@@ -56,6 +56,13 @@ $(TESTDIRS):
 	   $(TAR) -xzf $(TARBALL) $(TESTDIRS) ;				\
 	   echo "done" ;						\
 	   fi);
+	-@(if [ -x fixup-tests.py ] ; then				\
+	   chmod -R u+w msxsdtest;					\
+	   echo "## Microsoft tests fixups";				\
+	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
+	   export PYTHONPATH;						\
+	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;  \
+	   $(PYTHON) fixup-tests.py ; fi)
 
 #
 # The actual test run if present. PYTHONPATH is updated to make sure

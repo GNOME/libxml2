@@ -23,13 +23,19 @@
 
 #include "encoding.h"
 
-/*
+/**
+ * isolat1ToUTF8:
+ * @out:  a pointer ot an array of bytes to store the result
+ * @outlen:  the lenght of @out
+ * @in:  a pointer ot an array of ISO Latin 1 chars
+ * @inlen:  the lenght of @in
+ *
  * Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
  * block of chars out.
- *
- * Returns the number of byte written, or -1 by lack of space.
+ * return values: number of byte written, or -1 by lack of space.
  */
-int isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
+int
+isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
 {
     unsigned char* outstart= out;
     unsigned char* outend= out+outlen;
@@ -52,17 +58,21 @@ int isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
     return out-outstart;
 }
 
-
-/*
+/**
+ * UTF8Toisolat1:
+ * @out:  a pointer ot an array of bytes to store the result
+ * @outlen:  the lenght of @out
+ * @in:  a pointer ot an array of UTF-8 chars
+ * @inlen:  the lenght of @in
+ *
  * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
  * block of chars out.
- *
- * Returns the number of byte written, or -1 by lack of space, or -2
- *     if the transcoding failed.
- *
  * TODO: need a fallback mechanism ...
+ * return values: the number of byte written, or -1 by lack of space, or -2
+ *     if the transcoding failed.
  */
-int UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
+int
+UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
 {
     unsigned char* outstart= out;
     unsigned char* outend= out+outlen;
@@ -84,13 +94,19 @@ int UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
     return out-outstart;
 }
 
-/*
+/**
+ * UTF16ToUTF8:
+ * @out:  a pointer ot an array of bytes to store the result
+ * @outlen:  the lenght of @out
+ * @in:  a pointer ot an array of UTF-16 chars (array of unsigned shorts)
+ * @inlen:  the lenght of @in
+ *
  * Take a block of UTF-16 ushorts in and try to convert it to an UTF-8
  * block of chars out.
- *
- * Returns the number of byte written, or -1 by lack of space.
+ * return values: number of byte written, or -1 by lack of space.
  */
-int UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
+int
+UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
 {
     unsigned char* outstart= out;
     unsigned char* outend= out+outlen;
@@ -126,16 +142,21 @@ int UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
     return out-outstart;
 }
 
-/*
+/**
+ * UTF8ToUTF16:
+ * @out:  a pointer ot an array of shorts to store the result
+ * @outlen:  the lenght of @out (number of shorts)
+ * @in:  a pointer ot an array of UTF-8 chars
+ * @inlen:  the lenght of @in
+ *
  * Take a block of UTF-8 chars in and try to convert it to an UTF-16
  * block of chars out.
- *
- * Returns the number of byte written, or -1 by lack of space, or -2
- *     if the transcoding failed.
- *
  * TODO: need a fallback mechanism ...
+ * return values: the number of byte written, or -1 by lack of space, or -2
+ *     if the transcoding failed.
  */
-int UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
+int
+UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
 {
     unsigned short* outstart= out;
     unsigned short* outend= out+outlen;
@@ -172,4 +193,5 @@ int UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
     }
     return out-outstart;
 }
+
 

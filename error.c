@@ -1,15 +1,25 @@
 /*
- * error.c: module displaying errors
+ * error.c: module displaying/handling XML parser errors
+ *
+ * Daniel Veillard <Daniel.Veillard@w3.org>
  */
 
 #include <stdio.h>
 #include <stdarg.h>
 #include "parser.h"
 
-/*
- * Display and format error messages.
+/**
+ * xmlParserError:
+ * @ctxt:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Display and format an error messages, gives file, line, position and
+ * extra parameters.
  */
-void xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...) {
+void
+xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...)
+{
     const CHAR *cur, *base;
     va_list args;
     int n;
@@ -52,10 +62,18 @@ void xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...) {
     fprintf(stderr,"^\n");
 }
 
-/*
- * Display and format error messages.
+/**
+ * xmlParserWarning:
+ * @ctxt:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Display and format a warning messages, gives file, line, position and
+ * extra parameters.
  */
-void xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...) {
+void
+xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...)
+{
     const CHAR *cur, *base;
     va_list args;
     int n;
@@ -91,3 +109,4 @@ void xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...) {
     }
     fprintf(stderr,"^\n");
 }
+

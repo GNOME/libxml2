@@ -1,4 +1,9 @@
-Sun Oct 18 20:40:58 EDT 1998
+Tue Oct 20 02:11:21 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* SAX.c, entities.c, tree.c, encoding.c, error.c: Set up the
+	  fonctions comment block, boring but useful.
+
+Sun Oct 18 20:40:58 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* encoding.[ch], Makefile.am: Added the UTF-8, UTF-16 and ISO Latin 1
 	  conversion routines. However they are not yet used to convert the

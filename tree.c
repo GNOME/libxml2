@@ -33,10 +33,12 @@ static int xmlCompressMode = 0;
  *									*
  ************************************************************************/
  
-/*
- * Upgrade old Namespace and move them to the root of the document.
+/**
+ * xmlUpgradeOldNs:
+ * @doc:  a document pointer
+ * 
+ * Upgrade old style Namespaces (PI) and move them to the root of the document.
  */
-
 void xmlUpgradeOldNs(xmlDocPtr doc) {
     xmlNsPtr cur;
 
@@ -57,8 +59,14 @@ void xmlUpgradeOldNs(xmlDocPtr doc) {
     doc->oldNs = NULL;
 }
 
-/*
+/**
+ * xmlNewNs:
+ * @node:  the element carrying the namespace
+ * @href:  the URI associated
+ * @prefix:  the prefix for the namespace
+ *
  * Creation of a new Namespace.
+ * return values: returns a new namespace pointer
  */
 xmlNsPtr xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
     xmlNsPtr cur;
@@ -105,8 +113,14 @@ xmlNsPtr xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
     return(cur);
 }
 
-/*
- * Creation of a new global namespace (the old way ...).
+/**
+ * xmlNewGlobalNs:
+ * @doc:  the document carrying the namespace
+ * @href:  the URI associated
+ * @prefix:  the prefix for the namespace
+ *
+ * Creation of a Namespace, the old way using PI and without scoping, to AVOID.
+ * return values: returns a new namespace pointer
  */
 xmlNsPtr xmlNewGlobalNs(xmlDocPtr doc, const CHAR *href, const CHAR *prefix) {
     xmlNsPtr cur;
@@ -148,8 +162,12 @@ xmlNsPtr xmlNewGlobalNs(xmlDocPtr doc, const CHAR *href, const CHAR *prefix) {
     return(cur);
 }
 
-/*
- * Set the node namespace a posteriori
+/**
+ * xmlSetNs:
+ * @node:  a node in the document
+ * @ns:  a namespace pointer
+ *
+ * Associate a namespace to a node, a posteriori.
  */
 void xmlSetNs(xmlNodePtr node, xmlNsPtr ns) {
     if (node == NULL) {
@@ -159,8 +177,11 @@ void xmlSetNs(xmlNodePtr node, xmlNsPtr ns) {
     node->ns = ns;
 }
 
-/*
- * Freeing a Namespace
+/**
+ * xmlFreeNs:
+ * @cur:  the namespace pointer
+ *
+ * Free up the structures associated to a namespace
  */
 void xmlFreeNs(xmlNsPtr cur) {
     if (cur == NULL) {
@@ -173,8 +194,11 @@ void xmlFreeNs(xmlNsPtr cur) {
     free(cur);
 }
 
-/*
- * Freeing a Namespace list
+/**
+ * xmlFreeNsList:
+ * @cur:  the first namespace pointer
+ *
+ * Free up all the structures associated to the chained namespaces.
  */
 void xmlFreeNsList(xmlNsPtr cur) {
     xmlNsPtr next;
@@ -189,8 +213,15 @@ void xmlFreeNsList(xmlNsPtr cur) {
     }
 }
 
-/*
+/**
+ * xmlNewDtd:
+ * @doc:  the document pointer
+ * @name:  the DTD name
+ * @ExternalID:  the external ID
+ * @SystemID:  the system ID
+ *
  * Creation of a new DTD.
+ * return values: a pointer to the new DTD structure
  */
 xmlDtdPtr xmlNewDtd(xmlDocPtr doc, const CHAR *name,
                     const CHAR *ExternalID, const CHAR *SystemID) {
@@ -229,8 +260,11 @@ xmlDtdPtr xmlNewDtd(xmlDocPtr doc, const CHAR *name,
     return(cur);
 }
 
-/*
- * Freeing a DTD
+/**
+ * xmlFreeDtd:
+ * @cur:  the DTD structure to free up
+ *
+ * Free a DTD structure.
  */
 void xmlFreeDtd(xmlDtdPtr cur) {
     if (cur == NULL) {
@@ -248,8 +282,11 @@ void xmlFreeDtd(xmlDtdPtr cur) {
     free(cur);
 }
 
-/*
- * Creation of a new document
+/**
+ * xmlNewDoc:
+ * @version:  CHAR string giving the version of XML "1.0"
+ *
+ * Create a new document
  */
 xmlDocPtr xmlNewDoc(const CHAR *version) {
     xmlDocPtr cur;
@@ -285,8 +322,12 @@ xmlDocPtr xmlNewDoc(const CHAR *version) {
     return(cur);
 }
 
-/*
- * Freeing a document : all the tree is freed too.
+/**
+ * xmlFreeDoc:
+ * @cur:  pointer to the document
+ * @:  
+ *
+ * Free up all the structures used by a document, tree included.
  */
 void xmlFreeDoc(xmlDocPtr cur) {
     if (cur == NULL) {
@@ -304,8 +345,14 @@ void xmlFreeDoc(xmlDocPtr cur) {
     free(cur);
 }
 
-/*
- * Creation of a new property of a node.
+/**
+ * xmlNewProp:
+ * @node:  the holding node
+ * @name:  the name of the attribute
+ * @value:  the value of the attribute
+ *
+ * Create a new property carried by a node.
+ * return values: a pointer to the attribute
  */
 xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
     xmlAttrPtr cur;
@@ -353,10 +400,11 @@ xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
     return(cur);
 }
 
-/*
- * Freeing a property list : Free a property and all its siblings,
- *                       this is a recursive behaviour, all the childs
- *                       are freed too.
+/**
+ * xmlFreePropList:
+ * @cur:  the first property in the list
+ *
+ * Free a property and all its siblings, all the childs are freed too.
  */
 void xmlFreePropList(xmlAttrPtr cur) {
     xmlAttrPtr next;
@@ -371,8 +419,11 @@ void xmlFreePropList(xmlAttrPtr cur) {
     }
 }
 
-/*
- * Freeing a property.
+/**
+ * xmlFreeProp:
+ * @cur:  the first property in the list
+ *
+ * Free one property, all the childs are freed too.
  */
 void xmlFreeProp(xmlAttrPtr cur) {
     if (cur == NULL) {
@@ -385,9 +436,14 @@ void xmlFreeProp(xmlAttrPtr cur) {
     free(cur);
 }
 
-/*
- * Creation of a new node element in a given DTD.
- * We assume that the "name" has already being strdup'd !
+/**
+ * xmlNewNode:
+ * @ns:  namespace if any
+ * @name:  the node name
+ * @content:  the text content if any
+ *
+ * Creation of a new node element. @ns and @content are optionnal (NULL).
+ * return values: a pointer to the new node object.
  */
 xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
     xmlNodePtr cur;
@@ -428,6 +484,17 @@ xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
     return(cur);
 }
 
+/**
+ * xmlNewDocNode:
+ * @doc:  the document
+ * @ns:  namespace if any
+ * @name:  the node name
+ * @content:  the text content if any
+ *
+ * Creation of a new node element within a document. @ns and @content
+ * are optionnal (NULL).
+ * return values: a pointer to the new node object.
+ */
 xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
                          const CHAR *name, CHAR *content) {
     xmlNodePtr cur;
@@ -438,8 +505,12 @@ xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
 }
 
 
-/*
- * Creation of a new node contening text.
+/**
+ * xmlNewText:
+ * @content:  the text content
+ *
+ * Creation of a new text node.
+ * return values: a pointer to the new node object.
  */
 xmlNodePtr xmlNewText(const CHAR *content) {
     xmlNodePtr cur;
@@ -471,6 +542,14 @@ xmlNodePtr xmlNewText(const CHAR *content) {
     return(cur);
 }
 
+/**
+ * xmlNewDocText:
+ * @doc: the document
+ * @content:  the text content
+ *
+ * Creation of a new text node within a document.
+ * return values: a pointer to the new node object.
+ */
 xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
     xmlNodePtr cur;
 
@@ -479,8 +558,13 @@ xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
     return(cur);
 }
 
-/*
- * Creation of a new node contening text.
+/**
+ * xmlNewText:
+ * @content:  the text content
+ * @len:  the text len.
+ *
+ * Creation of a new text node with an extra parameter for the content's lenght
+ * return values: a pointer to the new node object.
  */
 xmlNodePtr xmlNewTextLen(const CHAR *content, int len) {
     xmlNodePtr cur;
@@ -512,6 +596,16 @@ xmlNodePtr xmlNewTextLen(const CHAR *content, int len) {
     return(cur);
 }
 
+/**
+ * xmlNewDocTextLen:
+ * @doc: the document
+ * @content:  the text content
+ * @len:  the text len.
+ *
+ * Creation of a new text node with an extra content lenght parameter. The
+ * text node pertain to a given document.
+ * return values: a pointer to the new node object.
+ */
 xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
     xmlNodePtr cur;
 
@@ -520,8 +614,12 @@ xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
     return(cur);
 }
 
-/*
- * Creation of a new node contening a comment.
+/**
+ * xmlNewComment:
+ * @content:  the comment content
+ *
+ * Creation of a new node containing a comment.
+ * return values: a pointer to the new node object.
  */
 xmlNodePtr xmlNewComment(CHAR *content) {
     xmlNodePtr cur;
@@ -553,6 +651,14 @@ xmlNodePtr xmlNewComment(CHAR *content) {
     return(cur);
 }
 
+/**
+ * xmlNewComment:
+ * @doc:  the document
+ * @content:  the comment content
+ *
+ * Creation of a new node containing a commentwithin a document.
+ * return values: a pointer to the new node object.
+ */
 xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content) {
     xmlNodePtr cur;
 
@@ -561,8 +667,17 @@ xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content) {
     return(cur);
 }
 
-/*
- * Creation of a new child element, added at the end.
+/**
+ * xmlNewChild:
+ * @parent:  the parent node
+ * @ns:  a namespace if any
+ * @name:  the name of the child
+ * @content:  the content of the child if any.
+ *
+ * 
+ * Creation of a new child element, added at the end of @parent childs list.
+ * @ns and @content parameters are optionnal (NULL).
+ * return values: a pointer to the new node object.
  */
 xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
                        const CHAR *name, CHAR *content) {
@@ -608,8 +723,13 @@ xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
     return(cur);
 }
 
-/*
- * Add a new child element, added at the end.
+/**
+ * xmlAddChild:
+ * @parent:  the parent node
+ * @cur:  the child node
+ *
+ * Add a new child element, to @parent, at the end of the child list.
+ * return values: the child or NULL in case of error.
  */
 xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     xmlNodePtr prev;
@@ -646,8 +766,12 @@ xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     return(cur);
 }
 
-/*
- * Search the last child, if any.
+/**
+ * xmlGetLastChild:
+ * @parent:  the parent node
+ *
+ * Search the last child of a node.
+ * return values: the last child or NULL if none.
  */
 xmlNodePtr xmlGetLastChild(xmlNodePtr parent) {
     xmlNodePtr last;
@@ -669,10 +793,12 @@ xmlNodePtr xmlGetLastChild(xmlNodePtr parent) {
     return(last);
 }
 
-/*
- * Freeing a node list : Free a node and all its siblings,
- *                       this is a recursive behaviour, all the childs
- *                       are freed too.
+/**
+ * xmlFreeNodeList:
+ * @cur:  the first node in the list
+ *
+ * Free a node and all its siblings, this is a recursive behaviour, all
+ * the childs are freed too.
  */
 void xmlFreeNodeList(xmlNodePtr cur) {
     xmlNodePtr next;
@@ -687,9 +813,11 @@ void xmlFreeNodeList(xmlNodePtr cur) {
     }
 }
 
-/*
- * Freeing a node : this is a recursive behaviour, all the childs
- *                  are freed too.
+/**
+ * xmlFreeNode:
+ * @cur:  the node
+ *
+ * Free a node, this is a recursive behaviour, all the childs are freed too.
  */
 void xmlFreeNode(xmlNodePtr cur) {
     if (cur == NULL) {
@@ -711,8 +839,12 @@ void xmlFreeNode(xmlNodePtr cur) {
  *									*
  ************************************************************************/
  
-/*
- * Changing the content of a node.
+/**
+ * xmlNodeSetContent:
+ * @cur:  the node being modified
+ * @content:  the new value of the content
+ *
+ * Replace the content of a node.
  */
 void xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
     if (cur == NULL) {
@@ -726,8 +858,13 @@ void xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
 	cur->content = NULL;
 }
 
-/*
- * Changing the content of a node.
+/**
+ * xmlNodeSetContentLen:
+ * @cur:  the node being modified
+ * @content:  the new value of the content
+ * @len:  the size of @content
+ *
+ * Replace the content of a node.
  */
 void xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
     if (cur == NULL) {
@@ -741,8 +878,12 @@ void xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	cur->content = NULL;
 }
 
-/*
- * Adding content to a node.
+/**
+ * xmlNodeAddContent:
+ * @cur:  the node being modified
+ * @content:  extra content
+ * 
+ * Append the extra substring to the node content.
  */
 void xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
     if (cur == NULL) {
@@ -752,8 +893,13 @@ void xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
     cur->content = xmlStrcat(cur->content, content);
 }
 
-/*
- * Adding content to a node.
+/**
+ * xmlNodeAddContentLen:
+ * @cur:  the node being modified
+ * @content:  extra content
+ * @len:  the size of @content
+ * 
+ * Append the extra substring to the node content.
  */
 void xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
     if (cur == NULL) {
@@ -763,13 +909,17 @@ void xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
     cur->content = xmlStrncat(cur->content, content, len);
 }
 
-/*
- * Search a Ns registered under a given name space for a document.
- *      recurse on the parents until it finds the defined namespace
- *      or return NULL otherwise.
+/**
+ * xmlSearchNs:
+ * @doc:  the document
+ * @node:  the current node
+ * @nameSpace:  the namespace string
  *
- * Note : nameSpace == NULL is valid, this is a search for the default
- *        namespace.
+ * Search a Ns registered under a given name space for a document.
+ * recurse on the parents until it finds the defined namespace
+ * or return NULL otherwise.
+ * @nameSpace can be NULL, this is a search for the default namespace.
+ * return values: the namespace pointer or NULL.
  */
 xmlNsPtr xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const CHAR *nameSpace) {
     xmlNsPtr cur;
@@ -798,10 +948,15 @@ xmlNsPtr xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const CHAR *nameSpace) {
     return(NULL);
 }
 
-/*
- * Search a Ns aliasing a given URI
- *      recurse on the parents until it finds the defined namespace
- *      or return NULL otherwise.
+/**
+ * xmlSearchNsByHref:
+ * @doc:  the document
+ * @node:  the current node
+ * @href:  the namespace value
+ *
+ * Search a Ns aliasing a given URI. Recurse on the parents until it finds
+ * the defined namespace or return NULL otherwise.
+ * return values: the namespace pointer or NULL.
  */
 xmlNsPtr xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
     xmlNsPtr cur;
@@ -828,8 +983,13 @@ xmlNsPtr xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
     return(NULL);
 }
 
-/*
- * Reading the content of a given property.
+/**
+ * xmlGetProp:
+ * @node:  the node
+ * @name:  the attribute name
+ *
+ * Search and get the value of an attribute associated to a node
+ * return values: the attribute value or NULL if not found.
  */
 const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
     xmlAttrPtr prop = node->properties;
@@ -841,8 +1001,14 @@ const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
     return(NULL);
 }
 
-/*
- * Setting the content of a given property.
+/**
+ * xmlGetProp:
+ * @node:  the node
+ * @name:  the attribute name
+ * @value:  the attribute value
+ *
+ * Set (or reset) an attribute carried by a node.
+ * return values: the attribute pointer.
  */
 xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
     xmlAttrPtr prop = node->properties;
@@ -862,8 +1028,12 @@ xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
     return(prop);
 }
 
-/*
- * Is this node a piece of text
+/**
+ * xmlNodeIsText:
+ * @node:  the node
+ * 
+ * Is this node a Text node ?
+ * return values: 1 yes, 0 no
  */
 int xmlNodeIsText(xmlNodePtr node) {
     if (node == NULL) return(0);
@@ -872,11 +1042,15 @@ int xmlNodeIsText(xmlNodePtr node) {
     return(0);
 }
 
-/*
- * Concat a piece of text to an existing text node
- *
- * TODO !!! Should be optimized with a bit of preallocation.
+/**
+ * xmlNodeIsText:
+ * @node:  the node
+ * @content:  the content
+ * @len:  @content lenght
+ * 
+ * Concat the given string at the end of the existing node content
  */
+
 void xmlTextConcat(xmlNodePtr node, const CHAR *content, int len) {
     if (node == NULL) return;
 
@@ -893,14 +1067,17 @@ void xmlTextConcat(xmlNodePtr node, const CHAR *content, int len) {
  *									*
  ************************************************************************/
 
-/*
- * routine which manage and grows an output buffer. One can write
- * standard char array's (8 bits char) or CHAR's arrays.
- */
 static CHAR *buffer = NULL;
 static int buffer_index = 0;
 static int buffer_size = 0;
 
+/**
+ * xmlBufferWriteCHAR:
+ * @string:  the string to add
+ *
+ * routine which manage and grows an output buffer. This one add
+ * CHARs at the end of the array.
+ */
 void xmlBufferWriteCHAR(const CHAR *string) {
     const CHAR *cur;
 
@@ -928,6 +1105,13 @@ void xmlBufferWriteCHAR(const CHAR *string) {
     buffer[buffer_index] = 0;
 }
 
+/**
+ * xmlBufferWriteChar:
+ * @string:  the string to add
+ *
+ * routine which manage and grows an output buffer. This one add
+ * C chars at the end of the array.
+ */
 void xmlBufferWriteChar(const char *string) {
     const char *cur;
 
@@ -955,9 +1139,11 @@ void xmlBufferWriteChar(const char *string) {
     buffer[buffer_index] = 0;
 }
 
-/*
- * Dump the global Namespace inherited from the old WD.
- * Within the context of the document header.
+/**
+ * xmlGlobalNsDump:
+ * @cur:  a namespace
+ *
+ * Dump a global Namespace, this is the old version based on PIs.
  */
 static void xmlGlobalNsDump(xmlNsPtr cur) {
     if (cur == NULL) {
@@ -980,10 +1166,12 @@ static void xmlGlobalNsDump(xmlNsPtr cur) {
     }
 }
 
-/*
- * Dump an old global XML Namespace list
+/**
+ * xmlGlobalNsListDump:
+ * @cur:  the first namespace
+ *
+ * Dump a list of global Namespace, this is the old version based on PIs.
  */
-
 static void xmlGlobalNsListDump(xmlNsPtr cur) {
     while (cur != NULL) {
         xmlGlobalNsDump(cur);
@@ -991,9 +1179,12 @@ static void xmlGlobalNsListDump(xmlNsPtr cur) {
     }
 }
 
-/*
+/**
+ * xmlNsDump:
+ * @cur:  a namespace
+ *
  * Dump a local Namespace definition.
- * Within the context of an element attributes.
+ * Should be called in the context of attributes dumps.
  */
 static void xmlNsDump(xmlNsPtr cur) {
     if (cur == NULL) {
@@ -1013,10 +1204,13 @@ static void xmlNsDump(xmlNsPtr cur) {
     }
 }
 
-/*
- * Dump an XML Namespace list
+/**
+ * xmlNsListDump:
+ * @cur:  the first namespace
+ *
+ * Dump a list of local Namespace definitions.
+ * Should be called in the context of attributes dumps.
  */
-
 static void xmlNsListDump(xmlNsPtr cur) {
     while (cur != NULL) {
         xmlNsDump(cur);
@@ -1024,10 +1218,12 @@ static void xmlNsListDump(xmlNsPtr cur) {
     }
 }
 
-/*
- * Dump an XML DTD
+/**
+ * xmlDtdDump:
+ * @doc:  the document
+ * 
+ * Dump the XML document DTD, if any.
  */
-
 static void xmlDtdDump(xmlDocPtr doc) {
     xmlDtdPtr cur = doc->dtd;
 
@@ -1063,10 +1259,13 @@ static void xmlDtdDump(xmlDocPtr doc) {
     xmlBufferWriteChar(">\n");
 }
 
-/*
- * Dump an XML property
+/**
+ * xmlAttrDump:
+ * @doc:  the document
+ * @cur:  the attribute pointer
+ *
+ * Dump an XML attribute
  */
-
 static void xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "xmlAttrDump : property == NULL\n");
@@ -1081,10 +1280,13 @@ static void xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
     }
 }
 
-/*
- * Dump an XML property list
+/**
+ * xmlAttrListDump:
+ * @doc:  the document
+ * @cur:  the first attribute pointer
+ *
+ * Dump a list of XML attributes
  */
-
 static void xmlAttrListDump(xmlDocPtr doc, xmlAttrPtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "xmlAttrListDump : property == NULL\n");
@@ -1096,11 +1298,16 @@ static void xmlAttrListDump(xmlDocPtr doc, xmlAttrPtr cur) {
     }
 }
 
-/*
- * Dump an XML node list
- */
 
 static void xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level);
+/**
+ * xmlNodeListDump:
+ * @doc:  the document
+ * @cur:  the first node
+ * @level: the imbrication level for indenting
+ *
+ * Dump an XML node list, recursive behaviour,children are printed too.
+ */
 static void xmlNodeListDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
     if (cur == NULL) {
         fprintf(stderr, "xmlNodeListDump : node == NULL\n");
@@ -1112,10 +1319,14 @@ static void xmlNodeListDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
     }
 }
 
-/*
- * Dump an XML node
+/**
+ * xmlNodeListDump:
+ * @doc:  the document
+ * @cur:  the current node
+ * @level: the imbrication level for indenting
+ *
+ * Dump an XML node, recursive behaviour,children are printed too.
  */
-
 static void xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
     int i;
 
@@ -1176,8 +1387,11 @@ static void xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
     xmlBufferWriteChar(">\n");
 }
 
-/*
- * Dump an XML document
+/**
+ * xmlDocContentDump:
+ * @cur:  the document
+ *
+ * Dump an XML document.
  */
 static void xmlDocContentDump(xmlDocPtr cur) {
     if (oldXMLWDcompatibility)
@@ -1212,10 +1426,15 @@ static void xmlDocContentDump(xmlDocPtr cur) {
     }
 }
 
-/*
- * Dump an XML document to memory.
+/**
+ * xmlDocDumpMemory:
+ * @cur:  the document
+ * @mem:  OUT: the memory pointer
+ * @size:  OUT: the memory lenght
+ *
+ * Dump an XML document in memory and return the CHAR * and it's size.
+ * It's up to the caller to free the memory.
  */
-
 void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
     if (cur == NULL) {
         fprintf(stderr, "xmlDocDump : document == NULL\n");
@@ -1230,15 +1449,26 @@ void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
     *size = buffer_index;
 }
 
-/*
- * Get/Set a document compression mode.
+/**
+ * xmlGetDocCompressMode:
+ * @doc:  the document
+ *
+ * get the compression ratio for a document, ZLIB based
+ * return values: 0 (uncompressed) to 9 (max compression)
  */
-
 int  xmlGetDocCompressMode (xmlDocPtr doc) {
     if (doc == NULL) return(-1);
     return(doc->compression);
 }
 
+/**
+ * xmlSetDocCompressMode:
+ * @doc:  the document
+ * @mode:  the compression ratio
+ *
+ * set the compression ratio for a document, ZLIB based
+ * Correct values: 0 (uncompressed) to 9 (max compression)
+ */
 void xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
     if (doc == NULL) return;
     if (mode < 0) doc->compression = 0;
@@ -1246,23 +1476,36 @@ void xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
     else doc->compression = mode;
 }
 
-/*
- * Get/Set the global compression mode
+/**
+ * xmlGetCompressMode:
+ *
+ * get the default compression mode used, ZLIB based.
+ * return values: 0 (uncompressed) to 9 (max compression)
  */
-
 int  xmlGetCompressMode(void) {
     return(xmlCompressMode);
 }
+
+/**
+ * xmlSetCompressMode:
+ * @mode:  the compression ratio
+ *
+ * set the default compression mode used, ZLIB based
+ * Correct values: 0 (uncompressed) to 9 (max compression)
+ */
 void xmlSetCompressMode(int mode) {
     if (mode < 0) xmlCompressMode = 0;
     else if (mode > 9) xmlCompressMode = 9;
     else xmlCompressMode = mode;
 }
 
-/*
- * Dump an XML document to the given FD
+/**
+ * xmlDocDump:
+ * @f:  the FILE*
+ * @cur:  the document
+ *
+ * Dump an XML document to an open FILE.
  */
-
 void xmlDocDump(FILE *f, xmlDocPtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "xmlDocDump : document == NULL\n");
@@ -1274,10 +1517,15 @@ void xmlDocDump(FILE *f, xmlDocPtr cur) {
     fwrite(buffer, sizeof(CHAR), buffer_index, f);
 }
 
-/*
- * Dump an XML document to a file.
+/**
+ * xmlSaveFile:
+ * @filename:  the filename
+ * @cur:  the document
+ *
+ * Dump an XML document to a file. Will use compression if
+ * compiled in and enabled.
+ * returns: the number of file written or -1 in case of failure.
  */
-
 int xmlSaveFile(const char *filename, xmlDocPtr cur) {
 #ifdef HAVE_ZLIB_H
     gzFile zoutput = NULL;

@@ -28,6 +28,7 @@ testHTML
 testSAX
 testXPath
 libxml-2.0.pc
+libxml-2.0-uninstalled.pc
 xmlversion.h
 xmllint
 testURI

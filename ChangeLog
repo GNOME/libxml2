@@ -1,3 +1,9 @@
+Wed Jan 28 07:20:37 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/examples/Makefile.am
+	per Jan. 15 email to the list from oliverst, the index.html
+	file from this directory wasn't making it into the tarball
+
 Mon Jan 26 18:01:00 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* acinclude.m4: applied fix from Alexander Winston for a problem

@@ -19,14 +19,14 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(TARGET_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res io1.res 
+EXTRA_DIST=examples.xsl index.py examples.xml test1.xml test2.xml test3.xml writer.xml io1.res reader1.res reader3.res tree1.res tree2.res 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 
+noinst_PROGRAMS=io1 parse1 parse2 reader1 reader2 reader3 testWriter tree1 tree2 xpath1 
 
-xpath1_SOURCES=xpath1.c
-xpath1_LDFLAGS=
-xpath1_DEPENDENCIES= $(DEPS)
-xpath1_LDADD= @RDL_LIBS@ $(LDADDS)
+io1_SOURCES=io1.c
+io1_LDFLAGS=
+io1_DEPENDENCIES= $(DEPS)
+io1_LDADD= @RDL_LIBS@ $(LDADDS)
 
 parse1_SOURCES=parse1.c
 parse1_LDFLAGS=
@@ -37,21 +37,6 @@ parse2_SOURCES=parse2.c
 parse2_LDFLAGS=
 parse2_DEPENDENCIES= $(DEPS)
 parse2_LDADD= @RDL_LIBS@ $(LDADDS)
-
-tree1_SOURCES=tree1.c
-tree1_LDFLAGS=
-tree1_DEPENDENCIES= $(DEPS)
-tree1_LDADD= @RDL_LIBS@ $(LDADDS)
-
-tree2_SOURCES=tree2.c
-tree2_LDFLAGS=
-tree2_DEPENDENCIES= $(DEPS)
-tree2_LDADD= @RDL_LIBS@ $(LDADDS)
-
-testWriter_SOURCES=testWriter.c
-testWriter_LDFLAGS=
-testWriter_DEPENDENCIES= $(DEPS)
-testWriter_LDADD= @RDL_LIBS@ $(LDADDS)
 
 reader1_SOURCES=reader1.c
 reader1_LDFLAGS=
@@ -68,22 +53,33 @@ reader3_LDFLAGS=
 reader3_DEPENDENCIES= $(DEPS)
 reader3_LDADD= @RDL_LIBS@ $(LDADDS)
 
-io1_SOURCES=io1.c
-io1_LDFLAGS=
-io1_DEPENDENCIES= $(DEPS)
-io1_LDADD= @RDL_LIBS@ $(LDADDS)
+testWriter_SOURCES=testWriter.c
+testWriter_LDFLAGS=
+testWriter_DEPENDENCIES= $(DEPS)
+testWriter_LDADD= @RDL_LIBS@ $(LDADDS)
+
+tree1_SOURCES=tree1.c
+tree1_LDFLAGS=
+tree1_DEPENDENCIES= $(DEPS)
+tree1_LDADD= @RDL_LIBS@ $(LDADDS)
+
+tree2_SOURCES=tree2.c
+tree2_LDFLAGS=
+tree2_DEPENDENCIES= $(DEPS)
+tree2_LDADD= @RDL_LIBS@ $(LDADDS)
+
+xpath1_SOURCES=xpath1.c
+xpath1_LDFLAGS=
+xpath1_DEPENDENCIES= $(DEPS)
+xpath1_LDADD= @RDL_LIBS@ $(LDADDS)
 
 tests: $(noinst_PROGRAMS)
 	@(echo > .memdump)
+	@(./io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(./parse1 test1.xml)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(./parse2 test2.xml)
-	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp)
-	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./tree2 > tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp)
-	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(./reader1 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
@@ -91,7 +87,11 @@ tests: $(noinst_PROGRAMS)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(./reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
+	@(./testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@(./tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@(./tree2 > tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

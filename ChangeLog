@@ -1,3 +1,8 @@
+Tue Jun 29 23:00:05 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: Kasimier Buchcik fixed the memory access and
+	  allocation problem
+
 Tue Jun 29 19:00:32 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c xmlschemastypes.c include/libxml/xmlerror.h

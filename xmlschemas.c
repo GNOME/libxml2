@@ -771,18 +771,7 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
 	    xmlFree(link);
 	    link = next;
 	} while (link != NULL);
-    }
-  
-    if ((type->subtypes != NULL) && (type->type != XML_SCHEMA_TYPE_SEQUENCE)) {
-	switch (type->subtypes->type) { 
-	    case XML_SCHEMA_TYPE_SIMPLE_CONTENT:
-	    case XML_SCHEMA_TYPE_COMPLEX_CONTENT:
-	    case XML_SCHEMA_TYPE_RESTRICTION:
-	    case XML_SCHEMA_TYPE_EXTENSION:
-	    case XML_SCHEMA_TYPE_UNION:
-		xmlSchemaFreeType(type->subtypes);
-	}
-    }
+    }      
     xmlFree(type);
 }
 
@@ -3335,9 +3324,10 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
 
     snprintf((char *) name, 30, "union %d", ctxt->counter++ + 1);
-    type = xmlSchemaNewUnion(ctxt, name);
+    type = xmlSchemaAddType(ctxt, schema, name, NULL);
     if (type == NULL)
         return (NULL);
+    type->type = XML_SCHEMA_TYPE_UNION;
     type->node = node;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->base = xmlSchemaGetProp(ctxt, node, "memberTypes");
@@ -3791,6 +3781,8 @@ xmlSchemaImportSchema(xmlSchemaParserCtxtPtr ctxt,
 		      schemaLocation, NULL);
 
 	xmlSchemaFreeParserCtxt(newctxt);
+	if (import->schemaLocation != NULL)
+	    xmlFree((xmlChar *)import->schemaLocation);
 	xmlFree(import);
 	return NULL;
     }
@@ -4461,9 +4453,10 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     oldcontainer = ctxt->container;
 
     snprintf((char *) name, 30, "restriction %d", ctxt->counter++ + 1);
-    type = xmlSchemaNewRestriction(ctxt, name);
+    type = xmlSchemaAddType(ctxt, schema, name, NULL);
     if (type == NULL)
         return (NULL);
+    type->type = XML_SCHEMA_TYPE_RESTRICTION;
     type->node = node;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->base = xmlGetQNameProp(ctxt, node, "base", &(type->baseNs));
@@ -4614,9 +4607,10 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     oldcontainer = ctxt->container;
 
     snprintf((char *) name, 30, "extension %d", ctxt->counter++ + 1);
-    type = xmlSchemaNewExtension(ctxt, name);
+    type = xmlSchemaAddType(ctxt, schema, name, NULL);    
     if (type == NULL)
         return (NULL);
+    type->type = XML_SCHEMA_TYPE_EXTENSION;
     type->node = node;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     ctxt->container = name;
@@ -4682,9 +4676,10 @@ xmlSchemaParseSimpleContent(xmlSchemaParserCtxtPtr ctxt,
         return (NULL);
 
     snprintf((char *) name, 30, "simpleContent %d", ctxt->counter++ + 1);
-    type = xmlSchemaNewSimpleContent(ctxt, name);
+    type = xmlSchemaAddType(ctxt, schema, name, NULL);    
     if (type == NULL)
         return (NULL);
+    type->type = XML_SCHEMA_TYPE_SIMPLE_CONTENT;
     type->node = node;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
 
@@ -4737,9 +4732,10 @@ xmlSchemaParseComplexContent(xmlSchemaParserCtxtPtr ctxt,
         return (NULL);
 
     snprintf((char *) name, 30, "complexContent %d", ctxt->counter++ + 1);
-    type = xmlSchemaNewComplexContent(ctxt, name);   
+    type = xmlSchemaAddType(ctxt, schema, name, NULL);
     if (type == NULL)
         return (NULL);
+    type->type = XML_SCHEMA_TYPE_COMPLEX_CONTENT;
     type->node = node;    
     type->id = xmlSchemaGetProp(ctxt, node, "id");
 
@@ -8052,6 +8048,20 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 
     if (typeDecl == NULL)
         return;
+    /*
+    * Do not allow the following types to be typefixed, prior to
+    * the corresponding simple/complex types.
+    */
+    if (ctxt->ctxtType == NULL) {
+	switch (typeDecl->type) {
+	    case XML_SCHEMA_TYPE_SIMPLE_CONTENT:
+	    case XML_SCHEMA_TYPE_COMPLEX_CONTENT:
+	    case XML_SCHEMA_TYPE_UNION:
+	    case XML_SCHEMA_TYPE_RESTRICTION:
+	    case XML_SCHEMA_TYPE_EXTENSION:	    
+		return;
+	}
+    }
     if (name == NULL)
         name = typeDecl->name;
     if (typeDecl->contentType == XML_SCHEMA_CONTENT_UNKNOWN) {
@@ -8254,6 +8264,8 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
                     break;
                 }
             case XML_SCHEMA_TYPE_COMPLEX:{
+		    ctxtType = ctxt->ctxtType;
+		    ctxt->ctxtType = typeDecl;
 		    if ((typeDecl->subtypes == NULL) || 
 			((typeDecl->subtypes->type != 
 			XML_SCHEMA_TYPE_SIMPLE_CONTENT) && 
@@ -8277,12 +8289,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
                     } else {
 			if ((typeDecl->subtypes != NULL) &&
 			    (typeDecl->subtypes->contentType ==
-			    XML_SCHEMA_CONTENT_UNKNOWN)) {
-			    ctxtType = ctxt->ctxtType;
-			    ctxt->ctxtType = typeDecl;
+			    XML_SCHEMA_CONTENT_UNKNOWN)) {			    
 			    xmlSchemaTypeFixup(typeDecl->subtypes, ctxt,
-				NULL);
-			    ctxt->ctxtType = ctxtType;
+				NULL);			    
 			}
                         if (typeDecl->flags & XML_SCHEMAS_TYPE_MIXED) {
                             typeDecl->contentType =
@@ -8295,6 +8304,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
                         }			
                     }
 		    xmlSchemaBuildAttributeValidation(ctxt, typeDecl);
+		    ctxt->ctxtType = ctxtType;
                     break;
                 }
             case XML_SCHEMA_TYPE_COMPLEX_CONTENT:{
@@ -8330,13 +8340,12 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		* Simple Type Definition Schema Component
 		*
 		*/
+		ctxtType = ctxt->ctxtType;		
 		typeDecl->contentType = XML_SCHEMA_CONTENT_SIMPLE;
 		if (typeDecl->subtypes->contentType == 
 		    XML_SCHEMA_CONTENT_UNKNOWN) {
-		    ctxtType = ctxt->ctxtType;
 		    ctxt->ctxtType = typeDecl;
 		    xmlSchemaTypeFixup(typeDecl->subtypes, ctxt, NULL);
-		    ctxt->ctxtType = ctxtType;
 		}
 		/* Fixup base type */		
 		if ((typeDecl->baseType != NULL) && 
@@ -8345,10 +8354,8 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		    /* OPTIMIZE: Actually this one will never by hit, since
 		    * the base type is already type-fixed in <restriction>.
 		    */
-		    ctxtType = ctxt->ctxtType;
 		    ctxt->ctxtType = typeDecl;
 		    xmlSchemaTypeFixup(typeDecl->baseType, ctxt, NULL);
-		    ctxt->ctxtType = ctxtType;
 		}
 		/* Base type: 
 		* 2 If the <list> or <union> alternative is chosen, 
@@ -8450,6 +8457,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		* Check constraints.
 		*/
 		xmlSchemaCheckSRCSimpleType(ctxt, typeDecl);
+		ctxt->ctxtType = ctxtType;
 		break;
             case XML_SCHEMA_TYPE_SEQUENCE:
             case XML_SCHEMA_TYPE_GROUP:
@@ -8965,6 +8973,8 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     /*
      * Then fixup all types properties
      */
+    ctxt->ctxtType = NULL;
+    ctxt->parentItem = NULL;
     xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaTypeFixup, ctxt);
 
     /*

@@ -114,12 +114,16 @@ struct _xmlStepOp {
     const xmlChar *value2;
 };
 
+#define PAT_FROM_ROOT	1
+#define PAT_FROM_CUR	2
+
 struct _xmlPattern {
     void *data;    		/* the associated template */
     xmlDictPtr dict;		/* the optional dictionnary */
     struct _xmlPattern *next;	/* next pattern if | is used */
     const xmlChar *pattern;	/* the pattern */
 
+    int flags;			/* flags */
     int nbStep;
     int maxStep;
     xmlStepOpPtr steps;        /* ops for computation */
@@ -357,9 +361,19 @@ xsltSwapTopPattern(xmlPatternPtr comp) {
  */
 static int
 xmlReversePattern(xmlPatternPtr comp) {
-    int i = 0;
-    int j = comp->nbStep - 1;
+    int i, j;
 
+    /*
+     * remove the leading // for //a or .//a
+     */
+    if ((comp->nbStep > 0) && (comp->steps[0].op == XML_OP_ANCESTOR)) {
+        for (i = 0, j = 1;j < comp->nbStep;i++,j++) {
+	    comp->steps[i].value = comp->steps[j].value;
+	    comp->steps[i].value2 = comp->steps[j].value2;
+	    comp->steps[i].op = comp->steps[j].op;
+	}
+	comp->nbStep--;
+    }
     if (comp->nbStep >= comp->maxStep) {
         xmlStepOpPtr temp;
 	temp = (xmlStepOpPtr) xmlRealloc(comp->steps, comp->maxStep * 2 *
@@ -372,6 +386,8 @@ xmlReversePattern(xmlPatternPtr comp) {
 	comp->steps = temp;
 	comp->maxStep *= 2;
     }
+    i = 0;
+    j = comp->nbStep - 1;
     while (j > i) {
 	register const xmlChar *tmp;
 	register xmlPatOp op;
@@ -932,6 +948,7 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		    }
 		}
 		TODO
+		ctxt->error = 1;
 		/* URI = xsltGetQNameURI(ctxt->elem, &token); */
 		if (token == NULL) {
 		    ctxt->error = 1;
@@ -952,6 +969,7 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		    goto error;
 		}
 		TODO
+		ctxt->error = 1;
 		/* URI = xsltGetQNameURI(ctxt->elem, &token); */
 		if (token == NULL) {
 		    ctxt->error = 1;
@@ -1000,23 +1018,24 @@ error:
 static void
 xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
     SKIP_BLANKS;
+    if (CUR == '/') {
+        ctxt->comp->flags |= PAT_FROM_ROOT;
+    } else if (CUR == '.') {
+        ctxt->comp->flags |= PAT_FROM_CUR;
+    }
     if ((CUR == '/') && (NXT(1) == '/')) {
-	/*
-	 * since we reverse the query
-	 * a leading // can be safely ignored
-	 */
+	PUSH(XML_OP_ANCESTOR, NULL, NULL);
 	NEXT;
 	NEXT;
     } else if ((CUR == '.') && (NXT(1) == '/') && (NXT(2) == '/')) {
-	/*
-	 * a leading .// can be safely ignored
-	 */
+	PUSH(XML_OP_ANCESTOR, NULL, NULL);
 	NEXT;
 	NEXT;
 	NEXT;
     }
     if (CUR == '@') {
 	TODO
+	ctxt->error = 1;
     } else {
         if (CUR == '/') {
 	    PUSH(XML_OP_ROOT, NULL, NULL);
@@ -1040,6 +1059,11 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
 		}
 	    }
 	}
+    }
+    if (CUR != 0) {
+	ERROR5(NULL, NULL, NULL,
+	       "Failed to compile pattern %s\n", ctxt->base);
+	ctxt->error = 1;
     }
 error:
     return;
@@ -1207,6 +1231,20 @@ xmlStreamCompile(xmlPatternPtr comp) {
 
     if ((comp == NULL) || (comp->steps == NULL))
         return(-1);
+    /*
+     * special case for .
+     */
+    if ((comp->nbStep == 1) &&
+        (comp->steps[0].op == XML_OP_ELEM) &&
+	(comp->steps[0].value == NULL) &&
+	(comp->steps[0].value2 == NULL)) {
+	stream = xmlNewStreamComp(0);
+	if (stream == NULL)
+	    return(-1);
+	comp->stream = stream;
+	return(0);
+    }
+
     stream = xmlNewStreamComp((comp->nbStep / 2) + 1);
     if (stream == NULL)
         return(-1);
@@ -1385,7 +1423,7 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 		tmp = xmlStreamCtxtAddState(stream, 0, 0);
 		if (tmp < 0)
 		    err++;
-		if (comp->steps[tmp].flags & XML_STREAM_STEP_FINAL)
+		if (comp->nbStep == 0)
 		    ret = 1;
 		stream = stream->next;
 		continue; /* while */
@@ -1592,6 +1630,8 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	ctxt->comp = cur;
 
 	xmlCompilePathPattern(ctxt);
+	if (ctxt->error != 0)
+	    goto error;
 	xmlFreePatParserContext(ctxt);
 
 
@@ -1675,4 +1715,75 @@ failed:
     return(NULL);
 }
 
+/**
+ * xmlPatternStreamable:
+ * @comp: the precompiled pattern
+ *
+ * Check if the pattern is streamable i.e. xmlPatternGetStreamCtxt()
+ * should work.
+ *
+ * Returns 1 if streamable, 0 if not and -1 in case of error.
+ */
+int
+xmlPatternStreamable(xmlPatternPtr comp) {
+    if (comp == NULL)
+        return(-1);
+    while (comp != NULL) {
+        if (comp->stream == NULL)
+	    return(0);
+	comp = comp->next;
+    }
+    return(1);
+}
+
+/**
+ * xmlPatternMaxDepth:
+ * @comp: the precompiled pattern
+ *
+ * Check the maximum depth reachable by a pattern
+ *
+ * Returns -2 if no limit (using //), otherwise the depth,
+ *         and -1 in case of error
+ */
+int
+xmlPatternMaxDepth(xmlPatternPtr comp) {
+    int ret = 0, i;
+    if (comp == NULL)
+        return(-1);
+    while (comp != NULL) {
+        if (comp->stream == NULL)
+	    return(-1);
+	for (i = 0;i < comp->stream->nbStep;i++)
+	    if (comp->stream->steps[i].flags & XML_STREAM_STEP_DESC)
+	        return(-2);
+	if (comp->stream->nbStep > ret)
+	    ret = comp->stream->nbStep;
+	comp = comp->next;
+    }
+    return(ret);
+
+}
+
+/**
+ * xmlPatternFromRoot:
+ * @comp: the precompiled pattern
+ *
+ * Check if the pattern must be looked at from the root.
+ *
+ * Returns 1 if true, 0 if false and -1 in case of error
+ */
+int
+xmlPatternFromRoot(xmlPatternPtr comp) {
+    if (comp == NULL)
+        return(-1);
+    while (comp != NULL) {
+        if (comp->stream == NULL)
+	    return(-1);
+	if (comp->flags & PAT_FROM_ROOT)
+	    return(1);
+	comp = comp->next;
+    }
+    return(0);
+
+}
 #endif /* LIBXML_PATTERN_ENABLED */

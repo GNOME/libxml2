@@ -51,6 +51,22 @@
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
 #include <libxml/globals.h>
+#ifdef LIBXML_PATTERN_ENABLED
+#include <libxml/pattern.h>
+#endif
+
+#ifdef LIBXML_PATTERN_ENABLED
+/* currently only in testing for DV as it's not yet solid enough for XSLT */
+/*
+ * TODO:
+ *  - fix the | where there is both relative and absolute expressions
+ *    probably need new pattens APIs to separate both e.g "//b | a "
+ *  - fix also the 0 depth trick used for "/" and "." when or'ed
+ *  - double check /. is a noop
+ *  - libxslt tests show a mem leak of a few bytes
+ */
+/* #define XPATH_STREAMING */
+#endif
 
 #define TODO 								\
     xmlGenericError(xmlGenericErrorContext,				\
@@ -436,6 +452,9 @@ struct _xmlXPathCompExpr {
     int nb;
     xmlChar *string;
 #endif
+#ifdef XPATH_STREAMING
+    xmlPatternPtr stream;
+#endif
 };
 
 /************************************************************************
@@ -520,6 +539,11 @@ xmlXPathFreeCompExpr(xmlXPathCompExprPtr comp)
 #ifdef DEBUG_EVAL_COUNTS
     if (comp->string != NULL) {
         xmlFree(comp->string);
+    }
+#endif
+#ifdef XPATH_STREAMING
+    if (comp->stream != NULL) {
+        xmlFreePatternList(comp->stream);
     }
 #endif
     if (comp->expr != NULL) {
@@ -4042,8 +4066,15 @@ xmlXPathFreeParserContext(xmlXPathParserContextPtr ctxt) {
     if (ctxt->valueTab != NULL) {
         xmlFree(ctxt->valueTab);
     }
-    if (ctxt->comp)
+    if (ctxt->comp != NULL) {
+#ifdef XPATH_STREAMING
+	if (ctxt->comp->stream != NULL) {
+	    xmlFreePatternList(ctxt->comp->stream);
+	    ctxt->comp->stream = NULL;
+	}
+#endif
 	xmlXPathFreeCompExpr(ctxt->comp);
+    }
     xmlFree(ctxt);
 }
 
@@ -10904,6 +10935,163 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
     return (total);
 }
 
+#ifdef XPATH_STREAMING
+/**
+ * xmlXPathRunStreamEval:
+ * @ctxt:  the XPath parser context with the compiled expression
+ *
+ * Evaluate the Precompiled Streamable XPath expression in the given context.
+ */
+static xmlXPathObjectPtr
+xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
+    int max_depth;
+    int from_root;
+    int ret, depth;
+    xmlNodePtr cur, limit;
+    xmlXPathObjectPtr retval;
+    xmlStreamCtxtPtr patstream;
+
+    int nb_nodes = 0;
+
+    if ((ctxt == NULL) || (comp == NULL))
+        return(NULL);
+    max_depth = xmlPatternMaxDepth(comp);
+    if (max_depth == -1)
+        return(NULL);
+    if (max_depth == -2)
+        max_depth = 10000;
+    from_root = xmlPatternFromRoot(comp);
+    if (from_root < 0)
+        return(NULL);
+/*    printf("stream eval: depth %d from root %d\n", max_depth, from_root); */
+
+    retval = xmlXPathNewNodeSet(NULL);
+    if (retval == NULL)
+        return(NULL);
+    
+    /* FIXME '. | /' */
+    if ((from_root) && (max_depth == 0)) {
+	xmlXPathNodeSetAddUnique(retval->nodesetval, (xmlNodePtr) ctxt->doc);
+	return(retval);
+    } else if (max_depth == 0) {
+	xmlXPathNodeSetAddUnique(retval->nodesetval, ctxt->node);
+	return(retval);
+    }
+    if (from_root) {
+        cur = ctxt->doc;
+	limit = NULL;
+    } else if (ctxt->node != NULL) {
+        switch (ctxt->node->type) {
+            case XML_ELEMENT_NODE:
+            case XML_DOCUMENT_NODE:
+            case XML_DOCUMENT_FRAG_NODE:
+            case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+            case XML_DOCB_DOCUMENT_NODE:
+#endif
+	        cur = ctxt->node;
+		break;
+            case XML_ATTRIBUTE_NODE:
+            case XML_TEXT_NODE:
+            case XML_CDATA_SECTION_NODE:
+            case XML_ENTITY_REF_NODE:
+            case XML_ENTITY_NODE:
+            case XML_PI_NODE:
+            case XML_COMMENT_NODE:
+            case XML_NOTATION_NODE:
+            case XML_DTD_NODE:
+            case XML_DOCUMENT_TYPE_NODE:
+            case XML_ELEMENT_DECL:
+            case XML_ATTRIBUTE_DECL:
+            case XML_ENTITY_DECL:
+            case XML_NAMESPACE_DECL:
+            case XML_XINCLUDE_START:
+            case XML_XINCLUDE_END:
+	        cur = NULL;
+		break;
+	}
+	limit = cur;
+    }
+    if (cur == NULL)
+        return(retval);
+
+    patstream = xmlPatternGetStreamCtxt(comp);
+    if (patstream == NULL) {
+        return(retval);
+    }
+
+    if (from_root) {
+	ret = xmlStreamPush(patstream, NULL, NULL);
+	if (ret < 0) {
+	} else if (ret == 1) {
+	    xmlXPathNodeSetAddUnique(retval->nodesetval, cur);
+	}
+    }
+
+    depth = 0;
+    goto scan_children;
+    do {
+next_node:
+        nb_nodes++;
+	if (cur->type == XML_ELEMENT_NODE) {
+	    ret = xmlStreamPush(patstream, cur->name,
+				(cur->ns ? cur->ns->href : NULL));
+	    if (ret < 0) {
+	    } else if (ret == 1) {
+		xmlXPathNodeSetAddUnique(retval->nodesetval, cur);
+	    }
+	    if ((cur->children == NULL) || (depth >= max_depth)) {
+		ret = xmlStreamPop(patstream);
+	    }
+	}
+        
+scan_children:
+	if ((cur->children != NULL) && (depth < max_depth)) {
+	    /*
+	     * Do not descend on entities declarations
+	     */
+	    if (cur->children->type != XML_ENTITY_DECL) {
+		cur = cur->children;
+		depth++;
+		/*
+		 * Skip DTDs
+		 */
+		if (cur->type != XML_DTD_NODE)
+		    continue;
+	    }
+	}
+
+	if (cur == limit)
+	    break;
+
+	while (cur->next != NULL) {
+	    cur = cur->next;
+	    if ((cur->type != XML_ENTITY_DECL) &&
+		(cur->type != XML_DTD_NODE))
+		goto next_node;
+	}
+	
+	do {
+	    ret = xmlStreamPop(patstream);
+	    cur = cur->parent;
+	    depth--;
+	    if ((cur == NULL) || (cur == limit))
+	        goto done;
+	    if (cur->next != NULL) {
+		cur = cur->next;
+		break;
+	    }
+	} while (cur != NULL);
+
+    } while ((cur != NULL) && (depth >= 0));
+done:
+/*    printf("stream eval: checked %d nodes selected %d\n",
+           nb_nodes, retval->nodesetval->nodeNr); */
+    xmlFreeStreamCtxt(patstream);
+    return(retval);
+}
+#endif /* XPATH_STREAMING */
+
 /**
  * xmlXPathRunEval:
  * @ctxt:  the XPath parser context with the compiled expression
@@ -10929,6 +11117,16 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
 	ctxt->valueMax = 10;
 	ctxt->value = NULL;
     }
+#ifdef XPATH_STREAMING
+    if (ctxt->comp->stream) {
+        xmlXPathObjectPtr ret;
+        ret = xmlXPathRunStreamEval(ctxt->context, ctxt->comp->stream);
+	if (ret != NULL) {
+	    valuePush(ctxt, ret);
+	    return;
+	}
+    }
+#endif
     comp = ctxt->comp;
     if(comp->last < 0) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -11034,6 +11232,68 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
     return(0);
 }
 
+#ifdef XPATH_STREAMING
+/**
+ * xmlXPathTryStreamCompile:
+ * @ctxt: an XPath context
+ * @str:  the XPath expression
+ *
+ * Try to compile the XPath expression as a streamable subset.
+ *
+ * Returns the compiled expression or NULL if failed to compile.
+ */
+static xmlXPathCompExprPtr
+xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
+    /*
+     * Optimization: use streaming patterns when the XPath expression can
+     * be compiled to a stream lookup
+     */
+    xmlPatternPtr stream;
+    xmlXPathCompExprPtr comp;
+    xmlDictPtr dict = NULL;
+    const xmlChar **namespaces = NULL;
+    xmlNsPtr ns;
+    int i, j;
+
+    if ((!xmlStrchr(str, '[')) && (!xmlStrchr(str, '(')) &&
+        (!xmlStrchr(str, '@'))) {
+	if (ctxt != NULL) {
+	    dict = ctxt->dict;
+	    if (ctxt->nsNr > 0) {
+		namespaces = xmlMalloc(2 * (ctxt->nsNr + 1));
+		if (namespaces == NULL) {
+		    xmlXPathErrMemory(ctxt, "allocating namespaces array\n");
+		    return(NULL);
+		}
+		for (i = 0, j = 0; (j < ctxt->nsNr); j++) {
+		    ns = ctxt->namespaces[j];
+		    namespaces[i++] = ns->href;
+		    namespaces[i++] = ns->prefix;
+		}
+		namespaces[i++] = NULL;
+		namespaces[i++] = NULL;
+	    }
+	}
+
+	stream = xmlPatterncompile(str, dict, 0, &namespaces[0]);
+	if ((stream != NULL) && (xmlPatternStreamable(stream) == 1)) {
+	    comp = xmlXPathNewCompExpr();
+	    if (comp == NULL) {
+		xmlXPathErrMemory(ctxt, "allocating streamable expression\n");
+		return(NULL);
+	    }
+	    comp->stream = stream;
+	    comp->dict = dict;
+	    if (comp->dict)
+		xmlDictReference(comp->dict);
+	    return(comp);
+	}
+	xmlFreePattern(stream);
+    }
+    return(NULL);
+}
+#endif /* XPATH_STREAMING */
+
 /**
  * xmlXPathCtxtCompile:
  * @ctxt: an XPath context
@@ -11048,6 +11308,12 @@ xmlXPathCompExprPtr
 xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
     xmlXPathParserContextPtr pctxt;
     xmlXPathCompExprPtr comp;
+
+#ifdef XPATH_STREAMING
+    comp = xmlXPathTryStreamCompile(ctxt, str);
+    if (comp != NULL)
+        return(comp);
+#endif
 
     xmlXPathInit();
 
@@ -11184,8 +11450,25 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
  */
 void
 xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
+#ifdef XPATH_STREAMING
+    xmlXPathCompExprPtr comp;
+#endif
+
     if (ctxt == NULL) return;
-    xmlXPathCompileExpr(ctxt);
+    
+#ifdef XPATH_STREAMING
+    comp = xmlXPathTryStreamCompile(ctxt->context, ctxt->base);
+    if (comp != NULL) {
+        if (ctxt->comp != NULL)
+	    xmlXPathFreeCompExpr(ctxt->comp);
+        ctxt->comp = comp;
+	if (ctxt->cur != NULL)
+	    while (*ctxt->cur != 0) ctxt->cur++;
+    } else
+#endif
+    {
+	xmlXPathCompileExpr(ctxt);
+    }
     CHECK_ERROR;
     xmlXPathRunEval(ctxt);
 }
@@ -11217,7 +11500,11 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEval: evaluation failed\n");
 	res = NULL;
-    } else if (*ctxt->cur != 0) {
+    } else if ((*ctxt->cur != 0) && (ctxt->comp != NULL) 
+#ifdef XPATH_STREAMING
+            && (ctxt->comp->stream == NULL)
+#endif
+	      ) {
 	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
 	res = NULL;
     } else {

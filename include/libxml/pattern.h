@@ -48,6 +48,12 @@ XMLPUBFUN int XMLCALL
 typedef struct _xmlStreamCtxt xmlStreamCtxt;
 typedef xmlStreamCtxt *xmlStreamCtxtPtr;
 
+XMLPUBFUN int XMLCALL
+			xmlPatternStreamable	(xmlPatternPtr comp);
+XMLPUBFUN int XMLCALL
+			xmlPatternMaxDepth	(xmlPatternPtr comp);
+XMLPUBFUN int XMLCALL
+			xmlPatternFromRoot	(xmlPatternPtr comp);
 XMLPUBFUN xmlStreamCtxtPtr XMLCALL
 			xmlPatternGetStreamCtxt	(xmlPatternPtr comp);
 XMLPUBFUN void XMLCALL

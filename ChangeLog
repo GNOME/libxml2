@@ -1,3 +1,12 @@
+Wed Feb 16 01:19:27 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: fix the comment to describe the real return values
+	* pattern.c xpath.c include/libxml/pattern.h: lot of work on
+	  the patterns, pluggin in the XPath default evaluation, but
+	  disabled right now because it's not yet good enough for XSLT.
+	  pattern.h streaming API are likely to be changed to handle
+	  relative and absolute paths in the same expression.
+
 Tue Feb 15 15:33:32 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Added IDC evaluation for attribute nodes.

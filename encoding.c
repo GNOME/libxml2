@@ -223,7 +223,7 @@ UTF8Toascii(unsigned char* out, int *outlen,
  *
  * Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
  * block of chars out.
- * Returns 0 if success, or -1 otherwise
+ * Returns the number of bytes written if success, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
  *     if the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
@@ -311,7 +311,8 @@ UTF8ToUTF8(unsigned char* out, int *outlen,
  * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
  * block of chars out.
  *
- * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
+ * Returns the number of bytes written if success, -2 if the transcoding fails,
+           or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
  *     if the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.

@@ -110,6 +110,7 @@ static int isnan (double d) {
 
 #define HAVE_SYS_STAT_H
 #define HAVE__STAT
+#define HAVE_STAT
 
 #include <libxml/xmlwin32version.h>
 

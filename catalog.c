@@ -2016,95 +2016,126 @@ xmlInitializeCatalog(void) {
  * Returns 0 in case of success -1 in case of error
  */
 int
-xmlLoadCatalog(const char *filename) {
-    int fd, len, ret, i;
+xmlLoadCatalog(const char *filename)
+{
+#ifdef HAVE_STAT
+    int fd;
+#else
+    FILE *fd;
+#endif
+    int len, ret, i;
+    long size;
+
+#ifdef HAVE_STAT
     struct stat info;
+#endif
     xmlChar *content;
 
     if (filename == NULL)
-	return(-1);
+        return (-1);
 
     if (xmlDefaultCatalog == NULL)
-	xmlDefaultCatalog = xmlHashCreate(20);
+        xmlDefaultCatalog = xmlHashCreate(20);
     if (xmlDefaultCatalog == NULL)
-	return(-1);
+        return (-1);
 
     /*
      * Need to be done after ...
      */
     if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
+        xmlInitializeCatalog();
 
 #ifdef HAVE_STAT
-    if (stat(filename, &info) < 0) 
-	return(-1);
+    if (stat(filename, &info) < 0)
+        return (-1);
 #endif
 
     /*
      * Prevent loops
      */
-    for (i = 0;i < catalNr;i++) {
-	if (xmlStrEqual((const xmlChar *)catalTab[i],
-		        (const xmlChar *)filename)) {
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlLoadCatalog: %s seems to induce a loop\n",
-		            filename);
-	    return(-1);
-	}
+    for (i = 0; i < catalNr; i++) {
+        if (xmlStrEqual((const xmlChar *) catalTab[i],
+                        (const xmlChar *) filename)) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "xmlLoadCatalog: %s seems to induce a loop\n",
+                            filename);
+            return (-1);
+        }
     }
     if (catalNr >= catalMax) {
-	xmlGenericError(xmlGenericErrorContext,
-	    "xmlLoadCatalog: %s catalog list too deep\n",
-			filename);
-	    return(-1);
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlLoadCatalog: %s catalog list too deep\n",
+                        filename);
+        return (-1);
     }
     catalTab[catalNr++] = filename;
 
+#ifdef HAVE_STAT
     if ((fd = open(filename, O_RDONLY)) < 0) {
-	catalNr--;
-	return(-1);
+#else
+    if ((fd = fopen(filename, "rb")) == NULL) {
+#endif
+        catalNr--;
+        return (-1);
     }
-
-    content = xmlMalloc(info.st_size + 10);
+#ifdef HAVE_STAT
+    size = info.st_size;
+#else
+    if (fseek(fd, 0, SEEK_END) || (size = ftell(fd)) == EOF || fseek(fd, 0, SEEK_SET)) {        /* File operations denied? ok, just close and return failure */
+        fclose(fd);
+        return (-1);
+    }
+#endif
+    content = xmlMalloc(size + 10);
     if (content == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"realloc of %d byte failed\n", info.st_size + 10);
-	catalNr--;
-	return(-1);
+        xmlGenericError(xmlGenericErrorContext,
+                        "realloc of %d byte failed\n", size + 10);
+        catalNr--;
+        return (-1);
     }
-    len = read(fd, content, info.st_size);
+#ifdef HAVE_STAT
+    len = read(fd, content, size);
+#else
+    len = fread(content, 1, size, fd);
+#endif
     if (len < 0) {
-	xmlFree(content);
-	catalNr--;
-	return(-1);
+        xmlFree(content);
+        catalNr--;
+        return (-1);
     }
     content[len] = 0;
+#ifdef HAVE_STAT
     close(fd);
+#else
+    fclose(fd);
+#endif
 
     if ((content[0] == ' ') || (content[0] == '-') ||
-	((content[0] >= 'A') && (content[0] <= 'Z')) ||
-	((content[0] >= 'a') && (content[0] <= 'z')))
-	ret = xmlParseSGMLCatalog(content, filename);
+        ((content[0] >= 'A') && (content[0] <= 'Z')) ||
+        ((content[0] >= 'a') && (content[0] <= 'z')))
+        ret = xmlParseSGMLCatalog(content, filename);
     else {
-	xmlCatalogEntryPtr catal, tmp;
-	/* TODO: allow to switch the default preference */
-	catal = xmlParseXMLCatalog(content, XML_CATA_PREFER_PUBLIC, filename);
-	if (catal != NULL) {
-	    if (xmlDefaultXMLCatalogList == NULL)
-		xmlDefaultXMLCatalogList = catal;
-	    else {
-		tmp = xmlDefaultXMLCatalogList;
-		while (tmp->next != NULL)
-		    tmp = tmp->next;
-		tmp->next = catal;
-	    }
-	    ret = 0;
-	} else
-	    ret = -1;
+        xmlCatalogEntryPtr catal, tmp;
+
+        /* TODO: allow to switch the default preference */
+        catal =
+            xmlParseXMLCatalog(content, XML_CATA_PREFER_PUBLIC, filename);
+        if (catal != NULL) {
+            if (xmlDefaultXMLCatalogList == NULL)
+                xmlDefaultXMLCatalogList = catal;
+            else {
+                tmp = xmlDefaultXMLCatalogList;
+                while (tmp->next != NULL)
+                    tmp = tmp->next;
+                tmp->next = catal;
+            }
+            ret = 0;
+        } else
+            ret = -1;
     }
     xmlFree(content);
     catalNr--;
-    return(ret);
+    return (ret);
 }
 
 /**

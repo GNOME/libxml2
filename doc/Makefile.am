@@ -20,7 +20,9 @@ APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
     APIsymbols.html APIchunk0.html
 EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
            tutorial/images/*.png tutorial/images/callouts/*.png \
-	   API*.html
+	   API*.html *.1 *.xsl *.html *.gif w3c.png html/*.html \
+	   html/*.sgml libxml2-api.xml parsedecl.py index.py search.php
+
 
 man_MANS = xmllint.1 xmlcatalog.1
 
@@ -79,8 +81,5 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR)
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 	-@(tar cf - tutorial | (cd $(DESTDIR)$(TARGET_DIR) && tar xvf -)
-
-dist-hook:
-	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif w3c.png html/*.html html/*.sgml libxml2-api.xml parsedecl.py index.py search.php tutorial/*.* tutorial/images/*.* tutorial/images/callouts/*.*) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

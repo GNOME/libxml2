@@ -1,3 +1,9 @@
+Fri Nov 22 15:51:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing 2.4.28
+	* libxml.spec.in doc/Makefile.am: some cleanup
+	* doc/*: updated the news and regenerated.
+
 Fri Nov 22 14:15:14 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: final touch at closing #87235 </p> end tags

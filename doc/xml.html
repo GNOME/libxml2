@@ -589,6 +589,17 @@ to test those</p>
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
 </ul>
 
+<h3>2.4.28: Nov 22 2002</h3>
+<ul>
+  <li>a couple of python binding fixes</li>
+  <li>2 bug fixes in the XML push parser</li>
+  <li>potential memory leak removed (Martin Stoilov)</li>
+  <li>fix to the configure script for Unix (Dimitri Papadopoulos)</li>
+  <li>added encoding support for XInclude parse="text"</li>
+  <li>autodetection of XHTML1 and specific serialization rules added</li>
+  <li>nasty threading bug fixed (William Brack) </li>
+</ul>
+
 <h3>2.4.27: Nov 17 2002</h3>
 <ul>
   <li>fixes for the Python bindings</li>
@@ -2703,6 +2714,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

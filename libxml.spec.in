@@ -133,6 +133,8 @@ rm -fr %{buildroot}
 %doc python/TODO
 %doc python/libxml2class.txt
 %doc python/tests/*.py
+%doc doc/*.py
+%doc doc/python.html
 
 %changelog
 * Wed Oct 23 2002 Daniel Veillard <veillard@redhat.com>

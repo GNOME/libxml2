@@ -244,6 +244,20 @@ you want to test those</p>
     docs</li>
 </ul>
 
+<h3>2.3.8: May 3 2001</h3>
+<ul>
+  <li>Integrated an SGML DocBook parser for the Gnome project</li>
+  <li>Fixed a few things in the HTML parser</li>
+  <li>Fixed some XPath bugs raised by XSLT use, tried to fix the floating
+    point portability issue</li>
+  <li>Speed improvement (8M/s for SAX, 3M/s for DOM, 1.5M/s for DOM+validation
+    using the XML REC as input and a 700MHz celeron).</li>
+  <li>incorporated more Windows cleanup</li>
+  <li>added xmlSaveFormatFile()</li>
+  <li>fixed problems in copying nodes with entities references (gdome)</li>
+  <li>removed some troubles surrounding the new validation module</li>
+</ul>
+
 <h3>2.3.7: April 22 2001</h3>
 <ul>
   <li>lots of small bug fixes, corrected XPointer</li>
@@ -1508,6 +1522,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.80 2001/04/17 21:03:15 veillard Exp $</p>
+<p>$Id: xml.html,v 1.81 2001/04/22 19:31:17 veillard Exp $</p>
 </body>
 </html>

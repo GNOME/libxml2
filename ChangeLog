@@ -1,3 +1,8 @@
+Thu Mar 21 14:07:13 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlcatalog.c include/libxml/xmlversion.h.in: applied 2 fixups
+	  from Igor
+
 Thu Mar 21 13:30:06 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixing #75619, related to a problem when trying

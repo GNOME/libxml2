@@ -167,10 +167,8 @@ extern void xmlCheckVersion(int version);
  *
  * Whether iconv support is available
  */
-#if !defined(WIN32) || defined(__CYGWIN__)
 #if @WITH_ICONV@
 #define LIBXML_ICONV_ENABLED
-#endif
 #endif
 
 /**

@@ -1367,6 +1367,10 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     if (node1 == node2->next)
 	return(-1);
 
+#if 0
+    Unfortunately this does not work. Line number in entities reset
+    to 1 within the entity :-(
+
     /*
      * Speedup using line numbers if availble.
      */
@@ -1381,7 +1385,7 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
 	if (l1 > l2)
 	    return(-1);
     }
-
+#endif
     /*
      * compute depth to root
      */
@@ -5169,13 +5173,27 @@ xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     }
 
     if (cur->children != NULL) {
-    	if (cur->children->type != XML_ENTITY_DECL)
-	    return(cur->children);
+	/*
+	 * Do not descend on entities declarations
+	 */
+    	if (cur->children->type != XML_ENTITY_DECL) {
+	    cur = cur->children;
+	    /*
+	     * Skip DTDs
+	     */
+	    if (cur->type != XML_DTD_NODE)
+		return(cur);
+	}
     }
 
     if (cur == ctxt->context->node) return(NULL);
 
-    if (cur->next != NULL) return(cur->next);
+    while (cur->next != NULL) {
+	cur = cur->next;
+	if ((cur->type != XML_ENTITY_DECL) &&
+	    (cur->type != XML_DTD_NODE))
+	    return(cur);
+    }
     
     do {
         cur = cur->parent;

@@ -5456,6 +5456,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				} else {
 				    while (list != NULL) {
 					list->parent = (xmlNodePtr) ctxt->node;
+					list->doc = ctxt->myDoc;
 					if (list->next == NULL)
 					    ent->last = list;
 					list = list->next;
@@ -9767,9 +9768,9 @@ static int
 xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	const xmlChar *string, void *user_data, xmlNodePtr *lst) {
     xmlParserCtxtPtr ctxt;
-    xmlDocPtr newDoc;
+    xmlDocPtr newDoc = NULL;
     xmlSAXHandlerPtr oldsax = NULL;
-    xmlNodePtr content;
+    xmlNodePtr content = NULL;
     int size;
     int ret = 0;
 
@@ -9794,32 +9795,28 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;
-    newDoc = xmlNewDoc(BAD_CAST "1.0");
-    if (newDoc == NULL) {
-	ctxt->sax = oldsax;
-	xmlFreeParserCtxt(ctxt);
-	return(-1);
-    }
-    if (oldctxt->myDoc != NULL) {
-	newDoc->intSubset = oldctxt->myDoc->intSubset;
-	newDoc->extSubset = oldctxt->myDoc->extSubset;
-    }
-    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
-    if (newDoc->children == NULL) {
-	ctxt->sax = oldsax;
-	xmlFreeParserCtxt(ctxt);
-	newDoc->intSubset = NULL;
-	newDoc->extSubset = NULL;
-        xmlFreeDoc(newDoc);
-	return(-1);
-    }
-    nodePush(ctxt, newDoc->children);
     if (oldctxt->myDoc == NULL) {
-	ctxt->myDoc = oldctxt->myDoc;
-    } else {
+	newDoc = xmlNewDoc(BAD_CAST "1.0");
+	if (newDoc == NULL) {
+	    ctxt->sax = oldsax;
+	    xmlFreeParserCtxt(ctxt);
+	    return(-1);
+	}
 	ctxt->myDoc = newDoc;
-	newDoc->children->doc = newDoc;
+    } else {
+	ctxt->myDoc = oldctxt->myDoc;
+        content = ctxt->myDoc->children;
     }
+    ctxt->myDoc->children = xmlNewDocNode(newDoc, NULL,
+	                                  BAD_CAST "pseudoroot", NULL);
+    if (ctxt->myDoc->children == NULL) {
+	ctxt->sax = oldsax;
+	xmlFreeParserCtxt(ctxt);
+	if (newDoc != NULL)
+	    xmlFreeDoc(newDoc);
+	return(-1);
+    }
+    nodePush(ctxt, ctxt->myDoc->children);
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->depth = oldctxt->depth + 1;
 
@@ -9829,14 +9826,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     ctxt->validate = 0;
     ctxt->loadsubset = oldctxt->loadsubset;
 
-    if (ctxt->myDoc != NULL) {
-        content = ctxt->myDoc->children;
-        ctxt->myDoc->children = NULL;
-        xmlParseContent(ctxt);
-        ctxt->myDoc->children = content;
-    } else {
-        xmlParseContent(ctxt);
-    }
+    xmlParseContent(ctxt);
     if ((RAW == '<') && (NXT(1) == '/')) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -9852,7 +9842,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
     }
-    if (ctxt->node != newDoc->children) {
+    if (ctxt->node != ctxt->myDoc->children) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
@@ -9877,20 +9867,23 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	 * Return the newly created nodeset after unlinking it from
 	 * they pseudo parent.
 	 */
-	cur = newDoc->children->children;
+	cur = ctxt->myDoc->children->children;
 	*lst = cur;
 	while (cur != NULL) {
 	    cur->parent = NULL;
 	    cur = cur->next;
 	}
-	newDoc->children->children = NULL;
+	ctxt->myDoc->children->children = NULL;
+    }
+    if (ctxt->myDoc != NULL) {
+	xmlFreeNode(ctxt->myDoc->children);
+        ctxt->myDoc->children = content;
     }
 	
     ctxt->sax = oldsax;
     xmlFreeParserCtxt(ctxt);
-    newDoc->intSubset = NULL;
-    newDoc->extSubset = NULL;
-    xmlFreeDoc(newDoc);
+    if (newDoc != NULL)
+	xmlFreeDoc(newDoc);
     
     return(ret);
 }

@@ -1,3 +1,8 @@
+Sat Oct 18 07:28:25 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanohttp.c xmlIO.c include/libxml/nanohttp.h: starting work
+	  to fix the HTTP/XML parser integration.
+
 Sat Oct 18 11:04:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c include/libxml/xmlreader.h: added new APIs

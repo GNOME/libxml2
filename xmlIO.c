@@ -2108,6 +2108,7 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
+    int is_http = 0;
     int i = 0;
     void *context = NULL;
 
@@ -2125,8 +2126,11 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	    if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
 		(xmlInputCallbackTable[i].matchcallback(URI) != 0)) {
 		context = xmlInputCallbackTable[i].opencallback(URI);
-		if (context != NULL)
+		if (context != NULL) {
+		    if (xmlInputCallbackTable[i].opencallback == xmlIOHTTPOpen)
+		        is_http = 1;
 		    break;
+		}
 	    }
 	}
     }
@@ -3079,6 +3083,22 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     if (ret == NULL) {
 	xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
 	             (const char *) resource);
+    }
+    if ((ret->buf != NULL) && (ret->buf->readcallback == xmlIOHTTPRead)) {
+        const char *encoding;
+	const char *redir;
+
+	encoding = xmlNanoHTTPEncoding(ret->buf->context);
+	redir = xmlNanoHTTPRedir(ret->buf->context);
+	if (redir != NULL) {
+	    if (ret->filename != NULL)
+	        xmlFree((xmlChar *) ret->filename);
+	    if (ret->directory != NULL) {
+	        xmlFree((xmlChar *) ret->directory);
+		ret->directory = NULL;
+            }
+	    ret->filename = (char *) xmlStrdup((const xmlChar *)redir);
+	}
     }
     if ((resource != NULL) && (resource != (xmlChar *) URL))
 	xmlFree(resource);

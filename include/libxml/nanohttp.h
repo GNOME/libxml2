@@ -51,7 +51,11 @@ XMLPUBFUN void * XMLCALL
 XMLPUBFUN int XMLCALL	
 	xmlNanoHTTPReturnCode	(void *ctx);
 XMLPUBFUN const char * XMLCALL 
-	xmlNanoHTTPAuthHeader(void *ctx);
+	xmlNanoHTTPAuthHeader	(void *ctx);
+XMLPUBFUN const char * XMLCALL
+	xmlNanoHTTPRedir	(void * ctx);
+XMLPUBFUN const char * XMLCALL
+	xmlNanoHTTPEncoding	(void * ctx);
 XMLPUBFUN int XMLCALL	
 	xmlNanoHTTPRead		(void *ctx,
 				 void *dest,

@@ -149,6 +149,7 @@ typedef struct xmlNanoHTTPCtxt {
     char *contentType;	/* the MIME type for the input */
     char *location;	/* the new URL in case of redirect */
     char *authHeader;	/* contents of {WWW,Proxy}-Authenticate header */
+    char *encoding;	/* encoding extracted from the contentType */
 } xmlNanoHTTPCtxt, *xmlNanoHTTPCtxtPtr;
 
 static int initialized = 0;
@@ -528,6 +529,7 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->out != NULL) xmlFree(ctxt->out);
     if (ctxt->in != NULL) xmlFree(ctxt->in);
     if (ctxt->contentType != NULL) xmlFree(ctxt->contentType);
+    if (ctxt->encoding != NULL) xmlFree(ctxt->encoding);
     if (ctxt->location != NULL) xmlFree(ctxt->location);
     if (ctxt->authHeader != NULL) xmlFree(ctxt->authHeader);
     ctxt->state = XML_NANO_HTTP_NONE;
@@ -1574,6 +1576,36 @@ xmlNanoHTTPContentLength( void * ctx ) {
     xmlNanoHTTPCtxtPtr	ctxt = ctx;
 
     return ( ( ctxt == NULL ) ? -1 : ctxt->ContentLength );
+}
+
+/**
+ * xmlNanoHTTPRedir:
+ * @ctx:  the HTTP context
+ *
+ * Provides the specified redirection URL if available from the HTTP header.
+ *
+ * Return the specified redirection URL or NULL if not redirected.
+ */
+const char *
+xmlNanoHTTPRedir( void * ctx ) {
+    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+
+    return ( ( ctxt == NULL ) ? NULL : ctxt->location );
+}
+
+/**
+ * xmlNanoHTTPEncoding:
+ * @ctx:  the HTTP context
+ *
+ * Provides the specified encoding if specified in the HTTP headers.
+ *
+ * Return the specified encoding or NULL if not available
+ */
+const char *
+xmlNanoHTTPEncoding( void * ctx ) {
+    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+
+    return ( ( ctxt == NULL ) ? NULL : ctxt->encoding );
 }
 
 /**

@@ -1,3 +1,9 @@
+Mon Aug 25 11:16:01 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* include/libxml/xmlversion.h.in: moved export defs to a separate
+	  file for consistency.
+	* include/libxml/xmlexports.h: new file, contains export defs.
+	  
 Mon Aug 25 11:01:49 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* include/libxml/*.h genUnicode.py: exportability taint

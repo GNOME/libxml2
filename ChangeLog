@@ -1,3 +1,11 @@
+Mon Jul 16 06:32:44 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
+
+	* include/libxml/xpath{,Internals}.h xpath.c: added a more
+	  convenient extension API for value and context managing
+	  Now handles external objects through xmlXPathPopExternal,
+	  xmlXPathWrapExternal and xmlXPathReturnExternal.
+	  Added functions for sets operations (intersection, etc.)
+
 Mon Jul 16 20:05:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/parserInternals.h include/libxml/HTMLparser.h
@@ -5,7 +13,7 @@ Mon Jul 16 20:05:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 	  HTMLparser.c: cleanup of global variables, marking some
 	  const or private.
 
-Sun Jul 16 00:17:15 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
+Mon Jul 16 00:17:15 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
 
 	* include/libxml/xpath.h: exported xmlXPath{NAN,PINF,NINF}
 	  fixed xmlXPathNodeSetItem when passing index=0

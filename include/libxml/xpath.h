@@ -288,12 +288,40 @@ LIBXML_DLL_IMPORT extern double xmlXPathPINF;
 LIBXML_DLL_IMPORT extern double xmlXPathNINF;
 
 /* These macros may later turn into functions */
+/**
+ * xmlXPathNodeSetGetLength:
+ * @ns:  a node-set
+ *
+ * Implement a functionnality similar to the DOM NodeList.length
+ *
+ * Returns the number of nodes in the node-set.
+ */
 #define xmlXPathNodeSetGetLength(ns) ((ns) ? (ns)->nodeNr : 0)
+/**
+ * xmlXPathNodeSetItem:
+ * @ns:  a node-set
+ * @index:  index of a node in the set
+ *
+ * Implements a functionnality similar to the DOM NodeList.item()
+ *
+ * Returns the xmlNodePtr at the given @index in @ns or NULL if
+ *         @index is out of range (0 to length-1)
+ */
 #define xmlXPathNodeSetItem(ns, index)				\
 		((((ns) != NULL) && 				\
 		  ((index) >= 0) && ((index) < (ns)->nodeNr)) ?	\
 		 (ns)->nodeTab[(index)]				\
 		 : NULL)
+/**
+ * xmlXPathNodeSetIsEmpty:
+ * @ns: a node-set
+ *
+ * Checks whether @ns is empty or not
+ *
+ * Returns %TRUE if @ns is an empty node-set
+ */
+#define xmlXPathNodeSetIsEmpty(ns)                                      \
+    (((ns) == NULL) || ((ns)->nodeNr == 0) || ((ns)->nodeTab == NULL))
 
 
 void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);

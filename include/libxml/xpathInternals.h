@@ -27,6 +27,173 @@ extern "C" {
  *									*
  ************************************************************************/
 
+    /**
+     * Many of these macros may later turn into functions. They
+     * shouldn't be used in #ifdef's preprocessor instructions.
+     */
+/**
+ * xmlXPathSetError:
+ * @ctxt:  an XPath parser context
+ * @err:  an xmlXPathError code
+ *
+ * Raises an error.
+ */
+#define xmlXPathSetError(ctxt, err)					\
+    { xmlXPatherror((ctxt), __FILE__, __LINE__, (err));			\
+      (ctxt)->error = (err); }
+/**
+ * xmlXPathSetArityError:
+ * @ctxt:  an XPath parser context
+ *
+ * Raises an XPATH_INVALID_ARITY error
+ */
+#define xmlXPathSetArityError(ctxt)					\
+    xmlXPathSetError((ctxt), XPATH_INVALID_ARITY)
+/**
+ * xmlXPathSetTypeError:
+ * @ctxt:  an XPath parser context
+ *
+ * Raises an XPATH_INVALID_TYPE error
+ */
+#define xmlXPathSetTypeError(ctxt)					\
+    xmlXPathSetError((ctxt), XPATH_INVALID_TYPE)
+/**
+ * xmlXPathGetError:
+ * @ctxt:  an XPath parser context
+ *
+ * Returns the context error
+ */
+#define xmlXPathGetError(ctxt)	  ((ctxt)->error)
+/**
+ * xmlXPathCheckError:
+ * @ctxt:  an XPath parser context
+ *
+ * Returns true if an error has been raised, false otherwise.
+ */
+#define xmlXPathCheckError(ctxt)  ((ctxt)->error != XPATH_EXPRESSION_OK)
+
+/**
+ * xmlXPathGetDocument:
+ * @ctxt:  an XPath parser context
+ *
+ * Returns the context document
+ */
+#define xmlXPathGetDocument(ctxt)	((ctxt)->context->doc)
+/**
+ * xmlXPathGetContextNode:
+ * @ctxt: an XPath parser context
+ *
+ * Returns the context node
+ */
+#define xmlXPathGetContextNode(ctxt)	((ctxt)->context->node)
+
+int		xmlXPathPopBoolean	(xmlXPathParserContextPtr ctxt);
+double		xmlXPathPopNumber	(xmlXPathParserContextPtr ctxt);
+xmlChar *	xmlXPathPopString	(xmlXPathParserContextPtr ctxt);
+xmlNodeSetPtr	xmlXPathPopNodeSet	(xmlXPathParserContextPtr ctxt);
+void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
+
+/**
+ * xmlXPathReturnBoolean:
+ * @ctxt:  an XPath parser context
+ * @val:  a boolean
+ *
+ * Pushes the boolean @val on the context stack
+ */
+#define xmlXPathReturnBoolean(ctxt, val)				\
+    valuePush((ctxt), xmlXPathNewBoolean(val))
+/**
+ * xmlXPathReturnTrue:
+ * @ctxt:  an XPath parser context
+ *
+ * Pushes true on the context stack
+ */
+#define xmlXPathReturnTrue(ctxt)   xmlXPathReturnBoolean((ctxt), 1)
+/**
+ * xmlXPathReturnFalse:
+ * @ctxt:  an XPath parser context
+ *
+ * Pushes false on the context stack
+ */
+#define xmlXPathReturnFalse(ctxt)  xmlXPathReturnBoolean((ctxt), 0)
+/**
+ * xmlXPathReturnNumber:
+ * @ctxt:  an XPath parser context
+ * @val:  a double
+ *
+ * Pushes the double @val on the context stack
+ */
+#define xmlXPathReturnNumber(ctxt, val)					\
+    valuePush((ctxt), xmlXPathNewFloat(val))
+/**
+ * xmlXPathReturnString:
+ * @ctxt:  an XPath parser context
+ * @str:  a string
+ *
+ * Pushes the string @str on the context stack
+ */
+#define xmlXPathReturnString(ctxt, str)					\
+    valuePush((ctxt), xmlXPathWrapString(str))
+/**
+ * xmlXPathReturnEmptyString:
+ * @ctxt:  an XPath parser context
+ *
+ * Pushes an empty string on the stack
+ */
+#define xmlXPathReturnEmptyString(ctxt)					\
+    valuePush((ctxt), xmlXPathNewCString(""))
+/**
+ * xmlXPathReturnNodeSet:
+ * @ctxt:  an XPath parser context
+ * @ns:  a node-set
+ *
+ * Pushes the node-set @ns on the context stack
+ */
+#define xmlXPathReturnNodeSet(ctxt, ns)					\
+    valuePush((ctxt), xmlXPathWrapNodeSet(ns))
+/**
+ * xmlXPathReturnEmptyNodeSet:
+ * @ctxt:  an XPath parser context
+ *
+ * Pushes an empty node-set on the context stack
+ */
+#define xmlXPathReturnEmptyNodeSet(ctxt, ns)				\
+    valuePush((ctxt), xmlXPathNewNodeSet(NULL))
+/**
+ * xmlXPathReturnExternal:
+ * @ctxt:  an XPath parser context
+ * @val:  user data
+ *
+ * Pushes user data on the context stack
+ */
+#define xmlXPathReturnExternal(ctxt, val)				\
+    valuePush((ctxt), xmlXPathWrapExternal(val))
+
+/**
+ * xmlXPathStackIsNodeSet:
+ * @ctxt: an XPath parser context
+ *
+ * Returns true if the current object on the stack is a node-set
+ */
+#define xmlXPathStackIsNodeSet(ctxt)					\
+    (((ctxt)->value != NULL)						\
+     && (((ctxt)->value->type == XPATH_NODESET)				\
+         || ((ctxt)->value->type == XPATH_XSLT_TREE)))
+
+/**
+ * xmlXPathEmptyNodeSet:
+ * @ns:  a node-set
+ *
+ * Empties a node-set
+ */
+#define xmlXPathEmptyNodeSet(ns)					\
+    { while ((ns)->nodeNr > 0) (ns)->nodeTab[(ns)->nodeNr--] = NULL; }
+
+    /**
+     * These macros shouldn't be used anymore. Prefer above functions
+     * and macros.
+     */
+
 /**
  * CHECK_ERROR:
  *
@@ -123,7 +290,7 @@ extern "C" {
         xmlXPathBooleanFunction(ctxt, 1);
 
 /*
- * Varibale Lookup forwarding
+ * Variable Lookup forwarding
  */
 typedef xmlXPathObjectPtr
 	(*xmlXPathVariableLookupFunc)	(void *ctxt,
@@ -148,6 +315,40 @@ void		xmlXPathDebugDumpObject	(FILE *output,
 void		xmlXPathDebugDumpCompExpr(FILE *output,
 					 xmlXPathCompExprPtr comp,
 					 int depth);
+
+/**
+ * NodeSet handling
+ */
+xmlNodeSetPtr	xmlXPathDifference		(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+xmlNodeSetPtr	xmlXPathIntersection		(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+
+xmlNodeSetPtr	xmlXPathDistinctSorted		(xmlNodeSetPtr nodes);
+xmlNodeSetPtr	xmlXPathDistinct		(xmlNodeSetPtr nodes);
+
+int		xmlXPathHasSameNodes		(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+
+xmlNodeSetPtr	xmlXPathNodeLeadingSorted	(xmlNodeSetPtr nodes,
+						 xmlNodePtr node);
+xmlNodeSetPtr	xmlXPathLeadingSorted		(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+xmlNodeSetPtr	xmlXPathNodeLeading		(xmlNodeSetPtr nodes,
+						 xmlNodePtr node);
+xmlNodeSetPtr	xmlXPathLeading			(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+
+xmlNodeSetPtr	xmlXPathNodeTrailingSorted	(xmlNodeSetPtr nodes,
+						 xmlNodePtr node);
+xmlNodeSetPtr	xmlXPathTrailingSorted		(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+xmlNodeSetPtr	xmlXPathNodeTrailing		(xmlNodeSetPtr nodes,
+						 xmlNodePtr node);
+xmlNodeSetPtr	xmlXPathTrailing		(xmlNodeSetPtr nodes1,
+						 xmlNodeSetPtr nodes2);
+
+
 /**
  * Extending a context
  */
@@ -244,6 +445,7 @@ void xmlXPathFreeNodeSet(xmlNodeSetPtr obj);
 xmlXPathObjectPtr xmlXPathNewNodeSet(xmlNodePtr val);
 xmlXPathObjectPtr xmlXPathNewNodeSetList(xmlNodeSetPtr val);
 xmlXPathObjectPtr xmlXPathWrapNodeSet(xmlNodeSetPtr val);
+    xmlXPathObjectPtr xmlXPathWrapExternal(void *val);
 void xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj);
 
 

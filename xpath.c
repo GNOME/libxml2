@@ -941,6 +941,137 @@ extern type name##Pop(xmlXPathParserContextPtr ctxt) {			\
 
 PUSH_AND_POP(xmlXPathObjectPtr, value)
 
+/**
+ * xmlXPathPopBoolean:
+ * @ctxt:  an XPath parser context
+ *
+ * Pops a boolean from the stack, handling conversion if needed.
+ * Check error with #xmlXPathCheckError.
+ *
+ * Returns the boolean
+ */
+int
+xmlXPathPopBoolean (xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr obj;
+    int ret;
+
+    obj = valuePop(ctxt);
+    if (obj == NULL) {
+	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
+	return(0);
+    }
+    ret = xmlXPathCastToBoolean(obj);
+    xmlXPathFreeObject(obj);
+    return(ret);
+}
+
+/**
+ * xmlXPathPopNumber:
+ * @ctxt:  an XPath parser context
+ *
+ * Pops a number from the stack, handling conversion if needed.
+ * Check error with #xmlXPathCheckError.
+ *
+ * Returns the number
+ */
+double
+xmlXPathPopNumber (xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr obj;
+    double ret;
+
+    obj = valuePop(ctxt);
+    if (obj == NULL) {
+	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
+	return(0);
+    }
+    ret = xmlXPathCastToNumber(obj);
+    xmlXPathFreeObject(obj);
+    return(ret);
+}
+
+/**
+ * xmlXPathPopString:
+ * @ctxt:  an XPath parser context
+ *
+ * Pops a string from the stack, handling conversion if needed.
+ * Check error with #xmlXPathCheckError.
+ *
+ * Returns the string
+ */
+xmlChar *
+xmlXPathPopString (xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr obj;
+    xmlChar * ret;
+
+    obj = valuePop(ctxt);
+    if (obj == NULL) {
+	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
+	return(NULL);
+    }
+    ret = xmlXPathCastToString(obj);
+    /* TODO: needs refactoring somewhere else */
+    if (obj->stringval == ret)
+	obj->stringval = NULL;
+    xmlXPathFreeObject(obj);
+    return(ret);
+}
+
+/**
+ * xmlXPathPopNodeSet:
+ * @ctxt:  an XPath parser context
+ *
+ * Pops a node-set from the stack, handling conversion if needed.
+ * Check error with #xmlXPathCheckError.
+ *
+ * Returns the node-set
+ */
+xmlNodeSetPtr
+xmlXPathPopNodeSet (xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr obj;
+    xmlNodeSetPtr ret;
+
+    if (ctxt->value == NULL) {
+	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
+	return(NULL);
+    }
+    if (!xmlXPathStackIsNodeSet(ctxt)) {
+	xmlXPathSetTypeError(ctxt);
+	return(NULL);
+    }
+    obj = valuePop(ctxt);
+    ret = obj->nodesetval;
+    xmlXPathFreeNodeSetList(obj);
+    return(ret);
+}
+
+/**
+ * xmlXPathPopExternal:
+ * @ctxt:  an XPath parser context
+ *
+ * Pops an external oject from the stack, handling conversion if needed.
+ * Check error with #xmlXPathCheckError.
+ *
+ * Returns the object
+ */
+void *
+xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr obj;
+    void * ret;
+
+    if (ctxt->value == NULL) {
+	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
+	return(NULL);
+    }
+    if (ctxt->value->type != XPATH_USERS) {
+	xmlXPathSetTypeError(ctxt);
+	return(NULL);
+    }
+    obj = valuePop(ctxt);
+    ret = obj->user;
+    xmlXPathFreeObject(obj);
+    return(ret);
+}
+
 /*
  * Macros for accessing the content. Those should be used only by the parser,
  * and not exported.
@@ -1120,9 +1251,7 @@ const char *xmlXPathErrorMessages[] = {
  * @line:  the line number
  * @no:  the error number
  *
- * Create a new xmlNodeSetPtr of type double and of value @val
- *
- * Returns the newly created object.
+ * Formats an error message.
  */
 void
 xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
@@ -1318,6 +1447,26 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
 	ret->nodeTab[ret->nodeNr++] = val;
     }
     return(ret);
+}
+
+/**
+ * xmlXPathNodeSetContains:
+ * @cur:  the node-set
+ * @val:  the node
+ *
+ * checks whether @cur contains @val
+ *
+ * Returns true (1) if @cur contains @val, false (0) otherwise
+ */
+int
+xmlXPathNodeSetContains (xmlNodeSetPtr cur, xmlNodePtr val) {
+    int i;
+
+    for (i = 0; i < cur->nodeNr; i++) {
+        if (cur->nodeTab[i] == val)
+	    return(1);
+    }
+    return(0);
 }
 
 /**
@@ -1722,6 +1871,364 @@ void
 xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
     xmlFree(obj);
+}
+
+/**
+ * xmlXPathDifference:
+ * @nodes1:  a node-set
+ * @nodes2:  a node-set
+ *
+ * Implements the EXSLT - Sets difference() function:
+ *    node-set set:difference (node-set, node-set)
+ *
+ * Returns the difference between the two node sets, or nodes1 if
+ *         nodes2 is empty
+ */
+xmlNodeSetPtr
+xmlXPathDifference (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    xmlNodeSetPtr ret;
+    int i, l1;
+    xmlNodePtr cur;
+
+    if (xmlXPathNodeSetIsEmpty(nodes2))
+	return(nodes1);
+
+    ret = xmlXPathNodeSetCreate(NULL);
+    if (xmlXPathNodeSetIsEmpty(nodes1))
+	return(ret);
+
+    l1 = xmlXPathNodeSetGetLength(nodes1);
+
+    for (i = 0; i < l1; i++) {
+	cur = xmlXPathNodeSetItem(nodes1, i);
+	if (!xmlXPathNodeSetContains(nodes2, cur))
+	    xmlXPathNodeSetAddUnique(ret, cur);
+    }
+    return(ret);
+}
+
+/**
+ * xmlXPathIntersection:
+ * @nodes1:  a node-set
+ * @nodes2:  a node-set
+ *
+ * Implements the EXSLT - Sets intersection() function:
+ *    node-set set:intersection (node-set, node-set)
+ *
+ * Returns a node set comprising the nodes that are within both the
+ *         node sets passed as arguments
+ */
+xmlNodeSetPtr
+xmlXPathIntersection (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    xmlNodeSetPtr ret = xmlXPathNodeSetCreate(NULL);
+    int i, l1;
+    xmlNodePtr cur;
+
+    if (xmlXPathNodeSetIsEmpty(nodes1))
+	return(ret);
+    if (xmlXPathNodeSetIsEmpty(nodes2))
+	return(ret);
+
+    l1 = xmlXPathNodeSetGetLength(nodes1);
+
+    for (i = 0; i < l1; i++) {
+	cur = xmlXPathNodeSetItem(nodes1, i);
+	if (xmlXPathNodeSetContains(nodes2, cur))
+	    xmlXPathNodeSetAddUnique(ret, cur);
+    }
+    return(ret);
+}
+
+/**
+ * xmlXPathDistinctSorted:
+ * @nodes:  a node-set, sorted by document order
+ *
+ * Implements the EXSLT - Sets distinct() function:
+ *    node-set set:distinct (node-set)
+ * 
+ * Returns a subset of the nodes contained in @nodes, or @nodes if
+ *         it is empty
+ */
+xmlNodeSetPtr
+xmlXPathDistinctSorted (xmlNodeSetPtr nodes) {
+    xmlNodeSetPtr ret;
+    xmlHashTablePtr hash;
+    int i, l;
+    xmlChar * strval;
+    xmlNodePtr cur;
+
+    if (xmlXPathNodeSetIsEmpty(nodes))
+	return(nodes);
+
+    ret = xmlXPathNodeSetCreate(NULL);
+    l = xmlXPathNodeSetGetLength(nodes);
+    hash = xmlHashCreate (l);
+    for (i = 0; i < l; i++) {
+	cur = xmlXPathNodeSetItem(nodes, i);
+	strval = xmlXPathCastNodeToString(cur);
+	if (xmlHashLookup(hash, strval) == NULL) {
+	    xmlHashAddEntry(hash, strval, strval);
+	    xmlXPathNodeSetAddUnique(ret, cur);
+	} else {
+	    xmlFree(strval);
+	}
+    }
+    xmlHashFree(hash, (xmlHashDeallocator) xmlFree);
+    return(ret);
+}
+
+/**
+ * xmlXPathDistinct:
+ * @nodes:  a node-set
+ *
+ * Implements the EXSLT - Sets distinct() function:
+ *    node-set set:distinct (node-set)
+ * @nodes is sorted by document order, then #exslSetsDistinctSorted
+ * is called with the sorted node-set
+ *
+ * Returns a subset of the nodes contained in @nodes, or @nodes if
+ *         it is empty
+ */
+xmlNodeSetPtr
+xmlXPathDistinct (xmlNodeSetPtr nodes) {
+    if (xmlXPathNodeSetIsEmpty(nodes))
+	return(nodes);
+
+    xmlXPathNodeSetSort(nodes);
+    return(xmlXPathDistinctSorted(nodes));
+}
+
+/**
+ * xmlXPathHasSameNodes:
+ * @nodes1:  a node-set
+ * @nodes2:  a node-set
+ *
+ * Implements the EXSLT - Sets has-same-nodes function:
+ *    boolean set:has-same-node(node-set, node-set)
+ *
+ * Returns true (1) if @nodes1 shares any node with @nodes2, false (0)
+ *         otherwise
+ */
+int
+xmlXPathHasSameNodes (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    int i, l;
+    xmlNodePtr cur;
+
+    if (xmlXPathNodeSetIsEmpty(nodes1) ||
+	xmlXPathNodeSetIsEmpty(nodes2))
+	return(0);
+
+    l = xmlXPathNodeSetGetLength(nodes1);
+    for (i = 0; i < l; i++) {
+	cur = xmlXPathNodeSetItem(nodes1, i);
+	if (xmlXPathNodeSetContains(nodes2, cur))
+	    return(1);
+    }
+    return(0);
+}
+
+/**
+ * xmlXPathNodeLeadingSorted:
+ * @nodes: a node-set, sorted by document order
+ * @node: a node
+ *
+ * Implements the EXSLT - Sets leading() function:
+ *    node-set set:leading (node-set, node-set)
+ *
+ * Returns the nodes in @nodes that precede @node in document order,
+ *         @nodes if @node is NULL or an empty node-set if @nodes
+ *         doesn't contain @node
+ */
+xmlNodeSetPtr
+xmlXPathNodeLeadingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
+    int i, l;
+    xmlNodePtr cur;
+    xmlNodeSetPtr ret;
+
+    if (node == NULL)
+	return(nodes);
+
+    ret = xmlXPathNodeSetCreate(NULL);
+    if (xmlXPathNodeSetIsEmpty(nodes) ||
+	(!xmlXPathNodeSetContains(nodes, node)))
+	return(ret);
+
+    l = xmlXPathNodeSetGetLength(nodes);
+    for (i = 0; i < l; i++) {
+	cur = xmlXPathNodeSetItem(nodes, i);
+	if (cur == node)
+	    break;
+	xmlXPathNodeSetAddUnique(ret, cur);
+    }
+    return(ret);
+}
+
+/**
+ * xmlXPathNodeLeading:
+ * @nodes:  a node-set
+ * @node:  a node
+ *
+ * Implements the EXSLT - Sets leading() function:
+ *    node-set set:leading (node-set, node-set)
+ * @nodes is sorted by document order, then #exslSetsNodeLeadingSorted
+ * is called.
+ *
+ * Returns the nodes in @nodes that precede @node in document order,
+ *         @nodes if @node is NULL or an empty node-set if @nodes
+ *         doesn't contain @node
+ */
+xmlNodeSetPtr
+xmlXPathNodeLeading (xmlNodeSetPtr nodes, xmlNodePtr node) {
+    xmlXPathNodeSetSort(nodes);
+    return(xmlXPathNodeLeadingSorted(nodes, node));
+}
+
+/**
+ * xmlXPathLeadingSorted:
+ * @nodes1:  a node-set, sorted by document order
+ * @nodes2:  a node-set, sorted by document order
+ *
+ * Implements the EXSLT - Sets leading() function:
+ *    node-set set:leading (node-set, node-set)
+ *
+ * Returns the nodes in @nodes1 that precede the first node in @nodes2
+ *         in document order, @nodes1 if @nodes2 is NULL or empty or
+ *         an empty node-set if @nodes1 doesn't contain @nodes2
+ */
+xmlNodeSetPtr
+xmlXPathLeadingSorted (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    if (xmlXPathNodeSetIsEmpty(nodes2))
+	return(nodes1);
+    return(xmlXPathNodeLeadingSorted(nodes1,
+				     xmlXPathNodeSetItem(nodes2, 1)));
+}
+
+/**
+ * xmlXPathLeading:
+ * @nodes1:  a node-set
+ * @nodes2:  a node-set
+ *
+ * Implements the EXSLT - Sets leading() function:
+ *    node-set set:leading (node-set, node-set)
+ * @nodes1 and @nodes2 are sorted by document order, then
+ * #exslSetsLeadingSorted is called.
+ *
+ * Returns the nodes in @nodes1 that precede the first node in @nodes2
+ *         in document order, @nodes1 if @nodes2 is NULL or empty or
+ *         an empty node-set if @nodes1 doesn't contain @nodes2
+ */
+xmlNodeSetPtr
+xmlXPathLeading (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    if (xmlXPathNodeSetIsEmpty(nodes2))
+	return(nodes1);
+    if (xmlXPathNodeSetIsEmpty(nodes1))
+	return(xmlXPathNodeSetCreate(NULL));
+    xmlXPathNodeSetSort(nodes1);
+    xmlXPathNodeSetSort(nodes2);
+    return(xmlXPathNodeLeadingSorted(nodes1,
+				     xmlXPathNodeSetItem(nodes2, 1)));
+}
+
+/**
+ * xmlXPathNodeTrailingSorted:
+ * @nodes: a node-set, sorted by document order
+ * @node: a node
+ *
+ * Implements the EXSLT - Sets trailing() function:
+ *    node-set set:trailing (node-set, node-set)
+ *
+ * Returns the nodes in @nodes that follow @node in document order,
+ *         @nodes if @node is NULL or an empty node-set if @nodes
+ *         doesn't contain @node
+ */
+xmlNodeSetPtr
+xmlXPathNodeTrailingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
+    int i, l;
+    xmlNodePtr cur;
+    xmlNodeSetPtr ret;
+
+    if (node == NULL)
+	return(nodes);
+
+    ret = xmlXPathNodeSetCreate(NULL);
+    if (xmlXPathNodeSetIsEmpty(nodes) ||
+	(!xmlXPathNodeSetContains(nodes, node)))
+	return(ret);
+
+    l = xmlXPathNodeSetGetLength(nodes);
+    for (i = 0; i < l; i++) {
+	cur = xmlXPathNodeSetItem(nodes, i);
+	if (cur == node)
+	    break;
+	xmlXPathNodeSetAddUnique(ret, cur);
+    }
+    return(ret);
+}
+
+/**
+ * xmlXPathNodeTrailing:
+ * @nodes:  a node-set
+ * @node:  a node
+ *
+ * Implements the EXSLT - Sets trailing() function:
+ *    node-set set:trailing (node-set, node-set)
+ * @nodes is sorted by document order, then #xmlXPathNodeTrailingSorted
+ * is called.
+ *
+ * Returns the nodes in @nodes that follow @node in document order,
+ *         @nodes if @node is NULL or an empty node-set if @nodes
+ *         doesn't contain @node
+ */
+xmlNodeSetPtr
+xmlXPathNodeTrailing (xmlNodeSetPtr nodes, xmlNodePtr node) {
+    xmlXPathNodeSetSort(nodes);
+    return(xmlXPathNodeTrailingSorted(nodes, node));
+}
+
+/**
+ * xmlXPathTrailingSorted:
+ * @nodes1:  a node-set, sorted by document order
+ * @nodes2:  a node-set, sorted by document order
+ *
+ * Implements the EXSLT - Sets trailing() function:
+ *    node-set set:trailing (node-set, node-set)
+ *
+ * Returns the nodes in @nodes1 that follow the first node in @nodes2
+ *         in document order, @nodes1 if @nodes2 is NULL or empty or
+ *         an empty node-set if @nodes1 doesn't contain @nodes2
+ */
+xmlNodeSetPtr
+xmlXPathTrailingSorted (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    if (xmlXPathNodeSetIsEmpty(nodes2))
+	return(nodes1);
+    return(xmlXPathNodeTrailingSorted(nodes1,
+				      xmlXPathNodeSetItem(nodes2, 0)));
+}
+
+/**
+ * xmlXPathTrailing:
+ * @nodes1:  a node-set
+ * @nodes2:  a node-set
+ *
+ * Implements the EXSLT - Sets trailing() function:
+ *    node-set set:trailing (node-set, node-set)
+ * @nodes1 and @nodes2 are sorted by document order, then
+ * #xmlXPathTrailingSorted is called.
+ *
+ * Returns the nodes in @nodes1 that follow the first node in @nodes2
+ *         in document order, @nodes1 if @nodes2 is NULL or empty or
+ *         an empty node-set if @nodes1 doesn't contain @nodes2
+ */
+xmlNodeSetPtr
+xmlXPathTrailing (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
+    if (xmlXPathNodeSetIsEmpty(nodes2))
+	return(nodes1);
+    if (xmlXPathNodeSetIsEmpty(nodes1))
+	return(xmlXPathNodeSetCreate(NULL));
+    xmlXPathNodeSetSort(nodes1);
+    xmlXPathNodeSetSort(nodes2);
+    return(xmlXPathNodeTrailingSorted(nodes1,
+				      xmlXPathNodeSetItem(nodes2, 0)));
 }
 
 /************************************************************************
@@ -2189,6 +2696,30 @@ xmlXPathNewCString(const char *val) {
 xmlXPathObjectPtr
 xmlXPathWrapCString (char * val) {
     return(xmlXPathWrapString((xmlChar *)(val)));
+}
+
+/**
+ * xmlXPathWrapExternal:
+ * @val:  the user data
+ *
+ * Wraps the @val data into an XPath object.
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathWrapExternal (void *val) {
+    xmlXPathObjectPtr ret;
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathWrapString: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_USERS;
+    ret->user = val;
+    return(ret);
 }
 
 /**

@@ -1,3 +1,8 @@
+Fri Jan  2 21:22:18 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: applied patch from Stéphane Bidoul for structured error
+	  reporting.
+
 Fri Jan  2 21:03:17 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlwriter.h xmlwriter.c: applied the patch from

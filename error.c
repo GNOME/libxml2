@@ -537,6 +537,9 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     to->node = node;
     to->ctxt = ctx;
 
+    if (to != &xmlLastError)
+        xmlCopyError(to,&xmlLastError);
+
     /*
      * Find the callback channel.
      */

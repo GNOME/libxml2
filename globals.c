@@ -117,7 +117,10 @@ int xmlSubstituteEntitiesDefaultValue = 0;
 
 /* xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc; */
 /* Must initialize xmlGenericError in xmlInitParser */
-xmlGenericErrorFunc xmlGenericError;
+void xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
+				 const char *msg,
+				 ...);
+xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
 void *xmlGenericErrorContext = NULL;
 
 /*

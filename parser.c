@@ -9791,6 +9791,8 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
     xmlParserCtxtPtr ctxt;
     char *directory = NULL;
 
+    xmlInitParser();
+
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) {
 	return(NULL);

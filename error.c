@@ -14,6 +14,10 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/globals.h>
 
+void xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
+				 const char *msg,
+				 ...);
+
 #define XML_GET_VAR_STR(msg, str) {				\
     int       size;						\
     int       chars;						\
@@ -58,7 +62,7 @@
  * 
  * Default handler for out of context error messages.
  */
-static void
+void
 xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
     va_list args;
 
@@ -261,7 +265,7 @@ xmlParserError(void *ctx, const char *msg, ...)
 
     xmlGenericError(xmlGenericErrorContext, "error: ");
     XML_GET_VAR_STR(msg, str);
-    xmlGenericError(xmlGenericErrorContext, str);
+    xmlGenericError(xmlGenericErrorContext, "%s", str);
     if (str != NULL)
 	xmlFree(str);
 
@@ -304,7 +308,7 @@ xmlParserWarning(void *ctx, const char *msg, ...)
         
     xmlGenericError(xmlGenericErrorContext, "warning: ");
     XML_GET_VAR_STR(msg, str);
-    xmlGenericError(xmlGenericErrorContext, str);
+    xmlGenericError(xmlGenericErrorContext, "%s", str);
     if (str != NULL)
 	xmlFree(str);
 
@@ -350,7 +354,7 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
 
     xmlGenericError(xmlGenericErrorContext, "validity error: ");
     XML_GET_VAR_STR(msg, str);
-    xmlGenericError(xmlGenericErrorContext, str);
+    xmlGenericError(xmlGenericErrorContext, "%s", str);
     if (str != NULL)
 	xmlFree(str);
 
@@ -385,7 +389,7 @@ xmlParserValidityWarning(void *ctx, const char *msg, ...)
         
     xmlGenericError(xmlGenericErrorContext, "validity warning: ");
     XML_GET_VAR_STR(msg, str);
-    xmlGenericError(xmlGenericErrorContext, str);
+    xmlGenericError(xmlGenericErrorContext, "%s", str);
     if (str != NULL)
 	xmlFree(str);
 

@@ -1,3 +1,12 @@
+Mon Oct 29 12:44:17 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c globals.c DOCBparser.c HTMLparser.c error.c:
+	  apply fixes to close #63271 and avoid segfaults when
+	  the error routine gets callbed before xmlInitParser()
+	  get called.
+	* nanoftp.c error.c: Applied patches from Justin Fletcher
+	  correcting some xmlGenericError misuses.
+
 Sat Oct 27 14:04:45 MDT 2001 John Fleck <jfleck@inkstain.net>
 
 	*doc/xmllint.xml, doc/xmllint.1

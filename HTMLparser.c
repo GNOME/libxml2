@@ -3747,6 +3747,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->replaceEntities = 0;
+    ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->html = 1;
     ctxt->record_info = 0;
     ctxt->validate = 0;

@@ -1272,6 +1272,7 @@ node_found:
      * If we are in the middle of a piece of CDATA make sure it's finished
      */
     if ((reader->node != NULL) &&
+        (reader->node->next == NULL) &&
         ((reader->node->type == XML_TEXT_NODE) ||
 	 (reader->node->type == XML_CDATA_SECTION_NODE))) {
             xmlTextReaderExpand(reader);

@@ -123,7 +123,7 @@ NAME="LIBXML-XMLIO"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN18081"
+NAME="AEN18171"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN18081"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN18084"
+NAME="AEN18174"
 ></A
 ><H2
 >Synopsis</H2
@@ -164,10 +164,6 @@ int         (<A
 HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >*xmlInputCloseCallback</A
 >)        (void *context);
-struct      <A
-HREF="libxml-tree.html#XMLPARSERINPUTBUFFER"
->xmlParserInputBuffer</A
->;
 int         (<A
 HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
 >*xmlOutputMatchCallback</A
@@ -186,6 +182,10 @@ int         (<A
 HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >*xmlOutputCloseCallback</A
 >)       (void *context);
+struct      <A
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFER"
+>xmlParserInputBuffer</A
+>;
 struct      <A
 HREF="libxml-tree.html#XMLOUTPUTBUFFER"
 >xmlOutputBuffer</A
@@ -505,7 +505,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18175"
+NAME="AEN18265"
 ></A
 ><H2
 >Description</H2
@@ -515,14 +515,14 @@ NAME="AEN18175"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18178"
+NAME="AEN18268"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18180"
+NAME="AEN18270"
 ></A
 ><H3
 ><A
@@ -550,7 +550,7 @@ can provide input fonctionnalities for this resource.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18186"
+NAME="AEN18276"
 ></A
 ><P
 ></P
@@ -603,7 +603,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18199"
+NAME="AEN18289"
 ></A
 ><H3
 ><A
@@ -630,7 +630,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18205"
+NAME="AEN18295"
 ></A
 ><P
 ></P
@@ -668,7 +668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18214"
+NAME="AEN18304"
 ></A
 ><H3
 ><A
@@ -697,7 +697,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18220"
+NAME="AEN18310"
 ></A
 ><P
 ></P
@@ -784,7 +784,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18241"
+NAME="AEN18331"
 ></A
 ><H3
 ><A
@@ -811,7 +811,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18247"
+NAME="AEN18337"
 ></A
 ><P
 ></P
@@ -864,42 +864,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18260"
-></A
-><H3
-><A
-NAME="XMLPARSERINPUTBUFFER"
-></A
->struct xmlParserInputBuffer</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlParserInputBuffer {
-    void*                  context;
-    xmlInputReadCallback   readcallback;
-    xmlInputCloseCallback  closecallback;
-    
-    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
-    
-    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
-    xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18265"
+NAME="AEN18350"
 ></A
 ><H3
 ><A
@@ -927,7 +892,7 @@ can provide output fonctionnalities for this resource.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18271"
+NAME="AEN18356"
 ></A
 ><P
 ></P
@@ -980,7 +945,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18284"
+NAME="AEN18369"
 ></A
 ><H3
 ><A
@@ -1007,7 +972,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18290"
+NAME="AEN18375"
 ></A
 ><P
 ></P
@@ -1045,7 +1010,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18299"
+NAME="AEN18384"
 ></A
 ><H3
 ><A
@@ -1074,7 +1039,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18305"
+NAME="AEN18390"
 ></A
 ><P
 ></P
@@ -1161,7 +1126,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18326"
+NAME="AEN18411"
 ></A
 ><H3
 ><A
@@ -1188,7 +1153,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18332"
+NAME="AEN18417"
 ></A
 ><P
 ></P
@@ -1241,7 +1206,42 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18345"
+NAME="AEN18430"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFER"
+></A
+>struct xmlParserInputBuffer</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlParserInputBuffer {
+    void*                  context;
+    xmlInputReadCallback   readcallback;
+    xmlInputCloseCallback  closecallback;
+    
+    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
+    
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
+    xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18435"
 ></A
 ><H3
 ><A
@@ -1277,7 +1277,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18350"
+NAME="AEN18440"
 ></A
 ><H3
 ><A
@@ -1306,7 +1306,7 @@ compiled-in I/O.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18356"
+NAME="AEN18446"
 ></A
 ><H3
 ><A
@@ -1335,7 +1335,7 @@ compiled-in I/O callbacks.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18362"
+NAME="AEN18452"
 ></A
 ><H3
 ><A
@@ -1364,7 +1364,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18368"
+NAME="AEN18458"
 ></A
 ><H3
 ><A
@@ -1398,7 +1398,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18376"
+NAME="AEN18466"
 ></A
 ><P
 ></P
@@ -1451,7 +1451,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18389"
+NAME="AEN18479"
 ></A
 ><H3
 ><A
@@ -1489,7 +1489,7 @@ HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILENAME"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18398"
+NAME="AEN18488"
 ></A
 ><P
 ></P
@@ -1559,7 +1559,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18415"
+NAME="AEN18505"
 ></A
 ><H3
 ><A
@@ -1598,7 +1598,7 @@ Do an encoding check if enc == XML_CHAR_ENCODING_NONE</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18423"
+NAME="AEN18513"
 ></A
 ><P
 ></P
@@ -1668,7 +1668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18440"
+NAME="AEN18530"
 ></A
 ><H3
 ><A
@@ -1707,7 +1707,7 @@ buffered C I/O</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18449"
+NAME="AEN18539"
 ></A
 ><P
 ></P
@@ -1777,7 +1777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18466"
+NAME="AEN18556"
 ></A
 ><H3
 ><A
@@ -1813,7 +1813,7 @@ from a file descriptor</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18474"
+NAME="AEN18564"
 ></A
 ><P
 ></P
@@ -1883,7 +1883,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18491"
+NAME="AEN18581"
 ></A
 ><H3
 ><A
@@ -1920,7 +1920,7 @@ from a memory area.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18499"
+NAME="AEN18589"
 ></A
 ><P
 ></P
@@ -2007,7 +2007,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18520"
+NAME="AEN18610"
 ></A
 ><H3
 ><A
@@ -2051,7 +2051,7 @@ from an I/O handler</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18530"
+NAME="AEN18620"
 ></A
 ><P
 ></P
@@ -2155,7 +2155,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18555"
+NAME="AEN18645"
 ></A
 ><H3
 ><A
@@ -2188,7 +2188,7 @@ This routine handle the I18N transcoding to internal UTF-8</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18562"
+NAME="AEN18652"
 ></A
 ><P
 ></P
@@ -2259,7 +2259,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18579"
+NAME="AEN18669"
 ></A
 ><H3
 ><A
@@ -2295,7 +2295,7 @@ onto in-&gt;buffer or in-&gt;raw</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18587"
+NAME="AEN18677"
 ></A
 ><P
 ></P
@@ -2366,7 +2366,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18604"
+NAME="AEN18694"
 ></A
 ><H3
 ><A
@@ -2400,7 +2400,7 @@ This is used when operating the parser in progressive (push) mode.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18611"
+NAME="AEN18701"
 ></A
 ><P
 ></P
@@ -2488,7 +2488,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18632"
+NAME="AEN18722"
 ></A
 ><H3
 ><A
@@ -2518,7 +2518,7 @@ HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18639"
+NAME="AEN18729"
 ></A
 ><P
 ></P
@@ -2556,7 +2556,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18648"
+NAME="AEN18738"
 ></A
 ><H3
 ><A
@@ -2583,7 +2583,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18654"
+NAME="AEN18744"
 ></A
 ><P
 ></P
@@ -2636,7 +2636,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18667"
+NAME="AEN18757"
 ></A
 ><H3
 ><A
@@ -2678,7 +2678,7 @@ HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18677"
+NAME="AEN18767"
 ></A
 ><P
 ></P
@@ -2782,7 +2782,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18702"
+NAME="AEN18792"
 ></A
 ><H3
 ><A
@@ -2811,7 +2811,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18708"
+NAME="AEN18798"
 ></A
 ><H3
 ><A
@@ -2844,7 +2844,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18716"
+NAME="AEN18806"
 ></A
 ><P
 ></P
@@ -2897,7 +2897,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18729"
+NAME="AEN18819"
 ></A
 ><H3
 ><A
@@ -2938,7 +2938,7 @@ writing to a local file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18737"
+NAME="AEN18827"
 ></A
 ><P
 ></P
@@ -3025,7 +3025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18758"
+NAME="AEN18848"
 ></A
 ><H3
 ><A
@@ -3064,7 +3064,7 @@ buffered C I/O</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18767"
+NAME="AEN18857"
 ></A
 ><P
 ></P
@@ -3134,7 +3134,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18784"
+NAME="AEN18874"
 ></A
 ><H3
 ><A
@@ -3169,7 +3169,7 @@ to a file descriptor</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18792"
+NAME="AEN18882"
 ></A
 ><P
 ></P
@@ -3239,7 +3239,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18809"
+NAME="AEN18899"
 ></A
 ><H3
 ><A
@@ -3282,7 +3282,7 @@ to an I/O handler</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18819"
+NAME="AEN18909"
 ></A
 ><P
 ></P
@@ -3386,7 +3386,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18844"
+NAME="AEN18934"
 ></A
 ><H3
 ><A
@@ -3421,7 +3421,7 @@ or delayed writes.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18851"
+NAME="AEN18941"
 ></A
 ><P
 ></P
@@ -3509,7 +3509,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18872"
+NAME="AEN18962"
 ></A
 ><H3
 ><A
@@ -3543,7 +3543,7 @@ or delayed writes.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18879"
+NAME="AEN18969"
 ></A
 ><P
 ></P
@@ -3614,7 +3614,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18896"
+NAME="AEN18986"
 ></A
 ><H3
 ><A
@@ -3644,7 +3644,7 @@ HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18903"
+NAME="AEN18993"
 ></A
 ><P
 ></P
@@ -3697,7 +3697,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18916"
+NAME="AEN19006"
 ></A
 ><H3
 ><A
@@ -3728,7 +3728,7 @@ and free up all the associated resources</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18923"
+NAME="AEN19013"
 ></A
 ><P
 ></P
@@ -3781,7 +3781,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18936"
+NAME="AEN19026"
 ></A
 ><H3
 ><A
@@ -3823,7 +3823,7 @@ HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18946"
+NAME="AEN19036"
 ></A
 ><P
 ></P
@@ -3927,7 +3927,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18971"
+NAME="AEN19061"
 ></A
 ><H3
 ><A
@@ -3956,7 +3956,7 @@ request.  Non-static as is called from the output buffer creation routine.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18977"
+NAME="AEN19067"
 ></A
 ><P
 ></P
@@ -4011,7 +4011,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18990"
+NAME="AEN19080"
 ></A
 ><H3
 ><A
@@ -4041,7 +4041,7 @@ method instead.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18996"
+NAME="AEN19086"
 ></A
 ><H3
 ><A
@@ -4078,7 +4078,7 @@ allowing local catalog accesses for resolution.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19004"
+NAME="AEN19094"
 ></A
 ><P
 ></P

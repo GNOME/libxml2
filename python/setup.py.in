@@ -11,6 +11,29 @@ def missing(file):
         return 1
     return 0
 
+try:
+    import posix
+    HOME = posix.environ['HOME']
+except:
+    HOME="C:"
+
+includes_dir = [
+"/usr/include",
+"/usr/local/include",
+"/opt/include",
+HOME
+];
+
+xml_includes=""
+for dir in includes_dir:
+    if not missing(dir + "/libxml2/libxml/tree.h"):
+        xml_includes=dir + "/libxml2"
+	break;
+
+if xml_includes == "":
+    print "failed to find headers for libxml2: update includes_dir"
+    sys.exit(1)
+        
 xml_files = ["libxml2-api.xml", "libxml2-python-api.xml",
              "libxml.c", "libxml.py", "libxml_wrap.h", "types.c",
 	     "xmlgenerator.py", "README", "TODO"]
@@ -66,11 +89,22 @@ if missing("libxslt-py.c") or missing("libxslt.py"):
 else:
     with_xslt=1
 
+if with_xslt == 1:
+    xslt_includes=""
+    for dir in includes_dir:
+	if not missing(dir + "/libxslt/xsltconfig.h"):
+	    xslt_includes=dir + "/libxslt"
+	    break;
+
+    if xslt_includes == "":
+	print "failed to find headers for libxslt: update includes_dir"
+	with_xslt = 0
+
 
 descr = "libxml2 package"
 modules = [ 'libxml2' ]
 c_files = ['libxml2-py.c', 'libxml.c', 'types.c' ]
-includes= ["/usr/include/libxml2"]
+includes= [xml_includes]
 libs    = ["xml2", "m", "z"]
 macros  = []
 if with_xslt == 1:
@@ -81,7 +115,7 @@ if with_xslt == 1:
     #
     c_files = c_files + ['libxslt-py.c', 'libxslt.c']
     libs.insert(0, 'xslt')
-    includes.append("/usr/include/libxslt")
+    includes.append(xslt_includes)
     modules.append('libxslt')
     macros.append(('MERGED_MODULES', '1'))
 

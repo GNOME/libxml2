@@ -989,6 +989,10 @@
     <reference name='xmlValidateDtdFinal' href='html/libxml-valid.html#XMLVALIDATEDTDFINAL'/>
     <reference name='xmlValidateElement' href='html/libxml-valid.html#XMLVALIDATEELEMENT'/>
     <reference name='xmlValidateElementDecl' href='html/libxml-valid.html#XMLVALIDATEELEMENTDECL'/>
+    <reference name='xmlValidateNameValue' href='html/libxml-valid.html#XMLVALIDATENAMEVALUE'/>
+    <reference name='xmlValidateNamesValue' href='html/libxml-valid.html#XMLVALIDATENAMESVALUE'/>
+    <reference name='xmlValidateNmtokenValue' href='html/libxml-valid.html#XMLVALIDATENMTOKENVALUE'/>
+    <reference name='xmlValidateNmtokensValue' href='html/libxml-valid.html#XMLVALIDATENMTOKENSVALUE'/>
     <reference name='xmlValidateNotationDecl' href='html/libxml-valid.html#XMLVALIDATENOTATIONDECL'/>
     <reference name='xmlValidateNotationUse' href='html/libxml-valid.html#XMLVALIDATENOTATIONUSE'/>
     <reference name='xmlValidateOneAttribute' href='html/libxml-valid.html#XMLVALIDATEONEATTRIBUTE'/>
@@ -2260,6 +2264,10 @@
     <ref name='xmlValidateDtdFinal'/>
     <ref name='xmlValidateElement'/>
     <ref name='xmlValidateElementDecl'/>
+    <ref name='xmlValidateNameValue'/>
+    <ref name='xmlValidateNamesValue'/>
+    <ref name='xmlValidateNmtokenValue'/>
+    <ref name='xmlValidateNmtokensValue'/>
     <ref name='xmlValidateNotationDecl'/>
     <ref name='xmlValidateNotationUse'/>
     <ref name='xmlValidateOneAttribute'/>
@@ -3316,6 +3324,10 @@
       <ref name='xmlGetDtdQElementDesc'/>
       <ref name='xmlGetDtdQElementDesc'/>
       <ref name='xmlGetDtdElementDesc'/>
+      <ref name='xmlValidateNameValue'/>
+      <ref name='xmlValidateNamesValue'/>
+      <ref name='xmlValidateNmtokenValue'/>
+      <ref name='xmlValidateNmtokensValue'/>
       <ref name='xmlXPathCastStringToBoolean'/>
       <ref name='xmlXPathCastStringToNumber'/>
       <ref name='xmlXPathEval'/>
@@ -5646,6 +5658,10 @@
       <ref name='xmlGetDtdElementDesc'/>
       <ref name='xmlValidGetValidElements'/>
       <ref name='xmlValidGetPotentialChildren'/>
+      <ref name='xmlValidateNameValue'/>
+      <ref name='xmlValidateNamesValue'/>
+      <ref name='xmlValidateNmtokenValue'/>
+      <ref name='xmlValidateNmtokensValue'/>
     </file>
     <file name='xinclude'>
       <ref name='xmlXIncludeProcess'/>
@@ -5655,11 +5671,11 @@
       <ref name='xmlInputOpenCallback'/>
       <ref name='xmlInputReadCallback'/>
       <ref name='xmlInputCloseCallback'/>
-      <ref name='xmlParserInputBuffer'/>
       <ref name='xmlOutputMatchCallback'/>
       <ref name='xmlOutputOpenCallback'/>
       <ref name='xmlOutputWriteCallback'/>
       <ref name='xmlOutputCloseCallback'/>
+      <ref name='xmlParserInputBuffer'/>
       <ref name='xmlOutputBuffer'/>
       <ref name='xmlCleanupInputCallbacks'/>
       <ref name='xmlCleanupOutputCallbacks'/>
@@ -7369,7 +7385,11 @@
           <ref name='xmlParseName'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlScanName'/>
+          <ref name='xmlValidateNameValue'/>
           <ref name='xmlValidateOneAttribute'/>
+        </word>
+        <word name='Names'>
+          <ref name='xmlValidateNamesValue'/>
         </word>
         <word name='Namespace'>
           <ref name='XML_XML_NAMESPACE'/>
@@ -7382,6 +7402,10 @@
         </word>
         <word name='Nmtoken'>
           <ref name='xmlParseNmtoken'/>
+          <ref name='xmlValidateNmtokenValue'/>
+        </word>
+        <word name='Nmtokens'>
+          <ref name='xmlValidateNmtokensValue'/>
         </word>
         <word name='Node'>
           <ref name='xmlNodeListGetRawString'/>
@@ -8187,6 +8211,10 @@
         <word name='Validate'>
           <ref name='xmlShellValidate'/>
           <ref name='xmlValidateAttributeValue'/>
+          <ref name='xmlValidateNameValue'/>
+          <ref name='xmlValidateNamesValue'/>
+          <ref name='xmlValidateNmtokenValue'/>
+          <ref name='xmlValidateNmtokensValue'/>
           <ref name='xmlValidateNotationUse'/>
         </word>
         <word name='Value'>
@@ -12635,6 +12663,10 @@
           <ref name='xmlHashScan3'/>
           <ref name='xmlHashScanFull3'/>
           <ref name='xmlValidateAttributeValue'/>
+          <ref name='xmlValidateNameValue'/>
+          <ref name='xmlValidateNamesValue'/>
+          <ref name='xmlValidateNmtokenValue'/>
+          <ref name='xmlValidateNmtokensValue'/>
           <ref name='xmlValidateNotationUse'/>
         </word>
         <word name='matches'>
@@ -13924,35 +13956,6 @@
         </word>
         <word name='producing'>
           <ref name='xmlCheckUTF8'/>
-        </word>
-        <word name='production'>
-          <ref name='IS_BASECHAR'/>
-          <ref name='IS_BLANK'/>
-          <ref name='IS_CHAR'/>
-          <ref name='IS_COMBINING'/>
-          <ref name='IS_DIGIT'/>
-          <ref name='IS_EXTENDER'/>
-          <ref name='IS_IDEOGRAPHIC'/>
-          <ref name='IS_LETTER'/>
-          <ref name='IS_PUBIDCHAR'/>
-          <ref name='xmlIsBaseChar'/>
-          <ref name='xmlIsBlank'/>
-          <ref name='xmlIsChar'/>
-          <ref name='xmlIsCombining'/>
-          <ref name='xmlIsDigit'/>
-          <ref name='xmlIsExtender'/>
-          <ref name='xmlIsIdeographic'/>
-          <ref name='xmlIsLetter'/>
-          <ref name='xmlIsPubidChar'/>
-          <ref name='xmlParseBalancedChunkMemory'/>
-          <ref name='xmlParseCtxtExternalEntity'/>
-          <ref name='xmlParseExtParsedEnt'/>
-          <ref name='xmlParseExternalEntity'/>
-          <ref name='xmlParseExternalID'/>
-          <ref name='xmlParserCtxt'/>
-          <ref name='xmlValidateAttributeValue'/>
-          <ref name='xmlXPathIdFunction'/>
-          <ref name='xmlXPathNormalizeFunction'/>
         </word>
         <word name='production:'>
           <ref name='xmlCheckLanguageID'/>
@@ -16377,6 +16380,10 @@
           <ref name='xmlValidateDtdFinal'/>
           <ref name='xmlValidateElement'/>
           <ref name='xmlValidateElementDecl'/>
+          <ref name='xmlValidateNameValue'/>
+          <ref name='xmlValidateNamesValue'/>
+          <ref name='xmlValidateNmtokenValue'/>
+          <ref name='xmlValidateNmtokensValue'/>
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateNotationUse'/>
           <ref name='xmlValidateOneAttribute'/>

@@ -144,6 +144,12 @@ createURI()
 normalizeURIPath()
 parseURI()
 
+# functions from module valid
+validateNameValue()
+validateNamesValue()
+validateNmtokenValue()
+validateNmtokensValue()
+
 # functions from module xmlIO
 cleanupInputCallbacks()
 cleanupOutputCallbacks()

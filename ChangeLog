@@ -1,3 +1,8 @@
+Mon Apr 15 19:11:36 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: release of 2.4.20
+	* doc/*: updated and rebuilt the docs
+
 Mon Apr 15 14:55:53 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: patch from Cristian Gafton to build on

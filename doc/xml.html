@@ -556,6 +556,14 @@ you want to test those</p>
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
 </ul>
 
+<h3>2.4.20: Apr 15 2002</h3>
+<ul>
+  <li>bug fixes: file descriptor leak, XPath, HTML ouput, DTD validation</li>
+  <li>XPath conformance testing by Richard Jinks</li>
+  <li>Portability fixes: Solaris, MPE/iX, Windows, OSF/1, python bindings,
+    libxml.m4</li>
+</ul>
+
 <h3>2.4.19: Mar 25 2002</h3>
 <ul>
   <li>bug fixes: half a dozen XPath bugs, Validation, ISO-Latin to UTF8
@@ -2557,6 +2565,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -316,6 +316,10 @@
      <exports symbol='xmlGetDtdElementDesc'/>
      <exports symbol='xmlValidGetValidElements'/>
      <exports symbol='xmlValidGetPotentialChildren'/>
+     <exports symbol='xmlValidateNameValue'/>
+     <exports symbol='xmlValidateNamesValue'/>
+     <exports symbol='xmlValidateNmtokenValue'/>
+     <exports symbol='xmlValidateNmtokensValue'/>
     </file>
     <file name='nanohttp'>
      <exports symbol='xmlNanoHTTPInit'/>
@@ -1144,11 +1148,11 @@
      <exports symbol='xmlInputOpenCallback'/>
      <exports symbol='xmlInputReadCallback'/>
      <exports symbol='xmlInputCloseCallback'/>
-     <exports symbol='xmlParserInputBuffer'/>
      <exports symbol='xmlOutputMatchCallback'/>
      <exports symbol='xmlOutputOpenCallback'/>
      <exports symbol='xmlOutputWriteCallback'/>
      <exports symbol='xmlOutputCloseCallback'/>
+     <exports symbol='xmlParserInputBuffer'/>
      <exports symbol='xmlOutputBuffer'/>
      <exports symbol='xmlCleanupInputCallbacks'/>
      <exports symbol='xmlCleanupOutputCallbacks'/>
@@ -6457,6 +6461,26 @@
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context '/>
       <arg name='doc' type='xmlDocPtr' info='a document instance '/>
       <arg name='elem' type='xmlElementPtr' info='an element definition '/>
+    </function>
+    <function name='xmlValidateNameValue' file='valid'>
+      <info>Validate that the given value match Name production</info>
+      <return type='int' info='1 if valid or 0 otherwise '/>
+      <arg name='value' type='const xmlChar *' info='an Name value '/>
+    </function>
+    <function name='xmlValidateNamesValue' file='valid'>
+      <info>Validate that the given value match Names production</info>
+      <return type='int' info='1 if valid or 0 otherwise '/>
+      <arg name='value' type='const xmlChar *' info='an Names value '/>
+    </function>
+    <function name='xmlValidateNmtokenValue' file='valid'>
+      <info>Validate that the given value match Nmtoken production </info>
+      <return type='int' info='1 if valid or 0 otherwise '/>
+      <arg name='value' type='const xmlChar *' info='an Nmtoken value '/>
+    </function>
+    <function name='xmlValidateNmtokensValue' file='valid'>
+      <info>Validate that the given value match Nmtokens production </info>
+      <return type='int' info='1 if valid or 0 otherwise '/>
+      <arg name='value' type='const xmlChar *' info='an Nmtokens value '/>
     </function>
     <function name='xmlValidateNotationDecl' file='valid'>
       <info>Try to validate a single notation definition basically it does the following checks as described by the XML-1.0 recommendation: - it seems that no validity constraint exists on notation declarations But this function get called anyway ...</info>

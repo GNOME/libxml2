@@ -144,39 +144,40 @@
       <include>&lt;libxml/xmlwriter.h&gt;</include>
     </includes>
     <uses>
-      <function line='1090' file='xmlwriter' name='xmlTextWriterEndElement'/>
-      <function line='895' file='xmlwriter' name='xmlTextWriterStartDocument'/>
-      <function line='1100' file='xmlwriter' name='xmlTextWriterEndDocument'/>
-      <function line='940' file='xmlwriter' name='xmlTextWriterWriteFormatComment'/>
-      <function line='905' file='xmlwriter' name='xmlTextWriterWriteComment'/>
+      <function line='1109' file='xmlwriter' name='xmlTextWriterEndElement'/>
+      <function line='899' file='tree' name='xmlDocSetRootElement'/>
+      <function line='911' file='xmlwriter' name='xmlTextWriterStartDocument'/>
+      <function line='1119' file='xmlwriter' name='xmlTextWriterEndDocument'/>
+      <function line='957' file='xmlwriter' name='xmlTextWriterWriteFormatComment'/>
+      <function line='923' file='xmlwriter' name='xmlTextWriterWriteComment'/>
       <function line='52' file='parser' name='xmlCleanupParser'/>
-      <variable line='1145' file='globals' name='xmlMalloc'/>
-      <function line='1052' file='xmlwriter' name='xmlTextWriterWriteFormatElement'/>
-      <function line='1135' file='encoding' name='xmlFindCharEncodingHandler'/>
-      <typedef line='1130' file='encoding' name='xmlCharEncodingHandlerPtr'/>
-      <function line='886' file='xmlwriter' name='xmlNewTextWriterTree'/>
-      <function line='73' file='xmlwriter' name='xmlNewTextWriterFilename'/>
-      <function line='1110' file='tree' name='xmlFreeDoc'/>
-      <typedef line='863' file='tree' name='xmlNodePtr'/>
-      <typedef line='862' file='tree' name='xmlDocPtr'/>
-      <typedef line='335' file='tree' name='xmlBufferPtr'/>
-      <function line='618' file='xmlwriter' name='xmlNewTextWriterDoc'/>
-      <function line='876' file='tree' name='xmlNewDocNode'/>
-      <function line='1108' file='tree' name='xmlSaveFileEnc'/>
+      <variable line='1164' file='globals' name='xmlMalloc'/>
+      <function line='1071' file='xmlwriter' name='xmlTextWriterWriteFormatElement'/>
+      <function line='1154' file='encoding' name='xmlFindCharEncodingHandler'/>
+      <typedef line='1149' file='encoding' name='xmlCharEncodingHandlerPtr'/>
+      <function line='902' file='xmlwriter' name='xmlNewTextWriterTree'/>
+      <function line='74' file='xmlwriter' name='xmlNewTextWriterFilename'/>
+      <function line='1129' file='tree' name='xmlFreeDoc'/>
+      <typedef line='878' file='tree' name='xmlNodePtr'/>
+      <typedef line='877' file='tree' name='xmlDocPtr'/>
+      <typedef line='339' file='tree' name='xmlBufferPtr'/>
+      <function line='630' file='xmlwriter' name='xmlNewTextWriterDoc'/>
+      <function line='892' file='tree' name='xmlNewDocNode'/>
+      <function line='1127' file='tree' name='xmlSaveFileEnc'/>
       <function line='56' file='xmlmemory' name='xmlMemoryDump'/>
-      <macro line='867' file='parser' name='XML_DEFAULT_VERSION'/>
-      <function line='348' file='xmlwriter' name='xmlNewTextWriterMemory'/>
-      <variable line='1159' file='globals' name='xmlFree'/>
-      <function line='883' file='tree' name='xmlDocSetRootElement'/>
-      <function line='1106' file='xmlwriter' name='xmlFreeTextWriter'/>
-      <function line='1075' file='xmlwriter' name='xmlTextWriterStartElement'/>
+      <macro line='883' file='parser' name='XML_DEFAULT_VERSION'/>
+      <function line='353' file='xmlwriter' name='xmlNewTextWriterMemory'/>
+      <variable line='1178' file='globals' name='xmlFree'/>
+      <function line='1094' file='xmlwriter' name='xmlTextWriterStartElement'/>
+      <function line='1125' file='xmlwriter' name='xmlFreeTextWriter'/>
+      <function line='345' file='tree' name='xmlBufferCreate'/>
       <macro line='38' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <function line='340' file='tree' name='xmlBufferCreate'/>
-      <typedef line='861' file='xmlwriter' name='xmlTextWriterPtr'/>
-      <function line='1082' file='xmlwriter' name='xmlTextWriterWriteElement'/>
-      <function line='931' file='xmlwriter' name='xmlTextWriterWriteAttribute'/>
-      <variable line='1162' file='globals' name='xmlRealloc'/>
-      <function line='867' file='tree' name='xmlNewDoc'/>
+      <function line='611' file='tree' name='xmlBufferFree'/>
+      <typedef line='876' file='xmlwriter' name='xmlTextWriterPtr'/>
+      <function line='1101' file='xmlwriter' name='xmlTextWriterWriteElement'/>
+      <function line='947' file='xmlwriter' name='xmlTextWriterWriteAttribute'/>
+      <variable line='1181' file='globals' name='xmlRealloc'/>
+      <function line='883' file='tree' name='xmlNewDoc'/>
     </uses>
   </example>
   <example filename='reader1.c'>
@@ -311,6 +312,9 @@
       <ref filename='tree2.c'/>
     </symbol>
     <symbol name='xmlBufferCreate'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlBufferFree'>
       <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlBufferPtr'>

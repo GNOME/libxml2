@@ -662,11 +662,36 @@ to test those</p>
   Schemas</a></li>
 </ul>
 
+<h3>2.6.5: Jan 25 2004</h3>
+<ul>
+  <li>Bugfixes: dictionnaries for schemas (William Brack), regexp segfault
+    (William), xs:all problem (William), a number of XPointer bugfixes
+    (William), xmllint error go to stderr, DTD validation problem with
+    namespace, memory leak (William), SAX1 cleanup and minimal options fixes
+    (Mark Vadoc), parser context reset on error (Shaun McCance), XPath union
+    evaluation problem (William) , xmlReallocLoc with NULL (Aleksey Sanin),
+    XML Schemas double free (Steve Ball), XInclude with no href, argument
+    callbacks order for XPath callbacks (Frederic Peters)</li>
+  <li>Documentation: python scripts (William Brack), xslt stylesheets (John
+    Fleck), doc (Sven Zimmerman), I/O example.</li>
+  <li>Python bindings: fixes (William), enum support (Stéphane Bidoul),
+    structured error reporting (Stéphane Bidoul)</li>
+  <li>XInclude: various fixes for conformance, problem related to dictionnary
+    references (William &amp; me), recursion (William)</li>
+  <li>xmlWriter: indentation (Lucas Brasilino), memory leaks (Alfred
+    Mickautsch), </li>
+  <li>xmlSchemas: normalizedString datatype (John Belmonte)</li>
+  <li>code cleanup for strings functions (William)</li>
+  <li>Windows: compiler patches (Mark Vakoc)</li>
+  <li>Parser optimizations, a few new XPath and dictionnary APIs for future
+    XSLT optimizations.</li>
+</ul>
+
 <h3>2.6.4: Dec 24 2003</h3>
 <ul>
   <li>Windows build fixes (Igor Zlatkovic)</li>
-  <li>Some serious XInclude problems reported by Oleg Paraschenko and </li>
-  <li>Unix and Makefile packaging fixes (me, William Brack, </li>
+  <li>Some serious XInclude problems reported by Oleg Paraschenko and</li>
+  <li>Unix and Makefile packaging fixes (me, William Brack,</li>
   <li>Documentation improvements (John Fleck, William Brack), example fix
     (Lucas Brasilino)</li>
   <li>bugfixes: xmlTextReaderExpand() with xmlReaderWalker, XPath handling of
@@ -2776,10 +2801,10 @@ encoding for ASCII and to save space for Western encodings, but it is a bit
 more complex to handle in practice. UTF-16 use 2 bytes per character (and
 sometimes combines two pairs), it makes implementation easier, but looks a
 bit overkill for Western languages encoding. Moreover the XML specification
-allows the document to be encoded in other encodings at the condition that they
-are clearly labeled as such. For example the following is a wellformed XML
-document encoded in ISO-8859-1 and using accentuated letters that we French
-like for both markup and content:</p>
+allows the document to be encoded in other encodings at the condition that
+they are clearly labeled as such. For example the following is a wellformed
+XML document encoded in ISO-8859-1 and using accentuated letters that we
+French like for both markup and content:</p>
 <pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
 &lt;très&gt;là&lt;/très&gt;</pre>
 
@@ -2871,8 +2896,8 @@ when reading a document or saving one. Let's look first at the reading
 sequence:</p>
 <ol>
   <li>when a document is processed, we usually don't know the encoding, a
-    simple heuristic allows to detect UTF-16 and UCS-4 from encodings
-    where the ASCII range (0-0x7F) maps with ASCII</li>
+    simple heuristic allows to detect UTF-16 and UCS-4 from encodings where
+    the ASCII range (0-0x7F) maps with ASCII</li>
   <li>the xml declaration if available is parsed, including the encoding
     declaration. At that point, if the autodetected encoding is different
     from the one declared a call to xmlSwitchEncoding() is issued.</li>
@@ -2937,8 +2962,8 @@ encoding:</p>
     resume the conversion. This guarantees that any document will be saved
     without losses (except for markup names where this is not legal, this is
     a problem in the current version, in practice avoid using non-ascii
-    characters for tag or attribute names). A special "ascii" encoding
-    name is used to save documents to a pure ascii form can be used when
+    characters for tag or attribute names). A special "ascii" encoding name
+    is used to save documents to a pure ascii form can be used when
     portability is really crucial</li>
 </ol>
 

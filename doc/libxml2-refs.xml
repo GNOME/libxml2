@@ -504,6 +504,9 @@
     <reference name='XML_READER_TYPE_WHITESPACE' href='html/libxml-xmlreader.html#XML_READER_TYPE_WHITESPACE'/>
     <reference name='XML_READER_TYPE_XML_DECLARATION' href='html/libxml-xmlreader.html#XML_READER_TYPE_XML_DECLARATION'/>
     <reference name='XML_REGEXP_COMPILE_ERROR' href='html/libxml-xmlerror.html#XML_REGEXP_COMPILE_ERROR'/>
+    <reference name='XML_RELAXNGP_CRNG' href='html/libxml-relaxng.html#XML_RELAXNGP_CRNG'/>
+    <reference name='XML_RELAXNGP_FREE_DOC' href='html/libxml-relaxng.html#XML_RELAXNGP_FREE_DOC'/>
+    <reference name='XML_RELAXNGP_NONE' href='html/libxml-relaxng.html#XML_RELAXNGP_NONE'/>
     <reference name='XML_RELAXNG_ERR_ATTREXTRANS' href='html/libxml-relaxng.html#XML_RELAXNG_ERR_ATTREXTRANS'/>
     <reference name='XML_RELAXNG_ERR_ATTRNAME' href='html/libxml-relaxng.html#XML_RELAXNG_ERR_ATTRNAME'/>
     <reference name='XML_RELAXNG_ERR_ATTRNONS' href='html/libxml-relaxng.html#XML_RELAXNG_ERR_ATTRNONS'/>
@@ -2018,6 +2021,7 @@
     <reference name='xmlRelaxNGParse' href='html/libxml-relaxng.html#xmlRelaxNGParse'/>
     <reference name='xmlRelaxNGParserCtxt' href='html/libxml-relaxng.html#xmlRelaxNGParserCtxt'/>
     <reference name='xmlRelaxNGParserCtxtPtr' href='html/libxml-relaxng.html#xmlRelaxNGParserCtxtPtr'/>
+    <reference name='xmlRelaxNGParserFlag' href='html/libxml-relaxng.html#xmlRelaxNGParserFlag'/>
     <reference name='xmlRelaxNGPtr' href='html/libxml-relaxng.html#xmlRelaxNGPtr'/>
     <reference name='xmlRelaxNGSetParserErrors' href='html/libxml-relaxng.html#xmlRelaxNGSetParserErrors'/>
     <reference name='xmlRelaxNGSetValidErrors' href='html/libxml-relaxng.html#xmlRelaxNGSetValidErrors'/>
@@ -2031,6 +2035,7 @@
     <reference name='xmlRelaxNGValidatePushElement' href='html/libxml-relaxng.html#xmlRelaxNGValidatePushElement'/>
     <reference name='xmlRelaxNGValidityErrorFunc' href='html/libxml-relaxng.html#xmlRelaxNGValidityErrorFunc'/>
     <reference name='xmlRelaxNGValidityWarningFunc' href='html/libxml-relaxng.html#xmlRelaxNGValidityWarningFunc'/>
+    <reference name='xmlRelaxParserSetFlag' href='html/libxml-relaxng.html#xmlRelaxParserSetFlag'/>
     <reference name='xmlRemoveID' href='html/libxml-valid.html#xmlRemoveID'/>
     <reference name='xmlRemoveProp' href='html/libxml-tree.html#xmlRemoveProp'/>
     <reference name='xmlRemoveRef' href='html/libxml-valid.html#xmlRemoveRef'/>
@@ -3362,6 +3367,9 @@
       <ref name='XML_READER_TYPE_WHITESPACE'/>
       <ref name='XML_READER_TYPE_XML_DECLARATION'/>
       <ref name='XML_REGEXP_COMPILE_ERROR'/>
+      <ref name='XML_RELAXNGP_CRNG'/>
+      <ref name='XML_RELAXNGP_FREE_DOC'/>
+      <ref name='XML_RELAXNGP_NONE'/>
       <ref name='XML_RELAXNG_ERR_ATTREXTRANS'/>
       <ref name='XML_RELAXNG_ERR_ATTRNAME'/>
       <ref name='XML_RELAXNG_ERR_ATTRNONS'/>
@@ -4912,6 +4920,7 @@
       <ref name='xmlRelaxNGParse'/>
       <ref name='xmlRelaxNGParserCtxt'/>
       <ref name='xmlRelaxNGParserCtxtPtr'/>
+      <ref name='xmlRelaxNGParserFlag'/>
       <ref name='xmlRelaxNGPtr'/>
       <ref name='xmlRelaxNGSetParserErrors'/>
       <ref name='xmlRelaxNGSetValidErrors'/>
@@ -4925,6 +4934,7 @@
       <ref name='xmlRelaxNGValidatePushElement'/>
       <ref name='xmlRelaxNGValidityErrorFunc'/>
       <ref name='xmlRelaxNGValidityWarningFunc'/>
+      <ref name='xmlRelaxParserSetFlag'/>
       <ref name='xmlRemoveID'/>
       <ref name='xmlRemoveProp'/>
       <ref name='xmlRemoveRef'/>
@@ -8330,6 +8340,7 @@
       <ref name='xmlRelaxNGGetParserErrors'/>
       <ref name='xmlRelaxNGParse'/>
       <ref name='xmlRelaxNGSetParserErrors'/>
+      <ref name='xmlRelaxParserSetFlag'/>
     </type>
     <type name='xmlRelaxNGPtr'>
       <ref name='xmlRelaxNGDump'/>
@@ -9670,6 +9681,9 @@
       <ref name='xmlPatterncompile'/>
     </file>
     <file name='relaxng'>
+      <ref name='XML_RELAXNGP_CRNG'/>
+      <ref name='XML_RELAXNGP_FREE_DOC'/>
+      <ref name='XML_RELAXNGP_NONE'/>
       <ref name='XML_RELAXNG_ERR_ATTREXTRANS'/>
       <ref name='XML_RELAXNG_ERR_ATTRNAME'/>
       <ref name='XML_RELAXNG_ERR_ATTRNONS'/>
@@ -9726,6 +9740,7 @@
       <ref name='xmlRelaxNGParse'/>
       <ref name='xmlRelaxNGParserCtxt'/>
       <ref name='xmlRelaxNGParserCtxtPtr'/>
+      <ref name='xmlRelaxNGParserFlag'/>
       <ref name='xmlRelaxNGPtr'/>
       <ref name='xmlRelaxNGSetParserErrors'/>
       <ref name='xmlRelaxNGSetValidErrors'/>
@@ -9739,6 +9754,7 @@
       <ref name='xmlRelaxNGValidatePushElement'/>
       <ref name='xmlRelaxNGValidityErrorFunc'/>
       <ref name='xmlRelaxNGValidityWarningFunc'/>
+      <ref name='xmlRelaxParserSetFlag'/>
     </file>
     <file name='schemasInternals'>
       <ref name='XML_SCHEMAS_ANYATTR_LAX'/>
@@ -12386,6 +12402,7 @@
           <ref name='xmlAutomataCompile'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathCompile'/>
+          <ref name='xmlXPathCtxtCompile'/>
           <ref name='xmlXPathStringEvalNumber'/>
         </word>
         <word name='Compress'>
@@ -14600,6 +14617,7 @@
           <ref name='xmlRelaxNGValidatePopElement'/>
           <ref name='xmlRelaxNGValidatePushCData'/>
           <ref name='xmlRelaxNGValidatePushElement'/>
+          <ref name='xmlRelaxParserSetFlag'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
         </word>
@@ -14848,6 +14866,9 @@
         </word>
         <word name='Seems'>
           <ref name='xmlParseTextDecl'/>
+        </word>
+        <word name='Semi'>
+          <ref name='xmlRelaxParserSetFlag'/>
         </word>
         <word name='Send'>
           <ref name='xmlNanoFTPQuit'/>
@@ -17308,6 +17329,7 @@
         <word name='compilation'>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathCompile'/>
+          <ref name='xmlXPathCtxtCompile'/>
         </word>
         <word name='compile'>
           <ref name='xmlPatterncompile'/>
@@ -19031,25 +19053,6 @@
         <word name='exposing'>
           <ref name='xmlTextReaderRead'/>
         </word>
-        <word name='expression'>
-          <ref name='_xmlXPathContext'/>
-          <ref name='_xmlXPathParserContext'/>
-          <ref name='xmlRegFreeExecCtxt'/>
-          <ref name='xmlRegNewExecCtxt'/>
-          <ref name='xmlRegexpCompile'/>
-          <ref name='xmlRegexpExec'/>
-          <ref name='xmlRegexpIsDeterminist'/>
-          <ref name='xmlRegexpPrint'/>
-          <ref name='xmlXPathCompile'/>
-          <ref name='xmlXPathCompiledEval'/>
-          <ref name='xmlXPathDebugDumpCompExpr'/>
-          <ref name='xmlXPathEval'/>
-          <ref name='xmlXPathEvalExpr'/>
-          <ref name='xmlXPathEvalExpression'/>
-          <ref name='xmlXPathNewParserContext'/>
-          <ref name='xmlXPathStringEvalNumber'/>
-          <ref name='xmlXPtrEval'/>
-        </word>
         <word name='expressions'>
           <ref name='LIBXML_REGEXP_ENABLED'/>
         </word>
@@ -19341,6 +19344,7 @@
           <ref name='xmlReaderNewFile'/>
           <ref name='xmlReaderNewIO'/>
           <ref name='xmlReaderNewMemory'/>
+          <ref name='xmlRelaxParserSetFlag'/>
           <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='flat'>
@@ -20344,6 +20348,7 @@
           <ref name='xmlParserPrintFileInfo'/>
           <ref name='xmlRelaxNGGetValidErrors'/>
           <ref name='xmlRelaxNGSetValidErrors'/>
+          <ref name='xmlRelaxParserSetFlag'/>
           <ref name='xmlSAX2EndElementNs'/>
           <ref name='xmlSAX2StartElementNs'/>
           <ref name='xmlSchemaSetValidErrors'/>
@@ -22360,6 +22365,7 @@
         </word>
         <word name='pass'>
           <ref name='xmlCurrentChar'/>
+          <ref name='xmlRelaxParserSetFlag'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
         </word>
         <word name='passed'>
@@ -22741,6 +22747,7 @@
         <word name='private'>
           <ref name='xmlCatalogLocalResolve'/>
           <ref name='xmlCatalogLocalResolveURI'/>
+          <ref name='xmlRelaxParserSetFlag'/>
         </word>
         <word name='problem'>
           <ref name='xmlParseBalancedChunkMemory'/>
@@ -26612,6 +26619,9 @@
         <word name='xmlRefPtr'>
           <ref name='xmlAddRef'/>
         </word>
+        <word name='xmlRelaxNGParserFlag'>
+          <ref name='xmlRelaxParserSetFlag'/>
+        </word>
         <word name='xmlRelaxNGValidatePushElement'>
           <ref name='xmlRelaxNGValidateFullElement'/>
         </word>
@@ -26825,6 +26835,7 @@
         </word>
         <word name='xmlXPathCompExprPtr'>
           <ref name='xmlXPathCompile'/>
+          <ref name='xmlXPathCtxtCompile'/>
         </word>
         <word name='xmlXPathContext'>
           <ref name='xmlXPathFreeContext'/>

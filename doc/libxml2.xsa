@@ -8,20 +8,30 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.4</version>
-    <last-release> Dec 24 2003</last-release>
+    <version>2.6.5</version>
+    <last-release> Jan 25 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Windows build fixes (Igor Zlatkovic)
-   - Some serious XInclude problems reported by Oleg Paraschenko and 
-   - Unix and Makefile packaging fixes (me, William Brack, 
-   - Documentation improvements (John Fleck, William Brack), example fix
-    (Lucas Brasilino)
-   - bugfixes: xmlTextReaderExpand() with xmlReaderWalker, XPath handling of
-    NULL strings (William Brack) , API building reader or parser from
-    filedescriptor should not close it, changed XPath sorting to be stable
-    again (William Brack), xmlGetNodePath() generating '(null)' (William
-    Brack), DTD validation and namespace bug (William Brack), XML Schemas
-    double inclusion behaviour
+    <changes>   - Bugfixes: dictionnaries for schemas (William Brack), regexp segfault
+    (William), xs:all problem (William), a number of XPointer bugfixes
+    (William), xmllint error go to stderr, DTD validation problem with
+    namespace, memory leak (William), SAX1 cleanup and minimal options fixes
+    (Mark Vadoc), parser context reset on error (Shaun McCance), XPath union
+    evaluation problem (William) , xmlReallocLoc with NULL (Aleksey Sanin),
+    XML Schemas double free (Steve Ball), XInclude with no href, argument
+    callbacks order for XPath callbacks (Frederic Peters)
+   - Documentation: python scripts (William Brack), xslt stylesheets (John
+    Fleck), doc (Sven Zimmerman), I/O example.
+   - Python bindings: fixes (William), enum support (St&#xE9;phane Bidoul),
+    structured error reporting (St&#xE9;phane Bidoul)
+   - XInclude: various fixes for conformance, problem related to dictionnary
+    references (William &amp; me), recursion (William)
+   - xmlWriter: indentation (Lucas Brasilino), memory leaks (Alfred
+    Mickautsch), 
+   - xmlSchemas: normalizedString datatype (John Belmonte)
+   - code cleanup for strings functions (William)
+   - Windows: compiler patches (Mark Vakoc)
+   - Parser optimizations, a few new XPath and dictionnary APIs for future
+    XSLT optimizations.
 
 </changes>
   </product>

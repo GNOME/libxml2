@@ -15,6 +15,7 @@ The content of this structure is not made public by the API.
 </pre><pre class="programlisting">Structure <a href="#xmlRelaxNGParserCtxt">xmlRelaxNGParserCtxt</a><br />struct _xmlRelaxNGParserCtxt
 The content of this structure is not made public by the API.
 </pre><pre class="programlisting">Typedef <a href="libxml-relaxng.html#xmlRelaxNGParserCtxt">xmlRelaxNGParserCtxt</a> * <a name="xmlRelaxNGParserCtxtPtr" id="xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>
+</pre><pre class="programlisting">Enum <a href="#xmlRelaxNGParserFlag">xmlRelaxNGParserFlag</a>
 </pre><pre class="programlisting">Typedef <a href="libxml-relaxng.html#xmlRelaxNG">xmlRelaxNG</a> * <a name="xmlRelaxNGPtr" id="xmlRelaxNGPtr">xmlRelaxNGPtr</a>
 </pre><pre class="programlisting">Structure <a href="#xmlRelaxNGValidCtxt">xmlRelaxNGValidCtxt</a><br />struct _xmlRelaxNGValidCtxt
 The content of this structure is not made public by the API.
@@ -46,12 +47,18 @@ void	<a href="#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a>	(voi
 <pre class="programlisting">Function type: <a href="#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a>
 void	<a href="#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a>	(void * ctx, <br />					 const char * msg, <br />					 ... ...)
 </pre>
+<pre class="programlisting">int	<a href="#xmlRelaxParserSetFlag">xmlRelaxParserSetFlag</a>		(<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br />					 int flags)</pre>
 <h2>Description</h2>
 <h3><a name="xmlRelaxNG" id="xmlRelaxNG">Structure xmlRelaxNG</a></h3><pre class="programlisting">Structure xmlRelaxNG<br />struct _xmlRelaxNG {
 The content of this structure is not made public by the API.
 }</pre><h3><a name="xmlRelaxNGParserCtxt" id="xmlRelaxNGParserCtxt">Structure xmlRelaxNGParserCtxt</a></h3><pre class="programlisting">Structure xmlRelaxNGParserCtxt<br />struct _xmlRelaxNGParserCtxt {
 The content of this structure is not made public by the API.
-}</pre><h3><a name="xmlRelaxNGValidCtxt" id="xmlRelaxNGValidCtxt">Structure xmlRelaxNGValidCtxt</a></h3><pre class="programlisting">Structure xmlRelaxNGValidCtxt<br />struct _xmlRelaxNGValidCtxt {
+}</pre><h3>Enum <a name="xmlRelaxNGParserFlag" id="xmlRelaxNGParserFlag">xmlRelaxNGParserFlag</a></h3><pre class="programlisting">Enum xmlRelaxNGParserFlag {
+    <a name="XML_RELAXNGP_NONE" id="XML_RELAXNGP_NONE">XML_RELAXNGP_NONE</a> = 0
+    <a name="XML_RELAXNGP_FREE_DOC" id="XML_RELAXNGP_FREE_DOC">XML_RELAXNGP_FREE_DOC</a> = 1
+    <a name="XML_RELAXNGP_CRNG" id="XML_RELAXNGP_CRNG">XML_RELAXNGP_CRNG</a> = 2
+}
+</pre><h3><a name="xmlRelaxNGValidCtxt" id="xmlRelaxNGValidCtxt">Structure xmlRelaxNGValidCtxt</a></h3><pre class="programlisting">Structure xmlRelaxNGValidCtxt<br />struct _xmlRelaxNGValidCtxt {
 The content of this structure is not made public by the API.
 }</pre><h3>Enum <a name="xmlRelaxNGValidErr" id="xmlRelaxNGValidErr">xmlRelaxNGValidErr</a></h3><pre class="programlisting">Enum xmlRelaxNGValidErr {
     <a name="XML_RELAXNG_OK" id="XML_RELAXNG_OK">XML_RELAXNG_OK</a> = 0
@@ -141,4 +148,6 @@ void	xmlRelaxNGValidityErrorFunc	(void * ctx, <br />					 const char * msg, <br 
 <h3><a name="xmlRelaxNGValidityWarningFunc" id="xmlRelaxNGValidityWarningFunc"></a>Function type: xmlRelaxNGValidityWarningFunc</h3><pre class="programlisting">Function type: xmlRelaxNGValidityWarningFunc
 void	xmlRelaxNGValidityWarningFunc	(void * ctx, <br />					 const char * msg, <br />					 ... ...)
 </pre><p></p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td></td></tr></tbody></table></div><br />
-<p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+<h3><a name="xmlRelaxParserSetFlag" id="xmlRelaxParserSetFlag"></a>Function: xmlRelaxParserSetFlag</h3><pre class="programlisting">int	xmlRelaxParserSetFlag		(<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br />					 int flags)<br />
+</pre><p>Semi private function used to pass informations to a parser context which are a combination of <a href="libxml-relaxng.html#xmlRelaxNGParserFlag">xmlRelaxNGParserFlag</a> .</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a RelaxNG parser context</td></tr><tr><td><span class="term"><i><tt>flags</tt></i>:</span></td><td>a set of flags values</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if success and -1 in case of error</td></tr></tbody></table></div><p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

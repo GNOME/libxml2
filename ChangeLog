@@ -1,3 +1,8 @@
+Sun Jan 25 21:45:03 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS doc/*: preparing release 2.6.5, rebuilt the
+	  docs, checked rngparser stuff does not end up in the tarball
+
 Sun Jan 25 20:59:20 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: applied patch from Frederic Peters

@@ -940,53 +940,57 @@
      <summary>implementation of the Relax-NG validation</summary>
      <description>implementation of the Relax-NG validation </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_RELAXNG_OK' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_DUPID' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_VALELEM' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_ATTRVALID' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_LISTELEM' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERNODATA' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_ATTRNONS' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_EXTRADATA' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_ELEMNONS' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_ELEMEXTRANS' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_DATATYPE' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPEVAL' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERNAL' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_LIST' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNODATA' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPECMP' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_VALUE' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_MEMORY' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPE' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_NOELEM' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_DATAELEM' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_INTERSEQ' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_LACKDATA' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNAME' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_DATAELEM' type='enum'/>
+     <exports symbol='XML_RELAXNGP_FREE_DOC' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNAME' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY' type='enum'/>
+     <exports symbol='XML_RELAXNG_OK' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_DATATYPE' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT' type='enum'/>
+     <exports symbol='XML_RELAXNGP_NONE' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS' type='enum'/>
+     <exports symbol='XML_RELAXNGP_CRNG' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPEVAL' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_LIST' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPE' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_NOELEM' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_MEMORY' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNAME' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_NODEFINE' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_NOSTATE' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_VALELEM' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRNAME' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_INTEREXTRA' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY' type='enum'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNAL' type='enum'/>
      <exports symbol='XML_RELAXNG_ERR_NOTELEM' type='enum'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPECMP' type='enum'/>
      <exports symbol='xmlRelaxNG' type='typedef'/>
      <exports symbol='xmlRelaxNGParserCtxt' type='typedef'/>
      <exports symbol='xmlRelaxNGParserCtxtPtr' type='typedef'/>
-     <exports symbol='xmlRelaxNGPtr' type='typedef'/>
+     <exports symbol='xmlRelaxNGParserFlag' type='typedef'/>
      <exports symbol='xmlRelaxNGValidErr' type='typedef'/>
      <exports symbol='xmlRelaxNGValidCtxt' type='typedef'/>
      <exports symbol='xmlRelaxNGValidCtxtPtr' type='typedef'/>
+     <exports symbol='xmlRelaxNGPtr' type='typedef'/>
      <exports symbol='xmlRelaxNGFreeValidCtxt' type='function'/>
      <exports symbol='xmlRelaxNGValidateFullElement' type='function'/>
      <exports symbol='xmlRelaxNGNewDocParserCtxt' type='function'/>
@@ -1008,6 +1012,7 @@
      <exports symbol='xmlRelaxNGValidatePushElement' type='function'/>
      <exports symbol='xmlRelaxNGCleanupTypes' type='function'/>
      <exports symbol='xmlRelaxNGValidatePushCData' type='function'/>
+     <exports symbol='xmlRelaxParserSetFlag' type='function'/>
      <exports symbol='xmlRelaxNGValidityWarningFunc' type='function'/>
     </file>
     <file name='schemasInternals'>
@@ -4042,6 +4047,9 @@
     <enum name='XML_READER_TYPE_WHITESPACE' file='xmlreader' value='13' type='xmlReaderTypes'/>
     <enum name='XML_READER_TYPE_XML_DECLARATION' file='xmlreader' value='17' type='xmlReaderTypes'/>
     <enum name='XML_REGEXP_COMPILE_ERROR' file='xmlerror' value='1450' type='xmlParserErrors'/>
+    <enum name='XML_RELAXNGP_CRNG' file='relaxng' value='2' type='xmlRelaxNGParserFlag'/>
+    <enum name='XML_RELAXNGP_FREE_DOC' file='relaxng' value='1' type='xmlRelaxNGParserFlag'/>
+    <enum name='XML_RELAXNGP_NONE' file='relaxng' value='0' type='xmlRelaxNGParserFlag'/>
     <enum name='XML_RELAXNG_ERR_ATTREXTRANS' file='relaxng' value='20' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ATTRNAME' file='relaxng' value='14' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ATTRNONS' file='relaxng' value='16' type='xmlRelaxNGValidErr'/>
@@ -5004,6 +5012,7 @@ actually an xmlCharEncoding'/>
     <struct name='xmlRelaxNG' file='relaxng' type='struct _xmlRelaxNG'/>
     <struct name='xmlRelaxNGParserCtxt' file='relaxng' type='struct _xmlRelaxNGParserCtxt'/>
     <typedef name='xmlRelaxNGParserCtxtPtr' file='relaxng' type='xmlRelaxNGParserCtxt *'/>
+    <typedef name='xmlRelaxNGParserFlag' file='relaxng' type='enum'/>
     <typedef name='xmlRelaxNGPtr' file='relaxng' type='xmlRelaxNG *'/>
     <struct name='xmlRelaxNGValidCtxt' file='relaxng' type='struct _xmlRelaxNGValidCtxt'/>
     <typedef name='xmlRelaxNGValidCtxtPtr' file='relaxng' type='xmlRelaxNGValidCtxt *'/>
@@ -5099,6 +5108,7 @@ actually an xmlCharEncoding'/>
       <field name='groupDecl' type='xmlHashTablePtr' info=''/>
       <field name='dict' type='xmlDictPtr' info=''/>
       <field name='includes' type='void *' info=' the includes, this is opaque for now'/>
+      <field name='preserve' type='int' info=' whether to free the document'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
@@ -10522,6 +10532,12 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const char *' info=''/>
       <arg name='...' type='...' info=''/>
     </functype>
+    <function name='xmlRelaxParserSetFlag' file='relaxng'>
+      <info>Semi private function used to pass informations to a parser context which are a combination of xmlRelaxNGParserFlag .</info>
+      <return type='int' info='0 if success and -1 in case of error'/>
+      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a RelaxNG parser context'/>
+      <arg name='flags' type='int' info='a set of flags values'/>
+    </function>
     <function name='xmlRemoveID' file='valid'>
       <info>Remove the given attribute from the ID table maintained internally.</info>
       <return type='int' info='-1 if the lookup failed and 0 otherwise'/>
@@ -13795,10 +13811,10 @@ actually an xmlCharEncoding'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
     </function>
     <function name='xmlXPathCtxtCompile' file='xpath'>
-      <info></info>
-      <return type='xmlXPathCompExprPtr' info=''/>
-      <arg name='ctxt' type='xmlXPathContextPtr' info=''/>
-      <arg name='str' type='const xmlChar *' info=''/>
+      <info>Compile an XPath expression</info>
+      <return type='xmlXPathCompExprPtr' info='the xmlXPathCompExprPtr resulting from the compilation or NULL. the caller has to free the object.'/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='an XPath context'/>
+      <arg name='str' type='const xmlChar *' info='the XPath expression'/>
     </function>
     <function name='xmlXPathDebugDumpCompExpr' file='xpathInternals'>
       <info>Dumps the tree of the compiled XPath expression.</info>

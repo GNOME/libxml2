@@ -1013,6 +1013,7 @@ Class relaxNgParserCtxt()
     # functions from module relaxng
     relaxNGFreeParserCtxt()
     relaxNGParse()
+    relaxParserSetFlag()
 
 
 Class outputBuffer(ioWriteWrapper)

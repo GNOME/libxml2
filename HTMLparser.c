@@ -880,6 +880,7 @@ static const char *htmlStartClose[] = {
 "head",		"p", NULL,
 "title",	"p", NULL,
 "body",		"head", "style", "link", "title", "p", NULL,
+"frameset",	"head", "style", "link", "title", "p", NULL,
 "li",		"p", "h1", "h2", "h3", "h4", "h5", "h6", "dl", "address",
 		"pre", "listing", "xmp", "head", "li", NULL,
 "hr",		"p", "head", NULL,

@@ -1,3 +1,8 @@
+Mon Apr  5 09:07:24 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied patch from James Bursa, frameset should
+	  close head.
+
 Fri Apr  2 22:02:24 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* relaxng.c: fixed problem in xmlRelaxNGCompareNameClasses

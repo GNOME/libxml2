@@ -121,70 +121,17 @@ static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
 static int xmlOutputCallbackNr = 0;
 static int xmlOutputCallbackInitialized = 0;
 
-/************************************************************************
- *									*
- *		Handling of Windows file paths				*
- *									*
- ************************************************************************/
-
-#define IS_WINDOWS_PATH(p) 					\
-	((p != NULL) &&						\
-	 (((p[0] >= 'a') && (p[0] <= 'z')) ||			\
-	  ((p[0] >= 'A') && (p[0] <= 'Z'))) &&			\
-	 (p[1] == ':') && ((p[2] == '/') || (p[2] == '\\')))
-
 
 /**
  * xmlNormalizeWindowsPath:
- * @path:  a windows path like "C:/foo/bar"
  *
- * Normalize a Windows path to make an URL from it
- *
- * Returns a new URI which must be freed by the caller or NULL
- *   in case of error
+ * This function is obsolete. Please see xmlURIFromPath in uri.c for
+ * a better solution.
  */
 xmlChar *
 xmlNormalizeWindowsPath(const xmlChar *path)
 {
-    int len, i = 0, j;
-    xmlChar *ret;
-
-    if (path == NULL)
-	return(NULL);
-
-    len = xmlStrlen(path);
-    if (!IS_WINDOWS_PATH(path)) {
-	ret = xmlStrdup(path);
-	if (ret == NULL)
-	    return(NULL);
-	j = 0;
-    } else {
-	ret = xmlMalloc(len + 10);
-	if (ret == NULL)
-	    return(NULL);
-	ret[0] = 'f';
-	ret[1] = 'i';
-	ret[2] = 'l';
-	ret[3] = 'e';
-	ret[4] = ':';
-	ret[5] = '/';
-	ret[6] = '/';
-	ret[7] = '/';
-	j = 8;
-    }
-
-    while (i < len) {
-	/* TODO: UTF8 conversion + URI escaping ??? */
-	if (path[i] == '\\')
-	    ret[j] = '/';
-	else
-	    ret[j] = path[i];
-	i++;
-	j++;
-    }
-    ret[j] = 0;
-
-    return(ret);
+    return xmlCanonicPath(path);
 }
 
 /**
@@ -1768,14 +1715,11 @@ xmlParserInputBufferCreateFilename
     xmlParserInputBufferPtr ret;
     int i = 0;
     void *context = NULL;
-    char *normalized;
 
     if (xmlInputCallbackInitialized == 0)
 	xmlRegisterDefaultInputCallbacks();
 
     if (URI == NULL) return(NULL);
-    normalized = (char *) xmlNormalizeWindowsPath((const xmlChar *)URI);
-    if (normalized == NULL) return(NULL);
 
 #ifdef LIBXML_CATALOG_ENABLED
 #endif
@@ -1788,13 +1732,12 @@ xmlParserInputBufferCreateFilename
 	for (i = xmlInputCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
 		(xmlInputCallbackTable[i].matchcallback(URI) != 0)) {
-		context = xmlInputCallbackTable[i].opencallback(normalized);
+		context = xmlInputCallbackTable[i].opencallback(URI);
 		if (context != NULL)
 		    break;
 	    }
 	}
     }
-    xmlFree(normalized);
     if (context == NULL) {
 	return(NULL);
     }
@@ -1834,7 +1777,6 @@ xmlOutputBufferCreateFilename(const char *URI,
     int i = 0;
     void *context = NULL;
     char *unescaped;
-    char *normalized;
 
     int is_http_uri = 0;	/*   Can't change if HTTP disabled  */
 
@@ -1842,13 +1784,11 @@ xmlOutputBufferCreateFilename(const char *URI,
 	xmlRegisterDefaultOutputCallbacks();
 
     if (URI == NULL) return(NULL);
-    normalized = (char *) xmlNormalizeWindowsPath((const xmlChar *)URI);
-    if (normalized == NULL) return(NULL);
 
 #ifdef LIBXML_HTTP_ENABLED
     /*  Need to prevent HTTP URI's from falling into zlib short circuit  */
 
-    is_http_uri = xmlIOHTTPMatch( normalized );
+    is_http_uri = xmlIOHTTPMatch( URI );
 #endif
 
 
@@ -1857,7 +1797,7 @@ xmlOutputBufferCreateFilename(const char *URI,
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the URI
      */
-    unescaped = xmlURIUnescapeString(normalized, 0, NULL);
+    unescaped = xmlURIUnescapeString(URI, 0, NULL);
     if (unescaped != NULL) {
 #ifdef HAVE_ZLIB_H
 	if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
@@ -1870,7 +1810,6 @@ xmlOutputBufferCreateFilename(const char *URI,
 		    ret->closecallback = xmlGzfileClose;
 		}
 		xmlFree(unescaped);
-		xmlFree(normalized);
 		return(ret);
 	    }
 	}
@@ -1899,7 +1838,7 @@ xmlOutputBufferCreateFilename(const char *URI,
     if (context == NULL) {
 #ifdef HAVE_ZLIB_H
 	if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
-	    context = xmlGzfileOpenW(normalized, compression);
+	    context = xmlGzfileOpenW(URI, compression);
 	    if (context != NULL) {
 		ret = xmlAllocOutputBuffer(encoder);
 		if (ret != NULL) {
@@ -1907,14 +1846,13 @@ xmlOutputBufferCreateFilename(const char *URI,
 		    ret->writecallback = xmlGzfileWrite;
 		    ret->closecallback = xmlGzfileClose;
 		}
-		xmlFree(normalized);
 		return(ret);
 	    }
 	}
 #endif
 	for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
-		(xmlOutputCallbackTable[i].matchcallback(normalized) != 0)) {
+		(xmlOutputCallbackTable[i].matchcallback(URI) != 0)) {
 #if defined(LIBXML_HTTP_ENABLED) && defined(HAVE_ZLIB_H)
 		/*  Need to pass compression parameter into HTTP open calls  */
 		if (xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch)
@@ -1927,7 +1865,6 @@ xmlOutputBufferCreateFilename(const char *URI,
 	    }
 	}
     }
-    xmlFree(normalized);
 
     if (context == NULL) {
 	return(NULL);

@@ -239,7 +239,11 @@ xmlParserInputPtr xmlNoNetExternalEntityLoader(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
 
-xmlChar *xmlNormalizeWindowsPath	(const xmlChar *path);
+/* 
+ * xmlNormalizeWindowsPath is obsolete, don't use it. 
+ * Check xmlCanonicPath in uri.h for a better alternative.
+ */
+xmlChar * xmlNormalizeWindowsPath	(const xmlChar *path);
 
 int	xmlCheckFilename		(const char *path);
 /**

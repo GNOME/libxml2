@@ -42,6 +42,7 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/globals.h>
+#include <libxml/uri.h>
 
 #define HTML_MAX_NAMELEN 1000
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000
@@ -5346,7 +5347,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     memset(inputStream, 0, sizeof(htmlParserInput));
 
     inputStream->filename = (char *)
-	xmlNormalizeWindowsPath((xmlChar *)filename);
+	xmlCanonicPath((xmlChar *)filename);
     inputStream->line = 1;
     inputStream->col = 1;
     inputStream->buf = buf;

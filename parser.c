@@ -9154,7 +9154,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	inputStream->filename = NULL;
     else
 	inputStream->filename = (char *)
-	    xmlNormalizeWindowsPath((const xmlChar *) filename);
+	    xmlCanonicPath((const xmlChar *) filename);
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
@@ -10330,7 +10330,6 @@ xmlCreateFileParserCtxt(const char *filename)
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
     char *directory = NULL;
-    xmlChar *normalized;
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
@@ -10340,25 +10339,17 @@ xmlCreateFileParserCtxt(const char *filename)
 	return(NULL);
     }
 
-    normalized = xmlNormalizeWindowsPath((const xmlChar *) filename);
-    if (normalized == NULL) {
-	xmlFreeParserCtxt(ctxt);
-	return(NULL);
-    }
-    inputStream = xmlLoadExternalEntity((char *) normalized, NULL, ctxt);
+    inputStream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
-	xmlFree(normalized);
 	return(NULL);
     }
 
     inputPush(ctxt, inputStream);
     if ((ctxt->directory == NULL) && (directory == NULL))
-        directory = xmlParserGetDirectory((char *) normalized);
+        directory = xmlParserGetDirectory(filename);
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = directory;
-
-    xmlFree(normalized);
 
     return(ctxt);
 }

@@ -1,3 +1,8 @@
+Tue Aug 24 16:40:51 CEST 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/configure.js: added support for version extra
+	* win32/Makefile.*: upgraded to zlib 1.2.1
+
 Mon Aug 23 14:33:54 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: removing -O -g from default gcc flags #150828

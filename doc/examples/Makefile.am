@@ -3,7 +3,7 @@ HTML_DIR=$(datadir)/doc
 DOC_MODULE=libxml2-$(VERSION)
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/examples
 
-INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@
+INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = @STATIC_BINARIES@ $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm @WIN32_EXTRA_LIBADD@
 
@@ -19,7 +19,7 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(TARGET_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res writer1.res writer2.res writer3.res writer4.res 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res 
 
 noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 
 

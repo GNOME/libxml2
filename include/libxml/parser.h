@@ -574,12 +574,6 @@ xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr context);
-#include <libxml/globals.h>
-/*
- * Parser Locking
- */
-int	xmlLockContext(xmlParserCtxtPtr ctxt);
-int	xmlUnlockContext(xmlParserCtxtPtr ctxt);
 
 #ifdef __cplusplus
 }

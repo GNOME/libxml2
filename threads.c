@@ -74,7 +74,7 @@ struct _xmlRMutex {
 
 static int initialized = 0;
 #ifdef HAVE_PTHREAD_H
-static pthread_mutex_t	keylock  = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t	keylock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_key_t	globalkey;
 static int		keyonce = 0;
 static pthread_t	mainthread;

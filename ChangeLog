@@ -1,3 +1,8 @@
+Mon Oct 15 12:45:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parser.h: Norm reported that a few lines
+	  added were breaking libxslt compile, removed them for now
+
 Sun Oct 14 05:55:01 EDT 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c parserInternals.c threads.c: debugged and fixed

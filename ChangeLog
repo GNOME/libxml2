@@ -1,3 +1,8 @@
+Fri May 28 22:58:42 EDT 1999 Manish Vachharajani <mvachhar@vger.rutgers.edu>
+
+	* tree.c: (xmlSaveFile) - removed double call of xmlContentDump.  
+	  Also freed allocated buffer.
+
 Wed Apr 21 22:07:35 CEST 1999
 
 	* parser.[ch] tree.[ch] entities.[ch] valid.[ch] : removed the main

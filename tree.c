@@ -2778,8 +2778,6 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     }
 #endif
 
-    xmlDocContentDump(buf, cur);
-
 #ifdef HAVE_ZLIB_H
     if (zoutput != NULL) {
         ret = gzwrite(zoutput, buf->content, sizeof(CHAR) * buf->use);
@@ -2791,6 +2789,7 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
 #ifdef HAVE_ZLIB_H
     }
 #endif
+    xmlBufferFree(buf);
     return(ret * sizeof(CHAR));
 }
 

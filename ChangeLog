@@ -1,3 +1,8 @@
+Thu Jan  9 22:35:31 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/drv_libxml2.py: update from Stéphane Bidoul: python 2.1
+	  support and improved error handler registration
+
 Thu Jan  9 14:16:38 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c tree.c: fixes #102920 about namespace handling in

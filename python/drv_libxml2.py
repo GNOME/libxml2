@@ -34,10 +34,12 @@ TODO
 """
 
 __author__  = u"Stéphane Bidoul <sbi@skynet.be>"
-__version__ = "0.1"
+__version__ = "0.2"
 
 import codecs
-from types import StringTypes
+import sys
+from types import StringType, UnicodeType
+StringTypes = (StringType,UnicodeType)
 
 from xml.sax._exceptions import *
 from xml.sax import xmlreader, saxutils
@@ -54,7 +56,7 @@ from xml.sax.handler import \
      property_xml_string
 
 # libxml2 returns strings as UTF8
-_decoder = codecs.getdecoder("utf8")
+_decoder = codecs.lookup("utf8")[1]
 def _d(s):
     if s is None:
         return s
@@ -64,19 +66,18 @@ def _d(s):
 try:
     import libxml2
 except ImportError, e:
-    raise SAXReaderNotAvailable("libxml2 not available: " + e)
+    raise SAXReaderNotAvailable("libxml2 not available: " \
+                                "import error was: %s" % e)
 
-try:
-    import libxslt
-except ImportError:
-    # normal behaviour
-    def _registerErrorHandler(handler):
-        libxml2.registerErrorHandler(handler,"drv_libxml")
-else:
-    # work around libxslt bindings bug (libxml2 bug #102181)
-    def _registerErrorHandler(handler):
-        libxml2.registerErrorHandler(handler,"drv_libxml")
-        libxslt.registerErrorHandler(handler,"drv_libxml")
+def _registerErrorHandler(handler):
+    if not sys.modules.has_key('libxslt'):
+        # normal behaviour when libxslt is not imported
+        libxml2.registerErrorHandler(handler,"drv_libxml2")
+    else:
+        # when libxslt is imported, one must
+        # use libxst's error handler instead (see libxml2 bug 102181)
+        import libxslt
+        libxslt.registerErrorHandler(handler,"drv_libxml2")
 
 class LibXml2Reader(xmlreader.XMLReader):
 

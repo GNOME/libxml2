@@ -1,3 +1,9 @@
+Sun Jan  4 18:54:29 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/newapi.xsl: change background color of function
+	declaration to improve readability
+	* doc/*: rebuild docs with new stylesheet
+
 Sun Jan  4 22:45:14 HKT 2004 William Brack <wbarck@mmm.com.hk>
 
 	* parser.c, include/libxml/parser.h: added a routine

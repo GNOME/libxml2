@@ -884,7 +884,7 @@ xmlUTF8Strpos(const xmlChar *utf, int pos) {
     xmlChar ch;
 
     if (utf == NULL) return(NULL);
-    if ( (pos < 0) || (pos >= xmlUTF8Strlen(utf)) )
+    if (pos < 0)
         return(NULL);
     while (pos--) {
         if ((ch=*utf++) == 0) return(NULL);

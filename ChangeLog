@@ -1,3 +1,10 @@
+Mon Dec 20 08:02:57 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: reset input->base within xmlStopParser
+	* xmlstring.c: removed call to xmlUTF8Strlen from within
+	  xmlUTF8Strpos (Bill Moseley pointed out it was not
+	  useful)
+
 Fri Dec 17 16:03:41 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: changed xmlErrValidWarning to use ctxt->warning

@@ -178,6 +178,7 @@ install : all
 	copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
 	copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
 	copy $(BINDIR)\*.exe $(BINPREFIX)
+	-copy $(BINDIR)\*.pdb $(BINPREFIX)
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)

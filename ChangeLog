@@ -1,3 +1,9 @@
+Sat Sep 13 14:42:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/xmlerror.h: starting cleaning up
+	  error handling, factorize error processing
+	* doc/xmllint.html: update of the page, remove --sgml
+
 Sat Sep 13 02:13:50 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am DOCBparser.c parserInternals.c testDocbook.c

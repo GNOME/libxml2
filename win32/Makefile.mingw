@@ -161,6 +161,7 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/xlink.o\
 	$(XML_INTDIR)/xmlIO.o\
 	$(XML_INTDIR)/xmlmemory.o\
+	$(XML_INTDIR)/xmlreader.o\
 	$(XML_INTDIR)/xmlregexp.o\
 	$(XML_INTDIR)/xmlschemas.o\
 	$(XML_INTDIR)/xmlschemastypes.o\
@@ -196,6 +197,7 @@ XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/xlink.o\
 	$(XML_INTDIR_A)/xmlIO.o\
 	$(XML_INTDIR_A)/xmlmemory.o\
+	$(XML_INTDIR_A)/xmlreader.o\
 	$(XML_INTDIR_A)/xmlregexp.o\
 	$(XML_INTDIR_A)/xmlschemas.o\
 	$(XML_INTDIR_A)/xmlschemastypes.o\
@@ -212,6 +214,7 @@ UTILS = $(BINDIR)/xmllint.exe\
 	$(BINDIR)/testC14N.exe\
 	$(BINDIR)/testDocbook.exe\
 	$(BINDIR)/testHTML.exe\
+	$(BINDIR)/testReader.exe\
 	$(BINDIR)/testRegexp.exe\
 	$(BINDIR)/testSAX.exe\
 	$(BINDIR)/testSchemas.exe\

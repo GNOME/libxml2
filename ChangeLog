@@ -1,3 +1,8 @@
+Fri Sep 14 19:32:43 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: let's ship 2.4.5 before egtting too much
+	  troubles with 2.4.4 errors.
+
 Fri Sep 14 12:26:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c entities.c: do not output hexadecimal charrefs

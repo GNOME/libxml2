@@ -2194,7 +2194,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     cur = tree;
     if (xmlXIncludeTestNode(ctxt, cur) == 1)
 	xmlXIncludePreProcessNode(ctxt, cur);
-    while (cur != NULL) {
+    while ((cur != NULL) && (cur != tree->parent)) {
 	/* TODO: need to work on entities -> stack */
 	if ((cur->children != NULL) &&
 	    (cur->children->type != XML_ENTITY_DECL) &&
@@ -2212,7 +2212,8 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
 	        break;
 	    do {
 		cur = cur->parent;
-		if (cur == NULL) break; /* do */
+		if ((cur == NULL) || (cur == tree->parent))
+		    break; /* do */
 		if (cur->next != NULL) {
 		    cur = cur->next;
 		    if (xmlXIncludeTestNode(ctxt, cur))

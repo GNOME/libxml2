@@ -1,3 +1,8 @@
+Wed May 12 17:27:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: a little further fixing of fallback processing, this
+	  time for fallback with children (bug 139520).
+
 Wed May 12 08:21:33 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: added code in xmlSchemaBuildContentModel to

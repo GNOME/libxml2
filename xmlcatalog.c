@@ -210,11 +210,17 @@ static void usershell(void) {
 	    }
 	} else if (!strcmp(command, "add")) {
 	    if (sgml) {
-		if (nbargs != 1) {
-		    printf("add requires 1 argument\n");
+		if ((nbargs != 3) && (nbargs != 2)) {
+		    printf("add requires 2 or 3 arguments\n");
 		} else {
-		    ret = xmlCatalogAdd(BAD_CAST "sgmlcatalog", NULL,
-			                BAD_CAST argv[0]);
+		    if (argv[2] == NULL)
+			ret = xmlCatalogAdd(BAD_CAST argv[0], NULL,
+					    BAD_CAST argv[1]);
+		    else
+			ret = xmlCatalogAdd(BAD_CAST argv[0], BAD_CAST argv[1],
+					    BAD_CAST argv[2]);
+		    if (ret != 0)
+			printf("add command failed\n");
 		}
 	    } else {
 		if ((nbargs != 3) && (nbargs != 2)) {
@@ -382,12 +388,10 @@ int main(int argc, char **argv) {
 	} else if (argv[i][0] == '-')
 	    continue;
 	filename = argv[i];
-	if (!sgml) {
 	    ret = xmlLoadCatalog(argv[i]);
 	    if ((ret < 0) && (create)) {
 		xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);
 	    }
-	}
 	break;
     }
 

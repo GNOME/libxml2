@@ -1,3 +1,7 @@
+Tue Oct 22 16:23:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlcatalog.c: tried to fix some of the problem with --sgml
+
 Mon Oct 21 09:57:10 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: tried to fix bug #91500 where doc->children may

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-xmlincdir = $(includedir)
+xmlincdir = $(includedir)/libxml
 
 xmlinc_HEADERS = \
 		SAX.h \

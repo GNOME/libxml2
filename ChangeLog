@@ -1,3 +1,8 @@
+Mon Jun 25 18:06:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/libxml/Makefile.am: Laszlo Peter pointed out that
+	  includes were installed in the wrong dir
+
 Mon Jun 25 17:07:37 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/html.xml: warn against sending code to exhibit bugs.

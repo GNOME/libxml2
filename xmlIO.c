@@ -2374,6 +2374,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     xmlChar *resource = NULL;
 #ifdef LIBXML_CATALOG_ENABLED
     struct stat info;
+    xmlCatalogAllow pref;
 #endif
 
 #ifdef DEBUG_EXTERNAL_ENTITIES
@@ -2385,11 +2386,40 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
      * If the resource doesn't exists as a file,
      * try to load it from the resource pointed in the catalog
      */
+    pref = xmlCatalogGetDefaults();
+
+    if ((pref != XML_CATA_ALLOW_NONE)
 #ifdef HAVE_STAT
-    if ((URL == NULL) || (stat(URL, &info) < 0)) 
+        && ((URL == NULL) || (stat(URL, &info) < 0))
 #endif
-	resource = xmlCatalogResolve((const xmlChar *)ID,
-		                     (const xmlChar *)URL);
+	) {
+	/*
+	 * Do a local lookup
+	 */
+	if ((ctxt->catalogs != NULL) &&
+	    ((pref == XML_CATA_ALLOW_ALL) ||
+	     (pref == XML_CATA_ALLOW_DOCUMENT))) {
+	    resource = xmlCatalogLocalResolve(ctxt->catalogs,
+					      (const xmlChar *)ID,
+					      (const xmlChar *)URL);
+        }
+	/*
+	 * Do a global lookup
+	 */
+	if (((resource == NULL)
+#ifdef HAVE_STAT
+            || (stat((const char *) resource, &info) < 0)
+#endif
+	    ) && ((pref == XML_CATA_ALLOW_ALL) ||
+		  (pref == XML_CATA_ALLOW_GLOBAL))) {
+
+	    resource = xmlCatalogResolve((const xmlChar *)ID,
+					 (const xmlChar *)URL);
+	}
+	/*
+	 * TODO: do an URI lookup on the reference
+	 */
+    }
 #endif
 
     if (resource == NULL)

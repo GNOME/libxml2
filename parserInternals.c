@@ -46,6 +46,9 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
+#ifdef LIBXML_CATALOG_ENABLED
+#include <libxml/catalog.h>
+#endif
 
 void xmlUpgradeOldNs(xmlDocPtr doc);
 
@@ -2270,6 +2273,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->errNo = XML_ERR_OK;
     ctxt->depth = 0;
     ctxt->charset = XML_CHAR_ENCODING_UTF8;
+    ctxt->catalogs = NULL;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 }
 
@@ -2308,6 +2312,10 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
+#ifdef LIBXML_CATALOG_ENABLED
+    if (ctxt->catalogs != NULL)
+	xmlCatalogFreeLocal(ctxt->catalogs);
+#endif
     xmlFree(ctxt);
 }
 

@@ -165,7 +165,7 @@ int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback matchFunc,
 #ifdef LIBXML_HTTP_ENABLED
 void *	xmlIOHTTPOpenW			(const char * post_uri,
 					 int   compression );
-void	xmlRegisterHTTPPostCallbacksI	(void );
+void	xmlRegisterHTTPPostCallbacks	(void );
 #endif
 
 /*

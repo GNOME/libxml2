@@ -217,6 +217,7 @@ struct _xmlParserCtxt {
 
     int                loadsubset;    /* should the external subset be loaded */
     int                linenumbers;   /* set line number in element content */
+    void              *catalogs;       /* document's own catalog */
 };
 
 /**

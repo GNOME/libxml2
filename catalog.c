@@ -93,10 +93,11 @@ struct _xmlCatalogEntry {
     xmlCatalogPrefer prefer;
 };
 
+static xmlCatalogAllow xmlCatalogDefaultAllow = XML_CATA_ALLOW_ALL;
+static xmlCatalogPrefer xmlCatalogDefaultPrefer = XML_CATA_PREFER_SYSTEM;
 static xmlHashTablePtr xmlDefaultCatalog;
 static xmlCatalogEntryPtr xmlDefaultXMLCatalogList = NULL;
 static int xmlCatalogInitialized = 0;
-static xmlCatalogPrefer xmlCatalogDefaultPrefer = XML_CATA_PREFER_SYSTEM;
 
 
 /* Catalog stack */
@@ -1562,7 +1563,17 @@ xmlCatalogGetSGMLSystem(xmlHashTablePtr catal, const xmlChar *sysID) {
  */
 static const xmlChar *
 xmlCatalogSGMLResolve(const xmlChar *pubID, const xmlChar *sysID) {
-    TODO
+    const xmlChar *ret = NULL;
+
+    if (xmlDefaultCatalog == NULL)
+	return(NULL);
+
+    if (pubID != NULL)
+	ret = xmlCatalogGetSGMLPublic(xmlDefaultCatalog, pubID);
+    if (ret != NULL)
+	return(ret);
+    if (sysID != NULL)
+	ret = xmlCatalogGetSGMLSystem(xmlDefaultCatalog, sysID);
     return(NULL);
 }
 
@@ -2011,11 +2022,58 @@ xmlCatalogRemove(const xmlChar *value) {
 }
 
 /**
+ * xmlCatalogGetDefaults:
+ *
+ * Used to get the user preference w.r.t. to what catalogs should
+ * be accepted
+ *
+ * Returns the current xmlCatalogAllow value
+ */
+xmlCatalogAllow
+xmlCatalogGetDefaults(void) {
+    return(xmlCatalogDefaultAllow);
+}
+
+/**
+ * xmlCatalogSetDefaults:
+ *
+ * Used to set the user preference w.r.t. to what catalogs should
+ * be accepted
+ */
+void
+xmlCatalogSetDefaults(xmlCatalogAllow allow) {
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+    if (xmlDebugCatalogs) {
+	switch (allow) {
+	    case XML_CATA_ALLOW_NONE:
+		xmlGenericError(xmlGenericErrorContext,
+			"Disabling catalog usage\n");
+		break;
+	    case XML_CATA_ALLOW_GLOBAL:
+		xmlGenericError(xmlGenericErrorContext,
+			"Allowing only global catalogs\n");
+		break;
+	    case XML_CATA_ALLOW_DOCUMENT:
+		xmlGenericError(xmlGenericErrorContext,
+			"Allowing only catalogs from the document\n");
+		break;
+	    case XML_CATA_ALLOW_ALL:
+		xmlGenericError(xmlGenericErrorContext,
+			"Allowing all catalogs\n");
+		break;
+	}
+    }
+    xmlCatalogDefaultAllow = allow;
+}
+
+/**
  * xmlCatalogSetDefaultPrefer:
  * @prefer:  the default preference for delegation
  *
  * Allows to set the preference between public and system for deletion
  * in XML Catalog resolution. C.f. section 4.1.1 of the spec
+ * Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM
  *
  * Returns the previous value of the default preference for delegation
  */
@@ -2023,6 +2081,25 @@ xmlCatalogPrefer
 xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer) {
     xmlCatalogPrefer ret = xmlCatalogDefaultPrefer;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+    if (prefer == XML_CATA_PREFER_NONE)
+	return(ret);
+
+    if (xmlDebugCatalogs) {
+	switch (prefer) {
+	    case XML_CATA_PREFER_PUBLIC:
+		xmlGenericError(xmlGenericErrorContext,
+			"Setting catalog preference to PUBLIC\n");
+		break;
+	    case XML_CATA_PREFER_SYSTEM:
+		xmlGenericError(xmlGenericErrorContext,
+			"Setting catalog preference to SYSTEM\n");
+		break;
+	    case XML_CATA_PREFER_NONE:
+		break;
+	}
+    }
     xmlCatalogDefaultPrefer = prefer;
     return(ret);
 }
@@ -2046,4 +2123,83 @@ xmlCatalogSetDebug(int level) {
 	xmlDebugCatalogs = level;
     return(ret);
 }
+
+/**
+ * xmlCatalogFreeLocal:
+ * @catalogs:  a document's list of catalogs
+ *
+ * Free up the memory associated to the catalog list
+ */
+void
+xmlCatalogFreeLocal(void *catalogs) {
+    xmlCatalogEntryPtr catal;
+
+    catal = (xmlCatalogEntryPtr) catalogs;
+    if (catal != NULL)
+	xmlFreeCatalogEntryList(catal);
+}
+
+
+/**
+ * xmlCatalogAddLocal:
+ * @catalogs:  a document's list of catalogs
+ * @URL:  the URL to a new local catalog
+ *
+ * Add the new entry to the catalog list
+ *
+ * Returns the updated list
+ */
+void *	
+xmlCatalogAddLocal(void *catalogs, const xmlChar *URL) {
+    xmlCatalogEntryPtr catal, add;
+
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+    if (URL == NULL)
+	return(catalogs);
+
+    if (xmlDebugCatalogs)
+	xmlGenericError(xmlGenericErrorContext,
+		"Adding document catalog %s\n", URL);
+
+    add = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL, URL,
+	                     xmlCatalogDefaultPrefer);
+    if (add == NULL)
+	return(catalogs);
+
+    catal = (xmlCatalogEntryPtr) catalogs;
+    if (catal == NULL) 
+	return((void *) add);
+
+    while (catal->next != NULL)
+	catal = catal->next;
+    catal->next = add;
+    return(catalogs);
+}
+
+/**
+ * xmlCatalogLocalResolve:
+ * @catalogs:  a document's list of catalogs
+ * @pubId:  the public ID string
+ * @sysId:  the system ID string
+ *
+ * Do a complete resolution lookup of an External Identifier using a 
+ * document's private catalog list
+ *
+ * Returns the URI of the resource or NULL if not found, it must be freed
+ *      by the caller.
+ */
+xmlChar *
+xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
+	               const xmlChar *sysID) {
+    xmlCatalogEntryPtr catal;
+
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+    catal = (xmlCatalogEntryPtr) catalogs;
+    if (catal == NULL)
+	return(NULL);
+    return(xmlCatalogListXMLResolve(catal, pubID, sysID));
+}
+
 #endif /* LIBXML_CATALOG_ENABLED */

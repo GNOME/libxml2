@@ -50,6 +50,9 @@
 #include <libxml/encoding.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
+#ifdef LIBXML_CATALOG_ENABLED
+#include <libxml/catalog.h>
+#endif
 
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
@@ -2941,6 +2944,69 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
     return(name);
 }
 
+#ifdef LIBXML_CATALOG_ENABLED
+/**
+ * xmlParseCatalogPI:
+ * @ctxt:  an XML parser context
+ * @catalog:  the PI value string
+ * 
+ * parse an XML Catalog Processing Instruction.
+ *
+ * <?oasis-xml-catalog catalog="http://example.com/catalog.xml"?>
+ *
+ * Occurs only if allowed by the user and if happening in the Misc
+ * part of the document before any doctype informations
+ * This will add the given catalog to the parsing context in order
+ * to be used if there is a resolution need further down in the document
+ */
+
+static void
+xmlParseCatalogPI(xmlParserCtxtPtr ctxt, const xmlChar *catalog) {
+    xmlChar *URL = NULL;
+    const xmlChar *tmp, *base;
+    xmlChar marker;
+
+    tmp = catalog;
+    while (IS_BLANK(*tmp)) tmp++;
+    if (xmlStrncmp(tmp, BAD_CAST"catalog", 7))
+	goto error;
+    tmp += 7;
+    while (IS_BLANK(*tmp)) tmp++;
+    if (*tmp != '=') {
+	return;
+    }
+    tmp++;
+    while (IS_BLANK(*tmp)) tmp++;
+    marker = *tmp;
+    if ((marker != '\'') && (marker != '"'))
+	goto error;
+    tmp++;
+    base = tmp;
+    while ((*tmp != 0) && (*tmp != marker)) tmp++;
+    if (*tmp == 0)
+	goto error;
+    URL = xmlStrndup(base, tmp - base);
+    tmp++;
+    while (IS_BLANK(*tmp)) tmp++;
+    if (*tmp != 0)
+	goto error;
+
+    if (URL != NULL) {
+	ctxt->catalogs = xmlCatalogAddLocal(ctxt->catalogs, URL);
+	xmlFree(URL);
+    }
+    return;
+
+error:
+    ctxt->errNo = XML_WAR_CATALOG_PI;
+    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	ctxt->sax->warning(ctxt->userData, 
+	     "Catalog PI syntax error: %s\n", catalog);
+    if (URL != NULL)
+	xmlFree(URL);
+}
+#endif
+
 /**
  * xmlParsePI:
  * @ctxt:  an XML parser context
@@ -3062,6 +3128,18 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    ctxt->disableSAX = 1;
 		}
 		SKIP(2);
+
+#ifdef LIBXML_CATALOG_ENABLED
+		if (((state == XML_PARSER_MISC) ||
+	             (state == XML_PARSER_START)) &&
+		    (xmlStrEqual(target, XML_CATALOG_PI))) {
+		    xmlCatalogAllow allow = xmlCatalogGetDefaults();
+		    if ((allow == XML_CATA_ALLOW_DOCUMENT) ||
+			(allow == XML_CATA_ALLOW_ALL))
+			xmlParseCatalogPI(ctxt, buf);
+		}
+#endif
+
 
 		/*
 		 * SAX: PI detected.
@@ -5324,7 +5402,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 			ctxt->disableSAX = 1;
 		    } else {
 			ctxt->errNo = XML_WAR_UNDECLARED_ENTITY;
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData, 
 				 "Entity '%s' not defined\n", name);
 		    }

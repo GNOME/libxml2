@@ -33,8 +33,10 @@ extern "C" {
  *
  * The namespace for the XML Catalogs elements
  */
-#define XML_CATALOGS_NAMESPACE		\
+#define XML_CATALOGS_NAMESPACE					\
     (const xmlChar *) "urn:oasis:names:tc:entity:xmlns:xml:catalog"
+#define XML_CATALOG_PI						\
+    (const xmlChar *) "oasis-xml-catalog"
 
 /*
  * The API is voluntarily limited to general cataloging
@@ -44,6 +46,13 @@ typedef enum {
     XML_CATA_PREFER_PUBLIC = 1,
     XML_CATA_PREFER_SYSTEM
 } xmlCatalogPrefer;
+
+typedef enum {
+    XML_CATA_ALLOW_NONE = 0,
+    XML_CATA_ALLOW_GLOBAL = 1,
+    XML_CATA_ALLOW_DOCUMENT = 2,
+    XML_CATA_ALLOW_ALL = 3
+} xmlCatalogAllow;
 
 void		xmlInitializeCatalog	(void);
 int		xmlLoadCatalog		(const char *filename);
@@ -58,8 +67,24 @@ int		xmlCatalogAdd		(const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
 int		xmlCatalogRemove	(const xmlChar *value);
+
+/*
+ * Strictly minimal interfaces for per-document catalogs used
+ * by the parser.
+ */
+void		xmlCatalogFreeLocal	(void *catalogs);
+void *		xmlCatalogAddLocal	(void *catalogs,
+					 const xmlChar *URL);
+xmlChar *	xmlCatalogLocalResolve	(void *catalogs,
+					 const xmlChar *pubID,
+	                                 const xmlChar *sysID);
+/*
+ * Preference settings
+ */
 int		xmlCatalogSetDebug	(int level);
 xmlCatalogPrefer xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer);
+void		xmlCatalogSetDefaults	(xmlCatalogAllow allow);
+xmlCatalogAllow	xmlCatalogGetDefaults	(void);
 
 /* DEPRECATED interfaces */
 const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);

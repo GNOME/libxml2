@@ -1,3 +1,12 @@
+Sat Mar 15 22:26:46 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c include/libxml/relaxng.h: After coming to the conclusion
+	  that the original RelaxNG validation code was un-fixeable, it got
+	  rewritten to use the derivation algorithm from James Clark and
+	  redebugged it (nearly) from scratch:
+	  found 373 test schemas: 372 success 1 failures
+	  found 529 test instances: 529 success 0 failures
+
 Tue Mar 11 12:08:23 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c parser.c: fix some recursion problems introduced in the

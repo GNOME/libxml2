@@ -2509,10 +2509,14 @@ get_more:
 			    ctxt->sax->characters(ctxt->userData,
 						  tmp, nbchar);
 		    }
+                    line = ctxt->input->line;
+                    col = ctxt->input->col;
 		} else {
 		    if (ctxt->sax->characters != NULL)
 			ctxt->sax->characters(ctxt->userData,
 					      ctxt->input->cur, nbchar);
+                    line = ctxt->input->line;
+                    col = ctxt->input->col;
 		}
 	    }
 	    ctxt->input->cur = in;

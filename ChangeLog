@@ -1,3 +1,9 @@
+Sun Jun 17 19:56:33 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: Stephan Kulow also raised the fact that line number
+	  could get miscounted making debug harder, fixed the problem
+	  in xmlParseCharData()
+
 Sun Jun 17 19:17:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: Stephan Kulow pointed out a problem when validating

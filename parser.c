@@ -1313,9 +1313,11 @@ xmlStrlen(const xmlChar *str) {
  * @add:  the xmlChar * array added
  * @len:  the length of @add
  *
- * a strncat for array of xmlChar's
+ * a strncat for array of xmlChar's, it will extend cur with the len
+ * first bytes of @add.
  *
- * Returns a new xmlChar * containing the concatenated string.
+ * Returns a new xmlChar *, the original @cur is reallocated if needed
+ * and should not be freed
  */
 
 xmlChar *

@@ -2616,7 +2616,10 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
     xmlNodePtr p = NULL,q;
 
     while (node != NULL) {
-        q = xmlStaticCopyNode(node, doc, parent, 1);
+       if( node->type == XML_DTD_NODE )
+	 q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
+       else
+	 q = xmlStaticCopyNode(node, doc, parent, 1);
 	if (ret == NULL) {
 	    q->prev = NULL;
 	    ret = p = q;
@@ -2737,6 +2740,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
         ret->name = xmlMemStrdup(doc->name);
     if (doc->encoding != NULL)
         ret->encoding = xmlStrdup(doc->encoding);
+    ret->charset = doc->charset;
     ret->compression = doc->compression;
     ret->standalone = doc->standalone;
     if (!recursive) return(ret);

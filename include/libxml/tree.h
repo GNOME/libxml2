@@ -387,7 +387,8 @@ LIBXML_DLL_IMPORT extern xmlNsPtr baseDTD;
 LIBXML_DLL_IMPORT extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
 LIBXML_DLL_IMPORT extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
 LIBXML_DLL_IMPORT extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */
-LIBXML_DLL_IMPORT extern int xmlSaveNoEmptyTags;   /* save empty tags as <empty></empty> */
+LIBXML_DLL_IMPORT extern int xmlSaveNoEmptyTags; /* save empty tags as <empty></empty> */
+LIBXML_DLL_IMPORT extern int xmlDefaultBufferSize; /* default buffer size */
 
 /*
  * Handling Buffers.

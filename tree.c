@@ -311,7 +311,7 @@ xmlGetIntSubset(xmlDocPtr doc) {
  * xmlCreateIntSubset:
  * @doc:  the document pointer
  * @name:  the DTD name
- * @ExternalID:  the external ID
+ * @ExternalID:  the external (PUBLIC) ID
  * @SystemID:  the system ID
  *
  * Create the internal subset of a document
@@ -358,18 +358,33 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
 	    doc->children = (xmlNodePtr) cur;
 	    doc->last = (xmlNodePtr) cur;
 	} else {
-	    xmlNodePtr prev;
-
 	    if (doc->type == XML_HTML_DOCUMENT_NODE) {
+		xmlNodePtr prev;
+
 		prev = doc->children;
 		prev->prev = (xmlNodePtr) cur;
 		cur->next = prev;
 		doc->children = (xmlNodePtr) cur;
 	    } else {
-		prev = doc->last;
-		prev->next = (xmlNodePtr) cur;
-		cur->prev = prev;
-		doc->last = (xmlNodePtr) cur;
+		xmlNodePtr next;
+
+		next = doc->children;
+		while ((next != NULL) && (next->type != XML_ELEMENT_NODE))
+		    next = next->next;
+		if (next == NULL) {
+		    cur->prev = doc->last;
+		    cur->prev->next = (xmlNodePtr) cur;
+		    cur->next = NULL;
+		    doc->last = (xmlNodePtr) cur;
+		} else {
+		    cur->next = next;
+		    cur->prev = next->prev;
+		    if (cur->prev == NULL)
+			doc->children = (xmlNodePtr) cur;
+		    else
+			cur->prev->next = (xmlNodePtr) cur;
+		    next->prev = (xmlNodePtr) cur;
+		}
 	    }
 	}
     }
@@ -4412,6 +4427,8 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
 
 #define BASE_BUFFER_SIZE 4000
 
+int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
+
 /**
  * xmlBufferCreate:
  *
@@ -4429,7 +4446,7 @@ xmlBufferCreate(void) {
         return(NULL);
     }
     ret->use = 0;
-    ret->size = BASE_BUFFER_SIZE;
+    ret->size = xmlDefaultBufferSize;
     ret->alloc = xmlBufferAllocScheme;
     ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
     if (ret->content == NULL) {

@@ -1,3 +1,14 @@
+Sat Mar 10 13:09:53 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: bumped to 2.3.4
+	* error.c: fixed bug #51860
+	* tree.c: fixed bug #51861
+	* valid.c: cleanup, more debug, failed to fix one bug crap ...
+	* tree.[ch] : added xmlDefaultBufferSize
+	* nanoftp.c: typo in function name header block
+	* doc/xml.html : updated, added link to XML::LibXSLT
+	* doc/html/* : rebuilt the docs
+
 Wed Mar  7 20:43:47 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c SAX.c: the new content parsing code raised an

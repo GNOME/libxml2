@@ -164,7 +164,7 @@ xmlNanoFTPInit(void) {
 }
 
 /**
- * xmlNanoFTPClenup:
+ * xmlNanoFTPCleanup:
  *
  * Cleanup the FTP protocol layer. This cleanup proxy informations.
  */
@@ -189,7 +189,6 @@ xmlNanoFTPCleanup(void) {
 	WSACleanup();
 #endif
     initialized = 0;
-    return;
 }
 
 /**

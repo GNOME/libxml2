@@ -16,6 +16,7 @@
 #include <stdarg.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/xmlmemory.h>
 
 /************************************************************************
  * 									*
@@ -137,6 +138,50 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
 }
 
 /**
+ * xmlGetVarStr:
+ * @msg:  the message format
+ * @args:  a va_list argument list
+ *
+ * SGS contribution
+ * Get an arbitrary-sized string for an error argument
+ * The caller must free() the returned string
+ */
+char *
+xmlGetVarStr(const char * msg, va_list args) {
+    int       size;
+    int       length;
+    int       chars, left;
+    char      *str, *larger;
+
+    str = (char *) xmlMalloc(100);
+    if (str == NULL)
+      return(NULL);
+
+    size = 100;
+    length = 0;
+
+    while (1) {                       // From the man page for vsnprintf ....
+	left = size - length;
+		    /* Try to print in the allocated space. */
+	chars = vsnprintf(str + length, left, msg, args);
+			  /* If that worked, we're done. */
+	if ((chars > -1) && (chars < left ))
+	    break;
+			  /* Else try again with more space. */
+	if (chars > -1)         /* glibc 2.1 */
+	    size += chars + 1;  /* precisely what is needed */
+	else                    /* glibc 2.0 */
+	    size += 100;
+	if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
+	    xmlFree(str);
+	    return(NULL);
+	}
+	str = larger;
+    }
+    return(str);
+}
+
+/**
  * xmlParserError:
  * @ctx:  an XML parser context
  * @msg:  the message to display/transmit
@@ -151,6 +196,7 @@ xmlParserError(void *ctx, const char *msg, ...)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input = NULL;
     xmlParserInputPtr cur = NULL;
+    char * str;
     va_list args;
 
     if (ctxt != NULL) {
@@ -165,8 +211,10 @@ xmlParserError(void *ctx, const char *msg, ...)
 
     xmlGenericError(xmlGenericErrorContext, "error: ");
     va_start(args, msg);
-    vfprintf(xmlGenericErrorContext, msg, args);
+    str = xmlGetVarStr(msg, args);
     va_end(args);
+    xmlGenericError(xmlGenericErrorContext, str);
+    xmlFree(str);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
@@ -193,6 +241,7 @@ xmlParserWarning(void *ctx, const char *msg, ...)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input = NULL;
     xmlParserInputPtr cur = NULL;
+    char * str;
     va_list args;
 
     if (ctxt != NULL) {
@@ -207,9 +256,10 @@ xmlParserWarning(void *ctx, const char *msg, ...)
         
     xmlGenericError(xmlGenericErrorContext, "warning: ");
     va_start(args, msg);
-    vfprintf(xmlGenericErrorContext, msg, args);
+    str = xmlGetVarStr(msg, args);
     va_end(args);
-
+    xmlGenericError(xmlGenericErrorContext, str);
+    xmlFree(str);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);

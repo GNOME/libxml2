@@ -24,7 +24,7 @@ APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
 EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
            tutorial/images/*.png tutorial/images/callouts/*.png \
 	   API*.html *.1 *.xsl *.html *.gif w3c.png html/*.html \
-	   html/*.png libxml2-api.xml parsedecl.py index.py search.php \
+	   html/*.png libxml2-api.xml index.py search.php \
 	   apibuild.py libxml2.xsa xmllint.xml xmlcatalog_man.xml \
 	   README.docs
 

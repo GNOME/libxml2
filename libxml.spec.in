@@ -7,12 +7,11 @@ Name: libxml2
 Version: %ver
 Release: 1
 Copyright: LGPL
-Group: X11/Libraries
-Source: ftp://ftp.gnome.org/pub/GNOME/sources/libxml/libxml2-%{ver}.tar.gz
+Group: Development/Libraries
+Source: ftp://xmlsoft.org/libxml2-%{ver}.tar.gz
 BuildRoot: /var/tmp/libxml2-%{PACKAGE_VERSION}-root
 
 URL: http://xmlsoft.org/
-Prereq: /sbin/install-info
 Docdir: %{prefix}/doc
 
 %description
@@ -20,8 +19,8 @@ This library allows you to manipulate XML files.
 
 %package devel
 Summary: Libraries, includes, etc to develop libxml applications
-Group: X11/libraries
-Requires: libxml2=%ver
+Group: Development/Libraries
+Requires: libxml2 = %{version}
 
 %description devel
 Libraries, include files, etc you can use to develop libxml applications.

@@ -1,3 +1,8 @@
+Mon Jul 10 16:17:18 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.c: fixed the way the control connection is handled
+	* libxml.spec.in: fixed the dependancies and cleanup
+
 Mon Jul  3 14:37:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html: changed the xmlsoft.org structure, updated the

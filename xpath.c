@@ -30,12 +30,6 @@
 #ifdef HAVE_FLOAT_H
 #include <float.h>
 #endif
-#ifdef HAVE_IEEEFP_H
-#include <ieeefp.h>
-#endif
-#ifdef HAVE_NAN_H
-#include <nan.h>
-#endif
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
@@ -57,6 +51,7 @@
 #include <libxml/debugXML.h>
 #endif
 #include <libxml/xmlerror.h>
+#include <libxml/trionan.h>
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */
@@ -81,108 +76,6 @@ double xmlXPathNAN = 0;
 double xmlXPathPINF = 1;
 double xmlXPathNINF = -1;
 
-#ifndef isinf
-#ifndef HAVE_ISINF
-
-#if HAVE_FPCLASS
-
-int isinf(double d) {
-    fpclass_t	type = fpclass(d);
-    switch (type) {
-	case FP_NINF:
-	    return(-1);
-	case FP_PINF:
-	    return(1);
-    }
-    return(0);
-}
-
-#elif defined(HAVE_FP_CLASS) || defined(HAVE_FP_CLASS_D)
-
-#if HAVE_FP_CLASS_H
-#include <fp_class.h>
-#endif
-
-int isinf(double d) {
-#if HAVE_FP_CLASS
-    int	fpclass = fp_class(d);
-#else
-    int	fpclass = fp_class_d(d);
-#endif
-    if (fpclass == FP_POS_INF)
-	return(1);
-    if (fpclass == FP_NEG_INF)
-	return(-1);
-    return(0);
-}
-
-#elif defined(HAVE_CLASS)
-
-int isinf(double d) {
-    int	fpclass = class(d);
-    if (fpclass == FP_PLUS_INF)
-	return(1);
-    if (fpclass == FP_MINUS_INF)
-	return(-1);
-    return(0);
-}
-#elif defined(finite) || defined(HAVE_FINITE)
-int isinf(double x) { return !finite(x) && x==x; }
-#elif defined(HUGE_VAL)
-int isinf(double x)
-{
-    if (x == HUGE_VAL)
-        return(1);
-    if (x == -HUGE_VAL)
-        return(-1);
-    return(0);
-}
-#endif 
-
-#endif /* ! HAVE_ISINF */
-#endif /* ! defined(isinf) */
-
-#ifndef isnan
-#ifndef HAVE_ISNAN
-
-#ifdef HAVE_ISNAND
-#define isnan(f) isnand(f)
-#endif /* HAVE_iSNAND */
-
-#endif /* ! HAVE_iSNAN */
-#endif /* ! defined(isnan) */
-
-
-/**
- * xmlXPathDivideBy:
- *
- * The best way found so far to generate the NAN, +-INF
- * without hitting a compiler bug or optimization :-\
- *
- * Returns the double resulting from the division
- */
-double
-xmlXPathDivideBy(double f, double fzero) {
-    double ret;
-#ifdef HAVE_SIGNAL
-#ifdef SIGFPE
-#ifdef SIG_IGN
-    void (*sighandler)(int);
-    sighandler = signal(SIGFPE, SIG_IGN);
-#endif
-#endif
-#endif
-    ret = f / fzero;
-#ifdef HAVE_SIGNAL
-#ifdef SIGFPE
-#ifdef SIG_IGN
-    signal(SIGFPE, sighandler);
-#endif
-#endif
-#endif
-    return(ret);
-}
-
 /**
  * xmlXPathInit:
  *
@@ -194,16 +87,9 @@ xmlXPathInit(void) {
 
     if (initialized) return;
 
-#if defined(HUGE_VAL) && defined(DBL_MAX)
-    xmlXPathPINF = (HUGE_VAL == DBL_MAX) ?
-	           xmlXPathDivideBy(1.0, 0.0) : HUGE_VAL;
-    xmlXPathNINF = -xmlXPathPINF;
-    xmlXPathNAN = xmlXPathDivideBy(xmlXPathPINF, xmlXPathPINF);
-#else
-    xmlXPathNAN = xmlXPathDivideBy(0.0, 0.0);
-    xmlXPathPINF = xmlXPathDivideBy(1.0, 0.0);
-    xmlXPathNINF = xmlXPathDivideBy(-1.0, 0.0);
-#endif
+    xmlXPathPINF = trio_pinf();
+    xmlXPathNINF = trio_ninf();
+    xmlXPathNAN = trio_nan();
 
     initialized = 1;
 }
@@ -640,7 +526,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    else fprintf(output, "false\n");
 	    break;
         case XPATH_NUMBER:
-	    switch (isinf(cur->floatval)) {
+	    switch (trio_isinf(cur->floatval)) {
 	    case 1:
 		fprintf(output, "Object is a number : +Infinity\n");
 		break;
@@ -648,7 +534,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 		fprintf(output, "Object is a number : -Infinity\n");
 		break;
 	    default:
-		if (isnan(cur->floatval)) {
+		if (trio_isnan(cur->floatval)) {
 		    fprintf(output, "Object is a number : NaN\n");
 		} else {
 		    fprintf(output, "Object is a number : %0g\n", cur->floatval);
@@ -1169,7 +1055,7 @@ xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
 static void
 xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 {
-    switch (isinf(number)) {
+    switch (trio_isinf(number)) {
     case 1:
 	if (buffersize > (int)sizeof("+Infinity"))
 	    sprintf(buffer, "+Infinity");
@@ -1179,7 +1065,7 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	    sprintf(buffer, "-Infinity");
 	break;
     default:
-	if (isnan(number)) {
+	if (trio_isnan(number)) {
 	    if (buffersize > (int)sizeof("NaN"))
 		sprintf(buffer, "NaN");
 	} else {
@@ -2927,7 +2813,7 @@ xmlXPathCastBooleanToString (int val) {
 xmlChar *
 xmlXPathCastNumberToString (double val) {
     xmlChar *ret;
-    switch (isinf(val)) {
+    switch (trio_isinf(val)) {
     case 1:
 	ret = xmlStrdup((const xmlChar *) "+Infinity");
 	break;
@@ -2935,7 +2821,7 @@ xmlXPathCastNumberToString (double val) {
 	ret = xmlStrdup((const xmlChar *) "-Infinity");
 	break;
     default:
-	if (isnan(val)) {
+	if (trio_isnan(val)) {
 	    ret = xmlStrdup((const xmlChar *) "NaN");
 	} else {
 	    /* could be improved */
@@ -3221,7 +3107,7 @@ xmlXPathConvertNumber(xmlXPathObjectPtr val) {
  */
 int
 xmlXPathCastNumberToBoolean (double val) {
-     if (isnan(val) || (val == 0.0))
+     if (trio_isnan(val) || (val == 0.0))
 	 return(0);
      return(1);
 }
@@ -3828,13 +3714,13 @@ xmlXPathCompareNodeSets(int inf, int strict,
     }
     for (i = 0;i < ns1->nodeNr;i++) {
 	val1 = xmlXPathCastNodeToNumber(ns1->nodeTab[i]);
-	if (isnan(val1))
+	if (trio_isnan(val1))
 	    continue;
 	for (j = 0;j < ns2->nodeNr;j++) {
 	    if (init == 0) {
 		values2[j] = xmlXPathCastNodeToNumber(ns2->nodeTab[j]);
 	    }
-	    if (isnan(values2[j]))
+	    if (trio_isnan(values2[j]))
 		continue;
 	    if (inf && strict) 
 		ret = (val1 < values2[j]);
@@ -6291,9 +6177,9 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
 
-    if ((ctxt->value->floatval == xmlXPathNAN) ||
-	(ctxt->value->floatval == xmlXPathPINF) ||
-	(ctxt->value->floatval == xmlXPathNINF) ||
+    if ((trio_isnan(ctxt->value->floatval)) ||
+	(trio_isinf(ctxt->value->floatval) == 1) ||
+	(trio_isinf(ctxt->value->floatval) == -1) ||
 	(ctxt->value->floatval == 0.0))
 	return;
 

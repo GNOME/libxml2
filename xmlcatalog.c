@@ -12,6 +12,13 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#ifdef HAVE_LIBREADLINE
+#include <readline/readline.h>
+#ifdef HAVE_LIBHISTORY
+#include <readline/history.h>
+#endif
+#endif
+
 #include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
 #include <libxml/catalog.h>

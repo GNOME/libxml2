@@ -46,8 +46,10 @@ static const char rcsid[] = "@(#)$Id$";
 /*************************************************************************
  * Trio include files
  */
+#include "triodef.h"
 #include "trio.h"
 #include "triop.h"
+#include "trionan.h"
 #include "strio.h"
 
 /*
@@ -58,32 +60,6 @@ static const char rcsid[] = "@(#)$Id$";
 # define TRIO_ERROR_RETURN(x,y) (- ((x) + ((y) << 8)))
 #else
 # define TRIO_ERROR_RETURN(x,y) (-1)
-#endif
-
-
-/*************************************************************************
- * Platform and compiler support detection
- */
-#if defined(unix) || defined(__xlC__) || defined(_AIX) || defined(__QNX__)
-# define PLATFORM_UNIX
-#elif defined(AMIGA) && defined(__GNUC__)
-# define PLATFORM_UNIX
-#elif defined(WIN32) || defined(_WIN32) || defined(_MSC_VER)
-# define PLATFORM_WIN32
-# define TRIO_MSVC_5 1100
-#endif
-
-#if defined(__STDC__) && defined(__STDC_VERSION__)
-# if (__STDC_VERSION__ >= 199409L)
-#  define TRIO_COMPILER_SUPPORTS_ISO94
-# endif
-# if (__STDC_VERSION__ >= 199901L)
-#  define TRIO_COMPILER_SUPPORTS_C99
-# endif
-#endif
-
-#if defined(_XOPEN_SOURCE) && defined(_XOPEN_SOURCE_EXTENDED)
-# define TRIO_COMPILER_SUPPORTS_UNIX98
 #endif
 
 #if defined(__STDC_ISO_10646__) || defined(MB_LEN_MAX) || defined(USE_MULTIBYTE) || TRIO_WIDECHAR
@@ -127,7 +103,7 @@ static const char rcsid[] = "@(#)$Id$";
 #define VALID(x) (NULL != (x))
 
 /* xlC crashes on log10(0) */
-#define guarded_log10(x) (((x) == 0.0) ? -HUGE_VAL : log10(x))
+#define guarded_log10(x) (((x) == 0.0) ? trio_ninf() : log10(x))
 #define guarded_log16(x) (guarded_log10(x) / log10(16.0))
 
 
@@ -145,6 +121,8 @@ static const char rcsid[] = "@(#)$Id$";
 # define read _read
 # define write _write
 #endif /* PLATFORM_WIN32 */
+
+#define TRIO_MSVC_VERSION_5 1100
 
 #if TRIO_WIDECHAR
 # if defined(TRIO_COMPILER_SUPPORTS_ISO94)
@@ -192,7 +170,7 @@ typedef int wint_t;
 typedef signed long long int trio_longlong_t;
 typedef unsigned long long int trio_ulonglong_t;
 #elif defined(_MSC_VER)
-# if (_MSC_VER >= TRIO_MSVC_5)
+# if (_MSC_VER >= TRIO_MSVC_VERSION_5)
 typedef signed __int64 trio_longlong_t;
 typedef unsigned __int64 trio_ulonglong_t;
 # else
@@ -779,74 +757,6 @@ TrioIsQualifier(const char ch)
     default:
       return FALSE;
     }
-}
-
-/*************************************************************************
- * TrioGenerateNan [private]
- *
- * Calculating NaN portably is difficult. Some compilers will emit
- * warnings about divide by zero, and others will simply fail to
- * generate a NaN.
- */
-static double
-TrioDivide(double dividend, double divisor)
-{
-  return dividend / divisor;
-}
-
-static double
-TrioGenerateNaN(void)
-{
-#if defined(TRIO_COMPILER_SUPPORTS_C99)
-  return nan(NULL);
-#elif defined(DBL_QNAN)
-  return DBL_QNAN;
-#elif defined(PLATFORM_UNIX)
-  double value;
-  void (*signal_handler)(int);
-  
-  signal_handler = signal(SIGFPE, SIG_IGN);
-  value = TrioDivide(0.0, 0.0);
-  signal(SIGFPE, signal_handler);
-  return value;
-#else
-  return TrioDivide(0.0, 0.0);
-#endif
-}
-
-/*************************************************************************
- * TrioIsNan [private]
- */
-static int
-TrioIsNan(double number)
-{
-#ifdef isnan
-  /* C99 defines isnan() as a macro */
-  return isnan(number);
-#else
-  double integral, fraction;
-  
-  return (/* NaN is the only number which does not compare to itself */
-	  (number != number) ||
-	  /* Fallback solution if NaN compares to NaN */
-	  ((number != 0.0) &&
-	   (fraction = modf(number, &integral),
-	    integral == fraction)));
-#endif
-}
-
-/*************************************************************************
- * TrioIsInfinite [private]
- */
-static int
-TrioIsInfinite(double number)
-{
-#ifdef isinf
-  /* C99 defines isinf() as a macro */
-  return isinf(number);
-#else
-  return ((number == HUGE_VAL) ? 1 : ((number == -HUGE_VAL) ? -1 : 0));
-#endif
 }
 
 /*************************************************************************
@@ -1930,7 +1840,7 @@ TrioPreprocess(int type,
  */
 static void
 TrioWriteNumber(trio_T *self,
-		trio_uintmax_t number,
+		trio_intmax_t snumber,
 		unsigned long flags,
 		int width,
 		int precision,
@@ -1941,6 +1851,7 @@ TrioWriteNumber(trio_T *self,
   char *bufferend;
   char *pointer;
   const char *digits;
+  trio_uintmax_t number;
   int i;
   int length;
   char *p;
@@ -1956,9 +1867,8 @@ TrioWriteNumber(trio_T *self,
 
   isNegative = (flags & FLAGS_UNSIGNED)
     ? FALSE
-    : ((trio_intmax_t)number < 0);
-  if (isNegative)
-    number = -number;
+    : (snumber < 0);
+  number = (isNegative) ? -snumber : snumber;
 
   if (flags & FLAGS_QUAD)
     number &= (trio_ulonglong_t)-1;
@@ -2374,7 +2284,7 @@ TrioWriteDouble(trio_T *self,
   number = (double)longdoubleNumber;
   
   /* Look for infinite numbers and non-a-number first */
-  switch (TrioIsInfinite(number))
+  switch (trio_isinf(number))
     {
     case 1:
       /* Positive infinity */
@@ -2398,7 +2308,7 @@ TrioWriteDouble(trio_T *self,
       /* Finitude */
       break;
     }
-  if (TrioIsNan(number))
+  if (trio_isnan(number))
     {
       TrioWriteString(self,
 		      (flags & FLAGS_UPPER)
@@ -2448,7 +2358,7 @@ TrioWriteDouble(trio_T *self,
     {
       /* Scale the number */
       workNumber = guarded_log10(number);
-      if (workNumber == -HUGE_VAL)
+      if (trio_isinf(workNumber) == -1)
 	{
 	  exponent = 0;
 	  /* Undo setting */
@@ -4916,14 +4826,14 @@ TrioReadDouble(trio_T *self,
 	  StrEqual(&doubleString[start], LONG_INFINITE_UPPER))
 	{
 	  *target = ((start == 1 && doubleString[0] == '-'))
-	    ? -HUGE_VAL
-	    : HUGE_VAL;
+	    ? trio_ninf()
+	    : trio_pinf();
 	  return TRUE;
 	}
       if (StrEqual(doubleString, NAN_LOWER))
 	{
 	  /* NaN must not have a preceeding + nor - */
-	  *target = TrioGenerateNaN();
+	  *target = trio_nan();
 	  return TRUE;
 	}
       return FALSE;

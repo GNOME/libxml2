@@ -1,3 +1,10 @@
+Tue Aug 21 11:18:45 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* Makefile.am trio.c triodef.h trionan.c xpath.c
+	  include/libxml/Makefile.am include/libxml/trionan.h:
+	  Re-worked Not-A-Number and Infinity support.
+	* xmlcatalog.c: added readline include files
+
 Mon Aug 20 02:04:13 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am xmlcatalog.c libxml.spec.in: renaming 

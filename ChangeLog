@@ -1,3 +1,11 @@
+Fri Jan 21 16:08:21 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed bug #164556 where non-fatal errors stopped
+	  push parsing and xmlreader.
+	* Makefile.am: fixup
+	* test/errors/webdav.xml result/errors/webdav*: adding regression
+	  test for this problem.
+
 Wed Jan 19 17:24:34 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Corrected targetNamespace in

@@ -1,3 +1,7 @@
+Mon Jun 14 14:11:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: patch from Igor for the default catalog path on Windows
+
 Sat Jun 12 09:03:57 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* configure.in: apparently wasn't updated last time

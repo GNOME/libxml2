@@ -68,6 +68,13 @@
 #define XML_SGML_DEFAULT_CATALOG "file:///etc/sgml/catalog"
 #endif
 
+#if defined(_WIN32) && defined(_MSC_VER)
+#undef XML_XML_DEFAULT_CATALOG
+static char XML_XML_DEFAULT_CATALOG[256] = "file:///etc/xml/catalog";
+void* __stdcall GetModuleHandleA(const char*);
+unsigned long __stdcall GetModuleFileNameA(void*, char*, unsigned long);
+#endif
+
 static int xmlExpandCatalog(xmlCatalogPtr catal, const char *filename);
 
 /************************************************************************
@@ -2925,7 +2932,35 @@ xmlInitializeCatalog(void) {
 
 	catalogs = (const char *) getenv("XML_CATALOG_FILES");
 	if (catalogs == NULL)
+#if defined(_WIN32) && defined(_MSC_VER)
+    {
+		void* hmodule;
+		hmodule = GetModuleHandleA("libxml2.dll");
+		if (hmodule == NULL)
+			hmodule = GetModuleHandleA(NULL);
+		if (hmodule != NULL) {
+			char buf[256];
+			unsigned long len = GetModuleFileNameA(hmodule, buf, 255);
+			if (len != 0) {
+				char* p = &(buf[len]);
+				while (*p != '\\' && p > buf) 
+					p--;
+				if (p != buf) {
+					xmlChar* uri;
+					strncpy(p, "\\..\\etc\\catalog", 255 - (p - buf));
+					uri = xmlCanonicPath(buf);
+					if (uri != NULL) {
+						strncpy(XML_XML_DEFAULT_CATALOG, uri, 255);
+						xmlFree(uri);
+					}
+				}
+			}
+		}
+		catalogs = XML_XML_DEFAULT_CATALOG;
+    }
+#else
 	    catalogs = XML_XML_DEFAULT_CATALOG;
+#endif
 
 	catal = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE, 
 		xmlCatalogDefaultPrefer);
@@ -3509,37 +3544,7 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
  */
 const xmlChar *
 xmlCatalogGetSystem(const xmlChar *sysID) {
-    xmlChar *ret;
-    static xmlChar result[1000];
-    static int msg = 0;
-
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
-    if (msg == 0) {
-	xmlGenericError(xmlGenericErrorContext,
-		"Use of deprecated xmlCatalogGetSystem() call\n");
-	msg++;
-    }
-
-    if (sysID == NULL)
-	return(NULL);
-    
-    /*
-     * Check first the XML catalogs
-     */
-    if (xmlDefaultCatalog != NULL) {
-	ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, NULL, sysID);
-	if ((ret != NULL) && (ret != XML_CATAL_BREAK)) {
-	    snprintf((char *) result, sizeof(result) - 1, "%s", (char *) ret);
-	    result[sizeof(result) - 1] = 0;
-	    return(result);
-	}
-    }
-
-    if (xmlDefaultCatalog != NULL)
-	return(xmlCatalogGetSGMLSystem(xmlDefaultCatalog->sgml, sysID));
-    return(NULL);
+	return xmlCatalogResolveSystem(sysID);
 }
 
 /**
@@ -3553,37 +3558,7 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
  */
 const xmlChar *
 xmlCatalogGetPublic(const xmlChar *pubID) {
-    xmlChar *ret;
-    static xmlChar result[1000];
-    static int msg = 0;
-
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
-    if (msg == 0) {
-	xmlGenericError(xmlGenericErrorContext,
-		"Use of deprecated xmlCatalogGetPublic() call\n");
-	msg++;
-    }
-
-    if (pubID == NULL)
-	return(NULL);
-    
-    /*
-     * Check first the XML catalogs
-     */
-    if (xmlDefaultCatalog != NULL) {
-	ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, pubID, NULL);
-	if ((ret != NULL) && (ret != XML_CATAL_BREAK)) {
-	    snprintf((char *) result, sizeof(result) - 1, "%s", (char *) ret);
-	    result[sizeof(result) - 1] = 0;
-	    return(result);
-	}
-    }
-
-    if (xmlDefaultCatalog != NULL)
-	return(xmlCatalogGetSGMLPublic(xmlDefaultCatalog->sgml, pubID));
-    return(NULL);
+	return xmlCatalogResolvePublic(pubID);
 }
 
 #endif /* LIBXML_CATALOG_ENABLED */

@@ -729,11 +729,13 @@ EXPORTS
 /* 
  * xlink.h 
  */
+#ifdef LIBXML_XLINK_INCLUDED
 	xlinkGetDefaultDetect
 	xlinkSetDefaultDetect
 	xlinkGetDefaultHandler
 	xlinkSetDefaultHandler
 	xlinkIsLink
+#endif
 
 /* 
  * xmlerror.h 

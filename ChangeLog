@@ -1,3 +1,8 @@
+Thu Aug 16 21:33:20 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/dsp/libxml2.def.src: another set of symbols conditionally
+	  defined
+
 Thu Aug 16 21:31:14 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpointer.c: removed unused var

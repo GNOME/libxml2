@@ -21,7 +21,8 @@ APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
 EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
            tutorial/images/*.png tutorial/images/callouts/*.png \
 	   API*.html *.1 *.xsl *.html *.gif w3c.png html/*.html \
-	   html/*.sgml libxml2-api.xml parsedecl.py index.py search.php
+	   html/*.sgml libxml2-api.xml parsedecl.py index.py search.php \
+	   apibuild.py
 
 
 man_MANS = xmllint.1 xmlcatalog.1
@@ -52,8 +53,8 @@ xml: sgml
 	-@(for s in sgml/*.sgml ; do name=`basename $$s .sgml` ; \
 	   xmllint --sgml $$s > xml/"$$name".xml ; done)
 
-libxml2-api.xml libxml2-refs.xml: xml parsedecl.py libxml-decl.txt libxml-decl-list.txt
-	-(./parsedecl.py)
+libxml2-api.xml: apibuild.py ../include/libxml/*.h
+	-(./apibuild.py)
 
 api: libxml2-api.xml libxml2-refs.xml
 

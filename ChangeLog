@@ -1,3 +1,17 @@
+Wed Dec 11 14:54:47 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/apibuild.py doc/libxml2-api.xml doc/Makefile.am: new API
+	  building Python script, does the C parsing directly, generates
+	  a better API description including structure fieds defs and
+	  enums. Still a couple of bugs, but good enough for the python
+	  wrappers now.
+	* DOCBparser.c SAX.c nanohttp.c parser.c parserInternals.c tree.c
+	  valid.c xmlIO.c xmlmemory.c xmlreader.c xmlregexp.c xmlschemas.c
+	  include/libxml/schemasInternals.h include/libxml/tree.h: more
+	  cleanup based on the python analysis script reports.
+	* libxml.spec.in: make sure the API XML description is part of the
+	  devel package.
+
 Tue Dec 10 16:16:34 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c HTMLparser.c c14n.c debugXML.c encoding.c hash.c

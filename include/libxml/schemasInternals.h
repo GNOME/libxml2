@@ -139,10 +139,17 @@ struct _xmlSchemaAttributeGroup {
 
 
 /**
- * Schemas type definition.
+ * XML_SCHEMAS_TYPE_MIXED:
+ *
+ * the element content type is mixed
  */
 #define XML_SCHEMAS_TYPE_MIXED		1 << 0
 
+/**
+ * _xmlSchemaType:
+ *
+ * Schemas type definition.
+ */
 struct _xmlSchemaType {
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaType *next;/* the next type if in a sequence ... */
@@ -166,17 +173,53 @@ struct _xmlSchemaType {
 };
 
 /**
+ * xmlSchemaElement:
  * An element definition.
  *
  * xmlSchemaType, xmlSchemaFacet and xmlSchemaElement start of
  * structures must be kept similar
  */
+/**
+ * XML_SCHEMAS_ELEM_NILLABLE:
+ *
+ * the element is nillable
+ */
 #define XML_SCHEMAS_ELEM_NILLABLE	1 << 0
+/**
+ * XML_SCHEMAS_ELEM_GLOBAL:
+ *
+ * the element is global
+ */
 #define XML_SCHEMAS_ELEM_GLOBAL		1 << 1
+/**
+ * XML_SCHEMAS_ELEM_DEFAULT:
+ *
+ * the element has a default value
+ */
 #define XML_SCHEMAS_ELEM_DEFAULT	1 << 2
+/**
+ * XML_SCHEMAS_ELEM_FIXED:
+ *
+ * the element has a fixed value
+ */
 #define XML_SCHEMAS_ELEM_FIXED		1 << 3
+/**
+ * XML_SCHEMAS_ELEM_ABSTRACT:
+ *
+ * the element is abstract
+ */
 #define XML_SCHEMAS_ELEM_ABSTRACT	1 << 4
+/**
+ * XML_SCHEMAS_ELEM_TOPLEVEL:
+ *
+ * the element is top level
+ */
 #define XML_SCHEMAS_ELEM_TOPLEVEL	1 << 5
+/**
+ * XML_SCHEMAS_ELEM_REF:
+ *
+ * the element is a reference to a type
+ */
 #define XML_SCHEMAS_ELEM_REF		1 << 6
 
 typedef struct _xmlSchemaElement xmlSchemaElement;
@@ -208,15 +251,34 @@ struct _xmlSchemaElement {
     xmlSchemaContentType contentType;
 };
 
-/**
- * An facet definition.
+/*
+ * XML_SCHEMAS_FACET_UNKNOWN:
  *
+ * unknown facet handling
  */
 #define XML_SCHEMAS_FACET_UNKNOWN	0
+/*
+ * XML_SCHEMAS_FACET_PRESERVE:
+ *
+ * preserve the type of the facet
+ */
 #define XML_SCHEMAS_FACET_PRESERVE	1
+/*
+ * XML_SCHEMAS_FACET_REPLACE:
+ *
+ * replace the type of the facet
+ */
 #define XML_SCHEMAS_FACET_REPLACE	2
+/*
+ * XML_SCHEMAS_FACET_COLLAPSE:
+ *
+ * collapse the types of the facet
+ */
 #define XML_SCHEMAS_FACET_COLLAPSE	3
 
+/**
+ * A facet definition.
+ */
 struct _xmlSchemaFacet {
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaFacet *next;/* the next type if in a sequence ... */
@@ -243,10 +305,22 @@ struct _xmlSchemaNotation {
 };
 
 /**
- * A Schemas definition
+ * XML_SCHEMAS_QUALIF_ELEM:
+ *
+ * the shemas requires qualified elements
  */
 #define XML_SCHEMAS_QUALIF_ELEM		1 << 0
+/**
+ * XML_SCHEMAS_QUALIF_ATTR:
+ *
+ * the shemas requires qualified attributes
+ */
 #define XML_SCHEMAS_QUALIF_ATTR		1 << 1
+/**
+ * _xmlSchema:
+ *
+ * A Schemas definition
+ */
 struct _xmlSchema {
     xmlChar *name;        /* schema name */
     xmlChar *targetNamespace;     /* the target namespace */

@@ -4364,6 +4364,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseElementMixedContentDecl:
  * @ctxt:  an XML parser context
+ * @inputchk:  the input used for the current entity, needed for boundary checks
  *
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
@@ -4491,6 +4492,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, xmlParserInputPtr inputch
 /**
  * xmlParseElementChildrenContentDecl:
  * @ctxt:  an XML parser context
+ * @inputchk:  the input used for the current entity, needed for boundary checks
  *
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl

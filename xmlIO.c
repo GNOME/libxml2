@@ -246,7 +246,7 @@ xmlCleanupOutputCallbacks(void)
  ************************************************************************/
 
 /**
- * xmlCheckFilename
+ * xmlCheckFilename:
  * @path:  the path to check
  *
  * function checks to see if @path is a valid source
@@ -461,6 +461,8 @@ xmlFileWrite (void * context, const char * buffer, int len) {
  * @context:  the I/O context
  *
  * Close an I/O channel
+ *
+ * Returns 0 or -1 in case of error
  */
 int
 xmlFileClose (void * context) {
@@ -1033,7 +1035,7 @@ xmlIOHTTPOpen (const char *filename) {
 }
 
 /**
- * xmlIOHTTPOpenW
+ * xmlIOHTTPOpenW:
  * @post_uri:  The destination URI for the document
  * @compression:  The compression desired for the document.
  *
@@ -1176,6 +1178,8 @@ xmlIOHTTPWrite( void * context, const char * buffer, int len ) {
  * @context:  the I/O context
  *
  * Close an HTTP I/O channel
+ *
+ * Returns 0
  */
 int
 xmlIOHTTPClose (void * context) {
@@ -1396,6 +1400,8 @@ xmlIOFTPRead(void * context, char * buffer, int len) {
  * @context:  the I/O context
  *
  * Close an FTP I/O channel
+ *
+ * Returns 0
  */
 int
 xmlIOFTPClose (void * context) {
@@ -1524,7 +1530,7 @@ xmlRegisterDefaultOutputCallbacks
 
 #ifdef LIBXML_HTTP_ENABLED
 /**
- * xmlRegisterHTTPPostCallbacks
+ * xmlRegisterHTTPPostCallbacks:
  *
  * By default, libxml submits HTTP output requests using the "PUT" method.
  * Calling this method changes the HTTP output method to use the "POST"

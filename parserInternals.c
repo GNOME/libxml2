@@ -2712,8 +2712,8 @@ xmlCheckLanguageID(const xmlChar *lang) {
 /**
  * xmlDecodeEntities:
  * @ctxt:  the parser context
- * @what:  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
  * @len:  the len to decode (in bytes !), -1 for no size limit
+ * @what:  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
  * @end:  an end marker xmlChar, 0 if none
  * @end2:  an end marker xmlChar, 0 if none
  * @end3:  an end marker xmlChar, 0 if none

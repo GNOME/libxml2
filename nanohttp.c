@@ -1422,6 +1422,8 @@ xmlNanoHTTPAuthHeader(void *ctx) {
  * xmlNanoHTTPContentLength:
  * @ctx:  the HTTP context
  *
+ * Provides the specified content length from the HTTP header.
+ *
  * Return the specified content length from the HTTP header.  Note that
  * a value of -1 indicates that the content length element was not included in
  * the response header.
@@ -1438,6 +1440,8 @@ xmlNanoHTTPContentLength( void * ctx ) {
  * @ctx:  the HTTP context
  * @ptr:  pointer to set to the content buffer.
  * @len:  integer pointer to hold the length of the content
+ *
+ * Check if all the content was read
  *
  * Returns 0 if all the content was read and available, returns
  * -1 if received content length was less than specified or an error 

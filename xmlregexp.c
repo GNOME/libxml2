@@ -3961,6 +3961,8 @@ xmlFreeAutomata(xmlAutomataPtr am) {
  * xmlAutomataGetInitState:
  * @am: an automata
  *
+ * Initial state lookup
+ *
  * Returns the initial state of the automata
  */
 xmlAutomataStatePtr
@@ -4028,7 +4030,8 @@ xmlAutomataNewTransition(xmlAutomataPtr am, xmlAutomataStatePtr from,
  * @to: the target point of the transition or NULL
  * @token: the input string associated to that transition
  * @min:  the minimum successive occurences of token
- * @min:  the maximum successive occurences of token
+ * @max:  the maximum successive occurences of token
+ * @data:  data associated to the transition
  *
  * If @to is NULL, this create first a new target state in the automata
  * and then adds a transition from the @from state to the target state
@@ -4077,7 +4080,8 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
  * @to: the target point of the transition or NULL
  * @token: the input string associated to that transition
  * @min:  the minimum successive occurences of token
- * @min:  the maximum successive occurences of token
+ * @max:  the maximum successive occurences of token
+ * @data:  data associated to the transition
  *
  * If @to is NULL, this create first a new target state in the automata
  * and then adds a transition from the @from state to the target state
@@ -4153,7 +4157,7 @@ xmlAutomataNewState(xmlAutomataPtr am) {
 }
 
 /**
- * xmlAutomataNewTransition:
+ * xmlAutomataNewEpsilon:
  * @am: an automata
  * @from: the starting point of the transition
  * @to: the target point of the transition or NULL
@@ -4180,6 +4184,7 @@ xmlAutomataNewEpsilon(xmlAutomataPtr am, xmlAutomataStatePtr from,
  * @am: an automata
  * @from: the starting point of the transition
  * @to: the target point of the transition or NULL
+ * @lax: allow to transition if not all all transitions have been activated
  *
  * If @to is NULL, this create first a new target state in the automata
  * and then adds a an ALL transition from the @from state to the

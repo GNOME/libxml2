@@ -427,7 +427,7 @@ xmlMemoryStrdup(const char *str) {
 /**
  * xmlMemUsed:
  *
- * returns the amount of memory currently allocated
+ * Provides the amount of memory currently allocated
  *
  * Returns an int representing the amount of memory allocated.
  */
@@ -754,12 +754,12 @@ xmlMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
 
 /**
  * xmlMemGet:
- * @freeFunc: the free() function in use
- * @mallocFunc: the malloc() function in use
- * @reallocFunc: the realloc() function in use
- * @strdupFunc: the strdup() function in use
+ * @freeFunc: place to save the free() function in use
+ * @mallocFunc: place to save the malloc() function in use
+ * @reallocFunc: place to save the realloc() function in use
+ * @strdupFunc: place to save the strdup() function in use
  *
- * Return the memory access functions set currently in use
+ * Provides the memory access functions set currently in use
  *
  * Returns 0 on success
  */

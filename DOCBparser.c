@@ -68,18 +68,6 @@ struct _docbEntityDesc {
     const char *desc;   /* the description */
 };
 
-#if 0
-docbElemDescPtr        docbTagLookup   (const xmlChar *tag); 
-docbEntityDescPtr      docbEntityLookup(const xmlChar *name);
-docbEntityDescPtr      docbEntityValueLookup(int value);
-
-int                    docbIsAutoClosed(docbDocPtr doc,
-                                        docbNodePtr elem);
-int                    docbAutoCloseTag(docbDocPtr doc,
-                                        const xmlChar *name,
-                                        docbNodePtr elem);
-
-#endif
 static int             docbParseCharRef(docbParserCtxtPtr ctxt);
 static xmlEntityPtr    docbParseEntityRef(docbParserCtxtPtr ctxt,
                                         xmlChar **str);

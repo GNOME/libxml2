@@ -33,7 +33,7 @@
  * getPublicId:
  * @ctx: the user data (XML parser context)
  *
- * Return the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"
+ * Provides the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"
  *
  * Returns a xmlChar *
  */
@@ -48,7 +48,7 @@ getPublicId(void *ctx ATTRIBUTE_UNUSED)
  * getSystemId:
  * @ctx: the user data (XML parser context)
  *
- * Return the system ID, basically URL or filename e.g.
+ * Provides the system ID, basically URL or filename e.g.
  * http://www.sgmlsource.com/dtds/memo.dtd
  *
  * Returns a xmlChar *
@@ -64,7 +64,7 @@ getSystemId(void *ctx)
  * getLineNumber:
  * @ctx: the user data (XML parser context)
  *
- * Return the line number of the current parsing point.
+ * Provide the line number of the current parsing point.
  *
  * Returns an int
  */
@@ -79,7 +79,7 @@ getLineNumber(void *ctx)
  * getColumnNumber:
  * @ctx: the user data (XML parser context)
  *
- * Return the column number of the current parsing point.
+ * Provide the column number of the current parsing point.
  *
  * Returns an int
  */

@@ -482,7 +482,7 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
  * xmlTextReaderAttributeCount:
  * @reader:  the xmlTextReaderPtr used
  *
- * Returns the number of attributes of the current node
+ * Provides the number of attributes of the current node
  *
  * Returns 0 i no attributes, -1 in case of error or the attribute count
  */

@@ -3825,6 +3825,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @ctxt:  the validation context
  * @doc:  a document instance
  * @elem:  an element instance
+ * @prefix:  the namespace prefix
  * @ns:  an namespace declaration instance
  * @value:  the attribute value (without entities processing)
  *

@@ -899,8 +899,9 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
  * @list:  a Node list
  * @inLine:  should we replace entity contents or show their external form
  *
- * Returns the string equivalent to the text contained in the Node list
+ * Build the string equivalent to the text contained in the Node list
  * made of TEXTs and ENTITY_REFs
+ *
  * Returns a pointer to the string copy, the caller must free it with xmlFree().
  */
 xmlChar *
@@ -977,7 +978,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
  * @list:  a Node list
  * @inLine:  should we replace entity contents or show their external form
  *
- * Returns the string equivalent to the text contained in the Node list
+ * Builds the string equivalent to the text contained in the Node list
  * made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString()
  * this function doesn't do any character encoding handling.
  *
@@ -7469,6 +7470,8 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding,
  * @cur:  the document being saved
  * @encoding:  the name of the encoding to use or NULL.
  * @format:  should formatting spaces be added.
+ *
+ * Dump an XML document to a file or an URL.
  *
  * Returns the number of bytes written or -1 in case of error.
  */

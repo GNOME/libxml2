@@ -5401,7 +5401,7 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt) {
  * @ctxt:  a schema validation context
  * @err:  the error function
  * @warn: the warning function
- * @ctxt: the functions context
+ * @ctx: the functions context
  *
  * Set the error and warning callback informations
  */

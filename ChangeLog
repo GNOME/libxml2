@@ -1,3 +1,7 @@
+Mon Feb  2 20:22:18 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlwriter.c: enhanced output indenting (bug 133264)
+	
 Mon Feb  2 16:13:33 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlreader.c, include/libxml/xmlreader.h: applied patch from

@@ -868,6 +868,8 @@ xmlTextWriterEndElement(xmlTextWriterPtr writer)
             sum += count;
             /* fallthrough */
         case XML_TEXTWRITER_NAME:
+	    if (writer->indent)		/* next element needs indent */
+	        writer->doindent = 1;
             count = xmlOutputBufferWriteString(writer->out, "/>");
             if (count < 0)
                 return -1;

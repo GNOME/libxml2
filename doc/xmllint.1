@@ -30,8 +30,8 @@ xmllint \- command line XML tool
         | \fB--sgml\fR | \fB--html\fR | \fB--push\fR | \fB--memory\fR | \fB--nowarning\fR
         | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode \fIencoding\fR\fR
         | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR
-        | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR] [\fBxmlfile\fR]
-       
+        | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR | \fB--stream\fR
+        | \fB--chkregister\fR] [\fBxmlfile\fR]
 .fi
 
 .SH "INTRODUCTION"
@@ -175,6 +175,14 @@ Fetch external DTD and populate the tree with inherited attributes.
 .TP
 \fB--dropdtd\fR
 Remove DTD from output.
+
+.TP
+\fB--stream\fR
+Use streaming API - useful for validation of files that are too large to be held in memory.
+
+.TP
+\fB--chkregister\fR
+Turn on node registration. Useful for developeres testing libxml2 node tracking code.
 
 .SH "SHELL"
 

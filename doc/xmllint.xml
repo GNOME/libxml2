@@ -74,6 +74,8 @@
 	<arg>--loaddtd</arg>
 	<arg>--dtdattr</arg>
 	<arg>--dropdtd</arg>
+	<arg>--stream</arg>
+	<arg>--chkregister</arg>
       </group>
       <arg><option><replaceable>xmlfile</replaceable></option></arg>
   </cmdsynopsis>
@@ -410,6 +412,20 @@
 	  <simpara>
 	    Remove <acronym>DTD</acronym> from output.
 	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>--stream</option></term>
+	<listitem>
+	  <simpara>Use streaming API - useful for validation of files that are
+	  too large to be held in memory.</simpara> 
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>--chkregister</option></term>
+	<listitem>
+	  <simpara>Turn on node registration. Useful for developeres testing
+	  libxml2 node tracking code.</simpara>
 	</listitem>
       </varlistentry>
     </variablelist>

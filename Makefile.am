@@ -451,7 +451,7 @@ confexec_DATA = xml2Conf.sh
 EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
              libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
-	     $(man_MANS) libxml-2.0.pc.in xmlversion.h.in \
+	     $(man_MANS) libxml-2.0.pc.in \
 	     win32/README.MSDev win32/Makefile.mingw \
 	     win32/libxml2/libxml2.dsp win32/libxml2/libxml2_so.dsp \
 	     win32/libxml2/libxml2_a.dsp win32/libxml2/xmllint.dsp \

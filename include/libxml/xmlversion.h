@@ -153,7 +153,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the memory debugging is configured in
  */
-#if 1
+#if 0
 #define DEBUG_MEMORY_LOCATION
 #endif
 

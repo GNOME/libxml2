@@ -1,0 +1,36 @@
+## Process this file with automake to produce Makefile.in
+
+xmlincdir = $(includedir)
+
+xmlinc_HEADERS = \
+		SAX.h \
+		entities.h \
+		encoding.h \
+		parser.h \
+		parserInternals.h \
+		xmlerror.h \
+		HTMLparser.h \
+		HTMLtree.h \
+		debugXML.h \
+		tree.h \
+		list.h \
+		hash.h \
+		xpath.h \
+		xpathInternals.h \
+		xpointer.h \
+		xinclude.h \
+		xmlIO.h \
+		xmlmemory.h \
+		nanohttp.h \
+		nanoftp.h \
+		uri.h \
+		valid.h \
+		xlink.h \
+		xmlversion.h \
+		DOCBparser.h \
+		catalog.h
+
+install-exec-hook:
+	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml
+
+EXTRA_DIST = xmlversion.h.in

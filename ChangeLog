@@ -1,3 +1,8 @@
+Sat Jun 23 23:54:12 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/Makefile.am include/libxml/Makefile.am configure.in:
+	  fixed make distcheck and rebuilding the rpms
+
 Sat Jun 23 20:50:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: should finish the migration of exported includes

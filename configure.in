@@ -454,5 +454,5 @@ then
     ln -s $srcdir/include/libxml libxml
 fi
 
-AC_OUTPUT(libxml.spec Makefile include/Makefile doc/Makefile example/Makefile libxml/xmlversion.h xml2-config libxml-2.0.pc xml2Conf.sh)
+AC_OUTPUT(libxml.spec Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc xml2Conf.sh)
 

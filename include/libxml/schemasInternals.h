@@ -16,6 +16,7 @@
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #include <libxml/xmlregexp.h>
+#include <libxml/hash.h>
 
 #ifdef __cplusplus
 extern "C" {

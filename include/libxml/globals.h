@@ -55,8 +55,8 @@ extern "C" {
 #undef xmlRegisterNodeDefaultValue
 #undef xmlDeregisterNodeDefaultValue
 
-typedef void (*xmlRegisterNodeFunc)(xmlNodePtr node);
-typedef void (*xmlDeregisterNodeFunc)(xmlNodePtr node);
+typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
+typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;

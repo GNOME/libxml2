@@ -115,6 +115,8 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #undef	xmlPedanticParserDefaultValue
 #undef	xmlSaveNoEmptyTags
 #undef	xmlSubstituteEntitiesDefaultValue
+#undef	xmlRegisterNodeDefaultValue
+#undef	xmlDeregisterNodeDefaultValue
 
 #undef	xmlFree
 #undef	xmlMalloc

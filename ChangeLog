@@ -1,3 +1,10 @@
+Tue Jan  7 01:17:26 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c: fixed --with-threads compile
+	* xmllint.c: fixed --without-debug compile
+	* include/libxml/globals.h: cleanup
+	* include/libxml/schemasInternals.h: add a missing include
+
 Mon Jan  6 14:06:07 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS: preparing 2.5.0 release

@@ -86,10 +86,10 @@
 #include <libxml/xmlreader.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
-static int debug = 0;
 static int shell = 0;
 static int debugent = 0;
 #endif
+static int debug = 0;
 static int copy = 0;
 static int recovery = 0;
 static int noent = 0;
@@ -1132,6 +1132,8 @@ static void usage(const char *name) {
     printf("\t--debug : dump a debug tree of the in-memory document\n");
     printf("\t--shell : run a navigating shell\n");
     printf("\t--debugent : debug the entities defined in the document\n");
+#else
+    printf("\t--debug : dump the nodes content when using --stream\n");
 #endif
     printf("\t--copy : used to test the internal copy implementation\n");
     printf("\t--recover : output what was parsable on broken XML documents\n");

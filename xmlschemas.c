@@ -60,6 +60,8 @@ static const xmlChar *xmlSchemaInstanceNs = (const xmlChar *)
 
 #define XML_SCHEMAS_PARSE_ERROR		1
 
+#define SCHEMAS_PARSE_OPTIONS XML_PARSE_NOENT
+
 struct _xmlSchemaParserCtxt {
     void *userData;             /* user specific data block */
     xmlSchemaValidityErrorFunc error;   /* the callback in case of errors */
@@ -149,6 +151,18 @@ struct _xmlSchemaImport {
     xmlSchemaPtr schema;
 };
 
+/*
+ * These are the entries associated to includes in a schemas
+ */
+typedef struct _xmlSchemaInclude xmlSchemaInclude;
+typedef xmlSchemaInclude *xmlSchemaIncludePtr;
+struct _xmlSchemaInclude {
+    xmlSchemaIncludePtr next;
+
+    const xmlChar *schemaLocation;
+    xmlDocPtr doc;
+};
+
 /************************************************************************
  * 									*
  * 			Some predeclarations				*
@@ -158,6 +172,9 @@ static int xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
                                         xmlSchemaTypePtr type,
                                         const xmlChar * value);
 
+static int xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt,
+                                 xmlSchemaPtr schema,
+                                 xmlNodePtr node);
 /************************************************************************
  *									*
  * 			Datatype error handlers				*
@@ -431,6 +448,40 @@ xmlSchemaFreeImport(xmlSchemaImportPtr import)
 }
 
 /**
+ * xmlSchemaFreeInclude:
+ * @include:  a schema include structure
+ *
+ * Deallocate an include structure
+ */
+static void
+xmlSchemaFreeInclude(xmlSchemaIncludePtr include)
+{
+    if (include == NULL)
+        return;
+
+    xmlFreeDoc(include->doc);
+    xmlFree(include);
+}
+
+/**
+ * xmlSchemaFreeIncludeList:
+ * @includes:  a schema include list
+ *
+ * Deallocate an include structure
+ */
+static void
+xmlSchemaFreeIncludeList(xmlSchemaIncludePtr includes)
+{
+    xmlSchemaIncludePtr next;
+
+    while (includes != NULL) {
+        next = includes->next;
+	xmlSchemaFreeInclude(includes);
+	includes = next;
+    }
+}
+
+/**
  * xmlSchemaFreeNotation:
  * @schema:  a schema notation structure
  *
@@ -569,6 +620,9 @@ xmlSchemaFree(xmlSchemaPtr schema)
     if (schema->schemasImports != NULL)
 	xmlHashFree(schema->schemasImports,
 		    (xmlHashDeallocator) xmlSchemaFreeImport);
+    if (schema->includes != NULL) {
+        xmlSchemaFreeIncludeList((xmlSchemaIncludePtr) schema->includes);
+    }
     if (schema->annot != NULL)
         xmlSchemaFreeAnnot(schema->annot);
     if (schema->doc != NULL)
@@ -2516,12 +2570,18 @@ xmlSchemaImportSchema(xmlSchemaParserCtxtPtr ctxt,
     xmlSchemaImportPtr import;
     xmlSchemaParserCtxtPtr newctxt;
 
-    newctxt = xmlSchemaNewParserCtxt((const char *) schemaLocation);
+    newctxt = (xmlSchemaParserCtxtPtr) xmlMalloc(sizeof(xmlSchemaParserCtxt));
     if (newctxt == NULL) {
-        xmlSchemaPErrMemory(NULL, "allocating parser context",
+        xmlSchemaPErrMemory(ctxt, "allocating schama parser context",
                             NULL);
         return (NULL);
     }
+    memset(newctxt, 0, sizeof(xmlSchemaParserCtxt));
+    /* Keep the same dictionnary for parsing, really */
+    xmlDictReference(ctxt->dict);
+    newctxt->dict = ctxt->dict;
+    newctxt->URL = xmlDictLookup(newctxt->dict, schemaLocation, -1);
+
     xmlSchemaSetParserErrors(newctxt, ctxt->error, ctxt->warning,
 	                     ctxt->userData);
 
@@ -2695,6 +2755,303 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                        "Import has unexpected content\n", NULL, NULL);
         return (-1);
     }
+    return (1);
+}
+
+/**
+ * xmlSchemaCleanupDoc:
+ * @ctxt:  a schema validation context
+ * @node:  the root of the document.
+ *
+ * removes unwanted nodes in a schemas document tree
+ */
+static void
+xmlSchemaCleanupDoc(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr root)
+{
+    xmlNodePtr delete, cur;
+
+    if ((ctxt == NULL) || (root == NULL)) return;
+
+    /*
+     * Remove all the blank text nodes
+     */
+    delete = NULL;
+    cur = root;
+    while (cur != NULL) {
+        if (delete != NULL) {
+            xmlUnlinkNode(delete);
+            xmlFreeNode(delete);
+            delete = NULL;
+        }
+        if (cur->type == XML_TEXT_NODE) {
+            if (IS_BLANK_NODE(cur)) {
+                if (xmlNodeGetSpacePreserve(cur) != 1) {
+                    delete = cur;
+                }
+            }
+        } else if ((cur->type != XML_ELEMENT_NODE) &&
+                   (cur->type != XML_CDATA_SECTION_NODE)) {
+            delete = cur;
+            goto skip_children;
+        }
+
+        /*
+         * Skip to next node
+         */
+        if (cur->children != NULL) {
+            if ((cur->children->type != XML_ENTITY_DECL) &&
+                (cur->children->type != XML_ENTITY_REF_NODE) &&
+                (cur->children->type != XML_ENTITY_NODE)) {
+                cur = cur->children;
+                continue;
+            }
+        }
+      skip_children:
+        if (cur->next != NULL) {
+            cur = cur->next;
+            continue;
+        }
+
+        do {
+            cur = cur->parent;
+            if (cur == NULL)
+                break;
+            if (cur == root) {
+                cur = NULL;
+                break;
+            }
+            if (cur->next != NULL) {
+                cur = cur->next;
+                break;
+            }
+        } while (cur != NULL);
+    }
+    if (delete != NULL) {
+        xmlUnlinkNode(delete);
+        xmlFreeNode(delete);
+        delete = NULL;
+    }
+}
+
+/**
+ * xmlSchemaParseSchemaTopLevel:
+ * @ctxt:  a schema validation context
+ * @schema:  the schemas
+ * @nodes:  the list of top level nodes
+ *
+ * Returns the internal XML Schema structure built from the resource or
+ *         NULL in case of error
+ */
+static void
+xmlSchemaParseSchemaTopLevel(xmlSchemaParserCtxtPtr ctxt,
+                             xmlSchemaPtr schema, xmlNodePtr nodes)
+{
+    xmlNodePtr child;
+    xmlSchemaAnnotPtr annot;
+
+    if ((ctxt == NULL) || (schema == NULL) || (nodes == NULL))
+        return;
+
+    child = nodes;
+    while ((IS_SCHEMA(child, "include")) ||
+	   (IS_SCHEMA(child, "import")) ||
+	   (IS_SCHEMA(child, "redefine")) ||
+	   (IS_SCHEMA(child, "annotation"))) {
+	if (IS_SCHEMA(child, "annotation")) {
+	    annot = xmlSchemaParseAnnotation(ctxt, schema, child);
+	    if (schema->annot == NULL)
+		schema->annot = annot;
+	    else
+		xmlSchemaFreeAnnot(annot);
+	} else if (IS_SCHEMA(child, "import")) {
+	    xmlSchemaParseImport(ctxt, schema, child);
+	} else if (IS_SCHEMA(child, "include")) {
+	    xmlSchemaParseInclude(ctxt, schema, child);
+	} else if (IS_SCHEMA(child, "redefine")) {
+	    TODO
+	}
+	child = child->next;
+    }
+    while (child != NULL) {
+	if (IS_SCHEMA(child, "complexType")) {
+	    xmlSchemaParseComplexType(ctxt, schema, child);
+	    child = child->next;
+	} else if (IS_SCHEMA(child, "simpleType")) {
+	    xmlSchemaParseSimpleType(ctxt, schema, child);
+	    child = child->next;
+	} else if (IS_SCHEMA(child, "element")) {
+	    xmlSchemaParseElement(ctxt, schema, child, 1);
+	    child = child->next;
+	} else if (IS_SCHEMA(child, "attribute")) {
+	    xmlSchemaParseAttribute(ctxt, schema, child);
+	    child = child->next;
+	} else if (IS_SCHEMA(child, "attributeGroup")) {
+	    xmlSchemaParseAttributeGroup(ctxt, schema, child);
+	    child = child->next;
+	} else if (IS_SCHEMA(child, "group")) {
+	    xmlSchemaParseGroup(ctxt, schema, child);
+	    child = child->next;
+	} else if (IS_SCHEMA(child, "notation")) {
+	    xmlSchemaParseNotation(ctxt, schema, child);
+	    child = child->next;
+	} else {
+	    xmlSchemaPErr2(ctxt, NULL, child,
+			   XML_SCHEMAP_UNKNOWN_SCHEMAS_CHILD,
+			   "Schemas: unexpected element %s here \n",
+			   child->name, NULL);
+	    child = child->next;
+	}
+	while (IS_SCHEMA(child, "annotation")) {
+	    annot = xmlSchemaParseAnnotation(ctxt, schema, child);
+	    if (schema->annot == NULL)
+		schema->annot = annot;
+	    else
+		xmlSchemaFreeAnnot(annot);
+	    child = child->next;
+	}
+    }
+}
+
+/**
+ * xmlSchemaParseInclude:
+ * @ctxt:  a schema validation context
+ * @schema:  the schema being built
+ * @node:  a subtree containing XML Schema informations
+ *
+ * parse a XML schema Include definition
+ *
+ * Returns -1 in case of error, 0 if the declaration is inproper and
+ *         1 in case of success.
+ */
+static int
+xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
+                      xmlNodePtr node)
+{
+    xmlNodePtr child = NULL;
+    const xmlChar *schemaLocation;
+    xmlURIPtr check;
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlSchemaIncludePtr include;
+
+
+    if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
+        return (-1);
+
+    /*
+     * Preliminary step, extract the URI-Reference for the include and
+     * make an URI from the base.
+     */
+    schemaLocation = xmlSchemaGetProp(ctxt, node, "schemaLocation");
+    if (schemaLocation != NULL) {
+        xmlChar *base = NULL;
+        xmlChar *URI = NULL;
+        check = xmlParseURI((const char *) schemaLocation);
+        if (check == NULL) {
+            xmlSchemaPErr2(ctxt, node, child,
+                           XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI,
+		       "Include schemaLocation attribute is not an URI: %s\n",
+                           schemaLocation, NULL);
+            return (-1);
+        } else {
+            xmlFreeURI(check);
+        }
+	base = xmlNodeGetBase(node->doc, node);
+	if (base == NULL) {
+	    URI = xmlBuildURI(schemaLocation, node->doc->URL);
+	} else {
+	    URI = xmlBuildURI(schemaLocation, base);
+	    xmlFree(base);
+	}
+	if (URI != NULL) {
+	    schemaLocation = xmlDictLookup(ctxt->dict, URI, -1);
+	    xmlFree(URI);
+	}
+    } else {
+	xmlSchemaPErr2(ctxt, node, child,
+		       XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI,
+		   "Include schemaLocation attribute missing\n",
+		       NULL, NULL);
+	return (-1);
+    }
+
+    child = node->children;
+    while (IS_SCHEMA(child, "annotation")) {
+        /*
+         * the annotations here are simply discarded ...
+         */
+        child = child->next;
+    }
+    if (child != NULL) {
+        xmlSchemaPErr2(ctxt, node, child, XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD,
+                       "Include has unexpected content\n", NULL, NULL);
+        return (-1);
+    }
+
+    /*
+     * First step is to parse the input document into an DOM/Infoset
+     */
+    doc = xmlReadFile((const char *) schemaLocation, NULL,
+                      SCHEMAS_PARSE_OPTIONS);
+    if (doc == NULL) {
+	xmlSchemaPErr(ctxt, NULL,
+		      XML_SCHEMAP_FAILED_LOAD,
+		      "xmlSchemaParse: could not load %s\n",
+		      ctxt->URL, NULL);
+	return(-1);
+    }
+
+    /*
+     * Then extract the root of the schema
+     */
+    root = xmlDocGetRootElement(doc);
+    if (root == NULL) {
+	xmlSchemaPErr(ctxt, (xmlNodePtr) doc,
+		      XML_SCHEMAP_NOROOT,
+		      "schemas %s has no root", schemaLocation, NULL);
+	xmlFreeDoc(doc);
+        return (-1);
+    }
+
+    /*
+     * Remove all the blank text nodes
+     */
+    xmlSchemaCleanupDoc(ctxt, root);
+
+    /*
+     * Check the schemas top level element
+     */
+    if (!IS_SCHEMA(root, "schema")) {
+	xmlSchemaPErr(ctxt, (xmlNodePtr) doc,
+		      XML_SCHEMAP_NOT_SCHEMA,
+		      "File %s is not a schemas", schemaLocation, NULL);
+	xmlFreeDoc(doc);
+        return (-1);
+    }
+
+    /*
+     * register the include
+     */
+    include = (xmlSchemaIncludePtr) xmlMalloc(sizeof(xmlSchemaInclude));
+    if (include == NULL) {
+        xmlSchemaPErrMemory(ctxt, "allocating included schema", NULL);
+	xmlFreeDoc(doc);
+        return (-1);
+    }
+
+    memset(include, 0, sizeof(xmlSchemaInclude));
+    include->schemaLocation = xmlDictLookup(ctxt->dict, schemaLocation, -1);
+    include->doc = doc;
+    include->next = schema->includes;
+    schema->includes = include;
+
+
+    /*
+     * parse the declarations in the included file like if they
+     * were in the original file.
+     */
+    xmlSchemaParseSchemaTopLevel(ctxt, schema, root->children);
+
     return (1);
 }
 
@@ -3240,7 +3597,6 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     return (type);
 }
 
-
 /**
  * xmlSchemaParseSchema:
  * @ctxt:  a schema validation context
@@ -3256,7 +3612,6 @@ static xmlSchemaPtr
 xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 {
     xmlSchemaPtr schema = NULL;
-    xmlSchemaAnnotPtr annot;
     xmlNodePtr child = NULL;
     const xmlChar *val;
     int nberrors;
@@ -3303,62 +3658,22 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
             }
         } 
 
-        child = node->children;
-        while ((IS_SCHEMA(child, "include")) ||
-               (IS_SCHEMA(child, "import")) ||
-               (IS_SCHEMA(child, "redefine")) ||
-               (IS_SCHEMA(child, "annotation"))) {
-            if (IS_SCHEMA(child, "annotation")) {
-                annot = xmlSchemaParseAnnotation(ctxt, schema, child);
-                if (schema->annot == NULL)
-                    schema->annot = annot;
-                else
-                    xmlSchemaFreeAnnot(annot);
-            } else if (IS_SCHEMA(child, "include")) {
-            TODO} else if (IS_SCHEMA(child, "import")) {
-                xmlSchemaParseImport(ctxt, schema, child);
-            } else if (IS_SCHEMA(child, "redefine")) {
-            TODO}
-            child = child->next;
-        }
-        while (child != NULL) {
-            if (IS_SCHEMA(child, "complexType")) {
-                xmlSchemaParseComplexType(ctxt, schema, child);
-                child = child->next;
-            } else if (IS_SCHEMA(child, "simpleType")) {
-                xmlSchemaParseSimpleType(ctxt, schema, child);
-                child = child->next;
-            } else if (IS_SCHEMA(child, "element")) {
-                xmlSchemaParseElement(ctxt, schema, child, 1);
-                child = child->next;
-            } else if (IS_SCHEMA(child, "attribute")) {
-                xmlSchemaParseAttribute(ctxt, schema, child);
-                child = child->next;
-            } else if (IS_SCHEMA(child, "attributeGroup")) {
-                xmlSchemaParseAttributeGroup(ctxt, schema, child);
-                child = child->next;
-            } else if (IS_SCHEMA(child, "group")) {
-                xmlSchemaParseGroup(ctxt, schema, child);
-                child = child->next;
-            } else if (IS_SCHEMA(child, "notation")) {
-                xmlSchemaParseNotation(ctxt, schema, child);
-                child = child->next;
-            } else {
-                xmlSchemaPErr2(ctxt, node, child,
-                               XML_SCHEMAP_UNKNOWN_SCHEMAS_CHILD,
-                               "Schemas: unexpected element %s here \n",
-                               child->name, NULL);
-                child = child->next;
-            }
-            while (IS_SCHEMA(child, "annotation")) {
-                annot = xmlSchemaParseAnnotation(ctxt, schema, child);
-                if (schema->annot == NULL)
-                    schema->annot = annot;
-                else
-                    xmlSchemaFreeAnnot(annot);
-                child = child->next;
-            }
-        }
+        xmlSchemaParseSchemaTopLevel(ctxt, schema, node->children);
+    } else {
+        xmlDocPtr doc;
+
+	doc = node->doc;
+
+        if ((doc != NULL) && (doc->URL != NULL)) {
+	    xmlSchemaPErr(ctxt, (xmlNodePtr) doc,
+		      XML_SCHEMAP_NOT_SCHEMA,
+		      "File %s is not a schemas", doc->URL, NULL);
+	} else {
+	    xmlSchemaPErr(ctxt, (xmlNodePtr) doc,
+		      XML_SCHEMAP_NOT_SCHEMA,
+		      "File is not a schemas", NULL, NULL);
+	}
+	return(NULL);
     }
     if (ctxt->nberrors != 0) {
         if (schema != NULL) {
@@ -4492,7 +4807,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 {
     xmlSchemaPtr ret = NULL;
     xmlDocPtr doc;
-    xmlNodePtr root, cur, delete;
+    xmlNodePtr root;
     int nberrors;
 
     xmlSchemaInitTypes();
@@ -4509,7 +4824,8 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
      * First step is to parse the input document into an DOM/Infoset
      */
     if (ctxt->URL != NULL) {
-        doc = xmlParseFile((const char *) ctxt->URL);
+        doc = xmlReadFile((const char *) ctxt->URL, NULL, 
+	                  SCHEMAS_PARSE_OPTIONS);
         if (doc == NULL) {
 	    xmlSchemaPErr(ctxt, NULL,
 			  XML_SCHEMAP_FAILED_LOAD,
@@ -4518,7 +4834,8 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
             return (NULL);
         }
     } else if (ctxt->buffer != NULL) {
-        doc = xmlParseMemory(ctxt->buffer, ctxt->size);
+        doc = xmlReadMemory(ctxt->buffer, ctxt->size, NULL, NULL,
+	                    SCHEMAS_PARSE_OPTIONS);
         if (doc == NULL) {
 	    xmlSchemaPErr(ctxt, NULL,
 			  XML_SCHEMAP_FAILED_PARSE,
@@ -4553,62 +4870,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     /*
      * Remove all the blank text nodes
      */
-    delete = NULL;
-    cur = root;
-    while (cur != NULL) {
-        if (delete != NULL) {
-            xmlUnlinkNode(delete);
-            xmlFreeNode(delete);
-            delete = NULL;
-        }
-        if (cur->type == XML_TEXT_NODE) {
-            if (IS_BLANK_NODE(cur)) {
-                if (xmlNodeGetSpacePreserve(cur) != 1) {
-                    delete = cur;
-                }
-            }
-        } else if ((cur->type != XML_ELEMENT_NODE) &&
-                   (cur->type != XML_CDATA_SECTION_NODE)) {
-            delete = cur;
-            goto skip_children;
-        }
-
-        /*
-         * Skip to next node
-         */
-        if (cur->children != NULL) {
-            if ((cur->children->type != XML_ENTITY_DECL) &&
-                (cur->children->type != XML_ENTITY_REF_NODE) &&
-                (cur->children->type != XML_ENTITY_NODE)) {
-                cur = cur->children;
-                continue;
-            }
-        }
-      skip_children:
-        if (cur->next != NULL) {
-            cur = cur->next;
-            continue;
-        }
-
-        do {
-            cur = cur->parent;
-            if (cur == NULL)
-                break;
-            if (cur == root) {
-                cur = NULL;
-                break;
-            }
-            if (cur->next != NULL) {
-                cur = cur->next;
-                break;
-            }
-        } while (cur != NULL);
-    }
-    if (delete != NULL) {
-        xmlUnlinkNode(delete);
-        xmlFreeNode(delete);
-        delete = NULL;
-    }
+    xmlSchemaCleanupDoc(ctxt, root);
 
     /*
      * Then do the parsing for good

@@ -361,6 +361,7 @@ struct _xmlSchema {
     void *_private;	/* unused by the library for users or bindings */
     xmlHashTablePtr groupDecl;
     xmlDictPtr      dict;
+    void *includes;     /* the includes, this is opaque for now */
 };
 
 XMLPUBFUN void XMLCALL 	xmlSchemaFreeType	(xmlSchemaTypePtr type);

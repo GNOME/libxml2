@@ -1,3 +1,11 @@
+Tue Nov 25 16:36:21 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/schemasInternals.h include/libxml/xmlerror.h
+	  testSchemas.c xmlschemas.c: added xsd:include support, fixed
+	  testSchemas behaviour when a schemas failed to parse.
+	* test/schemas/vdv-* result/schemas/vdv-first5_0_0*: added one
+	  test for xsd:include from Eric Van der Vlist
+
 Tue Nov 25 08:18:12 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: swapped the attribute defaulting and attribute checking

@@ -120,6 +120,8 @@ int main(int argc, char **argv) {
 		    xmlSchemaDump(stdout, schema);
 #endif
 #endif /* LIBXML_OUTPUT_ENABLED */
+		if (schema == NULL)
+		    goto failed_schemas;
 	    } else {
 		xmlDocPtr doc;
 
@@ -166,6 +168,7 @@ int main(int argc, char **argv) {
 	printf("\t--memory : test the schemas in memory parsing\n");
 #endif
     }
+failed_schemas:
     xmlSchemaCleanupTypes();
     xmlCleanupParser();
     xmlMemoryDump();

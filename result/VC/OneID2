@@ -1,0 +1,3 @@
+./test/VC/OneID2:4: validity error: Element doc has too may ID attributes defined : val
+<!ELEMENT doc (#PCDATA)>
+                       ^

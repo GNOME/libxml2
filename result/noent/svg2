@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG April 1999//EN" "http://www.w3.org/Graphics/SVG/svg-19990412.dtd">
+<svg width="" height="">
+  <g style="">
+    <path d=""/>
+    <path d=""/>
+  </g>
+  <g style="">
+    <polyline verts=""/>
+  </g>
+  <g style=""/>
+  <g style="">
+    <rect x="" y="" width="" height=""/>
+  </g>
+  <g style="">
+    <ellipse cx="" cy="" major="" minor="" angle=""/>
+  </g>
+  <g style="">
+    <polyline verts=""/>
+    <g>
+      <desc> Java Font definition:Dialog 0</desc>
+    </g>
+    <g>
+      <desc> Java Font definition:Helvetica 0</desc>
+    </g>
+  </g>
+  <g style="">
+    <text x="" y="">this is text</text>
+  </g>
+  <g style="">
+    <g>
+      <desc> Java Font definition:Dialog 0</desc>
+    </g>
+    <g>
+      <desc> Java Font definition:Helvetica 700</desc>
+    </g>
+  </g>
+  <g style="">
+    <text x="" y="">sadfsadfsad</text>
+  </g>
+  <g style=""/>
+  <g style="">
+    <ellipse cx="" cy="" major="" minor="" angle=""/>
+  </g>
+  <g style=""/>
+  <g style="">
+    <g>
+      <desc> Java Font definition:Dialog 700</desc>
+    </g>
+    <g>
+      <desc> Java Font definition:Dialog 700</desc>
+    </g>
+  </g>
+</svg>

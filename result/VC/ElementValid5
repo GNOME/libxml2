@@ -1,0 +1,4 @@
+./test/VC/ElementValid5:7: validity error: Element doc content doesn't follow the Dtd
+Expecting (a , b* , c+), got (a b c b)
+<doc><a/><b> but this</b><c>was not declared</c><b>seems</b></doc>
+                                                                 ^

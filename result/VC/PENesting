@@ -1,0 +1,6 @@
+./test/VC/PENesting:1: error: xmlParseStartTag: invalid element name
+<!ENTITY % pe1 "EMPTY> <!ELEMENT e2 EMPTY>"> 
+ ^
+./test/VC/PENesting:1: error: Extra content at the end of the document
+<!ENTITY % pe1 "EMPTY> <!ELEMENT e2 EMPTY>"> 
+ ^

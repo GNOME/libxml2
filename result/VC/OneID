@@ -1,0 +1,3 @@
+./test/VC/OneID:4: validity error: Element doc has too may ID attributes defined : id
+<!ATTLIST doc id ID #IMPLIED>
+                            ^

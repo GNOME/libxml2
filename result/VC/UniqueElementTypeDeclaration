@@ -1,0 +1,3 @@
+./test/VC/UniqueElementTypeDeclaration:3: validity error: Redefinition of element a
+<!ELEMENT a (#PCDATA | b | c)*>
+                              ^

@@ -1,0 +1,3 @@
+./test/VC/OneID3:2: validity error: Element doc has ID attribute defined in the external subset : id
+<!ATTLIST doc id ID #IMPLIED>
+                            ^

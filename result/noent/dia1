@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<dia:diagram xmlns:dia="http://www.lysator.liu.se/~alla/dia/">
+  <dia:diagramdata>
+    <dia:attribute name="">
+      <dia:color val=""/>
+    </dia:attribute>
+  </dia:diagramdata>
+  <dia:layer name="" visible="">
+    <dia:object type="" version="" id="">
+      <dia:attribute name="">
+        <dia:point val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:rectangle val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:point val=""/>
+        <dia:point val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:color val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:real val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:enum val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:enum val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:enum val=""/>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="" to="" connection=""/>
+      </dia:connections>
+    </dia:object>
+    <dia:object type="" version="" id="">
+      <dia:attribute name="">
+        <dia:point val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:rectangle val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:composite type="">
+          <dia:attribute name="">
+            <dia:string val=""/>
+          </dia:attribute>
+          <dia:attribute name="">
+            <dia:font name=""/>
+          </dia:attribute>
+          <dia:attribute name="">
+            <dia:real val=""/>
+          </dia:attribute>
+          <dia:attribute name="">
+            <dia:point val=""/>
+          </dia:attribute>
+          <dia:attribute name="">
+            <dia:color val=""/>
+          </dia:attribute>
+          <dia:attribute name="">
+            <dia:enum val=""/>
+          </dia:attribute>
+        </dia:composite>
+      </dia:attribute>
+    </dia:object>
+    <dia:object type="" version="" id="">
+      <dia:attribute name="">
+        <dia:point val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:rectangle val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:point val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:real val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:real val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:real val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:color val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:color val=""/>
+      </dia:attribute>
+      <dia:attribute name="">
+        <dia:enum val=""/>
+      </dia:attribute>
+    </dia:object>
+  </dia:layer>
+</dia:diagram>

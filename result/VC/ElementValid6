@@ -1,0 +1,4 @@
+./test/VC/ElementValid6:7: validity error: Element doc content doesn't follow the Dtd
+Expecting (a , b? , c+)?, got (a b)
+<doc><a/><b>lacks c</b></doc>
+                            ^

@@ -138,14 +138,14 @@ AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T)
 
 dnl Checks for isnan in libm if not in libc
 AC_CHECK_FUNC(isnan, , AC_CHECK_LIB(m, isnan,
-  [M_LIBS="-lm"; AC_DEFINE(HAVE_ISNAN)]))
+  [AC_DEFINE(HAVE_ISNAN)]))
 
 AC_CHECK_FUNC(isinf, AC_DEFINE(HAVE_ISINF) , AC_CHECK_LIB(m, isinf,
-  [M_LIBS="-lm"; AC_DEFINE(HAVE_ISINF)]))
+  [AC_DEFINE(HAVE_ISINF)]))
 
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml -I${includedir}'
-XML_LIBS="-lxml2 $Z_LIBS $M_LIBS $LIBS"
+XML_LIBS="-lxml2 $Z_LIBS -lm $LIBS"
 
 dnl
 dnl Extra flags

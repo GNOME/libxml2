@@ -40,7 +40,7 @@ libxml2_la_SOURCES = \
 		nanoftp.c
 
 DEPS = $(top_builddir)/libxml2.la
-LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ @M_LIBS@
+LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ -lm
 
 man_MANS = xmllint.1 xml2-config.1 libxml.4
 

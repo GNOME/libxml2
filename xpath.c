@@ -462,6 +462,157 @@ PUSH_AND_POP(xmlXPathObjectPtr, value)
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)
 
+
+#ifndef DBL_DIG
+#define DBL_DIG 16
+#endif
+#ifndef DBL_EPSILON
+#define DBL_EPSILON 1E-9
+#endif
+
+#define UPPER_DOUBLE 1E9
+#define LOWER_DOUBLE 1E-5
+
+#define INTEGER_DIGITS DBL_DIG
+#define FRACTION_DIGITS (DBL_DIG + 1)
+#define EXPONENT_DIGITS (3 + 2)
+
+/**
+ * xmlXPathFormatNumber:
+ * @number:     number to format
+ * @buffer:     output buffer
+ * @buffersize: size of output buffer
+ *
+ * Convert the number into a string representation.
+ */
+static void
+xmlXPathFormatNumber(double number, char buffer[], int buffersize)
+{
+    switch (isinf(number)) {
+    case 1:
+	if (buffersize > (int)sizeof("+Infinity"))
+	    sprintf(buffer, "+Infinity");
+	break;
+    case -1:
+	if (buffersize > (int)sizeof("-Infinity"))
+	    sprintf(buffer, "-Infinity");
+	break;
+    default:
+	if (isnan(number)) {
+	    if (buffersize > (int)sizeof("NaN"))
+		sprintf(buffer, "NaN");
+	} else {
+	    char work[INTEGER_DIGITS + FRACTION_DIGITS + EXPONENT_DIGITS + 1];
+	    char *pointer;
+	    char *start;
+	    int i;
+	    int digits;
+	    int is_negative;
+	    int use_scientific;
+	    int exponent;
+	    int index;
+	    int count;
+	    double n;
+
+	    i = digits = 0;
+	    is_negative = (number < 0.0);
+	    if (is_negative)
+		number = -number;
+
+	    /* Scale number */
+	    n = log10(number);
+	    exponent = (isinf(n) == -1) ? 0 : (int)n;
+	    use_scientific = (((number <= LOWER_DOUBLE) ||
+			       (number > UPPER_DOUBLE)) &&
+			      (number != 0));
+	    if (use_scientific) {
+		number /= pow(10.0, (double)exponent);
+		while (number < 1.0) {
+		    number *= 10.0;
+		    exponent--;
+		}
+	    }
+	    
+	    /* Integer part is build from back */
+	    pointer = &work[INTEGER_DIGITS + 1];
+	    if (number < 1.0) {
+		*(--pointer) = '0';
+		digits++;
+	    } else {
+		n = number;
+		for (i = 1; i < INTEGER_DIGITS - 1; i++) {
+		    index = (int)n % 10;
+		    *(--pointer) = "0123456789"[index];
+		    n /= 10.0;
+		    if (n < 1.0)
+			break;
+		}
+		digits += i;
+	    }
+	    if (is_negative) {
+		*(--pointer) = '-';
+		digits++;
+	    }
+	    start = pointer;
+
+	    /* Fraction part is build from front */
+	    i = 0;
+	    pointer = &work[INTEGER_DIGITS + 1];
+	    if (number - floor(number) > DBL_EPSILON) {
+		*(pointer++) = '.';
+		i++;
+		n = number;
+		count = 0;
+		while (i < FRACTION_DIGITS) {
+		    n -= floor(n);
+		    n *= 10.0;
+		    index = (int)n % 10;
+		    *(pointer++) = "0123456789"[index];
+		    i++;
+		    if ((index != 0) || (count > 0))
+			count++;
+		    if ((n > 10.0) || (count > FRACTION_DIGITS / 2))
+			break;
+		}
+	    }
+	    /* Remove trailing zeroes */
+	    while ((pointer[-1] == '0') && (i > 0)) {
+		pointer--;
+		i--;
+	    }
+	    digits += i;
+	    
+	    if (use_scientific) {
+		*(pointer++) = 'e';
+		digits++;
+		if (exponent < 0) {
+		    *(pointer++) = '-';
+		    exponent = -exponent;
+		} else {
+		    *(pointer++) = '+';
+		}
+		digits++;
+		if (exponent >= 100)
+		    pointer += 2;
+		else if (exponent >= 10)
+		    pointer += 1;
+		while (exponent >= 1) {
+		    *(pointer--) = "0123456789"[exponent % 10];
+		    exponent /= 10;
+		    digits++;
+		}
+	    }
+
+	    if (digits >= buffersize)
+		digits = buffersize - 1;
+	    
+	    memcpy(buffer, start, digits);
+	    buffer[digits] = 0;
+	}
+	break;
+    }
+}
+
 /************************************************************************
  *									*
  *			Error handling routines				*
@@ -632,7 +783,7 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
  */
 void
 xmlXPathNodeSetSort(xmlNodeSetPtr set) {
-    int i, j, incr, len, rc;
+    int i, j, incr, len;
     xmlNodePtr tmp;
 
     if (set == NULL)
@@ -644,8 +795,8 @@ xmlXPathNodeSetSort(xmlNodeSetPtr set) {
 	for (i = incr; i < len; i++) {
 	    j = i - incr;
 	    while (j >= 0) {
-		rc = xmlXPathCmpNodes(set->nodeTab[j], set->nodeTab[j + incr]);
-		if (rc != 1 && rc != -2) {
+		if (xmlXPathCmpNodes(set->nodeTab[j],
+				     set->nodeTab[j + incr]) == -1) {
 		    tmp = set->nodeTab[j];
 		    set->nodeTab[j] = set->nodeTab[j + incr];
 		    set->nodeTab[j + incr] = tmp;
@@ -2093,15 +2244,7 @@ xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, double f) {
 	((arg->type != XPATH_NODESET) && (arg->type != XPATH_XSLT_TREE)))
         return(0);
 
-    if (isnan(f))
-	sprintf(buf, "NaN");
-    else if (isinf(f) > 0)
-	sprintf(buf, "+Infinity");
-    else if (isinf(f) < 0)
-	sprintf(buf, "-Infinity");
-    else
-	sprintf(buf, "%0g", f);
-
+    xmlXPathFormatNumber(f, buf, sizeof(buf));
     return(xmlXPathEqualNodeSetString(arg, BAD_CAST buf));
 }
 
@@ -3191,6 +3334,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
     xmlNodePtr cur = NULL;
     xmlXPathObjectPtr obj;
     xmlNodeSetPtr nodelist;
+    xmlNodePtr tmp;
 
     CHECK_TYPE(XPATH_NODESET);
     obj = valuePop(ctxt);
@@ -3343,6 +3487,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
      * principal node type. For example, child::* willi
      * select all element children of the context node
      */
+    tmp = ctxt->context->node;
     for (i = 0;i < nodelist->nodeNr; i++) {
         ctxt->context->node = nodelist->nodeTab[i];
 
@@ -3356,6 +3501,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #endif
 	    switch (test) {
                 case NODE_TEST_NONE:
+		    ctxt->context->node = tmp;
 		    STRANGE
 		    return;
                 case NODE_TEST_TYPE:
@@ -3483,6 +3629,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 	    }
 	} while (cur != NULL);
     }
+    ctxt->context->node = tmp;
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext,
             "\nExamined %d nodes, found %d nodes at that step\n", t, n);
@@ -3944,14 +4091,7 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	case XPATH_NUMBER: {
 	    char buf[100];
 
-	    if (isnan(cur->floatval))
-	        sprintf(buf, "NaN");
-	    else if (isinf(cur->floatval) > 0)
-	        sprintf(buf, "+Infinity");
-	    else if (isinf(cur->floatval) < 0)
-	        sprintf(buf, "-Infinity");
-	    else
-		sprintf(buf, "%0g", cur->floatval);
+	    xmlXPathFormatNumber(cur->floatval, buf, sizeof(buf));
 	    valuePush(ctxt, xmlXPathNewCString(buf));
 	    xmlXPathFreeObject(cur);
 	    return;

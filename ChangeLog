@@ -1,3 +1,12 @@
+Sat Mar  3 13:04:37 CET 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* xpath.c: Fixed xmlXPathNodeCollectAndTest (problem reported
+	  and fixed by William Brack). Added xmlXPathFormatNumber.
+	  Changed the sorting slightly.
+	* configure.in Makefile.am example/Makefile.am: Added -lm.
+	  Please note that applications linking with libxml2, must
+	  also like with the math library from now on.
+
 Sat Mar  3 07:38:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: fixed loop reported by Marc Sanfacon

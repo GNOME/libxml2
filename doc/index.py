@@ -60,6 +60,12 @@ TABLES={
 	   KEY name (name),
 	   KEY symbol (symbol),
 	   UNIQUE KEY ID (name, symbol))""",
+  "Queries" : """CREATE TABLE Queries (
+           ID int(11) NOT NULL auto_increment,
+	   Value varchar(50) NOT NULL,
+	   Count int(11) NOT NULL,
+	   UNIQUE KEY id (ID,Value(35)),
+	   INDEX (ID))""",
 }
 
 #
@@ -118,6 +124,7 @@ def checkTables(db):
     # make sure apache can access the tables read-only
     try:
 	ret = c.execute("GRANT SELECT ON xmlsoft.* TO nobody@localhost")
+	ret = c.execute("GRANT INSERT,SELECT,UPDATE  ON xmlsoft.Queries TO nobody@localhost")
     except:
         pass
     return 0

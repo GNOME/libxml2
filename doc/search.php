@@ -92,7 +92,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     // We handle only the first argument so far
     $query = ltrim ($query);
     if (! $query) {
-        echo "<h1 align='center'>Search the documentation on XMLSoft.org</h1>";
+        echo "<h1 align='center'>Search the X documentation on XMLSoft.org</h1>";
     }
 ?>
 <p> The search service indexes only the XML API at the moment. To use it
@@ -104,6 +104,23 @@ simply provide a set of keywords:
   <input name=submit type=submit value="Search ...">
 </form>
 <?php
+    function logQueryWord($word) {
+        $result = mysql_query ("SELECT ID,Count FROM Queries WHERE Value='$word'");
+	if ($result) {
+	    $i = mysql_num_rows($result);
+	    if ($i == 0) {
+	        mysql_free_result($result);
+		mysql_query ("INSERT INTO Queries (Value,Count) VALUES ('$word',1)");
+	    } else {
+	        $id = mysql_result($result, 0, 0);
+		$count = mysql_result($result, 0, 1);
+		$count ++;
+		mysql_query ("UPDATE Queries SET Count=$count WHERE ID=$id");
+	    }
+	} else {
+	    mysql_query ("INSERT INTO Queries (Value,Count) VALUES ('$word',1)");
+	}
+    }
     function queryWord($word) {
         $result = NULL;
 	$j = 0;
@@ -114,6 +131,7 @@ simply provide a set of keywords:
 		if ($j == 0) 
 		    mysql_free_result($result);
 	    }
+	    logQueryWord($word);
 	}
 	return array($result, $j);
     }

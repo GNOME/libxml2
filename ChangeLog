@@ -1,3 +1,8 @@
+Sat Jan 15 18:44:30 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.py: make __str__ call serialize() on nodes, c.f. 
+	  bug #157872
+
 Sat Jan 15 18:18:07 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c: applied patch from Dan McNichol for compilation on AIX

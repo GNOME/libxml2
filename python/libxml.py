@@ -231,6 +231,8 @@ class xmlCore:
             self._o = _obj;
             return
         self._o = None
+    def __str__(self):
+        return self.serialize()
     def get_parent(self):
         ret = libxml2mod.parent(self._o)
         if ret == None:

@@ -1,3 +1,8 @@
+Wed Oct 29 13:52:25 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied a couple of patches from Mark Lilback about text
+	  nodes coalescing
+
 Wed Oct 29 12:16:52 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: change suggested by Anthony Carrico when unregistering

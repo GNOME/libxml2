@@ -2989,7 +2989,8 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 
     xmlUnlinkNode(elem);
 
-    if ((cur->type == XML_TEXT_NODE) && (elem->type == XML_TEXT_NODE)) {
+    if ((cur->type == XML_TEXT_NODE) && (elem->type == XML_TEXT_NODE) &&
+        (cur->name == elem->name)) {
 	xmlNodeAddContent(cur, elem->content);
 	xmlFreeNode(elem);
 	return(cur);
@@ -3129,6 +3130,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (cur->type == XML_TEXT_NODE) {
 	if ((parent->type == XML_TEXT_NODE) &&
 	    (parent->content != NULL) &&
+	    (parent->name == cur->name) &&
 	    (parent != cur)) {
 	    xmlNodeAddContent(parent, cur->content);
 	    xmlFreeNode(cur);

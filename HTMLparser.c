@@ -372,100 +372,417 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  *             2 means that this element is valid only in the Frameset DTD
  *
  * Name,Start Tag,End Tag,Save End,Empty,Deprecated,DTD,inline,Description
+	, subElements , impliedsubelt , Attributes, userdata
  */
+
+/* Definitions and a couple of vars for HTML Elements */
+
+#define FONTSTYLE "tt", "i", "b", "u", "s", "strike", "big", "small"
+#define PHRASE "em", "strong", "dfn", "code", "samp", "kbd", "var", "cite", "abbr", "acronym"
+#define SPECIAL "a", "img", "applet", "object", "font", "basefont", "br", "script", "map", "q", "sub", "sup", "span", "bdo", "iframe"
+#define INLINE PCDATA FONTSTYLE PHRASE SPECIAL FORMCTRL
+#define BLOCK HEADING LIST "pre", "p", "dl", "div", "center", "noscript", "noframes", "blockquote", "form", "isindex", "hr", "table", "fieldset", "address"
+#define FORMCTRL "input", "select", "textarea", "label", "button"
+#define PCDATA
+#define HEADING "h1", "h2", "h3", "h4", "h5", "h6"
+#define LIST "ul", "ol", "dir", "menu"
+#define MODIFIER
+#define FLOW BLOCK,INLINE
+#define EMPTY NULL
+
+
+static const char* html_flow[] = { FLOW, NULL } ;
+static const char* html_inline[] = { INLINE, NULL } ;
+
+/* placeholders: elts with content but no subelements */
+static const char* html_pcdata[] = { NULL } ;
+#define html_cdata html_pcdata
+
+
+/* ... and for HTML Attributes */
+
+#define COREATTRS "id", "class", "style", "title"
+#define I18N "lang", "dir"
+#define EVENTS "onclick", "ondblclick", "onmousedown", "onmouseup", "onmouseover", "onmouseout", "onkeypress", "onkeydown", "onkeyup"
+#define ATTRS COREATTRS,I18N,EVENTS
+#define CELLHALIGN "align", "char", "charoff"
+#define CELLVALIGN "valign"
+
+static const char* html_attrs[] = { ATTRS, NULL } ;
+static const char* core_i18n_attrs[] = { COREATTRS, I18N, NULL } ;
+static const char* core_attrs[] = { COREATTRS, NULL } ;
+static const char* i18n_attrs[] = { I18N, NULL } ;
+
+
+/* Other declarations that should go inline ... */
+static const char* a_attrs[] = { ATTRS, "charset", "type", "name",
+	"href", "hreflang", "rel", "rev", "accesskey", "shape", "coords",
+	"tabindex", "onfocus", "onblur", NULL } ;
+static const char* target_attr[] = { "target", NULL } ;
+static const char* rows_cols_attr[] = { "rows", "cols", NULL } ;
+static const char* alt_attr[] = { "alt", NULL } ;
+static const char* src_alt_attrs[] = { "src", "alt", NULL } ;
+static const char* href_attrs[] = { "href", NULL } ;
+static const char* clear_attrs[] = { "clear", NULL } ;
+static const char* inline_p[] = { INLINE, "p", NULL } ;
+static const char* flow_param[] = { FLOW, "param", NULL } ;
+static const char* applet_attrs[] = { COREATTRS , "codebase",
+		"archive", "alt", "name", "height", "width", "align",
+		"hspace", "vspace", NULL } ;
+static const char* area_attrs[] = { "shape", "coords", "href", "nohref",
+	"tabindex", "accesskey", "onfocus", "onblur", NULL } ;
+static const char* basefont_attrs[] =
+	{ "id", "size", "color", "face", NULL } ;
+static const char* quote_attrs[] = { ATTRS, "cite", NULL } ;
+static const char* body_contents[] = { FLOW, "ins", "del", NULL } ;
+static const char* body_attrs[] = { ATTRS, "onload", "onunload", NULL } ;
+static const char* body_depr[] = { "background", "bgcolor", "text",
+	"link", "vlink", "alink", NULL } ;
+static const char* button_attrs[] = { ATTRS, "name", "value", "type",
+	"disabled", "tabindex", "accesskey", "onfocus", "onblur", NULL } ;
+
+
+static const char* col_attrs[] = { ATTRS, "span", "width", CELLHALIGN, CELLVALIGN, NULL } ;
+static const char* col_elt[] = { "col", NULL } ;
+static const char* edit_attrs[] = { ATTRS, "datetime", "cite", NULL } ;
+static const char* compact_attrs[] = { ATTRS, "compact", NULL } ;
+static const char* dl_contents[] = { "dt", "dd", NULL } ;
+static const char* compact_attr[] = { "compact", NULL } ;
+static const char* label_attr[] = { "label", NULL } ;
+static const char* fieldset_contents[] = { FLOW, "legend" } ;
+static const char* font_attrs[] = { COREATTRS, I18N, "size", "color", "face" , NULL } ;
+static const char* form_contents[] = { HEADING, LIST, INLINE, "pre", "p", "div", "center", "noscript", "noframes", "blockquote", "isindex", "hr", "table", "fieldset", "address", NULL } ;
+static const char* form_attrs[] = { ATTRS, "method", "enctype", "accept", "name", "onsubmit", "onreset", "accept-charset", NULL } ;
+static const char* frame_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "noresize", "scrolling" , NULL } ;
+static const char* frameset_attrs[] = { COREATTRS, "rows", "cols", "onload", "onunload", NULL } ;
+static const char* frameset_contents[] = { "frameset", "frame", "noframes", NULL } ;
+static const char* head_attrs[] = { I18N, "profile", NULL } ;
+static const char* head_contents[] = { "title", "isindex", "base", "script", "style", "meta", "link", "object", NULL } ;
+static const char* hr_depr[] = { "align", "noshade", "size", "width", NULL } ;
+static const char* version_attr[] = { "version", NULL } ;
+static const char* html_content[] = { "head", "body", "frameset", NULL } ;
+static const char* iframe_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "scrolling", "align", "height", "width", NULL } ;
+static const char* img_attrs[] = { ATTRS, "longdesc", "name", "height", "width", "usemap", "ismap", NULL } ;
+static const char* input_attrs[] = { ATTRS, "type", "name", "value", "checked", "disabled", "readonly", "size", "maxlength", "src", "alt", "usemap", "ismap", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", "accept", NULL } ;
+static const char* prompt_attrs[] = { COREATTRS, I18N, "prompt", NULL } ;
+static const char* label_attrs[] = { ATTRS, "for", "accesskey", "onfocus", "onblur", NULL } ;
+static const char* legend_attrs[] = { ATTRS, "accesskey", NULL } ;
+static const char* align_attr[] = { "align", NULL } ;
+static const char* link_attrs[] = { ATTRS, "charset", "href", "hreflang", "type", "rel", "rev", "media", NULL } ;
+static const char* map_contents[] = { BLOCK, "area", NULL } ;
+static const char* name_attr[] = { "name", NULL } ;
+static const char* action_attr[] = { "action", NULL } ;
+static const char* blockli_elt[] = { BLOCK, "li", NULL } ;
+static const char* meta_attrs[] = { I18N, "http-equiv", "name", "scheme", NULL } ;
+static const char* content_attr[] = { "content", NULL } ;
+static const char* type_attr[] = { "type", NULL } ;
+static const char* noframes_content[] = { "body", FLOW MODIFIER, NULL } ;
+static const char* object_contents[] = { FLOW, "param", NULL } ;
+static const char* object_attrs[] = { ATTRS, "declare", "classid", "codebase", "data", "type", "codetype", "archive", "standby", "height", "width", "usemap", "name", "tabindex", NULL } ;
+static const char* object_depr[] = { "align", "border", "hspace", "vspace", NULL } ;
+static const char* ol_attrs[] = { "type", "compact", "start", NULL} ;
+static const char* option_elt[] = { "option", NULL } ;
+static const char* optgroup_attrs[] = { ATTRS, "disabled", NULL } ;
+static const char* option_attrs[] = { ATTRS, "disabled", "label", "selected", "value", NULL } ;
+static const char* param_attrs[] = { "id", "value", "valuetype", "type", NULL } ;
+static const char* width_attr[] = { "width", NULL } ;
+static const char* pre_content[] = { PHRASE, "tt", "i", "b", "u", "s", "strike", "a", "br", "script", "map", "q", "span", "bdo", "iframe", NULL } ;
+static const char* script_attrs[] = { "charset", "src", "defer", "event", "for", NULL } ;
+static const char* language_attr[] = { "language", NULL } ;
+static const char* select_content[] = { "optgroup", "option", NULL } ;
+static const char* select_attrs[] = { ATTRS, "name", "size", "multiple", "disabled", "tabindex", "onfocus", "onblur", "onchange", NULL } ;
+static const char* style_attrs[] = { I18N, "media", "title", NULL } ;
+static const char* table_attrs[] = { ATTRS "summary", "width", "border", "frame", "rules", "cellspacing", "cellpadding", "datapagesize", NULL } ;
+static const char* table_depr[] = { "align", "bgcolor", NULL } ;
+static const char* table_contents[] = { "caption", "col", "colgroup", "thead", "tfoot", "tbody", "tr", NULL} ;
+static const char* tr_elt[] = { "tr", NULL } ;
+static const char* talign_attrs[] = { ATTRS, CELLHALIGN, CELLVALIGN, NULL} ;
+static const char* th_td_depr[] = { "nowrap", "bgcolor", "width", "height", NULL } ;
+static const char* th_td_attr[] = { ATTRS, "abbr", "axis", "headers", "scope", "rowspan", "colspan", CELLHALIGN, CELLVALIGN, NULL } ;
+static const char* textarea_attrs[] = { ATTRS, "name", "disabled", "readonly", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", NULL } ;
+static const char* tr_contents[] = { "th", "td", NULL } ;
+static const char* bgcolor_attr[] = { "bgcolor", NULL } ;
+static const char* li_elt[] = { "li", NULL } ;
+static const char* ul_depr[] = { "type", "compact", NULL} ;
+static const char* dir_attr[] = { "dir", NULL} ;
+
+#define DECL (const char**)
+
 static const htmlElemDesc
 html40ElementTable[] = {
-{ "a",		0, 0, 0, 0, 0, 0, 1, "anchor " },
-{ "abbr",	0, 0, 0, 0, 0, 0, 1, "abbreviated form" },
-{ "acronym",	0, 0, 0, 0, 0, 0, 1, "" },
-{ "address",	0, 0, 0, 0, 0, 0, 0, "information on author " },
-{ "applet",	0, 0, 0, 0, 1, 1, 2, "java applet " },
-{ "area",	0, 2, 2, 1, 0, 0, 0, "client-side image map area " },
-{ "b",		0, 3, 0, 0, 0, 0, 1, "bold text style" },
-{ "base",	0, 2, 2, 1, 0, 0, 0, "document base uri " },
-{ "basefont",	0, 2, 2, 1, 1, 1, 1, "base font size " },
-{ "bdo",	0, 0, 0, 0, 0, 0, 1, "i18n bidi over-ride " },
-{ "big",	0, 3, 0, 0, 0, 0, 1, "large text style" },
-{ "blockquote",	0, 0, 0, 0, 0, 0, 0, "long quotation " },
-{ "body",	1, 1, 0, 0, 0, 0, 0, "document body " },
-{ "br",		0, 2, 2, 1, 0, 0, 1, "forced line break " },
-{ "button",	0, 0, 0, 0, 0, 0, 2, "push button " },
-{ "caption",	0, 0, 0, 0, 0, 0, 0, "table caption " },
-{ "center",	0, 3, 0, 0, 1, 1, 0, "shorthand for div align=center " },
-{ "cite",	0, 0, 0, 0, 0, 0, 1, "citation" },
-{ "code",	0, 0, 0, 0, 0, 0, 1, "computer code fragment" },
-{ "col",	0, 2, 2, 1, 0, 0, 0, "table column " },
-{ "colgroup",	0, 1, 0, 0, 0, 0, 0, "table column group " },
-{ "dd",		0, 1, 0, 0, 0, 0, 0, "definition description " },
-{ "del",	0, 0, 0, 0, 0, 0, 2, "deleted text " },
-{ "dfn",	0, 0, 0, 0, 0, 0, 1, "instance definition" },
-{ "dir",	0, 0, 0, 0, 1, 1, 0, "directory list" },
-{ "div",	0, 0, 0, 0, 0, 0, 0, "generic language/style container"},
-{ "dl",		0, 0, 0, 0, 0, 0, 0, "definition list " },
-{ "dt",		0, 1, 0, 0, 0, 0, 0, "definition term " },
-{ "em",		0, 3, 0, 0, 0, 0, 1, "emphasis" },
-{ "fieldset",	0, 0, 0, 0, 0, 0, 0, "form control group " },
-{ "font",	0, 3, 0, 0, 1, 1, 1, "local change to font " },
-{ "form",	0, 0, 0, 0, 0, 0, 0, "interactive form " },
-{ "frame",	0, 2, 2, 1, 0, 2, 0, "subwindow " },
-{ "frameset",	0, 0, 0, 0, 0, 2, 0, "window subdivision" },
-{ "h1",		0, 0, 0, 0, 0, 0, 0, "heading " },
-{ "h2",		0, 0, 0, 0, 0, 0, 0, "heading " },
-{ "h3",		0, 0, 0, 0, 0, 0, 0, "heading " },
-{ "h4",		0, 0, 0, 0, 0, 0, 0, "heading " },
-{ "h5",		0, 0, 0, 0, 0, 0, 0, "heading " },
-{ "h6",		0, 0, 0, 0, 0, 0, 0, "heading " },
-{ "head",	1, 1, 0, 0, 0, 0, 0, "document head " },
-{ "hr",		0, 2, 2, 1, 0, 0, 0, "horizontal rule " },
-{ "html",	1, 1, 0, 0, 0, 0, 0, "document root element " },
-{ "i",		0, 3, 0, 0, 0, 0, 1, "italic text style" },
-{ "iframe",	0, 0, 0, 0, 0, 1, 2, "inline subwindow " },
-{ "img",	0, 2, 2, 1, 0, 0, 1, "embedded image " },
-{ "input",	0, 2, 2, 1, 0, 0, 1, "form control " },
-{ "ins",	0, 0, 0, 0, 0, 0, 2, "inserted text" },
-{ "isindex",	0, 2, 2, 1, 1, 1, 0, "single line prompt " },
-{ "kbd",	0, 0, 0, 0, 0, 0, 1, "text to be entered by the user" },
-{ "label",	0, 0, 0, 0, 0, 0, 1, "form field label text " },
-{ "legend",	0, 0, 0, 0, 0, 0, 0, "fieldset legend " },
-{ "li",		0, 1, 1, 0, 0, 0, 0, "list item " },
-{ "link",	0, 2, 2, 1, 0, 0, 0, "a media-independent link " },
-{ "map",	0, 0, 0, 0, 0, 0, 2, "client-side image map " },
-{ "menu",	0, 0, 0, 0, 1, 1, 0, "menu list " },
-{ "meta",	0, 2, 2, 1, 0, 0, 0, "generic metainformation " },
-{ "noframes",	0, 0, 0, 0, 0, 2, 0, "alternate content container for non frame-based rendering " },
-{ "noscript",	0, 0, 0, 0, 0, 0, 0, "alternate content container for non script-based rendering " },
-{ "object",	0, 0, 0, 0, 0, 0, 2, "generic embedded object " },
-{ "ol",		0, 0, 0, 0, 0, 0, 0, "ordered list " },
-{ "optgroup",	0, 0, 0, 0, 0, 0, 0, "option group " },
-{ "option",	0, 1, 0, 0, 0, 0, 0, "selectable choice " },
-{ "p",		0, 1, 0, 0, 0, 0, 0, "paragraph " },
-{ "param",	0, 2, 2, 1, 0, 0, 0, "named property value " },
-{ "pre",	0, 0, 0, 0, 0, 0, 0, "preformatted text " },
-{ "q",		0, 0, 0, 0, 0, 0, 1, "short inline quotation " },
-{ "s",		0, 3, 0, 0, 1, 1, 1, "strike-through text style" },
-{ "samp",	0, 0, 0, 0, 0, 0, 1, "sample program output, scripts, etc." },
-{ "script",	0, 0, 0, 0, 0, 0, 2, "script statements " },
-{ "select",	0, 0, 0, 0, 0, 0, 1, "option selector " },
-{ "small",	0, 3, 0, 0, 0, 0, 1, "small text style" },
-{ "span",	0, 0, 0, 0, 0, 0, 1, "generic language/style container " },
-{ "strike",	0, 3, 0, 0, 1, 1, 1, "strike-through text" },
-{ "strong",	0, 3, 0, 0, 0, 0, 1, "strong emphasis" },
-{ "style",	0, 0, 0, 0, 0, 0, 0, "style info " },
-{ "sub",	0, 3, 0, 0, 0, 0, 1, "subscript" },
-{ "sup",	0, 3, 0, 0, 0, 0, 1, "superscript " },
-{ "table",	0, 0, 0, 0, 0, 0, 0, "&#160;" },
-{ "tbody",	1, 0, 0, 0, 0, 0, 0, "table body " },
-{ "td",		0, 0, 0, 0, 0, 0, 0, "table data cell" },
-{ "textarea",	0, 0, 0, 0, 0, 0, 1, "multi-line text field " },
-{ "tfoot",	0, 1, 0, 0, 0, 0, 0, "table footer " },
-{ "th",		0, 1, 0, 0, 0, 0, 0, "table header cell" },
-{ "thead",	0, 1, 0, 0, 0, 0, 0, "table header " },
-{ "title",	0, 0, 0, 0, 0, 0, 0, "document title " },
-{ "tr",		0, 0, 0, 0, 0, 0, 0, "table row " },
-{ "tt",		0, 3, 0, 0, 0, 0, 1, "teletype or monospaced text style" },
-{ "u",		0, 3, 0, 0, 1, 1, 1, "underlined text style" },
-{ "ul",		0, 0, 0, 0, 0, 0, 0, "unordered list " },
-{ "var",	0, 0, 0, 0, 0, 0, 1, "instance of a variable or program argument" },
+{ "a",		0, 0, 0, 0, 0, 0, 1, "anchor ",
+	DECL html_inline , NULL , DECL a_attrs , DECL target_attr, NULL
+},
+{ "abbr",	0, 0, 0, 0, 0, 0, 1, "abbreviated form",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "acronym",	0, 0, 0, 0, 0, 0, 1, "",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "address",	0, 0, 0, 0, 0, 0, 0, "information on author ",
+	DECL inline_p  , NULL , DECL html_attrs, NULL, NULL
+},
+{ "applet",	0, 0, 0, 0, 1, 1, 2, "java applet ",
+	DECL flow_param , NULL , NULL , DECL applet_attrs, NULL
+},
+{ "area",	0, 2, 2, 1, 0, 0, 0, "client-side image map area ",
+	EMPTY ,  NULL , DECL area_attrs , DECL target_attr, DECL alt_attr
+},
+{ "b",		0, 3, 0, 0, 0, 0, 1, "bold text style",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "base",	0, 2, 2, 1, 0, 0, 0, "document base uri ",
+	EMPTY , NULL , NULL , DECL target_attr, DECL href_attrs
+},
+{ "basefont",	0, 2, 2, 1, 1, 1, 1, "base font size " ,
+	EMPTY , NULL , NULL, DECL basefont_attrs, NULL
+},
+{ "bdo",	0, 0, 0, 0, 0, 0, 1, "i18n bidi over-ride ",
+	DECL html_inline , NULL , DECL core_i18n_attrs, NULL, DECL dir_attr
+},
+{ "big",	0, 3, 0, 0, 0, 0, 1, "large text style",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "blockquote",	0, 0, 0, 0, 0, 0, 0, "long quotation ",
+	DECL html_flow , NULL , DECL quote_attrs , NULL, NULL
+},
+{ "body",	1, 1, 0, 0, 0, 0, 0, "document body ",
+	DECL body_contents , "div" , DECL body_attrs, DECL body_depr, NULL
+},
+{ "br",		0, 2, 2, 1, 0, 0, 1, "forced line break ",
+	EMPTY , NULL , DECL core_attrs, DECL clear_attrs , NULL
+},
+{ "button",	0, 0, 0, 0, 0, 0, 2, "push button ",
+	DECL html_flow MODIFIER , NULL , DECL button_attrs, NULL, NULL
+},
+{ "caption",	0, 0, 0, 0, 0, 0, 0, "table caption ",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "center",	0, 3, 0, 0, 1, 1, 0, "shorthand for div align=center ",
+	DECL html_flow , NULL , NULL, DECL html_attrs, NULL
+},
+{ "cite",	0, 0, 0, 0, 0, 0, 1, "citation",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "code",	0, 0, 0, 0, 0, 0, 1, "computer code fragment",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "col",	0, 2, 2, 1, 0, 0, 0, "table column ",
+	EMPTY , NULL , DECL col_attrs , NULL, NULL
+},
+{ "colgroup",	0, 1, 0, 0, 0, 0, 0, "table column group ",
+	DECL col_elt , "col" , DECL col_attrs , NULL, NULL
+},
+{ "dd",		0, 1, 0, 0, 0, 0, 0, "definition description ",
+	DECL html_flow , NULL , DECL html_attrs, NULL, NULL
+},
+{ "del",	0, 0, 0, 0, 0, 0, 2, "deleted text ",
+	DECL html_flow , NULL , DECL edit_attrs , NULL, NULL
+},
+{ "dfn",	0, 0, 0, 0, 0, 0, 1, "instance definition",
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+},
+{ "dir",	0, 0, 0, 0, 1, 1, 0, "directory list",
+	DECL blockli_elt, "li" , NULL, DECL compact_attrs, NULL
+},
+{ "div",	0, 0, 0, 0, 0, 0, 0, "generic language/style container",
+	DECL html_flow, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "dl",		0, 0, 0, 0, 0, 0, 0, "definition list ",
+	DECL dl_contents , "dd" , html_attrs, DECL compact_attr, NULL
+},
+{ "dt",		0, 1, 0, 0, 0, 0, 0, "definition term ",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "em",		0, 3, 0, 0, 0, 0, 1, "emphasis",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "fieldset",	0, 0, 0, 0, 0, 0, 0, "form control group ",
+	DECL fieldset_contents , NULL, DECL html_attrs, NULL, NULL
+},
+{ "font",	0, 3, 0, 0, 1, 1, 1, "local change to font ",
+	DECL html_inline, NULL, NULL, DECL font_attrs, NULL
+},
+{ "form",	0, 0, 0, 0, 0, 0, 0, "interactive form ",
+	DECL form_contents, "fieldset", DECL form_attrs , DECL target_attr, DECL action_attr
+},
+{ "frame",	0, 2, 2, 1, 0, 2, 0, "subwindow " ,
+	EMPTY, NULL, NULL, DECL frame_attrs, NULL
+},
+{ "frameset",	0, 0, 0, 0, 0, 2, 0, "window subdivision" ,
+	DECL frameset_contents, "noframes" , NULL , DECL frameset_attrs, NULL
+},
+{ "h1",		0, 0, 0, 0, 0, 0, 0, "heading ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "h2",		0, 0, 0, 0, 0, 0, 0, "heading ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "h3",		0, 0, 0, 0, 0, 0, 0, "heading ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "h4",		0, 0, 0, 0, 0, 0, 0, "heading ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "h5",		0, 0, 0, 0, 0, 0, 0, "heading ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "h6",		0, 0, 0, 0, 0, 0, 0, "heading ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "head",	1, 1, 0, 0, 0, 0, 0, "document head ",
+	DECL head_contents, NULL, DECL head_attrs, NULL, NULL
+},
+{ "hr",		0, 2, 2, 1, 0, 0, 0, "horizontal rule " ,
+	EMPTY, NULL, DECL html_attrs, DECL hr_depr, NULL
+},
+{ "html",	1, 1, 0, 0, 0, 0, 0, "document root element ",
+	DECL html_content , NULL , DECL i18n_attrs, DECL version_attr, NULL
+},
+{ "i",		0, 3, 0, 0, 0, 0, 1, "italic text style",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "iframe",	0, 0, 0, 0, 0, 1, 2, "inline subwindow ",
+	DECL html_flow, NULL, NULL, DECL iframe_attrs, NULL
+},
+{ "img",	0, 2, 2, 1, 0, 0, 1, "embedded image ",
+	EMPTY, NULL, DECL img_attrs, DECL align_attr, src_alt_attrs
+},
+{ "input",	0, 2, 2, 1, 0, 0, 1, "form control ",
+	EMPTY, NULL, DECL input_attrs , DECL align_attr, NULL
+},
+{ "ins",	0, 0, 0, 0, 0, 0, 2, "inserted text",
+	DECL html_flow, NULL, DECL edit_attrs, NULL, NULL
+},
+{ "isindex",	0, 2, 2, 1, 1, 1, 0, "single line prompt ",
+	EMPTY, NULL, NULL, DECL prompt_attrs, NULL
+},
+{ "kbd",	0, 0, 0, 0, 0, 0, 1, "text to be entered by the user",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "label",	0, 0, 0, 0, 0, 0, 1, "form field label text ",
+	DECL html_inline MODIFIER, NULL, DECL label_attrs , NULL, NULL
+},
+{ "legend",	0, 0, 0, 0, 0, 0, 0, "fieldset legend ",
+	DECL html_inline, NULL, DECL legend_attrs , DECL align_attr, NULL
+},
+{ "li",		0, 1, 1, 0, 0, 0, 0, "list item ",
+	DECL html_flow, NULL, DECL html_attrs, NULL, NULL
+},
+{ "link",	0, 2, 2, 1, 0, 0, 0, "a media-independent link ",
+	EMPTY, NULL, DECL link_attrs, DECL target_attr, NULL
+},
+{ "map",	0, 0, 0, 0, 0, 0, 2, "client-side image map ",
+	DECL map_contents , NULL, DECL html_attrs , NULL, name_attr
+},
+{ "menu",	0, 0, 0, 0, 1, 1, 0, "menu list ",
+	DECL blockli_elt , NULL, NULL, DECL compact_attrs, NULL
+},
+{ "meta",	0, 2, 2, 1, 0, 0, 0, "generic metainformation ",
+	EMPTY, NULL, DECL meta_attrs , NULL , DECL content_attr
+},
+{ "noframes",	0, 0, 0, 0, 0, 2, 0, "alternate content container for non frame-based rendering ",
+	DECL noframes_content, "body" , DECL html_attrs, NULL, NULL
+},
+{ "noscript",	0, 0, 0, 0, 0, 0, 0, "alternate content container for non script-based rendering ",
+	DECL html_flow, "div", DECL html_attrs, NULL, NULL
+},
+{ "object",	0, 0, 0, 0, 0, 0, 2, "generic embedded object ",
+	DECL object_contents , "div" , DECL object_attrs, DECL object_depr, NULL
+},
+{ "ol",		0, 0, 0, 0, 0, 0, 0, "ordered list ",
+	DECL li_elt , "li" , DECL html_attrs, DECL ol_attrs, NULL
+},
+{ "optgroup",	0, 0, 0, 0, 0, 0, 0, "option group ",
+	option_elt , "option", DECL optgroup_attrs, NULL, DECL label_attr
+},
+{ "option",	0, 1, 0, 0, 0, 0, 0, "selectable choice " ,
+	DECL html_pcdata, NULL, DECL option_attrs, NULL, NULL
+},
+{ "p",		0, 1, 0, 0, 0, 0, 0, "paragraph ",
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+},
+{ "param",	0, 2, 2, 1, 0, 0, 0, "named property value ",
+	EMPTY, NULL, DECL param_attrs, NULL, name_attr
+},
+{ "pre",	0, 0, 0, 0, 0, 0, 0, "preformatted text ",
+	DECL pre_content, NULL, DECL html_attrs, DECL width_attr, NULL
+},
+{ "q",		0, 0, 0, 0, 0, 0, 1, "short inline quotation ",
+	DECL html_inline, NULL, DECL quote_attrs, NULL, NULL
+},
+{ "s",		0, 3, 0, 0, 1, 1, 1, "strike-through text style",
+	DECL html_inline, NULL, NULL, DECL html_attrs, NULL
+},
+{ "samp",	0, 0, 0, 0, 0, 0, 1, "sample program output, scripts, etc.",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "script",	0, 0, 0, 0, 0, 0, 2, "script statements ",
+	DECL html_cdata, NULL, DECL script_attrs, DECL language_attr, DECL type_attr
+},
+{ "select",	0, 0, 0, 0, 0, 0, 1, "option selector ",
+	DECL select_content, NULL, DECL select_attrs, NULL, NULL
+},
+{ "small",	0, 3, 0, 0, 0, 0, 1, "small text style",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "span",	0, 0, 0, 0, 0, 0, 1, "generic language/style container ",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "strike",	0, 3, 0, 0, 1, 1, 1, "strike-through text",
+	DECL html_inline, NULL, NULL, DECL html_attrs, NULL
+},
+{ "strong",	0, 3, 0, 0, 0, 0, 1, "strong emphasis",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "style",	0, 0, 0, 0, 0, 0, 0, "style info ",
+	DECL html_cdata, NULL, DECL style_attrs, NULL, DECL type_attr
+},
+{ "sub",	0, 3, 0, 0, 0, 0, 1, "subscript",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "sup",	0, 3, 0, 0, 0, 0, 1, "superscript ",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "table",	0, 0, 0, 0, 0, 0, 0, "",
+	DECL table_contents , "tr" , DECL table_attrs , DECL table_depr, NULL
+},
+{ "tbody",	1, 0, 0, 0, 0, 0, 0, "table body ",
+	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL
+},
+{ "td",		0, 0, 0, 0, 0, 0, 0, "table data cell",
+	DECL html_flow, NULL, DECL th_td_attr, DECL th_td_depr, NULL
+},
+{ "textarea",	0, 0, 0, 0, 0, 0, 1, "multi-line text field ",
+	DECL html_pcdata, NULL, DECL textarea_attrs, NULL, DECL rows_cols_attr
+},
+{ "tfoot",	0, 1, 0, 0, 0, 0, 0, "table footer ",
+	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL
+},
+{ "th",		0, 1, 0, 0, 0, 0, 0, "table header cell",
+	DECL html_flow, NULL, DECL th_td_attr, DECL th_td_depr, NULL
+},
+{ "thead",	0, 1, 0, 0, 0, 0, 0, "table header ",
+	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL
+},
+{ "title",	0, 0, 0, 0, 0, 0, 0, "document title ",
+	DECL html_pcdata, NULL, DECL i18n_attrs, NULL, NULL
+},
+{ "tr",		0, 0, 0, 0, 0, 0, 0, "table row ",
+	DECL tr_contents , "td" , DECL talign_attrs, DECL bgcolor_attr, NULL
+},
+{ "tt",		0, 3, 0, 0, 0, 0, 1, "teletype or monospaced text style",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "u",		0, 3, 0, 0, 1, 1, 1, "underlined text style",
+	DECL html_inline, NULL, NULL, DECL html_attrs, NULL
+},
+{ "ul",		0, 0, 0, 0, 0, 0, 0, "unordered list ",
+	DECL li_elt , "li" , DECL html_attrs, DECL ul_depr, NULL
+},
+{ "var",	0, 0, 0, 0, 0, 0, 1, "instance of a variable or program argument",
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+}
 };
 
 /*
@@ -5133,4 +5450,116 @@ htmlHandleOmittedElem(int val) {
     return(old);
 }
 
+/**
+ * htmlElementAllowedHere:
+ * @parent: HTML parent element
+ * @elt: HTML element
+ *
+ * Checks whether an HTML element may be a direct child of a parent element.
+ * Note - doesn't check for deprecated elements
+ *
+ * Returns 1 if allowed; 0 otherwise.
+ */
+int
+htmlElementAllowedHere(const htmlElemDesc* parent, const xmlChar* elt) {
+  const char** p ;
+
+  if ( ! elt || ! parent || ! parent->subelts )
+	return 0 ;
+
+  for ( p = parent->subelts; *p; ++p )
+    if ( !xmlStrcmp((const xmlChar *)*p, elt) )
+      return 1 ;
+
+  return 0 ;
+}
+/**
+ * htmlElementStatusHere:
+ * @parent: HTML parent element
+ * @elt: HTML element
+ *
+ * Checks whether an HTML element may be a direct child of a parent element.
+ * and if so whether it is valid or deprecated.
+ *
+ * Returns one of HTML_VALID, HTML_DEPRECATED, HTML_INVALID
+ */
+htmlStatus
+htmlElementStatusHere(const htmlElemDesc* parent, const htmlElemDesc* elt) {
+  if ( ! parent || ! elt )
+    return HTML_INVALID ;
+  if ( ! htmlElementAllowedHere(parent, (const xmlChar*) elt->name ) )
+    return HTML_INVALID ;
+
+  return ( elt->dtd == 0 ) ? HTML_VALID : HTML_DEPRECATED ;
+}
+/**
+ * htmlAttrAllowed
+ * @elt: HTML element
+ * @attr: HTML attribute
+ * @legacy: whether to allow deprecated attributes
+ *
+ * Checks whether an attribute is valid for an element
+ * Has full knowledge of Required and Deprecated attributes
+ *
+ * Returns one of HTML_REQUIRED, HTML_VALID, HTML_DEPRECATED, HTML_INVALID
+ */
+htmlStatus
+htmlAttrAllowed(const htmlElemDesc* elt, const xmlChar* attr, int legacy) {
+  const char** p ;
+
+  if ( !elt || ! attr )
+	return HTML_INVALID ;
+
+  if ( elt->attrs_req )
+    for ( p = elt->attrs_req; *p; ++p)
+      if ( !xmlStrcmp((const xmlChar*)*p, attr) )
+        return HTML_REQUIRED ;
+
+  if ( elt->attrs_opt )
+    for ( p = elt->attrs_opt; *p; ++p)
+      if ( !xmlStrcmp((const xmlChar*)*p, attr) )
+        return HTML_VALID ;
+
+  if ( legacy && elt->attrs_depr )
+    for ( p = elt->attrs_depr; *p; ++p)
+      if ( !xmlStrcmp((const xmlChar*)*p, attr) )
+        return HTML_DEPRECATED ;
+
+  return HTML_INVALID ;
+}
+/**
+ * htmlNodeStatus
+ * @node - an htmlNodePtr in a tree
+ * @legacy - whether to allow deprecated elements (YES is faster here
+ *	for Element nodes)
+ *
+ * Checks whether the tree node is valid.  Experimental (the author
+ *     only uses the HTML enhancements in a SAX parser)
+ *
+ * Return: for Element nodes, a return from htmlElementAllowedHere (if
+ *	legacy allowed) or htmlElementStatusHere (otherwise).
+ *	for Attribute nodes, a return from htmlAttrAllowed
+ *	for other nodes, HTML_NA (no checks performed)
+ */
+htmlStatus
+htmlNodeStatus(const htmlNodePtr node, int legacy) {
+  if ( ! node )
+    return HTML_INVALID ;
+
+  switch ( node->type ) {
+    case XML_ELEMENT_NODE:
+      return legacy
+	? ( htmlElementAllowedHere (
+		htmlTagLookup(node->parent->name) , node->name
+		) ? HTML_VALID : HTML_INVALID )
+	: htmlElementStatusHere(
+		htmlTagLookup(node->parent->name) ,
+		htmlTagLookup(node->name) )
+	;
+    case XML_ATTRIBUTE_NODE:
+      return htmlAttrAllowed(
+	htmlTagLookup(node->parent->name) , node->name, legacy) ;
+    default: return HTML_NA ;
+  }
+}
 #endif /* LIBXML_HTML_ENABLED */

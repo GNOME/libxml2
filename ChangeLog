@@ -1,3 +1,9 @@
+Wed Feb  5 11:09:29 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c include/libxml/HTMLparser.h: applied HTML
+	  improvements from Nick Kew, allowing to do more checking
+	  to HTML elements and attributes.
+
 Tue Feb  4 23:47:06 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fixing bug #105137 about entities declaration

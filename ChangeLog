@@ -1,3 +1,8 @@
+Tue Sep  2 15:59:04 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* include/libxml/xmlexports.h: defined additional macros which
+	  affect exports and added mingw section
+
 Mon Sep  1 15:15:18 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/index.py: fixed problem parsing xhtml docs

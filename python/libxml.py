@@ -132,7 +132,7 @@ class SAXCallback:
 # This class is the ancestor of all the Node classes. It provides
 # the basic functionalities shared by all nodes (and handle
 # gracefylly the exception), like name, navigation in the tree,
-# doc reference and content access
+# doc reference, content access and serializing to a string or URI
 #
 class xmlCore:
     def __init__(self, _obj=None):
@@ -238,6 +238,17 @@ class xmlCore:
         return xmlDoc(_doc=ret)
     def free(self):
         libxml2mod.freeDoc(self._o)
+
+    #
+    # Serialization routines, the optional arguments have the following
+    # meaning:
+    #     encoding: string to ask saving in a specific encoding
+    #     indent: if 1 the serializer is asked to indent the output
+    #
+    def serialize(self, encoding = None, format = 0):
+        return libxml2mod.serializeNode(self._o, encoding, format)
+    def saveTo(self, file, encoding = None, format = 0):
+        return libxml2mod.saveNodeTo(self._o, file, encoding, format)
             
 #
 # converters to present a nicer view of the XPath returns

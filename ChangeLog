@@ -1,3 +1,9 @@
+Wed Mar  6 18:34:07 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fix bug #72490
+	* python/libxml.c python/libxml.py: added methods serialize()
+	  and saveTo() to all node elements.
+
 Tue Mar  5 21:27:03 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: closed #73430, don't read from an input source

@@ -1458,6 +1458,225 @@ libxml_xmlNodeGetNs(PyObject *self, PyObject *args) {
 
 /************************************************************************
  *									*
+ *			Serialization front-end				*
+ *									*
+ ************************************************************************/
+
+PyObject *
+libxml_serializeNode(PyObject *self, PyObject *args) {
+    PyObject *py_retval = NULL;
+    xmlChar *c_retval;
+    PyObject *pyobj_node;
+    xmlNodePtr node;
+    xmlDocPtr doc;
+    xmlChar *encoding;
+    int format;
+    int len;
+
+    if (!PyArg_ParseTuple(args, "Ozi:serializeNode", &pyobj_node,
+		          &encoding, &format))
+        return(NULL);
+    node = (xmlNodePtr) PyxmlNode_Get(pyobj_node);
+
+    if (node == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    if (node->type == XML_DOCUMENT_NODE) {
+	doc = (xmlDocPtr) node;
+	xmlDocDumpFormatMemoryEnc(doc, &c_retval, &len, encoding, format);
+	py_retval = libxml_charPtrWrap(c_retval);
+    } else if (node->type == XML_HTML_DOCUMENT_NODE) {
+	xmlOutputBufferPtr buf;
+	xmlCharEncodingHandlerPtr handler = NULL;
+
+	doc = (xmlDocPtr) node;
+	if (encoding == NULL)
+	    encoding = (xmlChar *) htmlGetMetaEncoding(doc);
+
+	if (encoding != NULL) {
+	    handler = xmlFindCharEncodingHandler(encoding);
+	    if (handler == NULL) {
+		Py_INCREF(Py_None);
+		return(Py_None);
+	    }
+	}
+
+	/*
+	 * Fallback to HTML or ASCII when the encoding is unspecified
+	 */
+	if (handler == NULL)
+	    handler = xmlFindCharEncodingHandler("HTML");
+	if (handler == NULL)
+	    handler = xmlFindCharEncodingHandler("ascii");
+
+	buf = xmlAllocOutputBuffer(handler);
+	if (buf == NULL) {
+	    Py_INCREF(Py_None);
+	    return(Py_None);
+	}
+	htmlDocContentDumpFormatOutput(buf, doc, encoding, format);
+	xmlOutputBufferFlush(buf);
+	if (buf->conv != NULL) {
+	    len = buf->conv->use;
+	    c_retval = buf->conv->content;
+	    buf->conv->content = NULL;
+	} else {
+	    len = buf->buffer->use;
+	    c_retval = buf->buffer->content;
+	    buf->buffer->content = NULL;
+	}
+	(void)xmlOutputBufferClose(buf);
+	py_retval = libxml_charPtrWrap(c_retval);
+    } else {
+	doc = node->doc;
+	if (doc->type == XML_DOCUMENT_NODE) {
+	    xmlOutputBufferPtr buf;
+	    xmlCharEncodingHandlerPtr handler = NULL;
+
+	    if (encoding != NULL) {
+		handler = xmlFindCharEncodingHandler(encoding);
+		if (handler == NULL) {
+		    Py_INCREF(Py_None);
+		    return(Py_None);
+		}
+	    }
+
+	    buf = xmlAllocOutputBuffer(handler);
+	    if (buf == NULL) {
+		Py_INCREF(Py_None);
+		return(Py_None);
+	    }
+	    xmlNodeDumpOutput(buf, doc, node, 0, format, encoding);
+	    xmlOutputBufferFlush(buf);
+	    if (buf->conv != NULL) {
+		len = buf->conv->use;
+		c_retval = buf->conv->content;
+		buf->conv->content = NULL;
+	    } else {
+		len = buf->buffer->use;
+		c_retval = buf->buffer->content;
+		buf->buffer->content = NULL;
+	    }
+	    (void)xmlOutputBufferClose(buf);
+	    py_retval = libxml_charPtrWrap(c_retval);
+	} else if (doc->type == XML_HTML_DOCUMENT_NODE) {
+	    xmlOutputBufferPtr buf;
+	    xmlCharEncodingHandlerPtr handler = NULL;
+
+	    if (encoding != NULL) {
+		handler = xmlFindCharEncodingHandler(encoding);
+		if (handler == NULL) {
+		    Py_INCREF(Py_None);
+		    return(Py_None);
+		}
+	    }
+
+	    /*
+	     * Fallback to HTML or ASCII when the encoding is unspecified
+	     */
+	    if (handler == NULL)
+		handler = xmlFindCharEncodingHandler("HTML");
+	    if (handler == NULL)
+		handler = xmlFindCharEncodingHandler("ascii");
+
+	    buf = xmlAllocOutputBuffer(handler);
+	    if (buf == NULL) {
+		Py_INCREF(Py_None);
+		return(Py_None);
+	    }
+	    htmlNodeDumpFormatOutput(buf, doc, node, encoding, format);
+	    xmlOutputBufferFlush(buf);
+	    if (buf->conv != NULL) {
+		len = buf->conv->use;
+		c_retval = buf->conv->content;
+		buf->conv->content = NULL;
+	    } else {
+		len = buf->buffer->use;
+		c_retval = buf->buffer->content;
+		buf->buffer->content = NULL;
+	    }
+	    (void)xmlOutputBufferClose(buf);
+	    py_retval = libxml_charPtrWrap(c_retval);
+	} else {
+	    Py_INCREF(Py_None);
+	    return(Py_None);
+	}
+    }
+    return(py_retval);
+}
+
+PyObject *
+libxml_saveNodeTo(PyObject *self, PyObject *args) {
+    PyObject *py_file = NULL;
+    FILE *output;
+    PyObject *pyobj_node;
+    xmlNodePtr node;
+    xmlDocPtr doc;
+    xmlChar *encoding;
+    int format;
+    int len;
+    xmlOutputBufferPtr buf;
+    xmlCharEncodingHandlerPtr handler = NULL;
+
+    if (!PyArg_ParseTuple(args, "OOzi:serializeNode", &pyobj_node,
+		          &py_file, &encoding, &format))
+        return(NULL);
+    node = (xmlNodePtr) PyxmlNode_Get(pyobj_node);
+
+    if (node == NULL) {
+	return(PyInt_FromLong((long) -1));
+    }
+    if ((py_file == NULL) || (!(PyFile_Check(py_file)))) {
+	return(PyInt_FromLong((long) -1));
+    }
+    output = PyFile_AsFile(py_file);
+    if (output == NULL) {
+	return(PyInt_FromLong((long) -1));
+    }
+
+    if (node->type == XML_DOCUMENT_NODE) {
+	doc = (xmlDocPtr) node;
+    } else if (node->type == XML_HTML_DOCUMENT_NODE) {
+	doc = (xmlDocPtr) node;
+    } else {
+	doc = node->doc;
+    }
+    if (doc->type == XML_HTML_DOCUMENT_NODE) {
+	if (encoding == NULL)
+	    encoding = (xmlChar *) htmlGetMetaEncoding(doc);
+    }
+    if (encoding != NULL) {
+	handler = xmlFindCharEncodingHandler(encoding);
+	if (handler == NULL) {
+	    return(PyInt_FromLong((long) -1));
+	}
+    }
+    if (doc->type == XML_HTML_DOCUMENT_NODE) {
+	if (handler == NULL)
+	    handler = xmlFindCharEncodingHandler("HTML");
+	if (handler == NULL)
+	    handler = xmlFindCharEncodingHandler("ascii");
+    }
+
+    buf = xmlOutputBufferCreateFile(output, handler);
+    if (node->type == XML_DOCUMENT_NODE) {
+	len = xmlSaveFormatFileTo(buf, doc, encoding, format);
+    } else if (node->type == XML_HTML_DOCUMENT_NODE) {
+	htmlDocContentDumpFormatOutput(buf, doc, encoding, format);
+	len = xmlOutputBufferClose(buf);
+    } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
+	htmlNodeDumpFormatOutput(buf, doc, node, encoding, format);
+	len = xmlOutputBufferClose(buf);
+    } else {
+	xmlNodeDumpOutput(buf, doc, node, 0, format, encoding);
+	len = xmlOutputBufferClose(buf);
+    }
+    return(PyInt_FromLong((long) len));
+}
+
+/************************************************************************
+ *									*
  *			Extra stuff					*
  *									*
  ************************************************************************/
@@ -1497,6 +1716,8 @@ static PyMethodDef libxmlMethods[] = {
     { "type", libxml_type, METH_VARARGS, NULL },
     { "doc", libxml_doc, METH_VARARGS, NULL },
     { "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL },
+    { "serializeNode", libxml_serializeNode, METH_VARARGS, NULL },
+    { "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL },
     { NULL }
 };
 

@@ -4718,7 +4718,8 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	    /* exit condition */
 	    if (node == tree) 
 	        node = NULL;
-	}
+	} else
+	    break;
     }
     return(ret);
 }

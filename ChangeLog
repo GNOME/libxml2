@@ -1,3 +1,8 @@
+Wed Jan 23 15:14:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.h: Greg Sjaardema suggested to use an
+	  eponential buffer groth policy in xmlParserAddNodeInfo()
+
 Wed Jan 23 13:32:40 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/api.xsl doc/APIconstructors.html doc/APIfiles.html

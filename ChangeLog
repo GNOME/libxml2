@@ -1,3 +1,8 @@
+Fri Jul 19 16:35:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: small additional enhancement for booleans
+	  compared to nodesets
+
 Wed Jul 17 19:48:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: changed the order of the encoding declaration

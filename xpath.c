@@ -4420,9 +4420,8 @@ xmlXPathEqualValuesCommon(xmlXPathParserContextPtr ctxt,
 		    ret = (arg1->boolval == arg2->boolval);
 		    break;
 		case XPATH_NUMBER:
-		    if (arg2->floatval) ret = 1;
-		    else ret = 0;
-		    ret = (arg1->boolval == ret);
+		    ret = (arg1->boolval ==
+			   xmlXPathCastNumberToBoolean(arg2->floatval));
 		    break;
 		case XPATH_STRING:
 		    if ((arg2->stringval == NULL) ||
@@ -4451,9 +4450,8 @@ xmlXPathEqualValuesCommon(xmlXPathParserContextPtr ctxt,
 #endif
 		    break;
 		case XPATH_BOOLEAN:
-		    if (arg1->floatval) ret = 1;
-		    else ret = 0;
-		    ret = (arg2->boolval == ret);
+		    ret = (arg2->boolval==
+			   xmlXPathCastNumberToBoolean(arg1->floatval));
 		    break;
 		case XPATH_STRING:
 		    valuePush(ctxt, arg2);
@@ -4717,7 +4715,7 @@ xmlXPathNotEqualValues(xmlXPathParserContextPtr ctxt) {
 		  (arg1->nodesetval->nodeNr == 0)) ret = 0;
 		else 
 		    ret = 1;
-		ret = (ret == arg2->boolval);
+		ret = (ret != arg2->boolval);
 		break;
 	    case XPATH_NUMBER:
 		ret = xmlXPathEqualNodeSetFloat(ctxt, arg1, arg2->floatval, 1);

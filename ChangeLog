@@ -1,3 +1,7 @@
+Mon Feb 26 03:34:43 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xinclude.c: fixed a problem building on Mac
+
 Sun Feb 25 21:52:30 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: more work on increasing parsing ferformances

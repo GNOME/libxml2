@@ -53,7 +53,7 @@
 /*
  * An XInclude context
  */
-typedef xmlChar *URL;
+typedef xmlChar *xmlURL;
 typedef struct _xmlXIncludeCtxt xmlXIncludeCtxt;
 typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;
 struct _xmlXIncludeCtxt {
@@ -65,11 +65,11 @@ struct _xmlXIncludeCtxt {
     int                 docNr; /* number of parsed documents */
     int                docMax; /* size of parsed documents tab */
     xmlDocPtr         *docTab; /* array of parsed documents */
-    URL               *urlTab; /* array of parsed documents URLs */
+    xmlURL            *urlTab; /* array of parsed documents URLs */
     int                 txtNr; /* number of unparsed documents */
     int                txtMax; /* size of unparsed documents tab */
     xmlNodePtr        *txtTab; /* array of unparsed text nodes */
-    URL            *txturlTab; /* array of unparsed txtuments URLs */
+    xmlURL         *txturlTab; /* array of unparsed txtuments URLs */
 };
 
 /**
@@ -129,7 +129,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  * Add a new document to the list
  */
 void
-xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const URL url) {
+xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const xmlURL url) {
     if (ctxt->docMax == 0) {
 	ctxt->docMax = 4;
         ctxt->docTab = (xmlDocPtr *) xmlMalloc(ctxt->docMax *
@@ -139,7 +139,7 @@ xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const URL url) {
 		    "malloc failed !\n");
 	    return;
 	}
-        ctxt->urlTab = (URL *) xmlMalloc(ctxt->docMax *
+        ctxt->urlTab = (xmlURL *) xmlMalloc(ctxt->docMax *
 		                          sizeof(ctxt->urlTab[0]));
         if (ctxt->urlTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
@@ -156,7 +156,7 @@ xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const URL url) {
 		    "realloc failed !\n");
 	    return;
 	}
-        ctxt->urlTab = (URL *) xmlRealloc(ctxt->urlTab,
+        ctxt->urlTab = (xmlURL *) xmlRealloc(ctxt->urlTab,
 	             ctxt->docMax * sizeof(ctxt->urlTab[0]));
         if (ctxt->urlTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
@@ -178,7 +178,7 @@ xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const URL url) {
  * Add a new txtument to the list
  */
 void
-xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const URL url) {
+xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
     if (ctxt->txtMax == 0) {
 	ctxt->txtMax = 4;
         ctxt->txtTab = (xmlNodePtr *) xmlMalloc(ctxt->txtMax *
@@ -188,7 +188,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const URL url) {
 		    "malloc failed !\n");
 	    return;
 	}
-        ctxt->txturlTab = (URL *) xmlMalloc(ctxt->txtMax *
+        ctxt->txturlTab = (xmlURL *) xmlMalloc(ctxt->txtMax *
 		                          sizeof(ctxt->txturlTab[0]));
         if (ctxt->txturlTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
@@ -205,7 +205,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const URL url) {
 		    "realloc failed !\n");
 	    return;
 	}
-        ctxt->txturlTab = (URL *) xmlRealloc(ctxt->txturlTab,
+        ctxt->txturlTab = (xmlURL *) xmlRealloc(ctxt->txturlTab,
 	             ctxt->txtMax * sizeof(ctxt->urlTab[0]));
         if (ctxt->txturlTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,

@@ -2085,7 +2085,8 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 	    }
-	    if ((ctxt->inSubset == 1) && (tmp == '%')) {
+	    if ((tmp == '%') && (ctxt->inSubset == 1) &&
+		(ctxt->inputNr == 1)) {
 		ctxt->errNo = XML_ERR_ENTITY_PE_INTERNAL;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,

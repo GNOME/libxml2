@@ -54,7 +54,7 @@ htmlGetMetaEncoding(htmlDocPtr doc) {
      * Search the html
      */
     while (cur != NULL) {
-	if (cur->name != NULL) {
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->name != NULL)) {
 	    if (xmlStrEqual(cur->name, BAD_CAST"html"))
 		break;
 	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
@@ -72,7 +72,7 @@ htmlGetMetaEncoding(htmlDocPtr doc) {
      * Search the head
      */
     while (cur != NULL) {
-	if (cur->name != NULL) {
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->name != NULL)) {
 	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
 		break;
 	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
@@ -90,7 +90,7 @@ found_head:
      */
 found_meta:
     while (cur != NULL) {
-	if (cur->name != NULL) {
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->name != NULL)) {
 	    if (xmlStrEqual(cur->name, BAD_CAST"meta")) {
 		xmlAttrPtr attr = cur->properties;
 		int http;
@@ -180,7 +180,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      * Search the html
      */
     while (cur != NULL) {
-	if (cur->name != NULL) {
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->name != NULL)) {
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"html") == 0)
 		break;
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"head") == 0)
@@ -198,7 +198,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      * Search the head
      */
     while (cur != NULL) {
-	if (cur->name != NULL) {
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->name != NULL)) {
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"head") == 0)
 		break;
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"meta") == 0)
@@ -237,7 +237,7 @@ found_meta:
      * encoding informations
      */
     while (cur != NULL) {
-	if (cur->name != NULL) {
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->name != NULL)) {
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"meta") == 0) {
 		xmlAttrPtr attr = cur->properties;
 		int http;

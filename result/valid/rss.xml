@@ -17,7 +17,6 @@
   
   Based on RSS DTD originally created by
   Lars Marius Garshol - larsga@ifi.uio.no.
-  $Id: rss.xml,v 1.1 2001/04/20 13:48:21 veillard Exp $
   
 --><!ELEMENT rss (channel)>
 <!ATTLIST rss version CDATA #REQUIRED>

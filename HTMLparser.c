@@ -1823,7 +1823,7 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->_private = NULL;
     if ((ExternalID != NULL) ||
 	(URI != NULL))
-	xmlCreateIntSubset(cur, BAD_CAST "html", ExternalID, URI);
+	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
     return(cur);
 }
 

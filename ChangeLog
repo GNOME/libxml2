@@ -1,3 +1,15 @@
+Fri Oct 17 14:38:54 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* legacy.c: remove the warning for startDocument(), as it is used by
+	  glade (or glade-python)
+	* parser.c relaxng.c xmlschemastypes.c: fixed an assorted set of
+	  invalid accesses found by running some Python based regression
+	  tests under valgrind. There is still a few leaks reported by the
+	  relaxng regressions which need some attention.
+	* doc/Makefile.am: fixed a make install problem c.f. #124539
+	* include/libxml/parserInternals.h: addition of xmlParserMaxDepth
+	  patch from crutcher
+
 Wed Oct 15 12:47:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Marc Liyanage pointed out that xmlCleanupParser()

@@ -19,6 +19,15 @@
 extern "C" {
 #endif
 
+/**
+ * xmlParserMaxDepth:
+ *
+ * arbitrary depth limit for the XML documents that we allow to 
+ * process. This is not a limitation of the parser but a safety 
+ * boundary feature.
+ */
+XMLPUBVAR unsigned int xmlParserMaxDepth;
+
  /**
   * XML_MAX_NAMELEN:
   *

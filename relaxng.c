@@ -6696,11 +6696,11 @@ xmlRelaxNGNormExtSpace(xmlChar * value)
             /* don't try to normalize the inner spaces */
             while (IS_BLANK(*cur))
                 cur++;
-            *start++ = *cur++;
             if (*cur == 0) {
                 *start = 0;
                 return;
             }
+            *start++ = *cur++;
         } while (1);
     }
 }

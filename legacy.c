@@ -1084,7 +1084,8 @@ setDocumentLocator(void *ctx ATTRIBUTE_UNUSED,
 void
 startDocument(void *ctx)
 {
-    DEPRECATED("startDocument")
+   /* don't be too painful for glade users */
+   /*  DEPRECATED("startDocument") */
         xmlSAX2StartDocument(ctx);
 }
 

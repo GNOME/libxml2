@@ -78,13 +78,13 @@
 #endif
 
 /**
- * MAX_DEPTH:
+ * xmlParserMaxDepth:
  *
  * arbitrary depth limit for the XML documents that we allow to 
  * process. This is not a limitation of the parser but a safety 
  * boundary feature.
  */
-#define MAX_DEPTH 1024
+unsigned int xmlParserMaxDepth = 1024;
 
 #define SAX2 1
 
@@ -972,15 +972,13 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
             return (0);
         }
     }
-#ifdef MAX_DEPTH
-    if (ctxt->nodeNr > MAX_DEPTH) {
+    if (((unsigned int) ctxt->nodeNr) > xmlParserMaxDepth) {
 	xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
-		 "Excessive depth in document: change MAX_DEPTH = %d\n",
-			  MAX_DEPTH);
+		 "Excessive depth in document: change xmlParserMaxDepth = %d\n",
+			  xmlParserMaxDepth);
 	ctxt->instate = XML_PARSER_EOF;
 	return(0);
     }
-#endif
     ctxt->nodeTab[ctxt->nodeNr] = value;
     ctxt->node = value;
     return (ctxt->nodeNr++);
@@ -3101,6 +3099,8 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	    }
 	    if (name != NULL)
 		xmlFree(name);
+	    if (*cur == 0)
+	        break;
 	}
 	cur++;
     }
@@ -3810,10 +3810,16 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	return;
     }
     q = CUR_CHAR(ql);
+    if (q == 0)
+        goto not_terminated;
     NEXTL(ql);
     r = CUR_CHAR(rl);
+    if (r == 0)
+        goto not_terminated;
     NEXTL(rl);
     cur = CUR_CHAR(l);
+    if (cur == 0)
+        goto not_terminated;
     len = 0;
     while (xmlIsChar(cur) && /* checked */
            ((cur != '>') ||
@@ -3866,6 +3872,11 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	xmlFree(buf);
     }
     ctxt->instate = state;
+    return;
+not_terminated:
+    xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
+			 "Comment not terminated\n", NULL);
+    xmlFree(buf);
 }
 
 /**
@@ -5763,7 +5774,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		/*
 		 * Check that this entity is well formed
 		 */
-		if ((value != NULL) &&
+		if ((value != NULL) && (value[0] != 0) &&
 		    (value[1] == 0) && (value[0] == '<') &&
 		    (xmlStrEqual(ent->name, BAD_CAST "lt"))) {
 		    /*
@@ -8776,7 +8787,8 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
         ctxt->sax->setDocumentLocator(ctxt->userData, &xmlDefaultSAXLocator);
 
-    if (ctxt->encoding == (const xmlChar *)XML_CHAR_ENCODING_NONE) {
+    if ((ctxt->encoding == (const xmlChar *)XML_CHAR_ENCODING_NONE) &&
+        ((ctxt->input->end - ctxt->input->cur) >= 4)) {
 	/* 
 	 * Get the 4 first bytes and decode the charset
 	 * if enc != XML_CHAR_ENCODING_NONE
@@ -8786,7 +8798,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	start[1] = NXT(1);
 	start[2] = NXT(2);
 	start[3] = NXT(3);
-	enc = xmlDetectCharEncoding(start, 4);
+	enc = xmlDetectCharEncoding(&start[0], 4);
 	if (enc != XML_CHAR_ENCODING_NONE) {
 	    xmlSwitchEncoding(ctxt, enc);
 	}
@@ -8938,13 +8950,15 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
      * if enc != XML_CHAR_ENCODING_NONE
      * plug some encoding conversion routines.
      */
-    start[0] = RAW;
-    start[1] = NXT(1);
-    start[2] = NXT(2);
-    start[3] = NXT(3);
-    enc = xmlDetectCharEncoding(start, 4);
-    if (enc != XML_CHAR_ENCODING_NONE) {
-        xmlSwitchEncoding(ctxt, enc);
+    if ((ctxt->input->end - ctxt->input->cur) >= 4) {
+	start[0] = RAW;
+	start[1] = NXT(1);
+	start[2] = NXT(2);
+	start[3] = NXT(3);
+	enc = xmlDetectCharEncoding(start, 4);
+	if (enc != XML_CHAR_ENCODING_NONE) {
+	    xmlSwitchEncoding(ctxt, enc);
+	}
     }
 
 
@@ -10314,7 +10328,8 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
 	                               BAD_CAST "none", BAD_CAST "none");
 
-    if (enc == XML_CHAR_ENCODING_NONE) {
+    if ((enc == XML_CHAR_ENCODING_NONE) &&
+        ((ctxt->input->end - ctxt->input->cur) >= 4)) {
 	/* 
 	 * Get the 4 first bytes and decode the charset
 	 * if enc != XML_CHAR_ENCODING_NONE
@@ -10410,8 +10425,10 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      * plug some encoding conversion routines here.
      */
     xmlPushInput(ctxt, input);
-    enc = xmlDetectCharEncoding(ctxt->input->cur, 4);
-    xmlSwitchEncoding(ctxt, enc);
+    if ((ctxt->input->end - ctxt->input->cur) >= 4) {
+	enc = xmlDetectCharEncoding(ctxt->input->cur, 4);
+	xmlSwitchEncoding(ctxt, enc);
+    }
 
     if (input->filename == NULL)
 	input->filename = (char *) xmlCanonicPath(SystemID);
@@ -10560,13 +10577,15 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
      * plug some encoding conversion routines.
      */
     GROW
-    start[0] = RAW;
-    start[1] = NXT(1);
-    start[2] = NXT(2);
-    start[3] = NXT(3);
-    enc = xmlDetectCharEncoding(start, 4);
-    if (enc != XML_CHAR_ENCODING_NONE) {
-        xmlSwitchEncoding(ctxt, enc);
+    if ((ctxt->input->end - ctxt->input->cur) >= 4) {
+	start[0] = RAW;
+	start[1] = NXT(1);
+	start[2] = NXT(2);
+	start[3] = NXT(3);
+	enc = xmlDetectCharEncoding(start, 4);
+	if (enc != XML_CHAR_ENCODING_NONE) {
+	    xmlSwitchEncoding(ctxt, enc);
+	}
     }
 
     /*
@@ -10756,13 +10775,15 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
      * plug some encoding conversion routines.
      */
     GROW;
-    start[0] = RAW;
-    start[1] = NXT(1);
-    start[2] = NXT(2);
-    start[3] = NXT(3);
-    enc = xmlDetectCharEncoding(start, 4);
-    if (enc != XML_CHAR_ENCODING_NONE) {
-        xmlSwitchEncoding(ctxt, enc);
+    if ((ctxt->input->end - ctxt->input->cur) >= 4) {
+	start[0] = RAW;
+	start[1] = NXT(1);
+	start[2] = NXT(2);
+	start[3] = NXT(3);
+	enc = xmlDetectCharEncoding(start, 4);
+	if (enc != XML_CHAR_ENCODING_NONE) {
+	    xmlSwitchEncoding(ctxt, enc);
+	}
     }
 
     /*

@@ -68,13 +68,13 @@ xmlCheckVersion(int version) {
     int myversion = (int) LIBXML_VERSION;
 
     if ((myversion / 10000) != (version / 10000)) {
-	fprintf(stderr, 
+	xmlGenericError(xmlGenericErrorContext, 
 		"Fatal: program compiled against libxml %d using libxml %d\n",
 		(version / 10000), (myversion / 10000));
 	exit(1);
     }
     if ((myversion / 100) < (version / 100)) {
-	fprintf(stderr, 
+	xmlGenericError(xmlGenericErrorContext, 
 		"Warning: program compiled against libxml %d using older %d\n",
 		(version / 100), (myversion / 100));
     }
@@ -877,15 +877,18 @@ xmlIsPubidChar(int c) {
 
 void check_buffer(xmlParserInputPtr in) {
     if (in->base != in->buf->buffer->content) {
-        fprintf(stderr, "xmlParserInput: base mismatch problem\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlParserInput: base mismatch problem\n");
     }
     if (in->cur < in->base) {
-        fprintf(stderr, "xmlParserInput: cur < base problem\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlParserInput: cur < base problem\n");
     }
     if (in->cur > in->base + in->buf->buffer->use) {
-        fprintf(stderr, "xmlParserInput: cur > base + use problem\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlParserInput: cur > base + use problem\n");
     }
-    fprintf(stderr,"buffer %x : content %x, cur %d, use %d, size %d\n",
+    xmlGenericError(xmlGenericErrorContext,"buffer %x : content %x, cur %d, use %d, size %d\n",
             (int) in, (int) in->buf->buffer->content, in->cur - in->base,
 	    in->buf->buffer->use, in->buf->buffer->size);
 }
@@ -913,7 +916,7 @@ xmlParserInputRead(xmlParserInputPtr in, int len) {
     int index;
 
 #ifdef DEBUG_INPUT
-    fprintf(stderr, "Read\n");
+    xmlGenericError(xmlGenericErrorContext, "Read\n");
 #endif
     if (in->buf == NULL) return(-1);
     if (in->base == NULL) return(-1);
@@ -961,7 +964,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     int index;
 
 #ifdef DEBUG_INPUT
-    fprintf(stderr, "Grow\n");
+    xmlGenericError(xmlGenericErrorContext, "Grow\n");
 #endif
     if (in->buf == NULL) return(-1);
     if (in->base == NULL) return(-1);
@@ -1015,7 +1018,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     int index;
 
 #ifdef DEBUG_INPUT
-    fprintf(stderr, "Shrink\n");
+    xmlGenericError(xmlGenericErrorContext, "Shrink\n");
 #endif
     if (in->buf == NULL) return;
     if (in->base == NULL) return;
@@ -1479,7 +1482,8 @@ xmlCopyChar(int len, xmlChar *out, int val) {
 	else if (val < 0x10000) len = 3;
 	else if (val < 0x110000) len = 4;
 	if (len == 0) {
-	    fprintf(stderr, "Internal error, xmlCopyChar 0x%X out of bound\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Internal error, xmlCopyChar 0x%X out of bound\n",
 		    val);
 	    return(0);
 	}
@@ -1736,7 +1740,8 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 						      ctxt->input->buf->raw);
 		    }
 		    if (nbchars < 0) {
-			fprintf(stderr, "xmlSwitchToEncoding: encoder error\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"xmlSwitchToEncoding: encoder error\n");
 			return(-1);
 		    }
 		    ctxt->input->base =
@@ -1776,7 +1781,8 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		                               ctxt->input->buf->buffer,
 					       ctxt->input->buf->raw);
 		    if (nbchars < 0) {
-			fprintf(stderr, "xmlSwitchToEncoding: encoder error\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"xmlSwitchToEncoding: encoder error\n");
 			return(-1);
 		    }
 
@@ -1880,7 +1886,7 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
     xmlParserInputPtr inputStream;
 
     if (xmlParserDebugEntities)
-	fprintf(stderr, "new input from I/O\n");
+	xmlGenericError(xmlGenericErrorContext, "new input from I/O\n");
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	return(NULL);
@@ -1918,7 +1924,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	return(NULL);
     }
     if (xmlParserDebugEntities)
-	fprintf(stderr, "new input from entity: %s\n", entity->name);
+	xmlGenericError(xmlGenericErrorContext,
+		"new input from entity: %s\n", entity->name);
     if (entity->content == NULL) {
 	switch (entity->etype) {
             case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
@@ -1982,7 +1989,8 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
 	return(NULL);
     }
     if (xmlParserDebugEntities)
-	fprintf(stderr, "new fixed input: %.30s\n", buffer);
+	xmlGenericError(xmlGenericErrorContext,
+		"new fixed input: %.30s\n", buffer);
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
 	return(NULL);
@@ -2010,7 +2018,8 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlChar *URI = NULL;
 
     if (xmlParserDebugEntities)
-	fprintf(stderr, "new input from file: %s\n", filename);
+	xmlGenericError(xmlGenericErrorContext,
+		"new input from file: %s\n", filename);
     if (ctxt == NULL) return(NULL);
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
     if (buf == NULL)
@@ -2059,15 +2068,18 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (sax == NULL) {
-        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: out of memory\n");
     }
     else
         memset(sax, 0, sizeof(xmlSAXHandler));
 
     /* Allocate the Input stack */
-    ctxt->inputTab = (xmlParserInputPtr *) xmlMalloc(5 * sizeof(xmlParserInputPtr));
+    ctxt->inputTab = (xmlParserInputPtr *)
+	        xmlMalloc(5 * sizeof(xmlParserInputPtr));
     if (ctxt->inputTab == NULL) {
-        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: out of memory\n");
 	ctxt->inputNr = 0;
 	ctxt->inputMax = 0;
 	ctxt->input = NULL;
@@ -2091,7 +2103,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     /* Allocate the Node stack */
     ctxt->nodeTab = (xmlNodePtr *) xmlMalloc(10 * sizeof(xmlNodePtr));
     if (ctxt->nodeTab == NULL) {
-        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: out of memory\n");
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;
 	ctxt->node = NULL;
@@ -2107,7 +2120,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     /* Allocate the Name stack */
     ctxt->nameTab = (xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
     if (ctxt->nameTab == NULL) {
-        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: out of memory\n");
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;
 	ctxt->node = NULL;
@@ -2126,7 +2140,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     /* Allocate the space stack */
     ctxt->spaceTab = (int *) xmlMalloc(10 * sizeof(int));
     if (ctxt->spaceTab == NULL) {
-        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: out of memory\n");
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;
 	ctxt->node = NULL;
@@ -2169,7 +2184,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	/* Allocate the Node stack */
 	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
 	if (ctxt->vctxt.nodeTab == NULL) {
-	    fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlInitParserCtxt: out of memory\n");
 	    ctxt->vctxt.nodeMax = 0;
 	    ctxt->validate = 0;
 	    ctxt->vctxt.error = NULL;
@@ -2247,7 +2263,8 @@ xmlNewParserCtxt()
 
     ctxt = (xmlParserCtxtPtr) xmlMalloc(sizeof(xmlParserCtxt));
     if (ctxt == NULL) {
-        fprintf(stderr, "xmlNewParserCtxt : cannot allocate context\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewParserCtxt : cannot allocate context\n");
         perror("malloc");
 	return(NULL);
     }
@@ -2540,7 +2557,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlDecodeEntities() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlDecodeEntities() deprecated function reached\n");
 	deprecated = 1;
     }
 
@@ -2581,7 +2599,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	} else if ((c == '&') && (ctxt->token != '&') &&
 		   (what & XML_SUBSTITUTE_REF)) {
 	    if (xmlParserDebugEntities)
-		fprintf(stderr, "decoding Entity Reference\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"decoding Entity Reference\n");
 	    ent = xmlParseEntityRef(ctxt);
 	    if ((ent != NULL) && 
 		(ctxt->replaceEntities != 0)) {
@@ -2611,7 +2630,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	     * parsed if any. We will be called back later.
 	     */
 	    if (xmlParserDebugEntities)
-		fprintf(stderr, "decoding PE Reference\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"decoding PE Reference\n");
 	    if (nbchars != 0) break;
 
 	    xmlParsePEReference(ctxt);
@@ -2665,7 +2685,8 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
 
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlNamespaceParseNCName() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlNamespaceParseNCName() deprecated function reached\n");
 	deprecated = 1;
     }
 
@@ -2674,7 +2695,8 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
     GROW;
     if (!IS_LETTER(cur) && (cur != '_')) return(NULL);
 
-fprintf(stderr, "xmlNamespaceParseNCName: reached loop 3\n");
+xmlGenericError(xmlGenericErrorContext,
+	"xmlNamespaceParseNCName: reached loop 3\n");
     while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) || /* NOT REACHED */
            (cur == '.') || (cur == '-') ||
 	   (cur == '_') ||
@@ -2684,7 +2706,7 @@ fprintf(stderr, "xmlNamespaceParseNCName: reached loop 3\n");
 	NEXTL(l);
 	cur = CUR_CHAR(l);
 	if (len >= XML_MAX_NAMELEN) {
-	    fprintf(stderr, 
+	    xmlGenericError(xmlGenericErrorContext, 
 	       "xmlNamespaceParseNCName: reached XML_MAX_NAMELEN limit\n");
 	    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) ||/* NOT REACHED */
 		   (cur == '.') || (cur == '-') ||
@@ -2727,7 +2749,8 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, xmlChar **prefix) {
 
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlNamespaceParseQName() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlNamespaceParseQName() deprecated function reached\n");
 	deprecated = 1;
     }
 
@@ -2767,7 +2790,8 @@ xmlChar *
 xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt) {
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlNamespaceParseNSDef() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlNamespaceParseNSDef() deprecated function reached\n");
 	deprecated = 1;
     }
     return(NULL);
@@ -2801,7 +2825,8 @@ xmlChar *
 xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlParseQuotedString() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlParseQuotedString() deprecated function reached\n");
 	deprecated = 1;
     }
     return(NULL);
@@ -2814,10 +2839,12 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
-fprintf(stderr, "xmlParseQuotedString: reached loop 4\n");
+xmlGenericError(xmlGenericErrorContext,
+	"xmlParseQuotedString: reached loop 4\n");
     if (RAW == '"') {
         NEXT;
 	c = CUR_CHAR(l);
@@ -2826,7 +2853,8 @@ fprintf(stderr, "xmlParseQuotedString: reached loop 4\n");
 		size *= 2;
 		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		if (buf == NULL) {
-		    fprintf(stderr, "realloc of %d byte failed\n", size);
+		    xmlGenericError(xmlGenericErrorContext,
+			    "realloc of %d byte failed\n", size);
 		    return(NULL);
 		}
 	    }
@@ -2852,7 +2880,8 @@ fprintf(stderr, "xmlParseQuotedString: reached loop 4\n");
 		size *= 2;
 		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		if (buf == NULL) {
-		    fprintf(stderr, "realloc of %d byte failed\n", size);
+		    xmlGenericError(xmlGenericErrorContext,
+			    "realloc of %d byte failed\n", size);
 		    return(NULL);
 		}
 	    }
@@ -2894,7 +2923,8 @@ void
 xmlParseNamespace(xmlParserCtxtPtr ctxt) {
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlParseNamespace() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlParseNamespace() deprecated function reached\n");
 	deprecated = 1;
     }
 
@@ -2908,7 +2938,8 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt) {
      */
     SKIP_BLANKS;
 
-fprintf(stderr, "xmlParseNamespace: reached loop 5\n");
+xmlGenericError(xmlGenericErrorContext,
+	"xmlParseNamespace: reached loop 5\n");
     while (IS_CHAR(RAW) && (RAW != '>')) { /* NOT REACHED */
 	/*
 	 * We can have "ns" or "prefix" attributes
@@ -3019,7 +3050,8 @@ xmlChar *
 xmlScanName(xmlParserCtxtPtr ctxt) {
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlScanName() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlScanName() deprecated function reached\n");
 	deprecated = 1;
     }
     return(NULL);
@@ -3044,7 +3076,7 @@ xmlScanName(xmlParserCtxtPtr ctxt) {
 	buf[len] = NXT(len);
 	len++;
 	if (len >= XML_MAX_NAMELEN) {
-	    fprintf(stderr, 
+	    xmlGenericError(xmlGenericErrorContext, 
 	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
 	    while ((IS_LETTER(NXT(len))) || /* NOT REACHED */
 		   (IS_DIGIT(NXT(len))) ||
@@ -3091,7 +3123,8 @@ void
 xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlParserHandleReference() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlParserHandleReference() deprecated function reached\n");
 	deprecated = 1;
     }
 
@@ -3238,9 +3271,12 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
     }
 
 /* TODO: this seems not reached anymore .... Verify ... */
-fprintf(stderr, "Reached deprecated section in xmlParserHandleReference()\n");
-fprintf(stderr, "Please forward the document to Daniel.Veillard@w3.org\n");
-fprintf(stderr, "indicating the version: %s, thanks !\n", xmlParserVersion);
+xmlGenericError(xmlGenericErrorContext,
+	"Reached deprecated section in xmlParserHandleReference()\n");
+xmlGenericError(xmlGenericErrorContext,
+	"Please forward the document to Daniel.Veillard@w3.org\n");
+xmlGenericError(xmlGenericErrorContext,
+	"indicating the version: %s, thanks !\n", xmlParserVersion);
     NEXT;
     name = xmlScanName(ctxt);
     if (name == NULL) {
@@ -3329,7 +3365,8 @@ void
 xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     static int deprecated = 0;
     if (!deprecated) {
-	fprintf(stderr, "xmlHandleEntity() deprecated function reached\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlHandleEntity() deprecated function reached\n");
 	deprecated = 1;
     }
 

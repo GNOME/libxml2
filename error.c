@@ -15,6 +15,64 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <libxml/parser.h>
+#include <libxml/xmlerror.h>
+
+/************************************************************************
+ * 									*
+ * 			Handling of out of context errors		*
+ * 									*
+ ************************************************************************/
+
+/**
+ * xmlGenericErrorDefaultFunc:
+ * @ctx:  an error context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Default handler for out of context error messages.
+ */
+void
+xmlGenericErrorDefaultFunc(void *ctx, const char *msg, ...) {
+    va_list args;
+
+    if (xmlGenericErrorContext == NULL)
+	xmlGenericErrorContext = (void *) stderr;
+
+    va_start(args, msg);
+    vfprintf((FILE *)xmlGenericErrorContext, msg, args);
+    va_end(args);
+}
+
+xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
+void *xmlGenericErrorContext = NULL;
+
+
+/**
+ * xmlSetGenericErrorFunc:
+ * @ctx:  the new error handling context
+ * @handler:  the new handler function
+ *
+ * Function to reset the handler and the error context for out of
+ * context error messages.
+ * This simply means that @handler will be called for subsequent
+ * error messages while not parsing nor validating. And @ctx will
+ * be passed as first argument to @handler
+ * One can simply force messages to be emitted to another FILE * than
+ * stderr by setting @ctx to this file handle and @handler to NULL.
+ */
+void
+xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
+    if (ctx != NULL)
+	xmlGenericErrorContext = ctx;
+    if (handler != NULL)
+	xmlGenericError = handler;
+}
+
+/************************************************************************
+ * 									*
+ * 			Handling of parsing errors			*
+ * 									*
+ ************************************************************************/
 
 /**
  * xmlParserPrintFileInfo:
@@ -27,10 +85,12 @@ void
 xmlParserPrintFileInfo(xmlParserInputPtr input) {
     if (input != NULL) {
 	if (input->filename)
-	    fprintf(stderr, "%s:%d: ", input->filename,
+	    xmlGenericError(xmlGenericErrorContext,
+		    "%s:%d: ", input->filename,
 		    input->line);
 	else
-	    fprintf(stderr, "Entity: line %d: ", input->line);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Entity: line %d: ", input->line);
     }
 }
 
@@ -59,19 +119,20 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     base = cur;
     n = 0;
     while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-        fprintf(stderr, "%c", (unsigned char) *cur++);
+        xmlGenericError(xmlGenericErrorContext,
+		"%c", (unsigned char) *cur++);
 	n++;
     }
-    fprintf(stderr, "\n");
+    xmlGenericError(xmlGenericErrorContext, "\n");
     cur = input->cur;
     while ((*cur == '\n') || (*cur == '\r'))
 	cur--;
     n = 0;
     while ((cur != base) && (n++ < 80)) {
-        fprintf(stderr, " ");
+        xmlGenericError(xmlGenericErrorContext, " ");
         base++;
     }
-    fprintf(stderr,"^\n");
+    xmlGenericError(xmlGenericErrorContext,"^\n");
 }
 
 /**
@@ -101,16 +162,16 @@ xmlParserError(void *ctx, const char *msg, ...)
 	xmlParserPrintFileInfo(input);
     }
 
-    fprintf(stderr, "error: ");
+    xmlGenericError(xmlGenericErrorContext, "error: ");
     va_start(args, msg);
-    vfprintf(stderr, msg, args);
+    vfprintf(xmlGenericErrorContext, msg, args);
     va_end(args);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
 	if (cur != NULL) {
 	    xmlParserPrintFileInfo(cur);
-	    fprintf(stderr, "\n");
+	    xmlGenericError(xmlGenericErrorContext, "\n");
 	    xmlParserPrintFileContext(cur);
 	}
     }
@@ -143,20 +204,27 @@ xmlParserWarning(void *ctx, const char *msg, ...)
 	xmlParserPrintFileInfo(input);
     }
         
-    fprintf(stderr, "warning: ");
+    xmlGenericError(xmlGenericErrorContext, "warning: ");
     va_start(args, msg);
-    vfprintf(stderr, msg, args);
+    vfprintf(xmlGenericErrorContext, msg, args);
     va_end(args);
+
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
 	if (cur != NULL) {
 	    xmlParserPrintFileInfo(cur);
-	    fprintf(stderr, "\n");
+	    xmlGenericError(xmlGenericErrorContext, "\n");
 	    xmlParserPrintFileContext(cur);
 	}
     }
 }
+
+/************************************************************************
+ * 									*
+ * 			Handling of validation errors			*
+ * 									*
+ ************************************************************************/
 
 /**
  * xmlParserValidityError:
@@ -182,9 +250,9 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
 	xmlParserPrintFileInfo(input);
     }
 
-    fprintf(stderr, "validity error: ");
+    xmlGenericError(xmlGenericErrorContext, "validity error: ");
     va_start(args, msg);
-    vfprintf(stderr, msg, args);
+    vfprintf(xmlGenericErrorContext, msg, args);
     va_end(args);
 
     if (ctxt != NULL) {
@@ -216,13 +284,14 @@ xmlParserValidityWarning(void *ctx, const char *msg, ...)
 	xmlParserPrintFileInfo(input);
     }
         
-    fprintf(stderr, "validity warning: ");
+    xmlGenericError(xmlGenericErrorContext, "validity warning: ");
     va_start(args, msg);
-    vfprintf(stderr, msg, args);
+    vfprintf(xmlGenericErrorContext, msg, args);
     va_end(args);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
     }
 }
+
 

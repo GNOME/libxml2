@@ -41,6 +41,7 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parserInternals.h>
+#include <libxml/xmlerror.h>
 #if defined(LIBXML_XPTR_ENABLED)
 #include <libxml/xpointer.h>
 static int xptr = 0;
@@ -115,7 +116,8 @@ void testXPathFile(const char *filename) {
 
     input = fopen(filename, "r");
     if (input == NULL) {
-        fprintf(stderr, "Cannot open %s for reading\n", filename);
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot open %s for reading\n", filename);
 	return;
     }
     while (fgets(expr, 4500, input) != NULL) {

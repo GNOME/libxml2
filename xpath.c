@@ -57,6 +57,7 @@
 #ifdef LIBXML_DEBUG_ENABLED
 #include <libxml/debugXML.h>
 #endif
+#include <libxml/xmlerror.h>
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */
@@ -173,21 +174,17 @@ xmlXPathInit(void) {
  *									*
  ************************************************************************/
 
-FILE *xmlXPathDebug = NULL;
-
 #define TODO 								\
-    fprintf(xmlXPathDebug, "Unimplemented block at %s:%d\n",		\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
 #define STRANGE 							\
-    fprintf(xmlXPathDebug, "Internal error at %s:%d\n",			\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Internal error at %s:%d\n",				\
             __FILE__, __LINE__);
 
 #ifdef LIBXML_DEBUG_ENABLED
-double xmlXPathStringEvalNumber(const xmlChar *str);
-void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
-void xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt);
-
 void xmlXPathDebugDumpNode(FILE *output, xmlNodePtr cur, int depth) {
     int i;
     char shift[100];
@@ -360,7 +357,8 @@ extern int name##Push(xmlXPathParserContextPtr ctxt, type value) {	\
         ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
-	    fprintf(xmlXPathDebug, "realloc failed !\n");		\
+	    xmlGenericError(xmlGenericErrorContext,			\
+		    "realloc failed !\n");				\
 	    return(0);							\
 	}								\
     }									\
@@ -464,7 +462,8 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
     const xmlChar *cur;
     const xmlChar *base;
 
-    fprintf(xmlXPathDebug, "Error %s:%d: %s\n", file, line,
+    xmlGenericError(xmlGenericErrorContext,
+	    "Error %s:%d: %s\n", file, line,
             xmlXPathErrorMessages[no]);
 
     cur = ctxt->cur;
@@ -479,19 +478,19 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
     base = cur;
     n = 0;
     while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-        fprintf(xmlXPathDebug, "%c", (unsigned char) *cur++);
+        xmlGenericError(xmlGenericErrorContext, "%c", (unsigned char) *cur++);
 	n++;
     }
-    fprintf(xmlXPathDebug, "\n");
+    xmlGenericError(xmlGenericErrorContext, "\n");
     cur = ctxt->cur;
     while ((*cur == '\n') || (*cur == '\r'))
 	cur--;
     n = 0;
     while ((cur != base) && (n++ < 80)) {
-        fprintf(xmlXPathDebug, " ");
+        xmlGenericError(xmlGenericErrorContext, " ");
         base++;
     }
-    fprintf(xmlXPathDebug,"^\n");
+    xmlGenericError(xmlGenericErrorContext,"^\n");
 }
 
 
@@ -516,7 +515,8 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
 
     ret = (xmlNodeSetPtr) xmlMalloc(sizeof(xmlNodeSet));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewNodeSet: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewNodeSet: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlNodeSet));
@@ -524,7 +524,8 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
         ret->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 					     sizeof(xmlNodePtr));
 	if (ret->nodeTab == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPathNewNodeSet: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNewNodeSet: out of memory\n");
 	    return(NULL);
 	}
 	memset(ret->nodeTab, 0 ,
@@ -561,7 +562,8 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
         cur->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 					     sizeof(xmlNodePtr));
 	if (cur->nodeTab == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPathNodeSetAdd: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNodeSetAdd: out of memory\n");
 	    return;
 	}
 	memset(cur->nodeTab, 0 ,
@@ -574,7 +576,8 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
 				      sizeof(xmlNodePtr));
 	if (temp == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPathNodeSetAdd: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNodeSetAdd: out of memory\n");
 	    return;
 	}
 	cur->nodeTab = temp;
@@ -634,7 +637,7 @@ xmlXPathNodeSetDel(xmlNodeSetPtr cur, xmlNodePtr val) {
 
     if (i >= cur->nodeNr) {
 #ifdef DEBUG
-        fprintf(xmlXPathDebug, 
+        xmlGenericError(xmlGenericErrorContext, 
 	        "xmlXPathNodeSetDel: Node %s wasn't found in NodeList\n",
 		val->name);
 #endif
@@ -686,17 +689,17 @@ xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
 
 #if defined(DEBUG) || defined(DEBUG_STEP)
 /**
- * xmlXPathDebugNodeSet:
+ * xmlGenericErrorContextNodeSet:
  * @output:  a FILE * for the output
  * @obj:  the xmlNodeSetPtr to free
  *
  * Quick display of a NodeSet
  */
 void
-xmlXPathDebugNodeSet(FILE *output, xmlNodeSetPtr obj) {
+xmlGenericErrorContextNodeSet(FILE *output, xmlNodeSetPtr obj) {
     int i;
 
-    if (output == NULL) output = xmlXPathDebug;
+    if (output == NULL) output = xmlGenericErrorContext;
     if (obj == NULL)  {
         fprintf(output, "NodeSet == NULL !\n");
 	return;
@@ -740,7 +743,8 @@ xmlXPathNewNodeSet(xmlNodePtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewNodeSet: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewNodeSet: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -791,7 +795,8 @@ xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathWrapNodeSet: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathWrapNodeSet: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -976,7 +981,8 @@ xmlXPathNewFloat(double val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewFloat: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewFloat: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -999,7 +1005,8 @@ xmlXPathNewBoolean(int val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewBoolean: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewBoolean: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -1022,7 +1029,8 @@ xmlXPathNewString(const xmlChar *val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewString: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewString: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -1045,7 +1053,8 @@ xmlXPathNewCString(const char *val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewCString: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewCString: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -1071,7 +1080,8 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathObjectCopy: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathObjectCopy: out of memory\n");
 	return(NULL);
     }
     memcpy(ret, val , (size_t) sizeof(xmlXPathObject));
@@ -1095,7 +1105,8 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 #endif
 	case XPATH_UNDEFINED:
 	case XPATH_USERS:
-	    fprintf(xmlXPathDebug, "xmlXPathObjectCopy: unsupported type %d\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathObjectCopy: unsupported type %d\n",
 		    val->type);
     }
     return(ret);
@@ -1149,7 +1160,8 @@ xmlXPathNewContext(xmlDocPtr doc) {
 
     ret = (xmlXPathContextPtr) xmlMalloc(sizeof(xmlXPathContext));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewContext: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewContext: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathContext));
@@ -1207,22 +1219,25 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
 
 #define CHECK_CTXT(ctxt)						\
     if (ctxt == NULL) { 						\
-        fprintf(xmlXPathDebug, "%s:%d Internal error: ctxt == NULL\n",	\
+        xmlGenericError(xmlGenericErrorContext,				\
+		"%s:%d Internal error: ctxt == NULL\n",			\
 	        __FILE__, __LINE__);					\
     }									\
 
 
 #define CHECK_CONTEXT(ctxt)						\
     if (ctxt == NULL) { 						\
-        fprintf(xmlXPathDebug, "%s:%d Internal error: no context\n",	\
+        xmlGenericError(xmlGenericErrorContext,				\
+		"%s:%d Internal error: no context\n",			\
 	        __FILE__, __LINE__);					\
     }									\
     else if (ctxt->doc == NULL) { 					\
-        fprintf(xmlXPathDebug, "%s:%d Internal error: no document\n",	\
+        xmlGenericError(xmlGenericErrorContext,				\
+		"%s:%d Internal error: no document\n",			\
 	        __FILE__, __LINE__);					\
     }									\
     else if (ctxt->doc->children == NULL) { 				\
-        fprintf(xmlXPathDebug,						\
+        xmlGenericError(xmlGenericErrorContext,				\
 	        "%s:%d Internal error: document without root\n",	\
 	        __FILE__, __LINE__);					\
     }									\
@@ -1243,7 +1258,8 @@ xmlXPathNewParserContext(const xmlChar *str, xmlXPathContextPtr ctxt) {
 
     ret = (xmlXPathParserContextPtr) xmlMalloc(sizeof(xmlXPathParserContext));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewParserContext: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewParserContext: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathParserContext));
@@ -1432,7 +1448,8 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
   
     if (arg1 == arg2) {
 #ifdef DEBUG_EXPR
-        fprintf(xmlXPathDebug, "Equal: by pointer\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"Equal: by pointer\n");
 #endif
         return(1);
     }
@@ -1440,14 +1457,16 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
     switch (arg1->type) {
         case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-	    fprintf(xmlXPathDebug, "Equal: undefined\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Equal: undefined\n");
 #endif
 	    break;
         case XPATH_NODESET:
 	    switch (arg2->type) {
 	        case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-		    fprintf(xmlXPathDebug, "Equal: undefined\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Equal: undefined\n");
 #endif
 		    break;
 		case XPATH_NODESET:
@@ -1478,7 +1497,8 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 	    switch (arg2->type) {
 	        case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-		    fprintf(xmlXPathDebug, "Equal: undefined\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Equal: undefined\n");
 #endif
 		    break;
 		case XPATH_NODESET:
@@ -1489,7 +1509,8 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    break;
 		case XPATH_BOOLEAN:
 #ifdef DEBUG_EXPR
-		    fprintf(xmlXPathDebug, "Equal: %d boolean %d \n",
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Equal: %d boolean %d \n",
 			    arg1->boolval, arg2->boolval);
 #endif
 		    ret = (arg1->boolval == arg2->boolval);
@@ -1518,7 +1539,8 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 	    switch (arg2->type) {
 	        case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-		    fprintf(xmlXPathDebug, "Equal: undefined\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Equal: undefined\n");
 #endif
 		    break;
 		case XPATH_NODESET:
@@ -1549,7 +1571,8 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 	    switch (arg2->type) {
 	        case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-		    fprintf(xmlXPathDebug, "Equal: undefined\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Equal: undefined\n");
 #endif
 		    break;
 		case XPATH_NODESET:
@@ -2346,74 +2369,88 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
     obj = valuePop(ctxt);
 
 #ifdef DEBUG_STEP
-    fprintf(xmlXPathDebug, "new step : ");
+    xmlGenericError(xmlGenericErrorContext,
+	    "new step : ");
 #endif
     switch (axis) {
         case AXIS_ANCESTOR:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'ancestors' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'ancestors' ");
 #endif
 	    next = xmlXPathNextAncestor; break;
         case AXIS_ANCESTOR_OR_SELF:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'ancestors-or-self' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'ancestors-or-self' ");
 #endif
 	    next = xmlXPathNextAncestorOrSelf; break;
         case AXIS_ATTRIBUTE:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'attributes' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'attributes' ");
 #endif
 	    next = (xmlXPathTraversalFunction) xmlXPathNextAttribute; break;
 	    break;
         case AXIS_CHILD:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'child' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'child' ");
 #endif
 	    next = xmlXPathNextChild; break;
         case AXIS_DESCENDANT:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'descendant' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'descendant' ");
 #endif
 	    next = xmlXPathNextDescendant; break;
         case AXIS_DESCENDANT_OR_SELF:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'descendant-or-self' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'descendant-or-self' ");
 #endif
 	    next = xmlXPathNextDescendantOrSelf; break;
         case AXIS_FOLLOWING:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'following' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'following' ");
 #endif
 	    next = xmlXPathNextFollowing; break;
         case AXIS_FOLLOWING_SIBLING:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'following-siblings' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'following-siblings' ");
 #endif
 	    next = xmlXPathNextFollowingSibling; break;
         case AXIS_NAMESPACE:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'namespace' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'namespace' ");
 #endif
 	    next = (xmlXPathTraversalFunction) xmlXPathNextNamespace; break;
 	    break;
         case AXIS_PARENT:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'parent' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'parent' ");
 #endif
 	    next = xmlXPathNextParent; break;
         case AXIS_PRECEDING:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'preceding' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'preceding' ");
 #endif
 	    next = xmlXPathNextPreceding; break;
         case AXIS_PRECEDING_SIBLING:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'preceding-sibling' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'preceding-sibling' ");
 #endif
 	    next = xmlXPathNextPrecedingSibling; break;
         case AXIS_SELF:
 #ifdef DEBUG_STEP
-	    fprintf(xmlXPathDebug, "axis 'self' ");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'self' ");
 #endif
 	    next = xmlXPathNextSelf; break;
     }
@@ -2423,33 +2460,41 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
     nodelist = obj->nodesetval;
     ret = xmlXPathNodeSetCreate(NULL);
 #ifdef DEBUG_STEP
-    fprintf(xmlXPathDebug, " context contains %d nodes\n",
+    xmlGenericError(xmlGenericErrorContext,
+	    " context contains %d nodes\n",
             nodelist->nodeNr);
     switch (test) {
 	case NODE_TEST_NONE:
-	    fprintf(xmlXPathDebug, "           searching for none !!!\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for none !!!\n");
 	    break;
 	case NODE_TEST_TYPE:
-	    fprintf(xmlXPathDebug, "           searching for type %d\n", type);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for type %d\n", type);
 	    break;
 	case NODE_TEST_PI:
-	    fprintf(xmlXPathDebug, "           searching for PI !!!\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for PI !!!\n");
 	    break;
 	case NODE_TEST_ALL:
-	    fprintf(xmlXPathDebug, "           searching for *\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for *\n");
 	    break;
 	case NODE_TEST_NS:
-	    fprintf(xmlXPathDebug, "           searching for namespace %s\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for namespace %s\n",
 	            prefix);
 	    break;
 	case NODE_TEST_NAME:
-	    fprintf(xmlXPathDebug, "           searching for name %s\n", name);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for name %s\n", name);
 	    if (prefix != NULL)
-		fprintf(xmlXPathDebug, "           with namespace %s\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"           with namespace %s\n",
 		        prefix);
 	    break;
     }
-    fprintf(xmlXPathDebug, "Testing : ");
+    xmlGenericError(xmlGenericErrorContext, "Testing : ");
 #endif
     /*
      * 2.3 Node Tests
@@ -2470,7 +2515,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 	    if (cur == NULL) break;
 #ifdef DEBUG_STEP
             t++;
-            fprintf(xmlXPathDebug, " %s", cur->name);
+            xmlGenericError(xmlGenericErrorContext, " %s", cur->name);
 #endif
 	    switch (test) {
                 case NODE_TEST_NONE:
@@ -2543,7 +2588,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 	} while (cur != NULL);
     }
 #ifdef DEBUG_STEP
-    fprintf(xmlXPathDebug,
+    xmlGenericError(xmlGenericErrorContext,
             "\nExamined %d nodes, found %d nodes at that step\n", t, n);
 #endif
     xmlXPathFreeObject(obj);
@@ -2597,7 +2642,8 @@ xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if (ctxt->context->contextSize > 0) {
 	valuePush(ctxt, xmlXPathNewFloat((double) ctxt->context->contextSize));
 #ifdef DEBUG_EXPR
-	fprintf(xmlXPathDebug, "last() : %d\n", ctxt->context->contextSize);
+	xmlGenericError(xmlGenericErrorContext,
+		"last() : %d\n", ctxt->context->contextSize);
 #endif
     } else {
 	XP_ERROR(XPATH_INVALID_CTXT_SIZE);
@@ -2620,7 +2666,7 @@ xmlXPathPositionFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	valuePush(ctxt,
 	      xmlXPathNewFloat((double) ctxt->context->proximityPosition));
 #ifdef DEBUG_EXPR
-	fprintf(xmlXPathDebug, "position() : %d\n",
+	xmlGenericError(xmlGenericErrorContext, "position() : %d\n",
 		ctxt->context->proximityPosition);
 #endif
     } else {
@@ -2885,7 +2931,7 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     switch (cur->type) {
 	case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-	    fprintf(xmlXPathDebug, "String: undefined\n");
+	    xmlGenericError(xmlGenericErrorContext, "String: undefined\n");
 #endif
 	    valuePush(ctxt, xmlXPathNewCString(""));
 	    break;
@@ -3495,7 +3541,7 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     switch (cur->type) {
 	case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-	    fprintf(xmlXPathDebug, "NUMBER: undefined\n");
+	    xmlGenericError(xmlGenericErrorContext, "NUMBER: undefined\n");
 #endif
 	    valuePush(ctxt, xmlXPathNewFloat(0.0));
 	    break;
@@ -3967,7 +4013,7 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
 	XP_ERROR(XPATH_UNKNOWN_FUNC_ERROR);
     }
 #ifdef DEBUG_EXPR
-    fprintf(xmlXPathDebug, "Calling function %s\n", name);
+    xmlGenericError(xmlGenericErrorContext, "Calling function %s\n", name);
 #endif
 
     if (CUR != '(') {
@@ -4098,7 +4144,7 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
 	buf[len] = NXT(len);
 	len++;
 	if (len >= XML_MAX_NAMELEN) {
-	    fprintf(stderr, 
+	    xmlGenericError(xmlGenericErrorContext, 
 	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
 	    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) ||
 		   (NXT(len) == '.') || (NXT(len) == '-') ||
@@ -4170,7 +4216,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		if (NXT(len) == '/') {
 		    /* element name */
 #ifdef DEBUG_STEP
-		    fprintf(xmlXPathDebug, "PathExpr: AbbrRelLocation\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PathExpr: AbbrRelLocation\n");
 #endif
 		    lc = 1;
 		    break;
@@ -4179,7 +4226,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		    blank = 1;
 		} else if (NXT(len) == ':') {
 #ifdef DEBUG_STEP
-		    fprintf(xmlXPathDebug, "PathExpr: AbbrRelLocation\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PathExpr: AbbrRelLocation\n");
 #endif
 		    lc = 1;
 		    break;
@@ -4187,12 +4235,14 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		    /* Note Type or Function */
 		    if (xmlXPathIsNodeType(name)) {
 #ifdef DEBUG_STEP
-		        fprintf(xmlXPathDebug, "PathExpr: Type search\n");
+		        xmlGenericError(xmlGenericErrorContext,
+				"PathExpr: Type search\n");
 #endif
 			lc = 1;
 		    } else {
 #ifdef DEBUG_STEP
-		        fprintf(xmlXPathDebug, "PathExpr: function call\n");
+		        xmlGenericError(xmlGenericErrorContext,
+				"PathExpr: function call\n");
 #endif
 			lc = 0;
 		    }
@@ -4200,7 +4250,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		} else if ((NXT(len) == '[')) {
 		    /* element name */
 #ifdef DEBUG_STEP
-		    fprintf(xmlXPathDebug, "PathExpr: AbbrRelLocation\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PathExpr: AbbrRelLocation\n");
 #endif
 		    lc = 1;
 		    break;
@@ -4211,7 +4262,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	    }
 	    if (NXT(len) == 0) {
 #ifdef DEBUG_STEP
-		fprintf(xmlXPathDebug, "PathExpr: AbbrRelLocation\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PathExpr: AbbrRelLocation\n");
 #endif
 		/* element name */
 		lc = 1;
@@ -4685,8 +4737,9 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     NEXT;
     SKIP_BLANKS;
 #ifdef DEBUG_STEP
-    fprintf(xmlXPathDebug, "After predicate : ");
-    xmlXPathDebugNodeSet(xmlXPathDebug, ctxt->value->nodesetval);
+    xmlGenericError(xmlGenericErrorContext, "After predicate : ");
+    xmlGenericErrorContextNodeSet(xmlGenericErrorContext,
+	    ctxt->value->nodesetval);
 #endif
 }
 
@@ -5017,12 +5070,13 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 	    return;
 
 #ifdef DEBUG_STEP
-	fprintf(xmlXPathDebug, "Basis : computing new set\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"Basis : computing new set\n");
 #endif
 	xmlXPathNodeCollectAndTest(ctxt, axis, test, type, prefix, name);
 #ifdef DEBUG_STEP
-	fprintf(xmlXPathDebug, "Basis : ");
-	xmlXPathDebugNodeSet(stdout, ctxt->value->nodesetval);
+	xmlGenericError(xmlGenericErrorContext, "Basis : ");
+	xmlGenericErrorContextNodeSet(stdout, ctxt->value->nodesetval);
 #endif
 	if (name != NULL)
 	    xmlFree(name);
@@ -5036,8 +5090,9 @@ eval_predicates:
 	}
     }
 #ifdef DEBUG_STEP
-    fprintf(xmlXPathDebug, "Step : ");
-    xmlXPathDebugNodeSet(xmlXPathDebug, ctxt->value->nodesetval);
+    xmlGenericError(xmlGenericErrorContext, "Step : ");
+    xmlGenericErrorContextNodeSet(xmlGenericErrorContext,
+	    ctxt->value->nodesetval);
 #endif
 }
 
@@ -5144,9 +5199,6 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 
     xmlXPathInit();
 
-    if (xmlXPathDebug == NULL)
-        xmlXPathDebug = stderr;
-
     CHECK_CONTEXT(ctx)
 
     ctxt = xmlXPathNewParserContext(str, ctx);
@@ -5159,7 +5211,7 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathEvalExpr(ctxt);
 
     if ((ctxt->value == NULL) || (ctxt->value->type != XPATH_NODESET)) {
-	fprintf(xmlXPathDebug,
+	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEval: evaluation failed to return a node set\n");
     } else {
 	res = valuePop(ctxt);
@@ -5174,7 +5226,8 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
         }
     } while (tmp != NULL);
     if (stack != 0) {
-	fprintf(xmlXPathDebug, "xmlXPathEval: %d object left on the stack\n",
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathEval: %d object left on the stack\n",
 	        stack);
     }
     if (ctxt->error != XPATH_EXPRESSION_OK) {
@@ -5206,8 +5259,6 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
 
     CHECK_CONTEXT(ctxt)
 
-    if (xmlXPathDebug == NULL)
-        xmlXPathDebug = stderr;
     pctxt = xmlXPathNewParserContext(str, ctxt);
     xmlXPathEvalExpr(pctxt);
 
@@ -5220,7 +5271,8 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
 	}
     } while (tmp != NULL);
     if (stack != 0) {
-	fprintf(xmlXPathDebug, "xmlXPathEvalExpression: %d object left on the stack\n",
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathEvalExpression: %d object left on the stack\n",
 	        stack);
     }
     xmlXPathFreeParserContext(pctxt);

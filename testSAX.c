@@ -617,7 +617,8 @@ void parseAndPrintFile(char *filename) {
 	    }
 	    fclose(f);
 	} else {
-	    fprintf(stderr, "Cannot read file %s\n", filename);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Cannot read file %s\n", filename);
 	}
 	/*
 	 * Debug callback

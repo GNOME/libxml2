@@ -54,6 +54,7 @@
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 #include <libxml/debugXML.h>
+#include <libxml/xmlerror.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
@@ -97,7 +98,7 @@ xmlHTMLEncodeSend(void) {
 
     result = (char *) xmlEncodeEntitiesReentrant(NULL, BAD_CAST buffer);
     if (result) {
-	fprintf(stderr, "%s", result);
+	xmlGenericError(xmlGenericErrorContext, "%s", result);
 	xmlFree(result);
     }
     buffer[0] = 0;
@@ -112,7 +113,7 @@ xmlHTMLEncodeSend(void) {
 
 void
 xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
-    fprintf(stderr, "<p>");
+    xmlGenericError(xmlGenericErrorContext, "<p>");
     if (input != NULL) {
 	if (input->filename) {
 	    sprintf(&buffer[strlen(buffer)], "%s:%d: ", input->filename,
@@ -137,7 +138,7 @@ xmlHTMLPrintFileContext(xmlParserInputPtr input) {
     int n;
 
     if (input == NULL) return;
-    fprintf(stderr, "<pre>\n");
+    xmlGenericError(xmlGenericErrorContext, "<pre>\n");
     cur = input->cur;
     base = input->base;
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
@@ -164,7 +165,7 @@ xmlHTMLPrintFileContext(xmlParserInputPtr input) {
     }
     sprintf(&buffer[strlen(buffer)],"^\n");
     xmlHTMLEncodeSend();
-    fprintf(stderr, "</pre>");
+    xmlGenericError(xmlGenericErrorContext, "</pre>");
 }
 
 /**
@@ -193,12 +194,12 @@ xmlHTMLError(void *ctx, const char *msg, ...)
         
     xmlHTMLPrintFileInfo(input);
 
-    fprintf(stderr, "<b>error</b>: ");
+    xmlGenericError(xmlGenericErrorContext, "<b>error</b>: ");
     va_start(args, msg);
     vsprintf(&buffer[strlen(buffer)], msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
-    fprintf(stderr, "</p>\n");
+    xmlGenericError(xmlGenericErrorContext, "</p>\n");
 
     xmlHTMLPrintFileContext(input);
     xmlHTMLEncodeSend();
@@ -231,12 +232,12 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
 
     xmlHTMLPrintFileInfo(input);
         
-    fprintf(stderr, "<b>warning</b>: ");
+    xmlGenericError(xmlGenericErrorContext, "<b>warning</b>: ");
     va_start(args, msg);
     vsprintf(&buffer[strlen(buffer)], msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
-    fprintf(stderr, "</p>\n");
+    xmlGenericError(xmlGenericErrorContext, "</p>\n");
 
     xmlHTMLPrintFileContext(input);
     xmlHTMLEncodeSend();
@@ -265,12 +266,12 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
         
     xmlHTMLPrintFileInfo(input);
 
-    fprintf(stderr, "<b>validity error</b>: ");
+    xmlGenericError(xmlGenericErrorContext, "<b>validity error</b>: ");
     va_start(args, msg);
     vsprintf(&buffer[strlen(buffer)], msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
-    fprintf(stderr, "</p>\n");
+    xmlGenericError(xmlGenericErrorContext, "</p>\n");
 
     xmlHTMLPrintFileContext(input);
     xmlHTMLEncodeSend();
@@ -299,12 +300,12 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
 
     xmlHTMLPrintFileInfo(input);
         
-    fprintf(stderr, "<b>validity warning</b>: ");
+    xmlGenericError(xmlGenericErrorContext, "<b>validity warning</b>: ");
     va_start(args, msg);
     vsprintf(&buffer[strlen(buffer)], msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
-    fprintf(stderr, "</p>\n");
+    xmlGenericError(xmlGenericErrorContext, "</p>\n");
 
     xmlHTMLPrintFileContext(input);
     xmlHTMLEncodeSend();
@@ -568,12 +569,14 @@ void parseAndPrintFile(char *filename) {
 
 	dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid); 
 	if (dtd == NULL) {
-	    fprintf(stderr, "Could not parse DTD %s\n", dtdvalid);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Could not parse DTD %s\n", dtdvalid);
 	} else {
 	    xmlValidCtxt cvp;
 	    cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
 	    if (!xmlValidateDtd(&cvp, doc, dtd)) {
-		fprintf(stderr, "Document %s does not validate against %s\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"Document %s does not validate against %s\n",
 			filename, dtdvalid);
 	    }
 	    xmlFreeDtd(dtd);
@@ -582,7 +585,8 @@ void parseAndPrintFile(char *filename) {
 	xmlValidCtxt cvp;
 	cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
 	if (!xmlValidateDocument(&cvp, doc)) {
-	    fprintf(stderr, "Document %s does not validate\n", filename);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Document %s does not validate\n", filename);
 	}
     }
 
@@ -703,13 +707,14 @@ int main(int argc, char **argv) {
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
     if ((htmlout) && (!nowrap)) {
-	fprintf(stderr,
+	xmlGenericError(xmlGenericErrorContext,
          "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");
-	fprintf(stderr, "\t\"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
-	fprintf(stderr,
+	xmlGenericError(xmlGenericErrorContext,
+		"\t\"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
+	xmlGenericError(xmlGenericErrorContext,
 	 "<html><head><title>%s output</title></head>\n",
 		argv[0]);
-	fprintf(stderr, 
+	xmlGenericError(xmlGenericErrorContext, 
 	 "<body bgcolor=\"#ffffff\"><h1 align=\"center\">%s output</h1>\n",
 		argv[0]);
     }
@@ -734,7 +739,7 @@ int main(int argc, char **argv) {
 	}
     }
     if ((htmlout) && (!nowrap)) {
-	fprintf(stderr, "</body></html>\n");
+	xmlGenericError(xmlGenericErrorContext, "</body></html>\n");
     }
     if (files == 0) {
 	printf("Usage : %s [--debug] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",

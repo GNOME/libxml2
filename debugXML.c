@@ -31,6 +31,7 @@
 #include <libxml/debugXML.h>
 #include <libxml/HTMLtree.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/xmlerror.h>
 
 #define IS_BLANK(c)							\
   (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
@@ -1203,31 +1204,36 @@ xmlShellWrite(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
     if (node == NULL)
         return(-1);
     if ((filename == NULL) || (filename[0] == 0)) {
-        fprintf(stderr, "Write command requires a filename argument\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"Write command requires a filename argument\n");
 	return(-1);
     }
 #ifdef W_OK
     if (access((char *) filename, W_OK)) {
-        fprintf(stderr, "Cannot write to %s\n", filename);
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot write to %s\n", filename);
 	return(-1);
     }
 #endif    
     switch(node->type) {
         case XML_DOCUMENT_NODE:
 	    if (xmlSaveFile((char *) filename, ctxt->doc) < -1) {
-		fprintf(stderr, "Failed to write to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to write to %s\n", filename);
 		return(-1);
 	    }
 	    break;
         case XML_HTML_DOCUMENT_NODE:
 #ifdef LIBXML_HTML_ENABLED
 	    if (htmlSaveFile((char *) filename, ctxt->doc) < 0) {
-		fprintf(stderr, "Failed to write to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to write to %s\n", filename);
 		return(-1);
 	    }
 #else
 	    if (xmlSaveFile((char *) filename, ctxt->doc) < -1) {
-		fprintf(stderr, "Failed to write to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to write to %s\n", filename);
 		return(-1);
 	    }
 #endif /* LIBXML_HTML_ENABLED */
@@ -1237,7 +1243,8 @@ xmlShellWrite(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
 
 	    f = fopen((char *) filename, "w");
 	    if (f == NULL) {
-		fprintf(stderr, "Failed to write to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to write to %s\n", filename);
 		return(-1);
 	    }
 	    xmlElemDump(f, ctxt->doc, node);
@@ -1268,29 +1275,33 @@ xmlShellSave(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
         filename = ctxt->filename;
 #ifdef W_OK
     if (access((char *) filename, W_OK)) {
-        fprintf(stderr, "Cannot save to %s\n", filename);
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot save to %s\n", filename);
 	return(-1);
     }
 #endif
     switch(ctxt->doc->type) {
         case XML_DOCUMENT_NODE:
 	    if (xmlSaveFile((char *) filename, ctxt->doc) < 0) {
-		fprintf(stderr, "Failed to save to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to save to %s\n", filename);
 	    }
 	    break;
         case XML_HTML_DOCUMENT_NODE:
 #ifdef LIBXML_HTML_ENABLED
 	    if (htmlSaveFile((char *) filename, ctxt->doc) < 0) {
-		fprintf(stderr, "Failed to save to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to save to %s\n", filename);
 	    }
 #else
 	    if (xmlSaveFile((char *) filename, ctxt->doc) < 0) {
-		fprintf(stderr, "Failed to save to %s\n", filename);
+		xmlGenericError(xmlGenericErrorContext,
+			"Failed to save to %s\n", filename);
 	    }
 #endif /* LIBXML_HTML_ENABLED */
 	    break;
 	default:
-	    fprintf(stderr, 
+	    xmlGenericError(xmlGenericErrorContext, 
 	      "To save to subparts of a document use the 'write' command\n");
 	    return(-1);
 	    
@@ -1653,7 +1664,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		if (list != NULL) {
 		    switch (list->type) {
 			case XPATH_UNDEFINED:
-			    fprintf(stderr, "%s: no such node\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s: no such node\n", arg);
 			    break;
 			case XPATH_NODESET: {
 			    int i;
@@ -1669,30 +1681,38 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 			}
 			case XPATH_BOOLEAN:
-			    fprintf(stderr, "%s is a Boolean\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a Boolean\n", arg);
 			    break;
 			case XPATH_NUMBER:
-			    fprintf(stderr, "%s is a number\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a number\n", arg);
 			    break;
 			case XPATH_STRING:
-			    fprintf(stderr, "%s is a string\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a string\n", arg);
 			    break;
 			case XPATH_POINT:
-			    fprintf(stderr, "%s is a point\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a point\n", arg);
 			    break;
 			case XPATH_RANGE:
-			    fprintf(stderr, "%s is a range\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a range\n", arg);
 			    break;
 			case XPATH_LOCATIONSET:
-			    fprintf(stderr, "%s is a range\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a range\n", arg);
 			    break;
 			case XPATH_USERS:
-			    fprintf(stderr, "%s is user-defined\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is user-defined\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
 		} else {
-		    fprintf(stderr, "%s: no such node\n", arg);
+		    xmlGenericError(xmlGenericErrorContext,
+			    "%s: no such node\n", arg);
 		}
 		ctxt->pctxt->node = NULL;
 	    }
@@ -1709,40 +1729,50 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		if (list != NULL) {
 		    switch (list->type) {
 			case XPATH_UNDEFINED:
-			    fprintf(stderr, "%s: no such node\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s: no such node\n", arg);
 			    break;
 			case XPATH_NODESET:
 			    if (list->nodesetval->nodeNr == 1) {
 				ctxt->node = list->nodesetval->nodeTab[0];
 			    } else 
-				fprintf(stderr, "%s is a %d Node Set\n",
+				xmlGenericError(xmlGenericErrorContext,
+					"%s is a %d Node Set\n",
 				        arg, list->nodesetval->nodeNr);
 			    break;
 			case XPATH_BOOLEAN:
-			    fprintf(stderr, "%s is a Boolean\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a Boolean\n", arg);
 			    break;
 			case XPATH_NUMBER:
-			    fprintf(stderr, "%s is a number\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a number\n", arg);
 			    break;
 			case XPATH_STRING:
-			    fprintf(stderr, "%s is a string\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a string\n", arg);
 			    break;
 			case XPATH_POINT:
-			    fprintf(stderr, "%s is a point\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a point\n", arg);
 			    break;
 			case XPATH_RANGE:
-			    fprintf(stderr, "%s is a range\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a range\n", arg);
 			    break;
 			case XPATH_LOCATIONSET:
-			    fprintf(stderr, "%s is a range\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a range\n", arg);
 			    break;
 			case XPATH_USERS:
-			    fprintf(stderr, "%s is user-defined\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is user-defined\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
 		} else {
-		    fprintf(stderr, "%s: no such node\n", arg);
+		    xmlGenericError(xmlGenericErrorContext,
+			    "%s: no such node\n", arg);
 		}
 		ctxt->pctxt->node = NULL;
 	    }
@@ -1760,7 +1790,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		if (list != NULL) {
 		    switch (list->type) {
 			case XPATH_UNDEFINED:
-			    fprintf(stderr, "%s: no such node\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s: no such node\n", arg);
 			    break;
 			case XPATH_NODESET: {
 			    int i;
@@ -1773,35 +1804,44 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 			}
 			case XPATH_BOOLEAN:
-			    fprintf(stderr, "%s is a Boolean\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a Boolean\n", arg);
 			    break;
 			case XPATH_NUMBER:
-			    fprintf(stderr, "%s is a number\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a number\n", arg);
 			    break;
 			case XPATH_STRING:
-			    fprintf(stderr, "%s is a string\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a string\n", arg);
 			    break;
 			case XPATH_POINT:
-			    fprintf(stderr, "%s is a point\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a point\n", arg);
 			    break;
 			case XPATH_RANGE:
-			    fprintf(stderr, "%s is a range\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a range\n", arg);
 			    break;
 			case XPATH_LOCATIONSET:
-			    fprintf(stderr, "%s is a range\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is a range\n", arg);
 			    break;
 			case XPATH_USERS:
-			    fprintf(stderr, "%s is user-defined\n", arg);
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is user-defined\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
 		} else {
-		    fprintf(stderr, "%s: no such node\n", arg);
+		    xmlGenericError(xmlGenericErrorContext,
+			    "%s: no such node\n", arg);
 		}
 		ctxt->pctxt->node = NULL;
 	    }
 	} else {
-	    fprintf(stderr, "Unknown command %s\n", command);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Unknown command %s\n", command);
 	}
 	free(cmdline); /* not xmlFree here ! */
     }

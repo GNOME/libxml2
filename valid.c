@@ -25,6 +25,7 @@
 #include <libxml/valid.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
+#include <libxml/xmlerror.h>
 
 /*
  * Generic function for accessing stacks in the Validity Context
@@ -37,7 +38,8 @@ scope int name##VPush(xmlValidCtxtPtr ctxt, type value) {		\
         ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
-	    fprintf(stderr, "realloc failed !\n");			\
+	    xmlGenericError(xmlGenericErrorContext,			\
+		    "realloc failed !\n");				\
 	    return(0);							\
 	}								\
     }									\
@@ -65,59 +67,59 @@ PUSH_AND_POP(static, xmlNodePtr, node)
 #ifdef DEBUG_VALID_ALGO
 void xmlValidPrintNodeList(xmlNodePtr cur) {
     if (cur == NULL)
-	fprintf(stderr, "null ");
+	xmlGenericError(xmlGenericErrorContext, "null ");
     while (cur != NULL) {
 	switch (cur->type) {
 	    case XML_ELEMENT_NODE:
-		fprintf(stderr, "%s ", cur->name);
+		xmlGenericError(xmlGenericErrorContext, "%s ", cur->name);
 		break;
 	    case XML_TEXT_NODE:
-		fprintf(stderr, "text ");
+		xmlGenericError(xmlGenericErrorContext, "text ");
 		break;
 	    case XML_CDATA_SECTION_NODE:
-		fprintf(stderr, "cdata ");
+		xmlGenericError(xmlGenericErrorContext, "cdata ");
 		break;
 	    case XML_ENTITY_REF_NODE:
-		fprintf(stderr, "&%s; ", cur->name);
+		xmlGenericError(xmlGenericErrorContext, "&%s; ", cur->name);
 		break;
 	    case XML_PI_NODE:
-		fprintf(stderr, "pi(%s) ", cur->name);
+		xmlGenericError(xmlGenericErrorContext, "pi(%s) ", cur->name);
 		break;
 	    case XML_COMMENT_NODE:
-		fprintf(stderr, "comment ");
+		xmlGenericError(xmlGenericErrorContext, "comment ");
 		break;
 	    case XML_ATTRIBUTE_NODE:
-		fprintf(stderr, "?attr? ");
+		xmlGenericError(xmlGenericErrorContext, "?attr? ");
 		break;
 	    case XML_ENTITY_NODE:
-		fprintf(stderr, "?ent? ");
+		xmlGenericError(xmlGenericErrorContext, "?ent? ");
 		break;
 	    case XML_DOCUMENT_NODE:
-		fprintf(stderr, "?doc? ");
+		xmlGenericError(xmlGenericErrorContext, "?doc? ");
 		break;
 	    case XML_DOCUMENT_TYPE_NODE:
-		fprintf(stderr, "?doctype? ");
+		xmlGenericError(xmlGenericErrorContext, "?doctype? ");
 		break;
 	    case XML_DOCUMENT_FRAG_NODE:
-		fprintf(stderr, "?frag? ");
+		xmlGenericError(xmlGenericErrorContext, "?frag? ");
 		break;
 	    case XML_NOTATION_NODE:
-		fprintf(stderr, "?nota? ");
+		xmlGenericError(xmlGenericErrorContext, "?nota? ");
 		break;
 	    case XML_HTML_DOCUMENT_NODE:
-		fprintf(stderr, "?html? ");
+		xmlGenericError(xmlGenericErrorContext, "?html? ");
 		break;
 	    case XML_DTD_NODE:
-		fprintf(stderr, "?dtd? ");
+		xmlGenericError(xmlGenericErrorContext, "?dtd? ");
 		break;
 	    case XML_ELEMENT_DECL:
-		fprintf(stderr, "?edecl? ");
+		xmlGenericError(xmlGenericErrorContext, "?edecl? ");
 		break;
 	    case XML_ATTRIBUTE_DECL:
-		fprintf(stderr, "?adecl? ");
+		xmlGenericError(xmlGenericErrorContext, "?adecl? ");
 		break;
 	    case XML_ENTITY_DECL:
-		fprintf(stderr, "?entdecl? ");
+		xmlGenericError(xmlGenericErrorContext, "?entdecl? ");
 		break;
 	}
 	cur = cur->next;
@@ -128,11 +130,11 @@ void xmlValidDebug(xmlNodePtr cur, xmlElementContentPtr cont) {
     char expr[1000];
 
     expr[0] = 0;
-    fprintf(stderr, "valid: ");
+    xmlGenericError(xmlGenericErrorContext, "valid: ");
     xmlValidPrintNodeList(cur);
-    fprintf(stderr, "against ");
+    xmlGenericError(xmlGenericErrorContext, "against ");
     xmlSprintfElementContent(expr, cont, 0);
-    fprintf(stderr, "%s\n", expr);
+    xmlGenericError(xmlGenericErrorContext, "%s\n", expr);
 }
 
 #define DEBUG_VALID_STATE(n,c) xmlValidDebug(n,c);
@@ -233,23 +235,27 @@ xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
     switch(type) {
 	case XML_ELEMENT_CONTENT_ELEMENT:
 	    if (name == NULL) {
-	        fprintf(stderr, "xmlNewElementContent : name == NULL !\n");
+	        xmlGenericError(xmlGenericErrorContext,
+			"xmlNewElementContent : name == NULL !\n");
 	    }
 	    break;
         case XML_ELEMENT_CONTENT_PCDATA:
 	case XML_ELEMENT_CONTENT_SEQ:
 	case XML_ELEMENT_CONTENT_OR:
 	    if (name != NULL) {
-	        fprintf(stderr, "xmlNewElementContent : name != NULL !\n");
+	        xmlGenericError(xmlGenericErrorContext,
+			"xmlNewElementContent : name != NULL !\n");
 	    }
 	    break;
 	default:
-	    fprintf(stderr, "xmlNewElementContent: unknown type %d\n", type);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlNewElementContent: unknown type %d\n", type);
 	    return(NULL);
     }
     ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
     if (ret == NULL) {
-	fprintf(stderr, "xmlNewElementContent : out of memory!\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlNewElementContent : out of memory!\n");
 	return(NULL);
     }
     ret->type = type;
@@ -277,7 +283,8 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
     if (cur == NULL) return(NULL);
     ret = xmlNewElementContent((xmlChar *) cur->name, cur->type);
     if (ret == NULL) {
-        fprintf(stderr, "xmlCopyElementContent : out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlCopyElementContent : out of memory\n");
 	return(NULL);
     }
     ret->ocur = cur->ocur;
@@ -302,7 +309,8 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
 	case XML_ELEMENT_CONTENT_OR:
 	    break;
 	default:
-	    fprintf(stderr, "xmlFreeElementContent : type %d\n", cur->type);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlFreeElementContent : type %d\n", cur->type);
 	    return;
     }
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
@@ -357,7 +365,8 @@ xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) 
 		xmlDumpElementContent(buf, content->c2, 0);
 	    break;
 	default:
-	    fprintf(stderr, "xmlDumpElementContent: unknown type %d\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlDumpElementContent: unknown type %d\n",
 	            content->type);
     }
     if (glob)
@@ -498,44 +507,47 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     xmlChar *ns, *uqname;
 
     if (dtd == NULL) {
-        fprintf(stderr, "xmlAddElementDecl: dtd == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddElementDecl: dtd == NULL\n");
 	return(NULL);
     }
     if (name == NULL) {
-        fprintf(stderr, "xmlAddElementDecl: name == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddElementDecl: name == NULL\n");
 	return(NULL);
     }
     switch (type) {
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (content != NULL) {
-	        fprintf(stderr,
+	        xmlGenericError(xmlGenericErrorContext,
 		        "xmlAddElementDecl: content != NULL for EMPTY\n");
 		return(NULL);
 	    }
 	    break;
 	case XML_ELEMENT_TYPE_ANY:
 	    if (content != NULL) {
-	        fprintf(stderr,
+	        xmlGenericError(xmlGenericErrorContext,
 		        "xmlAddElementDecl: content != NULL for ANY\n");
 		return(NULL);
 	    }
 	    break;
 	case XML_ELEMENT_TYPE_MIXED:
 	    if (content == NULL) {
-	        fprintf(stderr,
+	        xmlGenericError(xmlGenericErrorContext,
 		        "xmlAddElementDecl: content == NULL for MIXED\n");
 		return(NULL);
 	    }
 	    break;
 	case XML_ELEMENT_TYPE_ELEMENT:
 	    if (content == NULL) {
-	        fprintf(stderr,
+	        xmlGenericError(xmlGenericErrorContext,
 		        "xmlAddElementDecl: content == NULL for ELEMENT\n");
 		return(NULL);
 	    }
 	    break;
 	default:
-	    fprintf(stderr, "xmlAddElementDecl: unknown type %d\n", type);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlAddElementDecl: unknown type %d\n", type);
 	    return(NULL);
     }
 
@@ -555,13 +567,15 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 	dtd->elements = (void *) table;
     }
     if (table == NULL) {
-	fprintf(stderr, "xmlAddElementDecl: Table creation failed!\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddElementDecl: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
     if (ret == NULL) {
-	fprintf(stderr, "xmlAddElementDecl: out of memory\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddElementDecl: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlElement));
@@ -633,7 +647,8 @@ xmlCopyElement(xmlElementPtr elem) {
 
     cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
     if (cur == NULL) {
-	fprintf(stderr, "xmlCopyElement: out of memory !\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlCopyElement: out of memory !\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlElement));
@@ -703,7 +718,7 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
 	    xmlBufferWriteChar(buf, ">\n");
 	    break;
 	default:
-	    fprintf(stderr,
+	    xmlGenericError(xmlGenericErrorContext,
 		"xmlDumpElementDecl: internal: unknown type %d\n",
 		    elem->etype);
     }
@@ -736,7 +751,8 @@ xmlCreateEnumeration(xmlChar *name) {
 
     ret = (xmlEnumerationPtr) xmlMalloc(sizeof(xmlEnumeration));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEnumeration : xmlMalloc(%ld) failed\n",
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlCreateEnumeration : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlEnumeration));
         return(NULL);
     }
@@ -851,11 +867,13 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
     xmlAttributeTablePtr table;
 
     if (dtd == NULL) {
-        fprintf(stderr, "xmlScanAttributeDecl: dtd == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlScanAttributeDecl: dtd == NULL\n");
 	return(NULL);
     }
     if (elem == NULL) {
-        fprintf(stderr, "xmlScanAttributeDecl: elem == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlScanAttributeDecl: elem == NULL\n");
 	return(NULL);
     }
     table = (xmlAttributeTablePtr) dtd->attributes;
@@ -950,17 +968,20 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     xmlElementPtr elemDef;
 
     if (dtd == NULL) {
-        fprintf(stderr, "xmlAddAttributeDecl: dtd == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddAttributeDecl: dtd == NULL\n");
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     if (name == NULL) {
-        fprintf(stderr, "xmlAddAttributeDecl: name == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddAttributeDecl: name == NULL\n");
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     if (elem == NULL) {
-        fprintf(stderr, "xmlAddAttributeDecl: elem == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddAttributeDecl: elem == NULL\n");
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
@@ -989,7 +1010,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
         case XML_ATTRIBUTE_NOTATION:
 	    break;
 	default:
-	    fprintf(stderr, "xmlAddAttributeDecl: unknown type %d\n", type);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlAddAttributeDecl: unknown type %d\n", type);
 	    xmlFreeEnumeration(tree);
 	    return(NULL);
     }
@@ -1009,14 +1031,16 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	dtd->attributes = (void *) table;
     }
     if (table == NULL) {
-	fprintf(stderr, "xmlAddAttributeDecl: Table creation failed!\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddAttributeDecl: Table creation failed!\n");
         return(NULL);
     }
 
 
     ret = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (ret == NULL) {
-	fprintf(stderr, "xmlAddAttributeDecl: out of memory\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddAttributeDecl: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlAttribute));
@@ -1104,7 +1128,8 @@ xmlCopyAttribute(xmlAttributePtr attr) {
 
     cur = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (cur == NULL) {
-	fprintf(stderr, "xmlCopyAttribute: out of memory !\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlCopyAttribute: out of memory !\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttribute));
@@ -1186,7 +1211,7 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 	    xmlDumpEnumeration(buf, attr->tree);
 	    break;
 	default:
-	    fprintf(stderr,
+	    xmlGenericError(xmlGenericErrorContext,
 		"xmlDumpAttributeTable: internal: unknown type %d\n",
 		    attr->atype);
     }
@@ -1203,7 +1228,7 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 	    xmlBufferWriteChar(buf, " #FIXED");
 	    break;
 	default:
-	    fprintf(stderr,
+	    xmlGenericError(xmlGenericErrorContext,
 		"xmlDumpAttributeTable: internal: unknown default %d\n",
 		    attr->def);
     }
@@ -1283,15 +1308,18 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     xmlNotationTablePtr table;
 
     if (dtd == NULL) {
-        fprintf(stderr, "xmlAddNotationDecl: dtd == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddNotationDecl: dtd == NULL\n");
 	return(NULL);
     }
     if (name == NULL) {
-        fprintf(stderr, "xmlAddNotationDecl: name == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddNotationDecl: name == NULL\n");
 	return(NULL);
     }
     if ((PublicID == NULL) && (SystemID == NULL)) {
-        fprintf(stderr, "xmlAddNotationDecl: no PUBLIC ID nor SYSTEM ID\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddNotationDecl: no PUBLIC ID nor SYSTEM ID\n");
     }
 
     /*
@@ -1301,13 +1329,15 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     if (table == NULL) 
         dtd->notations = table = xmlCreateNotationTable();
     if (table == NULL) {
-	fprintf(stderr, "xmlAddNotationDecl: Table creation failed!\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddNotationDecl: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (ret == NULL) {
-	fprintf(stderr, "xmlAddNotationDecl: out of memory\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddNotationDecl: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlNotation));
@@ -1326,7 +1356,7 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
      * Check the DTD for previous declarations of the ATTLIST
      */
     if (xmlHashAddEntry(table, name, ret)) {
-	fprintf(stderr,
+	xmlGenericError(xmlGenericErrorContext,
 		"xmlAddNotationDecl: %s already defined\n", name);
 	xmlFreeNotation(ret);
 	return(NULL);
@@ -1359,7 +1389,8 @@ xmlCopyNotation(xmlNotationPtr nota) {
 
     cur = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (cur == NULL) {
-	fprintf(stderr, "xmlCopyNotation: out of memory !\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlCopyNotation: out of memory !\n");
 	return(NULL);
     }
     if (nota->name != NULL)
@@ -1479,15 +1510,18 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     xmlIDTablePtr table;
 
     if (doc == NULL) {
-        fprintf(stderr, "xmlAddIDDecl: doc == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddIDDecl: doc == NULL\n");
 	return(NULL);
     }
     if (value == NULL) {
-        fprintf(stderr, "xmlAddIDDecl: value == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddIDDecl: value == NULL\n");
 	return(NULL);
     }
     if (attr == NULL) {
-        fprintf(stderr, "xmlAddIDDecl: attr == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddIDDecl: attr == NULL\n");
 	return(NULL);
     }
 
@@ -1498,13 +1532,15 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     if (table == NULL) 
         doc->ids = table = xmlCreateIDTable();
     if (table == NULL) {
-	fprintf(stderr, "xmlAddID: Table creation failed!\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddID: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
     if (ret == NULL) {
-	fprintf(stderr, "xmlAddID: out of memory\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddID: out of memory\n");
 	return(NULL);
     }
 
@@ -1625,12 +1661,12 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
     xmlIDPtr id;
 
     if (doc == NULL) {
-        fprintf(stderr, "xmlGetID: doc == NULL\n");
+        xmlGenericError(xmlGenericErrorContext, "xmlGetID: doc == NULL\n");
 	return(NULL);
     }
 
     if (ID == NULL) {
-        fprintf(stderr, "xmlGetID: ID == NULL\n");
+        xmlGenericError(xmlGenericErrorContext, "xmlGetID: ID == NULL\n");
 	return(NULL);
     }
 
@@ -1695,15 +1731,18 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     xmlRefTablePtr table;
 
     if (doc == NULL) {
-        fprintf(stderr, "xmlAddRefDecl: doc == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddRefDecl: doc == NULL\n");
 	return(NULL);
     }
     if (value == NULL) {
-        fprintf(stderr, "xmlAddRefDecl: value == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddRefDecl: value == NULL\n");
 	return(NULL);
     }
     if (attr == NULL) {
-        fprintf(stderr, "xmlAddRefDecl: attr == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddRefDecl: attr == NULL\n");
 	return(NULL);
     }
 
@@ -1714,13 +1753,15 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     if (table == NULL) 
         doc->refs = table = xmlCreateRefTable();
     if (table == NULL) {
-	fprintf(stderr, "xmlAddRef: Table creation failed!\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddRef: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlRefPtr) xmlMalloc(sizeof(xmlRef));
     if (ret == NULL) {
-	fprintf(stderr, "xmlAddRef: out of memory\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddRef: out of memory\n");
 	return(NULL);
     }
 
@@ -1834,12 +1875,12 @@ xmlGetRef(xmlDocPtr doc, const xmlChar *Ref) {
     xmlRefTablePtr table;
 
     if (doc == NULL) {
-        fprintf(stderr, "xmlGetRef: doc == NULL\n");
+        xmlGenericError(xmlGenericErrorContext, "xmlGetRef: doc == NULL\n");
 	return(NULL);
     }
 
     if (Ref == NULL) {
-        fprintf(stderr, "xmlGetRef: Ref == NULL\n");
+        xmlGenericError(xmlGenericErrorContext, "xmlGetRef: Ref == NULL\n");
 	return(NULL);
     }
 
@@ -3350,7 +3391,8 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 				(cont->c1 == NULL) ||
 				(cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
 				/* Internal error !!! */
-				fprintf(stderr, "Internal: MIXED struct bad\n");
+				xmlGenericError(xmlGenericErrorContext,
+					"Internal: MIXED struct bad\n");
 				break;
 			    }
 			    cont = cont->c2;
@@ -3370,7 +3412,8 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 			    (cont->c1 == NULL) ||
 			    (cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)) {
 			    /* Internal error !!! */
-			    fprintf(stderr, "Internal: MIXED struct bad\n");
+			    xmlGenericError(xmlGenericErrorContext,
+				    "Internal: MIXED struct bad\n");
 			    break;
 			}
 			cont = cont->c2;
@@ -3648,7 +3691,8 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlRefTablePtr table;
 
     if (doc == NULL) {
-        fprintf(stderr, "xmlValidateDocumentFinal: doc == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlValidateDocumentFinal: doc == NULL\n");
 	return(0);
     }
 

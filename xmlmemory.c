@@ -31,6 +31,7 @@
 
 
 #include <libxml/xmlmemory.h>
+#include <libxml/xmlerror.h>
 
 #ifdef xmlMalloc
 #undef xmlMalloc
@@ -111,7 +112,8 @@ void debugmem_list_delete(MEMHDR *);
 
 void
 xmlMallocBreakpoint(void) {
-    fprintf(stderr, "xmlMallocBreakpoint reached on block %d\n", xmlMemStopAtBlock);
+    xmlGenericError(xmlGenericErrorContext,
+	    "xmlMallocBreakpoint reached on block %d\n", xmlMemStopAtBlock);
 }
 
 /**
@@ -132,7 +134,8 @@ xmlMallocLoc(int size, const char * file, int line)
     
     if (!xmlMemInitialized) xmlInitMemory();
 #ifdef DEBUG_MEMORY
-    fprintf(stderr, "Malloc(%d)\n",size);
+    xmlGenericError(xmlGenericErrorContext,
+	    "Malloc(%d)\n",size);
 #endif
 
     TEST_POINT
@@ -140,7 +143,8 @@ xmlMallocLoc(int size, const char * file, int line)
     p = (MEMHDR *) malloc(RESERVE_SIZE+size);
 
     if (!p) {
-	fprintf(stderr, "xmlMalloc : Out of free space\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlMalloc : Out of free space\n");
 	xmlMemoryDump();
 	return(NULL);
     }   
@@ -157,7 +161,8 @@ xmlMallocLoc(int size, const char * file, int line)
 #endif
 
 #ifdef DEBUG_MEMORY
-    fprintf(stderr, "Malloc(%d) Ok\n",size);
+    xmlGenericError(xmlGenericErrorContext,
+	    "Malloc(%d) Ok\n",size);
 #endif
     
     if (xmlMemStopAtBlock == block) xmlMallocBreakpoint();
@@ -285,7 +290,8 @@ xmlMemFree(void *ptr)
     return;
     
 error:    
-    fprintf(stderr, "xmlFree(%X) error\n", (unsigned int) ptr);
+    xmlGenericError(xmlGenericErrorContext,
+	    "xmlFree(%X) error\n", (unsigned int) ptr);
     return;
 }
 
@@ -557,7 +563,8 @@ void debugmem_list_delete(MEMHDR *p)
  
 void debugmem_tag_error(void *p)
 {
-     fprintf(stderr, "Memory tag error occurs :%p \n\t bye\n", p);
+     xmlGenericError(xmlGenericErrorContext,
+	     "Memory tag error occurs :%p \n\t bye\n", p);
 #ifdef MEM_LIST
      if (stderr)
      xmlMemDisplay(stderr);
@@ -637,7 +644,8 @@ xmlInitMemory(void)
 #endif     
     
 #ifdef DEBUG_MEMORY
-     fprintf(stderr, "xmlInitMemory() Ok\n");
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlInitMemory() Ok\n");
 #endif     
      ret = 0;
      return(ret);

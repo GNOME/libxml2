@@ -21,6 +21,7 @@
 #include <libxml/hash.h>
 #include <libxml/entities.h>
 #include <libxml/parser.h>
+#include <libxml/xmlerror.h>
 
 #define DEBUG_ENT_REF /* debugging of cross entities dependancies */
 #define ENTITY_HASH_SIZE 256 /* modify xmlEntityComputeHash accordingly */
@@ -122,7 +123,8 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 	return(NULL);
     ret = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
     if (ret == NULL) {
-	fprintf(stderr, "xmlAddEntity: out of memory\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlAddEntity: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlEntity));
@@ -236,12 +238,12 @@ xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
     xmlDtdPtr dtd;
 
     if (doc == NULL) {
-        fprintf(stderr,
+        xmlGenericError(xmlGenericErrorContext,
 	        "xmlAddDtdEntity: doc == NULL !\n");
 	return(NULL);
     }
     if (doc->extSubset == NULL) {
-        fprintf(stderr,
+        xmlGenericError(xmlGenericErrorContext,
 	        "xmlAddDtdEntity: document without external subset !\n");
 	return(NULL);
     }
@@ -285,12 +287,12 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
     xmlDtdPtr dtd;
 
     if (doc == NULL) {
-        fprintf(stderr,
+        xmlGenericError(xmlGenericErrorContext,
 	        "xmlAddDocEntity: document is NULL !\n");
 	return(NULL);
     }
     if (doc->intSubset == NULL) {
-        fprintf(stderr,
+        xmlGenericError(xmlGenericErrorContext,
 	        "xmlAddDtdEntity: document without internal subset !\n");
 	return(NULL);
     }
@@ -465,8 +467,10 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 
 
     if (warning) {
-    fprintf(stderr, "Deprecated API xmlEncodeEntities() used\n");
-    fprintf(stderr, "   change code to use xmlEncodeEntitiesReentrant()\n");
+    xmlGenericError(xmlGenericErrorContext,
+	    "Deprecated API xmlEncodeEntities() used\n");
+    xmlGenericError(xmlGenericErrorContext,
+	    "   change code to use xmlEncodeEntitiesReentrant()\n");
     warning = 0;
     }
 
@@ -561,7 +565,8 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 	     * default case, this is not a valid char !
 	     * Skip it...
 	     */
-	    fprintf(stderr, "xmlEncodeEntities: invalid char %d\n", (int) *cur);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlEncodeEntities: invalid char %d\n", (int) *cur);
 	}
 #endif
 	cur++;
@@ -688,7 +693,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		int val = 0, l = 1;
 
 		if (*cur < 0xC0) {
-		    fprintf(stderr,
+		    xmlGenericError(xmlGenericErrorContext,
 			    "xmlEncodeEntitiesReentrant : input not UTF-8\n");
 		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 #ifdef HAVE_SNPRINTF
@@ -723,7 +728,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		    l = 4;
 		}
 		if ((l == 1) || (!IS_CHAR(val))) {
-		    fprintf(stderr,
+		    xmlGenericError(xmlGenericErrorContext,
 			"xmlEncodeEntitiesReentrant : char out of range\n");
 		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 #ifdef HAVE_SNPRINTF
@@ -769,7 +774,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	     * default case, this is not a valid char !
 	     * Skip it...
 	     */
-	    fprintf(stderr, "xmlEncodeEntities: invalid char %d\n", (int) *cur);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlEncodeEntities: invalid char %d\n", (int) *cur);
 	}
 #endif
 	cur++;
@@ -895,7 +901,8 @@ xmlCopyEntity(xmlEntityPtr ent) {
 
     cur = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
     if (cur == NULL) {
-	fprintf(stderr, "xmlCopyEntity: out of memory !\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlCopyEntity: out of memory !\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlEntity));
@@ -1008,7 +1015,7 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 	    xmlBufferWriteChar(buf, ">\n");
 	    break;
 	default:
-	    fprintf(stderr,
+	    xmlGenericError(xmlGenericErrorContext,
 		"xmlDumpEntitiesTable: internal: unknown type %d\n",
 		    ent->etype);
     }

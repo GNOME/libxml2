@@ -46,6 +46,7 @@
 #ifdef LIBXML_HTML_ENABLED
 #include <libxml/HTMLparser.h>
 #endif
+#include <libxml/xmlerror.h>
 
 xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
 xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;
@@ -585,7 +586,8 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 	    *outlen = 2;
 	    *inlen = 0;
 #ifdef DEBUG_ENCODING
-            fprintf(stderr, "Added FFFE Byte Order Mark\n");
+            xmlGenericError(xmlGenericErrorContext,
+		    "Added FFFE Byte Order Mark\n");
 #endif
 	    return(2);
 	}
@@ -795,7 +797,8 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 	    *outlen = 2;
 	    *inlen = 0;
 #ifdef DEBUG_ENCODING
-            fprintf(stderr, "Added FEFF Byte Order Mark\n");
+            xmlGenericError(xmlGenericErrorContext,
+		    "Added FEFF Byte Order Mark\n");
 #endif
 	    return(2);
 	}
@@ -1146,7 +1149,7 @@ xmlParseCharEncoding(const char* name)
     if (!strcmp(upper, "EUC-JP")) return(XML_CHAR_ENCODING_EUC_JP);
 
 #ifdef DEBUG_ENCODING
-    fprintf(stderr, "Unknown encoding %s\n", name);
+    xmlGenericError(xmlGenericErrorContext, "Unknown encoding %s\n", name);
 #endif
     return(XML_CHAR_ENCODING_ERROR);
 }
@@ -1265,7 +1268,8 @@ xmlNewCharEncodingHandler(const char *name,
      * Keep only the uppercase version of the encoding.
      */
     if (name == NULL) {
-        fprintf(stderr, "xmlNewCharEncodingHandler : no name !\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewCharEncodingHandler : no name !\n");
 	return(NULL);
     }
     for (i = 0;i < 499;i++) {
@@ -1275,7 +1279,8 @@ xmlNewCharEncodingHandler(const char *name,
     upper[i] = 0;
     up = xmlMemStrdup(upper);
     if (up == NULL) {
-        fprintf(stderr, "xmlNewCharEncodingHandler : out of memory !\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewCharEncodingHandler : out of memory !\n");
 	return(NULL);
     }
 
@@ -1285,7 +1290,8 @@ xmlNewCharEncodingHandler(const char *name,
     handler = (xmlCharEncodingHandlerPtr)
               xmlMalloc(sizeof(xmlCharEncodingHandler));
     if (handler == NULL) {
-        fprintf(stderr, "xmlNewCharEncodingHandler : out of memory !\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewCharEncodingHandler : out of memory !\n");
 	return(NULL);
     }
     handler->input = input;
@@ -1302,7 +1308,8 @@ xmlNewCharEncodingHandler(const char *name,
      */
     xmlRegisterCharEncodingHandler(handler);
 #ifdef DEBUG_ENCODING
-    fprintf(stderr, "Registered encoding handler for %s\n", name);
+    xmlGenericError(xmlGenericErrorContext,
+	    "Registered encoding handler for %s\n", name);
 #endif
     return(handler);
 }
@@ -1327,10 +1334,12 @@ xmlInitCharEncodingHandlers(void) {
 
     if (*ptr == 0x12) xmlLittleEndian = 0;
     else if (*ptr == 0x34) xmlLittleEndian = 1;
-    else fprintf(stderr, "Odd problem at endianness detection\n");
+    else xmlGenericError(xmlGenericErrorContext,
+	    "Odd problem at endianness detection\n");
 
     if (handlers == NULL) {
-        fprintf(stderr, "xmlInitCharEncodingHandlers : out of memory !\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitCharEncodingHandlers : out of memory !\n");
 	return;
     }
     xmlNewCharEncodingHandler("UTF-8", NULL, NULL);
@@ -1381,14 +1390,16 @@ void
 xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
     if (handlers == NULL) xmlInitCharEncodingHandlers();
     if (handler == NULL) {
-        fprintf(stderr, "xmlRegisterCharEncodingHandler: NULL handler !\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlRegisterCharEncodingHandler: NULL handler !\n");
 	return;
     }
 
     if (nbCharEncodingHandler >= MAX_ENCODING_HANDLERS) {
-        fprintf(stderr, 
+        xmlGenericError(xmlGenericErrorContext, 
 	"xmlRegisterCharEncodingHandler: Too many handler registered\n");
-        fprintf(stderr, "\tincrease MAX_ENCODING_HANDLERS : %s\n", __FILE__);
+        xmlGenericError(xmlGenericErrorContext,
+		"\tincrease MAX_ENCODING_HANDLERS : %s\n", __FILE__);
 	return;
     }
     handlers[nbCharEncodingHandler++] = handler;
@@ -1518,7 +1529,8 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
     }
     
 #ifdef DEBUG_ENCODING
-    fprintf(stderr, "No handler found for encoding %d\n", enc);
+    xmlGenericError(xmlGenericErrorContext,
+	    "No handler found for encoding %d\n", enc);
 #endif
     return(NULL);
 }
@@ -1567,7 +1579,8 @@ xmlFindCharEncodingHandler(const char *name) {
     for (i = 0;i < nbCharEncodingHandler; i++)
         if (!strcmp(upper, handlers[i]->name)) {
 #ifdef DEBUG_ENCODING
-            fprintf(stderr, "Found registered handler for encoding %s\n", name);
+            xmlGenericError(xmlGenericErrorContext,
+		    "Found registered handler for encoding %s\n", name);
 #endif
 	    return(handlers[i]);
 	}
@@ -1590,16 +1603,19 @@ xmlFindCharEncodingHandler(const char *name) {
 	    enc->iconv_in = icv_in;
 	    enc->iconv_out = icv_out;
 #ifdef DEBUG_ENCODING
-            fprintf(stderr, "Found iconv handler for encoding %s\n", name);
+            xmlGenericError(xmlGenericErrorContext,
+		    "Found iconv handler for encoding %s\n", name);
 #endif
 	    return enc;
     } else if ((icv_in != (iconv_t) -1) || icv_out != (iconv_t) -1) {
-	    fprintf(stderr, "iconv : problems with filters for '%s'\n", name);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "iconv : problems with filters for '%s'\n", name);
     }
 #endif /* LIBXML_ICONV_ENABLED */
 
 #ifdef DEBUG_ENCODING
-    fprintf(stderr, "No handler found for encoding %s\n", name);
+    xmlGenericError(xmlGenericErrorContext,
+	    "No handler found for encoding %s\n", name);
 #endif
 
     /*
@@ -1739,22 +1755,24 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 #ifdef DEBUG_ENCODING
     switch (ret) {
         case 0:
-	    fprintf(stderr, "converted %d bytes to %d bytes of input\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "converted %d bytes to %d bytes of input\n",
 	            toconv, written);
 	    break;
         case -1:
-	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
+	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of input, %d left\n",
 	            toconv, written, in->use);
 	    break;
         case -2:
-	    fprintf(stderr, "input conversion failed due to input error\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "input conversion failed due to input error\n");
 	    break;
         case -3:
-	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
+	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of input, %d left\n",
 	            toconv, written, in->use);
 	    break;
 	default:
-	    fprintf(stderr,"Unknown input conversion failed %d\n", ret);
+	    xmlGenericError(xmlGenericErrorContext,"Unknown input conversion failed %d\n", ret);
     }
 #endif
     /*
@@ -1817,21 +1835,24 @@ xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     switch (ret) {
 #ifdef DEBUG_ENCODING
         case 0:
-	    fprintf(stderr, "converted %d bytes to %d bytes of input\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "converted %d bytes to %d bytes of input\n",
 	            toconv, written);
 	    break;
         case -1:
-	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
+	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of input, %d left\n",
 	            toconv, written, in->use);
 	    break;
         case -3:
-	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
+	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of input, %d left\n",
 	            toconv, written, in->use);
 	    break;
 #endif
         case -2:
-	    fprintf(stderr, "input conversion failed due to input error\n");
-	    fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "input conversion failed due to input error\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 		    in->content[0], in->content[1],
 		    in->content[2], in->content[3]);
     }
@@ -1895,7 +1916,8 @@ retry:
 	}
 #endif /* LIBXML_ICONV_ENABLED */
 #ifdef DEBUG_ENCODING
-	fprintf(stderr, "initialized encoder\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"initialized encoder\n");
 #endif
         return(0);
     }
@@ -1928,7 +1950,8 @@ retry:
     }
 #endif /* LIBXML_ICONV_ENABLED */
     else {
-	fprintf(stderr, "xmlCharEncOutFunc: no output function !\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlCharEncOutFunc: no output function !\n");
 	return(-1);
     }
 
@@ -1940,14 +1963,16 @@ retry:
     switch (ret) {
 #ifdef DEBUG_ENCODING
         case 0:
-	    fprintf(stderr, "converted %d bytes to %d bytes of output\n",
+	    xmlGenericError(xmlGenericErrorContext,
+		    "converted %d bytes to %d bytes of output\n",
 	            toconv, written);
 	    break;
         case -1:
-	    fprintf(stderr, "output conversion failed by lack of space\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "output conversion failed by lack of space\n");
 	    break;
         case -3:
-	    fprintf(stderr,"converted %d bytes to %d bytes of output %d left\n",
+	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of output %d left\n",
 	            toconv, written, in->use);
 	    break;
 #endif
@@ -1961,8 +1986,10 @@ retry:
 		xmlChar charref[20];
 
 #ifdef DEBUG_ENCODING
-		fprintf(stderr, "handling output conversion error\n");
-		fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"handling output conversion error\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			in->content[0], in->content[1],
 			in->content[2], in->content[3]);
 #endif
@@ -1977,8 +2004,10 @@ retry:
 
 		goto retry;
 	    } else {
-		fprintf(stderr, "output conversion failed due to conv error\n");
-		fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"output conversion failed due to conv error\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			in->content[0], in->content[1],
 			in->content[2], in->content[3]);
 		in->content[0] = ' ';
@@ -2026,9 +2055,11 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
 #endif /* LIBXML_ICONV_ENABLED */
 #ifdef DEBUG_ENCODING
     if (ret)
-        fprintf(stderr, "failed to close the encoding handler\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"failed to close the encoding handler\n");
     else
-        fprintf(stderr, "closed the encoding handler\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"closed the encoding handler\n");
 
 #endif
     return(ret);

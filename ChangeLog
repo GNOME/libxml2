@@ -1,3 +1,15 @@
+Wed Oct 25 21:31:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* patched to redirrect all "out of context" error messages to
+	  a reconfigurable routine. The changes are:
+	* xmlerror.h : added the export of an error context type (void *)
+	  an error handler type xmlGenericErrorFunc there is an interface
+	  xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
+	  to reset the error handling routine and its argument
+	  (by default it's equivalent to respectively fprintf and stderr.
+        * all the c files: all wild accesses to stderr or stdout within
+	  the library have been replaced to calls to the handler.
+
 Wed Oct 25 15:27:19 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: release 2.2.6

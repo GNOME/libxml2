@@ -40,6 +40,7 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
 #include <libxml/debugXML.h>
+#include <libxml/xmlerror.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
@@ -719,7 +720,8 @@ void parseAndPrintFile(char *filename) {
 	doc = htmlParseFile(filename, NULL);
     }
     if (doc == NULL) {
-        fprintf(stderr, "Could not parse %s\n", filename);
+        xmlGenericError(xmlGenericErrorContext,
+		"Could not parse %s\n", filename);
     }
 
     /*

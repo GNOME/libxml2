@@ -120,7 +120,8 @@ scope int name##Push(xmlParserCtxtPtr ctxt, type value) {		\
         ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
-	    fprintf(stderr, "realloc failed !\n");			\
+	    xmlGenericError(xmlGenericErrorContext,			\
+		    "realloc failed !\n");				\
 	    return(0);							\
 	}								\
     }									\
@@ -154,7 +155,8 @@ int spacePush(xmlParserCtxtPtr ctxt, int val) {
         ctxt->spaceTab = (int *) xmlRealloc(ctxt->spaceTab,
 	             ctxt->spaceMax * sizeof(ctxt->spaceTab[0]));
         if (ctxt->spaceTab == NULL) {
-	    fprintf(stderr, "realloc failed !\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
 	    return(0);
 	}
     }
@@ -316,7 +318,8 @@ xmlChar
 xmlPopInput(xmlParserCtxtPtr ctxt) {
     if (ctxt->inputNr == 1) return(0); /* End of main Input */
     if (xmlParserDebugEntities)
-	fprintf(stderr, "Popping input %d\n", ctxt->inputNr);
+	xmlGenericError(xmlGenericErrorContext,
+		"Popping input %d\n", ctxt->inputNr);
     xmlFreeInputStream(inputPop(ctxt));
     if ((*ctxt->input->cur == 0) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
@@ -338,9 +341,11 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 
     if (xmlParserDebugEntities) {
 	if ((ctxt->input != NULL) && (ctxt->input->filename))
-	    fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+	    xmlGenericError(xmlGenericErrorContext,
+		    "%s(%d): ", ctxt->input->filename,
 		    ctxt->input->line);
-	fprintf(stderr, "Pushing input %d : %.30s\n", ctxt->inputNr+1, input->cur);
+	xmlGenericError(xmlGenericErrorContext,
+		"Pushing input %d : %.30s\n", ctxt->inputNr+1, input->cur);
     }
     inputPush(ctxt, input);
     GROW;
@@ -661,7 +666,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     NEXT;
     name = xmlParseName(ctxt);
     if (xmlParserDebugEntities)
-	fprintf(stderr, "PE Reference: %s\n", name);
+	xmlGenericError(xmlGenericErrorContext,
+		"PE Reference: %s\n", name);
     if (name == NULL) {
         ctxt->errNo = XML_ERR_PEREF_NO_NAME;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -829,7 +835,8 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 	    }
 	} else if ((c == '&') && (what & XML_SUBSTITUTE_REF)) {
 	    if (xmlParserDebugEntities)
-		fprintf(stderr, "String decoding Entity Reference: %.30s\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"String decoding Entity Reference: %.30s\n",
 			str);
 	    ent = xmlParseStringEntityRef(ctxt, &str);
 	    if ((ent != NULL) &&
@@ -873,7 +880,8 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 	    }
 	} else if (c == '%' && (what & XML_SUBSTITUTE_PEREF)) {
 	    if (xmlParserDebugEntities)
-		fprintf(stderr, "String decoding PE Reference: %.30s\n", str);
+		xmlGenericError(xmlGenericErrorContext,
+			"String decoding PE Reference: %.30s\n", str);
 	    ent = xmlParseStringPEReference(ctxt, &str);
 	    if (ent != NULL) {
 		xmlChar *rep;
@@ -930,7 +938,8 @@ xmlStrndup(const xmlChar *cur, int len) {
     if ((cur == NULL) || (len < 0)) return(NULL);
     ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
-        fprintf(stderr, "malloc of %ld byte failed\n",
+        xmlGenericError(xmlGenericErrorContext,
+		"malloc of %ld byte failed\n",
 	        (len + 1) * (long)sizeof(xmlChar));
         return(NULL);
     }
@@ -976,7 +985,7 @@ xmlCharStrndup(const char *cur, int len) {
     if ((cur == NULL) || (len < 0)) return(NULL);
     ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
-        fprintf(stderr, "malloc of %ld byte failed\n",
+        xmlGenericError(xmlGenericErrorContext, "malloc of %ld byte failed\n",
 	        (len + 1) * (long)sizeof(xmlChar));
         return(NULL);
     }
@@ -1309,7 +1318,8 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
     size = xmlStrlen(cur);
     ret = (xmlChar *) xmlRealloc(cur, (size + len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
-        fprintf(stderr, "xmlStrncat: realloc of %ld byte failed\n",
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlStrncat: realloc of %ld byte failed\n",
 	        (size + len + 1) * (long)sizeof(xmlChar));
         return(cur);
     }
@@ -1858,7 +1868,8 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
     }
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
 
@@ -1886,7 +1897,8 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "realloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"realloc of %d byte failed\n", size);
 		return(NULL);
 	    }
 	}
@@ -2213,7 +2225,8 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
     ctxt->instate = XML_PARSER_SYSTEM_LITERAL;
@@ -2223,7 +2236,8 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "realloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"realloc of %d byte failed\n", size);
 		ctxt->instate = (xmlParserInputState) state;
 		return(NULL);
 	    }
@@ -2294,7 +2308,8 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     }
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
     cur = CUR;
@@ -2303,7 +2318,8 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "realloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"realloc of %d byte failed\n", size);
 		return(NULL);
 	    }
 	}
@@ -2563,7 +2579,8 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     SKIP(4);
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	ctxt->instate = state;
 	return;
     }
@@ -2588,7 +2605,8 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "realloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"realloc of %d byte failed\n", size);
 		ctxt->instate = state;
 		return;
 	    }
@@ -2752,7 +2770,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	    }
 	    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "malloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"malloc of %d byte failed\n", size);
 		ctxt->instate = state;
 		return;
 	    }
@@ -2773,7 +2792,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    size *= 2;
 		    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		    if (buf == NULL) {
-			fprintf(stderr, "realloc of %d byte failed\n", size);
+			xmlGenericError(xmlGenericErrorContext,
+				"realloc of %d byte failed\n", size);
 			ctxt->instate = state;
 			return;
 		    }
@@ -4430,9 +4450,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	}
 	if (xmlParserDebugEntities) {
 	    if ((ctxt->input != NULL) && (ctxt->input->filename))
-		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+		xmlGenericError(xmlGenericErrorContext,
+			"%s(%d): ", ctxt->input->filename,
 			ctxt->input->line);
-	    fprintf(stderr, "Entering INCLUDE Conditional Section\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Entering INCLUDE Conditional Section\n");
 	}
 
 	while ((RAW != 0) && ((RAW != ']') || (NXT(1) != ']') ||
@@ -4469,9 +4491,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	}
 	if (xmlParserDebugEntities) {
 	    if ((ctxt->input != NULL) && (ctxt->input->filename))
-		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+		xmlGenericError(xmlGenericErrorContext,
+			"%s(%d): ", ctxt->input->filename,
 			ctxt->input->line);
-	    fprintf(stderr, "Leaving INCLUDE Conditional Section\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Leaving INCLUDE Conditional Section\n");
 	}
 
     } else if ((RAW == 'I') && (NXT(1) == 'G') && (NXT(2) == 'N') &&
@@ -4492,9 +4516,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	}
 	if (xmlParserDebugEntities) {
 	    if ((ctxt->input != NULL) && (ctxt->input->filename))
-		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+		xmlGenericError(xmlGenericErrorContext,
+			"%s(%d): ", ctxt->input->filename,
 			ctxt->input->line);
-	    fprintf(stderr, "Entering IGNORE Conditional Section\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Entering IGNORE Conditional Section\n");
 	}
 
 	/*
@@ -4538,9 +4564,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	ctxt->disableSAX = state;
 	if (xmlParserDebugEntities) {
 	    if ((ctxt->input != NULL) && (ctxt->input->filename))
-		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+		xmlGenericError(xmlGenericErrorContext,
+			"%s(%d): ", ctxt->input->filename,
 			ctxt->input->line);
-	    fprintf(stderr, "Leaving IGNORE Conditional Section\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Leaving IGNORE Conditional Section\n");
 	}
 
     } else {
@@ -5866,7 +5894,8 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	        maxatts = 10;
 	        atts = (const xmlChar **) xmlMalloc(maxatts * sizeof(xmlChar *));
 		if (atts == NULL) {
-		    fprintf(stderr, "malloc of %ld byte failed\n",
+		    xmlGenericError(xmlGenericErrorContext,
+			    "malloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(xmlChar *));
 		    return(NULL);
 		}
@@ -5875,7 +5904,8 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	        atts = (const xmlChar **) xmlRealloc((void *) atts,
 						     maxatts * sizeof(xmlChar *));
 		if (atts == NULL) {
-		    fprintf(stderr, "realloc of %ld byte failed\n",
+		    xmlGenericError(xmlGenericErrorContext,
+			    "realloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(xmlChar *));
 		    return(NULL);
 		}
@@ -6015,7 +6045,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
     spacePop(ctxt);
     if (oldname != NULL) {
 #ifdef DEBUG_STACK
-	fprintf(stderr,"Close: popped %s\n", oldname);
+	xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
 #endif
 	xmlFree(oldname);
     }
@@ -6083,7 +6113,8 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     cur = CUR_CHAR(l);
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	return;
     }
     while (IS_CHAR(cur) &&
@@ -6092,7 +6123,8 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "realloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"realloc of %d byte failed\n", size);
 		return;
 	    }
 	}
@@ -6304,7 +6336,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	spacePop(ctxt);
 	if (oldname != NULL) {
 #ifdef DEBUG_STACK
-	    fprintf(stderr,"Close: popped %s\n", oldname);
+	    xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
 #endif
 	    xmlFree(oldname);
 	}
@@ -6336,7 +6368,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	spacePop(ctxt);
 	if (oldname != NULL) {
 #ifdef DEBUG_STACK
-	    fprintf(stderr,"Close: popped %s\n", oldname);
+	    xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
 #endif
 	    xmlFree(oldname);
 	}
@@ -6374,7 +6406,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	spacePop(ctxt);
 	if (oldname != NULL) {
 #ifdef DEBUG_STACK
-	    fprintf(stderr,"Close: popped %s\n", oldname);
+	    xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
 #endif
 	    xmlFree(oldname);
 	}
@@ -6417,7 +6449,8 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
-	fprintf(stderr, "malloc of %d byte failed\n", size);
+	xmlGenericError(xmlGenericErrorContext,
+		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
     cur = CUR;
@@ -6430,7 +6463,8 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
-		fprintf(stderr, "realloc of %d byte failed\n", size);
+		xmlGenericError(xmlGenericErrorContext,
+			"realloc of %d byte failed\n", size);
 		return(NULL);
 	    }
 	}
@@ -6537,7 +6571,8 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
         ((cur >= 'A') && (cur <= 'Z'))) {
 	buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
 	if (buf == NULL) {
-	    fprintf(stderr, "malloc of %d byte failed\n", size);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc of %d byte failed\n", size);
 	    return(NULL);
 	}
 	
@@ -6553,7 +6588,8 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 		size *= 2;
 		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		if (buf == NULL) {
-		    fprintf(stderr, "realloc of %d byte failed\n", size);
+		    xmlGenericError(xmlGenericErrorContext,
+			    "realloc of %d byte failed\n", size);
 		    return(NULL);
 		}
 	    }
@@ -7251,13 +7287,16 @@ xmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first,
 	    ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
 	    if (next == 0)
-		fprintf(stderr, "PP: lookup '%c' found at %d\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: lookup '%c' found at %d\n",
 			first, base);
 	    else if (third == 0)
-		fprintf(stderr, "PP: lookup '%c%c' found at %d\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: lookup '%c%c' found at %d\n",
 			first, next, base);
 	    else 
-		fprintf(stderr, "PP: lookup '%c%c%c' found at %d\n",
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: lookup '%c%c%c' found at %d\n",
 			first, next, third, base);
 #endif
 	    return(base - (in->cur - in->base));
@@ -7266,11 +7305,14 @@ xmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first,
     ctxt->checkIndex = base;
 #ifdef DEBUG_PUSH
     if (next == 0)
-	fprintf(stderr, "PP: lookup '%c' failed\n", first);
+	xmlGenericError(xmlGenericErrorContext,
+		"PP: lookup '%c' failed\n", first);
     else if (third == 0)
-	fprintf(stderr, "PP: lookup '%c%c' failed\n", first, next);
+	xmlGenericError(xmlGenericErrorContext,
+		"PP: lookup '%c%c' failed\n", first, next);
     else	
-	fprintf(stderr, "PP: lookup '%c%c%c' failed\n", first, next, third);
+	xmlGenericError(xmlGenericErrorContext,
+		"PP: lookup '%c%c%c' failed\n", first, next, third);
 #endif
     return(-1);
 }
@@ -7293,35 +7335,50 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #ifdef DEBUG_PUSH
     switch (ctxt->instate) {
 	case XML_PARSER_EOF:
-	    fprintf(stderr, "PP: try EOF\n"); break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try EOF\n"); break;
 	case XML_PARSER_START:
-	    fprintf(stderr, "PP: try START\n"); break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try START\n"); break;
 	case XML_PARSER_MISC:
-	    fprintf(stderr, "PP: try MISC\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try MISC\n");break;
 	case XML_PARSER_COMMENT:
-	    fprintf(stderr, "PP: try COMMENT\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try COMMENT\n");break;
 	case XML_PARSER_PROLOG:
-	    fprintf(stderr, "PP: try PROLOG\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try PROLOG\n");break;
 	case XML_PARSER_START_TAG:
-	    fprintf(stderr, "PP: try START_TAG\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try START_TAG\n");break;
 	case XML_PARSER_CONTENT:
-	    fprintf(stderr, "PP: try CONTENT\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try CONTENT\n");break;
 	case XML_PARSER_CDATA_SECTION:
-	    fprintf(stderr, "PP: try CDATA_SECTION\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try CDATA_SECTION\n");break;
 	case XML_PARSER_END_TAG:
-	    fprintf(stderr, "PP: try END_TAG\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try END_TAG\n");break;
 	case XML_PARSER_ENTITY_DECL:
-	    fprintf(stderr, "PP: try ENTITY_DECL\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try ENTITY_DECL\n");break;
 	case XML_PARSER_ENTITY_VALUE:
-	    fprintf(stderr, "PP: try ENTITY_VALUE\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try ENTITY_VALUE\n");break;
 	case XML_PARSER_ATTRIBUTE_VALUE:
-	    fprintf(stderr, "PP: try ATTRIBUTE_VALUE\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try ATTRIBUTE_VALUE\n");break;
 	case XML_PARSER_DTD:
-	    fprintf(stderr, "PP: try DTD\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try DTD\n");break;
 	case XML_PARSER_EPILOG:
-	    fprintf(stderr, "PP: try EPILOG\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try EPILOG\n");break;
 	case XML_PARSER_PI:
-	    fprintf(stderr, "PP: try PI\n");break;
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PP: try PI\n");break;
     }
 #endif
 
@@ -7383,7 +7440,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->disableSAX = 1;
 		    ctxt->instate = XML_PARSER_EOF;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering EOF\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering EOF\n");
 #endif
 		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 			ctxt->sax->endDocument(ctxt->userData);
@@ -7404,7 +7462,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			(IS_BLANK(ctxt->input->cur[5]))) {
 			ret += 5;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: Parsing XML Decl\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: Parsing XML Decl\n");
 #endif
 			xmlParseXMLDecl(ctxt);
 			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
@@ -7424,7 +7483,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    ctxt->sax->startDocument(ctxt->userData);
 			ctxt->instate = XML_PARSER_MISC;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: entering MISC\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: entering MISC\n");
 #endif
 		    } else {
 			ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
@@ -7433,7 +7493,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    ctxt->sax->startDocument(ctxt->userData);
 			ctxt->instate = XML_PARSER_MISC;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: entering MISC\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: entering MISC\n");
 #endif
 		    }
 		} else {
@@ -7446,7 +7507,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->sax->startDocument(ctxt->userData);
 		    ctxt->instate = XML_PARSER_MISC;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering MISC\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering MISC\n");
 #endif
 		}
 		break;
@@ -7465,7 +7527,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing PI\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing PI\n");
 #endif
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
@@ -7474,7 +7537,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing Comment\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_MISC;
@@ -7487,14 +7551,16 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing internal subset\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing internal subset\n");
 #endif
 		    ctxt->inSubset = 1;
 		    xmlParseDocTypeDecl(ctxt);
 		    if (RAW == '[') {
 			ctxt->instate = XML_PARSER_DTD;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: entering DTD\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: entering DTD\n");
 #endif
 		    } else {
 			/*
@@ -7509,7 +7575,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->inSubset = 0;
 			ctxt->instate = XML_PARSER_PROLOG;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: entering PROLOG\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: entering PROLOG\n");
 #endif
 		    }
 		} else if ((cur == '<') && (next == '!') &&
@@ -7518,7 +7585,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else {
 		    ctxt->instate = XML_PARSER_START_TAG;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering START_TAG\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering START_TAG\n");
 #endif
 		}
 		break;
@@ -7537,7 +7605,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing PI\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing PI\n");
 #endif
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
@@ -7546,7 +7615,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing Comment\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -7556,7 +7626,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else {
 		    ctxt->instate = XML_PARSER_START_TAG;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering START_TAG\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering START_TAG\n");
 #endif
 		}
 		break;
@@ -7575,7 +7646,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing PI\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing PI\n");
 #endif
 		    xmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_EPILOG;
@@ -7585,7 +7657,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing Comment\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_EPILOG;
@@ -7601,7 +7674,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->disableSAX = 1;
 		    ctxt->instate = XML_PARSER_EOF;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering EOF\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering EOF\n");
 #endif
 		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
 			(!ctxt->disableSAX))
@@ -7624,7 +7698,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->disableSAX = 1;
 		    ctxt->instate = XML_PARSER_EOF;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering EOF\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering EOF\n");
 #endif
 		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
 			(!ctxt->disableSAX))
@@ -7643,7 +7718,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    spacePop(ctxt);
 		    ctxt->instate = XML_PARSER_EOF;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering EOF\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering EOF\n");
 #endif
 		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
 			(!ctxt->disableSAX))
@@ -7674,19 +7750,21 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    spacePop(ctxt);
 		    if (oldname != NULL) {
 #ifdef DEBUG_STACK
-			fprintf(stderr,"Close: popped %s\n", oldname);
+			xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
 #endif
 			xmlFree(oldname);
 		    }
 		    if (ctxt->name == NULL) {
 			ctxt->instate = XML_PARSER_EPILOG;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: entering EPILOG\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: entering EPILOG\n");
 #endif
 		    } else {
 			ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-			fprintf(stderr, "PP: entering CONTENT\n");
+			xmlGenericError(xmlGenericErrorContext,
+				"PP: entering CONTENT\n");
 #endif
 		    }
 		    break;
@@ -7710,7 +7788,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    spacePop(ctxt);
 		    if (oldname != NULL) {
 #ifdef DEBUG_STACK
-			fprintf(stderr,"Close: popped %s\n", oldname);
+			xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
 #endif
 			xmlFree(oldname);
 		    }
@@ -7718,7 +7796,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		xmlFree(name);
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering CONTENT\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering CONTENT\n");
 #endif
                 break;
 	    }
@@ -7752,7 +7831,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing PI\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing PI\n");
 #endif
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
@@ -7761,7 +7841,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing Comment\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_CONTENT;
@@ -7773,7 +7854,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    SKIP(9);
 		    ctxt->instate = XML_PARSER_CDATA_SECTION;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering CDATA_SECTION\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering CDATA_SECTION\n");
 #endif
 		    break;
 		} else if ((cur == '<') && (next == '!') &&
@@ -7782,13 +7864,15 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else if ((cur == '<') && (next == '/')) {
 		    ctxt->instate = XML_PARSER_END_TAG;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering END_TAG\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering END_TAG\n");
 #endif
 		    break;
 		} else if (cur == '<') {
 		    ctxt->instate = XML_PARSER_START_TAG;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering START_TAG\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering START_TAG\n");
 #endif
 		    break;
 		} else if (cur == '&') {
@@ -7796,7 +7880,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        (xmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing Reference\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing Reference\n");
 #endif
 		    xmlParseReference(ctxt);
 		} else {
@@ -7820,7 +7905,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                     }
 		    ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: Parsing char data\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: Parsing char data\n");
 #endif
 		    xmlParseCharData(ctxt, 0);
 		}
@@ -7872,7 +7958,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->checkIndex = 0;
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering CONTENT\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering CONTENT\n");
 #endif
 		}
 		break;
@@ -7887,12 +7974,14 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		if (ctxt->name == NULL) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering EPILOG\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering EPILOG\n");
 #endif
 		} else {
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "PP: entering CONTENT\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: entering CONTENT\n");
 #endif
 		}
 		break;
@@ -7956,7 +8045,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->checkIndex = base;
 #ifdef DEBUG_PUSH
 		if (next == 0)
-		    fprintf(stderr, "PP: lookup of int subset end filed\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "PP: lookup of int subset end filed\n");
 #endif
 	        goto done;
 
@@ -7971,57 +8061,70 @@ found_end_int_subset:
 		ctxt->instate = XML_PARSER_PROLOG;
 		ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering PROLOG\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering PROLOG\n");
 #endif
                 break;
 	    }
             case XML_PARSER_COMMENT:
-		fprintf(stderr, "PP: internal error, state == COMMENT\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == COMMENT\n");
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering CONTENT\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering CONTENT\n");
 #endif
 		break;
             case XML_PARSER_PI:
-		fprintf(stderr, "PP: internal error, state == PI\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == PI\n");
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering CONTENT\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering CONTENT\n");
 #endif
 		break;
             case XML_PARSER_ENTITY_DECL:
-		fprintf(stderr, "PP: internal error, state == ENTITY_DECL\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == ENTITY_DECL\n");
 		ctxt->instate = XML_PARSER_DTD;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering DTD\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering DTD\n");
 #endif
 		break;
             case XML_PARSER_ENTITY_VALUE:
-		fprintf(stderr, "PP: internal error, state == ENTITY_VALUE\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == ENTITY_VALUE\n");
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering DTD\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering DTD\n");
 #endif
 		break;
             case XML_PARSER_ATTRIBUTE_VALUE:
-		fprintf(stderr, "PP: internal error, state == ATTRIBUTE_VALUE\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == ATTRIBUTE_VALUE\n");
 		ctxt->instate = XML_PARSER_START_TAG;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering START_TAG\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering START_TAG\n");
 #endif
 		break;
             case XML_PARSER_SYSTEM_LITERAL:
-		fprintf(stderr, "PP: internal error, state == SYSTEM_LITERAL\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == SYSTEM_LITERAL\n");
 		ctxt->instate = XML_PARSER_START_TAG;
 #ifdef DEBUG_PUSH
-		fprintf(stderr, "PP: entering START_TAG\n");
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering START_TAG\n");
 #endif
 		break;
 	}
     }
 done:    
 #ifdef DEBUG_PUSH
-    fprintf(stderr, "PP: done %d\n", ret);
+    xmlGenericError(xmlGenericErrorContext, "PP: done %d\n", ret);
 #endif
     return(ret);
 }
@@ -8062,7 +8165,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	ctxt->input->base = ctxt->input->buf->buffer->content + base;
 	ctxt->input->cur = ctxt->input->base + cur;
 #ifdef DEBUG_PUSH
-	fprintf(stderr, "PP: pushed %d\n", size);
+	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
 
 	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
@@ -8190,7 +8293,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
         (ctxt->input->buf != NULL))  {	      
 	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
 #ifdef DEBUG_PUSH
-	fprintf(stderr, "PP: pushed %d\n", size);
+	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
     }
 
@@ -8532,7 +8635,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	/* Allocate the Node stack */
 	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
 	if (ctxt->vctxt.nodeTab == NULL) {
-	    fprintf(stderr, "xmlParseCtxtExternalEntity: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlParseCtxtExternalEntity: out of memory\n");
 	    ctxt->validate = 0;
 	    ctxt->vctxt.error = NULL;
 	    ctxt->vctxt.warning = NULL;

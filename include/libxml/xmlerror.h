@@ -135,6 +135,30 @@ typedef enum {
     XML_ERR_URI_FRAGMENT /* 92 */
 }xmlParserErrors;
 
+/*
+ * Signature of the function to use when there is an error and
+ * no parsing or validity context available 
+ */
+typedef void (*xmlGenericErrorFunc) (void *ctx, const char *msg, ...);
+
+/*
+ * Those are the default error function and associated context to use
+ * when when there is an error and no parsing or validity context available
+ */
+
+extern xmlGenericErrorFunc xmlGenericError;
+extern void *xmlGenericErrorContext;
+
+/*
+ * Use the following function to reset the two previous global variables.
+ */
+void	xmlSetGenericErrorFunc	(void *ctx,
+				 xmlGenericErrorFunc handler);
+
+/*
+ * Default message routines used by SAX and Valid context for error
+ * and warning reporting
+ */
 void	xmlParserError		(void *ctx,
 				 const char *msg,
 				 ...);

@@ -33,20 +33,20 @@
 #ifdef LIBXML_DEBUG_ENABLED
 #include <libxml/debugXML.h>
 #endif
+#include <libxml/xmlerror.h>
 
 #ifdef LIBXML_XPTR_ENABLED
 
 /* #define DEBUG_RANGES */
 
-
-extern FILE *xmlXPathDebug;
-
 #define TODO 								\
-    fprintf(xmlXPathDebug, "Unimplemented block at %s:%d\n",		\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
 #define STRANGE 							\
-    fprintf(xmlXPathDebug, "Internal error at %s:%d\n",			\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Internal error at %s:%d\n",				\
             __FILE__, __LINE__);
 
 /************************************************************************
@@ -235,7 +235,8 @@ xmlXPtrNewPoint(xmlNodePtr node, int index) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewPoint: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewPoint: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -300,7 +301,8 @@ xmlXPtrNewRange(xmlNodePtr start, int startindex,
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangePoints: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangePoints: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -337,7 +339,8 @@ xmlXPtrNewRangePoints(xmlXPathObjectPtr start, xmlXPathObjectPtr end) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangePoints: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangePoints: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -372,7 +375,8 @@ xmlXPtrNewRangePointNode(xmlXPathObjectPtr start, xmlNodePtr end) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangePointNode: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangePointNode: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -409,7 +413,8 @@ xmlXPtrNewRangeNodePoint(xmlNodePtr start, xmlXPathObjectPtr end) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangeNodePoint: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangeNodePoint: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -442,7 +447,8 @@ xmlXPtrNewRangeNodes(xmlNodePtr start, xmlNodePtr end) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangeNodes: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangeNodes: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -472,7 +478,8 @@ xmlXPtrNewCollapsedRange(xmlNodePtr start) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangeNodes: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangeNodes: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -518,7 +525,8 @@ xmlXPtrNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewRangeNodeObject: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewRangeNodeObject: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -558,7 +566,8 @@ xmlXPtrLocationSetCreate(xmlXPathObjectPtr val) {
 
     ret = (xmlLocationSetPtr) xmlMalloc(sizeof(xmlLocationSet));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrLocationSetCreate: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrLocationSetCreate: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlLocationSet));
@@ -566,7 +575,8 @@ xmlXPtrLocationSetCreate(xmlXPathObjectPtr val) {
         ret->locTab = (xmlXPathObjectPtr *) xmlMalloc(XML_RANGESET_DEFAULT *
 					     sizeof(xmlXPathObjectPtr));
 	if (ret->locTab == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPtrLocationSetCreate: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPtrLocationSetCreate: out of memory\n");
 	    return(NULL);
 	}
 	memset(ret->locTab, 0 ,
@@ -603,7 +613,8 @@ xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
         cur->locTab = (xmlXPathObjectPtr *) xmlMalloc(XML_RANGESET_DEFAULT *
 					     sizeof(xmlXPathObjectPtr));
 	if (cur->locTab == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPtrLocationSetAdd: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPtrLocationSetAdd: out of memory\n");
 	    return;
 	}
 	memset(cur->locTab, 0 ,
@@ -616,7 +627,8 @@ xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
 	temp = (xmlXPathObjectPtr *) xmlRealloc(cur->locTab, cur->locMax *
 				      sizeof(xmlXPathObjectPtr));
 	if (temp == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPtrLocationSetAdd: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPtrLocationSetAdd: out of memory\n");
 	    return;
 	}
 	cur->locTab = temp;
@@ -673,7 +685,7 @@ xmlXPtrLocationSetDel(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
 
     if (i >= cur->locNr) {
 #ifdef DEBUG
-        fprintf(xmlXPathDebug, 
+        xmlGenericError(xmlGenericErrorContext, 
 	        "xmlXPtrLocationSetDel: Range %s wasn't found in RangeList\n",
 		val->name);
 #endif
@@ -745,7 +757,8 @@ xmlXPtrNewLocationSetNodes(xmlNodePtr start, xmlNodePtr end) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewLocationSetNodes: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewLocationSetNodes: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -772,7 +785,8 @@ xmlXPtrNewLocationSetNodeSet(xmlNodeSetPtr set) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrNewLocationSetNodes: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrNewLocationSetNodes: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -808,7 +822,8 @@ xmlXPtrWrapLocationSet(xmlLocationSetPtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrWrapLocationSet: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrWrapLocationSet: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -943,7 +958,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     len++;
     buffer = (xmlChar *) xmlMalloc(len * sizeof (xmlChar));
     if (buffer == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPtrEvalXPtrPart: out of memory\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrEvalXPtrPart: out of memory\n");
 	return;
     }
 
@@ -987,7 +1003,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	xmlXPathEvalExpr(ctxt);
 	CUR_PTR=left;
     } else {
-        fprintf(xmlXPathDebug, "unsupported scheme '%s'\n", name);
+        xmlGenericError(xmlGenericErrorContext,
+		"unsupported scheme '%s'\n", name);
     }
     xmlFree(buffer);
     xmlFree(name);
@@ -1095,7 +1112,8 @@ xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
      * this might prove useful in some cases, warn about it.
      */
     if ((name == NULL) && (CUR == '/') && (NXT(1) != '1')) {
-	fprintf(xmlXPathDebug, "warning: ChildSeq not starting by /1\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"warning: ChildSeq not starting by /1\n");
     }
 
     if (name != NULL) {
@@ -1234,8 +1252,6 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     if ((ctx == NULL) || (str == NULL))
 	return(NULL);
 
-    if (xmlXPathDebug == NULL)
-        xmlXPathDebug = stderr;
     ctxt = xmlXPathNewParserContext(str, ctx);
     if (ctx->node != NULL) {
 	init = xmlXPathNewNodeSet(ctx->node);
@@ -1246,7 +1262,7 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     if ((ctxt->value != NULL) &&
 	(ctxt->value->type != XPATH_NODESET) &&
 	(ctxt->value->type != XPATH_LOCATIONSET)) {
-	fprintf(xmlXPathDebug,
+	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPtrEval: evaluation failed to return a node set\n");
     } else {
 	res = valuePop(ctxt);
@@ -1272,7 +1288,8 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
         }
     } while (tmp != NULL);
     if (stack != 0) {
-	fprintf(xmlXPathDebug, "xmlXPtrEval: %d object left on the stack\n",
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlXPtrEval: %d object left on the stack\n",
 	        stack);
     }
     if (ctxt->error != XPATH_EXPRESSION_OK) {
@@ -2054,10 +2071,11 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
 		match = (!xmlStrncmp(&cur->content[pos], string, stringlen));
 		if (match) {
 #ifdef DEBUG_RANGES
-		    fprintf(stdout, "found range %d bytes at index %d of ->",
+		    xmlGenericError(xmlGenericErrorContext,
+			    "found range %d bytes at index %d of ->",
 			    stringlen, pos + 1);
 		    xmlDebugDumpString(stdout, cur->content);
-		    fprintf(stdout, "\n");
+		    xmlGenericError(xmlGenericErrorContext, "\n");
 #endif
 		    *end = cur;
 		    *endindex = pos + stringlen;
@@ -2070,10 +2088,11 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
 		match = (!xmlStrncmp(&cur->content[pos], string, sub));
 		if (match) {
 #ifdef DEBUG_RANGES
-		    fprintf(stdout, "found subrange %d bytes at index %d of ->",
+		    xmlGenericError(xmlGenericErrorContext,
+			    "found subrange %d bytes at index %d of ->",
 			    sub, pos + 1);
 		    xmlDebugDumpString(stdout, cur->content);
-		    fprintf(stdout, "\n");
+		    xmlGenericError(xmlGenericErrorContext, "\n");
 #endif
                     string = &string[sub];
 		    stringlen -= sub;
@@ -2138,10 +2157,11 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
 		    if (str != NULL) {
 			pos = (str - cur->content);
 #ifdef DEBUG_RANGES
-			fprintf(stdout, "found '%c' at index %d of ->",
+			xmlGenericError(xmlGenericErrorContext,
+				"found '%c' at index %d of ->",
 				first, pos + 1);
 			xmlDebugDumpString(stdout, cur->content);
-			fprintf(stdout, "\n");
+			xmlGenericError(xmlGenericErrorContext, "\n");
 #endif
 			if (xmlXPtrMatchString(string, cur, pos + 1,
 					       end, endindex)) {
@@ -2160,10 +2180,11 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
 		     * character. 
 		     */
 #ifdef DEBUG_RANGES
-		    fprintf(stdout, "found '' at index %d of ->",
+		    xmlGenericError(xmlGenericErrorContext,
+			    "found '' at index %d of ->",
 			    pos + 1);
 		    xmlDebugDumpString(stdout, cur->content);
-		    fprintf(stdout, "\n");
+		    xmlGenericError(xmlGenericErrorContext, "\n");
 #endif
 		    *start = cur;
 		    *startindex = pos + 1;
@@ -2397,12 +2418,14 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	xmlXPtrGetLastChar(&end, &endindex);
 
 #ifdef DEBUG_RANGES
-	fprintf(stdout, "from index %d of ->", startindex);
+	xmlGenericError(xmlGenericErrorContext,
+		"from index %d of ->", startindex);
 	xmlDebugDumpString(stdout, start->content);
-	fprintf(stdout, "\n");
-	fprintf(stdout, "to index %d of ->", endindex);
+	xmlGenericError(xmlGenericErrorContext, "\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"to index %d of ->", endindex);
 	xmlDebugDumpString(stdout, end->content);
-	fprintf(stdout, "\n");
+	xmlGenericError(xmlGenericErrorContext, "\n");
 #endif
 	do {
             fend = end;

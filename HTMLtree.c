@@ -31,6 +31,7 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/entities.h>
 #include <libxml/valid.h>
+#include <libxml/xmlerror.h>
 
 /************************************************************************
  *									*
@@ -335,7 +336,8 @@ htmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
     xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
-        fprintf(stderr, "htmlDtdDump : no internal subset\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlDtdDump : no internal subset\n");
 	return;
     }
     xmlBufferWriteChar(buf, "<!DOCTYPE ");
@@ -367,7 +369,8 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     xmlChar *value;
 
     if (cur == NULL) {
-        fprintf(stderr, "htmlAttrDump : property == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlAttrDump : property == NULL\n");
 	return;
     }
     xmlBufferWriteChar(buf, " ");
@@ -395,7 +398,8 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 static void
 htmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     if (cur == NULL) {
-        fprintf(stderr, "htmlAttrListDump : property == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlAttrListDump : property == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -418,7 +422,8 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
 static void
 htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (cur == NULL) {
-        fprintf(stderr, "htmlNodeListDump : node == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlNodeListDump : node == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -440,7 +445,8 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     htmlElemDescPtr info;
 
     if (cur == NULL) {
-        fprintf(stderr, "htmlNodeDump : node == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlNodeDump : node == NULL\n");
 	return;
     }
     /*
@@ -624,7 +630,8 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
-        fprintf(stderr, "htmlxmlDocDumpMemory : document == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlxmlDocDumpMemory : document == NULL\n");
 #endif
 	*mem = NULL;
 	*size = 0;
@@ -665,7 +672,8 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding) {
     xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
-        fprintf(stderr, "htmlDtdDump : no internal subset\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlDtdDump : no internal subset\n");
 	return;
     }
     xmlOutputBufferWriteString(buf, "<!DOCTYPE ");
@@ -697,7 +705,8 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const 
     xmlChar *value;
 
     if (cur == NULL) {
-        fprintf(stderr, "htmlAttrDump : property == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlAttrDump : property == NULL\n");
 	return;
     }
     xmlOutputBufferWriteString(buf, " ");
@@ -725,7 +734,8 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const 
 static void
 htmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const char *encoding) {
     if (cur == NULL) {
-        fprintf(stderr, "htmlAttrListDump : property == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlAttrListDump : property == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -749,7 +759,8 @@ void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 static void
 htmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const char *encoding) {
     if (cur == NULL) {
-        fprintf(stderr, "htmlNodeListDump : node == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlNodeListDump : node == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -771,7 +782,8 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
     htmlElemDescPtr info;
 
     if (cur == NULL) {
-        fprintf(stderr, "htmlNodeDump : node == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlNodeDump : node == NULL\n");
 	return;
     }
     /*
@@ -971,7 +983,8 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
-        fprintf(stderr, "htmlDocDump : document == NULL\n");
+        xmlGenericError(xmlGenericErrorContext,
+		"htmlDocDump : document == NULL\n");
 #endif
 	return(-1);
     }

@@ -302,9 +302,11 @@ xmlNanoHTTPScanProxy(const char *URL) {
     }
 #ifdef DEBUG_HTTP
     if (URL == NULL)
-	printf("Removing HTTP proxy info\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"Removing HTTP proxy info\n");
     else
-	printf("Using HTTP proxy %s\n", URL);
+	xmlGenericError(xmlGenericErrorContext,
+		"Using HTTP proxy %s\n", URL);
 #endif
     if (URL == NULL) return;
     buf[index] = 0;
@@ -749,7 +751,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     if (h==NULL)
     {
 #ifdef DEBUG_HTTP
-	fprintf(stderr,"unable to resolve '%s'.\n", host);
+	xmlGenericError(xmlGenericErrorContext,"unable to resolve '%s'.\n", host);
 #endif
 	return(-1);
     }
@@ -764,7 +766,8 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     }
 
 #ifdef DEBUG_HTTP
-    fprintf(stderr, "unable to connect to '%s'.\n", host);
+    xmlGenericError(xmlGenericErrorContext,
+	    "unable to connect to '%s'.\n", host);
 #endif
     return(-1);
 }
@@ -935,9 +938,11 @@ retry:
     else
 	strcpy(p, "\r\n");
 #ifdef DEBUG_HTTP
-    printf("-> %s%s", proxy? "(Proxy) " : "", bp);
+    xmlGenericError(xmlGenericErrorContext,
+	    "-> %s%s", proxy? "(Proxy) " : "", bp);
     if ((blen -= strlen(bp)+1) < 0)
-	printf("ERROR: overflowed buffer by %d bytes\n", -blen);
+	xmlGenericError(xmlGenericErrorContext,
+		"ERROR: overflowed buffer by %d bytes\n", -blen);
 #endif
     ctxt->outptr = ctxt->out = bp;
     ctxt->state = XML_NANO_HTTP_WRITE;
@@ -955,7 +960,7 @@ retry:
 	xmlNanoHTTPScanAnswer(ctxt, p);
 
 #ifdef DEBUG_HTTP
-	printf("<- %s\n", p);
+	xmlGenericError(xmlGenericErrorContext, "<- %s\n", p);
 #endif
         xmlFree(p);
     }
@@ -963,7 +968,8 @@ retry:
     if ((ctxt->location != NULL) && (ctxt->returnValue >= 300) &&
         (ctxt->returnValue < 400)) {
 #ifdef DEBUG_HTTP
-	printf("\nRedirect to: %s\n", ctxt->location);
+	xmlGenericError(xmlGenericErrorContext,
+		"\nRedirect to: %s\n", ctxt->location);
 #endif
 	while (xmlNanoHTTPRecv(ctxt)) ;
         if (nbRedirects < XML_NANO_HTTP_MAX_REDIR) {
@@ -974,7 +980,8 @@ retry:
 	}
 	xmlNanoHTTPFreeCtxt(ctxt);
 #ifdef DEBUG_HTTP
-	printf("Too many redirects, aborting ...\n");
+	xmlGenericError(xmlGenericErrorContext,
+		"Too many redirects, aborting ...\n");
 #endif
 	return(NULL);
 
@@ -989,10 +996,12 @@ retry:
 
 #ifdef DEBUG_HTTP
     if (ctxt->contentType != NULL)
-	printf("\nCode %d, content-type '%s'\n\n",
+	xmlGenericError(xmlGenericErrorContext,
+		"\nCode %d, content-type '%s'\n\n",
 	       ctxt->returnValue, ctxt->contentType);
     else
-	printf("\nCode %d, no content-type\n\n",
+	xmlGenericError(xmlGenericErrorContext,
+		"\nCode %d, no content-type\n\n",
 	       ctxt->returnValue);
 #endif
 
@@ -1107,8 +1116,10 @@ int main(int argc, char **argv) {
 	    xmlNanoHTTPFetch(argv[1], "-", &contentType);
 	if (contentType != NULL) xmlFree(contentType);
     } else {
-        printf("%s: minimal HTTP GET implementation\n", argv[0]);
-        printf("\tusage %s [ URL [ filename ] ]\n", argv[0]);
+        xmlGenericError(xmlGenericErrorContext,
+		"%s: minimal HTTP GET implementation\n", argv[0]);
+        xmlGenericError(xmlGenericErrorContext,
+		"\tusage %s [ URL [ filename ] ]\n", argv[0]);
     }
     xmlNanoHTTPCleanup();
     xmlMemoryDump();
@@ -1119,7 +1130,8 @@ int main(int argc, char **argv) {
 #ifdef STANDALONE
 #include <stdio.h>
 int main(int argc, char **argv) {
-    printf("%s : HTTP support not compiled in\n", argv[0]);
+    xmlGenericError(xmlGenericErrorContext,
+	    "%s : HTTP support not compiled in\n", argv[0]);
     return(0);
 }
 #endif /* STANDALONE */

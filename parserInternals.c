@@ -1025,6 +1025,12 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     CHECK_BUFFER(in);
 
     used = in->cur - in->buf->buffer->content;
+    /*
+     * Do not shrink on large buffers whose only a tiny fraction
+     * was consumned
+     */
+    if (in->buf->buffer->use > used + 2 * INPUT_CHUNK)
+	return;
     if (used > INPUT_CHUNK) {
 	ret = xmlBufferShrink(in->buf->buffer, used - LINE_LEN);
 	if (ret > 0) {

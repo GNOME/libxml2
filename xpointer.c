@@ -50,6 +50,83 @@ extern FILE *xmlXPathDebug;
 
 /************************************************************************
  *									*
+ *		A few helper functions for child sequences		*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlXPtrGetArity:
+ * @cur:  the node
+ *
+ * Returns the number of child for an element, -1 in case of error
+ */
+int
+xmlXPtrGetArity(xmlNodePtr cur) {
+    int i;
+    if (cur == NULL) 
+	return(-1);
+    cur = cur->children;
+    for (i = 0;cur != NULL;cur = cur->next) {
+	if ((cur->type == XML_ELEMENT_NODE) ||
+	    (cur->type == XML_DOCUMENT_NODE) ||
+	    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+	    i++;
+	}
+    }
+    return(i);
+}
+
+/**
+ * xmlXPtrGetIndex:
+ * @cur:  the node
+ *
+ * Returns the index of the node in its parent children list, -1
+ *         in case of error
+ */
+int
+xmlXPtrGetIndex(xmlNodePtr cur) {
+    int i;
+    if (cur == NULL) 
+	return(-1);
+    for (i = 1;cur != NULL;cur = cur->prev) {
+	if ((cur->type == XML_ELEMENT_NODE) ||
+	    (cur->type == XML_DOCUMENT_NODE) ||
+	    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+	    i++;
+	}
+    }
+    return(i);
+}
+
+/**
+ * xmlXPtrGetNthChild:
+ * @cur:  the node
+ * @no:  the child number
+ *
+ * Returns the @no'th element child of @cur or NULL
+ */
+xmlNodePtr
+xmlXPtrGetNthChild(xmlNodePtr cur, int no) {
+    int i;
+    if (cur == NULL) 
+	return(cur);
+    cur = cur->children;
+    for (i = 0;i <= no;cur = cur->next) {
+	if (cur == NULL) 
+	    return(cur);
+	if ((cur->type == XML_ELEMENT_NODE) ||
+	    (cur->type == XML_DOCUMENT_NODE) ||
+	    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+	    i++;
+	    if (i == no)
+		break;
+	}
+    }
+    return(cur);
+}
+
+/************************************************************************
+ *									*
  *		Handling of XPointer specific types			*
  *									*
  ************************************************************************/
@@ -779,33 +856,6 @@ xmlXPtrWrapLocationSet(xmlLocationSetPtr val) {
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)
 
-/**
- * xmlXPtrGetNthChild:
- * @cur:  the node
- * @no:  the child number
- *
- * Returns the @no'th element child of @cur or NULL
- */
-xmlNodePtr
-xmlXPtrGetNthChild(xmlNodePtr cur, int no) {
-    int i;
-    if (cur == NULL) 
-	return(cur);
-    cur = cur->children;
-    for (i = 0;i <= no;cur = cur->next) {
-	if (cur == NULL) 
-	    return(cur);
-	if ((cur->type == XML_ELEMENT_NODE) ||
-	    (cur->type == XML_DOCUMENT_NODE) ||
-	    (cur->type == XML_HTML_DOCUMENT_NODE)) {
-	    i++;
-	    if (i == no)
-		break;
-	}
-    }
-    return(cur);
-}
-
 /*
  * xmlXPtrGetChildNo:
  * @ctxt:  the XPointer Parser context
@@ -1116,6 +1166,8 @@ void xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPtrHereFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPtrOriginFunction(xmlXPathParserContextPtr ctxt, int nargs);
+void xmlXPtrRangeInsideFunction(xmlXPathParserContextPtr ctxt, int nargs);
+void xmlXPtrRangeFunction(xmlXPathParserContextPtr ctxt, int nargs);
 
 /**
  * xmlXPtrNewContext:
@@ -1141,6 +1193,10 @@ xmlXPtrNewContext(xmlDocPtr doc, xmlNodePtr here, xmlNodePtr origin) {
 
     xmlXPathRegisterFunc(ret, (xmlChar *)"range-to",
 	                 xmlXPtrRangeToFunction);
+    xmlXPathRegisterFunc(ret, (xmlChar *)"range",
+	                 xmlXPtrRangeFunction);
+    xmlXPathRegisterFunc(ret, (xmlChar *)"range-inside",
+	                 xmlXPtrRangeInsideFunction);
     xmlXPathRegisterFunc(ret, (xmlChar *)"string-range",
 	                 xmlXPtrStringRangeFunction);
     xmlXPathRegisterFunc(ret, (xmlChar *)"start-point",
@@ -1492,17 +1548,267 @@ xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathFreeObject(obj);
 }
 
+
 /**
  * xmlXPtrCoveringRange:
  * @ctxt:  the XPointer Parser context
+ * @loc:  the location for which the covering range must be computed
  *
- * Function implementing the range() operation of computing a covering
- * range as described in 5.3.3 Covering Ranges for All Location Types.
+ * A covering range is a range that wholly encompasses a location
+ * Section 5.3.3. Covering Ranges for All Location Types
+ *        http://www.w3.org/TR/xptr#N2267
+ *
+ * Returns a new location or NULL in case of error
+ */
+xmlXPathObjectPtr
+xmlXPtrCoveringRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
+    if (loc == NULL)
+	return(NULL);
+    if ((ctxt == NULL) || (ctxt->context == NULL) ||
+	(ctxt->context->doc == NULL))
+	return(NULL);
+    switch (loc->type) {
+        case XPATH_POINT:
+	    return(xmlXPtrNewRange(loc->user, loc->index,
+			           loc->user, loc->index));
+        case XPATH_RANGE:
+	    if (loc->user2 != NULL) {
+		return(xmlXPtrNewRange(loc->user, loc->index,
+			              loc->user2, loc->index2));
+	    } else {
+		xmlNodePtr node = (xmlNodePtr) loc->user;
+		if (node == (xmlNodePtr) ctxt->context->doc) {
+		    return(xmlXPtrNewRange(node, 0, node,
+					   xmlXPtrGetArity(node)));
+		} else {
+		    switch (node->type) {
+			case XML_ATTRIBUTE_NODE:
+			/* !!! our model is slightly different than XPath */
+			    return(xmlXPtrNewRange(node, 0, node,
+					           xmlXPtrGetArity(node)));
+			case XML_ELEMENT_NODE:
+			case XML_TEXT_NODE:
+			case XML_CDATA_SECTION_NODE:
+			case XML_ENTITY_REF_NODE:
+			case XML_PI_NODE:
+			case XML_COMMENT_NODE:
+			case XML_DOCUMENT_NODE:
+			case XML_NOTATION_NODE:
+			case XML_HTML_DOCUMENT_NODE: {
+			    int index = xmlXPtrGetIndex(node);
+			     
+			    node = node->parent;
+			    return(xmlXPtrNewRange(node, index - 1,
+					           node, index + 1));
+			}
+			default:
+			    return(NULL);
+		    }
+		}
+	    }
+	default:
+	    TODO /* missed one case ??? */
+    }
+    return(NULL);
+}
+
+/**
+ * xmlXPtrRangeFunction:
+ * @ctxt:  the XPointer Parser context
+ *
+ * Function implementing the range() function 5.4.3
+ *  location-set range(location-set )
+ *
+ *  The range function returns ranges covering the locations in
+ *  the argument location-set. For each location x in the argument
+ *  location-set, a range location representing the covering range of
+ *  x is added to the result location-set.
  */
 void
-xmlXPtrRange(xmlXPathParserContextPtr ctxt, int nargs) {
+xmlXPtrRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+    int i;
+    xmlXPathObjectPtr set;
+    xmlLocationSetPtr oldset;
+    xmlLocationSetPtr newset;
+
     CHECK_ARITY(1);
-    TODO
+    if ((ctxt->value == NULL) ||
+	((ctxt->value->type != XPATH_LOCATIONSET) &&
+	 (ctxt->value->type != XPATH_NODESET)))
+        XP_ERROR(XPATH_INVALID_TYPE)
+
+    set = valuePop(ctxt);
+    if (set->type == XPATH_NODESET) {
+	xmlXPathObjectPtr tmp;
+
+	/*
+	 * First convert to a location set
+	 */
+	tmp = xmlXPtrNewLocationSetNodeSet(set->nodesetval);
+	xmlXPathFreeObject(set);
+	set = tmp;
+    }
+    oldset = (xmlLocationSetPtr) set->user;
+
+    /*
+     * The loop is to compute the covering range for each item and add it
+     */
+    newset = xmlXPtrLocationSetCreate(NULL);
+    for (i = 0;i < oldset->locNr;i++) {
+	xmlXPtrLocationSetAdd(newset,
+		xmlXPtrCoveringRange(ctxt, oldset->locTab[i]));
+    }
+
+    /*
+     * Save the new value and cleanup
+     */
+    valuePush(ctxt, xmlXPtrWrapLocationSet(newset));
+    xmlXPathFreeObject(set);
+}
+
+/**
+ * xmlXPtrInsideRange:
+ * @ctxt:  the XPointer Parser context
+ * @loc:  the location for which the inside range must be computed
+ *
+ * A inside range is a range described in the range-inside() description
+ *
+ * Returns a new location or NULL in case of error
+ */
+xmlXPathObjectPtr
+xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
+    if (loc == NULL)
+	return(NULL);
+    if ((ctxt == NULL) || (ctxt->context == NULL) ||
+	(ctxt->context->doc == NULL))
+	return(NULL);
+    switch (loc->type) {
+        case XPATH_POINT: {
+	    xmlNodePtr node = (xmlNodePtr) loc->user;
+	    switch (node->type) {
+		case XML_PI_NODE:
+		case XML_COMMENT_NODE:
+		case XML_TEXT_NODE:
+		case XML_CDATA_SECTION_NODE: {
+		    if (node->content == NULL) {
+			return(xmlXPtrNewRange(node, 0, node, 0));
+		    } else {
+			return(xmlXPtrNewRange(node, 0, node,
+					       xmlStrlen(node->content)));
+		    }
+		}
+		case XML_ATTRIBUTE_NODE:
+		case XML_ELEMENT_NODE:
+		case XML_ENTITY_REF_NODE:
+		case XML_DOCUMENT_NODE:
+		case XML_NOTATION_NODE:
+		case XML_HTML_DOCUMENT_NODE: {
+		    return(xmlXPtrNewRange(node, 0, node,
+					   xmlXPtrGetArity(node)));
+		}
+		default:
+		    return(NULL);
+	    }
+	    return(NULL);
+	}
+        case XPATH_RANGE: {
+	    xmlNodePtr node = (xmlNodePtr) loc->user;
+	    if (loc->user2 != NULL) {
+		return(xmlXPtrNewRange(node, loc->index,
+			               loc->user2, loc->index2));
+	    } else {
+		switch (node->type) {
+		    case XML_PI_NODE:
+		    case XML_COMMENT_NODE:
+		    case XML_TEXT_NODE:
+		    case XML_CDATA_SECTION_NODE: {
+			if (node->content == NULL) {
+			    return(xmlXPtrNewRange(node, 0, node, 0));
+			} else {
+			    return(xmlXPtrNewRange(node, 0, node,
+						   xmlStrlen(node->content)));
+			}
+		    }
+		    case XML_ATTRIBUTE_NODE:
+		    case XML_ELEMENT_NODE:
+		    case XML_ENTITY_REF_NODE:
+		    case XML_DOCUMENT_NODE:
+		    case XML_NOTATION_NODE:
+		    case XML_HTML_DOCUMENT_NODE: {
+			return(xmlXPtrNewRange(node, 0, node,
+					       xmlXPtrGetArity(node)));
+		    }
+		    default:
+			return(NULL);
+		}
+		return(NULL);
+	    }
+        }
+	default:
+	    TODO /* missed one case ??? */
+    }
+    return(NULL);
+}
+
+/**
+ * xmlXPtrRangeInsideFunction:
+ * @ctxt:  the XPointer Parser context
+ *
+ * Function implementing the range-inside() function 5.4.3
+ *  location-set range-inside(location-set )
+ *
+ *  The range-inside function returns ranges covering the contents of
+ *  the locations in the argument location-set. For each location x in
+ *  the argument location-set, a range location is added to the result
+ *  location-set. If x is a range location, then x is added to the
+ *  result location-set. If x is not a range location, then x is used
+ *  as the container location of the start and end points of the range
+ *  location to be added; the index of the start point of the range is
+ *  zero; if the end point is a character point then its index is the
+ *  length of the string-value of x, and otherwise is the number of
+ *  location children of x.
+ *
+ */
+void
+xmlXPtrRangeInsideFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+    int i;
+    xmlXPathObjectPtr set;
+    xmlLocationSetPtr oldset;
+    xmlLocationSetPtr newset;
+
+    CHECK_ARITY(1);
+    if ((ctxt->value == NULL) ||
+	((ctxt->value->type != XPATH_LOCATIONSET) &&
+	 (ctxt->value->type != XPATH_NODESET)))
+        XP_ERROR(XPATH_INVALID_TYPE)
+
+    set = valuePop(ctxt);
+    if (set->type == XPATH_NODESET) {
+	xmlXPathObjectPtr tmp;
+
+	/*
+	 * First convert to a location set
+	 */
+	tmp = xmlXPtrNewLocationSetNodeSet(set->nodesetval);
+	xmlXPathFreeObject(set);
+	set = tmp;
+    }
+    oldset = (xmlLocationSetPtr) set->user;
+
+    /*
+     * The loop is to compute the covering range for each item and add it
+     */
+    newset = xmlXPtrLocationSetCreate(NULL);
+    for (i = 0;i < oldset->locNr;i++) {
+	xmlXPtrLocationSetAdd(newset,
+		xmlXPtrInsideRange(ctxt, oldset->locTab[i]));
+    }
+
+    /*
+     * Save the new value and cleanup
+     */
+    valuePush(ctxt, xmlXPtrWrapLocationSet(newset));
+    xmlXPathFreeObject(set);
 }
 
 /**

@@ -1,3 +1,9 @@
+Sun Oct 15 22:28:32 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+        * Release of 2.2.5
+	* xpointer.c: range() range-inside and other helper functions
+	* parserInternals.c: fixed perf problem raised by rolf@pointsman.de
+
 Sun Oct 15 16:21:27 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* SAX.c: HTML attributes need normalization too (Bjorn Reese)

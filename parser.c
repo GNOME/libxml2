@@ -8361,6 +8361,90 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  ************************************************************************/
 
 /**
+ * xmlIOParseDTD:
+ * @sax:  the SAX handler block or NULL
+ * @input:  an Input Buffer
+ * @enc:  the charset encoding if known
+ *
+ * Load and parse a DTD
+ * 
+ * Returns the resulting xmlDtdPtr or NULL in case of error.
+ */
+
+xmlDtdPtr
+xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
+	      xmlCharEncoding enc) {
+    xmlDtdPtr ret = NULL;
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr pinput = NULL;
+
+    if (input == NULL)
+	return(NULL);
+
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+	return(NULL);
+    }
+
+    /*
+     * Set-up the SAX context
+     */
+    if (sax != NULL) { 
+	if (ctxt->sax != NULL)
+	    xmlFree(ctxt->sax);
+        ctxt->sax = sax;
+        ctxt->userData = NULL;
+    }
+
+    /*
+     * generate a parser input from the I/O handler
+     */
+
+    pinput = xmlNewIOInputStream(ctxt, input, enc);
+    if (pinput == NULL) {
+        if (sax != NULL) ctxt->sax = NULL;
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+
+    /*
+     * plug some encoding conversion routines here.
+     */
+    xmlPushInput(ctxt, pinput);
+
+    pinput->filename = NULL;
+    pinput->line = 1;
+    pinput->col = 1;
+    pinput->base = ctxt->input->cur;
+    pinput->cur = ctxt->input->cur;
+    pinput->free = NULL;
+
+    /*
+     * let's parse that entity knowing it's an external subset.
+     */
+    ctxt->inSubset = 2;
+    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+    ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
+	                               BAD_CAST "none", BAD_CAST "none");
+    xmlParseExternalSubset(ctxt, BAD_CAST "none", BAD_CAST "none");
+
+    if (ctxt->myDoc != NULL) {
+	if (ctxt->wellFormed) {
+	    ret = ctxt->myDoc->extSubset;
+	    ctxt->myDoc->extSubset = NULL;
+	} else {
+	    ret = NULL;
+	}
+        xmlFreeDoc(ctxt->myDoc);
+        ctxt->myDoc = NULL;
+    }
+    if (sax != NULL) ctxt->sax = NULL;
+    xmlFreeParserCtxt(ctxt);
+    
+    return(ret);
+}
+
+/**
  * xmlSAXParseDTD:
  * @sax:  the SAX handler block
  * @ExternalID:  a NAME* containing the External ID of the DTD

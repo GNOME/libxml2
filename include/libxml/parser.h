@@ -407,6 +407,9 @@ xmlDtdPtr	xmlParseDTD		(const xmlChar *ExternalID,
 xmlDtdPtr	xmlSAXParseDTD		(xmlSAXHandlerPtr sax,
 					 const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
+xmlDtdPtr	xmlIOParseDTD		(xmlSAXHandlerPtr sax,
+					 xmlParserInputBufferPtr input,
+					 xmlCharEncoding enc);
 int		xmlParseBalancedChunkMemory(xmlDocPtr doc,
 					 xmlSAXHandlerPtr sax,
 					 void *user_data,

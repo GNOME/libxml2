@@ -964,7 +964,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     }
 
     cur = buffer;
-    while (CUR != '0') {
+    while (CUR != 0) {
 	if (CUR == ')') {
 	    level--;
 	    if (level == 0) {
@@ -1989,6 +1989,7 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *index, int bytes) {
 		pos = 0;
 	    }
 	}
+
 	if (cur == NULL) {
 	    *node = NULL;
 	    *index = 0;
@@ -2020,6 +2021,11 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *index, int bytes) {
 	    bytes -= (len - pos);
 	    cur = xmlXPtrAdvanceNode(cur);
 	    cur = 0;
+	} else if (pos + bytes < len) {
+	    pos += bytes;
+	    *node = cur;
+	    *index = pos;
+	    return(0);
 	}
     }
     return(-1);
@@ -2366,7 +2372,7 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr string;
     xmlXPathObjectPtr position = NULL;
     xmlXPathObjectPtr number = NULL;
-    int found;
+    int found, pos, num;
 
     /*
      * Grab the arguments
@@ -2377,10 +2383,14 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if (nargs >= 4) {
 	CHECK_TYPE(XPATH_NUMBER);
 	number = valuePop(ctxt);
+	if (number != NULL)
+	    num = number->floatval;
     }
     if (nargs >= 3) {
 	CHECK_TYPE(XPATH_NUMBER);
 	position = valuePop(ctxt);
+	if (position != NULL)
+	    pos = position->floatval;
     }
     CHECK_TYPE(XPATH_STRING);
     string = valuePop(ctxt);
@@ -2433,8 +2443,32 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    found = xmlXPtrSearchString(string->stringval, &start, &startindex,
 		                        &fend, &fendindex);
 	    if (found == 1) {
-		xmlXPtrLocationSetAdd(newset,
+		if (position == NULL) {
+		    xmlXPtrLocationSetAdd(newset,
 			 xmlXPtrNewRange(start, startindex, fend, fendindex));
+		} else if (xmlXPtrAdvanceChar(&start, &startindex,
+			                      pos - 1) == 0) {
+		    if ((number != NULL) && (num > 0)) {
+			int rindex;
+			xmlNodePtr rend;
+			rend = start;
+			rindex = startindex - 1;
+			if (xmlXPtrAdvanceChar(&rend, &rindex,
+				               num) == 0) {
+			    xmlXPtrLocationSetAdd(newset,
+					xmlXPtrNewRange(start, startindex,
+							rend, rindex));
+			}
+		    } else if (num <= 0) {
+			xmlXPtrLocationSetAdd(newset,
+				    xmlXPtrNewRange(start, startindex,
+						    start, startindex));
+		    } else {
+			xmlXPtrLocationSetAdd(newset,
+				    xmlXPtrNewRange(start, startindex,
+						    fend, fendindex));
+		    }
+		}
 		start = fend;
 		startindex = fendindex;
 		if (string->stringval[0] == 0)

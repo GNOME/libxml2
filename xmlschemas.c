@@ -34,7 +34,9 @@
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/dict.h>
-#include <libxml/xpath.h>
+#ifdef LIBXML_PATTERN_ENABLED
+#include <libxml/pattern.h>
+#endif
 
 /* #define DEBUG 1 */
 
@@ -258,7 +260,7 @@ struct _xmlSchemaIDCSelect {
     xmlSchemaIDCPtr idc;
     int index; /* an index position if significant for IDC key-sequences */
     const xmlChar *xpath; /* the XPath expression */
-    xmlXPathCompExprPtr xpathComp; /* the compiled XPath expression */
+    void *xpathComp; /* the compiled XPath expression */
 };
 
 /**
@@ -353,16 +355,16 @@ typedef xmlSchemaIDCMatcher *xmlSchemaIDCMatcherPtr;
 typedef struct _xmlSchemaIDCStateObj xmlSchemaIDCStateObj;
 typedef xmlSchemaIDCStateObj *xmlSchemaIDCStateObjPtr;
 struct _xmlSchemaIDCStateObj {
-    int type;
-    xmlSchemaIDCStateObjPtr parent; /* the parent selector state object */
+    int type;    
     xmlSchemaIDCStateObjPtr next; /* next if in a list */
-    int topDown;
-    int **history; /* list of (depth, state-id) tuples */
+    int depth; /* depth of creation */
+    int *history; /* list of (depth, state-id) tuples */
     int nbHistory;
     int sizeHistory;
     xmlSchemaIDCMatcherPtr matcher; /* the correspondent field/selector
                                        matcher */
     xmlSchemaIDCSelectPtr sel;
+    void *xpathCtxt;
 };
 
 #define IDC_MATCHER 0
@@ -2442,6 +2444,60 @@ xmlSchemaFreeTypeLinkList(xmlSchemaTypeLinkPtr link)
     }    
 }
 
+#ifdef IDC_ENABLED
+static void
+xmlSchemaFreeIDCStateObjList(xmlSchemaIDCStateObjPtr sto)
+{
+    xmlSchemaIDCStateObjPtr next;
+    while (sto != NULL) {
+	next = sto->next;
+	if (sto->history != NULL)
+	    xmlFree(sto->history);
+	if (sto->xpathCtxt != NULL)
+	    xmlFreeStreamCtxt((xmlStreamCtxtPtr) sto->xpathCtxt);
+	xmlFree(sto);
+	sto = next;
+    }
+}
+
+/**
+ * xmlSchemaFreeIDC:
+ * @idc: a identity-constraint definition
+ *
+ * Deallocates an identity-constraint definition.
+ */
+static void
+xmlSchemaFreeIDC(xmlSchemaIDCPtr idcDef)
+{
+    xmlSchemaIDCSelectPtr cur, prev;
+
+    if (idcDef == NULL)
+	return;
+    if (idcDef->annot != NULL)
+        xmlSchemaFreeAnnot(idcDef->annot);
+    if (idcDef->ref != NULL)
+	xmlFree(idcDef->ref);
+    /* Selector */
+    if (idcDef->selector != NULL) {
+	if (idcDef->selector->xpathComp != NULL)
+	    xmlFreePattern((xmlPatternPtr) idcDef->selector->xpathComp);
+	xmlFree(idcDef->selector);
+    }
+    /* Fields */
+    if (idcDef->fields != NULL) {
+	cur = idcDef->fields;
+	do {
+	    prev = cur;
+	    cur = cur->next;
+	    if (prev->xpathComp != NULL)
+		xmlFreePattern((xmlPatternPtr) prev->xpathComp);
+	    xmlFree(prev);	    
+	} while (cur != NULL);
+    }
+    xmlFree(idcDef);
+}
+#endif /* IDC_ENABLED */
+
 /**
  * xmlSchemaFreeElement:
  * @schema:  a schema element structure
@@ -2536,66 +2592,6 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
     xmlFree(type);
 }
 
-#ifdef IDC_ENABLED
-static void
-xmlSchemaFreeIDCStateObjList(xmlSchemaIDCStateObjPtr sto)
-{
-    xmlSchemaIDCStateObjPtr next;
-    while (sto != NULL) {
-	next = sto->next;
-	if (sto->history != NULL) {
-	    int i;
-	    for (i = 0; i < sto->sizeHistory; i++) {
-		if (sto->history[i] != NULL)
-		    xmlFree(sto->history[i]);
-		else 
-		    break;
-	    }
-	    xmlFree(sto->history);
-	}
-	xmlFree(sto);
-	sto = next;
-    }
-}
-
-/**
- * xmlSchemaFreeIDC:
- * @idc: a identity-constraint definition
- *
- * Deallocates an identity-constraint definition.
- */
-static void
-xmlSchemaFreeIDC(xmlSchemaIDCPtr idc)
-{
-    xmlSchemaIDCSelectPtr cur, prev;
-
-    if (idc == NULL)
-	return;
-    if (idc->annot != NULL)
-        xmlSchemaFreeAnnot(idc->annot);
-    if (idc->ref != NULL)
-	xmlFree(idc->ref);
-    /* Selector */
-    if (idc->selector != NULL) {
-	if (idc->selector->xpathComp != NULL)
-	    xmlXPathFreeCompExpr(idc->selector->xpathComp);
-	xmlFree(idc->selector);
-    }
-    /* Fields */
-    if (idc->fields != NULL) {
-	cur = idc->fields;
-	do {
-	    prev = cur;
-	    cur = cur->next;
-	    if (prev->xpathComp != NULL)
-		xmlXPathFreeCompExpr(prev->xpathComp);
-	    xmlFree(prev);	    
-	} while (cur != NULL);
-    }
-    xmlFree(idc);
-}
-#endif /* IDC_ENABLED */
-
 /**
  * xmlSchemaFreeTypeList:
  * @type:  a schema type structure
@@ -2644,6 +2640,11 @@ xmlSchemaFree(xmlSchemaPtr schema)
     if (schema->groupDecl != NULL)
         xmlHashFree(schema->groupDecl,
                     (xmlHashDeallocator) xmlSchemaFreeType);
+#ifdef IDC_ENABLED
+    if (schema->idcDef != NULL)
+        xmlHashFree(schema->idcDef,
+                    (xmlHashDeallocator) xmlSchemaFreeIDC);
+#endif
     if (schema->schemasImports != NULL)
 	xmlHashFree(schema->schemasImports,
 		    (xmlHashDeallocator) xmlSchemaFreeImport);
@@ -2964,14 +2965,12 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
 		    value = xmlStrdup(BAD_CAST "dummy-value");
 		    res = 0;
 #endif
-		    if (res == 0)
+		    if (res >= 0)
 			fprintf(output, "\"%s\" ", value);
 		    else
 			fprintf(output, "CANON-VALUE-FAILED ");
-		    if (value != NULL) {
-			xmlFree(value);
-			value = NULL;
-		    }
+		    if (res == 0) 
+			FREE_AND_NULL(value)
 		} else if (key != NULL)
 		    fprintf(output, "(no val), ");
 		else
@@ -3553,8 +3552,7 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    xmlFree(ret);	    
 	    return (NULL);
 	} else {
-	    char buf[20];
-	    xmlChar *str;
+	    char buf[30];
 	    /*
 	    * Using the ctxt->container for xmlHashAddEntry3 is ambigious
 	    * in the scenario:
@@ -3564,24 +3562,21 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    * 2. those complex types contain attributes with an equal name
 	    * 3. those attributes are in no namespace 
 	    * We will compute a new context string.
-	    */
-	    snprintf(buf, 19, "%d", ctxt->counter++ + 1);
-	    str = xmlStrdup(BAD_CAST ctxt->container);
-	    str = xmlStrcat(str, BAD_CAST buf);
+	    */	    
+	    snprintf(buf, 29, "#aCont%d", ctxt->counter++ + 1);
 	    val = xmlHashAddEntry3(schema->attrDecl, name,
-		namespace, xmlDictLookup(ctxt->dict, str, -1), ret);
-	    FREE_AND_NULL(str)
+		namespace, BAD_CAST buf, ret);
+
 	    if (val != 0) {
 		xmlSchemaPCustomErr(ctxt,
 		    XML_SCHEMAP_INTERNAL,
 		    NULL, NULL, node,
-		    "Internal error: xmlSchemaAddElement, "
-		    "a dublicate element declaration with the name '%s' "
+		    "Internal error: xmlSchemaAddAttribute, "
+		    "a dublicate attribute declaration with the name '%s' "
 		    "could not be added to the hash.", name);
 		xmlFree(ret);
 		return (NULL);
-	    }
-	    
+	    }	    
 	}
     }
     if (ctxt->assemble != NULL)
@@ -3695,8 +3690,8 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    char buf[30]; 
 
 	    snprintf(buf, 29, "#eCont%d", ctxt->counter++ + 1);
-	    val = xmlHashAddEntry3(schema->elemDecl, name, (xmlChar *) buf,
-		namespace, ret);
+	    val = xmlHashAddEntry3(schema->elemDecl, name, 
+		namespace, (xmlChar *) buf, ret);
 	    if (val != 0) {
 		xmlSchemaPCustomErr(ctxt,
 		    XML_SCHEMAP_INTERNAL,
@@ -5844,19 +5839,19 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	/*
 	* TODO: We need the array of in-scope namespaces for compilation.
 	*/	
-	selector->xpathComp = xmlXPathCompile(selector->xpath);
+	selector->xpathComp = (void *) xmlPatterncompile(selector->xpath,
+	    NULL, 0, NULL);
 #ifdef IDC_XPATH_SUPPORT
-	if ((selector->xpathComp == NULL) || 
-	    (xmlXPathWXSIDCValid(selector->xpathComp, isField) != 0)) {
+	if (selector->xpathComp == NULL) {
 	    xmlSchemaPCustomErr(ctxt,
-		/* TODO: Adjust error code? */
+		* TODO: Adjust error code? *
 		XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
 		NULL, NULL, node, 
 		"The XPath expression '%s' could not be "
 		"compiled", selector->xpath);
 	    return (XML_SCHEMAP_S4S_ATTR_INVALID_VALUE);
 	}		
-#endif
+#endif  
     }
     return (0);
 }
@@ -6012,7 +6007,7 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
     const xmlChar *name = NULL;
     xmlSchemaIDCSelectPtr field = NULL, lastField = NULL;
     int resAdd;
-    
+        
     /*
     * Check for illegal attributes.
     */
@@ -6077,7 +6072,6 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
 	xmlFree(item);
 	return (NULL);
     }
-    
     memset(item, 0, sizeof(xmlSchemaIDC));
     item->name = name;
     item->type = idcCategory;  
@@ -13506,7 +13500,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 			* then a value needs not to checked against against a
 			* facet, thus no computed value is needed.
 			*/
-			if (item->baseType->flags && XML_SCHEMAS_TYPE_FACETSNEEDVALUE)
+			if (item->baseType->flags & XML_SCHEMAS_TYPE_FACETSNEEDVALUE)
 			    item->flags |= XML_SCHEMAS_TYPE_FACETSNEEDVALUE;
 			else {
 			    for (cur = item->facetSet; cur != NULL;
@@ -16205,6 +16199,38 @@ xmlSchemaHasElemOrCharContent(xmlNodePtr node)
 #ifdef IDC_ENABLED
 
 /**
+ * xmlSchemaAugmentIDC:
+ * @idcDef: the IDC definition
+ *
+ * Creates an augmented IDC definition item.
+ *
+ * Returns the item, or NULL on internal errors.
+ */
+static void
+xmlSchemaAugmentIDC(xmlSchemaIDCPtr idcDef,
+		    xmlSchemaValidCtxtPtr vctxt)
+{
+    xmlSchemaIDCAugPtr aidc;
+
+    aidc = (xmlSchemaIDCAugPtr) xmlMalloc(sizeof(xmlSchemaIDCAug));
+    if (aidc == NULL) {
+	xmlSchemaVErrMemory(vctxt, 
+	    "xmlSchemaAugmentIDC: allocating an augmented IDC definition",
+	    NULL);
+	return;
+    }
+    aidc->bubbleDepth = -1;
+    aidc->def = idcDef;
+    aidc->next = NULL;
+    if (vctxt->aidcs == NULL)
+	vctxt->aidcs = aidc;
+    else {
+	aidc->next = vctxt->aidcs;
+	vctxt->aidcs = aidc;
+    }
+}
+
+/**
  * xmlSchemaIDCNewBinding:
  * @idcDef: the IDC definition of this binding
  *
@@ -16554,85 +16580,6 @@ compareValue:
 }
 
 /**
- * xmlSchemaXPathChangeState:
- * @vctxt: the WXS validation context
- * @sto: the state object
- * @newState: the state index to be added to the history
- *
- * Adds an entry (vctxt->depth and newState) to the history of the
- * state object.
- *
- * Returns 1 if they are equal, 0 if not and -1 on internal errors.
- */
-static int
-xmlSchemaXPathChangeState(xmlSchemaValidCtxtPtr vctxt,
-			xmlSchemaIDCStateObjPtr sto,
-			int newState)
-
-{
-    int *change = NULL;
-    /*
-    * Create/grow the array of history items.
-    */
-    if (sto->history == NULL) {
-	sto->history = (int **) xmlMalloc(5 * sizeof(int *));
-	if (sto->history == NULL) {
-	    xmlSchemaVErrMemory(NULL, 
-		"allocating an array of state change informations", NULL);
-	    xmlFree(sto);
-	    return(-1);
-	}
-	memset(sto->history, 0, 5 * sizeof(int *));
-	sto->sizeHistory = 10;
-    } else if (sto->sizeHistory > sto->nbHistory) {
-	/*
-	* Reuse a history item.
-	*/
-	change = sto->history[sto->nbHistory];
-    } else {
-	int i = sto->sizeHistory;
-
-	sto->sizeHistory *= 2;
-	sto->history = (int **) xmlRealloc(sto->history, 
-	    sto->sizeHistory * sizeof(int *));
-	if (sto->history == NULL) {
-	    xmlSchemaVErrMemory(NULL, 
-		"re-allocating an array of state change informations", NULL);
-	    return(-1);
-	}
-	/*
-	* The new memory needs to be NULLed.
-	* TODO: Use memset instead?
-	*/
-	for (; i < sto->sizeHistory; i++)
-	    sto->history[i] = NULL;    
-    }	
-    /*
-    * Create the history item.
-    */
-    if (change == NULL) {
-	change = (int *) xmlMalloc(2 * sizeof(int));
-	if (change == NULL) {
-	    xmlSchemaVErrMemory(NULL, 
-		"allocating a state change information", NULL);
-	    return(-1);
-	}
-	sto->history[sto->nbHistory] = change;
-    }
-    sto->nbHistory++;
-    /*
-    * Init the history item.
-    */
-    change[0] = vctxt->depth;
-    change[1] = newState;
-#ifdef DEBUG_IDC
-    xmlGenericError(xmlGenericErrorContext, "IDC:       push state '%d'\n",
-	newState);
-#endif
-    return(0);
-}
-
-/**
  * xmlSchemaIDCAddStateObject:
  * @vctxt: the WXS validation context
  * @matcher: the IDC matcher
@@ -16650,68 +16597,65 @@ static int
 xmlSchemaIDCAddStateObject(xmlSchemaValidCtxtPtr vctxt,
 			xmlSchemaIDCMatcherPtr matcher,
 			xmlSchemaIDCSelectPtr sel,
-			xmlSchemaIDCStateObjPtr parent,
 			int type)
 {
     xmlSchemaIDCStateObjPtr sto;
-    int i = 0, stateId, reversed;
 
     /*
-    * Create a state object for every location path in the XPath expression.
+    * Reuse the state objects from the pool.
     */
-    while (1) {
-#ifdef IDC_XPATH_SUPPORT
-	stateId = xmlXPathWXSIDCGetLocationPath(sel->xpathComp, i, &reversed);
-#else
-	break;
-#endif
-	if (stateId < 0)
-	    break;
+    if (vctxt->xpathStatePool != NULL) {
+	sto = vctxt->xpathStatePool;
+	vctxt->xpathStatePool = sto->next;
+	sto->next = NULL;
+    } else {	
 	/*
-	* Reuse the state objects from the pool.
+	* Create a new state object.
 	*/
-	if (vctxt->xpathStatePool != NULL) {
-	    sto = vctxt->xpathStatePool;
-	    vctxt->xpathStatePool = sto->next;
-	    sto->next = NULL;
-	} else {	
-	    /*
-	    * Create a new state object.
-	    */
-	    sto = (xmlSchemaIDCStateObjPtr) xmlMalloc(sizeof(xmlSchemaIDCStateObj));
-	    if (sto == NULL) {
-		xmlSchemaVErrMemory(NULL,
-		    "allocating an IDC state object", NULL);
-		return (-1);
-	    }
-	    memset(sto, 0, sizeof(xmlSchemaIDCStateObj));
-	}	
-	sto->type = type;
-	sto->parent = parent;
-	sto->matcher = matcher;
-	sto->sel = sel;
-	sto->nbHistory = 0;	
-	/*
-	* Add to global list. 
-	*/	
-	if (vctxt->xpathStates != NULL)
-	    sto->next = vctxt->xpathStates;
-	vctxt->xpathStates = sto;
-#if DEBUG_IDC
-	xmlGenericError(xmlGenericErrorContext, "IDC:   STO push '%s'\n",
-	    sto->sel->xpath);
-#endif		
-	xmlSchemaXPathChangeState(vctxt, sto, stateId);
-	/*
-	* Set if the state object should be processed as a push
-	* down transducer (topDown == 1) or upwards the ancestor axis of
-	* the tree.
-	*/
-	if (reversed)
-	    sto->topDown = 1;	
-	i++;
-    };
+	sto = (xmlSchemaIDCStateObjPtr) xmlMalloc(sizeof(xmlSchemaIDCStateObj));
+	if (sto == NULL) {
+	    xmlSchemaVErrMemory(NULL,
+		"allocating an IDC state object", NULL);
+	    return (-1);
+	}
+	memset(sto, 0, sizeof(xmlSchemaIDCStateObj));
+    }	
+    /*
+    * Add to global list. 
+    */	
+    if (vctxt->xpathStates != NULL)
+	sto->next = vctxt->xpathStates;
+    vctxt->xpathStates = sto;
 
+    /*
+    * Free the old xpath validation context.
+    */
+    if (sto->xpathCtxt != NULL)
+	xmlFreeStreamCtxt((xmlStreamCtxtPtr) sto->xpathCtxt);
+
+    /*
+    * Create a new XPath (pattern) validation context.
+    */
+    sto->xpathCtxt = (void *) xmlPatternGetStreamCtxt(
+	(xmlPatternPtr) sel->xpathComp);
+    if (sto->xpathCtxt == NULL) {
+	xmlSchemaVErr(vctxt, vctxt->node,
+	    XML_SCHEMAV_INTERNAL,
+	    "Internal error: xmlSchemaIDCAddStateObject, "
+	    "failed to create the XPath validation context.\n",
+	    NULL, NULL);
+	return (-1);
+    }    
+    sto->type = type;
+    sto->depth = vctxt->depth;
+    sto->matcher = matcher;
+    sto->sel = sel;
+    sto->nbHistory = 0;
+    
+#if DEBUG_IDC
+    xmlGenericError(xmlGenericErrorContext, "IDC:   STO push '%s'\n",
+	sto->sel->xpath);
+#endif
     return (0);
 }
 
@@ -16732,7 +16676,6 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 		       xmlElementType nodeType)
 {
     xmlSchemaIDCStateObjPtr sto, head = NULL, first;
-    int retState, *change;
     int res, resolved = 0;
         
     if (vctxt->xpathStates == NULL)
@@ -16753,142 +16696,66 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
     first = vctxt->xpathStates;
     sto = first;
     while (sto != head) {
-	/*
-	* Evaluate:
-	* 1. all bottom-up state objs.
-	* 2. top-down state objs. which are not marked as
-	*    matching or blocking.
-	* Note: sto->history[0][0] will hold the depth of creation.
-	*/
-	if (sto->topDown == 0) {
-	    /*
-	    * Always start from the beginning with bottom-up
-	    * evaluation.
-	    */
-	    change = sto->history[0];
-	} else {
-	    change = sto->history[sto->nbHistory -1];
-	    if (change[1] < 0)
-		goto next_sto;
-	}
-	/*
-	* change[0] holds the depth of change.
-	* change[1] holds the state index or the "match" or "blocked"
-	* indicator.
-	*/
-	retState = -1;
 #if DEBUG_IDC
-	if (sto->type == XPATH_STATE_OBJ_IDC_SELECTOR)
+	if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_SELECTOR)
 	    xmlGenericError(xmlGenericErrorContext, "IDC:   ['%s'] selector '%s'\n", 
 		sto->matcher->aidc->def->name, sto->sel->xpath);
 	else
 	    xmlGenericError(xmlGenericErrorContext, "IDC:   ['%s'] field '%s'\n", 
 		sto->matcher->aidc->def->name, sto->sel->xpath);
 #endif
-	if (sto->topDown == 0) {
-	    /*
-	    * The XPath will be evaluated using the
-	    * ancestor-or-self axis.
-	    */
-#ifdef IDC_XPATH_SUPPORT
-	    res = xmlXPathWXSIDCEvalOneNode(sto->sel->xpathComp, 
-		change[1], &retState, nodeType,
-		localName, namespaceName);
-#else
-	    res = 0;
-#endif
-	    if (res == 1) {
-		int i;
 
-		if (nodeType == XML_ELEMENT_NODE)
-		    i = vctxt->depth -1;
-		else
-		    i = vctxt->depth;
-		while ((res == 1) && (i >= 0)) {
-		    /*
-		    * If we get a partial match, evaluate the
-		    * ancestor axis.
-		    */
 #ifdef IDC_XPATH_SUPPORT
-		    res = xmlXPathWXSIDCEvalOneNode(sto->sel->xpathComp, 
-			retState, &retState, XML_ELEMENT_NODE,
-			vctxt->elemInfos[i]->localName, 
-			vctxt->elemInfos[i]->namespaceName);
-#endif
-		    i--;
-		}
-	    }
-	    if (res == -1) {
-		xmlSchemaVErr(vctxt, vctxt->node,
-		    XML_SCHEMAV_INTERNAL,
-		    "Internal error: xmlSchemaXPathEvaluate, "
-		    "failed to evaluate a node.\n",
-		    NULL, NULL);
-		return (-1);
-	    } else if (res != 2) {
-		/*
-		* We will record matches only.
-		*/
-#if DEBUG_IDC
-		xmlGenericError(xmlGenericErrorContext, "IDC:     "
-		    "no match\n");
-#endif
-		goto next_sto;
-	    }
-	} else {
-	    /*
-	    * Push-down.
-	    */
-#ifdef IDC_XPATH_SUPPORT
-	    res = xmlXPathWXSIDCEvalOneNode(sto->sel->xpathComp, 
-		change[1], &retState, nodeType,
-		localName, namespaceName);
+	res = xmlStreamPush((xmlStreamCtxtPtr) sto->xpathCtxt,
+	    localName, namespaceName);	    
 #else
-	    res = 0;
+	res = 0;
 #endif
-	    if (res == -1) {
-		xmlSchemaVErr(vctxt, vctxt->node,
-		    XML_SCHEMAV_INTERNAL,
-		    "Internal error: xmlSchemaXPathEvaluate, "
-		    "failed to evaluate a node.\n",
-		    NULL, NULL);
-		return (-1);
-	    } else if (res == 0) {
-		/*
-		* No Match.
-		*/
-#if DEBUG_IDC
-		xmlGenericError(xmlGenericErrorContext,
-		    "IDC:     no match, blocked\n");
-#endif
-		if (xmlSchemaXPathChangeState(vctxt, sto, -3) == -1)
-		    return (-1);
-	    } else if (res == 1) {
-		/*
-		* Partial match.
-		*/
-#if DEBUG_IDC
-		xmlGenericError(xmlGenericErrorContext,
-		    "IDC:     partial match\n");
-#endif
-		if (xmlSchemaXPathChangeState(vctxt, sto, retState) == -1)
-		    return (-1);
-	    }
+	if (res == -1) {
+	    xmlSchemaVErr(vctxt, vctxt->node,
+		XML_SCHEMAV_INTERNAL,
+		"Internal error: xmlSchemaXPathEvaluate, "
+		"failed to evaluate a node.\n",
+		NULL, NULL);
+	    return (-1);
 	}
-	if (res != 2)
+	if (res == 0)
 	    goto next_sto;
 	/*
 	* Full match.
 	*/
 #if DEBUG_IDC
 	xmlGenericError(xmlGenericErrorContext, "IDC:     "
-	    "final match\n");
+	    "MATCH\n");
 #endif
 	/*
-	* Register a state-change.
-	*/			
-	if (xmlSchemaXPathChangeState(vctxt, sto, -2) == -1)
-	    return (-1);
+	* Register a match in the state object history.
+	*/
+	if (sto->history == NULL) {
+	    sto->history = (int *) xmlMalloc(5 * sizeof(int));
+	    if (sto->history == NULL) {
+		xmlSchemaVErrMemory(NULL, 
+		    "allocating the state object history", NULL);
+		return(-1);
+	    }
+	    sto->sizeHistory = 10;
+	} else if (sto->sizeHistory <= sto->nbHistory) {
+	    sto->sizeHistory *= 2;
+	    sto->history = (int *) xmlRealloc(sto->history,
+		sto->sizeHistory * sizeof(int));
+	    if (sto->history == NULL) {
+		xmlSchemaVErrMemory(NULL, 
+		    "re-allocating the state object history", NULL);
+		return(-1);
+	    }
+	}		
+	sto->history[sto->nbHistory++] = vctxt->depth;
+
+#ifdef DEBUG_IDC
+	xmlGenericError(xmlGenericErrorContext, "IDC:       push match '%d'\n",
+	    vctxt->depth);
+#endif
+
 	if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_SELECTOR) {
 	    xmlSchemaIDCSelectPtr sel;
 	    /*
@@ -16901,9 +16768,9 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 #endif
 	    sel = sto->matcher->aidc->def->fields;
 	    while (sel != NULL) {
-		if (xmlSchemaIDCAddStateObject(vctxt, sto->matcher, 
-		    sel, sto, XPATH_STATE_OBJ_TYPE_IDC_FIELD) == -1)
-		    return (-1);				
+		if (xmlSchemaIDCAddStateObject(vctxt, sto->matcher,
+		    sel, XPATH_STATE_OBJ_TYPE_IDC_FIELD) == -1)
+		    return (-1);
 		sel = sel->next;
 	    }
 	} else if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_FIELD) {
@@ -16925,7 +16792,7 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 next_sto:
 	if (sto->next == NULL) {
 	    /*
-	    * Evaluate field state objects created on this node.
+	    * Evaluate field state objects created on this node as well.
 	    */
 	    head = first;
 	    sto = vctxt->xpathStates;
@@ -16950,7 +16817,7 @@ xmlSchemaXPathProcessChanges(xmlSchemaValidCtxtPtr vctxt,
 			     xmlSchemaTypePtr type)
 {
     xmlSchemaIDCStateObjPtr sto, nextsto;
-    int res, *change;
+    int res, matchDepth;
     xmlSchemaPSVIIDCKeyPtr key = NULL;
 
     if (vctxt->xpathStates == NULL)
@@ -16972,381 +16839,364 @@ xmlSchemaXPathProcessChanges(xmlSchemaValidCtxtPtr vctxt,
     * Evaluate the state objects.
     */
     while (sto != NULL) {
-	/*
-	* If (nbHistory == 1) then there are no history left
-	* (only the initial one), so deregister the state object.
-	*/
-    	if (sto->nbHistory == 1)
+	if (sto->nbHistory == 0)
 	    goto deregister_check;
 
-	change = sto->history[sto->nbHistory -1];
+	matchDepth = sto->history[sto->nbHistory -1];
 
 	/*
-	* Ony history at the current depth are of interest.
+	* Only matches at the current depth are of interest.
 	*/
-	if (change[0] != vctxt->depth) {
+	if (matchDepth != vctxt->depth) {
 	    sto = sto->next;
 	    continue;
 	}
-
-	if (change[1] == -2) {
-	    if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_FIELD) {
-		if (! IS_SIMPLE_TYPE(type)) {
-		    /*
-		    * Not qualified if the field resolves to a node of non
-		    * simple type.
-		    */	
-		    xmlSchemaVCustomErr(vctxt,
-			XML_SCHEMAV_CVC_IDC,
-			vctxt->node, 
-			(xmlSchemaTypePtr) sto->matcher->aidc->def,
-			"The field '%s' does evaluate to a node of "
-			"non-simple type", sto->sel->xpath);
-
-		    sto->nbHistory--;
-		    sto = sto->next;
-		    continue;
-		}
-		if (vctxt->value == NULL) {
-		    /*
-		    * Failed to provide the normalized value; maby
-		    * the value was invalid.
-		    */ 
-		    xmlSchemaVErr(vctxt, NULL, 
-			XML_SCHEMAV_INTERNAL,
-			"Internal error: xmlSchemaIDCEvaluateMatches, "
-			"normalized node value not available.\n", 
-			NULL, NULL);
-		    sto->nbHistory--;
-		    sto = sto->next;
-		    continue;
-		} else {
-		    xmlSchemaIDCMatcherPtr matcher = sto->matcher;
-		    xmlSchemaPSVIIDCKeyPtr *keySeq;
-		    int pos, sizeNeeded, index;
-
-		    /*
-		    * The key will be anchored on the matcher's list of
-		    * key-sequences. The position in this list is determined
-		    * by the target node's depth relative to the matcher's
-		    * depth of creation (i.e. the depth of the scope element).
-		    * Note that sto->parent will be the selector state object,
-		    * which resolved to a target node. Since this match was
-		    * recorded in the last change entry, we can obtain the
-		    * depth of the target node from there.
-		    */		    
-		    pos = sto->parent->history[sto->parent->nbHistory -1][0] -
-			matcher->depth;
-		    sizeNeeded = pos;
-		    index = sto->sel->index;
-
-		    /*
-		    * Create/grow the array of key-sequences.
-		    */
+	
+	if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_FIELD) {
+	    if (! IS_SIMPLE_TYPE(type)) {
+		/*
+		* Not qualified if the field resolves to a node of non
+		* simple type.
+		*/	
+		xmlSchemaVCustomErr(vctxt,
+		    XML_SCHEMAV_CVC_IDC,
+		    vctxt->node, 
+		    (xmlSchemaTypePtr) sto->matcher->aidc->def,
+		    "The field '%s' does evaluate to a node of "
+		    "non-simple type", sto->sel->xpath);
+		
+		sto->nbHistory--;
+		goto deregister_check;
+	    }
+	    if ((key == NULL) && (vctxt->value == NULL)) {
+		/*
+		* Failed to provide the normalized value; maby
+		* the value was invalid.
+		*/ 
+		xmlSchemaVErr(vctxt, NULL, 
+		    XML_SCHEMAV_INTERNAL,
+		    "Internal error: xmlSchemaIDCEvaluateMatches, "
+		    "normalized node value not available.\n", 
+		    NULL, NULL);
+		sto->nbHistory--;
+		goto deregister_check;
+	    } else {
+		xmlSchemaIDCMatcherPtr matcher = sto->matcher;
+		xmlSchemaPSVIIDCKeyPtr *keySeq;
+		int pos, index;
+		
+		/*
+		* The key will be anchored on the matcher's list of
+		* key-sequences. The position in this list is determined
+		* by the target node's depth relative to the matcher's
+		* depth of creation (i.e. the depth of the scope element).
+		*/		    
+		pos = sto->depth - matcher->depth;
+		index = sto->sel->index;
+		
+		/*
+		* Create/grow the array of key-sequences.
+		*/
+		if (matcher->keySeqs == NULL) {
+		    if (pos > 9) 
+			matcher->sizeKeySeqs = pos * 2;
+		    else
+			matcher->sizeKeySeqs = 10;
+		    matcher->keySeqs = (xmlSchemaPSVIIDCKeyPtr **) 
+			xmlMalloc(matcher->sizeKeySeqs *
+			sizeof(xmlSchemaPSVIIDCKeyPtr *));			
+		    if (matcher->keySeqs == NULL) {		
+			xmlSchemaVErrMemory(NULL,
+			    "allocating an array of key-sequences",
+			    NULL);
+			return(-1);
+		    }
+		    memset(matcher->keySeqs, 0,
+			matcher->sizeKeySeqs *
+			sizeof(xmlSchemaPSVIIDCKeyPtr *));
+		} else if (pos >= matcher->sizeKeySeqs) {	
+		    int i = matcher->sizeKeySeqs;
+		    
+		    matcher->sizeKeySeqs *= 2;
+		    matcher->keySeqs = (xmlSchemaPSVIIDCKeyPtr **)
+			xmlRealloc(matcher->keySeqs,
+			matcher->sizeKeySeqs *
+			sizeof(xmlSchemaPSVIIDCKeyPtr *));
 		    if (matcher->keySeqs == NULL) {
-			if (pos > 9) 
-			    matcher->sizeKeySeqs = pos * 2;
-			else
-			    matcher->sizeKeySeqs = 10;
-			matcher->keySeqs = (xmlSchemaPSVIIDCKeyPtr **) 
-			    xmlMalloc(matcher->sizeKeySeqs *
-			    sizeof(xmlSchemaPSVIIDCKeyPtr *));			
-			if (matcher->keySeqs == NULL) {		
-			    xmlSchemaVErrMemory(NULL,
-				"allocating an array of key-sequences",
-				NULL);
-			    return(-1);
-			}
-			memset(matcher->keySeqs, 0,
-			    matcher->sizeKeySeqs *
-			    sizeof(xmlSchemaPSVIIDCKeyPtr *));
-		    } else if (pos >= matcher->sizeKeySeqs) {	
-			int i = matcher->sizeKeySeqs;
-
-			matcher->sizeKeySeqs *= 2;
-			matcher->keySeqs = (xmlSchemaPSVIIDCKeyPtr **)
-			    xmlRealloc(matcher->keySeqs,
-			    matcher->sizeKeySeqs *
-			    sizeof(xmlSchemaPSVIIDCKeyPtr *));
-			if (matcher->keySeqs == NULL) {
-			    xmlSchemaVErrMemory(NULL,
-				"reallocating an array of key-sequences",
-				NULL);
-			    return (-1);
-			}
-			/*
-			* The array needs to be NULLed.
-			* TODO: Use memset?
-			*/
-			for (; i < matcher->sizeKeySeqs; i++) 
-			    matcher->keySeqs[i] = NULL;			
+			xmlSchemaVErrMemory(NULL,
+			    "reallocating an array of key-sequences",
+			    NULL);
+			return (-1);
 		    }
-		    
 		    /*
-		    * Get/create the key-sequence.
+		    * The array needs to be NULLed.
+		    * TODO: Use memset?
 		    */
-		    keySeq = matcher->keySeqs[pos];		    
-		    if (keySeq == NULL) {	
-			goto create_sequence;
-		    } else {
-			if (keySeq[index] != NULL) {
-			    /*
-			    * cvc-identity-constraint:
-			    * 3 For each node in the ·target node set· all
-			    * of the {fields}, with that node as the context
-			    * node, evaluate to either an empty node-set or
-			    * a node-set with exactly one member, which must
-			    * have a simple type.
-			    * 
-			    * The key was already set; report an error.
-			    */
-			    xmlSchemaVCustomErr(vctxt, 
-				XML_SCHEMAV_CVC_IDC,
-				vctxt->node, (xmlSchemaTypePtr) matcher->aidc->def,
-				"The field '%s' evaluates to a node-set "
-				"with more than one member", sto->sel->xpath);
-			    return (1);
-			} else {
-			    goto create_key;
-			}
-		    }
-
-create_sequence:
-		    /*
-		    * Create a key-sequence.
-		    */
-		    keySeq = (xmlSchemaPSVIIDCKeyPtr *) xmlMalloc(
-			matcher->aidc->def->nbFields * 
-			sizeof(xmlSchemaPSVIIDCKeyPtr));
-		    if (keySeq == NULL) {
-			xmlSchemaVErrMemory(NULL, 
-			    "allocating an IDC key-sequence", NULL);
-			return(-1);			
-		    }	
-		    memset(keySeq, 0, matcher->aidc->def->nbFields * 
-			sizeof(xmlSchemaPSVIIDCKeyPtr));
-		    matcher->keySeqs[pos] = keySeq;
-create_key:
-		    /*
-		    * Created a key once per node only.
-		    */  
-		    if (key == NULL) {
-			key = (xmlSchemaPSVIIDCKeyPtr) xmlMalloc(
-			    sizeof(xmlSchemaPSVIIDCKey));
-			if (key == NULL) {
-			    xmlSchemaVErrMemory(NULL,
-				"allocating a IDC key", NULL);
-			    xmlFree(keySeq);
-			    matcher->keySeqs[pos] = NULL;
-			    return(-1);			
-			}
-			/*
-			* Consume the compiled value.
-			*/
-			key->type = type;
-			key->compValue = vctxt->value;
-			vctxt->value = NULL;
-			/*
-			* Store the key in a global list.
-			*/
-			if (xmlSchemaIDCStoreKey(vctxt, key) == -1) {
-			    xmlSchemaIDCFreeKey(key);
-			    return (-1);
-			}
-		    }
-		    keySeq[index] = key;		    
-		}
-	    } else if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_SELECTOR) {
-		
-		xmlSchemaPSVIIDCKeyPtr **keySeq = NULL;
-		xmlSchemaPSVIIDCBindingPtr bind;
-		xmlSchemaPSVIIDCNodePtr ntItem;
-		xmlSchemaIDCMatcherPtr matcher;
-		xmlSchemaIDCPtr idc;
-		int pos, i, j, nbKeys;
-		/*
-		* Here we have the following scenario:
-		* An IDC 'selector' state object resolved to a target node,
-		* during the time this target node was in the 
-		* ancestor-or-self axis, the 'field' state object(s) looked 
-		* out for matching nodes to create a key-sequence for this 
-		* target node. Now we are back to this target node and need
-		* to put the key-sequence, together with the target node 
-		* itself, into the node-table of the corresponding IDC 
-		* binding.
-		*/
-		matcher = sto->matcher;
-		idc = matcher->aidc->def;
-		nbKeys = idc->nbFields;
-		pos = vctxt->depth - matcher->depth;		
-		/*
-		* Check if the matcher has any key-sequences at all, plus
-		* if it has a key-sequence for the current target node.
-		*/		
-		if ((matcher->keySeqs == NULL) ||
-		    (matcher->sizeKeySeqs <= pos)) {
-		    if (idc->type == XML_SCHEMA_TYPE_IDC_KEY)
-			goto selector_key_error;
-		    else
-			goto selector_leave;
+		    for (; i < matcher->sizeKeySeqs; i++) 
+			matcher->keySeqs[i] = NULL;			
 		}
 		
-		keySeq = &(matcher->keySeqs[pos]);		
-		if (*keySeq == NULL) {
-		    if (idc->type == XML_SCHEMA_TYPE_IDC_KEY)
-			goto selector_key_error;
-		    else
-			goto selector_leave;
-		}
-		
-		for (i = 0; i < nbKeys; i++) {
-		    if (*keySeq[i] == NULL) {
+		/*
+		* Get/create the key-sequence.
+		*/
+		keySeq = matcher->keySeqs[pos];		    
+		if (keySeq == NULL) {	
+		    goto create_sequence;
+		} else {
+		    if (keySeq[index] != NULL) {
 			/*
-			* Not qualified, if not all fields did resolve.
-			*/
-			if (idc->type == XML_SCHEMA_TYPE_IDC_KEY) {
-			    /*
-			    * All fields of a "key" IDC must resolve.
-			    */
-			    goto selector_key_error;
-			}		    
-			goto selector_leave;
-		    }
-		}
-		/*
-		* All fields did resolve.
-		*/
-
-		/*
-		* 4.1 If the {identity-constraint category} is unique(/key),
-		* then no two members of the ·qualified node set· have
-		* ·key-sequences· whose members are pairwise equal, as
-		* defined by Equal in [XML Schemas: Datatypes].
-		*
-		* Get the IDC binding from the matcher and check for
-		* duplicate key-sequences.
-		*/
-		bind = xmlSchemaIDCAquireBinding(vctxt, matcher);
-		if ((idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) && 
-		    (bind->nbNodes != 0)) {
-		    xmlSchemaPSVIIDCKeyPtr key, bkey, *bkeySeq;
-		    
-		    i = 0;
-		    /*
-		    * Compare the key-sequences, key by key.
-		    */
-		    do {
-			bkeySeq = bind->nodeTable[i]->keys;
-			for (j = 0; j < nbKeys; j++) {
-			    key = *keySeq[j];
-			    bkey = bkeySeq[j];							
-			    res = xmlSchemaAreValuesEqual(key->type,
-				key->compValue, bkey->type, bkey->compValue);
-			    if (res == -1) {
-				return (-1);
-			    } else if (res == 0)
-				break;
-			}
-			if (res == 1) {
-			    /*
-			    * Duplicate found.
-			    */
-			    break;
-			}
-			i++;
-		    } while (i < bind->nbNodes);
-		    if (i != bind->nbNodes) {
-			/*   
-			* TODO: Try to report the key-sequence.
+			* cvc-identity-constraint:
+			* 3 For each node in the ·target node set· all
+			* of the {fields}, with that node as the context
+			* node, evaluate to either an empty node-set or
+			* a node-set with exactly one member, which must
+			* have a simple type.
+			* 
+			* The key was already set; report an error.
 			*/
 			xmlSchemaVCustomErr(vctxt, 
 			    XML_SCHEMAV_CVC_IDC,
-			    vctxt->node,
-			    (xmlSchemaTypePtr) idc,
-			    "Duplicate key-sequence found", NULL);
-			
-			goto selector_leave;
+			    vctxt->node, (xmlSchemaTypePtr) matcher->aidc->def,
+			    "The field '%s' evaluates to a node-set "
+			    "with more than one member", sto->sel->xpath);
+			sto->nbHistory--;
+			goto deregister_check;
+		    } else {
+			goto create_key;
 		    }
 		}
-		/*
-		* Add a node-table item to the IDC binding.
-		*/
-		ntItem = (xmlSchemaPSVIIDCNodePtr) xmlMalloc(
-		    sizeof(xmlSchemaPSVIIDCNode));
-		if (ntItem == NULL) {
-		    xmlSchemaVErrMemory(NULL, 
-			"allocating an IDC node-table item", NULL);
-		    xmlFree(*keySeq);
-		    *keySeq = NULL;
-		    return(-1);
-		}	
-		memset(ntItem, 0, sizeof(xmlSchemaPSVIIDCNode));		
 		
-		/* 
-		* Store the node-table item on global list.
+create_sequence:
+		/*
+		* Create a key-sequence.
 		*/
-		if (idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) {
-		    if (xmlSchemaIDCStoreNodeTableItem(vctxt, ntItem) == -1) {
-			xmlFree(ntItem);
-			xmlFree(*keySeq);
-			*keySeq = NULL;
+		keySeq = (xmlSchemaPSVIIDCKeyPtr *) xmlMalloc(
+		    matcher->aidc->def->nbFields * 
+		    sizeof(xmlSchemaPSVIIDCKeyPtr));
+		if (keySeq == NULL) {
+		    xmlSchemaVErrMemory(NULL, 
+			"allocating an IDC key-sequence", NULL);
+		    return(-1);			
+		}	
+		memset(keySeq, 0, matcher->aidc->def->nbFields * 
+		    sizeof(xmlSchemaPSVIIDCKeyPtr));
+		matcher->keySeqs[pos] = keySeq;
+create_key:
+		/*
+		* Created a key once per node only.
+		*/  
+		if (key == NULL) {
+		    key = (xmlSchemaPSVIIDCKeyPtr) xmlMalloc(
+			sizeof(xmlSchemaPSVIIDCKey));
+		    if (key == NULL) {
+			xmlSchemaVErrMemory(NULL,
+			    "allocating a IDC key", NULL);
+			xmlFree(keySeq);
+			matcher->keySeqs[pos] = NULL;
+			return(-1);			
+		    }
+		    /*
+		    * Consume the compiled value.
+		    */
+		    key->type = type;
+		    key->compValue = vctxt->value;
+		    vctxt->value = NULL;
+		    /*
+		    * Store the key in a global list.
+		    */
+		    if (xmlSchemaIDCStoreKey(vctxt, key) == -1) {
+			xmlSchemaIDCFreeKey(key);
 			return (-1);
 		    }
 		}
-		/*
-		* Init the node-table item. Consume the key-sequence.
-		*/
-		ntItem->node = vctxt->node;
-		ntItem->keys = *keySeq;
-		*keySeq = NULL;
-		if (xmlSchemaIDCAppendNodeTableItem(bind, ntItem) == -1) {		    
-		    if (idc->type == XML_SCHEMA_TYPE_IDC_KEYREF) {
-			/* 
-			* Free the item, since keyref items won't be
-			* put on a global list.
-			*/
-			xmlFree(ntItem->keys);
-			xmlFree(ntItem);
-		    }
-		    return (-1);
-		}
+		keySeq[index] = key;		    
+	    }
+	} else if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_SELECTOR) {
 		
-		goto selector_leave;
-selector_key_error:
+	    xmlSchemaPSVIIDCKeyPtr **keySeq = NULL;
+	    xmlSchemaPSVIIDCBindingPtr bind;
+	    xmlSchemaPSVIIDCNodePtr ntItem;
+	    xmlSchemaIDCMatcherPtr matcher;
+	    xmlSchemaIDCPtr idc;
+	    int pos, i, j, nbKeys;
+	    /*
+	    * Here we have the following scenario:
+	    * An IDC 'selector' state object resolved to a target node,
+	    * during the time this target node was in the 
+	    * ancestor-or-self axis, the 'field' state object(s) looked 
+	    * out for matching nodes to create a key-sequence for this 
+	    * target node. Now we are back to this target node and need
+	    * to put the key-sequence, together with the target node 
+	    * itself, into the node-table of the corresponding IDC 
+	    * binding.
+	    */
+	    matcher = sto->matcher;
+	    idc = matcher->aidc->def;
+	    nbKeys = idc->nbFields;
+	    pos = vctxt->depth - matcher->depth;		
+	    /*
+	    * Check if the matcher has any key-sequences at all, plus
+	    * if it has a key-sequence for the current target node.
+	    */		
+	    if ((matcher->keySeqs == NULL) ||
+		(matcher->sizeKeySeqs <= pos)) {
+		if (idc->type == XML_SCHEMA_TYPE_IDC_KEY)
+		    goto selector_key_error;
+		else
+		    goto selector_leave;
+	    }
+	    
+	    keySeq = &(matcher->keySeqs[pos]);		
+	    if (*keySeq == NULL) {
+		if (idc->type == XML_SCHEMA_TYPE_IDC_KEY)
+		    goto selector_key_error;
+		else
+		    goto selector_leave;
+	    }
+	    
+	    for (i = 0; i < nbKeys; i++) {
+		if ((*keySeq)[i] == NULL) {
+		    /*
+		    * Not qualified, if not all fields did resolve.
+		    */
+		    if (idc->type == XML_SCHEMA_TYPE_IDC_KEY) {
+			/*
+			* All fields of a "key" IDC must resolve.
+			*/
+			goto selector_key_error;
+		    }		    
+		    goto selector_leave;
+		}
+	    }
+	    /*
+	    * All fields did resolve.
+	    */
+	    
+	    /*
+	    * 4.1 If the {identity-constraint category} is unique(/key),
+	    * then no two members of the ·qualified node set· have
+	    * ·key-sequences· whose members are pairwise equal, as
+	    * defined by Equal in [XML Schemas: Datatypes].
+	    *
+	    * Get the IDC binding from the matcher and check for
+	    * duplicate key-sequences.
+	    */
+	    bind = xmlSchemaIDCAquireBinding(vctxt, matcher);
+	    if ((idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) && 
+		(bind->nbNodes != 0)) {
+		xmlSchemaPSVIIDCKeyPtr key, bkey, *bkeySeq;
+		
+		i = 0;
 		/*
-		* 4.2.1 (KEY) The ·target node set· and the 
-		* ·qualified node set· are equal, that is, every 
-		* member of the ·target node set· is also a member
-		* of the ·qualified node set· and vice versa.
+		* Compare the key-sequences, key by key.
 		*/
-		xmlSchemaVCustomErr(vctxt, 
-		    XML_SCHEMAV_CVC_IDC,
-		    vctxt->node, 
-		    (xmlSchemaTypePtr) idc,
-		    "All 'key' fields must evaluate to a node",
-		    NULL);
-selector_leave:
-		/*
-		* Free the key-sequence if not added to the IDC table.
-		*/
-		if (*keySeq != NULL) {
+		do {
+		    bkeySeq = bind->nodeTable[i]->keys;
+		    for (j = 0; j < nbKeys; j++) {
+			key = (*keySeq)[j];
+			bkey = bkeySeq[j];							
+			res = xmlSchemaAreValuesEqual(key->type,
+			    key->compValue, bkey->type, bkey->compValue);
+			if (res == -1) {
+			    return (-1);
+			} else if (res == 0)
+			    break;
+		    }
+		    if (res == 1) {
+			/*
+			* Duplicate found.
+			*/
+			break;
+		    }
+		    i++;
+		} while (i < bind->nbNodes);
+		if (i != bind->nbNodes) {
+		    /*   
+		    * TODO: Try to report the key-sequence.
+		    */
+		    xmlSchemaVCustomErr(vctxt, 
+			XML_SCHEMAV_CVC_IDC,
+			vctxt->node,
+			(xmlSchemaTypePtr) idc,
+			"Duplicate key-sequence found", NULL);
+		    
+		    goto selector_leave;
+		}
+	    }
+	    /*
+	    * Add a node-table item to the IDC binding.
+	    */
+	    ntItem = (xmlSchemaPSVIIDCNodePtr) xmlMalloc(
+		sizeof(xmlSchemaPSVIIDCNode));
+	    if (ntItem == NULL) {
+		xmlSchemaVErrMemory(NULL, 
+		    "allocating an IDC node-table item", NULL);
+		xmlFree(*keySeq);
+		*keySeq = NULL;
+		return(-1);
+	    }	
+	    memset(ntItem, 0, sizeof(xmlSchemaPSVIIDCNode));		
+	    
+	    /* 
+	    * Store the node-table item on global list.
+	    */
+	    if (idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) {
+		if (xmlSchemaIDCStoreNodeTableItem(vctxt, ntItem) == -1) {
+		    xmlFree(ntItem);
 		    xmlFree(*keySeq);
 		    *keySeq = NULL;
+		    return (-1);
 		}
-	    } /* if selector */
-	} /* if matched */
-
+	    }
+	    /*
+	    * Init the node-table item. Consume the key-sequence.
+	    */
+	    ntItem->node = vctxt->node;
+	    ntItem->keys = *keySeq;
+	    *keySeq = NULL;
+	    if (xmlSchemaIDCAppendNodeTableItem(bind, ntItem) == -1) {		    
+		if (idc->type == XML_SCHEMA_TYPE_IDC_KEYREF) {
+		    /* 
+		    * Free the item, since keyref items won't be
+		    * put on a global list.
+		    */
+		    xmlFree(ntItem->keys);
+		    xmlFree(ntItem);
+		}
+		return (-1);
+	    }
+	    
+	    goto selector_leave;
+selector_key_error:
+	    /*
+	    * 4.2.1 (KEY) The ·target node set· and the 
+	    * ·qualified node set· are equal, that is, every 
+	    * member of the ·target node set· is also a member
+	    * of the ·qualified node set· and vice versa.
+	    */
+	    xmlSchemaVCustomErr(vctxt, 
+		XML_SCHEMAV_CVC_IDC,
+		vctxt->node, 
+		(xmlSchemaTypePtr) idc,
+		"All 'key' fields must evaluate to a node",
+		NULL);
+selector_leave:
+	    /*
+	    * Free the key-sequence if not added to the IDC table.
+	    */
+	    if (*keySeq != NULL) {
+		xmlFree(*keySeq);
+		*keySeq = NULL;
+	    }
+	} /* if selector */
+	
 	sto->nbHistory--;
 
 deregister_check:
 	/*
 	* Deregister state objects if they reach the depth of creation.
-	* Note that this has to be checked before and after processing
-	* any history if the state object resolved to partially/fully
-	* to a node on which it was created as well, since this scenario
-	* created two entries in the list of history for the same node.
 	*/
-	if ((sto->nbHistory == 1) && (sto->history[0][0] == vctxt->depth)) {
+	if ((sto->nbHistory == 0) && (sto->depth == vctxt->depth)) {
 #if DEBUG_IDC
 	    xmlGenericError(xmlGenericErrorContext, "IDC:   STO pop '%s'\n",
 		sto->sel->xpath);
@@ -17359,7 +17209,6 @@ deregister_check:
 		    "in the list.\n",
 		    NULL, NULL);
 	    }
-	    sto->nbHistory = 0;
 	    nextsto = sto->next;
 	    /*
 	    * Unlink from the list of active XPath state objects.
@@ -17398,13 +17247,13 @@ xmlSchemaIDCRegisterMatchers(xmlSchemaValidCtxtPtr vctxt,
     idc = (xmlSchemaIDCPtr) elemDecl->idcs;
     if (idc == NULL)
 	return (0);
-    
+
 #if DEBUG_IDC
     {
 	xmlChar *str = NULL;
 	xmlGenericError(xmlGenericErrorContext, 
-	    "IDC: MATCHERS on %s, depth %d\n",
-	    xmlSchemaFormatNsUriLocal(&str, vctxt->elemInfo->namespaceName,
+	    "IDC: REGISTER on %s, depth %d\n",
+	    (char *) xmlSchemaFormatNsUriLocal(&str, vctxt->elemInfo->namespaceName,
 		vctxt->elemInfo->localName), vctxt->depth);
 	FREE_AND_NULL(str)
     }
@@ -17495,7 +17344,7 @@ xmlSchemaIDCRegisterMatchers(xmlSchemaValidCtxtPtr vctxt,
 	* Init the automaton state object. 
 	*/
 	if (xmlSchemaIDCAddStateObject(vctxt, matcher, 
-	    idc->selector, NULL, XPATH_STATE_OBJ_TYPE_IDC_SELECTOR) == -1)
+	    idc->selector, XPATH_STATE_OBJ_TYPE_IDC_SELECTOR) == -1)
 	    return (-1);
 
 	idc = idc->next;
@@ -17554,15 +17403,17 @@ start_binding:
 	/*
 	* Skip keyref IDCs.
 	*/
-	if (bind->definition->type == XML_SCHEMA_TYPE_IDC_KEYREF)
+	if (bind->definition->type == XML_SCHEMA_TYPE_IDC_KEYREF) {
+	    bind = bind->next;
 	    continue;
+	}
 	/*
 	* Check if the key/unique IDC table needs to be bubbled.
 	*/
 	aidc = vctxt->aidcs;
 	do {
 	    if (aidc->def == bind->definition) {
-		if (aidc->bubbleDepth == vctxt->depth) {
+		if (aidc->bubbleDepth >= vctxt->depth) {
 		    bind = bind->next;
 		    goto start_binding;
 		}
@@ -17570,6 +17421,7 @@ start_binding:
 	    }
 	    aidc = aidc->next;
 	} while (aidc != NULL);
+
 	if (parTable != NULL)
 	    parBind = *parTable;
 	while (parBind != NULL) {
@@ -17752,12 +17604,9 @@ start_binding:
 		return(-1);
 	    }
 	    parBind->sizeNodes = bind->nbNodes;
+	    parBind->nbNodes = bind->nbNodes;
 	    memcpy(parBind->nodeTable, bind->nodeTable,
 		bind->nbNodes * sizeof(xmlSchemaPSVIIDCNodePtr));
-	    /*
-	    for (i = 1; i < bind->nbNodes; i++)
-		parBind->nodeTable[i] = bind->nodeTable[i];
-		*/
 	    if (*parTable == NULL)
 		*parTable = parBind;
 	    else
@@ -17906,13 +17755,13 @@ xmlSchemaEndElement(xmlSchemaValidCtxtPtr vctxt)
     * Merge/free the IDC table.
     */
     if (vctxt->elemInfo->idcTable != NULL) {
+#ifdef IDC_ENABLED
 #ifdef DEBUG_IDC
 	xmlSchemaDebugDumpIDCTable(stdout,
 	    vctxt->elemInfo->namespaceName,
 	    vctxt->elemInfo->localName,
 	    vctxt->elemInfo->idcTable);
 #endif
-#ifdef IDC_ENABLED
 	if (vctxt->depth > 0) {
 	    /*
 	    * Merge the IDC node table with the table of the parent node.
@@ -19657,6 +19506,15 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt)
 		"No matching global declaration available", NULL);
 	    ret = XML_SCHEMAV_CVC_ELT_1;
 	} else { 
+#ifdef IDC_ENABLED
+	    /*
+	    * Augment the IDC definitions.
+	    */
+	    if (ctxt->schema->idcDef != NULL) {
+		xmlHashScan(ctxt->schema->idcDef, 
+		    (xmlHashScanner) xmlSchemaAugmentIDC, ctxt);
+	    }
+#endif
 #ifdef ELEM_INFO_ENABLED
 	    ctxt->depth = -1;
 	    xmlSchemaBeginElement(ctxt);
@@ -19847,7 +19705,7 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
     if (ctxt->elemInfos != NULL) {
 	int i;
 	xmlSchemaElemInfoPtr info;
-
+	
 	for (i = 0; i < ctxt->sizeElemInfos; i++) {
 	    info = ctxt->elemInfos[i];
 	    if (info == NULL)

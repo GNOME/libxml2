@@ -1038,6 +1038,9 @@ xmlXPathPopNodeSet (xmlXPathParserContextPtr ctxt) {
     }
     obj = valuePop(ctxt);
     ret = obj->nodesetval;
+    /* to fix memory leak of not clearing obj->user */
+    if (obj->boolval && obj->user != NULL)
+        xmlFreeNodeList((xmlNodePtr) obj->user);
     xmlXPathFreeNodeSetList(obj);
     return(ret);
 }

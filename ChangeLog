@@ -1,3 +1,8 @@
+Mon Jul 28 16:39:14 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: applied a change suggested by Sean Griffin in bug
+	  #118494 about a memory leak in EXSLT
+
 Sun Jul 27 14:30:56 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed a Relax-NG compilation/streaming bug introduced

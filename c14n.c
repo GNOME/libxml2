@@ -167,6 +167,10 @@ xmlC14NVisibleNsStackDestroy(xmlC14NVisibleNsStackPtr cur) {
 	memset(cur->nsTab, 0, cur->nsMax * sizeof(xmlNsPtr));
 	xmlFree(cur->nsTab);
     }
+    if(cur->nodeTab != NULL) {
+	memset(cur->nodeTab, 0, cur->nsMax * sizeof(xmlNodePtr));
+	xmlFree(cur->nodeTab);
+    }
     memset(cur, 0, sizeof(xmlC14NVisibleNsStack));
     xmlFree(cur);
     

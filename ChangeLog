@@ -1,3 +1,7 @@
+Fri Aug  2 16:46:46 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* c14n.c: fixed a memory leak in c14n code
+
 Sat Aug  3 00:15:06 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/parser.h: adding a new API for Christian

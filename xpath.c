@@ -7560,9 +7560,9 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR(CUR)) && (CUR != '"'))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
 	    NEXT;
-	if (!IS_CHAR(CUR)) {
+	if (!IS_CHAR((unsigned int) CUR)) {
 	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7571,9 +7571,9 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR(CUR)) && (CUR != '\''))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_CHAR(CUR)) {
+	if (!IS_CHAR((unsigned int) CUR)) {
 	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7604,9 +7604,9 @@ xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR(CUR)) && (CUR != '"'))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
 	    NEXT;
-	if (!IS_CHAR(CUR)) {
+	if (!IS_CHAR((unsigned int) CUR)) {
 	    XP_ERROR(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7615,9 +7615,9 @@ xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR(CUR)) && (CUR != '\''))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_CHAR(CUR)) {
+	if (!IS_CHAR((unsigned int) CUR)) {
 	    XP_ERROR(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);

@@ -1924,6 +1924,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
             unsigned long lo = 0, mi = 0, hi = 0;
 	    unsigned long *base;
 
+	    if (cur == NULL)
+	        goto return1;
             tmp = cur;
             while (((*tmp >= '0') && (*tmp <= '9')) ||
                    ((*tmp >= 'A') && (*tmp <= 'F')) ||

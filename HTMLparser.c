@@ -2565,9 +2565,9 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR(CUR)) && (CUR != '"'))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
 	    NEXT;
-	if (!IS_CHAR(CUR)) {
+	if (!IS_CHAR((unsigned int) CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, "Unfinished SystemLiteral\n");
 	    ctxt->wellFormed = 0;
@@ -2578,9 +2578,9 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR(CUR)) && (CUR != '\''))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_CHAR(CUR)) {
+	if (!IS_CHAR((unsigned int) CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, "Unfinished SystemLiteral\n");
 	    ctxt->wellFormed = 0;
@@ -2679,7 +2679,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 
     SHRINK;
     cur = CUR;
-    while (IS_CHAR(cur)) {
+    while (IS_CHAR((unsigned int) cur)) {
 	if ((cur == '<') && (NXT(1) == '!') && (NXT(2) == '-') &&
 	    (NXT(3) == '-')) {
 	    if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
@@ -2722,7 +2722,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	NEXT;
 	cur = CUR;
     }
-    if (!(IS_CHAR(cur))) {
+    if (!(IS_CHAR((unsigned int) cur))) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 		"Invalid char in CDATA 0x%X\n", cur);
@@ -3319,7 +3319,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	     "htmlParseStartTag: invalid element name\n");
 	ctxt->wellFormed = 0;
 	/* Dump the bogus tag like browsers do */
-	while ((IS_CHAR(CUR)) && (CUR != '>'))
+	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '>'))
 	    NEXT;
         return;
     }
@@ -3377,7 +3377,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
      * (S Attribute)* S?
      */
     SKIP_BLANKS;
-    while ((IS_CHAR(CUR)) &&
+    while ((IS_CHAR((unsigned int) CUR)) &&
            (CUR != '>') && 
 	   ((CUR != '/') || (NXT(1) != '>'))) {
 	long cons = ctxt->nbChars;
@@ -3436,8 +3436,9 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	else {
 	    /* Dump the bogus attribute string up to the next blank or
 	     * the end of the tag. */
-	    while ((IS_CHAR(CUR)) && !(IS_BLANK(CUR)) && (CUR != '>')
-	     && ((CUR != '/') || (NXT(1) != '>')))
+	    while ((IS_CHAR((unsigned int) CUR)) &&
+	           !(IS_BLANK(CUR)) && (CUR != '>') &&
+		   ((CUR != '/') || (NXT(1) != '>')))
 		NEXT;
 	}
 
@@ -3514,7 +3515,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
      * We should definitely be at the ending "S? '>'" part
      */
     SKIP_BLANKS;
-    if ((!IS_CHAR(CUR)) || (CUR != '>')) {
+    if ((!IS_CHAR((unsigned int) CUR)) || (CUR != '>')) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "End tag : expected '>'\n");
 	ctxt->wellFormed = 0;
@@ -3931,7 +3932,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
      */
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
-    while (IS_CHAR(CUR)) {
+    while (IS_CHAR((unsigned int) CUR)) {
 	oldptr = ctxt->input->cur;
 	htmlParseContent(ctxt);
 	if (oldptr==ctxt->input->cur) break;
@@ -3948,7 +3949,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
        node_info.node = ctxt->node;
        xmlParserAddNodeInfo(ctxt, &node_info);
     }
-    if (!IS_CHAR(CUR)) {
+    if (!IS_CHAR((unsigned int) CUR)) {
 	htmlAutoCloseOnEnd(ctxt);
     }
 

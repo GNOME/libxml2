@@ -2917,9 +2917,9 @@ docbParseSystemLiteral(docbParserCtxtPtr ctxt) {
     if (CUR == '"') {
         NEXT;
        q = CUR_PTR;
-       while ((IS_CHAR(CUR)) && (CUR != '"'))
+       while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
            NEXT;
-       if (!IS_CHAR(CUR)) {
+       if (!IS_CHAR((unsigned int) CUR)) {
            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
                ctxt->sax->error(ctxt->userData, "Unfinished SystemLiteral\n");
            ctxt->wellFormed = 0;
@@ -2930,9 +2930,9 @@ docbParseSystemLiteral(docbParserCtxtPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
        q = CUR_PTR;
-       while ((IS_CHAR(CUR)) && (CUR != '\''))
+       while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
            NEXT;
-       if (!IS_CHAR(CUR)) {
+       if (!IS_CHAR((unsigned int) CUR)) {
            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
                ctxt->sax->error(ctxt->userData, "Unfinished SystemLiteral\n");
            ctxt->wellFormed = 0;
@@ -3724,7 +3724,7 @@ docbParseStartTag(docbParserCtxtPtr ctxt) {
      * (S Attribute)* S?
      */
     SKIP_BLANKS;
-    while ((IS_CHAR(CUR)) &&
+    while ((IS_CHAR((unsigned int) CUR)) &&
            (CUR != '>') && 
           ((CUR != '/') || (NXT(1) != '>'))) {
        long cons = ctxt->nbChars;
@@ -3870,7 +3870,7 @@ docbParseEndTag(docbParserCtxtPtr ctxt) {
      * We should definitely be at the ending "S? '>'" part
      */
     SKIP_BLANKS;
-    if ((!IS_CHAR(CUR)) || (CUR != '>')) {
+    if ((!IS_CHAR((unsigned int) CUR)) || (CUR != '>')) {
        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
            ctxt->sax->error(ctxt->userData, "End tag : expected '>'\n");
        ctxt->wellFormed = 0;
@@ -4323,12 +4323,12 @@ docbParseElement(docbParserCtxtPtr ctxt) {
      */
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
-    while (IS_CHAR(CUR)) {
+    while (IS_CHAR((unsigned int) CUR)) {
        docbParseContent(ctxt);
        if (ctxt->nameNr < depth) break; 
     }  
 
-    if (!IS_CHAR(CUR)) {
+    if (!IS_CHAR((unsigned int) CUR)) {
        /************
        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
            ctxt->sax->error(ctxt->userData,

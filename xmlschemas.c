@@ -459,13 +459,13 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	     * Try to find contextual informations to report
 	     */
 	    if (node->type == XML_ELEMENT_NODE) {
-		line = (int) node->content;
+		line = (long) node->content;
 	    } else if ((node->prev != NULL) &&
 		       (node->prev->type == XML_ELEMENT_NODE)) {
-		line = (int) node->prev->content;
+		line = (long) node->prev->content;
 	    } else if ((node->parent != NULL) &&
 		       (node->parent->type == XML_ELEMENT_NODE)) {
-		line = (int) node->parent->content;
+		line = (long) node->parent->content;
 	    }
 	    if ((node->doc != NULL) && (node->doc->URL != NULL))
 		file = node->doc->URL;

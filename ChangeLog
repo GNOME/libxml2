@@ -1,3 +1,13 @@
+Tue Jul 15 15:30:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c HTMLparser.c entities.c parser.c relaxng.c 
+	  xmlschemas.c xpath.c: removed some warnings by casting xmlChar
+	  to unsigned int and a couple of others.
+
+Fri Jul 11 16:44:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: fixes a segfault on empty hexBinary strings
+
 Thu Jul 10 16:02:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c: cleanup patches from Peter Breitenlohner

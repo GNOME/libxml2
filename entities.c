@@ -532,7 +532,7 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 #endif
-	} else if (IS_CHAR(*cur)) {
+	} else if (IS_CHAR((unsigned int) *cur)) {
 	    char buf[10], *ptr;
 
 	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
@@ -731,7 +731,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		cur += l;
 		continue;
 	    }
-	} else if (IS_CHAR(*cur)) {
+	} else if (IS_CHAR((unsigned int) *cur)) {
 	    char buf[10], *ptr;
 
 	    snprintf(buf, sizeof(buf), "&#%d;", *cur);

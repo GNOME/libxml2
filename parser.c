@@ -6714,7 +6714,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 
     while ((RAW != '>') && 
 	   ((RAW != '/') || (NXT(1) != '>')) &&
-	   (IS_CHAR(RAW))) {
+	   (IS_CHAR((unsigned int) RAW))) {
 	const xmlChar *q = CUR_PTR;
 	unsigned int cons = ctxt->input->consumed;
 
@@ -6870,7 +6870,7 @@ xmlParseEndTagInternal(xmlParserCtxtPtr ctxt, int line) {
      */
     GROW;
     SKIP_BLANKS;
-    if ((!IS_CHAR(RAW)) || (RAW != '>')) {
+    if ((!IS_CHAR((unsigned int) RAW)) || (RAW != '>')) {
 	ctxt->errNo = XML_ERR_GT_REQUIRED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "End tag : expected '>'\n");
@@ -7274,7 +7274,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
      * Parse the content of the element:
      */
     xmlParseContent(ctxt);
-    if (!IS_CHAR(RAW)) {
+    if (!IS_CHAR((unsigned int) RAW)) {
 	ctxt->errNo = XML_ERR_TAG_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,

@@ -1593,6 +1593,10 @@ xmlSAXHandler xmlDefaultSAXHandler = {
 void
 xmlDefaultSAXHandlerInit(void)
 {
+    static int xmlSAXInitialized = 0;
+    if (xmlSAXInitialized)
+	return;
+
     xmlDefaultSAXHandler.internalSubset = internalSubset;
     xmlDefaultSAXHandler.externalSubset = externalSubset;
     xmlDefaultSAXHandler.isStandalone = isStandalone;
@@ -1623,6 +1627,8 @@ xmlDefaultSAXHandlerInit(void)
 	xmlDefaultSAXHandler.warning = xmlParserWarning;
     xmlDefaultSAXHandler.error = xmlParserError;
     xmlDefaultSAXHandler.fatalError = xmlParserError;
+
+    xmlSAXInitialized = 1;
 }
 
 #ifdef LIBXML_HTML_ENABLED
@@ -1667,6 +1673,10 @@ xmlSAXHandler htmlDefaultSAXHandler = {
 void
 htmlDefaultSAXHandlerInit(void)
 {
+    static int htmlSAXInitialized = 0;
+    if (htmlSAXInitialized)
+	return;
+
     htmlDefaultSAXHandler.internalSubset = internalSubset;
     htmlDefaultSAXHandler.externalSubset = NULL;
     htmlDefaultSAXHandler.isStandalone = NULL;
@@ -1694,6 +1704,8 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.warning = xmlParserWarning;
     htmlDefaultSAXHandler.error = xmlParserError;
     htmlDefaultSAXHandler.fatalError = xmlParserError;
+
+    htmlSAXInitialized = 1;
 }
 #endif /* LIBXML_HTML_ENABLED */
 
@@ -1739,6 +1751,10 @@ xmlSAXHandler docbDefaultSAXHandler = {
 void
 docbDefaultSAXHandlerInit(void)
 {
+    static int docbSAXInitialized = 0;
+    if (docbSAXInitialized)
+	return;
+
     docbDefaultSAXHandler.internalSubset = internalSubset;
     docbDefaultSAXHandler.externalSubset = NULL;
     docbDefaultSAXHandler.isStandalone = isStandalone;
@@ -1766,6 +1782,8 @@ docbDefaultSAXHandlerInit(void)
     docbDefaultSAXHandler.warning = xmlParserWarning;
     docbDefaultSAXHandler.error = xmlParserError;
     docbDefaultSAXHandler.fatalError = xmlParserError;
+
+    docbSAXInitialized = 1;
 }
 
 #endif /* LIBXML_DOCB_ENABLED */

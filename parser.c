@@ -6428,6 +6428,8 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
 	if (ctxt->sax->cdataBlock != NULL)
 	    ctxt->sax->cdataBlock(ctxt->userData, buf, len);
+	else if (ctxt->sax->characters != NULL)
+	    ctxt->sax->characters(ctxt->userData, buf, len);
     }
     xmlFree(buf);
 }

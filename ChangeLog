@@ -1,3 +1,9 @@
+Sun Jul  8 15:11:05 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* SAX.c parser.c testXPath.c xpath.c: trying to fix #56948, this
+	  led to an XPath fix, improvements of SAX initialization, and
+	  an added option --nocdata to testXPath
+
 Sat Jul  7 21:09:55 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/libxml-doc.el: Felix Natter provided anew version working

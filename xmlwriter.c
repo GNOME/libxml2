@@ -936,6 +936,12 @@ xmlTextWriterStartElement(xmlTextWriterPtr writer, const xmlChar * name)
                     return -1;
                 case XML_TEXTWRITER_NONE:
                     break;
+				case XML_TEXTWRITER_ATTRIBUTE:
+					count = xmlTextWriterEndAttribute(writer);
+					if (count < 0)
+						return -1;
+					sum += count;
+					/* fallthrough */
                 case XML_TEXTWRITER_NAME:
                     count = xmlOutputBufferWriteString(writer->out, ">");
                     if (count < 0)
@@ -1839,8 +1845,8 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
                 np = (xmlTextWriterNsStackEntry *) xmlLinkGetData(lk);
 
 		if (np != 0) {
-		    namespaceURI = xmlStrdup(np->prefix);
-		    prefix = xmlStrdup(np->uri);
+		    namespaceURI = xmlStrdup(np->uri);
+		    prefix = xmlStrdup(np->prefix);
 		}
 
 		xmlListPopFront(writer->nsstack);

@@ -25,7 +25,87 @@
 
   <!-- the target directory for the HTML output -->
   <xsl:variable name="htmldir">html</xsl:variable>
+  <xsl:variable name="href_base">../</xsl:variable>
 
+  <!-- The table of content for the HTML API pages -->
+  <xsl:variable name="menu_name">API Menu</xsl:variable>
+  <xsl:variable name="apitoc">
+    <form action="../search.php"
+          enctype="application/x-www-form-urlencoded" method="get">
+      <input name="query" type="text" size="20" value=""/>
+      <input name="submit" type="submit" value="Search ..."/>
+    </form>
+    <ul><!-- style="margin-left: -1em" -->
+      <li><a style="font-weight:bold"
+             href="{$href_base}index.html">Main Menu</a></li>
+      <li><a style="font-weight:bold" 
+             href="{$href_base}docs.html">Developer Menu</a></li>
+      <li><a style="font-weight:bold" 
+             href="{$href_base}examples/index.html">Code Examples</a></li>
+      <li><a style="font-weight:bold"
+             href="{$href_base}index.html">API Menu</a></li>
+      <li><a href="libxml-parser.html">Parser API</a></li>
+      <li><a href="libxml-tree.html">Tree API</a></li>
+      <li><a href="libxml-xmlreader.html">Reader API</a></li>
+      <li><a href="{$href_base}guidelines.html">XML Guidelines</a></li>
+    </ul>
+  </xsl:variable>
+  <xsl:template name="apitoc">
+    <table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+      <tr>
+        <td>
+          <table width="100%" border="0" cellspacing="1" cellpadding="3">
+            <tr>
+              <td colspan="1" bgcolor="#eecfa1" align="center">
+                <center>
+                  <b><xsl:value-of select="$menu_name"/></b>
+                </center>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#fffacd">
+                <xsl:copy-of select="$apitoc"/>
+              </td>
+            </tr>
+          </table>
+          <table width="100%" border="0" cellspacing="1" cellpadding="3">
+            <tr>
+              <td colspan="1" bgcolor="#eecfa1" align="center">
+                <center>
+                  <b>API Indexes</b>
+                </center>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#fffacd">
+                <xsl:copy-of select="$api"/>
+              </td>
+            </tr>
+          </table>
+          <table width="100%" border="0" cellspacing="1" cellpadding="3">
+            <tr>
+              <td colspan="1" bgcolor="#eecfa1" align="center">
+                <center>
+                  <b>Related links</b>
+                </center>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#fffacd">
+                <xsl:copy-of select="$related"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template name="docstyle">
+    <style type="text/css">
+      pre.programlisting {border-style: double}
+    </style>
+  </xsl:template>
   <xsl:template name="navbar">
     <xsl:variable name="previous" select="preceding-sibling::file[1]"/>
     <xsl:variable name="next" select="following-sibling::file[1]"/>
@@ -354,6 +434,7 @@
 	<html>
 	  <head>
 	    <xsl:call-template name="style"/>
+	    <xsl:call-template name="docstyle"/>
 	    <title><xsl:value-of select="$title"/></title>
 	  </head>
 	  <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
@@ -366,7 +447,7 @@
 		<table border="0" cellspacing="0" cellpadding="2" width="100%">
 		  <tr>
 		    <td valign="top" width="200" bgcolor="#8b7765">
-		      <xsl:call-template name="toc"/>
+		      <xsl:call-template name="apitoc"/>
 		    </td>
 		    <td valign="top" bgcolor="#8b7765">
 		      <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -419,6 +500,7 @@
 	<html>
 	  <head>
 	    <xsl:call-template name="style"/>
+	    <xsl:call-template name="docstyle"/>
 	    <title><xsl:value-of select="$title"/></title>
 	  </head>
 	  <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
@@ -431,7 +513,7 @@
 		<table border="0" cellspacing="0" cellpadding="2" width="100%">
 		  <tr>
 		    <td valign="top" width="200" bgcolor="#8b7765">
-		      <xsl:call-template name="toc"/>
+		      <xsl:call-template name="apitoc"/>
 		    </td>
 		    <td valign="top" bgcolor="#8b7765">
 		      <table border="0" cellspacing="0" cellpadding="1" width="100%">

@@ -11,6 +11,8 @@ import os, sys
 import string
 import glob
 
+debug=0
+
 #
 # C parser analysis code
 #
@@ -33,8 +35,14 @@ ignored_words = {
   "WINAPI": (0, "Windows keyword"),
   "LIBXML_DLL_IMPORT": (0, "Special macro to flag external keywords"),
   "XMLPUBVAR": (0, "Special macro for extern vars for win32"),
+  "XSLTPUBVAR": (0, "Special macro for extern vars for win32"),
+  "EXSLTPUBVAR": (0, "Special macro for extern vars for win32"),
   "XMLPUBFUN": (0, "Special macro for extern funcs for win32"),
+  "XSLTPUBFUN": (0, "Special macro for extern funcs for win32"),
+  "EXSLTPUBFUN": (0, "Special macro for extern funcs for win32"),
   "XMLCALL": (0, "Special macro for win32 calls"),
+  "XSLTCALL": (0, "Special macro for win32 calls"),
+  "EXSLTCALL": (0, "Special macro for win32 calls"),
   "__declspec": (3, "Windows keyword"),
   "ATTRIBUTE_UNUSED": (0, "macro keyword"),
   "LIBEXSLT_PUBLIC": (0, "macro keyword"),
@@ -790,7 +798,8 @@ class CParser:
 		 token = self.lexer.token()
 		 continue
 	     else:
-	         #print "=> ", token
+	         if debug:
+		     print "=> ", token
 	         return token
 	 return None
 
@@ -1340,216 +1349,437 @@ class CParser:
 	         
 
 class docBuilder:
-     """A documentation builder"""
-     def __init__(self, name, directories=['.'], excludes=[]):
-         self.name = name
-         self.directories = directories
-	 self.excludes = excludes + ignored_files.keys()
-	 self.modules = {}
-	 self.headers = {}
-	 self.idx = index()
+    """A documentation builder"""
+    def __init__(self, name, directories=['.'], excludes=[]):
+        self.name = name
+        self.directories = directories
+	self.excludes = excludes + ignored_files.keys()
+	self.modules = {}
+	self.headers = {}
+	self.idx = index()
+        self.xref = {}
+	self.index = {}
+	if name == 'libxml2':
+	    self.basename = 'libxml'
+	else:
+	    self.basename = name
 
-     def analyze(self):
-         print "Project %s : %d headers, %d modules" % (self.name, len(self.headers.keys()), len(self.modules.keys()))
-	 self.idx.analyze()
+    def indexString(self, id, str):
+	if str == None:
+	    return
+	str = string.replace(str, "'", ' ')
+	str = string.replace(str, '"', ' ')
+	str = string.replace(str, "/", ' ')
+	str = string.replace(str, '*', ' ')
+	str = string.replace(str, "[", ' ')
+	str = string.replace(str, "]", ' ')
+	str = string.replace(str, "(", ' ')
+	str = string.replace(str, ")", ' ')
+	str = string.replace(str, "<", ' ')
+	str = string.replace(str, '>', ' ')
+	str = string.replace(str, "&", ' ')
+	str = string.replace(str, '#', ' ')
+	str = string.replace(str, ",", ' ')
+	str = string.replace(str, '.', ' ')
+	str = string.replace(str, ';', ' ')
+	tokens = string.split(str)
+	for token in tokens:
+	    try:
+		c = token[0]
+		if string.find(string.letters, c) < 0:
+		    pass
+		elif len(token) < 3:
+		    pass
+		else:
+		    lower = string.lower(token)
+		    # TODO: generalize this a bit
+		    if lower == 'and' or lower == 'the':
+			pass
+		    elif self.xref.has_key(token):
+			self.xref[token].append(id)
+		    else:
+			self.xref[token] = [id]
+	    except:
+		pass
 
-     def scanHeaders(self):
-	 for header in self.headers.keys():
+    def analyze(self):
+        print "Project %s : %d headers, %d modules" % (self.name, len(self.headers.keys()), len(self.modules.keys()))
+	self.idx.analyze()
+
+    def scanHeaders(self):
+	for header in self.headers.keys():
 	    parser = CParser(header)
 	    idx = parser.parse()
 	    self.headers[header] = idx;
 	    self.idx.merge(idx)
 
-     def scanModules(self):
-	 for module in self.modules.keys():
+    def scanModules(self):
+	for module in self.modules.keys():
 	    parser = CParser(module)
 	    idx = parser.parse()
 	    # idx.analyze()
 	    self.modules[module] = idx
 	    self.idx.merge_public(idx)
 
-     def scan(self):
-         for directory in self.directories:
-	     files = glob.glob(directory + "/*.c")
-	     for file in files:
-	         skip = 0
-		 for excl in self.excludes:
-		     if string.find(file, excl) != -1:
-		         skip = 1;
-			 break
-		 if skip == 0:
-		     self.modules[file] = None;
-	     files = glob.glob(directory + "/*.h")
-	     for file in files:
-	         skip = 0
-		 for excl in self.excludes:
-		     if string.find(file, excl) != -1:
-		         skip = 1;
-			 break
-		 if skip == 0:
-		     self.headers[file] = None;
-	 self.scanHeaders()
-	 self.scanModules()
+    def scan(self):
+        for directory in self.directories:
+	    files = glob.glob(directory + "/*.c")
+	    for file in files:
+	        skip = 0
+		for excl in self.excludes:
+		    if string.find(file, excl) != -1:
+		        skip = 1;
+			break
+		if skip == 0:
+		    self.modules[file] = None;
+	    files = glob.glob(directory + "/*.h")
+	    for file in files:
+	        skip = 0
+		for excl in self.excludes:
+		    if string.find(file, excl) != -1:
+		        skip = 1;
+			break
+		if skip == 0:
+		    self.headers[file] = None;
+	self.scanHeaders()
+	self.scanModules()
          
-     def modulename_file(self, file):
-         module = os.path.basename(file)
-	 if module[-2:] == '.h':
-	     module = module[:-2]
-	 return module
+    def modulename_file(self, file):
+        module = os.path.basename(file)
+	if module[-2:] == '.h':
+	    module = module[:-2]
+	return module
 
-     def serialize_enum(self, output, name):
-         id = self.idx.enums[name]
-         output.write("    <enum name='%s' file='%s'" % (name,
-	              self.modulename_file(id.module)))
-	 if id.info != None:
-	     info = id.info
-	     if info[0] != None and info[0] != '':
-	         try:
-		     val = eval(info[0])
-		 except:
-		     val = info[0]
-		 output.write(" value='%s'" % (val));
-	     if info[2] != None and info[2] != '':
-		 output.write(" type='%s'" % info[2]);
-	     if info[1] != None and info[1] != '':
-		 output.write(" info='%s'" % escape(info[1]));
-         output.write("/>\n")
+    def serialize_enum(self, output, name):
+        id = self.idx.enums[name]
+        output.write("    <enum name='%s' file='%s'" % (name,
+	             self.modulename_file(id.module)))
+	if id.info != None:
+	    info = id.info
+	    if info[0] != None and info[0] != '':
+	        try:
+		    val = eval(info[0])
+		except:
+		    val = info[0]
+		output.write(" value='%s'" % (val));
+	    if info[2] != None and info[2] != '':
+		output.write(" type='%s'" % info[2]);
+	    if info[1] != None and info[1] != '':
+		output.write(" info='%s'" % escape(info[1]));
+        output.write("/>\n")
 
-     def serialize_macro(self, output, name):
-         id = self.idx.macros[name]
-         output.write("    <macro name='%s' file='%s'>\n" % (name,
-	              self.modulename_file(id.module)))
-	 if id.info != None:
-             try:
-		 (args, desc) = id.info
-		 if desc != None and desc != "":
-		     output.write("      <info>%s</info>\n" % (escape(desc)))
-		 for arg in args:
-		     (name, desc) = arg
-		     if desc != None and desc != "":
-			 output.write("      <arg name='%s' info='%s'/>\n" % (
-				      name, escape(desc)))
-		     else:
-			 output.write("      <arg name='%s'/>\n" % (name))
-             except:
-                 pass
-         output.write("    </macro>\n")
+    def serialize_macro(self, output, name):
+        id = self.idx.macros[name]
+        output.write("    <macro name='%s' file='%s'>\n" % (name,
+	             self.modulename_file(id.module)))
+	if id.info != None:
+            try:
+		(args, desc) = id.info
+		if desc != None and desc != "":
+		    output.write("      <info>%s</info>\n" % (escape(desc)))
+		    self.indexString(name, desc)
+		for arg in args:
+		    (name, desc) = arg
+		    if desc != None and desc != "":
+			output.write("      <arg name='%s' info='%s'/>\n" % (
+				     name, escape(desc)))
+			self.indexString(name, desc)
+		    else:
+			output.write("      <arg name='%s'/>\n" % (name))
+            except:
+                pass
+        output.write("    </macro>\n")
 
-     def serialize_typedef(self, output, name):
-         id = self.idx.typedefs[name]
-	 if id.info[0:7] == 'struct ':
-	     output.write("    <struct name='%s' file='%s' type='%s'" % (
-	              name, self.modulename_file(id.module), id.info))
-	     name = id.info[7:]
-	     if self.idx.structs.has_key(name) and ( \
-	        type(self.idx.structs[name].info) == type(()) or
+    def serialize_typedef(self, output, name):
+        id = self.idx.typedefs[name]
+	if id.info[0:7] == 'struct ':
+	    output.write("    <struct name='%s' file='%s' type='%s'" % (
+	             name, self.modulename_file(id.module), id.info))
+	    name = id.info[7:]
+	    if self.idx.structs.has_key(name) and ( \
+	       type(self.idx.structs[name].info) == type(()) or
 		type(self.idx.structs[name].info) == type([])):
-	         output.write(">\n");
-		 try:
-		     for field in self.idx.structs[name].info:
-			 desc = field[2]
-			 if desc == None:
-			     desc = ''
-			 else:
-			     desc = escape(desc)
-			 output.write("      <field name='%s' type='%s' info='%s'/>\n" % (field[1] , field[0], desc))
-		 except:
-		     print "Failed to serialize struct %s" % (name)
-		 output.write("    </struct>\n")
-	     else:
-	         output.write("/>\n");
-	 else :
-	     output.write("    <typedef name='%s' file='%s' type='%s'/>\n" % (
-	              name, self.modulename_file(id.module), id.info))
+	        output.write(">\n");
+		try:
+		    for field in self.idx.structs[name].info:
+			desc = field[2]
+			self.indexString(name, desc)
+			if desc == None:
+			    desc = ''
+			else:
+			    desc = escape(desc)
+			output.write("      <field name='%s' type='%s' info='%s'/>\n" % (field[1] , field[0], desc))
+		except:
+		    print "Failed to serialize struct %s" % (name)
+		output.write("    </struct>\n")
+	    else:
+	        output.write("/>\n");
+	else :
+	    output.write("    <typedef name='%s' file='%s' type='%s'/>\n" % (
+	             name, self.modulename_file(id.module), id.info))
 
-     def serialize_variable(self, output, name):
-         id = self.idx.variables[name]
-	 if id.info != None:
-	     output.write("    <variable name='%s' file='%s' type='%s'/>\n" % (
-		     name, self.modulename_file(id.module), id.info))
-	 else:
-	     output.write("    <variable name='%s' file='%s'/>\n" % (
-	             name, self.modulename_file(id.module)))
+    def serialize_variable(self, output, name):
+        id = self.idx.variables[name]
+	if id.info != None:
+	    output.write("    <variable name='%s' file='%s' type='%s'/>\n" % (
+		    name, self.modulename_file(id.module), id.info))
+	else:
+	    output.write("    <variable name='%s' file='%s'/>\n" % (
+	            name, self.modulename_file(id.module)))
 	              
-     def serialize_function(self, output, name):
-         id = self.idx.functions[name]
-         output.write("    <%s name='%s' file='%s'>\n" % (id.type, name,
-	              self.modulename_file(id.module)))
-	 try:
-	     (ret, params, desc) = id.info
-	     output.write("      <info>%s</info>\n" % (escape(desc)))
-	     if ret[0] != None:
-	         if ret[0] == "void":
-		     output.write("      <return type='void'/>\n")
-		 else:
-		     output.write("      <return type='%s' info='%s'/>\n" % (
-			      ret[0], escape(ret[1])))
-	     for param in params:
-	         if param[0] == 'void':
-		     continue
-	         if param[2] == None:
-		     output.write("      <arg name='%s' type='%s' info=''/>\n" % (param[1], param[0]))
-		 else:
-		     output.write("      <arg name='%s' type='%s' info='%s'/>\n" % (param[1], param[0], escape(param[2])))
-	 except:
-	     print "Failed to save function %s info: " % name, `id.info`
-         output.write("    </%s>\n" % (id.type))
+    def serialize_function(self, output, name):
+        id = self.idx.functions[name]
+        output.write("    <%s name='%s' file='%s'>\n" % (id.type, name,
+	             self.modulename_file(id.module)))
+	try:
+	    (ret, params, desc) = id.info
+	    output.write("      <info>%s</info>\n" % (escape(desc)))
+	    self.indexString(name, desc)
+	    if ret[0] != None:
+	        if ret[0] == "void":
+		    output.write("      <return type='void'/>\n")
+		else:
+		    output.write("      <return type='%s' info='%s'/>\n" % (
+			     ret[0], escape(ret[1])))
+		    self.indexString(name, ret[1])
+	    for param in params:
+	        if param[0] == 'void':
+		    continue
+	        if param[2] == None:
+		    output.write("      <arg name='%s' type='%s' info=''/>\n" % (param[1], param[0]))
+		else:
+		    output.write("      <arg name='%s' type='%s' info='%s'/>\n" % (param[1], param[0], escape(param[2])))
+		    self.indexString(name, param[2])
+	except:
+	    print "Failed to save function %s info: " % name, `id.info`
+        output.write("    </%s>\n" % (id.type))
 
-     def serialize_exports(self, output, file):
-         module = self.modulename_file(file)
-	 output.write("    <file name='%s'>\n" % (module))
-	 dict = self.headers[file]
-	 ids = dict.functions.keys() + dict.variables.keys() + \
-	       dict.macros.keys() + dict.typedefs.keys() + \
-	       dict.structs.keys() + dict.enums.keys()
-	 ids.sort()
-	 for id in uniq(ids):
-	     output.write("     <exports symbol='%s'/>\n" % (id))
-	 output.write("    </file>\n")
+    def serialize_exports(self, output, file):
+        module = self.modulename_file(file)
+	output.write("    <file name='%s'>\n" % (module))
+	dict = self.headers[file]
+	ids = dict.functions.keys() + dict.variables.keys() + \
+	      dict.macros.keys() + dict.typedefs.keys() + \
+	      dict.structs.keys() + dict.enums.keys()
+	ids.sort()
+	for id in uniq(ids):
+	    output.write("     <exports symbol='%s'/>\n" % (id))
+	output.write("    </file>\n")
 
+    def serialize_xrefs_files(self, output):
+        headers = self.headers.keys()
+        headers.sort()
+        for file in headers:
+	    module = self.modulename_file(file)
+	    output.write("    <file name='%s'>\n" % (module))
+	    dict = self.headers[file]
+	    ids = dict.functions.keys() + dict.variables.keys() + \
+		  dict.macros.keys() + dict.typedefs.keys() + \
+		  dict.structs.keys() + dict.enums.keys()
+	    ids.sort()
+	    for id in uniq(ids):
+		output.write("      <ref name='%s'/>\n" % (id))
+	    output.write("    </file>\n")
+        pass
 
-     def serialize(self, filename = None):
-         if filename == None:
-	     filename = "%s-api.xml" % self.name
-         print "Saving XML description %s" % (filename)
-	 output = open(filename, "w")
-	 output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
-	 output.write("<api name='%s'>\n" % self.name)
-	 output.write("  <files>\n")
-	 headers = self.headers.keys()
-	 headers.sort()
-	 for file in headers:
-	     self.serialize_exports(output, file)
-	 output.write("  </files>\n")
-	 output.write("  <symbols>\n")
-	 macros = self.idx.macros.keys()
-	 macros.sort()
-	 for macro in macros:
-	     self.serialize_macro(output, macro)
-	 enums = self.idx.enums.keys()
-	 enums.sort()
-	 for enum in enums:
-	     self.serialize_enum(output, enum)
-	 typedefs = self.idx.typedefs.keys()
-	 typedefs.sort()
-	 for typedef in typedefs:
-	     self.serialize_typedef(output, typedef)
-	 variables = self.idx.variables.keys()
-	 variables.sort()
-	 for variable in variables:
-	     self.serialize_variable(output, variable)
-	 functions = self.idx.functions.keys()
-	 functions.sort()
-	 for function in functions:
-	     self.serialize_function(output, function)
-	 output.write("  </symbols>\n")
-	 output.write("</api>\n")
-	 output.close()
+    def serialize_xrefs_functions(self, output):
+        funcs = {}
+	for name in self.idx.functions.keys():
+	    id = self.idx.functions[name]
+	    try:
+		(ret, params, desc) = id.info
+		for param in params:
+		    if param[0] == 'void':
+			continue
+		    if funcs.has_key(param[0]):
+		        funcs[param[0]].append(name)
+		    else:
+		        funcs[param[0]] = [name]
+	    except:
+	        pass
+	typ = funcs.keys()
+	typ.sort()
+	for type in typ:
+	    if type == '' or type == 'void' or type == "int" or \
+	       type == "char *" or type == "const char *" :
+	        continue
+	    output.write("    <type name='%s'>\n" % (type))
+	    ids = funcs[type]
+	    ids.sort()
+	    for id in ids:
+	        output.write("      <ref name='%s'/>\n" % (id))
+	    output.write("    </type>\n")
+
+    def serialize_xrefs_constructors(self, output):
+        funcs = {}
+	for name in self.idx.functions.keys():
+	    id = self.idx.functions[name]
+	    try:
+		(ret, params, desc) = id.info
+		if ret[0] == "void":
+		    continue
+		if funcs.has_key(ret[0]):
+		    funcs[ret[0]].append(name)
+		else:
+		    funcs[ret[0]] = [name]
+	    except:
+	        pass
+	typ = funcs.keys()
+	typ.sort()
+	for type in typ:
+	    if type == '' or type == 'void' or type == "int" or \
+	       type == "char *" or type == "const char *" :
+	        continue
+	    output.write("    <type name='%s'>\n" % (type))
+	    ids = funcs[type]
+	    for id in ids:
+	        output.write("      <ref name='%s'/>\n" % (id))
+	    output.write("    </type>\n")
+
+    def serialize_xrefs_alpha(self, output):
+	letter = None
+	ids = self.idx.identifiers.keys()
+	ids.sort()
+	for id in ids:
+	    if id[0] != letter:
+		if letter != None:
+		    output.write("    </letter>\n")
+		letter = id[0]
+		output.write("    <letter name='%s'>\n" % (letter))
+	    output.write("      <ref name='%s'/>\n" % (id))
+	if letter != None:
+	    output.write("    </letter>\n")
+
+    def serialize_xrefs_references(self, output):
+        typ = self.idx.identifiers.keys()
+	typ.sort()
+	for id in typ:
+	    idf = self.idx.identifiers[id]
+	    module = idf.module
+	    output.write("    <reference name='%s' href='%s'/>\n" % (id,
+	                 'html/' + self.basename + '-' +
+		         self.modulename_file(module) + '.html#' +
+			 id))
+
+    def serialize_xrefs_index(self, output):
+        index = self.xref
+	typ = index.keys()
+	typ.sort()
+	letter = None
+	count = 0
+	chunk = 0
+	chunks = []
+	for id in typ:
+	    if len(index[id]) > 30:
+		continue
+	    if id[0] != letter:
+		if letter == None or count > 200:
+		    if letter != None:
+			output.write("      </letter>\n")
+			output.write("    </chunk>\n")
+			count = 0
+			chunks.append(["chunk%s" % (chunk -1), first_letter, letter])
+		    output.write("    <chunk name='chunk%s'>\n" % (chunk))
+		    first_letter = id[0]
+		    chunk = chunk + 1
+		elif letter != None:
+		    output.write("      </letter>\n")
+		letter = id[0]
+		output.write("      <letter name='%s'>\n" % (letter))
+	    output.write("        <word name='%s'>\n" % (id))
+	    tokens = index[id];
+	    tokens.sort()
+	    tok = None
+	    for token in index[id]:
+		if tok == token:
+		    continue
+		tok = token
+		output.write("          <ref name='%s'/>\n" % (token))
+		count = count + 1
+	    output.write("        </word>\n")
+	if letter != None:
+	    output.write("      </letter>\n")
+	    output.write("    </chunk>\n")
+	    output.write("    <chunks>\n")
+	    for ch in chunks:
+		output.write("      <chunk name='%s' start='%s' end='%s'/>\n" % (
+			     ch[0], ch[1], ch[2]))
+	    output.write("    </chunks>\n")
+
+    def serialize_xrefs(self, output):
+	output.write("  <references>\n")
+	self.serialize_xrefs_references(output)
+	output.write("  </references>\n")
+	output.write("  <alpha>\n")
+	self.serialize_xrefs_alpha(output)
+	output.write("  </alpha>\n")
+	output.write("  <constructors>\n")
+	self.serialize_xrefs_constructors(output)
+	output.write("  </constructors>\n")
+	output.write("  <functions>\n")
+	self.serialize_xrefs_functions(output)
+	output.write("  </functions>\n")
+	output.write("  <files>\n")
+	self.serialize_xrefs_files(output)
+	output.write("  </files>\n")
+	output.write("  <index>\n")
+	self.serialize_xrefs_index(output)
+	output.write("  </index>\n")
+
+    def serialize(self):
+        filename = "%s-api.xml" % self.name
+        print "Saving XML description %s" % (filename)
+        output = open(filename, "w")
+        output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
+        output.write("<api name='%s'>\n" % self.name)
+        output.write("  <files>\n")
+        headers = self.headers.keys()
+        headers.sort()
+        for file in headers:
+            self.serialize_exports(output, file)
+        output.write("  </files>\n")
+        output.write("  <symbols>\n")
+        macros = self.idx.macros.keys()
+        macros.sort()
+        for macro in macros:
+            self.serialize_macro(output, macro)
+        enums = self.idx.enums.keys()
+        enums.sort()
+        for enum in enums:
+            self.serialize_enum(output, enum)
+        typedefs = self.idx.typedefs.keys()
+        typedefs.sort()
+        for typedef in typedefs:
+            self.serialize_typedef(output, typedef)
+        variables = self.idx.variables.keys()
+        variables.sort()
+        for variable in variables:
+            self.serialize_variable(output, variable)
+        functions = self.idx.functions.keys()
+        functions.sort()
+        for function in functions:
+            self.serialize_function(output, function)
+        output.write("  </symbols>\n")
+        output.write("</api>\n")
+        output.close()
+
+        filename = "%s-refs.xml" % self.name
+        print "Saving XML Cross References %s" % (filename)
+        output = open(filename, "w")
+        output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
+        output.write("<apirefs name='%s'>\n" % self.name)
+        self.serialize_xrefs(output)
+        output.write("</apirefs>\n")
+        output.close()
 
 
 def rebuild():
     builder = None
-    if glob.glob("../parser.c") != [] :
+    if glob.glob("parser.c") != [] :
+        print "Rebuilding API description for libxml2"
+	builder = docBuilder("libxml2", [".", "."],
+	                     ["xmlwin32version.h", "tst.c"])
+    elif glob.glob("../parser.c") != [] :
         print "Rebuilding API description for libxml2"
 	builder = docBuilder("libxml2", ["..", "../include/libxml"],
 	                     ["xmlwin32version.h", "tst.c"])

@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<!-- this stylesheet builds the API*.html , it works based on libxml2-refs.xml
+  -->
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
@@ -8,6 +10,12 @@
   <!-- Import the resto of the site stylesheets -->
   <xsl:import href="site.xsl"/>
 
+  <!-- Generate XHTML-1.0 transitional -->
+  <xsl:output method="xml" encoding="ISO-8859-1" indent="yes"
+      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+
+  <xsl:variable name="href_base" select="''"/>
   <xsl:variable name="apirefs" select="document('libxml2-refs.xml')"/>
   <xsl:variable name="module" select="$apirefs/apirefs/@name"/>
   <xsl:key name="refhref" match="reference" use="@name"/>
@@ -15,7 +23,7 @@
   <xsl:template match="ref" mode="anchor">
     <xsl:variable name="name" select="@name"/>
     <xsl:for-each select="document('libxml2-refs.xml')">
-	<a href="{key('refhref', $name)/@href}"><xsl:value-of select="$name"/></a>
+	<a href="{key('refhref', $name)/@href}"><xsl:value-of select="$name"/></a><br/>
     </xsl:for-each>
   </xsl:template>
   <xsl:template match="type" mode="reflist">
@@ -67,7 +75,9 @@
   <xsl:template match="constructors">
     <xsl:message>Generating API Constructors</xsl:message>
     <xsl:variable name="title">List of constructors for <xsl:value-of select="$module"/></xsl:variable>
-    <xsl:document href="APIconstructors.html" method="html" version="4.01" encoding="ISO-8859-1">
+    <xsl:document href="APIconstructors.html" method="xml" encoding="ISO-8859-1"
+      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html>
         <head>
         <xsl:call-template name="style"/>
@@ -85,7 +95,7 @@
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                   <tr>
                     <td valign="top" width="200" bgcolor="#8b7765">
-                      <xsl:call-template name="toc"/>
+                      <xsl:call-template name="develtoc"/>
                     </td>
                     <td valign="top" bgcolor="#8b7765">
                       <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -121,7 +131,9 @@
   <xsl:template match="files">
     <xsl:message>Generating API List of synbols per file</xsl:message>
     <xsl:variable name="title">List of Symbols per Module for <xsl:value-of select="$module"/></xsl:variable>
-    <xsl:document href="APIfiles.html" method="html" version="4.01" encoding="ISO-8859-1">
+    <xsl:document href="APIfiles.html" method="xml" encoding="ISO-8859-1"
+      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html>
         <head>
         <xsl:call-template name="style"/>
@@ -139,7 +151,7 @@
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                   <tr>
                     <td valign="top" width="200" bgcolor="#8b7765">
-                      <xsl:call-template name="toc"/>
+                      <xsl:call-template name="develtoc"/>
                     </td>
                     <td valign="top" bgcolor="#8b7765">
                       <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -175,7 +187,9 @@
   <xsl:template match="functions">
     <xsl:message>Generating API Functions by Type</xsl:message>
     <xsl:variable name="title">List of function manipulating types in <xsl:value-of select="$module"/></xsl:variable>
-    <xsl:document href="APIfunctions.html" method="html" version="4.01" encoding="ISO-8859-1">
+    <xsl:document href="APIfunctions.html" method="xml" encoding="ISO-8859-1"
+      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html>
         <head>
         <xsl:call-template name="style"/>
@@ -193,7 +207,7 @@
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                   <tr>
                     <td valign="top" width="200" bgcolor="#8b7765">
-                      <xsl:call-template name="toc"/>
+                      <xsl:call-template name="develtoc"/>
                     </td>
                     <td valign="top" bgcolor="#8b7765">
                       <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -229,7 +243,9 @@
   <xsl:template match="alpha">
     <xsl:message>Generating API Alphabetic list</xsl:message>
     <xsl:variable name="title">Alphabetic List of Symbols in <xsl:value-of select="$module"/></xsl:variable>
-    <xsl:document href="APIsymbols.html" method="html" version="4.01" encoding="ISO-8859-1">
+    <xsl:document href="APIsymbols.html" method="xml" encoding="ISO-8859-1"
+      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html>
         <head>
         <xsl:call-template name="style"/>
@@ -247,7 +263,7 @@
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                   <tr>
                     <td valign="top" width="200" bgcolor="#8b7765">
-                      <xsl:call-template name="toc"/>
+                      <xsl:call-template name="develtoc"/>
                     </td>
                     <td valign="top" bgcolor="#8b7765">
                       <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -300,7 +316,9 @@
     <xsl:variable name="block" select="concat($start, '-', $end)"/>
     <xsl:variable name="target" select="/apirefs/index/chunk[@name = $name]"/>
     <xsl:variable name="title">API Alphabetic Index <xsl:value-of select="$block"/> for <xsl:value-of select="$module"/></xsl:variable>
-    <xsl:document href="API{$name}.html" method="html" version="4.01" encoding="ISO-8859-1">
+    <xsl:document href="API{$name}.html" method="xml" encoding="ISO-8859-1"
+      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html>
         <head>
         <xsl:call-template name="style"/>
@@ -318,7 +336,7 @@
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                   <tr>
                     <td valign="top" width="200" bgcolor="#8b7765">
-                      <xsl:call-template name="toc"/>
+                      <xsl:call-template name="develtoc"/>
                     </td>
                     <td valign="top" bgcolor="#8b7765">
                       <table border="0" cellspacing="0" cellpadding="1" width="100%">

@@ -1,670 +1,584 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="SHORTCUT ICON" href="/favicon.ico">
-<style type="text/css">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
 H1 {font-family: Verdana,Arial,Helvetica}
 H2 {font-family: Verdana,Arial,Helvetica}
 H3 {font-family: Verdana,Arial,Helvetica}
 A:link, A:visited, A:active { text-decoration: underline }
-</style>
-<title>API Alphabetic Index t-t for libxml2</title>
-</head>
-<body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
-<table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
-<td width="120"><a href="http://swpat.ffii.org/"><img src="../epatents.png" alt="Action against software patents"></a></td>
-<td width="180">
-<a href="http://www.gnome.org/"><img src="../gnome2.png" alt="Gnome2 Logo"></a><a href="http://www.w3.org/Status"><img src="../w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="../redhat.gif" alt="Red Hat Logo"></a><div align="left"><a href="http://xmlsoft.org/"><img src="../Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo"></a></div>
-</td>
-<td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
-<h1>The XML C parser and toolkit of Gnome</h1>
-<h2>API Alphabetic Index t-t for libxml2</h2>
-</td></tr></table></td></tr></table></td>
-</tr></table>
-<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
-<td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td>
-<table width="100%" border="0" cellspacing="1" cellpadding="3">
-<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
-<tr><td bgcolor="#fffacd">
-<form action="search.php" enctype="application/x-www-form-urlencoded" method="get">
-<input name="query" type="text" size="20" value=""><input name="submit" type="submit" value="Search ...">
-</form>
-<ul>
-<li><a href="index.html">Home</a></li>
-<li><a href="intro.html">Introduction</a></li>
-<li><a href="FAQ.html">FAQ</a></li>
-<li><a href="docs.html" style="font-weight:bold">Developer Menu</a></li>
-<li><a href="bugs.html">Reporting bugs and getting help</a></li>
-<li><a href="help.html">How to help</a></li>
-<li><a href="downloads.html">Downloads</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="XMLinfo.html">XML</a></li>
-<li><a href="XSLT.html">XSLT</a></li>
-<li><a href="xmldtd.html">Validation &amp; DTDs</a></li>
-<li><a href="encoding.html">Encodings support</a></li>
-<li><a href="catalog.html">Catalog support</a></li>
-<li><a href="namespaces.html">Namespaces</a></li>
-<li><a href="contribs.html">Contributions</a></li>
-<li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
-<li><a href="guidelines.html">XML Guidelines</a></li>
-</ul>
-</td></tr>
-</table>
-<table width="100%" border="0" cellspacing="1" cellpadding="3">
-<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr>
-<tr><td bgcolor="#fffacd"><ul>
-<li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
-<li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
-<li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
-<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
-<li><a href="ftp://xmlsoft.org/">FTP</a></li>
-<li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li>
-<li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
-<li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li>
-</ul></td></tr>
-</table>
-</td></tr></table></td>
-<td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
-<h2 align="center">
-<a href="APIchunk0.html">A-C</a>
-<a href="APIchunk1.html">D-E</a>
-<a href="APIchunk2.html">F-I</a>
-<a href="APIchunk3.html">J-N</a>
-<a href="APIchunk4.html">O-R</a>
-<a href="APIchunk5.html">S-T</a>
-<a href="APIchunk6.html">U-X</a>
-<a href="APIchunk7.html">Y-a</a>
-<a href="APIchunk8.html">b-b</a>
-<a href="APIchunk9.html">c-c</a>
-<a href="APIchunk10.html">d-d</a>
-<a href="APIchunk11.html">e-e</a>
-<a href="APIchunk12.html">f-f</a>
-<a href="APIchunk13.html">g-h</a>
-<a href="APIchunk14.html">i-i</a>
-<a href="APIchunk15.html">j-l</a>
-<a href="APIchunk16.html">m-n</a>
-<a href="APIchunk17.html">o-o</a>
-<a href="APIchunk18.html">p-p</a>
-<a href="APIchunk19.html">q-r</a>
-<a href="APIchunk20.html">s-s</a>
-<a href="APIchunk21.html">t-t</a>
-<a href="APIchunk22.html">u-v</a>
-<a href="APIchunk23.html">w-x</a>
-</h2>
-<h2>Letter t:</h2>
-<dl>
-<dt>tables</dt>
-<dd>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-</dd>
-<dt>tag</dt>
-<dd>
-<a href="html/libxml-HTMLparser.html#HTMLAUTOCLOSETAG">htmlAutoCloseTag</a>
-<a href="html/libxml-HTMLparser.html#HTMLISAUTOCLOSED">htmlIsAutoClosed</a>
-<a href="html/libxml-HTMLparser.html#HTMLTAGLOOKUP">htmlTagLookup</a>
-<a href="html/libxml-SAX.html#STARTELEMENT">startElement</a>
-<a href="html/libxml-parser.html#STARTELEMENTSAXFUNC">startElementSAXFunc</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEENDTAG">xmlParseEndTag</a>
-<a href="html/libxml-parserInternals.html#XMLPARSESTARTTAG">xmlParseStartTag</a>
-</dd>
-<dt>tagged</dt>
-<dd>
-<a href="html/libxml-SAX.html#ISSTANDALONE">isStandalone</a>
-<a href="html/libxml-parser.html#ISSTANDALONESAXFUNC">isStandaloneSAXFunc</a>
-<a href="html/libxml-tree.html#XMLNEWNSPROP">xmlNewNsProp</a>
-<a href="html/libxml-tree.html#XMLNEWNSPROPEATNAME">xmlNewNsPropEatName</a>
-</dd>
-<dt>tags</dt>
-<dd>
-<a href="html/libxml-HTMLparser.html#HTMLAUTOCLOSETAG">htmlAutoCloseTag</a>
-<a href="html/libxml-HTMLtree.html#HTMLGETMETAENCODING">htmlGetMetaEncoding</a>
-<a href="html/libxml-HTMLparser.html#HTMLHANDLEOMITTEDELEM">htmlHandleOmittedElem</a>
-<a href="html/libxml-parserInternals.html#HTMLINITAUTOCLOSE">htmlInitAutoClose</a>
-<a href="html/libxml-HTMLparser.html#HTMLISAUTOCLOSED">htmlIsAutoClosed</a>
-<a href="html/libxml-HTMLtree.html#HTMLSETMETAENCODING">htmlSetMetaEncoding</a>
-<a href="html/libxml-globals.html#XMLSAVENOEMPTYTAGS">xmlSaveNoEmptyTags</a>
-</dd>
-<dt>take</dt>
-<dd>
-<a href="html/libxml-threads.html#XMLLOCKLIBRARY">xmlLockLibrary</a>
-</dd>
-<dt>takes</dt>
-<dd>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-</dd>
-<dt>target</dt>
-<dd>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWALLTRANS">xmlAutomataNewAllTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTEDTRANS">xmlAutomataNewCountedTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTERTRANS">xmlAutomataNewCounterTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWEPSILON">xmlAutomataNewEpsilon</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION">xmlAutomataNewTransition</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION2">xmlAutomataNewTransition2</a>
-<a href="html/libxml-xmlIO.html#XMLCHECKFILENAME">xmlCheckFilename</a>
-</dd>
-<dt>tell</dt>
-<dd>
-<a href="html/libxml-parser.html#XML-COMPLETE-ATTRS-CAPS">XML_COMPLETE_ATTRS</a>
-<a href="html/libxml-parser.html#XML-DETECT-IDS-CAPS">XML_DETECT_IDS</a>
-<a href="html/libxml-parser.html#XML-SKIP-IDS-CAPS">XML_SKIP_IDS</a>
-</dd>
-<dt>tells</dt>
-<dd>
-<a href="html/libxml-xmlwin32version.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
-</dd>
-<dt>temporary</dt>
-<dd>
-<a href="html/libxml-xmlIO.html#XMLIOHTTPOPENW">xmlIOHTTPOpenW</a>
-</dd>
-<dt>terminated</dt>
-<dd>
-<a href="html/libxml-tree.html#XMLBUFFERCCAT">xmlBufferCCat</a>
-<a href="html/libxml-tree.html#XMLBUFFERCAT">xmlBufferCat</a>
-</dd>
-<dt>termination</dt>
-<dd>
-<a href="html/libxml-parser.html#XMLSTRCAT">xmlStrcat</a>
-<a href="html/libxml-parser.html#XMLSTRDUP">xmlStrdup</a>
-</dd>
-<dt>test</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSERHANDLEREFERENCE">xmlParserHandleReference</a>
-</dd>
-<dt>tested</dt>
-<dd>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-</dd>
-<dt>testing</dt>
-<dd>
-<a href="html/libxml-xmlregexp.html#XMLREGEXPCOMPILE">xmlRegexpCompile</a>
-</dd>
-<dt>text</dt>
-<dd>
-<a href="html/libxml-HTMLtree.html#HTML-TEXT-NODE-CAPS">HTML_TEXT_NODE</a>
-<a href="html/libxml-tree.html#XMLADDNEXTSIBLING">xmlAddNextSibling</a>
-<a href="html/libxml-valid.html#XMLISMIXEDELEMENT">xmlIsMixedElement</a>
-<a href="html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault</a>
-<a href="html/libxml-tree.html#XMLNEWDOCTEXT">xmlNewDocText</a>
-<a href="html/libxml-tree.html#XMLNEWDOCTEXTLEN">xmlNewDocTextLen</a>
-<a href="html/libxml-tree.html#XMLNEWTEXT">xmlNewText</a>
-<a href="html/libxml-tree.html#XMLNEWTEXTLEN">xmlNewTextLen</a>
-<a href="html/libxml-tree.html#XMLNODEGETCONTENT">xmlNodeGetContent</a>
-<a href="html/libxml-tree.html#XMLNODELISTGETRAWSTRING">xmlNodeListGetRawString</a>
-<a href="html/libxml-tree.html#XMLNODELISTGETSTRING">xmlNodeListGetString</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTVALUE">xmlParseAttValue</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTRIBUTE">xmlParseAttribute</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEELEMENTCHILDRENCONTENTDECL">xmlParseElementChildrenContentDecl</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEMARKUPDECL">xmlParseMarkupDecl</a>
-<a href="html/libxml-tree.html#XMLTEXTMERGE">xmlTextMerge</a>
-<a href="html/libxml-xmlreader.html#XMLTEXTREADERHASVALUE">xmlTextReaderHasValue</a>
-<a href="html/libxml-xmlreader.html#XMLTEXTREADERREADSTRING">xmlTextReaderReadString</a>
-<a href="html/libxml-xmlreader.html#XMLTEXTREADERVALUE">xmlTextReaderValue</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHISNODETYPE">xmlXPathIsNodeType</a>
-</dd>
-<dt>text-node</dt>
-<dd>
-<a href="html/libxml-tree.html#XMLISBLANKNODE">xmlIsBlankNode</a>
-</dd>
-<dt>textDecl?</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSEEXTERNALSUBSET">xmlParseExternalSubset</a>
-</dd>
-<dt>than</dt>
-<dd>
-<a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
-<a href="html/libxml-tree.html#XMLNEWNS">xmlNewNs</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTRIBUTE">xmlParseAttribute</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTRIBUTETYPE">xmlParseAttributeType</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEELEMENTDECL">xmlParseElementDecl</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEELEMENTMIXEDCONTENTDECL">xmlParseElementMixedContentDecl</a>
-<a href="html/libxml-parserInternals.html#XMLPARSESDDECL">xmlParseSDDecl</a>
-<a href="html/libxml-parserInternals.html#XMLPARSESTARTTAG">xmlParseStartTag</a>
-<a href="html/libxml-xmlerror.html#XMLSETGENERICERRORFUNC">xmlSetGenericErrorFunc</a>
-<a href="html/libxml-parser.html#XMLSTREQUAL">xmlStrEqual</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHCEILINGFUNCTION">xmlXPathCeilingFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHCOMPAREVALUES">xmlXPathCompareValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHFLOORFUNCTION">xmlXPathFloorFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSUBSTRINGFUNCTION">xmlXPathSubstringFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRANSLATEFUNCTION">xmlXPathTranslateFunction</a>
-</dd>
-<dt>thank</dt>
-<dd>
-<a href="html/libxml-xmlregexp.html#XMLREGEXPPTR">xmlRegexpPtr</a>
-</dd>
-<dt>their</dt>
-<dd>
-<a href="html/libxml-encoding.html#XMLCHARENCOUTFUNC">xmlCharEncOutFunc</a>
-<a href="html/libxml-entities.html#XMLENCODEENTITIES">xmlEncodeEntities</a>
-<a href="html/libxml-entities.html#XMLENCODEENTITIESREENTRANT">xmlEncodeEntitiesReentrant</a>
-<a href="html/libxml-catalog.html#XMLLOADCATALOGS">xmlLoadCatalogs</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEENTITYREF">xmlParseEntityRef</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHADDVALUES">xmlXPathAddValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHDIVVALUES">xmlXPathDivValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHIDFUNCTION">xmlXPathIdFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHMODVALUES">xmlXPathModValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHMULTVALUES">xmlXPathMultValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSUBVALUES">xmlXPathSubValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHVALUEFLIPSIGN">xmlXPathValueFlipSign</a>
-</dd>
-<dt>them</dt>
-<dd>
-<a href="html/libxml-nanoftp.html#XMLNANOFTPREAD">xmlNanoFTPRead</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPREAD">xmlNanoHTTPRead</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTVALUE">xmlParseAttValue</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTRIBUTETYPE">xmlParseAttributeType</a>
-<a href="html/libxml-globals.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE">xmlSubstituteEntitiesDefaultValue</a>
-</dd>
-<dt>there</dt>
-<dd>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-<a href="html/libxml-tree.html#XMLADDCHILD">xmlAddChild</a>
-<a href="html/libxml-tree.html#XMLADDNEXTSIBLING">xmlAddNextSibling</a>
-<a href="html/libxml-tree.html#XMLADDPREVSIBLING">xmlAddPrevSibling</a>
-<a href="html/libxml-tree.html#XMLBUILDQNAME">xmlBuildQName</a>
-<a href="html/libxml-xmlmemory.html#XMLGCMEMSETUP">xmlGcMemSetup</a>
-<a href="html/libxml-xmlerror.html#XMLGENERICERRORFUNC">xmlGenericErrorFunc</a>
-<a href="html/libxml-xmlmemory.html#XMLMEMSETUP">xmlMemSetup</a>
-<a href="html/libxml-nanoftp.html#XMLNANOFTPCHECKRESPONSE">xmlNanoFTPCheckResponse</a>
-<a href="html/libxml-nanoftp.html#XMLNANOFTPUPDATEURL">xmlNanoFTPUpdateURL</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEELEMENT">xmlParseElement</a>
-<a href="html/libxml-parserInternals.html#XMLPARSENOTATIONDECL">xmlParseNotationDecl</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEREFERENCE">xmlParseReference</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHLANGFUNCTION">xmlXPathLangFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNEXTPARENT">xmlXPathNextParent</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHROUNDFUNCTION">xmlXPathRoundFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSTRINGFUNCTION">xmlXPathStringFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRANSLATEFUNCTION">xmlXPathTranslateFunction</a>
-</dd>
-<dt>these</dt>
-<dd>
-<a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
-<a href="html/libxml-parserInternals.html#XMLPARSESDDECL">xmlParseSDDecl</a>
-</dd>
-<dt>they</dt>
-<dd>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-<a href="html/libxml-parser.html#XMLCREATEPUSHPARSERCTXT">xmlCreatePushParserCtxt</a>
-<a href="html/libxml-xmlregexp.html#XMLREGEXPPTR">xmlRegexpPtr</a>
-<a href="html/libxml-parser.html#XMLSTRCAT">xmlStrcat</a>
-<a href="html/libxml-parser.html#XMLSTRDUP">xmlStrdup</a>
-</dd>
-<dt>thing:</dt>
-<dd>
-<a href="html/libxml-xmlwin32version.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
-</dd>
-<dt>third</dt>
-<dd>
-<a href="html/libxml-xmlwin32version.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSUBSTRINGFUNCTION">xmlXPathSubstringFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRANSLATEFUNCTION">xmlXPathTranslateFunction</a>
-</dd>
-<dt>those</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLCHECKLANGUAGEID">xmlCheckLanguageID</a>
-<a href="html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault</a>
-<a href="html/libxml-parserInternals.html#XMLPARSESDDECL">xmlParseSDDecl</a>
-<a href="html/libxml-globals.html#XMLSAVENOEMPTYTAGS">xmlSaveNoEmptyTags</a>
-<a href="html/libxml-tree.html#XMLSEARCHNS">xmlSearchNs</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSUBSTRINGFUNCTION">xmlXPathSubstringFunction</a>
-</dd>
-<dt>though</dt>
-<dd>
-<a href="html/libxml-xmlIO.html#XMLNONETEXTERNALENTITYLOADER">xmlNoNetExternalEntityLoader</a>
-</dd>
-<dt>thread</dt>
-<dd>
-<a href="html/libxml-xmlwin32version.html#LIBXML-THREAD-ENABLED-CAPS">LIBXML_THREAD_ENABLED</a>
-<a href="html/libxml-threads.html#XMLCLEANUPTHREADS">xmlCleanupThreads</a>
-<a href="html/libxml-threads.html#XMLGETGLOBALSTATE">xmlGetGlobalState</a>
-<a href="html/libxml-threads.html#XMLGETTHREADID">xmlGetThreadId</a>
-<a href="html/libxml-threads.html#XMLINITTHREADS">xmlInitThreads</a>
-<a href="html/libxml-catalog.html#XMLINITIALIZECATALOG">xmlInitializeCatalog</a>
-<a href="html/libxml-threads.html#XMLISMAINTHREAD">xmlIsMainThread</a>
-<a href="html/libxml-catalog.html#XMLLOADCATALOG">xmlLoadCatalog</a>
-<a href="html/libxml-catalog.html#XMLLOADCATALOGS">xmlLoadCatalogs</a>
-</dd>
-<dt>three</dt>
-<dd>
-<a href="html/libxml-xmlwin32version.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
-</dd>
-<dt>through</dt>
-<dd>
-<a href="html/libxml-parser.html#XMLCREATEPUSHPARSERCTXT">xmlCreatePushParserCtxt</a>
-<a href="html/libxml-parserInternals.html#XMLDECODEENTITIES">xmlDecodeEntities</a>
-<a href="html/libxml-uri.html#XMLNORMALIZEURIPATH">xmlNormalizeURIPath</a>
-</dd>
-<dt>thumblers</dt>
-<dd>
-<a href="html/libxml-debugXML.html#XMLSHELLPWD">xmlShellPwd</a>
-</dd>
-<dt>thus</dt>
-<dd>
-<a href="html/libxml-threads.html#XMLNEWRMUTEX">xmlNewRMutex</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNEXTANCESTOR">xmlXPathNextAncestor</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNEXTANCESTORORSELF">xmlXPathNextAncestorOrSelf</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNEXTDESCENDANTORSELF">xmlXPathNextDescendantOrSelf</a>
-</dd>
-<dt>time</dt>
-<dd>
-<a href="html/libxml-index.html#XMLSCHEMAVALIDERROR">enum</a>
-<a href="html/libxml-xpath.html#XMLXPATHAXISFUNC">xmlXPathAxisFunc</a>
-</dd>
-<dt>token</dt>
-<dd>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION">xmlAutomataNewTransition</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION2">xmlAutomataNewTransition2</a>
-<a href="html/libxml-threads.html#XMLFREEMUTEX">xmlFreeMutex</a>
-<a href="html/libxml-threads.html#XMLMUTEXLOCK">xmlMutexLock</a>
-<a href="html/libxml-threads.html#XMLMUTEXUNLOCK">xmlMutexUnlock</a>
-<a href="html/libxml-threads.html#XMLNEWMUTEX">xmlNewMutex</a>
-<a href="html/libxml-xmlregexp.html#XMLREGEXECPUSHSTRING">xmlRegExecPushString</a>
-<a href="html/libxml-xmlregexp.html#XMLREGEXECPUSHSTRING2">xmlRegExecPushString2</a>
-</dd>
-<dt>token_r</dt>
-<dd>
-<a href="html/libxml-threads.html#XMLNEWRMUTEX">xmlNewRMutex</a>
-<a href="html/libxml-threads.html#XMLRMUTEXLOCK">xmlRMutexLock</a>
-<a href="html/libxml-threads.html#XMLRMUTEXUNLOCK">xmlRMutexUnlock</a>
-</dd>
-<dt>tokens</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSEENUMERATIONTYPE">xmlParseEnumerationType</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHIDFUNCTION">xmlXPathIdFunction</a>
-</dd>
-<dt>too</dt>
-<dd>
-<a href="html/libxml-xmlmemory.html#DEBUG-MEMORY-CAPS">DEBUG_MEMORY</a>
-<a href="html/libxml-index.html#XMLSCHEMAVALIDERROR">enum</a>
-<a href="html/libxml-HTMLtree.html#HTMLNODEDUMP">htmlNodeDump</a>
-<a href="html/libxml-HTMLtree.html#HTMLNODEDUMPFILE">htmlNodeDumpFile</a>
-<a href="html/libxml-HTMLtree.html#HTMLNODEDUMPFILEFORMAT">htmlNodeDumpFileFormat</a>
-<a href="html/libxml-HTMLtree.html#HTMLNODEDUMPFORMATOUTPUT">htmlNodeDumpFormatOutput</a>
-<a href="html/libxml-HTMLtree.html#HTMLNODEDUMPOUTPUT">htmlNodeDumpOutput</a>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-<a href="html/libxml-tree.html#XMLCOPYDOC">xmlCopyDoc</a>
-<a href="html/libxml-tree.html#XMLELEMDUMP">xmlElemDump</a>
-<a href="html/libxml-tree.html#XMLFREENODE">xmlFreeNode</a>
-<a href="html/libxml-tree.html#XMLFREENODELIST">xmlFreeNodeList</a>
-<a href="html/libxml-tree.html#XMLFREEPROP">xmlFreeProp</a>
-<a href="html/libxml-tree.html#XMLFREEPROPLIST">xmlFreePropList</a>
-<a href="html/libxml-entities.html#XMLGETDOCENTITY">xmlGetDocEntity</a>
-<a href="html/libxml-tree.html#XMLNODEDUMP">xmlNodeDump</a>
-<a href="html/libxml-tree.html#XMLNODEDUMPOUTPUT">xmlNodeDumpOutput</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEELEMENTMIXEDCONTENTDECL">xmlParseElementMixedContentDecl</a>
-<a href="html/libxml-tree.html#XMLREMOVEPROP">xmlRemoveProp</a>
-</dd>
-<dt>top</dt>
-<dd>
-<a href="html/libxml-xpathInternals.html#CAST-TO-BOOLEAN-CAPS">CAST_TO_BOOLEAN</a>
-<a href="html/libxml-xpathInternals.html#CAST-TO-NUMBER-CAPS">CAST_TO_NUMBER</a>
-<a href="html/libxml-xpathInternals.html#CAST-TO-STRING-CAPS">CAST_TO_STRING</a>
-<a href="html/libxml-xpathInternals.html#CHECK-TYPE-CAPS">CHECK_TYPE</a>
-<a href="html/libxml-xpathInternals.html#CHECK-TYPE0-CAPS">CHECK_TYPE0</a>
-<a href="html/libxml-schemasInternals.html#XML-SCHEMAS-ELEM-TOPLEVEL-CAPS">XML_SCHEMAS_ELEM_TOPLEVEL</a>
-<a href="html/libxml-parserInternals.html#INPUTPOP">inputPop</a>
-<a href="html/libxml-parserInternals.html#INPUTPUSH">inputPush</a>
-<a href="html/libxml-parserInternals.html#NAMEPOP">namePop</a>
-<a href="html/libxml-parserInternals.html#NAMEPUSH">namePush</a>
-<a href="html/libxml-parserInternals.html#NODEPOP">nodePop</a>
-<a href="html/libxml-parserInternals.html#NODEPUSH">nodePush</a>
-<a href="html/libxml-xpathInternals.html#VALUEPOP">valuePop</a>
-<a href="html/libxml-xpathInternals.html#VALUEPUSH">valuePush</a>
-<a href="html/libxml-parserInternals.html#XMLNAMESPACEPARSENCNAME">xmlNamespaceParseNCName</a>
-<a href="html/libxml-parserInternals.html#XMLNAMESPACEPARSENSDEF">xmlNamespaceParseNSDef</a>
-<a href="html/libxml-parserInternals.html#XMLNAMESPACEPARSEQNAME">xmlNamespaceParseQName</a>
-<a href="html/libxml-parserInternals.html#XMLPUSHINPUT">xmlPushInput</a>
-<a href="html/libxml-tree.html#XMLRECONCILIATENS">xmlReconciliateNs</a>
-</dd>
-<dt>track</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLENTITYREFERENCEFUNC">xmlEntityReferenceFunc</a>
-</dd>
-<dt>tracking</dt>
-<dd>
-<a href="html/libxml-xmlerror.html#XMLPARSERPRINTFILECONTEXT">xmlParserPrintFileContext</a>
-</dd>
-<dt>trailing</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTVALUE">xmlParseAttValue</a>
-<a href="html/libxml-valid.html#XMLVALIDCTXTNORMALIZEATTRIBUTEVALUE">xmlValidCtxtNormalizeAttributeValue</a>
-<a href="html/libxml-valid.html#XMLVALIDNORMALIZEATTRIBUTEVALUE">xmlValidNormalizeAttributeValue</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNODETRAILING">xmlXPathNodeTrailing</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNODETRAILINGSORTED">xmlXPathNodeTrailingSorted</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNORMALIZEFUNCTION">xmlXPathNormalizeFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRAILING">xmlXPathTrailing</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRAILINGSORTED">xmlXPathTrailingSorted</a>
-</dd>
-<dt>transaction</dt>
-<dd>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPSAVE">xmlNanoHTTPSave</a>
-</dd>
-<dt>transcoding</dt>
-<dd>
-<a href="html/libxml-index.html#XMLSCHEMAVALIDERROR">enum</a>
-<a href="html/libxml-xmlIO.html#XMLOUTPUTBUFFERWRITE">xmlOutputBufferWrite</a>
-<a href="html/libxml-xmlIO.html#XMLOUTPUTBUFFERWRITESTRING">xmlOutputBufferWriteString</a>
-<a href="html/libxml-xmlIO.html#XMLPARSERINPUTBUFFERGROW">xmlParserInputBufferGrow</a>
-<a href="html/libxml-xmlIO.html#XMLPARSERINPUTBUFFERPUSH">xmlParserInputBufferPush</a>
-<a href="html/libxml-xmlIO.html#XMLPARSERINPUTBUFFERREAD">xmlParserInputBufferRead</a>
-</dd>
-<dt>transfered</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSEPI">xmlParsePI</a>
-</dd>
-<dt>transformed</dt>
-<dd>
-<a href="html/libxml-relaxng.html#XMLRELAXNGDUMPTREE">xmlRelaxNGDumpTree</a>
-</dd>
-<dt>transistion</dt>
-<dd>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
-</dd>
-<dt>transition</dt>
-<dd>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWALLTRANS">xmlAutomataNewAllTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTEDTRANS">xmlAutomataNewCountedTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTERTRANS">xmlAutomataNewCounterTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWEPSILON">xmlAutomataNewEpsilon</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION">xmlAutomataNewTransition</a>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION2">xmlAutomataNewTransition2</a>
-</dd>
-<dt>transitions</dt>
-<dd>
-<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWALLTRANS">xmlAutomataNewAllTrans</a>
-</dd>
-<dt>translate</dt>
-<dd>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRANSLATEFUNCTION">xmlXPathTranslateFunction</a>
-</dd>
-<dt>translated</dt>
-<dd>
-<a href="html/libxml-index.html#XMLSCHEMAVALIDERROR">enum</a>
-</dd>
-<dt>translation</dt>
-<dd>
-<a href="html/libxml-index.html#XMLSCHEMAVALIDERROR">enum</a>
-<a href="html/libxml-uri.html#XMLURIUNESCAPESTRING">xmlURIUnescapeString</a>
-</dd>
-<dt>transparently</dt>
-<dd>
-<a href="html/libxml-globals.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE">xmlSubstituteEntitiesDefaultValue</a>
-</dd>
-<dt>transport</dt>
-<dd>
-<a href="html/libxml-nanoftp.html#XMLNANOFTPCLOSE">xmlNanoFTPClose</a>
-</dd>
-<dt>traversal</dt>
-<dd>
-<a href="html/libxml-xpath.html#XMLXPATHAXISFUNC">xmlXPathAxisFunc</a>
-</dd>
-<dt>traverse</dt>
-<dd>
-<a href="html/libxml-xpath.html#XMLXPATHAXISFUNC">xmlXPathAxisFunc</a>
-</dd>
-<dt>treated</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSEATTVALUE">xmlParseAttValue</a>
-</dd>
-<dt>tries</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#INPUT-CHUNK-CAPS">INPUT_CHUNK</a>
-<a href="html/libxml-parser.html#XMLCLEANUPPARSER">xmlCleanupParser</a>
-<a href="html/libxml-nanoftp.html#XMLNANOFTPREAD">xmlNanoFTPRead</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPREAD">xmlNanoHTTPRead</a>
-<a href="html/libxml-parser.html#XMLPARSERINPUTGROW">xmlParserInputGrow</a>
-</dd>
-<dt>trimmed</dt>
-<dd>
-<a href="html/libxml-index.html#XMLGLOBALSTATE">struct</a>
-</dd>
-<dt>trio</dt>
-<dd>
-<a href="html/libxml-xmlwin32version.html#WITHOUT-TRIO-CAPS">WITHOUT_TRIO</a>
-<a href="html/libxml-xmlwin32version.html#WITH-TRIO-CAPS">WITH_TRIO</a>
-<a href="html/libxml-xpath.html#XMLXPATHISINF">xmlXPathIsInf</a>
-<a href="html/libxml-xpath.html#XMLXPATHISNAN">xmlXPathIsNaN</a>
-</dd>
-<dt>troubles</dt>
-<dd>
-<a href="html/libxml-tree.html#XMLSEARCHNS">xmlSearchNs</a>
-</dd>
-<dt>true</dt>
-<dd>
-<a href="html/libxml-xmlschemastypes.html#XMLSCHEMAVALPREDEFTYPENODE">xmlSchemaValPredefTypeNode</a>
-<a href="html/libxml-xmlschemastypes.html#XMLSCHEMAVALIDATEPREDEFINEDTYPE">xmlSchemaValidatePredefinedType</a>
-<a href="html/libxml-xmlreader.html#XMLTEXTREADERNORMALIZATION">xmlTextReaderNormalization</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHBOOLEANFUNCTION">xmlXPathBooleanFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHCOMPAREVALUES">xmlXPathCompareValues</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHCONTAINSFUNCTION">xmlXPathContainsFunction</a>
-<a href="html/libxml-xpath.html#XMLXPATHEVALPREDICATE">xmlXPathEvalPredicate</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHEVALUATEPREDICATERESULT">xmlXPathEvaluatePredicateResult</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHLANGFUNCTION">xmlXPathLangFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNOTFUNCTION">xmlXPathNotFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHRETURNTRUE">xmlXPathReturnTrue</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSTARTSWITHFUNCTION">xmlXPathStartsWithFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHSTRINGFUNCTION">xmlXPathStringFunction</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHTRUEFUNCTION">xmlXPathTrueFunction</a>
-</dd>
-<dt>try</dt>
-<dd>
-<a href="html/libxml-xpathInternals.html#CAST-TO-BOOLEAN-CAPS">CAST_TO_BOOLEAN</a>
-<a href="html/libxml-xpathInternals.html#CAST-TO-NUMBER-CAPS">CAST_TO_NUMBER</a>
-<a href="html/libxml-xpathInternals.html#CAST-TO-STRING-CAPS">CAST_TO_STRING</a>
-<a href="html/libxml-HTMLparser.html#UTF8TOHTML">UTF8ToHtml</a>
-<a href="html/libxml-encoding.html#UTF8TOISOLAT1">UTF8Toisolat1</a>
-<a href="html/libxml-DOCBparser.html#DOCBENCODEENTITIES">docbEncodeEntities</a>
-<a href="html/libxml-HTMLparser.html#HTMLENCODEENTITIES">htmlEncodeEntities</a>
-<a href="html/libxml-HTMLtree.html#HTMLNODEDUMPFILEFORMAT">htmlNodeDumpFileFormat</a>
-<a href="html/libxml-encoding.html#ISOLAT1TOUTF8">isolat1ToUTF8</a>
-<a href="html/libxml-encoding.html#XMLCHARENCODINGINPUTFUNC">xmlCharEncodingInputFunc</a>
-<a href="html/libxml-encoding.html#XMLCHARENCODINGOUTPUTFUNC">xmlCharEncodingOutputFunc</a>
-<a href="html/libxml-xmlIO.html#XMLFILEOPEN">xmlFileOpen</a>
-<a href="html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPFETCH">xmlNanoHTTPFetch</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPMETHOD">xmlNanoHTTPMethod</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPMETHODREDIR">xmlNanoHTTPMethodRedir</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPOPEN">xmlNanoHTTPOpen</a>
-<a href="html/libxml-nanohttp.html#XMLNANOHTTPOPENREDIR">xmlNanoHTTPOpenRedir</a>
-<a href="html/libxml-parser.html#XMLPARSERINPUTREAD">xmlParserInputRead</a>
-<a href="html/libxml-tree.html#XMLRECONCILIATENS">xmlReconciliateNs</a>
-<a href="html/libxml-uri.html#XMLURIESCAPE">xmlURIEscape</a>
-<a href="html/libxml-valid.html#XMLVALIDATEROOT">xmlValidateRoot</a>
-</dd>
-<dt>tuple</dt>
-<dd>
-<a href="html/libxml-hash.html#XMLHASHADDENTRY2">xmlHashAddEntry2</a>
-<a href="html/libxml-hash.html#XMLHASHADDENTRY3">xmlHashAddEntry3</a>
-<a href="html/libxml-hash.html#XMLHASHLOOKUP2">xmlHashLookup2</a>
-<a href="html/libxml-hash.html#XMLHASHLOOKUP3">xmlHashLookup3</a>
-<a href="html/libxml-hash.html#XMLHASHREMOVEENTRY">xmlHashRemoveEntry</a>
-<a href="html/libxml-hash.html#XMLHASHREMOVEENTRY2">xmlHashRemoveEntry2</a>
-<a href="html/libxml-hash.html#XMLHASHREMOVEENTRY3">xmlHashRemoveEntry3</a>
-<a href="html/libxml-hash.html#XMLHASHSCAN3">xmlHashScan3</a>
-<a href="html/libxml-hash.html#XMLHASHSCANFULL3">xmlHashScanFull3</a>
-<a href="html/libxml-hash.html#XMLHASHUPDATEENTRY2">xmlHashUpdateEntry2</a>
-<a href="html/libxml-hash.html#XMLHASHUPDATEENTRY3">xmlHashUpdateEntry3</a>
-</dd>
-<dt>tuples</dt>
-<dd>
-<a href="html/libxml-hash.html#XMLHASHADDENTRY2">xmlHashAddEntry2</a>
-</dd>
-<dt>turned</dt>
-<dd>
-<a href="html/libxml-tree.html#XMLGETNONSPROP">xmlGetNoNsProp</a>
-<a href="html/libxml-tree.html#XMLGETNSPROP">xmlGetNsProp</a>
-<a href="html/libxml-tree.html#XMLGETPROP">xmlGetProp</a>
-<a href="html/libxml-tree.html#XMLHASNSPROP">xmlHasNsProp</a>
-<a href="html/libxml-tree.html#XMLHASPROP">xmlHasProp</a>
-<a href="html/libxml-parser.html#XMLLINENUMBERSDEFAULT">xmlLineNumbersDefault</a>
-</dd>
-<dt>two</dt>
-<dd>
-<a href="html/libxml-globals.html#XMLSAVENOEMPTYTAGS">xmlSaveNoEmptyTags</a>
-<a href="html/libxml-tree.html#XMLTEXTMERGE">xmlTextMerge</a>
-<a href="html/libxml-globals.html#XMLTREEINDENTSTRING">xmlTreeIndentString</a>
-<a href="html/libxml-encoding.html#XMLUTF8CHARCMP">xmlUTF8Charcmp</a>
-<a href="html/libxml-xpath.html#XMLXPATHCMPNODES">xmlXPathCmpNodes</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHNODESETMERGE">xmlXPathNodeSetMerge</a>
-<a href="html/libxml-xpathInternals.html#XMLXPATHROUNDFUNCTION">xmlXPathRoundFunction</a>
-<a href="html/libxml-xpointer.html#XMLXPTRLOCATIONSETMERGE">xmlXPtrLocationSetMerge</a>
-<a href="html/libxml-xpointer.html#XMLXPTRNEWLOCATIONSETNODES">xmlXPtrNewLocationSetNodes</a>
-</dd>
-<dt>two-character</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLCURRENTCHAR">xmlCurrentChar</a>
-</dd>
-<dt>types</dt>
-<dd>
-<a href="html/libxml-index.html#XMLSCHEMAVALIDERROR">enum</a>
-<a href="html/libxml-parser.html#XMLEXTERNALENTITYLOADER">xmlExternalEntityLoader</a>
-<a href="html/libxml-parserInternals.html#XMLPARSEELEMENT">xmlParseElement</a>
-<a href="html/libxml-parserInternals.html#XMLPARSESDDECL">xmlParseSDDecl</a>
-<a href="html/libxml-xmlschemastypes.html#XMLSCHEMACHECKFACET">xmlSchemaCheckFacet</a>
-</dd>
-<dt>typo</dt>
-<dd>
-<a href="html/libxml-parserInternals.html#XMLPARSETEXTDECL">xmlParseTextDecl</a>
-</dd>
-</dl>
-<h2 align="center">
-<a href="APIchunk0.html">A-C</a>
-<a href="APIchunk1.html">D-E</a>
-<a href="APIchunk2.html">F-I</a>
-<a href="APIchunk3.html">J-N</a>
-<a href="APIchunk4.html">O-R</a>
-<a href="APIchunk5.html">S-T</a>
-<a href="APIchunk6.html">U-X</a>
-<a href="APIchunk7.html">Y-a</a>
-<a href="APIchunk8.html">b-b</a>
-<a href="APIchunk9.html">c-c</a>
-<a href="APIchunk10.html">d-d</a>
-<a href="APIchunk11.html">e-e</a>
-<a href="APIchunk12.html">f-f</a>
-<a href="APIchunk13.html">g-h</a>
-<a href="APIchunk14.html">i-i</a>
-<a href="APIchunk15.html">j-l</a>
-<a href="APIchunk16.html">m-n</a>
-<a href="APIchunk17.html">o-o</a>
-<a href="APIchunk18.html">p-p</a>
-<a href="APIchunk19.html">q-r</a>
-<a href="APIchunk20.html">s-s</a>
-<a href="APIchunk21.html">t-t</a>
-<a href="APIchunk22.html">u-v</a>
-<a href="APIchunk23.html">w-x</a>
-</h2>
-<p><a href="bugs.html">Daniel Veillard</a></p>
-</td></tr></table></td></tr></table></td></tr></table></td>
-</tr></table></td></tr></table>
-</body>
-</html>
+</style><title>API Alphabetic Index q-r for libxml2</title></head><body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000"><table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr><td width="120"><a href="http://swpat.ffii.org/"><img src="epatents.png" alt="Action against software patents" /></a></td><td width="180"><a href="http://www.gnome.org/"><img src="gnome2.png" alt="Gnome2 Logo" /></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo" /></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo" /></a><div align="left"><a href="http://xmlsoft.org/"><img src="Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo" /></a></div></td><td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center"><h1>The XML C parser and toolkit of Gnome</h1><h2>API Alphabetic Index q-r for libxml2</h2></td></tr></table></td></tr></table></td></tr></table><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr><td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Developer Menu</b></center></td></tr><tr><td bgcolor="#fffacd"><form action="search.php" enctype="application/x-www-form-urlencoded" method="get"><input name="query" type="text" size="20" value="" /><input name="submit" type="submit" value="Search ..." /></form><ul><li><a href="index.html" style="font-weight:bold">Main Menu</a></li><li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li><li><a href="guidelines.html">XML Guidelines</a></li><li><a href="tutorial/index.html">Tutorial</a></li><li><a href="xmlreader.html">The Reader Interface</a></li><li><a href="XSLT.html">XSLT</a></li><li><a href="python.html">Python and bindings</a></li><li><a href="architecture.html">libxml2 architecture</a></li><li><a href="tree.html">The tree output</a></li><li><a href="interface.html">The SAX interface</a></li><li><a href="xmlmem.html">Memory Management</a></li><li><a href="xmlio.html">I/O Interfaces</a></li><li><a href="library.html">The parser interfaces</a></li><li><a href="entities.html">Entities or no entities</a></li><li><a href="namespaces.html">Namespaces</a></li><li><a href="upgrade.html">Upgrading 1.x code</a></li><li><a href="threads.html">Thread safety</a></li><li><a href="DOM.html">DOM Principles</a></li><li><a href="example.html">A real example</a></li><li><a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>API Indexes</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="APIchunk0.html">Alphabetic</a></li><li><a href="APIconstructors.html">Constructors</a></li><li><a href="APIfunctions.html">Functions/Types</a></li><li><a href="APIfiles.html">Modules</a></li><li><a href="APIsymbols.html">Symbols</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li><li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li><li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li><li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li><li><a href="ftp://xmlsoft.org/">FTP</a></li><li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li><li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li><li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li><li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li><li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li></ul></td></tr></table></td></tr></table></td><td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd"><h2 align="center"><a href="APIchunk0.html">A-B</a>
+<a href="APIchunk1.html">C-C</a>
+<a href="APIchunk2.html">D-E</a>
+<a href="APIchunk3.html">F-I</a>
+<a href="APIchunk4.html">J-N</a>
+<a href="APIchunk5.html">O-Q</a>
+<a href="APIchunk6.html">R-S</a>
+<a href="APIchunk7.html">T-U</a>
+<a href="APIchunk8.html">V-a</a>
+<a href="APIchunk9.html">b-b</a>
+<a href="APIchunk10.html">c-c</a>
+<a href="APIchunk11.html">d-d</a>
+<a href="APIchunk12.html">e-e</a>
+<a href="APIchunk13.html">f-f</a>
+<a href="APIchunk14.html">g-h</a>
+<a href="APIchunk15.html">i-i</a>
+<a href="APIchunk16.html">j-l</a>
+<a href="APIchunk17.html">m-m</a>
+<a href="APIchunk18.html">n-n</a>
+<a href="APIchunk19.html">o-o</a>
+<a href="APIchunk20.html">p-p</a>
+<a href="APIchunk21.html">q-r</a>
+<a href="APIchunk22.html">s-s</a>
+<a href="APIchunk23.html">t-t</a>
+<a href="APIchunk24.html">u-v</a>
+<a href="APIchunk25.html">w-x</a>
+</h2><h2>Letter q:</h2><dl><dt>qualified</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_QUALIF_ATTR">XML_SCHEMAS_QUALIF_ATTR</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_QUALIF_ELEM">XML_SCHEMAS_QUALIF_ELEM</a><br />
+<a href="html/libxml-valid.html#xmlGetDtdQAttrDesc">xmlGetDtdQAttrDesc</a><br />
+<a href="html/libxml-parserInternals.html#xmlNamespaceParseQName">xmlNamespaceParseQName</a><br />
+<a href="html/libxml-parserInternals.html#xmlSplitQName">xmlSplitQName</a><br />
+<a href="html/libxml-tree.html#xmlSplitQName2">xmlSplitQName2</a><br />
+<a href="html/libxml-tree.html#xmlSplitQName3">xmlSplitQName3</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstName">xmlTextReaderConstName</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderGetAttribute">xmlTextReaderGetAttribute</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderMoveToAttribute">xmlTextReaderMoveToAttribute</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderName">xmlTextReaderName</a><br />
+<a href="html/libxml-valid.html#xmlValidatePopElement">xmlValidatePopElement</a><br />
+<a href="html/libxml-valid.html#xmlValidatePushElement">xmlValidatePushElement</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathParseNCName">xmlXPathParseNCName</a><br />
+</dd><dt>query</dt><dd><a href="html/libxml-uri.html#_xmlURI">_xmlURI</a><br />
+</dd><dt>quot</dt><dd><a href="html/libxml-parserInternals.html#xmlParseEntityRef">xmlParseEntityRef</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseSDDecl">xmlParseSDDecl</a><br />
+<a href="html/libxml-parserInternals.html#xmlParserHandleReference">xmlParserHandleReference</a><br />
+</dd><dt>quotation</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderQuoteChar">xmlTextReaderQuoteChar</a><br />
+</dd><dt>quote</dt><dd><a href="html/libxml-DOCBparser.html#docbEncodeEntities">docbEncodeEntities</a><br />
+<a href="html/libxml-HTMLparser.html#htmlEncodeEntities">htmlEncodeEntities</a><br />
+<a href="html/libxml-tree.html#xmlBufferWriteQuotedString">xmlBufferWriteQuotedString</a><br />
+</dd><dt>quoted</dt><dd><a href="html/libxml-tree.html#xmlBufferWriteQuotedString">xmlBufferWriteQuotedString</a><br />
+</dd><dt>quotes</dt><dd><a href="html/libxml-parserInternals.html#xmlParseQuotedString">xmlParseQuotedString</a><br />
+</dd></dl><h2>Letter r:</h2><dl><dt>raise</dt><dd><a href="html/libxml-xpathInternals.html#XP_ERROR">XP_ERROR</a><br />
+<a href="html/libxml-xpathInternals.html#XP_ERROR0">XP_ERROR0</a><br />
+</dd><dt>raised</dt><dd><a href="html/libxml-xmlerror.html#_xmlError">_xmlError</a><br />
+<a href="html/libxml-xmlIO.html#xmlCheckHTTPInput">xmlCheckHTTPInput</a><br />
+<a href="html/libxml-nanoftp.html#xmlNanoFTPUpdateURL">xmlNanoFTPUpdateURL</a><br />
+<a href="html/libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathCheckError">xmlXPathCheckError</a><br />
+</dd><dt>range</dt><dd><a href="html/libxml-parserInternals.html#IS_BYTE_CHAR">IS_BYTE_CHAR</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewCounterTrans">xmlAutomataNewCounterTrans</a><br />
+<a href="html/libxml-tree.html#xmlBufferAdd">xmlBufferAdd</a><br />
+<a href="html/libxml-tree.html#xmlBufferAddHead">xmlBufferAddHead</a><br />
+<a href="html/libxml-chvalid.html#xmlCharInRange">xmlCharInRange</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderNormalization">xmlTextReaderNormalization</a><br />
+<a href="html/libxml-xpath.html#xmlXPathNodeSetItem">xmlXPathNodeSetItem</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrLocationSetAdd">xmlXPtrLocationSetAdd</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrLocationSetDel">xmlXPtrLocationSetDel</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrLocationSetRemove">xmlXPtrLocationSetRemove</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewCollapsedRange">xmlXPtrNewCollapsedRange</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewLocationSetNodes">xmlXPtrNewLocationSetNodes</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewRange">xmlXPtrNewRange</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewRangeNodeObject">xmlXPtrNewRangeNodeObject</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewRangeNodePoint">xmlXPtrNewRangeNodePoint</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewRangeNodes">xmlXPtrNewRangeNodes</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewRangePointNode">xmlXPtrNewRangePointNode</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrNewRangePoints">xmlXPtrNewRangePoints</a><br />
+</dd><dt>range-to</dt><dd><a href="html/libxml-xpointer.html#xmlXPtrRangeToFunction">xmlXPtrRangeToFunction</a><br />
+</dd><dt>ranges</dt><dd><a href="html/libxml-chvalid.html#_xmlChRangeGroup">_xmlChRangeGroup</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrFreeLocationSet">xmlXPtrFreeLocationSet</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrLocationSetMerge">xmlXPtrLocationSetMerge</a><br />
+</dd><dt>rangesets</dt><dd><a href="html/libxml-xpointer.html#xmlXPtrLocationSetMerge">xmlXPtrLocationSetMerge</a><br />
+</dd><dt>ratio</dt><dd><a href="html/libxml-tree.html#xmlGetDocCompressMode">xmlGetDocCompressMode</a><br />
+<a href="html/libxml-tree.html#xmlSetCompressMode">xmlSetCompressMode</a><br />
+<a href="html/libxml-tree.html#xmlSetDocCompressMode">xmlSetDocCompressMode</a><br />
+</dd><dt>ration</dt><dd><a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFilename">xmlOutputBufferCreateFilename</a><br />
+</dd><dt>raw</dt><dd><a href="html/libxml-xmlIO.html#_xmlParserInputBuffer">_xmlParserInputBuffer</a><br />
+<a href="html/libxml-parserInternals.html#xmlNamespaceParseNCName">xmlNamespaceParseNCName</a><br />
+<a href="html/libxml-parserInternals.html#xmlNamespaceParseNSDef">xmlNamespaceParseNSDef</a><br />
+<a href="html/libxml-parserInternals.html#xmlNamespaceParseQName">xmlNamespaceParseQName</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseCDSect">xmlParseCDSect</a><br />
+<a href="html/libxml-xmlIO.html#xmlParserInputBufferGrow">xmlParserInputBufferGrow</a><br />
+<a href="html/libxml-xmlwriter.html#xmlTextWriterWriteFormatRaw">xmlTextWriterWriteFormatRaw</a><br />
+<a href="html/libxml-xmlwriter.html#xmlTextWriterWriteRaw">xmlTextWriterWriteRaw</a><br />
+<a href="html/libxml-xmlwriter.html#xmlTextWriterWriteVFormatRaw">xmlTextWriterWriteVFormatRaw</a><br />
+</dd><dt>re-entrant</dt><dd><a href="html/libxml-threads.html#xmlLockLibrary">xmlLockLibrary</a><br />
+<a href="html/libxml-threads.html#xmlNewRMutex">xmlNewRMutex</a><br />
+<a href="html/libxml-threads.html#xmlUnlockLibrary">xmlUnlockLibrary</a><br />
+</dd><dt>reached</dt><dd><a href="html/libxml-xmlregexp.html#xmlRegExecPushString">xmlRegExecPushString</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegExecPushString2">xmlRegExecPushString2</a><br />
+</dd><dt>readable</dt><dd><a href="html/libxml-parser.html#xmlStrEqual">xmlStrEqual</a><br />
+</dd><dt>reader</dt><dd><a href="html/libxml-xmlreader.html#xmlFreeTextReader">xmlFreeTextReader</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderForDoc">xmlReaderForDoc</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderForFd">xmlReaderForFd</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderForFile">xmlReaderForFile</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderForIO">xmlReaderForIO</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderForMemory">xmlReaderForMemory</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewDoc">xmlReaderNewDoc</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewFd">xmlReaderNewFd</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewFile">xmlReaderNewFile</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewIO">xmlReaderNewIO</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewMemory">xmlReaderNewMemory</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewWalker">xmlReaderNewWalker</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderWalker">xmlReaderWalker</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstBaseUri">xmlTextReaderConstBaseUri</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstLocalName">xmlTextReaderConstLocalName</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstName">xmlTextReaderConstName</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstNamespaceUri">xmlTextReaderConstNamespaceUri</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstPrefix">xmlTextReaderConstPrefix</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderConstString">xmlTextReaderConstString</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderCurrentDoc">xmlTextReaderCurrentDoc</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderReadAttributeValue">xmlTextReaderReadAttributeValue</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderReadState">xmlTextReaderReadState</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderReadString">xmlTextReaderReadString</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema">xmlTextReaderRelaxNGSetSchema</a><br />
+</dd><dt>reading</dt><dd><a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
+<a href="html/libxml-debugXML.html#xmlShell">xmlShell</a><br />
+</dd><dt>ready</dt><dd><a href="html/libxml-parserInternals.html#INPUT_CHUNK">INPUT_CHUNK</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataCompile">xmlAutomataCompile</a><br />
+</dd><dt>realloc</dt><dd><a href="html/libxml-tree.html#_xmlBuffer">_xmlBuffer</a><br />
+<a href="html/libxml-xmlmemory.html#xmlGcMemGet">xmlGcMemGet</a><br />
+<a href="html/libxml-xmlmemory.html#xmlGcMemSetup">xmlGcMemSetup</a><br />
+<a href="html/libxml-xmlmemory.html#xmlMemGet">xmlMemGet</a><br />
+<a href="html/libxml-xmlmemory.html#xmlMemRealloc">xmlMemRealloc</a><br />
+<a href="html/libxml-xmlmemory.html#xmlMemSetup">xmlMemSetup</a><br />
+<a href="html/libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a><br />
+<a href="html/libxml-xmlmemory.html#xmlReallocLoc">xmlReallocLoc</a><br />
+</dd><dt>reallocated</dt><dd><a href="html/libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a><br />
+<a href="html/libxml-parser.html#xmlStrncat">xmlStrncat</a><br />
+</dd><dt>really</dt><dd><a href="html/libxml-HTMLtree.html#HTML_COMMENT_NODE">HTML_COMMENT_NODE</a><br />
+<a href="html/libxml-HTMLtree.html#HTML_ENTITY_REF_NODE">HTML_ENTITY_REF_NODE</a><br />
+<a href="html/libxml-HTMLtree.html#HTML_PI_NODE">HTML_PI_NODE</a><br />
+<a href="html/libxml-HTMLtree.html#HTML_PRESERVE_NODE">HTML_PRESERVE_NODE</a><br />
+<a href="html/libxml-HTMLtree.html#HTML_TEXT_NODE">HTML_TEXT_NODE</a><br />
+<a href="html/libxml-HTMLparser.html#htmlEntityLookup">htmlEntityLookup</a><br />
+<a href="html/libxml-HTMLparser.html#htmlEntityValueLookup">htmlEntityValueLookup</a><br />
+</dd><dt>received</dt><dd><a href="html/libxml-nanoftp.html#ftpDataCallback">ftpDataCallback</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPReturnCode">xmlNanoHTTPReturnCode</a><br />
+</dd><dt>receives</dt><dd><a href="html/libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a><br />
+</dd><dt>receiving</dt><dd><a href="html/libxml-SAX.html#characters">characters</a><br />
+<a href="html/libxml-SAX.html#ignorableWhitespace">ignorableWhitespace</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a><br />
+<a href="html/libxml-SAX2.html#xmlSAX2Characters">xmlSAX2Characters</a><br />
+<a href="html/libxml-SAX2.html#xmlSAX2IgnorableWhitespace">xmlSAX2IgnorableWhitespace</a><br />
+<a href="html/libxml-valid.html#xmlValidGetValidElements">xmlValidGetValidElements</a><br />
+</dd><dt>reclaim</dt><dd><a href="html/libxml-parser.html#xmlCleanupParser">xmlCleanupParser</a><br />
+<a href="html/libxml-threads.html#xmlFreeMutex">xmlFreeMutex</a><br />
+<a href="html/libxml-threads.html#xmlFreeRMutex">xmlFreeRMutex</a><br />
+</dd><dt>recognized</dt><dd><a href="html/libxml-encoding.html#xmlParseCharEncoding">xmlParseCharEncoding</a><br />
+</dd><dt>recommendation</dt><dd><a href="html/libxml-encoding.html#xmlDetectCharEncoding">xmlDetectCharEncoding</a><br />
+</dd><dt>recommendation:</dt><dd><a href="html/libxml-valid.html#xmlValidateAttributeDecl">xmlValidateAttributeDecl</a><br />
+<a href="html/libxml-valid.html#xmlValidateElementDecl">xmlValidateElementDecl</a><br />
+<a href="html/libxml-valid.html#xmlValidateNotationDecl">xmlValidateNotationDecl</a><br />
+<a href="html/libxml-valid.html#xmlValidateOneAttribute">xmlValidateOneAttribute</a><br />
+<a href="html/libxml-valid.html#xmlValidateOneElement">xmlValidateOneElement</a><br />
+<a href="html/libxml-valid.html#xmlValidateOneNamespace">xmlValidateOneNamespace</a><br />
+<a href="html/libxml-valid.html#xmlValidateRoot">xmlValidateRoot</a><br />
+</dd><dt>recomputed</dt><dd><a href="html/libxml-tree.html#xmlBufferAdd">xmlBufferAdd</a><br />
+<a href="html/libxml-tree.html#xmlBufferAddHead">xmlBufferAddHead</a><br />
+<a href="html/libxml-dict.html#xmlDictLookup">xmlDictLookup</a><br />
+</dd><dt>reconciliate</dt><dd><a href="html/libxml-tree.html#xmlReconciliateNs">xmlReconciliateNs</a><br />
+</dd><dt>record</dt><dd><a href="html/libxml-catalog.html#xmlACatalogAdd">xmlACatalogAdd</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogAdd">xmlCatalogAdd</a><br />
+<a href="html/libxml-parser.html#xmlParserAddNodeInfo">xmlParserAddNodeInfo</a><br />
+<a href="html/libxml-parser.html#xmlParserFindNodeInfoIndex">xmlParserFindNodeInfoIndex</a><br />
+</dd><dt>recover</dt><dd><a href="html/libxml-parser.html#xmlParseBalancedChunkMemoryRecover">xmlParseBalancedChunkMemoryRecover</a><br />
+</dd><dt>recovery</dt><dd><a href="html/libxml-parser.html#_xmlParserCtxt">_xmlParserCtxt</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseDoc">xmlSAXParseDoc</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseFile">xmlSAXParseFile</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseFileWithData">xmlSAXParseFileWithData</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseMemory">xmlSAXParseMemory</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseMemoryWithData">xmlSAXParseMemoryWithData</a><br />
+</dd><dt>recurse</dt><dd><a href="html/libxml-catalog.html#xmlLoadACatalog">xmlLoadACatalog</a><br />
+<a href="html/libxml-catalog.html#xmlLoadCatalog">xmlLoadCatalog</a><br />
+<a href="html/libxml-tree.html#xmlSearchNs">xmlSearchNs</a><br />
+<a href="html/libxml-valid.html#xmlValidateRoot">xmlValidateRoot</a><br />
+</dd><dt>recursive</dt><dd><a href="html/libxml-HTMLtree.html#htmlNodeDump">htmlNodeDump</a><br />
+<a href="html/libxml-HTMLtree.html#htmlNodeDumpFile">htmlNodeDumpFile</a><br />
+<a href="html/libxml-HTMLtree.html#htmlNodeDumpFileFormat">htmlNodeDumpFileFormat</a><br />
+<a href="html/libxml-HTMLtree.html#htmlNodeDumpFormatOutput">htmlNodeDumpFormatOutput</a><br />
+<a href="html/libxml-HTMLtree.html#htmlNodeDumpOutput">htmlNodeDumpOutput</a><br />
+<a href="html/libxml-HTMLparser.html#htmlParseElement">htmlParseElement</a><br />
+<a href="html/libxml-tree.html#xmlCopyDoc">xmlCopyDoc</a><br />
+<a href="html/libxml-valid.html#xmlCopyEnumeration">xmlCopyEnumeration</a><br />
+<a href="html/libxml-tree.html#xmlCopyNode">xmlCopyNode</a><br />
+<a href="html/libxml-tree.html#xmlCopyNodeList">xmlCopyNodeList</a><br />
+<a href="html/libxml-debugXML.html#xmlDebugDumpDocument">xmlDebugDumpDocument</a><br />
+<a href="html/libxml-debugXML.html#xmlDebugDumpDocumentHead">xmlDebugDumpDocumentHead</a><br />
+<a href="html/libxml-debugXML.html#xmlDebugDumpNode">xmlDebugDumpNode</a><br />
+<a href="html/libxml-debugXML.html#xmlDebugDumpNodeList">xmlDebugDumpNodeList</a><br />
+<a href="html/libxml-debugXML.html#xmlDebugDumpOneNode">xmlDebugDumpOneNode</a><br />
+<a href="html/libxml-tree.html#xmlDocCopyNode">xmlDocCopyNode</a><br />
+<a href="html/libxml-tree.html#xmlElemDump">xmlElemDump</a><br />
+<a href="html/libxml-valid.html#xmlFreeElementContent">xmlFreeElementContent</a><br />
+<a href="html/libxml-valid.html#xmlFreeEnumeration">xmlFreeEnumeration</a><br />
+<a href="html/libxml-tree.html#xmlFreeNode">xmlFreeNode</a><br />
+<a href="html/libxml-tree.html#xmlFreeNodeList">xmlFreeNodeList</a><br />
+<a href="html/libxml-threads.html#xmlNewRMutex">xmlNewRMutex</a><br />
+<a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
+<a href="html/libxml-tree.html#xmlNodeDumpOutput">xmlNodeDumpOutput</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseElement">xmlParseElement</a><br />
+<a href="html/libxml-parserInternals.html#xmlParsePEReference">xmlParsePEReference</a><br />
+<a href="html/libxml-parserInternals.html#xmlParserHandlePEReference">xmlParserHandlePEReference</a><br />
+</dd><dt>recursively</dt><dd><a href="html/libxml-catalog.html#xmlLoadACatalog">xmlLoadACatalog</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseAttValue">xmlParseAttValue</a><br />
+</dd><dt>redeclared</dt><dd><a href="html/libxml-tree.html#xmlReconciliateNs">xmlReconciliateNs</a><br />
+</dd><dt>redefinition</dt><dd><a href="html/libxml-parserInternals.html#xmlErrMemory">xmlErrMemory</a><br />
+</dd><dt>redir</dt><dd><a href="html/libxml-nanohttp.html#xmlNanoHTTPMethodRedir">xmlNanoHTTPMethodRedir</a><br />
+</dd><dt>redirected</dt><dd><a href="html/libxml-nanohttp.html#xmlNanoHTTPMethodRedir">xmlNanoHTTPMethodRedir</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPOpenRedir">xmlNanoHTTPOpenRedir</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPRedir">xmlNanoHTTPRedir</a><br />
+</dd><dt>redirection</dt><dd><a href="html/libxml-xmlIO.html#xmlCheckHTTPInput">xmlCheckHTTPInput</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPRedir">xmlNanoHTTPRedir</a><br />
+</dd><dt>reentrant</dt><dd><a href="html/libxml-parserInternals.html#htmlInitAutoClose">htmlInitAutoClose</a><br />
+<a href="html/libxml-entities.html#xmlEncodeEntitiesReentrant">xmlEncodeEntitiesReentrant</a><br />
+<a href="html/libxml-entities.html#xmlEncodeSpecialChars">xmlEncodeSpecialChars</a><br />
+<a href="html/libxml-threads.html#xmlFreeRMutex">xmlFreeRMutex</a><br />
+<a href="html/libxml-parser.html#xmlInitParser">xmlInitParser</a><br />
+<a href="html/libxml-threads.html#xmlNewRMutex">xmlNewRMutex</a><br />
+<a href="html/libxml-threads.html#xmlRMutexLock">xmlRMutexLock</a><br />
+<a href="html/libxml-threads.html#xmlRMutexUnlock">xmlRMutexUnlock</a><br />
+</dd><dt>ref</dt><dd><a href="html/libxml-entities.html#_xmlEntity">_xmlEntity</a><br />
+<a href="html/libxml-valid.html#xmlAddRef">xmlAddRef</a><br />
+<a href="html/libxml-valid.html#xmlFreeRefTable">xmlFreeRefTable</a><br />
+<a href="html/libxml-tree.html#xmlNewCharRef">xmlNewCharRef</a><br />
+</dd><dt>referenced</dt><dd><a href="html/libxml-list.html#xmlLinkGetData">xmlLinkGetData</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseAttValue">xmlParseAttValue</a><br />
+</dd><dt>references</dt><dd><a href="html/libxml-HTMLparser.html#htmlParseEntityRef">htmlParseEntityRef</a><br />
+<a href="html/libxml-valid.html#xmlGetRefs">xmlGetRefs</a><br />
+<a href="html/libxml-catalog.html#xmlLoadSGMLSuperCatalog">xmlLoadSGMLSuperCatalog</a><br />
+<a href="html/libxml-tree.html#xmlNewChild">xmlNewChild</a><br />
+<a href="html/libxml-tree.html#xmlNewDocNode">xmlNewDocNode</a><br />
+<a href="html/libxml-tree.html#xmlNewDocNodeEatName">xmlNewDocNodeEatName</a><br />
+<a href="html/libxml-tree.html#xmlNodeBufGetContent">xmlNodeBufGetContent</a><br />
+<a href="html/libxml-tree.html#xmlNodeGetContent">xmlNodeGetContent</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseAttribute">xmlParseAttribute</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseCharRef">xmlParseCharRef</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseEntityRef">xmlParseEntityRef</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseMarkupDecl">xmlParseMarkupDecl</a><br />
+<a href="html/libxml-parserInternals.html#xmlParsePEReference">xmlParsePEReference</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseReference">xmlParseReference</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseSDDecl">xmlParseSDDecl</a><br />
+<a href="html/libxml-parserInternals.html#xmlParserHandlePEReference">xmlParserHandlePEReference</a><br />
+<a href="html/libxml-parserInternals.html#xmlScanName">xmlScanName</a><br />
+<a href="html/libxml-parser.html#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a><br />
+</dd><dt>referencing</dt><dd><a href="html/libxml-entities.html#xmlGetDocEntity">xmlGetDocEntity</a><br />
+<a href="html/libxml-entities.html#xmlGetDtdEntity">xmlGetDtdEntity</a><br />
+<a href="html/libxml-entities.html#xmlGetParameterEntity">xmlGetParameterEntity</a><br />
+</dd><dt>referred</dt><dd><a href="html/libxml-parserInternals.html#xmlParseAttribute">xmlParseAttribute</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseCharRef">xmlParseCharRef</a><br />
+</dd><dt>refresh</dt><dd><a href="html/libxml-parser.html#xmlParserInputRead">xmlParserInputRead</a><br />
+</dd><dt>refs</dt><dd><a href="html/libxml-tree.html#_xmlDoc">_xmlDoc</a><br />
+<a href="html/libxml-parser.html#_xmlParserCtxt">_xmlParserCtxt</a><br />
+</dd><dt>refuse</dt><dd><a href="html/libxml-tree.html#xmlNewNs">xmlNewNs</a><br />
+</dd><dt>regexp</dt><dd><a href="html/libxml-tree.html#_xmlElement">_xmlElement</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataCompile">xmlAutomataCompile</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegExecPushString">xmlRegExecPushString</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegExecPushString2">xmlRegExecPushString2</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegFreeRegexp">xmlRegFreeRegexp</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegNewExecCtxt">xmlRegNewExecCtxt</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegexpPrint">xmlRegexpPrint</a><br />
+</dd><dt>register</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathRegisterVariableLookup">xmlXPathRegisterVariableLookup</a><br />
+</dd><dt>registered</dt><dd><a href="html/libxml-xmlerror.html#xmlCtxtGetLastError">xmlCtxtGetLastError</a><br />
+<a href="html/libxml-xmlerror.html#xmlCtxtResetLastError">xmlCtxtResetLastError</a><br />
+<a href="html/libxml-encoding.html#xmlFindCharEncodingHandler">xmlFindCharEncodingHandler</a><br />
+<a href="html/libxml-encoding.html#xmlGetCharEncodingHandler">xmlGetCharEncodingHandler</a><br />
+<a href="html/libxml-xmlerror.html#xmlGetLastError">xmlGetLastError</a><br />
+<a href="html/libxml-xmlIO.html#xmlRegisterInputCallbacks">xmlRegisterInputCallbacks</a><br />
+<a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
+<a href="html/libxml-xmlerror.html#xmlResetLastError">xmlResetLastError</a><br />
+<a href="html/libxml-tree.html#xmlSearchNs">xmlSearchNs</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderGetErrorHandler">xmlTextReaderGetErrorHandler</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathRegisteredFuncsCleanup">xmlXPathRegisteredFuncsCleanup</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathRegisteredNsCleanup">xmlXPathRegisteredNsCleanup</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathRegisteredVariablesCleanup">xmlXPathRegisteredVariablesCleanup</a><br />
+</dd><dt>registers</dt><dd><a href="html/libxml-encoding.html#xmlInitCharEncodingHandlers">xmlInitCharEncodingHandlers</a><br />
+<a href="html/libxml-encoding.html#xmlNewCharEncodingHandler">xmlNewCharEncodingHandler</a><br />
+</dd><dt>registration</dt><dd><a href="html/libxml-parser.html#XML_SKIP_IDS">XML_SKIP_IDS</a><br />
+<a href="html/libxml-globals.html#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a><br />
+</dd><dt>regular</dt><dd><a href="html/libxml-xmlversion.html#LIBXML_REGEXP_ENABLED">LIBXML_REGEXP_ENABLED</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegFreeExecCtxt">xmlRegFreeExecCtxt</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegNewExecCtxt">xmlRegNewExecCtxt</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegexpCompile">xmlRegexpCompile</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegexpExec">xmlRegexpExec</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegexpIsDeterminist">xmlRegexpIsDeterminist</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegexpPrint">xmlRegexpPrint</a><br />
+</dd><dt>reinitialize</dt><dd><a href="html/libxml-parser.html#xmlClearNodeInfoSeq">xmlClearNodeInfoSeq</a><br />
+<a href="html/libxml-parser.html#xmlClearParserCtxt">xmlClearParserCtxt</a><br />
+</dd><dt>related</dt><dd><a href="html/libxml-xmlversion.html#LIBXML_UNICODE_ENABLED">LIBXML_UNICODE_ENABLED</a><br />
+<a href="html/libxml-HTMLparser.html#htmlTagLookup">htmlTagLookup</a><br />
+<a href="html/libxml-parser.html#xmlCleanupParser">xmlCleanupParser</a><br />
+<a href="html/libxml-threads.html#xmlCleanupThreads">xmlCleanupThreads</a><br />
+<a href="html/libxml-threads.html#xmlInitThreads">xmlInitThreads</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPClose">xmlNanoHTTPClose</a><br />
+<a href="html/libxml-valid.html#xmlValidCtxtNormalizeAttributeValue">xmlValidCtxtNormalizeAttributeValue</a><br />
+<a href="html/libxml-valid.html#xmlValidNormalizeAttributeValue">xmlValidNormalizeAttributeValue</a><br />
+</dd><dt>relationships</dt><dd><a href="html/libxml-HTMLparser.html#_htmlElemDesc">_htmlElemDesc</a><br />
+</dd><dt>relative</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderGetAttributeNo">xmlTextReaderGetAttributeNo</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderMoveToAttributeNo">xmlTextReaderMoveToAttributeNo</a><br />
+<a href="html/libxml-encoding.html#xmlUTF8Strloc">xmlUTF8Strloc</a><br />
+<a href="html/libxml-encoding.html#xmlUTF8Strsub">xmlUTF8Strsub</a><br />
+</dd><dt>relativeURI</dt><dd><a href="html/libxml-uri.html#xmlParseURI">xmlParseURI</a><br />
+<a href="html/libxml-uri.html#xmlParseURIReference">xmlParseURIReference</a><br />
+</dd><dt>release</dt><dd><a href="html/libxml-parser.html#xmlClearNodeInfoSeq">xmlClearNodeInfoSeq</a><br />
+<a href="html/libxml-parser.html#xmlClearParserCtxt">xmlClearParserCtxt</a><br />
+<a href="html/libxml-parserInternals.html#xmlDecodeEntities">xmlDecodeEntities</a><br />
+<a href="html/libxml-threads.html#xmlUnlockLibrary">xmlUnlockLibrary</a><br />
+</dd><dt>releases</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderClose">xmlTextReaderClose</a><br />
+</dd><dt>rely</dt><dd><a href="html/libxml-parserInternals.html#xmlParseNamespace">xmlParseNamespace</a><br />
+</dd><dt>remainder</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderGetRemainder">xmlTextReaderGetRemainder</a><br />
+</dd><dt>remaining</dt><dd><a href="html/libxml-parser.html#xmlCreatePushParserCtxt">xmlCreatePushParserCtxt</a><br />
+<a href="html/libxml-valid.html#xmlValidityErrorFunc">xmlValidityErrorFunc</a><br />
+<a href="html/libxml-valid.html#xmlValidityWarningFunc">xmlValidityWarningFunc</a><br />
+</dd><dt>remapped</dt><dd><a href="html/libxml-encoding.html#xmlCharEncOutFunc">xmlCharEncOutFunc</a><br />
+</dd><dt>remote</dt><dd><a href="html/libxml-nanoftp.html#xmlNanoFTPCwd">xmlNanoFTPCwd</a><br />
+</dd><dt>removal</dt><dd><a href="html/libxml-hash.html#xmlHashRemoveEntry">xmlHashRemoveEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry2">xmlHashRemoveEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry3">xmlHashRemoveEntry3</a><br />
+</dd><dt>remove</dt><dd><a href="html/libxml-catalog.html#xmlACatalogRemove">xmlACatalogRemove</a><br />
+<a href="html/libxml-tree.html#xmlBufferShrink">xmlBufferShrink</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogRemove">xmlCatalogRemove</a><br />
+<a href="html/libxml-parserInternals.html#xmlDecodeEntities">xmlDecodeEntities</a><br />
+<a href="html/libxml-entities.html#xmlEncodeEntities">xmlEncodeEntities</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry">xmlHashRemoveEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry2">xmlHashRemoveEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry3">xmlHashRemoveEntry3</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseNamespace">xmlParseNamespace</a><br />
+<a href="html/libxml-xmlIO.html#xmlParserInputBufferGrow">xmlParserInputBufferGrow</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNodeSetRemove">xmlXPathNodeSetRemove</a><br />
+<a href="html/libxml-xpointer.html#xmlXPtrLocationSetRemove">xmlXPtrLocationSetRemove</a><br />
+</dd><dt>removed</dt><dd><a href="html/libxml-parserInternals.html#inputPop">inputPop</a><br />
+<a href="html/libxml-parserInternals.html#namePop">namePop</a><br />
+<a href="html/libxml-parserInternals.html#nodePop">nodePop</a><br />
+<a href="html/libxml-xpathInternals.html#valuePop">valuePop</a><br />
+<a href="html/libxml-catalog.html#xmlACatalogRemove">xmlACatalogRemove</a><br />
+<a href="html/libxml-tree.html#xmlBufferShrink">xmlBufferShrink</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogRemove">xmlCatalogRemove</a><br />
+<a href="html/libxml-parserInternals.html#xmlCheckLanguageID">xmlCheckLanguageID</a><br />
+<a href="html/libxml-parserInternals.html#xmlHandleEntity">xmlHandleEntity</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry">xmlHashRemoveEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry2">xmlHashRemoveEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashRemoveEntry3">xmlHashRemoveEntry3</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry">xmlHashUpdateEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry2">xmlHashUpdateEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry3">xmlHashUpdateEntry3</a><br />
+<a href="html/libxml-tree.html#xmlNewGlobalNs">xmlNewGlobalNs</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseNamespace">xmlParseNamespace</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseQuotedString">xmlParseQuotedString</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathTranslateFunction">xmlXPathTranslateFunction</a><br />
+</dd><dt>removes</dt><dd><a href="html/libxml-parserInternals.html#xmlParserInputShrink">xmlParserInputShrink</a><br />
+</dd><dt>removing</dt><dd><a href="html/libxml-catalog.html#xmlLoadSGMLSuperCatalog">xmlLoadSGMLSuperCatalog</a><br />
+</dd><dt>repeat</dt><dd><a href="html/libxml-xpath.html#xmlXPathAxisFunc">xmlXPathAxisFunc</a><br />
+</dd><dt>replace</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_FACET_REPLACE">XML_SCHEMAS_FACET_REPLACE</a><br />
+<a href="html/libxml-parser.html#_xmlParserCtxt">_xmlParserCtxt</a><br />
+<a href="html/libxml-tree.html#xmlNodeListGetRawString">xmlNodeListGetRawString</a><br />
+<a href="html/libxml-tree.html#xmlNodeListGetString">xmlNodeListGetString</a><br />
+<a href="html/libxml-valid.html#xmlValidGetValidElements">xmlValidGetValidElements</a><br />
+</dd><dt>replaced</dt><dd><a href="html/libxml-hash.html#xmlHashUpdateEntry">xmlHashUpdateEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry2">xmlHashUpdateEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry3">xmlHashUpdateEntry3</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathTranslateFunction">xmlXPathTranslateFunction</a><br />
+</dd><dt>replacement</dt><dd><a href="html/libxml-catalog.html#xmlACatalogAdd">xmlACatalogAdd</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogAdd">xmlCatalogAdd</a><br />
+<a href="html/libxml-parserInternals.html#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseAttValue">xmlParseAttValue</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseAttribute">xmlParseAttribute</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseElementChildrenContentDecl">xmlParseElementChildrenContentDecl</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseMarkupDecl">xmlParseMarkupDecl</a><br />
+</dd><dt>replaces</dt><dd><a href="html/libxml-xmlmemory.html#DEBUG_MEMORY">DEBUG_MEMORY</a><br />
+</dd><dt>replacing</dt><dd><a href="html/libxml-entities.html#xmlEncodeEntitiesReentrant">xmlEncodeEntitiesReentrant</a><br />
+<a href="html/libxml-entities.html#xmlEncodeSpecialChars">xmlEncodeSpecialChars</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseAttValue">xmlParseAttValue</a><br />
+<a href="html/libxml-valid.html#xmlValidCtxtNormalizeAttributeValue">xmlValidCtxtNormalizeAttributeValue</a><br />
+<a href="html/libxml-valid.html#xmlValidNormalizeAttributeValue">xmlValidNormalizeAttributeValue</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNormalizeFunction">xmlXPathNormalizeFunction</a><br />
+</dd><dt>reporting</dt><dd><a href="html/libxml-parserInternals.html#INPUT_CHUNK">INPUT_CHUNK</a><br />
+<a href="html/libxml-xpath.html#_xmlXPathContext">_xmlXPathContext</a><br />
+<a href="html/libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a><br />
+</dd><dt>reports</dt><dd><a href="html/libxml-DOCBparser.html#docbCreatePushParserCtxt">docbCreatePushParserCtxt</a><br />
+<a href="html/libxml-HTMLparser.html#htmlCreatePushParserCtxt">htmlCreatePushParserCtxt</a><br />
+<a href="html/libxml-parser.html#xmlCreatePushParserCtxt">xmlCreatePushParserCtxt</a><br />
+</dd><dt>repr</dt><dd><a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a><br />
+</dd><dt>representation</dt><dd><a href="html/libxml-HTMLparser.html#_htmlElemDesc">_htmlElemDesc</a><br />
+</dd><dt>represented</dt><dd><a href="html/libxml-parserInternals.html#xmlParseCharData">xmlParseCharData</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathStringFunction">xmlXPathStringFunction</a><br />
+</dd><dt>represented:</dt><dd><a href="html/libxml-HTMLparser.html#_htmlElemDesc">_htmlElemDesc</a><br />
+</dd><dt>representing</dt><dd><a href="html/libxml-xmlmemory.html#xmlMemUsed">xmlMemUsed</a><br />
+</dd><dt>request</dt><dd><a href="html/libxml-xmlIO.html#xmlIOHTTPOpenW">xmlIOHTTPOpenW</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPMethod">xmlNanoHTTPMethod</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPMethodRedir">xmlNanoHTTPMethodRedir</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPOpen">xmlNanoHTTPOpen</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPOpenRedir">xmlNanoHTTPOpenRedir</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPReturnCode">xmlNanoHTTPReturnCode</a><br />
+</dd><dt>requested</dt><dd><a href="html/libxml-parser.html#xmlExternalEntityLoader">xmlExternalEntityLoader</a><br />
+<a href="html/libxml-valid.html#xmlIsID">xmlIsID</a><br />
+<a href="html/libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a><br />
+<a href="html/libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a><br />
+</dd><dt>requests</dt><dd><a href="html/libxml-xmlIO.html#xmlRegisterHTTPPostCallbacks">xmlRegisterHTTPPostCallbacks</a><br />
+</dd><dt>required</dt><dd><a href="html/libxml-HTMLparser.html#htmlRequiredAttrs">htmlRequiredAttrs</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogSetDebug">xmlCatalogSetDebug</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathStringFunction">xmlXPathStringFunction</a><br />
+</dd><dt>requires</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_QUALIF_ATTR">XML_SCHEMAS_QUALIF_ATTR</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_QUALIF_ELEM">XML_SCHEMAS_QUALIF_ELEM</a><br />
+<a href="html/libxml-HTMLparser.html#_htmlElemDesc">_htmlElemDesc</a><br />
+<a href="html/libxml-c14n.html#xmlC14NDocSaveTo">xmlC14NDocSaveTo</a><br />
+<a href="html/libxml-c14n.html#xmlC14NExecute">xmlC14NExecute</a><br />
+<a href="html/libxml-tree.html#xmlGetLineNo">xmlGetLineNo</a><br />
+<a href="html/libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a><br />
+</dd><dt>requred</dt><dd><a href="html/libxml-c14n.html#xmlC14NDocSave">xmlC14NDocSave</a><br />
+</dd><dt>reserved</dt><dd><a href="html/libxml-uri.html#xmlURIEscapeStr">xmlURIEscapeStr</a><br />
+</dd><dt>reset</dt><dd><a href="html/libxml-xmlerror.html#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a><br />
+<a href="html/libxml-tree.html#xmlNodeSetBase">xmlNodeSetBase</a><br />
+<a href="html/libxml-tree.html#xmlNodeSetName">xmlNodeSetName</a><br />
+<a href="html/libxml-tree.html#xmlNodeSetSpacePreserve">xmlNodeSetSpacePreserve</a><br />
+<a href="html/libxml-xmlerror.html#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a><br />
+<a href="html/libxml-tree.html#xmlSetNsProp">xmlSetNsProp</a><br />
+<a href="html/libxml-tree.html#xmlSetProp">xmlSetProp</a><br />
+<a href="html/libxml-xmlerror.html#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a><br />
+</dd><dt>resides</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderConstXmlLang">xmlTextReaderConstXmlLang</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderXmlLang">xmlTextReaderXmlLang</a><br />
+</dd><dt>resize</dt><dd><a href="html/libxml-tree.html#xmlBufferResize">xmlBufferResize</a><br />
+</dd><dt>resolution</dt><dd><a href="html/libxml-SAX.html#resolveEntity">resolveEntity</a><br />
+<a href="html/libxml-parser.html#resolveEntitySAXFunc">resolveEntitySAXFunc</a><br />
+<a href="html/libxml-catalog.html#xmlACatalogResolve">xmlACatalogResolve</a><br />
+<a href="html/libxml-catalog.html#xmlACatalogResolveURI">xmlACatalogResolveURI</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogLocalResolve">xmlCatalogLocalResolve</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogLocalResolveURI">xmlCatalogLocalResolveURI</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogResolve">xmlCatalogResolve</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogResolveURI">xmlCatalogResolveURI</a><br />
+<a href="html/libxml-catalog.html#xmlCatalogSetDefaultPrefer">xmlCatalogSetDefaultPrefer</a><br />
+<a href="html/libxml-xmlIO.html#xmlNoNetExternalEntityLoader">xmlNoNetExternalEntityLoader</a><br />
+<a href="html/libxml-SAX2.html#xmlSAX2ResolveEntity">xmlSAX2ResolveEntity</a><br />
+</dd><dt>resolveEntity</dt><dd><a href="html/libxml-SAX.html#resolveEntity">resolveEntity</a><br />
+<a href="html/libxml-parser.html#resolveEntitySAXFunc">resolveEntitySAXFunc</a><br />
+</dd><dt>resolved</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderLookupNamespace">xmlTextReaderLookupNamespace</a><br />
+</dd><dt>resolver</dt><dd><a href="html/libxml-parser.html#xmlGetExternalEntityLoader">xmlGetExternalEntityLoader</a><br />
+<a href="html/libxml-parser.html#xmlSetExternalEntityLoader">xmlSetExternalEntityLoader</a><br />
+</dd><dt>resources</dt><dd><a href="html/libxml-parser.html#xmlClearParserCtxt">xmlClearParserCtxt</a><br />
+<a href="html/libxml-threads.html#xmlFreeMutex">xmlFreeMutex</a><br />
+<a href="html/libxml-threads.html#xmlFreeRMutex">xmlFreeRMutex</a><br />
+<a href="html/libxml-xmlreader.html#xmlFreeTextReader">xmlFreeTextReader</a><br />
+<a href="html/libxml-xmlwriter.html#xmlFreeTextWriter">xmlFreeTextWriter</a><br />
+<a href="html/libxml-xmlIO.html#xmlOutputBufferClose">xmlOutputBufferClose</a><br />
+<a href="html/libxml-relaxng.html#xmlRelaxNGFreeParserCtxt">xmlRelaxNGFreeParserCtxt</a><br />
+<a href="html/libxml-relaxng.html#xmlRelaxNGFreeValidCtxt">xmlRelaxNGFreeValidCtxt</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaFreeParserCtxt">xmlSchemaFreeParserCtxt</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderClose">xmlTextReaderClose</a><br />
+</dd><dt>respecting</dt><dd><a href="html/libxml-valid.html#xmlValidGetValidElements">xmlValidGetValidElements</a><br />
+</dd><dt>response</dt><dd><a href="html/libxml-nanoftp.html#xmlNanoFTPCheckResponse">xmlNanoFTPCheckResponse</a><br />
+<a href="html/libxml-nanoftp.html#xmlNanoFTPGetResponse">xmlNanoFTPGetResponse</a><br />
+</dd><dt>responsible</dt><dd><a href="html/libxml-c14n.html#xmlC14NDocDumpMemory">xmlC14NDocDumpMemory</a><br />
+<a href="html/libxml-uri.html#xmlCanonicPath">xmlCanonicPath</a><br />
+</dd><dt>restored</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a><br />
+</dd><dt>restrict</dt><dd><a href="html/libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a><br />
+</dd><dt>results</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathEqualValues">xmlXPathEqualValues</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNotEqualValues">xmlXPathNotEqualValues</a><br />
+</dd><dt>retrieve</dt><dd><a href="html/libxml-threads.html#xmlGetGlobalState">xmlGetGlobalState</a><br />
+<a href="html/libxml-nanoftp.html#xmlNanoFTPGet">xmlNanoFTPGet</a><br />
+<a href="html/libxml-nanoftp.html#xmlNanoFTPGetSocket">xmlNanoFTPGetSocket</a><br />
+</dd><dt>retrieved</dt><dd><a href="html/libxml-hash.html#xmlHashAddEntry">xmlHashAddEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashAddEntry2">xmlHashAddEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashAddEntry3">xmlHashAddEntry3</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry">xmlHashUpdateEntry</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry2">xmlHashUpdateEntry2</a><br />
+<a href="html/libxml-hash.html#xmlHashUpdateEntry3">xmlHashUpdateEntry3</a><br />
+</dd><dt>retry</dt><dd><a href="html/libxml-valid.html#xmlValidGetValidElements">xmlValidGetValidElements</a><br />
+</dd><dt>returning</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathStringFunction">xmlXPathStringFunction</a><br />
+</dd><dt>reuse</dt><dd><a href="html/libxml-tree.html#xmlReconciliateNs">xmlReconciliateNs</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegExecPushString">xmlRegExecPushString</a><br />
+<a href="html/libxml-xmlregexp.html#xmlRegExecPushString2">xmlRegExecPushString2</a><br />
+</dd><dt>reuses</dt><dd><a href="html/libxml-HTMLparser.html#htmlCtxtReadDoc">htmlCtxtReadDoc</a><br />
+<a href="html/libxml-HTMLparser.html#htmlCtxtReadFd">htmlCtxtReadFd</a><br />
+<a href="html/libxml-HTMLparser.html#htmlCtxtReadFile">htmlCtxtReadFile</a><br />
+<a href="html/libxml-HTMLparser.html#htmlCtxtReadIO">htmlCtxtReadIO</a><br />
+<a href="html/libxml-HTMLparser.html#htmlCtxtReadMemory">htmlCtxtReadMemory</a><br />
+<a href="html/libxml-parser.html#xmlCtxtReadDoc">xmlCtxtReadDoc</a><br />
+<a href="html/libxml-parser.html#xmlCtxtReadFd">xmlCtxtReadFd</a><br />
+<a href="html/libxml-parser.html#xmlCtxtReadFile">xmlCtxtReadFile</a><br />
+<a href="html/libxml-parser.html#xmlCtxtReadIO">xmlCtxtReadIO</a><br />
+<a href="html/libxml-parser.html#xmlCtxtReadMemory">xmlCtxtReadMemory</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewDoc">xmlReaderNewDoc</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewFd">xmlReaderNewFd</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewFile">xmlReaderNewFile</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewIO">xmlReaderNewIO</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewMemory">xmlReaderNewMemory</a><br />
+<a href="html/libxml-xmlreader.html#xmlReaderNewWalker">xmlReaderNewWalker</a><br />
+</dd><dt>reusing</dt><dd><a href="html/libxml-parser.html#xmlCleanupParser">xmlCleanupParser</a><br />
+<a href="html/libxml-xinclude.html#xmlXIncludeProcessNode">xmlXIncludeProcessNode</a><br />
+</dd><dt>reverse</dt><dd><a href="html/libxml-list.html#xmlListReverseSearch">xmlListReverseSearch</a><br />
+<a href="html/libxml-list.html#xmlListReverseWalk">xmlListReverseWalk</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNextAncestor">xmlXPathNextAncestor</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNextAncestorOrSelf">xmlXPathNextAncestorOrSelf</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNextPreceding">xmlXPathNextPreceding</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNextPrecedingSibling">xmlXPathNextPrecedingSibling</a><br />
+</dd><dt>right</dt><dd><a href="html/libxml-xmlautomata.html#xmlAutomataNewCounterTrans">xmlAutomataNewCounterTrans</a><br />
+<a href="html/libxml-xmlIO.html#xmlCheckFilename">xmlCheckFilename</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseCharData">xmlParseCharData</a><br />
+<a href="html/libxml-tree.html#xmlSetListDoc">xmlSetListDoc</a><br />
+<a href="html/libxml-tree.html#xmlSetTreeDoc">xmlSetTreeDoc</a><br />
+</dd><dt>role</dt><dd><a href="html/libxml-xlink.html#xlinkSimpleLinkFunk">xlinkSimpleLinkFunk</a><br />
+</dd><dt>roles</dt><dd><a href="html/libxml-xlink.html#xlinkExtendedLinkFunk">xlinkExtendedLinkFunk</a><br />
+<a href="html/libxml-xlink.html#xlinkExtendedLinkSetFunk">xlinkExtendedLinkSetFunk</a><br />
+</dd><dt>rollback</dt><dd><a href="html/libxml-parserInternals.html#xmlScanName">xmlScanName</a><br />
+</dd><dt>root</dt><dd><a href="html/libxml-SAX.html#externalSubset">externalSubset</a><br />
+<a href="html/libxml-parser.html#externalSubsetSAXFunc">externalSubsetSAXFunc</a><br />
+<a href="html/libxml-SAX.html#internalSubset">internalSubset</a><br />
+<a href="html/libxml-parser.html#internalSubsetSAXFunc">internalSubsetSAXFunc</a><br />
+<a href="html/libxml-tree.html#xmlDocGetRootElement">xmlDocGetRootElement</a><br />
+<a href="html/libxml-tree.html#xmlDocSetRootElement">xmlDocSetRootElement</a><br />
+<a href="html/libxml-tree.html#xmlNewGlobalNs">xmlNewGlobalNs</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseDocTypeDecl">xmlParseDocTypeDecl</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseNamespace">xmlParseNamespace</a><br />
+<a href="html/libxml-SAX2.html#xmlSAX2ExternalSubset">xmlSAX2ExternalSubset</a><br />
+<a href="html/libxml-SAX2.html#xmlSAX2InternalSubset">xmlSAX2InternalSubset</a><br />
+<a href="html/libxml-debugXML.html#xmlShellPwd">xmlShellPwd</a><br />
+<a href="html/libxml-valid.html#xmlValidateRoot">xmlValidateRoot</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathNewValueTree">xmlXPathNewValueTree</a><br />
+<a href="html/libxml-xpathInternals.html#xmlXPathRoot">xmlXPathRoot</a><br />
+</dd><dt>round</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathRoundFunction">xmlXPathRoundFunction</a><br />
+</dd><dt>routines</dt><dd><a href="html/libxml-DOCBparser.html#docbSAXParseDoc">docbSAXParseDoc</a><br />
+<a href="html/libxml-DOCBparser.html#docbSAXParseFile">docbSAXParseFile</a><br />
+<a href="html/libxml-HTMLparser.html#htmlSAXParseFile">htmlSAXParseFile</a><br />
+<a href="html/libxml-xmlmemory.html#xmlGcMemSetup">xmlGcMemSetup</a><br />
+<a href="html/libxml-xmlmemory.html#xmlMemSetup">xmlMemSetup</a><br />
+<a href="html/libxml-parserInternals.html#xmlParserHandleReference">xmlParserHandleReference</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseDoc">xmlSAXParseDoc</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseEntity">xmlSAXParseEntity</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseFile">xmlSAXParseFile</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseFileWithData">xmlSAXParseFileWithData</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseMemory">xmlSAXParseMemory</a><br />
+<a href="html/libxml-parser.html#xmlSAXParseMemoryWithData">xmlSAXParseMemoryWithData</a><br />
+<a href="html/libxml-parser.html#xmlSAXUserParseFile">xmlSAXUserParseFile</a><br />
+<a href="html/libxml-parser.html#xmlSAXUserParseMemory">xmlSAXUserParseMemory</a><br />
+</dd><dt>rule</dt><dd><a href="html/libxml-parserInternals.html#xmlParseEntityRef">xmlParseEntityRef</a><br />
+<a href="html/libxml-parserInternals.html#xmlParseStartTag">xmlParseStartTag</a><br />
+</dd><dt>rules</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathSubstringFunction">xmlXPathSubstringFunction</a><br />
+</dd><dt>run</dt><dd><a href="html/libxml-parser.html#_xmlParserCtxt">_xmlParserCtxt</a><br />
+</dd><dt>running</dt><dd><a href="html/libxml-parser.html#xmlKeepBlanksDefault">xmlKeepBlanksDefault</a><br />
+</dd><dt>runtime</dt><dd><a href="html/libxml-parserInternals.html#XML_MAX_NAMELEN">XML_MAX_NAMELEN</a><br />
+</dd></dl><h2 align="center"><a href="APIchunk0.html">A-B</a>
+<a href="APIchunk1.html">C-C</a>
+<a href="APIchunk2.html">D-E</a>
+<a href="APIchunk3.html">F-I</a>
+<a href="APIchunk4.html">J-N</a>
+<a href="APIchunk5.html">O-Q</a>
+<a href="APIchunk6.html">R-S</a>
+<a href="APIchunk7.html">T-U</a>
+<a href="APIchunk8.html">V-a</a>
+<a href="APIchunk9.html">b-b</a>
+<a href="APIchunk10.html">c-c</a>
+<a href="APIchunk11.html">d-d</a>
+<a href="APIchunk12.html">e-e</a>
+<a href="APIchunk13.html">f-f</a>
+<a href="APIchunk14.html">g-h</a>
+<a href="APIchunk15.html">i-i</a>
+<a href="APIchunk16.html">j-l</a>
+<a href="APIchunk17.html">m-m</a>
+<a href="APIchunk18.html">n-n</a>
+<a href="APIchunk19.html">o-o</a>
+<a href="APIchunk20.html">p-p</a>
+<a href="APIchunk21.html">q-r</a>
+<a href="APIchunk22.html">s-s</a>
+<a href="APIchunk23.html">t-t</a>
+<a href="APIchunk24.html">u-v</a>
+<a href="APIchunk25.html">w-x</a>
+</h2><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

@@ -31,14 +31,16 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
 
 man_MANS = xmllint.1 xmlcatalog.1
 
-all: $(PAGES) $(top_srcdir)/NEWS libxml2.xsa $(man_MANS)
+all: api web $(top_srcdir)/NEWS libxml2.xsa $(man_MANS)
 
-web: $(PAGES) $(APIPAGES)
+web: $(PAGES) $(APIPAGES) $(srcdir)/html/index.html
 
 $(PAGES): xml.html site.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  echo "Rebuilding the HTML Web pages from xml.html" ; \
 	  $(bindir)/xsltproc --nonet --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
 	-@(if [ -x $(bindir)/xmllint ] ; then \
+	  echo "Validating the HTML Web pages" ; \
 	  $(bindir)/xmllint --nonet --valid --noout $(PAGES) ; fi );
 
 $(top_srcdir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
@@ -49,17 +51,16 @@ libxml2.xsa: $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc --nonet $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
 
-$(APIPAGES): libxml2-refs.xml site.xsl api.xsl
+$(APIPAGES): libxml2-api.xml libxml2-refs.xml $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/api.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
-	  $(bindir)/xsltproc --nonet --html $(top_srcdir)/doc/api.xsl $(top_srcdir)/doc/xml.html ; fi );
+	  echo "Rebuilding the HTML API pages from libxml2-refs.xml" ; \
+	  $(bindir)/xsltproc --nonet --html $(top_srcdir)/doc/api.xsl \
+	                     $(top_srcdir)/doc/xml.html ; fi );
+	-@(if [ -x $(bindir)/xmllint ] ; then \
+	  echo "Validating the HTML API pages" ; \
+	  $(bindir)/xmllint --nonet --valid --noout API*.html ; fi );
 
-xmllint.1: xmllint.xml
-	-@(xsltproc --nonet xmllint.xml)
-
-xmlcatalog.1: xmlcatalog_man.xml
-	-@(xsltproc --nonet xmlcatalog_man.xml)
-
-html: libxml2-api.xml $(srcdir)/newapi.xsl
+$(srcdir)/html/index.html: libxml2-api.xml $(srcdir)/newapi.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  echo "Rebuilding the HTML pages from the XML API" ; \
 	  $(bindir)/xsltproc \
@@ -68,15 +69,21 @@ html: libxml2-api.xml $(srcdir)/newapi.xsl
 	  echo "Validating the resulting XHTML pages" ; \
 	  $(bindir)/xmllint --nonet --valid --noout html/*.html ; fi );
 
-libxml2-api.xml: apibuild.py ../include/libxml/*.h ../*.c
-	-(./apibuild.py)
+api: libxml2-api.xml libxml2-refs.xml $(WIN32_DIR)/libxml2.def.src
 
 $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc -o $(WIN32_DIR)/libxml2.def.src \
 	  --nonet $(WIN32_DIR)/defgen.xsl libxml2-api.xml ; fi )
 
-api: libxml2-api.xml libxml2-refs.xml $(WIN32_DIR)/libxml2.def.src
+libxml2-api.xml libxml2-refs.xml: apibuild.py ../include/libxml/*.h ../*.c
+	-(./apibuild.py)
+
+xmllint.1: xmllint.xml
+	-@(xsltproc --nonet xmllint.xml)
+
+xmlcatalog.1: xmlcatalog_man.xml
+	-@(xsltproc --nonet xmlcatalog_man.xml)
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
@@ -84,7 +91,7 @@ clean-local:
 maintainer-clean-local: clean
 	rm -rf libxml-decl-list.txt libxml-decl.txt 
 
-rebuild: api html
+rebuild: api web
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)

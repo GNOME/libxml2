@@ -8195,12 +8195,12 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the length of the buffer in bytes'/>
     </functype>
     <function name='xmlIsBaseChar' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsBaseChar_ch or xmlIsBaseCharQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsBaseChar_ch or xmlIsBaseCharQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsBlank' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsBlank_ch or xmlIsBlankQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsBlank_ch or xmlIsBlankQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
@@ -8210,22 +8210,22 @@ actually an xmlCharEncoding'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
     </function>
     <function name='xmlIsChar' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsChar_ch or xmlIsCharQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsChar_ch or xmlIsCharQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsCombining' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsCombining_ch or xmlIsCombiningQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsCombiningQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsDigit' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsDigit_ch or xmlIsDigitQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsDigit_ch or xmlIsDigitQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsExtender' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsExtender_ch or xmlIsExtenderQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsExtender_ch or xmlIsExtenderQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
@@ -8237,7 +8237,7 @@ actually an xmlCharEncoding'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
     </function>
     <function name='xmlIsIdeographic' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsIdeographic_ch or xmlIsIdeographicQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsIdeographicQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
@@ -8257,7 +8257,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the element name'/>
     </function>
     <function name='xmlIsPubidChar' file='chvalid'>
-      <info>This function is DEPRECATED.  Use xmlIsPubidChar_ch or xmlIsPubidCharQ instead</info>
+      <info>This function is DEPRECATED. Use xmlIsPubidChar_ch or xmlIsPubidCharQ instead</info>
       <return type='int' info='true if argument valid, false otherwise'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
@@ -11505,9 +11505,9 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderNextSibling' file='xmlreader'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='reader' type='xmlTextReaderPtr' info=''/>
+      <info>Skip to the node following the current one in document order while avoiding the subtree if any. Currently implemented only for Readers built on a document</info>
+      <return type='int' info='1 if the node was read successfully, 0 if there is no more nodes to read, or -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderNodeType' file='xmlreader'>
       <info>Get the node type of the current node Reference: http://dotgnu.org/pnetlib-doc/System/Xml/XmlNodeType.html</info>
@@ -11765,7 +11765,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the name of the DTD'/>
       <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
       <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
-      <arg name='subset' type='const xmlChar *' info=''/>
+      <arg name='subset' type='const xmlChar *' info='string content of the DTD'/>
     </function>
     <function name='xmlTextWriterWriteDTDAttlist' file='xmlwriter'>
       <info></info>

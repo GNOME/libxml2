@@ -4,7 +4,8 @@
       doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
       doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
-  <xsl:variable name="href_base">../</xsl:variable>
+  <xsl:variable name="href_base" select="''"/>
+  <xsl:variable name="menu_name">Main Menu</xsl:variable>
 <!--
  - returns the filename associated to an ID in the original file
  -->
@@ -338,6 +339,7 @@
 	</xsl:if>
       </xsl:for-each>
       <li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
+      <li><a href="html/index.html" style="font-weight:bold">API Menu</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
     </ul>
   </xsl:variable>
@@ -375,11 +377,11 @@
   </xsl:variable>
   <xsl:variable name="api">
     <ul><!-- style="margin-left: -1em" -->
-      <li><a href="APIchunk0.html">Alphabetic</a></li>
-      <li><a href="APIconstructors.html">Constructors</a></li>
-      <li><a href="APIfunctions.html">Functions/Types</a></li>
-      <li><a href="APIfiles.html">Modules</a></li>
-      <li><a href="APIsymbols.html">Symbols</a></li>
+      <li><a href="{$href_base}APIchunk0.html">Alphabetic</a></li>
+      <li><a href="{$href_base}APIconstructors.html">Constructors</a></li>
+      <li><a href="{$href_base}APIfunctions.html">Functions/Types</a></li>
+      <li><a href="{$href_base}APIfiles.html">Modules</a></li>
+      <li><a href="{$href_base}APIsymbols.html">Symbols</a></li>
     </ul>
   </xsl:variable>
   <xsl:variable name="related">
@@ -404,7 +406,7 @@
             <tr>
               <td colspan="1" bgcolor="#eecfa1" align="center">
                 <center>
-                  <b>Main Menu</b>
+                  <b><xsl:value-of select="$menu_name"/></b>
                 </center>
               </td>
             </tr>

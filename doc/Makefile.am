@@ -37,21 +37,19 @@ $(APIPAGES): libxml2-refs.xml site.xsl api.xsl
 	  $(bindir)/xsltproc --html $(top_srcdir)/doc/api.xsl $(top_srcdir)/doc/xml.html ; fi );
 
 scan:
-	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h xmlschemas.h xmlschemastypes.h"
+	-gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h xmlschemas.h xmlschemastypes.h"
 
 templates: scan
-	gtkdoc-mktmpl --module=libxml
+	-gtkdoc-mktmpl --module=libxml
 
-sgml:
-	gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR)
+sgml: templates
+	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR)
 
-xml: sgml
+xml: sgml 
 	if test -d xml ; then rm xml/* ; else mkdir xml ; fi
 	-@(for s in sgml/*.sgml ; do name=`basename $$s .sgml` ; \
-	   echo '<!DOCTYPE refentry [ <!ENTITY nbsp   "&#x00A0;"> ]>' > \
-	       xml/"$$name".xml ;\
-	   grep -v "^<colspec" $$s | sed 's+<anchor(.*>+<anchor\1/>+' >> xml/"$$name".xml ; done)
-	   
+	   xmllint --sgml $$s > xml/"$$name".xml ; done)
+
 libxml2-api.xml libxml2-refs.xml: xml parsedecl.py libxml-decl.txt libxml-decl-list.txt
 	-(./parsedecl.py)
 
@@ -67,7 +65,7 @@ clean-local:
 maintainer-clean-local: clean
 	rm -rf sgml html libxml-decl-list.txt libxml-decl.txt 
 
-libxml-decl-list.txt : templates
+libxml-decl-list.txt libxml-decl.txt : templates
 
 libxml-sections.txt : scan
 	cp libxml-decl-list.txt libxml-sections.txt

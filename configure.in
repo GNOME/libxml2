@@ -82,12 +82,63 @@ LDFLAGS=${_ldflags}
 dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h unistd.h ctype.h dirent.h errno.h malloc.h)
-AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h ansidecl.h)
-AC_CHECK_HEADERS(ieeefp.h nan.h math.h fp_class.h float.h)
-AC_CHECK_HEADERS(stdlib.h sys/socket.h netinet/in.h arpa/inet.h)
-AC_CHECK_HEADERS(netdb.h sys/time.h sys/select.h sys/mman.h)
-AC_CHECK_HEADERS(sys/timeb.h signal.h arpa/nameser.h resolv.h)
+AC_CHECK_HEADERS([fcntl.h])
+AC_CHECK_HEADERS([unistd.h])
+AC_CHECK_HEADERS([ctype.h])
+AC_CHECK_HEADERS([dirent.h])
+AC_CHECK_HEADERS([errno.h])
+AC_CHECK_HEADERS([malloc.h])
+AC_CHECK_HEADERS([stdarg.h])
+AC_CHECK_HEADERS([sys/stat.h])
+AC_CHECK_HEADERS([sys/types.h])
+AC_CHECK_HEADERS([time.h])
+AC_CHECK_HEADERS([ansidecl.h])
+AC_CHECK_HEADERS([ieeefp.h])
+AC_CHECK_HEADERS([nan.h])
+AC_CHECK_HEADERS([math.h])
+AC_CHECK_HEADERS([fp_class.h])
+AC_CHECK_HEADERS([float.h])
+AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([sys/socket.h], [], [],
+[#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+# endif
+])
+AC_CHECK_HEADERS([netinet/in.h], [], [],
+[#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+# endif
+])
+AC_CHECK_HEADERS([arpa/inet.h], [], [],
+[#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+# endif
+#if HAVE_ARPA_INET_H
+# include <arpa/inet.h>
+# endif
+])
+AC_CHECK_HEADERS([netdb.h])
+AC_CHECK_HEADERS([sys/time.h])
+AC_CHECK_HEADERS([sys/select.h])
+AC_CHECK_HEADERS([sys/mman.h])
+AC_CHECK_HEADERS([sys/timeb.h])
+AC_CHECK_HEADERS([signal.h])
+AC_CHECK_HEADERS([arpa/nameser.h], [], [],
+[#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+# endif
+])
+AC_CHECK_HEADERS([resolv.h], [], [],
+[#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+# endif
+#if HAVE_NETINET_IN_H
+# include <netinet/in.h>
+# endif
+#if HAVE_ARPA_NAMESER_H
+# include <arpa/nameser.h>
+# endif
+])
 
 dnl Specific dir for HTML output ?
 if test "x$with_html_dir" = "x" ; then

@@ -450,196 +450,102 @@ def insertComment(name, title, value, id):
     nbcomments = nbcomments + 1
 
 
+import libxml2
 import os
-import xmllib
-try:
-    import sgmlop
-except ImportError:
-    sgmlop = None # accelerator not available
-
-debug = 0
-
-if sgmlop:
-    class FastParser:
-	"""sgmlop based XML parser.  this is typically 15x faster
-	   than SlowParser..."""
-
-	def __init__(self, target):
-
-	    # setup callbacks
-	    self.finish_starttag = target.start
-	    self.finish_endtag = target.end
-	    self.handle_data = target.data
-
-	    # activate parser
-	    self.parser = sgmlop.XMLParser()
-	    self.parser.register(self)
-	    self.feed = self.parser.feed
-	    self.entity = {
-		"amp": "&", "gt": ">", "lt": "<",
-		"apos": "'", "quot": '"'
-		}
-
-	def close(self):
-	    try:
-		self.parser.close()
-	    finally:
-		self.parser = self.feed = None # nuke circular reference
-
-	def handle_entityref(self, entity):
-	    # <string> entity
-	    try:
-		self.handle_data(self.entity[entity])
-	    except KeyError:
-		self.handle_data("&%s;" % entity)
-
-else:
-    FastParser = None
 
 
-class SlowParser(xmllib.XMLParser):
-    """slow but safe standard parser, based on the XML parser in
-       Python's standard library."""
+def analyzeXMLDescriptionRow(doc, desc, id, row):
+    if doc == None or desc == None or id == None or row == None:
+        return
+    ctxt = doc.xpathNewContext()
+    ctxt.setContextNode(row)
+    param = ctxt.xpathEval("entry[1]/parameter")
+    entries = ctxt.xpathEval("entry")
+    if param == []:
+        is_param = 0
+	name = None
+    else:
+        name = param[0].content
+	is_param = 1
+    str = entries[1].content
+    str = string.replace(str, '\n', ' ')
+    str = string.replace(str, '\r', ' ')
+    str = string.replace(str, '    ', ' ')
+    str = string.replace(str, '   ', ' ')
+    str = string.replace(str, '  ', ' ')
+    while len(str) >= 1 and str[0] == ' ':
+	str=str[1:]
 
-    def __init__(self, target):
-	self.unknown_starttag = target.start
-	self.handle_data = target.data
-	self.unknown_endtag = target.end
-	xmllib.XMLParser.__init__(self)
+    insertParameterComment(id, name, str, is_param)
 
-def getparser(target = None):
-    # get the fastest available parser, and attach it to an
-    # unmarshalling object.  return both objects.
-    if target == None:
-	target = docParser()
-    if FastParser:
-	return FastParser(target), target
-    return SlowParser(target), target
 
-class docParser:
-    def __init__(self):
-        self._methodname = None
-	self._data = []
-	self.id = None
-	self.title = None
-	self.descr = None
-	self.string = None
 
-    def close(self):
-        if debug:
-	    print "close"
+def analyzeXMLDescription(doc, desc):
+    if doc == None or desc == None:
+        return
+    ctxt = doc.xpathNewContext()
+    ctxt.setContextNode(desc)
 
-    def getmethodname(self):
-        return self._methodname
+    #
+    # get the function name
+    #
+    try:
+	title = ctxt.xpathEval("title")[0].content
+    except:
+        return
+    old_id = ctxt.xpathEval("string(title/anchor/@id)")
+    id = string.replace(title, '(', ' ');
+    id = string.replace(id, ')', ' ');
+    id = string.split(id) [0]
 
-    def data(self, text):
-        if debug:
-	    print "data %s" % text
-        self._data.append(text)
+    #
+    # get the function comments
+    #
+    comment = ""
+    paras = ctxt.xpathEval("para")
+    for para in paras:
+        str = para.content
+	str = string.replace(str, '\n', ' ')
+	str = string.replace(str, '\r', ' ')
+	str = string.replace(str, '    ', ' ')
+	str = string.replace(str, '   ', ' ')
+	str = string.replace(str, '  ', ' ')
+	while len(str) >= 1 and str[0] == ' ':
+	    str=str[1:]
 
-    def start(self, tag, attrs):
-        if debug:
-	    print "start %s, %s" % (tag, attrs)
-	if tag == 'refsect2':
-	    self.id = None
-	    self.title = None
-	    self.descr = None
-	    self.string = None
-	    self.type = None
-	    self.in_parameter = 0
-	    self.is_parameter = 0
-	    self.parameter = None
-	    self.parameter_info = None
-	    self.entry = 0
-	elif tag == 'para':
-	    self._data = []
-	elif tag == 'title':
-	    self._data = []
-	elif tag == 'tgroup':
-	    self.in_parameter = 1
-	elif tag == 'row':
-	    self._data = []
-	    self.entry = 0
-	elif tag == 'entry':
-	    self.entry = self.entry + 1
-	elif tag == 'parameter' and self.in_parameter == 1:
-	    self._data = []
-	elif tag == 'anchor' and self.id == None:
-	    if attrs.has_key('id'):
-	        self.orig_id = attrs['id']
-		self.id = string.replace(self.orig_id, '-CAPS', '')
-		self.id = string.replace(self.id, '-', '_')
+        comment = comment + str
 
-    def end(self, tag):
-        if debug:
-	    print "end %s" % tag
-	if tag == 'refsect2':
-	    self.type = insertComment(self.id, self.title, self.string,
-	                              self.orig_id)
-	    self.string = None
-	elif tag == 'row':
-	    if self.parameter_info != None and self.parameter_info != '':
-		insertParameterComment(self.id, self.parameter,
-				       self.parameter_info, self.is_parameter)
-	    self.parameter_info = None
-	    self.parameter = 0
-	    self.is_parameter = 0
-	elif tag == 'parameter' and self.in_parameter == 1 and self.entry == 1:
-	    str = ''
-	    for c in self._data:
-		str = str + c
-	    str = string.replace(str, '\n', ' ')
-	    str = string.replace(str, '\r', ' ')
-	    str = string.replace(str, '    ', ' ')
-	    str = string.replace(str, '   ', ' ')
-	    str = string.replace(str, '  ', ' ')
-	    while len(str) >= 1 and str[0] == ' ':
-		str=str[1:]
-	    self.parameter = str
-	    self.is_parameter = 1
-	    self._data = []
-	elif tag == 'para' or tag == 'entry':
-	    str = ''
-	    for c in self._data:
-		str = str + c
-	    str = string.replace(str, '\n', ' ')
-	    str = string.replace(str, '\r', ' ')
-	    str = string.replace(str, '    ', ' ')
-	    str = string.replace(str, '   ', ' ')
-	    str = string.replace(str, '  ', ' ')
-	    while len(str) >= 1 and str[0] == ' ':
-		str=str[1:]
-	    if self.string == None:
-		self.string = str
-	    elif self.in_parameter == 1:
-		self.parameter_info = str
-	    self._data = []
-	elif tag == 'title':
-	    str = ''
-	    for c in self._data:
-	        str = str + c
-	    str = string.replace(str, '\n', ' ')
-	    str = string.replace(str, '\r', ' ')
-	    str = string.replace(str, '    ', ' ')
-	    str = string.replace(str, '   ', ' ')
-	    str = string.replace(str, '  ', ' ')
-	    while len(str) >= 1 and str[0] == ' ':
-		str=str[1:]
-	    self.title = str
+    insertComment(id, title, comment, old_id)
+
+    rows = ctxt.xpathEval("informaltable/tgroup/tbody/row")
+    for row in rows:
+        analyzeXMLDescriptionRow(doc, desc, id, row)
+
+def analyzeXMLDoc(doc):
+    if doc == None:
+        return
+    ctxt = doc.xpathNewContext()
+    descriptions = ctxt.xpathEval("//refsect2")
+    print len(descriptions)
+    for description in descriptions:
+        analyzeXMLDescription(doc, description)
+
+doc = libxml2.parseFile("xml/c14n.xml");
+analyzeXMLDoc(doc)
+doc.freeDoc()
 
 xmlfiles = 0
 filenames = os.listdir("xml")
 for filename in filenames:
+    print filename
     try:
-        f = open("xml/" + filename, 'r')
-    except IOError, msg:
-        print file, ":", msg
+        doc = libxml2.parseFile("xml/" + filename)
+	analyzeXMLDoc(doc)
+	doc.freeDoc()
+	xmlfiles = xmlfiles + 1
+    except:
+        print "failed to parse XML description %s" % ("xml/" + filename)
 	continue
-    data = f.read()
-    (parser, target)  = getparser()
-    parser.feed(data)
-    parser.close()
-    xmlfiles = xmlfiles + 1
 
 print "Parsed: %d XML files collexting %d comments" % (xmlfiles, nbcomments)
 

@@ -1,3 +1,12 @@
+Tue Nov 19 23:25:47 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am: repair some problem if gtk-doc fail or such
+	* configure.in: patch for Solaris on new autoconf closes #98880 
+	* doc/parsedecl.py: repair the frigging API building script,
+	  did I say that python xmllib sucks ?
+	* doc/libxml2-api.xml doc/libxml2-refs.xml: regenerated, reordering
+	  and some comment are no more truncated.
+
 Tue Nov 19 09:09:04 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Martin Stoilov pointed out a potential leak in

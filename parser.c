@@ -11182,6 +11182,9 @@ xmlInitParser(void) {
 
 void
 xmlCleanupParser(void) {
+    if (!xmlParserInitialized)
+	return;
+
     xmlCleanupCharEncodingHandlers();
     xmlCleanupPredefinedEntities();
 #ifdef LIBXML_CATALOG_ENABLED

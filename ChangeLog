@@ -1,3 +1,7 @@
+Sun Aug 17 23:05:38 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch to xmlCleanupParser from Dave Beckett
+
 Sat Aug 16 22:53:42 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/parsedecl.py, doc/libxml2-refs.xml, doc/API*.html:

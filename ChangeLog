@@ -1,3 +1,10 @@
+Tue May 22 18:46:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: fixed a gross mistake in base computation, xml:base is
+	  not completely correct yet (need cascade).
+	* xpath.[ch]: added the few things needed to find a function name
+	  and URI from the XPath context when it is called.
+
 Tue May 22 17:00:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* catalog.[ch]: fixes and add xmlLoadCatalogs()

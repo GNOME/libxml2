@@ -222,6 +222,10 @@ struct _xmlXPathContext {
 
     /* Possibility to link in an extra item */
     void *extra;                        /* needed for XSLT */
+
+    /* The function name and URI when calling a function */
+    const xmlChar *function;
+    const xmlChar *functionURI;
 };
 
 /*

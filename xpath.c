@@ -279,6 +279,7 @@ struct _xmlXPathStepOp {
     void *value4;
     void *value5;
     void *cache;
+    void *cacheURI;
 };
 
 struct _xmlXPathCompExpr {
@@ -5487,9 +5488,8 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
+    *len = 0;
     XP_ERROR0(XPATH_ENCODING_ERROR);
-    *len = 1;
-    return((int) *cur);
 }
 
 /**
@@ -7571,16 +7571,18 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 	}
 	case XPATH_OP_FUNCTION: {
 	    xmlXPathFunction func;
+	    const xmlChar *oldFunc, *oldFuncURI;
 
 	    if (op->ch1 != -1)
 		xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    if (op->cache != NULL) 
 		func = (xmlXPathFunction) op->cache;
 	    else {
+		const xmlChar *URI = NULL;
+
 		if (op->value5 == NULL) 
 		    func = xmlXPathFunctionLookup(ctxt->context, op->value4);
 		else {
-		    const xmlChar *URI;
 		    URI = xmlXPathNsLookup(ctxt->context, op->value5);
 		    if (URI == NULL) {
 			xmlGenericError(xmlGenericErrorContext,
@@ -7599,8 +7601,15 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 		    return;
 		}
 		op->cache = (void *) func;
+		op->cacheURI = (void *) URI;
 	    }
+            oldFunc = ctxt->context->function;
+            oldFuncURI = ctxt->context->functionURI;
+	    ctxt->context->function = op->value4;
+	    ctxt->context->functionURI = op->cacheURI;
 	    func(ctxt, op->value);
+            ctxt->context->function = oldFunc;
+            ctxt->context->functionURI = oldFuncURI;
 	    return;
 	}
 	case XPATH_OP_ARG:

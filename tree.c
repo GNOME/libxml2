@@ -3267,9 +3267,13 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
 	    xmlEntityPtr ent = (xmlEntityPtr) cur;
 	    return(xmlStrdup(ent->URI));
 	}
-        base = xmlGetProp(cur, BAD_CAST "xml:base");
-	if (base != NULL)
-	    return(base);
+	if (cur->type == XML_ELEMENT_NODE) {
+	    base = xmlGetProp(cur, BAD_CAST "xml:base");
+	    if (base != NULL) {
+		/* TODO : apply cascade in the base resolution ! */
+		return(base);
+	    }
+	}
 	cur = cur->parent;
     }
     if ((doc != NULL) && (doc->URL != NULL))

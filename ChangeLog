@@ -1,3 +1,7 @@
+Wed Apr  5 20:36:46 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmllint.c: forgot to commit this too ?
+
 Wed Apr  5 16:22:44 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlversion.h.in : forgot to commit this previously

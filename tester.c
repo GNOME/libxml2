@@ -38,8 +38,7 @@ static int recovery = 0;
  * Note: there is a couple of errors introduced on purpose.
  */
 static CHAR buffer[] = 
-"\n\
-<?xml version=\"1.0\"?>\n\
+"<?xml version=\"1.0\"?>\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
 <?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
 <D:propertyupdate>\n\
@@ -75,6 +74,7 @@ int treeTest(void) {
     doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
     xmlSetProp(doc->root, "prop1", "gnome is great");
     xmlSetProp(doc->root, "prop2", "&linux; too");
+    xmlSetProp(doc->root, "emptyprop", "");
     tree = xmlNewChild(doc->root, NULL, "head", NULL);
     subtree = xmlNewChild(tree, NULL, "title", "Welcome to Gnome");
     tree = xmlNewChild(doc->root, NULL, "chapter", NULL);

@@ -1,3 +1,9 @@
+Mon Feb  8 16:10:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: patched an error outputting empty attribute values.
+	* Makefile.am and doc/makefile.am: have been updated during the
+	  week-end. Sorry for an empty CVS log, I got a shell problem.
+
 Mon Feb  1 12:10:13 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.h: cleaned up using enums instead of defines

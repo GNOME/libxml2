@@ -2307,6 +2307,8 @@ xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
 	xmlBufferWriteCHAR(value);
 	xmlBufferWriteChar("\"");
 	free(value);
+    } else  {
+	xmlBufferWriteChar("=\"\"");
     }
 }
 

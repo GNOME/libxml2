@@ -1,3 +1,10 @@
+Tue Dec 21 08:10:44 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/site.xsl, doc/xml.html, plus rebuilt all the html pages
+	Change reference to new site for Solaris binaries, fixing bug
+	160598
+
+
 Mon Dec 20 08:02:57 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: reset input->base within xmlStopParser

@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <libxml/xmlversion.h>
+#include <libxml/xmlmemory.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -92,7 +92,7 @@ static int xmlLittleEndian = 1;
  * xmlUTF8Size:
  * @utf: pointer to the UTF8 character
  *
- * calulates the internal size of a UTF8 character
+ * calculates the internal size of a UTF8 character
  *
  * returns the numbers of bytes in the character, -1 on format error
  */
@@ -186,8 +186,8 @@ xmlUTF8Strlen(const xmlChar *utf) {
  *
  * Read one UTF8 Char from @utf
  *
- * Returns the char value or -1 in case of error and update @len with the
- *        number of bytes used
+ * Returns the char value or -1 in case of error, and updates *len with the
+ *        number of bytes consumed
  */
 int
 xmlGetUTF8Char(const unsigned char *utf, int *len) {
@@ -248,11 +248,11 @@ error:
 
 /**
  * xmlCheckUTF8:
- * @utf: Pointer to putative utf-8 encoded string.
+ * @utf: Pointer to putative UTF-8 encoded string.
  *
- * Checks @utf for being valid utf-8. @utf is assumed to be
+ * Checks @utf for being valid UTF-8. @utf is assumed to be
  * null-terminated. This function is not super-strict, as it will
- * allow longer utf-8 sequences than necessary. Note that Java is
+ * allow longer UTF-8 sequences than necessary. Note that Java is
  * capable of producing these sequences if provoked. Also note, this
  * routine checks for the 4-byte maximum size, but does not check for
  * 0x10ffff maximum value.
@@ -386,7 +386,7 @@ xmlUTF8Strpos(const xmlChar *utf, int pos) {
  * @utf:  the input UTF8 *
  * @utfchar:  the UTF8 character to be found
  *
- * a function to provide relative location of a UTF8 char
+ * a function to provide the relative location of a UTF8 char
  *
  * Returns the relative character position of the desired char
  * or -1 if not found
@@ -421,6 +421,7 @@ xmlUTF8Strloc(const xmlChar *utf, const xmlChar *utfchar) {
  * @start: relative pos of first char
  * @len:   total number to copy
  *
+ * Create a substring from a given UTF-8 string
  * Note:  positions are given in units of UTF-8 chars
  *
  * Returns a pointer to a newly created string
@@ -472,8 +473,8 @@ xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
  * block of chars out.
  * Returns 0 if success, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of ocetes consumed.
+ *     if the return value is positive, else unpredictable.
+ * The value of @outlen after return is the number of octets consumed.
  */
 static int
 asciiToUTF8(unsigned char* out, int *outlen,
@@ -525,8 +526,8 @@ asciiToUTF8(unsigned char* out, int *outlen,
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of ocetes consumed.
+ *     if the return value is positive, else unpredictable.
+ * The value of @outlen after return is the number of octets consumed.
  */
 static int
 UTF8Toascii(unsigned char* out, int *outlen,
@@ -608,8 +609,8 @@ UTF8Toascii(unsigned char* out, int *outlen,
  * block of chars out.
  * Returns 0 if success, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of ocetes consumed.
+ *     if the return value is positive, else unpredictable.
+ * The value of @outlen after return is the number of octets consumed.
  */
 int
 isolat1ToUTF8(unsigned char* out, int *outlen,
@@ -656,10 +657,9 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
  *
  * No op copy operation for UTF8 handling.
  *
- * Returns the number of byte written, or -1 by lack of space, or -2
- *     if the transcoding fails (for *in is not valid utf16 string)
+ * Returns the number of bytes written, or -1 if lack of space.
  *     The value of *inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
+ *     if the return value is positive, else unpredictable.
  */
 static int
 UTF8ToUTF8(unsigned char* out, int *outlen,
@@ -698,8 +698,8 @@ UTF8ToUTF8(unsigned char* out, int *outlen,
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of ocetes consumed.
+ *     if the return value is positive, else unpredictable.
+ * The value of @outlen after return is the number of octets consumed.
  */
 int
 UTF8Toisolat1(unsigned char* out, int *outlen,
@@ -783,14 +783,14 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
  * @inlenb:  the length of @in in UTF-16LE chars
  *
  * Take a block of UTF-16LE ushorts in and try to convert it to an UTF-8
- * block of chars out. This function assume the endian property
+ * block of chars out. This function assumes the endian property
  * is the same between the native type of this machine and the
  * inputed one.
  *
- * Returns the number of byte written, or -1 by lack of space, or -2
- *     if the transcoding fails (for *in is not valid utf16 string)
+ * Returns the number of bytes written, or -1 if lack of space, or -2
+ *     if the transcoding fails (if *in is not a valid utf16 string)
  *     The value of *inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
+ *     if the return value is positive, else unpredictable.
  */
 static int
 UTF16LEToUTF8(unsigned char* out, int *outlen,
@@ -874,7 +874,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
  * Take a block of UTF-8 chars in and try to convert it to an UTF-16LE
  * block of chars out.
  *
- * Returns the number of byte written, or -1 by lack of space, or -2
+ * Returns the number of bytes written, or -1 if lack of space, or -2
  *     if the transcoding failed. 
  */
 static int
@@ -892,21 +892,8 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     unsigned char *tmp;
     unsigned short tmp1, tmp2;
 
+    /* UTF16LE encoding has no BOM */
     if (in == NULL) {
-        /*
-	 * initialization, add the Byte Order Mark
-	 */
-        if (*outlen >= 2) {
-	    outb[0] = 0xFF;
-	    outb[1] = 0xFE;
-	    *outlen = 2;
-	    *inlen = 0;
-#ifdef DEBUG_ENCODING
-            xmlGenericError(xmlGenericErrorContext,
-		    "Added FFFE Byte Order Mark\n");
-#endif
-	    return(2);
-	}
 	*outlen = 0;
 	*inlen = 0;
 	return(0);
@@ -986,21 +973,60 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
+ * UTF8ToUTF16:
+ * @outb:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @outb
+ * @in:  a pointer to an array of UTF-8 chars
+ * @inlen:  the length of @in
+ *
+ * Take a block of UTF-8 chars in and try to convert it to an UTF-16
+ * block of chars out.
+ *
+ * Returns the number of bytes written, or -1 if lack of space, or -2
+ *     if the transcoding failed. 
+ */
+static int
+UTF8ToUTF16(unsigned char* outb, int *outlen,
+            const unsigned char* in, int *inlen)
+{
+    if (in == NULL) {
+	/*
+	 * initialization, add the Byte Order Mark for UTF-16LE
+	 */
+        if (*outlen >= 2) {
+	    outb[0] = 0xFF;
+	    outb[1] = 0xFE;
+	    *outlen = 2;
+	    *inlen = 0;
+#ifdef DEBUG_ENCODING
+            xmlGenericError(xmlGenericErrorContext,
+		    "Added FFFE Byte Order Mark\n");
+#endif
+	    return(2);
+	}
+	*outlen = 0;
+	*inlen = 0;
+	return(0);
+    }
+    return (UTF8ToUTF16LE(outb, outlen, in, inlen));
+}
+
+/**
  * UTF16BEToUTF8:
  * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
- * @inb:  a pointer to an array of UTF-16 passwd as a byte array
+ * @inb:  a pointer to an array of UTF-16 passed as a byte array
  * @inlenb:  the length of @in in UTF-16 chars
  *
  * Take a block of UTF-16 ushorts in and try to convert it to an UTF-8
- * block of chars out. This function assume the endian property
+ * block of chars out. This function assumes the endian property
  * is the same between the native type of this machine and the
  * inputed one.
  *
- * Returns the number of byte written, or -1 by lack of space, or -2
- *     if the transcoding fails (for *in is not valid utf16 string)
+ * Returns the number of bytes written, or -1 if lack of space, or -2
+ *     if the transcoding fails (if *in is not a valid utf16 string)
  * The value of *inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
+ *     if the return value is positive, else unpredictable.
  */
 static int
 UTF16BEToUTF8(unsigned char* out, int *outlen,
@@ -1106,21 +1132,8 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     unsigned char *tmp;
     unsigned short tmp1, tmp2;
 
+    /* UTF-16BE has no BOM */
     if (in == NULL) {
-        /*
-	 * initialization, add the Byte Order Mark
-	 */
-        if (*outlen >= 2) {
-	    outb[0] = 0xFE;
-	    outb[1] = 0xFF;
-	    *outlen = 2;
-	    *inlen = 0;
-#ifdef DEBUG_ENCODING
-            xmlGenericError(xmlGenericErrorContext,
-		    "Added FEFF Byte Order Mark\n");
-#endif
-	    return(2);
-	}
 	*outlen = 0;
 	*inlen = 0;
 	return(0);
@@ -1205,11 +1218,11 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 /**
  * xmlDetectCharEncoding:
  * @in:  a pointer to the first bytes of the XML entity, must be at least
- *       4 bytes long.
+ *       2 bytes long (at least 4 if encoding is UTF4 variant).
  * @len:  pointer to the length of the buffer
  *
  * Guess the encoding of the entity using the first bytes of the entity content
- * accordingly of the non-normative appendix F of the XML-1.0 recommendation.
+ * according to the non-normative appendix F of the XML-1.0 recommendation.
  * 
  * Returns one of the XML_CHAR_ENCODING_... values.
  */
@@ -1235,6 +1248,17 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 	if ((in[0] == 0x3C) && (in[1] == 0x3F) &&
 	    (in[2] == 0x78) && (in[3] == 0x6D))
 	    return(XML_CHAR_ENCODING_UTF8);
+	/*
+	 * Although not part of the recommendation, we also
+	 * attempt an "auto-recognition" of UTF-16LE and
+	 * UTF-16BE encodings.
+	 */
+	if ((in[0] == 0x3C) && (in[1] == 0x00) &&
+	    (in[2] == 0x3F) && (in[3] == 0x00))
+	    return(XML_CHAR_ENCODING_UTF16LE);
+	if ((in[0] == 0x00) && (in[1] == 0x3C) &&
+	    (in[2] == 0x00) && (in[3] == 0x3F))
+	    return(XML_CHAR_ENCODING_UTF16BE);
     }
     if (len >= 3) {
 	/*
@@ -1245,6 +1269,7 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 	    (in[2] == 0xBF))
 	    return(XML_CHAR_ENCODING_UTF8);
     }
+    /* For UTF-16 we can recognize by the BOM */
     if (len >= 2) {
 	if ((in[0] == 0xFE) && (in[1] == 0xFF))
 	    return(XML_CHAR_ENCODING_UTF16BE);
@@ -1284,7 +1309,7 @@ xmlCleanupEncodingAliases(void) {
  *
  * Lookup an encoding name for the given alias.
  * 
- * Returns NULL if not found the original name otherwise
+ * Returns NULL if not found, otherwise the original name
  */
 const char *
 xmlGetEncodingAlias(const char *alias) {
@@ -1319,7 +1344,7 @@ xmlGetEncodingAlias(const char *alias) {
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
  *
- * Registers and alias @alias for an encoding named @name. Existing alias
+ * Registers an alias @alias for an encoding named @name. Existing alias
  * will be overwritten.
  * 
  * Returns 0 in case of success, -1 in case of error
@@ -1410,7 +1435,7 @@ xmlDelEncodingAlias(const char *alias) {
  * xmlParseCharEncoding:
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  *
- * Compare the string to the known encoding schemes already known. Note
+ * Compare the string to the encoding schemes already known. Note
  * that the comparison is case insensitive accordingly to the section
  * [XML] 4.3.3 Character Encoding in Entities.
  * 
@@ -1686,6 +1711,7 @@ xmlInitCharEncodingHandlers(void) {
           xmlNewCharEncodingHandler("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE);
     xmlUTF16BEHandler = 
           xmlNewCharEncodingHandler("UTF-16BE", UTF16BEToUTF8, UTF8ToUTF16BE);
+    xmlNewCharEncodingHandler("UTF-16", UTF16LEToUTF8, UTF8ToUTF16);
     xmlNewCharEncodingHandler("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1);
     xmlNewCharEncodingHandler("ASCII", asciiToUTF8, UTF8Toascii);
     xmlNewCharEncodingHandler("US-ASCII", asciiToUTF8, UTF8Toascii);
@@ -1697,6 +1723,7 @@ xmlInitCharEncodingHandlers(void) {
           xmlNewCharEncodingHandler("UTF-16LE", UTF16LEToUTF8, NULL);
     xmlUTF16BEHandler = 
           xmlNewCharEncodingHandler("UTF-16BE", UTF16BEToUTF8, NULL);
+    xmlNewCharEncodingHandler("UTF-16", UTF16LEToUTF8, NULL);
     xmlNewCharEncodingHandler("ISO-8859-1", isolat1ToUTF8, NULL);
     xmlNewCharEncodingHandler("ASCII", asciiToUTF8, NULL);
     xmlNewCharEncodingHandler("US-ASCII", asciiToUTF8, NULL);
@@ -1985,14 +2012,7 @@ xmlFindCharEncodingHandler(const char *name) {
         }
     }
 
-    /*
-     * If nothing was found and it is "UTF-16" then use the Little endian
-     * version.
-     */
-    if ((xmlStrEqual(BAD_CAST upper, BAD_CAST "UTF-16")) ||
-	(xmlStrEqual(BAD_CAST upper, BAD_CAST "UTF16")))
-        return(xmlUTF16LEHandler);
-
+    /* If "none of the above", give up */
     return(NULL);
 }
 

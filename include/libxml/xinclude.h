@@ -20,13 +20,53 @@
 extern "C" {
 #endif
 
+/**
+ * XINCLUDE_NS:
+ *
+ * Macro defining the Xinclude namespace: http://www.w3.org/2001/XInclude
+ */
 #define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
+/**
+ * XINCLUDE_NODE:
+ *
+ * Macro defining "include"
+ */
 #define XINCLUDE_NODE (const xmlChar *) "include"
+/**
+ * XINCLUDE_FALLBACK:
+ *
+ * Macro defining "fallback"
+ */
 #define XINCLUDE_FALLBACK (const xmlChar *) "fallback"
+/**
+ * XINCLUDE_HREF:
+ *
+ * Macro defining "href"
+ */
 #define XINCLUDE_HREF (const xmlChar *) "href"
+/**
+ * XINCLUDE_PARSE:
+ *
+ * Macro defining "parse"
+ */
 #define XINCLUDE_PARSE (const xmlChar *) "parse"
+/**
+ * XINCLUDE_PARSE_XML:
+ *
+ * Macro defining "xml"
+ */
 #define XINCLUDE_PARSE_XML (const xmlChar *) "xml"
+/**
+ * XINCLUDE_PARSE_TEXT:
+ *
+ * Macro defining "text"
+ */
 #define XINCLUDE_PARSE_TEXT (const xmlChar *) "text"
+/**
+ * XINCLUDE_PARSE_ENCODING:
+ *
+ * Macro defining "encoding"
+ */
 #define XINCLUDE_PARSE_ENCODING (const xmlChar *) "encoding"
 
 typedef struct _xmlXIncludeCtxt xmlXIncludeCtxt;

@@ -1040,10 +1040,12 @@
      <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_GLOBAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_SKIP' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_DEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_REPLACE' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_PRESERVE' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_REF' type='macro'/>
@@ -1705,6 +1707,7 @@
      <exports symbol='XML_HTTP_UNKNOWN_HOST' type='enum'/>
      <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' type='enum'/>
      <exports symbol='XML_IO_UNKNOWN' type='enum'/>
      <exports symbol='XML_RNGP_PAT_ONEMORE_GROUP_ATTR' type='enum'/>
      <exports symbol='XML_ERR_VALUE_REQUIRED' type='enum'/>
@@ -1759,6 +1762,7 @@
      <exports symbol='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_SCHEMAP_RESTRICTION_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_XINCLUDE_TEXT_DOCUMENT' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_PREFIX' type='enum'/>
      <exports symbol='XML_XINCLUDE_FALLBACKS_IN_INCLUDE' type='enum'/>
      <exports symbol='XML_ERR_STANDALONE_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ATTR' type='enum'/>
@@ -1783,6 +1787,7 @@
      <exports symbol='XML_RNGP_ELEMENT_EMPTY' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_TEXT' type='enum'/>
      <exports symbol='XML_XPATH_START_LITERAL_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' type='enum'/>
      <exports symbol='XML_ERR_ELEMCONTENT_NOT_STARTED' type='enum'/>
      <exports symbol='XML_RNGP_INCLUDE_FAILURE' type='enum'/>
      <exports symbol='XML_RNGP_INVALID_VALUE' type='enum'/>
@@ -1980,6 +1985,7 @@
      <exports symbol='XML_XPATH_MEMORY_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOROOT' type='enum'/>
      <exports symbol='XML_XPATH_EXPR_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' type='enum'/>
      <exports symbol='XML_RNGP_DEFINE_EMPTY' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_STARTED' type='enum'/>
      <exports symbol='XML_XPATH_UNCLOSED_ERROR' type='enum'/>
@@ -2158,9 +2164,11 @@
      <exports symbol='XML_IO_ESPIPE' type='enum'/>
      <exports symbol='XML_DTD_NO_DOC' type='enum'/>
      <exports symbol='XML_IO_EEXIST' type='enum'/>
+     <exports symbol='XML_SCHEMAP_NOT_SCHEMA' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASV' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASP' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAP_DEF_AND_PREFIX' type='enum'/>
      <exports symbol='XML_DTD_STANDALONE_WHITE_SPACE' type='enum'/>
      <exports symbol='XML_HTTP_USE_IP' type='enum'/>
      <exports symbol='XML_IO_ENCODER' type='enum'/>
@@ -3256,20 +3264,28 @@
     <macro name='WITH_TRIO' file='xmlversion'>
     </macro>
     <macro name='XINCLUDE_FALLBACK' file='xinclude'>
+      <info>Macro defining &quot;fallback&quot;</info>
     </macro>
     <macro name='XINCLUDE_HREF' file='xinclude'>
+      <info>Macro defining &quot;href&quot;</info>
     </macro>
     <macro name='XINCLUDE_NODE' file='xinclude'>
+      <info>Macro defining &quot;include&quot;</info>
     </macro>
     <macro name='XINCLUDE_NS' file='xinclude'>
+      <info>Macro defining the Xinclude namespace: http://www.w3.org/2001/XInclude</info>
     </macro>
     <macro name='XINCLUDE_PARSE' file='xinclude'>
+      <info>Macro defining &quot;parse&quot;</info>
     </macro>
     <macro name='XINCLUDE_PARSE_ENCODING' file='xinclude'>
+      <info>Macro defining &quot;encoding&quot;</info>
     </macro>
     <macro name='XINCLUDE_PARSE_TEXT' file='xinclude'>
+      <info>Macro defining &quot;text&quot;</info>
     </macro>
     <macro name='XINCLUDE_PARSE_XML' file='xinclude'>
+      <info>Macro defining &quot;xml&quot;</info>
     </macro>
     <macro name='XMLCALL' file='xmlexports'>
       <info>Macros which declare the called convention for exported functions Windows platform with MS compiler Windows platform with Borland compiler Windows platform with GNU compiler (Mingw) Cygwin platform, GNU compiler</info>
@@ -3297,7 +3313,7 @@
       <info>Macro to extract the content pointer of a node.</info>
     </macro>
     <macro name='XML_GET_LINE' file='tree'>
-      <info>Macro to extract the line number of an element node. This will work only if line numbering is activated by calling xmlLineNumbersDefault(1) before parsing.</info>
+      <info>Macro to extract the line number of an element node.</info>
     </macro>
     <macro name='XML_LOCAL_NAMESPACE' file='tree'>
       <info>A namespace declaration node.</info>
@@ -3314,6 +3330,9 @@
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_STRICT' file='schemasInternals'>
     </macro>
+    <macro name='XML_SCHEMAS_ATTR_NSDEFAULT' file='schemasInternals'>
+      <info>allow elements in no namespace</info>
+    </macro>
     <macro name='XML_SCHEMAS_ELEM_ABSTRACT' file='schemasInternals'>
       <info>the element is abstract</info>
     </macro>
@@ -3328,6 +3347,9 @@
     </macro>
     <macro name='XML_SCHEMAS_ELEM_NILLABLE' file='schemasInternals'>
       <info>the element is nillable</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_NSDEFAULT' file='schemasInternals'>
+      <info>allow elements in no namespace</info>
     </macro>
     <macro name='XML_SCHEMAS_ELEM_REF' file='schemasInternals'>
       <info>the element is a reference to a type</info>
@@ -4141,6 +4163,7 @@
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>
     <enum name='XML_SCHEMAP_ATTR_NONAME_NOREF' file='xmlerror' value='1703' type='xmlParserErrors' info='1703'/>
     <enum name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF' file='xmlerror' value='1704' type='xmlParserErrors' info='1704'/>
+    <enum name='XML_SCHEMAP_DEF_AND_PREFIX' file='xmlerror' value='1768' type='xmlParserErrors' info='1767'/>
     <enum name='XML_SCHEMAP_ELEMFORMDEFAULT_VALUE' file='xmlerror' value='1705' type='xmlParserErrors' info='1705'/>
     <enum name='XML_SCHEMAP_ELEM_DEFAULT_FIXED' file='xmlerror' value='1755' type='xmlParserErrors' info='1755'/>
     <enum name='XML_SCHEMAP_ELEM_NONAME_NOREF' file='xmlerror' value='1706' type='xmlParserErrors' info='1706'/>
@@ -4153,6 +4176,8 @@
     <enum name='XML_SCHEMAP_IMPORT_NAMESPACE_NOT_URI' file='xmlerror' value='1711' type='xmlParserErrors' info='1711'/>
     <enum name='XML_SCHEMAP_IMPORT_REDEFINE_NSNAME' file='xmlerror' value='1712' type='xmlParserErrors' info='1712'/>
     <enum name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' file='xmlerror' value='1713' type='xmlParserErrors' info='1713'/>
+    <enum name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' file='xmlerror' value='1770' type='xmlParserErrors' info='1769'/>
+    <enum name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' file='xmlerror' value='1771' type='xmlParserErrors' info='1770'/>
     <enum name='XML_SCHEMAP_INVALID_BOOLEAN' file='xmlerror' value='1714' type='xmlParserErrors' info='1714'/>
     <enum name='XML_SCHEMAP_INVALID_ENUM' file='xmlerror' value='1715' type='xmlParserErrors' info='1715'/>
     <enum name='XML_SCHEMAP_INVALID_FACET' file='xmlerror' value='1716' type='xmlParserErrors' info='1716'/>
@@ -4166,6 +4191,7 @@
     <enum name='XML_SCHEMAP_NOTATION_NO_NAME' file='xmlerror' value='1723' type='xmlParserErrors' info='1723'/>
     <enum name='XML_SCHEMAP_NOTHING_TO_PARSE' file='xmlerror' value='1758' type='xmlParserErrors' info='1757'/>
     <enum name='XML_SCHEMAP_NOTYPE_NOREF' file='xmlerror' value='1724' type='xmlParserErrors' info='1724'/>
+    <enum name='XML_SCHEMAP_NOT_SCHEMA' file='xmlerror' value='1772' type='xmlParserErrors' info='1771'/>
     <enum name='XML_SCHEMAP_PREFIX_UNDEFINED' file='xmlerror' value='1700' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_REDEFINED_ATTR' file='xmlerror' value='1764' type='xmlParserErrors' info='1763'/>
     <enum name='XML_SCHEMAP_REDEFINED_ATTRGROUP' file='xmlerror' value='1763' type='xmlParserErrors' info='1762'/>
@@ -4193,8 +4219,10 @@
     <enum name='XML_SCHEMAP_UNKNOWN_FACET_TYPE' file='xmlerror' value='1741' type='xmlParserErrors' info='1741'/>
     <enum name='XML_SCHEMAP_UNKNOWN_GROUP_CHILD' file='xmlerror' value='1742' type='xmlParserErrors' info='1742'/>
     <enum name='XML_SCHEMAP_UNKNOWN_IMPORT_CHILD' file='xmlerror' value='1743' type='xmlParserErrors' info='1743'/>
+    <enum name='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' file='xmlerror' value='1769' type='xmlParserErrors' info='1768'/>
     <enum name='XML_SCHEMAP_UNKNOWN_LIST_CHILD' file='xmlerror' value='1744' type='xmlParserErrors' info='1744'/>
     <enum name='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' file='xmlerror' value='1745' type='xmlParserErrors' info='1745'/>
+    <enum name='XML_SCHEMAP_UNKNOWN_PREFIX' file='xmlerror' value='1767' type='xmlParserErrors' info='1766'/>
     <enum name='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' file='xmlerror' value='1746' type='xmlParserErrors' info='1746'/>
     <enum name='XML_SCHEMAP_UNKNOWN_REF' file='xmlerror' value='1747' type='xmlParserErrors' info='1747'/>
     <enum name='XML_SCHEMAP_UNKNOWN_RESTRICTION_CHILD' file='xmlerror' value='1748' type='xmlParserErrors' info='1748'/>
@@ -5000,10 +5028,10 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlSAXLocatorPtr' file='tree' type='xmlSAXLocator *'/>
     <struct name='xmlSchema' file='xmlschemas' type='struct _xmlSchema'>
-      <field name='name' type='xmlChar *' info=' schema name'/>
-      <field name='targetNamespace' type='xmlChar *' info=' the target namespace'/>
-      <field name='version' type='xmlChar *' info=''/>
-      <field name='id' type='xmlChar *' info=''/>
+      <field name='name' type='const xmlChar *' info=' schema name'/>
+      <field name='targetNamespace' type='const xmlChar *' info=' the target namespace'/>
+      <field name='version' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=''/>
       <field name='doc' type='xmlDocPtr' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='flags' type='int' info=''/>
@@ -5015,6 +5043,8 @@ actually an xmlCharEncoding'/>
       <field name='schemasImports' type='xmlHashTablePtr' info=''/>
       <field name='_private' type='void *' info=' unused by the library for users or bindings'/>
       <field name='groupDecl' type='xmlHashTablePtr' info=''/>
+      <field name='dict' type='xmlDictPtr' info=''/>
+      <field name='includes' type='void *' info=' the includes, this is opaque for now'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
@@ -5024,26 +5054,28 @@ actually an xmlCharEncoding'/>
     <struct name='xmlSchemaAttribute' file='schemasInternals' type='struct _xmlSchemaAttribute'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
-      <field name='name' type='xmlChar *' info=''/>
-      <field name='id' type='xmlChar *' info=''/>
-      <field name='ref' type='xmlChar *' info=''/>
-      <field name='refNs' type='xmlChar *' info=''/>
-      <field name='typeName' type='xmlChar *' info=''/>
-      <field name='typeNs' type='xmlChar *' info=''/>
+      <field name='name' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=''/>
+      <field name='ref' type='const xmlChar *' info=''/>
+      <field name='refNs' type='const xmlChar *' info=''/>
+      <field name='typeName' type='const xmlChar *' info=''/>
+      <field name='typeNs' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='base' type='xmlSchemaTypePtr' info=''/>
       <field name='occurs' type='int' info=''/>
-      <field name='defValue' type='xmlChar *' info=''/>
+      <field name='defValue' type='const xmlChar *' info=''/>
       <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
       <field name='node' type='xmlNodePtr' info=''/>
+      <field name='targetNamespace' type='const xmlChar *' info=''/>
+      <field name='flags' type='int' info=''/>
     </struct>
     <struct name='xmlSchemaAttributeGroup' file='schemasInternals' type='struct _xmlSchemaAttributeGroup'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
-      <field name='name' type='xmlChar *' info=''/>
-      <field name='id' type='xmlChar *' info=''/>
-      <field name='ref' type='xmlChar *' info=''/>
-      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='name' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=''/>
+      <field name='ref' type='const xmlChar *' info=''/>
+      <field name='refNs' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
       <field name='node' type='xmlNodePtr' info=''/>
@@ -5054,10 +5086,10 @@ actually an xmlCharEncoding'/>
     <struct name='xmlSchemaElement' file='schemasInternals' type='struct _xmlSchemaElement'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
-      <field name='name' type='xmlChar *' info=''/>
-      <field name='id' type='xmlChar *' info=''/>
-      <field name='ref' type='xmlChar *' info=''/>
-      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='name' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=''/>
+      <field name='ref' type='const xmlChar *' info=''/>
+      <field name='refNs' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
       <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
@@ -5065,13 +5097,13 @@ actually an xmlCharEncoding'/>
       <field name='minOccurs' type='int' info=''/>
       <field name='maxOccurs' type='int' info=''/>
       <field name='flags' type='int' info=''/>
-      <field name='targetNamespace' type='xmlChar *' info=''/>
-      <field name='namedType' type='xmlChar *' info=''/>
-      <field name='namedTypeNs' type='xmlChar *' info=''/>
-      <field name='substGroup' type='xmlChar *' info=''/>
-      <field name='substGroupNs' type='xmlChar *' info=''/>
-      <field name='scope' type='xmlChar *' info=''/>
-      <field name='value' type='xmlChar *' info=''/>
+      <field name='targetNamespace' type='const xmlChar *' info=''/>
+      <field name='namedType' type='const xmlChar *' info=''/>
+      <field name='namedTypeNs' type='const xmlChar *' info=''/>
+      <field name='substGroup' type='const xmlChar *' info=''/>
+      <field name='substGroupNs' type='const xmlChar *' info=''/>
+      <field name='scope' type='const xmlChar *' info=''/>
+      <field name='value' type='const xmlChar *' info=''/>
       <field name='refDecl' type='struct _xmlSchemaElement *' info=''/>
       <field name='contModel' type='xmlRegexpPtr' info=''/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
@@ -5080,8 +5112,8 @@ actually an xmlCharEncoding'/>
     <struct name='xmlSchemaFacet' file='schemasInternals' type='struct _xmlSchemaFacet'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaFacet *' info=' the next type if in a sequence ...'/>
-      <field name='value' type='xmlChar *' info=''/>
-      <field name='id' type='xmlChar *' info=''/>
+      <field name='value' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='node' type='xmlNodePtr' info=''/>
       <field name='fixed' type='int' info=''/>
@@ -5092,9 +5124,9 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlSchemaFacetPtr' file='schemasInternals' type='xmlSchemaFacet *'/>
     <struct name='xmlSchemaNotation' file='schemasInternals' type='struct _xmlSchemaNotation'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='name' type='xmlChar *' info=''/>
+      <field name='name' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='identifier' type='xmlChar *' info=''/>
+      <field name='identifier' type='const xmlChar *' info=''/>
     </struct>
     <typedef name='xmlSchemaNotationPtr' file='schemasInternals' type='xmlSchemaNotation *'/>
     <struct name='xmlSchemaParserCtxt' file='xmlschemas' type='struct _xmlSchemaParserCtxt'/>
@@ -5103,10 +5135,10 @@ actually an xmlCharEncoding'/>
     <struct name='xmlSchemaType' file='schemasInternals' type='struct _xmlSchemaType'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
-      <field name='name' type='xmlChar *' info=''/>
-      <field name='id' type='xmlChar *' info=''/>
-      <field name='ref' type='xmlChar *' info=''/>
-      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='name' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=''/>
+      <field name='ref' type='const xmlChar *' info=''/>
+      <field name='refNs' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
       <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
@@ -5115,8 +5147,8 @@ actually an xmlCharEncoding'/>
       <field name='maxOccurs' type='int' info=''/>
       <field name='flags' type='int' info=''/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
-      <field name='base' type='xmlChar *' info=''/>
-      <field name='baseNs' type='xmlChar *' info=''/>
+      <field name='base' type='const xmlChar *' info=''/>
+      <field name='baseNs' type='const xmlChar *' info=''/>
       <field name='baseType' type='xmlSchemaTypePtr' info=''/>
       <field name='facets' type='xmlSchemaFacetPtr' info=''/>
     </struct>
@@ -5323,7 +5355,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='UTF8Toisolat1' file='encoding'>
       <info>Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1 block of chars out.</info>
-      <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of ocetes consumed.'/>
+      <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
@@ -6136,7 +6168,7 @@ actually an xmlCharEncoding'/>
     </functype>
     <function name='isolat1ToUTF8' file='encoding'>
       <info>Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8 block of chars out.</info>
-      <return type='int' info='0 if success, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of ocetes consumed.'/>
+      <return type='int' info='0 if success, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of ISO Latin 1 chars'/>
@@ -6486,7 +6518,7 @@ actually an xmlCharEncoding'/>
       <arg name='content' type='xmlElementContentPtr' info='the element content tree or NULL'/>
     </function>
     <function name='xmlAddEncodingAlias' file='encoding'>
-      <info>Registers and alias @alias for an encoding named @name. Existing alias will be overwritten.</info>
+      <info>Registers an alias @alias for an encoding named @name. Existing alias will be overwritten.</info>
       <return type='int' info='0 in case of success, -1 in case of error'/>
       <arg name='name' type='const char *' info='the encoding name as parsed, in UTF-8 format (ASCII actually)'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
@@ -6963,15 +6995,15 @@ actually an xmlCharEncoding'/>
     </function>
     <functype name='xmlCharEncodingInputFunc' file='encoding'>
       <info>Take a block of chars in the original encoding and try to convert it to an UTF-8 block of chars out.</info>
-      <return type='int' info='the number of byte written, or -1 by lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets consumed.'/>
+      <return type='int' info='the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the UTF-8 result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of chars in the original encoding'/>
       <arg name='inlen' type='int *' info='the length of @in'/>
     </functype>
     <functype name='xmlCharEncodingOutputFunc' file='encoding'>
-      <info>Take a block of UTF-8 chars in and try to convert it to an other encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state.</info>
-      <return type='int' info='the number of byte written, or -1 by lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictiable. The value of @outlen after return is the number of ocetes consumed.'/>
+      <info>Take a block of UTF-8 chars in and try to convert it to another encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state.</info>
+      <return type='int' info='the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of ocetes consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
@@ -7011,9 +7043,9 @@ actually an xmlCharEncoding'/>
       <arg name='lang' type='const xmlChar *' info='pointer to the string value'/>
     </function>
     <function name='xmlCheckUTF8' file='encoding'>
-      <info>Checks @utf for being valid utf-8. @utf is assumed to be null-terminated. This function is not super-strict, as it will allow longer utf-8 sequences than necessary. Note that Java is capable of producing these sequences if provoked. Also note, this routine checks for the 4-byte maximum size, but does not check for 0x10ffff maximum value.</info>
+      <info>Checks @utf for being valid UTF-8. @utf is assumed to be null-terminated. This function is not super-strict, as it will allow longer UTF-8 sequences than necessary. Note that Java is capable of producing these sequences if provoked. Also note, this routine checks for the 4-byte maximum size, but does not check for 0x10ffff maximum value.</info>
       <return type='int' info='value: true if @utf is valid.'/>
-      <arg name='utf' type='const unsigned char *' info='Pointer to putative utf-8 encoded string.'/>
+      <arg name='utf' type='const unsigned char *' info='Pointer to putative UTF-8 encoded string.'/>
     </function>
     <function name='xmlCheckVersion' file='xmlversion'>
       <info>check the compiled lib version against the include one. This can warn or immediately kill the application</info>
@@ -7407,9 +7439,9 @@ actually an xmlCharEncoding'/>
       <arg name='node' type='xmlNodePtr' info=''/>
     </functype>
     <function name='xmlDetectCharEncoding' file='encoding'>
-      <info>Guess the encoding of the entity using the first bytes of the entity content accordingly of the non-normative appendix F of the XML-1.0 recommendation.</info>
+      <info>Guess the encoding of the entity using the first bytes of the entity content according to the non-normative appendix F of the XML-1.0 recommendation.</info>
       <return type='xmlCharEncoding' info='one of the XML_CHAR_ENCODING_... values.'/>
-      <arg name='in' type='const unsigned char *' info='a pointer to the first bytes of the XML entity, must be at least 4 bytes long.'/>
+      <arg name='in' type='const unsigned char *' info='a pointer to the first bytes of the XML entity, must be at least 2 bytes long (at least 4 if encoding is UTF4 variant).'/>
       <arg name='len' type='int' info='pointer to the length of the buffer'/>
     </function>
     <function name='xmlDictCreate' file='dict'>
@@ -7870,7 +7902,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlGetEncodingAlias' file='encoding'>
       <info>Lookup an encoding name for the given alias.</info>
-      <return type='const char *' info='NULL if not found the original name otherwise'/>
+      <return type='const char *' info='NULL if not found, otherwise the original name'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
     <function name='xmlGetExternalEntityLoader' file='parser'>
@@ -7972,7 +8004,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlGetUTF8Char' file='encoding'>
       <info>Read one UTF8 Char from @utf</info>
-      <return type='int' info='the char value or -1 in case of error and update @len with the number of bytes used'/>
+      <return type='int' info='the char value or -1 in case of error, and updates *len with the number of bytes consumed'/>
       <arg name='utf' type='const unsigned char *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='len' type='int *' info='a pointer to @bytes len'/>
     </function>
@@ -9507,7 +9539,7 @@ actually an xmlCharEncoding'/>
       <arg name='cdata' type='int' info='int indicating whether we are within a CDATA section'/>
     </function>
     <function name='xmlParseCharEncoding' file='encoding'>
-      <info>Compare the string to the known encoding schemes already known. Note that the comparison is case insensitive accordingly to the section [XML] 4.3.3 Character Encoding in Entities.</info>
+      <info>Compare the string to the encoding schemes already known. Note that the comparison is case insensitive accordingly to the section [XML] 4.3.3 Character Encoding in Entities.</info>
       <return type='xmlCharEncoding' info='one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE if not recognized.'/>
       <arg name='name' type='const char *' info='the encoding name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
@@ -11989,7 +12021,7 @@ actually an xmlCharEncoding'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='name' type='const xmlChar *' info='attribute name'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatAttributeNS' file='xmlwriter'>
       <info>Write a formatted xml attribute.with namespace support</info>
@@ -11999,21 +12031,21 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='attribute local name'/>
       <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatCDATA' file='xmlwriter'>
       <info>Write a formatted xml CDATA.</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatComment' file='xmlwriter'>
       <info>Write an xml comment.</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatDTD' file='xmlwriter'>
       <info>Write a DTD with a formatted markup declarations part.</info>
@@ -12023,7 +12055,7 @@ actually an xmlCharEncoding'/>
       <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
       <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatDTDAttlist' file='xmlwriter'>
       <info>Write a formatted DTD ATTLIST.</info>
@@ -12031,7 +12063,7 @@ actually an xmlCharEncoding'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='name' type='const xmlChar *' info='the name of the DTD ATTLIST'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatDTDElement' file='xmlwriter'>
       <info>Write a formatted DTD element.</info>
@@ -12039,7 +12071,7 @@ actually an xmlCharEncoding'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='name' type='const xmlChar *' info='the name of the DTD element'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatDTDInternalEntity' file='xmlwriter'>
       <info>Write a formatted DTD internal entity.</info>
@@ -12048,7 +12080,7 @@ actually an xmlCharEncoding'/>
       <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
       <arg name='name' type='const xmlChar *' info='the name of the DTD entity'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatElement' file='xmlwriter'>
       <info>Write a formatted xml element.</info>
@@ -12056,7 +12088,7 @@ actually an xmlCharEncoding'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='name' type='const xmlChar *' info='element name'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatElementNS' file='xmlwriter'>
       <info>Write a formatted xml element with namespace support.</info>
@@ -12066,7 +12098,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='element local name'/>
       <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatPI' file='xmlwriter'>
       <info>Write a formatted PI.</info>
@@ -12074,21 +12106,21 @@ actually an xmlCharEncoding'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='target' type='const xmlChar *' info='PI target'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatRaw' file='xmlwriter'>
       <info>Write a formatted raw xml text.</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWriteFormatString' file='xmlwriter'>
       <info>Write a formatted xml text.</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='...' type='...' info=''/>
+      <arg name='...' type='...' info='extra parameters for the format'/>
     </function>
     <function name='xmlTextWriterWritePI' file='xmlwriter'>
       <info>Write an xml PI.</info>
@@ -13167,7 +13199,7 @@ actually an xmlCharEncoding'/>
       <arg name='utf2' type='const xmlChar *' info='pointer to second UTF8 char'/>
     </function>
     <function name='xmlUTF8Size' file='encoding'>
-      <info>calulates the internal size of a UTF8 character</info>
+      <info>calculates the internal size of a UTF8 character</info>
       <return type='int' info='the numbers of bytes in the character, -1 on format error'/>
       <arg name='utf' type='const xmlChar *' info='pointer to the UTF8 character'/>
     </function>
@@ -13177,7 +13209,7 @@ actually an xmlCharEncoding'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
     </function>
     <function name='xmlUTF8Strloc' file='encoding'>
-      <info>a function to provide relative location of a UTF8 char</info>
+      <info>a function to provide the relative location of a UTF8 char</info>
       <return type='int' info='the relative character position of the desired char or -1 if not found'/>
       <arg name='utf' type='const xmlChar *' info='the input UTF8 *'/>
       <arg name='utfchar' type='const xmlChar *' info='the UTF8 character to be found'/>
@@ -13201,7 +13233,7 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the number of characters in the array'/>
     </function>
     <function name='xmlUTF8Strsub' file='encoding'>
-      <info>Note:  positions are given in units of UTF-8 chars</info>
+      <info>Create a substring from a given UTF-8 string Note:  positions are given in units of UTF-8 chars</info>
       <return type='xmlChar *' info='a pointer to a newly created string or NULL if any problem'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='start' type='int' info='relative pos of first char'/>

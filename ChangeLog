@@ -1,3 +1,10 @@
+Sun Nov 30 21:33:37 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* include/libxml/xinclude.h
+	* doc/*
+	Add comments for macro definitions in xinclude.h and
+	rebuild the docs
+
 Sun Nov 30 21:06:29 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/docdescr.doc

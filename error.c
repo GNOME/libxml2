@@ -447,7 +447,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     char *str = NULL;
     xmlParserInputPtr input = NULL;
     xmlErrorPtr to = &xmlLastError;
-    xmlChar *base = NULL;
+    xmlNodePtr baseptr = NULL;
 
     if ((xmlGetWarningsDefaultValue == 0) && (level == XML_ERR_WARNING))
         return;
@@ -509,14 +509,14 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	int i;
 
 	if ((node->doc != NULL) && (node->doc->URL != NULL))
-	    base = xmlStrdup(node->doc->URL);
+	    baseptr = node;
 	for (i = 0;
 	     ((i < 10) && (node != NULL) && (node->type != XML_ELEMENT_NODE));
 	     i++)
 	     node = node->parent;
-        if ((base == NULL) && (node != NULL) &&
+        if ((baseptr == NULL) && (node != NULL) &&
 	    (node->doc != NULL) && (node->doc->URL != NULL))
-	    base = xmlStrdup(node->doc->URL);
+	    baseptr = node;
 
 	if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
 	    line = node->line;
@@ -532,9 +532,33 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     to->level = level;
     if (file != NULL)
         to->file = (char *) xmlStrdup((const xmlChar *) file);
-    else if (base != NULL) {
-        to->file = (char *) base;
-	file = (char *) base;
+    else if (baseptr != NULL) {
+#ifdef LIBXML_XINCLUDE_ENABLED
+	/*
+	 * We check if the error is within an XInclude section and,
+	 * if so, attempt to print out the href of the XInclude instead
+	 * of the usual "base" (doc->URL) for the node (bug 152623).
+	 */
+        xmlNodePtr prev = baseptr;
+	int inclcount = 0;
+	while (prev != NULL) {
+	    if (prev->prev == NULL)
+	        prev = prev->parent;
+	    else {
+	        prev = prev->prev;
+		if (prev->type == XML_XINCLUDE_START) {
+		    if (--inclcount < 0)
+		        break;
+		} else if (prev->type == XML_XINCLUDE_END)
+		    inclcount++;
+	    }
+	}
+	if (prev != NULL) {
+	    to->file = (char *) xmlGetProp(prev, BAD_CAST "href");
+	} else
+#endif
+	    to->file = (char *) xmlStrdup(baseptr->doc->URL);
+	file = to->file;
     }
     to->line = line;
     if (str1 != NULL)

@@ -1,3 +1,8 @@
+Fri Oct  1 20:37:25 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* error.c: added some coding to attempt to display which file
+	  contains an error when using XInclude (bug 152623)
+
 Thu Sep 30 11:19:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: stupid cut'n paste bug in xmllint detection

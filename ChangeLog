@@ -1,3 +1,7 @@
+Mon Aug 23 14:33:54 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: removing -O -g from default gcc flags #150828
+
 Sun Aug 22 16:26:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/* NEWS: preparing 2.6.12 release, updated and

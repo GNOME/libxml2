@@ -16,6 +16,18 @@ extern "C" {
 #endif
 
 /*
+ * Parser context
+ */
+xmlParserCtxtPtr
+xmlCreateDocParserCtxt(CHAR *cur);
+xmlParserCtxtPtr
+xmlCreateFileParserCtxt(const char *filename);
+xmlParserCtxtPtr
+xmlCreateMemoryParserCtxt(char *buffer, int size);
+void
+xmlFreeParserCtxt(xmlParserCtxtPtr ctxt);
+
+/*
  * Entities
  */
 void

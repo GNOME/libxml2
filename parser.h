@@ -20,12 +20,14 @@ extern "C" {
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
+typedef void (* xmlParserInputDeallocate)(CHAR *);
 typedef struct xmlParserInput {
     const char *filename;             /* The file analyzed, if any */
     const CHAR *base;                 /* Base of the array to parse */
     const CHAR *cur;                  /* Current char being parsed */
     int line;                         /* Current line */
     int col;                          /* Current column */
+    xmlParserInputDeallocate free;    /* function to deallocate the base */
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 

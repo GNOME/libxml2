@@ -58,13 +58,16 @@ int name##Push(xmlParserCtxtPtr ctxt, type value) {			\
     return(ctxt->name##Nr++);						\
 }									\
 type name##Pop(xmlParserCtxtPtr ctxt) {					\
+    type ret;								\
     if (ctxt->name##Nr <= 0) return(0);					\
     ctxt->name##Nr--;							\
     if (ctxt->name##Nr > 0)						\
 	ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];		\
     else								\
         ctxt->name = NULL;						\
-    return(ctxt->name);							\
+    ret = ctxt->name##Tab[ctxt->name##Nr];				\
+    ctxt->name##Tab[ctxt->name##Nr] = 0;				\
+    return(ret);							\
 }									\
 
 PUSH_AND_POP(xmlParserInputPtr, input)
@@ -148,6 +151,23 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 }
 
 /**
+ * xmlFreeInputStream:
+ * @input:  an xmlParserInputPtr
+ *
+ * Free up an input stream.
+ */
+void
+xmlFreeInputStream(xmlParserInputPtr input) {
+    if (input == NULL) return;
+
+    if (input->filename != NULL) return;
+    if ((input->free != NULL) && (input->base != NULL))
+        input->free((char *) input->base);
+    memset(input, -1, sizeof(xmlParserInput));
+    free(input);
+}
+
+/**
  * xmlNewEntityInputStream:
  * @ctxt:  an XML parser context
  * @entity:  an Entity pointer
@@ -182,6 +202,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     input->cur = entity->content;
     input->line = 1;
     input->col = 1;
+    input->free = NULL;
     return(input);
 }
 
@@ -214,6 +235,7 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, CHAR *string) {
     input->cur = string;
     input->line = 1;
     input->col = 1;
+    input->free = NULL;
     return(input);
 }
 
@@ -4397,6 +4419,43 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * xmlCreateFileParserCtxt :
+ * @cur:  a pointer to an array of CHAR
+ *
+ * Create a parser context for an XML in-memory document.
+ *
+ * Returns the new parser context or NULL
+ */
+xmlParserCtxtPtr
+xmlCreateDocParserCtxt(CHAR *cur) {
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr input;
+
+    ctxt = (xmlParserCtxtPtr) malloc(sizeof(xmlParserCtxt));
+    if (ctxt == NULL) {
+        perror("malloc");
+	return(NULL);
+    }
+    xmlInitParserCtxt(ctxt);
+    input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
+    if (input == NULL) {
+        perror("malloc");
+	free(ctxt);
+	return(NULL);
+    }
+
+    input->filename = NULL;
+    input->line = 1;
+    input->col = 1;
+    input->base = cur;
+    input->cur = cur;
+    input->free = NULL;
+
+    inputPush(ctxt, input);
+    return(ctxt);
+}
+
+/**
  * xmlSAXParseDoc :
  * @sax:  the SAX handler block
  * @cur:  a pointer to an array of CHAR
@@ -4414,32 +4473,13 @@ xmlDocPtr
 xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
-    xmlParserInputPtr input;
 
     if (cur == NULL) return(NULL);
 
-    ctxt = (xmlParserCtxtPtr) malloc(sizeof(xmlParserCtxt));
-    if (ctxt == NULL) {
-        perror("malloc");
-	return(NULL);
-    }
-    xmlInitParserCtxt(ctxt);
+
+    ctxt = xmlCreateDocParserCtxt(cur);
+    if (ctxt == NULL) return(NULL);
     if (sax != NULL) ctxt->sax = sax;
-    input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
-    if (input == NULL) {
-        perror("malloc");
-	free(ctxt);
-	return(NULL);
-    }
-
-    input->filename = NULL;
-    input->line = 1;
-    input->col = 1;
-    input->base = cur;
-    input->cur = cur;
-
-    inputPush(ctxt, input);
-
 
     xmlParseDocument(ctxt);
     if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
@@ -4448,12 +4488,7 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
        xmlFreeDoc(ctxt->doc);
        ctxt->doc = NULL;
     }
-    free(ctxt->nodeTab);
-    free(ctxt->inputTab);
-    if (input->filename != NULL)
-	free((char *)input->filename);
-    free(input);
-    free(ctxt);
+    xmlFreeParserCtxt(ctxt);
     
     return(ret);
 }
@@ -4488,23 +4523,19 @@ xmlRecoverDoc(CHAR *cur) {
 }
 
 /**
- * xmlSAXParseFile :
- * @sax:  the SAX handler block
+ * xmlCreateFileParserCtxt :
  * @filename:  the filename
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
- *             documents
  *
- * parse an XML file and build a tree. Automatic support for ZLIB/Compress
- * compressed document is provided by default if found at compile-time.
- * It use the given SAX function block to handle the parsing callback.
- * If sax is NULL, fallback to the default DOM tree building routines.
+ * Create a parser context for a file content. 
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * by default if found at compile-time.
  *
- * Returns the resulting document tree
+ * Returns the new parser context or NULL
  */
-
-xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
-                          int recovery) {
-    xmlDocPtr ret;
+xmlParserCtxtPtr
+xmlCreateFileParserCtxt(const char *filename)
+{
+    xmlParserCtxtPtr ctxt;
 #ifdef HAVE_ZLIB_H
     gzFile input;
 #else
@@ -4514,7 +4545,6 @@ xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
     int len;
     struct stat buf;
     char *buffer;
-    xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
 
     res = stat(filename, &buf);
@@ -4583,7 +4613,6 @@ retry_bigger:
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
-    if (sax != NULL) ctxt->sax = sax;
     inputStream = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (inputStream == NULL) {
         perror("malloc");
@@ -4600,8 +4629,35 @@ retry_bigger:
      */
     inputStream->base = buffer;
     inputStream->cur = buffer;
+    inputStream->free = (xmlParserInputDeallocate) free;
 
     inputPush(ctxt, inputStream);
+    return(ctxt);
+}
+
+/**
+ * xmlSAXParseFile :
+ * @sax:  the SAX handler block
+ * @filename:  the filename
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
+ *
+ * parse an XML file and build a tree. Automatic support for ZLIB/Compress
+ * compressed document is provided by default if found at compile-time.
+ * It use the given SAX function block to handle the parsing callback.
+ * If sax is NULL, fallback to the default DOM tree building routines.
+ *
+ * Returns the resulting document tree
+ */
+
+xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
+                          int recovery) {
+    xmlDocPtr ret;
+    xmlParserCtxtPtr ctxt;
+
+    ctxt = xmlCreateFileParserCtxt(filename);
+    if (ctxt == NULL) return(NULL);
+    if (sax != NULL) ctxt->sax = sax;
 
     xmlParseDocument(ctxt);
 
@@ -4611,13 +4667,7 @@ retry_bigger:
        xmlFreeDoc(ctxt->doc);
        ctxt->doc = NULL;
     }
-    free(buffer);
-    free(ctxt->nodeTab);
-    free(ctxt->inputTab);
-    if (inputStream->filename != NULL)
-	free((char *)inputStream->filename);
-    free(inputStream);
-    free(ctxt);
+    xmlFreeParserCtxt(ctxt);
     
     return(ret);
 }
@@ -4652,25 +4702,16 @@ xmlDocPtr xmlRecoverFile(const char *filename) {
 }
 
 /**
- * xmlSAXParseMemory :
- * @sax:  the SAX handler block
+ * xmlCreateMemoryParserCtxt :
  * @buffer:  an pointer to a char array
  * @size:  the siwe of the array
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
- *             documents
  *
- * parse an XML in-memory block and use the given SAX function block
- * to handle the parsing callback. If sax is NULL, fallback to the default
- * DOM tree building routines.
- * 
- * TODO : plug some encoding conversion routines here. !!!
+ * Create a parser context for an XML in-memory document.
  *
- * Returns the resulting document tree
+ * Returns the new parser context or NULL
  */
-xmlDocPtr
-xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
-                            int recovery) {
-    xmlDocPtr ret;
+xmlParserCtxtPtr
+xmlCreateMemoryParserCtxt(char *buffer, int size) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
 
@@ -4682,7 +4723,6 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
-    if (sax != NULL) ctxt->sax = sax;
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
         perror("malloc");
@@ -4701,8 +4741,36 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
      */
     input->base = buffer;
     input->cur = buffer;
+    input->free = NULL;
 
     inputPush(ctxt, input);
+    return(ctxt);
+}
+
+/**
+ * xmlSAXParseMemory :
+ * @sax:  the SAX handler block
+ * @buffer:  an pointer to a char array
+ * @size:  the siwe of the array
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
+ *
+ * parse an XML in-memory block and use the given SAX function block
+ * to handle the parsing callback. If sax is NULL, fallback to the default
+ * DOM tree building routines.
+ * 
+ * TODO : plug some encoding conversion routines here. !!!
+ *
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
+    xmlDocPtr ret;
+    xmlParserCtxtPtr ctxt;
+
+    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+    if (ctxt == NULL) return(NULL);
+    if (sax != NULL) ctxt->sax = sax;
 
     xmlParseDocument(ctxt);
 
@@ -4712,12 +4780,7 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
        xmlFreeDoc(ctxt->doc);
        ctxt->doc = NULL;
     }
-    free(ctxt->nodeTab);
-    free(ctxt->inputTab);
-    if (input->filename != NULL)
-	free((char *)input->filename);
-    free(input);
-    free(ctxt);
+    xmlFreeParserCtxt(ctxt);
     
     return(ret);
 }
@@ -4761,23 +4824,47 @@ xmlDocPtr xmlRecoverMemory(char *buffer, int size) {
 void
 xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
-  /* Allocate the Input stack */
-  ctxt->inputTab = (xmlParserInputPtr *) malloc(5 * sizeof(xmlParserInputPtr));
-  ctxt->inputNr = 0;
-  ctxt->inputMax = 5;
-  ctxt->input = NULL;
+    /* Allocate the Input stack */
+    ctxt->inputTab = (xmlParserInputPtr *) malloc(5 * sizeof(xmlParserInputPtr));
+    ctxt->inputNr = 0;
+    ctxt->inputMax = 5;
+    ctxt->input = NULL;
 
-  /* Allocate the Node stack */
-  ctxt->nodeTab = (xmlNodePtr *) malloc(10 * sizeof(xmlNodePtr));
-  ctxt->nodeNr = 0;
-  ctxt->nodeMax = 10;
-  ctxt->node = NULL;
+    /* Allocate the Node stack */
+    ctxt->nodeTab = (xmlNodePtr *) malloc(10 * sizeof(xmlNodePtr));
+    ctxt->nodeNr = 0;
+    ctxt->nodeMax = 10;
+    ctxt->node = NULL;
 
-  ctxt->sax = &xmlDefaultSAXHandler;
-  ctxt->doc = NULL;
-  ctxt->wellFormed = 1;
-  ctxt->record_info = 0;
-  xmlInitNodeInfoSeq(&ctxt->node_seq);
+    ctxt->sax = &xmlDefaultSAXHandler;
+    ctxt->doc = NULL;
+    ctxt->wellFormed = 1;
+    ctxt->record_info = 0;
+    xmlInitNodeInfoSeq(&ctxt->node_seq);
+}
+
+/**
+ * xmlFreeParserCtxt:
+ * @ctxt:  an XML parser context
+ *
+ * Free all the memory used by a parser context. However the parsed
+ * document in ctxt->doc is not freed.
+ */
+
+void
+xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
+{
+    xmlParserInputPtr input;
+
+    if (ctxt == NULL) return;
+
+    while ((input = inputPop(ctxt)) != NULL) {
+        xmlFreeInputStream(input);
+    }
+
+    if (ctxt->nodeTab != NULL) free(ctxt->nodeTab);
+    if (ctxt->inputTab != NULL) free(ctxt->inputTab);
+    free(ctxt);
 }
 
 /**

@@ -590,6 +590,8 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
     xmlEntityPtr ret;
 
+    if (doc == NULL)
+	return(NULL);
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
 	ret = xmlGetEntityFromTable(table, name, 1);
@@ -617,6 +619,8 @@ xmlEntityPtr
 xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
 
+    if (doc == NULL)
+	return(NULL);
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	return(xmlGetEntityFromTable(table, name, 0));
@@ -640,17 +644,19 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
-    if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
-	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
-	cur = xmlGetEntityFromTable(table, name, 0);
-	if (cur != NULL)
-	    return(cur);
-    }
-    if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
-	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
-	cur = xmlGetEntityFromTable(table, name, 0);
-	if (cur != NULL)
-	    return(cur);
+    if (doc != NULL) {
+	if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
+	    table = (xmlEntitiesTablePtr) doc->intSubset->entities;
+	    cur = xmlGetEntityFromTable(table, name, 0);
+	    if (cur != NULL)
+		return(cur);
+	}
+	if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
+	    table = (xmlEntitiesTablePtr) doc->extSubset->entities;
+	    cur = xmlGetEntityFromTable(table, name, 0);
+	    if (cur != NULL)
+		return(cur);
+	}
     }
     if (xmlPredefinedEntities == NULL)
         xmlInitializePredefinedEntities();

@@ -138,7 +138,7 @@ endif
 # Libxml object files.
 XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/catalog.o\
-	$(XML_INTDIR)/chvalid.obj\
+	$(XML_INTDIR)/chvalid.o\
 	$(XML_INTDIR)/debugXML.o\
 	$(XML_INTDIR)/dict.o\
 	$(XML_INTDIR)/DOCBparser.o\
@@ -179,7 +179,7 @@ XML_SRCS = $(subst .o,.c,$(subst $(XML_INTDIR)/,$(XML_SRCDIR)/,$(XML_OBJS)))
 # Static libxml object files.
 XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/catalog.o\
-	$(XML_INTDIR_A)/chvalid.obj\
+	$(XML_INTDIR_A)/chvalid.o\
 	$(XML_INTDIR_A)/debugXML.o\
 	$(XML_INTDIR_A)/dict.o\
 	$(XML_INTDIR_A)/DOCBparser.o\

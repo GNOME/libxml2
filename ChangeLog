@@ -1,3 +1,7 @@
+Tue Oct 21 21:14:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.mingw: typo pointed out by Stephane Bidoul
+
 Tue Oct 21 11:26:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.bcb win32/Makefile.mingw win32/Makefile.msvc

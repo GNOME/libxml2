@@ -155,14 +155,14 @@
 #define IS_URIC(p) ((IS_UNRESERVED(*(p))) || (IS_ESCAPED(p)) ||		\
 	            (IS_RESERVED(*(p))))
 
-/*
- * unwise = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
- */
+/*                                                                              
+* unwise = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
+*/                                                                             
 
-#define IS_UNWISE(p) 							\
-      (((*(p) == '{')) || ((*(p) == '}')) || ((*(p) == '|')) ||		\
-       ((*(p) == '\\')) || ((*(p) == '^')) || ((*(p) == '[')) ||	\
-       ((*(p) == ']')) || ((*(p) == '`')))
+#define IS_UNWISE(p)                                                    \
+      (((*(p) == '{')) || ((*(p) == '}')) || ((*(p) == '|')) ||         \
+       ((*(p) == '\\')) || ((*(p) == '^')) || ((*(p) == '[')) ||        \
+       ((*(p) == ']')) || ((*(p) == '`')))  
 
 /*
  * Skip to next pointer char, handle escaped sequences
@@ -936,7 +936,8 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
  *   - Carl Douglas
  */
 xmlChar *
-xmlURIEscape(const xmlChar *str) {
+xmlURIEscape(const xmlChar * str)
+{
     xmlChar *ret, *segment = NULL;
     xmlURIPtr uri;
     int ret2;
@@ -947,97 +948,103 @@ xmlURIEscape(const xmlChar *str) {
                    return NULL; }
 
     if (str == NULL)
-	return(NULL);
+        return (NULL);
 
     uri = xmlCreateURI();
     if (uri != NULL) {
-	uri->cleanup = 1;
-	ret2 = xmlParseURIReference(uri, str);
+	/*
+	 * Allow escaping errors in the unescaped form
+	 */
+        uri->cleanup = 1;
+        ret2 = xmlParseURIReference(uri, (const char *)str);
         if (ret2) {
-	    xmlFreeURI(uri);
-	    return(NULL);
-	}
+            xmlFreeURI(uri);
+            return (NULL);
+        }
     }
 
-    if(!uri)
-	return NULL;
+    if (!uri)
+        return NULL;
 
     ret = NULL;
 
-    if(uri->scheme) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->scheme, BAD_CAST "+-.");
-	NULLCHK(segment)
-	xmlStrcat(ret, segment);
-	xmlStrcat(ret, BAD_CAST ":");
-	xmlFree(segment);
+    if (uri->scheme) {
+        segment = xmlURIEscapeStr(BAD_CAST uri->scheme, BAD_CAST "+-.");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, segment);
+        ret = xmlStrcat(ret, BAD_CAST ":");
+        xmlFree(segment);
     }
 
-    if(uri->authority) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->authority, BAD_CAST "/?;:@");
-	NULLCHK(segment)
-	xmlStrcat(ret, BAD_CAST "//");
-	xmlStrcat(ret, segment);
-	xmlFree(segment);
+    if (uri->authority) {
+        segment =
+            xmlURIEscapeStr(BAD_CAST uri->authority, BAD_CAST "/?;:@");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, BAD_CAST "//");
+        ret = xmlStrcat(ret, segment);
+        xmlFree(segment);
     }
 
-    if(uri->user) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->user, BAD_CAST ";:&=+$,");
-	NULLCHK(segment)
-	xmlStrcat(ret, segment);
-	xmlStrcat(ret, BAD_CAST "@");
-	xmlFree(segment);
+    if (uri->user) {
+        segment = xmlURIEscapeStr(BAD_CAST uri->user, BAD_CAST ";:&=+$,");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, segment);
+        ret = xmlStrcat(ret, BAD_CAST "@");
+        xmlFree(segment);
     }
 
-    if(uri->server) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->server, BAD_CAST "/?;:@");
-	NULLCHK(segment)
-	xmlStrcat(ret, BAD_CAST "//");
-	xmlStrcat(ret, segment);
-	xmlFree(segment);
+    if (uri->server) {
+        segment = xmlURIEscapeStr(BAD_CAST uri->server, BAD_CAST "/?;:@");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, BAD_CAST "//");
+        ret = xmlStrcat(ret, segment);
+        xmlFree(segment);
     }
 
-    if(uri->port) {
-	xmlChar port[10];
-	snprintf((char *) segment, 10, "%d", uri->port);
-	xmlStrcat(ret, BAD_CAST ":");
-	xmlStrcat(ret, port);
-	xmlFree(segment);
+    if (uri->port) {
+        xmlChar port[10];
+
+        snprintf((char *) segment, 10, "%d", uri->port);
+        ret = xmlStrcat(ret, BAD_CAST ":");
+        ret = xmlStrcat(ret, port);
+        xmlFree(segment);
     }
 
-    if(uri->path) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->path, BAD_CAST ":@&=+$,/?;");
-	NULLCHK(segment)
-	xmlStrcat(ret, segment);
-	xmlFree(segment);
+    if (uri->path) {
+        segment =
+            xmlURIEscapeStr(BAD_CAST uri->path, BAD_CAST ":@&=+$,/?;");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, segment);
+        xmlFree(segment);
     }
 
-    if(uri->query) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->query, BAD_CAST ";/?:@&=+,$");
-	NULLCHK(segment)
-	xmlStrcat(ret, BAD_CAST "?");
-	xmlStrcat(ret, segment);
-	xmlFree(segment);
+    if (uri->query) {
+        segment =
+            xmlURIEscapeStr(BAD_CAST uri->query, BAD_CAST ";/?:@&=+,$");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, BAD_CAST "?");
+        ret = xmlStrcat(ret, segment);
+        xmlFree(segment);
     }
 
-    if(uri->opaque) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->opaque, BAD_CAST "");
-	NULLCHK(segment)
-	xmlStrcat(ret, segment);
-	xmlStrcat(ret, BAD_CAST ":");
-	xmlFree(segment);
+    if (uri->opaque) {
+        segment = xmlURIEscapeStr(BAD_CAST uri->opaque, BAD_CAST "");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, segment);
+        ret = xmlStrcat(ret, BAD_CAST ":");
+        xmlFree(segment);
     }
 
-    if(uri->fragment) {
-	segment = xmlURIEscapeStr( BAD_CAST uri->fragment, BAD_CAST "#");
-	NULLCHK(segment)
-	xmlStrcat(ret, BAD_CAST "#");
-	xmlStrcat(ret, segment);
-	xmlFree(segment);
+    if (uri->fragment) {
+        segment = xmlURIEscapeStr(BAD_CAST uri->fragment, BAD_CAST "#");
+        NULLCHK(segment)
+        ret = xmlStrcat(ret, BAD_CAST "#");
+        ret = xmlStrcat(ret, segment);
+        xmlFree(segment);
     }
-
 #undef NULLCHK
 
-    return(ret);
+    return (ret);
 }
 
 /************************************************************************
@@ -1059,18 +1066,22 @@ xmlURIEscape(const xmlChar *str) {
  * Returns 0 or the error code
  */
 static int
-xmlParseURIFragment(xmlURIPtr uri, const char **str) {
+xmlParseURIFragment(xmlURIPtr uri, const char **str)
+{
     const char *cur = *str;
 
-    if (str == NULL) return(-1);
+    if (str == NULL)
+        return (-1);
 
-    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) NEXT(cur);
+    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+        NEXT(cur);
     if (uri != NULL) {
-	if (uri->fragment != NULL) xmlFree(uri->fragment);
-	uri->fragment = xmlURIUnescapeString(*str, cur - *str, NULL);
+        if (uri->fragment != NULL)
+            xmlFree(uri->fragment);
+        uri->fragment = xmlURIUnescapeString(*str, cur - *str, NULL);
     }
     *str = cur;
-    return(0);
+    return (0);
 }
 
 /**
@@ -1085,18 +1096,22 @@ xmlParseURIFragment(xmlURIPtr uri, const char **str) {
  * Returns 0 or the error code
  */
 static int
-xmlParseURIQuery(xmlURIPtr uri, const char **str) {
+xmlParseURIQuery(xmlURIPtr uri, const char **str)
+{
     const char *cur = *str;
 
-    if (str == NULL) return(-1);
+    if (str == NULL)
+        return (-1);
 
-    while (IS_URIC(cur)) NEXT(cur);
+    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+        NEXT(cur);
     if (uri != NULL) {
-	if (uri->query != NULL) xmlFree(uri->query);
-	uri->query = xmlURIUnescapeString(*str, cur - *str, NULL);
+        if (uri->query != NULL)
+            xmlFree(uri->query);
+        uri->query = xmlURIUnescapeString(*str, cur - *str, NULL);
     }
     *str = cur;
-    return(0);
+    return (0);
 }
 
 /**
@@ -1143,24 +1158,27 @@ xmlParseURIScheme(xmlURIPtr uri, const char **str) {
  * Returns 0 or the error code
  */
 static int
-xmlParseURIOpaquePart(xmlURIPtr uri, const char **str) {
+xmlParseURIOpaquePart(xmlURIPtr uri, const char **str)
+{
     const char *cur;
 
     if (str == NULL)
-	return(-1);
-    
+        return (-1);
+
     cur = *str;
     if (!(IS_URIC_NO_SLASH(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))) {
-	return(3);
+        return (3);
     }
     NEXT(cur);
-    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) NEXT(cur);
+    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+        NEXT(cur);
     if (uri != NULL) {
-	if (uri->opaque != NULL) xmlFree(uri->opaque);
-	uri->opaque = xmlURIUnescapeString(*str, cur - *str, NULL);
+        if (uri->opaque != NULL)
+            xmlFree(uri->opaque);
+        uri->opaque = xmlURIUnescapeString(*str, cur - *str, NULL);
     }
     *str = cur;
-    return(0);
+    return (0);
 }
 
 /**
@@ -1319,24 +1337,27 @@ host_done:
  * Returns 0 or the error code
  */
 static int
-xmlParseURIRelSegment(xmlURIPtr uri, const char **str) {
+xmlParseURIRelSegment(xmlURIPtr uri, const char **str)
+{
     const char *cur;
 
     if (str == NULL)
-	return(-1);
-    
+        return (-1);
+
     cur = *str;
-    if (!IS_SEGMENT(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) {
-	return(3);
+    if (!(IS_SEGMENT(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))) {
+        return (3);
     }
     NEXT(cur);
-    while (IS_SEGMENT(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) NEXT(cur);
+    while (IS_SEGMENT(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+        NEXT(cur);
     if (uri != NULL) {
-	if (uri->path != NULL) xmlFree(uri->path);
-	uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
+        if (uri->path != NULL)
+            xmlFree(uri->path);
+        uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
     }
     *str = cur;
-    return(0);
+    return (0);
 }
 
 /**
@@ -1354,62 +1375,64 @@ xmlParseURIRelSegment(xmlURIPtr uri, const char **str) {
  * Returns 0 or the error code
  */
 static int
-xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash) {
+xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash)
+{
     const char *cur;
 
     if (str == NULL)
-	return(-1);
-    
+        return (-1);
+
     cur = *str;
 
     do {
-	while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
-	    NEXT(cur);
-	if (*cur == ';') {
-	    cur++;
-	    while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
-		NEXT(cur);
-	}
-	if (*cur != '/') break;
-	cur++;
+        while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+            NEXT(cur);
+        if (*cur == ';') {
+            cur++;
+            while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+                NEXT(cur);
+        }
+        if (*cur != '/')
+            break;
+        cur++;
     } while (1);
     if (uri != NULL) {
-	int len, len2 = 0;
-	char *path;
+        int len, len2 = 0;
+        char *path;
 
-	/*
-	 * Concat the set of path segments to the current path
-	 */
-	len = cur - *str;
-	if (slash)
-	    len++;
+        /*
+         * Concat the set of path segments to the current path
+         */
+        len = cur - *str;
+        if (slash)
+            len++;
 
-	if (uri->path != NULL) {
-	    len2 = strlen(uri->path);
-	    len += len2;
-	}
+        if (uri->path != NULL) {
+            len2 = strlen(uri->path);
+            len += len2;
+        }
         path = (char *) xmlMalloc(len + 1);
-	if (path == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlParseURIPathSegments: out of memory\n");
-	    *str = cur;
-	    return(-1);
-	}
-	if (uri->path != NULL)
-	    memcpy(path, uri->path, len2);
-	if (slash) {
-	    path[len2] = '/';
-	    len2++;
-	}
-	path[len2] = 0;
-	if (cur - *str > 0)
-	    xmlURIUnescapeString(*str, cur - *str, &path[len2]);
-	if (uri->path != NULL)
-	    xmlFree(uri->path);
-	uri->path = path;
+        if (path == NULL) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "xmlParseURIPathSegments: out of memory\n");
+            *str = cur;
+            return (-1);
+        }
+        if (uri->path != NULL)
+            memcpy(path, uri->path, len2);
+        if (slash) {
+            path[len2] = '/';
+            len2++;
+        }
+        path[len2] = 0;
+        if (cur - *str > 0)
+            xmlURIUnescapeString(*str, cur - *str, &path[len2]);
+        if (uri->path != NULL)
+            xmlFree(uri->path);
+        uri->path = path;
     }
     *str = cur;
-    return(0);
+    return (0);
 }
 
 /**

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <features.h>
 #include <libxml/xmlversion.h>
 
 #ifdef LIBXML_THREAD_ENABLED

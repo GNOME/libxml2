@@ -1,3 +1,8 @@
+Fri Oct 19 11:47:13 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: use only "anonymous@" string for anonymous passwds
+	* testThreads.c: removed bogus include
+
 Thu Oct 18 16:56:23 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c valid.c result/valid/rss.xml result/valid/rss.xml.err:

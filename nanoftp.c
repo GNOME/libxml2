@@ -99,7 +99,6 @@ typedef struct xmlNanoFTPCtxt {
     int controlBufIndex;
     int controlBufUsed;
     int controlBufAnswer;
-    char localhostname[100];
 } xmlNanoFTPCtxt, *xmlNanoFTPCtxtPtr;
 
 static int initialized = 0;
@@ -478,7 +477,6 @@ xmlNanoFTPNewCtxt(const char *URL) {
     ret->returnValue = 0;
     ret->controlBufIndex = 0;
     ret->controlBufUsed = 0;
-    gethostname(ret->localhostname, sizeof(ret->localhostname));
 
     if (URL != NULL)
 	xmlNanoFTPScanURL(ret, URL);
@@ -777,7 +775,7 @@ xmlNanoFTPSendPasswd(void *ctx) {
     int res;
 
     if (ctxt->passwd == NULL)
-	snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", ctxt->localhostname);
+	snprintf(buf, sizeof(buf), "PASS anonymous@\r\n");
     else
 	snprintf(buf, sizeof(buf), "PASS %s\r\n", ctxt->passwd);
     buf[sizeof(buf) - 1] = 0;
@@ -949,8 +947,7 @@ xmlNanoFTPConnect(void *ctx) {
 		    if (proxyPasswd != NULL)
 			snprintf(buf, sizeof(buf), "PASS %s\r\n", proxyPasswd);
 		    else
-			snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n",
-			               ctxt->localhostname);
+			snprintf(buf, sizeof(buf), "PASS anonymous@\r\n");
                     buf[sizeof(buf) - 1] = 0;
                     len = strlen(buf);
 #ifdef DEBUG_FTP
@@ -1039,8 +1036,7 @@ xmlNanoFTPConnect(void *ctx) {
 		    return(0);
 		}    
 		if (ctxt->passwd == NULL)
-		    snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", 
-			     ctxt->localhostname);
+		    snprintf(buf, sizeof(buf), "PASS anonymous@\r\n");
 		else
 		    snprintf(buf, sizeof(buf), "PASS %s\r\n", ctxt->passwd);
                 buf[sizeof(buf) - 1] = 0;

@@ -1,3 +1,7 @@
+Wed Oct 11 01:23:25 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: fixed, very broken, make distcheck works again
+
 Wed Oct 11 02:53:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* More work toward 2.2.5, integrated a number of patches

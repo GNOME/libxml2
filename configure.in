@@ -299,9 +299,12 @@ dnl create the libxml and include links needed to get dependencies right
 dnl
 if test ! -d $srcdir/include/libxml
 then
-    rm -rf $srcdir/include
+    if [ ! -d $srcdir/include ]
+    then
+        rm -f $srcdir/include
+        mkdir $srcdir/include
+    fi
     rm -f $srcdir/libxml
-    mkdir $srcdir/include
     (cd $srcdir/include ; ln -s .. libxml)
 fi
 if test ! -e $srcdir/libxml
@@ -310,8 +313,11 @@ then
 fi
 if test ! -e include/libxml
 then
-    rm -rf include
-    mkdir include
+    if [ ! -d include ]
+    then
+        rm -f include
+        mkdir include
+    fi
     (cd include ; ln -s ../libxml libxml)
 fi
 if test ! -e libxml

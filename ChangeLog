@@ -1,9 +1,17 @@
+Thu Dec  4 13:29:19 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml_wrap.h:
+	  cleanup the output buffer support to at least get the basic
+	  to work
+	* python/tests/outbuf.py python/tests/serialize.py: fixes and
+	  cleanup.
+	* include/libxml/xmlwriter.h: cleanup
+
 Wed Dec  3 21:38:56 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* include/libxml/xmlversion.h.in
-	* doc/*
-	add WITH_TRIO comment so it shows up in the docs, rebuild
-	docs
+	* doc/*: add WITH_TRIO comment so it shows up in the docs, rebuild
+	  docs
 
 Wed Dec  3 13:10:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 

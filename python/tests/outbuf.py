@@ -3,8 +3,8 @@ import sys
 import libxml2
 import StringIO
 
-print "Skipped"
-sys.exit(1)
+#print "Skipped"
+#sys.exit(1)
 
 # Memory debug specific
 libxml2.debugMemory(1)
@@ -15,12 +15,12 @@ buf = libxml2.createOutputBuffer(f, "ISO-8859-1")
 buf.write(3, "foo")
 buf.writeString("bar")
 buf.close()
-del buf
 
 if f.getvalue() != "foobar":
     print "Failed to save to StringIO"
     sys.exit(1)
 
+del buf
 del f
 
 # Memory debug specific

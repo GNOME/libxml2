@@ -321,6 +321,10 @@ def skip_function(name):
         return 1
     if name == "xmlTextReaderValue":
         return 1
+    if name == "xmlOutputBufferClose": # handled by by the superclass
+        return 1
+    if name == "xmlOutputBufferFlush": # handled by by the superclass
+        return 1
     return 0
 
 def print_function_wrapper(name, output, export, include):
@@ -996,7 +1000,7 @@ def buildWrappers():
 		    rlist = reference_keepers[classname]
 		    for ref in rlist:
 		        classes.write("        self.%s = None\n" % ref[1])
-		classes.write("        self._o = None\n")
+		classes.write("        self._o = _obj\n")
 		classes.write("        %s.__init__(self, _obj=_obj)\n\n" % (
 			      classes_ancestor[classname]))
 		if classes_ancestor[classname] == "xmlCore" or \

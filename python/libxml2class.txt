@@ -1013,8 +1013,6 @@ Class outputBuffer(ioWriteWrapper)
     saveFormatFileTo()
 
     # functions from module xmlIO
-    close()
-    flush()
     write()
     writeString()
 Class xmlTextReaderLocator()

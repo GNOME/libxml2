@@ -69,19 +69,19 @@ doc.freeDoc()
 #
 doc = libxml2.htmlParseDoc("""<html><head><title>Hello</title><body><p>hello</body></html>""", None)
 str = doc.serialize()
-if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+if str != """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><head><title>Hello</title></head><body><p>hello</p></body></html>
 """:
    print "error serializing HTML document 1"
    sys.exit(1)
 str = doc.serialize("ISO-8859-1")
-if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+if str != """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Hello</title></head><body><p>hello</p></body></html>
 """:
    print "error serializing HTML document 2"
    sys.exit(1)
 str = doc.serialize(format=1)
-if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+if str != """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -93,7 +93,7 @@ if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http
    print "error serializing HTML document 3"
    sys.exit(1)
 str = doc.serialize("iso-8859-1", 1)
-if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+if str != """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

@@ -30,14 +30,14 @@ XMLPUBFUN xmlTextWriterPtr XMLCALL
         xmlNewTextWriterFilename(const char *uri, int compression);
 XMLPUBFUN xmlTextWriterPtr XMLCALL
         xmlNewTextWriterMemory(xmlBufferPtr buf, int compression);
-    XMLPUBFUN xmlTextWriterPtr XMLCALL
+XMLPUBFUN xmlTextWriterPtr XMLCALL
         xmlNewTextWriterPushParser(xmlParserCtxtPtr ctxt, int compression);
-    XMLPUBFUN xmlTextWriterPtr XMLCALL
+XMLPUBFUN xmlTextWriterPtr XMLCALL
         xmlNewTextWriterDoc(xmlDocPtr * doc, int compression);
-    XMLPUBFUN xmlTextWriterPtr XMLCALL
+XMLPUBFUN xmlTextWriterPtr XMLCALL
         xmlNewTextWriterTree(xmlDocPtr doc,
                              xmlNodePtr node, int compression);
-    XMLPUBFUN void XMLCALL xmlFreeTextWriter(xmlTextWriterPtr writer);
+XMLPUBFUN void XMLCALL xmlFreeTextWriter(xmlTextWriterPtr writer);
 
 /*
  * Functions
@@ -208,7 +208,7 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 	xmlTextWriterStartPI		(xmlTextWriterPtr writer,
 					 const xmlChar * target);
-    XMLPUBFUN int XMLCALL xmlTextWriterEndPI(xmlTextWriterPtr writer);
+XMLPUBFUN int XMLCALL xmlTextWriterEndPI(xmlTextWriterPtr writer);
 
 /*
  * PI conveniency functions
@@ -230,8 +230,8 @@ XMLPUBFUN int XMLCALL
 /*
  * CDATA
  */
-    XMLPUBFUN int XMLCALL xmlTextWriterStartCDATA(xmlTextWriterPtr writer);
-    XMLPUBFUN int XMLCALL xmlTextWriterEndCDATA(xmlTextWriterPtr writer);
+XMLPUBFUN int XMLCALL xmlTextWriterStartCDATA(xmlTextWriterPtr writer);
+XMLPUBFUN int XMLCALL xmlTextWriterEndCDATA(xmlTextWriterPtr writer);
 
 /*
  * CDATA conveniency functions
@@ -254,7 +254,7 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar * name,
 					 const xmlChar * pubid,
 					 const xmlChar * sysid);
-    XMLPUBFUN int XMLCALL xmlTextWriterEndDTD(xmlTextWriterPtr writer);
+XMLPUBFUN int XMLCALL xmlTextWriterEndDTD(xmlTextWriterPtr writer);
 
 /*
  * DTD conveniency functions
@@ -384,7 +384,7 @@ XMLPUBFUN int XMLCALL
 /*
  * misc
  */
-    XMLPUBFUN int XMLCALL xmlTextWriterFlush(xmlTextWriterPtr writer);
+XMLPUBFUN int XMLCALL xmlTextWriterFlush(xmlTextWriterPtr writer);
 
 #ifdef __cplusplus
 }

@@ -269,7 +269,7 @@ static int
 xmlPythonFileWrite (void * context, const char * buffer, int len) {
     PyObject *file;
     PyObject *string;
-    PyObject *ret;
+    PyObject *ret = NULL;
     int written = -1;
 
 #ifdef DEBUG_FILES
@@ -279,7 +279,13 @@ xmlPythonFileWrite (void * context, const char * buffer, int len) {
     if (file == NULL) return(-1);
     string = PyString_FromStringAndSize(buffer, len);
     if (string == NULL) return(-1);
-    ret = PyEval_CallMethod(file, (char *) "io_write", (char *) "(O)", string);
+    if (PyObject_HasAttrString(file, (char *) "io_write")) {
+        ret = PyEval_CallMethod(file, (char *) "io_write", (char *) "(O)",
+	                        string);
+    } else if (PyObject_HasAttrString(file, (char *) "write")) {
+        ret = PyEval_CallMethod(file, (char *) "write", (char *) "(O)",
+	                        string);
+    }
     Py_DECREF(string);
     if (ret == NULL) {
 	printf("xmlPythonFileWrite: result is NULL\n");
@@ -305,14 +311,18 @@ xmlPythonFileWrite (void * context, const char * buffer, int len) {
  */
 static int
 xmlPythonFileClose (void * context) {
-    PyObject *file, *ret;
+    PyObject *file, *ret = NULL;
 
 #ifdef DEBUG_FILES
     printf("xmlPythonFileClose\n");
 #endif
     file = (PyObject *) context;
     if (file == NULL) return(-1);
-    ret = PyEval_CallMethod(file, (char *) "io_close", (char *) "()");
+    if (PyObject_HasAttrString(file, (char *) "io_close")) {
+        ret = PyEval_CallMethod(file, (char *) "io_close", (char *) "()");
+    } else if (PyObject_HasAttrString(file, (char *) "flush")) {
+        ret = PyEval_CallMethod(file, (char *) "flush", (char *) "()");
+    }
     if (ret != NULL) {
 	Py_DECREF(ret);
     }
@@ -367,6 +377,79 @@ libxml_xmlCreateOutputBuffer(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
     if (buffer == NULL)
 	printf("libxml_xmlCreateOutputBuffer: buffer == NULL\n");
     py_retval = libxml_xmlOutputBufferPtrWrap(buffer);
+    return(py_retval);
+}
+
+/**
+ * libxml_outputBufferGetPythonFile:
+ * @buffer:  the I/O buffer
+ *
+ * read the Python I/O from the CObject
+ *
+ * Returns the new parser output or NULL
+ */
+static PyObject *
+libxml_outputBufferGetPythonFile(ATTRIBUTE_UNUSED PyObject *self,
+                                    PyObject *args) {
+    PyObject *buffer;
+    PyObject *file;
+    xmlOutputBufferPtr obj;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:outputBufferGetPythonFile",
+			  &buffer))
+	return(NULL);
+
+    obj = PyoutputBuffer_Get(buffer);
+    if (obj == NULL) {
+	fprintf(stderr,
+	        "outputBufferGetPythonFile: obj == NULL\n");
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    if (obj->closecallback != xmlPythonFileClose) {
+	fprintf(stderr,
+	        "outputBufferGetPythonFile: not a python file wrapper\n");
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    file = (PyObject *) obj->context;
+    if (file == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    Py_INCREF(file);
+    return(file);
+}
+
+PyObject *
+libxml_xmlOutputBufferClose(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+    PyObject *py_retval;
+    int c_retval;
+    xmlOutputBufferPtr out;
+    PyObject *pyobj_out;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlOutputBufferClose", &pyobj_out))
+        return(NULL);
+    out = (xmlOutputBufferPtr) PyoutputBuffer_Get(pyobj_out);
+
+    c_retval = xmlOutputBufferClose(out);
+    py_retval = libxml_intWrap((int) c_retval);
+    return(py_retval);
+}
+
+PyObject *
+libxml_xmlOutputBufferFlush(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+    PyObject *py_retval;
+    int c_retval;
+    xmlOutputBufferPtr out;
+    PyObject *pyobj_out;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlOutputBufferFlush", &pyobj_out))
+        return(NULL);
+    out = (xmlOutputBufferPtr) PyoutputBuffer_Get(pyobj_out);
+
+    c_retval = xmlOutputBufferFlush(out);
+    py_retval = libxml_intWrap((int) c_retval);
     return(py_retval);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -2793,6 +2876,9 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "serializeNode", libxml_serializeNode, METH_VARARGS, NULL},
     {(char *) "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL},
     {(char *) "outputBufferCreate", libxml_xmlCreateOutputBuffer, METH_VARARGS, NULL},
+    {(char *) "outputBufferGetPythonFile", libxml_outputBufferGetPythonFile, METH_VARARGS, NULL},
+    {(char *) "xmlOutputBufferClose", libxml_xmlOutputBufferClose, METH_VARARGS, NULL},
+    { (char *)"xmlOutputBufferFlush", libxml_xmlOutputBufferFlush, METH_VARARGS, NULL },
 #endif /* LIBXML_OUTPUT_ENABLED */
     {(char *) "inputBufferCreate", libxml_xmlCreateInputBuffer, METH_VARARGS, NULL},
     {(char *) "setEntityLoader", libxml_xmlSetEntityLoader, METH_VARARGS, NULL},

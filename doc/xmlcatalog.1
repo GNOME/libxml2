@@ -48,17 +48,17 @@ Create a new XML catalog\&. Outputs to stdout, ignoring \fIfilename\fR unless \f
 
 .TP
 \fB\-\-add\fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR \fIfilename\fR
-Add an entry to catalog file \fIfilename\fR\&. \fItype\fR indicates the type of entry\&. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic', 'delegateSystem'amd 'rewriteURI'\&. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used\&. The \fB\-\-add\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB\-\-noout\fR is used\&. The \fB\-\-add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument\&.
+Add an entry to catalog file \fIfilename\fR\&. \fItype\fR indicates the type of entry\&. Possible types are 'public', 'system', 'rewriteSystem', 'rewriteURI', 'delegatePublic', 'delegateSystem', and 'nextCatalog'\&. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used\&. The \fB\-\-add\fR option will not overwrite \fIfilename\fR, outputting to stdout, unless \fB\-\-noout\fR is used\&. The \fB\-\-add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument\&.
 
 If the \fB\-\-add\fR option is used following the \fB\-\-sgml\fR option, only a single argument, a \fIfilename\fR, is used\&. This is used to add the name of a catalog file to an SGML supercatalog, a file that contains references to other included SGML catalog files\&.
 
 .TP
 \fB\-\-del\fR \fI'values'\fR \fIfilename\fR
-Remove entries from the catalog file \fIfilename\fR matching \fI'values'\fR\&. The \fB\-\-del\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB\-\-noout\fR is used\&.
+Remove entries from the catalog file \fIfilename\fR matching \fI'values'\fR\&. The \fB\-\-del\fR option will not overwrite \fIfilename\fR, outputting to stdout, unless \fB\-\-noout\fR is used\&.
 
 .TP
 \fB\-\-noout\fR
-Save output to the named file rather than outputing to stdout\&.
+Save output to the named file rather than outputting to stdout\&.
 
 .TP
 \fB\-\-sgml\fR
@@ -83,7 +83,7 @@ Execute a public identifier lookup of the catalog entry for \fI'SystemID'\fR\&. 
 
 .TP
 \fBadd \fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR
-Add an entry to the catalog file\&. \fItype\fR indicates the type of entry\&. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'\&. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used\&.
+Add an entry to the catalog file\&. \fItype\fR indicates the type of entry\&. Possible types are 'public', 'system', 'rewriteSystem', 'rewriteURI', 'delegatePublic', 'delegateSystem', and 'nextCatalog'\&. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used\&.
 
 .TP
 \fBdel\fR \fI'values'\fR
@@ -136,13 +136,13 @@ Catalog behavior can be changed by redirecting queries to the user's own set of 
 libxml web page: \fIhttp://www.xmlsoft.org/\fR
 
 .PP
-libxml catalog support web page:: \fIhttp://www.xmlsoft.org/catalog.html\fR
+libxml catalog support web page: \fIhttp://www.xmlsoft.org/catalog.html\fR
 
 .PP
-James Clark's SGML catalog page:: \fIhttp://www.jclark.com/sp/catalog.htm\fR
+James Clark's SGML catalog page: \fIhttp://www.jclark.com/sp/catalog.htm\fR
 
 .PP
-OASIS XML catalog specification: : \fIhttp://www.oasis-open.org/committees/entity/spec.html\fR
+OASIS XML catalog specification: \fIhttp://www.oasis-open.org/committees/entity/spec.html\fR
 
 .SH AUTHOR
 John Fleck.

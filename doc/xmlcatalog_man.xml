@@ -98,12 +98,12 @@
 	    Add an entry to catalog file
 	    <filename>filename</filename>. <replaceable>type</replaceable>
 	    indicates the type of entry. Possible types are 'public', 'system',
-	    'rewriteSystem', 'delegatePublic', 'delegateSystem'amd
-	    'rewriteURI'. <replaceable>'orig'</replaceable> is the original
+	    'rewriteSystem', 'rewriteURI', 'delegatePublic', 'delegateSystem',
+	    and 'nextCatalog'. <replaceable>'orig'</replaceable> is the original
 	    reference to be replaced, and <replaceable>'replace'</replaceable>
 	    is the <acronym>URI</acronym> of the replacement entity to be
 	    used. The <option>--add</option> option will not overwrite
-	    <replaceable>filename</replaceable>, outputing to stdout, unless
+	    <replaceable>filename</replaceable>, outputting to stdout, unless
 	    <option>--noout</option> is used. The <option>--add</option> will
 	    always take three parameters even if some of the
 	    <acronym>XML</acronym> catalog constructs will have only a single
@@ -129,7 +129,7 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
 	    Remove entries from the catalog file
 	    <replaceable>filename</replaceable> matching
 	    <replaceable>'values'</replaceable>. The <option>--del</option> option
-	    will not overwrite <replaceable>filename</replaceable>, outputing to
+	    will not overwrite <replaceable>filename</replaceable>, outputting to
 	    stdout, unless <option>--noout</option> is used.
 	  </simpara>
 	</listitem>
@@ -139,7 +139,7 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
 	<listitem>
 	  <simpara>
 	    Save output to the named file rather than
-	    outputing to stdout.
+	    outputting to stdout.
 	  </simpara>
 	</listitem>
       </varlistentry>
@@ -203,7 +203,8 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
 	    Add an entry to the catalog
 	    file. <replaceable>type</replaceable> indicates the type of
 	    entry. Possible types are 'public', 'system', 'rewriteSystem',
-	    'delegatePublic' and 'delegateSystem'. <replaceable>'orig'</replaceable>
+	    'rewriteURI', 'delegatePublic', 'delegateSystem', and
+	    'nextCatalog'. <replaceable>'orig'</replaceable>
 	    is the original reference to  be replaced, and
 	    <replaceable>'replace'</replaceable> is the <acronym>URI</acronym> of the
 	    replacement entity to be used.
@@ -284,14 +285,14 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
     <para><ulink url="http://www.xmlsoft.org/">libxml web page</ulink></para>
 
     <para><ulink url="http://www.xmlsoft.org/catalog.html"><application>libxml</application>
-    catalog support web page:</ulink></para>
+    catalog support web page</ulink></para>
 
     <para><ulink url="http://www.jclark.com/sp/catalog.htm">James Clark's
-    <acronym>SGML</acronym> catalog page:</ulink></para>
+    <acronym>SGML</acronym> catalog page</ulink></para>
   
     <para><ulink
     url="http://www.oasis-open.org/committees/entity/spec.html"><acronym>OASIS</acronym>
-    <acronym>XML</acronym> catalog specification: </ulink></para>
+    <acronym>XML</acronym> catalog specification</ulink></para>
 </refsect1>
 
 

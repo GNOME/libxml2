@@ -1,3 +1,8 @@
+Wed Jun 23 20:18:19 MDT 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmlcatalog_man.xml, xmlcatalog.1
+	Docs patch from Ville Skytta, bugzilla #144841
+
 Sat Jun 19 18:34:11 MDT 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmllint.xml, xmllint.html, xmllint.1

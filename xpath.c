@@ -7421,10 +7421,18 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 			    }
 			    break;
 			}
-			case XML_NAMESPACE_DECL: {
-			    TODO;
+			case XML_NAMESPACE_DECL:
+			    if (cur->type == XML_NAMESPACE_DECL) {
+				xmlNsPtr ns = (xmlNsPtr) cur;
+				if ((ns->prefix != NULL) && (name != NULL) &&
+				    (xmlStrEqual(ns->prefix, name))) {
+#ifdef DEBUG_STEP
+				    n++;
+#endif
+				    addNode(list, cur);
+				}
+			    }
 			    break;
-			}
 			default:
 			    break;
 		    }

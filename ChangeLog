@@ -1,3 +1,8 @@
+Sat Jun 16 23:23:33 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: first part of the work on selecting namespace to
+	  fix bug #56115 
+
 Sat Jun 16 00:20:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am example/Makefile.am: Laszlo PETER provided a fix

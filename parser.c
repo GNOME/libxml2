@@ -5842,8 +5842,8 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		}
 	    } else if (nbatts + 4 > maxatts) {
 	        maxatts *= 2;
-	        atts = (const xmlChar **) xmlRealloc(atts,
-		                                  maxatts * sizeof(xmlChar *));
+	        atts = (const xmlChar **) xmlRealloc((void *) atts,
+						     maxatts * sizeof(xmlChar *));
 		if (atts == NULL) {
 		    fprintf(stderr, "realloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(xmlChar *));
@@ -5895,7 +5895,7 @@ failed:
 
     if (atts != NULL) {
         for (i = 0;i < nbatts;i++) xmlFree((xmlChar *) atts[i]);
-	xmlFree(atts);
+	xmlFree((void *) atts);
     }
     return(name);
 }

@@ -1254,8 +1254,8 @@ htmlEntityValueLookup(int value) {
 
     for (i = 0;i < (sizeof(html40EntitiesTable)/
                     sizeof(html40EntitiesTable[0]));i++) {
-        if (html40EntitiesTable[i].value >= value) {
-	    if (html40EntitiesTable[i].value > value)
+        if ((unsigned int) html40EntitiesTable[i].value >= value) {
+	    if ((unsigned int) html40EntitiesTable[i].value > value)
 		break;
 #ifdef DEBUG
 	    fprintf(stderr,"Found entity %s\n", html40EntitiesTable[i].name);
@@ -2862,7 +2862,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 		}
 	    } else if (nbatts + 4 > maxatts) {
 	        maxatts *= 2;
-	        atts = (const xmlChar **) xmlRealloc(atts, maxatts * sizeof(xmlChar *));
+	        atts = (const xmlChar **) xmlRealloc((void *) atts,
+			                             maxatts * sizeof(xmlChar *));
 		if (atts == NULL) {
 		    fprintf(stderr, "realloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(xmlChar *));

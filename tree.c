@@ -3969,7 +3969,7 @@ xmlBufferEmpty(xmlBufferPtr buf) {
  * Returns the number of xmlChar removed, or -1 in case of failure.
  */
 int
-xmlBufferShrink(xmlBufferPtr buf, int len) {
+xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
     if (len == 0) return(0);
     if (len > buf->use) return(-1);
 
@@ -3990,7 +3990,7 @@ xmlBufferShrink(xmlBufferPtr buf, int len) {
  * Returns the new available space or -1 in case of error
  */
 int
-xmlBufferGrow(xmlBufferPtr buf, int len) {
+xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     int size;
     xmlChar *newbuf;
 
@@ -4069,26 +4069,29 @@ xmlBufferLength(const xmlBufferPtr buf)
 /**
  * xmlBufferResize:
  * @buf:  the buffer to resize
- * @len:  the desired size
+ * @size:  the desired size
  *
- * Resize a buffer to accomodate minimum size of <len>.
+ * Resize a buffer to accomodate minimum size of @size.
  *
  * Returns  0 in case of problems, 1 otherwise
  */
 int
-xmlBufferResize(xmlBufferPtr buf, int size)
+xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 {
-    int newSize = (buf->size ? buf->size*2 : size);/*take care of empty case*/
+    unsigned int newSize;
     xmlChar* rebuf = NULL;
 
+    /*take care of empty case*/
+    newSize = (buf->size ? buf->size*2 : size);
+
     /* Don't resize if we don't have to */
-    if(size < buf->size)
+    if (size < buf->size)
         return 1;
 
     /* figure out new size */
-    switch(buf->alloc){
+    switch (buf->alloc){
     case XML_BUFFER_ALLOC_DOUBLEIT:
-        while(size > newSize) newSize *= 2;
+        while (size > newSize) newSize *= 2;
         break;
     case XML_BUFFER_ALLOC_EXACT:
         newSize = size+10;
@@ -4112,6 +4115,7 @@ xmlBufferResize(xmlBufferPtr buf, int size)
 
     return 1;
 }
+
 /**
  * xmlBufferAdd:
  * @buf:  the buffer to dump
@@ -4123,7 +4127,7 @@ xmlBufferResize(xmlBufferPtr buf, int size)
  */
 void
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
-    int needSize;
+    unsigned int needSize;
 
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
@@ -4145,8 +4149,8 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     if (len <= 0) return;
 
     needSize = buf->use + len + 2;
-    if(needSize > buf->size){
-        if(!xmlBufferResize(buf, needSize)){
+    if (needSize > buf->size){
+        if (!xmlBufferResize(buf, needSize)){
             fprintf(stderr, "xmlBufferAdd : out of memory!\n");
             return;
         }
@@ -4168,7 +4172,7 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
  */
 void
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
-    int needSize;
+    unsigned int needSize;
 
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
@@ -4190,8 +4194,8 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
     if (len <= 0) return;
 
     needSize = buf->use + len + 2;
-    if(needSize > buf->size){
-        if(!xmlBufferResize(buf, needSize)){
+    if (needSize > buf->size){
+        if (!xmlBufferResize(buf, needSize)){
             fprintf(stderr, "xmlBufferAddHead : out of memory!\n");
             return;
         }
@@ -4235,7 +4239,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     }
     for (cur = str;*cur != 0;cur++) {
         if (buf->use  + 10 >= buf->size) {
-            if(!xmlBufferResize(buf, buf->use+10)){
+            if (!xmlBufferResize(buf, buf->use+10)){
                 fprintf(stderr, "xmlBufferCCat : out of memory!\n");
                 return;
             }

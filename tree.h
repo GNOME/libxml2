@@ -397,9 +397,9 @@ void		xmlBufferCat		(xmlBufferPtr buf,
 void		xmlBufferCCat		(xmlBufferPtr buf,
 					 const char *str);
 int		xmlBufferShrink		(xmlBufferPtr buf,
-					 int len);
+					 unsigned int len);
 int		xmlBufferGrow		(xmlBufferPtr buf,
-					 int len);
+					 unsigned int len);
 void		xmlBufferEmpty		(xmlBufferPtr buf);
 const xmlChar*	xmlBufferContent	(const xmlBufferPtr buf);
 int		xmlBufferUse		(const xmlBufferPtr buf);

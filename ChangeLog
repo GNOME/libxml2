@@ -1,3 +1,8 @@
+Mon Sep 25 16:23:41 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c parser.c tree.c tree.h: Avoiding a few warning
+	  when compiling with MSC
+
 Sun Sep 24 20:32:52 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c: patch for normalize-string() substring-before(),

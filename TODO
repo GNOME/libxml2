@@ -30,9 +30,6 @@ TODO:
 - jamesh suggestion: SAX like functions to save a document ie. call a
   function to open a new element with given attributes, write character
   data, close last element, etc
-- HTML: handling of Script data elements/attributes, need special code in
-  the parser and saving functions (handling of < > " ' ...):
-  http://www.w3.org/TR/html4/types.html#type-script
 
 TODO:
 =====
@@ -98,6 +95,10 @@ EXTENSIONS:
 Done:
 =====
 
+- HTML: handling of Script and style data elements, need special code in
+  the parser and saving functions (handling of < > " ' ...):
+  http://www.w3.org/TR/html4/types.html#type-script
+  Attributes are no problems since entities are accepted.
 - DOM needs
   xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
 - problem when parsing hrefs with & with the HTML parser (IRC ac)

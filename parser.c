@@ -2077,8 +2077,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		    buf[len++] = *current++;
 		}
 	    } else {
-		COPY_BUF(l,buf,len,val);
-		NEXTL(l);
+		len += xmlCopyChar(0, &buf[len], val);
 	    }
 	} else if (c == '&') {
 	    ent = xmlParseEntityRef(ctxt);

@@ -1,3 +1,9 @@
+Sun Oct 15 12:00:24 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c test/wap.xml result/noent/wap.xml result/wap.xml:
+	  Closed bug #27499, added to regression tests
+	* TODO: updated
+
 Sun Oct 15 01:34:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c HTMLtree.[ch] SAX.c testHTML.c tree.c: fixed HTML

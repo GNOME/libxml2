@@ -1,3 +1,8 @@
+Thu Mar  4 15:00:45 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlcatalog.c: allow fallback to URI lookup when SYSTEM fails,
+	  should close #134092
+
 Thu Mar  4 14:39:38 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am tree.c xmlsave.c include/libxml/xmlsave.h: commiting

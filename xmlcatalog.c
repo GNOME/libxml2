@@ -547,7 +547,14 @@ int main(int argc, char **argv) {
 		ans = xmlCatalogResolveSystem((const xmlChar *) argv[i]);
 		if (ans == NULL) {
 		    printf("No entry for SYSTEM %s\n", argv[i]);
-		    exit_value = 4;
+		    ans = xmlCatalogResolveURI ((const xmlChar *) argv[i]);
+		    if (ans == NULL) {
+			printf ("No entry for URI %s\n", argv[i]);
+		        exit_value = 4;
+		    } else {
+		        printf("%s\n", (char *) ans);
+			xmlFree (ans);
+		    }
 		} else {
 		    printf("%s\n", (char *) ans);
 		    xmlFree(ans);

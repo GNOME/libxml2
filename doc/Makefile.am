@@ -26,13 +26,25 @@ $(PAGES): xml.html site.xsl
 	  $(bindir)/xsltproc --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
 
 scan:
-	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h xmlwin32version.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h"
+	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h xmlwin32version.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h"
 
 templates: scan
 	gtkdoc-mktmpl --module=libxml
 
 sgml:
 	gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR)
+
+xml: sgml
+	if test -d xml ; then rm xml/* ; else mkdir xml ; fi
+	-@(for s in sgml/*.sgml ; do name=`basename $$s .sgml` ; \
+	   echo '<!DOCTYPE refentry [ <!ENTITY nbsp   "&#x00A0;"> ]>' > \
+	       xml/"$$name".xml ;\
+	   grep -v "^<colspec" $$s >> xml/"$$name".xml ; done)
+	   
+libxml2-api.xml: xml parsedecl.py libxml-decl.txt libxml-decl-list.txt
+	-./parsedecl.py
+
+api: libxml2-api.xml
 
 html:
 	if test -n -d html ; then mkdir html ; fi
@@ -49,7 +61,7 @@ libxml-decl-list.txt : templates
 libxml-sections.txt : scan
 	cp libxml-decl-list.txt libxml-sections.txt
 
-rebuild: libxml-sections.txt templates sgml html
+rebuild: libxml-sections.txt templates sgml html api
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
@@ -59,6 +71,6 @@ install-data-local:
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 
 dist-hook:
-	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif html/*.html html/*.sgml libxml2-api.xml parsedecl.py) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

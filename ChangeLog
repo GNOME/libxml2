@@ -1,3 +1,9 @@
+Mon Jan 21 18:29:19 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am doc/Makefile.am doc/libxml2-api.xml doc/parsedecl.py:
+	  added an XML description of the API, moved the script generating
+	  it here. Added a "make api" target
+
 Mon Jan 21 14:34:37 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: Adam Lounds pointed out a bug in xmlSearchNs()

@@ -1663,8 +1663,9 @@ xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
 			      int compression) {
     xmlOutputBufferPtr ret;
-    int i;
+    int i = 0;
     void *context = NULL;
+    char *unescaped;
 
     int is_http_uri = 0;	/*   Can't change if HTTP disabled  */
 
@@ -1679,40 +1680,79 @@ xmlOutputBufferCreateFilename(const char *URI,
     is_http_uri = xmlIOHTTPMatch( URI );
 #endif
 
-#ifdef HAVE_ZLIB_H
-    if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
-        context = xmlGzfileOpenW(URI, compression);
-	if (context != NULL) {
-	    ret = xmlAllocOutputBuffer(encoder);
-	    if (ret != NULL) {
-		ret->context = context;
-		ret->writecallback = xmlGzfileWrite;
-		ret->closecallback = xmlGzfileClose;
-	    }
-	    return(ret);
-	}
-    }
-#endif
 
     /*
-     * Try to find one of the output accept method accepting that scheme
+     * Try to find one of the output accept method accepting taht scheme
      * Go in reverse to give precedence to user defined handlers.
+     * try with an unescaped version of the URI
      */
-    for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
-	if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
-	    (xmlOutputCallbackTable[i].matchcallback(URI) != 0)) {
-
-#if ( defined( LIBXML_HTTP_ENABLED ) && defined( HAVE_ZLIB_H ) )
-	    /*  Need to pass compression parameter into HTTP open calls  */
-
-	    if ( xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch )
-		context = xmlIOHTTPOpenW( URI, compression );
-	    else
+    unescaped = xmlURIUnescapeString(URI, 0, NULL);
+    if (unescaped != NULL) {
+#ifdef HAVE_ZLIB_H
+	if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
+	    context = xmlGzfileOpenW(unescaped, compression);
+	    if (context != NULL) {
+		ret = xmlAllocOutputBuffer(encoder);
+		if (ret != NULL) {
+		    ret->context = context;
+		    ret->writecallback = xmlGzfileWrite;
+		    ret->closecallback = xmlGzfileClose;
+		}
+		xmlFree(unescaped);
+		return(ret);
+	    }
+	}
 #endif
-		context = xmlOutputCallbackTable[i].opencallback(URI);
+	for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
+	    if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
+		(xmlOutputCallbackTable[i].matchcallback(unescaped) != 0)) {
+#if defined(LIBXML_HTTP_ENABLED) && defined(HAVE_ZLIB_H)
+		/*  Need to pass compression parameter into HTTP open calls  */
+		if (xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch)
+		    context = xmlIOHTTPOpenW(unescaped, compression);
+		else
+#endif
+		    context = xmlOutputCallbackTable[i].opencallback(unescaped);
+		if (context != NULL)
+		    break;
+	    }
+	}
+	xmlFree(unescaped);
+    }
 
-	    if (context != NULL)
-		break;
+    /*
+     * If this failed try with a non-escaped URI this may be a strange
+     * filename
+     */
+    if (context == NULL) {
+#ifdef HAVE_ZLIB_H
+	if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
+	    context = xmlGzfileOpenW(URI, compression);
+	    if (context != NULL) {
+		ret = xmlAllocOutputBuffer(encoder);
+		if (ret != NULL) {
+		    ret->context = context;
+		    ret->writecallback = xmlGzfileWrite;
+		    ret->closecallback = xmlGzfileClose;
+		}
+		return(ret);
+	    }
+	}
+#endif
+	for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
+	    if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
+		(xmlOutputCallbackTable[i].matchcallback(URI) != 0)) {
+		context = xmlOutputCallbackTable[i].opencallback(URI);
+#if defined(LIBXML_HTTP_ENABLED) && defined(HAVE_ZLIB_H)
+		/*  Need to pass compression parameter into HTTP open calls  */
+		if (xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch)
+		    context = xmlIOHTTPOpenW(URI, compression);
+		else
+#endif
+		    context = xmlOutputCallbackTable[i].opencallback(URI);
+		if (context != NULL)
+		    break;
+	    }
 	}
     }
 

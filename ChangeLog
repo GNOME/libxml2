@@ -1,3 +1,8 @@
+Wed Aug 15 10:46:07 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: xmlOutputBufferCreateFilename() didn't unescaped
+	  URIs before doing the lookups (pointed by Mark Vakoc)
+
 Tue Aug 14 18:37:23 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: serious changes on Result Value Trees and NodeSets

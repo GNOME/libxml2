@@ -2488,6 +2488,10 @@ xmlParserGetDirectory(const char *filename) {
     char *cur;
     char sep = '/';
 
+#ifdef _WIN32_WCE  /* easy way by now ... wince does not have dirs! */
+    return NULL;
+#endif
+
     if (xmlInputCallbackInitialized == 0)
 	xmlRegisterDefaultInputCallbacks();
 

@@ -31,7 +31,7 @@ var verMinor;
 var verMicro;
 /* Libxml features. */
 var withTrio = false;
-var withThreads = false;
+var withThreads = "no";
 var withFtp = true;
 var withHttp = true;
 var withHtml = true;
@@ -65,11 +65,11 @@ var error = 0;
 function boolToStr(opt)
 {
 	if (opt == false)
-		return "Disabled";
+		return "no";
 	else if (opt == true)
-		return "Enabled";
+		return "yes";
 	error = 1;
-	return "Undefined";
+	return "*** undefined ***";
 }
 
 /* Helper function, transforms the argument string into a boolean
@@ -92,10 +92,10 @@ function usage()
 	txt += "  cscript " + WScript.ScriptName + " <options>\n";
 	txt += "  cscript " + WScript.ScriptName + " help\n\n";
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
-	txt += "either 'yes' or 'no'.\n\n";
+	txt += "either 'yes' or 'no', if not stated otherwise.\n\n";
 	txt += "XML processor options, default value given in parentheses:\n\n";
 	txt += "  trio:       Enable TRIO string manipulator (" + (withTrio? "yes" : "no")  + ")\n";
-	txt += "  threads:    Enable thread safety (" + (withThreads? "yes" : "no")  + ") \n";
+	txt += "  threads:    Enable thread safety [no|ctls|native|posix] (" + (withThreads)  + ") \n";
 	txt += "  ftp:        Enable FTP client (" + (withFtp? "yes" : "no")  + ")\n";
 	txt += "  http:       Enable HTTP client (" + (withHttp? "yes" : "no")  + ")\n";
 	txt += "  html:       Enable HTML processor (" + (withHtml? "yes" : "no")  + ")\n";
@@ -161,7 +161,7 @@ function discoverVersion()
 	vf.WriteLine("UTILS_SRCDIR=" + srcDirUtils);
 	vf.WriteLine("BINDIR=" + binDir);
 	vf.WriteLine("WITH_TRIO=" + (withTrio? "1" : "0"));
-	vf.WriteLine("WITH_THREADS=" + (withThreads? "1" : "0"));
+	vf.WriteLine("WITH_THREADS=" + withThreads);
 	vf.WriteLine("WITH_FTP=" + (withFtp? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHttp? "1" : "0"));
 	vf.WriteLine("WITH_HTML=" + (withHtml? "1" : "0"));
@@ -209,7 +209,7 @@ function configureLibxml()
 		} else if (s.search(/\@WITH_TRIO\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_TRIO\@/, withTrio? "1" : "0"));
 		} else if (s.search(/\@WITH_THREADS\@/) != -1) {
-			of.WriteLine(s.replace(/\@WITH_THREADS\@/, withThreads? "1" : "0"));
+			of.WriteLine(s.replace(/\@WITH_THREADS\@/, withThreads == "no"? "0" : "1"));
 		} else if (s.search(/\@WITH_FTP\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_FTP\@/, withFtp? "1" : "0"));
 		} else if (s.search(/\@WITH_HTTP\@/) != -1) {
@@ -317,7 +317,7 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 		if (opt == "trio")
 			withTrio = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "threads")
-			withThreads = strToBool(arg.substring(opt.length + 1, arg.length));
+			withThreads = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "ftp")
 			withFtp = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "http")
@@ -414,7 +414,7 @@ WScript.Echo("Created Makefile.");
 var txtOut = "\nXML processor configuration\n";
 txtOut += "---------------------------\n";
 txtOut += "              Trio: " + boolToStr(withTrio) + "\n";
-txtOut += "     Thread safety: " + boolToStr(withThreads) + "\n";
+txtOut += "     Thread safety: " + withThreads + "\n";
 txtOut += "        FTP client: " + boolToStr(withFtp) + "\n";
 txtOut += "       HTTP client: " + boolToStr(withHttp) + "\n";
 txtOut += "    HTML processor: " + boolToStr(withHtml) + "\n";

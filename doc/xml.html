@@ -514,11 +514,12 @@ please visit the <a
 href="http://mail.gnome.org/mailman/listinfo/xml">associated Web</a> page and
 follow the instructions. <strong>Do not send code, I won't debug it</strong>
 (but patches are really appreciated!).</p>
-<p>Please note that with the current amount of virus and SPAM, sending
-mail to the list without being subscribed won't work. There is *far too
-many bounces* (in the order of a thousand a day !) I cannot approve them
-manually anymore. If your mail to the list bounced waiting for administrator
-approval, it is LOST ! Repost it and fix the problem triggering the error.</p>
+
+<p>Please note that with the current amount of virus and SPAM, sending mail
+to the list without being subscribed won't work. There is *far too many
+bounces* (in the order of a thousand a day !) I cannot approve them manually
+anymore. If your mail to the list bounced waiting for administrator approval,
+it is LOST ! Repost it and fix the problem triggering the error.</p>
 
 <p>Check the following <strong><span style="color: #FF0000">before
 posting</span></strong>:</p>
@@ -599,12 +600,12 @@ database</a>:</p>
 <h2><a name="Downloads">Downloads</a></h2>
 
 <p>The latest versions of libxml2 can be found on the <a
-href="ftp://xmlsoft.org/">xmlsoft.org</a> server, there is also mirrors (<a
+href="ftp://xmlsoft.org/">xmlsoft.org</a> server (FTP and rsync are
+available), there is also mirrors (<a
 href="ftp://speakeasy.rpmfind.net/pub/libxml/">Seattle</a>, <a
 href="ftp://fr.rpmfind.net/pub/libxml/">France</a>) or on the <a
-href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> 
-as a <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">source
-archive</a>
+href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> as <a
+href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">source archive</a>
 , Antonin Sprinzl also provide <a href="ftp://gd.tuwien.ac.at/pub/libxml/">a
 mirror in Austria</a>. (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
@@ -643,9 +644,9 @@ href="http://veillard.com/">contact me</a>.</p>
 <p><a name="Contribs">Contributions:</a></p>
 
 <p>I do accept external contributions, especially if compiling on another
-platform,  get in touch with me to upload the package, wrappers for various
-languages have been provided, and can be found in the <a
-href="contribs.html">contrib section</a></p>
+platform,  get in touch with the list to upload the package, wrappers for
+various languages have been provided, and can be found in the <a
+href="python.html">bindings section</a></p>
 
 <p>Libxml2 is also available from CVS:</p>
 <ul>
@@ -653,7 +654,7 @@ href="contribs.html">contrib section</a></p>
     href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Gnome
     CVS base</a>. Check the <a
     href="http://developer.gnome.org/tools/cvs.html">Gnome CVS Tools</a>
-    page; the CVS module is <b>gnome-xml</b>.</p>
+    page; the CVS module is <b>libxml2</b>.</p>
   </li>
   <li>The <strong>libxslt</strong> module is also present there</li>
 </ul>
@@ -668,7 +669,8 @@ to help those</p>
   Schemas</a></li>
 </ul>
 
-<p> There is the list of public releases:</p>
+<p>There is the list of public releases:</p>
+
 <h3>2.6.8: Mar 23 2004</h3>
 <ul>
   <li>First step of the cleanup of the serialization code and APIs</li>
@@ -686,7 +688,7 @@ to help those</p>
     XInclude and XPointer fixes for entities (William), XML parser bug
     reported by Holger Rauch, nanohttp fd leak (William),  regexps char
     groups '-' handling (William), dictionnary reference counting problems,
-    do not close stderr. </li>
+    do not close stderr.</li>
   <li>performance patches from Petr Pajas</li>
   <li>Documentation fixes: XML_CATALOG_FILES in man pages (Mike Hommey)</li>
   <li>compilation and portability fixes: --without-valid, catalog cleanups

@@ -1,3 +1,10 @@
+Sat Apr 26 14:00:58 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py: fixed a problem in the generator where
+	  the way functions are remapped as methods on classes was
+	  not symetric and dependant on python internal hash order,
+	  as reported by Stéphane Bidoul
+
 Fri Apr 25 21:52:33 MDT 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial:

@@ -482,6 +482,7 @@ Class xmlDoc(xmlNode)
 
     # functions from module tree
     copyDoc()
+    copyNode()
     createIntSubset()
     docCompressMode()
     dump()
@@ -504,21 +505,33 @@ Class xmlDoc(xmlNode)
     newGlobalNs()
     newReference()
     nodeDumpOutput()
+    nodeGetBase()
+    nodeListGetRawString()
+    nodeListGetString()
+    reconciliateNs()
     saveFile()
     saveFileEnc()
     saveFileTo()
     saveFormatFile()
     saveFormatFileEnc()
     saveFormatFileTo()
+    searchNs()
+    searchNsByHref()
     setDocCompressMode()
+    setListDoc()
+    setRootElement()
+    setTreeDoc()
     stringGetNodeList()
     stringLenGetNodeList()
 
     # functions from module valid
     ID()
+    isID()
     isMixedElement()
+    isRef()
     removeID()
     removeRef()
+    validNormalizeAttributeValue()
 
     # functions from module xinclude
     xincludeProcess()
@@ -526,6 +539,9 @@ Class xmlDoc(xmlNode)
     # functions from module xpath
     xpathNewContext()
     xpathOrderDocElems()
+
+    # functions from module xpointer
+    xpointerNewContext()
 Class xpathContext()
     # accessors
     contextDoc()
@@ -586,9 +602,15 @@ Class xmlAttr(xmlNode)
     debugDumpAttrList()
 
     # functions from module tree
+    copyProp()
+    copyPropList()
     freeProp()
     freePropList()
     removeProp()
+
+    # functions from module valid
+    removeID()
+    removeRef()
 
 
 Class xmlTextReader(xmlTextReaderCore)
@@ -657,11 +679,18 @@ Class relaxNgSchema()
     relaxNGDumpTree()
     relaxNGFree()
     relaxNGNewValidCtxt()
+
+    # functions from module xmlreader
+    RelaxNGSetSchema()
 Class relaxNgValidCtxt()
 
     # functions from module relaxng
     relaxNGFreeValidCtxt()
+    relaxNGValidateDoc()
+    relaxNGValidateFullElement()
+    relaxNGValidatePopElement()
     relaxNGValidatePushCData()
+    relaxNGValidatePushElement()
 Class xpathParserContext()
     # accessors
     context()
@@ -687,6 +716,19 @@ Class xpathParserContext()
     xpathModValues()
     xpathMultValues()
     xpathNamespaceURIFunction()
+    xpathNextAncestor()
+    xpathNextAncestorOrSelf()
+    xpathNextAttribute()
+    xpathNextChild()
+    xpathNextDescendant()
+    xpathNextDescendantOrSelf()
+    xpathNextFollowing()
+    xpathNextFollowingSibling()
+    xpathNextNamespace()
+    xpathNextParent()
+    xpathNextPreceding()
+    xpathNextPrecedingSibling()
+    xpathNextSelf()
     xpathNormalizeFunction()
     xpathNotEqualValues()
     xpathNotFunction()
@@ -746,6 +788,7 @@ Class parserCtxt(parserCtxtCore)
 
     # functions from module parserInternals
     decodeEntities()
+    handleEntity()
     namespaceParseNCName()
     namespaceParseNSDef()
     nextChar()
@@ -815,7 +858,17 @@ Class xmlNs(xmlNode)
     copyNamespaceList()
     freeNs()
     freeNsList()
+    newChild()
+    newDocNode()
+    newDocNodeEatName()
+    newDocRawNode()
     newNodeEatName()
+    newNsProp()
+    newNsPropEatName()
+    newTextChild()
+    setNs()
+    setNsProp()
+    unsetNsProp()
 
     # functions from module xpathInternals
     xpathNodeSetFreeNs()
@@ -839,6 +892,17 @@ Class relaxNgParserCtxt()
 
 
 Class outputBuffer(ioWriteWrapper)
+
+    # functions from module HTMLtree
+    htmlDocContentDumpFormatOutput()
+    htmlDocContentDumpOutput()
+    htmlNodeDumpFormatOutput()
+    htmlNodeDumpOutput()
+
+    # functions from module tree
+    nodeDumpOutput()
+    saveFileTo()
+    saveFormatFileTo()
 
     # functions from module xmlIO
     close()

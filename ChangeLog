@@ -1,3 +1,8 @@
+Fri Mar 22 15:13:49 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: Richard Jinks also raised some rounding problems
+	  this tries to fix them
+
 Fri Mar 22 13:22:09 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: Richard Jinks spotted an incoherent memory allocation

@@ -728,24 +728,24 @@ Timingtests: xmllint$(EXEEXT) $(srcdir)/dba100000.xml
 	@echo "## 2/ using the memory interface"
 	@echo "## 3/ repeated DOM parsing"
 	@echo "## 4/ repeated DOM validation"
-	-@(xmllint --stream --timing $(srcdir)/dba100000.xml; \
+	-@($(top_builddir)/xmllint --stream --timing $(srcdir)/dba100000.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
-	-@(xmllint --stream --timing --memory $(srcdir)/dba100000.xml; \
+	-@($(top_builddir)/xmllint --stream --timing --memory $(srcdir)/dba100000.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
-	-@(xmllint --noout --timing --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
+	-@($(top_builddir)/xmllint --noout --timing --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
 
 VTimingtests: xmllint$(EXEEXT)
-	-@(xmllint --noout --timing --valid --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
+	-@($(top_builddir)/xmllint --noout --timing --valid --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\

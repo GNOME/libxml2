@@ -1,3 +1,8 @@
+Thu Feb 26 10:56:29 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: applied patch from Charles Bozeman to nit use
+	  the system xmllint.
+
 Wed Feb 25 18:07:05 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlexports.h: applied patch from Roland Schwingel

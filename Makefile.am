@@ -899,7 +899,7 @@ Relaxtests: xmllint$(EXEEXT)
 		      diff $(srcdir)/result/relaxng/"$$name"_"$$xno".err \
 			   err.$$name | grep -v "error detected at";\
 		  fi ; grep Unimplemented err.$$name`; \
-	          if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	          if [ -n "$$log" ] ; then echo "$$name"_"$$xno" result ; echo $$log ; fi ; \
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \
 	  done; done)

@@ -1,3 +1,9 @@
+Fri Apr 16 23:58:42 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: fixed problem with detecting external dtd
+	  encoding (bug 135229).
+	* Makefile.am: minor change to test label
+
 Fri Apr 16 16:09:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: fixed problem causing duplicate fallback

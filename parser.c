@@ -1825,9 +1825,13 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * Get the 4 first bytes and decode the charset
 		     * if enc != XML_CHAR_ENCODING_NONE
 		     * plug some encoding conversion routines.
+		     * Note that, since we may have some non-UTF8
+		     * encoding (like UTF16, bug 135229), the 'length'
+		     * is not known, but we can calculate based upon
+		     * the amount of data in the buffer.
 		     */
 		    GROW
-	            if (entity->length >= 4) {
+		    if ((ctxt->input->end - ctxt->input->cur)>=4) {
 			start[0] = RAW;
 			start[1] = NXT(1);
 			start[2] = NXT(2);

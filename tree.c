@@ -4714,6 +4714,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
         }
         buf->content[buf->use++] = *cur;
     }
+    buf->content[buf->use] = 0;
 }
 
 /**

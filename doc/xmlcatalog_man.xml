@@ -79,30 +79,30 @@
       <varlistentry>
 	<term><option>--shell</option> <replaceable>filename</replaceable></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Run a shell
 	    allowing interactive queries on catalog file
 	    <replaceable>filename</replaceable>.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><option>--create</option> <replaceable>filename</replaceable></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Create a new
 	    <acronym>XML</acronym> catalog. Outputs to stdout, ignoring
 	    <replaceable>filename</replaceable> unless <option>--noout</option> is
 	    used, in which case it creates a new catalog file
 	    <replaceable>filename</replaceable>.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term><option>--add</option> <replaceable>'type'</replaceable> <replaceable>'orig'</replaceable> <replaceable>'replace'</replaceable> <replaceable>filename</replaceable></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Add an entry to catalog file
 	    <filename>filename</filename>. <replaceable>type</replaceable> indicates
 	    the type of entry. Possible types are 'public', 'system', 'rewriteSystem',
@@ -118,37 +118,37 @@
 <!--
 FIXME - Is my list of possible types correct? Are SGML types the same? 
 -->
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><option>--del</option> <replaceable>'values'</replaceable> <replaceable>filename</replaceable></term>
 	<listitem>
-	 <para>
+	 <simpara>
 	    Remove entries from the catalog file
 	    <replaceable>filename</replaceable> matching
 	    <replaceable>'values'</replaceable>. The <option>--del</option> option
 	    will not overwrite <replaceable>filename</replaceable>, outputing to
 	    stdout, unless <option>--noout</option> is used.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><option>--noout</option></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Save output to the named file rather than
 	    outputing to stdout.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><option>-v</option> or <option>--verbose</option></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    output debugging
 	    information.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -167,30 +167,30 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
       <varlistentry>
 	<term><option>public</option> <replaceable>'PublicID'</replaceable></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Execute a
 	    public identifier lookup of the catalog entry for
 	    <replaceable>'PublicID'</replaceable>. The corresponding entry will be
 	    output to the command line.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
     
       <varlistentry>
 	<term><option>system</option> <replaceable>'SystemID'</replaceable></term>
 	<listitem>
-	 <para>
+	 <simpara>
 	    Execute a
 	    public identifier lookup of the catalog entry for
 	    <replaceable>'SystemID'</replaceable>. The corresponding entry will be
 	    output to the command line.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><option>add </option> <replaceable>'type'</replaceable> <replaceable>'orig'</replaceable> <replaceable>'replace'</replaceable></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Add an entry to the catalog
 	    file. <replaceable>type</replaceable> indicates the type of
 	    entry. Possible types are 'public', 'system', 'rewriteSystem',
@@ -198,53 +198,53 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
 	    is the original reference to  be replaced, and
 	    <replaceable>'replace'</replaceable> is the <acronym>URI</acronym> of the
 	    replacement entity to be used.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term><option>del</option> <replaceable>'values'</replaceable></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Remove the
 	    catalog entry corresponding to <replaceable>'values'</replaceable>.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term><option>dump</option></term>
 	<listitem>
-	   <para>
+	   <simpara>
 	    Print the current catalog.
-	  </para> 
+	  </simpara> 
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term><option>debug</option></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Print debugging statements showing the steps
 	    <application>xmlcatalog</application> is executing.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
     
       <varlistentry>
 	<term><option>quiet</option></term>
 	<listitem>
-	<para>
+	<simpara>
 	    Stop printing debugging statements.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
     
       <varlistentry>
 	<term><option>exit</option></term>
 	<listitem>
-	  <para>
+	  <simpara>
 	    Quit the shell.
-	  </para>
+	  </simpara>
 	</listitem>
       </varlistentry>
     </variablelist>

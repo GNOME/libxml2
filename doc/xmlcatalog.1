@@ -36,32 +36,32 @@ Its functions can be invoked from a single command from the command line, or it 
 
 .TP
 \fB--shell\fR \fIfilename\fR
-.PP
+
 Run a shell allowing interactive queries on catalog file \fIfilename\fR.
 
 .TP
 \fB--create\fR \fIfilename\fR
-.PP
+
 Create a new XML catalog. Outputs to stdout, ignoring \fIfilename\fR unless \fB--noout\fR is used, in which case it creates a new catalog file \fIfilename\fR.
 
 .TP
 \fB--add\fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR \fIfilename\fR
-.PP
+
 Add an entry to catalog file \fIfilename\fR. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used. The \fB-add\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used. The \fB--add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument.
 
 .TP
 \fB--del\fR \fI'values'\fR \fIfilename\fR
-.PP
+
 Remove entries from the catalog file \fIfilename\fR matching \fI'values'\fR. The \fB--del\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used.
 
 .TP
 \fB--noout\fR
-.PP
+
 Save output to the named file rather than outputing to stdout.
 
 .TP
 \fB-v\fR or \fB--verbose\fR
-.PP
+
 output debugging information.
 
 .SH "SHELL COMMANDS"
@@ -71,62 +71,66 @@ Invoking xmlcatalog with the \fB--shell\fR \fIfilename\fR option opens a command
 
 .TP
 \fBpublic\fR \fI'PublicID'\fR
-.PP
+
 Execute a public identifier lookup of the catalog entry for \fI'PublicID'\fR. The corresponding entry will be output to the command line.
 
 .TP
 \fBsystem\fR \fI'SystemID'\fR
-.PP
+
 Execute a public identifier lookup of the catalog entry for \fI'SystemID'\fR. The corresponding entry will be output to the command line.
 
 .TP
 \fBadd \fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR
-.PP
+
 Add an entry to the catalog file. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used.
 
 .TP
 \fBdel\fR \fI'values'\fR
-.PP
+
 Remove the catalog entry corresponding to \fI'values'\fR.
 
 .TP
 \fBdump\fR
-.PP
+
 Print the current catalog.
 
 .TP
 \fBdebug\fR
-.PP
+
 Print debugging statements showing the steps xmlcatalog is executing.
 
 .TP
 \fBquiet\fR
-.PP
+
 Stop printing debugging statements.
 
 .TP
 \fBexit\fR
-.PP
+
 Quit the shell.
 
 .SH "REFERENCES"
 
 .TP
 libxml web page:
-	  http://www.xmlsoft.org/: \fIhttp://www.xmlsoft.org/\fR
-	  
+
+http://www.xmlsoft.org/: \fIhttp://www.xmlsoft.org/\fR
+
 .TP
 libxml catalog support web page:
-	    http://www.xmlsoft.org/catalog.html: \fIhttp://www.xmlsoft.org/catalog.html\fR
-	  
+
+http://www.xmlsoft.org/catalog.html: \fIhttp://www.xmlsoft.org/catalog.html\fR
+
 .TP
 James Clark's SGML catalog page:
-	     http://www.jclark.com/sp/catalog.htm: \fIhttp://www.jclark.com/sp/catalog.htm\fR
-	  
+
+http://www.jclark.com/sp/catalog.htm: \fIhttp://www.jclark.com/sp/catalog.htm\fR
+
 .TP
 OASIS XML catalog specification:
-	     http://www.oasis-open.org/committees/entity/spec.html: \fIhttp://www.oasis-open.org/committees/entity/spec.html\fR
-	  
+
+http://www.oasis-open.org/committees/entity/spec.html: \fIhttp://www.oasis-open.org/committees/entity/spec.html\fR
+
 .SH AUTHOR
 Copyright 2001
 .Sp

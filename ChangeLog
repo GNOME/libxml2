@@ -1,3 +1,10 @@
+Sun Apr 27 17:56:21 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* debugXML.c: included libxml/uri.h for xmlCanonicPath
+	  declaration
+	* win32/configure.js: thread-enabled build is now default
+	* win32/libxml2.def.src: added more exports
+
 Sun Apr 27 00:23:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS doc/*.xsl doc/*.html: updated the web site separated

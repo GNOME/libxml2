@@ -328,6 +328,9 @@
 	      <xsl:attribute name="href">
 	        <xsl:value-of select="$filename"/>
 	      </xsl:attribute>
+	      <xsl:if test="$filename = 'docs.html'">
+		  <xsl:attribute name="style">font-weight:bold</xsl:attribute>
+	      </xsl:if>
 	      <xsl:value-of select="."/>
 	    </xsl:element>
 	  </li>
@@ -343,7 +346,7 @@
       <input name="submit" type="submit" value="Search ..."/>
     </form>
     <ul><!-- style="margin-left: -1em" -->
-      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html" style="font-weight:bold">Main Menu</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
       <li><a href="tutorial/index.html">Tutorial</a></li>
       <li><a href="xmlreader.html">The Reader Interface</a></li>

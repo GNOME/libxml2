@@ -56,6 +56,7 @@
 	<arg>--valid</arg>
 	<arg>--postvalid</arg>
 	<arg>--dtdvalid <replaceable>URL</replaceable></arg>
+	<arg>--dtdvalidfpi <replaceable>FPI</replaceable></arg>
 	<arg>--timing</arg>
 	<arg>--repeat</arg>
 	<arg>--insert</arg>
@@ -234,6 +235,18 @@
 	    Use the
       <acronym>DTD</acronym> specified by <replaceable>URL</replaceable> for
       validation.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+   
+    <varlistentry>
+	<term> <option>--dtdvalidfpi</option> <replaceable>FPI</replaceable></term>
+	<listitem>
+	  <simpara>
+	    Use the
+      <acronym>DTD</acronym> specified by the Public Identifier
+      <replaceable>FPI</replaceable> for validation, note that this
+      will require a Catalog exporting that Public Identifier to work.
 	  </simpara>
 	</listitem>
       </varlistentry>

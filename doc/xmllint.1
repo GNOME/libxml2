@@ -26,13 +26,9 @@ xmllint \- command line XML tool
 \fBxmllint\fR [\fB--version\fR | \fB--debug\fR | \fB--shell\fR | \fB--debugent\fR |
         \fB--copy\fR | \fB--recover\fR | \fB--noent\fR | \fB--noout\fR | \fB--htmlout\fR
         | \fB--nowrap\fR | \fB--valid\fR | \fB--postvalid\fR | \fB--dtdvalid
-        \fIURL\fR\fR | \fB--timing\fR | \fB--repeat\fR | \fB--insert\fR | \fB--compress\fR
-        | \fB--sgml\fR | \fB--html\fR | \fB--push\fR | \fB--memory\fR | \fB--nowarning\fR
-        | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode \fIencoding\fR\fR
-        | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR
-        | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR | \fB--stream\fR
-        | \fB--chkregister\fR | \fB--relaxng\fR | \fB--schema\fR | \fB--nonet\fR]
-        [\fBxmlfile\fR]
+        \fIURL\fR\fR | \fB--dtdvalidfpi \fIFPI\fR\fR | \fB--timing\fR | \fB--repeat\fR
+        | \fB--insert\fR | \fB--compress\fR | \fB--sgml\fR | \fB--html\fR | \fB--push\fR | \fB--memory\fR | \fB--nowarning\fR | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode \fIencoding\fR\fR | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR | \fB--stream\fR | \fB--chkregister\fR | \fB--relaxng\fR | \fB--schema\fR | \fB--nonet\fR] [\fBxmlfile\fR]
+       
 .fi
 
 .SH "INTRODUCTION"
@@ -96,6 +92,10 @@ Validate after parsing is completed.
 .TP
 \fB--dtdvalid\fR \fIURL\fR
 Use the DTD specified by \fIURL\fR for validation.
+
+.TP
+\fB--dtdvalidfpi\fR \fIFPI\fR
+Use the DTD specified by the Public Identifier \fIFPI\fR for validation, note that this will require a Catalog exporting that Public Identifier to work.
 
 .TP
 \fB--timing\fR

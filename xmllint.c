@@ -115,6 +115,7 @@ static int nowrap = 0;
 static int valid = 0;
 static int postvalid = 0;
 static char * dtdvalid = NULL;
+static char * dtdvalidfpi = NULL;
 #ifdef LIBXML_SCHEMAS_ENABLED
 static char * relaxng = NULL;
 static xmlRelaxNGPtr relaxngschemas = NULL;
@@ -1087,19 +1088,26 @@ static void parseAndPrintFile(char *filename) {
     /*
      * A posteriori validation test
      */
-    if (dtdvalid != NULL) {
+    if ((dtdvalid != NULL) || (dtdvalidfpi != NULL)) {
 	xmlDtdPtr dtd;
 
 	if ((timing) && (!repeat)) {
 	    startTimer();
 	}
-	dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid); 
+	if (dtdvalid != NULL)
+	    dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid); 
+	else
+	    dtd = xmlParseDTD((const xmlChar *)dtdvalidfpi, NULL); 
 	if ((timing) && (!repeat)) {
 	    endTimer("Parsing DTD");
 	}
 	if (dtd == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Could not parse DTD %s\n", dtdvalid);
+	    if (dtdvalid != NULL)
+		xmlGenericError(xmlGenericErrorContext,
+			"Could not parse DTD %s\n", dtdvalid);
+	    else
+		xmlGenericError(xmlGenericErrorContext,
+			"Could not parse DTD %s\n", dtdvalidfpi);
 	    progresult = 2;
 	} else {
 	    xmlValidCtxtPtr cvp;
@@ -1117,9 +1125,14 @@ static void parseAndPrintFile(char *filename) {
 		startTimer();
 	    }
 	    if (!xmlValidateDtd(cvp, doc, dtd)) {
-		xmlGenericError(xmlGenericErrorContext,
-			"Document %s does not validate against %s\n",
-			filename, dtdvalid);
+		if (dtdvalid != NULL)
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Document %s does not validate against %s\n",
+			    filename, dtdvalid);
+		else
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Document %s does not validate against %s\n",
+			    filename, dtdvalidfpi);
 		progresult = 3;
 	    }
 	    if ((timing) && (!repeat)) {
@@ -1303,6 +1316,7 @@ static void usage(const char *name) {
     printf("\t--valid : validate the document in addition to std well-formed check\n");
     printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
     printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
+    printf("\t--dtdvalidfpi FPI : same but name the DTD with a Public Identifier\n");
     printf("\t--timing : print some timings\n");
     printf("\t--output file or -o file: save to a given file\n");
     printf("\t--repeat : repeat 100 times, for timing or profiling\n");
@@ -1446,6 +1460,11 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--dtdvalid"))) {
 	    i++;
 	    dtdvalid = argv[i];
+	    loaddtd++;
+	} else if ((!strcmp(argv[i], "-dtdvalidfpi")) ||
+	         (!strcmp(argv[i], "--dtdvalidfpi"))) {
+	    i++;
+	    dtdvalidfpi = argv[i];
 	    loaddtd++;
         }
 	else if ((!strcmp(argv[i], "-dropdtd")) ||
@@ -1667,6 +1686,11 @@ main(int argc, char **argv) {
         }
 	if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
+	    i++;
+	    continue;
+        }
+	if ((!strcmp(argv[i], "-dtdvalidfpi")) ||
+	         (!strcmp(argv[i], "--dtdvalidfpi"))) {
 	    i++;
 	    continue;
         }

@@ -5,6 +5,7 @@
 import sys
 import glob
 import string
+import StringIO
 import libxml2
 
 # Memory debug specific
@@ -43,6 +44,58 @@ for file in valid_files:
 if err != expect:
     print err
 
+#
+# another separate test based on Stephane Bidoul one
+#
+s = """
+<!DOCTYPE test [
+<!ELEMENT test (x,b)>
+<!ELEMENT x (c)>
+<!ELEMENT b (#PCDATA)>
+<!ELEMENT c (#PCDATA)>
+<!ENTITY x "<x><c>xxx</c></x>">
+]>
+<test>
+    &x;
+    <b>bbb</b>
+</test>
+"""
+expect="""1,test
+3,#text
+1,x
+1,c
+3,#text
+15,c
+15,x
+3,#text
+1,b
+3,#text
+15,b
+3,#text
+15,test
+"""
+res=""
+err=""
+
+input = libxml2.inputBuffer(StringIO.StringIO(s))
+reader = input.newTextReader("test2")
+reader.SetParserProp(libxml2.PARSER_LOADDTD,1)
+reader.SetParserProp(libxml2.PARSER_DEFAULTATTRS,1)
+reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES,1)
+reader.SetParserProp(libxml2.PARSER_VALIDATE,1)
+while reader.Read() == 1:
+    res = res + "%s,%s\n" % (reader.NodeType(),reader.Name())
+
+if res != expect:
+    print "test2 failed: unexpected output"
+    print res
+    sys.exit(1)
+if err != "":
+    print "test2 failed: validation error found"
+    print err
+    sys.exit(1)
+
+del input
 del reader
 
 # Memory debug specific

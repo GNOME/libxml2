@@ -134,16 +134,21 @@ static void
 xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 	                  const xmlChar **atts) {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserCtxtPtr origctxt;
     xmlTextReaderPtr reader = ctxt->_private;
 
 #ifdef DEBUG_CALLBACKS
     printf("xmlTextReaderStartElement(%s)\n", fullname);
 #endif
     if ((reader != NULL) && (reader->startElement != NULL)) {
+	/*
+	 * when processing an entity, the context may have been changed
+	 */
+	origctxt = reader->ctxt;
 	reader->startElement(ctx, fullname, atts);
-	if (ctxt->validate) {
-	    ctxt->valid &= xmlValidatePushElement(&ctxt->vctxt, ctxt->myDoc,
-		                                  ctxt->node, fullname);
+	if (origctxt->validate) {
+	    ctxt->valid &= xmlValidatePushElement(&origctxt->vctxt,
+				 ctxt->myDoc, ctxt->node, fullname);
 	}
     }
     reader->state = XML_TEXTREADER_ELEMENT;
@@ -159,6 +164,7 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 static void
 xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserCtxtPtr origctxt;
     xmlTextReaderPtr reader = ctxt->_private;
 
 #ifdef DEBUG_CALLBACKS
@@ -166,12 +172,16 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 #endif
     if ((reader != NULL) && (reader->endElement != NULL)) {
 	xmlNodePtr node = ctxt->node;
+	/*
+	 * when processing an entity, the context may have been changed
+	 */
+	origctxt = reader->ctxt;
 
 	reader->endElement(ctx, fullname);
 
-	if (ctxt->validate) {
-	    ctxt->valid &= xmlValidatePopElement(&ctxt->vctxt, ctxt->myDoc,
-		                                 node, fullname);
+	if (origctxt->validate) {
+	    ctxt->valid &= xmlValidatePopElement(&origctxt->vctxt,
+		                ctxt->myDoc, node, fullname);
 	}
     }
     if (reader->state == XML_TEXTREADER_ELEMENT)
@@ -192,6 +202,7 @@ static void
 xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserCtxtPtr origctxt;
     xmlTextReaderPtr reader = ctxt->_private;
 
 #ifdef DEBUG_CALLBACKS
@@ -199,9 +210,13 @@ xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 #endif
     if ((reader != NULL) && (reader->characters != NULL)) {
 	reader->characters(ctx, ch, len);
+	/*
+	 * when processing an entity, the context may have been changed
+	 */
+	origctxt = reader->ctxt;
 
-	if (ctxt->validate) {
-	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt, ch, len);
+	if (origctxt->validate) {
+	    ctxt->valid &= xmlValidatePushCData(&origctxt->vctxt, ch, len);
 	}
     }
 }

@@ -1228,6 +1228,7 @@ encoding_error:
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
+    ctxt->wellFormed = 0;
     ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
@@ -1371,6 +1372,7 @@ encoding_error:
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
+    ctxt->wellFormed = 0;
     ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
@@ -1481,6 +1483,7 @@ encoding_error:
                              ctxt->input->cur[2], ctxt->input->cur[3]);
         }
         ctxt->errNo = XML_ERR_INVALID_ENCODING;
+	ctxt->wellFormed = 0;
     }
 
     *len = 1;

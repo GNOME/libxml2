@@ -640,6 +640,8 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 	    "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
             name, publicId, systemId, notationName);
 #endif
+#if 0
+    Done in xmlValidateDtdFinal now.
     if (ctxt->validate && ctxt->wellFormed && ctxt->myDoc) {
 	int ret;
 	ret = xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
@@ -649,6 +651,7 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 	    ctxt->valid = 0;
 	}
     }
+#endif
     if (ctxt->inSubset == 1) {
 	ent = xmlAddDocEntity(ctxt->myDoc, name,
 			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
@@ -1220,7 +1223,13 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
      * check the document root element for validity
      */
     if ((ctxt->validate) && (ctxt->vctxt.finishDtd == 0)) {
-	ctxt->valid &= xmlValidateDtdFinal(&ctxt->vctxt, ctxt->myDoc);
+	int chk;
+
+	chk = xmlValidateDtdFinal(&ctxt->vctxt, ctxt->myDoc);
+	if (chk <= 0)
+	    ctxt->valid = 0;
+	if (chk < 0)
+	    ctxt->wellFormed = 0;
 	ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
 	ctxt->vctxt.finishDtd = 1;
     }

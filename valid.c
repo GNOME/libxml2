@@ -4789,8 +4789,29 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
 }
 
 static void
+xmlValidateNotationCallback(xmlEntityPtr cur, xmlValidCtxtPtr ctxt,
+	                    const xmlChar *name ATTRIBUTE_UNUSED) {
+    if (cur == NULL)
+	return;
+    if (cur->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
+	xmlChar *notation = cur->content;
+
+	if (cur != NULL) {
+	    int ret;
+
+	    ret = xmlValidateNotationUse(ctxt, cur->doc, notation);
+	    if (ret != 1) {
+		ctxt->valid = -1;
+	    }
+	}
+    }
+}
+
+static void
 xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
 	                    const xmlChar *name ATTRIBUTE_UNUSED) {
+    int ret;
+
     if (cur == NULL)
 	return;
     switch (cur->atype) {
@@ -4806,14 +4827,19 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
 	case XML_ATTRIBUTE_ENTITIES:
 	case XML_ATTRIBUTE_NOTATION:
 	    if (cur->defaultValue != NULL) {
-		ctxt->valid &= xmlValidateAttributeValue2(ctxt, ctxt->doc,
-			    cur->name, cur->atype, cur->defaultValue);
+		
+		ret = xmlValidateAttributeValue2(ctxt, ctxt->doc, cur->name,
+			                         cur->atype, cur->defaultValue);
+		if ((ret == 0) && (ctxt->valid == 1))
+		    ctxt->valid = 0;
 	    }
 	    if (cur->tree != NULL) {
 		xmlEnumerationPtr tree = cur->tree;
 		while (tree != NULL) {
-		    ctxt->valid &= xmlValidateAttributeValue2(ctxt, ctxt->doc,
+		    ret = xmlValidateAttributeValue2(ctxt, ctxt->doc,
 				    cur->name, cur->atype, tree->name);
+		    if ((ret == 0) && (ctxt->valid == 1))
+			ctxt->valid = 0;
 		    tree = tree->next;
 		}
 	    }
@@ -4834,29 +4860,35 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
  * - check that NOTATION type attributes default or 
  *   possible values matches one of the defined notations.
  *
- * returns 1 if valid or 0 otherwise
+ * returns 1 if valid or 0 if invalid and -1 if not well-formed
  */
 
 int
 xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
-    int ret = 1;
     xmlDtdPtr dtd;
     xmlAttributeTablePtr table;
+    xmlEntitiesTablePtr entities;
 
     if (doc == NULL) return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL))
 	return(0);
     ctxt->doc = doc;
-    ctxt->valid = ret;
+    ctxt->valid = 1;
     dtd = doc->intSubset;
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
 	table = (xmlAttributeTablePtr) dtd->attributes;
 	xmlHashScan(table, (xmlHashScanner) xmlValidateAttributeCallback, ctxt);
+	entities = (xmlEntitiesTablePtr) dtd->entities;
+	xmlHashScan(entities, (xmlHashScanner) xmlValidateNotationCallback,
+		    ctxt);
     }
     dtd = doc->extSubset;
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
 	table = (xmlAttributeTablePtr) dtd->attributes;
 	xmlHashScan(table, (xmlHashScanner) xmlValidateAttributeCallback, ctxt);
+	entities = (xmlEntitiesTablePtr) dtd->entities;
+	xmlHashScan(entities, (xmlHashScanner) xmlValidateNotationCallback,
+		    ctxt);
     }
     return(ctxt->valid);
 }

@@ -1,3 +1,10 @@
+Mon Feb 18 19:27:32 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c parserInternals.c valid.c: more work on the conformance
+	  suite. Took the step to finally block documents with encoding
+	  errors. It's a fatal error per the spec, people should have fixed
+	  their documents by now.
+
 Mon Feb 18 15:30:14 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* check-xml-test-suite.py: fixed the test script after some discussion

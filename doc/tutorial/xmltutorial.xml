@@ -62,6 +62,11 @@
 	<date>July 24, 2003</date>
 	<revremark>add XPath example</revremark>
       </revision>
+      <revision>
+	<revnumber>9</revnumber>
+	<date>Feb. 14, 2004</date>
+	<revremark>Fix bug in XPath example</revremark>
+      </revision>
     </revhistory>
   </articleinfo>
   <abstract>
@@ -396,6 +401,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 	<co id="conodesetcounter" />for (i=0; i &lt; nodeset->nodeNr; i++) {
 	<co id="coprintkeywords" />keyword = xmlNodeListGetString(doc, nodeset->nodeTab[i]->xmlChildrenNode, 1);
 		printf("keyword: %s\n", keyword);
+	        xmlFree(keyword);
 	}
       </programlisting>
       <calloutlist>

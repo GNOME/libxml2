@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Encoding Conversion</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Libxml Tutorial"><link rel="up" href="index.html" title="Libxml Tutorial"><link rel="previous" href="ar01s08.html" title="Retrieving Attributes"><link rel="next" href="apa.html" title="A. Compilation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Encoding Conversion</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ar01s08.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="apa.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="xmltutorialconvert"></a>Encoding Conversion</h2></div></div><div></div></div><p><a class="indexterm" name="id2815684"></a>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Encoding Conversion</title><meta name="generator" content="DocBook XSL Stylesheets V1.61.2"><link rel="home" href="index.html" title="Libxml Tutorial"><link rel="up" href="index.html" title="Libxml Tutorial"><link rel="previous" href="ar01s08.html" title="Retrieving Attributes"><link rel="next" href="apa.html" title="A. Compilation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Encoding Conversion</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ar01s08.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="apa.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="xmltutorialconvert"></a>Encoding Conversion</h2></div></div><div></div></div><p><a class="indexterm" name="id2509349"></a>
 Data encoding compatibility problems are one of the most common
       difficulties encountered by programmers new to <span class="acronym">XML</span> in
       general and <span class="application">libxml</span> in particular. Thinking
@@ -18,14 +18,14 @@ Data encoding compatibility problems are one of the most common
     different character formats with ability to convert from any to any. While
     the actual number of supported formats varies between implementations, every
     <span class="application">iconv</span> implementation is almost guaranteed to
-    support every format anyone has ever heard of.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>A common mistake is to use different formats for the internal data
+    support every format anyone has ever heard of.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>A common mistake is to use different formats for the internal data
 	in different parts of one's code. The most common case is an application
 	that assumes ISO-8859-1 to be the internal data format, combined with
 	<span class="application">libxml</span>, which assumes UTF-8 to be the
 	internal data format. The result is an application that treats internal
 	data differently, depending on which code section is executing. The one or
 	the other part of code will then, naturally, misinterpret the data.
-      </p></div><p>This example constructs a simple document, then adds content provided
+      </p></td></tr></table></div><p>This example constructs a simple document, then adds content provided
     at the command line to the document's root element and outputs the results
     to <tt class="filename">stdout</tt> in the proper encoding. For this example, we
     use ISO-8859-1 encoding. The encoding of the string input at the command

@@ -47,8 +47,7 @@
 			</xsl:if>
 			<xsl:if test="(@file = 'relaxng') 
 					or (@file = 'xmlschemas') 
-					or (@file = 'xmlschemastypes') 
-					or (@file = 'xmlunicode')">
+					or (@file = 'xmlschemastypes')">
 				<xsl:text>#ifdef LIBXML_SCHEMAS_ENABLED&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="@file = 'xinclude'">
@@ -60,7 +59,8 @@
 			<xsl:if test="@file = 'xmlautomata'">
 				<xsl:text>#ifdef LIBXML_AUTOMATA_ENABLED&nl;</xsl:text>
 			</xsl:if>
-			<xsl:if test="@file = 'xmlregexp'">
+			<xsl:if test="(@file = 'xmlregexp') 
+					or (@file = 'xmlunicode')">
 				<xsl:text>#ifdef LIBXML_REGEXP_ENABLED&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="(@file = 'xpath') 
@@ -214,8 +214,7 @@
 			</xsl:if>
 			<xsl:if test="(@file = 'relaxng') 
 					or (@file = 'xmlschemas') 
-					or (@file = 'xmlschemastypes') 
-					or (@file = 'xmlunicode')">
+					or (@file = 'xmlschemastypes')">
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="@file = 'xinclude'">
@@ -227,7 +226,8 @@
 			<xsl:if test="@file = 'xmlautomata'">
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
-			<xsl:if test="@file = 'xmlregexp'">
+			<xsl:if test="(@file = 'xmlregexp') 
+					or (@file = 'xmlunicode')">
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="(@file = 'xpath') 
@@ -279,28 +279,6 @@
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
 		</xsl:for-each>
-		<!-- Few additional exports which are not available in the
-			libxml2-api.xml for some reason -->
-		<xsl:text>#ifdef LIBXML_SCHEMAS_ENABLED&nl;</xsl:text>
-		<xsl:text>xmlSchemaNewParserCtxt&nl;</xsl:text>
-		<xsl:text>xmlSchemaNewMemParserCtxt&nl;</xsl:text>
-		<xsl:text>xmlSchemaFreeParserCtxt&nl;</xsl:text>
-		<xsl:text>xmlSchemaSetParserErrors&nl;</xsl:text>
-		<xsl:text>xmlSchemaParse&nl;</xsl:text>
-		<xsl:text>xmlSchemaFree&nl;</xsl:text>
-		<xsl:text>xmlSchemaDump&nl;</xsl:text>
-		<xsl:text>xmlSchemaSetValidErrors&nl;</xsl:text>
-		<xsl:text>xmlSchemaNewValidCtxt&nl;</xsl:text>
-		<xsl:text>xmlSchemaFreeValidCtxt&nl;</xsl:text>
-		<xsl:text>xmlSchemaValidateDoc&nl;</xsl:text>
-		<xsl:text>xmlSchemaValidateStream&nl;</xsl:text>
-		<xsl:text>xmlSchemaInitTypes&nl;</xsl:text>
-		<xsl:text>xmlSchemaCleanupTypes&nl;</xsl:text>
-		<xsl:text>xmlSchemaGetPredefinedType&nl;</xsl:text>
-		<xsl:text>xmlSchemaValidatePredefinedType&nl;</xsl:text>
-		<xsl:text>xmlSchemaValidateFacet&nl;</xsl:text>
-		<xsl:text>xmlSchemaFreeValue&nl;</xsl:text>
-		<xsl:text>#endif&nl;</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
 

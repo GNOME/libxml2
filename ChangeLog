@@ -1,3 +1,8 @@
+1999-12-20  Chris Lahey  <clahey@umich.edu>
+
+	* HTMLtree.c: Made it so that html nodes with a single child do
+	not insert a carriage return before or after the child node.
+
 Sat Dec 18 16:07:03 CET 1999
 
 	* configure.in, doc/xml.html : bug fix release 1.8.1

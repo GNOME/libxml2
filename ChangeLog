@@ -1,3 +1,8 @@
+Thu Feb 26 18:52:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* doc/*.html, doc/html/*.html: regenerated docs using older
+	  version of xsltproc pending resolution of AVT problem
+
 Thu Feb 26 10:56:29 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: applied patch from Charles Bozeman to nit use

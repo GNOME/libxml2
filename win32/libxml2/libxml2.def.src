@@ -784,6 +784,23 @@ EXPORTS
 	xmlXPathCompile
 	xmlXPathCompiledEval
 	xmlXPathFreeCompExpr
+	xmlXPathCastNumberToBoolean
+	xmlXPathCastStringToBoolean
+	xmlXPathCastNodeSetToBoolean
+	xmlXPathCastToBoolean
+	xmlXPathCastBooleanToNumber
+	xmlXPathCastStringToNumber
+	xmlXPathCastNodeToNumber
+	xmlXPathCastNodeSetToNumber
+	xmlXPathCastToNumber
+	xmlXPathCastBooleanToString
+	xmlXPathCastNumberToString
+	xmlXPathCastNodeToString
+	xmlXPathCastNodeSetToString
+	xmlXPathCastToString
+	xmlXPathConvertBoolean
+	xmlXPathConvertNumber
+	xmlXPathConvertString
 #endif /* LIBXML_XPATH_ENABLED */
 
 /* 

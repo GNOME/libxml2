@@ -1,3 +1,8 @@
+Sun Jul  8 23:09:07 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* win32/libxml2/libxml2.def.src: added some missing entry point
+	  for XPath (Mark Vakoc)
+
 Sun Jul  8 20:34:35 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlIO.c: fixed an old bug raised by Bernhard Zwisch, the I/O

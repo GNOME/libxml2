@@ -268,6 +268,7 @@ xmlDocPtr xmlNewDoc(const CHAR *version) {
 	return(NULL);
     }
 
+    cur->type = XML_DOCUMENT_NODE;
     cur->version = xmlStrdup(version); 
     cur->name = NULL;
     cur->root = NULL; 
@@ -323,6 +324,7 @@ xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
 	return(NULL);
     }
 
+    cur->type = XML_ATTRIBUTE_NODE;
     cur->node = node; 
     cur->name = xmlStrdup(name);
     if (value != NULL)
@@ -404,6 +406,7 @@ xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
 	return(NULL);
     }
 
+    cur->type = XML_ELEMENT_NODE;
     cur->doc = NULL;
     cur->parent = NULL; 
     cur->next = NULL;
@@ -450,6 +453,7 @@ xmlNodePtr xmlNewText(const CHAR *content) {
 	return(NULL);
     }
 
+    cur->type = XML_TEXT_NODE;
     cur->doc = NULL;
     cur->parent = NULL; 
     cur->next = NULL; 
@@ -490,6 +494,7 @@ xmlNodePtr xmlNewTextLen(const CHAR *content, int len) {
 	return(NULL);
     }
 
+    cur->type = XML_TEXT_NODE;
     cur->doc = NULL; 
     cur->parent = NULL; 
     cur->prev = NULL; 
@@ -530,6 +535,7 @@ xmlNodePtr xmlNewComment(CHAR *content) {
 	return(NULL);
     }
 
+    cur->type = XML_COMMENT_NODE;
     cur->doc = NULL; 
     cur->parent = NULL; 
     cur->prev = NULL; 
@@ -584,6 +590,10 @@ xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
     /*
      * add the new element at the end of the childs list.
      */
+    if (content == NULL)
+	cur->type = XML_ELEMENT_NODE;
+    else
+	cur->type = XML_TEXT_NODE;
     cur->parent = parent;
     cur->doc = parent->doc;
     if (parent->childs == NULL) {

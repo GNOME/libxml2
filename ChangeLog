@@ -1,3 +1,8 @@
+Sun Oct 18 15:08:19 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c : make sure that the type id is properly set-up when
+	  a new object is allocated, needed for DOM.
+
 Sat Oct 17 02:43:21 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.h, tree.c: Ok, the main objects in the tree will be native

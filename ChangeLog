@@ -1,3 +1,9 @@
+Tue Sep 30 12:31:00 AEST 2003 Malcolm Tredinnick <malcolm@commsecure.com.au>
+
+	* libxml-2.0-uninstalled.pc.in: New file for building against
+	uninstalled libxml2 builds.
+	* configure.in, Makefile.am: Support the *-uninstalled.pc file.
+
 Tue Sep 30 02:38:16 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am SAX.c SAX2.c configure.in globals.c parser.c

@@ -33,7 +33,7 @@ typedef enum {
     XML_PARSER_SEVERITY_ERROR = 4
 } xmlParserSeverities;
 
-enum {
+typedef enum {
     XML_READER_TYPE_NONE = 0,
     XML_READER_TYPE_ELEMENT = 1,
     XML_READER_TYPE_ATTRIBUTE = 2,
@@ -52,7 +52,7 @@ enum {
     XML_READER_TYPE_END_ELEMENT = 15,
     XML_READER_TYPE_END_ENTITY = 16,
     XML_READER_TYPE_XML_DECLARATION = 17
-};
+} xmlReaderTypes;
 
 typedef struct _xmlTextReader xmlTextReader;
 typedef xmlTextReader *xmlTextReaderPtr;

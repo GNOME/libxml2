@@ -473,8 +473,10 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-	    if ((cur->name == xmlStringText) ||
-		(cur->name != xmlStringTextNoenc)) {
+	    if (((cur->name == xmlStringText) ||
+		 (cur->name != xmlStringTextNoenc)) &&
+		((cur->parent == NULL) ||
+		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
 		xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
@@ -889,8 +891,10 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-	    if ((cur->name == xmlStringText) ||
-		(cur->name != xmlStringTextNoenc)) {
+	    if (((cur->name == xmlStringText) ||
+		 (cur->name != xmlStringTextNoenc)) &&
+		((cur->parent == NULL) ||
+		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
 		xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT

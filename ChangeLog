@@ -1,4 +1,10 @@
-Tue Jun  5 19:11:02 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
+Tue Jun  5 22:54:21 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: trying to close bug #55772 escaping in script
+	  elements
+	* doc/xml.html: suggest to send mail to the list
+
+Tue Jun  5 19:11:02 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* error.c: attempt to fix the xmlGetVarStr breakage once and for
 	  good. Use a macro and based on the solution provided in 

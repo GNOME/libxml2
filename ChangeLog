@@ -1,3 +1,7 @@
+Thu Apr 26 22:53:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* libxml.m4: yet another patch from Toshio Kuratomi
+
 Thu Apr 26 21:27:43 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* libxml.m4 libxml2-spec.in: new patches from Toshio Kuratomi

@@ -32,7 +32,7 @@ AC_ARG_ENABLE(xmltest,
   fi
 
   AC_PATH_PROG(XML_CONFIG, xml-config, no)
-  min_xml_version=ifelse([$1], ,2.0.0,[$1])
+  min_xml_version=ifelse([$1], ,1.0.0,[$1])
   AC_MSG_CHECKING(for libxml - version >= $min_xml_version)
   no_xml=""
   if test "$XML_CONFIG" = "no" ; then
@@ -59,7 +59,7 @@ dnl
       AC_TRY_RUN([
 #include <stdlib.h>
 #include <stdio.h>
-#include <xmlversion.h>
+#include <libxml/tree.h>
 
 int 
 main()
@@ -67,6 +67,7 @@ main()
   int xml_major_version, xml_minor_version, xml_micro_version;
   int major, minor, micro;
   char *tmp_version;
+  int tmp_int_version;
 
   system("touch conf.xmltest");
 
@@ -80,17 +81,24 @@ main()
    free(tmp_version);
 
    /* Capture the version information from the header files */
-   tmp_version = (char *)strdup(LIBXML_DOTTED_VERSION);
-   if (sscanf(tmp_version, "%d.%d.%d", &xml_major_version, &xml_minor_version, &xml_micro_version) != 3) {
-     printf("%s, bad version string from libxml includes\n", "LIBXML_DOTTED_VERSION");
-     exit(1);
-   }
-   free(tmp_version);
+   tmp_int_version = LIBXML_VERSION_NUMBER;
+   xml_major_version=tmp_int_version / 10000;
+   xml_minor_version=(tmp_int_version - xml_major_version * 10000) / 100;
+   xml_micro_version=(tmp_int_version - xml_minor_version * 100 - xml_major_version * 10000);
 
  /* Compare xml-config output to the libxml headers */
   if ((xml_major_version != $xml_config_major_version) ||
-      (xml_minor_version != $xml_config_minor_version) ||
-      (xml_micro_version != $xml_config_micro_version))
+      (xml_minor_version != $xml_config_minor_version)
+#if 0
+      ||
+/* The last released version of libxml-1.x has an incorrect micro version in
+ * the header file so neither the includes nor the library will match the
+ * micro_version to the output of xml-config
+ */
+      (xml_micro_version != $xml_config_micro_version)
+#endif 
+	  )
+	  
     {
       printf("*** libxml header files (version %d.%d.%d) do not match\n",
          xml_major_version, xml_minor_version, xml_micro_version);
@@ -105,10 +113,10 @@ main()
     LIBXML_TEST_VERSION;
 
     /* Test that the library is greater than our minimum version */
-    if ((xml_major_version > major) ||
-        ((xml_major_version == major) && (xml_minor_version > minor)) ||
-        ((xml_major_version == major) && (xml_minor_version == minor) &&
-        (xml_micro_version >= micro)))
+    if (($xml_config_major_version > major) ||
+        (($xml_config_major_version == major) && ($xml_config_minor_version > minor)) ||
+        (($xml_config_major_version == major) && ($xml_config_minor_version == minor) &&
+        ($xml_config_micro_version >= micro)))
       {
         return 0;
        }
@@ -154,7 +162,7 @@ main()
           CFLAGS="$CFLAGS $XML_CFLAGS"
           LIBS="$LIBS $XML_LIBS"
           AC_TRY_LINK([
-#include <xmlversion.h>
+#include <libxml/tree.h>
 #include <stdio.h>
 ],      [ LIBXML_TEST_VERSION; return 0;],
         [ echo "*** The test program compiled, but did not run. This usually means"

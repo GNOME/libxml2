@@ -1,0 +1,1 @@
+./test/schemas/ns0_0.xml:1: element foo: Schemas validity error : Attribute id on foo is unknown

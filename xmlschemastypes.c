@@ -261,7 +261,7 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type) {
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlSchemaType));
-    ret->name = xmlStrdup((const xmlChar *)name);
+    ret->name = (const xmlChar *)name;
     ret->type = XML_SCHEMA_TYPE_BASIC;
     ret->flags = type;
     ret->contentType = XML_SCHEMA_CONTENT_BASIC;

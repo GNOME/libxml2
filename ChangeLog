@@ -1,3 +1,11 @@
+Sat Nov 22 21:35:42 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c xmlschemastypes.c include/libxml/xmlerror.h
+	  include/libxml/schemasInternals.h: lot of bug fixes, cleanup,
+	  starting to add proper namespace support too.
+	* test/schemas/* result/schemas/*: added a number of tests
+	  fixed the result from some regression tests too.
+
 Fri Nov 21 20:50:59 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/xml.html, docs.html: remove reference to gtk-doc now that

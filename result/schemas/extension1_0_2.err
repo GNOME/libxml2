@@ -1,0 +1,1 @@
+./test/schemas/extension1_2.xml:1: element title: Schemas validity error : Element title: child salut should not be present

@@ -2819,16 +2819,58 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
 	ret = xmlNewDocProp(NULL, cur->name, NULL);
     if (ret == NULL) return(NULL);
     ret->parent = target;
-    
+
     if ((cur->ns != NULL) && (target != NULL)) {
       xmlNsPtr ns;
-      if (target->doc) 
-	ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
-      else if (cur->doc)  /* target may not yet have a doc : KPI */
-	ns = xmlSearchNs(cur->doc, target, cur->ns->prefix);       
-      else
-	ns = NULL;
-	ret->ns = ns;
+/*
+ *      if (target->doc) 
+ *	ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
+ *      else if (cur->doc)  / * target may not yet have a doc : KPI * /
+ *	ns = xmlSearchNs(cur->doc, target, cur->ns->prefix);       
+ *      else
+ *	ns = NULL;
+ *	ret->ns = ns;
+ */
+      ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
+      if (ns == NULL) {
+        /*
+         * Humm, we are copying an element whose namespace is defined
+         * out of the new tree scope. Search it in the original tree
+         * and add it at the top of the new tree
+         */
+        ns = xmlSearchNs(cur->doc, cur->parent, cur->ns->prefix);
+        if (ns != NULL) {
+          xmlNodePtr root = target;
+          xmlNodePtr pred = NULL;
+
+          while (root->parent != NULL) {
+            pred = root;
+            root = root->parent;
+          }
+          if (root == (xmlNodePtr) target->doc) {
+            /* correct possibly cycling above the document elt */
+            root = pred;
+          }
+          ret->ns = xmlNewNs(root, ns->href, ns->prefix);
+        }
+      } else {
+        /*
+         * we have to find something appropriate here since
+         * we cant be sure, that the namespce we found is identified
+         * by the prefix
+         */
+        if (xmlStrEqual(ns->href, ret->ns->href)) {
+          /* this is the nice case */
+          ret->ns = ns;
+        } else {
+          /*
+           * we are in trouble: we need a new reconcilied namespace.
+           * This is expensive
+           */
+          ret->ns = xmlNewReconciliedNs(target->doc, target, cur->ns);
+        }
+      }
+ 
     } else
         ret->ns = NULL;
 

@@ -194,7 +194,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the Unicode related interfaces are compiled in
  */
-#if @WITH_SCHEMAS@
+#if @WITH_REGEXPS@
 #define LIBXML_UNICODE_ENABLED
 #endif
 
@@ -203,7 +203,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the regular expressions interfaces are compiled in
  */
-#if @WITH_SCHEMAS@
+#if @WITH_REGEXPS@
 #define LIBXML_REGEXP_ENABLED
 #endif
 
@@ -212,7 +212,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the automata interfaces are compiled in
  */
-#if @WITH_SCHEMAS@
+#if @WITH_REGEXPS@
 #define LIBXML_AUTOMATA_ENABLED
 #endif
 

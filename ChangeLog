@@ -1,3 +1,15 @@
+Thu Sep 19 21:46:53 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in include/libxml/xmlversion.h.in:
+	  made configuring with regexps/automata/unicode the default
+	  but without schemas ATM
+	* testRegexp.c valid.c xmlregexp.c include/libxml/xmlregexp.h:
+	  fixed the regexp based DTD validation performance and memory
+	  problem by switching to a compact form for determinist regexps
+	  and detecting the determinism property in the process. Seems
+	  as fast as the old DTD validation specific engine :-) despite
+	  the regexp built and compaction process.
+
 Wed Sep 18 18:27:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: determinism is debugged, new DTD checking code now works

@@ -140,11 +140,12 @@ int main(int argc, char **argv) {
 		}
 	    }
 	}
+	xmlMemoryDump();
 	if (comp != NULL)
 	    xmlRegFreeRegexp(comp);
     }
     xmlCleanupParser();
-    xmlMemoryDump();
+    /* xmlMemoryDump(); */
     return(0);
 }
 

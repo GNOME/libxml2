@@ -55,6 +55,7 @@ int			xmlRegexpExec	(xmlRegexpPtr comp,
 					 const xmlChar *value);
 void			xmlRegexpPrint	(FILE *output,
 					 xmlRegexpPtr regexp);
+int			xmlRegexpIsDeterminist(xmlRegexpPtr comp);
 
 /*
  * Callback function when doing a transition in the automata

@@ -553,7 +553,7 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     xmlValidBuildAContentModel(elem->content, ctxt, elem->name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);
-    if (!xmlAutomataIsDeterminist(ctxt->am)) {
+    if (!xmlRegexpIsDeterminist(elem->contModel)) {
 	char expr[5000];
 	expr[0] = 0;
 	xmlSnprintfElementContent(expr, 5000, elem->content, 1);
@@ -3849,6 +3849,7 @@ xmlValidateSkipIgnorable(xmlNodePtr child) {
     return(child);
 }
 
+#ifndef  LIBXML_REGEXP_ENABLED
 /**
  * xmlValidateElementType:
  * @ctxt:  the validation context
@@ -4217,6 +4218,7 @@ analyze:
     }
     return(determinist);
 }
+#endif
 
 /**
  * xmlSnprintfElements:
@@ -4319,7 +4321,10 @@ static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
        xmlElementPtr elemDecl, int warn, xmlNodePtr parent) {
     int ret = 1;
-    xmlNodePtr repl = NULL, last = NULL, cur, tmp;
+#ifndef  LIBXML_REGEXP_ENABLED
+    xmlNodePtr last = NULL;
+#endif
+    xmlNodePtr repl = NULL, cur, tmp;
     xmlElementContentPtr cont;
     const xmlChar *name;
 
@@ -4561,7 +4566,9 @@ fail:
     if (ret == -3)
 	ret = 1;
 
+#ifndef  LIBXML_REGEXP_ENABLED
 done:
+#endif
     /*
      * Deallocate the copy if done, and free up the validation stack
      */

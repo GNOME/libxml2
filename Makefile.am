@@ -106,7 +106,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_SCHEMAS@ @TEST_THREADS@
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
 	@(cd python ; $(MAKE) tests)
 
 valgrind:

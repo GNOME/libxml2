@@ -525,13 +525,26 @@ AC_ARG_WITH(schemas, [  --with-schemas              Add experimental Schemas sup
 if test "$with_schemas" = "yes" ; then
     echo Enabling Schemas support
     WITH_SCHEMAS=1
-    TEST_SCHEMAS="Regexptests Automatatests Schemastests"
+    TEST_SCHEMAS="Schemastests"
+    with_regexps=yes
 else    
     WITH_SCHEMAS=0
     TEST_SCHEMAS=
 fi
 AC_SUBST(WITH_SCHEMAS)
 AC_SUBST(TEST_SCHEMAS)
+
+AC_ARG_WITH(regexps, [  --with-regexps              Add Regular Expressions support (on)])
+if test "$with_regexps" = "no" ; then
+    echo Disabling Regexps support
+    WITH_REGEXPS=0
+    TEST_REGEXPS=
+else    
+    WITH_REGEXPS=1
+    TEST_REGEXPS="Regexptests Automatatests"
+fi
+AC_SUBST(WITH_REGEXPS)
+AC_SUBST(TEST_REGEXPS)
 
 AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])
 if test "$with_debug" = "no" ; then

@@ -30,6 +30,7 @@
 /* #define DEBUG_REGEXP_GRAPH  */
 /* #define DEBUG_REGEXP_EXEC */
 /* #define DEBUG_PUSH */
+/* #define DEBUG_COMPACTION */
 
 #define ERROR(str) ctxt->error = 1;					\
     xmlGenericError(xmlGenericErrorContext, "Regexp: %s: %s\n", str, ctxt->cur)
@@ -193,6 +194,7 @@ struct _xmlRegTrans {
 struct _xmlAutomataState {
     xmlRegStateType type;
     xmlRegMarkedType mark;
+    xmlRegMarkedType reached;
     int no;
 
     int maxTrans;
@@ -240,6 +242,13 @@ struct _xmlRegexp {
     int nbCounters;
     xmlRegCounter *counters;
     int determinist;
+    /*
+     * That's the compact form for determinists automatas
+     */
+    int nbstates;
+    int *compact;
+    int nbstrings;
+    xmlChar **stringMap;
 };
 
 typedef struct _xmlRegExecRollback xmlRegExecRollback;
@@ -299,6 +308,8 @@ struct _xmlRegExecCtxt {
 #define REGEXP_ALL_LAX_COUNTER	0x123457
 
 static void xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top);
+static void xmlRegFreeState(xmlRegStatePtr state);
+static void xmlRegFreeAtom(xmlRegAtomPtr atom);
 
 /************************************************************************
  * 									*
@@ -306,6 +317,7 @@ static void xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top);
  * 									*
  ************************************************************************/
 
+static int xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt);
 /**
  * xmlRegEpxFromParse:
  * @ctxt:  the parser context used to build it
@@ -337,6 +349,166 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
     ret->counters = ctxt->counters;
     ctxt->counters = NULL;
     ret->determinist = ctxt->determinist;
+
+    if ((ret->determinist != 0) &&
+	(ret->nbCounters == 0) &&
+	(ret->atoms[0] != NULL) &&
+	(ret->atoms[0]->type == XML_REGEXP_STRING)) {
+	int i, j, nbstates = 0, nbatoms = 0;
+	int *stateRemap;
+	int *stringRemap;
+	int *transitions;
+	xmlChar **stringMap;
+        xmlChar *value;
+
+	/*
+	 * Switch to a compact representation
+	 * 1/ counting the effective number of states left
+	 * 2/ conting the unique number of atoms, and check that
+	 *    they are all of the string type
+	 * 3/ build a table state x atom for the transitions
+	 */
+
+	stateRemap = xmlMalloc(ret->nbStates * sizeof(int));
+	for (i = 0;i < ret->nbStates;i++) {
+	    if (ret->states[i] != NULL) {
+		stateRemap[i] = nbstates;
+		nbstates++;
+	    } else {
+		stateRemap[i] = -1;
+	    }
+	}
+#ifdef DEBUG_COMPACTION
+	printf("Final: %d states\n", nbstates);
+#endif
+	stringMap = xmlMalloc(ret->nbAtoms * sizeof(char *));
+	stringRemap = xmlMalloc(ret->nbAtoms * sizeof(int));
+	for (i = 0;i < ret->nbAtoms;i++) {
+	    if ((ret->atoms[i]->type == XML_REGEXP_STRING) &&
+		(ret->atoms[i]->quant == XML_REGEXP_QUANT_ONCE)) {
+		value = ret->atoms[i]->valuep;
+                for (j = 0;j < nbatoms;j++) {
+		    if (xmlStrEqual(stringMap[j], value)) {
+			stringRemap[i] = j;
+			break;
+		    }
+		}
+		if (j >= nbatoms) {
+		    stringRemap[i] = nbatoms;
+		    stringMap[nbatoms] = xmlStrdup(value);
+		    nbatoms++;
+		}
+	    } else {
+		xmlFree(stateRemap);
+		xmlFree(stringRemap);
+		for (i = 0;i < nbatoms;i++)
+		    xmlFree(stringMap[i]);
+		xmlFree(stringMap);
+		goto fail_compact;
+	    }
+	}
+#ifdef DEBUG_COMPACTION
+	printf("Final: %d atoms\n", nbatoms);
+#endif
+
+	/*
+	 * Allocate the transition table. The first entry for each
+	 * state correspond to the state type.
+	 */
+	transitions = (int *) xmlMalloc(nbstates * (nbatoms + 1) * sizeof(int));
+	memset(transitions, 0, nbstates * (nbatoms + 1) * sizeof(int));
+
+	for (i = 0;i < ret->nbStates;i++) {
+	    int stateno, atomno, targetno, prev;
+	    xmlRegStatePtr state;
+	    xmlRegTransPtr trans;
+
+	    stateno = stateRemap[i];
+	    if (stateno == -1)
+		continue;
+	    state = ret->states[i];
+
+	    transitions[stateno * (nbatoms + 1)] = state->type;
+
+	    for (j = 0;j < state->nbTrans;j++) {
+		trans = &(state->trans[j]);
+		if ((trans->to == -1) || (trans->atom == NULL))
+		    continue;
+                atomno = stringRemap[trans->atom->no];
+		targetno = stateRemap[trans->to];
+		/*
+		 * if the same atome can generate transition to 2 different
+		 * states then it means the automata is not determinist and
+		 * the compact form can't be used !
+		 */
+		prev = transitions[stateno * (nbatoms + 1) + atomno + 1];
+		if (prev != 0) {
+		    if (prev != targetno + 1) {
+			printf("not determinist\n");
+			ret->determinist = 0;
+#ifdef DEBUG_COMPACTION
+			printf("Indet: state %d trans %d, atom %d to %d : %d to %d\n",
+			       i, j, trans->atom->no, trans->to, atomno, targetno);
+			printf("       previous to is %d\n", prev);
+#endif
+			ret->determinist = 0;
+			xmlFree(transitions);
+			xmlFree(stateRemap);
+			xmlFree(stringRemap);
+			for (i = 0;i < nbatoms;i++)
+			    xmlFree(stringMap[i]);
+			xmlFree(stringMap);
+			goto fail_compact;
+		    }
+		} else {
+#if 0
+		    printf("State %d trans %d: atom %d to %d : %d to %d\n",
+			   i, j, trans->atom->no, trans->to, atomno, targetno);
+#endif
+		    transitions[stateno * (nbatoms + 1) + atomno + 1] =
+			targetno + 1;; /* to avoid 0 */
+		}
+	    }
+	}
+	ret->determinist = 1;
+#ifdef DEBUG_COMPACTION
+	/*
+	 * Debug
+	 */
+	for (i = 0;i < nbstates;i++) {
+	    for (j = 0;j < nbatoms + 1;j++) {
+                printf("%02d ", transitions[i * (nbatoms + 1) + j]);
+	    }
+	    printf("\n");
+	}
+	printf("\n");
+#endif
+	/*
+	 * Cleanup of the old data
+	 */
+	if (ret->states != NULL) {
+	    for (i = 0;i < ret->nbStates;i++)
+		xmlRegFreeState(ret->states[i]);
+	    xmlFree(ret->states);
+	}
+	ret->states = NULL;
+	ret->nbStates = 0;
+	if (ret->atoms != NULL) {
+	    for (i = 0;i < ret->nbAtoms;i++)
+		xmlRegFreeAtom(ret->atoms[i]);
+	    xmlFree(ret->atoms);
+	}
+	ret->atoms = NULL;
+	ret->nbAtoms = 0;
+
+	ret->compact = transitions;
+	ret->stringMap = stringMap;
+	ret->nbstrings = nbatoms;
+	ret->nbstates = nbstates;
+	xmlFree(stateRemap);
+	xmlFree(stringRemap);
+    }
+fail_compact:
     return(ret);
 }
 
@@ -741,6 +913,7 @@ xmlRegPrintState(FILE *output, xmlRegStatePtr state) {
     }
 }
 
+#ifdef DEBUG_REGEXP_GRAPH
 static void
 xmlRegPrintCtxt(FILE *output, xmlRegParserCtxtPtr ctxt) {
     int i;
@@ -780,6 +953,7 @@ xmlRegPrintCtxt(FILE *output, xmlRegParserCtxtPtr ctxt) {
 		                                ctxt->counters[i].max);
     }
 }
+#endif
 
 /************************************************************************
  * 									*
@@ -1228,7 +1402,6 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom, 
 				    ctxt->states[newto], counter, -1);
 	    }
-
 	}
     }
     to->mark = XML_REGEXP_MARK_NORMAL;
@@ -1296,6 +1469,63 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 	    }
 	}
     }
+
+    /*
+     * Use this pass to detect unreachable states too
+     */
+    for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
+	state = ctxt->states[statenr];
+	if (state != NULL)
+	    state->reached = 0;
+    }
+    state = ctxt->states[0];
+    if (state != NULL)
+	state->reached = 1;
+    while (state != NULL) {
+	xmlRegStatePtr target = NULL;
+	state->reached = 2;
+	/*
+	 * Mark all state reachable from the current reachable state
+	 */
+	for (transnr = 0;transnr < state->nbTrans;transnr++) {
+	    if ((state->trans[transnr].to >= 0) &&
+		((state->trans[transnr].atom != NULL) ||
+		 (state->trans[transnr].count >= 0))) {
+		int newto = state->trans[transnr].to;
+
+		if (ctxt->states[newto] == NULL)
+		    continue;
+		if (ctxt->states[newto]->reached == 0) {
+		    ctxt->states[newto]->reached = 1;
+		    target = ctxt->states[newto];
+		}
+	    }
+	}
+	/*
+	 * find the next accessible state not explored
+	 */
+	if (target == NULL) {
+	    for (statenr = 1;statenr < ctxt->nbStates;statenr++) {
+		state = ctxt->states[statenr];
+		if ((state != NULL) && (state->reached == 1)) {
+		    target = state;
+		    break;
+		}
+	    }
+	}
+	state = target;
+    }
+    for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
+	state = ctxt->states[statenr];
+	if ((state != NULL) && (state->reached == 0)) {
+#ifdef DEBUG_REGEXP_GRAPH
+	    printf("Removed unreachable state %d\n", statenr);
+#endif
+	    xmlRegFreeState(state);
+	    ctxt->states[statenr] = NULL;
+	}
+    }
+
 }
 
 /**
@@ -2041,7 +2271,8 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
     exec->rollbacks = NULL;
     exec->status = 0;
     exec->comp = comp;
-    exec->state = comp->states[0];
+    if (comp->compact == NULL)
+	exec->state = comp->states[0];
     exec->transno = 0;
     exec->transcount = 0;
     exec->callback = callback;
@@ -2131,6 +2362,73 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 
 
 /**
+ * xmlRegCompactPushString:
+ * @exec: a regexp execution context
+ * @comp:  the precompiled exec with a compact table
+ * @value: a string token input
+ * @data: data associated to the token to reuse in callbacks
+ *
+ * Push one input token in the execution context
+ *
+ * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ *     a negative value in case of error.
+ */
+static int
+xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
+	                xmlRegexpPtr comp,
+	                const xmlChar *value,
+	                void *data) {
+    int state = exec->index;
+    int i, target;
+
+    if ((comp == NULL) || (comp->compact == NULL) || (comp->stringMap == NULL))
+	return(-1);
+    
+    if (value == NULL) {
+	/*
+	 * are we at a final state ?
+	 */
+	if (comp->compact[state * (comp->nbstrings + 1)] ==
+            XML_REGEXP_FINAL_STATE)
+	    return(1);
+	return(0);
+    }
+
+#ifdef DEBUG_PUSH
+    printf("value pushed: %s\n", value);
+#endif
+
+    /*
+     * Examine all outside transition from current state
+     */
+    for (i = 0;i < comp->nbstrings;i++) {
+	target = comp->compact[state * (comp->nbstrings + 1) + i + 1];
+	if ((target > 0) && (target <= comp->nbstates)) {
+	    target--; /* to avoid 0 */
+	    if (xmlStrEqual(comp->stringMap[i], value)) {
+		exec->index = target;
+#ifdef DEBUG_PUSH
+		printf("entering state %d\n", target);
+#endif
+		if (comp->compact[target * (comp->nbstrings + 1)] ==
+		    XML_REGEXP_FINAL_STATE)
+		    return(1);
+		return(0);
+	    }
+	}
+    }
+    /*
+     * Failed to find an exit transition out from current state for the
+     * current token
+     */
+#ifdef DEBUG_PUSH
+    printf("failed to find a transition for %s on state %d\n", value, state);
+#endif
+    exec->status = -1;
+    return(-1);
+}
+
+/**
  * xmlRegExecPushString:
  * @exec: a regexp execution context
  * @value: a string token input
@@ -2151,8 +2449,13 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 
     if (exec == NULL)
 	return(-1);
+    if (exec->comp == NULL)
+	return(-1);
     if (exec->status != 0)
 	return(exec->status);
+
+    if (exec->comp->compact != NULL)
+	return(xmlRegCompactPushString(exec, exec->comp, value, data));
 
     if (value == NULL) {
         if (exec->state->type == XML_REGEXP_FINAL_STATE)
@@ -3510,6 +3813,37 @@ xmlRegexpExec(xmlRegexpPtr comp, const xmlChar *content) {
 }
 
 /**
+ * xmlRegexpIsDeterminist:
+ * @comp:  the compiled regular expression
+ *
+ * Check if the regular expression is determinist
+ *
+ * Returns 1 if it yes, 0 if not and a negativa value in case of error
+ */
+int
+xmlRegexpIsDeterminist(xmlRegexpPtr comp) {
+    xmlAutomataPtr am;
+    int ret;
+
+    if (comp == NULL)
+	return(-1);
+    if (comp->determinist != -1)
+	return(comp->determinist);
+
+    am = xmlNewAutomata();
+    am->nbAtoms = comp->nbAtoms;
+    am->atoms = comp->atoms;
+    am->nbStates = comp->nbStates;
+    am->states = comp->states;
+    am->determinist = -1;
+    ret = xmlFAComputesDeterminism(am);
+    am->atoms = NULL;
+    am->states = NULL;
+    xmlFreeAutomata(am);
+    return(ret);
+}
+
+/**
  * xmlRegFreeRegexp:
  * @regexp:  the regexp
  *
@@ -3535,6 +3869,14 @@ xmlRegFreeRegexp(xmlRegexpPtr regexp) {
     }
     if (regexp->counters != NULL)
 	xmlFree(regexp->counters);
+    if (regexp->compact != NULL)
+	xmlFree(regexp->compact);
+    if (regexp->stringMap != NULL) {
+	for (i = 0; i < regexp->nbstrings;i++)
+	    xmlFree(regexp->stringMap[i]);
+	xmlFree(regexp->stringMap);
+    }
+
     xmlFree(regexp);
 }
 
@@ -3910,7 +4252,7 @@ xmlAutomataCompile(xmlAutomataPtr am) {
     xmlRegexpPtr ret;
 
     xmlFAEliminateEpsilonTransitions(am);
-    xmlFAComputesDeterminism(am);
+    /* xmlFAComputesDeterminism(am); */
     ret = xmlRegEpxFromParse(am);
 
     return(ret);

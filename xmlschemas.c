@@ -13374,7 +13374,7 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
 		OK = 1;
 
 	    } else { /* if IS_SIMPLE_TYPE(base) */
-		if (base->contentType = XML_SCHEMA_CONTENT_MIXED) {
+		if (base->contentType == XML_SCHEMA_CONTENT_MIXED) {
 		    /*
 		    * 2.1.2 only if the <restriction> alternative is also 
 		    * chosen, a complex type definition whose {content type} 
@@ -13425,7 +13425,7 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
 			return (XML_SCHEMAP_SRC_CT_1);
 		    } 
 		    OK = 1;
-		} else { /* if (base->contentType = XML_SCHEMA_CONTENT_MIXED)*/
+		} else { /* if (base->contentType == XML_SCHEMA_CONTENT_MIXED)*/
 		    /*
 		    * 2.1.1 a complex type definition whose {content type} is a 
 		    * simple type definition;

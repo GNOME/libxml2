@@ -714,6 +714,7 @@ xmlCleanupPredefinedEntities
 	xmlRelaxNGParse
 	xmlRelaxNGFree
 	xmlRelaxNGDump
+	xmlRelaxNGDumpTree
 	
 	/* Interfaces for validating */
 	xmlRelaxNGSetValidErrors
@@ -957,6 +958,7 @@ xmlCleanupPredefinedEntities
 	xmlNormalizeURIPath
 	xmlURIEscape
 	xmlFreeURI
+	xmlCanonicPath
 
 
 /* valid.h

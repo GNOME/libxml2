@@ -48,6 +48,7 @@
       <li><a href="libxml-tree.html">Tree API</a></li>
       <li><a href="libxml-xmlreader.html">Reader API</a></li>
       <li><a href="{$href_base}guidelines.html">XML Guidelines</a></li>
+      <li><a href="{$href_base}ChangeLog.html">ChangeLog</a></li>
     </ul>
   </xsl:variable>
   <xsl:template name="apitoc">

@@ -4,6 +4,7 @@
 #
 
 functions = {}
+enums = {} # { enumType: { enumConstant: enumValue } }
 
 import sys
 import string
@@ -137,7 +138,8 @@ class docParser:
                     self.function_return_info = attrs['info']
                 if attrs.has_key('field'):
                     self.function_return_field = attrs['field']
-
+        elif tag == 'enum':
+            enum(attrs['type'],attrs['name'],attrs['value'])
 
     def end(self, tag):
         if debug:
@@ -167,9 +169,12 @@ class docParser:
                 
                 
 def function(name, desc, ret, args, file):
-    global functions
-
     functions[name] = (desc, ret, args, file)
+
+def enum(type, name, value):
+    if not enums.has_key(type):
+        enums[type] = {}
+    enums[type][name] = value
 
 #######################################################################
 #
@@ -1161,9 +1166,19 @@ def buildWrappers():
 			classes.write("        return ret\n");
 		classes.write("\n");
 
+    #
+    # Generate enum constants
+    #
+    for type,enum in enums.items():
+        classes.write("# %s\n" % type)
+        items = enum.items()
+        items.sort(lambda i1,i2: cmp(long(i1[1]),long(i2[1])))
+        for name,value in items:
+            classes.write("%s = %s\n" % (name,value))
+        classes.write("\n");
+
     txt.close()
     classes.close()
-
 
 buildStubs()
 buildWrappers()

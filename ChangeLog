@@ -1,3 +1,8 @@
+Thu Jan 15 00:48:46 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/tests/tstLastError.py: applied
+	  patch from Stephane Bidoul to add enums to the Python bindings.
+
 Tue Jan 13 21:50:05 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* testHTML.c: another small patch from Mark Vadoc

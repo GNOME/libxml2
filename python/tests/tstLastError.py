@@ -48,10 +48,10 @@ class TestCase(unittest.TestCase):
         self.failUnlessXmlError(libxml2.readFile,
                         ("dummy.xml",None,0),
                         libxml2.treeError,
-                        domain=8, # XML_FROM_IO
-                        code=1549, # XML_IO_LOAD_ERROR
+                        domain=libxml2.XML_FROM_IO,
+                        code=libxml2.XML_IO_LOAD_ERROR,
                         message='failed to load external entity "dummy.xml"\n',
-                        level=1, # XML_ERR_WARNING
+                        level=libxml2.XML_ERR_WARNING,
                         file=None,
                         line=0)
 
@@ -61,10 +61,10 @@ class TestCase(unittest.TestCase):
         self.failUnlessXmlError(libxml2.readMemory,
                         (s,len(s),"dummy.xml",None,0),
                         libxml2.treeError,
-                        domain=1, # XML_FROM_PARSER
-                        code=77, # XML_ERR_TAG_NOT_FINISHED
+                        domain=libxml2.XML_FROM_PARSER,
+                        code=libxml2.XML_ERR_TAG_NOT_FINISHED,
                         message='Premature end of data in tag x line 1\n',
-                        level=3, # XML_ERR_FATAL
+                        level=libxml2.XML_ERR_FATAL,
                         file='dummy.xml',
                         line=3)
 

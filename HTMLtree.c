@@ -212,8 +212,8 @@ found_head:
 	    return(0);
 	meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
 	xmlAddChild(cur, meta);
-	xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
 	xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
+	xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
 	return(0);
     }
     cur = cur->children;
@@ -226,8 +226,8 @@ found_meta:
 
 	meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
 	xmlAddPrevSibling(cur, meta);
-	xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
 	xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
+	xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
     }
 
     /*

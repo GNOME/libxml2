@@ -1,3 +1,8 @@
+Wed Jul 17 19:48:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: changed the order of the encoding declaration
+	  attributes in the meta tags due to a bug in IE/Mac
+
 Fri Jul 12 08:45:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: enhanced handling of booleans (especially '='

@@ -484,14 +484,30 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     } else {
 	for (insert = &(dict->dict[key]); insert->next != NULL;
 	     insert = insert->next) {
+#ifdef __GNUC__
+	    if (insert->len == len) {
+	        register int tmp = memcmp(insert->name, name, len);
+		if (!tmp)
+		    return(insert->name);
+	    }
+#else
 	    if ((insert->len == len) &&
 	        (!xmlStrncmp(insert->name, name, len)))
 		return(insert->name);
+#endif
 	    nbi++;
 	}
+#ifdef __GNUC__
+	if (insert->len == len) {
+	    register int tmp = memcmp(insert->name, name, len);
+	    if (!tmp)
+		return(insert->name);
+	}
+#else
 	if ((insert->len == len) &&
 	    (!xmlStrncmp(insert->name, name, len)))
 	    return(insert->name);
+#endif
     }
 
     ret = xmlDictAddString(dict, name, len);

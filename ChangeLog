@@ -1,3 +1,9 @@
+Mon Jan 12 17:22:57 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c parser.c xmlstring.c: some parser optimizations,
+	  xmllint --memory --timing --repeat --stream ./db10000.xml
+	  went down from 16.5 secs to 15.5 secs.
+
 Thu Jan  8 17:57:50 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: removed a memory leak remaining from the switch

@@ -2038,13 +2038,15 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
  * @ctxt:  an XML parser context
  * @str:  a xmlChar *
  * @len:  the size of @str
+ * @blank_chars: we know the chars are blanks
  *
  * Is this a sequence of blank chars that one can ignore ?
  *
  * Returns 1 if ignorable 0 otherwise.
  */
 
-static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
+static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
+                     int blank_chars) {
     int i, ret;
     xmlNodePtr lastChild;
 
@@ -2064,8 +2066,10 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     /*
      * Check that the string is made of blanks
      */
-    for (i = 0;i < len;i++)
-        if (!(IS_BLANK_CH(str[i]))) return(0);
+    if (blank_chars == 0) {
+	for (i = 0;i < len;i++)
+	    if (!(IS_BLANK_CH(str[i]))) return(0);
+    }
 
     /*
      * Look if the element is mixed content in the DTD if available
@@ -2339,8 +2343,8 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 
 static const xmlChar *
 xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
-    const xmlChar *cmp = other;
-    const xmlChar *in;
+    register const xmlChar *cmp = other;
+    register const xmlChar *in;
     const xmlChar *ret;
 
     GROW;
@@ -3106,9 +3110,49 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     if (!cdata) {
 	in = ctxt->input->cur;
 	do {
+get_more_space:
+	    while (*in == 0x20) in++;
+	    if (*in == 0xA) {
+		ctxt->input->line++;
+		in++;
+		while (*in == 0xA) {
+		    ctxt->input->line++;
+		    in++;
+		}
+		goto get_more_space;
+	    }
+	    if (*in == '<') {
+		nbchar = in - ctxt->input->cur;
+		if (nbchar > 0) {
+		    const xmlChar *tmp = ctxt->input->cur;
+		    ctxt->input->cur = in;
+
+		    if (ctxt->sax->ignorableWhitespace !=
+		        ctxt->sax->characters) {
+			if (areBlanks(ctxt, tmp, nbchar, 1)) {
+			    ctxt->sax->ignorableWhitespace(ctxt->userData,
+						   tmp, nbchar);
+			} else if (ctxt->sax->characters != NULL)
+			    ctxt->sax->characters(ctxt->userData,
+						  tmp, nbchar);
+		    } else if (ctxt->sax->characters != NULL) {
+			ctxt->sax->characters(ctxt->userData,
+					      tmp, nbchar);
+		    }
+		}
+		return;
+	    }
 get_more:
+#if 0
 	    while (((*in >= 0x20) && (*in != '<') && (*in != ']') &&
 		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09))
+		in++;
+#endif
+	    while (((*in > ']') && (*in <= 0x7F)) ||
+	           ((*in > '&') && (*in < '<')) ||
+	           ((*in > '<') && (*in < ']')) ||
+		   ((*in >= 0x20) && (*in < '&')) ||
+		   (*in == 0x09))
 		in++;
 	    if (*in == 0xA) {
 		ctxt->input->line++;
@@ -3136,7 +3180,7 @@ get_more:
 		    const xmlChar *tmp = ctxt->input->cur;
 		    ctxt->input->cur = in;
 
-		    if (areBlanks(ctxt, tmp, nbchar)) {
+		    if (areBlanks(ctxt, tmp, nbchar, 0)) {
 			ctxt->sax->ignorableWhitespace(ctxt->userData,
 					       tmp, nbchar);
 		    } else if (ctxt->sax->characters != NULL)
@@ -3217,7 +3261,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	     * OK the segment is to be consumed as chars.
 	     */
 	    if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-		if (areBlanks(ctxt, buf, nbchar)) {
+		if (areBlanks(ctxt, buf, nbchar, 0)) {
 		    if (ctxt->sax->ignorableWhitespace != NULL)
 			ctxt->sax->ignorableWhitespace(ctxt->userData,
 			                               buf, nbchar);
@@ -3242,7 +3286,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	 * OK the segment is to be consumed as chars.
 	 */
 	if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-	    if (areBlanks(ctxt, buf, nbchar)) {
+	    if (areBlanks(ctxt, buf, nbchar, 0)) {
 		if (ctxt->sax->ignorableWhitespace != NULL)
 		    ctxt->sax->ignorableWhitespace(ctxt->userData, buf, nbchar);
 	    } else {
@@ -6689,6 +6733,7 @@ xmlGetNamespace(xmlParserCtxtPtr ctxt, const xmlChar *prefix) {
 /**
  * xmlParseNCName:
  * @ctxt:  an XML parser context
+ * @len:  lenght of the string parsed
  *
  * parse an XML name.
  *
@@ -7142,7 +7187,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 
 static const xmlChar *
 xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
-                  const xmlChar **URI) {
+                  const xmlChar **URI, int *tlen) {
     const xmlChar *localname;
     const xmlChar *prefix;
     const xmlChar *attname;
@@ -7182,6 +7227,7 @@ reparse:
 		       "StartTag: invalid element name\n");
         return(NULL);
     }
+    *tlen = ctxt->input->cur - ctxt->input->base - cur;
 
     /*
      * Now parse the attributes, it ends up with the ending
@@ -7507,7 +7553,7 @@ base_changed:
 
 static void
 xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
-                const xmlChar *URI, int line, int nsNr) {
+                const xmlChar *URI, int line, int nsNr, int tlen) {
     const xmlChar *name;
 
     GROW;
@@ -7517,7 +7563,19 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
     }
     SKIP(2);
 
-    name = xmlParseQNameAndCompare(ctxt, ctxt->name, prefix);
+    if ((tlen > 0) && (memcmp(ctxt->input->cur, ctxt->name, tlen) == 0)) {
+        if (ctxt->input->cur[tlen] == '>') {
+	    ctxt->input->cur += tlen + 1;
+	    goto done;
+	}
+	ctxt->input->cur += tlen;
+	name = (xmlChar*)1;
+    } else {
+	if (prefix == NULL)
+	    name = xmlParseNameAndCompare(ctxt, ctxt->name);
+	else
+	    name = xmlParseQNameAndCompare(ctxt, ctxt->name, prefix);
+    }
 
     /*
      * We should definitely be at the ending "S? '>'" part
@@ -7545,6 +7603,7 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
     /*
      * SAX: End of Tag
      */
+done:
     if ((ctxt->sax != NULL) && (ctxt->sax->endElementNs != NULL) &&
 	(!ctxt->disableSAX))
 	ctxt->sax->endElementNs(ctxt->userData, ctxt->name, prefix, URI);
@@ -7753,7 +7812,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     const xmlChar *prefix;
     const xmlChar *URI;
     xmlParserNodeInfo node_info;
-    int line;
+    int line, tlen;
     xmlNodePtr ret;
     int nsNr = ctxt->nsNr;
 
@@ -7773,7 +7832,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 #ifdef LIBXML_SAX1_ENABLED
     if (ctxt->sax2)
 #endif /* LIBXML_SAX1_ENABLED */
-        name = xmlParseStartTag2(ctxt, &prefix, &URI);
+        name = xmlParseStartTag2(ctxt, &prefix, &URI, &tlen);
 #ifdef LIBXML_SAX1_ENABLED
     else
 	name = xmlParseStartTag(ctxt);
@@ -7878,7 +7937,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
      * parse the end of tag: '</' should be here.
      */
     if (ctxt->sax2) {
-	xmlParseEndTag2(ctxt, prefix, URI, line, ctxt->nsNr - nsNr);
+	xmlParseEndTag2(ctxt, prefix, URI, line, ctxt->nsNr - nsNr, tlen);
 	namePop(ctxt);
     }
 #ifdef LIBXML_SAX1_ENABLED
@@ -8734,7 +8793,7 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
 static int
 xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
-    int avail;
+    int avail, tlen;
     xmlChar cur, next;
     const xmlChar *lastlt, *lastgt;
 
@@ -8984,7 +9043,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #ifdef LIBXML_SAX1_ENABLED
 		if (ctxt->sax2)
 #endif /* LIBXML_SAX1_ENABLED */
-		    name = xmlParseStartTag2(ctxt, &prefix, &URI);
+		    name = xmlParseStartTag2(ctxt, &prefix, &URI, &tlen);
 #ifdef LIBXML_SAX1_ENABLED
 		else
 		    name = xmlParseStartTag(ctxt);
@@ -9159,7 +9218,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    xmlParseEndTag2(ctxt,
 		           (void *) ctxt->pushTab[ctxt->nameNr * 3 - 3],
 		           (void *) ctxt->pushTab[ctxt->nameNr * 3 - 2], 0,
-		       (int) (long) ctxt->pushTab[ctxt->nameNr * 3 - 1]);
+		       (int) (long) ctxt->pushTab[ctxt->nameNr * 3 - 1], 0);
 		    nameNsPop(ctxt);
 		}
 #ifdef LIBXML_SAX1_ENABLED

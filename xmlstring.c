@@ -208,11 +208,16 @@ xmlStrncmp(const xmlChar *str1, const xmlChar *str2, int len) {
     if (str1 == str2) return(0);
     if (str1 == NULL) return(-1);
     if (str2 == NULL) return(1);
+#ifdef __GNUC__
+    tmp = strncmp(str1, str2, len);
+    return tmp;
+#else
     do {
         tmp = *str1++ - *str2;
         if (tmp != 0 || --len == 0) return(tmp);
     } while (*str2++ != 0);
     return 0;
+#endif
 }
 
 static const xmlChar casemap[256] = {

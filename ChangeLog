@@ -1,3 +1,9 @@
+Sat Aug 14 18:45:38 MDT 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.xml, xmllint.html, xmllint.1
+	add pattern, walker, maxmem, output and xmlout to man page
+	fixes #144675
+
 Sun Aug 15 00:41:12 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: added a --c14n option to canonicalize the output

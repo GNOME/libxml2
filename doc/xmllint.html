@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmllint</title><meta name="generator" content="DocBook XSL Stylesheets V1.61.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en"><a name="id2719562"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2>Name</h2><p>xmllint &#8212; command line <span class="acronym">XML</span> tool</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><tt class="command">xmllint</tt>  [[--version] |  [--debug] |  [--shell] |  [--debugent] |  [--copy] |  [--recover] |  [--noent] |  [--nocdata] |  [--nsclean] |  [--noout] |  [--htmlout] |  [--nowrap] |  [--valid] |  [--postvalid] |  [--dtdvalid <i class="replaceable"><tt>URL</tt></i>] |  [--dtdvalidfpi <i class="replaceable"><tt>FPI</tt></i>] |  [--timing] |  [--repeat] |  [--insert] |  [--compress] |  [--html] |  [--push] |  [--memory] |  [--nowarning] |  [--noblanks] |  [--format] |  [--testIO] |  [--encode <i class="replaceable"><tt>encoding</tt></i>] |  [--catalogs] |  [--nocatalogs] |  [--auto] |  [--xinclude] |  [--loaddtd] |  [--dtdattr] |  [--dropdtd] |  [--stream] |  [--chkregister] |  [--relaxng] |  [--schema] |  [--nonet]] [<tt class="option"><i class="replaceable"><tt>xmlfile</tt></i></tt>]</p></div></div><div class="refsect1" lang="en"><a name="introduction"></a><h2>Introduction</h2><p>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmllint</title><meta name="generator" content="DocBook XSL Stylesheets V1.61.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en"><a name="id2848995"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2>Name</h2><p>xmllint &#8212; command line <span class="acronym">XML</span> tool</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><tt class="command">xmllint</tt>  [[--version] |  [--debug] |  [--shell] |  [--debugent] |  [--copy] |  [--recover] |  [--noent] |  [--noout] |  [--nonet] |  [--htmlout] |  [--nowrap] |  [--valid] |  [--postvalid] |  [--dtdvalid <i class="replaceable"><tt>URL</tt></i>] |  [--dtdvalidfpi <i class="replaceable"><tt>FPI</tt></i>] |  [--timing] |  [--output <i class="replaceable"><tt>file</tt></i>] |  [--repeat] |  [--insert] |  [--compress] |  [--html] |  [--xmlout] |  [--push] |  [--memory] |  [--maxmem <i class="replaceable"><tt>nbbytes</tt></i>] |  [--nowarning] |  [--noblanks] |  [--nocdata] |  [--format] |  [--encode <i class="replaceable"><tt>encoding</tt></i>] |  [--dropdtd] |  [--nsclean] |  [--testIO] |  [--catalogs] |  [--nocatalogs] |  [--auto] |  [--xinclude] |  [--loaddtd] |  [--dtdattr] |  [--stream] |  [--walker] |  [--pattern <i class="replaceable"><tt>patternvalue</tt></i>] |  [--chkregister] |  [--relaxng] |  [--schema]] [<tt class="option"><i class="replaceable"><tt>xmlfile</tt></i></tt>]</p></div></div><div class="refsect1" lang="en"><a name="introduction"></a><h2>Introduction</h2><p>
       The xmllint program parses one or more XML files, specified on the
       command line as <i class="replaceable"><tt>xmlfile</tt></i>. It prints various
       types of output, depending upon the options selected. It is useful for
@@ -61,7 +61,9 @@
 	  </dd><dt><span class="term"><tt class="option">--timing</tt></span></dt><dd>
 	    Output information about the time it takes
 	    <span class="application">xmllint</span> to perform the various steps.
-	  </dd><dt><span class="term"><tt class="option">--repeat</tt></span></dt><dd>
+	  </dd><dt><span class="term"><tt class="option">--output</tt> <i class="replaceable"><tt>file</tt></i></span></dt><dd>Define a file path where xmllint will save the result of
+	  parsing. Usually the programs build a tree and save it on stdout, with
+	  this option the result XML instance will be saved onto a file.</dd><dt><span class="term"><tt class="option">--repeat</tt></span></dt><dd>
 	    Repeat 100 times, for timing or profiling.
 	  </dd><dt><span class="term"><tt class="option">--insert</tt></span></dt><dd>
 	    Test for valid insertions.
@@ -69,11 +71,18 @@
 	    Turn on gzip compression of output.
 	  </dd><dt><span class="term"><tt class="option">--html</tt></span></dt><dd>
 	    Use the <span class="acronym">HTML</span> parser.
-	  </dd><dt><span class="term"><tt class="option">--push</tt></span></dt><dd>
+	  </dd><dt><span class="term"><tt class="option">--xmlout</tt></span></dt><dd>Used in conjusntion with <tt class="option">--html</tt>. Usually
+  when HTML is parsed the document is saved with the HTML serializer, but with
+  this option the resulting document is saved with the XML serializer. This is
+  primarily used to generate XHTML from HTML input.</dd><dt><span class="term"><tt class="option">--push</tt></span></dt><dd>
 	    Use the push mode of the parser.
 	  </dd><dt><span class="term"><tt class="option">--memory</tt></span></dt><dd>
 	   Parse from memory.
-	  </dd><dt><span class="term"><tt class="option">--nowarning</tt></span></dt><dd>
+	  </dd><dt><span class="term"><tt class="option">--maxmem</tt> <i class="replaceable"><tt>nnbytes</tt></i></span></dt><dd>Test the parser memory
+  support. <i class="replaceable"><tt>nnbytes</tt></i> is the maximum number of bytes the
+  library is allowed to allocate. This can also be used to make sure batch
+  processing of XML files will not exhaust the virtual memory of the server
+  running them.</dd><dt><span class="term"><tt class="option">--nowarning</tt></span></dt><dd>
 	   Do not emit warnings from the parser and/or validator.
 	  </dd><dt><span class="term"><tt class="option">--noblanks</tt></span></dt><dd>
 	   Drop ignorable blank spaces.
@@ -102,8 +111,13 @@
 	    Remove <span class="acronym">DTD</span> from output.
 	  </dd><dt><span class="term"><tt class="option">--stream</tt></span></dt><dd>Use streaming API - useful when  used  in combination with
               --relaxng or --valid options for validation of files that are
-	    too large to be held in memory.</dd><dt><span class="term"><tt class="option">--chkregister</tt></span></dt><dd>Turn on node registration. Useful for developeres testing
-	  libxml2 node tracking code.</dd><dt><span class="term"><tt class="option">--relaxng</tt> <i class="replaceable"><tt>schema</tt></i></span></dt><dd>Use RelaxNG file named <i class="replaceable"><tt>schema</tt></i> for
+	    too large to be held in memory.</dd><dt><span class="term"><tt class="option">--walker</tt></span></dt><dd>Test the walker module, which is a reader interface but for a
+  document tree, instead of using the reader API on an unparsed document it
+  works on a existing in-memory tree. Used in debugging.</dd><dt><span class="term"><tt class="option">--chkregister</tt></span></dt><dd>Turn on node registration. Useful for developers testing
+	  libxml2 node tracking code.</dd><dt><span class="term"><tt class="option">--pattern</tt> <i class="replaceable"><tt>patternvalue</tt></i></span></dt><dd>Used to exercise the pattern recognition engine, which can be
+	  used with the reader interface to the parser. It allows to select some
+	  nodes in the document based on an XPath (subset) expression. Used for
+	  debugging.</dd><dt><span class="term"><tt class="option">--relaxng</tt> <i class="replaceable"><tt>schema</tt></i></span></dt><dd>Use RelaxNG file named <i class="replaceable"><tt>schema</tt></i> for
 	  validation.</dd><dt><span class="term"><tt class="option">--schema</tt> <i class="replaceable"><tt>schema</tt></i></span></dt><dd>Use a W3C XML Schema file named <i class="replaceable"><tt>schema</tt></i> for validation.</dd><dt><span class="term">
       <tt class="option">--nonet</tt></span></dt><dd>Do not use the Internet to fetch DTD's or entities.</dd></dl></div></div><div class="refsect1" lang="en"><a name="shell"></a><h2>Shell</h2><p>
       <span class="application">xmllint</span> offers an interactive shell mode

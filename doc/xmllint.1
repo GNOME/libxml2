@@ -24,7 +24,7 @@ xmllint \- command line XML tool
 .ad l
 .hy 0
 .HP 8
-\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-shell\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-noent\fR | \fB\-\-nocdata\fR | \fB\-\-nsclean\fR | \fB\-\-noout\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-format\fR | \fB\-\-testIO\fR | \fB\-\-encode\ \fIencoding\fR\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-dropdtd\fR | \fB\-\-stream\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\fR | \fB\-\-schema\fR | \fB\-\-nonet\fR] [\fB\fIxmlfile\fR\fR]
+\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-shell\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fIfile\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-maxmem\ \fInbbytes\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fIencoding\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fIpatternvalue\fR\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\fR | \fB\-\-schema\fR] [\fB\fIxmlfile\fR\fR]
 .ad
 .hy
 
@@ -107,6 +107,10 @@ Use the DTD specified by the Public Identifier \fIFPI\fR for validation, note th
 Output information about the time it takes xmllint to perform the various steps\&.
 
 .TP
+\fB\-\-output\fR \fIfile\fR
+Define a file path where xmllint will save the result of parsing\&. Usually the programs build a tree and save it on stdout, with this option the result XML instance will be saved onto a file\&.
+
+.TP
 \fB\-\-repeat\fR
 Repeat 100 times, for timing or profiling\&.
 
@@ -123,12 +127,20 @@ Turn on gzip compression of output\&.
 Use the HTML parser\&.
 
 .TP
+\fB\-\-xmlout\fR
+Used in conjusntion with \fB\-\-html\fR\&. Usually when HTML is parsed the document is saved with the HTML serializer, but with this option the resulting document is saved with the XML serializer\&. This is primarily used to generate XHTML from HTML input\&.
+
+.TP
 \fB\-\-push\fR
 Use the push mode of the parser\&.
 
 .TP
 \fB\-\-memory\fR
 Parse from memory\&.
+
+.TP
+\fB\-\-maxmem\fR \fInnbytes\fR
+Test the parser memory support\&. \fInnbytes\fR is the maximum number of bytes the library is allowed to allocate\&. This can also be used to make sure batch processing of XML files will not exhaust the virtual memory of the server running them\&.
 
 .TP
 \fB\-\-nowarning\fR
@@ -183,8 +195,16 @@ Remove DTD from output\&.
 Use streaming API \- useful when used in combination with \-\-relaxng or \-\-valid options for validation of files that are too large to be held in memory\&.
 
 .TP
+\fB\-\-walker\fR
+Test the walker module, which is a reader interface but for a document tree, instead of using the reader API on an unparsed document it works on a existing in\-memory tree\&. Used in debugging\&.
+
+.TP
 \fB\-\-chkregister\fR
 Turn on node registration\&. Useful for developers testing libxml2 node tracking code\&.
+
+.TP
+\fB\-\-pattern\fR \fIpatternvalue\fR
+Used to exercise the pattern recognition engine, which can be used with the reader interface to the parser\&. It allows to select some nodes in the document based on an XPath (subset) expression\&. Used for debugging\&.
 
 .TP
 \fB\-\-relaxng\fR \fIschema\fR

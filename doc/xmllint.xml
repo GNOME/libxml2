@@ -29,7 +29,7 @@
     </author>
     <address><email>hwr@pilhuhn.de</email></address>
     
-    <releaseinfo>This is release 0.4 of the xmllint Manual.</releaseinfo>
+    <releaseinfo>This is release 0.5 of the xmllint Manual.</releaseinfo>
   </refentryinfo>
 
   <refmeta>
@@ -53,9 +53,8 @@
 	<arg>--copy</arg>
 	<arg>--recover</arg>
 	<arg>--noent</arg>
-	<arg>--nocdata</arg>
-	<arg>--nsclean</arg>
 	<arg>--noout</arg>
+	<arg>--nonet</arg>
 	<arg>--htmlout</arg>
 	<arg>--nowrap</arg>
 	<arg>--valid</arg>
@@ -63,29 +62,35 @@
 	<arg>--dtdvalid <replaceable>URL</replaceable></arg>
 	<arg>--dtdvalidfpi <replaceable>FPI</replaceable></arg>
 	<arg>--timing</arg>
+	<arg>--output <replaceable>file</replaceable></arg>
 	<arg>--repeat</arg>
 	<arg>--insert</arg>
 	<arg>--compress</arg>
 	<arg>--html</arg>
+	<arg>--xmlout</arg>
 	<arg>--push</arg>
 	<arg>--memory</arg>
+	<arg>--maxmem <replaceable>nbbytes</replaceable></arg>
 	<arg>--nowarning</arg>
 	<arg>--noblanks</arg>
+	<arg>--nocdata</arg>
 	<arg>--format</arg>
-	<arg>--testIO</arg>
 	<arg>--encode <replaceable>encoding</replaceable></arg>
+	<arg>--dropdtd</arg>
+	<arg>--nsclean</arg>
+	<arg>--testIO</arg>
 	<arg>--catalogs</arg>
 	<arg>--nocatalogs</arg>
 	<arg>--auto</arg>
 	<arg>--xinclude</arg>
 	<arg>--loaddtd</arg>
 	<arg>--dtdattr</arg>
-	<arg>--dropdtd</arg>
 	<arg>--stream</arg>
+	<arg>--walker</arg>
+	<arg>--pattern <replaceable>patternvalue</replaceable></arg>
 	<arg>--chkregister</arg>
 	<arg>--relaxng</arg>
 	<arg>--schema</arg>
-	<arg>--nonet</arg>
       </group>
       <arg><option><replaceable>xmlfile</replaceable></option></arg>
   </cmdsynopsis>
@@ -282,7 +287,14 @@
 	  </simpara>
 	</listitem>
       </varlistentry>
-
+      <varlistentry>
+	<term><option>--output</option> <replaceable>file</replaceable></term>
+	<listitem>
+	  <simpara>Define a file path where xmllint will save the result of
+	  parsing. Usually the programs build a tree and save it on stdout, with
+	  this option the result XML instance will be saved onto a file.</simpara>
+	</listitem>
+      </varlistentry>
    <varlistentry>
 	<term><option>--repeat</option></term>
 	<listitem>
@@ -318,7 +330,15 @@
 	  </simpara>
 	</listitem>
       </varlistentry>
-   
+      <varlistentry>
+	<term><option>--xmlout</option></term>
+	<listitem>
+	  <simpara>Used in conjusntion with <option>--html</option>. Usually
+  when HTML is parsed the document is saved with the HTML serializer, but with
+  this option the resulting document is saved with the XML serializer. This is
+  primarily used to generate XHTML from HTML input.</simpara>
+	</listitem>
+      </varlistentry>
     <varlistentry>
 	<term><option>--push</option></term>
 	<listitem>
@@ -337,7 +357,16 @@
 	  </simpara>
 	</listitem>
       </varlistentry>
-
+      <varlistentry>
+	<term><option>--maxmem</option> <replaceable>nnbytes</replaceable></term>
+	<listitem>
+	  <simpara>Test the parser memory
+  support. <replaceable>nnbytes</replaceable> is the maximum number of bytes the
+  library is allowed to allocate. This can also be used to make sure batch
+  processing of XML files will not exhaust the virtual memory of the server
+  running them.</simpara>
+	</listitem>
+      </varlistentry>
     <varlistentry>
 	<term><option>--nowarning</option></term>
 	<listitem>
@@ -455,10 +484,27 @@
 	</listitem>
       </varlistentry>
       <varlistentry>
+	<term><option>--walker</option></term>
+	<listitem>
+	  <simpara>Test the walker module, which is a reader interface but for a
+  document tree, instead of using the reader API on an unparsed document it
+  works on a existing in-memory tree. Used in debugging.</simpara> 
+	</listitem>
+      </varlistentry>
+      <varlistentry>
 	<term><option>--chkregister</option></term>
 	<listitem>
 	  <simpara>Turn on node registration. Useful for developers testing
 	  libxml2 node tracking code.</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>--pattern</option> <replaceable>patternvalue</replaceable></term>
+	<listitem>
+	  <simpara>Used to exercise the pattern recognition engine, which can be
+	  used with the reader interface to the parser. It allows to select some
+	  nodes in the document based on an XPath (subset) expression. Used for
+	  debugging.</simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>

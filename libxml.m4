@@ -81,7 +81,7 @@ main()
    free(tmp_version);
 
    /* Capture the version information from the header files */
-   tmp_int_version = LIBXML_VERSION_NUMBER;
+   tmp_int_version = LIBXML_VERSION;
    xml_major_version=tmp_int_version / 10000;
    xml_minor_version=(tmp_int_version - xml_major_version * 10000) / 100;
    xml_micro_version=(tmp_int_version - xml_minor_version * 100 - xml_major_version * 10000);

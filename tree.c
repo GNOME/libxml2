@@ -7865,7 +7865,9 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
             return;
 
         } else if (doc_charset != XML_CHAR_ENCODING_UTF8) {
-            conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
+	    conv_hdlr = xmlGetCharEncodingHandler(doc_charset);
+	    if (conv_hdlr == NULL)
+		conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
             if ( conv_hdlr == NULL ) {
                 xmlGenericError(xmlGenericErrorContext,
                                 "%s:  %s %s '%s'\n",
@@ -8050,7 +8052,9 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
 	    return(-1);
 	}
 	if (enc != XML_CHAR_ENCODING_UTF8) {
-	    handler = xmlFindCharEncodingHandler(encoding);
+	    handler = xmlGetCharEncodingHandler(enc);
+	    if (handler == NULL)
+		handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL) {
 		xmlFree((char *) cur->encoding);
 		cur->encoding = NULL;

@@ -1062,6 +1062,34 @@ EXPORTS
 	#endif /* LIBXML_HTTP_ENABLED */
 	xmlNoNetExternalEntityLoader
 
+	/**
+	 * Default 'file://' protocol callbacks 
+	 */
+	xmlFileMatch
+	xmlFileOpen 
+	xmlFileRead 
+	xmlFileClose
+
+	/**
+	 * Default 'http://' protocol callbacks 
+	 */
+	#ifdef LIBXML_HTTP_ENABLED
+    	xmlIOHTTPMatch
+	xmlIOHTTPOpen 
+ 	xmlIOHTTPRead
+        xmlIOHTTPClose
+	#endif /* LIBXML_HTTP_ENABLED */
+
+	/**
+	 * Default 'ftp://' protocol callbacks 
+	 */
+	#ifdef LIBXML_FTP_ENABLED 
+	xmlIOFTPMatch 
+	xmlIOFTPOpen 
+ 	xmlIOFTPRead
+ 	xmlIOFTPClose
+	#endif /* LIBXML_FTP_ENABLED */
+
 
 /* xmlmemory.h 
    --------------------------------------------------------------------- */

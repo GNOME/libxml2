@@ -4595,7 +4595,11 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     }
     if (zoutput == NULL) {
 #endif
+#ifdef WIN32
+        output = fopen(filename, "wb");
+#else
         output = fopen(filename, "w");
+#endif
 	if (output == NULL) {
 	    xmlBufferFree(buf);
 	    return(-1);

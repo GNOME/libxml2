@@ -1,3 +1,9 @@
+Thu Sep  7 16:12:35 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Makefile.in: aplied old patch from Sopwith
+	* tree.c: fix Windows bug reported by Marcus Lankenau
+	  <marcus.lankenau@socon.de>
+
 Thu Sep  7 01:27:42 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: released 1.8.10
@@ -25,6 +31,7 @@ Sun Jul  2 20:27:34 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 Thu Jun 29 11:37:38 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: fixed &#38; parsing bug
+	* released 1.8.8
 
 Thu Jun 29 01:27:19 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 

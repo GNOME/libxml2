@@ -1,3 +1,7 @@
+Wed Feb  6 23:37:07 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: fixed stupid bug #70738 found by alfons hoogervorst
+
 Wed Feb  6 17:04:51 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/TODO python/libxml.c: cleanup the extension function lookup

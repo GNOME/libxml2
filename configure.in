@@ -223,7 +223,7 @@ if test "$with_python" != "no" ; then
 		if test -r /usr/include/python$PYTHON_VERSION/Python.h
 		then
 		    PYTHON_INCLUDES=/usr/include/python$PYTHON_VERSION
-		    PYTHON_SITE_PACKAGES='$(prefix)/lib/python$PYTHON_VERSION/site-packages'
+		    PYTHON_SITE_PACKAGES='$(prefix)/lib/python$(PYTHON_VERSION)/site-packages'
 		else
 		    echo could not find python$PYTHON_VERSION/Python.h
 		fi

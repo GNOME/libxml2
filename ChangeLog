@@ -1,3 +1,8 @@
+Sat Jan  4 01:43:06 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmlreader.html: starting documenting the new XmlTextReader
+	  interface.
+
 Fri Jan  3 17:18:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: added the --stream flag to use the TextReader API

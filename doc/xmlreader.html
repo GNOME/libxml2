@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <style type="text/css">
+<!--
+TD {font-family: Verdana,Arial,Helvetica}
+BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-family: Verdana,Arial,Helvetica}
+H2 {font-family: Verdana,Arial,Helvetica}
+H3 {font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }-->
+
+
+  </style>
+  <title>XML resources publication guidelines</title>
+</head>
+
+<body bgcolor="#fffacd" text="#000000">
+<h1 align="center">Libxml2 XmlTextReader Interface tutorial</h1>
+
+<p></p>
+
+<p>This document describes the use of the XmlTextReader streaming API added
+to libxml2 in version 2.5.0 . This API is closely modelled on the <a
+href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">XmlTextReader</a>
+and <a
+href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlReader.html">XmlReader</a>
+classes of the C# language.</p>
+
+<p>This tutorial will present the key points of this API, and working
+examples using both C and the Python bindings:</p>
+
+<p>Table of content:</p>
+<ul>
+  <li><a href="#Introducti">Introduction: why a new API</a></li>
+  <li><a href="#Walking">Walking a simple tree</a></li>
+  <li><a href="#Extracting">Extracting informations for the current
+  node</a></li>
+  <li><a href="#Validating">Validating a document</a></li>
+  <li><a href="#Entities">Entities substitution</a></li>
+</ul>
+
+<p></p>
+
+<h2><a name="Introducti">Introduction: why a new API</a></h2>
+
+<p>Libxml2 <a href="http://xmlsoft.org/html/libxml-tree.html">main API is
+tree based</a>, where the parsing operation results in a document loaded
+completely in memory, and expose it as a tree of nodes all availble at the
+same time. This is very simple and quite powerful, but has the major
+limitation that the size of the document that can be hamdled is limited by
+the size of the memory available. Libxml2 also provide a <a
+href="http://www.saxproject.org/">SAX</a> based API, but that version was
+designed upon one of the early <a
+href="http://www.jclark.com/xml/expat.html">expat</a> version of SAX, SAX is
+also not formally defined for C. SAX basically work by registering callbacks
+which are called directly by the parser as it progresses through the document
+streams. The problem is that this programming model is relatively complex,
+not well standardized, cannot provide validation directly, makes entity,
+namespace and base processing relatively hard.</p>
+
+<p>The <a
+href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">XmlTextReader
+API from C#</a> provides a far simpler programming model, the API act as a
+cursor going forward on the document stream and stopping at each node in the
+way. The user code keep the control of the progresses and simply call a
+Read() function repeatedly to progress to each node in sequence in document
+order. There is direct support for namespaces, xml:base, entity handling and
+adding DTD validation on top of it was relatively simple. This API is really
+close to the <a href="http://www.w3.org/TR/DOM-Level-2-Core/">DOM Core
+specification</a> This provides a far more standard, easy to use and powerful
+API than the existing SAX. Moreover integrating extension feature based on
+the tree seems relatively easy.</p>
+
+<p>In a nutshell the XmlTextReader API provides a simpler, more standard and
+more extensible interface to handle large document than the existing SAX
+version.</p>
+
+<h2><a name="Walking">Walking a simple tree</a></h2>
+
+<p>Basically the XmlTextReader API is a forward only tree walking interface.
+The basic steps are:</p>
+<ol>
+  <li>prepare a reader context operating on some input</li>
+  <li>run a loop iterating over all nodes in the document</li>
+  <li>free up the reader context</li>
+</ol>
+
+<p>Here is a basic C sample doing this:</p>
+<pre>#include &lt;libxml/xmlreader.h&gt;
+
+void processNode(xmlTextReaderPtr reader) {
+    /* handling of a node in the tree */
+}
+
+int streamFile(char *filename) {
+    xmlTextReaderPtr reader;
+    int ret;
+
+    reader = xmlNewTextReaderFilename(filename);
+    if (reader != NULL) {
+        ret = xmlTextReaderRead(reader);
+        while (ret == 1) {
+            processNode(reader);
+            ret = xmlTextReaderRead(reader);
+        }
+        xmlFreeTextReader(reader);
+        if (ret != 0) {
+            printf("%s : failed to parse\n", filename);
+        }
+    } else {
+        printf("Unable to open %s\n", filename);
+    }
+}</pre>
+
+<p>A few things to notice:</p>
+<ul>
+  <li>the include file needed : <code>libxml/xmlreader.h</code></li>
+  <li>the creation of the reader using a filename</li>
+  <li>the repeated call to xmlTextReaderRead() and how any return value
+    different from 1 should stop the loop</li>
+  <li>that a negative return mean a parsing error</li>
+  <li>how xmlFreeTextReader() should be used to free up the resources used by
+    the reader.</li>
+</ul>
+
+<p>Here is a similar code in python for exactly the same processing:</p>
+<pre>import libxml2
+
+def processNode(reader):
+    pass
+
+try:
+    reader = newTextReaderFilename(filename)
+except:
+    print "unable to open %s" % (filename)
+
+
+ret = reader.Read()
+while ret == 1:
+    processNode(reader)
+    ret = reader.Read()
+if ret != 0:
+    print "%s : failed to parse" % (filename)
+</pre>
+
+<p>The only things worth adding are that the <a
+href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">xmlTextReader
+is abstracted as a class like in C#</a> with the same method names (but the
+properties are currently accessed with methods) and to note one doesn't need
+to free the reader at the end of the processing, it will get garbage
+collected once all references have disapeared</p>
+
+<h2><a name="Extracting">Extracting informations for the current node</a></h2>
+
+<p>So far the example code did not indicate how informations were extracted
+from the reader, it was abstrated as a call to the processNode() routine,
+with the reader as the argument. At each invocation, the parser is stopped on
+a given node and the reader can be used to query those node properties. Each
+<em>Property</em> is available at the C level as a function taking a single
+xmlTextReaderPtr argument whose name is
+<code>xmlTextReader</code><em>Property</em> , if the return type is an
+<code>xmlChar *</code> string then it must be deallocated with
+<code>xmlFree()</code> to avoid leaks. For the Python interface, there is a
+<em>Property</em> method to the reader class that can be called on the
+instance. The list of the properties is based on the <a
+href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">C#
+XmlTextReader class</a> set of properties and methods:</p>
+<ul>
+  <li><em>NodeType</em>: The node type, 1 for start element, 15 for end of
+    element, 2 for attributes, 3 for text nodes, 4 for CData sections, 5 for
+    entity references, 6 for entity declarations, 7 for PIs, 8 for comments,
+    9 for the document nodes, 10 for DTD/Doctype nodes, 11 for document
+    fragment and 12 for notation nodes.</li>
+  <li><em>Name</em>: the <a
+    href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">qualified
+    name</a> of the node, equal to (<em>Prefix</em>:)<em>LocalName</em>.</li>
+  <li><em>LocalName</em>: the <a
+    href="http://www.w3.org/TR/REC-xml-names/#NT-LocalPart">local name</a> of
+    the node.</li>
+  <li><em>Prefix</em>: a  shorthand reference to the <a
+    href="http://www.w3.org/TR/REC-xml-names/">namespace</a> associated with
+    the node.</li>
+  <li><em>NamespaceUri</em>: the URI defining the <a
+    href="http://www.w3.org/TR/REC-xml-names/">namespace</a> associated with
+    the node.</li>
+  <li><em>BaseUri:</em> the base URI of the node. See the <a
+    href="http://www.w3.org/TR/xmlbase/">XML Base W3C specification</a>.</li>
+  <li><em>Depth:</em> the depth of the node in the tree, starts at 0 for the
+    root node.</li>
+  <li><em>HasAttributes</em>: whether the node has attributes.</li>
+  <li><em>HasValue</em>: whether the node can have a text value.</li>
+  <li><em>Value</em>: provides the text value of the node if present.</li>
+  <li><em>IsDefault</em>: whether an Attribute  node was generated from the
+    default value defined in the DTD or schema (<em>unsupported
+  yet</em>).</li>
+  <li><em>XmlLang</em>: the <a
+    href="http://www.w3.org/TR/REC-xml#sec-lang-tag">xml:lang</a> scope
+    within which the node resides.</li>
+  <li><em>IsEmptyElement</em>: check if the current node is empty, this is a
+    bit bizarre in the sense that <code>&lt;a/&gt;</code> will be considered
+    empty while <code>&lt;a&gt;&lt;/a&gt;</code> will not.</li>
+  <li><em>AttributeCount</em>: provides the number of attributes of the
+    current node.</li>
+</ul>
+
+<p></p>
+
+<h2><a name="Validating">Validating a document</a></h2>
+
+<h2><a name="Entities">Entities substitution</a></h2>
+
+<p> </p>
+
+<p><a href="mailto:veillard@redhat.com">Daniel Veillard</a></p>
+
+<p>$Id$</p>
+
+<p></p>
+</body>
+</html>

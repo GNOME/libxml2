@@ -822,6 +822,7 @@ xmlCleanupMemory(void) {
         return;
 
     xmlFreeMutex(xmlMemMutex);
+    xmlMemMutex = NULL;
     xmlMemInitialized = 0;
 }
 

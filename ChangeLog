@@ -1,3 +1,10 @@
+Fri Jan  2 11:40:06 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: found and fixed a bug misallocating some non
+	  blank text node strings from the dictionnary.
+	* xmlmemory.c: fixed a problem with the memory debug mutex
+	  release.
+
 Wed Dec 31 22:02:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: fixed problem caused by wrong dictionary

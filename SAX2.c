@@ -1670,7 +1670,7 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	    int i;
 
 	    for (i = 1;i < len;i++) {
-		if (!IS_BLANK_CH(*str)) goto skip;
+		if (!IS_BLANK_CH(str[i])) goto skip;
 	    }
 	    intern = xmlDictLookup(ctxt->dict, str, len);
 	}

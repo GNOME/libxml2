@@ -1,3 +1,9 @@
+Wed Feb 18 15:20:42 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a problem in push mode when attribute contains
+	  unescaped '>' characters, fixes bug #134566
+	* test/att6 result//att6*: added the test to the regression suite
+
 Tue Feb 17 17:26:31 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: removing a non-linear behaviour from ID/IDREF raised

@@ -9030,7 +9030,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		}
 		if (!terminate) {
 		    if (ctxt->progressive) {
-		        if ((lastgt == NULL) || (ctxt->input->cur > lastgt))
+		        /* > can be found unescaped in attribute values */
+		        if ((lastlt == NULL) || (ctxt->input->cur >= lastlt))
 			    goto done;
 		    } else if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) {
 			goto done;

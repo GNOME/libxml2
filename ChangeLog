@@ -1,3 +1,7 @@
+Tue Jan 13 21:50:05 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* testHTML.c: another small patch from Mark Vadoc
+
 Tue Jan 13 21:39:58 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c relaxng.c testRelax.c testSchemas.c: applied

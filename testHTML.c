@@ -709,6 +709,7 @@ parseAndPrintFile(char *filename) {
     /*
      * build an HTML tree from a string;
      */
+#ifdef LIBXML_PUSH_ENABLED
     if (push) {
 	FILE *f;
 
@@ -736,6 +737,9 @@ parseAndPrintFile(char *filename) {
     } else {	
 	doc = htmlReadFile(filename, NULL, options);
     }
+#else
+	doc = htmlReadFile(filename,NULL,options);
+#endif
     if (doc == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"Could not parse %s\n", filename);

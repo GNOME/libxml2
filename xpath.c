@@ -110,7 +110,7 @@ int isinf(double d) {
 #elif defined(finite) || defined(HAVE_FINITE)
 int isinf(double x) { return !finite(x) && x==x; }
 #elif defined(HUGE_VAL)
-static int isinf(double x)
+int isinf(double x)
 {
     if (x == HUGE_VAL)
         return(1);

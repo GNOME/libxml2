@@ -28,7 +28,7 @@ extern "C" {
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
 #define IS_CHAR(c)							\
-    ((((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||		\
+    ((((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0D) ||		\
       (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF))) &&		\
       (((c) <= 0xD7FF) || ((c) >= 0xE000)) && ((c) >= 0) &&		\
       ((c) <= 0x10FFFF))
@@ -36,7 +36,7 @@ extern "C" {
 /*
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
-#define IS_BLANK(c) (((c) == 0x20) || ((c) == 0x09) || ((c) == 0xa) ||	\
+#define IS_BLANK(c) (((c) == 0x20) || ((c) == 0x09) || ((c) == 0xA) ||	\
                      ((c) == 0x0D))
 
 /*

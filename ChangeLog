@@ -1,3 +1,9 @@
+Sat Apr  8 14:54:54 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c uri.h parserInternals.h: cosmetic changes from
+	  "Timur I. Bakeyev" <timur@bat.ru>, including making 
+	  xmlCreateURI() public
+
 Fri Apr  7 18:35:02 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlIO.[ch] parser.c: cleane up the xmlParserInputBuffer mess

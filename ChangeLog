@@ -1,3 +1,10 @@
+Fri Dec 27 20:35:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c xmlreader.c: final touch running DTD validation
+	  on the XmlTextReader
+	* python/tests/Makefile.am python/tests/reader2.py: added a
+	  specific run based on the examples from test/valid/*.xml
+
 Fri Dec 27 15:17:20 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py: added a few predefined xmlTextReader parser

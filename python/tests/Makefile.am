@@ -20,7 +20,8 @@ PYTESTS=	\
     inbuf.py	\
     resolver.py \
     regexp.py	\
-    reader.py
+    reader.py	\
+    reader2.py
 
 XMLS=		\
     tst.xml	\

@@ -100,7 +100,7 @@ static int
 vstateVPop(xmlValidCtxtPtr ctxt) {
     xmlElementPtr elemDecl;
 
-    if (ctxt->vstateNr <= 1) return(-1);
+    if (ctxt->vstateNr < 1) return(-1);
     ctxt->vstateNr--;
     elemDecl = ctxt->vstateTab[ctxt->vstateNr].elemDecl;
     ctxt->vstateTab[ctxt->vstateNr].elemDecl = NULL;
@@ -249,6 +249,39 @@ nodeVPop(xmlValidCtxtPtr ctxt)
     ctxt->nodeTab[ctxt->nodeNr] = 0;
     return (ret);
 }
+
+#if 0
+/**
+ * xmlFreeValidCtxt:
+ * @ctxt:  a validation context
+ *
+ * Free the memory allocated for a validation context
+ */
+void 
+xmlFreeValidCtxt(xmlValidCtxtPtr ctxt) {
+    if (ctxt == NULL)
+	return;
+#ifdef LIBXML_REGEXP_ENABLED
+    while (ctxt->vstateNr >= 0)
+	vstateVPop(ctxt);
+    if (ctxt->vstateNr <= 1) return(-1);
+    ctxt->vstateNr--;
+    elemDecl = ctxt->vstateTab[ctxt->vstateNr].elemDecl;
+    ctxt->vstateTab[ctxt->vstateNr].elemDecl = NULL;
+    ctxt->vstateTab[ctxt->vstateNr].node = NULL;
+    if ((elemDecl != NULL) && (elemDecl->etype == XML_ELEMENT_TYPE_ELEMENT)) {
+	xmlRegFreeExecCtxt(ctxt->vstateTab[ctxt->vstateNr].exec);
+    }
+    ctxt->vstateTab[ctxt->vstateNr].exec = NULL;
+    if (ctxt->vstateNr >= 1)
+	ctxt->vstate = &ctxt->vstateTab[ctxt->vstateNr - 1];
+    else
+	ctxt->vstate = NULL;
+    return(ctxt->vstateNr);
+#else /* ! LIBXML_REGEXP_ENABLED */
+#endif /* LIBXML_REGEXP_ENABLED */
+}
+#endif
 
 #ifdef DEBUG_VALID_ALGO
 static void

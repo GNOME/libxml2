@@ -696,6 +696,12 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	    xmlFreeDoc(reader->ctxt->myDoc);
 	    reader->ctxt->myDoc = NULL;
 	}
+	if ((reader->ctxt->vctxt.vstateTab != NULL) &&
+	    (reader->ctxt->vctxt.vstateMax > 0)){
+	    xmlFree(reader->ctxt->vctxt.vstateTab);
+	    reader->ctxt->vctxt.vstateTab = 0;
+	    reader->ctxt->vctxt.vstateMax = 0;
+	}
 	if (reader->allocs & XML_TEXTREADER_CTXT)
 	    xmlFreeParserCtxt(reader->ctxt);
     }

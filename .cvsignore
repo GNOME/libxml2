@@ -39,3 +39,5 @@ testC14N
 testRegexp
 testSchemas
 testThreads
+testReader
+autom4te.cache

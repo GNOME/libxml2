@@ -11736,6 +11736,7 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
 
     ctxt->wellFormed = 1;
     ctxt->nsWellFormed = 1;
+    ctxt->disableSAX = 0;
     ctxt->valid = 1;
     ctxt->vctxt.userData = ctxt;
     ctxt->vctxt.error = xmlParserValidityError;

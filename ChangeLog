@@ -1,3 +1,8 @@
+Wed Jan 21 17:03:17 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed bug #131745 raised by Shaun McCance with the
+	  suggested patch
+
 Wed Jan 21 10:59:55 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: applied patch from Alfred Mickautsch fixing a memory

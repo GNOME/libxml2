@@ -149,6 +149,9 @@ validateNmtokensValue()
 # functions from module xmlIO
 cleanupInputCallbacks()
 cleanupOutputCallbacks()
+fileMatch()
+iOFTPMatch()
+iOHTTPMatch()
 parserGetDirectory()
 registerDefaultInputCallbacks()
 registerDefaultOutputCallbacks()
@@ -440,6 +443,7 @@ Class parserCtxt()
     htmlFreeParserCtxt()
     htmlParseCharRef()
     htmlParseChunk()
+    htmlParseDocument()
     htmlParseElement()
 
     # functions from module parser

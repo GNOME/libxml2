@@ -1,3 +1,7 @@
+Mon May 27 23:18:33 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing 2.4.22
+
 Mon May 27 16:44:04 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c win32/libxml2.def.src win32/dsp/libxml2.def.src

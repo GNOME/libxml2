@@ -2230,7 +2230,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 return(-2);
             }
             c = *in++;
-            if ((c & 0xC0) != 0xC0) {
+            if ((c & 0xC0) != 0x80) {
                 /* not a trailing byte */
                 *outlen = out - outstart;
                 *inlen = in - instart - 2;
@@ -2256,14 +2256,14 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 return(-2);
             }
             c1 = *in++;
-            if ((c1 & 0xC0) != 0xC0) {
+            if ((c1 & 0xC0) != 0x80) {
                 /* not a trailing byte (c1) */
                 *outlen = out - outstart;
                 *inlen = in - instart - 2;
                 return(-2);
             }
             c2 = *in++;
-            if ((c2 & 0xC0) != 0xC0) {
+            if ((c2 & 0xC0) != 0x80) {
                 /* not a trailing byte (c2) */
                 *outlen = out - outstart;
                 *inlen = in - instart - 2;
@@ -2271,8 +2271,9 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
             }
             c1 = c1 & 0x3F; 
             c2 = c2 & 0x3F; 
-            d = d & 0x0F;
-            d = xlattable [48 + c2 + xlattable [48 + c1 + xlattable [32 + d] * 64] * 64];
+	    d = d & 0x0F;
+	    d = xlattable [48 + c2 + xlattable [48 + c1 + 
+	    		xlattable [32 + d] * 64] * 64];
             if (d == 0) {
                 /* not in character set */
                 *outlen = out - outstart;

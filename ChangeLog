@@ -1,3 +1,8 @@
+Thu Sep  9 07:22:11 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c: applied fixes for the UTF8ToISO8859x transcoding
+	  routine suggested by Mark Itzcovitz
+	  
 Wed Sep  8 22:50:27 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c xmlsave.c: fixed 2 problems raised by #152140, one

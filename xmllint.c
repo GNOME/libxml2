@@ -102,6 +102,7 @@ static int shell = 0;
 static int debugent = 0;
 #endif
 static int debug = 0;
+static int maxmem = 0;
 #ifdef LIBXML_TREE_ENABLED
 static int copy = 0;
 #endif /* LIBXML_TREE_ENABLED */
@@ -170,10 +171,66 @@ static xmlPatternPtr patternc = NULL;
 #endif
 static int options = 0;
 
-/*
- * Internal timing routines to remove the necessity to have unix-specific
- * function calls
- */
+/************************************************************************
+ * 									*
+ * Memory allocation consumption debugging				*
+ * 									*
+ ************************************************************************/
+
+static void OOM(void) {
+    fprintf(stderr, "Ran out of memory needs > %d bytes\n", maxmem);
+    progresult = 9;
+}
+
+static void myFreeFunc(void *mem) {
+    xmlMemFree(mem);
+}
+static void *myMallocFunc(size_t size) {
+    void *ret;
+
+    ret = xmlMemMalloc(size);
+    if (ret != NULL) {
+        if (xmlMemUsed() > maxmem) {
+	    OOM();
+	    xmlMemFree(ret);
+	    return(NULL);
+	}
+    }
+    return(ret);
+}
+static void *myReallocFunc(void *mem, size_t size) {
+    void *ret;
+
+    ret = xmlMemRealloc(mem, size);
+    if (ret != NULL) {
+        if (xmlMemUsed() > maxmem) {
+	    OOM();
+	    xmlMemFree(ret);
+	    return(NULL);
+	}
+    }
+    return(ret);
+}
+static char *myStrdupFunc(const char *str) {
+    char *ret;
+
+    ret = xmlMemoryStrdup(str);
+    if (ret != NULL) {
+        if (xmlMemUsed() > maxmem) {
+	    OOM();
+	    xmlFree(ret);
+	    return(NULL);
+	}
+    }
+    return(ret);
+}
+
+/************************************************************************
+ * 									*
+ * Internal timing routines to remove the necessity to have		*
+ * unix-specific function calls.					*
+ * 									*
+ ************************************************************************/
 
 #ifndef HAVE_GETTIMEOFDAY 
 #ifdef HAVE_SYS_TIMEB_H
@@ -1476,6 +1533,7 @@ static void usage(const char *name) {
 #ifdef HAVE_SYS_MMAN_H
     printf("\t--memory : parse from memory\n");
 #endif
+    printf("\t--maxmem nbbytes : limits memory allocation to nbbytes bytes\n");
     printf("\t--nowarning : do not emit warnings from parser/validator\n");
     printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
     printf("\t--nocdata : replace cdata section with text nodes\n");
@@ -1734,6 +1792,16 @@ main(int argc, char **argv) {
 	     noblanks++;
 	     xmlKeepBlanksDefault(0);
         }
+	else if ((!strcmp(argv[i], "-maxmem")) ||
+	         (!strcmp(argv[i], "--maxmem"))) {
+	     i++;
+	     if (sscanf(argv[i], "%d", &maxmem) == 1) {
+	         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc,
+		             myStrdupFunc);
+	     } else {
+	         maxmem = 0;
+	     }
+        }
 	else if ((!strcmp(argv[i], "-format")) ||
 	         (!strcmp(argv[i], "--format"))) {
 	     noblanks++;
@@ -1940,6 +2008,11 @@ main(int argc, char **argv) {
 #endif /* LIBXML_VALID_ENABLED */
 	if ((!strcmp(argv[i], "-relaxng")) ||
 	         (!strcmp(argv[i], "--relaxng"))) {
+	    i++;
+	    continue;
+        }
+	if ((!strcmp(argv[i], "-maxmem")) ||
+	         (!strcmp(argv[i], "--maxmem"))) {
 	    i++;
 	    continue;
         }

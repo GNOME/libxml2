@@ -1,3 +1,7 @@
+Tue May  4 00:52:16 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: adding a --maxmem option to check memory used.
+
 Sat May  1 01:08:44 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c xmlsave.c python/generator.py python/libxml.c: Fixed

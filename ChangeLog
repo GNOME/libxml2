@@ -1,3 +1,10 @@
+Fri Jan 24 02:00:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: more work on Relax-NG
+	* doc/*: regenerated the docs
+	* test/relaxng/* result/relaxng/*: updated and augmented the
+	  Relax-NG regression tests and results
+
 Thu Jan 23 19:26:20 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in relaxng.c include/libxml/relaxng.h:

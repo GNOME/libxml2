@@ -166,11 +166,15 @@ extern void xmlSetNs(xmlNodePtr node, xmlNsPtr ns);
 extern xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
                               const CHAR *name, CHAR *content);
 
-extern void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size);
-extern void xmlDocDump(FILE *f, xmlDocPtr doc);
 extern void xmlBufferWriteCHAR(const CHAR *string);
 extern void xmlBufferWriteChar(const char *string);
 
+extern void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size);
+extern void xmlDocDump(FILE *f, xmlDocPtr doc);
+int xmlSaveFile(const char *filename, xmlDocPtr cur);
+
+extern int  xmlGetCompressMode(void);
+extern void xmlSetCompressMode(int mode);
 
 #ifdef __cplusplus
 }

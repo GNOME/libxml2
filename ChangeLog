@@ -1,3 +1,9 @@
+Tue Sep 22 20:47:38 EDT 1998
+
+	* tree.c, tree.h: added saving with compression and added interfaces
+	  to control the compression level (xmlGetCompressMode,
+	  xmlSetCompressMode) and a new save to filename function (xmlSaveFile).
+
 Mon Sep 21 20:11:13 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: corrected a loop for files of size 0

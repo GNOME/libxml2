@@ -8,10 +8,15 @@
  * TODO Cleanup the Dump mechanism.
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <malloc.h>
 #include <string.h> /* for memset() only ! */
+
+#ifdef HAVE_ZLIB_H
+#include <zlib.h>
+#endif
 
 #include "tree.h"
 #include "entities.h"
@@ -1150,6 +1155,21 @@ void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
 }
 
 /*
+ * Get the compression mode
+ */
+
+static int xmlCompressMode = 0;
+
+int  xmlGetCompressMode(void) {
+    return(xmlCompressMode);
+}
+void xmlSetCompressMode(int mode) {
+    if (mode < 0) xmlCompressMode = 0;
+    if (mode > 9) xmlCompressMode = 9;
+    else xmlCompressMode = mode;
+}
+
+/*
  * Dump an XML document to the given FD
  */
 
@@ -1162,6 +1182,49 @@ void xmlDocDump(FILE *f, xmlDocPtr cur) {
     xmlDocContentDump(cur);
 
     fwrite(buffer, sizeof(CHAR), buffer_index, f);
+}
+
+/*
+ * Dump an XML document to a file.
+ */
+
+int xmlSaveFile(const char *filename, xmlDocPtr cur) {
+#ifdef HAVE_ZLIB_H
+    gzFile zoutput = NULL;
+    char mode[15];
+#endif
+    FILE *output;
+    int ret;
+
+#ifdef HAVE_ZLIB_H
+    if ((xmlCompressMode > 0) && (xmlCompressMode <= 9)) {
+        sprintf(mode, "w%d", xmlCompressMode);
+	zoutput = gzopen(filename, mode);
+    }
+    if (zoutput == NULL) {
+#endif
+        output = fopen(filename, "w");
+	if (output == NULL) return(-1);
+#ifdef HAVE_ZLIB_H
+    }
+#endif
+
+    /* 
+     * save the content to a temp buffer.
+     */
+    buffer_index = 0;
+    xmlDocContentDump(cur);
+
+#ifdef HAVE_ZLIB_H
+    if (zoutput != NULL) {
+        ret = gzwrite(zoutput, buffer, sizeof(CHAR) * buffer_index);
+	gzclose(zoutput);
+	return(ret);
+    }
+#endif
+    ret = fwrite(buffer, sizeof(CHAR), buffer_index, output);
+    fclose(output);
+    return(ret * sizeof(CHAR));
 }
 
 /************************************************************************

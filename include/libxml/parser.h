@@ -122,8 +122,8 @@ typedef struct xmlSAXHandler {
  * Global variables: just the SAX interface tables we are looking for full
  *      reentrancy of the code !
  */
-xmlSAXLocator xmlDefaultSAXLocator;
-xmlSAXHandler xmlDefaultSAXHandler;
+extern xmlSAXLocator xmlDefaultSAXLocator;
+extern xmlSAXHandler xmlDefaultSAXHandler;
 
 /*
  * Interfaces

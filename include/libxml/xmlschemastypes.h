@@ -23,6 +23,13 @@
 extern "C" {
 #endif
 
+typedef enum {
+    XML_SCHEMA_WHITESPACE_UNKNOWN = 0,
+    XML_SCHEMA_WHITESPACE_PRESERVE = 1,
+    XML_SCHEMA_WHITESPACE_REPLACE = 2,
+    XML_SCHEMA_WHITESPACE_COLLAPSE = 3
+} xmlSchemaWhitespaceValueType;
+
 XMLPUBFUN void XMLCALL		
     		xmlSchemaInitTypes		(void);
 XMLPUBFUN void XMLCALL		
@@ -87,6 +94,17 @@ XMLPUBFUN int XMLCALL
 						 const xmlChar *value,
 						 xmlSchemaValPtr *val, 
 						 xmlNodePtr node);
+XMLPUBFUN int XMLCALL
+		xmlSchemaGetCanonValue		(xmlSchemaValPtr val,
+						 const xmlChar **retValue);
+XMLPUBFUN xmlSchemaValPtr XMLCALL
+		xmlSchemaNewStringValue		(xmlSchemaValType type,
+						 const xmlChar *value);
+XMLPUBFUN int XMLCALL
+		xmlSchemaCompareValuesWhtsp	(xmlSchemaValPtr x,
+						 xmlSchemaWhitespaceValueType xws,
+						 xmlSchemaValPtr y,
+						 xmlSchemaWhitespaceValueType yws); 
 
 #ifdef __cplusplus
 }

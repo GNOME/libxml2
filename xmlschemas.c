@@ -7,7 +7,7 @@
  * Daniel Veillard <veillard@redhat.com>
  */
 
-/*
+/* 
  * TODO:
  *   - when types are redefined in includes, check that all
  *     types in the redef list are equal
@@ -54,7 +54,7 @@
 
 #define ELEM_INFO_ENABLED 1 
 
-/* #define IDC_ENABLED 1 */
+/*  #define IDC_ENABLED 1 */
 
 /* #define IDC_VALUE_SUPPORT 1 */
 
@@ -117,9 +117,11 @@ static const xmlChar *xmlSchemaElemDesCT = (const xmlChar *)
      ((item->type == XML_SCHEMA_TYPE_BASIC) &&     \
       (item->builtInType != XML_SCHEMAS_ANYTYPE))) 
 
+/*
 #define XML_SCHEMAS_VAL_WTSP_PRESERVE 0
 #define XML_SCHEMAS_VAL_WTSP_REPLACE  1
 #define XML_SCHEMAS_VAL_WTSP_COLLAPSE 2
+*/
 
 #define XML_SCHEMAS_PARSE_ERROR		1
 
@@ -384,9 +386,6 @@ struct _xmlSchemaIDCMatcher {
     xmlSchemaPSVIIDCKeyPtr **keySeqs; /* the key-sequences of the target
                                          elements */
     int sizeKeySeqs;
-    xmlSchemaPSVIIDCKeyPtr **refKeySeqs;
-    int nbRefKeySeqs;
-    int sizeRefKeySeqs;
     int targetDepth;
 };
 
@@ -10268,7 +10267,7 @@ xmlSchemaIsDerivedFromBuiltInType(xmlSchemaParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchemaIsDerivedFromBuiltInType:
+ * xmlSchemaGetPrimitiveType:
  * @type:  the simpleType definition
  *
  * Returns the primitive type of the given type or
@@ -10279,6 +10278,25 @@ xmlSchemaGetPrimitiveType(xmlSchemaTypePtr type)
 {
     while (type != NULL) {
 	if (type->flags & XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE)
+	    return (type);
+	type = type->baseType;
+    }
+
+    return (NULL);
+}
+
+/**
+ * xmlSchemaGetBuiltInTypeAncestor:
+ * @type:  the simpleType definition
+ *
+ * Returns the primitive type of the given type or
+ * NULL in case of error.
+ */
+static xmlSchemaTypePtr
+xmlSchemaGetBuiltInTypeAncestor(xmlSchemaTypePtr type)
+{
+    while (type != NULL) {
+	if (type->type == XML_SCHEMA_TYPE_BASIC)
 	    return (type);
 	type = type->baseType;
     }
@@ -14763,8 +14781,6 @@ xmlSchemaFacetTypeToString(xmlSchemaTypeType type)
     return ("Internal Error");
 }
 
-
-
 static int
 xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 {
@@ -14776,24 +14792,24 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
     */
     if (type->type == XML_SCHEMA_TYPE_BASIC) {
 	if (type->builtInType == XML_SCHEMAS_STRING)
-	    return(XML_SCHEMAS_VAL_WTSP_PRESERVE);
+	    return(XML_SCHEMAS_FACET_PRESERVE);
 	else if (type->builtInType == XML_SCHEMAS_NORMSTRING)
-	    return(XML_SCHEMAS_VAL_WTSP_REPLACE);
+	    return(XML_SCHEMAS_FACET_REPLACE);
 	else {
 	    /*
 	    * For all ·atomic· datatypes other than string (and types ·derived· 
 	    * by ·restriction· from it) the value of whiteSpace is fixed to 
 	    * collapse
 	    */
-	    return(XML_SCHEMAS_VAL_WTSP_COLLAPSE);
+	    return(XML_SCHEMAS_FACET_COLLAPSE);
 	}		   	    
     } else if (type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) {
 	/*
 	* For list types the facet "whiteSpace" is fixed to "collapse". 
 	*/
-	return (XML_SCHEMAS_VAL_WTSP_COLLAPSE);
+	return (XML_SCHEMAS_FACET_COLLAPSE);
     } else if (type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION) {
-	return (-1);
+	return (XML_SCHEMAS_FACET_UNKNOWN);
     } else if (type->facetSet != NULL) {
 	xmlSchemaTypePtr anyST;
 	xmlSchemaFacetLinkPtr lin;
@@ -14815,14 +14831,7 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 		lin = type->facetSet;
 		do {
 		    if (lin->facet->type == XML_SCHEMA_FACET_WHITESPACE) {
-			if (lin->facet->whitespace == 
-			    XML_SCHEMAS_FACET_COLLAPSE) {
-			    return(XML_SCHEMAS_VAL_WTSP_COLLAPSE);  
-			} else if (lin->facet->whitespace == 
-			    XML_SCHEMAS_FACET_REPLACE) { 
-			    return(XML_SCHEMAS_VAL_WTSP_REPLACE);
-			} else
-			    return(XML_SCHEMAS_VAL_WTSP_PRESERVE);
+			return(lin->facet->whitespace);
 			break;
 		    }
 		    lin = lin->next;
@@ -14831,7 +14840,7 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 	    }
 	    anc = anc->baseType;
 	} while (anc != anyST);
-	return (XML_SCHEMAS_VAL_WTSP_COLLAPSE);	
+	return (XML_SCHEMAS_FACET_COLLAPSE);
     }  
     return (-1);
 }
@@ -15667,11 +15676,11 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
     * Normalize the value.
     */
     if (normalize && 
-	(ctxt->valueWS != XML_SCHEMAS_VAL_WTSP_COLLAPSE)) {
+	(ctxt->valueWS != XML_SCHEMAS_FACET_COLLAPSE)) {
 	int norm = xmlSchemaGetWhiteSpaceFacetValue(type);
 	
 	if ((norm != -1) && (norm > ctxt->valueWS)) {
-	    if (norm == XML_SCHEMAS_VAL_WTSP_COLLAPSE)
+	    if (norm == XML_SCHEMAS_FACET_COLLAPSE)
 		normValue = xmlSchemaCollapseString(value);
 	    else
 		normValue = xmlSchemaWhiteSpaceReplace(value);
@@ -15992,7 +16001,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	    }
 	    mws = xmlSchemaGetWhiteSpaceFacetValue(memberLink->type);
 	    if (mws > ctxt->valueWS) {
-		if (mws == XML_SCHEMAS_VAL_WTSP_COLLAPSE)
+		if (mws == XML_SCHEMAS_FACET_COLLAPSE)
 		    normValue = xmlSchemaCollapseString(value);
 		else
 		    normValue = xmlSchemaWhiteSpaceReplace(value);
@@ -16636,7 +16645,14 @@ compareValue:
     {	
 #ifdef IDC_VALUE_SUPPORT
 	int ret;
-	ret = xmlSchemaCompareValues(a, b);
+	int aws, bws;
+
+	aws = xmlSchemaGetWhiteSpaceFacetValue(ta);
+	bws = xmlSchemaGetWhiteSpaceFacetValue(tb);
+
+	ret = xmlSchemaCompareValuesWhtsp(
+	    a, (xmlSchemaWhitespaceValueType) aws,
+	    b, (xmlSchemaWhitespaceValueType) bws);
 	if (ret == 0) 
 	    return(1);
 	else if (ret == -2) {
@@ -16962,11 +16978,19 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
 		* Failed to provide the normalized value; maby
 		* the value was invalid.
 		*/ 
-		xmlSchemaVErr(vctxt, NULL, 
+		xmlSchemaVCustomErr(vctxt,
+		    XML_SCHEMAV_CVC_IDC,
+		    vctxt->nodeInfo->node,
+		    (xmlSchemaTypePtr) sto->matcher->aidc->def,
+		    "Warning: No precomputed value available, the value "
+		    "was either invalid or something strange happend", NULL);
+		/*
+		xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
 		    XML_SCHEMAV_INTERNAL,
 		    "Internal error: xmlSchemaXPathProcessHistory, "
 		    "computed value not available.\n",
 		    NULL, NULL);
+		*/
 		sto->nbHistory--;
 		goto deregister_check;
 	    } else {
@@ -18308,7 +18332,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 		XML_SCHEMAV_INTERNAL, 
 		elem, actualType,
 		"Internal error: xmlSchemaValidateElementByDeclaration, "
-		"validating a default value", NULL);
+		"calling validation by type", NULL);
 	    return (-1);
 	}
 	/*
@@ -19083,7 +19107,6 @@ xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
 	return (ret);
 }
 
-
 static int
 xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr ctxt,
 			       xmlSchemaAttrStatePtr state)
@@ -19126,6 +19149,10 @@ xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr ctxt,
 	if (xmlSchemaGetEffectiveValueConstraint(
 	    (xmlSchemaAttributePtr) ctxt->attrInfo->decl, 
 	    &fixed, &defValue, &defVal) && (fixed == 1)) {
+
+	    int ws = xmlSchemaGetWhiteSpaceFacetValue(
+		ctxt->attrInfo->typeDef);	   
+
 	    /*
 	    * cvc-au : Attribute Locally Valid (Use)
 	    * For an attribute information item to be·valid· 
@@ -19142,12 +19169,45 @@ xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr ctxt,
 	    * TODO: Use the *normalized* value and the *canonical* fixed
 	    * value.
 	    */
-	    if (((ctxt->value != NULL) && 
-		(xmlSchemaCompareValues(ctxt->value, defVal) != 0)) ||
-		((ctxt->value == NULL) &&
-		(! xmlStrEqual(defValue, BAD_CAST value)))) {
+	    if (ctxt->value != NULL) {
+		if (defVal == NULL) {
+		    xmlSchemaTypePtr prim;
+		    /*
+		    * Oops, the value was not computed.
+		    */
+		    prim = xmlSchemaGetPrimitiveType(ctxt->attrInfo->typeDef);
+		    if (prim->builtInType == XML_SCHEMAS_STRING) {
+			xmlSchemaTypePtr builtIn;
+			
+			builtIn = xmlSchemaGetBuiltInTypeAncestor(
+			    ctxt->attrInfo->typeDef);
+			defVal = xmlSchemaNewStringValue(
+			    builtIn->builtInType, value);			
+			((xmlSchemaAttributePtr) ctxt->attrInfo->decl)->defVal =
+			    defVal;
+			value = NULL;
+		    } else {
+			 xmlSchemaVErr(ctxt, ctxt->attrInfo->node, 
+			     XML_SCHEMAV_INTERNAL,
+			     "Internal error: xmlSchemaCheckAttrLocallyValid, "
+			     "could not aquire a precomputed vale",
+			     NULL, NULL);
+		    }
+		}
+		if (defVal != NULL) {
+		    if (xmlSchemaCompareValuesWhtsp(ctxt->value,
+			(xmlSchemaWhitespaceValueType) ws,
+			defVal, (xmlSchemaWhitespaceValueType) ws) != 0)
+		    state->state = 
+			XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE;
+		}
+	    } else if (! xmlStrEqual(defValue, BAD_CAST value)) {
+		/*
+		* TODO: Remove this and ensure computed values to be
+		* existent.
+		*/
 		state->state = 
-		    XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE;			
+		    XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE;
 	    }
 	}
     }  

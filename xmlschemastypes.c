@@ -45,6 +45,11 @@ extern double xmlXPathNINF;
 #define XML_SCHEMAS_NAMESPACE_NAME \
     (const xmlChar *)"http://www.w3.org/2001/XMLSchema"
 
+#define IS_WSP_REPLACE_CH(c)	((((c) == 0x9) || ((c) == 0xa)) || \
+				 ((c) == 0xd))
+
+#define IS_WSP_SPACE_CH(c)	((c) == 0x20)
+
 
 static unsigned long powten[10] = {
     1, 10, 100, 1000, 10000, 100000, 1000000, 10000000L,
@@ -675,6 +680,34 @@ xmlSchemaNewValue(xmlSchemaValType type) {
     value->type = type;
     return(value);
 }
+
+/**
+ * xmlSchemaNewStringValue:
+ * @type:  the value type
+ *
+ * Allocate a new simple type value. The type can be 
+ * of XML_SCHEMAS_STRING.
+ *
+ * Returns a pointer to the new value or NULL in case of error
+ */
+xmlSchemaValPtr
+xmlSchemaNewStringValue(xmlSchemaValType type,
+			const xmlChar *value)
+{
+    xmlSchemaValPtr val;
+
+    if (type != XML_SCHEMAS_STRING)
+	return(NULL);
+    val = (xmlSchemaValPtr) xmlMalloc(sizeof(xmlSchemaVal));
+    if (val == NULL) {
+	return(NULL);
+    }
+    memset(val, 0, sizeof(xmlSchemaVal));
+    val->type = type;
+    val->value.str = (xmlChar *) value;
+    return(val);
+}
+
 
 /**
  * xmlSchemaFreeValue:
@@ -2210,7 +2243,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_IDREF:
             ret = xmlValidateNCName(value, 1);
             if ((ret == 0) && (val != NULL)) {
-                TODO;
+		v = xmlSchemaNewValue(XML_SCHEMAS_IDREF);
+		if (v == NULL)
+		    goto error;
+		v->value.str = xmlStrdup(value);
+		*val = v;
             }
             if ((ret == 0) && (node != NULL) &&
                 (node->type == XML_ATTRIBUTE_NODE)) {
@@ -3478,6 +3515,333 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
 }
 
 /**
+ * xmlSchemaComparePreserveReplaceStrings:
+ * @x:  a first string value
+ * @y:  a second string value
+ * @invert: inverts the result if x < y or x > y.
+ *
+ * Compare 2 string for their normalized values.
+ * @x is a string with whitespace of "preserve", @y is
+ * a string with a whitespace of "replace". I.e. @x could
+ * be an "xsd:string" and @y an "xsd:normalizedString".
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaComparePreserveReplaceStrings(xmlSchemaValPtr x, xmlSchemaValPtr y,
+				       int invert)
+{
+    const xmlChar *utf1;
+    const xmlChar *utf2;
+    int tmp;
+
+    if ((x == NULL) || (y == NULL))
+	return(-2);
+    utf1 = x->value.str;
+    utf2 = y->value.str;
+    
+    while ((*utf1 != 0) && (*utf2 != 0)) {
+	if (IS_WSP_REPLACE_CH(*utf2)) {
+	    if (! IS_WSP_SPACE_CH(*utf1)) {
+		if ((*utf1 - 0x20) < 0) {
+		    if (invert)
+			return(1);
+		    else
+			return(-1);
+		} else {
+		    if (invert)
+			return(-1);
+		    else
+			return(1);
+		}
+	    }	    
+	} else {
+	    tmp = *utf1 - *utf2;
+	    if (tmp < 0) {
+		if (invert)
+		    return(1);
+		else
+		    return(-1);
+	    }
+	    if (tmp > 0) {
+		if (invert)
+		    return(-1);
+		else
+		    return(1);
+	    }
+	}
+	utf1++;
+	utf2++;
+    }
+    if (*utf1 != 0) {
+	if (invert)
+	    return(-1);
+	else
+	    return(1);
+    }
+    if (*utf2 != 0) {
+	if (invert)
+	    return(1);
+	else
+	    return(-1);
+    }
+    return(0);
+}
+
+/**
+ * xmlSchemaComparePreserveCollapseStrings:
+ * @x:  a first string value
+ * @y:  a second string value
+ *
+ * Compare 2 string for their normalized values.
+ * @x is a string with whitespace of "preserve", @y is
+ * a string with a whitespace of "collapse". I.e. @x could
+ * be an "xsd:string" and @y an "xsd:normalizedString".
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaComparePreserveCollapseStrings(xmlSchemaValPtr x, xmlSchemaValPtr y,
+					int invert)
+{
+    const xmlChar *utf1;
+    const xmlChar *utf2;
+    int tmp;
+
+    if ((x == NULL) || (y == NULL))
+	return(-2);
+    utf1 = x->value.str;
+    utf2 = y->value.str;
+
+    /* 
+    * Skip leading blank chars of the collapsed string.
+    */
+    while (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2))
+	utf2++;
+
+    while ((*utf1 != 0) && (*utf2 != 0)) {
+	if (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2)) {
+	    if (! IS_WSP_SPACE_CH(*utf1)) {
+		/*
+		* The utf2 character would have been replaced to 0x20.
+		*/
+		if ((*utf1 - 0x20) < 0) {
+		    if (invert)
+			return(1);
+		    else
+			return(-1);
+		} else {
+		    if (invert)
+			return(-1);
+		    else
+			return(1);
+		}
+	    }
+	    utf1++;
+	    utf2++;
+	    /*
+	    * Skip contiguous blank chars of the collapsed string.
+	    */
+	    while (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2))
+		utf2++;
+	} else {
+	    tmp = *utf1++ - *utf2++;
+	    if (tmp < 0) {
+		if (invert)
+		    return(1);
+		else
+		    return(-1);
+	    }
+	    if (tmp > 0) {
+		if (invert)
+		    return(-1);
+		else
+		    return(1);
+	    }
+	}
+    }
+    if (*utf1 != 0) {
+	 if (invert)
+	     return(-1);
+	 else
+	     return(1);
+    }
+    if (*utf2 != 0) {
+	/*
+	* Skip trailing blank chars of the collapsed string.
+	*/
+	while (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2))
+	    utf2++;
+	if (*utf2 != 0) {
+	    if (invert)
+		return(1);
+	    else
+		return(-1);
+	}
+    }
+    return(0);
+}
+
+/**
+ * xmlSchemaComparePreserveCollapseStrings:
+ * @x:  a first string value
+ * @y:  a second string value
+ *
+ * Compare 2 string for their normalized values.
+ * @x is a string with whitespace of "preserve", @y is
+ * a string with a whitespace of "collapse". I.e. @x could
+ * be an "xsd:string" and @y an "xsd:normalizedString".
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaCompareReplaceCollapseStrings(xmlSchemaValPtr x, xmlSchemaValPtr y,
+				       int invert)
+{
+    const xmlChar *utf1;
+    const xmlChar *utf2;
+    int tmp;
+
+    if ((x == NULL) || (y == NULL))
+	return(-2);
+    utf1 = x->value.str;
+    utf2 = y->value.str;
+
+    /* 
+    * Skip leading blank chars of the collapsed string.
+    */
+    while (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2))
+	utf2++;
+    
+    while ((*utf1 != 0) && (*utf2 != 0)) {
+	if (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2)) {
+	    if (! (IS_WSP_SPACE_CH(*utf1) || IS_WSP_REPLACE_CH(*utf1))) {
+		/*
+		* The utf2 character would have been replaced to 0x20.
+		*/
+		if ((*utf1 - 0x20) < 0) {
+		    if (invert)
+			return(1);
+		    else
+			return(-1);
+		} else {
+		    if (invert)
+			return(-1);
+		    else
+			return(1);
+		}
+	    }
+	    utf1++;
+	    utf2++;	    
+	    /* 
+	    * Skip contiguous blank chars of the collapsed string.
+	    */
+	    while (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2))
+		utf2++;
+	} else {
+	    if (IS_WSP_SPACE_CH(*utf1) || IS_WSP_REPLACE_CH(*utf1)) {
+		/*
+		* The utf1 character would have been replaced to 0x20.
+		*/
+		if ((0x20 - *utf2) < 0) {
+		    if (invert)
+			return(1);
+		    else
+			return(-1);
+		} else {
+		    if (invert)
+			return(-1);
+		    else
+			return(1);
+		}
+	    }
+	    tmp = *utf1++ - *utf2++;
+	    if (tmp < 0)
+		return(-1);
+	    if (tmp > 0)
+		return(1);
+	}
+    }
+    if (*utf1 != 0) {
+	 if (invert)
+	     return(-1);
+	 else
+	     return(1);
+    }   
+    if (*utf2 != 0) {
+	/*
+	* Skip trailing blank chars of the collapsed string.
+	*/
+	while (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2))
+	    utf2++;
+	if (*utf2 != 0) {
+	    if (invert)
+		return(1);
+	    else
+		return(-1);
+	}
+    }
+    return(0);
+}
+
+
+/**
+ * xmlSchemaCompareReplacedStrings:
+ * @x:  a first string value
+ * @y:  a second string value
+ *
+ * Compare 2 string for their normalized values.
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaCompareReplacedStrings(xmlSchemaValPtr x, xmlSchemaValPtr y)
+{
+    const xmlChar *utf1;
+    const xmlChar *utf2;
+    int tmp;
+
+    if ((x == NULL) || (y == NULL))
+	return(-2);
+    utf1 = x->value.str;
+    utf2 = y->value.str;
+    
+    while ((*utf1 != 0) && (*utf2 != 0)) {
+	if (IS_WSP_SPACE_CH(*utf2) || IS_WSP_REPLACE_CH(*utf2)) {
+	    if (! (IS_WSP_SPACE_CH(*utf1) || IS_WSP_REPLACE_CH(*utf1))) {
+		if ((*utf1 - 0x20) < 0)
+    		    return(-1);
+		else
+		    return(1);
+	    }	    
+	} else {
+	    if (IS_WSP_SPACE_CH(*utf1) || IS_WSP_REPLACE_CH(*utf1)) {
+		if ((0x20 - *utf2) < 0)
+    		    return(-1);
+		else
+		    return(1);
+	    }
+	    tmp = *utf1 - *utf2;
+	    if (tmp < 0)
+    		return(-1);
+	    if (tmp > 0)
+    		return(1);
+	}
+	utf1++;
+	utf2++;
+    }
+    if (*utf1 != 0)
+        return(1);
+    if (*utf2 != 0)
+        return(-1);
+    return(0);
+}
+
+/**
  * xmlSchemaCompareNormStrings:
  * @x:  a first string value
  * @y:  a second string value
@@ -3605,15 +3969,20 @@ xmlSchemaCompareFloats(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 /**
  * xmlSchemaCompareValues:
  * @x:  a first value
+ * @xwtsp: the whitespace type
  * @y:  a second value
+ * @ywtsp: the whitespace type
  *
  * Compare 2 values
  *
  * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
-int
-xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
+static int
+xmlSchemaCompareValuesInternal(xmlSchemaValPtr x,
+			       xmlSchemaWhitespaceValueType xws,
+			       xmlSchemaValPtr y,
+			       xmlSchemaWhitespaceValueType yws) {
     if ((x == NULL) || (y == NULL))
 	return(-2);
 
@@ -3676,7 +4045,8 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
                 (y->type == XML_SCHEMAS_GYEARMONTH))
                 return (xmlSchemaCompareDates(x, y));
             return (-2);
-        case XML_SCHEMAS_NORMSTRING:
+	case XML_SCHEMAS_STRING:
+        case XML_SCHEMAS_NORMSTRING:		
         case XML_SCHEMAS_TOKEN:
         case XML_SCHEMAS_LANGUAGE:
         case XML_SCHEMAS_NMTOKEN:
@@ -3687,19 +4057,60 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
         case XML_SCHEMAS_ENTITY:
         case XML_SCHEMAS_NOTATION:
         case XML_SCHEMAS_ANYURI:
-            if ((y->type == XML_SCHEMAS_NORMSTRING) ||
+	    /*
+	    * TODO: Compare those against QName.
+	    */
+	    if (y->type == XML_SCHEMAS_QNAME) {
+		TODO
+		return (-2);
+	    }
+            if ((y->type == XML_SCHEMAS_STRING) ||
+		(y->type == XML_SCHEMAS_NORMSTRING) ||
                 (y->type == XML_SCHEMAS_TOKEN) ||
                 (y->type == XML_SCHEMAS_LANGUAGE) ||
                 (y->type == XML_SCHEMAS_NMTOKEN) ||
                 (y->type == XML_SCHEMAS_NAME) ||
-                (y->type == XML_SCHEMAS_QNAME) ||
                 (y->type == XML_SCHEMAS_NCNAME) ||
                 (y->type == XML_SCHEMAS_ID) ||
                 (y->type == XML_SCHEMAS_IDREF) ||
                 (y->type == XML_SCHEMAS_ENTITY) ||
                 (y->type == XML_SCHEMAS_NOTATION) ||
-                (y->type == XML_SCHEMAS_ANYURI))
-                return (xmlSchemaCompareNormStrings(x, y));
+                (y->type == XML_SCHEMAS_ANYURI)) {
+
+		if (xws == XML_SCHEMA_WHITESPACE_PRESERVE) {
+
+		    if (yws == XML_SCHEMA_WHITESPACE_PRESERVE) {
+			/* TODO: What about x < y or x > y. */
+			if (xmlStrEqual(x->value.str, y->value.str))
+			    return (0);
+			else 
+			    return (2);
+		    } else if (yws == XML_SCHEMA_WHITESPACE_REPLACE)
+			return (xmlSchemaComparePreserveReplaceStrings(x, y, 0));
+		    else if (yws == XML_SCHEMA_WHITESPACE_COLLAPSE)
+			return (xmlSchemaComparePreserveCollapseStrings(x, y, 0));
+
+		} else if (xws == XML_SCHEMA_WHITESPACE_REPLACE) {
+
+		    if (yws == XML_SCHEMA_WHITESPACE_PRESERVE)
+			return (xmlSchemaComparePreserveReplaceStrings(y, x, 1));
+		    if (yws == XML_SCHEMA_WHITESPACE_REPLACE)
+			return (xmlSchemaCompareReplacedStrings(x, y));
+		    if (yws == XML_SCHEMA_WHITESPACE_COLLAPSE)
+			return (xmlSchemaCompareReplaceCollapseStrings(x, y, 0));
+
+		} else if (xws == XML_SCHEMA_WHITESPACE_COLLAPSE) {
+
+		    if (yws == XML_SCHEMA_WHITESPACE_PRESERVE)
+			return (xmlSchemaComparePreserveCollapseStrings(y, x, 1));
+		    if (yws == XML_SCHEMA_WHITESPACE_REPLACE)
+			return (xmlSchemaCompareReplaceCollapseStrings(y, x, 1));
+		    if (yws == XML_SCHEMA_WHITESPACE_COLLAPSE)
+			return (xmlSchemaCompareNormStrings(x, y));
+		} else
+		    return (-2);
+                
+	    }
             return (-2);
         case XML_SCHEMAS_QNAME:
             if (y->type == XML_SCHEMAS_QNAME) {
@@ -3754,8 +4165,7 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
                 else
                     return(-1);
             }
-            return (-2);
-        case XML_SCHEMAS_STRING:
+            return (-2);    
         case XML_SCHEMAS_IDREFS:
         case XML_SCHEMAS_ENTITIES:
         case XML_SCHEMAS_NMTOKENS:
@@ -3763,6 +4173,57 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 	    break;
     }
     return -2;
+}
+
+/**
+ * xmlSchemaCompareValues:
+ * @x:  a first value
+ * @y:  a second value
+ *
+ * Compare 2 values
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * case of error
+ */
+int
+xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
+    xmlSchemaWhitespaceValueType xws, yws;
+
+    if (x->type == XML_SCHEMAS_STRING)
+	xws = XML_SCHEMA_WHITESPACE_PRESERVE;
+    else if (x->type == XML_SCHEMAS_NORMSTRING)
+        xws = XML_SCHEMA_WHITESPACE_REPLACE;
+    else
+        xws = XML_SCHEMA_WHITESPACE_COLLAPSE;
+
+    if (y->type == XML_SCHEMAS_STRING)
+	yws = XML_SCHEMA_WHITESPACE_PRESERVE;
+    else if (x->type == XML_SCHEMAS_NORMSTRING)
+        yws = XML_SCHEMA_WHITESPACE_REPLACE;
+    else
+        yws = XML_SCHEMA_WHITESPACE_COLLAPSE;
+
+    return(xmlSchemaCompareValuesInternal(x, xws, y, yws));
+}
+
+/**
+ * xmlSchemaCompareValuesWhtsp:
+ * @x:  a first value
+ * @xws: the whitespace value of x
+ * @y:  a second value
+ * @yws: the whitespace value of y
+ *
+ * Compare 2 values
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * case of error
+ */
+int
+xmlSchemaCompareValuesWhtsp(xmlSchemaValPtr x,
+				 xmlSchemaWhitespaceValueType xws,
+				 xmlSchemaValPtr y,
+				 xmlSchemaWhitespaceValueType yws) {
+    return(xmlSchemaCompareValuesInternal(x, xws, y, yws));
 }
 
 /**
@@ -4136,6 +4597,53 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
     }
     return(0);
 
+}
+
+/**
+ * xmlSchemaGetCanonValue:
+ * @val: the precomputed value
+ * @retValue: the returned value
+ *
+ * Returns a the cononical representation of the value.
+ * The called has to free the returned retValue.
+ *
+ * Returns 0 if the value could be built and -1 in case of
+ *         API errors or if the value type is not supported yet.
+ */
+int
+xmlSchemaGetCanonValue(xmlSchemaValPtr val,
+		       const xmlChar **retValue)
+{
+    if (retValue == NULL)
+	return (-1);
+    *retValue = NULL;
+    switch (val->type) {
+	case XML_SCHEMAS_STRING:	
+	case XML_SCHEMAS_NORMSTRING:
+	/*
+	case XML_SCHEMAS_TOKEN:
+	case XML_SCHEMAS_LANGUAGE:
+	case XML_SCHEMAS_NMTOKEN:
+	case XML_SCHEMAS_NAME:
+	case XML_SCHEMAS_QNAME:
+	case XML_SCHEMAS_NCNAME:
+	case XML_SCHEMAS_ID:
+	case XML_SCHEMAS_IDREF:
+	case XML_SCHEMAS_ENTITY:
+	case XML_SCHEMAS_NOTATION:
+	case XML_SCHEMAS_ANYURI:
+	*/
+	    if (val->value.str == NULL)
+		*retValue = NULL;
+	    else
+		/* TODO: This is not yet correct for non-normalized values. */
+		*retValue = 
+		    BAD_CAST xmlStrdup((const xmlChar *) val->value.str);
+	    return (0);
+	default:
+	    return (-1);
+    }
+    return (-1);
 }
 
 #endif /* LIBXML_SCHEMAS_ENABLED */

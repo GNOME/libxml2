@@ -1,3 +1,14 @@
+Thu Feb 17 12:03:46 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed comparison for default/fixed attribute
+	  values, if the type was 'xsd:string'. Changed the comparison
+	  for IDCs to use the whitespace aware comparison function.
+	* xmlschemastypes.c include/libxml/xmlschemastypes.h:
+	  Added xmlSchemaGetCanonValue, xmlSchemaNewStringValue and
+	  xmlSchemaCompareValuesWhtsp to the API. Added functions
+	  to compare strings with whitespace combinations of "preserve",
+	  "replace" and "collapse".
+
 Wed Feb 16 13:24:35 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Further work on IDCs, especially evaluation for

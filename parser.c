@@ -795,7 +795,6 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     int val = 0;
 
     if (ctxt->token != 0) {
-fprintf(stderr, "xmlParseCharRef : ctxt->token != 0\n");    
 	val = ctxt->token;
         ctxt->token = 0;
         return(val);
@@ -994,7 +993,6 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
     xmlEntityPtr ent = NULL;
 
     if (ctxt->token != 0) {
-fprintf(stderr, "xmlParserHandleReference : ctxt->token != 0\n");
         return;
     }	
     if (CUR != '&') return;
@@ -1229,7 +1227,6 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr input;
 
     if (ctxt->token != 0) {
-fprintf(stderr, "xmlParserHandlePEReference : ctxt->token != 0\n");
         return;
     }	
     if (CUR != '%') return;

@@ -1,16 +1,149 @@
 
-           TODO for the XML parser:
+           TODO for the XML parser and stuff:
+	   ==================================
 
-- use libunicode !
-- finish XPath, then XPointer, Xlink
-- Support for UTF-8 and UTF-16 encoding (Urgent !!!).
-- progressive parsing. The entity support is a first step toward
+URGENT:
+=======
+- Support for UTF-8 and UTF-16 encoding
+  => added some convertion routines provided by Martin Durst but I didn't
+     try to glue them in. I plan to keep everything internally as UTF-8
+     this is slightly more costly but more compact, and recent processors
+     efficiency is cache related. The key for good performances is keeping
+     the data set small, so will I.
+  => the new progressive reading routines call the detection code which
+     need to be enabled, then thest the ISO->UTF-8 stuff, and add more
+     charset conv routines.
+
+TODO:
+=====
+
+- Tools to produce man pages from the SGML docs.
+
+- Finish XPath
+  => attributes addressing troubles
+  => defaulted attributes handling
+  => namespace axis ?
+
+- Add Xpointer recognition/API
+
+- Add Xlink recognition/API
+  => started adding an xlink.[ch] with a unified API for XML and HTML.
+
+- Implement XSLT
+  => seems that someone volunteered ?!?
+
+- Implement XSchemas
+
+- O2K parsing;
+  => this is a somewhat ugly mix of HTML and XML, adding a specific
+     routine in the comment parsing code of HTML and plug the XML 
+     parsing one in-there should not be too hard. Key point is to get
+     XSL to transform all this to something decent ...
+
+- Add regression tests for all WFC errors
+  => did some in test/WFC , not added to the Makefile yet.
+
+- Optimization of tag strings allocation.
+
+- Language identification code, productions [33] to [38]
+
+- Conditional sections in DTDs [61] to [65]
+  => should this crap be really implemented ???
+
+
+- Allow parsed entities defined in the internal subset to override
+  the ones defined in the external subset (DtD customization).
+  => This mean that the entity content should be computed only at
+     use time, i.e. keep the orig string only at parse time and expand
+     only when referenced from the external subset :-(
+     Needed for complete use of most DTD from Eve Maler
+
+- maintain coherency of namespace when doing cut'n paste operations
+  => the functions are coded, but need testing
+
+- function to rebuild the ID table ?
+
+- extend the shell with:
+   - edit
+   - load/save
+   - mv (yum, yum, but it's harder because directories are ordered in
+     our case, mvup and mvdown would be required)
+
+- Parsing of a well balanced chunk
+
+- Add HTML validation using the XHTML DTD
+  - problem: do we want to keep and maintain the code for handling
+    DTD/System ID cache directly in libxml ?
+
+- Add a DTD cache prefilled with xhtml DTDs and entities and a program to
+  manage them -> like the /usr/bin/install-catalog from SGML
+  right place seems $datadir/xmldtds
+
+- turn tester into a generic program xml-test installed with xml-devel
+
+- Add output to XHTML in case of HTML documents.
+
+- dynamically adapt the alloc entry point to use g_alloc()/g_free()
+  if the programmer wants it
+
+Done:
+=====
+
+- External entities loading: 
+   - allow override by client code
+   - make sure it is alled for all external entities referenced
+  Done, client code should use xmlSetExternalEntityLoader() to set
+  the default loading routine. It will be called each time an external
+  entity entity resolution is triggered.
+- maintain ID coherency when removing/changing attributes
+  The function used to deallocate attributes now check for it being an
+  ID and removes it from the table.
+- push mode parsing i.e. non-blocking state based parser
+  done, both for XML and HTML parsers. Use xmlCreatePushParserCtxt()
+  and xmlParseChunk() and html counterparts.
+  The tester program now has a --push option to select that parser 
+  front-end. Douplicated tests to use both and check results are similar.
+
+- Most of XPath, still see some troubles and occasionnal memleaks.
+- an XML shell, allowing to traverse/manipulate an XML document with
+  a shell like interface, and using XPath for the anming syntax
+  - use of readline and history added when available
+  - the shell interface has been cleanly separated and moved to debugXML.c
+- HTML parser, should be fairly stable now
+- API to search the lang of an attribute
+- Collect IDs at parsing and maintain a table. 
+   PBM: maintain the table coherency
+   PBM: how to detect ID types in absence of DtD !
+- Use it for XPath ID support
+- Add validity checking
+  Should be finished now !
+- Add regression tests with entity substitutions
+
+- External Parsed entities, either XML or external Subset [78] and [79]
+  parsing the xmllang DtD now works, so it should be sufficient for
+  most cases !
+
+- progressive reading. The entity support is a first step toward
   asbtraction of an input stream. A large part of the context is still
   located on the stack, moving to a state machine and putting everyting
   in the parsing context should provide an adequate solution.
+  => Rather than progressive parsing, give more power to the SAX-like
+     interface. Currently the DOM-like representation is built but
+     => it should be possible to define that only as a set of SAX callbacks
+	and remove the tree creation from the parser code.
+	DONE
 
-Done:
-- Improve the support for SAX
+- DOM support, instead of using a proprietary in memory
+  format for the document representation, the parser should
+  call a DOM API to actually build the resulting document.
+  Then the parser becomes independent of the in-memory
+  representation of the document. Even better using RPC's
+  the parser can actually build the document in another
+  program.
+  => Work started, now the internal representation is by default
+     very near a direct DOM implementation. The DOM glue is implemented
+     as a separate module. See the GNOME gdome module.
+
 - C++ support : John Ehresman <jehresma@dsg.harvard.edu>
 - Updated code to follow more recent specs, added compatibility flag
 - Better error handling, use a dedicated, overridable error
@@ -18,5 +151,7 @@ Done:
 - Support for CDATA.
 - Keep track of line numbers for better error reporting.
 - Support for PI (SAX one).
+- Support for Comments (bad, should be in ASAP, they are parsed
+  but not stored), should be configurable.
+- Improve the support of entities on save (+SAX).
 
-$Id$

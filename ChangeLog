@@ -1,3 +1,10 @@
+Sat Jan 15 15:09:06 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* TODO: updated
+	* tree.c, parser.c: made sure that only memory alloc problems
+	  and internal parser errors are allowed to write to stdout or
+	  stderr.
+
 Thu Jan 13 11:49:11 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c : restored xmlNewGlobalNs since this seems used by

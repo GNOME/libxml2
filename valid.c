@@ -6039,7 +6039,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     xmlNodePtr child;
     xmlAttrPtr attr;
     xmlNsPtr ns;
-    xmlChar *value;
+    const xmlChar *value;
     int ret = 1;
 
     if (elem == NULL) return(0);
@@ -6067,7 +6067,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
         value = xmlNodeListGetString(doc, attr->children, 0);
 	ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
 	if (value != NULL)
-	    xmlFree(value);
+	    xmlFree((char *)value);
 	attr= attr->next;
     }
     ns = elem->nsDef;
@@ -6314,7 +6314,7 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
 	                    const xmlChar *name ATTRIBUTE_UNUSED) {
     int ret;
     xmlDocPtr doc;
-    xmlElementPtr elem;
+    xmlElementPtr elem = NULL;
 
     if (cur == NULL)
 	return;
@@ -6350,15 +6350,20 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
     }
     if (cur->atype == XML_ATTRIBUTE_NOTATION) {
 	doc = cur->doc;
-	if ((doc == NULL) || (cur->elem == NULL)) {
+	if (cur->elem == NULL) {
 	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
 		   "xmlValidateAttributeCallback(%s): internal error\n",
 		   (const char *) cur->name);
 	    return;
 	}
-	elem = xmlGetDtdElementDesc(doc->intSubset, cur->elem);
-	if (elem == NULL)
+
+	if (doc != NULL)
+	    elem = xmlGetDtdElementDesc(doc->intSubset, cur->elem);
+	if ((elem == NULL) && (doc != NULL))
 	    elem = xmlGetDtdElementDesc(doc->extSubset, cur->elem);
+	if ((elem == NULL) && (cur->parent != NULL) &&
+	    (cur->parent->type == XML_DTD_NODE))
+	    elem = xmlGetDtdElementDesc((xmlDtdPtr) cur->parent, cur->elem);
 	if (elem == NULL) {
 	    xmlErrValidNode(ctxt, NULL, XML_DTD_UNKNOWN_ELEM,
 		   "attribute %s: could not find decl for element %s\n",

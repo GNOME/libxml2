@@ -1,3 +1,8 @@
+Mon Nov  3 17:18:22 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed bug #125811 related to DTD post validation
+	  where the DTD doesn't pertain to a document.
+
 Mon Nov  3 15:25:58 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xmlIO.c include/libxml/parserInternals.h: implemented

@@ -1,3 +1,8 @@
+Thu Jul 24 17:07:06 IST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c parser.c: fixing a bug about a special case of namespace
+	  handling, this closes bug #116841
+
 Wed Jul 23 20:52:36 IST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c result/relaxng/*: checked and fixed the compilation

@@ -1729,7 +1729,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	return(xmlStrdup(name));
 #endif
 
-    /* nasty but valid */
+    /* nasty but well=formed */
     if (cur[0] == ':')
 	return(xmlStrdup(name));
 
@@ -1771,6 +1771,11 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	buffer[len] = 0;
     }
     
+    /* nasty but well=formed
+    if ((c == ':') && (*cur == 0)) {
+	return(xmlStrdup(name));
+    } */
+
     if (buffer == NULL)
 	ret = xmlStrndup(buf, len);
     else {
@@ -1782,8 +1787,10 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 
     if (c == ':') {
 	c = *cur;
-	if (c == 0) return(ret);
         *prefix = ret;
+	if (c == 0) {
+	    return(xmlStrndup("", 0));
+	}
 	len = 0;
 
 	/*

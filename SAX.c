@@ -862,6 +862,22 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
      * Split the full name into a namespace prefix and the tag name
      */
     name = xmlSplitQName(ctxt, fullname, &ns);
+    if ((name != NULL) && (name[0] == 0)) {
+        if (xmlStrEqual(ns, BAD_CAST "xmlns")) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+		     "invalid namespace declaration '%s'\n", fullname);
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt->userData, 
+		     "Avoid attribute ending with ':' like '%s'\n", fullname);
+	}
+	if (ns != NULL)
+	    xmlFree(ns);
+	ns = NULL;
+	xmlFree(name);
+	name = xmlStrdup(fullname);
+    }
     if (name == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, 

@@ -1804,7 +1804,6 @@ xmlOutputBufferCreateFilename(const char *URI,
 	for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
 		(xmlOutputCallbackTable[i].matchcallback(URI) != 0)) {
-		context = xmlOutputCallbackTable[i].opencallback(URI);
 #if defined(LIBXML_HTTP_ENABLED) && defined(HAVE_ZLIB_H)
 		/*  Need to pass compression parameter into HTTP open calls  */
 		if (xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch)

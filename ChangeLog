@@ -1,3 +1,8 @@
+Tue Mar 26 13:43:16 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: Thomas Steinborn pointed out #76404 that libxml2
+	  could leak filedescriptors
+
 Tue Mar 26 08:55:53 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in nanohttp.c: applied patch from Allan Clark for

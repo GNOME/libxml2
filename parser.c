@@ -129,32 +129,6 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
  ************************************************************************/
 
 /**
- * xmlErrMemory:
- * @ctxt:  an XML parser context
- * @extra:  extra informations
- *
- * Handle a redefinition of attribute error
- */
-static void
-xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
-{
-    if (ctxt != NULL) {
-        ctxt->errNo = XML_ERR_NO_MEMORY;
-        ctxt->instate = XML_PARSER_EOF;
-        ctxt->disableSAX = 1;
-    }
-    if (extra)
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
-                        XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
-                        NULL, NULL, 0, 0,
-                        "Memory allocation failed : %s\n", extra);
-    else
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
-                        XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
-                        NULL, NULL, 0, 0, "Memory allocation failed\n");
-}
-
-/**
  * xmlErrAttributeDup:
  * @ctxt:  an XML parser context
  * @prefix:  the attribute prefix

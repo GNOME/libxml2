@@ -492,6 +492,14 @@ typedef	void	(*xmlEntityReferenceFunc)	(xmlEntityPtr ent,
   
 XMLPUBFUN void XMLCALL		xmlSetEntityReferenceFunc	(xmlEntityReferenceFunc func);
 
+#ifdef IN_LIBXML
+/*
+ * internal only
+ */
+XMLPUBFUN void XMLCALL
+	xmlErrMemory		(xmlParserCtxtPtr ctxt,
+				 const char *extra);
+#endif
 
 #ifdef __cplusplus
 }

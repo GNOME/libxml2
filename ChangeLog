@@ -1,3 +1,9 @@
+Sun Oct  5 23:30:48 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c parser.c valid.c include/libxml/parserInternals.h:
+	  more cleanup of error handling in parserInternals, sharing the
+	  routine for memory errors.
+
 Sun Oct  5 15:49:14 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c Makefile.am legacy.c parser.c parserInternals.c

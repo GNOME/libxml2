@@ -44,14 +44,14 @@ static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
  ************************************************************************/
 
 /**
- * xmlErrMemory:
+ * xmlVErrMemory:
  * @ctxt:  an XML validation parser context
  * @extra:  extra informations
  *
  * Handle an out of memory error
  */
 static void
-xmlErrMemory(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, const char *extra)
+xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
 {
     xmlGenericErrorFunc channel = NULL;
     xmlParserCtxtPtr pctxt = NULL;
@@ -230,7 +230,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(ctxt->vstateMax *
 		              sizeof(ctxt->vstateTab[0]));
         if (ctxt->vstateTab == NULL) {
-	    xmlErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt, "malloc failed");
 	    return(-1);
 	}
     }
@@ -241,7 +241,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
 	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
         if (tmp == NULL) {
-	    xmlErrMemory(ctxt, "realloc failed");
+	    xmlVErrMemory(ctxt, "realloc failed");
 	    return(-1);
 	}
 	ctxt->vstateMax *= 2;
@@ -337,7 +337,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(
 		     ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
 	if (ctxt->vstateTab == NULL) {
-	    xmlErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt, "malloc failed");
 	    return(-1);
 	}
     }
@@ -347,7 +347,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
         tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
 	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
         if (tmp == NULL) {
-	    xmlErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt, "malloc failed");
 	    return(-1);
 	}
 	ctxt->vstateMax *= 2;
@@ -395,7 +395,7 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
             (xmlNodePtr *) xmlMalloc(ctxt->nodeMax *
                                      sizeof(ctxt->nodeTab[0]));
         if (ctxt->nodeTab == NULL) {
-	    xmlErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt, "malloc failed");
             ctxt->nodeMax = 0;
             return (0);
         }
@@ -405,7 +405,7 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
         tmp = (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
 			      ctxt->nodeMax * 2 * sizeof(ctxt->nodeTab[0]));
         if (tmp == NULL) {
-	    xmlErrMemory(ctxt, "realloc failed");
+	    xmlVErrMemory(ctxt, "realloc failed");
             return (0);
         }
         ctxt->nodeMax *= 2;
@@ -634,7 +634,7 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	    
 	    fullname = xmlBuildQName(content->name, content->prefix, fn, 50);
 	    if (fullname == NULL) {
-	        xmlErrMemory(ctxt, "Building content model");
+	        xmlVErrMemory(ctxt, "Building content model");
 		return(0);
 	    }
 
@@ -836,7 +836,7 @@ xmlValidCtxtPtr xmlNewValidCtxt(void) {
     xmlValidCtxtPtr ret;
 
     if ((ret = xmlMalloc(sizeof (xmlValidCtxt))) == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
 	return (NULL);
     }
 
@@ -896,7 +896,7 @@ xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
     }
     ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
     if (ret == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlElementContent));
@@ -931,7 +931,7 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
     if (cur == NULL) return(NULL);
     ret = xmlNewElementContent((xmlChar *) cur->name, cur->type);
     if (ret == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     if (cur->prefix != NULL)
@@ -1285,7 +1285,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	dtd->elements = (void *) table;
     }
     if (table == NULL) {
-	xmlErrMemory(ctxt,
+	xmlVErrMemory(ctxt,
             "xmlAddElementDecl: Table creation failed!\n");
 	if (uqname != NULL)
 	    xmlFree(uqname);
@@ -1332,7 +1332,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     } else {
 	ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (ret == NULL) {
-	    xmlErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt, "malloc failed");
 	    if (uqname != NULL)
 		xmlFree(uqname);
             if (ns != NULL)
@@ -1347,7 +1347,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	 */
 	ret->name = xmlStrdup(name);
 	if (ret->name == NULL) {
-	    xmlErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt, "malloc failed");
 	    if (uqname != NULL)
 		xmlFree(uqname);
             if (ns != NULL)
@@ -1431,7 +1431,7 @@ xmlCopyElement(xmlElementPtr elem) {
 
     cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
     if (cur == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlElement));
@@ -1553,7 +1553,7 @@ xmlCreateEnumeration(const xmlChar *name) {
 
     ret = (xmlEnumerationPtr) xmlMalloc(sizeof(xmlEnumeration));
     if (ret == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
         return(NULL);
     }
     memset(ret, 0, sizeof(xmlEnumeration));
@@ -1844,7 +1844,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	dtd->attributes = (void *) table;
     }
     if (table == NULL) {
-	xmlErrMemory(ctxt,
+	xmlVErrMemory(ctxt,
             "xmlAddAttributeDecl: Table creation failed!\n");
         return(NULL);
     }
@@ -1852,7 +1852,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 
     ret = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (ret == NULL) {
-	xmlErrMemory(ctxt, "malloc failed");
+	xmlVErrMemory(ctxt, "malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlAttribute));
@@ -1975,7 +1975,7 @@ xmlCopyAttribute(xmlAttributePtr attr) {
 
     cur = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (cur == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttribute));
@@ -2176,14 +2176,14 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
     if (table == NULL) 
         dtd->notations = table = xmlCreateNotationTable();
     if (table == NULL) {
-	xmlErrMemory(ctxt,
+	xmlVErrMemory(ctxt,
 		"xmlAddNotationDecl: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (ret == NULL) {
-	xmlErrMemory(ctxt, "malloc failed");
+	xmlVErrMemory(ctxt, "malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlNotation));
@@ -2239,7 +2239,7 @@ xmlCopyNotation(xmlNotationPtr nota) {
 
     cur = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (cur == NULL) {
-	xmlErrMemory(NULL, "malloc failed");
+	xmlVErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     if (nota->name != NULL)
@@ -2379,14 +2379,14 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     if (table == NULL) 
         doc->ids = table = xmlCreateIDTable();
     if (table == NULL) {
-	xmlErrMemory(ctxt,
+	xmlVErrMemory(ctxt,
 		"xmlAddID: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
     if (ret == NULL) {
-	xmlErrMemory(ctxt, "malloc failed");
+	xmlVErrMemory(ctxt, "malloc failed");
 	return(NULL);
     }
 
@@ -2686,14 +2686,14 @@ xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *v
     if (table == NULL) 
         doc->refs = table = xmlCreateRefTable();
     if (table == NULL) {
-	xmlErrMemory(ctxt,
+	xmlVErrMemory(ctxt,
             "xmlAddRef: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlRefPtr) xmlMalloc(sizeof(xmlRef));
     if (ret == NULL) {
-	xmlErrMemory(ctxt, "malloc failed");
+	xmlVErrMemory(ctxt, "malloc failed");
         return(NULL);
     }
 
@@ -2935,7 +2935,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
 	    dtd->elements = (void *) table;
 	}
 	if (table == NULL) {
-	    xmlErrMemory(NULL, "element table allocation failed");
+	    xmlVErrMemory(NULL, "element table allocation failed");
 	    return(NULL);
 	}
     }
@@ -2948,7 +2948,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
     if ((cur == NULL) && (create)) {
 	cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (cur == NULL) {
-	    xmlErrMemory(NULL, "malloc failed");
+	    xmlVErrMemory(NULL, "malloc failed");
 	    return(NULL);
 	}
 	memset(cur, 0, sizeof(xmlElement));
@@ -4163,7 +4163,7 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	
 	fullname = xmlBuildQName(elem->name, prefix, fn, 50);
 	if (fullname == NULL) {
-	    xmlErrMemory(ctxt, "Validating namespace");
+	    xmlVErrMemory(ctxt, "Validating namespace");
 	    return(0);
 	}
 	if (ns->prefix != NULL) {
@@ -4950,7 +4950,7 @@ fail:
     ctxt->vstateTab = (xmlValidState *) xmlMalloc(
 		 ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
     if (ctxt->vstateTab == NULL) {
-	xmlErrMemory(ctxt, "malloc failed");
+	xmlVErrMemory(ctxt, "malloc failed");
 	return(-1);
     }
     /*
@@ -5006,7 +5006,7 @@ fail:
 		     */
 		    tmp = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
 		    if (tmp == NULL) {
-			xmlErrMemory(ctxt, "malloc failed");
+			xmlVErrMemory(ctxt, "malloc failed");
 			xmlFreeNodeList(repl);
 			ret = -1;
 			goto done;
@@ -5957,7 +5957,7 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 		
 		fullname = xmlBuildQName(root->name, root->ns->prefix, fn, 50);
 		if (fullname == NULL) {
-		    xmlErrMemory(ctxt, NULL);
+		    xmlVErrMemory(ctxt, NULL);
 		    return(0);
 		}
 		ret = xmlStrEqual(doc->intSubset->name, fullname);
@@ -6093,7 +6093,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 
 	dup = xmlStrdup(name);
 	if (dup == NULL) {
-	    xmlErrMemory(ctxt, "IDREFS split");
+	    xmlVErrMemory(ctxt, "IDREFS split");
 	    ctxt->valid = 0;
 	    return;
 	}

@@ -86,6 +86,116 @@ xmlCheckVersion(int version) {
     }
 }
 
+
+/************************************************************************
+ *									*
+ * 		Some factorized error routines				*
+ *									*
+ ************************************************************************/
+
+
+/**
+ * xmlErrMemory:
+ * @ctxt:  an XML parser context
+ * @extra:  extra informations
+ *
+ * Handle a redefinition of attribute error
+ */
+void
+xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
+{
+    if (ctxt != NULL) {
+        ctxt->errNo = XML_ERR_NO_MEMORY;
+        ctxt->instate = XML_PARSER_EOF;
+        ctxt->disableSAX = 1;
+    }
+    if (extra)
+        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+                        XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
+                        NULL, NULL, 0, 0,
+                        "Memory allocation failed : %s\n", extra);
+    else
+        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+                        XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
+                        NULL, NULL, 0, 0, "Memory allocation failed\n");
+}
+
+/**
+ * xmlErrEncoding:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an string info
+ * @str2:  an string info
+ *
+ * Handle an encoding error
+ */
+static void
+xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+               const char *msg, const xmlChar * str1, const xmlChar * str2)
+{
+    if (ctxt != NULL)
+        ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL,
+                    ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+                    NULL, 0, (const char *) str1, (const char *) str2,
+                    NULL, 0, 0, msg, str1, str2);
+    if (ctxt != NULL) {
+        ctxt->wellFormed = 0;
+        if (ctxt->recovery == 0)
+            ctxt->disableSAX = 1;
+    }
+}
+
+/**
+ * xmlErrInternal:
+ * @ctxt:  an XML parser context
+ * @msg:  the error message
+ * @str:  error informations
+ *
+ * Handle an internal error
+ */
+static void
+xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
+{
+    if (ctxt != NULL)
+        ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+    __xmlRaiseError(NULL, NULL,
+                    ctxt, NULL, XML_FROM_PARSER, XML_ERR_INTERNAL_ERROR,
+                    XML_ERR_FATAL, NULL, 0, (const char *) str, NULL, NULL,
+                    0, 0, msg, str);
+    if (ctxt != NULL) {
+        ctxt->wellFormed = 0;
+        if (ctxt->recovery == 0)
+            ctxt->disableSAX = 1;
+    }
+}
+
+/**
+ * xmlErrEncodingInt:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @val:  an integer value
+ *
+ * n encoding error
+ */
+static void
+xmlErrEncodingInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+                  const char *msg, int val)
+{
+    if (ctxt != NULL)
+        ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL,
+                    ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+                    NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
+    if (ctxt != NULL) {
+        ctxt->wellFormed = 0;
+        if (ctxt->recovery == 0)
+            ctxt->disableSAX = 1;
+    }
+}
+
 /************************************************************************
  *									*
  * 		Some functions to avoid too large macros		*
@@ -890,15 +1000,9 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
                     if (((val > 0xd7ff) && (val < 0xe000)) ||
                         ((val > 0xfffd) && (val < 0x10000)) ||
                         (val >= 0x110000)) {
-                        if ((ctxt->sax != NULL) &&
-                            (ctxt->sax->error != NULL))
-                            ctxt->sax->error(ctxt->userData,
-                                             "Char 0x%X out of allowed range\n",
-                                             val);
-                        ctxt->errNo = XML_ERR_INVALID_ENCODING;
-                        ctxt->wellFormed = 0;
-                        if (ctxt->recovery == 0)
-                            ctxt->disableSAX = 1;
+			xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
+					  "Char 0x%X out of allowed range\n",
+					  val);
                     }
                 } else
                     /* 2-byte code */
@@ -942,17 +1046,15 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
+    xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		   "Input is not proper UTF-8, indicate encoding !\n",
+		   NULL, NULL);
     if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-        ctxt->sax->error(ctxt->userData,
-                         "Input is not proper UTF-8, indicate encoding !\n");
         ctxt->sax->error(ctxt->userData,
                          "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
                          ctxt->input->cur[0], ctxt->input->cur[1],
                          ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-    ctxt->wellFormed = 0;
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
-
     ctxt->charset = XML_CHAR_ENCODING_8859_1;
     ctxt->input->cur++;
     return;
@@ -1041,13 +1143,8 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		val |= cur[1] & 0x3f;
 	    }
 	    if (!IS_CHAR(val)) {
-		if ((ctxt->sax != NULL) &&
-		    (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
-				     "Char 0x%X out of allowed range\n", val);
-		ctxt->errNo = XML_ERR_INVALID_CHAR;
-		ctxt->wellFormed = 0;
-		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	        xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
+				  "Char 0x%X out of allowed range\n", val);
 	    }    
 	    return(val);
 	} else {
@@ -1095,16 +1192,14 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
+    xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		   "Input is not proper UTF-8, indicate encoding !\n",
+		   NULL, NULL);
     if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	ctxt->sax->error(ctxt->userData, 
-			 "Input is not proper UTF-8, indicate encoding !\n");
 	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-    ctxt->wellFormed = 0;
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
-
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     *len = 1;
     return((int) *ctxt->input->cur);
@@ -1171,16 +1266,8 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
                 val |= cur[1] & 0x3f;
             }
             if (!IS_CHAR(val)) {
-                if ((ctxt != NULL) && (ctxt->sax != NULL) &&
-                    (ctxt->sax->error != NULL))
-                    ctxt->sax->error(ctxt->userData,
-                                     "Char 0x%X out of allowed range\n",
-                                     val);
-		if (ctxt != NULL) {
-		    ctxt->errNo = XML_ERR_INVALID_ENCODING;
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-		}
+	        xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
+				  "Char 0x%X out of allowed range\n", val);
             }
             return (val);
         } else {
@@ -1205,19 +1292,15 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    if (ctxt != NULL) {
-        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-            ctxt->sax->error(ctxt->userData,
-                         "Input is not proper UTF-8, indicate encoding !\n");
-            ctxt->sax->error(ctxt->userData,
-                             "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-                             ctxt->input->cur[0], ctxt->input->cur[1],
-                             ctxt->input->cur[2], ctxt->input->cur[3]);
-        }
-        ctxt->errNo = XML_ERR_INVALID_ENCODING;
-	ctxt->wellFormed = 0;
+    xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		   "Input is not proper UTF-8, indicate encoding !\n",
+		   NULL, NULL);
+    if ((ctxt != NULL) && (ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+	ctxt->sax->error(ctxt->userData,
+			 "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			 ctxt->input->cur[0], ctxt->input->cur[1],
+			 ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-
     *len = 1;
     return ((int) *cur);
 }
@@ -1249,9 +1332,9 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
 	else if (val < 0x10000) { *out++= (val >> 12) | 0xE0;  bits=  6;}
 	else if (val < 0x110000)  { *out++= (val >> 18) | 0xF0;  bits=  12; }
 	else {
-	    xmlGenericError(xmlGenericErrorContext,
+	    xmlErrEncodingInt(NULL, XML_ERR_INVALID_CHAR,
 		    "Internal error, xmlCopyCharMultiByte 0x%X out of bound\n",
-		    val);
+			      val);
 	    return(0);
 	}
 	for ( ; bits >= 0; bits-= 6)
@@ -1306,11 +1389,8 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 
     switch (enc) {
 	case XML_CHAR_ENCODING_ERROR:
-	    ctxt->errNo = XML_ERR_UNKNOWN_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, "encoding unknown\n");
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	    xmlErrEncoding(ctxt, XML_ERR_UNKNOWN_ENCODING,
+	                   "encoding unknown\n", NULL, NULL);
 	    break;
 	case XML_CHAR_ENCODING_NONE:
 	    /* let's assume it's UTF-8 without the XML decl */
@@ -1359,12 +1439,8 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	 */
 	switch (enc) {
 	    case XML_CHAR_ENCODING_ERROR:
-		ctxt->errNo = XML_ERR_UNKNOWN_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, "encoding unknown\n");
-		ctxt->wellFormed = 0;
-		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-		ctxt->charset = XML_CHAR_ENCODING_UTF8;
+		xmlErrEncoding(ctxt, XML_ERR_UNKNOWN_ENCODING,
+			       "encoding unknown\n", NULL, NULL);
 		break;
 	    case XML_CHAR_ENCODING_NONE:
 		/* let's assume it's UTF-8 without the XML decl */
@@ -1380,40 +1456,34 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	    case XML_CHAR_ENCODING_UTF16BE:
 		break;
 	    case XML_CHAR_ENCODING_UCS4LE:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding USC4 little endian not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "USC4 little endian", NULL);
 		break;
 	    case XML_CHAR_ENCODING_UCS4BE:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding USC4 big endian not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "USC4 big endian", NULL);
 		break;
 	    case XML_CHAR_ENCODING_EBCDIC:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding EBCDIC not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "EBCDIC", NULL);
 		break;
 	    case XML_CHAR_ENCODING_UCS4_2143:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding UCS4 2143 not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "UCS4 2143", NULL);
 		break;
 	    case XML_CHAR_ENCODING_UCS4_3412:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding UCS4 3412 not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "UCS4 3412", NULL);
 		break;
 	    case XML_CHAR_ENCODING_UCS2:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding UCS2 not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "UCS2", NULL);
 		break;
 	    case XML_CHAR_ENCODING_8859_1:
 	    case XML_CHAR_ENCODING_8859_2:
@@ -1438,22 +1508,19 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		ctxt->charset = enc;
 		return(0);
 	    case XML_CHAR_ENCODING_2022_JP:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding ISO-2022-JPnot supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "ISO-2022-JP", NULL);
 		break;
 	    case XML_CHAR_ENCODING_SHIFT_JIS:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding Shift_JIS not supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "Shift_JIS", NULL);
 		break;
 	    case XML_CHAR_ENCODING_EUC_JP:
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "char encoding EUC-JPnot supported\n");
+		xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+			       "encoding not supported %s\n",
+			       BAD_CAST "EUC-JP", NULL);
 		break;
 	}
     }
@@ -1574,8 +1641,9 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 						      ctxt->input->buf->raw);
 		    }
 		    if (nbchars < 0) {
-			xmlGenericError(xmlGenericErrorContext,
-				"xmlSwitchToEncoding: encoder error\n");
+		        xmlErrInternal(ctxt,
+				"xmlSwitchToEncoding: encoder error\n",
+		                       NULL);
 			return(-1);
 		    }
 		    ctxt->input->base =
@@ -1591,9 +1659,8 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		     * When parsing a static memory array one must know the
 		     * size to be able to convert the buffer.
 		     */
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-					 "xmlSwitchToEncoding : no input\n");
+		    xmlErrInternal(ctxt, "xmlSwitchToEncoding : no input\n",
+		                   NULL);
 		    return(-1);
 		} else {
 		    int processed;
@@ -1617,8 +1684,9 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		                               ctxt->input->buf->buffer,
 					       ctxt->input->buf->raw);
 		    if (nbchars < 0) {
-			xmlGenericError(xmlGenericErrorContext,
-				"xmlSwitchToEncoding: encoder error\n");
+			xmlErrInternal(ctxt,
+				"xmlSwitchToEncoding: encoder error\n",
+				       NULL);
 			return(-1);
 		    }
 
@@ -1635,9 +1703,8 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		}
 	    }
 	} else {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData,
-		                 "xmlSwitchToEncoding : no input\n");
+	    xmlErrInternal(ctxt, "xmlSwitchToEncoding : no input\n",
+	                   NULL);
 	    return(-1);
 	}
 	/*
@@ -1691,13 +1758,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
 
     input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
-	if (ctxt != NULL) {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-			 "malloc: couldn't allocate a new input stream\n");
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	}
+        xmlErrMemory(ctxt,  "couldn't allocate a new input stream\n");
 	return(NULL);
     }
     memset(input, 0, sizeof(xmlParserInput));
@@ -1760,11 +1821,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     xmlParserInputPtr input;
 
     if (entity == NULL) {
-        ctxt->errNo = XML_ERR_INTERNAL_ERROR;
-        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	      "internal: xmlNewEntityInputStream entity = NULL\n");
-	ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+        xmlErrInternal(ctxt, "xmlNewEntityInputStream entity = NULL\n",
+	               NULL);
 	return(NULL);
     }
     if (xmlParserDebugEntities)
@@ -1773,31 +1831,27 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     if (entity->content == NULL) {
 	switch (entity->etype) {
             case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-	        ctxt->errNo = XML_ERR_UNPARSED_ENTITY;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "xmlNewEntityInputStream unparsed entity !\n");
+	        xmlErrInternal(ctxt, "Cannot parse entity %s\n",
+		               entity->name);
                 break;
             case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
             case XML_EXTERNAL_PARAMETER_ENTITY:
 		return(xmlLoadExternalEntity((char *) entity->URI,
 		       (char *) entity->ExternalID, ctxt));
             case XML_INTERNAL_GENERAL_ENTITY:
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-	  "Internal entity %s without content !\n", entity->name);
+	        xmlErrInternal(ctxt,
+		      "Internal entity %s without content !\n",
+		               entity->name);
                 break;
             case XML_INTERNAL_PARAMETER_ENTITY:
-		ctxt->errNo = XML_ERR_INTERNAL_ERROR;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-	  "Internal parameter entity %s without content !\n", entity->name);
+	        xmlErrInternal(ctxt,
+		      "Internal parameter entity %s without content !\n",
+		               entity->name);
                 break;
             case XML_INTERNAL_PREDEFINED_ENTITY:
-		ctxt->errNo = XML_ERR_INTERNAL_ERROR;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-	      "Predefined entity %s without content !\n", entity->name);
+	        xmlErrInternal(ctxt,
+		      "Predefined entity %s without content !\n",
+		               entity->name);
                 break;
 	}
 	return(NULL);
@@ -1827,10 +1881,8 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     xmlParserInputPtr input;
 
     if (buffer == NULL) {
-	ctxt->errNo = XML_ERR_INTERNAL_ERROR;
-        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	      "internal: xmlNewStringInputStream string = NULL\n");
+        xmlErrInternal(ctxt, "xmlNewStringInputStream string = NULL\n",
+	               NULL);
 	return(NULL);
     }
     if (xmlParserDebugEntities)
@@ -1838,6 +1890,7 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
 		"new fixed input: %.30s\n", buffer);
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
+        xmlErrMemory(ctxt,  "couldn't allocate a new input stream\n");
 	return(NULL);
     }
     input->base = buffer;
@@ -1913,8 +1966,7 @@ int
 xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
     if(ctxt==NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: NULL context given\n");
+        xmlErrInternal(NULL, "Got NULL parser context\n", NULL);
         return(-1);
     }
 
@@ -1922,14 +1974,12 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     ctxt->dict = xmlDictCreate();
     if (ctxt->dict == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: out of memory\n");
+        xmlErrMemory(NULL, "cannot initialize parser context\n");
 	return(-1);
     }
     ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ctxt->sax == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: out of memory\n");
+        xmlErrMemory(NULL, "cannot initialize parser context\n");
 	return(-1);
     }
     else
@@ -1941,8 +1991,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->inputTab = (xmlParserInputPtr *)
 	        xmlMalloc(5 * sizeof(xmlParserInputPtr));
     if (ctxt->inputTab == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: out of memory\n");
+        xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->inputNr = 0;
 	ctxt->inputMax = 0;
 	ctxt->input = NULL;
@@ -1966,8 +2015,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     /* Allocate the Node stack */
     ctxt->nodeTab = (xmlNodePtr *) xmlMalloc(10 * sizeof(xmlNodePtr));
     if (ctxt->nodeTab == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: out of memory\n");
+        xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;
 	ctxt->node = NULL;
@@ -1983,8 +2031,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     /* Allocate the Name stack */
     ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
     if (ctxt->nameTab == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: out of memory\n");
+        xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;
 	ctxt->node = NULL;
@@ -2003,8 +2050,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     /* Allocate the space stack */
     ctxt->spaceTab = (int *) xmlMalloc(10 * sizeof(int));
     if (ctxt->spaceTab == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlInitParserCtxt: out of memory\n");
+        xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;
 	ctxt->node = NULL;
@@ -2159,9 +2205,7 @@ xmlNewParserCtxt()
 
     ctxt = (xmlParserCtxtPtr) xmlMalloc(sizeof(xmlParserCtxt));
     if (ctxt == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewParserCtxt : cannot allocate context\n");
-        xmlGenericError(xmlGenericErrorContext, "malloc failed");
+	xmlErrMemory(NULL, "cannot allocate parser context\n");
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(xmlParserCtxt));
@@ -2326,9 +2370,7 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
                                                      byte_size);
 
             if (tmp_buffer == NULL) {
-                if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                    ctxt->sax->error(ctxt->userData, "Out of memory\n");
-                ctxt->errNo = XML_ERR_NO_MEMORY;
+		xmlErrMemory(ctxt, "failed to allocate buffer\n");
                 return;
             }
             ctxt->node_seq.buffer = tmp_buffer;

@@ -85,6 +85,53 @@ static int xmlLittleEndian = 1;
  ************************************************************************/
 
 /**
+ * xmlUTF8Size:
+ * @utf: pointer to the UTF8 character
+ *
+ * returns the numbers of bytes in the character, -1 on format error
+ */
+int
+xmlUTF8Size(const xmlChar *utf) {
+    xmlChar mask;
+    int len;
+
+    if (utf == NULL)
+        return -1;
+    if (*utf < 0x80)
+        return 1;
+    /* check valid UTF8 character */
+    if (!(*utf & 0x40))
+        return -1;
+    /* determine number of bytes in char */
+    len = 2;
+    for (mask=0x20; mask != 0; mask>>=1) {
+        if (!(*utf & mask))
+            return len;
+        len++;
+    }
+    return -1;
+}
+
+/**
+ * xmlUTF8Charcmp
+ * @utf1: pointer to first UTF8 char
+ * @utf2: pointer to second UTF8 char
+ *
+ * returns result of comparing the two UCS4 values
+ * as with xmlStrncmp
+ */
+int
+xmlUTF8Charcmp(const xmlChar *utf1, const xmlChar *utf2) {
+
+    if (utf1 == NULL ) {
+        if (utf2 == NULL)
+            return 0;
+        return -1;
+    }
+    return xmlStrncmp(utf1, utf2, xsltUTF8Size(utf1));
+}
+
+/**
  * xmlUTF8Strlen:
  * @utf:  a sequence of UTF-8 encoded bytes
  *

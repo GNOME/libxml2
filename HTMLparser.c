@@ -4358,10 +4358,11 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
 		(buf[base + 2] == '-') && (buf[base + 3] == '-')) {
 		incomment = 1;
 	    }
-	    /* do not increment base, some people use <!--> */
+	    /* do not increment past <!, some people use <!--> */
+	    base += 2;
 	}
 	if (incomment) {
-	    if (base + 3 < len)
+	    if (base + 3 > len)
 		return(-1);
 	    if ((buf[base] == '-') && (buf[base + 1] == '-') &&
 		(buf[base + 2] == '>')) {

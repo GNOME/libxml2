@@ -208,7 +208,6 @@ int	xmlGetUTF8Char			(const unsigned char *utf,
  */
 
 int	xmlCheckUTF8			(const unsigned char *utf);
-
 int	xmlUTF8Strsize			(const xmlChar *utf,
 					 int len);
 xmlChar * xmlUTF8Strndup		(const xmlChar *utf,
@@ -220,9 +219,10 @@ int	xmlUTF8Strloc			(const xmlChar *utf,
 xmlChar * xmlUTF8Strsub			(const xmlChar *utf,
 					 int start,
 					 int len);
-
 int	xmlUTF8Strlen			(const xmlChar *utf);
-
+int	xmlUTF8Size			(const xmlChar *utf);
+int	xmlUTF8Charcmp			(const xmlChar *utf1,
+					 const xmlChar *utf2);
 #ifdef __cplusplus
 }
 #endif

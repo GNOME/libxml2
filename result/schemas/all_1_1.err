@@ -1,0 +1,26 @@
+Type of all2 : ./test/schemas/all_1.xsd:5 :elements
+Type of all2 : ./test/schemas/all_1.xsd:5 :elements
+Type of anontype1 : ./test/schemas/all_1.xsd:4 :elements
+Building content model for doc
+Unimplemented block at xmlschemas.c:3062
+Content model of doc:
+ regexp: '(null)' 
+3 atoms:
+ 00  atom: string onceonly 'a' 
+ 01  atom: string onceonly 'b' 
+ 02  atom: string onceonly 'c' 
+2 states:
+ state: 0, 4 transitions:
+  trans: counted 0, atom 0, to 0
+  trans: counted 1, atom 1, to 0
+  trans: counted 2, atom 2, to 0
+  trans: count based 1193047, epsilon to 1
+ state: FINAL 1, 0 transitions:
+3 counters:
+ 0: min 1 max 1
+ 1: min 1 max 1
+ 2: min 1 max 1
+xmlSchemaValidateCallback: b, b, b
+xmlSchemaValidateCallback: c, c, c
+xmlSchemaValidateCallback: a, a, a
+Element doc content check succeeded

@@ -3037,10 +3037,10 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    break;
 	}
 	case XML_SCHEMA_TYPE_ALL: {
-	    xmlAutomataStatePtr end;
 	    xmlAutomataStatePtr start;
 	    xmlSchemaTypePtr subtypes;
 	    xmlSchemaElementPtr elem = (xmlSchemaElementPtr) type;
+	    int lax;
 
 	    subtypes = type->subtypes;
 	    if (subtypes == NULL)
@@ -3056,7 +3056,9 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 				subtypes);
 		subtypes = subtypes->next;
 	    }
-	    ctxt->state = xmlAutomataNewAllTrans(ctxt->am, ctxt->state, NULL);
+	    lax = type->minOccurs == 0;
+	    ctxt->state = xmlAutomataNewAllTrans(ctxt->am, ctxt->state, NULL,
+		                                 lax);
 	    TODO
 	    break;
 	}
@@ -3895,6 +3897,11 @@ static int
 xmlSchemaRegisterAttributes(xmlSchemaValidCtxtPtr ctxt,
 	                    xmlAttrPtr attrs) {
     while (attrs != NULL) {
+	if ((attrs->ns != NULL) &&
+	    (xmlStrEqual(attrs->ns->href, xmlSchemaInstanceNs))) {
+	    attrs = attrs->next;
+	    continue;
+	}
 	if (ctxt->attrNr >= ctxt->attrMax) {
 	    xmlSchemaAttrStatePtr tmp;
 

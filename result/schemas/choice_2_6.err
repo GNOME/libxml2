@@ -38,15 +38,7 @@ xmlSchemaValidateCallback: a, a, a
 xmlSchemaValidateCallback: b, b, b
 xmlSchemaValidateCallback: a, a, a
 xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
 xmlSchemaValidateCallback: b, b, b
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: a, a, a
 xmlSchemaValidateCallback: a, a, a
 xmlSchemaValidateCallback: a, a, a
 Element doc content check failed

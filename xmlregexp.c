@@ -281,7 +281,8 @@ struct _xmlRegExecCtxt {
 
 };
 
-#define REGEXP_ALL_COUNTER 0x123456
+#define REGEXP_ALL_COUNTER	0x123456
+#define REGEXP_ALL_LAX_COUNTER	0x123457
 
 static void xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top);
 
@@ -956,27 +957,32 @@ xmlRegStatePush(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
 
 /**
  * xmlFAGenerateAllTransition:
- * ctxt:  a regexp parser context
- * from:  the from state
- * to:  the target state or NULL for building a new one
+ * @ctxt:  a regexp parser context
+ * @from:  the from state
+ * @to:  the target state or NULL for building a new one
+ * @lax:
  *
  */
 static void
 xmlFAGenerateAllTransition(xmlRegParserCtxtPtr ctxt,
-			   xmlRegStatePtr from, xmlRegStatePtr to) {
+			   xmlRegStatePtr from, xmlRegStatePtr to,
+			   int lax) {
     if (to == NULL) {
 	to = xmlRegNewState(ctxt);
 	xmlRegStatePush(ctxt, to);
 	ctxt->state = to;
     }
-    xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_COUNTER);
+    if (lax)
+	xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_LAX_COUNTER);
+    else
+	xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_COUNTER);
 }
 
 /**
  * xmlFAGenerateEpsilonTransition:
- * ctxt:  a regexp parser context
- * from:  the from state
- * to:  the target state or NULL for building a new one
+ * @ctxt:  a regexp parser context
+ * @from:  the from state
+ * @to:  the target state or NULL for building a new one
  *
  */
 static void
@@ -992,9 +998,9 @@ xmlFAGenerateEpsilonTransition(xmlRegParserCtxtPtr ctxt,
 
 /**
  * xmlFAGenerateCountedEpsilonTransition:
- * ctxt:  a regexp parser context
- * from:  the from state
- * to:  the target state or NULL for building a new one
+ * @ctxt:  a regexp parser context
+ * @from:  the from state
+ * @to:  the target state or NULL for building a new one
  * counter:  the counter for that transition
  *
  */
@@ -1011,9 +1017,9 @@ xmlFAGenerateCountedEpsilonTransition(xmlRegParserCtxtPtr ctxt,
 
 /**
  * xmlFAGenerateCountedTransition:
- * ctxt:  a regexp parser context
- * from:  the from state
- * to:  the target state or NULL for building a new one
+ * @ctxt:  a regexp parser context
+ * @from:  the from state
+ * @to:  the target state or NULL for building a new one
  * counter:  the counter for that transition
  *
  */
@@ -1030,10 +1036,10 @@ xmlFAGenerateCountedTransition(xmlRegParserCtxtPtr ctxt,
 
 /**
  * xmlFAGenerateTransitions:
- * ctxt:  a regexp parser context
- * from:  the from state
- * to:  the target state or NULL for building a new one
- * atom:  the atom generating the transition
+ * @ctxt:  a regexp parser context
+ * @from:  the from state
+ * @to:  the target state or NULL for building a new one
+ * @atom:  the atom generating the transition
  *
  */
 static void
@@ -1135,7 +1141,7 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 
 /**
  * xmlFAReduceEpsilonTransitions:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  * @fromnr:  the from state
  * @tonr:  the to state 
  * @cpunter:  should that transition be associted to a counted
@@ -1216,7 +1222,7 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 
 /**
  * xmlFAEliminateEpsilonTransitions:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  */
 static void
@@ -2027,7 +2033,44 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		continue;
 	    atom = trans->atom;
 	    ret = 0;
-	    if (trans->count == REGEXP_ALL_COUNTER) {
+	    if (trans->count == REGEXP_ALL_LAX_COUNTER) {
+		int i;
+		int count;
+		xmlRegTransPtr t;
+		xmlRegCounterPtr counter;
+
+		ret = 0;
+
+#ifdef DEBUG_PUSH
+		printf("testing all lax %d\n", trans->count);
+#endif
+		/*
+		 * Check all counted transitions from the current state
+		 */
+		if ((value == NULL) && (final)) {
+		    ret = 1;
+		} else if (value != NULL) {
+		    for (i = 0;i < exec->state->nbTrans;i++) {
+			t = &exec->state->trans[i];
+			if ((t->counter < 0) || (t == trans))
+			    continue;
+			counter = &exec->comp->counters[t->counter];
+			count = exec->counts[t->counter];
+			if ((count < counter->max) && 
+		            (t->atom != NULL) &&
+			    (xmlStrEqual(value, t->atom->valuep))) {
+			    ret = 0;
+			    break;
+			}
+			if ((count >= counter->min) &&
+			    (count < counter->max) &&
+			    (xmlStrEqual(value, t->atom->valuep))) {
+			    ret = 1;
+			    break;
+			}
+		    }
+		}
+	    } else if (trans->count == REGEXP_ALL_COUNTER) {
 		int i;
 		int count;
 		xmlRegTransPtr t;
@@ -2073,6 +2116,16 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		break;
 	    } else if (value != NULL) {
 		ret = xmlStrEqual(value, atom->valuep);
+		if ((ret == 1) && (trans->counter >= 0)) {
+		    xmlRegCounterPtr counter;
+		    int count;
+
+		    count = exec->counts[trans->counter];
+		    counter = &exec->comp->counters[trans->counter];
+		    if (count >= counter->max)
+			ret = 0;
+		}
+
 		if ((ret == 1) && (atom->min > 0) && (atom->max > 0)) {
 		    xmlRegStatePtr to = exec->comp->states[trans->to];
 
@@ -2373,7 +2426,7 @@ progress:
 
 /**
  * xmlFAIsChar:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [10]   Char   ::=   [^.\?*+()|#x5B#x5D]
  */
@@ -2393,7 +2446,7 @@ xmlFAIsChar(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseCharProp:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [27]   charProp   ::=   IsCategory | IsBlock
  * [28]   IsCategory ::= Letters | Marks | Numbers | Punctuation |
@@ -2616,7 +2669,7 @@ xmlFAParseCharProp(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseCharClassEsc:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [23] charClassEsc ::= ( SingleCharEsc | MultiCharEsc | catEsc | complEsc ) 
  * [24] SingleCharEsc ::= '\' [nrt\|.?*+(){}#x2D#x5B#x5D#x5E]
@@ -2734,7 +2787,7 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseCharRef:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [19]   XmlCharRef   ::=   ( '&#' [0-9]+ ';' ) | (' &#x' [0-9a-fA-F]+ ';' )
  */
@@ -2791,7 +2844,7 @@ xmlFAParseCharRef(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseCharRange:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [17]   charRange   ::=     seRange | XmlCharRef | XmlCharIncDash 
  * [18]   seRange   ::=   charOrEsc '-' charOrEsc
@@ -2880,7 +2933,7 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParsePosCharGroup:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [14]   posCharGroup ::= ( charRange | charClassEsc  )+
  */
@@ -2898,7 +2951,7 @@ xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseCharGroup:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [13]   charGroup    ::= posCharGroup | negCharGroup | charClassSub
  * [15]   negCharGroup ::= '^' posCharGroup
@@ -2941,7 +2994,7 @@ xmlFAParseCharGroup(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseCharClass:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [11]   charClass   ::=     charClassEsc | charClassExpr
  * [12]   charClassExpr   ::=   '[' charGroup ']'
@@ -2966,7 +3019,7 @@ xmlFAParseCharClass(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseQuantExact:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [8]   QuantExact   ::=   [0-9]+
  */
@@ -2988,7 +3041,7 @@ xmlFAParseQuantExact(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseQuantifier:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [4]   quantifier   ::=   [?*+] | ( '{' quantity '}' )
  * [5]   quantity   ::=   quantRange | quantMin | QuantExact
@@ -3045,7 +3098,7 @@ xmlFAParseQuantifier(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseAtom:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [9]   atom   ::=   Char | charClass | ( '(' regExp ')' )
  */
@@ -3099,7 +3152,7 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParsePiece:
- * ctxt:  a regexp parser context
+ * @ctxt:  a regexp parser context
  *
  * [3]   piece   ::=   atom quantifier?
  */
@@ -3120,8 +3173,8 @@ xmlFAParsePiece(xmlRegParserCtxtPtr ctxt) {
 
 /**
  * xmlFAParseBranch:
- * ctxt:  a regexp parser context
- * first:  is taht the first
+ * @ctxt:  a regexp parser context
+ * @first:  is taht the first
  *
  * [2]   branch   ::=   piece*
  */
@@ -3162,8 +3215,8 @@ xmlFAParseBranch(xmlRegParserCtxtPtr ctxt, int first) {
 
 /**
  * xmlFAParseRegExp:
- * ctxt:  a regexp parser context
- * top:  is that the top-level expressions ?
+ * @ctxt:  a regexp parser context
+ * @top:  is that the top-level expressions ?
  *
  * [1]   regExp   ::=     branch  ( '|' branch )*
  */
@@ -3598,10 +3651,10 @@ xmlAutomataNewEpsilon(xmlAutomataPtr am, xmlAutomataStatePtr from,
  */
 xmlAutomataStatePtr
 xmlAutomataNewAllTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
-		      xmlAutomataStatePtr to) {
+		       xmlAutomataStatePtr to, int lax) {
     if ((am == NULL) || (from == NULL))
 	return(NULL);
-    xmlFAGenerateAllTransition(am, from, to);
+    xmlFAGenerateAllTransition(am, from, to, lax);
     if (to == NULL)
 	return(am->state);
     return(to);

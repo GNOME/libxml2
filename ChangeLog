@@ -1,3 +1,10 @@
+Sat Apr 20 19:36:39 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h:
+	  implementing xs:all with minOccurs = 0
+	* tes/schemas/* result/schemas/*: added more tests covering
+	  xs:all
+
 Sat Apr 20 09:22:50 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: first implementation of the all particle, this

@@ -69,7 +69,8 @@ xmlAutomataStatePtr	xmlAutomataNewOnceTrans	(xmlAutomataPtr am,
 						 void *data);
 xmlAutomataStatePtr	xmlAutomataNewAllTrans	(xmlAutomataPtr am,
 						 xmlAutomataStatePtr from,
-						 xmlAutomataStatePtr to);
+						 xmlAutomataStatePtr to,
+						 int lax);
 xmlAutomataStatePtr	xmlAutomataNewEpsilon	(xmlAutomataPtr am,
 						 xmlAutomataStatePtr from,
 						 xmlAutomataStatePtr to);

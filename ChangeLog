@@ -1,3 +1,8 @@
+Fri Apr 20 17:45:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: forgot an epsilon transition in for ()+
+	* test/VCM/v21.xml : added a specific test case
+
 Fri Apr 20 15:46:04 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: removed a state explosion exhibited by RSS

@@ -3590,7 +3590,8 @@ cont:
     if ((consumed) && (CONT != NULL) &&
 	(CONT->parent != NULL) &&
 	((CONT->ocur == XML_ELEMENT_CONTENT_MULT) ||
-	(CONT->ocur == XML_ELEMENT_CONTENT_OPT))) {
+	 (CONT->ocur == XML_ELEMENT_CONTENT_OPT) ||
+	 ((CONT->ocur == XML_ELEMENT_CONTENT_PLUS) && (OCCURENCE)))) {
 	DEBUG_VALID_MSG("saving parent branch");
 	vstateVPush(ctxt, CONT, NODE, DEPTH, OCCURS, ROLLBACK_PARENT);
     }

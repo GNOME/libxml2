@@ -89,6 +89,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </td></tr></table></td>
 <td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
 <?php
+    $query = $HTTP_GET_VARS[ "query" ];
+    $scope = $HTTP_GET_VARS[ "scope" ];
     // We handle only the first argument so far
     $query = $_GET['query'];
     $query = ltrim ($query);

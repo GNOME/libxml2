@@ -1,3 +1,7 @@
+Wed Apr 23 17:16:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: trivial fix for 109774 removing a warning
+
 Wed Apr 23 15:49:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c SAX.c catalog.c debugXML.c parser.c: try to find

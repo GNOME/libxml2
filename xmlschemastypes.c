@@ -3046,8 +3046,6 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
                 (y->type == XML_SCHEMAS_DOUBLE))
                 return (xmlSchemaCompareFloats(x, y));
             return (-2);
-	    TODO
-	    break;
         case XML_SCHEMAS_BOOLEAN:
             if (y->type == XML_SCHEMAS_BOOLEAN) {
 		if (x->value.b == y->value.b)

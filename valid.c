@@ -3503,22 +3503,9 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
  */
 
 static xmlNodePtr
-xmlValidateSkipIgnorable(xmlValidCtxtPtr ctxt, xmlNodePtr child) {
+xmlValidateSkipIgnorable(xmlNodePtr child) {
     while (child != NULL) {
 	switch (child->type) {
-	    /*
-	     * If there is an entity declared and it's not empty
-	     * Push the current node on the stack and process with the
-	     * entity content.
-	     */
-	    case XML_ENTITY_REF_NODE:
-		if ((child->children != NULL) &&
-		    (child->children->children != NULL)) {
-		    nodeVPush(ctxt, child);
-		    child = child->children->children;
-		    continue;
-		}
-		break;
 	    /* These things are ignored (skipped) during validation.  */
 	    case XML_PI_NODE:
 	    case XML_COMMENT_NODE:
@@ -3546,8 +3533,8 @@ xmlValidateSkipIgnorable(xmlValidCtxtPtr ctxt, xmlNodePtr child) {
  *
  * Try to validate the content model of an element internal function
  *
- * returns 1 if valid or 0 and -1 if PCDATA stuff is found,
- *         also update child and content values in-situ.
+ * returns 1 if valid or 0 ,-1 in case of error, and -2 if an entity
+ *           reference is found.
  */
 
 static int
@@ -3555,7 +3542,7 @@ xmlValidateElementType(xmlValidCtxtPtr ctxt) {
     int ret = -1;
     int consumed = 1;
 
-    NODE = xmlValidateSkipIgnorable(ctxt, NODE);
+    NODE = xmlValidateSkipIgnorable(NODE);
     if ((NODE == NULL) && (CONT == NULL))
 	return(1);
     if ((NODE == NULL) && 
@@ -3564,6 +3551,8 @@ xmlValidateElementType(xmlValidCtxtPtr ctxt) {
 	return(1);
     }
     if (CONT == NULL) return(-1);
+    if (NODE->type == XML_ENTITY_REF_NODE)
+	return(-2);
 
     /*
      * We arrive here when more states need to be examined
@@ -3615,7 +3604,10 @@ cont:
 		 */
 		do {
 		    NODE = NODE->next;
-		    NODE = xmlValidateSkipIgnorable(ctxt, NODE);
+		    NODE = xmlValidateSkipIgnorable(NODE);
+		    if ((NODE != NULL) &&
+			(NODE->type == XML_ENTITY_REF_NODE))
+			return(-2);
 		} while ((NODE != NULL) &&
 			 ((NODE->type != XML_ELEMENT_NODE) &&
 			  (NODE->type != XML_TEXT_NODE)));
@@ -3643,7 +3635,10 @@ cont:
 		 */
 		do {
 		    NODE = NODE->next;
-		    NODE = xmlValidateSkipIgnorable(ctxt, NODE);
+		    NODE = xmlValidateSkipIgnorable(NODE);
+		    if ((NODE != NULL) &&
+			(NODE->type == XML_ENTITY_REF_NODE))
+			return(-2);
 		} while ((NODE != NULL) &&
 			 ((NODE->type != XML_ELEMENT_NODE) &&
 			  (NODE->type != XML_TEXT_NODE)));
@@ -3852,10 +3847,10 @@ static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 		   xmlElementContentPtr cont) {
     int ret;
+    xmlNodePtr repl = NULL, last = NULL, tmp;
 
     /*
-     * TODO: handle the fact that entities references
-     * may appear at this level.
+     * Allocate the stack
      */
     ctxt->vstateMax = 8;
     ctxt->vstateTab = (xmlValidState *) xmlMalloc(
@@ -3863,7 +3858,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     if (ctxt->vstateTab == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc failed !n");
-	return(0);
+	return(-1);
     }
     /*
      * The first entry in the stack is reserved to the current state
@@ -3876,10 +3871,95 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     OCCURS = 0;
     STATE = 0;
     ret = xmlValidateElementType(ctxt);
+    if (ret == -2) {
+	/*
+	 * An entities reference appeared at this level.
+	 * Buid a minimal representation of this node content
+	 * sufficient to run the validation process on it
+	 */
+	DEBUG_VALID_MSG("Found an entity reference, linearizing");
+	while (child != NULL) {
+	    switch (child->type) {
+		case XML_ENTITY_REF_NODE:
+		    /*
+		     * Push the current node to be able to roll back
+		     * and process within the entity
+		     */
+		    if ((child->children != NULL) &&
+			(child->children->children != NULL)) {
+			nodeVPush(ctxt, child);
+			child = child->children->children;
+			continue;
+		    }
+		case XML_TEXT_NODE:
+		    if (xmlIsBlankNode(child))
+			break;
+		case XML_ELEMENT_NODE:
+		    /*
+		     * Allocate a new node and minimally fills in
+		     * what's required
+		     */
+		    tmp = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
+		    if (tmp == NULL) {
+			xmlGenericError(xmlGenericErrorContext,
+				"xmlValidateElementContent : malloc failed\n");
+			xmlFreeNodeList(repl);
+			ret = -1;
+			goto done;
+		    }
+		    tmp->type = child->type;
+		    tmp->name = child->name;
+		    tmp->ns = child->ns;
+		    tmp->next = NULL;
+		    if (repl == NULL)
+			repl = last = tmp;
+		    else {
+			last->next = tmp;
+			last = tmp;
+		    }
+		    break;
+		default:
+		    break;
+	    }
+	    /*
+	     * Switch to next element
+	     */
+	    child = child->next;
+	    while (child == NULL) {
+		child = nodeVPop(ctxt);
+		if (child == NULL)
+		    break;
+		child = child->next;
+	    }
+	}
+
+	/*
+	 * Relaunch the validation
+	 */
+	ctxt->vstate = &ctxt->vstateTab[0];
+	ctxt->vstateNr = 1;
+	CONT = cont;
+	NODE = repl;
+	DEPTH = 0;
+	OCCURS = 0;
+	STATE = 0;
+	ret = xmlValidateElementType(ctxt);
+    }
+
+
+done:
+    /*
+     * Deallocate the copy if done, and free up the validation stack
+     */
+    while (repl != NULL) {
+	tmp = repl->next;
+	xmlFree(repl);
+	repl = tmp;
+    }
     ctxt->vstateMax = 0;
     xmlFree(ctxt->vstateTab);
-
     return(ret);
+
 }
 #endif /* ALLOW_UNDETERMINISTIC_MODELS */
 

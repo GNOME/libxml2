@@ -1,3 +1,8 @@
+Sat Apr 21 12:25:49 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: fixed to validate within entities
+	* test/VCM/v22.xml: added a specific testcase
+
 Fri Apr 20 17:45:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: forgot an epsilon transition in for ()+

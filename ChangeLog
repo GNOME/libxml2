@@ -1,3 +1,13 @@
+Sun Apr 18 22:51:43 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: relaxed id() to not check taht the name(s) passed
+	  are actually NCName, decided this in agreement with Aleksey Sanin
+	  since existing specs like Visa3D broke that conformance checking
+	  and other tools seems to not implement it sigh...
+	* SAX2.c: check attribute decls for xml:id and the value is an
+	  NCName.
+	* test/xmlid/id_err* result/xmlid/id_err*: added error testing
+
 Sun Apr 18 21:46:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: work around Microsoft compiler NaN bug raise reported

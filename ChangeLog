@@ -1,3 +1,8 @@
+Thu Jun 28 15:08:22 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/win32config.h: bug #56801 Yon Derek provided a patch
+	  to the windows config file.
+
 Thu Jun 28 14:51:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpointer.c include/win32config.h win32/libxml2/libxml2.def.src

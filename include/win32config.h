@@ -10,10 +10,14 @@
 #include <io.h>
 
 #ifndef LIBXML_DLL_IMPORT
+#if !defined(STATIC)
+#define LIBXML_DLL_IMPORT __declspec(dllimport)
+#else
 #define LIBXML_DLL_IMPORT
 #endif
-#define SOCKLEN_T int
+#endif
 
+#define SOCKLEN_T int
 #ifdef NEED_SOCKETS
 #include <winsock2.h>
 

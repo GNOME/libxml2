@@ -4268,7 +4268,7 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
  * xmlHasNsProp:
  * @node:  the node
  * @name:  the attribute name
- * @namespace:  the URI of the namespace
+ * @nameSpace:  the URI of the namespace
  *
  * Search for an attribute associated to a node
  * This attribute has to be anchored in the namespace specified.
@@ -4280,7 +4280,7 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
  *     if neither was found.
  */
 xmlAttrPtr
-xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
+xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
     xmlNsPtr ns;
@@ -4289,7 +4289,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	return(NULL);
 
     prop = node->properties;
-    if (namespace == NULL)
+    if (nameSpace == NULL)
 	return(xmlHasProp(node, name));
     while (prop != NULL) {
 	/*
@@ -4301,9 +4301,9 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
 	    (((prop->ns == NULL) && (node->ns != NULL) &&
-	      (xmlStrEqual(node->ns->href, namespace))) ||
+	      (xmlStrEqual(node->ns->href, nameSpace))) ||
 	     ((prop->ns != NULL) &&
-	      (xmlStrEqual(prop->ns->href, namespace))))) {
+	      (xmlStrEqual(prop->ns->href, nameSpace))))) {
 	  return(prop);
         }
 	prop = prop->next;
@@ -4328,7 +4328,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 		 * The DTD declaration only allows a prefix search
 		 */
 		ns = xmlSearchNs(doc, node, attrDecl->prefix);
-		if ((ns != NULL) && (xmlStrEqual(ns->href, namespace)))
+		if ((ns != NULL) && (xmlStrEqual(ns->href, nameSpace)))
 		    return((xmlAttrPtr) attrDecl);
 	    }
 	}
@@ -4393,7 +4393,7 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
  * xmlGetNsProp:
  * @node:  the node
  * @name:  the attribute name
- * @namespace:  the URI of the namespace
+ * @nameSpace:  the URI of the namespace
  *
  * Search and get the value of an attribute associated to a node
  * This attribute has to be anchored in the namespace specified.
@@ -4405,7 +4405,7 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
  *     It's up to the caller to free the memory.
  */
 xmlChar *
-xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
+xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
     xmlNsPtr ns;
@@ -4414,7 +4414,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	return(NULL);
 
     prop = node->properties;
-    if (namespace == NULL)
+    if (nameSpace == NULL)
 	return(xmlGetProp(node, name));
     while (prop != NULL) {
 	/*
@@ -4424,7 +4424,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
 	    ((prop->ns != NULL) &&
-	     (xmlStrEqual(prop->ns->href, namespace)))) {
+	     (xmlStrEqual(prop->ns->href, nameSpace)))) {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
@@ -4453,7 +4453,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 		 * The DTD declaration only allows a prefix search
 		 */
 		ns = xmlSearchNs(doc, node, attrDecl->prefix);
-		if ((ns != NULL) && (xmlStrEqual(ns->href, namespace)))
+		if ((ns != NULL) && (xmlStrEqual(ns->href, nameSpace)))
 		    return(xmlStrdup(attrDecl->defaultValue));
 	    }
 	}

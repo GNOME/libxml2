@@ -1,3 +1,7 @@
+Tue Jun 12 08:09:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.[ch]: grrr ... namespace is a C++ reserved keyword
+
 Tue Jun 12 06:29:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* libxml.h: fixed an error in last commit

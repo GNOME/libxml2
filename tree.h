@@ -669,7 +669,7 @@ xmlAttrPtr	xmlHasProp		(xmlNodePtr node,
 					 const xmlChar *name);
 xmlAttrPtr	xmlHasNsProp		(xmlNodePtr node,
 					 const xmlChar *name,
-					 const xmlChar *namespace);
+					 const xmlChar *nameSpace);
 xmlAttrPtr	xmlSetNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 const xmlChar *name,

@@ -1936,14 +1936,19 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
  *
  * Search and get the value of an attribute associated to a node
  * This does the entity substitution.
+ *
  * return values: the attribute value or NULL if not found.
  */
 const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name)) 
-	    return(xmlNodeListGetString(node->doc, prop->val, 1));
+        if (!xmlStrcmp(prop->name, name)) {
+	    if (prop->val != NULL)
+		return(xmlNodeListGetString(node->doc, prop->val, 1));
+	    else
+	        return(xmlStrndup("", 1));
+	}
 	prop = prop->next;
     }
     return(NULL);

@@ -1,3 +1,7 @@
+Sun Dec  6 13:06:58 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: changed the behaviour of xmlGetProp on NULL values.
+
 Sat Dec  5 12:25:09 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c: patched a bug in the generation of empty attributes

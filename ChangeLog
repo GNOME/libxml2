@@ -1,3 +1,8 @@
+Thu Dec 20 14:59:52 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/debugXML.h win32/dsp/libxml2.def.src: fixes
+	  for Windows from Igor
+
 Tue Dec 18 12:13:33 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: applied Justin Fletcher patch for --output or -o

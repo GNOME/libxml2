@@ -50,7 +50,7 @@ void	xmlDebugDumpEntities	(FILE *output,
 void	xmlLsOneNode		(FILE *output, xmlNodePtr node);
 int	xmlLsCountNode		(xmlNodePtr node);
 
-const char *xmlBoolToText	(int boolval);
+LIBXML_DLL_IMPORT const char *xmlBoolToText	(int boolval);
 
 /****************************************************************
  *								*

@@ -54,6 +54,22 @@ EXPORTS
 	xmlDebugDumpDocument
 	xmlDebugDumpDTD
 	xmlDebugDumpEntities
+	xmlLsOneNode
+	xmlLsCountNode
+	xmlBoolToText DATA
+	xmlShellPrintXPathError
+	xmlShellPrintNode
+	xmlShellPrintXPathResult
+	xmlShellList
+	xmlShellBase
+	xmlShellDir
+	xmlShellCat
+	xmlShellLoad
+	xmlShellWrite
+	xmlShellSave
+	xmlShellValidate
+	xmlShellDu
+	xmlShellPwd
 	xmlShell
 #endif
 
@@ -581,6 +597,8 @@ EXPORTS
 	xmlCopyNode
 	xmlCopyNodeList
 	xmlNewDocFragment
+	xmlGetLineNo
+	xmlGetNodePath
 	xmlDocGetRootElement
 	xmlGetLastChild
 	xmlNodeIsText

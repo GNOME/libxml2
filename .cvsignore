@@ -23,3 +23,7 @@ tester
 xml-config
 xmlConf.sh
 COPYING
+libxml.spec
+testHTML
+testSAX
+testXPath

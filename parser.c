@@ -339,13 +339,14 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
  *   NXT(n)  returns the n'th next xmlChar. Same as CUR is should be used only
  *           to compare on ASCII based substring.
  *   SKIP(n) Skip n xmlChar, and must also be used only to skip ASCII defined
- *           strings within the parser.
- *
+ *           strings without newlines within the parser.
+ *   NEXT1(l) Skip 1 xmlChar, and must also be used only to skip 1 non-newline ASCII 
+ *           defined char within the parser.
  * Clean macros, not dependent of an ASCII context, expect UTF-8 encoding
  *
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
- *   NEXTL(l) Skip l xmlChar in the input buffer
+ *   NEXTL(l) Skip the current unicode character of l xmlChars long.
  *   CUR_CHAR(l) returns the current unicode character (int), set l
  *           to the number of xmlChars used for the encoding [0-5].
  *   CUR_SCHAR  same but operate on a string instead of the context
@@ -360,7 +361,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 #define CUR_PTR ctxt->input->cur
 
 #define SKIP(val) do {							\
-    ctxt->nbChars += (val),ctxt->input->cur += (val);			\
+    ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val);			\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
@@ -392,6 +393,7 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
 #define NEXT xmlNextChar(ctxt)
 
 #define NEXT1 {								\
+	ctxt->input->col++;						\
 	ctxt->input->cur++;						\
 	ctxt->nbChars++;						\
 	if (*ctxt->input->cur == 0)					\
@@ -578,6 +580,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	}
 	if (RAW == ';') {
 	    /* on purpose to avoid reentrancy problems with NEXT and SKIP */
+	    ctxt->input->col++;
 	    ctxt->nbChars ++;
 	    ctxt->input->cur++;
 	}
@@ -606,6 +609,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	}
 	if (RAW == ';') {
 	    /* on purpose to avoid reentrancy problems with NEXT and SKIP */
+	    ctxt->input->col++;
 	    ctxt->nbChars ++;
 	    ctxt->input->cur++;
 	}
@@ -1897,6 +1901,8 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	    count = in - ctxt->input->cur;
 	    ret = xmlStrndup(ctxt->input->cur, count);
 	    ctxt->input->cur = in;
+	    ctxt->nbChars += count;
+	    ctxt->input->col += count;
 	    return(ret);
 	}
     }
@@ -9149,6 +9155,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
+	xmlFree(buf);
 	return(NULL);
     }
 

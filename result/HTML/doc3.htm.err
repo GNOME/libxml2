@@ -1,69 +1,69 @@
-./test/HTML/doc3.htm:5: error: Misplaced DOCTYPE declaration
+./test/HTML/doc3.htm:10: error: Misplaced DOCTYPE declaration
 <!-- END Naviscope Javascript --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//E
                                  ^
-./test/HTML/doc3.htm:47: error: htmlParseEntityRef: expecting ';'
+./test/HTML/doc3.htm:52: error: htmlParseEntityRef: expecting ';'
  href="http://ads.gamesquad.net/addclick.exe/adclick.cgi?REGION=game|tech|ent&i
                                                                               ^
-./test/HTML/doc3.htm:47: error: htmlParseEntityRef: expecting ';'
+./test/HTML/doc3.htm:52: error: htmlParseEntityRef: expecting ';'
 _top"><img src="http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&medi
                                                                               ^
-./test/HTML/doc3.htm:47: error: htmlParseEntityRef: expecting ';'
+./test/HTML/doc3.htm:52: error: htmlParseEntityRef: expecting ';'
 ><img src="http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&media=1&i
                                                                               ^
-./test/HTML/doc3.htm:140: error: error parsing attribute name
+./test/HTML/doc3.htm:145: error: error parsing attribute name
                         width=70 Gentus?.?></A><BR><A 
                                        ^
-./test/HTML/doc3.htm:143: error: Unexpected end tag : p
+./test/HTML/doc3.htm:148: error: Unexpected end tag : p
   </P></TD></TR></TBODY></TABLE></CENTER></TD></TR></TBODY></TABLE></CENTER></P
                                                                               ^
-./test/HTML/doc3.htm:231: error: Unexpected end tag : font
+./test/HTML/doc3.htm:236: error: Unexpected end tag : font
             Specials<BR><BR></FONT></A><BR></FONT></A><B><FONT color=yellow 
                                                   ^
-./test/HTML/doc3.htm:231: error: Unexpected end tag : a
+./test/HTML/doc3.htm:236: error: Unexpected end tag : a
             Specials<BR><BR></FONT></A><BR></FONT></A><B><FONT color=yellow 
                                                       ^
-./test/HTML/doc3.htm:742: error: htmlParseEntityRef: expecting ';'
+./test/HTML/doc3.htm:747: error: htmlParseEntityRef: expecting ';'
 er=0 alt="Advertisement" src="http://ads.adflight.com/ad_static.asp?pid=2097&si
                                                                               ^
-./test/HTML/doc3.htm:742: error: htmlParseEntityRef: expecting ';'
+./test/HTML/doc3.htm:747: error: htmlParseEntityRef: expecting ';'
 Advertisement" src="http://ads.adflight.com/ad_static.asp?pid=2097&sid=1881&asi
                                                                               ^
-./test/HTML/doc3.htm:742: error: Unexpected end tag : li
+./test/HTML/doc3.htm:747: error: Unexpected end tag : li
 light.com/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI
                                                                               ^
-./test/HTML/doc3.htm:742: error: Unexpected end tag : font
+./test/HTML/doc3.htm:747: error: Unexpected end tag : font
 om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
                                                                               ^
-./test/HTML/doc3.htm:742: error: Unexpected end tag : p
+./test/HTML/doc3.htm:747: error: Unexpected end tag : p
 =7708"></a></IFRAME></CENTER></LI></FONT></TD></TR></TBODY></TABLE></CENTER></P
                                                                               ^
-./test/HTML/doc3.htm:767: error: Unexpected end tag : form
+./test/HTML/doc3.htm:772: error: Unexpected end tag : form
             archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
                                       ^
-./test/HTML/doc3.htm:815: error: Unexpected end tag : a
+./test/HTML/doc3.htm:820: error: Unexpected end tag : a
             </A></A></B><B></NOSCRIPT></B><B><!-- END GoTo.com Search Box --></
                     ^
-./test/HTML/doc3.htm:815: error: Unexpected end tag : noscript
+./test/HTML/doc3.htm:820: error: Unexpected end tag : noscript
             </A></A></B><B></NOSCRIPT></B><B><!-- END GoTo.com Search Box --></
                                       ^
-./test/HTML/doc3.htm:821: error: Opening and ending tag mismatch: form and center
+./test/HTML/doc3.htm:826: error: Opening and ending tag mismatch: form and center
             </FORM><!-- Pricewatch Search Box --><A 
                    ^
-./test/HTML/doc3.htm:828: error: Unexpected end tag : p
+./test/HTML/doc3.htm:833: error: Unexpected end tag : p
             Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
                                                   ^
-./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: center and td
+./test/HTML/doc3.htm:833: error: Opening and ending tag mismatch: center and td
             Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
                                                            ^
-./test/HTML/doc3.htm:834: error: Unexpected end tag : p
+./test/HTML/doc3.htm:839: error: Unexpected end tag : p
 width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
                                                  ^
-./test/HTML/doc3.htm:835: error: Unexpected end tag : td
+./test/HTML/doc3.htm:840: error: Unexpected end tag : td
 <CENTER></CENTER></TD></TR><TR><TD COLSPAN="3" VALIGN="TOP" 
                       ^
-./test/HTML/doc3.htm:835: error: Unexpected end tag : tr
+./test/HTML/doc3.htm:840: error: Unexpected end tag : tr
 <CENTER></CENTER></TD></TR><TR><TD COLSPAN="3" VALIGN="TOP" 
                            ^
-./test/HTML/doc3.htm:836: error: Unexpected end tag : table
+./test/HTML/doc3.htm:841: error: Unexpected end tag : table
 HEIGHT="70">&nbsp;</TD> </TR></TABLE>
                                     ^

@@ -134,7 +134,7 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
  *   UPP(n)  returns the n'th next xmlChar converted to uppercase. Same as CUR
  *           it should be used only to compare on ASCII based substring.
  *   SKIP(n) Skip n xmlChar, and must also be used only to skip ASCII defined
- *           strings within the parser.
+ *           strings without newlines within the parser.
  *
  * Clean macros, not dependent of an ASCII context, expect UTF-8 encoding
  *
@@ -142,12 +142,13 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
  *           UTF-8 if we are using this mode. It returns an int.
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
+ *   NEXTL(l) Skip the current unicode character of l xmlChars long.
  *   COPY(to) copy one char to *to, increment CUR_PTR and to accordingly
  */
 
 #define UPPER (toupper(*ctxt->input->cur))
 
-#define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val)
+#define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val)
 
 #define NXT(val) ctxt->input->cur[(val)]
 
@@ -167,7 +168,7 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
 
 /* #define CUR (ctxt->token ? ctxt->token : (int) (*ctxt->input->cur)) */
 #define CUR ((int) (*ctxt->input->cur))
-#define NEXT xmlNextChar(ctxt),ctxt->nbChars++
+#define NEXT xmlNextChar(ctxt)
 
 #define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
 #define NXT(val) ctxt->input->cur[(val)]
@@ -2220,6 +2221,8 @@ htmlParseName(htmlParserCtxtPtr ctxt) {
 	    count = in - ctxt->input->cur;
 	    ret = xmlStrndup(ctxt->input->cur, count);
 	    ctxt->input->cur = in;
+	    ctxt->nbChars += count;
+	    ctxt->input->col += count;
 	    return(ret);
 	}
     }
@@ -5203,6 +5206,8 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     }
     memset(ctxt, 0, sizeof(htmlParserCtxt));
     htmlInitParserCtxt(ctxt);
+    if(enc==XML_CHAR_ENCODING_UTF8 || buf->encoder)
+	ctxt->charset=XML_CHAR_ENCODING_UTF8;
     if (sax != NULL) {
 	if (ctxt->sax != &htmlDefaultSAXHandler)
 	    xmlFree(ctxt->sax);
@@ -5225,6 +5230,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     inputStream = htmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
+	xmlFree(buf);
 	return(NULL);
     }
 

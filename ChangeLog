@@ -1,3 +1,10 @@
+Sat Mar 23 01:00:24 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c parser.c parserInternals.c: patch from
+	  johan@evenhuis.nl for #107937 fixing some line counting
+	  problems, and some other cleanups.
+	* result/HTML/: this result in some line number changes
+
 Fri Mar 21 22:19:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in Makefile.am: fixed Red Hat bug #86118 use libxml2.spec

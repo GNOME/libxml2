@@ -1247,6 +1247,7 @@
      <exports symbol='xmlNodeDumpOutput'/>
      <exports symbol='xmlSaveFormatFileEnc'/>
      <exports symbol='xmlSaveFileEnc'/>
+     <exports symbol='xmlIsXHTML'/>
      <exports symbol='xmlGetDocCompressMode'/>
      <exports symbol='xmlSetDocCompressMode'/>
      <exports symbol='xmlGetCompressMode'/>
@@ -1577,7 +1578,7 @@
     </file>
   </files>
   <symbols>
-    <macro name='ATTRIBUTE_UNUSED' file='xmlwin32version'>
+    <macro name='ATTRIBUTE_UNUSED' file='xmlversion'>
       <info>Macro used to signal to GCC unused function parameters</info>
     </macro>
     <macro name='BAD_CAST' file='tree'>
@@ -1616,7 +1617,7 @@
     <macro name='DEBUG_MEMORY' file='xmlmemory'>
       <info>DEBUG_MEMORY replaces the allocator with a collect and debug shell to the libc allocator. DEBUG_MEMORY should only be activated when debugging libxml i.e. if libxml has been configured with --with-debug-mem too.</info>
     </macro>
-    <macro name='DEBUG_MEMORY_LOCATION' file='xmlwin32version'>
+    <macro name='DEBUG_MEMORY_LOCATION' file='xmlversion'>
       <info>Whether the memory debugging is configured in</info>
     </macro>
     <macro name='EADDRINUSE' file='wsockcompat'>
@@ -1728,7 +1729,7 @@
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_EXTENDER' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec: [89] Extender ::= x00B7 | x02D0 | x02D1 | x0387 | x0640 | x0E46 | x0EC6 | x3005 | [x3031-x3035] | [x309D-x309E] | [x30FC-x30FE]</info>
+      <info>Macro to check the following production in the XML spec: [89] Extender ::= x00B7 | x02D0 | x02D1 | x0387 | x0640 |  x0E46 | x0EC6 | x3005 | [x3031-x3035] |  [x309D-x309E] | [x30FC-x30FE]</info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_IDEOGRAPHIC' file='parserInternals'>
@@ -1746,34 +1747,34 @@
     <macro name='LIBXML_AUTOMATA_ENABLED' file='xmlversion'>
       <info>Whether the automata interfaces are compiled in</info>
     </macro>
-    <macro name='LIBXML_C14N_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_C14N_ENABLED' file='xmlversion'>
       <info>Whether the Canonicalization support is configured in</info>
     </macro>
-    <macro name='LIBXML_CATALOG_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_CATALOG_ENABLED' file='xmlversion'>
       <info>Whether the Catalog support is configured in</info>
     </macro>
-    <macro name='LIBXML_DEBUG_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_DEBUG_ENABLED' file='xmlversion'>
       <info>Whether Debugging module is configured in</info>
     </macro>
-    <macro name='LIBXML_DLL_IMPORT' file='xmlwin32version'>
+    <macro name='LIBXML_DLL_IMPORT' file='xmlversion'>
       <info>Used on Windows (MS C compiler only) to declare a variable as imported from the library. This macro should be empty when compiling libxml itself. It should expand to __declspec(dllimport) when the client code includes this header, and that only if the client links dynamically against libxml. For this to work, we need three macros. One tells us which compiler is being used and luckily the compiler defines such a thing: _MSC_VER. The second macro tells us if we are compiling libxml or the client code and we define the macro IN_LIBXML on the compiler&apos;s command line for this purpose. The third macro, LIBXML_STATIC, must be defined by any client code which links against libxml statically.</info>
     </macro>
-    <macro name='LIBXML_DOCB_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_DOCB_ENABLED' file='xmlversion'>
       <info>Whether the SGML Docbook support is configured in</info>
     </macro>
-    <macro name='LIBXML_DOTTED_VERSION' file='xmlwin32version'>
+    <macro name='LIBXML_DOTTED_VERSION' file='xmlversion'>
       <info>the version string like &quot;1.2.3&quot;</info>
     </macro>
-    <macro name='LIBXML_FTP_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_FTP_ENABLED' file='xmlversion'>
       <info>Whether the FTP support is configured in</info>
     </macro>
-    <macro name='LIBXML_HTML_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_HTML_ENABLED' file='xmlversion'>
       <info>Whether the HTML support is configured in</info>
     </macro>
-    <macro name='LIBXML_HTTP_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_HTTP_ENABLED' file='xmlversion'>
       <info>Whether the HTTP support is configured in</info>
     </macro>
-    <macro name='LIBXML_ICONV_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_ICONV_ENABLED' file='xmlversion'>
       <info>Whether iconv support is available</info>
     </macro>
     <macro name='LIBXML_REGEXP_ENABLED' file='xmlversion'>
@@ -1782,28 +1783,28 @@
     <macro name='LIBXML_SCHEMAS_ENABLED' file='xmlversion'>
       <info>Whether the Schemas validation interfaces are compiled in</info>
     </macro>
-    <macro name='LIBXML_TEST_VERSION' file='xmlwin32version'>
+    <macro name='LIBXML_TEST_VERSION' file='xmlversion'>
       <info>Macro to check that the libxml version in use is compatible with the version the software has been compiled against</info>
     </macro>
-    <macro name='LIBXML_THREAD_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_THREAD_ENABLED' file='xmlversion'>
       <info>Whether the thread support is configured in</info>
     </macro>
     <macro name='LIBXML_UNICODE_ENABLED' file='xmlversion'>
       <info>Whether the Unicode related interfaces are compiled in</info>
     </macro>
-    <macro name='LIBXML_VERSION' file='xmlwin32version'>
+    <macro name='LIBXML_VERSION' file='xmlversion'>
       <info>the version number: 1.2.3 value is 1002003</info>
     </macro>
-    <macro name='LIBXML_VERSION_STRING' file='xmlwin32version'>
+    <macro name='LIBXML_VERSION_STRING' file='xmlversion'>
       <info>the version number string, 1.2.3 value is &quot;1002003&quot;</info>
     </macro>
-    <macro name='LIBXML_XINCLUDE_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_XINCLUDE_ENABLED' file='xmlversion'>
       <info>Whether XInclude is configured in</info>
     </macro>
-    <macro name='LIBXML_XPATH_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_XPATH_ENABLED' file='xmlversion'>
       <info>Whether XPath is configured in</info>
     </macro>
-    <macro name='LIBXML_XPTR_ENABLED' file='xmlwin32version'>
+    <macro name='LIBXML_XPTR_ENABLED' file='xmlversion'>
       <info>Whether XPointer is configured in</info>
     </macro>
     <macro name='MAX_STRERROR' file='wincecompat'>
@@ -1852,10 +1853,10 @@
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars '/>
       <arg name='inlen' type='int *' info='the length of in'/>
     </function>
-    <macro name='WITHOUT_TRIO' file='xmlwin32version'>
+    <macro name='WITHOUT_TRIO' file='xmlversion'>
       <info>defined if the trio support should not be configured in</info>
     </macro>
-    <macro name='WITH_TRIO' file='xmlwin32version'>
+    <macro name='WITH_TRIO' file='xmlversion'>
       <info>defined if the trio support need to be configured in</info>
     </macro>
     <const name='XML_ATTRIBUTE_CDATA' file='tree'/>
@@ -2492,7 +2493,7 @@
       <arg name='attrib' type='const char *' info='the attribute string '/>
       <arg name='owner' type='const char *' info='the owner string '/>
       <arg name='group' type='const char *' info='the group string '/>
-      <arg name='size' type='unsigned long' info='the file size '/>
+      <arg name='size' type='unsigned long'/>
       <arg name='links' type='int' info='the link count '/>
       <arg name='year' type='int' info='the year '/>
       <arg name='month' type='const char *' info='the month '/>
@@ -3490,43 +3491,43 @@
       <info>Dumps the canonized image of given XML document into memory. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
       <return type='int' info='the number of bytes written on success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
-      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
-      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image 		or NULL if all document nodes should be included '/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; 		otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes 		ended with a NULL or NULL if there is no 		inclusive namespaces (only for exclusive 		canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
-      <arg name='doc_txt_ptr' type='xmlChar **' info='	the memory pointer for allocated canonical XML text; the caller of this functions is responsible for calling xmlFree() to free allocated memory '/>
+      <arg name='doc_txt_ptr' type='xmlChar **' info='	the memory pointer for allocated canonical XML text; 		the caller of this functions is responsible for calling 		xmlFree() to free allocated memory '/>
     </function>
     <function name='xmlC14NDocSave' file='c14n'>
       <info>Dumps the canonized image of given XML document into the file. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
       <return type='int' info='the number of bytes written success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
-      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
-      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image 		or NULL if all document nodes should be included '/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; 		otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes 		ended with a NULL or NULL if there is no 		inclusive namespaces (only for exclusive 		canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
       <arg name='filename' type='const char*' info='		the filename to store canonical XML image '/>
-      <arg name='compression' type='int' info='	the compression level (zlib requred): -1 - libxml default, 0 - uncompressed, &gt;0 - compression level '/>
+      <arg name='compression' type='int' info='	the compression level (zlib requred): 			-1 - libxml default, 			 0 - uncompressed, 			&gt;0 - compression level '/>
     </function>
     <function name='xmlC14NDocSaveTo' file='c14n'>
       <info>Dumps the canonized image of given XML document into the provided buffer. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
       <return type='int' info='non-negative value on success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
-      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
-      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image 		or NULL if all document nodes should be included '/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; 		otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes 		ended with a NULL or NULL if there is no 		inclusive namespaces (only for exclusive 		canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
-      <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
+      <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this 		buffer MUST have encoder==NULL because C14N requires 		UTF-8 output '/>
     </function>
     <function name='xmlC14NExecute' file='c14n'>
       <info>Dumps the canonized image of given XML document into the provided buffer. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
       <return type='int' info='non-negative value on success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
-      <arg name='is_visible_callback' type='xmlC14NIsVisibleCallback' info='the function to use to determine is node visible or not '/>
-      <arg name='user_data' type='void*' info='		the first parameter for is_visible_callback function (in most cases, it is nodes set) '/>
-      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='is_visible_callback' type='xmlC14NIsVisibleCallback' info='the function to use to determine is node visible 		or not '/>
+      <arg name='user_data' type='void*' info='		the first parameter for is_visible_callback function 		(in most cases, it is nodes set) '/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; 		otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes 		ended with a NULL or NULL if there is no 		inclusive namespaces (only for exclusive 		canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
-      <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
+      <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this 		buffer MUST have encoder==NULL because C14N requires 		UTF-8 output '/>
     </function>
     <functype name='xmlC14NIsVisibleCallback' file='c14n'>
       <return type='int'/>
@@ -3714,7 +3715,7 @@
       <return type='int' info='true if utf is valid. '/>
       <arg name='utf' type='const unsigned char *' info='Pointer to putative utf-8 encoded string. '/>
     </function>
-    <function name='xmlCheckVersion' file='xmlwin32version'>
+    <function name='xmlCheckVersion' file='xmlversion'>
       <info>check the compiled lib version against the include one. This can warn or immediately kill the application</info>
       <return type='void'/>
       <arg name='version' type='int'/>
@@ -3903,7 +3904,7 @@
       <arg name='size' type='int' info='the size of the array '/>
     </function>
     <function name='xmlCreatePushParserCtxt' file='parser'>
-      <info>Create a parser context for using the XML parser in push mode To allow content encoding detection, size should be &gt;= 4 The value of filename is used for fetching external entities and error/warning reports.</info>
+      <info>Create a parser context for using the XML parser in push mode. If buffer and size are non-NULL, the data is used to detect the encoding. The remaining characters will be parsed so they don&apos;t need to be fed in again through xmlParseChunk. To allow content encoding detection, size should be &gt;= 4 The value of filename is used for fetching external entities and error/warning reports.</info>
       <return type='xmlParserCtxtPtr' info='the new parser context or NULL '/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler '/>
       <arg name='user_data' type='void *' info='The user data returned on SAX callbacks '/>
@@ -4360,7 +4361,7 @@
       <arg name='' type='...'/>
     </functype>
     <function name='xmlGetBufferAllocationScheme' file='tree'>
-      <info>Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance</info>
+      <info>Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed,  improves performance</info>
       <return type='xmlBufferAllocationScheme' info='the current allocation scheme '/>
     </function>
     <function name='xmlGetCharEncodingHandler' file='encoding'>
@@ -4815,7 +4816,7 @@
     <function name='xmlInitParserCtxt' file='parser'>
       <info>Initialize a parser context</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an HTML parser context '/>
     </function>
     <function name='xmlInitThreads' file='threads'>
       <info>xmlInitThreads() is used to to initialize all the thread related data of the libxml2 library.</info>
@@ -4887,7 +4888,7 @@
       <arg name='c' type='int' info='an unicode character (int) '/>
     </function>
     <function name='xmlIsExtender' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [89] Extender ::= x00B7 | x02D0 | x02D1 | x0387 | x0640 | x0E46 | x0EC6 | x3005 | [x3031-x3035] | [x309D-x309E] | [x30FC-x30FE]</info>
+      <info>Check whether the character is allowed by the production [89] Extender ::= x00B7 | x02D0 | x02D1 | x0387 | x0640 |  x0E46 | x0EC6 | x3005 | [x3031-x3035] |  [x309D-x309E] | [x30FC-x30FE]</info>
       <return type='int' info='0 if not, non-zero otherwise '/>
       <arg name='c' type='int' info='an unicode character (int) '/>
     </function>
@@ -4929,6 +4930,11 @@
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute '/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute '/>
+    </function>
+    <function name='xmlIsXHTML' file='tree'>
+      <return type='int'/>
+      <arg name='systemID' type='const xmlChar *'/>
+      <arg name='publicID' type='const xmlChar *'/>
     </function>
     <function name='xmlKeepBlanksDefault' file='parser'>
       <info>Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating ignorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
@@ -5256,7 +5262,7 @@
       <arg name='tok' type='xmlMutexPtr' info='the simple mutex '/>
     </function>
     <function name='xmlNamespaceParseNCName' file='parserInternals'>
-      <info>parse an XML namespace name. TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input. [NS 3] NCName ::= (Letter | &apos;_&apos;) (NCNameChar)* [NS 4] NCNameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | CombiningChar | Extender</info>
+      <info>parse an XML namespace name. TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input. [NS 3] NCName ::= (Letter | &apos;_&apos;) (NCNameChar)* [NS 4] NCNameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; |  CombiningChar | Extender</info>
       <return type='xmlChar *' info='the namespace name or NULL '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
     </function>
@@ -5924,7 +5930,7 @@
       <arg name='len' type='int' info='the length of the buffer in bytes '/>
     </functype>
     <function name='xmlParseAttValue' file='parserInternals'>
-      <info>parse a value for an attribute Note: the parser won&apos;t do substitution of entities here, this will be handled later in xmlStringGetNodeList [10] AttValue ::= &apos;&quot;&apos; ([^&lt;&amp;&quot;] | Reference)* &apos;&quot;&apos; | &quot;&apos;&quot; ([^&lt;&amp;&apos;] | Reference)* &quot;&apos;&quot; 3.3.3 Attribute-Value Normalization: Before the value of an attribute is passed to the application or checked for validity, the XML processor must normalize it as follows: - a character reference is processed by appending the referenced character to the attribute value - an entity reference is processed by recursively processing the replacement text of the entity - a whitespace character (x20, xD, xA, x9) is processed by appending x20 to the normalized value, except that only a single x20 is appended for a &quot;xDxA&quot; sequence that is part of an external parsed entity or the literal entity value of an internal parsed entity - other characters are processed by appending them to the normalized value If the declared value is not CDATA, then the XML processor must further process the normalized attribute value by discarding any leading and trailing space (x20) characters, and by replacing sequences of space (x20) characters by a single space (x20) character. All attributes for which no declaration has been read should be treated by a non-validating parser as if declared CDATA.</info>
+      <info>parse a value for an attribute Note: the parser won&apos;t do substitution of entities here, this will be handled later in xmlStringGetNodeList [10] AttValue ::= &apos;&quot;&apos; ([^&lt;&amp;&quot;] | Reference)* &apos;&quot;&apos; |  &quot;&apos;&quot; ([^&lt;&amp;&apos;] | Reference)* &quot;&apos;&quot; 3.3.3 Attribute-Value Normalization: Before the value of an attribute is passed to the application or checked for validity, the XML processor must normalize it as follows: - a character reference is processed by appending the referenced character to the attribute value - an entity reference is processed by recursively processing the replacement text of the entity - a whitespace character (x20, xD, xA, x9) is processed by appending x20 to the normalized value, except that only a single x20 is appended for a &quot;xDxA&quot; sequence that is part of an external parsed entity or the literal entity value of an internal parsed entity - other characters are processed by appending them to the normalized value If the declared value is not CDATA, then the XML processor must further process the normalized attribute value by discarding any leading and trailing space (x20) characters, and by replacing sequences of space (x20) characters by a single space (x20) character. All attributes for which no declaration has been read should be treated by a non-validating parser as if declared CDATA.</info>
       <return type='xmlChar *' info='the AttValue parsed or NULL. The value has to be freed by the caller. '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
     </function>
@@ -6036,7 +6042,7 @@
       <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar '/>
     </function>
     <function name='xmlParseDocTypeDecl' file='parserInternals'>
-      <info>parse a DOCTYPE declaration [28] doctypedecl ::= &apos;&lt;!DOCTYPE&apos; S Name (S ExternalID)? S? (&apos;[&apos; (markupdecl | PEReference | S)* &apos;]&apos; S?)? &apos;&gt;&apos; [ VC: Root Element Type ] The Name in the document type declaration must match the element type of the root element.</info>
+      <info>parse a DOCTYPE declaration [28] doctypedecl ::= &apos;&lt;!DOCTYPE&apos; S Name (S ExternalID)? S?  (&apos;[&apos; (markupdecl | PEReference | S)* &apos;]&apos; S?)? &apos;&gt;&apos; [ VC: Root Element Type ] The Name in the document type declaration must match the element type of the root element.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
     </function>
@@ -6052,7 +6058,7 @@
     </function>
     <function name='xmlParseElementChildrenContentDecl' file='parserInternals'>
       <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl [47] children ::= (choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)? [48] cp ::= (Name | choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)? [49] choice ::= &apos;(&apos; S? cp ( S? &apos;|&apos; S? cp )* S? &apos;)&apos; [50] seq ::= &apos;(&apos; S? cp ( S? &apos;,&apos; S? cp )* S? &apos;)&apos; [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity reference appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</info>
-      <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element hierarchy. '/>
+      <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element  hierarchy. '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
       <arg name='inputchk' type='xmlParserInputPtr'/>
     </function>
@@ -6138,7 +6144,7 @@
       <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes '/>
     </function>
     <function name='xmlParseExternalID' file='parserInternals'>
-      <info>Parse an External ID or a Public ID NOTE: Productions [75] and [83] interact badly since [75] can generate &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral [75] ExternalID ::= &apos;SYSTEM&apos; S SystemLiteral | &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral [83] PublicID ::= &apos;PUBLIC&apos; S PubidLiteral</info>
+      <info>Parse an External ID or a Public ID NOTE: Productions [75] and [83] interact badly since [75] can generate &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral [75] ExternalID ::= &apos;SYSTEM&apos; S SystemLiteral  | &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral [83] PublicID ::= &apos;PUBLIC&apos; S PubidLiteral</info>
       <return type='xmlChar *' info='the function returns SystemLiteral and in the second case publicID receives PubidLiteral, is strict is off it is possible to return NULL and have publicID set. '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
       <arg name='publicID' type='xmlChar **' info='a xmlChar** receiving PubidLiteral '/>
@@ -6228,7 +6234,7 @@
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
     </function>
     <function name='xmlParseSDDecl' file='parserInternals'>
-      <info>parse the XML standalone declaration [32] SDDecl ::= S &apos;standalone&apos; Eq ((&quot;&apos;&quot; (&apos;yes&apos; | &apos;no&apos;) &quot;&apos;&quot;) | (&apos;&quot;&apos; (&apos;yes&apos; | &apos;no&apos;)&apos;&quot;&apos;)) [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value &quot;no&quot; if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the attribute appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</info>
+      <info>parse the XML standalone declaration [32] SDDecl ::= S &apos;standalone&apos; Eq  ((&quot;&apos;&quot; (&apos;yes&apos; | &apos;no&apos;) &quot;&apos;&quot;) | (&apos;&quot;&apos; (&apos;yes&apos; | &apos;no&apos;)&apos;&quot;&apos;)) [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value &quot;no&quot; if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the attribute appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</info>
       <return type='int' info='1 if standalone, 0 otherwise '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
     </function>
@@ -6797,7 +6803,7 @@
       <arg name='href' type='const xmlChar *' info='the namespace value '/>
     </function>
     <function name='xmlSetBufferAllocationScheme' file='tree'>
-      <info>Set the buffer allocation method. Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance</info>
+      <info>Set the buffer allocation method. Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed,  improves performance</info>
       <return type='void'/>
       <arg name='scheme' type='xmlBufferAllocationScheme' info='allocation method to use '/>
     </function>
@@ -8480,7 +8486,7 @@
       <arg name='val' type='double' info='a double value '/>
     </function>
     <function name='xmlXPathIsNodeType' file='xpathInternals'>
-      <info>Is the name given a NodeType one. [38] NodeType ::= &apos;comment&apos; | &apos;text&apos; | &apos;processing-instruction&apos; | &apos;node&apos;</info>
+      <info>Is the name given a NodeType one. [38] NodeType ::= &apos;comment&apos;  | &apos;text&apos;  | &apos;processing-instruction&apos;  | &apos;node&apos;</info>
       <return type='int' info='1 if true 0 otherwise '/>
       <arg name='name' type='const xmlChar *' info='a name string '/>
     </function>
@@ -8787,7 +8793,7 @@
     <typedef name='xmlXPathObjectPtr' file='xpath'/>
     <enum name='xmlXPathObjectType' file='xpath'/>
     <function name='xmlXPathParseNCName' file='xpathInternals'>
-      <info>parse an XML namespace non qualified name. [NS 3] NCName ::= (Letter | &apos;_&apos;) (NCNameChar)* [NS 4] NCNameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | CombiningChar | Extender</info>
+      <info>parse an XML namespace non qualified name. [NS 3] NCName ::= (Letter | &apos;_&apos;) (NCNameChar)* [NS 4] NCNameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; |  CombiningChar | Extender</info>
       <return type='xmlChar *' info='the namespace name or NULL '/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context '/>
     </function>
@@ -8980,7 +8986,7 @@
       <arg name='nargs' type='int' info='the number of arguments '/>
     </function>
     <function name='xmlXPathStringEvalNumber' file='xpathInternals'>
-      <info>[30a] Float ::= Number (&apos;e&apos; Digits?)? [30] Number ::= Digits (&apos;.&apos; Digits?)? | &apos;.&apos; Digits [31] Digits ::= [0-9]+ Compile a Number in the string In complement of the Number expression, this function also handles negative values : &apos;-&apos; Number.</info>
+      <info>[30a] Float ::= Number (&apos;e&apos; Digits?)? [30] Number ::= Digits (&apos;.&apos; Digits?)?  | &apos;.&apos; Digits [31] Digits ::= [0-9]+ Compile a Number in the string In complement of the Number expression, this function also handles negative values : &apos;-&apos; Number.</info>
       <return type='double' info='the double value. '/>
       <arg name='str' type='const xmlChar *' info='A string to scan '/>
     </function>
@@ -9166,7 +9172,7 @@
       <return type='xmlXPathContextPtr' info='the xmlXPathContext just allocated. '/>
       <arg name='doc' type='xmlDocPtr' info='the XML document '/>
       <arg name='here' type='xmlNodePtr' info='the node that directly contains the XPointer being evaluated or NULL '/>
-      <arg name='origin' type='xmlNodePtr' info='the element from which a user or program initiated traversal of the link, or NULL. '/>
+      <arg name='origin' type='xmlNodePtr' info='the element from which a user or program initiated traversal of  the link, or NULL. '/>
     </function>
     <function name='xmlXPtrNewLocationSetNodeSet' file='xpointer'>
       <info>Create a new xmlXPathObjectPtr of type LocationSet and initialize it with all the nodes from set</info>

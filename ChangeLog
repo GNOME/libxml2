@@ -1,3 +1,11 @@
+Fri Nov 22 14:15:14 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: final touch at closing #87235 </p> end tags
+	  need to be generated.
+	* result/HTML/cf_128.html result/HTML/test2.html result/HTML/test3.html:
+	  this change slightly the output of a few tests
+	* doc/*: regenerated
+
 Fri Nov 22 13:26:19 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: fixing bug #99190 when UTF8 document are

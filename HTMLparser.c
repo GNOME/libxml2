@@ -421,7 +421,7 @@ html40ElementTable[] = {
 { "ol",		0, 0, 0, 0, 0, 0, 0, "ordered list " },
 { "optgroup",	0, 0, 0, 0, 0, 0, 0, "option group " },
 { "option",	0, 1, 0, 0, 0, 0, 0, "selectable choice " },
-{ "p",		0, 1, 1, 0, 0, 0, 0, "paragraph " },
+{ "p",		0, 1, 0, 0, 0, 0, 0, "paragraph " },
 { "param",	0, 2, 2, 1, 0, 0, 0, "named property value " },
 { "pre",	0, 0, 0, 0, 0, 0, 0, "preformatted text " },
 { "q",		0, 0, 0, 0, 0, 0, 1, "short inline quotation " },

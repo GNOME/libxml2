@@ -1,3 +1,14 @@
+Wed Feb 19 15:39:56 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* DOCBparser.c: obsoleted xmlNormalizeWindowsPath
+	* HTMLparser.c: obsoleted xmlNormalizeWindowsPath
+	* SAX.c: ensured xmlDoc.URL is always canonic
+	* parser.c: obsoleted xmlNormalizeWindowsPath
+	* uri.c include/libxml/uri.h: introduced xmlCanonicPath
+	* xmlIO.c include/libxml/xmlIO.h: obsoleted xmlNormalizeWindowsPath
+	* win32/libxml2.def.src: added few exports
+	
+	
 Wed Feb 19 14:26:51 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in: patched to have shared libraries

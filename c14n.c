@@ -38,6 +38,12 @@ typedef enum {
     XMLC14N_AFTER_DOCUMENT_ELEMENT = 2
 } xmlC14NPosition;
 
+typedef struct _xmlC14NNamespaces {
+    int nsNr;		/* number of nodes in the set */
+    int nsMax;		/* size of the array as allocated */
+    xmlNsPtr *nsTab;	/* array of nodes in no particular order */	      
+} xmlC14NNamespaces, *xmlC14NNamespacesPtr;
+
 typedef struct _xmlC14NCtx {
     /* input parameters */
     xmlDocPtr doc;
@@ -48,10 +54,10 @@ typedef struct _xmlC14NCtx {
     /* position in the XML document */
     xmlC14NPosition pos;
     int parent_is_doc;
+    xmlC14NNamespacesPtr ns_rendered;
 
     /* exclusive canonicalization */
     int exclusive;
-    xmlNodeSetPtr ns_rendered;
     xmlChar **inclusive_ns_prefixes;
 } xmlC14NCtx, *xmlC14NCtxPtr;
 
@@ -82,6 +88,67 @@ static xmlChar *xmlC11NNormalizeString(const xmlChar * input,
  *		The implementation internals				*
  *									*
  ************************************************************************/
+#define XML_NAMESPACES_DEFAULT		16
+
+static xmlC14NNamespacesPtr
+xmlC14NNamespacesCreate() {
+    xmlC14NNamespacesPtr ret;
+
+    ret = (xmlC14NNamespacesPtr) xmlMalloc(sizeof(xmlC14NNamespaces));
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlC14NNamespacesCreate: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlC14NNamespaces));
+    return(ret);
+}
+
+static void
+xmlC14NNamespacesDestroy(xmlC14NNamespacesPtr cur) {
+    if(cur == NULL) {
+	return;
+    }
+    if(cur->nsTab != NULL) {
+	memset(cur->nsTab, 0, cur->nsMax * sizeof(xmlNsPtr));
+	xmlFree(cur->nsTab);
+    }
+    memset(cur, 0, sizeof(xmlC14NNamespaces));
+    xmlFree(cur);
+    
+}
+
+static void xmlC14NNamespacesAdd(xmlC14NNamespacesPtr cur, xmlNsPtr ns) {
+    if((cur == NULL) || (ns == NULL)) {
+	return;
+    }
+
+    if (cur->nsTab == NULL) {
+        cur->nsTab = (xmlNsPtr*) xmlMalloc(XML_NAMESPACES_DEFAULT * sizeof(xmlNsPtr));
+	if (cur->nsTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlC14NNamespacesAdd: out of memory\n");
+	    return;
+	}
+	memset(cur->nsTab, 0 , XML_NAMESPACES_DEFAULT * sizeof(xmlNsPtr));
+        cur->nsMax = XML_NAMESPACES_DEFAULT;
+    } else if(cur->nsMax == cur->nsNr) {
+	xmlNsPtr *tmp;
+	int tmpSize;
+	
+	tmpSize = 2 * cur->nsMax;
+	tmp = (xmlNsPtr*) xmlRealloc(cur->nsTab, tmpSize * sizeof(xmlNsPtr));
+	if (tmp == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlC14NNamespacesAdd: out of memory\n");
+	    return;
+	}
+	cur->nsTab = tmp;
+	cur->nsMax = tmpSize;
+    }
+    cur->nsTab[cur->nsNr++] = ns;
+}
+
 
 /**
  * xmlC14NIsVisible:
@@ -150,9 +217,9 @@ xmlExcC14NIsRendered(xmlC14NCtxPtr ctx, xmlNsPtr ns)
         return (0);
     }
 
-    if (ctx->ns_rendered->nodeTab != NULL) {
-        for (i = ctx->ns_rendered->nodeNr - 1; i >= 0; --i) {
-            xmlNsPtr ns1 = (xmlNsPtr) ctx->ns_rendered->nodeTab[i];
+    if (ctx->ns_rendered->nsTab != NULL) {
+        for (i = ctx->ns_rendered->nsNr - 1; i >= 0; --i) {
+            xmlNsPtr ns1 = (xmlNsPtr) ctx->ns_rendered->nsTab[i];
 
             if (xmlStrEqual(ns1->prefix, ns->prefix)) {
                 return (xmlStrEqual(ns1->href, ns->href));
@@ -267,8 +334,6 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
     xmlNsPtr ns;
     xmlListPtr list;
     xmlNodePtr visible_parent;
-    xmlNodePtr node;
-    xmlNsPtr prev;
     
     if ((ctx == NULL) || (cur == NULL) || (cur->type != XML_ELEMENT_NODE)) {
 #ifdef DEBUG_C14N
@@ -293,53 +358,46 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 
     /* find nearest visible parent */
     visible_parent = cur->parent;
-    while ((visible_parent != NULL) &&
-           (!xmlC14NIsVisible(ctx, visible_parent))) {
+    while ((visible_parent != NULL) && (!xmlC14NIsVisible(ctx, visible_parent))) {
         visible_parent = visible_parent->parent;
     }
 
-    /* 
-     * todo: the libxml XPath implementation does not create 
-     * nodes for all namespaces known to the node (i.e. for namespaces
-     * defined in node parents). By this we need to now walk thru 
-     * all namespace in current node and all invisible ancesstors
-     */
-    node = cur;
-    while (cur != visible_parent) {
-        for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
-            /* 
-             * first of all ignore default "xml" namespace and 
-             * already included namespace
-             */
-            if ((xmlC14NIsXmlNs(ns)) || (xmlListSearch(list, ns) != NULL)) {
-                continue;
+    if(ctx->visible_nodes == NULL) {
+	xmlNodePtr node;
+	
+	/* 
+         * the libxml does not create nodes for all namespaces known 
+	 * to the node (i.e. for namespaces defined in node parents). 
+	 * By this we need to now walk thru all namespace in current 
+	 * node and all invisible ancesstors
+         */
+	node = cur;
+	while (cur != visible_parent) {
+    	    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+		if(!xmlC14NIsXmlNs(ns) && !xmlExcC14NIsRendered(ctx, ns)) {
+                    xmlListInsert(list, ns);
+                    xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
+                }
+    	    }
+    	    cur = cur->parent;
+	}
+    } else {
+	int i;
+	
+	/*
+	 * All visible namespace nodes are in the nodes set
+	 */
+	for(i = 0; i < ctx->visible_nodes->nodeNr; i++) { 
+	    if(ctx->visible_nodes->nodeTab[i]->type == XML_NAMESPACE_DECL) {
+		ns = (xmlNsPtr) ctx->visible_nodes->nodeTab[i];
+		
+		if((ns != NULL) && (ns->next == (xmlNsPtr)cur) &&
+		   !xmlC14NIsXmlNs(ns) && !xmlExcC14NIsRendered(ctx, ns)) {
+                    xmlListInsert(list, ns);
+                    xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
+                }
             }
-	    prev = xmlSearchNs(ctx->doc, node, ns->prefix);
-	    if(prev != ns) {
-		/* we already processed a namespace with this name */
-		continue;
-	    }
-
-            /*
-             * Lookup nearest namespace after visible parent having
-             * the same prefix. Namespace included if and only if one of 
-             * the following:
-             *   - another namespace having the same prefix but 
-             *   different value found or
-             *   - there is no namespaces having the same prefix and  
-             *   it is not a default xmlns="" namespace (empty prefix 
-             *   and empty href)
-             */
-            prev = xmlSearchNs(ctx->doc, visible_parent, ns->prefix);
-            if ((prev == NULL) && ((xmlStrlen(ns->prefix) > 0) ||
-                                   (xmlStrlen(ns->href) > 0))) {
-                xmlListInsert(list, ns);
-            } else if ((prev != NULL)
-                       && (!xmlStrEqual(ns->href, prev->href))) {
-                xmlListInsert(list, ns);
-            }
-        }
-        cur = cur->parent;
+	}
     }
 
     /* 
@@ -354,6 +412,7 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
     xmlListDelete(list);
     return (0);
 }
+
 
 /**
  * xmlExcC14NProcessNamespacesAxis:
@@ -426,12 +485,13 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
      * First of all, add all namespaces required by current node
      * (i.e. node namespace and all attribute namespaces)
      * we also need to check for default "xml:" namespace
+     * todo: shouldn't we check for namespaces "visibility"?
      */
     ns = (cur->ns != NULL) ? cur->ns : xmlSearchNs(ctx->doc, cur, NULL);
     if ((ns != NULL) && (!xmlC14NIsXmlNs(ns)) &&
 	(xmlListSearch(list, ns) == NULL) && !xmlExcC14NIsRendered(ctx, ns)) {
             xmlListInsert(list, ns);
-            xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) ns);
+            xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
     }
     attr = cur->properties;
     while (attr != NULL) {
@@ -444,7 +504,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 	    (!xmlC14NIsXmlNs(attr->ns)) && 
             (xmlListSearch(list, attr->ns) == NULL) && (!xmlExcC14NIsRendered(ctx, attr->ns))) {
         	xmlListInsert(list, attr->ns);
-        	xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) attr->ns);
+        	xmlC14NNamespacesAdd(ctx->ns_rendered, attr->ns);
         }
         attr = attr->next;
     }
@@ -470,7 +530,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
                 if (xmlListSearch(list, ns) == NULL &&
                     !xmlExcC14NIsRendered(ctx, ns)) {
                     xmlListInsert(list, ns);
-                    xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) ns);
+                    xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
                 }
             }
         }
@@ -809,8 +869,8 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
      * Save ns_rendered stack position for exclusive 
      * processing
      */
-    if ((ctx->exclusive) && (ctx->ns_rendered != NULL)) {
-        ns_rendered_pos = ctx->ns_rendered->nodeNr;
+    if (ctx->ns_rendered != NULL) {
+        ns_rendered_pos = ctx->ns_rendered->nsNr;
     }
 
     if (visible) {	
@@ -883,8 +943,8 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
      * Restore ns_rendered stack position for exclusive 
      * processing
      */
-    if ((ctx->exclusive) && (ctx->ns_rendered != NULL)) {
-        ctx->ns_rendered->nodeNr = ns_rendered_pos;
+    if (ctx->ns_rendered != NULL) {
+        ctx->ns_rendered->nsNr = ns_rendered_pos;
     }
     return (0);
 }
@@ -1148,7 +1208,7 @@ xmlC14NFreeCtx(xmlC14NCtxPtr ctx)
     }
 
     if (ctx->ns_rendered != NULL) {
-        xmlXPathFreeNodeSet(ctx->ns_rendered);
+        xmlC14NNamespacesDestroy(ctx->ns_rendered);
     }
     xmlFree(ctx);
 }
@@ -1226,6 +1286,7 @@ xmlC14NNewCtx(xmlDocPtr doc, xmlNodeSetPtr nodes,
     ctx->buf = buf;
     ctx->parent_is_doc = 1;
     ctx->pos = XMLC14N_BEFORE_DOCUMENT_ELEMENT;
+    ctx->ns_rendered = xmlC14NNamespacesCreate();
 
     /*
      * Set "exclusive" flag, create a nodes set for namespaces
@@ -1233,7 +1294,6 @@ xmlC14NNewCtx(xmlDocPtr doc, xmlNodeSetPtr nodes,
      */
     if (exclusive) {
         ctx->exclusive = 1;
-        ctx->ns_rendered = xmlXPathNodeSetCreate(NULL);
         ctx->inclusive_ns_prefixes = inclusive_ns_prefixes;
     }
     return (ctx);

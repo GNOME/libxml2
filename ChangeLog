@@ -1,3 +1,10 @@
+Thu May 30 21:23:06 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* c14n.c: propagating xpath ancesstors node fix to c14n
+	plus small performance improvement to reduce number of
+	mallocs
+	* xpath.c: fixed ancestors axis processing for namespace nodes
+
 Wed May 29 10:21:39 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c parser.c tree.c include/libxml/tree.h: performance patch from

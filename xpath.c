@@ -5200,6 +5200,15 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 
 	    return(att->parent);
 	}
+	case XML_NAMESPACE_DECL: {
+	    xmlNsPtr ns = (xmlNsPtr) ctxt->context->node;
+		
+	    if ((ns->next != NULL) &&
+	        (ns->next->type != XML_NAMESPACE_DECL))
+	        return((xmlNodePtr) ns->next);
+	    /* Bad, how did that namespace ended-up there ? */
+            return(NULL);
+	}
 	case XML_DOCUMENT_NODE:
 	case XML_DOCUMENT_TYPE_NODE:
 	case XML_DOCUMENT_FRAG_NODE:
@@ -5207,12 +5216,6 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 #ifdef LIBXML_DOCB_ENABLED
 	case XML_DOCB_DOCUMENT_NODE:
 #endif
-	    return(NULL);
-	case XML_NAMESPACE_DECL:
-	    /*
-	     * this should not hapen a namespace can't be
-	     * the ancestor of another node
-	     */
 	    return(NULL);
     }
     return(NULL);

@@ -762,9 +762,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 				(ctxt->sax->error != NULL))
 				ctxt->sax->error(ctxt->userData, 
 				 "Char 0x%X out of allowed range\n", val);
-			    ctxt->errNo = XML_ERR_INVALID_ENCODING;
-			    ctxt->wellFormed = 0;
-			    ctxt->disableSAX = 1;
+			    goto encoding_error;
 			}    
 		    } else
 		      /* 2-byte code */
@@ -811,7 +809,6 @@ encoding_error:
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     ctxt->input->cur++;
@@ -907,9 +904,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
 				     "Char 0x%X out of allowed range\n", val);
-		ctxt->errNo = XML_ERR_INVALID_ENCODING;
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
+		goto encoding_error;
 	    }    
 	    return(val);
 	} else {
@@ -954,8 +949,6 @@ encoding_error:
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
-
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     *len = 1;
     return((int) *ctxt->input->cur);
@@ -1026,9 +1019,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
 		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
 				     "Char 0x%X out of allowed range\n", val);
-		ctxt->errNo = XML_ERR_INVALID_ENCODING;
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
+		goto encoding_error;
 	    }    
 	    return(val);
 	} else {
@@ -1059,8 +1050,7 @@ encoding_error:
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
-
+    ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     *len = 1;
     return((int) *cur);
 }

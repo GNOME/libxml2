@@ -1,3 +1,8 @@
+Wed Jan  2 14:11:35 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am: should fix #67674 and avoid troubles if 
+	  xsltproc is not available or fails in the prefix provided
+
 Tue Jan  1 17:48:56 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c: one more doc patch from Charlie Bozeman.

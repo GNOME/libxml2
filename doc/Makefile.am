@@ -22,8 +22,8 @@ man_MANS = xmllint.1 xmlcatalog.1
 all: $(PAGES)
 
 $(PAGES): xml.html site.xsl
-	@(if [ -x /usr/bin/xsltproc ] ; then \
-	  /usr/bin/xsltproc --html site.xsl xml.html > index.html ; fi );
+	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  $(bindir)/xsltproc --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
 
 scan:
 	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h xmlwin32version.h win32config.h trio.h strio.h triop.h"

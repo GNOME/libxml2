@@ -3444,33 +3444,57 @@ xmlSchemaPValAttrQName(xmlSchemaParserCtxtPtr ctxt,
  * Returns the default if not found, or the value
  */
 static int
-xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
+xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
+		int min, int max, int def, const char *expected)
 {
     const xmlChar *val, *cur;
     int ret = 0;
+    xmlAttrPtr attr;
 
-    val = xmlSchemaGetProp(ctxt, node, "maxOccurs");
-    if (val == NULL)
-        return (1);
+    attr = xmlSchemaGetPropNode(node, "maxOccurs");
+    if (attr == NULL)
+	return (def);
+    val = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
 
     if (xmlStrEqual(val, (const xmlChar *) "unbounded")) {
-        return (UNBOUNDED);  /* encoding it with -1 might be another option */
+	if (max != UNBOUNDED) {
+	    xmlSchemaPSimpleTypeErr(ctxt, 
+		XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
+		/* XML_SCHEMAP_INVALID_MINOCCURS, */
+		NULL, NULL, (xmlNodePtr) attr, NULL, expected,
+		val, NULL, NULL, NULL);
+	    return (def);
+	} else 
+	    return (UNBOUNDED);  /* encoding it with -1 might be another option */
     }
 
     cur = val;
     while (IS_BLANK_CH(*cur))
         cur++;
+    if (*cur == 0) {
+        xmlSchemaPSimpleTypeErr(ctxt, 
+	    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
+	    /* XML_SCHEMAP_INVALID_MINOCCURS, */
+	    NULL, NULL, (xmlNodePtr) attr, NULL, expected,
+	    val, NULL, NULL, NULL);
+	return (def);
+    }
     while ((*cur >= '0') && (*cur <= '9')) {
         ret = ret * 10 + (*cur - '0');
         cur++;
     }
     while (IS_BLANK_CH(*cur))
         cur++;
-    if (*cur != 0) {
-        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MAXOCCURS,
-	    "The value '%s' of the attribute 'maxOccurs' is invalid.\n", 
-	    val, NULL);
-        return (1);
+    /*
+    * TODO: Restrict the maximal value to Integer.
+    */
+    if ((*cur != 0) || (ret < min) || ((max != -1) && (ret > max))) {
+	xmlSchemaPSimpleTypeErr(ctxt, 
+	    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
+	    /* XML_SCHEMAP_INVALID_MINOCCURS, */
+	    NULL, NULL, (xmlNodePtr) attr, NULL, expected,
+	    val, NULL, NULL, NULL);
+        return (def);
     }
     return (ret);
 }
@@ -3485,28 +3509,44 @@ xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
  * Returns the default if not found, or the value
  */
 static int
-xmlGetMinOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
+xmlGetMinOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, 
+		int min, int max, int def, const char *expected)
 {
     const xmlChar *val, *cur;
     int ret = 0;
+    xmlAttrPtr attr;
 
-    val = xmlSchemaGetProp(ctxt, node, "minOccurs");
-    if (val == NULL)
-        return (1);
-
+    attr = xmlSchemaGetPropNode(node, "minOccurs");
+    if (attr == NULL)
+	return (def);
+    val = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
     cur = val;
     while (IS_BLANK_CH(*cur))
         cur++;
+    if (*cur == 0) {
+        xmlSchemaPSimpleTypeErr(ctxt, 
+	    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
+	    /* XML_SCHEMAP_INVALID_MINOCCURS, */
+	    NULL, NULL, (xmlNodePtr) attr, NULL, expected,
+	    val, NULL, NULL, NULL);
+        return (def);
+    }
     while ((*cur >= '0') && (*cur <= '9')) {
         ret = ret * 10 + (*cur - '0');
         cur++;
     }
     while (IS_BLANK_CH(*cur))
         cur++;
-    if (*cur != 0) {
-        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MINOCCURS,
-                      "invalid value for minOccurs: %s\n", val, NULL);
-        return (1);
+    /*
+    * TODO: Restrict the maximal value to Integer.
+    */
+    if ((*cur != 0) || (ret < min) || ((max != -1) && (ret > max))) {
+	xmlSchemaPSimpleTypeErr(ctxt, 
+	    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
+	    /* XML_SCHEMAP_INVALID_MINOCCURS, */
+	    NULL, NULL, (xmlNodePtr) attr, NULL, expected,
+	    val, NULL, NULL, NULL);
+        return (def);
     }
     return (ret);
 }
@@ -4207,6 +4247,47 @@ xmlSchemaParseWildcardNs(xmlSchemaParserCtxtPtr ctxt,
     }
     return (ret);
 }
+
+static int
+xmlSchemaPCheckParticleCorrect_2(xmlSchemaParserCtxtPtr ctxt, 
+				 xmlSchemaTypePtr item, 
+				 xmlNodePtr node,
+				 int minOccurs,
+				 int maxOccurs) {
+
+    if (maxOccurs != UNBOUNDED) {
+	/*
+	* TODO: Maby we should better not create the particle, 
+	* if min/max is invalid, since it could confuse the build of the 
+	* content model.
+	*/
+	/* 
+	* 3.9.6 Schema Component Constraint: Particle Correct
+	*
+	*/
+	if (maxOccurs < 1) { 
+	    /* 
+	    * 2.2 {max occurs} must be greater than or equal to 1.
+	    */
+	    xmlSchemaPCustomAttrErr(ctxt,
+		XML_SCHEMAP_P_PROPS_CORRECT_2_2,
+		NULL, item, xmlSchemaGetPropNode(node, "maxOccurs"),
+		"The value must be greater than or equal to 1");
+	    return (XML_SCHEMAP_P_PROPS_CORRECT_2_2);
+	} else if (minOccurs > maxOccurs) {
+	    /*
+	    * 2.1 {min occurs} must not be greater than {max occurs}.
+	    */
+	    xmlSchemaPCustomAttrErr(ctxt,
+		XML_SCHEMAP_P_PROPS_CORRECT_2_1, 
+		NULL, item, xmlSchemaGetPropNode(node, "minOccurs"),
+		"The value must not be greater than the value of 'maxOccurs'");
+	    return (XML_SCHEMAP_P_PROPS_CORRECT_2_1);
+	}
+    }	
+    return (0);
+}
+
 /**
  * xmlSchemaParseAny:
  * @ctxt:  a schema validation context
@@ -4226,24 +4307,38 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlNodePtr child = NULL;
     xmlChar name[30];
     xmlSchemaWildcardPtr wildc;
+    int minOccurs, maxOccurs;
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
+    maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, 
+	"(nonNegativeInteger | unbounded)");
+    minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, 
+	"nonNegativeInteger");
+    if ((minOccurs == 0) && (maxOccurs == 0))
+	return (NULL);
+
     snprintf((char *) name, 30, "any %d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
     type->node = node;
-    type->type = XML_SCHEMA_TYPE_ANY;
-    type->minOccurs = xmlGetMinOccurs(ctxt, node);
-    type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
+    type->type = XML_SCHEMA_TYPE_ANY;    
+    
     wildc = xmlSchemaAddWildcard(ctxt);
+    /*
+    * Check min/max sanity.
+    */
+    type->maxOccurs = maxOccurs;
+    type->minOccurs = minOccurs;
+    xmlSchemaPCheckParticleCorrect_2(ctxt, type, 
+	    node, type->minOccurs, type->maxOccurs);    
     /*
     * This is not nice, since it is won't be used as a attribute wildcard,
     * but better than adding a field to the structure.
     */
     type->attributeWildcard = wildc;
-    xmlSchemaParseWildcardNs(ctxt, schema, wildc, node);
+    xmlSchemaParseWildcardNs(ctxt, schema, wildc, node);    
     child = node->children;    
     if (IS_SCHEMA(child, "annotation")) {
         type->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -4501,25 +4596,23 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	/* 
 	* Evaluate the target namespace 
 	*/	
-	if (schema->targetNamespace != NULL) {
-	    if (topLevel) {
-		ns = schema->targetNamespace;
-	    } else {
-		attr = xmlSchemaGetPropNode(node, "form");
-		if (attr != NULL) {
-		    attrValue = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
-		    if (xmlStrEqual(attrValue, BAD_CAST "qualified")) {
-			ns = schema->targetNamespace;
-		    } else if (!xmlStrEqual(attrValue, BAD_CAST "unqualified")) {
-			xmlSchemaPSimpleTypeErr(ctxt, 
-			    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
-			    &repName, NULL, (xmlNodePtr) attr, 
-			    NULL, "(qualified | unqualified)", 
-			    attrValue, NULL, NULL, NULL);			
-		    }
-		} else if (schema->flags & XML_SCHEMAS_QUALIF_ATTR)
-		    ns = schema->targetNamespace;		
-	    } 
+	if (topLevel) {
+	    ns = schema->targetNamespace;
+	} else {
+	    attr = xmlSchemaGetPropNode(node, "form");
+	    if (attr != NULL) {
+		attrValue = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
+		if (xmlStrEqual(attrValue, BAD_CAST "qualified")) {
+		    ns = schema->targetNamespace;
+		} else if (!xmlStrEqual(attrValue, BAD_CAST "unqualified")) {
+		    xmlSchemaPSimpleTypeErr(ctxt, 
+			XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
+			&repName, NULL, (xmlNodePtr) attr, 
+			NULL, "(qualified | unqualified)", 
+			attrValue, NULL, NULL, NULL);			
+		}
+	    } else if (schema->flags & XML_SCHEMAS_QUALIF_ATTR)
+		ns = schema->targetNamespace;		
 	}				
 	ret = xmlSchemaAddAttribute(ctxt, schema, name, ns, node);
 	if (ret == NULL) {
@@ -4929,9 +5022,9 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     * to no component at all
     * TODO: It might be better to validate the element, even if it won't be 
     * used.
-    */
-    minOccurs = xmlGetMinOccurs(ctxt, node);
-    maxOccurs = xmlGetMaxOccurs(ctxt, node);
+    */    
+    minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
+    maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, "(nonNegativeInteger | unbounded)");
     if ((minOccurs == 0) && (maxOccurs == 0))
 	return (NULL);
     /*
@@ -5013,26 +5106,23 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	/* 
 	* Evaluate the target namespace.
 	*/
-	if (schema->targetNamespace != NULL) {
-	    if (topLevel) {
-		ns = schema->targetNamespace;
-	    } else {
-		attr = xmlSchemaGetPropNode(node, "form");
-		if (attr != NULL) {
-		    attrValue = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
-		    if (xmlStrEqual(attrValue, BAD_CAST "qualified")) {
-			ns = schema->targetNamespace;
-		    } else if (!xmlStrEqual(attrValue, BAD_CAST "unqualified")) {
-			xmlSchemaPSimpleTypeErr(ctxt, 
-			    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
-			    (xmlChar **) &xmlSchemaElemDesElemDecl, NULL, 
-			    (xmlNodePtr) attr, 
-			    NULL, "(qualified | unqualified)", 
-			    attrValue, NULL, NULL, NULL);
-		    }
-		} else if (schema->flags & XML_SCHEMAS_QUALIF_ELEM)
+	if (topLevel) {
+	    ns = schema->targetNamespace;
+	} else {
+	    attr = xmlSchemaGetPropNode(node, "form");
+	    if (attr != NULL) {
+		attrValue = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
+		if (xmlStrEqual(attrValue, BAD_CAST "qualified")) {
 		    ns = schema->targetNamespace;
-	    }
+		} else if (!xmlStrEqual(attrValue, BAD_CAST "unqualified")) {
+		    xmlSchemaPSimpleTypeErr(ctxt, 
+			XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
+			&repName, NULL, (xmlNodePtr) attr, 
+			NULL, "(qualified | unqualified)", 
+			attrValue, NULL, NULL, NULL);			
+		}
+	    } else if (schema->flags & XML_SCHEMAS_QUALIF_ELEM)
+		ns = schema->targetNamespace;		
 	}	
 	ret = xmlSchemaAddElement(ctxt, schema, name, ns, node, topLevel);
 	if (ret == NULL) {
@@ -5183,37 +5273,9 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     ret->id = xmlSchemaGetProp(ctxt, node, "id");
     ret->minOccurs = minOccurs;
     ret->maxOccurs = maxOccurs; 
-    if ((topLevel != 1) && (ret->maxOccurs != UNBOUNDED)) {
-	/*
-	* TODO: Maby we should better not create the element/particle, 
-	* if min/max is invalid, since it could confuse the build of the 
-	* content model.
-	*/
-	/* 
-	* 3.9.6 Schema Component Constraint: Particle Correct
-	*
-	*/
-	if (maxOccurs < 1) { 
-	    /* 
-	    * 2.2 {max occurs} must be greater than or equal to 1.
-	    */
-	    xmlSchemaPCustomAttrErr(ctxt,
-		XML_SCHEMAP_P_PROPS_CORRECT_2_2,
-		&repName, (xmlSchemaTypePtr) ret, 
-		xmlSchemaGetPropNode(node, "maxOccurs"),
-		"The value must be greater than or equal to 1");
-	} else if (minOccurs > maxOccurs) {
-	    /*
-	    * 2.1 {min occurs} must not be greater than {max occurs}.
-	    */
-	    xmlSchemaPCustomAttrErr(ctxt,
-		XML_SCHEMAP_P_PROPS_CORRECT_2_1, 
-		&repName, (xmlSchemaTypePtr) ret, 
-		xmlSchemaGetPropNode(node, "minOccurs"),
-		"The value must not be greater than the value of 'maxOccurs'");
-	}
-    }	
-    
+    if (topLevel != 1)
+	xmlSchemaPCheckParticleCorrect_2(ctxt, (xmlSchemaTypePtr) ret, 
+	    node, minOccurs, maxOccurs);    
     /*
     * And now for the children...
     */
@@ -5676,8 +5738,11 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->ref = ref;
     type->refNs = refNs;
-    type->minOccurs = xmlGetMinOccurs(ctxt, node);
-    type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
+
+    type->minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
+    type->maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, "(nonNegativeInteger | unbounded)");
+    xmlSchemaPCheckParticleCorrect_2(ctxt, type, 
+	node, type->minOccurs, type->maxOccurs);    
 
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
@@ -5739,16 +5804,9 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->node = node;
     type->type = XML_SCHEMA_TYPE_ALL;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
-    type->minOccurs = xmlGetMinOccurs(ctxt, node);
-    if (type->minOccurs > 1)
-        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MINOCCURS,
-	    "<all>: The value of the attribute \"minOccurs\" is invalid. "
-	    "Either \"0\" or \"1\" is expected.\n", NULL, NULL);
-    type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
-    if (type->maxOccurs > 1)
-        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MAXOCCURS,
-	    "<all>: The value of the attribute \"maxOccurs\" is invalid. "
-	    "Either \"0\" or \"1\" is expected.\n", NULL, NULL);
+
+    type->minOccurs = xmlGetMinOccurs(ctxt, node, 0, 1, 1, "(0 | 1)");
+    type->maxOccurs = xmlGetMaxOccurs(ctxt, node, 1, 1, 1, "1");    
 
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
@@ -6735,8 +6793,9 @@ xmlSchemaParseChoice(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     * Extract and validate attributes.
     */
     type->id = xmlSchemaGetProp(ctxt, node, "id");
-    type->minOccurs = xmlGetMinOccurs(ctxt, node);
-    type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
+    type->minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
+    type->maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, 
+	"(nonNegativeInteger | unbounded)");
     /*
     * And now for the children...
     */
@@ -6842,8 +6901,9 @@ xmlSchemaParseSequence(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     * Extract and validate attributes.
     */
     type->id = xmlSchemaGetProp(ctxt, node, "id");
-    type->minOccurs = xmlGetMinOccurs(ctxt, node);
-    type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
+    type->minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
+    type->maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, 
+	"(nonNegativeInteger | unbounded)");
     /*
     * And now for the children...
     */
@@ -11380,7 +11440,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
                     xmlSchemaTypePtr typeDecl,
                     xmlSchemaParserCtxtPtr ctxt, const xmlChar * name)
 {
-    static xmlSchemaTypePtr nonNegativeIntegerType = NULL;
+    xmlSchemaTypePtr nonNegativeIntegerType = NULL;
     int ret = 0;
 
     if (nonNegativeIntegerType == NULL) {
@@ -11494,7 +11554,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
                 tmp =
                     xmlSchemaValidatePredefinedType(nonNegativeIntegerType,
                                                     facet->value,
-                                                    &facet->val);
+                                                    &(facet->val));
                 if (tmp != 0) {
                     /* error code */
                     if (ctxt != NULL) {

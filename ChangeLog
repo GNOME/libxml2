@@ -1,3 +1,11 @@
+Mon Aug 30 12:45:46 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a bug in xmlSchemasCheckFacet, which did
+	  not create a computed value on a facet and thus crashed during
+	  validation of instances.
+	  Expanded validity checks for min/maxOccurs attributes.
+	  Expanded validity checks for the value of the attribute "form".
+
 Fri Aug 27 18:32:24 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlstring.c: fixed a problem with xmlCheckUTF8 reported on the

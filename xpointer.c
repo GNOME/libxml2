@@ -898,7 +898,7 @@ static void xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name);
 #define CUR_PTR ctxt->cur
 
 #define SKIP_BLANKS 							\
-    while (IS_BLANK(*(ctxt->cur))) NEXT
+    while (IS_BLANK_CH(*(ctxt->cur))) NEXT
 
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)

@@ -368,8 +368,12 @@ for f in fkeys:
 		if rg[0] == rg[1]:		# single value - check equal
 		    pline += "((c) == 0x%x)" % rg[0]
 		else:				# value range
-		    pline += "((0x%x <= (c)) &&" % rg[0]
-		    pline += " ((c) <= 0x%x))" % rg[1]
+		# since we are doing char, also change range ending in 0xff
+		    if rg[1] != 0xff:
+		        pline += "((0x%x <= (c)) &&" % rg[0]
+		        pline += " ((c) <= 0x%x))" % rg[1]
+		    else:
+		        pline += " (0x%x <= (c))" % rg[0]
 	    pline += ")\n"
 	    header.write(pline)
 

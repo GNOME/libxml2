@@ -29,7 +29,7 @@ static int scanNumber(char **ptr) {
 static void
 testRegexpFile(const char *filename) {
     FILE *input;
-    char exp[5000];
+    char expr[5000];
     int len;
     int ret;
     int i;
@@ -63,24 +63,24 @@ testRegexpFile(const char *filename) {
     }
     ret = 0;
 
-    while (fgets(exp, 4500, input) != NULL) {
-	if (exp[0] == '#')
+    while (fgets(expr, 4500, input) != NULL) {
+	if (expr[0] == '#')
 	    continue;
-	len = strlen(exp);
+	len = strlen(expr);
 	len--;
 	while ((len >= 0) && 
-	       ((exp[len] == '\n') || (exp[len] == '\t') ||
-		(exp[len] == '\r') || (exp[len] == ' '))) len--;
-	exp[len + 1] = 0;      
+	       ((expr[len] == '\n') || (expr[len] == '\t') ||
+		(expr[len] == '\r') || (expr[len] == ' '))) len--;
+	expr[len + 1] = 0;      
 	if (len >= 0) {
-	    if ((am != NULL) && (exp[0] == 't') && (exp[1] == ' ')) {
-		char *ptr = &exp[2];
+	    if ((am != NULL) && (expr[0] == 't') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
 		int from, to;
 
 		from = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		if (states[from] == NULL)
@@ -89,7 +89,7 @@ testRegexpFile(const char *filename) {
 		to = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		if (states[to] == NULL)
@@ -97,14 +97,14 @@ testRegexpFile(const char *filename) {
 		ptr++;
 		xmlAutomataNewTransition(am, states[from], states[to],
 			                 BAD_CAST ptr, NULL);
-	    } else if ((am != NULL) && (exp[0] == 'e') && (exp[1] == ' ')) {
-		char *ptr = &exp[2];
+	    } else if ((am != NULL) && (expr[0] == 'e') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
 		int from, to;
 
 		from = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		if (states[from] == NULL)
@@ -114,26 +114,26 @@ testRegexpFile(const char *filename) {
 		if (states[to] == NULL)
 		    states[to] = xmlAutomataNewState(am);
 		xmlAutomataNewEpsilon(am, states[from], states[to]);
-	    } else if ((am != NULL) && (exp[0] == 'f') && (exp[1] == ' ')) {
-		char *ptr = &exp[2];
+	    } else if ((am != NULL) && (expr[0] == 'f') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
 		int state;
 
 		state = scanNumber(&ptr);
 		if (states[state] == NULL) {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad state %d : %s\n", state, exp);
+			    "Bad state %d : %s\n", state, expr);
 		    break;
 		}
 		xmlAutomataSetFinalState(am, states[state]);
-	    } else if ((am != NULL) && (exp[0] == 'c') && (exp[1] == ' ')) {
-		char *ptr = &exp[2];
+	    } else if ((am != NULL) && (expr[0] == 'c') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
 		int from, to;
 		int min, max;
 
 		from = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		if (states[from] == NULL)
@@ -142,7 +142,7 @@ testRegexpFile(const char *filename) {
 		to = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		if (states[to] == NULL)
@@ -151,20 +151,20 @@ testRegexpFile(const char *filename) {
 		min = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		ptr++;
 		max = scanNumber(&ptr);
 		if (*ptr != ' ') {
 		    xmlGenericError(xmlGenericErrorContext,
-			    "Bad line %s\n", exp);
+			    "Bad line %s\n", expr);
 		    break;
 		}
 		ptr++;
 		xmlAutomataNewCountTrans(am, states[from], states[to],
 			                 BAD_CAST ptr, min, max, NULL);
-	    } else if ((am != NULL) && (exp[0] == '-') && (exp[1] == '-')) {
+	    } else if ((am != NULL) && (expr[0] == '-') && (expr[1] == '-')) {
 		/* end of the automata */
 		regexp = xmlAutomataCompile(am);
 		xmlFreeAutomata(am);
@@ -174,7 +174,7 @@ testRegexpFile(const char *filename) {
 			    "Failed to compile the automata");
 		    break;
 		}
-	    } else if ((exp[0] == '=') && (exp[1] == '>')) {
+	    } else if ((expr[0] == '=') && (expr[1] == '>')) {
 		if (regexp == NULL) {
 		    printf("=> failed not compiled\n");
 		} else {
@@ -196,10 +196,10 @@ testRegexpFile(const char *filename) {
 	    } else if (regexp != NULL) {
 		if (exec == NULL)
 		    exec = xmlRegNewExecCtxt(regexp, NULL, NULL);
-		ret = xmlRegExecPushString(exec, BAD_CAST exp, NULL);
+		ret = xmlRegExecPushString(exec, BAD_CAST expr, NULL);
 	    } else {
 		xmlGenericError(xmlGenericErrorContext,
-			"Unexpected line %s\n", exp);
+			"Unexpected line %s\n", expr);
 	    }
 	}
     }

@@ -1,3 +1,9 @@
+Fri Nov 14 23:47:31 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* catalog.c,relaxng.c,testAutomata.c,xpointer.c,genChRanges.py,
+	  chvalid.c,include/libxml/chvalid.h,doc/examples/test1.c:
+	  minor error cleanup for gcc-3.3.[12] compilation warnings.
+
 Fri Nov 14 15:08:13 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* tree.c: minor changes to some comments

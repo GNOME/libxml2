@@ -7786,7 +7786,7 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
 static int xmlRelaxNGValidateAttributeList(xmlRelaxNGValidCtxtPtr ctxt,
                                            xmlRelaxNGDefinePtr defines);
 static int xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt,
-                                        int log);
+                                        int dolog);
 static void xmlRelaxNGLogBestError(xmlRelaxNGValidCtxtPtr ctxt);
 
 /**
@@ -9423,7 +9423,7 @@ xmlRelaxNGLogBestError(xmlRelaxNGValidCtxtPtr ctxt)
 /**
  * xmlRelaxNGValidateElementEnd:
  * @ctxt:  a Relax-NG validation context
- * @log:  indicate that error logging should be done
+ * @dolog:  indicate that error logging should be done
  *
  * Validate the end of the element, implements check that
  * there is nothing left not consumed in the element content
@@ -9432,7 +9432,7 @@ xmlRelaxNGLogBestError(xmlRelaxNGValidCtxtPtr ctxt)
  * Returns 0 if the validation succeeded or an error code.
  */
 static int
-xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt, int log)
+xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt, int dolog)
 {
     int i;
     xmlRelaxNGValidStatePtr state;
@@ -9441,7 +9441,7 @@ xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt, int log)
     if (state->seq != NULL) {
         state->seq = xmlRelaxNGSkipIgnored(ctxt, state->seq);
         if (state->seq != NULL) {
-            if (log) {
+            if (dolog) {
                 VALID_ERR3(XML_RELAXNG_ERR_EXTRACONTENT,
                            state->node->name, state->seq->name);
             }
@@ -9450,7 +9450,7 @@ xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt, int log)
     }
     for (i = 0; i < state->nbAttrs; i++) {
         if (state->attrs[i] != NULL) {
-            if (log) {
+            if (dolog) {
                 VALID_ERR3(XML_RELAXNG_ERR_INVALIDATTR,
                            state->attrs[i]->name, state->node->name);
             }

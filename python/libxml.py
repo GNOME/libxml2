@@ -208,57 +208,6 @@ class xmlCore:
             self._o = _obj;
             return
         self._o = None
-
-    def __getattr__(self, attr):
-        if attr == "parent":
-            ret = libxml2mod.parent(self._o)
-            if ret == None:
-                return None
-            return xmlNode(_obj=ret)
-        elif attr == "properties":
-            ret = libxml2mod.properties(self._o)
-            if ret == None:
-                return None
-            return xmlAttr(_obj=ret)
-        elif attr == "children":
-            ret = libxml2mod.children(self._o)
-            if ret == None:
-                return None
-            return xmlNode(_obj=ret)
-        elif attr == "last":
-            ret = libxml2mod.last(self._o)
-            if ret == None:
-                return None
-            return xmlNode(_obj=ret)
-        elif attr == "next":
-            ret = libxml2mod.next(self._o)
-            if ret == None:
-                return None
-            return xmlNode(_obj=ret)
-        elif attr == "prev":
-            ret = libxml2mod.prev(self._o)
-            if ret == None:
-                return None
-            return xmlNode(_obj=ret)
-        elif attr == "content":
-            return libxml2mod.xmlNodeGetContent(self._o)
-        elif attr == "name":
-            return libxml2mod.name(self._o)
-        elif attr == "type":
-            return libxml2mod.type(self._o)
-        elif attr == "doc":
-            ret = libxml2mod.doc(self._o)
-            if ret == None:
-		if self.type == "document_xml" or self.type == "document_html":
-		    return xmlDoc(_obj=self._o)
-		else:
-		    return None
-            return xmlDoc(_obj=ret)
-        raise AttributeError,attr
-
-        #
-        # Those are common attributes to nearly all type of nodes
-        #
     def get_parent(self):
         ret = libxml2mod.parent(self._o)
         if ret == None:
@@ -284,11 +233,6 @@ class xmlCore:
         if ret == None:
             return None
         return xmlAttr(_obj=ret)
-    def get_doc(self):
-        ret = libxml2mod.doc(self._o)
-        if ret == None:
-            return None
-        return xmlDoc(_obj=ret)
     def get_prev(self):
         ret = libxml2mod.prev(self._o)
         if ret == None:
@@ -296,20 +240,88 @@ class xmlCore:
         return xmlNode(_obj=ret)
     def get_content(self):
         return libxml2mod.xmlNodeGetContent(self._o)
-    def getContent(self):
-        return libxml2mod.xmlNodeGetContent(self._o)
+    getContent = get_content  # why is this duplicate naming needed ?
     def get_name(self):
         return libxml2mod.name(self._o)
     def get_type(self):
         return libxml2mod.type(self._o)
-    def free(self):
-        libxml2mod.freeDoc(self._o)
+    def get_doc(self):
+        ret = libxml2mod.doc(self._o)
+        if ret == None:
+            if self.type in ["document_xml", "document_html"]:
+                return xmlDoc(_obj=self._o)
+            else:
+                return None
+        return xmlDoc(_obj=ret)
+    #
+    # Those are common attributes to nearly all type of nodes
+    # defined as python2 properties
+    # 
+    import sys
+    if float(sys.version[0:3]) < 2.2:
+	def __getattr__(self, attr):
+	    if attr == "parent":
+		ret = libxml2mod.parent(self._o)
+		if ret == None:
+		    return None
+		return xmlNode(_obj=ret)
+	    elif attr == "properties":
+		ret = libxml2mod.properties(self._o)
+		if ret == None:
+		    return None
+		return xmlAttr(_obj=ret)
+	    elif attr == "children":
+		ret = libxml2mod.children(self._o)
+		if ret == None:
+		    return None
+		return xmlNode(_obj=ret)
+	    elif attr == "last":
+		ret = libxml2mod.last(self._o)
+		if ret == None:
+		    return None
+		return xmlNode(_obj=ret)
+	    elif attr == "next":
+		ret = libxml2mod.next(self._o)
+		if ret == None:
+		    return None
+		return xmlNode(_obj=ret)
+	    elif attr == "prev":
+		ret = libxml2mod.prev(self._o)
+		if ret == None:
+		    return None
+		return xmlNode(_obj=ret)
+	    elif attr == "content":
+		return libxml2mod.xmlNodeGetContent(self._o)
+	    elif attr == "name":
+		return libxml2mod.name(self._o)
+	    elif attr == "type":
+		return libxml2mod.type(self._o)
+	    elif attr == "doc":
+		ret = libxml2mod.doc(self._o)
+		if ret == None:
+		    if self.type == "document_xml" or self.type == "document_html":
+			return xmlDoc(_obj=self._o)
+		    else:
+			return None
+		return xmlDoc(_obj=ret)
+	    raise AttributeError,attr
+    else:
+	parent = property(get_parent, None, None, "Parent node")
+	children = property(get_children, None, None, "First child node")
+	last = property(get_last, None, None, "Last sibling node")
+	next = property(get_next, None, None, "Next sibling node")
+	prev = property(get_prev, None, None, "Previous sibling node")
+	properties = property(get_properties, None, None, "List of properies")
+	content = property(get_content, None, None, "Content of this node")
+	name = property(get_name, None, None, "Node name")
+	type = property(get_type, None, None, "Node type")
+	doc = property(get_doc, None, None, "The document this node belongs to")
 
     #
     # Serialization routines, the optional arguments have the following
     # meaning:
     #     encoding: string to ask saving in a specific encoding
-    #     format: if 1 the serializer is asked to indent the output
+    #     indent: if 1 the serializer is asked to indent the output
     #
     def serialize(self, encoding = None, format = 0):
         return libxml2mod.serializeNode(self._o, encoding, format)
@@ -329,7 +341,82 @@ class xmlCore:
 	res = ctxt.xpathEval(expr)
 	ctxt.xpathFreeContext()
 	return res
-	
+
+    #
+    # Selecting nodes using XPath, faster because the context
+    # is allocated just once per xmlDoc.
+    #
+    def xpathEval2(self, expr):
+	doc = self.doc
+	if doc == None:
+	    return None
+        try:
+            doc._ctxt.setContextNode(self)
+        except:
+            doc._ctxt = doc.xpathNewContext()
+            doc._ctxt.setContextNode(self)
+	res = doc._ctxt.xpathEval(expr)
+	return res
+
+    # support for python2 iterators
+    def walk_depth_first(self):
+        return xmlCoreDepthFirstItertor(self)
+    def walk_breadth_first(self):
+        return xmlCoreBreadthFirstItertor(self)
+    __iter__ = walk_depth_first
+
+    def free(self):
+        try:
+            self.doc._ctxt.xpathFreeContext()
+        except:
+            pass
+        libxml2mod.freeDoc(self._o)
+
+
+#
+# implements the depth-first iterator for libxml2 DOM tree
+#
+class xmlCoreDepthFirstItertor:
+    def __init__(self, node):
+        self.node = node
+        self.parents = []
+    def __iter__(self):
+        return self
+    def next(self):
+        while 1:
+            if self.node:
+                ret = self.node
+                self.parents.append(self.node)
+                self.node = self.node.children
+                return ret
+            try:
+                parent = self.parents.pop()
+            except IndexError:
+                raise StopIteration
+            self.node = parent.next
+
+#
+# implements the breadth-first iterator for libxml2 DOM tree
+#
+class xmlCoreBreadthFirstItertor:
+    def __init__(self, node):
+        self.node = node
+        self.parents = []
+    def __iter__(self):
+        return self
+    def next(self):
+        while 1:
+            if self.node:
+                ret = self.node
+                self.parents.append(self.node)
+                self.node = self.node.next
+                return ret
+            try:
+                parent = self.parents.pop()
+            except IndexError:
+                raise StopIteration
+            self.node = parent.children
+
 #
 # converters to present a nicer view of the XPath returns
 #
@@ -366,7 +453,6 @@ def xpathObjectRet(o):
 def registerXPathFunction(ctxt, name, ns_uri, f):
     ret = libxml2mod.xmlRegisterXPathFunction(ctxt, name, ns_uri, f)
 
-    
 #
 # For the xmlTextReader parser configuration
 #

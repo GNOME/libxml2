@@ -1,3 +1,9 @@
+Sat Jan  4 20:40:28 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.py: integrated the Python 2.2 optimizations
+	  from Hannu Krosing, while maintaining compatibility with 
+	  1.5 and 2.1
+
 Sat Jan  4 17:33:17 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: a bit of cleanup

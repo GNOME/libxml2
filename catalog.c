@@ -2731,7 +2731,7 @@ xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
  * @catal:  a Catalog
  * @out:  the file.
  *
- * Free up all the memory associated with catalogs
+ * Dump the given catalog to the given file.
  */
 void
 xmlACatalogDump(xmlCatalogPtr catal, FILE *out) {
@@ -3147,7 +3147,7 @@ xmlCatalogResolveURI(const xmlChar *URI) {
  * xmlCatalogDump:
  * @out:  the file.
  *
- * Free up all the memory associated with catalogs
+ * Dump all the global catalog content to the given file.
  */
 void
 xmlCatalogDump(FILE *out) {

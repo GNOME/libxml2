@@ -17009,10 +17009,8 @@
           <ref name='xmlShellCat'/>
         </word>
         <word name='catalogs'>
-          <ref name='xmlACatalogDump'/>
           <ref name='xmlCatalogAddLocal'/>
           <ref name='xmlCatalogCleanup'/>
-          <ref name='xmlCatalogDump'/>
           <ref name='xmlCatalogFreeLocal'/>
           <ref name='xmlCatalogGetDefaults'/>
           <ref name='xmlCatalogLocalResolve'/>
@@ -19756,6 +19754,7 @@
           <ref name='XML_SCHEMAS_ELEM_GLOBAL'/>
           <ref name='_xmlNs'/>
           <ref name='globalNamespace'/>
+          <ref name='xmlCatalogDump'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCtxtResetLastError'/>
           <ref name='xmlEncodeEntitiesReentrant'/>

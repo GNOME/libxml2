@@ -6508,7 +6508,7 @@ actually an xmlCharEncoding'/>
       <arg name='replace' type='const xmlChar *' info='the replacement value for the match'/>
     </function>
     <function name='xmlACatalogDump' file='catalog'>
-      <info>Free up all the memory associated with catalogs</info>
+      <info>Dump the given catalog to the given file.</info>
       <return type='void'/>
       <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
       <arg name='out' type='FILE *' info='the file.'/>
@@ -6979,7 +6979,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the number of entries converted if successful, -1 otherwise'/>
     </function>
     <function name='xmlCatalogDump' file='catalog'>
-      <info>Free up all the memory associated with catalogs</info>
+      <info>Dump all the global catalog content to the given file.</info>
       <return type='void'/>
       <arg name='out' type='FILE *' info='the file.'/>
     </function>

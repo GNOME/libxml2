@@ -1,3 +1,7 @@
+Sun Jul  6 19:56:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c xpath.c: fixed 2 bugs pointed in #116448
+
 Sun Jul  6 19:34:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fixed bug #116095 removing the error message when

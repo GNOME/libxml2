@@ -5942,6 +5942,8 @@ xmlXPathGetElementsByIds (xmlDocPtr doc, const xmlChar *ids) {
     xmlAttrPtr attr;
     xmlNodePtr elem = NULL;
 
+    if (ids == NULL) return(NULL);
+
     ret = xmlXPathNodeSetCreate(NULL);
 
     while (IS_BLANK(*cur)) cur++;

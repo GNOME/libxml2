@@ -2104,7 +2104,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
     while (1) {
         if (ctxt->node == (xmlNodePtr) ctxt->doc)
             snprintf(prompt, sizeof(prompt), "%s > ", "/");
-        else if (ctxt->node->name)
+        else if ((ctxt->node != NULL) && (ctxt->node->name))
             snprintf(prompt, sizeof(prompt), "%s > ", ctxt->node->name);
         else
             snprintf(prompt, sizeof(prompt), "? > ");
@@ -2329,6 +2329,13 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                             if (list->nodesetval != NULL) {
 				if (list->nodesetval->nodeNr == 1) {
 				    ctxt->node = list->nodesetval->nodeTab[0];
+				    if ((ctxt->node != NULL) &&
+				        (ctxt->node->type ==
+					 XML_NAMESPACE_DECL)) {
+					xmlGenericError(xmlGenericErrorContext,
+						    "cannot cd to namespace\n");
+					ctxt->node = NULL;
+				    }
 				} else
 				    xmlGenericError(xmlGenericErrorContext,
 						    "%s is a %d Node Set\n",

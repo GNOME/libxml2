@@ -1444,6 +1444,7 @@ xmlCleanupPredefinedEntities
 	xmlXPathNewValueTree
 	xmlXPathNodeSetAdd
 	xmlXPathNodeSetAddUnique
+	xmlXPathNodeSetAddNs
 	xmlXPathNodeSetSort
 	xmlXPathIdFunction
 	xmlXPathRoot

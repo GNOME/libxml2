@@ -1,3 +1,8 @@
+Fri Mar  1 10:11:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: close #72663 and #72658, don't memdump unless compiled
+	  explicitely with memory debugging switched on
+
 Sat Feb 23 11:08:09 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml2-python-api.xml

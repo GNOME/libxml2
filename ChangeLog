@@ -1,3 +1,8 @@
+Tue Oct  8 18:53:31 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/index.py doc/search.php: added mailing-list archives
+	  indexing and lookup
+
 Tue Oct  8 10:25:07 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: patch from Mark Vakoc to fix xmlNodeGetPath()

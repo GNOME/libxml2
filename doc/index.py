@@ -76,10 +76,23 @@ TABLES={
 	   KEY name (name),
 	   KEY resource (resource),
 	   UNIQUE KEY ref (name, resource))""",
+  "wordsArchive" : """CREATE TABLE wordsArchive (
+           name varchar(50) BINARY NOT NULL,
+	   ID int(11) NOT NULL,
+           relevance int,
+	   KEY name (name),
+	   UNIQUE KEY ref (name, ID))""",
   "pages" : """CREATE TABLE pages (
            resource varchar(255) BINARY NOT NULL,
 	   title varchar(255) BINARY NOT NULL,
 	   UNIQUE KEY name (resource))""",
+  "archives" : """CREATE TABLE archives (
+           ID int(11) NOT NULL auto_increment,
+           resource varchar(255) BINARY NOT NULL,
+	   title varchar(255) BINARY NOT NULL,
+	   UNIQUE KEY id (ID,resource(255)),
+	   INDEX (ID),
+	   INDEX (resource))""",
   "Queries" : """CREATE TABLE Queries (
            ID int(11) NOT NULL auto_increment,
 	   Value varchar(50) NOT NULL,
@@ -324,15 +337,154 @@ def updateWordHTML(name, resource, desc, id, relevance):
 	    return -1
 	     
     return ret
-        
+
+def checkXMLMsgArchive(url):
+    global DB
+
+    if DB == None:
+        openMySQL()
+    if DB == None:
+        return -1
+    if url == None:
+        return -1
+
+    c = DB.cursor()
+    try:
+	ret = c.execute(
+	    """SELECT ID FROM archives WHERE resource='%s'""" % (url))
+	row = c.fetchone()
+	if row == None:
+	    return -1
+    except:
+	return -1
+	     
+    return row[0]
+    
+def addXMLMsgArchive(url, title):
+    global DB
+
+    if DB == None:
+        openMySQL()
+    if DB == None:
+        return -1
+    if url == None:
+        return -1
+    if title == None:
+        title = ""
+    else:
+	title = string.replace(title, "'", " ")
+	title = title[0:99]
+
+    c = DB.cursor()
+    try:
+        cmd = """INSERT INTO archives (resource, title) VALUES ('%s','%s')""" % (url, title)
+        ret = c.execute(cmd)
+	cmd = """SELECT ID FROM archives WHERE resource='%s'""" % (url)
+        ret = c.execute(cmd)
+	row = c.fetchone()
+	if row == None:
+	    print "addXMLMsgArchive failed to get the ID: %s" % (url)
+	    return -1
+    except:
+        print "addXMLMsgArchive failed command: %s" % (cmd)
+	return -1
+	     
+    return((int)(row[0]))
+
+def updateWordArchive(name, id, relevance):
+    global DB
+
+    if DB == None:
+        openMySQL()
+    if DB == None:
+        return -1
+    if name == None:
+        return -1
+    if id == None:
+        return -1
+
+    c = DB.cursor()
+    try:
+	ret = c.execute(
+"""INSERT INTO wordsArchive (name, id, relevance) VALUES ('%s', '%d', '%d')""" %
+                    (name, id, relevance))
+    except:
+        try:
+	    ret = c.execute(
+"""UPDATE wordsArchive SET relevance='%d' where name='%s' and ID='%d'""" %
+                    (relevance, name, id))
+        except:
+	    print "Update word archive (%s, %d, %d) failed command" % (name, id, relevance)
+	    print """UPDATE wordsArchive SET relevance='%d' where name='%s' and ID='%d'""" % (relevance, name, id)
+	    print sys.exc_type, sys.exc_value
+	    return -1
+	     
+    return ret
+
 #########################################################################
 #									#
 #                  Word dictionnary and analysis routines		#
 #									#
 #########################################################################
 
+#
+# top 100 english word without the one len < 3 + own set
+#
+dropWords = {
+    'the':0, 'this':0, 'can':0, 'man':0, 'had':0, 'him':0, 'only':0,
+    'and':0, 'not':0, 'been':0, 'other':0, 'even':0, 'are':0, 'was':0,
+    'new':0, 'most':0, 'but':0, 'when':0, 'some':0, 'made':0, 'from':0,
+    'who':0, 'could':0, 'after':0, 'that':0, 'will':0, 'time':0, 'also':0,
+    'have':0, 'more':0, 'these':0, 'did':0, 'was':0, 'two':0, 'many':0,
+    'they':0, 'may':0, 'before':0, 'for':0, 'which':0, 'out':0, 'then':0,
+    'must':0, 'one':0, 'through':0, 'with':0, 'you':0, 'said':0,
+    'first':0, 'back':0, 'were':0, 'what':0, 'any':0, 'years':0, 'his':0,
+    'her':0, 'where':0, 'all':0, 'its':0, 'now':0, 'much':0, 'she':0,
+    'about':0, 'such':0, 'your':0, 'there':0, 'into':0, 'like':0, 'may':0,
+    'would':0, 'than':0, 'our':0, 'well':0, 'their':0, 'them':0, 'over':0,
+    'down':0,
+    'net':0, 'www':0, 'bad':0, 'Okay':0, 'bin':0, 'cur':0,
+}
+
 wordsDict = {}
 wordsDictHTML = {}
+wordsDictArchive = {}
+
+def cleanupWordsString(str):
+    str = string.replace(str, ".", " ")
+    str = string.replace(str, "!", " ")
+    str = string.replace(str, "?", " ")
+    str = string.replace(str, ",", " ")
+    str = string.replace(str, "'", " ")
+    str = string.replace(str, '"', " ")
+    str = string.replace(str, ";", " ")
+    str = string.replace(str, "-", " ")
+    str = string.replace(str, "(", " ")
+    str = string.replace(str, ")", " ")
+    str = string.replace(str, "{", " ")
+    str = string.replace(str, "}", " ")
+    str = string.replace(str, "<", " ")
+    str = string.replace(str, ">", " ")
+    str = string.replace(str, "=", " ")
+    str = string.replace(str, "/", " ")
+    str = string.replace(str, "*", " ")
+    str = string.replace(str, ":", " ")
+    str = string.replace(str, "#", " ")
+    str = string.replace(str, "\\", " ")
+    str = string.replace(str, "\n", " ")
+    str = string.replace(str, "\r", " ")
+    str = string.replace(str, "\xc2", " ")
+    str = string.replace(str, "\xa0", " ")
+    return str
+    
+def cleanupDescrString(str):
+    str = string.replace(str, "\n", " ")
+    str = string.replace(str, "\r", " ")
+    str = string.replace(str, "\xc2", " ")
+    str = string.replace(str, "\xa0", " ")
+    l = string.split(str)
+    str = string.join(str)
+    return str
 
 def splitIdentifier(str):
     ret = []
@@ -359,6 +511,11 @@ def addWord(word, module, symbol, relevance):
         return -1
     if module == None or symbol == None:
         return -1
+    if dropWords.has_key(word):
+        return 0
+    if ord(word[0]) > 0x80:
+        return 0
+
     if wordsDict.has_key(word):
         d = wordsDict[word]
 	if d == None:
@@ -379,12 +536,7 @@ def addString(str, module, symbol, relevance):
     if str == None or len(str) < 3:
         return -1
     ret = 0
-    str = string.replace(str, ".", " ")
-    str = string.replace(str, ",", " ")
-    str = string.replace(str, "'", " ")
-    str = string.replace(str, '"', " ")
-    str = string.replace(str, ";", " ")
-    str = string.replace(str, "-", " ")
+    str = cleanupWordsString(str)
     l = string.split(str)
     for word in l:
 	if len(word) > 2:
@@ -399,6 +551,12 @@ def addWordHTML(word, resource, id, section, relevance):
         return -1
     if resource == None or section == None:
         return -1
+    if dropWords.has_key(word):
+        return 0
+    if ord(word[0]) > 0x80:
+        return 0
+
+    section = cleanupDescrString(section)
 
     if wordsDictHTML.has_key(word):
         d = wordsDictHTML[word]
@@ -424,33 +582,13 @@ def addStringHTML(str, resource, id, section, relevance):
     if str == None or len(str) < 3:
         return -1
     ret = 0
-    str = string.replace(str, ".", " ")
-    str = string.replace(str, ",", " ")
-    str = string.replace(str, "'", " ")
-    str = string.replace(str, '"', " ")
-    str = string.replace(str, ";", " ")
-    str = string.replace(str, "-", " ")
-    str = string.replace(str, "(", " ")
-    str = string.replace(str, ")", " ")
-    str = string.replace(str, "{", " ")
-    str = string.replace(str, "}", " ")
-    str = string.replace(str, "<", " ")
-    str = string.replace(str, ">", " ")
-    str = string.replace(str, "/", " ")
-    str = string.replace(str, "*", " ")
-    str = string.replace(str, ":", " ")
-    str = string.replace(str, "#", " ")
-    str = string.replace(str, "!", " ")
-    str = string.replace(str, "\n", " ")
-    str = string.replace(str, "\r", " ")
-    str = string.replace(str, "\xc2", " ")
-    str = string.replace(str, "\xa0", " ")
+    str = cleanupWordsString(str)
     l = string.split(str)
     for word in l:
 	if len(word) > 2:
 	    try:
 		r = addWordHTML(word, resource, id, section, relevance)
-		if r <= 0:
+		if r < 0:
 		    print "addWordHTML failed: %s %s" % (word, resource)
 		ret = ret + r
 	    except:
@@ -459,6 +597,53 @@ def addStringHTML(str, resource, id, section, relevance):
 
     return ret
 
+def addWordArchive(word, id, relevance):
+    global wordsDictArchive
+
+    if word == None or len(word) < 3:
+        return -1
+    if id == None or id == -1:
+        return -1
+    if dropWords.has_key(word):
+        return 0
+    if ord(word[0]) > 0x80:
+        return 0
+
+    if wordsDictArchive.has_key(word):
+        d = wordsDictArchive[word]
+	if d == None:
+	    print "skipped %s" % (word)
+	    return 0
+	try:
+	    r = d[id]
+	    relevance = relevance + r
+	except:
+	    pass
+    else:
+        wordsDictArchive[word] = {}
+    d = wordsDictArchive[word];
+    d[id] = relevance
+    return relevance
+    
+def addStringArchive(str, id, relevance):
+    if str == None or len(str) < 3:
+        return -1
+    ret = 0
+    str = cleanupWordsString(str)
+    l = string.split(str)
+    for word in l:
+        i = len(word)
+	if i > 2:
+	    try:
+		r = addWordArchive(word, id, relevance)
+		if r < 0:
+		    print "addWordArchive failed: %s %s" % (word, id)
+		else:
+		    ret = ret + r
+	    except:
+		print "addWordArchive failed: %s %s %d" % (word, id, relevance)
+		print sys.exc_type, sys.exc_value
+    return ret
 
 #########################################################################
 #									#
@@ -817,6 +1002,88 @@ def analyzeHTMLPages():
 
 #########################################################################
 #									#
+#                  Mail archives parsing and analysis			#
+#									#
+#########################################################################
+
+import time
+
+def getXMLDateArchive(t = None):
+    if t == None:
+	t = time.time()
+    T = time.gmtime(t)
+    month = time.strftime("%B", T)
+    year = T[0]
+    url = "http://mail.gnome.org/archives/xml/%d-%s/date.html" % (year, month)
+    return url
+
+def scanXMLMsgArchive(url, title, force = 0):
+    if url == None or title == None:
+        return 0
+
+    ID = checkXMLMsgArchive(url)
+    if force == 0 and ID != -1:
+        return 0
+
+    if ID == -1:
+	ID = addXMLMsgArchive(url, title)
+	if ID == -1:
+	    return 0
+
+    try:
+        print "Loading %s" % (url)
+        doc = libxml2.htmlParseFile(url, None);
+    except:
+        doc = None
+    if doc == None:
+        print "Failed to parse %s" % (url)
+	return 0
+
+    addStringArchive(title, ID, 20)
+    ctxt = doc.xpathNewContext()
+    texts = ctxt.xpathEval("//pre//text()")
+    for text in texts:
+        addStringArchive(text.content, ID, 5)
+
+    return 1
+
+def scanXMLDateArchive(t = None, force = 0):
+    url = getXMLDateArchive(t)
+    print "loading %s" % (url)
+    try:
+	doc = libxml2.htmlParseFile(url, None);
+    except:
+        doc = None
+    if doc == None:
+        print "Failed to parse %s" % (url)
+	return -1
+    ctxt = doc.xpathNewContext()
+    anchors = ctxt.xpathEval("//a[@href]")
+    links = 0
+    newmsg = 0
+    for anchor in anchors:
+	href = anchor.prop("href")
+	if href == None or href[0:3] != "msg":
+	    continue
+        try:
+	    links = links + 1
+
+	    msg = libxml2.buildURI(href, url)
+	    title = anchor.content
+	    if title != None and title[0:4] == 'Re: ':
+	        title = title[4:]
+	    if title != None and title[0:6] == '[xml] ':
+	        title = title[6:]
+	    newmsg = newmsg + scanXMLMsgArchive(msg, title, force)
+
+	except:
+	    pass
+
+    return newmsg
+    
+
+#########################################################################
+#									#
 #          Main code: open the DB, the API XML and analyze it		#
 #									#
 #########################################################################
@@ -827,43 +1094,106 @@ except:
     print sys.exc_type, sys.exc_value
     sys.exit(1)
 
-ret = analyzeHTMLPages()
-print "Indexed %d words in %d HTML pages" % (len(wordsDictHTML), ret)
+def analyzeArchives(t = None, force = 0):
+    global wordsDictArchive
 
-i = 0
-skipped = 0
-for word in wordsDictHTML.keys():
-    refs = wordsDictHTML[word]
-    if refs  == None:
-        skipped = skipped + 1
-        continue;
-    for resource in refs.keys():
-        (relevance, id, section) = refs[resource]
-        updateWordHTML(word, resource, section, id, relevance)
-	i = i + 1
+    ret = scanXMLDateArchive(t, force)
+    print "Indexed %d words in %d archive pages" % (len(wordsDictArchive), ret)
 
-print "Found %d associations in HTML pages" % (i)
+    i = 0
+    skipped = 0
+    for word in wordsDictArchive.keys():
+	refs = wordsDictArchive[word]
+	if refs  == None:
+	    skipped = skipped + 1
+	    continue;
+	for id in refs.keys():
+	    relevance = refs[id]
+	    updateWordArchive(word, id, relevance)
+	    i = i + 1
 
-try:
-    doc = loadAPI(API)
-    ret = analyzeAPI(doc)
-    print "Analyzed %d blocs" % (ret)
-    doc.freeDoc()
-except:
-    print "Failed to parse and analyze %s" % (API)
-    print sys.exc_type, sys.exc_value
+    print "Found %d associations in HTML pages" % (i)
+
+def analyzeHTML():
+    global wordsDictHTML
+
+    ret = analyzeHTMLPages()
+    print "Indexed %d words in %d HTML pages" % (len(wordsDictHTML), ret)
+
+    i = 0
+    skipped = 0
+    for word in wordsDictHTML.keys():
+	refs = wordsDictHTML[word]
+	if refs  == None:
+	    skipped = skipped + 1
+	    continue;
+	for resource in refs.keys():
+	    (relevance, id, section) = refs[resource]
+	    updateWordHTML(word, resource, section, id, relevance)
+	    i = i + 1
+
+    print "Found %d associations in HTML pages" % (i)
+
+def analyzeAPI():
+    global wordsDict
+
+    try:
+	doc = loadAPI(API)
+	ret = analyzeAPI(doc)
+	print "Analyzed %d blocs" % (ret)
+	doc.freeDoc()
+    except:
+	print "Failed to parse and analyze %s" % (API)
+	print sys.exc_type, sys.exc_value
+	sys.exit(1)
+
+    print "Indexed %d words" % (len(wordsDict))
+    i = 0
+    skipped = 0
+    for word in wordsDict.keys():
+	refs = wordsDict[word]
+	if refs  == None:
+	    skipped = skipped + 1
+	    continue;
+	for (module, symbol) in refs.keys():
+	    updateWord(word, symbol, refs[(module, symbol)])
+	    i = i + 1
+
+    print "Found %d associations, skipped %d words" % (i, skipped)
+
+def usage():
+    print "Usage index.py [--force] [--archive] [--archive-month month] [--API] [--docs]"
     sys.exit(1)
 
-print "Indexed %d words" % (len(wordsDict))
-i = 0
-skipped = 0
-for word in wordsDict.keys():
-    refs = wordsDict[word]
-    if refs  == None:
-        skipped = skipped + 1
-        continue;
-    for (module, symbol) in refs.keys():
-        updateWord(word, symbol, refs[(module, symbol)])
-	i = i + 1
+def main():
+    args = sys.argv[1:]
+    force = 0
+    if args:
+        i = 0
+	while i < len(args):
+	    if args[i] == '--force':
+	        force = 1
+	    elif args[i] == '--archive':
+	        analyzeArchives(force)
+	    elif args[i] == '--archive-month':
+	        i = i + 1;
+		month = args[i]
+		try:
+		    T = time.strptime(month, "%Y-%B")
+		    t = time.mktime(T) + 3600 * 24 * 10;
+		    analyzeArchives(t, force)
+		except:
+		    print "Failed to index month archive:"
+		    print sys.exc_type, sys.exc_value
+	    elif args[i] == '--API':
+	        analyzeAPI()
+	    elif args[i] == '--docs':
+	        analyzeHTML()
+	    else:
+	        usage()
+	    i = i + 1
+    else:
+        usage()
 
-print "Found %d associations, skipped %d words" % (i, skipped)
+if __name__ == "__main__":
+    main()

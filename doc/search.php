@@ -95,8 +95,7 @@ A:link, A:visited, A:active { text-decoration: underline }
         echo "<h1 align='center'>Search the X documentation on XMLSoft.org</h1>";
     }
 ?>
-<p> The search service indexes only the XML API at the moment. To use it
-simply provide a set of keywords:
+<p> The search service indexes the XML API, the XML documentation and the xml@gnome.org mailing-list archive. To use it simply provide a set of keywords:
 <p>
 <form action="<?php echo "$PHP_SELF", "?query=", rawurlencode($query) ?>"
       enctype="application/x-www-form-urlencoded" method="GET">
@@ -140,6 +139,20 @@ simply provide a set of keywords:
 	$j = 0;
         if ($word) {
 	    $result = mysql_query ("SELECT relevance, name, id, resource, section FROM wordsHTML WHERE LCASE(name) LIKE LCASE('$word') ORDER BY relevance DESC");
+	    if ($result) {
+		$j = mysql_num_rows($result);
+		if ($j == 0) 
+		    mysql_free_result($result);
+	    }
+	    logQueryWord($word);
+	}
+	return array($result, $j);
+    }
+    function queryArchiveWord($word) {
+        $result = NULL;
+	$j = 0;
+        if ($word) {
+	    $result = mysql_query ("SELECT wordsArchive.relevance, wordsArchive.name, 'mailing-list', archives.resource, archives.title FROM wordsArchive, archives WHERE LCASE(name) LIKE LCASE('$word') and wordsArchive.ID = archives.ID ORDER BY relevance DESC");
 	    if ($result) {
 		$j = mysql_num_rows($result);
 		if ($j == 0) 
@@ -207,6 +220,28 @@ simply provide a set of keywords:
 		    }
 		    mysql_free_result($result);
 		}
+		list($result, $j) = queryArchiveWord($word);
+		if ($j > 0) {
+		    for ($i = 0; $i < $j; $i++) {
+			$relevance = mysql_result($result, $i, 0);
+			$name = mysql_result($result, $i, 1);
+			$type = mysql_result($result, $i, 2);
+			$url = mysql_result($result, $i, 3);
+			$desc = mysql_result($result, $i, 4);
+			if (array_key_exists($url, $results)) {
+			    list($r,$t,$m,$d,$w,$u) = $results[$url];
+			    $results[$name] = array(($r + $relevance) * 2,
+			                            $t,$m,$d,$w,$u);
+			} else {
+			    $id = strtoupper($name);
+			    $m = strtolower($module);
+			    $u = str_replace("http://mail.gnome.org/archives/xml/", "", $url);
+			    $results[$url] = array($relevance,$type,
+					    $u, $desc, $name, $url);
+			}
+		    }
+		    mysql_free_result($result);
+		}
 		if (($j <= 0) && ($k <= 0)) {
 		    echo "<p> No result found for $word\n";
 		}
@@ -221,6 +256,9 @@ simply provide a set of keywords:
 		printf("<tr><td>Quality</td><td>Symbol</td><td>Type</td><td>module</td><td>Description</td></tr>\n");
 		while (list ($name, $val) = each ($results)) {
 		    list($r,$t,$m,$d,$s,$u) = $val;
+		    $m = str_replace("<", "&lt;", $m);
+		    $s = str_replace("<", "&lt;", $s);
+		    $d = str_replace("<", "&lt;", $d);
 		    echo "<tr><td>$r</td><td><a href='$u'>$s</a></td><td>$t</td><td>$m</td><td>$d</td></tr>";
 		}
 		printf("</tbody></table>\n");

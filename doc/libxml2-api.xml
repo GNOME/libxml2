@@ -2878,13 +2878,14 @@
      <exports symbol='xmlSchemaGetPredefinedType' type='function'/>
      <exports symbol='xmlSchemaValidatePredefinedType' type='function'/>
      <exports symbol='xmlSchemaFreeFacet' type='function'/>
+     <exports symbol='xmlSchemaValidateListSimpleTypeFacet' type='function'/>
      <exports symbol='xmlSchemaGetFacetValueAsULong' type='function'/>
      <exports symbol='xmlSchemaFreeValue' type='function'/>
-     <exports symbol='xmlSchemaNewStringValue' type='function'/>
+     <exports symbol='xmlSchemaCopyValue' type='function'/>
      <exports symbol='xmlSchemaNewNOTATIONValue' type='function'/>
      <exports symbol='xmlSchemaCleanupTypes' type='function'/>
      <exports symbol='xmlSchemaWhiteSpaceReplace' type='function'/>
-     <exports symbol='xmlSchemaValidateListSimpleTypeFacet' type='function'/>
+     <exports symbol='xmlSchemaNewStringValue' type='function'/>
      <exports symbol='xmlSchemaGetBuiltInType' type='function'/>
      <exports symbol='xmlSchemaInitTypes' type='function'/>
      <exports symbol='xmlSchemaCheckFacet' type='function'/>
@@ -3819,7 +3820,7 @@
     <macro name='XMLPUBVAR' file='xmlexports'>
     </macro>
     <macro name='XML_CAST_FPTR' file='hash'>
-      <info>Macro to do a casting from an object pointer to a function pointer without encountering a warning from gcc</info>
+      <info>Macro to do a casting from an object pointer to a function pointer without encountering a warning from gcc  #define XML_CAST_FPTR(fptr) (*(void **)(&amp;fptr)) This macro violated ISO C aliasing rules (gcc4 on s390 broke) so it is disabled now</info>
       <arg name='fptr' info='pointer to a function'/>
     </macro>
     <macro name='XML_CATALOGS_NAMESPACE' file='catalog'>
@@ -11580,43 +11581,43 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlPatternFromRoot' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='comp' type='xmlPatternPtr' info=''/>
+      <info>Check if the pattern must be looked at from the root.</info>
+      <return type='int' info='1 if true, 0 if false and -1 in case of error'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
     </function>
     <function name='xmlPatternGetStreamCtxt' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='xmlStreamCtxtPtr' info=''/>
-      <arg name='comp' type='xmlPatternPtr' info=''/>
+      <info>Get a streaming context for that pattern Use xmlFreeStreamCtxt to free the context.</info>
+      <return type='xmlStreamCtxtPtr' info='a pointer to the context or NULL in case of failure'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
     </function>
     <function name='xmlPatternMatch' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='comp' type='xmlPatternPtr' info=''/>
-      <arg name='node' type='xmlNodePtr' info=''/>
+      <info>Test wether the node matches the pattern</info>
+      <return type='int' info='1 if it matches, 0 if it doesn&apos;t and -1 in case of failure'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
+      <arg name='node' type='xmlNodePtr' info='a node'/>
     </function>
     <function name='xmlPatternMaxDepth' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='comp' type='xmlPatternPtr' info=''/>
+      <info>Check the maximum depth reachable by a pattern</info>
+      <return type='int' info='-2 if no limit (using //), otherwise the depth, and -1 in case of error'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
     </function>
     <function name='xmlPatternStreamable' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='comp' type='xmlPatternPtr' info=''/>
+      <info>Check if the pattern is streamable i.e. xmlPatternGetStreamCtxt() should work.</info>
+      <return type='int' info='1 if streamable, 0 if not and -1 in case of error.'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
     </function>
     <function name='xmlPatterncompile' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='xmlPatternPtr' info=''/>
-      <arg name='pattern' type='const xmlChar *' info=''/>
-      <arg name='dict' type='xmlDict *' info=''/>
-      <arg name='flags' type='int' info=''/>
-      <arg name='namespaces' type='const xmlChar **' info=''/>
+      <info>Compile a pattern.</info>
+      <return type='xmlPatternPtr' info='the compiled for of the pattern or NULL in case of error'/>
+      <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
+      <arg name='dict' type='xmlDict *' info='an optional dictionnary for interned strings'/>
+      <arg name='flags' type='int' info='compilation flags, undefined yet'/>
+      <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
     <function name='xmlPedanticParserDefault' file='parser'>
       <info>Set and return the previous value for enabling pedantic warnings.</info>
@@ -12668,6 +12669,12 @@ actually an xmlCharEncoding'/>
       <arg name='y' type='xmlSchemaValPtr' info='a second value'/>
       <arg name='yws' type='xmlSchemaWhitespaceValueType' info='the whitespace value of y'/>
     </function>
+    <function name='xmlSchemaCopyValue' file='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Copies the precomputed value. This duplicates any string within.</info>
+      <return type='xmlSchemaValPtr' info='the copy or NULL if a copy for a data-type is not implemented.'/>
+      <arg name='val' type='xmlSchemaValPtr' info='the precomputed value to be copied'/>
+    </function>
     <function name='xmlSchemaDump' file='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Dump a Schema structure.</info>
@@ -12812,14 +12819,14 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaNewStringValue' file='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Allocate a new simple type value. The type can be of XML_SCHEMAS_STRING.</info>
+      <info>Allocate a new simple type value. The type can be of XML_SCHEMAS_STRING. WARNING: This one is intended to be expanded for other string based types. We need this for anySimpleType as well.</info>
       <return type='xmlSchemaValPtr' info='a pointer to the new value or NULL in case of error'/>
       <arg name='type' type='xmlSchemaValType' info='the value type'/>
       <arg name='value' type='const xmlChar *' info='the value'/>
     </function>
     <function name='xmlSchemaNewValidCtxt' file='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Create an XML Schemas validation context based on the given schema</info>
+      <info>Create an XML Schemas validation context based on the given schema.</info>
       <return type='xmlSchemaValidCtxtPtr' info='the validation context or NULL in case of error'/>
       <arg name='schema' type='xmlSchemaPtr' info='a precompiled XML Schemas'/>
     </function>
@@ -13314,25 +13321,25 @@ actually an xmlCharEncoding'/>
     </functype>
     <function name='xmlStreamPop' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='stream' type='xmlStreamCtxtPtr' info=''/>
+      <info>push one level from the stream.</info>
+      <return type='int' info='-1 in case of error, 0 otherwise.'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
     </function>
     <function name='xmlStreamPush' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='stream' type='xmlStreamCtxtPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='ns' type='const xmlChar *' info=''/>
+      <info>push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionnary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+      <arg name='name' type='const xmlChar *' info='the current name'/>
+      <arg name='ns' type='const xmlChar *' info='the namespace name'/>
     </function>
     <function name='xmlStreamPushAttr' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='stream' type='xmlStreamCtxtPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='ns' type='const xmlChar *' info=''/>
+      <info>push new attribute data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionnary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+      <arg name='name' type='const xmlChar *' info='the current name'/>
+      <arg name='ns' type='const xmlChar *' info='the namespace name'/>
     </function>
     <function name='xmlStringCurrentChar' file='parserInternals'>
       <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer.</info>

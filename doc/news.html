@@ -12,7 +12,30 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p><p>There is the list of public releases:</p><h3>2.6.17: Jan 16 2005</h3><ul><li>build fixes: Windows, warnings removal (William Brack), 
+to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p><p>There is the list of public releases:</p><h3>2.6.18: Mar 13 2005</h3><ul><li> build fixes: warnings (Peter Breitenlohner), testapi.c generation, 
+       Bakefile support (Francesco Montorsi), Windows compilation (Joel Reed),
+       some gcc4 fixes, HP-UX portability fixes (Rick Jones).</li>
+  <li> bug fixes: xmlSchemaElementDump namespace (Kasimier Buchcik), push and
+       xmlreader stopping on non-fatal errors, thread support for dictionnaries
+       reference counting (Gary Coady), internal subset and push problem, 
+       URL saved in xmlCopyDoc, various schemas bug fixes (Kasimier), Python
+       paths fixup (Stephane Bidoul), xmlGetNodePath and namespaces, 
+       xmlSetNsProp fix (Mike Hommey), warning should not count as error
+       (William Brack), xmlCreatePushParser empty chunk, XInclude parser
+       flags (William), cleanup FTP and HTTP code to reuse the uri parsing
+       and IPv6 (William), xmlTextWriterStartAttributeNS fix (Rob Richards),
+       XMLLINT_INDENT being empty (William), xmlWriter bugs (Rob Richards),
+       multithreading on Windows (Rich Salz), xmlSearchNsByHref fix (Kasimier),
+       Python binding leak (Brent Hendricks), aliasing bug exposed by gcc4
+       on s390, xmlTextReaderNext bug (Rob Richards), Schemas decimal type
+       fixes (William Brack), xmlByteConsumed static buffer (Ben Maurer).</li>
+  <li> improvement: speedup parsing comments and DTDs, dictionnary support for
+       hash tables, Schemas Identity constraints (Kasimier), streaming XPath
+       subset, xmlTextReaderReadString added (Bjorn Reese), Schemas canonical
+       values handling (Kasimier), add xmlTextReaderByteConsumed (Aron
+       Stansvik), </li>
+  <li> Documentation: Wiki support (Joel Reed)
+</li></ul><h3>2.6.17: Jan 16 2005</h3><ul><li>build fixes: Windows, warnings removal (William Brack), 
       maintainer-clean dependency(William), build in a different directory
       (William), fixing --with-minimum configure build (William), BeOS
       build (Marcin Konicki), Python-2.4 detection (William), compilation

@@ -8,19 +8,33 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.16</version>
-    <last-release> Nov 10 2004</last-release>
+    <version>2.6.17</version>
+    <last-release> Jan 16 2005</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - general hardening and bug fixing crossing all the API based on new
-    automated regression testing
-   - build fix: IPv6 build and test on AIX (Dodji Seketeli)
-   - bug fixes: problem with XML::Libxml reported by Petr Pajas,  encoding
-    conversion functions return values, UTF-8 bug affecting XPath reported by
-    Markus Bertheau, catalog problem with NULL entries (William Brack)
-   - documentation: fix to xmllint man page, some API function descritpion
-    were updated.
-   - improvements: DTD validation APIs provided at the Python level (Brent
-    Hendricks) 
+    <changes>   - build fixes: Windows, warnings removal (William Brack), 
+      maintainer-clean dependency(William), build in a different directory
+      (William), fixing --with-minimum configure build (William), BeOS
+      build (Marcin Konicki), Python-2.4 detection (William), compilation
+      on AIX (Dan McNichol)
+   - bug fixes: xmlTextReaderHasAttributes (Rob Richards), xmlCtxtReadFile()
+      to use the catalog(s), loop on output (William Brack), XPath memory leak,
+      ID deallocation problem (Steve Shepard), debugDumpNode crash (William),
+      warning not using error callback (William), xmlStopParser bug (William),
+      UTF-16 with BOM on DTDs (William), namespace bug on empty elements
+      in push mode (Rob Richards), line and col computations fixups (Aleksey
+      Sanin), xmlURIEscape fix (William), xmlXPathErr on bad range (William),
+      patterns with too many steps, bug in RNG choice optimization, line
+      number sometimes missing.
+      
+   - improvements: XSD Schemas (Kasimier Buchcik), python generator (William),
+      xmlUTF8Strpos speedup (William), unicode Python strings (William),
+      XSD error reports (Kasimier Buchcik), Python __str__ call serialize().
+      
+   - new APIs: added xmlDictExists(), GetLineNumber and GetColumnNumber
+      for the xmlReader (Aleksey Sanin), Dynamic Shared Libraries APIs
+      (mostly Joel Reed), error extraction API from regexps, new XMLSave
+      option for format (Phil Shafer)
+   - documentation: site improvement (John Fleck), FAQ entries (William).
 
 </changes>
   </product>

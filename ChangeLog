@@ -1,3 +1,9 @@
+Sun Mar 13 19:32:03 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in testapi.c doc/*: preparing release of 2.6.18
+	  updated docs and rebuilt
+	* libxml.spec.in: reactivated gcc profiling for gcc >= 4.0.0
+
 Sat Mar 12 19:50:22 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: removed a static buffer in xmlByteConsumed(),

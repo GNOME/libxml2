@@ -65,7 +65,7 @@ at parse time or later once the document has been modified.
 # initial test spec. This really doesn't work okay for most tests done.
 #
 GCC_VERSION=`gcc --version | grep "^gcc" | awk '{ print $3 }' | sed 's+\([0-9]\)\.\([0-9]\)\..*+\1\2+'`
-if [ $GCC_VERSION -eq 34 ]
+if [ $GCC_VERSION -ge 34 ]
 then
     PROF_GEN='-fprofile-generate'
     PROF_USE='-fprofile-use'

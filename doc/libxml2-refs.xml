@@ -2519,6 +2519,7 @@
     <reference name='xmlSchemaCompareValues' href='html/libxml-xmlschemastypes.html#xmlSchemaCompareValues'/>
     <reference name='xmlSchemaCompareValuesWhtsp' href='html/libxml-xmlschemastypes.html#xmlSchemaCompareValuesWhtsp'/>
     <reference name='xmlSchemaContentType' href='html/libxml-schemasInternals.html#xmlSchemaContentType'/>
+    <reference name='xmlSchemaCopyValue' href='html/libxml-xmlschemastypes.html#xmlSchemaCopyValue'/>
     <reference name='xmlSchemaDump' href='html/libxml-xmlschemas.html#xmlSchemaDump'/>
     <reference name='xmlSchemaElement' href='html/libxml-schemasInternals.html#xmlSchemaElement'/>
     <reference name='xmlSchemaElementPtr' href='html/libxml-schemasInternals.html#xmlSchemaElementPtr'/>
@@ -5866,6 +5867,7 @@
       <ref name='xmlSchemaCompareValues'/>
       <ref name='xmlSchemaCompareValuesWhtsp'/>
       <ref name='xmlSchemaContentType'/>
+      <ref name='xmlSchemaCopyValue'/>
       <ref name='xmlSchemaDump'/>
       <ref name='xmlSchemaElement'/>
       <ref name='xmlSchemaElementPtr'/>
@@ -7266,6 +7268,7 @@
       <ref name='xmlSchemaGetPredefinedType'/>
     </type>
     <type name='xmlSchemaValPtr'>
+      <ref name='xmlSchemaCopyValue'/>
       <ref name='xmlSchemaNewNOTATIONValue'/>
       <ref name='xmlSchemaNewStringValue'/>
     </type>
@@ -9476,6 +9479,7 @@
     <type name='xmlSchemaValPtr'>
       <ref name='xmlSchemaCompareValues'/>
       <ref name='xmlSchemaCompareValuesWhtsp'/>
+      <ref name='xmlSchemaCopyValue'/>
       <ref name='xmlSchemaFreeValue'/>
       <ref name='xmlSchemaGetCanonValue'/>
       <ref name='xmlSchemaValidateFacet'/>
@@ -12642,6 +12646,7 @@
       <ref name='xmlSchemaCollapseString'/>
       <ref name='xmlSchemaCompareValues'/>
       <ref name='xmlSchemaCompareValuesWhtsp'/>
+      <ref name='xmlSchemaCopyValue'/>
       <ref name='xmlSchemaFreeFacet'/>
       <ref name='xmlSchemaFreeValue'/>
       <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
@@ -13623,6 +13628,8 @@
         </word>
         <word name='Both'>
           <ref name='XML_SUBSTITUTE_BOTH'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='BoxDrawing'>
           <ref name='xmlUCSIsBoxDrawing'/>
@@ -13977,6 +13984,7 @@
         </word>
         <word name='Compile'>
           <ref name='xmlAutomataCompile'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathCompile'/>
           <ref name='xmlXPathCtxtCompile'/>
           <ref name='xmlXPathStringEvalNumber'/>
@@ -14050,6 +14058,9 @@
           <ref name='xmlXPathConvertBoolean'/>
           <ref name='xmlXPathConvertNumber'/>
           <ref name='xmlXPathConvertString'/>
+        </word>
+        <word name='Copies'>
+          <ref name='xmlSchemaCopyValue'/>
         </word>
         <word name='Copy'>
           <ref name='xmlCopyEnumeration'/>
@@ -15000,6 +15011,7 @@
         </word>
         <word name='ISO'>
           <ref name='UTF8Toisolat1'/>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='isolat1ToUTF8'/>
         </word>
         <word name='ISO-8859-'>
@@ -15508,6 +15520,8 @@
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlTextReaderCurrentDoc'/>
         </word>
         <word name='NRK'>
@@ -16816,6 +16830,9 @@
         <word name='Telugu'>
           <ref name='xmlUCSIsTelugu'/>
         </word>
+        <word name='Test'>
+          <ref name='xmlPatternMatch'/>
+        </word>
         <word name='Text'>
           <ref name='xmlNodeIsText'/>
           <ref name='xmlTextReaderReadAttributeValue'/>
@@ -17042,6 +17059,7 @@
           <ref name='xmlNewNodeEatName'/>
           <ref name='xmlNewPI'/>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlPatternGetStreamCtxt'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
         </word>
@@ -17135,6 +17153,9 @@
         <word name='WARNING'>
           <ref name='xmlRelaxNGParse'/>
           <ref name='xmlSchemaParse'/>
+        </word>
+        <word name='WARNING:'>
+          <ref name='xmlSchemaNewStringValue'/>
         </word>
         <word name='WFC:'>
           <ref name='xmlParseAttribute'/>
@@ -17298,6 +17319,9 @@
         <word name='XML_BUFFER_ALLOC_EXACT'>
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlSetBufferAllocationScheme'/>
+        </word>
+        <word name='XML_CAST_FPTR'>
+          <ref name='XML_CAST_FPTR'/>
         </word>
         <word name='XML_CATA_PREFER_PUBLIC'>
           <ref name='xmlCatalogSetDefaultPrefer'/>
@@ -17536,6 +17560,10 @@
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
         </word>
+        <word name='act'>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
+        </word>
         <word name='activate'>
           <ref name='xmlTextReaderSetParserProp'/>
         </word>
@@ -17723,6 +17751,7 @@
           <ref name='xmlCleanupEncodingAliases'/>
         </word>
         <word name='aliasing'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='xmlSearchNsByHref'/>
         </word>
         <word name='allocate'>
@@ -17844,6 +17873,8 @@
           <ref name='xmlHasProp'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlNanoFTPProxy'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlTextReaderPreserve'/>
           <ref name='xmlTextReaderPreservePattern'/>
           <ref name='xmlXPathStringEvalNumber'/>
@@ -17922,6 +17953,9 @@
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlOutputMatchCallback'/>
           <ref name='xmlSetGenericErrorFunc'/>
+        </word>
+        <word name='anySimpleType'>
+          <ref name='xmlSchemaNewStringValue'/>
         </word>
         <word name='anymore'>
           <ref name='XML_SCHEMAS_ANYATTR_LAX'/>
@@ -18192,6 +18226,7 @@
           <ref name='xmlNewInputFromFile'/>
           <ref name='xmlNewStringInputStream'/>
           <ref name='xmlRelaxNGNewValidCtxt'/>
+          <ref name='xmlSchemaNewStringValue'/>
           <ref name='xmlSchemaNewValidCtxt'/>
           <ref name='xmlSetCompressMode'/>
           <ref name='xmlSetDocCompressMode'/>
@@ -18392,6 +18427,9 @@
         <word name='breaks'>
           <ref name='xmlCurrentChar'/>
         </word>
+        <word name='broke'>
+          <ref name='XML_CAST_FPTR'/>
+        </word>
         <word name='broken'>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlTextReaderNormalization'/>
@@ -18490,33 +18528,6 @@
         </word>
         <word name='calculates'>
           <ref name='xmlUTF8Size'/>
-        </word>
-        <word name='call'>
-          <ref name='xmlCharEncOutFunc'/>
-          <ref name='xmlCharEncodingOutputFunc'/>
-          <ref name='xmlCleanupParser'/>
-          <ref name='xmlCleanupPredefinedEntities'/>
-          <ref name='xmlInitializePredefinedEntities'/>
-          <ref name='xmlNanoFTPRead'/>
-          <ref name='xmlNanoHTTPRead'/>
-          <ref name='xmlNewTextWriter'/>
-          <ref name='xmlNewTextWriterPushParser'/>
-          <ref name='xmlParseReference'/>
-          <ref name='xmlSAXUserParseFile'/>
-          <ref name='xmlSAXUserParseMemory'/>
-          <ref name='xmlSaveFileTo'/>
-          <ref name='xmlSaveFormatFileTo'/>
-          <ref name='xmlSetEntityReferenceFunc'/>
-          <ref name='xmlTextReaderByteConsumed'/>
-          <ref name='xmlTextReaderCurrentDoc'/>
-          <ref name='xmlTextReaderExpand'/>
-          <ref name='xmlTextReaderSetErrorHandler'/>
-          <ref name='xmlTextReaderSetParserProp'/>
-          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
-          <ref name='xmlValidateOneElement'/>
-          <ref name='xmlXPathEvalPredicate'/>
-          <ref name='xmlXPathEvaluatePredicateResult'/>
-          <ref name='xmlXPathIdFunction'/>
         </word>
         <word name='calling'>
           <ref name='_xmlXPathContext'/>
@@ -18921,6 +18932,10 @@
         <word name='combining'>
           <ref name='IS_COMBINING_CH'/>
         </word>
+        <word name='come'>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
+        </word>
         <word name='coment'>
           <ref name='xmlTextWriterEndComment'/>
         </word>
@@ -19027,8 +19042,12 @@
         </word>
         <word name='compilation'>
           <ref name='LIBXML_VERSION_EXTRA'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathCompile'/>
           <ref name='xmlXPathCtxtCompile'/>
+        </word>
+        <word name='compile'>
+          <ref name='xmlPatterncompile'/>
         </word>
         <word name='compile-time'>
           <ref name='docbCreateFileParserCtxt'/>
@@ -19058,6 +19077,7 @@
           <ref name='xmlAutomataCompile'/>
           <ref name='xmlCheckVersion'/>
           <ref name='xmlGetLastError'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
           <ref name='xmlRegexpIsDeterminist'/>
@@ -19494,6 +19514,7 @@
           <ref name='xmlBufferCreateStatic'/>
           <ref name='xmlCopyDoc'/>
           <ref name='xmlGetFeaturesList'/>
+          <ref name='xmlSchemaCopyValue'/>
           <ref name='xmlXPathNodeSetMerge'/>
         </word>
         <word name='copier'>
@@ -19637,6 +19658,9 @@
       <letter name='d'>
         <word name='dangerous'>
           <ref name='xmlTextReaderCurrentNode'/>
+        </word>
+        <word name='data-type'>
+          <ref name='xmlSchemaCopyValue'/>
         </word>
         <word name='datatype'>
           <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
@@ -19809,6 +19833,7 @@
         </word>
         <word name='define'>
           <ref name='DEBUG_MEMORY'/>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='xmlHandleEntity'/>
         </word>
         <word name='defined'>
@@ -19853,6 +19878,7 @@
           <ref name='startElementNsSAX2Func'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlSAX2StartElementNs'/>
           <ref name='xmlTextReaderPreservePattern'/>
           <ref name='xmlValidateDtd'/>
@@ -19896,6 +19922,7 @@
         <word name='depth'>
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlValidCtxt'/>
+          <ref name='xmlPatternMaxDepth'/>
           <ref name='xmlTextReaderDepth'/>
         </word>
         <word name='deregistration'>
@@ -20076,6 +20103,8 @@
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlDictReference'/>
           <ref name='xmlHashCreateDict'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='dictionnary'>
           <ref name='_xmlParserCtxt'/>
@@ -20089,6 +20118,9 @@
           <ref name='xmlDictQLookup'/>
           <ref name='xmlDictReference'/>
           <ref name='xmlDictSize'/>
+          <ref name='xmlPatterncompile'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='did'>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_DEFAULT'/>
@@ -20175,6 +20207,7 @@
           <ref name='xmlCatalogSetDebug'/>
         </word>
         <word name='disabled'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlParserCtxt'/>
         </word>
         <word name='disabling'>
@@ -20293,6 +20326,7 @@
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlParserInputRead'/>
+          <ref name='xmlPatternMatch'/>
           <ref name='xmlRemoveProp'/>
           <ref name='xmlUTF8Strlen'/>
           <ref name='xmlValidateRoot'/>
@@ -20400,6 +20434,9 @@
         <word name='duplicated'>
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
           <ref name='xmlXPathNodeSetFreeNs'/>
+        </word>
+        <word name='duplicates'>
+          <ref name='xmlSchemaCopyValue'/>
         </word>
         <word name='during'>
           <ref name='xmlSAXDefaultVersion'/>
@@ -20889,6 +20926,7 @@
         </word>
         <word name='expanded'>
           <ref name='xmlRelaxNGValidateFullElement'/>
+          <ref name='xmlSchemaNewStringValue'/>
           <ref name='xmlXPathNamespaceURIFunction'/>
         </word>
         <word name='expected'>
@@ -20900,6 +20938,8 @@
           <ref name='xmlSchemaNewMemParserCtxt'/>
           <ref name='xmlSchemaNewParserCtxt'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='explicitly'>
           <ref name='xmlSAXDefaultVersion'/>
@@ -21046,6 +21086,8 @@
           <ref name='xmlNanoHTTPOpenRedir'/>
           <ref name='xmlNanoHTTPSave'/>
           <ref name='xmlNewAutomata'/>
+          <ref name='xmlPatternGetStreamCtxt'/>
+          <ref name='xmlPatternMatch'/>
           <ref name='xmlRelaxNGGetParserErrors'/>
           <ref name='xmlSaveFile'/>
           <ref name='xmlSaveFileEnc'/>
@@ -21232,6 +21274,7 @@
           <ref name='htmlGetMetaEncoding'/>
         </word>
         <word name='flags'>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlReaderForDoc'/>
           <ref name='xmlReaderForFd'/>
           <ref name='xmlReaderForFile'/>
@@ -21355,6 +21398,9 @@
           <ref name='htmlSAXParseFile'/>
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExternalEntity'/>
+        </word>
+        <word name='fptr'>
+          <ref name='XML_CAST_FPTR'/>
         </word>
         <word name='fragment'>
           <ref name='_xmlURI'/>
@@ -21485,6 +21531,9 @@
           <ref name='xmlGcMemSetup'/>
         </word>
         <word name='gcc'>
+          <ref name='XML_CAST_FPTR'/>
+        </word>
+        <word name='gcc4'>
           <ref name='XML_CAST_FPTR'/>
         </word>
         <word name='genChRanges'>
@@ -21992,6 +22041,7 @@
           <ref name='xmlModuleOpen'/>
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>
+          <ref name='xmlSchemaCopyValue'/>
           <ref name='xmlTextReaderNextSibling'/>
         </word>
         <word name='implicitly'>
@@ -22177,6 +22227,8 @@
           <ref name='xmlNanoHTTPMethodRedir'/>
           <ref name='xmlNanoHTTPOpen'/>
           <ref name='xmlNanoHTTPOpenRedir'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='indicates'>
           <ref name='XML_SCHEMAS_TYPE_FACETSNEEDVALUE'/>
@@ -22456,6 +22508,9 @@
           <ref name='xmlXPathRoundFunction'/>
           <ref name='xmlXPathStringFunction'/>
         </word>
+        <word name='intended'>
+          <ref name='xmlSchemaNewStringValue'/>
+        </word>
         <word name='interact'>
           <ref name='xmlParseExternalID'/>
         </word>
@@ -22495,6 +22550,7 @@
           <ref name='xmlRemoveRef'/>
         </word>
         <word name='interned'>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlTextReaderConstString'/>
         </word>
         <word name='interning'>
@@ -22809,6 +22865,7 @@
           <ref name='xmlNodeDump'/>
           <ref name='xmlNodeDumpOutput'/>
           <ref name='xmlShellPwd'/>
+          <ref name='xmlStreamPop'/>
           <ref name='xmlXPathDebugDumpCompExpr'/>
           <ref name='xmlXPathDebugDumpObject'/>
         </word>
@@ -22910,6 +22967,7 @@
         <word name='limit'>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlDecodeEntities'/>
+          <ref name='xmlPatternMaxDepth'/>
         </word>
         <word name='limited'>
           <ref name='_htmlElemDesc'/>
@@ -23060,6 +23118,7 @@
         </word>
         <word name='looked'>
           <ref name='_xmlNodeSet'/>
+          <ref name='xmlPatternFromRoot'/>
         </word>
         <word name='looks'>
           <ref name='xmlGetNoNsProp'/>
@@ -23097,6 +23156,7 @@
           <ref name='xmlCheckFilename'/>
         </word>
         <word name='macro'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='xmlTextWriterWriteDocType'/>
           <ref name='xmlTextWriterWriteProcessingInstruction'/>
         </word>
@@ -23219,6 +23279,7 @@
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExtParsedEnt'/>
           <ref name='xmlParseExternalEntity'/>
+          <ref name='xmlPatternMatch'/>
           <ref name='xmlRegexpExec'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
@@ -23260,10 +23321,13 @@
           <ref name='xmlAutomataNewOnceTrans'/>
           <ref name='xmlAutomataNewOnceTrans2'/>
           <ref name='xmlCheckUTF8'/>
+          <ref name='xmlPatternMaxDepth'/>
         </word>
         <word name='means'>
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetStructuredErrorFunc'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='mechanism'>
           <ref name='_xmlXPathContext'/>
@@ -23606,6 +23670,7 @@
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlRegExecErrInfo'/>
           <ref name='xmlRegExecNextValues'/>
+          <ref name='xmlSchemaNewStringValue'/>
           <ref name='xmlValidGetValidElements'/>
           <ref name='xmlXPathNewContext'/>
         </word>
@@ -23852,6 +23917,7 @@
           <ref name='xmlLoadExternalEntity'/>
         </word>
         <word name='now'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlSchema'/>
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlNewGlobalNs'/>
@@ -24060,6 +24126,8 @@
         </word>
         <word name='onto'>
           <ref name='xmlParserInputBufferGrow'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='opaque'>
           <ref name='_xmlSchema'/>
@@ -24165,6 +24233,7 @@
           <ref name='xmlNodeDumpOutput'/>
           <ref name='xmlOutputBufferWriteEscape'/>
           <ref name='xmlParseMisc'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlSchemaValidateStream'/>
           <ref name='xmlShellSave'/>
           <ref name='xmlShellValidate'/>
@@ -24236,6 +24305,7 @@
           <ref name='xmlParseAttribute'/>
           <ref name='xmlParseNamespace'/>
           <ref name='xmlParseSDDecl'/>
+          <ref name='xmlSchemaNewStringValue'/>
           <ref name='xmlTextReaderIsNamespaceDecl'/>
           <ref name='xmlTextReaderReadString'/>
           <ref name='xmlValidateRoot'/>
@@ -24449,6 +24519,12 @@
           <ref name='xmlTextReaderRelaxNGValidate'/>
         </word>
         <word name='pattern'>
+          <ref name='xmlPatternFromRoot'/>
+          <ref name='xmlPatternGetStreamCtxt'/>
+          <ref name='xmlPatternMatch'/>
+          <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlPatternStreamable'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlTextReaderPreservePattern'/>
         </word>
         <word name='pcdata'>
@@ -24663,6 +24739,11 @@
         </word>
         <word name='precompiled'>
           <ref name='_xmlXPathParserContext'/>
+          <ref name='xmlPatternFromRoot'/>
+          <ref name='xmlPatternGetStreamCtxt'/>
+          <ref name='xmlPatternMatch'/>
+          <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlPatternStreamable'/>
           <ref name='xmlRegNewExecCtxt'/>
           <ref name='xmlRelaxNGNewValidCtxt'/>
           <ref name='xmlSchemaNewValidCtxt'/>
@@ -24670,6 +24751,7 @@
           <ref name='xmlXPathDebugDumpCompExpr'/>
         </word>
         <word name='precomputed'>
+          <ref name='xmlSchemaCopyValue'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaValidateFacet'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
@@ -25035,6 +25117,9 @@
           <ref name='xmlCreatePushParserCtxt'/>
           <ref name='xmlCtxtResetPush'/>
           <ref name='xmlParserInputBufferPush'/>
+          <ref name='xmlStreamPop'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlXPathEvalExpr'/>
         </word>
         <word name='pushed'>
@@ -25165,6 +25250,9 @@
           <ref name='xmlLockLibrary'/>
           <ref name='xmlNewRMutex'/>
           <ref name='xmlUnlockLibrary'/>
+        </word>
+        <word name='reachable'>
+          <ref name='xmlPatternMaxDepth'/>
         </word>
         <word name='reached'>
           <ref name='xmlRegExecPushString'/>
@@ -25685,6 +25773,8 @@
           <ref name='xmlSetNsProp'/>
           <ref name='xmlSetProp'/>
           <ref name='xmlSetStructuredErrorFunc'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='resides'>
           <ref name='xmlTextReaderConstXmlLang'/>
@@ -25852,9 +25942,12 @@
           <ref name='xmlNewGlobalNs'/>
           <ref name='xmlParseDocTypeDecl'/>
           <ref name='xmlParseNamespace'/>
+          <ref name='xmlPatternFromRoot'/>
           <ref name='xmlSAX2ExternalSubset'/>
           <ref name='xmlSAX2InternalSubset'/>
           <ref name='xmlShellPwd'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlValidateRoot'/>
           <ref name='xmlXPathNewValueTree'/>
           <ref name='xmlXPathRoot'/>
@@ -25883,6 +25976,7 @@
           <ref name='xmlParseStartTag'/>
         </word>
         <word name='rules'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='XML_SCHEMAS_ANYATTR_STRICT'/>
           <ref name='XML_SCHEMAS_ANY_STRICT'/>
           <ref name='xmlXPathSubstringFunction'/>
@@ -25902,6 +25996,9 @@
     </chunk>
     <chunk name='chunk22'>
       <letter name='s'>
+        <word name='s390'>
+          <ref name='XML_CAST_FPTR'/>
+        </word>
         <word name='safe'>
           <ref name='BAD_CAST'/>
           <ref name='xmlInitializeCatalog'/>
@@ -26744,26 +26841,11 @@
           <ref name='xmlStrdup'/>
           <ref name='xmlStrdupFunc'/>
         </word>
-        <word name='stream'>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='xmlCheckHTTPInput'/>
-          <ref name='xmlCreateIOParserCtxt'/>
-          <ref name='xmlFreeInputStream'/>
-          <ref name='xmlFreeStreamCtxt'/>
-          <ref name='xmlHandleEntity'/>
-          <ref name='xmlNewEntityInputStream'/>
-          <ref name='xmlNewIOInputStream'/>
-          <ref name='xmlNewInputFromFile'/>
-          <ref name='xmlNewInputStream'/>
-          <ref name='xmlNewStringInputStream'/>
-          <ref name='xmlParsePEReference'/>
-          <ref name='xmlParserHandlePEReference'/>
-          <ref name='xmlParserHandleReference'/>
-          <ref name='xmlPrintURI'/>
-          <ref name='xmlPushInput'/>
-          <ref name='xmlSwitchInputEncoding'/>
-          <ref name='xmlTextReaderGetRemainder'/>
-          <ref name='xmlTextReaderRead'/>
+        <word name='streamable'>
+          <ref name='xmlPatternStreamable'/>
+        </word>
+        <word name='streaming'>
+          <ref name='xmlPatternGetStreamCtxt'/>
         </word>
         <word name='streams'>
           <ref name='_xmlParserCtxt'/>
@@ -26792,9 +26874,12 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlGetFeaturesList'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlRegExecErrInfo'/>
           <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRegexpCompile'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlStrncatNew'/>
         </word>
         <word name='stripping'>
@@ -27610,6 +27695,7 @@
           <ref name='xmlExternalEntityLoader'/>
           <ref name='xmlParseSDDecl'/>
           <ref name='xmlSchemaCheckFacet'/>
+          <ref name='xmlSchemaNewStringValue'/>
         </word>
         <word name='typo'>
           <ref name='xmlParseTextDecl'/>
@@ -27635,6 +27721,9 @@
           <ref name='xmlGetDocCompressMode'/>
           <ref name='xmlSetCompressMode'/>
           <ref name='xmlSetDocCompressMode'/>
+        </word>
+        <word name='undefined'>
+          <ref name='xmlPatterncompile'/>
         </word>
         <word name='under'>
           <ref name='xmlBuildRelativeURI'/>
@@ -27949,10 +28038,14 @@
         <word name='view'>
           <ref name='xmlShell'/>
         </word>
+        <word name='violated'>
+          <ref name='XML_CAST_FPTR'/>
+        </word>
         <word name='visible'>
           <ref name='xmlC14NExecute'/>
         </word>
         <word name='void'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='xmlSAXParseFileWithData'/>
           <ref name='xmlSAXParseMemoryWithData'/>
         </word>
@@ -28035,6 +28128,7 @@
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlParseInNodeContext'/>
           <ref name='xmlSAX2StartElementNs'/>
+          <ref name='xmlSchemaNewStringValue'/>
         </word>
         <word name='well-balanced'>
           <ref name='xmlParseBalancedChunkMemory'/>
@@ -28070,6 +28164,7 @@
         </word>
         <word name='wether'>
           <ref name='_xmlNodeSet'/>
+          <ref name='xmlPatternMatch'/>
         </word>
         <word name='what'>
           <ref name='xmlCatalogGetDefaults'/>
@@ -28176,6 +28271,7 @@
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlSAXParseFileWithData'/>
           <ref name='xmlSAXParseMemoryWithData'/>
+          <ref name='xmlSchemaCopyValue'/>
           <ref name='xmlSearchNs'/>
           <ref name='xmlTextReaderConstXmlLang'/>
           <ref name='xmlTextReaderXmlLang'/>
@@ -28215,6 +28311,7 @@
         </word>
         <word name='work'>
           <ref name='xmlNodeGetBase'/>
+          <ref name='xmlPatternStreamable'/>
           <ref name='xmlRemoveProp'/>
           <ref name='xmlSAXParseDoc'/>
           <ref name='xmlSAXParseFile'/>
@@ -28598,6 +28695,9 @@
         <word name='xmlFreeMutex'>
           <ref name='xmlFreeMutex'/>
         </word>
+        <word name='xmlFreeStreamCtxt'>
+          <ref name='xmlPatternGetStreamCtxt'/>
+        </word>
         <word name='xmlGetGlobalState'>
           <ref name='xmlGetGlobalState'/>
         </word>
@@ -28898,6 +28998,13 @@
         </word>
         <word name='xmlPattern'>
           <ref name='LIBXML_PATTERN_ENABLED'/>
+        </word>
+        <word name='xmlPatternGetStreamCtxt'>
+          <ref name='xmlPatternStreamable'/>
+        </word>
+        <word name='xmlPatterncompile'>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='xmlPopInput:'>
           <ref name='xmlPopInput'/>
@@ -29251,6 +29358,7 @@
         </word>
         <word name='yet'>
           <ref name='xmlModuleOpen'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>
           <ref name='xmlSchemaGetCanonValue'/>

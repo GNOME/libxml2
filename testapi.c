@@ -16578,7 +16578,7 @@ test_xmlPatternFromRoot(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlPatternPtr comp; /*  */
+    xmlPatternPtr comp; /* the precompiled pattern */
     int n_comp;
 
     for (n_comp = 0;n_comp < gen_nb_xmlPatternPtr;n_comp++) {
@@ -16622,9 +16622,9 @@ test_xmlPatternMatch(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlPatternPtr comp; /*  */
+    xmlPatternPtr comp; /* the precompiled pattern */
     int n_comp;
-    xmlNodePtr node; /*  */
+    xmlNodePtr node; /* a node */
     int n_node;
 
     for (n_comp = 0;n_comp < gen_nb_xmlPatternPtr;n_comp++) {
@@ -16663,7 +16663,7 @@ test_xmlPatternMaxDepth(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlPatternPtr comp; /*  */
+    xmlPatternPtr comp; /* the precompiled pattern */
     int n_comp;
 
     for (n_comp = 0;n_comp < gen_nb_xmlPatternPtr;n_comp++) {
@@ -16697,7 +16697,7 @@ test_xmlPatternStreamable(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlPatternPtr comp; /*  */
+    xmlPatternPtr comp; /* the precompiled pattern */
     int n_comp;
 
     for (n_comp = 0;n_comp < gen_nb_xmlPatternPtr;n_comp++) {
@@ -16748,7 +16748,7 @@ test_xmlStreamPop(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlStreamCtxtPtr stream; /*  */
+    xmlStreamCtxtPtr stream; /* the stream context */
     int n_stream;
 
     for (n_stream = 0;n_stream < gen_nb_xmlStreamCtxtPtr;n_stream++) {
@@ -16782,11 +16782,11 @@ test_xmlStreamPush(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlStreamCtxtPtr stream; /*  */
+    xmlStreamCtxtPtr stream; /* the stream context */
     int n_stream;
-    xmlChar * name; /*  */
+    xmlChar * name; /* the current name */
     int n_name;
-    xmlChar * ns; /*  */
+    xmlChar * ns; /* the namespace name */
     int n_ns;
 
     for (n_stream = 0;n_stream < gen_nb_xmlStreamCtxtPtr;n_stream++) {
@@ -16830,11 +16830,11 @@ test_xmlStreamPushAttr(void) {
 #if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
-    xmlStreamCtxtPtr stream; /*  */
+    xmlStreamCtxtPtr stream; /* the stream context */
     int n_stream;
-    xmlChar * name; /*  */
+    xmlChar * name; /* the current name */
     int n_name;
-    xmlChar * ns; /*  */
+    xmlChar * ns; /* the namespace name */
     int n_ns;
 
     for (n_stream = 0;n_stream < gen_nb_xmlStreamCtxtPtr;n_stream++) {
@@ -32870,6 +32870,16 @@ test_xmlSchemaCompareValuesWhtsp(void) {
 
 
 static int
+test_xmlSchemaCopyValue(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlSchemaGetBuiltInListSimpleTypeItemType(void) {
     int test_ret = 0;
 
@@ -33509,12 +33519,13 @@ static int
 test_xmlschemastypes(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlschemastypes : 19 of 24 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemastypes : 19 of 25 functions ...\n");
     test_ret += test_xmlSchemaCheckFacet();
     test_ret += test_xmlSchemaCleanupTypes();
     test_ret += test_xmlSchemaCollapseString();
     test_ret += test_xmlSchemaCompareValues();
     test_ret += test_xmlSchemaCompareValuesWhtsp();
+    test_ret += test_xmlSchemaCopyValue();
     test_ret += test_xmlSchemaGetBuiltInListSimpleTypeItemType();
     test_ret += test_xmlSchemaGetBuiltInType();
     test_ret += test_xmlSchemaGetCanonValue();

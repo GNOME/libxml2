@@ -394,7 +394,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 		$word = $list[0];
 		if (($scope == 'any') || ($scope == 'XML') ||
 		    ($scope == 'API') || ($scope == 'XMLAPI')) {
-		    list($result, $j) = queryWord("xml" + $word);
+		    list($result, $j) = queryWord("xml$word");
 		    if ($j > 0) {
 			for ($i = 0; $i < $j; $i++) {
 			    $relevance = mysql_result($result, $i, 0);
@@ -419,8 +419,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 		}
 		if (($scope == 'any') || ($scope == 'XSLT') ||
 		    ($scope == 'API') || ($scope == 'XSLTAPI')) {
-		    list($result, $j) = queryWord("xslt" + $word);
-		    list($result, $j) = XSLTqueryWord($word);
+		    list($result, $j) = XSLTqueryWord("xslt$word");
 		    if ($j > 0) {
 			for ($i = 0; $i < $j; $i++) {
 			    $relevance = mysql_result($result, $i, 0);

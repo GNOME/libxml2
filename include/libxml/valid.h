@@ -264,6 +264,12 @@ int		xmlValidateOneAttribute	(xmlValidCtxtPtr ctxt,
 					 xmlNodePtr	elem,
 					 xmlAttrPtr attr,
 					 const xmlChar *value);
+int		xmlValidateOneNamespace	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem,
+					 const xmlChar *prefix,
+					 xmlNsPtr ns,
+					 const xmlChar *value);
 int		xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc);
 int		xmlValidateNotationUse	(xmlValidCtxtPtr ctxt,

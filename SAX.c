@@ -795,18 +795,20 @@ endDocument(void *ctx)
 }
 
 /**
- * attribute:
+ * my_attribute:
  * @ctx: the user data (XML parser context)
  * @fullname:  The attribute name, including namespace prefix
  * @value:  The attribute value
+ * @prefix: the prefix on the element node
  *
  * Handle an attribute that has been read by the parser.
  * The default handling is to convert the attribute into an
  * DOM subtree and past it in a new xmlAttr element added to
  * the element.
  */
-void
-attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
+static void
+my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
+	     const xmlChar *prefix)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlAttrPtr ret;
@@ -847,6 +849,8 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     if ((!ctxt->html) && (ns == NULL) &&
         (name[0] == 'x') && (name[1] == 'm') && (name[2] == 'l') &&
         (name[3] == 'n') && (name[4] == 's') && (name[5] == 0)) {
+	xmlNsPtr nsret;
+
 	if (value[0] != 0) {
 	    xmlURIPtr uri;
 
@@ -866,7 +870,16 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	}
 
 	/* a default namespace definition */
-	xmlNewNs(ctxt->node, value, NULL);
+	nsret = xmlNewNs(ctxt->node, value, NULL);
+
+	/*
+	 * Validate also for namespace decls, they are attributes from
+	 * an XML-1.0 perspective
+	 */
+        if (nsret != NULL && ctxt->validate && ctxt->wellFormed &&
+	    ctxt->myDoc && ctxt->myDoc->intSubset)
+	    ctxt->valid &= xmlValidateOneNamespace(&ctxt->vctxt, ctxt->myDoc,
+					   ctxt->node, prefix, nsret, value);
 	if (name != NULL) 
 	    xmlFree(name);
 	if (nval != NULL)
@@ -876,23 +889,24 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     if ((!ctxt->html) &&
 	(ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
         (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
-	/*
-	 * Validate also for namespace decls, they are attributes from
-	 * an XML-1.0 perspective
-	 TODO ... doesn't map well with current API
-        if (ctxt->validate && ctxt->wellFormed &&
-	    ctxt->myDoc && ctxt->myDoc->intSubset)
-	    ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt, ctxt->myDoc,
-					       ctxt->node, ret, value);
-	 */
+	xmlNsPtr nsret;
+
 	if (value[0] == 0) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData, 
 		     "Empty namespace name for prefix %s\n", name);
 	}
 	/* a standard namespace definition */
-	xmlNewNs(ctxt->node, value, name);
+	nsret = xmlNewNs(ctxt->node, value, name);
 	xmlFree(ns);
+	/*
+	 * Validate also for namespace decls, they are attributes from
+	 * an XML-1.0 perspective
+	 */
+        if (nsret != NULL && ctxt->validate && ctxt->wellFormed &&
+	    ctxt->myDoc && ctxt->myDoc->intSubset)
+	    ctxt->valid &= xmlValidateOneNamespace(&ctxt->vctxt, ctxt->myDoc,
+					   ctxt->node, prefix, nsret, value);
 	if (name != NULL) 
 	    xmlFree(name);
 	if (nval != NULL)
@@ -986,6 +1000,23 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	xmlFree(nval);
     if (ns != NULL) 
 	xmlFree(ns);
+}
+
+/**
+ * attribute:
+ * @ctx: the user data (XML parser context)
+ * @fullname:  The attribute name, including namespace prefix
+ * @value:  The attribute value
+ *
+ * Handle an attribute that has been read by the parser.
+ * The default handling is to convert the attribute into an
+ * DOM subtree and past it in a new xmlAttr element added to
+ * the element.
+ */
+void
+attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
+{
+    my_attribute(ctx, fullname, value, NULL);
 }
 
 /*
@@ -1256,7 +1287,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	    while ((att != NULL) && (value != NULL)) {
 		if ((att[0] == 'x') && (att[1] == 'm') && (att[2] == 'l') &&
 		    (att[3] == 'n') && (att[4] == 's'))
-		    attribute(ctxt, att, value);
+		    my_attribute(ctxt, att, value, prefix);
 
 		att = atts[i++];
 		value = atts[i++];

@@ -3817,6 +3817,232 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     return(ret);
 }
 
+/**
+ * xmlValidateOneNamespace:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ * @ns:  an namespace declaration instance
+ * @value:  the attribute value (without entities processing)
+ *
+ * Try to validate a single namespace declaration for an element
+ * basically it does the following checks as described by the
+ * XML-1.0 recommendation:
+ *  - [ VC: Attribute Value Type ]
+ *  - [ VC: Fixed Attribute Default ]
+ *  - [ VC: Entity Name ]
+ *  - [ VC: Name Token ]
+ *  - [ VC: ID ]
+ *  - [ VC: IDREF ]
+ *  - [ VC: Entity Name ]
+ *  - [ VC: Notation Attributes ]
+ *
+ * The ID/IDREF uniqueness and matching are done separately
+ *
+ * returns 1 if valid or 0 otherwise
+ */
+
+int
+xmlValidateOneNamespace(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
+    /* xmlElementPtr elemDecl; */
+    xmlAttributePtr attrDecl =  NULL;
+    int val;
+    int ret = 1;
+
+    CHECK_DTD;
+    if ((elem == NULL) || (elem->name == NULL)) return(0);
+    if ((ns == NULL) || (ns->href == NULL)) return(0);
+
+    if (prefix != NULL) {
+	xmlChar qname[500];
+	snprintf((char *) qname, sizeof(qname), "%s:%s",
+		 prefix, elem->name);
+        qname[sizeof(qname) - 1] = 0;
+	if (ns->prefix != NULL) {
+	    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, qname,
+		                          ns->prefix, BAD_CAST "xmlns");
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, qname,
+					  ns->prefix, BAD_CAST "xmlns");
+	} else {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, qname,
+		                         BAD_CAST "xmlns");
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, qname,
+			                 BAD_CAST "xmlns");
+	}
+    }
+    if (attrDecl == NULL) {
+	if (ns->prefix != NULL) {
+	    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, elem->name,
+		                          ns->prefix, BAD_CAST "xmlns");
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, elem->name,
+					      ns->prefix, BAD_CAST "xmlns");
+	} else {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset,
+		                         elem->name, BAD_CAST "xmlns");
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset,
+					     elem->name, BAD_CAST "xmlns");
+	}
+    }
+
+
+    /* Validity Constraint: Attribute Value Type */
+    if (attrDecl == NULL) {
+	VECTXT(ctxt, elem);
+	if (ns->prefix != NULL) {
+	    VERROR(ctxt->userData,
+		   "No declaration for attribute xmlns:%s of element %s\n",
+		   ns->prefix, elem->name);
+	} else {
+	    VERROR(ctxt->userData,
+		   "No declaration for attribute xmlns of element %s\n",
+		   elem->name);
+	}
+	return(0);
+    }
+
+    val = xmlValidateAttributeValue(attrDecl->atype, value);
+    if (val == 0) {
+	VECTXT(ctxt, elem);
+	if (ns->prefix != NULL) {
+	    VERROR(ctxt->userData,
+	       "Syntax of value for attribute xmlns:%s of %s is not valid\n",
+		   ns->prefix, elem->name);
+	} else {
+	    VERROR(ctxt->userData,
+	       "Syntax of value for attribute xmlns of %s is not valid\n",
+		   elem->name);
+	}
+        ret = 0;
+    }
+
+    /* Validity constraint: Fixed Attribute Default */
+    if (attrDecl->def == XML_ATTRIBUTE_FIXED) {
+	if (!xmlStrEqual(value, attrDecl->defaultValue)) {
+	    VECTXT(ctxt, elem);
+	    if (ns->prefix != NULL) {
+		VERROR(ctxt->userData,
+       "Value for attribute xmlns:%s of %s is different from default \"%s\"\n",
+		       ns->prefix, elem->name, attrDecl->defaultValue);
+	    } else {
+		VERROR(ctxt->userData,
+       "Value for attribute xmlns of %s is different from default \"%s\"\n",
+		       elem->name, attrDecl->defaultValue);
+	    }
+	    ret = 0;
+	}
+    }
+
+    /* Validity Constraint: ID uniqueness */
+    if (attrDecl->atype == XML_ATTRIBUTE_ID) {
+        if (xmlAddID(ctxt, doc, value, (xmlAttrPtr) ns) == NULL)
+	    ret = 0;
+    }
+
+    if ((attrDecl->atype == XML_ATTRIBUTE_IDREF) ||
+	(attrDecl->atype == XML_ATTRIBUTE_IDREFS)) {
+        if (xmlAddRef(ctxt, doc, value, (xmlAttrPtr) ns) == NULL)
+	    ret = 0;
+    }
+
+    /* Validity Constraint: Notation Attributes */
+    if (attrDecl->atype == XML_ATTRIBUTE_NOTATION) {
+        xmlEnumerationPtr tree = attrDecl->tree;
+        xmlNotationPtr nota;
+
+        /* First check that the given NOTATION was declared */
+	nota = xmlGetDtdNotationDesc(doc->intSubset, value);
+	if (nota == NULL)
+	    nota = xmlGetDtdNotationDesc(doc->extSubset, value);
+	
+	if (nota == NULL) {
+	    VECTXT(ctxt, elem);
+	    if (ns->prefix != NULL) {
+		VERROR(ctxt->userData,
+       "Value \"%s\" for attribute xmlns:%s of %s is not a declared Notation\n",
+		       value, ns->prefix, elem->name);
+	    } else {
+		VERROR(ctxt->userData,
+       "Value \"%s\" for attribute xmlns of %s is not a declared Notation\n",
+		       value, elem->name);
+	    }
+	    ret = 0;
+        }
+
+	/* Second, verify that it's among the list */
+	while (tree != NULL) {
+	    if (xmlStrEqual(tree->name, value)) break;
+	    tree = tree->next;
+	}
+	if (tree == NULL) {
+	    VECTXT(ctxt, elem);
+	    if (ns->prefix != NULL) {
+		VERROR(ctxt->userData,
+"Value \"%s\" for attribute xmlns:%s of %s is not among the enumerated notations\n",
+		       value, ns->prefix, elem->name);
+	    } else {
+		VERROR(ctxt->userData,
+"Value \"%s\" for attribute xmlns of %s is not among the enumerated notations\n",
+		       value, elem->name);
+	    }
+	    ret = 0;
+	}
+    }
+
+    /* Validity Constraint: Enumeration */
+    if (attrDecl->atype == XML_ATTRIBUTE_ENUMERATION) {
+        xmlEnumerationPtr tree = attrDecl->tree;
+	while (tree != NULL) {
+	    if (xmlStrEqual(tree->name, value)) break;
+	    tree = tree->next;
+	}
+	if (tree == NULL) {
+	    VECTXT(ctxt, elem);
+	    if (ns->prefix != NULL) {
+		VERROR(ctxt->userData,
+"Value \"%s\" for attribute xmlns:%s of %s is not among the enumerated set\n",
+		       value, ns->prefix, elem->name);
+	    } else {
+		VERROR(ctxt->userData,
+"Value \"%s\" for attribute xmlns of %s is not among the enumerated set\n",
+		       value, elem->name);
+	    }
+	    ret = 0;
+	}
+    }
+
+    /* Fixed Attribute Default */
+    if ((attrDecl->def == XML_ATTRIBUTE_FIXED) &&
+        (!xmlStrEqual(attrDecl->defaultValue, value))) {
+	VECTXT(ctxt, elem);
+	if (ns->prefix != NULL) {
+	    VERROR(ctxt->userData,
+		   "Value for attribute xmlns:%s of %s must be \"%s\"\n",
+		   ns->prefix, elem->name, attrDecl->defaultValue);
+	} else {
+	    VERROR(ctxt->userData,
+		   "Value for attribute xmlns of %s must be \"%s\"\n",
+		   elem->name, attrDecl->defaultValue);
+	}
+        ret = 0;
+    }
+
+    /* Extra check for the attribute value */
+    if (ns->prefix != NULL) {
+	ret &= xmlValidateAttributeValue2(ctxt, doc, ns->prefix,
+					  attrDecl->atype, value);
+    } else {
+	ret &= xmlValidateAttributeValue2(ctxt, doc, BAD_CAST "xmlns",
+					  attrDecl->atype, value);
+    }
+
+    return(ret);
+}
+
 #ifndef  LIBXML_REGEXP_ENABLED
 /**
  * xmlValidateSkipIgnorable:

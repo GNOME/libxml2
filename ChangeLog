@@ -1,3 +1,11 @@
+Thu Sep 26 17:33:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c valid.c include/libxml/valid.h: fixed bug #92518 validation
+	  error were not covering namespace declarations.
+	* result/valid/dia.xml test/valid/dia.xml: the test wasn't valid,
+	  it was missing the attribute declaration for the namespace
+	* result/VC/NS3: the fix now report breakages in that test
+
 Thu Sep 26 14:39:07 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: fixing bug #94241 on HTML boolean attributes

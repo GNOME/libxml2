@@ -6022,12 +6022,14 @@ actually an xmlCharEncoding'/>
       <arg name='value' type='const xmlChar *' info='the comment content'/>
     </functype>
     <function name='docbCreateFileParserCtxt' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>Create a parser context for a file content. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
       <return type='docbParserCtxtPtr' info='the new parser context or NULL'/>
       <arg name='filename' type='const char *' info='the filename'/>
       <arg name='encoding' type='const char *' info='the SGML document encoding, or NULL'/>
     </function>
     <function name='docbCreatePushParserCtxt' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>Create a parser context for using the DocBook SGML parser in push mode To allow content encoding detection, @size should be &gt;= 4 The value of @filename is used for fetching external entities and error/warning reports.</info>
       <return type='docbParserCtxtPtr' info='the new parser context or NULL'/>
       <arg name='sax' type='docbSAXHandlerPtr' info='a SAX handler'/>
@@ -6042,6 +6044,7 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='docbEncodeEntities' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>Take a block of UTF-8 chars in and try to convert it to an ASCII plus SGML entities block of chars out.</info>
       <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
@@ -6051,11 +6054,13 @@ actually an xmlCharEncoding'/>
       <arg name='quoteChar' type='int' info='the quote character to escape (&apos; or &quot;) or zero.'/>
     </function>
     <function name='docbFreeParserCtxt' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>Free all the memory used by a parser context. However the parsed document in ctxt-&gt;myDoc is not freed.</info>
       <return type='void'/>
       <arg name='ctxt' type='docbParserCtxtPtr' info='an SGML parser context'/>
     </function>
     <function name='docbParseChunk' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>Parse a Chunk of memory</info>
       <return type='int' info='zero if no error, the xmlParserErrors otherwise.'/>
       <arg name='ctxt' type='docbParserCtxtPtr' info='an XML parser context'/>
@@ -6064,23 +6069,27 @@ actually an xmlCharEncoding'/>
       <arg name='terminate' type='int' info='last chunk indicator'/>
     </function>
     <function name='docbParseDoc' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>parse an SGML in-memory document and build a tree.</info>
       <return type='docbDocPtr' info='the resulting document tree'/>
       <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the SGML document encoding, or NULL'/>
     </function>
     <function name='docbParseDocument' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>parse an SGML document (and build a tree if using the standard SAX interface).</info>
       <return type='int' info='0, -1 in case of error. the parser context is augmented as a result of the parsing.'/>
       <arg name='ctxt' type='docbParserCtxtPtr' info='an SGML parser context'/>
     </function>
     <function name='docbParseFile' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>parse a Docbook SGML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
       <return type='docbDocPtr' info='the resulting document tree'/>
       <arg name='filename' type='const char *' info='the filename'/>
       <arg name='encoding' type='const char *' info='a free form C string describing document encoding, or NULL'/>
     </function>
     <function name='docbSAXParseDoc' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>parse an SGML in-memory document and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
       <return type='docbDocPtr' info='the resulting document tree'/>
       <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
@@ -6089,6 +6098,7 @@ actually an xmlCharEncoding'/>
       <arg name='userData' type='void *' info='if using SAX, this pointer will be provided on callbacks.'/>
     </function>
     <function name='docbSAXParseFile' file='DOCBparser'>
+      <cond>LIBXML_DOCB_ENABLED</cond>
       <info>parse an SGML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
       <return type='docbDocPtr' info='the resulting document tree'/>
       <arg name='filename' type='const char *' info='the filename'/>

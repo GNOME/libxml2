@@ -857,7 +857,7 @@ class CParser:
 		self.index_add(name, self.filename, not self.is_header,
 		                "macro", info)
 		return token
-	if name == "#ifdef" and self.is_header:
+	if (name == "#ifdef" or name == "#ifndef") and self.is_header:
 	    try:
 	        self.defines.append(self.lexer.tokens[0][1])
 	        if string.find(self.lexer.tokens[0][1], 'ENABLED') != -1:

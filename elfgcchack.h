@@ -66,9 +66,11 @@ extern __typeof (__xmlGenericErrorContext) __xmlGenericErrorContext __attribute(
 
 /* list generated from libxml2-api.xml */
 
+#ifdef LIBXML_DOCB_ENABLED
 extern __typeof (docbCreatePushParserCtxt) docbCreatePushParserCtxt__internal_alias __attribute((visibility("hidden")));
 extern __typeof (docbCreatePushParserCtxt) docbCreatePushParserCtxt __attribute((alias("docbCreatePushParserCtxt__internal_alias")));
 #define docbCreatePushParserCtxt docbCreatePushParserCtxt__internal_alias
+#endif
 
 #ifdef LIBXML_HTML_ENABLED
 extern __typeof (htmlAttrAllowed) htmlAttrAllowed__internal_alias __attribute((visibility("hidden")));

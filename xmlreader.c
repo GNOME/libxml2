@@ -3915,6 +3915,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 
     reader->doc = NULL;
     reader->entNr = 0;
+    reader->validate = XML_TEXTREADER_NOT_VALIDATE;
     if ((input != NULL) && (reader->input != NULL) &&
         (reader->allocs & XML_TEXTREADER_INPUT)) {
 	xmlFreeParserInputBuffer(reader->input);
@@ -4053,6 +4054,9 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
         reader->xinclude = 0;
     reader->in_xinclude = 0;
 #endif
+    if (options & XML_PARSE_DTDVALID)
+        reader->validate = XML_TEXTREADER_VALIDATE_DTD;
+
     xmlCtxtUseOptions(reader->ctxt, options);
     if (encoding != NULL) {
         xmlCharEncodingHandlerPtr hdlr;

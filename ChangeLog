@@ -1,7 +1,12 @@
+Tue Dec  2 11:25:25 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixed a problem in xmlreader validation when
+	  streaming exposed by reader2 example.
+
 Mon Dec  1 20:40:51 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/xml.html
-	* doc/docs.html
+	* doc/docs.html:
 	add reference to the Code Examples page to docs.html list
 	of resources
 
@@ -13,8 +18,7 @@ Mon Dec  1 12:30:28 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 Sun Nov 30 21:33:37 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* include/libxml/xinclude.h
-	* doc/*
-	Add comments for macro definitions in xinclude.h and
+	* doc/*: Add comments for macro definitions in xinclude.h and
 	rebuild the docs
 
 Sun Nov 30 21:06:29 MST 2003 John Fleck <jfleck@inkstain.net>
@@ -31,9 +35,8 @@ Sat Nov 29 18:38:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 	  
 Fri Nov 28 21:39:49 MST 2003 John Fleck <jfleck@inkstain.net>
 
-	* doc/xml.html
-	* doc/python.html
-	fix tst.py text, which didn't import sys
+	* doc/xml.html doc/python.html: fix tst.py text, which didn't
+	  import sys
 
 Fri Nov 28 17:28:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
 

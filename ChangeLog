@@ -1,3 +1,9 @@
+Tue Aug 21 14:56:18 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: fixed nextCatalog
+	* result/catalogs/docbook test/catalogs/*: started adding
+	  a small regression test
+
 Tue Aug 21 12:52:38 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am catalog.c xmlcatalog.c include/libxml/catalog.h:

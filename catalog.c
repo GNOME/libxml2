@@ -1018,7 +1018,9 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 		    xmlFetchXMLCatalogFile(cur);
 		}
 		if (cur->children != NULL) {
-		    xmlCatalogListXMLResolve(cur->children, pubID, sysID);
+		    ret = xmlCatalogListXMLResolve(cur->children, pubID, sysID);
+		    if (ret != NULL)
+			return(ret);
 		}
 	    }
 	    cur = cur->next;

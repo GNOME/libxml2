@@ -1,3 +1,8 @@
+Sun Mar 25 01:40:24 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: initialization code must be run before deciding
+	  which parser to launch.
+
 Sun Mar 25 01:03:10 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am parserold.c: added back the 1.8.11 parser for compatibility

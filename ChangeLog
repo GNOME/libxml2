@@ -1,3 +1,7 @@
+Fri Nov  8 16:55:47 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/libxml2.def.src: exported additional symbols
+
 Fri Nov  8 16:08:13 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c: fixed a typo pointed out by Igor

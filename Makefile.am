@@ -404,7 +404,7 @@ confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in xmlversion.h.in \
-	     win32/README.MSDev win32/Makefile.mingw win32/libxml2/libxml2.dsp \
+	     win32/README.MSDev win32/Makefile.mingw win32/libxml2/libxml*.dsp \
 	     vms/build_libxml.com vms/config.vms
 
 pkgconfigdir = $(libdir)/pkgconfig

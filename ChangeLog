@@ -1,3 +1,9 @@
+Thu Mar  7 16:11:35 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xmllint.c: owen pointed out a problem with the
+	  ftme fix, gettimeofday() was not detected by configure and
+	  the ftime header wasn't included, dohhh
+
 Thu Mar  7 12:19:36 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xmllint.c: trying to fix #71457 for timing

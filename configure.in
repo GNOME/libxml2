@@ -102,7 +102,7 @@ dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror)
 AC_CHECK_FUNCS(finite isnand fp_class class fpclass)
-AC_CHECK_FUNCS(strftime localtime ftime)
+AC_CHECK_FUNCS(strftime localtime gettimeofday ftime)
 AC_CHECK_FUNCS(stat _stat signal)
 
 dnl Checking the standard string functions availability

@@ -29,6 +29,9 @@
 #endif
 #endif /* _WIN32 */
 
+#ifdef HAVE_SYS_TIMEB_H
+#include <sys/timeb.h>
+#endif
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -192,12 +195,14 @@ endTimer(const char *format, ...)
     fprintf(stderr, " took %ld ms\n", msec);
 }
 #elif defined(HAVE_TIME_H)
-
 /*
  * No gettimeofday function, so we have to make do with calling clock.
  * This is obviously less accurate, but there's little we can do about
  * that.
  */
+#ifndef CLOCKS_PER_SEC
+#define CLOCKS_PER_SEC 100
+#endif
 
 static clock_t begin, end;
 static void

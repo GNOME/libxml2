@@ -94,3 +94,11 @@ Object is a Boolean : false
 ========================
 Expression: 'test'!=false()
 Object is a Boolean : true
+
+========================
+Expression: 'a'=0.0
+Object is a Boolean : false
+
+========================
+Expression: 'a'!=0.0
+Object is a Boolean : true

@@ -28,6 +28,14 @@ Expression: concat("titi","toto","tata")
 Object is a string : tititototata
 
 ========================
+Expression: concat("titi",'toto')
+Object is a string : tititoto
+
+========================
+Expression: concat("titi",'toto',"tata","last")
+Object is a string : tititototatalast
+
+========================
 Expression: starts-with("tititoto","titi")
 Object is a Boolean : true
 

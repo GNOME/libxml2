@@ -12,9 +12,85 @@ Expression: number("1.5")
 Object is a number : 1.5
 
 ========================
-Expression: concat("titi",'toto')
-Object is a string : tititoto
+Expression: number('abc')
+Object is a number : NaN
 
 ========================
-Expression: concat("titi",'toto',"tata","last")
-Object is a string : tititototatalast
+Expression: floor(0.1)
+Object is a number : 0
+
+========================
+Expression: floor(-0.1)
+Object is a number : -1
+
+========================
+Expression: floor(-0)
+Object is a number : 0
+
+========================
+Expression: floor(0)
+Object is a number : 0
+
+========================
+Expression: floor(5.2)
+Object is a number : 5
+
+========================
+Expression: floor(-5.2)
+Object is a number : -6
+
+========================
+Expression: ceiling(0.1)
+Object is a number : 1
+
+========================
+Expression: ceiling(-0.1)
+Object is a number : 0
+
+========================
+Expression: ceiling(-0)
+Object is a number : 0
+
+========================
+Expression: ceiling(0)
+Object is a number : 0
+
+========================
+Expression: ceiling(5.2)
+Object is a number : 6
+
+========================
+Expression: ceiling(-5.2)
+Object is a number : -5
+
+========================
+Expression: round(0.1)
+Object is a number : 0
+
+========================
+Expression: round(5.2)
+Object is a number : 5
+
+========================
+Expression: round(5.5)
+Object is a number : 6
+
+========================
+Expression: round(5.6)
+Object is a number : 6
+
+========================
+Expression: round(-0.1)
+Object is a number : 0
+
+========================
+Expression: round(-5.2)
+Object is a number : -5
+
+========================
+Expression: round(-5.5)
+Object is a number : -5
+
+========================
+Expression: round(-5.6)
+Object is a number : -6

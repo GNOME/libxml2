@@ -25,7 +25,7 @@ Object is a number : 0.00123
 
 ========================
 Expression: 1 div 0
-Object is a number : +Infinity
+Object is a number : Infinity
 
 ========================
 Expression: -1 div 0
@@ -34,6 +34,10 @@ Object is a number : -Infinity
 ========================
 Expression: 0 div 0
 Object is a number : NaN
+
+========================
+Expression: 1 div -0
+Object is a number : -Infinity
 
 ========================
 Expression: (1 div 0) > 0
@@ -58,3 +62,135 @@ Object is a Boolean : false
 ========================
 Expression: (0 div 0) < 0
 Object is a Boolean : false
+
+========================
+Expression: (1 div -0) > 0
+Object is a Boolean : false
+
+========================
+Expression: (1 div -0) < 0
+Object is a Boolean : true
+
+========================
+Expression: 0 div 0 = 0 div 0
+Object is a Boolean : false
+
+========================
+Expression: 0 div 0 != 0 div 0
+Object is a Boolean : true
+
+========================
+Expression: 0 div 0 > 0 div 0
+Object is a Boolean : false
+
+========================
+Expression: 0 div 0 < 0 div 0
+Object is a Boolean : false
+
+========================
+Expression: 0 div 0 >= 0 div 0
+Object is a Boolean : false
+
+========================
+Expression: 0 div 0 <= 0 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 = -1 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 != -1 div 0
+Object is a Boolean : true
+
+========================
+Expression: 1 div 0 > -1 div 0
+Object is a Boolean : true
+
+========================
+Expression: 1 div 0 < -1 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 >= -1 div 0
+Object is a Boolean : true
+
+========================
+Expression: 1 div 0 <= -1 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 = 1 div 0
+Object is a Boolean : true
+
+========================
+Expression: 1 div 0 != 1 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 > 1 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 < 1 div 0
+Object is a Boolean : false
+
+========================
+Expression: 1 div 0 >= -1 div 0
+Object is a Boolean : true
+
+========================
+Expression: 1 div 0 <= -1 div 0
+Object is a Boolean : false
+
+========================
+Expression: -2 div 0 = -1 div 0
+Object is a Boolean : true
+
+========================
+Expression: 1 div floor(0.1)
+Object is a number : Infinity
+
+========================
+Expression: 1 div floor(-0.1)
+Object is a number : -1
+
+========================
+Expression: 1 div floor(-0)
+Object is a number : -Infinity
+
+========================
+Expression: 1 div floor(0)
+Object is a number : Infinity
+
+========================
+Expression: 1 div ceiling(0.1)
+Object is a number : 1
+
+========================
+Expression: 1 div ceiling(-0.1)
+Object is a number : -Infinity
+
+========================
+Expression: 1 div ceiling(-0)
+Object is a number : -Infinity
+
+========================
+Expression: 1 div ceiling(0)
+Object is a number : Infinity
+
+========================
+Expression: 1 div round(0.1)
+Object is a number : Infinity
+
+========================
+Expression: 1 div round(-0.1)
+Object is a number : -Infinity
+
+========================
+Expression: 1 div round(-0)
+Object is a number : -Infinity
+
+========================
+Expression: 1 div round(0)
+Object is a number : Infinity

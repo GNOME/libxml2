@@ -155,9 +155,9 @@ xmlXPathIsInf(double val) {
  * 
  * Returns 1 if the value is Negative, 0 if positive
  */
-int
+static int
 xmlXPathGetSign(double val) {
-    return(trio_get_sign(val));
+    return(trio_signbit(val));
 }
 
 
@@ -1275,8 +1275,8 @@ static const char *xmlXPathErrorMessages[] = {
  * Formats an error message.
  */
 void
-xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
-              int line, int no) {
+xmlXPatherror(xmlXPathParserContextPtr ctxt, ATTRIBUTE_UNUSED const char *file,
+              ATTRIBUTE_UNUSED int line, int no) {
     int n;
     const xmlChar *cur;
     const xmlChar *base;
@@ -4472,7 +4472,12 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    arg2 = valuePop(ctxt);
 		    /* no break on purpose */
 		case XPATH_NUMBER:
-		    ret = (arg1->floatval == arg2->floatval);
+		    /* Hand checking NaNs for VC6++'s benefit... */
+		    if (xmlXPathIsNaN(arg1->floatval) || xmlXPathIsNaN(arg2->floatval)) {
+		        ret = 0;
+		    } else {
+		        ret = (arg1->floatval == arg2->floatval);
+		    }
 		    break;
 		case XPATH_USERS:
 		case XPATH_POINT:
@@ -4508,7 +4513,12 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    valuePush(ctxt, arg1);
 		    xmlXPathNumberFunction(ctxt, 1);
 		    arg1 = valuePop(ctxt);
-		    ret = (arg1->floatval == arg2->floatval);
+		    /* Hand checking NaNs for VC6++'s benefit... */
+		    if (xmlXPathIsNaN(arg1->floatval) || xmlXPathIsNaN(arg2->floatval)) {
+		        ret = 0;
+		    } else {
+		        ret = (arg1->floatval == arg2->floatval);
+		    }
 		    break;
 		case XPATH_USERS:
 		case XPATH_POINT:
@@ -4610,14 +4620,19 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
      * Add tests for infinity and nan
      * => feedback on 3.4 for Inf and NaN
      */
-    if (inf && strict) 
-        ret = (arg1->floatval < arg2->floatval);
-    else if (inf && !strict)
-        ret = (arg1->floatval <= arg2->floatval);
-    else if (!inf && strict)
-        ret = (arg1->floatval > arg2->floatval);
-    else if (!inf && !strict)
-        ret = (arg1->floatval >= arg2->floatval);
+    /* Hand checking NaNs for VC++6's benefit... */
+    if (xmlXPathIsNaN(arg1->floatval) || xmlXPathIsNaN(arg2->floatval)) {
+      ret=0;
+    } else {
+      if (inf && strict) 
+	  ret = (arg1->floatval < arg2->floatval);
+      else if (inf && !strict)
+	  ret = (arg1->floatval <= arg2->floatval);
+      else if (!inf && strict)
+	  ret = (arg1->floatval > arg2->floatval);
+      else if (!inf && !strict)
+	  ret = (arg1->floatval >= arg2->floatval);
+    }
     xmlXPathFreeObject(arg1);
     xmlXPathFreeObject(arg2);
     return(ret);

@@ -1,3 +1,13 @@
+Wed Mar 27 17:09:43 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* trionan.c trionan.h xpath.c: more patches from Richard Jinks
+	* test/XPath/expr/compare test/XPath/expr/equality
+	  test/XPath/expr/floats test/XPath/expr/functions
+	  test/XPath/expr/strings result/XPath/expr/compare
+	  result/XPath/expr/equality result/XPath/expr/floats
+	  result/XPath/expr/functions result/XPath/expr/strings: Updated
+	  tests though they show a divergence on Linux
+
 Wed Mar 27 10:06:53 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c trionan.c: previous commit also included patches

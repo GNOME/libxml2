@@ -22,4 +22,5 @@ true()='test'
 false()='test'
 'test'!=true()
 'test'!=false()
-
+'a'=0.0
+'a'!=0.0

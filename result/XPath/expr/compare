@@ -1,5 +1,21 @@
 
 ========================
+Expression: 0<0
+Object is a Boolean : false
+
+========================
+Expression: 0<=0
+Object is a Boolean : true
+
+========================
+Expression: 0>0
+Object is a Boolean : false
+
+========================
+Expression: 0>=0
+Object is a Boolean : true
+
+========================
 Expression: 0<1
 Object is a Boolean : true
 
@@ -80,6 +96,22 @@ Expression: 0>='1.2'
 Object is a Boolean : false
 
 ========================
+Expression: 0<'-0.2'
+Object is a Boolean : false
+
+========================
+Expression: 0<='-0.2'
+Object is a Boolean : false
+
+========================
+Expression: 0>'-0.2'
+Object is a Boolean : true
+
+========================
+Expression: 0>='-0.2'
+Object is a Boolean : true
+
+========================
 Expression: false()<1
 Object is a Boolean : true
 
@@ -93,4 +125,60 @@ Object is a Boolean : false
 
 ========================
 Expression: 0>=true()
+Object is a Boolean : false
+
+========================
+Expression: 'a' > 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' > 'b'
+Object is a Boolean : false
+
+========================
+Expression: 'b' > 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' < 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' < 'b'
+Object is a Boolean : false
+
+========================
+Expression: 'b' < 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' >= 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' >= 'b'
+Object is a Boolean : false
+
+========================
+Expression: 'b' >= 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' <= 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' <= 'b'
+Object is a Boolean : false
+
+========================
+Expression: 'b' <= 'a'
+Object is a Boolean : false
+
+========================
+Expression: 'a' > '0.0'
+Object is a Boolean : false
+
+========================
+Expression: 'a' < '0.0'
 Object is a Boolean : false

@@ -1,0 +1,4 @@
+Internal: failed to validate type float
+internal error validating list
+Extra content for element vector
+./test/relaxng/tutor7_1_2.xml validation generated an internal error

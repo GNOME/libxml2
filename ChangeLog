@@ -1,3 +1,11 @@
+Mon Jan 27 13:29:43 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: more work on Relax-NG
+	* test/relaxng/* result/relaxng/*: augmented/updated the 
+	  regression tests
+	* xmlschemastypes.c: added a number of base type definition but not
+	  the associated checks, those are still TODOs
+
 Sun Jan 26 17:37:06 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	in docs/tutorial:
@@ -30,7 +38,7 @@ Sun Jan 26 17:02:29 MST 2003 John Fleck <jfleck@inkstain.net>
 
 Sun Jan 26 20:47:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
-	* xmlcatalog.c xmllint.c: applied patch for FreeBSD by
+	* xmlcatalog.c xmllint.c: applied patch for NetBSD by
 	  Julio Merino, closing #104475
 
 Sun Jan 26 20:38:43 CET 2003 Daniel Veillard <daniel@veillard.com>

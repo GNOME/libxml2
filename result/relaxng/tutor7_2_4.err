@@ -1,0 +1,3 @@
+error detected at relaxng.c:2932
+error detected at relaxng.c:3427
+xmlRelaxNGValidateDefinition(): validated vector : -1

@@ -1,7 +1,5 @@
-Unimplemented block at relaxng.c:672
-Unimplemented block at relaxng.c:672
-Unimplemented block at relaxng.c:691
+Unimplemented block at xmlschemastypes.c:1135
 xmlRelaxNGValidateDefinition(): validated x : 0
-Unimplemented block at relaxng.c:691
+Unimplemented block at xmlschemastypes.c:1135
 xmlRelaxNGValidateDefinition(): validated y : 0
 xmlRelaxNGValidateDefinition(): validated point : 0

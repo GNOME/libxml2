@@ -110,6 +110,9 @@ struct _xmlSchemaVal {
 static int xmlSchemaTypesInitialized = 0;
 static xmlHashTablePtr xmlSchemaTypesBank = NULL;
 
+/*
+ * Basic types
+ */
 static xmlSchemaTypePtr xmlSchemaTypeStringDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeAnyTypeDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeAnySimpleTypeDef = NULL;
@@ -123,11 +126,26 @@ static xmlSchemaTypePtr xmlSchemaTypeGDayDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeGMonthDayDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeGMonthDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDurationDef = NULL;
-static xmlSchemaTypePtr xmlSchemaTypePositiveIntegerDef = NULL;
-static xmlSchemaTypePtr xmlSchemaTypeNonNegativeIntegerDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtoken = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeFloatDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDoubleDef = NULL;
+
+/*
+ * Derived types
+ */
+static xmlSchemaTypePtr xmlSchemaTypePositiveIntegerDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeNonPositiveIntegerDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeNegativeIntegerDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeNonNegativeIntegerDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeIntegerDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeLongDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeIntDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeShortDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeByteDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeUnsignedLongDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeUnsignedIntDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeUnsignedShortDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeUnsignedByteDef = NULL;
 
 /*
  * xmlSchemaInitBasicType:
@@ -165,6 +183,9 @@ xmlSchemaInitTypes(void) {
 	return;
     xmlSchemaTypesBank = xmlHashCreate(40);
     
+    /*
+     * primitive datatypes
+     */
     xmlSchemaTypeStringDef = xmlSchemaInitBasicType("string");
     xmlSchemaTypeAnyTypeDef = xmlSchemaInitBasicType("anyType");
     xmlSchemaTypeAnySimpleTypeDef = xmlSchemaInitBasicType("anySimpleType");
@@ -178,12 +199,26 @@ xmlSchemaInitTypes(void) {
     xmlSchemaTypeGMonthDayDef = xmlSchemaInitBasicType("gMonthDay");
     xmlSchemaTypeGDayDef = xmlSchemaInitBasicType("gDay");
     xmlSchemaTypeDurationDef = xmlSchemaInitBasicType("duration");
-    xmlSchemaTypePositiveIntegerDef = xmlSchemaInitBasicType("positiveInteger");
-    xmlSchemaTypeNonNegativeIntegerDef =
-	xmlSchemaInitBasicType("nonNegativeInteger");
     xmlSchemaTypeNmtoken = xmlSchemaInitBasicType("NMTOKEN");
     xmlSchemaTypeFloatDef = xmlSchemaInitBasicType("float");
     xmlSchemaTypeDoubleDef = xmlSchemaInitBasicType("double");
+
+    /*
+     * derived datatypes
+     */
+    xmlSchemaTypeIntegerDef = xmlSchemaInitBasicType("integer");;
+    xmlSchemaTypeNonPositiveIntegerDef = xmlSchemaInitBasicType("nonPositiveInteger");;
+    xmlSchemaTypeNegativeIntegerDef = xmlSchemaInitBasicType("negativeInteger");;
+    xmlSchemaTypeLongDef = xmlSchemaInitBasicType("long");;
+    xmlSchemaTypeIntDef = xmlSchemaInitBasicType("int");;
+    xmlSchemaTypeShortDef = xmlSchemaInitBasicType("short");;
+    xmlSchemaTypeByteDef = xmlSchemaInitBasicType("byte");;
+    xmlSchemaTypeNonNegativeIntegerDef = xmlSchemaInitBasicType("nonNegativeInteger");
+    xmlSchemaTypeUnsignedLongDef = xmlSchemaInitBasicType("unsignedLong");;
+    xmlSchemaTypeUnsignedIntDef = xmlSchemaInitBasicType("unsignedInt");;
+    xmlSchemaTypeUnsignedShortDef = xmlSchemaInitBasicType("insignedShort");;
+    xmlSchemaTypeUnsignedByteDef = xmlSchemaInitBasicType("unsignedByte");;
+    xmlSchemaTypePositiveIntegerDef = xmlSchemaInitBasicType("positiveInteger");
 
     xmlSchemaTypesInitialized = 1;
 }

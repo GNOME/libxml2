@@ -2593,8 +2593,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 		    ctxt->sax->error(ctxt->userData, 
 		         "htmlParseCharRef: invalid hexadecimal value\n");
 		ctxt->wellFormed = 0;
-		val = 0;
-		break;
+		return(0);
 	    }
 	    NEXT;
 	}
@@ -2610,8 +2609,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 		    ctxt->sax->error(ctxt->userData, 
 		         "htmlParseCharRef: invalid decimal value\n");
 		ctxt->wellFormed = 0;
-		val = 0;
-		break;
+		return(0);
 	    }
 	    NEXT;
 	}
@@ -3171,6 +3169,9 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 	int bits, i = 0;
 
 	c = htmlParseCharRef(ctxt);
+	if (c == 0)
+	    return;
+
         if      (c <    0x80) { out[i++]= c;                bits= -6; }
         else if (c <   0x800) { out[i++]=((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
         else if (c < 0x10000) { out[i++]=((c >> 12) & 0x0F) | 0xE0;  bits=  6; }

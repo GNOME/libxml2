@@ -42,10 +42,10 @@ typedef char *(*xmlStrdupFunc)(const char *);
 /*
  * The 4 interfaces used for all memory handling within libxml
  */
-extern xmlFreeFunc xmlFree;
-extern xmlMallocFunc xmlMalloc;
-extern xmlReallocFunc xmlRealloc;
-extern xmlStrdupFunc xmlMemStrdup;
+LIBXML_DLL_IMPORT extern xmlFreeFunc xmlFree;
+LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMalloc;
+LIBXML_DLL_IMPORT extern xmlReallocFunc xmlRealloc;
+LIBXML_DLL_IMPORT extern xmlStrdupFunc xmlMemStrdup;
 
 /*
  * The way to overload the existing functions
@@ -78,9 +78,9 @@ int	xmlInitMemory	(void);
 #define xmlRealloc(p, x) xmlReallocLoc((p), (x), __FILE__, __LINE__)
 #define xmlMemStrdup(x) xmlMemStrdupLoc((x), __FILE__, __LINE__)
 
-extern void *	xmlMallocLoc(int size, const char *file, int line);
-extern void *	xmlReallocLoc(void *ptr,int size, const char *file, int line);
-extern char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
+void *	xmlMallocLoc(int size, const char *file, int line);
+void *	xmlReallocLoc(void *ptr,int size, const char *file, int line);
+char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
 #endif /* DEBUG_MEMORY_LOCATION */
 
 #ifdef __cplusplus

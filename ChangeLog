@@ -1,3 +1,9 @@
+Fri Nov 17 17:28:06 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: fixed handling of broken charrefs
+	* xmlmemory.h libxml2.dsp include/win32config.h: reporting Windows
+	  patches
+
 Mon Nov 13 19:17:20 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html doc/html/* : rebuilt the docs after adding

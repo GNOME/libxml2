@@ -6,6 +6,9 @@
 
 #include <io.h>
 
+#define LIBXML_DLL_IMPORT
+#define SOCKLEN_T int
+
 #ifdef INCLUDE_WINSOCK
 #include <winsock2.h>
 
@@ -48,7 +51,8 @@
 #define EREMOTE                 WSAEREMOTE
 #endif /* INCLUDE_WINSOCK */
 
-#define HAVE_ISINF                                                              #define HAVE_ISNAN     
+#define HAVE_ISINF
+#define HAVE_ISNAN
 
 #include <math.h>
 static int isinf (double d) {
@@ -81,3 +85,5 @@ static int isnan (double d) {
         return 0;
     }
 }
+
+#include <direct.h>

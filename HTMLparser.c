@@ -4331,7 +4331,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
  */
 static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                       xmlChar next, xmlChar third, int comment) {
+                        xmlChar next, xmlChar third, int comment) {
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;

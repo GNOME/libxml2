@@ -1789,7 +1789,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	c = *cur;
         *prefix = ret;
 	if (c == 0) {
-	    return(xmlStrndup("", 0));
+	    return(xmlStrndup(BAD_CAST "", 0));
 	}
 	len = 0;
 

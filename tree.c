@@ -236,6 +236,43 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
     return(ret);
 }
 
+/**
+ * xmlSplitQName3:
+ * @name:  the full QName
+ * @len: an int *
+ *
+ * parse an XML qualified name string,i
+ *
+ * returns NULL if it is not a Qualified Name, otherwise, update len
+ *         with the lenght in byte of the prefix and return a pointer
+ */
+
+const xmlChar *
+xmlSplitQName3(const xmlChar *name, int *len) {
+    int l = 0;
+
+    if (name == NULL) return(NULL);
+    if (len == NULL) return(NULL);
+
+    /* nasty but valid */
+    if (name[0] == ':')
+	return(NULL);
+
+    /*
+     * we are not trying to validate but just to cut, and yes it will
+     * work even if this is as set of UTF-8 encoded chars
+     */
+    while ((name[l] != 0) && (name[l] != ':')) 
+	l++;
+    
+    if (name[l] == 0)
+	return(NULL);
+
+    *len = l;
+
+    return(&name[l+1]);
+}
+
 /************************************************************************
  *									*
  *		Check Name, NCName and QName strings			*

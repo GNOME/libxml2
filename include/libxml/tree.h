@@ -556,6 +556,9 @@ xmlChar *	xmlBuildQName		(const xmlChar *ncname,
 					 int len);
 xmlChar *	xmlSplitQName2		(const xmlChar *name,
 					 xmlChar **prefix);
+const xmlChar *	xmlSplitQName3		(const xmlChar *name,
+					 int *len);
+
 /*
  * Handling Buffers.
  */

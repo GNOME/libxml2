@@ -1,3 +1,8 @@
+Wed Jan 26 01:03:37 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: had to fix generation and rebuild.
+	* valid.c: the testapi found a bug in the last code of course !
+
 Wed Jan 26 00:43:05 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am testapi.c doc/Makefile.am: fixing the way testapi.c

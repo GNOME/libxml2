@@ -24401,6 +24401,7 @@ test_xmlNewDocElementContent(void) {
         type = gen_xmlElementContentType(n_type, 2);
 
         ret_val = xmlNewDocElementContent(doc, (const xmlChar *)name, type);
+        xmlFreeDocElementContent(doc, ret_val); ret_val = NULL;
         desret_xmlElementContentPtr(ret_val);
         call_tests++;
         des_xmlDocPtr(n_doc, doc, 0);

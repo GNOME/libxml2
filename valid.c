@@ -1547,8 +1547,9 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
      * and flag it by setting a special parent value
      * so the parser doesn't unallocate it.
      */
-    if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-        (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+    if ((ctxt != NULL) &&
+        ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+         (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1))) {
 	ret->content = content;
 	if (content != NULL)
 	    content->parent = (xmlElementContentPtr) 1;

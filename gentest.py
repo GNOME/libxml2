@@ -231,6 +231,8 @@ extra_post_call = {
               (ret_val != prefix) && (ret_val != memory))
               xmlFree(ret_val);
 	  ret_val = NULL;""",
+   "xmlNewDocElementContent":
+       """xmlFreeDocElementContent(doc, ret_val); ret_val = NULL;""",
    "xmlDictReference": "xmlDictFree(dict);",
    # Functions which deallocates one of their parameters
    "xmlXPathConvertBoolean": """val = NULL;""",

@@ -27,13 +27,17 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
 
 man_MANS = xmllint.1 xmlcatalog.1
 
-all: $(PAGES)
+all: $(PAGES) $(top_srcdir)/NEWS
 
 web: $(PAGES) $(APIPAGES)
 
 $(PAGES): xml.html site.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
+
+$(top_srcdir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
+	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  $(bindir)/xsltproc --html $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
 
 $(APIPAGES): libxml2-refs.xml site.xsl api.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \

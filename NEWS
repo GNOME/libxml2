@@ -1,9 +1,818 @@
-Well, for accurate NEWS on libxml2 look at the following resources:
-   - the ChangeLog, very detailed, quickly boring unless you're really
-     looking for something specific
-   - the on-line News at http://xmlsoft.org/news.html which are more
-     general and intended to a less techmical audience
 
-Daniel Veillard
+        NEWS file for libxml2
 
-daniel@veillard.com
+  Note that this is automatically generated from the news webpage at:
+       http://xmlsoft.org/news.html
+
+
+
+CVS only : check the Changelog at 
+http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog
+ file
+for a really accurate description:
+Items not finished and worked on, get in touch with the list if you want
+to test those
+   - Finishing up XML
+    Schemas and XInclude
+
+
+
+2.4.30: Dec 12 2002:
+   - 2.4.29 broke the python bindings, rereleasing
+   - Improvement/fixes of the XML API generator, and couple of minor code
+    fixes.
+
+
+2.4.29: Dec 11 2002:
+   - Windows fixes (Igor): Windows CE port, pthread linking, python bindings
+    (Stéphane Bidoul), Mingw (Magnus Henoch), and export list updates
+   - Fix for prev in python bindings (ERDI Gergo)
+   - Fix for entities handling (Marcus Clarke)
+   - Refactored the XML and HTML dumps to a single code path, fixed XHTML1
+    dump
+   - Fix for URI parsing when handling URNs with fragment identifiers
+   - Fix for HTTP URL escaping problem
+   - added an TextXmlReader (C#) like API (work in progress)
+   - Rewrote the API in XML generation script, includes a C parser and saves
+    more informations needed for C# bindings
+
+
+2.4.28: Nov 22 2002:
+   - a couple of python binding fixes
+   - 2 bug fixes in the XML push parser
+   - potential memory leak removed (Martin Stoilov)
+   - fix to the configure script for Unix (Dimitri Papadopoulos)
+   - added encoding support for XInclude parse="text"
+   - autodetection of XHTML1 and specific serialization rules added
+   - nasty threading bug fixed (William Brack)
+
+
+2.4.27: Nov 17 2002:
+   - fixes for the Python bindings
+   - a number of bug fixes: SGML catalogs, xmlParseBalancedChunkMemory(),
+    HTML parser,  Schemas (Charles Bozeman), document fragment support
+    (Christian Glahn), xmlReconciliateNs (Brian Stafford), XPointer,
+    xmlFreeNode(), xmlSAXParseMemory (Peter Jones), xmlGetNodePath (Petr
+    Pajas), entities processing
+   - added grep to xmllint --shell
+   - VMS update patch from Craig A. Berry
+   - cleanup of the Windows build with support for more compilers (Igor),
+    better thread support on Windows
+   - cleanup of Unix Makefiles and spec file
+   - Improvements to the documentation (John Fleck)
+
+
+2.4.26: Oct 18 2002:
+   - Patches for Windows CE port, improvements on Windows paths handling
+   - Fixes to the validation  code (DTD and Schemas), xmlNodeGetPath() ,
+    HTML serialization, Namespace compliance,  and a number of small
+  problems
+
+
+2.4.25: Sep 26 2002:
+   - A number of bug fixes: XPath, validation, Python bindings, DOM and
+    tree, xmlI/O,  Html
+   - Serious rewrite of XInclude
+   - Made XML Schemas regexp part of the default build and APIs, small fix
+    and improvement of the regexp core
+   - Changed the validation code to reuse XML Schemas regexp APIs
+   - Better handling of Windows file paths, improvement of Makefiles (Igor,
+    Daniel Gehriger, Mark Vakoc)
+   - Improved the python I/O bindings, the tests, added resolver and regexp
+    APIs
+   - New logos from Marc Liyanage
+   - Tutorial improvements: John Fleck, Christopher Harris
+   - Makefile: Fixes for AMD x86_64 (Mandrake), DESTDIR (Christophe
+  Merlet)
+   - removal of all stderr/perror use for error reporting
+   - Better error reporting: XPath and DTD validation
+   - update of the trio portability layer (Bjorn Reese)
+
+2.4.24: Aug 22 2002
+   - XPath fixes (William), xf:escape-uri() (Wesley Terpstra)
+   - Python binding fixes: makefiles (William), generator, rpm build, x86-64
+    (fcrozat)
+   - HTML <style> and boolean attributes serializer fixes
+   - C14N improvements by Aleksey
+   - doc cleanups: Rick Jones
+   - Windows compiler makefile updates: Igor and Elizabeth Barham
+   - XInclude: implementation of fallback and xml:base fixup added
+
+
+2.4.23: July 6 2002:
+   - performances patches: Peter Jacobi
+   - c14n fixes, testsuite and performances: Aleksey Sanin
+   - added xmlDocFormatDump: Chema Celorio
+   - new tutorial: John Fleck
+   - new hash functions and performances: Sander Vesik, portability fix from
+    Peter Jacobi
+   - a number of bug fixes: XPath (William Brack, Richard Jinks), XML and
+    HTML parsers, ID lookup function
+   - removal of all remaining sprintf: Aleksey Sanin
+
+
+2.4.22: May 27 2002:
+   - a number of bug fixes: configure scripts, base handling, parser, memory
+    usage, HTML parser, XPath, documentation (Christian Cornelssen),
+    indentation, URI parsing
+   - Optimizations for XMLSec, fixing and making public some of the network
+    protocol handlers (Aleksey)
+   - performance patch from Gary Pennington
+   - Charles Bozeman provided date and time support for XML Schemas
+  datatypes
+
+
+2.4.21: Apr 29 2002:
+This release is both a bug fix release and also contains the early XML
+Schemas structures at 
+http://www.w3.org/TR/xmlschema-1/
+ and datatypes at 
+http://www.w3.org/TR/xmlschema-2/
+ code, beware, all
+interfaces are likely to change, there is huge holes, it is clearly a work in
+progress and don't even think of putting this code in a production system,
+it's actually not compiled in by default. The real fixes are:
+   - a couple of bugs or limitations introduced in 2.4.20
+   - patches for Borland C++ and MSC by Igor
+   - some fixes on XPath strings and conformance patches by Richard
+  Jinks
+   - patch from Aleksey for the ExcC14N specification
+   - OSF/1 bug fix by Bjorn
+
+
+2.4.20: Apr 15 2002:
+   - bug fixes: file descriptor leak, XPath, HTML output, DTD validation
+   - XPath conformance testing by Richard Jinks
+   - Portability fixes: Solaris, MPE/iX, Windows, OSF/1, python bindings,
+    libxml.m4
+
+
+2.4.19: Mar 25 2002:
+   - bug fixes: half a dozen XPath bugs, Validation, ISO-Latin to UTF8
+    encoder
+   - portability fixes in the HTTP code
+   - memory allocation checks using valgrind, and profiling tests
+   - revamp of the Windows build and Makefiles
+
+
+2.4.18: Mar 18 2002:
+   - bug fixes: tree, SAX, canonicalization, validation, portability,
+  XPath
+   - removed the --with-buffer option it was becoming unmaintainable
+   - serious cleanup of the Python makefiles
+   - speedup patch to XPath very effective for DocBook stylesheets
+   - Fixes for Windows build, cleanup of the documentation
+
+
+2.4.17: Mar 8 2002:
+   - a lot of bug fixes, including "namespace nodes have no parents in
+  XPath"
+   - fixed/improved the Python wrappers, added more examples and more
+    regression tests, XPath extension functions can now return node-sets
+   - added the XML Canonicalization support from Aleksey Sanin
+
+
+2.4.16: Feb 20 2002:
+   - a lot of bug fixes, most of them were triggered by the XML Testsuite
+    from OASIS and W3C. Compliance has been significantly improved.
+   - a couple of portability fixes too.
+
+
+2.4.15: Feb 11 2002:
+   - Fixed the Makefiles, especially the python module ones
+   - A few bug fixes and cleanup
+   - Includes cleanup
+
+
+2.4.14: Feb 8 2002:
+   - Change of License to the MIT
+    License basically for integration in XFree86 codebase, and removing
+    confusion around the previous dual-licensing
+   - added Python bindings, beta software but should already be quite
+    complete
+   - a large number of fixes and cleanups, especially for all tree
+    manipulations
+   - cleanup of the headers, generation of a reference API definition in
+  XML
+
+
+2.4.13: Jan 14 2002:
+   - update of the documentation: John Fleck and Charlie Bozeman
+   - cleanup of timing code from Justin Fletcher
+   - fixes for Windows and initial thread support on Win32: Igor and Serguei
+    Narojnyi
+   - Cygwin patch from Robert Collins
+   - added xmlSetEntityReferenceFunc() for Keith Isdale work on xsldbg
+
+
+2.4.12: Dec 7 2001:
+   - a few bug fixes: thread (Gary Pennington), xmllint (Geert Kloosterman),
+    XML parser (Robin Berjon), XPointer (Danny Jamshy), I/O cleanups
+  (robert)
+   - Eric Lavigne contributed project files for MacOS
+   - some makefiles cleanups
+
+
+2.4.11: Nov 26 2001:
+   - fixed a couple of errors in the includes, fixed a few bugs, some code
+    cleanups
+   - xmllint man pages improvement by Heiko Rupp
+   - updated VMS build instructions from John A Fotheringham
+   - Windows Makefiles updates from Igor
+
+
+2.4.10: Nov 10 2001:
+   - URI escaping fix (Joel Young)
+   - added xmlGetNodePath() (for paths or XPointers generation)
+   - Fixes namespace handling problems when using DTD and validation
+   - improvements on xmllint: Morus Walter patches for --format and
+    --encode, Stefan Kost and Heiko Rupp improvements on the --shell
+   - fixes for xmlcatalog linking pointed by Weiqi Gao
+   - fixes to the HTML parser
+
+
+2.4.9: Nov 6 2001:
+   - fixes more catalog bugs
+   - avoid a compilation problem, improve xmlGetLineNo()
+
+
+2.4.8: Nov 4 2001:
+   - fixed SGML catalogs broken in previous release, updated xmlcatalog
+  tool
+   - fixed a compile errors and some includes troubles.
+
+
+2.4.7: Oct 30 2001:
+   - exported some debugging interfaces
+   - serious rewrite of the catalog code
+   - integrated Gary Pennington thread safety patch, added configure option
+    and regression tests
+   - removed an HTML parser bug
+   - fixed a couple of potentially serious validation bugs
+   - integrated the SGML DocBook support in xmllint
+   - changed the nanoftp anonymous login passwd
+   - some I/O cleanup and a couple of interfaces for Perl wrapper
+   - general bug fixes
+   - updated xmllint man page by John Fleck
+   - some VMS and Windows updates
+
+
+2.4.6: Oct 10 2001:
+   - added an updated man pages by John Fleck
+   - portability and configure fixes
+   - an infinite loop on the HTML parser was removed (William)
+   - Windows makefile patches from Igor
+   - fixed half a dozen bugs reported for libxml or libxslt
+   - updated xmlcatalog to be able to modify SGML super catalogs
+
+
+2.4.5: Sep 14 2001:
+   - Remove a few annoying bugs in 2.4.4
+   - forces the HTML serializer to output decimal charrefs since some
+    version of Netscape can't handle hexadecimal ones
+
+
+1.8.16: Sep 14 2001:
+   - maintenance release of the old libxml1 branch, couple of bug and
+    portability fixes
+
+
+2.4.4: Sep 12 2001:
+   - added --convert to xmlcatalog, bug fixes and cleanups of XML
+  Catalog
+   - a few bug fixes and some portability changes
+   - some documentation cleanups
+
+
+2.4.3:  Aug 23 2001:
+   - XML Catalog support see the doc
+   - New NaN/Infinity floating point code
+   - A few bug fixes
+
+
+2.4.2:  Aug 15 2001:
+   - adds xmlLineNumbersDefault() to control line number generation
+   - lot of bug fixes
+   - the Microsoft MSC projects files should now be up to date
+   - inheritance of namespaces from DTD defaulted attributes
+   - fixes a serious potential security bug
+   - added a --format option to xmllint
+
+
+2.4.1:  July 24 2001:
+   - possibility to keep line numbers in the tree
+   - some computation NaN fixes
+   - extension of the XPath API
+   - cleanup for alpha and ia64 targets
+   - patch to allow saving through HTTP PUT or POST
+
+
+2.4.0: July 10 2001:
+   - Fixed a few bugs in XPath, validation, and tree handling.
+   - Fixed XML Base implementation, added a couple of examples to the
+    regression tests
+   - A bit of cleanup
+
+
+2.3.14: July 5 2001:
+   - fixed some entities problems and reduce memory requirement when
+    substituting them
+   - lots of improvements in the XPath queries interpreter can be
+    substantially faster
+   - Makefiles and configure cleanups
+   - Fixes to XPath variable eval, and compare on empty node set
+   - HTML tag closing bug fixed
+   - Fixed an URI reference computation problem when validating
+
+
+2.3.13: June 28 2001:
+   - 2.3.12 configure.in was broken as well as the push mode XML parser
+   - a few more fixes for compilation on Windows MSC by Yon Derek
+
+
+1.8.14: June 28 2001:
+   - Zbigniew Chyla gave a patch to use the old XML parser in push mode
+   - Small Makefile fix
+
+
+2.3.12: June 26 2001:
+   - lots of cleanup
+   - a couple of validation fix
+   - fixed line number counting
+   - fixed serious problems in the XInclude processing
+   - added support for UTF8 BOM at beginning of entities
+   - fixed a strange gcc optimizer bugs in xpath handling of float, gcc-3.0
+    miscompile uri.c (William), Thomas Leitner provided a fix for the
+    optimizer on Tru64
+   - incorporated Yon Derek and Igor Zlatkovic  fixes and improvements for
+    compilation on Windows MSC
+   - update of libxml-doc.el (Felix Natter)
+   - fixed 2 bugs in URI normalization code
+
+
+2.3.11: June 17 2001:
+   - updates to trio, Makefiles and configure should fix some portability
+    problems (alpha)
+   - fixed some HTML serialization problems (pre, script, and block/inline
+    handling), added encoding aware APIs, cleanup of this code
+   - added xmlHasNsProp()
+   - implemented a specific PI for encoding support in the DocBook SGML
+    parser
+   - some XPath fixes (-Infinity, / as a function parameter and namespaces
+    node selection)
+   - fixed a performance problem and an error in the validation code
+   - fixed XInclude routine to implement the recursive behaviour
+   - fixed xmlFreeNode problem when libxml is included statically twice
+   - added --version to xmllint for bug reports
+
+
+2.3.10: June 1 2001:
+   - fixed the SGML catalog support
+   - a number of reported bugs got fixed, in XPath, iconv detection,
+    XInclude processing
+   - XPath string function should now handle unicode correctly
+
+
+2.3.9: May 19 2001:
+Lots of bugfixes, and added a basic SGML catalog support:
+   - HTML push bugfix #54891 and another patch from Jonas Borgström
+   - some serious speed optimization again
+   - some documentation cleanups
+   - trying to get better linking on Solaris (-R)
+   - XPath API cleanup from Thomas Broyer
+   - Validation bug fixed #54631, added a patch from Gary Pennington, fixed
+    xmlValidGetValidElements()
+   - Added an INSTALL file
+   - Attribute removal added to API: #54433
+   - added a basic support for SGML catalogs
+   - fixed xmlKeepBlanksDefault(0) API
+   - bugfix in xmlNodeGetLang()
+   - fixed a small configure portability problem
+   - fixed an inversion of SYSTEM and PUBLIC identifier in HTML document
+
+
+1.8.13: May 14 2001:
+   - bugfixes release of the old libxml1 branch used by Gnome
+
+
+2.3.8: May 3 2001:
+   - Integrated an SGML DocBook parser for the Gnome project
+   - Fixed a few things in the HTML parser
+   - Fixed some XPath bugs raised by XSLT use, tried to fix the floating
+    point portability issue
+   - Speed improvement (8M/s for SAX, 3M/s for DOM, 1.5M/s for
+    DOM+validation using the XML REC as input and a 700MHz celeron).
+   - incorporated more Windows cleanup
+   - added xmlSaveFormatFile()
+   - fixed problems in copying nodes with entities references (gdome)
+   - removed some troubles surrounding the new validation module
+
+
+2.3.7: April 22 2001:
+   - lots of small bug fixes, corrected XPointer
+   - Non deterministic content model validation support
+   - added xmlDocCopyNode for gdome2
+   - revamped the way the HTML parser handles end of tags
+   - XPath: corrections of namespaces support and number formatting
+   - Windows: Igor Zlatkovic patches for MSC compilation
+   - HTML output fixes from P C Chow and William M. Brack
+   - Improved validation speed sensible for DocBook
+   - fixed a big bug with ID declared in external parsed entities
+   - portability fixes, update of Trio from Bjorn Reese
+
+
+2.3.6: April 8 2001:
+   - Code cleanup using extreme gcc compiler warning options, found and
+    cleared half a dozen potential problem
+   - the Eazel team found an XML parser bug
+   - cleaned up the user of some of the string formatting function. used the
+    trio library code to provide the one needed when the platform is missing
+    them
+   - xpath: removed a memory leak and fixed the predicate evaluation
+    problem, extended the testsuite and cleaned up the result. XPointer seems
+    broken ...
+
+
+2.3.5: Mar 23 2001:
+   - Biggest change is separate parsing and evaluation of XPath expressions,
+    there is some new APIs for this too
+   - included a number of bug fixes(XML push parser, 51876, notations,
+  52299)
+   - Fixed some portability issues
+
+
+2.3.4: Mar 10 2001:
+   - Fixed bugs #51860 and #51861
+   - Added a global variable xmlDefaultBufferSize to allow default buffer
+    size to be application tunable.
+   - Some cleanup in the validation code, still a bug left and this part
+    should probably be rewritten to support ambiguous content model :-\
+   - Fix a couple of serious bugs introduced or raised by changes in 2.3.3
+    parser
+   - Fixed another bug in xmlNodeGetContent()
+   - Bjorn fixed XPath node collection and Number formatting
+   - Fixed a loop reported in the HTML parsing
+   - blank space are reported even if the Dtd content model proves that they
+    are formatting spaces, this is for XML conformance
+
+
+2.3.3: Mar 1 2001:
+   - small change in XPath for XSLT
+   - documentation cleanups
+   - fix in validation by Gary Pennington
+   - serious parsing performances improvements
+
+
+2.3.2: Feb 24 2001:
+   - chasing XPath bugs, found a bunch, completed some TODO
+   - fixed a Dtd parsing bug
+   - fixed a bug in xmlNodeGetContent
+   - ID/IDREF support partly rewritten by Gary Pennington
+
+
+2.3.1: Feb 15 2001:
+   - some XPath and HTML bug fixes for XSLT
+   - small extension of the hash table interfaces for DOM gdome2
+    implementation
+   - A few bug fixes
+
+
+2.3.0: Feb 8 2001 (2.2.12 was on 25 Jan but I didn't kept track):
+   - Lots of XPath bug fixes
+   - Add a mode with Dtd lookup but without validation error reporting for
+    XSLT
+   - Add support for text node without escaping (XSLT)
+   - bug fixes for xmlCheckFilename
+   - validation code bug fixes from Gary Pennington
+   - Patch from Paul D. Smith correcting URI path normalization
+   - Patch to allow simultaneous install of libxml-devel and
+  libxml2-devel
+   - the example Makefile is now fixed
+   - added HTML to the RPM packages
+   - tree copying bugfixes
+   - updates to Windows makefiles
+   - optimization patch from Bjorn Reese
+
+
+2.2.11: Jan 4 2001:
+   - bunch of bug fixes (memory I/O, xpath, ftp/http, ...)
+   - added htmlHandleOmittedElem()
+   - Applied Bjorn Reese's IPV6 first patch
+   - Applied Paul D. Smith patches for validation of XInclude results
+   - added XPointer xmlns() new scheme support
+
+
+2.2.10: Nov 25 2000:
+   - Fix the Windows problems of 2.2.8
+   - integrate OpenVMS patches
+   - better handling of some nasty HTML input
+   - Improved the XPointer implementation
+   - integrate a number of provided patches
+
+
+2.2.9: Nov 25 2000:
+   - erroneous release :-(
+
+
+2.2.8: Nov 13 2000:
+   - First version of XInclude
+    support
+   - Patch in conditional section handling
+   - updated MS compiler project
+   - fixed some XPath problems
+   - added an URI escaping function
+   - some other bug fixes
+
+
+2.2.7: Oct 31 2000:
+   - added message redirection
+   - XPath improvements (thanks TOM !)
+   - xmlIOParseDTD() added
+   - various small fixes in the HTML, URI, HTTP and XPointer support
+   - some cleanup of the Makefile, autoconf and the distribution content
+
+
+2.2.6: Oct 25 2000::
+   - Added an hash table module, migrated a number of internal structure to
+    those
+   - Fixed a posteriori validation problems
+   - HTTP module cleanups
+   - HTML parser improvements (tag errors, script/style handling, attribute
+    normalization)
+   - coalescing of adjacent text nodes
+   - couple of XPath bug fixes, exported the internal API
+
+
+2.2.5: Oct 15 2000::
+   - XPointer implementation and testsuite
+   - Lot of XPath fixes, added variable and functions registration, more
+    tests
+   - Portability fixes, lots of enhancements toward an easy Windows build
+    and release
+   - Late validation fixes
+   - Integrated a lot of contributed patches
+   - added memory management docs
+   - a performance problem when using large buffer seems fixed
+
+
+2.2.4: Oct 1 2000::
+   - main XPath problem fixed
+   - Integrated portability patches for Windows
+   - Serious bug fixes on the URI and HTML code
+
+
+2.2.3: Sep 17 2000:
+   - bug fixes
+   - cleanup of entity handling code
+   - overall review of all loops in the parsers, all sprintf usage has been
+    checked too
+   - Far better handling of larges Dtd. Validating against DocBook XML Dtd
+    works smoothly now.
+
+
+1.8.10: Sep 6 2000:
+   - bug fix release for some Gnome projects
+
+
+2.2.2: August 12 2000:
+   - mostly bug fixes
+   - started adding routines to access xml parser context options
+
+
+2.2.1: July 21 2000:
+   - a purely bug fixes release
+   - fixed an encoding support problem when parsing from a memory block
+   - fixed a DOCTYPE parsing problem
+   - removed a bug in the function allowing to override the memory
+    allocation routines
+
+
+2.2.0: July 14 2000:
+   - applied a lot of portability fixes
+   - better encoding support/cleanup and saving (content is now always
+    encoded in UTF-8)
+   - the HTML parser now correctly handles encodings
+   - added xmlHasProp()
+   - fixed a serious problem with &#38;
+   - propagated the fix to FTP client
+   - cleanup, bugfixes, etc ...
+   - Added a page about libxml Internationalization
+    support
+
+
+
+1.8.9:  July 9 2000:
+   - fixed the spec the RPMs should be better
+   - fixed a serious bug in the FTP implementation, released 1.8.9 to solve
+    rpmfind users problem
+
+
+2.1.1: July 1 2000:
+   - fixes a couple of bugs in the 2.1.0 packaging
+   - improvements on the HTML parser
+
+
+2.1.0 and 1.8.8: June 29 2000:
+   - 1.8.8 is mostly a commodity package for upgrading to libxml2 according
+    to new instructions. It fixes a nasty problem
+    about &#38; charref parsing
+   - 2.1.0 also ease the upgrade from libxml v1 to the recent version. it
+    also contains numerous fixes and enhancements:
+    added xmlStopParser() to stop parsing
+      improved a lot parsing speed when there is large CDATA blocs
+      includes XPath patches provided by Picdar Technology
+      tried to fix as much as possible DTD validation and namespace
+        related problems
+      output to a given encoding has been added/tested
+      lot of various fixes
+    
+   - added xmlStopParser() to stop parsing
+   - improved a lot parsing speed when there is large CDATA blocs
+   - includes XPath patches provided by Picdar Technology
+   - tried to fix as much as possible DTD validation and namespace
+        related problems
+   - output to a given encoding has been added/tested
+   - lot of various fixes
+
+
+2.0.0: Apr 12 2000:
+   - First public release of libxml2. If you are using libxml, it's a good
+    idea to check the 1.x to 2.x upgrade instructions. NOTE: while initially
+    scheduled for Apr 3 the release occurred only on Apr 12 due to massive
+    workload.
+   - The include are now located under $prefix/include/libxml (instead of
+    $prefix/include/gnome-xml), they also are referenced by
+    #include <libxml/xxx.h>
+    instead of
+    #include "xxx.h"
+  
+   - a new URI module for parsing URIs and following strictly RFC 2396
+   - the memory allocation routines used by libxml can now be overloaded
+    dynamically by using xmlMemSetup()
+   - The previously CVS only tool tester has been renamed
+    xmllint and is now installed as part of the libxml2
+    package
+   - The I/O interface has been revamped. There is now ways to plug in
+    specific I/O modules, either at the URI scheme detection level using
+    xmlRegisterInputCallbacks()  or by passing I/O functions when creating a
+    parser context using xmlCreateIOParserCtxt()
+   - there is a C preprocessor macro LIBXML_VERSION providing the version
+    number of the libxml module in use
+   - a number of optional features of libxml can now be excluded at
+    configure time (FTP/HTTP/HTML/XPath/Debug)
+
+
+2.0.0beta: Mar 14 2000:
+   - This is a first Beta release of libxml version 2
+   - It's available only fromxmlsoft.org
+    FTP, it's packaged as libxml2-2.0.0beta and available as tar and
+  RPMs
+   - This version is now the head in the Gnome CVS base, the old one is
+    available under the tag LIB_XML_1_X
+   - This includes a very large set of changes. From a  programmatic point
+    of view applications should not have to be modified too much, check the
+    upgrade page
+
+   - Some interfaces may changes (especially a bit about encoding).
+   - the updates includes:
+    fix I18N support. ISO-Latin-x/UTF-8/UTF-16 (nearly) seems correctly
+        handled now
+      Better handling of entities, especially well-formedness checking
+        and proper PEref extensions in external subsets
+      DTD conditional sections
+      Validation now correctly handle entities content
+      change
+        structures to accommodate DOM
+    
+   - fix I18N support. ISO-Latin-x/UTF-8/UTF-16 (nearly) seems correctly
+        handled now
+   - Better handling of entities, especially well-formedness checking
+        and proper PEref extensions in external subsets
+   - DTD conditional sections
+   - Validation now correctly handle entities content
+   - change
+        structures to accommodate DOM
+   - Serious progress were made toward compliance, here are the result of the test against the
+    OASIS testsuite (except the Japanese tests since I don't support that
+    encoding yet). This URL is rebuilt every couple of hours using the CVS
+    head version.
+
+
+1.8.7: Mar 6 2000:
+   - This is a bug fix release:
+   - It is possible to disable the ignorable blanks heuristic used by
+    libxml-1.x, a new function  xmlKeepBlanksDefault(0) will allow this. Note
+    that for adherence to XML spec, this behaviour will be disabled by
+    default in 2.x . The same function will allow to keep compatibility for
+    old code.
+   - Blanks in <a>  </a> constructs are not ignored anymore,
+    avoiding heuristic is really the Right Way :-\
+   - The unchecked use of snprintf which was breaking libxml-1.8.6
+    compilation on some platforms has been fixed
+   - nanoftp.c nanohttp.c: Fixed '#' and '?' stripping when processing
+  URIs
+
+
+1.8.6: Jan 31 2000:
+   - added a nanoFTP transport module, debugged until the new version of rpmfind can use
+    it without troubles
+
+
+1.8.5: Jan 21 2000:
+   - adding APIs to parse a well balanced chunk of XML (production [43] content of the
+    XML spec)
+   - fixed a hideous bug in xmlGetProp pointed by Rune.Djurhuus@fast.no
+   - Jody Goldberg <jgoldberg@home.com> provided another patch trying
+    to solve the zlib checks problems
+   - The current state in gnome CVS base is expected to ship as 1.8.5 with
+    gnumeric soon
+
+
+1.8.4: Jan 13 2000:
+   - bug fixes, reintroduced xmlNewGlobalNs(), fixed xmlNewNs()
+   - all exit() call should have been removed from libxml
+   - fixed a problem with INCLUDE_WINSOCK on WIN32 platform
+   - added newDocFragment()
+
+
+1.8.3: Jan 5 2000:
+   - a Push interface for the XML and HTML parsers
+   - a shell-like interface to the document tree (try tester --shell :-)
+   - lots of bug fixes and improvement added over XMas holidays
+   - fixed the DTD parsing code to work with the xhtml DTD
+   - added xmlRemoveProp(), xmlRemoveID() and xmlRemoveRef()
+   - Fixed bugs in xmlNewNs()
+   - External entity loading code has been revamped, now it uses
+    xmlLoadExternalEntity(), some fix on entities processing were added
+   - cleaned up WIN32 includes of socket stuff
+
+
+1.8.2: Dec 21 1999:
+   - I got another problem with includes and C++, I hope this issue is fixed
+    for good this time
+   - Added a few tree modification functions: xmlReplaceNode,
+    xmlAddPrevSibling, xmlAddNextSibling, xmlNodeSetName and
+    xmlDocSetRootElement
+   - Tried to improve the HTML output with help from Chris Lahey
+
+
+
+1.8.1: Dec 18 1999:
+   - various patches to avoid troubles when using libxml with C++ compilers
+    the "namespace" keyword and C escaping in include files
+   - a problem in one of the core macros IS_CHAR was corrected
+   - fixed a bug introduced in 1.8.0 breaking default namespace processing,
+    and more specifically the Dia application
+   - fixed a posteriori validation (validation after parsing, or by using a
+    Dtd not specified in the original document)
+   - fixed a bug in
+
+
+1.8.0: Dec 12 1999:
+   - cleanup, especially memory wise
+   - the parser should be more reliable, especially the HTML one, it should
+    not crash, whatever the input !
+   - Integrated various patches, especially a speedup improvement for large
+    dataset from Carl Nygard,
+    configure with --with-buffers to enable them.
+   - attribute normalization, oops should have been added long ago !
+   - attributes defaulted from DTDs should be available, xmlSetProp() now
+    does entities escaping by default.
+
+
+1.7.4: Oct 25 1999:
+   - Lots of HTML improvement
+   - Fixed some errors when saving both XML and HTML
+   - More examples, the regression tests should now look clean
+   - Fixed a bug with contiguous charref
+
+
+1.7.3: Sep 29 1999:
+   - portability problems fixed
+   - snprintf was used unconditionally, leading to link problems on system
+    were it's not available, fixed
+
+
+1.7.1: Sep 24 1999:
+   - The basic type for strings manipulated by libxml has been renamed in
+    1.7.1 from CHAR to xmlChar. The reason
+    is that CHAR was conflicting with a predefined type on Windows. However
+    on non WIN32 environment, compatibility is provided by the way of  a
+    #define .
+   - Changed another error : the use of a structure field called errno, and
+    leading to troubles on platforms where it's a macro
+
+
+1.7.0: Sep 23 1999:
+   - Added the ability to fetch remote DTD or parsed entities, see the nanohttp module.
+   - Added an errno to report errors by another mean than a simple printf
+    like callback
+   - Finished ID/IDREF support and checking when validation
+   - Serious memory leaks fixed (there is now a memory wrapper module)
+   - Improvement of XPath
+    implementation
+   - Added an HTML parser front-end
+
+Daniel Veillard at 
+bugs.html
+

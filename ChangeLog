@@ -1,3 +1,8 @@
+Wed Jan  1 20:12:07 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS doc/Makefile.am doc/news.xsl: generate the NEWS file
+	  from doc/news.html and a stylesheet
+
 Wed Jan  1 16:09:57 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed another couple of

@@ -1179,6 +1179,8 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     fprintf(stderr, "\nREAD ");
     DUMP_READER
 #endif
+    if (reader->mode == XML_TEXTREADER_DONE)
+        return(0);
     reader->curnode = NULL;
     if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
 	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;
@@ -1215,12 +1217,15 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     oldnode = reader->node;
 
 get_next_node:
+    if (reader->node == NULL)
+        return(-1);
+
     /*
      * If we are not backtracking on ancestors or examined nodes,
      * that the parser didn't finished or that we arent at the end
      * of stream, continue processing.
      */
-    while ((reader->node->next == NULL) &&
+    while ((reader->node != NULL) && (reader->node->next == NULL) &&
 	   (reader->ctxt->nodeNr == olddepth) &&
            ((oldstate == XML_TEXTREADER_BACKTRACK) ||
             (reader->node->children == NULL) ||

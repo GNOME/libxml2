@@ -1,3 +1,8 @@
+Thu Apr 29 20:15:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fix a nasty problem with reading over the end
+	* xmlsave.c: fix a reported memory leak apparently
+
 Thu Apr 29 17:05:00 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.msvc: patch from Mark Vakoc for regression tests

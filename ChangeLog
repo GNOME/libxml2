@@ -1,3 +1,7 @@
+Wed Aug  8 22:57:05 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+        * HACKING: added John Fleck right to commit in the doc subdir
+
 Tue Aug  7 03:05:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c testXPath.c valid.c xmllint.c include/libxml/valid.h:

@@ -11,7 +11,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <malloc.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -20,6 +19,7 @@
 #endif
 #include <string.h>
 
+#include "xmlmemory.h"
 #include "parser.h"
 #include "xmlIO.h"
 
@@ -45,7 +45,7 @@ xmlParserInputBufferPtr
 xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
 
-    ret = (xmlParserInputBufferPtr) malloc(sizeof(xmlParserInputBuffer));
+    ret = (xmlParserInputBufferPtr) xmlMalloc(sizeof(xmlParserInputBuffer));
     if (ret == NULL) {
         fprintf(stderr, "xmlAllocParserInputBuffer : out of memory!\n");
 	return(NULL);
@@ -77,7 +77,7 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
     if (in->fd >= 0)
         close(in->fd);
     memset(in, 0xbe, (size_t) sizeof(xmlParserInputBuffer));
-    free(in);
+    xmlFree(in);
 }
 
 /**
@@ -250,7 +250,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (len > buffree) 
         len = buffree;
 
-    buffer = malloc((len + 1) * sizeof(char));
+    buffer = xmlMalloc((len + 1) * sizeof(char));
     if (buffer == NULL) {
         fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	return(-1);
@@ -265,32 +265,32 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	res = read(in->fd, &buffer[0], len);
     } else {
         fprintf(stderr, "xmlParserInputBufferGrow : no input !\n");
-	free(buffer);
+	xmlFree(buffer);
 	return(-1);
     }
     if (res == 0) {
-	free(buffer);
+	xmlFree(buffer);
         return(0);
     }
     if (res < 0) {
 	perror ("read error");
-	free(buffer);
+	xmlFree(buffer);
 	return(-1);
     }
     if (in->encoder != NULL) {
         CHAR *buf;
 
-	buf = (CHAR *) malloc((res + 1) * 2 * sizeof(CHAR));
+	buf = (CHAR *) xmlMalloc((res + 1) * 2 * sizeof(CHAR));
 	if (buf == NULL) {
 	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
-	    free(buffer);
+	    xmlFree(buffer);
 	    return(-1);
 	}
 	nbchars = in->encoder->input(buf, (res + 1) * 2 * sizeof(CHAR),
 	                             BAD_CAST buffer, res);
         buf[nbchars] = 0;
         xmlBufferAdd(in->buffer, (CHAR *) buf, nbchars);
-	free(buf);
+	xmlFree(buf);
     } else {
 	nbchars = res;
         buffer[nbchars] = 0;
@@ -300,7 +300,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     fprintf(stderr, "I/O: read %d chars, buffer %d/%d\n",
             nbchars, in->buffer->use, in->buffer->size);
 #endif
-    free(buffer);
+    xmlFree(buffer);
     return(nbchars);
 }
 
@@ -352,11 +352,11 @@ xmlParserGetDirectory(const char *filename) {
     if (*cur == sep) {
         if (cur == dir) dir[1] = 0;
 	else *cur = 0;
-	ret = strdup(dir);
+	ret = xmlMemStrdup(dir);
     } else {
         if (getcwd(dir, 1024) != NULL) {
 	    dir[1023] = 0;
-	    ret = strdup(dir);
+	    ret = xmlMemStrdup(dir);
 	}
     }
     return(ret);

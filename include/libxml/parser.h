@@ -238,13 +238,21 @@ typedef struct xmlSAXHandler {
 typedef xmlSAXHandler *xmlSAXHandlerPtr;
 
 /**
- * Global variables: just the default SAX interface tables and XML version infos.
+ * Global variables: just the default SAX interface tables and XML
+ * version infos.
  */
 extern const char *xmlParserVersion;
 
 extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
 extern xmlSAXHandler htmlDefaultSAXHandler;
+
+/**
+ * entity substitution default behaviour.
+ */
+
+extern int xmlSubstituteEntitiesDefaultValue;
+
 
 #include "entities.h"
 #include "xml-error.h"

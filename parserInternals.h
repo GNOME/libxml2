@@ -509,12 +509,6 @@ typedef unsigned char CHARVAL;
     while (IS_CHAR(*p) && (*(p) != '<')) (p)++
 
 /**
- * entity substitution default behaviour.
- */
-
-int			xmlSubstituteEntitiesDefaultValue;
-
-/**
  * Parser context
  */
 xmlParserCtxtPtr	xmlCreateDocParserCtxt	(CHAR *cur);

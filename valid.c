@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "xmlmemory.h"
 #include "valid.h"
 #include "parser.h"
 #include "parserInternals.h"
@@ -63,7 +64,7 @@ xmlNewElementContent(CHAR *name, xmlElementContentType type) {
 	    fprintf(stderr, "xmlNewElementContent: unknown type %d\n", type);
 	    exit(1);
     }
-    ret = (xmlElementContentPtr) malloc(sizeof(xmlElementContent));
+    ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
     if (ret == NULL) {
 	fprintf(stderr, "xmlNewElementContent : out of memory!\n");
 	return(NULL);
@@ -113,9 +114,9 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
     if (cur == NULL) return;
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
     if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
-    if (cur->name != NULL) free((CHAR *) cur->name);
+    if (cur->name != NULL) xmlFree((CHAR *) cur->name);
     memset(cur, -1, sizeof(xmlElementContent));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -263,20 +264,20 @@ xmlCreateElementTable(void) {
     xmlElementTablePtr ret;
 
     ret = (xmlElementTablePtr) 
-         malloc(sizeof(xmlElementTable));
+         xmlMalloc(sizeof(xmlElementTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateElementTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateElementTable : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlElementTable));
         return(NULL);
     }
     ret->max_elements = XML_MIN_ELEMENT_TABLE;
     ret->nb_elements = 0;
     ret->table = (xmlElementPtr *) 
-         malloc(ret->max_elements * sizeof(xmlElementPtr));
+         xmlMalloc(ret->max_elements * sizeof(xmlElementPtr));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateElementTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateElementTable : xmlMalloc(%ld) failed\n",
 	        ret->max_elements * (long)sizeof(xmlElement));
-	free(ret);
+	xmlFree(ret);
         return(NULL);
     }
     return(ret);
@@ -378,13 +379,13 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *name,
 	 */
 	table->max_elements *= 2;
 	table->table = (xmlElementPtr *) 
-	    realloc(table->table, table->max_elements * sizeof(xmlElementPtr));
+	    xmlRealloc(table->table, table->max_elements * sizeof(xmlElementPtr));
 	if (table->table == NULL) {
 	    fprintf(stderr, "xmlAddElementDecl: out of memory\n");
 	    return(NULL);
 	}
     }
-    ret = (xmlElementPtr) malloc(sizeof(xmlElement));
+    ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddElementDecl: out of memory\n");
 	return(NULL);
@@ -414,9 +415,9 @@ xmlFreeElement(xmlElementPtr elem) {
     if (elem == NULL) return;
     xmlFreeElementContent(elem->content);
     if (elem->name != NULL)
-	free((CHAR *) elem->name);
+	xmlFree((CHAR *) elem->name);
     memset(elem, -1, sizeof(xmlElement));
-    free(elem);
+    xmlFree(elem);
 }
 
 /**
@@ -434,8 +435,8 @@ xmlFreeElementTable(xmlElementTablePtr table) {
     for (i = 0;i < table->nb_elements;i++) {
         xmlFreeElement(table->table[i]);
     }
-    free(table->table);
-    free(table);
+    xmlFree(table->table);
+    xmlFree(table);
 }
 
 /**
@@ -452,26 +453,26 @@ xmlCopyElementTable(xmlElementTablePtr table) {
     xmlElementPtr cur, ent;
     int i;
 
-    ret = (xmlElementTablePtr) malloc(sizeof(xmlElementTable));
+    ret = (xmlElementTablePtr) xmlMalloc(sizeof(xmlElementTable));
     if (ret == NULL) {
         fprintf(stderr, "xmlCopyElementTable: out of memory !\n");
 	return(NULL);
     }
-    ret->table = (xmlElementPtr *) malloc(table->max_elements *
+    ret->table = (xmlElementPtr *) xmlMalloc(table->max_elements *
                                          sizeof(xmlElementPtr));
     if (ret->table == NULL) {
         fprintf(stderr, "xmlCopyElementTable: out of memory !\n");
-	free(ret);
+	xmlFree(ret);
 	return(NULL);
     }
     ret->max_elements = table->max_elements;
     ret->nb_elements = table->nb_elements;
     for (i = 0;i < ret->nb_elements;i++) {
-	cur = (xmlElementPtr) malloc(sizeof(xmlElement));
+	cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (cur == NULL) {
 	    fprintf(stderr, "xmlCopyElementTable: out of memory !\n");
-	    free(ret);
-	    free(ret->table);
+	    xmlFree(ret);
+	    xmlFree(ret->table);
 	    return(NULL);
 	}
 	ret->table[i] = cur;
@@ -549,9 +550,9 @@ xmlEnumerationPtr
 xmlCreateEnumeration(CHAR *name) {
     xmlEnumerationPtr ret;
 
-    ret = (xmlEnumerationPtr) malloc(sizeof(xmlEnumeration));
+    ret = (xmlEnumerationPtr) xmlMalloc(sizeof(xmlEnumeration));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEnumeration : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateEnumeration : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlEnumeration));
         return(NULL);
     }
@@ -576,9 +577,9 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
 
     if (cur->next != NULL) xmlFreeEnumeration(cur->next);
 
-    if (cur->name != NULL) free((CHAR *) cur->name);
+    if (cur->name != NULL) xmlFree((CHAR *) cur->name);
     memset(cur, -1, sizeof(xmlEnumeration));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -636,20 +637,20 @@ xmlCreateAttributeTable(void) {
     xmlAttributeTablePtr ret;
 
     ret = (xmlAttributeTablePtr) 
-         malloc(sizeof(xmlAttributeTable));
+         xmlMalloc(sizeof(xmlAttributeTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateAttributeTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateAttributeTable : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlAttributeTable));
         return(NULL);
     }
     ret->max_attributes = XML_MIN_ATTRIBUTE_TABLE;
     ret->nb_attributes = 0;
     ret->table = (xmlAttributePtr *) 
-         malloc(ret->max_attributes * sizeof(xmlAttributePtr));
+         xmlMalloc(ret->max_attributes * sizeof(xmlAttributePtr));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateAttributeTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateAttributeTable : xmlMalloc(%ld) failed\n",
 	        ret->max_attributes * (long)sizeof(xmlAttributePtr));
-	free(ret);
+	xmlFree(ret);
         return(NULL);
     }
     return(ret);
@@ -831,14 +832,14 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *elem,
 	 */
 	table->max_attributes *= 2;
 	table->table = (xmlAttributePtr *) 
-	    realloc(table->table, table->max_attributes * 
+	    xmlRealloc(table->table, table->max_attributes * 
 	            sizeof(xmlAttributePtr));
 	if (table->table == NULL) {
 	    fprintf(stderr, "xmlAddAttributeDecl: out of memory\n");
 	    return(NULL);
 	}
     }
-    ret = (xmlAttributePtr) malloc(sizeof(xmlAttribute));
+    ret = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddAttributeDecl: out of memory\n");
 	return(NULL);
@@ -884,13 +885,13 @@ xmlFreeAttribute(xmlAttributePtr attr) {
     if (attr->tree != NULL)
         xmlFreeEnumeration(attr->tree);
     if (attr->elem != NULL)
-	free((CHAR *) attr->elem);
+	xmlFree((CHAR *) attr->elem);
     if (attr->name != NULL)
-	free((CHAR *) attr->name);
+	xmlFree((CHAR *) attr->name);
     if (attr->defaultValue != NULL)
-	free((CHAR *) attr->defaultValue);
+	xmlFree((CHAR *) attr->defaultValue);
     memset(attr, -1, sizeof(xmlAttribute));
-    free(attr);
+    xmlFree(attr);
 }
 
 /**
@@ -908,8 +909,8 @@ xmlFreeAttributeTable(xmlAttributeTablePtr table) {
     for (i = 0;i < table->nb_attributes;i++) {
         xmlFreeAttribute(table->table[i]);
     }
-    free(table->table);
-    free(table);
+    xmlFree(table->table);
+    xmlFree(table);
 }
 
 /**
@@ -926,27 +927,27 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
     xmlAttributePtr cur, attr;
     int i;
 
-    ret = (xmlAttributeTablePtr) malloc(sizeof(xmlAttributeTable));
+    ret = (xmlAttributeTablePtr) xmlMalloc(sizeof(xmlAttributeTable));
     if (ret == NULL) {
         fprintf(stderr, "xmlCopyAttributeTable: out of memory !\n");
 	return(NULL);
     }
-    ret->table = (xmlAttributePtr *) malloc(table->max_attributes *
+    ret->table = (xmlAttributePtr *) xmlMalloc(table->max_attributes *
                                           sizeof(xmlAttributePtr));
     if (ret->table == NULL) {
         fprintf(stderr, "xmlCopyAttributeTable: out of memory !\n");
-	free(ret);
+	xmlFree(ret);
 	return(NULL);
     }
     ret->max_attributes = table->max_attributes;
     ret->nb_attributes = table->nb_attributes;
     for (i = 0;i < ret->nb_attributes;i++) {
 	attr = table->table[i];
-	cur = (xmlAttributePtr) malloc(sizeof(xmlAttribute));
+	cur = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
 	if (cur == NULL) {
 	    fprintf(stderr, "xmlCopyAttributeTable: out of memory !\n");
-	    free(ret);
-	    free(ret->table);
+	    xmlFree(ret);
+	    xmlFree(ret->table);
 	    return(NULL);
 	}
 	ret->table[i] = cur;
@@ -1071,20 +1072,20 @@ xmlCreateNotationTable(void) {
     xmlNotationTablePtr ret;
 
     ret = (xmlNotationTablePtr) 
-         malloc(sizeof(xmlNotationTable));
+         xmlMalloc(sizeof(xmlNotationTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateNotationTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateNotationTable : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlNotationTable));
         return(NULL);
     }
     ret->max_notations = XML_MIN_NOTATION_TABLE;
     ret->nb_notations = 0;
     ret->table = (xmlNotationPtr *) 
-         malloc(ret->max_notations * sizeof(xmlNotationPtr));
+         xmlMalloc(ret->max_notations * sizeof(xmlNotationPtr));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateNotationTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateNotationTable : xmlMalloc(%ld) failed\n",
 	        ret->max_notations * (long)sizeof(xmlNotation));
-	free(ret);
+	xmlFree(ret);
         return(NULL);
     }
     return(ret);
@@ -1157,14 +1158,14 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *name,
 	 */
 	table->max_notations *= 2;
 	table->table = (xmlNotationPtr *) 
-	    realloc(table->table, table->max_notations *
+	    xmlRealloc(table->table, table->max_notations *
 	            sizeof(xmlNotationPtr));
 	if (table->table == NULL) {
 	    fprintf(stderr, "xmlAddNotationDecl: out of memory\n");
 	    return(NULL);
 	}
     }
-    ret = (xmlNotationPtr) malloc(sizeof(xmlNotation));
+    ret = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddNotationDecl: out of memory\n");
 	return(NULL);
@@ -1198,13 +1199,13 @@ void
 xmlFreeNotation(xmlNotationPtr nota) {
     if (nota == NULL) return;
     if (nota->name != NULL)
-	free((CHAR *) nota->name);
+	xmlFree((CHAR *) nota->name);
     if (nota->PublicID != NULL)
-	free((CHAR *) nota->PublicID);
+	xmlFree((CHAR *) nota->PublicID);
     if (nota->SystemID != NULL)
-	free((CHAR *) nota->SystemID);
+	xmlFree((CHAR *) nota->SystemID);
     memset(nota, -1, sizeof(xmlNotation));
-    free(nota);
+    xmlFree(nota);
 }
 
 /**
@@ -1222,8 +1223,8 @@ xmlFreeNotationTable(xmlNotationTablePtr table) {
     for (i = 0;i < table->nb_notations;i++) {
         xmlFreeNotation(table->table[i]);
     }
-    free(table->table);
-    free(table);
+    xmlFree(table->table);
+    xmlFree(table);
 }
 
 /**
@@ -1240,26 +1241,26 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
     xmlNotationPtr cur, nota;
     int i;
 
-    ret = (xmlNotationTablePtr) malloc(sizeof(xmlNotationTable));
+    ret = (xmlNotationTablePtr) xmlMalloc(sizeof(xmlNotationTable));
     if (ret == NULL) {
         fprintf(stderr, "xmlCopyNotationTable: out of memory !\n");
 	return(NULL);
     }
-    ret->table = (xmlNotationPtr *) malloc(table->max_notations *
+    ret->table = (xmlNotationPtr *) xmlMalloc(table->max_notations *
                                          sizeof(xmlNotationPtr));
     if (ret->table == NULL) {
         fprintf(stderr, "xmlCopyNotationTable: out of memory !\n");
-	free(ret);
+	xmlFree(ret);
 	return(NULL);
     }
     ret->max_notations = table->max_notations;
     ret->nb_notations = table->nb_notations;
     for (i = 0;i < ret->nb_notations;i++) {
-	cur = (xmlNotationPtr) malloc(sizeof(xmlNotation));
+	cur = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
 	if (cur == NULL) {
 	    fprintf(stderr, "xmlCopyNotationTable: out of memory !\n");
-	    free(ret);
-	    free(ret->table);
+	    xmlFree(ret);
+	    xmlFree(ret->table);
 	    return(NULL);
 	}
 	ret->table[i] = cur;
@@ -1331,20 +1332,20 @@ xmlCreateIDTable(void) {
     xmlIDTablePtr ret;
 
     ret = (xmlIDTablePtr) 
-         malloc(sizeof(xmlIDTable));
+         xmlMalloc(sizeof(xmlIDTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateIDTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateIDTable : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlIDTable));
         return(NULL);
     }
     ret->max_ids = XML_MIN_NOTATION_TABLE;
     ret->nb_ids = 0;
     ret->table = (xmlIDPtr *) 
-         malloc(ret->max_ids * sizeof(xmlIDPtr));
+         xmlMalloc(ret->max_ids * sizeof(xmlIDPtr));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateIDTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateIDTable : xmlMalloc(%ld) failed\n",
 	        ret->max_ids * (long)sizeof(xmlID));
-	free(ret);
+	xmlFree(ret);
         return(NULL);
     }
     return(ret);
@@ -1417,14 +1418,14 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const CHAR *value,
 	 */
 	table->max_ids *= 2;
 	table->table = (xmlIDPtr *) 
-	    realloc(table->table, table->max_ids *
+	    xmlRealloc(table->table, table->max_ids *
 	            sizeof(xmlIDPtr));
 	if (table->table == NULL) {
 	    fprintf(stderr, "xmlAddID: out of memory\n");
 	    return(NULL);
 	}
     }
-    ret = (xmlIDPtr) malloc(sizeof(xmlID));
+    ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddID: out of memory\n");
 	return(NULL);
@@ -1451,9 +1452,9 @@ void
 xmlFreeID(xmlIDPtr id) {
     if (id == NULL) return;
     if (id->value != NULL)
-	free((CHAR *) id->value);
+	xmlFree((CHAR *) id->value);
     memset(id, -1, sizeof(xmlID));
-    free(id);
+    xmlFree(id);
 }
 
 /**
@@ -1471,8 +1472,8 @@ xmlFreeIDTable(xmlIDTablePtr table) {
     for (i = 0;i < table->nb_ids;i++) {
         xmlFreeID(table->table[i]);
     }
-    free(table->table);
-    free(table);
+    xmlFree(table->table);
+    xmlFree(table);
 }
 
 /**

@@ -1,3 +1,12 @@
+Fri Sep  3 00:01:08 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlmemory.[ch] Makefile.am  :added a memory wrapper to chase
+	      not deallocated memory blocks
+	* *.c : replaces all calls to malloc() free() and realloc() to
+	      the wrapper functions/macros
+	* tree.c : removed memory leaks dues to calling xmlFreeNode()
+	      instead of xmlFreeNodeList()
+
 Wed Sep  1 14:15:09 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: corrected a stupid bug leading to core dump at

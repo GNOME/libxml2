@@ -16,6 +16,7 @@
 #include <zlib.h>
 #endif
 
+#include "xmlmemory.h"
 #include "tree.h"
 #include "entities.h"
 #include "valid.h"
@@ -89,7 +90,7 @@ xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
     /*
      * Allocate a new DTD and fill the fields.
      */
-    cur = (xmlNsPtr) malloc(sizeof(xmlNs));
+    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewNs : malloc failed\n");
 	return(NULL);
@@ -139,7 +140,7 @@ xmlNewGlobalNs(xmlDocPtr doc, const CHAR *href, const CHAR *prefix) {
     /*
      * Allocate a new DTD and fill the fields.
      */
-    cur = (xmlNsPtr) malloc(sizeof(xmlNs));
+    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewGlobalNs : malloc failed\n");
 	return(NULL);
@@ -201,10 +202,10 @@ xmlFreeNs(xmlNsPtr cur) {
         fprintf(stderr, "xmlFreeNs : ns == NULL\n");
 	return;
     }
-    if (cur->href != NULL) free((char *) cur->href);
-    if (cur->prefix != NULL) free((char *) cur->prefix);
+    if (cur->href != NULL) xmlFree((char *) cur->href);
+    if (cur->prefix != NULL) xmlFree((char *) cur->prefix);
     memset(cur, -1, sizeof(xmlNs));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -251,7 +252,7 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
     /*
      * Allocate a new DTD and fill the fields.
      */
-    cur = (xmlDtdPtr) malloc(sizeof(xmlDtd));
+    cur = (xmlDtdPtr) xmlMalloc(sizeof(xmlDtd));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewDtd : malloc failed\n");
 	return(NULL);
@@ -304,7 +305,7 @@ xmlCreateIntSubset(xmlDocPtr doc, const CHAR *name,
     /*
      * Allocate a new DTD and fill the fields.
      */
-    cur = (xmlDtdPtr) malloc(sizeof(xmlDtd));
+    cur = (xmlDtdPtr) xmlMalloc(sizeof(xmlDtd));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewDtd : malloc failed\n");
 	return(NULL);
@@ -344,9 +345,9 @@ xmlFreeDtd(xmlDtdPtr cur) {
         fprintf(stderr, "xmlFreeDtd : DTD == NULL\n");
 	return;
     }
-    if (cur->name != NULL) free((char *) cur->name);
-    if (cur->SystemID != NULL) free((char *) cur->SystemID);
-    if (cur->ExternalID != NULL) free((char *) cur->ExternalID);
+    if (cur->name != NULL) xmlFree((char *) cur->name);
+    if (cur->SystemID != NULL) xmlFree((char *) cur->SystemID);
+    if (cur->ExternalID != NULL) xmlFree((char *) cur->ExternalID);
     if (cur->notations != NULL)
         xmlFreeNotationTable((xmlNotationTablePtr) cur->notations);
     if (cur->elements != NULL)
@@ -356,7 +357,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
     if (cur->entities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
     memset(cur, -1, sizeof(xmlDtd));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -377,7 +378,7 @@ xmlNewDoc(const CHAR *version) {
     /*
      * Allocate a new document and fill the fields.
      */
-    cur = (xmlDocPtr) malloc(sizeof(xmlDoc));
+    cur = (xmlDocPtr) xmlMalloc(sizeof(xmlDoc));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewDoc : malloc failed\n");
 	return(NULL);
@@ -416,16 +417,16 @@ xmlFreeDoc(xmlDocPtr cur) {
 #endif
 	return;
     }
-    if (cur->version != NULL) free((char *) cur->version);
-    if (cur->name != NULL) free((char *) cur->name);
-    if (cur->encoding != NULL) free((char *) cur->encoding);
-    if (cur->root != NULL) xmlFreeNode(cur->root);
+    if (cur->version != NULL) xmlFree((char *) cur->version);
+    if (cur->name != NULL) xmlFree((char *) cur->name);
+    if (cur->encoding != NULL) xmlFree((char *) cur->encoding);
+    if (cur->root != NULL) xmlFreeNodeList(cur->root);
     if (cur->intSubset != NULL) xmlFreeDtd(cur->intSubset);
     if (cur->extSubset != NULL) xmlFreeDtd(cur->extSubset);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
     if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
     memset(cur, -1, sizeof(xmlDoc));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -501,7 +502,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
 		     */
 		    node = xmlNewReference(doc, val);
 		    if (node == NULL) {
-			if (val != NULL) free(val);
+			if (val != NULL) xmlFree(val);
 		        return(ret);
 		    }
 		    if (last == NULL)
@@ -512,7 +513,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
 			last = node;
 		    }
 		}
-		free(val);
+		xmlFree(val);
 	    }
 	    cur++;
 	    q = cur;
@@ -612,7 +613,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
 		     */
 		    node = xmlNewReference(doc, val);
 		    if (node == NULL) {
-			if (val != NULL) free(val);
+			if (val != NULL) xmlFree(val);
 		        return(ret);
 		    }
 		    if (last == NULL)
@@ -623,7 +624,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
 			last = node;
 		    }
 		}
-		free(val);
+		xmlFree(val);
 	    }
 	    cur++;
 	    q = cur;
@@ -679,7 +680,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 		buffer = xmlEncodeEntitiesReentrant(doc, node->content);
 		if (buffer != NULL) {
 		    ret = xmlStrcat(ret, buffer);
-		    free(buffer);
+		    xmlFree(buffer);
 		}
             }
 	} else if (node->type == XML_ENTITY_REF_NODE) {
@@ -730,7 +731,7 @@ xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
     /*
      * Allocate a new property and fill the fields.
      */
-    cur = (xmlAttrPtr) malloc(sizeof(xmlAttr));
+    cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewProp : malloc failed\n");
 	return(NULL);
@@ -789,7 +790,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const CHAR *name,
     /*
      * Allocate a new property and fill the fields.
      */
-    cur = (xmlAttrPtr) malloc(sizeof(xmlAttr));
+    cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewProp : malloc failed\n");
 	return(NULL);
@@ -846,7 +847,7 @@ xmlNewDocProp(xmlDocPtr doc, const CHAR *name, const CHAR *value) {
     /*
      * Allocate a new property and fill the fields.
      */
-    cur = (xmlAttrPtr) malloc(sizeof(xmlAttr));
+    cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewProp : malloc failed\n");
 	return(NULL);
@@ -900,10 +901,10 @@ xmlFreeProp(xmlAttrPtr cur) {
         fprintf(stderr, "xmlFreeProp : property == NULL\n");
 	return;
     }
-    if (cur->name != NULL) free((char *) cur->name);
+    if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->val != NULL) xmlFreeNodeList(cur->val);
     memset(cur, -1, sizeof(xmlAttr));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -926,7 +927,7 @@ xmlNewPI(const CHAR *name, const CHAR *content) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewPI : malloc failed\n");
 	return(NULL);
@@ -976,7 +977,7 @@ xmlNewNode(xmlNsPtr ns, const CHAR *name) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewNode : malloc failed\n");
 	return(NULL);
@@ -1043,7 +1044,7 @@ xmlNewText(const CHAR *content) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewText : malloc failed\n");
 	return(NULL);
@@ -1084,7 +1085,7 @@ xmlNewReference(xmlDocPtr doc, const CHAR *name) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewText : malloc failed\n");
 	return(NULL);
@@ -1151,7 +1152,7 @@ xmlNewTextLen(const CHAR *content, int len) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewText : malloc failed\n");
 	return(NULL);
@@ -1209,7 +1210,7 @@ xmlNewComment(const CHAR *content) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewComment : malloc failed\n");
 	return(NULL);
@@ -1250,7 +1251,7 @@ xmlNewCDataBlock(xmlDocPtr doc, const CHAR *content, int len) {
     /*
      * Allocate a new node and fill the fields.
      */
-    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewCDataBlock : malloc failed\n");
 	return(NULL);
@@ -1438,7 +1439,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 		text->next->prev = text;
 	    parent->childs = text;
 	    UPDATE_LAST_CHILD(parent)
-	    free(parent->content);
+	    xmlFree(parent->content);
 	    parent->content = NULL;
 	}
     }
@@ -1511,11 +1512,11 @@ xmlFreeNode(xmlNodePtr cur) {
     if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
     if (cur->properties != NULL) xmlFreePropList(cur->properties);
     if (cur->type != XML_ENTITY_REF_NODE)
-	if (cur->content != NULL) free(cur->content);
-    if (cur->name != NULL) free((char *) cur->name);
+	if (cur->content != NULL) xmlFree(cur->content);
+    if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
     memset(cur, -1, sizeof(xmlNode));
-    free(cur);
+    xmlFree(cur);
 }
 
 /**
@@ -1688,7 +1689,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     /*
      * Allocate a new node and fill the fields.
      */
-    ret = (xmlNodePtr) malloc(sizeof(xmlNode));
+    ret = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (ret == NULL) {
         fprintf(stderr, "xmlStaticCopyNode : malloc failed\n");
 	return(NULL);
@@ -1883,7 +1884,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     ret = xmlNewDoc(doc->version);
     if (ret == NULL) return(NULL);
     if (doc->name != NULL)
-        ret->name = strdup(doc->name);
+        ret->name = xmlMemStrdup(doc->name);
     if (doc->encoding != NULL)
         ret->encoding = xmlStrdup(doc->encoding);
     ret->compression = doc->compression;
@@ -2007,10 +2008,10 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
 	    if (cur->content != NULL) {
-	        free(cur->content);
+	        xmlFree(cur->content);
 		cur->content = NULL;
 	    }
-	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->childs = xmlStringGetNodeList(cur->doc, content);
 	    UPDATE_LAST_CHILD(cur)
 	    break;
@@ -2022,8 +2023,8 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-	    if (cur->content != NULL) free(cur->content);
-	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (cur->content != NULL) xmlFree(cur->content);
+	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->last = cur->childs = NULL;
 	    if (content != NULL)
 		cur->content = xmlStrdup(content);
@@ -2056,10 +2057,10 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
 	    if (cur->content != NULL) {
-	        free(cur->content);
+	        xmlFree(cur->content);
 		cur->content = NULL;
 	    }
-	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->childs = xmlStringLenGetNodeList(cur->doc, content, len);
 	    UPDATE_LAST_CHILD(cur)
 	    break;
@@ -2071,8 +2072,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-	    if (cur->content != NULL) free(cur->content);
-	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (cur->content != NULL) xmlFree(cur->content);
+	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->childs = cur->last = NULL;
 	    if (content != NULL)
 		cur->content = xmlStrndup(content, len);
@@ -2083,8 +2084,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
         case XML_DOCUMENT_TYPE_NODE:
 	    break;
         case XML_NOTATION_NODE:
-	    if (cur->content != NULL) free(cur->content);
-	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (cur->content != NULL) xmlFree(cur->content);
+	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->childs = cur->last = NULL;
 	    if (content != NULL)
 		cur->content = xmlStrndup(content, len);
@@ -2120,7 +2121,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	        if (cur->content != NULL) {
 		    cur->childs = xmlStringGetNodeList(cur->doc, cur->content);
 		    UPDATE_LAST_CHILD(cur)
-		    free(cur->content);
+		    xmlFree(cur->content);
 		    cur->content = NULL;
 		    last = cur->last;
 		}
@@ -2216,7 +2217,7 @@ xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
 	cur = node->nsDef;
 	while (cur != NULL) {
 	    if (ret == NULL) {
-	        ret = (xmlNsPtr *) malloc((maxns + 1) * sizeof(xmlNsPtr));
+	        ret = (xmlNsPtr *) xmlMalloc((maxns + 1) * sizeof(xmlNsPtr));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlGetNsList : out of memory!\n");
 		    return(NULL);
@@ -2230,7 +2231,7 @@ xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
 	    if (i >= nbns) {
 	        if (nbns >= maxns) {
 		    maxns *= 2;
-		    ret = (xmlNsPtr *) realloc(ret,
+		    ret = (xmlNsPtr *) xmlRealloc(ret,
 		                         (maxns + 1) * sizeof(xmlNsPtr));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlGetNsList : realloc failed!\n");
@@ -2365,7 +2366,7 @@ xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
     while (prop != NULL) {
         if (!xmlStrcmp(prop->name, name)) {
 	    if (prop->val != NULL) 
-	        xmlFreeNode(prop->val);
+	        xmlFreeNodeList(prop->val);
 	    prop->val = NULL;
 	    if (value != NULL)
 		prop->val = xmlStringGetNodeList(node->doc, value);
@@ -2430,17 +2431,17 @@ xmlBufferPtr
 xmlBufferCreate(void) {
     xmlBufferPtr ret;
 
-    ret = (xmlBufferPtr) malloc(sizeof(xmlBuffer));
+    ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
     if (ret == NULL) {
 	fprintf(stderr, "xmlBufferCreate : out of memory!\n");
         return(NULL);
     }
     ret->use = 0;
     ret->size = BASE_BUFFER_SIZE;
-    ret->content = (CHAR *) malloc(ret->size * sizeof(CHAR));
+    ret->content = (CHAR *) xmlMalloc(ret->size * sizeof(CHAR));
     if (ret->content == NULL) {
 	fprintf(stderr, "xmlBufferCreate : out of memory!\n");
-	free(ret);
+	xmlFree(ret);
         return(NULL);
     }
     ret->content[0] = 0;
@@ -2463,10 +2464,10 @@ xmlBufferFree(xmlBufferPtr buf) {
         fprintf(stderr, "xmlBufferFree: buf->content == NULL\n");
     } else {
         memset(buf->content, -1, BASE_BUFFER_SIZE);
-        free(buf->content);
+        xmlFree(buf->content);
     }
     memset(buf, -1, sizeof(xmlBuffer));
-    free(buf);
+    xmlFree(buf);
 }
 
 /**
@@ -2553,7 +2554,7 @@ xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len) {
         buf->size *= 2;
 	if (buf->use + len + 10 > buf->size)
 	    buf->size = buf->use + len + 10;
-	rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	rebuf = (CHAR *) xmlRealloc(buf->content, buf->size * sizeof(CHAR));
 	if (rebuf == NULL) {
 	    fprintf(stderr, "xmlBufferAdd : out of memory!\n");
 	    return;
@@ -2585,7 +2586,7 @@ xmlBufferCat(xmlBufferPtr buf, const CHAR *str) {
 	    CHAR *rebuf;
 
 	    buf->size *= 2;
-	    rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	    rebuf = (CHAR *) xmlRealloc(buf->content, buf->size * sizeof(CHAR));
 	    if (rebuf == NULL) {
 	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
 		return;
@@ -2616,7 +2617,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
 	    CHAR *rebuf;
 
 	    buf->size *= 2;
-	    rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	    rebuf = (CHAR *) xmlRealloc(buf->content, buf->size * sizeof(CHAR));
 	    if (rebuf == NULL) {
 	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
 		return;
@@ -2836,7 +2837,7 @@ xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     if (value) {
 	xmlBufferWriteChar(buf, "=");
 	xmlBufferWriteQuotedString(buf, value);
-	free(value);
+	xmlFree(value);
     } else  {
 	xmlBufferWriteChar(buf, "=\"\"");
     }
@@ -2922,7 +2923,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	    if (buffer != NULL) {
 		xmlBufferWriteCHAR(buf, buffer);
-		free(buffer);
+		xmlFree(buffer);
 	    }
 	}
 	return;
@@ -2987,7 +2988,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	if (buffer != NULL) {
 	    xmlBufferWriteCHAR(buf, buffer);
-	    free(buffer);
+	    xmlFree(buffer);
 	}
     }
     if (cur->childs != NULL) {

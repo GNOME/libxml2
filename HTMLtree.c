@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h> /* for memset() only ! */
 
+#include "xmlmemory.h"
 #include "HTMLparser.h"
 #include "HTMLtree.h"
 #include "entities.h"
@@ -70,7 +71,7 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     if (value) {
 	xmlBufferWriteChar(buf, "=");
 	xmlBufferWriteQuotedString(buf, value);
-	free(value);
+	xmlFree(value);
     } else  {
 	xmlBufferWriteChar(buf, "=\"\"");
     }
@@ -146,7 +147,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	    if (buffer != NULL) {
 		xmlBufferWriteCHAR(buf, buffer);
-		free(buffer);
+		xmlFree(buffer);
 	    }
 	}
 	return;
@@ -207,7 +208,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	if (buffer != NULL) {
 	    xmlBufferWriteCHAR(buf, buffer);
-	    free(buffer);
+	    xmlFree(buffer);
 	}
     }
     if (cur->childs != NULL) {
@@ -277,7 +278,7 @@ htmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
     *mem = buf->content;
     *size = buf->use;
     memset(buf, -1, sizeof(xmlBuffer));
-    free(buf);
+    xmlFree(buf);
 }
 
 

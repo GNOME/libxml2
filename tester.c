@@ -26,6 +26,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "xmlmemory.h"
 #include "parser.h"
 #include "tree.h"
 #include "debugXML.h"
@@ -231,6 +232,7 @@ int main(int argc, char **argv) {
 	printf("\t--noout : don't output the result\n");
 	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
     }
+    xmlMemoryDump();
 
     return(0);
 }

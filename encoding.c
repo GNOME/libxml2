@@ -23,13 +23,11 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef HAVE_MALLOC_H
-#include <malloc.h>
-#endif
 #include "encoding.h"
 #ifdef HAVE_UNICODE_H
 #include <unicode.h>
 #endif
+#include "xmlmemory.h"
 
 #ifdef HAVE_UNICODE_H
 
@@ -374,7 +372,7 @@ xmlNewCharEncodingHandler(const char *name, xmlCharEncodingInputFunc input,
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;
-    up = strdup(upper);
+    up = xmlMemStrdup(upper);
     if (up == NULL) {
         fprintf(stderr, "xmlNewCharEncodingHandler : out of memory !\n");
 	return(NULL);
@@ -384,7 +382,7 @@ xmlNewCharEncodingHandler(const char *name, xmlCharEncodingInputFunc input,
      * allocate and fill-up an handler block.
      */
     handler = (xmlCharEncodingHandlerPtr)
-              malloc(sizeof(xmlCharEncodingHandler));
+              xmlMalloc(sizeof(xmlCharEncodingHandler));
     if (handler == NULL) {
         fprintf(stderr, "xmlNewCharEncodingHandler : out of memory !\n");
 	return(NULL);
@@ -413,7 +411,7 @@ xmlInitCharEncodingHandlers(void) {
     if (handlers != NULL) return;
 
     handlers = (xmlCharEncodingHandlerPtr *)
-        malloc(MAX_ENCODING_HANDLERS * sizeof(xmlCharEncodingHandlerPtr));
+        xmlMalloc(MAX_ENCODING_HANDLERS * sizeof(xmlCharEncodingHandlerPtr));
 
     if (handlers == NULL) {
         fprintf(stderr, "xmlInitCharEncodingHandlers : out of memory !\n");

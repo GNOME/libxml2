@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "xmlmemory.h"
 #include "entities.h"
 
 /*
@@ -36,15 +37,15 @@ void xmlFreeEntity(xmlEntityPtr entity) {
     if (entity == NULL) return;
 
     if (entity->name != NULL)
-	free((char *) entity->name);
+	xmlFree((char *) entity->name);
     if (entity->ExternalID != NULL)
-        free((char *) entity->ExternalID);
+        xmlFree((char *) entity->ExternalID);
     if (entity->SystemID != NULL)
-        free((char *) entity->SystemID);
+        xmlFree((char *) entity->SystemID);
     if (entity->content != NULL)
-        free((char *) entity->content);
+        xmlFree((char *) entity->content);
     if (entity->orig != NULL)
-        free((char *) entity->orig);
+        xmlFree((char *) entity->orig);
     memset(entity, -1, sizeof(xmlEntity));
 }
 
@@ -85,7 +86,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
 	 */
 	table->max_entities *= 2;
 	table->table = (xmlEntityPtr) 
-	    realloc(table->table, table->max_entities * sizeof(xmlEntity));
+	    xmlRealloc(table->table, table->max_entities * sizeof(xmlEntity));
 	if (table->table == NULL) {
 	    perror("realloc failed");
 	    return;
@@ -365,7 +366,7 @@ static CHAR *buffer = NULL;
 
 void growBuffer(void) {
     buffer_size *= 2;
-    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));
+    buffer = (CHAR *) xmlRealloc(buffer, buffer_size * sizeof(CHAR));
     if (buffer == NULL) {
         perror("realloc failed");
         exit(1);
@@ -404,7 +405,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     if (input == NULL) return(NULL);
     if (buffer == NULL) {
         buffer_size = 1000;
-        buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
+        buffer = (CHAR *) xmlMalloc(buffer_size * sizeof(CHAR));
 	if (buffer == NULL) {
 	    perror("malloc failed");
             exit(1);
@@ -500,7 +501,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
  */
 #define growBufferReentrant() {						\
     buffer_size *= 2;							\
-    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));	\
+    buffer = (CHAR *) xmlRealloc(buffer, buffer_size * sizeof(CHAR));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
 	exit(1);							\
@@ -536,7 +537,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input) {
      * allocate an translation buffer.
      */
     buffer_size = 1000;
-    buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
+    buffer = (CHAR *) xmlMalloc(buffer_size * sizeof(CHAR));
     if (buffer == NULL) {
 	perror("malloc failed");
 	exit(1);
@@ -639,20 +640,20 @@ xmlCreateEntitiesTable(void) {
     xmlEntitiesTablePtr ret;
 
     ret = (xmlEntitiesTablePtr) 
-         malloc(sizeof(xmlEntitiesTable));
+         xmlMalloc(sizeof(xmlEntitiesTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEntitiesTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateEntitiesTable : xmlMalloc(%ld) failed\n",
 	        (long)sizeof(xmlEntitiesTable));
         return(NULL);
     }
     ret->max_entities = XML_MIN_ENTITIES_TABLE;
     ret->nb_entities = 0;
     ret->table = (xmlEntityPtr ) 
-         malloc(ret->max_entities * sizeof(xmlEntity));
+         xmlMalloc(ret->max_entities * sizeof(xmlEntity));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEntitiesTable : malloc(%ld) failed\n",
+        fprintf(stderr, "xmlCreateEntitiesTable : xmlMalloc(%ld) failed\n",
 	        ret->max_entities * (long)sizeof(xmlEntity));
-	free(ret);
+	xmlFree(ret);
         return(NULL);
     }
     return(ret);
@@ -673,8 +674,8 @@ xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
     for (i = 0;i < table->nb_entities;i++) {
         xmlFreeEntity(&table->table[i]);
     }
-    free(table->table);
-    free(table);
+    xmlFree(table->table);
+    xmlFree(table);
 }
 
 /**
@@ -691,16 +692,16 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
     xmlEntityPtr cur, ent;
     int i;
 
-    ret = (xmlEntitiesTablePtr) malloc(sizeof(xmlEntitiesTable));
+    ret = (xmlEntitiesTablePtr) xmlMalloc(sizeof(xmlEntitiesTable));
     if (ret == NULL) {
         fprintf(stderr, "xmlCopyEntitiesTable: out of memory !\n");
 	return(NULL);
     }
-    ret->table = (xmlEntityPtr) malloc(table->max_entities *
+    ret->table = (xmlEntityPtr) xmlMalloc(table->max_entities *
                                          sizeof(xmlEntity));
     if (ret->table == NULL) {
         fprintf(stderr, "xmlCopyEntitiesTable: out of memory !\n");
-	free(ret);
+	xmlFree(ret);
 	return(NULL);
     }
     ret->max_entities = table->max_entities;

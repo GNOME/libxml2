@@ -27,6 +27,7 @@
 #include <zlib.h>
 #endif
 
+#include "xmlmemory.h"
 #include "tree.h"
 #include "HTMLparser.h"
 #include "entities.h"
@@ -54,7 +55,7 @@
 int html##name##Push(htmlParserCtxtPtr ctxt, type value) {		\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (void *) realloc(ctxt->name##Tab,		\
+        ctxt->name##Tab = (void *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(stderr, "realloc failed !\n");			\
@@ -766,7 +767,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
  */
 #define growBuffer(buffer) {						\
     buffer##_size *= 2;							\
-    buffer = (CHAR *) realloc(buffer, buffer##_size * sizeof(CHAR));	\
+    buffer = (CHAR *) xmlRealloc(buffer, buffer##_size * sizeof(CHAR));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
 	exit(1);							\
@@ -834,7 +835,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
      * allocate a translation buffer.
      */
     buffer_size = 1000;
-    buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
+    buffer = (CHAR *) xmlMalloc(buffer_size * sizeof(CHAR));
     if (buffer == NULL) {
 	perror("htmlDecodeEntities: malloc failed");
 	return(NULL);
@@ -881,7 +882,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 			}
 		    }
 		    nbchars += 2 + xmlStrlen(name);
-		    free(name);
+		    xmlFree(name);
 		}
 	    }
 	} else {
@@ -1114,7 +1115,7 @@ htmlNewDoc(const CHAR *URI, const CHAR *ExternalID) {
     /*
      * Allocate a new document and fill the fields.
      */
-    cur = (xmlDocPtr) malloc(sizeof(xmlDoc));
+    cur = (xmlDocPtr) xmlMalloc(sizeof(xmlDoc));
     if (cur == NULL) {
         fprintf(stderr, "xmlNewDoc : malloc failed\n");
 	return(NULL);
@@ -1340,7 +1341,7 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt, CHAR **str) {
 		    ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 		    ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
 		}
-		free(name);
+		xmlFree(name);
 	    }
 	}
     }
@@ -1674,7 +1675,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int create) {
 	    val = xmlStrndup(start, q - start);
 	    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL))
 		ctxt->sax->comment(ctxt->userData, val);
-	    free(val);
+	    xmlFree(val);
 	}
     }
 }
@@ -1817,9 +1818,9 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     /*
      * Cleanup, since we don't use all those identifiers
      */
-    if (URI != NULL) free(URI);
-    if (ExternalID != NULL) free(ExternalID);
-    if (name != NULL) free(name);
+    if (URI != NULL) xmlFree(URI);
+    if (ExternalID != NULL) xmlFree(ExternalID);
+    if (name != NULL) xmlFree(name);
 }
 
 /**
@@ -1945,8 +1946,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 			ctxt->sax->error(ctxt->userData, "Attribute %s redefined\n",
 			                 name);
 		    ctxt->wellFormed = 0;
-		    free(attname);
-		    free(attvalue);
+		    xmlFree(attname);
+		    xmlFree(attvalue);
 		    break;
 		}
 	    }
@@ -1956,7 +1957,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	     */
 	    if (atts == NULL) {
 	        maxatts = 10;
-	        atts = (const CHAR **) malloc(maxatts * sizeof(CHAR *));
+	        atts = (const CHAR **) xmlMalloc(maxatts * sizeof(CHAR *));
 		if (atts == NULL) {
 		    fprintf(stderr, "malloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(CHAR *));
@@ -1964,7 +1965,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 		}
 	    } else if (nbatts + 2 < maxatts) {
 	        maxatts *= 2;
-	        atts = (const CHAR **) realloc(atts, maxatts * sizeof(CHAR *));
+	        atts = (const CHAR **) xmlRealloc(atts, maxatts * sizeof(CHAR *));
 		if (atts == NULL) {
 		    fprintf(stderr, "realloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(CHAR *));
@@ -1994,8 +1995,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
         ctxt->sax->startElement(ctxt->userData, name, atts);
 
     if (atts != NULL) {
-        for (i = 0;i < nbatts;i++) free((CHAR *) atts[i]);
-	free(atts);
+        for (i = 0;i < nbatts;i++) xmlFree((CHAR *) atts[i]);
+	xmlFree(atts);
     }
     return(name);
 }
@@ -2054,7 +2055,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt, const CHAR *tagname) {
 	    ctxt->sax->error(ctxt->userData, 
 	                     "htmlParseEndTag: unexpected close for tag %s\n",
 			     tagname);
-	free(name);
+	xmlFree(name);
 	ctxt->wellFormed = 0;
 	return;
     }
@@ -2087,7 +2088,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt, const CHAR *tagname) {
         ctxt->sax->endElement(ctxt->userData, name);
 
     if (name != NULL)
-	free(name);
+	xmlFree(name);
 
     return;
 }
@@ -2132,7 +2133,7 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 		ctxt->sax->characters(ctxt->userData, out, 1);
 	}
-	free(name);
+	xmlFree(name);
     }
 }
 
@@ -2261,7 +2262,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
         SKIP(2);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
-	free(name);
+	xmlFree(name);
 	return;
     }
 
@@ -2277,7 +2278,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	nodePop(ctxt);
-	free(name);
+	xmlFree(name);
 
 	/*
 	 * Capture end position and add node
@@ -2298,7 +2299,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     if ((info != NULL) && (info->empty)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
-	free(name);
+	xmlFree(name);
 	return;
     }
 
@@ -2313,7 +2314,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
      * on start tag
      */
     if (currentNode != ctxt->node) {
-	free(name);
+	xmlFree(name);
         return;
     }
 
@@ -2327,11 +2328,11 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	nodePop(ctxt);
-	free(name);
+	xmlFree(name);
 	return;
     }
 
-    free(name);
+    xmlFree(name);
 
     /*
      * Capture end position and add node
@@ -2439,13 +2440,13 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
 {
     htmlSAXHandler *sax;
 
-    sax = (htmlSAXHandler *) malloc(sizeof(htmlSAXHandler));
+    sax = (htmlSAXHandler *) xmlMalloc(sizeof(htmlSAXHandler));
     if (sax == NULL) {
         fprintf(stderr, "htmlInitParserCtxt: out of memory\n");
     }
 
     /* Allocate the Input stack */
-    ctxt->inputTab = (htmlParserInputPtr *) malloc(5 * sizeof(htmlParserInputPtr));
+    ctxt->inputTab = (htmlParserInputPtr *) xmlMalloc(5 * sizeof(htmlParserInputPtr));
     ctxt->inputNr = 0;
     ctxt->inputMax = 5;
     ctxt->input = NULL;
@@ -2454,7 +2455,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->standalone = -1;
 
     /* Allocate the Node stack */
-    ctxt->nodeTab = (htmlNodePtr *) malloc(10 * sizeof(htmlNodePtr));
+    ctxt->nodeTab = (htmlNodePtr *) xmlMalloc(10 * sizeof(htmlNodePtr));
     ctxt->nodeNr = 0;
     ctxt->nodeMax = 10;
     ctxt->node = NULL;
@@ -2492,12 +2493,12 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
         xmlFreeInputStream(input);
     }
 
-    if (ctxt->nodeTab != NULL) free(ctxt->nodeTab);
-    if (ctxt->inputTab != NULL) free(ctxt->inputTab);
-    if (ctxt->version != NULL) free((char *) ctxt->version);
+    if (ctxt->nodeTab != NULL) xmlFree(ctxt->nodeTab);
+    if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);
+    if (ctxt->version != NULL) xmlFree((char *) ctxt->version);
     if ((ctxt->sax != NULL) && (ctxt->sax != &htmlDefaultSAXHandler))
-        free(ctxt->sax);
-    free(ctxt);
+        xmlFree(ctxt->sax);
+    xmlFree(ctxt);
 }
 
 /**
@@ -2515,16 +2516,16 @@ htmlCreateDocParserCtxt(CHAR *cur, const char *encoding) {
     htmlParserInputPtr input;
     /* htmlCharEncoding enc; */
 
-    ctxt = (htmlParserCtxtPtr) malloc(sizeof(htmlParserCtxt));
+    ctxt = (htmlParserCtxtPtr) xmlMalloc(sizeof(htmlParserCtxt));
     if (ctxt == NULL) {
         perror("malloc");
 	return(NULL);
     }
     htmlInitParserCtxt(ctxt);
-    input = (htmlParserInputPtr) malloc(sizeof(htmlParserInput));
+    input = (htmlParserInputPtr) xmlMalloc(sizeof(htmlParserInput));
     if (input == NULL) {
         perror("malloc");
-	free(ctxt);
+	xmlFree(ctxt);
 	return(NULL);
     }
 
@@ -2632,20 +2633,20 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) return(NULL);
 
-    ctxt = (htmlParserCtxtPtr) malloc(sizeof(htmlParserCtxt));
+    ctxt = (htmlParserCtxtPtr) xmlMalloc(sizeof(htmlParserCtxt));
     if (ctxt == NULL) {
         perror("malloc");
 	return(NULL);
     }
     htmlInitParserCtxt(ctxt);
-    inputStream = (htmlParserInputPtr) malloc(sizeof(htmlParserInput));
+    inputStream = (htmlParserInputPtr) xmlMalloc(sizeof(htmlParserInput));
     if (inputStream == NULL) {
         perror("malloc");
-	free(ctxt);
+	xmlFree(ctxt);
 	return(NULL);
     }
 
-    inputStream->filename = strdup(filename);
+    inputStream->filename = xmlMemStrdup(filename);
     inputStream->line = 1;
     inputStream->col = 1;
     inputStream->buf = buf;

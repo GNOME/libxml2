@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "xmlmemory.h"
 #include "tree.h"
 #include "parser.h"
 #include "parserInternals.h"
@@ -536,16 +537,16 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
 	/* a default namespace definition */
 	xmlNewNs(ctxt->node, value, NULL);
 	if (name != NULL) 
-	    free(name);
+	    xmlFree(name);
 	return;
     }
     if ((ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
         (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
 	/* a standard namespace definition */
 	xmlNewNs(ctxt->node, value, name);
-	free(ns);
+	xmlFree(ns);
 	if (name != NULL) 
-	    free(name);
+	    xmlFree(name);
 	return;
     }
 
@@ -574,9 +575,9 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
     }
 
     if (name != NULL) 
-	free(name);
+	xmlFree(name);
     if (ns != NULL) 
-	free(ns);
+	xmlFree(ns);
 }
 
 /**
@@ -697,9 +698,9 @@ startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
     xmlSetNs(ret, ns);
 
     if (prefix != NULL)
-	free(prefix);
+	xmlFree(prefix);
     if (name != NULL)
-	free(name);
+	xmlFree(name);
 
 }
 

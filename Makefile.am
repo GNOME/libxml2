@@ -26,6 +26,7 @@ libxml_la_SOURCES = \
 		tree.c \
 		xpath.c \
 		xmlIO.c \
+		xmlmemory.c \
 		valid.c
 
 xmlincdir = $(includedir)/gnome-xml
@@ -41,6 +42,7 @@ xmlinc_HEADERS = \
 		tree.h \
 		xpath.h \
 		xmlIO.h \
+		xmlmemory.h \
 		valid.h
 
 DEPS = $(top_builddir)/libxml.la

@@ -1,3 +1,8 @@
+Sun Jan 19 17:09:28 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/guidelines.html
+	grammar and spelling cleanup
+
 Fri Jan 17 00:31:30 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c include/libxml/xmlreader.h python/generator.py

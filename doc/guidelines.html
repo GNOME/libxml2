@@ -25,19 +25,19 @@ A:link, A:visited, A:active { text-decoration: underline }-->
 helping the publication and deployment of <a
 href="http://www.w3.org.XML/">XML</a> resources for the <a
 href="http://www.gnome.org/">GNOME project</a>. However it is not tied to
-GNOME and might be helpful more generally, I welcome <a
+GNOME and might be helpful more generally. I welcome <a
 href="mailto:veillard@redhat.com">feedback</a> on this document.</p>
 
-<p>The intended audience are the software developpers who started using XML
+<p>The intended audience is the software developers who started using XML
 for some of the resources of their project, as a storage format, for data
 exchange, checking or transformations. There have been an increasing number
-of new XML format defined, but not all steps have been taken, possibly by
-lack of documentation, to truely gain all the benefits of the use of XML.
-Those guidelines hopes to improve the matter and provide a better overview of
-the overall XML processing and associated steps needed deploy it
+of new XML formats defined, but not all steps have been taken, possibly because of
+lack of documentation, to truly gain all the benefits of the use of XML.
+These guidelines hope to improve the matter and provide a better overview of
+the overall XML processing and associated steps needed to deploy it
 successfully:</p>
 
-<p>Table of content:</p>
+<p>Table of contents:</p>
 <ol>
   <li><a href="#Design">Design guidelines</a></li>
   <li><a href="#Canonical">Canonical URL</a></li>
@@ -47,9 +47,9 @@ successfully:</p>
 
 <h2><a name="Design">Design guidelines</a></h2>
 
-<p>This part intend to focuse on the format itself of XML, those may  arrive
+<p>This part intends to focus on the format itself of XML. It may  arrive
 a bit too late since the structure of the document may already be cast in
-existing and deployed code. Still here are a few rules which might be helpful
+existing and deployed code. Still, here are a few rules which might be helpful
 when designing a new XML vocabulary or making the revision of an existing
 format:</p>
 
@@ -57,12 +57,12 @@ format:</p>
 
 <p>This may sounds a bit simplistic, but before designing your own format,
 try to lookup existing XML vocabularies on similar data. Ideally this allows
-to reuse them, in which case a lot of the existing tools like DTD, schemas
+you to reuse them, in which case a lot of the existing tools like DTD, schemas
 and stylesheets may already be available. If you are looking at a
 documentation format, <a href="http://www.docbook.org/">DocBook</a> should
 handle your needs. If reuse is not possible because some semantic or use case
-aspects are too differents this will be helpful avoiding design errors like
-targetting the vocabulary to the wrong abstraction level. In this format
+aspects are too different this will be helpful avoiding design errors like
+targeting the vocabulary to the wrong abstraction level. In this format
 design phase try to be synthetic and be sure to express the real content of
 your data and use the XML structure to express the semantic and context of
 those data.</p>
@@ -77,8 +77,8 @@ vocabulary. Here are a few tips:</p>
   <li>do not use attributes for general textual content, attributes
     will be modified by the parser before reaching the application,
     spaces and line informations will be modified.</li>
-  <li>use single elements for every strings which might be subject to
-    localization, the canonical way to localize XML content is to use
+  <li>use single elements for every string that might be subject to
+    localization. The canonical way to localize XML content is to use
     siblings element carrying different xml:lang attributes like in the
     following:
     <pre>&lt;welcome&gt;
@@ -86,7 +86,7 @@ vocabulary. Here are a few tips:</p>
   &lt;msg xml:lang="fr"&gt;bonjour&lt;/msg&gt;
 &lt;/welcome&gt;</pre>
   </li>
-  <li>use attribute to refine the content of an element but avoid them for
+  <li>use attributes to refine the content of an element but avoid them for
     more complex tasks, attribute parsing is not cheaper than an element and
     it is far easier to make an element content more complex while attribute
     will have to remain very simple.</li>
@@ -95,14 +95,14 @@ vocabulary. Here are a few tips:</p>
 <h3>Versioning:</h3>
 
 <p>As part of the design, make sure the structure you define will be usable
-for future extension that you may not consider for the current version, there
-is 2 parts for this:</p>
+for future extension that you may not consider for the current version. There
+are two parts to this:</p>
 <ul>
-  <li>make sure the instance contains a version number which will allow to
-    make backward compatibility easy, something as simple as having a
+  <li>Make sure the instance contains a version number which will allow to
+    make backward compatibility easy. Something as simple as having a
     <code>version="1.0"</code> on the root document of the instance is
-    sufficient</li>
-  <li>while designing the code doing the analysis of the data provided by the
+    sufficient.</li>
+  <li>While designing the code doing the analysis of the data provided by the
     XML parser, make sure you can work with unknown versions, generate a UI
     warning and process only the tags recognized by your version but keep in
     mind that you should not break on unknown elements if the version
@@ -111,31 +111,31 @@ is 2 parts for this:</p>
 
 <h3>Other design parts:</h3>
 
-<p>While defining you vocabulary, try to think in term of other usage to your
+<p>While defining you vocabulary, try to think in term of other usage of your
 data, for example how using XSLT stylesheets could be used to make an HTML
 view of your data, or to convert it into a different format. Checking XML
-Schemas and looking at defining an XML Schemas with a more complete
-validation and datatyping of your data structures are important, this helps
+Schemas and looking at defining an XML Schema with a more complete
+validation and datatyping of your data structures is important, this helps
 avoiding some mistakes in the design phase.</p>
 
 <h3>Namespace:</h3>
 
 <p>If you expect your XML vocabulary to be used or recognized outside of your
 application (for example binding a specific processing from a graphic shell
-like Nautilus to instance of your data) then you should really define an <a
+like Nautilus to an instance of your data) then you should really define an <a
 href="http://www.w3.org/TR/REC-xml-names/">XML namespace</a> for your
-vocabulary. A namespace name is an URL (absolute URI more precisely), it is
+vocabulary. A namespace name is an URL (absolute URI more precisely). It is
 generally recommended to anchor it as an HTTP resource to a server associated
-with the software project, see the next section about this. In practice this
+with the software project. See the next section about this. In practice this
 will mean that XML parsers will not handle your element names as-is but as a
-couple based on the namespace name and the element name. This allow to
+couple based on the namespace name and the element name. This allows it to
 recognize and disambiguate processing. Unicity of the namespace name can be
-for the most part garanteed by the use of the DNS registry. Namespace can
-also  be used to carry versionning informations like:</p>
+for the most part guaranteed by the use of the DNS registry. Namespace can
+also be used to carry versioning information like:</p>
 
 <p><code>"http://www.gnome.org/project/projectname/1.0/"</code></p>
 
-<p>an an easy way to use them is to make them the default namespace on the
+<p>An easy way to use them is to make them the default namespace on the
 root element of the XML instance like:</p>
 <pre>&lt;structure xmlns="http://www.gnome.org/project/projectname/1.0/"&gt;
   &lt;data&gt;
@@ -149,21 +149,21 @@ the given namespace.</p>
 <h2><a name="Canonical">Canonical URL</a></h2>
 
 <p>As seen in the previous namespace section, while XML processing is not
-tied to the Web there is a natural synergy between both, XML was designed to
+tied to the Web there is a natural synergy between both. XML was designed to
 be available on the Web, and keeping the infrastructure that way helps
 deploying the XML resources. The core of this issue is the notion of
-"Canonical URL" of an XML resource, the resource can be an XML document, a
-DTD, a stylesheet, a schemas, or even non-XML data associated to an XML
+"Canonical URL" of an XML resource. The resource can be an XML document, a
+DTD, a stylesheet, a schema, or even non-XML data associated with an XML
 resource, the canonical URL is the URL where the "master" copy of that
 resource is expected to be present on the Web. Usually when processing XML a
 copy of the resource will be present on the local disk, maybe in
 /usr/share/xml or /usr/share/sgml maybe in /opt or even on C:\projectname\
-(horror !), the key point is that the way to name that resource should be
-independant of the actual place where it reside on disk if it is available,
+(horror !). The key point is that the way to name that resource should be
+independent of the actual place where it resides on disk if it is available,
 and the fact that the processing will still work if there is no local copy
 (and that the machine where the processing is connected to the Internet).</p>
 
-<p>What this really mean is that one should never use the local name of a
+<p>What this really means is that one should never use the local name of a
 resource to reference it but always use the canonical URL. For example in a
 DocBook instance the following should not be used:</p>
 <pre>&lt;!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"<br>
@@ -177,7 +177,7 @@ DocBook instance the following should not be used:</p>
 
                          "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"&gt;   </pre>
 
-<p>Similary, the document instance may reference the <a
+<p>Similarly, the document instance may reference the <a
 href="http://www.w3.org/TR/xslt">XSLT</a> stylesheets needed to process it to
 generate HTML, and the canonical URL should be used:</p>
 <pre>&lt;?xml-stylesheet
@@ -189,15 +189,15 @@ simple rules similar to those used to design namespace names:</p>
 <ul>
   <li>use a DNS name you know is associated to the project and will be
     available on the long term</li>
-  <li>whithin that server space, reserve the right to the subtree where you
+  <li>within that server space, reserve the right to the subtree where you
     intend to keep those data</li>
-  <li>version the URL so that multiple concurent versions of the resources
+  <li>version the URL so that multiple concurrent versions of the resources
     can be hosted simultaneously</li>
 </ul>
 
 <h2><a name="Catalog">Catalog setup</a></h2>
 
-<h3>How catalog works:</h3>
+<h3>How catalogs work:</h3>
 
 <p>The catalogs are the technical mechanism which allow the XML processing
 tools to use a local copy of the resources if it is available even if the
@@ -214,10 +214,10 @@ from the root catalog, and possibly fetching sub-catalog resources until it
 finds that the catalog has that resource or not. If not the default
 processing of fetching the resource from the Web is done, allowing in most
 case to recover from a catalog miss. The key point is that the document
-instances are totally independant of the availability of a catalog or from
-the actual place where the loacl resource they reference may be installed.
-This greatly improve the management of the document in the long run, making
-them independant of the platform or toolchain used to process them. The
+instances are totally independent of the availability of a catalog or from
+the actual place where the local resource they reference may be installed.
+This greatly improves the management of the documents in the long run, making
+them independent of the platform or toolchain used to process them. The
 figure below tries to express that  mechanism:<img src="catalog.gif"
 alt="Picture describing the catalog "></p>
 
@@ -226,7 +226,7 @@ alt="Picture describing the catalog "></p>
 <p>Usually catalogs for a project are setup as a 2 level hierarchical cache,
 the root catalog containing only "delegates" indicating a separate subcatalog
 dedicated to the project. The goal is to keep the root catalog clean and
-simplify the maintainance of the catalog by using separate catalogs per
+simplify the maintenance of the catalog by using separate catalogs per
 project. For example when creating a catalog for the <a
 href="http://www.w3.org/TR/xhtml1">XHTML1</a> DTDs, only 3 items are added to
 the root catalog:</p>
@@ -240,9 +240,9 @@ the root catalog:</p>
 <p>They are all "delegates" meaning that if the catalog system is asked to
 resolve a reference corresponding to them, it has to lookup a sub catalog.
 Here the subcatalog was installed as
-<code>/usr/share/sgml/xhtml1/xmlcatalog</code> in the local tree, that
+<code>/usr/share/sgml/xhtml1/xmlcatalog</code> in the local tree. That
 decision is left to the sysadmin or the packager for that system and may
-obbey different rules, but the actual place on the filesystem (or on a
+obey different rules, but the actual place on the filesystem (or on a
 resource cache on the local network) will not influence the processing as
 long as it is available. The first rule indicate that if the reference uses a
 PUBLIC identifier beginning with the</p>
@@ -250,12 +250,12 @@ PUBLIC identifier beginning with the</p>
 <p><code>"-//W3C//DTD XHTML 1.0"</code></p>
 
 <p>substring, then the catalog lookup should be limited to the specific given
-lookup catalog. Similary the second and third entries indicate those
+lookup catalog. Similarly the second and third entries indicate those
 delegation rules for SYSTEM, DOCTYPE or normal URI references when the URL
-starts with the <code>"http://www.w3.org/TR/xhtml1/DTD"</code> subscting
+starts with the <code>"http://www.w3.org/TR/xhtml1/DTD"</code> substring
 which indicates the location on the W3C server where the XHTML1 resources are
-stored, those are the beginning of all Canonical URLs for XHTML1 resources.
-Those 3 rules are sufficient in practice to capture all references to XHTML1
+stored. Those are the beginning of all Canonical URLs for XHTML1 resources.
+Those three rules are sufficient in practice to capture all references to XHTML1
 resources and direct the processing tools to the right subcatalog.</p>
 
 <h3>A subcatalog example:</h3>
@@ -277,7 +277,7 @@ resources and direct the processing tools to the right subcatalog.</p>
           rewritePrefix="xhtml1-20020801/DTD"/&gt;
 &lt;/catalog&gt;</pre>
 
-<p>There is a few things to notice:</p>
+<p>There are a few things to notice:</p>
 <ul>
   <li>this is an XML resource, it points to the DTD using Canonical URLs, the
     root element defines a namespace (but based on an URN not an HTTP
@@ -286,7 +286,7 @@ resources and direct the processing tools to the right subcatalog.</p>
     PUBLIC identifiers defined by the XHTML1 specification and associating
     them with the local resource containing the DTD, the 2 last ones are
     rewrite rules allowing to build the local filename for any URL based on
-    "http://www.w3.org/TR/xhtml1/DTD", the local cache simplify the rules by
+    "http://www.w3.org/TR/xhtml1/DTD", the local cache simplifies the rules by
     keeping the same structure as the on-line server at the Canonical URL</li>
   <li>the local resources are designated using URI references (the uri or
     rewritePrefix attributes), the base being the containing sub-catalog URL,
@@ -303,9 +303,9 @@ at the Canonical URL for the XHTML1 DTDs.</p>
 <p>Creating and removing catalogs should be handled as part of the process of
 (un)installing the local copy of the resources. The catalog files being XML
 resources should be processed with XML based tools to avoid problems with the
-generated files, the xmlcatalog command coming with libxml2 allows to create
+generated files, the xmlcatalog command coming with libxml2 allows you to create
 catalogs, and add or remove rules at that time. Here is a complete example
-coming from RPM for the XHTML1 DTDs post install script. While this example
+coming from the RPM for the XHTML1 DTDs post install script. While this example
 is platform and packaging specific, this can be useful as a an example in
 other contexts:</p>
 <pre>%post
@@ -337,7 +337,7 @@ fi</pre>
 installed as part of the files of the packages. So the only work needed is to
 make sure the root catalog exists and register the delegate rules.</p>
 
-<p>Similary, the script for the post-uninstall just remove the rules from the
+<p>Similarly, the script for the post-uninstall just remove the rules from the
 catalog:</p>
 <pre>%postun
 #

@@ -395,7 +395,7 @@ xmlFileOpenW (const char *filename) {
     if (path == NULL)
 	return(NULL);
 
-    fd = fopen(path, "w");
+    fd = fopen(path, "wb");
     return((void *) fd);
 }
 
@@ -1265,7 +1265,7 @@ xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
 	    if ( dump_name != NULL ) {
 		(void)snprintf( buffer, sizeof(buffer), "%s.content", dump_name );
 
-		tst_file = fopen( buffer, "w" );
+		tst_file = fopen( buffer, "wb" );
 		if ( tst_file != NULL ) {
 		    xmlGenericError( xmlGenericErrorContext,
 			"Transmitted content saved in file:  %s\n", buffer );
@@ -1276,7 +1276,7 @@ xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
 		}
 
 		(void)snprintf( buffer, sizeof(buffer), "%s.reply", dump_name );
-		tst_file = fopen( buffer, "w" );
+		tst_file = fopen( buffer, "wb" );
 		if ( tst_file != NULL ) {
 		    xmlGenericError( xmlGenericErrorContext,
 			"Reply content saved in file:  %s\n", buffer );

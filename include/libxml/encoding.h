@@ -47,7 +47,7 @@ extern "C" {
  * declaration are looked at and a converter is looked for at that
  * point. If not found the parser stops here as asked by the XML REC
  * Converter can be registered by the user using xmlRegisterCharEncodingHandler
- * but the currentl form doesn't allow stateful transcoding (a serious
+ * but the current form doesn't allow stateful transcoding (a serious
  * problem agreed !). If iconv has been found it will be used
  * automatically and allow stateful transcoding, the simplest is then
  * to be sure to enable icon and to provide iconv libs for the encoding
@@ -82,9 +82,9 @@ typedef enum {
 
 /**
  * xmlCharEncodingInputFunc:
- * @out:  a pointer ot an array of bytes to store the UTF-8 result
+ * @out:  a pointer to an array of bytes to store the UTF-8 result
  * @outlen:  the length of @out
- * @in:  a pointer ot an array of chars in the original encoding
+ * @in:  a pointer to an array of chars in the original encoding
  * @inlen:  the length of @in
  *
  * Take a block of chars in the original encoding and try to convert
@@ -94,7 +94,7 @@ typedef enum {
  *     if the transcoding failed.
  * The value of @inlen after return is the number of octets consumed
  *     as the return value is positive, else unpredictiable.
- * The value of @outlen after return is the number of ocetes consumed.
+ * The value of @outlen after return is the number of octets consumed.
  */
 typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int *outlen,
                                          const unsigned char* in, int *inlen);
@@ -102,9 +102,9 @@ typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int *outlen,
 
 /**
  * xmlCharEncodingOutputFunc:
- * @out:  a pointer ot an array of bytes to store the result
+ * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
- * @in:  a pointer ot an array of UTF-8 chars
+ * @in:  a pointer to an array of UTF-8 chars
  * @inlen:  the length of @in
  *
  * Take a block of UTF-8 chars in and try to convert it to an other

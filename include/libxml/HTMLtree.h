@@ -1,6 +1,6 @@
 /*
- * tree.h : describes the structures found in an tree resulting
- *          from an XML parsing.
+ * HTMLtree.h : describes the structures found in an tree resulting
+ *              from an XML parsing.
  *
  * See Copyright for the status of this software.
  *

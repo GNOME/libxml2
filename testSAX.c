@@ -1,5 +1,5 @@
 /*
- * tester.c : a small tester program for parsing using the SAX API.
+ * testSAX.c : a small tester program for parsing using the SAX API.
  *
  * See Copyright for the status of this software.
  *

@@ -47,7 +47,7 @@ struct _xmlParserInput {
     const char *directory;            /* the directory/base of the file */
     const xmlChar *base;              /* Base of the array to parse */
     const xmlChar *cur;               /* Current char being parsed */
-    const xmlChar *end;               /* end of the arry to parse */
+    const xmlChar *end;               /* end of the array to parse */
     int length;                       /* length if known */
     int line;                         /* Current line */
     int col;                          /* Current column */
@@ -89,13 +89,13 @@ struct _xmlParserNodeInfoSeq {
  * xmlParserInputState:
  *
  * The parser is now working also as a state based parser
- * The recursive one use the stagte info for entities processing
+ * The recursive one use the state info for entities processing
  */
 typedef enum {
     XML_PARSER_EOF = -1,	/* nothing is to be parsed */
     XML_PARSER_START = 0,	/* nothing has been parsed */
     XML_PARSER_MISC,		/* Misc* before int subset */
-    XML_PARSER_PI,		/* Whithin a processing instruction */
+    XML_PARSER_PI,		/* Within a processing instruction */
     XML_PARSER_DTD,		/* within some DTD content */
     XML_PARSER_PROLOG,		/* Misc* after internal subset */
     XML_PARSER_COMMENT,		/* within a comment */
@@ -322,9 +322,11 @@ struct _xmlSAXHandler {
  * xmlExternalEntityLoader:
  * @URL: The System ID of the resource requested
  * @ID: The Public ID of the resource requested
- * @xmlParserCtxtPtr: the XML parser context 
+ * @context: the XML parser context 
  *
  * External entity loaders types
+ *
+ * Returns the entity input parser
  */
 typedef xmlParserInputPtr (*xmlExternalEntityLoader)(const char *URL,
 						     const char *ID,
@@ -342,14 +344,14 @@ LIBXML_DLL_IMPORT extern xmlSAXHandler htmlDefaultSAXHandler;
 LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
 
 /*
- * entity substitution default behaviour.
+ * entity substitution default behavior.
  */
 
 #ifdef VMS
 /**
  * xmlSubstituteEntitiesDefaultValue:
  *
- * global variable controlling the entity substitution default behaviour
+ * global variable controlling the entity substitution default behavior
  */
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultVal;
 #define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal

@@ -189,8 +189,8 @@ xmlHashGrow(xmlHashTablePtr table, int size) {
  * @table: the hash table
  * @f:  the deallocator function for items in the hash
  *
- * Free the hash table and its contents. The userdata is
- * deallocated with f if provided.
+ * Free the hash @table and its contents. The userdata is
+ * deallocated with @f if provided.
  */
 void
 xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
@@ -230,8 +230,8 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
  * @name: the name of the userdata
  * @userdata: a pointer to the userdata
  *
- * Add the userdata to the hash table. This can later be retrieved
- * by using the name. Duplicate names generate errors.
+ * Add the @userdata to the hash @table. This can later be retrieved
+ * by using the @name. Duplicate names generate errors.
  *
  * Returns 0 the addition succeeded and -1 in case of error.
  */
@@ -247,8 +247,8 @@ xmlHashAddEntry(xmlHashTablePtr table, const xmlChar *name, void *userdata) {
  * @name2: a second name of the userdata
  * @userdata: a pointer to the userdata
  *
- * Add the userdata to the hash table. This can later be retrieved
- * by using the (name, name2) tuple. Duplicate tuples generate errors.
+ * Add the @userdata to the hash @table. This can later be retrieved
+ * by using the (@name, @name2) tuple. Duplicate tuples generate errors.
  *
  * Returns 0 the addition succeeded and -1 in case of error.
  */
@@ -265,8 +265,8 @@ xmlHashAddEntry2(xmlHashTablePtr table, const xmlChar *name,
  * @userdata: a pointer to the userdata
  * @f: the deallocator function for replaced item (if any)
  *
- * Add the userdata to the hash table. This can later be retrieved
- * by using the name. Existing entry for this name will be removed
+ * Add the @userdata to the hash @table. This can later be retrieved
+ * by using the @name. Existing entry for this @name will be removed
  * and freed with @f if found.
  *
  * Returns 0 the addition succeeded and -1 in case of error.
@@ -285,8 +285,8 @@ xmlHashUpdateEntry(xmlHashTablePtr table, const xmlChar *name,
  * @userdata: a pointer to the userdata
  * @f: the deallocator function for replaced item (if any)
  *
- * Add the userdata to the hash table. This can later be retrieved
- * by using the (name, name2) tuple. Existing entry for this tuple will
+ * Add the @userdata to the hash @table. This can later be retrieved
+ * by using the (@name, @name2) tuple. Existing entry for this tuple will
  * be removed and freed with @f if found.
  *
  * Returns 0 the addition succeeded and -1 in case of error.
@@ -303,7 +303,7 @@ xmlHashUpdateEntry2(xmlHashTablePtr table, const xmlChar *name,
  * @table: the hash table
  * @name: the name of the userdata
  *
- * Find the userdata specified by the name.
+ * Find the userdata specified by the @name.
  *
  * Returns the pointer to the userdata
  */
@@ -318,7 +318,7 @@ xmlHashLookup(xmlHashTablePtr table, const xmlChar *name) {
  * @name: the name of the userdata
  * @name2: a second name of the userdata
  *
- * Find the userdata specified by the (name, name2) tuple.
+ * Find the userdata specified by the (@name, @name2) tuple.
  *
  * Returns the pointer to the userdata
  */
@@ -336,8 +336,8 @@ xmlHashLookup2(xmlHashTablePtr table, const xmlChar *name,
  * @name3: a third name of the userdata
  * @userdata: a pointer to the userdata
  *
- * Add the userdata to the hash table. This can later be retrieved
- * by using the tuple (name, name2, name3). Duplicate entries generate
+ * Add the @userdata to the hash @table. This can later be retrieved
+ * by using the tuple (@name, @name2, @name3). Duplicate entries generate
  * errors.
  *
  * Returns 0 the addition succeeded and -1 in case of error.
@@ -406,8 +406,8 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
  * @userdata: a pointer to the userdata
  * @f: the deallocator function for replaced item (if any)
  *
- * Add the userdata to the hash table. This can later be retrieved
- * by using the tuple (name, name2, name3). Existing entry for this tuple
+ * Add the @userdata to the hash @table. This can later be retrieved
+ * by using the tuple (@name, @name2, @name3). Existing entry for this tuple
  * will be removed and freed with @f if found.
  *
  * Returns 0 the addition succeeded and -1 in case of error.
@@ -477,7 +477,7 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
  * @name2: a second name of the userdata
  * @name3: a third name of the userdata
  *
- * Find the userdata specified by the (name, name2, name3) tuple.
+ * Find the userdata specified by the (@name, @name2, @name3) tuple.
  *
  * Returns the a pointer to the userdata
  */
@@ -507,7 +507,7 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
  * @f:  the scanner function for items in the hash
  * @data:  extra data passed to f
  *
- * Scan the hash table and applied f to each value.
+ * Scan the hash @table and applied @f to each value.
  */
 void
 xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
@@ -520,7 +520,7 @@ xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
  * @f:  the scanner function for items in the hash
  * @data:  extra data passed to f
  *
- * Scan the hash table and applied f to each value.
+ * Scan the hash @table and applied @f to each value.
  */
 void
 xmlHashScanFull(xmlHashTablePtr table, xmlHashScannerFull f, void *data) {
@@ -556,8 +556,8 @@ xmlHashScanFull(xmlHashTablePtr table, xmlHashScannerFull f, void *data) {
  * @f:  the scanner function for items in the hash
  * @data:  extra data passed to f
  *
- * Scan the hash table and applied f to each value matching
- * (name, name2, name3) tuple. If one of the names is null,
+ * Scan the hash @table and applied @f to each value matching
+ * (@name, @name2, @name3) tuple. If one of the names is null,
  * the comparison is considered to match.
  */
 void
@@ -577,8 +577,8 @@ xmlHashScan3(xmlHashTablePtr table, const xmlChar *name,
  * @f:  the scanner function for items in the hash
  * @data:  extra data passed to f
  *
- * Scan the hash table and applied f to each value matching
- * (name, name2, name3) tuple. If one of the names is null,
+ * Scan the hash @table and applied @f to each value matching
+ * (@name, @name2, @name3) tuple. If one of the names is null,
  * the comparison is considered to match.
  */
 void
@@ -616,7 +616,7 @@ xmlHashScanFull3(xmlHashTablePtr table, const xmlChar *name,
  * @table: the hash table
  * @f:  the copier function for items in the hash
  *
- * Scan the hash table and applied f to each value.
+ * Scan the hash @table and applied @f to each value.
  *
  * Returns the new table or NULL in case of error.
  */
@@ -652,7 +652,7 @@ xmlHashCopy(xmlHashTablePtr table, xmlHashCopier f) {
  * xmlHashSize:
  * @table: the hash table
  *
- * Query the number of element installed in the hash table.
+ * Query the number of elements installed in the hash @table.
  *
  * Returns the number of elements in the hash table or
  * -1 in case of error
@@ -670,8 +670,8 @@ xmlHashSize(xmlHashTablePtr table) {
  * @name: the name of the userdata
  * @f: the deallocator function for removed item (if any)
  *
- * Find the userdata specified by the (name, name2, name3) tuple and remove
- * it from the hash table. Existing userdata for this tuple will be removed
+ * Find the userdata specified by the @name and remove
+ * it from the hash @table. Existing userdata for this tuple will be removed
  * and freed with @f.
  *
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
@@ -688,8 +688,8 @@ int xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
  * @name2: a second name of the userdata
  * @f: the deallocator function for removed item (if any)
  *
- * Find the userdata specified by the (name, name2, name3) tuple and remove
- * it from the hash table. Existing userdata for this tuple will be removed
+ * Find the userdata specified by the (@name, @name2) tuple and remove
+ * it from the hash @table. Existing userdata for this tuple will be removed
  * and freed with @f.
  *
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
@@ -707,8 +707,8 @@ int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
  * @name3: a third name of the userdata
  * @f: the deallocator function for removed item (if any)
  *
- * Find the userdata specified by the (name, name2, name3) tuple and remove
- * it from the hash table. Existing userdata for this tuple will be removed
+ * Find the userdata specified by the (@name, @name2, @name3) tuple and remove
+ * it from the hash @table. Existing userdata for this tuple will be removed
  * and freed with @f.
  *
  * Returns 0 if the removal succeeded and -1 in case of error or not found.

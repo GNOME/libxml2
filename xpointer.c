@@ -230,7 +230,7 @@ xmlXPtrRangeCheckOrder(xmlXPathObjectPtr range) {
  *
  * Compare two ranges
  *
- * Return 1 if equal, 0 otherwise
+ * Returns 1 if equal, 0 otherwise
  */
 static int
 xmlXPtrRangesEqual(xmlXPathObjectPtr range1, xmlXPathObjectPtr range2) {
@@ -281,7 +281,7 @@ xmlXPtrNewRange(xmlNodePtr start, int startindex,
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlXPtrNewRangePoints: out of memory\n");
+		"xmlXPtrNewRange: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -458,7 +458,7 @@ xmlXPtrNewCollapsedRange(xmlNodePtr start) {
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlXPtrNewRangeNodes: out of memory\n");
+		"xmlXPtrNewCollapsedRange: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -571,7 +571,7 @@ xmlXPtrLocationSetCreate(xmlXPathObjectPtr val) {
  * @cur:  the initial range set
  * @val:  a new xmlXPathObjectPtr
  *
- * add a new xmlXPathObjectPtr ot an existing LocationSet
+ * add a new xmlXPathObjectPtr to an existing LocationSet
  * If the location already exist in the set @val is freed.
  */
 void
@@ -762,7 +762,7 @@ xmlXPtrNewLocationSetNodeSet(xmlNodeSetPtr set) {
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlXPtrNewLocationSetNodes: out of memory\n");
+		"xmlXPtrNewLocationSetNodeSet: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -909,7 +909,7 @@ xmlXPtrGetChildNo(xmlXPathParserContextPtr ctxt, int indx) {
  *   are not balanced, a syntax error results.
  *
  * Parse and evaluate an XPtrPart. Basically it generates the unescaped
- * string and if the scheme is 'xpointer' it will call the XPath interprter.
+ * string and if the scheme is 'xpointer' it will call the XPath interpreter.
  * 
  * TODO: there is no new scheme registration mechanism
  */
@@ -1054,7 +1054,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
  * -----------
  *
  * Parse and evaluate a Full XPtr i.e. possibly a cascade of XPath based
- * expressions or other shemes.
+ * expressions or other schemes.
  */
 static void
 xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
@@ -1106,7 +1106,7 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	}
 
 	/*
-	 * Is there another XPoointer part.
+	 * Is there another XPointer part.
 	 */
 	SKIP_BLANKS;
 	name = xmlXPathParseName(ctxt);
@@ -1127,7 +1127,7 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 static void
 xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     /*
-     * XPointer don't allow by syntax to adress in mutirooted trees
+     * XPointer don't allow by syntax to address in mutirooted trees
      * this might prove useful in some cases, warn about it.
      */
     if ((name == NULL) && (CUR == '/') && (NXT(1) != '1')) {
@@ -1174,7 +1174,7 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
 	if (ctxt->valueTab == NULL) {
 	    xmlFree(ctxt);
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathRunEval: out of memory\n");
+		    "xmlXPathEvalXPointer: out of memory\n");
 	    return;
 	}
 	ctxt->valueNr = 0;
@@ -1270,7 +1270,7 @@ xmlXPtrNewContext(xmlDocPtr doc, xmlNodePtr here, xmlNodePtr origin) {
  *
  * Evaluate the XPath Location Path in the given context.
  *
- * Returns the xmlXPathObjectPtr resulting from the eveluation or NULL.
+ * Returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathObjectPtr
@@ -1462,7 +1462,7 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 		    /* Do not copy DTD informations */
 		    break;
 		case XML_ENTITY_DECL:
-		    TODO /* handle csossing entities -> stack needed */
+		    TODO /* handle crossing entities -> stack needed */
 		    break;
 		case XML_XINCLUDE_START:
 		case XML_XINCLUDE_END:
@@ -1780,7 +1780,7 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * location-set end-point(location-set)
  *
  * For each location x in the argument location-set, end-point adds a
- * location of type point to the result location-set. That point representsi
+ * location of type point to the result location-set. That point represents
  * the end point of location x and is determined by the following rules:
  *
  * - If x is of type point, the resulting point is x.
@@ -1788,7 +1788,7 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * - If x is of type root or element, the container node of the resulting
  *   point is x and the index is the number of location children of x.
  * - If x is of type text, comment, or processing instruction, the container
- *   node of the resulting point is x and the index is the length of thei
+ *   node of the resulting point is x and the index is the length of the
  *   string-value of x.
  * - If x is of type attribute or namespace, the function must signal a
  *   syntax error.
@@ -2358,7 +2358,7 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *indx, int bytes) {
  *
  * Returns -1 in case of failure, 0 if not found, 1 if found in which case
  *            (@start, @startindex) will indicate the position of the beginning
- *            of the range and (@end, @endindex) will endicate the end
+ *            of the range and (@end, @endindex) will indicate the end
  *            of the range
  */
 static int
@@ -2452,12 +2452,12 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
  * @end:  the end textnode
  * @endindex:  the end index
  *
- * Search the next occurence of @string within the document content
+ * Search the next occurrence of @string within the document content
  * until the (@end, @endindex) point is reached
  *
  * Returns -1 in case of failure, 0 if not found, 1 if found in which case
  *            (@start, @startindex) will indicate the position of the beginning
- *            of the range and (@end, @endindex) will endicate the end
+ *            of the range and (@end, @endindex) will indicate the end
  *            of the range
  */
 static int

@@ -260,7 +260,7 @@ xmlFreeGlobalState(void *state)
  *
  * xmlNewGlobalState() allocates a global state. This structure is used to
  * hold all data for use by a thread when supporting backwards compatibility
- * of libmxml2 to pre-thread-safe behaviour.
+ * of libxml2 to pre-thread-safe behaviour.
  *
  * Returns the newly allocated xmlGlobalStatePtr or NULL in case of error
  */
@@ -335,7 +335,7 @@ xmlGetThreadId(void)
 /**
  * xmlIsMainThread:
  *
- * xmlIsMainThread() check wether the current thread is the main thread.
+ * xmlIsMainThread() check whether the current thread is the main thread.
  *
  * Returns 1 if the current thread is the main thread, 0 otherwise
  */

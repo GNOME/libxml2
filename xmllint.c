@@ -647,7 +647,7 @@ static void parseAndPrintFile(char *filename) {
 	    ctxt = xmlCreateFileParserCtxt(filename);
 
 	    if (ctxt == NULL) {	      
-	      /* If xmlCreateFileParseCtxt() return NULL something
+	      /* If xmlCreateFileParserCtxt() return NULL something
 		 strange happened so we don't want to do anything.  Do
 		 we want to print an error message here?
 		 <sven@zen.org> */
@@ -738,7 +738,7 @@ static void parseAndPrintFile(char *filename) {
 
 #ifdef LIBXML_DEBUG_ENABLED
     /*
-     * shell interraction
+     * shell interaction
      */
     if (shell)  
         xmlShell(doc, filename, xmlShellReadline, stdout);
@@ -983,7 +983,7 @@ static void usage(const char *name) {
 #ifdef LIBXML_XINCLUDE_ENABLED
     printf("\t--xinclude : do XInclude processing\n");
 #endif
-    printf("\t--loaddtd : fetch external Dtd\n");
+    printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
 }
@@ -1212,7 +1212,7 @@ main(int argc, char **argv) {
         }
 	if ((timing) && (repeat))
 	    startTimer();
-	/* Remember file names.  "-" means stding.  <sven@zen.org> */
+	/* Remember file names.  "-" means stdin.  <sven@zen.org> */
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
 		for (count = 0;count < 100 * repeat;count++)

@@ -1052,7 +1052,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	    while (attr != NULL) {
 		if (attr->defaultValue != NULL) {
 		    /*
-		     * the element should be instanciated in the tree if:
+		     * the element should be instantiated in the tree if:
 		     *  - this is a namespace prefix
 		     *  - the user required for completion in the tree
 		     *    like XSLT
@@ -1163,7 +1163,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     }
 
     /*
-     * If it's the Document root, finish the Dtd validation and
+     * If it's the Document root, finish the DTD validation and
      * check the document root element for validity
      */
     if ((ctxt->validate) && (ctxt->vctxt.finishDtd == 0)) {
@@ -1662,8 +1662,10 @@ cdataBlock(void *ctx, const xmlChar *value, int len)
 
 /**
  * xmlDefaultSAXHandlerInit:
+ * @hdlr:  the SAX handler
+ * @warning:  flag if non-zero sets the handler warning procedure
  *
- * Initialize the default SAX handler
+ * Initialize the default XML SAX handler
  */
 void
 initxmlDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
@@ -1720,9 +1722,11 @@ xmlDefaultSAXHandlerInit(void)
 #ifdef LIBXML_HTML_ENABLED
 
 /**
- * htmlDefaultSAXHandlerInit:
+ * inithtmlDefaultSAXHandlerInit:
+ * @hdlr:  the SAX handler
+ * @warning:  flag if non-zero sets the handler warning procedure
  *
- * Initialize the default SAX handler
+ * Initialize the default HTML SAX handler
  */
 void
 inithtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
@@ -1776,6 +1780,13 @@ htmlDefaultSAXHandlerInit(void)
 
 #ifdef LIBXML_DOCB_ENABLED
 
+/**
+ * initdocbDefaultSAXHandlerInit:
+ * @hdlr:  the SAX handler
+ * @warning:  flag if non-zero sets the handler warning procedure
+ *
+ * Initialize the default DocBook SAX handler
+ */
 void
 initdocbDefaultSAXHandler(xmlSAXHandler *hdlr)
 {

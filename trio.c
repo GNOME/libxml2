@@ -825,7 +825,7 @@ TrioGetPosition(const char *format,
  * TrioFindNamespace [private]
  *
  * Find registered user-defined specifier.
- * The prev argument is used for optimisation only.
+ * The prev argument is used for optimization only.
  */
 static userdef_T *
 TrioFindNamespace(const char *name, userdef_T **prev)
@@ -4025,7 +4025,7 @@ trio_print_pointer(void *ref,
        * The subtraction of the null pointer is a workaround
        * to avoid a compiler warning. The performance overhead
        * is negligible (and likely to be removed by an
-       * optimising compiler). The (char *) casting is done
+       * optimizing compiler). The (char *) casting is done
        * to please ANSI C++.
        */
       number = (trio_uintmax_t)((char *)pointer - (char *)0);
@@ -4264,7 +4264,7 @@ TrioGetCharacterClass(const char *format,
 	    
 		if (internalCollationUnconverted)
 		  {
-		    /* Lazy evalutation of collation array */
+		    /* Lazy evaluation of collation array */
 		    TrioGetCollation();
 		    internalCollationUnconverted = FALSE;
 		  }
@@ -4832,7 +4832,7 @@ TrioReadDouble(trio_T *self,
 	}
       if (StrEqual(doubleString, NAN_LOWER))
 	{
-	  /* NaN must not have a preceeding + nor - */
+	  /* NaN must not have a preceding + nor - */
 	  *target = trio_nan();
 	  return TRUE;
 	}

@@ -12,9 +12,9 @@
 #define HAVE_NETINET_IN_H
 #define HAVE_NETDB_H
 #define HAVE_SYS_TIME_H
-#else /* STANDALONE */
+#else /* TESTING */
 #define NEED_SOCKETS
-#endif /* STANDALONE */
+#endif /* TESTING */
 
 #include "libxml.h"
 
@@ -768,7 +768,7 @@ xmlNanoFTPCheckResponse(void *ctx) {
 }
 
 /**
- * Send the user authentification
+ * Send the user authentication
  */
 
 static int
@@ -793,7 +793,7 @@ xmlNanoFTPSendUser(void *ctx) {
 }
 
 /**
- * Send the password authentification
+ * Send the password authentication
  */
 
 static int
@@ -1013,7 +1013,7 @@ xmlNanoFTPConnect(void *ctx) {
 	 */
 	switch (proxyType) {
 	    case 0:
-		/* we will try in seqence */
+		/* we will try in sequence */
 	    case 1:
 		/* Using SITE command */
 		snprintf(buf, sizeof(buf), "SITE %s\r\n", ctxt->hostname);

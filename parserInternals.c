@@ -1,6 +1,6 @@
 /*
- * parser.c : Internal routines (and obsolete ones) needed for the
- *            XML and HTML parsers.
+ * parserInternals.c : Internal routines (and obsolete ones) needed for the
+ *                     XML and HTML parsers.
  *
  * See Copyright for the status of this software.
  *
@@ -956,7 +956,7 @@ xmlParserInputRead(xmlParserInputPtr in, int len) {
     ret = xmlParserInputBufferRead(in->buf, len);
     if (in->base != in->buf->buffer->content) {
         /*
-	 * the buffer has been realloced
+	 * the buffer has been reallocated
 	 */
 	indx = in->cur - in->base;
 	in->base = in->buf->buffer->content;
@@ -1015,7 +1015,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
      */
     if (in->base != in->buf->buffer->content) {
         /*
-	 * the buffer has been realloced
+	 * the buffer has been reallocated
 	 */
 	indx = in->cur - in->base;
 	in->base = in->buf->buffer->content;
@@ -1053,7 +1053,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     used = in->cur - in->buf->buffer->content;
     /*
      * Do not shrink on large buffers whose only a tiny fraction
-     * was consumned
+     * was consumed
      */
     if ((int) in->buf->buffer->use > used + 2 * INPUT_CHUNK)
 	return;
@@ -1074,7 +1074,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     xmlParserInputBufferRead(in->buf, 2 * INPUT_CHUNK);
     if (in->base != in->buf->buffer->content) {
         /*
-	 * the buffer has been realloced
+	 * the buffer has been ereallocated
 	 */
 	indx = in->cur - in->base;
 	in->base = in->buf->buffer->content;
@@ -1192,7 +1192,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 	    } else {
 		/*
 		 * Assume it's a fixed length encoding (1) with
-		 * a compatibke encoding for the ASCII set, since
+		 * a compatible encoding for the ASCII set, since
 		 * XML constructs only use < 128 chars
 		 */
 	        ctxt->input->cur++;
@@ -1216,7 +1216,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
-     * input encoding didn't get properly advertized in the
+     * input encoding didn't get properly advertised in the
      * declaration header. Report the error and switch the encoding
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
@@ -1240,7 +1240,7 @@ encoding_error:
  * @ctxt:  the XML parser context
  * @len:  pointer to the length of the char read
  *
- * The current char value, if using UTF-8 this may actaully span multiple
+ * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer. Implement the end of line normalization:
  * 2.11 End-of-Line Handling
  * Wherever an external parsed entity or the literal entity value
@@ -1344,7 +1344,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     }
     /*
      * Assume it's a fixed length encoding (1) with
-     * a compatibke encoding for the ASCII set, since
+     * a compatible encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */
     *len = 1;
@@ -1359,7 +1359,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
-     * input encoding didn't get properly advertized in the
+     * input encoding didn't get properly advertised in the
      * declaration header. Report the error and switch the encoding
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
@@ -1384,7 +1384,7 @@ encoding_error:
  * @cur:  pointer to the beginning of the char
  * @len:  pointer to the length of the char read
  *
- * The current char value, if using UTF-8 this may actaully span multiple
+ * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer.
  *
  * Returns the current char value and its length
@@ -1456,7 +1456,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
     }
     /*
      * Assume it's a fixed length encoding (1) with
-     * a compatibke encoding for the ASCII set, since
+     * a compatible encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */
     *len = 1;
@@ -1464,7 +1464,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
 encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
-     * input encoding didn't get properly advertized in the
+     * input encoding didn't get properly advertised in the
      * declaration header. Report the error and switch the encoding
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
@@ -1484,7 +1484,7 @@ encoding_error:
 
 /**
  * xmlCopyCharMultiByte:
- * @out:  pointer to an arry of xmlChar
+ * @out:  pointer to an array of xmlChar
  * @val:  the char value
  *
  * append the char value in the array 
@@ -1510,7 +1510,7 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
 	else if (val < 0x110000)  { *out++= (val >> 18) | 0xF0;  bits=  12; }
 	else {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "Internal error, xmlCopyChar 0x%X out of bound\n",
+		    "Internal error, xmlCopyCharMultiByte 0x%X out of bound\n",
 		    val);
 	    return(0);
 	}
@@ -1525,7 +1525,7 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
 /**
  * xmlCopyChar:
  * @len:  Ignored, compatibility
- * @out:  pointer to an arry of xmlChar
+ * @out:  pointer to an array of xmlChar
  * @val:  the char value
  *
  * append the char value in the array 
@@ -1775,7 +1775,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		    }
 
 		    /*
-		     * Shring the current input buffer.
+		     * Shrink the current input buffer.
 		     * Move it as the raw buffer and create a new input buffer
 		     */
 		    processed = ctxt->input->cur - ctxt->input->base;
@@ -1785,7 +1785,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 
 		    if (ctxt->html) {
 			/*
-			 * converst as much as possbile of the buffer
+			 * convert as much as possible of the buffer
 			 */
 			nbchars = xmlCharEncInFunc(ctxt->input->buf->encoder,
 				                   ctxt->input->buf->buffer,
@@ -1821,13 +1821,13 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		     */
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
-					 "xmlSwitchEncoding : no input\n");
+					 "xmlSwitchToEncoding : no input\n");
 		    return(-1);
 		} else {
 		    int processed;
 
 		    /*
-		     * Shring the current input buffer.
+		     * Shrink the current input buffer.
 		     * Move it as the raw buffer and create a new input buffer
 		     */
 		    processed = ctxt->input->cur - ctxt->input->base;
@@ -1865,7 +1865,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,
-		                 "xmlSwitchEncoding : no input\n");
+		                 "xmlSwitchToEncoding : no input\n");
 	    return(-1);
 	}
 	/*
@@ -2561,8 +2561,8 @@ xmlLineNumbersDefault(int val) {
  * Set and return the previous value for default entity support.
  * Initially the parser always keep entity references instead of substituting
  * entity values in the output. This function has to be used to change the
- * default parser behaviour
- * SAX::subtituteEntities() has to be used for changing that on a file by
+ * default parser behavior
+ * SAX::substituteEntities() has to be used for changing that on a file by
  * file basis.
  *
  * Returns the last value for 0 for no substitution, 1 for substitution.
@@ -2589,7 +2589,7 @@ xmlSubstituteEntitiesDefault(int val) {
  * ignorableWhitespace() are only generated when running the parser in
  * validating mode and when the current element doesn't allow CDATA or
  * mixed content.
- * This function is provided as a way to force the standard behaviour 
+ * This function is provided as a way to force the standard behavior 
  * on 1.X libs and to switch back to the old mode for compatibility when
  * running 1.X client code on 2.X . Upgrade of 1.X code should be done
  * by using xmlIsBlankNode() commodity function to detect the "empty"
@@ -2750,7 +2750,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
     }
 
     /*
-     * Ok loop until we reach one of the ending char or a size limit.
+     * OK loop until we reach one of the ending char or a size limit.
      */
     GROW;
     c = CUR_CHAR(l);
@@ -3281,7 +3281,7 @@ xmlScanName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
  * [66] CharRef ::= '&#' [0-9]+ ';' |
  *                  '&#x' [0-9a-fA-F]+ ';'
  *
- * A PEReference may have been detectect in the current input stream
+ * A PEReference may have been detected in the current input stream
  * the handling is done accordingly to 
  *      http://www.w3.org/TR/REC-xml#entproc
  */
@@ -3344,7 +3344,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 		ctxt->errNo = XML_ERR_CHARREF_IN_DTD;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
-		           "CharRef are forbiden in DTDs!\n");
+		           "CharRef are forbidden in DTDs!\n");
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 		return;
@@ -3416,7 +3416,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 	    /*
 	     * NOTE: in the case of attributes values, we don't do the
 	     *       substitution here unless we are in a mode where
-	     *       the parser is explicitely asked to substitute
+	     *       the parser is explicitly asked to substitute
 	     *       entities. The SAX callback is called with values
 	     *       without entity substitution.
 	     *       This will then be handled by xmlStringDecodeEntities
@@ -3432,7 +3432,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 	    ctxt->errNo = XML_ERR_ENTITYREF_IN_DTD;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData, 
-		       "Entity references are forbiden in DTDs!\n");
+		       "Entity references are forbidden in DTDs!\n");
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
 	    return;
@@ -3582,7 +3582,7 @@ handle_as_char:
  * Creation of a Namespace, the old way using PI and without scoping
  *   DEPRECATED !!!
  * It now create a namespace on the root element of the document if found.
- * Returns NULL this functionnality had been removed
+ * Returns NULL this functionality had been removed
  */
 xmlNsPtr
 xmlNewGlobalNs(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED,
@@ -3651,7 +3651,7 @@ xmlUpgradeOldNs(xmlDocPtr doc ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlNewGlobalNs() deprecated function reached\n");
+		"xmlUpgradeOldNs() deprecated function reached\n");
 	deprecated = 1;
     }
 #if 0

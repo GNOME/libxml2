@@ -1,5 +1,5 @@
 /*
- * HTMLtree.c : implemetation of access function for an HTML tree.
+ * HTMLtree.c : implementation of access function for an HTML tree.
  *
  * See Copyright for the status of this software.
  *
@@ -223,7 +223,7 @@ found_head:
 found_meta:
     if (encoding != NULL) {
 	/*
-	 * Create a new Meta element with the right aatributes
+	 * Create a new Meta element with the right attributes
 	 */
 
 	meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
@@ -435,7 +435,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"htmlNodeDump : node == NULL\n");
+		"htmlNodeDumpFormat : node == NULL\n");
 	return;
     }
     /*
@@ -517,7 +517,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     }
 
     /*
-     * Get specific HTML info for taht node.
+     * Get specific HTML info for that node.
      */
     info = htmlTagLookup(cur->name);
 
@@ -693,7 +693,7 @@ htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur, int format) {
     if (cur->intSubset != NULL)
         htmlDtdDump(buf, cur);
     else {
-	/* Default to HTML-4.0 transitionnal @@@@ */
+	/* Default to HTML-4.0 transitional @@@@ */
 	xmlBufferWriteChar(buf, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">");
 
     }
@@ -808,7 +808,7 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"htmlDtdDump : no internal subset\n");
+		"htmlDtdDumpOutput : no internal subset\n");
 	return;
     }
     xmlOutputBufferWriteString(buf, "<!DOCTYPE ");
@@ -849,7 +849,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"htmlAttrDump : property == NULL\n");
+		"htmlAttrDumpOutput : property == NULL\n");
 	return;
     }
     xmlOutputBufferWriteString(buf, " ");
@@ -879,7 +879,7 @@ static void
 htmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const char *encoding) {
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"htmlAttrListDump : property == NULL\n");
+		"htmlAttrListDumpOutput : property == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -907,7 +907,7 @@ htmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	               xmlNodePtr cur, const char *encoding, int format) {
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"htmlNodeListDump : node == NULL\n");
+		"htmlNodeListDumpOutput : node == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -933,7 +933,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"htmlNodeDump : node == NULL\n");
+		"htmlNodeDumpFormatOutput : node == NULL\n");
 	return;
     }
     /*
@@ -1018,7 +1018,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     }
 
     /*
-     * Get specific HTML info for taht node.
+     * Get specific HTML info for that node.
      */
     info = htmlTagLookup(cur->name);
 

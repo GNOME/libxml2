@@ -1,5 +1,5 @@
 /*
- * SGMLparser.h : interface for a DocBook SGML non-verifying parser
+ * DOCBparser.h : interface for a DocBook SGML non-verifying parser
  *
  * See Copyright for the status of this software.
  *

@@ -303,7 +303,7 @@ int		xmlXPathIsInf	(double val);
  * xmlXPathNodeSetGetLength:
  * @ns:  a node-set
  *
- * Implement a functionnality similar to the DOM NodeList.length
+ * Implement a functionality similar to the DOM NodeList.length
  *
  * Returns the number of nodes in the node-set.
  */
@@ -313,7 +313,7 @@ int		xmlXPathIsInf	(double val);
  * @ns:  a node-set
  * @index:  index of a node in the set
  *
- * Implements a functionnality similar to the DOM NodeList.item()
+ * Implements a functionality similar to the DOM NodeList.item()
  *
  * Returns the xmlNodePtr at the given @index in @ns or NULL if
  *         @index is out of range (0 to length-1)
@@ -377,7 +377,7 @@ void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
  * Evaluation functions.
  */
 xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
-						 xmlXPathContextPtr ctxt);
+						 xmlXPathContextPtr ctx);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 int                xmlXPathEvalPredicate	(xmlXPathContextPtr ctxt,

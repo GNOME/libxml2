@@ -87,7 +87,7 @@ xlinkGetDefaultDetect	(void) {
 
 /**
  * xlinkSetDefaultDetect:
- * @func: pointer to the new detction routine.
+ * @func: pointer to the new detection routine.
  *
  * Set the default xlink detection routine
  */

@@ -672,7 +672,7 @@ xmlXIncludePreProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  *
  * Find and load the infoset replacement for the given node.
  *
- * Returns 0 if substition succeeded, -1 if some processing failed
+ * Returns 0 if substitution succeeded, -1 if some processing failed
  */
 static int
 xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
@@ -739,7 +739,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	xmlChar *escbase;
 	xmlChar *eschref;
 	/*
-	 * Some escapeing may be needed
+	 * Some escaping may be needed
 	 */
 	escbase = xmlURIEscape(base);
 	eschref = xmlURIEscape(href);
@@ -796,7 +796,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
  *
  * Inplement the infoset replacement for the given node
  *
- * Returns 0 if substition succeeded, -1 if some processing failed
+ * Returns 0 if substitution succeeded, -1 if some processing failed
  */
 static int
 xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
@@ -864,7 +864,7 @@ xmlXIncludeTestNode(xmlNodePtr node) {
  *
  * Implement the XInclude substitution on the XML document @doc
  *
- * Returns 0 if no substition were done, -1 if some processing failed
+ * Returns 0 if no substitution were done, -1 if some processing failed
  *    or the number of substitutions done.
  */
 static int
@@ -932,7 +932,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
  *
  * Implement the XInclude substitution on the XML document @doc
  *
- * Returns 0 if no substition were done, -1 if some processing failed
+ * Returns 0 if no substitution were done, -1 if some processing failed
  *    or the number of substitutions done.
  */
 int

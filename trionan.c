@@ -110,7 +110,7 @@ static const char rcsid[] = "@(#)$Id$";
  *     maximum exponent is 10 bits wide (2^10 == 1024).
  *   o DBL_MANT_DIG == 53: The mantissa is 52 bits wide, but because
  *     numbers are normalized the initial binary 1 is represented
- *     implictly (the so-called "hidden bit"), which leaves us with
+ *     implicitly (the so-called "hidden bit"), which leaves us with
  *     the ability to represent 53 bits wide mantissa.
  */
 #if (FLT_RADIX == 2) && (DBL_MAX_EXP == 1024) && (DBL_MANT_DIG == 53)

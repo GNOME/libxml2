@@ -63,7 +63,7 @@ typedef enum {
 typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
 
 /**
- * The link detection module interract with the upper layers using
+ * The link detection module interact with the upper layers using
  * a set of callback registered at parsing time.
  */
 
@@ -155,7 +155,7 @@ struct _xlinkHandler {
 };
 
 /*
- * the default detection routine, can be overriden, they call the default
+ * the default detection routine, can be overridden, they call the default
  * detection callbacks. 
  */
 

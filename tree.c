@@ -413,7 +413,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
 	xmlNodePtr next, c = cur->children;
 
 	/*
-	 * Cleanup all the DTD comments they are not in the Dtd
+	 * Cleanup all the DTD comments they are not in the DTD
 	 * indexes.
 	 */
         while (c != NULL) {
@@ -1628,7 +1628,7 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
 	    xmlBufferAdd(cur->content, ent->content, -1);
 #endif
 	/*
-	 * The parent pointer in entity is a Dtd pointer and thus is NOT
+	 * The parent pointer in entity is a DTD pointer and thus is NOT
 	 * updated.  Not sure if this is 100% correct.
 	 *  -George
 	 */
@@ -2380,7 +2380,7 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	     *
 	     * The xmlStrEqual comparisons need to be done when (happened with
 	     * XML::libXML and XML::libXSLT) the library is included twice
-	     * statically in the binary and a tree allocated by one occurent
+	     * statically in the binary and a tree allocated by one occurrence
 	     * of the lib gets freed by the other occurrence, in this case
 	     * the string addresses compare are not sufficient.
 	     */
@@ -2447,7 +2447,7 @@ xmlFreeNode(xmlNodePtr cur) {
      *
      * The xmlStrEqual comparisons need to be done when (happened with
      * XML::libXML and XML::libXSLT) the library is included twice statically
-     * in the binary and a tree allocated by one occurent of the lib gets
+     * in the binary and a tree allocated by one occurence of the lib gets
      * freed by the other occurrence, in this case the string addresses compare
      * are not sufficient.
      */
@@ -2955,7 +2955,7 @@ xmlCopyDtd(xmlDtdPtr dtd) {
  * @recursive:  if 1 do a recursive copy.
  *
  * Do a copy of the document info. If recursive, the content tree will
- * be copied too as well as Dtd, namespaces and entities.
+ * be copied too as well as DTD, namespaces and entities.
  *
  * Returns: a new #xmlDocPtr, or NULL in case of error.
  */

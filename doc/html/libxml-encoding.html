@@ -123,7 +123,7 @@ NAME="LIBXML-ENCODING"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN23635"
+NAME="AEN23659"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN23635"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN23638"
+NAME="AEN23662"
 ></A
 ><H2
 >Synopsis</H2
@@ -382,7 +382,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23698"
+NAME="AEN23722"
 ></A
 ><H2
 >Description</H2
@@ -392,14 +392,14 @@ NAME="AEN23698"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23701"
+NAME="AEN23725"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23703"
+NAME="AEN23727"
 ></A
 ><H3
 ><A
@@ -454,7 +454,7 @@ given to the parser itself. The BOM for UTF16 and the encoding
 declaration are looked at and a converter is looked for at that
 point. If not found the parser stops here as asked by the XML REC
 Converter can be registered by the user using xmlRegisterCharEncodingHandler
-but the currentl form doesn't allow stateful transcoding (a serious
+but the current form doesn't allow stateful transcoding (a serious
 problem agreed !). If iconv has been found it will be used
 automatically and allow stateful transcoding, the simplest is then
 to be sure to enable icon and to provide iconv libs for the encoding
@@ -465,7 +465,7 @@ support needed.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23710"
+NAME="AEN23734"
 ></A
 ><H3
 ><A
@@ -496,7 +496,7 @@ it to an UTF-8 block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23716"
+NAME="AEN23740"
 ></A
 ><P
 ></P
@@ -523,7 +523,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer ot an array of bytes to store the UTF-8 result</TD
+>  a pointer to an array of bytes to store the UTF-8 result</TD
 ></TR
 ><TR
 ><TD
@@ -562,7 +562,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer ot an array of chars in the original encoding</TD
+>  a pointer to an array of chars in the original encoding</TD
 ></TR
 ><TR
 ><TD
@@ -613,7 +613,7 @@ CLASS="PARAMETER"
 ><I
 >outlen</I
 ></TT
-> after return is the number of ocetes consumed.</TD
+> after return is the number of octets consumed.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -624,7 +624,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23745"
+NAME="AEN23769"
 ></A
 ><H3
 ><A
@@ -657,7 +657,7 @@ in = NULL. If stateful this should also initialize the encoder state</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23751"
+NAME="AEN23775"
 ></A
 ><P
 ></P
@@ -684,7 +684,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer ot an array of bytes to store the result</TD
+>  a pointer to an array of bytes to store the result</TD
 ></TR
 ><TR
 ><TD
@@ -723,7 +723,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer ot an array of UTF-8 chars</TD
+>  a pointer to an array of UTF-8 chars</TD
 ></TR
 ><TR
 ><TD
@@ -785,7 +785,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23780"
+NAME="AEN23804"
 ></A
 ><H3
 ><A
@@ -819,7 +819,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23785"
+NAME="AEN23809"
 ></A
 ><H3
 ><A
@@ -845,7 +845,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23790"
+NAME="AEN23814"
 ></A
 ><H3
 ><A
@@ -876,7 +876,7 @@ in normal processing.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23796"
+NAME="AEN23820"
 ></A
 ><H3
 ><A
@@ -905,7 +905,7 @@ unregisters all the encoding handlers and the aliases.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23802"
+NAME="AEN23826"
 ></A
 ><H3
 ><A
@@ -929,13 +929,13 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ></TR
 ></TABLE
 ><P
->Register the char encoding handler, surprizing, isn't it ?</P
+>Register the char encoding handler, surprising, isn't it ?</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23809"
+NAME="AEN23833"
 ></A
 ><P
 ></P
@@ -973,7 +973,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23818"
+NAME="AEN23842"
 ></A
 ><H3
 ><A
@@ -1001,13 +1001,13 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ></TR
 ></TABLE
 ><P
->Search in the registrered set the handler able to read/write that encoding.</P
+>Search in the registered set the handler able to read/write that encoding.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23826"
+NAME="AEN23850"
 ></A
 ><P
 ></P
@@ -1060,7 +1060,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23839"
+NAME="AEN23863"
 ></A
 ><H3
 ><A
@@ -1085,13 +1085,13 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ></TR
 ></TABLE
 ><P
->Search in the registrered set the handler able to read/write that encoding.</P
+>Search in the registered set the handler able to read/write that encoding.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23846"
+NAME="AEN23870"
 ></A
 ><P
 ></P
@@ -1144,7 +1144,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23859"
+NAME="AEN23883"
 ></A
 ><H3
 ><A
@@ -1183,7 +1183,7 @@ will be overwritten.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23867"
+NAME="AEN23891"
 ></A
 ><P
 ></P
@@ -1253,7 +1253,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23884"
+NAME="AEN23908"
 ></A
 ><H3
 ><A
@@ -1285,7 +1285,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23891"
+NAME="AEN23915"
 ></A
 ><P
 ></P
@@ -1338,7 +1338,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23904"
+NAME="AEN23928"
 ></A
 ><H3
 ><A
@@ -1365,7 +1365,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23910"
+NAME="AEN23934"
 ></A
 ><P
 ></P
@@ -1418,7 +1418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23923"
+NAME="AEN23947"
 ></A
 ><H3
 ><A
@@ -1446,7 +1446,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23929"
+NAME="AEN23953"
 ></A
 ><H3
 ><A
@@ -1470,7 +1470,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ></TR
 ></TABLE
 ><P
->Conpare the string to the known encoding schemes already known. Note
+>Compare the string to the known encoding schemes already known. Note
 that the comparison is case insensitive accordingly to the section
 [XML] 4.3.3 Character Encoding in Entities.</P
 ><P
@@ -1478,7 +1478,7 @@ that the comparison is case insensitive accordingly to the section
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23936"
+NAME="AEN23960"
 ></A
 ><P
 ></P
@@ -1532,7 +1532,7 @@ if not recognized.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23949"
+NAME="AEN23973"
 ></A
 ><H3
 ><A
@@ -1567,7 +1567,7 @@ Section 4.3.3  Character Encoding in Entities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23957"
+NAME="AEN23981"
 ></A
 ><P
 ></P
@@ -1620,7 +1620,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23970"
+NAME="AEN23994"
 ></A
 ><H3
 ><A
@@ -1652,7 +1652,7 @@ accordingly of the non-normative appendix F of the XML-1.0 recommendation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23977"
+NAME="AEN24001"
 ></A
 ><P
 ></P
@@ -1723,7 +1723,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23994"
+NAME="AEN24018"
 ></A
 ><H3
 ><A
@@ -1771,7 +1771,7 @@ the content will be automatically remapped to a CharRef sequence.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24004"
+NAME="AEN24028"
 ></A
 ><P
 ></P
@@ -1861,7 +1861,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24025"
+NAME="AEN24049"
 ></A
 ><H3
 ><A
@@ -1899,7 +1899,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24034"
+NAME="AEN24058"
 ></A
 ><P
 ></P
@@ -1926,7 +1926,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->	char enconding transformation data structure</TD
+>	char encoding transformation data structure</TD
 ></TR
 ><TR
 ><TD
@@ -1989,7 +1989,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24055"
+NAME="AEN24079"
 ></A
 ><H3
 ><A
@@ -2028,7 +2028,7 @@ the very first line, i.e. limit itself to 45 chars.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24064"
+NAME="AEN24088"
 ></A
 ><P
 ></P
@@ -2118,7 +2118,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24085"
+NAME="AEN24109"
 ></A
 ><H3
 ><A
@@ -2142,13 +2142,13 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLER"
 ></TR
 ></TABLE
 ><P
->Generic front-end for hencoding handler close function</P
+>Generic front-end for encoding handler close function</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24092"
+NAME="AEN24116"
 ></A
 ><P
 ></P
@@ -2201,7 +2201,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24105"
+NAME="AEN24129"
 ></A
 ><H3
 ><A
@@ -2232,7 +2232,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24111"
+NAME="AEN24135"
 ></A
 ><P
 ></P
@@ -2342,7 +2342,7 @@ CLASS="PARAMETER"
 >inlen</I
 ></TT
 > after return is the number of octets consumed
-as the return value is positive, else unpredictiable.
+as the return value is positive, else unpredictable.
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -2359,7 +2359,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24140"
+NAME="AEN24164"
 ></A
 ><H3
 ><A
@@ -2390,7 +2390,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24146"
+NAME="AEN24170"
 ></A
 ><P
 ></P
@@ -2500,7 +2500,7 @@ CLASS="PARAMETER"
 >inlen</I
 ></TT
 > after return is the number of octets consumed
-as the return value is positive, else unpredictiable.
+as the return value is positive, else unpredictable.
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -2517,7 +2517,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24175"
+NAME="AEN24199"
 ></A
 ><H3
 ><A
@@ -2552,14 +2552,14 @@ CLASS="PARAMETER"
 null-terminated. This function is not super-strict, as it will
 allow longer utf-8 sequences than necessary. Note that Java is
 capable of producing these sequences if provoked. Also note, this
-routine checks for the 4-byte maxiumum size, but does not check for
+routine checks for the 4-byte maximum size, but does not check for
 0x10ffff maximum value.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24183"
+NAME="AEN24207"
 ></A
 ><P
 ></P
@@ -2617,7 +2617,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24197"
+NAME="AEN24221"
 ></A
 ><H3
 ><A
@@ -2648,7 +2648,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24204"
+NAME="AEN24228"
 ></A
 ><P
 ></P
@@ -2719,7 +2719,7 @@ the first 'len' characters of ARRAY&#13;</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24221"
+NAME="AEN24245"
 ></A
 ><H3
 ><A
@@ -2753,7 +2753,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24229"
+NAME="AEN24253"
 ></A
 ><P
 ></P
@@ -2828,7 +2828,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24247"
+NAME="AEN24271"
 ></A
 ><H3
 ><A
@@ -2863,7 +2863,7 @@ character from a string array</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24255"
+NAME="AEN24279"
 ></A
 ><P
 ></P
@@ -2933,7 +2933,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24272"
+NAME="AEN24296"
 ></A
 ><H3
 ><A
@@ -2967,7 +2967,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24280"
+NAME="AEN24304"
 ></A
 ><P
 ></P
@@ -3038,7 +3038,7 @@ or -1 if not found</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24297"
+NAME="AEN24321"
 ></A
 ><H3
 ><A
@@ -3073,7 +3073,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24305"
+NAME="AEN24329"
 ></A
 ><P
 ></P
@@ -3161,7 +3161,7 @@ or NULL if any problem</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24326"
+NAME="AEN24350"
 ></A
 ><H3
 ><A
@@ -3192,7 +3192,7 @@ checking of the content of the string.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24333"
+NAME="AEN24357"
 ></A
 ><P
 ></P

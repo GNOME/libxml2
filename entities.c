@@ -1,5 +1,5 @@
 /*
- * entities.c : implementation for the XML entities handking
+ * entities.c : implementation for the XML entities handling
  *
  * See Copyright for the status of this software.
  *
@@ -185,7 +185,7 @@ void xmlCleanupPredefinedEntities(void) {
  *
  * Check whether this name is an predefined entity.
  *
- * Returns NULL if not, othervise the entity
+ * Returns NULL if not, otherwise the entity
  */
 xmlEntityPtr
 xmlGetPredefinedEntity(const xmlChar *name) {
@@ -229,7 +229,7 @@ xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
     if (ret == NULL) return(NULL);
 
     /*
-     * Link it to the Dtd
+     * Link it to the DTD
      */
     ret->parent = dtd;
     ret->doc = dtd->doc;
@@ -270,7 +270,7 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
     }
     if (doc->intSubset == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-	        "xmlAddDtdEntity: document without internal subset !\n");
+	        "xmlAddDocEntity: document without internal subset !\n");
 	return(NULL);
     }
     dtd = doc->intSubset;
@@ -278,7 +278,7 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
     if (ret == NULL) return(NULL);
 
     /*
-     * Link it to the Dtd
+     * Link it to the DTD
      */
     ret->parent = dtd;
     ret->doc = dtd->doc;
@@ -341,7 +341,7 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
  * @doc:  the document referencing the entity
  * @name:  the entity name
  *
- * Do an entity lookup in the Dtd entity hash table and
+ * Do an entity lookup in the DTD entity hash table and
  * returns the corresponding entity, if found.
  * 
  * Returns A pointer to the entity structure or NULL if not found.
@@ -363,7 +363,7 @@ xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
  * @name:  the entity name
  *
  * Do an entity lookup in the document entity hash table and
- * returns the corrsponding entity, otherwise a lookup is done
+ * returns the corresponding entity, otherwise a lookup is done
  * in the predefined entities too.
  * 
  * Returns A pointer to the entity structure or NULL if not found.
@@ -975,7 +975,7 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 	    break;
 	default:
 	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpEntitiesTable: internal: unknown type %d\n",
+		"xmlDumpEntitiesDecl: internal: unknown type %d\n",
 		    ent->etype);
     }
 }

@@ -1,5 +1,5 @@
 /**
- * uri.c: interfaces of the Catalog handling system
+ * catalog.h: interfaces of the Catalog handling system
  *
  * Reference:  SGML Open Technical Resolution TR9401:1997.
  *             http://www.jclark.com/sp/catalog.htm

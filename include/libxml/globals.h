@@ -92,7 +92,7 @@ void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
 
 /*
  * In general the memory allocation entry points are not kept
- * thread specific but this can be overriden by LIBXML_THREAD_ALLOC_ENABLED
+ * thread specific but this can be overridden by LIBXML_THREAD_ALLOC_ENABLED
  *    - xmlMalloc
  *    - xmlRealloc
  *    - xmlMemStrdup

@@ -1,5 +1,5 @@
 /*
- * entities.h : interface for the XML entities handking
+ * entities.h : interface for the XML entities handling
  *
  * See Copyright for the status of this software.
  *
@@ -35,7 +35,7 @@ typedef enum {
 typedef struct _xmlEntity xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 struct _xmlEntity {
-    void           *_private;	        /* for Corba, must be first ! */
+    void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */
     const xmlChar          *name;	/* Attribute name */
     struct _xmlNode    *children;	/* NULL */
@@ -57,8 +57,8 @@ struct _xmlEntity {
 };
 
 /*
- * ALl entities are stored in an hash table
- * there is 2 separate hash tables for global and parmeter entities
+ * All entities are stored in an hash table
+ * there is 2 separate hash tables for global and parameter entities
  */
 
 typedef struct _xmlHashTable xmlEntitiesTable;

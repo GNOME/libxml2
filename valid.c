@@ -72,7 +72,7 @@ scope type name##VPop(xmlValidCtxtPtr ctxt) {				\
 
 /*
  * I use a home made algorithm less complex and easier to
- * debug/maintin than a generic NFA -> DFA state based algo. The
+ * debug/maintain than a generic NFA -> DFA state based algo. The
  * only restriction is on the deepness of the tree limited by the
  * size of the occurs bitfield
  *
@@ -85,7 +85,7 @@ scope type name##VPop(xmlValidCtxtPtr ctxt) {				\
 typedef struct _xmlValidState {
     xmlElementContentPtr cont;	/* pointer to the content model subtree */
     xmlNodePtr           node;	/* pointer to the current node in the list */
-    long                 occurs;/* bitfield for multiple occurences */
+    long                 occurs;/* bitfield for multiple occurrences */
     unsigned char        depth; /* current depth in the overall tree */
     unsigned char        state; /* ROLLBACK_XXX */
 } _xmlValidState;
@@ -302,7 +302,7 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
 #define DEBUG_VALID_MSG(m)
 #endif
 
-/* TODO: use hash table for accesses to elem and attribute dedinitions */
+/* TODO: use hash table for accesses to elem and attribute definitions */
 
 #define VERROR							\
    if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
@@ -390,7 +390,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
  *
  * Allocate an element content structure.
  *
- * Returns NULL if not, othervise the new element content structure
+ * Returns NULL if not, otherwise the new element content structure
  */
 xmlElementContentPtr
 xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
@@ -722,7 +722,7 @@ xmlFreeElement(xmlElementPtr elem) {
  *
  * Register a new element declaration
  *
- * Returns NULL if not, othervise the entity
+ * Returns NULL if not, otherwise the entity
  */
 xmlElementPtr
 xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
@@ -821,7 +821,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     if (ret != NULL) {
 	if (ret->etype != XML_ELEMENT_TYPE_UNDEFINED) {
 	    /*
-	     * The element is already defined in this Dtd.
+	     * The element is already defined in this DTD.
 	     */
 	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
 	    if (uqname != NULL)
@@ -850,7 +850,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 	 */
 	if (xmlHashAddEntry2(table, name, ns, ret)) {
 	    /*
-	     * The element is already defined in this Dtd.
+	     * The element is already defined in this DTD.
 	     */
 	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
 	    xmlFreeElement(ret);
@@ -868,7 +868,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     ret->attributes = oldAttributes;
 
     /*
-     * Link it to the Dtd
+     * Link it to the DTD
      */
     ret->parent = dtd;
     ret->doc = dtd->doc;
@@ -1133,7 +1133,7 @@ xmlScanAttributeDeclCallback(xmlAttributePtr attr, xmlAttributePtr *list,
  * @elem:  the element name
  *
  * When inserting a new element scan the DtD for existing attributes
- * for taht element and initialize the Attribute chain
+ * for that element and initialize the Attribute chain
  *
  * Returns the pointer to the first attribute decl in the chain,
  *         possibly NULL.
@@ -1232,7 +1232,7 @@ xmlFreeAttribute(xmlAttributePtr attr) {
  * Register a new attribute declaration
  * Note that @tree becomes the ownership of the DTD
  *
- * Returns NULL if not new, othervise the attribute decl
+ * Returns NULL if not new, otherwise the attribute decl
  */
 xmlAttributePtr
 xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
@@ -1340,7 +1340,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
      */
     if (xmlHashAddEntry3(table, name, ns, elem, ret) < 0) {
 	/*
-	 * The attribute is already defined in this Dtd.
+	 * The attribute is already defined in this DTD.
 	 */
 	VWARNING(ctxt->userData,
 		 "Attribute %s on %s: already defined\n",
@@ -1363,7 +1363,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 		   elem, name);
 	/*
 	 * Insert namespace default def first they need to be
-	 * processed firt.
+	 * processed first.
 	 */
 	if ((xmlStrEqual(ret->name, BAD_CAST "xmlns")) ||
 	    ((ret->prefix != NULL &&
@@ -1392,7 +1392,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     }
 
     /*
-     * Link it to the Dtd
+     * Link it to the DTD
      */
     ret->parent = dtd;
     ret->doc = dtd->doc;
@@ -1515,7 +1515,7 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 	    break;
 	default:
 	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpAttributeTable: internal: unknown type %d\n",
+		"xmlDumpAttributeDecl: internal: unknown type %d\n",
 		    attr->atype);
     }
     switch (attr->def) {
@@ -1532,7 +1532,7 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 	    break;
 	default:
 	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpAttributeTable: internal: unknown default %d\n",
+		"xmlDumpAttributeDecl: internal: unknown default %d\n",
 		    attr->def);
     }
     if (attr->defaultValue != NULL) {
@@ -1601,7 +1601,7 @@ xmlFreeNotation(xmlNotationPtr nota) {
  *
  * Register a new notation declaration
  *
- * Returns NULL if not, othervise the entity
+ * Returns NULL if not, otherwise the entity
  */
 xmlNotationPtr
 xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
@@ -1803,7 +1803,7 @@ xmlFreeID(xmlIDPtr id) {
  *
  * Register a new id declaration
  *
- * Returns NULL if not, othervise the new xmlIDPtr
+ * Returns NULL if not, otherwise the new xmlIDPtr
  */
 xmlIDPtr 
 xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
@@ -1813,17 +1813,17 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 
     if (doc == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAddIDDecl: doc == NULL\n");
+		"xmlAddID: doc == NULL\n");
 	return(NULL);
     }
     if (value == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAddIDDecl: value == NULL\n");
+		"xmlAddID: value == NULL\n");
 	return(NULL);
     }
     if (attr == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAddIDDecl: attr == NULL\n");
+		"xmlAddID: attr == NULL\n");
 	return(NULL);
     }
 
@@ -1854,7 +1854,7 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 
     if (xmlHashAddEntry(table, value, ret) < 0) {
 	/*
-	 * The id is already defined in this Dtd.
+	 * The id is already defined in this DTD.
 	 */
 	VERROR(ctxt->userData, "ID %s already defined\n", value);
 	xmlFreeID(ret);
@@ -1880,7 +1880,7 @@ xmlFreeIDTable(xmlIDTablePtr table) {
  * @elem:  the element carrying the attribute
  * @attr:  the attribute
  *
- * Determine whether an attribute is of type ID. In case we have Dtd(s)
+ * Determine whether an attribute is of type ID. In case we have DTD(s)
  * then this is simple, otherwise we use an heuristic: name ID (upper
  * or lowercase).
  *
@@ -2048,7 +2048,7 @@ xmlFreeRefList(xmlListPtr list_ref) {
  * @data:  Contents of current link
  * @user:  Value supplied by the user
  *
- * Return 0 to abort the walk or 1 to continue
+ * Returns 0 to abort the walk or 1 to continue
  */
 static int
 xmlWalkRemoveRef(const void *data, const void *user)
@@ -2073,7 +2073,7 @@ xmlWalkRemoveRef(const void *data, const void *user)
  *
  * Register a new ref declaration
  *
- * Returns NULL if not, othervise the new xmlRefPtr
+ * Returns NULL if not, otherwise the new xmlRefPtr
  */
 xmlRefPtr 
 xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *value,
@@ -2084,17 +2084,17 @@ xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *v
 
     if (doc == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRefDecl: doc == NULL\n");
+            "xmlAddRef: doc == NULL\n");
         return(NULL);
     }
     if (value == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRefDecl: value == NULL\n");
+            "xmlAddRef: value == NULL\n");
         return(NULL);
     }
     if (attr == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRefDecl: attr == NULL\n");
+            "xmlAddRef: attr == NULL\n");
         return(NULL);
     }
 
@@ -2164,7 +2164,7 @@ xmlFreeRefTable(xmlRefTablePtr table) {
  * @elem:  the element carrying the attribute
  * @attr:  the attribute
  *
- * Determine whether an attribute is of type Ref. In case we have Dtd(s)
+ * Determine whether an attribute is of type Ref. In case we have DTD(s)
  * then this is simple, otherwise we use an heuristic: name Ref (upper
  * or lowercase).
  *
@@ -2264,12 +2264,12 @@ xmlGetRefs(xmlDocPtr doc, const xmlChar *ID) {
     xmlRefTablePtr table;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "xmlGetRef: doc == NULL\n");
+        xmlGenericError(xmlGenericErrorContext, "xmlGetRefs: doc == NULL\n");
         return(NULL);
     }
 
     if (ID == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "xmlGetRef: ID == NULL\n");
+        xmlGenericError(xmlGenericErrorContext, "xmlGetRefs: ID == NULL\n");
         return(NULL);
     }
 
@@ -2291,7 +2291,7 @@ xmlGetRefs(xmlDocPtr doc, const xmlChar *ID) {
  * @dtd:  a pointer to the DtD to search
  * @name:  the element name
  *
- * Search the Dtd for the description of this element
+ * Search the DTD for the description of this element
  *
  * returns the xmlElementPtr if found or NULL
  */
@@ -2321,7 +2321,7 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
  * @name:  the element name
  * @create:  create an empty description if not found
  *
- * Search the Dtd for the description of this element
+ * Search the DTD for the description of this element
  *
  * returns the xmlElementPtr if found or NULL
  */
@@ -2346,7 +2346,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
 	}
 	if (table == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetDtdElementDesc: Table creation failed!\n");
+		    "xmlGetDtdElementDesc2: Table creation failed!\n");
 	    return(NULL);
 	}
     }
@@ -2360,7 +2360,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
 	cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (cur == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetDtdElementDesc: out of memory\n");
+		    "xmlGetDtdElementDesc2: out of memory\n");
 	    return(NULL);
 	}
 	memset(cur, 0, sizeof(xmlElement));
@@ -2386,7 +2386,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
  * @name:  the element name
  * @prefix:  the element namespace prefix
  *
- * Search the Dtd for the description of this element
+ * Search the DTD for the description of this element
  *
  * returns the xmlElementPtr if found or NULL
  */
@@ -2409,7 +2409,7 @@ xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
  * @elem:  the element name
  * @name:  the attribute name
  *
- * Search the Dtd for the description of this attribute on
+ * Search the DTD for the description of this attribute on
  * this element.
  *
  * returns the xmlAttributePtr if found or NULL
@@ -2446,7 +2446,7 @@ xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
  * @name:  the attribute name
  * @prefix:  the attribute namespace prefix
  *
- * Search the Dtd for the description of this qualified attribute on
+ * Search the DTD for the description of this qualified attribute on
  * this element.
  *
  * returns the xmlAttributePtr if found or NULL
@@ -2469,7 +2469,7 @@ xmlGetDtdQAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name,
  * @dtd:  a pointer to the DtD to search
  * @name:  the notation name
  *
- * Search the Dtd for the description of this notation
+ * Search the DTD for the description of this notation
  *
  * returns the xmlNotationPtr if found or NULL
  */
@@ -2491,7 +2491,7 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
  * @doc:  the document
  * @notationName:  the notation name to check
  *
- * Validate that the given mame match a notation declaration.
+ * Validate that the given name match a notation declaration.
  * - [ VC: Notation Declared ]
  *
  * returns 1 if valid or 0 otherwise
@@ -2637,7 +2637,7 @@ xmlValidateNamesValue(const xmlChar *value) {
 
 /**
  * xmlValidateNmtokenValue:
- * @value:  an Mntoken value
+ * @value:  an Nmtoken value
  *
  * Validate that the given value match Nmtoken production
  *
@@ -2674,7 +2674,7 @@ xmlValidateNmtokenValue(const xmlChar *value) {
 
 /**
  * xmlValidateNmtokensValue:
- * @value:  an Mntokens value
+ * @value:  an Nmtokens value
  *
  * Validate that the given value match Nmtokens production
  *
@@ -2738,7 +2738,7 @@ xmlValidateNmtokensValue(const xmlChar *value) {
  * Try to validate a single notation definition
  * basically it does the following checks as described by the
  * XML-1.0 recommendation:
- *  - it seems that no validity constraing exist on notation declarations
+ *  - it seems that no validity constraint exists on notation declarations
  * But this function get called anyway ...
  *
  * returns 1 if valid or 0 otherwise
@@ -3036,7 +3036,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (attr->atype == XML_ATTRIBUTE_ID) {
         int nbId;
 
-	/* the trick is taht we parse DtD as their own internal subset */
+	/* the trick is that we parse DtD as their own internal subset */
         xmlElementPtr elem = xmlGetDtdElementDesc(doc->intSubset,
 	                                          attr->elem);
 	if (elem != NULL) {
@@ -3277,7 +3277,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (attrDecl->def == XML_ATTRIBUTE_FIXED) {
 	if (!xmlStrEqual(value, attrDecl->defaultValue)) {
 	    VERROR(ctxt->userData, 
-	   "Value for attribute %s on %s is differnt from default \"%s\"\n",
+	   "Value for attribute %s on %s is different from default \"%s\"\n",
 		   attr->name, elem->name, attrDecl->defaultValue);
 	    ret = 0;
 	}
@@ -3429,7 +3429,7 @@ cont:
      * epsilon transition, go directly to the analysis phase
      */
     if (STATE == ROLLBACK_PARENT) {
-	DEBUG_VALID_MSG("restaured parent branch");
+	DEBUG_VALID_MSG("restored parent branch");
 	DEBUG_VALID_STATE(NODE, CONT)
 	ret = 1;
 	goto analyze;
@@ -3598,7 +3598,7 @@ cont:
 analyze:
     while (CONT != NULL) {
 	/*
-	 * First do the analysis depending on the occurence model at
+	 * First do the analysis depending on the occurrence model at
 	 * this level.
 	 */
 	if (ret == 0) {
@@ -3988,21 +3988,21 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 
 	    if (name != NULL) {
 		VERROR(ctxt->userData,
-	   "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
+	   "Element %s content doesn't follow the DTD\nExpecting %s, got %s\n",
 		       name, expr, list);
 	    } else {
 		VERROR(ctxt->userData,
-	   "Element content doesn't follow the Dtd\nExpecting %s, got %s\n",
+	   "Element content doesn't follow the DTD\nExpecting %s, got %s\n",
 		       expr, list);
 	    }
 	} else {
 	    if (name != NULL) {
 		VERROR(ctxt->userData,
-		       "Element %s content doesn't follow the Dtd\n",
+		       "Element %s content doesn't follow the DTD\n",
 		       name);
 	    } else {
 		VERROR(ctxt->userData,
-		       "Element content doesn't follow the Dtd\n");
+		       "Element content doesn't follow the DTD\n");
 	    }
 	}
 	ret = 0;
@@ -4227,7 +4227,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	return(0);
     }
 
-    /* Check taht the element content matches the definition */
+    /* Check that the element content matches the definition */
     switch (elemDecl->etype) {
         case XML_ELEMENT_TYPE_UNDEFINED:
 	    VERROR(ctxt->userData, "No declaration for element %s\n",
@@ -4566,7 +4566,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
  * @data:  Contents of current link
  * @user:  Value supplied by the user
  *
- * Return 0 to abort the walk or 1 to continue
+ * Returns 0 to abort the walk or 1 to continue
  */
 static int
 xmlWalkValidateList(const void *data, const void *user)

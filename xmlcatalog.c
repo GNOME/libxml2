@@ -400,7 +400,7 @@ int main(int argc, char **argv) {
 
 	    if (sgml) {
 		/*
-		 * Maintainance of SGML catalogs.
+		 * Maintenance of SGML catalogs.
 		 */
 		xmlCatalogPtr catal = NULL;
 		xmlCatalogPtr super = NULL;

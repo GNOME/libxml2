@@ -606,7 +606,7 @@ xmlNanoHTTPReadLine(xmlNanoHTTPCtxtPtr ctxt) {
  * We currently parse and process:
  *  - The HTTP revision/ return code
  *  - The Content-Type
- *  - The Location for redirrect processing.
+ *  - The Location for redirect processing.
  *
  * Returns -1 in case of failure, the file descriptor number otherwise
  */
@@ -685,7 +685,7 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 
 /**
  * xmlNanoHTTPConnectAttempt:
- * @addr:  a socket adress structure
+ * @addr:  a socket address structure
  *
  * Attempt a connection to the given IP:port endpoint. It forces
  * non-blocking semantic on the socket, and allow 60 seconds for
@@ -944,7 +944,7 @@ xmlNanoHTTPOpen(const char *URL, char **contentType) {
  * @URL:  The URL to load
  * @contentType:  if available the Content-Type information will be
  *                returned at that location
- * @redir: if availble the redirected URL will be returned
+ * @redir: if available the redirected URL will be returned
  *
  * This function try to open a connection to the indicated resource
  * via HTTP GET.
@@ -1014,6 +1014,7 @@ xmlNanoHTTPClose(void *ctx) {
  * @contentType:  the Content-Type information IN and OUT
  * @redir:  the redirected URL OUT
  * @headers:  the extra headers
+ * @ilen:  input length
  *
  * This function try to open a connection to the indicated resource
  * via HTTP using the given @method, adding the given extra headers
@@ -1245,6 +1246,7 @@ retry:
  * @input:  the input string if any
  * @contentType:  the Content-Type information IN and OUT
  * @headers:  the extra headers
+ * @ilen:  input length
  *
  * This function try to open a connection to the indicated resource
  * via HTTP using the given @method, adding the given extra headers

@@ -1214,7 +1214,7 @@ xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
 		close_rc = 0;
 	    else
 		xmlGenericError( xmlGenericErrorContext,
-			    "xmlIOHTTPClose: HTTP '%s' of %d %s\n'%s' %s %d\n",
+			    "xmlIOHTTPCloseWrite: HTTP '%s' of %d %s\n'%s' %s %d\n",
 			    http_mthd, content_lgth,
 			    "bytes to URI", ctxt->uri,
 			    "failed.  HTTP return code:", http_rtn );
@@ -1657,7 +1657,7 @@ xmlParserInputBufferCreateFilename
 #endif
 
     /*
-     * Try to find one of the input accept method accepting taht scheme
+     * Try to find one of the input accept method accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the URI
      */
@@ -1743,7 +1743,7 @@ xmlOutputBufferCreateFilename(const char *URI,
 
 
     /*
-     * Try to find one of the output accept method accepting taht scheme
+     * Try to find one of the output accept method accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the URI
      */
@@ -2089,7 +2089,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
  * This routine handle the I18N transcoding to internal UTF-8
  * This routine is used when operating the parser in normal (pull) mode
  *
- * TODO: one should be able to remove one extra copy by copying directy
+ * TODO: one should be able to remove one extra copy by copying directly
  *       onto in->buffer or in->raw
  *
  * Returns the number of chars read and stored in the buffer, or -1
@@ -2334,7 +2334,7 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
 	nbchars = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
 	if (nbchars < 0) {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlOutputBufferWrite: encoder error\n");
+		    "xmlOutputBufferFlush: encoder error\n");
 	    return(-1);
 	}
     }
@@ -2586,7 +2586,7 @@ xmlGetExternalEntityLoader(void) {
  *
  * Load an external entity, note that the use of this function for
  * unparsed entities may generate problems
- * TODO: a more generic External entitiy API must be designed
+ * TODO: a more generic External entity API must be designed
  *
  * Returns the xmlParserInputPtr or NULL
  */

@@ -123,7 +123,7 @@ NAME="LIBXML-ENTITIES"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7834"
+NAME="AEN7858"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN7834"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7837"
+NAME="AEN7861"
 ></A
 ><H2
 >Synopsis</H2
@@ -371,7 +371,7 @@ HREF="libxml-entities.html#XMLCLEANUPPREDEFINEDENTITIES"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7900"
+NAME="AEN7924"
 ></A
 ><H2
 >Description</H2
@@ -381,14 +381,14 @@ NAME="AEN7900"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7903"
+NAME="AEN7927"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7905"
+NAME="AEN7929"
 ></A
 ><H3
 ><A
@@ -421,7 +421,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7910"
+NAME="AEN7934"
 ></A
 ><H3
 ><A
@@ -438,7 +438,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlEntity {
-    void           *_private;	        /* for Corba, must be first ! */
+    void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */
     const xmlChar          *name;	/* Attribute name */
     struct _xmlNode    *children;	/* NULL */
@@ -467,7 +467,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7915"
+NAME="AEN7939"
 ></A
 ><H3
 ><A
@@ -493,7 +493,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7920"
+NAME="AEN7944"
 ></A
 ><H3
 ><A
@@ -519,7 +519,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7925"
+NAME="AEN7949"
 ></A
 ><H3
 ><A
@@ -547,7 +547,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7931"
+NAME="AEN7955"
 ></A
 ><H3
 ><A
@@ -597,7 +597,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7943"
+NAME="AEN7967"
 ></A
 ><P
 ></P
@@ -735,7 +735,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7976"
+NAME="AEN8000"
 ></A
 ><H3
 ><A
@@ -785,7 +785,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7988"
+NAME="AEN8012"
 ></A
 ><P
 ></P
@@ -923,7 +923,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8021"
+NAME="AEN8045"
 ></A
 ><H3
 ><A
@@ -956,7 +956,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8029"
+NAME="AEN8053"
 ></A
 ><P
 ></P
@@ -998,7 +998,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>NULL if not, otherwise the entity</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1009,7 +1009,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8042"
+NAME="AEN8066"
 ></A
 ><H3
 ><A
@@ -1041,14 +1041,14 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TABLE
 ><P
 >Do an entity lookup in the document entity hash table and
-returns the corrsponding entity, otherwise a lookup is done
+returns the corresponding entity, otherwise a lookup is done
 in the predefined entities too.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8051"
+NAME="AEN8075"
 ></A
 ><P
 ></P
@@ -1118,7 +1118,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8068"
+NAME="AEN8092"
 ></A
 ><H3
 ><A
@@ -1149,14 +1149,14 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Do an entity lookup in the Dtd entity hash table and
+>Do an entity lookup in the DTD entity hash table and
 returns the corresponding entity, if found.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8077"
+NAME="AEN8101"
 ></A
 ><P
 ></P
@@ -1226,7 +1226,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8094"
+NAME="AEN8118"
 ></A
 ><H3
 ><A
@@ -1264,7 +1264,7 @@ returns the corresponding parameter entity, if found.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8103"
+NAME="AEN8127"
 ></A
 ><P
 ></P
@@ -1334,7 +1334,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8120"
+NAME="AEN8144"
 ></A
 ><H3
 ><A
@@ -1378,7 +1378,7 @@ This routine will issue a warning when encountered.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8131"
+NAME="AEN8155"
 ></A
 ><P
 ></P
@@ -1448,7 +1448,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8148"
+NAME="AEN8172"
 ></A
 ><H3
 ><A
@@ -1488,7 +1488,7 @@ must be deallocated.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8157"
+NAME="AEN8181"
 ></A
 ><P
 ></P
@@ -1558,7 +1558,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8174"
+NAME="AEN8198"
 ></A
 ><H3
 ><A
@@ -1596,7 +1596,7 @@ this routine is reentrant, and result must be deallocated.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8183"
+NAME="AEN8207"
 ></A
 ><P
 ></P
@@ -1666,7 +1666,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8200"
+NAME="AEN8224"
 ></A
 ><H3
 ><A
@@ -1696,7 +1696,7 @@ HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8207"
+NAME="AEN8231"
 ></A
 ><P
 ></P
@@ -1732,7 +1732,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8216"
+NAME="AEN8240"
 ></A
 ><H3
 ><A
@@ -1765,7 +1765,7 @@ HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8224"
+NAME="AEN8248"
 ></A
 ><P
 ></P
@@ -1818,7 +1818,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8237"
+NAME="AEN8261"
 ></A
 ><H3
 ><A
@@ -1848,7 +1848,7 @@ HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8244"
+NAME="AEN8268"
 ></A
 ><P
 ></P
@@ -1886,7 +1886,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8253"
+NAME="AEN8277"
 ></A
 ><H3
 ><A
@@ -1920,7 +1920,7 @@ HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8261"
+NAME="AEN8285"
 ></A
 ><P
 ></P
@@ -1975,7 +1975,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8274"
+NAME="AEN8298"
 ></A
 ><H3
 ><A
@@ -2009,7 +2009,7 @@ HREF="libxml-entities.html#XMLENTITYPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8282"
+NAME="AEN8306"
 ></A
 ><P
 ></P
@@ -2064,7 +2064,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8295"
+NAME="AEN8319"
 ></A
 ><H3
 ><A

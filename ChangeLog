@@ -1,3 +1,8 @@
+Mon Dec 31 17:13:34 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* *.c include/libxml/*.h doc/html/*: applied 42 documentation
+	  patches from Charlie Bozeman. Regenerated the HTML docs.
+
 Thu Dec 20 14:59:52 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/debugXML.h win32/dsp/libxml2.def.src: fixes

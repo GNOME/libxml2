@@ -199,7 +199,7 @@ error:
  * null-terminated. This function is not super-strict, as it will
  * allow longer utf-8 sequences than necessary. Note that Java is
  * capable of producing these sequences if provoked. Also note, this
- * routine checks for the 4-byte maxiumum size, but does not check for
+ * routine checks for the 4-byte maximum size, but does not check for
  * 0x10ffff maximum value.
  *
  * Return value: true if @utf is valid.
@@ -417,7 +417,7 @@ xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
  * block of chars out.
  * Returns 0 if success, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
 static int
@@ -469,7 +469,7 @@ asciiToUTF8(unsigned char* out, int *outlen,
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
 static int
@@ -551,7 +551,7 @@ UTF8Toascii(unsigned char* out, int *outlen,
  * block of chars out.
  * Returns 0 if success, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
 int
@@ -600,7 +600,7 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
 int
@@ -684,14 +684,14 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
  * @inlenb:  the length of @in in UTF-16LE chars
  *
  * Take a block of UTF-16LE ushorts in and try to convert it to an UTF-8
- * block of chars out. This function assume the endian properity
+ * block of chars out. This function assume the endian property
  * is the same between the native type of this machine and the
  * inputed one.
  *
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding fails (for *in is not valid utf16 string)
  *     The value of *inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  */
 static int
 UTF16LEToUTF8(unsigned char* out, int *outlen,
@@ -891,14 +891,14 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
  * @inlenb:  the length of @in in UTF-16 chars
  *
  * Take a block of UTF-16 ushorts in and try to convert it to an UTF-8
- * block of chars out. This function assume the endian properity
+ * block of chars out. This function assume the endian property
  * is the same between the native type of this machine and the
  * inputed one.
  *
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding fails (for *in is not valid utf16 string)
  * The value of *inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  */
 static int
 UTF16BEToUTF8(unsigned char* out, int *outlen,
@@ -1304,7 +1304,7 @@ xmlDelEncodingAlias(const char *alias) {
  * xmlParseCharEncoding:
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  *
- * Conpare the string to the known encoding schemes already known. Note
+ * Compare the string to the known encoding schemes already known. Note
  * that the comparison is case insensitive accordingly to the section
  * [XML] 4.3.3 Character Encoding in Entities.
  * 
@@ -1616,7 +1616,7 @@ xmlCleanupCharEncodingHandlers(void) {
  * xmlRegisterCharEncodingHandler:
  * @handler:  the xmlCharEncodingHandlerPtr handler block
  *
- * Register the char encoding handler, surprizing, isn't it ?
+ * Register the char encoding handler, surprising, isn't it ?
  */
 void
 xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
@@ -1641,7 +1641,7 @@ xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
  * xmlGetCharEncodingHandler:
  * @enc:  an xmlCharEncoding value.
  *
- * Search in the registrered set the handler able to read/write that encoding.
+ * Search in the registered set the handler able to read/write that encoding.
  *
  * Returns the handler or NULL if not found
  */
@@ -1771,7 +1771,7 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  * xmlFindCharEncodingHandler:
  * @name:  a string describing the char encoding.
  *
- * Search in the registrered set the handler able to read/write that encoding.
+ * Search in the registered set the handler able to read/write that encoding.
  *
  * Returns the handler or NULL if not found
  */
@@ -1887,7 +1887,7 @@ xmlFindCharEncodingHandler(const char *name) {
  *     -3 if there the last byte can't form a single output char.
  *     
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
 static int
@@ -1973,7 +1973,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     /*
      * echo '<?xml version="1.0" encoding="UCS4"?>' | wc -c => 38
      * 45 chars should be sufficient to reach the end of the encoding
-     * decalration without going too far inside the document content.
+     * declaration without going too far inside the document content.
      */
     written = 45;
 
@@ -2027,7 +2027,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 
 /**
  * xmlCharEncInFunc:
- * @handler:	char enconding transformation data structure
+ * @handler:	char encoding transformation data structure
  * @out:  an xmlBuffer for the output.
  * @in:  an xmlBuffer for the input
  *     
@@ -2178,7 +2178,7 @@ retry:
     }
 
     /*
-     * Convertion itself.
+     * Conversion itself.
      */
     toconv = in->use;
     if (toconv == 0)
@@ -2289,7 +2289,7 @@ retry:
  * xmlCharEncCloseFunc:
  * @handler:	char enconding transformation data structure
  *     
- * Generic front-end for hencoding handler close function
+ * Generic front-end for encoding handler close function
  *
  * Returns 0 if success, or -1 in case of error
  */
@@ -2300,7 +2300,7 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
     if (handler->name == NULL) return(-1);
 #ifdef LIBXML_ICONV_ENABLED
     /*
-     * Iconv handlers can be oused only once, free the whole block.
+     * Iconv handlers can be used only once, free the whole block.
      * and the associated icon resources.
      */
     if ((handler->iconv_out != NULL) || (handler->iconv_in != NULL)) {

@@ -20,7 +20,7 @@ extern "C" {
 #endif
 const xmlChar *	getPublicId			(void *ctx);
 const xmlChar *	getSystemId			(void *ctx);
-void	setDocumentLocator			(void *ctx,
+void		setDocumentLocator		(void *ctx,
 						 xmlSAXLocatorPtr loc);
     
 int		getLineNumber			(void *ctx);

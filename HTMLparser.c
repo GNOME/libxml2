@@ -180,7 +180,7 @@ PUSH_AND_POP(static, xmlChar*, name)
  * @ctxt:  the HTML parser context
  * @len:  pointer to the length of the char read
  *
- * The current char value, if using UTF-8 this may actaully span multiple
+ * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer. Implement the end of line normalization:
  * 2.11 End-of-Line Handling
  * If the encoding is unspecified, in the case we find an ISO-Latin-1
@@ -269,7 +269,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     }
     /*
      * Assume it's a fixed length encoding (1) with
-     * a compatibke encoding for the ASCII set, since
+     * a compatible encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */
     *len = 1;
@@ -348,7 +348,7 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  *  Start Tag: 1 means the start tag can be ommited
  *  End Tag:   1 means the end tag can be ommited
  *             2 means it's forbidden (empty elements)
- *             3 means the tag is stylistic and should be closed easilly
+ *             3 means the tag is stylistic and should be closed easily
  *  Depr:      this element is deprecated
  *  DTD:       1 means that this element is valid only in the Loose DTD
  *             2 means that this element is valid only in the Frameset DTD
@@ -514,7 +514,7 @@ NULL
  * The list of HTML elements which are supposed not to have
  * CDATA content and where a p element will be implied
  *
- * TODO: extend that list by reading the HTML SGML DtD on
+ * TODO: extend that list by reading the HTML SGML DTD on
  *       implied paragraph
  */
 static const char *htmlNoContentElements[] = {
@@ -652,7 +652,8 @@ htmlGetEndPriority (const xmlChar *name) {
  * @newtag:  The new tag name
  * @oldtag:  The old tag name
  *
- * Checks wether the new tag is one of the registered valid tags for closing old.
+ * Checks whether the new tag is one of the registered valid tags for
+ * closing old.
  * Initialize the htmlStartCloseIndex for fast lookup of closing tags names.
  *
  * Returns 0 if no, 1 if yes.
@@ -688,7 +689,7 @@ htmlCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
  * @newtag:  The new tag name
  * @force:  force the tag closure
  *
- * The HTmL DtD allows an ending tag to implicitely close other tags.
+ * The HTML DTD allows an ending tag to implicitly close other tags.
  */
 static void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
@@ -708,7 +709,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 
         if (xmlStrEqual(newtag, ctxt->nameTab[i])) break;
 	/*
-	 * A missplaced endtagad can only close elements with lower
+	 * A missplaced endtag can only close elements with lower
 	 * or equal priority, so if we find an element with higher
 	 * priority before we find an element with
 	 * matching name, we just ignore this endtag 
@@ -784,7 +785,7 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt) {
  * @ctxt:  an HTML parser context
  * @newtag:  The new tag name or NULL
  *
- * The HTmL DtD allows a tag to implicitely close other tags.
+ * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function is
  * called when a new tag has been detected and generates the
  * appropriates closes if possible/needed.
@@ -839,7 +840,7 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
  * @name:  The tag name
  * @elem:  the HTML element
  *
- * The HTmL DtD allows a tag to implicitely close other tags.
+ * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function checks
  * if the element or one of it's children would autoclose the
  * given tag.
@@ -866,7 +867,7 @@ htmlAutoCloseTag(htmlDocPtr doc, const xmlChar *name, htmlNodePtr elem) {
  * @doc:  the HTML document
  * @elem:  the HTML element
  *
- * The HTmL DtD allows a tag to implicitely close other tags.
+ * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function checks
  * if a tag is autoclosed by one of it's child
  *
@@ -890,7 +891,7 @@ htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
  * @ctxt:  an HTML parser context
  * @newtag:  The new tag name
  *
- * The HTML DtD allows a tag to exists only implicitely
+ * The HTML DTD allows a tag to exists only implicitly
  * called when a new tag has been detected and generates the
  * appropriates implicit tags if missing
  */
@@ -1268,7 +1269,7 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
 { 8713,	"notin","not an element of, U+2209 ISOtech" },
 { 8715,	"ni",	"contains as member, U+220B ISOtech" },
 { 8719,	"prod",	"n-ary product = product sign, U+220F ISOamsb" },
-{ 8721,	"sum",	"n-ary sumation, U+2211 ISOamsb" },
+{ 8721,	"sum",	"n-ary summation, U+2211 ISOamsb" },
 { 8722,	"minus","minus sign, U+2212 ISOtech" },
 { 8727,	"lowast","asterisk operator, U+2217 ISOtech" },
 { 8730,	"radic","square root = radical sign, U+221A ISOtech" },
@@ -1407,7 +1408,7 @@ htmlEntityValueLookup(unsigned int value) {
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
  */
 int
@@ -1508,7 +1509,7 @@ UTF8ToHtml(unsigned char* out, int *outlen,
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
  */
 int
@@ -1598,7 +1599,7 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
  * @end2:  an end marker xmlChar, 0 if none
  * @end3:  an end marker xmlChar, 0 if none
  *
- * Subtitute the HTML entities by their value
+ * Substitute the HTML entities by their value
  *
  * DEPRECATED !!!!
  *
@@ -1791,7 +1792,7 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
  * Creates a new HTML document without a DTD node if @URI and @ExternalID
  * are NULL
  *
- * Returns a new document, do not intialize the DTD if not provided
+ * Returns a new document, do not initialize the DTD if not provided
  */
 htmlDocPtr
 htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
@@ -1803,7 +1804,7 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur = (xmlDocPtr) xmlMalloc(sizeof(xmlDoc));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewDoc : malloc failed\n");
+		"htmlNewDocNoDtD : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlDoc));
@@ -1899,7 +1900,7 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
  * htmlParseName:
  * @ctxt:  an HTML parser context
  *
- * parse an HTML name, this routine is case sensistive.
+ * parse an HTML name, this routine is case sensitive.
  *
  * Returns the Name parsed or NULL
  */
@@ -3470,7 +3471,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     }
 
     /*
-     * Check for an Empty Element labelled the XML/SGML way
+     * Check for an Empty Element labeled the XML/SGML way
      */
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
@@ -4275,7 +4276,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		}
 
 		/*
-		 * Check for an Empty Element labelled the XML/SGML way
+		 * Check for an Empty Element labeled the XML/SGML way
 		 */
 		if ((CUR == '/') && (NXT(1) == '>')) {
 		    SKIP(2);

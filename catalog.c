@@ -241,7 +241,7 @@ xmlFreeCatalogEntry(xmlCatalogEntryPtr ret) {
     if (ret == NULL)
 	return;
     /*
-     * Entries stored in the file hash must be dealloacted
+     * Entries stored in the file hash must be deallocated
      * only by the file hash cleaner !
      */
     if (ret->dealloc == 1)
@@ -681,7 +681,7 @@ xmlConvertSGMLCatalog(xmlCatalogPtr catal) {
 
 /**
  * xmlCatalogUnWrapURN:
- * @urn:  an "urn:publicid:" to unwrapp
+ * @urn:  an "urn:publicid:" to unwrap
  *
  * Expand the URN into the equivalent Public Identifier
  *
@@ -1252,7 +1252,7 @@ xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal) {
 
     /*
      * Fetch and parse. Note that xmlParseXMLCatalogFile does not
-     * use the existing catalog, there is no recusivity allowed at
+     * use the existing catalog, there is no recursion allowed at
      * that level.
      */
     doc = xmlParseXMLCatalogFile(catal->prefer, catal->URL);
@@ -2613,7 +2613,7 @@ xmlACatalogResolve(xmlCatalogPtr catal, const xmlChar * pubID,
 /**
  * xmlACatalogResolveURI:
  * @catal:  a Catalog
- * @pubId:  the URI
+ * @URI:  the URI
  *
  * Do a complete resolution lookup of an URI
  *
@@ -3019,7 +3019,7 @@ xmlCatalogResolve(const xmlChar *pubID, const xmlChar *sysID) {
 
 /**
  * xmlCatalogResolveURI:
- * @pubId:  the URI
+ * @URI:  the URI
  *
  * Do a complete resolution lookup of an URI
  *
@@ -3062,7 +3062,7 @@ xmlCatalogDump(FILE *out) {
  *
  * Add an entry in the catalog, it may overwrite existing but
  * different entries.
- * If called before any other catalo routine, allows to override the
+ * If called before any other catalog routine, allows to override the
  * default shared catalog put in place by xmlInitializeCatalog();
  *
  * Returns 0 if successful, -1 otherwise
@@ -3157,6 +3157,7 @@ xmlCatalogGetDefaults(void) {
 
 /**
  * xmlCatalogSetDefaults:
+ * @allow:  what catalogs should be accepted
  *
  * Used to set the user preference w.r.t. to what catalogs should
  * be accepted
@@ -3350,7 +3351,7 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
 /**
  * xmlCatalogLocalResolveURI:
  * @catalogs:  a document's list of catalogs
- * @pubId:  the URI
+ * @URI:  the URI
  *
  * Do a complete resolution lookup of an URI using a 
  * document's private catalog list
@@ -3389,7 +3390,7 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
  ************************************************************************/
 /**
  * xmlCatalogGetSystem:
- * @pubId:  the public ID string
+ * @sysId:  the system ID string
  *
  * Try to lookup the system ID associated to a public ID
  * DEPRECATED, use xmlCatalogResolveSystem()

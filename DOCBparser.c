@@ -232,7 +232,7 @@ PUSH_AND_POP(static, xmlChar*, name)
  * @ctxt:  the DocBook SGML parser context
  * @len:  pointer to the length of the char read
  *
- * The current char value, if using UTF-8 this may actaully span multiple
+ * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer. Implement the end of line normalization:
  * 2.11 End-of-Line Handling
  * If the encoding is unspecified, in the case we find an ISO-Latin-1
@@ -321,7 +321,7 @@ docbCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     }
     /*
      * Assume it's a fixed length encoding (1) with
-     * a compatibke encoding for the ASCII set, since
+     * a compatible encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */
     *len = 1;
@@ -835,7 +835,7 @@ NULL
 #endif
 
 /*
- * acording the SGML DTD, HR should be added to the 2nd line above, as it
+ * according the SGML DTD, HR should be added to the 2nd line above, as it
  * is not allowed within a H1, H2, H3, etc. But we should tolerate that case
  * because many documents contain rules in headings...
  */
@@ -851,7 +851,7 @@ NULL
  * The list of SGML elements which are supposed not to have
  * CDATA content and where a p element will be implied
  *
- * TODO: extend that list by reading the SGML SGML DtD on
+ * TODO: extend that list by reading the SGML SGML DTD on
  *       implied paragraph
  */
 static char *docbNoContentElements[] = {
@@ -914,7 +914,8 @@ docbTagLookup(const xmlChar *tag) {
  * @newtag:  The new tag name
  * @oldtag:  The old tag name
  *
- * Checks wether the new tag is one of the registered valid tags for closing old.
+ * Checks whether the new tag is one of the registered valid tags for
+ * closing old.
  * Initialize the docbStartCloseIndex for fast lookup of closing tags names.
  *
  * Returns 0 if no, 1 if yes.
@@ -949,7 +950,7 @@ docbCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
  * @ctxt:  an SGML parser context
  * @newtag:  The new tag name
  *
- * The HTmL DtD allows an ending tag to implicitely close other tags.
+ * The DocBook DTD allows an ending tag to implicitly close other tags.
  */
 static void
 docbAutoCloseOnClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
@@ -1001,7 +1002,7 @@ docbAutoCloseOnClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
  * @ctxt:  an SGML parser context
  * @newtag:  The new tag name or NULL
  *
- * The HTmL DtD allows a tag to implicitely close other tags.
+ * The DocBook DTD allows a tag to implicitly close other tags.
  * The list is kept in docbStartClose array. This function is
  * called when a new tag has been detected and generates the
  * appropriates closes if possible/needed.
@@ -1034,7 +1035,7 @@ docbAutoClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
  * @name:  The tag name
  * @elem:  the SGML element
  *
- * The HTmL DtD allows a tag to implicitely close other tags.
+ * The DocBook DTD allows a tag to implicitly close other tags.
  * The list is kept in docbStartClose array. This function checks
  * if the element or one of it's children would autoclose the
  * given tag.
@@ -2211,7 +2212,7 @@ docbEntityValueLookup(int value) {
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
  */
 int
@@ -2313,7 +2314,7 @@ UTF8ToSgml(unsigned char* out, int *outlen,
  *
  * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of @inlen after return is the number of octets consumed
- *     as the return value is positive, else unpredictiable.
+ *     as the return value is positive, else unpredictable.
  * The value of @outlen after return is the number of octets consumed.
  */
 int
@@ -2689,7 +2690,7 @@ docbParseSGMLName(docbParserCtxtPtr ctxt) {
  * docbParseName:
  * @ctxt:  an SGML parser context
  *
- * parse an SGML name, this routine is case sensistive.
+ * parse an SGML name, this routine is case sensitive.
  *
  * Returns the Name parsed or NULL
  */
@@ -4328,7 +4329,7 @@ docbParseElement(docbParserCtxtPtr ctxt) {
     }
 
     /*
-     * Check for an Empty Element labelled the XML/SGML way
+     * Check for an Empty Element labeled the XML/SGML way
      */
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
@@ -4765,7 +4766,7 @@ docbParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * docbParseInternalsubset:
+ * docbParseInternalSubset:
  * @ctxt:  an SGML parser context
  *
  * parse the internal subset declaration
@@ -4833,7 +4834,7 @@ docbParseInternalSubset(xmlParserCtxtPtr ctxt) {
  * docbParseMisc:
  * @ctxt:  an XML parser context
  * 
- * parse an XML Misc* optionnal field.
+ * parse an XML Misc* optional field.
  *
  * [27] Misc ::= Comment | PI |  S
  */
@@ -5525,7 +5526,7 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                }
 
                /*
-                * Check for an Empty Element labelled the XML/SGML way
+                * Check for an Empty Element labeled the XML/SGML way
                 */
                if ((CUR == '/') && (NXT(1) == '>')) {
                    SKIP(2);

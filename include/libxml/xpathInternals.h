@@ -1,6 +1,6 @@
 /*
- * xpath.c: internal interfaces for XML Path Language implementation
- *          used to build new modules on top of XPath
+ * xpathInternals.c: internal interfaces for XML Path Language implementation
+ *                   used to build new modules on top of XPath
  *
  * See COPYRIGHT for the status of this software
  *
@@ -330,7 +330,7 @@ typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc)	(void *ctxt,
 
 void	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
 					 xmlXPathVariableLookupFunc f,
-					 void *varCtxt);
+					 void *data);
 
 /*
  * Function Lookup forwarding
@@ -402,7 +402,7 @@ int		   xmlXPathRegisterNs		(xmlXPathContextPtr ctxt,
 						 const xmlChar *prefix,
 						 const xmlChar *ns_uri);
 const xmlChar *	   xmlXPathNsLookup		(xmlXPathContextPtr ctxt,
-						 const xmlChar *ns_uri);
+						 const xmlChar *prefix);
 void		   xmlXPathRegisteredNsCleanup	(xmlXPathContextPtr ctxt);
 
 int		   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
@@ -490,7 +490,7 @@ void xmlXPathFreeNodeSet(xmlNodeSetPtr obj);
 xmlXPathObjectPtr xmlXPathNewNodeSet(xmlNodePtr val);
 xmlXPathObjectPtr xmlXPathNewNodeSetList(xmlNodeSetPtr val);
 xmlXPathObjectPtr xmlXPathWrapNodeSet(xmlNodeSetPtr val);
-    xmlXPathObjectPtr xmlXPathWrapExternal(void *val);
+xmlXPathObjectPtr xmlXPathWrapExternal(void *val);
 void xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj);
 
 

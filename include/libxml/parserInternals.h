@@ -316,25 +316,25 @@ void			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
 /**
  * XML_SUBSTITUTE_NONE:
  *
- * If no entities need to be substitued
+ * If no entities need to be substituted
  */
 #define XML_SUBSTITUTE_NONE	0
 /**
  * XML_SUBSTITUTE_REF:
  *
- * Whether general entities need to be substitued
+ * Whether general entities need to be substituted
  */
 #define XML_SUBSTITUTE_REF	1
 /**
  * XML_SUBSTITUTE_PEREF:
  *
- * Whether parameter entities need to be substitued
+ * Whether parameter entities need to be substituted
  */
 #define XML_SUBSTITUTE_PEREF	2
 /**
  * XML_SUBSTITUTE_BOTH:
  *
- * Both general and parameter entities need to be substitued
+ * Both general and parameter entities need to be substituted
  */
 #define XML_SUBSTITUTE_BOTH 	3
 
@@ -365,7 +365,7 @@ int			namePush		(xmlParserCtxtPtr ctxt,
 						 xmlChar *value);
 
 /*
- * other comodities shared between parser.c and parserInternals
+ * other commodities shared between parser.c and parserInternals
  */
 int			xmlSkipBlankChars	(xmlParserCtxtPtr ctxt);
 int			xmlStringCurrentChar	(xmlParserCtxtPtr ctxt,

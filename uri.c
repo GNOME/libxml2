@@ -19,7 +19,7 @@
 
 /************************************************************************
  *									*
- *		Macros to differenciate various character type		*
+ *		Macros to differentiate various character type		*
  *			directly extracted from RFC 2396		*
  *									*
  ************************************************************************/
@@ -797,7 +797,7 @@ xmlNormalizeURIPath(char *path) {
  * xmlURIUnescapeString:
  * @str:  the string to unescape
  * @len:   the length in bytes to unescape (or <= 0 to indicate full string)
- * @target:  optionnal destination buffer
+ * @target:  optional destination buffer
  *
  * Unescaping routine, does not do validity checks !
  * Output is direct unsigned char translation of %XX values (no encoding)
@@ -879,7 +879,7 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
     ret = (xmlChar *) xmlMalloc(len);
     if (ret == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlURIEscape: out of memory\n");
+		"xmlURIEscapeStr: out of memory\n");
 	return(NULL);
     }
     in = (const xmlChar *) str;
@@ -890,7 +890,7 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
 	    ret = (xmlChar *) xmlRealloc(ret, len);
 	    if (ret == NULL) {
 		xmlGenericError(xmlGenericErrorContext,
-			"xmlURIEscape: out of memory\n");
+			"xmlURIEscapeStr: out of memory\n");
 		return(NULL);
 	    }
 	}
@@ -1500,7 +1500,7 @@ xmlParseURIAuthority(xmlURIPtr uri, const char **str) {
  * @uri:  pointer to an URI structure
  * @str:  pointer to the string to analyze
  *
- * Parse an URI hirarchical part
+ * Parse an URI hierarchical part
  * 
  * hier_part = ( net_path | abs_path ) [ "?" query ]
  * abs_path = "/"  path_segments
@@ -1658,7 +1658,7 @@ xmlParseURIReference(xmlURIPtr uri, const char *str) {
     xmlCleanURI(uri);
 
     /*
-     * Try first to parse aboslute refs, then fallback to relative if
+     * Try first to parse absolute refs, then fallback to relative if
      * it fails.
      */
     ret = xmlParseAbsoluteURI(uri, &str);

@@ -79,6 +79,9 @@ specification but don't claim to implement them:</p>
   XML</li>
 </ul>
 
+<p>XML Schemas is being worked on but it would be far too early to make any
+conformance statement about it at the moment.</p>
+
 <p>Libxml2 is known to be very portable, the library should build and work
 without serious troubles on a variety of systems (Linux, Unix, Windows,
 CygWin, MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
@@ -93,6 +96,8 @@ CygWin, MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
   <li><a href="http://www.aleksey.com/xmlsec/">the XMLSec page</a>: an
     implementation of <a href="http://www.w3.org/TR/xmldsig-core/">W3C XML
     Digital Signature</a> for libxml2</li>
+  <li>also check the related links section below for more related and active
+    projects.</li>
 </ul>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -551,8 +556,8 @@ href="contribs.html">contrib section</a></p>
 href="http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog">Changelog</a> file
 for a really accurate description</h3>
 
-<p>Items floating around but not actively worked on, get in touch with me if
-you want to test those</p>
+<p>Items not finished and worked on, get in touch with the list if you want
+to test those</p>
 <ul>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
@@ -565,7 +570,7 @@ Schemas <a href="http://www.w3.org/TR/xmlschema-1/">structures</a> and <a
 href="http://www.w3.org/TR/xmlschema-2/">datatypes</a> code, beware, all
 interfaces are likely to change, there is huge holes, it is clearly a work in
 progress and don't even think of putting this code in a production system,
-it's actually not compiled in by default. The real fixes are: </p>
+it's actually not compiled in by default. The real fixes are:</p>
 <ul>
   <li>a couple of bugs or limitations introduced in 2.4.20</li>
   <li>patches for Borland C++ and MSC by Igor</li>
@@ -2584,6 +2589,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

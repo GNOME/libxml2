@@ -80,6 +80,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
+<li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
 <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
@@ -91,8 +92,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk2.html">F-I</a>
 <a href="APIchunk3.html">J-P</a>
 <a href="APIchunk4.html">Q-S</a>
-<a href="APIchunk5.html">T-X</a>
-<a href="APIchunk6.html">Z-a</a>
+<a href="APIchunk5.html">T-W</a>
+<a href="APIchunk6.html">X-a</a>
 <a href="APIchunk7.html">b-b</a>
 <a href="APIchunk8.html">c-c</a>
 <a href="APIchunk9.html">d-d</a>
@@ -101,20 +102,22 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-o</a>
-<a href="APIchunk16.html">p-p</a>
-<a href="APIchunk17.html">q-r</a>
-<a href="APIchunk18.html">s-s</a>
-<a href="APIchunk19.html">t-t</a>
-<a href="APIchunk20.html">u-v</a>
-<a href="APIchunk21.html">w-w</a>
-<a href="APIchunk22.html">x-x</a>
+<a href="APIchunk15.html">o-p</a>
+<a href="APIchunk16.html">q-r</a>
+<a href="APIchunk17.html">s-s</a>
+<a href="APIchunk18.html">t-t</a>
+<a href="APIchunk19.html">u-v</a>
+<a href="APIchunk20.html">w-x</a>
 </h2>
 <h2>Letter A:</h2>
 <dl>
 <dt>ABC</dt>
 <dd>
 <a href="html/libxml-xpathinternals.html#XMLXPATHTRANSLATEFUNCTION">xmlXPathTranslateFunction</a>
+</dd>
+<dt>ALL</dt>
+<dd>
+<a href="html/libxml-index.html#XMLAUTOMATANEWALLTRANS">xmlAutomataNewAllTrans</a>
 </dd>
 <dt>ANY</dt>
 <dd>
@@ -132,6 +135,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK">xmlOutputMatchCallback</a>
 <a href="html/libxml-xmlio.html#XMLOUTPUTOPENCALLBACK">xmlOutputOpenCallback</a>
 <a href="html/libxml-xmlio.html#XMLOUTPUTWRITECALLBACK">xmlOutputWriteCallback</a>
+<a href="html/libxml-index.html#XMLSCHEMAVALIDATEDOC">xmlSchemaValidateDoc</a>
+<a href="html/libxml-index.html#XMLSCHEMAVALIDATEFACET">xmlSchemaValidateFacet</a>
+<a href="html/libxml-index.html#XMLSCHEMAVALIDATEPREDEFINEDTYPE">xmlSchemaValidatePredefinedType</a>
+<a href="html/libxml-index.html#XMLSCHEMAVALIDATESTREAM">xmlSchemaValidateStream</a>
 </dd>
 <dt>ARRAY</dt>
 <dd>
@@ -195,6 +202,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-catalog.html#XMLCATALOGSETDEFAULTPREFER">xmlCatalogSetDefaultPrefer</a>
 </dd>
+<dt>AlphabeticPresentationForms</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISALPHABETICPRESENTATIONFORMS">xmlUCSIsAlphabeticPresentationForms</a>
+</dd>
 <dt>Also</dt>
 <dd>
 <a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
@@ -212,9 +223,33 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#XMLNODEADDCONTENT">xmlNodeAddContent</a>
 <a href="html/libxml-tree.html#XMLNODEADDCONTENTLEN">xmlNodeAddContentLen</a>
 </dd>
+<dt>Appendix</dt>
+<dd>
+<a href="html/libxml-index.html#XMLREGEXPCOMPILE">xmlRegexpCompile</a>
+</dd>
 <dt>Applies</dt>
 <dd>
 <a href="html/libxml-uri.html#XMLNORMALIZEURIPATH">xmlNormalizeURIPath</a>
+</dd>
+<dt>Arabic</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISARABIC">xmlUCSIsArabic</a>
+</dd>
+<dt>ArabicPresentationForms-A</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISARABICPRESENTATIONFORMSA">xmlUCSIsArabicPresentationFormsA</a>
+</dd>
+<dt>ArabicPresentationForms-B</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISARABICPRESENTATIONFORMSB">xmlUCSIsArabicPresentationFormsB</a>
+</dd>
+<dt>Armenian</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISARMENIAN">xmlUCSIsArmenian</a>
+</dd>
+<dt>Arrows</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISARROWS">xmlUCSIsArrows</a>
 </dd>
 <dt>Associate</dt>
 <dd>
@@ -295,18 +330,46 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpath.html#XMLXPATHISINF">xmlXPathIsInf</a>
 <a href="html/libxml-xpath.html#XMLXPATHISNAN">xmlXPathIsNaN</a>
 </dd>
+<dt>BasicLatin</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBASICLATIN">xmlUCSIsBasicLatin</a>
+</dd>
+<dt>Bengali</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBENGALI">xmlUCSIsBengali</a>
+</dd>
 <dt>Bit</dt>
 <dd>
 <a href="html/libxml-parser.html#XML-COMPLETE-ATTRS-CAPS">XML_COMPLETE_ATTRS</a>
 <a href="html/libxml-parser.html#XML-DETECT-IDS-CAPS">XML_DETECT_IDS</a>
 </dd>
+<dt>BlockElements</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBLOCKELEMENTS">xmlUCSIsBlockElements</a>
+</dd>
 <dt>Blocks</dt>
 <dd>
 <a href="html/libxml-parser.html#XMLSTOPPARSER">xmlStopParser</a>
 </dd>
+<dt>Bopomofo</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBOPOMOFO">xmlUCSIsBopomofo</a>
+</dd>
+<dt>BopomofoExtended</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBOPOMOFOEXTENDED">xmlUCSIsBopomofoExtended</a>
+</dd>
 <dt>Both</dt>
 <dd>
 <a href="html/libxml-parserinternals.html#XML-SUBSTITUTE-BOTH-CAPS">XML_SUBSTITUTE_BOTH</a>
+</dd>
+<dt>BoxDrawing</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBOXDRAWING">xmlUCSIsBoxDrawing</a>
+</dd>
+<dt>BraillePatterns</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBRAILLEPATTERNS">xmlUCSIsBraillePatterns</a>
 </dd>
 <dt>Buffer</dt>
 <dd>
@@ -326,6 +389,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dt>But</dt>
 <dd>
 <a href="html/libxml-valid.html#XMLVALIDATENOTATIONDECL">xmlValidateNotationDecl</a>
+</dd>
+<dt>ByzantineMusicalSymbols</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISBYZANTINEMUSICALSYMBOLS">xmlUCSIsByzantineMusicalSymbols</a>
 </dd>
 </dl>
 <h2>Letter C:</h2>
@@ -348,6 +415,42 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#XMLNEWCHILD">xmlNewChild</a>
 <a href="html/libxml-tree.html#XMLNEWDOCNODE">xmlNewDocNode</a>
 <a href="html/libxml-parserinternals.html#XMLPARSECHARDATA">xmlParseCharData</a>
+</dd>
+<dt>CJKCompatibility</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKCOMPATIBILITY">xmlUCSIsCJKCompatibility</a>
+</dd>
+<dt>CJKCompatibilityForms</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKCOMPATIBILITYFORMS">xmlUCSIsCJKCompatibilityForms</a>
+</dd>
+<dt>CJKCompatibilityIdeographs</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKCOMPATIBILITYIDEOGRAPHS">xmlUCSIsCJKCompatibilityIdeographs</a>
+</dd>
+<dt>CJKCompatibilityIdeographsSupplement</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKCOMPATIBILITYIDEOGRAPHSSUPPLEMENT">xmlUCSIsCJKCompatibilityIdeographsSupplement</a>
+</dd>
+<dt>CJKRadicalsSupplement</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKRADICALSSUPPLEMENT">xmlUCSIsCJKRadicalsSupplement</a>
+</dd>
+<dt>CJKSymbolsandPunctuation</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKSYMBOLSANDPUNCTUATION">xmlUCSIsCJKSymbolsandPunctuation</a>
+</dd>
+<dt>CJKUnifiedIdeographs</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKUNIFIEDIDEOGRAPHS">xmlUCSIsCJKUnifiedIdeographs</a>
+</dd>
+<dt>CJKUnifiedIdeographsExtensionA</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKUNIFIEDIDEOGRAPHSEXTENSIONA">xmlUCSIsCJKUnifiedIdeographsExtensionA</a>
+</dd>
+<dt>CJKUnifiedIdeographsExtensionB</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCJKUNIFIEDIDEOGRAPHSEXTENSIONB">xmlUCSIsCJKUnifiedIdeographsExtensionB</a>
 </dd>
 <dt>CWD</dt>
 <dd>
@@ -471,38 +574,18 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-encoding.html#XMLGETCHARENCODINGNAME">xmlGetCharEncodingName</a>
 <a href="html/libxml-encoding.html#XMLPARSECHARENCODING">xmlParseCharEncoding</a>
 </dd>
-<dt>Check</dt>
-<dd>
-<a href="html/libxml-sax.html#CHECKNAMESPACE">checkNamespace</a>
-<a href="html/libxml-htmlparser.html#HTMLISSCRIPTATTRIBUTE">htmlIsScriptAttribute</a>
-<a href="html/libxml-catalog.html#XMLCATALOGISEMPTY">xmlCatalogIsEmpty</a>
-<a href="html/libxml-entities.html#XMLGETPREDEFINEDENTITY">xmlGetPredefinedEntity</a>
-<a href="html/libxml-parserinternals.html#XMLISBASECHAR">xmlIsBaseChar</a>
-<a href="html/libxml-parserinternals.html#XMLISBLANK">xmlIsBlank</a>
-<a href="html/libxml-parserinternals.html#XMLISCHAR">xmlIsChar</a>
-<a href="html/libxml-parserinternals.html#XMLISCOMBINING">xmlIsCombining</a>
-<a href="html/libxml-parserinternals.html#XMLISDIGIT">xmlIsDigit</a>
-<a href="html/libxml-parserinternals.html#XMLISEXTENDER">xmlIsExtender</a>
-<a href="html/libxml-parserinternals.html#XMLISIDEOGRAPHIC">xmlIsIdeographic</a>
-<a href="html/libxml-parserinternals.html#XMLISLETTER">xmlIsLetter</a>
-<a href="html/libxml-parserinternals.html#XMLISPUBIDCHAR">xmlIsPubidChar</a>
-<a href="html/libxml-nanoftp.html#XMLNANOFTPCHECKRESPONSE">xmlNanoFTPCheckResponse</a>
-<a href="html/libxml-parser.html#XMLSTREQUAL">xmlStrEqual</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHCHECKERROR">xmlXPathCheckError</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHPOPBOOLEAN">xmlXPathPopBoolean</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHPOPEXTERNAL">xmlXPathPopExternal</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHPOPNODESET">xmlXPathPopNodeSet</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHPOPNUMBER">xmlXPathPopNumber</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHPOPSTRING">xmlXPathPopString</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHSTACKISNODESET">xmlXPathStackIsNodeSet</a>
-</dd>
 <dt>Checks</dt>
 <dd>
+<a href="html/libxml-index.html#XMLAUTOMATAISDETERMINIST">xmlAutomataIsDeterminist</a>
 <a href="html/libxml-parserinternals.html#XMLCHECKLANGUAGEID">xmlCheckLanguageID</a>
 <a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
 <a href="html/libxml-tree.html#XMLISBLANKNODE">xmlIsBlankNode</a>
 <a href="html/libxml-xpath.html#XMLXPATHNODESETISEMPTY">xmlXPathNodeSetIsEmpty</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHSTACKISEXTERNAL">xmlXPathStackIsExternal</a>
+</dd>
+<dt>Cherokee</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCHEROKEE">xmlUCSIsCherokee</a>
 </dd>
 <dt>Children</dt>
 <dd>
@@ -522,6 +605,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-entities.html#XMLCLEANUPPREDEFINEDENTITIES">xmlCleanupPredefinedEntities</a>
 <a href="html/libxml-nanoftp.html#XMLNANOFTPCLEANUP">xmlNanoFTPCleanup</a>
 <a href="html/libxml-nanohttp.html#XMLNANOHTTPCLEANUP">xmlNanoHTTPCleanup</a>
+<a href="html/libxml-index.html#XMLSCHEMACLEANUPTYPES">xmlSchemaCleanupTypes</a>
+<a href="html/libxml-index.html#XMLSCHEMAFREEVALUE">xmlSchemaFreeValue</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHREGISTEREDFUNCSCLEANUP">xmlXPathRegisteredFuncsCleanup</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHREGISTEREDNSCLEANUP">xmlXPathRegisteredNsCleanup</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHREGISTEREDVARIABLESCLEANUP">xmlXPathRegisteredVariablesCleanup</a>
@@ -544,6 +629,18 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-parserinternals.html#XMLISCOMBINING">xmlIsCombining</a>
 </dd>
+<dt>CombiningDiacriticalMarks</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCOMBININGDIACRITICALMARKS">xmlUCSIsCombiningDiacriticalMarks</a>
+</dd>
+<dt>CombiningHalfMarks</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCOMBININGHALFMARKS">xmlUCSIsCombiningHalfMarks</a>
+</dd>
+<dt>CombiningMarksforSymbols</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCOMBININGMARKSFORSYMBOLS">xmlUCSIsCombiningMarksforSymbols</a>
+</dd>
 <dt>Compare</dt>
 <dd>
 <a href="html/libxml-encoding.html#XMLPARSECHARENCODING">xmlParseCharEncoding</a>
@@ -551,6 +648,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>Compile</dt>
 <dd>
+<a href="html/libxml-index.html#XMLAUTOMATACOMPILE">xmlAutomataCompile</a>
 <a href="html/libxml-xpath.html#XMLXPATHCOMPILE">xmlXPathCompile</a>
 </dd>
 <dt>Compress</dt>
@@ -599,6 +697,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dt>Contrary</dt>
 <dd>
 <a href="html/libxml-entities.html#XMLENCODEENTITIESREENTRANT">xmlEncodeEntitiesReentrant</a>
+</dd>
+<dt>ControlPictures</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCONTROLPICTURES">xmlUCSIsControlPictures</a>
 </dd>
 <dt>Convert</dt>
 <dd>
@@ -669,6 +771,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</a>
 <a href="html/libxml-tree.html#XMLNEWTEXTLEN">xmlNewTextLen</a>
 </dd>
+<dt>CurrencySymbols</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCURRENCYSYMBOLS">xmlUCSIsCurrencySymbols</a>
+</dd>
 <dt>Currently</dt>
 <dd>
 <a href="html/libxml-nanoftp.html#XMLNANOFTPGETCONNECTION">xmlNanoFTPGetConnection</a>
@@ -679,6 +785,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-tree.html#XMLRECONCILIATENS">xmlReconciliateNs</a>
 </dd>
+<dt>Cyrillic</dt>
+<dd>
+<a href="html/libxml-index.html#XMLUCSISCYRILLIC">xmlUCSIsCyrillic</a>
+</dd>
 </dl>
 <h2 align="center">
 <a href="APIchunk0.html">A-C</a>
@@ -686,8 +796,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk2.html">F-I</a>
 <a href="APIchunk3.html">J-P</a>
 <a href="APIchunk4.html">Q-S</a>
-<a href="APIchunk5.html">T-X</a>
-<a href="APIchunk6.html">Z-a</a>
+<a href="APIchunk5.html">T-W</a>
+<a href="APIchunk6.html">X-a</a>
 <a href="APIchunk7.html">b-b</a>
 <a href="APIchunk8.html">c-c</a>
 <a href="APIchunk9.html">d-d</a>
@@ -696,14 +806,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-o</a>
-<a href="APIchunk16.html">p-p</a>
-<a href="APIchunk17.html">q-r</a>
-<a href="APIchunk18.html">s-s</a>
-<a href="APIchunk19.html">t-t</a>
-<a href="APIchunk20.html">u-v</a>
-<a href="APIchunk21.html">w-w</a>
-<a href="APIchunk22.html">x-x</a>
+<a href="APIchunk15.html">o-p</a>
+<a href="APIchunk16.html">q-r</a>
+<a href="APIchunk17.html">s-s</a>
+<a href="APIchunk18.html">t-t</a>
+<a href="APIchunk19.html">u-v</a>
+<a href="APIchunk20.html">w-x</a>
 </h2>
 <p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

@@ -80,6 +80,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
+<li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
 <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
@@ -91,8 +92,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk2.html">F-I</a>
 <a href="APIchunk3.html">J-P</a>
 <a href="APIchunk4.html">Q-S</a>
-<a href="APIchunk5.html">T-X</a>
-<a href="APIchunk6.html">Z-a</a>
+<a href="APIchunk5.html">T-W</a>
+<a href="APIchunk6.html">X-a</a>
 <a href="APIchunk7.html">b-b</a>
 <a href="APIchunk8.html">c-c</a>
 <a href="APIchunk9.html">d-d</a>
@@ -101,14 +102,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-o</a>
-<a href="APIchunk16.html">p-p</a>
-<a href="APIchunk17.html">q-r</a>
-<a href="APIchunk18.html">s-s</a>
-<a href="APIchunk19.html">t-t</a>
-<a href="APIchunk20.html">u-v</a>
-<a href="APIchunk21.html">w-w</a>
-<a href="APIchunk22.html">x-x</a>
+<a href="APIchunk15.html">o-p</a>
+<a href="APIchunk16.html">q-r</a>
+<a href="APIchunk17.html">s-s</a>
+<a href="APIchunk18.html">t-t</a>
+<a href="APIchunk19.html">u-v</a>
+<a href="APIchunk20.html">w-x</a>
 </h2>
 <h2>Letter b:</h2>
 <dl>
@@ -147,6 +146,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserinternals.html#XMLNEWSTRINGINPUTSTREAM">xmlNewStringInputStream</a>
 <a href="html/libxml-parser.html#XMLPARSERCTXT">xmlParserCtxt</a>
 <a href="html/libxml-parser.html#XMLPARSERINPUTSTATE">xmlParserInputState</a>
+<a href="html/libxml-index.html#XMLSCHEMANEWVALIDCTXT">xmlSchemaNewValidCtxt</a>
 <a href="html/libxml-tree.html#XMLSETCOMPRESSMODE">xmlSetCompressMode</a>
 <a href="html/libxml-tree.html#XMLSETDOCCOMPRESSMODE">xmlSetDocCompressMode</a>
 <a href="html/libxml-parser.html#XMLSTRCAT">xmlStrcat</a>
@@ -237,6 +237,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlversion.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
 <a href="html/libxml-sax.html#STARTDOCUMENT">startDocument</a>
 <a href="html/libxml-parser.html#STARTDOCUMENTSAXFUNC">startDocumentSAXFunc</a>
+<a href="html/libxml-index.html#XMLAUTOMATACOMPILE">xmlAutomataCompile</a>
 <a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
 <a href="html/libxml-tree.html#XMLNODEADDCONTENT">xmlNodeAddContent</a>
 <a href="html/libxml-tree.html#XMLNODEADDCONTENTLEN">xmlNodeAddContentLen</a>
@@ -268,6 +269,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>between</dt>
 <dd>
+<a href="html/libxml-index.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
+<a href="html/libxml-index.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
 <a href="html/libxml-catalog.html#XMLCATALOGSETDEFAULTPREFER">xmlCatalogSetDefaultPrefer</a>
 <a href="html/libxml-parserinternals.html#XMLPARSEQUOTEDSTRING">xmlParseQuotedString</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHDIFFERENCE">xmlXPathDifference</a>
@@ -383,10 +386,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#XMLRECOVERDOC">xmlRecoverDoc</a>
 <a href="html/libxml-parser.html#XMLRECOVERFILE">xmlRecoverFile</a>
 <a href="html/libxml-parser.html#XMLRECOVERMEMORY">xmlRecoverMemory</a>
+<a href="html/libxml-index.html#XMLREGEXPCOMPILE">xmlRegexpCompile</a>
 <a href="html/libxml-parser.html#XMLSAXPARSEDOC">xmlSAXParseDoc</a>
 <a href="html/libxml-parser.html#XMLSAXPARSEENTITY">xmlSAXParseEntity</a>
 <a href="html/libxml-parser.html#XMLSAXPARSEFILE">xmlSAXParseFile</a>
 <a href="html/libxml-parser.html#XMLSAXPARSEFILEWITHDATA">xmlSAXParseFileWithData</a>
+<a href="html/libxml-index.html#XMLSCHEMAPARSE">xmlSchemaParse</a>
 <a href="html/libxml-tree.html#XMLSTRINGGETNODELIST">xmlStringGetNodeList</a>
 <a href="html/libxml-tree.html#XMLSTRINGLENGETNODELIST">xmlStringLenGetNodeList</a>
 </dd>
@@ -420,6 +425,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#XMLRECOVERDOC">xmlRecoverDoc</a>
 <a href="html/libxml-parser.html#XMLRECOVERFILE">xmlRecoverFile</a>
 <a href="html/libxml-parser.html#XMLRECOVERMEMORY">xmlRecoverMemory</a>
+<a href="html/libxml-index.html#XMLSCHEMAPARSE">xmlSchemaParse</a>
 </dd>
 <dt>bunch</dt>
 <dd>
@@ -475,8 +481,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk2.html">F-I</a>
 <a href="APIchunk3.html">J-P</a>
 <a href="APIchunk4.html">Q-S</a>
-<a href="APIchunk5.html">T-X</a>
-<a href="APIchunk6.html">Z-a</a>
+<a href="APIchunk5.html">T-W</a>
+<a href="APIchunk6.html">X-a</a>
 <a href="APIchunk7.html">b-b</a>
 <a href="APIchunk8.html">c-c</a>
 <a href="APIchunk9.html">d-d</a>
@@ -485,14 +491,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-o</a>
-<a href="APIchunk16.html">p-p</a>
-<a href="APIchunk17.html">q-r</a>
-<a href="APIchunk18.html">s-s</a>
-<a href="APIchunk19.html">t-t</a>
-<a href="APIchunk20.html">u-v</a>
-<a href="APIchunk21.html">w-w</a>
-<a href="APIchunk22.html">x-x</a>
+<a href="APIchunk15.html">o-p</a>
+<a href="APIchunk16.html">q-r</a>
+<a href="APIchunk17.html">s-s</a>
+<a href="APIchunk18.html">t-t</a>
+<a href="APIchunk19.html">u-v</a>
+<a href="APIchunk20.html">w-x</a>
 </h2>
 <p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

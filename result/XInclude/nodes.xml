@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<x xmlns:xinclude="http://www.w3.org/1999/XML/xinclude">
+   <!-- Simple test of including a set of nodes from an XML document -->
+   <p>something</p><p>really</p><p>simple</p>
+</x>

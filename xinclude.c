@@ -396,6 +396,7 @@ loaded:
 	    xmlGenericError(xmlGenericErrorContext,
 			"XInclude: XPointer evaluation failed: #%s\n",
 			fragment);
+	    xmlXPathFreeContext(xptrctxt);
 	    xmlFree(URL);
 	    xmlFree(fragment);
 	    return;
@@ -599,7 +600,11 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
      * compute the URI
      */
     base = xmlNodeGetBase(ctxt->doc, cur);
-    URI = xmlBuildURI(href, base);
+    if (base == NULL) {
+	URI = xmlBuildURI(href, ctxt->doc->URL);
+    } else {
+	URI = xmlBuildURI(href, base);
+    }
     if (URI == NULL) {
 	xmlChar *escbase;
 	xmlChar *eschref;

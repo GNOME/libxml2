@@ -6,6 +6,8 @@
 TODO:
 =====
 
+- Computation of base when HTTP redirect occurs, might affect HTTP
+  interfaces.
 - performances: there is still improvements needed when parsing Docbook DTD
   a single function to optimize/avoid.
 - DOM needs

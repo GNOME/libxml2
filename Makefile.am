@@ -82,7 +82,7 @@ $(libxml_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests
 
 HTMLtests : testHTML
 	@(rm -f .memdump ; touch .memdump)
@@ -272,6 +272,24 @@ XPtrtests : testXPath
 	      diff $(srcdir)/result/XPath/xptr/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
+
+XIncludetests : xmllint
+	@echo "##"
+	@echo "## XInclude regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/XInclude/docs/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/XInclude/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmllint --xinclude $$i > $(srcdir)/result/XInclude/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmllint --xinclude $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 SVGtests : xmllint
 	@echo "##"

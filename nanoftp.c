@@ -1310,7 +1310,7 @@ xmlNanoFTPGetConnection(void *ctx) {
 	}
 	cur = &ctxt->controlBuf[ctxt->controlBufAnswer]; 
 	while (((*cur < '0') || (*cur > '9')) && *cur != '\0') cur++;
-	if (sscanf(cur, "%d,%d,%d,%d,%d,%d", &temp[0], &temp[1], &temp[2],
+	if (sscanf(cur, "%u,%u,%u,%u,%u,%u", &temp[0], &temp[1], &temp[2],
 	            &temp[3], &temp[4], &temp[5]) != 6) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Invalid answer to PASV\n");

@@ -55,6 +55,7 @@
  *									*
  ************************************************************************/
 
+xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur);
 /**
  * xmlXPtrGetArity:
  * @cur:  the node
@@ -1302,13 +1303,182 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 }
 
 /**
+ * xmlXPtrBuildRangeNodeList:
+ * @range:  a range object
+ *
+ * Build a node list tree copy of the range
+ *
+ * Returns an xmlNodePtr list or NULL.
+ *         the caller has to free the node tree.
+ */
+xmlNodePtr
+xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
+    /* pointers to generated nodes */
+    xmlNodePtr list = NULL, last = NULL, parent = NULL, tmp;
+    /* pointers to traversal nodes */
+    xmlNodePtr start, cur, end;
+    int index, index2;
+
+    if (range == NULL)
+	return(NULL);
+    if (range->type != XPATH_RANGE)
+	return(NULL);
+    start = (xmlNodePtr) range->user;
+
+    if (start == NULL)
+	return(NULL);
+    end = range->user2;
+    if (end == NULL)
+	return(xmlCopyNode(start, 1));
+
+    cur = start;
+    index = range->index;
+    index2 = range->index2;
+    while (cur != NULL) {
+	if (cur == end) {
+	    if (cur->type == XML_TEXT_NODE) {
+		const xmlChar *content = cur->content;
+		int len;
+
+		if (content == NULL) {
+		    tmp = xmlNewTextLen(NULL, 0);
+		} else {
+		    len = index2;
+		    if ((cur == start) && (index > 1)) {
+			content += (index - 1);
+			len -= (index - 1);
+			index = 0;
+		    } else {
+			len = index2;
+		    }
+		    tmp = xmlNewTextLen(content, len);
+		}
+		/* single sub text node selection */
+		if (list == NULL)
+		    return(tmp);
+		/* prune and return full set */
+		if (last != NULL)
+		    xmlAddNextSibling(last, tmp);
+		else 
+		    xmlAddChild(parent, tmp);
+		return(list);
+	    } else {
+		tmp = xmlCopyNode(cur, 0);
+		if (list == NULL)
+		    list = tmp;
+		else {
+		    if (last != NULL)
+			xmlAddNextSibling(last, tmp);
+		    else
+			xmlAddChild(parent, tmp);
+		}
+		last = NULL;
+		parent = tmp;
+
+		if (index2 > 1) {
+		    end = xmlXPtrGetNthChild(cur, index2 - 1);
+		    index2 = 0;
+		}
+		if ((cur == start) && (index > 1)) {
+		    cur = xmlXPtrGetNthChild(cur, index - 1);
+		    index = 0;
+		} else {
+		    cur = cur->children;
+		}
+		/*
+		 * Now gather the remaining nodes from cur to end
+		 */
+		continue; /* while */
+	    }
+	} else if ((cur == start) &&
+		   (list == NULL) /* looks superfluous but ... */ ) {
+	    if (cur->type == XML_TEXT_NODE) {
+		const xmlChar *content = cur->content;
+
+		if (content == NULL) {
+		    tmp = xmlNewTextLen(NULL, 0);
+		} else {
+		    if (index > 1) {
+			content += (index - 1);
+		    }
+		    tmp = xmlNewText(content);
+		}
+		last = list = tmp;
+	    } else {
+		if ((cur == start) && (index > 1)) {
+		    tmp = xmlCopyNode(cur, 0);
+		    list = tmp;
+		    parent = tmp;
+		    last = NULL;
+		    cur = xmlXPtrGetNthChild(cur, index - 1);
+		    index = 0;
+		    /*
+		     * Now gather the remaining nodes from cur to end
+		     */
+		    continue; /* while */
+		}
+		tmp = xmlCopyNode(cur, 1);
+		list = tmp;
+		parent = NULL;
+		last = tmp;
+	    }
+	} else {
+	    tmp = NULL;
+	    switch (cur->type) {
+		case XML_DTD_NODE:
+		case XML_ELEMENT_DECL:
+		case XML_ATTRIBUTE_DECL:
+		case XML_ENTITY_NODE:
+		    /* Do not copy DTD informations */
+		    break;
+		case XML_ENTITY_DECL:
+		    TODO /* handle csossing entities -> stack needed */
+		    break;
+		case XML_XINCLUDE_START:
+		case XML_XINCLUDE_END:
+		    /* don't consider it part of the tree content */
+		    break;
+		case XML_ATTRIBUTE_NODE:
+		    /* Humm, should not happen ! */
+		    STRANGE
+		    break;
+		default:
+		    tmp = xmlCopyNode(cur, 1);
+		    break;
+	    }
+	    if (tmp != NULL) {
+		if ((list == NULL) || ((last == NULL) && (parent == NULL)))  {
+		    STRANGE
+		    return(NULL);
+		}
+		if (last != NULL)
+		    xmlAddNextSibling(last, tmp);
+		else {
+		    xmlAddChild(parent, tmp);
+		    last = tmp;
+		}
+	    }
+	}
+	/*
+	 * Skip to next node in document order
+	 */
+	if ((list == NULL) || ((last == NULL) && (parent == NULL)))  {
+	    STRANGE
+	    return(NULL);
+	}
+	cur = xmlXPtrAdvanceNode(cur);
+    }
+    return(list);
+}
+
+/**
  * xmlXPtrBuildNodeList:
  * @obj:  the XPointer result from the evaluation.
  *
- * Build a node list copy of the XPointer result.
+ * Build a node list tree copy of the XPointer result.
  *
  * Returns an xmlNodePtr list or NULL.
- *         the caller has to free the node list.
+ *         the caller has to free the node tree.
  */
 xmlNodePtr
 xmlXPtrBuildNodeList(xmlXPathObjectPtr obj) {
@@ -1333,8 +1503,27 @@ xmlXPtrBuildNodeList(xmlXPathObjectPtr obj) {
 	    }
 	    break;
 	}
-	case XPATH_LOCATIONSET:
+	case XPATH_LOCATIONSET: {
+	    xmlLocationSetPtr set = (xmlLocationSetPtr) obj->user;
+	    if (set == NULL)
+		return(NULL);
+	    for (i = 0;i < set->locNr;i++) {
+		if (last == NULL)
+		    list = last = xmlXPtrBuildNodeList(set->locTab[i]);
+		else
+		    xmlAddNextSibling(last,
+			    xmlXPtrBuildNodeList(set->locTab[i]));
+		if (last != NULL) {
+		    while (last->next != NULL)
+			last = last->next;
+		}
+	    }
 	    break;
+	}
+	case XPATH_RANGE:
+	    return(xmlXPtrBuildRangeNodeList(obj));
+	case XPATH_POINT:
+	    return(xmlCopyNode(obj->user, 0));
 	default:
 	    break;
     }

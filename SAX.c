@@ -1668,7 +1668,7 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.endElement = endElement;
     htmlDefaultSAXHandler.reference = NULL;
     htmlDefaultSAXHandler.characters = characters;
-    xmlDefaultSAXHandler.cdataBlock = cdataBlock;
+    htmlDefaultSAXHandler.cdataBlock = cdataBlock;
     htmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
     htmlDefaultSAXHandler.processingInstruction = NULL;
     htmlDefaultSAXHandler.comment = comment;

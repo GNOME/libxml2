@@ -5119,7 +5119,7 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
         xmlNodePtr child = cur->children;
 
 	while (child != NULL) {
-	    xmlNodeDump(buf, cur, child, 0, 1);
+	    xmlNodeDump(buf, cur, child, 0, 0);
 	    xmlBufferWriteChar(buf, "\n");
 	    child = child->next;
 	}
@@ -5218,16 +5218,6 @@ xmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDtdPtr dtd, const char *encoding) {
     }
     xmlOutputBufferWriteString(buf, " [\n");
     xmlNodeListDumpOutput(buf, dtd->doc, dtd->children, -1, 0, encoding);
-#if 0
-    if (dtd->entities != NULL)
-	xmlDumpEntitiesTable(buf, (xmlEntitiesTablePtr) dtd->entities);
-    if (dtd->notations != NULL)
-	xmlDumpNotationTable(buf, (xmlNotationTablePtr) dtd->notations);
-    if (dtd->elements != NULL)
-	xmlDumpElementTable(buf, (xmlElementTablePtr) dtd->elements);
-    if (dtd->attributes != NULL)
-	xmlDumpAttributeTable(buf, (xmlAttributeTablePtr) dtd->attributes);
-#endif
     xmlOutputBufferWriteString(buf, "]>");
 }
 

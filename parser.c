@@ -268,32 +268,29 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
  *   GROW, SHRINK  handling of input buffers
  */
 
-#define AVAIL (ctxt->input->end - ctxt->input->cur)
-#define RAW (ctxt->token ? -1 : 					\
-	     (ctxt->input->cur < ctxt->input->end) ? (*ctxt->input->cur) : 0)
-#define CUR (ctxt->token ? ctxt->token :				\
-	     (ctxt->input->cur < ctxt->input->end) ? (*ctxt->input->cur) : 0)
+#define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
+#define CUR (ctxt->token ? ctxt->token : (*ctxt->input->cur))
 #define NXT(val) ctxt->input->cur[(val)]
 #define CUR_PTR ctxt->input->cur
 
 #define SKIP(val) do {							\
     ctxt->nbChars += (val),ctxt->input->cur += (val);			\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
-    if ((ctxt->input->cur >= ctxt->input->end) &&					\
+    if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
   } while (0)
 
 #define SHRINK if (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK) {\
     xmlParserInputShrink(ctxt->input);					\
-    if ((ctxt->input->cur >= ctxt->input->end) &&					\
+    if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
   }
 
 #define GROW if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) {	\
     xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
-    if ((ctxt->input->cur >= ctxt->input->end) &&					\
+    if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
   }
@@ -305,7 +302,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 #define NEXT1 {								\
 	ctxt->input->cur++;						\
 	ctxt->nbChars++;						\
-	if (ctxt->input->cur >= ctxt->input->end)					\
+	if (*ctxt->input->cur == 0)					\
 	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
     }
 
@@ -412,7 +409,7 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Popping input %d\n", ctxt->inputNr);
     xmlFreeInputStream(inputPop(ctxt));
-    if ((ctxt->input->cur >= ctxt->input->end) &&
+    if ((*ctxt->input->cur == 0) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
 	    return(xmlPopInput(ctxt));
     return(CUR);
@@ -470,8 +467,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     /*
      * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
      */
-    GROW;
-    if ((AVAIL >= 5) && (RAW == '&') && (NXT(1) == '#') &&
+    if ((RAW == '&') && (NXT(1) == '#') &&
         (NXT(2) == 'x')) {
 	SKIP(3);
 	GROW;
@@ -504,7 +500,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    ctxt->nbChars ++;
 	    ctxt->input->cur++;
 	}
-    } else if  ((AVAIL >= 4) && (RAW == '&') && (NXT(1) == '#')) {
+    } else if  ((RAW == '&') && (NXT(1) == '#')) {
 	SKIP(2);
 	GROW;
 	while (RAW != ';') { /* loop blocked by count */
@@ -840,19 +836,16 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * plug some encoding conversion routines.
 		     */
 		    GROW
-		    if (AVAIL > 4) {
-			start[0] = RAW;
-			start[1] = NXT(1);
-			start[2] = NXT(2);
-			start[3] = NXT(3);
-			enc = xmlDetectCharEncoding(start, 4);
-			if (enc != XML_CHAR_ENCODING_NONE) {
-			    xmlSwitchEncoding(ctxt, enc);
-			}
+		    start[0] = RAW;
+		    start[1] = NXT(1);
+		    start[2] = NXT(2);
+		    start[3] = NXT(3);
+		    enc = xmlDetectCharEncoding(start, 4);
+		    if (enc != XML_CHAR_ENCODING_NONE) {
+			xmlSwitchEncoding(ctxt, enc);
 		    }
 
 		    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-			(AVAIL >= 6) &&
 			(RAW == '<') && (NXT(1) == '?') &&
 			(NXT(2) == 'x') && (NXT(3) == 'm') &&
 			(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
@@ -1533,7 +1526,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     /*
      * Otherwise, heuristic :-\
      */
-    if ((AVAIL < 2) || (RAW != '<')) return(0);
+    if (RAW != '<') return(0);
     if ((ctxt->node->children == NULL) &&
 	(RAW == '<') && (NXT(1) == '/')) return(0);
 
@@ -2562,7 +2555,7 @@ void xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata);
 
 void
 xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
-    const xmlChar *in, *end;
+    const xmlChar *in;
     int nbchar = 0;
     int line = ctxt->input->line;
     int col = ctxt->input->col;
@@ -2575,24 +2568,21 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
      */
     if ((ctxt->token == 0) && (!cdata)) {
 	in = ctxt->input->cur;
-	end = ctxt->input->end;
 	do {
 get_more:
-	    while ((in < end) &&
-		   (((*in >= 0x20) && (*in != '<') && (*in != ']') &&
-		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09)))
+	    while (((*in >= 0x20) && (*in != '<') && (*in != ']') &&
+		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09))
 		in++;
-	    if (in >= end) {
-		end = ctxt->input->end;
-	    } else if (*in == 0xA) {
+	    if (*in == 0xA) {
 		ctxt->input->line++;
 		in++;
-		while ((in < end) && (*in == 0xA)) {
+		while (*in == 0xA) {
 		    ctxt->input->line++;
 		    in++;
 		}
 		goto get_more;
-	    } else if (*in == ']') {
+	    }
+	    if (*in == ']') {
 		if ((in[1] == ']') && (in[2] == '>')) {
 		    ctxt->errNo = XML_ERR_MISPLACED_CDATA_END;
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -2631,29 +2621,26 @@ get_more:
 		}
 	    }
 	    ctxt->input->cur = in;
-	    if (in < ctxt->input->end) {
-		if (*in == 0xD) {
+	    if (*in == 0xD) {
+		in++;
+		if (*in == 0xA) {
+		    ctxt->input->cur = in;
 		    in++;
-		    if (*in == 0xA) {
-			ctxt->input->cur = in;
-			in++;
-			ctxt->input->line++;
-			continue; /* while */
-		    }
-		    in--;
+		    ctxt->input->line++;
+		    continue; /* while */
 		}
-		if (*in == '<') {
-		    return;
-		}
-		if (*in == '&') {
-		    return;
-		}
+		in--;
+	    }
+	    if (*in == '<') {
+		return;
+	    }
+	    if (*in == '&') {
+		return;
 	    }
 	    SHRINK;
 	    GROW;
 	    in = ctxt->input->cur;
-	    end = ctxt->input->end;
-	} while ((in < end) && (*in >= 0x20) && (*in <= 0x7F));
+	} while ((*in >= 0x20) && (*in <= 0x7F));
 	nbchar = 0;
     }
     ctxt->input->line = line;
@@ -6759,7 +6746,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
     GROW;
-    while ((AVAIL > 0) && ((RAW != 0) || (ctxt->token != 0)) &&
+    while (((RAW != 0) || (ctxt->token != 0)) &&
 	   ((RAW != '<') || (NXT(1) != '/'))) {
 	const xmlChar *test = CUR_PTR;
 	int cons = ctxt->input->consumed;
@@ -6826,7 +6813,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Pop-up of finished entities.
 	 */
-	while (((AVAIL == 0) || (RAW == 0)) && (ctxt->inputNr > 1))
+	while ((RAW == 0) && (ctxt->inputNr > 1))
 	    xmlPopInput(ctxt);
 	SHRINK;
 
@@ -7540,16 +7527,13 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 
 void
 xmlParseMisc(xmlParserCtxtPtr ctxt) {
-    if (AVAIL < 4) {
-	GROW;
-    }
-    while (((AVAIL >= 2) && ((RAW == '<') && (NXT(1) == '?'))) ||
-           ((AVAIL >= 4) && ((RAW == '<') && (NXT(1) == '!') &&
-	    (NXT(2) == '-') && (NXT(3) == '-'))) ||
-	   ((AVAIL > 0) && (IS_BLANK(CUR)))) {
-        if ((AVAIL >= 2) && (RAW == '<') && (NXT(1) == '?')) {
+    while (((RAW == '<') && (NXT(1) == '?')) ||
+           ((RAW == '<') && (NXT(1) == '!') &&
+	    (NXT(2) == '-') && (NXT(3) == '-')) ||
+           IS_BLANK(CUR)) {
+        if ((RAW == '<') && (NXT(1) == '?')) {
 	    xmlParsePI(ctxt);
-	} else if ((AVAIL > 0) && (IS_BLANK(CUR))) {
+	} else if (IS_BLANK(CUR)) {
 	    NEXT;
 	} else
 	    xmlParseComment(ctxt);
@@ -7699,7 +7683,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	 */
 	xmlParseMisc(ctxt);
 
-	if ((AVAIL > 0) && (RAW != 0)) {
+	if (RAW != 0) {
 	    ctxt->errNo = XML_ERR_DOCUMENT_END;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -9541,14 +9525,14 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 
     xmlParseContent(ctxt);
    
-    if ((AVAIL > 2) && (RAW == '<') && (NXT(1) == '/')) {
+    if ((RAW == '<') && (NXT(1) == '/')) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 		"chunk is not well balanced\n");
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
-    } else if ((AVAIL > 0) && (RAW != 0)) {
+    } else if (RAW != 0) {
 	ctxt->errNo = XML_ERR_EXTRA_CONTENT;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,

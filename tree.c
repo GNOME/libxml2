@@ -5159,8 +5159,6 @@ xmlBufferCreateSize(size_t size) {
 void
 xmlBufferSetAllocationScheme(xmlBufferPtr buf, 
                              xmlBufferAllocationScheme scheme) {
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return;
     if (buf == NULL) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
@@ -5188,8 +5186,7 @@ xmlBufferFree(xmlBufferPtr buf) {
 #endif
 	return;
     }
-    if ((buf->content != NULL) &&
-	(buf->alloc != XML_BUFFER_ALLOC_UNMUTABLE)) {
+    if (buf->content != NULL) {
         xmlFree(buf->content);
     }
     xmlFree(buf);
@@ -5203,9 +5200,6 @@ xmlBufferFree(xmlBufferPtr buf) {
  */
 void
 xmlBufferEmpty(xmlBufferPtr buf) {
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return;
-
     if (buf->content == NULL) return;
     buf->use = 0;
     memset(buf->content, 0, buf->size);
@@ -5224,12 +5218,6 @@ int
 xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
     if (len == 0) return(0);
     if (len > buf->use) return(-1);
-
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE) {
-	buf->content = &buf->content[len];
-	buf->use -= len;
-	return(len);
-    }
 
     buf->use -= len;
     memmove(buf->content, &buf->content[len], buf->use * sizeof(xmlChar));
@@ -5251,9 +5239,6 @@ int
 xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     int size;
     xmlChar *newbuf;
-
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return(-1);
 
     if (len + buf->use < buf->size) return(0);
 
@@ -5349,9 +5334,6 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
     unsigned int newSize;
     xmlChar* rebuf = NULL;
 
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return 0;
-
     /*take care of empty case*/
     newSize = (buf->size ? buf->size*2 : size);
 
@@ -5401,9 +5383,6 @@ void
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     unsigned int needSize;
 
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return;
-
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
@@ -5451,9 +5430,6 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
 void
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
     unsigned int needSize;
-
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return;
 
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
@@ -5514,9 +5490,6 @@ xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
 void
 xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     const char *cur;
-
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return;
 
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
@@ -5590,9 +5563,6 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
  */
 void
 xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
-    if (buf->alloc == XML_BUFFER_ALLOC_UNMUTABLE)
-	return;
-
     if (xmlStrchr(string, '"')) {
         if (xmlStrchr(string, '\'')) {
 #ifdef DEBUG_BUFFER

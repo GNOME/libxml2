@@ -1,3 +1,9 @@
+Wed Mar 20 22:42:42 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c error.c parser.c parserInternals.c tree.c xmlIO.c
+	  include/libxml/tree.h: dohh I really didn't intended to commit
+	  this test version :-(
+
 Wed Mar 20 20:20:57 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* testSAX.c: I wanted to see the real speed at the SAX interface

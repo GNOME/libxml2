@@ -14820,7 +14820,9 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	* of white space separated tokens, each of which ·match·es a literal 
 	* in the ·lexical space· of {item type definition} 
 	*/
-	
+
+	if (value == NULL)
+	    value = BAD_CAST "";
 	tmpType = xmlSchemaGetListSimpleTypeItemType(type);	
 	cur = value;
 	do {

@@ -21,9 +21,9 @@
 #include "libxml.h"
 
 #include <string.h>
+#include <libxml/parser.h>
 #include <libxml/hash.h>
 #include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
 
@@ -74,6 +74,55 @@ xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
 	while ((ch = *name2++) != 0) {
 	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
 	}
+    }
+    if (name3 != NULL) {
+	while ((ch = *name3++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+    }
+    return (value % table->size);
+}
+
+static unsigned long
+xmlHashComputeQKey(xmlHashTablePtr table,
+		   const xmlChar *name, const xmlChar *prefix,
+		   const xmlChar *name2, const xmlChar *prefix2,
+		   const xmlChar *name3, const xmlChar *prefix3) {
+    unsigned long value = 0L;
+    char ch;
+    
+    if (prefix != NULL)
+	value += 30 * (*prefix);
+    else
+	value += 30 * (*name);
+
+    if (prefix != NULL) {
+	while ((ch = *prefix++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+	value = value ^ ((value << 5) + (value >> 3) + (unsigned long)':');
+    }
+    if (name != NULL) {
+	while ((ch = *name++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+    }
+    if (prefix2 != NULL) {
+	while ((ch = *prefix2++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+	value = value ^ ((value << 5) + (value >> 3) + (unsigned long)':');
+    }
+    if (name2 != NULL) {
+	while ((ch = *name2++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+    }
+    if (prefix3 != NULL) {
+	while ((ch = *prefix3++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+	value = value ^ ((value << 5) + (value >> 3) + (unsigned long)':');
     }
     if (name3 != NULL) {
 	while ((ch = *name3++) != 0) {
@@ -358,6 +407,41 @@ xmlHashLookup2(xmlHashTablePtr table, const xmlChar *name,
 }
 
 /**
+ * xmlHashQLookup:
+ * @table: the hash table
+ * @prefix: the prefix of the userdata
+ * @name: the name of the userdata
+ *
+ * Find the userdata specified by the QName @prefix:@name/@name.
+ *
+ * Returns the pointer to the userdata
+ */
+void *
+xmlHashQLookup(xmlHashTablePtr table, const xmlChar *prefix,
+               const xmlChar *name) {
+    return(xmlHashQLookup3(table, prefix, name, NULL, NULL, NULL, NULL));
+}
+
+/**
+ * xmlHashLookup2:
+ * @table: the hash table
+ * @prefix: the prefix of the userdata
+ * @name: the name of the userdata
+ * @prefix: the second prefix of the userdata
+ * @name2: a second name of the userdata
+ *
+ * Find the userdata specified by the QNames tuple
+ *
+ * Returns the pointer to the userdata
+ */
+void *
+xmlHashQLookup2(xmlHashTablePtr table, const xmlChar *prefix,
+                const xmlChar *name, const xmlChar *prefix2,
+	        const xmlChar *name2) {
+    return(xmlHashQLookup3(table, prefix, name, prefix2, name2, NULL, NULL));
+}
+
+/**
  * xmlHashAddEntry3:
  * @table: the hash table
  * @name: the name of the userdata
@@ -535,6 +619,45 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
 	if ((xmlStrEqual(entry->name, name)) &&
 	    (xmlStrEqual(entry->name2, name2)) &&
 	    (xmlStrEqual(entry->name3, name3)))
+	    return(entry->payload);
+    }
+    return(NULL);
+}
+
+/**
+ * xmlHashQLookup3:
+ * @table: the hash table
+ * @prefix: the prefix of the userdata
+ * @name: the name of the userdata
+ * @prefix2: the second prefix of the userdata
+ * @name2: a second name of the userdata
+ * @prefix3: the third prefix of the userdata
+ * @name3: a third name of the userdata
+ *
+ * Find the userdata specified by the (@name, @name2, @name3) tuple.
+ *
+ * Returns the a pointer to the userdata
+ */
+void *
+xmlHashQLookup3(xmlHashTablePtr table,
+                const xmlChar *prefix, const xmlChar *name,
+		const xmlChar *prefix2, const xmlChar *name2,
+		const xmlChar *prefix3, const xmlChar *name3) {
+    unsigned long key;
+    xmlHashEntryPtr entry;
+
+    if (table == NULL)
+	return(NULL);
+    if (name == NULL)
+	return(NULL);
+    key = xmlHashComputeQKey(table, prefix, name, prefix2,
+                             name2, prefix3, name3);
+    if (table->table[key].valid == 0)
+	return(NULL);
+    for (entry = &(table->table[key]); entry != NULL; entry = entry->next) {
+	if ((xmlStrQEqual(prefix, name, entry->name)) &&
+	    (xmlStrQEqual(prefix2, name2, entry->name2)) &&
+	    (xmlStrQEqual(prefix3, name3, entry->name3)))
 	    return(entry->payload);
     }
     return(NULL);

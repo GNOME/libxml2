@@ -1,6 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.startElement(RDF:RDF, xmlns:p3p='http//www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD', xmlns:RDF='http://www.w3.org/TR/WD-rdf-syntax#')
+SAX.startElement(RDF:RDF, xmlns:p3p='http://www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD', xmlns:RDF='http://www.w3.org/TR/WD-rdf-syntax#')
 SAX.characters(
 , 1)
 SAX.startElement(PROP, realm='http://www.CoolCatalog.com/catalogue/', entity='CoolCatalog', agreeID='94df1293a3e519bb', assurance='http://www.TrustUs.org')

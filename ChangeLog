@@ -1,3 +1,24 @@
+Wed Sep 10 12:38:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	Time to commit 3 days of work rewriting the parser internal,
+	fixing bugs and migrating to SAX2 interface by default. There
+	is some work letf TODO, like namespace validation and attributes
+	normalization (this break C14N right now)
+	* Makefile.am: fixed the test rules
+	* include/libxml/SAX2.h include/libxml/parser.h
+	  include/libxml/parserInternals.h SAX2.c parser.c
+	  parserInternals.c: changing the parser, migrating to SAX2,
+	  adding new interface to switch back to SAX1 or initialize a
+	  SAX block for v1 or v2. Most of the namespace work is done
+	  below SAX, as well as attribute defaulting
+	* globals.c: changed initialization of the default SAX handlers
+	* hash.c tree.c include/libxml/hash.h: added QName specific handling
+	* xmlIO.c: small fix
+	* xmllint.c testSAX.c: provide a --sax1 switch to test the old
+	  version code path
+	* result/p3p result/p3p.sax result/noent/p3p test/p3p: the new code
+	  pointed out a typo in a very old test namespace
+
 Sun Sep  7 19:58:33 PTD 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlIO.c include/libxml/xmlIO.h parser.c: Implemented detection

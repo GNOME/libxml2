@@ -92,7 +92,7 @@ static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 static __declspec(thread) xmlGlobalState tlstate;
 static __declspec(thread) int tlstate_inited = 0;
 #else /* HAVE_COMPILER_TLS */
-static DWORD globalkey;
+static DWORD globalkey = TLS_OUT_OF_INDEXES;
 #endif /* HAVE_COMPILER_TLS */
 static DWORD mainthread;
 static int run_once_init = 1;
@@ -323,7 +323,7 @@ xmlNewGlobalState(void)
 
 
 #ifdef HAVE_WIN32_THREADS
-#if !defined(HAVE_COMPILER_TLS)
+#if !defined(HAVE_COMPILER_TLS) && defined(LIBXML_STATIC)
 typedef struct _xmlGlobalStateCleanupHelperParams
 {
     HANDLE thread;
@@ -339,7 +339,7 @@ static void xmlGlobalStateCleanupHelper (void *p)
     free(params);
     _endthread();
 }
-#endif /* HAVE_COMPILER_TLS */
+#endif /* HAVE_COMPILER_TLS && LIBXML_STATIC */
 #endif /* HAVE_WIN32_THREADS */
 
 /**
@@ -381,13 +381,17 @@ xmlGetGlobalState(void)
     }
     if ((globalval = (xmlGlobalState *) TlsGetValue(globalkey)) == NULL) {
 	xmlGlobalState *tsd = xmlNewGlobalState();
+#if defined(LIBXML_STATIC)
 	xmlGlobalStateCleanupHelperParams *p = 
 	    (xmlGlobalStateCleanupHelperParams *) malloc(sizeof(xmlGlobalStateCleanupHelperParams));
 	p->memory = tsd;
 	DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), 
 		GetCurrentProcess(), &p->thread, 0, TRUE, DUPLICATE_SAME_ACCESS);
+#endif
 	TlsSetValue(globalkey, tsd);
+#if defined(LIBXML_STATIC)
 	_beginthread(xmlGlobalStateCleanupHelper, 0, p);
+#endif
 
 	return (tsd);
     }
@@ -535,3 +539,34 @@ xmlOnceInit(void) {
     mainthread = GetCurrentThreadId();
 #endif
 }
+
+/**
+ * DllMain
+ *
+ * Entry point for Windows library. It is being used to free thread-specific
+ * storage.
+ */
+#if defined(HAVE_WIN32_THREADS) && !defined(LIBXML_STATIC)
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 
+{
+    switch(fdwReason) {
+    case DLL_THREAD_DETACH:
+	if (globalkey != TLS_OUT_OF_INDEXES) {
+	    xmlGlobalState *globalval = (xmlGlobalState *)TlsGetValue(globalkey);
+	    if (globalval) {
+		xmlFreeGlobalState(globalval);
+		TlsSetValue(globalkey, NULL);
+	    }
+	}
+	break;
+    case DLL_PROCESS_DETACH:
+	if (globalkey != TLS_OUT_OF_INDEXES) {
+	    TlsFree(globalkey);
+	    globalkey = TLS_OUT_OF_INDEXES;
+	}
+	break;
+    }
+    return TRUE;
+}
+#endif
+

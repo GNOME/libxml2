@@ -4167,6 +4167,101 @@ xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
     ctxt->userData = ctx;
 }
 
+/**
+ * xmlSchemaFacetTypeToString:
+ * @type:  the facet type
+ *
+ * Convert the xmlSchemaTypeType to a char string.
+ *
+ * Returns the char string representation of the facet type if the
+ *     type is a facet and an "Internal Error" string otherwise.
+ */
+static const char *
+xmlSchemaFacetTypeToString(xmlSchemaTypeType type)
+{
+    switch (type) {
+        case XML_SCHEMA_FACET_PATTERN:
+            return ("pattern");
+	case XML_SCHEMA_FACET_MAXEXCLUSIVE:
+            return ("maxExclusive");
+	case XML_SCHEMA_FACET_MAXINCLUSIVE:
+            return ("maxInclusive");
+	case XML_SCHEMA_FACET_MINEXCLUSIVE:
+            return ("minExclusive");
+	case XML_SCHEMA_FACET_MININCLUSIVE:
+            return ("minInclusive");
+	case XML_SCHEMA_FACET_WHITESPACE:
+            return ("whiteSpace");
+	case XML_SCHEMA_FACET_ENUMERATION:
+            return ("enumeration");
+	case XML_SCHEMA_FACET_LENGTH:
+            return ("length");
+	case XML_SCHEMA_FACET_MAXLENGTH:
+            return ("maxLength");
+	case XML_SCHEMA_FACET_MINLENGTH:
+            return ("minLength");
+	case XML_SCHEMA_FACET_TOTALDIGITS:
+            return ("totalDigits");
+	case XML_SCHEMA_FACET_FRACTIONDIGITS:
+            return ("fractionDigits");
+        default:
+            break;
+    }
+    return ("Internal Error");
+}
+
+/**
+ * xmlSchemaValidateFacets:
+ * @ctxt:  a schema validation context
+ * @base:  the base type
+ * @facets:  the list of facets to check
+ * @value:  the lexical repr of the value to validate
+ * @val:  the precomputed value
+ *
+ * Check a value against all facet conditions
+ *
+ * Returns 0 if the element is schemas valid, a positive error code
+ *     number otherwise and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt, 
+			     xmlSchemaTypePtr base,
+	                    xmlSchemaFacetPtr facets,
+	                             xmlChar *value) {
+    int ret = 0;
+    int tmp = 0;
+    xmlSchemaTypeType type;
+    xmlSchemaFacetPtr facet = facets;
+
+    while (facet != NULL) {
+        type = facet->type;
+        if (type == XML_SCHEMA_FACET_ENUMERATION) {
+	    tmp = 1;
+
+	    while (facet != NULL) {
+		tmp = xmlSchemaValidateFacet(base, facet, value, ctxt->value);
+		if (tmp == 0) {
+                    return 0;
+		}
+		facet = facet->next;
+	    }
+        } else
+	    tmp = xmlSchemaValidateFacet(base, facet, value, ctxt->value);
+
+        if (tmp != 0) {
+            ret = tmp;
+            if (ctxt->error != NULL)
+	        ctxt->error(ctxt->userData,
+	             "Failed to validate type with facet %s\n",
+                     xmlSchemaFacetTypeToString(type));
+	    ctxt->err = XML_SCHEMAS_ERR_FACET;
+        }
+        if (facet != NULL)
+            facet = facet->next;
+    }
+    return (ret);
+}
+
 /************************************************************************
  * 									*
  * 			Simple type validation				*
@@ -4203,10 +4298,15 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 	    ctxt->value = NULL;
 	}
 	ret = xmlSchemaValidatePredefinedType(type, value, &(ctxt->value));
+        if (ret != 0) {
+            if (ctxt->error != NULL)
+	        ctxt->error(ctxt->userData,
+		        "Failed to validate basic type %s\n", type->name);
+	    ctxt->err = XML_SCHEMAS_ERR_VALUE;
+        }
     } else if (type->type == XML_SCHEMA_TYPE_RESTRICTION) {
 	xmlSchemaTypePtr base;
 	xmlSchemaFacetPtr facet;
-	int tmp;
 
 	base = type->baseType;
 	if (base != NULL) {
@@ -4220,29 +4320,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 	if (ctxt->schema != NULL) {
 	    if (ret == 0) {
 		facet = type->facets;
-		if ((type->type == XML_SCHEMA_TYPE_RESTRICTION) &&
-		    (facet != NULL) &&
-		    (facet->type == XML_SCHEMA_FACET_ENUMERATION)) {
-		    while (facet != NULL) {
-			ret = 1;
-
-			tmp = xmlSchemaValidateFacet(base, facet, value,
-						     ctxt->value);
-			if (tmp == 0) {
-			    ret = 0;
-			    break;
-			}
-			facet = facet->next;
-		    }
-		} else {
-		    while (facet != NULL) {
-			tmp = xmlSchemaValidateFacet(base, facet, value,
-						     ctxt->value);
-			if (tmp != 0)
-			    ret = tmp;
-			facet = facet->next;
-		    }
-		}
+                ret = xmlSchemaValidateFacets(ctxt, base, facet, value);
 	    }
 	}
     } else if (type->type == XML_SCHEMA_TYPE_SIMPLE) {
@@ -4391,7 +4469,7 @@ xmlSchemaValidateSimpleContent(xmlSchemaValidCtxtPtr ctxt,
     xmlNodePtr child;
     xmlSchemaTypePtr type, base;
     xmlChar *value;
-    int ret = 0, tmp;
+    int ret = 0;
 
     child = ctxt->node;
     type = ctxt->type;
@@ -4413,13 +4491,7 @@ xmlSchemaValidateSimpleContent(xmlSchemaValidCtxtPtr ctxt,
 	    }
 	    if (ret == 0) {
 		facet = type->facets;
-		while (facet != NULL) {
-		    tmp = xmlSchemaValidateFacet(base, facet, value,
-			                         ctxt->value);
-		    if (tmp != 0)
-			ret = tmp;
-		    facet = facet->next;
-		}
+                ret = xmlSchemaValidateFacets(ctxt, base, facet, value);
 	    }
 	    break;
 	}
@@ -4853,9 +4925,10 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     if (value != NULL)
 	xmlFree(value);
     if (ret != 0) {
-	ctxt->error(ctxt->userData,
-		"Element %s: failed to validate basic type %s\n",
-		    node->name, type->name);
+        if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		    "Element %s: failed to validate basic type %s\n",
+		        node->name, type->name);
 	ctxt->err = XML_SCHEMAS_ERR_VALUE;
     }
     return(ret);

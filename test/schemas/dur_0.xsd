@@ -9,7 +9,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element name="second1" type="xsd:duration">
+          <xsd:element name="second1">
             <xsd:simpleType>
               <xsd:restriction base="xsd:duration">
                 <xsd:maxExclusive value="PT1S"/>
@@ -17,7 +17,7 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>
-          <xsd:element name="second2" type="xsd:duration">
+          <xsd:element name="second2">
             <xsd:simpleType>
               <xsd:restriction base="xsd:duration">
                 <xsd:maxInclusive value="PT1S"/>
@@ -25,7 +25,7 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>
-          <xsd:element name="month1" type="xsd:duration">
+          <xsd:element name="month1">
             <xsd:simpleType>
               <xsd:restriction base="xsd:duration">
                 <xsd:maxExclusive value="P1M"/>
@@ -33,7 +33,7 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>
-          <xsd:element name="month2" type="xsd:duration">
+          <xsd:element name="month2">
             <xsd:simpleType>
               <xsd:restriction base="xsd:duration">
                 <xsd:maxInclusive value="P1M"/>
@@ -42,7 +42,7 @@
             </xsd:simpleType>
           </xsd:element>
           <xsd:element name="month3" type="MSD"/>
-          <xsd:element name="year1" type="xsd:duration">
+          <xsd:element name="year1">
             <xsd:simpleType>
               <xsd:restriction base="xsd:duration">
                 <xsd:maxExclusive value="P2Y"/>
@@ -50,7 +50,7 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>
-          <xsd:element name="year2" type="xsd:duration">
+          <xsd:element name="year2">
             <xsd:simpleType>
               <xsd:restriction base="xsd:duration">
                 <xsd:maxInclusive value="P2Y"/>
@@ -64,7 +64,6 @@
   </xsd:element>
   <xsd:simpleType name="MSD">
     <xsd:restriction base="xsd:duration">
-      <xsd:minOccurs value="0"/>
       <xsd:maxExclusive value="PT24H"/>
       <xsd:minExclusive value="-PT24H"/>
     </xsd:restriction>

@@ -78,19 +78,20 @@
           <xsd:element name="mon1">
             <xsd:simpleType>
               <xsd:restriction base="xsd:gMonth">
-                <xsd:maxInclusive value="--01Z"/>
-                <xsd:minInclusive value="--05Z"/>
+                <xsd:minInclusive value="--01Z"/>
+                <xsd:maxInclusive value="--05Z"/>
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>
           <xsd:element name="day1">
             <xsd:simpleType>
               <xsd:restriction base="xsd:gDay">
-                <xsd:maxInclusive value="---28"/>
-                <xsd:minInclusive value="---31"/>
+                <xsd:minInclusive value="---28"/>
+                <xsd:maxInclusive value="---31"/>
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>
+          <xsd:element name="monthday1" type="xsd:gMonthDay"/>
         </xsd:choice>
       </xsd:sequence>
     </xsd:complexType>

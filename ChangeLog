@@ -1,3 +1,10 @@
+Wed Apr  9 13:21:48 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c xmlschemastypes.c include/libxml/xmlschemas.h:
+	  update from Charles Bozeman for date and duration types
+	* test/schemas/date_0.* test/schemas/dur_0.*
+	  result/schemas/date_0.* result/schemas/dur_0.*: updated too
+
 Mon Apr  7 12:19:26 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c valid.c xpath.c include/libxml/tree.h include/libxml/valid.h:

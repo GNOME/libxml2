@@ -903,19 +903,42 @@ xmlSchemaValidateDates (xmlSchemaValType type,
 	if (ret != 0)
 	    goto error;
 
-	if (*cur != '-') {
-	    RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTH);
-	    goto error;
-	}
-	if (type == XML_SCHEMAS_GMONTH)
-	    goto error;
-	/* it should be an xs:gMonthDay */
-	cur++;
-	ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
-	if (ret != 0)
-	    goto error;
+        /*
+         * a '-' char could indicate this type is xs:gMonthDay or
+         * a negative time zone offset. Check for xs:gMonthDay first.
+         * Also the first three char's of a negative tzo (-MM:SS) can
+         * appear to be a valid day; so even if the day portion
+         * of the xs:gMonthDay verifies, we must insure it was not
+         * a tzo.
+         */
+        if (*cur == '-') {
+            const xmlChar *rewnd = cur;
+            cur++;
 
-	RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTHDAY);
+  	    ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
+            if ((ret == 0) && ((*cur == 0) || (*cur != ':'))) {
+
+                /*
+                 * we can use the VALID_MDAY macro to validate the month
+                 * and day because the leap year test will flag year zero
+                 * as a leap year (even though zero is an invalid year).
+                 */
+                if (VALID_MDAY((&(dt->value.date)))) {
+
+	            RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTHDAY);
+
+                    goto error;
+                }
+            }
+
+            /*
+             * not xs:gMonthDay so rewind and check if just xs:gMonth
+             * with an optional time zone.
+             */
+            cur = rewnd;
+        }
+
+	RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTH);
 
 	goto error;
     }
@@ -981,9 +1004,37 @@ xmlSchemaValidateDates (xmlSchemaValType type,
     dt->type = XML_SCHEMAS_DATETIME;
 
 done:
-#if 0
-    if ((type != XML_SCHEMAS_UNKNOWN) && (type != XML_SCHEMAS_DATETIME))
-	goto error;
+#if 1
+    if ((type != XML_SCHEMAS_UNKNOWN) && (type != dt->type))
+        goto error;
+#else
+    /*
+     * insure the parsed type is equal to or less significant (right
+     * truncated) than the desired type.
+     */
+    if ((type != XML_SCHEMAS_UNKNOWN) && (type != dt->type)) {
+
+        /* time only matches time */
+        if ((type == XML_SCHEMAS_TIME) && (dt->type == XML_SCHEMAS_TIME))
+            goto error;
+
+        if ((type == XML_SCHEMAS_DATETIME) &&
+            ((dt->type != XML_SCHEMAS_DATE) ||
+             (dt->type != XML_SCHEMAS_GYEARMONTH) ||
+             (dt->type != XML_SCHEMAS_GYEAR)))
+            goto error;
+
+        if ((type == XML_SCHEMAS_DATE) &&
+            ((dt->type != XML_SCHEMAS_GYEAR) ||
+             (dt->type != XML_SCHEMAS_GYEARMONTH)))
+            goto error;
+
+        if ((type == XML_SCHEMAS_GYEARMONTH) && (dt->type != XML_SCHEMAS_GYEAR))
+            goto error;
+
+        if ((type == XML_SCHEMAS_GMONTHDAY) && (dt->type != XML_SCHEMAS_GMONTH))
+            goto error;
+    }
 #endif
 
     if (val != NULL)
@@ -1018,6 +1069,10 @@ xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
     xmlSchemaValPtr dur;
     int isneg = 0;
     unsigned int seq = 0;
+    double         num;
+    int            num_type = 0;  /* -1 = invalid, 0 = int, 1 = floating */
+    const xmlChar  desig[]  = {'Y', 'M', 'D', 'H', 'M', 'S'};
+    const double   multi[]  = { 0.0, 0.0, 86400.0, 3600.0, 60.0, 1.0, 0.0};
 
     if (duration == NULL)
 	return -1;
@@ -1039,10 +1094,6 @@ xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 	return -1;
 
     while (*cur != 0) {
-        double         num;
-        int            num_type = 0;  /* -1 = invalid, 0 = int, 1 = floating */
-        const xmlChar  desig[] = {'Y', 'M', 'D', 'H', 'M', 'S'};
-        const double   multi[] = { 0.0, 0.0, 86400.0, 3600.0, 60.0, 1.0, 0.0};
 
         /* input string should be empty or invalid date/time item */
         if (seq >= sizeof(desig))
@@ -1328,7 +1379,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
 	               xmlSchemaValPtr *val, xmlNodePtr node, int flags) {
     xmlSchemaValPtr v;
     xmlChar *norm = NULL;
-    int ret;
+    int ret = 0;
 
     if (xmlSchemaTypesInitialized == 0)
 	return(-1);

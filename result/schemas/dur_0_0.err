@@ -1,17 +1,3 @@
-compilation error: file ./test/schemas/dur_0.xsd line 67 element minOccurs
-Restriction restriction 16 has unexpected content
-compilation error
-Schemas: element year1 have both type and subtype
-compilation error
-Schemas: element second2 have both type and subtype
-compilation error
-Schemas: element month1 have both type and subtype
-compilation error
-Schemas: element year2 have both type and subtype
-compilation error
-Schemas: element second1 have both type and subtype
-compilation error
-Schemas: element month2 have both type and subtype
 Type of restriction 7 : ./test/schemas/dur_0.xsd:22 :empty
 Type of restriction 9 : ./test/schemas/dur_0.xsd:30 :empty
 Type of simpletype14 : ./test/schemas/dur_0.xsd:54 :simple

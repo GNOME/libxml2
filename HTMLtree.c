@@ -657,7 +657,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  *									*
  ************************************************************************/
 
-static void
+void
 htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding);
 
 /**

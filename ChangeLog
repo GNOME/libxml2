@@ -1,3 +1,7 @@
+Mon Feb 24 18:50:35 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: fixed bug #105992
+
 Mon Feb 24 18:14:16 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed xmlSetProp and al. when the node passed is not an

@@ -934,7 +934,7 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
         if (nsret != NULL && ctxt->validate && ctxt->wellFormed &&
 	    ctxt->myDoc && ctxt->myDoc->intSubset)
 	    ctxt->valid &= xmlValidateOneNamespace(&ctxt->vctxt, ctxt->myDoc,
-					   ctxt->node, prefix, nsret, value);
+					   ctxt->node, name, nsret, value);
 	if (name != NULL) 
 	    xmlFree(name);
 	if (nval != NULL)

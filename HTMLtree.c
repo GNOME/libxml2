@@ -536,6 +536,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  *									*
  ************************************************************************/
 
+void xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur);
 
 /**
  * htmlDtdDumpOutput:
@@ -761,10 +762,19 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     /*
      * Get specific HTML info for that node.
      */
-    info = htmlTagLookup(cur->name);
+    if (cur->ns == NULL)
+	info = htmlTagLookup(cur->name);
+    else
+	info = NULL;
 
     xmlOutputBufferWriteString(buf, "<");
+    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+        xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
+	xmlOutputBufferWriteString(buf, ":");
+    }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
+    if (cur->nsDef)
+	xmlNsListDumpOutput(buf, cur->nsDef);
     if (cur->properties != NULL)
         htmlAttrListDumpOutput(buf, doc, cur->properties, encoding);
 
@@ -826,6 +836,10 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    xmlOutputBufferWriteString(buf, "\n");
     }
     xmlOutputBufferWriteString(buf, "</");
+    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+        xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
+	xmlOutputBufferWriteString(buf, ":");
+    }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     xmlOutputBufferWriteString(buf, ">");
     if ((format) && (info != NULL) && (!info->isinline) &&

@@ -6322,6 +6322,8 @@ static void
 xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    xmlNodePtr cur, int level, int format, const char *encoding);
 
+void xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur);
+
 /**
  * xmlNsDumpOutput:
  * @buf:  the XML buffer output
@@ -6362,7 +6364,7 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
  * Dump a list of local Namespace definitions.
  * Should be called in the context of attributes dumps.
  */
-static void
+void
 xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
     while (cur != NULL) {
         xmlNsDumpOutput(buf, cur);

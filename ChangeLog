@@ -1,3 +1,9 @@
+Thu Jan  9 14:16:38 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c tree.c: fixes #102920 about namespace handling in
+	  HTML output and section 16.2 "HTML Output Method" of XSLT-1.0
+	* README: fixed a link
+
 Wed Jan  8 18:32:25 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/* NEWS: preparing 2.5.1 release

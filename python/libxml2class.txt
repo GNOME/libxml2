@@ -788,6 +788,11 @@ Class outputBuffer(ioWriteWrapper)
     flush()
     write()
     writeString()
+Class xmlTextReaderLocator()
+
+    # functions from module xmlreader
+    BaseURI()
+    LineNumber()
 Class URI()
     # accessors
     authority()

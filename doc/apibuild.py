@@ -7,7 +7,7 @@
 #
 # daniel@veillard.com
 #
-import sys
+import os, sys
 import string
 import glob
 
@@ -1307,7 +1307,7 @@ class docBuilder:
 	 self.scanModules()
          
      def modulename_file(self, file):
-         module = string.split(file, '/')[-1]
+         module = os.path.basename(file)
 	 if module[-2:] == '.h':
 	     module = module[:-2]
 	 return module

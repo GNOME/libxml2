@@ -2282,7 +2282,7 @@ xmlTextReaderBuildMessage(const char *msg, va_list ap) {
 }
 
 /**
- * xmlTextReaderLocatorLineNumber
+ * xmlTextReaderLocatorLineNumber:
  * @locator: the xmlTextReaderLocatorPtr used
  *
  * Obtain the line number for the given locator.
@@ -2316,7 +2316,7 @@ xmlTextReaderLocatorLineNumber(xmlTextReaderLocatorPtr locator) {
 }
 
 /**
- * xmlTextReaderLocatorBaseURI
+ * xmlTextReaderLocatorBaseURI:
  * @locator: the xmlTextReaderLocatorPtr used
  *
  * Obtain the base URI for the given locator.

@@ -61,47 +61,141 @@
      <exports symbol='xmlXPtrRangeToFunction'/>
      <exports symbol='xmlXPtrWrapLocationSet'/>
     </file>
-    <file name='SAX'>
-     <exports symbol='attribute'/>
-     <exports symbol='attributeDecl'/>
-     <exports symbol='cdataBlock'/>
-     <exports symbol='characters'/>
-     <exports symbol='checkNamespace'/>
-     <exports symbol='comment'/>
-     <exports symbol='docbDefaultSAXHandlerInit'/>
-     <exports symbol='elementDecl'/>
-     <exports symbol='endDocument'/>
-     <exports symbol='endElement'/>
-     <exports symbol='entityDecl'/>
-     <exports symbol='externalSubset'/>
-     <exports symbol='getColumnNumber'/>
-     <exports symbol='getEntity'/>
-     <exports symbol='getLineNumber'/>
-     <exports symbol='getNamespace'/>
-     <exports symbol='getParameterEntity'/>
-     <exports symbol='getPublicId'/>
-     <exports symbol='getSystemId'/>
-     <exports symbol='globalNamespace'/>
-     <exports symbol='hasExternalSubset'/>
-     <exports symbol='hasInternalSubset'/>
-     <exports symbol='htmlDefaultSAXHandlerInit'/>
-     <exports symbol='ignorableWhitespace'/>
-     <exports symbol='initdocbDefaultSAXHandler'/>
-     <exports symbol='inithtmlDefaultSAXHandler'/>
-     <exports symbol='initxmlDefaultSAXHandler'/>
-     <exports symbol='internalSubset'/>
-     <exports symbol='isStandalone'/>
-     <exports symbol='namespaceDecl'/>
-     <exports symbol='notationDecl'/>
-     <exports symbol='processingInstruction'/>
-     <exports symbol='reference'/>
-     <exports symbol='resolveEntity'/>
-     <exports symbol='setDocumentLocator'/>
-     <exports symbol='setNamespace'/>
-     <exports symbol='startDocument'/>
-     <exports symbol='startElement'/>
-     <exports symbol='unparsedEntityDecl'/>
-     <exports symbol='xmlDefaultSAXHandlerInit'/>
+    <file name='xmlunicode'>
+     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
+     <exports symbol='xmlUCSIsArabic'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
+     <exports symbol='xmlUCSIsArmenian'/>
+     <exports symbol='xmlUCSIsArrows'/>
+     <exports symbol='xmlUCSIsBasicLatin'/>
+     <exports symbol='xmlUCSIsBengali'/>
+     <exports symbol='xmlUCSIsBlock'/>
+     <exports symbol='xmlUCSIsBlockElements'/>
+     <exports symbol='xmlUCSIsBopomofo'/>
+     <exports symbol='xmlUCSIsBopomofoExtended'/>
+     <exports symbol='xmlUCSIsBoxDrawing'/>
+     <exports symbol='xmlUCSIsBraillePatterns'/>
+     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
+     <exports symbol='xmlUCSIsCJKCompatibility'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
+     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+     <exports symbol='xmlUCSIsCat'/>
+     <exports symbol='xmlUCSIsCatC'/>
+     <exports symbol='xmlUCSIsCatCc'/>
+     <exports symbol='xmlUCSIsCatCf'/>
+     <exports symbol='xmlUCSIsCatCo'/>
+     <exports symbol='xmlUCSIsCatCs'/>
+     <exports symbol='xmlUCSIsCatL'/>
+     <exports symbol='xmlUCSIsCatLl'/>
+     <exports symbol='xmlUCSIsCatLm'/>
+     <exports symbol='xmlUCSIsCatLo'/>
+     <exports symbol='xmlUCSIsCatLt'/>
+     <exports symbol='xmlUCSIsCatLu'/>
+     <exports symbol='xmlUCSIsCatM'/>
+     <exports symbol='xmlUCSIsCatMc'/>
+     <exports symbol='xmlUCSIsCatMe'/>
+     <exports symbol='xmlUCSIsCatMn'/>
+     <exports symbol='xmlUCSIsCatN'/>
+     <exports symbol='xmlUCSIsCatNd'/>
+     <exports symbol='xmlUCSIsCatNl'/>
+     <exports symbol='xmlUCSIsCatNo'/>
+     <exports symbol='xmlUCSIsCatP'/>
+     <exports symbol='xmlUCSIsCatPc'/>
+     <exports symbol='xmlUCSIsCatPd'/>
+     <exports symbol='xmlUCSIsCatPe'/>
+     <exports symbol='xmlUCSIsCatPf'/>
+     <exports symbol='xmlUCSIsCatPi'/>
+     <exports symbol='xmlUCSIsCatPo'/>
+     <exports symbol='xmlUCSIsCatPs'/>
+     <exports symbol='xmlUCSIsCatS'/>
+     <exports symbol='xmlUCSIsCatSc'/>
+     <exports symbol='xmlUCSIsCatSk'/>
+     <exports symbol='xmlUCSIsCatSm'/>
+     <exports symbol='xmlUCSIsCatSo'/>
+     <exports symbol='xmlUCSIsCatZ'/>
+     <exports symbol='xmlUCSIsCatZl'/>
+     <exports symbol='xmlUCSIsCatZp'/>
+     <exports symbol='xmlUCSIsCatZs'/>
+     <exports symbol='xmlUCSIsCherokee'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
+     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
+     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
+     <exports symbol='xmlUCSIsControlPictures'/>
+     <exports symbol='xmlUCSIsCurrencySymbols'/>
+     <exports symbol='xmlUCSIsCyrillic'/>
+     <exports symbol='xmlUCSIsDeseret'/>
+     <exports symbol='xmlUCSIsDevanagari'/>
+     <exports symbol='xmlUCSIsDingbats'/>
+     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
+     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
+     <exports symbol='xmlUCSIsEthiopic'/>
+     <exports symbol='xmlUCSIsGeneralPunctuation'/>
+     <exports symbol='xmlUCSIsGeometricShapes'/>
+     <exports symbol='xmlUCSIsGeorgian'/>
+     <exports symbol='xmlUCSIsGothic'/>
+     <exports symbol='xmlUCSIsGreek'/>
+     <exports symbol='xmlUCSIsGreekExtended'/>
+     <exports symbol='xmlUCSIsGujarati'/>
+     <exports symbol='xmlUCSIsGurmukhi'/>
+     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
+     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
+     <exports symbol='xmlUCSIsHangulJamo'/>
+     <exports symbol='xmlUCSIsHangulSyllables'/>
+     <exports symbol='xmlUCSIsHebrew'/>
+     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
+     <exports symbol='xmlUCSIsHighSurrogates'/>
+     <exports symbol='xmlUCSIsHiragana'/>
+     <exports symbol='xmlUCSIsIPAExtensions'/>
+     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
+     <exports symbol='xmlUCSIsKanbun'/>
+     <exports symbol='xmlUCSIsKangxiRadicals'/>
+     <exports symbol='xmlUCSIsKannada'/>
+     <exports symbol='xmlUCSIsKatakana'/>
+     <exports symbol='xmlUCSIsKhmer'/>
+     <exports symbol='xmlUCSIsLao'/>
+     <exports symbol='xmlUCSIsLatin1Supplement'/>
+     <exports symbol='xmlUCSIsLatinExtendedA'/>
+     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
+     <exports symbol='xmlUCSIsLatinExtendedB'/>
+     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
+     <exports symbol='xmlUCSIsLowSurrogates'/>
+     <exports symbol='xmlUCSIsMalayalam'/>
+     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
+     <exports symbol='xmlUCSIsMathematicalOperators'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
+     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
+     <exports symbol='xmlUCSIsMongolian'/>
+     <exports symbol='xmlUCSIsMusicalSymbols'/>
+     <exports symbol='xmlUCSIsMyanmar'/>
+     <exports symbol='xmlUCSIsNumberForms'/>
+     <exports symbol='xmlUCSIsOgham'/>
+     <exports symbol='xmlUCSIsOldItalic'/>
+     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
+     <exports symbol='xmlUCSIsOriya'/>
+     <exports symbol='xmlUCSIsPrivateUse'/>
+     <exports symbol='xmlUCSIsRunic'/>
+     <exports symbol='xmlUCSIsSinhala'/>
+     <exports symbol='xmlUCSIsSmallFormVariants'/>
+     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
+     <exports symbol='xmlUCSIsSpecials'/>
+     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
+     <exports symbol='xmlUCSIsSyriac'/>
+     <exports symbol='xmlUCSIsTags'/>
+     <exports symbol='xmlUCSIsTamil'/>
+     <exports symbol='xmlUCSIsTelugu'/>
+     <exports symbol='xmlUCSIsThaana'/>
+     <exports symbol='xmlUCSIsThai'/>
+     <exports symbol='xmlUCSIsTibetan'/>
+     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+     <exports symbol='xmlUCSIsYiRadicals'/>
+     <exports symbol='xmlUCSIsYiSyllables'/>
     </file>
     <file name='parserInternals'>
      <exports symbol='INPUT_CHUNK'/>
@@ -626,6 +720,142 @@
      <exports symbol='xmlXPathVariable'/>
      <exports symbol='xmlXPathVariablePtr'/>
     </file>
+    <file name='xmlunicode'>
+     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
+     <exports symbol='xmlUCSIsArabic'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
+     <exports symbol='xmlUCSIsArmenian'/>
+     <exports symbol='xmlUCSIsArrows'/>
+     <exports symbol='xmlUCSIsBasicLatin'/>
+     <exports symbol='xmlUCSIsBengali'/>
+     <exports symbol='xmlUCSIsBlock'/>
+     <exports symbol='xmlUCSIsBlockElements'/>
+     <exports symbol='xmlUCSIsBopomofo'/>
+     <exports symbol='xmlUCSIsBopomofoExtended'/>
+     <exports symbol='xmlUCSIsBoxDrawing'/>
+     <exports symbol='xmlUCSIsBraillePatterns'/>
+     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
+     <exports symbol='xmlUCSIsCJKCompatibility'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
+     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+     <exports symbol='xmlUCSIsCat'/>
+     <exports symbol='xmlUCSIsCatC'/>
+     <exports symbol='xmlUCSIsCatCc'/>
+     <exports symbol='xmlUCSIsCatCf'/>
+     <exports symbol='xmlUCSIsCatCo'/>
+     <exports symbol='xmlUCSIsCatCs'/>
+     <exports symbol='xmlUCSIsCatL'/>
+     <exports symbol='xmlUCSIsCatLl'/>
+     <exports symbol='xmlUCSIsCatLm'/>
+     <exports symbol='xmlUCSIsCatLo'/>
+     <exports symbol='xmlUCSIsCatLt'/>
+     <exports symbol='xmlUCSIsCatLu'/>
+     <exports symbol='xmlUCSIsCatM'/>
+     <exports symbol='xmlUCSIsCatMc'/>
+     <exports symbol='xmlUCSIsCatMe'/>
+     <exports symbol='xmlUCSIsCatMn'/>
+     <exports symbol='xmlUCSIsCatN'/>
+     <exports symbol='xmlUCSIsCatNd'/>
+     <exports symbol='xmlUCSIsCatNl'/>
+     <exports symbol='xmlUCSIsCatNo'/>
+     <exports symbol='xmlUCSIsCatP'/>
+     <exports symbol='xmlUCSIsCatPc'/>
+     <exports symbol='xmlUCSIsCatPd'/>
+     <exports symbol='xmlUCSIsCatPe'/>
+     <exports symbol='xmlUCSIsCatPf'/>
+     <exports symbol='xmlUCSIsCatPi'/>
+     <exports symbol='xmlUCSIsCatPo'/>
+     <exports symbol='xmlUCSIsCatPs'/>
+     <exports symbol='xmlUCSIsCatS'/>
+     <exports symbol='xmlUCSIsCatSc'/>
+     <exports symbol='xmlUCSIsCatSk'/>
+     <exports symbol='xmlUCSIsCatSm'/>
+     <exports symbol='xmlUCSIsCatSo'/>
+     <exports symbol='xmlUCSIsCatZ'/>
+     <exports symbol='xmlUCSIsCatZl'/>
+     <exports symbol='xmlUCSIsCatZp'/>
+     <exports symbol='xmlUCSIsCatZs'/>
+     <exports symbol='xmlUCSIsCherokee'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
+     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
+     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
+     <exports symbol='xmlUCSIsControlPictures'/>
+     <exports symbol='xmlUCSIsCurrencySymbols'/>
+     <exports symbol='xmlUCSIsCyrillic'/>
+     <exports symbol='xmlUCSIsDeseret'/>
+     <exports symbol='xmlUCSIsDevanagari'/>
+     <exports symbol='xmlUCSIsDingbats'/>
+     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
+     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
+     <exports symbol='xmlUCSIsEthiopic'/>
+     <exports symbol='xmlUCSIsGeneralPunctuation'/>
+     <exports symbol='xmlUCSIsGeometricShapes'/>
+     <exports symbol='xmlUCSIsGeorgian'/>
+     <exports symbol='xmlUCSIsGothic'/>
+     <exports symbol='xmlUCSIsGreek'/>
+     <exports symbol='xmlUCSIsGreekExtended'/>
+     <exports symbol='xmlUCSIsGujarati'/>
+     <exports symbol='xmlUCSIsGurmukhi'/>
+     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
+     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
+     <exports symbol='xmlUCSIsHangulJamo'/>
+     <exports symbol='xmlUCSIsHangulSyllables'/>
+     <exports symbol='xmlUCSIsHebrew'/>
+     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
+     <exports symbol='xmlUCSIsHighSurrogates'/>
+     <exports symbol='xmlUCSIsHiragana'/>
+     <exports symbol='xmlUCSIsIPAExtensions'/>
+     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
+     <exports symbol='xmlUCSIsKanbun'/>
+     <exports symbol='xmlUCSIsKangxiRadicals'/>
+     <exports symbol='xmlUCSIsKannada'/>
+     <exports symbol='xmlUCSIsKatakana'/>
+     <exports symbol='xmlUCSIsKhmer'/>
+     <exports symbol='xmlUCSIsLao'/>
+     <exports symbol='xmlUCSIsLatin1Supplement'/>
+     <exports symbol='xmlUCSIsLatinExtendedA'/>
+     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
+     <exports symbol='xmlUCSIsLatinExtendedB'/>
+     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
+     <exports symbol='xmlUCSIsLowSurrogates'/>
+     <exports symbol='xmlUCSIsMalayalam'/>
+     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
+     <exports symbol='xmlUCSIsMathematicalOperators'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
+     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
+     <exports symbol='xmlUCSIsMongolian'/>
+     <exports symbol='xmlUCSIsMusicalSymbols'/>
+     <exports symbol='xmlUCSIsMyanmar'/>
+     <exports symbol='xmlUCSIsNumberForms'/>
+     <exports symbol='xmlUCSIsOgham'/>
+     <exports symbol='xmlUCSIsOldItalic'/>
+     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
+     <exports symbol='xmlUCSIsOriya'/>
+     <exports symbol='xmlUCSIsPrivateUse'/>
+     <exports symbol='xmlUCSIsRunic'/>
+     <exports symbol='xmlUCSIsSinhala'/>
+     <exports symbol='xmlUCSIsSmallFormVariants'/>
+     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
+     <exports symbol='xmlUCSIsSpecials'/>
+     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
+     <exports symbol='xmlUCSIsSyriac'/>
+     <exports symbol='xmlUCSIsTags'/>
+     <exports symbol='xmlUCSIsTamil'/>
+     <exports symbol='xmlUCSIsTelugu'/>
+     <exports symbol='xmlUCSIsThaana'/>
+     <exports symbol='xmlUCSIsThai'/>
+     <exports symbol='xmlUCSIsTibetan'/>
+     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+     <exports symbol='xmlUCSIsYiRadicals'/>
+     <exports symbol='xmlUCSIsYiSyllables'/>
+    </file>
     <file name='xlink'>
      <exports symbol='XLINK_ACTUATE_AUTO'/>
      <exports symbol='XLINK_ACTUATE_NONE'/>
@@ -1092,12 +1322,17 @@
     <file name='xmlreader'>
      <exports symbol='XML_PARSER_DEFAULTATTRS'/>
      <exports symbol='XML_PARSER_LOADDTD'/>
+     <exports symbol='XML_PARSER_SEVERITY_ERROR'/>
+     <exports symbol='XML_PARSER_SEVERITY_VALIDITY_ERROR'/>
+     <exports symbol='XML_PARSER_SEVERITY_VALIDITY_WARNING'/>
+     <exports symbol='XML_PARSER_SEVERITY_WARNING'/>
      <exports symbol='XML_PARSER_SUBST_ENTITIES'/>
      <exports symbol='XML_PARSER_VALIDATE'/>
      <exports symbol='xmlFreeTextReader'/>
      <exports symbol='xmlNewTextReader'/>
      <exports symbol='xmlNewTextReaderFilename'/>
      <exports symbol='xmlParserProperties'/>
+     <exports symbol='xmlParserSeverities'/>
      <exports symbol='xmlTextReader'/>
      <exports symbol='xmlTextReaderAttributeCount'/>
      <exports symbol='xmlTextReaderBaseUri'/>
@@ -1105,9 +1340,11 @@
      <exports symbol='xmlTextReaderCurrentDoc'/>
      <exports symbol='xmlTextReaderCurrentNode'/>
      <exports symbol='xmlTextReaderDepth'/>
+     <exports symbol='xmlTextReaderErrorFunc'/>
      <exports symbol='xmlTextReaderGetAttribute'/>
      <exports symbol='xmlTextReaderGetAttributeNo'/>
      <exports symbol='xmlTextReaderGetAttributeNs'/>
+     <exports symbol='xmlTextReaderGetErrorHandler'/>
      <exports symbol='xmlTextReaderGetParserProp'/>
      <exports symbol='xmlTextReaderGetRemainder'/>
      <exports symbol='xmlTextReaderHasAttributes'/>
@@ -1115,6 +1352,9 @@
      <exports symbol='xmlTextReaderIsDefault'/>
      <exports symbol='xmlTextReaderIsEmptyElement'/>
      <exports symbol='xmlTextReaderLocalName'/>
+     <exports symbol='xmlTextReaderLocatorBaseURI'/>
+     <exports symbol='xmlTextReaderLocatorLineNumber'/>
+     <exports symbol='xmlTextReaderLocatorPtr'/>
      <exports symbol='xmlTextReaderLookupNamespace'/>
      <exports symbol='xmlTextReaderMoveToAttribute'/>
      <exports symbol='xmlTextReaderMoveToAttributeNo'/>
@@ -1135,6 +1375,7 @@
      <exports symbol='xmlTextReaderReadOuterXml'/>
      <exports symbol='xmlTextReaderReadState'/>
      <exports symbol='xmlTextReaderReadString'/>
+     <exports symbol='xmlTextReaderSetErrorHandler'/>
      <exports symbol='xmlTextReaderSetParserProp'/>
      <exports symbol='xmlTextReaderValue'/>
      <exports symbol='xmlTextReaderXmlLang'/>
@@ -1202,6 +1443,48 @@
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
+    </file>
+    <file name='SAX'>
+     <exports symbol='attribute'/>
+     <exports symbol='attributeDecl'/>
+     <exports symbol='cdataBlock'/>
+     <exports symbol='characters'/>
+     <exports symbol='checkNamespace'/>
+     <exports symbol='comment'/>
+     <exports symbol='docbDefaultSAXHandlerInit'/>
+     <exports symbol='elementDecl'/>
+     <exports symbol='endDocument'/>
+     <exports symbol='endElement'/>
+     <exports symbol='entityDecl'/>
+     <exports symbol='externalSubset'/>
+     <exports symbol='getColumnNumber'/>
+     <exports symbol='getEntity'/>
+     <exports symbol='getLineNumber'/>
+     <exports symbol='getNamespace'/>
+     <exports symbol='getParameterEntity'/>
+     <exports symbol='getPublicId'/>
+     <exports symbol='getSystemId'/>
+     <exports symbol='globalNamespace'/>
+     <exports symbol='hasExternalSubset'/>
+     <exports symbol='hasInternalSubset'/>
+     <exports symbol='htmlDefaultSAXHandlerInit'/>
+     <exports symbol='ignorableWhitespace'/>
+     <exports symbol='initdocbDefaultSAXHandler'/>
+     <exports symbol='inithtmlDefaultSAXHandler'/>
+     <exports symbol='initxmlDefaultSAXHandler'/>
+     <exports symbol='internalSubset'/>
+     <exports symbol='isStandalone'/>
+     <exports symbol='namespaceDecl'/>
+     <exports symbol='notationDecl'/>
+     <exports symbol='processingInstruction'/>
+     <exports symbol='reference'/>
+     <exports symbol='resolveEntity'/>
+     <exports symbol='setDocumentLocator'/>
+     <exports symbol='setNamespace'/>
+     <exports symbol='startDocument'/>
+     <exports symbol='startElement'/>
+     <exports symbol='unparsedEntityDecl'/>
+     <exports symbol='xmlDefaultSAXHandlerInit'/>
     </file>
     <file name='threads'>
      <exports symbol='xmlCleanupThreads'/>
@@ -1648,142 +1931,6 @@
      <exports symbol='xmlNanoHTTPReturnCode'/>
      <exports symbol='xmlNanoHTTPSave'/>
      <exports symbol='xmlNanoHTTPScanProxy'/>
-    </file>
-    <file name='xmlunicode'>
-     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
-     <exports symbol='xmlUCSIsArabic'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
-     <exports symbol='xmlUCSIsArmenian'/>
-     <exports symbol='xmlUCSIsArrows'/>
-     <exports symbol='xmlUCSIsBasicLatin'/>
-     <exports symbol='xmlUCSIsBengali'/>
-     <exports symbol='xmlUCSIsBlock'/>
-     <exports symbol='xmlUCSIsBlockElements'/>
-     <exports symbol='xmlUCSIsBopomofo'/>
-     <exports symbol='xmlUCSIsBopomofoExtended'/>
-     <exports symbol='xmlUCSIsBoxDrawing'/>
-     <exports symbol='xmlUCSIsBraillePatterns'/>
-     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
-     <exports symbol='xmlUCSIsCJKCompatibility'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
-     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
-     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
-     <exports symbol='xmlUCSIsCat'/>
-     <exports symbol='xmlUCSIsCatC'/>
-     <exports symbol='xmlUCSIsCatCc'/>
-     <exports symbol='xmlUCSIsCatCf'/>
-     <exports symbol='xmlUCSIsCatCo'/>
-     <exports symbol='xmlUCSIsCatCs'/>
-     <exports symbol='xmlUCSIsCatL'/>
-     <exports symbol='xmlUCSIsCatLl'/>
-     <exports symbol='xmlUCSIsCatLm'/>
-     <exports symbol='xmlUCSIsCatLo'/>
-     <exports symbol='xmlUCSIsCatLt'/>
-     <exports symbol='xmlUCSIsCatLu'/>
-     <exports symbol='xmlUCSIsCatM'/>
-     <exports symbol='xmlUCSIsCatMc'/>
-     <exports symbol='xmlUCSIsCatMe'/>
-     <exports symbol='xmlUCSIsCatMn'/>
-     <exports symbol='xmlUCSIsCatN'/>
-     <exports symbol='xmlUCSIsCatNd'/>
-     <exports symbol='xmlUCSIsCatNl'/>
-     <exports symbol='xmlUCSIsCatNo'/>
-     <exports symbol='xmlUCSIsCatP'/>
-     <exports symbol='xmlUCSIsCatPc'/>
-     <exports symbol='xmlUCSIsCatPd'/>
-     <exports symbol='xmlUCSIsCatPe'/>
-     <exports symbol='xmlUCSIsCatPf'/>
-     <exports symbol='xmlUCSIsCatPi'/>
-     <exports symbol='xmlUCSIsCatPo'/>
-     <exports symbol='xmlUCSIsCatPs'/>
-     <exports symbol='xmlUCSIsCatS'/>
-     <exports symbol='xmlUCSIsCatSc'/>
-     <exports symbol='xmlUCSIsCatSk'/>
-     <exports symbol='xmlUCSIsCatSm'/>
-     <exports symbol='xmlUCSIsCatSo'/>
-     <exports symbol='xmlUCSIsCatZ'/>
-     <exports symbol='xmlUCSIsCatZl'/>
-     <exports symbol='xmlUCSIsCatZp'/>
-     <exports symbol='xmlUCSIsCatZs'/>
-     <exports symbol='xmlUCSIsCherokee'/>
-     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
-     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
-     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
-     <exports symbol='xmlUCSIsControlPictures'/>
-     <exports symbol='xmlUCSIsCurrencySymbols'/>
-     <exports symbol='xmlUCSIsCyrillic'/>
-     <exports symbol='xmlUCSIsDeseret'/>
-     <exports symbol='xmlUCSIsDevanagari'/>
-     <exports symbol='xmlUCSIsDingbats'/>
-     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
-     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
-     <exports symbol='xmlUCSIsEthiopic'/>
-     <exports symbol='xmlUCSIsGeneralPunctuation'/>
-     <exports symbol='xmlUCSIsGeometricShapes'/>
-     <exports symbol='xmlUCSIsGeorgian'/>
-     <exports symbol='xmlUCSIsGothic'/>
-     <exports symbol='xmlUCSIsGreek'/>
-     <exports symbol='xmlUCSIsGreekExtended'/>
-     <exports symbol='xmlUCSIsGujarati'/>
-     <exports symbol='xmlUCSIsGurmukhi'/>
-     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
-     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
-     <exports symbol='xmlUCSIsHangulJamo'/>
-     <exports symbol='xmlUCSIsHangulSyllables'/>
-     <exports symbol='xmlUCSIsHebrew'/>
-     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
-     <exports symbol='xmlUCSIsHighSurrogates'/>
-     <exports symbol='xmlUCSIsHiragana'/>
-     <exports symbol='xmlUCSIsIPAExtensions'/>
-     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
-     <exports symbol='xmlUCSIsKanbun'/>
-     <exports symbol='xmlUCSIsKangxiRadicals'/>
-     <exports symbol='xmlUCSIsKannada'/>
-     <exports symbol='xmlUCSIsKatakana'/>
-     <exports symbol='xmlUCSIsKhmer'/>
-     <exports symbol='xmlUCSIsLao'/>
-     <exports symbol='xmlUCSIsLatin1Supplement'/>
-     <exports symbol='xmlUCSIsLatinExtendedA'/>
-     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
-     <exports symbol='xmlUCSIsLatinExtendedB'/>
-     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
-     <exports symbol='xmlUCSIsLowSurrogates'/>
-     <exports symbol='xmlUCSIsMalayalam'/>
-     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
-     <exports symbol='xmlUCSIsMathematicalOperators'/>
-     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
-     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
-     <exports symbol='xmlUCSIsMongolian'/>
-     <exports symbol='xmlUCSIsMusicalSymbols'/>
-     <exports symbol='xmlUCSIsMyanmar'/>
-     <exports symbol='xmlUCSIsNumberForms'/>
-     <exports symbol='xmlUCSIsOgham'/>
-     <exports symbol='xmlUCSIsOldItalic'/>
-     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
-     <exports symbol='xmlUCSIsOriya'/>
-     <exports symbol='xmlUCSIsPrivateUse'/>
-     <exports symbol='xmlUCSIsRunic'/>
-     <exports symbol='xmlUCSIsSinhala'/>
-     <exports symbol='xmlUCSIsSmallFormVariants'/>
-     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
-     <exports symbol='xmlUCSIsSpecials'/>
-     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
-     <exports symbol='xmlUCSIsSyriac'/>
-     <exports symbol='xmlUCSIsTags'/>
-     <exports symbol='xmlUCSIsTamil'/>
-     <exports symbol='xmlUCSIsTelugu'/>
-     <exports symbol='xmlUCSIsThaana'/>
-     <exports symbol='xmlUCSIsThai'/>
-     <exports symbol='xmlUCSIsTibetan'/>
-     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
-     <exports symbol='xmlUCSIsYiRadicals'/>
-     <exports symbol='xmlUCSIsYiSyllables'/>
     </file>
     <file name='uri'>
      <exports symbol='_xmlURI'/>
@@ -2391,6 +2538,10 @@
     <enum name='XML_PARSER_PI' file='parser' value='2' type='xmlParserInputState' info='Within a processing instruction'/>
     <enum name='XML_PARSER_PROLOG' file='parser' value='4' type='xmlParserInputState' info='Misc* after internal subset'/>
     <enum name='XML_PARSER_PUBLIC_LITERAL' file='parser' value='16' type='xmlParserInputState' info=' within a PUBLIC value'/>
+    <enum name='XML_PARSER_SEVERITY_ERROR' file='xmlreader' value='4' type='xmlParserSeverities'/>
+    <enum name='XML_PARSER_SEVERITY_VALIDITY_ERROR' file='xmlreader' value='2' type='xmlParserSeverities'/>
+    <enum name='XML_PARSER_SEVERITY_VALIDITY_WARNING' file='xmlreader' value='1' type='xmlParserSeverities'/>
+    <enum name='XML_PARSER_SEVERITY_WARNING' file='xmlreader' value='3' type='xmlParserSeverities'/>
     <enum name='XML_PARSER_START' file='parser' value='0' type='xmlParserInputState' info='nothing has been parsed'/>
     <enum name='XML_PARSER_START_TAG' file='parser' value='6' type='xmlParserInputState' info='within a start tag'/>
     <enum name='XML_PARSER_SUBST_ENTITIES' file='xmlreader' value='4' type='xmlParserProperties'/>
@@ -2857,6 +3008,7 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlParserNodeInfoSeqPtr' file='parser' type='xmlParserNodeInfoSeq *'/>
     <typedef name='xmlParserProperties' file='xmlreader' type='enum'/>
+    <typedef name='xmlParserSeverities' file='xmlreader' type='enum'/>
     <struct name='xmlRMutex' file='threads' type='struct _xmlRMutex'/>
     <typedef name='xmlRMutexPtr' file='threads' type='xmlRMutex *'/>
     <struct name='xmlRef' file='tree' type='struct _xmlRef'>
@@ -2922,6 +3074,7 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlShellCtxtPtr' file='debugXML' type='xmlShellCtxt *'/>
     <struct name='xmlTextReader' file='xmlreader' type='struct _xmlTextReader'/>
+    <typedef name='xmlTextReaderLocatorPtr' file='xmlreader' type='void *'/>
     <typedef name='xmlTextReaderPtr' file='xmlreader' type='xmlTextReader *'/>
     <struct name='xmlURI' file='uri' type='struct _xmlURI'>
       <field name='scheme' type='char *' info=' the URI scheme'/>
@@ -5051,8 +5204,8 @@ actually an xmlCharEncoding'/>
       <arg name='filename' type='const char *' info='the URI for matching'/>
     </function>
     <function name='xmlFileOpen' file='xmlIO'>
-      <info>input from FILE *, supports compressed input if @filename is &quot; &quot; then the standard input is used</info>
-      <return type='void *' info='an I/O context or NULL in case of error'/>
+      <info>Wrapper around xmlFileOpen_real that try it with an unescaped version of @filename, if this fails fallback to @filename</info>
+      <return type='void *' info=''/>
       <arg name='filename' type='const char *' info='the URI for matching'/>
     </function>
     <function name='xmlFileRead' file='xmlIO'>
@@ -7969,6 +8122,14 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the depth or -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
+    <functype name='xmlTextReaderErrorFunc' file='xmlreader'>
+      <info></info>
+      <return type='void'/>
+      <arg name='arg' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='severity' type='xmlParserSeverities' info=''/>
+      <arg name='locator' type='xmlTextReaderLocatorPtr' info=''/>
+    </functype>
     <function name='xmlTextReaderGetAttribute' file='xmlreader'>
       <info>Provides the value of the attribute with the specified qualified name.</info>
       <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
@@ -7987,6 +8148,13 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
       <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
+    </function>
+    <function name='xmlTextReaderGetErrorHandler' file='xmlreader'>
+      <info>Retrieve the error callback function and user argument.</info>
+      <return type='void'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='f' type='xmlTextReaderErrorFunc *' info='the callback function or NULL is no callback has been registered'/>
+      <arg name='arg' type='void **' info='a user argument'/>
     </function>
     <function name='xmlTextReaderGetParserProp' file='xmlreader'>
       <info>Read the parser internal property.</info>
@@ -8023,6 +8191,16 @@ actually an xmlCharEncoding'/>
       <info>The local name of the node.</info>
       <return type='xmlChar *' info='the local name or NULL if not available'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderLocatorBaseURI' file='xmlreader'>
+      <info>Obtain the base URI for the given locator.</info>
+      <return type='xmlChar *' info='the base URI or NULL in case of error.'/>
+      <arg name='locator' type='xmlTextReaderLocatorPtr' info='the xmlTextReaderLocatorPtr used'/>
+    </function>
+    <function name='xmlTextReaderLocatorLineNumber' file='xmlreader'>
+      <info>Obtain the line number for the given locator.</info>
+      <return type='int' info='the line number or -1 in case of error.'/>
+      <arg name='locator' type='xmlTextReaderLocatorPtr' info='the xmlTextReaderLocatorPtr used'/>
     </function>
     <function name='xmlTextReaderLookupNamespace' file='xmlreader'>
       <info>Resolves a namespace prefix in the scope of the current element.</info>
@@ -8123,6 +8301,13 @@ actually an xmlCharEncoding'/>
       <info>Reads the contents of an element or a text node as a string.</info>
       <return type='xmlChar *' info='a string containing the contents of the Element or Text node, or NULL if the reader is positioned on any other type of node. The string must be deallocated by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderSetErrorHandler' file='xmlreader'>
+      <info>Register a callback function that will be called on error and warnings.  If @f is NULL, the default error and warning handlers are restored.</info>
+      <return type='void'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='f' type='xmlTextReaderErrorFunc' info='the callback function to call on error and warnings'/>
+      <arg name='arg' type='void *' info='a user argument to pass to the callback function'/>
     </function>
     <function name='xmlTextReaderSetParserProp' file='xmlreader'>
       <info>Change the parser processing behaviour by changing some of its internal properties. Note that some properties can only be changed before any read has been done.</info>

@@ -198,7 +198,6 @@ function discoverVersion()
 	} else if (compiler == "mingw") {
 		vf.WriteLine("INCLUDE+=;" + buildInclude);
 		vf.WriteLine("LIB+=;" + buildLib);
-	}
 	} else if (compiler == "bcb") {
 		vf.WriteLine("INCLUDE=" + buildInclude);
 		vf.WriteLine("LIB=" + buildLib);

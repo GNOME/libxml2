@@ -8406,7 +8406,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #endif
 	    last = NULL;
             next = xmlXPathNextFollowingSibling;
-	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_NAMESPACE:
 #ifdef DEBUG_STEP
@@ -8438,7 +8437,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #endif
             first = NULL;
             next = xmlXPathNextPrecedingSibling;
-	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_SELF:
 #ifdef DEBUG_STEP
@@ -8678,7 +8676,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
         /*
          * If there is some predicate filtering do it now
          */
-        if (op->ch2 != -1) {
+        if ((op->ch2 != -1) && (list != NULL) && (list->nodeNr > 0)) {
             xmlXPathObjectPtr obj2;
 
             valuePush(ctxt, xmlXPathWrapNodeSet(list));

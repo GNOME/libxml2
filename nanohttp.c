@@ -65,6 +65,14 @@
 #include <libxml/parser.h> /* for xmlStr(n)casecmp() */
 #include <libxml/nanohttp.h>
 
+/**
+ * A couple portability macros
+ */
+#ifndef _WINSOCKAPI_
+#define closesocket(s) close(s)
+#define SOCKET int
+#endif
+
 #ifdef STANDALONE
 #define DEBUG_HTTP
 #define xmlStrncasecmp(a, b, n) strncasecmp((char *)a, (char *)b, n)
@@ -85,7 +93,7 @@ typedef struct xmlNanoHTTPCtxt {
     char *hostname;	/* the host name */
     int port;		/* the port */
     char *path;		/* the path within the URL */
-    int fd;		/* the file descriptor for the socket */
+    SOCKET fd;		/* the file descriptor for the socket */
     int state;		/* WRITE / READ / CLOSED */
     char *out;		/* buffer sent (zero terminated) */
     char *outptr;	/* index within the buffer sent */
@@ -106,18 +114,8 @@ static int proxyPort;	/* the proxy port if any */
 static unsigned int timeout = 60;/* the select() timeout in seconds */
 
 /**
- * A bit of portability macros and functions
+ * A portability function
  */
-#ifdef _WINSOCKAPI_
-
-WSADATA wsaData;
-
-#else
-
-#define closesocket(s) close(s)
-
-#endif
-
 int socket_errno(void) {
 #ifdef _WINSOCKAPI_
     return(WSAGetLastError());
@@ -136,13 +134,16 @@ int socket_errno(void) {
 void
 xmlNanoHTTPInit(void) {
     const char *env;
+#ifdef _WINSOCKAPI_
+    WSADATA wsaData;    
+#endif
 
     if (initialized)
 	return;
 
 #ifdef _WINSOCKAPI_
-    if (WSAStartup(0x0101, &wsaData) != 0)
-	WSACleanup();
+    if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0)
+	return;
 #endif
 
     if (proxy == NULL) {
@@ -175,10 +176,11 @@ void
 xmlNanoHTTPCleanup(void) {
     if (proxy != NULL)
 	xmlFree(proxy);
-    initialized = 0;
 #ifdef _WINSOCKAPI_
-    WSACleanup();
+    if (initialized)
+	WSACleanup();
 #endif
+    initialized = 0;
     return;
 }
 
@@ -612,7 +614,7 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 static int
 xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 {
-    int s=socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    SOCKET s = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     struct sockaddr_in sin;
     fd_set wfd;
     struct timeval tv;
@@ -663,11 +665,16 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     sin.sin_addr   = ia;
     sin.sin_port   = htons(port);
     
-    if ((connect(s, (struct sockaddr *)&sin, sizeof(sin))==-1) &&
-       (socket_errno() != EINPROGRESS) && (socket_errno() != EWOULDBLOCK)) {
-	perror("connect");
-	closesocket(s);
-	return(-1);
+    if ((connect(s, (struct sockaddr *)&sin, sizeof(sin))==-1)) {
+	switch (socket_errno()) {
+	    case EINPROGRESS:
+	    case EWOULDBLOCK:
+		break;
+	    default:
+		perror("connect");
+		closesocket(s);
+		return(-1);
+	}
     }	
     
     tv.tv_sec = timeout;
@@ -694,7 +701,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     if ( FD_ISSET(s, &wfd) ) {
 	SOCKLEN_T len;
 	len = sizeof(status);
-	if (getsockopt(s, SOL_SOCKET, SO_ERROR, &status, &len) < 0 ) {
+	if (getsockopt(s, SOL_SOCKET, SO_ERROR, (char*)&status, &len) < 0 ) {
 	    /* Solaris error code */
 	    return (-1);
 	}

@@ -1,4 +1,9 @@
-Fri Oct 13 02:54:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+Fri Oct 13 01:23:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.c nanohttp.c xmlIO.c: Wayne Davison Win32 patch
+	  nanoftp code work on Windows too now
+
+Fri Oct 13 00:54:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* testXPath.c xpath.[ch]: moved some debug functions to xpath core
 	* xpointer.c: implemented string-range() at least a good first version

@@ -374,7 +374,7 @@ xmlGzfileOpen (const char *filename) {
     gzFile fd;
 
     if (!strcmp(filename, "-")) {
-        fd = gzdopen (fileno(stdin), "r");
+        fd = gzdopen(fileno(stdin), "rb");
 	return((void *) fd);
     }
 
@@ -385,7 +385,7 @@ xmlGzfileOpen (const char *filename) {
     else 
 	path = filename;
 
-    fd = gzopen(filename, "r");
+    fd = gzopen(filename, "rb");
     return((void *) fd);
 }
 
@@ -405,7 +405,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
     char mode[15];
     gzFile fd;
 
-    sprintf(mode, "w%d", compression);
+    sprintf(mode, "wb%d", compression);
     if (!strcmp(filename, "-")) {
         fd = gzdopen(1, mode);
 	return((void *) fd);

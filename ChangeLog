@@ -1,3 +1,13 @@
+Fri Feb 22 23:44:57 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/README python/generator.py python/libxml.c python/setup.py:
+	  added the 'usual' setup.py to allow building a libxml2-python
+	  module based on the same code. The initialization is however
+	  different the 2 .so files fo libxml2 and libxslt are identical and
+	  they entry point initialize both libraries. this is done to avoid
+	  some possible nasty problem since the Python don't merge the maps
+	  of all shared modules.
+
 Wed Feb 20 23:16:08 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a push/encoding bug reported by Michael

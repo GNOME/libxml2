@@ -5,6 +5,7 @@
 
 functions = {}
 
+import sys
 import string
 
 #######################################################################
@@ -408,65 +409,78 @@ def print_function_wrapper(name, output, export, include):
     output.write("}\n\n")
     return 1
 
-try:
-    f = open("../doc/libxml2-api.xml")
-    data = f.read()
-    (parser, target)  = getparser()
-    parser.feed(data)
-    parser.close()
-except IOError, msg:
-    print file, ":", msg
+def buildStubs():
+    global py_types
+    global py_return_types
+    global unknown_types
 
-n = len(functions.keys())
-print "Found %d functions in libxml2-api.xml" % (n)
+    try:
+	f = open("libxml2-api.xml")
+	data = f.read()
+	(parser, target)  = getparser()
+	parser.feed(data)
+	parser.close()
+    except IOError, msg:
+	try:
+	    f = open("../doc/libxml2-api.xml")
+	    data = f.read()
+	    (parser, target)  = getparser()
+	    parser.feed(data)
+	    parser.close()
+	except IOError, msg:
+	    print file, ":", msg
+	    sys.exit(1)
 
-py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
-try:
-    f = open("libxml2-python-api.xml")
-    data = f.read()
-    (parser, target)  = getparser()
-    parser.feed(data)
-    parser.close()
-except IOError, msg:
-    print file, ":", msg
+    n = len(functions.keys())
+    print "Found %d functions in libxml2-api.xml" % (n)
+
+    py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
+    try:
+	f = open("libxml2-python-api.xml")
+	data = f.read()
+	(parser, target)  = getparser()
+	parser.feed(data)
+	parser.close()
+    except IOError, msg:
+	print file, ":", msg
 
 
-print "Found %d functions in libxml2-python-api.xml" % (
-      len(functions.keys()) - n)
-nb_wrap = 0
-failed = 0
-skipped = 0
+    print "Found %d functions in libxml2-python-api.xml" % (
+	  len(functions.keys()) - n)
+    nb_wrap = 0
+    failed = 0
+    skipped = 0
 
-include = open("libxml2-py.h", "w")
-include.write("/* Generated */\n\n")
-export = open("libxml2-export.c", "w")
-export.write("/* Generated */\n\n")
-wrapper = open("libxml2-py.c", "w")
-wrapper.write("/* Generated */\n\n")
-wrapper.write("#include <Python.h>\n")
-wrapper.write("#include <libxml/tree.h>\n")
-wrapper.write("#include \"libxml_wrap.h\"\n")
-wrapper.write("#include \"libxml2-py.h\"\n\n")
-for function in functions.keys():
-    ret = print_function_wrapper(function, wrapper, export, include)
-    if ret < 0:
-        failed = failed + 1
-        del functions[function]
-    if ret == 0:
-        skipped = skipped + 1
-        del functions[function]
-    if ret == 1:
-        nb_wrap = nb_wrap + 1
-include.close()
-export.close()
-wrapper.close()
+    include = open("libxml2-py.h", "w")
+    include.write("/* Generated */\n\n")
+    export = open("libxml2-export.c", "w")
+    export.write("/* Generated */\n\n")
+    wrapper = open("libxml2-py.c", "w")
+    wrapper.write("/* Generated */\n\n")
+    wrapper.write("#include <Python.h>\n")
+    wrapper.write("#include <libxml/tree.h>\n")
+    wrapper.write("#include \"libxml_wrap.h\"\n")
+    wrapper.write("#include \"libxml2-py.h\"\n\n")
+    for function in functions.keys():
+	ret = print_function_wrapper(function, wrapper, export, include)
+	if ret < 0:
+	    failed = failed + 1
+	    del functions[function]
+	if ret == 0:
+	    skipped = skipped + 1
+	    del functions[function]
+	if ret == 1:
+	    nb_wrap = nb_wrap + 1
+    include.close()
+    export.close()
+    wrapper.close()
 
-print "Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
-                                                          failed, skipped);
-print "Missing type converters: "
-for type in unknown_types.keys():
-    print "%s:%d " % (type, len(unknown_types[type])),
-print
+    print "Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
+							      failed, skipped);
+    print "Missing type converters: "
+    for type in unknown_types.keys():
+	print "%s:%d " % (type, len(unknown_types[type])),
+    print
 
 #######################################################################
 #
@@ -531,36 +545,8 @@ classes_destructors = {
 function_classes = {}
 
 function_classes["None"] = []
-for type in classes_type.keys():
-    function_classes[classes_type[type][2]] = []
-    
-#
-# Build the list of C types to look for ordered to start with primary classes
-#
-ctypes = []
-classes_list = []
-ctypes_processed = {}
-classes_processed = {}
-for classe in primary_classes:
-    classes_list.append(classe)
-    classes_processed[classe] = ()
-    for type in classes_type.keys():
-        tinfo = classes_type[type]
-        if tinfo[2] == classe:
-            ctypes.append(type)
-            ctypes_processed[type] = ()
-for type in classes_type.keys():
-    if ctypes_processed.has_key(type):
-        continue
-    tinfo = classes_type[type]
-    if not classes_processed.has_key(tinfo[2]):
-        classes_list.append(tinfo[2])
-        classes_processed[tinfo[2]] = ()
-        
-    ctypes.append(type)
-    ctypes_processed[type] = ()
 
-def nameFixup(function, classe, type, file):
+def nameFixup(name, classe, type, file):
     listname = classe + "List"
     ll = len(listname)
     l = len(classe)
@@ -613,49 +599,6 @@ def nameFixup(function, classe, type, file):
         func = "UTF8" + func[4:]
     return func
 
-for name in functions.keys():
-    found = 0;
-    (desc, ret, args, file) = functions[name]
-    for type in ctypes:
-        classe = classes_type[type][2]
-
-        if name[0:3] == "xml" and len(args) >= 1 and args[0][1] == type:
-            found = 1
-            func = nameFixup(name, classe, type, file)
-            info = (0, func, name, ret, args, file)
-            function_classes[classe].append(info)
-        elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == type:
-            found = 1
-            func = nameFixup(name, classe, type, file)
-            info = (1, func, name, ret, args, file)
-            function_classes[classe].append(info)
-        elif name[0:4] == "html" and len(args) >= 1 and args[0][1] == type:
-            found = 1
-            func = nameFixup(name, classe, type, file)
-            info = (0, func, name, ret, args, file)
-            function_classes[classe].append(info)
-        elif name[0:4] == "html" and len(args) >= 2 and args[1][1] == type:
-            found = 1
-            func = nameFixup(name, classe, type, file)
-            info = (1, func, name, ret, args, file)
-            function_classes[classe].append(info)
-        if found == 1:
-            break
-    if found == 1:
-        continue
-    if name[0:8] == "xmlXPath":
-        continue
-    if name[0:6] == "xmlStr":
-        continue
-    if name[0:10] == "xmlCharStr":
-        continue
-    func = nameFixup(name, "None", file, file)
-    info = (0, func, name, ret, args, file)
-    function_classes['None'].append(info)
-
-classes = open("libxml2class.py", "w")
-txt = open("libxml2class.txt", "w")
-txt.write("          Generated Classes for libxml2-python\n\n")
 
 def functionCompare(info1, info2):
     (index1, func1, name1, ret1, args1, file1) = info1
@@ -695,157 +638,253 @@ def writeDoc(name, args, indent, output):
      output.write(val);
      output.write('"""\n')
 
-txt.write("#\n# Global functions of the module\n#\n\n")
-if function_classes.has_key("None"):
-    flist = function_classes["None"]
-    flist.sort(functionCompare)
-    oldfile = ""
-    for info in flist:
-        (index, func, name, ret, args, file) = info
-        if file != oldfile:
-            classes.write("#\n# Functions from module %s\n#\n\n" % file)
-            txt.write("\n# functions from module %s\n" % file)
-            oldfile = file
-        classes.write("def %s(" % func)
-        txt.write("%s()\n" % func);
-        n = 0
-        for arg in args:
-            if n != 0:
-                classes.write(", ")
-            classes.write("%s" % arg[0])
-            n = n + 1
-        classes.write("):\n")
-        writeDoc(name, args, '    ', classes);
+def buildWrappers():
+    global ctypes
+    global py_types
+    global py_return_types
+    global unknown_types
+    global functions
+    global function_classes
+    global classes_type
+    global classes_list
+    global converter_type
+    global primary_classes
+    global converter_type
+    global classes_ancestor
+    global converter_type
+    global primary_classes
+    global classes_ancestor
+    global classes_destructors
 
-        for arg in args:
-            if classes_type.has_key(arg[1]):
-                classes.write("    if %s == None: %s__o = None\n" %
-                              (arg[0], arg[0]))
-                classes.write("    else: %s__o = %s%s\n" %
-                              (arg[0], arg[0], classes_type[arg[1]][0]))
-        if ret[0] != "void":
-            classes.write("    ret = ");
-        else:
-            classes.write("    ");
-        classes.write("libxml2mod.%s(" % name)
-        n = 0
-        for arg in args:
-            if n != 0:
-                classes.write(", ");
-            classes.write("%s" % arg[0])
-            if classes_type.has_key(arg[1]):
-                classes.write("__o");
-            n = n + 1
-        classes.write(")\n");
-        if ret[0] != "void":
-            if classes_type.has_key(ret[0]):
-                classes.write("    if ret == None: return None\n");
-                classes.write("    return ");
-                classes.write(classes_type[ret[0]][1] % ("ret"));
-                classes.write("\n");
-            else:
-                classes.write("    return ret\n");
-        classes.write("\n");
+    for type in classes_type.keys():
+	function_classes[classes_type[type][2]] = []
 
-txt.write("\n\n#\n# Set of classes of the module\n#\n\n")
-for classname in classes_list:
-    if classname == "None":
-        pass
-    else:
-        if classes_ancestor.has_key(classname):
-            txt.write("\n\nClass %s(%s)\n" % (classname,
-                      classes_ancestor[classname]))
-            classes.write("class %s(%s):\n" % (classname,
-                          classes_ancestor[classname]))
-            classes.write("    def __init__(self, _obj=None):\n")
-            classes.write("        self._o = None\n")
-            classes.write("        %s.__init__(self, _obj=_obj)\n\n" % (
-                          classes_ancestor[classname]))
-            if classes_ancestor[classname] == "xmlCore" or \
-               classes_ancestor[classname] == "xmlNode":
-                classes.write("    def __repr__(self):\n")
-                format = "%s:%%s" % (classname)
-                classes.write("        return \"%s\" %% (self.name)\n\n" % (
-                              format))
-        else:
-            txt.write("Class %s()\n" % (classname))
-            classes.write("class %s:\n" % (classname))
-            classes.write("    def __init__(self, _obj=None):\n")
-            classes.write("        if _obj != None:self._o = _obj;return\n")
-            classes.write("        self._o = None\n\n");
-        if classes_destructors.has_key(classname):
-            classes.write("    def __del__(self):\n")
-            classes.write("        if self._o != None:\n")
-            classes.write("            libxml2mod.%s(self._o)\n" %
-                          classes_destructors[classname]);
-            classes.write("        self._o = None\n\n");
-        flist = function_classes[classname]
-        flist.sort(functionCompare)
-        oldfile = ""
-        for info in flist:
-            (index, func, name, ret, args, file) = info
-            if file != oldfile:
-                if file == "python_accessor":
-                    classes.write("    # accessors for %s\n" % (classname))
-                    txt.write("    # accessors\n")
-                else:
-                    classes.write("    #\n")
-                    classes.write("    # %s functions from module %s\n" % (
-                                  classname, file))
-                    txt.write("\n    # functions from module %s\n" % file)
-                    classes.write("    #\n\n")
-            oldfile = file
-            classes.write("    def %s(self" % func)
-            txt.write("    %s()\n" % func);
-            n = 0
-            for arg in args:
-                if n != index:
-                    classes.write(", %s" % arg[0])
-                n = n + 1
-            classes.write("):\n")
-            writeDoc(name, args, '        ', classes);
-            n = 0
-            for arg in args:
-                if classes_type.has_key(arg[1]):
-                    if n != index:
-                        classes.write("        if %s == None: %s__o = None\n" %
-                                      (arg[0], arg[0]))
-                        classes.write("        else: %s__o = %s%s\n" %
-                                      (arg[0], arg[0], classes_type[arg[1]][0]))
-                n = n + 1
-            if ret[0] != "void":
-                classes.write("        ret = ");
-            else:
-                classes.write("        ");
-            classes.write("libxml2mod.%s(" % name)
-            n = 0
-            for arg in args:
-                if n != 0:
-                    classes.write(", ");
-                if n != index:
-                    classes.write("%s" % arg[0])
-                    if classes_type.has_key(arg[1]):
-                        classes.write("__o");
-                else:
-                    classes.write("self");
-                    if classes_type.has_key(arg[1]):
-                        classes.write(classes_type[arg[1]][0])
-                n = n + 1
-            classes.write(")\n");
-            if ret[0] != "void":
-                if classes_type.has_key(ret[0]):
-                    classes.write("        if ret == None: return None\n");
-                    classes.write("        return ");
-                    classes.write(classes_type[ret[0]][1] % ("ret"));
-                    classes.write("\n");
-                elif converter_type.has_key(ret[0]):
-                    classes.write("        if ret == None: return None\n");
-                    classes.write("        return ");
-                    classes.write(converter_type[ret[0]] % ("ret"));
-                    classes.write("\n");
-                else:
-                    classes.write("        return ret\n");
-            classes.write("\n");
+    #
+    # Build the list of C types to look for ordered to start
+    # with primary classes
+    #
+    ctypes = []
+    classes_list = []
+    ctypes_processed = {}
+    classes_processed = {}
+    for classe in primary_classes:
+	classes_list.append(classe)
+	classes_processed[classe] = ()
+	for type in classes_type.keys():
+	    tinfo = classes_type[type]
+	    if tinfo[2] == classe:
+		ctypes.append(type)
+		ctypes_processed[type] = ()
+    for type in classes_type.keys():
+	if ctypes_processed.has_key(type):
+	    continue
+	tinfo = classes_type[type]
+	if not classes_processed.has_key(tinfo[2]):
+	    classes_list.append(tinfo[2])
+	    classes_processed[tinfo[2]] = ()
+	    
+	ctypes.append(type)
+	ctypes_processed[type] = ()
 
-txt.close()
-classes.close()
+    for name in functions.keys():
+	found = 0;
+	(desc, ret, args, file) = functions[name]
+	for type in ctypes:
+	    classe = classes_type[type][2]
+
+	    if name[0:3] == "xml" and len(args) >= 1 and args[0][1] == type:
+		found = 1
+		func = nameFixup(name, classe, type, file)
+		info = (0, func, name, ret, args, file)
+		function_classes[classe].append(info)
+	    elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == type:
+		found = 1
+		func = nameFixup(name, classe, type, file)
+		info = (1, func, name, ret, args, file)
+		function_classes[classe].append(info)
+	    elif name[0:4] == "html" and len(args) >= 1 and args[0][1] == type:
+		found = 1
+		func = nameFixup(name, classe, type, file)
+		info = (0, func, name, ret, args, file)
+		function_classes[classe].append(info)
+	    elif name[0:4] == "html" and len(args) >= 2 and args[1][1] == type:
+		found = 1
+		func = nameFixup(name, classe, type, file)
+		info = (1, func, name, ret, args, file)
+		function_classes[classe].append(info)
+	    if found == 1:
+		break
+	if found == 1:
+	    continue
+	if name[0:8] == "xmlXPath":
+	    continue
+	if name[0:6] == "xmlStr":
+	    continue
+	if name[0:10] == "xmlCharStr":
+	    continue
+	func = nameFixup(name, "None", file, file)
+	info = (0, func, name, ret, args, file)
+	function_classes['None'].append(info)
+   
+    classes = open("libxml2class.py", "w")
+    txt = open("libxml2class.txt", "w")
+    txt.write("          Generated Classes for libxml2-python\n\n")
+
+    txt.write("#\n# Global functions of the module\n#\n\n")
+    if function_classes.has_key("None"):
+	flist = function_classes["None"]
+	flist.sort(functionCompare)
+	oldfile = ""
+	for info in flist:
+	    (index, func, name, ret, args, file) = info
+	    if file != oldfile:
+		classes.write("#\n# Functions from module %s\n#\n\n" % file)
+		txt.write("\n# functions from module %s\n" % file)
+		oldfile = file
+	    classes.write("def %s(" % func)
+	    txt.write("%s()\n" % func);
+	    n = 0
+	    for arg in args:
+		if n != 0:
+		    classes.write(", ")
+		classes.write("%s" % arg[0])
+		n = n + 1
+	    classes.write("):\n")
+	    writeDoc(name, args, '    ', classes);
+
+	    for arg in args:
+		if classes_type.has_key(arg[1]):
+		    classes.write("    if %s == None: %s__o = None\n" %
+				  (arg[0], arg[0]))
+		    classes.write("    else: %s__o = %s%s\n" %
+				  (arg[0], arg[0], classes_type[arg[1]][0]))
+	    if ret[0] != "void":
+		classes.write("    ret = ");
+	    else:
+		classes.write("    ");
+	    classes.write("libxml2mod.%s(" % name)
+	    n = 0
+	    for arg in args:
+		if n != 0:
+		    classes.write(", ");
+		classes.write("%s" % arg[0])
+		if classes_type.has_key(arg[1]):
+		    classes.write("__o");
+		n = n + 1
+	    classes.write(")\n");
+	    if ret[0] != "void":
+		if classes_type.has_key(ret[0]):
+		    classes.write("    if ret == None: return None\n");
+		    classes.write("    return ");
+		    classes.write(classes_type[ret[0]][1] % ("ret"));
+		    classes.write("\n");
+		else:
+		    classes.write("    return ret\n");
+	    classes.write("\n");
+
+    txt.write("\n\n#\n# Set of classes of the module\n#\n\n")
+    for classname in classes_list:
+	if classname == "None":
+	    pass
+	else:
+	    if classes_ancestor.has_key(classname):
+		txt.write("\n\nClass %s(%s)\n" % (classname,
+			  classes_ancestor[classname]))
+		classes.write("class %s(%s):\n" % (classname,
+			      classes_ancestor[classname]))
+		classes.write("    def __init__(self, _obj=None):\n")
+		classes.write("        self._o = None\n")
+		classes.write("        %s.__init__(self, _obj=_obj)\n\n" % (
+			      classes_ancestor[classname]))
+		if classes_ancestor[classname] == "xmlCore" or \
+		   classes_ancestor[classname] == "xmlNode":
+		    classes.write("    def __repr__(self):\n")
+		    format = "%s:%%s" % (classname)
+		    classes.write("        return \"%s\" %% (self.name)\n\n" % (
+				  format))
+	    else:
+		txt.write("Class %s()\n" % (classname))
+		classes.write("class %s:\n" % (classname))
+		classes.write("    def __init__(self, _obj=None):\n")
+		classes.write("        if _obj != None:self._o = _obj;return\n")
+		classes.write("        self._o = None\n\n");
+	    if classes_destructors.has_key(classname):
+		classes.write("    def __del__(self):\n")
+		classes.write("        if self._o != None:\n")
+		classes.write("            libxml2mod.%s(self._o)\n" %
+			      classes_destructors[classname]);
+		classes.write("        self._o = None\n\n");
+	    flist = function_classes[classname]
+	    flist.sort(functionCompare)
+	    oldfile = ""
+	    for info in flist:
+		(index, func, name, ret, args, file) = info
+		if file != oldfile:
+		    if file == "python_accessor":
+			classes.write("    # accessors for %s\n" % (classname))
+			txt.write("    # accessors\n")
+		    else:
+			classes.write("    #\n")
+			classes.write("    # %s functions from module %s\n" % (
+				      classname, file))
+			txt.write("\n    # functions from module %s\n" % file)
+			classes.write("    #\n\n")
+		oldfile = file
+		classes.write("    def %s(self" % func)
+		txt.write("    %s()\n" % func);
+		n = 0
+		for arg in args:
+		    if n != index:
+			classes.write(", %s" % arg[0])
+		    n = n + 1
+		classes.write("):\n")
+		writeDoc(name, args, '        ', classes);
+		n = 0
+		for arg in args:
+		    if classes_type.has_key(arg[1]):
+			if n != index:
+			    classes.write("        if %s == None: %s__o = None\n" %
+					  (arg[0], arg[0]))
+			    classes.write("        else: %s__o = %s%s\n" %
+					  (arg[0], arg[0], classes_type[arg[1]][0]))
+		    n = n + 1
+		if ret[0] != "void":
+		    classes.write("        ret = ");
+		else:
+		    classes.write("        ");
+		classes.write("libxml2mod.%s(" % name)
+		n = 0
+		for arg in args:
+		    if n != 0:
+			classes.write(", ");
+		    if n != index:
+			classes.write("%s" % arg[0])
+			if classes_type.has_key(arg[1]):
+			    classes.write("__o");
+		    else:
+			classes.write("self");
+			if classes_type.has_key(arg[1]):
+			    classes.write(classes_type[arg[1]][0])
+		    n = n + 1
+		classes.write(")\n");
+		if ret[0] != "void":
+		    if classes_type.has_key(ret[0]):
+			classes.write("        if ret == None: return None\n");
+			classes.write("        return ");
+			classes.write(classes_type[ret[0]][1] % ("ret"));
+			classes.write("\n");
+		    elif converter_type.has_key(ret[0]):
+			classes.write("        if ret == None: return None\n");
+			classes.write("        return ");
+			classes.write(converter_type[ret[0]] % ("ret"));
+			classes.write("\n");
+		    else:
+			classes.write("        return ret\n");
+		classes.write("\n");
+
+    txt.close()
+    classes.close()
+
+
+buildStubs()
+buildWrappers()

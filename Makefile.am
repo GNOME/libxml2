@@ -40,3 +40,23 @@ tests : tester
 	      rm result.`basename $$i` ; \
 	  fi ; fi ; done)
 
+## Put `exec' in the name because this should be installed by
+## `install-exec', not `install-data'.
+
+confexecdir=$(libdir)
+confexec_DATA = xmlConf.sh
+
+EXTRA_DIST = xmlConf.sh.in
+
+## We create xmlConf.sh here and not from configure because we want
+## to get the paths expanded correctly.  Macros like srcdir are given
+## the value NONE in configure if the user doesn't specify them (this
+## is an autoconf feature, not a bug).
+
+xmlConf.sh: xmlConf.sh.in Makefile
+## Use sed and then mv to avoid problems if the user interrupts.
+	sed -e 's,\@XML_LIBDIR\@,$(XML_LIBDIR),g' \
+	    -e 's,\@XML_INCLUDEDIR\@,$(XML_INCLUDEDIR),g' \
+	    -e 's,\@XML_LIBS\@,$(XML_LIBS),g' \
+	      < $(srcdir)/xmlConf.sh.in > xmlConf.tmp \
+	  && mv xmlConf.tmp xmlConf.sh

@@ -11,7 +11,7 @@ AC_PROG_CPP
 AC_PATH_PROG(RM, rm, /bin/rm)
 AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
-AC_PATH_PROG(GZIP, gzip, /bin/gzip)
+ AC_PATH_PROG(GZIP, gzip, /bin/gzip)
 
 AM_PROG_LIBTOOL
 
@@ -29,8 +29,17 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h unistd.h ctype.h dirent.h errno.h malloc.h)
 AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h zlib.h)
 
+XML_LIBDIR='-L${libdir}'
+XML_INCLUDEDIR='-L${includedir}'
+XML_LIBS="-lxml $Z_LIBS"
+
+AC_SUBST(XML_LIBDIR)
+AC_SUBST(XML_LIBS)
+AC_SUBST(XML_INCLUDEDIR)
+
 dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror snprintf )
 AC_SUBST(Z_LIBS)
 AC_OUTPUT(Makefile)
+

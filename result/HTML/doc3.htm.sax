@@ -22,24 +22,19 @@ SAX.internalSubset(HTML, -//W3C//DTD HTML 3.2//EN, )
 SAX.comment(last modified on Tuesday, February 22, 2000 11:47 PM )
 SAX.ignorableWhitespace(
 , 2)
-SAX.error: error parsing attribute name
-SAX.error: htmlParseStartTag: problem parsing attributes
-SAX.startElement(meta, content='text/html;CHARSET=iso-8859-1', http)
-SAX.error: Couldn't find end of Start Tag meta
-SAX.endElement(head)
-SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(-equiv=Content-Type&gt;
-, 22)
+SAX.startElement(meta, content='text/html;CHARSET=iso-8859-1', http-equiv='Content-Type')
+SAX.endElement(meta)
+SAX.ignorableWhitespace(
+, 2)
 SAX.startElement(meta, content='Tim', name='Author')
 SAX.endElement(meta)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(style, type='text/css')
 SAX.characters(A.nav {
 	COLOR: #003399; TEXT, 115)
 SAX.endElement(style)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 4)
 SAX.startElement(script, language='JavaScript')
@@ -69,15 +64,14 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbars=0, scrollbars=0,
 SAX.characters(
 , 1)
 SAX.endElement(script)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 4)
 SAX.startElement(meta, content='MSHTML 5.00.3103.1000', name='GENERATOR')
 SAX.endElement(meta)
-SAX.error: Unexpected end tag : head
-SAX.characters(
+SAX.endElement(head)
+SAX.ignorableWhitespace(
 , 2)
-SAX.endElement(p)
 SAX.startElement(body, alink='red', bgcolor='black', link='red', text='white', vlink='red')
 SAX.ignorableWhitespace(
 , 2)
@@ -2926,7 +2920,6 @@ SAX.characters( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
 SAX.ignorableWhitespace(
 , 2)
-SAX.endElement(body)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

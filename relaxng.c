@@ -7786,7 +7786,8 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
  ************************************************************************/
 static int xmlRelaxNGValidateAttributeList(xmlRelaxNGValidCtxtPtr ctxt, 
 					   xmlRelaxNGDefinePtr defines);
-static int xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt);
+static int xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt, int log);
+static void xmlRelaxNGLogBestError(xmlRelaxNGValidCtxtPtr ctxt);
 
 /**
  * xmlRelaxNGElemPush:
@@ -7944,7 +7945,7 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
     }
     if (ctxt->state != NULL) {
 	ctxt->state->seq = NULL;
-	ret = xmlRelaxNGValidateElementEnd(ctxt);
+	ret = xmlRelaxNGValidateElementEnd(ctxt, 1);
 	if (ret != 0) {
 	    ctxt->pstate = -1;
 	}
@@ -7953,16 +7954,27 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
 	int tmp = -1, i;
 
         oldflags = ctxt->flags;
-	ctxt->flags |= FLAGS_IGNORABLE;
 
 	for (i = 0; i < ctxt->states->nbState; i++) {
 	    state = ctxt->states->tabState[i];
 	    ctxt->state = state;
 	    ctxt->state->seq = NULL;
 
-	    if (xmlRelaxNGValidateElementEnd(ctxt) == 0)
+	    if (xmlRelaxNGValidateElementEnd(ctxt, 0) == 0) {
 		tmp = 0;
-	    xmlRelaxNGFreeValidState(ctxt, state);
+		break;
+	    }
+	}
+	if (tmp != 0) {
+	    /*
+	     * validation error, log the message for the "best" one
+	     */
+	    ctxt->flags |= FLAGS_IGNORABLE;
+	    xmlRelaxNGLogBestError(ctxt);
+	}
+	for (i = 0; i < ctxt->states->nbState; i++) {
+	    xmlRelaxNGFreeValidState(ctxt,
+				     ctxt->states->tabState[i]);
 	}
 	xmlRelaxNGFreeStates(ctxt, ctxt->states);
 	ctxt->states = NULL;
@@ -9302,8 +9314,74 @@ xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
 }
 
 /**
+ * xmlRelaxNGBestState:
+ * @ctxt:  a Relax-NG validation context
+ *
+ * Find the "best" state in the ctxt->states list of states to report
+ * errors about. I.e. a state with no element left in the child list
+ * or the one with the less attributes left.
+ * This is called only if a falidation error was detected
+ *
+ * Returns the index of the "best" state or -1 in case of error
+ */
+static int
+xmlRelaxNGBestState(xmlRelaxNGValidCtxtPtr ctxt) {
+    xmlRelaxNGValidStatePtr state;
+    int i, tmp;
+    int best = -1;
+    int value = 1000000;
+
+    if ((ctxt == NULL) || (ctxt->states == NULL) ||
+        (ctxt->states->nbState <= 0))
+	return(-1);
+
+    for (i = 0;i < ctxt->states->nbState;i++) {
+        state = ctxt->states->tabState[i];
+	if (state == NULL)
+	    continue;
+	if (state->seq != NULL) {
+	    if ((best == -1) || (value > 100000)) {
+	        value = 100000;
+		best = i;
+	    }
+	} else {
+	    tmp = state->nbAttrLeft;
+	    if ((best == -1) || (value > tmp)) {
+	        value = tmp;
+		best = i;
+	    }
+	}
+    }
+    return(best);
+}
+
+/**
+ * xmlRelaxNGLogBestError:
+ * @ctxt:  a Relax-NG validation context
+ *
+ * Find the "best" state in the ctxt->states list of states to report
+ * errors about and log it.
+ */
+static void
+xmlRelaxNGLogBestError(xmlRelaxNGValidCtxtPtr ctxt) {
+    int best;
+
+    if ((ctxt == NULL) || (ctxt->states == NULL) ||
+        (ctxt->states->nbState <= 0))
+	return;
+
+    best = xmlRelaxNGBestState(ctxt);
+    if ((best >= 0) && (best < ctxt->states->nbState)) {
+	ctxt->state = ctxt->states->tabState[best];
+
+	xmlRelaxNGValidateElementEnd(ctxt, 1);
+    }
+}
+
+/**
  * xmlRelaxNGValidateElementEnd:
  * @ctxt:  a Relax-NG validation context
+ * @log:  indicate that error logging should be done
  *
  * Validate the end of the element, implements check that
  * there is nothing left not consumed in the element content
@@ -9312,27 +9390,31 @@ xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
  * Returns 0 if the validation succeeded or an error code.
  */
 static int
-xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt) {
-    int ret = 0, i;
+xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt, int log) {
+    int i;
     xmlRelaxNGValidStatePtr state;
 
     state = ctxt->state;
     if (state->seq != NULL) {
 	state->seq = xmlRelaxNGSkipIgnored(ctxt, state->seq);
 	if (state->seq != NULL) {
-	    VALID_ERR3(XML_RELAXNG_ERR_EXTRACONTENT,
-		state->node->name, state->seq->name);
-	    ret = -1;
+	    if (log) {
+		VALID_ERR3(XML_RELAXNG_ERR_EXTRACONTENT,
+		    state->node->name, state->seq->name);
+	    }
+	    return(-1);
 	}
     }
     for (i = 0;i < state->nbAttrs;i++) {
 	if (state->attrs[i] != NULL) {
-	    VALID_ERR3(XML_RELAXNG_ERR_INVALIDATTR,
-		       state->attrs[i]->name, state->node->name);
-	    ret = -1;
+	    if (log) {
+		VALID_ERR3(XML_RELAXNG_ERR_INVALIDATTR,
+			   state->attrs[i]->name, state->node->name);
+	    }
+	    return(-1 -i);
 	}
     }
-    return(ret);
+    return(0);
 }
 
 /**
@@ -9503,16 +9585,26 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 if (ctxt->states != NULL) {
                     tmp = -1;
 
-                    ctxt->flags |= FLAGS_IGNORABLE;
-
                     for (i = 0; i < ctxt->states->nbState; i++) {
                         state = ctxt->states->tabState[i];
                         ctxt->state = state;
 			ctxt->state->seq = nseq;
 
-                        if (xmlRelaxNGValidateElementEnd(ctxt) == 0)
+                        if (xmlRelaxNGValidateElementEnd(ctxt, 0) == 0) {
                             tmp = 0;
-                        xmlRelaxNGFreeValidState(ctxt, state);
+			    break;
+			}
+                    }
+		    if (tmp != 0) {
+		        /*
+			 * validation error, log the message for the "best" one
+			 */
+			ctxt->flags |= FLAGS_IGNORABLE;
+			xmlRelaxNGLogBestError(ctxt);
+		    }
+                    for (i = 0; i < ctxt->states->nbState; i++) {
+                        xmlRelaxNGFreeValidState(ctxt,
+			                         ctxt->states->tabState[i]);
                     }
                     xmlRelaxNGFreeStates(ctxt, ctxt->states);
                     ctxt->flags = oldflags;
@@ -9523,7 +9615,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                     state = ctxt->state;
 		    ctxt->state->seq = nseq;
                     if (ret == 0)
-                        ret = xmlRelaxNGValidateElementEnd(ctxt);
+                        ret = xmlRelaxNGValidateElementEnd(ctxt, 1);
                     xmlRelaxNGFreeValidState(ctxt, state);
                 }
             } else {
@@ -9547,15 +9639,25 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 if (ctxt->states != NULL) {
                     tmp = -1;
 
-                    ctxt->flags |= FLAGS_IGNORABLE;
-
                     for (i = 0; i < ctxt->states->nbState; i++) {
                         state = ctxt->states->tabState[i];
                         ctxt->state = state;
 
-                        if (xmlRelaxNGValidateElementEnd(ctxt) == 0)
+                        if (xmlRelaxNGValidateElementEnd(ctxt, 0) == 0) {
                             tmp = 0;
-                        xmlRelaxNGFreeValidState(ctxt, state);
+			    break;
+			}
+                    }
+		    if (tmp != 0) {
+		        /*
+			 * validation error, log the message for the "best" one
+			 */
+			ctxt->flags |= FLAGS_IGNORABLE;
+			xmlRelaxNGLogBestError(ctxt);
+		    }
+                    for (i = 0; i < ctxt->states->nbState; i++) {
+                        xmlRelaxNGFreeValidState(ctxt,
+			                         ctxt->states->tabState[i]);
                     }
                     xmlRelaxNGFreeStates(ctxt, ctxt->states);
                     ctxt->flags = oldflags;
@@ -9565,7 +9667,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 } else {
                     state = ctxt->state;
                     if (ret == 0)
-                        ret = xmlRelaxNGValidateElementEnd(ctxt);
+                        ret = xmlRelaxNGValidateElementEnd(ctxt, 1);
                     xmlRelaxNGFreeValidState(ctxt, state);
                 }
             }

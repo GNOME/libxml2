@@ -1463,18 +1463,25 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
             q1 = xmlSchemaDateNormalize(y, (14 * SECS_PER_HOUR));
 
             q1d = _xmlSchemaDateCastYMToDays(q1) + q1->value.date.day;
-            if (p1d < q1d)
+            if (p1d < q1d) {
+		xmlSchemaFreeValue(p1);
+		xmlSchemaFreeValue(q1);
                 return -1;
-            else if (p1d == q1d) {
+	    } else if (p1d == q1d) {
                 double sec;
 
                 sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q1);
-                if (sec < 0.0)
+                if (sec < 0.0) {
+		    xmlSchemaFreeValue(p1);
+		    xmlSchemaFreeValue(q1);
                     return -1;
-                else {
+		} else {
                     /* normalize y - 14:00 */
                     q2 = xmlSchemaDateNormalize(y, -(14 * SECS_PER_HOUR));
                     q2d = _xmlSchemaDateCastYMToDays(q2) + q2->value.date.day;
+		    xmlSchemaFreeValue(p1);
+		    xmlSchemaFreeValue(q1);
+		    xmlSchemaFreeValue(q2);
                     if (p1d > q2d)
                         return 1;
                     else if (p1d == q2d) {
@@ -1485,7 +1492,10 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
                             return 2; /* indeterminate */
                     }
                 }
-            }
+            } else {
+		xmlSchemaFreeValue(p1);
+		xmlSchemaFreeValue(q1);
+	    }
         }
     } else if (y->value.date.tz_flag) {
         q1 = xmlSchemaDateNormalize(y, 0);
@@ -1495,19 +1505,26 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
         p1 = xmlSchemaDateNormalize(x, -(14 * SECS_PER_HOUR));
         p1d = _xmlSchemaDateCastYMToDays(p1) + p1->value.date.day;
 
-        if (p1d < q1d)
+        if (p1d < q1d) {
+	    xmlSchemaFreeValue(p1);
+	    xmlSchemaFreeValue(q1);
             return -1;
-        else if (p1d == q1d) {
+	} else if (p1d == q1d) {
             double sec;
 
             sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q1);
-            if (sec < 0.0)
+            if (sec < 0.0) {
+		xmlSchemaFreeValue(p1);
+		xmlSchemaFreeValue(q1);
                 return -1;
-            else {
+	    } else {
                 /* normalize x + 14:00 */
                 p2 = xmlSchemaDateNormalize(x, (14 * SECS_PER_HOUR));
                 p2d = _xmlSchemaDateCastYMToDays(p2) + p2->value.date.day;
 
+		xmlSchemaFreeValue(p1);
+		xmlSchemaFreeValue(q1);
+		xmlSchemaFreeValue(p2);
                 if (p2d > q1d)
                     return 1;
                 else if (p2d == q1d) {
@@ -1518,6 +1535,9 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
                         return 2; /* indeterminate */
                 }
             }
+	} else {
+	    xmlSchemaFreeValue(p1);
+	    xmlSchemaFreeValue(q1);
         }
     }
 
@@ -1531,14 +1551,20 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
         p1 = xmlSchemaDateNormalize(x, 0);
         p1d = _xmlSchemaDateCastYMToDays(p1) + p1->value.date.day;
 
-        if (p1d < q1d)
+        if (p1d < q1d) {
+	    xmlSchemaFreeValue(p1);
+	    xmlSchemaFreeValue(q1);
             return -1;
-        else if (p1d > q1d)
+	} else if (p1d > q1d) {
+	    xmlSchemaFreeValue(p1);
+	    xmlSchemaFreeValue(q1);
             return 1;
-        else {
+	} else {
             double sec;
 
             sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q1);
+	    xmlSchemaFreeValue(p1);
+	    xmlSchemaFreeValue(q1);
             if (sec < 0.0)
                 return -1;
             else if (sec > 0.0)

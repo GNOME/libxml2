@@ -268,8 +268,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
  *   GROW, SHRINK  handling of input buffers
  */
 
-#define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
-#define CUR (ctxt->token ? ctxt->token : (*ctxt->input->cur))
+#define RAW (*ctxt->input->cur)
+#define CUR (*ctxt->input->cur)
 #define NXT(val) ctxt->input->cur[(val)]
 #define CUR_PTR ctxt->input->cur
 
@@ -316,7 +316,7 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
     if (*(ctxt->input->cur) == '\n') {					\
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
-    ctxt->token = 0; ctxt->input->cur += l;				\
+    ctxt->input->cur += l;				\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
   } while (0)
 
@@ -341,12 +341,6 @@ int
 xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     int res = 0;
 
-    if (ctxt->token != 0) {
-	if (!IS_BLANK(ctxt->token))
-	    return(0);
-	ctxt->token = 0;
-	res++;
-    }
     /*
      * It's Okay to use CUR/NEXT here since all the blanks are on
      * the ASCII range.
@@ -465,11 +459,6 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     unsigned int val = 0;
     int count = 0;
 
-    if (ctxt->token != 0) {
-	val = ctxt->token;
-        ctxt->token = 0;
-        return(val);
-    }
     /*
      * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
      */
@@ -754,9 +743,6 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     xmlEntityPtr entity = NULL;
     xmlParserInputPtr input;
 
-    if (ctxt->token != 0) {
-        return;
-    }	
     if (RAW != '%') return;
     switch(ctxt->instate) {
 	case XML_PARSER_CDATA_SECTION:
@@ -2363,32 +2349,10 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
      * OK loop until we reach one of the ending char or a size limit.
      */
     c = CUR_CHAR(l);
-    while (((NXT(0) != limit) && /* checked */
-	   (c != '<')) || (ctxt->token != 0)) {
+    while ((NXT(0) != limit) && /* checked */
+	   (c != '<')) {
 	if (c == 0) break;
-	if (ctxt->token == '&') {
-	    if (ctxt->replaceEntities) {
-		if (len > buf_size - 10) {
-		    growBuffer(buf);
-		}
-		buf[len++] = '&';
-	    } else {
-		/*
-		 * The reparsing will be done in xmlStringGetNodeList()
-		 * called by the attribute() function in SAX.c
-		 */
-		static xmlChar buffer[6] = "&#38;";
-
-		if (len > buf_size - 10) {
-		    growBuffer(buf);
-		}
-		current = &buffer[0];
-		while (*current != 0) { /* non input consuming */
-		    buf[len++] = *current++;
-		}
-		ctxt->token = 0;
-	    }
-	} else if (c == '&') {
+	if (c == '&') {
 	    if (NXT(1) == '#') {
 		int val = xmlParseCharRef(ctxt);
 		if (val == '&') {
@@ -2707,7 +2671,7 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
      * Accelerated common case where input don't need to be
      * modified before passing it to the handler.
      */
-    if ((ctxt->token == 0) && (!cdata)) {
+    if (!cdata) {
 	in = ctxt->input->cur;
 	do {
 get_more:
@@ -2799,9 +2763,9 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
     SHRINK;
     GROW;
     cur = CUR_CHAR(l);
-    while (((cur != '<') || (ctxt->token == '<')) && /* checked */
-           ((cur != '&') || (ctxt->token == '&')) && 
-	    (IS_CHAR(cur))) /* test also done in xmlCurrentChar() */ {
+    while ((cur != '<') && /* checked */
+           (cur != '&') && 
+	   (IS_CHAR(cur))) /* test also done in xmlCurrentChar() */ {
 	if ((cur == ']') && (NXT(1) == ']') &&
 	    (NXT(2) == '>')) {
 	    if (cdata) break;
@@ -4960,7 +4924,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	       (NXT(2) != '>'))) {
 	    const xmlChar *check = CUR_PTR;
 	    int cons = ctxt->input->consumed;
-	    int tok = ctxt->token;
 
 	    if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 		xmlParseConditionalSections(ctxt);
@@ -4977,8 +4940,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	    while ((RAW == 0) && (ctxt->inputNr > 1))
 		xmlPopInput(ctxt);
 
-	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed) &&
-		(tok == ctxt->token)) {
+	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 		ctxt->errNo = XML_ERR_EXT_SUBSET_NOT_FINISHED;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -5270,7 +5232,6 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 	   (RAW == '%') || IS_BLANK(CUR)) {
 	const xmlChar *check = CUR_PTR;
 	int cons = ctxt->input->consumed;
-	int tok = ctxt->token;
 
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
@@ -5288,8 +5249,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 	while ((RAW == 0) && (ctxt->inputNr > 1))
 	    xmlPopInput(ctxt);
 
-	if ((CUR_PTR == check) && (cons == ctxt->input->consumed) &&
-	    (tok == ctxt->token)) {
+	if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 	    ctxt->errNo = XML_ERR_EXT_SUBSET_NOT_FINISHED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -6884,23 +6844,16 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
     GROW;
-    while (((RAW != 0) || (ctxt->token != 0)) &&
+    while ((RAW != 0) &&
 	   ((RAW != '<') || (NXT(1) != '/'))) {
 	const xmlChar *test = CUR_PTR;
 	int cons = ctxt->input->consumed;
-	int tok = ctxt->token;
 	const xmlChar *cur = ctxt->input->cur;
 
 	/*
-	 * Handle  possible processed charrefs.
-	 */
-	if (ctxt->token != 0) {
-	    xmlParseCharData(ctxt, 0);
-	}
-	/*
 	 * First case : a Processing Instruction.
 	 */
-	else if ((*cur == '<') && (cur[1] == '?')) {
+	if ((*cur == '<') && (cur[1] == '?')) {
 	    xmlParsePI(ctxt);
 	}
 
@@ -6955,8 +6908,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	    xmlPopInput(ctxt);
 	SHRINK;
 
-	if ((cons == ctxt->input->consumed) && (test == CUR_PTR) &&
-	    (tok == ctxt->token)) {
+	if ((cons == ctxt->input->consumed) && (test == CUR_PTR)) {
 	    ctxt->errNo = XML_ERR_INTERNAL_ERROR;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,
@@ -8573,20 +8525,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
             case XML_PARSER_CONTENT: {
 		const xmlChar *test;
 		int cons;
-		int tok;
-
-                /*
-		 * Handle preparsed entities and charRef
-		 */
-		if (ctxt->token != 0) {
-		    xmlChar current[2] = { 0 , 0 } ;
-
-		    current[0] = (xmlChar) ctxt->token;
-		    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-			(ctxt->sax->characters != NULL))
-			ctxt->sax->characters(ctxt->userData, current, 1);
-		    ctxt->token = 0;
-		}
 		if ((avail < 2) && (ctxt->inputNr == 1))
 		    goto done;
 		cur = ctxt->input->cur[0];
@@ -8594,7 +8532,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 
 		test = CUR_PTR;
 	        cons = ctxt->input->consumed;
-	        tok = ctxt->token;
 	        if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
 		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
@@ -8684,8 +8621,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		 */
 		while ((RAW == 0) && (ctxt->inputNr > 1))
 		    xmlPopInput(ctxt);
-		if ((cons == ctxt->input->consumed) && (test == CUR_PTR) &&
-		    (tok == ctxt->token)) {
+		if ((cons == ctxt->input->consumed) && (test == CUR_PTR)) {
 		    ctxt->errNo = XML_ERR_INTERNAL_ERROR;
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,

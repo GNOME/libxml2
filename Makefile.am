@@ -13,7 +13,7 @@ bin_PROGRAMS = xmllint xmlcatalog
 bin_SCRIPTS=xml2-config
 
 lib_LTLIBRARIES = libxml2.la
-libxml2_la_LIBADD = @Z_LIBS@ $(ICONV_LIBS) -lm
+libxml2_la_LIBADD = @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm
 
 libxml2_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
 

@@ -1,6 +1,16 @@
+Mon Jul  1 23:23:41 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: applied patch from Richard Jinks for the namespace
+	  axis + fixed a memory error.
+	* parser.c parserInternals.c: applied patches from Peter Jacobi
+	  removing ctxt->token for good.
+	* xmlschemas.c xmlschemastypes.c: fixed a few memory leaks
+	  popped out by the regression tests.
+	* Makefile.am: patch for threads makefile from Gary Pennington
+
 Fri Jun 28 19:38:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
 
-	* xpath.c enhanced behaviour of position() after usage of
+	* xpath.c: enhanced behaviour of position() after usage of
 	  expressions involving preceding-sibling (et al).
 
 Tue Jun 18 09:58:48 CEST 2002 Daniel Veillard <daniel@veillard.com>

@@ -4873,7 +4873,7 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
 void
 xmlXPathModValues(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr arg;
-    double arg1, arg2, tmp;
+    double arg1, arg2;
 
     arg = valuePop(ctxt);
     if (arg == NULL)
@@ -4887,8 +4887,7 @@ xmlXPathModValues(xmlXPathParserContextPtr ctxt) {
     if (arg2 == 0)
 	ctxt->value->floatval = xmlXPathNAN;
     else {
-	tmp=arg1/arg2;
-	ctxt->value->floatval = arg2 * (tmp - (double)((int)tmp));
+	ctxt->value->floatval = fmod(arg1, arg2);
     }
 }
 
@@ -5443,26 +5442,28 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
  */
 xmlNodePtr
 xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
-    xmlNodePtr ret;
-
     if (ctxt->context->node->type != XML_ELEMENT_NODE) return(NULL);
-    if (cur == (xmlNodePtr) xmlXPathXMLNamespace)
-	return(NULL);
-    if ((cur == NULL) || (ctxt->context->tmpNsList == NULL)) {
+    if (ctxt->context->tmpNsList == NULL && cur != (xmlNodePtr) xmlXPathXMLNamespace) {
         if (ctxt->context->tmpNsList != NULL)
 	    xmlFree(ctxt->context->tmpNsList);
 	ctxt->context->tmpNsList = 
 	    xmlGetNsList(ctxt->context->doc, ctxt->context->node);
-	if (ctxt->context->tmpNsList == NULL) return(NULL);
 	ctxt->context->tmpNsNr = 0;
-    }
-    ret = (xmlNodePtr)ctxt->context->tmpNsList[ctxt->context->tmpNsNr++];
-    if (ret == NULL) {
-	xmlFree(ctxt->context->tmpNsList);
-	ctxt->context->tmpNsList = NULL;
+	if (ctxt->context->tmpNsList != NULL) {
+	    while (ctxt->context->tmpNsList[ctxt->context->tmpNsNr] != NULL) {
+		ctxt->context->tmpNsNr++;
+	    }
+	}
 	return((xmlNodePtr) xmlXPathXMLNamespace);
     }
-    return(ret);
+    if (ctxt->context->tmpNsNr > 0) {
+	return (xmlNodePtr)ctxt->context->tmpNsList[--ctxt->context->tmpNsNr];
+    } else {
+	if (ctxt->context->tmpNsList != NULL)
+	    xmlFree(ctxt->context->tmpNsList);
+	ctxt->context->tmpNsList = NULL;
+	return(NULL);
+    }
 }
 
 /**

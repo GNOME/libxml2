@@ -210,6 +210,20 @@ xmlSchemaNewAnnot(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 }
 
 /**
+ * xmlSchemaFreeAnnot:
+ * @annot:  a schema type structure
+ *
+ * Deallocate a annotation structure
+ */
+static void
+xmlSchemaFreeAnnot(xmlSchemaAnnotPtr annot)
+{
+    if (annot == NULL)
+        return;
+    xmlFree(annot);
+}
+
+/**
  * xmlSchemaFreeNotation:
  * @schema:  a schema notation structure
  *
@@ -310,6 +324,8 @@ xmlSchemaFreeFacet(xmlSchemaFacetPtr facet)
 	xmlSchemaFreeValue(facet->val);
     if (facet->regexp != NULL)
 	xmlRegFreeRegexp(facet->regexp);
+    if (facet->annot != NULL)
+	xmlSchemaFreeAnnot(facet->annot);
     xmlFree(facet);
 }
 
@@ -343,20 +359,6 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
 	}
     }
     xmlFree(type);
-}
-
-/**
- * xmlSchemaFreeAnnot:
- * @annot:  a schema type structure
- *
- * Deallocate a annotation structure
- */
-static void
-xmlSchemaFreeAnnot(xmlSchemaAnnotPtr annot)
-{
-    if (annot == NULL)
-        return;
-    xmlFree(annot);
 }
 
 /**

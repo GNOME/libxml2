@@ -1110,8 +1110,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
      *   literal #xD, an XML processor must pass to the application
      *   the single character #xA. 
      */
-    if (ctxt->token != 0) ctxt->token = 0;
-    else if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
+    if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 	if ((*ctxt->input->cur == 0) &&
 	    (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0) &&
 	    (ctxt->instate != XML_PARSER_COMMENT)) {
@@ -1260,10 +1259,6 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     if (ctxt->instate == XML_PARSER_EOF)
 	return(0);
 
-    if (ctxt->token != 0) {
-	*len = 0;
-	return(ctxt->token);
-    }	
     if ((*ctxt->input->cur >= 0x20) && (*ctxt->input->cur <= 0x7F)) {
 	    *len = 1;
 	    return((int) *ctxt->input->cur);
@@ -2785,11 +2780,11 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
            (c != end2) && (c != end3)) {
 	GROW;
 	if (c == 0) break;
-        if (((c == '&') && (ctxt->token != '&')) && (NXT(1) == '#')) {
+        if ((c == '&') && (NXT(1) == '#')) {
 	    int val = xmlParseCharRef(ctxt);
 	    COPY_BUF(0,buffer,nbchars,val);
 	    NEXTL(l);
-	} else if ((c == '&') && (ctxt->token != '&') &&
+	} else if (c == '&') &&
 		   (what & XML_SUBSTITUTE_REF)) {
 	    if (xmlParserDebugEntities)
 		xmlGenericError(xmlGenericErrorContext,
@@ -3321,229 +3316,6 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 	deprecated = 1;
     }
 
-#if 0
-    xmlParserInputPtr input;
-    xmlChar *name;
-    xmlEntityPtr ent = NULL;
-
-    if (ctxt->token != 0) {
-        return;
-    }	
-    if (RAW != '&') return;
-    GROW;
-    if ((RAW == '&') && (NXT(1) == '#')) {
-	switch(ctxt->instate) {
-	    case XML_PARSER_ENTITY_DECL:
-	    case XML_PARSER_PI:
-	    case XML_PARSER_CDATA_SECTION:
-	    case XML_PARSER_COMMENT:
-	    case XML_PARSER_SYSTEM_LITERAL:
-		/* we just ignore it there */
-		return;
-	    case XML_PARSER_START_TAG:
-		return;
-	    case XML_PARSER_END_TAG:
-		return;
-	    case XML_PARSER_EOF:
-		ctxt->errNo = XML_ERR_CHARREF_AT_EOF;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, "CharRef at EOF\n");
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
-		return;
-	    case XML_PARSER_PROLOG:
-	    case XML_PARSER_START:
-	    case XML_PARSER_MISC:
-		ctxt->errNo = XML_ERR_CHARREF_IN_PROLOG;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, "CharRef in prolog!\n");
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
-		return;
-	    case XML_PARSER_EPILOG:
-		ctxt->errNo = XML_ERR_CHARREF_IN_EPILOG;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, "CharRef in epilog!\n");
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
-		return;
-	    case XML_PARSER_DTD:
-		ctxt->errNo = XML_ERR_CHARREF_IN_DTD;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
-		           "CharRef are forbidden in DTDs!\n");
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
-		return;
-	    case XML_PARSER_ENTITY_VALUE:
-	        /*
-		 * NOTE: in the case of entity values, we don't do the
-		 *       substitution here since we need the literal
-		 *       entity value to be able to save the internal
-		 *       subset of the document.
-		 *       This will be handled by xmlStringDecodeEntities
-		 */
-		return;
-	    case XML_PARSER_CONTENT:
-		return;
-	    case XML_PARSER_ATTRIBUTE_VALUE:
-		/* ctxt->token = xmlParseCharRef(ctxt); */
-		return;
-            case XML_PARSER_IGNORE:
-	        return;
-	}
-	return;
-    }
-
-    switch(ctxt->instate) {
-	case XML_PARSER_CDATA_SECTION:
-	    return;
-	case XML_PARSER_PI:
-        case XML_PARSER_COMMENT:
-	case XML_PARSER_SYSTEM_LITERAL:
-        case XML_PARSER_CONTENT:
-	    return;
-	case XML_PARSER_START_TAG:
-	    return;
-	case XML_PARSER_END_TAG:
-	    return;
-        case XML_PARSER_EOF:
-	    ctxt->errNo = XML_ERR_ENTITYREF_AT_EOF;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, "Reference at EOF\n");
-	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
-	    return;
-        case XML_PARSER_PROLOG:
-	case XML_PARSER_START:
-	case XML_PARSER_MISC:
-	    ctxt->errNo = XML_ERR_ENTITYREF_IN_PROLOG;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, "Reference in prolog!\n");
-	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
-	    return;
-        case XML_PARSER_EPILOG:
-	    ctxt->errNo = XML_ERR_ENTITYREF_IN_EPILOG;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, "Reference in epilog!\n");
-	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
-	    return;
-	case XML_PARSER_ENTITY_VALUE:
-	    /*
-	     * NOTE: in the case of entity values, we don't do the
-	     *       substitution here since we need the literal
-	     *       entity value to be able to save the internal
-	     *       subset of the document.
-	     *       This will be handled by xmlStringDecodeEntities
-	     */
-	    return;
-        case XML_PARSER_ATTRIBUTE_VALUE:
-	    /*
-	     * NOTE: in the case of attributes values, we don't do the
-	     *       substitution here unless we are in a mode where
-	     *       the parser is explicitly asked to substitute
-	     *       entities. The SAX callback is called with values
-	     *       without entity substitution.
-	     *       This will then be handled by xmlStringDecodeEntities
-	     */
-	    return;
-	case XML_PARSER_ENTITY_DECL:
-	    /*
-	     * we just ignore it there
-	     * the substitution will be done once the entity is referenced
-	     */
-	    return;
-        case XML_PARSER_DTD:
-	    ctxt->errNo = XML_ERR_ENTITYREF_IN_DTD;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		       "Entity references are forbidden in DTDs!\n");
-	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
-	    return;
-        case XML_PARSER_IGNORE:
-	    return;
-    }
-
-/* TODO: this seems not reached anymore .... Verify ... */
-xmlGenericError(xmlGenericErrorContext,
-	"Reached deprecated section in xmlParserHandleReference()\n");
-xmlGenericError(xmlGenericErrorContext,
-	"Please forward the document to daniel@veillard.com\n");
-xmlGenericError(xmlGenericErrorContext,
-	"indicating the version: %s, thanks !\n", xmlParserVersion);
-    NEXT;
-    name = xmlScanName(ctxt);
-    if (name == NULL) {
-	ctxt->errNo = XML_ERR_ENTITYREF_NO_NAME;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "Entity reference: no name\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-	ctxt->token = '&';
-	return;
-    }
-    if (NXT(xmlStrlen(name)) != ';') {
-	ctxt->errNo = XML_ERR_ENTITYREF_SEMICOL_MISSING;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	                     "Entity reference: ';' expected\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-	ctxt->token = '&';
-	xmlFree(name);
-	return;
-    }
-    SKIP(xmlStrlen(name) + 1);
-    if (ctxt->sax != NULL) {
-	if (ctxt->sax->getEntity != NULL)
-	    ent = ctxt->sax->getEntity(ctxt->userData, name);
-    }
-
-    /*
-     * [ WFC: Entity Declared ]
-     * the Name given in the entity reference must match that in an entity
-     * declaration, except that well-formed documents need not declare any
-     * of the following entities: amp, lt, gt, apos, quot. 
-     */
-    if (ent == NULL)
-	ent = xmlGetPredefinedEntity(name);
-    if (ent == NULL) {
-        ctxt->errNo = XML_ERR_UNDECLARED_ENTITY;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-			     "Entity reference: entity %s not declared\n",
-			     name);
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-	xmlFree(name);
-	return;
-    }
-
-    /*
-     * [ WFC: Parsed Entity ]
-     * An entity reference must not contain the name of an unparsed entity
-     */
-    if (ent->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
-        ctxt->errNo = XML_ERR_UNPARSED_ENTITY;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-			 "Entity reference to unparsed entity %s\n", name);
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-    }
-
-    if (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY) {
-        ctxt->token = ent->content[0];
-	xmlFree(name);
-	return;
-    }
-    input = xmlNewEntityInputStream(ctxt, ent);
-    xmlPushInput(ctxt, input);
-    xmlFree(name);
-#endif
     return;
 }
 

@@ -32,6 +32,10 @@ AC_PATH_PROG(RM, rm, /bin/rm)
 AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
 
+dnl Make sure we have an ANSI compiler
+AM_C_PROTOTYPES
+test "x$U" != "x" && AC_MSG_ERROR(Compiler not ANSI compliant)
+
 AM_PROG_LIBTOOL
 
 AM_MAINTAINER_MODE
@@ -42,7 +46,7 @@ _ldflags="${LDFLAGS}"
 
 AC_ARG_WITH(zlib,
 [  --with-zlib[=DIR]       use libz in DIR],[
-  if test "$withval" != "no"; then
+  if test "$withval" != "no" -a "$withval" != "yes"; then
     Z_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
     LDFLAGS="${LDFLAGS} -L$withval/lib"
@@ -120,13 +124,13 @@ dnl
 XML_CFLAGS=""
 
 dnl
-dnl Workaround wor HP native compiler
+dnl Workaround for HP native compiler
 dnl http://bugs.gnome.org/db/31/3163.html
 dnl
-if test "${CC}" != "gcc" ; then
+if test "${GCC}" != "yes" ; then
     case "${host}" in
           *-*-hpux* )
-	       CFLAGS="${CFLAGS} -Wp,-H30000 -Ae"
+	       CFLAGS="${CFLAGS} -Wp,-H30000"
 	       ;;
     esac
 fi
@@ -144,12 +148,43 @@ fi
 dnl
 dnl Tester makes use of readline if present
 dnl
-RDL_LIBS=""
-AC_CHECK_LIB(history, append_history,
-             RDL_LIBS="-lhistory"; AC_DEFINE(HAVE_LIBHISTORY))
-AC_CHECK_LIB(readline, readline,
-             RDL_LIBS="-lreadline ${RDL_LIBS}"; AC_DEFINE(HAVE_LIBREADLINE))
+_cppflags="${CPPFLAGS}"
+_ldflags="${LDFLAGS}"
 
+AC_ARG_WITH(readline,
+[  --with-readline=DIR     use readline in DIR],[
+  if test "$withval" != "no" -a "$withval" != "yes"; then
+    RDL_DIR=$withval
+    CPPFLAGS="${CPPFLAGS} -I$withval/include"
+    LDFLAGS="${LDFLAGS} -L$withval/lib"
+  fi
+])
+
+dnl check for terminal library. this is a very cool solution
+dnl from octave's configure.in
+unset tcap
+for termlib in ncurses curses termcap terminfo termlib; do
+    AC_CHECK_LIB(${termlib}, tputs, [tcap="-l$termlib"])
+    test -n "$tcap" && break
+done
+
+AC_CHECK_HEADER(readline/history.h,
+    AC_CHECK_LIB(history, append_history,[
+       RDL_LIBS="-lhistory"
+       AC_DEFINE(HAVE_LIBHISTORY)]))
+AC_CHECK_HEADER(readline/readline.h,
+    AC_CHECK_LIB(readline, readline,[
+       RDL_LIBS="-lreadline $RDL_LIBS $tcap"
+       AC_DEFINE(HAVE_LIBREADLINE)], , $tcap))
+if test -n "$RDL_DIR" -a -n "$RDL_LIBS"; then
+    CPPFLAGS="$CPPFLAGS -I${RDL_DIR}/include"
+    RDL_LIBS="-L${RDL_DIR}/lib $RDL_LIBS"
+else
+    CPPFLAGS=${_cppflags}
+fi
+LDFLAGS=${_ldflags}
+
+AC_SUBST(RDL_LIBS)
 
 dnl
 dnl Aloow to disable various pieces

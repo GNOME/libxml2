@@ -1,3 +1,13 @@
+Mon Aug 14 10:26:09 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Patch from Albert Chin-A-Young <china@thewrittenword.com>:
+	* configure.in: added --with-readline=DIR to accept alternate
+	  path for readline include/library
+	* configure.in: added AM_C_PROTOTYPES to add -Aa -D_HPUX_SOURCE
+	  for ANSI under HP-UX
+	* config.in: Removed @LIBS@ from xml-config because @XML_LIBS@
+	  includes @LIBS@
+
 Sat Aug 12 23:19:42 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/* : rebuilt the docs

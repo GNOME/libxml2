@@ -572,26 +572,24 @@ static int count = 0;
 static int elem, attrs;
 
 static void processNode(xmlTextReaderPtr reader) {
-    if (debug) {
-	xmlChar *name, *value;
+    xmlChar *name, *value;
 
-	name = xmlTextReaderName(reader);
-	if (name == NULL)
-	    name = xmlStrdup(BAD_CAST "--");
-	value = xmlTextReaderValue(reader);
+    name = xmlTextReaderName(reader);
+    if (name == NULL)
+	name = xmlStrdup(BAD_CAST "--");
+    value = xmlTextReaderValue(reader);
 
-	printf("%d %d %d %s", 
-		xmlTextReaderDepth(reader),
-		xmlTextReaderNodeType(reader),
-		xmlTextReaderIsEmptyElement(reader),
-		name);
-	xmlFree(name);
-	if (value == NULL)
-	    printf("\n");
-	else {
-	    printf(" %s\n", value);
-	    xmlFree(value);
-	}
+    printf("%d %d %s %d", 
+	    xmlTextReaderDepth(reader),
+	    xmlTextReaderNodeType(reader),
+	    name,
+	    xmlTextReaderIsEmptyElement(reader));
+    xmlFree(name);
+    if (value == NULL)
+	printf("\n");
+    else {
+	printf(" %s\n", value);
+	xmlFree(value);
     }
 }
 

@@ -602,6 +602,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    reader->state = XML_TEXTREADER_ELEMENT;
 	} else {
 	    reader->node = reader->ctxt->nodeTab[0];
+	    reader->state = XML_TEXTREADER_ELEMENT;
 	}
 	reader->depth = 0;
 	goto node_found;

@@ -302,11 +302,6 @@ class xmlCore:
         return libxml2mod.name(self._o)
     def get_type(self):
         return libxml2mod.type(self._o)
-    def get_doc(self):
-        ret = libxml2mod.doc(self._o)
-        if ret == None:
-            return None
-        return xmlDoc(_obj=ret)
     def free(self):
         libxml2mod.freeDoc(self._o)
 
@@ -356,7 +351,7 @@ def nodeWrap(o):
     if name == "entity_decl":
         return xmlEntity(_obj=o)
     if name == "dtd":
-        return xmlAttr(_obj=o)
+        return xmlDtd(_obj=o)
     return xmlNode(_obj=o)
 
 def xpathObjectRet(o):

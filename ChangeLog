@@ -1,3 +1,10 @@
+Sat Jan  4 17:33:17 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: a bit of cleanup
+	* xmlreader.c: small fix
+	* doc/xmlreader.html: more work on the XmlTextReader tutorial
+	* python/libxml.py: a few fixes pointed out by Hannu Krosing
+
 Sat Jan  4 13:46:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/setup.py.in: patch from Stéphane Bidoul to include

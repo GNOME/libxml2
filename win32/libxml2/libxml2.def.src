@@ -49,7 +49,6 @@ EXPORTS
 	xmlDebugDumpDocument
 	xmlDebugDumpDTD
 	xmlDebugDumpEntities
-	xmlLsOneNode
 	xmlShell
 #endif
 
@@ -75,6 +74,12 @@ EXPORTS
 	xmlCharEncCloseFunc
 	UTF8Toisolat1
 	isolat1ToUTF8
+	xmlUTF8Strsize
+	xmlUTF8Strndup
+	xmlUTF8Strpos
+	xmlUTF8Strloc
+	xmlUTF8Strsub
+	xmlUTF8Strlen
 
 /* 
  * entities.h 
@@ -118,6 +123,8 @@ EXPORTS
 	xmlHashSize
 	xmlHashScan
 	xmlHashScan3
+	xmlHashScanFull
+	xmlHashScanFull3
 
 /* 
  * HTMLparser.h 
@@ -158,6 +165,7 @@ EXPORTS
 	htmlNodeDump
 	htmlNodeDumpFile
 	htmlSaveFileEnc
+	htmlSaveFileFormat
 #endif /* LIBXML_HTML_ENABLED */
 
 /* 
@@ -226,7 +234,9 @@ EXPORTS
 	xmlNanoHTTPScanProxy
 	xmlNanoHTTPFetch
 	xmlNanoHTTPMethod
+	xmlNanoHTTPMethodRedir
 	xmlNanoHTTPOpen
+	xmlNanoHTTPOpenRedir
 	xmlNanoHTTPReturnCode
 	xmlNanoHTTPAuthHeader
 	xmlNanoHTTPRead
@@ -304,7 +314,13 @@ EXPORTS
 	xmlSetExternalEntityLoader
 	xmlGetExternalEntityLoader
 	xmlLoadExternalEntity
-	xmlParserVersion
+	xmlParserVersion DATA
+	xmlDefaultSAXLocator DATA
+	xmlDefaultSAXHandler DATA
+	htmlDefaultSAXHandler DATA
+	docbDefaultSAXHandler DATA
+	xmlSubstituteEntitiesDefaultValue DATA
+	xmlGetWarningsDefaultValue DATA
 
 /* 
  * parserinternals.h 
@@ -407,6 +423,17 @@ EXPORTS
 	htmlInitAutoClose
 	htmlCreateFileParserCtxt
 #endif /* LIBXML_HTML_ENABLED */
+	xmlParserDebugEntities DATA
+	xmlGetWarningsDefaultValue DATA
+	xmlParserDebugEntities DATA
+	xmlSubstituteEntitiesDefaultValue DATA
+	xmlDoValidityCheckingDefaultValue DATA
+	xmlLoadExtDtdDefaultValue DATA
+	xmlPedanticParserDefaultValue DATA
+	xmlKeepBlanksDefaultValue DATA
+	xmlStringText DATA
+	xmlStringTextNoenc DATA
+	xmlStringComment DATA
 
 /*
  * SAX.h 
@@ -446,7 +473,12 @@ EXPORTS
 	comment
 	cdataBlock
 	xmlDefaultSAXHandlerInit
+#ifdef LIBXML_HTML_ENABLED
 	htmlDefaultSAXHandlerInit
+#endif /* LIBXML_HTML_ENABLED */
+#ifdef LIBXML_DOCB_ENABLED
+	docbDefaultSAXHandlerInit
+#endif /* LIBXML_DOCB_ENABLED */
 
 /* 
  * strio.h 
@@ -475,11 +507,11 @@ EXPORTS
 /* 
  * tree.h 
  */
-	oldXMLWDcompatibility
-	xmlIndentTreeOutput
-	xmlBufferAllocScheme
-	xmlSaveNoEmptyTags
-	xmlDefaultBufferSize
+//	oldXMLWDcompatibility
+//	xmlIndentTreeOutput
+//	xmlBufferAllocScheme
+//	xmlSaveNoEmptyTags
+//	xmlDefaultBufferSize
 	xmlSetBufferAllocationScheme
 	xmlGetBufferAllocationScheme
 	xmlBufferCreate
@@ -598,12 +630,18 @@ EXPORTS
 	xmlSetDocCompressMode
 	xmlGetCompressMode
 	xmlSetCompressMode
-	xmlLoadExtDtdDefaultValue
-	xmlStringText
-	xmlStringTextNoenc
-	xmlStringComment
+//	xmlLoadExtDtdDefaultValue
+//	xmlStringText
+//	xmlStringTextNoenc
+//	xmlStringComment
 	xmlSaveFormatFile
 	xmlUnsetProp
+//	baseDTD DATA
+	oldXMLWDcompatibility DATA
+	xmlIndentTreeOutput DATA
+	xmlBufferAllocScheme DATA
+	xmlSaveNoEmptyTags DATA
+	xmlDefaultBufferSize DATA
 
 /* 
  * uri.h 
@@ -695,8 +733,8 @@ EXPORTS
 /* 
  * xmlerror.h 
  */
-	xmlGenericError
-	xmlGenericErrorContext
+//	xmlGenericError
+//	xmlGenericErrorContext
 	xmlSetGenericErrorFunc
 	xmlParserError
 	xmlParserWarning
@@ -704,6 +742,8 @@ EXPORTS
 	xmlParserValidityWarning
 	xmlParserPrintFileInfo
 	xmlParserPrintFileContext
+	xmlGenericError DATA
+	xmlGenericErrorContext DATA
 
 /* 
  * xmlIO.h 
@@ -741,10 +781,10 @@ EXPORTS
 /* 
  * xmlmemory.h 
  */
-	xmlFree
-	xmlMalloc
-	xmlRealloc
-	xmlMemStrdup
+//	xmlFree
+//	xmlMalloc
+//	xmlRealloc
+//	xmlMemStrdup
 	xmlMemSetup
 	xmlMemGet
 	xmlInitMemory
@@ -758,6 +798,10 @@ EXPORTS
 	xmlReallocLoc
 	xmlMemStrdupLoc
 #endif /* DEBUG_MEMORY_LOCATION */
+	xmlFree DATA
+	xmlMalloc DATA
+	xmlRealloc DATA
+	xmlMemStrdup DATA
 
 /* 
  * xmlversion.h 
@@ -803,6 +847,9 @@ EXPORTS
 	xmlXPathConvertBoolean
 	xmlXPathConvertNumber
 	xmlXPathConvertString
+	xmlXPathNAN DATA
+	xmlXPathPINF DATA
+	xmlXPathNINF DATA
 #endif /* LIBXML_XPATH_ENABLED */
 
 /* 

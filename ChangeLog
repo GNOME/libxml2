@@ -1,3 +1,8 @@
+Tue Jul 31 17:48:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/libxml/xmlIO.h: apply change to close #58141 
+	* win32/libxml2/*: update of the MSC projects from Igor  Zlatkovic
+
 Tue Jul 31 17:09:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: when the internal subset uses a PE, then the

@@ -12,7 +12,11 @@
 #define __XML_IO_H__
 
 #include <stdio.h>
+#if defined(WIN32) && defined(_MSC_VER)
+#include <libxml/xmlwin32version.h>
+#else
 #include <libxml/xmlversion.h>
+#endif
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/encoding.h>

@@ -37,21 +37,21 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "release_a"
-# PROP Intermediate_Dir "release_a"
+# PROP Output_Dir "libxml2_a"
+# PROP Intermediate_Dir "libxml2_a"
 # PROP Target_Dir ""
 F90=df.exe
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "STATIC" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "IN_LIBXML" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
-# ADD RSC /l 0x409 /d "NDEBUG"
+# ADD RSC /l 0x809 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo /out:"release_a\libxml2.lib"
+# ADD LIB32 /nologo /out:"libxml2_a\libxml2.lib"
 
 !ELSEIF  "$(CFG)" == "libxml2_a - Win32 Debug"
 
@@ -62,21 +62,21 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "debug_a"
-# PROP Intermediate_Dir "debug_a"
+# PROP Output_Dir "libxml2_a"
+# PROP Intermediate_Dir "libxml2_a"
 # PROP Target_Dir ""
 F90=df.exe
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MD /W3 /Gm /GX /Zi /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "STATIC" /FD /GZ /c
+# ADD CPP /nologo /MD /W3 /Gm /Zi /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "IN_LIBXML" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
-# ADD RSC /l 0x409 /d "_DEBUG"
+# ADD RSC /l 0x809 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo /out:"debug_a\libxml2.lib"
+# ADD LIB32 /nologo /out:"libxml2_a\libxml2.lib"
 
 !ENDIF 
 
@@ -146,10 +146,6 @@ SOURCE=..\..\parserInternals.c
 # Begin Source File
 
 SOURCE=..\..\SAX.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\strio.c
 # End Source File
 # Begin Source File
 
@@ -250,10 +246,6 @@ SOURCE=..\..\include\libxml\parserInternals.h
 # Begin Source File
 
 SOURCE=..\..\include\libxml\SAX.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\strio.h
 # End Source File
 # Begin Source File
 

@@ -157,6 +157,7 @@ dnl Workaround for HP native compiler
 dnl http://bugs.gnome.org/db/31/3163.html
 dnl
 if test "${GCC}" != "yes" ; then
+    CFLAGS="${CFLAGS} -Wall "
     case "${host}" in
           *-*-hpux* )
 	       CFLAGS="${CFLAGS} -Wp,-H30000"

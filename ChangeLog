@@ -1,3 +1,9 @@
+Mon Feb 19 19:01:57 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am valid.c list.[ch]: Gary Pennington provided a
+	  better handling of ID/IDREF and the list modules associated
+	* configure.in: small CFLAGS cleanup
+
 Mon Feb 19 16:13:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: fixed iconv detection on AIX (stric)

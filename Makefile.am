@@ -24,6 +24,7 @@ libxml2_la_SOURCES = \
 		parser.c \
 		tree.c \
 		hash.c \
+		list.c \
 		xmlIO.c \
 		xmlmemory.c \
 		uri.c \

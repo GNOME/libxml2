@@ -15,11 +15,60 @@
 
 <book>
   <bookinfo>
-      <title>Gnome XML Library Reference Manual</title>
+    <title>Gnome XML Library Reference Manual</title>
+    <authorgroup>
+      <author>
+        <firstname>Daniel</firstname>
+        <surname>Veillard</surname>
+        <affiliation>
+	  <address>
+	    <email>Daniel.Veillard@w3.org</email>
+	  </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <copyright>
+      <year>1999</year>
+      <holder>Daniel Veillard</holder>
+    </copyright>	
+
+    <legalnotice>
+      <para>Permission is granted to make and distribute verbatim
+      copies of this manual provided the copyright notice and this
+      permission notice are preserved on all copies.</para>
+
+      <para>Permission is granted to copy and distribute modified
+      versions of this manual under the conditions for verbatim
+      copying, provided also that the entire resulting derived work is
+      distributed under the terms of a permission notice identical to
+      this one.</para>
+
+      <para>Permission is granted to copy and distribute translations
+      of this manual into another language, under the above conditions
+      for modified versions.</para>
+    </legalnotice>
+
+    <abstract>
+      <para>This manual documents the interfaces of the libglade
+      library and has some short notes to help get you up to speed
+      with using the library.</para>
+    </abstract>
   </bookinfo>
 
-  <chapter id="libxml">
-    <title>Gnome XML Library</title>
+  <chapter id="libxml-notes">
+     <title>Libxml Programming Notes</title>
+
+     <para>Libxml is an XML toolkit library, it allows to parse, edit
+     search and write XML documents. There is also an HTML parser front-end
+     so the same range of tools can be used with HTML input.</para>
+  </chapter>
+  <chapter id="libxml-lib">
+    <title>Libxml Library Reference</title>
+
+    <para>This section contains the API reference for libxml. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+
     &parser;
     &SAX;
     &tree;
@@ -29,9 +78,9 @@
     &HTMLparser;
     &HTMLtree;
     &xpath;
+    &nanohttp;
     &parserInternals;
     &xmlmemory;
-    &nanohttp;
   </chapter>
 </book>
 

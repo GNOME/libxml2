@@ -53,6 +53,7 @@
 #endif
 
 #include "xmlmemory.h"
+#include "nanohttp.h"
 
 #ifdef STANDALONE
 #define DEBUG_HTTP
@@ -731,6 +732,9 @@ xmlNanoHTTPClose(void *ctx) {
     xmlNanoHTTPFreeCtxt(ctxt);
 }
 
+#ifndef DEBUG_HTTP
+#define DEBUG_HTTP
+#endif
 /**
  * xmlNanoHTTPMethod:
  * @URL:  The URL to load
@@ -747,9 +751,6 @@ xmlNanoHTTPClose(void *ctx) {
  *     The contentType, if provided must be freed by the caller
  */
 
-#ifndef DEBUG_HTTP
-#define DEBUG_HTTP
-#endif
 void *
 xmlNanoHTTPMethod(const char *URL, const char *method, const char *input,
                   char **contentType, const char *headers) {
@@ -1000,7 +1001,7 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
 
 /**
  * xmlNanoHTTPSave:
- * @ctx:  the HTTP context
+ * @ctxt:  the HTTP context
  * @filename:  the filename where the content should be saved
  *
  * This function saves the output of the HTTP transaction to a file

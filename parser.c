@@ -1326,11 +1326,10 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 /**
  * xmlSwitchEncoding:
  * @ctxt:  the parser context
- * @len:  the len of @cur
+ * @enc:  the encoding value (number)
  *
  * change the input functions when discovering the character encoding
  * of a given entity.
- *
  */
 void
 xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
@@ -4333,8 +4332,10 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlParseExternalSubset
+ * xmlParseExternalSubset:
  * @ctxt:  an XML parser context
+ * @ExternalID: the external identifier
+ * @SystemID: the system identifier (or URL)
  * 
  * parse Markup declarations from an external subset
  *

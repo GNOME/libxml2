@@ -297,6 +297,7 @@ xmlCreateElementTable(void) {
 
 /**
  * xmlAddElementDecl:
+ * @ctxt:  the validation context
  * @dtd:  pointer to the DTD
  * @name:  the entity name
  * @type:  the element type
@@ -2343,6 +2344,7 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @doc:  a document instance
  * @elem:  an element instance
  * @attr:  an attribute instance
+ * @value:  the attribute value (without entities processing)
  *
  * Try to validate a single attribute for an element
  * basically it * does the following checks as described by the
@@ -2851,8 +2853,6 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     xmlAttrPtr attr;
     xmlChar *value;
     int ret = 1;
-
-    /* TODO xmlValidateElement */
 
     if (elem == NULL) return(0);
     CHECK_DTD;

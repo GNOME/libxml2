@@ -1,3 +1,9 @@
+Fri Oct  8 11:37:11 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c : Raph patch for initialization of CORBA fields
+	* parser.c, xpath.c, ...: modification of doc comments
+	* xpath.c : allow spaces in xpath expressions
+
 Mon Sep 27 10:16:43 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlmemory.h: turning off memory debug :-(

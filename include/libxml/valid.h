@@ -29,9 +29,6 @@ typedef struct xmlValidCtxt {
     xmlValidityWarningFunc warning;	/* the callback in case of warning */
 } xmlValidCtxt, *xmlValidCtxtPtr;
 
-extern void xmlParserValidityError(void *ctx, const char *msg, ...);
-extern void xmlParserValidityWarning(void *ctx, const char *msg, ...);
-
 /*
  * ALl notation declarations are stored in a table
  * there is one table per DTD

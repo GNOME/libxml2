@@ -27,7 +27,6 @@
 #include "xmlmemory.h"
 
 #ifndef NO_DEBUG_MEMORY
-
 #ifdef xmlMalloc
 #undef xmlMalloc
 #endif
@@ -37,6 +36,7 @@
 #ifdef xmlMemStrdup
 #undef xmlMemStrdup
 #endif
+
 extern void xmlMemoryDump(void);
 
 /*
@@ -233,11 +233,7 @@ xmlRealloc(void *ptr,int size) {
  * @ptr:  the memory block pointer
  *
  * a free() equivalent, with error checking.
- *
- * Returns a pointer to the allocated area or NULL in case of lack of memory.
  */
-
-
 void
 xmlFree(void *ptr)
 {
@@ -468,6 +464,8 @@ xmlMemoryDump(void)
  * xmlInitMemory:
  *
  * Initialize the memory layer.
+ *
+ * Returns 0 on success
  */
 
 

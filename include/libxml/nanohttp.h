@@ -9,7 +9,8 @@
 #ifndef __NANO_HTTP_H__
 #define __NANO_HTTP_H__
 int	xmlNanoHTTPFetch	(const char *URL,
-				 const char *filename);
+				 const char *filename,
+				 char **contentType);
 void *	xmlNanoHTTPMethod	(const char *URL,
 				 const char *method,
 				 const char *input,

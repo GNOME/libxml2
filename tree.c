@@ -776,6 +776,10 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	    prev->next = cur;
 	}
     }
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif    
     return(cur);
 }
 
@@ -1078,6 +1082,10 @@ xmlNewText(const xmlChar *content) {
 	cur->content = xmlStrdup(content);
     else 
 	cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif    
     return(cur);
 }
 
@@ -1129,6 +1137,10 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
 	cur->content = ent->content;
     else
         cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif    
     return(cur);
 }
 
@@ -1186,6 +1198,10 @@ xmlNewTextLen(const xmlChar *content, int len) {
 	cur->content = xmlStrndup(content, len);
     else 
 	cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif    
     return(cur);
 }
 
@@ -1244,6 +1260,10 @@ xmlNewComment(const xmlChar *content) {
 	cur->content = xmlStrdup(content);
     else 
 	cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif    
     return(cur);
 }
 
@@ -1284,6 +1304,10 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
 	cur->content = xmlStrndup(content, len);
     } else 
 	cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif    
     return(cur);
 }
 
@@ -1925,8 +1949,6 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  *
  * Searches the language of a node, i.e. the values of the xml:lang
  * attribute or the one carried by the nearest ancestor.
- *
- * Returns a pointer to the lang value, or NULL if not found
  */
 void
 xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {

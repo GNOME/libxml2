@@ -30,11 +30,11 @@ extern "C" {
 typedef struct xmlEntity {
     int type;			/* The entity type */
     int len;			/* The lenght of the name */
-    const xmlChar    *name;	/* Name of the entity */
-    const xmlChar    *ExternalID;	/* External identifier for PUBLIC Entity */
-    const xmlChar    *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
+    const xmlChar  *name;	/* Name of the entity */
+    const xmlChar  *ExternalID;	/* External identifier for PUBLIC Entity */
+    const xmlChar  *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
     xmlChar *content;		/* The entity content or ndata if unparsed */
-    xmlChar *orig;			/* The entity cont without ref substitution */
+    xmlChar *orig;		/* The entity cont without ref substitution */
 } xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 
@@ -80,7 +80,7 @@ xmlEntityPtr		xmlGetParameterEntity	(xmlDocPtr doc,
 						 const xmlChar *name);
 const xmlChar *		xmlEncodeEntities	(xmlDocPtr doc,
 						 const xmlChar *input);
-xmlChar *			xmlEncodeEntitiesReentrant(xmlDocPtr doc,
+xmlChar *		xmlEncodeEntitiesReentrant(xmlDocPtr doc,
 						 const xmlChar *input);
 xmlEntitiesTablePtr	xmlCreateEntitiesTable	(void);
 xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);

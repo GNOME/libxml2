@@ -775,8 +775,6 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
 /**
  * xmlXPathNewContext:
  * @doc:  the XML document
- * @variables:  the variable list
- * @functions:  the function list
  *
  * Create a new xmlXPathContext
  *
@@ -3240,6 +3238,8 @@ xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
 	        return(xmlXPathNameFunction);
 	    if (!xmlStrcmp(name, BAD_CAST "namespace"))
 	        return(xmlXPathNamespaceFunction);
+	    if (!xmlStrcmp(name, BAD_CAST "normalize-space"))
+	        return(xmlXPathNormalizeFunction);
 	    if (!xmlStrcmp(name, BAD_CAST "normalize"))
 	        return(xmlXPathNormalizeFunction);
 	    if (!xmlStrcmp(name, BAD_CAST "number"))
@@ -3373,6 +3373,7 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
     if (name == NULL) {
 	ERROR(XPATH_EXPR_ERROR);
     }
+    SKIP_BLANKS;
     func = xmlXPathIsFunction(ctxt, name);
     if (func == NULL) {
         xmlFree(name);
@@ -3387,6 +3388,7 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
 	ERROR(XPATH_EXPR_ERROR);
     }
     NEXT;
+    SKIP_BLANKS;
 
     while (CUR != ')') {
         xmlXPathEvalExpr(ctxt);
@@ -3397,8 +3399,10 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
 	    ERROR(XPATH_EXPR_ERROR);
 	}
 	NEXT;
+	SKIP_BLANKS;
     }
     NEXT;
+    SKIP_BLANKS;
     xmlFree(name);
     func(ctxt, nbargs);
 }
@@ -3417,14 +3421,17 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
  */
 void
 xmlXPathEvalPrimaryExpr(xmlXPathParserContextPtr ctxt) {
+    SKIP_BLANKS;
     if (CUR == '$') xmlXPathEvalVariableReference(ctxt);
     else if (CUR == '(') {
         NEXT;
+	SKIP_BLANKS;
         xmlXPathEvalExpr(ctxt);
 	if (CUR != ')') {
 	    ERROR(XPATH_EXPR_ERROR);
 	}
 	NEXT;
+	SKIP_BLANKS;
     } else if (IS_DIGIT(CUR)) {
         xmlXPathEvalNumber(ctxt);
     } else if ((CUR == '\'') || (CUR == '"')) {
@@ -3458,6 +3465,7 @@ xmlXPathEvalFilterExpr(xmlXPathParserContextPtr ctxt) {
 
     xmlXPathEvalPrimaryExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     
     if (CUR != '[') return;
 
@@ -3465,6 +3473,7 @@ xmlXPathEvalFilterExpr(xmlXPathParserContextPtr ctxt) {
 
     while (CUR == '[') {
 	xmlXPathEvalPredicate(ctxt);
+	SKIP_BLANKS;
     }
 
     
@@ -3492,6 +3501,7 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
     xmlChar buf[XML_MAX_NAMELEN];
     int len = 0;
 
+    SKIP_BLANKS;
     if (!IS_LETTER(CUR) && (CUR != '_') &&
         (CUR != ':')) {
 	return(NULL);
@@ -3541,12 +3551,14 @@ void
 xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
     xmlNodeSetPtr newset = NULL;
 
+    SKIP_BLANKS;
     if ((CUR == '$') || (CUR == '(') || (IS_DIGIT(CUR)) ||
         (CUR == '\'') || (CUR == '"')) {
 	xmlXPathEvalFilterExpr(ctxt);
 	CHECK_ERROR;
 	if ((CUR == '/') && (NXT(1) == '/')) {
 	    SKIP(2);
+	    SKIP_BLANKS;
 	    if (ctxt->context->nodelist == NULL) {
 		STRANGE
 		xmlXPathRoot(ctxt);
@@ -3562,6 +3574,7 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	    xmlXPathEvalRelativeLocationPath(ctxt);
 	}
     } else {
+        /******* !!!!!!!!!! @attname */
         xmlChar *name;
 
 	name = xmlXPathScanName(ctxt);
@@ -3588,9 +3601,12 @@ void
 xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalPathExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     if (CUR == '|') {
 	xmlNodeSetPtr old = ctxt->context->nodelist;
 
+	NEXT;
+	SKIP_BLANKS;
 	xmlXPathEvalPathExpr(ctxt);
 
 	if (ctxt->context->nodelist == NULL)
@@ -3617,9 +3633,11 @@ void
 xmlXPathEvalUnaryExpr(xmlXPathParserContextPtr ctxt) {
     int minus = 0;
 
+    SKIP_BLANKS;
     if (CUR == '-') {
         minus = 1;
 	NEXT;
+	SKIP_BLANKS;
     }
     xmlXPathEvalUnionExpr(ctxt);
     CHECK_ERROR;
@@ -3645,6 +3663,7 @@ void
 xmlXPathEvalMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalUnaryExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     while ((CUR == '*') || 
            ((CUR == 'd') && (NXT(1) == 'i') && (NXT(2) == 'v')) ||
            ((CUR == 'm') && (NXT(1) == 'o') && (NXT(2) == 'd'))) {
@@ -3660,6 +3679,7 @@ xmlXPathEvalMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
 	    op = 2;
 	    SKIP(3);
 	}
+	SKIP_BLANKS;
         xmlXPathEvalUnaryExpr(ctxt);
 	CHECK_ERROR;
 	switch (op) {
@@ -3691,12 +3711,14 @@ void
 xmlXPathEvalAdditiveExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalMultiplicativeExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     while ((CUR == '+') || (CUR == '-')) {
 	int plus;
 
         if (CUR == '+') plus = 1;
 	else plus = 0;
 	NEXT;
+	SKIP_BLANKS;
         xmlXPathEvalMultiplicativeExpr(ctxt);
 	CHECK_ERROR;
 	if (plus) xmlXPathAddValues(ctxt);
@@ -3726,6 +3748,7 @@ void
 xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalAdditiveExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     while ((CUR == '<') ||
            (CUR == '>') ||
            ((CUR == '<') && (NXT(1) == '=')) ||
@@ -3738,6 +3761,7 @@ xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
 	else strict = 1;
 	NEXT;
 	if (!strict) NEXT;
+	SKIP_BLANKS;
         xmlXPathEvalAdditiveExpr(ctxt);
 	CHECK_ERROR;
 	ret = xmlXPathCompareValues(ctxt, inf, strict);
@@ -3765,6 +3789,7 @@ void
 xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalRelationalExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     while ((CUR == '=') || ((CUR == '!') && (NXT(1) == '='))) {
 	xmlXPathObjectPtr res;
 	int eq, equal;
@@ -3773,6 +3798,7 @@ xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
 	else eq = 0;
 	NEXT;
 	if (!eq) NEXT;
+	SKIP_BLANKS;
         xmlXPathEvalRelationalExpr(ctxt);
 	CHECK_ERROR;
 	equal = xmlXPathEqualValues(ctxt);
@@ -3796,10 +3822,12 @@ void
 xmlXPathEvalAndExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalEqualityExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     while ((CUR == 'a') && (NXT(1) == 'n') && (NXT(2) == 'n')) {
 	xmlXPathObjectPtr arg1, arg2;
 
         SKIP(3);
+	SKIP_BLANKS;
         xmlXPathEvalEqualityExpr(ctxt);
 	CHECK_ERROR;
 	arg2 = valuePop(ctxt);
@@ -3825,10 +3853,12 @@ void
 xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalAndExpr(ctxt);
     CHECK_ERROR;
+    SKIP_BLANKS;
     while ((CUR == 'o') && (NXT(1) == 'r')) {
 	xmlXPathObjectPtr arg1, arg2;
 
         SKIP(2);
+	SKIP_BLANKS;
         xmlXPathEvalAndExpr(ctxt);
 	CHECK_ERROR;
 	arg2 = valuePop(ctxt);
@@ -3892,10 +3922,12 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     xmlNodeSetPtr newset = NULL;
     int i;
 
+    SKIP_BLANKS;
     if (CUR != '[') {
 	ERROR(XPATH_INVALID_PREDICATE_ERROR);
     }
     NEXT;
+    SKIP_BLANKS;
     if ((ctxt->context->nodelist == NULL) ||
         (ctxt->context->nodelist->nodeNr == 0)) {
         ctxt->context->node = NULL;
@@ -3928,6 +3960,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
 	ERROR(XPATH_INVALID_PREDICATE_ERROR);
     }
     NEXT;
+    SKIP_BLANKS;
 #ifdef DEBUG_STEP
     fprintf(xmlXPathDebug, "After predicate : ");
     xmlXPathDebugNodeSet(xmlXPathDebug, ctxt->context->nodelist);
@@ -4226,8 +4259,10 @@ void
 xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
     xmlNodeSetPtr newset = NULL;
 
+    SKIP_BLANKS;
     if ((CUR == '.') && (NXT(1) == '.')) {
 	SKIP(2);
+	SKIP_BLANKS;
 	if (ctxt->context->nodelist == NULL) {
 	    STRANGE
 	    xmlXPathRoot(ctxt);
@@ -4240,8 +4275,10 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 	ctxt->context->node = NULL;
     } else if (CUR == '.') {
 	NEXT;
+	SKIP_BLANKS;
     } else {
 	xmlXPathEvalBasis(ctxt);
+	SKIP_BLANKS;
 	while (CUR == '[') {
 	    xmlXPathEvalPredicate(ctxt);
 	}
@@ -4266,10 +4303,13 @@ void
 xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt) {
     xmlNodeSetPtr newset = NULL;
 
+    SKIP_BLANKS;
     xmlXPathEvalStep(ctxt);
+    SKIP_BLANKS;
     while (CUR == '/') {
 	if ((CUR == '/') && (NXT(1) == '/')) {
 	    SKIP(2);
+	    SKIP_BLANKS;
 	    if (ctxt->context->nodelist == NULL) {
 		STRANGE
 		xmlXPathRoot(ctxt);
@@ -4283,8 +4323,10 @@ xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt) {
 	    xmlXPathEvalStep(ctxt);
 	} else if (CUR == '/') {
 	    NEXT;
+	    SKIP_BLANKS;
 	    xmlXPathEvalStep(ctxt);
 	}
+	SKIP_BLANKS;
     }
 }
 
@@ -4311,53 +4353,36 @@ void
 xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
     xmlNodeSetPtr newset = NULL;
 
-    while (CUR == '/') {
-	if ((CUR == '/') && (NXT(1) == '/')) {
-	    SKIP(2);
-	    if (ctxt->context->nodelist == NULL)
-		xmlXPathRoot(ctxt);
-	    newset = xmlXPathNodeCollectAndTest(ctxt, AXIS_DESCENDANT_OR_SELF,
-			     NODE_TEST_TYPE, XML_ELEMENT_NODE, NULL, NULL);
-	    if (ctxt->context->nodelist != NULL)
-		xmlXPathFreeNodeSet(ctxt->context->nodelist);
-	    ctxt->context->nodelist = newset;
-	    ctxt->context->node = NULL;
-	    xmlXPathEvalRelativeLocationPath(ctxt);
-	} else if (CUR == '/') {
-	    NEXT;
-	    xmlXPathRoot(ctxt);
-	    if (CUR != 0)
+    SKIP_BLANKS;
+    if (CUR != '/') {
+        xmlXPathEvalRelativeLocationPath(ctxt);
+    } else {
+	while (CUR == '/') {
+	    if ((CUR == '/') && (NXT(1) == '/')) {
+		SKIP(2);
+		SKIP_BLANKS;
+		if (ctxt->context->nodelist == NULL)
+		    xmlXPathRoot(ctxt);
+		newset = xmlXPathNodeCollectAndTest(ctxt,
+		                 AXIS_DESCENDANT_OR_SELF, NODE_TEST_TYPE,
+				 XML_ELEMENT_NODE, NULL, NULL);
+		if (ctxt->context->nodelist != NULL)
+		    xmlXPathFreeNodeSet(ctxt->context->nodelist);
+		ctxt->context->nodelist = newset;
+		ctxt->context->node = NULL;
 		xmlXPathEvalRelativeLocationPath(ctxt);
-	} else {
-	    xmlXPathEvalRelativeLocationPath(ctxt);
+	    } else if (CUR == '/') {
+		NEXT;
+		SKIP_BLANKS;
+		xmlXPathRoot(ctxt);
+		if (CUR != 0)
+		    xmlXPathEvalRelativeLocationPath(ctxt);
+	    } else {
+		xmlXPathEvalRelativeLocationPath(ctxt);
+	    }
 	}
     }
 }
-
-/*
- * TODO * extra spaces *
- * more tokenization rules ... Not used currently, especially allowing
- * spaces before and after ExprToken !!!!!!!!!!!!!
- *
- *  [32]   Operator ::=   OperatorName 
- *                    | MultiplyOperator 
- *                    | '/' | '//' | '|' | '+' | '-' | '=' | '!='
- *                    | '<'| '<=' | '>' | '>='
- *  [33]   OperatorName ::=   'and' | 'or' | 'mod' | 'div'
- *  [39]   ExprWhitespace ::=   S 
- *
- *  BUG: ExprToken is never referenced.
- *
- *  [28]   ExprToken ::=   '(' | ')' | '[' | ']' | '.' | '..' | '@' | ',' | '::'
- *                    | WildcardName 
- *                    | NodeType 
- *                    | Operator 
- *                    | FunctionName 
- *                    | AxisName 
- *                    | Literal 
- *                    | Number 
- *                    | VariableReference 
- */
 
 /**
  * xmlXPathEval:

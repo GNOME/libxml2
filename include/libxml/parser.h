@@ -78,7 +78,7 @@ typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
  * The parser is not a state based parser, but we need to maintain
  * minimum state informations, especially for entities processing.
  */
-typedef enum xmlParserInputState {
+typedef enum {
     XML_PARSER_EOF = 0,
     XML_PARSER_PROLOG,
     XML_PARSER_CONTENT,

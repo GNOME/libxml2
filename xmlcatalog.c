@@ -38,7 +38,7 @@ static int add = 0;
 static int del = 0;
 static int convert = 0;
 static int verbose = 0;
-static char *filename;
+static char *filename = NULL;
 
 
 #ifndef XML_SGML_DEFAULT_CATALOG
@@ -556,7 +556,7 @@ int main(int argc, char **argv) {
 	}
     }
     if ((!sgml) && ((add) || (del) || (create) || (convert))) {
-	if (noout) {
+	if (noout && filename && *filename) {
 	    FILE *out;
 
 	    out = fopen(filename, "w");

@@ -1,3 +1,7 @@
+Fri Dec 12 15:55:15 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlcatalog.c: applied patch from Stefan Kost
+
 Thu Dec 11 15:15:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/testWriter.c: applied small fix from Lucas Brasilino

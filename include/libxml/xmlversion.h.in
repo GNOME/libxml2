@@ -70,6 +70,11 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #define WITHOUT_TRIO
 #endif
 #else /* VMS */
+/**
+ * WITH_TRIO:
+ *
+ * defined if the trio support need to be configured in
+ */
 #define WITH_TRIO 1
 #endif /* VMS */
 

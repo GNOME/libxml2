@@ -1,3 +1,10 @@
+Wed Dec  3 21:38:56 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* include/libxml/xmlversion.h.in
+	* doc/*
+	add WITH_TRIO comment so it shows up in the docs, rebuild
+	docs
+
 Wed Dec  3 13:10:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* config.h.in configure.in xmlregexp.c: fix bug #128401 affecting

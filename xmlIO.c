@@ -2125,21 +2125,8 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-/**
- * xmlParserInputBufferCreateFilename:
- * @URI:  a C string containing the URI or filename
- * @enc:  the charset encoding if known
- *
- * Create a buffered parser input for the progressive parsing of a file
- * If filename is "-' then we use stdin as the input.
- * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time.
- * Do an encoding check if enc == XML_CHAR_ENCODING_NONE
- *
- * Returns the new parser input or NULL
- */
-xmlParserInputBufferPtr
-xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
+static xmlParserInputBufferPtr
+__xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
     int i = 0;
     void *context = NULL;
@@ -2196,26 +2183,32 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     return(ret);
 }
 
-#ifdef LIBXML_OUTPUT_ENABLED
 /**
- * xmlOutputBufferCreateFilename:
+ * xmlParserInputBufferCreateFilename:
  * @URI:  a C string containing the URI or filename
- * @encoder:  the encoding converter or NULL
- * @compression:  the compression ration (0 none, 9 max).
+ * @enc:  the charset encoding if known
  *
- * Create a buffered  output for the progressive saving of a file
- * If filename is "-' then we use stdout as the output.
+ * Create a buffered parser input for the progressive parsing of a file
+ * If filename is "-' then we use stdin as the input.
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
- * TODO: currently if compression is set, the library only support
- *       writing to a local file.
+ * Do an encoding check if enc == XML_CHAR_ENCODING_NONE
  *
- * Returns the new output or NULL
+ * Returns the new parser input or NULL
  */
-xmlOutputBufferPtr
-xmlOutputBufferCreateFilename(const char *URI,
+xmlParserInputBufferPtr
+xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
+    if ((xmlParserInputBufferCreateFilenameValue)) {
+		return xmlParserInputBufferCreateFilenameValue(URI, enc);
+	}
+	return __xmlParserInputBufferCreateFilename(URI, enc);
+}
+
+#ifdef LIBXML_OUTPUT_ENABLED
+static xmlOutputBufferPtr
+__xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
-			      int compression ATTRIBUTE_UNUSED) {
+                              int compression ATTRIBUTE_UNUSED) {
     xmlOutputBufferPtr ret;
     xmlURIPtr puri;
     int i = 0;
@@ -2328,6 +2321,31 @@ xmlOutputBufferCreateFilename(const char *URI,
 	ret->closecallback = xmlOutputCallbackTable[i].closecallback;
     }
     return(ret);
+}
+
+/**
+ * xmlOutputBufferCreateFilename:
+ * @URI:  a C string containing the URI or filename
+ * @encoder:  the encoding converter or NULL
+ * @compression:  the compression ration (0 none, 9 max).
+ *
+ * Create a buffered  output for the progressive saving of a file
+ * If filename is "-' then we use stdout as the output.
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * by default if found at compile-time.
+ * TODO: currently if compression is set, the library only support
+ *       writing to a local file.
+ *
+ * Returns the new output or NULL
+ */
+xmlOutputBufferPtr
+xmlOutputBufferCreateFilename(const char *URI,
+                              xmlCharEncodingHandlerPtr encoder,
+                              int compression ATTRIBUTE_UNUSED) {
+    if ((xmlOutputBufferCreateFilenameValue)) {
+		return xmlOutputBufferCreateFilenameValue(URI, encoder, compression);
+	}
+	return __xmlOutputBufferCreateFilename(URI, encoder, compression);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

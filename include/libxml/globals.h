@@ -63,9 +63,14 @@ XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
 #undef  xmlRegisterNodeDefaultValue
 #undef  xmlDeregisterNodeDefaultValue
 #undef  xmlLastError
+#undef  xmlParserInputBufferCreateFilenameValue
+#undef  xmlOutputBufferCreateFilenameValue
 
 typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
+
+typedef xmlParserInputBufferPtr (*xmlParserInputBufferCreateFilenameFunc) (const char *URI, xmlCharEncoding enc);
+typedef xmlOutputBufferPtr (*xmlOutputBufferCreateFilenameFunc) (const char *URI, xmlCharEncodingHandlerPtr encoder, int compression);
 
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
@@ -110,6 +115,9 @@ struct _xmlGlobalState
 
 	xmlMallocFunc xmlMallocAtomic;
 	xmlError xmlLastError;
+
+	xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValue;
+	xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue;
 };
 
 #ifdef __cplusplus
@@ -130,6 +138,12 @@ XMLPUBFUN xmlRegisterNodeFunc XMLCALL xmlRegisterNodeDefault(xmlRegisterNodeFunc
 XMLPUBFUN xmlRegisterNodeFunc XMLCALL xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
 XMLPUBFUN xmlDeregisterNodeFunc XMLCALL xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 XMLPUBFUN xmlDeregisterNodeFunc XMLCALL xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
+
+XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL xmlParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func);
+
+XMLPUBFUN xmlOutputBufferCreateFilenameFunc XMLCALL xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlOutputBufferCreateFilenameFunc XMLCALL xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
 
 /** DOC_DISABLE */
 /*
@@ -413,6 +427,22 @@ XMLPUBFUN xmlDeregisterNodeFunc * XMLCALL __xmlDeregisterNodeDefaultValue(void);
 (*(__xmlDeregisterNodeDefaultValue()))
 #else
 XMLPUBVAR xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
+#endif
+
+XMLPUBFUN xmlParserInputBufferCreateFilenameFunc * XMLCALL __xmlParserInputBufferCreateFilenameValue(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlParserInputBufferCreateFilenameValue \
+(*(__xmlParserInputBufferCreateFilenameValue()))
+#else
+XMLPUBVAR xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValue;
+#endif
+
+XMLPUBFUN xmlOutputBufferCreateFilenameFunc * XMLCALL __xmlOutputBufferCreateFilenameValue(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlOutputBufferCreateFilenameValue \
+(*(__xmlOutputBufferCreateFilenameValue()))
+#else
+XMLPUBVAR xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue;
 #endif
 
 #ifdef __cplusplus

@@ -169,6 +169,8 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #undef	xmlMemStrdup
 #undef	xmlRealloc
 
+#undef  xmlParserInputBufferCreateFilenameValue
+#undef  xmlOutputBufferCreateFilenameValue
 /**
  * xmlParserVersion:
  *
@@ -281,6 +283,12 @@ xmlRegisterNodeFunc xmlRegisterNodeDefaultValue = NULL;
 static xmlRegisterNodeFunc xmlRegisterNodeDefaultValueThrDef = NULL;
 xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue = NULL;
 static xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValueThrDef = NULL;
+
+xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValue = NULL;
+static xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValueThrDef = NULL;
+
+xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue = NULL;
+static xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValueThrDef = NULL;
 
 /*
  * Error handling
@@ -545,6 +553,9 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->xmlGenericErrorContext = xmlGenericErrorContextThrDef;
     gs->xmlRegisterNodeDefaultValue = xmlRegisterNodeDefaultValueThrDef;
     gs->xmlDeregisterNodeDefaultValue = xmlDeregisterNodeDefaultValueThrDef;
+
+	gs->xmlParserInputBufferCreateFilenameValue = xmlParserInputBufferCreateFilenameValueThrDef;
+	gs->xmlOutputBufferCreateFilenameValue = xmlOutputBufferCreateFilenameValueThrDef;
     memset(&gs->xmlLastError, 0, sizeof(xmlError));
 
     xmlMutexUnlock(xmlThrDefMutex);
@@ -639,6 +650,67 @@ xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func)
     return(old);
 }
 
+/**
+ * xmlParserInputBufferCreateFilename:
+ * @func: function pointer to the new ParserInputBufferCreateFilenameFunc
+ *
+ * Registers a callback for URI input file handling
+ *
+ * Returns the old value of the registration function
+ */
+xmlParserInputBufferCreateFilenameFunc
+xmlParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func)
+{
+    xmlParserInputBufferCreateFilenameFunc old = xmlParserInputBufferCreateFilenameValue;
+    
+    xmlParserInputBufferCreateFilenameValue = func;
+    return(old);
+}
+
+xmlParserInputBufferCreateFilenameFunc
+xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func)
+{
+    xmlParserInputBufferCreateFilenameFunc old;
+    
+    xmlMutexLock(xmlThrDefMutex);
+    old = xmlParserInputBufferCreateFilenameValueThrDef;
+    
+    xmlParserInputBufferCreateFilenameValueThrDef = func;
+    xmlMutexUnlock(xmlThrDefMutex);
+
+    return(old);
+}
+
+/**
+ * xmlOutputBufferCreateFilename:
+ * @func: function pointer to the new OutputBufferCreateFilenameFunc
+ *
+ * Registers a callback for URI output file handling
+ *
+ * Returns the old value of the registration function
+ */
+xmlOutputBufferCreateFilenameFunc
+xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func)
+{
+    xmlOutputBufferCreateFilenameFunc old = xmlOutputBufferCreateFilenameValue;
+    
+    xmlOutputBufferCreateFilenameValue = func;
+    return(old);
+}
+
+xmlOutputBufferCreateFilenameFunc
+xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func)
+{
+    xmlOutputBufferCreateFilenameFunc old;
+    
+    xmlMutexLock(xmlThrDefMutex);
+    old = xmlOutputBufferCreateFilenameValueThrDef;
+    
+    xmlOutputBufferCreateFilenameValueThrDef = func;
+    xmlMutexUnlock(xmlThrDefMutex);
+
+    return(old);
+}
 
 #ifdef LIBXML_DOCB_ENABLED
 #undef	docbDefaultSAXHandler
@@ -980,4 +1052,22 @@ __xmlDeregisterNodeDefaultValue(void) {
 	return (&xmlDeregisterNodeDefaultValue);
     else
 	return (&xmlGetGlobalState()->xmlDeregisterNodeDefaultValue);
+}
+
+#undef	xmlParserInputBufferCreateFilenameValue
+xmlParserInputBufferCreateFilenameFunc *
+__xmlParserInputBufferCreateFilenameValue(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlParserInputBufferCreateFilenameValue);
+    else
+	return (&xmlGetGlobalState()->xmlParserInputBufferCreateFilenameValue);
+}
+
+#undef	xmlOutputBufferCreateFilenameValue
+xmlOutputBufferCreateFilenameFunc *
+__xmlOutputBufferCreateFilenameValue(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlOutputBufferCreateFilenameValue);
+    else
+	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
 }

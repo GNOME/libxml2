@@ -1,3 +1,9 @@
+Wed Jun  2 18:15:51 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c xmlIO.c include/libxml/globals.h: applied patch from 
+	  Rob Richards for custom I/O BufferCreateFilenane fixes bug
+	  #143366
+
 Wed Jun 02 16:25:32 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed problem with predicate evaluation on an

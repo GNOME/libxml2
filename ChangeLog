@@ -1,3 +1,10 @@
+Sun Oct 22 18:39:19 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* entities.[ch] xpath.[ch] hash.[ch] debugXML.c tree.h: added/hacked
+	  hash tables from Bjorn Reese <breese@mail1.stofanet.dk>. Switched
+	  XPath functions and XML entities table to them. More to come...
+	* xmlIO.c: fixed libxml closing FILEs it didn't open.
+
 Sun Oct 22 13:59:50 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c: coalesce adjacent text nodes

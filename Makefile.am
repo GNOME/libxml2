@@ -23,6 +23,7 @@ libxml_la_SOURCES = \
 		parserInternals.c \
 		parser.c \
 		tree.c \
+		hash.c \
 		xmlIO.c \
 		xmlmemory.c \
 		uri.c \

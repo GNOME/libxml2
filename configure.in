@@ -264,6 +264,7 @@ AC_SUBST(HTML_OBJ)
 AC_ARG_WITH(xpath, [  --with-xpath            Add the XPATH support (on)])
 if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
+    with_xptr="no"
     WITH_XPATH=0
     XPATH_OBJ=
 else    

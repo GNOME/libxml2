@@ -13,6 +13,7 @@
 #define __XML_XPATH_H__
 
 #include <libxml/tree.h>
+#include <libxml/hash.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -184,9 +185,9 @@ struct _xmlXPathContext {
     int max_types;			/* max number of types */
     xmlXPathTypePtr types;		/* Array of defined types */
 
-    int nb_funcs;			/* number of defined funcs */
-    int max_funcs;			/* max number of funcs */
-    xmlXPathFuncPtr funcs;		/* Array of defined funcs */
+    int nb_funcs_unused;		/* unused (hash table) */
+    int max_funcs_unused;		/* unused (hash table) */
+    xmlHashTablePtr funcHash;		/* Hash table of defined funcs */
 
     int nb_axis;			/* number of defined axis */
     int max_axis;			/* max number of axis */

@@ -49,6 +49,7 @@
 #include <libxml/valid.h>
 #include <libxml/xpath.h>
 #include <libxml/parserInternals.h>
+#include <libxml/hash.h>
 #ifdef LIBXML_XPTR_ENABLED
 #include <libxml/xpointer.h>
 #endif
@@ -184,6 +185,7 @@ FILE *xmlXPathDebug = NULL;
 #ifdef LIBXML_DEBUG_ENABLED
 double xmlXPathStringEvalNumber(const xmlChar *str);
 void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
+void xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt);
 
 void xmlXPathDebugDumpNode(FILE *output, xmlNodePtr cur, int depth) {
     int i;
@@ -832,40 +834,16 @@ xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
 int		  
 xmlXPathRegisterFunc(xmlXPathContextPtr ctxt, const xmlChar *name,
 		     xmlXPathFunction f) {
-    int i;
-
     if (ctxt == NULL)
 	return(-1);
     if (name == NULL)
 	return(-1);
 
-    for (i = 0;i < ctxt->nb_funcs;i++) {
-	if (xmlStrEqual(ctxt->funcs[i].name, name)) {
-	    /*
-	     * It's just an update or a removal
-	     */
-	    ctxt->funcs[i].func = f;
-	    return(0);
-	}
-    }
-    if (ctxt->max_funcs <= 0) {
-	ctxt->max_funcs = 10;
-	ctxt->nb_funcs = 0;
-	ctxt->funcs = (xmlXPathFuncPtr) xmlMalloc(ctxt->max_funcs *
-		                                    sizeof(xmlXPathFunct));
-    } else if (ctxt->max_funcs <= ctxt->nb_funcs) {
-	ctxt->max_funcs *= 2;
-	ctxt->funcs = (xmlXPathFuncPtr) xmlRealloc(ctxt->funcs,
-		                  ctxt->max_funcs * sizeof(xmlXPathFunct));
-    }
-    if (ctxt->funcs == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathRegisterFunc: out of memory\n");
+    if (ctxt->funcHash == NULL)
+	ctxt->funcHash = xmlHashCreate(0);
+    if (ctxt->funcHash == NULL)
 	return(-1);
-    }
-    ctxt->funcs[ctxt->nb_funcs].name = xmlStrdup(name);
-    ctxt->funcs[ctxt->nb_funcs].func = f;
-    ctxt->nb_funcs++;
-    return(0);
+    return(xmlHashAddEntry(ctxt->funcHash, name, (void *) f));
 }
 
 /**
@@ -880,19 +858,14 @@ xmlXPathRegisterFunc(xmlXPathContextPtr ctxt, const xmlChar *name,
  */
 xmlXPathFunction
 xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
-    int i;
-
     if (ctxt == NULL)
+	return(NULL);
+    if (ctxt->funcHash == NULL)
 	return(NULL);
     if (name == NULL)
 	return(NULL);
 
-    for (i = 0;i < ctxt->nb_funcs;i++) {
-	if (xmlStrEqual(ctxt->funcs[i].name, name)) {
-	    return(ctxt->funcs[i].func);
-	}
-    }
-    return(NULL);
+    return((xmlXPathFunction) xmlHashLookup(ctxt->funcHash, name));
 }
 
 /**
@@ -903,19 +876,11 @@ xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
  */
 void
 xmlXPathRegisteredFuncsCleanup(xmlXPathContextPtr ctxt) {
-    int i;
-
     if (ctxt == NULL)
 	return;
 
-    for (i = 0;i < ctxt->nb_funcs;i++) {
-	xmlFree((xmlChar *) ctxt->funcs[i].name);
-    }
-    ctxt->nb_funcs = -1;
-    ctxt->max_funcs = -1;
-    if (ctxt->funcs != NULL)
-	xmlFree(ctxt->funcs);
-    ctxt->funcs = NULL;
+    xmlHashFree(ctxt->funcHash, NULL);
+    ctxt->funcHash = NULL;
 }
 
 /************************************************************************
@@ -1239,9 +1204,7 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->max_types = 0;
     ret->types = NULL;
 
-    ret->nb_funcs = 0;
-    ret->max_funcs = 0;
-    ret->funcs = NULL;
+    ret->funcHash = xmlHashCreate(0);
 
     ret->nb_axis = 0;
     ret->max_axis = 0;
@@ -1253,6 +1216,9 @@ xmlXPathNewContext(xmlDocPtr doc) {
 
     ret->contextSize = -1;
     ret->proximityPosition = -1;
+
+    xmlXPathRegisterAllFunctions(ret);
+    
     return(ret);
 }
 
@@ -4012,88 +3978,7 @@ xmlXPathIsNodeType(const xmlChar *name) {
  */
 xmlXPathFunction
 xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
-    if (name == NULL)
-	return(NULL);
-
-    switch (name[0]) {
-        case 'b':
-	    if (xmlStrEqual(name, BAD_CAST "boolean"))
-	        return(xmlXPathBooleanFunction);
-	    break;
-        case 'c':
-	    if (xmlStrEqual(name, BAD_CAST "ceiling"))
-	        return(xmlXPathCeilingFunction);
-	    if (xmlStrEqual(name, BAD_CAST "count"))
-	        return(xmlXPathCountFunction);
-	    if (xmlStrEqual(name, BAD_CAST "concat"))
-	        return(xmlXPathConcatFunction);
-	    if (xmlStrEqual(name, BAD_CAST "contains"))
-	        return(xmlXPathContainsFunction);
-	    break;
-        case 'i':
-	    if (xmlStrEqual(name, BAD_CAST "id"))
-	        return(xmlXPathIdFunction);
-	    break;
-        case 'f':
-	    if (xmlStrEqual(name, BAD_CAST "false"))
-	        return(xmlXPathFalseFunction);
-	    if (xmlStrEqual(name, BAD_CAST "floor"))
-	        return(xmlXPathFloorFunction);
-	    break;
-        case 'l':
-	    if (xmlStrEqual(name, BAD_CAST "last"))
-	        return(xmlXPathLastFunction);
-	    if (xmlStrEqual(name, BAD_CAST "lang"))
-	        return(xmlXPathLangFunction);
-	    if (xmlStrEqual(name, BAD_CAST "local-part"))
-	        return(xmlXPathLocalPartFunction);
-	    break;
-        case 'n':
-	    if (xmlStrEqual(name, BAD_CAST "not"))
-	        return(xmlXPathNotFunction);
-	    if (xmlStrEqual(name, BAD_CAST "name"))
-	        return(xmlXPathNameFunction);
-	    if (xmlStrEqual(name, BAD_CAST "namespace"))
-	        return(xmlXPathNamespaceFunction);
-	    if (xmlStrEqual(name, BAD_CAST "normalize-space"))
-	        return(xmlXPathNormalizeFunction);
-	    if (xmlStrEqual(name, BAD_CAST "normalize"))
-	        return(xmlXPathNormalizeFunction);
-	    if (xmlStrEqual(name, BAD_CAST "number"))
-	        return(xmlXPathNumberFunction);
-	    break;
-        case 'p':
-	    if (xmlStrEqual(name, BAD_CAST "position"))
-	        return(xmlXPathPositionFunction);
-	    break;
-        case 'r':
-	    if (xmlStrEqual(name, BAD_CAST "round"))
-	        return(xmlXPathRoundFunction);
-	    break;
-        case 's':
-	    if (xmlStrEqual(name, BAD_CAST "string"))
-	        return(xmlXPathStringFunction);
-	    if (xmlStrEqual(name, BAD_CAST "string-length"))
-	        return(xmlXPathStringLengthFunction);
-	    if (xmlStrEqual(name, BAD_CAST "starts-with"))
-	        return(xmlXPathStartsWithFunction);
-	    if (xmlStrEqual(name, BAD_CAST "substring"))
-	        return(xmlXPathSubstringFunction);
-	    if (xmlStrEqual(name, BAD_CAST "substring-before"))
-	        return(xmlXPathSubstringBeforeFunction);
-	    if (xmlStrEqual(name, BAD_CAST "substring-after"))
-	        return(xmlXPathSubstringAfterFunction);
-	    if (xmlStrEqual(name, BAD_CAST "sum"))
-	        return(xmlXPathSumFunction);
-	    break;
-        case 't':
-	    if (xmlStrEqual(name, BAD_CAST "true"))
-	        return(xmlXPathTrueFunction);
-	    if (xmlStrEqual(name, BAD_CAST "translate"))
-	        return(xmlXPathTranslateFunction);
-	    break;
-    }
-    return(xmlXPathFunctionLookup(ctxt->context, name));
+    return((xmlXPathFunction) xmlHashLookup(ctxt->context->funcHash, name));
 }
  
 /**
@@ -5381,6 +5266,67 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     }
     xmlXPathFreeParserContext(pctxt);
     return(res);
+}
+
+void
+xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt)
+{
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"boolean",
+                         xmlXPathBooleanFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"ceiling",
+                         xmlXPathCeilingFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"count",
+                         xmlXPathCountFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"concat",
+                         xmlXPathConcatFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"contains",
+                         xmlXPathContainsFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"id",
+                         xmlXPathIdFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"false",
+                         xmlXPathFalseFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"floor",
+                         xmlXPathFloorFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"last",
+                         xmlXPathLastFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"lang",
+                         xmlXPathLangFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"local-part",
+                         xmlXPathLocalPartFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"not",
+                         xmlXPathNotFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"name",
+                         xmlXPathNameFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"namespace",
+                         xmlXPathNamespaceFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"normalize-space",
+                         xmlXPathNormalizeFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"normalize",
+                         xmlXPathNormalizeFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"number",
+                         xmlXPathNumberFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"position",
+                         xmlXPathPositionFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"round",
+                         xmlXPathRoundFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"string",
+                         xmlXPathStringFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"string-length",
+                         xmlXPathStringLengthFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"starts-with",
+                         xmlXPathStartsWithFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"substring",
+                         xmlXPathSubstringFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"substring-before",
+                         xmlXPathSubstringBeforeFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"substring-after",
+                         xmlXPathSubstringAfterFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"sum",
+                         xmlXPathSumFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"true",
+                         xmlXPathTrueFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"translate",
+                         xmlXPathTranslateFunction);
 }
 
 #endif /* LIBXML_XPATH_ENABLED */

@@ -233,6 +233,7 @@ struct _xmlDtd {
     void          *entities;    /* Hash table for entities if any */
     const xmlChar *ExternalID;	/* External identifier for PUBLIC DTD */
     const xmlChar *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
+    void          *pentities;   /* Hash table for param entities if any */
 };
 
 /*

@@ -14,6 +14,7 @@ xmlinc_HEADERS = \
 		libxml/HTMLtree.h \
 		libxml/debugXML.h \
 		libxml/tree.h \
+		libxml/hash.h \
 		libxml/xpath.h \
 		libxml/xpointer.h \
 		libxml/xmlIO.h \

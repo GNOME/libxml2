@@ -340,6 +340,17 @@ xmlFileClose (void * context) {
     fclose((FILE *) context);
 }
 
+/**
+ * xmlFileFlush:
+ * @context:  the I/O context
+ *
+ * Flush an I/O channel
+ */
+void
+xmlFileFlush (void * context) {
+    fflush((FILE *) context);
+}
+
 #ifdef HAVE_ZLIB_H
 /************************************************************************
  *									*
@@ -990,7 +1001,7 @@ xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
     if (ret != NULL) {
         ret->context = file;
 	ret->readcallback = xmlFileRead;
-	ret->closecallback = xmlFileClose;
+	ret->closecallback = xmlFileFlush;
     }
 
     return(ret);
@@ -1019,7 +1030,7 @@ xmlOutputBufferCreateFile(FILE *file, xmlCharEncodingHandlerPtr encoder) {
     if (ret != NULL) {
         ret->context = file;
 	ret->writecallback = xmlFileWrite;
-	ret->closecallback = xmlFileClose;
+	ret->closecallback = xmlFileFlush;
     }
 
     return(ret);

@@ -54,33 +54,17 @@ struct _xmlEntity {
     const xmlChar    *ExternalID;	/* External identifier for PUBLIC */
     const xmlChar      *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
 
-    struct _xmlEntity     *nexte;	/* next entity in the hash table */
+    struct _xmlEntity     *nexte;	/* unused */
     const xmlChar           *URI;	/* the full URI as computed */
-
-#ifdef WITH_EXTRA_ENT_DETECT
-    /* Referenced entities name stack */
-    xmlChar           *ent;             /* Current parsed Node */
-    int                entNr;           /* Depth of the parsing stack */
-    int                entMax;          /* Max depth of the parsing stack */
-    xmlChar *         *entTab;          /* array of nodes */
-#endif
 };
 
 /*
- * ALl entities are stored in a table there is one table per DTD
- * and one extra per document.
+ * ALl entities are stored in an hash table
+ * there is 2 separate hash tables for global and parmeter entities
  */
 
-#define XML_MIN_ENTITIES_TABLE	32
-
-typedef struct _xmlEntitiesTable xmlEntitiesTable;
+typedef struct _xmlHashTable xmlEntitiesTable;
 typedef xmlEntitiesTable *xmlEntitiesTablePtr;
-struct _xmlEntitiesTable {
-    int nb_entities;		/* number of elements stored */
-    int max_entities;		/* maximum number of elements */
-    xmlEntityPtr *table;	/* the table of entities */
-};
-
 
 /*
  * External functions :
@@ -122,10 +106,6 @@ void			xmlDumpEntityDecl	(xmlBufferPtr buf,
 xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
 void			xmlCleanupPredefinedEntities(void);
 
-#ifdef WITH_EXTRA_ENT_DETECT
-int			xmlEntityAddReference	(xmlEntityPtr ent,
-						 const xmlChar *to);
-#endif
 
 #ifdef __cplusplus
 }

@@ -773,6 +773,7 @@ void xmlDebugDumpDTD(FILE *output, xmlDtdPtr dtd) {
 
 void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
     int i;
+    xmlHashEntryPtr ent;
     xmlEntityPtr cur;
 
     if (output == NULL) output = stdout;
@@ -828,9 +829,10 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr) 
 	                            doc->intSubset->entities;
 	fprintf(output, "Entities in internal subset\n");
-	for (i = 0;i < table->max_entities;i++) {
-	    cur = table->table[i];
-	    while (cur != NULL) {
+	for (i = 0;i < table->size;i++) {
+	    ent = table->table[i];
+	    while (ent != NULL) {
+		cur = (xmlEntityPtr) ent->payload;
 		fprintf(output, "%d : %s : ", i, cur->name);
 		switch (cur->etype) {
 		    case XML_INTERNAL_GENERAL_ENTITY:
@@ -861,7 +863,7 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
 		if (cur->content != NULL)
 		    fprintf(output, "\n content \"%s\"", cur->content);
 		fprintf(output, "\n");	
-		cur = cur->nexte;
+		ent = ent->next;
 	    }
 	}
     } else
@@ -870,9 +872,10 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr) 
 	                            doc->extSubset->entities;
 	fprintf(output, "Entities in external subset\n");
-	for (i = 0;i < table->max_entities;i++) {
-	    cur = table->table[i];
-	    while (cur != NULL) {
+	for (i = 0;i < table->size;i++) {
+	    ent = table->table[i];
+	    while (ent != NULL) {
+		cur = (xmlEntityPtr) ent->payload;
 		fprintf(output, "%d : %s : ", i, cur->name);
 		switch (cur->etype) {
 		    case XML_INTERNAL_GENERAL_ENTITY:
@@ -903,7 +906,7 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
 		if (cur->content != NULL)
 		    fprintf(output, "\n content \"%s\"", cur->content);
 		fprintf(output, "\n");	
-		cur = cur->nexte;
+		ent = ent->next;
 	    }
 	}
     } else

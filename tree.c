@@ -6427,6 +6427,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	    memcpy(rebuf, buf->content, buf->use);
 	    xmlFree(buf->content);
 	}
+	rebuf[buf->use] = 0;
     }
     if (rebuf == NULL) {
         xmlGenericError(xmlGenericErrorContext,

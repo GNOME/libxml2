@@ -1,3 +1,8 @@
+Wed Aug 20 00:20:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixes a small bug introduced in last commit and detected
+	  by valgrind.
+
 Tue Aug 19 16:54:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c hash.c: optimization when freeing hash tables.

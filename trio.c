@@ -238,7 +238,7 @@ enum {
   /* Maximal length of locale separator strings */
   MAX_LOCALE_SEPARATOR_LENGTH = 64,
   /* Maximal number of integers in grouping */
-  MAX_LOCALE_GROUPS = 64,
+  MAX_LOCALE_GROUPS = 64
 };
 
 #define NO_GROUPING ((int)CHAR_MAX)

@@ -4286,7 +4286,8 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (((prop->ns == NULL) && (node->ns != NULL) &&
 	      (xmlStrEqual(node->ns->href, namespace))) ||
-	     ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, namespace))))) {
+	     ((prop->ns != NULL) &&
+	      (xmlStrEqual(prop->ns->href, namespace))))) {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
@@ -4303,8 +4304,9 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
      */
     doc =  node->doc;
     if (doc != NULL) {
-        xmlAttributePtr attrDecl;
         if (doc->intSubset != NULL) {
+	    xmlAttributePtr attrDecl;
+
 	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
 		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);

@@ -1,3 +1,8 @@
+Mon Apr 30 19:42:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* strio.h trio.c: Dan McNichol suggested a couple of small
+	  fixes for AIX 4.3.3 using Visual Age 5.0.2 compiler
+
 Mon Apr 30 13:44:48 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c parser.c encoding.c: spent a bit more time looking

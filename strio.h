@@ -125,7 +125,7 @@
 enum {
   STRIO_HASH_NONE = 0,
   STRIO_HASH_PLAIN,
-  STRIO_HASH_TWOSIGNED,
+  STRIO_HASH_TWOSIGNED
 };
 
 #if !defined(DEBUG) || defined(__DECC)

@@ -39,9 +39,8 @@
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
-#if defined(__osf__) && defined(__GNUC__)
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#define FPE_WORKAROUND
 #endif
 
 #include <libxml/xmlmemory.h>
@@ -65,6 +64,7 @@
 
 void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 double xmlXPathStringEvalNumber(const xmlChar *str);
+double xmlXPathDivideBy(double f, double fzero);
 
 /************************************************************************
  * 									*
@@ -150,6 +150,37 @@ int isinf(double x)
 #endif /* ! HAVE_iSNAN */
 #endif /* ! defined(isnan) */
 
+
+/**
+ * xmlXPathDivideBy:
+ *
+ * The best way found so far to generate the NAN, +-INF
+ * without hitting a compiler bug or optimization :-\
+ *
+ * Returns the double resulting from the division
+ */
+double
+xmlXPathDivideBy(double f, double fzero) {
+    float ret;
+#ifdef HAVE_SIGNAL
+#ifdef SIGFPE
+#ifdef SIG_IGN
+    void (*sighandler)(int);
+    sighandler = signal(SIGFPE, SIG_IGN);
+#endif
+#endif
+#endif
+    ret = f / fzero;
+#ifdef HAVE_SIGNAL
+#ifdef SIGFPE
+#ifdef SIG_IGN
+    signal(SIGFPE, sighandler);
+#endif
+#endif
+#endif
+    return(ret);
+}
+
 /**
  * xmlXPathInit:
  *
@@ -161,22 +192,9 @@ xmlXPathInit(void) {
 
     if (initialized) return;
 
-#ifdef FPE_WORKAROUND
-    signal(SIGFPE, SIG_IGN);
-#endif
-
-#ifdef XPATH_USE_DIVISION_SHORTCUTS
-    xmlXPathNAN = 0;
-    xmlXPathNAN /= 0.0;
-    xmlXPathPINF = 1;
-    xmlXPathPINF /= 0.0;
-    xmlXPathNINF = -1;
-    xmlXPathNINF /= 0.0;
-#else
-    xmlXPathNAN = 0.0 / 0.0;
-    xmlXPathPINF = 1 / 0.0;
-    xmlXPathNINF = -1 / 0.0;
-#endif
+    xmlXPathNAN = xmlXPathDivideBy(0.0, 0.0);
+    xmlXPathPINF = xmlXPathDivideBy(1.0, 0.0);
+    xmlXPathPINF = xmlXPathDivideBy(-1.0, 0.0);
 
     initialized = 1;
 }

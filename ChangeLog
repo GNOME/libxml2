@@ -1,3 +1,7 @@
+Sat Feb 21 16:57:48 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: small patch to try to fix a warning with Sun One compiler
+
 Sat Feb 21 16:22:35 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: small patch removing a warning with MS compiler.

@@ -1,3 +1,17 @@
+Thu Sep 11 16:21:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/* : 2.6.0beta1 changes
+	* SAX2.c hash.c parser.c parserInternals.c: Fixing attribute
+	  normalization, might not be totally fixed but this should 
+	  make sure SAX event provide the right strings for attributes
+	  except entities for which libxml2 is different by default
+	  This should fix #109564
+	* result/attrib.xml.sax result/ent3.sax result/p3p.sax: minor changes
+	  in attribute callback values
+	* result/c14n/with-comments/example-4
+	  result/c14n/without-comments/example-4: this also fixes a subtle
+	  bug in the canonicalization tests.
+
 Wed Sep 10 12:38:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	Time to commit 3 days of work rewriting the parser internal,

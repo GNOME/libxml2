@@ -1692,6 +1692,10 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 			        ctxt->myDoc, ctxt->node, ret, dup);
 	    }
 	} else {
+	    /*
+	     * if entities already have been substitued, then
+	     * the attribute as passed is already normalized
+	     */
 	    dup = xmlStrndup(value, valueend - value);
 
 	    ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,

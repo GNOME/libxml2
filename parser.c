@@ -244,6 +244,38 @@ mem_error:
     return;
 }
 
+/**
+ * xmlAddSpecialAttr:
+ * @ctxt:  an XML parser context
+ * @fullname:  the element fullname
+ * @fullattr:  the attribute fullname
+ * @type:  the attribute type
+ *
+ * Register that this attribute is not CDATA
+ */
+static void
+xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
+		  const xmlChar *fullname,
+		  const xmlChar *fullattr,
+		  int type)
+{
+    if (ctxt->attsSpecial == NULL) {
+        ctxt->attsSpecial = xmlHashCreate(10);
+	if (ctxt->attsSpecial == NULL)
+	    goto mem_error;
+    }
+
+    xmlHashAddEntry2(ctxt->attsSpecial, fullname, fullattr, (void *) type);
+    return;
+
+mem_error:
+    xmlGenericError(xmlGenericErrorContext, "Memory allocation failed !\n");
+    ctxt->errNo = XML_ERR_NO_MEMORY;
+    ctxt->instate = XML_PARSER_EOF;
+    ctxt->disableSAX = 1;
+    return;
+}
+
 /************************************************************************
  *									*
  * 		Parser stacks related functions and macros		*
@@ -1337,10 +1369,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     buffer##_size *= 2;							\
     buffer = (xmlChar *)						\
     		xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
-    if (buffer == NULL) {						\
-	xmlGenericError(xmlGenericErrorContext,	"realloc failed");	\
-	return(NULL);							\
-    }									\
+    if (buffer == NULL) goto mem_error;					\
 }
 
 /**
@@ -1393,11 +1422,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
      */
     buffer_size = XML_PARSER_BIG_BUFFER_SIZE;
     buffer = (xmlChar *) xmlMallocAtomic(buffer_size * sizeof(xmlChar));
-    if (buffer == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		        "xmlStringDecodeEntities: malloc failed");
-	return(NULL);
-    }
+    if (buffer == NULL) goto mem_error;
 
     /*
      * OK loop until we reach one of the ending char or a size limit.
@@ -1499,6 +1524,13 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     }
     buffer[nbchars++] = 0;
     return(buffer);
+
+mem_error:
+    xmlGenericError(xmlGenericErrorContext, "Memory allocation failed !\n");
+    ctxt->errNo = XML_ERR_NO_MEMORY;
+    ctxt->instate = XML_PARSER_EOF;
+    ctxt->disableSAX = 1;
+    return(NULL);
 }
 
 /**
@@ -1688,7 +1720,7 @@ xmlStrQEqual(const xmlChar *pref, const xmlChar *name, const xmlChar *str) {
 
     do {
 	if (*pref++ != *str) return(0);
-    } while (*str++);
+    } while ((*str++) && (*pref));
     if (*str++ != ':') return(0);
     do {
 	if (*name++ != *str) return(0);
@@ -2246,7 +2278,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 
 static const xmlChar * xmlParseNameComplex(xmlParserCtxtPtr ctxt);
 static xmlChar * xmlParseAttValueInternal(xmlParserCtxtPtr ctxt,
-                                          int *len, int *alloc);
+                                          int *len, int *alloc, int normalize);
 
 /**
  * xmlParseName:
@@ -2704,20 +2736,21 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
  * xmlParseAttValueComplex:
  * @ctxt:  an XML parser context
  * @len:   the resulting attribute len
+ * @normalize:  wether to apply the inner normalization
  *
  * parse a value for an attribute, this is the fallback function
  * of xmlParseAttValue() when the attribute parsing requires handling
- * of non-ASCII characters.
+ * of non-ASCII characters, or normalization compaction.
  *
  * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
  */
 static xmlChar *
-xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
+xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
     xmlChar limit = 0;
     xmlChar *buf = NULL;
     int len = 0;
     int buf_size = 0;
-    int c, l;
+    int c, l, in_space = 0;
     xmlChar *current = NULL;
     xmlEntityPtr ent;
 
@@ -2743,11 +2776,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
      */
     buf_size = XML_PARSER_BUFFER_SIZE;
     buf = (xmlChar *) xmlMallocAtomic(buf_size * sizeof(xmlChar));
-    if (buf == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		        "xmlParseAttValue: malloc failed");
-	return(NULL);
-    }
+    if (buf == NULL) goto mem_error;
 
     /*
      * OK loop until we reach one of the ending char or a size limit.
@@ -2759,6 +2788,8 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 	if (c == '&') {
 	    if (NXT(1) == '#') {
 		int val = xmlParseCharRef(ctxt);
+
+		in_space = 0;
 		if (val == '&') {
 		    if (ctxt->replaceEntities) {
 			if (len > buf_size - 10) {
@@ -2770,15 +2801,14 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 			 * The reparsing will be done in xmlStringGetNodeList()
 			 * called by the attribute() function in SAX.c
 			 */
-			static xmlChar buffer[6] = "&#38;";
-
 			if (len > buf_size - 10) {
 			    growBuffer(buf);
 			}
-			current = &buffer[0];
-			while (*current != 0) { /* non input consuming */
-			    buf[len++] = *current++;
-			}
+			buf[len++] = '&';
+			buf[len++] = '#';
+			buf[len++] = '3';
+			buf[len++] = '8';
+			buf[len++] = ';';
 		    }
 		} else {
 		    if (len > buf_size - 10) {
@@ -2788,13 +2818,30 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 		}
 	    } else {
 		ent = xmlParseEntityRef(ctxt);
-		if ((ent != NULL) && 
-		    (ctxt->replaceEntities != 0)) {
+		if ((ent != NULL) &&
+		    (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
+		    if (len > buf_size - 10) {
+			growBuffer(buf);
+		    }
+		    if ((ctxt->replaceEntities == 0) &&
+		        (ent->content[0] == '&')) {
+			buf[len++] = '&';
+			buf[len++] = '#';
+			buf[len++] = '3';
+			buf[len++] = '8';
+			buf[len++] = ';';
+		    } else {
+			buf[len++] = ent->content[0];
+		    }
+		    in_space = 0;
+		} else if ((ent != NULL) && 
+		           (ctxt->replaceEntities != 0)) {
 		    xmlChar *rep;
 
 		    if (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) {
 			rep = xmlStringDecodeEntities(ctxt, ent->content,
-						      XML_SUBSTITUTE_REF, 0, 0, 0);
+						      XML_SUBSTITUTE_REF,
+						      0, 0, 0);
 			if (rep != NULL) {
 			    current = rep;
 			    while (*current != 0) { /* non input consuming */
@@ -2843,11 +2890,17 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 	    }
 	} else {
 	    if ((c == 0x20) || (c == 0xD) || (c == 0xA) || (c == 0x9)) {
-		COPY_BUF(l,buf,len,0x20);
-		if (len > buf_size - 10) {
-		    growBuffer(buf);
+	        if ((len != 0) || (!normalize)) {
+		    if ((!normalize) || (!in_space)) {
+			COPY_BUF(l,buf,len,0x20);
+			if (len > buf_size - 10) {
+			    growBuffer(buf);
+			}
+		    }
+		    in_space = 1;
 		}
 	    } else {
+	        in_space = 0;
 		COPY_BUF(l,buf,len,c);
 		if (len > buf_size - 10) {
 		    growBuffer(buf);
@@ -2857,6 +2910,9 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 	}
 	GROW;
 	c = CUR_CHAR(l);
+    }
+    if ((in_space) && (normalize)) {
+        while (buf[len - 1] == 0x20) len--;
     }
     buf[len] = 0;
     if (RAW == '<') {
@@ -2876,6 +2932,13 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 	NEXT;
     if (attlen != NULL) *attlen = len;
     return(buf);
+
+mem_error:
+    xmlGenericError(xmlGenericErrorContext, "Memory allocation failed !\n");
+    ctxt->errNo = XML_ERR_NO_MEMORY;
+    ctxt->instate = XML_PARSER_EOF;
+    ctxt->disableSAX = 1;
+    return(NULL);
 }
 
 /**
@@ -2914,7 +2977,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
 
 xmlChar *
 xmlParseAttValue(xmlParserCtxtPtr ctxt) {
-    return(xmlParseAttValueInternal(ctxt, NULL, NULL));
+    return(xmlParseAttValueInternal(ctxt, NULL, NULL, 0));
 }
 
 /**
@@ -4678,6 +4741,9 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	        (def != XML_ATTRIBUTE_IMPLIED) && 
 		(def != XML_ATTRIBUTE_REQUIRED)) {
 		xmlAddDefAttrs(ctxt, elemName, attrName, defaultValue);
+	    }
+	    if ((ctxt->sax2) && (type != XML_ATTRIBUTE_CDATA)) {
+		xmlAddSpecialAttr(ctxt, elemName, attrName, type);
 	    }
 	    if (defaultValue != NULL)
 	        xmlFree(defaultValue);
@@ -7439,6 +7505,8 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
  * xmlParseAttValueInternal:
  * @ctxt:  an XML parser context
  * @len:  attribute len result
+ * @alloc:  whether the attribute was reallocated as a new string
+ * @normalize:  if 1 then further non-CDATA normalization must be done
  *
  * parse a value for an attribute.
  * NOTE: if no normalization is needed, the routine will return pointers
@@ -7468,10 +7536,11 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
  */
 
 static xmlChar *
-xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc)
+xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
+                         int normalize)
 {
     xmlChar limit = 0;
-    const xmlChar *in = NULL;
+    const xmlChar *in = NULL, *start, *end, *last;
     xmlChar *ret = NULL;
 
     GROW;
@@ -7487,34 +7556,124 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc)
         return (NULL);
     }
     ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
-    limit = *in;
-    ++in;
 
-    while (*in != limit && *in >= 0x20 && *in <= 0x7f &&
-           *in != '&' && *in != '<') {
-        ++in;
+    /*
+     * try to handle in this routine the most common case where no
+     * allocation of a new string is required and where content is
+     * pure ASCII.
+     */
+    limit = *in++;
+    end = ctxt->input->end;
+    start = in;
+    if (in >= end) {
+        const xmlChar *oldbase = ctxt->input->base;
+	GROW;
+	if (oldbase != ctxt->input->base) {
+	    long delta = ctxt->input->base - oldbase;
+	    start = start + delta;
+	    in = in + delta;
+	}
+	end = ctxt->input->end;
     }
-    if (*in != limit) {
-        if (alloc) *alloc = 1;
-        return xmlParseAttValueComplex(ctxt, len);
+    if (normalize) {
+        /*
+	 * Skip any leading spaces
+	 */
+	while ((in < end) && (*in != limit) && 
+	       ((*in == 0x20) || (*in == 0x9) ||
+	        (*in == 0xA) || (*in == 0xD))) {
+	    in++;
+	    start = in;
+	    if (in >= end) {
+		const xmlChar *oldbase = ctxt->input->base;
+		GROW;
+		if (oldbase != ctxt->input->base) {
+		    long delta = ctxt->input->base - oldbase;
+		    start = start + delta;
+		    in = in + delta;
+		}
+		end = ctxt->input->end;
+	    }
+	}
+	while ((in < end) && (*in != limit) && (*in >= 0x20) &&
+	       (*in <= 0x7f) && (*in != '&') && (*in != '<')) {
+	    if ((*in++ == 0x20) && (*in == 0x20)) break;
+	    if (in >= end) {
+		const xmlChar *oldbase = ctxt->input->base;
+		GROW;
+		if (oldbase != ctxt->input->base) {
+		    long delta = ctxt->input->base - oldbase;
+		    start = start + delta;
+		    in = in + delta;
+		}
+		end = ctxt->input->end;
+	    }
+	}
+	last = in;
+	/*
+	 * skip the trailing blanks
+	 */
+	while (last[-1] == 0x20) last--;
+	while ((in < end) && (*in != limit) && 
+	       ((*in == 0x20) || (*in == 0x9) ||
+	        (*in == 0xA) || (*in == 0xD))) {
+	    in++;
+	    if (in >= end) {
+		const xmlChar *oldbase = ctxt->input->base;
+		GROW;
+		if (oldbase != ctxt->input->base) {
+		    long delta = ctxt->input->base - oldbase;
+		    start = start + delta;
+		    in = in + delta;
+		    last = last + delta;
+		}
+		end = ctxt->input->end;
+	    }
+	}
+	if (*in != limit) goto need_complex;
+    } else {
+	while ((in < end) && (*in != limit) && (*in >= 0x20) &&
+	       (*in <= 0x7f) && (*in != '&') && (*in != '<')) {
+	    in++;
+	    if (in >= end) {
+		const xmlChar *oldbase = ctxt->input->base;
+		GROW;
+		if (oldbase != ctxt->input->base) {
+		    long delta = ctxt->input->base - oldbase;
+		    start = start + delta;
+		    in = in + delta;
+		}
+		end = ctxt->input->end;
+	    }
+	}
+	last = in;
+	if (*in != limit) goto need_complex;
     }
-    ++in;
+    in++;
     if (len != NULL) {
-        *len = in - CUR_PTR - 2;
-        ret = (xmlChar *) CUR_PTR + 1;
+        *len = last - start;
+        ret = (xmlChar *) start;
     } else {
         if (alloc) *alloc = 1;
-        ret = xmlStrndup(CUR_PTR + 1, in - CUR_PTR - 2);
+        ret = xmlStrndup(start, last - start);
     }
     CUR_PTR = in;
     if (alloc) *alloc = 0;
     return ret;
+need_complex:
+    if (alloc) *alloc = 1;
+    return xmlParseAttValueComplex(ctxt, len, normalize);
 }
 
 /**
  * xmlParseAttribute2:
  * @ctxt:  an XML parser context
+ * @pref:  the element prefix
+ * @elem:  the element name
+ * @prefix:  a xmlChar ** used to store the value of the attribute prefix
  * @value:  a xmlChar ** used to store the value of the attribute
+ * @len:  an int * to save the length of the attribute
+ * @alloc:  an int * to indicate if the attribute was allocated
  *
  * parse an attribute in the new SAX2 framework.
  *
@@ -7522,10 +7681,13 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc)
  */
 
 static const xmlChar *
-xmlParseAttribute2(xmlParserCtxtPtr ctxt, const xmlChar **prefix, 
-                   xmlChar **value, int *len, int *alloc) {
+xmlParseAttribute2(xmlParserCtxtPtr ctxt,
+                   const xmlChar *pref, const xmlChar *elem,
+                   const xmlChar **prefix, xmlChar **value,
+		   int *len, int *alloc) {
     const xmlChar *name;
     xmlChar *val;
+    int normalize = 0;
 
     *value = NULL;
     GROW;
@@ -7540,13 +7702,24 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt, const xmlChar **prefix,
     }
 
     /*
+     * get the type if needed
+     */
+    if (ctxt->attsSpecial != NULL) {
+        int type;
+
+        type = (int) (long) xmlHashQLookup2(ctxt->attsSpecial,
+	                                    pref, elem, *prefix, name);
+	if (type != 0) normalize = 1;
+    }
+
+    /*
      * read the value
      */
     SKIP_BLANKS;
     if (RAW == '=') {
         NEXT;
 	SKIP_BLANKS;
-	val = xmlParseAttValueInternal(ctxt, len, alloc);
+	val = xmlParseAttValueInternal(ctxt, len, alloc, normalize);
 	ctxt->instate = XML_PARSER_CONTENT;
     } else {
 	ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
@@ -7686,7 +7859,8 @@ reparse:
 	unsigned int cons = ctxt->input->consumed;
 	int len = -1, alloc = 0;
 
-	attname = xmlParseAttribute2(ctxt, &aprefix, &attvalue, &len, &alloc);
+	attname = xmlParseAttribute2(ctxt, prefix, localname,
+	                             &aprefix, &attvalue, &len, &alloc);
         if ((attname != NULL) && (attvalue != NULL)) {
 	    if (len < 0) len = xmlStrlen(attvalue);
             if ((attname == ctxt->str_xmlns) && (aprefix == NULL)) {

@@ -85,9 +85,9 @@ xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
 
 static unsigned long
 xmlHashComputeQKey(xmlHashTablePtr table,
-		   const xmlChar *name, const xmlChar *prefix,
-		   const xmlChar *name2, const xmlChar *prefix2,
-		   const xmlChar *name3, const xmlChar *prefix3) {
+		   const xmlChar *prefix, const xmlChar *name,
+		   const xmlChar *prefix2, const xmlChar *name2,
+		   const xmlChar *prefix3, const xmlChar *name3) {
     unsigned long value = 0L;
     char ch;
     

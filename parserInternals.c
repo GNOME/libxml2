@@ -2378,6 +2378,8 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->attallocs != NULL) xmlFree(ctxt->attallocs);
     if (ctxt->attsDefault != NULL) 
         xmlHashFree(ctxt->attsDefault, (xmlHashDeallocator) xmlFree);
+    if (ctxt->attsSpecial != NULL)
+        xmlHashFree(ctxt->attsSpecial, NULL);
 
 #ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)

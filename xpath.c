@@ -1486,6 +1486,178 @@ void xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs);
     }
 
 /**
+ * xmlXPathCompareNodeSetFloat:
+ * @ctxt:  the XPath Parser context
+ * @inf:  less than (1) or greater than (0)
+ * @strict:  is the comparison strict
+ * @arg:  the node set
+ * @f:  the value
+ *
+ * Implement the compare operation between a nodeset and a number
+ *     @ns < @val    (1, 1, ...
+ *     @ns <= @val   (1, 0, ...
+ *     @ns > @val    (0, 1, ...
+ *     @ns >= @val   (0, 0, ...
+ *
+ * If one object to be compared is a node-set and the other is a number,
+ * then the comparison will be true if and only if there is a node in the
+ * node-set such that the result of performing the comparison on the number
+ * to be compared and on the result of converting the string-value of that
+ * node to a number using the number function is true.
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathCompareNodeSetFloat(xmlXPathParserContextPtr ctxt, int inf, int strict,
+	                    xmlXPathObjectPtr arg, xmlXPathObjectPtr f) {
+    int i, ret = 0;
+    xmlNodeSetPtr ns;
+    xmlChar *str2;
+
+    if ((f == NULL) || (arg == NULL) || (arg->type != XPATH_NODESET)) {
+	xmlXPathFreeObject(arg);
+	xmlXPathFreeObject(f);
+        return(0);
+    }
+    ns = arg->nodesetval;
+    for (i = 0;i < ns->nodeNr;i++) {
+         str2 = xmlNodeGetContent(ns->nodeTab[i]);
+	 if (str2 != NULL) {
+	     valuePush(ctxt,
+		       xmlXPathNewString(str2));
+	     xmlFree(str2);
+	     xmlXPathNumberFunction(ctxt, 1);
+	     valuePush(ctxt, xmlXPathObjectCopy(f));
+	     ret = xmlXPathCompareValues(ctxt, inf, strict);
+	     if (ret)
+		 break;
+	 }
+    }
+    xmlXPathFreeObject(arg);
+    xmlXPathFreeObject(f);
+    return(ret);
+}
+
+/**
+ * xmlXPathCompareNodeSetString:
+ * @ctxt:  the XPath Parser context
+ * @inf:  less than (1) or greater than (0)
+ * @strict:  is the comparison strict
+ * @arg:  the node set
+ * @s:  the value
+ *
+ * Implement the compare operation between a nodeset and a string
+ *     @ns < @val    (1, 1, ...
+ *     @ns <= @val   (1, 0, ...
+ *     @ns > @val    (0, 1, ...
+ *     @ns >= @val   (0, 0, ...
+ *
+ * If one object to be compared is a node-set and the other is a string,
+ * then the comparison will be true if and only if there is a node in
+ * the node-set such that the result of performing the comparison on the
+ * string-value of the node and the other string is true.
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
+	                    xmlXPathObjectPtr arg, xmlXPathObjectPtr s) {
+    int i, ret = 0;
+    xmlNodeSetPtr ns;
+    xmlChar *str2;
+
+    if ((s == NULL) || (arg == NULL) || (arg->type != XPATH_NODESET)) {
+	xmlXPathFreeObject(arg);
+	xmlXPathFreeObject(s);
+        return(0);
+    }
+    ns = arg->nodesetval;
+    for (i = 0;i < ns->nodeNr;i++) {
+         str2 = xmlNodeGetContent(ns->nodeTab[i]);
+	 if (str2 != NULL) {
+	     valuePush(ctxt,
+		       xmlXPathNewString(str2));
+	     xmlFree(str2);
+	     valuePush(ctxt, xmlXPathObjectCopy(s));
+	     ret = xmlXPathCompareValues(ctxt, inf, strict);
+	     if (ret)
+		 break;
+	 }
+    }
+    xmlXPathFreeObject(arg);
+    xmlXPathFreeObject(s);
+    return(ret);
+}
+
+/**
+ * xmlXPathCompareNodeSets:
+ * @ctxt:  the XPath Parser context
+ * @op:  less than (-1), equal (0) or greater than (1)
+ * @strict:  is the comparison strict
+ * @ns1:  the fist node set
+ * @ns2:  the second node set
+ *
+ * Implement the compare operation on nodesets:
+ *
+ * If both objects to be compared are node-sets, then the comparison will be true if
+ * and only if there is a node in the first node-set and a node in the second node-set
+ * such that the result of performing the comparison on the string-values of the two
+ * nodes is true. 
+ */
+int
+xmlXPathCompareNodeSets(xmlXPathParserContextPtr ctxt, int inf, int strict,
+	                xmlXPathObjectPtr ns1, xmlXPathObjectPtr ns2) {
+    TODO
+    return(0);
+}
+
+/**
+ * xmlXPathCompareNodeSetValue:
+ * @ctxt:  the XPath Parser context
+ * @inf:  less than (1) or greater than (0)
+ * @strict:  is the comparison strict
+ * @arg:  the node set
+ * @val:  the value
+ *
+ * Implement the compare operation between a nodeset and a value
+ *     @ns < @val    (1, 1, ...
+ *     @ns <= @val   (1, 0, ...
+ *     @ns > @val    (0, 1, ...
+ *     @ns >= @val   (0, 0, ...
+ *
+ * If one object to be compared is a node-set and the other is a boolean, then the
+ * comparison will be true if and only if the result of performing the comparison
+ * on the boolean and on the result of converting the node-set to a boolean using
+ * the boolean function is true.
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
+	                    xmlXPathObjectPtr arg, xmlXPathObjectPtr val) {
+    if ((val == NULL) || (arg == NULL) || (arg->type != XPATH_NODESET))
+        return(0);
+
+    switch(val->type) {
+        case XPATH_NUMBER:
+	    return(xmlXPathCompareNodeSetFloat(ctxt, inf, strict, arg, val));
+        case XPATH_NODESET:
+	    return(xmlXPathCompareNodeSets(ctxt, inf, strict, arg, val));
+        case XPATH_STRING:
+	    return(xmlXPathCompareNodeSetString(ctxt, inf, strict, arg, val));
+        case XPATH_BOOLEAN:
+	    valuePush(ctxt, arg);
+	    xmlXPathBooleanFunction(ctxt, 1);
+	    valuePush(ctxt, val);
+	    return(xmlXPathCompareValues(ctxt, inf, strict));
+	default:
+	    TODO
+	    return(0);
+    }
+    return(0);
+}
+
+/**
  * xmlXPathEqualNodeSetString
  * @arg:  the nodeset object argument
  * @str:  the string to compare to.
@@ -1781,10 +1953,11 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
     return(ret);
 }
 
+
 /**
  * xmlXPathCompareValues:
  * @ctxt:  the XPath Parser context
- * @inf:  less than (1) or greater than (2)
+ * @inf:  less than (1) or greater than (0)
  * @strict:  is the comparison strict
  *
  * Implement the compare operation on XPath objects: 
@@ -1802,6 +1975,8 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
  * will be true if and only if the first number is greater than the second
  * number. The >= comparison will be true if and only if the first number
  * is greater than or equal to the second number.
+ *
+ * Returns 1 if the comparaison succeeded, 0 if it failed
  */
 int
 xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
@@ -1809,18 +1984,27 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
     xmlXPathObjectPtr arg1, arg2;
 
     arg2 = valuePop(ctxt);
-    if ((arg2 == NULL) || (arg2->type == XPATH_NODESET)) {
-        if (arg2 != NULL)
-	    xmlXPathFreeObject(arg2);
+    if (arg2 == NULL) {
 	XP_ERROR0(XPATH_INVALID_OPERAND);
     }
   
     arg1 = valuePop(ctxt);
-    if ((arg1 == NULL) || (arg1->type == XPATH_NODESET)) {
-        if (arg1 != NULL)
-	    xmlXPathFreeObject(arg1);
+    if (arg1 == NULL) {
 	xmlXPathFreeObject(arg2);
 	XP_ERROR0(XPATH_INVALID_OPERAND);
+    }
+
+    if ((arg2->type == XPATH_NODESET) || (arg1->type == XPATH_NODESET)) {
+	if ((arg2->type == XPATH_NODESET) && (arg1->type == XPATH_NODESET)) {
+	    ret = xmlXPathCompareNodeSets(ctxt, inf, strict, arg1, arg2);
+	} else {
+	    if (arg1->type == XPATH_NODESET) {
+		ret = xmlXPathCompareNodeSetValue(ctxt, inf, strict, arg1, arg2);
+	    } else {
+		ret = xmlXPathCompareNodeSetValue(ctxt, !inf, !strict, arg2, arg2);
+	    }
+	}
+	return(ret);
     }
 
     if (arg1->type != XPATH_NUMBER) {
@@ -4672,6 +4856,10 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PathExpr: AbbrRelLocation\n");
 #endif
+		    lc = 1;
+		    break;
+		} else if ((NXT(len) == '<') || (NXT(len) == '>') ||
+			   (NXT(len) == '=')) {
 		    lc = 1;
 		    break;
 		} else {

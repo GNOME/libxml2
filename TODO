@@ -35,7 +35,12 @@ TODO:
 - htmlParseDoc has parameter encoding which is not used.
   Function htmlCreateDocParserCtxt ignore it.
 - bug reported by Michael Meallin on validation problems
+  => Actually means I need to add support (and warn) for non-deterministic
+     content model.
 - fix realloc() usage.
+- compliance to XML-Namespace checking, see section 6 of
+  http://www.w3.org/TR/REC-xml-names/
+- Fix output of <tst val="x&#xA;y"/>
 
 TODO:
 =====

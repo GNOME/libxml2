@@ -110,6 +110,7 @@ xmlXPathParserContextPtr
 			  			 xmlXPathContextPtr ctxt);
 void		  xmlXPathFreeParserContext	(xmlXPathParserContextPtr ctxt);
 
+/* TODO: remap to xmlXPathValuePop and Push */
 xmlXPathObjectPtr valuePop			(xmlXPathParserContextPtr ctxt);
 int		  valuePush			(xmlXPathParserContextPtr ctxt,
 					 	xmlXPathObjectPtr value);
@@ -204,6 +205,7 @@ void xmlXPathSumFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathFloorFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs);
+void xmlXPathBooleanFunction(xmlXPathParserContextPtr ctxt, int nargs);
 #ifdef __cplusplus
 }
 #endif

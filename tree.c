@@ -2425,6 +2425,8 @@ xmlCopyNamespaceList(xmlNsPtr cur) {
     return(ret);
 }
 
+static xmlNodePtr
+xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
 /**
  * xmlCopyProp:
  * @target:  the element where the attribute will be grafted
@@ -2439,7 +2441,9 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
     xmlAttrPtr ret;
 
     if (cur == NULL) return(NULL);
-    if (cur->parent != NULL)
+    if (target != NULL)
+	ret = xmlNewDocProp(target->doc, cur->name, NULL);
+    else if (cur->parent != NULL)
 	ret = xmlNewDocProp(cur->parent->doc, cur->name, NULL);
     else if (cur->children != NULL)
 	ret = xmlNewDocProp(cur->children->doc, cur->name, NULL);
@@ -2459,11 +2463,11 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
     if (cur->children != NULL) {
 	xmlNodePtr tmp;
 
-	ret->children = xmlCopyNodeList(cur->children);
+	ret->children = xmlStaticCopyNodeList(cur->children, ret->doc, (xmlNodePtr) ret);
 	ret->last = NULL;
 	tmp = ret->children;
 	while (tmp != NULL) {
-	    tmp->parent = (xmlNodePtr)ret;
+	    /* tmp->parent = (xmlNodePtr)ret; */
 	    if (tmp->next == NULL)
 	        ret->last = tmp;
 	    tmp = tmp->next;
@@ -4022,10 +4026,14 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
  */
 xmlChar *
 xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
-    xmlAttrPtr prop = node->properties;
+    xmlAttrPtr prop;
     xmlDocPtr doc;
     xmlNsPtr ns;
 
+    if (node == NULL)
+	return(NULL);
+
+    prop = node->properties;
     if (namespace == NULL)
 	return(xmlGetProp(node, name));
     while (prop != NULL) {
@@ -4115,6 +4123,73 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	prop = prop->next;
     }
     prop = xmlNewProp(node, name, value);
+    return(prop);
+}
+
+/**
+ * xmlSetNsProp:
+ * @node:  the node
+ * @ns:  the namespace definition
+ * @name:  the attribute name
+ * @value:  the attribute value
+ *
+ * Set (or reset) an attribute carried by a node.
+ * The ns structure must be in scope, this is not checked.
+ *
+ * Returns the attribute pointer.
+ */
+xmlAttrPtr
+xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
+	     const xmlChar *value) {
+    xmlAttrPtr prop;
+    
+    if ((node == NULL) || (name == NULL))
+	return(NULL);
+
+    if (ns == NULL)
+	return(xmlSetProp(node, name, value));
+    if (ns->href == NULL)
+	return(NULL);
+    prop = node->properties;
+
+    while (prop != NULL) {
+	/*
+	 * One need to have
+	 *   - same attribute names
+	 *   - and the attribute carrying that namespace
+	 *         or
+	 *         no namespace on the attribute and the element carrying it
+	 */
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (((prop->ns == NULL) && (node->ns != NULL) &&
+	      (xmlStrEqual(node->ns->href, ns->href))) ||
+	     ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))))) {
+	    if (prop->children != NULL) 
+	        xmlFreeNodeList(prop->children);
+	    prop->children = NULL;
+	    prop->last = NULL;
+	    prop->ns = ns;
+	    if (value != NULL) {
+	        xmlChar *buffer;
+		xmlNodePtr tmp;
+
+		buffer = xmlEncodeEntitiesReentrant(node->doc, value);
+		prop->children = xmlStringGetNodeList(node->doc, buffer);
+		prop->last = NULL;
+		tmp = prop->children;
+		while (tmp != NULL) {
+		    tmp->parent = (xmlNodePtr) prop;
+		    if (tmp->next == NULL)
+			prop->last = tmp;
+		    tmp = tmp->next;
+		}
+		xmlFree(buffer);
+	    }	
+	    return(prop);
+        }
+	prop = prop->next;
+    }
+    prop = xmlNewNsProp(node, ns, name, value);
     return(prop);
 }
 

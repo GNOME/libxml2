@@ -510,7 +510,7 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	case XML_ELEMENT_NODE:
 	    fprintf(output, shift);
 	    fprintf(output, "ELEMENT ");
-	    if (node->ns != NULL) {
+	    if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
 		xmlDebugDumpString(output, node->ns->prefix);
 	        fprintf(output, ":");
 	    }

@@ -1,3 +1,16 @@
+Mon Jan 15 20:24:18 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fixed the comaprision of values and nodelists,
+	  need to compare nodelist still ...
+	* debugXML.c: avoided a possible core dump
+	* HTMLparser.c: cleanup
+	* nanohttp.c: contributed fix.
+	* tree.c: fixes in properties handling added xmlSetNsProp
+	  needed by libxslt
+	* xpathInternals.h: exported xmlXPathBooleanFunction, added a 
+	  comment
+	* TODO: updated
+
 Sat Jan  6 22:05:09 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c parserInternals.c: applied Bjorn Reese optimization

@@ -377,6 +377,7 @@ xmlNanoHTTPNewCtxt(const char *URL) {
     memset(ret, 0, sizeof(xmlNanoHTTPCtxt));
     ret->port = 80;
     ret->returnValue = 0;
+    ret->fd = -1;
 
     xmlNanoHTTPScanURL(ret, URL);
 

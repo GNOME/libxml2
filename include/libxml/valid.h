@@ -81,6 +81,10 @@ typedef xmlIDTable *xmlIDTablePtr;
 typedef struct _xmlHashTable xmlRefTable;
 typedef xmlRefTable *xmlRefTablePtr;
 
+/* helper */
+xmlChar *           xmlSplitQName2	(const xmlChar *name,
+					 xmlChar **prefix);
+
 /* Notation */
 xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,

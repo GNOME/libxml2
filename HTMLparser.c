@@ -926,7 +926,7 @@ htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
 	return(1);
     }
     if (!htmlOmittedDefaultValue)
-	return;
+	return(0);
     for (i = 0; htmlNoContentElements[i] != NULL; i++) {
 	if (xmlStrEqual(tag, BAD_CAST htmlNoContentElements[i])) {
 #ifdef DEBUG
@@ -4570,6 +4570,16 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	    case XML_PARSER_SYSTEM_LITERAL:
 		xmlGenericError(xmlGenericErrorContext,
 			"HPP: internal error, state == XML_PARSER_SYSTEM_LITERAL\n");
+		ctxt->instate = XML_PARSER_CONTENT;
+		ctxt->checkIndex = 0;
+#ifdef DEBUG_PUSH
+		xmlGenericError(xmlGenericErrorContext,
+			"HPP: entering CONTENT\n");
+#endif
+		break;
+	    case XML_PARSER_IGNORE:
+		xmlGenericError(xmlGenericErrorContext,
+			"HPP: internal error, state == XML_PARSER_IGNORE\n");
 		ctxt->instate = XML_PARSER_CONTENT;
 		ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH

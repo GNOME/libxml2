@@ -557,8 +557,12 @@ processingInstructionDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *target,
     callbacks++;
     if (quiet)
 	return;
-    fprintf(stdout, "SAX.processingInstruction(%s, %s)\n",
-            (char *) target, (char *) data);
+    if (data != NULL)
+	fprintf(stdout, "SAX.processingInstruction(%s, %s)\n",
+		(char *) target, (char *) data);
+    else
+	fprintf(stdout, "SAX.processingInstruction(%s, NULL)\n",
+		(char *) target);
 }
 
 /**

@@ -1,3 +1,8 @@
+Mon Oct 27 11:11:29 EST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* testSAX.c: fix bug #125592 need a NULL check
+	* include/libxml/chvalid.h: rename a parameter
+
 Mon Oct 27 09:43:48 EST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch from #123105 about defaulted attributes

@@ -50,7 +50,7 @@ struct _xmlChRangeGroup {
  * Range checking routine
  */
 XMLPUBFUN int XMLCALL
-		xmlCharInRange(unsigned int val, const xmlChRangeGroupPtr group);
+		xmlCharInRange(unsigned int val, const xmlChRangeGroupPtr rptr);
 
 
 /**

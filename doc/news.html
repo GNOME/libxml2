@@ -93,6 +93,17 @@ to test those</p>
 <ul><li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a>
 </li></ul>
+<h3>2.4.22: May 27 2002</h3>
+<ul>
+<li>a number of bug fixes: configure scripts, base handling, parser, memory
+    usage, HTML parser, XPath, documentation (Christian Cornelssen),
+    indentation, URI parsing </li>
+<li>Optimizations for XMLSec, fixing and making public some of the network
+    protocol handlers (Aleksey)</li>
+<li>performance patch from Gary Pennington</li>
+<li>Charles Bozeman provided date and time support for XML Schemas
+  datatypes</li>
+</ul>
 <h3>2.4.21: Apr 29 2002</h3>
 <p>This release is both a bug fix release and also contains the early XML
 Schemas <a href="http://www.w3.org/TR/xmlschema-1/">structures</a> and <a href="http://www.w3.org/TR/xmlschema-2/">datatypes</a> code, beware, all
@@ -573,8 +584,8 @@ it's actually not compiled in by default. The real fixes are:</p>
 </ul>
 <h3>2.1.0 and 1.8.8: June 29 2000</h3>
 <ul>
-<li>1.8.8 is mostly a commodity package for upgrading to libxml2 according to
-    <a href="upgrade.html">new instructions</a>. It fixes a nasty problem
+<li>1.8.8 is mostly a commodity package for upgrading to libxml2 according
+    to <a href="upgrade.html">new instructions</a>. It fixes a nasty problem
     about &amp;#38; charref parsing</li>
 <li>2.1.0 also ease the upgrade from libxml v1 to the recent version. it
     also contains numerous fixes and enhancements:
@@ -624,8 +635,9 @@ it's actually not compiled in by default. The real fixes are:</p>
   RPMs</li>
 <li>This version is now the head in the Gnome CVS base, the old one is
     available under the tag LIB_XML_1_X</li>
-<li>This includes a very large set of changes. From a  programmatic point of
-    view applications should not have to be modified too much, check the <a href="upgrade.html">upgrade page</a>
+<li>This includes a very large set of changes. From a  programmatic point
+    of view applications should not have to be modified too much, check the
+    <a href="upgrade.html">upgrade page</a>
 </li>
 <li>Some interfaces may changes (especially a bit about encoding).</li>
 <li>the updates includes:

@@ -178,15 +178,16 @@ following:</p>
 <li>find all occurrences where the xmlDoc <strong>root</strong> field is
     used and change it to <strong>xmlRootNode</strong>
 </li>
-<li>similarly find all occurrences where the xmlNode <strong>childs</strong>
-    field is used and change it to <strong>xmlChildrenNode</strong>
+<li>similarly find all occurrences where the xmlNode
+    <strong>childs</strong> field is used and change it to
+    <strong>xmlChildrenNode</strong>
 </li>
 <li>add a <strong>LIBXML_TEST_VERSION</strong> macro somewhere in your
     <strong>main()</strong> or in the library init entry point</li>
 <li>Recompile, check compatibility, it should still work</li>
-<li>Change your configure script to look first for xml2-config and fall back
-    using xml-config . Use the --cflags and --libs output of the command as
-    the Include and Linking parameters needed to use libxml.</li>
+<li>Change your configure script to look first for xml2-config and fall
+    back using xml-config . Use the --cflags and --libs output of the command
+    as the Include and Linking parameters needed to use libxml.</li>
 <li>install libxml2-2.3.x and  libxml2-devel-2.3.x (libxml-1.8.y and
     libxml-devel-1.8.y can be kept simultaneously)</li>
 <li>remove your config.cache, relaunch your configuration mechanism, and

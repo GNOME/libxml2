@@ -105,8 +105,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>Well what is validation and what is a DTD ?</p>
 <p>DTD is the acronym for Document Type Definition. This is a description of
 the content for a family of XML files. This is part of the XML 1.0
-specification, and allows to describe and check that a given document instance
-conforms to a set of rules detailing its structure and content.</p>
+specification, and allows to describe and check that a given document
+instance conforms to a set of rules detailing its structure and content.</p>
 <p>Validation is the process of checking a document against a DTD (more
 generally against a set of construction rules).</p>
 <p>The validation process and building DTDs are the two most difficult parts
@@ -158,9 +158,9 @@ is placed in the file <code>mydtd</code> in the subdirectory
 <p>The following declares an element <code>spec</code>:</p>
 <p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
 <p>it also expresses that the spec element contains one <code>front</code>,
-one <code>body</code> and one optional <code>back</code> children elements
-in this order. The declaration of one element of the structure and its
-content are done in a single declaration. Similarly the following declares
+one <code>body</code> and one optional <code>back</code> children elements in
+this order. The declaration of one element of the structure and its content
+are done in a single declaration. Similarly the following declares
 <code>div1</code> elements:</p>
 <p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2?)&gt;</code></p>
 <p>means div1 contains one <code>head</code> then a series of optional

@@ -160,8 +160,8 @@ libxml2</p>
   </li>
   <li><em>Can I embed libxml in a proprietary application ?</em>
     <p>Yes. The MIT License allows you to also keep proprietary the changes
-    you made to libxml, but it would be graceful to provide back bug fixes and
-    improvements as patches for possible incorporation in the main
+    you made to libxml, but it would be graceful to provide back bug fixes
+    and improvements as patches for possible incorporation in the main
     development tree</p>
   </li>
 </ol>
@@ -568,6 +568,18 @@ to test those</p>
 <ul>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+</ul>
+
+<h3>2.4.22: May 27 2002</h3>
+<ul>
+  <li>a number of bug fixes: configure scripts, base handling, parser, memory
+    usage, HTML parser, XPath, documentation (Christian Cornelssen),
+    indentation, URI parsing </li>
+  <li>Optimizations for XMLSec, fixing and making public some of the network
+    protocol handlers (Aleksey)</li>
+  <li>performance patch from Gary Pennington</li>
+  <li>Charles Bozeman provided date and time support for XML Schemas
+  datatypes</li>
 </ul>
 
 <h3>2.4.21: Apr 29 2002</h3>
@@ -1116,8 +1128,8 @@ it's actually not compiled in by default. The real fixes are:</p>
 
 <h3>2.1.0 and 1.8.8: June 29 2000</h3>
 <ul>
-  <li>1.8.8 is mostly a commodity package for upgrading to libxml2 according to
-    <a href="upgrade.html">new instructions</a>. It fixes a nasty problem
+  <li>1.8.8 is mostly a commodity package for upgrading to libxml2 according
+    to <a href="upgrade.html">new instructions</a>. It fixes a nasty problem
     about &amp;#38; charref parsing</li>
   <li>2.1.0 also ease the upgrade from libxml v1 to the recent version. it
     also contains numerous fixes and enhancements:
@@ -1169,9 +1181,9 @@ it's actually not compiled in by default. The real fixes are:</p>
   RPMs</li>
   <li>This version is now the head in the Gnome CVS base, the old one is
     available under the tag LIB_XML_1_X</li>
-  <li>This includes a very large set of changes. From a  programmatic point of
-    view applications should not have to be modified too much, check the <a
-    href="upgrade.html">upgrade page</a></li>
+  <li>This includes a very large set of changes. From a  programmatic point
+    of view applications should not have to be modified too much, check the
+    <a href="upgrade.html">upgrade page</a></li>
   <li>Some interfaces may changes (especially a bit about encoding).</li>
   <li>the updates includes:
     <ul>
@@ -1421,8 +1433,8 @@ or libxslt wrappers or bindings:</p>
   <li>There is support for libxml2 in the DOM module of PHP.</li>
 </ul>
 
-<p>The distribution includes a set of Python bindings, which are guaranteed to
-be maintained as part of the library in the future, though the Python
+<p>The distribution includes a set of Python bindings, which are guaranteed
+to be maintained as part of the library in the future, though the Python
 interface have not yet reached the maturity of the C API.</p>
 
 <p>To install the Python bindings there are 2 options:</p>
@@ -1468,8 +1480,7 @@ prefix is removed and the casing convention are kept). All node seen at the
 binding level share the same subset of accessors:</p>
 <ul>
   <li><code>name</code> : returns the node name</li>
-  <li><code>type</code> : returns a string indicating the node
-    type</li>
+  <li><code>type</code> : returns a string indicating the node type</li>
   <li><code>content</code> : returns the content of the node, it is based on
     xmlNodeGetContent() and hence is recursive.</li>
   <li><code>parent</code> , <code>children</code>, <code>last</code>,
@@ -1857,8 +1868,8 @@ interface.</p>
 
 <p>DTD is the acronym for Document Type Definition. This is a description of
 the content for a family of XML files. This is part of the XML 1.0
-specification, and allows to describe and check that a given document instance
-conforms to a set of rules detailing its structure and content.</p>
+specification, and allows to describe and check that a given document
+instance conforms to a set of rules detailing its structure and content.</p>
 
 <p>Validation is the process of checking a document against a DTD (more
 generally against a set of construction rules).</p>
@@ -1925,9 +1936,9 @@ is placed in the file <code>mydtd</code> in the subdirectory
 <p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
 
 <p>it also expresses that the spec element contains one <code>front</code>,
-one <code>body</code> and one optional <code>back</code> children elements
-in this order. The declaration of one element of the structure and its
-content are done in a single declaration. Similarly the following declares
+one <code>body</code> and one optional <code>back</code> children elements in
+this order. The declaration of one element of the structure and its content
+are done in a single declaration. Similarly the following declares
 <code>div1</code> elements:</p>
 
 <p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2?)&gt;</code></p>
@@ -2397,8 +2408,8 @@ detecting such a tag on input. Except for that the processing is the same
     predefined entities like &amp;copy; for the Copyright sign.</li>
 </ol>
 
-<p>More over when compiled on an Unix platform with iconv support the full set
-of encodings supported by iconv can be instantly be used by libxml. On a
+<p>More over when compiled on an Unix platform with iconv support the full
+set of encodings supported by iconv can be instantly be used by libxml. On a
 linux machine with glibc-2.1 the list of supported encodings and aliases fill
 3 full pages, and include UCS-4, the full set of ISO-Latin encodings, and the
 various Japanese ones.</p>
@@ -2583,8 +2594,8 @@ and this was a problem. The <a
 href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
 new output handler with the closing call deactivated:</p>
 <ol>
-  <li>First define a new I/O output allocator where the output don't close the
-    file:
+  <li>First define a new I/O output allocator where the output don't close
+    the file:
     <pre>xmlOutputBufferPtr
 xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
     xmlOutputBufferPtr ret;
@@ -2600,6 +2611,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 
@@ -3338,10 +3350,10 @@ value in the long-term. Example:</p>
 
 <p>The namespace value has to be an absolute URL, but the URL doesn't have to
 point to any existing resource on the Web. It will bind all the element and
-attributes with that URL. I suggest to use an URL within a domain you control,
-and that the URL should contain some kind of version information if possible.
-For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is a good
-namespace scheme.</p>
+attributes with that URL. I suggest to use an URL within a domain you
+control, and that the URL should contain some kind of version information if
+possible. For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is a
+good namespace scheme.</p>
 
 <p>Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
@@ -3466,14 +3478,15 @@ following:</p>
   <li>install the  libxml-1.8.8 (and libxml-devel-1.8.8) packages</li>
   <li>find all occurrences where the xmlDoc <strong>root</strong> field is
     used and change it to <strong>xmlRootNode</strong></li>
-  <li>similarly find all occurrences where the xmlNode <strong>childs</strong>
-    field is used and change it to <strong>xmlChildrenNode</strong></li>
+  <li>similarly find all occurrences where the xmlNode
+    <strong>childs</strong> field is used and change it to
+    <strong>xmlChildrenNode</strong></li>
   <li>add a <strong>LIBXML_TEST_VERSION</strong> macro somewhere in your
     <strong>main()</strong> or in the library init entry point</li>
   <li>Recompile, check compatibility, it should still work</li>
-  <li>Change your configure script to look first for xml2-config and fall back
-    using xml-config . Use the --cflags and --libs output of the command as
-    the Include and Linking parameters needed to use libxml.</li>
+  <li>Change your configure script to look first for xml2-config and fall
+    back using xml-config . Use the --cflags and --libs output of the command
+    as the Include and Linking parameters needed to use libxml.</li>
   <li>install libxml2-2.3.x and  libxml2-devel-2.3.x (libxml-1.8.y and
     libxml-devel-1.8.y can be kept simultaneously)</li>
   <li>remove your config.cache, relaunch your configuration mechanism, and

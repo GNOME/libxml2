@@ -205,8 +205,8 @@ real use case</a>,  xmlDocDump() closes the FILE * passed by the application
 and this was a problem. The <a href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
 new output handler with the closing call deactivated:</p>
 <ol>
-<li>First define a new I/O output allocator where the output don't close the
-    file:
+<li>First define a new I/O output allocator where the output don't close
+    the file:
     <pre>xmlOutputBufferPtr
 xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
     xmlOutputBufferPtr ret;
@@ -222,6 +222,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

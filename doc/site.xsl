@@ -399,7 +399,11 @@
       <li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li>
       <li><a href="http://www.blastwave.org/packages.php/libxml2">Solaris binaries</a></li>
       <li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
+      <li><a href="http://libxmlplusplus.sourceforge.net/">C++ bindings</a></li>
+      <li><a href="http://www.zend.com/php5/articles/php5-xmlphp.php#Heading4">PHP bindings</a></li>
       <li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
+      <li><a href="http://rubyforge.org/projects/xml-tools/">Ruby bindings</a></li>
+      <li><a href="http://tclxml.sourceforge.net/">Tcl bindings</a></li>
       <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li>
     </ul>
   </xsl:variable>

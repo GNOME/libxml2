@@ -1,3 +1,14 @@
+Fri Apr  8 21:58:04 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Added substitution group constraints; changed
+	  the build of the pre-computed substitution groups. Channeled
+	  errors during xsi assembling of schemas to the validation
+	  context. Fixed a big memory leak, which occured when using
+	  IDCs: the precomputed value of attributes was not freed if
+	  the attribute did not resolve to an IDC field (discovered
+	  with the help of Randy J. Ray's schema, posted to the
+	  xmlschema-dev maling list).
+
 Fri Apr  8 13:22:01 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Added "Particle correct 2" to parsing of model groups.

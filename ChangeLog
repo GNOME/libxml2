@@ -1,3 +1,23 @@
+Fri Apr  8 13:22:01 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Added "Particle correct 2" to parsing of model groups.
+	  Added handling substitution groups inside <choice> and <sequence>;
+	  for <all> this is not supported yet. Changed circular checks for
+	  model groups definitions. "memberTypes" are processed at different
+	  levels now: component resolution first, construction later; this
+	  goes hand in hand with a global change to handle component
+	  resolution in a distinct phase. Fixed invalid default values for
+	  elements to mark the schema as invalid; this just resulted in an
+	  error report previously, but the schema was handled as valid.
+	  Separated the assignment of the model groups to referencing
+	  model group definition references (i.e. particles); this was
+	  needed to perform the circularity check for model group definitions.
+	  Added "Element Declaration Properties Correct (e-props-correct)"
+	  constraints. Separated component resolution for simple/complex
+	  types.
+	* include/libxml/schemasInternals.h: Added a flag for substitution
+	  group heads.	  
+
 Wed Apr  6 23:14:03 CEST 2005 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.*: make install cleanup

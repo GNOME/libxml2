@@ -673,6 +673,12 @@ struct _xmlSchemaType {
  * substitution group exclusions: "restriction"
  */
 #define XML_SCHEMAS_ELEM_FINAL_RESTRICTION        1 << 16
+/**
+ * XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD:
+ *
+ * the declaration is a substitution group head
+ */
+#define XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD        1 << 17
 
 
 typedef struct _xmlSchemaElement xmlSchemaElement;
@@ -699,7 +705,7 @@ struct _xmlSchemaElement {
     const xmlChar *substGroupNs;
     const xmlChar *scope;
     const xmlChar *value;
-    struct _xmlSchemaElement *refDecl; /* the element declaration if a particle */
+    struct _xmlSchemaElement *refDecl; /* This will now be used for the substitution group affiliation */
     xmlRegexpPtr contModel;
     xmlSchemaContentType contentType;
     const xmlChar *refPrefix;
@@ -850,7 +856,7 @@ struct _xmlSchema {
     int preserve;        /* whether to free the document */
     int counter; /* used to give ononymous components unique names */
     xmlHashTablePtr idcDef;
-    void *volatiles; /* Misc. helper items (e.g. reference items) */
+    void *volatiles; /* Misc. helper items (e.g. reference items) */    
 };
 
 XMLPUBFUN void XMLCALL         xmlSchemaFreeType        (xmlSchemaTypePtr type);

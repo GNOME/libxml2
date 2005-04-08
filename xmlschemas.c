@@ -154,6 +154,10 @@ static const xmlChar *xmlSchemaElemModelGrRef = (const xmlChar *)
      (item->type == XML_SCHEMA_TYPE_CHOICE) ||   \
      (item->type == XML_SCHEMA_TYPE_ALL))
 
+#define ELEM_TYPE(item) item->subtypes
+
+#define SUBST_GROUP_AFF(item) item->refDecl
+
 #if 0
 #define WXS_GET_NEXT(item) xmlSchemaGetNextComponent((xmlSchemaBasicItemPtr) item)
 #endif
@@ -240,6 +244,7 @@ struct _xmlSchemaParserCtxt {
     const xmlChar **localImports; /* list of locally imported namespaces */
     int sizeLocalImports;
     int nbLocalImports;
+    xmlHashTablePtr substGroups;
 };
 
 
@@ -353,6 +358,7 @@ struct _xmlSchemaModelGroup {
     xmlNodePtr node;
 };
 
+#define XML_SCHEMA_MODEL_GROUP_DEF_MARKED 1<<0
 /**
  * xmlSchemaModelGroupDef:
  *
@@ -369,6 +375,7 @@ struct _xmlSchemaModelGroupDef {
     const xmlChar *name;
     const xmlChar *targetNamespace;
     xmlNodePtr node;
+    int flags;
 };
 
 typedef struct _xmlSchemaIDC xmlSchemaIDC;
@@ -629,6 +636,18 @@ struct _xmlSchemaInclude {
     const xmlChar *targetNamespace;
 };
 
+/**
+ * xmlSchemaSubstGroup:
+ *
+ *
+ */
+typedef struct _xmlSchemaSubstGroup xmlSchemaSubstGroup;
+typedef xmlSchemaSubstGroup *xmlSchemaSubstGroupPtr;
+struct _xmlSchemaSubstGroup {
+    xmlSchemaElementPtr head;
+    xmlSchemaItemListPtr members;
+};
+
 /************************************************************************
  * 									*
  * 			Some predeclarations				*
@@ -672,8 +691,6 @@ xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
 		       xmlSchemaTypePtr type,
 		       const xmlChar *value,
 		       xmlSchemaValPtr *val);
-static xmlSchemaTypePtr
-xmlSchemaGetSimpleContentType(xmlSchemaTypePtr complexType);
 static int
 xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type);
 static xmlSchemaTreeItemPtr
@@ -2789,6 +2806,146 @@ xmlSchemaNewAnnot(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
     return (ret);
 }
 
+static xmlSchemaItemListPtr
+xmlSchemaNewItemList(void)
+{
+    xmlSchemaItemListPtr ret;
+    
+    ret = xmlMalloc(sizeof(xmlSchemaItemList));
+    if (ret == NULL) {
+	xmlSchemaPErrMemory(NULL,
+	    "allocating an item list structure", NULL);
+	return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlSchemaItemList));
+    return (ret);
+}
+
+/**
+ * xmlSchemaAddElementSubstitutionMember:
+ * @pctxt:  a schema parser context
+ * @head:  the head of the substitution group
+ * @member: the new member of the substitution group
+ *
+ * Allocate a new annotation structure.
+ *
+ * Returns the newly allocated structure or NULL in case or error
+ */
+static int
+xmlSchemaAddElementSubstitutionMember(xmlSchemaParserCtxtPtr pctxt,
+				      xmlSchemaElementPtr head,
+				      xmlSchemaElementPtr member)
+{
+    xmlSchemaSubstGroupPtr substGroup;
+
+    if (pctxt == NULL)
+	return (-1);
+
+    if (pctxt->substGroups == NULL) {
+	pctxt->substGroups = xmlHashCreateDict(10, pctxt->dict);
+	if (pctxt->substGroups == NULL)
+	    return (-1);
+    }
+    substGroup = xmlHashLookup2(pctxt->substGroups, head->name,
+	head->targetNamespace);
+    if (substGroup == NULL) {
+	int res;
+
+	substGroup = (xmlSchemaSubstGroupPtr) xmlMalloc(sizeof(xmlSchemaSubstGroup));
+	if (substGroup == NULL) {
+	    xmlSchemaPErrMemory(NULL,
+		"xmlSchemaAddElementSubstitution, allocating a substitution "
+		"group container",
+		NULL);
+	    return (-1);
+	}
+	substGroup->members = xmlSchemaNewItemList();
+	if (substGroup->members == NULL) {
+	    xmlFree(substGroup);
+	    return (-1);
+	}
+	substGroup->head = head;
+
+	res = xmlHashAddEntry2(pctxt->substGroups,
+	    head->name, head->targetNamespace, substGroup);
+	if (res != 0) {	
+	    xmlFree(substGroup->members);
+	    xmlFree(substGroup);
+	    xmlSchemaPErr(pctxt, member->node,
+		XML_SCHEMAP_INTERNAL,
+		"Internal error: xmlSchemaAddElementSubstitution, "
+		"failed to add a new substitution group container for "
+		"'%s'.\n", head->name, NULL);
+	    return (-1);	    
+	}	
+    }    
+    if (substGroup->members->items == NULL) {
+	substGroup->members->items = (void **) xmlMalloc(
+	    5 * sizeof(xmlSchemaElementPtr));
+	if (substGroup->members->items == NULL) {
+	    xmlSchemaPErrMemory(NULL,
+		"allocating list of substitution group members", NULL);
+	    return (-1);
+	}	
+	substGroup->members->sizeItems = 5;
+    } else if (substGroup->members->sizeItems <= 
+	    substGroup->members->nbItems) {
+	substGroup->members->sizeItems *= 2;
+	substGroup->members->items = (void **) xmlRealloc(
+	    substGroup->members->items, 
+	    substGroup->members->sizeItems * sizeof(xmlSchemaElementPtr));
+	if (substGroup->members->items == NULL) {
+	    xmlSchemaPErrMemory(NULL,
+		"re-allocating list of substitution group members", NULL);
+	    substGroup->members->sizeItems = 0;
+	    return (-1);
+	}	
+    }
+    ((xmlSchemaElementPtr *) substGroup->members->items)
+	[substGroup->members->nbItems++] = (void *) member;
+    return (0);
+}
+
+/**
+ * xmlSchemaGetElementSubstitutionGroup:
+ * @pctxt:  a schema parser context
+ * @head:  the head of the substitution group
+ * @member: the new member of the substitution group
+ *
+ * Allocate a new annotation structure.
+ *
+ * Returns the newly allocated structure or NULL in case or error
+ */
+static xmlSchemaSubstGroupPtr
+xmlSchemaGetElementSubstitutionGroup(xmlSchemaParserCtxtPtr pctxt,
+				     xmlSchemaElementPtr head)
+{
+    if (pctxt == NULL)
+	return (NULL);
+
+    if (pctxt->substGroups == NULL)
+	return (NULL);
+
+    return ((xmlSchemaSubstGroupPtr) xmlHashLookup2(pctxt->substGroups,
+	head->name, head->targetNamespace));
+}
+
+/**
+ * xmlSchemaFreeItemList:
+ * @annot:  a schema type structure
+ *
+ * Deallocate a annotation structure
+ */
+static void
+xmlSchemaFreeItemList(xmlSchemaItemListPtr list)
+{
+    if (list == NULL)
+	return;
+    if (list->items != NULL)
+	xmlFree(list->items);
+    xmlFree(list);
+}
+
 /**
  * xmlSchemaFreeAnnot:
  * @annot:  a schema type structure
@@ -2970,6 +3127,22 @@ xmlSchemaFreeQNameRef(xmlSchemaQNameRefPtr item)
     xmlFree(item);
 }
 
+/**
+ * xmlSchemaFreeQNameRef:
+ * @item: a QName reference structure
+ *
+ * Deallocatea a QName reference structure.
+ */
+static void
+xmlSchemaFreeSubstGroup(xmlSchemaSubstGroupPtr item)
+{
+    if (item == NULL)
+	return;
+    if (item->members != NULL)
+	xmlSchemaFreeItemList(item->members);
+    xmlFree(item);
+}
+
 static int
 xmlSchemaAddVolatile(xmlSchemaPtr schema,
 		     xmlSchemaBasicItemPtr item)
@@ -2977,14 +3150,12 @@ xmlSchemaAddVolatile(xmlSchemaPtr schema,
     xmlSchemaItemListPtr list;
     
     if (schema->volatiles == NULL) {
-	schema->volatiles = (void *) xmlMalloc(sizeof(xmlSchemaItemList));
+	schema->volatiles = (void *) xmlSchemaNewItemList();
 	if (schema->volatiles == NULL) {
 	    xmlSchemaPErrMemory(NULL,
 		"allocating list of volatiles", NULL);
 	    return (-1);
-	}
-	memset(schema->volatiles, 0, sizeof(xmlSchemaItemList));
-	
+	}	
     }
     list = (xmlSchemaItemListPtr) schema->volatiles;
     if (list->items == NULL) {
@@ -3258,9 +3429,7 @@ xmlSchemaFreeVolatiles(xmlSchemaPtr schema)
 		}
 	    }
 	}
-	if (list->items != NULL)
-	    xmlFree(list->items);
-	xmlFree(list);
+	xmlSchemaFreeItemList(list);
     }
 }
 /**
@@ -7527,23 +7696,9 @@ declaration_part:
 			    (!xmlStrEqual(attr->name, BAD_CAST "minOccurs")) &&
 			    (!xmlStrEqual(attr->name, BAD_CAST "form"))) 
 			{
-			    if (xmlStrEqual(attr->name, BAD_CAST "substitutionGroup")) {
-				/*
-				* 3.3.6 : 3 If there is a non-·absent· {substitution 
-				* group affiliation}, then {scope} must be global.
-				* TODO: This one is redundant, since the S4S does 
-				* prohibit this attribute on local declarations already; 
-				* so why an explicit error code? Weird spec.
-				* TODO: Think about hanling this equal to the other attributes.
-				*/
-				xmlSchemaPIllegalAttrErr(ctxt,
-				    XML_SCHEMAP_E_PROPS_CORRECT_3,
-				    NULL, (xmlSchemaTypePtr) decl, attr);
-			    } else {
-				xmlSchemaPIllegalAttrErr(ctxt,
-				    XML_SCHEMAP_S4S_ATTR_NOT_ALLOWED,
-				    NULL, (xmlSchemaTypePtr) decl, attr);
-			    }
+			    xmlSchemaPIllegalAttrErr(ctxt,
+				XML_SCHEMAP_S4S_ATTR_NOT_ALLOWED,
+				NULL, (xmlSchemaTypePtr) decl, attr);
 			}
 		    } else if ((!xmlStrEqual(attr->name, BAD_CAST "final")) && 
 			(!xmlStrEqual(attr->name, BAD_CAST "abstract")) && 
@@ -7582,7 +7737,10 @@ declaration_part:
 	    */
 	    attr = xmlSchemaGetPropNode(node, "final");	    
 	    if (attr == NULL) {
-		decl->flags |= XML_SCHEMAS_ELEM_FINAL_ABSENT;
+		if (schema->flags & XML_SCHEMAS_FINAL_DEFAULT_EXTENSION)
+		    decl->flags |= XML_SCHEMAS_ELEM_FINAL_EXTENSION;
+		if (schema->flags & XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION)
+		    decl->flags |= XML_SCHEMAS_ELEM_FINAL_RESTRICTION;
 	    } else {
 		attrValue = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);	    
 		if (xmlSchemaPValAttrBlockFinal(attrValue, &(decl->flags), 
@@ -7670,7 +7828,7 @@ declaration_part:
 		    "The attribute 'type' and the <complexType> child are "
 		    "mutually exclusive", NULL);		
 	    } else
-		decl->subtypes = xmlSchemaParseComplexType(ctxt, schema, child, 0);
+		ELEM_TYPE(decl) = xmlSchemaParseComplexType(ctxt, schema, child, 0);
 	    child = child->next;
 	} else if (IS_SCHEMA(child, "simpleType")) {
 	    /* 
@@ -7685,7 +7843,7 @@ declaration_part:
 		    "The attribute 'type' and the <simpleType> child are "
 		    "mutually exclusive", NULL);				
 	    } else
-		decl->subtypes = xmlSchemaParseSimpleType(ctxt, schema, child, 0);
+		ELEM_TYPE(decl) = xmlSchemaParseSimpleType(ctxt, schema, child, 0);
 	    child = child->next;
 	}	
 	while ((IS_SCHEMA(child, "unique")) ||
@@ -7769,6 +7927,11 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     * Mark the simple type as being of variety "union".
     */
     type->flags |= XML_SCHEMAS_TYPE_VARIETY_UNION;
+    /* 
+    * SPEC (Base type) (2) "If the <list> or <union> alternative is chosen,
+    * then the ·simple ur-type definition·."
+    */
+    type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE);
     /*
     * Check for illegal attributes.
     */
@@ -7934,6 +8097,11 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     * Mark the type as being of variety "list".
     */
     type->flags |= XML_SCHEMAS_TYPE_VARIETY_LIST;
+    /* 
+    * SPEC (Base type) (2) "If the <list> or <union> alternative is chosen,
+    * then the ·simple ur-type definition·."
+    */
+    type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE);
     /*
     * Check for illegal attributes.
     */
@@ -9484,7 +9652,7 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlNodePtr child = NULL;
     xmlAttrPtr attr;
     const xmlChar *oldcontainer, *container;
-    int min, max;
+    int min = 0, max = 0;
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);    
@@ -9504,7 +9672,8 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    min = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
 	    max = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, 
 		"(nonNegativeInteger | unbounded)");
-	}    
+	}
+	xmlSchemaPCheckParticleCorrect_2(ctxt, NULL, node, min, max);      
 	/* 
 	* Create a particle 
 	*/
@@ -9641,9 +9810,12 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	}
     }
     ctxt->container = oldcontainer;
-    if (withParticle)
-	return ((xmlSchemaTreeItemPtr) particle);
-    else
+    if (withParticle) {
+	if ((min == 0) && (max == 0))
+	    return (NULL);
+	else
+	    return ((xmlSchemaTreeItemPtr) particle);
+    } else
 	return ((xmlSchemaTreeItemPtr) item);
 }
 
@@ -10818,6 +10990,9 @@ xmlSchemaFreeParserCtxt(xmlSchemaParserCtxtPtr ctxt)
     }
     if (ctxt->localImports != NULL)
 	xmlFree((xmlChar *) ctxt->localImports);
+    if (ctxt->substGroups != NULL)
+	xmlHashFree(ctxt->substGroups,
+	    (xmlHashDeallocator) xmlSchemaFreeSubstGroup);
     xmlDictFree(ctxt->dict);
     xmlFree(ctxt);
 }
@@ -10827,6 +11002,139 @@ xmlSchemaFreeParserCtxt(xmlSchemaParserCtxtPtr ctxt)
  *			Building the content models			*
  *									*
  ************************************************************************/
+
+
+static void
+xmlSchemaWalkSubstGroups(xmlSchemaParserCtxtPtr pctxt,
+			 xmlSchemaSubstGroupPtr substGroup,
+			 xmlAutomataStatePtr startState,
+			 xmlAutomataStatePtr endState)
+{
+    xmlSchemaElementPtr member;
+    xmlSchemaSubstGroupPtr sg;
+    int i;
+
+    for (i = 0; i < substGroup->members->nbItems; i++) {
+	member = (xmlSchemaElementPtr) substGroup->members->items[i];		
+	if ((member->flags & XML_SCHEMAS_ELEM_ABSTRACT) == 0) {
+	    xmlAutomataNewEpsilon(pctxt->am, 
+		xmlAutomataNewTransition2(pctxt->am,
+		    startState, NULL,
+		    member->name, member->targetNamespace, member),
+		endState);
+	}
+	if (member->flags & XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD) {
+	    sg = xmlSchemaGetElementSubstitutionGroup(pctxt, member);
+	    if (sg != NULL)
+		xmlSchemaWalkSubstGroups(pctxt, sg, startState, endState);
+	}
+    }  
+}
+
+static void
+xmlSchemaBuildContentModelForSubstGroup(xmlSchemaParserCtxtPtr pctxt,
+					xmlSchemaParticlePtr particle,
+					xmlSchemaSubstGroupPtr substGroup)
+{
+    xmlAutomataStatePtr start;
+    xmlSchemaElementPtr elemDecl;
+    xmlAutomataStatePtr end;
+
+    elemDecl = (xmlSchemaElementPtr) particle->children;
+    /*
+    * Wrap the substitution group with a CHOICE.
+    */        
+    start = pctxt->state;
+    end = xmlAutomataNewState(pctxt->am);    
+
+    if (particle->maxOccurs == 1) {	
+	/*
+	* NOTE that we put the declaration in, even if it's abstract,
+	*/
+	xmlAutomataNewEpsilon(pctxt->am, 
+	    xmlAutomataNewTransition2(pctxt->am,
+	    start, NULL,
+	    elemDecl->name, elemDecl->targetNamespace, elemDecl),
+	    end);	
+	xmlSchemaWalkSubstGroups(pctxt, substGroup, start, end);
+    } else {	
+	int counter;
+	xmlAutomataStatePtr hop;
+	int maxOccurs = particle->maxOccurs == UNBOUNDED ?
+	    UNBOUNDED : particle->maxOccurs - 1;
+	int minOccurs = particle->minOccurs < 1 ? 0 : particle->minOccurs - 1;
+
+	counter =
+	    xmlAutomataNewCounter(pctxt->am, minOccurs,
+	    maxOccurs);
+	hop = xmlAutomataNewState(pctxt->am);	
+
+	xmlAutomataNewEpsilon(pctxt->am, 
+	    xmlAutomataNewTransition2(pctxt->am,
+	    start, NULL,
+	    elemDecl->name, elemDecl->targetNamespace, elemDecl),
+	    hop);	    
+	
+	xmlSchemaWalkSubstGroups(pctxt, substGroup, start, hop);
+
+	xmlAutomataNewCountedTrans(pctxt->am, hop, start, counter);
+	xmlAutomataNewCounterTrans(pctxt->am, hop, end, counter);
+    }
+    if (particle->minOccurs == 0)
+	xmlAutomataNewEpsilon(pctxt->am, start, end);
+    pctxt->state = end;    
+}
+
+static void
+xmlSchemaBuildContentModelForElement(xmlSchemaParserCtxtPtr ctxt,
+				     xmlSchemaParticlePtr particle)
+{        
+    xmlSchemaSubstGroupPtr substGroup;    
+
+    substGroup = xmlSchemaGetElementSubstitutionGroup(ctxt,
+	(xmlSchemaElementPtr) particle->children);
+    if (substGroup != NULL) {
+	/*
+	* Substitution groups.
+	*/
+	xmlSchemaBuildContentModelForSubstGroup(ctxt, particle, substGroup);
+    } else {
+	xmlSchemaElementPtr elemDecl;
+	xmlAutomataStatePtr start;
+
+	elemDecl = (xmlSchemaElementPtr) particle->children;
+
+	if (elemDecl->flags & XML_SCHEMAS_ELEM_ABSTRACT)
+	    return;	
+	if (particle->maxOccurs == 1) {
+	    start = ctxt->state;
+	    ctxt->state = xmlAutomataNewTransition2(ctxt->am, start, NULL,
+		elemDecl->name, elemDecl->targetNamespace, elemDecl);
+	} else if ((particle->maxOccurs >= UNBOUNDED) && (particle->minOccurs < 2)) {
+	    /* Special case. */
+	    start = ctxt->state;
+	    ctxt->state = xmlAutomataNewTransition2(ctxt->am, start, NULL,
+		elemDecl->name, elemDecl->targetNamespace, elemDecl);
+	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, start);	
+	} else {
+	    int counter;
+	    int maxOccurs = particle->maxOccurs == UNBOUNDED ?
+			    UNBOUNDED : particle->maxOccurs - 1;
+	    int minOccurs = particle->minOccurs < 1 ?
+			    0 : particle->minOccurs - 1;
+	    
+	    start = xmlAutomataNewEpsilon(ctxt->am, ctxt->state, NULL);	    
+	    counter = xmlAutomataNewCounter(ctxt->am, minOccurs, maxOccurs);
+	    ctxt->state = xmlAutomataNewTransition2(ctxt->am, start, NULL,
+		elemDecl->name, elemDecl->targetNamespace, elemDecl);
+	    xmlAutomataNewCountedTrans(ctxt->am, ctxt->state, start, counter);
+	    ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, ctxt->state,
+		NULL, counter);
+	}
+	if (particle->minOccurs == 0)
+	    xmlAutomataNewEpsilon(ctxt->am, start, ctxt->state);
+    }
+}
 
 /**
  * xmlSchemaBuildAContentModel:
@@ -10954,94 +11262,9 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
 	    ctxt->state = end;
             break;
 	}
-        case XML_SCHEMA_TYPE_ELEMENT:{
-		xmlAutomataStatePtr oldstate;
-                xmlSchemaElementPtr elemDecl;
-
-		elemDecl = (xmlSchemaElementPtr) particle->children;		
-
-                oldstate = ctxt->state;
-
-                if (particle->maxOccurs >= UNBOUNDED) {
-                    if (particle->minOccurs > 1) {
-                        xmlAutomataStatePtr tmp;
-                        int counter;
-
-                        ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
-			    oldstate, NULL);
-                        oldstate = ctxt->state;
-                        counter = xmlAutomataNewCounter(ctxt->am,
-			    particle->minOccurs - 1, UNBOUNDED);                      
-                        ctxt->state =
-			    xmlAutomataNewTransition2(ctxt->am,
-				ctxt->state, NULL, 
-				elemDecl->name, 
-				elemDecl->targetNamespace,
-				(xmlSchemaTypePtr) elemDecl);
-                        tmp = ctxt->state;
-                        xmlAutomataNewCountedTrans(ctxt->am, tmp, oldstate,
-			    counter);
-                        ctxt->state =
-                            xmlAutomataNewCounterTrans(ctxt->am, tmp, NULL,
-				counter);
-
-                    } else {                        
-			ctxt->state =
-			    xmlAutomataNewTransition2(ctxt->am,
-			    ctxt->state, NULL,
-			    elemDecl->name, 
-			    elemDecl->targetNamespace,
-			    (xmlSchemaTypePtr) elemDecl);
-                        xmlAutomataNewEpsilon(ctxt->am, ctxt->state,
-                                              oldstate);
-                        if (particle->minOccurs == 0) {
-                            /* basically an elem* */
-                            xmlAutomataNewEpsilon(ctxt->am, oldstate,
-                                                  ctxt->state);
-                        }
-                    }
-                } else if ((particle->maxOccurs > 1) || (particle->minOccurs > 1)) {
-                    xmlAutomataStatePtr tmp;
-                    int counter;
-
-                    ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
-                                                        oldstate, NULL);
-                    oldstate = ctxt->state;
-                    counter = xmlAutomataNewCounter(ctxt->am,
-			particle->minOccurs - 1,
-			particle->maxOccurs - 1);
-                    ctxt->state = xmlAutomataNewTransition2(ctxt->am,
-			ctxt->state,
-			NULL,
-			elemDecl->name,
-			elemDecl->targetNamespace,
-			(xmlSchemaTypePtr) elemDecl);
-                    tmp = ctxt->state;
-                    xmlAutomataNewCountedTrans(ctxt->am, tmp, oldstate,
-			counter);
-                    ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, tmp,
-			NULL, counter);
-                    if (particle->minOccurs == 0) {
-                        /* basically an elem? */
-                        xmlAutomataNewEpsilon(ctxt->am, oldstate,
-			    ctxt->state);
-                    }
-
-                } else {                    
-		    ctxt->state = xmlAutomataNewTransition2(ctxt->am,
-			ctxt->state,
-			NULL,
-			elemDecl->name,
-			elemDecl->targetNamespace,
-			(xmlSchemaTypePtr) elemDecl);
-                    if (particle->minOccurs == 0) {
-                        /* basically an elem? */
-                        xmlAutomataNewEpsilon(ctxt->am, oldstate,
-			    ctxt->state);
-                    }
-                }
-                break;
-            }
+        case XML_SCHEMA_TYPE_ELEMENT:
+	    xmlSchemaBuildContentModelForElement(ctxt, particle);
+	    break;
         case XML_SCHEMA_TYPE_SEQUENCE:{
                 xmlSchemaTreeItemPtr sub;
 
@@ -11329,63 +11552,71 @@ xmlSchemaBuildContentModel(xmlSchemaTypePtr type,
  * term. 
  */
 static void
-xmlSchemaElementFixup(xmlSchemaElementPtr elem,
+xmlSchemaElementFixup(xmlSchemaElementPtr elemDecl,
                           xmlSchemaParserCtxtPtr ctxt,
                           const xmlChar * name ATTRIBUTE_UNUSED,
                           const xmlChar * context ATTRIBUTE_UNUSED,
                           const xmlChar * namespace ATTRIBUTE_UNUSED)
 {
-    if ((ctxt == NULL) || (elem == NULL) || 
-	((elem != NULL) && (elem->flags & XML_SCHEMAS_ELEM_INTERNAL_RESOLVED)))
+    if ((ctxt == NULL) || (elemDecl == NULL) || 
+	((elemDecl != NULL) && (elemDecl->flags & XML_SCHEMAS_ELEM_INTERNAL_RESOLVED)))
         return;
-    elem->flags |= XML_SCHEMAS_ELEM_INTERNAL_RESOLVED;
+    elemDecl->flags |= XML_SCHEMAS_ELEM_INTERNAL_RESOLVED;
     
-    if ((elem->subtypes == NULL) && (elem->namedType != NULL)) {
+    if ((elemDecl->subtypes == NULL) && (elemDecl->namedType != NULL)) {
 	xmlSchemaTypePtr type;
 	
 	/* (type definition) ... otherwise the type definition ·resolved· 
 	* to by the ·actual value· of the type [attribute] ...
 	*/	    	    
-	type = xmlSchemaGetType(ctxt->schema, elem->namedType,
-	    elem->namedTypeNs);	    
+	type = xmlSchemaGetType(ctxt->schema, elemDecl->namedType,
+	    elemDecl->namedTypeNs);	    
 	if (type == NULL) {	
 	    xmlSchemaPResCompAttrErr(ctxt,
 		XML_SCHEMAP_SRC_RESOLVE,
-		NULL, (xmlSchemaTypePtr) elem, elem->node,
-		"type", elem->namedType, elem->namedTypeNs,
+		NULL, (xmlSchemaTypePtr) elemDecl, elemDecl->node,
+		"type", elemDecl->namedType, elemDecl->namedTypeNs,
 		XML_SCHEMA_TYPE_BASIC, "type definition");
 	} else
-	    elem->subtypes = type;
+	    elemDecl->subtypes = type;
     }
-    if (elem->substGroup != NULL) {
+    if (elemDecl->substGroup != NULL) {
 	xmlSchemaElementPtr substHead;
 	
 	/*
 	* FIXME TODO: Do we need a new field in _xmlSchemaElement for 
 	* substitutionGroup?
 	*/
-	substHead = xmlSchemaGetElem(ctxt->schema, elem->substGroup, 
-	    elem->substGroupNs);	    
+	substHead = xmlSchemaGetElem(ctxt->schema, elemDecl->substGroup, 
+	    elemDecl->substGroupNs);	    
 	if (substHead == NULL) {
 	    xmlSchemaPResCompAttrErr(ctxt,
 		XML_SCHEMAP_SRC_RESOLVE,
-		NULL, (xmlSchemaTypePtr) elem, NULL,
-		"substitutionGroup", elem->substGroup, elem->substGroupNs,
-		XML_SCHEMA_TYPE_ELEMENT, NULL);
+		NULL, (xmlSchemaTypePtr) elemDecl, NULL,
+		"substitutionGroup", elemDecl->substGroup,
+		elemDecl->substGroupNs, XML_SCHEMA_TYPE_ELEMENT, NULL);
 	} else {
 	    xmlSchemaElementFixup(substHead, ctxt, NULL, NULL, NULL);
+	    if ((substHead->flags & XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD) == 0)
+		substHead->flags |= XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD;
+	    /*
+	    * Set the "substitution group affiliation".
+	    * NOTE that now we use the "refDecl" field for this.
+	    */	    
+	    elemDecl->refDecl = substHead;
 	    /*
 	    * (type definition)...otherwise the {type definition} of the 
 	    * element declaration ·resolved· to by the ·actual value· of 
 	    * the substitutionGroup [attribute], if present
 	    */
-	    if (elem->subtypes == NULL) 
-		elem->subtypes = substHead->subtypes;
+	    if (elemDecl->subtypes == NULL) 
+		elemDecl->subtypes = substHead->subtypes;
+	    xmlSchemaAddElementSubstitutionMember(ctxt, substHead, elemDecl);
 	}
     }
-    if ((elem->subtypes == NULL) && (elem->namedType == NULL) &&
-	(elem->substGroup == NULL))
-	elem->subtypes = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
+    if ((elemDecl->subtypes == NULL) && (elemDecl->namedType == NULL) &&
+	(elemDecl->substGroup == NULL))
+	elemDecl->subtypes = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
 }
 
 /**
@@ -11393,7 +11624,10 @@ xmlSchemaElementFixup(xmlSchemaElementPtr elem,
  * @ctxt:  the schema parser context
  * @type:  the schema simple type definition
  *
- * Checks and builds the memberTypes of the union simple type.
+ * Checks and builds the "member type definitions" property of the union
+ * simple type. This handles part (1), part (2) is done in
+ * xmlSchemaFinishMemberTypeDefinitionsProperty()
+ *
  * Returns -1 in case of an internal error, 0 otherwise.
  */
 static int
@@ -11401,14 +11635,15 @@ xmlSchemaResolveUnionMemberTypes(xmlSchemaParserCtxtPtr ctxt,
 				 xmlSchemaTypePtr type)
 {
     
-    xmlSchemaTypeLinkPtr link, lastLink, prevLink, subLink, newLink;
+    xmlSchemaTypeLinkPtr link, lastLink, newLink;
     xmlSchemaTypePtr memberType;
 
-    /* 1 If the <union> alternative is chosen, then [Definition:]  
+    /* 
+    * SPEC (1) "If the <union> alternative is chosen, then [Definition:]  
     * define the explicit members as the type definitions ·resolved· 
     * to by the items in the ·actual value· of the memberTypes [attribute], 
     * if any, followed by the type definitions corresponding to the 
-    * <simpleType>s among the [children] of <union>, if any. 
+    * <simpleType>s among the [children] of <union>, if any."
     */
     /*
     * Resolve references.
@@ -11437,10 +11672,7 @@ xmlSchemaResolveUnionMemberTypes(xmlSchemaParserCtxtPtr ctxt,
 	    link = link->next;
 	    xmlFree(newLink);
 	} else {
-	    link->type = memberType;
-	    if (IS_NOT_TYPEFIXED(memberType))
-		xmlSchemaTypeFixup(memberType, ctxt, NULL);
-	    
+	    link->type = memberType;	    
 	    lastLink = link;
 	    link = link->next;
 	}		
@@ -11455,8 +11687,6 @@ xmlSchemaResolveUnionMemberTypes(xmlSchemaParserCtxtPtr ctxt,
 	    xmlSchemaPErrMemory(ctxt, "allocating a type link", NULL);
 	    return (-1);
 	}
-	if (IS_NOT_TYPEFIXED(memberType))
-	    xmlSchemaTypeFixup(memberType, ctxt, NULL);
 	link->type = memberType;
 	link->next = NULL;
 	if (lastLink == NULL)
@@ -11466,43 +11696,6 @@ xmlSchemaResolveUnionMemberTypes(xmlSchemaParserCtxtPtr ctxt,
 	lastLink = link;
 	memberType = memberType->next;
     }    
-    /*
-    * The actual value is then formed by replacing any union type 
-    * definition in the ·explicit members· with the members of their 
-    * {member type definitions}, in order.
-    */
-    link = type->memberTypes;
-    while (link != NULL) {
-	/* TODO: type-fixup it. */
-	if (link->type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION) {
-	    subLink = xmlSchemaGetUnionSimpleTypeMemberTypes(link->type);
-	    if (subLink != NULL) {		
-		link->type = subLink->type;
-		if (subLink->next != NULL) {
-		    lastLink = link->next;
-		    subLink = subLink->next;		
-		    prevLink = link;
-		    while (subLink != NULL) {		    
-			newLink = (xmlSchemaTypeLinkPtr) 
-			    xmlMalloc(sizeof(xmlSchemaTypeLink));
-			if (newLink == NULL) {
-			    xmlSchemaPErrMemory(ctxt, "allocating a type link", 
-				NULL);
-			    return (-1);
-			}
-			newLink->type = memberType;	    
-			prevLink->next = newLink;
-			prevLink = newLink;
-			newLink->next = lastLink;
-			
-			subLink = subLink->next;
-		    }
-		}
-	    }
-	}
-	link = link->next;
-    }    
-
     return (0);
 }
 
@@ -13081,21 +13274,19 @@ xmlSchemaCheckTypeDefCircularInternal(xmlSchemaParserCtxtPtr pctxt,
 
     if ((ancestor == NULL) || (ancestor->type == XML_SCHEMA_TYPE_BASIC))
 	return (0);
-
-    if (IS_NOT_TYPEFIXED(ancestor))
-	xmlSchemaTypeFixup(ancestor, pctxt,  NULL);
-    if (ancestor->flags & XML_SCHEMAS_TYPE_MARKED) {
-	/*
-	* Avoid inifinite recursion on circular types not yet checked.
-	*/
-	return (0);
-    }
+    
     if (ctxtType == ancestor) {
 	xmlSchemaPCustomErr(pctxt,
 	    XML_SCHEMAP_ST_PROPS_CORRECT_2,
 	    NULL, ctxtType, GET_NODE(ctxtType),
 	    "The definition is circular", NULL);
 	return (XML_SCHEMAP_ST_PROPS_CORRECT_2);
+    }
+    if (ancestor->flags & XML_SCHEMAS_TYPE_MARKED) {
+	/*
+	* Avoid inifinite recursion on circular types not yet checked.
+	*/
+	return (0);
     }
     ancestor->flags |= XML_SCHEMAS_TYPE_MARKED;
     ret = xmlSchemaCheckTypeDefCircularInternal(pctxt, ctxtType,
@@ -13105,7 +13296,7 @@ xmlSchemaCheckTypeDefCircularInternal(xmlSchemaParserCtxtPtr pctxt,
 }
 
 /**
- * xmlSchemaCheckGroupDefCircular:
+ * xmlSchemaCheckTypeDefCircular:
  * @item:  the complex/simple type definition
  * @ctxt:  the parser context
  * @name:  the name
@@ -13124,6 +13315,68 @@ xmlSchemaCheckTypeDefCircular(xmlSchemaTypePtr item,
     xmlSchemaCheckTypeDefCircularInternal(ctxt, item, item->baseType);
 
 }
+
+/**
+ * xmlSchemaResolveTypeDefs:
+ * @item:  the complex/simple type definition
+ * @ctxt:  the parser context
+ * @name:  the name
+ *
+ * Checks for circular type definitions.
+ */
+static void
+xmlSchemaResolveTypeDefs(xmlSchemaTypePtr typeDef,
+			 xmlSchemaParserCtxtPtr ctxt, 
+			 const xmlChar * name ATTRIBUTE_UNUSED)
+{
+    if (typeDef == NULL)
+	return;
+
+    if (IS_SIMPLE_TYPE(typeDef)) {
+	if (typeDef->flags & XML_SCHEMAS_TYPE_VARIETY_UNION) {
+	    /*
+	    * Resolve the memberTypes.
+	    */
+	    xmlSchemaResolveUnionMemberTypes(ctxt, typeDef);
+	    return;
+	} else if (typeDef->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) {
+	    /*
+	    * Resolve the itemType.
+	    */
+	    if ((typeDef->subtypes == NULL) && (typeDef->ref != NULL)) {
+		typeDef->subtypes = xmlSchemaGetType(ctxt->schema,
+		    typeDef->ref, typeDef->refNs);
+		if ((typeDef->subtypes == NULL) ||
+		    (! IS_SIMPLE_TYPE(typeDef->subtypes))) {
+		    typeDef->subtypes = NULL;
+		    xmlSchemaPResCompAttrErr(ctxt,	    
+			XML_SCHEMAP_SRC_RESOLVE,
+			NULL, typeDef, typeDef->node,
+			"itemType", typeDef->ref, typeDef->refNs,
+			XML_SCHEMA_TYPE_SIMPLE, NULL);
+		}
+	    }
+	    return;
+	}
+    }
+    /*
+    * Resolve the base type.
+    */
+    if (typeDef->baseType == NULL) {
+	typeDef->baseType = xmlSchemaGetType(ctxt->schema,
+	    typeDef->base, typeDef->baseNs);
+	if (typeDef->baseType == NULL) {
+	    xmlSchemaPResCompAttrErr(ctxt,
+		XML_SCHEMAP_SRC_RESOLVE,
+		NULL, typeDef, typeDef->node,
+		"base", typeDef->base, typeDef->baseNs,
+		XML_SCHEMA_TYPE_SIMPLE, NULL);
+	    return;
+	}
+    }	  
+}
+
+
 
 /**
  * xmlSchemaCheckSTPropsCorrect:
@@ -13978,6 +14231,7 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
     */  
     vctxt->node = node;
     vctxt->cur = NULL;
+    /* ret = xmlSchemaCheckCVCSimpleType(vctxt, elemDecl->value, typeDef, 0); */   
     if (IS_SIMPLE_TYPE(type))
 	ret = xmlSchemaValidateSimpleTypeValue(vctxt, type, value,
 	    1, 1, 1, 0);
@@ -13986,8 +14240,11 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
 	    value, 1, 1, 1, 0);
     else
 	return (ret);
-
-    /* ret = xmlSchemaCheckCVCSimpleType(vctxt, elemDecl->value, typeDef, 0); */   
+    if (ret != 0) {
+	pctxt->err = vctxt->err;
+	pctxt->nberrors++;
+    }
+    
     if (ret < 0) {
 	xmlSchemaPErr(pctxt, node,
 	/* NOTNICE: error code: This function will be used during
@@ -13998,7 +14255,8 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
 	"while validating a value constaint value.\n",
 	NULL, NULL);
 
-    }     	    
+    }
+    
     return (ret);
 }
 
@@ -14109,24 +14367,24 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaPtr schema,
 	    (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION)) ||
 	    ((set & XML_SCHEMAS_TYPE_BLOCK_RESTRICTION) &&
 	    (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION)))
-	    return (0);
+	    return (1);
     } else {
 	/*
 	* SPEC (2.1) "B and D must be the same type definition."
 	*/
-	return (1);
+	return (0);
     }
     /*
     * SPEC (2.2) "B must be D's {base type definition}."
     */
     if (type->baseType == baseType)
-	return (1);
+	return (0);
     /*
     * SPEC (2.3.1) "D's {base type definition} must not be the ·ur-type
     * definition·."
     */
     if (IS_ANYTYPE(type->baseType))
-	return (0);
+	return (1);
     
     if (IS_COMPLEX_TYPE(type->baseType)) {
 	/*
@@ -15269,6 +15527,53 @@ internal_error:
     return (-1);
 }
 
+static int
+xmlSchemaFinishMemberTypeDefinitionsProperty(xmlSchemaParserCtxtPtr pctxt,
+					     xmlSchemaTypePtr type)
+{
+    xmlSchemaTypeLinkPtr link, lastLink, prevLink, subLink, newLink;
+    /*
+    * The actual value is then formed by replacing any union type 
+    * definition in the ·explicit members· with the members of their 
+    * {member type definitions}, in order.
+    */
+    link = type->memberTypes;
+    while (link != NULL) {
+	
+	if (IS_NOT_TYPEFIXED(link->type))
+	    xmlSchemaTypeFixup(link->type, pctxt, NULL);
+
+	if (link->type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION) {
+	    subLink = xmlSchemaGetUnionSimpleTypeMemberTypes(link->type);
+	    if (subLink != NULL) {		
+		link->type = subLink->type;
+		if (subLink->next != NULL) {
+		    lastLink = link->next;
+		    subLink = subLink->next;		
+		    prevLink = link;
+		    while (subLink != NULL) {		    
+			newLink = (xmlSchemaTypeLinkPtr) 
+			    xmlMalloc(sizeof(xmlSchemaTypeLink));
+			if (newLink == NULL) {
+			    xmlSchemaPErrMemory(pctxt, "allocating a type link", 
+				NULL);
+			    return (-1);
+			}
+			newLink->type = subLink->type;
+			prevLink->next = newLink;
+			prevLink = newLink;
+			newLink->next = lastLink;
+			
+			subLink = subLink->next;
+		    }
+		}
+	    }
+	}
+	link = link->next;
+    }
+    return (0);
+}
+
 /**
  * xmlSchemaTypeFixup:
  * @typeDecl:  the schema type definition
@@ -15290,27 +15595,22 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr type,
     type->flags |= XML_SCHEMAS_TYPE_INTERNAL_RESOLVED;
     if (name == NULL)
         name = type->name;
+
+    if (type->baseType == NULL) {
+	xmlSchemaPCustomErr(ctxt,
+	    XML_SCHEMAP_INTERNAL,
+	    NULL, type, NULL,
+	    "Internal error: xmlSchemaTypeFixup, "
+	    "baseType is missing on '%s'", type->name);
+	return;
+    }
     
     if (type->type == XML_SCHEMA_TYPE_COMPLEX) {
-	xmlSchemaTypePtr baseType;
+	xmlSchemaTypePtr baseType = type->baseType;
 
 	/*
-	* Resolve & type-fix the base type.
-	*/
-	baseType = type->baseType;
-	if (baseType == NULL) {
-	    baseType = xmlSchemaGetType(ctxt->schema,
-		type->base, type->baseNs);	    
-	    if (baseType == NULL) {
-		xmlSchemaPResCompAttrErr(ctxt,
-		    XML_SCHEMAP_SRC_RESOLVE,
-		    NULL, type, type->node,
-		    "base", type->base, type->baseNs,
-		    XML_SCHEMA_TYPE_SIMPLE, NULL);
-		return;
-	    }
-	    type->baseType = baseType;
-	}
+	* Type-fix the base type.
+	*/	
 	if (IS_NOT_TYPEFIXED(baseType))
 	    xmlSchemaTypeFixup(baseType, ctxt, NULL);
 	if (baseType->flags & XML_SCHEMAS_TYPE_INTERNAL_INVALID) {
@@ -15597,21 +15897,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr type,
 	if (type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) {
 	    /* 
 	    * Corresponds to <simpleType><list>...
-	    * Resolve the itemType.
 	    */
-	    if ((type->subtypes == NULL) && (type->ref != NULL)) {
-		type->subtypes = xmlSchemaGetType(ctxt->schema,
-		    type->ref, type->refNs);
-		if ((type->subtypes == NULL) ||
-		    (! IS_SIMPLE_TYPE(type->subtypes))) {
-		    type->subtypes = NULL;
-		    xmlSchemaPResCompAttrErr(ctxt,	    
-			XML_SCHEMAP_SRC_RESOLVE,
-			NULL, type, type->node,
-			"itemType", type->ref, type->refNs,
-			XML_SCHEMA_TYPE_SIMPLE, NULL);
-		}		
-	    }
 	    if (type->subtypes == NULL) {
 		/*
 		* This one is really needed, so get out.
@@ -15619,50 +15905,24 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr type,
 		return;
 	    }
 	    if (IS_NOT_TYPEFIXED(type->subtypes))
-		xmlSchemaTypeFixup(type->subtypes, ctxt, NULL);
-	    /* Base type:
-	    * 2 If the <list> or <union> alternative is chosen, 
-	    * then the ·simple ur-type definition·.
-	    */
-	    type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE);	    
+		xmlSchemaTypeFixup(type->subtypes, ctxt, NULL);	    	    
 	} else if (type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION) {
 	    /*
 	    * Corresponds to <simpleType><union>...
-	    * Resolve the member types.
-	    */
-	    xmlSchemaResolveUnionMemberTypes(ctxt, type);
+	    */	    
 	    if (type->memberTypes == NULL) {
 		/*
 		* This one is really needed, so get out.
 		*/
 		return;
 	    }
-	    type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE);
+	    if (xmlSchemaFinishMemberTypeDefinitionsProperty(ctxt, type) == -1)
+		return;
 	} else {
-	    xmlSchemaTypePtr baseType;
+	    xmlSchemaTypePtr baseType = type->baseType;
 	    /* 
 	    * Corresponds to <simpleType><restriction>...
-	    *
-	    * Resolve the base type.
 	    */
-	    if ((type->baseType == NULL) && (type->base != NULL)) {
-		baseType = xmlSchemaGetType(ctxt->schema,
-		    type->base, type->baseNs);
-		
-		if (baseType == NULL) {
-		    xmlSchemaPResCompAttrErr(ctxt,	    
-			XML_SCHEMAP_SRC_RESOLVE,
-			NULL, type, type->node,
-			"base", type->base, type->baseNs,
-			XML_SCHEMA_TYPE_SIMPLE, NULL);
-		}
-		type->baseType = baseType;
-	    } else
-		baseType = type->baseType;
-
-	    if (baseType == NULL)
-		return;			
-
 	    if (IS_NOT_TYPEFIXED(baseType))
 		xmlSchemaTypeFixup(baseType, ctxt, NULL);
 	    /* 
@@ -16050,33 +16310,47 @@ xmlSchemaCheckFacetValues(xmlSchemaTypePtr typeDecl,
  * otherwise NULL.
  */
 static xmlSchemaTreeItemPtr
-xmlSchemaGetCircModelGrDefRef(xmlSchemaTreeItemPtr ctxtMGroup,
-			      xmlSchemaTreeItemPtr selfMGroup,
+xmlSchemaGetCircModelGrDefRef(xmlSchemaModelGroupDefPtr groupDef,
 			      xmlSchemaTreeItemPtr particle)
 {
     xmlSchemaTreeItemPtr circ = NULL;
     xmlSchemaTreeItemPtr term;
+    xmlSchemaModelGroupDefPtr gdef;
 
-    while (particle != NULL) {
+    for (; particle != NULL; particle = particle->next) {
 	term = particle->children;
-	if ((term != NULL) &&
-	    ((term->type == XML_SCHEMA_TYPE_SEQUENCE) ||
-	    (term->type == XML_SCHEMA_TYPE_CHOICE) ||
-	    (term->type == XML_SCHEMA_TYPE_ALL))) {
-	    if (term == ctxtMGroup)
-		return (particle);
-	    /*
-	    * Avoid infinite recursion on circular references not yet
-	    * examined.
-	    */
-	    if (term == selfMGroup)
-		return (NULL);
-	    circ = xmlSchemaGetCircModelGrDefRef(ctxtMGroup, term,
-		term->children);
-	    if (circ != NULL)
-		return (circ);
+	if (term == NULL)
+	    continue;
+	switch (term->type) {
+	    case XML_SCHEMA_TYPE_GROUP:
+		gdef = (xmlSchemaModelGroupDefPtr) term;		
+		if (gdef == groupDef)
+		    return (particle);
+		/*
+		* Mark this model group definition to avoid infinite
+		* recursion on circular references not yet examined.
+		*/
+		if (gdef->flags & XML_SCHEMA_MODEL_GROUP_DEF_MARKED)
+		    continue;
+		if (gdef->children != NULL) {
+		    gdef->flags |= XML_SCHEMA_MODEL_GROUP_DEF_MARKED;
+		    circ = xmlSchemaGetCircModelGrDefRef(groupDef,
+			gdef->children->children);
+		    gdef->flags ^= XML_SCHEMA_MODEL_GROUP_DEF_MARKED;
+		    if (circ != NULL)
+			return (circ);
+		}
+		break;
+	    case XML_SCHEMA_TYPE_SEQUENCE:
+	    case XML_SCHEMA_TYPE_CHOICE:
+	    case XML_SCHEMA_TYPE_ALL:
+		circ = xmlSchemaGetCircModelGrDefRef(groupDef, term->children);
+		if (circ != NULL)
+		    return (circ);
+		break;
+	    default:
+		break;
 	}
-	particle = particle->next;
     }
     return (NULL);
 }
@@ -16088,11 +16362,12 @@ xmlSchemaGetCircModelGrDefRef(xmlSchemaTreeItemPtr ctxtMGroup,
  * @name:  the name
  *
  * Checks for circular references to model group definitions.
+ * Additionally it 
  */
 static void
 xmlSchemaCheckGroupDefCircular(xmlSchemaModelGroupDefPtr item,
-			    xmlSchemaParserCtxtPtr ctxt, 
-			    const xmlChar * name ATTRIBUTE_UNUSED)
+			       xmlSchemaParserCtxtPtr ctxt, 
+			       const xmlChar * name ATTRIBUTE_UNUSED)
 {    
     /*
     * Schema Component Constraint: Model Group Correct
@@ -16107,8 +16382,7 @@ xmlSchemaCheckGroupDefCircular(xmlSchemaModelGroupDefPtr item,
     {
 	xmlSchemaTreeItemPtr circ;
 
-	circ = xmlSchemaGetCircModelGrDefRef(item->children, NULL,
-	    item->children->children);
+	circ = xmlSchemaGetCircModelGrDefRef(item, item->children->children);
 	if (circ != NULL) {
 	    xmlChar *str = NULL;
 	    /*
@@ -16134,6 +16408,28 @@ xmlSchemaCheckGroupDefCircular(xmlSchemaModelGroupDefPtr item,
     }
 }
 
+/**
+ * xmlSchemaGroupDefTermFixup:
+ * @item:  the particle with a model group definition as term
+ * @ctxt:  the parser context
+ * @name:  the name
+ *
+ * Checks for circular references to model group definitions.
+ * Additionally it 
+ */
+static void
+xmlSchemaGroupDefTermFixup(xmlSchemaParticlePtr item,
+			   xmlSchemaParserCtxtPtr ctxt ATTRIBUTE_UNUSED, 
+			   const xmlChar * name ATTRIBUTE_UNUSED)
+{    
+    if ((item == NULL) ||
+	(item->type != XML_SCHEMA_TYPE_PARTICLE) ||
+	(item->children == NULL) ||
+	(item->children->type != XML_SCHEMA_TYPE_GROUP) ||
+	(item->children->children == NULL))
+	return;
+    item->children = item->children->children;
+}
 
 /**
  * xmlSchemaGetCircAttrGrRef:
@@ -16384,56 +16680,172 @@ xmlSchemaCheckAttrValConstr(xmlSchemaAttributePtr item,
     }    
 }
 
-#if 0 /* Not used yet. */
+/**
+ * xmlSchemaCheckElemPropsCorrect:
+ * @ctxt:  a schema parser context
+ * @decl: the element declaration
+ * @name:  the name of the attribute
+ * 
+ * Schema Component Constraint:
+ * Element Declaration Properties Correct (e-props-correct)  
+ *
+ * STATUS:
+ *   missing: (6)
+ */
 static int
-xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr ctxt,
-			       xmlSchemaElementPtr edecl)
+xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
+			       xmlSchemaElementPtr elemDecl)
 {
+    int ret = 0;
+    xmlSchemaTypePtr typeDef = ELEM_TYPE(elemDecl);
     /*
-    * TODO: 1 The values of the properties of an element declaration must be as 
-    * described in the property tableau in The Element Declaration Schema 
-    * Component (§3.3.1), modulo the impact of Missing Sub-components (§5.3).
-    */
+    * SPEC (1) "The values of the properties of an element declaration
+    * must be as described in the property tableau in The Element
+    * Declaration Schema Component (§3.3.1), modulo the impact of Missing
+    * Sub-components (§5.3)."
+    */            
+    if (SUBST_GROUP_AFF(elemDecl) != NULL) {
+	xmlSchemaElementPtr substGrAff = SUBST_GROUP_AFF(elemDecl);
+	/*
+	* SPEC (3) "If there is a non-·absent· {substitution group 
+	* affiliation}, then {scope} must be global."
+	*/
+	if ((elemDecl->flags & XML_SCHEMAS_ELEM_GLOBAL) == 0) {
+	    xmlSchemaPCustomErr(pctxt,
+		XML_SCHEMAP_E_PROPS_CORRECT_3,
+		NULL, (xmlSchemaTypePtr) elemDecl, elemDecl->node,
+		"Only global element declarations can have a "
+		"substitution group affiliation", NULL);
+	    ret = XML_SCHEMAP_E_PROPS_CORRECT_3;
+	}    
+	/*
+	* SPEC (4) "If there is a {substitution group affiliation},
+	* the {type definition} 
+	* of the element declaration must be validly derived from the {type 
+	* definition} of the {substitution group affiliation}, given the value
+	* of the {substitution group exclusions} of the {substitution group 
+	* affiliation}, as defined in Type Derivation OK (Complex) (§3.4.6) 
+	* (if the {type definition} is complex) or as defined in 
+	* Type Derivation OK (Simple) (§3.14.6) (if the {type definition} is 
+	* simple)."
+	*
+	* NOTE: {substitution group exclusions} means the values of the
+	* attribute "final".
+	*/
+	if (typeDef != ELEM_TYPE(SUBST_GROUP_AFF(elemDecl))) {	    
+	    int set = 0;
+	    
+	    if (substGrAff->flags & XML_SCHEMAS_ELEM_FINAL_EXTENSION)
+		set |= XML_SCHEMAS_TYPE_FINAL_EXTENSION;
+	    if (substGrAff->flags & XML_SCHEMAS_ELEM_FINAL_RESTRICTION)
+		set |= XML_SCHEMAS_TYPE_FINAL_RESTRICTION;
+	    
+	    if (xmlSchemaCheckCOSDerivedOK(pctxt->schema, typeDef,
+		ELEM_TYPE(substGrAff), set) != 0) {
+		xmlChar *strA = NULL, *strB = NULL, *strC = NULL;
+
+		ret = XML_SCHEMAP_E_PROPS_CORRECT_4;		
+		xmlSchemaPCustomErrExt(pctxt,
+		    XML_SCHEMAP_E_PROPS_CORRECT_4,
+		    NULL, (xmlSchemaTypePtr) elemDecl, elemDecl->node,
+		    "The type definition '%s' is not validly derived from "
+		    "the type definition '%s' of the element declaration "
+		    "'%s' (the substitution group affiliation)",
+		    xmlSchemaGetComponentQName(&strA, typeDef),
+		    xmlSchemaGetComponentQName(&strB, ELEM_TYPE(substGrAff)),
+		    xmlSchemaGetComponentQName(&strC, substGrAff));
+		FREE_AND_NULL(strA)
+		FREE_AND_NULL(strB)
+		FREE_AND_NULL(strC)
+	    }
+	}
+    }
     /*
-    * 2 If there is a {value constraint}, the canonical lexical 
-    * representation of its value must be ·valid· with respect to the {type 
-    * definition} as defined in Element Default Valid (Immediate) (§3.3.6).
-    *
-    * NOTE: This is done in xmlSchemaCheckElemValConstr.
-    */
-    /*
-    * 3 If there is a non-·absent· {substitution group affiliation}, 
-    * then {scope} must be global.
-    *
-    * NOTE: This is done in xmlSchemaParseElement.
-    * TODO: Move it to this layer here.
-    */
-    /*
-    * TODO: 4 If there is a {substitution group affiliation}, the {type definition} 
-    * of the element declaration must be validly derived from the {type 
-    * definition} of the {substitution group affiliation}, given the value 
-    * of the {substitution group exclusions} of the {substitution group 
-    * affiliation}, as defined in Type Derivation OK (Complex) (§3.4.6) 
-    * (if the {type definition} is complex) or as defined in 
-    * Type Derivation OK (Simple) (§3.14.6) (if the {type definition} is 
-    * simple). 
-    */
-    /*
-    * TODO: 5 If the {type definition} or {type definition}'s {content type} 
+    * SPEC (5) "If the {type definition} or {type definition}'s
+    * {content type} 
     * is or is derived from ID then there must not be a {value constraint}.
     * Note: The use of ID as a type definition for elements goes beyond 
-    * XML 1.0, and should be avoided if backwards compatibility is desired
+    * XML 1.0, and should be avoided if backwards compatibility is desired"
     */
+    if ((elemDecl->value != NULL) &&
+	((IS_SIMPLE_TYPE(typeDef) && 
+	  xmlSchemaIsDerivedFromBuiltInType(pctxt,
+	    ELEM_TYPE(elemDecl), XML_SCHEMAS_ID)) ||
+	 (IS_COMPLEX_TYPE(typeDef) &&
+	  HAS_SIMPLE_CONTENT(typeDef) &&
+	  xmlSchemaIsDerivedFromBuiltInType(pctxt,
+	  typeDef->contentTypeDef, XML_SCHEMAS_ID)))) {
+
+	ret = XML_SCHEMAP_E_PROPS_CORRECT_5;
+	xmlSchemaPCustomErr(pctxt,
+	    XML_SCHEMAP_E_PROPS_CORRECT_5,
+	    NULL, (xmlSchemaTypePtr) elemDecl, elemDecl->node,
+	    "The type definition (or type definition's content type) is or "
+	    "is derived from ID; value constraints are not allowed in "
+	    "conjunction with such a type definition", NULL);
+    } else if (elemDecl->value != NULL) {
+	int vcret;
+	xmlNodePtr node = NULL;
+
+	/*
+	* SPEC (2) "If there is a {value constraint}, the canonical lexical
+	* representation of its value must be ·valid· with respect to the
+	* {type definition} as defined in Element Default Valid (Immediate)
+	* (§3.3.6)."
+	*/	    
+	if (typeDef == NULL) {
+	    xmlSchemaPErr(pctxt, elemDecl->node,
+		XML_SCHEMAP_INTERNAL,
+		"Internal error: xmlSchemaCheckElemPropsCorrect, "
+		"type is missing... skipping validation of "
+		"the value constraint", NULL, NULL);
+	    return (-1);
+	}
+	/*
+	* Ensure there's a validation context.
+	*/
+	if (xmlSchemaCreateVCtxtOnPCtxt(pctxt) == -1)
+	    return (-1);
+	if (elemDecl->node != NULL) {
+	    if (elemDecl->flags & XML_SCHEMAS_ELEM_FIXED)
+		node = (xmlNodePtr) xmlHasProp(elemDecl->node,
+		    BAD_CAST "fixed");
+	    else
+		node = (xmlNodePtr) xmlHasProp(elemDecl->node,
+		    BAD_CAST "default");
+	}
+	pctxt->vctxt->node = node;
+	pctxt->vctxt->cur = NULL;
+	vcret = xmlSchemaCheckCOSValidDefault(pctxt, pctxt->vctxt, typeDef,
+	    elemDecl->value, node);
+	if (vcret == 0) {
+	    /*
+	    * Consume the computed value.
+	    */
+    	    elemDecl->defVal = pctxt->vctxt->value;
+  	    pctxt->vctxt->value = NULL;
+	} else if (vcret < 0) {
+	    xmlSchemaPCustomErr(pctxt, XML_SCHEMAP_INTERNAL,
+		NULL, NULL, node,
+		"Internal error: xmlSchemaElemCheckValConstr, "
+		"failed to validate the value constraint of the "
+		"element declaration '%s'",
+		elemDecl->name);
+	    ret = vcret;
+	} else
+	    ret = vcret;
+    }    
+    
     /*
-    * TODO: 6 Circular substitution groups are disallowed. That is, it must not 
-    * be possible to return to an element declaration by repeatedly following 
-    * the {substitution group affiliation} property.
+    * TODO: SPEC (6) "Circular substitution groups are disallowed.
+    * That is, it must not be possible to return to an element declaration
+    * by repeatedly following the {substitution group affiliation} property."
     */
+    return (ret);
 }
-#endif
 
 /**
- * xmlSchemaCheckElemValConstr:
+ * xmlSchemaCheckElementDeclComponent
  * @item:  an schema element declaration/particle
  * @ctxt:  a schema parser context
  * @name:  the name of the attribute
@@ -16443,63 +16855,14 @@ xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr ctxt,
  * Fixes finish doing the computations on the element declarations.
  */
 static void
-xmlSchemaCheckElemValConstr(xmlSchemaElementPtr decl,
-			    xmlSchemaParserCtxtPtr ctxt, 
-			    const xmlChar * name ATTRIBUTE_UNUSED)
-{   
-    if (decl->value != NULL) {
-	int ret;
-	xmlNodePtr node = NULL;
-	xmlSchemaTypePtr type;
-
-	/*
-	* 2 If there is a {value constraint}, the canonical lexical 
-	* representation of its value must be ·valid· with respect to the {type 
-	* definition} as defined in Element Default Valid (Immediate) (§3.3.6).
-	*/    
-	if (decl->subtypes == NULL) {
-	    xmlSchemaPErr(ctxt, decl->node,
-		XML_SCHEMAP_INTERNAL,
-		"Internal error: xmlSchemaCheckElemValConstr, "
-		"type is missing... skipping validation of "
-		"the value constraint", NULL, NULL);
-	    return;
-	}
-	/*
-	* Ensure there's a validation context.
-	*/
-	if (xmlSchemaCreateVCtxtOnPCtxt(ctxt) == -1)
-	    return;
-
-	type = decl->subtypes;
-
-	if (decl->node != NULL) {
-	    if (decl->flags & XML_SCHEMAS_ELEM_FIXED)
-		node = (xmlNodePtr) xmlHasProp(decl->node, BAD_CAST "fixed");
-	    else
-		node = (xmlNodePtr) xmlHasProp(decl->node, BAD_CAST "default");
-	}
-	ctxt->vctxt->node = node;
-	ctxt->vctxt->cur = NULL;
-	ret = xmlSchemaCheckCOSValidDefault(ctxt, ctxt->vctxt, type, decl->value, 
-	    node);
-	if (ret == 0) {
-	    /*
-	    * Consume the computed value.
-	    */
-    	    decl->defVal = ctxt->vctxt->value;
-  	    ctxt->vctxt->value = NULL;
-	} else if (ret < 0) {
-	    xmlSchemaPCustomErr(ctxt, XML_SCHEMAP_INTERNAL,
-		NULL, NULL, node,
-		"Internal error: xmlSchemaElemCheckValConstr, "
-		"failed to validate the value constraint of the "
-		"element declaration '%s'",
-		decl->name); 	    
-	}
-    }    
+xmlSchemaCheckElementDeclComponent(xmlSchemaElementPtr elemDecl,
+				   xmlSchemaParserCtxtPtr ctxt, 
+				   const xmlChar * name ATTRIBUTE_UNUSED)
+{
+    if (elemDecl == NULL)
+	return;
+    xmlSchemaCheckElemPropsCorrect(ctxt, elemDecl);
 }
-
 
 /**
  * xmlSchemaMiscRefFixup:
@@ -16532,10 +16895,13 @@ xmlSchemaMiscRefFixup(xmlSchemaTreeItemPtr item,
 	    } else {
 		if (refItem->type == XML_SCHEMA_TYPE_GROUP) {
 		    /*
-		    * Assign the model group of the model group definition
-		    * to the particle's "term".
+		    * NOTE that we will assign the model group definition
+		    * itself to the "term" of the particle. This will ease
+		    * the check for circular model group definitions. After
+		    * that the "term" will be assigned the model group of the
+		    * model group definition.
 		    */
-		    item->children = refItem->children;
+		    item->children = refItem;
 		} else
 		    item->children = refItem;
 	    }
@@ -16780,6 +17146,13 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     ctxt->ctxtType = NULL;
     ctxt->parentItem = NULL;
 
+    /*
+    * Resolve base types of simple/complex types.
+    */
+    xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaResolveTypeDefs, ctxt);
+   
+    if (ctxt->nberrors != 0)
+	goto exit;
 
     if (ret->volatiles != NULL) {
 	xmlSchemaItemListPtr list = (xmlSchemaItemListPtr) ret->volatiles;
@@ -16790,21 +17163,17 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 	    item = (xmlSchemaTreeItemPtr) list->items[i];
 	    if (item->type == XML_SCHEMA_TYPE_PARTICLE)
 		xmlSchemaMiscRefFixup(item, ctxt, NULL);
-	    /* xmlHashScan(ret->miscComps,
-	    (xmlHashScanner) xmlSchemaMiscRefFixup, ctxt); */
 	}
-    }
+    }            
     /*
      * Then fixup all attributes declarations
      */
     xmlHashScan(ret->attrDecl, (xmlHashScanner) xmlSchemaAttrFixup, ctxt);
-
     /*
      * Then fixup all attributes group declarations
      */
     xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) xmlSchemaAttrGrpFixup,
                 ctxt);
-
     /*
     * Resolve identity-constraint keyRefs.
     */
@@ -16819,19 +17188,31 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     */
     xmlHashScan(ret->groupDecl, (xmlHashScanner) 
 	xmlSchemaCheckGroupDefCircular, ctxt);
+    /*
+    * Set the "term" of particles pointing to model group definitions
+    * to the contained model group.
+    */
+    if (ret->volatiles != NULL) {
+	xmlSchemaItemListPtr list = (xmlSchemaItemListPtr) ret->volatiles;
+	int i;
+	xmlSchemaParticlePtr item;
 
+	for (i = 0; i < list->nbItems; i++) {
+	    item = (xmlSchemaParticlePtr) list->items[i];
+	    if (item->type == XML_SCHEMA_TYPE_PARTICLE)
+		xmlSchemaGroupDefTermFixup(item, ctxt, NULL);
+	}
+    }    
     /*
     * Check attribute groups for circular references.
     */
     xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) 
-	xmlSchemaCheckAttributeGroupCircular, ctxt);
-    
+	xmlSchemaCheckAttributeGroupCircular, ctxt);    
     /*
      * Then fix references of element declaration; apply constraints.
      */    
     xmlHashScanFull(ret->elemDecl,
                     (xmlHashScannerFull) xmlSchemaElementFixup, ctxt);
-
     /*
     * We will stop here if the schema was not valid to avoid internal errors
     * on missing sub-components. This is not conforming to the spec, since it
@@ -16845,22 +17226,19 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
      * Then fixup all types properties
      */    
     xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaTypeFixup, ctxt);
-
     /*
      * Then build the content model for all complex types
      */
     xmlHashScan(ret->typeDecl,
-                (xmlHashScanner) xmlSchemaBuildContentModel, ctxt);
-    
+                (xmlHashScanner) xmlSchemaBuildContentModel, ctxt);    
     /*
     * Validate the value constraint of attribute declarations/uses.
     */
     xmlHashScan(ret->attrDecl, (xmlHashScanner) xmlSchemaCheckAttrValConstr, ctxt);
-
     /*
     * Validate the value constraint of element declarations.
     */
-    xmlHashScan(ret->elemDecl, (xmlHashScanner) xmlSchemaCheckElemValConstr, ctxt);
+    xmlHashScan(ret->elemDecl, (xmlHashScanner) xmlSchemaCheckElementDeclComponent, ctxt);
 
 exit:
     if (ctxt->nberrors != 0) {
@@ -17430,6 +17808,10 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
     for (i = 0; i < nbItems; i++) {
 	item = items[i];
 	switch (item->type) {
+	    case XML_SCHEMA_TYPE_COMPLEX:
+	    case XML_SCHEMA_TYPE_SIMPLE:
+		xmlSchemaResolveTypeDefs(item, ctxt, NULL);
+		break;
 	    case XML_SCHEMA_TYPE_ATTRIBUTE:
 		xmlSchemaAttrFixup((xmlSchemaAttributePtr) item, ctxt, NULL);
 		break;
@@ -17471,6 +17853,20 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
 	}
     }
     /*
+    * Set the "term" of particles pointing to model group definitions
+    * to the contained model group.
+    */
+    for (i = 0; i < nbItems; i++) {
+	item = items[i];
+	if ((item->type == XML_SCHEMA_TYPE_PARTICLE) &&
+	    (((xmlSchemaParticlePtr) item)->children != NULL) &&
+	    (((xmlSchemaParticlePtr) item)->children->type == 
+	    XML_SCHEMA_TYPE_GROUP)) {
+	    xmlSchemaGroupDefTermFixup((xmlSchemaParticlePtr) item,
+		ctxt, NULL);
+	}
+    }
+    /*
     * Fixup for simple/complex types.
     */
     for (i = 0; i < nbItems; i++) {
@@ -17508,7 +17904,7 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
 		    ctxt, NULL);
 		break;
 	    case XML_SCHEMA_TYPE_ELEMENT:
-		xmlSchemaCheckElemValConstr((xmlSchemaElementPtr) item,
+		xmlSchemaCheckElementDeclComponent((xmlSchemaElementPtr) item,
 		    ctxt, NULL);
 		break;
 	    default:
@@ -17886,34 +18282,6 @@ xmlSchemaValidateNotation(xmlSchemaValidCtxtPtr vctxt,
     return (ret);
 }
 
-static xmlSchemaTypePtr
-xmlSchemaGetSimpleContentType(xmlSchemaTypePtr complexType)
-{
-    xmlSchemaTypePtr ret;
-
-    if (complexType->type != XML_SCHEMA_TYPE_COMPLEX)
-	return (NULL);
-    if (complexType->contentTypeDef != NULL)
-	return (complexType->contentTypeDef);
-    /*
-    * TODO: This is only a workaround until the simple content
-    * type is computed for complex types with simple content.
-    */
-    ret = complexType->baseType;
-    while (ret != NULL) {
-	if (IS_SIMPLE_TYPE(ret))
-	    return (ret);
-	if (ret->builtInType == XML_SCHEMAS_ANYTYPE)
-	    return (NULL);
-	if ((ret->type == XML_SCHEMA_TYPE_COMPLEX) &&
-	    (ret->contentTypeDef != NULL))
-	    ret = ret->contentTypeDef;
-	else
-	    ret = ret->baseType;
-    }
-    return (ret);
-}
-
 /**
  * xmlSchemaValidateSimpleTypeValue:
  * @ctxt:  a schema validation context
@@ -18023,50 +18391,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	} while (cur != NULL);
     }
 
-    if (type->type == XML_SCHEMA_TYPE_COMPLEX) {
-	xmlSchemaTypePtr simpType, anyType;
-
-	anyType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
-
-	simpType = xmlSchemaGetSimpleContentType(type);
-	if (simpType == NULL) {
-	    xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
-		"Internal error: xmlSchemaValidateSimpleTypeValue, "
-		"failed to obtain the simple content type of the complex "
-		"type '%s'\n",
-		type->name, NULL);
-	    return (-1);
-	}
-	ret = xmlSchemaValidateSimpleTypeValue(ctxt, simpType, value, 1, 0, 1, 0);
-	if (ret < 0) {
-	    xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
-		"Internal error: xmlSchemaValidateSimpleTypeValue, "
-		"validating complex type '%s'\n",
-		type->name, NULL);
-	} else if ((ret == 0) && (applyFacets) && (type->facetSet != NULL)) {
-	    /* 
-	    * Check facets.
-	    *
-	    * TODO: This is somehow not nice, since if an error occurs
-	    * the reported type will be the complex type; the spec
-	    * wants a simple type to be created on the complex type
-	    * if it has a simple content. For now we have to live with
-	    * it.
-	    */	    
-	    ret = xmlSchemaValidateFacetsInternal(ctxt, type,		
-		value, 0, fireErrors);
-	    if (ret < 0) {
-		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
-		    "Internal error: xmlSchemaValidateSimpleTypeValue, "
-		    "validating facets of complex type '%s'\n",
-		    type->name, NULL);
-	    } else if (ret > 0) {
-		ret = XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1;
-		if (fireErrors) 
-		    xmlSchemaVSimpleTypeErr(ctxt, ret, node, value, type);
-	    }	
-	}	
-    } else if (type->type == XML_SCHEMA_TYPE_BASIC) {
+    if (type->type == XML_SCHEMA_TYPE_BASIC) {
 
 	if (ctxt->value != NULL) {
 	    xmlSchemaFreeValue(ctxt->value);
@@ -20348,7 +20673,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	    xmlFree(attrValue);
     }
     
-    type = elemDecl->subtypes;
+    type = ELEM_TYPE(elemDecl);
     actualType = type;
     
     /* 
@@ -20435,8 +20760,8 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 		    (type->flags & XML_SCHEMAS_TYPE_BLOCK_RESTRICTION))
 		    set |= XML_SCHEMAS_TYPE_BLOCK_RESTRICTION;
 
-		if (! xmlSchemaCheckCOSDerivedOK(ctxt->schema, localType,
-		    type, set)) {
+		if (xmlSchemaCheckCOSDerivedOK(ctxt->schema, localType,
+		    type, set) != 0) {
 		    xmlChar *strA = NULL, *strB = NULL;
 
 		    xmlSchemaVCustomErrExt(ctxt, 
@@ -20448,8 +20773,8 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 			localType->targetNamespace,
 			localType->name),
 		    xmlSchemaFormatQName(&strB,
-			elemDecl->subtypes->targetNamespace, 
-			elemDecl->subtypes->name), NULL);
+			ELEM_TYPE(elemDecl)->targetNamespace, 
+			ELEM_TYPE(elemDecl)->name), NULL);
 		    FREE_AND_NULL(strA)
 		    FREE_AND_NULL(strB)
 		}		
@@ -20545,7 +20870,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	* NOTE: 'local' above means types aquired by xsi:type.
 	*/
 	ret = 0;
-	if (actualType != elemDecl->subtypes) {
+	if (actualType != ELEM_TYPE(elemDecl)) {
 	    xmlSchemaCreatePCtxtOnVCtxt(ctxt);
 	    ret = xmlSchemaCheckCOSValidDefault(ctxt->pctxt, ctxt, actualType, 
 		elemDecl->value, NULL);	    
@@ -20571,7 +20896,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	* done above.
 	*/
 	if (ret == 0) {
-	    if (actualType != elemDecl->subtypes)
+	    if (actualType != ELEM_TYPE(elemDecl))
 		ret = xmlSchemaValidateElementByType(ctxt, actualType, 0, 0);
 	    else
 		ret = xmlSchemaValidateElementByType(ctxt, actualType, 0, 1);

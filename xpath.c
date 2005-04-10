@@ -4918,6 +4918,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
         xmlGenericError(xmlGenericErrorContext,
 		"Equal: by pointer\n");
 #endif
+	xmlXPathFreeObject(arg1);
         return(1);
     }
 
@@ -5002,6 +5003,7 @@ xmlXPathNotEqualValues(xmlXPathParserContextPtr ctxt) {
         xmlGenericError(xmlGenericErrorContext,
 		"NotEqual: by pointer\n");
 #endif
+	xmlXPathFreeObject(arg1);
         return(0);
     }
 
@@ -5111,6 +5113,10 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 			                          arg2, arg1);
 	    }
 	}
+	/*
+	 * Note from Bill: I don't understand why, but arg1 and arg2 shouldn't be
+	 * freed here!
+	 */
 	return(ret);
     }
 
@@ -9094,8 +9100,10 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     mergeNodeSet = xmlXPathNodeSetMerge;
     if (prefix != NULL) {
         URI = xmlXPathNsLookup(ctxt->context, prefix);
-        if (URI == NULL)
+        if (URI == NULL) {
+	    xmlXPathFreeObject(obj);
             XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
+	}
     }
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext, "new step : ");
@@ -9204,8 +9212,10 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
     }
-    if (next == NULL)
+    if (next == NULL) {
+	xmlXPathFreeObject(obj);
         return(0);
+    }
 
     nodelist = obj->nodesetval;
     if (nodelist == NULL) {
@@ -9289,6 +9299,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
             switch (test) {
                 case NODE_TEST_NONE:
                     ctxt->context->node = tmp;
+		    xmlXPathFreeObject(obj);
                     STRANGE return(t);
                 case NODE_TEST_TYPE:
                     if ((cur->type == type) ||
@@ -9444,6 +9455,11 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
             list = obj2->nodesetval;
             obj2->nodesetval = NULL;
             xmlXPathFreeObject(obj2);
+	    if (ctxt->error != XPATH_EXPRESSION_OK) {
+		xmlXPathFreeObject(obj);
+		xmlXPathFreeNodeSet(list);
+		return(0);
+	    }
         }
         if (ret == NULL) {
             ret = list;
@@ -9511,8 +9527,10 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
     addNode = xmlXPathNodeSetAdd;
     if (prefix != NULL) {
         URI = xmlXPathNsLookup(ctxt->context, prefix);
-        if (URI == NULL)
+        if (URI == NULL) {
+	    xmlXPathFreeObject(obj);
             XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
+	}
     }
 #ifdef DEBUG_STEP_NTH
     xmlGenericError(xmlGenericErrorContext, "new step : ");
@@ -9631,8 +9649,10 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
             next = xmlXPathNextSelf;
             break;
     }
-    if (next == NULL)
+    if (next == NULL) {
+	xmlXPathFreeObject(obj);
         return(0);
+    }
 
     nodelist = obj->nodesetval;
     if (nodelist == NULL) {
@@ -10632,7 +10652,10 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             total +=
                                 xmlXPathCompOpEval(ctxt,
                                                    &comp->steps[op->ch2]);
-                        CHECK_ERROR0;
+			if (ctxt->error != XPATH_EXPRESSION_OK) {
+			    xmlXPathFreeObject(obj);
+			    return(0);
+			}
 
                         /*
                          * The result of the evaluation need to be tested to
@@ -10726,7 +10749,11 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             total +=
                                 xmlXPathCompOpEval(ctxt,
                                                    &comp->steps[op->ch2]);
-                        CHECK_ERROR0;
+			if (ctxt->error != XPATH_EXPRESSION_OK) {
+			    xmlXPathFreeNodeSet(newset);
+			    xmlXPathFreeObject(obj);
+			    return(0);
+			}
 
                         /*
                          * The result of the evaluation needs to be tested to
@@ -10828,7 +10855,10 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             total +=
                                 xmlXPathCompOpEval(ctxt,
                                                    &comp->steps[op->ch2]);
-                        CHECK_ERROR0;
+			if (ctxt->error != XPATH_EXPRESSION_OK) {
+			    xmlXPathFreeObject(obj);
+			    return(0);
+			}
 
                         res = valuePop(ctxt);
 			if (res->type == XPATH_LOCATIONSET) {
@@ -10886,7 +10916,10 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                 total +=
                                     xmlXPathCompOpEval(ctxt,
                                                    &comp->steps[op->ch2]);
-                            CHECK_ERROR0;
+			    if (ctxt->error != XPATH_EXPRESSION_OK) {
+				xmlXPathFreeObject(obj);
+				return(0);
+			    }
 
                             res = valuePop(ctxt);
                             range =

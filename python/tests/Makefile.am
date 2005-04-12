@@ -30,6 +30,7 @@ PYTESTS=	\
     reader8.py	\
     readernext.py	\
     walker.py	\
+    nsdel.py	\
     ctxterror.py\
     readererr.py\
     relaxng.py	\

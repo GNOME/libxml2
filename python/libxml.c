@@ -2661,6 +2661,55 @@ libxml_xmlNodeGetNsDefs(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 }
 
 PyObject *
+libxml_xmlNodeRemoveNsDef(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+{
+    PyObject *py_retval;
+    xmlNsPtr ns, prev;
+    xmlNodePtr node;
+    PyObject *pyobj_node;
+    xmlChar *href;
+    xmlNsPtr c_retval;
+    
+    if (!PyArg_ParseTuple
+        (args, (char *) "Oz:xmlNodeRemoveNsDef", &pyobj_node, &href))
+        return (NULL);
+    node = (xmlNodePtr) PyxmlNode_Get(pyobj_node);
+    ns = NULL;
+
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+
+    if (href == NULL) {
+	ns = node->nsDef;
+	node->nsDef = NULL;
+	c_retval = 0;
+    }
+    else {
+	prev = NULL;
+	ns = node->nsDef;
+	while (ns != NULL) {
+	    if (xmlStrEqual(ns->href, href)) {
+		if (prev != NULL)
+		    prev->next = ns->next;
+		else
+		    node->nsDef = ns->next;
+		ns->next = NULL;
+		c_retval = 0;
+		break;
+	    }
+	    prev = ns;
+	    ns = ns->next;
+	}
+    }
+
+    c_retval = ns;
+    py_retval = libxml_xmlNsPtrWrap((xmlNsPtr) c_retval);
+    return (py_retval);
+}
+
+PyObject *
 libxml_xmlNodeGetNs(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
     PyObject *py_retval;
@@ -3640,6 +3689,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "type", libxml_type, METH_VARARGS, NULL},
     {(char *) "doc", libxml_doc, METH_VARARGS, NULL},
     {(char *) "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL},
+    {(char *) "xmlNodeRemoveNsDef", libxml_xmlNodeRemoveNsDef, METH_VARARGS, NULL},
     {(char *)"xmlSetValidErrors", libxml_xmlSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlFreeValidCtxt", libxml_xmlFreeValidCtxt, METH_VARARGS, NULL},
 #ifdef LIBXML_OUTPUT_ENABLED

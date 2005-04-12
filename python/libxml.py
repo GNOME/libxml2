@@ -429,6 +429,27 @@ class xmlCore:
     def xpathEval2(self, expr):
         return self.xpathEval(expr)
 
+    # Remove namespaces
+    def removeNsDef(self, href):
+        """
+        Remove a namespace definition from a node.  If href is None,
+        remove all of the ns definitions on that node.  The removed
+        namespaces are returned as a linked list.
+
+        Note: If any child nodes referred to the removed namespaces,
+        they will be left with dangling links.  You should call
+        renciliateNs() to fix those pointers.
+
+        Note: This method does not free memory taken by the ns
+        definitions.  You will need to free it manually with the
+        freeNsList() method on the returns xmlNs object.
+        """
+
+        ret = libxml2mod.xmlNodeRemoveNsDef(self._o, href)
+        if ret is None:return None
+        __tmp = xmlNs(_obj=ret)
+        return __tmp
+
     # support for python2 iterators
     def walk_depth_first(self):
         return xmlCoreDepthFirstItertor(self)

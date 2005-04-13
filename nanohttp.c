@@ -134,6 +134,7 @@ typedef struct xmlNanoHTTPCtxt {
     char *hostname;	/* the host name */
     int port;		/* the port */
     char *path;		/* the path within the URL */
+    char *query;	/* the query string */
     SOCKET fd;		/* the file descriptor for the socket */
     int state;		/* WRITE / READ / CLOSED */
     char *out;		/* buffer sent (zero terminated) */
@@ -284,6 +285,10 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
         xmlFree(ctxt->path);
 	ctxt->path = NULL;
     }
+    if (ctxt->query != NULL) { 
+        xmlFree(ctxt->query);
+	ctxt->query = NULL;
+    }
     if (URL == NULL) return;
 
     uri = xmlParseURI(URL);
@@ -301,6 +306,8 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 	ctxt->path = xmlMemStrdup(uri->path);
     else
 	ctxt->path = xmlMemStrdup("/");
+    if (uri->query != NULL)
+	ctxt->query = xmlMemStrdup(uri->query);
     if (uri->port != 0)
 	ctxt->port = uri->port;
 
@@ -396,6 +403,7 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->hostname != NULL) xmlFree(ctxt->hostname);
     if (ctxt->protocol != NULL) xmlFree(ctxt->protocol);
     if (ctxt->path != NULL) xmlFree(ctxt->path);
+    if (ctxt->query != NULL) xmlFree(ctxt->query);
     if (ctxt->out != NULL) xmlFree(ctxt->out);
     if (ctxt->in != NULL) xmlFree(ctxt->in);
     if (ctxt->contentType != NULL) xmlFree(ctxt->contentType);
@@ -1229,6 +1237,8 @@ retry:
 	blen += strlen(headers) + 2;
     if (contentType && *contentType)
 	blen += strlen(*contentType) + 16;
+    if (ctxt->query != NULL)
+	blen += strlen(ctxt->query) + 1;
     blen += strlen(method) + strlen(ctxt->path) + 24;
     bp = (char*)xmlMallocAtomic(blen);
     if ( bp == NULL ) {
@@ -1251,6 +1261,9 @@ retry:
     }
     else
 	p += snprintf( p, blen - (p - bp), "%s %s", method, ctxt->path);
+
+    if (ctxt->query != NULL)
+	p += snprintf( p, blen - (p - bp), "?%s", ctxt->query);
 
     p += snprintf( p, blen - (p - bp), " HTTP/1.0\r\nHost: %s\r\n", 
 		    ctxt->hostname);

@@ -1,3 +1,8 @@
+Wed Apr 13 05:55:51 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* nanohttp.c: applied patch from Aron Stansvik for bug #172525
+	  about HTTP query string parameter being lost
+
 Tue Apr 12 04:03:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c python/libxml.py: applied patch from Brent Hendricks

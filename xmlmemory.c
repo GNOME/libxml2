@@ -325,6 +325,7 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
 
     p = CLIENT_2_HDR(ptr);
     number = p->mh_number;
+    if (xmlMemStopAtBlock == number) xmlMallocBreakpoint();
     if (p->mh_tag != MEMTAG) {
        Mem_Tag_Err(p);
 	 goto error;
@@ -429,6 +430,7 @@ xmlMemFree(void *ptr)
         Mem_Tag_Err(p);
         goto error;
     }
+    if (xmlMemStopAtBlock == p->mh_number) xmlMallocBreakpoint();
     p->mh_tag = ~MEMTAG;
     memset(target, -1, p->mh_size);
     xmlMutexLock(xmlMemMutex);

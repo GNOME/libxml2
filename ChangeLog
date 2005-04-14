@@ -1,3 +1,8 @@
+Thu Apr 14 20:52:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: added the call to the breakpoint routine
+	  when a monitored block is reallocated or freed
+
 Wed Apr 13 05:55:51 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* nanohttp.c: applied patch from Aron Stansvik for bug #172525

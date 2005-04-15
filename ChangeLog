@@ -1,3 +1,9 @@
+Fri Apr 15 09:33:21 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: Applied Daniel's fix for memory leak in dtd
+	  prefix (bug 300550).
+	* xpath.c: minor change to comment only
+
 Thu Apr 14 20:52:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c: added the call to the breakpoint routine

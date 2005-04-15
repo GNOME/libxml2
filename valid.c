@@ -1485,6 +1485,10 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
 	        xmlFree(ns);
 	    return(NULL);
 	}
+	if (ns != NULL) {
+	    xmlFree(ns);
+	    ns = NULL;
+	}
     } else {
 	ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (ret == NULL) {

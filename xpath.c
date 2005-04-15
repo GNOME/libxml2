@@ -5101,6 +5101,11 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 
     if ((arg2->type == XPATH_NODESET) || (arg2->type == XPATH_XSLT_TREE) ||
       (arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE)) {
+	/*
+	 * If either argument is a XPATH_NODESET or XPATH_XSLT_TREE the two arguments
+	 * are not freed from within this routine; they will be freed from the
+	 * called routine, e.g. xmlXPathCompareNodeSets or xmlXPathCompareNodeSetValue
+	 */
 	if (((arg2->type == XPATH_NODESET) || (arg2->type == XPATH_XSLT_TREE)) &&
 	  ((arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE))){
 	    ret = xmlXPathCompareNodeSets(inf, strict, arg1, arg2);
@@ -5113,10 +5118,6 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 			                          arg2, arg1);
 	    }
 	}
-	/*
-	 * Note from Bill: I don't understand why, but arg1 and arg2 shouldn't be
-	 * freed here!
-	 */
 	return(ret);
     }
 

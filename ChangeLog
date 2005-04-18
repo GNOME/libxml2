@@ -1,3 +1,7 @@
+Mon Apr 18 13:02:55 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/changelog093*: Added test results.
+
 Mon Apr 18 12:42:14 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Added output of canonical values in

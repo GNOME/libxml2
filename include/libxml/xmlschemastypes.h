@@ -111,6 +111,10 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 		xmlSchemaGetCanonValue		(xmlSchemaValPtr val,
 						 const xmlChar **retValue);
+XMLPUBFUN int XMLCALL
+		xmlSchemaGetCanonValueWhtsp	(xmlSchemaValPtr val,						 
+						 const xmlChar **retValue,
+						 xmlSchemaWhitespaceValueType ws);
 XMLPUBFUN xmlSchemaValPtr XMLCALL
 		xmlSchemaNewStringValue		(xmlSchemaValType type,
 						 const xmlChar *value);

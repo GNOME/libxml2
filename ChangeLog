@@ -1,3 +1,14 @@
+Mon Apr 18 12:42:14 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Added output of canonical values in
+	  identity-constraint error messages.
+	* xmlschemastypes.c include/libxml/xmlschemastypes.h:
+	  Added xmlSchemaGetCanonValueWhtsp() to the API.
+	  Further enhancement of the canonical value
+	  conversion.
+	* test/schemas/changelog093_0.*: Added test with an XSD
+	  submitted by Randy J. Ray.
+
 Fri Apr 15 09:33:21 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: Applied Daniel's fix for memory leak in dtd

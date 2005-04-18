@@ -1489,7 +1489,7 @@ xmlSchemaPRequestItemDes(xmlChar **buf,
 }
 
 /**
- * xmlSchemaGetCanonValueWhtsp:
+ * xmlSchemaGetCanonValueWhtspExt:
  * @val: the precomputed value
  * @retValue: the returned value
  * @ws: the whitespace type of the value
@@ -1501,14 +1501,14 @@ xmlSchemaPRequestItemDes(xmlChar **buf,
  *         API errors or if the value type is not supported yet.
  */
 static int
-xmlSchemaGetCanonValueWhtsp(const xmlChar *value,
+xmlSchemaGetCanonValueWhtspExt(const xmlChar *value,
 			    xmlSchemaValPtr val,
 			    xmlSchemaWhitespaceValueType ws,
 			    const xmlChar **retValue)
 {
     xmlSchemaValType valType;
 
-    if ((retValue == NULL) || (value == NULL) || (val == NULL))
+    if ((retValue == NULL) || ((value == NULL) && (val == NULL)))
 	return (-1);
     *retValue = NULL;
     valType = xmlSchemaGetValType(val);    
@@ -1572,7 +1572,7 @@ xmlSchemaFormatFacetEnumSet(xmlChar **buf, xmlSchemaTypePtr type)
 	    if (facet->type != XML_SCHEMA_FACET_ENUMERATION)
 		continue;
 	    found = 1;
-	    res = xmlSchemaGetCanonValueWhtsp(facet->value, facet->val,
+	    res = xmlSchemaGetCanonValueWhtspExt(facet->value, facet->val,
 		ws, &value);
 	    if (res == -1) {
 		xmlSchemaVErr(NULL, NULL,
@@ -19673,6 +19673,45 @@ next_sto:
     return (resolved);
 }
 
+static const xmlChar *
+xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr ctxt,
+			      xmlChar **buf,
+			      xmlSchemaPSVIIDCKeyPtr *seq,
+			      int count)
+{
+    int i, res;
+    const xmlChar *value = NULL;
+
+    *buf = xmlStrdup(BAD_CAST "[");
+    for (i = 0; i < count; i++) {
+	*buf = xmlStrcat(*buf, BAD_CAST "'");
+	res = xmlSchemaGetCanonValueWhtsp(seq[i]->compValue, &value,
+	    (xmlSchemaWhitespaceValueType)
+		xmlSchemaGetWhiteSpaceFacetValue(seq[i]->type));
+	if (res == 0)
+	    *buf = xmlStrcat(*buf, value);
+	else {
+	    xmlSchemaVErr(ctxt, ctxt->node,
+		XML_SCHEMAV_INTERNAL,
+		"Internal error: xmlSchemaFormatIDCKeySequence, "
+		"failed to compute canonical value.\n",
+		NULL, NULL);
+	    *buf = xmlStrcat(*buf, BAD_CAST "???");
+	}
+	if (i < count -1)
+	    *buf = xmlStrcat(*buf, BAD_CAST "', ");
+	else
+	    *buf = xmlStrcat(*buf, BAD_CAST "'");
+	if (value != NULL) {
+	    xmlFree((xmlChar *) value);
+	    value = NULL;
+	}
+    }
+    *buf = xmlStrcat(*buf, BAD_CAST "]");
+
+    return (BAD_CAST *buf);
+}
+
 /**
  * xmlSchemaXPathProcessHistory:
  * @vctxt: the WXS validation context
@@ -19999,6 +20038,7 @@ create_key:
 		    i++;
 		} while (i < bind->nbNodes);
 		if (i != bind->nbNodes) {
+		    xmlChar *str = NULL;
 		    /*   
 		    * TODO: Try to report the key-sequence.
 		    */
@@ -20006,8 +20046,10 @@ create_key:
 			XML_SCHEMAV_CVC_IDC,
 			vctxt->nodeInfo,
 			(xmlSchemaTypePtr) idc,
-			"Duplicate key-sequence found", NULL, NULL);
-		    
+			"Duplicate key-sequence %s",
+			xmlSchemaFormatIDCKeySequence(vctxt, &str,
+			    (*keySeq), nbKeys), NULL);
+		    FREE_AND_NULL(str)
 		    goto selector_leave;
 		}
 	    }
@@ -20570,12 +20612,17 @@ xmlSchemaCheckCVCIDCKeyRef(xmlSchemaValidCtxtPtr vctxt)
 		    }
 		}
 		if (res == 0) {
+		    xmlChar *str = NULL;
 		    /* TODO: Report the key-sequence. */
 		    xmlSchemaVCustomErr(vctxt,
 			XML_SCHEMAV_CVC_IDC,
 			refbind->nodeTable[i]->node, 
 			(xmlSchemaTypePtr) refbind->definition,
-			"No matching key-sequence found", NULL);
+			"No match found for key reference %s",
+			xmlSchemaFormatIDCKeySequence(vctxt, &str,
+			 refbind->nodeTable[i]->keys,
+			 refbind->definition->nbFields));
+		    FREE_AND_NULL(str)
 		}
 	    }
 	}

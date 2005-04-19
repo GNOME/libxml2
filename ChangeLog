@@ -1,3 +1,8 @@
+Tue Apr 19 22:33:18 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: Added some code to avoid integer overflow for
+	  ceil, floor and round functions (bug 301162)
+
 Tue Apr 19 13:21:54 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Removed workaround for bug #172215, since it

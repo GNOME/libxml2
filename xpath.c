@@ -7190,6 +7190,18 @@ xmlXPathSumFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathFreeObject(cur);
 }
 
+/*
+ * To assure working code on multiple platforms, we want to only depend
+ * upon the characteristic truncation of converting a floating point value
+ * to an integer.  Unfortunately, because of the different storage sizes
+ * of our internal floating point value (double) and integer (int), we
+ * can't directly convert (see bug 301162).  This macro is a messy
+ * 'workaround'
+ */
+#define XTRUNC(f, v)            \
+    f = fmod((v), INT_MAX);     \
+    f = (v) - (f) + (double)((int)(f));
+
 /**
  * xmlXPathFloorFunction:
  * @ctxt:  the XPath Parser context
@@ -7208,7 +7220,7 @@ xmlXPathFloorFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
 
-    f = (double)((int) ctxt->value->floatval);
+    XTRUNC(f, ctxt->value->floatval);
     if (f != ctxt->value->floatval) {
 	if (ctxt->value->floatval > 0)
 	    ctxt->value->floatval = f;
@@ -7238,7 +7250,7 @@ xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 #if 0
     ctxt->value->floatval = ceil(ctxt->value->floatval);
 #else
-    f = (double)((int) ctxt->value->floatval);
+    XTRUNC(f, ctxt->value->floatval);
     if (f != ctxt->value->floatval) {
 	if (ctxt->value->floatval > 0)
 	    ctxt->value->floatval = f + 1;
@@ -7278,7 +7290,7 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	(ctxt->value->floatval == 0.0))
 	return;
 
-    f = (double)((int) ctxt->value->floatval);
+    XTRUNC(f, ctxt->value->floatval);
     if (ctxt->value->floatval < 0) {
 	if (ctxt->value->floatval < f - 0.5)
 	    ctxt->value->floatval = f - 1;

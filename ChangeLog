@@ -1,3 +1,9 @@
+Tue Apr 19 13:21:54 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Removed workaround for bug #172215, since it
+	  does more harm in some scenarios. Added some of the
+	  "Particle Restriction OK" constraints - not yet enabled.	  
+
 Mon Apr 18 13:02:55 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/changelog093*: Added test results.

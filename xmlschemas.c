@@ -62,6 +62,8 @@
 
 /* #define DEBUG_INCLUDES 1 */
 
+/* #define ENABLE_PARTICLE_RESTRICTION 1 */
+
 #define DUMP_CONTENT_MODEL
 
 
@@ -156,11 +158,19 @@ static const xmlChar *xmlSchemaElemModelGrRef = (const xmlChar *)
 
 #define ELEM_TYPE(item) item->subtypes
 
+#define GET_PARTICLE(item) (xmlSchemaParticlePtr) item->subtypes;
+
 #define SUBST_GROUP_AFF(item) item->refDecl
 
 #if 0
 #define WXS_GET_NEXT(item) xmlSchemaGetNextComponent((xmlSchemaBasicItemPtr) item)
 #endif
+
+#define SUBSET_RESTRICTION  1<<0
+#define SUBSET_EXTENSION    1<<1
+#define SUBSET_SUBSTITUTION 1<<2
+#define SUBSET_LIST         1<<3
+#define SUBSET_UNION        1<<4
 
 /*
 #define XML_SCHEMAS_VAL_WTSP_PRESERVE 0
@@ -549,7 +559,7 @@ struct _xmlSchemaNodeInfo {
                                            element */
 };
 
-#define XML_SCHEMA_VALID_INVALID_NEG_WILDCARD 1<<0
+/* #define XML_SCHEMA_VALID_INVALID_NEG_WILDCARD 1<<0 */
 
 /**
  * xmlSchemaValidCtxt:
@@ -12323,48 +12333,46 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
 /**
  * xmlSchemaIsWildcardNsConstraintSubset:
  * @ctxt:  the schema parser context
- * @wildA:  the first wildcard
- * @wildB: the second wildcard 
+ * @sub:  the first wildcard
+ * @super: the second wildcard
  *
- * Returns 1 if the namespace constraint of @wildA is an intensional 
- * subset of @wildB, 0 otherwise.
+ * Schema Component Constraint: Wildcard Subset (cos-ns-subset)
+ *
+ * Returns 0 if the namespace constraint of @sub is an intensional 
+ * subset of @super, 1 otherwise.
  */
 static int
-xmlSchemaIsWildcardNsConstraintSubset(xmlSchemaWildcardPtr wildA,
-				      xmlSchemaWildcardPtr wildB)
-{    
-
-    /*
-    * Schema Component Constraint: Wildcard Subset 
-    */
+xmlSchemaCheckCOSNSSubset(xmlSchemaWildcardPtr sub,
+			  xmlSchemaWildcardPtr super)
+{        
     /*
     * 1 super must be any. 
     */
-    if (wildB->any)
-	return (1);
+    if (super->any)
+	return (0);
     /*
     * 2.1 sub must be a pair of not and a namespace name or ·absent·.
     * 2.2 super must be a pair of not and the same value.
     */
-    if ((wildA->negNsSet != NULL) &&
-	(wildB->negNsSet != NULL) &&
-	(wildA->negNsSet->value == wildA->negNsSet->value))
-	return (1);    
+    if ((sub->negNsSet != NULL) &&
+	(super->negNsSet != NULL) &&
+	(sub->negNsSet->value == sub->negNsSet->value))
+	return (0);    
     /* 
     * 3.1 sub must be a set whose members are either namespace names or ·absent·. 
     */
-    if (wildA->nsSet != NULL) {
+    if (sub->nsSet != NULL) {
 	/*
 	* 3.2.1 super must be the same set or a superset thereof. 
 	*/
-	if (wildB->nsSet != NULL) {
+	if (super->nsSet != NULL) {
 	    xmlSchemaWildcardNsPtr cur, curB;
 	    int found = 0;
 	    
-	    cur = wildA->nsSet;
+	    cur = sub->nsSet;
 	    while (cur != NULL) {
 		found = 0;
-		curB = wildB->nsSet;
+		curB = super->nsSet;
 		while (curB != NULL) {
 		    if (cur->value == curB->value) {
 			found = 1;
@@ -12373,27 +12381,27 @@ xmlSchemaIsWildcardNsConstraintSubset(xmlSchemaWildcardPtr wildA,
 		    curB = curB->next;
 		}
 		if (!found)
-		    return (0);
+		    return (1);
 		cur = cur->next;
 	    }
 	    if (found)
-		return (1); 
-	} else if (wildB->negNsSet != NULL) {
+		return (0); 
+	} else if (super->negNsSet != NULL) {
 	    xmlSchemaWildcardNsPtr cur;
 	    /*
 	    * 3.2.2 super must be a pair of not and a namespace name or 
 	    * ·absent· and that value must not be in sub's set. 
 	    */
-	    cur = wildA->nsSet;
+	    cur = sub->nsSet;
 	    while (cur != NULL) {		
-		if (cur->value == wildB->negNsSet->value)
-		    return (0);
+		if (cur->value == super->negNsSet->value)
+		    return (1);
 		cur = cur->next;
 	    }  
-	    return (1);
+	    return (0);
 	}
     }
-    return (0);
+    return (1);
 }
 
 /**
@@ -12673,8 +12681,8 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 		    xmlSchemaFormatItemForReport(&str, NULL, baseType, NULL, 1));
 		FREE_AND_NULL(str)
 		return (1);
-	    } else if (xmlSchemaIsWildcardNsConstraintSubset(
-		type->attributeWildcard, baseType->attributeWildcard) == 0) {
+	    } else if (xmlSchemaCheckCOSNSSubset(
+		type->attributeWildcard, baseType->attributeWildcard)) {
 		/* 4.2 */
 		xmlSchemaPCustomErr(ctxt,
 		    XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_2,
@@ -12714,8 +12722,8 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 	if ((baseType->attributeWildcard != NULL) &&
 	    (baseType->attributeWildcard != type->attributeWildcard)) {
 	    /* 1.3 */
-	    if (xmlSchemaIsWildcardNsConstraintSubset(
-		baseType->attributeWildcard, type->attributeWildcard) == 0) {
+	    if (xmlSchemaCheckCOSNSSubset(
+		baseType->attributeWildcard, type->attributeWildcard)) {
 		xmlSchemaPCustomErr(ctxt,
 		    XML_SCHEMAP_COS_CT_EXTENDS_1_3,
 		    NULL, type, NULL, 		
@@ -13097,70 +13105,145 @@ xmlSchemaGetListSimpleTypeItemType(xmlSchemaTypePtr type)
     return (type->subtypes);
 }
 
-
+/**
+ * xmlSchemaGetParticleTotalRangeMin:
+ * @particle: the particle
+ *
+ * Schema Component Constraint: Effective Total Range 
+ * (all and sequence) + (choice)
+ *
+ * Returns the minimun Effective Total Range.
+ */
 static int
-xmlSchemaGetParticleTotalRangeMin(xmlSchemaTreeItemPtr particle)
+xmlSchemaGetParticleTotalRangeMin(xmlSchemaParticlePtr particle)
 {
     if ((particle->children == NULL) ||
-	( ((xmlSchemaParticlePtr) particle)->minOccurs == 0))
+	(particle->minOccurs == 0))
 	return (0);
     if (particle->children->type == XML_SCHEMA_TYPE_CHOICE) {
-	int min = 0, cur;
-	xmlSchemaTreeItemPtr part = particle->children->children;
+	int min = -1, cur;
+	xmlSchemaParticlePtr part = 
+	    (xmlSchemaParticlePtr) particle->children->children;
 
 	if (part == NULL)
-	    return (0);	
-	if ((part->children->type == XML_SCHEMA_TYPE_ELEMENT) ||
-	    (part->children->type == XML_SCHEMA_TYPE_ANY))
-	    min = ((xmlSchemaParticlePtr) part)->minOccurs;
-	else
-	    min = xmlSchemaGetParticleTotalRangeMin(part);
-	if (min == 0)
-	    return (0);
-	part = part->next;
+	    return (0);		
 	while (part != NULL) {
 	    if ((part->children->type == XML_SCHEMA_TYPE_ELEMENT) ||
 		(part->children->type == XML_SCHEMA_TYPE_ANY))
-		cur = ((xmlSchemaParticlePtr) part)->minOccurs;
+		cur = part->minOccurs;
 	    else
-		cur = xmlSchemaGetParticleTotalRangeMin(part);	    
+		cur = xmlSchemaGetParticleTotalRangeMin(part);
 	    if (cur == 0)
 		return (0);
-	    if (min > cur)
-		min = cur;
-	    part = part->next;
+	    if ((min > cur) || (min == -1))
+		min = cur;	    
+	    part = (xmlSchemaParticlePtr) part->next;
 	}
-	return (((xmlSchemaParticlePtr) particle)->minOccurs * min);
+	return (particle->minOccurs * min);
     } else {
 	/* <all> and <sequence> */
 	int sum = 0;
-	xmlSchemaTreeItemPtr part = particle->children->children;
+	xmlSchemaParticlePtr part =
+	    (xmlSchemaParticlePtr) particle->children->children;
 
 	if (part == NULL)
 	    return (0);
 	do {
 	    if ((part->children->type == XML_SCHEMA_TYPE_ELEMENT) ||
 		(part->children->type == XML_SCHEMA_TYPE_ANY))
-		sum += ((xmlSchemaParticlePtr) part)->minOccurs;
+		sum += part->minOccurs;
 	    else
 		sum += xmlSchemaGetParticleTotalRangeMin(part);
-	    part = part->next;
+	    part = (xmlSchemaParticlePtr) part->next;
 	} while (part != NULL);
-	return (((xmlSchemaParticlePtr) particle)->minOccurs * sum);
+	return (particle->minOccurs * sum);
     }
 }
 
+/**
+ * xmlSchemaGetParticleTotalRangeMax:
+ * @particle: the particle
+ *
+ * Schema Component Constraint: Effective Total Range 
+ * (all and sequence) + (choice)
+ *
+ * Returns the maximum Effective Total Range.
+ */
+static int
+xmlSchemaGetParticleTotalRangeMax(xmlSchemaParticlePtr particle)
+{
+    if ((particle->children == NULL) ||
+	(particle->children->children == NULL))
+	return (0);
+    if (particle->children->type == XML_SCHEMA_TYPE_CHOICE) {
+	int max = -1, cur;
+	xmlSchemaParticlePtr part =
+	    (xmlSchemaParticlePtr) particle->children->children;
 
+	for (; part != NULL; part = (xmlSchemaParticlePtr) part->next) {
+	    if (part->children == NULL)
+		continue;
+	    if ((part->children->type == XML_SCHEMA_TYPE_ELEMENT) ||
+		(part->children->type == XML_SCHEMA_TYPE_ANY))
+		cur = part->maxOccurs;
+	    else
+		cur = xmlSchemaGetParticleTotalRangeMax(part);
+	    if (cur == UNBOUNDED)
+		return (UNBOUNDED);
+	    if ((max < cur) || (max == -1))
+		max = cur;
+	}
+	/* TODO: Handle overflows? */
+	return (particle->maxOccurs * max);
+    } else {
+	/* <all> and <sequence> */
+	int sum = 0, cur;
+	xmlSchemaParticlePtr part =
+	    (xmlSchemaParticlePtr) particle->children->children;
+
+	for (; part != NULL; part = (xmlSchemaParticlePtr) part->next) {
+	    if (part->children == NULL)
+		continue;
+	    if ((part->children->type == XML_SCHEMA_TYPE_ELEMENT) ||
+		(part->children->type == XML_SCHEMA_TYPE_ANY))
+		cur = part->maxOccurs;
+	    else
+		cur = xmlSchemaGetParticleTotalRangeMax(part);
+	    if (cur == UNBOUNDED)
+		return (UNBOUNDED);
+	    if ((cur > 0) && (particle->maxOccurs == UNBOUNDED))
+		return (UNBOUNDED);
+	    sum += cur;
+	}
+	/* TODO: Handle overflows? */
+	return (particle->maxOccurs * sum);
+    }
+}
+
+/**
+ * xmlSchemaIsParticleEmptiable:
+ * @particle: the particle
+ *
+ * Schema Component Constraint: Particle Emptiable
+ * Checks whether the given particle is emptiable.
+ *
+ * Returns 1 if emptiable, 0 otherwise.
+ */ 
 static int
 xmlSchemaIsParticleEmptiable(xmlSchemaParticlePtr particle)
 {
+    /*
+    * SPEC (1) "Its {min occurs} is 0."
+    */
     if ((particle == NULL) || (particle->minOccurs == 0) ||
 	(particle->children == NULL))
 	return (1);
-
+    /*
+    * SPEC (2) "Its {term} is a group and the minimum part of the
+    * effective total range of that group, [...] is 0."
+    */
     if (IS_MODEL_GROUP(particle->children)) {
-	if (xmlSchemaGetParticleTotalRangeMin(
-	    (xmlSchemaTreeItemPtr) particle) == 0)
+	if (xmlSchemaGetParticleTotalRangeMin(particle) == 0)
 	    return (1);
     }
     return (0);
@@ -13195,7 +13278,7 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaPtr schema,
     * 2.1 restriction is not in the subset, or in the {final}
     * of its own {base type definition};
     */
-    if ((subset & XML_SCHEMAS_TYPE_FINAL_RESTRICTION) ||
+    if ((subset & SUBSET_RESTRICTION) ||
 	(xmlSchemaTypeFinalContains(schema, 
 	    type->baseType, XML_SCHEMAS_TYPE_FINAL_RESTRICTION))) {
 	return (XML_SCHEMAP_COS_ST_DERIVED_OK_2_1); 
@@ -13212,17 +13295,18 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaPtr schema,
     * and is validly derived from B given the subset, as defined by this 
     * constraint.    
     */
-    if ((type->baseType != xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE)) &&
-	(xmlSchemaCheckCOSSTDerivedOK(schema, type->baseType, baseType, subset) == 0)) {
+    if ((! IS_ANYTYPE(type->baseType)) &&
+	(xmlSchemaCheckCOSSTDerivedOK(schema, type->baseType,
+	    baseType, subset) == 0)) {
 	return (0);		
     } 
     /* 
     * 2.2.3 D's {variety} is list or union and B is the ·simple ur-type 
     * definition·.
     */
-    if (((type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) ||
-	(type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION)) &&
-	(baseType == xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE))) {
+    if (IS_ANY_SIMPLE_TYPE(baseType) &&
+	((type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) ||
+	 (type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION))) {
 	return (0);
     }    
     /* 
@@ -14358,9 +14442,9 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaPtr schema,
 	* SPEC (1) "If B and D are not the same type definition, then the
 	* {derivation method} of D must not be in the subset."
 	*/
-	if (((set & XML_SCHEMAS_TYPE_BLOCK_EXTENSION) &&
+	if (((set & SUBSET_EXTENSION) &&
 	    (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION)) ||
-	    ((set & XML_SCHEMAS_TYPE_BLOCK_RESTRICTION) &&
+	    ((set & SUBSET_RESTRICTION) &&
 	    (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION)))
 	    return (1);
     } else {
@@ -14414,9 +14498,9 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaPtr schema,
  */ 
 static int
 xmlSchemaCheckCOSDerivedOK(xmlSchemaPtr schema,
-				     xmlSchemaTypePtr type,
-				     xmlSchemaTypePtr baseType,
-				     int set)
+			   xmlSchemaTypePtr type,
+			   xmlSchemaTypePtr baseType,
+			   int set)
 {
     if (IS_SIMPLE_TYPE(type))
 	return (xmlSchemaCheckCOSSTDerivedOK(schema, type, baseType, set));
@@ -14933,6 +15017,397 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
     return (ret);
 }
 
+#ifdef ENABLE_PARTICLE_RESTRICTION
+/**
+ * xmlSchemaCheckParticleRangeOK:
+ * @ctxt:  the schema parser context
+ * @type:  the complex type definition
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Occurrence Range OK (range-ok)
+ *
+ * STATUS: complete
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckParticleRangeOK(int rmin, int rmax,
+			      int bmin, int bmax)
+{ 
+    if (rmin < bmin)
+	return (1);
+    if ((bmax != UNBOUNDED) &&
+	(rmax > bmax))
+	return (1);
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckRCaseNameAndTypeOK:
+ * @ctxt:  the schema parser context
+ * @r: the restricting element declaration particle
+ * @b: the base element declaration particle
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Restriction OK (Elt:Elt -- NameAndTypeOK)
+ * (rcase-NameAndTypeOK)
+ * 
+ * STATUS: 
+ *   MISSING (3.2.3)
+ *   CLARIFY: (3.2.2)
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckRCaseNameAndTypeOK(xmlSchemaParserCtxtPtr ctxt,
+				 xmlSchemaParticlePtr r,
+				 xmlSchemaParticlePtr b)
+{
+    xmlSchemaElementPtr elemR, elemB;
+
+    /* TODO: Error codes (rcase-NameAndTypeOK). */
+    elemR = (xmlSchemaElementPtr) r->children;
+    elemB = (xmlSchemaElementPtr) b->children;
+    /*
+    * SPEC (1) "The declarations' {name}s and {target namespace}s are
+    * the same."
+    */
+    if ((elemR != elemB) &&
+	((! xmlStrEqual(elemR->name, elemB->name)) ||
+	(! xmlStrEqual(elemR->targetNamespace, elemB->targetNamespace))))
+	return (1);
+    /*
+    * SPEC (2) "R's occurrence range is a valid restriction of B's
+    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    */
+    if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
+	    b->minOccurs, b->maxOccurs) != 0)
+	return (1);
+    /*
+    * SPEC (3.1) "Both B's declaration's {scope} and R's declaration's
+    * {scope} are global."
+    */
+    if (elemR == elemB)
+	return (0);
+    /*
+    * SPEC (3.2.1) "Either B's {nillable} is true or R's {nillable} is false."
+    */
+    if (((elemB->flags & XML_SCHEMAS_ELEM_NILLABLE) == 0) &&
+	(elemR->flags & XML_SCHEMAS_ELEM_NILLABLE))
+	 return (1);
+    /*
+    * SPEC (3.2.2) "either B's declaration's {value constraint} is absent,
+    * or is not fixed, or R's declaration's {value constraint} is fixed
+    * with the same value."
+    */
+    if ((elemB->value != NULL) && (elemB->flags & XML_SCHEMAS_ELEM_FIXED) &&
+	((elemR->value == NULL) ||
+	 ((elemR->flags & XML_SCHEMAS_ELEM_FIXED) == 0) ||
+	 /* TODO: Equality of the initial value or normalized or canonical? */
+	 (! xmlStrEqual(elemR->value, elemB->value))))
+	 return (1);
+    /*
+    * TODO: SPEC (3.2.3) "R's declaration's {identity-constraint
+    * definitions} is a subset of B's declaration's {identity-constraint
+    * definitions}, if any."
+    */
+    if (elemB->idcs != NULL) {
+	/* TODO */
+    }
+    /*
+    * SPEC (3.2.4) "R's declaration's {disallowed substitutions} is a
+    * superset of B's declaration's {disallowed substitutions}."
+    */
+    if (((elemB->flags & XML_SCHEMAS_ELEM_BLOCK_EXTENSION) &&
+	 ((elemR->flags & XML_SCHEMAS_ELEM_BLOCK_EXTENSION) == 0)) ||
+	((elemB->flags & XML_SCHEMAS_ELEM_BLOCK_RESTRICTION) &&
+	 ((elemR->flags & XML_SCHEMAS_ELEM_BLOCK_RESTRICTION) == 0)) ||
+	((elemB->flags & XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION) &&
+	 ((elemR->flags & XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION) == 0)))
+	 return (1);
+    /*
+    * SPEC (3.2.5) "R's {type definition} is validly derived given
+    * {extension, list, union} from B's {type definition}"
+    *
+    * BADSPEC TODO: What's the point of adding "list" and "union" to the
+    * set, if the corresponding constraints handle "restriction" and
+    * "extension" only?
+    * 
+    */
+    {
+	int set = 0;
+
+	set |= SUBSET_EXTENSION;
+	set |= SUBSET_LIST;
+	set |= SUBSET_UNION;
+	if (xmlSchemaCheckCOSDerivedOK(ctxt->schema, elemR->subtypes,
+	    elemB->subtypes, set) != 0)
+	    return (1);
+    }
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckRCaseNSCompat:
+ * @ctxt:  the schema parser context
+ * @r: the restricting element declaration particle
+ * @b: the base wildcard particle
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Derivation OK (Elt:Any -- NSCompat)
+ * (rcase-NSCompat)
+ * 
+ * STATUS: complete
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckRCaseNSCompat(xmlSchemaParserCtxtPtr ctxt,
+			    xmlSchemaParticlePtr r,
+			    xmlSchemaParticlePtr b)
+{
+    /* TODO:Error codes (rcase-NSCompat). */
+    /*
+    * SPEC "For an element declaration particle to be a ·valid restriction·
+    * of a wildcard particle all of the following must be true:"
+    *
+    * SPEC (1) "The element declaration's {target namespace} is ·valid·
+    * with respect to the wildcard's {namespace constraint} as defined by
+    * Wildcard allows Namespace Name (§3.10.4)."
+    */
+    if (xmlSchemaMatchesWildcardNs((xmlSchemaWildcardPtr) b->children,
+	((xmlSchemaElementPtr) r->children)->targetNamespace) != 0)
+	return (1);
+    /*
+    * SPEC (2) "R's occurrence range is a valid restriction of B's
+    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    */
+    if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
+	    b->minOccurs, b->maxOccurs) != 0)
+	return (1);
+
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckRCaseRecurseAsIfGroup:
+ * @ctxt:  the schema parser context
+ * @r: the restricting element declaration particle
+ * @b: the base model group particle
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Derivation OK (Elt:All/Choice/Sequence -- RecurseAsIfGroup)
+ * (rcase-RecurseAsIfGroup)
+ * 
+ * STATUS: TODO
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckRCaseRecurseAsIfGroup(xmlSchemaParserCtxtPtr ctxt,
+				    xmlSchemaParticlePtr r,
+				    xmlSchemaParticlePtr b)
+{
+    /* TODO: Error codes (rcase-RecurseAsIfGroup). */
+    TODO
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckRCaseNSSubset:
+ * @ctxt:  the schema parser context
+ * @r: the restricting wildcard particle
+ * @b: the base wildcard particle
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Derivation OK (Any:Any -- NSSubset)
+ * (rcase-NSSubset)
+ * 
+ * STATUS: complete
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckRCaseNSSubset(xmlSchemaParserCtxtPtr ctxt,
+				    xmlSchemaParticlePtr r,
+				    xmlSchemaParticlePtr b,
+				    int isAnyTypeBase)
+{
+    /* TODO: Error codes (rcase-NSSubset). */
+    /*
+    * SPEC (1) "R's occurrence range is a valid restriction of B's
+    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    */
+    if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
+	    b->minOccurs, b->maxOccurs))
+	return (1);
+    /*
+    * SPEC (2) "R's {namespace constraint} must be an intensional subset
+    * of B's {namespace constraint} as defined by Wildcard Subset (§3.10.6)."
+    */
+    if (xmlSchemaCheckCOSNSSubset((xmlSchemaWildcardPtr) r->children,
+	(xmlSchemaWildcardPtr) b->children))
+	return (1);
+    /*
+    * SPEC (3) "Unless B is the content model wildcard of the ·ur-type
+    * definition·, R's {process contents} must be identical to or stronger
+    * than B's {process contents}, where strict is stronger than lax is
+    * stronger than skip."
+    */
+    if (! isAnyTypeBase) {
+	if ( ((xmlSchemaWildcardPtr) r->children)->processContents <
+	    ((xmlSchemaWildcardPtr) b->children)->processContents)
+	    return (1);
+    }
+	
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckCOSParticleRestrict:
+ * @ctxt:  the schema parser context
+ * @type:  the complex type definition
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Valid (Restriction) (cos-particle-restrict)
+ *
+ * STATUS: TODO
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckCOSParticleRestrict(xmlSchemaParserCtxtPtr ctxt,
+				  xmlSchemaParticlePtr r,
+				  xmlSchemaParticlePtr b)
+{
+    int ret = 0;
+
+    /*part = GET_PARTICLE(type);
+    basePart = GET_PARTICLE(base);
+    */
+
+    TODO
+
+    /*
+    * SPEC (1) "They are the same particle."
+    */
+    if (r == b)
+	return (0);
+    
+
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckRCaseNSRecurseCheckCardinality:
+ * @ctxt:  the schema parser context
+ * @r: the model group particle
+ * @b: the base wildcard particle
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Derivation OK (All/Choice/Sequence:Any -- 
+ *                         NSRecurseCheckCardinality)
+ * (rcase-NSRecurseCheckCardinality)
+ * 
+ * STATUS: TODO: subst-groups
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckRCaseNSRecurseCheckCardinality(xmlSchemaParserCtxtPtr ctxt,
+					     xmlSchemaParticlePtr r,
+					     xmlSchemaParticlePtr b)
+{
+    xmlSchemaParticlePtr part;
+    /* TODO: Error codes (rcase-NSRecurseCheckCardinality). */
+    if ((r->children == NULL) || (r->children->children == NULL))
+	return (-1);
+    /*
+    * SPEC "For a group particle to be a ·valid restriction· of a
+    * wildcard particle..."
+    *
+    * SPEC (1) "Every member of the {particles} of the group is a ·valid
+    * restriction· of the wildcard as defined by 
+    * Particle Valid (Restriction) (§3.9.6)."
+    */
+    part = (xmlSchemaParticlePtr) r->children->children;
+    do {
+	if (xmlSchemaCheckCOSParticleRestrict(ctxt, part, b))
+	    return (1);
+	part = (xmlSchemaParticlePtr) part->next;
+    } while (part != NULL);
+    /*
+    * SPEC (2) "The effective total range of the group [...] is a
+    * valid restriction of B's occurrence range as defined by
+    * Occurrence Range OK (§3.9.6)."
+    */
+    if (xmlSchemaCheckParticleRangeOK(
+	    xmlSchemaGetParticleTotalRangeMin(r),
+	    xmlSchemaGetParticleTotalRangeMax(r),
+	    b->minOccurs, b->maxOccurs) != 0)
+	return (1);       
+    return (0);
+}
+
+/**
+ * xmlSchemaCheckRCaseRecurse:
+ * @ctxt:  the schema parser context
+ * @r: the <all> or <sequence> model group particle
+ * @b: the base <all> or <sequence> model group particle
+ *
+ * (3.9.6) Constraints on Particle Schema Components
+ * Schema Component Constraint:
+ * Particle Derivation OK (All:All,Sequence:Sequence -- 
+                           Recurse)
+ * (rcase-Recurse)
+ * 
+ * STATUS:  ?
+ * TODO: subst-groups
+ *
+ * Returns 0 if the constraints are satisfied, a positive
+ * error code if not and -1 if an internal error occured.
+ */
+static int
+xmlSchemaCheckRCaseRecurse(xmlSchemaParserCtxtPtr ctxt,
+			   xmlSchemaParticlePtr r,
+			   xmlSchemaParticlePtr b)
+{
+    /* xmlSchemaParticlePtr part; */
+    /* TODO: Error codes (rcase-Recurse). */
+    if ((r->children == NULL) || (b->children == NULL) ||
+	(r->children->type != b->children->type))
+	return (-1);
+    /*
+    * SPEC "For an all or sequence group particle to be a ·valid
+    * restriction· of another group particle with the same {compositor}..."
+    *
+    * SPEC (1) "R's occurrence range is a valid restriction of B's
+    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    */
+    if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
+	    b->minOccurs, b->maxOccurs))
+	return (1);
+    
+
+    return (0);
+}
+
+#endif
+
 #define FACET_RESTR_MUTUAL_ERR(fac1, fac2) \
     xmlSchemaPCustomErrExt(pctxt,      \
 	XML_SCHEMAP_INVALID_FACET_VALUE, \
@@ -15109,9 +15584,6 @@ xmlSchemaDeriveAndValidateFacets(xmlSchemaParserCtxtPtr pctxt,
 	res = xmlSchemaCompareValues(flength->val, bflength->val);
 	if (res == -2)
 	    goto internal_error;
-	/*
-	* TODO: Maby a bug in the spec.
-	*/
 	if (res != 0)
 	    xmlSchemaDeriveFacetErr(pctxt, flength, bflength, 0, 0, 1);
 	if ((res != 0) && (bflength->fixed)) {
@@ -21409,6 +21881,7 @@ xmlSchemaValidateElementByWildcard(xmlSchemaValidCtxtPtr ctxt,
 	    "bad arguments", NULL);
 	return (-1);
     }
+#if 0
     if (wild->negNsSet != NULL) {
 	/*
 	* Workaround for negated namespaces.
@@ -21423,6 +21896,7 @@ xmlSchemaValidateElementByWildcard(xmlSchemaValidCtxtPtr ctxt,
 	    return (XML_SCHEMAV_ELEMENT_CONTENT);
 	}
     }
+#endif
     return(xmlSchemaValidateElementByWildcardInternal(ctxt, 
 	    wild, ctxt->node));
 }
@@ -21695,12 +22169,17 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 			nsUri = NULL;
 		    ret = xmlRegExecPushString2(ctxt->regexp,
 			child->name, nsUri, child);		    
-		    if (ctxt->err == XML_SCHEMAV_INTERNAL)
+		    if (ctxt->err == XML_SCHEMAV_INTERNAL) {
+			xmlRegFreeExecCtxt(ctxt->regexp);
+			ctxt->regexp = oldregexp;
 			return (-1);
+		    }
+#if 0
 		    if (ctxt->flags & XML_SCHEMA_VALID_INVALID_NEG_WILDCARD) {
 			ctxt->flags ^= XML_SCHEMA_VALID_INVALID_NEG_WILDCARD;
 			ret = -1;
 		    }
+#endif
 			/*
 			* URGENT TODO: Could we anchor an error report
 			* here to notify of invalid elements?

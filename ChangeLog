@@ -1,3 +1,8 @@
+Tue Apr 19 16:55:40 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c xmlregexp.c: Removed 5 unnecessary
+	  dereferences (reported by Andriy, bug #301074).
+
 Tue Apr 19 22:33:18 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: Added some code to avoid integer overflow for

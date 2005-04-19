@@ -2635,14 +2635,14 @@ xmlRegStrEqualWildcard(const xmlChar *expStr, const xmlChar *valStr) {
 		do {
 		    if (*valStr == XML_REG_STRING_SEPARATOR)
 			break;
-		    *valStr++;
+		    valStr++;
 		} while (*valStr != 0);
 		continue;
 	    } else
 		return(0);
 	}
-	*expStr++;
-	*valStr++;
+	expStr++;
+	valStr++;
     } while (*valStr != 0);
     if (*expStr != 0)
 	return (0);

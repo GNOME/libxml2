@@ -1883,14 +1883,14 @@ xmlSchemaVComplexTypeElemErr(xmlSchemaValidCtxtPtr ctxt,
 	    end = cur;
 	    if (*end == '*') {
 		localName = xmlStrdup(BAD_CAST "*");
-		*end++;
+		end++;
 	    } else {
 		while ((*end != 0) && (*end != '|'))
 		    end++;
 		localName = xmlStrncat(localName, BAD_CAST cur, end - cur);
 	    }		
 	    if (*end != 0) {		    
-		*end++;
+		end++;
 		/*
 		* Skip "*|*" if they come with negated expressions, since
 		* they represent the same negated wildcard.
@@ -11213,11 +11213,25 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
 		    } while (ns != NULL);
 
 		} else if (wild->negNsSet != NULL) {
-		    xmlAutomataStatePtr deadEnd;
-
-		    deadEnd = xmlAutomataNewState(ctxt->am);
-		    ctxt->state = xmlAutomataNewTransition2(ctxt->am,
-			start, deadEnd, BAD_CAST "*", wild->negNsSet->value, wild);
+		    
+		    /*
+		    * Lead nodes with the negated namespace to the sink-state
+		    * {"*", "##other"}.
+		    */
+		    xmlAutomataNewTransition2(ctxt->am, start, NULL,
+			BAD_CAST "*", wild->negNsSet->value, wild);
+		    /* ctxt->state = 
+		    * Capture those nodes with a transition which rejects
+		    * everything {"", ""}.
+		    */
+#if 0
+		    xmlAutomataNewTransition2(ctxt->am, ctxt->state, NULL,
+			NULL, NULL, wild);
+#endif
+		    /*
+		    * Open a door for nodes with any other namespace
+		    * {"*", "*"} 
+		    */
 		    ctxt->state = xmlAutomataNewTransition2(ctxt->am,
 			start, NULL, BAD_CAST "*", BAD_CAST "*", wild);
 		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
@@ -21881,22 +21895,20 @@ xmlSchemaValidateElementByWildcard(xmlSchemaValidCtxtPtr ctxt,
 	    "bad arguments", NULL);
 	return (-1);
     }
-#if 0
     if (wild->negNsSet != NULL) {
 	/*
-	* Workaround for negated namespaces.
+	* Don't process rejected namespaces.
 	*/
 	if (ctxt->node->ns != NULL) {
 	    if (xmlSchemaMatchesWildcardNs(wild, ctxt->node->ns->href) == 0) {
-		ctxt->flags |= XML_SCHEMA_VALID_INVALID_NEG_WILDCARD;
+		/* ctxt->flags |= XML_SCHEMA_VALID_INVALID_NEG_WILDCARD; */
 		return (XML_SCHEMAV_ELEMENT_CONTENT);
 	    }
 	} else if (xmlSchemaMatchesWildcardNs(wild, NULL) == 0) {
-	    ctxt->flags |= XML_SCHEMA_VALID_INVALID_NEG_WILDCARD;
+	    /* ctxt->flags |= XML_SCHEMA_VALID_INVALID_NEG_WILDCARD; */
 	    return (XML_SCHEMAV_ELEMENT_CONTENT);
 	}
     }
-#endif
     return(xmlSchemaValidateElementByWildcardInternal(ctxt, 
 	    wild, ctxt->node));
 }

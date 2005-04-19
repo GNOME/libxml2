@@ -1,3 +1,8 @@
+Tue Apr 19 17:51:32 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Fixed date-time related validation
+	  (reported by David Crossley, bug #300576).
+
 Tue Apr 19 16:55:40 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c xmlregexp.c: Removed 5 unnecessary

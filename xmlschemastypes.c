@@ -1012,13 +1012,16 @@ static int
 _xmlSchemaParseGMonth (xmlSchemaValDatePtr dt, const xmlChar **str) {
     const xmlChar *cur = *str;
     int ret = 0;
+    unsigned int value = 0;
 
-    PARSE_2_DIGITS(dt->mon, cur, ret);
+    PARSE_2_DIGITS(value, cur, ret);
     if (ret != 0)
 	return ret;
 
-    if (!VALID_MONTH(dt->mon))
+    if (!VALID_MONTH(value))
 	return 2;
+
+    dt->mon = value;
 
     *str = cur;
     return 0;
@@ -1039,14 +1042,16 @@ static int
 _xmlSchemaParseGDay (xmlSchemaValDatePtr dt, const xmlChar **str) {
     const xmlChar *cur = *str;
     int ret = 0;
+    unsigned int value = 0;
 
-    PARSE_2_DIGITS(dt->day, cur, ret);
+    PARSE_2_DIGITS(value, cur, ret);
     if (ret != 0)
 	return ret;
 
-    if (!VALID_DAY(dt->day))
+    if (!VALID_DAY(value))
 	return 2;
 
+    dt->day = value;
     *str = cur;
     return 0;
 }
@@ -1068,21 +1073,26 @@ _xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
     const xmlChar *cur = *str;
     unsigned int hour = 0; /* use temp var in case str is not xs:time */
     int ret = 0;
+    unsigned int value = 0;
 
-    PARSE_2_DIGITS(hour, cur, ret);
+    PARSE_2_DIGITS(value, cur, ret);
     if (ret != 0)
-	return ret;
-
+	return ret;    
     if (*cur != ':')
 	return 1;
+    if (!VALID_HOUR(value))
+	return 2;
     cur++;
 
     /* the ':' insures this string is xs:time */
-    dt->hour = hour;
+    dt->hour = value;
 
-    PARSE_2_DIGITS(dt->min, cur, ret);
+    PARSE_2_DIGITS(value, cur, ret);
     if (ret != 0)
 	return ret;
+    if (!VALID_MIN(value))
+	return 2;
+    dt->min = value;
 
     if (*cur != ':')
 	return 1;
@@ -1092,7 +1102,7 @@ _xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
     if (ret != 0)
 	return ret;
 
-    if (!VALID_TIME(dt))
+    if ((!VALID_SEC(dt->sec)) || (!VALID_TZO(dt->tzo)))
 	return 2;
 
     *str = cur;

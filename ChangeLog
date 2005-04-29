@@ -1,3 +1,8 @@
+Fri Apr 29 11:27:37 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* parser.c: Fixed a test for duplicate attributes: Non-prefixed
+	  attributes were treated as being bound to the default namespace.
+
 Tue Apr 19 17:51:32 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Fixed date-time related validation

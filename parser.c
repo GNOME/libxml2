@@ -7787,13 +7787,19 @@ failed:
      * The attributes checkings
      */
     for (i = 0; i < nbatts;i += 5) {
-        nsname = xmlGetNamespace(ctxt, atts[i + 1]);
-	if ((atts[i + 1] != NULL) && (nsname == NULL)) {
-	    xmlNsErr(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
-		 "Namespace prefix %s for %s on %s is not defined\n",
-		     atts[i + 1], atts[i], localname);
-	}
-	atts[i + 2] = nsname;
+        /*
+	* The default namespace does not apply to attribute names.
+	*/
+	if (atts[i + 1] != NULL) {
+	    nsname = xmlGetNamespace(ctxt, atts[i + 1]);
+	    if (nsname == NULL) {
+		xmlNsErr(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
+		    "Namespace prefix %s for %s on %s is not defined\n",
+		    atts[i + 1], atts[i], localname);
+	    }
+	    atts[i + 2] = nsname;
+	} else
+	    nsname = NULL;
 	/*
 	 * [ WFC: Unique Att Spec ]
 	 * No attribute name may appear more than once in the same

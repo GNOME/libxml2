@@ -82,7 +82,7 @@ testC14N_LDADD= $(LDADDS)
 testThreads_SOURCES=testThreads@THREADS_W32@.c
 testThreads_LDFLAGS = 
 testThreads_DEPENDENCIES = $(DEPS)
-testThreads_LDADD= $(LDADDS)
+testThreads_LDADD= @BASE_THREAD_LIBS@  $(LDADDS)
 
 testURI_SOURCES=testURI.c
 testURI_LDFLAGS = 

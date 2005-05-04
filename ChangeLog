@@ -1,3 +1,10 @@
+Wed May  4 11:16:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in threads.c: on linux/gcc use weak definitions
+	  to avoid linking with pthread library on non-threaded environments.
+	* xpath.c: applied patch from Mark Vakoc w.r.t. a buggy namespace
+	  list allocation.
+
 Fri Apr 29 11:27:37 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* parser.c: Fixed a test for duplicate attributes: Non-prefixed

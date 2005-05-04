@@ -719,6 +719,7 @@ dnl
 dnl Thread-related stuff
 dnl
 THREAD_LIBS=""
+BASE_THREAD_LIBS=""
 WITH_THREADS=0
 THREAD_CFLAGS=""
 TEST_THREADS=""
@@ -745,6 +746,12 @@ else
        *beos*) WITH_THREADS="1"
 	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
        ;;
+       *linux*)
+           if test "${CC}" = "gcc" -a "${THREAD_LIBS}" = "-lpthread" ; then
+	       THREAD_LIBS=""
+	       BASE_THREAD_LIBS="-lpthread"
+	   fi
+       ;;
     esac
     if test "$WITH_THREADS" = "1" ; then
 	THREAD_CFLAGS="$THREAD_CFLAGS -D_REENTRANT"
@@ -756,6 +763,7 @@ if test "$with_thread_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
 fi
 
 AC_SUBST(THREAD_LIBS)
+AC_SUBST(BASE_THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
 AC_SUBST(TEST_THREADS)

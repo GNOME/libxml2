@@ -1557,6 +1557,9 @@ xmlSchemaGetBuiltInType
 xmlSchemaGetCanonValue
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetCanonValueWhtsp
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetFacetValueAsULong
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED

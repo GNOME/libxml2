@@ -9094,6 +9094,18 @@ extern __typeof (xmlSchemaGetCanonValue) xmlSchemaGetCanonValue__internal_alias 
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_xmlschemastypes
+#undef xmlSchemaGetCanonValueWhtsp
+extern __typeof (xmlSchemaGetCanonValueWhtsp) xmlSchemaGetCanonValueWhtsp __attribute((alias("xmlSchemaGetCanonValueWhtsp__internal_alias")));
+#else
+#ifndef xmlSchemaGetCanonValueWhtsp
+extern __typeof (xmlSchemaGetCanonValueWhtsp) xmlSchemaGetCanonValueWhtsp__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaGetCanonValueWhtsp xmlSchemaGetCanonValueWhtsp__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemastypes
 #undef xmlSchemaGetFacetValueAsULong
 extern __typeof (xmlSchemaGetFacetValueAsULong) xmlSchemaGetFacetValueAsULong __attribute((alias("xmlSchemaGetFacetValueAsULong__internal_alias")));
 #else

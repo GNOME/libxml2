@@ -32986,6 +32986,54 @@ test_xmlSchemaGetCanonValue(void) {
 
 
 static int
+test_xmlSchemaGetCanonValueWhtsp(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlSchemaValPtr val; /* the precomputed value */
+    int n_val;
+    xmlChar ** retValue; /* the returned value */
+    int n_retValue;
+    xmlSchemaWhitespaceValueType ws; /* the whitespace type of the value */
+    int n_ws;
+
+    for (n_val = 0;n_val < gen_nb_xmlSchemaValPtr;n_val++) {
+    for (n_retValue = 0;n_retValue < gen_nb_const_xmlChar_ptr_ptr;n_retValue++) {
+    for (n_ws = 0;n_ws < gen_nb_xmlSchemaWhitespaceValueType;n_ws++) {
+        mem_base = xmlMemBlocks();
+        val = gen_xmlSchemaValPtr(n_val, 0);
+        retValue = gen_const_xmlChar_ptr_ptr(n_retValue, 1);
+        ws = gen_xmlSchemaWhitespaceValueType(n_ws, 2);
+
+        ret_val = xmlSchemaGetCanonValueWhtsp(val, (const xmlChar **)retValue, ws);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlSchemaValPtr(n_val, val, 0);
+        des_const_xmlChar_ptr_ptr(n_retValue, (const xmlChar **)retValue, 1);
+        des_xmlSchemaWhitespaceValueType(n_ws, ws, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlSchemaGetCanonValueWhtsp",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_val);
+            printf(" %d", n_retValue);
+            printf(" %d", n_ws);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlSchemaGetFacetValueAsULong(void) {
     int test_ret = 0;
 
@@ -33697,7 +33745,7 @@ static int
 test_xmlschemastypes(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlschemastypes : 22 of 28 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemastypes : 23 of 29 functions ...\n");
     test_ret += test_xmlSchemaCheckFacet();
     test_ret += test_xmlSchemaCleanupTypes();
     test_ret += test_xmlSchemaCollapseString();
@@ -33707,6 +33755,7 @@ test_xmlschemastypes(void) {
     test_ret += test_xmlSchemaGetBuiltInListSimpleTypeItemType();
     test_ret += test_xmlSchemaGetBuiltInType();
     test_ret += test_xmlSchemaGetCanonValue();
+    test_ret += test_xmlSchemaGetCanonValueWhtsp();
     test_ret += test_xmlSchemaGetFacetValueAsULong();
     test_ret += test_xmlSchemaGetPredefinedType();
     test_ret += test_xmlSchemaGetValType();

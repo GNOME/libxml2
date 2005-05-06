@@ -958,6 +958,14 @@ class CParser:
 	    elif token[0] == 'preproc':
 		token = self.parsePreproc(token)
 		continue
+	    elif token[0] == "name" and token[1] == "__const":
+	        token = ("name", "const")
+		return token
+	    elif token[0] == "name" and token[1] == "__attribute":
+		token = self.lexer.token()
+		while token != None and token[1] != ";":
+		    token = self.lexer.token()
+		return token
 	    elif token[0] == "name" and ignored_words.has_key(token[1]):
 	        (n, info) = ignored_words[token[1]]
 		i = 0

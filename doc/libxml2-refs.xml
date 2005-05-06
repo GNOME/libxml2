@@ -971,6 +971,7 @@
     <reference name='XML_SCHEMAS_ELEM_NILLABLE' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_NILLABLE'/>
     <reference name='XML_SCHEMAS_ELEM_NSDEFAULT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_NSDEFAULT'/>
     <reference name='XML_SCHEMAS_ELEM_REF' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_REF'/>
+    <reference name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD'/>
     <reference name='XML_SCHEMAS_ELEM_TOPLEVEL' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_TOPLEVEL'/>
     <reference name='XML_SCHEMAS_ENTITIES' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ENTITIES'/>
     <reference name='XML_SCHEMAS_ENTITY' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ENTITY'/>
@@ -2543,6 +2544,7 @@
     <reference name='xmlSchemaGetBuiltInListSimpleTypeItemType' href='html/libxml-xmlschemastypes.html#xmlSchemaGetBuiltInListSimpleTypeItemType'/>
     <reference name='xmlSchemaGetBuiltInType' href='html/libxml-xmlschemastypes.html#xmlSchemaGetBuiltInType'/>
     <reference name='xmlSchemaGetCanonValue' href='html/libxml-xmlschemastypes.html#xmlSchemaGetCanonValue'/>
+    <reference name='xmlSchemaGetCanonValueWhtsp' href='html/libxml-xmlschemastypes.html#xmlSchemaGetCanonValueWhtsp'/>
     <reference name='xmlSchemaGetFacetValueAsULong' href='html/libxml-xmlschemastypes.html#xmlSchemaGetFacetValueAsULong'/>
     <reference name='xmlSchemaGetParserErrors' href='html/libxml-xmlschemas.html#xmlSchemaGetParserErrors'/>
     <reference name='xmlSchemaGetPredefinedType' href='html/libxml-xmlschemastypes.html#xmlSchemaGetPredefinedType'/>
@@ -4292,6 +4294,7 @@
       <ref name='XML_SCHEMAS_ELEM_NILLABLE'/>
       <ref name='XML_SCHEMAS_ELEM_NSDEFAULT'/>
       <ref name='XML_SCHEMAS_ELEM_REF'/>
+      <ref name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD'/>
       <ref name='XML_SCHEMAS_ELEM_TOPLEVEL'/>
       <ref name='XML_SCHEMAS_ENTITIES'/>
       <ref name='XML_SCHEMAS_ENTITY'/>
@@ -5900,6 +5903,7 @@
       <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
       <ref name='xmlSchemaGetBuiltInType'/>
       <ref name='xmlSchemaGetCanonValue'/>
+      <ref name='xmlSchemaGetCanonValueWhtsp'/>
       <ref name='xmlSchemaGetFacetValueAsULong'/>
       <ref name='xmlSchemaGetParserErrors'/>
       <ref name='xmlSchemaGetPredefinedType'/>
@@ -7906,6 +7910,7 @@
       <ref name='xmlSAX2StartElement'/>
       <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlSchemaGetCanonValue'/>
+      <ref name='xmlSchemaGetCanonValueWhtsp'/>
       <ref name='xmlTextReaderPreservePattern'/>
       <ref name='xmlValidGetPotentialChildren'/>
       <ref name='xmlValidGetValidElements'/>
@@ -9508,6 +9513,7 @@
       <ref name='xmlSchemaCopyValue'/>
       <ref name='xmlSchemaFreeValue'/>
       <ref name='xmlSchemaGetCanonValue'/>
+      <ref name='xmlSchemaGetCanonValueWhtsp'/>
       <ref name='xmlSchemaGetValType'/>
       <ref name='xmlSchemaValidateFacet'/>
       <ref name='xmlSchemaValidateFacetWhtsp'/>
@@ -9553,6 +9559,7 @@
     </type>
     <type name='xmlSchemaWhitespaceValueType'>
       <ref name='xmlSchemaCompareValuesWhtsp'/>
+      <ref name='xmlSchemaGetCanonValueWhtsp'/>
       <ref name='xmlSchemaValidateFacetWhtsp'/>
       <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
     </type>
@@ -10960,6 +10967,7 @@
       <ref name='XML_SCHEMAS_ELEM_NILLABLE'/>
       <ref name='XML_SCHEMAS_ELEM_NSDEFAULT'/>
       <ref name='XML_SCHEMAS_ELEM_REF'/>
+      <ref name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD'/>
       <ref name='XML_SCHEMAS_ELEM_TOPLEVEL'/>
       <ref name='XML_SCHEMAS_ENTITIES'/>
       <ref name='XML_SCHEMAS_ENTITY'/>
@@ -12691,6 +12699,7 @@
       <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
       <ref name='xmlSchemaGetBuiltInType'/>
       <ref name='xmlSchemaGetCanonValue'/>
+      <ref name='xmlSchemaGetCanonValueWhtsp'/>
       <ref name='xmlSchemaGetFacetValueAsULong'/>
       <ref name='xmlSchemaGetPredefinedType'/>
       <ref name='xmlSchemaGetValType'/>
@@ -14730,6 +14739,9 @@
           <ref name='xmlHasProp'/>
           <ref name='xmlParseDefaultDecl'/>
         </word>
+        <word name='FREE'>
+          <ref name='xmlSchemaGetCanonValue'/>
+        </word>
         <word name='Facet'>
           <ref name='xmlSchemaFreeFacet'/>
           <ref name='xmlSchemaNewFacet'/>
@@ -15510,6 +15522,7 @@
         <word name='NOTATION'>
           <ref name='xmlParseEnumeratedType'/>
           <ref name='xmlParseNotationType'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaNewNOTATIONValue'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
@@ -16078,6 +16091,7 @@
           <ref name='xmlParseAttribute'/>
           <ref name='xmlParseEndTag'/>
           <ref name='xmlParseStartTag'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSplitQName'/>
           <ref name='xmlSplitQName2'/>
           <ref name='xmlSplitQName3'/>
@@ -16468,6 +16482,7 @@
           <ref name='xmlSchemaFreeFacet'/>
           <ref name='xmlSchemaFreeType'/>
           <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaParse'/>
         </word>
         <word name='Schemas'>
@@ -16803,6 +16818,7 @@
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>
           <ref name='xmlScanName'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlTextWriterWriteRawLen'/>
           <ref name='xmlXPathNextAttribute'/>
         </word>
@@ -17724,6 +17740,9 @@
         <word name='affect'>
           <ref name='xmlKeepBlanksDefault'/>
         </word>
+        <word name='affiliation'>
+          <ref name='_xmlSchemaElement'/>
+        </word>
         <word name='afraid'>
           <ref name='xmlEncodeEntities'/>
         </word>
@@ -17982,6 +18001,9 @@
         </word>
         <word name='anySimpleType'>
           <ref name='xmlSchemaNewStringValue'/>
+        </word>
+        <word name='anyURI'>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='anymore'>
           <ref name='XML_SCHEMAS_ANYATTR_LAX'/>
@@ -18526,6 +18548,7 @@
           <ref name='xmlRelaxNGParse'/>
           <ref name='xmlSchemaGetBuiltInType'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlSchemaParse'/>
           <ref name='xmlTextReaderNextSibling'/>
         </word>
@@ -18590,6 +18613,7 @@
           <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlC14NExecute'/>
           <ref name='xmlGetCharEncodingName'/>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='canonicalization'>
           <ref name='xmlC14NDocDumpMemory'/>
@@ -19309,6 +19333,7 @@
         </word>
         <word name='cononical'>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
         </word>
         <word name='consequent'>
           <ref name='_xmlError'/>
@@ -19585,6 +19610,7 @@
           <ref name='xmlByteConsumed'/>
           <ref name='xmlModuleClose'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlTextReaderByteConsumed'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
@@ -19865,6 +19891,7 @@
           <ref name='DEBUG_MEMORY'/>
           <ref name='XML_CAST_FPTR'/>
           <ref name='xmlHandleEntity'/>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='defined'>
           <ref name='WITHOUT_TRIO'/>
@@ -20329,6 +20356,7 @@
           <ref name='xmlResetLastError'/>
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
           <ref name='xmlURIEscape'/>
           <ref name='xmlURIUnescapeString'/>
@@ -20467,6 +20495,9 @@
         </word>
         <word name='duplicates'>
           <ref name='xmlSchemaCopyValue'/>
+        </word>
+        <word name='duration'>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='during'>
           <ref name='xmlSAXDefaultVersion'/>
@@ -20801,6 +20832,7 @@
           <ref name='xmlRelaxNGGetParserErrors'/>
           <ref name='xmlRelaxNGSetParserErrors'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlSchemaGetParserErrors'/>
           <ref name='xmlSchemaSetParserErrors'/>
           <ref name='xmlShellCmd'/>
@@ -21289,6 +21321,7 @@
           <ref name='XML_SCHEMAS_ATTR_FIXED'/>
           <ref name='XML_SCHEMAS_ELEM_FIXED'/>
           <ref name='xmlParseDefaultDecl'/>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='flag'>
           <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
@@ -21356,6 +21389,9 @@
         <word name='fonctionnalities'>
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlOutputMatchCallback'/>
+        </word>
+        <word name='for:'>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='force'>
           <ref name='xmlKeepBlanksDefault'/>
@@ -21555,6 +21591,21 @@
     </chunk>
     <chunk name='chunk14'>
       <letter name='g'>
+        <word name='gDay'>
+          <ref name='xmlSchemaGetCanonValue'/>
+        </word>
+        <word name='gMonth'>
+          <ref name='xmlSchemaGetCanonValue'/>
+        </word>
+        <word name='gMonthDay'>
+          <ref name='xmlSchemaGetCanonValue'/>
+        </word>
+        <word name='gYear'>
+          <ref name='xmlSchemaGetCanonValue'/>
+        </word>
+        <word name='gYearMonth'>
+          <ref name='xmlSchemaGetCanonValue'/>
+        </word>
         <word name='garanteed'>
           <ref name='xmlUTF8Strsize'/>
         </word>
@@ -21727,8 +21778,10 @@
           <ref name='XML_SCHEMAS_ELEM_FINAL_ABSENT'/>
           <ref name='XML_SCHEMAS_ELEM_FINAL_EXTENSION'/>
           <ref name='XML_SCHEMAS_ELEM_FINAL_RESTRICTION'/>
+          <ref name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD'/>
           <ref name='_xmlSchemaAttribute'/>
           <ref name='_xmlSchemaAttributeGroup'/>
+          <ref name='_xmlSchemaElement'/>
           <ref name='ftpListCallback'/>
         </word>
         <word name='groups'>
@@ -21835,6 +21888,9 @@
           <ref name='xmlStrcasestr'/>
           <ref name='xmlStrstr'/>
           <ref name='xmlStrsub'/>
+        </word>
+        <word name='head'>
+          <ref name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD'/>
         </word>
         <word name='header'>
           <ref name='xmlNanoHTTPAuthHeader'/>
@@ -23965,6 +24021,7 @@
         <word name='now'>
           <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlSchema'/>
+          <ref name='_xmlSchemaElement'/>
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlNewGlobalNs'/>
           <ref name='xmlParserHandleReference'/>
@@ -24769,6 +24826,7 @@
         <word name='precomputed'>
           <ref name='xmlSchemaCopyValue'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlSchemaValidateFacet'/>
           <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
@@ -25724,9 +25782,11 @@
         <word name='representation'>
           <ref name='_htmlElemDesc'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
         </word>
         <word name='representations'>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='represented'>
           <ref name='xmlParseCharData'/>
@@ -27148,6 +27208,7 @@
           <ref name='xmlInitCharEncodingHandlers'/>
           <ref name='xmlNanoFTPGetConnection'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlTextReaderNormalization'/>
         </word>
         <word name='supposed'>
@@ -28241,6 +28302,7 @@
           <ref name='xmlIsBlankNode'/>
           <ref name='xmlParseAttValue'/>
           <ref name='xmlSchemaCompareValuesWhtsp'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlXPathIdFunction'/>
@@ -29399,6 +29461,7 @@
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
         </word>
         <word name='you'>
           <ref name='xmlNewDocNode'/>

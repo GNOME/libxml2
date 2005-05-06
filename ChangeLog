@@ -1,3 +1,9 @@
+Fri May  6 13:40:03 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: fixing bug #303068 increasing the nanoftp buffer.
+	* doc/apibuild.py: fixed __attribute() parsing problem
+	* doc/* testapi.c: regenerated the descriptions and docs.
+
 Wed May  4 11:16:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in threads.c: on linux/gcc use weak definitions

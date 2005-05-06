@@ -1073,7 +1073,7 @@
      <exports symbol='XML_SCHEMAS_ELEM_NILLABLE' type='macro'/>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_SUBSTITUTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED' type='macro'/>
-     <exports symbol='XML_SCHEMAS_WILDCARD_COMPLETE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_DEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_EXTENSION' type='macro'/>
@@ -1099,6 +1099,7 @@
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_LIST' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ABSENT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_RESTRICTION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_WILDCARD_COMPLETE' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_GLOBAL' type='macro'/>
@@ -2871,6 +2872,7 @@
      <exports symbol='XML_SCHEMA_WHITESPACE_PRESERVE' type='enum'/>
      <exports symbol='xmlSchemaWhitespaceValueType' type='typedef'/>
      <exports symbol='xmlSchemaValPredefTypeNode' type='function'/>
+     <exports symbol='xmlSchemaGetCanonValueWhtsp' type='function'/>
      <exports symbol='xmlSchemaValidateLengthFacetWhtsp' type='function'/>
      <exports symbol='xmlSchemaIsBuiltInTypeFacet' type='function'/>
      <exports symbol='xmlSchemaGetCanonValue' type='function'/>
@@ -3972,6 +3974,9 @@
     </macro>
     <macro name='XML_SCHEMAS_ELEM_REF' file='schemasInternals'>
       <info>the element is a reference to a type</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD' file='schemasInternals'>
+      <info>the declaration is a substitution group head</info>
     </macro>
     <macro name='XML_SCHEMAS_ELEM_TOPLEVEL' file='schemasInternals'>
       <info>the element is top level obsolete: use XML_SCHEMAS_ELEM_GLOBAL instead</info>
@@ -6133,7 +6138,7 @@ actually an xmlCharEncoding'/>
       <field name='substGroupNs' type='const xmlChar *' info=''/>
       <field name='scope' type='const xmlChar *' info=''/>
       <field name='value' type='const xmlChar *' info=''/>
-      <field name='refDecl' type='struct _xmlSchemaElement *' info=' the element declaration if a particle'/>
+      <field name='refDecl' type='struct _xmlSchemaElement *' info=' This will now be used for the substitution group affiliation'/>
       <field name='contModel' type='xmlRegexpPtr' info=''/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
@@ -12758,10 +12763,18 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaGetCanonValue' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Get a the cononical lexical representation of the value. The caller has to free the returned retValue. WARNING: Some value types are not supported yet, resulting in a @retValue of &quot;???&quot;.</info>
-      <return type='int' info='0 if the value could be built and -1 in case of API errors.'/>
+      <info>Get a the cononical lexical representation of the value. The caller has to FREE the returned retValue.  WARNING: Some value types are not supported yet, resulting in a @retValue of &quot;???&quot;.  TODO: XML Schema 1.0 does not define canonical representations for: duration, gYearMonth, gYear, gMonthDay, gMonth, gDay, anyURI, QName, NOTATION. This will be fixed in XML Schema 1.1.</info>
+      <return type='int' info='0 if the value could be built, 1 if the value type is not supported yet and -1 in case of API errors.'/>
       <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
       <arg name='retValue' type='const xmlChar **' info='the returned value'/>
+    </function>
+    <function name='xmlSchemaGetCanonValueWhtsp' file='xmlschemastypes' module='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Get a the cononical representation of the value. The caller has to free the returned @retValue.</info>
+      <return type='int' info='0 if the value could be built, 1 if the value type is not supported yet and -1 in case of API errors.'/>
+      <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
+      <arg name='retValue' type='const xmlChar **' info='the returned value'/>
+      <arg name='ws' type='xmlSchemaWhitespaceValueType' info='the whitespace type of the value'/>
     </function>
     <function name='xmlSchemaGetFacetValueAsULong' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>

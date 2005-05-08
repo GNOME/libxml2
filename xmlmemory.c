@@ -642,7 +642,18 @@ xmlMemDisplay(FILE *fp)
     time_t currentTime;
     char buf[500];
     struct tm * tstruct;
+#endif
+#endif
+    FILE *old_fp = fp;
 
+    if (fp == NULL) {
+	fp = fopen(".memorylist", "w");
+	if (fp == NULL)
+	    return;
+    }
+
+#ifdef MEM_LIST
+#if defined(HAVE_LOCALTIME) && defined(HAVE_STRFTIME)
     currentTime = time(NULL);
     tstruct = localtime(&currentTime);
     strftime(buf, sizeof(buf) - 1, "%I:%M:%S %p", tstruct);
@@ -668,6 +679,8 @@ xmlMemDisplay(FILE *fp)
            default:
 	        fprintf(fp,"Unknown memory block, may be corrupted");
 		xmlMutexUnlock(xmlMemMutex);
+		if (old_fp == NULL)
+		    fclose(fp);
 		return;
         }
 	if (p->mh_file != NULL) fprintf(fp,"%s(%u)", p->mh_file, p->mh_line);
@@ -686,6 +699,8 @@ xmlMemDisplay(FILE *fp)
 #else
     fprintf(fp,"Memory list not compiled (MEM_LIST not defined !)\n");
 #endif
+    if (old_fp == NULL)
+	fclose(fp);
 }
 
 #ifdef MEM_LIST

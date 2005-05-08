@@ -1,3 +1,7 @@
+Sun May  8 13:35:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: fixed #169630 segfault in xmlMemDisplay
+
 Fri May  6 13:40:03 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c: fixing bug #303068 increasing the nanoftp buffer.

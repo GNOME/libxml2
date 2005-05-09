@@ -1582,8 +1582,17 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	* Fast check for ".".
 	*/
 	if (comp->nbStep == 0) {
-	    if (nodeType == XML_ELEMENT_NODE)
-		ret = 1;
+	    /*
+	    * For non-pattern like evaluation like XML Schema IDCs,
+	    * this will match if we are at the first level only,
+	    * otherwise on every level.
+	    */
+	    if ((nodeType == XML_ELEMENT_NODE) &&
+		(((stream->flags & XML_PATTERN_NOTPATTERN) == 0) ||
+		(stream->level == 0))) {
+		    ret = 1;		
+	    }
+	    stream->level++;
 	    goto stream_next;
 	}
 

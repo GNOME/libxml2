@@ -1,3 +1,7 @@
+Tue May 10 17:27:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed bug #303682 of a leak reported by Malcolm Rowe
+
 Tue May 10 11:50:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c: applied patch from Steve Nairn tof fix the compilation

@@ -1,8 +1,13 @@
+Tue May 10 11:11:26 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/bug303566_1* result/schemas/bug303566_1_1*:
+	  Added regression a test provided by Heiko Oberdiek (bug #303566).
+
 Mon May  9 17:56:58 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* pattern.c: Changed the XPath "." to resolve only on the first
-	  level for XML Schema IDCs. This should not affect pattern-like
-	  resolution on every level.
+	  level for XML Schema IDCs (bug #303566 reported by Heiko Oberdiek).
+	  This should not affect pattern-like resolution on every level.
 
 Sun May  8 13:35:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
 

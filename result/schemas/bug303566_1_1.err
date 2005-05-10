@@ -1,0 +1,1 @@
+./test/schemas/bug303566_1.xml:9: element Part: Schemas validity error : Element 'Part' [keyRef 'PartRefCountryDummy']: No match found for key reference ['B'].

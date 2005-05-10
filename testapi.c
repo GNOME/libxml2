@@ -814,6 +814,8 @@ static void desret_xmlRelaxNGParserCtxtPtr(xmlRelaxNGParserCtxtPtr val) {
 #ifdef LIBXML_HTML_ENABLED
 static void desret_const_htmlEntityDesc_ptr(const htmlEntityDesc * val ATTRIBUTE_UNUSED) {
 }
+#endif
+#ifdef LIBXML_HTTP_ENABLED
 static void desret_xmlNanoHTTPCtxtPtr(void *val) {
     xmlNanoHTTPClose(val);
 }

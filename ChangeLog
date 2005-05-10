@@ -1,3 +1,8 @@
+Tue May 10 11:50:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* testapi.c: applied patch from Steve Nairn tof fix the compilation
+	  problem exposed in bug #303640
+
 Tue May 10 11:11:26 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/bug303566_1* result/schemas/bug303566_1_1*:

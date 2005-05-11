@@ -3469,7 +3469,7 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	return(old);
     }
     xmlUnlinkNode(cur);
-    cur->doc = old->doc;
+    xmlSetTreeDoc(cur, old->doc);
     cur->parent = old->parent;
     cur->next = old->next;
     if (cur->next != NULL)

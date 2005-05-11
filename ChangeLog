@@ -1,3 +1,7 @@
+Wed May 11 20:04:09 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch for replaceNode from Brent Hendricks
+
 Tue May 10 17:27:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed bug #303682 of a leak reported by Malcolm Rowe

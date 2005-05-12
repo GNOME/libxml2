@@ -844,7 +844,7 @@ xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaTypePtr type)
 #define VALID_HOUR(hr)          ((hr >= 0) && (hr <= 23))
 #define VALID_MIN(min)          ((min >= 0) && (min <= 59))
 #define VALID_SEC(sec)          ((sec >= 0) && (sec < 60))
-#define VALID_TZO(tzo)          ((tzo > -1440) && (tzo < 1440))
+#define VALID_TZO(tzo)          ((tzo > -840) && (tzo < 840))
 #define IS_LEAP(y)						\
 	(((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0))
 

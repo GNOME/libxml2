@@ -1,3 +1,8 @@
+Thu May 12 15:14:26 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Changed the VALID_TZO macro to restrict
+	  the timezone to -840 to 840.
+
 Thu May 12 15:05:11 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Applied patch from Steve Nairn (bug #303670)

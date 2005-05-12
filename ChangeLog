@@ -1,3 +1,9 @@
+Thu May 12 15:05:11 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Applied patch from Steve Nairn (bug #303670)
+	  for "signed int" of the date-time timezone field. Silenced
+	  a warning.
+
 Wed May 11 20:04:09 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch for replaceNode from Brent Hendricks

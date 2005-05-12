@@ -66,7 +66,8 @@ struct _xmlSchemaValDate {
     unsigned int	min	:6;	/* 0 <=  min    <= 59	*/
     double		sec;
     unsigned int	tz_flag	:1;	/* is tzo explicitely set? */
-    int			tzo	:11;	/* -1440 <= tzo <= 1440 */
+    signed int		tzo	:12;	/* -1440 <= tzo <= 1440;
+					   currently only -840 to +840 are needed */
 };
 
 /* Duration value */
@@ -1070,10 +1071,9 @@ _xmlSchemaParseGDay (xmlSchemaValDatePtr dt, const xmlChar **str) {
  */
 static int
 _xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
-    const xmlChar *cur = *str;
-    unsigned int hour = 0; /* use temp var in case str is not xs:time */
+    const xmlChar *cur = *str;    
     int ret = 0;
-    unsigned int value = 0;
+    int value = 0;
 
     PARSE_2_DIGITS(value, cur, ret);
     if (ret != 0)

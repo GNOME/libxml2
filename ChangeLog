@@ -1,3 +1,8 @@
+Fri May 20 20:48:08 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: applied patch from Mark Vakoc fixing saving of
+	  CDATA with NULL content.
+
 Thu May 12 15:14:26 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Changed the VALID_TZO macro to restrict

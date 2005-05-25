@@ -1,3 +1,14 @@
+Wed May 25 18:59:53 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed facet errors to be channelled back for
+	  union type members; facet-validation will stop now on the
+	  first error. Reported by GUY Fabrice to the mailing-list.
+	* xmlschemastypes.c: Changed to ignore lengh-related facet
+	  validation for QNames and NOTATIONs as proposed by the
+	  schema people.
+	* test/schemas/union2* result/schemas/union2*: Added
+	  regression tests for union types (by GUY Fabrice).
+
 Fri May 20 20:48:08 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: applied patch from Mark Vakoc fixing saving of

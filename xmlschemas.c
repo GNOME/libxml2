@@ -18076,7 +18076,7 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 				unsigned long length,
 				int fireErrors)
 {
-    int ret = 0;
+    int ret = 0, error = 0;
     xmlNodePtr node;
     xmlSchemaTypePtr biType; /* The build-in type. */
     xmlSchemaTypePtr tmpType;
@@ -18149,10 +18149,15 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 		    "Internal error: xmlSchemaValidateFacetsInternal, "
 		    "validating facet of type '%s'.\n",
 		    type->name, NULL);
-		break;
-	    } else if ((ret > 0) && (fireErrors)) {
-		xmlSchemaVFacetErr(ctxt, ret, node, value, len,
-		    type, facet, NULL, NULL, NULL, NULL);
+		return (-1);
+	    } else if (ret > 0) {		
+		if (fireErrors) {
+		    xmlSchemaVFacetErr(ctxt, ret, node, value, len,
+			type, facet, NULL, NULL, NULL, NULL);
+		} else
+		    return (ret);
+		if (error == 0)
+		    error = ret;
 	    }
 
 	    facetLink = facetLink->next;
@@ -18160,7 +18165,7 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 	
     }    
 		
-    if (ret >= 0) {
+    if (error >= 0) {
 	xmlSchemaWhitespaceValueType fws;
 	int found = 0;
 	/*
@@ -18191,8 +18196,7 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 			"Internal error: xmlSchemaValidateFacetsInternal, "
 			"validating enumeration facet '%s' of type '%s'.\n",
 			facet->value, tmpType->name);
-		    ret = -1;
-		    break;
+		    return (-1);
 		}
 	    }
 	    if (retFacet <= 0)
@@ -18205,11 +18209,14 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 	    if (fireErrors) {
 		xmlSchemaVFacetErr(ctxt, ret, node, value, 0, type, NULL, 
 		    NULL, NULL, NULL, NULL);
-	    }
+	    } else
+		return (ret);
+	    if (error == 0)
+		error = ret;
 	}		
     }
 
-    if (ret >= 0) {
+    if (error >= 0) {
 	/*
 	* Process patters. Pattern facets are ORed at type level 
 	* and ANDed if derived. Walk the base type axis.
@@ -18231,8 +18238,7 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 			"Internal error: xmlSchemaValidateFacetsInternal, "
 			"validating 'pattern' facet '%s' of type '%s'.\n",
 			facetLink->facet->value, tmpType->name);
-		    ret = -1;
-		    break;
+		    return (-1);
 		} else
 		    /* Save the last non-validating facet. */
 		    facet = facetLink->facet;
@@ -18246,11 +18252,14 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 	    if (fireErrors) {
 		xmlSchemaVFacetErr(ctxt, ret, node, value, 0, type, facet, 
 		    NULL, NULL, NULL, NULL);
-	    }
+	    } else
+		return (ret);
+	    if (error == 0)
+		error = ret;
 	}
     }	    
    
-    return (ret);
+    return (error);
 }
 
 /************************************************************************

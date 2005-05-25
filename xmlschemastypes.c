@@ -4671,14 +4671,20 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
 	    case XML_SCHEMAS_NMTOKEN:
 	    case XML_SCHEMAS_NAME:
 	    case XML_SCHEMAS_NCNAME:
-	    case XML_SCHEMAS_ID:
-	    /*
-	    * FIXME: What exactly to do with anyURI?
+	    case XML_SCHEMAS_ID:		
+		/*
+		* FIXME: What exactly to do with anyURI?
 		*/
 	    case XML_SCHEMAS_ANYURI:
 		if (value != NULL)
 		    len = xmlSchemaNormLen(value);
 		break;
+	    case XML_SCHEMAS_QNAME:
+ 	    case XML_SCHEMAS_NOTATION:
+ 		/*
+ 		* Ignore validation against QName and NOTATION.
+ 		*/
+		return (0);
 	    default:
 		TODO
 	}

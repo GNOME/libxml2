@@ -1663,32 +1663,81 @@ loaded:
      */
     if ((doc != NULL) && (URL != NULL) && (xmlStrchr(URL, (xmlChar) '/'))) {
 	xmlNodePtr node;
-	xmlChar *relURI;
+	xmlChar *base;
 	xmlChar *curBase;
 
 	/*
-	 * The base is only adjusted if necessary for the existing base
+	 * The base is only adjusted if "necessary", i.e. if the xinclude node
+	 * has a base specified, or the URL is relative
 	 */
-	relURI = xmlBuildRelativeURI(URL, ctxt->base);
-	if (relURI == NULL) {	/* Error return */
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
+	base = xmlGetNsProp(ctxt->incTab[nr]->ref, BAD_CAST "base",
+			XML_XML_NAMESPACE);
+	if (base == NULL) {
+	    /*
+	     * No xml:base on the xinclude node, so we check whether the
+	     * URI base is different than (relative to) the context base
+	     */
+	    curBase = xmlBuildRelativeURI(URL, ctxt->base);
+	    if (curBase == NULL) {	/* Error return */
+	        xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
 	               XML_XINCLUDE_HREF_URI,
 		       "trying to build relative URI from %s\n", URL);
-	} else {
-	    if (xmlStrchr(relURI, (xmlChar) '/')) {
-		node = ctxt->incTab[nr]->inc;
-		while (node != NULL) {
-	            if (node->type == XML_ELEMENT_NODE) {
-			curBase = xmlNodeGetBase(node->doc, node);
-			if ((curBase == NULL) || xmlStrEqual(curBase, node->doc->URL))
-			    xmlNodeSetBase(node, relURI);
-			if (curBase != NULL)
-			    xmlFree(curBase);
-		    }
-	            node = node->next;
-		}
+	    } else {
+		/* If the URI doesn't contain a slash, it's not relative */
+	        if (!xmlStrchr(curBase, (xmlChar) '/'))
+		    xmlFree(curBase);
+		else
+		    base = curBase;
 	    }
-	    xmlFree(relURI);
+	}
+	if (base != NULL) {	/* Adjustment may be needed */
+	    node = ctxt->incTab[nr]->inc;
+	    while (node != NULL) {
+		/* Only work on element nodes */
+		if (node->type == XML_ELEMENT_NODE) {
+		    curBase = xmlNodeGetBase(node->doc, node);
+		    /* If no current base, set it */
+		    if (curBase == NULL) {
+			xmlNodeSetBase(node, base);
+		    } else {
+			/*
+			 * If the current base is the same as the
+			 * URL of the document, then reset it to be
+			 * the specified xml:base or the relative URI
+			 */
+			if (xmlStrEqual(curBase, node->doc->URL)) {
+			    xmlNodeSetBase(node, base);
+			} else {
+			    /*
+			     * If the element already has an xml:base
+			     * set, then relativise it if necessary
+			     */
+			    xmlChar *xmlBase;
+			    xmlBase = xmlGetNsProp(node,
+					    BAD_CAST "base",
+					    XML_XML_NAMESPACE);
+			    if (xmlBase != NULL) {
+				xmlChar *relBase;
+				relBase = xmlBuildURI(xmlBase, base);
+				if (relBase == NULL) { /* error */
+				    xmlXIncludeErr(ctxt, 
+						ctxt->incTab[nr]->ref,
+						XML_XINCLUDE_HREF_URI,
+					"trying to rebuild base from %s\n",
+						xmlBase);
+				} else {
+				    xmlNodeSetBase(node, relBase);
+				    xmlFree(relBase);
+				}
+				xmlFree(xmlBase);
+			    }
+			}
+			xmlFree(curBase);
+		    }
+		}
+	        node = node->next;
+	    }
+	    xmlFree(base);
 	}
     }
     if ((nr < ctxt->incNr) && (ctxt->incTab[nr]->doc != NULL) &&

@@ -793,7 +793,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
          * default namespace (XML Namespaces: "default namespaces 
     	 * do not apply directly to attributes")	 
          */
-	if((attr->ns != NULL) && xmlC14NIsVisible(ctx, attr, cur)) {
+	if((attr->ns != NULL) && !xmlC14NIsXmlNs(attr->ns) && xmlC14NIsVisible(ctx, attr, cur)) {
 	    already_rendered = xmlExcC14NVisibleNsStackFind(ctx->ns_rendered, attr->ns, ctx);
 	    xmlC14NVisibleNsStackAdd(ctx->ns_rendered, attr->ns, cur); 
 	    if(!already_rendered && visible) {

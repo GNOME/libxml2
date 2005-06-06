@@ -1,3 +1,8 @@
+2005-06-06  Aleksey Sanin <aleksey@aleksey.com>
+
+	* c14n.c: fixed xml attributes processing bug in exc c14n
+	* xmllint.c: added --exc-c14n command line option
+
 Mon Jun  6 06:43:33 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c, pattern.c: Enhanced xmlXPathRunStreamEval, fixed

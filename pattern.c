@@ -61,7 +61,7 @@ struct _xmlStreamStep {
 typedef struct _xmlStreamComp xmlStreamComp;
 typedef xmlStreamComp *xmlStreamCompPtr;
 struct _xmlStreamComp {
-    xmlDict *dict;		/* the dictionnary if any */
+    xmlDict *dict;		/* the dictionary if any */
     int nbStep;			/* number of steps in the automata */
     int maxStep;		/* allocated number of steps */
     xmlStreamStepPtr steps;	/* the array of steps */
@@ -70,8 +70,8 @@ struct _xmlStreamComp {
 struct _xmlStreamCtxt {
     struct _xmlStreamCtxt *next;/* link to next sub pattern if | */
     xmlStreamCompPtr comp;	/* the compiled stream */
-    int nbState;		/* number of state in the automata */
-    int maxState;		/* allocated number of state */
+    int nbState;		/* number of states in the automata */
+    int maxState;		/* allocated number of states */
     int level;			/* how deep are we ? */
     int *states;		/* the array of step indexes */
     int flags;			/* validation options */
@@ -124,7 +124,7 @@ struct _xmlStepOp {
 
 struct _xmlPattern {
     void *data;    		/* the associated template */
-    xmlDictPtr dict;		/* the optional dictionnary */
+    xmlDictPtr dict;		/* the optional dictionary */
     struct _xmlPattern *next;	/* next pattern if | is used */
     const xmlChar *pattern;	/* the pattern */
 
@@ -141,7 +141,7 @@ struct _xmlPatParserContext {
     const xmlChar *cur;			/* the current char being parsed */
     const xmlChar *base;		/* the full expression */
     int	           error;		/* error code */
-    xmlDictPtr     dict;		/* the dictionnary if any */
+    xmlDictPtr     dict;		/* the dictionary if any */
     xmlPatternPtr  comp;		/* the result */
     xmlNodePtr     elem;		/* the current node if any */    
     const xmlChar **namespaces;		/* the namespaces definitions */
@@ -242,7 +242,7 @@ xmlFreePatternList(xmlPatternPtr comp) {
 /**
  * xmlNewPatParserContext:
  * @pattern:  the pattern context
- * @dict:  the inherited dictionnary or NULL
+ * @dict:  the inherited dictionary or NULL
  * @namespaces: the prefix definitions, array of [URI, prefix] terminated
  *              with [NULL, NULL] or NULL if no namespace is used
  *
@@ -300,7 +300,7 @@ xmlFreePatParserContext(xmlPatParserContextPtr ctxt) {
  * @value:  the first value
  * @value2:  the second value
  *
- * Add an step to an XSLT Compiled Match
+ * Add a step to an XSLT Compiled Match
  *
  * Returns -1 in case of failure, 0 otherwise.
  */
@@ -451,7 +451,7 @@ xmlPatPushState(xmlStepStates *states, int step, xmlNodePtr node) {
  * @comp: the precompiled pattern
  * @node: a node
  *
- * Test wether the node matches the pattern
+ * Test whether the node matches the pattern
  *
  * Returns 1 if it matches, 0 if it doesn't and -1 in case of failure
  */
@@ -1139,7 +1139,7 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
 	NEXT;
 	xmlCompileAttributeTest(ctxt);
 	SKIP_BLANKS;
-	if ((CUR != 0) || (CUR == '|')) {
+	if (CUR != 0) {
 	    xmlCompileStepPattern(ctxt);
 	}
     } else {
@@ -1150,7 +1150,7 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
 	xmlCompileStepPattern(ctxt);
 	SKIP_BLANKS;
 	while (CUR == '/') {
-	    if ((CUR == '/') && (NXT(1) == '/')) {
+	    if (NXT(1) == '/') {
 	        PUSH(XML_OP_ANCESTOR, NULL, NULL);
 		NEXT;
 		NEXT;
@@ -1160,7 +1160,7 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
 	        PUSH(XML_OP_PARENT, NULL, NULL);
 		NEXT;
 		SKIP_BLANKS;
-		if ((CUR != 0) || (CUR == '|')) {
+		if (CUR != 0) {
 		    xmlCompileStepPattern(ctxt);
 		}
 	    }
@@ -1538,8 +1538,8 @@ xmlStreamCtxtAddState(xmlStreamCtxtPtr comp, int idx, int level) {
  * @ns: the namespace name
  * @nodeType: the type of the node
  *
- * push new data onto the stream. NOTE: if the call xmlPatterncompile()
- * indicated a dictionnary, then strings for name and ns will be expected
+ * Push new data onto the stream. NOTE: if the call xmlPatterncompile()
+ * indicated a dictionary, then strings for name and ns will be expected
  * to come from the dictionary.
  * Both @name and @ns being NULL means the / i.e. the root of the document.
  * This can also act as a reset.
@@ -1571,8 +1571,6 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		    err++;
 		if (comp->nbStep == 0)
 		    ret = 1;
-		stream = stream->next;
-		continue; /* while */
 	    }
 	    stream = stream->next;
 	    continue; /* while */
@@ -1592,6 +1590,17 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		(stream->level == 0))) {
 		    ret = 1;		
 	    }
+	    stream->level++;
+	    goto stream_next;
+	}
+	tmp = stream->level;
+	for (i = 0; i < comp->nbStep; i++) {
+	    if (comp->steps[i].flags & XML_STREAM_STEP_DESC) {
+		tmp = -2;
+		break;
+	    }
+	}
+	if (comp->nbStep < tmp) {
 	    stream->level++;
 	    goto stream_next;
 	}
@@ -1773,8 +1782,8 @@ stream_next:
  * @name: the current name
  * @ns: the namespace name
  *
- * push new data onto the stream. NOTE: if the call xmlPatterncompile()
- * indicated a dictionnary, then strings for name and ns will be expected
+ * Push new data onto the stream. NOTE: if the call xmlPatterncompile()
+ * indicated a dictionary, then strings for name and ns will be expected
  * to come from the dictionary.
  * Both @name and @ns being NULL means the / i.e. the root of the document.
  * This can also act as a reset.
@@ -1794,8 +1803,8 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 * @name: the current name
 * @ns: the namespace name
 *
-* push new attribute data onto the stream. NOTE: if the call xmlPatterncompile()
-* indicated a dictionnary, then strings for name and ns will be expected
+* Push new attribute data onto the stream. NOTE: if the call xmlPatterncompile()
+* indicated a dictionary, then strings for name and ns will be expected
 * to come from the dictionary.
 * Both @name and @ns being NULL means the / i.e. the root of the document.
 * This can also act as a reset.
@@ -1854,13 +1863,13 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
 /**
  * xmlPatterncompile:
  * @pattern: the pattern to compile
- * @dict: an optional dictionnary for interned strings
+ * @dict: an optional dictionary for interned strings
  * @flags: compilation flags, undefined yet
  * @namespaces: the prefix definitions, array of [URI, prefix] or NULL
  *
  * Compile a pattern.
  *
- * Returns the compiled for of the pattern or NULL in case of error
+ * Returns the compiled form of the pattern or NULL in case of error
  */
 xmlPatternPtr
 xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
@@ -1906,6 +1915,7 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	if (ctxt->error != 0)
 	    goto error;
 	xmlFreePatParserContext(ctxt);
+	ctxt = NULL;
 
 
         if (streamable) {
@@ -1923,10 +1933,8 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	    xmlStreamCompile(cur);
 	if (xmlReversePattern(cur) < 0)
 	    goto error;
-	if (tmp != NULL) {
+	if (tmp != NULL)
 	    xmlFree(tmp);
-	    tmp = NULL;
-	}
 	start = or;
     }
     if (streamable == 0) {
@@ -1953,7 +1961,7 @@ error:
  * @comp: the precompiled pattern
  * @node: a node
  *
- * Test wether the node matches the pattern
+ * Test whether the node matches the pattern
  *
  * Returns 1 if it matches, 0 if it doesn't and -1 in case of failure
  */

@@ -1,3 +1,12 @@
+Mon Jun  6 06:43:33 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c, pattern.c: Enhanced xmlXPathRunStreamEval, fixed
+	  handling of depth/level for cases like union operator
+	  (bug #306348 reported by Bob Stayton).  Also enhanced
+	  several comments throughout pattern.c.
+	* doc/apibuild.py: fixed problem in handling of
+	  'signed' declaration.  Rebuilt the docs.
+	  
 Tue May 31 20:35:27 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: Enhanced handling of xml:base for included

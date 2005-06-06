@@ -11618,7 +11618,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlPatternMatch' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>Test wether the node matches the pattern</info>
+      <info>Test whether the node matches the pattern</info>
       <return type='int' info='1 if it matches, 0 if it doesn&apos;t and -1 in case of failure'/>
       <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
       <arg name='node' type='xmlNodePtr' info='a node'/>
@@ -11638,9 +11638,9 @@ actually an xmlCharEncoding'/>
     <function name='xmlPatterncompile' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
       <info>Compile a pattern.</info>
-      <return type='xmlPatternPtr' info='the compiled for of the pattern or NULL in case of error'/>
+      <return type='xmlPatternPtr' info='the compiled form of the pattern or NULL in case of error'/>
       <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
-      <arg name='dict' type='xmlDict *' info='an optional dictionnary for interned strings'/>
+      <arg name='dict' type='xmlDict *' info='an optional dictionary for interned strings'/>
       <arg name='flags' type='int' info='compilation flags, undefined yet'/>
       <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
@@ -13388,7 +13388,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlStreamPush' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionnary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <info>Push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
       <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
       <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
       <arg name='name' type='const xmlChar *' info='the current name'/>
@@ -13396,7 +13396,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlStreamPushAttr' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>push new attribute data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionnary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <info>Push new attribute data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
       <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
       <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
       <arg name='name' type='const xmlChar *' info='the current name'/>

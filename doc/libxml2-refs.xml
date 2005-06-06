@@ -16062,6 +16062,8 @@
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlRegExecPushString2'/>
           <ref name='xmlRelaxNGValidatePushElement'/>
+          <ref name='xmlStreamPush'/>
+          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlValidatePushElement'/>
         </word>
         <word name='Pushes'>
@@ -20160,6 +20162,7 @@
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlDictReference'/>
           <ref name='xmlHashCreateDict'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlStreamPush'/>
           <ref name='xmlStreamPushAttr'/>
         </word>
@@ -20175,9 +20178,6 @@
           <ref name='xmlDictQLookup'/>
           <ref name='xmlDictReference'/>
           <ref name='xmlDictSize'/>
-          <ref name='xmlPatterncompile'/>
-          <ref name='xmlStreamPush'/>
-          <ref name='xmlStreamPushAttr'/>
         </word>
         <word name='did'>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_DEFAULT'/>
@@ -21412,6 +21412,7 @@
           <ref name='htmlSAXParseFile'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlNodeListGetString'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='formatted'>
@@ -25194,8 +25195,6 @@
           <ref name='xmlCtxtResetPush'/>
           <ref name='xmlParserInputBufferPush'/>
           <ref name='xmlStreamPop'/>
-          <ref name='xmlStreamPush'/>
-          <ref name='xmlStreamPushAttr'/>
           <ref name='xmlXPathEvalExpr'/>
         </word>
         <word name='pushed'>
@@ -28257,7 +28256,6 @@
         </word>
         <word name='wether'>
           <ref name='_xmlNodeSet'/>
-          <ref name='xmlPatternMatch'/>
         </word>
         <word name='what'>
           <ref name='xmlCatalogGetDefaults'/>

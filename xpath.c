@@ -11080,6 +11080,12 @@ next_node:
 	    }
 	    if ((cur->children == NULL) || (depth >= max_depth)) {
 		ret = xmlStreamPop(patstream);
+		while (cur->next != NULL) {
+		    cur = cur->next;
+		    if ((cur->type != XML_ENTITY_DECL) &&
+			(cur->type != XML_DTD_NODE))
+			goto next_node;
+		}
 	    }
 	}
         
@@ -11110,11 +11116,12 @@ scan_children:
 	}
 	
 	do {
-	    ret = xmlStreamPop(patstream);
 	    cur = cur->parent;
 	    depth--;
 	    if ((cur == NULL) || (cur == limit))
 	        goto done;
+	    if (cur->type == XML_ELEMENT_NODE)
+	        ret = xmlStreamPop(patstream);
 	    if (cur->next != NULL) {
 		cur = cur->next;
 		break;

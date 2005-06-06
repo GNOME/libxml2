@@ -1201,7 +1201,9 @@ class CParser:
 	    return token
 
 	while token[0] == "name" and ( 
-	      token[1] == "const" or token[1] == "unsigned"):
+	      token[1] == "const" or \
+	      token[1] == "unsigned" or \
+	      token[1] == "signed"):
 	    if self.type == "":
 	        self.type = token[1]
 	    else:

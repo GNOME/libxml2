@@ -946,6 +946,7 @@ xmlC14NPrintAttrs(const xmlAttrPtr attr, xmlC14NCtxPtr ctx)
  * xmlC14NProcessAttrsAxis:
  * @ctx: 		the C14N context
  * @cur:		the current node
+ * @parent_visible:	the visibility of parent node
  *
  * Prints out canonical attribute axis of the current node to the
  * buffer from C14N context as follows 
@@ -974,7 +975,7 @@ xmlC14NPrintAttrs(const xmlAttrPtr attr, xmlC14NCtxPtr ctx)
  * Returns 0 on success or -1 on fail.
  */
 static int
-xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
+xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int parent_visible)
 {
     xmlAttrPtr attr;
     xmlListPtr list;
@@ -1009,7 +1010,7 @@ xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
      * include attributes in "xml" namespace defined in ancestors
      * (only for non-exclusive XML Canonicalization)
      */
-    if ((!ctx->exclusive) && (cur->parent != NULL)
+    if (parent_visible && (!ctx->exclusive) && (cur->parent != NULL)
         && (!xmlC14NIsVisible(ctx, cur->parent, cur->parent->parent))) {
         /*
          * If XPath node-set is not specified then the parent is always 
@@ -1171,12 +1172,10 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 	xmlC14NVisibleNsStackShift(ctx->ns_rendered);
     }
     
-    if(visible) {
-	ret = xmlC14NProcessAttrsAxis(ctx, cur);
-	if (ret < 0) {
-        xmlC14NErrInternal("processing attributes axis");
-    	    return (-1);
-	}
+    ret = xmlC14NProcessAttrsAxis(ctx, cur, visible);
+    if (ret < 0) {
+	xmlC14NErrInternal("processing attributes axis");
+    	return (-1);
     }
 
     if (visible) { 

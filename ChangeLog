@@ -1,3 +1,8 @@
+2005-06-07  Aleksey Sanin <aleksey@aleksey.com>
+
+	* c14n.c: fix rendering of attributes when parent node
+	is not in the node set
+
 2005-06-06  Aleksey Sanin <aleksey@aleksey.com>
 
 	* c14n.c: fixed xml attributes processing bug in exc c14n

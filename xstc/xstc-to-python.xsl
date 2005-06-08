@@ -1,65 +1,118 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:ts="TestSuite" version="1.0"
+	xmlns:xl="http://www.w3.org/1999/xlink">
+	<xsl:param name="vendor" select="'NIST'"/>
     <xsl:output method="text"/>   
-    <!-- Main template. -->
+
     <xsl:template match="/">
         <xsl:text>#!/usr/bin/python -u
+# -*- coding: UTF-8 -*-
 #
 # This file is generated from the W3C test suite description file.
 #
 
-from xstc import MSTestRunner, MSTestCase
+import xstc
+from xstc import XSTCTestRunner, XSTCTestGroup, XSTCSchemaTest, XSTCInstanceTest
 
-r = MSTestRunner()
+xstc.vendor = "</xsl:text><xsl:value-of select="$vendor"/><xsl:text>"
+
+r = XSTCTestRunner()
+
+# Group definitions.
                                  
-</xsl:text>         
-        <xsl:apply-templates select="tests/test"/>
+</xsl:text>
+		      
+        <xsl:apply-templates select="ts:testSet/ts:testGroup" mode="group-def"/>
+<xsl:text>
+
+# Test definitions.
+
+</xsl:text>
+		<xsl:apply-templates select="ts:testSet/ts:testGroup" mode="test-def"/>
         <xsl:text>
            
-r.run() 
-    
-##################
-# Display results.      
-#
+r.run()    
 
 </xsl:text>
             
-    </xsl:template>
-        
-    <!-- Test template. --> 
+    </xsl:template>       
 
-    <xsl:template match="file">
-        <xsl:text>"</xsl:text>
-        <xsl:value-of select="@folder"/><xsl:text>", "</xsl:text>
-        <xsl:value-of select="@fileName"/><xsl:text>", </xsl:text>
-        <xsl:value-of select="@validity"/>
-    </xsl:template>
-                    
-    <xsl:template match="test">
-        <xsl:text>r.addTest(MSTestCase("</xsl:text>
-        <xsl:value-of select="@id"/>
-        <xsl:text>", """</xsl:text>   
-        <xsl:value-of select="description/text()"/>
-        <xsl:text>""", "</xsl:text>       
-        <xsl:value-of select="files/file[@role='schema']/@tsDir"/>
-        <xsl:text>", </xsl:text>
-        <xsl:choose>
-            <xsl:when test="count(files/file[@role='schema']) = 1">
-                <xsl:apply-templates select="files/file[@role='schema']"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text>"", "", 0</xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
-        <xsl:choose>
-            <xsl:when test="count(files/file[@role='instance']) = 1">
-                <xsl:text>, 1, </xsl:text>
-                <xsl:apply-templates select="files/file[@role='instance']"/>
-            </xsl:when>
-            <xsl:otherwise>, 0, "", "", 0</xsl:otherwise>
-        </xsl:choose>
-        <xsl:text>))
-</xsl:text>     
-    </xsl:template>             
+	<!-- groupName, descr -->
+    <xsl:template match="ts:testGroup" mode="group-def">
+		<xsl:text>r.addGroup(XSTCTestGroup("</xsl:text>
+		<!-- group -->
+		<xsl:value-of select="@name"/><xsl:text>", "</xsl:text>
+		<!-- main schema -->
+		<xsl:value-of select="ts:schemaTest[1]/ts:schemaDocument/@xl:href"/><xsl:text>", """</xsl:text>
+		<!-- group-description -->
+		<xsl:call-template name="str">
+			<xsl:with-param name="str" select="ts:annotation/ts:documentation/text()"/>
+		</xsl:call-template>
+		<xsl:text>"""))
+</xsl:text>
+	</xsl:template>
+	
+	<xsl:template name="str">
+		<xsl:param name="str"/>
+		<xsl:choose>
+			<xsl:when test="contains($str, '&quot;')">
+				<xsl:call-template name="str">
+					<xsl:with-param name="str" select="substring-before($str, '&quot;')"/>
+				</xsl:call-template>
+				<xsl:text>'</xsl:text>
+				<xsl:call-template name="str">
+					<xsl:with-param name="str" select="substring-after($str, '&quot;')"/>
+				</xsl:call-template>
+			
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$str"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="ts:testGroup" mode="test-def">	    
+		<xsl:param name="group" select="@name"/>
+		<xsl:for-each select="ts:schemaTest">
+			<!-- groupName, isSchema, Name, Accepted, File, Val, Descr -->
+			<xsl:text>r.addTest(XSTCSchemaTest("</xsl:text>
+			<!-- group -->
+			<xsl:value-of select="$group"/><xsl:text>", "</xsl:text>
+			<!-- test-name -->
+			<xsl:value-of select="@name"/><xsl:text>", </xsl:text>
+			<!-- accepted -->
+			<xsl:value-of select="number(ts:current/@status = 'accepted')"/><xsl:text>, "</xsl:text>
+			<!-- filename -->			
+			<xsl:value-of select="ts:schemaDocument/@xl:href"/><xsl:text>", </xsl:text>
+			<!-- validity -->
+			<xsl:value-of select="number(ts:expected/@validity = 'valid')"/><xsl:text>, "</xsl:text>
+			<!-- test-description -->
+			<xsl:value-of select="ts:annotation/ts:documentation/text()"/><xsl:text>"))
+</xsl:text>
+		</xsl:for-each>
+		<xsl:for-each select="ts:instanceTest">
+			<!-- groupName, isSchema, Name, Accepted, File, Val, Descr -->
+			<xsl:text>r.addTest(XSTCInstanceTest("</xsl:text>
+			<!-- group -->
+			<xsl:value-of select="$group"/><xsl:text>", "</xsl:text>
+			<!-- test-name -->
+			<xsl:value-of select="@name"/><xsl:text>", </xsl:text>
+			<!-- accepted -->
+			<xsl:value-of select="number(ts:current/@status = 'accepted')"/><xsl:text>, "</xsl:text>
+			<!-- filename -->			
+			<xsl:value-of select="ts:instanceDocument/@xl:href"/><xsl:text>", </xsl:text>
+			<!-- validity -->
+			<xsl:value-of select="number(ts:expected/@validity = 'valid')"/><xsl:text>, "</xsl:text>
+			<!-- test-description -->
+			<xsl:value-of select="ts:annotation/ts:documentation/text()"/><xsl:text>"))
+</xsl:text>
+		</xsl:for-each>
+	</xsl:template>                     
         
-</xsl:stylesheet>
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c)1998-2004. Sonic Software Corporation. All rights reserved.
+<metaInformation>
+<scenarios/><MapperInfo srcSchemaPathIsRelative="yes" srcSchemaInterpretAsXML="no" destSchemaPath="" destSchemaRoot="" destSchemaPathIsRelative="yes" destSchemaInterpretAsXML="no"/>
+</metaInformation>
+-->

@@ -1,3 +1,8 @@
+Wed Jun  8 19:11:42 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/Makefile.am xstc.py xstc-to-python.xsl: Adapted the
+	  XS tests to use the new release of tests and test-definitions.
+
 2005-06-07  Aleksey Sanin <aleksey@aleksey.com>
 
 	* c14n.c: fix rendering of attributes when parent node

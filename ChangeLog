@@ -1,3 +1,8 @@
+Wed Jun  8 19:41:38 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c: applied patch from Morten Welinder, closing bug #306901
+	  on compiling subsets of the library
+
 Wed Jun  8 19:11:42 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xstc/Makefile.am xstc.py xstc-to-python.xsl: Adapted the

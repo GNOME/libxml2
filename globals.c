@@ -496,10 +496,10 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 
     xmlMutexLock(xmlThrDefMutex);
 
-#ifdef LIBXML_DOCB_ENABLED
+#if defined(LIBXML_DOCB_ENABLED) && defined(LIBXML_LEGACY_ENABLED)
     initdocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
 #endif
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_LEGACY_ENABLED)
     inithtmlDefaultSAXHandler(&gs->htmlDefaultSAXHandler);
 #endif
 

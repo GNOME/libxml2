@@ -6747,9 +6747,9 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 	else if (xmlStrEqual(val, BAD_CAST "preserve"))
 	    *(ctxt->space) = 1;
 	else {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
+		xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
 "Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
-                                 val);
+                                 val, NULL);
 	}
     }
 
@@ -7414,7 +7414,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
                    const xmlChar **prefix, xmlChar **value,
 		   int *len, int *alloc) {
     const xmlChar *name;
-    xmlChar *val;
+    xmlChar *val, *internal_val = NULL;
     int normalize = 0;
 
     *value = NULL;
@@ -7452,33 +7452,40 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 	return(NULL);
     }
 
-    /*
-     * Check that xml:lang conforms to the specification
-     * No more registered as an error, just generate a warning now
-     * since this was deprecated in XML second edition
-     */
-    if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "xml:lang"))) {
-	if (!xmlCheckLanguageID(val)) {
-	    xmlWarningMsg(ctxt, XML_WAR_LANG_VALUE,
-		          "Malformed value for xml:lang : %s\n",
-			  val, NULL);
-	}
-    }
+	if (*prefix == ctxt->str_xml) {
+		/*
+		 * Check that xml:lang conforms to the specification
+		 * No more registered as an error, just generate a warning now
+		 * since this was deprecated in XML second edition
+		 */
+		if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "lang"))) {
+			internal_val = xmlStrndup(val, *len);
+			if (!xmlCheckLanguageID(internal_val)) {
+				xmlWarningMsg(ctxt, XML_WAR_LANG_VALUE,
+						  "Malformed value for xml:lang : %s\n",
+					  internal_val, NULL);
+			}
+		}
 
-    /*
-     * Check that xml:space conforms to the specification
-     */
-    if (xmlStrEqual(name, BAD_CAST "xml:space")) {
-	if (xmlStrEqual(val, BAD_CAST "default"))
-	    *(ctxt->space) = 0;
-	else if (xmlStrEqual(val, BAD_CAST "preserve"))
-	    *(ctxt->space) = 1;
-	else {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
+		/*
+		 * Check that xml:space conforms to the specification
+		 */
+		if (xmlStrEqual(name, BAD_CAST "space")) {
+			internal_val = xmlStrndup(val, *len);
+			if (xmlStrEqual(internal_val, BAD_CAST "default"))
+				*(ctxt->space) = 0;
+			else if (xmlStrEqual(internal_val, BAD_CAST "preserve"))
+				*(ctxt->space) = 1;
+			else {
+				xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
 "Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
-                                 val);
+                                 internal_val, NULL);
+			}
+		}
+		if (internal_val) {
+			xmlFree(internal_val);
+		}
 	}
-    }
 
     *value = val;
     return(name);

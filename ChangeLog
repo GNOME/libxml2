@@ -1,3 +1,8 @@
+Thu Jun  9 00:33:50 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/xmlerror.h: applied patch from Rob Richards
+	  for xml:space and xml:lang handling with SAX2 api.
+
 Wed Jun  8 19:41:38 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c: applied patch from Morten Welinder, closing bug #306901

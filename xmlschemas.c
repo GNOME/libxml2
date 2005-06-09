@@ -17499,7 +17499,6 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr item,
         }
 	item->refDecl = decl;
         xmlSchemaAttrFixup(decl, ctxt, NULL);
-
         item->subtypes = decl->subtypes;
 	/*
 	* Attribute Use Correct
@@ -21362,7 +21361,6 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
     /*
     * Validate values, create default attributes, evaluate IDCs.
     */
-    xpathRes = 0;
     for (i = 0; i < vctxt->nbAttrInfos; i++) {
 	attr = vctxt->attrInfos[i];
 	/*
@@ -21382,6 +21380,8 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	}
 
 	ACTIVATE_ATTRIBUTE(attr);
+	fixed = 0;
+	xpathRes = 0;
 
 	if (vctxt->xpathStates != NULL) {
 	    /*
@@ -21594,19 +21594,19 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		if (! xmlSchemaAreValuesEqual(attr->val, attr->use->defVal))
 		    attr->state = XML_SCHEMAS_ATTR_ERR_FIXED_VALUE;
 	    } else {
-		if (attrDecl->defVal == NULL) {
+		if (attr->decl->defVal == NULL) {
 		    /* VAL TODO: A default value was not precomputed. */
 		    TODO
 		    goto eval_idcs;
 		}
-		attr->vcValue = attrDecl->defValue;
+		attr->vcValue = attr->decl->defValue;
 		/*
 		if (xmlSchemaCompareValuesWhtsp(attr->val,
 		    (xmlSchemaWhitespaceValueType) ws,
 		    attrDecl->defVal,
 		    (xmlSchemaWhitespaceValueType) ws) != 0) {
 		*/
-		if (! xmlSchemaAreValuesEqual(attr->val, attrDecl->defVal))
+		if (! xmlSchemaAreValuesEqual(attr->val, attr->decl->defVal))
 		    attr->state = XML_SCHEMAS_ATTR_ERR_FIXED_VALUE;
 	    }
 	    /*

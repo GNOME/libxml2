@@ -1,3 +1,8 @@
+Thu Jun  9 13:20:57 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c result/schemas/include1_0_0.err:
+	  Fixed an attribute fixed/default value constraint error.
+
 Thu Jun  9 12:51:23 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/*: Adapted regression test results.

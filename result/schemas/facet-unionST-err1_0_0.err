@@ -1,1 +1,1 @@
-./test/schemas/facet-unionST-err1_0.xml:3: element foo: Schemas validity error : Element 'foo' [simple type 'fooType.B']: The character content is not valid.
+./test/schemas/facet-unionST-err1_0.xml:3: element foo: Schemas validity error : Element '{http://FOO}foo': 'tiny' is not a valid value of the union type '{http://FOO}fooType.B'.

@@ -1,1 +1,1 @@
-./test/schemas/extension1_1.xml:1: element title: Schemas validity error : Element 'title': The attribute 'langue' is not allowed.
+./test/schemas/extension1_1.xml:1: element title: Schemas validity error : Element 'title', attribute 'langue': The attribute 'langue' is not allowed.

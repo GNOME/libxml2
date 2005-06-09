@@ -2489,47 +2489,46 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
             }
             goto done;
         case XML_SCHEMAS_QNAME:{
-                xmlChar *uri = NULL;
+                const xmlChar *uri = NULL;
                 xmlChar *local = NULL;
 
                 ret = xmlValidateQName(value, 1);
-                if ((ret == 0) && (node != NULL)) {
+		if (ret != 0)
+		    goto done;
+                if (node != NULL) {
                     xmlChar *prefix;
+		    xmlNsPtr ns;
 
                     local = xmlSplitQName2(value, &prefix);
-                    if (prefix != NULL) {
-                        xmlNsPtr ns;
-
-                        ns = xmlSearchNs(node->doc, node, prefix);
-                        if (ns == NULL)
-                            ret = 1;
-                        else if (val != NULL)
-                            uri = xmlStrdup(ns->href);
-                    }
-                    if ((local != NULL) && ((val == NULL) || (ret != 0)))
-                        xmlFree(local);
+		    ns = xmlSearchNs(node->doc, node, prefix);
+		    if ((ns == NULL) && (prefix != NULL)) {
+			xmlFree(prefix);
+			if (local != NULL)
+			    xmlFree(local);
+			goto return1;
+		    }
+		    if (ns != NULL)
+			uri = ns->href;
                     if (prefix != NULL)
                         xmlFree(prefix);
                 }
-                if ((ret == 0) && (val != NULL)) {
+                if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_QNAME);
-                    if (v != NULL) {
-                        if (local != NULL)
-                            v->value.qname.name = local;
-                        else
-                            v->value.qname.name = xmlStrdup(value);
-                        if (uri != NULL)
-                            v->value.qname.uri = uri;
-
-                        *val = v;
-                    } else {
-                        if (local != NULL)
-                            xmlFree(local);
-                        if (uri != NULL)
-                            xmlFree(uri);
-                        goto error;
-                    }
-                }
+                    if (v == NULL) {
+			if (local != NULL)
+			    xmlFree(local);
+			goto error;
+		    }
+		    if (local != NULL)
+			v->value.qname.name = local;
+		    else
+			v->value.qname.name = xmlStrdup(value);
+		    if (uri != NULL)
+			v->value.qname.uri = xmlStrdup(uri);
+		    *val = v;
+                } else
+		    if (local != NULL)
+			xmlFree(local);
                 goto done;
             }
         case XML_SCHEMAS_NCNAME:

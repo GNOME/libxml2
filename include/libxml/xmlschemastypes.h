@@ -115,13 +115,24 @@ XMLPUBFUN int XMLCALL
 		xmlSchemaGetCanonValueWhtsp	(xmlSchemaValPtr val,						 
 						 const xmlChar **retValue,
 						 xmlSchemaWhitespaceValueType ws);
+XMLPUBFUN int XMLCALL
+		xmlSchemaValueAppend		(xmlSchemaValPtr prev,
+						 xmlSchemaValPtr cur);
+XMLPUBFUN xmlSchemaValPtr XMLCALL
+		xmlSchemaValueGetNext		(xmlSchemaValPtr cur);
+XMLPUBFUN const xmlChar * XMLCALL
+		xmlSchemaValueGetAsString	(xmlSchemaValPtr val);
+XMLPUBFUN int XMLCALL
+		xmlSchemaValueGetAsBoolean	(xmlSchemaValPtr val);
 XMLPUBFUN xmlSchemaValPtr XMLCALL
 		xmlSchemaNewStringValue		(xmlSchemaValType type,
 						 const xmlChar *value);
 XMLPUBFUN xmlSchemaValPtr XMLCALL
 		xmlSchemaNewNOTATIONValue	(const xmlChar *name,
 						 const xmlChar *ns);
-
+XMLPUBFUN xmlSchemaValPtr XMLCALL
+		xmlSchemaNewQNameValue		(const xmlChar *namespaceName,
+						 const xmlChar *localName);
 XMLPUBFUN int XMLCALL
 		xmlSchemaCompareValuesWhtsp	(xmlSchemaValPtr x,
 						 xmlSchemaWhitespaceValueType xws,

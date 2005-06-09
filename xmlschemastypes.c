@@ -115,6 +115,7 @@ struct _xmlSchemaValBase64 {
 
 struct _xmlSchemaVal {
     xmlSchemaValType type;
+    struct _xmlSchemaVal *next;
     union {
 	xmlSchemaValDecimal     decimal;
         xmlSchemaValDate        date;
@@ -208,6 +209,40 @@ xmlSchemaTypeErrMemory(xmlNodePtr node, const char *extra)
  * 			Base types support				*
  *									*
  ************************************************************************/
+
+/**
+ * xmlSchemaNewValue:
+ * @type:  the value type
+ *
+ * Allocate a new simple type value
+ *
+ * Returns a pointer to the new value or NULL in case of error
+ */
+static xmlSchemaValPtr
+xmlSchemaNewValue(xmlSchemaValType type) {
+    xmlSchemaValPtr value;
+
+    value = (xmlSchemaValPtr) xmlMalloc(sizeof(xmlSchemaVal));
+    if (value == NULL) {
+	return(NULL);
+    }
+    memset(value, 0, sizeof(xmlSchemaVal));
+    value->type = type;
+    return(value);
+}
+
+static xmlSchemaFacetPtr
+xmlSchemaNewMinLengthFacet(int value)
+{
+    xmlSchemaFacetPtr ret;
+
+    ret = xmlSchemaNewFacet();
+    ret->type = XML_SCHEMA_FACET_MINLENGTH;
+    ret->val = xmlSchemaNewValue(XML_SCHEMAS_NNINTEGER);
+    ret->val->value.decimal.lo = value;
+    return (ret);
+}
+
 /*
  * xmlSchemaInitBasicType:
  * @name:  the type name
@@ -227,20 +262,14 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
     }
     memset(ret, 0, sizeof(xmlSchemaType));
     ret->name = (const xmlChar *)name;
+    ret->targetNamespace = XML_SCHEMAS_NAMESPACE_NAME;
     ret->type = XML_SCHEMA_TYPE_BASIC;
-    ret->baseType = baseType;
-    /*
-    * Hack to reflect the variety.
-    */
-    if ((type == XML_SCHEMAS_IDREFS) ||
-	(type == XML_SCHEMAS_NMTOKENS) ||
-	(type == XML_SCHEMAS_ENTITIES)) 
-	ret->flags |= XML_SCHEMAS_TYPE_VARIETY_LIST;
-    else if ((type != XML_SCHEMAS_ANYTYPE) &&
-	(type != XML_SCHEMAS_ANYSIMPLETYPE))
-	ret->flags |= XML_SCHEMAS_TYPE_VARIETY_ATOMIC;
+    ret->baseType = baseType;	
     ret->contentType = XML_SCHEMA_CONTENT_BASIC;
-    switch (type) {
+    /*
+    * Primitive types.
+    */
+    switch (type) {		
 	case XML_SCHEMAS_STRING:            
 	case XML_SCHEMAS_DECIMAL:    
 	case XML_SCHEMAS_DATE:    
@@ -261,10 +290,28 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 	case XML_SCHEMAS_QNAME:	
 	case XML_SCHEMAS_NOTATION:	
 	    ret->flags |= XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE;
+	    break;
 	default:
-	break;
+	    break;
     }
-
+    /*
+    * Set variety.
+    */
+    switch (type) {
+	case XML_SCHEMAS_ANYTYPE:
+	case XML_SCHEMAS_ANYSIMPLETYPE:
+	    break;
+	case XML_SCHEMAS_IDREFS:
+	case XML_SCHEMAS_NMTOKENS:
+	case XML_SCHEMAS_ENTITIES:
+	    ret->flags |= XML_SCHEMAS_TYPE_VARIETY_LIST;
+	    ret->facets = xmlSchemaNewMinLengthFacet(1);
+	    ret->flags |= XML_SCHEMAS_TYPE_HAS_FACETS;	    
+	    break;
+	default:
+	    ret->flags |= XML_SCHEMAS_TYPE_VARIETY_ATOMIC;
+	    break;
+    }
     xmlHashAddEntry2(xmlSchemaTypesBank, ret->name,
 	             XML_SCHEMAS_NAMESPACE_NAME, ret);
     ret->builtInType = type;
@@ -428,27 +475,38 @@ xmlSchemaInitTypes(void)
 						  xmlSchemaTypeTokenDef);
     xmlSchemaTypeNmtokenDef = xmlSchemaInitBasicType("NMTOKEN",
                                                      XML_SCHEMAS_NMTOKEN,
-						     xmlSchemaTypeTokenDef);                
+						     xmlSchemaTypeTokenDef);
     xmlSchemaTypeNCNameDef = xmlSchemaInitBasicType("NCName",
                                                     XML_SCHEMAS_NCNAME,
 						    xmlSchemaTypeNameDef);
     xmlSchemaTypeIdDef = xmlSchemaInitBasicType("ID", XML_SCHEMAS_ID,
-	xmlSchemaTypeNCNameDef);
+						    xmlSchemaTypeNCNameDef);
     xmlSchemaTypeIdrefDef = xmlSchemaInitBasicType("IDREF",
                                                    XML_SCHEMAS_IDREF,
-						   xmlSchemaTypeNCNameDef);
-    xmlSchemaTypeIdrefsDef = xmlSchemaInitBasicType("IDREFS",
-                                                    XML_SCHEMAS_IDREFS,
-						    xmlSchemaTypeIdrefDef);    
-    xmlSchemaTypeNmtokensDef = xmlSchemaInitBasicType("NMTOKENS",
-                                                      XML_SCHEMAS_NMTOKENS,
-						      xmlSchemaTypeNmtokenDef);
+						   xmlSchemaTypeNCNameDef);        
     xmlSchemaTypeEntityDef = xmlSchemaInitBasicType("ENTITY",
                                                     XML_SCHEMAS_ENTITY,
 						    xmlSchemaTypeNCNameDef);
+    /*
+    * Derived list types.
+    */
+    /* ENTITIES */
     xmlSchemaTypeEntitiesDef = xmlSchemaInitBasicType("ENTITIES",
                                                       XML_SCHEMAS_ENTITIES,
-						      xmlSchemaTypeNCNameDef);
+						      xmlSchemaTypeAnySimpleTypeDef);
+    xmlSchemaTypeEntitiesDef->subtypes = xmlSchemaTypeEntityDef;
+    /* IDREFS */
+    xmlSchemaTypeIdrefsDef = xmlSchemaInitBasicType("IDREFS",
+                                                    XML_SCHEMAS_IDREFS,
+						    xmlSchemaTypeAnySimpleTypeDef);
+    xmlSchemaTypeIdrefsDef->subtypes = xmlSchemaTypeIdrefDef;
+
+    /* NMTOKENS */
+    xmlSchemaTypeNmtokensDef = xmlSchemaInitBasicType("NMTOKENS",
+                                                      XML_SCHEMAS_NMTOKENS,
+						      xmlSchemaTypeAnySimpleTypeDef);
+    xmlSchemaTypeNmtokensDef->subtypes = xmlSchemaTypeNmtokenDef;
+
     xmlSchemaTypesInitialized = 1;
 }
 
@@ -659,25 +717,54 @@ xmlSchemaGetBuiltInType(xmlSchemaValType type)
     }
 }
 
-/**
- * xmlSchemaNewValue:
- * @type:  the value type
- *
- * Allocate a new simple type value
- *
- * Returns a pointer to the new value or NULL in case of error
- */
-static xmlSchemaValPtr
-xmlSchemaNewValue(xmlSchemaValType type) {
-    xmlSchemaValPtr value;
+int
+xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
 
-    value = (xmlSchemaValPtr) xmlMalloc(sizeof(xmlSchemaVal));
-    if (value == NULL) {
-	return(NULL);
+    if ((prev == NULL) || (cur == NULL))
+	return (-1);
+    prev->next = cur;
+    return (0);
+}
+
+xmlSchemaValPtr
+xmlSchemaValueGetNext(xmlSchemaValPtr cur) {
+
+    if (cur == NULL)
+	return (NULL);
+    return (cur->next);
+}
+
+const xmlChar *
+xmlSchemaValueGetAsString(xmlSchemaValPtr val)
+{    
+    if (val == NULL)
+	return (NULL);
+    switch (val->type) {
+	case XML_SCHEMAS_STRING:
+	case XML_SCHEMAS_NORMSTRING:
+	case XML_SCHEMAS_ANYSIMPLETYPE:
+	case XML_SCHEMAS_TOKEN:
+        case XML_SCHEMAS_LANGUAGE:
+        case XML_SCHEMAS_NMTOKEN:
+        case XML_SCHEMAS_NAME:
+        case XML_SCHEMAS_NCNAME:
+        case XML_SCHEMAS_ID:
+        case XML_SCHEMAS_IDREF:
+        case XML_SCHEMAS_ENTITY:
+        case XML_SCHEMAS_ANYURI:
+	    return (BAD_CAST val->value.str);
+	default:
+	    break;
     }
-    memset(value, 0, sizeof(xmlSchemaVal));
-    value->type = type;
-    return(value);
+    return (NULL);
+}
+
+int
+xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
+{    
+    if ((val == NULL) || (val->type != XML_SCHEMAS_BOOLEAN))
+	return (0);
+    return (val->value.b);
 }
 
 /**
@@ -689,6 +776,7 @@ xmlSchemaNewValue(xmlSchemaValType type) {
  * of XML_SCHEMAS_STRING. 
  * WARNING: This one is intended to be expanded for other
  * string based types. We need this for anySimpleType as well.
+ * The given value is consumed and freed with the struct.
  *
  * Returns a pointer to the new value or NULL in case of error
  */
@@ -716,6 +804,7 @@ xmlSchemaNewStringValue(xmlSchemaValType type,
  * @ns: the notation namespace name or NULL
  *
  * Allocate a new NOTATION value.
+ * The given values are consumed and freed with the struct.
  *
  * Returns a pointer to the new value or NULL in case of error
  */
@@ -736,6 +825,31 @@ xmlSchemaNewNOTATIONValue(const xmlChar *name,
 }
 
 /**
+ * xmlSchemaNewQNameValue:
+ * @namespaceName: the namespace name
+ * @localName: the local name
+ *
+ * Allocate a new QName value.
+ * The given values are consumed and freed with the struct.
+ *
+ * Returns a pointer to the new value or NULL in case of an error.
+ */
+xmlSchemaValPtr
+xmlSchemaNewQNameValue(const xmlChar *namespaceName,
+		       const xmlChar *localName)
+{
+    xmlSchemaValPtr val;
+
+    val = xmlSchemaNewValue(XML_SCHEMAS_QNAME);
+    if (val == NULL)
+	return (NULL);
+
+    val->value.qname.name = (xmlChar *) localName;
+    val->value.qname.uri = (xmlChar *) namespaceName;
+    return(val);
+}
+
+/**
  * xmlSchemaFreeValue:
  * @value:  the value to free
  *
@@ -743,45 +857,50 @@ xmlSchemaNewNOTATIONValue(const xmlChar *name,
  */
 void	
 xmlSchemaFreeValue(xmlSchemaValPtr value) {
-    if (value == NULL)
-	return;
-    switch (value->type) {
-        case XML_SCHEMAS_STRING:
-        case XML_SCHEMAS_NORMSTRING:
-        case XML_SCHEMAS_TOKEN:
-        case XML_SCHEMAS_LANGUAGE:
-        case XML_SCHEMAS_NMTOKEN:
-        case XML_SCHEMAS_NMTOKENS:
-        case XML_SCHEMAS_NAME:
-        case XML_SCHEMAS_NCNAME:
-        case XML_SCHEMAS_ID:
-        case XML_SCHEMAS_IDREF:
-        case XML_SCHEMAS_IDREFS:
-        case XML_SCHEMAS_ENTITY:
-        case XML_SCHEMAS_ENTITIES:        
-        case XML_SCHEMAS_ANYURI:
-	    if (value->value.str != NULL)
-		xmlFree(value->value.str);
-	    break;
-	case XML_SCHEMAS_NOTATION:
-        case XML_SCHEMAS_QNAME:
-	    if (value->value.qname.uri != NULL)
-		xmlFree(value->value.qname.uri);
-	    if (value->value.qname.name != NULL)
-		xmlFree(value->value.qname.name);
-	    break;
-        case XML_SCHEMAS_HEXBINARY:
-	    if (value->value.hex.str != NULL)
-		xmlFree(value->value.hex.str);
-	    break;
-        case XML_SCHEMAS_BASE64BINARY:
-	    if (value->value.base64.str != NULL)
-		xmlFree(value->value.base64.str);
-	    break;
-	default:
-	    break;
-    }
-    xmlFree(value);
+    xmlSchemaValPtr prev;
+
+    while (value != NULL) {	
+	switch (value->type) {
+	    case XML_SCHEMAS_STRING:
+	    case XML_SCHEMAS_NORMSTRING:
+	    case XML_SCHEMAS_TOKEN:
+	    case XML_SCHEMAS_LANGUAGE:
+	    case XML_SCHEMAS_NMTOKEN:
+	    case XML_SCHEMAS_NMTOKENS:
+	    case XML_SCHEMAS_NAME:
+	    case XML_SCHEMAS_NCNAME:
+	    case XML_SCHEMAS_ID:
+	    case XML_SCHEMAS_IDREF:
+	    case XML_SCHEMAS_IDREFS:
+	    case XML_SCHEMAS_ENTITY:
+	    case XML_SCHEMAS_ENTITIES:        
+	    case XML_SCHEMAS_ANYURI:
+	    case XML_SCHEMAS_ANYSIMPLETYPE:
+		if (value->value.str != NULL)
+		    xmlFree(value->value.str);
+		break;
+	    case XML_SCHEMAS_NOTATION:
+	    case XML_SCHEMAS_QNAME:
+		if (value->value.qname.uri != NULL)
+		    xmlFree(value->value.qname.uri);
+		if (value->value.qname.name != NULL)
+		    xmlFree(value->value.qname.name);
+		break;
+	    case XML_SCHEMAS_HEXBINARY:
+		if (value->value.hex.str != NULL)
+		    xmlFree(value->value.hex.str);
+		break;
+	    case XML_SCHEMAS_BASE64BINARY:
+		if (value->value.base64.str != NULL)
+		    xmlFree(value->value.base64.str);
+		break;
+	    default:
+		break;
+	}
+	prev = value;
+	value = value->next;
+	xmlFree(prev);
+    }    
 }
 
 /**
@@ -1272,7 +1391,8 @@ _xmlSchemaBase64Decode (const xmlChar ch) {
  */
 static int
 xmlSchemaValidateDates (xmlSchemaValType type,
-	                const xmlChar *dateTime, xmlSchemaValPtr *val) {
+	                const xmlChar *dateTime, xmlSchemaValPtr *val,
+			int collapse) {
     xmlSchemaValPtr dt;
     int ret;
     const xmlChar *cur = dateTime;
@@ -1290,6 +1410,9 @@ xmlSchemaValidateDates (xmlSchemaValType type,
 
     if (dateTime == NULL)
 	return -1;
+
+    if (collapse)
+	while IS_WSP_BLANK_CH(*cur) cur++;
 
     if ((*cur != '-') && (*cur < '0') && (*cur > '9'))
 	return 1;
@@ -1345,6 +1468,8 @@ xmlSchemaValidateDates (xmlSchemaValType type,
                  * we can use the VALID_MDAY macro to validate the month
                  * and day because the leap year test will flag year zero
                  * as a leap year (even though zero is an invalid year).
+		 * FUTURE TODO: Zero will become valid in XML Schema 1.1
+		 * probably.
                  */
                 if (VALID_MDAY((&(dt->value.date)))) {
 
@@ -1420,6 +1545,8 @@ xmlSchemaValidateDates (xmlSchemaValType type,
 	goto error;
 
     ret = _xmlSchemaParseTimeZone(&(dt->value.date), &cur);
+    if (collapse)
+	while IS_WSP_BLANK_CH(*cur) cur++;
     if ((ret != 0) || (*cur != 0) || !VALID_DATETIME((&(dt->value.date))))
 	goto error;
 
@@ -1487,7 +1614,8 @@ error:
  */
 static int
 xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
-	                   const xmlChar *duration, xmlSchemaValPtr *val) {
+	                   const xmlChar *duration, xmlSchemaValPtr *val,
+			   int collapse) {
     const xmlChar  *cur = duration;
     xmlSchemaValPtr dur;
     int isneg = 0;
@@ -1499,6 +1627,9 @@ xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 
     if (duration == NULL)
 	return -1;
+
+    if (collapse)
+	while IS_WSP_BLANK_CH(*cur) cur++;
 
     if (*cur == '-') {
         isneg = 1;
@@ -1566,7 +1697,9 @@ xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
             if ((++seq == 3) || (seq == 6))
                 goto error;
         }
-        cur++;
+	cur++;
+	if (collapse)
+	    while IS_WSP_BLANK_CH(*cur) cur++;        
     }
 
     if (isneg) {
@@ -1834,7 +1967,9 @@ xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
  */
 static int
 xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
-                       xmlSchemaValPtr * val, xmlNodePtr node, int flags)
+                       xmlSchemaValPtr * val, xmlNodePtr node, int flags,
+		       xmlSchemaWhitespaceValueType ws,
+		       int normOnTheFly, int applyNorm, int createStringValue)
 {
     xmlSchemaValPtr v;
     xmlChar *norm = NULL;
@@ -1873,19 +2008,80 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
             goto error;
 	case XML_SCHEMAS_ANYTYPE:
 	case XML_SCHEMAS_ANYSIMPLETYPE:
+	    if ((createStringValue) && (val != NULL)) {
+		v = xmlSchemaNewValue(XML_SCHEMAS_ANYSIMPLETYPE);
+		if (v != NULL) {
+		    v->value.str = xmlStrdup(value);
+		    *val = v;
+		} else {
+		    goto error;
+		}		
+	    }
 	    goto return0;
-        case XML_SCHEMAS_STRING:
+        case XML_SCHEMAS_STRING:		
+	    if (! normOnTheFly) {
+		const xmlChar *cur = value;
+
+		if (ws == XML_SCHEMA_WHITESPACE_REPLACE) {
+		    while (*cur != 0) {
+			if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
+			    goto return1;
+			} else {
+			    cur++;
+			}
+		    }
+		} else if (ws == XML_SCHEMA_WHITESPACE_COLLAPSE) {
+		    while (*cur != 0) {
+			if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
+			    goto return1;
+			} else if IS_WSP_SPACE_CH(*cur) {
+			    cur++;
+			    if IS_WSP_SPACE_CH(*cur)
+				goto return1;
+			} else {
+			    cur++;
+			}
+		    }
+		}
+	    }
+	    if (createStringValue && (val != NULL)) {
+		if (applyNorm) {
+		    if (ws == XML_SCHEMA_WHITESPACE_COLLAPSE)
+			norm = xmlSchemaCollapseString(value);
+		    else if (ws == XML_SCHEMA_WHITESPACE_REPLACE)
+			norm = xmlSchemaWhiteSpaceReplace(value);
+		    if (norm != NULL)
+			value = norm;
+		}
+		v = xmlSchemaNewValue(XML_SCHEMAS_STRING);
+		if (v != NULL) {
+		    v->value.str = xmlStrdup(value);
+		    *val = v;
+		} else {
+		    goto error;
+		}
+	    }
             goto return0;
         case XML_SCHEMAS_NORMSTRING:{
-                const xmlChar *cur = value;
-
-                while (*cur != 0) {
-                    if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
-                        goto return1;
-                    } else {
-                        cur++;
-                    }
-                }
+		if (normOnTheFly) {
+		    if (applyNorm) {
+			if (ws == XML_SCHEMA_WHITESPACE_COLLAPSE)
+			    norm = xmlSchemaCollapseString(value);
+			else
+			    norm = xmlSchemaWhiteSpaceReplace(value);
+			if (norm != NULL)
+			    value = norm;
+		    }
+		} else {
+		    const xmlChar *cur = value;
+		    while (*cur != 0) {
+			if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
+			    goto return1;
+			} else {
+			    cur++;
+			}
+		    }
+		}
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_NORMSTRING);
                     if (v != NULL) {
@@ -1906,6 +2102,10 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 
                 if (cur == NULL)
                     goto return1;
+
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
+
 		/* First we handle an optional sign */
                 if (*cur == '+')
                     cur++;
@@ -1948,6 +2148,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			    break;
 		    }
 		}
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
 		if (*cur != 0)
 		    goto return1;	/* error if any extraneous chars */
                 if (val != NULL) {
@@ -1998,10 +2200,12 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_GYEARMONTH:
         case XML_SCHEMAS_DATE:
         case XML_SCHEMAS_DATETIME:
-            ret = xmlSchemaValidateDates(type->builtInType, value, val);
+            ret = xmlSchemaValidateDates(type->builtInType, value, val,
+		normOnTheFly);
             break;
         case XML_SCHEMAS_DURATION:
-            ret = xmlSchemaValidateDuration(type, value, val);
+            ret = xmlSchemaValidateDuration(type, value, val,
+		normOnTheFly);
             break;
         case XML_SCHEMAS_FLOAT:
         case XML_SCHEMAS_DOUBLE:{
@@ -2010,6 +2214,10 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 
                 if (cur == NULL)
                     goto return1;
+
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
+
                 if ((cur[0] == 'N') && (cur[1] == 'a') && (cur[2] == 'N')) {
                     cur += 3;
                     if (*cur != 0)
@@ -2091,6 +2299,9 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     while ((*cur >= '0') && (*cur <= '9'))
                         cur++;
                 }
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
+
                 if (*cur != 0)
                     goto return1;
                 if (val != NULL) {
@@ -2136,20 +2347,50 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_BOOLEAN:{
                 const xmlChar *cur = value;
 
-                if ((cur[0] == '0') && (cur[1] == 0))
-                    ret = 0;
-                else if ((cur[0] == '1') && (cur[1] == 0))
-                    ret = 1;
-                else if ((cur[0] == 't') && (cur[1] == 'r')
-                         && (cur[2] == 'u') && (cur[3] == 'e')
-                         && (cur[4] == 0))
-                    ret = 1;
-                else if ((cur[0] == 'f') && (cur[1] == 'a')
-                         && (cur[2] == 'l') && (cur[3] == 's')
-                         && (cur[4] == 'e') && (cur[5] == 0))
-                    ret = 0;
-                else
-                    goto return1;
+		if (normOnTheFly) {
+		    while IS_WSP_BLANK_CH(*cur) cur++;
+		    if (*cur == '0') {
+			ret = 0;
+			cur++;
+		    } else if (*cur == '1') {
+			ret = 1;
+			cur++;
+		    } else if (*cur == 't') {
+			cur++;
+			if ((*cur++ == 'r') && (*cur++ == 'u') &&
+			    (*cur++ == 'e')) {
+			    ret = 1;
+			} else
+			    goto return1;
+		    } else if (*cur == 'f') {
+			cur++;
+			if ((*cur++ == 'a') && (*cur++ == 'l') &&
+			    (*cur++ == 's') && (*cur++ == 'e')) {
+			    ret = 0;
+			} else
+			    goto return1;
+		    }
+		    if (*cur != 0) {
+			while IS_WSP_BLANK_CH(*cur) cur++;
+			if (*cur != 0)
+			    goto return1;
+		    }
+		} else {
+		    if ((cur[0] == '0') && (cur[1] == 0))
+			ret = 0;
+		    else if ((cur[0] == '1') && (cur[1] == 0))
+			ret = 1;
+		    else if ((cur[0] == 't') && (cur[1] == 'r')
+			&& (cur[2] == 'u') && (cur[3] == 'e')
+			&& (cur[4] == 0))
+			ret = 1;
+		    else if ((cur[0] == 'f') && (cur[1] == 'a')
+			&& (cur[2] == 'l') && (cur[3] == 's')
+			&& (cur[4] == 'e') && (cur[5] == 0))
+			ret = 0;
+		    else
+			goto return1;
+		}
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_BOOLEAN);
                     if (v != NULL) {
@@ -2164,22 +2405,21 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_TOKEN:{
                 const xmlChar *cur = value;
 
-                if (IS_BLANK_CH(*cur))
-                    goto return1;
-
-                while (*cur != 0) {
-                    if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
-                        goto return1;
-                    } else if (*cur == ' ') {
-                        cur++;
-                        if (*cur == 0)
-                            goto return1;
-                        if (*cur == ' ')
-                            goto return1;
-                    } else {
-                        cur++;
-                    }
-                }
+		if (! normOnTheFly) {
+		    while (*cur != 0) {
+			if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
+			    goto return1;
+			} else if (*cur == ' ') {
+			    cur++;
+			    if (*cur == 0)
+				goto return1;
+			    if (*cur == ' ')
+				goto return1;
+			} else {
+			    cur++;
+			}
+		    }		    
+		}                
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_TOKEN);
                     if (v != NULL) {
@@ -2192,6 +2432,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 goto return0;
             }
         case XML_SCHEMAS_LANGUAGE:
+	    if (normOnTheFly) {		    
+		norm = xmlSchemaCollapseString(value);
+		if (norm != NULL)
+		    value = norm;
+	    }
             if (xmlCheckLanguageID(value) == 1) {
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_LANGUAGE);
@@ -2473,9 +2718,15 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 }
                 goto done;
             }
-        case XML_SCHEMAS_ANYURI:{
+        case XML_SCHEMAS_ANYURI:{		
                 if (*value != 0) {
-                    xmlURIPtr uri = xmlParseURI((const char *) value);
+		    xmlURIPtr uri;
+		    if (normOnTheFly) {		    
+			norm = xmlSchemaCollapseString(value);
+			if (norm != NULL)
+			    value = norm;
+		    }
+                    uri = xmlParseURI((const char *) value);
                     if (uri == NULL)
                         goto return1;
                     xmlFreeURI(uri);
@@ -2498,12 +2749,17 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 if (cur == NULL)
                     goto return1;
 
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
+
                 while (((*cur >= '0') && (*cur <= '9')) ||
                        ((*cur >= 'A') && (*cur <= 'F')) ||
                        ((*cur >= 'a') && (*cur <= 'f'))) {
                     i++;
                     cur++;
                 }
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
 
                 if (*cur != 0)
                     goto return1;
@@ -2515,8 +2771,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     v = xmlSchemaNewValue(XML_SCHEMAS_HEXBINARY);
                     if (v == NULL)
                         goto error;
-
-                    cur = xmlStrdup(value);
+		    /*
+		    * Copy only the normalized piece.
+		    * CRITICAL TODO: Check this.
+		    */
+                    cur = xmlStrndup(cur, i);
                     if (cur == NULL) {
 		        xmlSchemaTypeErrMemory(node, "allocating hexbin data");
                         xmlFree(v);
@@ -2673,6 +2932,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 
                 if (cur == NULL)
                     goto return1;
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
                 if (*cur == '-') {
                     sign = 1;
                     cur++;
@@ -2681,6 +2942,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
                 if (ret == -1)
                     goto return1;
+		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
                 if (*cur != 0)
                     goto return1;
                 if (type->builtInType == XML_SCHEMAS_NPINTEGER) {
@@ -2890,7 +3153,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 int
 xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	                   xmlSchemaValPtr *val, xmlNodePtr node) {
-    return(xmlSchemaValAtomicType(type, value, val, node, 0));
+    return(xmlSchemaValAtomicType(type, value, val, node, 0,
+	XML_SCHEMA_WHITESPACE_UNKNOWN, 1, 1, 0));
 }
 
 /**
@@ -2910,7 +3174,8 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 int
 xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, const xmlChar *value,
 				 xmlSchemaValPtr *val, xmlNodePtr node) {
-    return(xmlSchemaValAtomicType(type, value, val, node, 1));
+    return(xmlSchemaValAtomicType(type, value, val, node, 1,
+	XML_SCHEMA_WHITESPACE_UNKNOWN, 1, 0, 1));
 }
 
 /**
@@ -3161,6 +3426,7 @@ xmlSchemaDupVal (xmlSchemaValPtr v)
         return NULL;
     
     memcpy(ret, v, sizeof(xmlSchemaVal));
+    ret->next = NULL;
     return ret;
 }
 
@@ -3175,60 +3441,68 @@ xmlSchemaDupVal (xmlSchemaValPtr v)
 xmlSchemaValPtr
 xmlSchemaCopyValue(xmlSchemaValPtr val)
 {
-    xmlSchemaValPtr ret;
+    xmlSchemaValPtr ret = NULL, prev = NULL, cur;
 
-    if (val == NULL)
-        return (NULL);
     /*
     * Copy the string values.
     */
-    switch (val->type) {
-        case XML_SCHEMAS_IDREFS:
-        case XML_SCHEMAS_ENTITIES:
-        case XML_SCHEMAS_NMTOKENS:
-        case XML_SCHEMAS_ANYTYPE:
-        case XML_SCHEMAS_ANYSIMPLETYPE:
-            return (NULL);
-        case XML_SCHEMAS_STRING:
-        case XML_SCHEMAS_NORMSTRING:
-        case XML_SCHEMAS_TOKEN:
-        case XML_SCHEMAS_LANGUAGE:
-        case XML_SCHEMAS_NAME:
-        case XML_SCHEMAS_NCNAME:
-        case XML_SCHEMAS_ID:
-        case XML_SCHEMAS_IDREF:
-        case XML_SCHEMAS_ENTITY:
-        case XML_SCHEMAS_NMTOKEN:
-	case XML_SCHEMAS_ANYURI:
-            ret = xmlSchemaDupVal(val);
-            if (val->value.str != NULL)
-                ret->value.str = xmlStrdup(BAD_CAST val->value.str);
-            return (ret);
-        case XML_SCHEMAS_QNAME:        
-        case XML_SCHEMAS_NOTATION:
-            ret = xmlSchemaDupVal(val);
-            if (val->value.qname.name != NULL)
-                ret->value.qname.name =
+    while (val != NULL) {
+	switch (val->type) {
+	    case XML_SCHEMAS_ANYTYPE:
+	    case XML_SCHEMAS_IDREFS:
+	    case XML_SCHEMAS_ENTITIES:
+	    case XML_SCHEMAS_NMTOKENS:
+		xmlSchemaFreeValue(ret);
+		return (NULL);
+	    case XML_SCHEMAS_ANYSIMPLETYPE:
+	    case XML_SCHEMAS_STRING:
+	    case XML_SCHEMAS_NORMSTRING:
+	    case XML_SCHEMAS_TOKEN:
+	    case XML_SCHEMAS_LANGUAGE:
+	    case XML_SCHEMAS_NAME:
+	    case XML_SCHEMAS_NCNAME:
+	    case XML_SCHEMAS_ID:
+	    case XML_SCHEMAS_IDREF:
+	    case XML_SCHEMAS_ENTITY:
+	    case XML_SCHEMAS_NMTOKEN:
+	    case XML_SCHEMAS_ANYURI:
+		cur = xmlSchemaDupVal(val);
+		if (val->value.str != NULL)
+		    cur->value.str = xmlStrdup(BAD_CAST val->value.str);
+		break;
+	    case XML_SCHEMAS_QNAME:        
+	    case XML_SCHEMAS_NOTATION:
+		cur = xmlSchemaDupVal(val);
+		if (val->value.qname.name != NULL)
+		    cur->value.qname.name =
                     xmlStrdup(BAD_CAST val->value.qname.name);
-            if (val->value.qname.uri != NULL)
-                ret->value.qname.uri =
+		if (val->value.qname.uri != NULL)
+		    cur->value.qname.uri =
                     xmlStrdup(BAD_CAST val->value.qname.uri);
-            return (ret);
-        case XML_SCHEMAS_HEXBINARY:
-            ret = xmlSchemaDupVal(val);
-            if (val->value.hex.str != NULL)
-                ret->value.hex.str = xmlStrdup(BAD_CAST val->value.hex.str);
-            return (ret);
-        case XML_SCHEMAS_BASE64BINARY:
-            ret = xmlSchemaDupVal(val);
-            if (val->value.base64.str != NULL)
-                ret->value.base64.str =
+		break;
+	    case XML_SCHEMAS_HEXBINARY:
+		cur = xmlSchemaDupVal(val);
+		if (val->value.hex.str != NULL)
+		    cur->value.hex.str = xmlStrdup(BAD_CAST val->value.hex.str);
+		break;
+	    case XML_SCHEMAS_BASE64BINARY:
+		cur = xmlSchemaDupVal(val);
+		if (val->value.base64.str != NULL)
+		    cur->value.base64.str =
                     xmlStrdup(BAD_CAST val->value.base64.str);
-            return (ret);
-        default:
-            return (xmlSchemaDupVal(val));
+		break;
+	    default:
+		cur = xmlSchemaDupVal(val);
+		break;
+	}
+	if (ret == NULL)
+	    ret = cur;
+	else
+	    prev->next = cur;
+	prev = cur;
+	val = val->next;
     }
-    return (NULL);
+    return (ret);
 }
 
 /**
@@ -4154,8 +4428,8 @@ xmlSchemaCompareFloats(xmlSchemaValPtr x, xmlSchemaValPtr y) {
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
- * case of error
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, 3 if not
+ * comparable and -2 in case of error
  */
 static int
 xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
@@ -4278,7 +4552,6 @@ xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
                 (ytype == XML_SCHEMAS_ID) ||
                 (ytype == XML_SCHEMAS_IDREF) ||
                 (ytype == XML_SCHEMAS_ENTITY) ||
-                (ytype == XML_SCHEMAS_NOTATION) ||
                 (ytype == XML_SCHEMAS_ANYURI)) {
 
 		if (xws == XML_SCHEMA_WHITESPACE_PRESERVE) {
@@ -4682,7 +4955,8 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
 	    case XML_SCHEMAS_QNAME:
  	    case XML_SCHEMAS_NOTATION:
  		/*
- 		* Ignore validation against QName and NOTATION.
+		* For QName and NOTATION, those facets are
+		* deprecated and should be ignored.
  		*/
 		return (0);
 	    default:
@@ -4872,6 +5146,9 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	case XML_SCHEMA_FACET_MINLENGTH: {
 	    unsigned int len = 0;
 
+	    if ((valType == XML_SCHEMAS_QNAME) ||
+		(valType == XML_SCHEMAS_NOTATION))
+		return (0);
 	    /*
 	    * TODO: length, maxLength and minLength must be of type
 	    * nonNegativeInteger only. Check if decimal is used somehow.

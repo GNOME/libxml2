@@ -83,7 +83,7 @@ typedef enum {
     XML_SCHEMA_TYPE_FACET,
     XML_SCHEMA_TYPE_SIMPLE,
     XML_SCHEMA_TYPE_COMPLEX,
-    XML_SCHEMA_TYPE_SEQUENCE,
+    XML_SCHEMA_TYPE_SEQUENCE = 6,
     XML_SCHEMA_TYPE_CHOICE,
     XML_SCHEMA_TYPE_ALL,
     XML_SCHEMA_TYPE_SIMPLE_CONTENT,
@@ -102,7 +102,7 @@ typedef enum {
     XML_SCHEMA_TYPE_IDC_UNIQUE,
     XML_SCHEMA_TYPE_IDC_KEY,
     XML_SCHEMA_TYPE_IDC_KEYREF,
-    XML_SCHEMA_TYPE_PARTICLE,
+    XML_SCHEMA_TYPE_PARTICLE = 25, 
     XML_SCHEMA_FACET_MININCLUSIVE = 1000,
     XML_SCHEMA_FACET_MINEXCLUSIVE,
     XML_SCHEMA_FACET_MAXINCLUSIVE,
@@ -521,7 +521,36 @@ struct _xmlSchemaFacetLink {
  * indicates that the type is invalid
  */
 #define XML_SCHEMAS_TYPE_INTERNAL_INVALID    1 << 23
-
+/**
+ * XML_SCHEMAS_TYPE_WHITESPACE_PRESERVE:
+ *
+ * a whitespace-facet value of "preserve"
+ */
+#define XML_SCHEMAS_TYPE_WHITESPACE_PRESERVE    1 << 24
+/**
+ * XML_SCHEMAS_TYPE_WHITESPACE_REPLACE:
+ *
+ * a whitespace-facet value of "replace"
+ */
+#define XML_SCHEMAS_TYPE_WHITESPACE_REPLACE    1 << 25
+/**
+ * XML_SCHEMAS_TYPE_WHITESPACE_COLLAPSE:
+ *
+ * a whitespace-facet value of "collapse"
+ */
+#define XML_SCHEMAS_TYPE_WHITESPACE_COLLAPSE    1 << 26
+/**
+ * XML_SCHEMAS_TYPE_HAS_FACETS:
+ *
+ * has facets
+ */
+#define XML_SCHEMAS_TYPE_HAS_FACETS    1 << 27
+/**
+ * XML_SCHEMAS_TYPE_NORMVALUENEEDED:
+ *
+ * indicates if the facets (pattern) need a normalized value
+ */
+#define XML_SCHEMAS_TYPE_NORMVALUENEEDED    1 << 28
 
 /**
  * _xmlSchemaType:
@@ -679,7 +708,13 @@ struct _xmlSchemaType {
  * the declaration is a substitution group head
  */
 #define XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD        1 << 17
-
+/**
+ * XML_SCHEMAS_ELEM_INTERNAL_CHECKED:
+ *
+ * this is set when the elem decl has been checked against
+ * all constraints
+ */
+#define XML_SCHEMAS_ELEM_INTERNAL_CHECKED        1 << 18
 
 typedef struct _xmlSchemaElement xmlSchemaElement;
 typedef xmlSchemaElement *xmlSchemaElementPtr;

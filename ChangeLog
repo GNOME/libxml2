@@ -1,3 +1,13 @@
+Thu Jun  9 12:22:45 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c xmlschemastypes.c include/libxml/schemasInternals.h
+	  include/libxml/xmlschemastypes.h: Changed the validation process
+	  to be able to work in streaming mode. Some datatype fixes,
+	  especially for list and union types. Due to the changes the
+	  error report output has changed in most cases. Initial migration to
+	  functions usable by both, the parser and the validator. This should
+	  ease a yet-to-come XS construction API in the long term as well.
+
 Thu Jun  9 10:16:11 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch from Malcolm Rowe to avoid namespace

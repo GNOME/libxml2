@@ -1,3 +1,9 @@
+Thu Jun  9 15:11:38 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Fixed a bug which I invented: hexBinary's string
+	  values were not duplicated corrently when creating a computed value
+	  in xmlSchemaValAtomicType.
+
 Thu Jun  9 13:20:57 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c result/schemas/include1_0_0.err:

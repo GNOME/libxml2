@@ -2742,7 +2742,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 goto return0;
             }
         case XML_SCHEMAS_HEXBINARY:{
-                const xmlChar *cur = value;
+                const xmlChar *cur = value, *start;
                 xmlChar *base;
                 int total, i = 0;
 
@@ -2752,6 +2752,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
 
+		start = cur;
                 while (((*cur >= '0') && (*cur <= '9')) ||
                        ((*cur >= 'A') && (*cur <= 'F')) ||
                        ((*cur >= 'a') && (*cur <= 'f'))) {
@@ -2775,7 +2776,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		    * Copy only the normalized piece.
 		    * CRITICAL TODO: Check this.
 		    */
-                    cur = xmlStrndup(cur, i);
+                    cur = xmlStrndup(start, i);
                     if (cur == NULL) {
 		        xmlSchemaTypeErrMemory(node, "allocating hexbin data");
                         xmlFree(v);

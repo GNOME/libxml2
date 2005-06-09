@@ -552,6 +552,10 @@
     <reference name='XML_PARSE_SAX1' href='html/libxml-parser.html#XML_PARSE_SAX1'/>
     <reference name='XML_PARSE_UNKNOWN' href='html/libxml-parser.html#XML_PARSE_UNKNOWN'/>
     <reference name='XML_PARSE_XINCLUDE' href='html/libxml-parser.html#XML_PARSE_XINCLUDE'/>
+    <reference name='XML_PATTERN_DEFAULT' href='html/libxml-pattern.html#XML_PATTERN_DEFAULT'/>
+    <reference name='XML_PATTERN_XPATH' href='html/libxml-pattern.html#XML_PATTERN_XPATH'/>
+    <reference name='XML_PATTERN_XSFIELD' href='html/libxml-pattern.html#XML_PATTERN_XSFIELD'/>
+    <reference name='XML_PATTERN_XSSEL' href='html/libxml-pattern.html#XML_PATTERN_XSSEL'/>
     <reference name='XML_PI_NODE' href='html/libxml-tree.html#XML_PI_NODE'/>
     <reference name='XML_READER_TYPE_ATTRIBUTE' href='html/libxml-xmlreader.html#XML_READER_TYPE_ATTRIBUTE'/>
     <reference name='XML_READER_TYPE_CDATA' href='html/libxml-xmlreader.html#XML_READER_TYPE_CDATA'/>
@@ -2330,6 +2334,7 @@
     <reference name='xmlParserVersion' href='html/libxml-globals.html#xmlParserVersion'/>
     <reference name='xmlParserWarning' href='html/libxml-xmlerror.html#xmlParserWarning'/>
     <reference name='xmlPattern' href='html/libxml-pattern.html#xmlPattern'/>
+    <reference name='xmlPatternFlags' href='html/libxml-pattern.html#xmlPatternFlags'/>
     <reference name='xmlPatternFromRoot' href='html/libxml-pattern.html#xmlPatternFromRoot'/>
     <reference name='xmlPatternGetStreamCtxt' href='html/libxml-pattern.html#xmlPatternGetStreamCtxt'/>
     <reference name='xmlPatternMatch' href='html/libxml-pattern.html#xmlPatternMatch'/>
@@ -3875,6 +3880,10 @@
       <ref name='XML_PARSE_SAX1'/>
       <ref name='XML_PARSE_UNKNOWN'/>
       <ref name='XML_PARSE_XINCLUDE'/>
+      <ref name='XML_PATTERN_DEFAULT'/>
+      <ref name='XML_PATTERN_XPATH'/>
+      <ref name='XML_PATTERN_XSFIELD'/>
+      <ref name='XML_PATTERN_XSSEL'/>
       <ref name='XML_PI_NODE'/>
       <ref name='XML_READER_TYPE_ATTRIBUTE'/>
       <ref name='XML_READER_TYPE_CDATA'/>
@@ -5689,6 +5698,7 @@
       <ref name='xmlParserVersion'/>
       <ref name='xmlParserWarning'/>
       <ref name='xmlPattern'/>
+      <ref name='xmlPatternFlags'/>
       <ref name='xmlPatternFromRoot'/>
       <ref name='xmlPatternGetStreamCtxt'/>
       <ref name='xmlPatternMatch'/>
@@ -9345,6 +9355,9 @@
     <type name='xmlParserSeverities'>
       <ref name='xmlTextReaderErrorFunc'/>
     </type>
+    <type name='xmlPatternFlags'>
+      <ref name='xmlPatterncompile'/>
+    </type>
     <type name='xmlPatternPtr'>
       <ref name='xmlFreePattern'/>
       <ref name='xmlFreePatternList'/>
@@ -10826,10 +10839,15 @@
       <ref name='xmlSwitchToEncoding'/>
     </file>
     <file name='pattern'>
+      <ref name='XML_PATTERN_DEFAULT'/>
+      <ref name='XML_PATTERN_XPATH'/>
+      <ref name='XML_PATTERN_XSFIELD'/>
+      <ref name='XML_PATTERN_XSSEL'/>
       <ref name='xmlFreePattern'/>
       <ref name='xmlFreePatternList'/>
       <ref name='xmlFreeStreamCtxt'/>
       <ref name='xmlPattern'/>
+      <ref name='xmlPatternFlags'/>
       <ref name='xmlPatternFromRoot'/>
       <ref name='xmlPatternGetStreamCtxt'/>
       <ref name='xmlPatternMatch'/>

@@ -951,8 +951,13 @@
      <summary>pattern expression handling</summary>
      <description>allows to compile and test pattern expressions for nodes either in a tree or based on a parser state. </description>
      <author>Daniel Veillard </author>
-     <exports symbol='xmlStreamCtxt' type='typedef'/>
+     <exports symbol='XML_PATTERN_DEFAULT' type='enum'/>
+     <exports symbol='XML_PATTERN_XSFIELD' type='enum'/>
+     <exports symbol='XML_PATTERN_XSSEL' type='enum'/>
+     <exports symbol='XML_PATTERN_XPATH' type='enum'/>
      <exports symbol='xmlStreamCtxtPtr' type='typedef'/>
+     <exports symbol='xmlPatternFlags' type='typedef'/>
+     <exports symbol='xmlStreamCtxt' type='typedef'/>
      <exports symbol='xmlPattern' type='typedef'/>
      <exports symbol='xmlPatternPtr' type='typedef'/>
      <exports symbol='xmlPatternGetStreamCtxt' type='function'/>
@@ -4739,6 +4744,10 @@
     <enum name='XML_PARSE_SAX1' file='parser' value='512' type='xmlParserOption' info='use the SAX1 interface internally'/>
     <enum name='XML_PARSE_UNKNOWN' file='parser' value='0' type='xmlParserMode'/>
     <enum name='XML_PARSE_XINCLUDE' file='parser' value='1024' type='xmlParserOption' info='Implement XInclude substitition'/>
+    <enum name='XML_PATTERN_DEFAULT' file='pattern' value='0' type='xmlPatternFlags' info='simple pattern match'/>
+    <enum name='XML_PATTERN_XPATH' file='pattern' value='1' type='xmlPatternFlags' info='standard XPath pattern'/>
+    <enum name='XML_PATTERN_XSFIELD' file='pattern' value='4' type='xmlPatternFlags' info=' XPath subset for schema field'/>
+    <enum name='XML_PATTERN_XSSEL' file='pattern' value='2' type='xmlPatternFlags' info='XPath subset for schema selector'/>
     <enum name='XML_PI_NODE' file='tree' value='7' type='xmlElementType'/>
     <enum name='XML_READER_TYPE_ATTRIBUTE' file='xmlreader' value='2' type='xmlReaderTypes'/>
     <enum name='XML_READER_TYPE_CDATA' file='xmlreader' value='4' type='xmlReaderTypes'/>
@@ -5942,6 +5951,7 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlParserProperties' file='xmlreader' type='enum'/>
     <typedef name='xmlParserSeverities' file='xmlreader' type='enum'/>
     <struct name='xmlPattern' file='pattern' type='struct _xmlPattern'/>
+    <typedef name='xmlPatternFlags' file='pattern' type='enum'/>
     <typedef name='xmlPatternPtr' file='pattern' type='xmlPattern *'/>
     <struct name='xmlRMutex' file='threads' type='struct _xmlRMutex'/>
     <typedef name='xmlRMutexPtr' file='threads' type='xmlRMutex *'/>
@@ -11641,7 +11651,7 @@ actually an xmlCharEncoding'/>
       <return type='xmlPatternPtr' info='the compiled form of the pattern or NULL in case of error'/>
       <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
       <arg name='dict' type='xmlDict *' info='an optional dictionary for interned strings'/>
-      <arg name='flags' type='int' info='compilation flags, undefined yet'/>
+      <arg name='flags' type='xmlPatternFlags' info='compilation flags, undefined yet'/>
       <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
     <function name='xmlPedanticParserDefault' file='parser' module='parserInternals'>

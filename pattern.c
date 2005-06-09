@@ -48,7 +48,10 @@
 #define XML_STREAM_STEP_ROOT	4
 #define XML_STREAM_STEP_ATTR	8
 
-#define XML_PATTERN_NOTPATTERN 1
+#define XML_PATTERN_NOTPATTERN  (XML_PATTERN_XPATH | \
+				 XML_PATTERN_XSSEL | \
+				 XML_PATTERN_XSFIELD)
+#define XML_PATTERN_XSD		(XML_PATTERN_XSSEL | XML_PATTERN_XSFIELD)
 
 typedef struct _xmlStreamStep xmlStreamStep;
 typedef xmlStreamStep *xmlStreamStepPtr;
@@ -119,16 +122,15 @@ struct _xmlStepOp {
     const xmlChar *value2;
 };
 
-#define PAT_FROM_ROOT	1
-#define PAT_FROM_CUR	2
+#define PAT_FROM_ROOT	(1<<8)
+#define PAT_FROM_CUR	(1<<9)
 
 struct _xmlPattern {
     void *data;    		/* the associated template */
     xmlDictPtr dict;		/* the optional dictionary */
     struct _xmlPattern *next;	/* next pattern if | is used */
     const xmlChar *pattern;	/* the pattern */
-
-    int flags;			/* flags */
+    xmlPatternFlags flags;	/* flags */
     int nbStep;
     int maxStep;
     xmlStepOpPtr steps;        /* ops for computation */
@@ -692,11 +694,11 @@ rollback:
     if (xmlPatternAdd(ctxt, ctxt->comp, (op), (val), (val2))) goto error;
 
 #define XSLT_ERROR(X)							\
-    { xsltError(ctxt, __FILE__, __LINE__, X);			\
+    { xsltError(ctxt, __FILE__, __LINE__, X);				\
       ctxt->error = (X); return; }
 
 #define XSLT_ERROR0(X)							\
-    { xsltError(ctxt, __FILE__, __LINE__, X);			\
+    { xsltError(ctxt, __FILE__, __LINE__, X);				\
       ctxt->error = (X); return(0); }
 
 #if 0
@@ -1047,8 +1049,8 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		    }
 		    if (i >= ctxt->nb_namespaces) {
 			ERROR5(NULL, NULL, NULL,
-			    "xmlCompileStepPattern : no namespace bound to prefix %s\n",
-			    prefix);
+			    "xmlCompileStepPattern : no namespace bound "
+			    	"to prefix %s\n", prefix);
 			ctxt->error = 1;
 			goto error;
 		    }
@@ -1122,9 +1124,10 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
     SKIP_BLANKS;
     if (CUR == '/') {
         ctxt->comp->flags |= PAT_FROM_ROOT;
-    } else if (CUR == '.') {
+    } else if ((CUR == '.') || (ctxt->comp->flags & XML_PATTERN_NOTPATTERN)) {
         ctxt->comp->flags |= PAT_FROM_CUR;
     }
+	
     if ((CUR == '/') && (NXT(1) == '/')) {
 	PUSH(XML_OP_ANCESTOR, NULL, NULL);
 	NEXT;
@@ -1581,9 +1584,9 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	*/
 	if (comp->nbStep == 0) {
 	    /*
-	    * For non-pattern like evaluation like XML Schema IDCs,
-	    * this will match if we are at the first level only,
-	    * otherwise on every level.
+	    * For non-pattern like evaluation like XML Schema IDCs
+	    * or traditional XPath expressions, this will match if
+	    * we are at the first level only, otherwise on every level.
 	    */
 	    if ((nodeType == XML_ELEMENT_NODE) &&
 		(((stream->flags & XML_PATTERN_NOTPATTERN) == 0) ||
@@ -1593,18 +1596,20 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	    stream->level++;
 	    goto stream_next;
 	}
-	tmp = stream->level;
-	for (i = 0; i < comp->nbStep; i++) {
-	    if (comp->steps[i].flags & XML_STREAM_STEP_DESC) {
-		tmp = -2;
-		break;
+	if ((stream->flags & XML_PATTERN_NOTPATTERN) != 0) {
+	    tmp = stream->level;
+	    for (i = 0; i < comp->nbStep; i++) {
+	        if (comp->steps[i].flags & XML_STREAM_STEP_DESC) {
+		    tmp = -2;
+		    break;
+	        }
 	    }
-	}
-	if (comp->nbStep < tmp) {
-	    stream->level++;
-	    goto stream_next;
-	}
+	    if (comp->nbStep <= tmp) {
+	        stream->level++;
+	        goto stream_next;
+	    }
 
+	}
 	/*
 	 * Check evolution of existing states
 	 */
@@ -1685,7 +1690,7 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	*/
 	desc = comp->steps[0].flags & XML_STREAM_STEP_DESC;
 	if ( ((comp->steps[0].flags & XML_STREAM_STEP_ROOT) == 0) &&
-	     ( ((stream->flags & XML_PATTERN_NOTPATTERN) == 0) ||
+	     ( ((stream->flags & XML_PATTERN_XSD) == 0) ||
 	       ( (desc || (stream->level == 1)) )
 	     )
 	   ) {
@@ -1709,48 +1714,26 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	if (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT)) {
 #endif
 	*/
-	    match = 0;
-	    if (comp->dict) {
-		if (comp->steps[0].name == NULL) {
-		    if (comp->steps[0].ns == NULL)
-			match = 1;
-		    else
+	    if (comp->steps[0].name == NULL) {
+		if (comp->steps[0].ns == NULL)
+		    match = 1;
+		else {
+		    if (comp->dict)
 			match = (comp->steps[0].ns == ns);
-		} else {
-		    if (stream->flags & XML_PATTERN_NOTPATTERN) {
-			/* 
-			* Workaround for missing "self::node() on "foo".
-			*/
-			if (!desc) {
-			    xmlStreamCtxtAddState(stream, 0, stream->level);
-			    goto stream_next;
-			} else {
-			    match = ((comp->steps[0].name == name) &&
-				 (comp->steps[0].ns == ns));
-			}
-		    } else {
-			match = ((comp->steps[0].name == name) &&
-			     (comp->steps[0].ns == ns));
-		    }
-		}
-	    } else {
-		if (comp->steps[0].name == NULL) {
-		    if (comp->steps[0].ns == NULL)
-			match = 1;
 		    else
 			match = xmlStrEqual(comp->steps[0].ns, ns);
+		}
+	    } else {
+		if ((stream->flags & XML_PATTERN_XSD) && (!desc)) {
+		    /*
+		     * Workaround for missing "self::node() on "foo".
+		     */
+		    xmlStreamCtxtAddState(stream, 0, stream->level);
+		    goto stream_next;
 		} else {
-		    if (stream->flags & XML_PATTERN_NOTPATTERN) {
-			/* 
-			* Workaround for missing "self::node() on "foo".
-			*/
-			if (!desc) {
-			    xmlStreamCtxtAddState(stream, 0, stream->level);
-			    goto stream_next;
-			} else {
-			    match = ((xmlStrEqual(comp->steps[0].name, name)) &&
-				 (xmlStrEqual(comp->steps[0].ns, ns)));
-			}
+		    if (comp->dict) {
+			match = ((comp->steps[0].name == name) &&
+				 (comp->steps[0].ns == ns));
 		    } else {
 			match = ((xmlStrEqual(comp->steps[0].name, name)) &&
 			     (xmlStrEqual(comp->steps[0].ns, ns)));
@@ -1873,7 +1856,7 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
  */
 xmlPatternPtr
 xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
-                  int flags ATTRIBUTE_UNUSED,
+                  xmlPatternFlags flags,
                   const xmlChar **namespaces) {
     xmlPatternPtr ret = NULL, cur;
     xmlPatParserContextPtr ctxt = NULL;
@@ -1933,8 +1916,10 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	    xmlStreamCompile(cur);
 	if (xmlReversePattern(cur) < 0)
 	    goto error;
-	if (tmp != NULL)
+	if (tmp != NULL) {
 	    xmlFree(tmp);
+	    tmp = NULL;
+	}
 	start = or;
     }
     if (streamable == 0) {

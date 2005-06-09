@@ -29,6 +29,20 @@ extern "C" {
 typedef struct _xmlPattern xmlPattern;
 typedef xmlPattern *xmlPatternPtr;
 
+/**
+ * xmlPatternFlags:
+ *
+ * This is the set of options affecting the behaviour of pattern
+ * matching with this module
+ *
+ */
+typedef enum {
+    XML_PATTERN_DEFAULT		= 0,	/* simple pattern match */
+    XML_PATTERN_XPATH		= 1<<0,	/* standard XPath pattern */
+    XML_PATTERN_XSSEL		= 1<<1,	/* XPath subset for schema selector */
+    XML_PATTERN_XSFIELD		= 1<<2	/* XPath subset for schema field */
+} xmlPatternFlags;
+
 XMLPUBFUN void XMLCALL
 			xmlFreePattern		(xmlPatternPtr comp);
 
@@ -38,7 +52,7 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN xmlPatternPtr XMLCALL
 			xmlPatterncompile	(const xmlChar *pattern,
 						 xmlDict *dict,
-						 int flags,
+						 xmlPatternFlags flags,
 						 const xmlChar **namespaces);
 XMLPUBFUN int XMLCALL
 			xmlPatternMatch		(xmlPatternPtr comp,

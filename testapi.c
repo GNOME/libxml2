@@ -1053,6 +1053,21 @@ static void des_xmlElementTypeVal(int no ATTRIBUTE_UNUSED, xmlElementTypeVal val
 static void desret_xmlParserErrors(xmlParserErrors val ATTRIBUTE_UNUSED) {
 }
 
+#ifdef LIBXML_PATTERN_ENABLED
+#define gen_nb_xmlPatternFlags 4
+static xmlPatternFlags gen_xmlPatternFlags(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 1) return(XML_PATTERN_DEFAULT);
+    if (no == 2) return(XML_PATTERN_XPATH);
+    if (no == 3) return(XML_PATTERN_XSFIELD);
+    if (no == 4) return(XML_PATTERN_XSSEL);
+    return(0);
+}
+
+static void des_xmlPatternFlags(int no ATTRIBUTE_UNUSED, xmlPatternFlags val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#endif
+
 #ifdef LIBXML_SCHEMAS_ENABLED
 #define gen_nb_xmlSchemaValType 4
 static xmlSchemaValType gen_xmlSchemaValType(int no, int nr ATTRIBUTE_UNUSED) {

@@ -1,3 +1,15 @@
+Wed Jun  9 11:07:42 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* pattern.c, xpath.c, include/libxml/pattern.h: Further
+	  enhancement for XPath streaming, consolidated with
+	  schemas usage of pattern.c.  Added a new enum
+	  xmlPatternFlags.
+	* doc/*, testapi.c, elfgcchack.h: updated to reflect new
+	  enum.
+	* test/XPath/tests/mixedpat, test/XPath/docs/mixed,
+	  result/XPath/mixedpat: added regression test for problems
+	  reported in bug306348
+
 Thu Jun  9 16:51:31 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Changed non-prefixed QNames to be bound to a

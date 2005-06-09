@@ -7535,6 +7535,7 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     int i, j, nbNs, attval;
     const xmlChar *base;
     unsigned long cur;
+    int nsNr = ctxt->nsNr;
 
     if (RAW != '<') return(NULL);
     NEXT1;
@@ -7555,6 +7556,8 @@ reparse:
     nbdef = 0;
     nbNs = 0;
     attval = 0;
+    /* Forget any namespaces added during an earlier parse of this element. */
+    ctxt->nsNr = nsNr;
 
     localname = xmlParseQName(ctxt, &prefix);
     if (localname == NULL) {

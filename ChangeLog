@@ -1,3 +1,10 @@
+Thu Jun  9 10:16:11 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from Malcolm Rowe to avoid namespace
+	  troubles on rollback parsing of elements start #304761
+	* test/nsclean.xml result/noent/nsclean.xml result/nsclean.xml*:
+	  added it to the regression tests.
+
 Thu Jun  9 00:33:50 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/xmlerror.h: applied patch from Rob Richards

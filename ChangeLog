@@ -1,3 +1,9 @@
+Mon Jun 13 13:39:43 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed a bug exposed by Rob Richards in the mailing-list
+	* result//compare0* test//compare0*: added the regression test in
+	  the suite as this went unnoticed !
+
 Wed Jun  9 11:07:42 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* pattern.c, xpath.c, include/libxml/pattern.h: Further

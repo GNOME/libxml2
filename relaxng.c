@@ -2573,11 +2573,11 @@ xmlRelaxNGSchemaTypeCompare(void *data ATTRIBUTE_UNUSED,
     }
     ret = xmlSchemaValPredefTypeNode(typ, value2, &res2, ctxt2);
     if (ret != 0) {
-        xmlSchemaFreeValue(res1);
+	if ((comp1 == NULL) && (res1 != NULL))
+	    xmlSchemaFreeValue(res1);
         return (-1);
     }
     if (res1 == NULL) {
-        xmlSchemaFreeValue(res1);
         return (-1);
     }
     ret = xmlSchemaCompareValues(res1, res2);

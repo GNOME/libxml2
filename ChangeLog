@@ -1,3 +1,8 @@
+Mon Jun 13 14:35:59 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/Makefile.am: Changed test extraction process, since some
+	  boxes don't know about "tar --strip-path".
+
 Mon Jun 13 13:39:43 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed a bug exposed by Rob Richards in the mailing-list

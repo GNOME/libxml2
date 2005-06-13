@@ -32,16 +32,6 @@ $(TESTDIRS) Tests/$(NISTTESTDEF_2) Tests/$(MSTTESTDEF) Tests/$(SUNTESTDEF):
 	-@(if [ ! -d Tests ] ; then \
 	   mkdir Tests ; \
 	   fi)
-	-@(if [ ! -f $(TARBALL) ] ; then \
-	   echo "Missing the test suite description (2002-01-16), trying to fetch it" ;\
-	   if [ -x /usr/bin/wget ] ; then \
-	   wget $(TARBALLURL) ; \
-	   else echo "Dont' know how to fetch $(TARBALLURL)" ; fi ; fi)
-	-@(if [ -f $(TARBALL) ] ; then \
-	   echo -n "extracting test data (Sun, Microsoft)..." ; \
-	   $(TAR) -C Tests --strip-path 1 -xzf $(TARBALL) '*/suntest' '*/msxsdtest' '*/$(MSTESTDEF)' '*/$(SUNTESTDEF)' ; \
-	   echo "done" ; \
-	   fi)
 	-@(if [ ! -f $(TARBALL_2) ] ; then \
 	   echo "Missing the test suite description (2004-01-14), trying to fetch it" ;\
 	   if [ -x /usr/bin/wget ] ; then \
@@ -49,8 +39,20 @@ $(TESTDIRS) Tests/$(NISTTESTDEF_2) Tests/$(MSTTESTDEF) Tests/$(SUNTESTDEF):
 	   else echo "Dont' know how to fetch $(TARBALLURL_2)" ; fi ; fi)
 	-@(if [ -f $(TARBALL_2) ] ; then \
 	   echo -n "extracting test data (NIST)..." ; \
-	   $(TAR) -C Tests --strip-path 1 -xzf $(TARBALL_2) '*/Datatypes' ; \
-	   $(TAR) -C Tests --strip-path 2 -xzf $(TARBALL_2) '*/Metadata/$(NISTTESTDEF_2)' ; \
+	   $(TAR) -xzf $(TARBALL_2) '*/Datatypes' '*/Metadata/$(NISTTESTDEF_2)' ; \
+	   echo "done" ; \
+	   fi)
+	-@(if [ ! -f $(TARBALL) ] ; then \
+	   echo "Missing the test suite description (2002-01-16), trying to fetch it" ;\
+	   if [ -x /usr/bin/wget ] ; then \
+	   wget $(TARBALLURL) ; \
+	   else echo "Dont' know how to fetch $(TARBALLURL)" ; fi ; fi)
+	-@(if [ -f $(TARBALL) ] ; then \
+	   echo -n "extracting test data (Sun, Microsoft)..." ; \
+	   $(TAR) -C Tests -xzf $(TARBALL) '*/suntest' '*/msxsdtest' '*/$(MSTESTDEF)' '*/$(SUNTESTDEF)' ; \
+	   mv Tests/xmlschema2002-01-16/* Tests ; \
+	   mv Tests/*.testSet Tests/Metadata ; \
+	   rm -r Tests/xmlschema2002-01-16 ; \
 	   echo "done" ; \
 	   fi)
 
@@ -62,7 +64,7 @@ nist-test.py: Tests/$(NISTTESTDEF_2) xstc-to-python.xsl
 	  echo "Rebuilding script (NIST)" $@ ; \
 	  $(XSLTPROC) --nonet --stringparam vendor NIST-2 \
 	                     $(srcdir)/xstc-to-python.xsl \
-	                     $(srcdir)/Tests/$(NISTTESTDEF_2) > $@ ; \
+	                     $(srcdir)/Tests/Metadata/$(NISTTESTDEF_2) > $@ ; \
 	  chmod +x $@ ; fi )
 
 ms-test.py: Tests/$(MSTTESTDEF) xstc-to-python.xsl
@@ -70,7 +72,7 @@ ms-test.py: Tests/$(MSTTESTDEF) xstc-to-python.xsl
 	  echo "Rebuilding script (Microsoft)" $@ ; \
 	  $(XSLTPROC) --nonet --stringparam vendor MS \
 	                     $(srcdir)/xstc-to-python.xsl \
-	                     $(srcdir)/Tests/$(MSTESTDEF) > $@ ; \
+	                     $(srcdir)/Tests/Metadata/$(MSTESTDEF) > $@ ; \
 	  chmod +x $@ ; fi )
 
 sun-test.py: Tests/$(SUNTESTDEF) xstc-to-python.xsl
@@ -78,7 +80,7 @@ sun-test.py: Tests/$(SUNTESTDEF) xstc-to-python.xsl
 	  echo "Rebuilding script (Sun)" $@ ; \
 	  $(XSLTPROC) --nonet --stringparam vendor SUN \
 	                     $(srcdir)/xstc-to-python.xsl \
-	                     $(srcdir)/Tests/$(SUNTESTDEF) > $@ ; \
+	                     $(srcdir)/Tests/Metadata/$(SUNTESTDEF) > $@ ; \
 	  chmod +x $@ ; fi )
 
 #

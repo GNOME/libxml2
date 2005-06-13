@@ -1,3 +1,7 @@
+Mon Jun 13 14:58:33 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/Makefile.am: Some more adjustments.
+
 Mon Jun 13 14:35:59 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xstc/Makefile.am: Changed test extraction process, since some

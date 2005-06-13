@@ -28,7 +28,7 @@ all:
 #
 # Rule to load the test description and extract the informations
 #
-$(TESTDIRS) Tests/$(NISTTESTDEF_2) Tests/$(MSTTESTDEF) Tests/$(SUNTESTDEF):
+$(TESTDIRS) Tests/Metadata/$(NISTTESTDEF_2) Tests/Metadata/$(MSTTESTDEF) Tests/Metadata/$(SUNTESTDEF):
 	-@(if [ ! -d Tests ] ; then \
 	   mkdir Tests ; \
 	   fi)
@@ -50,6 +50,8 @@ $(TESTDIRS) Tests/$(NISTTESTDEF_2) Tests/$(MSTTESTDEF) Tests/$(SUNTESTDEF):
 	-@(if [ -f $(TARBALL) ] ; then \
 	   echo -n "extracting test data (Sun, Microsoft)..." ; \
 	   $(TAR) -C Tests -xzf $(TARBALL) '*/suntest' '*/msxsdtest' '*/$(MSTESTDEF)' '*/$(SUNTESTDEF)' ; \
+	   if [ -d Tests/suntest ] ; then rm -r Tests/suntest ; fi ; \
+	   if [ -d Tests/msxsdtest ] ; then rm -r Tests/msxsdtest ; fi ; \
 	   mv Tests/xmlschema2002-01-16/* Tests ; \
 	   mv Tests/*.testSet Tests/Metadata ; \
 	   rm -r Tests/xmlschema2002-01-16 ; \
@@ -59,7 +61,7 @@ $(TESTDIRS) Tests/$(NISTTESTDEF_2) Tests/$(MSTTESTDEF) Tests/$(SUNTESTDEF):
 #
 # The python tests are generated via XSLT
 #
-nist-test.py: Tests/$(NISTTESTDEF_2) xstc-to-python.xsl
+nist-test.py: Tests/Metadata/$(NISTTESTDEF_2) xstc-to-python.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding script (NIST)" $@ ; \
 	  $(XSLTPROC) --nonet --stringparam vendor NIST-2 \
@@ -67,7 +69,7 @@ nist-test.py: Tests/$(NISTTESTDEF_2) xstc-to-python.xsl
 	                     $(srcdir)/Tests/Metadata/$(NISTTESTDEF_2) > $@ ; \
 	  chmod +x $@ ; fi )
 
-ms-test.py: Tests/$(MSTTESTDEF) xstc-to-python.xsl
+ms-test.py: Tests/Metadata/$(MSTTESTDEF) xstc-to-python.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding script (Microsoft)" $@ ; \
 	  $(XSLTPROC) --nonet --stringparam vendor MS \
@@ -75,7 +77,7 @@ ms-test.py: Tests/$(MSTTESTDEF) xstc-to-python.xsl
 	                     $(srcdir)/Tests/Metadata/$(MSTESTDEF) > $@ ; \
 	  chmod +x $@ ; fi )
 
-sun-test.py: Tests/$(SUNTESTDEF) xstc-to-python.xsl
+sun-test.py: Tests/Metadata/$(SUNTESTDEF) xstc-to-python.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding script (Sun)" $@ ; \
 	  $(XSLTPROC) --nonet --stringparam vendor SUN \

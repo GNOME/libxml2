@@ -9,4 +9,4 @@ Version: @VERSION@
 Description: libXML library version2.
 Requires:
 Libs: -L${libdir} -lxml2 @THREAD_LIBS@ @Z_LIBS@ @ICONV_LIBS@ @M_LIBS@ @LIBS@
-Cflags: -I${includedir}/libxml2 @XML_INCLUDEDIR@ @XML_CFLAGS@
+Cflags: @XML_INCLUDEDIR@ @XML_CFLAGS@

@@ -38,7 +38,6 @@
 #ifdef LIBXML_PATTERN_ENABLED
 
 /* #define DEBUG_STREAMING */
-#define SUPPORT_IDC
 
 #define ERROR(a, b, c, d)
 #define ERROR5(a, b, c, d, e)
@@ -48,10 +47,18 @@
 #define XML_STREAM_STEP_ROOT	4
 #define XML_STREAM_STEP_ATTR	8
 
+/*
+* TODO: This is used on _xmlStreamCtxt, so don't use any values
+* from xmlPatternFlags.
+*/
+#define XML_STREAM_DESC 1<<16
+
 #define XML_PATTERN_NOTPATTERN  (XML_PATTERN_XPATH | \
 				 XML_PATTERN_XSSEL | \
 				 XML_PATTERN_XSFIELD)
-#define XML_PATTERN_XSD		(XML_PATTERN_XSSEL | XML_PATTERN_XSFIELD)
+
+#define XML_STREAM_XS_IDC(item) (item->flags & \
+    (XML_PATTERN_XSSEL | XML_PATTERN_XSFIELD))
 
 typedef struct _xmlStreamStep xmlStreamStep;
 typedef xmlStreamStep *xmlStreamStepPtr;
@@ -68,6 +75,7 @@ struct _xmlStreamComp {
     int nbStep;			/* number of steps in the automata */
     int maxStep;		/* allocated number of steps */
     xmlStreamStepPtr steps;	/* the array of steps */
+    int flags;
 };
 
 struct _xmlStreamCtxt {
@@ -78,6 +86,7 @@ struct _xmlStreamCtxt {
     int level;			/* how deep are we ? */
     int *states;		/* the array of step indexes */
     int flags;			/* validation options */
+    int blockLevel;
 };
 
 static void xmlFreeStreamComp(xmlStreamCompPtr comp);
@@ -879,6 +888,7 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
     if (name == NULL) {
 	if (CUR == '*') {
 	    PUSH(XML_OP_ATTR, NULL, NULL);
+	    NEXT;
 	} else {
 	    ERROR(NULL, NULL, NULL,
 		"xmlCompileAttributeTest : Name expected\n");
@@ -1122,7 +1132,7 @@ error:
 static void
 xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
     SKIP_BLANKS;
-    if (CUR == '/') {
+    if ((CUR == '/') && (NXT(1) != '/')) {
         ctxt->comp->flags |= PAT_FROM_ROOT;
     } else if ((CUR == '.') || (ctxt->comp->flags & XML_PATTERN_NOTPATTERN)) {
         ctxt->comp->flags |= PAT_FROM_CUR;
@@ -1429,7 +1439,26 @@ xmlStreamCompile(xmlPatternPtr comp) {
 	        break;
 	    case XML_OP_ANCESTOR:
 	        flags |= XML_STREAM_STEP_DESC;
+		/*
+		* Mark the expression as having "//".
+		*/
+		if ((stream->flags & XML_STREAM_DESC) == 0)
+		    stream->flags |= XML_STREAM_DESC;
 		break;
+	}
+    }    
+    if ((! root) && (comp->flags & XML_PATTERN_NOTPATTERN) == 0) {
+	/*
+	* If this should behave like a real pattern, we will mark
+	* the first step as having "//", to be reentrant on every
+	* tree level.
+	*/
+	if ((stream->flags & XML_STREAM_DESC) == 0)
+	    stream->flags |= XML_STREAM_DESC;
+
+	if (stream->nbStep > 0) {
+	    if ((stream->steps[0].flags & XML_STREAM_STEP_DESC) == 0)
+		stream->steps[0].flags |= XML_STREAM_STEP_DESC;	    
 	}
     }
     stream->steps[s].flags |= XML_STREAM_STEP_FINAL;
@@ -1475,6 +1504,7 @@ xmlNewStreamCtxt(xmlStreamCompPtr stream) {
     cur->maxState = 4;
     cur->level = 0;
     cur->comp = stream;
+    cur->blockLevel = -1;
     return(cur);
 }
 
@@ -1568,6 +1598,7 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	if ((name == NULL) && (ns == NULL)) {
 	    stream->nbState = 0;
 	    stream->level = 0;
+	    stream->blockLevel = -1;
 	    if (comp->steps[0].flags & XML_STREAM_STEP_ROOT) {
 		tmp = xmlStreamCtxtAddState(stream, 0, 0);
 		if (tmp < 0)
@@ -1596,47 +1627,68 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	    stream->level++;
 	    goto stream_next;
 	}
-	if ((stream->flags & XML_PATTERN_NOTPATTERN) != 0) {
-	    tmp = stream->level;
-	    for (i = 0; i < comp->nbStep; i++) {
-	        if (comp->steps[i].flags & XML_STREAM_STEP_DESC) {
-		    tmp = -2;
-		    break;
-	        }
-	    }
-	    if (comp->nbStep <= tmp) {
-	        stream->level++;
-	        goto stream_next;
-	    }
-
+	if (stream->blockLevel != -1) {
+	    /*
+	    * Skip blocked expressions.
+	    */
+    	    stream->level++;
+	    goto stream_next;
 	}
 	/*
 	 * Check evolution of existing states
 	 */
+	i = 0;
 	m = stream->nbState;
-	for (i = 0;i < m;i++) {
-	    match = 0;
-	    step = stream->states[2 * i];
-	    /* dead states */
-	    if (step < 0) continue;
-	    /* skip new states just added */
-	    if (stream->states[(2 * i) + 1] > stream->level)
-	        continue;
-	    /* skip continuations */
-	    desc = comp->steps[step].flags & XML_STREAM_STEP_DESC;
-	    if ((stream->states[(2 * i) + 1] < stream->level) && (!desc))
-	        continue;
+	while (i < m) {
+	    if ((comp->flags & XML_STREAM_DESC) == 0) {
+		/*
+		* If there is no "//", then only the last
+		* added state is of interest.
+		*/
+		step = stream->states[2 * (stream->nbState -1)];
+		/*
+		* TODO: Security check, should not happen, remove it.
+		*/
+		if (stream->states[(2 * (stream->nbState -1)) + 1] <
+		    stream->level) {
+		    return (-1);
+		}
+		desc = 0;
+		/* loop-stopper */
+		i = m;
+	    } else {
+		/*
+		* If there are "//", then we need to process every "//"
+		* occuring in the states, plus any other state for this
+		* level.
+		*/		
+		step = stream->states[2 * i];
 
-	    /* discard old states */
-	    /* something needed about old level discarded */
+		/* TODO: should not happen anymore: dead states */
+		if (step < 0)
+		    goto next_state;
 
+		tmp = stream->states[(2 * i) + 1];
+
+		/* skip new states just added */
+		if (tmp > stream->level)
+		    goto next_state;
+
+		/* skip states at ancestor levels, except if "//" */
+		desc = comp->steps[step].flags & XML_STREAM_STEP_DESC;
+		if ((tmp < stream->level) && (!desc))
+		    goto next_state;
+	    }
 	    /* 
 	    * Check for correct node-type.
 	    */
-	    if ((comp->steps[step].flags & XML_STREAM_STEP_ATTR) &&
-		(nodeType != XML_ATTRIBUTE_NODE))
-		continue;
-
+	    if ((nodeType == XML_ATTRIBUTE_NODE) && 
+		((comp->steps[0].flags & XML_STREAM_STEP_ATTR) == 0))
+		goto next_state;
+	    /*
+	    * Compare local/namespace-name.
+	    */
+	    match = 0;
 	    if (comp->dict) {
 		if (comp->steps[step].name == NULL) {
 		    if (comp->steps[step].ns == NULL)
@@ -1677,76 +1729,105 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		    }
 		}
 	    }
+	    if (((comp->flags & XML_STREAM_DESC) == 0) &&
+		((! match) || final))  {
+		/*
+		* Mark this expression as blocked for any evaluation at
+		* deeper levels. Note that this includes "/foo"
+		* expressions if the *pattern* behaviour is used.
+		*/
+		stream->blockLevel = stream->level +1;
+	    }
+next_state:
+	    i++;
 	}
 
-	/*
-	 * Check creating a new state.
-	 */
 	stream->level++;
-		
+
 	/*
-	* Check the start only if this is a "desc" evaluation
-	* or if we are at the first level of evaluation.
+	* Re/enter the expression.
 	*/
+	if (comp->steps[0].flags & XML_STREAM_STEP_ROOT)
+	    goto stream_next;
+
 	desc = comp->steps[0].flags & XML_STREAM_STEP_DESC;
-	if ( ((comp->steps[0].flags & XML_STREAM_STEP_ROOT) == 0) &&
-	     ( ((stream->flags & XML_PATTERN_XSD) == 0) ||
-	       ( (desc || (stream->level == 1)) )
-	     )
-	   ) {
-
-/*
-#ifdef SUPPORT_IDC
-
-	
-	if ((desc || (stream->level == 1)) &&
-	    (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT))) {
-
-	    * 
-	    * Workaround for missing "self::node()" on "@foo".
-	    *
-	    if (comp->steps[0].flags & XML_STREAM_STEP_ATTR) {
-		xmlStreamCtxtAddState(stream, 0, stream->level);
-		goto stream_next;
-	    }
-#else
+	if (stream->flags & XML_PATTERN_NOTPATTERN) {
+	    /*
+	    * Re/enter the expression if it is a "descendant" one,
+	    * or if we are at the 1st level of evaluation.
+	    */
 	    
-	if (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT)) {
-#endif
-	*/
-	    if (comp->steps[0].name == NULL) {
-		if (comp->steps[0].ns == NULL)
-		    match = 1;
-		else {
-		    if (comp->dict)
-			match = (comp->steps[0].ns == ns);
-		    else
-			match = xmlStrEqual(comp->steps[0].ns, ns);
-		}
-	    } else {
-		if ((stream->flags & XML_PATTERN_XSD) && (!desc)) {
+	    if (stream->level == 1) {
+		if (XML_STREAM_XS_IDC(stream)) {
 		    /*
-		     * Workaround for missing "self::node() on "foo".
-		     */
-		    xmlStreamCtxtAddState(stream, 0, stream->level);
+		    * XS-IDC: The missing "self::node()" will always
+		    * match the first given node.
+		    */
 		    goto stream_next;
-		} else {
-		    if (comp->dict) {
-			match = ((comp->steps[0].name == name) &&
-				 (comp->steps[0].ns == ns));
-		    } else {
-			match = ((xmlStrEqual(comp->steps[0].name, name)) &&
-			     (xmlStrEqual(comp->steps[0].ns, ns)));
-		    }
-		}
-	    }
-	    if (match) {
-		if (comp->steps[0].flags & XML_STREAM_STEP_FINAL)
-		    ret = 1;
-		else
-		    xmlStreamCtxtAddState(stream, 1, stream->level);
-	    }
+		} else
+		    goto compare;
+	    }	    
+	    /*
+	    * A "//" is always reentrant.
+	    */
+	    if (desc)
+		goto compare;
+
+	    /*
+	    * XS-IDC: Process the 2nd level, since the missing
+	    * "self::node()" is responsible for the 2nd level being
+	    * the real start level.	    
+	    */	    
+	    if ((stream->level == 2) && XML_STREAM_XS_IDC(stream))
+		goto compare;
+
+	    goto stream_next;
 	}
+	
+compare:
+	/*
+	* Check expected node-type.
+	*/
+	if ((nodeType == XML_ATTRIBUTE_NODE) && 
+	    ((comp->steps[0].flags & XML_STREAM_STEP_ATTR) == 0))
+	    goto stream_next;
+	/*
+	* Compare local/namespace-name.
+	*/
+	match = 0;
+	if (comp->steps[0].name == NULL) {
+	    if (comp->steps[0].ns == NULL)
+		match = 1;
+	    else {
+		if (comp->dict)
+		    match = (comp->steps[0].ns == ns);
+		else
+		    match = xmlStrEqual(comp->steps[0].ns, ns);
+	    }
+	} else {
+	    if (comp->dict)
+		match = ((comp->steps[0].name == name) &&
+		    (comp->steps[0].ns == ns));
+	    else
+		match = ((xmlStrEqual(comp->steps[0].name, name)) &&
+		    (xmlStrEqual(comp->steps[0].ns, ns)));
+	}
+	if (match) {
+	    final = comp->steps[0].flags & XML_STREAM_STEP_FINAL;
+	    if (final)
+		ret = 1;
+	    else
+		xmlStreamCtxtAddState(stream, 1, stream->level);
+	}
+	if (((comp->flags & XML_STREAM_DESC) == 0) &&
+	    ((! match) || final))  {
+	    /*
+	    * Mark this expression as blocked for any evaluation at
+	    * deeper levels.
+	    */
+	    stream->blockLevel = stream->level;
+	}
+	
 stream_next:
         stream = stream->next;
     } /* while stream != NULL */
@@ -1811,26 +1892,32 @@ xmlStreamPushAttr(xmlStreamCtxtPtr stream,
  */
 int
 xmlStreamPop(xmlStreamCtxtPtr stream) {
-    int i, m;
+    int i, lev;
     int ret;
 
     if (stream == NULL)
         return(-1);
     ret = 0;
     while (stream != NULL) {
+	/*
+	* Reset block-level.
+	*/
+	if (stream->blockLevel == stream->level)
+	    stream->blockLevel = -1;
+
 	stream->level--;
 	if (stream->level < 0)
-	    ret = -1;
-	
+	    ret = -1;		
 	/*
 	 * Check evolution of existing states
-	 */
-	m = stream->nbState;
-	for (i = 0;i < m;i++) {
-	    if (stream->states[(2 * i)] < 0) break;
+	 */	
+	for (i = stream->nbState -1; i >= 0; i--) {
 	    /* discard obsoleted states */
-	    if (stream->states[(2 * i) + 1] > stream->level)
-		stream->states[(2 * i)] = -1;
+	    lev = stream->states[(2 * i) + 1];
+	    if (lev > stream->level)
+		stream->nbState--;
+	    if (lev <= stream->level)
+		break;
 	}
 	stream = stream->next;
     }

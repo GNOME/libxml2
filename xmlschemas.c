@@ -256,6 +256,7 @@ struct _xmlSchemaParserCtxt {
     int sizeLocalImports;
     int nbLocalImports;
     xmlHashTablePtr substGroups;
+    int isS4S;
 };
 
 #define XML_SCHEMAS_ATTR_UNKNOWN 1
@@ -6914,10 +6915,10 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	*/
 	if (isField)
 	    selector->xpathComp = (void *) xmlPatterncompile(selector->xpath,
-		NULL, 1, nsArray);
+		NULL, XML_PATTERN_XSFIELD, nsArray);
 	else
 	    selector->xpathComp = (void *) xmlPatterncompile(selector->xpath,
-		NULL, 1, nsArray);
+		NULL, XML_PATTERN_XSSEL, nsArray);
 	if (nsArray != NULL)
 	    xmlFree((xmlChar **) nsArray);
 
@@ -8046,10 +8047,21 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		NULL, node,
 		"name", NULL);
 	    return (NULL);
-	} else if (xmlSchemaPValAttrNode(ctxt,
-	    NULL, NULL, attr,
-	    xmlSchemaGetBuiltInType(XML_SCHEMAS_NCNAME), &attrValue) != 0) {
-	    return (NULL);
+	} else {
+	    if (xmlSchemaPValAttrNode(ctxt,
+		NULL, NULL, attr,
+		xmlSchemaGetBuiltInType(XML_SCHEMAS_NCNAME), &attrValue) != 0)
+		return (NULL);
+	    /*
+	    * Skip built-in types.
+	    */
+	    if (ctxt->isS4S) {
+		xmlSchemaTypePtr biType;
+
+		biType = xmlSchemaGetPredefinedType(attrValue, xmlSchemaNs);
+		if (biType != NULL)
+		    return (biType);
+	    }
 	}
     }
 
@@ -9020,7 +9032,7 @@ xmlSchemaParseForImpInc(xmlSchemaParserCtxtPtr pctxt,
 			xmlNodePtr node)
 {
     const xmlChar *oldURL, **oldLocImps, *oldTNS;
-    int oldFlags, oldNumLocImps, oldSizeLocImps;
+    int oldFlags, oldNumLocImps, oldSizeLocImps, oldIsS4S;
 
     /*
     * Save and reset the context & schema.
@@ -9035,9 +9047,17 @@ xmlSchemaParseForImpInc(xmlSchemaParserCtxtPtr pctxt,
     oldSizeLocImps = pctxt->sizeLocalImports;
     pctxt->sizeLocalImports = 0;
     oldFlags = schema->flags;
+    oldIsS4S = pctxt->isS4S;
     xmlSchemaClearSchemaDefaults(schema);
     oldTNS = schema->targetNamespace;
     schema->targetNamespace = targetNamespace;
+    if ((targetNamespace != NULL) &&
+	xmlStrEqual(targetNamespace, xmlSchemaNs)) {
+	/*
+	* We are parsing the schema for schema!
+	*/
+	pctxt->isS4S = 1;
+    }
     /*
     * Parse the schema.
     */
@@ -9054,6 +9074,7 @@ xmlSchemaParseForImpInc(xmlSchemaParserCtxtPtr pctxt,
     pctxt->nbLocalImports = oldNumLocImps;
     pctxt->sizeLocalImports = oldSizeLocImps;
     pctxt->URL = oldURL;
+    pctxt->isS4S = oldIsS4S;
 }
 
 /**
@@ -10568,15 +10589,13 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
         return (NULL);
     nberrors = ctxt->nberrors;
     ctxt->nberrors = 0;
+    ctxt->isS4S = 0;
     if (IS_SCHEMA(node, "schema")) {
 	xmlSchemaImportPtr import;
 
         schema = xmlSchemaNewSchema(ctxt);
         if (schema == NULL)
             return (NULL);
-	/*
-	* Disable build of list of items.
-	*/
 	attr = xmlSchemaGetPropNode(node, "targetNamespace");
 	if (attr != NULL) {
 	    xmlSchemaPValAttrNode(ctxt, NULL, NULL, attr,
@@ -10585,6 +10604,12 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 	    * TODO: Should we proceed with an invalid target namespace?
 	    */
 	    schema->targetNamespace = xmlDictLookup(ctxt->dict, val, -1);
+	    if (xmlStrEqual(schema->targetNamespace, xmlSchemaNs)) {
+		/*
+		* We are parsing the schema for schema!
+		*/
+		ctxt->isS4S = 1;
+	    }
 	} else {
 	    schema->targetNamespace = NULL;
 	}
@@ -12474,18 +12499,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr pctxt,
 	    }
 	}
     }
-    if ((type->subtypes != NULL) &&
-	((type->subtypes->type == XML_SCHEMA_TYPE_COMPLEX_CONTENT) ||
-	 (type->subtypes->type == XML_SCHEMA_TYPE_SIMPLE_CONTENT))) {
-	/*
-	* type --> (<simpleContent>|<complexContent>)
-	*        --> (<restriction>|<extension>) --> attributes
-	*/
-	attrs = type->subtypes->subtypes->attributes;
-    } else {
-	/* Short hand form of the complexType. */
-	attrs = type->attributes;
-    }
+    attrs = type->attributes;    
     /*
     * Handle attribute wildcards.
     */
@@ -12661,6 +12675,13 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr pctxt,
 			found = 1;
 			
 			if ((cur->attr->occurs ==
+			    XML_SCHEMAS_ATTR_USE_PROHIBITED) &&
+			    (base->attr->occurs ==
+			    XML_SCHEMAS_ATTR_USE_OPTIONAL)) {
+			    /*
+			    * NOOP.
+			    */
+			} else if ((cur->attr->occurs ==
 			    XML_SCHEMAS_ATTR_USE_OPTIONAL) &&
 			    (base->attr->occurs ==
 			    XML_SCHEMAS_ATTR_USE_REQUIRED)) {
@@ -18085,7 +18106,7 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
 {
     const xmlChar *targetNs, *oldtns;
     xmlDocPtr doc, olddoc;
-    int oldflags, ret = 0;
+    int oldflags, ret = 0, oldIsS4S;
     xmlNodePtr docElem;
     xmlSchemaParserCtxtPtr pctxt;
 
@@ -18137,9 +18158,17 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
 	oldflags = schema->flags;
 	oldtns = schema->targetNamespace;
 	olddoc = schema->doc;
+	oldIsS4S = vctxt->pctxt->isS4S;
 
 	xmlSchemaClearSchemaDefaults(schema);
 	schema->targetNamespace = targetNs;
+	if ((targetNs != NULL) &&
+	    xmlStrEqual(targetNs, xmlSchemaNs)) {
+	    /*
+	    * We are parsing the schema for schema!
+	    */
+	    vctxt->pctxt->isS4S = 1;
+	}
 	/* schema->nbCurItems = 0; */
 	pctxt->schema = schema;
 	pctxt->ctxtType = NULL;
@@ -18170,6 +18199,7 @@ finally:
 	/*
 	* Restore the context & schema.
 	*/
+	vctxt->pctxt->isS4S = oldIsS4S;
 	schema->flags = oldflags;
 	schema->targetNamespace = oldtns;
 	schema->doc = olddoc;
@@ -18904,7 +18934,7 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 	    }
 	} else if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_FIELD) {
 	    /*
-	    * An IDC key node was found.
+	    * An IDC key node was found by the IDC field.
 	    */
 #if DEBUG_IDC
 	    xmlGenericError(xmlGenericErrorContext,
@@ -22770,10 +22800,10 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
 	    vctxt->inode->localName,
 	    vctxt->inode->nsName);
 	if (vctxt->inode->decl == NULL) {
-	    VERROR(XML_SCHEMAV_CVC_ELT_1, NULL,
+	    ret = XML_SCHEMAV_CVC_ELT_1;
+	    VERROR(ret, NULL,
 		"No matching global declaration available "
 		"for the validation root");
-	    ret = vctxt->err;
 	    goto exit;
 	}
     }
@@ -22823,6 +22853,9 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
 	}
 	goto exit;
     }
+    /*
+    * Validate against the type definition.
+    */
 type_validation:
 
     if (vctxt->inode->typeDef == NULL) {
@@ -22840,7 +22873,7 @@ type_validation:
 	goto exit;
     }
     /*
-    * Evaluate IDCs. Do it here, since new matchers are registered
+    * Evaluate IDCs. Do it here, since new IDC matchers are registered
     * during validation against the declaration. This must be done
     * _before_ attribute validation.
     */

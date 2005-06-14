@@ -1132,7 +1132,7 @@ error:
 static void
 xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
     SKIP_BLANKS;
-    if ((CUR == '/') && (NXT(1) != '/')) {
+    if (CUR == '/') {
         ctxt->comp->flags |= PAT_FROM_ROOT;
     } else if ((CUR == '.') || (ctxt->comp->flags & XML_PATTERN_NOTPATTERN)) {
         ctxt->comp->flags |= PAT_FROM_CUR;
@@ -1584,7 +1584,7 @@ static int
 xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		      const xmlChar *name, const xmlChar *ns,
 		      xmlElementType nodeType) {
-    int ret = 0, err = 0, tmp, i, m, match, step, desc, final;
+    int ret = 0, err = 0, final = 0, tmp, i, m, match, step, desc;
     xmlStreamCompPtr comp;
 #ifdef DEBUG_STREAMING
     xmlStreamCtxtPtr orig = stream;

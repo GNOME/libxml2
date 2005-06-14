@@ -1,3 +1,8 @@
+Tue Jun 14 15:03:22 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* pattern.c: adjusted last change to xmlCompilePathPattern,
+	  fixed one compilation warning
+
 Tue Jun 14 21:19:16 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* pattern.c: Some changes/fixes to the streaming evaluation.

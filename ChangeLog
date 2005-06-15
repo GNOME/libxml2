@@ -1,3 +1,8 @@
+Wed Jun 15 11:11:38 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/bug306806_1_0 result/schemas/bug306806_1_0.err:
+	  Added schema test results (Tom Browder, bug #306806).
+
 Wed Jun 15 11:08:34 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/bug306806_1.xsd test/schemas/bug306806_0.xml:

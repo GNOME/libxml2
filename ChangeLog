@@ -1,3 +1,8 @@
+Wed Jun 15 11:08:34 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/bug306806_1.xsd test/schemas/bug306806_0.xml:
+	  Added schema tests submitted by Tom Browder (bug #306806).
+
 Tue Jun 14 15:03:22 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* pattern.c: adjusted last change to xmlCompilePathPattern,

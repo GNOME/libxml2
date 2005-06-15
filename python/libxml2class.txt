@@ -1123,6 +1123,7 @@ Class SchemaValidCtxt(SchemaValidCtxtCore)
     schemaSetValidOptions()
     schemaValidCtxtGetOptions()
     schemaValidateDoc()
+    schemaValidateFile()
     schemaValidateOneElement()
 
 

@@ -1064,14 +1064,17 @@
      <exports symbol='XML_SCHEMAS_ELEM_CIRCULAR' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ATTR' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_FINAL_LIST' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_USE_REQUIRED' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_WHITESPACE_COLLAPSE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_WHITESPACE_REPLACE' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_STRICT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_LIST' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_WHITESPACE_PRESERVE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_INTERNAL_CHECKED' type='macro'/>
      <exports symbol='XML_SCHEMAS_INCLUDING_CONVERT_NS' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_INTERNAL_RESOLVED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_USE_PROHIBITED' type='macro'/>
@@ -1085,6 +1088,7 @@
      <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ATOMIC' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FINAL_LIST' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_USE_OPTIONAL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_RESTRICTION' type='macro'/>
@@ -1111,7 +1115,9 @@
      <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_LAX' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_HAS_FACETS' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_EXTENSION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_NORMVALUENEEDED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_ABSENT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_INTERNAL_INVALID' type='macro'/>
@@ -2281,6 +2287,7 @@
      <exports symbol='XML_SCHEMAV_CVC_LENGTH_VALID' type='enum'/>
      <exports symbol='XML_DTD_STANDALONE_DEFAULTED' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ELEM' type='enum'/>
+     <exports symbol='XML_WAR_SPACE_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_FACET_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTATION_NO_NAME' type='enum'/>
      <exports symbol='XML_XPATH_START_LITERAL_ERROR' type='enum'/>
@@ -2848,12 +2855,13 @@
      <exports symbol='xmlSchemaValidCtxt' type='typedef'/>
      <exports symbol='xmlSchemaValidateStream' type='function'/>
      <exports symbol='xmlSchemaSetParserErrors' type='function'/>
-     <exports symbol='xmlSchemaValidateOneElement' type='function'/>
+     <exports symbol='xmlSchemaValidateFile' type='function'/>
      <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
      <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
      <exports symbol='xmlSchemaValidateDoc' type='function'/>
      <exports symbol='xmlSchemaNewDocParserCtxt' type='function'/>
      <exports symbol='xmlSchemaFree' type='function'/>
+     <exports symbol='xmlSchemaValidateOneElement' type='function'/>
      <exports symbol='xmlSchemaNewParserCtxt' type='function'/>
      <exports symbol='xmlSchemaSetValidOptions' type='function'/>
      <exports symbol='xmlSchemaParse' type='function'/>
@@ -2883,10 +2891,12 @@
      <exports symbol='xmlSchemaGetCanonValue' type='function'/>
      <exports symbol='xmlSchemaGetBuiltInListSimpleTypeItemType' type='function'/>
      <exports symbol='xmlSchemaCompareValuesWhtsp' type='function'/>
+     <exports symbol='xmlSchemaValueGetAsBoolean' type='function'/>
      <exports symbol='xmlSchemaCollapseString' type='function'/>
      <exports symbol='xmlSchemaValPredefTypeNodeNoNorm' type='function'/>
      <exports symbol='xmlSchemaValidateFacet' type='function'/>
      <exports symbol='xmlSchemaNewFacet' type='function'/>
+     <exports symbol='xmlSchemaValueAppend' type='function'/>
      <exports symbol='xmlSchemaCompareValues' type='function'/>
      <exports symbol='xmlSchemaValidateLengthFacet' type='function'/>
      <exports symbol='xmlSchemaGetValType' type='function'/>
@@ -2896,8 +2906,11 @@
      <exports symbol='xmlSchemaValidateListSimpleTypeFacet' type='function'/>
      <exports symbol='xmlSchemaGetFacetValueAsULong' type='function'/>
      <exports symbol='xmlSchemaFreeValue' type='function'/>
+     <exports symbol='xmlSchemaValueGetNext' type='function'/>
+     <exports symbol='xmlSchemaValueGetAsString' type='function'/>
      <exports symbol='xmlSchemaCopyValue' type='function'/>
      <exports symbol='xmlSchemaNewNOTATIONValue' type='function'/>
+     <exports symbol='xmlSchemaNewQNameValue' type='function'/>
      <exports symbol='xmlSchemaCleanupTypes' type='function'/>
      <exports symbol='xmlSchemaWhiteSpaceReplace' type='function'/>
      <exports symbol='xmlSchemaNewStringValue' type='function'/>
@@ -3968,6 +3981,9 @@
     <macro name='XML_SCHEMAS_ELEM_GLOBAL' file='schemasInternals'>
       <info>the element is global</info>
     </macro>
+    <macro name='XML_SCHEMAS_ELEM_INTERNAL_CHECKED' file='schemasInternals'>
+      <info>this is set when the elem decl has been checked against all constraints</info>
+    </macro>
     <macro name='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED' file='schemasInternals'>
       <info>this is set when &quot;type&quot;, &quot;ref&quot;, &quot;substitutionGroup&quot; references have been resolved.</info>
     </macro>
@@ -4061,6 +4077,9 @@
     <macro name='XML_SCHEMAS_TYPE_GLOBAL' file='schemasInternals'>
       <info>the type is global</info>
     </macro>
+    <macro name='XML_SCHEMAS_TYPE_HAS_FACETS' file='schemasInternals'>
+      <info>has facets</info>
+    </macro>
     <macro name='XML_SCHEMAS_TYPE_INTERNAL_INVALID' file='schemasInternals'>
       <info>indicates that the type is invalid</info>
     </macro>
@@ -4072,6 +4091,9 @@
     </macro>
     <macro name='XML_SCHEMAS_TYPE_MIXED' file='schemasInternals'>
       <info>the element content type is mixed</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_NORMVALUENEEDED' file='schemasInternals'>
+      <info>indicates if the facets (pattern) need a normalized value</info>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' file='schemasInternals'>
       <info>the complexType owns an attribute wildcard, i.e. it can be freed by the complexType</info>
@@ -4087,6 +4109,15 @@
     </macro>
     <macro name='XML_SCHEMAS_TYPE_VARIETY_UNION' file='schemasInternals'>
       <info>the simpleType has a variety of &quot;union&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_WHITESPACE_COLLAPSE' file='schemasInternals'>
+      <info>a whitespace-facet value of &quot;collapse&quot;</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_WHITESPACE_PRESERVE' file='schemasInternals'>
+      <info>a whitespace-facet value of &quot;preserve&quot;</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_WHITESPACE_REPLACE' file='schemasInternals'>
+      <info>a whitespace-facet value of &quot;replace&quot;</info>
     </macro>
     <macro name='XML_SCHEMAS_WILDCARD_COMPLETE' file='schemasInternals'>
       <info>If the wildcard is complete.</info>
@@ -5338,6 +5369,7 @@
     <enum name='XML_WAR_LANG_VALUE' file='xmlerror' value='98' type='xmlParserErrors' info='98'/>
     <enum name='XML_WAR_NS_URI' file='xmlerror' value='99' type='xmlParserErrors' info='99'/>
     <enum name='XML_WAR_NS_URI_RELATIVE' file='xmlerror' value='100' type='xmlParserErrors' info='100'/>
+    <enum name='XML_WAR_SPACE_VALUE' file='xmlerror' value='102' type='xmlParserErrors' info='102'/>
     <enum name='XML_WAR_UNDECLARED_ENTITY' file='xmlerror' value='27' type='xmlParserErrors' info='27'/>
     <enum name='XML_WAR_UNKNOWN_VERSION' file='xmlerror' value='97' type='xmlParserErrors' info='97'/>
     <enum name='XML_XINCLUDE_BUILD_FAILED' file='xmlerror' value='1609' type='xmlParserErrors' info='1609'/>
@@ -12670,12 +12702,12 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaCheckFacet' file='xmlschemastypes' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Checks the default values types, especially for facets</info>
-      <return type='int' info='0 if okay or -1 in cae of error'/>
+      <info>Checks and computes the values of facets.</info>
+      <return type='int' info='0 if valid, a positive error code if not valid and -1 in case of an internal or API error.'/>
       <arg name='facet' type='xmlSchemaFacetPtr' info='the facet'/>
       <arg name='typeDecl' type='xmlSchemaTypePtr' info='the schema type definition'/>
-      <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='the schema parser context or NULL'/>
-      <arg name='name' type='const xmlChar *' info='name of the type'/>
+      <arg name='pctxt' type='xmlSchemaParserCtxtPtr' info='the schema parser context or NULL'/>
+      <arg name='name' type='const xmlChar *' info='the optional name of the type'/>
     </function>
     <function name='xmlSchemaCleanupTypes' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -12855,7 +12887,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaNewNOTATIONValue' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Allocate a new NOTATION value.</info>
+      <info>Allocate a new NOTATION value. The given values are consumed and freed with the struct.</info>
       <return type='xmlSchemaValPtr' info='a pointer to the new value or NULL in case of error'/>
       <arg name='name' type='const xmlChar *' info='the notation name'/>
       <arg name='ns' type='const xmlChar *' info='the notation namespace name or NULL'/>
@@ -12866,9 +12898,16 @@ actually an xmlCharEncoding'/>
       <return type='xmlSchemaParserCtxtPtr' info='the parser context or NULL in case of error'/>
       <arg name='URL' type='const char *' info='the location of the schema'/>
     </function>
+    <function name='xmlSchemaNewQNameValue' file='xmlschemastypes' module='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Allocate a new QName value. The given values are consumed and freed with the struct.</info>
+      <return type='xmlSchemaValPtr' info='a pointer to the new value or NULL in case of an error.'/>
+      <arg name='namespaceName' type='const xmlChar *' info='the namespace name'/>
+      <arg name='localName' type='const xmlChar *' info='the local name'/>
+    </function>
     <function name='xmlSchemaNewStringValue' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Allocate a new simple type value. The type can be of XML_SCHEMAS_STRING. WARNING: This one is intended to be expanded for other string based types. We need this for anySimpleType as well.</info>
+      <info>Allocate a new simple type value. The type can be of XML_SCHEMAS_STRING. WARNING: This one is intended to be expanded for other string based types. We need this for anySimpleType as well. The given value is consumed and freed with the struct.</info>
       <return type='xmlSchemaValPtr' info='a pointer to the new value or NULL in case of error'/>
       <arg name='type' type='xmlSchemaValType' info='the value type'/>
       <arg name='value' type='const xmlChar *' info='the value'/>
@@ -12961,6 +13000,14 @@ actually an xmlCharEncoding'/>
       <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
       <arg name='ws' type='xmlSchemaWhitespaceValueType' info='the whitespace type of the value'/>
     </function>
+    <function name='xmlSchemaValidateFile' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Do a schemas validation of the given resource, it will use the SAX streamable validation internally.</info>
+      <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of an internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='filename' type='const char *' info='the URI of the instance'/>
+      <arg name='options' type='int' info='a future set of options, currently unused'/>
+    </function>
     <function name='xmlSchemaValidateLengthFacet' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Checka a value against a &quot;length&quot;, &quot;minLength&quot; and &quot;maxLength&quot; facet; sets @length to the computed length of @value.</info>
@@ -13032,6 +13079,31 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const char *' info=''/>
       <arg name='...' type='...' info=''/>
     </functype>
+    <function name='xmlSchemaValueAppend' file='xmlschemastypes' module='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='prev' type='xmlSchemaValPtr' info=''/>
+      <arg name='cur' type='xmlSchemaValPtr' info=''/>
+    </function>
+    <function name='xmlSchemaValueGetAsBoolean' file='xmlschemastypes' module='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='val' type='xmlSchemaValPtr' info=''/>
+    </function>
+    <function name='xmlSchemaValueGetAsString' file='xmlschemastypes' module='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='const xmlChar *' info=''/>
+      <arg name='val' type='xmlSchemaValPtr' info=''/>
+    </function>
+    <function name='xmlSchemaValueGetNext' file='xmlschemastypes' module='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='xmlSchemaValPtr' info=''/>
+      <arg name='cur' type='xmlSchemaValPtr' info=''/>
+    </function>
     <function name='xmlSchemaWhiteSpaceReplace' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Replaces 0xd, 0x9 and 0xa with a space.</info>

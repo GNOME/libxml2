@@ -1596,6 +1596,9 @@ xmlSchemaNewNOTATIONValue
 xmlSchemaNewParserCtxt
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaNewQNameValue
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaNewStringValue
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1632,6 +1635,9 @@ xmlSchemaValidateFacet
 xmlSchemaValidateFacetWhtsp
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateFile
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateLengthFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1648,6 +1654,18 @@ xmlSchemaValidatePredefinedType
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateStream
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValueAppend
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValueGetAsBoolean
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValueGetAsString
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValueGetNext
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaWhiteSpaceReplace

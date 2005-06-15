@@ -1308,8 +1308,14 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	} else {
 	    if (rectxt != NULL)
 	        doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
-	    else
+	    else {
+#ifdef LIBXML_SAX1_ENABLED
+                if (sax1)
+		    doc = xmlParseFile(filename);
+		else
+#endif /* LIBXML_SAX1_ENABLED */
 		doc = xmlReadFile(filename, NULL, options);
+	    }
 	}
     }
 

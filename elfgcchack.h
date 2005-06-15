@@ -9250,6 +9250,18 @@ extern __typeof (xmlSchemaNewParserCtxt) xmlSchemaNewParserCtxt__internal_alias 
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_xmlschemastypes
+#undef xmlSchemaNewQNameValue
+extern __typeof (xmlSchemaNewQNameValue) xmlSchemaNewQNameValue __attribute((alias("xmlSchemaNewQNameValue__internal_alias")));
+#else
+#ifndef xmlSchemaNewQNameValue
+extern __typeof (xmlSchemaNewQNameValue) xmlSchemaNewQNameValue__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaNewQNameValue xmlSchemaNewQNameValue__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemastypes
 #undef xmlSchemaNewStringValue
 extern __typeof (xmlSchemaNewStringValue) xmlSchemaNewStringValue __attribute((alias("xmlSchemaNewStringValue__internal_alias")));
 #else
@@ -9393,6 +9405,18 @@ extern __typeof (xmlSchemaValidateFacetWhtsp) xmlSchemaValidateFacetWhtsp__inter
 #endif
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
+#undef xmlSchemaValidateFile
+extern __typeof (xmlSchemaValidateFile) xmlSchemaValidateFile __attribute((alias("xmlSchemaValidateFile__internal_alias")));
+#else
+#ifndef xmlSchemaValidateFile
+extern __typeof (xmlSchemaValidateFile) xmlSchemaValidateFile__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaValidateFile xmlSchemaValidateFile__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_xmlschemastypes
 #undef xmlSchemaValidateLengthFacet
 extern __typeof (xmlSchemaValidateLengthFacet) xmlSchemaValidateLengthFacet __attribute((alias("xmlSchemaValidateLengthFacet__internal_alias")));
@@ -9460,6 +9484,54 @@ extern __typeof (xmlSchemaValidateStream) xmlSchemaValidateStream __attribute((a
 #ifndef xmlSchemaValidateStream
 extern __typeof (xmlSchemaValidateStream) xmlSchemaValidateStream__internal_alias __attribute((visibility("hidden")));
 #define xmlSchemaValidateStream xmlSchemaValidateStream__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemastypes
+#undef xmlSchemaValueAppend
+extern __typeof (xmlSchemaValueAppend) xmlSchemaValueAppend __attribute((alias("xmlSchemaValueAppend__internal_alias")));
+#else
+#ifndef xmlSchemaValueAppend
+extern __typeof (xmlSchemaValueAppend) xmlSchemaValueAppend__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaValueAppend xmlSchemaValueAppend__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemastypes
+#undef xmlSchemaValueGetAsBoolean
+extern __typeof (xmlSchemaValueGetAsBoolean) xmlSchemaValueGetAsBoolean __attribute((alias("xmlSchemaValueGetAsBoolean__internal_alias")));
+#else
+#ifndef xmlSchemaValueGetAsBoolean
+extern __typeof (xmlSchemaValueGetAsBoolean) xmlSchemaValueGetAsBoolean__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaValueGetAsBoolean xmlSchemaValueGetAsBoolean__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemastypes
+#undef xmlSchemaValueGetAsString
+extern __typeof (xmlSchemaValueGetAsString) xmlSchemaValueGetAsString __attribute((alias("xmlSchemaValueGetAsString__internal_alias")));
+#else
+#ifndef xmlSchemaValueGetAsString
+extern __typeof (xmlSchemaValueGetAsString) xmlSchemaValueGetAsString__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaValueGetAsString xmlSchemaValueGetAsString__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemastypes
+#undef xmlSchemaValueGetNext
+extern __typeof (xmlSchemaValueGetNext) xmlSchemaValueGetNext __attribute((alias("xmlSchemaValueGetNext__internal_alias")));
+#else
+#ifndef xmlSchemaValueGetNext
+extern __typeof (xmlSchemaValueGetNext) xmlSchemaValueGetNext__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaValueGetNext xmlSchemaValueGetNext__internal_alias
 #endif
 #endif
 #endif

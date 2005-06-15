@@ -16420,7 +16420,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr type,
  * xmlSchemaCheckFacet:
  * @facet:  the facet
  * @typeDecl:  the schema type definition
- * @ctxt:  the schema parser context or NULL
+ * @pctxt:  the schema parser context or NULL
  * @name: the optional name of the type
  *
  * Checks and computes the values of facets.
@@ -23955,11 +23955,14 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     TODO return (0);
 }
 
-#ifdef XML_SCHEMA_SAX_ENABLED
 /**
  * xmlSchemaValidateFile:
  * @ctxt: a schema validation context
- * @uri: the URI of the instance
+ * @filename: the URI of the instance
+ * @options: a future set of options, currently unused
+ *
+ * Do a schemas validation of the given resource, it will use the
+ * SAX streamable validation internally.
  *
  * Returns 0 if the document is valid, a positive error code
  *     number otherwise and -1 in case of an internal or API error.
@@ -23969,6 +23972,7 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
                       const char * filename,
 		      int options ATTRIBUTE_UNUSED)
 {
+#ifdef XML_SCHEMA_SAX_ENABLED
     int ret;
 
     if ((ctxt == NULL) || (filename == NULL))
@@ -24036,10 +24040,22 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
     ctxt->sax = NULL;
 
     return (ret);
-}
+#else
+    return (-1);
 #endif /* XML_SCHEMA_SAX_ENABLED */
+}
 
 #ifdef XML_SCHEMA_READER_ENABLED
+/**
+ * xmlSchemaValidateReader:
+ * @ctxt: a schema validation context
+ * @reader: an XML reader.
+ *
+ * Do a schemas validation of the given resource, using the reader.
+ *
+ * Returns 0 if the document is valid, a positive error code
+ *     number otherwise and -1 in case of an internal or API error.
+ */
 int
 xmlSchemaValidateReader(xmlSchemaValidCtxtPtr ctxt,
 			xmlTextReaderPtr reader)

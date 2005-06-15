@@ -1,3 +1,11 @@
+Wed Jun 15 15:26:14 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: if sax1 is used and input is a file use the old
+	  API xmlParseFile()
+	* xmlschemas.c: cleanups
+	* doc/* testapi.c elfgcchack.h: rebuilt to add python bindings
+	  for the new functions in Schemas.
+
 Wed Jun 15 14:50:48 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/xmlschemas.h: Added

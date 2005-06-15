@@ -156,12 +156,16 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
             xmlSchemaValidateOneElement (xmlSchemaValidCtxtPtr ctxt,
 			                 xmlNodePtr elem);
-XMLPUBFUN int XMLCALL			
+XMLPUBFUN int XMLCALL
 	    xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlParserInputBufferPtr input,
 					 xmlCharEncoding enc,
 					 xmlSAXHandlerPtr sax,
 					 void *user_data);
+XMLPUBFUN int XMLCALL
+	    xmlSchemaValidateFile	(xmlSchemaValidCtxtPtr ctxt,
+					 const char * filename,
+					 int options);
 #ifdef __cplusplus
 }
 #endif

@@ -1,3 +1,9 @@
+Wed Jun 15 14:50:48 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/xmlschemas.h: Added
+	  xmlSchemaValidateFile() to the public API. This will use
+	  SAX2-driven validation.
+
 Wed Jun 15 11:11:38 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/bug306806_1_0 result/schemas/bug306806_1_0.err:

@@ -67,7 +67,7 @@
 
 #define DUMP_CONTENT_MODEL
 
-/* #define XML_SCHEMA_SAX_ENABLED */
+#define XML_SCHEMA_SAX_ENABLED
 
 #ifdef LIBXML_READER_ENABLED
 /* #define XML_SCHEMA_READER_ENABLED */
@@ -19037,7 +19037,12 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
     * Evaluate the state objects.
     */
     while (sto != NULL) {
-	xmlStreamPop((xmlStreamCtxtPtr) sto->xpathCtxt);
+	res = xmlStreamPop((xmlStreamCtxtPtr) sto->xpathCtxt);
+	if (res == -1) {
+	    VERROR_INT("xmlSchemaXPathProcessHistory",
+		"calling xmlStreamPop()");
+	    return (-1);
+	}
 #if DEBUG_IDC
 	xmlGenericError(xmlGenericErrorContext, "IDC:   stream pop '%s'\n",
 	    sto->sel->xpath);
@@ -23950,7 +23955,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     TODO return (0);
 }
 
-#if 0
+#ifdef XML_SCHEMA_SAX_ENABLED
 /**
  * xmlSchemaValidateFile:
  * @ctxt: a schema validation context
@@ -23961,7 +23966,8 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
  */
 int
 xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
-                      const char * filename)
+                      const char * filename,
+		      int options ATTRIBUTE_UNUSED)
 {
     int ret;
 
@@ -23997,6 +24003,7 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
     */
     ctxt->sax->ignorableWhitespace = xmlSchemaSAXHandleText;
     ctxt->sax->characters = xmlSchemaSAXHandleText;
+
     ctxt->sax->cdataBlock = xmlSchemaSAXHandleCDataSection;
     ctxt->sax->reference = xmlSchemaSAXHandleReference;
     ctxt->sax->initialized = XML_SAX2_MAGIC;
@@ -24009,7 +24016,7 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
     /* VAL TODO: Set error handlers. */
 
     ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
-    ret = xmlSchemaVStart(ctxt, filename);
+    ret = xmlSchemaVStart(ctxt);
 
     /*
     * URGENT VAL TODO: What to do with well-formedness errors?
@@ -24021,7 +24028,7 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
 	    ret = 1;
 	xmlSchemaErr((xmlSchemaAbstractCtxtPtr) ctxt, ret, NULL,
 	    "The instance document '%s' is not well-formed",
-	    filename, NULL);	
+	    BAD_CAST filename, NULL);	
     }    
     ctxt->parserCtxt->sax = NULL;
     xmlFreeParserCtxt(ctxt->parserCtxt);
@@ -24030,7 +24037,7 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
 
     return (ret);
 }
-#endif
+#endif /* XML_SCHEMA_SAX_ENABLED */
 
 #ifdef XML_SCHEMA_READER_ENABLED
 int

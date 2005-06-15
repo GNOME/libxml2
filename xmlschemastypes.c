@@ -717,6 +717,15 @@ xmlSchemaGetBuiltInType(xmlSchemaValType type)
     }
 }
 
+/**
+ * xmlSchemaValueAppend:
+ * @prev: the value
+ * @cur: the value to be appended
+ *
+ * Appends a next sibling to a list of computed values.
+ *
+ * Returns 0 if succeeded and -1 on API errors.
+ */
 int
 xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
 
@@ -726,6 +735,15 @@ xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
     return (0);
 }
 
+/**
+ * xmlSchemaValueGetNext:
+ * @cur: the value
+ *
+ * Accessor for the next sibling of a list of computed values.
+ *
+ * Returns the next value or NULL if there was none, or on
+ *         API errors.
+ */
 xmlSchemaValPtr
 xmlSchemaValueGetNext(xmlSchemaValPtr cur) {
 
@@ -734,6 +752,15 @@ xmlSchemaValueGetNext(xmlSchemaValPtr cur) {
     return (cur->next);
 }
 
+/**
+ * xmlSchemaValueGetAsString:
+ * @val: the value
+ *
+ * Accessor for the string value of a computed value.
+ *
+ * Returns the string value or NULL if there was none, or on
+ *         API errors.
+ */
 const xmlChar *
 xmlSchemaValueGetAsString(xmlSchemaValPtr val)
 {    
@@ -759,6 +786,14 @@ xmlSchemaValueGetAsString(xmlSchemaValPtr val)
     return (NULL);
 }
 
+/**
+ * xmlSchemaValueGetAsBoolean:
+ * @val: the value
+ *
+ * Accessor for the boolean value of a computed value.
+ *
+ * Returns 1 if true and 0 if false, or in case of an error. Hmm.
+ */
 int
 xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
 {    

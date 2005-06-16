@@ -1,3 +1,9 @@
+Thu Jun 16 14:38:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed SAX2 validation: grow of internal
+	  namespace list, appending of element character content.
+	* xstc/xstc.py: Added "--sax" option for SAX2 validation.
+
 Wed Jun 15 15:34:52 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Added missing function descriptions.

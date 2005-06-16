@@ -82,6 +82,12 @@ opa.add_option("--debug", action="store_true",
 opa.add_option("--info", action="store_true",
 			   dest="info", default=False,
 			   help="Displays info on the suite only. Does not run any test.")
+opa.add_option("--sax", action="store_true",
+			   dest="validationSAX", default=False,
+			   help="Use SAX2-driven validation.")
+opa.add_option("--tn", action="store_true",
+			   dest="displayTestName", default=False,
+			   help="Display the test name in every case.")
 
 (options, args) = opa.parse_args()
 
@@ -312,6 +318,8 @@ class XSTCTestCase:
 
 		##filePath = os.path.join(options.baseDir, self.fileName)
 		# filePath = "%s/%s/%s/%s" % (options.baseDir, self.test_Folder, self.schema_Folder, self.schema_File)
+		if options.displayTestName:
+			sys.stdout.write("'%s'\n" % self.name)
 		try:
 			self.validate()
 		except (Exception, libxml2.parserError, libxml2.treeError), e:
@@ -387,52 +395,55 @@ class XSTCInstanceTest(XSTCTestCase):
 			# TODO: Is this one necessary, or will an exception
 			# be already raised?
 			raise Exception("Could not create the instance parser context.")
-		try:
+		if not options.validationSAX:
 			try:
-				instance = parserCtxt.ctxtReadFile(filePath, None, libxml2.XML_PARSE_NOWARNING)
-			except:
-				# Suppress exceptions.
-				pass
-		finally:
-			del parserCtxt
-		self.debugMsg("after loading instance")
-
-		if instance is None:
-			self.debugMsg("instance is None")
-			self.failCritical("Failed to parse the instance for unknown reasons.")
-			return
-		else:
-			try:
-				#
-				# Validate the instance.
-				#
-				self.debugMsg("loading schema: %s" % self.group.schemaFileName)
-				schema = parseSchema(self.group.schemaFileName)
 				try:
-					validationCtxt = schema.schemaNewValidCtxt()
-					#validationCtxt = libxml2.schemaNewValidCtxt(None)
-					if (validationCtxt is None):
-						self.failCritical("Could not create the validation context.")
-						return
-					try:
-						self.debugMsg("validating instance")
-						instance_Err = validationCtxt.schemaValidateDoc(instance)
-						self.debugMsg("after instance validation")
-						self.debugMsg("instance-err: %d" % instance_Err)
-						if (instance_Err != 0 and self.val == 1) or (instance_Err == 0 and self.val == 0):
-							self.debugMsg("instance result is BAD")
-							if (instance_Err != 0):
-								self.fail(msgInstanceNotValidButShould)
-							else:
-								self.fail(msgInstanceValidButShouldNot)
-	
-						else:
-									self.debugMsg("instance result is OK")
-					finally:
-						del validationCtxt
-				finally:
-					del schema
+					instance = parserCtxt.ctxtReadFile(filePath, None, libxml2.XML_PARSE_NOWARNING)
+				except:
+					# Suppress exceptions.
+					pass
 			finally:
+				del parserCtxt
+			self.debugMsg("after loading instance")
+			if instance is None:
+				self.debugMsg("instance is None")
+				self.failCritical("Failed to parse the instance for unknown reasons.")
+				return		
+		try:
+			#
+			# Validate the instance.
+			#
+			self.debugMsg("loading schema: %s" % self.group.schemaFileName)
+			schema = parseSchema(self.group.schemaFileName)
+			try:
+				validationCtxt = schema.schemaNewValidCtxt()
+				#validationCtxt = libxml2.schemaNewValidCtxt(None)
+				if (validationCtxt is None):
+					self.failCritical("Could not create the validation context.")
+					return
+				try:
+					self.debugMsg("validating instance")
+					if options.validationSAX:
+						instance_Err = validationCtxt.schemaValidateFile(filePath, 0)
+					else:
+						instance_Err = validationCtxt.schemaValidateDoc(instance)
+					self.debugMsg("after instance validation")
+					self.debugMsg("instance-err: %d" % instance_Err)
+					if (instance_Err != 0 and self.val == 1) or (instance_Err == 0 and self.val == 0):
+						self.debugMsg("instance result is BAD")
+						if (instance_Err != 0):
+							self.fail(msgInstanceNotValidButShould)
+						else:
+							self.fail(msgInstanceValidButShouldNot)
+
+					else:
+								self.debugMsg("instance result is OK")
+				finally:
+					del validationCtxt
+			finally:
+				del schema
+		finally:
+			if instance is not None:
 				instance.freeDoc()
 
 

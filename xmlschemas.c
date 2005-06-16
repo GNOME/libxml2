@@ -21942,8 +21942,7 @@ xmlSchemaVContentModelCallback(xmlSchemaValidCtxtPtr vctxt ATTRIBUTE_UNUSED,
 
 static int
 xmlSchemaValidatorPushElem(xmlSchemaValidCtxtPtr vctxt)
-{
-    vctxt->depth++;
+{    
     vctxt->inode = xmlSchemaGetFreshElemInfo(vctxt);
     if (vctxt->inode == NULL) {
 	VERROR_INT("xmlSchemaValidatorPushElem",
@@ -21995,8 +21994,9 @@ xmlSchemaValidatorPopElem(xmlSchemaValidCtxtPtr vctxt)
     if ((inode->typeDef == NULL) ||
 	(inode->flags & XML_SCHEMA_NODE_INFO_ERR_BAD_TYPE)) {
 	/*
-	* The type definition might be missing if the element was
-	* error prone.
+	* 1. the type definition might be missing if the element was
+	*    error prone
+	* 2. it might be abstract.
 	*/
 	goto end_elem;
     }
@@ -22747,11 +22747,14 @@ xmlSchemaVPushText(xmlSchemaValidCtxtPtr vctxt,
 	* Concat the value.
 	*/	
 	if (vctxt->inode->flags & XML_SCHEMA_NODE_INFO_FLAG_OWNED_VALUES) {
-	    vctxt->inode->value =
-		BAD_CAST xmlStrncatNew(vctxt->inode->value, value, -1);
+	    xmlChar *tmp;
+
+	    tmp = BAD_CAST xmlStrncatNew(vctxt->inode->value, value, len);
+	    xmlFree((xmlChar *) vctxt->inode->value);
+	    vctxt->inode->value = tmp;
 	} else {
 	    vctxt->inode->value =
-		BAD_CAST xmlStrncatNew(vctxt->inode->value, value, -1);
+		BAD_CAST xmlStrncatNew(vctxt->inode->value, value, len);
 	    vctxt->inode->flags |= XML_SCHEMA_NODE_INFO_FLAG_OWNED_VALUES;
 	}
     }	
@@ -22874,7 +22877,7 @@ type_validation:
 	vctxt->inode->flags |= XML_SCHEMA_NODE_INFO_ERR_BAD_TYPE;
 	ret = XML_SCHEMAV_CVC_TYPE_2;
     	    VERROR(ret, NULL,
-    	    "The type definition is abstract");
+    	    "The type definition is abstract");	
 	goto exit;
     }
     /*
@@ -22953,6 +22956,7 @@ root_found:
 
 	if (nodeType == XML_ELEMENT_NODE) {
 	    
+	    vctxt->depth++;
 	    if (xmlSchemaValidatorPushElem(vctxt) == -1) {
 		VERROR_INT("xmlSchemaVReaderWalk",
 		    "calling xmlSchemaValidatorPushElem()");
@@ -23207,9 +23211,10 @@ xmlSchemaSAXHandleStartElementNs(void *ctx,
     * SAX VAL TODO: What to do with nb_defaulted?
     */
     /*
-    * Skip elements if inside a "skip" wildcard.
+    * Skip elements if inside a "skip" wildcard or invalid.
     */
-    if ((vctxt->skipDepth != -1) && (vctxt->depth > vctxt->skipDepth))
+    vctxt->depth++;
+    if ((vctxt->skipDepth != -1) && (vctxt->depth >= vctxt->skipDepth))
 	return;
     /*
     * Push the element.
@@ -23252,7 +23257,7 @@ xmlSchemaSAXHandleStartElementNs(void *ctx,
 		ielem->nsBindings =
 		    (const xmlChar **) xmlRealloc(
 			(void *) ielem->nsBindings,
-			ielem->nbNsBindings * 2 * sizeof(const xmlChar *));
+			ielem->sizeNsBindings * 2 * sizeof(const xmlChar *));
 		if (ielem->nsBindings == NULL) {
 		    xmlSchemaVErrMemory(vctxt,
 			"re-allocating namespace bindings for SAX validation",
@@ -23328,7 +23333,7 @@ xmlSchemaSAXHandleEndElementNs(void *ctx,
     int res;
 
     /*
-    * Skip elements if inside a "skip" wildcard.
+    * Skip elements if inside a "skip" wildcard or if invalid.
     */
     if (vctxt->skipDepth != -1) {
 	if (vctxt->depth > vctxt->skipDepth) {
@@ -23676,6 +23681,7 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
 	    /*
 	    * Init the node-info.
 	    */
+	    vctxt->depth++;
 	    if (xmlSchemaValidatorPushElem(vctxt) == -1)
 		goto internal_error;
 	    ielem = vctxt->inode;

@@ -1964,11 +1964,8 @@ xmlFreeProp(xmlAttrPtr cur) {
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
 
     /* Check for ID removal -> leading to invalid references ! */
-    if ((cur->parent != NULL) && (cur->parent->doc != NULL) &&
-	((cur->parent->doc->intSubset != NULL) ||
-	 (cur->parent->doc->extSubset != NULL))) {
-        if (xmlIsID(cur->parent->doc, cur->parent, cur))
-	    xmlRemoveID(cur->parent->doc, cur);
+    if ((cur->doc != NULL) && (cur->atype == XML_ATTRIBUTE_ID)) {
+	    xmlRemoveID(cur->doc, cur);
     }
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
     DICT_FREE(cur->name)
@@ -3408,6 +3405,11 @@ xmlUnlinkNode(xmlNodePtr cur) {
 	xmlNodePtr parent;
 	parent = cur->parent;
 	if (cur->type == XML_ATTRIBUTE_NODE) {
+		/* If attribute is an ID from subset then remove it */
+		if ((((xmlAttrPtr) cur)->atype == XML_ATTRIBUTE_ID) &&
+			xmlIsID(parent->doc, parent, (xmlAttrPtr) cur)) {
+			xmlRemoveID(cur->doc, (xmlAttrPtr) cur);
+		}
 	    if (parent->properties == (xmlAttrPtr) cur)
 		parent->properties = ((xmlAttrPtr) cur)->next;
 	} else {
@@ -3481,6 +3483,12 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	if (cur->type == XML_ATTRIBUTE_NODE) {
 	    if (cur->parent->properties == (xmlAttrPtr)old)
 		cur->parent->properties = ((xmlAttrPtr) cur);
+
+		/* If old attribute is ID and defined in DTD then remove ID */
+		if ((((xmlAttrPtr) old)->atype == XML_ATTRIBUTE_ID) &&
+			xmlIsID(old->doc, old->parent, (xmlAttrPtr) old)) {
+			xmlRemoveID(old->doc, (xmlAttrPtr) old);
+		}
 	} else {
 	    if (cur->parent->children == old)
 		cur->parent->children = cur;

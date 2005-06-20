@@ -1612,9 +1612,34 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
  *         string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
-    TODO
-    return(NULL);
+xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
+{
+    xmlChar *resbuf;
+    xmlNodePtr node, cur_node;
+    xmlBufferPtr buff, buff2;
+    xmlDocPtr doc;
+
+    if (xmlTextReaderExpand(reader) == NULL) {
+        return NULL;
+    }
+    doc = reader->doc;
+    buff = xmlBufferCreate();
+    for (cur_node = reader->node->children; cur_node != NULL;
+         cur_node = cur_node->next) {
+        node = xmlDocCopyNode(cur_node, doc, 1);
+        buff2 = xmlBufferCreate();
+        if (xmlNodeDump(buff2, doc, node, 0, 0) == -1) {
+            xmlFreeNode(node);
+            xmlBufferFree(buff2);
+            xmlBufferFree(buff);
+            return NULL;
+        }
+        xmlBufferCat(buff, buff2->content);
+        xmlFreeNode(node);
+        xmlBufferFree(buff2);
+    }
+    resbuf = buff->content;
+    return resbuf;
 }
 
 /**
@@ -1628,9 +1653,32 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
  *         string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
-    TODO
-    return(NULL);
+xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
+{
+    xmlChar *resbuf;
+    xmlNodePtr node;
+    xmlBufferPtr buff;
+    xmlDocPtr doc;
+
+    node = reader->node;
+    doc = reader->doc;
+    if (xmlTextReaderExpand(reader) == NULL) {
+        return NULL;
+    }
+    node = xmlDocCopyNode(node, doc, 1);
+    buff = xmlBufferCreate();
+    if (xmlNodeDump(buff, doc, node, 0, 0) == -1) {
+        xmlFreeNode(node);
+        xmlBufferFree(buff);
+        return NULL;
+    }
+
+    resbuf = buff->content;
+    buff->content = NULL;
+
+    xmlFreeNode(node);
+    xmlBufferFree(buff);
+    return resbuf;
 }
 
 /**

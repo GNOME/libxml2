@@ -2772,6 +2772,7 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
     }
     xmlHashRemoveEntry(table, ID, (xmlHashDeallocator) xmlFreeID);
     xmlFree(ID);
+	attr->atype = 0;
     return(0);
 }
 

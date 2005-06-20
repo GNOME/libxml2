@@ -1,3 +1,10 @@
+Mon Jun 20 18:11:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c valid.c: applied patch from Rob Richards for removal
+	  of ID (and xml:id)
+	* xmlreader.c: applied patch from James Wert implementing 
+	  xmlTextReaderReadInnerXml and xmlTextReaderReadOuterXml
+
 Thu Jun 16 14:38:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed SAX2 validation: grow of internal

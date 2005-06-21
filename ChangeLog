@@ -1,3 +1,8 @@
+Tue Jun 21 10:44:34 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/empty-value* result/schemas/empty-value*:
+	  Added regression tests (from Dhyanesh).
+
 Tue Jun 21 10:35:43 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed NULL values to be validated as empty

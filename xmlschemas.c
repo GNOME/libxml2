@@ -20482,6 +20482,8 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
     */
     if ((! valNeeded) && (type->flags & XML_SCHEMAS_TYPE_FACETSNEEDVALUE))
 	valNeeded = 1;
+    if (value == NULL)
+	value = BAD_CAST "";
     if (IS_ANY_SIMPLE_TYPE(type) || VARIETY_ATOMIC(type)) {
 	xmlSchemaTypePtr biType; /* The built-in type. */
 	/*
@@ -20610,9 +20612,7 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
 	* VAL TODO: Optimize validation of empty values.
 	* VAL TODO: We do not have computed values for lists.
 	*/
-	itemType = GET_LIST_ITEM_TYPE(type);
-	if (value == NULL)
-	    value = BAD_CAST "";
+	itemType = GET_LIST_ITEM_TYPE(type);	
 	cur = value;
 	do {
 	    while (IS_BLANK_CH(*cur))
@@ -22747,11 +22747,8 @@ xmlSchemaVPushText(xmlSchemaValidCtxtPtr vctxt,
 	* Concat the value.
 	*/	
 	if (vctxt->inode->flags & XML_SCHEMA_NODE_INFO_FLAG_OWNED_VALUES) {
-	    xmlChar *tmp;
-
-	    tmp = BAD_CAST xmlStrncatNew(vctxt->inode->value, value, len);
-	    xmlFree((xmlChar *) vctxt->inode->value);
-	    vctxt->inode->value = tmp;
+	    vctxt->inode->value = BAD_CAST xmlStrncat(
+		(xmlChar *) vctxt->inode->value, value, len);
 	} else {
 	    vctxt->inode->value =
 		BAD_CAST xmlStrncatNew(vctxt->inode->value, value, len);

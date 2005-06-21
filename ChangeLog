@@ -1,3 +1,9 @@
+Tue Jun 21 10:35:43 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed NULL values to be validated as empty
+	  string values (reported by Dhyanesh to the mailing list).
+	  Adjusted text concatenation of mixed content.
+
 Mon Jun 20 18:11:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c valid.c: applied patch from Rob Richards for removal

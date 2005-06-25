@@ -1,3 +1,9 @@
+Sat Jun 25 01:37:22 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* configure.in: fixed a problem with the detection of
+	  ss_family for ipV6, as reported on the mailing list by
+	  Doug Orleans.
+
 Tue Jun 21 10:44:34 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/empty-value* result/schemas/empty-value*:

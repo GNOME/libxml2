@@ -466,22 +466,41 @@ if test $enable_ipv6 = yes; then
     dnl *********************************************************************
     dnl on some platforms (like AIX 5L), the structure sockaddr doesn't have
     dnl a ss_family member, but rather __ss_family. Let's detect that
-    dnl and define the HAVE_BROKEN_SS_FAMILY when we are on one of these platforms.
+    dnl and define the HAVE_BROKEN_SS_FAMILY when we are on one of these
+    dnl platforms.  However, we should only do this if ss_family is not
+    dnl present.
     dnl ********************************************************************
-    AC_MSG_CHECKING([broken struct sockaddr::ss_family])
+    AC_MSG_CHECKING([struct sockaddr::ss_family])
     AC_TRY_COMPILE([
       #include <sys/socket.h>
       #include <sys/types.h>], [
       struct sockaddr_storage ss ;
-      ss.__ss_family = 0 ;
+      ss.ss_family = 0 ;
       ],
-      have_broken_ss_family=yes,
-      have_broken_ss_family=no
+      have_ss_family=yes,
+      have_ss_family=no
     )
-    AC_MSG_RESULT($have_broken_ss_family)
-    if test x$have_broken_ss_family = xyes ; then
-      AC_DEFINE(HAVE_BROKEN_SS_FAMILY, [], [Whether struct sockaddr::__ss_family exists]) 
-      AC_DEFINE(ss_family, __ss_family, [ss_family is not defined here, use __ss_family instead])
+    AC_MSG_RESULT($have_ss_family)
+    if test x$have_ss_family = xno ; then
+      AC_MSG_CHECKING([broken struct sockaddr::ss_family])
+      AC_TRY_COMPILE([
+        #include <sys/socket.h>
+        #include <sys/types.h>], [
+        struct sockaddr_storage ss ;
+        ss.__ss_family = 0 ;
+        ],
+        have_broken_ss_family=yes,
+        have_broken_ss_family=no
+      )
+      AC_MSG_RESULT($have_broken_ss_family)
+      if test x$have_broken_ss_family = xyes ; then
+        AC_DEFINE(HAVE_BROKEN_SS_FAMILY, [],
+	  [Whether struct sockaddr::__ss_family exists]) 
+        AC_DEFINE(ss_family, __ss_family,
+	  [ss_family is not defined here, use __ss_family instead])
+      else
+        AC_MSG_WARN(ss_family and __ss_family not found)
+      fi
     fi
 
     have_getaddrinfo=no

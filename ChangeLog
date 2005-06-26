@@ -1,3 +1,10 @@
+Sun Jun 26 20:08:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/valid.h valid.c: avoid name glob in agruments as
+	  it matches the glob() routine.
+	* runtest.c Makefile.am: first steps toward a C regression test
+	  framework.
+
 Sat Jun 25 01:37:22 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* configure.in: fixed a problem with the detection of

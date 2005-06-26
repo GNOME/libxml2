@@ -1212,14 +1212,14 @@ xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) 
  * xmlSprintfElementContent:
  * @buf:  an output buffer
  * @content:  An element table
- * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
+ * @englob: 1 if one must print the englobing parenthesis, 0 otherwise
  *
  * Deprecated, unsafe, use xmlSnprintfElementContent
  */
 void
 xmlSprintfElementContent(char *buf ATTRIBUTE_UNUSED,
 	                 xmlElementContentPtr content ATTRIBUTE_UNUSED,
-			 int glob ATTRIBUTE_UNUSED) {
+			 int englob ATTRIBUTE_UNUSED) {
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -1228,13 +1228,13 @@ xmlSprintfElementContent(char *buf ATTRIBUTE_UNUSED,
  * @buf:  an output buffer
  * @size:  the buffer size
  * @content:  An element table
- * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
+ * @englob: 1 if one must print the englobing parenthesis, 0 otherwise
  *
  * This will dump the content of the element content definition
  * Intended just for the debug routine
  */
 void
-xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int glob) {
+xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int englob) {
     int len;
 
     if (content == NULL) return;
@@ -1244,7 +1244,7 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 	    strcat(buf, " ...");
 	return;
     }
-    if (glob) strcat(buf, "(");
+    if (englob) strcat(buf, "(");
     switch (content->type) {
         case XML_ELEMENT_CONTENT_PCDATA:
             strcat(buf, "#PCDATA");
@@ -1306,7 +1306,7 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 		xmlSnprintfElementContent(buf, size, content->c2, 0);
 	    break;
     }
-    if (glob)
+    if (englob)
         strcat(buf, ")");
     switch (content->ocur) {
         case XML_ELEMENT_CONTENT_ONCE:

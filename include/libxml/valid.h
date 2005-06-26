@@ -195,13 +195,13 @@ XMLPUBFUN void XMLCALL
 		xmlSnprintfElementContent(char *buf,
 					 int size,
 	                                 xmlElementContentPtr content,
-					 int glob);
+					 int englob);
 #ifdef LIBXML_OUTPUT_ENABLED
 /* DEPRECATED */
 XMLPUBFUN void XMLCALL		     
 		xmlSprintfElementContent(char *buf,
 	                                 xmlElementContentPtr content,
-					 int glob);
+					 int englob);
 #endif /* LIBXML_OUTPUT_ENABLED */
 /* DEPRECATED */
 

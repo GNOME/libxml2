@@ -1,3 +1,7 @@
+Mon Jun 27 23:29:36 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: finishing XPath, adding XPointer
+
 Mon Jun 27 17:39:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: adding more coverage, XInclude and starting XPath

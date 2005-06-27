@@ -1874,6 +1874,7 @@ testXPath(const char *str, int xptr, int expr) {
     xmlXPathFreeObject(res);
     xmlXPathFreeContext(ctxt);
 }
+
 /**
  * xpathExprTest:
  * @filename: the file to parse
@@ -1885,9 +1886,8 @@ testXPath(const char *str, int xptr, int expr) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-xpathExprTest(const char *filename, const char *result,
-              const char *err ATTRIBUTE_UNUSED,
-              int options ATTRIBUTE_UNUSED) {
+xpathCommonTest(const char *filename, const char *result,
+                int xptr, int expr) {
     FILE *input;
     char expression[5000];
     int len, ret = 0;
@@ -1923,7 +1923,7 @@ xpathExprTest(const char *filename, const char *result,
 	    fprintf(xpathOutput,
 	            "\n========================\nExpression: %s\n",
 		    expression) ;
-	    testXPath(expression, 0, 1);
+	    testXPath(expression, xptr, expr);
 	}
     }
 
@@ -1940,6 +1940,119 @@ xpathExprTest(const char *filename, const char *result,
     free(temp);
     return(ret);
 }
+
+/**
+ * xpathExprTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing XPath standalone expressions and evaluate them
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+xpathExprTest(const char *filename, const char *result,
+              const char *err ATTRIBUTE_UNUSED,
+              int options ATTRIBUTE_UNUSED) {
+    return(xpathCommonTest(filename, result, 0, 1));
+}
+
+/**
+ * xpathDocTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing XPath expressions and evaluate them against
+ * a set of corresponding documents.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+xpathDocTest(const char *filename,
+             const char *resul ATTRIBUTE_UNUSED,
+             const char *err ATTRIBUTE_UNUSED,
+             int options) {
+
+    char pattern[500];
+    char result[500];
+    glob_t globbuf;
+    size_t i;
+    int ret = 0, res;
+
+    xpathDocument = xmlReadFile(filename, NULL,
+                                options | XML_PARSE_DTDATTR | XML_PARSE_NOENT);
+    if (xpathDocument == NULL) {
+        fprintf(stderr, "Failed to load %s\n", filename);
+	return(-1);
+    }
+
+    snprintf(pattern, 499, "./test/XPath/tests/%s*", baseFilename(filename));
+    pattern[499] = 0;
+    globbuf.gl_offs = 0;
+    glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
+    for (i = 0;i < globbuf.gl_pathc;i++) {
+        snprintf(result, 499, "result/XPath/tests/%s",
+	         baseFilename(globbuf.gl_pathv[i]));
+	res = xpathCommonTest(globbuf.gl_pathv[i], &result[0], 0, 0);
+	if (res != 0)
+	    ret = res;
+    }
+    globfree(&globbuf);
+
+    xmlFreeDoc(xpathDocument);
+    return(ret);
+}
+
+#ifdef LIBXML_XPTR_ENABLED
+/**
+ * xptrDocTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing XPath expressions and evaluate them against
+ * a set of corresponding documents.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+xptrDocTest(const char *filename,
+            const char *resul ATTRIBUTE_UNUSED,
+            const char *err ATTRIBUTE_UNUSED,
+            int options) {
+
+    char pattern[500];
+    char result[500];
+    glob_t globbuf;
+    size_t i;
+    int ret = 0, res;
+
+    xpathDocument = xmlReadFile(filename, NULL,
+                                options | XML_PARSE_DTDATTR | XML_PARSE_NOENT);
+    if (xpathDocument == NULL) {
+        fprintf(stderr, "Failed to load %s\n", filename);
+	return(-1);
+    }
+
+    snprintf(pattern, 499, "./test/XPath/xptr/%s*", baseFilename(filename));
+    pattern[499] = 0;
+    globbuf.gl_offs = 0;
+    glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
+    for (i = 0;i < globbuf.gl_pathc;i++) {
+        snprintf(result, 499, "result/XPath/xptr/%s",
+	         baseFilename(globbuf.gl_pathv[i]));
+	res = xpathCommonTest(globbuf.gl_pathv[i], &result[0], 1, 0);
+	if (res != 0)
+	    ret = res;
+    }
+    globfree(&globbuf);
+
+    xmlFreeDoc(xpathDocument);
+    return(ret);
+}
+#endif /* LIBXML_XPTR_ENABLED */
 #endif /* XPATH */
 /************************************************************************
  *									*
@@ -2038,6 +2151,14 @@ testDesc testDescriptions[] = {
     { "XPath expressions regression tests" ,
       xpathExprTest, "./test/XPath/expr/*", "result/XPath/expr/", "", NULL,
       0 },
+    { "XPath document queries regression tests" ,
+      xpathDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
+      0 },
+#ifdef LIBXML_XPTR_ENABLED
+    { "XPointer document queries regression tests" ,
+      xptrDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
+      0 },
+#endif
 #endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
@@ -2118,6 +2239,7 @@ launchTests(testDescPtr tst) {
 	    if (error)
 		free(error);
 	}
+	globfree(&globbuf);
     } else {
         testErrorsSize = 0;
 	testErrors[0] = 0;

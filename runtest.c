@@ -2053,6 +2053,73 @@ xptrDocTest(const char *filename,
     return(ret);
 }
 #endif /* LIBXML_XPTR_ENABLED */
+
+/**
+ * xmlidDocTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing xml:id and check for errors and verify
+ * that XPath queries will work on them as expected.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+xmlidDocTest(const char *filename,
+             const char *result,
+             const char *err,
+             int options) {
+
+    int res = 0;
+    int ret = 0;
+    char *temp;
+
+    xpathDocument = xmlReadFile(filename, NULL,
+                                options | XML_PARSE_DTDATTR | XML_PARSE_NOENT);
+    if (xpathDocument == NULL) {
+        fprintf(stderr, "Failed to load %s\n", filename);
+	return(-1);
+    }
+
+    temp = resultFilename(filename, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    xpathOutput = fopen(temp, "w");
+    if (xpathOutput == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+        xmlFreeDoc(xpathDocument);
+        free(temp);
+	return(-1);
+    }
+
+    testXPath("id('bar')", 0, 0);
+
+    fclose(xpathOutput);
+    if (result != NULL) {
+	ret = compareFiles(temp, result);
+	if (ret) {
+	    fprintf(stderr, "Result for %s failed\n", filename);
+	    res = 1;
+	}
+    }
+
+    unlink(temp);
+    free(temp);
+    xmlFreeDoc(xpathDocument);
+
+    if (err != NULL) {
+	ret = compareFileMem(err, testErrors, testErrorsSize);
+	if (ret != 0) {
+	    fprintf(stderr, "Error for %s failed\n", filename);
+	    res = 1;
+	}
+    }
+    return(res);
+}
+
 #endif /* XPATH */
 /************************************************************************
  *									*
@@ -2159,6 +2226,9 @@ testDesc testDescriptions[] = {
       xptrDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
       0 },
 #endif
+    { "xml:id regression tests" ,
+      xmlidDocTest, "./test/xmlid/*", "result/xmlid/", "", ".err",
+      0 },
 #endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };

@@ -1,3 +1,7 @@
+Mon Jun 27 23:55:56 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: adding xml:id
+
 Mon Jun 27 23:29:36 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: finishing XPath, adding XPointer

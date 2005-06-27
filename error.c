@@ -512,8 +512,10 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     } else if ((node != NULL) && (file == NULL)) {
 	int i;
 
-	if ((node->doc != NULL) && (node->doc->URL != NULL))
+	if ((node->doc != NULL) && (node->doc->URL != NULL)) {
 	    baseptr = node;
+	    file = node->doc->URL;
+	}
 	for (i = 0;
 	     ((i < 10) && (node != NULL) && (node->type != XML_ELEMENT_NODE));
 	     i++)

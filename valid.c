@@ -1868,6 +1868,7 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
  * xmlScanIDAttributeDecl:
  * @ctxt:  the validation context
  * @elem:  the element name
+ * @err: whether to raise errors here
  *
  * Verify that the element don't have too many ID attributes
  * declared.
@@ -1875,7 +1876,7 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
  * Returns the number of ID attributes found.
  */
 static int
-xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
+xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem, int err) {
     xmlAttributePtr cur;
     int ret = 0;
 
@@ -1884,7 +1885,7 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     while (cur != NULL) {
         if (cur->atype == XML_ATTRIBUTE_ID) {
 	    ret ++;
-	    if (ret > 1)
+	    if ((ret > 1) && (err))
 		xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_MULTIPLE_ID,
 	       "Element %s has too many ID attributes defined : %s\n",
 		       elem->name, cur->name, NULL);
@@ -2106,7 +2107,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
 
 #ifdef LIBXML_VALID_ENABLED
         if ((type == XML_ATTRIBUTE_ID) &&
-	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0)) {
+	    (xmlScanIDAttributeDecl(NULL, elemDef, 1) != 0)) {
 	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
 	   "Element %s has too may ID attributes defined : %s\n",
 		   elem, name, NULL);
@@ -4042,7 +4043,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
         xmlElementPtr elem = xmlGetDtdElementDesc(doc->intSubset,
 	                                          attr->elem);
 	if (elem != NULL) {
-	    nbId = xmlScanIDAttributeDecl(NULL, elem);
+	    nbId = xmlScanIDAttributeDecl(NULL, elem, 0);
 	} else {
 	    xmlAttributeTablePtr table;
 
@@ -4064,7 +4065,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    int extId = 0;
 	    elem = xmlGetDtdElementDesc(doc->extSubset, attr->elem);
 	    if (elem != NULL) {
-		extId = xmlScanIDAttributeDecl(NULL, elem);
+		extId = xmlScanIDAttributeDecl(NULL, elem, 0);
 	    }
 	    if (extId > 1) {
 		xmlErrValidNodeNr(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,

@@ -1,3 +1,10 @@
+Mon Jun 27 14:41:14 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* error.c valid.c: working some weird error reporting problem for
+	  DTD validation.
+	* runtest.c: augmented with DTD validation tests
+	* result/VC/OneID*: slight change in validation output.
+
 Mon Jun 27 13:44:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: added most HTML tests

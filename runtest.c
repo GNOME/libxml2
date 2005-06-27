@@ -1537,7 +1537,7 @@ errParseTest(const char *filename, const char *result, const char *err,
              int options) {
     xmlDocPtr doc;
     const char *base;
-    int size, res;
+    int size, res = 0;
 
 #ifdef LIBXML_HTML_ENABLED
     if (options & XML_PARSE_HTML) {
@@ -1548,19 +1548,21 @@ errParseTest(const char *filename, const char *result, const char *err,
 	xmlGetWarningsDefaultValue = 1;
 	doc = xmlReadFile(filename, NULL, options);
     }
-    if (doc == NULL) {
-        base = "";
-	size = 0;
-    } else {
-#ifdef LIBXML_HTML_ENABLED
-	if (options & XML_PARSE_HTML) {
-	    htmlDocDumpMemory(doc, (xmlChar **) &base, &size);
-	} else
-#endif
-	xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
-    }
     xmlGetWarningsDefaultValue = 0;
-    res = compareFileMem(result, base, size);
+    if (result) {
+	if (doc == NULL) {
+	    base = "";
+	    size = 0;
+	} else {
+#ifdef LIBXML_HTML_ENABLED
+	    if (options & XML_PARSE_HTML) {
+		htmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+	    } else
+#endif
+	    xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+	}
+	res = compareFileMem(result, base, size);
+    }
     if (doc != NULL) {
 	if (base != NULL)
 	    xmlFree((char *)base);
@@ -1576,6 +1578,9 @@ errParseTest(const char *filename, const char *result, const char *err,
 	    fprintf(stderr, "Error for %s failed\n", filename);
 	    return(-1);
 	}
+    } else if (options & XML_PARSE_DTDVALID) {
+        if (testErrorsSize != 0)
+	    fprintf(stderr, "Validation for %s failed\n", filename);
     }
 
     return(0);
@@ -1871,6 +1876,17 @@ testDesc testDescriptions[] = {
     { "HTML SAX regression tests" ,
       saxParseTest, "./test/HTML/*", "result/HTML/", ".sax", NULL,
       XML_PARSE_HTML },
+#endif
+#ifdef LIBXML_VALID_ENABLED
+    { "Valid documents regression tests" ,
+      errParseTest, "./test/VCM/*", NULL, NULL, NULL,
+      XML_PARSE_DTDVALID },
+    { "Validity checking regression tests" ,
+      errParseTest, "./test/VC/*", "result/VC/", NULL, "",
+      XML_PARSE_DTDVALID },
+    { "General documents valid regression tests" ,
+      errParseTest, "./test/valid/*", "result/valid/", "", ".err",
+      XML_PARSE_DTDVALID },
 #endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };

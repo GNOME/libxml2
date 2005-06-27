@@ -7127,5 +7127,1530 @@ xmlSetCompressMode(int mode) {
     else xmlCompressMode = mode;
 }
 
+#define XML_TREE_NSMAP_PARENT -1
+#define XML_TREE_NSMAP_XML -2
+#define XML_TREE_NSMAP_DOC -3
+#define XML_TREE_NSMAP_CUSTOM -4
+
+typedef struct xmlNsMapItem *xmlNsMapItemPtr;
+struct xmlNsMapItem {
+    xmlNsMapItemPtr next;
+    xmlNsMapItemPtr prev;
+    xmlNsPtr oldNs; /* old ns decl reference */
+    xmlNsPtr newNs; /* new ns decl reference */
+    int shadowDepth; /* Shadowed at this depth */
+    /*
+    * depth:
+    * >= 0 == @node's ns-decls
+    * -1   == @parent's ns-decls
+    * -2   == @parent's out-of-scope ns-decls
+    * -3   == the doc->oldNs XML ns-decl
+    * -4   == the doc->oldNs storage ns-decls
+    */
+    int depth;
+};
+
+/*
+* xmlTreeAddNsMapItem:
+* @map: the ns-map
+* @cur: the current map entry to append a new entry to
+* @oldNs: the old ns-struct
+* @newNs: the new ns-struct
+* @depth: depth and ns-kind information
+* 
+* Frees the ns-map
+*/
+static xmlNsMapItemPtr
+xmlDOMWrapNSNormAddNsMapItem(xmlNsMapItemPtr *map,
+			     xmlNsMapItemPtr *cur,
+			     xmlNsPtr oldNs,
+			     xmlNsPtr newNs,
+			     int depth)
+{
+    xmlNsMapItemPtr ret;
+     
+    if ((cur != NULL) && (*cur != NULL) && ((*cur)->next != NULL)) {
+	/*
+	* Reuse.
+	*/
+	ret = (*cur)->next;
+	*cur = ret;
+    } else {
+	ret = (xmlNsMapItemPtr) xmlMalloc(sizeof(struct xmlNsMapItem));
+	if (ret == NULL) {
+	    xmlTreeErrMemory("allocating namespace map item");
+	    return (NULL);
+	}
+	memset(ret, 0, sizeof(struct xmlNsMapItem));
+	if (*map == NULL) {
+	    /*
+	    * First ever.
+	    */
+	    *map = ret;
+	    ret->prev = ret;
+	    if (cur != NULL)
+		*cur = ret;
+	} else {
+	    if (cur) {
+		/*
+		* Append.
+		*/
+		(*cur)->next = ret;
+		ret->prev = *cur;
+		*cur = ret;
+	    } else {
+		/*
+		* Set on first position.
+		*/
+		ret->next = (*map);
+		ret->prev = (*map)->prev;
+		(*map)->prev = ret;
+		*map = ret;
+	    }
+	}
+    }
+    ret->oldNs = oldNs;
+    ret->newNs = newNs;
+    ret->shadowDepth = -1;
+    ret->depth = depth;
+    return (ret);
+}
+
+/*
+* xmlTreeFreeNsMap:
+* @map: the ns-map
+* 
+* Frees the ns-map
+*/
+static void
+xmlDOMWrapNSNormFreeNsMap(xmlNsMapItemPtr map)
+{    
+    xmlNsMapItemPtr mi = map, miprev;
+
+    while (mi != NULL) {
+	miprev = mi;
+	mi = mi->next;
+	xmlFree(miprev);
+    }
+}
+
+/*
+* xmlTreeEnsureXMLDecl:
+* @doc: the doc
+* 
+* Ensures that there is an XML namespace declaration on the doc.
+* 
+* Returns the XML ns-struct or NULL on API and internal errors.
+*/
+static xmlNsPtr
+xmlTreeEnsureXMLDecl(xmlDocPtr doc)
+{
+    if (doc == NULL)
+	return (NULL);
+    if (doc->oldNs != NULL)
+	return (doc->oldNs);
+    {
+	xmlNsPtr ns;
+	ns = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	if (ns == NULL) {
+	    xmlTreeErrMemory(
+		"allocating the XML namespace");
+	    return (NULL);
+	}
+	memset(ns, 0, sizeof(xmlNs));
+	ns->type = XML_LOCAL_NAMESPACE;
+	ns->href = xmlStrdup(XML_XML_NAMESPACE); 
+	ns->prefix = xmlStrdup((const xmlChar *)"xml");
+	doc->oldNs = ns;
+	return (ns);
+    }
+}
+
+/*
+* xmlDOMWrapStoreNs:
+* @doc: the doc
+* @nsName: the namespace name
+* @prefix: the prefix
+* 
+* Creates or reuses an xmlNs struct on doc->oldNs with
+* the given prefix and namespace name.
+* 
+* Returns the aquired ns struct or NULL in case of an API
+*         or internal error.
+*/
+static xmlNsPtr
+xmlDOMWrapStoreNs(xmlDocPtr doc,
+		   const xmlChar *nsName,
+		   const xmlChar *prefix)
+{
+    xmlNsPtr ns;
+
+    if (doc == NULL)
+	return (NULL);
+    ns = xmlTreeEnsureXMLDecl(doc);
+    if (ns == NULL)
+	return (NULL);
+    if (ns->next != NULL) {
+	/* Reuse. */
+	ns = ns->next;
+	while (ns != NULL) {
+	    if (((ns->prefix == prefix) ||
+		xmlStrEqual(ns->prefix, prefix)) &&
+		xmlStrEqual(ns->href, nsName)) {
+		return (ns);
+	    }
+	    if (ns->next == NULL)
+		break;
+	    ns = ns->next;
+	}
+    }
+    /* Create. */
+    ns->next = xmlNewNs(NULL, nsName, prefix);
+    return (ns->next);
+}
+
+/*
+* xmlTreeLookupNsListByPrefix:
+* @nsList: a list of ns-structs
+* @prefix: the searched prefix
+* 
+* Searches for a ns-decl with the given prefix in @nsList.
+* 
+* Returns the ns-decl if found, NULL if not found and on
+*         API errors.
+*/
+static xmlNsPtr
+xmlTreeNSListLookupByPrefix(xmlNsPtr nsList, const xmlChar *prefix)
+{
+    if (nsList == NULL)
+	return (NULL);
+    {
+	xmlNsPtr ns;
+	ns = nsList;
+	do {
+	    if ((prefix == ns->prefix) ||
+		xmlStrEqual(prefix, ns->prefix)) {
+		return (ns);
+	    }
+	    ns = ns->next;
+	} while (ns != NULL);
+    }
+    return (NULL);
+}
+
+/*
+*
+* xmlTreeGetInScopeNamespaces:
+* @map: the namespace map
+* @node: the node to start with
+* 
+* Puts in-scope namespaces into the ns-map.
+* 
+* Returns 0 on success, -1 on API or internal errors.
+*/
+static int
+xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapItemPtr *map,
+				xmlNodePtr node)
+{
+    xmlNodePtr cur;
+    xmlNsPtr ns;
+    xmlNsMapItemPtr mi;
+    int shadowed;
+
+    if ((map == NULL) || (*map != NULL))
+	return (-1);
+    /*
+    * Get in-scope ns-decls of @parent.
+    */
+    cur = node;
+    while ((cur != NULL) && (cur != (xmlNodePtr) cur->doc)) {
+	if (cur->type == XML_ELEMENT_NODE) {
+	    if (cur->nsDef != NULL) {
+		ns = cur->nsDef;
+		do {
+		    shadowed = 0;
+		    if (*map != NULL) {
+			/*
+			* Skip shadowed prefixes.
+			*/
+			for (mi = *map; mi != NULL; mi = mi->next) {
+			    if ((ns->prefix == mi->newNs->prefix) ||
+				xmlStrEqual(ns->prefix, mi->newNs->prefix)) {
+				shadowed = 1;
+				break;
+			    }
+			}
+		    }
+		    /*
+		    * Insert mapping.
+		    */
+		    mi = xmlDOMWrapNSNormAddNsMapItem(map, NULL, NULL,
+			ns, XML_TREE_NSMAP_PARENT);
+		    if (mi == NULL)
+			return (-1);
+		    if (shadowed)
+			mi->shadowDepth = 0;
+		    ns = ns->next;
+		} while (ns != NULL);
+	    }
+	}
+	cur = cur->parent;
+    }
+    return (0);
+}
+
+/*
+* XML_TREE_ADOPT_STR: If we have a dest-dict, put @str in the dict;
+* otherwise copy it, when it was in the source-dict.
+*/
+#define XML_TREE_ADOPT_STR(str) \
+    if (adoptStr && (str != NULL)) { \
+	if (destDoc->dict) { \
+	    str = xmlDictLookup(destDoc->dict, str, -1); \
+	} else if ((sourceDoc) && (sourceDoc->dict) && \
+	    xmlDictOwns(sourceDoc->dict, str)) { \
+	    str = BAD_CAST xmlStrdup(str); \
+	} \
+    }
+
+/*
+* XML_TREE_ADOPT_STR_2: If @str was in the source-dict, then
+* put it in dest-dict or copy it.
+*/
+#define XML_TREE_ADOPT_STR_2(str) \
+    if (adoptStr && (str != NULL) && (sourceDoc != NULL) && \
+	(sourceDoc->dict != NULL) && \
+	xmlDictOwns(sourceDoc->dict, cur->content)) { \
+	if (destDoc->dict) \
+	    cur->content = (xmlChar *) \
+		xmlDictLookup(destDoc->dict, cur->content, -1); \
+	else \
+	    cur->content = xmlStrdup(BAD_CAST cur->content); \
+    }
+
+/*
+* xmlDOMWrapNSNormAddNsMapItem2:
+*
+* For internal use. Adds a ns-decl mapping.
+*
+* Returns 0 on success, -1 on internal errors. 
+*/
+static int
+xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
+			xmlNsPtr oldNs, xmlNsPtr newNs)
+{
+    if (*list == NULL) {
+	*list = (xmlNsPtr *) xmlMalloc(6 * sizeof(xmlNsPtr));
+	if (*list == NULL) {
+	    xmlTreeErrMemory("alloc ns map item");
+	    return(-1);
+	}
+	*size = 3;
+	*number = 0;
+    } else if ((*number) >= (*size)) {
+	*size *= 2;
+	*list = (xmlNsPtr *) xmlRealloc(*list,
+	    (*size) * 2 * sizeof(xmlNsPtr));
+	if (*list == NULL) {
+	    xmlTreeErrMemory("realloc ns map item");
+	    return(-1);
+	}
+    }
+    (*list)[2 * (*number)] = oldNs;
+    (*list)[2 * (*number) +1] = newNs;
+    (*number)++;
+    return (0);
+}
+
+/*
+* xmlDOMWrapRemoveNode:
+*
+* @doc: the doc
+* @node: the node to be removed.
+*
+* Unlinks the given node from its owner.
+* This will substitute ns-references to node->nsDef for
+* ns-references to doc->oldNs, thus ensuring the removed
+* branch to be autark wrt ns-references.
+*
+* Returns 0 on success, 1 if the node is not supported,
+*         -1 on API and internal errors. 
+*/
+int
+xmlDOMWrapRemoveNode(xmlDOMWrapCtxtPtr ctxt, xmlDocPtr doc,
+		     xmlNodePtr node, int options ATTRIBUTE_UNUSED)
+{
+    xmlNsPtr *list = NULL;
+    int sizeList, nbList, i, j;
+    xmlNsPtr ns;
+
+    if ((node == NULL) || (doc == NULL) || (node->doc != doc))
+	return (-1);
+
+    /* TODO: 0 or -1 ? */
+    if (node->parent == NULL)
+	return (0);
+
+    switch (node->type) {    	
+	case XML_TEXT_NODE:
+	case XML_CDATA_SECTION_NODE:
+	case XML_ENTITY_REF_NODE:
+	case XML_PI_NODE:
+	case XML_COMMENT_NODE:
+	    xmlUnlinkNode(node);
+	    return (0);
+	case XML_ELEMENT_NODE:	    
+	case XML_ATTRIBUTE_NODE:
+	    break;
+	default:
+	    return (1);
+    }
+    xmlUnlinkNode(node);
+    /*
+    * Save out-of-scope ns-references in doc->oldNs.
+    */
+    do {
+	switch (node->type) {
+	    case XML_ELEMENT_NODE:
+		if ((ctxt == NULL) && (node->nsDef != NULL)) {
+		    ns = node->nsDef;
+		    do {
+			if (xmlDOMWrapNSNormAddNsMapItem2(&list, &sizeList,
+			    &nbList, ns, ns) == -1)
+			    goto internal_error;
+			ns = ns->next;
+		    } while (ns != NULL);
+		}
+		/* No break on purpose. */
+	    case XML_ATTRIBUTE_NODE:
+		if (node->ns != NULL) {		    
+		    /*
+		    * Find a mapping.
+		    */
+		    if (list != NULL) {
+			for (i = 0, j = 0; i < nbList; i++, j += 2) {
+			    if (node->ns == list[j]) {
+				node->ns = list[++j];
+				goto next_node;
+			    }
+			}
+		    }
+		    ns = NULL;
+		    if (ctxt != NULL) {
+			/*
+			* User defined.
+			*/
+		    } else {
+			/*
+			* Add to doc's oldNs.
+			*/
+			ns = xmlDOMWrapStoreNs(doc, node->ns->href,
+			    node->ns->prefix);
+			if (ns == NULL)
+			    goto internal_error;
+		    }
+		    if (ns != NULL) {
+			/*
+			* Add mapping.
+			*/
+			if (xmlDOMWrapNSNormAddNsMapItem2(&list, &sizeList,
+			    &nbList, node->ns, ns) == -1)
+			    goto internal_error;
+		    }
+		    node->ns = ns;
+		}
+		if ((node->type == XML_ELEMENT_NODE) &&
+		    (node->properties != NULL)) {
+		    node = (xmlNodePtr) node->properties;
+		    continue;
+		}
+		break;
+	    default:
+		goto next_sibling;
+	}	
+next_node:	 
+	if ((node->type == XML_ELEMENT_NODE) &&
+	    (node->children != NULL)) {
+	    node = node->children;
+	    continue;
+	}
+next_sibling:	
+	if (node == NULL)
+	    break;
+	if (node->next != NULL)
+	    node = node->next;
+	else {
+	    node = node->parent;
+	    goto next_sibling;
+	}
+    } while (node != NULL);
+
+    if (list != NULL)
+	xmlFree(list);
+    return (0);
+
+internal_error:
+    if (list != NULL)
+	xmlFree(list);
+    return (-1);
+}
+
+/*
+* xmlSearchNsByHrefStrict:
+* @doc: the document
+* @node: the start node
+* @nsName: the searched namespace name
+* @retNs: the resulting ns-decl
+* @prefixed: if the found ns-decl must have a prefix (for attributes)
+*
+* Dynamically searches for a ns-declaration which matches
+* the given @nsName in the ancestor-or-self axis of @node.
+*
+* Returns 1 if a ns-decl was found, 0 if not and -1 on API
+*         and internal errors.
+*/
+static int
+xmlSearchNsByHrefStrict(xmlDocPtr doc, xmlNodePtr node, const xmlChar* nsName,
+			 xmlNsPtr *retNs, int prefixed)
+{
+    xmlNodePtr cur, prev = NULL, out = NULL;
+    xmlNsPtr ns, prevns;
+
+    if ((doc == NULL) || (nsName == NULL) || (retNs == NULL))
+	return (-1);
+
+    *retNs = NULL;
+    if (xmlStrEqual(nsName, XML_XML_NAMESPACE)) {
+	*retNs = xmlTreeEnsureXMLDecl(doc);
+	if (*retNs == NULL)
+	    return (-1);
+	return (1);
+    }
+    cur = node;
+    do {
+	if (cur->type == XML_ELEMENT_NODE) {
+	    if (cur->nsDef != NULL) {
+		for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+		    if (prefixed && (ns->prefix == NULL))
+			continue;
+		    if (prev != NULL) {
+			/*
+			* Check the last level of ns-decls for a
+			* shadowing prefix.
+			*/
+			prevns = prev->nsDef;
+			do {
+			    if ((prevns->prefix == ns->prefix) ||
+				((prevns->prefix != NULL) &&
+				(ns->prefix != NULL) &&
+				xmlStrEqual(prevns->prefix, ns->prefix))) {
+				/*
+				* Shadowed.
+				*/
+				break;
+			    }
+			    prevns = prevns->next;
+			} while (prevns != NULL);
+			if (prevns != NULL)
+			    continue;
+		    }
+		    /*
+		    * Ns-name comparison.
+		    */
+		    if ((nsName == ns->href) ||
+			xmlStrEqual(nsName, ns->href)) {
+			/*
+			* At this point the prefix can only be shadowed,
+			* if we are the the (at least) 3rd level of
+			* ns-decls.
+			*/
+			if (out) {
+			    int ret;
+			    
+			    ret = xmlNsInScope(doc, node, prev, ns->prefix);
+			    if (ret < 0)
+				return (-1);
+			    /*
+			    * TODO: Should we try to find a matching ns-name
+			    * only once? This here keeps on searching.
+			    * I think we should try further since, there might
+			    * be an other matching ns-decl with an unshadowed
+			    * prefix.
+			    */
+			    if (! ret)
+				continue;
+			}
+			*retNs = ns;
+			return (1);
+		    }
+		}
+		out = prev;
+		prev = cur;
+	    }
+	} else if ((node->type == XML_ENTITY_REF_NODE) ||
+            (node->type == XML_ENTITY_NODE) ||
+            (node->type == XML_ENTITY_DECL))
+	    return (0);
+	cur = cur->parent;
+    } while ((cur != NULL) && (cur->doc != (xmlDocPtr) cur));
+    return (0);
+}
+
+/*
+* xmlDOMWrapNSNormDeclareNsForced:
+* @doc: the doc
+* @elem: the element-node to declare on
+* @nsName: the namespace-name of the ns-decl
+* @prefix: the preferred prefix of the ns-decl
+* @checkShadow: ensure that the new ns-decl doesn't shadow ancestor ns-decls
+*
+* Declares a new namespace on @elem. It tries to use the
+* given @prefix; if a ns-decl with the given prefix is already existent
+* on @elem, it will generate an other prefix.
+*
+* Returns 1 if a ns-decl was found, 0 if not and -1 on API
+*         and internal errors.
+*/
+static xmlNsPtr
+xmlDOMWrapNSNormDeclareNsForced(xmlDocPtr doc,
+				xmlNodePtr elem,
+				const xmlChar *nsName,
+				const xmlChar *prefix,
+				int checkShadow)
+{
+
+    xmlNsPtr ret;
+    char buf[50];
+    const xmlChar *pref;
+    int counter = 0;
+    /*
+    * Create a ns-decl on @anchor.
+    */
+    pref = prefix;
+    while (1) {
+	/*
+	* Lookup whether the prefix is unused in elem's ns-decls.
+	*/
+	if ((elem->nsDef != NULL) &&
+	    (xmlTreeNSListLookupByPrefix(elem->nsDef, pref) != NULL))
+	    goto ns_next_prefix;
+	if (checkShadow && elem->parent &&
+	    ((xmlNodePtr) elem->parent->doc != elem->parent)) {
+	    /*
+	    * Does it shadow ancestor ns-decls?
+	    */
+	    if (xmlSearchNs(doc, elem->parent, pref) != NULL)
+		goto ns_next_prefix;
+	}
+	ret = xmlNewNs(NULL, nsName, pref);
+	if (ret == NULL)
+	    return (NULL);
+	if (elem->nsDef == NULL)
+	    elem->nsDef = ret;
+	else {
+	    xmlNsPtr ns2 = elem->nsDef;
+	    while (ns2->next != NULL)
+		ns2 = ns2->next;
+	    ns2->next = ret;
+	}
+	return (ret);
+ns_next_prefix:
+	counter++;
+	if (counter > 1000)
+	    return (NULL);
+	if (prefix == NULL) {
+	    snprintf((char *) buf, sizeof(buf),
+		"default%d", counter);
+	} else
+	    snprintf((char *) buf, sizeof(buf),
+	    "%.30s%d", (char *)prefix, counter);
+	pref = BAD_CAST buf;
+    }
+}
+
+/*
+* xmlDOMWrapNSNormAquireNormalizedNs:
+* @doc: the doc
+* @elem: the element-node to declare namespaces on
+* @ns: the ns-struct to use for the search
+* @retNs: the found/created ns-struct
+* @nsMap: the ns-map
+* @topmi: the last ns-map entry
+* @depth: the current tree depth
+* @ancestorsOnly: search in ancestor ns-decls only
+* @prefixed: if the searched ns-decl must have a prefix (for attributes)
+*
+* Searches for a matching ns-name in the ns-decls of @nsMap, if not
+* found it will either declare it on @elem, or store it in doc->oldNs.
+* If a new ns-decl needs to be declared on @elem, it tries to use the
+* @ns->prefix for it, if this prefix is already in use on @elem, it will
+* change the prefix or the new ns-decl.
+*
+* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
+*/
+static int
+xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
+				   xmlNodePtr elem,
+				   xmlNsPtr ns,
+				   xmlNsPtr *retNs,
+				   xmlNsMapItemPtr *nsMap,
+				   xmlNsMapItemPtr *topmi,
+				   int depth,
+				   int ancestorsOnly,
+				   int prefixed)
+{
+    xmlNsMapItemPtr mi;    
+
+    if ((doc == NULL) || (ns == NULL) || (retNs == NULL) ||
+	(nsMap == NULL) || (topmi == NULL))
+	return (-1);
+
+    *retNs = NULL;
+    /*
+    * Handle XML namespace.
+    */
+    if ((ns->prefix) &&
+	(ns->prefix[0] == 'x') &&
+	(ns->prefix[1] == 'm') &&
+	(ns->prefix[2] == 'l') &&
+	(ns->prefix[3] == 0)) {
+	/*
+	* Insert XML namespace mapping.
+	*/
+	*retNs = xmlTreeEnsureXMLDecl(doc);
+	if (*retNs == NULL)
+	    return (-1);
+	return (0);
+    }
+    /*
+    * If the search should be done in ancestors only and no
+    * @elem (the first ancestor) was specified, then skip the search.
+    */
+    if ((! (ancestorsOnly && (elem == NULL))) &&
+	(*nsMap != NULL)) {
+	
+	/*
+	* Try to find an equal ns-name in in-scope ns-decls.
+	*/
+	for (mi = *nsMap; mi != (*topmi)->next; mi = mi->next) {
+	    
+	    if ((mi->depth >= XML_TREE_NSMAP_PARENT) && 				
+		/* 
+		* This should be turned on to gain speed, if one knows
+		* that the branch itself was already ns-wellformed and no
+		* stale references existed. I.e. it searches in the ancestor
+		* axis only.
+		*/
+		((! ancestorsOnly) || (mi->depth == XML_TREE_NSMAP_PARENT)) &&
+		/* Skip shadowed prefixes. */
+		(mi->shadowDepth == -1) &&		
+		/* Skip xmlns="" or xmlns:foo="". */
+		((mi->newNs->href != NULL) &&
+		(mi->newNs->href[0] != 0)) &&		
+		/* Ensure a prefix if wanted. */
+		((! prefixed) || (mi->newNs->prefix != NULL)) &&
+		/* Equal ns name */
+		((mi->newNs->href == ns->href) ||
+		xmlStrEqual(mi->newNs->href, ns->href))) {
+		/* Set the mapping. */
+		mi->oldNs = ns;
+		*retNs = mi->newNs;
+		return (0);
+	    }
+	}
+    }
+    /*
+    * No luck, the namespace is out of scope or shadowed.
+    */
+    if (elem == NULL) {
+	xmlNsPtr tmpns;
+
+	/*
+	* Store ns-decls in "oldNs" of the document-node.
+	*/
+	tmpns = xmlDOMWrapStoreNs(doc, ns->href, ns->prefix);
+	if (tmpns == NULL)
+	    return (-1);
+	/*
+	* Insert mapping.
+	*/	
+	if (xmlDOMWrapNSNormAddNsMapItem(nsMap, NULL, ns,
+		tmpns, XML_TREE_NSMAP_DOC) == NULL) {
+	    xmlFreeNs(tmpns);
+	    return (-1);
+	}
+	*retNs = tmpns;
+    } else {
+	xmlNsPtr tmpns;
+
+	tmpns = xmlDOMWrapNSNormDeclareNsForced(doc, elem, ns->href,
+	    ns->prefix, 0);
+	if (tmpns == NULL)
+	    return (-1);
+
+	if (*nsMap != NULL) {
+	    /*
+	    * Does it shadow ancestor ns-decls?
+	    */		
+	    for (mi = *nsMap; mi != (*topmi)->next; mi = mi->next) {
+		if ((mi->depth < depth) &&
+		    (mi->shadowDepth == -1) &&
+		    ((ns->prefix == mi->newNs->prefix) ||
+		    xmlStrEqual(ns->prefix, mi->newNs->prefix))) {
+		    /*
+		    * Shadows.
+		    */
+		    mi->shadowDepth = depth;
+		    break;
+		}
+	    }
+	}
+	if (xmlDOMWrapNSNormAddNsMapItem(nsMap, topmi, ns,
+		tmpns, depth) == NULL) {
+	    xmlFreeNs(tmpns);
+	    return (-1);
+	}
+	*retNs = tmpns;
+    }
+    return (0);
+}
+
+/*
+* xmlDOMWrapReconcileNamespaces:
+* @elem: the element-node
+* @options: option flags
+*
+* Ensures that ns-references point to ns-decls hold on element-nodes.
+* Ensures that the tree is namespace wellformed by creating additional
+* ns-decls where needed. Note that, since prefixes of already existent
+* ns-decls can be shadowed by this process, it could break QNames in
+* attribute values or element content.
+*
+* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
+*/
+int
+xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
+			      xmlNodePtr elem,
+			      int options ATTRIBUTE_UNUSED)
+{
+    int depth = -1, adoptns = 0, parnsdone = 0;
+    xmlNsPtr ns;
+    xmlDocPtr doc;
+    xmlNodePtr cur, curElem = NULL;
+    xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
+    /* @ancestorsOnly should be set by an option flag. */
+    int ancestorsOnly = 0;
+
+    if ((elem == NULL) || (elem->doc == NULL) ||
+	(elem->type != XML_ELEMENT_NODE))
+	return (-1);
+
+    doc = elem->doc;
+    cur = elem;
+    do {
+	switch (cur->type) {
+	    case XML_ELEMENT_NODE:
+		adoptns = 1;
+		curElem = cur;
+		depth++;
+		/*
+		* Namespace declarations.
+		*/
+		if (cur->nsDef != NULL) {
+		    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+			if (! parnsdone) {
+			    if ((elem->parent) &&
+				((xmlNodePtr) elem->parent->doc != elem->parent)) {
+				/*
+				* Gather ancestor in-scope ns-decls.
+				*/
+				if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
+				    elem->parent) == -1)
+				    goto internal_error;
+				if (nsMap != NULL)
+				    topmi = nsMap->prev;
+			    }
+			    parnsdone = 1;
+			}
+			/*
+			* Skip ns-references handling if the referenced
+			* ns-decl is declared on the same element.
+			*/
+			if ((cur->ns != NULL) && adoptns && (cur->ns == ns))
+			    adoptns = 0;						
+			/*
+			* Does it shadow any ns-decl?
+			*/
+			if (nsMap) {
+			    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
+				    (mi->shadowDepth == -1) &&
+				    ((ns->prefix == mi->newNs->prefix) ||
+				    xmlStrEqual(ns->prefix, mi->newNs->prefix))) {
+				    
+				    mi->shadowDepth = depth;
+				}
+			    }
+			}
+			/*
+			* Push mapping.
+			*/
+			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi, ns, ns,
+			    depth) == NULL)
+			    goto internal_error;
+		    }
+		}
+		if (! adoptns)
+		    goto ns_end;
+
+		/* No break on purpose. */
+	    case XML_ATTRIBUTE_NODE:
+		if (cur->ns == NULL)
+		    goto ns_end;
+		if (! parnsdone) {
+		    if ((elem->parent) &&
+			((xmlNodePtr) elem->parent->doc != elem->parent)) {
+			if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
+				elem->parent) == -1)
+			    goto internal_error;
+			if (nsMap != NULL)
+			    topmi = nsMap->prev;
+		    }
+		    parnsdone = 1;
+		}
+		/*
+		* Adopt ns-references.
+		*/
+		if (nsMap != NULL) {
+		    /*
+		    * Search for a mapping.
+		    */
+		    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+			if ((mi->shadowDepth == -1) &&
+			    (cur->ns == mi->oldNs)) {
+
+			    cur->ns = mi->newNs;
+			    goto ns_end;
+			}
+		    }
+		}
+		/*
+		* Aquire a normalized ns-decl and add it to the map.
+		*/
+		if (xmlDOMWrapNSNormAquireNormalizedNs(doc, curElem,
+			cur->ns, &ns,
+			&nsMap, &topmi, depth,
+			ancestorsOnly,
+			(cur->type == XML_ATTRIBUTE_NODE) ? 1 : 0) == -1)
+		    goto internal_error;
+		cur->ns = ns;
+
+ns_end:
+		if ((cur->type == XML_ELEMENT_NODE) &&
+		    (cur->properties != NULL)) {
+		    /*
+		    * Process attributes.
+		    */
+		    cur = (xmlNodePtr) cur->properties;
+		    continue;
+		}
+		break;		
+	    default:
+		goto next_sibling;
+	}
+	if ((cur->type == XML_ELEMENT_NODE) &&
+	    (cur->children != NULL)) {
+	    /*
+	    * Process content of element-nodes only.
+	    */
+	    cur = cur->children;
+	    continue;
+	}
+next_sibling:	
+	if (cur == elem)
+	    break;
+	if (cur->type == XML_ELEMENT_NODE) {
+	    if (nsMap != NULL) {
+		/*
+		* Pop mappings.
+		*/
+		while ((topmi->depth >= 0) && (topmi->depth >= depth))
+		    topmi = topmi->prev;
+		/*
+		* Unshadow.
+		*/
+		for (mi = nsMap; mi != topmi->next; mi = mi->next)
+		    if (mi->shadowDepth >= depth)
+			mi->shadowDepth = -1;
+	    }
+	    depth--;
+	}
+	if (cur->next != NULL)
+	    cur = cur->next;
+	else {
+	    cur = cur->parent;
+	    goto next_sibling;
+	}
+    } while (cur != NULL);
+
+    if (nsMap != NULL)
+	xmlDOMWrapNSNormFreeNsMap(nsMap);
+    return (0);
+internal_error:
+    if (nsMap != NULL)
+	xmlDOMWrapNSNormFreeNsMap(nsMap);    
+    return (-1);
+}
+
+/*
+* xmlDOMWrapAdoptBranch:
+* @ctxt: the optional context for custom processing
+* @sourceDoc: the optional sourceDoc
+* @node: the element-node to start with
+* @destDoc: the destination doc for adoption
+* @parent: the optional new parent of @node in @destDoc
+* @options: option flags
+*
+* Ensures that ns-references point to @destDoc: either to
+* elements->nsDef entries if @destParent is given, or to
+* @destDoc->oldNs otherwise.
+* If @destParent is given, it ensures that the tree is namespace
+* wellformed by creating additional ns-decls where needed.
+* Note that, since prefixes of already existent ns-decls can be
+* shadowed by this process, it could break QNames in attribute
+* values or element content.
+*
+* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
+*/
+static int
+xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
+		      xmlDocPtr sourceDoc,
+		      xmlNodePtr node,
+		      xmlDocPtr destDoc,
+		      xmlNodePtr destParent,
+		      int options ATTRIBUTE_UNUSED)
+{
+    int ret = 0;
+    xmlNodePtr cur, curElem = NULL;
+    xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
+    xmlNsPtr ns;
+    int depth = -1, adoptStr = 1;
+    /* gather @parent's ns-decls. */
+    int parnsdone = 0;
+    /* @ancestorsOnly should be set per option. */
+    int ancestorsOnly = 0;
+    
+    /*
+    * Optimize string adoption for equal or none dicts.
+    */
+    if ((sourceDoc != NULL) &&
+	(sourceDoc->dict == destDoc->dict))
+	adoptStr = 0;
+    else
+	adoptStr = 1;
+
+    cur = node;
+    while (cur != NULL) {
+	if (cur->doc != sourceDoc) {
+	    /*
+	    * We'll assume XIncluded nodes if the doc differs.
+	    * TODO: Do we need to reconciliate XIncluded nodes?
+	    * This here skips XIncluded nodes and tries to handle
+	    * broken sequences.
+	    */
+	    if (cur->next == NULL)
+		goto leave_node;
+	    do {
+		cur = cur->next;
+		if ((cur->type == XML_XINCLUDE_END) ||
+		    (cur->doc == node->doc))
+		    break;
+	    } while (cur->next != NULL);
+
+	    if (cur->doc != node->doc)
+		goto leave_node;
+	}
+	cur->doc = destDoc;
+	switch (cur->type) {
+	    case XML_XINCLUDE_START:		
+	    case XML_XINCLUDE_END:
+		/*
+		* TODO
+		*/
+		return (-1);
+	    case XML_ELEMENT_NODE:   	
+		curElem = cur;
+		depth++;
+		/*
+		* Namespace declarations.
+		*/
+		if ((ctxt == NULL) && (cur->nsDef != NULL)) {
+		    if (! parnsdone) {
+			if (destParent && (ctxt == NULL)) {
+			    /*
+			    * Gather @parent's in-scope ns-decls.
+			    */
+			    if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
+				destParent) == -1)
+				goto internal_error;
+			    if (nsMap != NULL)
+				topmi = nsMap->prev;
+			}
+			parnsdone = 1;
+		    }
+		    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+			/*
+			* ns->prefix and ns->href seem not to be in the dict.
+			* XML_TREE_ADOPT_STR(ns->prefix)
+			* XML_TREE_ADOPT_STR(ns->href)
+			*/			
+			/*
+			* Does it shadow any ns-decl?
+			*/			
+			if (nsMap) {
+			    for (mi = nsMap; mi != topmi->next;
+			    mi = mi->next) {
+				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
+				    (mi->shadowDepth == -1) &&
+				    ((ns->prefix == mi->newNs->prefix) ||
+				    xmlStrEqual(ns->prefix,
+				    mi->newNs->prefix))) {
+				    
+				    mi->shadowDepth = depth;
+				}
+			    }
+			}
+			/*
+			* Push mapping.
+			*/
+			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+			    ns, ns, depth) == NULL)
+			    goto internal_error;
+		    }
+		}
+		/* No break on purpose. */	    
+	    case XML_ATTRIBUTE_NODE:
+		
+		if (cur->ns == NULL)
+		    goto ns_end;
+		if (! parnsdone) {
+		    if (destParent && (ctxt == NULL)) {
+			if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
+			    destParent) == -1)
+			    goto internal_error;
+			if (nsMap != NULL)
+			    topmi = nsMap->prev;
+		    }
+		    parnsdone = 1;
+		}
+		/*
+		* Adopt ns-references.
+		*/
+		if (nsMap != NULL) {
+		    /*
+		    * Search for a mapping.
+		    */
+		    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+			if ((mi->shadowDepth == -1) &&
+			    (cur->ns == mi->oldNs)) {
+
+			    cur->ns = mi->newNs;
+			    goto ns_end;
+			}
+		    }
+		}
+		/*
+		* Start searching for an in-scope ns-decl.
+		*/		
+		if (ctxt != NULL) {
+		    /*
+		    * User-defined behaviour.
+		    */
+#if 0
+		    ctxt->aquireNsDecl(ctxt, cur->ns, &ns);
+#endif		    
+		    /*
+		    * Insert mapping if ns is available; it's the users fault
+		    * if not.
+		    */
+		    if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+			    ns, ns, XML_TREE_NSMAP_CUSTOM) == NULL)
+			goto internal_error;
+		    cur->ns = ns;
+		} else {
+		    /*
+		    * Aquire a normalized ns-decl and add it to the map.
+		    */
+		    if (xmlDOMWrapNSNormAquireNormalizedNs(destDoc,
+			/* ns-decls on curElem or on destDoc->oldNs */			
+			destParent ? curElem : NULL,
+			cur->ns, &ns,
+			&nsMap, &topmi, depth,
+			ancestorsOnly,
+			/* ns-decls must be prefixed for attributes. */
+			(cur->type == XML_ATTRIBUTE_NODE) ? 1 : 0) == -1)
+			goto internal_error;
+		    cur->ns = ns;
+		}
+ns_end:
+		/*
+		* Further node properties.
+		* TODO: Is this all?
+		*/
+		XML_TREE_ADOPT_STR(cur->name)
+		if (cur->type == XML_ELEMENT_NODE) {
+		    cur->psvi = NULL;
+		    cur->line = 0;
+		    cur->extra = 0;
+		    /*
+		    * Walk attributes.
+		    */
+		    if (cur->properties != NULL) {
+			/*
+			* Process first attribute node.
+			*/
+			cur = (xmlNodePtr) cur->properties;
+			continue;
+		    }
+		} else {
+		    /*
+		    * Attributes.
+		    */
+		    if ((sourceDoc != NULL) &&
+			(((xmlAttrPtr) cur)->atype == XML_ATTRIBUTE_ID))
+			xmlRemoveID(sourceDoc, (xmlAttrPtr) cur);
+		    ((xmlAttrPtr) cur)->atype = 0;
+		    ((xmlAttrPtr) cur)->psvi = NULL;
+		}
+		break;
+	    case XML_TEXT_NODE:
+	    case XML_CDATA_SECTION_NODE:		
+		/*
+		* This puts the content in the dest dict, only if
+		* it was previously in the source dict.
+		*/
+		XML_TREE_ADOPT_STR_2(cur->content)		
+		goto leave_node;	   
+	    case XML_ENTITY_REF_NODE:
+		/*
+		* Remove reference to the entitity-node.
+		*/
+		cur->content = NULL;
+		cur->children = NULL;
+		cur->last = NULL;
+		if ((destDoc->intSubset) || (destDoc->extSubset)) {
+		    xmlEntityPtr ent;
+		    /*
+		    * Assign new entity-node if available.
+		    */
+		    ent = xmlGetDocEntity(destDoc, cur->name);
+		    if (ent != NULL) {
+			cur->content = ent->content;
+			cur->children = (xmlNodePtr) ent;
+			cur->last = (xmlNodePtr) ent;
+		    }
+		}
+		goto leave_node;
+	    case XML_PI_NODE:
+		XML_TREE_ADOPT_STR(cur->name)
+		XML_TREE_ADOPT_STR_2(cur->content)
+		break;
+	    case XML_COMMENT_NODE:	    
+		break;
+	    default:
+		goto internal_error;
+	}
+	/*
+	* Walk the tree.
+	*/
+	if (cur->children != NULL) {
+	    cur = cur->children;
+	    continue;
+	}
+
+leave_node:
+	if (cur == node)
+	    break;
+	if ((cur->type == XML_ELEMENT_NODE) ||
+	    (cur->type == XML_XINCLUDE_START) ||
+	    (cur->type == XML_XINCLUDE_END)) {
+	    /*
+	    * TODO: Do we expect nsDefs on XML_XINCLUDE_START?
+	    */
+	    if (nsMap != NULL) {
+		/*
+		* Pop mappings.
+		*/
+		while (topmi->depth >= depth)
+		    topmi = topmi->prev;
+		/*
+		* Unshadow.
+		*/
+		for (mi = nsMap; mi != topmi->next; mi = mi->next)
+		    if (mi->shadowDepth >= depth)
+			mi->shadowDepth = -1;
+	    }
+	    depth--;
+	}
+	if (cur->next != NULL)
+	    cur = cur->next;
+	else {
+	    cur = cur->parent;
+	    goto leave_node;
+	}
+    }
+    /*
+    * Cleanup.
+    */
+    if (nsMap != NULL)
+	xmlDOMWrapNSNormFreeNsMap(nsMap);
+    return (ret);
+internal_error:
+    if (nsMap != NULL)
+	xmlDOMWrapNSNormFreeNsMap(nsMap);
+    return (-1);
+}
+
+/*
+* xmlDOMWrapAdoptAttr:
+* @ctxt: the optional context for custom processing
+* @sourceDoc: the optional source document of attr
+* @attr: the attribute-node to be adopted
+* @destDoc: the destination doc for adoption
+* @destParent: the optional new parent of @attr in @destDoc
+* @options: option flags
+*
+* @attr is adopted by @destDoc.
+* Ensures that ns-references point to @destDoc: either to
+* elements->nsDef entries if @destParent is given, or to
+* @destDoc->oldNs otherwise.
+*
+* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
+*/
+static int
+xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
+		    xmlDocPtr sourceDoc,
+		    xmlAttrPtr attr,
+		    xmlDocPtr destDoc,
+		    xmlNodePtr destParent,
+		    int options ATTRIBUTE_UNUSED)
+{
+    xmlNodePtr cur;
+    int adoptStr = 1;
+
+    if ((attr == NULL) || (destDoc == NULL))
+	return (-1);
+    
+    attr->doc = destDoc;
+    if (attr->ns != NULL) {
+	xmlNsPtr ns = NULL;
+
+	if (ctxt != NULL) {
+	    /* TODO: User defined. */
+	}
+	/* XML Namespace. */
+	if ((attr->ns->prefix[0] == 'x') && (attr->ns->prefix[1] == 'm') &&
+	    (attr->ns->prefix[2] == 'l') && (attr->ns->prefix[3] == 0)) {
+	    ns = xmlTreeEnsureXMLDecl(destDoc);
+	} else if (destParent == NULL) {
+	    /*
+	    * Store in @destDoc->oldNs.
+	    */
+	    ns = xmlDOMWrapStoreNs(destDoc, attr->ns->href, attr->ns->prefix);
+	} else {
+	    /*
+	    * Declare on @destParent.
+	    */
+	    if (xmlSearchNsByHrefStrict(destDoc, destParent, attr->ns->href,
+		&ns, 1) == -1)
+		goto internal_error;
+	    if (ns == NULL) {
+		ns = xmlDOMWrapNSNormDeclareNsForced(destDoc, destParent,
+		    attr->ns->href, attr->ns->prefix, 1);
+	    }
+	}	    
+	if (ns == NULL)
+	    goto internal_error;
+	attr->ns = ns;
+    }   
+    
+    XML_TREE_ADOPT_STR(attr->name);    
+    attr->atype = 0;
+    attr->psvi = NULL;
+    /*
+    * Walk content.
+    */
+    if (attr->children == NULL)
+	return (0);
+    cur = attr->children;
+    while (cur != NULL) {
+	cur->doc = destDoc;
+	switch (cur->type) {
+	    case XML_TEXT_NODE:
+	    case XML_CDATA_SECTION_NODE:
+		XML_TREE_ADOPT_STR_2(cur->content)
+		break;	   
+	    case XML_ENTITY_REF_NODE:
+		/*
+		* Remove reference to the entitity-node.
+		*/
+		cur->content = NULL;
+		cur->children = NULL;
+		cur->last = NULL;
+		if ((destDoc->intSubset) || (destDoc->extSubset)) {
+		    xmlEntityPtr ent;
+		    /*
+		    * Assign new entity-node if available.
+		    */
+		    ent = xmlGetDocEntity(destDoc, cur->name);
+		    if (ent != NULL) {
+			cur->content = ent->content;
+			cur->children = (xmlNodePtr) ent;
+			cur->last = (xmlNodePtr) ent;
+		    }	    	    		
+		}
+		break;
+	    default:
+		break;
+	}
+	if (cur->children != NULL) {
+	    cur = cur->children;
+	    continue;
+	}
+next_sibling:
+	if (cur == (xmlNodePtr) attr)
+	    break;
+	if (cur->next != NULL)
+	    cur = cur->next;
+	else {
+	    cur = cur->parent;
+	    goto next_sibling;
+	}
+    }
+    return (0);
+internal_error:
+    return (-1);
+}
+
+/*
+* xmlDOMWrapAdoptNode:
+* @ctxt: the optional context for custom processing
+* @sourceDoc: the optional sourceDoc
+* @node: the node to start with
+* @destDoc: the destination doc
+* @parent: the optional new parent of @node in @destDoc
+* @options: option flags
+*
+* Ensures that ns-references point to @destDoc: either to
+* elements->nsDef entries if @destParent is given, or to
+* @destDoc->oldNs otherwise.
+* If @destParent is given, it ensures that the tree is namespace
+* wellformed by creating additional ns-decls where needed.
+* Note that, since prefixes of already existent ns-decls can be
+* shadowed by this process, it could break QNames in attribute
+* values or element content.
+*
+* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
+*/
+int
+xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
+		    xmlDocPtr sourceDoc,
+		    xmlNodePtr node,
+		    xmlDocPtr destDoc,		    
+		    xmlNodePtr destParent,
+		    int options)
+{    
+    if ((node == NULL) || (destDoc == NULL) ||
+	((destParent != NULL) && (destParent->doc != destDoc)))
+	return(-1);
+    /*
+    * Check node->doc sanity.
+    */    
+    if ((node->doc != NULL) && (sourceDoc != NULL) &&
+	(node->doc != sourceDoc)) {
+	/*
+	* Might be an XIncluded node.
+	*/
+	return (-1);
+    }
+    if (sourceDoc == NULL)
+	sourceDoc = node->doc;
+    if (sourceDoc == destDoc)
+	return (-1);
+    switch (node->type) {
+	case XML_ELEMENT_NODE:	    
+	case XML_ATTRIBUTE_NODE:
+	case XML_TEXT_NODE:
+	case XML_CDATA_SECTION_NODE:
+	case XML_ENTITY_REF_NODE:
+	case XML_PI_NODE:
+	case XML_COMMENT_NODE:
+	    break;
+	case XML_DOCUMENT_FRAG_NODE:
+	    return (2);
+	default:
+	    return (1);
+    }
+    /*
+    * Unlink only if @node was not already added to @destParent.
+    */
+    if ((node->parent != NULL) && (destParent != node->parent))
+	xmlUnlinkNode(node);
+
+    if (node->type == XML_ELEMENT_NODE) {
+	    return (xmlDOMWrapAdoptBranch(ctxt, sourceDoc, node,
+		    destDoc, destParent, options));
+    } else if (node->type == XML_ATTRIBUTE_NODE) {
+	    return (xmlDOMWrapAdoptAttr(ctxt, sourceDoc,
+		(xmlAttrPtr) node, destDoc, destParent, options));
+    } else {	
+	xmlNodePtr cur = node;
+	int adoptStr = 1;
+
+	cur->doc = destDoc;
+	/*
+	* Optimize string adoption.
+	*/
+	if ((sourceDoc != NULL) &&
+	    (sourceDoc->dict == destDoc->dict))
+		adoptStr = 0;
+	switch (node->type) {
+	    case XML_TEXT_NODE:	    
+	    case XML_CDATA_SECTION_NODE:
+		XML_TREE_ADOPT_STR_2(node->content)
+		    break;
+	    case XML_ENTITY_REF_NODE:
+		/*
+		* Remove reference to the entitity-node.
+		*/
+		node->content = NULL;
+		node->children = NULL;
+		node->last = NULL;
+		if ((destDoc->intSubset) || (destDoc->extSubset)) {
+		    xmlEntityPtr ent;
+		    /*
+		    * Assign new entity-node if available.
+		    */
+		    ent = xmlGetDocEntity(destDoc, node->name);
+		    if (ent != NULL) {
+			node->content = ent->content;
+			node->children = (xmlNodePtr) ent;
+			node->last = (xmlNodePtr) ent;
+		    }
+		}
+		XML_TREE_ADOPT_STR(node->name)
+		break;
+	    case XML_PI_NODE:
+		XML_TREE_ADOPT_STR(node->name)
+		XML_TREE_ADOPT_STR_2(node->content)
+		break;
+	    default:
+		break;
+	}
+    }	
+    return (0);
+}
+
+
 #define bottom_tree
 #include "elfgcchack.h"

@@ -250,7 +250,6 @@ typedef enum {
     XML_ELEMENT_TYPE_ELEMENT
 } xmlElementTypeVal;
 
-
 #ifdef __cplusplus
 }
 #endif
@@ -507,6 +506,12 @@ struct _xmlDoc {
 				   actually an xmlCharEncoding */
     struct _xmlDict *dict;      /* dict used to allocate names or NULL */
     void           *psvi;	/* for type/PSVI informations */
+};
+
+typedef struct _xmlDOMWrapCtxt xmlDOMWrapCtxt;
+typedef xmlDOMWrapCtxt *xmlDOMWrapCtxtPtr;
+struct _xmlDOMWrapCtxt {
+    void * _private;
 };
 
 /**
@@ -1113,6 +1118,26 @@ XMLPUBFUN int XMLCALL
 		xmlGetCompressMode	(void);
 XMLPUBFUN void XMLCALL		
 		xmlSetCompressMode	(int mode);
+
+/*
+* DOM-wrapper helper functions.
+*/
+XMLPUBFUN int XMLCALL
+	    xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt,
+					 xmlNodePtr elem,
+					 int options);
+XMLPUBFUN int XMLCALL
+	    xmlDOMWrapAdoptNode		(xmlDOMWrapCtxtPtr ctxt,
+					 xmlDocPtr sourceDoc,
+					 xmlNodePtr node,
+					 xmlDocPtr destDoc,		    
+					 xmlNodePtr destParent,
+					 int options);
+XMLPUBFUN int XMLCALL
+	    xmlDOMWrapRemoveNode	(xmlDOMWrapCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr node,
+					 int options);
 
 #ifdef __cplusplus
 }

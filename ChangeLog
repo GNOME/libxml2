@@ -1,3 +1,10 @@
+Mon Jun 27 12:24:54 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c include/libxml/tree.h: Added
+	  xmlDOMWrapReconcileNamespaces(), xmlDOMWrapAdoptNode() and
+	  xmlDOMWrapRemoveNode() to the API. These are functions intended
+	  to be used with DOM-wrappers.
+
 Mon Jun 27 10:14:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: continue to increase the tests

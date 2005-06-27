@@ -554,23 +554,15 @@ static void processNode(FILE *out, xmlTextReaderPtr reader) {
 #endif
 #endif
 }
-/**
- * streamParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
- *
- * Parse a file using the reader API and check for errors.
- *
- * Returns 0 in case of success, an error code otherwise
- */
 static int
-streamParseTest(const char *filename, const char *result, const char *err,
-                int options) {
-    xmlTextReaderPtr reader;
+streamProcessTest(const char *filename, const char *result, const char *err,
+                  xmlTextReaderPtr reader) {
     int ret;
     char *temp = NULL;
     FILE *t = NULL;
+
+    if (reader == NULL)
+        return(-1);
 
     if (result != NULL) {
 	temp = resultFilename(filename, "", ".res");
@@ -586,7 +578,6 @@ streamParseTest(const char *filename, const char *result, const char *err,
 	}
     }
     xmlGetWarningsDefaultValue = 1;
-    reader = xmlReaderForFile(filename, NULL, options);
     ret = xmlTextReaderRead(reader);
     while (ret == 1) {
 	if (t != NULL)
@@ -596,7 +587,6 @@ streamParseTest(const char *filename, const char *result, const char *err,
     if (ret != 0) {
         testErrorHandler(NULL, "%s : failed to parse\n", filename);
     }
-    xmlFreeTextReader(reader);
     xmlGetWarningsDefaultValue = 0;
     if (t != NULL) {
         fclose(t);
@@ -617,6 +607,89 @@ streamParseTest(const char *filename, const char *result, const char *err,
     }
 
     return(0);
+}
+
+/**
+ * streamParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file using the reader API and check for errors.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+streamParseTest(const char *filename, const char *result, const char *err,
+                int options) {
+    xmlTextReaderPtr reader;
+    int ret;
+
+    reader = xmlReaderForFile(filename, NULL, options);
+    ret = streamProcessTest(filename, result, err, reader);
+    xmlFreeTextReader(reader);
+    return(ret);
+}
+
+/**
+ * walkerParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file using the walker, i.e. a reader built from a atree.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+walkerParseTest(const char *filename, const char *result, const char *err,
+                int options) {
+    xmlDocPtr doc;
+    xmlTextReaderPtr reader;
+    int ret;
+
+    doc = xmlReadFile(filename, NULL, options);
+    if (doc == NULL) {
+        fprintf(stderr, "Failed to parse %s\n", filename);
+	return(-1);
+    }
+    reader = xmlReaderWalker(doc);
+    ret = streamProcessTest(filename, result, err, reader);
+    xmlFreeTextReader(reader);
+    xmlFreeDoc(doc);
+    return(ret);
+}
+
+/**
+ * streamMemParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file using the reader API from memory and check for errors.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+streamMemParseTest(const char *filename, const char *result, const char *err,
+                   int options) {
+    xmlTextReaderPtr reader;
+    int ret;
+    const char *base;
+    int size;
+
+    /*
+     * load and parse the memory
+     */
+    if (loadMem(filename, &base, &size) != 0) {
+        fprintf(stderr, "Failed to load %s\n", filename);
+	return(-1);
+    }
+    reader = xmlReaderForMemory(base, size, filename, NULL, options);
+    ret = streamProcessTest(filename, result, err, reader);
+    free((char *)base);
+    xmlFreeTextReader(reader);
+    return(ret);
 }
 #endif
 
@@ -653,6 +726,12 @@ testDesc testDescriptions[] = {
     { "Reader entities substitution regression tests",
       streamParseTest, "./test/*", "result/", ".rde", NULL,
       XML_PARSE_NOENT },
+    { "Reader on memory regression tests",
+      streamMemParseTest, "./test/*", "result/", ".rdr", NULL,
+      0 },
+    { "Walker regression tests",
+      walkerParseTest, "./test/*", "result/", ".rdr", NULL,
+      0 },
 #endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };

@@ -19,9 +19,12 @@
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#ifdef LIBXML_READER_ENABLED
+#include <libxml/xmlreader.h>
+#endif
 
 typedef int (*functest) (const char *filename, const char *result,
-                         const char *error);
+                         const char *error, int options);
 
 typedef struct testDesc testDesc;
 typedef testDesc *testDescPtr;
@@ -32,6 +35,7 @@ struct testDesc {
     const char *out;  /* output directory */
     const char *suffix;/* suffix for output files */
     const char *err;  /* suffix for error output files */
+    int     options;  /* parser options for the test */
 };
 
 static int checkTestFile(const char *filename);
@@ -79,7 +83,7 @@ static char testErrors[32769];
 static int testErrorsSize = 0;
 
 static void
-testErrorHandler(void *ctx, const char *msg, ...) {
+testErrorHandler(void *ctx  ATTRIBUTE_UNUSED, const char *msg, ...) {
     va_list args;
     int res;
 
@@ -282,7 +286,9 @@ static int unloadMem(const char *mem) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-oldParseTest(const char *filename, const char *result, const char *err) {
+oldParseTest(const char *filename, const char *result,
+             const char *err ATTRIBUTE_UNUSED,
+	     int options ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     char *temp;
     int res = 0;
@@ -334,7 +340,9 @@ oldParseTest(const char *filename, const char *result, const char *err) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-memParseTest(const char *filename, const char *result, const char *err) {
+memParseTest(const char *filename, const char *result,
+             const char *err ATTRIBUTE_UNUSED,
+	     int options ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     const char *base;
     int size, res;
@@ -378,7 +386,9 @@ memParseTest(const char *filename, const char *result, const char *err) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-noentParseTest(const char *filename, const char *result, const char *err) {
+noentParseTest(const char *filename, const char *result,
+               const char *err  ATTRIBUTE_UNUSED,
+	       int options ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     char *temp;
     int res = 0;
@@ -418,7 +428,7 @@ noentParseTest(const char *filename, const char *result, const char *err) {
 }
 
 /**
- * nsParseTest:
+ * errParseTest:
  * @filename: the file to parse
  * @result: the file with expected result
  * @err: the file with error messages
@@ -428,7 +438,8 @@ noentParseTest(const char *filename, const char *result, const char *err) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-errParseTest(const char *filename, const char *result, const char *err) {
+errParseTest(const char *filename, const char *result, const char *err,
+             int options ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     const char *base;
     int size, res;
@@ -461,6 +472,154 @@ errParseTest(const char *filename, const char *result, const char *err) {
     return(0);
 }
 
+#ifdef LIBXML_READER_ENABLED
+static void processNode(FILE *out, xmlTextReaderPtr reader) {
+    const xmlChar *name, *value;
+    int type, empty;
+
+    type = xmlTextReaderNodeType(reader);
+    empty = xmlTextReaderIsEmptyElement(reader);
+
+    name = xmlTextReaderConstName(reader);
+    if (name == NULL)
+	name = BAD_CAST "--";
+
+    value = xmlTextReaderConstValue(reader);
+
+    
+    fprintf(out, "%d %d %s %d %d", 
+	    xmlTextReaderDepth(reader),
+	    type,
+	    name,
+	    empty,
+	    xmlTextReaderHasValue(reader));
+    if (value == NULL)
+	fprintf(out, "\n");
+    else {
+	fprintf(out, " %s\n", value);
+    }
+#if 0
+#ifdef LIBXML_PATTERN_ENABLED
+    if (patternc) {
+        xmlChar *path = NULL;
+        int match = -1;
+	
+	if (type == XML_READER_TYPE_ELEMENT) {
+	    /* do the check only on element start */
+	    match = xmlPatternMatch(patternc, xmlTextReaderCurrentNode(reader));
+
+	    if (match) {
+		path = xmlGetNodePath(xmlTextReaderCurrentNode(reader));
+		fprintf(out, "Node %s matches pattern %s\n", path, pattern);
+	    }
+	}
+	if (patstream != NULL) {
+	    int ret;
+
+	    if (type == XML_READER_TYPE_ELEMENT) {
+		ret = xmlStreamPush(patstream,
+		                    xmlTextReaderConstLocalName(reader),
+				    xmlTextReaderConstNamespaceUri(reader));
+		if (ret < 0) {
+		    fprintf(stderr, "xmlStreamPush() failure\n");
+                    xmlFreeStreamCtxt(patstream);
+		    patstream = NULL;
+		} else if (ret != match) {
+		    if (path == NULL) {
+		        path = xmlGetNodePath(
+		                       xmlTextReaderCurrentNode(reader));
+		    }
+		    fprintf(stderr,
+		            "xmlPatternMatch and xmlStreamPush disagree\n");
+		    fprintf(stderr,
+		            "  pattern %s node %s\n",
+			    pattern, path);
+		}
+		
+
+	    } 
+	    if ((type == XML_READER_TYPE_END_ELEMENT) ||
+	        ((type == XML_READER_TYPE_ELEMENT) && (empty))) {
+	        ret = xmlStreamPop(patstream);
+		if (ret < 0) {
+		    fprintf(stderr, "xmlStreamPop() failure\n");
+                    xmlFreeStreamCtxt(patstream);
+		    patstream = NULL;
+		}
+	    }
+	}
+	if (path != NULL)
+	    xmlFree(path);
+    }
+#endif
+#endif
+}
+/**
+ * streamParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file using the reader API and check for errors.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+streamParseTest(const char *filename, const char *result, const char *err,
+                int options) {
+    xmlTextReaderPtr reader;
+    int ret;
+    char *temp = NULL;
+    FILE *t = NULL;
+
+    if (result != NULL) {
+	temp = resultFilename(filename, "", ".res");
+	if (temp == NULL) {
+	    fprintf(stderr, "Out of memory\n");
+	    fatalError();
+	}
+	t = fopen(temp, "w");
+	if (t == NULL) {
+	    fprintf(stderr, "Can't open temp file %s\n", temp);
+	    free(temp);
+	    return(-1);
+	}
+    }
+    xmlGetWarningsDefaultValue = 1;
+    reader = xmlReaderForFile(filename, NULL, options);
+    ret = xmlTextReaderRead(reader);
+    while (ret == 1) {
+	if (t != NULL)
+	    processNode(t, reader);
+        ret = xmlTextReaderRead(reader);
+    }
+    if (ret != 0) {
+        testErrorHandler(NULL, "%s : failed to parse\n", filename);
+    }
+    xmlFreeTextReader(reader);
+    xmlGetWarningsDefaultValue = 0;
+    if (t != NULL) {
+        fclose(t);
+	ret = compareFiles(temp, result);
+	unlink(temp);
+	free(temp);
+	if (ret) {
+	    fprintf(stderr, "Result for %s failed\n", filename);
+	    return(-1);
+	}
+    }
+    if (err != NULL) {
+	ret = compareFileMem(err, testErrors, testErrorsSize);
+	if (ret != 0) {
+	    fprintf(stderr, "Error for %s failed\n", filename);
+	    return(-1);
+	}
+    }
+
+    return(0);
+}
+#endif
+
 /************************************************************************
  *									*
  *		Tests Descriptions					*
@@ -470,16 +629,32 @@ errParseTest(const char *filename, const char *result, const char *err) {
 static
 testDesc testDescriptions[] = {
     { "XML regression tests" ,
-      oldParseTest, "./test/*", "result/", "", NULL },
+      oldParseTest, "./test/*", "result/", "", NULL,
+      0 },
     { "XML regression tests on memory" ,
-      memParseTest, "./test/*", "result/", "", NULL },
+      memParseTest, "./test/*", "result/", "", NULL,
+      0 },
     { "XML entity subst regression tests" ,
-      noentParseTest, "./test/*", "result/noent/", "", NULL },
+      noentParseTest, "./test/*", "result/noent/", "", NULL,
+      0 },
     { "XML Namespaces regression tests",
-      errParseTest, "./test/namespaces/*", "result/namespaces/", "", ".err" },
+      errParseTest, "./test/namespaces/*", "result/namespaces/", "", ".err",
+      0 },
     { "Error cases regression tests",
-      errParseTest, "./test/errors/*.xml", "result/errors/", "", ".err" },
-    {NULL, NULL, NULL, NULL, NULL, NULL}
+      errParseTest, "./test/errors/*.xml", "result/errors/", "", ".err",
+      0 },
+#ifdef LIBXML_READER_ENABLED
+    { "Error cases stream regression tests",
+      streamParseTest, "./test/errors/*.xml", "result/errors/", NULL, ".str",
+      0 },
+    { "Reader regression tests",
+      streamParseTest, "./test/*", "result/", ".rdr", NULL,
+      0 },
+    { "Reader entities substitution regression tests",
+      streamParseTest, "./test/*", "result/", ".rde", NULL,
+      XML_PARSE_NOENT },
+#endif
+    {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 
 /************************************************************************
@@ -534,7 +709,8 @@ launchTests(testDescPtr tst) {
 		extraMemoryFromResolver = 0;
 		testErrorsSize = 0;
 		testErrors[0] = 0;
-		res = tst->func(globbuf.gl_pathv[i], result, error);
+		res = tst->func(globbuf.gl_pathv[i], result, error,
+		                tst->options);
 		if (res != 0) {
 		    fprintf(stderr, "File %s generated an error\n",
 		            globbuf.gl_pathv[i]);
@@ -561,7 +737,7 @@ launchTests(testDescPtr tst) {
         testErrorsSize = 0;
 	testErrors[0] = 0;
 	extraMemoryFromResolver = 0;
-        res = tst->func(NULL, NULL, NULL);
+        res = tst->func(NULL, NULL, NULL, tst->options);
 	if (res != 0)
 	    err++;
     }
@@ -569,7 +745,7 @@ launchTests(testDescPtr tst) {
 }
 
 int
-main(int argc, char **argv) {
+main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     int i = 0, res, ret = 0;
 
     initializeLibxml2();

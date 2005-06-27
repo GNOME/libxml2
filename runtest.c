@@ -20,7 +20,8 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-typedef int (*functest) (const char *filename, const char *result);
+typedef int (*functest) (const char *filename, const char *result,
+                         const char *error);
 
 typedef struct testDesc testDesc;
 typedef testDesc *testDescPtr;
@@ -30,6 +31,7 @@ struct testDesc {
     const char *in;   /* glob to path for input files */
     const char *out;  /* output directory */
     const char *suffix;/* suffix for output files */
+    const char *err;  /* suffix for error output files */
 };
 
 static int checkTestFile(const char *filename);
@@ -69,6 +71,35 @@ testExternalEntityLoader(const char *URL, const char *ID,
     return(ret);
 }
 
+/*
+ * Trapping the error messages at the generic level to grab the equivalent of
+ * stderr messages on CLI tools.
+ */
+static char testErrors[32769];
+static int testErrorsSize = 0;
+
+static void
+testErrorHandler(void *ctx, const char *msg, ...) {
+    va_list args;
+    int res;
+
+    if (testErrorsSize >= 32768)
+        return;
+    va_start(args, msg);
+    res = vsnprintf(&testErrors[testErrorsSize],
+                    32768 - testErrorsSize,
+		    msg, args);
+    va_end(args);
+    if (testErrorsSize + res >= 32768) {
+        /* buffer is full */
+	testErrorsSize = 32768;
+	testErrors[testErrorsSize] = 0;
+    } else {
+        testErrorsSize += res;
+    }
+    testErrors[testErrorsSize] = 0;
+}
+
 static void
 initializeLibxml2(void) {
     xmlGetWarningsDefaultValue = 0;
@@ -77,6 +108,7 @@ initializeLibxml2(void) {
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
     xmlInitParser();
     xmlSetExternalEntityLoader(testExternalEntityLoader);
+    xmlSetGenericErrorFunc(NULL, testErrorHandler);
     libxmlMemoryAllocatedBase = xmlMemUsed();
 }
 
@@ -168,6 +200,36 @@ static int compareFiles(const char *r1, const char *r2) {
     return(0);
 }
 
+static int compareFileMem(const char *filename, const char *mem, int size) {
+    int res;
+    int fd;
+    char bytes[4096];
+    int idx = 0;
+    struct stat info;
+
+    if (stat(filename, &info) < 0) 
+	return(-1);
+    if (info.st_size != size)
+        return(-1);
+    fd = open(filename, O_RDONLY);
+    if (fd < 0)
+        return(-1);
+    while (idx < size) {
+        res = read(fd, bytes, 4096);
+	if (res <= 0)
+	    break;
+	if (res + idx > size) 
+	    break;
+	if (memcmp(bytes, &mem[idx], res) != 0) {
+	    close(fd);
+	    return(1);
+	}
+	idx += res;
+    }
+    close(fd);
+    return(idx != size);
+}
+
 static int loadMem(const char *filename, const char **mem, int *size) {
     int fd, res;
     struct stat info;
@@ -211,6 +273,7 @@ static int unloadMem(const char *mem) {
  * oldParseTest:
  * @filename: the file to parse
  * @result: the file with expected result
+ * @err: the file with error messages: unused
  *
  * Parse a file using the old xmlParseFile API, then serialize back
  * reparse the result and serialize again, then check for deviation
@@ -219,7 +282,7 @@ static int unloadMem(const char *mem) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-oldParseTest(const char *filename, const char *result) {
+oldParseTest(const char *filename, const char *result, const char *err) {
     xmlDocPtr doc;
     char *temp;
     int res = 0;
@@ -262,6 +325,7 @@ oldParseTest(const char *filename, const char *result) {
  * memParseTest:
  * @filename: the file to parse
  * @result: the file with expected result
+ * @err: the file with error messages: unused
  *
  * Parse a file using the old xmlReadMemory API, then serialize back
  * reparse the result and serialize again, then check for deviation
@@ -270,12 +334,10 @@ oldParseTest(const char *filename, const char *result) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-memParseTest(const char *filename, const char *result) {
+memParseTest(const char *filename, const char *result, const char *err) {
     xmlDocPtr doc;
     const char *base;
-    int size;
-    const char *base2;
-    int size2;
+    int size, res;
 
     /*
      * load and parse the memory
@@ -290,22 +352,16 @@ memParseTest(const char *filename, const char *result) {
     if (doc == NULL) {
         return(1);
     }
-    if (loadMem(result, &base, &size) != 0) {
-        fprintf(stderr, "Failed to load %s\n", result);
-	return(-1);
-    }
-    xmlDocDumpMemory(doc, (xmlChar **) &base2, &size2);
+    xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
     xmlFreeDoc(doc);
-    if ((base2 == NULL) || (size != size2) ||
-        (memcmp(base, base2, size) != 0)) {
-	unloadMem(base);
-	if (base2 != NULL)
-	    xmlFree((char *)base2);
+    res = compareFileMem(result, base, size);
+    if ((base == NULL) || (res != 0)) {
+	if (base != NULL)
+	    xmlFree((char *)base);
         fprintf(stderr, "Result for %s failed\n", filename);
 	return(-1);
     }
-    unloadMem(base);
-    xmlFree((char *)base2);
+    xmlFree((char *)base);
     return(0);
 }
 
@@ -313,6 +369,7 @@ memParseTest(const char *filename, const char *result) {
  * noentParseTest:
  * @filename: the file to parse
  * @result: the file with expected result
+ * @err: the file with error messages: unused
  *
  * Parse a file with entity resolution, then serialize back
  * reparse the result and serialize again, then check for deviation
@@ -321,7 +378,7 @@ memParseTest(const char *filename, const char *result) {
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-noentParseTest(const char *filename, const char *result) {
+noentParseTest(const char *filename, const char *result, const char *err) {
     xmlDocPtr doc;
     char *temp;
     int res = 0;
@@ -360,6 +417,50 @@ noentParseTest(const char *filename, const char *result) {
     return(res);
 }
 
+/**
+ * nsParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file using the xmlReadFile API and check for errors.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+errParseTest(const char *filename, const char *result, const char *err) {
+    xmlDocPtr doc;
+    const char *base;
+    int size, res;
+
+    xmlGetWarningsDefaultValue = 1;
+    doc = xmlReadFile(filename, NULL, 0);
+    if (doc == NULL) {
+        base = "";
+	size = 0;
+    } else {
+	xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+    }
+    xmlGetWarningsDefaultValue = 0;
+    res = compareFileMem(result, base, size);
+    if (doc != NULL) {
+	if (base != NULL)
+	    xmlFree((char *)base);
+	xmlFreeDoc(doc);
+    }
+    if (res != 0) {
+        fprintf(stderr, "Result for %s failed\n", filename);
+	return(-1);
+    }
+    res = compareFileMem(err, testErrors, testErrorsSize);
+    if (res != 0) {
+        fprintf(stderr, "Error for %s failed\n", filename);
+	return(-1);
+    }
+
+    return(0);
+}
+
 /************************************************************************
  *									*
  *		Tests Descriptions					*
@@ -368,10 +469,17 @@ noentParseTest(const char *filename, const char *result) {
 
 static
 testDesc testDescriptions[] = {
-    { "XML regression tests" , oldParseTest, "test/*", "result/", "" },
-    { "XML regression tests on memory" , memParseTest, "test/*", "result/", "" },
-    { "XML entity subst regression tests" , noentParseTest, "test/*", "result/noent/", "" },
-    {NULL, NULL, NULL, NULL, NULL}
+    { "XML regression tests" ,
+      oldParseTest, "./test/*", "result/", "", NULL },
+    { "XML regression tests on memory" ,
+      memParseTest, "./test/*", "result/", "", NULL },
+    { "XML entity subst regression tests" ,
+      noentParseTest, "./test/*", "result/noent/", "", NULL },
+    { "XML Namespaces regression tests",
+      errParseTest, "./test/namespaces/*", "result/namespaces/", "", ".err" },
+    { "Error cases regression tests",
+      errParseTest, "./test/errors/*.xml", "result/errors/", "", ".err" },
+    {NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
 /************************************************************************
@@ -385,6 +493,7 @@ launchTests(testDescPtr tst) {
     int res = 0, err = 0;
     size_t i;
     char *result;
+    char *error;
     int mem, leak;
 
     if (tst == NULL) return(-1);
@@ -396,35 +505,63 @@ launchTests(testDescPtr tst) {
 	for (i = 0;i < globbuf.gl_pathc;i++) {
 	    if (!checkTestFile(globbuf.gl_pathv[i]))
 	        continue;
-	    result = resultFilename(globbuf.gl_pathv[i], tst->out, tst->suffix);
-	    if (result == NULL) {
-	        fprintf(stderr, "Out of memory !\n");
-		fatalError();
+	    if (tst->suffix != NULL) {
+		result = resultFilename(globbuf.gl_pathv[i], tst->out,
+					tst->suffix);
+		if (result == NULL) {
+		    fprintf(stderr, "Out of memory !\n");
+		    fatalError();
+		}
+	    } else {
+	        result = NULL;
 	    }
-	    if (!checkTestFile(result)) {
+	    if (tst->err != NULL) {
+		error = resultFilename(globbuf.gl_pathv[i], tst->out,
+		                        tst->err);
+		if (error == NULL) {
+		    fprintf(stderr, "Out of memory !\n");
+		    fatalError();
+		}
+	    } else {
+	        error = NULL;
+	    }
+	    if ((result) &&(!checkTestFile(result))) {
 	        fprintf(stderr, "Missing result file %s\n", result);
+	    } else if ((error) &&(!checkTestFile(error))) {
+	        fprintf(stderr, "Missing error file %s\n", error);
 	    } else {
 		mem = xmlMemUsed();
 		extraMemoryFromResolver = 0;
-		res = tst->func(globbuf.gl_pathv[i], result);
+		testErrorsSize = 0;
+		testErrors[0] = 0;
+		res = tst->func(globbuf.gl_pathv[i], result, error);
 		if (res != 0) {
 		    fprintf(stderr, "File %s generated an error\n",
 		            globbuf.gl_pathv[i]);
 		    err++;
 		}
 		else if (xmlMemUsed() != mem) {
-		    if (extraMemoryFromResolver == 0) {
+		    xmlResetLastError();
+		    if ((xmlMemUsed() != mem) &&
+		        (extraMemoryFromResolver == 0)) {
 			fprintf(stderr, "File %s leaked %d bytes\n",
 				globbuf.gl_pathv[i], xmlMemUsed() - mem);
 			leak++;
 			err++;
 		    }
 		}
+		testErrorsSize = 0;
 	    }
-	    free(result);
+	    if (result)
+		free(result);
+	    if (error)
+		free(error);
 	}
     } else {
-        res = tst->func(NULL, NULL);
+        testErrorsSize = 0;
+	testErrors[0] = 0;
+	extraMemoryFromResolver = 0;
+        res = tst->func(NULL, NULL, NULL);
 	if (res != 0)
 	    err++;
     }

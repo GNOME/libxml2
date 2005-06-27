@@ -1,3 +1,7 @@
+Mon Jun 27 01:01:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: continue to increase the tests
+
 Sun Jun 26 20:08:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/valid.h valid.c: avoid name glob in agruments as

@@ -1,3 +1,9 @@
+Mon Jun 27 14:01:06 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/xstc-to-python.xsl: Cleanup.
+	* xstc/sun-test-def.xml xstc/nist-test-def.xml xstc/ms-test-def.xml:
+	  Removed, those are not needed anymore due to the new test suite.
+
 Mon Jun 27 11:39:50 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* result/*.sax2 MAkefile.am: added SAXv2 regression tests apparently

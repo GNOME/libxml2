@@ -23,6 +23,18 @@
 #include <libxml/xmlreader.h>
 #endif
 
+#ifdef LIBXML_XINCLUDE_ENABLED
+#include <libxml/xinclude.h>
+#endif
+
+#ifdef LIBXML_XPATH_ENABLED
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
+#ifdef LIBXML_XPTR_ENABLED
+#include <libxml/xpointer.h>
+#endif
+#endif
+
 #ifdef LIBXML_HTML_ENABLED
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
@@ -1536,12 +1548,18 @@ static int
 errParseTest(const char *filename, const char *result, const char *err,
              int options) {
     xmlDocPtr doc;
-    const char *base;
+    const char *base = NULL;
     int size, res = 0;
 
 #ifdef LIBXML_HTML_ENABLED
     if (options & XML_PARSE_HTML) {
         doc = htmlReadFile(filename, NULL, options);
+    } else
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+    if (options & XML_PARSE_XINCLUDE) {
+	doc = xmlReadFile(filename, NULL, options);
+	xmlXIncludeProcessFlags(doc, options);
     } else
 #endif
     {
@@ -1813,6 +1831,116 @@ streamMemParseTest(const char *filename, const char *result, const char *err,
 }
 #endif
 
+#ifdef LIBXML_XPATH_ENABLED
+/************************************************************************
+ *									*
+ *		XPath based tests					*
+ *									*
+ ************************************************************************/
+
+FILE *xpathOutput;
+xmlDocPtr xpathDocument;
+
+static void
+testXPath(const char *str, int xptr, int expr) {
+    xmlXPathObjectPtr res;
+    xmlXPathContextPtr ctxt;
+    
+#if defined(LIBXML_XPTR_ENABLED)
+    if (xptr) {
+	ctxt = xmlXPtrNewContext(xpathDocument, NULL, NULL);
+	res = xmlXPtrEval(BAD_CAST str, ctxt);
+    } else {
+#endif
+	ctxt = xmlXPathNewContext(xpathDocument);
+	ctxt->node = xmlDocGetRootElement(xpathDocument);
+	if (expr)
+	    res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
+	else {
+	    /* res = xmlXPathEval(BAD_CAST str, ctxt); */
+	    xmlXPathCompExprPtr comp;
+
+	    comp = xmlXPathCompile(BAD_CAST str);
+	    if (comp != NULL) {
+		res = xmlXPathCompiledEval(comp, ctxt);
+		xmlXPathFreeCompExpr(comp);
+	    } else
+		res = NULL;
+	}
+#if defined(LIBXML_XPTR_ENABLED)
+    }
+#endif
+    xmlXPathDebugDumpObject(xpathOutput, res, 0);
+    xmlXPathFreeObject(res);
+    xmlXPathFreeContext(ctxt);
+}
+/**
+ * xpathExprTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing XPath standalone expressions and evaluate them
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+xpathExprTest(const char *filename, const char *result,
+              const char *err ATTRIBUTE_UNUSED,
+              int options ATTRIBUTE_UNUSED) {
+    FILE *input;
+    char expression[5000];
+    int len, ret = 0;
+    char *temp;
+
+    temp = resultFilename(filename, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    xpathOutput = fopen(temp, "w");
+    if (xpathOutput == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+        free(temp);
+	return(-1);
+    }
+
+    input = fopen(filename, "r");
+    if (input == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot open %s for reading\n", filename);
+        free(temp);
+	return(-1);
+    }
+    while (fgets(expression, 4500, input) != NULL) {
+	len = strlen(expression);
+	len--;
+	while ((len >= 0) && 
+	       ((expression[len] == '\n') || (expression[len] == '\t') ||
+		(expression[len] == '\r') || (expression[len] == ' '))) len--;
+	expression[len + 1] = 0;      
+	if (len >= 0) {
+	    fprintf(xpathOutput,
+	            "\n========================\nExpression: %s\n",
+		    expression) ;
+	    testXPath(expression, 0, 1);
+	}
+    }
+
+    fclose(input);
+    fclose(xpathOutput);
+    if (result != NULL) {
+	ret = compareFiles(temp, result);
+	if (ret) {
+	    fprintf(stderr, "Result for %s failed\n", filename);
+	}
+    }
+
+    unlink(temp);
+    free(temp);
+    return(ret);
+}
+#endif /* XPATH */
 /************************************************************************
  *									*
  *		Tests Descriptions					*
@@ -1887,6 +2015,29 @@ testDesc testDescriptions[] = {
     { "General documents valid regression tests" ,
       errParseTest, "./test/valid/*", "result/valid/", "", ".err",
       XML_PARSE_DTDVALID },
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+    { "XInclude regression tests" ,
+      errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", NULL,
+      /* Ignore errors at this point ".err", */
+      XML_PARSE_XINCLUDE },
+    { "XInclude xmlReader regression tests",
+      streamParseTest, "./test/XInclude/docs/*", "result/XInclude/", ".rdr",
+      /* Ignore errors at this point ".err", */
+      NULL, XML_PARSE_XINCLUDE },
+    { "XInclude regression tests stripping include nodes" ,
+      errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", NULL,
+      /* Ignore errors at this point ".err", */
+      XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
+    { "XInclude xmlReader regression tests stripping include nodes",
+      streamParseTest, "./test/XInclude/docs/*", "result/XInclude/", ".rdr",
+      /* Ignore errors at this point ".err", */
+      NULL, XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+    { "XPath expressions regression tests" ,
+      xpathExprTest, "./test/XPath/expr/*", "result/XPath/expr/", "", NULL,
+      0 },
 #endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };

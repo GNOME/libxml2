@@ -1,3 +1,7 @@
+Mon Jun 27 15:41:30 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Commented the new functions to be experimental.
+
 Mon Jun 27 14:41:14 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* error.c valid.c: working some weird error reporting problem for

@@ -7472,6 +7472,7 @@ xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
 * This will substitute ns-references to node->nsDef for
 * ns-references to doc->oldNs, thus ensuring the removed
 * branch to be autark wrt ns-references.
+* WARNING: This function is in a experimental state.
 *
 * Returns 0 on success, 1 if the node is not supported,
 *         -1 on API and internal errors. 
@@ -7925,6 +7926,7 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 * ns-decls where needed. Note that, since prefixes of already existent
 * ns-decls can be shadowed by this process, it could break QNames in
 * attribute values or element content.
+* WARNING: This function is in a experimental state.
 *
 * Returns 0 if succeeded, -1 otherwise and on API/internal errors.
 */
@@ -8549,6 +8551,7 @@ internal_error:
 * Note that, since prefixes of already existent ns-decls can be
 * shadowed by this process, it could break QNames in attribute
 * values or element content.
+* WARNING: This function is in a experimental state.
 *
 * Returns 0 if succeeded, -1 otherwise and on API/internal errors.
 */

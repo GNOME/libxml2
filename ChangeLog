@@ -1,3 +1,7 @@
+Mon Jun 27 13:44:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: added most HTML tests
+
 Mon Jun 27 14:06:10 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/namespaces/reconcile/tests.xml

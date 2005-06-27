@@ -23,6 +23,16 @@
 #include <libxml/xmlreader.h>
 #endif
 
+#ifdef LIBXML_HTML_ENABLED
+#include <libxml/HTMLparser.h>
+#include <libxml/HTMLtree.h>
+
+/*
+ * pseudo flag for the unification of HTML and XML tests
+ */
+#define XML_PARSE_HTML 1 << 24
+#endif
+
 typedef int (*functest) (const char *filename, const char *result,
                          const char *error, int options);
 
@@ -1074,6 +1084,119 @@ xmlSAXHandler debugSAX2HandlerStruct = {
 xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
 /**
+ * htmlstartElementDebug:
+ * @ctxt:  An XML parser context
+ * @name:  The element name
+ *
+ * called when an opening tag has been processed.
+ */
+static void
+htmlstartElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, const xmlChar **atts)
+{
+    int i;
+
+    fprintf(SAXdebug, "SAX.startElement(%s", (char *) name);
+    if (atts != NULL) {
+        for (i = 0;(atts[i] != NULL);i++) {
+	    fprintf(SAXdebug, ", %s", atts[i++]);
+	    if (atts[i] != NULL) {
+		unsigned char output[40];
+		const unsigned char *att = atts[i];
+		int outlen, attlen;
+	        fprintf(SAXdebug, "='");
+		while ((attlen = strlen((char*)att)) > 0) {
+		    outlen = sizeof output - 1;
+		    htmlEncodeEntities(output, &outlen, att, &attlen, '\'');
+		    output[outlen] = 0;
+		    fprintf(SAXdebug, "%s", (char *) output);
+		    att += attlen;
+		}
+		fprintf(SAXdebug, "'");
+	    }
+	}
+    }
+    fprintf(SAXdebug, ")\n");
+}
+
+/**
+ * htmlcharactersDebug:
+ * @ctxt:  An XML parser context
+ * @ch:  a xmlChar string
+ * @len: the number of xmlChar
+ *
+ * receiving some chars from the parser.
+ * Question: how much at a time ???
+ */
+static void
+htmlcharactersDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
+{
+    unsigned char output[40];
+    int inlen = len, outlen = 30;
+
+    htmlEncodeEntities(output, &outlen, ch, &inlen, 0);
+    output[outlen] = 0;
+
+    fprintf(SAXdebug, "SAX.characters(%s, %d)\n", output, len);
+}
+
+/**
+ * htmlcdataDebug:
+ * @ctxt:  An XML parser context
+ * @ch:  a xmlChar string
+ * @len: the number of xmlChar
+ *
+ * receiving some cdata chars from the parser.
+ * Question: how much at a time ???
+ */
+static void
+htmlcdataDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
+{
+    unsigned char output[40];
+    int inlen = len, outlen = 30;
+
+    htmlEncodeEntities(output, &outlen, ch, &inlen, 0);
+    output[outlen] = 0;
+
+    fprintf(SAXdebug, "SAX.cdata(%s, %d)\n", output, len);
+}
+
+xmlSAXHandler debugHTMLSAXHandlerStruct = {
+    internalSubsetDebug,
+    isStandaloneDebug,
+    hasInternalSubsetDebug,
+    hasExternalSubsetDebug,
+    resolveEntityDebug,
+    getEntityDebug,
+    entityDeclDebug,
+    notationDeclDebug,
+    attributeDeclDebug,
+    elementDeclDebug,
+    unparsedEntityDeclDebug,
+    setDocumentLocatorDebug,
+    startDocumentDebug,
+    endDocumentDebug,
+    htmlstartElementDebug,
+    endElementDebug,
+    referenceDebug,
+    htmlcharactersDebug,
+    ignorableWhitespaceDebug,
+    processingInstructionDebug,
+    commentDebug,
+    warningDebug,
+    errorDebug,
+    fatalErrorDebug,
+    getParameterEntityDebug,
+    htmlcdataDebug,
+    externalSubsetDebug,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+
+xmlSAXHandlerPtr debugHTMLSAXHandler = &debugHTMLSAXHandlerStruct;
+/**
  * saxParseTest:
  * @filename: the file to parse
  * @result: the file with expected result
@@ -1084,7 +1207,8 @@ xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
  * Returns 0 in case of success, an error code otherwise
  */
 static int
-saxParseTest(const char *filename, const char *result, const char *err,
+saxParseTest(const char *filename, const char *result,
+             const char *err ATTRIBUTE_UNUSED,
              int options) {
     int ret;
     char *temp;
@@ -1101,6 +1225,12 @@ saxParseTest(const char *filename, const char *result, const char *err,
 	return(-1);
     }
 
+#ifdef LIBXML_HTML_ENABLED
+    if (options & XML_PARSE_HTML) {
+	htmlSAXParseFile(filename, NULL, emptySAXHandler, NULL);
+	ret = 0;
+    } else
+#endif
     ret = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
     if (ret == XML_WAR_UNDECLARED_ENTITY) {
         fprintf(SAXdebug, "xmlSAXUserParseFile returned error %d\n", ret);
@@ -1110,6 +1240,12 @@ saxParseTest(const char *filename, const char *result, const char *err,
         fprintf(stderr, "Failed to parse %s\n", filename);
 	return(1);
     }
+#ifdef LIBXML_HTML_ENABLED
+    if (options & XML_PARSE_HTML) {
+	htmlSAXParseFile(filename, NULL, debugHTMLSAXHandler, NULL);
+	ret = 0;
+    } else
+#endif
     if (options & XML_PARSE_SAX1) {
 	ret = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
     } else {
@@ -1187,6 +1323,104 @@ oldParseTest(const char *filename, const char *result,
     free(temp);
     return(res);
 }
+
+#ifdef LIBXML_PUSH_ENABLED
+/**
+ * pushParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages: unused
+ *
+ * Parse a file using the Push API, then serialize back
+ * to check for content.
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+pushParseTest(const char *filename, const char *result,
+             const char *err ATTRIBUTE_UNUSED,
+	     int options) {
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr doc;
+    const char *base;
+    int size, res;
+    int cur = 0;
+
+    /*
+     * load the document in memory and work from there.
+     */
+    if (loadMem(filename, &base, &size) != 0) {
+        fprintf(stderr, "Failed to load %s\n", filename);
+	return(-1);
+    }
+    
+#ifdef LIBXML_HTML_ENABLED
+    if (options & XML_PARSE_HTML)
+	ctxt = htmlCreatePushParserCtxt(NULL, NULL, base + cur, 4, filename,
+	                                XML_CHAR_ENCODING_NONE);
+    else
+#endif
+    ctxt = xmlCreatePushParserCtxt(NULL, NULL, base + cur, 4, filename);
+    xmlCtxtUseOptions(ctxt, options);
+    cur += 4;
+    while (cur < size) {
+        if (cur + 1024 >= size) {
+#ifdef LIBXML_HTML_ENABLED
+	    if (options & XML_PARSE_HTML)
+		htmlParseChunk(ctxt, base + cur, size - cur, 1);
+	    else
+#endif
+	    xmlParseChunk(ctxt, base + cur, size - cur, 1);
+	    break;
+	} else {
+#ifdef LIBXML_HTML_ENABLED
+	    if (options & XML_PARSE_HTML)
+		htmlParseChunk(ctxt, base + cur, 1024, 0);
+	    else
+#endif
+	    xmlParseChunk(ctxt, base + cur, 1024, 0);
+	    cur += 1024;
+	}
+    }
+    doc = ctxt->myDoc;
+#ifdef LIBXML_HTML_ENABLED
+    if (options & XML_PARSE_HTML)
+        res = 1;
+    else
+#endif
+    res = ctxt->wellFormed;
+    xmlFreeParserCtxt(ctxt);
+    free((char *)base);
+    if (!res) {
+	xmlFreeDoc(doc);
+	fprintf(stderr, "Failed to parse %s\n", filename);
+	return(-1);
+    }
+#ifdef LIBXML_HTML_ENABLED
+    if (options & XML_PARSE_HTML)
+	htmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+    else
+#endif
+    xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+    xmlFreeDoc(doc);
+    res = compareFileMem(result, base, size);
+    if ((base == NULL) || (res != 0)) {
+	if (base != NULL)
+	    xmlFree((char *)base);
+        fprintf(stderr, "Result for %s failed\n", filename);
+	return(-1);
+    }
+    xmlFree((char *)base);
+    if (err != NULL) {
+	res = compareFileMem(err, testErrors, testErrorsSize);
+	if (res != 0) {
+	    fprintf(stderr, "Error for %s failed\n", filename);
+	    return(-1);
+	}
+    }
+    return(0);
+}
+#endif
 
 /**
  * memParseTest:
@@ -1305,12 +1539,24 @@ errParseTest(const char *filename, const char *result, const char *err,
     const char *base;
     int size, res;
 
-    xmlGetWarningsDefaultValue = 1;
-    doc = xmlReadFile(filename, NULL, options);
+#ifdef LIBXML_HTML_ENABLED
+    if (options & XML_PARSE_HTML) {
+        doc = htmlReadFile(filename, NULL, options);
+    } else
+#endif
+    {
+	xmlGetWarningsDefaultValue = 1;
+	doc = xmlReadFile(filename, NULL, options);
+    }
     if (doc == NULL) {
         base = "";
 	size = 0;
     } else {
+#ifdef LIBXML_HTML_ENABLED
+	if (options & XML_PARSE_HTML) {
+	    htmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+	} else
+#endif
 	xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
     }
     xmlGetWarningsDefaultValue = 0;
@@ -1608,6 +1854,24 @@ testDesc testDescriptions[] = {
     { "SAX2 callbacks regression tests" ,
       saxParseTest, "./test/*", "result/", ".sax2", NULL,
       0 },
+#ifdef LIBXML_PUSH_ENABLED
+    { "XML push regression tests" ,
+      pushParseTest, "./test/*", "result/", "", NULL,
+      0 },
+#endif
+#ifdef LIBXML_HTML_ENABLED
+    { "HTML regression tests" ,
+      errParseTest, "./test/HTML/*", "result/HTML/", "", ".err",
+      XML_PARSE_HTML },
+#ifdef LIBXML_PUSH_ENABLED
+    { "Push HTML regression tests" ,
+      pushParseTest, "./test/HTML/*", "result/HTML/", "", ".err",
+      XML_PARSE_HTML },
+#endif
+    { "HTML SAX regression tests" ,
+      saxParseTest, "./test/HTML/*", "result/HTML/", ".sax", NULL,
+      XML_PARSE_HTML },
+#endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 
@@ -1665,13 +1929,13 @@ launchTests(testDescPtr tst) {
 		testErrors[0] = 0;
 		res = tst->func(globbuf.gl_pathv[i], result, error,
 		                tst->options);
+		xmlResetLastError();
 		if (res != 0) {
 		    fprintf(stderr, "File %s generated an error\n",
 		            globbuf.gl_pathv[i]);
 		    err++;
 		}
 		else if (xmlMemUsed() != mem) {
-		    xmlResetLastError();
 		    if ((xmlMemUsed() != mem) &&
 		        (extraMemoryFromResolver == 0)) {
 			fprintf(stderr, "File %s leaked %d bytes\n",

@@ -1,3 +1,8 @@
+Mon Jun 27 17:02:14 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c include/libxml/tree.h: Added allocation/deallocation
+	  functions for the DOM-wrapper context.
+
 Mon Jun 27 15:41:30 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Commented the new functions to be experimental.

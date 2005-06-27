@@ -1122,6 +1122,10 @@ XMLPUBFUN void XMLCALL
 /*
 * DOM-wrapper helper functions.
 */
+XMLPUBFUN xmlDOMWrapCtxtPtr XMLCALL
+		xmlDOMWrapNewCtxt	(void);
+XMLPUBFUN void XMLCALL
+		xmlDOMWrapFreeCtxt	(xmlDOMWrapCtxtPtr ctxt);
 XMLPUBFUN int XMLCALL
 	    xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt,
 					 xmlNodePtr elem,

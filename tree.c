@@ -7127,6 +7127,41 @@ xmlSetCompressMode(int mode) {
     else xmlCompressMode = mode;
 }
 
+/*
+* xmlDOMWrapNewCtxt:
+*
+* Allocates and initializes a new DOM-wrapper context.
+*
+* Returns the xmlDOMWrapCtxtPtr or NULL in case of an internal errror. 
+*/
+xmlDOMWrapCtxtPtr
+xmlDOMWrapNewCtxt(void)
+{
+    xmlDOMWrapCtxtPtr ret;
+
+    ret = xmlMalloc(sizeof(xmlDOMWrapCtxt));
+    if (ret == NULL) {
+	xmlTreeErrMemory("allocating DOM-wrapper context");
+	return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlDOMWrapCtxt));
+    return (ret);
+}
+
+/*
+* xmlDOMWrapFreeCtxt:
+* @ctxt: the DOM-wrapper context
+*
+* Frees the DOM-wrapper context.
+*/
+void
+xmlDOMWrapFreeCtxt(xmlDOMWrapCtxtPtr ctxt)
+{
+    if (ctxt == NULL)
+	return;
+    xmlFree(ctxt);
+}
+
 #define XML_TREE_NSMAP_PARENT -1
 #define XML_TREE_NSMAP_XML -2
 #define XML_TREE_NSMAP_DOC -3
@@ -8540,7 +8575,7 @@ internal_error:
 * @sourceDoc: the optional sourceDoc
 * @node: the node to start with
 * @destDoc: the destination doc
-* @parent: the optional new parent of @node in @destDoc
+* @destParent: the optional new parent of @node in @destDoc
 * @options: option flags
 *
 * Ensures that ns-references point to @destDoc: either to

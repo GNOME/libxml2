@@ -1,3 +1,9 @@
+Mon Jun 27 11:39:50 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* result/*.sax2 MAkefile.am: added SAXv2 regression tests apparently
+	  missing.
+	* runtest.c: added SAX1/SAX2 checks.
+
 Mon Jun 27 12:24:54 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c include/libxml/tree.h: Added

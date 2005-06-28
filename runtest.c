@@ -19,6 +19,7 @@
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <libxml/uri.h>
 #ifdef LIBXML_READER_ENABLED
 #include <libxml/xmlreader.h>
 #endif
@@ -1834,7 +1835,7 @@ streamMemParseTest(const char *filename, const char *result, const char *err,
 #ifdef LIBXML_XPATH_ENABLED
 /************************************************************************
  *									*
- *		XPath based tests					*
+ *		XPath and XPointer based tests				*
  *									*
  ************************************************************************/
 
@@ -2123,7 +2124,166 @@ xmlidDocTest(const char *filename,
 #endif /* XPATH */
 /************************************************************************
  *									*
- *		Tests Descriptions					*
+ *			URI based tests					*
+ *									*
+ ************************************************************************/
+
+static void
+handleURI(const char *str, const char *base, FILE *o) {
+    int ret;
+    xmlURIPtr uri;
+    xmlChar *res = NULL, *parsed = NULL;
+
+    uri = xmlCreateURI();
+
+    if (base == NULL) {
+	ret = xmlParseURIReference(uri, str);
+	if (ret != 0)
+	    fprintf(o, "%s : error %d\n", str, ret);
+	else {
+	    xmlNormalizeURIPath(uri->path);
+	    xmlPrintURI(o, uri);
+	    fprintf(o, "\n");
+	}
+    } else {
+	res = xmlBuildURI((xmlChar *)str, (xmlChar *) base);
+	if (res != NULL) {
+	    fprintf(o, "%s\n", (char *) res);
+	}
+	else
+	    fprintf(o, "::ERROR::\n");
+    }
+    if (res != NULL)
+	xmlFree(res);
+    if (parsed != NULL)
+	xmlFree(parsed);
+    xmlFreeURI(uri);
+}
+
+/**
+ * uriCommonTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing URI and check for errors
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+uriCommonTest(const char *filename,
+             const char *result,
+             const char *err,
+             const char *base) {
+    char *temp;
+    FILE *o, *f;
+    char str[1024];
+    int res = 0, i, ret;
+
+    temp = resultFilename(filename, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    o = fopen(temp, "w");
+    if (o == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+        free(temp);
+	return(-1);
+    }
+    f = fopen(filename, "r");
+    if (f == NULL) {
+	fprintf(stderr, "failed to open input file %s\n", filename);
+	fclose(o);
+	unlink(temp);
+        free(temp);
+	return(-1);
+    }
+
+    while (1) {
+	/*
+	 * read one line in string buffer.
+	 */
+	if (fgets (&str[0], sizeof (str) - 1, f) == NULL)
+	   break;
+
+	/*
+	 * remove the ending spaces
+	 */
+	i = strlen(str);
+	while ((i > 0) &&
+	       ((str[i - 1] == '\n') || (str[i - 1] == '\r') ||
+		(str[i - 1] == ' ') || (str[i - 1] == '\t'))) {
+	    i--;
+	    str[i] = 0;
+	}
+	handleURI(str, base, o);
+    }
+
+    fclose(f);
+    fclose(o);
+
+    if (result != NULL) {
+	ret = compareFiles(temp, result);
+	if (ret) {
+	    fprintf(stderr, "Result for %s failed\n", filename);
+	    res = 1;
+	}
+    }
+    if (err != NULL) {
+	ret = compareFileMem(err, testErrors, testErrorsSize);
+	if (ret != 0) {
+	    fprintf(stderr, "Error for %s failed\n", filename);
+	    res = 1;
+	}
+    }
+
+    unlink(temp);
+    free(temp);
+    return(res);
+}
+
+/**
+ * uriParseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing URI and check for errors
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+uriParseTest(const char *filename,
+             const char *result,
+             const char *err,
+             int options ATTRIBUTE_UNUSED) {
+    return(uriCommonTest(filename, result, err, NULL));
+}
+
+/**
+ * uriBaseTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing URI, compose them against a fixed base and
+ * check for errors
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+uriBaseTest(const char *filename,
+             const char *result,
+             const char *err,
+             int options ATTRIBUTE_UNUSED) {
+    return(uriCommonTest(filename, result, err,
+                         "http://foo.com/path/to/index.html?orig#help"));
+}
+
+/************************************************************************
+ *									*
+ *			Tests Descriptions				*
  *									*
  ************************************************************************/
 
@@ -2230,6 +2390,12 @@ testDesc testDescriptions[] = {
       xmlidDocTest, "./test/xmlid/*", "result/xmlid/", "", ".err",
       0 },
 #endif
+    { "URI parsing tests" ,
+      uriParseTest, "./test/URI/*.uri", "result/URI/", "", NULL,
+      0 },
+    { "URI base composition tests" ,
+      uriBaseTest, "./test/URI/*.data", "result/URI/", "", NULL,
+      0 },
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 

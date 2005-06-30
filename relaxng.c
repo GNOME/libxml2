@@ -6908,6 +6908,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         xmlRngPErr(ctxt, cur, XML_RNGP_MISSING_HREF,
                                    "xmlRelaxNGParse: externalRef has no href attribute\n",
                                    NULL, NULL);
+                        if (ns != NULL)
+                            xmlFree(ns);
                         delete = cur;
                         goto skip_children;
                     }
@@ -6916,6 +6918,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         xmlRngPErr(ctxt, cur, XML_RNGP_HREF_ERROR,
                                    "Incorrect URI for externalRef %s\n",
                                    href, NULL);
+                        if (ns != NULL)
+                            xmlFree(ns);
                         if (href != NULL)
                             xmlFree(href);
                         delete = cur;
@@ -6925,6 +6929,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         xmlRngPErr(ctxt, cur, XML_RNGP_HREF_ERROR,
 			       "Fragment forbidden in URI for externalRef %s\n",
                                    href, NULL);
+                        if (ns != NULL)
+                            xmlFree(ns);
 		        xmlFreeURI(uri);
                         if (href != NULL)
                             xmlFree(href);
@@ -6938,6 +6944,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         xmlRngPErr(ctxt, cur, XML_RNGP_HREF_ERROR,
                                    "Failed to compute URL for externalRef %s\n",
                                    href, NULL);
+                        if (ns != NULL)
+                            xmlFree(ns);
                         if (href != NULL)
                             xmlFree(href);
                         if (base != NULL)
@@ -6954,6 +6962,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         xmlRngPErr(ctxt, cur, XML_RNGP_EXTERNAL_REF_FAILURE,
                                    "Failed to load externalRef %s\n", URL,
                                    NULL);
+                        if (ns != NULL)
+                            xmlFree(ns);
                         xmlFree(URL);
                         delete = cur;
                         goto skip_children;

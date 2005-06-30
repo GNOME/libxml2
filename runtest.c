@@ -36,6 +36,20 @@
 #endif
 #endif
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+#include <libxml/relaxng.h>
+#include <libxml/xmlschemas.h>
+#include <libxml/xmlschemastypes.h>
+#endif
+
+#ifdef LIBXML_PATTERN_ENABLED
+#include <libxml/pattern.h>
+#endif
+
+#ifdef LIBXML_C14N_ENABLED
+#include <libxml/c14n.h>
+#endif
+
 #ifdef LIBXML_HTML_ENABLED
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
@@ -44,6 +58,17 @@
  * pseudo flag for the unification of HTML and XML tests
  */
 #define XML_PARSE_HTML 1 << 24
+#endif
+
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
+#include <libxml/globals.h>
+#include <libxml/threads.h>
+#include <libxml/parser.h>
+#include <libxml/catalog.h>
+#include <string.h>
+#if !defined(_MSC_VER)
+#include <unistd.h>
+#endif
 #endif
 
 typedef int (*functest) (const char *filename, const char *result,
@@ -68,6 +93,9 @@ static int checkTestFile(const char *filename);
  *									*
  ************************************************************************/
 
+static int nb_tests = 0;
+static int nb_errors = 0;
+static int nb_leaks = 0;
 static long libxmlMemoryAllocatedBase = 0;
 static int extraMemoryFromResolver = 0;
 
@@ -128,6 +156,266 @@ testErrorHandler(void *ctx  ATTRIBUTE_UNUSED, const char *msg, ...) {
 }
 
 static void
+channel(void *ctx  ATTRIBUTE_UNUSED, const char *msg, ...) {
+    va_list args;
+    int res;
+
+    if (testErrorsSize >= 32768)
+        return;
+    va_start(args, msg);
+    res = vsnprintf(&testErrors[testErrorsSize],
+                    32768 - testErrorsSize,
+		    msg, args);
+    va_end(args);
+    if (testErrorsSize + res >= 32768) {
+        /* buffer is full */
+	testErrorsSize = 32768;
+	testErrors[testErrorsSize] = 0;
+    } else {
+        testErrorsSize += res;
+    }
+    testErrors[testErrorsSize] = 0;
+}
+
+/**
+ * xmlParserPrintFileContext:
+ * @input:  an xmlParserInputPtr input
+ * 
+ * Displays current context within the input content for error tracking
+ */
+
+static void
+xmlParserPrintFileContextInternal(xmlParserInputPtr input , 
+		xmlGenericErrorFunc chanl, void *data ) {
+    const xmlChar *cur, *base;
+    unsigned int n, col;	/* GCC warns if signed, because compared with sizeof() */
+    xmlChar  content[81]; /* space for 80 chars + line terminator */
+    xmlChar *ctnt;
+
+    if (input == NULL) return;
+    cur = input->cur;
+    base = input->base;
+    /* skip backwards over any end-of-lines */
+    while ((cur > base) && ((*(cur) == '\n') || (*(cur) == '\r'))) {
+	cur--;
+    }
+    n = 0;
+    /* search backwards for beginning-of-line (to max buff size) */
+    while ((n++ < (sizeof(content)-1)) && (cur > base) && 
+    	   (*(cur) != '\n') && (*(cur) != '\r'))
+        cur--;
+    if ((*(cur) == '\n') || (*(cur) == '\r')) cur++;
+    /* calculate the error position in terms of the current position */
+    col = input->cur - cur;
+    /* search forward for end-of-line (to max buff size) */
+    n = 0;
+    ctnt = content;
+    /* copy selected text to our buffer */
+    while ((*cur != 0) && (*(cur) != '\n') && 
+    	   (*(cur) != '\r') && (n < sizeof(content)-1)) {
+		*ctnt++ = *cur++;
+	n++;
+    }
+    *ctnt = 0;
+    /* print out the selected text */
+    chanl(data ,"%s\n", content);
+    /* create blank line with problem pointer */
+    n = 0;
+    ctnt = content;
+    /* (leave buffer space for pointer + line terminator) */
+    while ((n<col) && (n++ < sizeof(content)-2) && (*ctnt != 0)) {
+	if (*(ctnt) != '\t')
+	    *(ctnt) = ' ';
+	ctnt++;
+    }
+    *ctnt++ = '^';
+    *ctnt = 0;
+    chanl(data ,"%s\n", content);
+}
+
+static void
+testStructuredErrorHandler(void *ctx  ATTRIBUTE_UNUSED, xmlErrorPtr err) {
+    char *file = NULL;
+    int line = 0;
+    int code = -1;
+    int domain;
+    void *data = NULL;
+    const char *str;
+    const xmlChar *name = NULL;
+    xmlNodePtr node;
+    xmlErrorLevel level;
+    xmlParserInputPtr input = NULL;
+    xmlParserInputPtr cur = NULL;
+    xmlParserCtxtPtr ctxt = NULL;
+
+    if (err == NULL)
+        return;
+
+    file = err->file;
+    line = err->line;
+    code = err->code;
+    domain = err->domain;
+    level = err->level;
+    node = err->node;
+    if ((domain == XML_FROM_PARSER) || (domain == XML_FROM_HTML) ||
+        (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
+	(domain == XML_FROM_IO) || (domain == XML_FROM_VALID)) {
+	ctxt = err->ctxt;
+    }
+    str = err->message;
+
+    if (code == XML_ERR_OK)
+        return;
+
+    if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
+        name = node->name;
+
+    /*
+     * Maintain the compatibility with the legacy error handling
+     */
+    if (ctxt != NULL) {
+        input = ctxt->input;
+        if ((input != NULL) && (input->filename == NULL) &&
+            (ctxt->inputNr > 1)) {
+            cur = input;
+            input = ctxt->inputTab[ctxt->inputNr - 2];
+        }
+        if (input != NULL) {
+            if (input->filename)
+                channel(data, "%s:%d: ", input->filename, input->line);
+            else if ((line != 0) && (domain == XML_FROM_PARSER))
+                channel(data, "Entity: line %d: ", input->line);
+        }
+    } else {
+        if (file != NULL)
+            channel(data, "%s:%d: ", file, line);
+        else if ((line != 0) && (domain == XML_FROM_PARSER))
+            channel(data, "Entity: line %d: ", line);
+    }
+    if (name != NULL) {
+        channel(data, "element %s: ", name);
+    }
+    if (code == XML_ERR_OK)
+        return;
+    switch (domain) {
+        case XML_FROM_PARSER:
+            channel(data, "parser ");
+            break;
+        case XML_FROM_NAMESPACE:
+            channel(data, "namespace ");
+            break;
+        case XML_FROM_DTD:
+        case XML_FROM_VALID:
+            channel(data, "validity ");
+            break;
+        case XML_FROM_HTML:
+            channel(data, "HTML parser ");
+            break;
+        case XML_FROM_MEMORY:
+            channel(data, "memory ");
+            break;
+        case XML_FROM_OUTPUT:
+            channel(data, "output ");
+            break;
+        case XML_FROM_IO:
+            channel(data, "I/O ");
+            break;
+        case XML_FROM_XINCLUDE:
+            channel(data, "XInclude ");
+            break;
+        case XML_FROM_XPATH:
+            channel(data, "XPath ");
+            break;
+        case XML_FROM_XPOINTER:
+            channel(data, "parser ");
+            break;
+        case XML_FROM_REGEXP:
+            channel(data, "regexp ");
+            break;
+        case XML_FROM_MODULE:
+            channel(data, "module ");
+            break;
+        case XML_FROM_SCHEMASV:
+            channel(data, "Schemas validity ");
+            break;
+        case XML_FROM_SCHEMASP:
+            channel(data, "Schemas parser ");
+            break;
+        case XML_FROM_RELAXNGP:
+            channel(data, "Relax-NG parser ");
+            break;
+        case XML_FROM_RELAXNGV:
+            channel(data, "Relax-NG validity ");
+            break;
+        case XML_FROM_CATALOG:
+            channel(data, "Catalog ");
+            break;
+        case XML_FROM_C14N:
+            channel(data, "C14N ");
+            break;
+        case XML_FROM_XSLT:
+            channel(data, "XSLT ");
+            break;
+        default:
+            break;
+    }
+    if (code == XML_ERR_OK)
+        return;
+    switch (level) {
+        case XML_ERR_NONE:
+            channel(data, ": ");
+            break;
+        case XML_ERR_WARNING:
+            channel(data, "warning : ");
+            break;
+        case XML_ERR_ERROR:
+            channel(data, "error : ");
+            break;
+        case XML_ERR_FATAL:
+            channel(data, "error : ");
+            break;
+    }
+    if (code == XML_ERR_OK)
+        return;
+    if (str != NULL) {
+        int len;
+	len = xmlStrlen((const xmlChar *)str);
+	if ((len > 0) && (str[len - 1] != '\n'))
+	    channel(data, "%s\n", str);
+	else
+	    channel(data, "%s", str);
+    } else {
+        channel(data, "%s\n", "out of memory error");
+    }
+    if (code == XML_ERR_OK)
+        return;
+
+    if (ctxt != NULL) {
+        xmlParserPrintFileContextInternal(input, channel, data);
+        if (cur != NULL) {
+            if (cur->filename)
+                channel(data, "%s:%d: \n", cur->filename, cur->line);
+            else if ((line != 0) && (domain == XML_FROM_PARSER))
+                channel(data, "Entity: line %d: \n", cur->line);
+            xmlParserPrintFileContextInternal(cur, channel, data);
+        }
+    }
+    if ((domain == XML_FROM_XPATH) && (err->str1 != NULL) &&
+        (err->int1 < 100) &&
+	(err->int1 < xmlStrlen((const xmlChar *)err->str1))) {
+	xmlChar buf[150];
+	int i;
+
+	channel(data, "%s\n", err->str1);
+	for (i=0;i < err->int1;i++)
+	     buf[i] = ' ';
+	buf[i++] = '^';
+	buf[i] = 0;
+	channel(data, "%s\n", buf);
+    }
+}
+
+static void
 initializeLibxml2(void) {
     xmlGetWarningsDefaultValue = 0;
     xmlPedanticParserDefault(0);
@@ -135,7 +423,11 @@ initializeLibxml2(void) {
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
     xmlInitParser();
     xmlSetExternalEntityLoader(testExternalEntityLoader);
-    xmlSetGenericErrorFunc(NULL, testErrorHandler);
+    xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
+#ifdef LIBXML_SCHEMAS_ENABLED
+    xmlSchemaInitTypes();
+    xmlRelaxNGInitTypes();
+#endif
     libxmlMemoryAllocatedBase = xmlMemUsed();
 }
 
@@ -1226,6 +1518,7 @@ saxParseTest(const char *filename, const char *result,
     int ret;
     char *temp;
 
+    nb_tests++;
     temp = resultFilename(filename, "", ".res");
     if (temp == NULL) {
         fprintf(stderr, "out of memory\n");
@@ -1237,6 +1530,10 @@ saxParseTest(const char *filename, const char *result,
 	free(temp);
 	return(-1);
     }
+
+    /* for SAX we really want the callbacks though the context handlers */
+    xmlSetStructuredErrorFunc(NULL, NULL);
+    xmlSetGenericErrorFunc(NULL, testErrorHandler);
 
 #ifdef LIBXML_HTML_ENABLED
     if (options & XML_PARSE_HTML) {
@@ -1270,11 +1567,16 @@ saxParseTest(const char *filename, const char *result,
     }
     fclose(SAXdebug);
     if (compareFiles(temp, result)) {
+        fprintf(stderr, "Got a difference for %s\n", filename);
         ret = 1;
-    }
+    } else
     unlink(temp);
     free(temp);
     
+    /* switch back to structured error handling */
+    xmlSetGenericErrorFunc(NULL, NULL);
+    xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
+
     return(ret);
 }
 
@@ -1303,6 +1605,7 @@ oldParseTest(const char *filename, const char *result,
     char *temp;
     int res = 0;
 
+    nb_tests++;
     /*
      * base of the test, parse with the old API
      */
@@ -1359,6 +1662,7 @@ pushParseTest(const char *filename, const char *result,
     int size, res;
     int cur = 0;
 
+    nb_tests++;
     /*
      * load the document in memory and work from there.
      */
@@ -1455,6 +1759,7 @@ memParseTest(const char *filename, const char *result,
     const char *base;
     int size, res;
 
+    nb_tests++;
     /*
      * load and parse the memory
      */
@@ -1501,6 +1806,7 @@ noentParseTest(const char *filename, const char *result,
     char *temp;
     int res = 0;
 
+    nb_tests++;
     /*
      * base of the test, parse with the old API
      */
@@ -1552,6 +1858,7 @@ errParseTest(const char *filename, const char *result, const char *err,
     const char *base = NULL;
     int size, res = 0;
 
+    nb_tests++;
 #ifdef LIBXML_HTML_ENABLED
     if (options & XML_PARSE_HTML) {
         doc = htmlReadFile(filename, NULL, options);
@@ -1637,65 +1944,10 @@ static void processNode(FILE *out, xmlTextReaderPtr reader) {
     else {
 	fprintf(out, " %s\n", value);
     }
-#if 0
-#ifdef LIBXML_PATTERN_ENABLED
-    if (patternc) {
-        xmlChar *path = NULL;
-        int match = -1;
-	
-	if (type == XML_READER_TYPE_ELEMENT) {
-	    /* do the check only on element start */
-	    match = xmlPatternMatch(patternc, xmlTextReaderCurrentNode(reader));
-
-	    if (match) {
-		path = xmlGetNodePath(xmlTextReaderCurrentNode(reader));
-		fprintf(out, "Node %s matches pattern %s\n", path, pattern);
-	    }
-	}
-	if (patstream != NULL) {
-	    int ret;
-
-	    if (type == XML_READER_TYPE_ELEMENT) {
-		ret = xmlStreamPush(patstream,
-		                    xmlTextReaderConstLocalName(reader),
-				    xmlTextReaderConstNamespaceUri(reader));
-		if (ret < 0) {
-		    fprintf(stderr, "xmlStreamPush() failure\n");
-                    xmlFreeStreamCtxt(patstream);
-		    patstream = NULL;
-		} else if (ret != match) {
-		    if (path == NULL) {
-		        path = xmlGetNodePath(
-		                       xmlTextReaderCurrentNode(reader));
-		    }
-		    fprintf(stderr,
-		            "xmlPatternMatch and xmlStreamPush disagree\n");
-		    fprintf(stderr,
-		            "  pattern %s node %s\n",
-			    pattern, path);
-		}
-		
-
-	    } 
-	    if ((type == XML_READER_TYPE_END_ELEMENT) ||
-	        ((type == XML_READER_TYPE_ELEMENT) && (empty))) {
-	        ret = xmlStreamPop(patstream);
-		if (ret < 0) {
-		    fprintf(stderr, "xmlStreamPop() failure\n");
-                    xmlFreeStreamCtxt(patstream);
-		    patstream = NULL;
-		}
-	    }
-	}
-	if (path != NULL)
-	    xmlFree(path);
-    }
-#endif
-#endif
 }
 static int
 streamProcessTest(const char *filename, const char *result, const char *err,
-                  xmlTextReaderPtr reader) {
+                  xmlTextReaderPtr reader, const char *rng) {
     int ret;
     char *temp = NULL;
     FILE *t = NULL;
@@ -1703,6 +1955,7 @@ streamProcessTest(const char *filename, const char *result, const char *err,
     if (reader == NULL)
         return(-1);
 
+    nb_tests++;
     if (result != NULL) {
 	temp = resultFilename(filename, "", ".res");
 	if (temp == NULL) {
@@ -1716,15 +1969,33 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 	    return(-1);
 	}
     }
+    if (rng != NULL) {
+	ret = xmlTextReaderRelaxNGValidate(reader, rng);
+	if (ret < 0) {
+	    testErrorHandler(NULL, "Relax-NG schema %s failed to compile\n",
+	                     rng);
+	    fclose(t);
+	    unlink(temp);
+	    free(temp);
+	    return(0);
+	}
+    }
     xmlGetWarningsDefaultValue = 1;
     ret = xmlTextReaderRead(reader);
     while (ret == 1) {
-	if (t != NULL)
+	if ((t != NULL) && (rng == NULL))
 	    processNode(t, reader);
         ret = xmlTextReaderRead(reader);
     }
     if (ret != 0) {
         testErrorHandler(NULL, "%s : failed to parse\n", filename);
+    }
+    if (rng != NULL) {
+        if (xmlTextReaderIsValid(reader) != 1) {
+	    testErrorHandler(NULL, "%s fails to validate\n", filename);
+	} else {
+	    testErrorHandler(NULL, "%s validates\n", filename);
+	}
     }
     xmlGetWarningsDefaultValue = 0;
     if (t != NULL) {
@@ -1741,6 +2012,7 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 	ret = compareFileMem(err, testErrors, testErrorsSize);
 	if (ret != 0) {
 	    fprintf(stderr, "Error for %s failed\n", filename);
+	    printf("%s", testErrors);
 	    return(-1);
 	}
     }
@@ -1765,7 +2037,7 @@ streamParseTest(const char *filename, const char *result, const char *err,
     int ret;
 
     reader = xmlReaderForFile(filename, NULL, options);
-    ret = streamProcessTest(filename, result, err, reader);
+    ret = streamProcessTest(filename, result, err, reader, NULL);
     xmlFreeTextReader(reader);
     return(ret);
 }
@@ -1793,7 +2065,7 @@ walkerParseTest(const char *filename, const char *result, const char *err,
 	return(-1);
     }
     reader = xmlReaderWalker(doc);
-    ret = streamProcessTest(filename, result, err, reader);
+    ret = streamProcessTest(filename, result, err, reader, NULL);
     xmlFreeTextReader(reader);
     xmlFreeDoc(doc);
     return(ret);
@@ -1825,7 +2097,7 @@ streamMemParseTest(const char *filename, const char *result, const char *err,
 	return(-1);
     }
     reader = xmlReaderForMemory(base, size, filename, NULL, options);
-    ret = streamProcessTest(filename, result, err, reader);
+    ret = streamProcessTest(filename, result, err, reader, NULL);
     free((char *)base);
     xmlFreeTextReader(reader);
     return(ret);
@@ -1847,6 +2119,7 @@ testXPath(const char *str, int xptr, int expr) {
     xmlXPathObjectPtr res;
     xmlXPathContextPtr ctxt;
     
+    nb_tests++;
 #if defined(LIBXML_XPTR_ENABLED)
     if (xptr) {
 	ctxt = xmlXPtrNewContext(xpathDocument, NULL, NULL);
@@ -2217,6 +2490,7 @@ uriCommonTest(const char *filename,
 	    i--;
 	    str[i] = 0;
 	}
+	nb_tests++;
 	handleURI(str, base, o);
     }
 
@@ -2281,6 +2555,1226 @@ uriBaseTest(const char *filename,
                          "http://foo.com/path/to/index.html?orig#help"));
 }
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+/************************************************************************
+ *									*
+ *			Schemas tests					*
+ *									*
+ ************************************************************************/
+static int
+schemasOneTest(const char *sch,
+               const char *filename,
+               const char *result,
+	       const char *err,
+	       int options,
+	       xmlSchemaPtr schemas) {
+    xmlDocPtr doc;
+    xmlSchemaValidCtxtPtr ctxt;
+    int ret = 0;
+    char *temp;
+    FILE *schemasOutput;
+
+    doc = xmlReadFile(filename, NULL, options);
+    if (doc == NULL) {
+        fprintf(stderr, "failed to parse instance %s for %s\n", filename, sch);
+	return(-1);
+    }
+
+    temp = resultFilename(result, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    schemasOutput = fopen(temp, "w");
+    if (schemasOutput == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+	xmlFreeDoc(doc);
+        free(temp);
+	return(-1);
+    }
+
+    ctxt = xmlSchemaNewValidCtxt(schemas);
+    xmlSchemaSetValidErrors(ctxt,
+         (xmlSchemaValidityErrorFunc) testErrorHandler,
+         (xmlSchemaValidityWarningFunc) testErrorHandler,
+	 ctxt);
+    ret = xmlSchemaValidateDoc(ctxt, doc);
+    if (ret == 0) {
+	fprintf(schemasOutput, "%s validates\n", filename);
+    } else if (ret > 0) {
+	fprintf(schemasOutput, "%s fails to validate\n", filename);
+    } else {
+	fprintf(schemasOutput, "%s validation generated an internal error\n",
+	       filename);
+    }
+    fclose(schemasOutput);
+    if (result) {
+	if (compareFiles(temp, result)) {
+	    fprintf(stderr, "Result for %s on %s failed\n", filename, sch);
+	    ret = 1;
+	}
+    }
+    unlink(temp);
+    free(temp);
+
+    if (err != NULL) {
+	if (compareFileMem(err, testErrors, testErrorsSize)) {
+	    fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
+	    ret = 1;
+	}
+    }
+
+
+    xmlSchemaFreeValidCtxt(ctxt);
+    xmlFreeDoc(doc);
+    return(ret);
+}
+/**
+ * schemasTest:
+ * @filename: the schemas file
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a file containing URI, compose them against a fixed base and
+ * check for errors
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+schemasTest(const char *filename,
+            const char *resul ATTRIBUTE_UNUSED,
+            const char *errr ATTRIBUTE_UNUSED,
+            int options) {
+    const char *base = baseFilename(filename);
+    const char *base2;
+    const char *instance;
+    xmlSchemaParserCtxtPtr ctxt;
+    xmlSchemaPtr schemas;
+    int res = 0, len, ret;
+    char pattern[500];
+    char prefix[500];
+    char result[500];
+    char err[500];
+    glob_t globbuf;
+    size_t i;
+    char count = 0;
+
+    /* first compile the schemas if possible */
+    ctxt = xmlSchemaNewParserCtxt(filename);
+    xmlSchemaSetParserErrors(ctxt,
+         (xmlSchemaValidityErrorFunc) testErrorHandler,
+         (xmlSchemaValidityWarningFunc) testErrorHandler,
+	 ctxt);
+    schemas = xmlSchemaParse(ctxt);
+    xmlSchemaFreeParserCtxt(ctxt);
+
+    /*
+     * most of the mess is about the output filenames generated by the Makefile
+     */
+    len = strlen(base);
+    if ((len > 499) || (len < 5)) {
+        xmlSchemaFree(schemas);
+	return(-1);
+    }
+    len -= 4; /* remove trailing .xsd */
+    if (base[len - 2] == '_') {
+        len -= 2; /* remove subtest number */
+    }
+    if (base[len - 2] == '_') {
+        len -= 2; /* remove subtest number */
+    }
+    memcpy(prefix, base, len);
+    prefix[len] = 0;
+
+    snprintf(pattern, 499, "./test/schemas/%s_?.xml", prefix);
+    pattern[499] = 0;
+
+    if (base[len] == '_') {
+        len += 2;
+	memcpy(prefix, base, len);
+	prefix[len] = 0;
+    }
+
+    globbuf.gl_offs = 0;
+    glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
+    for (i = 0;i < globbuf.gl_pathc;i++) {
+        testErrorsSize = 0;
+	testErrors[0] = 0;
+        instance = globbuf.gl_pathv[i];
+	base2 = baseFilename(instance);
+	len = strlen(base2);
+	if ((len > 6) && (base2[len - 6] == '_')) {
+	    count = base2[len - 5];
+	    snprintf(result, 499, "result/schemas/%s_%c",
+		     prefix, count);
+	    result[499] = 0;
+	    snprintf(err, 499, "result/schemas/%s_%c.err",
+		     prefix, count);
+	    err[499] = 0;
+	} else {
+	    fprintf(stderr, "don't know how to process %s\n", instance);
+	    continue;
+	}
+	if (schemas == NULL) {
+	} else {
+	    nb_tests++;
+	    ret = schemasOneTest(filename, instance, result, err,
+	                         options, schemas);
+	    if (res != 0)
+		ret = res;
+	}
+    }
+    globfree(&globbuf);
+    xmlSchemaFree(schemas);
+
+    return(res);
+}
+
+/************************************************************************
+ *									*
+ *			Schemas tests					*
+ *									*
+ ************************************************************************/
+static int
+rngOneTest(const char *sch,
+               const char *filename,
+               const char *result,
+	       const char *err,
+	       int options,
+	       xmlRelaxNGPtr schemas) {
+    xmlDocPtr doc;
+    xmlRelaxNGValidCtxtPtr ctxt;
+    int ret = 0;
+    char *temp;
+    FILE *schemasOutput;
+
+    doc = xmlReadFile(filename, NULL, options);
+    if (doc == NULL) {
+        fprintf(stderr, "failed to parse instance %s for %s\n", filename, sch);
+	return(-1);
+    }
+
+    temp = resultFilename(result, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    schemasOutput = fopen(temp, "w");
+    if (schemasOutput == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+	xmlFreeDoc(doc);
+        free(temp);
+	return(-1);
+    }
+
+    ctxt = xmlRelaxNGNewValidCtxt(schemas);
+    xmlRelaxNGSetValidErrors(ctxt,
+         (xmlRelaxNGValidityErrorFunc) testErrorHandler,
+         (xmlRelaxNGValidityWarningFunc) testErrorHandler,
+	 ctxt);
+    ret = xmlRelaxNGValidateDoc(ctxt, doc);
+    if (ret == 0) {
+	testErrorHandler(NULL, "%s validates\n", filename);
+    } else if (ret > 0) {
+	testErrorHandler(NULL, "%s fails to validate\n", filename);
+    } else {
+	testErrorHandler(NULL, "%s validation generated an internal error\n",
+	       filename);
+    }
+    fclose(schemasOutput);
+    if (result) {
+	if (compareFiles(temp, result)) {
+	    fprintf(stderr, "Result for %s on %s failed\n", filename, sch);
+	    ret = 1;
+	}
+    }
+    unlink(temp);
+    free(temp);
+
+    if (err != NULL) {
+	if (compareFileMem(err, testErrors, testErrorsSize)) {
+	    fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
+	    ret = 1;
+	    printf("%s", testErrors);
+	}
+    }
+
+
+    xmlRelaxNGFreeValidCtxt(ctxt);
+    xmlFreeDoc(doc);
+    return(ret);
+}
+/**
+ * rngTest:
+ * @filename: the schemas file
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse an RNG schemas and then apply it to the related .xml
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+rngTest(const char *filename,
+            const char *resul ATTRIBUTE_UNUSED,
+            const char *errr ATTRIBUTE_UNUSED,
+            int options) {
+    const char *base = baseFilename(filename);
+    const char *base2;
+    const char *instance;
+    xmlRelaxNGParserCtxtPtr ctxt;
+    xmlRelaxNGPtr schemas;
+    int res = 0, len, ret;
+    char pattern[500];
+    char prefix[500];
+    char result[500];
+    char err[500];
+    glob_t globbuf;
+    size_t i;
+    char count = 0;
+
+    /* first compile the schemas if possible */
+    ctxt = xmlRelaxNGNewParserCtxt(filename);
+    xmlRelaxNGSetParserErrors(ctxt,
+         (xmlRelaxNGValidityErrorFunc) testErrorHandler,
+         (xmlRelaxNGValidityWarningFunc) testErrorHandler,
+	 ctxt);
+    schemas = xmlRelaxNGParse(ctxt);
+    xmlRelaxNGFreeParserCtxt(ctxt);
+
+    /*
+     * most of the mess is about the output filenames generated by the Makefile
+     */
+    len = strlen(base);
+    if ((len > 499) || (len < 5)) {
+        xmlRelaxNGFree(schemas);
+	return(-1);
+    }
+    len -= 4; /* remove trailing .rng */
+    memcpy(prefix, base, len);
+    prefix[len] = 0;
+
+    snprintf(pattern, 499, "./test/relaxng/%s_?.xml", prefix);
+    pattern[499] = 0;
+
+    globbuf.gl_offs = 0;
+    glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
+    for (i = 0;i < globbuf.gl_pathc;i++) {
+        testErrorsSize = 0;
+	testErrors[0] = 0;
+        instance = globbuf.gl_pathv[i];
+	base2 = baseFilename(instance);
+	len = strlen(base2);
+	if ((len > 6) && (base2[len - 6] == '_')) {
+	    count = base2[len - 5];
+	    snprintf(result, 499, "result/relaxng/%s_%c",
+		     prefix, count);
+	    result[499] = 0;
+	    snprintf(err, 499, "result/relaxng/%s_%c.err",
+		     prefix, count);
+	    err[499] = 0;
+	} else {
+	    fprintf(stderr, "don't know how to process %s\n", instance);
+	    continue;
+	}
+	if (schemas == NULL) {
+	} else {
+	    nb_tests++;
+	    ret = rngOneTest(filename, instance, result, err,
+	                         options, schemas);
+	    if (res != 0)
+		ret = res;
+	}
+    }
+    globfree(&globbuf);
+    xmlRelaxNGFree(schemas);
+
+    return(res);
+}
+
+/**
+ * rngStreamTest:
+ * @filename: the schemas file
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a set of files with streaming, applying an RNG schemas 
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+rngStreamTest(const char *filename,
+            const char *resul ATTRIBUTE_UNUSED,
+            const char *errr ATTRIBUTE_UNUSED,
+            int options) {
+    const char *base = baseFilename(filename);
+    const char *base2;
+    const char *instance;
+    int res = 0, len, ret;
+    char pattern[500];
+    char prefix[500];
+    char result[500];
+    char err[500];
+    glob_t globbuf;
+    size_t i;
+    char count = 0;
+    xmlTextReaderPtr reader;
+    int disable_err = 0;
+
+    /*
+     * most of the mess is about the output filenames generated by the Makefile
+     */
+    len = strlen(base);
+    if ((len > 499) || (len < 5)) {
+	fprintf(stderr, "len(base) == %d !\n", len);
+	return(-1);
+    }
+    len -= 4; /* remove trailing .rng */
+    memcpy(prefix, base, len);
+    prefix[len] = 0;
+
+    /*
+     * strictly unifying the error messages is nearly impossible this
+     * hack is also done in the Makefile
+     */
+    if ((!strcmp(prefix, "tutor10_1")) || (!strcmp(prefix, "tutor10_2")) ||
+        (!strcmp(prefix, "tutor3_2"))) 
+	disable_err = 1;
+
+    snprintf(pattern, 499, "./test/relaxng/%s_?.xml", prefix);
+    pattern[499] = 0;
+
+    globbuf.gl_offs = 0;
+    glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
+    for (i = 0;i < globbuf.gl_pathc;i++) {
+        testErrorsSize = 0;
+	testErrors[0] = 0;
+        instance = globbuf.gl_pathv[i];
+	base2 = baseFilename(instance);
+	len = strlen(base2);
+	if ((len > 6) && (base2[len - 6] == '_')) {
+	    count = base2[len - 5];
+	    snprintf(result, 499, "result/relaxng/%s_%c",
+		     prefix, count);
+	    result[499] = 0;
+	    snprintf(err, 499, "result/relaxng/%s_%c.err",
+		     prefix, count);
+	    err[499] = 0;
+	} else {
+	    fprintf(stderr, "don't know how to process %s\n", instance);
+	    continue;
+	}
+	reader = xmlReaderForFile(instance, NULL, options);
+	if (reader == NULL) {
+	    fprintf(stderr, "Failed to build reder for %s\n", instance);
+	}
+	if (disable_err == 1)
+	    ret = streamProcessTest(instance, result, NULL, reader, filename);
+	else
+	    ret = streamProcessTest(instance, result, err, reader, filename);
+	xmlFreeTextReader(reader);
+	if (ret != 0) {
+	    fprintf(stderr, "instance %s failed\n", instance);
+	    res = ret;
+	}
+    }
+    globfree(&globbuf);
+
+    return(res);
+}
+
+
+#endif
+
+#ifdef LIBXML_PATTERN_ENABLED
+/************************************************************************
+ *									*
+ *			Patterns tests					*
+ *									*
+ ************************************************************************/
+static void patternNode(FILE *out, xmlTextReaderPtr reader,
+                        const char *pattern, xmlPatternPtr patternc,
+			xmlStreamCtxtPtr patstream) {
+    xmlChar *path = NULL;
+    int match = -1;
+    int type, empty;
+
+    type = xmlTextReaderNodeType(reader);
+    empty = xmlTextReaderIsEmptyElement(reader);
+	
+    if (type == XML_READER_TYPE_ELEMENT) {
+	/* do the check only on element start */
+	match = xmlPatternMatch(patternc, xmlTextReaderCurrentNode(reader));
+
+	if (match) {
+	    path = xmlGetNodePath(xmlTextReaderCurrentNode(reader));
+	    fprintf(out, "Node %s matches pattern %s\n", path, pattern);
+	}
+    }
+    if (patstream != NULL) {
+	int ret;
+
+	if (type == XML_READER_TYPE_ELEMENT) {
+	    ret = xmlStreamPush(patstream,
+				xmlTextReaderConstLocalName(reader),
+				xmlTextReaderConstNamespaceUri(reader));
+	    if (ret < 0) {
+		fprintf(out, "xmlStreamPush() failure\n");
+		xmlFreeStreamCtxt(patstream);
+		patstream = NULL;
+	    } else if (ret != match) {
+		if (path == NULL) {
+		    path = xmlGetNodePath(
+				   xmlTextReaderCurrentNode(reader));
+		}
+		fprintf(out,
+			"xmlPatternMatch and xmlStreamPush disagree\n");
+		fprintf(out,
+			"  pattern %s node %s\n",
+			pattern, path);
+	    }
+	    
+
+	} 
+	if ((type == XML_READER_TYPE_END_ELEMENT) ||
+	    ((type == XML_READER_TYPE_ELEMENT) && (empty))) {
+	    ret = xmlStreamPop(patstream);
+	    if (ret < 0) {
+		fprintf(out, "xmlStreamPop() failure\n");
+		xmlFreeStreamCtxt(patstream);
+		patstream = NULL;
+	    }
+	}
+    }
+    if (path != NULL)
+	xmlFree(path);
+}
+
+/**
+ * patternTest:
+ * @filename: the schemas file
+ * @result: the file with expected result
+ * @err: the file with error messages
+ *
+ * Parse a set of files with streaming, applying an RNG schemas 
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+patternTest(const char *filename,
+            const char *resul ATTRIBUTE_UNUSED,
+            const char *err ATTRIBUTE_UNUSED,
+            int options) {
+    xmlPatternPtr patternc = NULL;
+    xmlStreamCtxtPtr patstream = NULL;
+    FILE *o, *f;
+    char str[1024];
+    char xml[500];
+    char result[500];
+    int len, i;
+    int ret = 0, res;
+    char *temp;
+    xmlTextReaderPtr reader;
+    xmlDocPtr doc;
+
+    len = strlen(filename);
+    len -= 4;
+    memcpy(xml, filename, len);
+    xml[len] = 0;
+    snprintf(result, 499, "result/pattern/%s", baseFilename(xml));
+    result[499] = 0;
+    memcpy(xml + len, ".xml", 5);
+
+    if (!checkTestFile(xml)) {
+	fprintf(stderr, "Missing xml file %s\n", xml);
+	return(-1);
+    }
+    if (!checkTestFile(result)) {
+	fprintf(stderr, "Missing result file %s\n", result);
+	return(-1);
+    }
+    f = fopen(filename, "r");
+    if (f == NULL) {
+        fprintf(stderr, "Failed to open %s\n", filename);
+	return(-1);
+    }
+    temp = resultFilename(filename, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    o = fopen(temp, "w");
+    if (o == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+	fclose(f);
+        free(temp);
+	return(-1);
+    }
+    while (1) {
+	/*
+	 * read one line in string buffer.
+	 */
+	if (fgets (&str[0], sizeof (str) - 1, f) == NULL)
+	   break;
+
+	/*
+	 * remove the ending spaces
+	 */
+	i = strlen(str);
+	while ((i > 0) &&
+	       ((str[i - 1] == '\n') || (str[i - 1] == '\r') ||
+		(str[i - 1] == ' ') || (str[i - 1] == '\t'))) {
+	    i--;
+	    str[i] = 0;
+	}
+	doc = xmlReadFile(xml, NULL, options);
+	if (doc == NULL) {
+	    fprintf(stderr, "Failed to parse %s\n", xml);
+	    ret = 1;
+	} else {
+	    xmlNodePtr root;
+	    const xmlChar *namespaces[22];
+	    int j;
+	    xmlNsPtr ns;
+
+	    root = xmlDocGetRootElement(doc);
+	    for (ns = root->nsDef, j = 0;ns != NULL && j < 20;ns=ns->next) {
+		namespaces[j++] = ns->href;
+		namespaces[j++] = ns->prefix;
+	    }
+	    namespaces[j++] = NULL;
+	    namespaces[j++] = NULL;
+
+	    patternc = xmlPatterncompile((const xmlChar *) str, doc->dict,
+					 0, &namespaces[0]);
+	    if (patternc == NULL) {
+		testErrorHandler(NULL,
+			"Pattern %s failed to compile\n", str);
+		xmlFreeDoc(doc);
+		ret = 1;
+		continue;
+	    }
+	    patstream = xmlPatternGetStreamCtxt(patternc);
+	    if (patstream != NULL) {
+		ret = xmlStreamPush(patstream, NULL, NULL);
+		if (ret < 0) {
+		    fprintf(stderr, "xmlStreamPush() failure\n");
+		    xmlFreeStreamCtxt(patstream);
+		    patstream = NULL;
+		}
+	    }
+	    nb_tests++;
+
+	    reader = xmlReaderWalker(doc);
+	    res = xmlTextReaderRead(reader);
+	    while (res == 1) {
+		patternNode(o, reader, str, patternc, patstream);
+		res = xmlTextReaderRead(reader);
+	    }
+	    if (res != 0) {
+		fprintf(o, "%s : failed to parse\n", filename);
+	    }
+	    xmlFreeTextReader(reader);
+	    xmlFreeDoc(doc);
+	    xmlFreeStreamCtxt(patstream);
+	    patstream = NULL;
+	    xmlFreePattern(patternc);
+
+	}
+    }
+
+    fclose(f);
+    fclose(o);
+
+    ret = compareFiles(temp, result);
+    if (ret) {
+	fprintf(stderr, "Result for %s failed\n", filename);
+	ret = 1;
+    }
+    unlink(temp);
+    free(temp);
+    return(ret);
+}
+#endif
+#ifdef LIBXML_C14N_ENABLED
+/************************************************************************
+ *									*
+ *			Canonicalization tests				*
+ *									*
+ ************************************************************************/
+static xmlXPathObjectPtr
+load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
+    xmlXPathObjectPtr xpath; 
+    xmlDocPtr doc;
+    xmlChar *expr;
+    xmlXPathContextPtr ctx; 
+    xmlNodePtr node;
+    xmlNsPtr ns;
+    
+    /*
+     * load XPath expr as a file
+     */
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+
+    doc = xmlParseFile(filename);
+    if (doc == NULL) {
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", filename);
+	return(NULL);
+    }
+    
+    /*
+     * Check the document is of the right kind
+     */    
+    if(xmlDocGetRootElement(doc) == NULL) {
+        fprintf(stderr,"Error: empty document for file \"%s\"\n", filename);
+	xmlFreeDoc(doc);
+	return(NULL);
+    }
+
+    node = doc->children;
+    while(node != NULL && !xmlStrEqual(node->name, (const xmlChar *)"XPath")) {
+	node = node->next;
+    }
+    
+    if(node == NULL) {   
+        fprintf(stderr,"Error: XPath element expected in the file  \"%s\"\n", filename);
+	xmlFreeDoc(doc);
+	return(NULL);
+    }
+
+    expr = xmlNodeGetContent(node);
+    if(expr == NULL) {
+        fprintf(stderr,"Error: XPath content element is NULL \"%s\"\n", filename);
+	xmlFreeDoc(doc);
+	return(NULL);
+    }
+
+    ctx = xmlXPathNewContext(parent_doc);
+    if(ctx == NULL) {
+        fprintf(stderr,"Error: unable to create new context\n");
+        xmlFree(expr); 
+        xmlFreeDoc(doc); 
+        return(NULL);
+    }
+
+    /*
+     * Register namespaces
+     */
+    ns = node->nsDef;
+    while(ns != NULL) {
+	if(xmlXPathRegisterNs(ctx, ns->prefix, ns->href) != 0) {
+	    fprintf(stderr,"Error: unable to register NS with prefix=\"%s\" and href=\"%s\"\n", ns->prefix, ns->href);
+    	    xmlFree(expr); 
+	    xmlXPathFreeContext(ctx); 
+	    xmlFreeDoc(doc); 
+	    return(NULL);
+	}
+	ns = ns->next;
+    }
+
+    /*  
+     * Evaluate xpath
+     */
+    xpath = xmlXPathEvalExpression(expr, ctx);
+    if(xpath == NULL) {
+        fprintf(stderr,"Error: unable to evaluate xpath expression\n");
+    	xmlFree(expr); 
+        xmlXPathFreeContext(ctx); 
+        xmlFreeDoc(doc); 
+        return(NULL);
+    }
+
+    /* print_xpath_nodes(xpath->nodesetval); */
+
+    xmlFree(expr); 
+    xmlXPathFreeContext(ctx); 
+    xmlFreeDoc(doc); 
+    return(xpath);
+}
+
+/*
+ * Macro used to grow the current buffer.
+ */
+#define xxx_growBufferReentrant() {						\
+    buffer_size *= 2;							\
+    buffer = (xmlChar **)						\
+    		xmlRealloc(buffer, buffer_size * sizeof(xmlChar*));	\
+    if (buffer == NULL) {						\
+	perror("realloc failed");					\
+	return(NULL);							\
+    }									\
+}
+
+static xmlChar **
+parse_list(xmlChar *str) {
+    xmlChar **buffer;
+    xmlChar **out = NULL;
+    int buffer_size = 0;
+    int len;
+
+    if(str == NULL) {
+	return(NULL);
+    }
+
+    len = xmlStrlen(str);
+    if((str[0] == '\'') && (str[len - 1] == '\'')) {
+	str[len - 1] = '\0';
+	str++;
+	len -= 2;
+    }
+    /*
+     * allocate an translation buffer.
+     */
+    buffer_size = 1000;
+    buffer = (xmlChar **) xmlMalloc(buffer_size * sizeof(xmlChar*));
+    if (buffer == NULL) {
+	perror("malloc failed");
+	return(NULL);
+    }
+    out = buffer;
+    
+    while(*str != '\0') {
+	if (out - buffer > buffer_size - 10) {
+	    int indx = out - buffer;
+
+	    xxx_growBufferReentrant();
+	    out = &buffer[indx];
+	}
+	(*out++) = str;
+	while(*str != ',' && *str != '\0') ++str;
+	if(*str == ',') *(str++) = '\0';
+    }
+    (*out) = NULL;
+    return buffer;
+}
+
+static int 
+c14nRunTest(const char* xml_filename, int with_comments, int exclusive,
+	    const char* xpath_filename, const char *ns_filename,
+	    const char* result_file) {
+    xmlDocPtr doc;
+    xmlXPathObjectPtr xpath = NULL; 
+    xmlChar *result = NULL;
+    int ret;
+    xmlChar **inclusive_namespaces = NULL;
+    const char *nslist = NULL;
+    int nssize;
+
+
+    /*
+     * build an XML tree from a the file; we need to add default
+     * attributes and resolve all character and entities references
+     */
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+
+    doc = xmlParseFile(xml_filename);
+    if (doc == NULL) {
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_filename);
+	return(-1);
+    }
+    
+    /*
+     * Check the document is of the right kind
+     */    
+    if(xmlDocGetRootElement(doc) == NULL) {
+        fprintf(stderr,"Error: empty document for file \"%s\"\n", xml_filename);
+	xmlFreeDoc(doc);
+	return(-1);
+    }
+
+    /* 
+     * load xpath file if specified 
+     */
+    if(xpath_filename) {
+	xpath = load_xpath_expr(doc, xpath_filename);
+	if(xpath == NULL) {
+	    fprintf(stderr,"Error: unable to evaluate xpath expression\n");
+	    xmlFreeDoc(doc); 
+	    return(-1);
+	}
+    }
+
+    if (ns_filename != NULL) {
+        if (loadMem(ns_filename, &nslist, &nssize)) {
+	    fprintf(stderr,"Error: unable to evaluate xpath expression\n");
+	    if(xpath != NULL) xmlXPathFreeObject(xpath);
+	    xmlFreeDoc(doc); 
+	    return(-1);
+	}
+        inclusive_namespaces = parse_list((xmlChar *) nslist);
+    }
+
+    /*
+     * Canonical form
+     */      
+    /* fprintf(stderr,"File \"%s\" loaded: start canonization\n", xml_filename); */
+    ret = xmlC14NDocDumpMemory(doc, 
+	    (xpath) ? xpath->nodesetval : NULL, 
+	    exclusive, inclusive_namespaces,
+	    with_comments, &result);
+    if (ret >= 0) {
+	if(result != NULL) {
+	    if (compareFileMem(result_file, (const char *) result, ret)) {
+		fprintf(stderr, "Result mismatch for %s\n", xml_filename);
+	        ret = -1;
+	    }
+	}
+    } else {
+	fprintf(stderr,"Error: failed to canonicalize XML file \"%s\" (ret=%d)\n", xml_filename, ret);
+	ret = -1;
+    }
+        
+    /*
+     * Cleanup
+     */ 
+    if (result != NULL) xmlFree(result);
+    if(xpath != NULL) xmlXPathFreeObject(xpath);
+    if (inclusive_namespaces != NULL) xmlFree(inclusive_namespaces);
+    if (nslist != NULL) free((char *) nslist);
+    xmlFreeDoc(doc);    
+
+    return(ret);
+}
+
+static int
+c14nCommonTest(const char *filename, int with_comments, int exclusive,
+               const char *subdir) {
+    char buf[500];
+    char prefix[500];
+    const char *base;
+    int len;
+    char *result = NULL;
+    char *xpath = NULL;
+    char *ns = NULL;
+    int ret = 0;
+
+    base = baseFilename(filename);
+    len = strlen(base);
+    len -= 4;
+    memcpy(prefix, base, len);
+    prefix[len] = 0;
+
+    snprintf(buf, 499, "result/c14n/%s/%s", subdir,prefix);
+    if (!checkTestFile(buf)) {
+        fprintf(stderr, "Missing result file %s", buf);
+	return(-1);
+    }
+    result = strdup(buf);
+    snprintf(buf, 499, "test/c14n/%s/%s.xpath", subdir,prefix);
+    if (checkTestFile(buf)) {
+	xpath = strdup(buf);
+    }
+    snprintf(buf, 499, "test/c14n/%s/%s.ns", subdir,prefix);
+    if (checkTestFile(buf)) {
+	ns = strdup(buf);
+    }
+
+    nb_tests++;
+    if (c14nRunTest(filename, with_comments, exclusive,
+                    xpath, ns, result) < 0)
+        ret = 1;
+
+    if (result != NULL) free(result);
+    if (xpath != NULL) free(xpath);
+    if (ns != NULL) free(ns);
+    return(ret);
+}
+
+static int
+c14nWithCommentTest(const char *filename,
+                    const char *resul ATTRIBUTE_UNUSED,
+		    const char *err ATTRIBUTE_UNUSED,
+		    int options ATTRIBUTE_UNUSED) {
+    return(c14nCommonTest(filename, 1, 0, "with-comments"));
+}
+static int
+c14nWithoutCommentTest(const char *filename,
+                    const char *resul ATTRIBUTE_UNUSED,
+		    const char *err ATTRIBUTE_UNUSED,
+		    int options ATTRIBUTE_UNUSED) {
+    return(c14nCommonTest(filename, 0, 0, "without-comments"));
+}
+static int
+c14nExcWithoutCommentTest(const char *filename,
+                    const char *resul ATTRIBUTE_UNUSED,
+		    const char *err ATTRIBUTE_UNUSED,
+		    int options ATTRIBUTE_UNUSED) {
+    return(c14nCommonTest(filename, 0, 1, "exc-without-comments"));
+}
+#endif
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
+/************************************************************************
+ *									*
+ *			Catalog and threads test			*
+ *									*
+ ************************************************************************/
+
+/*
+ * mostly a cut and paste from testThreads.c
+ */
+#define	MAX_ARGC	20
+
+static const char *catalog = "test/threads/complex.xml";
+static const char *testfiles[] = {
+    "test/threads/abc.xml",
+    "test/threads/acb.xml",
+    "test/threads/bac.xml",
+    "test/threads/bca.xml",
+    "test/threads/cab.xml",
+    "test/threads/cba.xml",
+    "test/threads/invalid.xml",
+};
+
+const char *Okay = "OK";
+const char *Failed = "Failed";
+
+#ifndef xmlDoValidityCheckingDefaultValue
+#error xmlDoValidityCheckingDefaultValue is not a macro
+#endif
+#ifndef xmlGenericErrorContext
+#error xmlGenericErrorContext is not a macro
+#endif
+
+static void *
+thread_specific_data(void *private_data)
+{
+    xmlDocPtr myDoc;
+    const char *filename = (const char *) private_data;
+    int okay = 1;
+
+    if (!strcmp(filename, "test/threads/invalid.xml")) {
+        xmlDoValidityCheckingDefaultValue = 0;
+        xmlGenericErrorContext = stdout;
+    } else {
+        xmlDoValidityCheckingDefaultValue = 1;
+        xmlGenericErrorContext = stderr;
+    }
+    myDoc = xmlParseFile(filename);
+    if (myDoc) {
+        xmlFreeDoc(myDoc);
+    } else {
+        printf("parse failed\n");
+        okay = 0;
+    }
+    if (!strcmp(filename, "test/threads/invalid.xml")) {
+        if (xmlDoValidityCheckingDefaultValue != 0) {
+            printf("ValidityCheckingDefaultValue override failed\n");
+            okay = 0;
+        }
+        if (xmlGenericErrorContext != stdout) {
+            printf("xmlGenericErrorContext override failed\n");
+            okay = 0;
+        }
+    } else {
+        if (xmlDoValidityCheckingDefaultValue != 1) {
+            printf("ValidityCheckingDefaultValue override failed\n");
+            okay = 0;
+        }
+        if (xmlGenericErrorContext != stderr) {
+            printf("xmlGenericErrorContext override failed\n");
+            okay = 0;
+        }
+    }
+    if (okay == 0)
+        return ((void *) Failed);
+    return ((void *) Okay);
+}
+
+#if defined(linux) || defined(solaris)
+
+#include <pthread.h>
+
+static pthread_t tid[MAX_ARGC];
+
+static int
+testThread(void)
+{
+    unsigned int i, repeat;
+    unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);
+    void *results[MAX_ARGC];
+    int ret;
+    int res = 0;
+    
+    xmlInitParser();
+
+    for (repeat = 0; repeat < 500; repeat++) {
+        xmlLoadCatalog(catalog);
+        nb_tests++;
+
+        nb_tests++;
+        for (i = 0; i < num_threads; i++) {
+            results[i] = NULL;
+            tid[i] = (pthread_t) - 1;
+        }
+
+        for (i = 0; i < num_threads; i++) {
+            ret = pthread_create(&tid[i], 0, thread_specific_data,
+                                 (void *) testfiles[i]);
+            if (ret != 0) {
+                fprintf(stderr, "pthread_create failed\n");
+                return (1);
+            }
+        }
+        for (i = 0; i < num_threads; i++) {
+            ret = pthread_join(tid[i], &results[i]);
+            if (ret != 0) {
+                fprintf(stderr, "pthread_join failed\n");
+                return (1);
+            }
+        }
+
+        xmlCatalogCleanup();
+        for (i = 0; i < num_threads; i++)
+            if (results[i] != (void *) Okay) {
+                fprintf(stderr, "Thread %d handling %s failed\n",
+                        i, testfiles[i]);
+                res = 1;
+            }
+    }
+    return (res);
+}
+
+#elif defined WIN32
+#include <windows.h>
+#include <string.h>
+
+static HANDLE tid[MAX_ARGC];
+
+static DWORD WINAPI
+win32_thread_specific_data(void *private_data)
+{
+    return((DWORD) thread_specific_data());
+}
+
+static int
+testThread(void)
+{
+    unsigned int i, repeat;
+    unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);
+    DWORD results[MAX_ARGC];
+    BOOL ret;
+    int res = 0;
+
+    xmlInitParser();
+    for (repeat = 0; repeat < TEST_REPEAT_COUNT; repeat++) {
+        xmlLoadCatalog(catalog);
+
+        for (i = 0; i < num_threads; i++) {
+            results[i] = 0;
+            tid[i] = (HANDLE) - 1;
+        }
+
+        for (i = 0; i < num_threads; i++) {
+            DWORD useless;
+
+            tid[i] = CreateThread(NULL, 0,
+                                  win32_thread_specific_data, testfiles[i], 0,
+                                  &useless);
+            if (tid[i] == NULL) {
+                fprintf(stderr, "CreateThread failed\n");
+                return(1);
+            }
+        }
+
+        if (WaitForMultipleObjects(num_threads, tid, TRUE, INFINITE) ==
+            WAIT_FAILED) {
+            fprintf(stderr, "WaitForMultipleObjects failed\n");
+	    return(1);
+	}
+
+        for (i = 0; i < num_threads; i++) {
+            ret = GetExitCodeThread(tid[i], &results[i]);
+            if (ret == 0) {
+                fprintf(stderr, "GetExitCodeThread failed\n");
+                return(1);
+            }
+            CloseHandle(tid[i]);
+        }
+
+        xmlCatalogCleanup();
+        for (i = 0; i < num_threads; i++) {
+            if (results[i] != (DWORD) Okay) {
+                fprintf(stderr, "Thread %d handling %s failed\n",
+		        i, testfiles[i]);
+	        res = 1;
+	    }
+        }
+    }
+
+    return (res);
+}
+
+#elif defined __BEOS__
+#include <OS.h>
+
+static thread_id tid[MAX_ARGC];
+
+static int
+testThread(void)
+{
+    unsigned int i, repeat;
+    unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);
+    void *results[MAX_ARGC];
+    status_t ret;
+    int res = 0;
+
+    xmlInitParser();
+    for (repeat = 0; repeat < 500; repeat++) {
+        xmlLoadCatalog(catalog);
+        for (i = 0; i < num_threads; i++) {
+            results[i] = NULL;
+            tid[i] = (thread_id) - 1;
+        }
+        for (i = 0; i < num_threads; i++) {
+            tid[i] =
+                spawn_thread(thread_specific_data, "xmlTestThread",
+                             B_NORMAL_PRIORITY, (void *) testfiles[i]);
+            if (tid[i] < B_OK) {
+                fprintf(stderr, "beos_thread_create failed\n");
+                return (1);
+            }
+            printf("beos_thread_create %d -> %d\n", i, tid[i]);
+        }
+        for (i = 0; i < num_threads; i++) {
+            ret = wait_for_thread(tid[i], &results[i]);
+            printf("beos_thread_wait %d -> %d\n", i, ret);
+            if (ret != B_OK) {
+                fprintf(stderr, "beos_thread_wait failed\n");
+                return (1);
+            }
+        }
+
+        xmlCatalogCleanup();
+        ret = B_OK;
+        for (i = 0; i < num_threads; i++)
+            if (results[i] != (void *) Okay) {
+                printf("Thread %d handling %s failed\n", i, testfiles[i]);
+                ret = B_ERROR;
+            }
+    }
+    if (ret != B_OK)
+        return(1);
+    return (0);
+}
+#else
+static int
+testThread(void)
+{
+    fprintf(stderr,
+            "Specific platform thread support not detected\n");
+    return (-1);
+}
+#endif
+static int 
+threadsTest(const char *filename ATTRIBUTE_UNUSED,
+	    const char *resul ATTRIBUTE_UNUSED,
+	    const char *err ATTRIBUTE_UNUSED,
+	    int options ATTRIBUTE_UNUSED) {
+    return(testThread());
+}
+#endif
 /************************************************************************
  *									*
  *			Tests Descriptions				*
@@ -2396,6 +3890,38 @@ testDesc testDescriptions[] = {
     { "URI base composition tests" ,
       uriBaseTest, "./test/URI/*.data", "result/URI/", "", NULL,
       0 },
+#ifdef LIBXML_SCHEMAS_ENABLED
+    { "Schemas regression tests" ,
+      schemasTest, "./test/schemas/*_*.xsd", NULL, NULL, NULL,
+      0 },
+    { "Relax-NG regression tests" ,
+      rngTest, "./test/relaxng/*.rng", NULL, NULL, NULL,
+      XML_PARSE_DTDATTR | XML_PARSE_NOENT },
+    { "Relax-NG streaming regression tests" ,
+      rngStreamTest, "./test/relaxng/*.rng", NULL, NULL, NULL,
+      XML_PARSE_DTDATTR | XML_PARSE_NOENT },
+#endif
+#ifdef LIBXML_PATTERN_ENABLED
+    { "Pattern regression tests" ,
+      patternTest, "./test/pattern/*.pat", "result/pattern/", NULL, NULL,
+      0 },
+#endif
+#ifdef LIBXML_C14N_ENABLED
+    { "C14N with comments regression tests" ,
+      c14nWithCommentTest, "./test/c14n/with-comments/*.xml", NULL, NULL, NULL,
+      0 },
+    { "C14N without comments regression tests" ,
+      c14nWithoutCommentTest, "./test/c14n/without-comments/*.xml", NULL, NULL, NULL,
+      0 },
+    { "C14N exclusive without comments regression tests" ,
+      c14nExcWithoutCommentTest, "./test/c14n/exc-without-comments/*.xml", NULL, NULL, NULL,
+      0 },
+#endif
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
+    { "Catalog and Threads regression tests" ,
+      threadsTest, NULL, NULL, NULL, NULL,
+      0 },
+#endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 
@@ -2411,7 +3937,7 @@ launchTests(testDescPtr tst) {
     size_t i;
     char *result;
     char *error;
-    int mem, leak;
+    int mem;
 
     if (tst == NULL) return(-1);
     if (tst->in != NULL) {
@@ -2457,6 +3983,7 @@ launchTests(testDescPtr tst) {
 		if (res != 0) {
 		    fprintf(stderr, "File %s generated an error\n",
 		            globbuf.gl_pathv[i]);
+		    nb_errors++;
 		    err++;
 		}
 		else if (xmlMemUsed() != mem) {
@@ -2464,7 +3991,7 @@ launchTests(testDescPtr tst) {
 		        (extraMemoryFromResolver == 0)) {
 			fprintf(stderr, "File %s leaked %d bytes\n",
 				globbuf.gl_pathv[i], xmlMemUsed() - mem);
-			leak++;
+			nb_leaks++;
 			err++;
 		    }
 		}
@@ -2481,8 +4008,10 @@ launchTests(testDescPtr tst) {
 	testErrors[0] = 0;
 	extraMemoryFromResolver = 0;
         res = tst->func(NULL, NULL, NULL, tst->options);
-	if (res != 0)
+	if (res != 0) {
+	    nb_errors++;
 	    err++;
+	}
     }
     return(err);
 }
@@ -2490,15 +4019,40 @@ launchTests(testDescPtr tst) {
 int
 main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     int i = 0, res, ret = 0;
+    int verbose = 0;
+    int old_errors, old_tests, old_leaks;
 
     initializeLibxml2();
 
+    if ((argc >= 2) && (!strcmp(argv[1], "-v")))
+        verbose = 1;
     for (i = 0; testDescriptions[i].func != NULL; i++) {
+        old_errors = nb_errors;
+        old_tests = nb_tests;
+        old_leaks = nb_leaks;
         if (testDescriptions[i].desc != NULL)
 	    printf("## %s\n", testDescriptions[i].desc);
 	res = launchTests(&testDescriptions[i]);
 	if (res != 0)
 	    ret++;
+	if (verbose) {
+	    if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
+	        printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+	    else
+	        printf("Ran %d tests, %d errors, %d leaks\n",
+		       nb_tests - old_tests,
+		       nb_errors - old_errors,
+		       nb_leaks - old_leaks);
+	}
+    }
+    if ((nb_errors == 0) && (nb_leaks == 0)) {
+        ret = 0;
+	printf("Total %d tests, no errors\n",
+	       nb_tests);
+    } else {
+        ret = 1;
+	printf("Total %d tests, %d errors, %d leaks\n",
+	       nb_tests, nb_errors, nb_leaks);
     }
     xmlCleanupParser();
     xmlMemoryDump();

@@ -8,7 +8,7 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
-                testReader testapi testModule runtest
+                testReader testapi testModule runtest runsuite
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -52,7 +52,12 @@ m4data_DATA = libxml.m4
 runtest_SOURCES=runtest.c
 runtest_LDFLAGS = 
 runtest_DEPENDENCIES = $(DEPS)
-runtest_LDADD=  @RDL_LIBS@ $(LDADDS)
+runtest_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
+
+runsuite_SOURCES=runsuite.c
+runsuite_LDFLAGS = 
+runsuite_DEPENDENCIES = $(DEPS)
+runsuite_LDADD= @RDL_LIBS@ $(LDADDS)
 
 xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 

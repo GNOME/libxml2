@@ -1,3 +1,12 @@
+Thu Jun 30 15:01:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: complete, checking on other platforms is needed
+	* README: updated 
+	* debugXML.c: fix a bug raised by bill on IRC
+	* relaxng.c: fix a leak in weird circumstances
+	* runsuite.c Makefile.am: standalone test tool agaisnt
+	  the regression suites, work in progress
+
 Tue Jun 28 08:30:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: adding URI tests

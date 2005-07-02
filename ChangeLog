@@ -1,3 +1,8 @@
+Sat Jul  2 09:30:13 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runsuite.c: completed the simple checks for Relax-NG suites
+	  back to the same 11 errors as in the Python runs.
+
 Thu Jun 30 15:01:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: complete, checking on other platforms is needed

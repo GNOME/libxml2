@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
 #include <libxml/xmlreader.h>
@@ -44,6 +45,15 @@ static int checkTestFile(const char *filename) {
 
     return(1);
 }
+static xmlChar *composeDir(const xmlChar *dir, const xmlChar *path) {
+    char buf[500];
+
+    if (dir == NULL) return(xmlStrdup(path));
+    if (path == NULL) return(NULL);
+
+    snprintf(buf, 500, "%s/%s", (const char *) dir, (const char *) path);
+    return(xmlStrdup((const xmlChar *) buf));
+}
 
 /************************************************************************
  *									*
@@ -64,6 +74,35 @@ fatalError(void) {
 }
 
 /*
+ * that's needed to implement <resource>
+ */
+#define MAX_ENTITIES 20
+char *testEntitiesName[MAX_ENTITIES];
+char *testEntitiesValue[MAX_ENTITIES];
+int nb_entities = 0;
+static void resetEntities(void) {
+    int i;
+
+    for (i = 0;i < nb_entities;i++) {
+        if (testEntitiesName[i] != NULL)
+	    xmlFree(testEntitiesName[i]);
+        if (testEntitiesValue[i] != NULL)
+	    xmlFree(testEntitiesValue[i]);
+    }
+    nb_entities = 0;
+}
+static int addEntity(char *name, char *content) {
+    if (nb_entities >= MAX_ENTITIES) {
+	fprintf(stderr, "Too many entities defined\n");
+	return(-1);
+    }
+    testEntitiesName[nb_entities] = name;
+    testEntitiesValue[nb_entities] = content;
+    nb_entities++;
+    return(0);
+}
+
+/*
  * We need to trap calls to the resolver to not account memory for the catalog
  * which is shared to the current running test. We also don't want to have
  * network downloads modifying tests.
@@ -72,13 +111,28 @@ static xmlParserInputPtr
 testExternalEntityLoader(const char *URL, const char *ID,
 			 xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret;
+    int i;
 
+    for (i = 0;i < nb_entities;i++) {
+        if (!strcmp(testEntitiesName[i], URL)) {
+	    ret = xmlNewStringInputStream(ctxt,
+	                (const xmlChar *) testEntitiesValue[i]);
+	    if (ret != NULL) {
+	        ret->filename = (const char *)
+		                xmlStrdup((xmlChar *)testEntitiesName[i]);
+	    }
+	    return(ret);
+	}
+    }
     if (checkTestFile(URL)) {
 	ret = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
     } else {
 	int memused = xmlMemUsed();
 	ret = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
 	extraMemoryFromResolver += xmlMemUsed() - memused;
+    }
+    if (ret == NULL) {
+        fprintf(stderr, "Failed to find resource %s\n", URL);
     }
       
     return(ret);
@@ -252,6 +306,65 @@ done:
     return(ret);
 }
 
+static void
+installResources(xmlNodePtr tst, const xmlChar *base) {
+    xmlNodePtr test;
+    xmlBufferPtr buf;
+    xmlChar *name, *content, *res;
+    buf = xmlBufferCreate();
+    if (buf == NULL) {
+        fprintf(stderr, "out of memory !\n");
+	fatalError();
+    }
+    xmlNodeDump(buf, tst->doc, tst, 0, 0);
+
+    while (tst != NULL) {
+	test = getNext(tst, "./*");
+	if (test != NULL) {
+	    xmlBufferEmpty(buf);
+	    xmlNodeDump(buf, test->doc, test, 0, 0);
+	    name = getString(tst, "string(@name)");
+	    content = xmlStrdup(buf->content);
+	    if ((name != NULL) && (content != NULL)) {
+	        res = composeDir(base, name);
+		xmlFree(name);
+	        addEntity((char *) res, (char *) content);
+	    } else {
+	        if (name != NULL) xmlFree(name);
+	        if (content != NULL) xmlFree(content);
+	    }
+	}
+	tst = getNext(tst, "following-sibling::resource[1]");
+    }
+    if (buf != NULL)
+	xmlBufferFree(buf);
+}
+
+static void
+installDirs(xmlNodePtr tst, const xmlChar *base) {
+    xmlNodePtr test;
+    xmlChar *name, *res;
+
+    name = getString(tst, "string(@name)");
+    if (name == NULL)
+        return;
+    res = composeDir(base, name);
+    xmlFree(name);
+    if (res == NULL) {
+	return;
+    }
+    /* Now process resources and subdir recursively */
+    test = getNext(tst, "./resource[1]");
+    if (test != NULL) {
+        installResources(test, res);
+    }
+    test = getNext(tst, "./dir[1]");
+    while (test != NULL) {
+        installDirs(test, res);
+	test = getNext(test, "following-sibling::dir[1]");
+    }
+}
+
 static int 
 xsdTestCase(int verbose, xmlNodePtr tst) {
     xmlNodePtr test, tmp, cur;
@@ -261,6 +374,18 @@ xsdTestCase(int verbose, xmlNodePtr tst) {
     xmlRelaxNGValidCtxtPtr ctxt;
     xmlRelaxNGPtr rng = NULL;
     int ret = 0, mem, memt;
+    xmlChar *dtd;
+
+    resetEntities();
+
+    tmp = getNext(tst, "./dir[1]");
+    if (tmp != NULL) {
+        installDirs(tmp, NULL);
+    }
+    tmp = getNext(tst, "./resource[1]");
+    if (tmp != NULL) {
+        installResources(tmp, NULL);
+    }
 
     cur = getNext(tst, "./correct[1]");
     if (cur == NULL) {
@@ -307,6 +432,7 @@ xsdTestCase(int verbose, xmlNodePtr tst) {
      */
     tmp = getNext(cur, "following-sibling::valid[1]");
     while (tmp != NULL) {
+	dtd = xmlGetProp(tmp, BAD_CAST "dtd");
 	test = getNext(tmp, "./*");
 	if (test == NULL) {
 	    fprintf(stderr, "Failed to find test in <valid> line %ld\n",
@@ -314,6 +440,8 @@ xsdTestCase(int verbose, xmlNodePtr tst) {
 	    
 	} else {
 	    xmlBufferEmpty(buf);
+	    if (dtd != NULL)
+		xmlBufferAdd(buf, dtd, -1);
 	    xmlNodeDump(buf, test->doc, test, 0, 0);
 
 	    /*
@@ -358,6 +486,8 @@ xsdTestCase(int verbose, xmlNodePtr tst) {
 	        nb_leaks++;
 	    }
 	}
+	if (dtd != NULL)
+	    xmlFree(dtd);
 	tmp = getNext(tmp, "following-sibling::valid[1]");
     }
     /*
@@ -527,7 +657,7 @@ rngTest1(int verbose) {
         fprintf(stderr, "Failed to parse %s\n", filename);
 	return(-1);
     }
-    printf("## Relax NG test suite 1 from James Clark\n");
+    printf("## Relax NG test suite from James Clark\n");
 
     cur = xmlDocGetRootElement(doc);
     if ((cur == NULL) || (!xmlStrEqual(cur->name, BAD_CAST "testSuite"))) {
@@ -544,6 +674,44 @@ rngTest1(int verbose) {
     }
     while (cur != NULL) {
         rngTestSuite(verbose, cur);
+	cur = getNext(cur, "following-sibling::testSuite[1]");
+    }
+
+done:
+    if (doc != NULL)
+	xmlFreeDoc(doc);
+    return(ret);
+}
+
+static int 
+rngTest2(int verbose) {
+    xmlDocPtr doc;
+    xmlNodePtr cur;
+    const char *filename = "test/relaxng/testsuite.xml";
+    int ret = 0;
+
+    doc = xmlReadFile(filename, NULL, XML_PARSE_NOENT);
+    if (doc == NULL) {
+        fprintf(stderr, "Failed to parse %s\n", filename);
+	return(-1);
+    }
+    printf("## Relax NG test suite for libxml2\n");
+
+    cur = xmlDocGetRootElement(doc);
+    if ((cur == NULL) || (!xmlStrEqual(cur->name, BAD_CAST "testSuite"))) {
+        fprintf(stderr, "Unexpected format %s\n", filename);
+	ret = -1;
+	goto done;
+    }
+
+    cur = getNext(cur, "./testSuite[1]");
+    if ((cur == NULL) || (!xmlStrEqual(cur->name, BAD_CAST "testSuite"))) {
+        fprintf(stderr, "Unexpected format %s\n", filename);
+	ret = -1;
+	goto done;
+    }
+    while (cur != NULL) {
+        xsdTestSuite(verbose, cur);
 	cur = getNext(cur, "following-sibling::testSuite[1]");
     }
 
@@ -571,6 +739,9 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
         verbose = 1;
 
 
+    old_errors = nb_errors;
+    old_tests = nb_tests;
+    old_leaks = nb_leaks;
     res = xsdTest(verbose);
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
 	printf("Ran %d tests, no errors\n", nb_tests - old_tests);
@@ -583,6 +754,17 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     old_tests = nb_tests;
     old_leaks = nb_leaks;
     res = rngTest1(verbose);
+    if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
+	printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+    else
+	printf("Ran %d tests, %d errors, %d leaks\n",
+	       nb_tests - old_tests,
+	       nb_errors - old_errors,
+	       nb_leaks - old_leaks);
+    old_errors = nb_errors;
+    old_tests = nb_tests;
+    old_leaks = nb_leaks;
+    res = rngTest2(verbose);
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
 	printf("Ran %d tests, no errors\n", nb_tests - old_tests);
     else

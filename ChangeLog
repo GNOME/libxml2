@@ -1,3 +1,8 @@
+Mon Jul  4 00:39:35 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: fix a problem with previous patch to
+	  testapi.c
+
 Sun Jul  3 23:42:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c tree.c: fixing a leak detected by testapi in 

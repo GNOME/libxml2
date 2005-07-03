@@ -519,10 +519,6 @@ static xmlNodePtr gen_xmlNodePtr(int no, int nr ATTRIBUTE_UNUSED) {
 }
 static void des_xmlNodePtr(int no, xmlNodePtr val, int nr ATTRIBUTE_UNUSED) {
     if (no == 1) {
-        if ((val != NULL) && (val->parent == NULL)) {
-	    xmlUnlinkNode(val);
-	    xmlFreeNode(val);
-	}
         free_api_doc();
     } else if (val != NULL) {
         xmlUnlinkNode(val);
@@ -18933,6 +18929,7 @@ test_xmlDOMWrapAdoptNode(void) {
         options = gen_int(n_options, 5);
 
         ret_val = xmlDOMWrapAdoptNode(ctxt, sourceDoc, node, destDoc, destParent, options);
+        if ((node != NULL) && (node->parent == NULL)) {xmlUnlinkNode(node);xmlFreeNode(node);node = NULL;}
         desret_int(ret_val);
         call_tests++;
         des_xmlDOMWrapCtxtPtr(n_ctxt, ctxt, 0);

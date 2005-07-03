@@ -3349,9 +3349,10 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
+ * Returns 0 in case of success and -1 in case of error.
  */
 
-static void
+static int
 htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     const xmlChar *name;
     const xmlChar *attname;
@@ -3365,9 +3366,9 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     if ((ctxt == NULL) || (ctxt->input == NULL)) {
 	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
 		     "htmlParseStartTag: context error\n", NULL, NULL);
-	return;
+	return -1;
     }
-    if (CUR != '<') return;
+    if (CUR != '<') return -1;
     NEXT;
 
     GROW;
@@ -3379,7 +3380,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	/* Dump the bogus tag like browsers do */
 	while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
 	    NEXT;
-        return;
+        return -1;
     }
     if (xmlStrEqual(name, BAD_CAST"meta"))
 	meta = 1;
@@ -3402,14 +3403,14 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
 	             "htmlParseStartTag: misplaced <html> tag\n",
 		     name, NULL);
-	return;
+	return 0;
     }
     if ((ctxt->nameNr != 1) && 
 	(xmlStrEqual(name, BAD_CAST"head"))) {
 	htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
 	             "htmlParseStartTag: misplaced <head> tag\n",
 		     name, NULL);
-	return;
+	return 0;
     }
     if (xmlStrEqual(name, BAD_CAST"body")) {
 	int indx;
@@ -3420,7 +3421,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 			     name, NULL);
 		while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
 		    NEXT;
-		return;
+		return 0;
 	    }
 	}
     }
@@ -3533,6 +3534,8 @@ failed:
 		xmlFree((xmlChar *) atts[i]);
 	}
     }
+
+    return 0;
 }
 
 /**
@@ -3847,16 +3850,15 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     xmlChar *currentNode = NULL;
     const htmlElemDesc * info;
     htmlParserNodeInfo node_info;
-    const xmlChar *oldname;
+    int failed;
     int depth;
     const xmlChar *oldptr;
 
     if ((ctxt == NULL) || (ctxt->input == NULL)) {
 	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
-		     "htmlParseStartTag: context error\n", NULL, NULL);
+		     "htmlParseElement: context error\n", NULL, NULL);
 	return;
     }
-    depth = ctxt->nameNr;
     /* Capture start position */
     if (ctxt->record_info) {
         node_info.begin_pos = ctxt->input->consumed +
@@ -3864,11 +3866,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	node_info.begin_line = ctxt->input->line;
     }
 
-    oldname = ctxt->name;
-    htmlParseStartTag(ctxt);
+    failed = htmlParseStartTag(ctxt);
     name = ctxt->name;
-    if (((depth == ctxt->nameNr) && (xmlStrEqual(oldname, ctxt->name))) ||
-        (name == NULL)) {
+    if (failed || (name == NULL)) {
 	if (CUR == '>')
 	    NEXT;
         return;
@@ -4577,11 +4577,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
                 } else {
 		    ctxt->instate = XML_PARSER_MISC;
-		}
 #ifdef DEBUG_PUSH
-		xmlGenericError(xmlGenericErrorContext,
-			"HPP: entering MISC\n");
+		    xmlGenericError(xmlGenericErrorContext,
+			    "HPP: entering MISC\n");
 #endif
+		}
 		break;
             case XML_PARSER_MISC:
 		SKIP_BLANKS;
@@ -4739,7 +4739,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		break;
             case XML_PARSER_START_TAG: {
 	        const xmlChar *name, *oldname;
-		int depth = ctxt->nameNr;
+		int failed;
 		const htmlElemDesc * info;
 
 		if (avail < 2)
@@ -4766,11 +4766,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 		    goto done;
 
-		oldname = ctxt->name;
-		htmlParseStartTag(ctxt);
+		failed = htmlParseStartTag(ctxt);
 		name = ctxt->name;
-		if (((depth == ctxt->nameNr) &&
-		     (xmlStrEqual(oldname, ctxt->name))) ||
+		if (failed ||
 		    (name == NULL)) {
 		    if (CUR == '>')
 			NEXT;

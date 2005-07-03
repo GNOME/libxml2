@@ -1,3 +1,10 @@
+Mon Jul  4 00:58:44 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied patch from James Bursa fixing an html parsing
+	  bug in push mode
+	* result/HTML/repeat.html* test/HTML/repeat.html: added the test to the
+	  regression suite
+
 Sun Jul  3 23:42:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c tree.c: fixing a leak detected by testapi in 

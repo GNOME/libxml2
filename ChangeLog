@@ -1,3 +1,12 @@
+Sun Jul  3 18:06:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* testapi.c runsuite.c runtest.c: fixing #307823 and a couple of
+	  assorted bugs
+	* python/generator.py python/libxml2-python-api.xml: fixed 
+	  conditionals in generator too
+	* doc/apibuild.py doc/libxml2-api.xml doc/* elfgcchack.h: some
+	  cleanups too and rebuilt
+
 Sun Jul  3 16:42:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fixed bug #307503 misplaced #ifdef

@@ -114,6 +114,7 @@ class docParser:
             self._data = []
             self.in_function = 1
             self.function = None
+            self.function_cond = None
             self.function_args = []
             self.function_descr = None
             self.function_return = None
@@ -122,6 +123,8 @@ class docParser:
                 self.function = attrs['name']
             if attrs.has_key('file'):
                 self.function_file = attrs['file']
+        elif tag == 'cond':
+            self._data = []
         elif tag == 'info':
             self._data = []
         elif tag == 'arg':
@@ -156,7 +159,7 @@ class docParser:
             if self.function != None:
                 function(self.function, self.function_descr,
                          self.function_return, self.function_args,
-                         self.function_file)
+                         self.function_file, self.function_cond)
                 self.in_function = 0
         elif tag == 'arg':
             if self.in_function == 1:
@@ -174,10 +177,16 @@ class docParser:
                 str = str + c
             if self.in_function == 1:
                 self.function_descr = str
+        elif tag == 'cond':
+            str = ''
+            for c in self._data:
+                str = str + c
+            if self.in_function == 1:
+                self.function_cond = str
                 
                 
-def function(name, desc, ret, args, file):
-    functions[name] = (desc, ret, args, file)
+def function(name, desc, ret, args, file, cond):
+    functions[name] = (desc, ret, args, file, cond)
 
 def enum(type, name, value):
     if not enums.has_key(type):
@@ -390,7 +399,7 @@ def print_function_wrapper(name, output, export, include):
     global skipped_modules
 
     try:
-        (desc, ret, args, file) = functions[name]
+        (desc, ret, args, file, cond) = functions[name]
     except:
         print "failed to get function %s infos"
         return
@@ -486,39 +495,10 @@ def print_function_wrapper(name, output, export, include):
             unknown_types[ret[0]] = [name]
         return -1
 
-    if file == "debugXML":
-        include.write("#ifdef LIBXML_DEBUG_ENABLED\n");
-        export.write("#ifdef LIBXML_DEBUG_ENABLED\n");
-        output.write("#ifdef LIBXML_DEBUG_ENABLED\n");
-    elif file == "HTMLtree" or file == "HTMLparser" or name[0:4] == "html":
-        include.write("#ifdef LIBXML_HTML_ENABLED\n");
-        export.write("#ifdef LIBXML_HTML_ENABLED\n");
-        output.write("#ifdef LIBXML_HTML_ENABLED\n");
-    elif file == "c14n":
-        include.write("#ifdef LIBXML_C14N_ENABLED\n");
-        export.write("#ifdef LIBXML_C14N_ENABLED\n");
-        output.write("#ifdef LIBXML_C14N_ENABLED\n");
-    elif file == "xpathInternals" or file == "xpath":
-        include.write("#ifdef LIBXML_XPATH_ENABLED\n");
-        export.write("#ifdef LIBXML_XPATH_ENABLED\n");
-        output.write("#ifdef LIBXML_XPATH_ENABLED\n");
-    elif file == "xpointer":
-        include.write("#ifdef LIBXML_XPTR_ENABLED\n");
-        export.write("#ifdef LIBXML_XPTR_ENABLED\n");
-        output.write("#ifdef LIBXML_XPTR_ENABLED\n");
-    elif file == "xinclude":
-        include.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
-        export.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
-        output.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
-    elif file == "xmlregexp":
-        include.write("#ifdef LIBXML_REGEXP_ENABLED\n");
-        export.write("#ifdef LIBXML_REGEXP_ENABLED\n");
-        output.write("#ifdef LIBXML_REGEXP_ENABLED\n");
-    elif file == "xmlschemas" or file == "xmlschemastypes" or \
-         file == "relaxng":
-        include.write("#ifdef LIBXML_SCHEMAS_ENABLED\n");
-        export.write("#ifdef LIBXML_SCHEMAS_ENABLED\n");
-        output.write("#ifdef LIBXML_SCHEMAS_ENABLED\n");
+    if cond != None and cond != "":
+        include.write("#if %s\n" % cond)
+        export.write("#if %s\n" % cond)
+        output.write("#if %s\n" % cond)
 
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name));
@@ -528,17 +508,17 @@ def print_function_wrapper(name, output, export, include):
 
     if file == "python":
         # Those have been manually generated
-        if name[0:4] == "html":
-	    include.write("#endif /* LIBXML_HTML_ENABLED */\n");
-	    export.write("#endif /* LIBXML_HTML_ENABLED */\n");
-	    output.write("#endif /* LIBXML_HTML_ENABLED */\n");
+	if cond != None and cond != "":
+	    include.write("#endif\n");
+	    export.write("#endif\n");
+	    output.write("#endif\n");
         return 1
     if file == "python_accessor" and ret[0] != "void" and ret[2] is None:
         # Those have been manually generated
-        if name[0:4] == "html":
-	    include.write("#endif /* LIBXML_HTML_ENABLED */\n");
-	    export.write("#endif /* LIBXML_HTML_ENABLED */\n");
-	    output.write("#endif /* LIBXML_HTML_ENABLED */\n");
+	if cond != None and cond != "":
+	    include.write("#endif\n");
+	    export.write("#endif\n");
+	    output.write("#endif\n");
         return 1
 
     output.write("PyObject *\n")
@@ -563,39 +543,10 @@ def print_function_wrapper(name, output, export, include):
     output.write(c_call)
     output.write(ret_convert)
     output.write("}\n\n")
-    if file == "debugXML":
-        include.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
-        export.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
-        output.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
-    elif file == "HTMLtree" or file == "HTMLparser" or name[0:4] == "html":
-        include.write("#endif /* LIBXML_HTML_ENABLED */\n");
-        export.write("#endif /* LIBXML_HTML_ENABLED */\n");
-        output.write("#endif /* LIBXML_HTML_ENABLED */\n");
-    elif file == "c14n":
-        include.write("#endif /* LIBXML_C14N_ENABLED */\n");
-        export.write("#endif /* LIBXML_C14N_ENABLED */\n");
-        output.write("#endif /* LIBXML_C14N_ENABLED */\n");
-    elif file == "xpathInternals" or file == "xpath":
-        include.write("#endif /* LIBXML_XPATH_ENABLED */\n");
-        export.write("#endif /* LIBXML_XPATH_ENABLED */\n");
-        output.write("#endif /* LIBXML_XPATH_ENABLED */\n");
-    elif file == "xpointer":
-        include.write("#endif /* LIBXML_XPTR_ENABLED */\n");
-        export.write("#endif /* LIBXML_XPTR_ENABLED */\n");
-        output.write("#endif /* LIBXML_XPTR_ENABLED */\n");
-    elif file == "xinclude":
-        include.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
-        export.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
-        output.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
-    elif file == "xmlregexp":
-        include.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
-        export.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
-        output.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
-    elif file == "xmlschemas" or file == "xmlschemastypes" or \
-         file == "relaxng":
-        include.write("#endif /* LIBXML_SCHEMAS_ENABLED */\n");
-        export.write("#endif /* LIBXML_SCHEMAS_ENABLED */\n");
-        output.write("#endif /* LIBXML_SCHEMAS_ENABLED */\n");
+    if cond != None and cond != "":
+        include.write("#endif /* %s */\n" % cond)
+        export.write("#endif /* %s */\n" % cond)
+        output.write("#endif /* %s */\n" % cond)
     return 1
 
 def buildStubs():
@@ -961,7 +912,7 @@ def buildWrappers():
 
     for name in functions.keys():
 	found = 0;
-	(desc, ret, args, file) = functions[name]
+	(desc, ret, args, file, cond) = functions[name]
 	for type in ctypes:
 	    classe = classes_type[type][2]
 

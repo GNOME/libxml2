@@ -699,6 +699,11 @@ xmlCtxtResetLastError
 xmlCtxtResetPush
 xmlCtxtUseOptions
 xmlCurrentChar
+xmlDOMWrapAdoptNode
+xmlDOMWrapFreeCtxt
+xmlDOMWrapNewCtxt
+xmlDOMWrapReconcileNamespaces
+xmlDOMWrapRemoveNode
 #ifdef LIBXML_DEBUG_ENABLED
 xmlDebugCheckDocument
 #endif

@@ -2496,6 +2496,56 @@ extern __typeof (xmlCurrentChar) xmlCurrentChar__internal_alias __attribute((vis
 #endif
 #endif
 
+#ifdef bottom_tree
+#undef xmlDOMWrapAdoptNode
+extern __typeof (xmlDOMWrapAdoptNode) xmlDOMWrapAdoptNode __attribute((alias("xmlDOMWrapAdoptNode__internal_alias")));
+#else
+#ifndef xmlDOMWrapAdoptNode
+extern __typeof (xmlDOMWrapAdoptNode) xmlDOMWrapAdoptNode__internal_alias __attribute((visibility("hidden")));
+#define xmlDOMWrapAdoptNode xmlDOMWrapAdoptNode__internal_alias
+#endif
+#endif
+
+#ifdef bottom_tree
+#undef xmlDOMWrapFreeCtxt
+extern __typeof (xmlDOMWrapFreeCtxt) xmlDOMWrapFreeCtxt __attribute((alias("xmlDOMWrapFreeCtxt__internal_alias")));
+#else
+#ifndef xmlDOMWrapFreeCtxt
+extern __typeof (xmlDOMWrapFreeCtxt) xmlDOMWrapFreeCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlDOMWrapFreeCtxt xmlDOMWrapFreeCtxt__internal_alias
+#endif
+#endif
+
+#ifdef bottom_tree
+#undef xmlDOMWrapNewCtxt
+extern __typeof (xmlDOMWrapNewCtxt) xmlDOMWrapNewCtxt __attribute((alias("xmlDOMWrapNewCtxt__internal_alias")));
+#else
+#ifndef xmlDOMWrapNewCtxt
+extern __typeof (xmlDOMWrapNewCtxt) xmlDOMWrapNewCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlDOMWrapNewCtxt xmlDOMWrapNewCtxt__internal_alias
+#endif
+#endif
+
+#ifdef bottom_tree
+#undef xmlDOMWrapReconcileNamespaces
+extern __typeof (xmlDOMWrapReconcileNamespaces) xmlDOMWrapReconcileNamespaces __attribute((alias("xmlDOMWrapReconcileNamespaces__internal_alias")));
+#else
+#ifndef xmlDOMWrapReconcileNamespaces
+extern __typeof (xmlDOMWrapReconcileNamespaces) xmlDOMWrapReconcileNamespaces__internal_alias __attribute((visibility("hidden")));
+#define xmlDOMWrapReconcileNamespaces xmlDOMWrapReconcileNamespaces__internal_alias
+#endif
+#endif
+
+#ifdef bottom_tree
+#undef xmlDOMWrapRemoveNode
+extern __typeof (xmlDOMWrapRemoveNode) xmlDOMWrapRemoveNode __attribute((alias("xmlDOMWrapRemoveNode__internal_alias")));
+#else
+#ifndef xmlDOMWrapRemoveNode
+extern __typeof (xmlDOMWrapRemoveNode) xmlDOMWrapRemoveNode__internal_alias __attribute((visibility("hidden")));
+#define xmlDOMWrapRemoveNode xmlDOMWrapRemoveNode__internal_alias
+#endif
+#endif
+
 #if defined(LIBXML_DEBUG_ENABLED)
 #ifdef bottom_debugXML
 #undef xmlDebugCheckDocument

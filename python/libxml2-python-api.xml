@@ -2,6 +2,7 @@
 <api name='libxml2-python'>
   <symbols>
     <function name='xmlRegisterXPathFunction' file='python'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Register a Python written function to the XPath interpreter</info>
       <return type='int' info="1 in case of success, 0 or -1 in case of error"/>
       <arg name='ctx' type='xmlXPathContextPtr' info='the xpathContext'/>
@@ -23,6 +24,7 @@
       <arg name='URI' type='xmlChar *' info='The URI used for base computations'/>
     </function>
     <function name='htmlCreatePushParser' file='python'>
+      <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>Create a progressive HTML parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.</info>
       <return type='xmlParserCtxtPtr' info="the parser context or None in case of error"/>
       <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
@@ -38,6 +40,7 @@
       <arg name='recover' type='int' info='allow recovery in case of error'/>
     </function>
     <function name='htmlSAXParseFile' file='python'>
+      <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>Interface to parse an HTML file or resource pointed by an URI to build an event flow to the SAX object</info>
       <return type='void'/>
       <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
@@ -129,48 +132,57 @@
     </function>
     <!-- xmlXPathContextPtr accessors -->
     <function name='xmlXPathParserGetContext' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the xpathContext from an xpathParserContext</info>
       <return type='xmlXPathContextPtr' info="The XPath context" field="context"/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath parser context'/>
     </function>
     <function name='xmlXPathGetContextDoc' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the doc from an xpathContext</info>
       <return type='xmlDocPtr' info="The doc context" field="doc"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathGetContextNode' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the current node from an xpathContext</info>
       <return type='xmlNodePtr' info="The node context" field="node"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathSetContextDoc' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Set the doc of an xpathContext</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
       <arg name="doc" type='xmlDocPtr' info="The doc context"/>
     </function>
     <function name='xmlXPathSetContextNode' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Set the current node of an xpathContext</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
       <arg name="node" type='xmlNodePtr' info="The node context"/>
     </function>
     <function name='xmlXPathGetContextPosition' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the current node from an xpathContext</info>
       <return type='int' info="The node context" field="proximityPosition"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathGetContextSize' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the current node from an xpathContext</info>
       <return type='int' info="The node context" field="contextSize"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathGetFunction' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the current function name xpathContext</info>
       <return type='const xmlChar *' info="The function name" field="function"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathGetFunctionURI' file='python_accessor'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Get the current function name URI xpathContext</info>
       <return type='const xmlChar *' info="The function name URI" field="functionURI"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>

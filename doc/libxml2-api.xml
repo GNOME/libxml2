@@ -1373,9 +1373,11 @@
      <exports symbol='xmlNode' type='typedef'/>
      <exports symbol='xmlDocPtr' type='typedef'/>
      <exports symbol='xmlElementContent' type='typedef'/>
+     <exports symbol='xmlDOMWrapCtxtPtr' type='typedef'/>
      <exports symbol='xmlRefPtr' type='typedef'/>
      <exports symbol='xmlParserInputBuffer' type='typedef'/>
      <exports symbol='xmlRef' type='typedef'/>
+     <exports symbol='xmlDOMWrapCtxt' type='typedef'/>
      <exports symbol='xmlNodePtr' type='typedef'/>
      <exports symbol='xmlParserCtxt' type='typedef'/>
      <exports symbol='xmlDtdPtr' type='typedef'/>
@@ -1385,8 +1387,8 @@
      <exports symbol='xmlEntity' type='typedef'/>
      <exports symbol='xmlAttr' type='typedef'/>
      <exports symbol='xmlAttributePtr' type='typedef'/>
+     <exports symbol='xmlElementTypeVal' type='typedef'/>
      <exports symbol='xmlNotationPtr' type='typedef'/>
-     <exports symbol='xmlElementContentType' type='typedef'/>
      <exports symbol='xmlElementPtr' type='typedef'/>
      <exports symbol='xmlElementContentOccur' type='typedef'/>
      <exports symbol='xmlAttrPtr' type='typedef'/>
@@ -1402,7 +1404,7 @@
      <exports symbol='xmlOutputBuffer' type='typedef'/>
      <exports symbol='xmlSAXLocator' type='typedef'/>
      <exports symbol='xmlElementContentPtr' type='typedef'/>
-     <exports symbol='xmlElementTypeVal' type='typedef'/>
+     <exports symbol='xmlElementContentType' type='typedef'/>
      <exports symbol='xmlIDPtr' type='typedef'/>
      <exports symbol='xmlDtd' type='typedef'/>
      <exports symbol='xmlAttribute' type='typedef'/>
@@ -1420,17 +1422,20 @@
      <exports symbol='_xmlDtd' type='struct'/>
      <exports symbol='_xmlRef' type='struct'/>
      <exports symbol='_xmlAttr' type='struct'/>
+     <exports symbol='_xmlDOMWrapCtxt' type='struct'/>
      <exports symbol='_xmlElementContent' type='struct'/>
      <exports symbol='xmlDocCopyNode' type='function'/>
      <exports symbol='xmlNewDocRawNode' type='function'/>
      <exports symbol='xmlGetProp' type='function'/>
      <exports symbol='xmlNewNsPropEatName' type='function'/>
+     <exports symbol='xmlNewCDataBlock' type='function'/>
      <exports symbol='xmlBufferWriteCHAR' type='function'/>
      <exports symbol='xmlNodeGetBase' type='function'/>
      <exports symbol='xmlBufferEmpty' type='function'/>
      <exports symbol='xmlBuildQName' type='function'/>
      <exports symbol='xmlSaveFormatFileEnc' type='function'/>
      <exports symbol='xmlAddSibling' type='function'/>
+     <exports symbol='xmlBufferCreate' type='function'/>
      <exports symbol='xmlNewDocFragment' type='function'/>
      <exports symbol='xmlDocGetRootElement' type='function'/>
      <exports symbol='xmlStringGetNodeList' type='function'/>
@@ -1468,7 +1473,7 @@
      <exports symbol='xmlNodeListGetString' type='function'/>
      <exports symbol='xmlSetCompressMode' type='function'/>
      <exports symbol='xmlSetTreeDoc' type='function'/>
-     <exports symbol='xmlBufferCreate' type='function'/>
+     <exports symbol='xmlDOMWrapAdoptNode' type='function'/>
      <exports symbol='xmlCopyNodeList' type='function'/>
      <exports symbol='xmlNewDocNodeEatName' type='function'/>
      <exports symbol='xmlAddChildList' type='function'/>
@@ -1481,6 +1486,7 @@
      <exports symbol='xmlBufferDump' type='function'/>
      <exports symbol='xmlNodeGetContent' type='function'/>
      <exports symbol='xmlCopyDoc' type='function'/>
+     <exports symbol='xmlDOMWrapNewCtxt' type='function'/>
      <exports symbol='xmlDocDumpMemoryEnc' type='function'/>
      <exports symbol='xmlTextMerge' type='function'/>
      <exports symbol='xmlDocDumpMemory' type='function'/>
@@ -1505,6 +1511,7 @@
      <exports symbol='xmlSplitQName3' type='function'/>
      <exports symbol='xmlDocSetRootElement' type='function'/>
      <exports symbol='xmlGetLineNo' type='function'/>
+     <exports symbol='xmlBufferContent' type='function'/>
      <exports symbol='xmlRemoveProp' type='function'/>
      <exports symbol='xmlNodeGetLang' type='function'/>
      <exports symbol='xmlGetDocCompressMode' type='function'/>
@@ -1512,7 +1519,7 @@
      <exports symbol='xmlNewDocProp' type='function'/>
      <exports symbol='xmlFreeNode' type='function'/>
      <exports symbol='xmlNewNsProp' type='function'/>
-     <exports symbol='xmlBufferContent' type='function'/>
+     <exports symbol='xmlDOMWrapFreeCtxt' type='function'/>
      <exports symbol='xmlValidateNMToken' type='function'/>
      <exports symbol='xmlBufferSetAllocationScheme' type='function'/>
      <exports symbol='xmlNewChild' type='function'/>
@@ -1540,13 +1547,14 @@
      <exports symbol='xmlDocCopyNodeList' type='function'/>
      <exports symbol='xmlSetNs' type='function'/>
      <exports symbol='xmlNewNs' type='function'/>
-     <exports symbol='xmlNewCDataBlock' type='function'/>
+     <exports symbol='xmlDOMWrapRemoveNode' type='function'/>
      <exports symbol='xmlAttrSerializeTxtContent' type='function'/>
      <exports symbol='xmlCopyDtd' type='function'/>
      <exports symbol='xmlNewDocText' type='function'/>
      <exports symbol='xmlNodeListGetRawString' type='function'/>
      <exports symbol='xmlBufferCreateStatic' type='function'/>
      <exports symbol='xmlNewReference' type='function'/>
+     <exports symbol='xmlDOMWrapReconcileNamespaces' type='function'/>
      <exports symbol='xmlBufferCCat' type='function'/>
      <exports symbol='xmlGetNsList' type='function'/>
      <exports symbol='xmlBufferGrow' type='function'/>
@@ -5596,6 +5604,10 @@ if necessary or NULL'/>
       <field name='iconv_out' type='iconv_t' info=''/>
     </struct>
     <typedef name='xmlCharEncodingHandlerPtr' file='encoding' type='xmlCharEncodingHandler *'/>
+    <struct name='xmlDOMWrapCtxt' file='tree' type='struct _xmlDOMWrapCtxt'>
+      <field name='_private' type='void *' info=''/>
+    </struct>
+    <typedef name='xmlDOMWrapCtxtPtr' file='tree' type='xmlDOMWrapCtxt *'/>
     <struct name='xmlDict' file='dict' type='struct _xmlDict'/>
     <typedef name='xmlDictPtr' file='dict' type='xmlDict *'/>
     <struct name='xmlDoc' file='tree' type='struct _xmlDoc'>
@@ -8707,6 +8719,40 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the current char value and its length'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
       <arg name='len' type='int *' info='pointer to the length of the char read'/>
+    </function>
+    <function name='xmlDOMWrapAdoptNode' file='tree' module='tree'>
+      <info>Ensures that ns-references point to @destDoc: either to elements-&gt;nsDef entries if @destParent is given, or to @destDoc-&gt;oldNs otherwise. If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. WARNING: This function is in a experimental state.</info>
+      <return type='int' info='0 if succeeded, -1 otherwise and on API/internal errors.'/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='the optional context for custom processing'/>
+      <arg name='sourceDoc' type='xmlDocPtr' info='the optional sourceDoc'/>
+      <arg name='node' type='xmlNodePtr' info='the node to start with'/>
+      <arg name='destDoc' type='xmlDocPtr' info='the destination doc'/>
+      <arg name='destParent' type='xmlNodePtr' info='the optional new parent of @node in @destDoc'/>
+      <arg name='options' type='int' info='option flags'/>
+    </function>
+    <function name='xmlDOMWrapFreeCtxt' file='tree' module='tree'>
+      <info>Frees the DOM-wrapper context.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='the DOM-wrapper context'/>
+    </function>
+    <function name='xmlDOMWrapNewCtxt' file='tree' module='tree'>
+      <info>Allocates and initializes a new DOM-wrapper context.</info>
+      <return type='xmlDOMWrapCtxtPtr' info='the xmlDOMWrapCtxtPtr or NULL in case of an internal errror.'/>
+    </function>
+    <function name='xmlDOMWrapReconcileNamespaces' file='tree' module='tree'>
+      <info>Ensures that ns-references point to ns-decls hold on element-nodes. Ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. WARNING: This function is in a experimental state.</info>
+      <return type='int' info='0 if succeeded, -1 otherwise and on API/internal errors.'/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info=''/>
+      <arg name='elem' type='xmlNodePtr' info='the element-node'/>
+      <arg name='options' type='int' info='option flags'/>
+    </function>
+    <function name='xmlDOMWrapRemoveNode' file='tree' module='tree'>
+      <info>Unlinks the given node from its owner. This will substitute ns-references to node-&gt;nsDef for ns-references to doc-&gt;oldNs, thus ensuring the removed branch to be autark wrt ns-references. WARNING: This function is in a experimental state.</info>
+      <return type='int' info='0 on success, 1 if the node is not supported, -1 on API and internal errors.'/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info=''/>
+      <arg name='doc' type='xmlDocPtr' info='the doc'/>
+      <arg name='node' type='xmlNodePtr' info='the node to be removed.'/>
+      <arg name='options' type='int' info=''/>
     </function>
     <function name='xmlDebugCheckDocument' file='debugXML' module='debugXML'>
       <cond>defined(LIBXML_DEBUG_ENABLED)</cond>
@@ -13081,28 +13127,28 @@ actually an xmlCharEncoding'/>
     </functype>
     <function name='xmlSchemaValueAppend' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='prev' type='xmlSchemaValPtr' info=''/>
-      <arg name='cur' type='xmlSchemaValPtr' info=''/>
+      <info>Appends a next sibling to a list of computed values.</info>
+      <return type='int' info='0 if succeeded and -1 on API errors.'/>
+      <arg name='prev' type='xmlSchemaValPtr' info='the value'/>
+      <arg name='cur' type='xmlSchemaValPtr' info='the value to be appended'/>
     </function>
     <function name='xmlSchemaValueGetAsBoolean' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='val' type='xmlSchemaValPtr' info=''/>
+      <info>Accessor for the boolean value of a computed value.</info>
+      <return type='int' info='1 if true and 0 if false, or in case of an error. Hmm.'/>
+      <arg name='val' type='xmlSchemaValPtr' info='the value'/>
     </function>
     <function name='xmlSchemaValueGetAsString' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='const xmlChar *' info=''/>
-      <arg name='val' type='xmlSchemaValPtr' info=''/>
+      <info>Accessor for the string value of a computed value.</info>
+      <return type='const xmlChar *' info='the string value or NULL if there was none, or on API errors.'/>
+      <arg name='val' type='xmlSchemaValPtr' info='the value'/>
     </function>
     <function name='xmlSchemaValueGetNext' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='xmlSchemaValPtr' info=''/>
-      <arg name='cur' type='xmlSchemaValPtr' info=''/>
+      <info>Accessor for the next sibling of a list of computed values.</info>
+      <return type='xmlSchemaValPtr' info='the next value or NULL if there was none, or on API errors.'/>
+      <arg name='cur' type='xmlSchemaValPtr' info='the value'/>
     </function>
     <function name='xmlSchemaWhiteSpaceReplace' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13358,7 +13404,7 @@ actually an xmlCharEncoding'/>
       <arg name='buf' type='char *' info='an output buffer'/>
       <arg name='size' type='int' info='the buffer size'/>
       <arg name='content' type='xmlElementContentPtr' info='An element table'/>
-      <arg name='glob' type='int' info='1 if one must print the englobing parenthesis, 0 otherwise'/>
+      <arg name='englob' type='int' info='1 if one must print the englobing parenthesis, 0 otherwise'/>
     </function>
     <function name='xmlSplitQName' file='parserInternals' module='parser'>
       <info>parse an UTF8 encoded XML qualified name string  [NS 5] QName ::= (Prefix &apos;:&apos;)? LocalPart  [NS 6] Prefix ::= NCName  [NS 7] LocalPart ::= NCName</info>
@@ -13385,7 +13431,7 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='buf' type='char *' info='an output buffer'/>
       <arg name='content' type='xmlElementContentPtr' info='An element table'/>
-      <arg name='glob' type='int' info='1 if one must print the englobing parenthesis, 0 otherwise'/>
+      <arg name='englob' type='int' info='1 if one must print the englobing parenthesis, 0 otherwise'/>
     </function>
     <function name='xmlStopParser' file='parser' module='parser'>
       <cond>defined(LIBXML_PUSH_ENABLED)</cond>

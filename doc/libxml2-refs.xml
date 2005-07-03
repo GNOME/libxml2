@@ -1326,6 +1326,7 @@
     <reference name='_xmlChRangeGroup' href='html/libxml-chvalid.html#_xmlChRangeGroup'/>
     <reference name='_xmlChSRange' href='html/libxml-chvalid.html#_xmlChSRange'/>
     <reference name='_xmlCharEncodingHandler' href='html/libxml-encoding.html#_xmlCharEncodingHandler'/>
+    <reference name='_xmlDOMWrapCtxt' href='html/libxml-tree.html#_xmlDOMWrapCtxt'/>
     <reference name='_xmlDoc' href='html/libxml-tree.html#_xmlDoc'/>
     <reference name='_xmlDtd' href='html/libxml-tree.html#_xmlDtd'/>
     <reference name='_xmlElement' href='html/libxml-tree.html#_xmlElement'/>
@@ -1750,6 +1751,13 @@
     <reference name='xmlCtxtResetPush' href='html/libxml-parser.html#xmlCtxtResetPush'/>
     <reference name='xmlCtxtUseOptions' href='html/libxml-parser.html#xmlCtxtUseOptions'/>
     <reference name='xmlCurrentChar' href='html/libxml-parserInternals.html#xmlCurrentChar'/>
+    <reference name='xmlDOMWrapAdoptNode' href='html/libxml-tree.html#xmlDOMWrapAdoptNode'/>
+    <reference name='xmlDOMWrapCtxt' href='html/libxml-tree.html#xmlDOMWrapCtxt'/>
+    <reference name='xmlDOMWrapCtxtPtr' href='html/libxml-tree.html#xmlDOMWrapCtxtPtr'/>
+    <reference name='xmlDOMWrapFreeCtxt' href='html/libxml-tree.html#xmlDOMWrapFreeCtxt'/>
+    <reference name='xmlDOMWrapNewCtxt' href='html/libxml-tree.html#xmlDOMWrapNewCtxt'/>
+    <reference name='xmlDOMWrapReconcileNamespaces' href='html/libxml-tree.html#xmlDOMWrapReconcileNamespaces'/>
+    <reference name='xmlDOMWrapRemoveNode' href='html/libxml-tree.html#xmlDOMWrapRemoveNode'/>
     <reference name='xmlDebugCheckDocument' href='html/libxml-debugXML.html#xmlDebugCheckDocument'/>
     <reference name='xmlDebugDumpAttr' href='html/libxml-debugXML.html#xmlDebugDumpAttr'/>
     <reference name='xmlDebugDumpAttrList' href='html/libxml-debugXML.html#xmlDebugDumpAttrList'/>
@@ -4669,6 +4677,7 @@
       <ref name='_xmlChRangeGroup'/>
       <ref name='_xmlChSRange'/>
       <ref name='_xmlCharEncodingHandler'/>
+      <ref name='_xmlDOMWrapCtxt'/>
       <ref name='_xmlDoc'/>
       <ref name='_xmlDtd'/>
       <ref name='_xmlElement'/>
@@ -5127,6 +5136,13 @@
       <ref name='xmlCtxtResetPush'/>
       <ref name='xmlCtxtUseOptions'/>
       <ref name='xmlCurrentChar'/>
+      <ref name='xmlDOMWrapAdoptNode'/>
+      <ref name='xmlDOMWrapCtxt'/>
+      <ref name='xmlDOMWrapCtxtPtr'/>
+      <ref name='xmlDOMWrapFreeCtxt'/>
+      <ref name='xmlDOMWrapNewCtxt'/>
+      <ref name='xmlDOMWrapReconcileNamespaces'/>
+      <ref name='xmlDOMWrapRemoveNode'/>
       <ref name='xmlDebugCheckDocument'/>
       <ref name='xmlDebugDumpAttr'/>
       <ref name='xmlDebugDumpAttrList'/>
@@ -7004,6 +7020,9 @@
       <ref name='xmlGetCharEncodingHandler'/>
       <ref name='xmlNewCharEncodingHandler'/>
     </type>
+    <type name='xmlDOMWrapCtxtPtr'>
+      <ref name='xmlDOMWrapNewCtxt'/>
+    </type>
     <type name='xmlDeregisterNodeFunc'>
       <ref name='xmlDeregisterNodeDefault'/>
       <ref name='xmlThrDefDeregisterNodeDefault'/>
@@ -8590,6 +8609,12 @@
       <ref name='xmlSaveSetAttrEscape'/>
       <ref name='xmlSaveSetEscape'/>
     </type>
+    <type name='xmlDOMWrapCtxtPtr'>
+      <ref name='xmlDOMWrapAdoptNode'/>
+      <ref name='xmlDOMWrapFreeCtxt'/>
+      <ref name='xmlDOMWrapReconcileNamespaces'/>
+      <ref name='xmlDOMWrapRemoveNode'/>
+    </type>
     <type name='xmlDeregisterNodeFunc'>
       <ref name='xmlDeregisterNodeDefault'/>
       <ref name='xmlThrDefDeregisterNodeDefault'/>
@@ -8634,6 +8659,8 @@
       <ref name='xmlCopyDoc'/>
       <ref name='xmlCopyDocElementContent'/>
       <ref name='xmlCreateIntSubset'/>
+      <ref name='xmlDOMWrapAdoptNode'/>
+      <ref name='xmlDOMWrapRemoveNode'/>
       <ref name='xmlDebugCheckDocument'/>
       <ref name='xmlDebugDumpDocument'/>
       <ref name='xmlDebugDumpDocumentHead'/>
@@ -9007,6 +9034,9 @@
       <ref name='xmlC14NIsVisibleCallback'/>
       <ref name='xmlCopyProp'/>
       <ref name='xmlCopyPropList'/>
+      <ref name='xmlDOMWrapAdoptNode'/>
+      <ref name='xmlDOMWrapReconcileNamespaces'/>
+      <ref name='xmlDOMWrapRemoveNode'/>
       <ref name='xmlDebugDumpNode'/>
       <ref name='xmlDebugDumpNodeList'/>
       <ref name='xmlDebugDumpOneNode'/>
@@ -11272,6 +11302,7 @@
       <ref name='_xmlAttr'/>
       <ref name='_xmlAttribute'/>
       <ref name='_xmlBuffer'/>
+      <ref name='_xmlDOMWrapCtxt'/>
       <ref name='_xmlDoc'/>
       <ref name='_xmlDtd'/>
       <ref name='_xmlElement'/>
@@ -11327,6 +11358,13 @@
       <ref name='xmlCopyProp'/>
       <ref name='xmlCopyPropList'/>
       <ref name='xmlCreateIntSubset'/>
+      <ref name='xmlDOMWrapAdoptNode'/>
+      <ref name='xmlDOMWrapCtxt'/>
+      <ref name='xmlDOMWrapCtxtPtr'/>
+      <ref name='xmlDOMWrapFreeCtxt'/>
+      <ref name='xmlDOMWrapNewCtxt'/>
+      <ref name='xmlDOMWrapReconcileNamespaces'/>
+      <ref name='xmlDOMWrapRemoveNode'/>
       <ref name='xmlDoc'/>
       <ref name='xmlDocCopyNode'/>
       <ref name='xmlDocCopyNodeList'/>
@@ -13459,6 +13497,9 @@
         </word>
         <word name='Accessor'>
           <ref name='xmlSchemaGetValType'/>
+          <ref name='xmlSchemaValueGetAsBoolean'/>
+          <ref name='xmlSchemaValueGetAsString'/>
+          <ref name='xmlSchemaValueGetNext'/>
         </word>
         <word name='Activation'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
@@ -13509,6 +13550,9 @@
           <ref name='xmlSchemaNewQNameValue'/>
           <ref name='xmlSchemaNewStringValue'/>
         </word>
+        <word name='Allocates'>
+          <ref name='xmlDOMWrapNewCtxt'/>
+        </word>
         <word name='Allows'>
           <ref name='xmlCatalogSetDefaultPrefer'/>
         </word>
@@ -13531,6 +13575,9 @@
         </word>
         <word name='Appendix'>
           <ref name='xmlRegexpCompile'/>
+        </word>
+        <word name='Appends'>
+          <ref name='xmlSchemaValueAppend'/>
         </word>
         <word name='Applies'>
           <ref name='htmlCtxtUseOptions'/>
@@ -14294,6 +14341,10 @@
           <ref name='xmlXPathNodeSetGetLength'/>
           <ref name='xmlXPathNodeSetItem'/>
         </word>
+        <word name='DOM-wrapper'>
+          <ref name='xmlDOMWrapFreeCtxt'/>
+          <ref name='xmlDOMWrapNewCtxt'/>
+        </word>
         <word name='DTDs'>
           <ref name='XML_COMPLETE_ATTRS'/>
           <ref name='xmlParserHandlePEReference'/>
@@ -14627,6 +14678,10 @@
         <word name='End-of-Line'>
           <ref name='xmlCurrentChar'/>
         </word>
+        <word name='Ensures'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
         <word name='Entities'>
           <ref name='xmlGetCharEncodingName'/>
           <ref name='xmlParseCharEncoding'/>
@@ -14900,6 +14955,7 @@
         </word>
         <word name='Frees'>
           <ref name='xmlBufferFree'/>
+          <ref name='xmlDOMWrapFreeCtxt'/>
           <ref name='xmlNanoFTPFreeCtxt'/>
         </word>
         <word name='Front-end'>
@@ -15048,6 +15104,9 @@
         </word>
         <word name='Hiragana'>
           <ref name='xmlUCSIsHiragana'/>
+        </word>
+        <word name='Hmm'>
+          <ref name='xmlSchemaValueGetAsBoolean'/>
         </word>
         <word name='How'>
           <ref name='_xmlParserInput'/>
@@ -15750,6 +15809,8 @@
           <ref name='htmlElementAllowedHere'/>
           <ref name='xmlAddAttributeDecl'/>
           <ref name='xmlCheckUTF8'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlDocDumpFormatMemory'/>
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlDocDumpMemoryEnc'/>
@@ -16169,6 +16230,8 @@
           <ref name='xmlValidateQName'/>
         </word>
         <word name='QNames'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlHashQLookup2'/>
         </word>
         <word name='QUIT'>
@@ -17134,6 +17197,9 @@
           <ref name='xmlReplaceNode'/>
           <ref name='xmlUnlinkNode'/>
         </word>
+        <word name='Unlinks'>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='Unregisters'>
           <ref name='xmlCleanupEncodingAliases'/>
           <ref name='xmlDelEncodingAlias'/>
@@ -17259,6 +17325,9 @@
           <ref name='xmlSchemaParse'/>
         </word>
         <word name='WARNING:'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaNewStringValue'/>
         </word>
@@ -17559,6 +17628,8 @@
           <ref name='xmlSetDocCompressMode'/>
         </word>
       </letter>
+    </chunk>
+    <chunk name='chunk9'>
       <letter name='a'>
         <word name='a-z'>
           <ref name='xmlCheckLanguageID'/>
@@ -17780,6 +17851,10 @@
           <ref name='xmlHashUpdateEntry3'/>
           <ref name='xmlXPathSubstringFunction'/>
         </word>
+        <word name='additional'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
         <word name='address'>
           <ref name='xmlModuleSymbol'/>
           <ref name='xmlNewTextWriterDoc'/>
@@ -17971,6 +18046,8 @@
           <ref name='xmlAddPrevSibling'/>
           <ref name='xmlAddSibling'/>
           <ref name='xmlBuildRelativeURI'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlFreeFunc'/>
           <ref name='xmlGcMemSetup'/>
           <ref name='xmlMemSetup'/>
@@ -18125,6 +18202,7 @@
         </word>
         <word name='appended'>
           <ref name='xmlParseAttValue'/>
+          <ref name='xmlSchemaValueAppend'/>
         </word>
         <word name='appending'>
           <ref name='xmlParseAttValue'/>
@@ -18267,6 +18345,9 @@
           <ref name='xmlParseExtParsedEnt'/>
           <ref name='xmlTextMerge'/>
         </word>
+        <word name='autark'>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='authentication'>
           <ref name='xmlNanoHTTPAuthHeader'/>
         </word>
@@ -18310,7 +18391,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk9'>
+    <chunk name='chunk10'>
       <letter name='b'>
         <word name='back'>
           <ref name='xmlEntityReferenceFunc'/>
@@ -18534,10 +18615,13 @@
           <ref name='xmlParseCharData'/>
         </word>
         <word name='branch'>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlSchemaValidateOneElement'/>
         </word>
         <word name='break'>
           <ref name='_xmlError'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlLineNumbersDefault'/>
         </word>
         <word name='breaking'>
@@ -18643,7 +18727,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk10'>
+    <chunk name='chunk11'>
       <letter name='c'>
         <word name='calculates'>
           <ref name='xmlUTF8Size'/>
@@ -19321,6 +19405,10 @@
           <ref name='xmlSchemaValidateLengthFacet'/>
           <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlSchemaValidatePredefinedType'/>
+          <ref name='xmlSchemaValueAppend'/>
+          <ref name='xmlSchemaValueGetAsBoolean'/>
+          <ref name='xmlSchemaValueGetAsString'/>
+          <ref name='xmlSchemaValueGetNext'/>
           <ref name='xmlTextReaderByteConsumed'/>
         </word>
         <word name='computes'>
@@ -19685,6 +19773,8 @@
         </word>
         <word name='could'>
           <ref name='xmlByteConsumed'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlModuleClose'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaGetCanonValueWhtsp'/>
@@ -19742,6 +19832,10 @@
           <ref name='xmlCreateURI'/>
           <ref name='xmlStrncatNew'/>
         </word>
+        <word name='creating'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
         <word name='creation'>
           <ref name='xmlIOHTTPOpenW'/>
           <ref name='xmlNewNs'/>
@@ -19783,12 +19877,13 @@
           <ref name='xmlSchemaValidateFile'/>
         </word>
         <word name='custom'>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlSaveSetAttrEscape'/>
           <ref name='xmlSaveSetEscape'/>
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk11'>
+    <chunk name='chunk12'>
       <letter name='d'>
         <word name='dangerous'>
           <ref name='xmlTextReaderCurrentNode'/>
@@ -20152,6 +20247,7 @@
           <ref name='xmlUTF8Strpos'/>
         </word>
         <word name='destination'>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlIOHTTPOpenW'/>
           <ref name='xmlURIUnescapeString'/>
         </word>
@@ -20394,9 +20490,12 @@
         </word>
         <word name='doc'>
           <ref name='htmlNodeDumpFileFormat'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlNewTextWriterDoc'/>
         </word>
         <word name='doc-'>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlDocGetRootElement'/>
           <ref name='xmlDocSetRootElement'/>
           <ref name='xmlNewTextWriterTree'/>
@@ -20583,7 +20682,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk12'>
+    <chunk name='chunk13'>
       <letter name='e'>
         <word name='each'>
           <ref name='_xmlParserCtxt'/>
@@ -20612,6 +20711,7 @@
         <word name='either'>
           <ref name='xmlBoolToText'/>
           <ref name='xmlCurrentChar'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlLoadACatalog'/>
           <ref name='xmlNodeBufGetContent'/>
           <ref name='xmlNodeGetContent'/>
@@ -20633,6 +20733,12 @@
         </word>
         <word name='element-'>
           <ref name='xmlXPathOrderDocElems'/>
+        </word>
+        <word name='element-node'>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
+        <word name='element-nodes'>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
         </word>
         <word name='elementdecl'>
           <ref name='xmlParseElementDecl'/>
@@ -20664,6 +20770,9 @@
           <ref name='xmlTextWriterEndDocument'/>
           <ref name='xmlXPathIdFunction'/>
           <ref name='xmlXPathOrderDocElems'/>
+        </word>
+        <word name='elements-'>
+          <ref name='xmlDOMWrapAdoptNode'/>
         </word>
         <word name='else'>
           <ref name='UTF8ToHtml'/>
@@ -20793,6 +20902,12 @@
           <ref name='xmlCopyNodeList'/>
           <ref name='xmlNewTextChild'/>
         </word>
+        <word name='ensures'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+        </word>
+        <word name='ensuring'>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='entire'>
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
@@ -20812,6 +20927,7 @@
           <ref name='xmlCatalogConvert'/>
           <ref name='xmlCatalogRemove'/>
           <ref name='xmlConvertSGMLCatalog'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlHashAddEntry3'/>
           <ref name='xmlLoadACatalog'/>
           <ref name='xmlLoadCatalog'/>
@@ -20905,6 +21021,9 @@
           <ref name='initGenericErrorDefaultFunc'/>
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlCheckHTTPInput'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlDebugCheckDocument'/>
           <ref name='xmlHashAddEntry'/>
           <ref name='xmlHashAddEntry2'/>
@@ -20915,7 +21034,13 @@
           <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlSchemaGetParserErrors'/>
           <ref name='xmlSchemaSetParserErrors'/>
+          <ref name='xmlSchemaValueAppend'/>
+          <ref name='xmlSchemaValueGetAsString'/>
+          <ref name='xmlSchemaValueGetNext'/>
           <ref name='xmlShellCmd'/>
+        </word>
+        <word name='errror'>
+          <ref name='xmlDOMWrapNewCtxt'/>
         </word>
         <word name='escape'>
           <ref name='docbEncodeEntities'/>
@@ -21053,6 +21178,10 @@
         <word name='exist'>
           <ref name='xmlXPtrLocationSetAdd'/>
         </word>
+        <word name='existent'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
         <word name='exists'>
           <ref name='xmlDictExists'/>
           <ref name='xmlShellPwd'/>
@@ -21079,6 +21208,11 @@
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
           <ref name='xmlStreamPush'/>
           <ref name='xmlStreamPushAttr'/>
+        </word>
+        <word name='experimental'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
         </word>
         <word name='explicitly'>
           <ref name='xmlSAXDefaultVersion'/>
@@ -21145,7 +21279,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk13'>
+    <chunk name='chunk14'>
       <letter name='f'>
         <word name='fTP'>
           <ref name='xmlNanoFTPConnectTo'/>
@@ -21418,6 +21552,8 @@
           <ref name='htmlGetMetaEncoding'/>
         </word>
         <word name='flags'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlReaderForDoc'/>
           <ref name='xmlReaderForFd'/>
@@ -21672,7 +21808,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk14'>
+    <chunk name='chunk15'>
       <letter name='g'>
         <word name='gDay'>
           <ref name='xmlSchemaGetCanonValue'/>
@@ -22024,6 +22160,7 @@
           <ref name='xmlSchemaParse'/>
         </word>
         <word name='hold'>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlNewTextWriterDoc'/>
           <ref name='xmlNewTextWriterPushParser'/>
           <ref name='xmlReconciliateNs'/>
@@ -22140,7 +22277,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk15'>
+    <chunk name='chunk16'>
       <letter name='i'>
         <word name='iconv'>
           <ref name='LIBXML_ICONV_ENABLED'/>
@@ -22593,6 +22730,9 @@
         <word name='initialized'>
           <ref name='XML_SAX2_MAGIC'/>
         </word>
+        <word name='initializes'>
+          <ref name='xmlDOMWrapNewCtxt'/>
+        </word>
         <word name='initiate'>
           <ref name='xmlCharEncOutFunc'/>
         </word>
@@ -22839,7 +22979,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk16'>
+    <chunk name='chunk17'>
       <letter name='j'>
         <word name='just'>
           <ref name='htmlSetMetaEncoding'/>
@@ -23332,7 +23472,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk17'>
+    <chunk name='chunk18'>
       <letter name='m'>
         <word name='machine'>
           <ref name='xmlCheckFilename'/>
@@ -23766,7 +23906,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk18'>
+    <chunk name='chunk19'>
       <letter name='n'>
         <word name='named'>
           <ref name='xmlAddEncodingAlias'/>
@@ -23865,6 +24005,8 @@
           <ref name='htmlEntityLookup'/>
           <ref name='htmlEntityValueLookup'/>
           <ref name='xlinkIsLink'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlLoadSGMLSuperCatalog'/>
           <ref name='xmlNewNodeEatName'/>
@@ -23954,6 +24096,7 @@
           <ref name='xmlEntityReferenceFunc'/>
         </word>
         <word name='node-'>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlValidGetValidElements'/>
         </word>
         <word name='node-set?'>
@@ -24040,6 +24183,8 @@
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlGetLastChild'/>
           <ref name='xmlOutputBufferCreateFilename'/>
+          <ref name='xmlSchemaValueGetAsString'/>
+          <ref name='xmlSchemaValueGetNext'/>
           <ref name='xmlStringDecodeEntities'/>
           <ref name='xmlStringLenDecodeEntities'/>
           <ref name='xmlTextReaderConstXmlLang'/>
@@ -24114,6 +24259,19 @@
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlScanName'/>
         </word>
+        <word name='ns-decls'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
+        <word name='ns-references'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
+        <word name='nsDef'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='null'>
           <ref name='xmlHashScan3'/>
           <ref name='xmlHashScanFull3'/>
@@ -24153,7 +24311,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk19'>
+    <chunk name='chunk20'>
       <letter name='o'>
         <word name='object?'>
           <ref name='xmlXPathNumberFunction'/>
@@ -24268,6 +24426,10 @@
           <ref name='xmlXPathConvertBoolean'/>
           <ref name='xmlXPathConvertNumber'/>
           <ref name='xmlXPathConvertString'/>
+        </word>
+        <word name='oldNs'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
         </word>
         <word name='older'>
           <ref name='LIBXML_SAX1_ENABLED'/>
@@ -24401,6 +24563,8 @@
           <ref name='xmlXPathNodeSetAddUnique'/>
         </word>
         <word name='option'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlGetLineNo'/>
           <ref name='xmlSchemaValidCtxtGetOptions'/>
         </word>
@@ -24410,6 +24574,7 @@
           <ref name='htmlCreatePushParserCtxt'/>
           <ref name='xmlCreatePushParserCtxt'/>
           <ref name='xmlCtxtResetPush'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlListCreate'/>
           <ref name='xmlNanoFTPList'/>
           <ref name='xmlNewChild'/>
@@ -24566,6 +24731,7 @@
         </word>
         <word name='owner'>
           <ref name='ftpListCallback'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
         </word>
         <word name='ownership'>
           <ref name='xmlAddAttributeDecl'/>
@@ -24580,7 +24746,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk20'>
+    <chunk name='chunk21'>
       <letter name='p'>
         <word name='pairs'>
           <ref name='startElement'/>
@@ -24955,6 +25121,8 @@
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlC14NExecute'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
         </word>
         <word name='preparsed'>
           <ref name='xmlReaderNewWalker'/>
@@ -25079,6 +25247,8 @@
         </word>
         <word name='process'>
           <ref name='xmlCleanupParser'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlNewTextReaderFilename'/>
           <ref name='xmlParseAttValue'/>
@@ -25304,7 +25474,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk21'>
+    <chunk name='chunk22'>
       <letter name='q'>
         <word name='qualified'>
           <ref name='XML_SCHEMAS_QUALIF_ATTR'/>
@@ -25790,6 +25960,7 @@
           <ref name='xmlBufferShrink'/>
           <ref name='xmlCatalogRemove'/>
           <ref name='xmlCheckLanguageID'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlFreeDocElementContent'/>
           <ref name='xmlFreeElementContent'/>
           <ref name='xmlHandleEntity'/>
@@ -26163,7 +26334,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk22'>
+    <chunk name='chunk23'>
       <letter name='s'>
         <word name='s390'>
           <ref name='XML_CAST_FPTR'/>
@@ -26476,6 +26647,10 @@
           <ref name='getSystemId'/>
           <ref name='xmlSAX2GetSystemId'/>
         </word>
+        <word name='shadowed'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+        </word>
         <word name='shall'>
           <ref name='_xmlParserCtxt'/>
         </word>
@@ -26532,6 +26707,8 @@
           <ref name='_xmlNode'/>
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlSchemaValueAppend'/>
+          <ref name='xmlSchemaValueGetNext'/>
           <ref name='xmlXPathNextPrecedingSibling'/>
         </word>
         <word name='siblings'>
@@ -26597,6 +26774,8 @@
         </word>
         <word name='since'>
           <ref name='xmlBuildRelativeURI'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
         </word>
@@ -26707,6 +26886,9 @@
           <ref name='xmlReadIO'/>
           <ref name='xmlReaderForIO'/>
           <ref name='xmlReaderNewIO'/>
+        </word>
+        <word name='sourceDoc'>
+          <ref name='xmlDOMWrapAdoptNode'/>
         </word>
         <word name='sourceforge'>
           <ref name='xmlXPathIsInf'/>
@@ -26843,6 +27025,7 @@
           <ref name='startDocumentSAXFunc'/>
           <ref name='startElementNsSAX2Func'/>
           <ref name='xmlByteConsumed'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlParseStartTag'/>
           <ref name='xmlRelaxNGValidatePushElement'/>
           <ref name='xmlSAX2StartDocument'/>
@@ -27147,6 +27330,9 @@
         <word name='substituion'>
           <ref name='XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION'/>
         </word>
+        <word name='substitute'>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='substituted'>
           <ref name='XML_SUBSTITUTE_BOTH'/>
           <ref name='XML_SUBSTITUTE_NONE'/>
@@ -27217,6 +27403,8 @@
           <ref name='xmlNewTextWriter'/>
         </word>
         <word name='succeeded'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlHashAddEntry'/>
           <ref name='xmlHashAddEntry2'/>
           <ref name='xmlHashAddEntry3'/>
@@ -27226,6 +27414,7 @@
           <ref name='xmlHashUpdateEntry'/>
           <ref name='xmlHashUpdateEntry2'/>
           <ref name='xmlHashUpdateEntry3'/>
+          <ref name='xmlSchemaValueAppend'/>
           <ref name='xmlXPathCompareValues'/>
         </word>
         <word name='succeeds'>
@@ -27299,6 +27488,7 @@
           <ref name='xmlGetRefs'/>
         </word>
         <word name='supported'>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlInitCharEncodingHandlers'/>
           <ref name='xmlNanoFTPGetConnection'/>
           <ref name='xmlSchemaGetCanonValue'/>
@@ -27345,7 +27535,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk23'>
+    <chunk name='chunk24'>
       <letter name='t'>
         <word name='tag'>
           <ref name='_htmlElemDesc'/>
@@ -27487,37 +27677,6 @@
           <ref name='xmlRegExecErrInfo'/>
           <ref name='xmlRegExecNextValues'/>
         </word>
-        <word name='there'>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='_xmlParserInput'/>
-          <ref name='xlinkIsLink'/>
-          <ref name='xmlAddChild'/>
-          <ref name='xmlAddNextSibling'/>
-          <ref name='xmlAddPrevSibling'/>
-          <ref name='xmlBuildQName'/>
-          <ref name='xmlC14NDocDumpMemory'/>
-          <ref name='xmlC14NDocSave'/>
-          <ref name='xmlC14NDocSaveTo'/>
-          <ref name='xmlC14NExecute'/>
-          <ref name='xmlCanonicPath'/>
-          <ref name='xmlGcMemSetup'/>
-          <ref name='xmlGenericErrorFunc'/>
-          <ref name='xmlMemSetup'/>
-          <ref name='xmlNanoFTPCheckResponse'/>
-          <ref name='xmlNanoFTPUpdateURL'/>
-          <ref name='xmlParseNotationDecl'/>
-          <ref name='xmlParseReference'/>
-          <ref name='xmlStructuredErrorFunc'/>
-          <ref name='xmlTextReaderGetRemainder'/>
-          <ref name='xmlTextReaderNext'/>
-          <ref name='xmlTextReaderNextSibling'/>
-          <ref name='xmlTextReaderRead'/>
-          <ref name='xmlXPathLangFunction'/>
-          <ref name='xmlXPathNextParent'/>
-          <ref name='xmlXPathRoundFunction'/>
-          <ref name='xmlXPathStringFunction'/>
-          <ref name='xmlXPathTranslateFunction'/>
-        </word>
         <word name='these'>
           <ref name='_htmlElemDesc'/>
           <ref name='xmlCheckUTF8'/>
@@ -27578,6 +27737,7 @@
           <ref name='xmlShellPwd'/>
         </word>
         <word name='thus'>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlNewRMutex'/>
           <ref name='xmlXPathNextAncestor'/>
           <ref name='xmlXPathNextAncestorOrSelf'/>
@@ -27887,7 +28047,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk24'>
+    <chunk name='chunk25'>
       <letter name='u'>
         <word name='ugly'>
           <ref name='_xmlParserCtxt'/>
@@ -28238,7 +28398,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk25'>
+    <chunk name='chunk26'>
       <letter name='w'>
         <word name='walker'>
           <ref name='xmlListReverseWalk'/>
@@ -28336,6 +28496,8 @@
           <ref name='xmlResetLastError'/>
         </word>
         <word name='wellformed'>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlParseFile'/>
         </word>
         <word name='were'>
@@ -28363,6 +28525,8 @@
           <ref name='_htmlElemDesc'/>
           <ref name='xmlCopyProp'/>
           <ref name='xmlCopyPropList'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
           <ref name='xmlFileRead'/>
           <ref name='xmlIOFTPRead'/>
           <ref name='xmlIOHTTPRead'/>
@@ -28560,6 +28724,9 @@
         <word name='writing'>
           <ref name='xmlOutputBufferCreateFilename'/>
         </word>
+        <word name='wrt'>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='www'>
           <ref name='XINCLUDE_NS'/>
           <ref name='XINCLUDE_OLD_NS'/>
@@ -28576,7 +28743,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk26'>
+    <chunk name='chunk27'>
       <letter name='x'>
         <word name='x00B7'>
           <ref name='IS_EXTENDER'/>
@@ -28790,6 +28957,9 @@
         </word>
         <word name='xmlCreateIntSubset'>
           <ref name='xmlNewDtd'/>
+        </word>
+        <word name='xmlDOMWrapCtxtPtr'>
+          <ref name='xmlDOMWrapNewCtxt'/>
         </word>
         <word name='xmlDefaultSAXLocator'>
           <ref name='setDocumentLocator'/>
@@ -29535,7 +29705,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk27'>
+    <chunk name='chunk28'>
       <letter name='y'>
         <word name='year'>
           <ref name='ftpListCallback'/>
@@ -29618,26 +29788,27 @@
       <chunk name='chunk5' start='O' end='P'/>
       <chunk name='chunk6' start='Q' end='S'/>
       <chunk name='chunk7' start='T' end='U'/>
-      <chunk name='chunk8' start='V' end='a'/>
-      <chunk name='chunk9' start='b' end='b'/>
-      <chunk name='chunk10' start='c' end='c'/>
-      <chunk name='chunk11' start='d' end='d'/>
-      <chunk name='chunk12' start='e' end='e'/>
-      <chunk name='chunk13' start='f' end='f'/>
-      <chunk name='chunk14' start='g' end='h'/>
-      <chunk name='chunk15' start='i' end='i'/>
-      <chunk name='chunk16' start='j' end='l'/>
-      <chunk name='chunk17' start='m' end='m'/>
-      <chunk name='chunk18' start='n' end='n'/>
-      <chunk name='chunk19' start='o' end='o'/>
-      <chunk name='chunk20' start='p' end='p'/>
-      <chunk name='chunk21' start='q' end='r'/>
-      <chunk name='chunk22' start='s' end='s'/>
-      <chunk name='chunk23' start='t' end='t'/>
-      <chunk name='chunk24' start='u' end='v'/>
-      <chunk name='chunk25' start='w' end='w'/>
-      <chunk name='chunk26' start='x' end='x'/>
-      <chunk name='chunk27' start='y' end='z'/>
+      <chunk name='chunk8' start='V' end='Z'/>
+      <chunk name='chunk9' start='a' end='a'/>
+      <chunk name='chunk10' start='b' end='b'/>
+      <chunk name='chunk11' start='c' end='c'/>
+      <chunk name='chunk12' start='d' end='d'/>
+      <chunk name='chunk13' start='e' end='e'/>
+      <chunk name='chunk14' start='f' end='f'/>
+      <chunk name='chunk15' start='g' end='h'/>
+      <chunk name='chunk16' start='i' end='i'/>
+      <chunk name='chunk17' start='j' end='l'/>
+      <chunk name='chunk18' start='m' end='m'/>
+      <chunk name='chunk19' start='n' end='n'/>
+      <chunk name='chunk20' start='o' end='o'/>
+      <chunk name='chunk21' start='p' end='p'/>
+      <chunk name='chunk22' start='q' end='r'/>
+      <chunk name='chunk23' start='s' end='s'/>
+      <chunk name='chunk24' start='t' end='t'/>
+      <chunk name='chunk25' start='u' end='v'/>
+      <chunk name='chunk26' start='w' end='w'/>
+      <chunk name='chunk27' start='x' end='x'/>
+      <chunk name='chunk28' start='y' end='z'/>
     </chunks>
   </index>
 </apirefs>

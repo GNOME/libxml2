@@ -1969,6 +1969,7 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 	    return(-1);
 	}
     }
+#ifdef LIBXML_SCHEMAS_ENABLED
     if (rng != NULL) {
 	ret = xmlTextReaderRelaxNGValidate(reader, rng);
 	if (ret < 0) {
@@ -1980,6 +1981,7 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 	    return(0);
 	}
     }
+#endif
     xmlGetWarningsDefaultValue = 1;
     ret = xmlTextReaderRead(reader);
     while (ret == 1) {

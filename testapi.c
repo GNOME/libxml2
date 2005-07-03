@@ -18887,6 +18887,189 @@ test_xmlCreateIntSubset(void) {
 }
 
 
+#define gen_nb_xmlDOMWrapCtxtPtr 1
+static xmlDOMWrapCtxtPtr gen_xmlDOMWrapCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlDOMWrapCtxtPtr(int no ATTRIBUTE_UNUSED, xmlDOMWrapCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+static int
+test_xmlDOMWrapAdoptNode(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlDOMWrapCtxtPtr ctxt; /* the optional context for custom processing */
+    int n_ctxt;
+    xmlDocPtr sourceDoc; /* the optional sourceDoc */
+    int n_sourceDoc;
+    xmlNodePtr node; /* the node to start with */
+    int n_node;
+    xmlDocPtr destDoc; /* the destination doc */
+    int n_destDoc;
+    xmlNodePtr destParent; /* the optional new parent of @node in @destDoc */
+    int n_destParent;
+    int options; /* option flags */
+    int n_options;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlDOMWrapCtxtPtr;n_ctxt++) {
+    for (n_sourceDoc = 0;n_sourceDoc < gen_nb_xmlDocPtr;n_sourceDoc++) {
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+    for (n_destDoc = 0;n_destDoc < gen_nb_xmlDocPtr;n_destDoc++) {
+    for (n_destParent = 0;n_destParent < gen_nb_xmlNodePtr;n_destParent++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlDOMWrapCtxtPtr(n_ctxt, 0);
+        sourceDoc = gen_xmlDocPtr(n_sourceDoc, 1);
+        node = gen_xmlNodePtr(n_node, 2);
+        destDoc = gen_xmlDocPtr(n_destDoc, 3);
+        destParent = gen_xmlNodePtr(n_destParent, 4);
+        options = gen_int(n_options, 5);
+
+        ret_val = xmlDOMWrapAdoptNode(ctxt, sourceDoc, node, destDoc, destParent, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDOMWrapCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDocPtr(n_sourceDoc, sourceDoc, 1);
+        des_xmlNodePtr(n_node, node, 2);
+        des_xmlDocPtr(n_destDoc, destDoc, 3);
+        des_xmlNodePtr(n_destParent, destParent, 4);
+        des_int(n_options, options, 5);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlDOMWrapAdoptNode",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_sourceDoc);
+            printf(" %d", n_node);
+            printf(" %d", n_destDoc);
+            printf(" %d", n_destParent);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlDOMWrapNewCtxt(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlDOMWrapReconcileNamespaces(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlDOMWrapCtxtPtr ctxt; /*  */
+    int n_ctxt;
+    xmlNodePtr elem; /* the element-node */
+    int n_elem;
+    int options; /* option flags */
+    int n_options;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlDOMWrapCtxtPtr;n_ctxt++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlDOMWrapCtxtPtr(n_ctxt, 0);
+        elem = gen_xmlNodePtr(n_elem, 1);
+        options = gen_int(n_options, 2);
+
+        ret_val = xmlDOMWrapReconcileNamespaces(ctxt, elem, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDOMWrapCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlNodePtr(n_elem, elem, 1);
+        des_int(n_options, options, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlDOMWrapReconcileNamespaces",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_elem);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlDOMWrapRemoveNode(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlDOMWrapCtxtPtr ctxt; /*  */
+    int n_ctxt;
+    xmlDocPtr doc; /* the doc */
+    int n_doc;
+    xmlNodePtr node; /* the node to be removed. */
+    int n_node;
+    int options; /*  */
+    int n_options;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlDOMWrapCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlDOMWrapCtxtPtr(n_ctxt, 0);
+        doc = gen_xmlDocPtr(n_doc, 1);
+        node = gen_xmlNodePtr(n_node, 2);
+        options = gen_int(n_options, 3);
+
+        ret_val = xmlDOMWrapRemoveNode(ctxt, doc, node, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDOMWrapCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDocPtr(n_doc, doc, 1);
+        des_xmlNodePtr(n_node, node, 2);
+        des_int(n_options, options, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlDOMWrapRemoveNode",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_node);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
 static int
 test_xmlDocCopyNode(void) {
     int test_ret = 0;
@@ -23070,7 +23253,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing tree : 129 of 146 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 132 of 151 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();
@@ -23104,6 +23287,10 @@ test_tree(void) {
     test_ret += test_xmlCopyProp();
     test_ret += test_xmlCopyPropList();
     test_ret += test_xmlCreateIntSubset();
+    test_ret += test_xmlDOMWrapAdoptNode();
+    test_ret += test_xmlDOMWrapNewCtxt();
+    test_ret += test_xmlDOMWrapReconcileNamespaces();
+    test_ret += test_xmlDOMWrapRemoveNode();
     test_ret += test_xmlDocCopyNode();
     test_ret += test_xmlDocCopyNodeList();
     test_ret += test_xmlDocDump();
@@ -24723,25 +24910,25 @@ test_xmlSnprintfElementContent(void) {
     int n_size;
     xmlElementContentPtr content; /* An element table */
     int n_content;
-    int glob; /* 1 if one must print the englobing parenthesis, 0 otherwise */
-    int n_glob;
+    int englob; /* 1 if one must print the englobing parenthesis, 0 otherwise */
+    int n_englob;
 
     for (n_buf = 0;n_buf < gen_nb_char_ptr;n_buf++) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
     for (n_content = 0;n_content < gen_nb_xmlElementContentPtr;n_content++) {
-    for (n_glob = 0;n_glob < gen_nb_int;n_glob++) {
+    for (n_englob = 0;n_englob < gen_nb_int;n_englob++) {
         mem_base = xmlMemBlocks();
         buf = gen_char_ptr(n_buf, 0);
         size = gen_int(n_size, 1);
         content = gen_xmlElementContentPtr(n_content, 2);
-        glob = gen_int(n_glob, 3);
+        englob = gen_int(n_englob, 3);
 
-        xmlSnprintfElementContent(buf, size, content, glob);
+        xmlSnprintfElementContent(buf, size, content, englob);
         call_tests++;
         des_char_ptr(n_buf, buf, 0);
         des_int(n_size, size, 1);
         des_xmlElementContentPtr(n_content, content, 2);
-        des_int(n_glob, glob, 3);
+        des_int(n_englob, englob, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlSnprintfElementContent",
@@ -24750,7 +24937,7 @@ test_xmlSnprintfElementContent(void) {
             printf(" %d", n_buf);
             printf(" %d", n_size);
             printf(" %d", n_content);
-            printf(" %d", n_glob);
+            printf(" %d", n_englob);
             printf("\n");
         }
     }
@@ -24774,22 +24961,22 @@ test_xmlSprintfElementContent(void) {
     int n_buf;
     xmlElementContentPtr content; /* An element table */
     int n_content;
-    int glob; /* 1 if one must print the englobing parenthesis, 0 otherwise */
-    int n_glob;
+    int englob; /* 1 if one must print the englobing parenthesis, 0 otherwise */
+    int n_englob;
 
     for (n_buf = 0;n_buf < gen_nb_char_ptr;n_buf++) {
     for (n_content = 0;n_content < gen_nb_xmlElementContentPtr;n_content++) {
-    for (n_glob = 0;n_glob < gen_nb_int;n_glob++) {
+    for (n_englob = 0;n_englob < gen_nb_int;n_englob++) {
         mem_base = xmlMemBlocks();
         buf = gen_char_ptr(n_buf, 0);
         content = gen_xmlElementContentPtr(n_content, 1);
-        glob = gen_int(n_glob, 2);
+        englob = gen_int(n_englob, 2);
 
-        xmlSprintfElementContent(buf, content, glob);
+        xmlSprintfElementContent(buf, content, englob);
         call_tests++;
         des_char_ptr(n_buf, buf, 0);
         des_xmlElementContentPtr(n_content, content, 1);
-        des_int(n_glob, glob, 2);
+        des_int(n_englob, englob, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlSprintfElementContent",
@@ -24797,7 +24984,7 @@ test_xmlSprintfElementContent(void) {
 	    test_ret++;
             printf(" %d", n_buf);
             printf(" %d", n_content);
-            printf(" %d", n_glob);
+            printf(" %d", n_englob);
             printf("\n");
         }
     }
@@ -33791,9 +33978,9 @@ test_xmlSchemaValueAppend(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValPtr prev; /*  */
+    xmlSchemaValPtr prev; /* the value */
     int n_prev;
-    xmlSchemaValPtr cur; /*  */
+    xmlSchemaValPtr cur; /* the value to be appended */
     int n_cur;
 
     for (n_prev = 0;n_prev < gen_nb_xmlSchemaValPtr;n_prev++) {
@@ -33832,7 +34019,7 @@ test_xmlSchemaValueGetAsBoolean(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValPtr val; /*  */
+    xmlSchemaValPtr val; /* the value */
     int n_val;
 
     for (n_val = 0;n_val < gen_nb_xmlSchemaValPtr;n_val++) {
@@ -33866,7 +34053,7 @@ test_xmlSchemaValueGetAsString(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
-    xmlSchemaValPtr val; /*  */
+    xmlSchemaValPtr val; /* the value */
     int n_val;
 
     for (n_val = 0;n_val < gen_nb_xmlSchemaValPtr;n_val++) {

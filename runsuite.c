@@ -19,6 +19,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
+#if defined(LIBXML_SCHEMAS_ENABLED) && defined(LIBXML_XPATH_ENABLED)
 #include <libxml/xmlreader.h>
 
 #include <libxml/xpath.h>
@@ -1099,3 +1100,9 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 
     return(ret);
 }
+#else /* !SCHEMAS */
+int
+main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
+    fprintf(stderr, "runsuite requires support for schemas and xpath in libxml2\n");
+}
+#endif

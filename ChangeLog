@@ -1,3 +1,9 @@
+Sun Jul  3 23:42:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* testapi.c tree.c: fixing a leak detected by testapi in 
+	  xmlDOMWrapAdoptNode, and fixing another side effect in testapi
+	  seems to pass tests fine now.
+
 Sun Jul  3 22:59:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runsuite.c runtest.c tree.c: fixing compilations when

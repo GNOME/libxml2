@@ -518,8 +518,13 @@ static xmlNodePtr gen_xmlNodePtr(int no, int nr ATTRIBUTE_UNUSED) {
 /*     if (no == 2) return((xmlNodePtr) get_api_doc()); */
 }
 static void des_xmlNodePtr(int no, xmlNodePtr val, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) free_api_doc();
-    else if (val != NULL) {
+    if (no == 1) {
+        if ((val != NULL) && (val->parent == NULL)) {
+	    xmlUnlinkNode(val);
+	    xmlFreeNode(val);
+	}
+        free_api_doc();
+    } else if (val != NULL) {
         xmlUnlinkNode(val);
         xmlFreeNode(val);
     }

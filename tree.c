@@ -7441,7 +7441,11 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapItemPtr *map,
 #define XML_TREE_ADOPT_STR(str) \
     if (adoptStr && (str != NULL)) { \
 	if (destDoc->dict) { \
+	    const xmlChar *old = str;	\
 	    str = xmlDictLookup(destDoc->dict, str, -1); \
+	    if ((sourceDoc == NULL) || (sourceDoc->dict == NULL) || \
+	        (!xmlDictOwns(sourceDoc->dict, old))) \
+		xmlFree(old); \
 	} else if ((sourceDoc) && (sourceDoc->dict) && \
 	    xmlDictOwns(sourceDoc->dict, str)) { \
 	    str = BAD_CAST xmlStrdup(str); \
@@ -8680,10 +8684,11 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 		}
 		XML_TREE_ADOPT_STR(node->name)
 		break;
-	    case XML_PI_NODE:
+	    case XML_PI_NODE: {
 		XML_TREE_ADOPT_STR(node->name)
 		XML_TREE_ADOPT_STR_2(node->content)
 		break;
+	    }
 	    default:
 		break;
 	}

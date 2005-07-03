@@ -743,7 +743,7 @@ done:
 
 static int
 xstcTestInstance(int verbose, xmlNodePtr cur, xmlSchemaPtr schemas,
-                 const xmlChar *spath, const xmlChar *base) {
+                 const xmlChar *spath, const char *base) {
     xmlChar *href = NULL;
     xmlChar *path = NULL;
     xmlChar *validity = NULL;
@@ -952,7 +952,7 @@ xstcMetadata(int verbose, const char *metadata, const char *base) {
     xmlNodePtr cur;
     xmlChar *contributor;
     xmlChar *name;
-    int ret;
+    int ret = 0;
 
     doc = xmlReadFile(metadata, NULL, XML_PARSE_NOENT);
     if (doc == NULL) {

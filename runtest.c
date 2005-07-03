@@ -20,6 +20,8 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
+
+#ifdef LIBXML_OUTPUT_ENABLED
 #ifdef LIBXML_READER_ENABLED
 #include <libxml/xmlreader.h>
 #endif
@@ -1388,6 +1390,7 @@ xmlSAXHandler debugSAX2HandlerStruct = {
 
 xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
+#ifdef LIBXML_HTML_ENABLED
 /**
  * htmlstartElementDebug:
  * @ctxt:  An XML parser context
@@ -1501,6 +1504,9 @@ xmlSAXHandler debugHTMLSAXHandlerStruct = {
 };
 
 xmlSAXHandlerPtr debugHTMLSAXHandler = &debugHTMLSAXHandlerStruct;
+#endif /* LIBXML_HTML_ENABLED */
+
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * saxParseTest:
  * @filename: the file to parse
@@ -1579,6 +1585,7 @@ saxParseTest(const char *filename, const char *result,
 
     return(ret);
 }
+#endif
 
 /************************************************************************
  *									*
@@ -1609,7 +1616,11 @@ oldParseTest(const char *filename, const char *result,
     /*
      * base of the test, parse with the old API
      */
+#ifdef LIBXML_SAX1_ENABLED
     doc = xmlParseFile(filename);
+#else
+    doc = xmlReadFile(filename, NULL, 0);
+#endif
     if (doc == NULL)
         return(1);
     temp = resultFilename(filename, "", ".res");
@@ -1626,7 +1637,11 @@ oldParseTest(const char *filename, const char *result,
     /*
      * Parse the saved result to make sure the round trip is okay
      */
+#ifdef LIBXML_SAX1_ENABLED
     doc = xmlParseFile(temp);
+#else
+    doc = xmlReadFile(temp, NULL, 0);
+#endif
     if (doc == NULL)
         return(1);
     xmlSaveFile(temp, doc);
@@ -3817,12 +3832,14 @@ testDesc testDescriptions[] = {
       walkerParseTest, "./test/*", "result/", ".rdr", NULL,
       0 },
 #endif
+#ifdef LIBXML_SAX1_ENABLED
     { "SAX1 callbacks regression tests" ,
       saxParseTest, "./test/*", "result/", ".sax", NULL,
       XML_PARSE_SAX1 },
     { "SAX2 callbacks regression tests" ,
       saxParseTest, "./test/*", "result/", ".sax2", NULL,
       0 },
+#endif
 #ifdef LIBXML_PUSH_ENABLED
     { "XML push regression tests" ,
       pushParseTest, "./test/*", "result/", "", NULL,
@@ -3837,9 +3854,11 @@ testDesc testDescriptions[] = {
       pushParseTest, "./test/HTML/*", "result/HTML/", "", ".err",
       XML_PARSE_HTML },
 #endif
+#ifdef LIBXML_SAX1_ENABLED
     { "HTML SAX regression tests" ,
       saxParseTest, "./test/HTML/*", "result/HTML/", ".sax", NULL,
       XML_PARSE_HTML },
+#endif
 #endif
 #ifdef LIBXML_VALID_ENABLED
     { "Valid documents regression tests" ,
@@ -4061,3 +4080,11 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 
     return(ret);
 }
+
+#else /* ! LIBXML_OUTPUT_ENABLED */
+int
+main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
+    fprintf(stderr, "runtest requires output to be enabled in libxml2\n");
+    return(1);
+}
+#endif

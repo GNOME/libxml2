@@ -1,3 +1,8 @@
+Sun Jul  3 22:59:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runsuite.c runtest.c tree.c: fixing compilations when
+	  disabling parts of the library at configure time.
+
 Sun Jul  3 18:17:58 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: fix bug raised by zamez on IRC

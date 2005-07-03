@@ -1,3 +1,7 @@
+Sun Jul  3 16:42:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fixed bug #307503 misplaced #ifdef
+
 Sun Jul  3 16:34:47 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runsuite.c: expanded test

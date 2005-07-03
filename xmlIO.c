@@ -2250,9 +2250,9 @@ __xmlOutputBufferCreateFilename(const char *URI,
 
     puri = xmlParseURI(URI);
     if (puri != NULL) {
+#ifdef HAVE_ZLIB_H
         if ((puri->scheme != NULL) &&
 	    (!xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
-#ifdef HAVE_ZLIB_H
 	    is_file_uri = 0;
 #endif
 	/*

@@ -2341,7 +2341,11 @@ main(int argc, char **argv) {
     }
 #endif /* LIBXML_SCHEMAS_ENABLED */
 #ifdef LIBXML_PATTERN_ENABLED
-    if ((pattern != NULL) && (walker == 0)) {
+    if ((pattern != NULL)
+#ifdef LIBXML_WALKER_ENABLED
+        && (walker == 0)
+#endif
+	) {
         patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0, NULL);
 	if (patternc == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,

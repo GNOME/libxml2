@@ -7445,7 +7445,7 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapItemPtr *map,
 	    str = xmlDictLookup(destDoc->dict, str, -1); \
 	    if ((sourceDoc == NULL) || (sourceDoc->dict == NULL) || \
 	        (!xmlDictOwns(sourceDoc->dict, old))) \
-		xmlFree(old); \
+		xmlFree((char *)old); \
 	} else if ((sourceDoc) && (sourceDoc->dict) && \
 	    xmlDictOwns(sourceDoc->dict, str)) { \
 	    str = BAD_CAST xmlStrdup(str); \

@@ -836,10 +836,8 @@ XMLPUBFUN int XMLCALL
 		xmlSubstituteEntitiesDefault(int val);
 XMLPUBFUN int XMLCALL		
 		xmlKeepBlanksDefault	(int val);
-#ifdef LIBXML_PUSH_ENABLED
 XMLPUBFUN void XMLCALL		
 		xmlStopParser		(xmlParserCtxtPtr ctxt);
-#endif /* LIBXML_PUSH_ENABLED */
 XMLPUBFUN int XMLCALL		
 		xmlPedanticParserDefault(int val);
 XMLPUBFUN int XMLCALL		

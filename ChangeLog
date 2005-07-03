@@ -1,13 +1,18 @@
-Mon Jul  4 00:39:35 CEST 2005 Daniel Veillard <daniel@veillard.com>
-
-	* gentest.py testapi.c: fix a problem with previous patch to
-	  testapi.c
-
 Sun Jul  3 23:42:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c tree.c: fixing a leak detected by testapi in 
 	  xmlDOMWrapAdoptNode, and fixing another side effect in testapi
 	  seems to pass tests fine now.
+	* include/libxml/parser.h parser.c: xmlStopParser() is no more limited
+	  to push mode
+	* error.c: remove a warning
+	* runtest.c xmllint.c: avoid compilation errors if only some parts
+	  of the library are compiled in.
+
+Mon Jul  4 00:39:35 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: fix a problem with previous patch to
+	  testapi.c
 
 Sun Jul  3 22:59:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
 

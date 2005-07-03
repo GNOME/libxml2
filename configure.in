@@ -127,7 +127,7 @@ AC_ARG_WITH(run_debug,
 AC_ARG_WITH(sax1,
 [  --with-sax1             add the older SAX1 interface (on)])
 AC_ARG_WITH(schemas,
-[  --with-schemas          add Relax-NG and experimental Schemas support (on)])
+[  --with-schemas          add Relax-NG and Schemas support (on)])
 AC_ARG_WITH(threads,
 [  --with-threads          add multithread support(on)])
 AC_ARG_WITH(thread-alloc,
@@ -155,6 +155,22 @@ AC_ARG_WITH(zlib,
   fi
 ])
 
+dnl
+dnl hard dependancies on options
+dnl
+if test "$with_schemas" = "yes"
+then
+    with_pattern=yes
+    with_regexp=yes
+fi
+if test "$with_reader" = "yes"
+then
+    with_push=yes
+fi
+if test "$with_xptr" = "yes"
+then
+    with_xpath=yes
+fi
 dnl
 dnl option to build a minimal libxml2 library
 dnl

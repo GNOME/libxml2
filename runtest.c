@@ -2122,6 +2122,7 @@ streamMemParseTest(const char *filename, const char *result, const char *err,
 #endif
 
 #ifdef LIBXML_XPATH_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
 /************************************************************************
  *									*
  *		XPath and XPointer based tests				*
@@ -2411,6 +2412,7 @@ xmlidDocTest(const char *filename,
     return(res);
 }
 
+#endif /* LIBXML_DEBUG_ENABLED */
 #endif /* XPATH */
 /************************************************************************
  *									*
@@ -2909,6 +2911,7 @@ rngTest(const char *filename,
     return(res);
 }
 
+#ifdef LIBXML_READER_ENABLED
 /**
  * rngStreamTest:
  * @filename: the schemas file
@@ -2999,11 +3002,12 @@ rngStreamTest(const char *filename,
 
     return(res);
 }
-
+#endif /* READER */
 
 #endif
 
 #ifdef LIBXML_PATTERN_ENABLED
+#ifdef LIBXML_READER_ENABLED
 /************************************************************************
  *									*
  *			Patterns tests					*
@@ -3212,7 +3216,8 @@ patternTest(const char *filename,
     free(temp);
     return(ret);
 }
-#endif
+#endif /* READER */
+#endif /* PATTERN */
 #ifdef LIBXML_C14N_ENABLED
 /************************************************************************
  *									*
@@ -3890,6 +3895,7 @@ testDesc testDescriptions[] = {
       NULL, XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
 #endif
 #ifdef LIBXML_XPATH_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
     { "XPath expressions regression tests" ,
       xpathExprTest, "./test/XPath/expr/*", "result/XPath/expr/", "", NULL,
       0 },
@@ -3905,6 +3911,7 @@ testDesc testDescriptions[] = {
       xmlidDocTest, "./test/xmlid/*", "result/xmlid/", "", ".err",
       0 },
 #endif
+#endif
     { "URI parsing tests" ,
       uriParseTest, "./test/URI/*.uri", "result/URI/", "", NULL,
       0 },
@@ -3918,14 +3925,18 @@ testDesc testDescriptions[] = {
     { "Relax-NG regression tests" ,
       rngTest, "./test/relaxng/*.rng", NULL, NULL, NULL,
       XML_PARSE_DTDATTR | XML_PARSE_NOENT },
+#ifdef LIBXML_READER_ENABLED
     { "Relax-NG streaming regression tests" ,
       rngStreamTest, "./test/relaxng/*.rng", NULL, NULL, NULL,
       XML_PARSE_DTDATTR | XML_PARSE_NOENT },
 #endif
+#endif
 #ifdef LIBXML_PATTERN_ENABLED
+#ifdef LIBXML_READER_ENABLED
     { "Pattern regression tests" ,
       patternTest, "./test/pattern/*.pat", "result/pattern/", NULL, NULL,
       0 },
+#endif
 #endif
 #ifdef LIBXML_C14N_ENABLED
     { "C14N with comments regression tests" ,

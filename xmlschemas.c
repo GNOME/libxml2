@@ -664,7 +664,9 @@ struct _xmlSchemaValidCtxt {
 
     xmlDictPtr dict;
 
+#ifdef LIBXML_READER_ENABLED
     xmlTextReaderPtr reader;
+#endif
 
     xmlSchemaAttrInfoPtr *attrInfos;
     int nbAttrInfos;
@@ -18330,6 +18332,7 @@ xmlSchemaLookupNamespace(xmlSchemaValidCtxtPtr vctxt,
 	    }
 	}
 	return (NULL);
+#ifdef LIBXML_WRITER_ENABLED
     } else if (vctxt->reader != NULL) {
 	xmlChar *nsName;
 	
@@ -18343,6 +18346,7 @@ xmlSchemaLookupNamespace(xmlSchemaValidCtxtPtr vctxt,
 	    return (ret);
 	} else
 	    return (NULL);
+#endif
     } else {
 	xmlNsPtr ns;
 
@@ -23411,7 +23415,9 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
     vctxt->flags = 0;
     vctxt->validationRoot = NULL;
     vctxt->doc = NULL;
+#ifdef LIBXML_READER_ENABLED
     vctxt->reader = NULL;
+#endif
     if (vctxt->value != NULL) {
         xmlSchemaFreeValue(vctxt->value);
 	vctxt->value = NULL;
@@ -23846,12 +23852,14 @@ xmlSchemaVStart(xmlSchemaValidCtxtPtr vctxt)
 	* Tree validation.
 	*/
 	ret = xmlSchemaVDocWalk(vctxt);
+#ifdef LIBXML_READER_ENABLED
     } else if (vctxt->reader != NULL) {
 	/*
 	* XML Reader validation.
 	*/
 #ifdef XML_SCHEMA_READER_ENABLED
 	ret = xmlSchemaVReaderWalk(vctxt);
+#endif
 #endif
     } else if ((vctxt->sax != NULL) && (vctxt->parserCtxt != NULL)) {
 	/*

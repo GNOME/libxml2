@@ -10138,24 +10138,6 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
  ************************************************************************/
 
 /**
- * xmlStopParser:
- * @ctxt:  an XML parser context
- *
- * Blocks further parser processing
- */
-void           
-xmlStopParser(xmlParserCtxtPtr ctxt) {
-    if (ctxt == NULL)
-        return;
-    ctxt->instate = XML_PARSER_EOF;
-    ctxt->disableSAX = 1;
-    if (ctxt->input != NULL) {
-	ctxt->input->cur = BAD_CAST"";
-	ctxt->input->base = ctxt->input->cur;
-    }
-}
-
-/**
  * xmlCreatePushParserCtxt:
  * @sax:  a SAX handler
  * @user_data:  The user data returned on SAX callbacks
@@ -10286,6 +10268,24 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     return(ctxt);
 }
 #endif /* LIBXML_PUSH_ENABLED */
+
+/**
+ * xmlStopParser:
+ * @ctxt:  an XML parser context
+ *
+ * Blocks further parser processing
+ */
+void           
+xmlStopParser(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return;
+    ctxt->instate = XML_PARSER_EOF;
+    ctxt->disableSAX = 1;
+    if (ctxt->input != NULL) {
+	ctxt->input->cur = BAD_CAST"";
+	ctxt->input->base = ctxt->input->cur;
+    }
+}
 
 /**
  * xmlCreateIOParserCtxt:

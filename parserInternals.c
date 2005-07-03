@@ -1267,9 +1267,11 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 int
 xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler) 
 {
+    int ret = 0;
+
     if (handler != NULL) {
         if (ctxt->input != NULL) {
-	    xmlSwitchInputEncoding(ctxt, ctxt->input, handler);
+	    ret = xmlSwitchInputEncoding(ctxt, ctxt->input, handler);
 	} else {
 	    xmlErrInternal(ctxt, "xmlSwitchToEncoding : no input\n",
 	                   NULL);
@@ -1281,7 +1283,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 	ctxt->charset = XML_CHAR_ENCODING_UTF8;
     } else 
 	return(-1);
-    return(0);
+    return(ret);
 }
 
 /************************************************************************

@@ -7499,9 +7499,10 @@ xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
 
 /*
 * xmlDOMWrapRemoveNode:
-*
+* @ctxt: a DOM wrapper context
 * @doc: the doc
 * @node: the node to be removed.
+* @options: set of options, unused at the moment
 *
 * Unlinks the given node from its owner.
 * This will substitute ns-references to node->nsDef for
@@ -7953,6 +7954,7 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 
 /*
 * xmlDOMWrapReconcileNamespaces:
+* @ctxt: DOM wrapper context, unused at the moment
 * @elem: the element-node
 * @options: option flags
 *

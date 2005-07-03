@@ -1,3 +1,10 @@
+Sun Jul  3 18:17:58 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: fix bug raised by zamez on IRC
+	* testapi.c: regenerated, seems to pop-up leaks in new tree functions
+	* tree.c: added comments missing.
+	* doc/*: regenerated
+
 Sun Jul  3 18:06:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c runsuite.c runtest.c: fixing #307823 and a couple of

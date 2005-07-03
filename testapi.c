@@ -18977,7 +18977,7 @@ test_xmlDOMWrapReconcileNamespaces(void) {
 
     int mem_base;
     int ret_val;
-    xmlDOMWrapCtxtPtr ctxt; /*  */
+    xmlDOMWrapCtxtPtr ctxt; /* DOM wrapper context, unused at the moment */
     int n_ctxt;
     xmlNodePtr elem; /* the element-node */
     int n_elem;
@@ -19023,13 +19023,13 @@ test_xmlDOMWrapRemoveNode(void) {
 
     int mem_base;
     int ret_val;
-    xmlDOMWrapCtxtPtr ctxt; /*  */
+    xmlDOMWrapCtxtPtr ctxt; /* a DOM wrapper context */
     int n_ctxt;
     xmlDocPtr doc; /* the doc */
     int n_doc;
     xmlNodePtr node; /* the node to be removed. */
     int n_node;
-    int options; /*  */
+    int options; /* set of options, unused at the moment */
     int n_options;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlDOMWrapCtxtPtr;n_ctxt++) {

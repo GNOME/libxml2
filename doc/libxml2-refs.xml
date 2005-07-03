@@ -14327,6 +14327,8 @@
           <ref name='ignorableWhitespaceSAXFunc'/>
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlDocDumpMemoryEnc'/>
           <ref name='xmlKeepBlanksDefault'/>
@@ -23829,6 +23831,10 @@
           <ref name='xmlOutputMatchCallback'/>
           <ref name='xmlStructuredErrorFunc'/>
         </word>
+        <word name='moment'>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
+        </word>
         <word name='month'>
           <ref name='ftpListCallback'/>
         </word>
@@ -24597,6 +24603,7 @@
         <word name='options'>
           <ref name='htmlCtxtUseOptions'/>
           <ref name='xmlCtxtUseOptions'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlModuleOpen'/>
           <ref name='xmlSaveToFd'/>
           <ref name='xmlSaveToFilename'/>
@@ -28212,6 +28219,8 @@
           <ref name='_xmlSAXHandlerV1'/>
           <ref name='_xmlSchema'/>
           <ref name='_xmlXPathContext'/>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlSchemaValidateFile'/>
           <ref name='xmlShellBase'/>
           <ref name='xmlShellCat'/>
@@ -28694,6 +28703,10 @@
           <ref name='_xmlError'/>
           <ref name='htmlAutoCloseTag'/>
           <ref name='xmlTextReaderGetRemainder'/>
+        </word>
+        <word name='wrapper'>
+          <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlDOMWrapRemoveNode'/>
         </word>
         <word name='wraps'>
           <ref name='xmlTextReaderByteConsumed'/>

@@ -8742,17 +8742,17 @@ actually an xmlCharEncoding'/>
     <function name='xmlDOMWrapReconcileNamespaces' file='tree' module='tree'>
       <info>Ensures that ns-references point to ns-decls hold on element-nodes. Ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. WARNING: This function is in a experimental state.</info>
       <return type='int' info='0 if succeeded, -1 otherwise and on API/internal errors.'/>
-      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='DOM wrapper context, unused at the moment'/>
       <arg name='elem' type='xmlNodePtr' info='the element-node'/>
       <arg name='options' type='int' info='option flags'/>
     </function>
     <function name='xmlDOMWrapRemoveNode' file='tree' module='tree'>
       <info>Unlinks the given node from its owner. This will substitute ns-references to node-&gt;nsDef for ns-references to doc-&gt;oldNs, thus ensuring the removed branch to be autark wrt ns-references. WARNING: This function is in a experimental state.</info>
       <return type='int' info='0 on success, 1 if the node is not supported, -1 on API and internal errors.'/>
-      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='a DOM wrapper context'/>
       <arg name='doc' type='xmlDocPtr' info='the doc'/>
       <arg name='node' type='xmlNodePtr' info='the node to be removed.'/>
-      <arg name='options' type='int' info=''/>
+      <arg name='options' type='int' info='set of options, unused at the moment'/>
     </function>
     <function name='xmlDebugCheckDocument' file='debugXML' module='debugXML'>
       <cond>defined(LIBXML_DEBUG_ENABLED)</cond>

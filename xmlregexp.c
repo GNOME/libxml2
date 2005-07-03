@@ -749,7 +749,9 @@ xmlRegFreeAtom(xmlRegAtomPtr atom) {
 	xmlRegFreeRange(atom->ranges[i]);
     if (atom->ranges != NULL)
 	xmlFree(atom->ranges);
-    if (atom->type == XML_REGEXP_STRING)
+    if ((atom->type == XML_REGEXP_STRING) && (atom->valuep != NULL))
+	xmlFree(atom->valuep);
+    if ((atom->type == XML_REGEXP_BLOCK_NAME) && (atom->valuep != NULL))
 	xmlFree(atom->valuep);
     xmlFree(atom);
 }

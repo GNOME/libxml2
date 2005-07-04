@@ -1,3 +1,7 @@
+Mon Jul  4 11:26:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: added enhancement for #309057 in xmllint shell
+
 Mon Jul  4 00:58:44 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied patch from James Bursa fixing an html parsing

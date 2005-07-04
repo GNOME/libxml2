@@ -2123,6 +2123,37 @@ xmlShellRegisterNamespace(xmlShellCtxtPtr ctxt, char *arg,
     xmlFree(nsListDup);
     return(0);
 }
+/**
+ * xmlShellRegisterRootNamespaces:
+ * @ctxt:  the shell context
+ * @arg:  unused
+ * @node:  the root element
+ * @node2:  unused
+ *
+ * Implements the XML shell function "setrootns"
+ * which registers all namespaces declarations found on the root element.
+ *
+ * Returns 0 on success and a negative value otherwise.
+ */
+static int
+xmlShellRegisterRootNamespaces(xmlShellCtxtPtr ctxt, char *arg ATTRIBUTE_UNUSED,
+      xmlNodePtr root, xmlNodePtr node2 ATTRIBUTE_UNUSED)
+{
+    xmlNsPtr ns;
+
+    if ((root == NULL) || (root->type != XML_ELEMENT_NODE) ||
+        (root->nsDef == NULL) || (ctxt == NULL) || (ctxt->pctxt == NULL))
+	return(-1);
+    ns = root->nsDef;
+    while (ns != NULL) {
+        if (ns->prefix == NULL)
+	    xmlXPathRegisterNs(ctxt->pctxt, BAD_CAST "defaultns", ns->href);
+	else
+	    xmlXPathRegisterNs(ctxt->pctxt, ns->prefix, ns->href);
+        ns = ns->next;
+    }
+    return(0);
+}
 #endif
 
 /**
@@ -2860,6 +2891,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(ctxt->output, "\txpath expr   evaluate the XPath expression in that context and print the result\n");
 		  fprintf(ctxt->output, "\tsetns nsreg  register a namespace to a prefix in the XPath evaluation context\n");
 		  fprintf(ctxt->output, "\t             format for nsreg is: prefix=[nsuri] (i.e. prefix= unsets a prefix)\n");
+		  fprintf(ctxt->output, "\tsetrootns    register all namespace found on the root element\n");
+		  fprintf(ctxt->output, "\t             the default namespace if any uses 'defaultns' prefix\n");
 #endif /* LIBXML_XPATH_ENABLED */
 		  fprintf(ctxt->output, "\tpwd          display current working directory\n");
 		  fprintf(ctxt->output, "\tquit         leave shell\n");
@@ -2924,6 +2957,11 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             } else {
                 xmlShellRegisterNamespace(ctxt, arg, NULL, NULL);
             }
+        } else if (!strcmp(command, "setrootns")) {
+	    xmlNodePtr root;
+
+	    root = xmlDocGetRootElement(ctxt->doc);
+	    xmlShellRegisterRootNamespaces(ctxt, NULL, root, NULL);
         } else if (!strcmp(command, "xpath")) {
             if (arg[0] == 0) {
 		xmlGenericError(xmlGenericErrorContext,

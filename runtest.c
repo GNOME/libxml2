@@ -115,10 +115,11 @@ static int glob(const char *pattern, int flags,
 
     if ((pattern == NULL) || (pglob == NULL)) return(-1);
     
-    strncpy(499, directory, pattern);
+    strncpy(directory, pattern, 499);
     for (len = strlen(directory);len >= 0;len--) {
         if (directory[len] == '/') {
-	    directory[len + 1] = 0;
+	    len++;
+	    directory[len] = 0;
 	    break;
 	}
     }
@@ -138,7 +139,7 @@ static int glob(const char *pattern, int flags,
 	FindClose(hFind);
         return(-1);
     }
-    strncpy(499 - len, directory + len, FindFileData.cFileName);
+    strncpy(directory + len, FindFileData.cFileName, 499 - len);
     ret->gl_pathv[ret->gl_pathc] = strdup(directory);
     if (ret->gl_pathv[ret->gl_pathc] == NULL)
         goto done;
@@ -153,7 +154,7 @@ static int glob(const char *pattern, int flags,
             ret->gl_pathv = tmp;
             nb_paths *= 2;
 	}
-	strncpy(499 - len, directory + len, FindFileData.cFileName);
+	strncpy(directory + len, FindFileData.cFileName, 499 - len);
 	ret->gl_pathv[ret->gl_pathc] = strdup(directory);
         if (ret->gl_pathv[ret->gl_pathc] == NULL)
             break;

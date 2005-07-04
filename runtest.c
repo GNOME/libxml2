@@ -1631,7 +1631,7 @@ saxParseTest(const char *filename, const char *result,
         fprintf(stderr, "out of memory\n");
         fatalError();
     }
-    SAXdebug = fopen(temp, "w");
+    SAXdebug = fopen(temp, "wb");
     if (SAXdebug == NULL) {
         fprintf(stderr, "Failed to write to %s\n", temp);
 	free(temp);
@@ -2078,7 +2078,7 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 	    fprintf(stderr, "Out of memory\n");
 	    fatalError();
 	}
-	t = fopen(temp, "w");
+	t = fopen(temp, "wb");
 	if (t == NULL) {
 	    fprintf(stderr, "Can't open temp file %s\n", temp);
 	    free(temp);
@@ -2291,14 +2291,14 @@ xpathCommonTest(const char *filename, const char *result,
         fprintf(stderr, "Out of memory\n");
         fatalError();
     }
-    xpathOutput = fopen(temp, "w");
+    xpathOutput = fopen(temp, "wb");
     if (xpathOutput == NULL) {
 	fprintf(stderr, "failed to open output file %s\n", temp);
         free(temp);
 	return(-1);
     }
 
-    input = fopen(filename, "r");
+    input = fopen(filename, "rb");
     if (input == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"Cannot open %s for reading\n", filename);
@@ -2480,7 +2480,7 @@ xmlidDocTest(const char *filename,
         fprintf(stderr, "Out of memory\n");
         fatalError();
     }
-    xpathOutput = fopen(temp, "w");
+    xpathOutput = fopen(temp, "wb");
     if (xpathOutput == NULL) {
 	fprintf(stderr, "failed to open output file %s\n", temp);
         xmlFreeDoc(xpathDocument);
@@ -2578,13 +2578,13 @@ uriCommonTest(const char *filename,
         fprintf(stderr, "Out of memory\n");
         fatalError();
     }
-    o = fopen(temp, "w");
+    o = fopen(temp, "wb");
     if (o == NULL) {
 	fprintf(stderr, "failed to open output file %s\n", temp);
         free(temp);
 	return(-1);
     }
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if (f == NULL) {
 	fprintf(stderr, "failed to open input file %s\n", filename);
 	fclose(o);
@@ -2705,7 +2705,7 @@ schemasOneTest(const char *sch,
         fprintf(stderr, "Out of memory\n");
         fatalError();
     }
-    schemasOutput = fopen(temp, "w");
+    schemasOutput = fopen(temp, "wb");
     if (schemasOutput == NULL) {
 	fprintf(stderr, "failed to open output file %s\n", temp);
 	xmlFreeDoc(doc);
@@ -2879,7 +2879,7 @@ rngOneTest(const char *sch,
         fprintf(stderr, "Out of memory\n");
         fatalError();
     }
-    schemasOutput = fopen(temp, "w");
+    schemasOutput = fopen(temp, "wb");
     if (schemasOutput == NULL) {
 	fprintf(stderr, "failed to open output file %s\n", temp);
 	xmlFreeDoc(doc);
@@ -3215,7 +3215,7 @@ patternTest(const char *filename,
 	fprintf(stderr, "Missing result file %s\n", result);
 	return(-1);
     }
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if (f == NULL) {
         fprintf(stderr, "Failed to open %s\n", filename);
 	return(-1);
@@ -3225,7 +3225,7 @@ patternTest(const char *filename,
         fprintf(stderr, "Out of memory\n");
         fatalError();
     }
-    o = fopen(temp, "w");
+    o = fopen(temp, "wb");
     if (o == NULL) {
 	fprintf(stderr, "failed to open output file %s\n", temp);
 	fclose(f);

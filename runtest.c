@@ -90,6 +90,7 @@ static int checkTestFile(const char *filename);
 #if defined(_WIN32) && !defined(__CYGWIN__)
 
 #include <windows.h>
+#include <io.h>
 
 typedef struct
 {
@@ -105,11 +106,11 @@ static int glob(const char *pattern, int flags,
     glob_t *ret;
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
-    int nb_paths = 0;
+    unsigned int nb_paths = 0;
 
     if ((pattern == NULL) || (pglob == NULL)) return(-1);
     
-    ret = &pglob;
+    ret = pglob;
     memset(ret, 0, sizeof(glob_t));
     
     hFind = FindFirstFileA(pattern, &FindFileData);
@@ -555,8 +556,13 @@ static int checkTestFile(const char *filename) {
     if (stat(filename, &buf) == -1)
         return(0);
 
+#if defined(_WIN32) && !defined(__CYGWIN__)
+    if (!(buf.st_mode & _S_IFREG))
+        return(0);
+#else
     if (!S_ISREG(buf.st_mode))
         return(0);
+#endif
 
     return(1);
 }
@@ -3769,7 +3775,8 @@ testThread(void)
             DWORD useless;
 
             tid[i] = CreateThread(NULL, 0,
-                                  win32_thread_specific_data, testfiles[i], 0,
+                                  win32_thread_specific_data, 
+				  (void) testfiles[i], 0,
                                   &useless);
             if (tid[i] == NULL) {
                 fprintf(stderr, "CreateThread failed\n");

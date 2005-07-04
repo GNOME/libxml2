@@ -1,3 +1,8 @@
+Mon Jul  4 17:19:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runsuite.c: fix on schemas error
+	* runtest.c: portability glob() on Windows
+
 Mon Jul  4 16:23:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runsuite.c runtest.c: cleanups, logfile and portability

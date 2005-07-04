@@ -925,7 +925,7 @@ xstcTestGroup(xmlNodePtr cur, const char *base) {
 	     ctxt);
 	schemas = xmlSchemaParse(ctxt);
 	xmlSchemaFreeParserCtxt(ctxt);
-	if (schemas == NULL) {
+	if (schemas != NULL) {
 	    test_log("Failed to detect error in schemas %s\n",
 			path);
 	    nb_errors++;

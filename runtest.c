@@ -13,7 +13,6 @@
 #endif
 #include <string.h>
 #include <stdio.h>
-#include <glob.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -87,6 +86,84 @@ struct testDesc {
 };
 
 static int checkTestFile(const char *filename);
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+
+/* #include <windows.h> */
+
+typedef struct
+{
+      size_t gl_pathc;    /* Count of paths matched so far  */
+      char **gl_pathv;    /* List of matched pathnames.  */
+      size_t gl_offs;     /* Slots to reserve in 'gl_pathv'.  */
+} glob_t;
+
+#define GLOB_DOOFFS 0
+static int glob(const char *pattern, int flags,
+                int errfunc(const char *epath, int eerrno),
+                glob_t *pglob) {
+    glob_t *ret;
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind;
+    int nb_paths = 0;
+
+    if ((pattern == NULL) || (pglob == NULL)) return(-1);
+    
+    ret = malloc(sizeof(glob_t));
+    if (ret == NULL)
+        return(-1);
+    memset(ret, 0, sizeof(glob_t));
+    
+    hFind = FindFirstFileA(pattern, &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE) 
+        return(0);
+    nb_paths = 20;
+    ret->gl_pathv = (char **) malloc(nb_paths * sizeof(char *));
+    if (ret->gl_pathv == NULL) {
+	FindClose(hFind);
+        free(ret);
+        return(-1);
+    }
+    ret->gl_pathv[ret->gl_pathc] = strdup(FindFileData.cFileName);
+    if (ret->gl_pathv[ret->gl_pathc] == NULL)
+        goto done;
+    ret->gl_pathc++;
+    while(FindNextFileA(hFind, &FindFileData)) {
+        if (ret->gl_pathc + 2 > nb_paths) {
+            char **tmp = realloc(ret->gl_pathv, nb_paths * 2 * sizeof(char *));
+            if (tmp == NULL)
+                break;
+            ret->gl_pathv = tmp;
+            nb_paths *= 2;
+	}
+        ret->gl_pathv[ret->gl_pathc] = strdup(FindFileData.cFileName);
+        if (ret->gl_pathv[ret->gl_pathc] == NULL)
+            break;
+        ret->gl_pathc++;
+    }
+    ret->gl_pathv[ret->gl_pathc] = NULL;
+
+done:
+    FindClose(hFind);
+    *pglob = ret;
+    return(0);
+}
+void globfree(glob_t *pglob) {
+    int i;
+    if (pglob == NULL)
+        return;
+    
+    for (i = 0;i < pglob->gl_pathc;i++) {
+         if (pglob->gl_pathv[i] != NULL)
+             free(pglob->gl_pathv[i]);
+    }
+    free(pglob);
+}
+#define vsnprintf _vsnprintf
+#else
+#include <glob.h>
+#endif
+
 /************************************************************************
  *									*
  *		Libxml2 specific routines				*

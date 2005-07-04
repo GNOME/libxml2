@@ -1,3 +1,8 @@
+Mon Jul  4 16:23:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runsuite.c runtest.c: cleanups, logfile and portability
+	* xmllint.c: fixed a memory leak
+
 Mon Jul  4 13:11:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a bug failing to detect UTF-8 violations in

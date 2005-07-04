@@ -2342,7 +2342,7 @@ main(int argc, char **argv) {
 #endif /* LIBXML_SCHEMAS_ENABLED */
 #ifdef LIBXML_PATTERN_ENABLED
     if ((pattern != NULL)
-#ifdef LIBXML_WALKER_ENABLED
+#ifdef LIBXML_READER_ENABLED
         && (walker == 0)
 #endif
 	) {

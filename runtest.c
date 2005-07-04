@@ -8,14 +8,15 @@
  * daniel@veillard.com
  */
 
+#if !defined(_WIN32) || defined(__CYGWIN__)
 #include <unistd.h>
+#endif
 #include <string.h>
 #include <stdio.h>
 #include <glob.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -68,9 +69,6 @@
 #include <libxml/parser.h>
 #include <libxml/catalog.h>
 #include <string.h>
-#if !defined(_MSC_VER)
-#include <unistd.h>
-#endif
 #endif
 
 typedef int (*functest) (const char *filename, const char *result,

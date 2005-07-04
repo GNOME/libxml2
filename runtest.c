@@ -110,8 +110,21 @@ static int glob(const char *pattern, int flags,
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
     unsigned int nb_paths = 0;
+    char directory[500], *tmp;
+    int len;
 
     if ((pattern == NULL) || (pglob == NULL)) return(-1);
+    
+    strncpy(499, directory, pattern);
+    for (len = strlen(directory);len >= 0;len--) {
+        if (directory[len] == '/') {
+	    directory[len + 1] = 0;
+	    break;
+	}
+    }
+    if (len <= 0)
+        len = 0;
+
     
     ret = pglob;
     memset(ret, 0, sizeof(glob_t));
@@ -125,7 +138,8 @@ static int glob(const char *pattern, int flags,
 	FindClose(hFind);
         return(-1);
     }
-    ret->gl_pathv[ret->gl_pathc] = strdup(FindFileData.cFileName);
+    strncpy(499 - len, directory + len, FindFileData.cFileName);
+    ret->gl_pathv[ret->gl_pathc] = strdup(directory);
     if (ret->gl_pathv[ret->gl_pathc] == NULL)
         goto done;
     ret->gl_pathc++;
@@ -139,7 +153,8 @@ static int glob(const char *pattern, int flags,
             ret->gl_pathv = tmp;
             nb_paths *= 2;
 	}
-        ret->gl_pathv[ret->gl_pathc] = strdup(FindFileData.cFileName);
+	strncpy(499 - len, directory + len, FindFileData.cFileName);
+	ret->gl_pathv[ret->gl_pathc] = strdup(directory);
         if (ret->gl_pathv[ret->gl_pathc] == NULL)
             break;
         ret->gl_pathc++;
@@ -3710,7 +3725,6 @@ testThread(void)
         xmlLoadCatalog(catalog);
         nb_tests++;
 
-        nb_tests++;
         for (i = 0; i < num_threads; i++) {
             results[i] = NULL;
             tid[i] = (pthread_t) - 1;
@@ -3769,6 +3783,7 @@ testThread(void)
     xmlInitParser();
     for (repeat = 0; repeat < TEST_REPEAT_COUNT; repeat++) {
         xmlLoadCatalog(catalog);
+        nb_tests++;
 
         for (i = 0; i < num_threads; i++) {
             results[i] = 0;

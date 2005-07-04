@@ -9153,6 +9153,73 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
     }
 }
 /**
+ * xmlCheckCdataPush:
+ * @cur: pointer to the bock of characters
+ * @len: length of the block in bytes
+ *
+ * Check that the block of characters is okay as SCdata content [20]
+ *
+ * Returns the number of bytes to pass if okay, a negative index where an
+ *         UTF-8 error occured otherwise
+ */
+static int
+xmlCheckCdataPush(const xmlChar *utf, int len) {
+    int ix;
+    unsigned char c;
+    int codepoint;
+
+    if ((utf == NULL) || (len <= 0))
+        return(0);
+    
+    for (ix = 0; ix < len;) {      /* string is 0-terminated */
+        c = utf[ix];
+        if ((c & 0x80) == 0x00) {	/* 1-byte code, starts with 10 */
+	    if (c >= 0x20)
+		ix++;
+	    else if ((c == 0xA) || (c == 0xD) || (c == 0x9))
+	        ix++;
+	    else
+	        return(-ix);
+	} else if ((c & 0xe0) == 0xc0) {/* 2-byte code, starts with 110 */
+	    if (ix + 2 > len) return(ix);
+	    if ((utf[ix+1] & 0xc0 ) != 0x80)
+	        return(-ix);
+	    codepoint = (utf[0] & 0x1f) << 6;
+	    codepoint |= utf[1] & 0x3f;
+	    if (!xmlIsCharQ(codepoint))
+	        return(-ix);
+	    ix += 2;
+	} else if ((c & 0xf0) == 0xe0) {/* 3-byte code, starts with 1110 */
+	    if (ix + 3 > len) return(ix);
+	    if (((utf[ix+1] & 0xc0) != 0x80) ||
+	        ((utf[ix+2] & 0xc0) != 0x80))
+		    return(-ix);
+	    codepoint = (utf[0] & 0xf) << 12;
+	    codepoint |= (utf[1] & 0x3f) << 6;
+	    codepoint |= utf[2] & 0x3f;
+	    if (!xmlIsCharQ(codepoint))
+	        return(-ix);
+	    ix += 3;
+	} else if ((c & 0xf8) == 0xf0) {/* 4-byte code, starts with 11110 */
+	    if (ix + 4 > len) return(ix);
+	    if (((utf[ix+1] & 0xc0) != 0x80) ||
+	        ((utf[ix+2] & 0xc0) != 0x80) ||
+		((utf[ix+3] & 0xc0) != 0x80))
+		    return(-ix);
+	    codepoint = (utf[0] & 0x7) << 18;
+	    codepoint |= (utf[1] & 0x3f) << 12;
+	    codepoint |= (utf[2] & 0x3f) << 6;
+	    codepoint |= utf[3] & 0x3f;
+	    if (!xmlIsCharQ(codepoint))
+	        return(-ix);
+	    ix += 4;
+	} else				/* unknown encoding */
+	    return(-ix);
+      }
+      return(ix);
+}
+
+/**
  * xmlParseTryOrFinish:
  * @ctxt:  an XML parser context
  * @terminate:  last chunk indicator
@@ -9623,21 +9690,36 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		base = xmlParseLookupSequence(ctxt, ']', ']', '>');
 		if (base < 0) {
 		    if (avail >= XML_PARSER_BIG_BUFFER_SIZE + 2) {
+		        int tmp;
+
+			tmp = xmlCheckCdataPush(ctxt->input->cur, 
+			                        XML_PARSER_BIG_BUFFER_SIZE);
+			if (tmp < 0) {
+			    tmp = -tmp;
+			    ctxt->input->cur += tmp;
+			    goto encoding_error;
+			}
 			if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
 			    if (ctxt->sax->cdataBlock != NULL)
 				ctxt->sax->cdataBlock(ctxt->userData,
-				                      ctxt->input->cur,
-					  XML_PARSER_BIG_BUFFER_SIZE);
+				                      ctxt->input->cur, tmp);
 			    else if (ctxt->sax->characters != NULL)
 				ctxt->sax->characters(ctxt->userData,
-				                      ctxt->input->cur,
-					  XML_PARSER_BIG_BUFFER_SIZE);
+				                      ctxt->input->cur, tmp);
 			}
-			SKIPL(XML_PARSER_BIG_BUFFER_SIZE);
+			SKIPL(tmp);
 			ctxt->checkIndex = 0;
 		    }
 		    goto done;
 		} else {
+		    int tmp;
+
+		    tmp = xmlCheckCdataPush(ctxt->input->cur, base);
+		    if ((tmp < 0) || (tmp != base)) {
+			tmp = -tmp;
+			ctxt->input->cur += tmp;
+			goto encoding_error;
+		    }
 		    if ((ctxt->sax != NULL) && (base > 0) &&
 			(!ctxt->disableSAX)) {
 			if (ctxt->sax->cdataBlock != NULL)
@@ -10038,6 +10120,18 @@ done:
     xmlGenericError(xmlGenericErrorContext, "PP: done %d\n", ret);
 #endif
     return(ret);
+encoding_error:
+    {
+        char buffer[150];
+
+	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			ctxt->input->cur[0], ctxt->input->cur[1],
+			ctxt->input->cur[2], ctxt->input->cur[3]);
+	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		     "Input is not proper UTF-8, indicate encoding !\n%s",
+		     BAD_CAST buffer, NULL);
+    }
+    return(0);
 }
 
 /**

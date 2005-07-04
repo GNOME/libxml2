@@ -1,3 +1,10 @@
+Mon Jul  4 13:11:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a bug failing to detect UTF-8 violations in
+	  CData in push mode.
+	* result/errors/cdata.xml* test/errors/cdata.xml: added the test
+	  to the regressions
+
 Mon Jul  4 11:26:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: added enhancement for #309057 in xmllint shell

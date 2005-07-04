@@ -145,7 +145,7 @@ static int glob(const char *pattern, int flags,
         goto done;
     ret->gl_pathc++;
     while(FindNextFileA(hFind, &FindFileData)) {
-        if (strstr(FindFileData.cFileName, "/."))
+        if (FindFileData.cFileName[0] == '.')
 	    continue;
         if (ret->gl_pathc + 2 > nb_paths) {
             char **tmp = realloc(ret->gl_pathv, nb_paths * 2 * sizeof(char *));

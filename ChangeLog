@@ -1,3 +1,8 @@
+Mon Jul  4 17:44:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runsuite.c: first stb at unimplemnted detection
+	* runtest.c: fixing Windows code
+
 Mon Jul  4 17:19:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runsuite.c: fix on schemas error

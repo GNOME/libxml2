@@ -89,7 +89,7 @@ static int checkTestFile(const char *filename);
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
 
-/* #include <windows.h> */
+#include <windows.h>
 
 typedef struct
 {
@@ -109,9 +109,7 @@ static int glob(const char *pattern, int flags,
 
     if ((pattern == NULL) || (pglob == NULL)) return(-1);
     
-    ret = malloc(sizeof(glob_t));
-    if (ret == NULL)
-        return(-1);
+    ret = &pglob;
     memset(ret, 0, sizeof(glob_t));
     
     hFind = FindFirstFileA(pattern, &FindFileData);
@@ -121,7 +119,6 @@ static int glob(const char *pattern, int flags,
     ret->gl_pathv = (char **) malloc(nb_paths * sizeof(char *));
     if (ret->gl_pathv == NULL) {
 	FindClose(hFind);
-        free(ret);
         return(-1);
     }
     ret->gl_pathv[ret->gl_pathc] = strdup(FindFileData.cFileName);
@@ -145,11 +142,13 @@ static int glob(const char *pattern, int flags,
 
 done:
     FindClose(hFind);
-    *pglob = ret;
     return(0);
 }
-void globfree(glob_t *pglob) {
-    int i;
+ 
+
+
+static void globfree(glob_t *pglob) {
+    unsigned int i;
     if (pglob == NULL)
         return;
     
@@ -160,6 +159,7 @@ void globfree(glob_t *pglob) {
     free(pglob);
 }
 #define vsnprintf _vsnprintf
+#define snprintf _snprintf
 #else
 #include <glob.h>
 #endif
@@ -3737,12 +3737,14 @@ testThread(void)
 #include <windows.h>
 #include <string.h>
 
+#define TEST_REPEAT_COUNT 500
+
 static HANDLE tid[MAX_ARGC];
 
 static DWORD WINAPI
 win32_thread_specific_data(void *private_data)
 {
-    return((DWORD) thread_specific_data());
+    return((DWORD) thread_specific_data(private_data));
 }
 
 static int

@@ -71,6 +71,7 @@ static int nb_tests = 0;
 static int nb_errors = 0;
 static int nb_internals = 0;
 static int nb_schematas = 0;
+static int nb_unimplemented = 0;
 static int nb_leaks = 0;
 static long libxmlMemoryAllocatedBase = 0;
 static int extraMemoryFromResolver = 0;
@@ -908,6 +909,14 @@ xstcTestGroup(xmlNodePtr cur, const char *base) {
 	if (schemas == NULL) {
 	    test_log("valid schemas %s failed to parse\n",
 			path);
+	    ret = 1;
+	    nb_errors++;
+	}
+	if ((ret == 0) && (strstr(testErrors, "nimplemented") != NULL)) {
+	    test_log("valid schemas %s hit an unimplemented block\n",
+			path);
+	    ret = 1;
+	    nb_unimplemented++;
 	    nb_errors++;
 	}
 	instance = getNext(cur, "./ts:instanceTest[1]");
@@ -928,6 +937,14 @@ xstcTestGroup(xmlNodePtr cur, const char *base) {
 	if (schemas != NULL) {
 	    test_log("Failed to detect error in schemas %s\n",
 			path);
+	    nb_errors++;
+	    ret = 1;
+	}
+	if ((ret == 0) && (strstr(testErrors, "nimplemented") != NULL)) {
+	    nb_unimplemented++;
+	    test_log("invalid schemas %s hit an unimplemented block\n",
+			path);
+	    ret = 1;
 	    nb_errors++;
 	}
     } else {

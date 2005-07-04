@@ -3,6 +3,9 @@
  *            requiring make or Python, and reducing platform dependancies
  *            to a strict minimum.
  *
+ * To compile on Unixes:
+ * cc -o runtest `xml2-config --cflags` runtest.c `xml2-config --libs` -lpthread
+ *
  * See Copyright for the status of this software.
  *
  * daniel@veillard.com
@@ -127,6 +130,8 @@ static int glob(const char *pattern, int flags,
         goto done;
     ret->gl_pathc++;
     while(FindNextFileA(hFind, &FindFileData)) {
+        if (!strstr(FindFileData.cFileName, "/."))
+	    continue;
         if (ret->gl_pathc + 2 > nb_paths) {
             char **tmp = realloc(ret->gl_pathv, nb_paths * 2 * sizeof(char *));
             if (tmp == NULL)
@@ -157,7 +162,6 @@ static void globfree(glob_t *pglob) {
          if (pglob->gl_pathv[i] != NULL)
              free(pglob->gl_pathv[i]);
     }
-    free(pglob);
 }
 #define vsnprintf _vsnprintf
 #define snprintf _snprintf
@@ -3776,7 +3780,7 @@ testThread(void)
 
             tid[i] = CreateThread(NULL, 0,
                                   win32_thread_specific_data, 
-				  (void) testfiles[i], 0,
+				  (void *) testfiles[i], 0,
                                   &useless);
             if (tid[i] == NULL) {
                 fprintf(stderr, "CreateThread failed\n");

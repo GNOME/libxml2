@@ -95,6 +95,111 @@ xmlErrValid(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
+ * xmlFatalErrMsg:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an error string
+ * @str2:  an error string
+ *
+ * Handle a fatal parser error, i.e. violating Well-Formedness constraints
+ */
+static void
+xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+               const char *msg, const xmlChar *str1, const xmlChar *str2)
+{
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER, error,
+                    XML_ERR_FATAL, NULL, 0, 
+		    (const char *) str1, (const char *) str2,
+		    NULL, 0, 0, msg, str1, str2);
+    if (ctxt != NULL) {
+	ctxt->wellFormed = 0;
+	ctxt->valid = 0;
+	if (ctxt->recovery == 0)
+	    ctxt->disableSAX = 1;
+    }
+}
+
+/**
+ * xmlWarnMsg:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an error string
+ * @str2:  an error string
+ *
+ * Handle a parser warning
+ */
+static void
+xmlWarnMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+               const char *msg, const xmlChar *str1)
+{
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER, error,
+                    XML_ERR_WARNING, NULL, 0, 
+		    (const char *) str1, NULL,
+		    NULL, 0, 0, msg, str1);
+}
+
+/**
+ * xmlNsErrMsg:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an error string
+ * @str2:  an error string
+ *
+ * Handle a namespace error
+ */
+static void
+xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+            const char *msg, const xmlChar *str1, const xmlChar *str2)
+{
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
+                    XML_ERR_ERROR, NULL, 0, 
+		    (const char *) str1, (const char *) str2,
+		    NULL, 0, 0, msg, str1, str2);
+}
+
+/**
+ * xmlNsWarnMsg:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an error string
+ *
+ * Handle a namespace warning
+ */
+static void
+xmlNsWarnMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+             const char *msg, const xmlChar *str1, const xmlChar *str2)
+{
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
+                    XML_ERR_WARNING, NULL, 0, 
+		    (const char *) str1, (const char *) str2,
+		    NULL, 0, 0, msg, str1, str2);
+}
+
+/**
  * xmlSAX2GetPublicId:
  * @ctx: the user data (XML parser context)
  *
@@ -436,12 +541,9 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 		ctxt->myDoc->standalone = 0;
 		ret = xmlGetDocEntity(ctxt->myDoc, name);
 		if (ret != NULL) {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
-		 "Entity(%s) document marked standalone but requires external subset\n",
-					 name);
-		    ctxt->valid = 0;
-		    ctxt->wellFormed = 0;
+		    xmlFatalErrMsg(ctxt, XML_ERR_NOT_STANDALONE,
+	 "Entity(%s) document marked standalone but requires external subset\n",
+				   name, NULL);
 		}
 		ctxt->myDoc->standalone = 1;
 	    }
@@ -466,11 +568,8 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 	if (val == 0) {
 	    xmlAddChildList((xmlNodePtr) ret, children);
 	} else {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, 
-		 "Failure to process entity %s\n", name);
-	    ctxt->wellFormed = 0;
-	    ctxt->valid = 0;
+	    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_PROCESSING,
+		           "Failure to process entity %s\n", name, NULL);
 	    ctxt->validate = 0;
 	    return(NULL);
 	}
@@ -532,10 +631,10 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
     if (ctxt->inSubset == 1) {
 	ent = xmlAddDocEntity(ctxt->myDoc, name, type, publicId,
 		              systemId, content);
-	if ((ent == NULL) && (ctxt->pedantic) &&
-	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt->userData, 
-	     "Entity(%s) already defined in the internal subset\n", name);
+	if ((ent == NULL) && (ctxt->pedantic))
+	    xmlWarnMsg(ctxt, XML_WAR_ENTITY_REDEFINED,
+	     "Entity(%s) already defined in the internal subset\n",
+	               name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
 	    xmlChar *URI;
 	    const char *base = NULL;
@@ -568,9 +667,9 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 	    ent->URI = URI;
 	}
     } else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	     "SAX.xmlSAX2EntityDecl(%s) called while not in subset\n", name);
+	xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_PROCESSING,
+	               "SAX.xmlSAX2EntityDecl(%s) called while not in subset\n",
+		       name, NULL);
     }
 }
 
@@ -623,9 +722,9 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 	   name, prefix, (xmlAttributeType) type, 
 	   (xmlAttributeDefault) def, defaultValue, tree);
     else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	     "SAX.xmlSAX2AttributeDecl(%s) called while not in subset\n", name);
+        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
+	     "SAX.xmlSAX2AttributeDecl(%s) called while not in subset\n",
+	               name, NULL);
 	xmlFreeEnumeration(tree);
 	return;
     }
@@ -672,10 +771,9 @@ xmlSAX2ElementDecl(void *ctx, const xmlChar * name, int type,
         elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
                                  name, (xmlElementTypeVal) type, content);
     else {
-        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-            ctxt->sax->error(ctxt->userData,
-                             "SAX.xmlSAX2ElementDecl(%s) called while not in subset\n",
-                             name);
+        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
+	     "SAX.xmlSAX2ElementDecl(%s) called while not in subset\n",
+	               name, NULL);
         return;
     }
 #ifdef LIBXML_VALID_ENABLED
@@ -711,11 +809,9 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
 #endif
 
     if ((publicId == NULL) && (systemId == NULL)) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	     "SAX.xmlSAX2NotationDecl(%s) externalID or PublicID missing\n", name);
-	ctxt->valid = 0;
-	ctxt->wellFormed = 0;
+	xmlFatalErrMsg(ctxt, XML_ERR_NOTATION_PROCESSING,
+	     "SAX.xmlSAX2NotationDecl(%s) externalID or PublicID missing\n",
+	               name, NULL);
 	return;
     } else if (ctxt->inSubset == 1)
 	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
@@ -724,9 +820,9 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
 	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->extSubset, name,
                               publicId, systemId);
     else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	     "SAX.xmlSAX2NotationDecl(%s) called while not in subset\n", name);
+	xmlFatalErrMsg(ctxt, XML_ERR_NOTATION_PROCESSING,
+	     "SAX.xmlSAX2NotationDecl(%s) called while not in subset\n",
+	               name, NULL);
 	return;
     }
 #ifdef LIBXML_VALID_ENABLED
@@ -802,9 +898,9 @@ xmlSAX2UnparsedEntityDecl(void *ctx, const xmlChar *name,
 	    ent->URI = URI;
 	}
     } else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	     "SAX.xmlSAX2UnparsedEntityDecl(%s) called while not in subset\n", name);
+        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
+	     "SAX.xmlSAX2UnparsedEntityDecl(%s) called while not in subset\n",
+	               name, NULL);
     }
 }
 
@@ -956,13 +1052,13 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
     name = xmlSplitQName(ctxt, fullname, &ns);
     if ((name != NULL) && (name[0] == 0)) {
         if (xmlStrEqual(ns, BAD_CAST "xmlns")) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		     "invalid namespace declaration '%s'\n", fullname);
+	    xmlNsErrMsg(ctxt, XML_ERR_NS_DECL_ERROR,
+			"invalid namespace declaration '%s'\n",
+		        fullname, NULL);
 	} else {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-		ctxt->sax->warning(ctxt->userData, 
-		     "Avoid attribute ending with ':' like '%s'\n", fullname);
+	    xmlNsWarnMsg(ctxt, XML_WAR_NS_COLUMN,
+		         "Avoid attribute ending with ':' like '%s'\n",
+			 fullname, NULL);
 	}
 	if (ns != NULL)
 	    xmlFree(ns);
@@ -1076,22 +1172,19 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	}
 
 	if (val[0] == 0) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		     "Empty namespace name for prefix %s\n", name);
+	    xmlNsErrMsg(ctxt, XML_NS_ERR_EMPTY,
+		        "Empty namespace name for prefix %s\n", name, NULL);
 	}
 	if ((ctxt->pedantic != 0) && (val[0] != 0)) {
 	    xmlURIPtr uri;
 
 	    uri = xmlParseURI((const char *)val);
 	    if (uri == NULL) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-		    ctxt->sax->warning(ctxt->userData, 
+	        xmlNsWarnMsg(ctxt, XML_WAR_NS_URI,
 			 "xmlns:%s: %s not a valid URI\n", name, value);
 	    } else {
 		if (uri->scheme == NULL) {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			ctxt->sax->warning(ctxt->userData, 
+		    xmlNsWarnMsg(ctxt, XML_WAR_NS_URI_RELATIVE,
 			   "xmlns:%s: URI %s is not absolute\n", name, value);
 		}
 		xmlFreeURI(uri);
@@ -1124,8 +1217,7 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	xmlAttrPtr prop;
 	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
 	if (namespace == NULL) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
+	    xmlNsErrMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
 		    "Namespace prefix %s of attribute %s is not defined\n",
 		             ns, name);
 	}
@@ -1136,9 +1228,7 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 		if ((xmlStrEqual(name, prop->name)) &&
 		    ((namespace == prop->ns) ||
 		     (xmlStrEqual(namespace->href, prop->ns->href)))) {
-		    ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
+			xmlNsErrMsg(ctxt, XML_ERR_ATTRIBUTE_REDEFINED,
 			        "Attribute %s in %s redefined\n",
 			                 name, namespace->href);
 		    ctxt->wellFormed = 0;

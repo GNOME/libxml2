@@ -1,3 +1,8 @@
+Tue Jul  5 16:03:05 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: first steps toward a testsuite dist
+	* SAX2.c include/libxml/xmlerror.h: fixed bug #307870
+
 Tue Jul  5 12:38:36 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* runsuite.c runtest.c: Tiny portability adjustment for win.

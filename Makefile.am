@@ -1068,6 +1068,9 @@ dist-hook: cleanup libxml2.spec
 dist-source: distdir
 	$(AMTAR) -chof - --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
 
+dist-test: distdir
+	$(AMTAR) -chof - $(distdir)/test $(distdir)/result $(distdir)/xstc/Test | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
+
 cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
 

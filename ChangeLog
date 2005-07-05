@@ -1,3 +1,9 @@
+Tue Jul  5 12:38:36 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* runsuite.c runtest.c: Tiny portability adjustment for win.
+	* win32/Makefile.*: Added runtest.exe and runsuite.exe to
+	  be created.
+
 Mon Jul  4 17:44:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runsuite.c: first stb at unimplemnted detection

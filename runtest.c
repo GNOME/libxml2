@@ -110,7 +110,7 @@ static int glob(const char *pattern, int flags,
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
     unsigned int nb_paths = 0;
-    char directory[500], *tmp;
+    char directory[500];
     int len;
 
     if ((pattern == NULL) || (pglob == NULL)) return(-1);
@@ -670,10 +670,12 @@ static int loadMem(const char *filename, const char **mem, int *size) {
         siz += res;
     }
     close(fd);
+#if !defined(_WIN32)
     if (siz != info.st_size) {
         free(base);
 	return(-1);
     }
+#endif
     base[siz] = 0;
     *mem = base;
     *size = siz;

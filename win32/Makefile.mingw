@@ -208,7 +208,9 @@ UTILS = $(BINDIR)/xmllint.exe\
 	$(BINDIR)/testSAX.exe\
 	$(BINDIR)/testSchemas.exe\
 	$(BINDIR)/testURI.exe\
-	$(BINDIR)/testXPath.exe
+	$(BINDIR)/testXPath.exe\
+	$(BINDIR)/runtest.exe\
+	$(BINDIR)/runsuite.exe
 ifeq ($(WITH_THREADS),yes)
 UTILS += $(BINDIR)/testThreadsWin32.exe
 endif

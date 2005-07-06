@@ -78,7 +78,7 @@
  * on this system, avoid any compilation error
  */
 #ifdef	O_BINARY
-#define RD_FLAGS	(O_RDONLY | O_BINARY)
+#define RD_FLAGS	O_RDONLY | O_BINARY
 #else
 #define	RD_FLAGS	O_RDONLY
 #endif

@@ -2142,7 +2142,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     /*
      * Otherwise, heuristic :-\
      */
-    if (RAW != '<') return(0);
+    if ((RAW != '<') && (RAW != 0xD)) return(0);
     if ((ctxt->node->children == NULL) &&
 	(RAW == '<') && (NXT(1) == '/')) return(0);
 

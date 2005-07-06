@@ -1,3 +1,10 @@
+Wed Jul  6 15:45:48 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: fixed problem with free on dupl attribute in
+	  dtd (bug309637).
+	* test/errors/attr3.xml, result/errors/attr3.*: added
+	  regression test for this
+
 Wed Jul  6 13:11:35 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* win32/Makefile.msvc: try again to fix file format for Windows

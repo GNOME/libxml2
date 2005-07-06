@@ -2063,6 +2063,12 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
      * fill the structure.
      */
     ret->atype = type;
+    /*
+     * doc must be set before possible error causes call
+     * to xmlFreeAttribute (because it's used to check on
+     * dict use)
+     */
+    ret->doc = dtd->doc;
     if (dict) {
 	ret->name = xmlDictLookup(dict, name, -1);
 	ret->prefix = xmlDictLookup(dict, ns, -1);
@@ -2150,7 +2156,6 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
      * Link it to the DTD
      */
     ret->parent = dtd;
-    ret->doc = dtd->doc;
     if (dtd->last == NULL) {
 	dtd->children = dtd->last = (xmlNodePtr) ret;
     } else {

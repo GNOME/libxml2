@@ -2194,7 +2194,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		 	* If a mixed decimal, get rid of trailing zeroes
 		 	*/
 			if (dec != -1) {
-			    while ((cptr > cval) && (*(cptr-1) == '0')) {
+			    while ((len > dec) && (cptr > cval) &&
+				(*(cptr-1) == '0')) {
 				cptr--;
 				len--;
 			    }

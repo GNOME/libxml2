@@ -1,3 +1,10 @@
+Wed Jul  6 13:40:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Fixed bug #309338, reported by Kupriyanov
+	  Anotolij.
+	* test/schemas/bug309338* result/schemas/bug309338*:
+	  Added a regression test for the above bug.
+
 Tue Jul  5 16:03:05 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: first steps toward a testsuite dist

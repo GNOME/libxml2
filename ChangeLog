@@ -1,3 +1,10 @@
+Wed Jul  6 12:20:13 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* win32/Makefile.msvc: removed spurious ^M
+	* runtest.c: added check for option O_BINARY
+	* test/schemas/bug309338*, result/schemas/bug309338*: changed
+	  sticky tag to 'binary'
+
 Wed Jul  6 10:38:02 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* debugXML.c: excluded content string check for XML_ELEMENT_DECL

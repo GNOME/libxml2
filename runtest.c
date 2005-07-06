@@ -73,6 +73,16 @@
 #include <string.h>
 #endif
 
+/*
+ * O_BINARY is just for Windows compatibility - if it isn't defined
+ * on this system, avoid any compilation error
+ */
+#ifdef	O_BINARY
+#define RD_FLAGS	(O_RDONLY | O_BINARY)
+#else
+#define	RD_FLAGS	O_RDONLY
+#endif
+
 typedef int (*functest) (const char *filename, const char *result,
                          const char *error, int options);
 
@@ -593,10 +603,10 @@ static int compareFiles(const char *r1, const char *r2) {
     char bytes1[4096];
     char bytes2[4096];
 
-    fd1 = open(r1, O_RDONLY | O_BINARY);
+    fd1 = open(r1, RD_FLAGS);
     if (fd1 < 0)
         return(-1);
-    fd2 = open(r2, O_RDONLY | O_BINARY);
+    fd2 = open(r2, RD_FLAGS);
     if (fd2 < 0) {
         close(fd1);
         return(-1);
@@ -633,7 +643,7 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
 	return(-1);
     if (info.st_size != size)
         return(-1);
-    fd = open(filename, O_RDONLY | O_BINARY);
+    fd = open(filename, RD_FLAGS);
     if (fd < 0)
         return(-1);
     while (idx < size) {
@@ -667,7 +677,7 @@ static int loadMem(const char *filename, const char **mem, int *size) {
     base = malloc(info.st_size + 1);
     if (base == NULL)
 	return(-1);
-    if ((fd = open(filename, O_RDONLY | O_BINARY)) < 0) {
+    if ((fd = open(filename, RD_FLAGS)) < 0) {
         free(base);
 	return(-1);
     }

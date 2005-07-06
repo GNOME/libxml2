@@ -1,3 +1,9 @@
+Wed Jul  6 10:38:02 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* debugXML.c: excluded content string check for XML_ELEMENT_DECL
+	  in xmlCtxtGenericNodeCheck
+	* runtest.c: changed "open" calls to include O_BINARY for Windows
+
 Wed Jul  6 17:14:03 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing bug #166777 (and #169838), it was an heuristic

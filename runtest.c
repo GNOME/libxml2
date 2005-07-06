@@ -593,10 +593,10 @@ static int compareFiles(const char *r1, const char *r2) {
     char bytes1[4096];
     char bytes2[4096];
 
-    fd1 = open(r1, O_RDONLY);
+    fd1 = open(r1, O_RDONLY | O_BINARY);
     if (fd1 < 0)
         return(-1);
-    fd2 = open(r2, O_RDONLY);
+    fd2 = open(r2, O_RDONLY | O_BINARY);
     if (fd2 < 0) {
         close(fd1);
         return(-1);
@@ -633,7 +633,7 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
 	return(-1);
     if (info.st_size != size)
         return(-1);
-    fd = open(filename, O_RDONLY);
+    fd = open(filename, O_RDONLY | O_BINARY);
     if (fd < 0)
         return(-1);
     while (idx < size) {
@@ -643,6 +643,11 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
 	if (res + idx > size) 
 	    break;
 	if (memcmp(bytes, &mem[idx], res) != 0) {
+	    int ix;
+	    for (ix=0; ix<res; ix++)
+		if (bytes[ix] != mem[idx+ix])
+			break;
+	    fprintf(stderr,"Compare error at position %d\n", idx+ix);
 	    close(fd);
 	    return(1);
 	}
@@ -662,7 +667,7 @@ static int loadMem(const char *filename, const char **mem, int *size) {
     base = malloc(info.st_size + 1);
     if (base == NULL)
 	return(-1);
-    if ((fd = open(filename, O_RDONLY)) < 0) {
+    if ((fd = open(filename, O_RDONLY | O_BINARY)) < 0) {
         free(base);
 	return(-1);
     }

@@ -24402,6 +24402,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
         return (-1);
     old_sax = pctxt->sax;
     pctxt->sax = &schemas_sax;
+    pctxt->userData = &split_block;
 #if 0
     if (options)
         xmlCtxtUseOptions(pctxt, options);
@@ -24409,7 +24410,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     pctxt->linenumbers = 1;
     pctxt->userData = (void *) ctxt;
 
-    inputStream = xmlNewIOInputStream(pctxt, input, XML_CHAR_ENCODING_NONE);;
+    inputStream = xmlNewIOInputStream(pctxt, input, enc);;
     if (inputStream == NULL) {
         ret = -1;
 	goto done;

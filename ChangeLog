@@ -1,3 +1,11 @@
+Fri Jul  8 19:25:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix some potential leaks in error cases.
+	* xmllint.c: added --sax, to allow testing of --schemas --sax and
+	  various other combinations.
+	* xmlschemas.c: fix a couple of tiny problems in
+	  xmlSchemaValidateStream()
+
 Fri Jul  8 18:34:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 	
 	* xmlschemas.c: Changed xmlSchemaValidateFile() to use

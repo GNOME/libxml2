@@ -1,3 +1,11 @@
+Fri Jul  8 17:02:14 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* test/relaxng/docbook_0.xml: added the missing entity to the
+	  document internal subset to avoid errors if the DocBook catalogs
+	  are not there
+	* xmlschemas.c: first cut at implementing xmlSchemaValidateStream()
+	  untested yet
+
 Wed Jul  6 15:45:48 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: fixed problem with free on dupl attribute in

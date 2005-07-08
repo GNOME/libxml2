@@ -4,6 +4,7 @@
 <!ENTITY version "1.0.53">
 <!ENTITY mdash  "--">
 <!ENTITY hellip "...">
+<!ENTITY copy       "&#x00A9;"> <!-- COPYRIGHT SIGN -->
         <!-- replace version above with actual application version number-->
 	<!--  Template Version: 1.0.1  (do not remove this line) -->
 

@@ -24295,7 +24295,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
 
     memset(&schemas_sax, 0, sizeof(xmlSAXHandler));
     schemas_sax.initialized = XML_SAX2_MAGIC;
-    if (sax == NULL) {
+    if (sax == NULL) {	
         /*
 	 * go direct, no need for the split block and functions.
 	 */
@@ -24310,7 +24310,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
 
 	schemas_sax.cdataBlock = xmlSchemaSAXHandleCDataSection;
 	schemas_sax.reference = xmlSchemaSAXHandleReference;
-	ctxt->user_data = &split_block;
+	/* ctxt->user_data = &split_block; */
     } else {
        /*
         * Return -1 without parsing if passed a SAXv1 block
@@ -24385,15 +24385,13 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
         schemas_sax.reference = referenceSplit;
         schemas_sax.startElementNs = startElementNsSplit;
         schemas_sax.endElementNs = endElementNsSplit;
-	ctxt->user_data = &split_block;
-    }
-
-    split_block.user_sax = sax;
-    split_block.user_data = user_data;
+	/* ctxt->user_data = &split_block; */
+	split_block.user_sax = sax;
+	split_block.user_data = user_data;	
+    }    
     ctxt->input = input;
     ctxt->enc = enc;
     ctxt->sax = &schemas_sax;
-
     /*
      * prepare the parser
      */
@@ -24402,13 +24400,15 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
         return (-1);
     old_sax = pctxt->sax;
     pctxt->sax = &schemas_sax;
-    pctxt->userData = &split_block;
+    if (sax == NULL)
+	pctxt->userData = (void *) ctxt;
+    else
+	pctxt->userData = &split_block;
 #if 0
     if (options)
         xmlCtxtUseOptions(pctxt, options);
 #endif
-    pctxt->linenumbers = 1;
-    pctxt->userData = (void *) ctxt;
+    pctxt->linenumbers = 1;    
 
     inputStream = xmlNewIOInputStream(pctxt, input, enc);;
     if (inputStream == NULL) {
@@ -24432,7 +24432,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     }    
     ctxt->parserCtxt = NULL;
     ctxt->sax = NULL;
-    ctxt->user_data = NULL;
+    /* ctxt->user_data = NULL; */
     ctxt->input = NULL;
 
 done:

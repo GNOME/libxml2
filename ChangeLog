@@ -1,3 +1,8 @@
+Fri Jul  8 20:04:29 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: tiny fix in xmlSchemaValidateStream() if a
+	  user-provided SAX handler is given.
+
 Fri Jul  8 19:25:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix some potential leaks in error cases.

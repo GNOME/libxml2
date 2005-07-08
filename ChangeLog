@@ -1,3 +1,8 @@
+Fri Jul  8 18:34:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+	
+	* xmlschemas.c: Changed xmlSchemaValidateFile() to use
+	  xmlSchemaValidateStream() internally.
+
 Fri Jul  8 17:02:14 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* test/relaxng/docbook_0.xml: added the missing entity to the

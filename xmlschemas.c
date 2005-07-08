@@ -33,13 +33,14 @@
 #include <libxml/parserInternals.h>
 #include <libxml/hash.h>
 #include <libxml/uri.h>
-
 #include <libxml/xmlschemas.h>
 #include <libxml/schemasInternals.h>
 #include <libxml/xmlschemastypes.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/dict.h>
+#include <libxml/encoding.h>
+#include <libxml/xmlIO.h>
 #ifdef LIBXML_PATTERN_ENABLED
 #include <libxml/pattern.h>
 #endif
@@ -24406,6 +24407,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
         xmlCtxtUseOptions(pctxt, options);
 #endif
     pctxt->linenumbers = 1;
+    pctxt->userData = (void *) ctxt;
 
     inputStream = xmlNewIOInputStream(pctxt, input, XML_CHAR_ENCODING_NONE);;
     if (inputStream == NULL) {
@@ -24458,71 +24460,17 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
 {
 #ifdef XML_SCHEMA_SAX_ENABLED
     int ret;
+    xmlParserInputBufferPtr input;
 
     if ((ctxt == NULL) || (filename == NULL))
         return (-1);
     
-    ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
-    if (ctxt->sax == NULL) {
-	xmlSchemaVErrMemory(ctxt,
-	    "creating SAX handler", NULL);
+    input = xmlParserInputBufferCreateFilename(filename,
+	XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
 	return (-1);
-    }
-    memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
-    ctxt->parserCtxt = xmlCreateFileParserCtxt(filename);
-    if (ctxt->parserCtxt == NULL) {
-	xmlSchemaInternalErr((xmlSchemaAbstractCtxtPtr) ctxt,
-	    "xmlSchemaValidateFile", "creating a parser context");
-	xmlFree(ctxt->sax);
-	return (-1);
-    }
-#ifdef LIBXML_SAX1_ENABLED
-    if (ctxt->parserCtxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
-#endif /* LIBXML_SAX1_ENABLED */
-	xmlFree(ctxt->parserCtxt->sax);
-    /*
-    * Init the SAX handler.
-    */
-    ctxt->sax->startElementNs = xmlSchemaSAXHandleStartElementNs;
-    ctxt->sax->endElementNs = xmlSchemaSAXHandleEndElementNs;
-    /*
-    * Note that we use the same text-function for both, to prevent
-    * the parser from testing for ignorable whitespace.
-    */
-    ctxt->sax->ignorableWhitespace = xmlSchemaSAXHandleText;
-    ctxt->sax->characters = xmlSchemaSAXHandleText;
-
-    ctxt->sax->cdataBlock = xmlSchemaSAXHandleCDataSection;
-    ctxt->sax->reference = xmlSchemaSAXHandleReference;
-    ctxt->sax->initialized = XML_SAX2_MAGIC;
-    /*
-    * Init the parser context.
-    */
-    ctxt->parserCtxt->sax = ctxt->sax;
-    ctxt->parserCtxt->sax2 = 1;
-    ctxt->parserCtxt->userData = ctxt;
-    /* VAL TODO: Set error handlers. */
-
-    ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
-    ret = xmlSchemaVStart(ctxt);
-
-    /*
-    * URGENT VAL TODO: What to do with well-formedness errors?
-    */
-    if ((ret == 0) && (! ctxt->parserCtxt->wellFormed)) {
-	ret = ctxt->parserCtxt->errNo;
-	if (ret == 0)
-	    /* URGENT VAL TODO: Error code? */
-	    ret = 1;
-	xmlSchemaErr((xmlSchemaAbstractCtxtPtr) ctxt, ret, NULL,
-	    "The instance document '%s' is not well-formed",
-	    BAD_CAST filename, NULL);	
-    }    
-    ctxt->parserCtxt->sax = NULL;
-    xmlFreeParserCtxt(ctxt->parserCtxt);
-    xmlFree(ctxt->sax);
-    ctxt->sax = NULL;
-
+    ret = xmlSchemaValidateStream(ctxt, input, XML_CHAR_ENCODING_NONE,
+	NULL, NULL);    
     return (ret);
 #else
     return (-1);

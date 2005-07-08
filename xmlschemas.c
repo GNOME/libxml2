@@ -7239,6 +7239,8 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
     item->name = name;
     item->type = idcCategory;
     item->node = node;
+    if (ctxt->assemble != NULL)
+	xmlSchemaAddAssembledItem(ctxt, (xmlSchemaTypePtr) item);
     /*
     * The target namespace of the parent element declaration.
     */
@@ -17572,27 +17574,50 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr item,
  */
 static void
 xmlSchemaResolveIDCKeyRef(xmlSchemaIDCPtr idc,
-			  xmlSchemaParserCtxtPtr ctxt,
+			  xmlSchemaParserCtxtPtr pctxt,
 			  const xmlChar * name ATTRIBUTE_UNUSED)
 {
     if (idc->type != XML_SCHEMA_TYPE_IDC_KEYREF)
         return;
     if (idc->ref->name != NULL) {
 	idc->ref->item = (xmlSchemaBasicItemPtr) xmlHashLookup2(
-	    ctxt->schema->idcDef,
+	    pctxt->schema->idcDef,
 	    idc->ref->name,
 	    idc->ref->targetNamespace);
         if (idc->ref->item == NULL) {
 	    /*
 	    * TODO: It is actually not an error to fail to resolve.
 	    */
-	    xmlSchemaPResCompAttrErr(ctxt,
+	    xmlSchemaPResCompAttrErr(pctxt,
 		XML_SCHEMAP_SRC_RESOLVE,
 		(xmlSchemaTypePtr) idc, idc->node,
 		"refer", idc->ref->name,
 		idc->ref->targetNamespace,
 		XML_SCHEMA_TYPE_IDC_KEYREF, NULL);
             return;
+	} else {
+	    if (idc->nbFields !=
+		((xmlSchemaIDCPtr) idc->ref->item)->nbFields) {
+		xmlChar *str = NULL;
+		xmlSchemaIDCPtr refer;
+		
+		refer = (xmlSchemaIDCPtr) idc->ref->item;
+		/*
+		* SPEC c-props-correct(2)
+		* "If the {identity-constraint category} is keyref,
+		* the cardinality of the {fields} must equal that of
+		* the {fields} of the {referenced key}.
+		*/
+		xmlSchemaPCustomErr(pctxt,
+		    XML_SCHEMAP_C_PROPS_CORRECT,
+		    NULL, (xmlSchemaTypePtr) idc, idc->node,
+		    "The cardinality of the keyref differs from the "
+		    "cardinality of the referenced key '%s'",
+		    xmlSchemaFormatQName(&str, refer->targetNamespace,
+			refer->name) 
+		);
+		FREE_AND_NULL(str)
+	    }
 	}
     }
 }
@@ -17980,16 +18005,18 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
 	    case XML_SCHEMA_TYPE_ATTRIBUTE:
 		xmlSchemaAttrFixup((xmlSchemaAttributePtr) item, ctxt, NULL);
 		break;
-	    case XML_SCHEMA_TYPE_ELEMENT:
-		xmlSchemaElementFixup((xmlSchemaElementPtr) item, ctxt,
-		    NULL, NULL, NULL);
-		break;
 	    case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
 		xmlSchemaAttrGrpFixup((xmlSchemaAttributeGroupPtr) item,
 		    ctxt, NULL);
 		break;
 	    case XML_SCHEMA_TYPE_PARTICLE:
 		xmlSchemaMiscRefFixup((xmlSchemaTreeItemPtr) item, ctxt, NULL);
+		break;
+	    case XML_SCHEMA_TYPE_IDC_KEY:
+	    case XML_SCHEMA_TYPE_IDC_UNIQUE:
+	    case XML_SCHEMA_TYPE_IDC_KEYREF:
+		xmlSchemaResolveIDCKeyRef((xmlSchemaIDCPtr) item, ctxt, NULL);
+		break;
 	    default:
 		break;
 	}
@@ -18035,6 +18062,22 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
 		ctxt, NULL);
 	}
     }
+    if (ctxt->nberrors != 0)
+	return;
+    for (i = 0; i < nbItems; i++) {
+	item = items[i];
+	switch (item->type) {
+	    case XML_SCHEMA_TYPE_ELEMENT:
+		xmlSchemaElementFixup((xmlSchemaElementPtr) item, ctxt,
+		    NULL, NULL, NULL);
+		break;
+	    default:
+		break;
+	}
+    }
+    if (ctxt->nberrors != 0)
+	return;
+
     /*
     * Fixup for simple/complex types.
     */
@@ -24292,7 +24335,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
 
     if ((ctxt == NULL) || (input == NULL))
         return (-1);
-
+    
     memset(&schemas_sax, 0, sizeof(xmlSAXHandler));
     schemas_sax.initialized = XML_SAX2_MAGIC;
     if (sax == NULL) {	

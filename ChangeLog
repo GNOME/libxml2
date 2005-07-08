@@ -1,3 +1,9 @@
+Fri Jul  8 23:35:00 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Added c-props-correct constraint to check
+	  for equal cardinality of keyref/key.
+	* include/libxml/xmlerror.h: Added an error code.
+
 Fri Jul  8 21:56:04 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* pattern.c: Fixed evaluation of attributes. Actually only

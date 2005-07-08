@@ -1683,7 +1683,7 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	    * Check for correct node-type.
 	    */
 	    if ((nodeType == XML_ATTRIBUTE_NODE) && 
-		((comp->steps[0].flags & XML_STREAM_STEP_ATTR) == 0))
+		((comp->steps[step].flags & XML_STREAM_STEP_ATTR) == 0))
 		goto next_state;
 	    /*
 	    * Compare local/namespace-name.

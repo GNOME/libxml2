@@ -1,3 +1,9 @@
+Fri Jul  8 21:56:04 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* pattern.c: Fixed evaluation of attributes. Actually only
+	  attribute at the first level were evaluated (e.g. "@attr");
+	  expression like "foo/@attr" always failed.
+
 Fri Jul  8 20:04:29 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: tiny fix in xmlSchemaValidateStream() if a

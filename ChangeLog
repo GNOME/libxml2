@@ -1,3 +1,11 @@
+Sat Jul  9 19:29:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix for #309761 from Dylan Shell  
+	* xmlschemas.c include/libxml/xmlschemas.h: added xmlSchemaSAXPlug
+	  and xmlSchemaSAXUnplug generic APIs for SAX Schemas validation.
+	* xmllint.c: couple of fixes plus added descriptions for --sax and
+	  --sax1
+
 Fri Jul  8 23:35:00 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Added c-props-correct constraint to check

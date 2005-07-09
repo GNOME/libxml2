@@ -166,6 +166,19 @@ XMLPUBFUN int XMLCALL
 	    xmlSchemaValidateFile	(xmlSchemaValidCtxtPtr ctxt,
 					 const char * filename,
 					 int options);
+
+/*
+ * Interface to insert Schemas SAX velidation in a SAX stream
+ */
+typedef struct _xmlSchemaSAXPlug xmlSchemaSAXPlugStruct;
+typedef xmlSchemaSAXPlugStruct *xmlSchemaSAXPlugPtr;
+
+XMLPUBFUN xmlSchemaSAXPlugPtr XMLCALL
+            xmlSchemaSAXPlug		(xmlSchemaValidCtxtPtr ctxt,
+					 xmlSAXHandlerPtr *sax,
+					 void **user_data);
+XMLPUBFUN int XMLCALL
+            xmlSchemaSAXUnplug		(xmlSchemaSAXPlugPtr plug);
 #ifdef __cplusplus
 }
 #endif

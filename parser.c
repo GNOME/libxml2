@@ -12744,15 +12744,6 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
         options -= XML_PARSE_NOENT;
     } else
         ctxt->replaceEntities = 0;
-    if (options & XML_PARSE_NOWARNING) {
-        ctxt->sax->warning = NULL;
-        options -= XML_PARSE_NOWARNING;
-    }
-    if (options & XML_PARSE_NOERROR) {
-        ctxt->sax->error = NULL;
-        ctxt->sax->fatalError = NULL;
-        options -= XML_PARSE_NOERROR;
-    }
     if (options & XML_PARSE_PEDANTIC) {
         ctxt->pedantic = 1;
         options -= XML_PARSE_PEDANTIC;
@@ -12773,6 +12764,15 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
         options -= XML_PARSE_DTDVALID;
     } else
         ctxt->validate = 0;
+    if (options & XML_PARSE_NOWARNING) {
+        ctxt->sax->warning = NULL;
+        options -= XML_PARSE_NOWARNING;
+    }
+    if (options & XML_PARSE_NOERROR) {
+        ctxt->sax->error = NULL;
+        ctxt->sax->fatalError = NULL;
+        options -= XML_PARSE_NOERROR;
+    }
 #ifdef LIBXML_SAX1_ENABLED
     if (options & XML_PARSE_SAX1) {
         ctxt->sax->startElement = xmlSAX2StartElement;

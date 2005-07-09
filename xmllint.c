@@ -838,7 +838,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* getParameterEntity */
     NULL, /* cdataBlock; */
     NULL, /* externalSubset; */
-    1,
+    XML_SAX2_MAGIC,
     NULL,
     NULL, /* startElementNs */
     NULL, /* endElementNs */
@@ -1632,16 +1632,19 @@ testSAX(const char *filename) {
 		(xmlSchemaValidityWarningFunc) fprintf,
 		stderr);
 
-	ret = xmlSchemaValidateStream(vctxt, buf, 0, handler, user_data);
-	if (ret == 0) {
-	    fprintf(stderr, "%s validates\n", filename);
-	} else if (ret > 0) {
-	    fprintf(stderr, "%s fails to validate\n", filename);
-	    progresult = XMLLINT_ERR_VALID;
-	} else {
-	    fprintf(stderr, "%s validation generated an internal error\n",
-		   filename);
-	    progresult = XMLLINT_ERR_VALID;
+	ret = xmlSchemaValidateStream(vctxt, buf, 0, handler,
+	                              (void *)user_data);
+	if (repeat == 0) {
+	    if (ret == 0) {
+		fprintf(stderr, "%s validates\n", filename);
+	    } else if (ret > 0) {
+		fprintf(stderr, "%s fails to validate\n", filename);
+		progresult = XMLLINT_ERR_VALID;
+	    } else {
+		fprintf(stderr, "%s validation generated an internal error\n",
+		       filename);
+		progresult = XMLLINT_ERR_VALID;
+	    }
 	}
 	xmlSchemaFreeValidCtxt(vctxt);
     } else
@@ -2790,6 +2793,11 @@ static void usage(const char *name) {
     printf("\t--relaxng schema : do RelaxNG validation against the schema\n");
     printf("\t--schema schema : do validation against the WXS schema\n");
 #endif
+#ifdef LIBXML_SAX1_ENABLED
+    printf("\t--sax1: use the old SAX1 interfaces for processing\n");
+#endif
+    printf("\t--sax: do not build a tree but work just at the SAX level\n");
+
     printf("\nLibxml project home page: http://xmlsoft.org/\n");
     printf("To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
 }

@@ -1571,6 +1571,8 @@ xmlSchemaErr3(xmlSchemaAbstractCtxtPtr ctxt,
     if (ctxt != NULL) {
 	if (ctxt->type == XML_SCHEMA_CTXT_VALIDATOR) {
 	    xmlSchemaValidCtxtPtr vctxt = (xmlSchemaValidCtxtPtr) ctxt;
+	    int line = 0;
+	    const char *file = NULL;
 
 	    vctxt->nberrors++;
 	    vctxt->err = error;
@@ -1578,11 +1580,17 @@ xmlSchemaErr3(xmlSchemaAbstractCtxtPtr ctxt,
 	    schannel = vctxt->serror;
 	    data = vctxt->userData;
 	    if ((node == NULL) && (vctxt->depth >= 0) &&
-		(vctxt->inode != NULL))
+		(vctxt->inode != NULL)) {
 		node = vctxt->inode->node;
+	    }
+	    if ((node == NULL) && (vctxt->parserCtxt != NULL) &&
+	        (vctxt->parserCtxt->input != NULL)) {
+		file = vctxt->parserCtxt->input->filename;
+		line = vctxt->parserCtxt->input->line;
+	    }
 	    __xmlRaiseError(schannel, channel, data, ctxt,
 		node, XML_FROM_SCHEMASV,
-		error, XML_ERR_ERROR, NULL, 0,
+		error, XML_ERR_ERROR, file, line,
 		(const char *) str1, (const char *) str2,
 		(const char *) str3, 0, 0, msg, str1, str2, str3);
 
@@ -23999,12 +24007,28 @@ struct _xmlSchemaSplitSAXData {
     xmlSAXHandlerPtr      schemas_sax;
 };
 
+#define XML_SAX_PLUG_MAGIC 0xdc43ba21
+
+struct _xmlSchemaSAXPlug {
+    unsigned int magic;
+
+    /* the original callbacks informations */
+    xmlSAXHandlerPtr     *user_sax_ptr;
+    xmlSAXHandlerPtr      user_sax;
+    void                **user_data_ptr;
+    void                 *user_data;
+
+    /* the block plugged back and validation informations */
+    xmlSAXHandler         schemas_sax;
+    xmlSchemaValidCtxtPtr ctxt;
+};
+
 /* All those functions just bounces to the user provided SAX handlers */
 static void
 internalSubsetSplit(void *ctx, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->internalSubset != NULL))
 	ctxt->user_sax->internalSubset(ctxt->user_data, name, ExternalID,
@@ -24014,7 +24038,7 @@ internalSubsetSplit(void *ctx, const xmlChar *name,
 static int
 isStandaloneSplit(void *ctx)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->isStandalone != NULL))
 	return(ctxt->user_sax->isStandalone(ctxt->user_data));
@@ -24024,7 +24048,7 @@ isStandaloneSplit(void *ctx)
 static int
 hasInternalSubsetSplit(void *ctx)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->hasInternalSubset != NULL))
 	return(ctxt->user_sax->hasInternalSubset(ctxt->user_data));
@@ -24034,7 +24058,7 @@ hasInternalSubsetSplit(void *ctx)
 static int
 hasExternalSubsetSplit(void *ctx)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->hasExternalSubset != NULL))
 	return(ctxt->user_sax->hasExternalSubset(ctxt->user_data));
@@ -24045,7 +24069,7 @@ static void
 externalSubsetSplit(void *ctx, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->internalSubset != NULL))
 	ctxt->user_sax->internalSubset(ctxt->user_data, name, ExternalID,
@@ -24055,7 +24079,7 @@ externalSubsetSplit(void *ctx, const xmlChar *name,
 static xmlParserInputPtr
 resolveEntitySplit(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->resolveEntity != NULL))
 	return(ctxt->user_sax->resolveEntity(ctxt->user_data, publicId,
@@ -24066,7 +24090,7 @@ resolveEntitySplit(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 static xmlEntityPtr
 getEntitySplit(void *ctx, const xmlChar *name)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->getEntity != NULL))
 	return(ctxt->user_sax->getEntity(ctxt->user_data, name));
@@ -24076,7 +24100,7 @@ getEntitySplit(void *ctx, const xmlChar *name)
 static xmlEntityPtr
 getParameterEntitySplit(void *ctx, const xmlChar *name)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->getParameterEntity != NULL))
 	return(ctxt->user_sax->getParameterEntity(ctxt->user_data, name));
@@ -24088,7 +24112,7 @@ static void
 entityDeclSplit(void *ctx, const xmlChar *name, int type,
           const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->entityDecl != NULL))
 	ctxt->user_sax->entityDecl(ctxt->user_data, name, type, publicId,
@@ -24100,7 +24124,7 @@ attributeDeclSplit(void *ctx, const xmlChar * elem,
                    const xmlChar * name, int type, int def,
                    const xmlChar * defaultValue, xmlEnumerationPtr tree)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->attributeDecl != NULL)) {
 	ctxt->user_sax->attributeDecl(ctxt->user_data, elem, name, type,
@@ -24114,7 +24138,7 @@ static void
 elementDeclSplit(void *ctx, const xmlChar *name, int type,
 	    xmlElementContentPtr content)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->elementDecl != NULL))
 	ctxt->user_sax->elementDecl(ctxt->user_data, name, type, content);
@@ -24124,7 +24148,7 @@ static void
 notationDeclSplit(void *ctx, const xmlChar *name,
 	     const xmlChar *publicId, const xmlChar *systemId)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->notationDecl != NULL))
 	ctxt->user_sax->notationDecl(ctxt->user_data, name, publicId,
@@ -24136,7 +24160,7 @@ unparsedEntityDeclSplit(void *ctx, const xmlChar *name,
 		   const xmlChar *publicId, const xmlChar *systemId,
 		   const xmlChar *notationName)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->unparsedEntityDecl != NULL))
 	ctxt->user_sax->unparsedEntityDecl(ctxt->user_data, name, publicId,
@@ -24146,7 +24170,7 @@ unparsedEntityDeclSplit(void *ctx, const xmlChar *name,
 static void
 setDocumentLocatorSplit(void *ctx, xmlSAXLocatorPtr loc)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->setDocumentLocator != NULL))
 	ctxt->user_sax->setDocumentLocator(ctxt->user_data, loc);
@@ -24155,7 +24179,7 @@ setDocumentLocatorSplit(void *ctx, xmlSAXLocatorPtr loc)
 static void
 startDocumentSplit(void *ctx)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->startDocument != NULL))
 	ctxt->user_sax->startDocument(ctxt->user_data);
@@ -24164,7 +24188,7 @@ startDocumentSplit(void *ctx)
 static void
 endDocumentSplit(void *ctx)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->endDocument != NULL))
 	ctxt->user_sax->endDocument(ctxt->user_data);
@@ -24174,7 +24198,7 @@ static void
 processingInstructionSplit(void *ctx, const xmlChar *target,
                       const xmlChar *data)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->processingInstruction != NULL))
 	ctxt->user_sax->processingInstruction(ctxt->user_data, target, data);
@@ -24183,7 +24207,7 @@ processingInstructionSplit(void *ctx, const xmlChar *target,
 static void
 commentSplit(void *ctx, const xmlChar *value)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->comment != NULL))
 	ctxt->user_sax->comment(ctxt->user_data, value);
@@ -24195,7 +24219,7 @@ commentSplit(void *ctx, const xmlChar *value)
 
 static void
 warningSplit(void *ctx, const char *msg, ...) {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->warning != NULL)) {
 	TODO
@@ -24203,7 +24227,7 @@ warningSplit(void *ctx, const char *msg, ...) {
 }
 static void
 errorSplit(void *ctx, const char *msg, ...) {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->error != NULL)) {
 	TODO
@@ -24211,7 +24235,7 @@ errorSplit(void *ctx, const char *msg, ...) {
 }
 static void
 fatalErrorSplit(void *ctx, const char *msg, ...) {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->fatalError != NULL)) {
 	TODO
@@ -24225,7 +24249,7 @@ fatalErrorSplit(void *ctx, const char *msg, ...) {
 static void
 charactersSplit(void *ctx, const xmlChar *ch, int len)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if (ctxt == NULL)
         return;
     if ((ctxt->user_sax != NULL) && (ctxt->user_sax->characters != NULL))
@@ -24237,7 +24261,7 @@ charactersSplit(void *ctx, const xmlChar *ch, int len)
 static void
 ignorableWhitespaceSplit(void *ctx, const xmlChar *ch, int len)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if (ctxt == NULL)
         return;
     if ((ctxt->user_sax != NULL) &&
@@ -24250,7 +24274,7 @@ ignorableWhitespaceSplit(void *ctx, const xmlChar *ch, int len)
 static void
 cdataBlockSplit(void *ctx, const xmlChar *value, int len)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if (ctxt == NULL)
         return;
     if ((ctxt->user_sax != NULL) &&
@@ -24263,7 +24287,7 @@ cdataBlockSplit(void *ctx, const xmlChar *value, int len)
 static void
 referenceSplit(void *ctx, const xmlChar *name)
 {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->reference != NULL))
 	ctxt->user_sax->reference(ctxt->user_data, name);
@@ -24277,7 +24301,7 @@ startElementNsSplit(void *ctx, const xmlChar * localname,
 		    int nb_namespaces, const xmlChar ** namespaces, 
 		    int nb_attributes, int nb_defaulted, 
 		    const xmlChar ** attributes) {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if (ctxt == NULL)
         return;
     if ((ctxt->user_sax != NULL) &&
@@ -24296,7 +24320,7 @@ startElementNsSplit(void *ctx, const xmlChar * localname,
 static void
 endElementNsSplit(void *ctx, const xmlChar * localname, 
 		    const xmlChar * prefix, const xmlChar * URI) {
-    xmlSchemaSplitSAXDataPtr ctxt = (xmlSchemaSplitSAXDataPtr) ctx;
+    xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if (ctxt == NULL)
         return;
     if ((ctxt->user_sax != NULL) &&
@@ -24304,6 +24328,181 @@ endElementNsSplit(void *ctx, const xmlChar * localname,
 	ctxt->user_sax->endElementNs(ctxt->user_data, localname, prefix, URI);
     if (ctxt->ctxt != NULL)
 	xmlSchemaSAXHandleEndElementNs(ctxt->ctxt, localname, prefix, URI);
+}
+
+/**
+ * xmlSchemaSAXPlug:
+ * @ctxt:  a schema validation context
+ * @saxptr:  a pointer to the original xmlSAXHandlerPtr
+ * @dataptr:  a pointer to the original SAX user data pointer
+ *
+ * Plug a SAX based validation layer in a SAX parsing event flow.
+ * The original @saxptr and @dataptr data are replaced by new pointers
+ * but the calls to the original will be maintained.
+ *
+ * Returns a pointer to a data structure needed to unplug the validation layer
+ *         or NULL in case of errors.
+ */
+xmlSchemaSAXPlugPtr
+xmlSchemaSAXPlug(xmlSchemaValidCtxtPtr ctxt,
+		 xmlSAXHandlerPtr *sax, void **user_data)
+{
+    xmlSchemaSAXPlugPtr ret;
+    xmlSAXHandlerPtr old_sax;
+
+    if ((ctxt == NULL) || (sax == NULL) || (user_data == NULL))
+        return(NULL);
+
+    /*
+     * We only allow to plug into SAX2 event streams
+     */
+    old_sax = *sax;
+    if ((old_sax != NULL) && (old_sax->initialized != XML_SAX2_MAGIC))
+        return(NULL);
+    if ((old_sax != NULL) && 
+        (old_sax->startElementNs == NULL) && (old_sax->endElementNs == NULL) &&
+        ((old_sax->startElement != NULL) || (old_sax->endElement != NULL)))
+        return(NULL);
+
+    /*
+     * everything seems right allocate the local data needed for that layer
+     */
+    ret = (xmlSchemaSAXPlugPtr) xmlMalloc(sizeof(xmlSchemaSAXPlugStruct));
+    if (ret == NULL) {
+        return(NULL);
+    }
+    memset(ret, 0, sizeof(xmlSchemaSAXPlugStruct));
+    ret->magic = XML_SAX_PLUG_MAGIC;
+    ret->schemas_sax.initialized = XML_SAX2_MAGIC;
+    ret->ctxt = ctxt;
+    ret->user_sax_ptr = sax;
+    ret->user_sax = old_sax;
+    if (old_sax == NULL) {	
+        /*
+	 * go direct, no need for the split block and functions.
+	 */
+	ret->schemas_sax.startElementNs = xmlSchemaSAXHandleStartElementNs;
+	ret->schemas_sax.endElementNs = xmlSchemaSAXHandleEndElementNs;
+	/*
+	 * Note that we use the same text-function for both, to prevent
+	 * the parser from testing for ignorable whitespace.
+	 */
+	ret->schemas_sax.ignorableWhitespace = xmlSchemaSAXHandleText;
+	ret->schemas_sax.characters = xmlSchemaSAXHandleText;
+
+	ret->schemas_sax.cdataBlock = xmlSchemaSAXHandleCDataSection;
+	ret->schemas_sax.reference = xmlSchemaSAXHandleReference;
+
+	ret->user_data = ctxt;
+	*user_data = ctxt;
+    } else {
+       /*
+        * for each callback unused by Schemas initialize it to the Split
+	* routine only if non NULL in the user block, this can speed up 
+	* things at the SAX level.
+	*/
+        if (old_sax->internalSubset != NULL)
+            ret->schemas_sax.internalSubset = internalSubsetSplit;
+        if (old_sax->isStandalone != NULL)
+            ret->schemas_sax.isStandalone = isStandaloneSplit;
+        if (old_sax->hasInternalSubset != NULL)
+            ret->schemas_sax.hasInternalSubset = hasInternalSubsetSplit;
+        if (old_sax->hasExternalSubset != NULL)
+            ret->schemas_sax.hasExternalSubset = hasExternalSubsetSplit;
+        if (old_sax->resolveEntity != NULL)
+            ret->schemas_sax.resolveEntity = resolveEntitySplit;
+        if (old_sax->getEntity != NULL)
+            ret->schemas_sax.getEntity = getEntitySplit;
+        if (old_sax->entityDecl != NULL)
+            ret->schemas_sax.entityDecl = entityDeclSplit;
+        if (old_sax->notationDecl != NULL)
+            ret->schemas_sax.notationDecl = notationDeclSplit;
+        if (old_sax->attributeDecl != NULL)
+            ret->schemas_sax.attributeDecl = attributeDeclSplit;
+        if (old_sax->elementDecl != NULL)
+            ret->schemas_sax.elementDecl = elementDeclSplit;
+        if (old_sax->unparsedEntityDecl != NULL)
+            ret->schemas_sax.unparsedEntityDecl = unparsedEntityDeclSplit;
+        if (old_sax->setDocumentLocator != NULL)
+            ret->schemas_sax.setDocumentLocator = setDocumentLocatorSplit;
+        if (old_sax->startDocument != NULL)
+            ret->schemas_sax.startDocument = startDocumentSplit;
+        if (old_sax->endDocument != NULL)
+            ret->schemas_sax.endDocument = endDocumentSplit;
+        if (old_sax->processingInstruction != NULL)
+            ret->schemas_sax.processingInstruction = processingInstructionSplit;
+        if (old_sax->comment != NULL)
+            ret->schemas_sax.comment = commentSplit;
+        if (old_sax->warning != NULL)
+            ret->schemas_sax.warning = warningSplit;
+        if (old_sax->error != NULL)
+            ret->schemas_sax.error = errorSplit;
+        if (old_sax->fatalError != NULL)
+            ret->schemas_sax.fatalError = fatalErrorSplit;
+        if (old_sax->getParameterEntity != NULL)
+            ret->schemas_sax.getParameterEntity = getParameterEntitySplit;
+        if (old_sax->externalSubset != NULL)
+            ret->schemas_sax.externalSubset = externalSubsetSplit;
+
+	/*
+	 * the 6 schemas callback have to go to the splitter functions
+	 * Note that we use the same text-function for ignorableWhitespace
+	 * if possible, to prevent the parser from testing for ignorable
+	 * whitespace.
+	 */
+        ret->schemas_sax.characters = charactersSplit;
+	if ((old_sax->ignorableWhitespace != NULL) &&
+	    (old_sax->ignorableWhitespace != old_sax->characters))
+	    ret->schemas_sax.ignorableWhitespace = ignorableWhitespaceSplit;
+	else
+	    ret->schemas_sax.ignorableWhitespace = charactersSplit;
+        ret->schemas_sax.cdataBlock = cdataBlockSplit;
+        ret->schemas_sax.reference = referenceSplit;
+        ret->schemas_sax.startElementNs = startElementNsSplit;
+        ret->schemas_sax.endElementNs = endElementNsSplit;
+
+	ret->user_data_ptr = user_data;
+	ret->user_data = *user_data;
+	*user_data = ret;
+    }
+
+    /*
+     * plug the pointers back.
+     */
+    *sax = &(ret->schemas_sax);
+    return(ret);
+}
+
+/**
+ * xmlSchemaSAXUnplug:
+ * @plug:  a data structure returned by xmlSchemaSAXPlug
+ *
+ * Unplug a SAX based validation layer in a SAX parsing event flow.
+ * The original pointers used in the call are restored.
+ *
+ * Returns 0 in case of success and -1 in case of failure.
+ */
+int
+xmlSchemaSAXUnplug(xmlSchemaSAXPlugPtr plug)
+{
+    xmlSAXHandlerPtr *sax;
+    void **user_data;
+
+    if ((plug == NULL) || (plug->magic != XML_SAX_PLUG_MAGIC))
+        return(-1);
+    plug->magic = 0;
+
+    /* restore the data */
+    sax = plug->user_sax_ptr;
+    *sax = plug->user_sax;
+    if (plug->user_sax != NULL) {
+	user_data = plug->user_data_ptr;
+	*user_data = plug->user_data;
+    }
+
+    /* free and return */
+    xmlFree(plug);
+    return(0);
 }
 
 /**
@@ -24326,115 +24525,15 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
                         xmlParserInputBufferPtr input, xmlCharEncoding enc,
                         xmlSAXHandlerPtr sax, void *user_data)
 {
-    xmlSchemaSplitSAXData split_block;
-    xmlSAXHandler schemas_sax;
-    xmlSAXHandlerPtr old_sax;
-    xmlParserCtxtPtr pctxt;
-    xmlParserInputPtr inputStream;
+    xmlSchemaSAXPlugPtr plug = NULL;
+    xmlSAXHandlerPtr old_sax = NULL;
+    xmlParserCtxtPtr pctxt = NULL;
+    xmlParserInputPtr inputStream = NULL;
     int ret;
 
     if ((ctxt == NULL) || (input == NULL))
         return (-1);
-    
-    memset(&schemas_sax, 0, sizeof(xmlSAXHandler));
-    schemas_sax.initialized = XML_SAX2_MAGIC;
-    if (sax == NULL) {	
-        /*
-	 * go direct, no need for the split block and functions.
-	 */
-	schemas_sax.startElementNs = xmlSchemaSAXHandleStartElementNs;
-	schemas_sax.endElementNs = xmlSchemaSAXHandleEndElementNs;
-	/*
-	 * Note that we use the same text-function for both, to prevent
-	 * the parser from testing for ignorable whitespace.
-	 */
-	schemas_sax.ignorableWhitespace = xmlSchemaSAXHandleText;
-	schemas_sax.characters = xmlSchemaSAXHandleText;
 
-	schemas_sax.cdataBlock = xmlSchemaSAXHandleCDataSection;
-	schemas_sax.reference = xmlSchemaSAXHandleReference;
-	/* ctxt->user_data = &split_block; */
-    } else {
-       /*
-        * Return -1 without parsing if passed a SAXv1 block
-	*/
-       if (sax->initialized != XML_SAX2_MAGIC)
-           return(-1);
-       if ((sax->startElementNs == NULL) && (sax->endElementNs == NULL) &&
-           ((sax->startElement != NULL) || (sax->endElement != NULL)))
-	   return(-1);
-
-       /*
-        * for each callback unused by Schemas initialize it to the Split
-	* routine only if non NULL in the user block, this can speed up 
-	* things at the SAX level.
-	*/
-        if (sax->internalSubset != NULL)
-            schemas_sax.internalSubset = internalSubsetSplit;
-        if (sax->isStandalone != NULL)
-            schemas_sax.isStandalone = isStandaloneSplit;
-        if (sax->hasInternalSubset != NULL)
-            schemas_sax.hasInternalSubset = hasInternalSubsetSplit;
-        if (sax->hasExternalSubset != NULL)
-            schemas_sax.hasExternalSubset = hasExternalSubsetSplit;
-        if (sax->resolveEntity != NULL)
-            schemas_sax.resolveEntity = resolveEntitySplit;
-        if (sax->getEntity != NULL)
-            schemas_sax.getEntity = getEntitySplit;
-        if (sax->entityDecl != NULL)
-            schemas_sax.entityDecl = entityDeclSplit;
-        if (sax->notationDecl != NULL)
-            schemas_sax.notationDecl = notationDeclSplit;
-        if (sax->attributeDecl != NULL)
-            schemas_sax.attributeDecl = attributeDeclSplit;
-        if (sax->elementDecl != NULL)
-            schemas_sax.elementDecl = elementDeclSplit;
-        if (sax->unparsedEntityDecl != NULL)
-            schemas_sax.unparsedEntityDecl = unparsedEntityDeclSplit;
-        if (sax->setDocumentLocator != NULL)
-            schemas_sax.setDocumentLocator = setDocumentLocatorSplit;
-        if (sax->startDocument != NULL)
-            schemas_sax.startDocument = startDocumentSplit;
-        if (sax->endDocument != NULL)
-            schemas_sax.endDocument = endDocumentSplit;
-        if (sax->processingInstruction != NULL)
-            schemas_sax.processingInstruction = processingInstructionSplit;
-        if (sax->comment != NULL)
-            schemas_sax.comment = commentSplit;
-        if (sax->warning != NULL)
-            schemas_sax.warning = warningSplit;
-        if (sax->error != NULL)
-            schemas_sax.error = errorSplit;
-        if (sax->fatalError != NULL)
-            schemas_sax.fatalError = fatalErrorSplit;
-        if (sax->getParameterEntity != NULL)
-            schemas_sax.getParameterEntity = getParameterEntitySplit;
-        if (sax->externalSubset != NULL)
-            schemas_sax.externalSubset = externalSubsetSplit;
-
-	/*
-	 * the 6 schemas callback have to go to the splitter functions
-	 * Note that we use the same text-function for ignorableWhitespace
-	 * if possible, to prevent the parser from testing for ignorable
-	 * whitespace.
-	 */
-        schemas_sax.characters = charactersSplit;
-	if ((sax->ignorableWhitespace != NULL) &&
-	    (sax->ignorableWhitespace != sax->characters))
-	    schemas_sax.ignorableWhitespace = ignorableWhitespaceSplit;
-	else
-	    schemas_sax.ignorableWhitespace = charactersSplit;
-        schemas_sax.cdataBlock = cdataBlockSplit;
-        schemas_sax.reference = referenceSplit;
-        schemas_sax.startElementNs = startElementNsSplit;
-        schemas_sax.endElementNs = endElementNsSplit;
-	/* ctxt->user_data = &split_block; */
-	split_block.user_sax = sax;
-	split_block.user_data = user_data;	
-    }    
-    ctxt->input = input;
-    ctxt->enc = enc;
-    ctxt->sax = &schemas_sax;
     /*
      * prepare the parser
      */
@@ -24442,11 +24541,8 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     if (pctxt == NULL)
         return (-1);
     old_sax = pctxt->sax;
-    pctxt->sax = &schemas_sax;
-    if (sax == NULL)
-	pctxt->userData = (void *) ctxt;
-    else
-	pctxt->userData = &split_block;
+    pctxt->sax = sax;
+    pctxt->userData = user_data;
 #if 0
     if (options)
         xmlCtxtUseOptions(pctxt, options);
@@ -24463,8 +24559,16 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     ctxt->input = input;
 
     /*
-     * Launch the validation
+     * Plug the validation and launch the parsing
      */
+    plug = xmlSchemaSAXPlug(ctxt, &(pctxt->sax), &(pctxt->userData));
+    if (plug == NULL) {
+        ret = -1;
+	goto done;
+    }
+    ctxt->input = input;
+    ctxt->enc = enc;
+    ctxt->sax = pctxt->sax;
     ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
     ret = xmlSchemaVStart(ctxt);
 
@@ -24473,15 +24577,19 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
 	if (ret == 0)
 	    ret = 1;
     }    
-    ctxt->parserCtxt = NULL;
-    ctxt->sax = NULL;
-    /* ctxt->user_data = NULL; */
-    ctxt->input = NULL;
 
 done:
+    ctxt->parserCtxt = NULL;
+    ctxt->sax = NULL;
+    ctxt->input = NULL;
+    if (plug != NULL) {
+        xmlSchemaSAXUnplug(plug);
+    }
     /* cleanup */
-    pctxt->sax = old_sax;
-    xmlFreeParserCtxt(pctxt);
+    if (pctxt != NULL) {
+	pctxt->sax = old_sax;
+	xmlFreeParserCtxt(pctxt);
+    }
     return (ret);
 }
 

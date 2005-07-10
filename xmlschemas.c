@@ -23465,6 +23465,7 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
         return;
 
     vctxt->flags = 0;
+    vctxt->err = 0;
     vctxt->validationRoot = NULL;
     vctxt->doc = NULL;
 #ifdef LIBXML_READER_ENABLED
@@ -23605,6 +23606,23 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
     if (ctxt->dict != NULL)
 	xmlDictFree(ctxt->dict);
     xmlFree(ctxt);
+}
+
+/**
+ * xmlSchemaIsValid:
+ * @ctxt: the schema validation context
+ *
+ * Check if any error was detected during validation.
+ * 
+ * Returns 1 if valid so far, 0 if errors were detected, and -1 in case
+ *         of internal error.
+ */
+int
+xmlSchemaIsValid(xmlSchemaValidCtxtPtr ctxt)
+{
+    if (ctxt == NULL)
+        return(-1);
+    return(ctxt->err == 0);
 }
 
 /**
@@ -23863,10 +23881,7 @@ internal_error:
 }
 
 static int
-xmlSchemaVStart(xmlSchemaValidCtxtPtr vctxt)
-{
-    int ret = 0;
-
+xmlSchemaPreRun(xmlSchemaValidCtxtPtr vctxt) {
     /*
     * Some initialization.
     */
@@ -23899,32 +23914,11 @@ xmlSchemaVStart(xmlSchemaValidCtxtPtr vctxt)
 	xmlHashScan(vctxt->schema->idcDef,
 	    (xmlHashScanner) xmlSchemaAugmentIDC, vctxt);
     }
-    if (vctxt->doc != NULL) {
-	/*
-	* Tree validation.
-	*/
-	ret = xmlSchemaVDocWalk(vctxt);
-#ifdef LIBXML_READER_ENABLED
-    } else if (vctxt->reader != NULL) {
-	/*
-	* XML Reader validation.
-	*/
-#ifdef XML_SCHEMA_READER_ENABLED
-	ret = xmlSchemaVReaderWalk(vctxt);
-#endif
-#endif
-    } else if ((vctxt->sax != NULL) && (vctxt->parserCtxt != NULL)) {
-	/*
-	* SAX validation.
-	*/
-	/* ret = xmlSAXUserParseFile(ctxt->sax, ctxt, uri); */
-	ret = xmlParseDocument(vctxt->parserCtxt);
-    } else {
-	VERROR_INT("xmlSchemaVStartValidation",
-	    "no instance to validate");
-	ret = -1;
-    }
+    return(0);
+}
 
+static void
+xmlSchemaPostRun(xmlSchemaValidCtxtPtr vctxt) {
     if (vctxt->xsiAssemble) {
 	if (vctxt->schema != NULL) {
 	    xmlSchemaFree(vctxt->schema);
@@ -23932,6 +23926,42 @@ xmlSchemaVStart(xmlSchemaValidCtxtPtr vctxt)
 	}
     }
     xmlSchemaClearValidCtxt(vctxt);
+}
+
+static int
+xmlSchemaVStart(xmlSchemaValidCtxtPtr vctxt)
+{
+    int ret = 0;
+
+    if (xmlSchemaPreRun(vctxt) < 0)
+        return(-1);
+
+    if (vctxt->doc != NULL) {
+	/*
+	 * Tree validation.
+	 */
+	ret = xmlSchemaVDocWalk(vctxt);
+#ifdef LIBXML_READER_ENABLED
+    } else if (vctxt->reader != NULL) {
+	/*
+	 * XML Reader validation.
+	 */
+#ifdef XML_SCHEMA_READER_ENABLED
+	ret = xmlSchemaVReaderWalk(vctxt);
+#endif
+#endif
+    } else if ((vctxt->sax != NULL) && (vctxt->parserCtxt != NULL)) {
+	/*
+	 * SAX validation.
+	 */
+	ret = xmlParseDocument(vctxt->parserCtxt);
+    } else {
+	VERROR_INT("xmlSchemaVStartValidation",
+	    "no instance to validate");
+	ret = -1;
+    }
+
+    xmlSchemaPostRun(vctxt);
     if (ret == 0)
 	ret = vctxt->err;
     return (ret);
@@ -24470,6 +24500,9 @@ xmlSchemaSAXPlug(xmlSchemaValidCtxtPtr ctxt,
      * plug the pointers back.
      */
     *sax = &(ret->schemas_sax);
+    ctxt->sax = *sax;
+    ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
+    xmlSchemaPreRun(ctxt);
     return(ret);
 }
 
@@ -24492,6 +24525,7 @@ xmlSchemaSAXUnplug(xmlSchemaSAXPlugPtr plug)
         return(-1);
     plug->magic = 0;
 
+    xmlSchemaPostRun(plug->ctxt);
     /* restore the data */
     sax = plug->user_sax_ptr;
     *sax = plug->user_sax;
@@ -24628,29 +24662,6 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
     return (-1);
 #endif /* XML_SCHEMA_SAX_ENABLED */
 }
-
-#ifdef XML_SCHEMA_READER_ENABLED
-/**
- * xmlSchemaValidateReader:
- * @ctxt: a schema validation context
- * @reader: an XML reader.
- *
- * Do a schemas validation of the given resource, using the reader.
- *
- * Returns 0 if the document is valid, a positive error code
- *     number otherwise and -1 in case of an internal or API error.
- */
-int
-xmlSchemaValidateReader(xmlSchemaValidCtxtPtr ctxt,
-			xmlTextReaderPtr reader)
-{
-    if ((ctxt == NULL) || (reader == NULL))
-        return (-1);
-    ctxt->reader = reader;
-    ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
-    return(xmlSchemaVStart(ctxt, NULL));
-}
-#endif /* XML_SCHEMA_READER_ENABLED */
 
 #define bottom_xmlschemas
 #include "elfgcchack.h"

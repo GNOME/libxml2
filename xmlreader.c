@@ -32,7 +32,10 @@
 #include <libxml/xmlIO.h>
 #include <libxml/xmlreader.h>
 #include <libxml/parserInternals.h>
+#ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/relaxng.h>
+#include <libxml/xmlschemas.h>
+#endif
 #include <libxml/uri.h>
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>
@@ -85,7 +88,8 @@ typedef enum {
 typedef enum {
     XML_TEXTREADER_NOT_VALIDATE = 0,
     XML_TEXTREADER_VALIDATE_DTD = 1,
-    XML_TEXTREADER_VALIDATE_RNG = 2
+    XML_TEXTREADER_VALIDATE_RNG = 2,
+    XML_TEXTREADER_VALIDATE_XSD = 4
 } xmlTextReaderValidate;
 
 struct _xmlTextReader {
@@ -129,6 +133,11 @@ struct _xmlTextReader {
     xmlRelaxNGValidCtxtPtr rngValidCtxt;/* The Relax NG validation context */
     int                  rngValidErrors;/* The number of errors detected */
     xmlNodePtr             rngFullNode;	/* the node if RNG not progressive */
+    /* Handling of Schemas validation */
+    xmlSchemaPtr          xsdSchemas;	/* The Schemas schemas */
+    xmlSchemaValidCtxtPtr xsdValidCtxt;/* The Schemas validation context */
+    int                  xsdValidErrors;/* The number of errors detected */
+    xmlSchemaSAXPlugPtr   xsdPlug;	/* the schemas plug in SAX pipeline */
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
     /* Handling of XInclude processing */
@@ -1523,6 +1532,13 @@ node_found:
 	}
     }
 #endif /* LIBXML_PATTERN_ENABLED */
+#ifdef LIBXML_SCHEMAS_ENABLED
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_XSD) &&
+        (reader->xsdValidErrors == 0) && 
+	(reader->xsdValidCtxt != NULL)) {
+	reader->xsdValidErrors = !xmlSchemaIsValid(reader->xsdValidCtxt);
+    }
+#endif /* LIBXML_PATTERN_ENABLED */
     return(1);
 node_end:
     reader->mode = XML_TEXTREADER_DONE;
@@ -2117,6 +2133,18 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
     if (reader->rngValidCtxt != NULL) {
 	xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
 	reader->rngValidCtxt = NULL;
+    }
+    if (reader->xsdPlug != NULL) {
+	xmlSchemaSAXUnplug(reader->xsdPlug);
+	reader->xsdPlug = NULL;
+    }
+    if (reader->xsdValidCtxt != NULL) {
+	xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	reader->xsdValidCtxt = NULL;
+    }
+    if (reader->xsdSchemas != NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
     }
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -3907,6 +3935,80 @@ xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
 }
 
 /**
+ * xmlTextReaderSetSchema:
+ * @reader:  the xmlTextReaderPtr used
+ * @schema:  a precompiled Schema schema
+ *
+ * Use XSD Schema to validate the document as it is processed.
+ * Activation is only possible before the first Read().
+ * if @schema is NULL, then Schema validation is desactivated.
+ @ The @schema should not be freed until the reader is deallocated
+ * or its use has been deactivated.
+ *
+ * Returns 0 in case the Schema validation could be (des)activated and
+ *         -1 in case of error.
+ */
+int
+xmlTextReaderSetSchema(xmlTextReaderPtr reader, xmlSchemaPtr schema) {
+    if (reader == NULL)
+        return(-1);
+    if (schema == NULL) {
+	if (reader->xsdPlug != NULL) {
+	    xmlSchemaSAXUnplug(reader->xsdPlug);
+	    reader->xsdPlug = NULL;
+	}
+        if (reader->xsdValidCtxt != NULL) {
+	    xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	    reader->xsdValidCtxt = NULL;
+        }
+        if (reader->xsdSchemas != NULL) {
+	    xmlSchemaFree(reader->xsdSchemas);
+	    reader->xsdSchemas = NULL;
+	}
+	return(0);
+    }
+    if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
+	return(-1);
+    if (reader->xsdPlug != NULL) {
+	xmlSchemaSAXUnplug(reader->xsdPlug);
+	reader->xsdPlug = NULL;
+    }
+    if (reader->xsdValidCtxt != NULL) {
+	xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	reader->xsdValidCtxt = NULL;
+    }
+    if (reader->xsdSchemas != NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
+    }
+    reader->xsdValidCtxt = xmlSchemaNewValidCtxt(schema);
+    if (reader->xsdValidCtxt == NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
+        return(-1);
+    }
+    reader->xsdPlug = xmlSchemaSAXPlug(reader->xsdValidCtxt,
+                                       &(reader->ctxt->sax),
+				       &(reader->ctxt->userData));
+    if (reader->xsdPlug == NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
+	xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	reader->xsdValidCtxt = NULL;
+	return(-1);
+    }
+    if (reader->errorFunc != NULL) {
+	xmlSchemaSetValidErrors(reader->xsdValidCtxt,
+			 (xmlSchemaValidityErrorFunc)reader->errorFunc,
+			 (xmlSchemaValidityWarningFunc) reader->errorFunc,
+			 reader->errorFuncArg);
+    }
+    reader->xsdValidErrors = 0;
+    reader->validate = XML_TEXTREADER_VALIDATE_XSD;
+    return(0);
+}
+
+/**
  * xmlTextReaderRelaxNGValidate:
  * @reader:  the xmlTextReaderPtr used
  * @rng:  the path to a RelaxNG schema or NULL
@@ -3926,14 +4028,14 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
         return(-1);
     
     if (rng == NULL) {
-        if (reader->rngSchemas != NULL) {
-	    xmlRelaxNGFree(reader->rngSchemas);
-	    reader->rngSchemas = NULL;
-	}
         if (reader->rngValidCtxt != NULL) {
 	    xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
 	    reader->rngValidCtxt = NULL;
         }
+        if (reader->rngSchemas != NULL) {
+	    xmlRelaxNGFree(reader->rngSchemas);
+	    reader->rngSchemas = NULL;
+	}
 	return(0);
     }
     if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
@@ -3958,8 +4060,11 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     if (reader->rngSchemas == NULL)
         return(-1);
     reader->rngValidCtxt = xmlRelaxNGNewValidCtxt(reader->rngSchemas);
-    if (reader->rngValidCtxt == NULL)
+    if (reader->rngValidCtxt == NULL) {
+	xmlRelaxNGFree(reader->rngSchemas);
+	reader->rngSchemas = NULL;
         return(-1);
+    }
     if (reader->errorFunc != NULL) {
 	xmlRelaxNGSetValidErrors(reader->rngValidCtxt,
 			 (xmlRelaxNGValidityErrorFunc)reader->errorFunc,
@@ -3969,6 +4074,93 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     reader->rngValidErrors = 0;
     reader->rngFullNode = NULL;
     reader->validate = XML_TEXTREADER_VALIDATE_RNG;
+    return(0);
+}
+
+/**
+ * xmlTextReaderSchemaValidate:
+ * @reader:  the xmlTextReaderPtr used
+ * @xsd:  the path to a W3C XSD schema or NULL
+ *
+ * Use W3C XSD schema to validate the document as it is processed.
+ * Activation is only possible before the first Read().
+ * if @xsd is NULL, then RelaxNG validation is desactivated.
+ *
+ * Returns 0 in case the schemas validation could be (des)activated and
+ *         -1 in case of error.
+ */
+int
+xmlTextReaderSchemaValidate(xmlTextReaderPtr reader, const char *xsd) {
+    xmlSchemaParserCtxtPtr ctxt;
+
+    if (reader == NULL)
+        return(-1);
+    
+    if (xsd == NULL) {
+	if (reader->xsdPlug != NULL) {
+	    xmlSchemaSAXUnplug(reader->xsdPlug);
+	    reader->xsdPlug = NULL;
+	}
+        if (reader->xsdSchemas != NULL) {
+	    xmlSchemaFree(reader->xsdSchemas);
+	    reader->xsdSchemas = NULL;
+	}
+        if (reader->xsdValidCtxt != NULL) {
+	    xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	    reader->xsdValidCtxt = NULL;
+        }
+	return(0);
+    }
+    if ((reader->mode != XML_TEXTREADER_MODE_INITIAL) ||
+        (reader->ctxt == NULL))
+	return(-1);
+    if (reader->xsdPlug != NULL) {
+	xmlSchemaSAXUnplug(reader->xsdPlug);
+	reader->xsdPlug = NULL;
+    }
+    if (reader->xsdValidCtxt != NULL) {
+	xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	reader->xsdValidCtxt = NULL;
+    }
+    if (reader->xsdSchemas != NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
+    }
+    ctxt = xmlSchemaNewParserCtxt(xsd);
+    if (reader->errorFunc != NULL) {
+	xmlSchemaSetParserErrors(ctxt,
+			 (xmlSchemaValidityErrorFunc) reader->errorFunc,
+			 (xmlSchemaValidityWarningFunc) reader->errorFunc,
+			 reader->errorFuncArg);
+    }
+    reader->xsdSchemas = xmlSchemaParse(ctxt);
+    xmlSchemaFreeParserCtxt(ctxt);
+    if (reader->xsdSchemas == NULL)
+        return(-1);
+    reader->xsdValidCtxt = xmlSchemaNewValidCtxt(reader->xsdSchemas);
+    if (reader->xsdValidCtxt == NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
+        return(-1);
+    }
+    reader->xsdPlug = xmlSchemaSAXPlug(reader->xsdValidCtxt,
+                                       &(reader->ctxt->sax),
+				       &(reader->ctxt->userData));
+    if (reader->xsdPlug == NULL) {
+	xmlSchemaFree(reader->xsdSchemas);
+	reader->xsdSchemas = NULL;
+	xmlSchemaFreeValidCtxt(reader->xsdValidCtxt);
+	reader->xsdValidCtxt = NULL;
+	return(-1);
+    }
+    if (reader->errorFunc != NULL) {
+	xmlSchemaSetValidErrors(reader->xsdValidCtxt,
+			 (xmlSchemaValidityErrorFunc)reader->errorFunc,
+			 (xmlSchemaValidityWarningFunc) reader->errorFunc,
+			 reader->errorFuncArg);
+    }
+    reader->xsdValidErrors = 0;
+    reader->validate = XML_TEXTREADER_VALIDATE_XSD;
     return(0);
 }
 #endif
@@ -4339,6 +4531,8 @@ xmlTextReaderIsValid(xmlTextReaderPtr reader) {
 #ifdef LIBXML_SCHEMAS_ENABLED
     if (reader->validate == XML_TEXTREADER_VALIDATE_RNG)
         return(reader->rngValidErrors == 0);
+    if (reader->validate == XML_TEXTREADER_VALIDATE_XSD)
+        return(reader->xsdValidErrors == 0);
 #endif
     if ((reader->ctxt != NULL) && (reader->ctxt->validate == 1))
 	return(reader->ctxt->valid);

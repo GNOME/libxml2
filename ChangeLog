@@ -1,3 +1,12 @@
+Sun Jul 10 21:00:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmllint.1 doc/xmllint.html doc/xmllint.xml: fixed a typo
+	  pointed by Jeroen Ruigrok
+	* include/libxml/xmlreader.h include/libxml/xmlschemas.h: increased
+	  the APIs for xmlReader schemas validation support
+	* xmllint.c xmlreader.c xmlschemas.c: xmlReader schemas validation
+	  implementation and testing as xmllint --stream --schema ...
+
 Sun Jul 10 16:11:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlwin32version.h.in: try to avoid conflicts.

@@ -15,6 +15,7 @@
 #include <libxml/xmlIO.h>
 #ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/relaxng.h>
+#include <libxml/xmlschemas.h>
 #endif
 
 #ifdef LIBXML_READER_ENABLED
@@ -275,6 +276,12 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		    xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader,
 						 xmlRelaxNGPtr schema);
+XMLPUBFUN int XMLCALL
+		    xmlTextReaderSchemaValidate	(xmlTextReaderPtr reader,
+		    				 const char *xsd);
+XMLPUBFUN int XMLCALL		
+		    xmlTextReaderSetSchema	(xmlTextReaderPtr reader,
+		    				 xmlSchemaPtr schema);
 #endif
 XMLPUBFUN const xmlChar * XMLCALL
 		    xmlTextReaderConstXmlVersion(xmlTextReaderPtr reader);

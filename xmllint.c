@@ -1843,6 +1843,21 @@ static void streamFile(char *filename) {
 		endTimer("Compiling the schemas");
 	    }
 	}
+	if (schema != NULL) {
+	    if ((timing) && (!repeat)) {
+		startTimer();
+	    }
+	    ret = xmlTextReaderSchemaValidate(reader, schema);
+	    if (ret < 0) {
+		xmlGenericError(xmlGenericErrorContext,
+			"XSD schema %s failed to compile\n", schema);
+		progresult = XMLLINT_ERR_SCHEMACOMP;
+		schema = NULL;
+	    }
+	    if ((timing) && (!repeat)) {
+		endTimer("Compiling the schemas");
+	    }
+	}
 #endif
 
 	/*
@@ -1885,7 +1900,7 @@ static void streamFile(char *filename) {
 	}
 #endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
-	if (relaxng != NULL) {
+	if ((relaxng != NULL) || (schema != NULL)) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
 		fprintf(stderr, "%s fails to validate\n", filename);
 		progresult = XMLLINT_ERR_VALID;
@@ -3208,7 +3223,7 @@ main(int argc, char **argv) {
 	}
     } else if ((schema != NULL)
 #ifdef LIBXML_READER_ENABLED
-		   	&& (stream == 0)
+		&& (stream == 0)
 #endif
 	) {
 	xmlSchemaParserCtxtPtr ctxt;

@@ -1,3 +1,7 @@
+Sun Jul 10 21:51:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed a bug introduced on last commit
+
 Sun Jul 10 21:00:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmllint.1 doc/xmllint.html doc/xmllint.xml: fixed a typo

@@ -23465,7 +23465,6 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
         return;
 
     vctxt->flags = 0;
-    vctxt->err = 0;
     vctxt->validationRoot = NULL;
     vctxt->doc = NULL;
 #ifdef LIBXML_READER_ENABLED

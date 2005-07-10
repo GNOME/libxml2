@@ -1077,7 +1077,7 @@ cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
 
 rpm: cleanup cleantar
-	@(unset CDPATH ; $(MAKE) dist-source dist && rpmbuild -ta $(distdir).tar.gz)
+	@(unset CDPATH ; $(MAKE) dist-source dist dist-test && rpmbuild -ta $(distdir).tar.gz)
 
 ## We create xml2Conf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

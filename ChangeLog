@@ -1,3 +1,8 @@
+Mon Jul 11 00:28:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am NEWS configure.in doc/*: preparing release 2.6.20 
+	* xmllint.c: removed a compilation problem
+
 Sun Jul 10 23:33:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/Makefile.am README README.tests Makefile.tests Makefile.am:

@@ -15,6 +15,47 @@ ChangeLog.html
 to the CVS at 
 http://cvs.gnome.org/viewcvs/libxml2/
  code base.There is the list of public releases:
+2.6.20: Jul 10 2005:
+   -  build fixes: Windows build (Rob Richards), Mingw compilation (Igor
+       Zlatkovic), Windows Makefile (Igor), gcc warnings (Kasimier and
+       andriy@google.com), use gcc weak references to pthread to avoid the
+       pthread dependancy on Linux, compilation problem (Steve Nairn),
+       compiling of subset (Morten Welinder), IPv6/ss_family compilation
+       (William Brack), compilation when disabling parts of the library,
+       standalone test distribution.
+       
+   -  bug fixes: bug in lang(), memory cleanup on errors (William Brack),
+       HTTP query strings (Aron Stansvik), memory leak in DTD (William),
+       integer overflow in XPath (William), nanoftp buffer size, pattern
+       "." apth fixup (Kasimier), leak in tree reported by Malcolm Rowe,
+       replaceNode patch (Brent Hendricks), CDATA with NULL content
+       (Mark Vakoc), xml:base fixup on XInclude (William), pattern
+       fixes (William), attribute bug in exclusive c14n (Aleksey Sanin),
+       xml:space and xml:lang with SAX2 (Rob Richards), namespace 
+       trouble in complex parsing (Malcolm Rowe), XSD type QNames fixes
+       (Kasimier), XPath streaming fixups (William), RelaxNG bug (Rob Richards),
+       Schemas for Schemas fixes (Kasimier), removal of ID (Rob Richards),
+       a small RelaxNG leak, HTML parsing in push mode bug (James Bursa),
+       failure to detect UTF-8 parsing bugs in CDATA sections, areBlanks()
+       heuristic failure, duplicate attributes in DTD bug (William).
+       
+   -  improvements: lot of work on Schemas by Kasimier Buchcik both on 
+       conformance and streaming, Schemas validation messages (Kasimier
+       Buchcik, Matthew Burgess), namespace removal at the python level
+       (Brent Hendricks), Update to new Schemas regression tests from
+       W3C/Nist (Kasimier), xmlSchemaValidateFile() (Kasimier), implementation
+       of xmlTextReaderReadInnerXml and xmlTextReaderReadOuterXml (James Wert),
+       standalone test framework and programs, new DOM import APIs
+       xmlDOMWrapReconcileNamespaces() xmlDOMWrapAdoptNode() and
+       xmlDOMWrapRemoveNode(), extension of xmllint capabilities for
+       SAX and Schemas regression tests, xmlStopParser() available in
+       pull mode too, ienhancement to xmllint --shell namespaces support,
+       Windows port of the standalone testing tools (Kasimier and William),
+       xmlSchemaValidateStream() xmlSchemaSAXPlug() and xmlSchemaSAXUnplug()
+       SAX Schemas APIs, Schemas xmlReader support.
+       
+
+
 2.6.19: Apr 02 2005:
    -  build fixes: drop .la from RPMs, --with-minimum build fix (William
        Brack), use XML_SOCKLEN_T instead of SOCKLEN_T because it breaks with

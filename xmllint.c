@@ -1607,8 +1607,10 @@ testSAX(const char *filename) {
 
     if (noout) {
         handler = emptySAXHandler;
+#ifdef LIBXML_SAX1_ENABLED
     } else if (sax1) {
         handler = debugSAXHandler;
+#endif
     } else {
         handler = debugSAX2Handler;
     }

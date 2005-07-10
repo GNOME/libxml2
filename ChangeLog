@@ -1,3 +1,15 @@
+Sun Jul 10 23:33:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/Makefile.am README README.tests Makefile.tests Makefile.am:
+	  preparing to make testsuite releases along with code source releases
+	* gentest.py testapi.c: fixed a couple of problem introduced by
+	  the new Schemas support for Readers
+	* xpath.c: fixed the XPath attribute:: bug #309580, #309864 in a crude
+	  but simple way.
+	* xmlschemas.c include/libxml/tree.h: fixed a couple of problems
+	  raised by the doc builder.
+	* doc/*: made rebuild
+
 Sun Jul 10 21:51:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed a bug introduced on last commit

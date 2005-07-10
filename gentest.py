@@ -172,7 +172,8 @@ skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
    "xmlCatalogRemove", "xmlLoadCatalogs", "xmlCleanupCharEncodingHandlers",
    "xmlInitCharEncodingHandlers", "xmlCatalogCleanup",
    "xmlSchemaGetBuiltInType",
-   "htmlParseFile", "htmlCtxtReadFile" # loads the catalogs
+   "htmlParseFile", "htmlCtxtReadFile", # loads the catalogs
+   "xmlTextReaderSchemaValidate", "xmlSchemaCleanupTypes" # initialize the schemas type system
 ]
 
 #

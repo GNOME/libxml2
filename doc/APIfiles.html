@@ -1822,6 +1822,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_ERR_ENTITY_NOT_FINISHED">XML_ERR_ENTITY_NOT_FINISHED</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_ENTITY_NOT_STARTED">XML_ERR_ENTITY_NOT_STARTED</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_ENTITY_PE_INTERNAL">XML_ERR_ENTITY_PE_INTERNAL</a><br />
+<a href="html/libxml-xmlerror.html#XML_ERR_ENTITY_PROCESSING">XML_ERR_ENTITY_PROCESSING</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_EQUAL_REQUIRED">XML_ERR_EQUAL_REQUIRED</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_ERROR">XML_ERR_ERROR</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_EXTRA_CONTENT">XML_ERR_EXTRA_CONTENT</a><br />
@@ -1851,6 +1852,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_ERR_NONE">XML_ERR_NONE</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_NOTATION_NOT_FINISHED">XML_ERR_NOTATION_NOT_FINISHED</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_NOTATION_NOT_STARTED">XML_ERR_NOTATION_NOT_STARTED</a><br />
+<a href="html/libxml-xmlerror.html#XML_ERR_NOTATION_PROCESSING">XML_ERR_NOTATION_PROCESSING</a><br />
+<a href="html/libxml-xmlerror.html#XML_ERR_NOT_STANDALONE">XML_ERR_NOT_STANDALONE</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_NOT_WELL_BALANCED">XML_ERR_NOT_WELL_BALANCED</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_NO_DTD">XML_ERR_NO_DTD</a><br />
 <a href="html/libxml-xmlerror.html#XML_ERR_NO_MEMORY">XML_ERR_NO_MEMORY</a><br />
@@ -1981,6 +1984,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_MODULE_CLOSE">XML_MODULE_CLOSE</a><br />
 <a href="html/libxml-xmlerror.html#XML_MODULE_OPEN">XML_MODULE_OPEN</a><br />
 <a href="html/libxml-xmlerror.html#XML_NS_ERR_ATTRIBUTE_REDEFINED">XML_NS_ERR_ATTRIBUTE_REDEFINED</a><br />
+<a href="html/libxml-xmlerror.html#XML_NS_ERR_EMPTY">XML_NS_ERR_EMPTY</a><br />
 <a href="html/libxml-xmlerror.html#XML_NS_ERR_QNAME">XML_NS_ERR_QNAME</a><br />
 <a href="html/libxml-xmlerror.html#XML_NS_ERR_UNDEFINED_NAMESPACE">XML_NS_ERR_UNDEFINED_NAMESPACE</a><br />
 <a href="html/libxml-xmlerror.html#XML_NS_ERR_XML_NAMESPACE">XML_NS_ERR_XML_NAMESPACE</a><br />
@@ -2152,6 +2156,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_4">XML_SCHEMAP_CT_PROPS_CORRECT_4</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_5">XML_SCHEMAP_CT_PROPS_CORRECT_5</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_CVC_SIMPLE_TYPE">XML_SCHEMAP_CVC_SIMPLE_TYPE</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAP_C_PROPS_CORRECT">XML_SCHEMAP_C_PROPS_CORRECT</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DEF_AND_PREFIX">XML_SCHEMAP_DEF_AND_PREFIX</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1</a><br />
@@ -2375,7 +2380,9 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_TREE_INVALID_HEX">XML_TREE_INVALID_HEX</a><br />
 <a href="html/libxml-xmlerror.html#XML_TREE_UNTERMINATED_ENTITY">XML_TREE_UNTERMINATED_ENTITY</a><br />
 <a href="html/libxml-xmlerror.html#XML_WAR_CATALOG_PI">XML_WAR_CATALOG_PI</a><br />
+<a href="html/libxml-xmlerror.html#XML_WAR_ENTITY_REDEFINED">XML_WAR_ENTITY_REDEFINED</a><br />
 <a href="html/libxml-xmlerror.html#XML_WAR_LANG_VALUE">XML_WAR_LANG_VALUE</a><br />
+<a href="html/libxml-xmlerror.html#XML_WAR_NS_COLUMN">XML_WAR_NS_COLUMN</a><br />
 <a href="html/libxml-xmlerror.html#XML_WAR_NS_URI">XML_WAR_NS_URI</a><br />
 <a href="html/libxml-xmlerror.html#XML_WAR_NS_URI_RELATIVE">XML_WAR_NS_URI_RELATIVE</a><br />
 <a href="html/libxml-xmlerror.html#XML_WAR_SPACE_VALUE">XML_WAR_SPACE_VALUE</a><br />
@@ -2606,8 +2613,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlreader.html#xmlTextReaderReadString">xmlTextReaderReadString</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema">xmlTextReaderRelaxNGSetSchema</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate">xmlTextReaderRelaxNGValidate</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderSchemaValidate">xmlTextReaderSchemaValidate</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetParserProp">xmlTextReaderSetParserProp</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderSetSchema">xmlTextReaderSetSchema</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderStandalone">xmlTextReaderStandalone</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderValue">xmlTextReaderValue</a><br />
@@ -2675,6 +2684,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaGetParserErrors">xmlSchemaGetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaGetValidErrors">xmlSchemaGetValidErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaIsValid">xmlSchemaIsValid</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaNewDocParserCtxt">xmlSchemaNewDocParserCtxt</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaNewMemParserCtxt">xmlSchemaNewMemParserCtxt</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaNewParserCtxt">xmlSchemaNewParserCtxt</a><br />
@@ -2683,6 +2693,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaParserCtxt">xmlSchemaParserCtxt</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSAXPlug">xmlSchemaSAXPlug</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSAXPlugPtr">xmlSchemaSAXPlugPtr</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSAXPlugStruct">xmlSchemaSAXPlugStruct</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSAXUnplug">xmlSchemaSAXUnplug</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidOptions">xmlSchemaSetValidOptions</a><br />

@@ -1063,13 +1063,15 @@ cleanup:
 
 dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)
-	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms bakefile test result SAXresult ) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms bakefile test result) | (cd $(distdir); tar xf -)
 
 dist-source: distdir
 	$(AMTAR) -chof - --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
 
 dist-test: distdir
-	$(AMTAR) -chof - $(distdir)/test $(distdir)/result $(distdir)/xstc/Test | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
+	(cd $(srcdir) ; tar -cf - --exclude CVS xstc/Tests) | (cd $(distdir); tar xf -)
+	tar -cf - $(distdir)/test $(distdir)/result $(distdir)/xstc/Tests  $(distdir)/Makefile.tests $(distdir)/README $(distdir)/README.tests $(distdir)/AUTHORS $(distdir)/testapi.c $(distdir)/runtest.c $(distdir)/runsuite.c | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-tests+"`.tar.gz
+	@(rm -rf $(distdir)/xstc/Test)
 
 cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
@@ -1106,6 +1108,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     triop.h triodef.h libxml.h elfgcchack.h \
 	     testThreadsWin32.c genUnicode.py TODO_SCHEMAS \
 	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
+	     README.tests Makefile.tests \
 	     $(CVS_EXTRA_DIST)
 
 

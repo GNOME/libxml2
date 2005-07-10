@@ -24362,8 +24362,8 @@ endElementNsSplit(void *ctx, const xmlChar * localname,
 /**
  * xmlSchemaSAXPlug:
  * @ctxt:  a schema validation context
- * @saxptr:  a pointer to the original xmlSAXHandlerPtr
- * @dataptr:  a pointer to the original SAX user data pointer
+ * @sax:  a pointer to the original xmlSAXHandlerPtr
+ * @user_data:  a pointer to the original SAX user data pointer
  *
  * Plug a SAX based validation layer in a SAX parsing event flow.
  * The original @saxptr and @dataptr data are replaced by new pointers

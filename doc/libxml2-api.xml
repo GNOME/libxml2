@@ -1847,6 +1847,7 @@
      <exports symbol='XML_RNGP_PARAM_NAME_MISSING' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NO_PARENT' type='enum'/>
      <exports symbol='XML_IO_EISCONN' type='enum'/>
+     <exports symbol='XML_RNGP_VALUE_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' type='enum'/>
      <exports symbol='XML_SCHEMAP_ELEM_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_CHECK_NOT_DTD' type='enum'/>
@@ -1991,6 +1992,7 @@
      <exports symbol='XML_ERR_ENTITYREF_NO_NAME' type='enum'/>
      <exports symbol='XML_DTD_ID_FIXED' type='enum'/>
      <exports symbol='XML_SCHEMAP_A_PROPS_CORRECT_2' type='enum'/>
+     <exports symbol='XML_WAR_NS_COLUMN' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_1' type='enum'/>
      <exports symbol='XML_ERR_EXTRA_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SEQUENCE_CHILD' type='enum'/>
@@ -2163,7 +2165,7 @@
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE' type='enum'/>
-     <exports symbol='XML_IO_EINVAL' type='enum'/>
+     <exports symbol='XML_RNGP_GRAMMAR_EMPTY' type='enum'/>
      <exports symbol='XML_IO_ENAMETOOLONG' type='enum'/>
      <exports symbol='XML_RNGP_EXTERNAL_REF_FAILURE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_TEXT' type='enum'/>
@@ -2307,7 +2309,7 @@
      <exports symbol='XML_IO_EMSGSIZE' type='enum'/>
      <exports symbol='XML_FROM_CATALOG' type='enum'/>
      <exports symbol='XML_SCHEMAV_ATTRINVALID' type='enum'/>
-     <exports symbol='XML_SCHEMAV_CVC_ELT_1' type='enum'/>
+     <exports symbol='XML_NS_ERR_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_2' type='enum'/>
      <exports symbol='XML_FROM_HTML' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_MAXOCCURS' type='enum'/>
@@ -2361,9 +2363,10 @@
      <exports symbol='XML_ERR_EXT_ENTITY_STANDALONE' type='enum'/>
      <exports symbol='XML_TREE_INVALID_HEX' type='enum'/>
      <exports symbol='XML_C14N_REQUIRES_UTF8' type='enum'/>
+     <exports symbol='XML_ERR_ENTITY_PROCESSING' type='enum'/>
      <exports symbol='XML_FROM_XINCLUDE' type='enum'/>
      <exports symbol='XML_SCHEMAP_CVC_SIMPLE_TYPE' type='enum'/>
-     <exports symbol='XML_RNGP_GRAMMAR_EMPTY' type='enum'/>
+     <exports symbol='XML_IO_EINVAL' type='enum'/>
      <exports symbol='XML_CHECK_NOT_NCNAME' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_NO_CONTENT' type='enum'/>
      <exports symbol='XML_XINCLUDE_NO_HREF' type='enum'/>
@@ -2381,6 +2384,7 @@
      <exports symbol='XML_ERR_ENTITY_CHAR_ERROR' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ENTITY' type='enum'/>
      <exports symbol='XML_RNGP_PARSE_ERROR' type='enum'/>
+     <exports symbol='XML_ERR_NOTATION_PROCESSING' type='enum'/>
      <exports symbol='XML_RNGP_XML_NS' type='enum'/>
      <exports symbol='XML_ERR_MISPLACED_CDATA_END' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ONEMORE' type='enum'/>
@@ -2418,6 +2422,7 @@
      <exports symbol='XML_DTD_LOAD_ERROR' type='enum'/>
      <exports symbol='XML_CHECK_UNKNOWN_NODE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAP_C_PROPS_CORRECT' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_CT_1' type='enum'/>
      <exports symbol='XML_RNGP_EMPTY_CONTENT' type='enum'/>
      <exports symbol='XML_IO_EALREADY' type='enum'/>
@@ -2435,6 +2440,7 @@
      <exports symbol='XML_CHECK_FOUND_ENTITY' type='enum'/>
      <exports symbol='XML_CHECK_NAME_NOT_NULL' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_MINOCCURS' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_1' type='enum'/>
      <exports symbol='XML_CHECK_' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_IO_EPIPE' type='enum'/>
@@ -2455,7 +2461,7 @@
      <exports symbol='XML_RNGP_PARENTREF_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAP_FACET_NO_VALUE' type='enum'/>
      <exports symbol='XML_XPTR_SUB_RESOURCE_ERROR' type='enum'/>
-     <exports symbol='XML_RNGP_VALUE_EMPTY' type='enum'/>
+     <exports symbol='XML_ERR_NOT_STANDALONE' type='enum'/>
      <exports symbol='XML_RNGP_START_MISSING' type='enum'/>
      <exports symbol='XML_DTD_NO_PREFIX' type='enum'/>
      <exports symbol='XML_CATALOG_RECURSION' type='enum'/>
@@ -2549,6 +2555,7 @@
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1' type='enum'/>
      <exports symbol='XML_ERR_OK' type='enum'/>
+     <exports symbol='XML_WAR_ENTITY_REDEFINED' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_REDEFINED' type='enum'/>
      <exports symbol='XML_SCHEMAP_SIMPLETYPE_NONAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_GROUP_CHILD' type='enum'/>
@@ -2730,6 +2737,7 @@
      <exports symbol='xmlTextReaderXmlLang' type='function'/>
      <exports symbol='xmlTextReaderStandalone' type='function'/>
      <exports symbol='xmlReaderForDoc' type='function'/>
+     <exports symbol='xmlTextReaderSchemaValidate' type='function'/>
      <exports symbol='xmlReaderNewIO' type='function'/>
      <exports symbol='xmlTextReaderMoveToElement' type='function'/>
      <exports symbol='xmlTextReaderSetStructuredErrorHandler' type='function'/>
@@ -2758,6 +2766,7 @@
      <exports symbol='xmlTextReaderNextSibling' type='function'/>
      <exports symbol='xmlTextReaderRelaxNGValidate' type='function'/>
      <exports symbol='xmlTextReaderIsEmptyElement' type='function'/>
+     <exports symbol='xmlTextReaderSetSchema' type='function'/>
      <exports symbol='xmlTextReaderCurrentDoc' type='function'/>
      <exports symbol='xmlReaderForMemory' type='function'/>
      <exports symbol='xmlTextReaderCurrentNode' type='function'/>
@@ -2856,32 +2865,37 @@
      <exports symbol='xmlSchemaPtr' type='typedef'/>
      <exports symbol='xmlSchemaParserCtxt' type='typedef'/>
      <exports symbol='xmlSchemaValidOption' type='typedef'/>
+     <exports symbol='xmlSchemaSAXPlugPtr' type='typedef'/>
+     <exports symbol='xmlSchemaSAXPlugStruct' type='typedef'/>
      <exports symbol='xmlSchemaValidCtxtPtr' type='typedef'/>
      <exports symbol='xmlSchemaParserCtxtPtr' type='typedef'/>
      <exports symbol='xmlSchema' type='typedef'/>
      <exports symbol='xmlSchemaValidError' type='typedef'/>
      <exports symbol='xmlSchemaValidCtxt' type='typedef'/>
-     <exports symbol='xmlSchemaValidateStream' type='function'/>
-     <exports symbol='xmlSchemaSetParserErrors' type='function'/>
-     <exports symbol='xmlSchemaValidateFile' type='function'/>
-     <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
-     <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
-     <exports symbol='xmlSchemaValidateDoc' type='function'/>
      <exports symbol='xmlSchemaNewDocParserCtxt' type='function'/>
-     <exports symbol='xmlSchemaFree' type='function'/>
-     <exports symbol='xmlSchemaValidateOneElement' type='function'/>
-     <exports symbol='xmlSchemaNewParserCtxt' type='function'/>
-     <exports symbol='xmlSchemaSetValidOptions' type='function'/>
+     <exports symbol='xmlSchemaSAXUnplug' type='function'/>
      <exports symbol='xmlSchemaParse' type='function'/>
-     <exports symbol='xmlSchemaNewMemParserCtxt' type='function'/>
      <exports symbol='xmlSchemaFreeParserCtxt' type='function'/>
+     <exports symbol='xmlSchemaNewParserCtxt' type='function'/>
+     <exports symbol='xmlSchemaIsValid' type='function'/>
      <exports symbol='xmlSchemaValidityErrorFunc' type='function'/>
-     <exports symbol='xmlSchemaFreeValidCtxt' type='function'/>
-     <exports symbol='xmlSchemaGetValidErrors' type='function'/>
-     <exports symbol='xmlSchemaSetValidErrors' type='function'/>
-     <exports symbol='xmlSchemaDump' type='function'/>
+     <exports symbol='xmlSchemaSAXPlug' type='function'/>
+     <exports symbol='xmlSchemaValidateStream' type='function'/>
      <exports symbol='xmlSchemaGetParserErrors' type='function'/>
+     <exports symbol='xmlSchemaValidateOneElement' type='function'/>
+     <exports symbol='xmlSchemaDump' type='function'/>
+     <exports symbol='xmlSchemaSetValidErrors' type='function'/>
      <exports symbol='xmlSchemaValidCtxtGetOptions' type='function'/>
+     <exports symbol='xmlSchemaValidateFile' type='function'/>
+     <exports symbol='xmlSchemaValidateDoc' type='function'/>
+     <exports symbol='xmlSchemaFree' type='function'/>
+     <exports symbol='xmlSchemaNewMemParserCtxt' type='function'/>
+     <exports symbol='xmlSchemaGetValidErrors' type='function'/>
+     <exports symbol='xmlSchemaSetValidOptions' type='function'/>
+     <exports symbol='xmlSchemaSetParserErrors' type='function'/>
+     <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
+     <exports symbol='xmlSchemaFreeValidCtxt' type='function'/>
+     <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
     </file>
     <file name='xmlschemastypes'>
      <summary>implementation of XML Schema Datatypes</summary>
@@ -4562,6 +4576,7 @@
     <enum name='XML_ERR_ENTITY_NOT_FINISHED' file='xmlerror' value='37' type='xmlParserErrors' info='37'/>
     <enum name='XML_ERR_ENTITY_NOT_STARTED' file='xmlerror' value='36' type='xmlParserErrors' info='36'/>
     <enum name='XML_ERR_ENTITY_PE_INTERNAL' file='xmlerror' value='88' type='xmlParserErrors' info='88'/>
+    <enum name='XML_ERR_ENTITY_PROCESSING' file='xmlerror' value='104' type='xmlParserErrors' info='104'/>
     <enum name='XML_ERR_EQUAL_REQUIRED' file='xmlerror' value='75' type='xmlParserErrors' info='75'/>
     <enum name='XML_ERR_ERROR' file='xmlerror' value='2' type='xmlErrorLevel' info='A recoverable error'/>
     <enum name='XML_ERR_EXTRA_CONTENT' file='xmlerror' value='86' type='xmlParserErrors' info='86'/>
@@ -4591,6 +4606,8 @@
     <enum name='XML_ERR_NONE' file='xmlerror' value='0' type='xmlErrorLevel'/>
     <enum name='XML_ERR_NOTATION_NOT_FINISHED' file='xmlerror' value='49' type='xmlParserErrors' info='49'/>
     <enum name='XML_ERR_NOTATION_NOT_STARTED' file='xmlerror' value='48' type='xmlParserErrors' info='48'/>
+    <enum name='XML_ERR_NOTATION_PROCESSING' file='xmlerror' value='105' type='xmlParserErrors' info='105'/>
+    <enum name='XML_ERR_NOT_STANDALONE' file='xmlerror' value='103' type='xmlParserErrors' info='103'/>
     <enum name='XML_ERR_NOT_WELL_BALANCED' file='xmlerror' value='85' type='xmlParserErrors' info='85'/>
     <enum name='XML_ERR_NO_DTD' file='xmlerror' value='94' type='xmlParserErrors' info='94'/>
     <enum name='XML_ERR_NO_MEMORY' file='xmlerror' value='2' type='xmlParserErrors' info='2'/>
@@ -4732,6 +4749,7 @@
     <enum name='XML_NAMESPACE_DECL' file='tree' value='18' type='xmlElementType'/>
     <enum name='XML_NOTATION_NODE' file='tree' value='12' type='xmlElementType'/>
     <enum name='XML_NS_ERR_ATTRIBUTE_REDEFINED' file='xmlerror' value='203' type='xmlParserErrors' info='203'/>
+    <enum name='XML_NS_ERR_EMPTY' file='xmlerror' value='204' type='xmlParserErrors' info='204'/>
     <enum name='XML_NS_ERR_QNAME' file='xmlerror' value='202' type='xmlParserErrors' info='202'/>
     <enum name='XML_NS_ERR_UNDEFINED_NAMESPACE' file='xmlerror' value='201' type='xmlParserErrors' info='201'/>
     <enum name='XML_NS_ERR_XML_NAMESPACE' file='xmlerror' value='200' type='xmlParserErrors'/>
@@ -5018,6 +5036,7 @@
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_4' file='xmlerror' value='1785' type='xmlParserErrors' info='1785'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_5' file='xmlerror' value='1786' type='xmlParserErrors' info='1786'/>
     <enum name='XML_SCHEMAP_CVC_SIMPLE_TYPE' file='xmlerror' value='3062' type='xmlParserErrors' info='3062'/>
+    <enum name='XML_SCHEMAP_C_PROPS_CORRECT' file='xmlerror' value='3080' type='xmlParserErrors' info='3080'/>
     <enum name='XML_SCHEMAP_DEF_AND_PREFIX' file='xmlerror' value='1768' type='xmlParserErrors' info='1768'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' file='xmlerror' value='1787' type='xmlParserErrors' info='1787'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' file='xmlerror' value='1788' type='xmlParserErrors' info='1788'/>
@@ -5374,7 +5393,9 @@
     <enum name='XML_TREE_INVALID_HEX' file='xmlerror' value='1300' type='xmlParserErrors'/>
     <enum name='XML_TREE_UNTERMINATED_ENTITY' file='xmlerror' value='1302' type='xmlParserErrors' info='1302'/>
     <enum name='XML_WAR_CATALOG_PI' file='xmlerror' value='93' type='xmlParserErrors' info='93'/>
+    <enum name='XML_WAR_ENTITY_REDEFINED' file='xmlerror' value='107' type='xmlParserErrors' info='107'/>
     <enum name='XML_WAR_LANG_VALUE' file='xmlerror' value='98' type='xmlParserErrors' info='98'/>
+    <enum name='XML_WAR_NS_COLUMN' file='xmlerror' value='106' type='xmlParserErrors' info='106'/>
     <enum name='XML_WAR_NS_URI' file='xmlerror' value='99' type='xmlParserErrors' info='99'/>
     <enum name='XML_WAR_NS_URI_RELATIVE' file='xmlerror' value='100' type='xmlParserErrors' info='100'/>
     <enum name='XML_WAR_SPACE_VALUE' file='xmlerror' value='102' type='xmlParserErrors' info='102'/>
@@ -6229,6 +6250,8 @@ actually an xmlCharEncoding'/>
     <struct name='xmlSchemaParserCtxt' file='xmlschemas' type='struct _xmlSchemaParserCtxt'/>
     <typedef name='xmlSchemaParserCtxtPtr' file='xmlschemas' type='xmlSchemaParserCtxt *'/>
     <typedef name='xmlSchemaPtr' file='xmlschemas' type='xmlSchema *'/>
+    <typedef name='xmlSchemaSAXPlugPtr' file='xmlschemas' type='xmlSchemaSAXPlugStruct *'/>
+    <struct name='xmlSchemaSAXPlugStruct' file='xmlschemas' type='struct _xmlSchemaSAXPlug'/>
     <struct name='xmlSchemaType' file='schemasInternals' type='struct _xmlSchemaType'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
@@ -12913,6 +12936,12 @@ actually an xmlCharEncoding'/>
       <arg name='type' type='xmlSchemaTypePtr' info='the built-in type'/>
       <arg name='facetType' type='int' info='the facet type'/>
     </function>
+    <function name='xmlSchemaIsValid' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Check if any error was detected during validation.</info>
+      <return type='int' info='1 if valid so far, 0 if errors were detected, and -1 in case of internal error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
+    </function>
     <function name='xmlSchemaNewDocParserCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Create an XML Schemas parse context for that document. NB. The document may be modified during the parsing process.</info>
@@ -12969,6 +12998,20 @@ actually an xmlCharEncoding'/>
       <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances. *WARNING* this interface is highly subject to change</info>
       <return type='xmlSchemaPtr' info='the internal XML Schema structure built from the resource or NULL in case of error'/>
       <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='a schema validation context'/>
+    </function>
+    <function name='xmlSchemaSAXPlug' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Plug a SAX based validation layer in a SAX parsing event flow. The original @saxptr and @dataptr data are replaced by new pointers but the calls to the original will be maintained.</info>
+      <return type='xmlSchemaSAXPlugPtr' info='a pointer to a data structure needed to unplug the validation layer or NULL in case of errors.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='sax' type='xmlSAXHandlerPtr *' info='a pointer to the original xmlSAXHandlerPtr'/>
+      <arg name='user_data' type='void **' info='a pointer to the original SAX user data pointer'/>
+    </function>
+    <function name='xmlSchemaSAXUnplug' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Unplug a SAX based validation layer in a SAX parsing event flow. The original pointers used in the call are restored.</info>
+      <return type='int' info='0 in case of success and -1 in case of failure.'/>
+      <arg name='plug' type='xmlSchemaSAXPlugPtr' info='a data structure returned by xmlSchemaSAXPlug'/>
     </function>
     <function name='xmlSchemaSetParserErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13101,7 +13144,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaValidateStream' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Validate a document tree in memory.</info>
+      <info>Validate an input based on a flow of SAX event from the parser and forward the events to the @sax handler with the provided @user_data the user provided @sax handler must be a SAX2 one.</info>
       <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
       <arg name='input' type='xmlParserInputBufferPtr' info='the input to use for reading the data'/>
@@ -13434,7 +13477,6 @@ actually an xmlCharEncoding'/>
       <arg name='englob' type='int' info='1 if one must print the englobing parenthesis, 0 otherwise'/>
     </function>
     <function name='xmlStopParser' file='parser' module='parser'>
-      <cond>defined(LIBXML_PUSH_ENABLED)</cond>
       <info>Blocks further parser processing</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
@@ -14052,6 +14094,13 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='rng' type='const char *' info='the path to a RelaxNG schema or NULL'/>
     </function>
+    <function name='xmlTextReaderSchemaValidate' file='xmlreader' module='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Use W3C XSD schema to validate the document as it is processed. Activation is only possible before the first Read(). if @xsd is NULL, then RelaxNG validation is desactivated.</info>
+      <return type='int' info='0 in case the schemas validation could be (des)activated and -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='xsd' type='const char *' info='the path to a W3C XSD schema or NULL'/>
+    </function>
     <function name='xmlTextReaderSetErrorHandler' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>Register a callback function that will be called on error and warnings.  If @f is NULL, the default error and warning handlers are restored.</info>
@@ -14067,6 +14116,13 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='prop' type='int' info='the xmlParserProperties to set'/>
       <arg name='value' type='int' info='usually 0 or 1 to (de)activate it'/>
+    </function>
+    <function name='xmlTextReaderSetSchema' file='xmlreader' module='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Use XSD Schema to validate the document as it is processed. Activation is only possible before the first Read(). if @schema is NULL, then Schema validation is desactivated. @ The @schema should not be freed until the reader is deallocated or its use has been deactivated.</info>
+      <return type='int' info='0 in case the Schema validation could be (des)activated and -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='schema' type='xmlSchemaPtr' info='a precompiled Schema schema'/>
     </function>
     <function name='xmlTextReaderSetStructuredErrorHandler' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
@@ -15974,7 +16030,7 @@ actually an xmlCharEncoding'/>
       <arg name='elem' type='xmlElementPtr' info='an element definition'/>
     </function>
     <function name='xmlValidateNCName' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED)</cond>
+      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED)</cond>
       <info>Check that a value conforms to the lexical space of NCName</info>
       <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='value' type='const xmlChar *' info='the value to check'/>

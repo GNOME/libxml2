@@ -327,6 +327,7 @@
     <reference name='XML_ERR_ENTITY_NOT_FINISHED' href='html/libxml-xmlerror.html#XML_ERR_ENTITY_NOT_FINISHED'/>
     <reference name='XML_ERR_ENTITY_NOT_STARTED' href='html/libxml-xmlerror.html#XML_ERR_ENTITY_NOT_STARTED'/>
     <reference name='XML_ERR_ENTITY_PE_INTERNAL' href='html/libxml-xmlerror.html#XML_ERR_ENTITY_PE_INTERNAL'/>
+    <reference name='XML_ERR_ENTITY_PROCESSING' href='html/libxml-xmlerror.html#XML_ERR_ENTITY_PROCESSING'/>
     <reference name='XML_ERR_EQUAL_REQUIRED' href='html/libxml-xmlerror.html#XML_ERR_EQUAL_REQUIRED'/>
     <reference name='XML_ERR_ERROR' href='html/libxml-xmlerror.html#XML_ERR_ERROR'/>
     <reference name='XML_ERR_EXTRA_CONTENT' href='html/libxml-xmlerror.html#XML_ERR_EXTRA_CONTENT'/>
@@ -356,6 +357,8 @@
     <reference name='XML_ERR_NONE' href='html/libxml-xmlerror.html#XML_ERR_NONE'/>
     <reference name='XML_ERR_NOTATION_NOT_FINISHED' href='html/libxml-xmlerror.html#XML_ERR_NOTATION_NOT_FINISHED'/>
     <reference name='XML_ERR_NOTATION_NOT_STARTED' href='html/libxml-xmlerror.html#XML_ERR_NOTATION_NOT_STARTED'/>
+    <reference name='XML_ERR_NOTATION_PROCESSING' href='html/libxml-xmlerror.html#XML_ERR_NOTATION_PROCESSING'/>
+    <reference name='XML_ERR_NOT_STANDALONE' href='html/libxml-xmlerror.html#XML_ERR_NOT_STANDALONE'/>
     <reference name='XML_ERR_NOT_WELL_BALANCED' href='html/libxml-xmlerror.html#XML_ERR_NOT_WELL_BALANCED'/>
     <reference name='XML_ERR_NO_DTD' href='html/libxml-xmlerror.html#XML_ERR_NO_DTD'/>
     <reference name='XML_ERR_NO_MEMORY' href='html/libxml-xmlerror.html#XML_ERR_NO_MEMORY'/>
@@ -501,6 +504,7 @@
     <reference name='XML_NAMESPACE_DECL' href='html/libxml-tree.html#XML_NAMESPACE_DECL'/>
     <reference name='XML_NOTATION_NODE' href='html/libxml-tree.html#XML_NOTATION_NODE'/>
     <reference name='XML_NS_ERR_ATTRIBUTE_REDEFINED' href='html/libxml-xmlerror.html#XML_NS_ERR_ATTRIBUTE_REDEFINED'/>
+    <reference name='XML_NS_ERR_EMPTY' href='html/libxml-xmlerror.html#XML_NS_ERR_EMPTY'/>
     <reference name='XML_NS_ERR_QNAME' href='html/libxml-xmlerror.html#XML_NS_ERR_QNAME'/>
     <reference name='XML_NS_ERR_UNDEFINED_NAMESPACE' href='html/libxml-xmlerror.html#XML_NS_ERR_UNDEFINED_NAMESPACE'/>
     <reference name='XML_NS_ERR_XML_NAMESPACE' href='html/libxml-xmlerror.html#XML_NS_ERR_XML_NAMESPACE'/>
@@ -788,6 +792,7 @@
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_4' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_4'/>
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_5' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_5'/>
     <reference name='XML_SCHEMAP_CVC_SIMPLE_TYPE' href='html/libxml-xmlerror.html#XML_SCHEMAP_CVC_SIMPLE_TYPE'/>
+    <reference name='XML_SCHEMAP_C_PROPS_CORRECT' href='html/libxml-xmlerror.html#XML_SCHEMAP_C_PROPS_CORRECT'/>
     <reference name='XML_SCHEMAP_DEF_AND_PREFIX' href='html/libxml-xmlerror.html#XML_SCHEMAP_DEF_AND_PREFIX'/>
     <reference name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1'/>
     <reference name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1'/>
@@ -1225,7 +1230,9 @@
     <reference name='XML_TREE_INVALID_HEX' href='html/libxml-xmlerror.html#XML_TREE_INVALID_HEX'/>
     <reference name='XML_TREE_UNTERMINATED_ENTITY' href='html/libxml-xmlerror.html#XML_TREE_UNTERMINATED_ENTITY'/>
     <reference name='XML_WAR_CATALOG_PI' href='html/libxml-xmlerror.html#XML_WAR_CATALOG_PI'/>
+    <reference name='XML_WAR_ENTITY_REDEFINED' href='html/libxml-xmlerror.html#XML_WAR_ENTITY_REDEFINED'/>
     <reference name='XML_WAR_LANG_VALUE' href='html/libxml-xmlerror.html#XML_WAR_LANG_VALUE'/>
+    <reference name='XML_WAR_NS_COLUMN' href='html/libxml-xmlerror.html#XML_WAR_NS_COLUMN'/>
     <reference name='XML_WAR_NS_URI' href='html/libxml-xmlerror.html#XML_WAR_NS_URI'/>
     <reference name='XML_WAR_NS_URI_RELATIVE' href='html/libxml-xmlerror.html#XML_WAR_NS_URI_RELATIVE'/>
     <reference name='XML_WAR_SPACE_VALUE' href='html/libxml-xmlerror.html#XML_WAR_SPACE_VALUE'/>
@@ -2572,6 +2579,7 @@
     <reference name='xmlSchemaGetValidErrors' href='html/libxml-xmlschemas.html#xmlSchemaGetValidErrors'/>
     <reference name='xmlSchemaInitTypes' href='html/libxml-xmlschemastypes.html#xmlSchemaInitTypes'/>
     <reference name='xmlSchemaIsBuiltInTypeFacet' href='html/libxml-xmlschemastypes.html#xmlSchemaIsBuiltInTypeFacet'/>
+    <reference name='xmlSchemaIsValid' href='html/libxml-xmlschemas.html#xmlSchemaIsValid'/>
     <reference name='xmlSchemaNewDocParserCtxt' href='html/libxml-xmlschemas.html#xmlSchemaNewDocParserCtxt'/>
     <reference name='xmlSchemaNewFacet' href='html/libxml-xmlschemastypes.html#xmlSchemaNewFacet'/>
     <reference name='xmlSchemaNewMemParserCtxt' href='html/libxml-xmlschemas.html#xmlSchemaNewMemParserCtxt'/>
@@ -2586,6 +2594,10 @@
     <reference name='xmlSchemaParserCtxt' href='html/libxml-xmlschemas.html#xmlSchemaParserCtxt'/>
     <reference name='xmlSchemaParserCtxtPtr' href='html/libxml-xmlschemas.html#xmlSchemaParserCtxtPtr'/>
     <reference name='xmlSchemaPtr' href='html/libxml-xmlschemas.html#xmlSchemaPtr'/>
+    <reference name='xmlSchemaSAXPlug' href='html/libxml-xmlschemas.html#xmlSchemaSAXPlug'/>
+    <reference name='xmlSchemaSAXPlugPtr' href='html/libxml-xmlschemas.html#xmlSchemaSAXPlugPtr'/>
+    <reference name='xmlSchemaSAXPlugStruct' href='html/libxml-xmlschemas.html#xmlSchemaSAXPlugStruct'/>
+    <reference name='xmlSchemaSAXUnplug' href='html/libxml-xmlschemas.html#xmlSchemaSAXUnplug'/>
     <reference name='xmlSchemaSetParserErrors' href='html/libxml-xmlschemas.html#xmlSchemaSetParserErrors'/>
     <reference name='xmlSchemaSetValidErrors' href='html/libxml-xmlschemas.html#xmlSchemaSetValidErrors'/>
     <reference name='xmlSchemaSetValidOptions' href='html/libxml-xmlschemas.html#xmlSchemaSetValidOptions'/>
@@ -2773,8 +2785,10 @@
     <reference name='xmlTextReaderReadString' href='html/libxml-xmlreader.html#xmlTextReaderReadString'/>
     <reference name='xmlTextReaderRelaxNGSetSchema' href='html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema'/>
     <reference name='xmlTextReaderRelaxNGValidate' href='html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate'/>
+    <reference name='xmlTextReaderSchemaValidate' href='html/libxml-xmlreader.html#xmlTextReaderSchemaValidate'/>
     <reference name='xmlTextReaderSetErrorHandler' href='html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler'/>
     <reference name='xmlTextReaderSetParserProp' href='html/libxml-xmlreader.html#xmlTextReaderSetParserProp'/>
+    <reference name='xmlTextReaderSetSchema' href='html/libxml-xmlreader.html#xmlTextReaderSetSchema'/>
     <reference name='xmlTextReaderSetStructuredErrorHandler' href='html/libxml-xmlreader.html#xmlTextReaderSetStructuredErrorHandler'/>
     <reference name='xmlTextReaderStandalone' href='html/libxml-xmlreader.html#xmlTextReaderStandalone'/>
     <reference name='xmlTextReaderValue' href='html/libxml-xmlreader.html#xmlTextReaderValue'/>
@@ -3676,6 +3690,7 @@
       <ref name='XML_ERR_ENTITY_NOT_FINISHED'/>
       <ref name='XML_ERR_ENTITY_NOT_STARTED'/>
       <ref name='XML_ERR_ENTITY_PE_INTERNAL'/>
+      <ref name='XML_ERR_ENTITY_PROCESSING'/>
       <ref name='XML_ERR_EQUAL_REQUIRED'/>
       <ref name='XML_ERR_ERROR'/>
       <ref name='XML_ERR_EXTRA_CONTENT'/>
@@ -3705,6 +3720,8 @@
       <ref name='XML_ERR_NONE'/>
       <ref name='XML_ERR_NOTATION_NOT_FINISHED'/>
       <ref name='XML_ERR_NOTATION_NOT_STARTED'/>
+      <ref name='XML_ERR_NOTATION_PROCESSING'/>
+      <ref name='XML_ERR_NOT_STANDALONE'/>
       <ref name='XML_ERR_NOT_WELL_BALANCED'/>
       <ref name='XML_ERR_NO_DTD'/>
       <ref name='XML_ERR_NO_MEMORY'/>
@@ -3850,6 +3867,7 @@
       <ref name='XML_NAMESPACE_DECL'/>
       <ref name='XML_NOTATION_NODE'/>
       <ref name='XML_NS_ERR_ATTRIBUTE_REDEFINED'/>
+      <ref name='XML_NS_ERR_EMPTY'/>
       <ref name='XML_NS_ERR_QNAME'/>
       <ref name='XML_NS_ERR_UNDEFINED_NAMESPACE'/>
       <ref name='XML_NS_ERR_XML_NAMESPACE'/>
@@ -4137,6 +4155,7 @@
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_4'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_5'/>
       <ref name='XML_SCHEMAP_CVC_SIMPLE_TYPE'/>
+      <ref name='XML_SCHEMAP_C_PROPS_CORRECT'/>
       <ref name='XML_SCHEMAP_DEF_AND_PREFIX'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1'/>
@@ -4574,7 +4593,9 @@
       <ref name='XML_TREE_INVALID_HEX'/>
       <ref name='XML_TREE_UNTERMINATED_ENTITY'/>
       <ref name='XML_WAR_CATALOG_PI'/>
+      <ref name='XML_WAR_ENTITY_REDEFINED'/>
       <ref name='XML_WAR_LANG_VALUE'/>
+      <ref name='XML_WAR_NS_COLUMN'/>
       <ref name='XML_WAR_NS_URI'/>
       <ref name='XML_WAR_NS_URI_RELATIVE'/>
       <ref name='XML_WAR_SPACE_VALUE'/>
@@ -5957,6 +5978,7 @@
       <ref name='xmlSchemaGetValidErrors'/>
       <ref name='xmlSchemaInitTypes'/>
       <ref name='xmlSchemaIsBuiltInTypeFacet'/>
+      <ref name='xmlSchemaIsValid'/>
       <ref name='xmlSchemaNewDocParserCtxt'/>
       <ref name='xmlSchemaNewFacet'/>
       <ref name='xmlSchemaNewMemParserCtxt'/>
@@ -5971,6 +5993,10 @@
       <ref name='xmlSchemaParserCtxt'/>
       <ref name='xmlSchemaParserCtxtPtr'/>
       <ref name='xmlSchemaPtr'/>
+      <ref name='xmlSchemaSAXPlug'/>
+      <ref name='xmlSchemaSAXPlugPtr'/>
+      <ref name='xmlSchemaSAXPlugStruct'/>
+      <ref name='xmlSchemaSAXUnplug'/>
       <ref name='xmlSchemaSetParserErrors'/>
       <ref name='xmlSchemaSetValidErrors'/>
       <ref name='xmlSchemaSetValidOptions'/>
@@ -6158,8 +6184,10 @@
       <ref name='xmlTextReaderReadString'/>
       <ref name='xmlTextReaderRelaxNGSetSchema'/>
       <ref name='xmlTextReaderRelaxNGValidate'/>
+      <ref name='xmlTextReaderSchemaValidate'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
       <ref name='xmlTextReaderSetParserProp'/>
+      <ref name='xmlTextReaderSetSchema'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlTextReaderStandalone'/>
       <ref name='xmlTextReaderValue'/>
@@ -7340,6 +7368,9 @@
     <type name='xmlSchemaPtr'>
       <ref name='xmlSchemaParse'/>
     </type>
+    <type name='xmlSchemaSAXPlugPtr'>
+      <ref name='xmlSchemaSAXPlug'/>
+    </type>
     <type name='xmlSchemaTypePtr'>
       <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
       <ref name='xmlSchemaGetBuiltInType'/>
@@ -8374,6 +8405,7 @@
       <ref name='xmlRelaxNGGetValidErrors'/>
       <ref name='xmlSchemaGetParserErrors'/>
       <ref name='xmlSchemaGetValidErrors'/>
+      <ref name='xmlSchemaSAXPlug'/>
       <ref name='xmlTextReaderGetErrorHandler'/>
     </type>
     <type name='xlinkActuate *'>
@@ -9529,6 +9561,9 @@
       <ref name='xmlSAXUserParseMemory'/>
       <ref name='xmlSchemaValidateStream'/>
     </type>
+    <type name='xmlSAXHandlerPtr *'>
+      <ref name='xmlSchemaSAXPlug'/>
+    </type>
     <type name='xmlSAXHandlerV1 *'>
       <ref name='initdocbDefaultSAXHandler'/>
       <ref name='inithtmlDefaultSAXHandler'/>
@@ -9568,6 +9603,10 @@
       <ref name='xmlSchemaDump'/>
       <ref name='xmlSchemaFree'/>
       <ref name='xmlSchemaNewValidCtxt'/>
+      <ref name='xmlTextReaderSetSchema'/>
+    </type>
+    <type name='xmlSchemaSAXPlugPtr'>
+      <ref name='xmlSchemaSAXUnplug'/>
     </type>
     <type name='xmlSchemaTypePtr'>
       <ref name='xmlSchemaCheckFacet'/>
@@ -9611,6 +9650,8 @@
     <type name='xmlSchemaValidCtxtPtr'>
       <ref name='xmlSchemaFreeValidCtxt'/>
       <ref name='xmlSchemaGetValidErrors'/>
+      <ref name='xmlSchemaIsValid'/>
+      <ref name='xmlSchemaSAXPlug'/>
       <ref name='xmlSchemaSetValidErrors'/>
       <ref name='xmlSchemaSetValidOptions'/>
       <ref name='xmlSchemaValidCtxtGetOptions'/>
@@ -9756,8 +9797,10 @@
       <ref name='xmlTextReaderReadString'/>
       <ref name='xmlTextReaderRelaxNGSetSchema'/>
       <ref name='xmlTextReaderRelaxNGValidate'/>
+      <ref name='xmlTextReaderSchemaValidate'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
       <ref name='xmlTextReaderSetParserProp'/>
+      <ref name='xmlTextReaderSetSchema'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlTextReaderStandalone'/>
       <ref name='xmlTextReaderValue'/>
@@ -11892,6 +11935,7 @@
       <ref name='XML_ERR_ENTITY_NOT_FINISHED'/>
       <ref name='XML_ERR_ENTITY_NOT_STARTED'/>
       <ref name='XML_ERR_ENTITY_PE_INTERNAL'/>
+      <ref name='XML_ERR_ENTITY_PROCESSING'/>
       <ref name='XML_ERR_EQUAL_REQUIRED'/>
       <ref name='XML_ERR_ERROR'/>
       <ref name='XML_ERR_EXTRA_CONTENT'/>
@@ -11921,6 +11965,8 @@
       <ref name='XML_ERR_NONE'/>
       <ref name='XML_ERR_NOTATION_NOT_FINISHED'/>
       <ref name='XML_ERR_NOTATION_NOT_STARTED'/>
+      <ref name='XML_ERR_NOTATION_PROCESSING'/>
+      <ref name='XML_ERR_NOT_STANDALONE'/>
       <ref name='XML_ERR_NOT_WELL_BALANCED'/>
       <ref name='XML_ERR_NO_DTD'/>
       <ref name='XML_ERR_NO_MEMORY'/>
@@ -12051,6 +12097,7 @@
       <ref name='XML_MODULE_CLOSE'/>
       <ref name='XML_MODULE_OPEN'/>
       <ref name='XML_NS_ERR_ATTRIBUTE_REDEFINED'/>
+      <ref name='XML_NS_ERR_EMPTY'/>
       <ref name='XML_NS_ERR_QNAME'/>
       <ref name='XML_NS_ERR_UNDEFINED_NAMESPACE'/>
       <ref name='XML_NS_ERR_XML_NAMESPACE'/>
@@ -12222,6 +12269,7 @@
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_4'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_5'/>
       <ref name='XML_SCHEMAP_CVC_SIMPLE_TYPE'/>
+      <ref name='XML_SCHEMAP_C_PROPS_CORRECT'/>
       <ref name='XML_SCHEMAP_DEF_AND_PREFIX'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1'/>
@@ -12445,7 +12493,9 @@
       <ref name='XML_TREE_INVALID_HEX'/>
       <ref name='XML_TREE_UNTERMINATED_ENTITY'/>
       <ref name='XML_WAR_CATALOG_PI'/>
+      <ref name='XML_WAR_ENTITY_REDEFINED'/>
       <ref name='XML_WAR_LANG_VALUE'/>
+      <ref name='XML_WAR_NS_COLUMN'/>
       <ref name='XML_WAR_NS_URI'/>
       <ref name='XML_WAR_NS_URI_RELATIVE'/>
       <ref name='XML_WAR_SPACE_VALUE'/>
@@ -12684,8 +12734,10 @@
       <ref name='xmlTextReaderReadString'/>
       <ref name='xmlTextReaderRelaxNGSetSchema'/>
       <ref name='xmlTextReaderRelaxNGValidate'/>
+      <ref name='xmlTextReaderSchemaValidate'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
       <ref name='xmlTextReaderSetParserProp'/>
+      <ref name='xmlTextReaderSetSchema'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlTextReaderStandalone'/>
       <ref name='xmlTextReaderValue'/>
@@ -12759,6 +12811,7 @@
       <ref name='xmlSchemaFreeValidCtxt'/>
       <ref name='xmlSchemaGetParserErrors'/>
       <ref name='xmlSchemaGetValidErrors'/>
+      <ref name='xmlSchemaIsValid'/>
       <ref name='xmlSchemaNewDocParserCtxt'/>
       <ref name='xmlSchemaNewMemParserCtxt'/>
       <ref name='xmlSchemaNewParserCtxt'/>
@@ -12767,6 +12820,10 @@
       <ref name='xmlSchemaParserCtxt'/>
       <ref name='xmlSchemaParserCtxtPtr'/>
       <ref name='xmlSchemaPtr'/>
+      <ref name='xmlSchemaSAXPlug'/>
+      <ref name='xmlSchemaSAXPlugPtr'/>
+      <ref name='xmlSchemaSAXPlugStruct'/>
+      <ref name='xmlSchemaSAXUnplug'/>
       <ref name='xmlSchemaSetParserErrors'/>
       <ref name='xmlSchemaSetValidErrors'/>
       <ref name='xmlSchemaSetValidOptions'/>
@@ -13504,6 +13561,8 @@
         <word name='Activation'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='Add'>
           <ref name='xmlACatalogAdd'/>
@@ -16050,6 +16109,9 @@
         <word name='Please'>
           <ref name='xmlNormalizeWindowsPath'/>
         </word>
+        <word name='Plug'>
+          <ref name='xmlSchemaSAXPlug'/>
+        </word>
         <word name='Pointer'>
           <ref name='xmlCheckUTF8'/>
         </word>
@@ -16294,6 +16356,8 @@
           <ref name='xmlTextReaderGetParserProp'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='Reader'>
           <ref name='xmlTextReaderPreserve'/>
@@ -16423,6 +16487,7 @@
           <ref name='xmlRelaxParserSetFlag'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
         </word>
         <word name='RelaxNGs'>
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
@@ -16520,6 +16585,8 @@
           <ref name='xmlUCSIsRunic'/>
         </word>
       </letter>
+    </chunk>
+    <chunk name='chunk7'>
       <letter name='S'>
         <word name='SAX1'>
           <ref name='LIBXML_SAX1_ENABLED'/>
@@ -16537,6 +16604,7 @@
           <ref name='xmlSAX2InitDocbDefaultSAXHandler'/>
           <ref name='xmlSAX2InitHtmlDefaultSAXHandler'/>
           <ref name='xmlSAX2StartElementNs'/>
+          <ref name='xmlSchemaValidateStream'/>
         </word>
         <word name='SAX::substituteEntities'>
           <ref name='xmlSubstituteEntitiesDefault'/>
@@ -16619,6 +16687,7 @@
           <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaParse'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='Schemas'>
           <ref name='LIBXML_SCHEMAS_ENABLED'/>
@@ -16910,7 +16979,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk7'>
+    <chunk name='chunk8'>
       <letter name='T'>
         <word name='TEXT'>
           <ref name='xmlAddChild'/>
@@ -17202,6 +17271,9 @@
         <word name='Unlinks'>
           <ref name='xmlDOMWrapRemoveNode'/>
         </word>
+        <word name='Unplug'>
+          <ref name='xmlSchemaSAXUnplug'/>
+        </word>
         <word name='Unregisters'>
           <ref name='xmlCleanupEncodingAliases'/>
           <ref name='xmlDelEncodingAlias'/>
@@ -17234,6 +17306,8 @@
           <ref name='xmlPatternGetStreamCtxt'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='Used'>
           <ref name='XML_SCHEMAS_ANY_LAX'/>
@@ -17261,7 +17335,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk8'>
+    <chunk name='chunk9'>
       <letter name='V'>
         <word name='Valid'>
           <ref name='xmlValidateOneElement'/>
@@ -17322,6 +17396,9 @@
         </word>
       </letter>
       <letter name='W'>
+        <word name='W3C'>
+          <ref name='xmlTextReaderSchemaValidate'/>
+        </word>
         <word name='WARNING'>
           <ref name='xmlRelaxNGParse'/>
           <ref name='xmlSchemaParse'/>
@@ -17573,6 +17650,10 @@
           <ref name='xmlXPtrNewContext'/>
           <ref name='xmlXPtrRangeToFunction'/>
         </word>
+        <word name='XSD'>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
+        </word>
         <word name='XSLT'>
           <ref name='_xmlNode'/>
           <ref name='_xmlXPathContext'/>
@@ -17631,7 +17712,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk9'>
+    <chunk name='chunk10'>
       <letter name='a'>
         <word name='a-z'>
           <ref name='xmlCheckLanguageID'/>
@@ -17760,6 +17841,8 @@
           <ref name='xmlAutomataNewTransition2'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='activation'>
           <ref name='xmlGetLineNo'/>
@@ -18393,7 +18476,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk10'>
+    <chunk name='chunk11'>
       <letter name='b'>
         <word name='back'>
           <ref name='xmlEntityReferenceFunc'/>
@@ -18430,6 +18513,9 @@
           <ref name='xmlRelaxNGNewValidCtxt'/>
           <ref name='xmlSchemaNewStringValue'/>
           <ref name='xmlSchemaNewValidCtxt'/>
+          <ref name='xmlSchemaSAXPlug'/>
+          <ref name='xmlSchemaSAXUnplug'/>
+          <ref name='xmlSchemaValidateStream'/>
           <ref name='xmlSetCompressMode'/>
           <ref name='xmlSetDocCompressMode'/>
           <ref name='xmlStrcat'/>
@@ -18472,7 +18558,9 @@
           <ref name='xmlMemSetup'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
           <ref name='xmlTextReaderSetParserProp'/>
+          <ref name='xmlTextReaderSetSchema'/>
           <ref name='xmlValidGetValidElements'/>
           <ref name='xmlXPathNextPreceding'/>
           <ref name='xmlXPathStringFunction'/>
@@ -18729,7 +18817,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk11'>
+    <chunk name='chunk12'>
       <letter name='c'>
         <word name='calculates'>
           <ref name='xmlUTF8Size'/>
@@ -18750,6 +18838,7 @@
         </word>
         <word name='calls'>
           <ref name='xlinkNodeDetectFunc'/>
+          <ref name='xmlSchemaSAXPlug'/>
           <ref name='xmlXPathAxisFunc'/>
         </word>
         <word name='came'>
@@ -19783,6 +19872,8 @@
           <ref name='xmlTextReaderByteConsumed'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
           <ref name='xmlValidateDtd'/>
         </word>
         <word name='count'>
@@ -19885,7 +19976,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk12'>
+    <chunk name='chunk13'>
       <letter name='d'>
         <word name='dangerous'>
           <ref name='xmlTextReaderCurrentNode'/>
@@ -19907,6 +19998,7 @@
         </word>
         <word name='deactivated'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='deallocate'>
           <ref name='_xmlParserInput'/>
@@ -19945,6 +20037,7 @@
           <ref name='xmlTextReaderReadOuterXml'/>
           <ref name='xmlTextReaderReadString'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
+          <ref name='xmlTextReaderSetSchema'/>
           <ref name='xmlTextReaderValue'/>
         </word>
         <word name='deallocation'>
@@ -20168,10 +20261,14 @@
         <word name='des'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='desactivated'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='descendant'>
           <ref name='xmlXPathNextDescendant'/>
@@ -20301,6 +20398,7 @@
           <ref name='xmlSAX2EndElementNs'/>
           <ref name='xmlSAX2Reference'/>
           <ref name='xmlSAX2StartElementNs'/>
+          <ref name='xmlSchemaIsValid'/>
         </word>
         <word name='detection'>
           <ref name='docbCreatePushParserCtxt'/>
@@ -20679,12 +20777,13 @@
         </word>
         <word name='during'>
           <ref name='xmlSAXDefaultVersion'/>
+          <ref name='xmlSchemaIsValid'/>
           <ref name='xmlSchemaNewDocParserCtxt'/>
           <ref name='xmlSchemaSetValidOptions'/>
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk13'>
+    <chunk name='chunk14'>
       <letter name='e'>
         <word name='each'>
           <ref name='_xmlParserCtxt'/>
@@ -21035,6 +21134,8 @@
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlSchemaGetParserErrors'/>
+          <ref name='xmlSchemaIsValid'/>
+          <ref name='xmlSchemaSAXPlug'/>
           <ref name='xmlSchemaSetParserErrors'/>
           <ref name='xmlSchemaValueAppend'/>
           <ref name='xmlSchemaValueGetAsString'/>
@@ -21115,6 +21216,11 @@
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlTextWriterFullEndElement'/>
           <ref name='xmlXPathRoundFunction'/>
+        </word>
+        <word name='event'>
+          <ref name='xmlSchemaSAXPlug'/>
+          <ref name='xmlSchemaSAXUnplug'/>
+          <ref name='xmlSchemaValidateStream'/>
         </word>
         <word name='events'>
           <ref name='htmlSAXParseDoc'/>
@@ -21281,7 +21387,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk14'>
+    <chunk name='chunk15'>
       <letter name='f'>
         <word name='fTP'>
           <ref name='xmlNanoFTPConnectTo'/>
@@ -21374,6 +21480,7 @@
           <ref name='xmlSaveFormatFile'/>
           <ref name='xmlSaveFormatFileTo'/>
           <ref name='xmlSchemaGetParserErrors'/>
+          <ref name='xmlSchemaSAXUnplug'/>
         </word>
         <word name='fallback'>
           <ref name='XINCLUDE_FALLBACK'/>
@@ -21392,6 +21499,7 @@
         <word name='far'>
           <ref name='_xmlParserCtxt'/>
           <ref name='fatalErrorSAXFunc'/>
+          <ref name='xmlSchemaIsValid'/>
         </word>
         <word name='fashion'>
           <ref name='xmlNewRMutex'/>
@@ -21579,6 +21687,9 @@
         </word>
         <word name='flow'>
           <ref name='xmlScanName'/>
+          <ref name='xmlSchemaSAXPlug'/>
+          <ref name='xmlSchemaSAXUnplug'/>
+          <ref name='xmlSchemaValidateStream'/>
         </word>
         <word name='flushes'>
           <ref name='xmlOutputBufferClose'/>
@@ -21684,6 +21795,9 @@
           <ref name='htmlSAXParseFile'/>
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExternalEntity'/>
+        </word>
+        <word name='forward'>
+          <ref name='xmlSchemaValidateStream'/>
         </word>
         <word name='fptr'>
           <ref name='XML_CAST_FPTR'/>
@@ -21810,7 +21924,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk15'>
+    <chunk name='chunk16'>
       <letter name='g'>
         <word name='gDay'>
           <ref name='xmlSchemaGetCanonValue'/>
@@ -22279,7 +22393,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk16'>
+    <chunk name='chunk17'>
       <letter name='i'>
         <word name='iconv'>
           <ref name='LIBXML_ICONV_ENABLED'/>
@@ -22981,7 +23095,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk17'>
+    <chunk name='chunk18'>
       <letter name='j'>
         <word name='just'>
           <ref name='htmlSetMetaEncoding'/>
@@ -23114,6 +23228,8 @@
           <ref name='xmlRootNode'/>
           <ref name='xmlSaveFileTo'/>
           <ref name='xmlSaveFormatFileTo'/>
+          <ref name='xmlSchemaSAXPlug'/>
+          <ref name='xmlSchemaSAXUnplug'/>
         </word>
         <word name='leading'>
           <ref name='xmlParseAttValue'/>
@@ -23474,7 +23590,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk18'>
+    <chunk name='chunk19'>
       <letter name='m'>
         <word name='machine'>
           <ref name='xmlCheckFilename'/>
@@ -23498,6 +23614,7 @@
         <word name='maintained'>
           <ref name='xmlRemoveID'/>
           <ref name='xmlRemoveRef'/>
+          <ref name='xmlSchemaSAXPlug'/>
         </word>
         <word name='major'>
           <ref name='xmlDecodeEntities'/>
@@ -23912,7 +24029,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk19'>
+    <chunk name='chunk20'>
       <letter name='n'>
         <word name='named'>
           <ref name='xmlAddEncodingAlias'/>
@@ -24019,6 +24136,7 @@
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseElementMixedContentDecl'/>
           <ref name='xmlReconciliateNs'/>
+          <ref name='xmlSchemaSAXPlug'/>
           <ref name='xmlSetBufferAllocationScheme'/>
           <ref name='xmlShellPwd'/>
           <ref name='xmlStrncat'/>
@@ -24317,7 +24435,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk20'>
+    <chunk name='chunk21'>
       <letter name='o'>
         <word name='object?'>
           <ref name='xmlXPathNumberFunction'/>
@@ -24648,6 +24766,8 @@
           <ref name='xmlGetEncodingAlias'/>
           <ref name='xmlListMerge'/>
           <ref name='xmlParseEntityValue'/>
+          <ref name='xmlSchemaSAXPlug'/>
+          <ref name='xmlSchemaSAXUnplug'/>
           <ref name='xmlShellSave'/>
           <ref name='xmlStrcat'/>
           <ref name='xmlStrncat'/>
@@ -24753,7 +24873,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk21'>
+    <chunk name='chunk22'>
       <letter name='p'>
         <word name='pairs'>
           <ref name='startElement'/>
@@ -24881,6 +25001,7 @@
           <ref name='xmlShellPwd'/>
           <ref name='xmlShellValidate'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
         </word>
         <word name='pattern'>
           <ref name='XML_SCHEMAS_TYPE_NORMVALUENEEDED'/>
@@ -24966,6 +25087,8 @@
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlRegExecErrInfo'/>
           <ref name='xmlRegExecNextValues'/>
+          <ref name='xmlSchemaSAXPlug'/>
+          <ref name='xmlSchemaSAXUnplug'/>
           <ref name='xmlValidGetValidElements'/>
         </word>
         <word name='points'>
@@ -25018,6 +25141,8 @@
           <ref name='xmlRegExecNextValues'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='possibly'>
@@ -25083,6 +25208,7 @@
           <ref name='xmlRelaxNGNewValidCtxt'/>
           <ref name='xmlSchemaNewValidCtxt'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
+          <ref name='xmlTextReaderSetSchema'/>
           <ref name='xmlXPathDebugDumpCompExpr'/>
         </word>
         <word name='precomputed'>
@@ -25280,6 +25406,8 @@
           <ref name='xmlSAX2StartElement'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
+          <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='processing-instruction'>
           <ref name='xmlXPathIsNodeType'/>
@@ -25481,7 +25609,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk22'>
+    <chunk name='chunk23'>
       <letter name='q'>
         <word name='qualified'>
           <ref name='XML_SCHEMAS_QUALIF_ATTR'/>
@@ -26007,6 +26135,7 @@
           <ref name='xmlHashUpdateEntry2'/>
           <ref name='xmlHashUpdateEntry3'/>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlSchemaSAXPlug'/>
           <ref name='xmlXPathTranslateFunction'/>
         </word>
         <word name='replacement'>
@@ -26183,6 +26312,7 @@
           <ref name='xmlCanonicPath'/>
         </word>
         <word name='restored'>
+          <ref name='xmlSchemaSAXUnplug'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
           <ref name='xmlTextReaderSetStructuredErrorHandler'/>
         </word>
@@ -26341,7 +26471,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk23'>
+    <chunk name='chunk24'>
       <letter name='s'>
         <word name='s390'>
           <ref name='XML_CAST_FPTR'/>
@@ -26464,6 +26594,7 @@
           <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateFile'/>
           <ref name='xmlSchemaValidateStream'/>
+          <ref name='xmlTextReaderSchemaValidate'/>
         </word>
         <word name='scheme'>
           <ref name='_xmlURI'/>
@@ -27542,7 +27673,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk24'>
+    <chunk name='chunk25'>
       <letter name='t'>
         <word name='tag'>
           <ref name='_htmlElemDesc'/>
@@ -28054,7 +28185,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk25'>
+    <chunk name='chunk26'>
       <letter name='u'>
         <word name='ugly'>
           <ref name='_xmlParserCtxt'/>
@@ -28177,6 +28308,9 @@
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlSAX2UnparsedEntityDecl'/>
         </word>
+        <word name='unplug'>
+          <ref name='xmlSchemaSAXPlug'/>
+        </word>
         <word name='unpredictable'>
           <ref name='UTF8ToHtml'/>
           <ref name='UTF8Toisolat1'/>
@@ -28210,6 +28344,7 @@
           <ref name='xmlSearchNsByHref'/>
           <ref name='xmlTextReaderExpand'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
+          <ref name='xmlTextReaderSetSchema'/>
           <ref name='xmlXPathAxisFunc'/>
         </word>
         <word name='unused'>
@@ -28407,7 +28542,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk26'>
+    <chunk name='chunk27'>
       <letter name='w'>
         <word name='walker'>
           <ref name='xmlListReverseWalk'/>
@@ -28514,6 +28649,7 @@
           <ref name='xmlCheckLanguageID'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlMemShow'/>
+          <ref name='xmlSchemaIsValid'/>
           <ref name='xmlXIncludeProcess'/>
           <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
@@ -28756,7 +28892,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk27'>
+    <chunk name='chunk28'>
       <letter name='x'>
         <word name='x00B7'>
           <ref name='IS_EXTENDER'/>
@@ -29511,6 +29647,9 @@
         <word name='xmlSAX2UnparsedEntityDecl'>
           <ref name='unparsedEntityDecl'/>
         </word>
+        <word name='xmlSAXHandlerPtr'>
+          <ref name='xmlSchemaSAXPlug'/>
+        </word>
         <word name='xmlSAXVersion'>
           <ref name='xmlSAXDefaultVersion'/>
         </word>
@@ -29518,6 +29657,9 @@
           <ref name='xmlSaveToFd'/>
           <ref name='xmlSaveToFilename'/>
           <ref name='xmlSaveToIO'/>
+        </word>
+        <word name='xmlSchemaSAXPlug'>
+          <ref name='xmlSchemaSAXUnplug'/>
         </word>
         <word name='xmlSchemaValType'>
           <ref name='xmlSchemaGetValType'/>
@@ -29718,7 +29860,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk28'>
+    <chunk name='chunk29'>
       <letter name='y'>
         <word name='year'>
           <ref name='ftpListCallback'/>
@@ -29799,29 +29941,30 @@
       <chunk name='chunk3' start='F' end='I'/>
       <chunk name='chunk4' start='J' end='N'/>
       <chunk name='chunk5' start='O' end='P'/>
-      <chunk name='chunk6' start='Q' end='S'/>
-      <chunk name='chunk7' start='T' end='U'/>
-      <chunk name='chunk8' start='V' end='Z'/>
-      <chunk name='chunk9' start='a' end='a'/>
-      <chunk name='chunk10' start='b' end='b'/>
-      <chunk name='chunk11' start='c' end='c'/>
-      <chunk name='chunk12' start='d' end='d'/>
-      <chunk name='chunk13' start='e' end='e'/>
-      <chunk name='chunk14' start='f' end='f'/>
-      <chunk name='chunk15' start='g' end='h'/>
-      <chunk name='chunk16' start='i' end='i'/>
-      <chunk name='chunk17' start='j' end='l'/>
-      <chunk name='chunk18' start='m' end='m'/>
-      <chunk name='chunk19' start='n' end='n'/>
-      <chunk name='chunk20' start='o' end='o'/>
-      <chunk name='chunk21' start='p' end='p'/>
-      <chunk name='chunk22' start='q' end='r'/>
-      <chunk name='chunk23' start='s' end='s'/>
-      <chunk name='chunk24' start='t' end='t'/>
-      <chunk name='chunk25' start='u' end='v'/>
-      <chunk name='chunk26' start='w' end='w'/>
-      <chunk name='chunk27' start='x' end='x'/>
-      <chunk name='chunk28' start='y' end='z'/>
+      <chunk name='chunk6' start='Q' end='R'/>
+      <chunk name='chunk7' start='S' end='S'/>
+      <chunk name='chunk8' start='T' end='U'/>
+      <chunk name='chunk9' start='V' end='Z'/>
+      <chunk name='chunk10' start='a' end='a'/>
+      <chunk name='chunk11' start='b' end='b'/>
+      <chunk name='chunk12' start='c' end='c'/>
+      <chunk name='chunk13' start='d' end='d'/>
+      <chunk name='chunk14' start='e' end='e'/>
+      <chunk name='chunk15' start='f' end='f'/>
+      <chunk name='chunk16' start='g' end='h'/>
+      <chunk name='chunk17' start='i' end='i'/>
+      <chunk name='chunk18' start='j' end='l'/>
+      <chunk name='chunk19' start='m' end='m'/>
+      <chunk name='chunk20' start='n' end='n'/>
+      <chunk name='chunk21' start='o' end='o'/>
+      <chunk name='chunk22' start='p' end='p'/>
+      <chunk name='chunk23' start='q' end='r'/>
+      <chunk name='chunk24' start='s' end='s'/>
+      <chunk name='chunk25' start='t' end='t'/>
+      <chunk name='chunk26' start='u' end='v'/>
+      <chunk name='chunk27' start='w' end='w'/>
+      <chunk name='chunk28' start='x' end='x'/>
+      <chunk name='chunk29' start='y' end='z'/>
     </chunks>
   </index>
 </apirefs>

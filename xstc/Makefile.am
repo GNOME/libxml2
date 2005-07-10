@@ -128,4 +128,4 @@ clean:
 	rm -f $(PYSCRIPTS) test.log
 
 distclean:
-	rm -rf $(PYSCRIPTS) $(TESTDIRS) test.log
+	rm -rf $(PYSCRIPTS) test.log # TESTDIRS

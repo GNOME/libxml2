@@ -11304,6 +11304,16 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 
     if ((!xmlStrchr(str, '[')) && (!xmlStrchr(str, '(')) &&
         (!xmlStrchr(str, '@'))) {
+	const xmlChar *tmp;
+
+	/*
+	 * We don't try to handle :: constructs, just the simplied form at
+	 * this point
+	 */
+	tmp = xmlStrchr(str, ':');
+	if ((tmp != NULL) && (tmp[1] == ':'))
+	    return(NULL);
+
 	if (ctxt != NULL) {
 	    dict = ctxt->dict;
 	    if (ctxt->nsNr > 0) {

@@ -1066,7 +1066,9 @@ Class xmlTextReader(xmlTextReaderCore)
     ReadString()
     RelaxNGSetSchema()
     RelaxNGValidate()
+    SchemaValidate()
     SetParserProp()
+    SetSchema()
     Standalone()
     String()
     Value()
@@ -1079,6 +1081,9 @@ Class xmlEntity(xmlNode)
     # functions from module parserInternals
     handleEntity()
 Class Schema()
+
+    # functions from module xmlreader
+    SetSchema()
 
     # functions from module xmlschemas
     schemaDump()
@@ -1120,6 +1125,7 @@ Class inputBuffer(ioReadWrapper)
 Class SchemaValidCtxt(SchemaValidCtxtCore)
 
     # functions from module xmlschemas
+    schemaIsValid()
     schemaSetValidOptions()
     schemaValidCtxtGetOptions()
     schemaValidateDoc()

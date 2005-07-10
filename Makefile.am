@@ -1066,9 +1066,10 @@ dist-hook: cleanup libxml2.spec
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms bakefile test result) | (cd $(distdir); tar xf -)
 
 dist-source: distdir
-	$(AMTAR) -chof - --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
+	$(AMTAR) -chof - --exclude Tests --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
 
 dist-test: distdir
+	(mkdir -p $(distdir))
 	(cd $(srcdir) ; tar -cf - --exclude CVS xstc/Tests) | (cd $(distdir); tar xf -)
 	tar -cf - $(distdir)/test $(distdir)/result $(distdir)/xstc/Tests  $(distdir)/Makefile.tests $(distdir)/README $(distdir)/README.tests $(distdir)/AUTHORS $(distdir)/testapi.c $(distdir)/runtest.c $(distdir)/runsuite.c | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-tests+"`.tar.gz
 	@(rm -rf $(distdir)/xstc/Test)
@@ -1077,7 +1078,7 @@ cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
 
 rpm: cleanup cleantar
-	@(unset CDPATH ; $(MAKE) dist-source dist dist-test && rpmbuild -ta $(distdir).tar.gz)
+	@(unset CDPATH ; $(MAKE) dist-source dist && rpmbuild -ta $(distdir).tar.gz)
 
 ## We create xml2Conf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

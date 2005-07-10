@@ -49,7 +49,7 @@ extern void xmlCheckVersion(int version);
  *
  * extra version information, used to show a CVS compilation
  */
-#define LIBXML_VERSION_EXTRA "@LIBXML_VERSION_EXTRA@"
+#define LIBXML_VERSION_EXTRA "-win32"
 
 /**
  * LIBXML_TEST_VERSION:

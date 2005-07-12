@@ -248,8 +248,10 @@ done:
 
 void
 xmlNanoHTTPCleanup(void) {
-    if (proxy != NULL)
+    if (proxy != NULL) {
 	xmlFree(proxy);
+	proxy = NULL;
+    }
 #ifdef _WINSOCKAPI_
     if (initialized)
 	WSACleanup();

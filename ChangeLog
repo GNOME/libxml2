@@ -1,3 +1,8 @@
+Tue Jul 12 17:08:11 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* nanohttp.c: fixed bug #310105 with http_proxy environments with
+	  patch provided by Peter Breitenlohner
+
 Mon Jul 11 00:28:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am NEWS configure.in doc/*: preparing release 2.6.20 

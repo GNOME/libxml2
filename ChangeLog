@@ -1,3 +1,12 @@
+Thu Jul 14 01:03:03 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* error.c relaxng.c xmlreader.c xmlschemas.c include/libxml/relaxng.h
+	  include/libxml/xmlschemas.h: applied patch from Marcus Boerger
+	  to route relaxng and schemas error messages when using the reader
+	  through the structured interface if activated.
+	* elfgcchack.h doc/* testapi.c: rebuilt since this add  new APIs
+	  to test.
+
 Wed Jul 13 18:35:47 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied UTF-8 script parsing bug #310229 fix from

@@ -1430,6 +1430,9 @@ xmlRelaxNGSetParserErrors
 xmlRelaxNGSetValidErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGSetValidStructuredErrors
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlRelaxNGValidateDoc
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1586,6 +1589,9 @@ xmlSchemaInitTypes
 xmlSchemaIsBuiltInTypeFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaIsValid
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaNewDocParserCtxt
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1613,6 +1619,12 @@ xmlSchemaNewValidCtxt
 xmlSchemaParse
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaSAXPlug
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaSAXUnplug
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaSetParserErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1620,6 +1632,9 @@ xmlSchemaSetValidErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaSetValidOptions
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaSetValidStructuredErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValPredefTypeNode
@@ -1836,8 +1851,10 @@ xmlTextReaderRelaxNGSetSchema
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlTextReaderRelaxNGValidate
 #endif
+xmlTextReaderSchemaValidate
 xmlTextReaderSetErrorHandler
 xmlTextReaderSetParserProp
+xmlTextReaderSetSchema
 xmlTextReaderSetStructuredErrorHandler
 xmlTextReaderStandalone
 xmlTextReaderValue

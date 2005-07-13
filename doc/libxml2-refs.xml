@@ -2449,6 +2449,7 @@
     <reference name='xmlRelaxNGPtr' href='html/libxml-relaxng.html#xmlRelaxNGPtr'/>
     <reference name='xmlRelaxNGSetParserErrors' href='html/libxml-relaxng.html#xmlRelaxNGSetParserErrors'/>
     <reference name='xmlRelaxNGSetValidErrors' href='html/libxml-relaxng.html#xmlRelaxNGSetValidErrors'/>
+    <reference name='xmlRelaxNGSetValidStructuredErrors' href='html/libxml-relaxng.html#xmlRelaxNGSetValidStructuredErrors'/>
     <reference name='xmlRelaxNGValidCtxt' href='html/libxml-relaxng.html#xmlRelaxNGValidCtxt'/>
     <reference name='xmlRelaxNGValidCtxtPtr' href='html/libxml-relaxng.html#xmlRelaxNGValidCtxtPtr'/>
     <reference name='xmlRelaxNGValidErr' href='html/libxml-relaxng.html#xmlRelaxNGValidErr'/>
@@ -2601,6 +2602,7 @@
     <reference name='xmlSchemaSetParserErrors' href='html/libxml-xmlschemas.html#xmlSchemaSetParserErrors'/>
     <reference name='xmlSchemaSetValidErrors' href='html/libxml-xmlschemas.html#xmlSchemaSetValidErrors'/>
     <reference name='xmlSchemaSetValidOptions' href='html/libxml-xmlschemas.html#xmlSchemaSetValidOptions'/>
+    <reference name='xmlSchemaSetValidStructuredErrors' href='html/libxml-xmlschemas.html#xmlSchemaSetValidStructuredErrors'/>
     <reference name='xmlSchemaType' href='html/libxml-schemasInternals.html#xmlSchemaType'/>
     <reference name='xmlSchemaTypeLink' href='html/libxml-schemasInternals.html#xmlSchemaTypeLink'/>
     <reference name='xmlSchemaTypeLinkPtr' href='html/libxml-schemasInternals.html#xmlSchemaTypeLinkPtr'/>
@@ -5848,6 +5850,7 @@
       <ref name='xmlRelaxNGPtr'/>
       <ref name='xmlRelaxNGSetParserErrors'/>
       <ref name='xmlRelaxNGSetValidErrors'/>
+      <ref name='xmlRelaxNGSetValidStructuredErrors'/>
       <ref name='xmlRelaxNGValidCtxt'/>
       <ref name='xmlRelaxNGValidCtxtPtr'/>
       <ref name='xmlRelaxNGValidErr'/>
@@ -6000,6 +6003,7 @@
       <ref name='xmlSchemaSetParserErrors'/>
       <ref name='xmlSchemaSetValidErrors'/>
       <ref name='xmlSchemaSetValidOptions'/>
+      <ref name='xmlSchemaSetValidStructuredErrors'/>
       <ref name='xmlSchemaType'/>
       <ref name='xmlSchemaTypeLink'/>
       <ref name='xmlSchemaTypeLinkPtr'/>
@@ -8340,6 +8344,7 @@
       <ref name='xmlRegNewExecCtxt'/>
       <ref name='xmlRelaxNGSetParserErrors'/>
       <ref name='xmlRelaxNGSetValidErrors'/>
+      <ref name='xmlRelaxNGSetValidStructuredErrors'/>
       <ref name='xmlRelaxNGValidityErrorFunc'/>
       <ref name='xmlRelaxNGValidityWarningFunc'/>
       <ref name='xmlSAX2AttributeDecl'/>
@@ -8379,6 +8384,7 @@
       <ref name='xmlSaveToIO'/>
       <ref name='xmlSchemaSetParserErrors'/>
       <ref name='xmlSchemaSetValidErrors'/>
+      <ref name='xmlSchemaSetValidStructuredErrors'/>
       <ref name='xmlSchemaValidateStream'/>
       <ref name='xmlSchemaValidityErrorFunc'/>
       <ref name='xmlSchemaValidityWarningFunc'/>
@@ -9515,6 +9521,7 @@
       <ref name='xmlRelaxNGFreeValidCtxt'/>
       <ref name='xmlRelaxNGGetValidErrors'/>
       <ref name='xmlRelaxNGSetValidErrors'/>
+      <ref name='xmlRelaxNGSetValidStructuredErrors'/>
       <ref name='xmlRelaxNGValidateDoc'/>
       <ref name='xmlRelaxNGValidateFullElement'/>
       <ref name='xmlRelaxNGValidatePopElement'/>
@@ -9654,6 +9661,7 @@
       <ref name='xmlSchemaSAXPlug'/>
       <ref name='xmlSchemaSetValidErrors'/>
       <ref name='xmlSchemaSetValidOptions'/>
+      <ref name='xmlSchemaSetValidStructuredErrors'/>
       <ref name='xmlSchemaValidCtxtGetOptions'/>
       <ref name='xmlSchemaValidateDoc'/>
       <ref name='xmlSchemaValidateFile'/>
@@ -9716,6 +9724,8 @@
       <ref name='xmlStreamPushAttr'/>
     </type>
     <type name='xmlStructuredErrorFunc'>
+      <ref name='xmlRelaxNGSetValidStructuredErrors'/>
+      <ref name='xmlSchemaSetValidStructuredErrors'/>
       <ref name='xmlSetStructuredErrorFunc'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlThrDefSetStructuredErrorFunc'/>
@@ -11034,6 +11044,7 @@
       <ref name='xmlRelaxNGPtr'/>
       <ref name='xmlRelaxNGSetParserErrors'/>
       <ref name='xmlRelaxNGSetValidErrors'/>
+      <ref name='xmlRelaxNGSetValidStructuredErrors'/>
       <ref name='xmlRelaxNGValidCtxt'/>
       <ref name='xmlRelaxNGValidCtxtPtr'/>
       <ref name='xmlRelaxNGValidErr'/>
@@ -12827,6 +12838,7 @@
       <ref name='xmlSchemaSetParserErrors'/>
       <ref name='xmlSchemaSetValidErrors'/>
       <ref name='xmlSchemaSetValidOptions'/>
+      <ref name='xmlSchemaSetValidStructuredErrors'/>
       <ref name='xmlSchemaValidCtxt'/>
       <ref name='xmlSchemaValidCtxtGetOptions'/>
       <ref name='xmlSchemaValidCtxtPtr'/>
@@ -16472,6 +16484,7 @@
           <ref name='xmlRelaxNGParse'/>
           <ref name='xmlRelaxNGSetParserErrors'/>
           <ref name='xmlRelaxNGSetValidErrors'/>
+          <ref name='xmlRelaxNGSetValidStructuredErrors'/>
           <ref name='xmlRelaxNGValidateDoc'/>
         </word>
         <word name='RelaxNG'>
@@ -16760,38 +16773,6 @@
         </word>
         <word name='Serialize'>
           <ref name='xmlAttrSerializeTxtContent'/>
-        </word>
-        <word name='Set'>
-          <ref name='htmlHandleOmittedElem'/>
-          <ref name='initGenericErrorDefaultFunc'/>
-          <ref name='setNamespace'/>
-          <ref name='xlinkSetDefaultDetect'/>
-          <ref name='xlinkSetDefaultHandler'/>
-          <ref name='xmlDocSetRootElement'/>
-          <ref name='xmlInitializePredefinedEntities'/>
-          <ref name='xmlKeepBlanksDefault'/>
-          <ref name='xmlLineNumbersDefault'/>
-          <ref name='xmlNodeSetBase'/>
-          <ref name='xmlNodeSetLang'/>
-          <ref name='xmlNodeSetName'/>
-          <ref name='xmlNodeSetSpacePreserve'/>
-          <ref name='xmlPedanticParserDefault'/>
-          <ref name='xmlRelaxNGSetParserErrors'/>
-          <ref name='xmlRelaxNGSetValidErrors'/>
-          <ref name='xmlSAXDefaultVersion'/>
-          <ref name='xmlSaveSetAttrEscape'/>
-          <ref name='xmlSaveSetEscape'/>
-          <ref name='xmlSchemaSetParserErrors'/>
-          <ref name='xmlSchemaSetValidErrors'/>
-          <ref name='xmlSetBufferAllocationScheme'/>
-          <ref name='xmlSetEntityReferenceFunc'/>
-          <ref name='xmlSetNsProp'/>
-          <ref name='xmlSetProp'/>
-          <ref name='xmlSubstituteEntitiesDefault'/>
-          <ref name='xmlTextWriterSetIndent'/>
-          <ref name='xmlTextWriterSetIndentString'/>
-          <ref name='xmlXIncludeSetFlags'/>
-          <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
         <word name='Sets'>
           <ref name='htmlSetMetaEncoding'/>
@@ -21902,9 +21883,11 @@
           <ref name='xmlRelaxNGGetValidErrors'/>
           <ref name='xmlRelaxNGSetParserErrors'/>
           <ref name='xmlRelaxNGSetValidErrors'/>
+          <ref name='xmlRelaxNGSetValidStructuredErrors'/>
           <ref name='xmlSchemaGetValidErrors'/>
           <ref name='xmlSchemaSetParserErrors'/>
           <ref name='xmlSchemaSetValidErrors'/>
+          <ref name='xmlSchemaSetValidStructuredErrors'/>
           <ref name='xmlShellCmd'/>
           <ref name='xmlSwitchEncoding'/>
           <ref name='xmlSwitchInputEncoding'/>
@@ -27409,6 +27392,8 @@
           <ref name='xmlSchemaNewStringValue'/>
         </word>
         <word name='structured'>
+          <ref name='xmlRelaxNGSetValidStructuredErrors'/>
+          <ref name='xmlSchemaSetValidStructuredErrors'/>
           <ref name='xmlSetStructuredErrorFunc'/>
         </word>
         <word name='structures'>

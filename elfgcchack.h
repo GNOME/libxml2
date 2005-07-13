@@ -8134,6 +8134,18 @@ extern __typeof (xmlRelaxNGSetValidErrors) xmlRelaxNGSetValidErrors__internal_al
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_relaxng
+#undef xmlRelaxNGSetValidStructuredErrors
+extern __typeof (xmlRelaxNGSetValidStructuredErrors) xmlRelaxNGSetValidStructuredErrors __attribute((alias("xmlRelaxNGSetValidStructuredErrors__internal_alias")));
+#else
+#ifndef xmlRelaxNGSetValidStructuredErrors
+extern __typeof (xmlRelaxNGSetValidStructuredErrors) xmlRelaxNGSetValidStructuredErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlRelaxNGSetValidStructuredErrors xmlRelaxNGSetValidStructuredErrors__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_relaxng
 #undef xmlRelaxNGValidateDoc
 extern __typeof (xmlRelaxNGValidateDoc) xmlRelaxNGValidateDoc __attribute((alias("xmlRelaxNGValidateDoc__internal_alias")));
 #else
@@ -9240,6 +9252,18 @@ extern __typeof (xmlSchemaIsBuiltInTypeFacet) xmlSchemaIsBuiltInTypeFacet__inter
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_xmlschemas
+#undef xmlSchemaIsValid
+extern __typeof (xmlSchemaIsValid) xmlSchemaIsValid __attribute((alias("xmlSchemaIsValid__internal_alias")));
+#else
+#ifndef xmlSchemaIsValid
+extern __typeof (xmlSchemaIsValid) xmlSchemaIsValid__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaIsValid xmlSchemaIsValid__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
 #undef xmlSchemaNewDocParserCtxt
 extern __typeof (xmlSchemaNewDocParserCtxt) xmlSchemaNewDocParserCtxt __attribute((alias("xmlSchemaNewDocParserCtxt__internal_alias")));
 #else
@@ -9348,6 +9372,30 @@ extern __typeof (xmlSchemaParse) xmlSchemaParse__internal_alias __attribute((vis
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_xmlschemas
+#undef xmlSchemaSAXPlug
+extern __typeof (xmlSchemaSAXPlug) xmlSchemaSAXPlug __attribute((alias("xmlSchemaSAXPlug__internal_alias")));
+#else
+#ifndef xmlSchemaSAXPlug
+extern __typeof (xmlSchemaSAXPlug) xmlSchemaSAXPlug__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaSAXPlug xmlSchemaSAXPlug__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
+#undef xmlSchemaSAXUnplug
+extern __typeof (xmlSchemaSAXUnplug) xmlSchemaSAXUnplug __attribute((alias("xmlSchemaSAXUnplug__internal_alias")));
+#else
+#ifndef xmlSchemaSAXUnplug
+extern __typeof (xmlSchemaSAXUnplug) xmlSchemaSAXUnplug__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaSAXUnplug xmlSchemaSAXUnplug__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
 #undef xmlSchemaSetParserErrors
 extern __typeof (xmlSchemaSetParserErrors) xmlSchemaSetParserErrors __attribute((alias("xmlSchemaSetParserErrors__internal_alias")));
 #else
@@ -9378,6 +9426,18 @@ extern __typeof (xmlSchemaSetValidOptions) xmlSchemaSetValidOptions __attribute(
 #ifndef xmlSchemaSetValidOptions
 extern __typeof (xmlSchemaSetValidOptions) xmlSchemaSetValidOptions__internal_alias __attribute((visibility("hidden")));
 #define xmlSchemaSetValidOptions xmlSchemaSetValidOptions__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
+#undef xmlSchemaSetValidStructuredErrors
+extern __typeof (xmlSchemaSetValidStructuredErrors) xmlSchemaSetValidStructuredErrors __attribute((alias("xmlSchemaSetValidStructuredErrors__internal_alias")));
+#else
+#ifndef xmlSchemaSetValidStructuredErrors
+extern __typeof (xmlSchemaSetValidStructuredErrors) xmlSchemaSetValidStructuredErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaSetValidStructuredErrors xmlSchemaSetValidStructuredErrors__internal_alias
 #endif
 #endif
 #endif
@@ -9998,7 +10058,6 @@ extern __typeof (xmlSprintfElementContent) xmlSprintfElementContent__internal_al
 #endif
 #endif
 
-#if defined(LIBXML_PUSH_ENABLED)
 #ifdef bottom_parser
 #undef xmlStopParser
 extern __typeof (xmlStopParser) xmlStopParser __attribute((alias("xmlStopParser__internal_alias")));
@@ -10006,7 +10065,6 @@ extern __typeof (xmlStopParser) xmlStopParser __attribute((alias("xmlStopParser_
 #ifndef xmlStopParser
 extern __typeof (xmlStopParser) xmlStopParser__internal_alias __attribute((visibility("hidden")));
 #define xmlStopParser xmlStopParser__internal_alias
-#endif
 #endif
 #endif
 
@@ -11056,6 +11114,18 @@ extern __typeof (xmlTextReaderRelaxNGValidate) xmlTextReaderRelaxNGValidate__int
 #endif
 #endif
 
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlreader
+#undef xmlTextReaderSchemaValidate
+extern __typeof (xmlTextReaderSchemaValidate) xmlTextReaderSchemaValidate __attribute((alias("xmlTextReaderSchemaValidate__internal_alias")));
+#else
+#ifndef xmlTextReaderSchemaValidate
+extern __typeof (xmlTextReaderSchemaValidate) xmlTextReaderSchemaValidate__internal_alias __attribute((visibility("hidden")));
+#define xmlTextReaderSchemaValidate xmlTextReaderSchemaValidate__internal_alias
+#endif
+#endif
+#endif
+
 #if defined(LIBXML_READER_ENABLED)
 #ifdef bottom_xmlreader
 #undef xmlTextReaderSetErrorHandler
@@ -11076,6 +11146,18 @@ extern __typeof (xmlTextReaderSetParserProp) xmlTextReaderSetParserProp __attrib
 #ifndef xmlTextReaderSetParserProp
 extern __typeof (xmlTextReaderSetParserProp) xmlTextReaderSetParserProp__internal_alias __attribute((visibility("hidden")));
 #define xmlTextReaderSetParserProp xmlTextReaderSetParserProp__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlreader
+#undef xmlTextReaderSetSchema
+extern __typeof (xmlTextReaderSetSchema) xmlTextReaderSetSchema __attribute((alias("xmlTextReaderSetSchema__internal_alias")));
+#else
+#ifndef xmlTextReaderSetSchema
+extern __typeof (xmlTextReaderSetSchema) xmlTextReaderSetSchema__internal_alias __attribute((visibility("hidden")));
+#define xmlTextReaderSetSchema xmlTextReaderSetSchema__internal_alias
 #endif
 #endif
 #endif
@@ -14484,7 +14566,7 @@ extern __typeof (xmlValidateElementDecl) xmlValidateElementDecl__internal_alias 
 #endif
 #endif
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED)
 #ifdef bottom_tree
 #undef xmlValidateNCName
 extern __typeof (xmlValidateNCName) xmlValidateNCName __attribute((alias("xmlValidateNCName__internal_alias")));

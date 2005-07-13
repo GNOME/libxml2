@@ -595,7 +595,9 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    schannel = xmlStructuredError;
 	else
 	    channel = xmlGenericError;
+	if (!data) {
 	data = xmlGenericErrorContext;
+    }
     }
     if (schannel != NULL) {
         schannel(data, to);

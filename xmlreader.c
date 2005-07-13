@@ -3880,6 +3880,66 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 }
 
 #ifdef LIBXML_SCHEMAS_ENABLED
+
+static char *
+xmlTextReaderBuildMessage(const char *msg, va_list ap);
+
+static void 
+xmlTextReaderValidityError(void *ctxt, const char *msg, ...);
+
+static void 
+xmlTextReaderValidityWarning(void *ctxt, const char *msg, ...);
+
+static void xmlTextReaderValidityErrorRelay(void *ctx, const char *msg, ...)
+{
+	xmlTextReaderPtr reader = (xmlTextReaderPtr) ctx;
+	char * str;
+	va_list ap;
+
+	va_start(ap,msg);
+	str = xmlTextReaderBuildMessage(msg,ap);
+	if (!reader->errorFunc) {
+		xmlTextReaderValidityError(ctx, "%s", str);
+	} else {
+		reader->errorFunc(reader->errorFuncArg, str, XML_PARSER_SEVERITY_VALIDITY_ERROR, NULL /* locator */);
+	}
+	if (str != NULL)
+		xmlFree(str);
+	va_end(ap);
+}
+
+static void xmlTextReaderValidityWarningRelay(void *ctx, const char *msg, ...)
+{
+	xmlTextReaderPtr reader = (xmlTextReaderPtr) ctx;
+	char * str;
+	va_list ap;
+
+	va_start(ap,msg);
+	str = xmlTextReaderBuildMessage(msg,ap);
+	if (!reader->errorFunc) {
+		xmlTextReaderValidityWarning(ctx, "%s", str);
+	} else {
+		reader->errorFunc(reader->errorFuncArg, str, XML_PARSER_SEVERITY_VALIDITY_WARNING, NULL /* locator */);
+	}
+	if (str != NULL)
+		xmlFree(str);
+	va_end(ap);
+}
+
+static void 
+xmlTextReaderStructuredError(void *ctxt, xmlErrorPtr error);
+
+static void xmlTextReaderValidityStructuredRelay(void * userData, xmlErrorPtr error)
+{
+	xmlTextReaderPtr reader = (xmlTextReaderPtr) userData;
+
+	if (reader->sErrorFunc) {
+		reader->sErrorFunc(reader->errorFuncArg, error);
+	} else {
+		xmlTextReaderStructuredError(reader, error);
+	}
+}
+
 /**
  * xmlTextReaderRelaxNGSetSchema:
  * @reader:  the xmlTextReaderPtr used
@@ -3924,9 +3984,14 @@ xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
         return(-1);
     if (reader->errorFunc != NULL) {
 	xmlRelaxNGSetValidErrors(reader->rngValidCtxt,
-			 (xmlRelaxNGValidityErrorFunc)reader->errorFunc,
-			 (xmlRelaxNGValidityWarningFunc) reader->errorFunc,
-			 reader->errorFuncArg);
+			xmlTextReaderValidityErrorRelay,
+			xmlTextReaderValidityWarningRelay,
+			reader);
+    }
+	if (reader->sErrorFunc != NULL) {
+		xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, 
+			xmlTextReaderValidityStructuredRelay,
+			reader);
     }
     reader->rngValidErrors = 0;
     reader->rngFullNode = NULL;
@@ -3999,9 +4064,14 @@ xmlTextReaderSetSchema(xmlTextReaderPtr reader, xmlSchemaPtr schema) {
     }
     if (reader->errorFunc != NULL) {
 	xmlSchemaSetValidErrors(reader->xsdValidCtxt,
-			 (xmlSchemaValidityErrorFunc)reader->errorFunc,
-			 (xmlSchemaValidityWarningFunc) reader->errorFunc,
-			 reader->errorFuncArg);
+			xmlTextReaderValidityErrorRelay,
+			xmlTextReaderValidityWarningRelay,
+			reader);
+    }
+	if (reader->sErrorFunc != NULL) {
+		xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt,
+			xmlTextReaderValidityStructuredRelay,
+			reader);
     }
     reader->xsdValidErrors = 0;
     reader->validate = XML_TEXTREADER_VALIDATE_XSD;
@@ -4051,9 +4121,14 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     ctxt = xmlRelaxNGNewParserCtxt(rng);
     if (reader->errorFunc != NULL) {
 	xmlRelaxNGSetParserErrors(ctxt,
-			 (xmlRelaxNGValidityErrorFunc) reader->errorFunc,
-			 (xmlRelaxNGValidityWarningFunc) reader->errorFunc,
-			 reader->errorFuncArg);
+			 xmlTextReaderValidityErrorRelay,
+			 xmlTextReaderValidityWarningRelay,
+			 reader);
+    }
+	if (reader->sErrorFunc != NULL) {
+		xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, 
+			xmlTextReaderValidityStructuredRelay,
+			reader);
     }
     reader->rngSchemas = xmlRelaxNGParse(ctxt);
     xmlRelaxNGFreeParserCtxt(ctxt);
@@ -4067,9 +4142,14 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     }
     if (reader->errorFunc != NULL) {
 	xmlRelaxNGSetValidErrors(reader->rngValidCtxt,
-			 (xmlRelaxNGValidityErrorFunc)reader->errorFunc,
-			 (xmlRelaxNGValidityWarningFunc) reader->errorFunc,
-			 reader->errorFuncArg);
+			 xmlTextReaderValidityErrorRelay,
+			 xmlTextReaderValidityWarningRelay,
+			 reader);
+    }
+	if (reader->sErrorFunc != NULL) {
+		xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, 
+			xmlTextReaderValidityStructuredRelay,
+			reader);
     }
     reader->rngValidErrors = 0;
     reader->rngFullNode = NULL;
@@ -4129,9 +4209,9 @@ xmlTextReaderSchemaValidate(xmlTextReaderPtr reader, const char *xsd) {
     ctxt = xmlSchemaNewParserCtxt(xsd);
     if (reader->errorFunc != NULL) {
 	xmlSchemaSetParserErrors(ctxt,
-			 (xmlSchemaValidityErrorFunc) reader->errorFunc,
-			 (xmlSchemaValidityWarningFunc) reader->errorFunc,
-			 reader->errorFuncArg);
+			 xmlTextReaderValidityErrorRelay,
+			 xmlTextReaderValidityWarningRelay,
+			 reader);
     }
     reader->xsdSchemas = xmlSchemaParse(ctxt);
     xmlSchemaFreeParserCtxt(ctxt);
@@ -4155,9 +4235,14 @@ xmlTextReaderSchemaValidate(xmlTextReaderPtr reader, const char *xsd) {
     }
     if (reader->errorFunc != NULL) {
 	xmlSchemaSetValidErrors(reader->xsdValidCtxt,
-			 (xmlSchemaValidityErrorFunc)reader->errorFunc,
-			 (xmlSchemaValidityWarningFunc) reader->errorFunc,
-			 reader->errorFuncArg);
+			 xmlTextReaderValidityErrorRelay,
+			 xmlTextReaderValidityWarningRelay,
+			 reader);
+    }
+	if (reader->sErrorFunc != NULL) {
+		xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, 
+			xmlTextReaderValidityStructuredRelay,
+			reader);
     }
     reader->xsdValidErrors = 0;
     reader->validate = XML_TEXTREADER_VALIDATE_XSD;
@@ -4467,6 +4552,22 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 	reader->errorFunc = f;
 	reader->sErrorFunc = NULL;
 	reader->errorFuncArg = arg;
+#ifdef LIBXML_SCHEMAS_ENABLED
+		if (reader->rngValidCtxt) {
+			xmlRelaxNGSetValidErrors(reader->rngValidCtxt,
+				 xmlTextReaderValidityErrorRelay,
+				 xmlTextReaderValidityWarningRelay,
+				 reader);
+			xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, NULL, reader);
+		}
+		if (reader->xsdValidCtxt) {
+			xmlSchemaSetValidErrors(reader->xsdValidCtxt,
+				 xmlTextReaderValidityErrorRelay,
+				 xmlTextReaderValidityWarningRelay,
+				 reader);
+			xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, NULL, reader);
+		}
+#endif
     }
     else {
 	/* restore defaults */
@@ -4477,6 +4578,16 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 	reader->errorFunc = NULL;
 	reader->sErrorFunc = NULL;
 	reader->errorFuncArg = NULL;
+#ifdef LIBXML_SCHEMAS_ENABLED
+		if (reader->rngValidCtxt) {
+			xmlRelaxNGSetValidErrors(reader->rngValidCtxt, NULL, NULL, reader);
+			xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, NULL, reader);
+		}
+		if (reader->xsdValidCtxt) {
+			xmlSchemaSetValidErrors(reader->xsdValidCtxt, NULL, NULL, reader);
+			xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, NULL, reader);
+		}
+#endif
     }
 }
 
@@ -4503,6 +4614,20 @@ xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
 	reader->sErrorFunc = f;
 	reader->errorFunc = NULL;
 	reader->errorFuncArg = arg;
+#ifdef LIBXML_SCHEMAS_ENABLED
+		if (reader->rngValidCtxt) {
+			xmlRelaxNGSetValidErrors(reader->rngValidCtxt, NULL, NULL, reader);
+			xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt,
+				xmlTextReaderValidityStructuredRelay,
+				reader);
+		}
+		if (reader->xsdValidCtxt) {
+			xmlSchemaSetValidErrors(reader->xsdValidCtxt, NULL, NULL, reader);
+			xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, 
+				xmlTextReaderValidityStructuredRelay,
+				reader);
+		}
+#endif
   }
   else {
 	/* restore defaults */
@@ -4514,6 +4639,16 @@ xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
 	reader->errorFunc = NULL;
 	reader->sErrorFunc = NULL;
 	reader->errorFuncArg = NULL;
+#ifdef LIBXML_SCHEMAS_ENABLED
+		if (reader->rngValidCtxt) {
+			xmlRelaxNGSetValidErrors(reader->rngValidCtxt, NULL, NULL, reader);
+			xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, NULL, reader);
+		}
+		if (reader->xsdValidCtxt) {
+			xmlSchemaSetValidErrors(reader->xsdValidCtxt, NULL, NULL, reader);
+			xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, NULL, reader);
+		}
+#endif
   }
 }
 

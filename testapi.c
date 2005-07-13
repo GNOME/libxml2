@@ -17337,6 +17337,16 @@ test_xmlRelaxNGSetValidErrors(void) {
 
 
 static int
+test_xmlRelaxNGSetValidStructuredErrors(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlRelaxNGValidateDoc(void) {
     int test_ret = 0;
 
@@ -17613,7 +17623,7 @@ static int
 test_relaxng(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing relaxng : 14 of 22 functions ...\n");
+    if (quiet == 0) printf("Testing relaxng : 14 of 23 functions ...\n");
     test_ret += test_xmlRelaxNGDump();
     test_ret += test_xmlRelaxNGDumpTree();
     test_ret += test_xmlRelaxNGGetParserErrors();
@@ -17626,6 +17636,7 @@ test_relaxng(void) {
     test_ret += test_xmlRelaxNGParse();
     test_ret += test_xmlRelaxNGSetParserErrors();
     test_ret += test_xmlRelaxNGSetValidErrors();
+    test_ret += test_xmlRelaxNGSetValidStructuredErrors();
     test_ret += test_xmlRelaxNGValidateDoc();
     test_ret += test_xmlRelaxNGValidateFullElement();
     test_ret += test_xmlRelaxNGValidatePopElement();
@@ -32809,6 +32820,16 @@ test_xmlSchemaSetValidOptions(void) {
 
 
 static int
+test_xmlSchemaSetValidStructuredErrors(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlSchemaValidCtxtGetOptions(void) {
     int test_ret = 0;
 
@@ -33037,7 +33058,7 @@ static int
 test_xmlschemas(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlschemas : 14 of 22 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemas : 14 of 23 functions ...\n");
     test_ret += test_xmlSchemaDump();
     test_ret += test_xmlSchemaGetParserErrors();
     test_ret += test_xmlSchemaGetValidErrors();
@@ -33052,6 +33073,7 @@ test_xmlschemas(void) {
     test_ret += test_xmlSchemaSetParserErrors();
     test_ret += test_xmlSchemaSetValidErrors();
     test_ret += test_xmlSchemaSetValidOptions();
+    test_ret += test_xmlSchemaSetValidStructuredErrors();
     test_ret += test_xmlSchemaValidCtxtGetOptions();
     test_ret += test_xmlSchemaValidateDoc();
     test_ret += test_xmlSchemaValidateFile();

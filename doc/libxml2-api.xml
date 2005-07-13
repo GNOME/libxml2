@@ -1033,17 +1033,18 @@
      <exports symbol='xmlRelaxNGSetValidErrors' type='function'/>
      <exports symbol='xmlRelaxNGNewParserCtxt' type='function'/>
      <exports symbol='xmlRelaxNGGetParserErrors' type='function'/>
-     <exports symbol='xmlRelaxNGSetParserErrors' type='function'/>
+     <exports symbol='xmlRelaxNGValidatePopElement' type='function'/>
      <exports symbol='xmlRelaxNGNewValidCtxt' type='function'/>
      <exports symbol='xmlRelaxNGNewMemParserCtxt' type='function'/>
      <exports symbol='xmlRelaxNGDump' type='function'/>
-     <exports symbol='xmlRelaxNGValidityErrorFunc' type='function'/>
+     <exports symbol='xmlRelaxNGSetParserErrors' type='function'/>
      <exports symbol='xmlRelaxNGParse' type='function'/>
-     <exports symbol='xmlRelaxNGValidatePushElement' type='function'/>
      <exports symbol='xmlRelaxNGValidateFullElement' type='function'/>
-     <exports symbol='xmlRelaxNGValidatePopElement' type='function'/>
+     <exports symbol='xmlRelaxNGValidityErrorFunc' type='function'/>
+     <exports symbol='xmlRelaxNGValidatePushElement' type='function'/>
      <exports symbol='xmlRelaxNGFree' type='function'/>
      <exports symbol='xmlRelaxNGValidateDoc' type='function'/>
+     <exports symbol='xmlRelaxNGSetValidStructuredErrors' type='function'/>
      <exports symbol='xmlRelaxNGFreeParserCtxt' type='function'/>
      <exports symbol='xmlRelaxNGGetValidErrors' type='function'/>
      <exports symbol='xmlRelaxNGInitTypes' type='function'/>
@@ -2883,7 +2884,7 @@
      <exports symbol='xmlSchemaValidateStream' type='function'/>
      <exports symbol='xmlSchemaGetParserErrors' type='function'/>
      <exports symbol='xmlSchemaValidateOneElement' type='function'/>
-     <exports symbol='xmlSchemaDump' type='function'/>
+     <exports symbol='xmlSchemaSetValidStructuredErrors' type='function'/>
      <exports symbol='xmlSchemaSetValidErrors' type='function'/>
      <exports symbol='xmlSchemaValidCtxtGetOptions' type='function'/>
      <exports symbol='xmlSchemaValidateFile' type='function'/>
@@ -2894,6 +2895,7 @@
      <exports symbol='xmlSchemaSetValidOptions' type='function'/>
      <exports symbol='xmlSchemaSetParserErrors' type='function'/>
      <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
+     <exports symbol='xmlSchemaDump' type='function'/>
      <exports symbol='xmlSchemaFreeValidCtxt' type='function'/>
      <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
     </file>
@@ -12233,6 +12235,14 @@ actually an xmlCharEncoding'/>
       <arg name='warn' type='xmlRelaxNGValidityWarningFunc' info='the warning function'/>
       <arg name='ctx' type='void *' info='the functions context'/>
     </function>
+    <function name='xmlRelaxNGSetValidStructuredErrors' file='relaxng' module='relaxng'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Set the structured error callback</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info='the structured error function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
+    </function>
     <function name='xmlRelaxNGValidateDoc' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Validate a document tree in memory.</info>
@@ -13037,6 +13047,14 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 in case of success, -1 in case of an API error.'/>
       <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
       <arg name='options' type='int' info='a combination of xmlSchemaValidOption'/>
+    </function>
+    <function name='xmlSchemaSetValidStructuredErrors' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Set the structured error callback</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info='the structured error function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
     </function>
     <function name='xmlSchemaValPredefTypeNode' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>

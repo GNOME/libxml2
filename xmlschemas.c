@@ -23648,6 +23648,26 @@ xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,
 }
 
 /**
+ * xmlSchemaSetValidStructuredErrors:
+ * @ctxt:  a schema validation context
+ * @serror:  the structured error function
+ * @ctx: the functions context
+ *
+ * Set the structured error callback
+ */
+void
+xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
+								  xmlStructuredErrorFunc serror, void *ctx)
+{
+    if (ctxt == NULL)
+        return;
+	ctxt->serror = serror;
+    ctxt->error = NULL;
+    ctxt->warning = NULL;
+    ctxt->userData = ctx;
+}
+
+/**
  * xmlSchemaGetValidErrors:
  * @ctxt:	a XML-Schema validation context
  * @err: the error function result

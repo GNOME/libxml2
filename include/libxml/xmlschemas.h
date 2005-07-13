@@ -138,6 +138,9 @@ XMLPUBFUN void XMLCALL
 					 xmlSchemaValidityErrorFunc err,
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
+XMLPUBFUN void XMLCALL
+	    xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
+								  xmlStructuredErrorFunc serror, void *ctx);
 XMLPUBFUN int XMLCALL
 	    xmlSchemaGetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc *err,

@@ -2629,10 +2629,10 @@ static void
 htmlParseScript(htmlParserCtxtPtr ctxt) {
     xmlChar buf[HTML_PARSER_BIG_BUFFER_SIZE + 1];
     int nbchar = 0;
-    xmlChar cur;
+    int cur,l;
 
     SHRINK;
-    cur = CUR;
+    cur = CUR_CHAR(l);
     while (IS_CHAR_CH(cur)) {
 	if ((cur == '<') && (NXT(1) == '!') && (NXT(2) == '-') &&
 	    (NXT(3) == '-')) {
@@ -2648,7 +2648,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	    }
 	    nbchar = 0;
 	    htmlParseComment(ctxt);
-	    cur = CUR;
+	    cur = CUR_CHAR(l);
 	    continue;
 	} else if ((cur == '<') && (NXT(1) == '/')) {
 	    /*
@@ -2661,7 +2661,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	        ((NXT(2) >= 'a') && (NXT(2) <= 'z')))
 		break; /* while */
 	}
-	buf[nbchar++] = cur;
+	COPY_BUF(l,buf,nbchar,cur);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
 	    if (ctxt->sax->cdataBlock!= NULL) {
 		/*
@@ -2673,8 +2673,8 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	    }
 	    nbchar = 0;
 	}
-	NEXT;
-	cur = CUR;
+	NEXTL(l);
+	cur = CUR_CHAR(l);
     }
     if (!(IS_CHAR_CH(cur))) {
 	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,

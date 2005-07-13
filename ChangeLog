@@ -1,3 +1,10 @@
+Wed Jul 13 18:35:47 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied UTF-8 script parsing bug #310229 fix from
+	  Jiri Netolicky 
+	* result/HTML/script2.html* test/HTML/script2.html: added the test
+	  case from the regression suite
+
 Tue Jul 12 17:08:11 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* nanohttp.c: fixed bug #310105 with http_proxy environments with

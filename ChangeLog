@@ -1,3 +1,9 @@
+Thu Jul 14 14:57:36 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* testRegexp.c: fixed where xmlMemoryDump() should be called.
+	* xmlregexp.c: fixed handling of {0}, \n, \r and \t, two bugs
+	  affecting NIST regression tests
+
 Thu Jul 14 11:30:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: applied a patch from Gerrit P. Haase to add

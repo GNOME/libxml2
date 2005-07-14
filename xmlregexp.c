@@ -1467,6 +1467,23 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		break;
 	}
 	return(0);
+    } else if ((atom->min == 0) && (atom->max == 0) &&
+               (atom->quant == XML_REGEXP_QUANT_RANGE)) {
+        /*
+	 * we can discard the atom and generate an epsilon transition instead
+	 */
+	if (to == NULL) {
+	    to = xmlRegNewState(ctxt);
+	    if (to != NULL)
+		xmlRegStatePush(ctxt, to);
+	    else {
+		return(-1);
+	    }
+	}
+	xmlFAGenerateEpsilonTransition(ctxt, from, to);
+	ctxt->state = to;
+	xmlRegFreeAtom(atom);
+	return(0);
     } else {
 	if (to == NULL) {
 	    to = xmlRegNewState(ctxt);
@@ -3815,8 +3832,21 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 	(cur == 0x5E)) {
 	if (ctxt->atom == NULL) {
 	    ctxt->atom = xmlRegNewAtom(ctxt, XML_REGEXP_CHARVAL);
-	    if (ctxt->atom != NULL)
-		ctxt->atom->codepoint = cur;
+	    if (ctxt->atom != NULL) {
+	        switch (cur) {
+		    case 'n':
+		        ctxt->atom->codepoint = '\n';
+			break;
+		    case 'r':
+		        ctxt->atom->codepoint = '\r';
+			break;
+		    case 't':
+		        ctxt->atom->codepoint = '\t';
+			break;
+		    default:
+			ctxt->atom->codepoint = cur;
+		}
+	    }
 	} else if (ctxt->atom->type == XML_REGEXP_RANGES) {
 	    xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 			       XML_REGEXP_CHARVAL, cur, cur, NULL);

@@ -1,3 +1,8 @@
+Thu Jul 14 10:56:42 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed a potential buffer overrun error introduced
+	  on last commit to htmlParseScript() c.f. #310229
+
 Thu Jul 14 23:48:17 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: Changed the behaviour of xmlXPathEqualNodeSetFloat to

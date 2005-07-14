@@ -673,21 +673,33 @@ AC_SUBST(PYTHON_SUBDIR)
 
 dnl check for dso support
 WITH_MODULES=0
-MODULE_EXTENSION=".so"
 TEST_MODULES=
 
 if test "$with_modules" != "no" ; then
-AC_CHECK_LIB(dld, shl_load, [
-  WITH_MODULES=1
-  MODULE_PLATFORM_LIBS="-ldld"
-  AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])
-])
-
-AC_CHECK_LIB(dl, dlopen, [
-  WITH_MODULES=1
-  MODULE_PLATFORM_LIBS="-ldl"
-  AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
-])
+ case "$host" in
+  *-*-cygwin*)
+  MODULE_EXTENSION=".dll"
+  AC_CHECK_LIB(cygwin, dlopen, [
+    WITH_MODULES=1
+    MODULE_PLATFORM_LIBS=
+    AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
+  ])
+  ;;
+  *)
+  MODULE_EXTENSION=".so"
+  AC_CHECK_LIB(dld, shl_load, [
+    WITH_MODULES=1
+    MODULE_PLATFORM_LIBS="-ldld"
+    AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])
+  ])
+ 
+  AC_CHECK_LIB(dl, dlopen, [
+    WITH_MODULES=1
+    MODULE_PLATFORM_LIBS="-ldl"
+    AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
+  ])
+ ;;
+ esac
 fi
 
 if test "${WITH_MODULES}" = "1"; then

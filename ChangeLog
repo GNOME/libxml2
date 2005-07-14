@@ -1,3 +1,8 @@
+Thu Jul 14 11:30:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: applied a patch from Gerrit P. Haase to add
+	  module support on cygwin
+
 Thu Jul 14 10:56:42 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed a potential buffer overrun error introduced

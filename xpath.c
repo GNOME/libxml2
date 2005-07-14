@@ -4577,6 +4577,9 @@ xmlXPathEqualNodeSetFloat(xmlXPathParserContextPtr ctxt,
 			ret = 1;
 			break;
 		    }
+		} else {	/* NaN is unequal to any value */
+		    if (neq)
+			ret = 1;
 		}
 	    }
 	}

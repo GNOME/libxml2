@@ -1,3 +1,10 @@
+Thu Jul 14 17:53:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: found the last bug raised by NIST tests in
+	  comparing base64 strings, result from runsuite:
+	  ## NIST test suite for Schemas version NIST2004-01-14
+	  Ran 23170 tests (3953 schemata), no errors
+
 Thu Jul 14 14:57:36 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testRegexp.c: fixed where xmlMemoryDump() should be called.

@@ -4685,6 +4685,8 @@ xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
                         return(1);
                     else if (ret == 0)
                         return(0);
+		    else
+		        return(-1);
                 }
                 else if (x->value.base64.total > y->value.base64.total)
                     return(1);

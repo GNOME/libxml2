@@ -1,3 +1,8 @@
+Sun Jul 17 07:11:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed bug #307508, a bad automata was built but
+	  this showed as an indeterminist result
+
 Thu Jul 14 17:53:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: found the last bug raised by NIST tests in

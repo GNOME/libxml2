@@ -11182,6 +11182,10 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
                                                            NULL, counter);
 
                         } else {
+                            ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+				oldstate, NULL);
+                            oldstate = ctxt->state;
+
 			    sub = particle->children->children;
                             while (sub != NULL) {
                                 xmlSchemaBuildAContentModel(ctxt,
@@ -11190,6 +11194,13 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
                             }
                             xmlAutomataNewEpsilon(ctxt->am, ctxt->state,
                                                   oldstate);
+			    /*
+			     * epsilon needed to block previous trans from
+			     * being allowed to enter back from another
+			     * construct
+			     */
+			    ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+						ctxt->state, NULL);
                             if (particle->minOccurs == 0) {
                                 xmlAutomataNewEpsilon(ctxt->am,
 				    oldstate, ctxt->state);
@@ -11261,7 +11272,7 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
                     }
                 } else {
                     int counter;
-                    xmlAutomataStatePtr hop;
+                    xmlAutomataStatePtr hop, base;
                     int maxOccurs = particle->maxOccurs == UNBOUNDED ?
                         UNBOUNDED : particle->maxOccurs - 1;
                     int minOccurs =
@@ -11272,22 +11283,21 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
                      * which went through the choice.
                      */
                     counter =
-                        xmlAutomataNewCounter(ctxt->am, minOccurs,
-                                              maxOccurs);
+                        xmlAutomataNewCounter(ctxt->am, minOccurs, maxOccurs);
                     hop = xmlAutomataNewState(ctxt->am);
+                    base = xmlAutomataNewState(ctxt->am);
 
 		    sub = particle->children->children;
                     while (sub != NULL) {
-                        ctxt->state = start;
+                        ctxt->state = base;
                         xmlSchemaBuildAContentModel(ctxt,
 			    (xmlSchemaParticlePtr) sub, name);
                         xmlAutomataNewEpsilon(ctxt->am, ctxt->state, hop);
                         sub = sub->next;
-                    }
-                    xmlAutomataNewCountedTrans(ctxt->am, hop, start,
-                                               counter);
-                    xmlAutomataNewCounterTrans(ctxt->am, hop, end,
-                                               counter);
+/* DVDVDV */        }
+                    xmlAutomataNewEpsilon(ctxt->am, start, base);
+		    xmlAutomataNewCountedTrans(ctxt->am, hop, base, counter);
+                    xmlAutomataNewCounterTrans(ctxt->am, hop, end, counter);
                 }
                 if (particle->minOccurs == 0) {
                     xmlAutomataNewEpsilon(ctxt->am, start, end);
@@ -24267,7 +24277,7 @@ commentSplit(void *ctx, const xmlChar *value)
  */
 
 static void
-warningSplit(void *ctx, const char *msg, ...) {
+warningSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->warning != NULL)) {
@@ -24275,7 +24285,7 @@ warningSplit(void *ctx, const char *msg, ...) {
     }
 }
 static void
-errorSplit(void *ctx, const char *msg, ...) {
+errorSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->error != NULL)) {
@@ -24283,7 +24293,7 @@ errorSplit(void *ctx, const char *msg, ...) {
     }
 }
 static void
-fatalErrorSplit(void *ctx, const char *msg, ...) {
+fatalErrorSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->fatalError != NULL)) {

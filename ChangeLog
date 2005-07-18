@@ -1,3 +1,11 @@
+Mon Jul 18 20:49:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed xsd:all when used in conjunction with
+	  substitution groups
+	* test/schemas/allsg_* result/schemas/allsg_*: adding specific
+	  regression tests, strangely missing from NIST/Sun/Microsoft
+	  testsuites
+
 Sun Jul 17 07:11:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed bug #307508, a bad automata was built but

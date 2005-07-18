@@ -226,15 +226,6 @@
       </varlistentry>
 
       <varlistentry>
-	<term><option>--nonet</option></term>
-	<listitem>
-	  <simpara>
-	    Do not use the Internet to fetch DTD's or entities.
-	  </simpara>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
 	<term> <option>--path</option> <replaceable>paths</replaceable></term>
 	<listitem>
 	  <simpara>

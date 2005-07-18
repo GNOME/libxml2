@@ -1,3 +1,8 @@
+Mon Jul 18 23:01:15 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmllint.1 doc/xmllint.html doc/xmllint.xml: --nonet was
+	  ducplicated
+
 Mon Jul 18 20:49:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed xsd:all when used in conjunction with

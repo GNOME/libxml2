@@ -1,3 +1,10 @@
+Tue Jul 19 17:27:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c: fixed the error reporting for
+	  not transitions
+	* result/schemas/any5_0_0* result/schemas/any5_0_2*
+	  result/schemas/any5_1_0*: fixed output
+
 Tue Jul 19 15:34:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h: fixing

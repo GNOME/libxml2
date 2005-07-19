@@ -1,1 +1,1 @@
-./test/schemas/any5_0.xml:4: element foo: Schemas validity error : Element '{urn:test:foo}foo': Missing child element(s).
+./test/schemas/any5_0.xml:6: element boo: Schemas validity error : Element '{urn:test:foo}boo': This element is not expected. Expected is ( not {urn:test:foo}* ).

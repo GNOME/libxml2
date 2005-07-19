@@ -752,6 +752,8 @@ xmlRegFreeAtom(xmlRegAtomPtr atom) {
 	xmlFree(atom->ranges);
     if ((atom->type == XML_REGEXP_STRING) && (atom->valuep != NULL))
 	xmlFree(atom->valuep);
+    if ((atom->type == XML_REGEXP_STRING) && (atom->valuep2 != NULL))
+	xmlFree(atom->valuep2);
     if ((atom->type == XML_REGEXP_BLOCK_NAME) && (atom->valuep != NULL))
 	xmlFree(atom->valuep);
     xmlFree(atom);
@@ -3165,7 +3167,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
 }
 
 /**
- * xmlRegExecGetalues:
+ * xmlRegExecGetValues:
  * @exec: a regexp execution context
  * @err: error extraction or normal one
  * @nbval: pointer to the number of accepted values IN/OUT
@@ -3274,14 +3276,20 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 		    count = exec->counts[trans->counter];
 		counter = &exec->comp->counters[trans->counter];
 		if (count < counter->max) {
-		    values[nb++] = (xmlChar *) atom->valuep;
+		    if (atom->neg)
+			values[nb++] = (xmlChar *) atom->valuep2;
+		    else
+			values[nb++] = (xmlChar *) atom->valuep;
 		    (*nbval)++;
 		}
 	    } else {
                 if ((exec->comp->states[trans->to] != NULL) &&
 		    (exec->comp->states[trans->to]->type !=
 		     XML_REGEXP_SINK_STATE)) {
-		    values[nb++] = (xmlChar *) atom->valuep;
+		    if (atom->neg)
+			values[nb++] = (xmlChar *) atom->valuep2;
+		    else
+			values[nb++] = (xmlChar *) atom->valuep;
 		    (*nbval)++;
 		}
 	    } 
@@ -3305,7 +3313,10 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
                 if ((exec->comp->states[trans->to] != NULL) &&
 		    (exec->comp->states[trans->to]->type ==
 		     XML_REGEXP_SINK_STATE)) {
-		    values[nb++] = (xmlChar *) atom->valuep;
+		    if (atom->neg)
+			values[nb++] = (xmlChar *) atom->valuep2;
+		    else
+			values[nb++] = (xmlChar *) atom->valuep;
 		    (*nbneg)++;
 		}
 	    } 
@@ -4766,6 +4777,7 @@ xmlAutomataNewNegTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 		       xmlAutomataStatePtr to, const xmlChar *token,
 		       const xmlChar *token2, void *data) {
     xmlRegAtomPtr atom;
+    xmlChar err_msg[200];
 
     if ((am == NULL) || (from == NULL) || (token == NULL))
 	return(NULL);
@@ -4795,6 +4807,9 @@ xmlAutomataNewNegTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 
 	atom->valuep = str;
     }
+    snprintf(err_msg, 199, "not %s", atom->valuep);
+    err_msg[199] = 0;
+    atom->valuep2 = xmlStrdup(err_msg);
 
     if (xmlFAGenerateTransitions(am, from, to, atom) < 0) {
         xmlRegFreeAtom(atom);

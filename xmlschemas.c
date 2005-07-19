@@ -1879,7 +1879,7 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
     xmlChar *str = NULL, *msg = NULL;
     xmlChar *localName, *nsName;
     const xmlChar *cur, *end;
-    int i;
+    int i, is_not;
     
     xmlSchemaFormatNodeForError(&msg, actxt, node);
     msg = xmlStrcat(msg, (const xmlChar *) message);
@@ -1898,6 +1898,16 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
     	    
 	for (i = 0; i < nbval + nbneg; i++) {
 	    cur = values[i];
+	    if (cur == NULL)
+	        continue;
+	    if ((cur[0] == 'n') && (cur[1] == 'o') && (cur[2] == 't') &&
+	        (cur[3] == ' ')) {
+	        is_not = 1;
+		cur += 4;
+		str = xmlStrcat(str, BAD_CAST "not ");
+	    } else {
+	        is_not = 0;
+	    }
 	    /*
 	    * Get the local name.
 	    */
@@ -8679,6 +8689,7 @@ xmlSchemaParseSchemaTopLevel(xmlSchemaParserCtxtPtr ctxt,
 	    xmlSchemaParseInclude(ctxt, schema, child);
 	    ctxt->includes--;
 	} else if (IS_SCHEMA(child, "redefine")) {
+	    fprintf(stderr, "redefine is not yet implemented\n");
 	    TODO
 	}
 	child = child->next;

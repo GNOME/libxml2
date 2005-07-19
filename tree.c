@@ -4332,6 +4332,16 @@ xmlGetNodePath(xmlNodePtr node)
         } else if (cur->type == XML_ATTRIBUTE_NODE) {
             sep = "/@";
             name = (const char *) (((xmlAttrPtr) cur)->name);
+            if (cur->ns) {
+	        if (cur->ns->prefix != NULL)
+                    snprintf(nametemp, sizeof(nametemp) - 1, "%s:%s",
+		    	(char *)cur->ns->prefix, (char *)cur->name);
+		else
+		    snprintf(nametemp, sizeof(nametemp) - 1, "%s",
+		    	(char *)cur->name);
+                nametemp[sizeof(nametemp) - 1] = 0;
+                name = nametemp;
+            }
             next = ((xmlAttrPtr) cur)->parent;
         } else {
             next = cur->parent;

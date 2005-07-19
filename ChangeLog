@@ -1,3 +1,8 @@
+Tue Jul 19 12:33:31 CEST 2005  Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch from Alexander Pohoyda fixing xmlGetNodePath
+	  on namespaced attributes #310417.
+
 Mon Jul 18 23:01:15 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmllint.1 doc/xmllint.html doc/xmllint.xml: --nonet was

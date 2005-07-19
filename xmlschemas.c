@@ -11132,14 +11132,9 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
 		    } while (ns != NULL);
 
 		} else if (wild->negNsSet != NULL) {
-		    xmlAutomataStatePtr deadEnd;
-
-		    deadEnd = xmlAutomataNewState(ctxt->am);
-		    ctxt->state = xmlAutomataNewTransition2(ctxt->am,
-			start, deadEnd, BAD_CAST "*", wild->negNsSet->value, wild);
-		    ctxt->state = xmlAutomataNewTransition2(ctxt->am,
-			start, NULL, BAD_CAST "*", BAD_CAST "*", wild);
-		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, hop);
+		    ctxt->state = xmlAutomataNewNegTrans(ctxt->am,
+			start, hop, BAD_CAST "*", wild->negNsSet->value,
+			wild);
 		}
 		xmlAutomataNewCountedTrans(ctxt->am, hop, start, counter);
 		xmlAutomataNewCounterTrans(ctxt->am, hop, end, counter);
@@ -11384,60 +11379,6 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
                 ctxt->state =
                     xmlAutomataNewAllTrans(ctxt->am, ctxt->state, NULL, lax);
                 break;
-#if 0
-                xmlAutomataStatePtr start, end, base;
-		xmlSchemaParticlePtr sub;
-		xmlSchemaElementPtr elemDecl;
-		int nbtrans = 0;
-		int lax = particle->minOccurs == 0;
-		int counter = -1;
-
-		sub = (xmlSchemaParticlePtr) particle->children->children;
-                if (sub == NULL)
-                    break;
-
-                start = ctxt->state;
-                end = xmlAutomataNewState(ctxt->am);
-		base = xmlAutomataNewState(ctxt->am);
-		xmlAutomataNewEpsilon(ctxt->am, start, base);
-
-		if (!lax) {
-		    while (sub != NULL) {
-			sub = (xmlSchemaParticlePtr) sub->next;
-			nbtrans++;
-		    }
-		    sub = (xmlSchemaParticlePtr) particle->children->children;
-		    nbtrans--;
-                    counter = xmlAutomataNewCounter(ctxt->am, nbtrans, nbtrans);
-		}
-
-                while (sub != NULL) {
-                    ctxt->state = base;
-
-		    elemDecl = (xmlSchemaElementPtr) sub->children;
-		    if (elemDecl == NULL) {
-			xmlSchemaPErr(ctxt, NULL,
-			    XML_SCHEMAP_INTERNAL,
-			    "Internal error: xmlSchemaBuildAContentModel, "
-			    "<element> particle a NULL term.\n", NULL, NULL);
-			return;
-		    };
-		    xmlSchemaBuildContentModelForElement(ctxt,
-			(xmlSchemaParticlePtr) sub, 1);
-		    if (lax) {
-			xmlAutomataNewEpsilon(ctxt->am, ctxt->state, base);
-			xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
-		    } else {
-			xmlAutomataNewCountedTrans(ctxt->am, ctxt->state,
-			                           base, counter);
-			xmlAutomataNewCounterTrans(ctxt->am, ctxt->state,
-			                           end, counter);
-		    }
-                    sub = (xmlSchemaParticlePtr) sub->next;
-                }
-                ctxt->state = end;
-                break;
-#endif
             }
         default:
             xmlGenericError(xmlGenericErrorContext,

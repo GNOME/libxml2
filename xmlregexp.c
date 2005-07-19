@@ -329,6 +329,7 @@ struct _xmlRegExecCtxt {
 static void xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top);
 static void xmlRegFreeState(xmlRegStatePtr state);
 static void xmlRegFreeAtom(xmlRegAtomPtr atom);
+static int xmlRegStrEqualWildcard(const xmlChar *expStr, const xmlChar *valStr);
 
 /************************************************************************
  *									*
@@ -971,6 +972,8 @@ xmlRegPrintAtom(FILE *output, xmlRegAtomPtr atom) {
 	fprintf(output, "NULL\n");
 	return;
     }
+    if (atom->neg)
+        fprintf(output, "not ");
     xmlRegPrintAtomType(output, atom->type);
     xmlRegPrintQuantType(output, atom->quant);
     if (atom->quant == XML_REGEXP_QUANT_RANGE)
@@ -1741,6 +1744,8 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
  */
 static int
 xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
+    int ret;
+
     if (atom1 == atom2)
 	return(1);
     if ((atom1 == NULL) || (atom2 == NULL))
@@ -1750,19 +1755,23 @@ xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
 	return(0);
     switch (atom1->type) {
         case XML_REGEXP_STRING:
-	    return(xmlStrEqual((xmlChar *)atom1->valuep,
-			       (xmlChar *)atom2->valuep));
+	    ret = xmlRegStrEqualWildcard((xmlChar *)atom1->valuep,
+	                                 (xmlChar *)atom2->valuep);
+	    break;
         case XML_REGEXP_EPSILON:
 	    return(1);
         case XML_REGEXP_CHARVAL:
-	    return(atom1->codepoint == atom2->codepoint);
+	    ret = atom1->codepoint == atom2->codepoint;
+	    break;
         case XML_REGEXP_RANGES:
 	    TODO;
 	    return(0);
 	default:
-	    break;
+	    return(1);
     }
-    return(1);
+    if (atom1->neg != atom2->neg)
+        ret = !ret;
+    return(ret);
 }
 
 /**
@@ -2907,6 +2916,8 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		break;
 	    } else if (value != NULL) {
 		ret = xmlRegStrEqualWildcard(atom->valuep, value);
+		if (atom->neg)
+		    ret = !ret;
 		if ((ret == 1) && (trans->counter >= 0)) {
 		    xmlRegCounterPtr counter;
 		    int count;
@@ -4704,6 +4715,65 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
     atom->data = data;
     if (atom == NULL)
 	return(NULL);
+    if ((token2 == NULL) || (*token2 == 0)) {
+	atom->valuep = xmlStrdup(token);
+    } else {
+	int lenn, lenp;
+	xmlChar *str;
+
+	lenn = strlen((char *) token2);
+	lenp = strlen((char *) token);
+
+	str = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
+	if (str == NULL) {
+	    xmlRegFreeAtom(atom);
+	    return(NULL);
+	}
+	memcpy(&str[0], token, lenp);
+	str[lenp] = '|';
+	memcpy(&str[lenp + 1], token2, lenn);
+	str[lenn + lenp + 1] = 0;
+
+	atom->valuep = str;
+    }
+
+    if (xmlFAGenerateTransitions(am, from, to, atom) < 0) {
+        xmlRegFreeAtom(atom);
+	return(NULL);
+    }
+    if (to == NULL)
+	return(am->state);
+    return(to);
+}
+
+/**
+ * xmlAutomataNewNegTrans:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @token: the first input string associated to that transition
+ * @token2: the second input string associated to that transition
+ * @data: data passed to the callback function if the transition is activated
+ *
+ * If @to is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the @from state to the target state
+ * activated by any value except (@token,@token2)
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewNegTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
+		       xmlAutomataStatePtr to, const xmlChar *token,
+		       const xmlChar *token2, void *data) {
+    xmlRegAtomPtr atom;
+
+    if ((am == NULL) || (from == NULL) || (token == NULL))
+	return(NULL);
+    atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
+    if (atom == NULL)
+	return(NULL);
+    atom->data = data;
+    atom->neg = 1;
     if ((token2 == NULL) || (*token2 == 0)) {
 	atom->valuep = xmlStrdup(token);
     } else {

@@ -1,4 +1,13 @@
-Tue Jul 19 12:33:31 CEST 2005  Daniel Veillard <daniel@veillard.com>
+Tue Jul 19 15:34:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h: fixing
+	  bug #172215 about foreign namespaces by adding support for
+	  negated string transitions. Error messages still need to be
+	  improved.
+	* test/schemas/any5* result/schemas/any5*: adding regression
+	  tests for this.
+
+Tue Jul 19 12:33:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch from Alexander Pohoyda fixing xmlGetNodePath
 	  on namespaced attributes #310417.

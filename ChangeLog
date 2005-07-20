@@ -1,3 +1,10 @@
+Wed Jul 20 14:45:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: an optimization of the char data inner loop,
+	  can gain up to 10% in pure SAX2 parsing speed
+	* xmlschemas.c: applied patch from Kupriyanov Anatolij fixing
+	  a bug in XML Schemas facet comparison #310893
+
 Tue Jul 19 17:27:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c: fixed the error reporting for

@@ -8689,7 +8689,6 @@ xmlSchemaParseSchemaTopLevel(xmlSchemaParserCtxtPtr ctxt,
 	    xmlSchemaParseInclude(ctxt, schema, child);
 	    ctxt->includes--;
 	} else if (IS_SCHEMA(child, "redefine")) {
-	    fprintf(stderr, "redefine is not yet implemented\n");
 	    TODO
 	}
 	child = child->next;
@@ -15663,7 +15662,7 @@ xmlSchemaDeriveAndValidateFacets(xmlSchemaParserCtxtPtr pctxt,
 	    res = xmlSchemaCompareValues(fmininc->val, bfmaxinc->val);
 	    if (res == -2)
 		goto internal_error;
-	    if (res == -1) {
+	    if (res == 1) {
 		xmlSchemaDeriveFacetErr(pctxt, fmininc, bfmaxinc, -1, 1, 1);
 	    }
 	}

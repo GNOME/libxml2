@@ -591,7 +591,7 @@ typedef void (*cdataBlockSAXFunc) (
  * 
  * Display and format a warning messages, callback.
  */
-typedef void (*warningSAXFunc) (void *ctx,
+typedef void (XMLCDECL *warningSAXFunc) (void *ctx,
 				const char *msg, ...);
 /**
  * errorSAXFunc:
@@ -601,7 +601,7 @@ typedef void (*warningSAXFunc) (void *ctx,
  * 
  * Display and format an error messages, callback.
  */
-typedef void (*errorSAXFunc) (void *ctx,
+typedef void (XMLCDECL *errorSAXFunc) (void *ctx,
 				const char *msg, ...);
 /**
  * fatalErrorSAXFunc:
@@ -613,7 +613,7 @@ typedef void (*errorSAXFunc) (void *ctx,
  * Note: so far fatalError() SAX callbacks are not used, error()
  *       get all the callbacks for errors.
  */
-typedef void (*fatalErrorSAXFunc) (void *ctx,
+typedef void (XMLCDECL *fatalErrorSAXFunc) (void *ctx,
 				const char *msg, ...);
 /**
  * isStandaloneSAXFunc:

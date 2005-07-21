@@ -472,7 +472,7 @@ typedef struct _xmlGlobalStateCleanupHelperParams
     void *memory;
 } xmlGlobalStateCleanupHelperParams;
 
-static void xmlGlobalStateCleanupHelper (void *p)
+static void XMLCDECL xmlGlobalStateCleanupHelper (void *p)
 {
     xmlGlobalStateCleanupHelperParams *params = (xmlGlobalStateCleanupHelperParams *) p;
     WaitForSingleObject(params->thread, INFINITE);

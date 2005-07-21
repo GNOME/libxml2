@@ -6808,7 +6808,7 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
 /*
  * Dummy function to suppress messages while we try out valid elements
  */
-static void xmlNoValidityErr(void *ctx ATTRIBUTE_UNUSED,
+static void XMLCDECL xmlNoValidityErr(void *ctx ATTRIBUTE_UNUSED,
                                 const char *msg ATTRIBUTE_UNUSED, ...) {
     return;
 }

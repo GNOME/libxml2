@@ -3884,13 +3884,13 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 static char *
 xmlTextReaderBuildMessage(const char *msg, va_list ap);
 
-static void 
+static void XMLCDECL 
 xmlTextReaderValidityError(void *ctxt, const char *msg, ...);
 
-static void 
+static void XMLCDECL 
 xmlTextReaderValidityWarning(void *ctxt, const char *msg, ...);
 
-static void xmlTextReaderValidityErrorRelay(void *ctx, const char *msg, ...)
+static void XMLCDECL xmlTextReaderValidityErrorRelay(void *ctx, const char *msg, ...)
 {
 	xmlTextReaderPtr reader = (xmlTextReaderPtr) ctx;
 	char * str;
@@ -3908,7 +3908,7 @@ static void xmlTextReaderValidityErrorRelay(void *ctx, const char *msg, ...)
 	va_end(ap);
 }
 
-static void xmlTextReaderValidityWarningRelay(void *ctx, const char *msg, ...)
+static void XMLCDECL xmlTextReaderValidityWarningRelay(void *ctx, const char *msg, ...)
 {
 	xmlTextReaderPtr reader = (xmlTextReaderPtr) ctx;
 	char * str;
@@ -4470,7 +4470,7 @@ xmlTextReaderStructuredError(void *ctxt, xmlErrorPtr error) {
   }
 }
 
-static void 
+static void XMLCDECL 
 xmlTextReaderError(void *ctxt, const char *msg, ...) {
     va_list ap;
 
@@ -4482,7 +4482,7 @@ xmlTextReaderError(void *ctxt, const char *msg, ...) {
 
 }
 
-static void 
+static void XMLCDECL 
 xmlTextReaderWarning(void *ctxt, const char *msg, ...) {
     va_list ap;
 
@@ -4493,7 +4493,7 @@ xmlTextReaderWarning(void *ctxt, const char *msg, ...) {
     va_end(ap);
 }
 
-static void 
+static void XMLCDECL 
 xmlTextReaderValidityError(void *ctxt, const char *msg, ...) {
     va_list ap;
     int len = xmlStrlen((const xmlChar *) msg);
@@ -4511,7 +4511,7 @@ xmlTextReaderValidityError(void *ctxt, const char *msg, ...) {
     }
 }
 
-static void 
+static void XMLCDECL 
 xmlTextReaderValidityWarning(void *ctxt, const char *msg, ...) {
     va_list ap;
     int len = xmlStrlen((const xmlChar *) msg);

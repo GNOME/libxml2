@@ -113,7 +113,7 @@ startTimer(void)
  *           message about the timing performed; format is a printf
  *           type argument
  */
-static void
+static void XMLCDECL
 endTimer(const char *fmt, ...)
 {
     long msec;
@@ -149,7 +149,7 @@ startTimer(void)
 {
     begin = clock();
 }
-static void
+static void XMLCDECL
 endTimer(const char *fmt, ...)
 {
     long msec;
@@ -178,7 +178,7 @@ startTimer(void)
      * Do nothing
      */
 }
-static void
+static void XMLCDECL
 endTimer(char *format, ...)
 {
     /*
@@ -773,7 +773,7 @@ commentDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *value)
  * Display and format a warning messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
@@ -796,7 +796,7 @@ warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
  * Display and format a error messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
@@ -819,7 +819,7 @@ errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
  * Display and format a fatalError messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;

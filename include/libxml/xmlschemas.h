@@ -87,8 +87,8 @@ typedef xmlSchema *xmlSchemaPtr;
 /**
  * A schemas validation context
  */
-typedef void (*xmlSchemaValidityErrorFunc) (void *ctx, const char *msg, ...);
-typedef void (*xmlSchemaValidityWarningFunc) (void *ctx, const char *msg, ...);
+typedef void (XMLCDECL *xmlSchemaValidityErrorFunc) (void *ctx, const char *msg, ...);
+typedef void (XMLCDECL *xmlSchemaValidityWarningFunc) (void *ctx, const char *msg, ...);
 
 typedef struct _xmlSchemaParserCtxt xmlSchemaParserCtxt;
 typedef xmlSchemaParserCtxt *xmlSchemaParserCtxtPtr;

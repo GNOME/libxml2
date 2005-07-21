@@ -39,7 +39,7 @@ typedef xmlValidState *xmlValidStatePtr;
  * Callback called when a validity error is found. This is a message
  * oriented function similar to an *printf function.
  */
-typedef void (*xmlValidityErrorFunc) (void *ctx,
+typedef void (XMLCDECL *xmlValidityErrorFunc) (void *ctx,
 			     const char *msg,
 			     ...);
 
@@ -54,7 +54,7 @@ typedef void (*xmlValidityErrorFunc) (void *ctx,
  * Callback called when a validity warning is found. This is a message
  * oriented function similar to an *printf function.
  */
-typedef void (*xmlValidityWarningFunc) (void *ctx,
+typedef void (XMLCDECL *xmlValidityWarningFunc) (void *ctx,
 			       const char *msg,
 			       ...);
 

@@ -24309,7 +24309,7 @@ commentSplit(void *ctx, const xmlChar *value)
  * Varargs error callbacks to the user application, harder ...
  */
 
-static void
+static void XMLCDECL
 warningSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
@@ -24317,7 +24317,7 @@ warningSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
 	TODO
     }
 }
-static void
+static void XMLCDECL
 errorSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
@@ -24325,7 +24325,7 @@ errorSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
 	TODO
     }
 }
-static void
+static void XMLCDECL
 fatalErrorSplit(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...) {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&

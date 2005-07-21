@@ -815,7 +815,7 @@ typedef enum {
  * Signature of the function to use when there is an error and
  * no parsing or validity context available .
  */
-typedef void (*xmlGenericErrorFunc) (void *ctx,
+typedef void (XMLCDECL *xmlGenericErrorFunc) (void *ctx,
 				 const char *msg,
 	 			 ...);
 /**
@@ -826,7 +826,7 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
  * Signature of the function to use when there is an error and
  * the module handles the new error reporting mechanism.
  */
-typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
+typedef void (XMLCALL *xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
 
 /*
  * Use the following function to reset the two global variables
@@ -845,19 +845,19 @@ XMLPUBFUN void XMLCALL
  * Default message routines used by SAX and Valid context for error
  * and warning reporting.
  */
-XMLPUBFUN void XMLCALL	
+XMLPUBFUN void XMLCDECL	
     xmlParserError		(void *ctx,
 				 const char *msg,
 				 ...);
-XMLPUBFUN void XMLCALL	
+XMLPUBFUN void XMLCDECL	
     xmlParserWarning		(void *ctx,
 				 const char *msg,
 				 ...);
-XMLPUBFUN void XMLCALL	
+XMLPUBFUN void XMLCDECL	
     xmlParserValidityError	(void *ctx,
 				 const char *msg,
 				 ...);
-XMLPUBFUN void XMLCALL	
+XMLPUBFUN void XMLCDECL	
     xmlParserValidityWarning	(void *ctx,
 				 const char *msg,
 				 ...);

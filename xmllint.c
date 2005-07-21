@@ -413,7 +413,7 @@ startTimer(void)
  *           message about the timing performed; format is a printf
  *           type argument
  */
-static void
+static void XMLCDECL
 endTimer(const char *fmt, ...)
 {
     long msec;
@@ -449,7 +449,7 @@ startTimer(void)
 {
     begin = clock();
 }
-static void
+static void XMLCDECL
 endTimer(const char *fmt, ...)
 {
     long msec;
@@ -478,7 +478,7 @@ startTimer(void)
      * Do nothing
      */
 }
-static void
+static void XMLCDECL
 endTimer(char *format, ...)
 {
     /*
@@ -597,7 +597,7 @@ xmlHTMLPrintFileContext(xmlParserInputPtr input) {
  * Display and format an error messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 xmlHTMLError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -634,7 +634,7 @@ xmlHTMLError(void *ctx, const char *msg, ...)
  * Display and format a warning messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 xmlHTMLWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -672,7 +672,7 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
  * Display and format an validity error messages, gives file,
  * line, position and extra parameters.
  */
-static void
+static void XMLCDECL
 xmlHTMLValidityError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -709,7 +709,7 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
  * Display and format a validity warning messages, gives file, line,
  * position and extra parameters.
  */
-static void
+static void XMLCDECL
 xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -1373,7 +1373,7 @@ commentDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *value)
  * Display and format a warning messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
@@ -1396,7 +1396,7 @@ warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
  * Display and format a error messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
@@ -1419,7 +1419,7 @@ errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
  * Display and format a fatalError messages, gives file, line, position and
  * extra parameters.
  */
-static void
+static void XMLCDECL
 fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;

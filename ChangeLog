@@ -1,3 +1,14 @@
+Thu Jul 21 09:21:00 EDT 2005 Daniel Veillard <daniel@veillard.com>
+
+	* error.c globals.c parser.c runtest.c testHTML.c testSAX.c
+	  threads.c valid.c xmllint.c xmlreader.c xmlschemas.c xmlstring.c
+	  xmlwriter.c include/libxml/parser.h include/libxml/relaxng.h
+	  include/libxml/valid.h include/libxml/xmlIO.h
+	  include/libxml/xmlerror.h include/libxml/xmlexports.h
+	  include/libxml/xmlschemas.h: applied a patch from Marcus Boerger
+	  to fix problems with calling conventions on Windows this should
+	  fix #309757
+
 Wed Jul 20 14:45:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: an optimization of the char data inner loop,

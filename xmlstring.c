@@ -533,7 +533,7 @@ xmlStrcat(xmlChar *cur, const xmlChar *add) {
  *
  * Returns the number of characters written to @buf or -1 if an error occurs.
  */
-int 
+int XMLCDECL 
 xmlStrPrintf(xmlChar *buf, int len, const xmlChar *msg, ...) {
     va_list args;
     int ret;

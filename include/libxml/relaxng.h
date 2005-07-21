@@ -27,8 +27,8 @@ typedef xmlRelaxNG *xmlRelaxNGPtr;
 /**
  * A schemas validation context
  */
-typedef void (*xmlRelaxNGValidityErrorFunc) (void *ctx, const char *msg, ...);
-typedef void (*xmlRelaxNGValidityWarningFunc) (void *ctx, const char *msg, ...);
+typedef void (XMLCDECL *xmlRelaxNGValidityErrorFunc) (void *ctx, const char *msg, ...);
+typedef void (XMLCDECL *xmlRelaxNGValidityWarningFunc) (void *ctx, const char *msg, ...);
 
 typedef struct _xmlRelaxNGParserCtxt xmlRelaxNGParserCtxt;
 typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;

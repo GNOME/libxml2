@@ -31,7 +31,7 @@ extern "C" {
  *
  * Returns 1 if yes and 0 if another Input module should be used
  */
-typedef int (*xmlInputMatchCallback) (char const *filename);
+typedef int (XMLCALL *xmlInputMatchCallback) (char const *filename);
 /**
  * xmlInputOpenCallback:
  * @filename: the filename or URI
@@ -40,7 +40,7 @@ typedef int (*xmlInputMatchCallback) (char const *filename);
  *
  * Returns an Input context or NULL in case or error
  */
-typedef void * (*xmlInputOpenCallback) (char const *filename);
+typedef void * (XMLCALL *xmlInputOpenCallback) (char const *filename);
 /**
  * xmlInputReadCallback:
  * @context:  an Input context
@@ -51,7 +51,7 @@ typedef void * (*xmlInputOpenCallback) (char const *filename);
  *
  * Returns the number of bytes read or -1 in case of error
  */
-typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
+typedef int (XMLCALL *xmlInputReadCallback) (void * context, char * buffer, int len);
 /**
  * xmlInputCloseCallback:
  * @context:  an Input context
@@ -60,7 +60,7 @@ typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
  *
  * Returns 0 or -1 in case of error
  */
-typedef int (*xmlInputCloseCallback) (void * context);
+typedef int (XMLCALL *xmlInputCloseCallback) (void * context);
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /*
@@ -77,7 +77,7 @@ typedef int (*xmlInputCloseCallback) (void * context);
  *
  * Returns 1 if yes and 0 if another Output module should be used
  */
-typedef int (*xmlOutputMatchCallback) (char const *filename);
+typedef int (XMLCALL *xmlOutputMatchCallback) (char const *filename);
 /**
  * xmlOutputOpenCallback:
  * @filename: the filename or URI
@@ -86,7 +86,7 @@ typedef int (*xmlOutputMatchCallback) (char const *filename);
  *
  * Returns an Output context or NULL in case or error
  */
-typedef void * (*xmlOutputOpenCallback) (char const *filename);
+typedef void * (XMLCALL *xmlOutputOpenCallback) (char const *filename);
 /**
  * xmlOutputWriteCallback:
  * @context:  an Output context
@@ -97,7 +97,7 @@ typedef void * (*xmlOutputOpenCallback) (char const *filename);
  *
  * Returns the number of bytes written or -1 in case of error
  */
-typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
+typedef int (XMLCALL *xmlOutputWriteCallback) (void * context, const char * buffer,
                                        int len);
 /**
  * xmlOutputCloseCallback:
@@ -107,7 +107,7 @@ typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
  *
  * Returns 0 or -1 in case of error
  */
-typedef int (*xmlOutputCloseCallback) (void * context);
+typedef int (XMLCALL *xmlOutputCloseCallback) (void * context);
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef __cplusplus

@@ -2547,8 +2547,10 @@ xmlSchemaPSimpleTypeErr(xmlSchemaParserCtxtPtr ctxt,
 	else
 	    xmlSchemaPErr(ctxt, node, error, (const char *) msg, NULL, NULL);
     } else {
+	msg = xmlStrcat(msg, BAD_CAST message);
+	msg = xmlStrcat(msg, BAD_CAST "\n");
 	xmlSchemaPErrExt(ctxt, node, error, NULL, NULL, NULL,
-	     "%s%s.\n", msg, BAD_CAST message, str1, str2, NULL);
+	     (const char*) msg, str1, str2, NULL, NULL, NULL);
     }
     /* Cleanup. */    
     FREE_AND_NULL(msg)
@@ -11325,7 +11327,7 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr ctxt,
                 break;
             }
         case XML_SCHEMA_TYPE_ALL:{
-                xmlAutomataStatePtr start, hop;
+                xmlAutomataStatePtr start;
 		xmlSchemaParticlePtr sub;
 		xmlSchemaElementPtr elemDecl;
                 int lax;

@@ -1,3 +1,9 @@
+Sat Jul 23 00:34:07 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* pattern.c: Changed xmlCompileStepPattern() and
+	  xmlCompileAttributeTest() to handle the "xml" prefix without
+	  caring if the XML namespace was supplied by the user.
+
 Fri Jul 22 00:08:43 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed xmlSchemaPSimpleTypeErr(), which did not

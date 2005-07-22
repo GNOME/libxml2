@@ -905,20 +905,26 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
 	* This is a namespace match
 	*/
 	token = xmlPatScanName(ctxt);
-	for (i = 0;i < ctxt->nb_namespaces;i++) {
-	    if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
-		URL = xmlStrdup(ctxt->namespaces[2 * i]);
-		break;
+	if ((prefix[0] == 'x') &&
+	    (prefix[1] == 'm') &&
+	    (prefix[2] == 'l') &&
+	    (prefix[3] == 0)) {
+	    URL = xmlStrdup(XML_XML_NAMESPACE);
+	} else {
+	    for (i = 0;i < ctxt->nb_namespaces;i++) {
+		if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
+		    URL = xmlStrdup(ctxt->namespaces[2 * i]);
+		    break;
+		}
+	    }
+	    if (i >= ctxt->nb_namespaces) {
+		ERROR5(NULL, NULL, NULL,
+		    "xmlCompileAttributeTest : no namespace bound to prefix %s\n",
+		    prefix);
+		ctxt->error = 1;	    
+		goto error;
 	    }
 	}
-	if (i >= ctxt->nb_namespaces) {
-	    ERROR5(NULL, NULL, NULL,
-		"xmlCompileAttributeTest : no namespace bound to prefix %s\n",
-		prefix);
-	    ctxt->error = 1;	    
-	    goto error;
-	}
-	
 	xmlFree(prefix);
 	if (token == NULL) {
 	    if (CUR == '*') {
@@ -998,18 +1004,25 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	     * This is a namespace match
 	     */
 	    token = xmlPatScanName(ctxt);
-	    for (i = 0;i < ctxt->nb_namespaces;i++) {
-	        if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
-		    URL = xmlStrdup(ctxt->namespaces[2 * i]);
-		    break;
+	    if ((prefix[0] == 'x') &&
+		(prefix[1] == 'm') &&
+		(prefix[2] == 'l') &&
+		(prefix[3] == 0)) {
+		URL = xmlStrdup(XML_XML_NAMESPACE);
+	    } else {
+		for (i = 0;i < ctxt->nb_namespaces;i++) {
+		    if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
+			URL = xmlStrdup(ctxt->namespaces[2 * i]);
+			break;
+		    }
 		}
-	    }
-	    if (i >= ctxt->nb_namespaces) {
-		ERROR5(NULL, NULL, NULL,
-		    "xmlCompileStepPattern : no namespace bound to prefix %s\n",
-		    prefix);
-		ctxt->error = 1;
-		goto error;
+		if (i >= ctxt->nb_namespaces) {
+		    ERROR5(NULL, NULL, NULL,
+			"xmlCompileStepPattern : no namespace bound to prefix %s\n",
+			prefix);
+		    ctxt->error = 1;
+		    goto error;
+		}
 	    }
 	    xmlFree(prefix);
 	    if (token == NULL) {
@@ -1051,18 +1064,25 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		    * This is a namespace match
 		    */
 		    token = xmlPatScanName(ctxt);
-		    for (i = 0;i < ctxt->nb_namespaces;i++) {
-			if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
-			    URL = xmlStrdup(ctxt->namespaces[2 * i]);
-			    break;
+		    if ((prefix[0] == 'x') &&
+			(prefix[1] == 'm') &&
+			(prefix[2] == 'l') &&
+			(prefix[3] == 0)) {
+			URL = xmlStrdup(XML_XML_NAMESPACE);
+		    } else {
+			for (i = 0;i < ctxt->nb_namespaces;i++) {
+			    if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
+				URL = xmlStrdup(ctxt->namespaces[2 * i]);
+				break;
+			    }
 			}
-		    }
-		    if (i >= ctxt->nb_namespaces) {
-			ERROR5(NULL, NULL, NULL,
-			    "xmlCompileStepPattern : no namespace bound "
-			    	"to prefix %s\n", prefix);
-			ctxt->error = 1;
-			goto error;
+			if (i >= ctxt->nb_namespaces) {
+			    ERROR5(NULL, NULL, NULL,
+				"xmlCompileStepPattern : no namespace bound "
+				"to prefix %s\n", prefix);
+			    ctxt->error = 1;
+			    goto error;
+			}
 		    }
 		    xmlFree(prefix);
 		    if (token == NULL) {

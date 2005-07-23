@@ -27,7 +27,8 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		catalog.c globals.c threads.c c14n.c xmlstring.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
 		triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c \
-		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c xmlmodule.c
+		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
+		xmlmodule.c schematron.c
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
@@ -37,7 +38,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
 		xmlreader.c relaxng.c dict.c SAX2.c \
 		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
-		xmlmodule.c
+		xmlmodule.c schematron.c
 endif
 
 DEPS = $(top_builddir)/libxml2.la

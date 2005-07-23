@@ -1,3 +1,17 @@
+Sat Jul 23 10:55:50 EDT 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c include/libxml/pattern.h: changed xmlPatterncompile
+	  signature to pass an int and not an enum since it can generate
+	  ABI compat troubles.
+	* include/libxml/schematron.h schematron.c: adding the new 
+	  schematron code, work in progress lots to be left and needing
+	  testing
+	* include/libxml/xmlversion.h.in include/libxml/xmlwin32version.h.in
+	  Makefile.am configure.in: integration of schematron into the
+	  build
+	* xpath.c include/libxml/xpath.h: adding flags to control compilation
+	  options right now just XML_XPATH_CHECKNS.
+
 Sat Jul 23 16:39:35 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Removed an "internal error" message from

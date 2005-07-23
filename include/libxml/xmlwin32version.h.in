@@ -166,6 +166,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_SCHEMATRON_ENABLED:
+ *
+ * Whether the Schematron validation interfaces are compiled in
+ */
+#if 1
+#define LIBXML_SCHEMATRON_ENABLED
+#endif
+
+/**
  * LIBXML_ICONV_ENABLED:
  *
  * Whether iconv support is available

@@ -128,6 +128,8 @@ AC_ARG_WITH(sax1,
 [  --with-sax1             add the older SAX1 interface (on)])
 AC_ARG_WITH(schemas,
 [  --with-schemas          add Relax-NG and Schemas support (on)])
+AC_ARG_WITH(schematron,
+[  --with-schematron       add Schematron support (on)])
 AC_ARG_WITH(threads,
 [  --with-threads          add multithread support(on)])
 AC_ARG_WITH(thread-alloc,
@@ -162,6 +164,11 @@ if test "$with_schemas" = "yes"
 then
     with_pattern=yes
     with_regexp=yes
+fi
+if test "$with_schematron" = "yes"
+then
+    with_pattern=yes
+    with_xpath=yes
 fi
 if test "$with_reader" = "yes"
 then
@@ -269,6 +276,10 @@ then
     if test "$with_schemas" = ""
     then
       with_schemas=no
+    fi
+    if test "$with_schematron" = ""
+    then
+      with_schematron=no
     fi
     if test "$with_threads" = ""
     then
@@ -1151,6 +1162,20 @@ if test "$with_iso8859x" = "no" ; then
 fi
 fi
 AC_SUBST(WITH_ISO8859X)
+
+if test "$with_schematron" = "no" ; then
+    echo "Disabling Schematron support"
+    WITH_SCHEMATRON=0
+    TEST_SCHEMATRON=
+else    
+    echo "Enabled Schematron support"
+    WITH_SCHEMATRON=1
+    TEST_SCHEMATRON="Schematrontests"
+    with_xpath=yes
+    with_pattern=yes
+fi
+AC_SUBST(WITH_SCHEMATRON)
+AC_SUBST(TEST_SCHEMATRON)
 
 if test "$with_schemas" = "no" ; then
     echo "Disabling Schemas/Relax-NG support"

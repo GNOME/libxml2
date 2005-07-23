@@ -249,6 +249,14 @@ typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
 					 const xmlChar *ns_uri);
 
 /**
+ * xmlXPathFlags:
+ * Flags for XPath engine compilation and runtime
+ */
+typedef enum {
+    XML_XPATH_CHECKNS = 1		/* check namespaces at compilation */
+} xmlXPathFlags;
+
+/**
  * xmlXPathContext:
  *
  * Expression evaluation occurs with respect to a context.
@@ -324,6 +332,8 @@ struct _xmlXPathContext {
 
     /* dictionnary */
     xmlDictPtr dict;			/* dictionnary if any */
+
+    int flags;				/* flags to control compilation */
 };
 
 /*

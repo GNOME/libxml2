@@ -1954,7 +1954,7 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
  * xmlPatterncompile:
  * @pattern: the pattern to compile
  * @dict: an optional dictionary for interned strings
- * @flags: compilation flags, undefined yet
+ * @flags: compilation flags, see xmlPatternFlags
  * @namespaces: the prefix definitions, array of [URI, prefix] or NULL
  *
  * Compile a pattern.
@@ -1962,8 +1962,7 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
  * Returns the compiled form of the pattern or NULL in case of error
  */
 xmlPatternPtr
-xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
-                  xmlPatternFlags flags,
+xmlPatterncompile(const xmlChar *pattern, xmlDict *dict, int flags,
                   const xmlChar **namespaces) {
     xmlPatternPtr ret = NULL, cur;
     xmlPatParserContextPtr ctxt = NULL;

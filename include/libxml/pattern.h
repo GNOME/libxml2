@@ -52,7 +52,7 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN xmlPatternPtr XMLCALL
 			xmlPatterncompile	(const xmlChar *pattern,
 						 xmlDict *dict,
-						 xmlPatternFlags flags,
+						 int flags,
 						 const xmlChar **namespaces);
 XMLPUBFUN int XMLCALL
 			xmlPatternMatch		(xmlPatternPtr comp,

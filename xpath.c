@@ -8926,6 +8926,12 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	if (test == 0)
 	    return;
 
+        if ((prefix != NULL) && (ctxt->context != NULL) &&
+	    (ctxt->context->flags & XML_XPATH_CHECKNS)) {
+	    if (xmlXPathNsLookup(ctxt->context, prefix) == NULL) {
+		xmlXPathErr(ctxt, XPATH_UNDEF_PREFIX_ERROR);
+	    }
+	}
 #ifdef DEBUG_STEP
 	xmlGenericError(xmlGenericErrorContext,
 		"Basis : computing new set\n");

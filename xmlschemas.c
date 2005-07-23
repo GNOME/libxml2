@@ -21874,41 +21874,6 @@ xmlSchemaValidateElemWildcard(xmlSchemaValidCtxtPtr vctxt,
 	return (-1);
     }
     *skip = 0;
-    if (wild->negNsSet != NULL) {
-	/*
-	* URGENT VAL TODO: Fix the content model to reject
-	* "##other" wildcards.
-	*/
-	if (xmlSchemaCheckCVCWildcardNamespace(wild,
-	    vctxt->inode->nsName) != 0) {
-	    if ((wild->minOccurs == 1) && (wild->maxOccurs == 1)) {
-		xmlSchemaNodeInfoPtr pinode = vctxt->elemInfos[vctxt->depth -1];
-		/*
-		* VAL TODO: Workaround possible *only* if minOccurs and
-		* maxOccurs are 1.
-		*/
-		xmlSchemaComplexTypeErr((xmlSchemaAbstractCtxtPtr) vctxt,
-		    /* VAL TODO: error code? */
-		    XML_SCHEMAV_ELEMENT_CONTENT, NULL,
-		    (xmlSchemaTypePtr) wild,
-		    "This element is not accepted by the wildcard",
-		    0, 0, NULL);
-		vctxt->skipDepth = vctxt->depth;
-		if ((pinode->flags &
-		    XML_SCHEMA_ELEM_INFO_ERR_BAD_CONTENT) == 0)
-		    pinode->flags |= XML_SCHEMA_ELEM_INFO_ERR_BAD_CONTENT;
-		vctxt->inode->flags |= XML_SCHEMA_NODE_INFO_ERR_NOT_EXPECTED;
-		return (XML_SCHEMAV_ELEMENT_CONTENT);
-	    }
-	    if (wild->processContents == XML_SCHEMAS_ANY_SKIP) {
-		*skip = 1;
-		return (0);
-	    }
-	    vctxt->inode->typeDef =
-		xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
-	    return (0);
-	}
-    }
     if (wild->processContents == XML_SCHEMAS_ANY_SKIP) {
 	/*
 	* URGENT VAL TODO: Either we need to position the stream to the

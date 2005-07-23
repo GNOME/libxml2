@@ -1,3 +1,11 @@
+Sat Jul 23 23:07:05 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Removed the workaround code in
+	  xmlSchemaValidateElemWildcard() for the <any> wildcard
+	  with namespace == ##other. Support for such wildcards was
+	  implemented by Daniel at the automaton level recently, and
+	  the workaround code iterfered with it.
+
 Sat Jul 23 10:55:50 EDT 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c include/libxml/pattern.h: changed xmlPatterncompile

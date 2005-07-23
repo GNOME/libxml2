@@ -1,3 +1,8 @@
+Sat Jul 23 23:23:51 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/any6* test/schemas/any7*: Added regression tests
+	  (they fail currently), but did not added results yet.
+
 Sat Jul 23 23:07:05 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Removed the workaround code in

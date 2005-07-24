@@ -1,3 +1,8 @@
+Sun Jul 24 10:25:41 EDT 2005 Daniel Veillard <daniel@veillard.com>
+
+	* schematron.c xmllint.c: started adding schematron to the xmllint
+	  tool, the report infrastructure is gonna be fun.
+
 Sat Jul 23 23:23:51 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/any6* test/schemas/any7*: Added regression tests

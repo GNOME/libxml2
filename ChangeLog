@@ -1,3 +1,8 @@
+Mon Jul 25 11:41:18 PDT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* uri.c: enhanced xmlBuildRelativeURI to allow the URI and the
+	  base to be in "relative" form
+
 Sun Jul 24 10:25:41 EDT 2005 Daniel Veillard <daniel@veillard.com>
 
 	* schematron.c xmllint.c: started adding schematron to the xmllint

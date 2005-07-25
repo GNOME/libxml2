@@ -2070,14 +2070,6 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 
     if ((URI == NULL) || (*URI == 0))
 	return NULL;
-    /*
-     * Special case - if URI starts with '.', we assume it's already
-     * in relative form, so nothing to do.
-     */
-    if (*URI == '.') {
-	val = xmlStrdup (URI);
-	goto done;
-    }
 
     /*
      * First parse URI into a standard form
@@ -2085,9 +2077,13 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     ref = xmlCreateURI ();
     if (ref == NULL)
 	return NULL;
-    ret = xmlParseURIReference (ref, (const char *) URI);
-    if (ret != 0)
-	goto done;		/* Error in URI, return NULL */
+    /* If URI not already in "relative" form */
+    if (URI[0] != '.') {
+	ret = xmlParseURIReference (ref, (const char *) URI);
+	if (ret != 0)
+	    goto done;		/* Error in URI, return NULL */
+    } else
+	ref->path = (char *)xmlStrdup(URI);
 
     /*
      * Next parse base into the same standard form
@@ -2099,9 +2095,12 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     bas = xmlCreateURI ();
     if (bas == NULL)
 	goto done;
-    ret = xmlParseURIReference (bas, (const char *) base);
-    if (ret != 0)
-	goto done;		/* Error in base, return NULL */
+    if (base[0] != '.') {
+	ret = xmlParseURIReference (bas, (const char *) base);
+	if (ret != 0)
+	    goto done;		/* Error in base, return NULL */
+    } else
+	bas->path = (char *)xmlStrdup(base);
 
     /*
      * If the scheme / server on the URI differs from the base,

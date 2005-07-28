@@ -30,8 +30,8 @@
 #include <libxml/xmlschemastypes.h>
 
 #define LOGFILE "runsuite.log"
-FILE *logfile = NULL;
-int verbose = 0;
+static FILE *logfile = NULL;
+static int verbose = 0;
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
 #define vsnprintf _vsnprintf
@@ -96,9 +96,9 @@ fatalError(void) {
  * that's needed to implement <resource>
  */
 #define MAX_ENTITIES 20
-char *testEntitiesName[MAX_ENTITIES];
-char *testEntitiesValue[MAX_ENTITIES];
-int nb_entities = 0;
+static char *testEntitiesName[MAX_ENTITIES];
+static char *testEntitiesValue[MAX_ENTITIES];
+static int nb_entities = 0;
 static void resetEntities(void) {
     int i;
 
@@ -205,7 +205,7 @@ testErrorHandler(void *ctx  ATTRIBUTE_UNUSED, const char *msg, ...) {
     testErrors[testErrorsSize] = 0;
 }
 
-xmlXPathContextPtr ctxtXPath;
+static xmlXPathContextPtr ctxtXPath;
 
 static void
 initializeLibxml2(void) {

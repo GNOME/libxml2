@@ -12,8 +12,8 @@
 #include <libxml/tree.h>
 #include <libxml/xmlregexp.h>
 
-int repeat = 0;
-int debug = 0;
+static int repeat = 0;
+static int debug = 0;
 
 static void testRegexp(xmlRegexpPtr comp, const char *value) {
     int ret;

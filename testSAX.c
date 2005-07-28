@@ -200,7 +200,7 @@ endTimer(char *format, ...)
 /*
  * empty SAX block
  */
-xmlSAXHandler emptySAXHandlerStruct = {
+static xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
     NULL, /* isStandalone */
     NULL, /* hasInternalSubset */
@@ -235,7 +235,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL  /* xmlStructuredErrorFunc */
 };
 
-xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
+static xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
 extern xmlSAXHandlerPtr debugSAXHandler;
 
 /************************************************************************
@@ -833,7 +833,7 @@ fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
     va_end(args);
 }
 
-xmlSAXHandler debugSAXHandlerStruct = {
+static xmlSAXHandler debugSAXHandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -957,7 +957,7 @@ endElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 	fprintf(stdout, ", '%s')\n", (char *) URI);
 }
 
-xmlSAXHandler debugSAX2HandlerStruct = {
+static xmlSAXHandler debugSAX2HandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -992,7 +992,7 @@ xmlSAXHandler debugSAX2HandlerStruct = {
     NULL
 };
 
-xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
+static xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
 /************************************************************************
  *									*

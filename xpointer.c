@@ -2412,7 +2412,7 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *indx, int bytes) {
 	if (pos + bytes >= len) {
 	    bytes -= (len - pos);
 	    cur = xmlXPtrAdvanceNode(cur, NULL);
-	    cur = 0;
+	    pos = 0;
 	} else if (pos + bytes < len) {
 	    pos += bytes;
 	    *node = cur;

@@ -714,12 +714,12 @@ static int unloadMem(const char *mem) {
  *									*
  ************************************************************************/
 
-FILE *SAXdebug = NULL;
+static FILE *SAXdebug = NULL;
 
 /*
  * empty SAX block
  */
-xmlSAXHandler emptySAXHandlerStruct = {
+static xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
     NULL, /* isStandalone */
     NULL, /* hasInternalSubset */
@@ -755,8 +755,8 @@ xmlSAXHandler emptySAXHandlerStruct = {
 };
 
 static xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
-int callbacks = 0;
-int quiet = 0;
+static int callbacks = 0;
+static int quiet = 0;
 
 /**
  * isStandaloneDebug:
@@ -1347,7 +1347,7 @@ fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
     va_end(args);
 }
 
-xmlSAXHandler debugSAXHandlerStruct = {
+static xmlSAXHandler debugSAXHandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -1382,7 +1382,7 @@ xmlSAXHandler debugSAXHandlerStruct = {
     NULL
 };
 
-xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
+static xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
 
 /*
  * SAX2 specific callbacks
@@ -1471,7 +1471,7 @@ endElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 	fprintf(SAXdebug, ", '%s')\n", (char *) URI);
 }
 
-xmlSAXHandler debugSAX2HandlerStruct = {
+static xmlSAXHandler debugSAX2HandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -1506,7 +1506,7 @@ xmlSAXHandler debugSAX2HandlerStruct = {
     NULL
 };
 
-xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
+static xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
 #ifdef LIBXML_HTML_ENABLED
 /**
@@ -1586,7 +1586,7 @@ htmlcdataDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
     fprintf(SAXdebug, "SAX.cdata(%s, %d)\n", output, len);
 }
 
-xmlSAXHandler debugHTMLSAXHandlerStruct = {
+static xmlSAXHandler debugHTMLSAXHandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -1621,7 +1621,7 @@ xmlSAXHandler debugHTMLSAXHandlerStruct = {
     NULL
 };
 
-xmlSAXHandlerPtr debugHTMLSAXHandler = &debugHTMLSAXHandlerStruct;
+static xmlSAXHandlerPtr debugHTMLSAXHandler = &debugHTMLSAXHandlerStruct;
 #endif /* LIBXML_HTML_ENABLED */
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -2247,8 +2247,8 @@ streamMemParseTest(const char *filename, const char *result, const char *err,
  *									*
  ************************************************************************/
 
-FILE *xpathOutput;
-xmlDocPtr xpathDocument;
+static FILE *xpathOutput;
+static xmlDocPtr xpathDocument;
 
 static void
 testXPath(const char *str, int xptr, int expr) {
@@ -3667,8 +3667,8 @@ static const char *testfiles[] = {
     "test/threads/invalid.xml",
 };
 
-const char *Okay = "OK";
-const char *Failed = "Failed";
+static const char *Okay = "OK";
+static const char *Failed = "Failed";
 
 #ifndef xmlDoValidityCheckingDefaultValue
 #error xmlDoValidityCheckingDefaultValue is not a macro

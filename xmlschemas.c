@@ -5023,7 +5023,7 @@ xmlSchemaPValAttrNodeQNameValue(xmlSchemaParserCtxtPtr ctxt,
 	return (-1);
 
     if (!strchr((char *) value, ':')) {
-	ns = xmlSearchNs(attr->doc, attr->parent, 0);
+	ns = xmlSearchNs(attr->doc, attr->parent, NULL);
 	if (ns)
 	    *uri = xmlDictLookup(ctxt->dict, ns->href, -1);
 	else if (schema->flags & XML_SCHEMAS_INCLUDING_CONVERT_NS) {
@@ -12827,7 +12827,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr pctxt,
 			    * declaration}'s {value constraint} .
 			    */
 			    xmlSchemaGetEffectiveValueConstraint(base->attr,
-				&effFixed, &bEffValue, 0);
+				&effFixed, &bEffValue, NULL);
 			    /*
 			    * 2.1.3 ... one of the following must be true
 			    *
@@ -12839,7 +12839,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr pctxt,
 				const xmlChar *rEffValue = NULL;
 				
 				xmlSchemaGetEffectiveValueConstraint(base->attr,
-				    &effFixed, &rEffValue, 0);
+				    &effFixed, &rEffValue, NULL);
 				    /*
 				    * 2.1.3.2 R's ·effective value constraint· is
 				    * fixed with the same string as B's.

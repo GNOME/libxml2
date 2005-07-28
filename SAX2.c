@@ -227,7 +227,7 @@ const xmlChar *
 xmlSAX2GetSystemId(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    if ((ctx == NULL) || (ctxt->input == NULL)) return(0);
+    if ((ctx == NULL) || (ctxt->input == NULL)) return(NULL);
     return((const xmlChar *) ctxt->input->filename); 
 }
 

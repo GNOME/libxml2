@@ -453,14 +453,14 @@ nodeVPop(xmlValidCtxtPtr ctxt)
     xmlNodePtr ret;
 
     if (ctxt->nodeNr <= 0)
-        return (0);
+        return (NULL);
     ctxt->nodeNr--;
     if (ctxt->nodeNr > 0)
         ctxt->node = ctxt->nodeTab[ctxt->nodeNr - 1];
     else
         ctxt->node = NULL;
     ret = ctxt->nodeTab[ctxt->nodeNr];
-    ctxt->nodeTab[ctxt->nodeNr] = 0;
+    ctxt->nodeTab[ctxt->nodeNr] = NULL;
     return (ret);
 }
 
@@ -3866,7 +3866,7 @@ xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	
 	fullname = xmlBuildQName(elem->name, elem->ns->prefix, fn, 50);
 	if (fullname == NULL)
-	    return(0);
+	    return(NULL);
 	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, fullname, name);
 	if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
 	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, fullname, name);
@@ -3951,7 +3951,7 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
 	
 	fullname = xmlBuildQName(elem->name, elem->ns->prefix, fn, 50);
 	if (fullname == NULL)
-	    return(0);
+	    return(NULL);
 	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, fullname, name);
 	if ((attrDecl == NULL) && (doc->extSubset != NULL))
 	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, fullname, name);

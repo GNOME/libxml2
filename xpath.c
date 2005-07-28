@@ -89,7 +89,7 @@
 double xmlXPathNAN = 0;
 double xmlXPathPINF = 1;
 double xmlXPathNINF = -1;
-double xmlXPathNZERO = 0;
+static double xmlXPathNZERO = 0; /* not exported from headers */
 static int xmlXPathInitialized = 0;
 
 /**
@@ -188,6 +188,15 @@ static int xmlXPathDisableOptimizer = 0;
  *			Error handling routines				*
  *									*
  ************************************************************************/
+
+/**
+ * XP_ERRORNULL:
+ * @X:  the error code
+ *
+ * Macro to raise an XPath error and return NULL.
+ */
+#define XP_ERRORNULL(X)							\
+    { xmlXPathErr(ctxt, X); return(NULL); }
 
 /*
  * The array xmlXPathErrorMessages corresponds to the enum xmlXPathError
@@ -1116,20 +1125,20 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
  *
  * Returns the XPath object just removed
  */
-extern xmlXPathObjectPtr
+xmlXPathObjectPtr
 valuePop(xmlXPathParserContextPtr ctxt)
 {
     xmlXPathObjectPtr ret;
 
     if ((ctxt == NULL) || (ctxt->valueNr <= 0))
-        return (0);
+        return (NULL);
     ctxt->valueNr--;
     if (ctxt->valueNr > 0)
         ctxt->value = ctxt->valueTab[ctxt->valueNr - 1];
     else
         ctxt->value = NULL;
     ret = ctxt->valueTab[ctxt->valueNr];
-    ctxt->valueTab[ctxt->valueNr] = 0;
+    ctxt->valueTab[ctxt->valueNr] = NULL;
     return (ret);
 }
 /**
@@ -1141,7 +1150,7 @@ valuePop(xmlXPathParserContextPtr ctxt)
  *
  * returns the number of items on the value stack
  */
-extern int
+int
 valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
 {
     if ((ctxt == NULL) || (value == NULL)) return(-1);
@@ -7574,7 +7583,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 	    
 	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
-		XP_ERROR0(XPATH_MEMORY_ERROR);
+		XP_ERRORNULL(XPATH_MEMORY_ERROR);
 	    }
 	    memcpy(buffer, buf, len);
 	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigname.xml */
@@ -7587,7 +7596,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 		    buffer = (xmlChar *) xmlRealloc(buffer,
 			                            max * sizeof(xmlChar));
 		    if (buffer == NULL) {
-			XP_ERROR0(XPATH_MEMORY_ERROR);
+			XP_ERRORNULL(XPATH_MEMORY_ERROR);
 		    }
 		}
 		COPY_BUF(l,buffer,len,c);
@@ -7823,7 +7832,7 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
 	while ((IS_CHAR_CH(CUR)) && (CUR != '"'))
 	    NEXT;
 	if (!IS_CHAR_CH(CUR)) {
-	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
+	    XP_ERRORNULL(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -7834,13 +7843,13 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
 	while ((IS_CHAR_CH(CUR)) && (CUR != '\''))
 	    NEXT;
 	if (!IS_CHAR_CH(CUR)) {
-	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
+	    XP_ERRORNULL(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
         }
     } else {
-	XP_ERROR0(XPATH_START_LITERAL_ERROR);
+	XP_ERRORNULL(XPATH_START_LITERAL_ERROR);
     }
     return(ret);
 }
@@ -8650,7 +8659,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
     if (name == NULL)
 	name = xmlXPathParseNCName(ctxt);
     if (name == NULL) {
-	XP_ERROR0(XPATH_EXPR_ERROR);
+	XP_ERRORNULL(XPATH_EXPR_ERROR);
     }
 
     blanks = IS_BLANK_CH(CUR);
@@ -8671,7 +8680,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	else {
 	    if (name != NULL)
 		xmlFree(name);
-	    XP_ERROR0(XPATH_EXPR_ERROR);
+	    XP_ERRORNULL(XPATH_EXPR_ERROR);
 	}
 
 	*test = NODE_TEST_TYPE;
@@ -8686,7 +8695,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	    name = NULL;
 	    if (CUR != ')') {
 		name = xmlXPathParseLiteral(ctxt);
-		CHECK_ERROR 0;
+		CHECK_ERROR NULL;
 		*test = NODE_TEST_PI;
 		SKIP_BLANKS;
 	    }
@@ -8694,7 +8703,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	if (CUR != ')') {
 	    if (name != NULL)
 		xmlFree(name);
-	    XP_ERROR0(XPATH_UNCLOSED_ERROR);
+	    XP_ERRORNULL(XPATH_UNCLOSED_ERROR);
 	}
 	NEXT;
 	return(name);
@@ -8732,7 +8741,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 
 	name = xmlXPathParseNCName(ctxt);
 	if (name == NULL) {
-	    XP_ERROR0(XPATH_EXPR_ERROR);
+	    XP_ERRORNULL(XPATH_EXPR_ERROR);
 	}
     }
     return(name);
@@ -11390,7 +11399,7 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
     if( pctxt->error != XPATH_EXPRESSION_OK )
     {
         xmlXPathFreeParserContext(pctxt);
-        return (0);
+        return(NULL);
     }
 
     if (*pctxt->cur != 0) {

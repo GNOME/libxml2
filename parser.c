@@ -984,14 +984,14 @@ inputPop(xmlParserCtxtPtr ctxt)
     if (ctxt == NULL)
         return(NULL);
     if (ctxt->inputNr <= 0)
-        return (0);
+        return (NULL);
     ctxt->inputNr--;
     if (ctxt->inputNr > 0)
         ctxt->input = ctxt->inputTab[ctxt->inputNr - 1];
     else
         ctxt->input = NULL;
     ret = ctxt->inputTab[ctxt->inputNr];
-    ctxt->inputTab[ctxt->inputNr] = 0;
+    ctxt->inputTab[ctxt->inputNr] = NULL;
     return (ret);
 }
 /**
@@ -1053,7 +1053,7 @@ nodePop(xmlParserCtxtPtr ctxt)
     else
         ctxt->node = NULL;
     ret = ctxt->nodeTab[ctxt->nodeNr];
-    ctxt->nodeTab[ctxt->nodeNr] = 0;
+    ctxt->nodeTab[ctxt->nodeNr] = NULL;
     return (ret);
 }
 
@@ -1118,7 +1118,7 @@ nameNsPop(xmlParserCtxtPtr ctxt)
     const xmlChar *ret;
 
     if (ctxt->nameNr <= 0)
-        return (0);
+        return (NULL);
     ctxt->nameNr--;
     if (ctxt->nameNr > 0)
         ctxt->name = ctxt->nameTab[ctxt->nameNr - 1];
@@ -1184,7 +1184,7 @@ namePop(xmlParserCtxtPtr ctxt)
     else
         ctxt->name = NULL;
     ret = ctxt->nameTab[ctxt->nameNr];
-    ctxt->nameTab[ctxt->nameNr] = 0;
+    ctxt->nameTab[ctxt->nameNr] = NULL;
     return (ret);
 }
 

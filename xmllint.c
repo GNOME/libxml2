@@ -235,7 +235,7 @@ void parsePath(const xmlChar *path) {
     }
 }
 
-xmlExternalEntityLoader defaultEntityLoader = NULL;
+static xmlExternalEntityLoader defaultEntityLoader = NULL;
 
 static xmlParserInputPtr 
 xmllintExternalEntityLoader(const char *URL, const char *ID,
@@ -508,7 +508,7 @@ endTimer(char *format, ...)
  * 			HTML ouput					*
  * 									*
  ************************************************************************/
-char buffer[50000];
+static char buffer[50000];
 
 static void
 xmlHTMLEncodeSend(void) {
@@ -817,7 +817,7 @@ static void myClose(FILE *f) {
 /*
  * empty SAX block
  */
-xmlSAXHandler emptySAXHandlerStruct = {
+static xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
     NULL, /* isStandalone */
     NULL, /* hasInternalSubset */
@@ -852,7 +852,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL  /* xmlStructuredErrorFunc */
 };
 
-xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
+static xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
 extern xmlSAXHandlerPtr debugSAXHandler;
 static int callbacks;
 
@@ -1440,7 +1440,7 @@ fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
     va_end(args);
 }
 
-xmlSAXHandler debugSAXHandlerStruct = {
+static xmlSAXHandler debugSAXHandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -1564,7 +1564,7 @@ endElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 	fprintf(stdout, ", '%s')\n", (char *) URI);
 }
 
-xmlSAXHandler debugSAX2HandlerStruct = {
+static xmlSAXHandler debugSAX2HandlerStruct = {
     internalSubsetDebug,
     isStandaloneDebug,
     hasInternalSubsetDebug,
@@ -1599,7 +1599,7 @@ xmlSAXHandler debugSAX2HandlerStruct = {
     NULL
 };
 
-xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
+static xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
 static void
 testSAX(const char *filename) {

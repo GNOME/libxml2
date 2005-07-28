@@ -344,7 +344,7 @@ static const char *xmlTreeIndentStringThrDef = "  ";
  * Disabled by default
  */
 int xmlSaveNoEmptyTags = 0;
-int xmlSaveNoEmptyTagsThrDef = 0;
+static int xmlSaveNoEmptyTagsThrDef = 0;
 
 #ifdef LIBXML_SAX1_ENABLED
 /**

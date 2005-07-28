@@ -1239,7 +1239,7 @@ xmlNewCharEncodingHandler(const char *name,
     const char *alias;
     char upper[500];
     int i;
-    char *up = 0;
+    char *up = NULL;
 
     /*
      * Do the alias resolution

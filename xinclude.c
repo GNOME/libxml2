@@ -237,7 +237,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
 	ret->URI = xmlStrdup(URI);
     ret->fragment = NULL;
     ret->ref = ref;
-    ret->doc = 0;
+    ret->doc = NULL;
     ret->count = 0;
     ret->xml = 0;
     ret->inc = NULL;
@@ -360,7 +360,7 @@ xmlXIncludeURLPop(xmlXIncludeCtxtPtr ctxt)
     else
         ctxt->url = NULL;
     ret = ctxt->urlTab[ctxt->urlNr];
-    ctxt->urlTab[ctxt->urlNr] = 0;
+    ctxt->urlTab[ctxt->urlNr] = NULL;
     if (ret != NULL)
 	xmlFree(ret);
 }
@@ -1952,7 +1952,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 static xmlNodePtr
 xmlXIncludePreProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     xmlXIncludeAddNode(ctxt, node);
-    return(0);
+    return(NULL);
 }
 
 /**

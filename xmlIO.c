@@ -1206,7 +1206,7 @@ xmlCreateZMemBuff( int compression ) {
     }
 
     /*  Set the header data.  The CRC will be needed for the trailer  */
-    buff->crc = crc32( 0L, Z_NULL, 0 );
+    buff->crc = crc32( 0L, NULL, 0 );
     hdr_lgth = snprintf( (char *)buff->zbuff, buff->size,
 			"%c%c%c%c%c%c%c%c%c%c",
 			GZ_MAGIC1, GZ_MAGIC2, Z_DEFLATED, 

@@ -85,7 +85,7 @@ xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
                         XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
                         name, NULL, 0, 0, "failed to open %s\n", name);
-        return 0;
+        return(NULL);
     }
 
     module->name = xmlStrdup((const xmlChar *) name);
@@ -179,7 +179,7 @@ xmlModuleFree(xmlModulePtr module)
 {
     if (NULL == module) {
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, 0,
+                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, NULL,
                         NULL, NULL, 0, 0, "null module pointer\n");
         return -1;
     }

@@ -1477,14 +1477,14 @@ xmlRelaxNGIncludePop(xmlRelaxNGParserCtxtPtr ctxt)
     xmlRelaxNGIncludePtr ret;
 
     if (ctxt->incNr <= 0)
-        return (0);
+        return (NULL);
     ctxt->incNr--;
     if (ctxt->incNr > 0)
         ctxt->inc = ctxt->incTab[ctxt->incNr - 1];
     else
         ctxt->inc = NULL;
     ret = ctxt->incTab[ctxt->incNr];
-    ctxt->incTab[ctxt->incNr] = 0;
+    ctxt->incTab[ctxt->incNr] = NULL;
     return (ret);
 }
 
@@ -1889,14 +1889,14 @@ xmlRelaxNGDocumentPop(xmlRelaxNGParserCtxtPtr ctxt)
     xmlRelaxNGDocumentPtr ret;
 
     if (ctxt->docNr <= 0)
-        return (0);
+        return (NULL);
     ctxt->docNr--;
     if (ctxt->docNr > 0)
         ctxt->doc = ctxt->docTab[ctxt->docNr - 1];
     else
         ctxt->doc = NULL;
     ret = ctxt->docTab[ctxt->docNr];
-    ctxt->docTab[ctxt->docNr] = 0;
+    ctxt->docTab[ctxt->docNr] = NULL;
     return (ret);
 }
 

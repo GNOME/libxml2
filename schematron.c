@@ -470,7 +470,7 @@ xmlSchematronNewParserCtxt(const char *URL)
     ret->type = XML_STRON_CTXT_PARSER;
     ret->dict = xmlDictCreate();
     ret->URL = xmlDictLookup(ret->dict, (const xmlChar *) URL, -1);
-    ret->includes = 0;
+    ret->includes = NULL;
     ret->xctxt = xmlXPathNewContext(NULL);
     if (ret->xctxt == NULL) {
         xmlSchematronPErrMemory(NULL, "allocating schema parser XPath context",

@@ -1,3 +1,11 @@
+Fri Jul 29 01:48:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c SAX2.c encoding.c globals.c parser.c relaxng.c
+	  runsuite.c runtest.c schematron.c testHTML.c testReader.c
+	  testRegexp.c testSAX.c testThreads.c valid.c xinclude.c xmlIO.c
+	  xmllint.c xmlmodule.c xmlschemas.c xpath.c xpointer.c: a lot of 
+	  small cleanups based on Linus' sparse check output.
+
 Thu Jul 28 21:28:33 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/Makefile.am: added schematron.h, oops ...

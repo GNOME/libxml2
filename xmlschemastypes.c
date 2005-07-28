@@ -319,6 +319,63 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 }
 
 /*
+* WARNING: Those type reside normally in xmlschemas.c but are
+* redefined here locally in oder of being able to use them for xs:anyType-
+* TODO: Remove those definition if we move the types to a header file.
+* TODO: Always keep those structs up-to-date with the originals.
+*/
+#define UNBOUNDED (1 << 30)
+
+typedef struct _xmlSchemaTreeItem xmlSchemaTreeItem;
+typedef xmlSchemaTreeItem *xmlSchemaTreeItemPtr;
+struct _xmlSchemaTreeItem {
+    xmlSchemaTypeType type;
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next;
+    xmlSchemaTreeItemPtr children;
+};
+
+typedef struct _xmlSchemaParticle xmlSchemaParticle;
+typedef xmlSchemaParticle *xmlSchemaParticlePtr;
+struct _xmlSchemaParticle {
+    xmlSchemaTypeType type;
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next;
+    xmlSchemaTreeItemPtr children;
+    int minOccurs;
+    int maxOccurs;
+    xmlNodePtr node;
+};
+
+typedef struct _xmlSchemaModelGroup xmlSchemaModelGroup;
+typedef xmlSchemaModelGroup *xmlSchemaModelGroupPtr;
+struct _xmlSchemaModelGroup {
+    xmlSchemaTypeType type;
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next;
+    xmlSchemaTreeItemPtr children;
+    xmlNodePtr node;
+};
+
+static xmlSchemaParticlePtr
+xmlSchemaAddParticle(void)
+{
+    xmlSchemaParticlePtr ret = NULL;
+
+    ret = (xmlSchemaParticlePtr)
+	xmlMalloc(sizeof(xmlSchemaParticle));
+    if (ret == NULL) {
+	xmlSchemaTypeErrMemory(NULL, "allocating particle component");
+	return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlSchemaParticle));
+    ret->type = XML_SCHEMA_TYPE_PARTICLE;
+    ret->minOccurs = 1;
+    ret->maxOccurs = 1;
+    return (ret);
+}
+
+/*
  * xmlSchemaInitTypes:
  *
  * Initialize the default XML Schemas type library
@@ -339,12 +396,56 @@ xmlSchemaInitTypes(void)
 						     NULL);
     xmlSchemaTypeAnyTypeDef->baseType = xmlSchemaTypeAnyTypeDef;
     xmlSchemaTypeAnyTypeDef->contentType = XML_SCHEMA_CONTENT_MIXED;
+    /*
+    * Init the content type.
+    */
+    xmlSchemaTypeAnyTypeDef->contentType = XML_SCHEMA_CONTENT_MIXED;    
     {
+	xmlSchemaParticlePtr particle;
+	xmlSchemaModelGroupPtr sequence;
 	xmlSchemaWildcardPtr wild;
-
+	/* First particle. */
+	particle = xmlSchemaAddParticle();
+	if (particle == NULL)
+	    return;
+	xmlSchemaTypeAnyTypeDef->subtypes = (xmlSchemaTypePtr) particle;
+	/* Sequence model group. */
+	sequence = (xmlSchemaModelGroupPtr)
+	    xmlMalloc(sizeof(xmlSchemaModelGroup));
+	if (sequence == NULL) {
+	    xmlSchemaTypeErrMemory(NULL, "allocating model group component");
+	    return;
+	}
+	memset(sequence, 0, sizeof(xmlSchemaModelGroup));
+	sequence->type = XML_SCHEMA_TYPE_SEQUENCE;	
+	particle->children = (xmlSchemaTreeItemPtr) sequence;
+	/* Second particle. */
+	particle = xmlSchemaAddParticle();
+	if (particle == NULL)
+	    return;
+	particle->minOccurs = 0;
+	particle->maxOccurs = UNBOUNDED;
+	sequence->children = (xmlSchemaTreeItemPtr) particle;
+	/* The wildcard */
 	wild = (xmlSchemaWildcardPtr) xmlMalloc(sizeof(xmlSchemaWildcard));
 	if (wild == NULL) {
-	    xmlSchemaTypeErrMemory(NULL, "could not create an attribute wildcard on anyType");
+	    xmlSchemaTypeErrMemory(NULL, "allocating wildcard component");
+	    return;
+	}
+	memset(wild, 0, sizeof(xmlSchemaWildcard));
+	wild->type = XML_SCHEMA_TYPE_ANY;
+	wild->any = 1;
+	wild->minOccurs = 1;
+	wild->maxOccurs = 1;
+	wild->processContents = XML_SCHEMAS_ANY_LAX;	
+	particle->children = (xmlSchemaTreeItemPtr) wild;    
+	/*
+	* Create the attribute wildcard.
+	*/
+	wild = (xmlSchemaWildcardPtr) xmlMalloc(sizeof(xmlSchemaWildcard));
+	if (wild == NULL) {
+	    xmlSchemaTypeErrMemory(NULL, "could not create an attribute "
+		"wildcard on anyType");
 	    return;
 	}
 	memset(wild, 0, sizeof(xmlSchemaWildcard));
@@ -519,7 +620,24 @@ void
 xmlSchemaCleanupTypes(void) {
     if (xmlSchemaTypesInitialized == 0)
 	return;
-    xmlSchemaFreeWildcard(xmlSchemaTypeAnyTypeDef->attributeWildcard);
+    /*
+    * Free xs:anyType.
+    */
+    {
+	xmlSchemaParticlePtr particle;
+	/* Attribute wildcard. */
+	xmlSchemaFreeWildcard(xmlSchemaTypeAnyTypeDef->attributeWildcard);
+	/* Content type. */
+	particle = (xmlSchemaParticlePtr) xmlSchemaTypeAnyTypeDef->subtypes;
+	/* Wildcard. */
+	xmlSchemaFreeWildcard((xmlSchemaWildcardPtr) 
+	    particle->children->children->children);
+	xmlFree((xmlSchemaParticlePtr) particle->children->children);
+	/* Sequence model group. */
+	xmlFree((xmlSchemaModelGroupPtr) particle->children);
+	xmlFree((xmlSchemaParticlePtr) particle);
+	xmlSchemaTypeAnyTypeDef->subtypes = NULL;	
+    }
     xmlHashFree(xmlSchemaTypesBank, (xmlHashDeallocator) xmlSchemaFreeType);
     xmlSchemaTypesInitialized = 0;
 }

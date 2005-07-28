@@ -802,6 +802,8 @@ xmlSchemaCompTypeToString(xmlSchemaTypeType type)
 	    return(BAD_CAST "IDC (key)");
 	case XML_SCHEMA_TYPE_IDC_KEYREF:
 	    return(BAD_CAST "IDC (keyref)");
+	case XML_SCHEMA_TYPE_ANY:
+	    return(BAD_CAST "wildcard (any)");
 	case XML_SCHEMA_EXTRA_QNAMEREF:
 	    return(BAD_CAST "[helper component] QName reference");
 	default:
@@ -2577,7 +2579,7 @@ xmlSchemaPSimpleTypeErr(xmlSchemaParserCtxtPtr ctxt,
 	    xmlSchemaPErr(ctxt, node, error, (const char *) msg, NULL, NULL);
     } else {
 	msg = xmlStrcat(msg, BAD_CAST message);
-	msg = xmlStrcat(msg, BAD_CAST "\n");
+	msg = xmlStrcat(msg, BAD_CAST ".\n");
 	xmlSchemaPErrExt(ctxt, node, error, NULL, NULL, NULL,
 	     (const char*) msg, str1, str2, NULL, NULL, NULL);
     }
@@ -3259,6 +3261,9 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
         }
     }
     if (type->type != XML_SCHEMA_TYPE_BASIC) {
+	/*
+	* TODO: Why is this restricted to non built-in types?
+	*/
 	if (type->attributeUses != NULL)
 	    xmlSchemaFreeAttributeUseList(type->attributeUses);
     }
@@ -11423,8 +11428,10 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr pctxt,
         default:
 	    xmlSchemaPInternalErr(pctxt, "xmlSchemaBuildAContentModel",
 		"found unexpected term of type '%s' in content model of complex "
-		"type '%s'.\n",
+		"type '%s'",
 		xmlSchemaCompTypeToString(particle->children->type), name);
+	    xmlGenericError(xmlGenericErrorContext,
+                    "Unexpected type: %d\n", particle->children->type);
             return;
     }
 }
@@ -14370,7 +14377,7 @@ xmlSchemaCheckCOSCTExtends(xmlSchemaParserCtxtPtr ctxt,
     * SPEC (1) "If the {base type definition} is a complex type definition,
     * then all of the following must be true:"
     */
-    if (base->type == XML_SCHEMA_TYPE_COMPLEX) {
+    if (IS_COMPLEX_TYPE(base)) {
 	/*
 	* SPEC (1.1) "The {final} of the {base type definition} must not
 	* contain extension."

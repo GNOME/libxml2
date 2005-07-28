@@ -1,3 +1,16 @@
+Thu Jul 28 02:38:21 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Added creation of the content type of
+	  xs:anyType. This is needed when trying to extend xs:anyType
+	  (although it makes no sense to extend it; IMHO the schema
+	  people should have ruled this out). This was reported
+	  by Yong Chen to the mailing list.
+	* xmlschemas.c: Fixed handling of xs:anyType in
+	  xmlSchemaCheckCOSCTExtends() (reported by Young Chen). Tiny
+	  adjustment to an error report output.
+	* test/schemas/extension2* result/schemas/extension2*:
+	  Added a test case provided by Young Chen.
+
 Mon Jul 25 11:41:18 PDT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* uri.c: enhanced xmlBuildRelativeURI to allow the URI and the

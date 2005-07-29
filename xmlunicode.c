@@ -926,8 +926,8 @@ static xmlChSRange xmlZS[] = {{0x20, 0x20}, {0xa0, 0xa0}, {0x1680, 0x1680},
     {0x205f, 0x205f}, {0x3000, 0x3000} };
 static xmlChRangeGroup xmlZG = {9,0,xmlZS,NULL};
 
-xmlUnicodeNameTable xmlUnicodeBlockTbl = {xmlUnicodeBlocks, 128};
-xmlUnicodeNameTable xmlUnicodeCatTbl = {xmlUnicodeCats, 36};
+static xmlUnicodeNameTable xmlUnicodeBlockTbl = {xmlUnicodeBlocks, 128};
+static xmlUnicodeNameTable xmlUnicodeCatTbl = {xmlUnicodeCats, 36};
 
 /**
  * xmlUnicodeLookup:

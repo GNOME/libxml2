@@ -1135,3 +1135,6 @@ install-data-local:
 
 tst: tst.c
 	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz
+
+sparse: clean
+	$(MAKE) CC=cgcc

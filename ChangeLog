@@ -1,3 +1,9 @@
+Sat Jul 30 00:00:46 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am globals.c parserInternals.c xmlreader.c xmlunicode.c
+	  xmlwriter.c: more cleanups based on sparse reports, added 
+	  "make sparse"
+
 Fri Jul 29 12:11:25 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: don't output any message on failed resolver lookups,

@@ -44,7 +44,7 @@ static xmlMutexPtr xmlThrDefMutex = NULL;
  *
  * Additional initialisation for multi-threading
  */
-void xmlInitGlobals()
+void xmlInitGlobals(void)
 {
     xmlThrDefMutex = xmlNewMutex();
 }
@@ -54,7 +54,7 @@ void xmlInitGlobals()
  *
  * Additional cleanup for multi-threading
  */
-void xmlCleanupGlobals()
+void xmlCleanupGlobals(void)
 {
     if (xmlThrDefMutex != NULL) {
 	xmlFreeMutex(xmlThrDefMutex);

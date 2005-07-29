@@ -1794,7 +1794,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
  */
 
 xmlParserCtxtPtr
-xmlNewParserCtxt()
+xmlNewParserCtxt(void)
 {
     xmlParserCtxtPtr ctxt;
 

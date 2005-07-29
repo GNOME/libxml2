@@ -598,14 +598,14 @@ xmlTextReaderEntPop(xmlTextReaderPtr reader)
     xmlNodePtr ret;
 
     if (reader->entNr <= 0)
-        return (0);
+        return (NULL);
     reader->entNr--;
     if (reader->entNr > 0)
         reader->ent = reader->entTab[reader->entNr - 1];
     else
         reader->ent = NULL;
     ret = reader->entTab[reader->entNr];
-    reader->entTab[reader->entNr] = 0;
+    reader->entTab[reader->entNr] = NULL;
     return (ret);
 }
 
@@ -2172,7 +2172,7 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	if ((reader->ctxt->vctxt.vstateTab != NULL) &&
 	    (reader->ctxt->vctxt.vstateMax > 0)){
 	    xmlFree(reader->ctxt->vctxt.vstateTab);
-	    reader->ctxt->vctxt.vstateTab = 0;
+	    reader->ctxt->vctxt.vstateTab = NULL;
 	    reader->ctxt->vctxt.vstateMax = 0;
 	}
 	if (reader->allocs & XML_TEXTREADER_CTXT)

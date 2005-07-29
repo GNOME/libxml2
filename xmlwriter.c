@@ -739,7 +739,7 @@ xmlTextWriterStartComment(xmlTextWriterPtr writer)
         return -1;
     }
 
-    p->name = 0;
+    p->name = NULL;
     p->state = XML_TEXTWRITER_COMMENT;
 
     xmlListPushFront(writer->nodes, p);
@@ -1018,7 +1018,7 @@ xmlTextWriterStartElementNS(xmlTextWriterPtr writer,
     if ((writer == NULL) || (name == NULL) || (*name == '\0'))
         return -1;
 
-    buf = 0;
+    buf = NULL;
     if (prefix != 0) {
         buf = xmlStrdup(prefix);
         buf = xmlStrcat(buf, BAD_CAST ":");
@@ -1745,7 +1745,7 @@ xmlTextWriterStartAttributeNS(xmlTextWriterPtr writer,
     if ((writer == NULL) || (name == NULL) || (*name == '\0'))
         return -1;
 
-    buf = 0;
+    buf = NULL;
     if (prefix != 0) {
         buf = xmlStrdup(prefix);
         buf = xmlStrcat(buf, BAD_CAST ":");
@@ -2063,7 +2063,7 @@ xmlTextWriterWriteAttributeNS(xmlTextWriterPtr writer,
     if ((writer == NULL) || (name == NULL) || (*name == '\0'))
         return -1;
 
-    buf = 0;
+    buf = NULL;
     if (prefix != NULL) {
         buf = xmlStrdup(prefix);
         buf = xmlStrcat(buf, BAD_CAST ":");
@@ -2078,7 +2078,7 @@ xmlTextWriterWriteAttributeNS(xmlTextWriterPtr writer,
     sum += count;
 
     if (namespaceURI != NULL) {
-        buf = 0;
+        buf = NULL;
         buf = xmlStrdup(BAD_CAST "xmlns");
         if (prefix != NULL) {
             buf = xmlStrcat(buf, BAD_CAST ":");
@@ -2587,7 +2587,7 @@ xmlTextWriterStartCDATA(xmlTextWriterPtr writer)
         return -1;
     }
 
-    p->name = 0;
+    p->name = NULL;
     p->state = XML_TEXTWRITER_CDATA;
 
     xmlListPushFront(writer->nodes, p);

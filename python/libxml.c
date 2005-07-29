@@ -681,8 +681,12 @@ pythonExternalEntityLoader(const char *URL, const char *ID,
 		    result = xmlNewIOInputStream(ctxt, buf,
 			                         XML_CHAR_ENCODING_NONE);
 		}
+#if 0
 	    } else {
-		printf("pythonExternalEntityLoader: can't read\n");
+		if (URL != NULL)
+		    printf("pythonExternalEntityLoader: can't read %s\n",
+		           URL);
+#endif
 	    }
 	    if (result == NULL) {
 		Py_DECREF(ret);

@@ -1,3 +1,8 @@
+Fri Jul 29 12:11:25 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: don't output any message on failed resolver lookups,
+	  better done by the python user provided resolver layer.
+
 Fri Jul 29 01:48:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c SAX2.c encoding.c globals.c parser.c relaxng.c

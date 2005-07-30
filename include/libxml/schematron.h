@@ -21,8 +21,6 @@
 extern "C" {
 #endif
 
-#define XML_SCHEMATRON_NS BAD_CAST "http://purl.oclc.org/dsdl/schematron"
-
 typedef enum {
     XML_SCHEMATRON_OUT_QUIET = 1 << 0,	/* quiet no report */
     XML_SCHEMATRON_OUT_TEXT = 1 << 1,	/* build a textual report */

@@ -2853,6 +2853,9 @@ static void usage(const char *name) {
     printf("\t--relaxng schema : do RelaxNG validation against the schema\n");
     printf("\t--schema schema : do validation against the WXS schema\n");
 #endif
+#ifdef LIBXML_SCHEMATRON_ENABLED
+    printf("\t--schematron schema : do validation against a schematron\n");
+#endif
 #ifdef LIBXML_SAX1_ENABLED
     printf("\t--sax1: use the old SAX1 interfaces for processing\n");
 #endif

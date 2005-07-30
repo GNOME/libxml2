@@ -1,3 +1,8 @@
+Sat Jul 30 17:08:07 EDT 2005 Daniel Veillard <daniel@veillard.com>
+
+	* schematron.c xmllint.c include/libxml/schematron.h: commiting
+	  work done on the plane last week-end
+
 Sat Jul 30 15:16:29 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: allows an extra argument to subset the tests

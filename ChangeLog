@@ -1,3 +1,9 @@
+Sat Jul 30 15:16:29 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: allows an extra argument to subset the tests
+	* xmlregexp.c: big speedup for validation, basically avoided
+	  transition creation explosion when removing epsilon transition
+	  
 Sat Jul 30 00:00:46 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am globals.c parserInternals.c xmlreader.c xmlunicode.c

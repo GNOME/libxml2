@@ -4169,33 +4169,56 @@ launchTests(testDescPtr tst) {
     return(err);
 }
 
+static int verbose = 0;
+
+static int
+runtest(int i) {
+    int ret = 0, res;
+    int old_errors, old_tests, old_leaks;
+
+    old_errors = nb_errors;
+    old_tests = nb_tests;
+    old_leaks = nb_leaks;
+    if (testDescriptions[i].desc != NULL)
+	printf("## %s\n", testDescriptions[i].desc);
+    res = launchTests(&testDescriptions[i]);
+    if (res != 0)
+	ret++;
+    if (verbose) {
+	if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
+	    printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+	else
+	    printf("Ran %d tests, %d errors, %d leaks\n",
+		   nb_tests - old_tests,
+		   nb_errors - old_errors,
+		   nb_leaks - old_leaks);
+    }
+    return(ret);
+}
+
 int
 main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
-    int i = 0, res, ret = 0;
-    int verbose = 0;
-    int old_errors, old_tests, old_leaks;
+    int i, a, ret = 0;
+    int subset = 0;
 
     initializeLibxml2();
 
-    if ((argc >= 2) && (!strcmp(argv[1], "-v")))
-        verbose = 1;
-    for (i = 0; testDescriptions[i].func != NULL; i++) {
-        old_errors = nb_errors;
-        old_tests = nb_tests;
-        old_leaks = nb_leaks;
-        if (testDescriptions[i].desc != NULL)
-	    printf("## %s\n", testDescriptions[i].desc);
-	res = launchTests(&testDescriptions[i]);
-	if (res != 0)
-	    ret++;
-	if (verbose) {
-	    if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	        printf("Ran %d tests, no errors\n", nb_tests - old_tests);
-	    else
-	        printf("Ran %d tests, %d errors, %d leaks\n",
-		       nb_tests - old_tests,
-		       nb_errors - old_errors,
-		       nb_leaks - old_leaks);
+    
+    for (a = 1; a < argc;a++) {
+        if (!strcmp(argv[a], "-v"))
+	    verbose = 1;
+	else {
+	    for (i = 0; testDescriptions[i].func != NULL; i++) {
+	        if (strstr(testDescriptions[i].desc, argv[a])) {
+		    ret += runtest(i);
+		    subset++;
+		}
+	    }
+	}
+    }
+    if (subset == 0) {
+	for (i = 0; testDescriptions[i].func != NULL; i++) {
+	    ret += runtest(i);
 	}
     }
     if ((nb_errors == 0) && (nb_leaks == 0)) {

@@ -1,3 +1,8 @@
+Sat Jul 30 17:26:58 EDT 2005 Daniel Veillard <daniel@veillard.com>
+
+	* test/schematron/*: a few first tests from Zvon unfortunately
+	  with the old syntax
+
 Sat Jul 30 17:08:07 EDT 2005 Daniel Veillard <daniel@veillard.com>
 
 	* schematron.c xmllint.c include/libxml/schematron.h: commiting

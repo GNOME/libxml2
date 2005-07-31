@@ -1224,6 +1224,29 @@ exit:
  *									*
  ************************************************************************/
 
+static xmlNodePtr
+xmlSchematronGetNode(xmlSchematronValidCtxtPtr ctxt,
+                     xmlNodePtr cur, const xmlChar *xpath) {
+    xmlNodePtr node = NULL;
+    xmlXPathObjectPtr ret;
+
+    if ((ctxt == NULL) || (cur == NULL) || (xpath == NULL))
+        return(NULL);
+
+    ctxt->xctxt->doc = cur->doc;
+    ctxt->xctxt->node = cur;
+    ret = xmlXPathEval(xpath, ctxt->xctxt);
+    if (ret == NULL)
+        return(NULL);
+
+    if ((ret->type == XPATH_NODESET) &&
+        (ret->nodesetval != NULL) && (ret->nodesetval->nodeNr > 0))
+	node = ret->nodesetval->nodeTab[0];
+
+    xmlXPathFreeObject(ret);
+    return(node);
+}
+
 /**
  * xmlSchematronReportOutput:
  * @ctxt: the validation context
@@ -1255,7 +1278,7 @@ static xmlChar *
 xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt, 
 			  xmlNodePtr test, xmlNodePtr cur) {
     xmlChar *ret = NULL;
-    xmlNodePtr child;
+    xmlNodePtr child, node;
 
     if ((test == NULL) || (cur == NULL))
         return(ret);
@@ -1266,12 +1289,24 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
 	    (child->type == XML_CDATA_SECTION_NODE))
 	    ret = xmlStrcat(ret, child->content);
 	else if (IS_SCHEMATRON(child, "name")) {
-	    if ((cur->ns == NULL) || (cur->ns->prefix == NULL)) 
-	        ret = xmlStrcat(ret, cur->name);
+	    xmlChar *path;
+
+	    path = xmlGetNoNsProp(child, BAD_CAST "path");
+
+            node = cur;
+	    if (path != NULL) {
+	        node = xmlSchematronGetNode(ctxt, cur, path);
+		if (node == NULL)
+		    node = cur;
+		xmlFree(path);
+	    }
+
+	    if ((node->ns == NULL) || (node->ns->prefix == NULL)) 
+	        ret = xmlStrcat(ret, node->name);
 	    else {
-	        ret = xmlStrcat(ret, cur->ns->prefix);
+	        ret = xmlStrcat(ret, node->ns->prefix);
 	        ret = xmlStrcat(ret, BAD_CAST ":");
-	        ret = xmlStrcat(ret, cur->name);
+	        ret = xmlStrcat(ret, node->name);
 	    }
 	} else {
 	    child = child->next;
@@ -1358,7 +1393,7 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
 	} else {
 	    snprintf(msg, 999, "%s line %ld: %s\n", (const char *) path,
 		     line, (const char *) report);
-	    xmlFree(report);
+	    xmlFree((char *) report);
 	}
 	xmlSchematronReportOutput(ctxt, cur, &msg[0]);
 	if ((path != NULL) && (path != (xmlChar *) cur->name))

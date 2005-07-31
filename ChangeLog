@@ -1,3 +1,8 @@
+Sun Jul 31 18:48:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* schematron.c: report improvement
+	* test/schematron/zvon* result/schematron/zvon*: more tests
+
 Sun Jul 31 16:02:59 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.msvc win32/configure.js: applied patch from Rob

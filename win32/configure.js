@@ -45,6 +45,7 @@ var withZlib = false;
 var withDebug = true;
 var withMemDebug = false;
 var withSchemas = true;
+var withSchematron = true;
 var withRegExps = true;
 var withModules = true;
 var withTree = true;
@@ -138,6 +139,7 @@ function usage()
 	txt += "  legacy:     Enable Deprecated api's (" + (withLegacy? "yes" : "no") + ")\n";
 	txt += "  output:     Enable serialization support (" + (withOutput? "yes" : "no") + ")\n";
 	txt += "  schemas:    Enable XML Schema support (" + (withSchemas? "yes" : "no")  + ")\n";
+	txt += "  schematron: Enable Schematron support (" + (withSchematron? "yes" : "no")  + ")\n";
 	txt += "  python:     Build Python bindings (" + (withPython? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  compiler:   Compiler to be used [msvc|mingw|bcb] (" + compiler + ")\n";
@@ -232,6 +234,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_DEBUG=" + (withDebug? "1" : "0"));
 	vf.WriteLine("WITH_MEM_DEBUG=" + (withMemDebug? "1" : "0"));
 	vf.WriteLine("WITH_SCHEMAS=" + (withSchemas? "1" : "0"));
+	vf.WriteLine("WITH_SCHEMATRON=" + (withSchematron? "1" : "0"));
 	vf.WriteLine("WITH_REGEXPS=" + (withRegExps? "1" : "0"));
 	vf.WriteLine("WITH_MODULES=" + (withModules? "1" : "0"));
 	vf.WriteLine("WITH_TREE=" + (withTree? "1" : "0"));
@@ -320,6 +323,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_MEM_DEBUG\@/, withMemDebug? "1" : "0"));
 		} else if (s.search(/\@WITH_SCHEMAS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_SCHEMAS\@/, withSchemas? "1" : "0"));
+		} else if (s.search(/\@WITH_SCHEMATRON\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_SCHEMATRON\@/, withSchematron? "1" : "0"));
 		} else if (s.search(/\@WITH_REGEXPS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_REGEXPS\@/, withRegExps? "1" : "0"));
 		} else if (s.search(/\@WITH_MODULES\@/) != -1) {
@@ -459,6 +464,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withMemDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "schemas")
 			withSchemas = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "schematron")
+			withSchematron = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "regexps")
 			withRegExps = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "tree")
@@ -638,6 +645,7 @@ txtOut += "      SAX1 support: " + boolToStr(withSax1) + "\n";
 txtOut += "    Legacy support: " + boolToStr(withLegacy) + "\n";
 txtOut += "    Output support: " + boolToStr(withOutput) + "\n";
 txtOut += "XML Schema support: " + boolToStr(withSchemas) + "\n";
+txtOut += "Schematron support: " + boolToStr(withSchematron) + "\n";
 txtOut += "   Python bindings: " + boolToStr(withPython) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";

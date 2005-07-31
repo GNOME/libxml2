@@ -1,3 +1,11 @@
+Sun Jul 31 16:02:59 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.msvc win32/configure.js: applied patch from Rob
+	  Richards to add schematron to the build on Windows
+	* test/schematron/zvon3* result/schematron/zvon3*: second test
+	* test/schematron/zvon10* result/schematron/zvon10*: this is the
+	  real second test 10 and 2 are swapped.
+
 Sun Jul 31 15:42:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* schematron.c: more bug fixes, improve the error reporting.

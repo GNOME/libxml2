@@ -332,8 +332,16 @@ xmlSchematronAddTest(xmlSchematronParserCtxtPtr ctxt,
     ret->test = test;
     ret->comp = comp;
     ret->report = report;
-    ret->next = rule->tests;
-    rule->tests = ret;
+    ret->next = NULL;
+    if (rule->tests == NULL) {
+	rule->tests = ret;
+    } else {
+        xmlSchematronTestPtr prev = rule->tests;
+
+	while (prev->next != NULL)
+	     prev = prev->next;
+        prev->next = ret;
+    }
     return (ret);
 }
 
@@ -406,10 +414,26 @@ xmlSchematronAddRule(xmlSchematronParserCtxtPtr ctxt, xmlSchematronPtr schema,
     ret->context = context;
     ret->pattern = pattern;
     ret->report = report;
-    ret->next = schema->rules;
-    schema->rules = ret;
-    ret->patnext = pat->rules;
-    pat->rules = ret;
+    ret->next = NULL;
+    if (schema->rules == NULL) {
+	schema->rules = ret;
+    } else {
+        xmlSchematronRulePtr prev = schema->rules;
+
+	while (prev->next != NULL)
+	     prev = prev->next;
+        prev->next = ret;
+    }
+    ret->patnext = NULL;
+    if (pat->rules == NULL) {
+	pat->rules = ret;
+    } else {
+        xmlSchematronRulePtr prev = pat->rules;
+
+	while (prev->patnext != NULL)
+	     prev = prev->patnext;
+        prev->patnext = ret;
+    }
     return (ret);
 }
 
@@ -465,8 +489,16 @@ xmlSchematronAddPattern(xmlSchematronParserCtxtPtr ctxt,
     }
     memset(ret, 0, sizeof(xmlSchematronPattern));
     ret->name = name;
-    ret->next = schema->patterns;
-    schema->patterns = ret;
+    ret->next = NULL;
+    if (schema->patterns == NULL) {
+	schema->patterns = ret;
+    } else {
+        xmlSchematronPatternPtr prev = schema->patterns;
+
+	while (prev->next != NULL)
+	     prev = prev->next;
+        prev->next = ret;
+    }
     return (ret);
 }
 
@@ -1197,7 +1229,7 @@ exit:
 static void
 xmlSchematronReportOutput(xmlSchematronValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
                           xmlNodePtr cur ATTRIBUTE_UNUSED,
-                          const char *msg ATTRIBUTE_UNUSED) {
+                          const char *msg) {
     /* TODO */
     fprintf(stderr, "%s", msg);
 }
@@ -1220,8 +1252,7 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
     /* if quiet and not SVRL report only failures */
     if ((ctxt->flags & XML_SCHEMATRON_OUT_QUIET) &&
         ((ctxt->flags & XML_SCHEMATRON_OUT_XML) == 0) &&
-	(((test->type == XML_SCHEMATRON_REPORT) & (!success)) ||
-	 ((test->type == XML_SCHEMATRON_ASSERT) & (success))))
+	(test->type == XML_SCHEMATRON_REPORT))
         return;
     if (ctxt->flags & XML_SCHEMATRON_OUT_XML) {
         TODO
@@ -1253,6 +1284,33 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
     }
 }
 
+/**
+ * xmlSchematronReportPattern:
+ * @ctxt:  the validation context
+ * @pattern: the current pattern
+ *
+ * called from the validation engine when starting to check a pattern
+ */
+static void
+xmlSchematronReportPattern(xmlSchematronValidCtxtPtr ctxt, 
+			   xmlSchematronPatternPtr pattern) {
+    if ((ctxt == NULL) || (pattern == NULL))
+        return;
+    if (ctxt->flags & XML_SCHEMATRON_OUT_QUIET)
+        return;
+    if (ctxt->flags & XML_SCHEMATRON_OUT_XML) {
+        TODO
+    } else {
+	char msg[1000];
+
+	if (pattern->name == NULL)
+	    return;
+	snprintf(msg, 999, "Pattern: %s\n", (const char *) pattern->name);
+	xmlSchematronReportOutput(ctxt, NULL, &msg[0]);
+    }
+}
+
+
 /************************************************************************
  *									*
  *		Validation against a Schematrontron				*
@@ -1274,9 +1332,7 @@ xmlSchematronNewValidCtxt(xmlSchematronPtr schema, int options)
     int i;
     xmlSchematronValidCtxtPtr ret;
 
-    ret =
-        (xmlSchematronValidCtxtPtr)
-        xmlMalloc(sizeof(xmlSchematronValidCtxt));
+    ret = (xmlSchematronValidCtxtPtr) xmlMalloc(sizeof(xmlSchematronValidCtxt));
     if (ret == NULL) {
         xmlSchematronVErrMemory(NULL, "allocating validation context",
                                 NULL);
@@ -1432,7 +1488,6 @@ xmlSchematronValidateDoc(xmlSchematronValidCtxtPtr ctxt, xmlDocPtr instance)
     xmlSchematronPatternPtr pattern;
     xmlSchematronRulePtr rule;
     xmlSchematronTestPtr test;
-    int matched;
 
     if ((ctxt == NULL) || (ctxt->schema == NULL) ||
         (ctxt->schema->rules == NULL) || (instance == NULL))
@@ -1473,7 +1528,8 @@ xmlSchematronValidateDoc(xmlSchematronValidCtxtPtr ctxt, xmlDocPtr instance)
 	pattern = ctxt->schema->patterns;
 	
 	while (pattern != NULL) {
-	    matched = 0;
+	    xmlSchematronReportPattern(ctxt, pattern);
+
 	    /*
 	     * TODO convert the pattern rule to a direct XPath and
 	     * compute directly instead of using the pattern matching
@@ -1496,6 +1552,7 @@ xmlSchematronValidateDoc(xmlSchematronValidCtxtPtr ctxt, xmlDocPtr instance)
 		
 		cur = xmlSchematronNextNode(cur);
 	    }
+	    pattern = pattern->next;
 	}
     }
     return(ctxt->nberrors);

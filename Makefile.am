@@ -159,7 +159,7 @@ check-local: all tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_PATTERN@ @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@ @TEST_MODULES@
+tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_PATTERN@ @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_SCHEMATRON@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@ @TEST_MODULES@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
 	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
@@ -1003,6 +1003,35 @@ Relaxtests: xmllint$(EXEEXT)
 			   err.$$name | grep -v "error detected at";\
 		  fi ; grep Unimplemented err.$$name`; \
 	          if [ -n "$$log" ] ; then echo "$$name"_"$$xno" result ; echo $$log ; fi ; \
+	          rm res.$$name err.$$name ; \
+	       fi ; fi ; \
+	  done; done)
+
+Schematrontests: xmllint$(EXEEXT)
+	@(echo > .memdump)
+	@echo "## Schematron regression tests"
+	-@(for i in $(srcdir)/test/schematron/*.sct ; do \
+	  name=`basename $$i | sed 's+\.sct++'`; \
+	  for j in $(srcdir)/test/schematron/"$$name"_*.xml ; do \
+	      if [ -f $$j ] ; then \
+	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \
+	      if [ ! -f $(srcdir)/result/schematron/"$$name"_"$$xno" ]; \
+	      then \
+		  echo New test file "$$name"_"$$xno" ; \
+		  $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --schematron $$i $$j \
+		    > $(srcdir)/result/schematron/"$$name"_"$$xno" \
+		    2> $(srcdir)/result/schematron/"$$name"_"$$xno".err; \
+	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      else \
+	          log=`$(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --schematron $$i $$j \
+		    > res.$$name 2> err.$$name;\
+	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	          diff $(srcdir)/result/schematron/"$$name"_"$$xno" \
+		       res.$$name;\
+	          diff $(srcdir)/result/schematron/"$$name"_"$$xno".err \
+		       err.$$name | grep -v "error detected at";\
+		  grep Unimplemented err.$$name`; \
+		  if [ -n "$$log" ] ; then echo "$$name"_"$$xno" result ; echo $$log ; fi ; \
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \
 	  done; done)

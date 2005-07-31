@@ -2591,7 +2591,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     if (wxschematron != NULL) {
 	xmlSchematronValidCtxtPtr ctxt;
 	int ret;
-	int flag = XML_SCHEMATRON_OUT_TEXT;
+	int flag;
 
 	if ((timing) && (!repeat)) {
 	    startTimer();
@@ -2599,6 +2599,10 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 	if (debug)
 	    flag = XML_SCHEMATRON_OUT_XML;
+	else
+	    flag = XML_SCHEMATRON_OUT_TEXT;
+	if (noout)
+	    flag |= XML_SCHEMATRON_OUT_QUIET;
 	ctxt = xmlSchematronNewValidCtxt(wxschematron, flag);
 #if 0
 	xmlSchematronSetValidErrors(ctxt,

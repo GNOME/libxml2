@@ -1,3 +1,10 @@
+Sun Jul 31 14:15:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* schematron.c xmllint.c: fixing the loop bug, fixing schematron
+	  text error rendering
+	* Makefile.am result/schematron/* test/schematron/zvon1*.sct:
+	  started integrating within "make tests"
+
 Sat Jul 30 17:26:58 EDT 2005 Daniel Veillard <daniel@veillard.com>
 
 	* test/schematron/*: a few first tests from Zvon unfortunately

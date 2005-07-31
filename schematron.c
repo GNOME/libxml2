@@ -128,7 +128,7 @@ struct _xmlSchematronPattern {
  */
 struct _xmlSchematron {
     const xmlChar *name;	/* schema name */
-    int preserve;		/* was the document preserved by the user */
+    int preserve;		/* was the document passed by the user */
     xmlDocPtr doc;		/* pointer to the parsed document */
     int flags;			/* specific to this schematron */
 
@@ -1089,6 +1089,7 @@ xmlSchematronParse(xmlSchematronParserCtxtPtr ctxt)
                           ctxt->URL, NULL);
             return (NULL);
         }
+	ctxt->preserve = 0;
     } else if (ctxt->buffer != NULL) {
         doc = xmlReadMemory(ctxt->buffer, ctxt->size, NULL, NULL,
 	                    SCHEMATRON_PARSE_OPTIONS);
@@ -1101,9 +1102,11 @@ xmlSchematronParse(xmlSchematronParserCtxtPtr ctxt)
         }
         doc->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
         ctxt->URL = xmlDictLookup(ctxt->dict, BAD_CAST "in_memory_buffer", -1);
+	ctxt->preserve = 0;
     } else if (ctxt->doc != NULL) {
         doc = ctxt->doc;
 	preserve = 1;
+	ctxt->preserve = 1;
     } else {
 	xmlSchematronPErr(ctxt, NULL,
 		      XML_SCHEMAP_NOTHING_TO_PARSE,
@@ -1196,6 +1199,9 @@ xmlSchematronParse(xmlSchematronParserCtxtPtr ctxt)
 	    ctxt->URL, NULL);
 	goto exit;
     }
+    /* the original document must be kept for reporting */
+    ret->doc = doc;
+    preserve = 1;
 
 exit:
     if (!preserve) {
@@ -1235,6 +1241,72 @@ xmlSchematronReportOutput(xmlSchematronValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlSchematronFormatReport:
+ * @ctxt:  the validation context
+ * @test: the test node
+ * @cur: the current node tested
+ *
+ * Build the string being reported to the user.
+ *
+ * Returns a report string or NULL in case of error. The string needs
+ *         to be deallocated by teh caller
+ */
+static xmlChar *
+xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt, 
+			  xmlNodePtr test, xmlNodePtr cur) {
+    xmlChar *ret = NULL;
+    xmlNodePtr child;
+
+    if ((test == NULL) || (cur == NULL))
+        return(ret);
+
+    child = test->children;
+    while (child != NULL) {
+        if ((child->type == XML_TEXT_NODE) ||
+	    (child->type == XML_CDATA_SECTION_NODE))
+	    ret = xmlStrcat(ret, child->content);
+	else if (IS_SCHEMATRON(child, "name")) {
+	    if ((cur->ns == NULL) || (cur->ns->prefix == NULL)) 
+	        ret = xmlStrcat(ret, cur->name);
+	    else {
+	        ret = xmlStrcat(ret, cur->ns->prefix);
+	        ret = xmlStrcat(ret, BAD_CAST ":");
+	        ret = xmlStrcat(ret, cur->name);
+	    }
+	} else {
+	    child = child->next;
+	    continue;
+	}
+
+	/*
+	 * remove superfluous \n
+	 */
+	if (ret != NULL) {
+	    int len = xmlStrlen(ret);
+	    xmlChar c;
+
+	    if (len > 0) {
+		c = ret[len - 1];
+		if ((c == ' ') || (c == '\n') || (c == '\r') || (c == '\t')) {
+		    while ((c == ' ') || (c == '\n') ||
+		           (c == '\r') || (c == '\t')) {
+			len--;
+			if (len == 0)
+			    break;
+			c = ret[len - 1];
+		    }
+		    ret[len] = ' ';
+		    ret[len + 1] = 0;
+		}
+	    }
+	}
+
+        child = child->next;
+    }
+    return(ret);
+}
+
+/**
  * xmlSchematronReportSuccess:
  * @ctxt:  the validation context
  * @test: the compiled test
@@ -1260,7 +1332,7 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
         xmlChar *path;
 	char msg[1000];
 	long line;
-	const xmlChar *report;
+	const xmlChar *report = NULL;
 
         if (((test->type == XML_SCHEMATRON_REPORT) & (!success)) ||
 	    ((test->type == XML_SCHEMATRON_ASSERT) & (success)))
@@ -1269,15 +1341,25 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
 	path = xmlGetNodePath(cur);
 	if (path == NULL)
 	    path = (xmlChar *) cur->name;
+#if 0
 	if ((test->report != NULL) && (test->report[0] != 0))
 	    report = test->report;
-	else if (test->type == XML_SCHEMATRON_ASSERT) {
-	    report = BAD_CAST "node failed assert";
+#endif
+	if (test->node != NULL)
+            report = xmlSchematronFormatReport(ctxt, test->node, cur);
+	if (report == NULL) {
+	    if (test->type == XML_SCHEMATRON_ASSERT) {
+		snprintf(msg, 999, "%s line %ld: node failed assert\n",
+		         (const char *) path, line);
+	    } else {
+		snprintf(msg, 999, "%s line %ld: node failed report\n",
+		         (const char *) path, line);
+	    }
 	} else {
-	    report = BAD_CAST "node failed report";
+	    snprintf(msg, 999, "%s line %ld: %s\n", (const char *) path,
+		     line, (const char *) report);
+	    xmlFree(report);
 	}
-	snprintf(msg, 999, "%s line %ld: %s\n", (const char *) path,
-	         line, (const char *) report);
 	xmlSchematronReportOutput(ctxt, cur, &msg[0]);
 	if ((path != NULL) && (path != (xmlChar *) cur->name))
 	    xmlFree(path);
@@ -1436,36 +1518,42 @@ xmlSchematronRunTest(xmlSchematronValidCtxtPtr ctxt,
     ret = xmlXPathCompiledEval(test->comp, ctxt->xctxt);
     if (ret == NULL) {
 	failed = 1;
-    } else switch (ret->type) {
-	case XPATH_XSLT_TREE:
-	case XPATH_NODESET:
-	    if ((ret->nodesetval == NULL) ||
-		(ret->nodesetval->nodeNr == 0))
+    } else {
+        switch (ret->type) {
+	    case XPATH_XSLT_TREE:
+	    case XPATH_NODESET:
+		if ((ret->nodesetval == NULL) ||
+		    (ret->nodesetval->nodeNr == 0))
+		    failed = 1;
+		break;
+	    case XPATH_BOOLEAN:
+		failed = !ret->boolval;
+		break;
+	    case XPATH_NUMBER:
+		if ((xmlXPathIsNaN(ret->floatval)) ||
+		    (ret->floatval == 0.0))
+		    failed = 1;
+		break;
+	    case XPATH_STRING:
+		if ((ret->stringval == NULL) ||
+		    (ret->stringval[0] == 0))
+		    failed = 1;
+		break;
+	    case XPATH_UNDEFINED:
+	    case XPATH_POINT:
+	    case XPATH_RANGE:
+	    case XPATH_LOCATIONSET:
+	    case XPATH_USERS:
 		failed = 1;
-	    break;
-	case XPATH_BOOLEAN:
-	    failed = !ret->boolval;
-	    break;
-	case XPATH_NUMBER:
-	    if ((xmlXPathIsNaN(ret->floatval)) ||
-		(ret->floatval == 0.0))
-		failed = 1;
-	    break;
-	case XPATH_STRING:
-	    if ((ret->stringval == NULL) ||
-		(ret->stringval[0] == 0))
-		failed = 1;
-	    break;
-	case XPATH_UNDEFINED:
-	case XPATH_POINT:
-	case XPATH_RANGE:
-	case XPATH_LOCATIONSET:
-	case XPATH_USERS:
-	    failed = 1;
-	    break;
+		break;
+	}
+	xmlXPathFreeObject(ret);
     }
-    if (failed) 
+    if ((failed) && (test->type == XML_SCHEMATRON_ASSERT))
         ctxt->nberrors++;
+    else if ((!failed) && (test->type == XML_SCHEMATRON_REPORT))
+        ctxt->nberrors++;
+
     xmlSchematronReportSuccess(ctxt, test, cur, !failed);
 
     return(!failed);

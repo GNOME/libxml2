@@ -1,3 +1,8 @@
+Sun Jul 31 15:42:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* schematron.c: more bug fixes, improve the error reporting.
+	* test/schematron/zvon2* result/schematron/zvon2*: second test
+
 Sun Jul 31 14:15:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* schematron.c xmllint.c: fixing the loop bug, fixing schematron

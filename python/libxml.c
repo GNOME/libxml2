@@ -2533,6 +2533,7 @@ libxml_parent(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 
                 res = attr->parent;
             }
+	    break;
         case XML_ENTITY_DECL:
         case XML_NAMESPACE_DECL:
         case XML_XINCLUDE_START:

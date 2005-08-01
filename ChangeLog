@@ -1,3 +1,8 @@
+Mon Aug  1 07:18:53 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: applied fix from Jakub Piotr Clapa for
+	  xmlAttr.parent(), closing #312181
+
 Sun Jul 31 18:48:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* schematron.c: report improvement

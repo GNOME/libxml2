@@ -468,6 +468,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withSchematron = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "regexps")
 			withRegExps = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "modules")
+			withModules = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "tree")
 			withTree = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "reader")

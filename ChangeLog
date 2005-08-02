@@ -1,3 +1,8 @@
+Tue Aug  2 13:26:42 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* win32/configure.js: applied patch from Rob Richards to allow
+	  disabling modules in win32, fixes #304071
+
 Mon Aug  1 07:18:53 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: applied fix from Jakub Piotr Clapa for

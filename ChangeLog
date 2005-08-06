@@ -1,3 +1,7 @@
+Sat Aug  6 11:06:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/XSLT.html doc/xml.html: small doc fix for #312647
+
 Tue Aug  2 13:26:42 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* win32/configure.js: applied patch from Rob Richards to allow

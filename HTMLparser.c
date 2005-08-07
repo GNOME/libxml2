@@ -2743,6 +2743,8 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 	}
     }
     if (nbchar != 0) {
+        buf[nbchar] = 0;
+
 	/*
 	 * Ok the segment is to be consumed as chars.
 	 */
@@ -5176,10 +5178,18 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
 	int cur = ctxt->input->cur - ctxt->input->base;
+	int res;
 	
-	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
+	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
+	if (res < 0) {
+	    ctxt->errNo = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return (XML_PARSER_EOF);
+	}
 	ctxt->input->base = ctxt->input->buf->buffer->content + base;
 	ctxt->input->cur = ctxt->input->base + cur;
+	ctxt->input->end =
+	  &ctxt->input->buf->buffer->content[ctxt->input->buf->buffer->use];
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);
 #endif

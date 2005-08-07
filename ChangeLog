@@ -1,3 +1,8 @@
+Mon Aug  8 01:41:53 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed an uninitialized memory access spotted by
+	  valgrind
+
 Sun Aug  7 12:39:35 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* test/relaxng/docbook_0.xml: get rid of the dependancy on a locally

@@ -316,7 +316,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     }
     if (URL == NULL) return;
 
-    uri = xmlParseURI(URL);
+    uri = xmlParseURIRaw(URL, 1);
     if (uri == NULL)
 	return;
 
@@ -377,7 +377,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     if (ctxt->hostname == NULL)
 	return(-1);
 
-    uri = xmlParseURI(URL);
+    uri = xmlParseURIRaw(URL, 1);
     if (uri == NULL)
 	return(-1);
 
@@ -440,7 +440,7 @@ xmlNanoFTPScanProxy(const char *URL) {
 #endif
     if (URL == NULL) return;
 
-    uri = xmlParseURI(URL);
+    uri = xmlParseURIRaw(URL, 1);
     if ((uri == NULL) || (uri->scheme == NULL) ||
 	(strcmp(uri->scheme, "ftp")) || (uri->server == NULL)) {
 	__xmlIOErr(XML_FROM_FTP, XML_FTP_URL_SYNTAX, "Syntax Error\n");

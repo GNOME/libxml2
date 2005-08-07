@@ -2692,6 +2692,178 @@ uriBaseTest(const char *filename,
                          "http://foo.com/path/to/index.html?orig#help"));
 }
 
+static int urip_success = 1;
+static int urip_current = 0;
+static const char *urip_testURLs[] = {
+    "urip://example.com/a b.html",
+    "urip://example.com/a%20b.html",
+    "file:///path/to/a b.html",
+    "file:///path/to/a%20b.html",
+    "/path/to/a b.html",
+    "/path/to/a%20b.html",
+    "urip://example.com/résumé.html",
+    "urip://example.com/test?a=1&b=2%263&c=4#foo",
+    NULL
+};
+static const char *urip_rcvsURLs[] = {
+    /* it is an URI the strings must be escaped */
+    "urip://example.com/a%20b.html",
+    /* check that % escaping is not broken */
+    "urip://example.com/a%20b.html",
+    /* it's an URI path the strings must be escaped */
+    "file:///path/to/a%20b.html",
+    /* check that % escaping is not broken */
+    "file:///path/to/a%20b.html",
+    /* this is not an URI, this is a path, so this should not be escaped */
+    "/path/to/a b.html",
+    /* check that paths with % are not broken */
+    "/path/to/a%20b.html",
+    /* out of context the encoding can't be guessed byte by byte conversion */
+    "urip://example.com/r%E9sum%E9.html",
+    /* verify we don't destroy URIs especially the query part */
+    "urip://example.com/test?a=1&b=2%263&c=4#foo",
+    NULL
+};
+static const char *urip_res = "<list/>";
+static const char *urip_cur = NULL;
+static int urip_rlen;
+
+/**
+ * uripMatch:
+ * @URI: an URI to test
+ *
+ * Check for an urip: query
+ *
+ * Returns 1 if yes and 0 if another Input module should be used
+ */
+static int
+uripMatch(const char * URI) {
+    if ((URI == NULL) || (!strcmp(URI, "file:///etc/xml/catalog")))
+        return(0);
+    /* Verify we received the escaped URL */
+    if (strcmp(urip_rcvsURLs[urip_current], URI))
+	urip_success = 0;
+    return(1);
+}
+
+/**
+ * uripOpen:
+ * @URI: an URI to test
+ *
+ * Return a pointer to the urip: query handler, in this example simply
+ * the urip_current pointer...
+ *
+ * Returns an Input context or NULL in case or error
+ */
+static void *
+uripOpen(const char * URI) {
+    if ((URI == NULL) || (!strcmp(URI, "file:///etc/xml/catalog")))
+        return(NULL);
+    /* Verify we received the escaped URL */
+    if (strcmp(urip_rcvsURLs[urip_current], URI))
+	urip_success = 0;
+    urip_cur = urip_res;
+    urip_rlen = strlen(urip_res);
+    return((void *) urip_cur);
+}
+
+/**
+ * uripClose:
+ * @context: the read context
+ *
+ * Close the urip: query handler
+ *
+ * Returns 0 or -1 in case of error
+ */
+static int
+uripClose(void * context) {
+    if (context == NULL) return(-1);
+    urip_cur = NULL;
+    urip_rlen = 0;
+    return(0);
+}
+
+/**
+ * uripRead:
+ * @context: the read context
+ * @buffer: where to store data
+ * @len: number of bytes to read
+ *
+ * Implement an urip: query read.
+ *
+ * Returns the number of bytes read or -1 in case of error
+ */
+static int
+uripRead(void * context, char * buffer, int len) {
+   const char *ptr = (const char *) context;
+
+   if ((context == NULL) || (buffer == NULL) || (len < 0))
+       return(-1);
+
+   if (len > urip_rlen) len = urip_rlen;
+   memcpy(buffer, ptr, len);
+   urip_rlen -= len;
+   return(len);
+}
+
+static int
+urip_checkURL(const char *URL) {
+    xmlDocPtr doc;
+
+    doc = xmlReadFile(URL, NULL, 0);
+    if (doc == NULL)
+        return(-1);
+    xmlFreeDoc(doc);
+    return(1);
+}
+
+/**
+ * uriPathTest:
+ * @filename: ignored
+ * @result: ignored
+ * @err: ignored
+ *
+ * Run a set of tests to check how Path and URI are handled before
+ * being passed to the I/O layer
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+uriPathTest(const char *filename ATTRIBUTE_UNUSED,
+             const char *result ATTRIBUTE_UNUSED,
+             const char *err ATTRIBUTE_UNUSED,
+             int options ATTRIBUTE_UNUSED) {
+    int parsed;
+    int failures = 0;
+
+    /*
+     * register the new I/O handlers
+     */
+    if (xmlRegisterInputCallbacks(uripMatch, uripOpen, uripRead, uripClose) < 0)
+    {
+        fprintf(stderr, "failed to register HTTP handler\n");
+	return(-1);
+    }
+
+    for (urip_current = 0;urip_testURLs[urip_current] != NULL;urip_current++) {
+        urip_success = 1;
+        parsed = urip_checkURL(urip_testURLs[urip_current]);
+	if (urip_success != 1) {
+	    fprintf(stderr, "failed the URL passing test for %s",
+	            urip_testURLs[urip_current]);
+	    failures++;
+	} else if (parsed != 1) {
+	    fprintf(stderr, "failed the parsing test for %s",
+	            urip_testURLs[urip_current]);
+	    failures++;
+	}
+	nb_tests++;
+    }
+
+    xmlPopInputCallbacks();
+    return(failures);
+}
+
 #ifdef LIBXML_SCHEMAS_ENABLED
 /************************************************************************
  *									*
@@ -4039,6 +4211,9 @@ testDesc testDescriptions[] = {
     { "URI base composition tests" ,
       uriBaseTest, "./test/URI/*.data", "result/URI/", "", NULL,
       0 },
+    { "Path URI conversion tests" ,
+      uriPathTest, NULL, NULL, NULL, NULL,
+      0 },
 #ifdef LIBXML_SCHEMAS_ENABLED
     { "Schemas regression tests" ,
       schemasTest, "./test/schemas/*_*.xsd", NULL, NULL, NULL,
@@ -4170,6 +4345,7 @@ launchTests(testDescPtr tst) {
 }
 
 static int verbose = 0;
+static int tests_quiet = 0;
 
 static int
 runtest(int i) {
@@ -4179,7 +4355,7 @@ runtest(int i) {
     old_errors = nb_errors;
     old_tests = nb_tests;
     old_leaks = nb_leaks;
-    if (testDescriptions[i].desc != NULL)
+    if ((tests_quiet == 0) && (testDescriptions[i].desc != NULL))
 	printf("## %s\n", testDescriptions[i].desc);
     res = launchTests(&testDescriptions[i]);
     if (res != 0)
@@ -4207,6 +4383,8 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     for (a = 1; a < argc;a++) {
         if (!strcmp(argv[a], "-v"))
 	    verbose = 1;
+        else if (!strcmp(argv[a], "-quiet"))
+	    tests_quiet = 1;
 	else {
 	    for (i = 0; testDescriptions[i].func != NULL; i++) {
 	        if (strstr(testDescriptions[i].desc, argv[a])) {

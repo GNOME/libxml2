@@ -293,7 +293,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     }
     if (URL == NULL) return;
 
-    uri = xmlParseURI(URL);
+    uri = xmlParseURIRaw(URL, 1);
     if (uri == NULL)
 	return;
 
@@ -346,7 +346,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
 #endif
     if (URL == NULL) return;
 
-    uri = xmlParseURI(URL);
+    uri = xmlParseURIRaw(URL, 1);
     if ((uri == NULL) || (uri->scheme == NULL) ||
 	(strcmp(uri->scheme, "http")) || (uri->server == NULL)) {
 	__xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, "Syntax Error\n");

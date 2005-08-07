@@ -3533,7 +3533,6 @@ xmlGetExternalEntityLoader(void) {
  *
  * Load an external entity, note that the use of this function for
  * unparsed entities may generate problems
- * TODO: a more generic External entity API must be designed
  *
  * Returns the xmlParserInputPtr or NULL
  */

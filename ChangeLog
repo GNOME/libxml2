@@ -1,3 +1,9 @@
+Mon Aug  8 15:44:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: fixed bug #310333 with a patch close to the provided
+	  patch for HTML UTF-8 serialization
+	* result/HTML/script2.html: this changed the output of that test
+
 Mon Aug  8 15:01:51 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: fixed bug #310264, basically it's about reentrancy

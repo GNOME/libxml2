@@ -552,6 +552,8 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 		*size = 0;
 		return;
 	    }
+	} else {
+	    handler = xmlFindCharEncodingHandler(encoding);
 	}
     }
 
@@ -1026,6 +1028,8 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
 	    handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL)
 		return(-1);
+	} else {
+	    handler = xmlFindCharEncodingHandler(encoding);
 	}
     }
 

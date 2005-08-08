@@ -1,3 +1,11 @@
+Mon Aug  8 15:01:51 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: fixed bug #310264, basically it's about reentrancy
+	  of count based transition, when going though the counter must
+	  be reset to 0
+	* test/schemas/bug310264* result/schemas/bug310264*: added the
+	  regression test.
+
 Mon Aug  8 14:40:52 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a memory leak: xmlSchemaFreeAnnot() was

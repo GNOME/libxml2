@@ -38,7 +38,7 @@
 #endif
 
 /* #define DEBUG_REGEXP_GRAPH */
-/* #define DEBUG_REGEXP_EXEC */ 
+/* #define DEBUG_REGEXP_EXEC */
 /* #define DEBUG_PUSH */
 /* #define DEBUG_COMPACTION */
 
@@ -2579,6 +2579,14 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 #endif
 		    exec->counts[trans->counter]++;
 		}
+		if ((trans->count >= 0) &&
+		    (trans->count < REGEXP_ALL_COUNTER)) {
+#ifdef DEBUG_REGEXP_EXEC
+		    printf("resetting count %d on transition\n",
+		           trans->count);
+#endif
+		    exec->counts[trans->count] = 0;
+		}
 #ifdef DEBUG_REGEXP_EXEC
 		printf("entering state %d\n", trans->to);
 #endif
@@ -3145,6 +3153,14 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		    printf("Increasing count %d\n", trans->counter);
 #endif
 		    exec->counts[trans->counter]++;
+		}
+		if ((trans->count >= 0) &&
+		    (trans->count < REGEXP_ALL_COUNTER)) {
+#ifdef DEBUG_REGEXP_EXEC
+		    printf("resetting count %d on transition\n",
+		           trans->count);
+#endif
+		    exec->counts[trans->count] = 0;
 		}
 #ifdef DEBUG_PUSH
 		printf("entering state %d\n", trans->to);

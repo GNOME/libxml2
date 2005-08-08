@@ -2310,14 +2310,13 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 
     localname = xmlSplitQName2(name, &prefix);
     if (localname == NULL)
-	return(xmlGetProp(reader->node, name));
+	return(xmlGetNoNsProp(reader->node, name));
     
     ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
     if (ns != NULL)
         ret = xmlGetNsProp(reader->node, localname, ns->href);
 
-    if (localname != NULL)
-        xmlFree(localname);
+    xmlFree(localname);
     if (prefix != NULL)
         xmlFree(prefix);
     return(ret);

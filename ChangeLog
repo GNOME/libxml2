@@ -1,3 +1,8 @@
+Mon Aug  8 09:44:34 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: applied patch from Rob Richards fixing
+	  xmlTextReaderGetAttribute
+
 Mon Aug  8 01:41:53 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed an uninitialized memory access spotted by

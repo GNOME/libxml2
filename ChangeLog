@@ -1,3 +1,8 @@
+Mon Aug  8 16:43:04 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c include/libxml/xmlsave.h: fixed #145092 by adding 
+	  an xmlSaveOption to omit XML declaration
+
 Mon Aug  8 15:44:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: fixed bug #310333 with a patch close to the provided

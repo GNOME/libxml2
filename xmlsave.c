@@ -826,31 +826,33 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
         cur->encoding = BAD_CAST ctxt->encoding;
 
     buf = ctxt->buf;
-    xmlOutputBufferWrite(buf, 14, "<?xml version=");
-    if (cur->version != NULL) 
-	xmlBufferWriteQuotedString(buf->buffer, cur->version);
-    else
-	xmlOutputBufferWrite(buf, 5, "\"1.0\"");
-    if (ctxt->encoding == NULL) {
-	if (cur->encoding != NULL)
-	    encoding = cur->encoding;
-	else if (cur->charset != XML_CHAR_ENCODING_UTF8)
-	    encoding = (const xmlChar *)
-	         xmlGetCharEncodingName((xmlCharEncoding) cur->charset);
+    if ((ctxt->options & XML_SAVE_NO_DECL) == 0) {
+	xmlOutputBufferWrite(buf, 14, "<?xml version=");
+	if (cur->version != NULL) 
+	    xmlBufferWriteQuotedString(buf->buffer, cur->version);
+	else
+	    xmlOutputBufferWrite(buf, 5, "\"1.0\"");
+	if (ctxt->encoding == NULL) {
+	    if (cur->encoding != NULL)
+		encoding = cur->encoding;
+	    else if (cur->charset != XML_CHAR_ENCODING_UTF8)
+		encoding = (const xmlChar *)
+		     xmlGetCharEncodingName((xmlCharEncoding) cur->charset);
+	}
+	if (encoding != NULL) {
+	    xmlOutputBufferWrite(buf, 10, " encoding=");
+	    xmlBufferWriteQuotedString(buf->buffer, (xmlChar *) encoding);
+	}
+	switch (cur->standalone) {
+	    case 0:
+		xmlOutputBufferWrite(buf, 16, " standalone=\"no\"");
+		break;
+	    case 1:
+		xmlOutputBufferWrite(buf, 17, " standalone=\"yes\"");
+		break;
+	}
+	xmlOutputBufferWrite(buf, 3, "?>\n");
     }
-    if (encoding != NULL) {
-        xmlOutputBufferWrite(buf, 10, " encoding=");
-	xmlBufferWriteQuotedString(buf->buffer, (xmlChar *) encoding);
-    }
-    switch (cur->standalone) {
-        case 0:
-	    xmlOutputBufferWrite(buf, 16, " standalone=\"no\"");
-	    break;
-        case 1:
-	    xmlOutputBufferWrite(buf, 17, " standalone=\"yes\"");
-	    break;
-    }
-    xmlOutputBufferWrite(buf, 3, "?>\n");
 
 #ifdef LIBXML_HTML_ENABLED
     dtd = xmlGetIntSubset(cur);

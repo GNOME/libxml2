@@ -462,7 +462,14 @@ xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt, const char * xmt_ptr, int outlen) {
 		tv.tv_sec = timeout;
 		tv.tv_usec = 0;
 		FD_ZERO( &wfd );
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4018)
+#endif
 		FD_SET( ctxt->fd, &wfd );
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 		(void)select( ctxt->fd + 1, NULL, &wfd, NULL, &tv );
 	    }
 	}
@@ -555,7 +562,14 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 	tv.tv_sec = timeout;
 	tv.tv_usec = 0;
 	FD_ZERO(&rfd);
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4018)
+#endif
 	FD_SET(ctxt->fd, &rfd);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 	
 	if ( (select(ctxt->fd+1, &rfd, NULL, NULL, &tv)<1)
 #if defined(EINTR)
@@ -841,7 +855,11 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
     
     tv.tv_sec = timeout;
     tv.tv_usec = 0;
-    
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4018)
+#endif
     FD_ZERO(&wfd);
     FD_SET(s, &wfd);
 
@@ -852,6 +870,9 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
     switch(select(s+1, NULL, &wfd, &xfd, &tv))
 #else
     switch(select(s+1, NULL, &wfd, NULL, &tv))
+#endif
+#ifdef _MSC_VER
+#pragma warning(pop)
 #endif
     {
 	case 0:
@@ -1036,7 +1057,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 		memcpy (&ia, h->h_addr_list[i], h->h_length);
 		sockin.sin_family = h->h_addrtype;
 		sockin.sin_addr = ia;
-		sockin.sin_port = htons (port);
+		sockin.sin_port = (u_short)htons ((unsigned short)port);
 		addr = (struct sockaddr *) &sockin;
 #ifdef SUPPORT_IP6
 	    } else if (have_ipv6 () && (h->h_addrtype == AF_INET6)) {

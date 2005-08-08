@@ -2251,7 +2251,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 unsigned int len, neg = 0;
 		xmlChar cval[25];
 		xmlChar *cptr = cval;
-		int dec = -1;
+		unsigned int dec = ~0u;
 
                 if (cur == NULL)
                     goto return1;
@@ -2284,7 +2284,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			    *cptr++ = *cur++;
 			    len++;
 			} else if (*cur == '.') {
-			    if (dec != -1)
+			    if (dec != ~0u)
 				goto return1;	/* multiple decimal points */
 			    cur++;
 			    if ((*cur == 0) && (cur -1 == value))
@@ -2311,7 +2311,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			/*
 		 	* If a mixed decimal, get rid of trailing zeroes
 		 	*/
-			if (dec != -1) {
+			if (dec != ~0u) {
 			    while ((len > dec) && (cptr > cval) &&
 				(*(cptr-1) == '0')) {
 				cptr--;
@@ -2334,7 +2334,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			if (len == 0)
 			    len++;
                         v->value.decimal.sign = neg;
-			if (dec == -1) {
+			if (dec == ~0u) {
 			    v->value.decimal.frac = 0;
 			    v->value.decimal.total = len;
 			} else {

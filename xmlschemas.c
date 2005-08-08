@@ -2904,7 +2904,17 @@ xmlSchemaFreeAnnot(xmlSchemaAnnotPtr annot)
 {
     if (annot == NULL)
         return;
-    xmlFree(annot);
+    if (annot->next == NULL) {
+	xmlFree(annot);
+    } else {
+	xmlSchemaAnnotPtr prev;
+
+	do {
+	    prev = annot;
+	    annot = annot->next;
+	    xmlFree(prev);
+	} while (annot != NULL);
+    }
 }
 
 /**

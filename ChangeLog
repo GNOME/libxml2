@@ -1,3 +1,8 @@
+Mon Aug  8 14:40:52 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a memory leak: xmlSchemaFreeAnnot() was
+	  only freeing the first annotation in the list.
+
 Mon Aug  8 09:44:34 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: applied patch from Rob Richards fixing

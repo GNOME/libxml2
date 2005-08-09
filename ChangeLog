@@ -1,3 +1,9 @@
+Tue Aug  9 15:54:09 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/any7_2.xml test/schemas/any6_2.xsd
+	  test/schemas/any8_1.xsd test/schemas/any8_0.xml:
+	  Added some more tests for element wildcards.
+
 Tue Aug  9 14:22:47 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed #312957 reported by Carol Hunter:

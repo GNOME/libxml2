@@ -19134,6 +19134,32 @@ xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
 }
 
 /**
+ * xmlSchemaXPathPop:
+ * @vctxt: the WXS validation context
+ *
+ * Pops all XPath states.
+ *
+ * Returns 0 on success and -1 on internal errors.
+ */
+static int
+xmlSchemaXPathPop(xmlSchemaValidCtxtPtr vctxt)
+{
+    xmlSchemaIDCStateObjPtr sto;
+    int res;
+
+    if (vctxt->xpathStates == NULL)
+	return(0);
+    sto = vctxt->xpathStates;
+    do {
+	res = xmlStreamPop((xmlStreamCtxtPtr) sto->xpathCtxt);
+	if (res == -1)
+	    return (-1);
+	sto = sto->next;
+    } while (sto != NULL);
+    return(0);
+}
+
+/**
  * xmlSchemaXPathProcessHistory:
  * @vctxt: the WXS validation context
  * @type: the simple/complex type of the current node if any at all
@@ -21793,7 +21819,8 @@ eval_idcs:
 		    "calling xmlSchemaXPathEvaluate()");
 		goto internal_error;
 	    }
-	}
+	} else if (vctxt->xpathStates != NULL)
+	    xmlSchemaXPathPop(vctxt);
     }
 
     /*

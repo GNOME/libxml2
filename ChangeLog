@@ -1,3 +1,11 @@
+Tue Aug  9 14:22:47 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed #312957 reported by Carol Hunter:
+	  streaming XPath states were not popped in every case,
+	  thus failed to resolve correctly for subsequent input.
+	* test/schemas/bug312957* result/schemas/bug312957*:
+	  Added the test submitted by Carol Hunter.
+
 Tue Aug  9 13:07:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c: trying to nail down the remaining

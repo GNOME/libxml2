@@ -1,3 +1,11 @@
+Tue Aug  9 23:37:22 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: fixed a determinism detection problem exposed by
+	  ##other tests commited by Kasimier, also added a small speedup
+	  of determinism detection.
+	* test/results/any6_2_0* any8_1_0* any7_1_2* any7_2_2*: added 
+	  the results to the regression tests now
+
 Tue Aug  9 15:54:09 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/any7_2.xml test/schemas/any6_2.xsd

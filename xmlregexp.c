@@ -1981,6 +1981,8 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 	state = ctxt->states[statenr];
 	if (state == NULL)
 	    continue;
+	if (state->nbTrans < 2)
+	    continue;
 	for (transnr = 0;transnr < state->nbTrans;transnr++) {
 	    t1 = &(state->trans[transnr]);
 	    /*
@@ -2804,6 +2806,14 @@ xmlRegStrEqualWildcard(const xmlChar *expStr, const xmlChar *valStr) {
 	* Eval if we have a wildcard for the current item.
 	*/
         if (*expStr != *valStr) {
+	    /* if one of them starts with a wildcard make valStr be it */
+	    if (*valStr == '*') {
+	        const xmlChar *tmp;
+
+		tmp = valStr;
+		valStr = expStr;
+		expStr = tmp;
+	    }
 	    if ((*valStr != 0) && (*expStr != 0) && (*expStr++ == '*')) {
 		do {
 		    if (*valStr == XML_REG_STRING_SEPARATOR)

@@ -1,3 +1,13 @@
+Tue Aug  9 13:07:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c: trying to nail down the remaining
+	  ##other issues
+	* result/schemas/any7* test/schemas/any7: completed the tests
+	  and added the results
+	* result/schemas/any3_0_0.err result/schemas/any5_0_0.err
+	  result/schemas/any5_1_0.err: this slightly chnages the output
+	  from 3 existing tests
+
 Mon Aug  8 22:33:08 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c xmlschemastypes.c: applied patch from 

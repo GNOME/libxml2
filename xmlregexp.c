@@ -246,6 +246,7 @@ struct _xmlAutomata {
     xmlRegCounter *counters;
 
     int determinist;
+    int negs;
 };
 
 struct _xmlRegexp {
@@ -419,6 +420,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 
     if ((ret->determinist != 0) &&
 	(ret->nbCounters == 0) &&
+	(ctxt->negs == 0) &&
 	(ret->atoms != NULL) &&
 	(ret->atoms[0] != NULL) &&
 	(ret->atoms[0]->type == XML_REGEXP_STRING)) {
@@ -661,6 +663,7 @@ xmlRegNewParserCtxt(const xmlChar *string) {
 	ret->string = xmlStrdup(string);
     ret->cur = ret->string;
     ret->neg = 0;
+    ret->negs = 0;
     ret->error = 0;
     ret->determinist = -1;
     return(ret);
@@ -1902,8 +1905,9 @@ xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
 	default:
 	    return(1);
     }
-    if (atom1->neg != atom2->neg)
+    if (atom1->neg != atom2->neg) {
         ret = !ret;
+    }
     return(ret);
 }
 
@@ -2903,19 +2907,20 @@ error:
 }
 
 /**
- * xmlRegExecPushString:
+ * xmlRegExecPushStringInternal:
  * @exec: a regexp execution context or NULL to indicate the end
  * @value: a string token input
  * @data: data associated to the token to reuse in callbacks
+ * @compound: value was assembled from 2 strings
  *
  * Push one input token in the execution context
  *
  * Returns: 1 if the regexp reached a final state, 0 if non-final, and
  *     a negative value in case of error.
  */
-int
-xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
-	             void *data) {
+static int
+xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
+	                     void *data, int compound) {
     xmlRegTransPtr trans;
     xmlRegAtomPtr atom;
     int ret;
@@ -3057,8 +3062,11 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		break;
 	    } else if (value != NULL) {
 		ret = xmlRegStrEqualWildcard(atom->valuep, value);
-		if (atom->neg)
+		if (atom->neg) {
 		    ret = !ret;
+		    if (!compound)
+		        ret = 0;
+		}
 		if ((ret == 1) && (trans->counter >= 0)) {
 		    xmlRegCounterPtr counter;
 		    int count;
@@ -3258,6 +3266,23 @@ progress:
 }
 
 /**
+ * xmlRegExecPushString:
+ * @exec: a regexp execution context or NULL to indicate the end
+ * @value: a string token input
+ * @data: data associated to the token to reuse in callbacks
+ *
+ * Push one input token in the execution context
+ *
+ * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ *     a negative value in case of error.
+ */
+int
+xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
+	             void *data) {
+    return(xmlRegExecPushStringInternal(exec, value, data, 0));
+}
+
+/**
  * xmlRegExecPushString2:
  * @exec: a regexp execution context or NULL to indicate the end
  * @value: the first string token input
@@ -3306,7 +3331,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
     if (exec->comp->compact != NULL)
 	ret = xmlRegCompactPushString(exec, exec->comp, str, data);
     else
-        ret = xmlRegExecPushString(exec, str, data);
+        ret = xmlRegExecPushStringInternal(exec, str, data, 1);
 
     if (str != buf)
         xmlFree(buf);
@@ -4917,6 +4942,8 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
  * If @to is NULL, this creates first a new target state in the automata
  * and then adds a transition from the @from state to the target state
  * activated by any value except (@token,@token2)
+ * Note that if @token2 is not NULL, then (X, NULL) won't match to follow
+ # the semantic of XSD ##other
  *
  * Returns the target state or NULL in case of error
  */
@@ -4963,6 +4990,7 @@ xmlAutomataNewNegTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
         xmlRegFreeAtom(atom);
 	return(NULL);
     }
+    am->negs++;
     if (to == NULL)
 	return(am->state);
     return(to);

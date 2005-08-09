@@ -1935,7 +1935,7 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
 	        (cur[3] == ' ')) {
 	        is_not = 1;
 		cur += 4;
-		str = xmlStrcat(str, BAD_CAST "not ");
+		str = xmlStrcat(str, BAD_CAST "##other");
 	    } else {
 	        is_not = 0;
 	    }
@@ -11137,20 +11137,9 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr pctxt,
 		    } while (ns != NULL);
 
 		} else if (wild->negNsSet != NULL) {
-
-		    /*
-		    * Lead nodes with the negated namespace to the sink-state
-		    * {"*", "##other"}.
-		    */
-		    pctxt->state = xmlAutomataNewTransition2(pctxt->am, start, NULL,
-			BAD_CAST "*", wild->negNsSet->value, wild);
-		    /*
-		    * Open a door for nodes with any other namespace
-		    * {"*", "*"}
-		    */
-		    pctxt->state = xmlAutomataNewTransition2(pctxt->am,
-			start, NULL, BAD_CAST "*", BAD_CAST "*", wild);
-		    xmlAutomataNewEpsilon(pctxt->am, pctxt->state, end);
+		    pctxt->state = xmlAutomataNewNegTrans(pctxt->am,
+			start, end, BAD_CAST "*", wild->negNsSet->value,
+			wild);
 		}
 	    } else {
 		int counter;

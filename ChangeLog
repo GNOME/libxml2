@@ -1,3 +1,7 @@
+Wed Aug 10 11:59:46 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/any6_1_0*: Added missing test results.
+
 Tue Aug  9 23:37:22 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: fixed a determinism detection problem exposed by

@@ -998,7 +998,7 @@ Relaxtests: xmllint$(EXEEXT)
 		    > res.$$name 2> err.$$name;\
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno" res.$$name;\
-		  if [ "$$name" != "tutor10_1" -a "$$name" != "tutor10_2" -a "$$name" != "tutor3_2" ] ; then \
+		  if [ "$$name" != "tutor10_1" -a "$$name" != "tutor10_2" -a "$$name" != "tutor3_2" -a "$$name" != "307377" ] ; then \
 		      diff $(srcdir)/result/relaxng/"$$name"_"$$xno".err \
 			   err.$$name | grep -v "error detected at";\
 		  fi ; grep Unimplemented err.$$name`; \

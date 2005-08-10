@@ -8638,8 +8638,6 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
                     if (ctxt->errNr > 0)
                         xmlRelaxNGPopErrors(ctxt, 0);
                 }
-                if (ret == 0)
-                    xmlRelaxNGNextValue(ctxt);
                 break;
             }
         case XML_RELAXNG_LIST:{

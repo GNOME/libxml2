@@ -1,3 +1,11 @@
+Wed Aug 10 18:21:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed bug #307377 about validation of choices in
+	  list values.
+	* test/relaxng/307377* result/relaxng/307377* Makefile.am runtest.c:
+	  added examples to the regression tests, problem is that streaming
+	  version gives slightly more informations.
+
 Wed Aug 10 15:25:53 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fixed bug #302302, nasty but the fix is rather simple.

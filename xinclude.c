@@ -2303,7 +2303,7 @@ static int
 xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     xmlNodePtr cur;
     int ret = 0;
-    int i;
+    int i, start;
 
     if ((doc == NULL) || (tree == NULL))
 	return(-1);
@@ -2315,6 +2315,10 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
 	if (ret < 0)
 	    return(-1);
     }
+    if (tree)
+	start = ctxt->incNr;
+    else
+        start = ctxt->incBase;
 
     /*
      * First phase: lookup the elements in the document
@@ -2355,7 +2359,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     /*
      * Second Phase : collect the infosets fragments
      */
-    for (i = ctxt->incBase;i < ctxt->incNr; i++) {
+    for (i = start;i < ctxt->incNr; i++) {
         xmlXIncludeLoadNode(ctxt, i);
 	ret++;
     }

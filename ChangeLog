@@ -1,3 +1,7 @@
+Wed Aug 10 15:25:53 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: fixed bug #302302, nasty but the fix is rather simple.
+
 Wed Aug 10 11:59:46 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/any6_1_0*: Added missing test results.

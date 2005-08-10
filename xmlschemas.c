@@ -8532,73 +8532,6 @@ xmlSchemaCleanupDoc(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr root)
 }
 
 
-/**
- * xmlSchemaImportSchema
- *
- * @ctxt:  a schema validation context
- * @schemaLocation:  an URI defining where to find the imported schema
- *
- * import a XML schema
- * *WARNING* this interface is highly subject to change
- *
- * Returns -1 in case of error and 1 in case of success.
- */
-#if 0
-static xmlSchemaImportPtr
-xmlSchemaImportSchema(xmlSchemaParserCtxtPtr ctxt,
-                      const xmlChar *schemaLocation)
-{
-    xmlSchemaImportPtr import;
-    xmlSchemaParserCtxtPtr newctxt;
-
-    newctxt = (xmlSchemaParserCtxtPtr) xmlMalloc(sizeof(xmlSchemaParserCtxt));
-    if (newctxt == NULL) {
-        xmlSchemaPErrMemory(ctxt, "allocating schema parser context",
-                            NULL);
-        return (NULL);
-    }
-    memset(newctxt, 0, sizeof(xmlSchemaParserCtxt));
-    /* Keep the same dictionnary for parsing, really */
-    xmlDictReference(ctxt->dict);
-    newctxt->dict = ctxt->dict;
-    newctxt->includes = 0;
-    newctxt->URL = xmlDictLookup(newctxt->dict, schemaLocation, -1);
-
-    xmlSchemaSetParserErrors(newctxt, ctxt->error, ctxt->warning,
-	                     ctxt->userData);
-
-    import = (xmlSchemaImport*) xmlMalloc(sizeof(xmlSchemaImport));
-    if (import == NULL) {
-        xmlSchemaPErrMemory(NULL, "allocating imported schema",
-                            NULL);
-	xmlSchemaFreeParserCtxt(newctxt);
-        return (NULL);
-    }
-
-    memset(import, 0, sizeof(xmlSchemaImport));
-    import->schemaLocation = xmlDictLookup(ctxt->dict, schemaLocation, -1);
-    import->schema = xmlSchemaParse(newctxt);
-
-    if (import->schema == NULL) {
-        /* FIXME use another error enum here ? */
-        xmlSchemaPErr(ctxt, NULL, XML_SCHEMAP_INTERNAL,
-	              "Failed to import schema from location \"%s\".\n",
-		      schemaLocation, NULL);
-
-	xmlSchemaFreeParserCtxt(newctxt);
-	/* The schemaLocation is held by the dictionary.
-	if (import->schemaLocation != NULL)
-	    xmlFree((xmlChar *)import->schemaLocation);
-	*/
-	xmlFree(import);
-	return NULL;
-    }
-
-    xmlSchemaFreeParserCtxt(newctxt);
-    return import;
-}
-#endif
-
 static void
 xmlSchemaClearSchemaDefaults(xmlSchemaPtr schema)
 {
@@ -8826,10 +8759,6 @@ static xmlSchemaParserCtxtPtr
 xmlSchemaNewParserCtxtUseDict(const char *URL, xmlDictPtr dict)
 {
     xmlSchemaParserCtxtPtr ret;
-    /*
-    if (URL == NULL)
-        return (NULL);
-	*/
 
     ret = (xmlSchemaParserCtxtPtr) xmlMalloc(sizeof(xmlSchemaParserCtxt));
     if (ret == NULL) {
@@ -8839,6 +8768,7 @@ xmlSchemaNewParserCtxtUseDict(const char *URL, xmlDictPtr dict)
     }
     memset(ret, 0, sizeof(xmlSchemaParserCtxt));
     ret->dict = dict;
+    ret->type = XML_SCHEMA_CTXT_PARSER;
     xmlDictReference(dict);    
     if (URL != NULL)
 	ret->URL = xmlDictLookup(dict, (const xmlChar *) URL, -1);
@@ -10862,6 +10792,7 @@ xmlSchemaNewMemParserCtxt(const char *buffer, int size)
     ret->buffer = buffer;
     ret->size = size;
     ret->dict = xmlDictCreate();
+    ret->type = XML_SCHEMA_CTXT_PARSER;
     return (ret);
 }
 
@@ -10891,6 +10822,7 @@ xmlSchemaNewDocParserCtxt(xmlDocPtr doc)
     memset(ret, 0, sizeof(xmlSchemaParserCtxt));
     ret->doc = doc;
     ret->dict = xmlDictCreate();
+    ret->type = XML_SCHEMA_CTXT_PARSER;
     /* The application has responsibility for the document */
     ret->preserve = 1;
 

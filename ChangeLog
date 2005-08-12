@@ -1,3 +1,7 @@
+Fri Aug 12 12:17:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: applied patch from Derek Poon fixing bug #310692
+
 Wed Aug 10 23:39:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fix for bug #312945 as pointed by Dean Hill, the

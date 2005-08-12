@@ -2713,31 +2713,34 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 	    ((elem != NULL) && (!xmlStrEqual(elem->name, BAD_CAST "input"))))
 	    return(1);
 	return(0);    
+    } else if (elem == NULL) {
+	return(0);
     } else {
 	xmlAttributePtr attrDecl;
 
-	if (elem == NULL) return(0);
-	if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
-	    xmlChar fn[50];
-	    xmlChar *fullname;
-	    
-	    fullname = xmlBuildQName(elem->name, elem->ns->prefix, fn, 50);
-	    if (fullname == NULL)
-		return(0);
-	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, fullname,
-		                         attr->name);
+	xmlChar felem[50], fattr[50];
+	xmlChar *fullelemname, *fullattrname;
+
+	fullelemname = (elem->ns != NULL && elem->ns->prefix != NULL) ?
+	    xmlBuildQName(elem->name, elem->ns->prefix, felem, 50) :
+	    (xmlChar *)elem->name;
+
+	fullattrname = (attr->ns != NULL && attr->ns->prefix != NULL) ?
+	    xmlBuildQName(attr->name, attr->ns->prefix, fattr, 50) :
+	    (xmlChar *)attr->name;
+
+	if (fullelemname != NULL && fullattrname != NULL) {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, fullelemname,
+		                         fullattrname);
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, fullname,
-					     attr->name);
-	    if ((fullname != fn) && (fullname != elem->name))
-		xmlFree(fullname);
-	} else {
-	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name,
-		                         attr->name);
-	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
-					     attr->name);
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, fullelemname,
+					     fullattrname);
 	}
+
+	if ((fullattrname != fattr) && (fullattrname != attr->name))
+	    xmlFree(fullattrname);
+	if ((fullelemname != felem) && (fullelemname != elem->name))
+	    xmlFree(fullelemname);
 
         if ((attrDecl != NULL) && (attrDecl->atype == XML_ATTRIBUTE_ID))
 	    return(1);

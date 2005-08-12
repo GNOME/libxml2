@@ -738,6 +738,7 @@ if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
     if test "$with_minimum" != "yes"
     then
 	if test "${with_mem_debug}" = "" ; then
+	    echo Activating memory debugging
 	    with_mem_debug="yes"
 	    with_run_debug="yes"
 	fi

@@ -1,3 +1,15 @@
+Fri Aug 12 14:12:56 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/xmlerror.h:
+	  Changed output for keyref-match errors; the target-node will
+	  be now reported rather than the scope-node of the keyref
+	  definition - allowing easier chasing of instance errors.
+	  This was reported by Guy Fabrice to the mailing list.
+	  Some initial parsing code for schema redefinitions.
+	* result/schemas/bug303566_1_1.err
+	  result/schemas/bug312957_1_0.err: Adapted test results due
+	  to the keyref changes.
+
 Fri Aug 12 12:17:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: applied patch from Derek Poon fixing bug #310692

@@ -2309,12 +2309,40 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 	return(NULL);
 
     localname = xmlSplitQName2(name, &prefix);
-    if (localname == NULL)
-	return(xmlGetNoNsProp(reader->node, name));
-    
-    ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
-    if (ns != NULL)
-        ret = xmlGetNsProp(reader->node, localname, ns->href);
+    if (localname == NULL) {
+		/*
+		 * Namespace default decl
+		 */
+		if (xmlStrEqual(name, BAD_CAST "xmlns")) {
+			ns = reader->node->nsDef;
+			while (ns != NULL) {
+				if (ns->prefix == NULL) {
+					return(xmlStrdup(ns->href));
+				}
+				ns = ns->next;
+			}
+			return NULL;
+		}
+		return(xmlGetNoNsProp(reader->node, name));
+	}
+
+    /*
+     * Namespace default decl
+     */
+    if (xmlStrEqual(prefix, BAD_CAST "xmlns")) {
+		ns = reader->node->nsDef;
+		while (ns != NULL) {
+			if ((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localname))) {
+				ret = xmlStrdup(ns->href);
+				break;
+			}
+			ns = ns->next;
+		}
+    } else {
+		ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
+		if (ns != NULL)
+			ret = xmlGetNsProp(reader->node, localname, ns->href);
+	}
 
     xmlFree(localname);
     if (prefix != NULL)

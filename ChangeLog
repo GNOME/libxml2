@@ -1,3 +1,8 @@
+Wed Aug 17 09:06:33 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: applied patch from Rob Richards to fix 
+	  xmlTextReaderGetAttribute behaviour with namespace declarations
+
 Fri Aug 12 14:12:56 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/xmlerror.h:

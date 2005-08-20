@@ -2365,6 +2365,9 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 xmlChar *
 xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
 			    const xmlChar *namespaceURI) {
+    xmlChar *prefix = NULL;
+    xmlNsPtr ns;
+
     if ((reader == NULL) || (localName == NULL))
 	return(NULL);
     if (reader->node == NULL)
@@ -2375,6 +2378,21 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
     /* TODO: handle the xmlDecl */
     if (reader->node->type != XML_ELEMENT_NODE)
 	return(NULL);
+
+    if (xmlStrEqual(namespaceURI, BAD_CAST "http://www.w3.org/2000/xmlns/")) {
+		if (! xmlStrEqual(localName, BAD_CAST "xmlns")) {
+			prefix = BAD_CAST localName;
+		}
+		ns = reader->node->nsDef;
+		while (ns != NULL) {
+			if ((prefix == NULL && ns->prefix == NULL) || 
+				((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localName)))) {
+				return xmlStrdup(ns->href);
+			}
+			ns = ns->next;
+		}
+		return NULL;
+    }
 
     return(xmlGetNsProp(reader->node, localName, namespaceURI));
 }
@@ -2626,6 +2644,8 @@ xmlTextReaderMoveToAttributeNs(xmlTextReaderPtr reader,
 	const xmlChar *localName, const xmlChar *namespaceURI) {
     xmlAttrPtr prop;
     xmlNodePtr node;
+    xmlNsPtr ns;
+    xmlChar *prefix = NULL;
 
     if ((reader == NULL) || (localName == NULL) || (namespaceURI == NULL))
 	return(-1);
@@ -2635,10 +2655,22 @@ xmlTextReaderMoveToAttributeNs(xmlTextReaderPtr reader,
 	return(0);
     node = reader->node;
 
-    /*
-     * A priori reading http://www.w3.org/TR/REC-xml-names/ there is no
-     * namespace name associated to "xmlns"
-     */
+    if (xmlStrEqual(namespaceURI, BAD_CAST "http://www.w3.org/2000/xmlns/")) {
+		if (! xmlStrEqual(localName, BAD_CAST "xmlns")) {
+			prefix = BAD_CAST localName;
+		}
+		ns = reader->node->nsDef;
+		while (ns != NULL) {
+			if ((prefix == NULL && ns->prefix == NULL) || 
+				((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localName)))) {
+				reader->curnode = (xmlNodePtr) ns;
+				return(1);
+			}
+			ns = ns->next;
+		}
+		return(0);
+    }
+
     prop = node->properties;
     while (prop != NULL) {
 	/*

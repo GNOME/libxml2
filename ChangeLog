@@ -1,3 +1,8 @@
+Sat Aug 20 23:13:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: applied another patch from Rob Richards to fix
+	  xmlTextReaderGetAttributeNs and xmlTextReaderMoveToAttributeNs
+
 Wed Aug 17 09:06:33 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: applied patch from Rob Richards to fix 

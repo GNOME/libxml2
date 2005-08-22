@@ -1,3 +1,8 @@
+Mon Aug 22 14:57:13 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am result/expr/base test/expr/base: added the first
+	  regression test suite set for the new expression support
+
 Mon Aug 22 13:49:18 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed an uninitialized variable

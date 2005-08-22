@@ -822,6 +822,21 @@ Regexptests: testRegexp$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@echo "## Formal expresssions regression tests"
+	-@(for i in $(srcdir)/test/expr/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/expr/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/testRegexp --expr -i $$i > $(srcdir)/result/expr/$$name; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/testRegexp --expr -i $$i 2>&1 > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/expr/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 Automatatests: testAutomata$(EXEEXT)
 	@(echo > .memdump)

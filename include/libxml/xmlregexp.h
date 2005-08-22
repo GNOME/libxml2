@@ -178,6 +178,10 @@ XMLPUBFUN xmlExpNodePtr XMLCALL
 					 xmlExpNodePtr expr,
 					 const xmlChar *str,
 					 int len);
+XMLPUBFUN xmlExpNodePtr XMLCALL
+			xmlExpExpDerive	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr exp,
+					 xmlExpNodePtr sub);
 XMLPUBFUN int XMLCALL
 			xmlExpSubsume	(xmlExpCtxtPtr ctxt,
 					 xmlExpNodePtr expr,

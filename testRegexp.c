@@ -179,6 +179,79 @@ runFileTest(xmlExpCtxtPtr ctxt, const char *filename) {
     }
     fclose(input);
 }
+
+static void 
+testReduce(xmlExpCtxtPtr ctxt, xmlExpNodePtr expr, const char *tst) {
+    xmlBufferPtr xmlExpBuf;
+    xmlExpNodePtr sub, deriv;
+    xmlExpBuf = xmlBufferCreate();
+
+    sub = xmlExpParse(ctxt, tst);
+    if (sub == NULL) {
+        printf("Subset %s failed to parse\n", tst);
+	return;
+    }
+    xmlExpDump(xmlExpBuf, expr);
+    printf("Subset parsed as: %s\n",
+           (const char *) xmlBufferContent(xmlExpBuf));
+    deriv = xmlExpExpDerive(ctxt, expr, sub);
+    if (deriv == NULL) {
+        printf("Derivation led to an internal error, report this !\n");
+	return;
+    } else {
+        xmlBufferEmpty(xmlExpBuf);
+	xmlExpDump(xmlExpBuf, deriv);
+	if (xmlExpIsNillable(deriv))
+	    printf("Resulting nillable derivation: %s\n",
+	           (const char *) xmlBufferContent(xmlExpBuf));
+	else
+	    printf("Resulting derivation: %s\n",
+	           (const char *) xmlBufferContent(xmlExpBuf));
+	xmlExpFree(ctxt, deriv);
+    }
+    xmlExpFree(ctxt, sub);
+}
+
+static void 
+exprDebug(xmlExpCtxtPtr ctxt, xmlExpNodePtr expr) {
+    xmlBufferPtr xmlExpBuf;
+    xmlExpNodePtr deriv;
+    const char *list[40];
+    int ret;
+
+    xmlExpBuf = xmlBufferCreate();
+
+    if (expr == NULL) {
+        printf("Failed to parse\n");
+	return;
+    }
+    xmlExpDump(xmlExpBuf, expr);
+    printf("Parsed as: %s\n", (const char *) xmlBufferContent(xmlExpBuf));
+    printf("Max token input = %d\n", xmlExpMaxToken(expr));
+    if (xmlExpIsNillable(expr) == 1)
+	printf("Is nillable\n");
+    ret = xmlExpGetLanguage(ctxt, expr, (const xmlChar **) &list[0], 40);
+    if (ret < 0)
+	printf("Failed to get list: %d\n", ret);
+    else {
+	int i;
+
+	printf("Language has %d strings, testing string derivations\n", ret);
+	for (i = 0;i < ret;i++) {
+	    deriv = xmlExpStringDerive(ctxt, expr, BAD_CAST list[i], -1);
+	    if (deriv == NULL) {
+		printf("  %s -> derivation failed\n", list[i]);
+	    } else {
+		xmlBufferEmpty(xmlExpBuf);
+		xmlExpDump(xmlExpBuf, deriv);
+		printf("  %s -> %s\n", list[i],
+		       (const char *) xmlBufferContent(xmlExpBuf));
+	    }
+	    xmlExpFree(ctxt, deriv);
+	}
+    }
+    xmlBufferFree(xmlExpBuf);
+}
 #endif
 
 static void usage(const char *name) {
@@ -248,25 +321,51 @@ int main(int argc, char **argv) {
 #endif
 	    testRegexpFile(filename);
     } else {
-	for (i = 1; i < argc ; i++) {
-	    if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
-		if (pattern == NULL) {
-		    pattern = argv[i];
-		    printf("Testing %s:\n", pattern);
-		    comp = xmlRegexpCompile((const xmlChar *) pattern);
-		    if (comp == NULL) {
-			printf("   failed to compile\n");
-			break;
+#ifdef LIBXML_EXPR_ENABLED
+        if (use_exp) {
+	    for (i = 1; i < argc ; i++) {
+		if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
+		    if (pattern == NULL) {
+			pattern = argv[i];
+			printf("Testing expr %s:\n", pattern);
+			expr = xmlExpParse(ctxt, pattern);
+			if (expr == NULL) {
+			    printf("   failed to compile\n");
+			    break;
+			}
+			if (debug) {
+			    exprDebug(ctxt, expr);
+			}
+		    } else {
+			testReduce(ctxt, expr, argv[i]);
 		    }
-		    if (debug)
-			xmlRegexpPrint(stdout, comp);
-		} else {
-		    testRegexp(comp, argv[i]);
 		}
 	    }
-	}
-	if (comp != NULL)
-	    xmlRegFreeRegexp(comp);
+	    if (expr != NULL)
+		xmlExpFree(ctxt, expr);
+	} else
+#endif
+        {
+	    for (i = 1; i < argc ; i++) {
+		if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
+		    if (pattern == NULL) {
+			pattern = argv[i];
+			printf("Testing %s:\n", pattern);
+			comp = xmlRegexpCompile((const xmlChar *) pattern);
+			if (comp == NULL) {
+			    printf("   failed to compile\n");
+			    break;
+			}
+			if (debug)
+			    xmlRegexpPrint(stdout, comp);
+		    } else {
+			testRegexp(comp, argv[i]);
+		    }
+		}
+	    }
+	    if (comp != NULL)
+		xmlRegFreeRegexp(comp);
+        }
     }
 #ifdef LIBXML_EXPR_ENABLED
     if (ctxt != NULL) {

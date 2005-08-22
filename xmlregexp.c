@@ -6820,6 +6820,43 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 }
     
 /**
+ * xmlExpExpDerive:
+ * @ctxt: the expressions context
+ * @exp: the englobing expression
+ * @sub: the subexpression
+ *
+ * Evaluates the expression resulting from @exp consuming a sub expression @sub
+ * Based on algebraic derivation and sometimes direct Brzozowski derivation
+ * it usually tatkes less than linear time and can handle expressions generating
+ * infinite languages.
+ *
+ * Returns the resulting expression or NULL in case of internal error, the
+ *         result must be freed
+ */
+xmlExpNodePtr
+xmlExpExpDerive(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
+    if ((exp == NULL) || (ctxt == NULL) || (sub == NULL))
+        return(NULL);
+
+    /*
+     * O(1) speedups
+     */
+    if (IS_NILLABLE(sub) && (!IS_NILLABLE(exp))) {
+#ifdef DEBUG_DERIV
+	printf("Sub nillable and not exp : can't subsume\n");
+#endif
+        return(forbiddenExp);
+    }
+    if (xmlExpCheckCard(exp, sub) == 0) {
+#ifdef DEBUG_DERIV
+	printf("sub generate longuer sequances than exp : can't subsume\n");
+#endif
+        return(forbiddenExp);
+    }
+    return(xmlExpExpDeriveInt(ctxt, exp, sub));
+}
+
+/**
  * xmlExpSubsume:
  * @ctxt: the expressions context
  * @exp: the englobing expression

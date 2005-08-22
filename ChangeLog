@@ -1,3 +1,9 @@
+Mon Aug 22 16:42:07 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* testRegexp.c xmlregexp.c include/libxml/xmlregexp.h: exported
+	  xmlExpExpDerive(), added it to the testRegexp command line 
+	  tool when providing multiple expressions.
+
 Mon Aug 22 14:57:13 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am result/expr/base test/expr/base: added the first

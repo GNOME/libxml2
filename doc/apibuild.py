@@ -63,6 +63,7 @@ ignored_words = {
   "EXSLTPUBFUN": (0, "Special macro for extern funcs for win32"),
   "XMLCALL": (0, "Special macro for win32 calls"),
   "XSLTCALL": (0, "Special macro for win32 calls"),
+  "XMLCDECL": (0, "Special macro for win32 calls"),
   "EXSLTCALL": (0, "Special macro for win32 calls"),
   "__declspec": (3, "Windows keyword"),
   "__stdcall": (0, "Windows keyword"),

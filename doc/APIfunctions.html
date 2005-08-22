@@ -19,6 +19,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronValidityErrorFunc">xmlSchematronValidityErrorFunc</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronValidityWarningFunc">xmlSchematronValidityWarningFunc</a><br />
 <a href="html/libxml-xmlstring.html#xmlStrPrintf">xmlStrPrintf</a><br />
 <a href="html/libxml-xmlwriter.html#xmlTextWriterWriteFormatAttribute">xmlTextWriterWriteFormatAttribute</a><br />
 <a href="html/libxml-xmlwriter.html#xmlTextWriterWriteFormatAttributeNS">xmlTextWriterWriteFormatAttributeNS</a><br />
@@ -180,6 +182,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlAttrSerializeTxtContent">xmlAttrSerializeTxtContent</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountTrans">xmlAutomataNewCountTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountTrans2">xmlAutomataNewCountTrans2</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewNegTrans">xmlAutomataNewNegTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans">xmlAutomataNewOnceTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans2">xmlAutomataNewOnceTrans2</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewTransition">xmlAutomataNewTransition</a><br />
@@ -218,6 +221,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-entities.html#xmlEncodeEntities">xmlEncodeEntities</a><br />
 <a href="html/libxml-entities.html#xmlEncodeEntitiesReentrant">xmlEncodeEntitiesReentrant</a><br />
 <a href="html/libxml-entities.html#xmlEncodeSpecialChars">xmlEncodeSpecialChars</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpStringDerive">xmlExpStringDerive</a><br />
 <a href="html/libxml-entities.html#xmlGetDocEntity">xmlGetDocEntity</a><br />
 <a href="html/libxml-valid.html#xmlGetDtdAttrDesc">xmlGetDtdAttrDesc</a><br />
 <a href="html/libxml-valid.html#xmlGetDtdElementDesc">xmlGetDtdElementDesc</a><br />
@@ -491,6 +495,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#startElementSAXFunc">startElementSAXFunc</a><br />
 <a href="html/libxml-xlink.html#xlinkExtendedLinkFunk">xlinkExtendedLinkFunk</a><br />
 <a href="html/libxml-xlink.html#xlinkExtendedLinkSetFunk">xlinkExtendedLinkSetFunk</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpGetLanguage">xmlExpGetLanguage</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpGetStart">xmlExpGetStart</a><br />
 <a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegExecErrInfo">xmlRegExecErrInfo</a><br />
 <a href="html/libxml-SAX2.html#xmlSAX2StartElement">xmlSAX2StartElement</a><br />
@@ -694,6 +700,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xlink.html#xlinkSimpleLinkFunk">xlinkSimpleLinkFunk</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountTrans">xmlAutomataNewCountTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountTrans2">xmlAutomataNewCountTrans2</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewNegTrans">xmlAutomataNewNegTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans">xmlAutomataNewOnceTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans2">xmlAutomataNewOnceTrans2</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewTransition">xmlAutomataNewTransition</a><br />
@@ -836,6 +843,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetParserErrors">xmlSchematronSetParserErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidErrors">xmlSchematronSetValidErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidStructuredErrors">xmlSchematronSetValidStructuredErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronValidityErrorFunc">xmlSchematronValidityErrorFunc</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronValidityWarningFunc">xmlSchematronValidityWarningFunc</a><br />
 <a href="html/libxml-parser.html#xmlSetFeature">xmlSetFeature</a><br />
 <a href="html/libxml-xmlerror.html#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a><br />
 <a href="html/libxml-xmlerror.html#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a><br />
@@ -896,6 +908,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCounter">xmlAutomataNewCounter</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCounterTrans">xmlAutomataNewCounterTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewEpsilon">xmlAutomataNewEpsilon</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewNegTrans">xmlAutomataNewNegTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans">xmlAutomataNewOnceTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans2">xmlAutomataNewOnceTrans2</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewState">xmlAutomataNewState</a><br />
@@ -909,6 +922,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountedTrans">xmlAutomataNewCountedTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCounterTrans">xmlAutomataNewCounterTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewEpsilon">xmlAutomataNewEpsilon</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewNegTrans">xmlAutomataNewNegTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans">xmlAutomataNewOnceTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans2">xmlAutomataNewOnceTrans2</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewTransition">xmlAutomataNewTransition</a><br />
@@ -944,6 +958,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-entities.html#xmlDumpEntityDecl">xmlDumpEntityDecl</a><br />
 <a href="html/libxml-valid.html#xmlDumpNotationDecl">xmlDumpNotationDecl</a><br />
 <a href="html/libxml-valid.html#xmlDumpNotationTable">xmlDumpNotationTable</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpDump">xmlExpDump</a><br />
 <a href="html/libxml-xmlwriter.html#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a><br />
 <a href="html/libxml-tree.html#xmlNodeBufGetContent">xmlNodeBufGetContent</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
@@ -1057,6 +1072,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-dict.html#xmlDictQLookup">xmlDictQLookup</a><br />
 <a href="html/libxml-dict.html#xmlDictReference">xmlDictReference</a><br />
 <a href="html/libxml-dict.html#xmlDictSize">xmlDictSize</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpNewCtxt">xmlExpNewCtxt</a><br />
 <a href="html/libxml-hash.html#xmlHashCreateDict">xmlHashCreateDict</a><br />
 </p><h2>Type xmlDocPtr:</h2><p><a href="html/libxml-HTMLtree.html#htmlDocContentDumpFormatOutput">htmlDocContentDumpFormatOutput</a><br />
 <a href="html/libxml-HTMLtree.html#htmlDocContentDumpOutput">htmlDocContentDumpOutput</a><br />
@@ -1159,6 +1175,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlSaveFormatFileTo">xmlSaveFormatFileTo</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaNewDocParserCtxt">xmlSchemaNewDocParserCtxt</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronNewDocParserCtxt">xmlSchematronNewDocParserCtxt</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronValidateDoc">xmlSchematronValidateDoc</a><br />
 <a href="html/libxml-tree.html#xmlSearchNs">xmlSearchNs</a><br />
 <a href="html/libxml-tree.html#xmlSearchNsByHref">xmlSearchNsByHref</a><br />
 <a href="html/libxml-tree.html#xmlSetDocCompressMode">xmlSetDocCompressMode</a><br />
@@ -1243,6 +1261,26 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p><h2>Type xmlErrorPtr:</h2><p><a href="html/libxml-xmlerror.html#xmlCopyError">xmlCopyError</a><br />
 <a href="html/libxml-xmlerror.html#xmlResetError">xmlResetError</a><br />
 <a href="html/libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a><br />
+</p><h2>Type xmlExpCtxtPtr:</h2><p><a href="html/libxml-xmlregexp.html#xmlExpCtxtNbCons">xmlExpCtxtNbCons</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpCtxtNbNodes">xmlExpCtxtNbNodes</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpExpDerive">xmlExpExpDerive</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpFree">xmlExpFree</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpFreeCtxt">xmlExpFreeCtxt</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpGetLanguage">xmlExpGetLanguage</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpGetStart">xmlExpGetStart</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpParse">xmlExpParse</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpStringDerive">xmlExpStringDerive</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpSubsume">xmlExpSubsume</a><br />
+</p><h2>Type xmlExpNodePtr:</h2><p><a href="html/libxml-xmlregexp.html#xmlExpDump">xmlExpDump</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpExpDerive">xmlExpExpDerive</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpFree">xmlExpFree</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpGetLanguage">xmlExpGetLanguage</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpGetStart">xmlExpGetStart</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpIsNillable">xmlExpIsNillable</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpMaxToken">xmlExpMaxToken</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpRef">xmlExpRef</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpStringDerive">xmlExpStringDerive</a><br />
+<a href="html/libxml-xmlregexp.html#xmlExpSubsume">xmlExpSubsume</a><br />
 </p><h2>Type xmlExternalEntityLoader:</h2><p><a href="html/libxml-parser.html#xmlSetExternalEntityLoader">xmlSetExternalEntityLoader</a><br />
 </p><h2>Type xmlFreeFunc:</h2><p><a href="html/libxml-xmlmemory.html#xmlGcMemSetup">xmlGcMemSetup</a><br />
 <a href="html/libxml-xmlmemory.html#xmlMemSetup">xmlMemSetup</a><br />
@@ -1718,7 +1756,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p><h2>Type xmlParserNodeInfoSeqPtr:</h2><p><a href="html/libxml-parser.html#xmlClearNodeInfoSeq">xmlClearNodeInfoSeq</a><br />
 <a href="html/libxml-parser.html#xmlInitNodeInfoSeq">xmlInitNodeInfoSeq</a><br />
 </p><h2>Type xmlParserSeverities:</h2><p><a href="html/libxml-xmlreader.html#xmlTextReaderErrorFunc">xmlTextReaderErrorFunc</a><br />
-</p><h2>Type xmlPatternFlags:</h2><p><a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
 </p><h2>Type xmlPatternPtr:</h2><p><a href="html/libxml-pattern.html#xmlFreePattern">xmlFreePattern</a><br />
 <a href="html/libxml-pattern.html#xmlFreePatternList">xmlFreePatternList</a><br />
 <a href="html/libxml-pattern.html#xmlPatternFromRoot">xmlPatternFromRoot</a><br />
@@ -1882,6 +1919,19 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacetWhtsp">xmlSchemaValidateFacetWhtsp</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateLengthFacetWhtsp">xmlSchemaValidateLengthFacetWhtsp</a><br />
 </p><h2>Type xmlSchemaWildcardPtr:</h2><p><a href="html/libxml-schemasInternals.html#xmlSchemaFreeWildcard">xmlSchemaFreeWildcard</a><br />
+</p><h2>Type xmlSchematronParserCtxtPtr:</h2><p><a href="html/libxml-schematron.html#xmlSchematronFreeParserCtxt">xmlSchematronFreeParserCtxt</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronParse">xmlSchematronParse</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetParserErrors">xmlSchematronSetParserErrors</a><br />
+</p><h2>Type xmlSchematronPtr:</h2><p><a href="html/libxml-schematron.html#xmlSchematronFree">xmlSchematronFree</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronNewValidCtxt">xmlSchematronNewValidCtxt</a><br />
+</p><h2>Type xmlSchematronValidCtxtPtr:</h2><p><a href="html/libxml-schematron.html#xmlSchematronFreeValidCtxt">xmlSchematronFreeValidCtxt</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidErrors">xmlSchematronSetValidErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidStructuredErrors">xmlSchematronSetValidStructuredErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronValidateDoc">xmlSchematronValidateDoc</a><br />
+</p><h2>Type xmlSchematronValidityErrorFunc:</h2><p><a href="html/libxml-schematron.html#xmlSchematronSetParserErrors">xmlSchematronSetParserErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidErrors">xmlSchematronSetValidErrors</a><br />
+</p><h2>Type xmlSchematronValidityWarningFunc:</h2><p><a href="html/libxml-schematron.html#xmlSchematronSetParserErrors">xmlSchematronSetParserErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidErrors">xmlSchematronSetValidErrors</a><br />
 </p><h2>Type xmlShellCtxtPtr:</h2><p><a href="html/libxml-debugXML.html#xmlShellBase">xmlShellBase</a><br />
 <a href="html/libxml-debugXML.html#xmlShellCat">xmlShellCat</a><br />
 <a href="html/libxml-debugXML.html#xmlShellCmd">xmlShellCmd</a><br />
@@ -1904,6 +1954,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-pattern.html#xmlStreamPushAttr">xmlStreamPushAttr</a><br />
 </p><h2>Type xmlStructuredErrorFunc:</h2><p><a href="html/libxml-relaxng.html#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErrors</a><br />
+<a href="html/libxml-schematron.html#xmlSchematronSetValidStructuredErrors">xmlSchematronSetValidStructuredErrors</a><br />
 <a href="html/libxml-xmlerror.html#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a><br />
 <a href="html/libxml-globals.html#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc</a><br />

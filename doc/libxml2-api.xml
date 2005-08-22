@@ -1274,6 +1274,38 @@
      <exports symbol='xmlSchemaFreeType' type='function'/>
      <exports symbol='xmlSchemaFreeWildcard' type='function'/>
     </file>
+    <file name='schematron'>
+     <summary>XML Schemastron implementation</summary>
+     <description>interface to the XML Schematron validity checking. </description>
+     <author>Daniel Veillard </author>
+     <exports symbol='XML_SCHEMATRON_OUT_IO' type='enum'/>
+     <exports symbol='XML_SCHEMATRON_OUT_BUFFER' type='enum'/>
+     <exports symbol='XML_SCHEMATRON_OUT_FILE' type='enum'/>
+     <exports symbol='XML_SCHEMATRON_OUT_XML' type='enum'/>
+     <exports symbol='XML_SCHEMATRON_OUT_TEXT' type='enum'/>
+     <exports symbol='XML_SCHEMATRON_OUT_QUIET' type='enum'/>
+     <exports symbol='xmlSchematronValidCtxt' type='typedef'/>
+     <exports symbol='xmlSchematronValidOptions' type='typedef'/>
+     <exports symbol='xmlSchematronPtr' type='typedef'/>
+     <exports symbol='xmlSchematronParserCtxt' type='typedef'/>
+     <exports symbol='xmlSchematron' type='typedef'/>
+     <exports symbol='xmlSchematronValidCtxtPtr' type='typedef'/>
+     <exports symbol='xmlSchematronParserCtxtPtr' type='typedef'/>
+     <exports symbol='xmlSchematronValidateDoc' type='function'/>
+     <exports symbol='xmlSchematronFreeParserCtxt' type='function'/>
+     <exports symbol='xmlSchematronNewMemParserCtxt' type='function'/>
+     <exports symbol='xmlSchematronValidityErrorFunc' type='function'/>
+     <exports symbol='xmlSchematronNewParserCtxt' type='function'/>
+     <exports symbol='xmlSchematronValidityWarningFunc' type='function'/>
+     <exports symbol='xmlSchematronSetParserErrors' type='function'/>
+     <exports symbol='xmlSchematronSetValidErrors' type='function'/>
+     <exports symbol='xmlSchematronFree' type='function'/>
+     <exports symbol='xmlSchematronSetValidStructuredErrors' type='function'/>
+     <exports symbol='xmlSchematronFreeValidCtxt' type='function'/>
+     <exports symbol='xmlSchematronParse' type='function'/>
+     <exports symbol='xmlSchematronNewDocParserCtxt' type='function'/>
+     <exports symbol='xmlSchematronNewValidCtxt' type='function'/>
+    </file>
     <file name='threads'>
      <summary>interfaces for thread handling</summary>
      <description>set of generic threading related routines should work with pthreads, Windows native or TLS threads </description>
@@ -1586,6 +1618,7 @@
      <exports symbol='_xmlURI' type='struct'/>
      <exports symbol='xmlNormalizeURIPath' type='function'/>
      <exports symbol='xmlPrintURI' type='function'/>
+     <exports symbol='xmlParseURIRaw' type='function'/>
      <exports symbol='xmlURIUnescapeString' type='function'/>
      <exports symbol='xmlParseURI' type='function'/>
      <exports symbol='xmlCreateURI' type='function'/>
@@ -1832,9 +1865,10 @@
      <exports symbol='xmlAutomataNewCountedTrans' type='function'/>
      <exports symbol='xmlAutomataNewCounterTrans' type='function'/>
      <exports symbol='xmlAutomataCompile' type='function'/>
-     <exports symbol='xmlNewAutomata' type='function'/>
+     <exports symbol='xmlAutomataNewNegTrans' type='function'/>
      <exports symbol='xmlAutomataNewEpsilon' type='function'/>
      <exports symbol='xmlAutomataNewCountTrans2' type='function'/>
+     <exports symbol='xmlNewAutomata' type='function'/>
      <exports symbol='xmlAutomataSetFinalState' type='function'/>
      <exports symbol='xmlAutomataNewOnceTrans' type='function'/>
      <exports symbol='xmlAutomataNewTransition' type='function'/>
@@ -2477,6 +2511,7 @@
      <exports symbol='XML_XPATH_ENCODING_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_INCLUDE' type='enum'/>
      <exports symbol='XML_RNGP_NSNAME_ATTR_ANCESTOR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_REDEFINE' type='enum'/>
      <exports symbol='XML_RNGP_REF_CYCLE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_ATTR_ATTR' type='enum'/>
      <exports symbol='XML_XPTR_UNKNOWN_SCHEME' type='enum'/>
@@ -2612,11 +2647,12 @@
      <summary>macros for marking symbols as exportable/importable.</summary>
      <description>macros for marking symbols as exportable/importable. </description>
      <author>Igor Zlatovic &lt;igor@zlatkovic.com&gt; </author>
-     <exports symbol='XMLCALL' type='macro'/>
      <exports symbol='_REENTRANT' type='macro'/>
-     <exports symbol='XMLPUBFUN' type='macro'/>
+     <exports symbol='XMLCDECL' type='macro'/>
      <exports symbol='XMLPUBVAR' type='macro'/>
      <exports symbol='LIBXML_DLL_IMPORT' type='macro'/>
+     <exports symbol='XMLCALL' type='macro'/>
+     <exports symbol='XMLPUBFUN' type='macro'/>
     </file>
     <file name='xmlmemory'>
      <summary>interface for the memory allocator</summary>
@@ -2797,20 +2833,48 @@
      <summary>regular expressions handling</summary>
      <description>basic API for libxml regular expressions handling used for XML Schemas and validation. </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_EXP_COUNT' type='enum'/>
+     <exports symbol='XML_EXP_EMPTY' type='enum'/>
+     <exports symbol='XML_EXP_SEQ' type='enum'/>
+     <exports symbol='XML_EXP_ATOM' type='enum'/>
+     <exports symbol='XML_EXP_OR' type='enum'/>
+     <exports symbol='XML_EXP_FORBID' type='enum'/>
      <exports symbol='xmlRegExecCtxtPtr' type='typedef'/>
+     <exports symbol='xmlExpCtxt' type='typedef'/>
+     <exports symbol='xmlExpNodePtr' type='typedef'/>
+     <exports symbol='xmlExpCtxtPtr' type='typedef'/>
+     <exports symbol='xmlExpNodeType' type='typedef'/>
+     <exports symbol='xmlRegExecCtxt' type='typedef'/>
+     <exports symbol='xmlExpNode' type='typedef'/>
      <exports symbol='xmlRegexp' type='typedef'/>
      <exports symbol='xmlRegexpPtr' type='typedef'/>
-     <exports symbol='xmlRegExecCtxt' type='typedef'/>
-     <exports symbol='xmlRegExecErrInfo' type='function'/>
-     <exports symbol='xmlRegFreeExecCtxt' type='function'/>
-     <exports symbol='xmlRegexpExec' type='function'/>
+     <exports symbol='forbiddenExp' type='variable'/>
+     <exports symbol='emptyExp' type='variable'/>
      <exports symbol='xmlRegExecCallbacks' type='function'/>
      <exports symbol='xmlRegNewExecCtxt' type='function'/>
-     <exports symbol='xmlRegExecPushString2' type='function'/>
      <exports symbol='xmlRegFreeRegexp' type='function'/>
-     <exports symbol='xmlRegExecNextValues' type='function'/>
-     <exports symbol='xmlRegexpCompile' type='function'/>
+     <exports symbol='xmlExpRef' type='function'/>
      <exports symbol='xmlRegexpIsDeterminist' type='function'/>
+     <exports symbol='xmlRegExecErrInfo' type='function'/>
+     <exports symbol='xmlRegFreeExecCtxt' type='function'/>
+     <exports symbol='xmlExpCtxtNbCons' type='function'/>
+     <exports symbol='xmlExpSubsume' type='function'/>
+     <exports symbol='xmlRegExecPushString2' type='function'/>
+     <exports symbol='xmlRegExecNextValues' type='function'/>
+     <exports symbol='xmlExpExpDerive' type='function'/>
+     <exports symbol='xmlExpIsNillable' type='function'/>
+     <exports symbol='xmlExpFreeCtxt' type='function'/>
+     <exports symbol='xmlExpDump' type='function'/>
+     <exports symbol='xmlExpFree' type='function'/>
+     <exports symbol='xmlRegexpCompile' type='function'/>
+     <exports symbol='xmlRegexpExec' type='function'/>
+     <exports symbol='xmlExpMaxToken' type='function'/>
+     <exports symbol='xmlExpGetStart' type='function'/>
+     <exports symbol='xmlExpParse' type='function'/>
+     <exports symbol='xmlExpNewCtxt' type='function'/>
+     <exports symbol='xmlExpGetLanguage' type='function'/>
+     <exports symbol='xmlExpStringDerive' type='function'/>
+     <exports symbol='xmlExpCtxtNbNodes' type='function'/>
      <exports symbol='xmlRegExecPushString' type='function'/>
      <exports symbol='xmlRegexpPrint' type='function'/>
     </file>
@@ -2818,6 +2882,7 @@
      <summary>the XML document serializer</summary>
      <description>API to save document or subtree of document </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_SAVE_NO_DECL' type='enum'/>
      <exports symbol='XML_SAVE_FORMAT' type='enum'/>
      <exports symbol='xmlSaveOption' type='typedef'/>
      <exports symbol='xmlSaveCtxt' type='typedef'/>
@@ -3169,6 +3234,7 @@
      <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SAX1_ENABLED' type='macro'/>
      <exports symbol='WITHOUT_TRIO' type='macro'/>
+     <exports symbol='LIBXML_SCHEMATRON_ENABLED' type='macro'/>
      <exports symbol='LIBXML_HTTP_ENABLED' type='macro'/>
      <exports symbol='LIBXML_OUTPUT_ENABLED' type='macro'/>
      <exports symbol='WITH_TRIO' type='macro'/>
@@ -3190,6 +3256,7 @@
      <exports symbol='DEBUG_MEMORY_LOCATION' type='macro'/>
      <exports symbol='LIBXML_TEST_VERSION' type='macro'/>
      <exports symbol='LIBXML_XPATH_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_EXPR_ENABLED' type='macro'/>
      <exports symbol='LIBXML_VALID_ENABLED' type='macro'/>
      <exports symbol='LIBXML_TREE_ENABLED' type='macro'/>
      <exports symbol='LIBXML_PATTERN_ENABLED' type='macro'/>
@@ -3294,6 +3361,7 @@
      <exports symbol='XPATH_BOOLEAN' type='enum'/>
      <exports symbol='XPATH_START_LITERAL_ERROR' type='enum'/>
      <exports symbol='XPATH_UNCLOSED_ERROR' type='enum'/>
+     <exports symbol='XML_XPATH_CHECKNS' type='enum'/>
      <exports symbol='XPATH_INVALID_CHAR_ERROR' type='enum'/>
      <exports symbol='XPATH_UNDEF_VARIABLE_ERROR' type='enum'/>
      <exports symbol='XPATH_EXPRESSION_OK' type='enum'/>
@@ -3324,11 +3392,12 @@
      <exports symbol='XPATH_UNFINISHED_LITERAL_ERROR' type='enum'/>
      <exports symbol='XPATH_INVALID_OPERAND' type='enum'/>
      <exports symbol='xmlXPathObjectType' type='typedef'/>
-     <exports symbol='xmlXPathVariablePtr' type='typedef'/>
+     <exports symbol='xmlXPathFlags' type='typedef'/>
      <exports symbol='xmlXPathContext' type='typedef'/>
      <exports symbol='xmlXPathError' type='typedef'/>
      <exports symbol='xmlXPathFunct' type='typedef'/>
      <exports symbol='xmlXPathTypePtr' type='typedef'/>
+     <exports symbol='xmlXPathVariablePtr' type='typedef'/>
      <exports symbol='xmlXPathType' type='typedef'/>
      <exports symbol='xmlNodeSetPtr' type='typedef'/>
      <exports symbol='xmlXPathFuncPtr' type='typedef'/>
@@ -3738,6 +3807,9 @@
     <macro name='LIBXML_DOTTED_VERSION' file='xmlversion'>
       <info>the version string like &quot;1.2.3&quot;</info>
     </macro>
+    <macro name='LIBXML_EXPR_ENABLED' file='xmlversion'>
+      <info>Whether the formal expressions interfaces are compiled in</info>
+    </macro>
     <macro name='LIBXML_FTP_ENABLED' file='xmlversion'>
       <info>Whether the FTP support is configured in</info>
     </macro>
@@ -3760,6 +3832,7 @@
       <info>Whether the module interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_MODULE_EXTENSION' file='xmlversion'>
+      <info>the string suffix used by dynamic modules (usually shared libraries)</info>
     </macro>
     <macro name='LIBXML_OUTPUT_ENABLED' file='xmlversion'>
       <info>Whether the serialization/saving support is configured in</info>
@@ -3781,6 +3854,9 @@
     </macro>
     <macro name='LIBXML_SCHEMAS_ENABLED' file='xmlversion'>
       <info>Whether the Schemas validation interfaces are compiled in</info>
+    </macro>
+    <macro name='LIBXML_SCHEMATRON_ENABLED' file='xmlversion'>
+      <info>Whether the Schematron validation interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_TEST_VERSION' file='xmlversion'>
       <info>Macro to check that the libxml version in use is compatible with the version the software has been compiled against</info>
@@ -3867,6 +3943,8 @@
       <info>Macro defining &quot;xpointer&quot;</info>
     </macro>
     <macro name='XMLCALL' file='xmlexports'>
+    </macro>
+    <macro name='XMLCDECL' file='xmlexports'>
     </macro>
     <macro name='XMLPUBFUN' file='xmlexports'>
     </macro>
@@ -4644,6 +4722,12 @@
     <enum name='XML_ERR_WARNING' file='xmlerror' value='1' type='xmlErrorLevel' info='A simple warning'/>
     <enum name='XML_ERR_XMLDECL_NOT_FINISHED' file='xmlerror' value='57' type='xmlParserErrors' info='57'/>
     <enum name='XML_ERR_XMLDECL_NOT_STARTED' file='xmlerror' value='56' type='xmlParserErrors' info='56'/>
+    <enum name='XML_EXP_ATOM' file='xmlregexp' value='2' type='xmlExpNodeType'/>
+    <enum name='XML_EXP_COUNT' file='xmlregexp' value='5' type='xmlExpNodeType'/>
+    <enum name='XML_EXP_EMPTY' file='xmlregexp' value='0' type='xmlExpNodeType'/>
+    <enum name='XML_EXP_FORBID' file='xmlregexp' value='1' type='xmlExpNodeType'/>
+    <enum name='XML_EXP_OR' file='xmlregexp' value='4' type='xmlExpNodeType'/>
+    <enum name='XML_EXP_SEQ' file='xmlregexp' value='3' type='xmlExpNodeType'/>
     <enum name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' file='entities' value='2' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities' value='3' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
@@ -4994,8 +5078,9 @@
     <enum name='XML_RNGP_XMLNS_NAME' file='xmlerror' value='1121' type='xmlParserErrors' info='1121'/>
     <enum name='XML_RNGP_XML_NS' file='xmlerror' value='1122' type='xmlParserErrors' info='1122'/>
     <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors' info='1401'/>
-    <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info=' format save output'/>
+    <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info='format save output'/>
     <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
+    <enum name='XML_SAVE_NO_DECL' file='xmlsave' value='2' type='xmlSaveOption' info=' drop the xml declaration'/>
     <enum name='XML_SAVE_NO_DOCTYPE' file='xmlerror' value='1402' type='xmlParserErrors' info='1402'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
@@ -5137,6 +5222,7 @@
     <enum name='XML_SCHEMAP_SRC_IMPORT_3_2' file='xmlerror' value='1796' type='xmlParserErrors' info='1796'/>
     <enum name='XML_SCHEMAP_SRC_INCLUDE' file='xmlerror' value='3050' type='xmlParserErrors' info='3050'/>
     <enum name='XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE' file='xmlerror' value='3006' type='xmlParserErrors' info='3006'/>
+    <enum name='XML_SCHEMAP_SRC_REDEFINE' file='xmlerror' value='3081' type='xmlParserErrors' info='3081'/>
     <enum name='XML_SCHEMAP_SRC_RESOLVE' file='xmlerror' value='3004' type='xmlParserErrors' info='3004'/>
     <enum name='XML_SCHEMAP_SRC_RESTRICTION_BASE_OR_SIMPLETYPE' file='xmlerror' value='3005' type='xmlParserErrors' info='3005'/>
     <enum name='XML_SCHEMAP_SRC_SIMPLE_TYPE_1' file='xmlerror' value='3000' type='xmlParserErrors'/>
@@ -5253,6 +5339,12 @@
     <enum name='XML_SCHEMAS_ULONG' file='schemasInternals' value='38' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAS_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAS_USHORT' file='schemasInternals' value='40' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMATRON_OUT_BUFFER' file='schematron' value='512' type='xmlSchematronValidOptions' info='output to a buffer'/>
+    <enum name='XML_SCHEMATRON_OUT_FILE' file='schematron' value='256' type='xmlSchematronValidOptions' info='output to a file descriptor'/>
+    <enum name='XML_SCHEMATRON_OUT_IO' file='schematron' value='1024' type='xmlSchematronValidOptions' info=' output to I/O mechanism'/>
+    <enum name='XML_SCHEMATRON_OUT_QUIET' file='schematron' value='1' type='xmlSchematronValidOptions' info='quiet no report'/>
+    <enum name='XML_SCHEMATRON_OUT_TEXT' file='schematron' value='2' type='xmlSchematronValidOptions' info='build a textual report'/>
+    <enum name='XML_SCHEMATRON_OUT_XML' file='schematron' value='4' type='xmlSchematronValidOptions' info='output SVRL'/>
     <enum name='XML_SCHEMAV_ATTRINVALID' file='xmlerror' value='1821' type='xmlParserErrors' info='1821'/>
     <enum name='XML_SCHEMAV_ATTRUNKNOWN' file='xmlerror' value='1820' type='xmlParserErrors' info='1820'/>
     <enum name='XML_SCHEMAV_CONSTRUCT' file='xmlerror' value='1817' type='xmlParserErrors' info='1817'/>
@@ -5424,6 +5516,7 @@
     <enum name='XML_XINCLUDE_UNKNOWN_ENCODING' file='xmlerror' value='1610' type='xmlParserErrors' info='1610'/>
     <enum name='XML_XINCLUDE_XPTR_FAILED' file='xmlerror' value='1612' type='xmlParserErrors' info='1612'/>
     <enum name='XML_XINCLUDE_XPTR_RESULT' file='xmlerror' value='1613' type='xmlParserErrors' info='1613'/>
+    <enum name='XML_XPATH_CHECKNS' file='xpath' value='1' type='xmlXPathFlags' info=' check namespaces at compilation'/>
     <enum name='XML_XPATH_ENCODING_ERROR' file='xmlerror' value='1220' type='xmlParserErrors' info='1220'/>
     <enum name='XML_XPATH_EXPRESSION_OK' file='xmlerror' value='1200' type='xmlParserErrors'/>
     <enum name='XML_XPATH_EXPR_ERROR' file='xmlerror' value='1207' type='xmlParserErrors' info='1207'/>
@@ -5759,6 +5852,11 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlErrorDomain' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorLevel' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorPtr' file='xmlerror' type='xmlError *'/>
+    <struct name='xmlExpCtxt' file='xmlregexp' type='struct _xmlExpCtxt'/>
+    <typedef name='xmlExpCtxtPtr' file='xmlregexp' type='xmlExpCtxt *'/>
+    <struct name='xmlExpNode' file='xmlregexp' type='struct _xmlExpNode'/>
+    <typedef name='xmlExpNodePtr' file='xmlregexp' type='xmlExpNode *'/>
+    <typedef name='xmlExpNodeType' file='xmlregexp' type='enum'/>
     <struct name='xmlGlobalState' file='globals' type='struct _xmlGlobalState'>
       <field name='xmlParserVersion' type='const char *' info=''/>
       <field name='xmlDefaultSAXLocator' type='xmlSAXLocator' info=''/>
@@ -6319,6 +6417,13 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlSchemaWildcardNsPtr' file='schemasInternals' type='xmlSchemaWildcardNs *'/>
     <typedef name='xmlSchemaWildcardPtr' file='schemasInternals' type='xmlSchemaWildcard *'/>
+    <struct name='xmlSchematron' file='schematron' type='struct _xmlSchematron'/>
+    <struct name='xmlSchematronParserCtxt' file='schematron' type='struct _xmlSchematronParserCtxt'/>
+    <typedef name='xmlSchematronParserCtxtPtr' file='schematron' type='xmlSchematronParserCtxt *'/>
+    <typedef name='xmlSchematronPtr' file='schematron' type='xmlSchematron *'/>
+    <struct name='xmlSchematronValidCtxt' file='schematron' type='struct _xmlSchematronValidCtxt'/>
+    <typedef name='xmlSchematronValidCtxtPtr' file='schematron' type='xmlSchematronValidCtxt *'/>
+    <typedef name='xmlSchematronValidOptions' file='schematron' type='enum'/>
     <struct name='xmlShellCtxt' file='debugXML' type='struct _xmlShellCtxt'>
       <field name='filename' type='char *' info=''/>
       <field name='doc' type='xmlDocPtr' info=''/>
@@ -6420,9 +6525,11 @@ actually an xmlCharEncoding'/>
       <field name='lastError' type='xmlError' info=' the last error'/>
       <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT dictionnary'/>
       <field name='dict' type='xmlDictPtr' info=' dictionnary if any'/>
+      <field name='flags' type='int' info=' flags to control compilation'/>
     </struct>
     <typedef name='xmlXPathContextPtr' file='xpath' type='xmlXPathContext *'/>
     <typedef name='xmlXPathError' file='xpath' type='enum'/>
+    <typedef name='xmlXPathFlags' file='xpath' type='enum'/>
     <typedef name='xmlXPathFuncPtr' file='xpath' type='xmlXPathFunct *'/>
     <struct name='xmlXPathFunct' file='xpath' type='struct _xmlXPathFunct'>
       <field name='name' type='const xmlChar *' info=' the function name'/>
@@ -6466,6 +6573,8 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
     <variable name='docbDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
+    <variable name='emptyExp' file='xmlregexp' type='xmlExpNodePtr'/>
+    <variable name='forbiddenExp' file='xmlregexp' type='xmlExpNodePtr'/>
     <variable name='htmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
     <variable name='oldXMLWDcompatibility' file='globals' type='int'/>
     <variable name='xmlBufferAllocScheme' file='globals' type='xmlBufferAllocationScheme'/>
@@ -7965,6 +8074,17 @@ actually an xmlCharEncoding'/>
       <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
       <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
     </function>
+    <function name='xmlAutomataNewNegTrans' file='xmlautomata' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_AUTOMATA_ENABLED)</cond>
+      <info>If @to is NULL, this creates first a new target state in the automata and then adds a transition from the @from state to the target state activated by any value except (@token,@token2) Note that if @token2 is not NULL, then (X, NULL) won&apos;t match to follow # the semantic of XSD ##other</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error'/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata'/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
+      <arg name='token' type='const xmlChar *' info='the first input string associated to that transition'/>
+      <arg name='token2' type='const xmlChar *' info='the second input string associated to that transition'/>
+      <arg name='data' type='void *' info='data passed to the callback function if the transition is activated'/>
+    </function>
     <function name='xmlAutomataNewOnceTrans' file='xmlautomata' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_AUTOMATA_ENABLED)</cond>
       <info>If @to is NULL, this creates first a new target state in the automata and then adds a transition from the @from state to the target state activated by a succession of input of value @token and whose number is between @min and @max, moreover that transition can only be crossed once.</info>
@@ -9125,6 +9245,113 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='extra' type='const char *' info='extra informations'/>
     </function>
+    <function name='xmlExpCtxtNbCons' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Debugging facility provides the number of allocated nodes over lifetime</info>
+      <return type='int' info='the number of nodes ever allocated or -1 in case of error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='an expression context'/>
+    </function>
+    <function name='xmlExpCtxtNbNodes' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Debugging facility provides the number of allocated nodes at a that point</info>
+      <return type='int' info='the number of nodes in use or -1 in case of error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='an expression context'/>
+    </function>
+    <function name='xmlExpDump' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Serialize the expression as compiled to the buffer</info>
+      <return type='void'/>
+      <arg name='buf' type='xmlBufferPtr' info='a buffer to receive the output'/>
+      <arg name='expr' type='xmlExpNodePtr' info='the compiled expression'/>
+    </function>
+    <function name='xmlExpExpDerive' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Evaluates the expression resulting from @exp consuming a sub expression @sub Based on algebraic derivation and sometimes direct Brzozowski derivation it usually tatkes less than linear time and can handle expressions generating infinite languages.</info>
+      <return type='xmlExpNodePtr' info='the resulting expression or NULL in case of internal error, the result must be freed'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expressions context'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the englobing expression'/>
+      <arg name='sub' type='xmlExpNodePtr' info='the subexpression'/>
+    </function>
+    <function name='xmlExpFree' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Dereference the expression</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
+    </function>
+    <function name='xmlExpFreeCtxt' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Free an expression context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='an expression context'/>
+    </function>
+    <function name='xmlExpGetLanguage' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Find all the strings used in @exp and store them in @list</info>
+      <return type='int' info='the number of unique strings found, -1 in case of errors and -2 if there is more than @len strings'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
+      <arg name='list' type='const xmlChar **' info='where to store the tokens'/>
+      <arg name='len' type='int' info='the allocated lenght of @list'/>
+    </function>
+    <function name='xmlExpGetStart' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Find all the strings that appears at the start of the languages accepted by @exp and store them in @list. E.g. for (a, b) | c it will return the list [a, c]</info>
+      <return type='int' info='the number of unique strings found, -1 in case of errors and -2 if there is more than @len strings'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
+      <arg name='list' type='const xmlChar **' info='where to store the tokens'/>
+      <arg name='len' type='int' info='the allocated lenght of @list'/>
+    </function>
+    <function name='xmlExpIsNillable' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Finds if the expression is nillable, i.e. if it accepts the empty sequqnce</info>
+      <return type='int' info='1 if nillable, 0 if not and -1 in case of error'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
+    </function>
+    <function name='xmlExpMaxToken' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Indicate the maximum number of input a expression can accept</info>
+      <return type='int' info='the maximum length or -1 in case of error'/>
+      <arg name='expr' type='xmlExpNodePtr' info='a compiled expression'/>
+    </function>
+    <function name='xmlExpNewCtxt' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Creates a new context for manipulating expressions</info>
+      <return type='xmlExpCtxtPtr' info='the context or NULL in case of error'/>
+      <arg name='maxNodes' type='int' info='the maximum number of nodes'/>
+      <arg name='dict' type='xmlDictPtr' info='optional dictionnary to use internally'/>
+    </function>
+    <function name='xmlExpParse' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Minimal parser for regexps, it understand the following constructs - string terminals - choice operator | - sequence operator , - subexpressions (...) - usual cardinality operators + * and ? - finite sequences  { min, max } - infinite sequences { min, * } There is minimal checkings made especially no checking on strings values</info>
+      <return type='xmlExpNodePtr' info='a new expression or NULL in case of failure'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expressions context'/>
+      <arg name='expr' type='const char *' info='the 0 terminated string'/>
+    </function>
+    <function name='xmlExpRef' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Increase the reference count of the expression</info>
+      <return type='void'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
+    </function>
+    <function name='xmlExpStringDerive' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Do one step of Brzozowski derivation of the expression @exp with respect to the input string</info>
+      <return type='xmlExpNodePtr' info='the resulting expression or NULL in case of internal error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
+      <arg name='str' type='const xmlChar *' info='the string'/>
+      <arg name='len' type='int' info='the string len in bytes if available'/>
+    </function>
+    <function name='xmlExpSubsume' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Check whether @exp accepts all the languages accexpted by @sub the input being a subexpression.</info>
+      <return type='int' info='1 if true 0 if false and -1 in case of failure.'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expressions context'/>
+      <arg name='exp' type='xmlExpNodePtr' info='the englobing expression'/>
+      <arg name='sub' type='xmlExpNodePtr' info='the subexpression'/>
+    </function>
     <functype name='xmlExternalEntityLoader' file='parser' module='parser'>
       <info>External entity loaders types.</info>
       <return type='xmlParserInputPtr' info='the entity input parser.'/>
@@ -10173,7 +10400,7 @@ actually an xmlCharEncoding'/>
       <arg name='pathss' type='const char *' info='a list of directories separated by a colon or a space.'/>
     </function>
     <function name='xmlLoadExternalEntity' file='parser' module='xmlIO'>
-      <info>Load an external entity, note that the use of this function for unparsed entities may generate problems TODO: a more generic External entity API must be designed</info>
+      <info>Load an external entity, note that the use of this function for unparsed entities may generate problems</info>
       <return type='xmlParserInputPtr' info='the xmlParserInputPtr or NULL'/>
       <arg name='URL' type='const char *' info='the URL for the entity to load'/>
       <arg name='ID' type='const char *' info='the Public ID for the entity to load'/>
@@ -11532,6 +11759,12 @@ actually an xmlCharEncoding'/>
       <return type='xmlURIPtr' info='a newly built xmlURIPtr or NULL in case of error'/>
       <arg name='str' type='const char *' info='the URI string to analyze'/>
     </function>
+    <function name='xmlParseURIRaw' file='uri' module='uri'>
+      <info>Parse an URI but allows to keep intact the original fragments.  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
+      <return type='xmlURIPtr' info='a newly built xmlURIPtr or NULL in case of error'/>
+      <arg name='str' type='const char *' info='the URI string to analyze'/>
+      <arg name='raw' type='int' info='if 1 unescaping of URI pieces are disabled'/>
+    </function>
     <function name='xmlParseURIReference' file='uri' module='uri'>
       <info>Parse an URI reference string and fills in the appropriate fields of the @uri structure  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
       <return type='int' info='0 or the error code'/>
@@ -11754,7 +11987,7 @@ actually an xmlCharEncoding'/>
       <return type='xmlPatternPtr' info='the compiled form of the pattern or NULL in case of error'/>
       <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
       <arg name='dict' type='xmlDict *' info='an optional dictionary for interned strings'/>
-      <arg name='flags' type='xmlPatternFlags' info='compilation flags, undefined yet'/>
+      <arg name='flags' type='int' info='compilation flags, see xmlPatternFlags'/>
       <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
     <function name='xmlPedanticParserDefault' file='parser' module='parserInternals'>
@@ -13217,6 +13450,105 @@ actually an xmlCharEncoding'/>
       <return type='xmlChar *' info='the new string or NULL if no change was required.'/>
       <arg name='value' type='const xmlChar *' info='a value'/>
     </function>
+    <function name='xmlSchematronFree' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Deallocate a Schematron structure.</info>
+      <return type='void'/>
+      <arg name='schema' type='xmlSchematronPtr' info='a schema structure'/>
+    </function>
+    <function name='xmlSchematronFreeParserCtxt' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Free the resources associated to the schema parser context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchematronParserCtxtPtr' info='the schema parser context'/>
+    </function>
+    <function name='xmlSchematronFreeValidCtxt' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Free the resources associated to the schema validation context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info='the schema validation context'/>
+    </function>
+    <function name='xmlSchematronNewDocParserCtxt' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Create an XML Schematrons parse context for that document. NB. The document may be modified during the parsing process.</info>
+      <return type='xmlSchematronParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='doc' type='xmlDocPtr' info='a preparsed document tree'/>
+    </function>
+    <function name='xmlSchematronNewMemParserCtxt' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Create an XML Schematrons parse context for that memory buffer expected to contain an XML Schematrons file.</info>
+      <return type='xmlSchematronParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array containing the schemas'/>
+      <arg name='size' type='int' info='the size of the array'/>
+    </function>
+    <function name='xmlSchematronNewParserCtxt' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Create an XML Schematrons parse context for that file/resource expected to contain an XML Schematrons file.</info>
+      <return type='xmlSchematronParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='URL' type='const char *' info='the location of the schema'/>
+    </function>
+    <function name='xmlSchematronNewValidCtxt' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Create an XML Schematrons validation context based on the given schema.</info>
+      <return type='xmlSchematronValidCtxtPtr' info='the validation context or NULL in case of error'/>
+      <arg name='schema' type='xmlSchematronPtr' info='a precompiled XML Schematrons'/>
+      <arg name='options' type='int' info='a set of xmlSchematronValidOptions'/>
+    </function>
+    <function name='xmlSchematronParse' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</info>
+      <return type='xmlSchematronPtr' info='the internal XML Schematron structure built from the resource or NULL in case of error'/>
+      <arg name='ctxt' type='xmlSchematronParserCtxtPtr' info='a schema validation context'/>
+    </function>
+    <function name='xmlSchematronSetParserErrors' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchematronParserCtxtPtr' info=''/>
+      <arg name='err' type='xmlSchematronValidityErrorFunc' info=''/>
+      <arg name='warn' type='xmlSchematronValidityWarningFunc' info=''/>
+      <arg name='ctx' type='void *' info=''/>
+    </function>
+    <function name='xmlSchematronSetValidErrors' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info=''/>
+      <arg name='err' type='xmlSchematronValidityErrorFunc' info=''/>
+      <arg name='warn' type='xmlSchematronValidityWarningFunc' info=''/>
+      <arg name='ctx' type='void *' info=''/>
+    </function>
+    <function name='xmlSchematronSetValidStructuredErrors' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info=''/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info=''/>
+      <arg name='ctx' type='void *' info=''/>
+    </function>
+    <function name='xmlSchematronValidateDoc' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Validate a tree instance against the schematron</info>
+      <return type='int' info='0 in case of success, -1 in case of internal error and an error count otherwise.'/>
+      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info='the schema validation context'/>
+      <arg name='instance' type='xmlDocPtr' info='the document instace tree'/>
+    </function>
+    <functype name='xmlSchematronValidityErrorFunc' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </functype>
+    <functype name='xmlSchematronValidityWarningFunc' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </functype>
     <function name='xmlSearchNs' file='tree' module='tree'>
       <info>Search a Ns registered under a given name space for a document. recurse on the parents until it finds the defined namespace or return NULL otherwise. @nameSpace can be NULL, this is a search for the default namespace. We don&apos;t allow to cross entities boundaries. If you don&apos;t declare the namespace within those you will be in troubles !!! A warning is generated to cover this case.</info>
       <return type='xmlNsPtr' info='the namespace pointer or NULL.'/>

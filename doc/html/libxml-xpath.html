@@ -20,6 +20,7 @@ The content of this structure is not made public by the API.
 </pre><pre class="programlisting">Structure <a href="#xmlXPathContext">xmlXPathContext</a><br />struct _xmlXPathContext
 </pre><pre class="programlisting">Typedef <a href="libxml-xpath.html#xmlXPathContext">xmlXPathContext</a> * <a name="xmlXPathContextPtr" id="xmlXPathContextPtr">xmlXPathContextPtr</a>
 </pre><pre class="programlisting">Enum <a href="#xmlXPathError">xmlXPathError</a>
+</pre><pre class="programlisting">Enum <a href="#xmlXPathFlags">xmlXPathFlags</a>
 </pre><pre class="programlisting">Typedef <a href="libxml-xpath.html#xmlXPathFunct">xmlXPathFunct</a> * <a name="xmlXPathFuncPtr" id="xmlXPathFuncPtr">xmlXPathFuncPtr</a>
 </pre><pre class="programlisting">Structure <a href="#xmlXPathFunct">xmlXPathFunct</a><br />struct _xmlXPathFunct
 </pre><pre class="programlisting">Structure <a href="#xmlXPathObject">xmlXPathObject</a><br />struct _xmlXPathObject
@@ -136,6 +137,7 @@ The content of this structure is not made public by the API.
     <a href="libxml-xmlerror.html#xmlError">xmlError</a>	lastError	: the last error
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	debugNode	: the source node XSLT dictionnary
     <a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>	dict	: dictionnary if any
+    int	flags	: flags to control compilation
 }</pre><h3>Enum <a name="xmlXPathError" id="xmlXPathError">xmlXPathError</a></h3><pre class="programlisting">Enum xmlXPathError {
     <a name="XPATH_EXPRESSION_OK" id="XPATH_EXPRESSION_OK">XPATH_EXPRESSION_OK</a> = 0
     <a name="XPATH_NUMBER_ERROR" id="XPATH_NUMBER_ERROR">XPATH_NUMBER_ERROR</a> = 1
@@ -160,6 +162,9 @@ The content of this structure is not made public by the API.
     <a name="XPATH_ENCODING_ERROR" id="XPATH_ENCODING_ERROR">XPATH_ENCODING_ERROR</a> = 20
     <a name="XPATH_INVALID_CHAR_ERROR" id="XPATH_INVALID_CHAR_ERROR">XPATH_INVALID_CHAR_ERROR</a> = 21
     <a name="XPATH_INVALID_CTXT" id="XPATH_INVALID_CTXT">XPATH_INVALID_CTXT</a> = 22
+}
+</pre><h3>Enum <a name="xmlXPathFlags" id="xmlXPathFlags">xmlXPathFlags</a></h3><pre class="programlisting">Enum xmlXPathFlags {
+    <a name="XML_XPATH_CHECKNS" id="XML_XPATH_CHECKNS">XML_XPATH_CHECKNS</a> = 1 : check namespaces at compilation
 }
 </pre><h3><a name="xmlXPathFunct" id="xmlXPathFunct">Structure xmlXPathFunct</a></h3><pre class="programlisting">Structure xmlXPathFunct<br />struct _xmlXPathFunct {
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name	: the function name

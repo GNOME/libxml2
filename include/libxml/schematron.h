@@ -65,6 +65,7 @@ XMLPUBFUN void XMLCALL
 					 xmlSchematronValidityErrorFunc err,
 					 xmlSchematronValidityWarningFunc warn,
 					 void *ctx);
+/*****
 XMLPUBFUN int XMLCALL
 		xmlSchematronGetParserErrors(xmlSchematronParserCtxtPtr ctxt,
 					xmlSchematronValidityErrorFunc * err,
@@ -72,16 +73,11 @@ XMLPUBFUN int XMLCALL
 					void **ctx);
 XMLPUBFUN int XMLCALL
 		xmlSchematronIsValid	(xmlSchematronValidCtxtPtr ctxt);
-
+ *****/
 XMLPUBFUN xmlSchematronPtr XMLCALL	
 	    xmlSchematronParse		(xmlSchematronParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL		
 	    xmlSchematronFree		(xmlSchematronPtr schema);
-#ifdef LIBXML_OUTPUT_ENABLED
-XMLPUBFUN void XMLCALL		
-	    xmlSchematronDump		(FILE *output,
-					 xmlSchematronPtr schema);
-#endif /* LIBXML_OUTPUT_ENABLED */
 /*
  * Interfaces for validating
  */
@@ -91,8 +87,11 @@ XMLPUBFUN void XMLCALL
 					 xmlSchematronValidityWarningFunc warn,
 					 void *ctx);
 XMLPUBFUN void XMLCALL
-	    xmlSchematronSetValidStructuredErrors(xmlSchematronValidCtxtPtr ctxt,
-								  xmlStructuredErrorFunc serror, void *ctx);
+	    xmlSchematronSetValidStructuredErrors(
+	                                  xmlSchematronValidCtxtPtr ctxt,
+					  xmlStructuredErrorFunc serror,
+					  void *ctx);
+/******
 XMLPUBFUN int XMLCALL
 	    xmlSchematronGetValidErrors	(xmlSchematronValidCtxtPtr ctxt,
 					 xmlSchematronValidityErrorFunc *err,
@@ -103,6 +102,10 @@ XMLPUBFUN int XMLCALL
 					 int options);
 XMLPUBFUN int XMLCALL
 	    xmlSchematronValidCtxtGetOptions(xmlSchematronValidCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL
+            xmlSchematronValidateOneElement (xmlSchematronValidCtxtPtr ctxt,
+			                 xmlNodePtr elem);
+ *******/
 
 XMLPUBFUN xmlSchematronValidCtxtPtr XMLCALL	
 	    xmlSchematronNewValidCtxt	(xmlSchematronPtr schema,
@@ -112,9 +115,6 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN int XMLCALL			
 	    xmlSchematronValidateDoc	(xmlSchematronValidCtxtPtr ctxt,
 					 xmlDocPtr instance);
-XMLPUBFUN int XMLCALL
-            xmlSchematronValidateOneElement (xmlSchematronValidCtxtPtr ctxt,
-			                 xmlNodePtr elem);
 
 #ifdef __cplusplus
 }

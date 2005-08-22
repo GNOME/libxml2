@@ -36,6 +36,7 @@
 #include "libxml/SAX2.h"
 #include "libxml/SAX.h"
 #include "libxml/schemasInternals.h"
+#include "libxml/schematron.h"
 #include "libxml/threads.h"
 #include "libxml/tree.h"
 #include "libxml/uri.h"
@@ -1218,6 +1219,18 @@ extern __typeof (xmlAutomataNewEpsilon) xmlAutomataNewEpsilon __attribute((alias
 #ifndef xmlAutomataNewEpsilon
 extern __typeof (xmlAutomataNewEpsilon) xmlAutomataNewEpsilon__internal_alias __attribute((visibility("hidden")));
 #define xmlAutomataNewEpsilon xmlAutomataNewEpsilon__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlAutomataNewNegTrans
+extern __typeof (xmlAutomataNewNegTrans) xmlAutomataNewNegTrans __attribute((alias("xmlAutomataNewNegTrans__internal_alias")));
+#else
+#ifndef xmlAutomataNewNegTrans
+extern __typeof (xmlAutomataNewNegTrans) xmlAutomataNewNegTrans__internal_alias __attribute((visibility("hidden")));
+#define xmlAutomataNewNegTrans xmlAutomataNewNegTrans__internal_alias
 #endif
 #endif
 #endif
@@ -3091,6 +3104,186 @@ extern __typeof (xmlErrMemory) xmlErrMemory __attribute((alias("xmlErrMemory__in
 #ifndef xmlErrMemory
 extern __typeof (xmlErrMemory) xmlErrMemory__internal_alias __attribute((visibility("hidden")));
 #define xmlErrMemory xmlErrMemory__internal_alias
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpCtxtNbCons
+extern __typeof (xmlExpCtxtNbCons) xmlExpCtxtNbCons __attribute((alias("xmlExpCtxtNbCons__internal_alias")));
+#else
+#ifndef xmlExpCtxtNbCons
+extern __typeof (xmlExpCtxtNbCons) xmlExpCtxtNbCons__internal_alias __attribute((visibility("hidden")));
+#define xmlExpCtxtNbCons xmlExpCtxtNbCons__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpCtxtNbNodes
+extern __typeof (xmlExpCtxtNbNodes) xmlExpCtxtNbNodes __attribute((alias("xmlExpCtxtNbNodes__internal_alias")));
+#else
+#ifndef xmlExpCtxtNbNodes
+extern __typeof (xmlExpCtxtNbNodes) xmlExpCtxtNbNodes__internal_alias __attribute((visibility("hidden")));
+#define xmlExpCtxtNbNodes xmlExpCtxtNbNodes__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpDump
+extern __typeof (xmlExpDump) xmlExpDump __attribute((alias("xmlExpDump__internal_alias")));
+#else
+#ifndef xmlExpDump
+extern __typeof (xmlExpDump) xmlExpDump__internal_alias __attribute((visibility("hidden")));
+#define xmlExpDump xmlExpDump__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpExpDerive
+extern __typeof (xmlExpExpDerive) xmlExpExpDerive __attribute((alias("xmlExpExpDerive__internal_alias")));
+#else
+#ifndef xmlExpExpDerive
+extern __typeof (xmlExpExpDerive) xmlExpExpDerive__internal_alias __attribute((visibility("hidden")));
+#define xmlExpExpDerive xmlExpExpDerive__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpFree
+extern __typeof (xmlExpFree) xmlExpFree __attribute((alias("xmlExpFree__internal_alias")));
+#else
+#ifndef xmlExpFree
+extern __typeof (xmlExpFree) xmlExpFree__internal_alias __attribute((visibility("hidden")));
+#define xmlExpFree xmlExpFree__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpFreeCtxt
+extern __typeof (xmlExpFreeCtxt) xmlExpFreeCtxt __attribute((alias("xmlExpFreeCtxt__internal_alias")));
+#else
+#ifndef xmlExpFreeCtxt
+extern __typeof (xmlExpFreeCtxt) xmlExpFreeCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlExpFreeCtxt xmlExpFreeCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpGetLanguage
+extern __typeof (xmlExpGetLanguage) xmlExpGetLanguage __attribute((alias("xmlExpGetLanguage__internal_alias")));
+#else
+#ifndef xmlExpGetLanguage
+extern __typeof (xmlExpGetLanguage) xmlExpGetLanguage__internal_alias __attribute((visibility("hidden")));
+#define xmlExpGetLanguage xmlExpGetLanguage__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpGetStart
+extern __typeof (xmlExpGetStart) xmlExpGetStart __attribute((alias("xmlExpGetStart__internal_alias")));
+#else
+#ifndef xmlExpGetStart
+extern __typeof (xmlExpGetStart) xmlExpGetStart__internal_alias __attribute((visibility("hidden")));
+#define xmlExpGetStart xmlExpGetStart__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpIsNillable
+extern __typeof (xmlExpIsNillable) xmlExpIsNillable __attribute((alias("xmlExpIsNillable__internal_alias")));
+#else
+#ifndef xmlExpIsNillable
+extern __typeof (xmlExpIsNillable) xmlExpIsNillable__internal_alias __attribute((visibility("hidden")));
+#define xmlExpIsNillable xmlExpIsNillable__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpMaxToken
+extern __typeof (xmlExpMaxToken) xmlExpMaxToken __attribute((alias("xmlExpMaxToken__internal_alias")));
+#else
+#ifndef xmlExpMaxToken
+extern __typeof (xmlExpMaxToken) xmlExpMaxToken__internal_alias __attribute((visibility("hidden")));
+#define xmlExpMaxToken xmlExpMaxToken__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpNewCtxt
+extern __typeof (xmlExpNewCtxt) xmlExpNewCtxt __attribute((alias("xmlExpNewCtxt__internal_alias")));
+#else
+#ifndef xmlExpNewCtxt
+extern __typeof (xmlExpNewCtxt) xmlExpNewCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlExpNewCtxt xmlExpNewCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpParse
+extern __typeof (xmlExpParse) xmlExpParse __attribute((alias("xmlExpParse__internal_alias")));
+#else
+#ifndef xmlExpParse
+extern __typeof (xmlExpParse) xmlExpParse__internal_alias __attribute((visibility("hidden")));
+#define xmlExpParse xmlExpParse__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpRef
+extern __typeof (xmlExpRef) xmlExpRef __attribute((alias("xmlExpRef__internal_alias")));
+#else
+#ifndef xmlExpRef
+extern __typeof (xmlExpRef) xmlExpRef__internal_alias __attribute((visibility("hidden")));
+#define xmlExpRef xmlExpRef__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpStringDerive
+extern __typeof (xmlExpStringDerive) xmlExpStringDerive __attribute((alias("xmlExpStringDerive__internal_alias")));
+#else
+#ifndef xmlExpStringDerive
+extern __typeof (xmlExpStringDerive) xmlExpStringDerive__internal_alias __attribute((visibility("hidden")));
+#define xmlExpStringDerive xmlExpStringDerive__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpSubsume
+extern __typeof (xmlExpSubsume) xmlExpSubsume __attribute((alias("xmlExpSubsume__internal_alias")));
+#else
+#ifndef xmlExpSubsume
+extern __typeof (xmlExpSubsume) xmlExpSubsume__internal_alias __attribute((visibility("hidden")));
+#define xmlExpSubsume xmlExpSubsume__internal_alias
+#endif
 #endif
 #endif
 
@@ -7047,6 +7240,16 @@ extern __typeof (xmlParseURI) xmlParseURI__internal_alias __attribute((visibilit
 #endif
 
 #ifdef bottom_uri
+#undef xmlParseURIRaw
+extern __typeof (xmlParseURIRaw) xmlParseURIRaw __attribute((alias("xmlParseURIRaw__internal_alias")));
+#else
+#ifndef xmlParseURIRaw
+extern __typeof (xmlParseURIRaw) xmlParseURIRaw__internal_alias __attribute((visibility("hidden")));
+#define xmlParseURIRaw xmlParseURIRaw__internal_alias
+#endif
+#endif
+
+#ifdef bottom_uri
 #undef xmlParseURIReference
 extern __typeof (xmlParseURIReference) xmlParseURIReference __attribute((alias("xmlParseURIReference__internal_alias")));
 #else
@@ -9654,6 +9857,150 @@ extern __typeof (xmlSchemaWhiteSpaceReplace) xmlSchemaWhiteSpaceReplace __attrib
 #ifndef xmlSchemaWhiteSpaceReplace
 extern __typeof (xmlSchemaWhiteSpaceReplace) xmlSchemaWhiteSpaceReplace__internal_alias __attribute((visibility("hidden")));
 #define xmlSchemaWhiteSpaceReplace xmlSchemaWhiteSpaceReplace__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronFree
+extern __typeof (xmlSchematronFree) xmlSchematronFree __attribute((alias("xmlSchematronFree__internal_alias")));
+#else
+#ifndef xmlSchematronFree
+extern __typeof (xmlSchematronFree) xmlSchematronFree__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronFree xmlSchematronFree__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronFreeParserCtxt
+extern __typeof (xmlSchematronFreeParserCtxt) xmlSchematronFreeParserCtxt __attribute((alias("xmlSchematronFreeParserCtxt__internal_alias")));
+#else
+#ifndef xmlSchematronFreeParserCtxt
+extern __typeof (xmlSchematronFreeParserCtxt) xmlSchematronFreeParserCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronFreeParserCtxt xmlSchematronFreeParserCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronFreeValidCtxt
+extern __typeof (xmlSchematronFreeValidCtxt) xmlSchematronFreeValidCtxt __attribute((alias("xmlSchematronFreeValidCtxt__internal_alias")));
+#else
+#ifndef xmlSchematronFreeValidCtxt
+extern __typeof (xmlSchematronFreeValidCtxt) xmlSchematronFreeValidCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronFreeValidCtxt xmlSchematronFreeValidCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronNewDocParserCtxt
+extern __typeof (xmlSchematronNewDocParserCtxt) xmlSchematronNewDocParserCtxt __attribute((alias("xmlSchematronNewDocParserCtxt__internal_alias")));
+#else
+#ifndef xmlSchematronNewDocParserCtxt
+extern __typeof (xmlSchematronNewDocParserCtxt) xmlSchematronNewDocParserCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronNewDocParserCtxt xmlSchematronNewDocParserCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronNewMemParserCtxt
+extern __typeof (xmlSchematronNewMemParserCtxt) xmlSchematronNewMemParserCtxt __attribute((alias("xmlSchematronNewMemParserCtxt__internal_alias")));
+#else
+#ifndef xmlSchematronNewMemParserCtxt
+extern __typeof (xmlSchematronNewMemParserCtxt) xmlSchematronNewMemParserCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronNewMemParserCtxt xmlSchematronNewMemParserCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronNewParserCtxt
+extern __typeof (xmlSchematronNewParserCtxt) xmlSchematronNewParserCtxt __attribute((alias("xmlSchematronNewParserCtxt__internal_alias")));
+#else
+#ifndef xmlSchematronNewParserCtxt
+extern __typeof (xmlSchematronNewParserCtxt) xmlSchematronNewParserCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronNewParserCtxt xmlSchematronNewParserCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronNewValidCtxt
+extern __typeof (xmlSchematronNewValidCtxt) xmlSchematronNewValidCtxt __attribute((alias("xmlSchematronNewValidCtxt__internal_alias")));
+#else
+#ifndef xmlSchematronNewValidCtxt
+extern __typeof (xmlSchematronNewValidCtxt) xmlSchematronNewValidCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronNewValidCtxt xmlSchematronNewValidCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronParse
+extern __typeof (xmlSchematronParse) xmlSchematronParse __attribute((alias("xmlSchematronParse__internal_alias")));
+#else
+#ifndef xmlSchematronParse
+extern __typeof (xmlSchematronParse) xmlSchematronParse__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronParse xmlSchematronParse__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronSetParserErrors
+extern __typeof (xmlSchematronSetParserErrors) xmlSchematronSetParserErrors __attribute((alias("xmlSchematronSetParserErrors__internal_alias")));
+#else
+#ifndef xmlSchematronSetParserErrors
+extern __typeof (xmlSchematronSetParserErrors) xmlSchematronSetParserErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronSetParserErrors xmlSchematronSetParserErrors__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronSetValidErrors
+extern __typeof (xmlSchematronSetValidErrors) xmlSchematronSetValidErrors __attribute((alias("xmlSchematronSetValidErrors__internal_alias")));
+#else
+#ifndef xmlSchematronSetValidErrors
+extern __typeof (xmlSchematronSetValidErrors) xmlSchematronSetValidErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronSetValidErrors xmlSchematronSetValidErrors__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronSetValidStructuredErrors
+extern __typeof (xmlSchematronSetValidStructuredErrors) xmlSchematronSetValidStructuredErrors __attribute((alias("xmlSchematronSetValidStructuredErrors__internal_alias")));
+#else
+#ifndef xmlSchematronSetValidStructuredErrors
+extern __typeof (xmlSchematronSetValidStructuredErrors) xmlSchematronSetValidStructuredErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronSetValidStructuredErrors xmlSchematronSetValidStructuredErrors__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMATRON_ENABLED)
+#ifdef bottom_schematron
+#undef xmlSchematronValidateDoc
+extern __typeof (xmlSchematronValidateDoc) xmlSchematronValidateDoc __attribute((alias("xmlSchematronValidateDoc__internal_alias")));
+#else
+#ifndef xmlSchematronValidateDoc
+extern __typeof (xmlSchematronValidateDoc) xmlSchematronValidateDoc__internal_alias __attribute((visibility("hidden")));
+#define xmlSchematronValidateDoc xmlSchematronValidateDoc__internal_alias
 #endif
 #endif
 #endif

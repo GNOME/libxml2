@@ -43,6 +43,7 @@
 #include "libxml/SAX2.h"
 #include "libxml/SAX.h"
 #include "libxml/schemasInternals.h"
+#include "libxml/schematron.h"
 #include "libxml/threads.h"
 #include "libxml/tree.h"
 #include "libxml/uri.h"

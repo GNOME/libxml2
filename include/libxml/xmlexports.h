@@ -41,7 +41,7 @@
  */
 #define XMLCALL
 /**
- * XMLCALL:
+ * XMLCDECL:
  *
  * Macro which declares the calling convention for exported functions that 
  * use '...'.

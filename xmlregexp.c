@@ -7180,10 +7180,10 @@ xmlExpDumpInt(xmlBufferPtr buf, xmlExpNodePtr expr, int glob) {
  * Serialize the expression as compiled to the buffer
  */
 void
-xmlExpDump(xmlBufferPtr buf, xmlExpNodePtr exp) {
-    if ((buf == NULL) || (exp == NULL))
+xmlExpDump(xmlBufferPtr buf, xmlExpNodePtr expr) {
+    if ((buf == NULL) || (expr == NULL))
         return;
-    xmlExpDumpInt(buf, exp, 0);
+    xmlExpDumpInt(buf, expr, 0);
 }
 
 /**

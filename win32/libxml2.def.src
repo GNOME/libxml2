@@ -11,6 +11,12 @@ __docbDefaultSAXHandler
 docbDefaultSAXHandler DATA
 #endif
 #endif
+#ifdef LIBXML_REGEXP_ENABLED
+emptyExp DATA
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+forbiddenExp DATA
+#endif
 #ifdef LIBXML_THREAD_ENABLED
 #ifdef LIBXML_HTML_ENABLED
 __htmlDefaultSAXHandler
@@ -517,6 +523,9 @@ xmlAutomataNewCounterTrans
 xmlAutomataNewEpsilon
 #endif
 #ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewNegTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
 xmlAutomataNewOnceTrans
 #endif
 #ifdef LIBXML_AUTOMATA_ENABLED
@@ -775,6 +784,51 @@ xmlEncodeEntities
 xmlEncodeEntitiesReentrant
 xmlEncodeSpecialChars
 xmlErrMemory
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpCtxtNbCons
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpCtxtNbNodes
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpDump
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpExpDerive
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpFree
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpFreeCtxt
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpGetLanguage
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpGetStart
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpIsNillable
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpMaxToken
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpNewCtxt
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpParse
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpRef
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpStringDerive
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpSubsume
+#endif
 xmlFileClose
 xmlFileMatch
 xmlFileOpen
@@ -1273,6 +1327,7 @@ xmlParseStartTag
 xmlParseSystemLiteral
 xmlParseTextDecl
 xmlParseURI
+xmlParseURIRaw
 xmlParseURIReference
 xmlParseVersionInfo
 xmlParseVersionNum
@@ -1690,6 +1745,18 @@ xmlSchemaValueGetNext
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaWhiteSpaceReplace
 #endif
+xmlSchematronFree
+xmlSchematronFreeParserCtxt
+xmlSchematronFreeValidCtxt
+xmlSchematronNewDocParserCtxt
+xmlSchematronNewMemParserCtxt
+xmlSchematronNewParserCtxt
+xmlSchematronNewValidCtxt
+xmlSchematronParse
+xmlSchematronSetParserErrors
+xmlSchematronSetValidErrors
+xmlSchematronSetValidStructuredErrors
+xmlSchematronValidateDoc
 xmlSearchNs
 xmlSearchNsByHref
 xmlSetBufferAllocationScheme

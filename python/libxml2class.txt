@@ -188,6 +188,7 @@ canonicPath()
 createURI()
 normalizeURIPath()
 parseURI()
+parseURIRaw()
 
 # functions from module valid
 newValidCtxt()

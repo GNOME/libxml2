@@ -2284,6 +2284,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			    *cptr++ = *cur++;
 			    len++;
 			} else if (*cur == '.') {
+			    if (len == 0)
+			        len++;
 			    if (dec != ~0u)
 				goto return1;	/* multiple decimal points */
 			    cur++;

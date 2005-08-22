@@ -191,7 +191,7 @@ testReduce(xmlExpCtxtPtr ctxt, xmlExpNodePtr expr, const char *tst) {
         printf("Subset %s failed to parse\n", tst);
 	return;
     }
-    xmlExpDump(xmlExpBuf, expr);
+    xmlExpDump(xmlExpBuf, sub);
     printf("Subset parsed as: %s\n",
            (const char *) xmlBufferContent(xmlExpBuf));
     deriv = xmlExpExpDerive(ctxt, expr, sub);

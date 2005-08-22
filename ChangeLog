@@ -1,3 +1,7 @@
+Mon Aug 22 17:50:20 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* testRegexp.c: printed the wrong string
+
 Mon Aug 22 16:42:07 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testRegexp.c xmlregexp.c include/libxml/xmlregexp.h: exported

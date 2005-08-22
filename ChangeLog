@@ -1,3 +1,10 @@
+Mon Aug 22 12:11:10 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Some preparation for the creation of a graph
+	  of imported/included/redefined schemas; this is needed for
+	  at least the redefinitions.
+	  Centralized the creation of the parser context in one function.
+
 Mon Aug 22 02:19:33 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c include/libxml/xmlregexp.h: pushing the formal expression

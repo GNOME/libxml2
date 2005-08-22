@@ -5484,6 +5484,1400 @@ xmlAutomataIsDeterminist(xmlAutomataPtr am) {
     return(ret);
 }
 #endif /* LIBXML_AUTOMATA_ENABLED */
+
+#ifdef LIBXML_EXPR_ENABLED
+/************************************************************************
+ *									*
+ *		Formal Expression handling code				*
+ *									*
+ ************************************************************************/
+static void xmlExpDump(xmlBufferPtr buf, xmlExpNodePtr exp, int glob);
+#define PRINT_EXP(exp) { 						\
+    xmlBufferPtr xmlExpBuf;						\
+    xmlExpBuf = xmlBufferCreate();					\
+    xmlExpDump(xmlExpBuf, exp, 0);					\
+    xmlBufferWriteChar(xmlExpBuf, "\n");				\
+    xmlBufferDump(stdout, xmlExpBuf);					\
+    xmlBufferFree(xmlExpBuf);						\
+}
+/************************************************************************
+ *									*
+ *		Expression handling context				*
+ *									*
+ ************************************************************************/
+
+struct _xmlExpCtxt {
+    xmlDictPtr dict;
+    xmlExpNodePtr *table;
+    int size;
+    int nbElems;
+    int nb_nodes;
+    const char *expr;
+    const char *cur;
+    int nb_cons;
+    int nb_del;
+    int tabSize;
+};
+
+/**
+ * xmlExpNewCtxt:
+ * @maxNodes:  the maximum number of nodes
+ * @dict:  optional dictionnary to use internally
+ *
+ * Creates a new context for manipulating expressions
+ *
+ * Returns the context or NULL in case of error
+ */
+xmlExpCtxtPtr
+xmlExpNewCtxt(int maxNodes, xmlDictPtr dict) {
+    xmlExpCtxtPtr ret;
+    int size = 256;
+
+    if (maxNodes <= 4096)
+        maxNodes = 4096;
+    
+    ret = (xmlExpCtxtPtr) xmlMalloc(sizeof(xmlExpCtxt));
+    if (ret == NULL)
+        return(NULL);
+    memset(ret, 0, sizeof(xmlExpCtxt));
+    ret->size = size;
+    ret->nbElems = 0;
+    ret->table = xmlMalloc(size * sizeof(xmlExpNodePtr));
+    if (ret->table == NULL) {
+        xmlFree(ret);
+	return(NULL);
+    }
+    memset(ret->table, 0, size * sizeof(xmlExpNodePtr));
+    if (dict == NULL) {
+        ret->dict = xmlDictCreate();
+	if (ret->dict == NULL) {
+	    xmlFree(ret->table);
+	    xmlFree(ret);
+	    return(NULL);
+	}
+    } else {
+        ret->dict = dict;
+	xmlDictReference(ret->dict);
+    }
+    return(ret);
+}
+
+/**
+ * xmlExpFreeCtxt:
+ * @ctxt:  an expression context
+ *
+ * Free an expression context
+ */
+void
+xmlExpFreeCtxt(xmlExpCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return;
+    xmlDictFree(ctxt->dict);
+    if (ctxt->table != NULL)
+	xmlFree(ctxt->table);
+    xmlFree(ctxt);
+}
+
+/************************************************************************
+ *									*
+ *		Structure associated to an expression node		*
+ *									*
+ ************************************************************************/
+typedef enum {
+    XML_EXP_EMPTY = 0,
+    XML_EXP_FORBID = 1,
+    XML_EXP_ATOM = 2,
+    XML_EXP_SEQ = 3,
+    XML_EXP_OR = 4,
+    XML_EXP_COUNT = 5
+} xmlExpNodeType;
+
+typedef enum {
+    XML_EXP_NILABLE = (1 << 0)
+} xmlExpNodeInfo;
+
+#define IS_NILLABLE(node) ((node)->info & XML_EXP_NILABLE)
+
+struct _xmlExpNode {
+    unsigned char type;/* xmlExpNodeType */
+    unsigned char info;/* OR of xmlExpNodeInfo */
+    unsigned short key;	/* the hash key */
+    unsigned int ref;	/* The number of references */
+    int c_max;		/* the maximum length it can consume */
+    xmlExpNodePtr exp_left;
+    xmlExpNodePtr next;/* the next node in the hash table or free list */
+    union {
+	struct {
+	    int f_min;
+	    int f_max;
+	} count;
+	struct {
+	    xmlExpNodePtr f_right;
+	} children;
+        const xmlChar *f_str;
+    } field;
+};
+
+#define exp_min field.count.f_min
+#define exp_max field.count.f_max
+/* #define exp_left field.children.f_left */
+#define exp_right field.children.f_right
+#define exp_str field.f_str
+
+static xmlExpNodePtr xmlExpNewNode(xmlExpCtxtPtr ctxt, xmlExpNodeType type);
+static xmlExpNode forbiddenExpNode = {
+    XML_EXP_FORBID, 0, 0, 0, 0, NULL, NULL, {{ 0, 0}}
+};
+xmlExpNodePtr forbiddenExp = &forbiddenExpNode;
+static xmlExpNode emptyExpNode = {
+    XML_EXP_EMPTY, 1, 0, 0, 0, NULL, NULL, {{ 0, 0}}
+};
+xmlExpNodePtr emptyExp = &emptyExpNode;
+
+/************************************************************************
+ *									*
+ *  The custom hash table for unicity and canonicalization		*
+ *  of sub-expressions pointers						*
+ *									*
+ ************************************************************************/
+/*
+ * xmlExpHashNameComputeKey:
+ * Calculate the hash key for a token
+ */
+static unsigned short
+xmlExpHashNameComputeKey(const xmlChar *name) {
+    unsigned short value = 0L;
+    char ch;
+    
+    if (name != NULL) {
+	value += 30 * (*name);
+	while ((ch = *name++) != 0) {
+	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+	}
+    }
+    return (value);
+}
+
+/*
+ * xmlExpHashComputeKey:
+ * Calculate the hash key for a compound expression
+ */
+static unsigned short
+xmlExpHashComputeKey(xmlExpNodeType type, xmlExpNodePtr left,
+                     xmlExpNodePtr right) {
+    unsigned long value;
+    unsigned short ret;
+    
+    switch (type) {
+        case XML_EXP_SEQ:
+	    value = left->key;
+	    value += right->key;
+	    value *= 3;
+	    ret = (unsigned short) value;
+	    break;
+        case XML_EXP_OR:
+	    value = left->key;
+	    value += right->key;
+	    value *= 7;
+	    ret = (unsigned short) value;
+	    break;
+        case XML_EXP_COUNT:
+	    value = left->key;
+	    value += right->key;
+	    ret = (unsigned short) value;
+	    break;
+	default:
+	    ret = 0;
+    }
+    return(ret);
+}
+
+
+static xmlExpNodePtr
+xmlExpNewNode(xmlExpCtxtPtr ctxt, xmlExpNodeType type) {
+    xmlExpNodePtr ret;
+
+    if (ctxt->nb_nodes >= MAX_NODES)
+        return(NULL);
+    ret = (xmlExpNodePtr) xmlMalloc(sizeof(xmlExpNode));
+    if (ret == NULL)
+        return(NULL);
+    memset(ret, 0, sizeof(xmlExpNode));
+    ret->type = type;
+    ret->next = NULL;
+    ctxt->nb_nodes++;
+    ctxt->nb_cons++;
+    return(ret);
+}
+
+/**
+ * xmlExpHashGetEntry:
+ * @table: the hash table
+ *
+ * Get the unique entry from the hash table. The entry is created if
+ * needed. @left and @right are consumed, i.e. their ref count will
+ * be decremented by the operation.
+ *
+ * Returns the pointer or NULL in case of error
+ */
+static xmlExpNodePtr
+xmlExpHashGetEntry(xmlExpCtxtPtr ctxt, xmlExpNodeType type,
+                   xmlExpNodePtr left, xmlExpNodePtr right,
+		   const xmlChar *name, int min, int max) {
+    unsigned short kbase, key;
+    xmlExpNodePtr entry;
+    xmlExpNodePtr insert;
+
+    if (ctxt == NULL)
+	return(NULL);
+
+    /*
+     * Check for duplicate and insertion location.
+     */
+    if (type == XML_EXP_ATOM) {
+	kbase = xmlExpHashNameComputeKey(name);
+    } else if (type == XML_EXP_COUNT) {
+        /* COUNT reduction rule 1 */
+	/* a{1} -> a */
+	if (min == max) {
+	    if (min == 1) {
+		return(left);
+	    }
+	    if (min == 0) {
+		xmlExpFree(ctxt, left);
+	        return(emptyExp);
+	    }
+	}
+	if (min < 0) {
+	    xmlExpFree(ctxt, left);
+	    return(forbiddenExp);
+	}
+        if (max == -1)
+	    kbase = min + 79;
+	else
+	    kbase = max - min;
+	kbase += left->key;
+    } else if (type == XML_EXP_OR) {
+        /* Forbid reduction rules */
+        if (left->type == XML_EXP_FORBID) {
+	    xmlExpFree(ctxt, left);
+	    return(right);
+	}
+        if (right->type == XML_EXP_FORBID) {
+	    xmlExpFree(ctxt, right);
+	    return(left);
+	}
+
+        /* OR reduction rule 1 */
+	/* a | a reduced to a */
+        if (left == right) {
+	    left->ref--;
+	    return(left);
+	}
+        /* OR canonicalization rule 1 */
+	/* linearize (a | b) | c into a | (b | c) */
+        if ((left->type == XML_EXP_OR) && (right->type != XML_EXP_OR)) {
+	    xmlExpNodePtr tmp = left;
+            left = right;
+	    right = tmp;
+	}
+        /* OR reduction rule 2 */
+	/* a | (a | b) and b | (a | b) are reduced to a | b */
+        if (right->type == XML_EXP_OR) {
+	    if ((left == right->exp_left) ||
+	        (left == right->exp_right)) {
+		xmlExpFree(ctxt, left);
+		return(right);
+	    }
+	}
+        /* OR canonicalization rule 2 */
+	/* linearize (a | b) | c into a | (b | c) */
+        if (left->type == XML_EXP_OR) {
+	    xmlExpNodePtr tmp;
+
+	    /* OR canonicalization rule 2 */
+	    if ((left->exp_right->type != XML_EXP_OR) &&
+	        (left->exp_right->key < left->exp_left->key)) {
+	        tmp = left->exp_right;
+		left->exp_right = left->exp_left;
+		left->exp_left = tmp;
+	    }
+	    left->exp_right->ref++;
+	    tmp = xmlExpHashGetEntry(ctxt, XML_EXP_OR, left->exp_right, right,
+	                             NULL, 0, 0);
+	    left->exp_left->ref++;
+	    tmp = xmlExpHashGetEntry(ctxt, XML_EXP_OR, left->exp_left, tmp,
+	                             NULL, 0, 0);
+	
+	    xmlExpFree(ctxt, left);
+	    return(tmp);
+	}
+	if (right->type == XML_EXP_OR) {
+	    /* Ordering in the tree */
+	    /* C | (A | B) -> A | (B | C) */
+	    if (left->key > right->exp_right->key) {
+		xmlExpNodePtr tmp;
+		right->exp_right->ref++;
+		tmp = xmlExpHashGetEntry(ctxt, XML_EXP_OR, right->exp_right,
+		                         left, NULL, 0, 0);
+		right->exp_left->ref++;
+		tmp = xmlExpHashGetEntry(ctxt, XML_EXP_OR, right->exp_left,
+		                         tmp, NULL, 0, 0);
+		xmlExpFree(ctxt, right);
+		return(tmp);
+	    }
+	    /* Ordering in the tree */
+	    /* B | (A | C) -> A | (B | C) */
+	    if (left->key > right->exp_left->key) {
+		xmlExpNodePtr tmp;
+		right->exp_right->ref++;
+		tmp = xmlExpHashGetEntry(ctxt, XML_EXP_OR, left,
+		                         right->exp_right, NULL, 0, 0);
+		right->exp_left->ref++;
+		tmp = xmlExpHashGetEntry(ctxt, XML_EXP_OR, right->exp_left,
+		                         tmp, NULL, 0, 0);
+		xmlExpFree(ctxt, right);
+		return(tmp);
+	    }
+	}
+	/* we know both types are != XML_EXP_OR here */
+        else if (left->key > right->key) {
+	    xmlExpNodePtr tmp = left;
+            left = right;
+	    right = tmp;
+	}
+	kbase = xmlExpHashComputeKey(type, left, right);
+    } else if (type == XML_EXP_SEQ) {
+        /* Forbid reduction rules */
+        if (left->type == XML_EXP_FORBID) {
+	    xmlExpFree(ctxt, right);
+	    return(left);
+	}
+        if (right->type == XML_EXP_FORBID) {
+	    xmlExpFree(ctxt, left);
+	    return(right);
+	}
+        /* Empty reduction rules */
+        if (right->type == XML_EXP_EMPTY) {
+	    return(left);
+	}
+        if (left->type == XML_EXP_EMPTY) {
+	    return(right);
+	}
+	kbase = xmlExpHashComputeKey(type, left, right);
+    } else 
+        return(NULL);
+
+    key = kbase % ctxt->size;
+    if (ctxt->table[key] != NULL) {
+	for (insert = ctxt->table[key]; insert != NULL;
+	     insert = insert->next) {
+	    if ((insert->key == kbase) &&
+	        (insert->type == type)) {
+		if (type == XML_EXP_ATOM) {
+		    if (name == insert->exp_str) {
+			insert->ref++;
+			return(insert);
+		    }
+		} else if (type == XML_EXP_COUNT) {
+		    if ((insert->exp_min == min) && (insert->exp_max == max) &&
+		        (insert->exp_left == left)) {
+			insert->ref++;
+			left->ref--;
+			return(insert);
+		    }
+		} else if ((insert->exp_left == left) &&
+			   (insert->exp_right == right)) {
+		    insert->ref++;
+		    left->ref--;
+		    right->ref--;
+		    return(insert);
+		}
+	    }
+	}
+    }
+
+    entry = xmlExpNewNode(ctxt, type);
+    if (entry == NULL)
+        return(NULL);
+    entry->key = kbase;
+    if (type == XML_EXP_ATOM) {
+	entry->exp_str = name;
+	entry->c_max = 1;
+    } else if (type == XML_EXP_COUNT) {
+        entry->exp_min = min;
+        entry->exp_max = max;
+	entry->exp_left = left;
+	if ((min == 0) || (IS_NILLABLE(left)))
+	    entry->info |= XML_EXP_NILABLE;
+	if (max < 0)
+	    entry->c_max = -1;
+	else
+	    entry->c_max = max * entry->exp_left->c_max;
+    } else {
+	entry->exp_left = left;
+	entry->exp_right = right;
+	if (type == XML_EXP_OR) {
+	    if ((IS_NILLABLE(left)) || (IS_NILLABLE(right)))
+		entry->info |= XML_EXP_NILABLE;
+	    if ((entry->exp_left->c_max == -1) ||
+	        (entry->exp_right->c_max == -1))
+		entry->c_max = -1;
+	    else if (entry->exp_left->c_max > entry->exp_right->c_max)
+	        entry->c_max = entry->exp_left->c_max;
+	    else
+	        entry->c_max = entry->exp_right->c_max;
+	} else {
+	    if ((IS_NILLABLE(left)) && (IS_NILLABLE(right)))
+		entry->info |= XML_EXP_NILABLE;
+	    if ((entry->exp_left->c_max == -1) ||
+	        (entry->exp_right->c_max == -1))
+		entry->c_max = -1;
+	    else
+	        entry->c_max = entry->exp_left->c_max + entry->exp_right->c_max;
+	}
+    }
+    entry->ref = 1;
+    if (ctxt->table[key] != NULL)
+        entry->next = ctxt->table[key];
+
+    ctxt->table[key] = entry;
+    ctxt->nbElems++;
+
+    return(entry);
+}
+
+/**
+ * xmlExpFree:
+ * @ctxt: the expression context
+ * @exp: the expression
+ *
+ * Dereference the expression
+ */
+void
+xmlExpFree(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp) {
+    if ((exp == NULL) || (exp == forbiddenExp) || (exp == emptyExp))
+        return;
+    exp->ref--;
+#if 0
+    if (exp->ref == 0) {
+        printf("Freeing "); PRINT_EXP(exp)
+    } else {
+        printf("Dec to %d ", exp->ref); PRINT_EXP(exp)
+    }
+#endif
+    if (exp->ref == 0) {
+        unsigned short key;
+
+        /* Unlink it first from the hash table */
+	key = exp->key % ctxt->size;
+	if (ctxt->table[key] == exp) {
+	    ctxt->table[key] = exp->next;
+	} else {
+	    xmlExpNodePtr tmp;
+
+	    tmp = ctxt->table[key];
+	    while (tmp != NULL) {
+	        if (tmp->next == exp) {
+		    tmp->next = exp->next;
+		    break;
+		}
+	        tmp = tmp->next;
+	    }
+	}
+
+        if ((exp->type == XML_EXP_SEQ) || (exp->type == XML_EXP_OR)) {
+	    xmlExpFree(ctxt, exp->exp_left);
+	    xmlExpFree(ctxt, exp->exp_right);
+	} else if (exp->type == XML_EXP_COUNT) {
+	    xmlExpFree(ctxt, exp->exp_left);
+	}
+        xmlFree(exp);
+	ctxt->nb_del++;
+	ctxt->nb_nodes--;
+    }
+}
+
+/**
+ * xmlExpRef:
+ * @exp: the expression
+ *
+ * Increase the reference count of the expression
+ */
+void
+xmlExpRef(xmlExpNodePtr exp) {
+    if (exp != NULL)
+        exp->ref++;
+}
+
+/************************************************************************
+ *									*
+ *		Public API for operations on expressions		*
+ *									*
+ ************************************************************************/
+
+static int
+xmlExpGetLanguageInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, 
+                     const xmlChar**list, int len, int nb) {
+    int tmp, tmp2;
+tail:
+    switch (exp->type) {
+        case XML_EXP_EMPTY:
+	    return(0);
+        case XML_EXP_ATOM:
+	    for (tmp = 0;tmp < nb;tmp++)
+	        if (list[tmp] == exp->exp_str)
+		    return(0);
+            if (nb >= len)
+	        return(-2);
+	    list[nb++] = exp->exp_str;
+	    return(1);
+        case XML_EXP_COUNT:
+	    exp = exp->exp_left;
+	    goto tail;
+        case XML_EXP_SEQ:
+        case XML_EXP_OR:
+	    tmp = xmlExpGetLanguageInt(ctxt, exp->exp_left, list, len, nb);
+	    if (tmp < 0)
+	        return(tmp);
+	    tmp2 = xmlExpGetLanguageInt(ctxt, exp->exp_right, list, len,
+	                                nb + tmp);
+	    if (tmp2 < 0)
+	        return(tmp2);
+            return(tmp + tmp2);
+    }
+    return(-1);
+}
+
+/**
+ * xmlExpGetLanguage:
+ * @ctxt: the expression context
+ * @exp: the expression
+ * @list: where to store the tokens
+ * @len: the allocated lenght of @list
+ *
+ * Find all the strings used in @exp and store them in @list
+ *
+ * Returns the number of unique strings found, -1 in case of errors and
+ *         -2 if there is more than @len strings
+ */
+int
+xmlExpGetLanguage(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, 
+                  const xmlChar**list, int len) {
+    if ((ctxt == NULL) || (exp == NULL) || (list == NULL) || (len <= 0))
+        return(-1);
+    return(xmlExpGetLanguageInt(ctxt, exp, list, len, 0));
+}
+
+static int
+xmlExpGetStartInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, 
+                  const xmlChar**list, int len, int nb) {
+    int tmp, tmp2;
+tail:
+    switch (exp->type) {
+        case XML_EXP_FORBID:
+	    return(0);
+        case XML_EXP_EMPTY:
+	    return(0);
+        case XML_EXP_ATOM:
+	    for (tmp = 0;tmp < nb;tmp++)
+	        if (list[tmp] == exp->exp_str)
+		    return(0);
+            if (nb >= len)
+	        return(-2);
+	    list[nb++] = exp->exp_str;
+	    return(1);
+        case XML_EXP_COUNT:
+	    exp = exp->exp_left;
+	    goto tail;
+        case XML_EXP_SEQ:
+	    tmp = xmlExpGetStartInt(ctxt, exp->exp_left, list, len, nb);
+	    if (tmp < 0)
+	        return(tmp);
+	    if (IS_NILLABLE(exp->exp_left)) {
+		tmp2 = xmlExpGetStartInt(ctxt, exp->exp_right, list, len,
+					    nb + tmp);
+		if (tmp2 < 0)
+		    return(tmp2);
+		tmp += tmp2;
+	    }
+            return(tmp);
+        case XML_EXP_OR:
+	    tmp = xmlExpGetStartInt(ctxt, exp->exp_left, list, len, nb);
+	    if (tmp < 0)
+	        return(tmp);
+	    tmp2 = xmlExpGetStartInt(ctxt, exp->exp_right, list, len,
+	                                nb + tmp);
+	    if (tmp2 < 0)
+	        return(tmp2);
+            return(tmp + tmp2);
+    }
+    return(-1);
+}
+
+/**
+ * xmlExpGetStart:
+ * @ctxt: the expression context
+ * @exp: the expression
+ * @list: where to store the tokens
+ * @len: the allocated lenght of @list
+ *
+ * Find all the strings that appears at the start of the languages
+ * accepted by @exp and store them in @list. E.g. for (a, b) | c
+ * it will return the list [a, c]
+ *
+ * Returns the number of unique strings found, -1 in case of errors and
+ *         -2 if there is more than @len strings
+ */
+int
+xmlExpGetStart(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, 
+               const xmlChar**list, int len) {
+    if ((ctxt == NULL) || (exp == NULL) || (list == NULL) || (len <= 0))
+        return(-1);
+    return(xmlExpGetStartInt(ctxt, exp, list, len, 0));
+}
+
+/**
+ * xmlExpIsNillable:
+ * @exp: the expression
+ *
+ * Finds if the expression is nillable, i.e. if it accepts the empty sequqnce
+ *
+ * Returns 1 if nillable, 0 if not and -1 in case of error
+ */
+int
+xmlExpIsNillable(xmlExpNodePtr exp) {
+    if (exp == NULL)
+        return(-1);
+    return(IS_NILLABLE(exp) != 0);
+}
+
+static xmlExpNodePtr
+xmlExpStringDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, const xmlChar *str)
+{
+    xmlExpNodePtr ret;
+
+    switch (exp->type) {
+	case XML_EXP_EMPTY:
+	    return(forbiddenExp);
+	case XML_EXP_FORBID:
+	    return(forbiddenExp);
+	case XML_EXP_ATOM:
+	    if (exp->exp_str == str) {
+#ifdef DEBUG_DERIV
+		printf("deriv atom: equal => Empty\n");
+#endif
+	        ret = emptyExp;
+	    } else {
+#ifdef DEBUG_DERIV
+		printf("deriv atom: mismatch => forbid\n");
+#endif
+	        /* TODO wildcards here */
+		ret = forbiddenExp;
+	    }
+	    return(ret);
+	case XML_EXP_OR: {
+	    xmlExpNodePtr tmp;
+
+#ifdef DEBUG_DERIV
+	    printf("deriv or: => or(derivs)\n");
+#endif
+	    tmp = xmlExpStringDeriveInt(ctxt, exp->exp_left, str);
+	    if (tmp == NULL) {
+		return(NULL);
+	    }
+	    ret = xmlExpStringDeriveInt(ctxt, exp->exp_right, str);
+	    if (ret == NULL) {
+	        xmlExpFree(ctxt, tmp);
+		return(NULL);
+	    }
+            ret = xmlExpHashGetEntry(ctxt, XML_EXP_OR, tmp, ret,
+			     NULL, 0, 0);
+	    return(ret);
+	}
+	case XML_EXP_SEQ:
+#ifdef DEBUG_DERIV
+	    printf("deriv seq: starting with left\n");
+#endif
+	    ret = xmlExpStringDeriveInt(ctxt, exp->exp_left, str);
+	    if (ret == NULL) {
+	        return(NULL);
+	    } else if (ret == forbiddenExp) {
+	        if (IS_NILLABLE(exp->exp_left)) {
+#ifdef DEBUG_DERIV
+		    printf("deriv seq: left failed but nillable\n");
+#endif
+		    ret = xmlExpStringDeriveInt(ctxt, exp->exp_right, str);
+		}
+	    } else {
+#ifdef DEBUG_DERIV
+		printf("deriv seq: left match => sequence\n");
+#endif
+	        exp->exp_right->ref++;
+	        ret = xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, ret, exp->exp_right,
+		                         NULL, 0, 0);
+	    }
+	    return(ret);
+	case XML_EXP_COUNT: {
+	    int min, max;
+	    xmlExpNodePtr tmp;
+
+	    if (exp->exp_max == 0)
+		return(forbiddenExp);
+	    ret = xmlExpStringDeriveInt(ctxt, exp->exp_left, str);
+	    if (ret == NULL)
+	        return(NULL);
+	    if (ret == forbiddenExp) {
+#ifdef DEBUG_DERIV
+		printf("deriv count: pattern mismatch => forbid\n");
+#endif
+	        return(ret);
+	    }
+	    if (exp->exp_max == 1)
+		return(ret);
+	    if (exp->exp_max < 0) /* unbounded */
+		max = -1;
+	    else
+		max = exp->exp_max - 1;
+	    if (exp->exp_min > 0)
+		min = exp->exp_min - 1;
+	    else
+		min = 0;
+	    exp->exp_left->ref++;
+	    tmp = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, exp->exp_left, NULL,
+				     NULL, min, max);
+	    if (ret == emptyExp) {
+#ifdef DEBUG_DERIV
+		printf("deriv count: match to empty => new count\n");
+#endif
+	        return(tmp);
+	    }
+#ifdef DEBUG_DERIV
+	    printf("deriv count: match => sequence with new count\n");
+#endif
+	    return(xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, ret, tmp,
+	                              NULL, 0, 0));
+	}
+    }
+    return(NULL);
+}
+
+/**
+ * xmlExpStringDerive:
+ * @ctxt: the expression context
+ * @exp: the expression
+ * @str: the string
+ * @len: the string len in bytes if available
+ *
+ * Do one step of Brzozowski derivation of the expression @exp with
+ * respect to the input string
+ *
+ * Returns the resulting expression or NULL in case of internal error
+ */
+xmlExpNodePtr
+xmlExpStringDerive(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
+                   const xmlChar *str, int len) {
+    const xmlChar *input;
+
+    if ((exp == NULL) || (ctxt == NULL) || (str == NULL)) {
+        return(NULL);
+    }
+    /*
+     * check the string is in the dictionnary, if yes use an interned
+     * copy, otherwise we know it's not an acceptable input
+     */
+    input = xmlDictExists(ctxt->dict, str, len);
+    if (input == NULL) {
+        return(forbiddenExp);
+    }
+    return(xmlExpStringDeriveInt(ctxt, exp, input));
+}
+
+static int
+xmlExpCheckCard(xmlExpNodePtr exp, xmlExpNodePtr sub) {
+    int ret = 1;
+
+    if (sub->c_max == -1) {
+        if (exp->c_max != -1)
+	    ret = 0;
+    } else if ((exp->c_max >= 0) && (exp->c_max < sub->c_max)) {
+        ret = 0;
+    }
+#if 0
+    if ((IS_NILLABLE(sub)) && (!IS_NILLABLE(exp)))
+        ret = 0;
+#endif
+    return(ret);
+}
+
+static xmlExpNodePtr xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
+                                        xmlExpNodePtr sub);
+/**
+ * xmlExpDivide:
+ * @ctxt: the expressions context
+ * @exp: the englobing expression
+ * @sub: the subexpression
+ * @mult: the multiple expression
+ * @remain: the remain from the derivation of the multiple
+ *
+ * Check if exp is a multiple of sub, i.e. if there is a finite number n
+ * so that sub{n} subsume exp
+ *
+ * Returns the multiple value if successful, 0 if it is not a multiple
+ *         and -1 in case of internel error.
+ */
+
+static int
+xmlExpDivide(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub,
+             xmlExpNodePtr *mult, xmlExpNodePtr *remain) {
+    int i;
+    xmlExpNodePtr tmp, tmp2;
+
+    if (mult != NULL) *mult = NULL;
+    if (remain != NULL) *remain = NULL;
+    if (exp->c_max == -1) return(0);
+    if (IS_NILLABLE(exp) && (!IS_NILLABLE(sub))) return(0);
+
+    for (i = 1;i <= exp->c_max;i++) {
+        sub->ref++;
+        tmp = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT,
+				 sub, NULL, NULL, i, i);
+	if (tmp == NULL) {
+	    return(-1);
+	}
+	if (!xmlExpCheckCard(tmp, exp)) {
+	    xmlExpFree(ctxt, tmp);
+	    continue;
+	}
+	tmp2 = xmlExpExpDeriveInt(ctxt, tmp, exp);
+	if (tmp2 == NULL) {
+	    xmlExpFree(ctxt, tmp);
+	    return(-1);
+	}
+	if ((tmp2 != forbiddenExp) && (IS_NILLABLE(tmp2))) {
+	    if (remain != NULL)
+	        *remain = tmp2;
+	    else
+	        xmlExpFree(ctxt, tmp2);
+	    if (mult != NULL)
+	        *mult = tmp;
+	    else
+	        xmlExpFree(ctxt, tmp);
+#ifdef DEBUG_DERIV
+	    printf("Divide succeeded %d\n", i);
+#endif
+	    return(i);
+	}
+	xmlExpFree(ctxt, tmp);
+	xmlExpFree(ctxt, tmp2);
+    }
+#ifdef DEBUG_DERIV
+    printf("Divide failed\n");
+#endif
+    return(0);
+}
+
+/**
+ * xmlExpExpDeriveInt:
+ * @ctxt: the expressions context
+ * @exp: the englobing expression
+ * @sub: the subexpression
+ *
+ * Try to do a step of Brzozowski derivation but at a higher level
+ * the input being a subexpression.
+ *
+ * Returns the resulting expression or NULL in case of internal error
+ */
+static xmlExpNodePtr
+xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
+    xmlExpNodePtr ret, tmp, tmp2, tmp3;
+    const xmlChar **tab;
+    int len, i;
+
+    /*
+     * In case of equality and if the expression can only consume a finite
+     * amount, then the derivation is empty
+     */
+    if ((exp == sub) && (exp->c_max >= 0)) {
+#ifdef DEBUG_DERIV
+        printf("Equal(exp, sub) and finite -> Empty\n");
+#endif
+        return(emptyExp);
+    }
+    /*
+     * decompose sub sequence first
+     */
+    if (sub->type == XML_EXP_EMPTY) {
+#ifdef DEBUG_DERIV
+        printf("Empty(sub) -> Empty\n");
+#endif
+	exp->ref++;
+        return(exp);
+    }
+    if (sub->type == XML_EXP_SEQ) {
+#ifdef DEBUG_DERIV
+        printf("Seq(sub) -> decompose\n");
+#endif
+        tmp = xmlExpExpDeriveInt(ctxt, exp, sub->exp_left);
+	if (tmp == NULL)
+	    return(NULL);
+	if (tmp == forbiddenExp)
+	    return(tmp);
+	ret = xmlExpExpDeriveInt(ctxt, tmp, sub->exp_right);
+	xmlExpFree(ctxt, tmp);
+	return(ret);
+    }
+    if (sub->type == XML_EXP_OR) {
+#ifdef DEBUG_DERIV
+        printf("Or(sub) -> decompose\n");
+#endif
+        tmp = xmlExpExpDeriveInt(ctxt, exp, sub->exp_left);
+	if (tmp == forbiddenExp)
+	    return(tmp);
+	if (tmp == NULL)
+	    return(NULL);
+	ret = xmlExpExpDeriveInt(ctxt, exp, sub->exp_right);
+	if ((ret == NULL) || (ret == forbiddenExp)) {
+	    xmlExpFree(ctxt, tmp);
+	    return(ret);
+	}
+	return(xmlExpHashGetEntry(ctxt, XML_EXP_OR, tmp, ret, NULL, 0, 0));
+    }
+    if (!xmlExpCheckCard(exp, sub)) {
+#ifdef DEBUG_DERIV
+        printf("CheckCard(exp, sub) failed -> Forbid\n");
+#endif
+        return(forbiddenExp);
+    }
+    switch (exp->type) {
+        case XML_EXP_EMPTY:
+	    if (sub == emptyExp)
+	        return(emptyExp);
+#ifdef DEBUG_DERIV
+	    printf("Empty(exp) -> Forbid\n");
+#endif
+	    return(forbiddenExp);
+        case XML_EXP_FORBID:
+#ifdef DEBUG_DERIV
+	    printf("Forbid(exp) -> Forbid\n");
+#endif
+	    return(forbiddenExp);
+        case XML_EXP_ATOM:
+	    if (sub->type == XML_EXP_ATOM) {
+	        /* TODO: handle wildcards */
+	        if (exp->exp_str == sub->exp_str) {
+#ifdef DEBUG_DERIV
+		    printf("Atom match -> Empty\n");
+#endif
+		    return(emptyExp);
+                }
+#ifdef DEBUG_DERIV
+		printf("Atom mismatch -> Forbid\n");
+#endif
+	        return(forbiddenExp);
+	    }
+	    if ((sub->type == XML_EXP_COUNT) &&
+	        (sub->exp_max == 1) &&
+	        (sub->exp_left->type == XML_EXP_ATOM)) {
+	        /* TODO: handle wildcards */
+	        if (exp->exp_str == sub->exp_left->exp_str) {
+#ifdef DEBUG_DERIV
+		    printf("Atom match -> Empty\n");
+#endif
+		    return(emptyExp);
+		}
+#ifdef DEBUG_DERIV
+		printf("Atom mismatch -> Forbid\n");
+#endif
+	        return(forbiddenExp);
+	    }
+#ifdef DEBUG_DERIV
+	    printf("Compex exp vs Atom -> Forbid\n");
+#endif
+	    return(forbiddenExp);
+        case XML_EXP_SEQ:
+	    /* try to get the sequence consumed only if possible */
+	    if (xmlExpCheckCard(exp->exp_left, sub)) {
+		/* See if the sequence can be consumed directly */
+#ifdef DEBUG_DERIV
+		printf("Seq trying left only\n");
+#endif
+		ret = xmlExpExpDeriveInt(ctxt, exp->exp_left, sub);
+		if ((ret != forbiddenExp) && (ret != NULL)) {
+#ifdef DEBUG_DERIV
+		    printf("Seq trying left only worked\n");
+#endif
+		    /*
+		     * TODO: assumption here that we are determinist
+		     *       i.e. we won't get to a nillable exp left
+		     *       subset which could be matched by the right
+		     *       part too.
+		     * e.g.: (a | b)+,(a | c) and 'a+,a'
+		     */
+		    exp->exp_right->ref++;
+		    return(xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, ret,
+					      exp->exp_right, NULL, 0, 0));
+		}
+#ifdef DEBUG_DERIV
+	    } else {
+		printf("Seq: left too short\n");
+#endif
+	    }
+	    /* Try instead to decompose */
+	    if (sub->type == XML_EXP_COUNT) {
+		int min, max;
+
+#ifdef DEBUG_DERIV
+		printf("Seq: sub is a count\n");
+#endif
+	        ret = xmlExpExpDeriveInt(ctxt, exp->exp_left, sub->exp_left);
+		if (ret == NULL)
+		    return(NULL);
+		if (ret != forbiddenExp) {
+#ifdef DEBUG_DERIV
+		    printf("Seq , Count match on left\n");
+#endif
+		    if (sub->exp_max < 0)
+		        max = -1;
+	            else
+		        max = sub->exp_max -1;
+		    if (sub->exp_min > 0)
+		        min = sub->exp_min -1;
+		    else
+		        min = 0;
+		    exp->exp_right->ref++;
+		    tmp = xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, ret,
+		                             exp->exp_right, NULL, 0, 0);
+		    if (tmp == NULL)
+		        return(NULL);
+
+		    sub->exp_left->ref++;
+		    tmp2 = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT,
+				      sub->exp_left, NULL, NULL, min, max);
+		    if (tmp2 == NULL) {
+		        xmlExpFree(ctxt, tmp);
+			return(NULL);
+		    }
+		    ret = xmlExpExpDeriveInt(ctxt, tmp, tmp2);
+		    xmlExpFree(ctxt, tmp);
+		    xmlExpFree(ctxt, tmp2);
+		    return(ret);
+		}
+	    }
+	    /* we made no progress on structured operations */
+	    break;
+        case XML_EXP_OR:
+#ifdef DEBUG_DERIV
+	    printf("Or , trying both side\n");
+#endif
+	    ret = xmlExpExpDeriveInt(ctxt, exp->exp_left, sub);
+	    if (ret == NULL)
+	        return(NULL);
+	    tmp = xmlExpExpDeriveInt(ctxt, exp->exp_right, sub);
+	    if (tmp == NULL) {
+		xmlExpFree(ctxt, ret);
+	        return(NULL);
+	    }
+	    return(xmlExpHashGetEntry(ctxt, XML_EXP_OR, ret, tmp, NULL, 0, 0));
+        case XML_EXP_COUNT: {
+	    int min, max;
+
+	    if (sub->type == XML_EXP_COUNT) {
+	        /*
+		 * Try to see if the loop is completely subsumed
+		 */
+	        tmp = xmlExpExpDeriveInt(ctxt, exp->exp_left, sub->exp_left);
+		if (tmp == NULL)
+		    return(NULL);
+		if (tmp == forbiddenExp) {
+		    int mult;
+
+#ifdef DEBUG_DERIV
+		    printf("Count, Count inner don't subsume\n");
+#endif
+		    mult = xmlExpDivide(ctxt, sub->exp_left, exp->exp_left,
+		                        NULL, &tmp);
+		    if (mult <= 0) {
+#ifdef DEBUG_DERIV
+			printf("Count, Count not multiple => forbidden\n");
+#endif
+                        return(forbiddenExp);
+		    }
+		    if (sub->exp_max == -1) {
+		        max = -1;
+			if (exp->exp_max == -1) {
+			    if (exp->exp_min <= sub->exp_min * mult)
+			        min = 0;
+			    else
+			        min = exp->exp_min - sub->exp_min * mult;
+			} else {
+#ifdef DEBUG_DERIV
+			    printf("Count, Count finite can't subsume infinite\n");
+#endif
+                            xmlExpFree(ctxt, tmp);
+			    return(forbiddenExp);
+			}
+		    } else {
+			if (exp->exp_max == -1) {
+#ifdef DEBUG_DERIV
+			    printf("Infinite loop consume mult finite loop\n");
+#endif
+			    if (exp->exp_min > sub->exp_min * mult) {
+				max = -1;
+				min = exp->exp_min - sub->exp_min * mult;
+			    } else {
+				max = -1;
+				min = 0;
+			    }
+			} else {
+			    if (exp->exp_max < sub->exp_max * mult) {
+#ifdef DEBUG_DERIV
+				printf("loops max mult mismatch => forbidden\n");
+#endif
+				xmlExpFree(ctxt, tmp);
+				return(forbiddenExp);
+			    }
+			    if (sub->exp_max * mult > exp->exp_min)
+				min = 0;
+			    else
+				min = exp->exp_min - sub->exp_max * mult;
+			    max = exp->exp_max - sub->exp_max * mult;
+			}
+		    }
+		} else if (!IS_NILLABLE(tmp)) {
+		    /*
+		     * TODO: loop here to try to grow if working on finite
+		     *       blocks.
+		     */
+#ifdef DEBUG_DERIV
+		    printf("Count, Count remain not nillable => forbidden\n");
+#endif
+		    xmlExpFree(ctxt, tmp);
+		    return(forbiddenExp);
+		} else if (sub->exp_max == -1) {
+		    if (exp->exp_max == -1) {
+		        if (exp->exp_min <= sub->exp_min) {
+#ifdef DEBUG_DERIV
+			    printf("Infinite loops Okay => COUNT(0,Inf)\n");
+#endif
+                            max = -1;
+			    min = 0;
+			} else {
+#ifdef DEBUG_DERIV
+			    printf("Infinite loops min => Count(X,Inf)\n");
+#endif
+                            max = -1;
+			    min = exp->exp_min - sub->exp_min;
+			}
+		    } else if (exp->exp_min > sub->exp_min) {
+#ifdef DEBUG_DERIV
+			printf("loops min mismatch 1 => forbidden ???\n");
+#endif
+		        xmlExpFree(ctxt, tmp);
+		        return(forbiddenExp);
+		    } else {
+			max = -1;
+			min = 0;
+		    }
+		} else {
+		    if (exp->exp_max == -1) {
+#ifdef DEBUG_DERIV
+			printf("Infinite loop consume finite loop\n");
+#endif
+		        if (exp->exp_min > sub->exp_min) {
+			    max = -1;
+			    min = exp->exp_min - sub->exp_min;
+			} else {
+			    max = -1;
+			    min = 0;
+			}
+		    } else {
+		        if (exp->exp_max < sub->exp_max) {
+#ifdef DEBUG_DERIV
+			    printf("loops max mismatch => forbidden\n");
+#endif
+			    xmlExpFree(ctxt, tmp);
+			    return(forbiddenExp);
+			}
+			if (sub->exp_max > exp->exp_min)
+			    min = 0;
+			else
+			    min = exp->exp_min - sub->exp_max;
+			max = exp->exp_max - sub->exp_max;
+		    }
+		}
+#ifdef DEBUG_DERIV
+		printf("loops match => SEQ(COUNT())\n");
+#endif
+		exp->exp_left->ref++;
+		tmp2 = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, exp->exp_left,
+		                          NULL, NULL, min, max);
+		if (tmp2 == NULL) {
+		    return(NULL);
+		}
+                ret = xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, tmp, tmp2,
+		                         NULL, 0, 0);
+		return(ret);
+	    }
+	    tmp = xmlExpExpDeriveInt(ctxt, exp->exp_left, sub);
+	    if (tmp == NULL)
+		return(NULL);
+	    if (tmp == forbiddenExp) {
+#ifdef DEBUG_DERIV
+		printf("loop mismatch => forbidden\n");
+#endif
+		return(forbiddenExp);
+	    }
+	    if (exp->exp_min > 0)
+		min = exp->exp_min - 1;
+	    else
+		min = 0;
+	    if (exp->exp_max < 0)
+		max = -1;
+	    else
+		max = exp->exp_max - 1;
+
+#ifdef DEBUG_DERIV
+	    printf("loop match => SEQ(COUNT())\n");
+#endif
+	    exp->exp_left->ref++;
+	    tmp2 = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, exp->exp_left,
+				      NULL, NULL, min, max);
+	    if (tmp2 == NULL)
+		return(NULL);
+	    ret = xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, tmp, tmp2,
+				     NULL, 0, 0);
+	    return(ret);
+	}
+    }
+
+    /*
+     * here the structured derivation made no progress so
+     * we use the default token based derivation to force one more step
+     */
+    if (ctxt->tabSize == 0)
+        ctxt->tabSize = 40;
+
+    tab = (const xmlChar **) xmlMalloc(ctxt->tabSize *
+	                               sizeof(const xmlChar *));
+    if (tab == NULL) {
+	return(NULL);
+    }
+
+#ifdef DEBUG_DERIV
+    printf("Fallback to derivative\n");
+#endif
+    /*
+     * collect all the strings accepted by the subexpression on input
+     */
+    len = xmlExpGetStartInt(ctxt, sub, tab, ctxt->tabSize, 0);
+    while (len < 0) {
+        const xmlChar **temp;
+	temp = (const xmlChar **) xmlRealloc(tab, ctxt->tabSize * 2 *
+	                                     sizeof(const xmlChar *));
+	if (temp == NULL) {
+	    xmlFree(tab);
+	    return(NULL);
+	}
+	tab = temp;
+	ctxt->tabSize *= 2;
+	len = xmlExpGetStartInt(ctxt, sub, tab, ctxt->tabSize, 0);
+    }
+    ret = NULL;
+    for (i = 0;i < len;i++) {
+        tmp = xmlExpStringDeriveInt(ctxt, exp, tab[i]);
+	if ((tmp == NULL) || (tmp == forbiddenExp)) {
+	    xmlExpFree(ctxt, ret);
+	    xmlFree(tab);
+	    return(tmp);
+	}
+	tmp2 = xmlExpStringDeriveInt(ctxt, sub, tab[i]);
+	if ((tmp2 == NULL) || (tmp2 == forbiddenExp)) {
+	    xmlExpFree(ctxt, tmp);
+	    xmlExpFree(ctxt, ret);
+	    xmlFree(tab);
+	    return(tmp);
+	}
+	tmp3 = xmlExpExpDeriveInt(ctxt, tmp, tmp2);
+	xmlExpFree(ctxt, tmp);
+	xmlExpFree(ctxt, tmp2);
+
+	if ((tmp3 == NULL) || (tmp3 == forbiddenExp)) {
+	    xmlExpFree(ctxt, ret);
+	    xmlFree(tab);
+	    return(tmp3);
+	}
+
+	if (ret == NULL)
+	    ret = tmp3;
+	else {
+	    ret = xmlExpHashGetEntry(ctxt, XML_EXP_OR, ret, tmp3, NULL, 0, 0);
+	    if (ret == NULL) {
+		xmlFree(tab);
+	        return(NULL);
+	    }
+	}
+    }
+    xmlFree(tab);
+    return(ret);
+}
+    
+/**
+ * xmlExpSubsume:
+ * @ctxt: the expressions context
+ * @exp: the englobing expression
+ * @sub: the subexpression
+ *
+ * Check whether @exp accepts all the languages accexpted by @sub
+ * the input being a subexpression.
+ *
+ * Returns 1 if true 0 if false and -1 in case of failure.
+ */
+int
+xmlExpSubsume(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
+    xmlExpNodePtr tmp;
+    
+    if ((exp == NULL) || (ctxt == NULL) || (sub == NULL))
+        return(-1);
+
+    /*
+     * TODO: speedup by checking the language of sub is a subset of the
+     *       language of exp
+     */
+    /*
+     * O(1) speedups
+     */
+    if (IS_NILLABLE(sub) && (!IS_NILLABLE(exp))) {
+#ifdef DEBUG_DERIV
+	printf("Sub nillable and not exp : can't subsume\n");
+#endif
+        return(0);
+    }
+    if (xmlExpCheckCard(exp, sub) == 0) {
+#ifdef DEBUG_DERIV
+	printf("sub generate longuer sequances than exp : can't subsume\n");
+#endif
+        return(0);
+    }
+    tmp = xmlExpExpDeriveInt(ctxt, exp, sub);
+#ifdef DEBUG_DERIV
+    printf("Result derivation :\n");
+    PRINT_EXP(tmp);
+#endif
+    if (tmp == NULL)
+        return(-1);
+    if (tmp == forbiddenExp)
+	return(0);
+    if (tmp == emptyExp)
+	return(1);
+    if ((tmp != NULL) && (IS_NILLABLE(tmp))) {
+        xmlExpFree(ctxt, tmp);
+        return(1);
+    }
+    xmlExpFree(ctxt, tmp);
+    return(0);
+}
+#endif /* LIBXML_EXPR_ENABLED */
 #define bottom_xmlregexp
 #include "elfgcchack.h"
 #endif /* LIBXML_REGEXP_ENABLED */

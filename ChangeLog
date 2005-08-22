@@ -1,3 +1,9 @@
+Mon Aug 22 02:19:33 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c include/libxml/xmlregexp.h: pushing the formal expression
+	  handling code to have it in CVs from now. Not plugged, and misses 
+	  APIs it's not compiled in yet.
+
 Sat Aug 20 23:13:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: applied another patch from Rob Richards to fix

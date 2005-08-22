@@ -85,13 +85,121 @@ testRegexpFile(const char *filename) {
 	xmlRegFreeRegexp(comp);
 }
 
+#ifdef LIBXML_EXPR_ENABLED
+static void
+runFileTest(xmlExpCtxtPtr ctxt, const char *filename) {
+    xmlExpNodePtr expr = NULL, sub;
+    FILE *input;
+    char expression[5000];
+    int len;
+
+    input = fopen(filename, "r");
+    if (input == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot open %s for reading\n", filename);
+	return;
+    }
+    while (fgets(expression, 4500, input) != NULL) {
+	len = strlen(expression);
+	len--;
+	while ((len >= 0) && 
+	       ((expression[len] == '\n') || (expression[len] == '\t') ||
+		(expression[len] == '\r') || (expression[len] == ' '))) len--;
+	expression[len + 1] = 0;      
+	if (len >= 0) {
+	    if (expression[0] == '#')
+		continue;
+	    if ((expression[0] == '=') && (expression[1] == '>')) {
+		char *str = &expression[2];
+
+		if (expr != NULL) {
+		    xmlExpFree(ctxt, expr);
+		    if (xmlExpCtxtNbNodes(ctxt) != 0) 
+		        printf(" Parse/free of Expression leaked %d\n",
+			       xmlExpCtxtNbNodes(ctxt));
+		    expr = NULL;
+		}
+		printf("Expression: %s\n", str) ;
+		expr = xmlExpParse(ctxt, str);
+		if (expr == NULL) {
+		    printf("   parsing Failed\n");
+		    break;
+		}
+	    } else if (expr != NULL) {
+	        int expect = -1;
+		int nodes1, nodes2;
+
+		if (expression[0] == '0')
+		    expect = 0;
+		if (expression[0] == '1')
+		    expect = 1;
+		printf("Subexp: %s", expression + 2) ;
+		nodes1 = xmlExpCtxtNbNodes(ctxt);
+		sub = xmlExpParse(ctxt, expression + 2);
+		if (sub == NULL) {
+		    printf("   parsing Failed\n");
+		    break;
+		} else {
+		    int ret;
+		    
+		    nodes2 = xmlExpCtxtNbNodes(ctxt);
+		    ret = xmlExpSubsume(ctxt, expr, sub);
+
+		    if ((expect == 1) && (ret == 1)) {
+			printf(" => accept, Ok\n");
+		    } else if ((expect == 0) && (ret == 0)) {
+		        printf(" => reject, Ok\n");
+		    } else if ((expect == 1) && (ret == 0)) {
+			printf(" => reject, Failed\n");
+		    } else if ((expect == 0) && (ret == 1)) {
+			printf(" => accept, Failed\n");
+		    } else {
+		        printf(" => fail internally\n");
+		    }
+		    if (xmlExpCtxtNbNodes(ctxt) > nodes2) {
+		        printf(" Subsume leaked %d\n",
+			       xmlExpCtxtNbNodes(ctxt) - nodes2);
+			nodes1 += xmlExpCtxtNbNodes(ctxt) - nodes2;
+		    }
+		    xmlExpFree(ctxt, sub);
+		    if (xmlExpCtxtNbNodes(ctxt) > nodes1) {
+		        printf(" Parse/free leaked %d\n",
+			       xmlExpCtxtNbNodes(ctxt) - nodes1);
+		    }
+		}
+
+	    }
+	}
+    }
+    if (expr != NULL) {
+	xmlExpFree(ctxt, expr);
+	if (xmlExpCtxtNbNodes(ctxt) != 0) 
+	    printf(" Parse/free of Expression leaked %d\n",
+		   xmlExpCtxtNbNodes(ctxt));
+    }
+    fclose(input);
+}
+#endif
 
 static void usage(const char *name) {
-    fprintf(stderr, "Usage: %s\n", name);
+    fprintf(stderr, "Usage: %s [flags]\n", name);
+    fprintf(stderr, "Testing tool for libxml2 string and pattern regexps\n");
+    fprintf(stderr, "   --debug: switch on debugging\n");
+    fprintf(stderr, "   --repeat: loop on the operation\n");
+#ifdef LIBXML_EXPR_ENABLED
+    fprintf(stderr, "   --expr: test xmlExp and not xmlRegexp\n");
+#endif
+    fprintf(stderr, "   --input filename: use the given filename for regexp\n");
+    fprintf(stderr, "   --input filename: use the given filename for exp\n");
 }
 
 int main(int argc, char **argv) {
     xmlRegexpPtr comp = NULL;
+#ifdef LIBXML_EXPR_ENABLED
+    xmlExpNodePtr expr = NULL;
+    int use_exp = 0;
+    xmlExpCtxtPtr ctxt = NULL;
+#endif
     const char *pattern = NULL;
     char *filename = NULL;
     int i;
@@ -113,15 +221,32 @@ int main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat"))) {
 	    repeat++;
-	} else if ((!strcmp(argv[i], "-i")) || (!strcmp(argv[i], "--input")))
+#ifdef LIBXML_EXPR_ENABLED
+	} else if ((!strcmp(argv[i], "-expr")) ||
+	         (!strcmp(argv[i], "--expr"))) {
+	    use_exp++;
+#endif
+	} else if ((!strcmp(argv[i], "-i")) || (!strcmp(argv[i], "-f")) ||
+		   (!strcmp(argv[i], "--input")))
 	    filename = argv[++i];
         else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);
 	}
     }
+
+#ifdef LIBXML_EXPR_ENABLED
+    if (use_exp)
+	ctxt = xmlExpNewCtxt(0, NULL);
+#endif
+
     if (filename != NULL) {
-	testRegexpFile(filename);
+#ifdef LIBXML_EXPR_ENABLED
+        if (use_exp)
+	    runFileTest(ctxt, filename);
+	else
+#endif
+	    testRegexpFile(filename);
     } else {
 	for (i = 1; i < argc ; i++) {
 	    if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
@@ -143,6 +268,13 @@ int main(int argc, char **argv) {
 	if (comp != NULL)
 	    xmlRegFreeRegexp(comp);
     }
+#ifdef LIBXML_EXPR_ENABLED
+    if (ctxt != NULL) {
+	printf("Ops: %d nodes, %d cons\n",
+	       xmlExpCtxtNbNodes(ctxt), xmlExpCtxtNbCons(ctxt));
+	xmlExpFreeCtxt(ctxt);
+    }
+#endif
     xmlCleanupParser();
     xmlMemoryDump();
     return(0);

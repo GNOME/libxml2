@@ -1,3 +1,15 @@
+Mon Aug 22 13:49:18 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed an uninitialized variable
+	* xmlregexp.c include/libxml/xmlregexp.h: extended the API to
+	  add the parser, serializer and some debugging
+	* include/libxml/xmlversion.h.in: made the new support compiled
+	  by default if Schemas is included
+	* testRegexp.c: cleanup and integration of the first part of the
+	  new code with a special switch
+	* xmllint.c: show up Expr in --version if compiled in
+	* include/libxml/tree.h: moved the xmlBuffer definition up
+
 Mon Aug 22 12:11:10 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Some preparation for the creation of a graph

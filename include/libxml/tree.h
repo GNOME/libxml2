@@ -55,6 +55,33 @@ typedef xmlEntity *xmlEntityPtr;
 #define BASE_BUFFER_SIZE 4096
 
 /**
+ * xmlBufferAllocationScheme:
+ *
+ * A buffer allocation scheme can be defined to either match exactly the
+ * need or double it's allocated size each time it is found too small.
+ */
+
+typedef enum {
+    XML_BUFFER_ALLOC_DOUBLEIT,
+    XML_BUFFER_ALLOC_EXACT,
+    XML_BUFFER_ALLOC_IMMUTABLE
+} xmlBufferAllocationScheme;
+
+/**
+ * xmlBuffer:
+ *
+ * A buffer structure.
+ */
+typedef struct _xmlBuffer xmlBuffer;
+typedef xmlBuffer *xmlBufferPtr;
+struct _xmlBuffer {
+    xmlChar *content;		/* The buffer content UTF8 */
+    unsigned int use;		/* The buffer size used */
+    unsigned int size;		/* The buffer size */
+    xmlBufferAllocationScheme alloc; /* The realloc method */
+};
+
+/**
  * XML_XML_NAMESPACE:
  *
  * This is the namespace for the special xml: prefix predefined in the
@@ -399,33 +426,6 @@ struct _xmlRef {
     xmlAttrPtr        attr;	/* The attribute holding it */
     const xmlChar    *name;	/* The attribute if attr is not available */
     int               lineno;	/* The line number if attr is not available */
-};
-
-/**
- * xmlBufferAllocationScheme:
- *
- * A buffer allocation scheme can be defined to either match exactly the
- * need or double it's allocated size each time it is found too small.
- */
-
-typedef enum {
-    XML_BUFFER_ALLOC_DOUBLEIT,
-    XML_BUFFER_ALLOC_EXACT,
-    XML_BUFFER_ALLOC_IMMUTABLE
-} xmlBufferAllocationScheme;
-
-/**
- * xmlBuffer:
- *
- * A buffer structure.
- */
-typedef struct _xmlBuffer xmlBuffer;
-typedef xmlBuffer *xmlBufferPtr;
-struct _xmlBuffer {
-    xmlChar *content;		/* The buffer content UTF8 */
-    unsigned int use;		/* The buffer size used */
-    unsigned int size;		/* The buffer size */
-    xmlBufferAllocationScheme alloc; /* The realloc method */
 };
 
 /**

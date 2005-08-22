@@ -2716,7 +2716,7 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
     } else if (elem == NULL) {
 	return(0);
     } else {
-	xmlAttributePtr attrDecl;
+	xmlAttributePtr attrDecl = NULL;
 
 	xmlChar felem[50], fattr[50];
 	xmlChar *fullelemname, *fullattrname;

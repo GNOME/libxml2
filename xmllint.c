@@ -2752,6 +2752,9 @@ static void showVersion(const char *name) {
 #ifdef LIBXML_REGEXP_ENABLED
     fprintf(stderr, "Regexps ");
 #endif
+#ifdef LIBXML_EXPR_ENABLED
+    fprintf(stderr, "Expr ");
+#endif
 #ifdef LIBXML_AUTOMATA_ENABLED
     fprintf(stderr, "Automata ");
 #endif

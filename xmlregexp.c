@@ -5491,15 +5491,6 @@ xmlAutomataIsDeterminist(xmlAutomataPtr am) {
  *		Formal Expression handling code				*
  *									*
  ************************************************************************/
-static void xmlExpDump(xmlBufferPtr buf, xmlExpNodePtr exp, int glob);
-#define PRINT_EXP(exp) { 						\
-    xmlBufferPtr xmlExpBuf;						\
-    xmlExpBuf = xmlBufferCreate();					\
-    xmlExpDump(xmlExpBuf, exp, 0);					\
-    xmlBufferWriteChar(xmlExpBuf, "\n");				\
-    xmlBufferDump(stdout, xmlExpBuf);					\
-    xmlBufferFree(xmlExpBuf);						\
-}
 /************************************************************************
  *									*
  *		Expression handling context				*
@@ -5515,7 +5506,6 @@ struct _xmlExpCtxt {
     const char *expr;
     const char *cur;
     int nb_cons;
-    int nb_del;
     int tabSize;
 };
 
@@ -5583,14 +5573,22 @@ xmlExpFreeCtxt(xmlExpCtxtPtr ctxt) {
  *		Structure associated to an expression node		*
  *									*
  ************************************************************************/
-typedef enum {
-    XML_EXP_EMPTY = 0,
-    XML_EXP_FORBID = 1,
-    XML_EXP_ATOM = 2,
-    XML_EXP_SEQ = 3,
-    XML_EXP_OR = 4,
-    XML_EXP_COUNT = 5
-} xmlExpNodeType;
+#define MAX_NODES 10000
+
+/* #define DEBUG_DERIV */
+
+/*
+ * TODO: 
+ * - Wildcards
+ * - public API for creation
+ *
+ * Started
+ * - regression testing
+ *
+ * Done
+ * - split into module and test tool
+ * - memleaks
+ */
 
 typedef enum {
     XML_EXP_NILABLE = (1 << 0)
@@ -5993,7 +5991,6 @@ xmlExpFree(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp) {
 	    xmlExpFree(ctxt, exp->exp_left);
 	}
         xmlFree(exp);
-	ctxt->nb_del++;
 	ctxt->nb_nodes--;
     }
 }
@@ -6877,6 +6874,326 @@ xmlExpSubsume(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
     xmlExpFree(ctxt, tmp);
     return(0);
 }
+
+/************************************************************************
+ *									*
+ *			Parsing expression 				*
+ *									*
+ ************************************************************************/
+
+static xmlExpNodePtr xmlExpParseExpr(xmlExpCtxtPtr ctxt);
+
+#undef CUR
+#define CUR (*ctxt->cur)
+#undef NEXT
+#define NEXT ctxt->cur++;
+#undef IS_BLANK
+#define IS_BLANK(c) ((c == ' ') || (c == '\n') || (c == '\r') || (c == '\t'))
+#define SKIP_BLANKS while (IS_BLANK(*ctxt->cur)) ctxt->cur++;
+
+static int
+xmlExpParseNumber(xmlExpCtxtPtr ctxt) {
+    int ret = 0;
+
+    SKIP_BLANKS
+    if (CUR == '*') {
+	NEXT
+	return(-1);
+    }
+    if ((CUR < '0') || (CUR > '9'))
+        return(-1);
+    while ((CUR >= '0') && (CUR <= '9')) {
+        ret = ret * 10 + (CUR - '0');
+	NEXT
+    }
+    return(ret);
+}
+
+static xmlExpNodePtr
+xmlExpParseOr(xmlExpCtxtPtr ctxt) {
+    const char *base;
+    xmlExpNodePtr ret;
+    const xmlChar *val;
+
+    SKIP_BLANKS
+    base = ctxt->cur;
+    if (*ctxt->cur == '(') {
+        NEXT
+	ret = xmlExpParseExpr(ctxt);
+	SKIP_BLANKS
+	if (*ctxt->cur != ')') {
+	    fprintf(stderr, "unbalanced '(' : %s\n", base);
+	    xmlExpFree(ctxt, ret);
+	    return(NULL);
+	}
+	NEXT;
+	SKIP_BLANKS
+	goto parse_quantifier;
+    }
+    while ((CUR != 0) && (!(IS_BLANK(CUR))) && (CUR != '(') &&
+           (CUR != ')') && (CUR != '|') && (CUR != ',') && (CUR != '{') &&
+	   (CUR != '*') && (CUR != '+') && (CUR != '?') && (CUR != '}'))
+	NEXT;
+    val = xmlDictLookup(ctxt->dict, BAD_CAST base, ctxt->cur - base);
+    if (val == NULL)
+        return(NULL);
+    ret = xmlExpHashGetEntry(ctxt, XML_EXP_ATOM, NULL, NULL, val, 0, 0);
+    if (ret == NULL)
+        return(NULL);
+    SKIP_BLANKS
+parse_quantifier:
+    if (CUR == '{') {
+        int min, max;
+
+        NEXT
+	min = xmlExpParseNumber(ctxt);
+	if (min < 0) {
+	    xmlExpFree(ctxt, ret);
+	    return(NULL);
+	}
+	SKIP_BLANKS
+	if (CUR == ',') {
+	    NEXT
+	    max = xmlExpParseNumber(ctxt);
+	    SKIP_BLANKS
+	} else
+	    max = min;
+	if (CUR != '}') {
+	    xmlExpFree(ctxt, ret);
+	    return(NULL);
+	}
+        NEXT
+	ret = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, ret, NULL, NULL,
+	                         min, max);
+	SKIP_BLANKS
+    } else if (CUR == '?') {
+        NEXT
+	ret = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, ret, NULL, NULL,
+	                         0, 1);
+	SKIP_BLANKS
+    } else if (CUR == '+') {
+        NEXT
+	ret = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, ret, NULL, NULL,
+	                         1, -1);
+	SKIP_BLANKS
+    } else if (CUR == '*') {
+        NEXT
+	ret = xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, ret, NULL, NULL,
+	                         0, -1);
+	SKIP_BLANKS
+    } 
+    return(ret);
+}
+
+
+static xmlExpNodePtr
+xmlExpParseSeq(xmlExpCtxtPtr ctxt) {
+    xmlExpNodePtr ret, right;
+
+    ret = xmlExpParseOr(ctxt);
+    SKIP_BLANKS
+    while (CUR == '|') {
+        NEXT
+	right = xmlExpParseOr(ctxt);
+	if (right == NULL) {
+	    xmlExpFree(ctxt, ret);
+	    return(NULL);
+	}
+	ret = xmlExpHashGetEntry(ctxt, XML_EXP_OR, ret, right, NULL, 0, 0);
+	if (ret == NULL)
+	    return(NULL);
+    }
+    return(ret);
+}
+
+static xmlExpNodePtr
+xmlExpParseExpr(xmlExpCtxtPtr ctxt) {
+    xmlExpNodePtr ret, right;
+
+    ret = xmlExpParseSeq(ctxt);
+    SKIP_BLANKS
+    while (CUR == ',') {
+        NEXT
+	right = xmlExpParseSeq(ctxt);
+	if (right == NULL) {
+	    xmlExpFree(ctxt, ret);
+	    return(NULL);
+	}
+	ret = xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, ret, right, NULL, 0, 0);
+	if (ret == NULL)
+	    return(NULL);
+    }
+    return(ret);
+}
+
+/**
+ * xmlExpParse:
+ * @ctxt: the expressions context
+ * @expr: the 0 terminated string
+ *
+ * Minimal parser for regexps, it understand the following constructs
+ *  - string terminals
+ *  - choice operator |
+ *  - sequence operator ,
+ *  - subexpressions (...)
+ *  - usual cardinality operators + * and ?
+ *  - finite sequences  { min, max }
+ *  - infinite sequences { min, * }
+ * There is minimal checkings made especially no checking on strings values
+ *
+ * Returns a new expression or NULL in case of failure
+ */
+xmlExpNodePtr
+xmlExpParse(xmlExpCtxtPtr ctxt, const char *expr) {
+    xmlExpNodePtr ret;
+
+    ctxt->expr = expr;
+    ctxt->cur = expr;
+
+    ret = xmlExpParseExpr(ctxt);
+    SKIP_BLANKS
+    if (*ctxt->cur != 0) {
+        xmlExpFree(ctxt, ret);
+        return(NULL);
+    }
+    return(ret);
+}
+
+static void
+xmlExpDumpInt(xmlBufferPtr buf, xmlExpNodePtr expr, int glob) {
+    xmlExpNodePtr c;
+
+    if (expr == NULL) return;
+    if (glob) xmlBufferWriteChar(buf, "(");
+    switch (expr->type) {
+        case XML_EXP_EMPTY:
+	    xmlBufferWriteChar(buf, "empty");
+	    break;
+        case XML_EXP_FORBID:
+	    xmlBufferWriteChar(buf, "forbidden");
+	    break;
+        case XML_EXP_ATOM:
+	    xmlBufferWriteCHAR(buf, expr->exp_str);
+	    break;
+        case XML_EXP_SEQ:
+	    c = expr->exp_left;
+	    if ((c->type == XML_EXP_SEQ) || (c->type == XML_EXP_OR))
+	        xmlExpDumpInt(buf, c, 1);
+	    else
+	        xmlExpDumpInt(buf, c, 0);
+	    xmlBufferWriteChar(buf, " , ");
+	    c = expr->exp_right;
+	    if ((c->type == XML_EXP_SEQ) || (c->type == XML_EXP_OR))
+	        xmlExpDumpInt(buf, c, 1);
+	    else
+	        xmlExpDumpInt(buf, c, 0);
+            break;
+        case XML_EXP_OR:
+	    c = expr->exp_left;
+	    if ((c->type == XML_EXP_SEQ) || (c->type == XML_EXP_OR))
+	        xmlExpDumpInt(buf, c, 1);
+	    else
+	        xmlExpDumpInt(buf, c, 0);
+	    xmlBufferWriteChar(buf, " | ");
+	    c = expr->exp_right;
+	    if ((c->type == XML_EXP_SEQ) || (c->type == XML_EXP_OR))
+	        xmlExpDumpInt(buf, c, 1);
+	    else
+	        xmlExpDumpInt(buf, c, 0);
+            break;
+        case XML_EXP_COUNT: {
+	    char rep[40];
+	    
+	    c = expr->exp_left;
+	    if ((c->type == XML_EXP_SEQ) || (c->type == XML_EXP_OR))
+	        xmlExpDumpInt(buf, c, 1);
+	    else
+	        xmlExpDumpInt(buf, c, 0);
+	    if ((expr->exp_min == 0) && (expr->exp_max == 1)) {
+		rep[0] = '?';
+		rep[1] = 0;
+	    } else if ((expr->exp_min == 0) && (expr->exp_max == -1)) {
+		rep[0] = '*';
+		rep[1] = 0;
+	    } else if ((expr->exp_min == 1) && (expr->exp_max == -1)) {
+		rep[0] = '+';
+		rep[1] = 0;
+	    } else if (expr->exp_max == expr->exp_min) {
+	        snprintf(rep, 39, "{%d}", expr->exp_min);
+	    } else if (expr->exp_max < 0) {
+	        snprintf(rep, 39, "{%d,inf}", expr->exp_min);
+	    } else {
+	        snprintf(rep, 39, "{%d,%d}", expr->exp_min, expr->exp_max);
+	    }
+	    rep[39] = 0;
+	    xmlBufferWriteChar(buf, rep);
+	    break;
+	}
+	default:
+	    fprintf(stderr, "Error in tree\n");
+    }
+    if (glob)
+        xmlBufferWriteChar(buf, ")");
+}
+/**
+ * xmlExpDump:
+ * @buf:  a buffer to receive the output
+ * @expr:  the compiled expression
+ *
+ * Serialize the expression as compiled to the buffer
+ */
+void
+xmlExpDump(xmlBufferPtr buf, xmlExpNodePtr exp) {
+    if ((buf == NULL) || (exp == NULL))
+        return;
+    xmlExpDumpInt(buf, exp, 0);
+}
+
+/**
+ * xmlExpMaxToken:
+ * @expr: a compiled expression
+ *
+ * Indicate the maximum number of input a expression can accept
+ *
+ * Returns the maximum length or -1 in case of error
+ */
+int
+xmlExpMaxToken(xmlExpNodePtr expr) {
+    if (expr == NULL)
+        return(-1);
+    return(expr->c_max);
+}
+
+/**
+ * xmlExpCtxtNbNodes:
+ * @ctxt: an expression context
+ *
+ * Debugging facility provides the number of allocated nodes at a that point
+ *
+ * Returns the number of nodes in use or -1 in case of error
+ */
+int
+xmlExpCtxtNbNodes(xmlExpCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(-1);
+    return(ctxt->nb_nodes);
+}
+
+/**
+ * xmlExpCtxtNbCons:
+ * @ctxt: an expression context
+ *
+ * Debugging facility provides the number of allocated nodes over lifetime
+ *
+ * Returns the number of nodes ever allocated or -1 in case of error
+ */
+int
+xmlExpCtxtNbCons(xmlExpCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(-1);
+    return(ctxt->nb_cons);
+}
+
 #endif /* LIBXML_EXPR_ENABLED */
 #define bottom_xmlregexp
 #include "elfgcchack.h"

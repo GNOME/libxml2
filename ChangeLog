@@ -1,3 +1,9 @@
+Tue Aug 23 18:04:08 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c include/libxml/HTMLparser.h: added a recovery mode
+	  for the HTML parser based on the suggestions of bug #169834 by
+	  Paul Loberg
+
 Tue Aug 23 15:38:46 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* elfgcchack.h testapi.c doc/*: regenerated

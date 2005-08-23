@@ -2651,15 +2651,34 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	    cur = CUR_CHAR(l);
 	    continue;
 	} else if ((cur == '<') && (NXT(1) == '/')) {
-	    /*
-	     * One should break here, the specification is clear:
-	     * Authors should therefore escape "</" within the content.
-	     * Escape mechanisms are specific to each scripting or
-	     * style sheet language.
-	     */
-	    if (((NXT(2) >= 'A') && (NXT(2) <= 'Z')) ||
-	        ((NXT(2) >= 'a') && (NXT(2) <= 'z')))
-		break; /* while */
+            /*
+             * One should break here, the specification is clear:
+             * Authors should therefore escape "</" within the content.
+             * Escape mechanisms are specific to each scripting or
+             * style sheet language.
+             *
+             * In recovery mode, only break if end tag match the
+             * current tag, effectively ignoring all tags inside the
+             * script/style block and treating the entire block as
+             * CDATA.
+             */
+            if (ctxt->recovery) {
+                if (xmlStrncasecmp(ctxt->name, ctxt->input->cur+2, 
+				   xmlStrlen(ctxt->name)) == 0) 
+                {
+                    break; /* while */
+                } else {
+		    htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
+				 "Element %s embbeds close tag\n",
+		                 ctxt->name, NULL);
+		}
+            } else {
+                if (((NXT(2) >= 'A') && (NXT(2) <= 'Z')) ||
+                    ((NXT(2) >= 'a') && (NXT(2) <= 'z'))) 
+                {
+                    break; /* while */
+                }
+            }
 	}
 	COPY_BUF(l,buf,nbchar,cur);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
@@ -2676,6 +2695,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	NEXTL(l);
 	cur = CUR_CHAR(l);
     }
+
     if (!(IS_CHAR_CH(cur))) {
 	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
 	                "Invalid char in CDATA 0x%X\n", cur);
@@ -3580,6 +3600,15 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     if ((!IS_CHAR_CH(CUR)) || (CUR != '>')) {
         htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "End tag : expected '>'\n", NULL, NULL);
+	if (ctxt->recovery) {
+	    /*
+	     * We're not at the ending > !!
+	     * Error, unless in recover mode where we search forwards
+	     * until we find a >
+	     */
+	    while (CUR != '\0' && CUR != '>') NEXT;
+	    NEXT;
+	}
     } else
         NEXT;
 
@@ -5787,6 +5816,10 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 	ctxt->options |= XML_PARSE_NOBLANKS;
     } else
         ctxt->keepBlanks = 1;
+    if (options & HTML_PARSE_RECOVER) {
+        ctxt->recovery = 1;
+    } else
+        ctxt->recovery = 0;
     ctxt->dictNames = 0;
     return (options);
 }

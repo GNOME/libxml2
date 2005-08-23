@@ -17712,42 +17712,12 @@ test_xmlSchematronParse(void) {
 }
 
 
-static int
-test_xmlSchematronSetParserErrors(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
 #define gen_nb_xmlSchematronValidCtxtPtr 1
 static xmlSchematronValidCtxtPtr gen_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchematronValidCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
-
-static int
-test_xmlSchematronSetValidErrors(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
-static int
-test_xmlSchematronSetValidStructuredErrors(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
 
 static int
 test_xmlSchematronValidateDoc(void) {
@@ -17793,15 +17763,12 @@ static int
 test_schematron(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing schematron : 1 of 12 functions ...\n");
+    if (quiet == 0) printf("Testing schematron : 1 of 9 functions ...\n");
     test_ret += test_xmlSchematronNewDocParserCtxt();
     test_ret += test_xmlSchematronNewMemParserCtxt();
     test_ret += test_xmlSchematronNewParserCtxt();
     test_ret += test_xmlSchematronNewValidCtxt();
     test_ret += test_xmlSchematronParse();
-    test_ret += test_xmlSchematronSetParserErrors();
-    test_ret += test_xmlSchematronSetValidErrors();
-    test_ret += test_xmlSchematronSetValidStructuredErrors();
     test_ret += test_xmlSchematronValidateDoc();
 
     if (test_ret != 0)

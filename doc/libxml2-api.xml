@@ -1297,10 +1297,7 @@
      <exports symbol='xmlSchematronValidityErrorFunc' type='function'/>
      <exports symbol='xmlSchematronNewParserCtxt' type='function'/>
      <exports symbol='xmlSchematronValidityWarningFunc' type='function'/>
-     <exports symbol='xmlSchematronSetParserErrors' type='function'/>
-     <exports symbol='xmlSchematronSetValidErrors' type='function'/>
      <exports symbol='xmlSchematronFree' type='function'/>
-     <exports symbol='xmlSchematronSetValidStructuredErrors' type='function'/>
      <exports symbol='xmlSchematronFreeValidCtxt' type='function'/>
      <exports symbol='xmlSchematronParse' type='function'/>
      <exports symbol='xmlSchematronNewDocParserCtxt' type='function'/>
@@ -13536,32 +13533,6 @@ actually an xmlCharEncoding'/>
       <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</info>
       <return type='xmlSchematronPtr' info='the internal XML Schematron structure built from the resource or NULL in case of error'/>
       <arg name='ctxt' type='xmlSchematronParserCtxtPtr' info='a schema validation context'/>
-    </function>
-    <function name='xmlSchematronSetParserErrors' file='schematron' module='schematron'>
-      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
-      <info></info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlSchematronParserCtxtPtr' info=''/>
-      <arg name='err' type='xmlSchematronValidityErrorFunc' info=''/>
-      <arg name='warn' type='xmlSchematronValidityWarningFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
-    </function>
-    <function name='xmlSchematronSetValidErrors' file='schematron' module='schematron'>
-      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
-      <info></info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info=''/>
-      <arg name='err' type='xmlSchematronValidityErrorFunc' info=''/>
-      <arg name='warn' type='xmlSchematronValidityWarningFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
-    </function>
-    <function name='xmlSchematronSetValidStructuredErrors' file='schematron' module='schematron'>
-      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
-      <info></info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info=''/>
-      <arg name='serror' type='xmlStructuredErrorFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
     </function>
     <function name='xmlSchematronValidateDoc' file='schematron' module='schematron'>
       <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>

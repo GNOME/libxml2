@@ -2698,9 +2698,6 @@
     <reference name='xmlSchematronParserCtxt' href='html/libxml-schematron.html#xmlSchematronParserCtxt'/>
     <reference name='xmlSchematronParserCtxtPtr' href='html/libxml-schematron.html#xmlSchematronParserCtxtPtr'/>
     <reference name='xmlSchematronPtr' href='html/libxml-schematron.html#xmlSchematronPtr'/>
-    <reference name='xmlSchematronSetParserErrors' href='html/libxml-schematron.html#xmlSchematronSetParserErrors'/>
-    <reference name='xmlSchematronSetValidErrors' href='html/libxml-schematron.html#xmlSchematronSetValidErrors'/>
-    <reference name='xmlSchematronSetValidStructuredErrors' href='html/libxml-schematron.html#xmlSchematronSetValidStructuredErrors'/>
     <reference name='xmlSchematronValidCtxt' href='html/libxml-schematron.html#xmlSchematronValidCtxt'/>
     <reference name='xmlSchematronValidCtxtPtr' href='html/libxml-schematron.html#xmlSchematronValidCtxtPtr'/>
     <reference name='xmlSchematronValidOptions' href='html/libxml-schematron.html#xmlSchematronValidOptions'/>
@@ -6167,9 +6164,6 @@
       <ref name='xmlSchematronParserCtxt'/>
       <ref name='xmlSchematronParserCtxtPtr'/>
       <ref name='xmlSchematronPtr'/>
-      <ref name='xmlSchematronSetParserErrors'/>
-      <ref name='xmlSchematronSetValidErrors'/>
-      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidCtxt'/>
       <ref name='xmlSchematronValidCtxtPtr'/>
       <ref name='xmlSchematronValidOptions'/>
@@ -8557,9 +8551,6 @@
       <ref name='xmlSchemaValidateStream'/>
       <ref name='xmlSchemaValidityErrorFunc'/>
       <ref name='xmlSchemaValidityWarningFunc'/>
-      <ref name='xmlSchematronSetParserErrors'/>
-      <ref name='xmlSchematronSetValidErrors'/>
-      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidityErrorFunc'/>
       <ref name='xmlSchematronValidityWarningFunc'/>
       <ref name='xmlSetFeature'/>
@@ -9904,7 +9895,6 @@
     <type name='xmlSchematronParserCtxtPtr'>
       <ref name='xmlSchematronFreeParserCtxt'/>
       <ref name='xmlSchematronParse'/>
-      <ref name='xmlSchematronSetParserErrors'/>
     </type>
     <type name='xmlSchematronPtr'>
       <ref name='xmlSchematronFree'/>
@@ -9912,17 +9902,7 @@
     </type>
     <type name='xmlSchematronValidCtxtPtr'>
       <ref name='xmlSchematronFreeValidCtxt'/>
-      <ref name='xmlSchematronSetValidErrors'/>
-      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidateDoc'/>
-    </type>
-    <type name='xmlSchematronValidityErrorFunc'>
-      <ref name='xmlSchematronSetParserErrors'/>
-      <ref name='xmlSchematronSetValidErrors'/>
-    </type>
-    <type name='xmlSchematronValidityWarningFunc'>
-      <ref name='xmlSchematronSetParserErrors'/>
-      <ref name='xmlSchematronSetValidErrors'/>
     </type>
     <type name='xmlShellCtxtPtr'>
       <ref name='xmlShellBase'/>
@@ -9957,7 +9937,6 @@
     <type name='xmlStructuredErrorFunc'>
       <ref name='xmlRelaxNGSetValidStructuredErrors'/>
       <ref name='xmlSchemaSetValidStructuredErrors'/>
-      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSetStructuredErrorFunc'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlThrDefSetStructuredErrorFunc'/>
@@ -11525,9 +11504,6 @@
       <ref name='xmlSchematronParserCtxt'/>
       <ref name='xmlSchematronParserCtxtPtr'/>
       <ref name='xmlSchematronPtr'/>
-      <ref name='xmlSchematronSetParserErrors'/>
-      <ref name='xmlSchematronSetValidErrors'/>
-      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidCtxt'/>
       <ref name='xmlSchematronValidCtxtPtr'/>
       <ref name='xmlSchematronValidOptions'/>

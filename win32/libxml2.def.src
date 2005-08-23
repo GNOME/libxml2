@@ -1765,9 +1765,6 @@ xmlSchematronNewMemParserCtxt
 xmlSchematronNewParserCtxt
 xmlSchematronNewValidCtxt
 xmlSchematronParse
-xmlSchematronSetParserErrors
-xmlSchematronSetValidErrors
-xmlSchematronSetValidStructuredErrors
 xmlSchematronValidateDoc
 xmlSearchNs
 xmlSearchNsByHref

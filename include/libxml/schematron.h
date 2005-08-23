@@ -60,12 +60,12 @@ XMLPUBFUN xmlSchematronParserCtxtPtr XMLCALL
 	    xmlSchematronNewDocParserCtxt(xmlDocPtr doc);
 XMLPUBFUN void XMLCALL		
 	    xmlSchematronFreeParserCtxt	(xmlSchematronParserCtxtPtr ctxt);
+/*****
 XMLPUBFUN void XMLCALL		
 	    xmlSchematronSetParserErrors(xmlSchematronParserCtxtPtr ctxt,
 					 xmlSchematronValidityErrorFunc err,
 					 xmlSchematronValidityWarningFunc warn,
 					 void *ctx);
-/*****
 XMLPUBFUN int XMLCALL
 		xmlSchematronGetParserErrors(xmlSchematronParserCtxtPtr ctxt,
 					xmlSchematronValidityErrorFunc * err,
@@ -81,17 +81,17 @@ XMLPUBFUN void XMLCALL
 /*
  * Interfaces for validating
  */
-XMLPUBFUN void XMLCALL		
-	    xmlSchematronSetValidErrors	(xmlSchematronValidCtxtPtr ctxt,
-					 xmlSchematronValidityErrorFunc err,
-					 xmlSchematronValidityWarningFunc warn,
-					 void *ctx);
+/******
 XMLPUBFUN void XMLCALL
 	    xmlSchematronSetValidStructuredErrors(
 	                                  xmlSchematronValidCtxtPtr ctxt,
 					  xmlStructuredErrorFunc serror,
 					  void *ctx);
-/******
+XMLPUBFUN void XMLCALL		
+	    xmlSchematronSetValidErrors	(xmlSchematronValidCtxtPtr ctxt,
+					 xmlSchematronValidityErrorFunc err,
+					 xmlSchematronValidityWarningFunc warn,
+					 void *ctx);
 XMLPUBFUN int XMLCALL
 	    xmlSchematronGetValidErrors	(xmlSchematronValidCtxtPtr ctxt,
 					 xmlSchematronValidityErrorFunc *err,

@@ -98,7 +98,7 @@ XMLPUBFUN void XMLCALL
 		xmlSAX2StartDocument		(void *ctx);
 XMLPUBFUN void XMLCALL		
 		xmlSAX2EndDocument		(void *ctx);
-#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)
 XMLPUBFUN void XMLCALL		
 		xmlSAX2StartElement		(void *ctx,
 						 const xmlChar *fullname,

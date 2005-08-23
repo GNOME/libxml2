@@ -63,7 +63,7 @@ test_c14n(const char* xml_filename, int with_comments, int exclusive,
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 
-    doc = xmlParseFile(xml_filename);
+    doc = xmlReadFile(xml_filename, NULL, XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (doc == NULL) {
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_filename);
 	return(-1);
@@ -237,7 +237,7 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 
-    doc = xmlParseFile(filename);
+    doc = xmlReadFile(filename, NULL, XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (doc == NULL) {
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", filename);
 	return(NULL);

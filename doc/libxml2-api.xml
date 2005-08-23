@@ -40,6 +40,7 @@
      <exports symbol='HTML_PARSE_NOERROR' type='enum'/>
      <exports symbol='HTML_DEPRECATED' type='enum'/>
      <exports symbol='HTML_PARSE_PEDANTIC' type='enum'/>
+     <exports symbol='HTML_PARSE_RECOVER' type='enum'/>
      <exports symbol='HTML_PARSE_NOWARNING' type='enum'/>
      <exports symbol='htmlParserNodeInfo' type='typedef'/>
      <exports symbol='htmlParserInput' type='typedef'/>
@@ -4440,6 +4441,7 @@
     <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info=' Forbid network access'/>
     <enum name='HTML_PARSE_NOWARNING' file='HTMLparser' value='64' type='htmlParserOption' info='suppress warning reports'/>
     <enum name='HTML_PARSE_PEDANTIC' file='HTMLparser' value='128' type='htmlParserOption' info='pedantic error reporting'/>
+    <enum name='HTML_PARSE_RECOVER' file='HTMLparser' value='1' type='htmlParserOption' info='Relaxed parsing'/>
     <enum name='HTML_REQUIRED' file='HTMLparser' value='12' type='htmlStatus' info=' VALID bit set so ( &amp; HTML_VALID ) is TRUE'/>
     <enum name='HTML_VALID' file='HTMLparser' value='4' type='htmlStatus'/>
     <enum name='XLINK_ACTUATE_AUTO' file='xlink' value='1' type='xlinkActuate'/>
@@ -12651,7 +12653,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2EndElement' file='SAX2' module='SAX2'>
-      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)</cond>
+      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)</cond>
       <info>called when the end of an element has been detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
@@ -12803,7 +12805,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2StartElement' file='SAX2' module='SAX2'>
-      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)</cond>
+      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)</cond>
       <info>called when an opening tag has been processed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>

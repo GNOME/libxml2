@@ -496,7 +496,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 
     xmlMutexLock(xmlThrDefMutex);
 
-#if defined(LIBXML_DOCB_ENABLED) && defined(LIBXML_LEGACY_ENABLED)
+#if defined(LIBXML_DOCB_ENABLED) && defined(LIBXML_LEGACY_ENABLED) && defined(LIBXML_SAX1_ENABLED)
     initdocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
 #endif
 #if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_LEGACY_ENABLED)

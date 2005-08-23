@@ -197,7 +197,7 @@ XMLPUBFUN xmlExpNodePtr XMLCALL
 					 int len);
 XMLPUBFUN xmlExpNodePtr XMLCALL
 			xmlExpExpDerive	(xmlExpCtxtPtr ctxt,
-					 xmlExpNodePtr exp,
+					 xmlExpNodePtr expr,
 					 xmlExpNodePtr sub);
 XMLPUBFUN int XMLCALL
 			xmlExpSubsume	(xmlExpCtxtPtr ctxt,
@@ -205,7 +205,7 @@ XMLPUBFUN int XMLCALL
 					 xmlExpNodePtr sub);
 XMLPUBFUN void XMLCALL
 			xmlExpDump	(xmlBufferPtr buf,
-					 xmlExpNodePtr exp);
+					 xmlExpNodePtr expr);
 #endif /* LIBXML_EXPR_ENABLED */
 #ifdef __cplusplus
 }

@@ -1133,7 +1133,9 @@ xmlFreeDoc(xmlDocPtr cur) {
 	return;
     }
 #ifdef LIBXML_DEBUG_RUNTIME
+#ifdef LIBXML_DEBUG_ENABLED
     xmlDebugCheckDocument(stderr, cur);
+#endif
 #endif
 
     if (cur != NULL) dict = cur->dict;

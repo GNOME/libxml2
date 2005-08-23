@@ -3529,7 +3529,7 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 
-    doc = xmlParseFile(filename);
+    doc = xmlReadFile(filename, NULL, XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (doc == NULL) {
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", filename);
 	return(NULL);
@@ -3681,7 +3681,7 @@ c14nRunTest(const char* xml_filename, int with_comments, int exclusive,
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 
-    doc = xmlParseFile(xml_filename);
+    doc = xmlReadFile(xml_filename, NULL, XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (doc == NULL) {
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_filename);
 	return(-1);
@@ -3816,7 +3816,7 @@ c14nExcWithoutCommentTest(const char *filename,
     return(c14nCommonTest(filename, 0, 1, "exc-without-comments"));
 }
 #endif
-#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined (LIBXML_SAX1_ENABLED)
 /************************************************************************
  *									*
  *			Catalog and threads test			*
@@ -4245,7 +4245,7 @@ testDesc testDescriptions[] = {
       c14nExcWithoutCommentTest, "./test/c14n/exc-without-comments/*.xml", NULL, NULL, NULL,
       0 },
 #endif
-#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_SAX1_ENABLED)
     { "Catalog and Threads regression tests" ,
       threadsTest, NULL, NULL, NULL, NULL,
       0 },

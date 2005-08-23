@@ -1022,7 +1022,7 @@ xmlSAX2EndDocument(void *ctx)
     }
 }
 
-#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)
 /**
  * xmlSAX2AttributeInternal:
  * @ctx: the user data (XML parser context)

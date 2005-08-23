@@ -1,3 +1,10 @@
+Wed Aug 24 00:11:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c globals.c runtest.c testC14N.c testapi.c tree.c
+	  include/libxml/SAX2.h include/libxml/xmlregexp.h: fixed compilation
+	  when configured --without-sax1 and other cleanups fixes bug #172683
+	* doc/* elfgcchack.h: regenerated
+
 Tue Aug 23 20:05:05 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed bug #170489 reported by Jirka Kosek

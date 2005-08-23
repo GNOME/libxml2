@@ -24,6 +24,7 @@
     <reference name='HTML_PARSE_NONET' href='html/libxml-HTMLparser.html#HTML_PARSE_NONET'/>
     <reference name='HTML_PARSE_NOWARNING' href='html/libxml-HTMLparser.html#HTML_PARSE_NOWARNING'/>
     <reference name='HTML_PARSE_PEDANTIC' href='html/libxml-HTMLparser.html#HTML_PARSE_PEDANTIC'/>
+    <reference name='HTML_PARSE_RECOVER' href='html/libxml-HTMLparser.html#HTML_PARSE_RECOVER'/>
     <reference name='HTML_PI_NODE' href='html/libxml-HTMLtree.html#HTML_PI_NODE'/>
     <reference name='HTML_PRESERVE_NODE' href='html/libxml-HTMLtree.html#HTML_PRESERVE_NODE'/>
     <reference name='HTML_REQUIRED' href='html/libxml-HTMLparser.html#HTML_REQUIRED'/>
@@ -3440,6 +3441,7 @@
       <ref name='HTML_PARSE_NONET'/>
       <ref name='HTML_PARSE_NOWARNING'/>
       <ref name='HTML_PARSE_PEDANTIC'/>
+      <ref name='HTML_PARSE_RECOVER'/>
       <ref name='HTML_PI_NODE'/>
       <ref name='HTML_PRESERVE_NODE'/>
       <ref name='HTML_REQUIRED'/>
@@ -10308,6 +10310,7 @@
       <ref name='HTML_PARSE_NONET'/>
       <ref name='HTML_PARSE_NOWARNING'/>
       <ref name='HTML_PARSE_PEDANTIC'/>
+      <ref name='HTML_PARSE_RECOVER'/>
       <ref name='HTML_REQUIRED'/>
       <ref name='HTML_VALID'/>
       <ref name='UTF8ToHtml'/>

@@ -2852,6 +2852,7 @@
      <exports symbol='emptyExp' type='variable'/>
      <exports symbol='xmlRegExecCallbacks' type='function'/>
      <exports symbol='xmlRegNewExecCtxt' type='function'/>
+     <exports symbol='xmlExpNewOr' type='function'/>
      <exports symbol='xmlRegFreeRegexp' type='function'/>
      <exports symbol='xmlExpRef' type='function'/>
      <exports symbol='xmlRegexpIsDeterminist' type='function'/>
@@ -2865,17 +2866,20 @@
      <exports symbol='xmlExpIsNillable' type='function'/>
      <exports symbol='xmlExpFreeCtxt' type='function'/>
      <exports symbol='xmlExpDump' type='function'/>
+     <exports symbol='xmlExpNewSeq' type='function'/>
      <exports symbol='xmlExpFree' type='function'/>
+     <exports symbol='xmlExpNewRange' type='function'/>
      <exports symbol='xmlRegexpCompile' type='function'/>
+     <exports symbol='xmlExpNewAtom' type='function'/>
      <exports symbol='xmlRegexpExec' type='function'/>
-     <exports symbol='xmlExpMaxToken' type='function'/>
+     <exports symbol='xmlRegExecPushString' type='function'/>
      <exports symbol='xmlExpGetStart' type='function'/>
      <exports symbol='xmlExpParse' type='function'/>
      <exports symbol='xmlExpNewCtxt' type='function'/>
      <exports symbol='xmlExpGetLanguage' type='function'/>
      <exports symbol='xmlExpStringDerive' type='function'/>
      <exports symbol='xmlExpCtxtNbNodes' type='function'/>
-     <exports symbol='xmlRegExecPushString' type='function'/>
+     <exports symbol='xmlExpMaxToken' type='function'/>
      <exports symbol='xmlRegexpPrint' type='function'/>
     </file>
     <file name='xmlsave'>
@@ -9315,12 +9319,45 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the maximum length or -1 in case of error'/>
       <arg name='expr' type='xmlExpNodePtr' info='a compiled expression'/>
     </function>
+    <function name='xmlExpNewAtom' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Get the atom associated to this name from that context</info>
+      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='name' type='const xmlChar *' info='the atom name'/>
+      <arg name='len' type='int' info='the atom name lenght in byte (or -1);'/>
+    </function>
     <function name='xmlExpNewCtxt' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
       <info>Creates a new context for manipulating expressions</info>
       <return type='xmlExpCtxtPtr' info='the context or NULL in case of error'/>
       <arg name='maxNodes' type='int' info='the maximum number of nodes'/>
       <arg name='dict' type='xmlDictPtr' info='optional dictionnary to use internally'/>
+    </function>
+    <function name='xmlExpNewOr' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Get the atom associated to the choice @left | @right Note that @left and @right are consumed in the operation, to keep an handle on them use xmlExpRef() and use xmlExpFree() to release them, this is true even in case of failure (unless ctxt == NULL).</info>
+      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='left' type='xmlExpNodePtr' info='left expression'/>
+      <arg name='right' type='xmlExpNodePtr' info='right expression'/>
+    </function>
+    <function name='xmlExpNewRange' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Get the atom associated to the range (@subset){@min, @max} Note that @subset is consumed in the operation, to keep an handle on it use xmlExpRef() and use xmlExpFree() to release it, this is true even in case of failure (unless ctxt == NULL).</info>
+      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='subset' type='xmlExpNodePtr' info='the expression to be repeated'/>
+      <arg name='min' type='int' info='the lower bound for the repetition'/>
+      <arg name='max' type='int' info='the upper bound for the repetition, -1 means infinite'/>
+    </function>
+    <function name='xmlExpNewSeq' file='xmlregexp' module='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
+      <info>Get the atom associated to the sequence @left , @right Note that @left and @right are consumed in the operation, to keep an handle on them use xmlExpRef() and use xmlExpFree() to release them, this is true even in case of failure (unless ctxt == NULL).</info>
+      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
+      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
+      <arg name='left' type='xmlExpNodePtr' info='left expression'/>
+      <arg name='right' type='xmlExpNodePtr' info='right expression'/>
     </function>
     <function name='xmlExpParse' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>

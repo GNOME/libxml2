@@ -5957,13 +5957,6 @@ xmlExpFree(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp) {
     if ((exp == NULL) || (exp == forbiddenExp) || (exp == emptyExp))
         return;
     exp->ref--;
-#if 0
-    if (exp->ref == 0) {
-        printf("Freeing "); PRINT_EXP(exp)
-    } else {
-        printf("Dec to %d ", exp->ref); PRINT_EXP(exp)
-    }
-#endif
     if (exp->ref == 0) {
         unsigned short key;
 
@@ -6005,6 +5998,97 @@ void
 xmlExpRef(xmlExpNodePtr exp) {
     if (exp != NULL)
         exp->ref++;
+}
+
+/**
+ * xmlExpNewAtom:
+ * @ctxt: the expression context
+ * @name: the atom name
+ * @len: the atom name lenght in byte (or -1);
+ *
+ * Get the atom associated to this name from that context
+ *
+ * Returns the node or NULL in case of error
+ */
+xmlExpNodePtr
+xmlExpNewAtom(xmlExpCtxtPtr ctxt, const xmlChar *name, int len) {
+    if ((ctxt == NULL) || (name == NULL))
+        return(NULL);
+    name = xmlDictLookup(ctxt->dict, name, len);
+    if (name == NULL)
+        return(NULL);
+    return(xmlExpHashGetEntry(ctxt, XML_EXP_ATOM, NULL, NULL, name, 0, 0));
+}
+
+/**
+ * xmlExpNewOr:
+ * @ctxt: the expression context
+ * @left: left expression
+ * @right: right expression
+ *
+ * Get the atom associated to the choice @left | @right
+ * Note that @left and @right are consumed in the operation, to keep
+ * an handle on them use xmlExpRef() and use xmlExpFree() to release them,
+ * this is true even in case of failure (unless ctxt == NULL).
+ *
+ * Returns the node or NULL in case of error
+ */
+xmlExpNodePtr
+xmlExpNewOr(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
+    if ((ctxt == NULL) || (left == NULL) || (right == NULL)) {
+        xmlExpFree(ctxt, left);
+        xmlExpFree(ctxt, right);
+        return(NULL);
+    }
+    return(xmlExpHashGetEntry(ctxt, XML_EXP_OR, left, right, NULL, 0, 0));
+}
+
+/**
+ * xmlExpNewSeq:
+ * @ctxt: the expression context
+ * @left: left expression
+ * @right: right expression
+ *
+ * Get the atom associated to the sequence @left , @right
+ * Note that @left and @right are consumed in the operation, to keep
+ * an handle on them use xmlExpRef() and use xmlExpFree() to release them,
+ * this is true even in case of failure (unless ctxt == NULL).
+ *
+ * Returns the node or NULL in case of error
+ */
+xmlExpNodePtr
+xmlExpNewSeq(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
+    if ((ctxt == NULL) || (left == NULL) || (right == NULL)) {
+        xmlExpFree(ctxt, left);
+        xmlExpFree(ctxt, right);
+        return(NULL);
+    }
+    return(xmlExpHashGetEntry(ctxt, XML_EXP_SEQ, left, right, NULL, 0, 0));
+}
+
+/**
+ * xmlExpNewRange:
+ * @ctxt: the expression context
+ * @subset: the expression to be repeated
+ * @min: the lower bound for the repetition
+ * @max: the upper bound for the repetition, -1 means infinite
+ *
+ * Get the atom associated to the range (@subset){@min, @max}
+ * Note that @subset is consumed in the operation, to keep
+ * an handle on it use xmlExpRef() and use xmlExpFree() to release it,
+ * this is true even in case of failure (unless ctxt == NULL).
+ *
+ * Returns the node or NULL in case of error
+ */
+xmlExpNodePtr
+xmlExpNewRange(xmlExpCtxtPtr ctxt, xmlExpNodePtr subset, int min, int max) {
+    if ((ctxt == NULL) || (subset == NULL) || (min < 0) || (max < -1) ||
+        ((max >= 0) && (min > max))) {
+	xmlExpFree(ctxt, subset);
+        return(NULL);
+    }
+    return(xmlExpHashGetEntry(ctxt, XML_EXP_COUNT, subset,
+                              NULL, NULL, min, max));
 }
 
 /************************************************************************
@@ -6748,6 +6832,16 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 	}
     }
 
+#ifdef DEBUG_DERIV
+    printf("Fallback to derivative\n");
+#endif
+    if (IS_NILLABLE(sub)) {
+        if (!(IS_NILLABLE(exp)))
+	    return(forbiddenExp);
+	else
+	    ret = emptyExp;
+    } else
+	ret = NULL;
     /*
      * here the structured derivation made no progress so
      * we use the default token based derivation to force one more step
@@ -6761,9 +6855,6 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 	return(NULL);
     }
 
-#ifdef DEBUG_DERIV
-    printf("Fallback to derivative\n");
-#endif
     /*
      * collect all the strings accepted by the subexpression on input
      */
@@ -6780,7 +6871,6 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 	ctxt->tabSize *= 2;
 	len = xmlExpGetStartInt(ctxt, sub, tab, ctxt->tabSize, 0);
     }
-    ret = NULL;
     for (i = 0;i < len;i++) {
         tmp = xmlExpStringDeriveInt(ctxt, exp, tab[i]);
 	if ((tmp == NULL) || (tmp == forbiddenExp)) {

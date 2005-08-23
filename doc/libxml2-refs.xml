@@ -1881,7 +1881,11 @@
     <reference name='xmlExpGetStart' href='html/libxml-xmlregexp.html#xmlExpGetStart'/>
     <reference name='xmlExpIsNillable' href='html/libxml-xmlregexp.html#xmlExpIsNillable'/>
     <reference name='xmlExpMaxToken' href='html/libxml-xmlregexp.html#xmlExpMaxToken'/>
+    <reference name='xmlExpNewAtom' href='html/libxml-xmlregexp.html#xmlExpNewAtom'/>
     <reference name='xmlExpNewCtxt' href='html/libxml-xmlregexp.html#xmlExpNewCtxt'/>
+    <reference name='xmlExpNewOr' href='html/libxml-xmlregexp.html#xmlExpNewOr'/>
+    <reference name='xmlExpNewRange' href='html/libxml-xmlregexp.html#xmlExpNewRange'/>
+    <reference name='xmlExpNewSeq' href='html/libxml-xmlregexp.html#xmlExpNewSeq'/>
     <reference name='xmlExpNode' href='html/libxml-xmlregexp.html#xmlExpNode'/>
     <reference name='xmlExpNodePtr' href='html/libxml-xmlregexp.html#xmlExpNodePtr'/>
     <reference name='xmlExpNodeType' href='html/libxml-xmlregexp.html#xmlExpNodeType'/>
@@ -5346,7 +5350,11 @@
       <ref name='xmlExpGetStart'/>
       <ref name='xmlExpIsNillable'/>
       <ref name='xmlExpMaxToken'/>
+      <ref name='xmlExpNewAtom'/>
       <ref name='xmlExpNewCtxt'/>
+      <ref name='xmlExpNewOr'/>
+      <ref name='xmlExpNewRange'/>
+      <ref name='xmlExpNewSeq'/>
       <ref name='xmlExpNode'/>
       <ref name='xmlExpNodePtr'/>
       <ref name='xmlExpNodeType'/>
@@ -7280,6 +7288,10 @@
     </type>
     <type name='xmlExpNodePtr'>
       <ref name='xmlExpExpDerive'/>
+      <ref name='xmlExpNewAtom'/>
+      <ref name='xmlExpNewOr'/>
+      <ref name='xmlExpNewRange'/>
+      <ref name='xmlExpNewSeq'/>
       <ref name='xmlExpParse'/>
       <ref name='xmlExpStringDerive'/>
     </type>
@@ -7876,6 +7888,7 @@
       <ref name='xmlEncodeEntities'/>
       <ref name='xmlEncodeEntitiesReentrant'/>
       <ref name='xmlEncodeSpecialChars'/>
+      <ref name='xmlExpNewAtom'/>
       <ref name='xmlExpStringDerive'/>
       <ref name='xmlGetDocEntity'/>
       <ref name='xmlGetDtdAttrDesc'/>
@@ -9063,6 +9076,10 @@
       <ref name='xmlExpFreeCtxt'/>
       <ref name='xmlExpGetLanguage'/>
       <ref name='xmlExpGetStart'/>
+      <ref name='xmlExpNewAtom'/>
+      <ref name='xmlExpNewOr'/>
+      <ref name='xmlExpNewRange'/>
+      <ref name='xmlExpNewSeq'/>
       <ref name='xmlExpParse'/>
       <ref name='xmlExpStringDerive'/>
       <ref name='xmlExpSubsume'/>
@@ -9075,6 +9092,9 @@
       <ref name='xmlExpGetStart'/>
       <ref name='xmlExpIsNillable'/>
       <ref name='xmlExpMaxToken'/>
+      <ref name='xmlExpNewOr'/>
+      <ref name='xmlExpNewRange'/>
+      <ref name='xmlExpNewSeq'/>
       <ref name='xmlExpRef'/>
       <ref name='xmlExpStringDerive'/>
       <ref name='xmlExpSubsume'/>
@@ -13020,7 +13040,11 @@
       <ref name='xmlExpGetStart'/>
       <ref name='xmlExpIsNillable'/>
       <ref name='xmlExpMaxToken'/>
+      <ref name='xmlExpNewAtom'/>
       <ref name='xmlExpNewCtxt'/>
+      <ref name='xmlExpNewOr'/>
+      <ref name='xmlExpNewRange'/>
+      <ref name='xmlExpNewSeq'/>
       <ref name='xmlExpNode'/>
       <ref name='xmlExpNodePtr'/>
       <ref name='xmlExpNodeType'/>
@@ -16193,6 +16217,9 @@
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlDocDumpMemoryEnc'/>
           <ref name='xmlDocFormatDump'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlHasNsProp'/>
           <ref name='xmlNanoHTTPContentLength'/>
           <ref name='xmlNodeDump'/>
@@ -18731,6 +18758,12 @@
         <word name='assure'>
           <ref name='xmlGetUTF8Char'/>
         </word>
+        <word name='atom'>
+          <ref name='xmlExpNewAtom'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
+        </word>
         <word name='atomic'>
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
@@ -19017,6 +19050,9 @@
           <ref name='xmlStrEqual'/>
           <ref name='xmlXPathCompareValues'/>
           <ref name='xmlXPathIntersection'/>
+        </word>
+        <word name='bound'>
+          <ref name='xmlExpNewRange'/>
         </word>
         <word name='boundaries'>
           <ref name='_xmlParserCtxt'/>
@@ -19435,6 +19471,7 @@
           <ref name='xmlValidGetValidElements'/>
         </word>
         <word name='choice'>
+          <ref name='xmlExpNewOr'/>
           <ref name='xmlExpParse'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
         </word>
@@ -19976,6 +20013,9 @@
           <ref name='isolat1ToUTF8'/>
           <ref name='xmlCharEncodingInputFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlGetUTF8Char'/>
           <ref name='xmlParserInputBufferRead'/>
           <ref name='xmlSchemaNewNOTATIONValue'/>
@@ -20293,6 +20333,11 @@
         <word name='ctrio'>
           <ref name='xmlXPathIsInf'/>
           <ref name='xmlXPathIsNaN'/>
+        </word>
+        <word name='ctxt'>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
         </word>
         <word name='ctxt-'>
           <ref name='docbFreeParserCtxt'/>
@@ -21541,6 +21586,9 @@
         </word>
         <word name='even'>
           <ref name='_xmlParserInput'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlTextWriterFullEndElement'/>
@@ -23026,6 +23074,7 @@
         </word>
         <word name='infinite'>
           <ref name='xmlExpExpDerive'/>
+          <ref name='xmlExpNewRange'/>
           <ref name='xmlExpParse'/>
         </word>
         <word name='infinity'>
@@ -23459,6 +23508,9 @@
       </letter>
       <letter name='k'>
         <word name='keep'>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlParseURIRaw'/>
           <ref name='xmlParserInputGrow'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
@@ -23596,6 +23648,8 @@
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='left'>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='legacy'>
@@ -23621,6 +23675,7 @@
         <word name='lenght'>
           <ref name='xmlExpGetLanguage'/>
           <ref name='xmlExpGetStart'/>
+          <ref name='xmlExpNewAtom'/>
           <ref name='xmlRelaxNGValidatePushCData'/>
           <ref name='xmlSplitQName3'/>
           <ref name='xmlValidatePushCData'/>
@@ -23938,6 +23993,9 @@
           <ref name='xmlOutputBufferWriteEscape'/>
           <ref name='xmlOutputBufferWriteString'/>
         </word>
+        <word name='lower'>
+          <ref name='xmlExpNewRange'/>
+        </word>
         <word name='lowercase'>
           <ref name='htmlTagLookup'/>
           <ref name='xmlIsRef'/>
@@ -24125,6 +24183,7 @@
           <ref name='xmlPatternMaxDepth'/>
         </word>
         <word name='means'>
+          <ref name='xmlExpNewRange'/>
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetStructuredErrorFunc'/>
           <ref name='xmlStreamPush'/>
@@ -25022,6 +25081,9 @@
         <word name='operation'>
           <ref name='xmlBuildRelativeURI'/>
           <ref name='xmlCatalogSetDebug'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlTextReaderConstValue'/>
           <ref name='xmlXPathAddValues'/>
           <ref name='xmlXPathCompareValues'/>
@@ -26054,6 +26116,7 @@
           <ref name='xmlBufferAdd'/>
           <ref name='xmlBufferAddHead'/>
           <ref name='xmlCharInRange'/>
+          <ref name='xmlExpNewRange'/>
           <ref name='xmlTextReaderNormalization'/>
           <ref name='xmlXPathNodeSetItem'/>
           <ref name='xmlXPtrLocationSetAdd'/>
@@ -26435,6 +26498,9 @@
           <ref name='xmlClearNodeInfoSeq'/>
           <ref name='xmlClearParserCtxt'/>
           <ref name='xmlDecodeEntities'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlUnlockLibrary'/>
         </word>
         <word name='releases'>
@@ -26514,6 +26580,12 @@
         </word>
         <word name='repeat'>
           <ref name='xmlXPathAxisFunc'/>
+        </word>
+        <word name='repeated'>
+          <ref name='xmlExpNewRange'/>
+        </word>
+        <word name='repetition'>
+          <ref name='xmlExpNewRange'/>
         </word>
         <word name='replace'>
           <ref name='XML_SCHEMAS_FACET_REPLACE'/>
@@ -26793,6 +26865,8 @@
         <word name='right'>
           <ref name='xmlAutomataNewCounterTrans'/>
           <ref name='xmlCheckFilename'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlParseCharData'/>
           <ref name='xmlSetListDoc'/>
           <ref name='xmlSetTreeDoc'/>
@@ -27095,6 +27169,7 @@
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlClearNodeInfoSeq'/>
           <ref name='xmlCurrentChar'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlExpParse'/>
           <ref name='xmlGetUTF8Char'/>
           <ref name='xmlInitNodeInfoSeq'/>
@@ -28256,6 +28331,8 @@
         <word name='them'>
           <ref name='xmlExpGetLanguage'/>
           <ref name='xmlExpGetStart'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlNanoFTPRead'/>
           <ref name='xmlNanoHTTPRead'/>
           <ref name='xmlParseAttValue'/>
@@ -28727,6 +28804,9 @@
         <word name='unless'>
           <ref name='htmlSAXParseDoc'/>
           <ref name='htmlSAXParseFile'/>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
           <ref name='xmlGetNoNsProp'/>
           <ref name='xmlGetNsProp'/>
           <ref name='xmlGetProp'/>
@@ -28846,6 +28926,7 @@
           <ref name='xlinkNodeDetectFunc'/>
         </word>
         <word name='upper'>
+          <ref name='xmlExpNewRange'/>
           <ref name='xmlIsRef'/>
         </word>
         <word name='uri'>
@@ -29640,6 +29721,16 @@
         <word name='xmlEnumerationPtr'>
           <ref name='xmlCopyEnumeration'/>
           <ref name='xmlCreateEnumeration'/>
+        </word>
+        <word name='xmlExpFree'>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
+        </word>
+        <word name='xmlExpRef'>
+          <ref name='xmlExpNewOr'/>
+          <ref name='xmlExpNewRange'/>
+          <ref name='xmlExpNewSeq'/>
         </word>
         <word name='xmlExternalEntityLoader'>
           <ref name='xmlGetExternalEntityLoader'/>

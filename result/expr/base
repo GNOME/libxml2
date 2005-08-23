@@ -82,4 +82,4 @@ Subexp: a{0,100},(a|c) => accept, Ok
 Subexp: a{0,101},(a|c) => reject, Ok
 Expression: (a, ((b, c, d){0,5}, e{0,1}){0,4}, f)
 Subexp: (a, b, (c, d, b){2,3}, c, d, e, f) => accept, Ok
-Ops: 0 nodes, 205 cons
+Ops: 0 nodes, 221 cons

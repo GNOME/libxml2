@@ -3229,12 +3229,60 @@ extern __typeof (xmlExpMaxToken) xmlExpMaxToken__internal_alias __attribute((vis
 
 #if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
 #ifdef bottom_xmlregexp
+#undef xmlExpNewAtom
+extern __typeof (xmlExpNewAtom) xmlExpNewAtom __attribute((alias("xmlExpNewAtom__internal_alias")));
+#else
+#ifndef xmlExpNewAtom
+extern __typeof (xmlExpNewAtom) xmlExpNewAtom__internal_alias __attribute((visibility("hidden")));
+#define xmlExpNewAtom xmlExpNewAtom__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
 #undef xmlExpNewCtxt
 extern __typeof (xmlExpNewCtxt) xmlExpNewCtxt __attribute((alias("xmlExpNewCtxt__internal_alias")));
 #else
 #ifndef xmlExpNewCtxt
 extern __typeof (xmlExpNewCtxt) xmlExpNewCtxt__internal_alias __attribute((visibility("hidden")));
 #define xmlExpNewCtxt xmlExpNewCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpNewOr
+extern __typeof (xmlExpNewOr) xmlExpNewOr __attribute((alias("xmlExpNewOr__internal_alias")));
+#else
+#ifndef xmlExpNewOr
+extern __typeof (xmlExpNewOr) xmlExpNewOr__internal_alias __attribute((visibility("hidden")));
+#define xmlExpNewOr xmlExpNewOr__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpNewRange
+extern __typeof (xmlExpNewRange) xmlExpNewRange __attribute((alias("xmlExpNewRange__internal_alias")));
+#else
+#ifndef xmlExpNewRange
+extern __typeof (xmlExpNewRange) xmlExpNewRange__internal_alias __attribute((visibility("hidden")));
+#define xmlExpNewRange xmlExpNewRange__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+#ifdef bottom_xmlregexp
+#undef xmlExpNewSeq
+extern __typeof (xmlExpNewSeq) xmlExpNewSeq __attribute((alias("xmlExpNewSeq__internal_alias")));
+#else
+#ifndef xmlExpNewSeq
+extern __typeof (xmlExpNewSeq) xmlExpNewSeq__internal_alias __attribute((visibility("hidden")));
+#define xmlExpNewSeq xmlExpNewSeq__internal_alias
 #endif
 #endif
 #endif

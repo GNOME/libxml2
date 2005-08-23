@@ -156,6 +156,23 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN xmlExpNodePtr XMLCALL
 			xmlExpParse	(xmlExpCtxtPtr ctxt,
 					 const char *expr);
+XMLPUBFUN xmlExpNodePtr XMLCALL
+			xmlExpNewAtom	(xmlExpCtxtPtr ctxt,
+					 const xmlChar *name,
+					 int len);
+XMLPUBFUN xmlExpNodePtr XMLCALL
+			xmlExpNewOr	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr left,
+					 xmlExpNodePtr right);
+XMLPUBFUN xmlExpNodePtr XMLCALL
+			xmlExpNewSeq	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr left,
+					 xmlExpNodePtr right);
+XMLPUBFUN xmlExpNodePtr XMLCALL
+			xmlExpNewRange	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr subset,
+					 int min,
+					 int max);
 /*
  * The really interesting APIs
  */

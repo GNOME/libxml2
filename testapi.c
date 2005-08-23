@@ -32205,7 +32205,47 @@ test_xmlExpMaxToken(void) {
 
 
 static int
+test_xmlExpNewAtom(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlExpNewCtxt(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlExpNewOr(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlExpNewRange(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlExpNewSeq(void) {
     int test_ret = 0;
 
 
@@ -32705,7 +32745,7 @@ static int
 test_xmlregexp(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlregexp : 16 of 26 functions ...\n");
+    if (quiet == 0) printf("Testing xmlregexp : 16 of 30 functions ...\n");
     test_ret += test_xmlExpCtxtNbCons();
     test_ret += test_xmlExpCtxtNbNodes();
     test_ret += test_xmlExpDump();
@@ -32714,7 +32754,11 @@ test_xmlregexp(void) {
     test_ret += test_xmlExpGetStart();
     test_ret += test_xmlExpIsNillable();
     test_ret += test_xmlExpMaxToken();
+    test_ret += test_xmlExpNewAtom();
     test_ret += test_xmlExpNewCtxt();
+    test_ret += test_xmlExpNewOr();
+    test_ret += test_xmlExpNewRange();
+    test_ret += test_xmlExpNewSeq();
     test_ret += test_xmlExpParse();
     test_ret += test_xmlExpRef();
     test_ret += test_xmlExpStringDerive();

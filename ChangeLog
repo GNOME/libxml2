@@ -1,3 +1,10 @@
+Tue Aug 23 15:38:46 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* elfgcchack.h testapi.c doc/*: regenerated
+	* schematron.c: fixed a compilation problem
+	* xmlregexp.c include/libxml/xmlregexp.h: some cleanups and one bug fix
+	* result/expr/base: slightly changes the number of Cons.
+
 Mon Aug 22 23:19:50 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* elfgcchack.h testapi.c doc/*: rescanned code and rebuilt

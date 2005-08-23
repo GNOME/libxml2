@@ -1724,4 +1724,6 @@ main(void)
     return (0);
 }
 #endif
+#define bottom_schematron
+#include "elfgcchack.h"
 #endif /* LIBXML_SCHEMATRON_ENABLED */

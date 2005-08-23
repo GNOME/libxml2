@@ -815,7 +815,19 @@ xmlExpIsNillable
 xmlExpMaxToken
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlExpNewAtom
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlExpNewCtxt
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpNewOr
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpNewRange
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlExpNewSeq
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlExpParse

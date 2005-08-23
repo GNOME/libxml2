@@ -1,3 +1,9 @@
+Tue Aug 23 20:05:05 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed bug #170489 reported by Jirka Kosek
+	* test/valid/objednavka.xml test/valid/dtds/objednavka.dtd
+	  result/valid/objednavka*: added the test to the regression suite.
+
 Tue Aug 23 18:04:08 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c include/libxml/HTMLparser.h: added a recovery mode

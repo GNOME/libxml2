@@ -1,3 +1,8 @@
+Wed Aug 24 16:19:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: applied the patch suggested #309565 which can avoid
+	  looping in error conditions.
+
 Wed Aug 24 16:04:17 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c tree.c: line numbers are now carried by most nodes, fixing

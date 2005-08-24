@@ -11,6 +11,7 @@ SAX.error: PEReference: %sampleEnt; not found
 SAX.characters('they called me , 16)
 SAX.getEntity(sampleEnt)
 SAX.error: Entity 'sampleEnt' not defined
+SAX.reference(sampleEnt)
 SAX.characters(', 1)
 SAX.endDocument()
 xmlSAXUserParseFile returned error 27

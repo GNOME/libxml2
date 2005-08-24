@@ -11,6 +11,7 @@ SAX.characters(
   , 3)
 SAX.getEntity(title)
 SAX.error: Entity 'title' not defined
+SAX.reference(title)
 SAX.characters(
   This text is about XML, the, 31)
 SAX.getEntity(xml)

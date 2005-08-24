@@ -6100,6 +6100,11 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		    } else {
 		        xmlErrMsgStr(ctxt, XML_WAR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
+			if ((ctxt->inSubset == 0) &&
+		            (ctxt->sax != NULL) &&
+		            (ctxt->sax->reference != NULL)) {
+			    ctxt->sax->reference(ctxt, name);
+			}
 		    }
 		    ctxt->valid = 0;
 		}

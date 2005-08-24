@@ -1,3 +1,10 @@
+Wed Aug 24 16:44:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: found another bug while looking at #309616 on missing
+	  entities.
+	* result/ent2.sax* result/ent7.sax* result/xml2.sax*: this changed the
+	  SAX stream in missing conditions for a few tests
+
 Wed Aug 24 16:19:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: applied the patch suggested #309565 which can avoid

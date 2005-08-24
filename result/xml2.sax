@@ -12,6 +12,7 @@ SAX.error: PEReference: %xx; not found
 SAX.characters(This sample shows a , 20)
 SAX.getEntity(tricky)
 SAX.error: Entity 'tricky' not defined
+SAX.reference(tricky)
 SAX.characters( method., 8)
 SAX.endDocument()
 xmlSAXUserParseFile returned error 27

@@ -8931,6 +8931,8 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 
 	CHECK_ERROR;
 
+	type = (xmlXPathTypeVal) 0;
+	test = (xmlXPathTestVal) 0;
 	name = xmlXPathCompNodeTest(ctxt, &test, &type, &prefix, name);
 	if (test == 0)
 	    return;

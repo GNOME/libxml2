@@ -1,3 +1,9 @@
+Wed Aug 24 11:35:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: removed a potentially uninitialized variable error
+	* python/generator.py: fixed a deprecation warning
+	* python/tests/tstLastError.py: silent the damn test when Okay !
+
 Wed Aug 24 00:11:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c globals.c runtest.c testC14N.c testapi.c tree.c

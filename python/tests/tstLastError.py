@@ -5,6 +5,10 @@ import libxml2
 
 class TestCase(unittest.TestCase):
 
+    def runTest(self):
+        self.test1()
+        self.test2()
+
     def setUp(self):
         libxml2.debugMemory(1)
 
@@ -13,6 +17,8 @@ class TestCase(unittest.TestCase):
         if libxml2.debugMemory(1) != 0:
             libxml2.dumpMemory() 
             self.fail("Memory leak %d bytes" % (libxml2.debugMemory(1),))
+	else:
+	    print "OK"
 
     def failUnlessXmlError(self,f,args,exc,domain,code,message,level,file,line):
         """Run function f, with arguments args and expect an exception exc;
@@ -69,4 +75,8 @@ class TestCase(unittest.TestCase):
                         line=3)
 
 if __name__ == "__main__":
-    unittest.main()
+    test = TestCase()
+    test.setUp()
+    test.test1()
+    test.test2()
+    test.tearDown()

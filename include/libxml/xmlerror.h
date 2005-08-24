@@ -60,7 +60,8 @@ typedef enum {
     XML_FROM_VALID,	/* The XML DTD validation with valid context */
     XML_FROM_CHECK,	/* The error checking module */
     XML_FROM_WRITER,	/* The xmlwriter module */
-    XML_FROM_MODULE	/* The dynamically loaded module module*/
+    XML_FROM_MODULE,	/* The dynamically loaded module module*/
+    XML_FROM_I18N 	/* The module handling character conversion */
 } xmlErrorDomain;
 
 /**
@@ -800,7 +801,12 @@ typedef enum {
     XML_CHECK_NOT_NCNAME, /* 5034 */
     XML_CHECK_OUTSIDE_DICT, /* 5035 */
     XML_CHECK_WRONG_NAME, /* 5036 */
-    XML_CHECK_NAME_NOT_NULL /* 5037 */
+    XML_CHECK_NAME_NOT_NULL, /* 5037 */
+    XML_I18N_NO_NAME = 6000,
+    XML_I18N_NO_HANDLER, /* 6001 */
+    XML_I18N_EXCESS_HANDLER, /* 6002 */
+    XML_I18N_CONV_FAILED, /* 6003 */
+    XML_I18N_NO_OUTPUT /* 6004 */
 #if 0
     XML_CHECK_, /* 5033 */
     XML_CHECK_X /* 503 */

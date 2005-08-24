@@ -354,6 +354,9 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         case XML_FROM_XSLT:
             channel(data, "XSLT ");
             break;
+        case XML_FROM_I18N:
+            channel(data, "encoding ");
+            break;
         default:
             break;
     }

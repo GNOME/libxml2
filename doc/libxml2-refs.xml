@@ -414,6 +414,7 @@
     <reference name='XML_FROM_FTP' href='html/libxml-xmlerror.html#XML_FROM_FTP'/>
     <reference name='XML_FROM_HTML' href='html/libxml-xmlerror.html#XML_FROM_HTML'/>
     <reference name='XML_FROM_HTTP' href='html/libxml-xmlerror.html#XML_FROM_HTTP'/>
+    <reference name='XML_FROM_I18N' href='html/libxml-xmlerror.html#XML_FROM_I18N'/>
     <reference name='XML_FROM_IO' href='html/libxml-xmlerror.html#XML_FROM_IO'/>
     <reference name='XML_FROM_MEMORY' href='html/libxml-xmlerror.html#XML_FROM_MEMORY'/>
     <reference name='XML_FROM_MODULE' href='html/libxml-xmlerror.html#XML_FROM_MODULE'/>
@@ -445,6 +446,11 @@
     <reference name='XML_HTTP_UNKNOWN_HOST' href='html/libxml-xmlerror.html#XML_HTTP_UNKNOWN_HOST'/>
     <reference name='XML_HTTP_URL_SYNTAX' href='html/libxml-xmlerror.html#XML_HTTP_URL_SYNTAX'/>
     <reference name='XML_HTTP_USE_IP' href='html/libxml-xmlerror.html#XML_HTTP_USE_IP'/>
+    <reference name='XML_I18N_CONV_FAILED' href='html/libxml-xmlerror.html#XML_I18N_CONV_FAILED'/>
+    <reference name='XML_I18N_EXCESS_HANDLER' href='html/libxml-xmlerror.html#XML_I18N_EXCESS_HANDLER'/>
+    <reference name='XML_I18N_NO_HANDLER' href='html/libxml-xmlerror.html#XML_I18N_NO_HANDLER'/>
+    <reference name='XML_I18N_NO_NAME' href='html/libxml-xmlerror.html#XML_I18N_NO_NAME'/>
+    <reference name='XML_I18N_NO_OUTPUT' href='html/libxml-xmlerror.html#XML_I18N_NO_OUTPUT'/>
     <reference name='XML_INTERNAL_GENERAL_ENTITY' href='html/libxml-entities.html#XML_INTERNAL_GENERAL_ENTITY'/>
     <reference name='XML_INTERNAL_PARAMETER_ENTITY' href='html/libxml-entities.html#XML_INTERNAL_PARAMETER_ENTITY'/>
     <reference name='XML_INTERNAL_PREDEFINED_ENTITY' href='html/libxml-entities.html#XML_INTERNAL_PREDEFINED_ENTITY'/>
@@ -3845,6 +3851,7 @@
       <ref name='XML_FROM_FTP'/>
       <ref name='XML_FROM_HTML'/>
       <ref name='XML_FROM_HTTP'/>
+      <ref name='XML_FROM_I18N'/>
       <ref name='XML_FROM_IO'/>
       <ref name='XML_FROM_MEMORY'/>
       <ref name='XML_FROM_MODULE'/>
@@ -3876,6 +3883,11 @@
       <ref name='XML_HTTP_UNKNOWN_HOST'/>
       <ref name='XML_HTTP_URL_SYNTAX'/>
       <ref name='XML_HTTP_USE_IP'/>
+      <ref name='XML_I18N_CONV_FAILED'/>
+      <ref name='XML_I18N_EXCESS_HANDLER'/>
+      <ref name='XML_I18N_NO_HANDLER'/>
+      <ref name='XML_I18N_NO_NAME'/>
+      <ref name='XML_I18N_NO_OUTPUT'/>
       <ref name='XML_INTERNAL_GENERAL_ENTITY'/>
       <ref name='XML_INTERNAL_PARAMETER_ENTITY'/>
       <ref name='XML_INTERNAL_PREDEFINED_ENTITY'/>
@@ -12262,6 +12274,7 @@
       <ref name='XML_FROM_FTP'/>
       <ref name='XML_FROM_HTML'/>
       <ref name='XML_FROM_HTTP'/>
+      <ref name='XML_FROM_I18N'/>
       <ref name='XML_FROM_IO'/>
       <ref name='XML_FROM_MEMORY'/>
       <ref name='XML_FROM_MODULE'/>
@@ -12290,6 +12303,11 @@
       <ref name='XML_HTTP_UNKNOWN_HOST'/>
       <ref name='XML_HTTP_URL_SYNTAX'/>
       <ref name='XML_HTTP_USE_IP'/>
+      <ref name='XML_I18N_CONV_FAILED'/>
+      <ref name='XML_I18N_EXCESS_HANDLER'/>
+      <ref name='XML_I18N_NO_HANDLER'/>
+      <ref name='XML_I18N_NO_NAME'/>
+      <ref name='XML_I18N_NO_OUTPUT'/>
       <ref name='XML_IO_BUFFER_FULL'/>
       <ref name='XML_IO_EACCES'/>
       <ref name='XML_IO_EADDRINUSE'/>

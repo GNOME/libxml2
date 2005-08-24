@@ -1,3 +1,9 @@
+Wed Aug 24 14:43:34 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c error.c include/libxml/xmlerror.h: finally converted
+	  the encoding module to the common error reporting mechanism
+	* doc/* doc/html/libxml-xmlerror.html: rebuilt
+
 Wed Aug 24 11:35:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: removed a potentially uninitialized variable error

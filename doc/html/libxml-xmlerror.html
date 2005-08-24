@@ -79,6 +79,7 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_FROM_CHECK" id="XML_FROM_CHECK">XML_FROM_CHECK</a> = 24 : The error checking module
     <a name="XML_FROM_WRITER" id="XML_FROM_WRITER">XML_FROM_WRITER</a> = 25 : The xmlwriter module
     <a name="XML_FROM_MODULE" id="XML_FROM_MODULE">XML_FROM_MODULE</a> = 26 : The dynamically loaded module modul
+    <a name="XML_FROM_I18N" id="XML_FROM_I18N">XML_FROM_I18N</a> = 27 : The module handling character conversion
 }
 </pre><h3>Enum <a name="xmlErrorLevel" id="xmlErrorLevel">xmlErrorLevel</a></h3><pre class="programlisting">Enum xmlErrorLevel {
     <a name="XML_ERR_NONE" id="XML_ERR_NONE">XML_ERR_NONE</a> = 0
@@ -795,8 +796,13 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_CHECK_OUTSIDE_DICT" id="XML_CHECK_OUTSIDE_DICT">XML_CHECK_OUTSIDE_DICT</a> = 5035 : 5035
     <a name="XML_CHECK_WRONG_NAME" id="XML_CHECK_WRONG_NAME">XML_CHECK_WRONG_NAME</a> = 5036 : 5036
     <a name="XML_CHECK_NAME_NOT_NULL" id="XML_CHECK_NAME_NOT_NULL">XML_CHECK_NAME_NOT_NULL</a> = 5037 : 5037
-    <a name="XML_CHECK_" id="XML_CHECK_">XML_CHECK_</a> = 5038 : 5033
-    <a name="XML_CHECK_X" id="XML_CHECK_X">XML_CHECK_X</a> = 5039 : 503
+    <a name="XML_I18N_NO_NAME" id="XML_I18N_NO_NAME">XML_I18N_NO_NAME</a> = 6000
+    <a name="XML_I18N_NO_HANDLER" id="XML_I18N_NO_HANDLER">XML_I18N_NO_HANDLER</a> = 6001 : 6001
+    <a name="XML_I18N_EXCESS_HANDLER" id="XML_I18N_EXCESS_HANDLER">XML_I18N_EXCESS_HANDLER</a> = 6002 : 6002
+    <a name="XML_I18N_CONV_FAILED" id="XML_I18N_CONV_FAILED">XML_I18N_CONV_FAILED</a> = 6003 : 6003
+    <a name="XML_I18N_NO_OUTPUT" id="XML_I18N_NO_OUTPUT">XML_I18N_NO_OUTPUT</a> = 6004 : 6004
+    <a name="XML_CHECK_" id="XML_CHECK_">XML_CHECK_</a> = 6005 : 5033
+    <a name="XML_CHECK_X" id="XML_CHECK_X">XML_CHECK_X</a> = 6006 : 503
 }
 </pre><h3><a name="initGenericErrorDefaultFunc" id="initGenericErrorDefaultFunc"></a>Function: initGenericErrorDefaultFunc</h3><pre class="programlisting">void	initGenericErrorDefaultFunc	(<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler)<br />
 </pre><p>Set or reset (if NULL) the default handler for generic errors to the builtin error function.</p>

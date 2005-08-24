@@ -1945,6 +1945,7 @@
      <exports symbol='XML_SCHEMAP_SRC_RESOLVE' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_FACET_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_RESTRICTION_NONAME_NOREF' type='enum'/>
+     <exports symbol='XML_I18N_NO_OUTPUT' type='enum'/>
      <exports symbol='XML_CHECK_FOUND_ATTRIBUTE' type='enum'/>
      <exports symbol='XML_ERR_STANDALONE_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ATTR' type='enum'/>
@@ -2065,7 +2066,7 @@
      <exports symbol='XML_SCHEMAV_CVC_ELT_4_3' type='enum'/>
      <exports symbol='XML_FTP_ACCNT' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_4_1' type='enum'/>
-     <exports symbol='XML_SCHEMAP_EXTENSION_NO_BASE' type='enum'/>
+     <exports symbol='XML_RNGP_PAT_START_DATA' type='enum'/>
      <exports symbol='XML_IO_ENOENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2' type='enum'/>
@@ -2107,6 +2108,7 @@
      <exports symbol='XML_DTD_MULTIPLE_ID' type='enum'/>
      <exports symbol='XML_FROM_XPATH' type='enum'/>
      <exports symbol='XML_TREE_INVALID_DEC' type='enum'/>
+     <exports symbol='XML_SCHEMAP_EXTENSION_NO_BASE' type='enum'/>
      <exports symbol='XML_SCHEMAP_E_PROPS_CORRECT_5' type='enum'/>
      <exports symbol='XML_SCHEMAP_E_PROPS_CORRECT_4' type='enum'/>
      <exports symbol='XML_CHECK_FOUND_DOCTYPE' type='enum'/>
@@ -2145,7 +2147,7 @@
      <exports symbol='XML_SCHEMAP_SRC_ELEMENT_3' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_REF' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_EMPTY' type='enum'/>
-     <exports symbol='XML_RNGP_PAT_START_DATA' type='enum'/>
+     <exports symbol='XML_FROM_I18N' type='enum'/>
      <exports symbol='XML_DTD_MISSING_ATTRIBUTE' type='enum'/>
      <exports symbol='XML_IO_EMFILE' type='enum'/>
      <exports symbol='XML_RNGP_EMPTY_NOT_EMPTY' type='enum'/>
@@ -2184,6 +2186,7 @@
      <exports symbol='XML_DTD_NOTATION_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_3' type='enum'/>
+     <exports symbol='XML_I18N_NO_NAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_1' type='enum'/>
      <exports symbol='XML_RNGP_EXCEPT_MISSING' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MAXINCLUSIVE_VALID' type='enum'/>
@@ -2191,6 +2194,7 @@
      <exports symbol='XML_DTD_MIXED_CORRUPT' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_BOUNDARY' type='enum'/>
      <exports symbol='XML_SCHEMAP_ELEMFORMDEFAULT_VALUE' type='enum'/>
+     <exports symbol='XML_I18N_EXCESS_HANDLER' type='enum'/>
      <exports symbol='XML_RNGP_DATA_CONTENT' type='enum'/>
      <exports symbol='XML_ERR_STRING_NOT_STARTED' type='enum'/>
      <exports symbol='XML_RNGP_EXCEPT_MULTIPLE' type='enum'/>
@@ -2352,7 +2356,7 @@
      <exports symbol='XML_XPATH_INVALID_ARITY' type='enum'/>
      <exports symbol='XML_RNGP_ERROR_TYPE_LIB' type='enum'/>
      <exports symbol='XML_XPTR_EVAL_FAILED' type='enum'/>
-     <exports symbol='XML_RNGP_INCLUDE_RECURSE' type='enum'/>
+     <exports symbol='XML_DTD_NO_ROOT' type='enum'/>
      <exports symbol='XML_SCHEMAP_IMPORT_REDEFINE_NSNAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTR_CHILD' type='enum'/>
      <exports symbol='XML_ERR_UNKNOWN_ENCODING' type='enum'/>
@@ -2379,6 +2383,7 @@
      <exports symbol='XML_ERR_CHARREF_IN_DTD' type='enum'/>
      <exports symbol='XML_IO_ENFILE' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_IS_PARAMETER' type='enum'/>
+     <exports symbol='XML_I18N_CONV_FAILED' type='enum'/>
      <exports symbol='XML_CHECK_WRONG_PARENT' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NO_NAME' type='enum'/>
      <exports symbol='XML_IO_EPERM' type='enum'/>
@@ -2431,6 +2436,7 @@
      <exports symbol='XML_SCHEMAP_UNKNOWN_CHOICE_CHILD' type='enum'/>
      <exports symbol='XML_RNGP_ELEM_CONTENT_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAV_HAVEDEFAULT' type='enum'/>
+     <exports symbol='XML_I18N_NO_HANDLER' type='enum'/>
      <exports symbol='XML_RNGP_MISSING_HREF' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_FROM_RELAXNGP' type='enum'/>
@@ -2551,7 +2557,7 @@
      <exports symbol='XML_ERR_ELEMCONTENT_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_FROM_NAMESPACE' type='enum'/>
      <exports symbol='XML_IO_EBUSY' type='enum'/>
-     <exports symbol='XML_DTD_NO_ROOT' type='enum'/>
+     <exports symbol='XML_RNGP_INCLUDE_RECURSE' type='enum'/>
      <exports symbol='XML_ERR_INVALID_URI' type='enum'/>
      <exports symbol='XML_IO_ESRCH' type='enum'/>
      <exports symbol='XML_FROM_XPOINTER' type='enum'/>
@@ -4517,7 +4523,7 @@
     <enum name='XML_CHAR_ENCODING_UTF16BE' file='encoding' value='3' type='xmlCharEncoding' info='UTF-16 big endian'/>
     <enum name='XML_CHAR_ENCODING_UTF16LE' file='encoding' value='2' type='xmlCharEncoding' info='UTF-16 little endian'/>
     <enum name='XML_CHAR_ENCODING_UTF8' file='encoding' value='1' type='xmlCharEncoding' info='UTF-8'/>
-    <enum name='XML_CHECK_' file='xmlerror' value='5038' type='xmlParserErrors' info='5033'/>
+    <enum name='XML_CHECK_' file='xmlerror' value='6005' type='xmlParserErrors' info='5033'/>
     <enum name='XML_CHECK_ENTITY_TYPE' file='xmlerror' value='5012' type='xmlParserErrors' info='5012'/>
     <enum name='XML_CHECK_FOUND_ATTRIBUTE' file='xmlerror' value='5001' type='xmlParserErrors' info='5001'/>
     <enum name='XML_CHECK_FOUND_CDATA' file='xmlerror' value='5003' type='xmlParserErrors' info='5003'/>
@@ -4556,7 +4562,7 @@
     <enum name='XML_CHECK_WRONG_NEXT' file='xmlerror' value='5021' type='xmlParserErrors' info='5021'/>
     <enum name='XML_CHECK_WRONG_PARENT' file='xmlerror' value='5029' type='xmlParserErrors' info='5029'/>
     <enum name='XML_CHECK_WRONG_PREV' file='xmlerror' value='5019' type='xmlParserErrors' info='5019'/>
-    <enum name='XML_CHECK_X' file='xmlerror' value='5039' type='xmlParserErrors' info=' 503'/>
+    <enum name='XML_CHECK_X' file='xmlerror' value='6006' type='xmlParserErrors' info=' 503'/>
     <enum name='XML_COMMENT_NODE' file='tree' value='8' type='xmlElementType'/>
     <enum name='XML_DOCB_DOCUMENT_NODE' file='tree' value='21' type='xmlElementType'/>
     <enum name='XML_DOCUMENT_FRAG_NODE' file='tree' value='11' type='xmlElementType'/>
@@ -4742,9 +4748,10 @@
     <enum name='XML_FROM_FTP' file='xmlerror' value='9' type='xmlErrorDomain' info='The FTP module'/>
     <enum name='XML_FROM_HTML' file='xmlerror' value='5' type='xmlErrorDomain' info='The HTML parser'/>
     <enum name='XML_FROM_HTTP' file='xmlerror' value='10' type='xmlErrorDomain' info='The HTTP module'/>
+    <enum name='XML_FROM_I18N' file='xmlerror' value='27' type='xmlErrorDomain' info=' The module handling character conversion'/>
     <enum name='XML_FROM_IO' file='xmlerror' value='8' type='xmlErrorDomain' info='The Input/Output stack'/>
     <enum name='XML_FROM_MEMORY' file='xmlerror' value='6' type='xmlErrorDomain' info='The memory allocator'/>
-    <enum name='XML_FROM_MODULE' file='xmlerror' value='26' type='xmlErrorDomain' info=' The dynamically loaded module modul'/>
+    <enum name='XML_FROM_MODULE' file='xmlerror' value='26' type='xmlErrorDomain' info='The dynamically loaded module modul'/>
     <enum name='XML_FROM_NAMESPACE' file='xmlerror' value='3' type='xmlErrorDomain' info='The XML Namespace module'/>
     <enum name='XML_FROM_NONE' file='xmlerror' value='0' type='xmlErrorDomain'/>
     <enum name='XML_FROM_OUTPUT' file='xmlerror' value='7' type='xmlErrorDomain' info='The serialization code'/>
@@ -4771,6 +4778,11 @@
     <enum name='XML_HTTP_UNKNOWN_HOST' file='xmlerror' value='2022' type='xmlParserErrors' info='2022'/>
     <enum name='XML_HTTP_URL_SYNTAX' file='xmlerror' value='2020' type='xmlParserErrors'/>
     <enum name='XML_HTTP_USE_IP' file='xmlerror' value='2021' type='xmlParserErrors' info='2021'/>
+    <enum name='XML_I18N_CONV_FAILED' file='xmlerror' value='6003' type='xmlParserErrors' info='6003'/>
+    <enum name='XML_I18N_EXCESS_HANDLER' file='xmlerror' value='6002' type='xmlParserErrors' info='6002'/>
+    <enum name='XML_I18N_NO_HANDLER' file='xmlerror' value='6001' type='xmlParserErrors' info='6001'/>
+    <enum name='XML_I18N_NO_NAME' file='xmlerror' value='6000' type='xmlParserErrors'/>
+    <enum name='XML_I18N_NO_OUTPUT' file='xmlerror' value='6004' type='xmlParserErrors' info='6004'/>
     <enum name='XML_INTERNAL_GENERAL_ENTITY' file='entities' value='1' type='xmlEntityType'/>
     <enum name='XML_INTERNAL_PARAMETER_ENTITY' file='entities' value='4' type='xmlEntityType'/>
     <enum name='XML_INTERNAL_PREDEFINED_ENTITY' file='entities' value='6' type='xmlEntityType'/>

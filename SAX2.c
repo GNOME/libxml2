@@ -2496,6 +2496,14 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
     if (ret == NULL) return;
     parent = ctxt->node;
 
+    if (ctxt->linenumbers) {
+	if (ctxt->input != NULL) {
+	    if (ctxt->input->line < 65535)
+		ret->line = (short) ctxt->input->line;
+	    else
+	        ret->line = 65535;
+	}
+    }
     if (ctxt->inSubset == 1) {
 	xmlAddChild((xmlNodePtr) ctxt->myDoc->intSubset, ret);
 	return;
@@ -2548,6 +2556,14 @@ xmlSAX2Comment(void *ctx, const xmlChar *value)
 #endif
     ret = xmlNewDocComment(ctxt->myDoc, value);
     if (ret == NULL) return;
+    if (ctxt->linenumbers) {
+	if (ctxt->input != NULL) {
+	    if (ctxt->input->line < 65535)
+		ret->line = (short) ctxt->input->line;
+	    else
+	        ret->line = 65535;
+	}
+    }
 
     if (ctxt->inSubset == 1) {
 	xmlAddChild((xmlNodePtr) ctxt->myDoc->intSubset, ret);

@@ -4138,15 +4138,19 @@ xmlGetLineNo(xmlNodePtr node)
 
     if (!node)
         return result;
-    if (node->type == XML_ELEMENT_NODE)
+    if ((node->type == XML_ELEMENT_NODE) ||
+        (node->type == XML_TEXT_NODE) ||
+	(node->type == XML_COMMENT_NODE) ||
+	(node->type == XML_PI_NODE))
         result = (long) node->line;
     else if ((node->prev != NULL) &&
              ((node->prev->type == XML_ELEMENT_NODE) ||
-	      (node->prev->type == XML_TEXT_NODE)))
+	      (node->prev->type == XML_TEXT_NODE) ||
+	      (node->prev->type == XML_COMMENT_NODE) ||
+	      (node->prev->type == XML_PI_NODE)))
         result = xmlGetLineNo(node->prev);
     else if ((node->parent != NULL) &&
-             ((node->parent->type == XML_ELEMENT_NODE) ||
-      	      (node->parent->type == XML_TEXT_NODE)))
+             (node->parent->type == XML_ELEMENT_NODE))
         result = xmlGetLineNo(node->parent);
 
     return result;

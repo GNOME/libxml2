@@ -35,9 +35,10 @@
      <exports symbol='HTML_INVALID' type='enum'/>
      <exports symbol='HTML_PARSE_NONET' type='enum'/>
      <exports symbol='HTML_NA' type='enum'/>
+     <exports symbol='HTML_PARSE_COMPACT' type='enum'/>
      <exports symbol='HTML_VALID' type='enum'/>
-     <exports symbol='HTML_PARSE_NOBLANKS' type='enum'/>
      <exports symbol='HTML_PARSE_NOERROR' type='enum'/>
+     <exports symbol='HTML_PARSE_NOBLANKS' type='enum'/>
      <exports symbol='HTML_DEPRECATED' type='enum'/>
      <exports symbol='HTML_PARSE_PEDANTIC' type='enum'/>
      <exports symbol='HTML_PARSE_RECOVER' type='enum'/>
@@ -693,6 +694,7 @@
      <exports symbol='XML_PARSE_NOERROR' type='enum'/>
      <exports symbol='XML_PARSE_NSCLEAN' type='enum'/>
      <exports symbol='XML_PARSE_NOCDATA' type='enum'/>
+     <exports symbol='XML_PARSE_COMPACT' type='enum'/>
      <exports symbol='XML_PARSE_SAX1' type='enum'/>
      <exports symbol='XML_PARSER_DTD' type='enum'/>
      <exports symbol='XML_PARSER_MISC' type='enum'/>
@@ -4442,9 +4444,10 @@
     <enum name='HTML_DEPRECATED' file='HTMLparser' value='2' type='htmlStatus'/>
     <enum name='HTML_INVALID' file='HTMLparser' value='1' type='htmlStatus'/>
     <enum name='HTML_NA' file='HTMLparser' value='0' type='htmlStatus' info='something we don&apos;t check at all'/>
+    <enum name='HTML_PARSE_COMPACT' file='HTMLparser' value='65536' type='htmlParserOption' info=' compact small text nodes'/>
     <enum name='HTML_PARSE_NOBLANKS' file='HTMLparser' value='256' type='htmlParserOption' info='remove blank nodes'/>
     <enum name='HTML_PARSE_NOERROR' file='HTMLparser' value='32' type='htmlParserOption' info='suppress error reports'/>
-    <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info=' Forbid network access'/>
+    <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info='Forbid network access'/>
     <enum name='HTML_PARSE_NOWARNING' file='HTMLparser' value='64' type='htmlParserOption' info='suppress warning reports'/>
     <enum name='HTML_PARSE_PEDANTIC' file='HTMLparser' value='128' type='htmlParserOption' info='pedantic error reporting'/>
     <enum name='HTML_PARSE_RECOVER' file='HTMLparser' value='1' type='htmlParserOption' info='Relaxed parsing'/>
@@ -4880,6 +4883,7 @@
     <enum name='XML_PARSER_SUBST_ENTITIES' file='xmlreader' value='4' type='xmlParserProperties'/>
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
+    <enum name='XML_PARSE_COMPACT' file='parser' value='65536' type='xmlParserOption' info=' compact small text nodes'/>
     <enum name='XML_PARSE_DOM' file='parser' value='1' type='xmlParserMode'/>
     <enum name='XML_PARSE_DTDATTR' file='parser' value='8' type='xmlParserOption' info='default DTD attributes'/>
     <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
@@ -4891,7 +4895,7 @@
     <enum name='XML_PARSE_NOERROR' file='parser' value='32' type='xmlParserOption' info='suppress error reports'/>
     <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info='Forbid network access'/>
     <enum name='XML_PARSE_NOWARNING' file='parser' value='64' type='xmlParserOption' info='suppress warning reports'/>
-    <enum name='XML_PARSE_NOXINCNODE' file='parser' value='32768' type='xmlParserOption' info=' do not generate XINCLUDE START/END nodes'/>
+    <enum name='XML_PARSE_NOXINCNODE' file='parser' value='32768' type='xmlParserOption' info='do not generate XINCLUDE START/END nodes'/>
     <enum name='XML_PARSE_NSCLEAN' file='parser' value='8192' type='xmlParserOption' info='remove redundant namespaces declarations'/>
     <enum name='XML_PARSE_PEDANTIC' file='parser' value='128' type='xmlParserOption' info='pedantic error reporting'/>
     <enum name='XML_PARSE_PUSH_DOM' file='parser' value='3' type='xmlParserMode'/>

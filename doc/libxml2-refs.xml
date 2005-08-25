@@ -19,6 +19,7 @@
     <reference name='HTML_ENTITY_REF_NODE' href='html/libxml-HTMLtree.html#HTML_ENTITY_REF_NODE'/>
     <reference name='HTML_INVALID' href='html/libxml-HTMLparser.html#HTML_INVALID'/>
     <reference name='HTML_NA' href='html/libxml-HTMLparser.html#HTML_NA'/>
+    <reference name='HTML_PARSE_COMPACT' href='html/libxml-HTMLparser.html#HTML_PARSE_COMPACT'/>
     <reference name='HTML_PARSE_NOBLANKS' href='html/libxml-HTMLparser.html#HTML_PARSE_NOBLANKS'/>
     <reference name='HTML_PARSE_NOERROR' href='html/libxml-HTMLparser.html#HTML_PARSE_NOERROR'/>
     <reference name='HTML_PARSE_NONET' href='html/libxml-HTMLparser.html#HTML_PARSE_NONET'/>
@@ -550,6 +551,7 @@
     <reference name='XML_PARSER_SUBST_ENTITIES' href='html/libxml-xmlreader.html#XML_PARSER_SUBST_ENTITIES'/>
     <reference name='XML_PARSER_SYSTEM_LITERAL' href='html/libxml-parser.html#XML_PARSER_SYSTEM_LITERAL'/>
     <reference name='XML_PARSER_VALIDATE' href='html/libxml-xmlreader.html#XML_PARSER_VALIDATE'/>
+    <reference name='XML_PARSE_COMPACT' href='html/libxml-parser.html#XML_PARSE_COMPACT'/>
     <reference name='XML_PARSE_DOM' href='html/libxml-parser.html#XML_PARSE_DOM'/>
     <reference name='XML_PARSE_DTDATTR' href='html/libxml-parser.html#XML_PARSE_DTDATTR'/>
     <reference name='XML_PARSE_DTDLOAD' href='html/libxml-parser.html#XML_PARSE_DTDLOAD'/>
@@ -3442,6 +3444,7 @@
       <ref name='HTML_ENTITY_REF_NODE'/>
       <ref name='HTML_INVALID'/>
       <ref name='HTML_NA'/>
+      <ref name='HTML_PARSE_COMPACT'/>
       <ref name='HTML_PARSE_NOBLANKS'/>
       <ref name='HTML_PARSE_NOERROR'/>
       <ref name='HTML_PARSE_NONET'/>
@@ -3987,6 +3990,7 @@
       <ref name='XML_PARSER_SUBST_ENTITIES'/>
       <ref name='XML_PARSER_SYSTEM_LITERAL'/>
       <ref name='XML_PARSER_VALIDATE'/>
+      <ref name='XML_PARSE_COMPACT'/>
       <ref name='XML_PARSE_DOM'/>
       <ref name='XML_PARSE_DTDATTR'/>
       <ref name='XML_PARSE_DTDLOAD'/>
@@ -10317,6 +10321,7 @@
       <ref name='HTML_DEPRECATED'/>
       <ref name='HTML_INVALID'/>
       <ref name='HTML_NA'/>
+      <ref name='HTML_PARSE_COMPACT'/>
       <ref name='HTML_PARSE_NOBLANKS'/>
       <ref name='HTML_PARSE_NOERROR'/>
       <ref name='HTML_PARSE_NONET'/>
@@ -10915,6 +10920,7 @@
       <ref name='XML_PARSER_START'/>
       <ref name='XML_PARSER_START_TAG'/>
       <ref name='XML_PARSER_SYSTEM_LITERAL'/>
+      <ref name='XML_PARSE_COMPACT'/>
       <ref name='XML_PARSE_DOM'/>
       <ref name='XML_PARSE_DTDATTR'/>
       <ref name='XML_PARSE_DTDLOAD'/>

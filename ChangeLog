@@ -1,3 +1,8 @@
+Fri Aug 26 00:51:58 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: the profiling usually don't work, disabled
+	* doc/*: rebuilt
+
 Thu Aug 25 23:47:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: trying to fix the first part of #310033 by

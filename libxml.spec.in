@@ -64,31 +64,34 @@ at parse time or later once the document has been modified.
 # try to use compiler profiling, based on Arjan van de Ven <arjanv@redhat.com>
 # initial test spec. This really doesn't work okay for most tests done.
 #
-GCC_VERSION=`gcc --version | grep "^gcc" | awk '{ print $3 }' | sed 's+\([0-9]\)\.\([0-9]\)\..*+\1\2+'`
-if [ $GCC_VERSION -ge 34 ]
-then
-    PROF_GEN='-fprofile-generate'
-    PROF_USE='-fprofile-use'
-fi
-
-if [ "$PROF_GEN" != "" ]
-then
-    # First generate a profiling version
-    CFLAGS="${RPM_OPT_FLAGS} ${PROF_GEN}"  %configure
-    make
-    # Run a few sampling
-    make dba100000.xml
-    ./xmllint --noout  dba100000.xml
-    ./xmllint --stream  dba100000.xml
-    ./xmllint --noout --valid test/valid/REC-xml-19980210.xml
-    ./xmllint --stream --valid test/valid/REC-xml-19980210.xml
-    # Then generate code based on profile
-    CFLAGS="${RPM_OPT_FLAGS} ${PROF_USE}"  %configure
-    make
-else
-    %configure
-    make
-fi
+# Well except it's just broken most of the time.
+#GCC_VERSION=`gcc --version | grep "^gcc" | awk '{ print $3 }' | sed 's+\([0-9]\)\.\([0-9]\)\..*+\1\2+'`
+#if [ $GCC_VERSION -ge 34 ]
+#then
+#    PROF_GEN='-fprofile-generate'
+#    PROF_USE='-fprofile-use'
+#fi
+#
+#if [ "$PROF_GEN" != "" ]
+#then
+#    # First generate a profiling version
+#    CFLAGS="${RPM_OPT_FLAGS} ${PROF_GEN}"  %configure
+#    make
+#    # Run a few sampling
+#    make dba100000.xml
+#    ./xmllint --noout  dba100000.xml
+#    ./xmllint --stream  dba100000.xml
+#    ./xmllint --noout --valid test/valid/REC-xml-19980210.xml
+#    ./xmllint --stream --valid test/valid/REC-xml-19980210.xml
+#    # Then generate code based on profile
+#    CFLAGS="${RPM_OPT_FLAGS} ${PROF_USE}"  %configure
+#    make
+#else
+#    %configure
+#    make
+#fi
+%configure
+make
 gzip -9 ChangeLog
 
 %install

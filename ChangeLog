@@ -1,3 +1,8 @@
+Thu Aug 25 22:13:37 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: fixed bug #310033, the URI extraction code given a
+	  node is a bit twisted and broke in the last months.
+
 Thu Aug 25 16:18:15 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c result/XPath/xptr/strrange2: uninitialized field and

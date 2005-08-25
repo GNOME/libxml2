@@ -517,7 +517,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 
 	if ((node->doc != NULL) && (node->doc->URL != NULL)) {
 	    baseptr = node;
-	    file = (const char *) node->doc->URL;
+/*	    file = (const char *) node->doc->URL; */
 	}
 	for (i = 0;
 	     ((i < 10) && (node != NULL) && (node->type != XML_ELEMENT_NODE));
@@ -563,10 +563,19 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    }
 	}
 	if (prev != NULL) {
-	    to->file = (char *) xmlGetProp(prev, BAD_CAST "href");
+	    if (prev->type == XML_XINCLUDE_START) {
+		prev->type = XML_ELEMENT_NODE;
+		to->file = (char *) xmlGetProp(prev, BAD_CAST "href");
+		prev->type = XML_XINCLUDE_START;
+	    } else {
+		to->file = (char *) xmlGetProp(prev, BAD_CAST "href");
+	    }
 	} else
 #endif
 	    to->file = (char *) xmlStrdup(baseptr->doc->URL);
+	if ((to->file == NULL) && (node != NULL) && (node->doc != NULL)) {
+	    to->file = (char *) xmlStrdup(node->doc->URL);
+	}
 	file = to->file;
     }
     to->line = line;

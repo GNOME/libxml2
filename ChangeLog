@@ -1,3 +1,8 @@
+Thu Aug 25 23:47:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: trying to fix the first part of #310033 by
+	  detecting gcc <= 3.2
+
 Thu Aug 25 22:13:37 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: fixed bug #310033, the URI extraction code given a

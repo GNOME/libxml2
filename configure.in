@@ -812,9 +812,25 @@ else
 	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
        ;;
        *linux*)
-           if test "${GCC}" = "yes" -a "${THREAD_LIBS}" = "-lpthread" ; then
-	       THREAD_LIBS=""
-	       BASE_THREAD_LIBS="-lpthread"
+           if test "${GCC}" = "yes" ; then
+	       GCC_VERSION=`${CC} --version | head -1 | awk '{print $3}'`
+	       GCC_MAJOR=`echo ${GCC_VERSION} | sed 's+\..*++'`
+	       GCC_MEDIUM=`echo ${GCC_VERSION} | sed 's+[[0-9]]*\.++' | sed 's+\..*++'`
+	       if test "${THREAD_LIBS}" = "-lpthread" ; then
+	           if expr ${GCC_MEDIUM} \> 2 \& ${GCC_MAJOR} = 3 > /dev/null
+		   then
+		       THREAD_LIBS=""
+		       BASE_THREAD_LIBS="-lpthread"
+		   else
+		   if expr ${GCC_MAJOR} \> 3 > /dev/null 
+		   then
+		       THREAD_LIBS=""
+		       BASE_THREAD_LIBS="-lpthread"
+		   else
+		       echo old GCC disabling weak symbols for pthread
+		   fi
+		   fi
+	       fi
 	   fi
        ;;
     esac

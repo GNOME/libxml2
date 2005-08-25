@@ -684,7 +684,7 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     }
 
     /*
-     * plit the element name into prefix:localname , the string found
+     * Split the element name into prefix:localname , the string found
      * are within the DTD and hen not associated to namespace names.
      */
     name = xmlSplitQName3(fullattr, &len);
@@ -11319,8 +11319,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	*lst = cur;
 	while (cur != NULL) {
 #ifdef LIBXML_VALID_ENABLED
-	    if (oldctxt->validate && oldctxt->wellFormed &&
-		oldctxt->myDoc && oldctxt->myDoc->intSubset) {
+	    if ((oldctxt->validate) && (oldctxt->wellFormed) &&
+		(oldctxt->myDoc) && (oldctxt->myDoc->intSubset) &&
+		(cur->type == XML_ELEMENT_NODE)) {
 		oldctxt->valid &= xmlValidateElement(&oldctxt->vctxt,
 			oldctxt->myDoc, cur);
 	    }
@@ -12842,6 +12843,10 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
     if (options & XML_PARSE_NONET) {
 	ctxt->options |= XML_PARSE_NONET;
         options -= XML_PARSE_NONET;
+    }
+    if (options & XML_PARSE_COMPACT) {
+	ctxt->options |= XML_PARSE_COMPACT;
+        options -= XML_PARSE_COMPACT;
     }
     ctxt->linenumbers = 1;
     return (options);

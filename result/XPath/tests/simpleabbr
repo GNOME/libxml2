@@ -45,7 +45,7 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  TEXT
     content=bla bla bla ...
-2  TEXT
+2  TEXT compact
     content=...
 
 ========================
@@ -54,7 +54,7 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  TEXT
     content=bla bla bla ...
-2  TEXT
+2  TEXT compact
     content=...
 
 ========================
@@ -63,7 +63,7 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  TEXT
     content=bla bla bla ...
-2  TEXT
+2  TEXT compact
     content=...
 
 ========================
@@ -77,5 +77,5 @@ Set contains 1 nodes:
 Expression: (//p/text())[position()=last()]
 Object is a Node Set :
 Set contains 1 nodes:
-1  TEXT
+1  TEXT compact
     content=...

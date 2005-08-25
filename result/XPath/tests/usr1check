@@ -5,8 +5,8 @@ Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT ITEM
     ATTRIBUTE monto
-      TEXT
+      TEXT compact
         content=50.12
     ATTRIBUTE divisa
-      TEXT
+      TEXT compact
         content=DOL

@@ -4306,7 +4306,7 @@ launchTests(testDescPtr tst) {
 		testErrorsSize = 0;
 		testErrors[0] = 0;
 		res = tst->func(globbuf.gl_pathv[i], result, error,
-		                tst->options);
+		                tst->options | XML_PARSE_COMPACT);
 		xmlResetLastError();
 		if (res != 0) {
 		    fprintf(stderr, "File %s generated an error\n",

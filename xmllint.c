@@ -196,7 +196,7 @@ static const char *pattern = NULL;
 static xmlPatternPtr patternc = NULL;
 static xmlStreamCtxtPtr patstream = NULL;
 #endif
-static int options = 0;
+static int options = XML_PARSE_COMPACT;
 static int sax = 0;
 
 /************************************************************************
@@ -2793,6 +2793,7 @@ static void usage(const char *name) {
     printf("\t--path 'paths': provide a set of paths for resources\n");
     printf("\t--load-trace : print trace of all external entites loaded\n");
     printf("\t--nonet : refuse to fetch DTDs or entities over network\n");
+    printf("\t--nocompact : do not generate compact text nodes\n");
     printf("\t--htmlout : output results as HTML\n");
     printf("\t--nowrap : do not put HTML doc wrapper\n");
 #ifdef LIBXML_VALID_ENABLED
@@ -3175,6 +3176,9 @@ main(int argc, char **argv) {
         } else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
+        } else if ((!strcmp(argv[i], "-nocompact")) ||
+                   (!strcmp(argv[i], "--nocompact"))) {
+	    options &= ~XML_PARSE_COMPACT;
 	} else if ((!strcmp(argv[i], "-load-trace")) ||
 	           (!strcmp(argv[i], "--load-trace"))) {
 	    load_trace++;

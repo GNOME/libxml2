@@ -60,5 +60,5 @@ Expression: xpointer(string-range(//p, 'difficult', 1, 0))
 Object is a Location Set:
 1 :   Object is a collapsed range :
   index 3 in node
-    TEXT
+    TEXT compact
       content=a diff

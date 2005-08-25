@@ -1088,7 +1088,8 @@ typedef enum {
     XML_PARSE_NODICT	= 1<<12,/* Do not reuse the context dictionnary */
     XML_PARSE_NSCLEAN	= 1<<13,/* remove redundant namespaces declarations */
     XML_PARSE_NOCDATA	= 1<<14,/* merge CDATA as text nodes */
-    XML_PARSE_NOXINCNODE= 1<<15 /* do not generate XINCLUDE START/END nodes */
+    XML_PARSE_NOXINCNODE= 1<<15,/* do not generate XINCLUDE START/END nodes */
+    XML_PARSE_COMPACT   = 1<<16 /* compact small text nodes */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

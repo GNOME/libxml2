@@ -348,7 +348,8 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 		 (cur->type == XML_XINCLUDE_END)) &&
 		(cur->properties != NULL))
 		xmlTextReaderFreePropList(reader, cur->properties);
-	    if ((cur->type != XML_ELEMENT_NODE) &&
+	    if ((cur->content != (xmlChar *) &(cur->properties)) &&
+	        (cur->type != XML_ELEMENT_NODE) &&
 		(cur->type != XML_XINCLUDE_START) &&
 		(cur->type != XML_XINCLUDE_END) &&
 		(cur->type != XML_ENTITY_REF_NODE)) {
@@ -422,7 +423,8 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
 	 (cur->type == XML_XINCLUDE_END)) &&
 	(cur->properties != NULL))
 	xmlTextReaderFreePropList(reader, cur->properties);
-    if ((cur->type != XML_ELEMENT_NODE) &&
+    if ((cur->content != (xmlChar *) &(cur->properties)) &&
+        (cur->type != XML_ELEMENT_NODE) &&
 	(cur->type != XML_XINCLUDE_START) &&
 	(cur->type != XML_XINCLUDE_END) &&
 	(cur->type != XML_ENTITY_REF_NODE)) {
@@ -2810,7 +2812,9 @@ xmlTextReaderReadAttributeValue(xmlTextReaderPtr reader) {
 	    reader->faketext = xmlNewDocText(reader->node->doc, 
 		                             ns->href);
 	} else {
-            if (reader->faketext->content != NULL)
+            if ((reader->faketext->content != NULL) &&
+	        (reader->faketext->content !=
+		 (xmlChar *) &(reader->faketext->properties)))
 		xmlFree(reader->faketext->content);
 	    reader->faketext->content = xmlStrdup(ns->href);
 	}
@@ -4775,6 +4779,12 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 {
     if (reader == NULL)
         return (-1);
+
+    /*
+     * we force the generation of compact text nodes on the reader
+     * since usr applications should never modify the tree
+     */
+    options |= XML_PARSE_COMPACT;
 
     reader->doc = NULL;
     reader->entNr = 0;

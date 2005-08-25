@@ -5820,6 +5820,10 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
         ctxt->recovery = 1;
     } else
         ctxt->recovery = 0;
+    if (options & HTML_PARSE_COMPACT) {
+	ctxt->options |= HTML_PARSE_COMPACT;
+        options -= HTML_PARSE_COMPACT;
+    }
     ctxt->dictNames = 0;
     return (options);
 }

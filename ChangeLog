@@ -1,3 +1,13 @@
+Thu Aug 25 15:14:56 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c parser.c SAX2.c debugXML.c tree.c valid.c xmlreader.c
+	  xmllint.c include/libxml/HTMLparser.h include/libxml/parser.h:
+	  added a parser XML_PARSE_COMPACT option to allocate small 
+	  text nodes (less than 8 bytes on 32bits, less than 16bytes on 64bits)
+	  directly within the node, various changes to cope with this.
+	* result/XPath/tests/* result/XPath/xptr/* result/xmlid/*: this 
+	  slightly change the output
+
 Thu Aug 25 12:16:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: patch from Andrew W. Nosenko, use se $GCC = 'yes'

@@ -1777,6 +1777,7 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
         xmlErrMemory(ctxt, "xmlSAX2Characters");
 	return(NULL);
     }
+    memset(ret, 0, sizeof(xmlNode));
     /*
      * intern the formatting blanks found between tags, or the
      * very short strings
@@ -1784,7 +1785,14 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     if (ctxt->dictNames) {
         xmlChar cur = str[len];
 
-	if ((len <= 3) && ((cur == '"') || (cur == '\'') ||
+	if ((len < (int) (2 * sizeof(void *))) &&
+	    (ctxt->options & XML_PARSE_COMPACT)) {
+	    /* store the string in the node overrithing properties and nsDef */
+	    xmlChar *tmp = (xmlChar *) &(ret->properties);
+	    memcpy(tmp, str, len);
+	    tmp[len] = 0;
+	    intern = tmp;
+	} else if ((len <= 3) && ((cur == '"') || (cur == '\'') ||
 	    ((cur == '<') && (str[len + 1] != '!')))) {
 	    intern = xmlDictLookup(ctxt->dict, str, len);
 	} else if (IS_BLANK_CH(*str) && (len < 60) && (cur == '<') &&
@@ -1798,7 +1806,6 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	}
     }
 skip:
-    memset(ret, 0, sizeof(xmlNode));
     ret->type = XML_TEXT_NODE;
 
     ret->name = xmlStringText;
@@ -2407,8 +2414,11 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	     * We try to minimaze realloc() uses and avoid copying
 	     * and recomputing length over and over.
 	     */
-	    if ((ctxt->nodemem == ctxt->nodelen + 1) &&
-	        (xmlDictOwns(ctxt->dict, lastChild->content))) {
+	    if (lastChild->content == (xmlChar *)&(lastChild->properties)) {
+		lastChild->content = xmlStrdup(lastChild->content);
+		lastChild->properties = NULL;
+	    } else if ((ctxt->nodemem == ctxt->nodelen + 1) &&
+	               (xmlDictOwns(ctxt->dict, lastChild->content))) {
 		lastChild->content = xmlStrdup(lastChild->content);
 	    }
 	    if (ctxt->nodelen + len >= ctxt->nodemem) {

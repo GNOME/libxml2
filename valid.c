@@ -5860,19 +5860,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 				NULL,NULL,NULL);
 		return(0);
 	    }
-	    if (elem->properties != NULL) {
-		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		                "Text element has attribute !\n",
-				NULL,NULL,NULL);
-		return(0);
-	    }
 	    if (elem->ns != NULL) {
-		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		                "Text element has namespace !\n",
-				NULL,NULL,NULL);
-		return(0);
-	    }
-	    if (elem->nsDef != NULL) {
 		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
 		                "Text element has namespace !\n",
 				NULL,NULL,NULL);
@@ -6302,23 +6290,25 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     }
 
     ret &= xmlValidateOneElement(ctxt, doc, elem);
-    attr = elem->properties;
-    while (attr != NULL) {
-        value = xmlNodeListGetString(doc, attr->children, 0);
-	ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
-	if (value != NULL)
-	    xmlFree((char *)value);
-	attr= attr->next;
-    }
-    ns = elem->nsDef;
-    while (ns != NULL) {
-        if (elem->ns == NULL)
-	    ret &= xmlValidateOneNamespace(ctxt, doc, elem, NULL,
-					   ns, ns->href);
-	else
-	    ret &= xmlValidateOneNamespace(ctxt, doc, elem, elem->ns->prefix,
-					   ns, ns->href);
-        ns = ns->next;
+    if (elem->type == XML_ELEMENT_NODE) {
+	attr = elem->properties;
+	while (attr != NULL) {
+	    value = xmlNodeListGetString(doc, attr->children, 0);
+	    ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
+	    if (value != NULL)
+		xmlFree((char *)value);
+	    attr= attr->next;
+	}
+	ns = elem->nsDef;
+	while (ns != NULL) {
+	    if (elem->ns == NULL)
+		ret &= xmlValidateOneNamespace(ctxt, doc, elem, NULL,
+					       ns, ns->href);
+	    else
+		ret &= xmlValidateOneNamespace(ctxt, doc, elem,
+		                               elem->ns->prefix, ns, ns->href);
+	    ns = ns->next;
+	}
     }
     child = elem->children;
     while (child != NULL) {

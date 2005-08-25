@@ -902,9 +902,15 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
             if (!ctxt->check) {
                 xmlCtxtDumpSpaces(ctxt);
                 if (node->name == (const xmlChar *) xmlStringTextNoenc)
-                    fprintf(ctxt->output, "TEXT no enc\n");
+                    fprintf(ctxt->output, "TEXT no enc");
                 else
-                    fprintf(ctxt->output, "TEXT\n");
+                    fprintf(ctxt->output, "TEXT");
+		if (node->content == (xmlChar *) &(node->properties))
+		    fprintf(ctxt->output, " compact\n");
+		else if (xmlDictOwns(ctxt->dict, node->content) == 1)
+		    fprintf(ctxt->output, " interned\n");
+		else
+		    fprintf(ctxt->output, "\n");
             }
             break;
         case XML_CDATA_SECTION_NODE:
@@ -1005,9 +1011,9 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
         fprintf(ctxt->output, "PBM: doc == NULL !!!\n");
     }
     ctxt->depth++;
-    if (node->nsDef != NULL)
+    if ((node->type == XML_ELEMENT_NODE) && (node->nsDef != NULL))
         xmlCtxtDumpNamespaceList(ctxt, node->nsDef);
-    if (node->properties != NULL)
+    if ((node->type == XML_ELEMENT_NODE) && (node->properties != NULL))
         xmlCtxtDumpAttrList(ctxt, node->properties);
     if (node->type != XML_ENTITY_REF_NODE) {
         if ((node->type != XML_ELEMENT_NODE) && (node->content != NULL)) {

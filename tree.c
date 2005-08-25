@@ -3287,7 +3287,8 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	    if ((cur->type != XML_ELEMENT_NODE) &&
 		(cur->type != XML_XINCLUDE_START) &&
 		(cur->type != XML_XINCLUDE_END) &&
-		(cur->type != XML_ENTITY_REF_NODE)) {
+		(cur->type != XML_ENTITY_REF_NODE) &&
+		(cur->content != (xmlChar *) &(cur->properties))) {
 		DICT_FREE(cur->content)
 	    }
 	    if (((cur->type == XML_ELEMENT_NODE) ||
@@ -3356,7 +3357,8 @@ xmlFreeNode(xmlNodePtr cur) {
 	(cur->content != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE) &&
 	(cur->type != XML_XINCLUDE_END) &&
-	(cur->type != XML_XINCLUDE_START)) {
+	(cur->type != XML_XINCLUDE_START) &&
+	(cur->content != (xmlChar *) &(cur->properties))) {
 	DICT_FREE(cur->content)
     }
 
@@ -3811,7 +3813,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     
     if (!extended)
 	goto out;
-    if (node->nsDef != NULL)
+    if ((node->type == XML_ELEMENT_NODE) && (node->nsDef != NULL))
         ret->nsDef = xmlCopyNamespaceList(node->nsDef);
 
     if (node->ns != NULL) {
@@ -3838,7 +3840,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	    ret->ns = ns;
 	}
     }
-    if (node->properties != NULL)
+    if ((node->type == XML_ELEMENT_NODE) && (node->properties != NULL))
         ret->properties = xmlCopyPropList(ret, node->properties);
     if (node->type == XML_ENTITY_REF_NODE) {
 	if ((doc == NULL) || (node->doc != doc)) {
@@ -5106,7 +5108,8 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-	    if (cur->content != NULL) {
+	    if ((cur->content != NULL) &&
+	        (cur->content != (xmlChar *) &(cur->properties))) {
 	        if (!((cur->doc != NULL) && (cur->doc->dict != NULL) &&
 		    (xmlDictOwns(cur->doc->dict, cur->content))))
 		    xmlFree(cur->content);
@@ -5117,6 +5120,8 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
 		cur->content = xmlStrdup(content);
 	    } else 
 		cur->content = NULL;
+	    cur->properties = NULL;
+	    cur->nsDef = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
@@ -5178,8 +5183,11 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_NOTATION_NODE:
-	    if (cur->content != NULL) {
-		xmlFree(cur->content);
+	    if ((cur->content != NULL) &&
+	        (cur->content != (xmlChar *) &(cur->properties))) {
+	        if (!((cur->doc != NULL) && (cur->doc->dict != NULL) &&
+		    (xmlDictOwns(cur->doc->dict, cur->content))))
+		    xmlFree(cur->content);
 	    }	
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = cur->last = NULL;
@@ -5187,6 +5195,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 		cur->content = xmlStrndup(content, len);
 	    } else 
 		cur->content = NULL;
+	    cur->properties = NULL;
+	    cur->nsDef = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
         case XML_DTD_NODE:
@@ -5257,10 +5267,12 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_COMMENT_NODE:
         case XML_NOTATION_NODE:
 	    if (content != NULL) {
-	        if ((cur->doc != NULL) && (cur->doc->dict != NULL) &&
-			    xmlDictOwns(cur->doc->dict, cur->content)) {
-		    cur->content =
-			    xmlStrncatNew(cur->content, content, len);
+	        if ((cur->content == (xmlChar *) &(cur->properties)) ||
+		    ((cur->doc != NULL) && (cur->doc->dict != NULL) &&
+			    xmlDictOwns(cur->doc->dict, cur->content))) {
+		    cur->content = xmlStrncatNew(cur->content, content, len);
+		    cur->properties = NULL;
+		    cur->nsDef = NULL;
 		    break;
 		}
 		cur->content = xmlStrncat(cur->content, content, len);
@@ -5903,7 +5915,8 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
 
-    if ((node == NULL) || (name == NULL)) return(NULL);
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+        return(NULL);
     /*
      * Check on the properties attached to the node
      */
@@ -5959,7 +5972,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlDocPtr doc;
 #endif /* LIBXML_TREE_ENABLED */
 
-    if (node == NULL)
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
 	return(NULL);
 
     prop = node->properties;
@@ -6057,7 +6070,9 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
 
-    if ((node == NULL) || (name == NULL)) return(NULL);
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+        return(NULL);
+
     /*
      * Check on the properties attached to the node
      */
@@ -6114,7 +6129,8 @@ xmlGetNoNsProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
 
-    if ((node == NULL) || (name == NULL)) return(NULL);
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+	return(NULL);
     /*
      * Check on the properties attached to the node
      */
@@ -6172,7 +6188,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlDocPtr doc;
     xmlNsPtr ns;
 
-    if (node == NULL)
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE))
 	return(NULL);
 
     prop = node->properties;
@@ -6236,7 +6252,7 @@ int
 xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop, prev = NULL;;
 
-    if ((node == NULL) || (name == NULL))
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
 	return(-1);
     prop = node->properties;
     while (prop != NULL) {
@@ -6265,7 +6281,7 @@ int
 xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
     xmlAttrPtr prop, prev = NULL;;
 
-    if ((node == NULL) || (name == NULL))
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
 	return(-1);
     prop = node->properties;
     if (ns == NULL)
@@ -6471,12 +6487,14 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
         return(-1);
     }
     /* need to check if content is currently in the dictionary */
-    if ((node->doc != NULL) && (node->doc->dict != NULL) &&
-		xmlDictOwns(node->doc->dict, node->content)) {
+    if ((node->content == (xmlChar *) &(node->properties)) ||
+        ((node->doc != NULL) && (node->doc->dict != NULL) &&
+		xmlDictOwns(node->doc->dict, node->content))) {
 	node->content = xmlStrncatNew(node->content, content, len);
     } else {
         node->content = xmlStrncat(node->content, content, len);
     }
+    node->properties = NULL;
     if (node->content == NULL)
         return(-1);
     return(0);

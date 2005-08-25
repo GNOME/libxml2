@@ -5,30 +5,30 @@ Object is a Node Set :
 Set contains 9 nodes:
 1  ELEMENT b
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=en
 2  ELEMENT x
 3  ELEMENT x
 4  ELEMENT para
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=en
 5  ELEMENT div
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=en
 6  ELEMENT para
 7  ELEMENT para
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=EN
 8  ELEMENT para
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=en-us
 9  ELEMENT para
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=EN-US
 
 ========================
@@ -37,11 +37,11 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  ELEMENT para
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=en-us
 2  ELEMENT para
     ATTRIBUTE lang
-      TEXT
+      TEXT compact
         content=EN-US
 
 ========================

@@ -1,3 +1,8 @@
+Thu Aug 25 16:18:15 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c result/XPath/xptr/strrange2: uninitialized field and
+	  fix on test.
+
 Thu Aug 25 16:03:05 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: change verbosity depending on API

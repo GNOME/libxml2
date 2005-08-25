@@ -66,6 +66,7 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
     ctxt->node = NULL;
     ctxt->dict = NULL;
     ctxt->nodict = 0;
+    ctxt->options = 0;
     for (i = 0; i < 100; i++)
         ctxt->shift[i] = ' ';
     ctxt->shift[100] = 0;

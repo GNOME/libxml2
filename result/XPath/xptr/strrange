@@ -44,7 +44,7 @@ Expression: xpointer(string-range(//p, 'difficult'))
 Object is a Location Set:
 1 :   Object is a range :
   From index 3 in node
-    TEXT compact
+    TEXT
       content=a diff
   To index 4 in node
     TEXT
@@ -56,10 +56,10 @@ Expression: xpointer(string-range(//p, 'spanning'))
 Object is a Location Set:
 1 :   Object is a range :
   From index 3 in node
-    TEXT compact
+    TEXT
       content=a span
   To index 3 in node
-    TEXT compact
+    TEXT
       content=ing one
 
 
@@ -80,17 +80,17 @@ Expression: xpointer(string-range(//seq, ''))
 Object is a Location Set:
 1 :   Object is a collapsed range :
   index 1 in node
-    TEXT compact
+    TEXT
       content=123
 2 :   Object is a collapsed range :
   index 2 in node
-    TEXT compact
+    TEXT
       content=123
 3 :   Object is a collapsed range :
   index 3 in node
-    TEXT compact
+    TEXT
       content=123
 4 :   Object is a collapsed range :
   index 4 in node
-    TEXT compact
+    TEXT
       content=123

@@ -72,10 +72,10 @@ Set contains 1 nodes:
 Expression: /child::EXAMPLE/child::head/node()
 Object is a Node Set :
 Set contains 3 nodes:
-1  TEXT compact
+1  TEXT
     content=    
 2  ELEMENT title
-3  TEXT compact
+3  TEXT
     content=   
 
 ========================

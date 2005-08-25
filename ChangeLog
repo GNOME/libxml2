@@ -1,3 +1,9 @@
+Thu Aug 25 16:03:05 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: change verbosity depending on API
+	* result/XPath/tests/* result/XPath/xptr/* result/xmlid/*: get back
+	  to previous outputs
+
 Thu Aug 25 15:14:56 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c parser.c SAX2.c debugXML.c tree.c valid.c xmlreader.c

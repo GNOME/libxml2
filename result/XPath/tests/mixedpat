@@ -5,7 +5,7 @@ Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 
 ========================
@@ -14,11 +14,11 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 2  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p1
 
 ========================
@@ -27,11 +27,11 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 2  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p1
 
 ========================
@@ -40,11 +40,11 @@ Object is a Node Set :
 Set contains 2 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 2  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p1
 
 ========================
@@ -53,15 +53,15 @@ Object is a Node Set :
 Set contains 3 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 2  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p1
 3  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p2
 
 ========================
@@ -70,16 +70,16 @@ Object is a Node Set :
 Set contains 4 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 2  ELEMENT p1
 3  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p1
 4  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p2
 
 ========================
@@ -88,14 +88,14 @@ Object is a Node Set :
 Set contains 4 nodes:
 1  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=root
 2  ELEMENT p1
 3  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p1
 4  ELEMENT s
     ATTRIBUTE p
-      TEXT compact
+      TEXT
         content=p2

@@ -5,7 +5,7 @@ Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT EXAMPLE
     ATTRIBUTE id
-      TEXT compact
+      TEXT
         content=root
     ATTRIBUTE prop1
       TEXT

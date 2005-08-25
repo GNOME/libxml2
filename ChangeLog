@@ -1,3 +1,8 @@
+Thu Aug 25 12:16:26 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: patch from Andrew W. Nosenko, use se $GCC = 'yes'
+	  instead of $CC = 'gcc' because GCC may have a different name
+
 Thu Aug 25 00:18:20 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: changes the way the python binary is found, should

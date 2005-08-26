@@ -860,12 +860,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 	is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
 	if (is_xhtml < 0) is_xhtml = 0;
     }
-    if (is_xhtml) {
-	if (encoding != NULL)
-	    htmlSetMetaEncoding(cur, (const xmlChar *) ctxt->encoding);
-	else
-	    htmlSetMetaEncoding(cur, BAD_CAST "UTF-8");
-    }
 #endif
     if (cur->children != NULL) {
         xmlNodePtr child = cur->children;
@@ -1086,7 +1080,7 @@ xhtmlNodeListDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
  */
 static void
 xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
-    int format;
+    int format, addmeta = 0;
     xmlNodePtr tmp;
     xmlChar *start, *end;
     xmlOutputBufferPtr buf;
@@ -1210,14 +1204,49 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     if (cur->properties != NULL)
         xhtmlAttrListDumpOutput(ctxt, cur->properties);
 
+	if ((cur->type == XML_ELEMENT_NODE) && 
+		(cur->parent != NULL) && 
+		(cur->parent->parent == (xmlNodePtr) cur->doc) && 
+		xmlStrEqual(cur->name, BAD_CAST"head") && 
+		xmlStrEqual(cur->parent->name, BAD_CAST"html")) {
+
+		tmp = cur->children;
+		while (tmp != NULL) {
+			if (xmlStrEqual(tmp->name, BAD_CAST"meta")) {
+				xmlChar *httpequiv;
+
+				httpequiv = xmlGetProp(tmp, BAD_CAST"http-equiv");
+				if (xmlStrcasecmp(httpequiv, BAD_CAST"Content-Type") == 0) {
+					xmlFree(httpequiv);
+					break;
+				}
+				xmlFree(httpequiv);
+			}
+			tmp = tmp->next;
+		}
+		if (tmp == NULL)
+			addmeta = 1;
+	}
+
     if ((cur->type == XML_ELEMENT_NODE) && (cur->children == NULL)) {
 	if (((cur->ns == NULL) || (cur->ns->prefix == NULL)) &&
-	    (xhtmlIsEmpty(cur) == 1)) {
+	    ((xhtmlIsEmpty(cur) == 1) && (addmeta == 0))) {
 	    /*
 	     * C.2. Empty Elements
 	     */
 	    xmlOutputBufferWrite(buf, 3, " />");
 	} else {
+		if (addmeta == 1) {
+			xmlOutputBufferWrite(buf, 1, ">");
+			xmlOutputBufferWriteString(buf,
+				"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
+			if (ctxt->encoding) {
+				xmlOutputBufferWriteString(buf, (const char *)ctxt->encoding);
+			} else {
+				xmlOutputBufferWrite(buf, 5, "UTF-8");
+			}
+			xmlOutputBufferWrite(buf, 3, "\" /");
+		}
 	    /*
 	     * C.3. Element Minimization and Empty Element Content
 	     */
@@ -1232,6 +1261,16 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	return;
     }
     xmlOutputBufferWrite(buf, 1, ">");
+	if (addmeta == 1) {
+		xmlOutputBufferWriteString(buf,
+			"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
+		if (ctxt->encoding) {
+			xmlOutputBufferWriteString(buf, (const char *)ctxt->encoding);
+		} else {
+			xmlOutputBufferWrite(buf, 5, "UTF-8");
+		}
+		xmlOutputBufferWrite(buf, 4, "\" />");
+	}
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
     }
@@ -1832,15 +1871,6 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
         is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
         if (is_xhtml < 0)
             is_xhtml = 0;
-        if ((is_xhtml) && (cur->parent == (xmlNodePtr) doc) &&
-            (cur->type == XML_ELEMENT_NODE) &&
-            (xmlStrEqual(cur->name, BAD_CAST "html"))) {
-            if (encoding != NULL)
-                htmlSetMetaEncoding((htmlDocPtr) doc,
-                                    (const xmlChar *) encoding);
-            else
-                htmlSetMetaEncoding((htmlDocPtr) doc, BAD_CAST "UTF-8");
-        }
     }
 
     if (is_xhtml)

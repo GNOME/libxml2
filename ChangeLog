@@ -1,3 +1,8 @@
+Fri Aug 26 17:33:26 CEST 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlsave.c: move handling of meta element for http-equiv in XHTML docs 
+	  to serialization and no longer modify internal tree.
+
 Fri Aug 26 00:51:58 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: the profiling usually don't work, disabled

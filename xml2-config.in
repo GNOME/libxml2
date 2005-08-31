@@ -15,7 +15,6 @@ Known values for OPTION are:
   --prefix=DIR		change libxml prefix [default $prefix]
   --exec-prefix=DIR	change libxml exec prefix [default $exec_prefix]
   --libs		print library linking information
-  --libtool-libs        print linking information for use with libtool
   --cflags		print pre-processor and compiler flags
   --modules		module support enabled
   --help		display this help and exit

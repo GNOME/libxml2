@@ -1,3 +1,8 @@
+Wed Aug 31 11:39:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xml2-config.in: removed the obsolete --libtool-libs option, c.f.
+	  bug #314853
+
 Fri Aug 26 17:33:26 CEST 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlsave.c: move handling of meta element for http-equiv in XHTML docs 

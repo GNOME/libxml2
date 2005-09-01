@@ -1,3 +1,8 @@
+Thu Sep  1 11:22:37 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/downloads.html doc/xml.html: adding reference to Bull AIX rpms
+	  c.f. #160598
+
 Wed Aug 31 11:39:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xml2-config.in: removed the obsolete --libtool-libs option, c.f.

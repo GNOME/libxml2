@@ -964,7 +964,6 @@ NULL
 static const char *htmlNoContentElements[] = {
     "html",
     "head",
-    "body",
     NULL
 };
 
@@ -2042,6 +2041,7 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     unsigned int i;
     int j;
     xmlNodePtr lastChild;
+    xmlDtdPtr dtd;
 
     for (j = 0;j < len;j++)
         if (!(IS_BLANK_CH(str[j]))) return(0);
@@ -2054,8 +2054,17 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	return(1);
     if (xmlStrEqual(ctxt->name, BAD_CAST"head"))
 	return(1);
-    if (xmlStrEqual(ctxt->name, BAD_CAST"body"))
-	return(1);
+
+    /* Only strip CDATA children of the body tag for strict HTML DTDs */
+    if (xmlStrEqual(ctxt->name, BAD_CAST "body") && ctxt->myDoc != NULL) {
+        dtd = xmlGetIntSubset(ctxt->myDoc);
+        if (dtd != NULL && dtd->ExternalID != NULL) {
+            if (!xmlStrcasecmp(dtd->ExternalID, BAD_CAST "-//W3C//DTD HTML 4.01//EN") ||
+                    !xmlStrcasecmp(dtd->ExternalID, BAD_CAST "-//W3C//DTD HTML 4//EN"))
+                return(1);
+        }
+    }
+
     if (ctxt->node == NULL) return(0);
     lastChild = xmlGetLastChild(ctxt->node);
     while ((lastChild) && (lastChild->type == XML_COMMENT_NODE))

@@ -26,7 +26,7 @@ SAX.ignorableWhitespace(
 
 , 2)
 SAX.startElement(body)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(font, face='Verdana')
 SAX.characters(
@@ -167,7 +167,7 @@ SAX.characters(
 
 , 3)
 SAX.endElement(font)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(blockquote)
 SAX.characters(
@@ -184,7 +184,7 @@ SAX.endElement(font)
 SAX.characters(
 , 1)
 SAX.endElement(blockquote)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(font, face='Verdana')
 SAX.characters(
@@ -452,7 +452,7 @@ SAX.characters(
 
 , 4)
 SAX.endElement(font)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(body)
 SAX.ignorableWhitespace(

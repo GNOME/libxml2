@@ -16,19 +16,17 @@ SAX.ignorableWhitespace(
 
 , 2)
 SAX.startElement(body, bgcolor='#FFFFFF')
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(h1, align='center')
 SAX.characters(Sorry, this service is tempora, 37)
 SAX.endElement(h1)
-SAX.startElement(p)
 SAX.characters(
 We are doing our best to get , 48)
-SAX.endElement(p)
 SAX.startElement(p)
 SAX.characters(The W3C system administrators, 29)
 SAX.endElement(p)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(body)
 SAX.ignorableWhitespace(

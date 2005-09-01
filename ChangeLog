@@ -1,3 +1,9 @@
+Thu Sep  1 11:42:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: Applied the last patch from Gary Coady for #304637
+	  changing the behaviour when text nodes are found in body
+	* result/HTML/*: this changes the output of some tests
+
 Thu Sep  1 11:22:37 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* doc/downloads.html doc/xml.html: adding reference to Bull AIX rpms

@@ -20,7 +20,7 @@ SAX.endElement(head)
 SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(body)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(div, id='portal')
 SAX.characters(
@@ -38,7 +38,7 @@ SAX.endElement(p)
 SAX.characters(
 , 1)
 SAX.endElement(div)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(body)
 SAX.ignorableWhitespace(

@@ -73,7 +73,7 @@ SAX.endElement(head)
 SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(body, alink='red', bgcolor='black', link='red', text='white', vlink='red')
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(p)
 SAX.characters(
@@ -2905,12 +2905,12 @@ SAX.comment(	<TR>		<TD WIDTH="780">			<P ALIGN="CENTER"><FONT SIZE="1" COLOR="#9
 SAX.endElement(tbody)
 SAX.endElement(table)
 SAX.endElement(div)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(script)
 SAX.cdata( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.endElement(body)
 SAX.endElement(html)

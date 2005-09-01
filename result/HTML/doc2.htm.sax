@@ -51,12 +51,12 @@ SAX.characters(
 
   , 4)
 SAX.startElement(body, bgcolor='#FFFFFF', text='#000000', link='#000080', vlink='#000080', alink='#000080', topmargin='0', leftmargin='0', marginheight='0', marginwidth='0')
-SAX.ignorableWhitespace(
+SAX.characters(
   , 3)
 SAX.startElement(p)
 SAX.characters(This page uses frames, but you, 61)
 SAX.endElement(p)
-SAX.ignorableWhitespace(
+SAX.characters(
   , 3)
 SAX.endElement(body)
 SAX.characters(

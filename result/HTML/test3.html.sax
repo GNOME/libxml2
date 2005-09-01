@@ -26,7 +26,7 @@ SAX.endElement(p)
 SAX.startElement(hr)
 SAX.endElement(hr)
 SAX.error: Unexpected end tag : p
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dl)
 SAX.characters(
@@ -59,14 +59,14 @@ SAX.characters(Interface, thats stores and ma, 58)
 SAX.endElement(dd)
 SAX.endElement(dd)
 SAX.endElement(dl)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(p)
 SAX.endElement(p)
 SAX.startElement(hr)
 SAX.endElement(hr)
 SAX.error: Unexpected end tag : p
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dl)
 SAX.characters(
@@ -163,7 +163,7 @@ SAX.endElement(dt)
 SAX.characters(
 , 2)
 SAX.endElement(dl)
-SAX.ignorableWhitespace(
+SAX.characters(
 
 , 4)
 SAX.startElement(h4)
@@ -173,7 +173,7 @@ SAX.error: Opening and ending tag mismatch: h4 and b
 SAX.endElement(b)
 SAX.endElement(h4)
 SAX.error: Unexpected end tag : b
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(ul)
 SAX.startElement(li)
@@ -185,11 +185,11 @@ SAX.characters(HumanInterface, 14)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dir)
 SAX.endElement(dir)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(ul)
 SAX.startElement(li)
@@ -201,11 +201,11 @@ SAX.characters(DataManagement.FlatFile, 23)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dir)
 SAX.endElement(dir)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(ul)
 SAX.startElement(li)
@@ -217,11 +217,11 @@ SAX.characters(DataManagement, 14)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dir)
 SAX.endElement(dir)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.endElement(body)
 SAX.endElement(html)

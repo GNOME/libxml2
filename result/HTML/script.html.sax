@@ -11,17 +11,17 @@ SAX.endElement(head)
 SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(body)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(script, language='javascript')
 SAX.cdata(
     if (window.open&lt;max) ;, 28)
 SAX.endElement(script)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(input, onclick='if(window.open&lt;max);')
 SAX.endElement(input)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(body)
 SAX.ignorableWhitespace(

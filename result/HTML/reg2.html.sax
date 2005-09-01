@@ -15,12 +15,12 @@ SAX.endElement(head)
 SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(body)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(h1)
 SAX.characters(Regression test 2, 17)
 SAX.endElement(h1)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(p)
 SAX.characters(

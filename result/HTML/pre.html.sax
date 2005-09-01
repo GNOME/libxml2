@@ -4,7 +4,7 @@ SAX.startElement(html)
 SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(body)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.startElement(pre)
 SAX.startElement(a, href='toto')
@@ -12,7 +12,7 @@ SAX.endElement(a)
 SAX.startElement(img, src='titi')
 SAX.endElement(img)
 SAX.endElement(pre)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(body)
 SAX.ignorableWhitespace(

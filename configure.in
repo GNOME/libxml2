@@ -633,7 +633,7 @@ if test "$with_python" != "no" ; then
 	    then
 	        echo Found python in environment PYTHON=$PYTHON
 	    else
-		AM_PATH_PYTHON()
+		AC_PATH_PROG(PYTHON, python python2.6 python2.5 python2.4 python2.3 python2.2 python2.1 python2.0 python1.6 python1.5)
 	    fi
 	fi
     fi

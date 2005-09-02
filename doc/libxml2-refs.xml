@@ -2078,6 +2078,7 @@
     <reference name='xmlIsPubidChar_ch' href='html/libxml-chvalid.html#xmlIsPubidChar_ch'/>
     <reference name='xmlIsPubidChar_tab' href='html/libxml-chvalid.html#xmlIsPubidChar_tab'/>
     <reference name='xmlIsRef' href='html/libxml-valid.html#xmlIsRef'/>
+    <reference name='xmlIsThreadsEnabled' href='html/libxml-threads.html#xmlIsThreadsEnabled'/>
     <reference name='xmlIsXHTML' href='html/libxml-tree.html#xmlIsXHTML'/>
     <reference name='xmlKeepBlanksDefault' href='html/libxml-parser.html#xmlKeepBlanksDefault'/>
     <reference name='xmlKeepBlanksDefaultValue' href='html/libxml-globals.html#xmlKeepBlanksDefaultValue'/>
@@ -5553,6 +5554,7 @@
       <ref name='xmlIsPubidChar_ch'/>
       <ref name='xmlIsPubidChar_tab'/>
       <ref name='xmlIsRef'/>
+      <ref name='xmlIsThreadsEnabled'/>
       <ref name='xmlIsXHTML'/>
       <ref name='xmlKeepBlanksDefault'/>
       <ref name='xmlKeepBlanksDefaultValue'/>
@@ -11540,6 +11542,7 @@
       <ref name='xmlGetThreadId'/>
       <ref name='xmlInitThreads'/>
       <ref name='xmlIsMainThread'/>
+      <ref name='xmlIsThreadsEnabled'/>
       <ref name='xmlLockLibrary'/>
       <ref name='xmlMutex'/>
       <ref name='xmlMutexLock'/>
@@ -16930,6 +16933,9 @@
           <ref name='xmlParseDocTypeDecl'/>
           <ref name='xmlValidateRoot'/>
         </word>
+        <word name='Run-time'>
+          <ref name='xmlIsThreadsEnabled'/>
+        </word>
         <word name='Runic'>
           <ref name='xmlUCSIsRunic'/>
         </word>
@@ -18081,6 +18087,7 @@
         <word name='about'>
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlDebugDumpString'/>
+          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlShellDir'/>
           <ref name='xmlTextWriterWriteRawLen'/>
         </word>
@@ -19752,6 +19759,7 @@
           <ref name='xmlExpDump'/>
           <ref name='xmlExpMaxToken'/>
           <ref name='xmlGetLastError'/>
+          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
@@ -21300,6 +21308,7 @@
           <ref name='xmlCatalogSetDebug'/>
         </word>
         <word name='enabled'>
+          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlSaveFile'/>
           <ref name='xmlSaveFormatFile'/>
         </word>
@@ -23115,6 +23124,7 @@
           <ref name='xmlDebugDumpNode'/>
           <ref name='xmlDebugDumpNodeList'/>
           <ref name='xmlDebugDumpOneNode'/>
+          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlNanoFTPUpdateURL'/>
           <ref name='xmlNanoHTTPFetch'/>
           <ref name='xmlNanoHTTPMethod'/>
@@ -23748,6 +23758,7 @@
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlInitThreads'/>
           <ref name='xmlInitializeGlobalState'/>
+          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlLockLibrary'/>
           <ref name='xmlModuleFree'/>
           <ref name='xmlModuleOpen'/>
@@ -24428,6 +24439,9 @@
         </word>
         <word name='multiply'>
           <ref name='xmlXPathMultValues'/>
+        </word>
+        <word name='multithread'>
+          <ref name='xmlIsThreadsEnabled'/>
         </word>
         <word name='multithreaded'>
           <ref name='htmlInitAutoClose'/>

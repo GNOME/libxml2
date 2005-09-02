@@ -1905,7 +1905,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
         case -2: {
             char buf[50];
 
-	    snprintf(buf, 49, "0x%02X 0x%02X 0x%02X 0x%02X", 
+	    snprintf(&buf[0], 49, "0x%02X 0x%02X 0x%02X 0x%02X", 
 		     in->content[0], in->content[1],
 		     in->content[2], in->content[3]);
 	    buf[49] = 0;
@@ -2077,7 +2077,7 @@ retry:
 		 * and continue the transcoding phase, hoping the error
 		 * did not mangle the encoder state.
 		 */
-		snprintf((char *) charref, sizeof(charref), "&#%d;", cur);
+		snprintf((char *) &charref[0], sizeof(charref), "&#%d;", cur);
 		xmlBufferShrink(in, len);
 		xmlBufferAddHead(in, charref, -1);
 
@@ -2085,7 +2085,7 @@ retry:
 	    } else {
 		char buf[50];
 
-		snprintf(buf, 49, "0x%02X 0x%02X 0x%02X 0x%02X", 
+		snprintf(&buf[0], 49, "0x%02X 0x%02X 0x%02X 0x%02X", 
 			 in->content[0], in->content[1],
 			 in->content[2], in->content[3]);
 		buf[49] = 0;

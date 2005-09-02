@@ -1329,6 +1329,7 @@
      <exports symbol='xmlInitThreads' type='function'/>
      <exports symbol='xmlUnlockLibrary' type='function'/>
      <exports symbol='xmlFreeMutex' type='function'/>
+     <exports symbol='xmlIsThreadsEnabled' type='function'/>
     </file>
     <file name='tree'>
      <summary>interfaces for tree manipulation</summary>
@@ -10253,6 +10254,10 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
+    </function>
+    <function name='xmlIsThreadsEnabled' file='threads' module='threads'>
+      <info>Run-time information about whether multithread support is compiled in</info>
+      <return type='int' info='1 (true) if library was compiled with multithread support enabled or 0 (false) otherwise.'/>
     </function>
     <function name='xmlIsXHTML' file='tree' module='xmlsave'>
       <info>Try to find if the document correspond to an XHTML DTD</info>

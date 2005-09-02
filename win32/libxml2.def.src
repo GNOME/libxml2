@@ -996,6 +996,7 @@ xmlIsMainThread
 xmlIsMixedElement
 xmlIsPubidChar
 xmlIsRef
+xmlIsThreadsEnabled
 #ifdef LIBXML_HTML_ENABLED
 xmlIsXHTML
 #endif

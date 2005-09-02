@@ -23,6 +23,7 @@ The content of this structure is not made public by the API.
 <pre class="programlisting">int	<a href="#xmlGetThreadId">xmlGetThreadId</a>			(void)</pre>
 <pre class="programlisting">void	<a href="#xmlInitThreads">xmlInitThreads</a>			(void)</pre>
 <pre class="programlisting">int	<a href="#xmlIsMainThread">xmlIsMainThread</a>			(void)</pre>
+<pre class="programlisting">int	<a href="#xmlIsThreadsEnabled">xmlIsThreadsEnabled</a>		(void)</pre>
 <pre class="programlisting">void	<a href="#xmlLockLibrary">xmlLockLibrary</a>			(void)</pre>
 <pre class="programlisting">void	<a href="#xmlMutexLock">xmlMutexLock</a>			(<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)</pre>
 <pre class="programlisting">void	<a href="#xmlMutexUnlock">xmlMutexUnlock</a>			(<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)</pre>
@@ -50,7 +51,9 @@ The content of this structure is not made public by the API.
 </pre><p>xmlInitThreads() is used to to initialize all the thread related data of the libxml2 library.</p>
 <h3><a name="xmlIsMainThread" id="xmlIsMainThread"></a>Function: xmlIsMainThread</h3><pre class="programlisting">int	xmlIsMainThread			(void)<br />
 </pre><p>xmlIsMainThread() check whether the current thread is the main thread.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if the current thread is the main thread, 0 otherwise</td></tr></tbody></table></div><h3><a name="xmlLockLibrary" id="xmlLockLibrary"></a>Function: xmlLockLibrary</h3><pre class="programlisting">void	xmlLockLibrary			(void)<br />
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if the current thread is the main thread, 0 otherwise</td></tr></tbody></table></div><h3><a name="xmlIsThreadsEnabled" id="xmlIsThreadsEnabled"></a>Function: xmlIsThreadsEnabled</h3><pre class="programlisting">int	xmlIsThreadsEnabled		(void)<br />
+</pre><p>Run-time information about whether multithread support is compiled in</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 (true) if library was compiled with multithread support enabled or 0 (false) otherwise.</td></tr></tbody></table></div><h3><a name="xmlLockLibrary" id="xmlLockLibrary"></a>Function: xmlLockLibrary</h3><pre class="programlisting">void	xmlLockLibrary			(void)<br />
 </pre><p>xmlLockLibrary() is used to take out a re-entrant lock on the libxml2 library.</p>
 <h3><a name="xmlMutexLock" id="xmlMutexLock"></a>Function: xmlMutexLock</h3><pre class="programlisting">void	xmlMutexLock			(<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)<br />
 </pre><p>xmlMutexLock() is used to lock a libxml2 token.</p>

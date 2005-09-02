@@ -36,7 +36,6 @@ typedef xmlRMutex *xmlRMutexPtr;
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 XMLPUBFUN xmlMutexPtr XMLCALL		
 			xmlNewMutex	(void);
 XMLPUBFUN void XMLCALL			
@@ -58,6 +57,8 @@ XMLPUBFUN void XMLCALL
 /*
  * Library wide APIs.
  */
+XMLPUBFUN int XMLCALL
+			xmlIsThreadsEnabled(void);
 XMLPUBFUN void XMLCALL			
 			xmlInitThreads	(void);
 XMLPUBFUN void XMLCALL			

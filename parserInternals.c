@@ -728,7 +728,7 @@ encoding_error:
     {
         char buffer[150];
 
-	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+	snprintf(&buffer[0], 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
 	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,

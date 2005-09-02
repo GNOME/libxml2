@@ -4695,6 +4695,16 @@ extern __typeof (xmlIsRef) xmlIsRef__internal_alias __attribute((visibility("hid
 #endif
 #endif
 
+#ifdef bottom_threads
+#undef xmlIsThreadsEnabled
+extern __typeof (xmlIsThreadsEnabled) xmlIsThreadsEnabled __attribute((alias("xmlIsThreadsEnabled__internal_alias")));
+#else
+#ifndef xmlIsThreadsEnabled
+extern __typeof (xmlIsThreadsEnabled) xmlIsThreadsEnabled__internal_alias __attribute((visibility("hidden")));
+#define xmlIsThreadsEnabled xmlIsThreadsEnabled__internal_alias
+#endif
+#endif
+
 #ifdef bottom_xmlsave
 #undef xmlIsXHTML
 extern __typeof (xmlIsXHTML) xmlIsXHTML __attribute((alias("xmlIsXHTML__internal_alias")));

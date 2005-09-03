@@ -1,3 +1,7 @@
+Sat Sep  3 16:51:55 CEST 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlsave.c: check for NULL to prevent crash with meta elements
+
 Sat Sep  3 16:26:55 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: structured error reporting problem with Relax-NG

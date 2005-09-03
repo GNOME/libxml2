@@ -1216,11 +1216,13 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 				xmlChar *httpequiv;
 
 				httpequiv = xmlGetProp(tmp, BAD_CAST"http-equiv");
-				if (xmlStrcasecmp(httpequiv, BAD_CAST"Content-Type") == 0) {
+				if (httpequiv != NULL) {
+					if (xmlStrcasecmp(httpequiv, BAD_CAST"Content-Type") == 0) {
+						xmlFree(httpequiv);
+						break;
+					}
 					xmlFree(httpequiv);
-					break;
 				}
-				xmlFree(httpequiv);
 			}
 			tmp = tmp->next;
 		}

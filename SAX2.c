@@ -1316,11 +1316,7 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	 * when validating, the ID registration is done at the attribute
 	 * validation level. Otherwise we have to do specific handling here.
 	 */
-	if (xmlIsID(ctxt->myDoc, ctxt->node, ret))
-	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
-	else if (xmlIsRef(ctxt->myDoc, ctxt->node, ret))
-	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, value, ret);
-	else if (xmlStrEqual(fullname, BAD_CAST "xml:id")) {
+	if (xmlStrEqual(fullname, BAD_CAST "xml:id")) {
 	    /*
 	     * Add the xml:id value
 	     *
@@ -1332,7 +1328,10 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 			    (const char *) value, NULL);
 	    }
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
-	}
+	} else if (xmlIsID(ctxt->myDoc, ctxt->node, ret))
+	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
+	else if (xmlIsRef(ctxt->myDoc, ctxt->node, ret))
+	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, value, ret);
     }
 
 error:
@@ -2047,16 +2046,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	 * when validating, the ID registration is done at the attribute
 	 * validation level. Otherwise we have to do specific handling here.
 	 */
-	if (xmlIsID(ctxt->myDoc, ctxt->node, ret)) {
-	    /* might be worth duplicate entry points and not copy */
-	    if (dup == NULL)
-	        dup = xmlStrndup(value, valueend - value);
-	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, dup, ret);
-	} else if (xmlIsRef(ctxt->myDoc, ctxt->node, ret)) {
-	    if (dup == NULL)
-	        dup = xmlStrndup(value, valueend - value);
-	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, dup, ret);
-        } else if ((prefix == ctxt->str_xml) &&
+        if ((prefix == ctxt->str_xml) &&
 	           (localname[0] == 'i') && (localname[1] == 'd') &&
 		   (localname[2] == 0)) {
 	    /*
@@ -2074,6 +2064,15 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	    }
 #endif
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, dup, ret);
+	} else if (xmlIsID(ctxt->myDoc, ctxt->node, ret)) {
+	    /* might be worth duplicate entry points and not copy */
+	    if (dup == NULL)
+	        dup = xmlStrndup(value, valueend - value);
+	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, dup, ret);
+	} else if (xmlIsRef(ctxt->myDoc, ctxt->node, ret)) {
+	    if (dup == NULL)
+	        dup = xmlStrndup(value, valueend - value);
+	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, dup, ret);
 	}
     }
     if (dup != NULL)

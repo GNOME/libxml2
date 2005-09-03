@@ -297,6 +297,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
  *
  * returns NULL if it is not a Qualified Name, otherwise, update len
  *         with the lenght in byte of the prefix and return a pointer
+ *         to the start of the name without the prefix
  */
 
 const xmlChar *
@@ -1723,80 +1724,87 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
 }
 #endif /* LIBXML_TREE_ENABLED */
 
-static xmlAttrPtr xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns, 
-           const xmlChar *name, const xmlChar *value, int eatname) {
+static xmlAttrPtr
+xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
+                   const xmlChar * name, const xmlChar * value,
+                   int eatname)
+{
     xmlAttrPtr cur;
     xmlDocPtr doc = NULL;
 
     if ((node != NULL) && (node->type != XML_ELEMENT_NODE)) {
-		if (eatname == 1)
-			xmlFree((xmlChar *) name);
-		return(NULL);
-	}
+        if (eatname == 1)
+            xmlFree((xmlChar *) name);
+        return (NULL);
+    }
 
     /*
      * Allocate a new property and fill the fields.
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-		if (eatname == 1)
-			xmlFree((xmlChar *) name);
-		xmlTreeErrMemory("building attribute");
-		return(NULL);
+        if (eatname == 1)
+            xmlFree((xmlChar *) name);
+        xmlTreeErrMemory("building attribute");
+        return (NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
     cur->type = XML_ATTRIBUTE_NODE;
 
-    cur->parent = node; 
+    cur->parent = node;
     if (node != NULL) {
-	doc = node->doc;
-	cur->doc = doc;
+        doc = node->doc;
+        cur->doc = doc;
     }
-	cur->ns = ns;
+    cur->ns = ns;
 
-	if (eatname == 0) {
-		if ((doc != NULL) && (doc->dict != NULL))
-			cur->name = (xmlChar *) xmlDictLookup(doc->dict, name, -1);
-		else
-			cur->name = xmlStrdup(name);
-	} else
-		cur->name = name;
+    if (eatname == 0) {
+        if ((doc != NULL) && (doc->dict != NULL))
+            cur->name = (xmlChar *) xmlDictLookup(doc->dict, name, -1);
+        else
+            cur->name = xmlStrdup(name);
+    } else
+        cur->name = name;
 
     if (value != NULL) {
-	xmlChar *buffer;
-	xmlNodePtr tmp;
+        xmlChar *buffer;
+        xmlNodePtr tmp;
 
-	buffer = xmlEncodeEntitiesReentrant(doc, value);
-	cur->children = xmlStringGetNodeList(doc, buffer);
-	cur->last = NULL;
-	tmp = cur->children;
-	while (tmp != NULL) {
-	    tmp->parent = (xmlNodePtr) cur;
-	    if (tmp->next == NULL)
-		cur->last = tmp;
-	    tmp = tmp->next;
-	}
-	xmlFree(buffer);
-    }	
+        buffer = xmlEncodeEntitiesReentrant(doc, value);
+        cur->children = xmlStringGetNodeList(doc, buffer);
+        cur->last = NULL;
+        tmp = cur->children;
+        while (tmp != NULL) {
+            tmp->parent = (xmlNodePtr) cur;
+            if (tmp->next == NULL)
+                cur->last = tmp;
+            tmp = tmp->next;
+        }
+        xmlFree(buffer);
+    }
 
     /*
      * Add it at the end to preserve parsing order ...
      */
     if (node != NULL) {
-	if (node->properties == NULL) {
-	    node->properties = cur;
-	} else {
-	    xmlAttrPtr prev = node->properties;
+        if (node->properties == NULL) {
+            node->properties = cur;
+        } else {
+            xmlAttrPtr prev = node->properties;
 
-	    while (prev->next != NULL) prev = prev->next;
-	    prev->next = cur;
-	    cur->prev = prev;
-	}
+            while (prev->next != NULL)
+                prev = prev->next;
+            prev->next = cur;
+            cur->prev = prev;
+        }
     }
 
+    if (xmlIsID((node == NULL) ? NULL : node->doc, node, cur) == 1)
+        xmlAddID(NULL, node->doc, value, cur);
+
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
-	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
-    return(cur);
+        xmlRegisterNodeDefaultValue((xmlNodePtr) cur);
+    return (cur);
 }
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
@@ -6316,16 +6324,36 @@ xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
+    int len;
+    const xmlChar *nqname;
 
     if ((node == NULL) || (name == NULL) || (node->type != XML_ELEMENT_NODE))
 	return(NULL);
+
+    /*
+     * handle QNames
+     */
+    nqname = xmlSplitQName3(name, &len);
+    if (nqname != NULL) {
+        xmlNsPtr ns;
+	xmlChar *prefix = xmlStrndup(name, len);
+	ns = xmlSearchNs(node->doc, node, prefix);
+	if (prefix != NULL)
+	    xmlFree(prefix);
+	if (ns != NULL)
+	    return(xmlSetNsProp(node, ns, nqname, value));
+    }
+
     doc = node->doc;
     prop = node->properties;
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns == NULL)){
 	    xmlNodePtr oldprop = prop->children;
+	    int id = xmlIsID(node->doc, node, prop);
 
+	    if (id == 1)
+	        xmlRemoveID(node->doc, prop);
 	    prop->children = NULL;
 	    prop->last = NULL;
 	    if (value != NULL) {
@@ -6348,6 +6376,8 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	    }
 	    if (oldprop != NULL) 
 	        xmlFreeNodeList(oldprop);
+	    if (id)
+	        xmlAddID(NULL, node->doc, value, prop);
 	    return(prop);
 	}
 	prop = prop->next;
@@ -6390,6 +6420,10 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
+	    int id = xmlIsID(node->doc, node, prop);
+
+	    if (id == 1)
+	        xmlRemoveID(node->doc, prop);
 	    if (prop->children != NULL) 
 	        xmlFreeNodeList(prop->children);
 	    prop->children = NULL;
@@ -6411,6 +6445,8 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 		}
 		xmlFree(buffer);
 	    }	
+	    if (id)
+	        xmlAddID(NULL, node->doc, value, prop);
 	    return(prop);
         }
 	prop = prop->next;

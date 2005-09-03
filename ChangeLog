@@ -1,3 +1,9 @@
+Sat Sep  3 15:26:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c tree.c valid.c: fixing a number of issues raised by xml:id
+	  but more generally related to attributes and ID handling, fixes
+	  #314358 among other things
+
 Fri Sep  2 14:26:43 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c parserInternals.c: avoid passing a char[] as snprintf

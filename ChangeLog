@@ -1,3 +1,7 @@
+Sat Sep  3 15:42:29 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c: fixes a portability problem raised by C370 on Z/OS
+
 Sat Sep  3 15:26:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c tree.c valid.c: fixing a number of issues raised by xml:id

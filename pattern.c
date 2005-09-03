@@ -139,7 +139,7 @@ struct _xmlPattern {
     xmlDictPtr dict;		/* the optional dictionary */
     struct _xmlPattern *next;	/* next pattern if | is used */
     const xmlChar *pattern;	/* the pattern */
-    xmlPatternFlags flags;	/* flags */
+    int flags;			/* flags */
     int nbStep;
     int maxStep;
     xmlStepOpPtr steps;        /* ops for computation */

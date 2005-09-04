@@ -1400,25 +1400,16 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	} else if (number == ((int) number)) {
 	    char work[30];
 	    char *ptr, *cur;
-	    int res, value = (int) number;
+	    int value = (int) number;
 
             ptr = &buffer[0];
-	    if (value < 0) {
-		*ptr++ = '-';
-		value = -value;
-	    }
 	    if (value == 0) {
 		*ptr++ = '0';
 	    } else {
+		snprintf(work, 29, "%d", value);
 		cur = &work[0];
-		while (value != 0) {
-		    res = value % 10;
-		    value = value / 10;
-		    *cur++ = '0' + res;
-		}
-		cur--;
-		while ((cur >= &work[0]) && (ptr - buffer < buffersize)) {
-		    *ptr++ = *cur--;
+		while ((*cur) && (ptr - buffer < buffersize)) {
+		    *ptr++ = *cur++;
 		}
 	    }
 	    if (ptr - buffer < buffersize) {
@@ -7936,6 +7927,9 @@ xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
     PUSH_LONG_EXPR(XPATH_OP_VARIABLE, 0, 0, 0,
 	           name, prefix);
     SKIP_BLANKS;
+    if ((ctxt->context != NULL) && (ctxt->context->flags & XML_XPATH_NOVAR)) {
+	XP_ERROR(XPATH_UNDEF_VARIABLE_ERROR);
+    }
 }
 
 /**

@@ -1,3 +1,8 @@
+Sun Sep  4 22:45:49 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/* configure.in: prepare for release
+	* xpath.c: work for #303289, fix a formatting bug for MIN_INT
+
 Sun Sep  4 15:48:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: real fix for #314881 and #314759 is was a bit more complex

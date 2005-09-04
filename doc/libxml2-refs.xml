@@ -1299,6 +1299,7 @@
     <reference name='XML_XPATH_INVALID_PREDICATE_ERROR' href='html/libxml-xmlerror.html#XML_XPATH_INVALID_PREDICATE_ERROR'/>
     <reference name='XML_XPATH_INVALID_TYPE' href='html/libxml-xmlerror.html#XML_XPATH_INVALID_TYPE'/>
     <reference name='XML_XPATH_MEMORY_ERROR' href='html/libxml-xmlerror.html#XML_XPATH_MEMORY_ERROR'/>
+    <reference name='XML_XPATH_NOVAR' href='html/libxml-xpath.html#XML_XPATH_NOVAR'/>
     <reference name='XML_XPATH_NUMBER_ERROR' href='html/libxml-xmlerror.html#XML_XPATH_NUMBER_ERROR'/>
     <reference name='XML_XPATH_START_LITERAL_ERROR' href='html/libxml-xmlerror.html#XML_XPATH_START_LITERAL_ERROR'/>
     <reference name='XML_XPATH_UNCLOSED_ERROR' href='html/libxml-xmlerror.html#XML_XPATH_UNCLOSED_ERROR'/>
@@ -2417,6 +2418,7 @@
     <reference name='xmlPatternGetStreamCtxt' href='html/libxml-pattern.html#xmlPatternGetStreamCtxt'/>
     <reference name='xmlPatternMatch' href='html/libxml-pattern.html#xmlPatternMatch'/>
     <reference name='xmlPatternMaxDepth' href='html/libxml-pattern.html#xmlPatternMaxDepth'/>
+    <reference name='xmlPatternMinDepth' href='html/libxml-pattern.html#xmlPatternMinDepth'/>
     <reference name='xmlPatternPtr' href='html/libxml-pattern.html#xmlPatternPtr'/>
     <reference name='xmlPatternStreamable' href='html/libxml-pattern.html#xmlPatternStreamable'/>
     <reference name='xmlPatterncompile' href='html/libxml-pattern.html#xmlPatterncompile'/>
@@ -3248,7 +3250,6 @@
     <reference name='xmlXPathEvalPredicate' href='html/libxml-xpath.html#xmlXPathEvalPredicate'/>
     <reference name='xmlXPathEvaluatePredicateResult' href='html/libxml-xpathInternals.html#xmlXPathEvaluatePredicateResult'/>
     <reference name='xmlXPathFalseFunction' href='html/libxml-xpathInternals.html#xmlXPathFalseFunction'/>
-    <reference name='xmlXPathFlags' href='html/libxml-xpath.html#xmlXPathFlags'/>
     <reference name='xmlXPathFloorFunction' href='html/libxml-xpathInternals.html#xmlXPathFloorFunction'/>
     <reference name='xmlXPathFreeCompExpr' href='html/libxml-xpath.html#xmlXPathFreeCompExpr'/>
     <reference name='xmlXPathFreeContext' href='html/libxml-xpath.html#xmlXPathFreeContext'/>
@@ -4739,6 +4740,7 @@
       <ref name='XML_XPATH_INVALID_PREDICATE_ERROR'/>
       <ref name='XML_XPATH_INVALID_TYPE'/>
       <ref name='XML_XPATH_MEMORY_ERROR'/>
+      <ref name='XML_XPATH_NOVAR'/>
       <ref name='XML_XPATH_NUMBER_ERROR'/>
       <ref name='XML_XPATH_START_LITERAL_ERROR'/>
       <ref name='XML_XPATH_UNCLOSED_ERROR'/>
@@ -5893,6 +5895,7 @@
       <ref name='xmlPatternGetStreamCtxt'/>
       <ref name='xmlPatternMatch'/>
       <ref name='xmlPatternMaxDepth'/>
+      <ref name='xmlPatternMinDepth'/>
       <ref name='xmlPatternPtr'/>
       <ref name='xmlPatternStreamable'/>
       <ref name='xmlPatterncompile'/>
@@ -6724,7 +6727,6 @@
       <ref name='xmlXPathEvalPredicate'/>
       <ref name='xmlXPathEvaluatePredicateResult'/>
       <ref name='xmlXPathFalseFunction'/>
-      <ref name='xmlXPathFlags'/>
       <ref name='xmlXPathFloorFunction'/>
       <ref name='xmlXPathFreeCompExpr'/>
       <ref name='xmlXPathFreeContext'/>
@@ -9682,6 +9684,7 @@
       <ref name='xmlPatternGetStreamCtxt'/>
       <ref name='xmlPatternMatch'/>
       <ref name='xmlPatternMaxDepth'/>
+      <ref name='xmlPatternMinDepth'/>
       <ref name='xmlPatternStreamable'/>
     </type>
     <type name='xmlRMutexPtr'>
@@ -11204,6 +11207,7 @@
       <ref name='xmlPatternGetStreamCtxt'/>
       <ref name='xmlPatternMatch'/>
       <ref name='xmlPatternMaxDepth'/>
+      <ref name='xmlPatternMinDepth'/>
       <ref name='xmlPatternPtr'/>
       <ref name='xmlPatternStreamable'/>
       <ref name='xmlPatterncompile'/>
@@ -13528,6 +13532,7 @@
     </file>
     <file name='xpath'>
       <ref name='XML_XPATH_CHECKNS'/>
+      <ref name='XML_XPATH_NOVAR'/>
       <ref name='XPATH_BOOLEAN'/>
       <ref name='XPATH_ENCODING_ERROR'/>
       <ref name='XPATH_EXPRESSION_OK'/>
@@ -13605,7 +13610,6 @@
       <ref name='xmlXPathEvalExpression'/>
       <ref name='xmlXPathEvalFunc'/>
       <ref name='xmlXPathEvalPredicate'/>
-      <ref name='xmlXPathFlags'/>
       <ref name='xmlXPathFreeCompExpr'/>
       <ref name='xmlXPathFreeContext'/>
       <ref name='xmlXPathFreeNodeSet'/>
@@ -19719,6 +19723,7 @@
         </word>
         <word name='compilation'>
           <ref name='LIBXML_VERSION_EXTRA'/>
+          <ref name='XML_XPATH_CHECKNS'/>
           <ref name='_xmlXPathContext'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathCompile'/>
@@ -20651,6 +20656,7 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlValidCtxt'/>
           <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlPatternMinDepth'/>
           <ref name='xmlTextReaderDepth'/>
         </word>
         <word name='deregistration'>
@@ -22097,6 +22103,9 @@
         </word>
         <word name='for:'>
           <ref name='xmlSchemaGetCanonValue'/>
+        </word>
+        <word name='forbid'>
+          <ref name='XML_XPATH_NOVAR'/>
         </word>
         <word name='force'>
           <ref name='xmlKeepBlanksDefault'/>
@@ -24196,6 +24205,9 @@
           <ref name='xmlExpNewCtxt'/>
           <ref name='xmlPatternMaxDepth'/>
         </word>
+        <word name='mean'>
+          <ref name='xmlPatternMinDepth'/>
+        </word>
         <word name='means'>
           <ref name='xmlExpNewRange'/>
           <ref name='xmlSetGenericErrorFunc'/>
@@ -24314,6 +24326,7 @@
           <ref name='xmlBufferGrow'/>
           <ref name='xmlBufferResize'/>
           <ref name='xmlGetUTF8Char'/>
+          <ref name='xmlPatternMinDepth'/>
         </word>
         <word name='minus'>
           <ref name='xmlXPathStringFunction'/>
@@ -24501,6 +24514,7 @@
           <ref name='xmlParseStartTag'/>
         </word>
         <word name='namespaces'>
+          <ref name='XML_XPATH_CHECKNS'/>
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlSchemaWildcard'/>
           <ref name='_xmlXPathContext'/>
@@ -25466,6 +25480,7 @@
           <ref name='xmlPatternGetStreamCtxt'/>
           <ref name='xmlPatternMatch'/>
           <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlPatternMinDepth'/>
           <ref name='xmlPatternStreamable'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlSchemaValidateFacetWhtsp'/>
@@ -25663,6 +25678,7 @@
           <ref name='xmlPatternGetStreamCtxt'/>
           <ref name='xmlPatternMatch'/>
           <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlPatternMinDepth'/>
           <ref name='xmlPatternStreamable'/>
           <ref name='xmlRegNewExecCtxt'/>
           <ref name='xmlRelaxNGNewValidCtxt'/>
@@ -26188,6 +26204,7 @@
         </word>
         <word name='reachable'>
           <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlPatternMinDepth'/>
         </word>
         <word name='reached'>
           <ref name='xmlRegExecPushString'/>
@@ -27673,6 +27690,7 @@
           <ref name='xmlRelaxNGValidatePushElement'/>
           <ref name='xmlSAX2StartDocument'/>
           <ref name='xmlSAX2StartElementNs'/>
+          <ref name='xmlSplitQName3'/>
           <ref name='xmlTextReaderByteConsumed'/>
           <ref name='xmlValidatePushElement'/>
           <ref name='xmlXPtrNewLocationSetNodes'/>
@@ -29059,6 +29077,7 @@
           <ref name='xmlValidityWarningFunc'/>
         </word>
         <word name='variables'>
+          <ref name='XML_XPATH_NOVAR'/>
           <ref name='_xmlXPathContext'/>
           <ref name='xmlNanoFTPProxy'/>
           <ref name='xmlXPathRegisteredNsCleanup'/>
@@ -29357,6 +29376,7 @@
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlSAX2EntityDecl'/>
           <ref name='xmlScanName'/>
+          <ref name='xmlSplitQName3'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneNamespace'/>
         </word>

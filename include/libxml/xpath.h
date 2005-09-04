@@ -252,9 +252,18 @@ typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
  * xmlXPathFlags:
  * Flags for XPath engine compilation and runtime
  */
-typedef enum {
-    XML_XPATH_CHECKNS = 1		/* check namespaces at compilation */
-} xmlXPathFlags;
+/**
+ * XML_XPATH_CHECKNS:
+ *
+ * check namespaces at compilation
+ */
+#define XML_XPATH_CHECKNS (1<<0)
+/**
+ * XML_XPATH_NOVAR:
+ *
+ * forbid variables in expression
+ */
+#define XML_XPATH_NOVAR	  (1<<1)
 
 /**
  * xmlXPathContext:

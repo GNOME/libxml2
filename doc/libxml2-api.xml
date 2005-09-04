@@ -963,6 +963,7 @@
      <exports symbol='xmlStreamCtxt' type='typedef'/>
      <exports symbol='xmlPattern' type='typedef'/>
      <exports symbol='xmlPatternPtr' type='typedef'/>
+     <exports symbol='xmlPatternMinDepth' type='function'/>
      <exports symbol='xmlPatternGetStreamCtxt' type='function'/>
      <exports symbol='xmlPatternFromRoot' type='function'/>
      <exports symbol='xmlFreePatternList' type='function'/>
@@ -3366,13 +3367,14 @@
      <description>API for the XML Path Language implementation  XML Path Language implementation XPath is a language for addressing parts of an XML document, designed to be used by both XSLT and XPointer</description>
      <author>Daniel Veillard </author>
      <exports symbol='xmlXPathNodeSetGetLength' type='macro'/>
-     <exports symbol='xmlXPathNodeSetIsEmpty' type='macro'/>
+     <exports symbol='XML_XPATH_CHECKNS' type='macro'/>
+     <exports symbol='XML_XPATH_NOVAR' type='macro'/>
      <exports symbol='xmlXPathNodeSetItem' type='macro'/>
+     <exports symbol='xmlXPathNodeSetIsEmpty' type='macro'/>
      <exports symbol='XPATH_NUMBER_ERROR' type='enum'/>
      <exports symbol='XPATH_BOOLEAN' type='enum'/>
      <exports symbol='XPATH_START_LITERAL_ERROR' type='enum'/>
      <exports symbol='XPATH_UNCLOSED_ERROR' type='enum'/>
-     <exports symbol='XML_XPATH_CHECKNS' type='enum'/>
      <exports symbol='XPATH_INVALID_CHAR_ERROR' type='enum'/>
      <exports symbol='XPATH_UNDEF_VARIABLE_ERROR' type='enum'/>
      <exports symbol='XPATH_EXPRESSION_OK' type='enum'/>
@@ -3403,12 +3405,11 @@
      <exports symbol='XPATH_UNFINISHED_LITERAL_ERROR' type='enum'/>
      <exports symbol='XPATH_INVALID_OPERAND' type='enum'/>
      <exports symbol='xmlXPathObjectType' type='typedef'/>
-     <exports symbol='xmlXPathFlags' type='typedef'/>
+     <exports symbol='xmlXPathVariablePtr' type='typedef'/>
      <exports symbol='xmlXPathContext' type='typedef'/>
      <exports symbol='xmlXPathError' type='typedef'/>
      <exports symbol='xmlXPathFunct' type='typedef'/>
      <exports symbol='xmlXPathTypePtr' type='typedef'/>
-     <exports symbol='xmlXPathVariablePtr' type='typedef'/>
      <exports symbol='xmlXPathType' type='typedef'/>
      <exports symbol='xmlNodeSetPtr' type='typedef'/>
      <exports symbol='xmlXPathFuncPtr' type='typedef'/>
@@ -4255,6 +4256,12 @@
     </macro>
     <macro name='XML_XML_NAMESPACE' file='tree'>
       <info>This is the namespace for the special xml: prefix predefined in the XML Namespace specification.</info>
+    </macro>
+    <macro name='XML_XPATH_CHECKNS' file='xpath'>
+      <info>check namespaces at compilation</info>
+    </macro>
+    <macro name='XML_XPATH_NOVAR' file='xpath'>
+      <info>forbid variables in expression</info>
     </macro>
     <macro name='XP_ERROR' file='xpathInternals'>
       <info>Macro to raise an XPath error and return.</info>
@@ -5536,7 +5543,6 @@
     <enum name='XML_XINCLUDE_UNKNOWN_ENCODING' file='xmlerror' value='1610' type='xmlParserErrors' info='1610'/>
     <enum name='XML_XINCLUDE_XPTR_FAILED' file='xmlerror' value='1612' type='xmlParserErrors' info='1612'/>
     <enum name='XML_XINCLUDE_XPTR_RESULT' file='xmlerror' value='1613' type='xmlParserErrors' info='1613'/>
-    <enum name='XML_XPATH_CHECKNS' file='xpath' value='1' type='xmlXPathFlags' info=' check namespaces at compilation'/>
     <enum name='XML_XPATH_ENCODING_ERROR' file='xmlerror' value='1220' type='xmlParserErrors' info='1220'/>
     <enum name='XML_XPATH_EXPRESSION_OK' file='xmlerror' value='1200' type='xmlParserErrors'/>
     <enum name='XML_XPATH_EXPR_ERROR' file='xmlerror' value='1207' type='xmlParserErrors' info='1207'/>
@@ -6549,7 +6555,6 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlXPathContextPtr' file='xpath' type='xmlXPathContext *'/>
     <typedef name='xmlXPathError' file='xpath' type='enum'/>
-    <typedef name='xmlXPathFlags' file='xpath' type='enum'/>
     <typedef name='xmlXPathFuncPtr' file='xpath' type='xmlXPathFunct *'/>
     <struct name='xmlXPathFunct' file='xpath' type='struct _xmlXPathFunct'>
       <field name='name' type='const xmlChar *' info=' the function name'/>
@@ -12032,6 +12037,12 @@ actually an xmlCharEncoding'/>
       <return type='int' info='-2 if no limit (using //), otherwise the depth, and -1 in case of error'/>
       <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
     </function>
+    <function name='xmlPatternMinDepth' file='pattern' module='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>Check the minimum depth reachable by a pattern, 0 mean the / or . are part of the set.</info>
+      <return type='int' info='-1 in case of error otherwise the depth,'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
+    </function>
     <function name='xmlPatternStreamable' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
       <info>Check if the pattern is streamable i.e. xmlPatternGetStreamCtxt() should work.</info>
@@ -13845,7 +13856,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSplitQName3' file='tree' module='tree'>
       <info>parse an XML qualified name string,i</info>
-      <return type='const xmlChar *' info='NULL if it is not a Qualified Name, otherwise, update len with the lenght in byte of the prefix and return a pointer'/>
+      <return type='const xmlChar *' info='NULL if it is not a Qualified Name, otherwise, update len with the lenght in byte of the prefix and return a pointer to the start of the name without the prefix'/>
       <arg name='name' type='const xmlChar *' info='the full QName'/>
       <arg name='len' type='int *' info='an int *'/>
     </function>

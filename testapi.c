@@ -16699,6 +16699,40 @@ test_xmlPatternMaxDepth(void) {
 
 
 static int
+test_xmlPatternMinDepth(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_PATTERN_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlPatternPtr comp; /* the precompiled pattern */
+    int n_comp;
+
+    for (n_comp = 0;n_comp < gen_nb_xmlPatternPtr;n_comp++) {
+        mem_base = xmlMemBlocks();
+        comp = gen_xmlPatternPtr(n_comp, 0);
+
+        ret_val = xmlPatternMinDepth(comp);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlPatternPtr(n_comp, comp, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlPatternMinDepth",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_comp);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlPatternStreamable(void) {
     int test_ret = 0;
 
@@ -16885,11 +16919,12 @@ static int
 test_pattern(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing pattern : 7 of 12 functions ...\n");
+    if (quiet == 0) printf("Testing pattern : 8 of 13 functions ...\n");
     test_ret += test_xmlPatternFromRoot();
     test_ret += test_xmlPatternGetStreamCtxt();
     test_ret += test_xmlPatternMatch();
     test_ret += test_xmlPatternMaxDepth();
+    test_ret += test_xmlPatternMinDepth();
     test_ret += test_xmlPatternStreamable();
     test_ret += test_xmlPatterncompile();
     test_ret += test_xmlStreamPop();

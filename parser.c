@@ -583,6 +583,212 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 
 /************************************************************************
  *									*
+ * 		Library wide options					*
+ *									*
+ ************************************************************************/
+
+/**
+  * xmlHasFeature:
+  * @feature: the feature to be examined
+  *
+  * Examines if the library has been compiled with a given feature.
+  *
+  * Returns a non-zero value if the feature exist, otherwise zero.
+  * Returns zero (0) if the feature does not exist or an unknown
+  * unknown feature is requested, non-zero otherwise.
+  */
+int
+xmlHasFeature(xmlFeature feature)
+{
+    switch (feature) {
+	case XML_FEATURE_THREAD:
+#ifdef LIBXML_THREAD_ENABLED
+	    return(1);
+#else
+	    return(0);
+#endif
+        case XML_FEATURE_TREE:
+#ifdef LIBXML_TREE_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_OUTPUT:
+#ifdef LIBXML_OUTPUT_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_PUSH:
+#ifdef LIBXML_PUSH_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_READER:
+#ifdef LIBXML_READER_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_PATTERN:
+#ifdef LIBXML_PATTERN_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_WRITER:
+#ifdef LIBXML_WRITER_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_SAX1:
+#ifdef LIBXML_SAX1_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_FTP:
+#ifdef LIBXML_FTP_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_HTTP:
+#ifdef LIBXML_HTTP_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_VALID:
+#ifdef LIBXML_VALID_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_HTML:
+#ifdef LIBXML_HTML_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_LEGACY:
+#ifdef LIBXML_LEGACY_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_C14N:
+#ifdef LIBXML_C14N_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_CATALOG:
+#ifdef LIBXML_CATALOG_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_XPATH:
+#ifdef LIBXML_XPATH_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_XPTR:
+#ifdef LIBXML_XPTR_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_XINCLUDE:
+#ifdef LIBXML_XINCLUDE_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_ICONV:
+#ifdef LIBXML_ICONV_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_ISO8859X:
+#ifdef LIBXML_ISO8859X_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_UNICODE:
+#ifdef LIBXML_UNICODE_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_REGEXP:
+#ifdef LIBXML_REGEXP_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_AUTOMATA:
+#ifdef LIBXML_AUTOMATA_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_EXPR:
+#ifdef LIBXML_EXPR_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_SCHEMAS:
+#ifdef LIBXML_SCHEMAS_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_SCHEMATRON:
+#ifdef LIBXML_SCHEMATRON_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_MODULES:
+#ifdef LIBXML_MODULES_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_DEBUG:
+#ifdef LIBXML_DEBUG_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_DEBUG_MEM:
+#ifdef DEBUG_MEMORY_LOCATION
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_FEATURE_DEBUG_RUN:
+#ifdef LIBXML_DEBUG_RUNTIME
+            return(1);
+#else
+            return(0);
+#endif 
+        default:
+	    break;
+     }
+     return(0);
+}
+
+/************************************************************************
+ *									*
  * 		SAX2 defaulted attributes handling			*
  *									*
  ************************************************************************/

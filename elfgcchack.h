@@ -4071,6 +4071,16 @@ extern __typeof (xmlHandleEntity) xmlHandleEntity__internal_alias __attribute((v
 #endif
 #endif
 
+#ifdef bottom_parser
+#undef xmlHasFeature
+extern __typeof (xmlHasFeature) xmlHasFeature __attribute((alias("xmlHasFeature__internal_alias")));
+#else
+#ifndef xmlHasFeature
+extern __typeof (xmlHasFeature) xmlHasFeature__internal_alias __attribute((visibility("hidden")));
+#define xmlHasFeature xmlHasFeature__internal_alias
+#endif
+#endif
+
 #ifdef bottom_tree
 #undef xmlHasNsProp
 extern __typeof (xmlHasNsProp) xmlHasNsProp __attribute((alias("xmlHasNsProp__internal_alias")));
@@ -4692,16 +4702,6 @@ extern __typeof (xmlIsRef) xmlIsRef __attribute((alias("xmlIsRef__internal_alias
 #ifndef xmlIsRef
 extern __typeof (xmlIsRef) xmlIsRef__internal_alias __attribute((visibility("hidden")));
 #define xmlIsRef xmlIsRef__internal_alias
-#endif
-#endif
-
-#ifdef bottom_threads
-#undef xmlIsThreadsEnabled
-extern __typeof (xmlIsThreadsEnabled) xmlIsThreadsEnabled __attribute((alias("xmlIsThreadsEnabled__internal_alias")));
-#else
-#ifndef xmlIsThreadsEnabled
-extern __typeof (xmlIsThreadsEnabled) xmlIsThreadsEnabled__internal_alias __attribute((visibility("hidden")));
-#define xmlIsThreadsEnabled xmlIsThreadsEnabled__internal_alias
 #endif
 #endif
 
@@ -7643,6 +7643,18 @@ extern __typeof (xmlPatternMaxDepth) xmlPatternMaxDepth __attribute((alias("xmlP
 #ifndef xmlPatternMaxDepth
 extern __typeof (xmlPatternMaxDepth) xmlPatternMaxDepth__internal_alias __attribute((visibility("hidden")));
 #define xmlPatternMaxDepth xmlPatternMaxDepth__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
+#ifdef bottom_pattern
+#undef xmlPatternMinDepth
+extern __typeof (xmlPatternMinDepth) xmlPatternMinDepth __attribute((alias("xmlPatternMinDepth__internal_alias")));
+#else
+#ifndef xmlPatternMinDepth
+extern __typeof (xmlPatternMinDepth) xmlPatternMinDepth__internal_alias __attribute((visibility("hidden")));
+#define xmlPatternMinDepth xmlPatternMinDepth__internal_alias
 #endif
 #endif
 #endif

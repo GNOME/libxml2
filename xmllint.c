@@ -2713,57 +2713,36 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 static void showVersion(const char *name) {
     fprintf(stderr, "%s: using libxml version %s\n", name, xmlParserVersion);
     fprintf(stderr, "   compiled with: ");
-#ifdef LIBXML_VALID_ENABLED
-    fprintf(stderr, "DTDValid ");
-#endif
-#ifdef LIBXML_FTP_ENABLED
-    fprintf(stderr, "FTP ");
-#endif
-#ifdef LIBXML_HTTP_ENABLED
-    fprintf(stderr, "HTTP ");
-#endif
-#ifdef LIBXML_HTML_ENABLED
-    fprintf(stderr, "HTML ");
-#endif
-#ifdef LIBXML_C14N_ENABLED
-    fprintf(stderr, "C14N ");
-#endif
-#ifdef LIBXML_CATALOG_ENABLED
-    fprintf(stderr, "Catalog ");
-#endif
-#ifdef LIBXML_XPATH_ENABLED
-    fprintf(stderr, "XPath ");
-#endif
-#ifdef LIBXML_XPTR_ENABLED
-    fprintf(stderr, "XPointer ");
-#endif
-#ifdef LIBXML_XINCLUDE_ENABLED
-    fprintf(stderr, "XInclude ");
-#endif
-#ifdef LIBXML_ICONV_ENABLED
-    fprintf(stderr, "Iconv ");
-#endif
-#ifdef DEBUG_MEMORY_LOCATION
-    fprintf(stderr, "MemDebug ");
-#endif
-#ifdef LIBXML_UNICODE_ENABLED
-    fprintf(stderr, "Unicode ");
-#endif
-#ifdef LIBXML_REGEXP_ENABLED
-    fprintf(stderr, "Regexps ");
-#endif
-#ifdef LIBXML_EXPR_ENABLED
-    fprintf(stderr, "Expr ");
-#endif
-#ifdef LIBXML_AUTOMATA_ENABLED
-    fprintf(stderr, "Automata ");
-#endif
-#ifdef LIBXML_SCHEMAS_ENABLED
-    fprintf(stderr, "Schemas ");
-#endif
-#ifdef LIBXML_MODULES_ENABLED
-    fprintf(stderr, "Modules ");
-#endif
+    if (xmlHasFeature(XML_FEATURE_THREAD)) fprintf(stderr, "Threads ");
+    if (xmlHasFeature(XML_FEATURE_TREE)) fprintf(stderr, "Tree ");
+    if (xmlHasFeature(XML_FEATURE_OUTPUT)) fprintf(stderr, "Output ");
+    if (xmlHasFeature(XML_FEATURE_PUSH)) fprintf(stderr, "Push ");
+    if (xmlHasFeature(XML_FEATURE_READER)) fprintf(stderr, "Reader ");
+    if (xmlHasFeature(XML_FEATURE_PATTERN)) fprintf(stderr, "Patterns ");
+    if (xmlHasFeature(XML_FEATURE_WRITER)) fprintf(stderr, "Writer ");
+    if (xmlHasFeature(XML_FEATURE_SAX1)) fprintf(stderr, "SAXv1 ");
+    if (xmlHasFeature(XML_FEATURE_FTP)) fprintf(stderr, "FTP "); 
+    if (xmlHasFeature(XML_FEATURE_HTTP)) fprintf(stderr, "HTTP "); 
+    if (xmlHasFeature(XML_FEATURE_VALID)) fprintf(stderr, "DTDValid ");
+    if (xmlHasFeature(XML_FEATURE_HTML)) fprintf(stderr, "HTML "); 
+    if (xmlHasFeature(XML_FEATURE_LEGACY)) fprintf(stderr, "Legacy "); 
+    if (xmlHasFeature(XML_FEATURE_C14N)) fprintf(stderr, "C14N "); 
+    if (xmlHasFeature(XML_FEATURE_CATALOG)) fprintf(stderr, "Catalog "); 
+    if (xmlHasFeature(XML_FEATURE_XPATH)) fprintf(stderr, "XPath "); 
+    if (xmlHasFeature(XML_FEATURE_XPTR)) fprintf(stderr, "XPointer "); 
+    if (xmlHasFeature(XML_FEATURE_XINCLUDE)) fprintf(stderr, "XInclude "); 
+    if (xmlHasFeature(XML_FEATURE_ICONV)) fprintf(stderr, "Iconv "); 
+    if (xmlHasFeature(XML_FEATURE_ISO8859X)) fprintf(stderr, "ISO8859X "); 
+    if (xmlHasFeature(XML_FEATURE_UNICODE)) fprintf(stderr, "Unicode "); 
+    if (xmlHasFeature(XML_FEATURE_REGEXP)) fprintf(stderr, "Regexps "); 
+    if (xmlHasFeature(XML_FEATURE_AUTOMATA)) fprintf(stderr, "Automata "); 
+    if (xmlHasFeature(XML_FEATURE_EXPR)) fprintf(stderr, "Expr "); 
+    if (xmlHasFeature(XML_FEATURE_SCHEMAS)) fprintf(stderr, "Schemas "); 
+    if (xmlHasFeature(XML_FEATURE_SCHEMATRON)) fprintf(stderr, "Schematron "); 
+    if (xmlHasFeature(XML_FEATURE_MODULES)) fprintf(stderr, "Modules "); 
+    if (xmlHasFeature(XML_FEATURE_DEBUG)) fprintf(stderr, "Debug "); 
+    if (xmlHasFeature(XML_FEATURE_DEBUG_MEM)) fprintf(stderr, "MemDebug "); 
+    if (xmlHasFeature(XML_FEATURE_DEBUG_RUN)) fprintf(stderr, "RunDebug "); 
     fprintf(stderr, "\n");
 }
 

@@ -1,3 +1,11 @@
+Sun Sep  4 23:36:45 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS elfgcchack.h testapi.c doc/*: updated the docs and rebuild
+	  releasing 2.6.21
+	* include/libxml/threads.h threads.c: removed xmlIsThreadsEnabled()
+	* threads.c include/libxml/threads.h xmllint.c: added the more
+	  generic xmlHasFeature() as suggested by Bjorn Reese, xmllint uses it.
+
 Sun Sep  4 22:45:49 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/* configure.in: prepare for release

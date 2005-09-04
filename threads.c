@@ -165,24 +165,6 @@ static void xmlOnceInit(void);
 #endif
 
 /**
- * xmlIsThreadsEnabled:
- *
- * Run-time information about whether multithread support is compiled in
- *
- * Returns 1 (true) if library was compiled with multithread support
- * enabled or 0 (false) otherwise.
- */
-int
-xmlIsThreadsEnabled(void)
-{
-#ifdef LIBXML_THREAD_ENABLED
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-/**
  * xmlNewMutex:
  *
  * xmlNewMutex() is used to allocate a libxml2 token struct for use in

@@ -1052,6 +1052,18 @@ static xmlElementTypeVal gen_xmlElementTypeVal(int no, int nr ATTRIBUTE_UNUSED) 
 static void des_xmlElementTypeVal(int no ATTRIBUTE_UNUSED, xmlElementTypeVal val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_xmlFeature 4
+static xmlFeature gen_xmlFeature(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 1) return(XML_FEATURE_AUTOMATA);
+    if (no == 2) return(XML_FEATURE_C14N);
+    if (no == 3) return(XML_FEATURE_CATALOG);
+    if (no == 4) return(XML_FEATURE_DEBUG);
+    return(0);
+}
+
+static void des_xmlFeature(int no ATTRIBUTE_UNUSED, xmlFeature val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
 static void desret_xmlParserErrors(xmlParserErrors val ATTRIBUTE_UNUSED) {
 }
 
@@ -12974,6 +12986,38 @@ test_xmlGetFeaturesList(void) {
 
 
 static int
+test_xmlHasFeature(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlFeature feature; /* the feature to be examined */
+    int n_feature;
+
+    for (n_feature = 0;n_feature < gen_nb_xmlFeature;n_feature++) {
+        mem_base = xmlMemBlocks();
+        feature = gen_xmlFeature(n_feature, 0);
+
+        ret_val = xmlHasFeature(feature);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlFeature(n_feature, feature, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlHasFeature",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_feature);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlIOParseDTD(void) {
     int test_ret = 0;
 
@@ -15161,7 +15205,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 60 of 69 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 61 of 70 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlClearNodeInfoSeq();
     test_ret += test_xmlClearParserCtxt();
@@ -15176,6 +15220,7 @@ test_parser(void) {
     test_ret += test_xmlGetExternalEntityLoader();
     test_ret += test_xmlGetFeature();
     test_ret += test_xmlGetFeaturesList();
+    test_ret += test_xmlHasFeature();
     test_ret += test_xmlIOParseDTD();
     test_ret += test_xmlInitNodeInfoSeq();
     test_ret += test_xmlInitParser();

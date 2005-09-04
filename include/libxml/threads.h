@@ -57,8 +57,6 @@ XMLPUBFUN void XMLCALL
 /*
  * Library wide APIs.
  */
-XMLPUBFUN int XMLCALL
-			xmlIsThreadsEnabled(void);
 XMLPUBFUN void XMLCALL			
 			xmlInitThreads	(void);
 XMLPUBFUN void XMLCALL			

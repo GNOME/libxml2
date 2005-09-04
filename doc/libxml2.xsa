@@ -8,27 +8,47 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.19</version>
-    <last-release> Apr 02 2005</last-release>
+    <version>2.6.20</version>
+    <last-release> Jul 10 2005</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   -  build fixes: drop .la from RPMs, --with-minimum build fix (William
-       Brack), use XML_SOCKLEN_T instead of SOCKLEN_T because it breaks with
-       AIX 5.3 compiler, fixed elfgcchack.h generation and PLT reduction
-       code on Linux/ELF/gcc4
-   -  bug fixes: schemas type decimal fixups (William Brack), xmmlint return
-       code (Gerry Murphy), small schemas fixes (Matthew Burgess and
-       GUY Fabrice), workaround "DAV:" namespace brokeness in c14n (Aleksey
-       Sanin), segfault in Schemas (Kasimier Buchcik), Schemas attribute
-       validation (Kasimier), Prop related functions and xmlNewNodeEatName
-       (Rob Richards), HTML serialization of name attribute on a elements,
-       Python error handlers leaks and improvement (Brent Hendricks), 
-       uninitialized variable in encoding code, Relax-NG validation bug,
-       potential crash if gnorableWhitespace is NULL, xmlSAXParseDoc and
-       xmlParseDoc signatures, switched back to assuming UTF-8 in case 
-       no encoding is given at serialization time
-   -  improvements: lot of work on Schemas by Kasimier Buchcik on facets
-       checking and also mixed handling.
-   - 
+    <changes>   -  build fixes: Windows build (Rob Richards), Mingw compilation (Igor
+       Zlatkovic), Windows Makefile (Igor), gcc warnings (Kasimier and
+       andriy@google.com), use gcc weak references to pthread to avoid the
+       pthread dependancy on Linux, compilation problem (Steve Nairn),
+       compiling of subset (Morten Welinder), IPv6/ss_family compilation
+       (William Brack), compilation when disabling parts of the library,
+       standalone test distribution.
+       
+   -  bug fixes: bug in lang(), memory cleanup on errors (William Brack),
+       HTTP query strings (Aron Stansvik), memory leak in DTD (William),
+       integer overflow in XPath (William), nanoftp buffer size, pattern
+       "." apth fixup (Kasimier), leak in tree reported by Malcolm Rowe,
+       replaceNode patch (Brent Hendricks), CDATA with NULL content
+       (Mark Vakoc), xml:base fixup on XInclude (William), pattern
+       fixes (William), attribute bug in exclusive c14n (Aleksey Sanin),
+       xml:space and xml:lang with SAX2 (Rob Richards), namespace 
+       trouble in complex parsing (Malcolm Rowe), XSD type QNames fixes
+       (Kasimier), XPath streaming fixups (William), RelaxNG bug (Rob Richards),
+       Schemas for Schemas fixes (Kasimier), removal of ID (Rob Richards),
+       a small RelaxNG leak, HTML parsing in push mode bug (James Bursa),
+       failure to detect UTF-8 parsing bugs in CDATA sections, areBlanks()
+       heuristic failure, duplicate attributes in DTD bug (William).
+       
+   -  improvements: lot of work on Schemas by Kasimier Buchcik both on 
+       conformance and streaming, Schemas validation messages (Kasimier
+       Buchcik, Matthew Burgess), namespace removal at the python level
+       (Brent Hendricks), Update to new Schemas regression tests from
+       W3C/Nist (Kasimier), xmlSchemaValidateFile() (Kasimier), implementation
+       of xmlTextReaderReadInnerXml and xmlTextReaderReadOuterXml (James Wert),
+       standalone test framework and programs, new DOM import APIs
+       xmlDOMWrapReconcileNamespaces() xmlDOMWrapAdoptNode() and
+       xmlDOMWrapRemoveNode(), extension of xmllint capabilities for
+       SAX and Schemas regression tests, xmlStopParser() available in
+       pull mode too, ienhancement to xmllint --shell namespaces support,
+       Windows port of the standalone testing tools (Kasimier and William),
+       xmlSchemaValidateStream() xmlSchemaSAXPlug() and xmlSchemaSAXUnplug()
+       SAX Schemas APIs, Schemas xmlReader support.
+       
 
 </changes>
   </product>

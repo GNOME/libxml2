@@ -407,6 +407,37 @@
     <reference name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' href='html/libxml-entities.html#XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
     <reference name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' href='html/libxml-entities.html#XML_EXTERNAL_GENERAL_UNPARSED_ENTITY'/>
     <reference name='XML_EXTERNAL_PARAMETER_ENTITY' href='html/libxml-entities.html#XML_EXTERNAL_PARAMETER_ENTITY'/>
+    <reference name='XML_FEATURE_AUTOMATA' href='html/libxml-parser.html#XML_FEATURE_AUTOMATA'/>
+    <reference name='XML_FEATURE_C14N' href='html/libxml-parser.html#XML_FEATURE_C14N'/>
+    <reference name='XML_FEATURE_CATALOG' href='html/libxml-parser.html#XML_FEATURE_CATALOG'/>
+    <reference name='XML_FEATURE_DEBUG' href='html/libxml-parser.html#XML_FEATURE_DEBUG'/>
+    <reference name='XML_FEATURE_DEBUG_MEM' href='html/libxml-parser.html#XML_FEATURE_DEBUG_MEM'/>
+    <reference name='XML_FEATURE_DEBUG_RUN' href='html/libxml-parser.html#XML_FEATURE_DEBUG_RUN'/>
+    <reference name='XML_FEATURE_EXPR' href='html/libxml-parser.html#XML_FEATURE_EXPR'/>
+    <reference name='XML_FEATURE_FTP' href='html/libxml-parser.html#XML_FEATURE_FTP'/>
+    <reference name='XML_FEATURE_HTML' href='html/libxml-parser.html#XML_FEATURE_HTML'/>
+    <reference name='XML_FEATURE_HTTP' href='html/libxml-parser.html#XML_FEATURE_HTTP'/>
+    <reference name='XML_FEATURE_ICONV' href='html/libxml-parser.html#XML_FEATURE_ICONV'/>
+    <reference name='XML_FEATURE_ISO8859X' href='html/libxml-parser.html#XML_FEATURE_ISO8859X'/>
+    <reference name='XML_FEATURE_LEGACY' href='html/libxml-parser.html#XML_FEATURE_LEGACY'/>
+    <reference name='XML_FEATURE_MODULES' href='html/libxml-parser.html#XML_FEATURE_MODULES'/>
+    <reference name='XML_FEATURE_NONE' href='html/libxml-parser.html#XML_FEATURE_NONE'/>
+    <reference name='XML_FEATURE_OUTPUT' href='html/libxml-parser.html#XML_FEATURE_OUTPUT'/>
+    <reference name='XML_FEATURE_PATTERN' href='html/libxml-parser.html#XML_FEATURE_PATTERN'/>
+    <reference name='XML_FEATURE_PUSH' href='html/libxml-parser.html#XML_FEATURE_PUSH'/>
+    <reference name='XML_FEATURE_READER' href='html/libxml-parser.html#XML_FEATURE_READER'/>
+    <reference name='XML_FEATURE_REGEXP' href='html/libxml-parser.html#XML_FEATURE_REGEXP'/>
+    <reference name='XML_FEATURE_SAX1' href='html/libxml-parser.html#XML_FEATURE_SAX1'/>
+    <reference name='XML_FEATURE_SCHEMAS' href='html/libxml-parser.html#XML_FEATURE_SCHEMAS'/>
+    <reference name='XML_FEATURE_SCHEMATRON' href='html/libxml-parser.html#XML_FEATURE_SCHEMATRON'/>
+    <reference name='XML_FEATURE_THREAD' href='html/libxml-parser.html#XML_FEATURE_THREAD'/>
+    <reference name='XML_FEATURE_TREE' href='html/libxml-parser.html#XML_FEATURE_TREE'/>
+    <reference name='XML_FEATURE_UNICODE' href='html/libxml-parser.html#XML_FEATURE_UNICODE'/>
+    <reference name='XML_FEATURE_VALID' href='html/libxml-parser.html#XML_FEATURE_VALID'/>
+    <reference name='XML_FEATURE_WRITER' href='html/libxml-parser.html#XML_FEATURE_WRITER'/>
+    <reference name='XML_FEATURE_XINCLUDE' href='html/libxml-parser.html#XML_FEATURE_XINCLUDE'/>
+    <reference name='XML_FEATURE_XPATH' href='html/libxml-parser.html#XML_FEATURE_XPATH'/>
+    <reference name='XML_FEATURE_XPTR' href='html/libxml-parser.html#XML_FEATURE_XPTR'/>
     <reference name='XML_FROM_C14N' href='html/libxml-xmlerror.html#XML_FROM_C14N'/>
     <reference name='XML_FROM_CATALOG' href='html/libxml-xmlerror.html#XML_FROM_CATALOG'/>
     <reference name='XML_FROM_CHECK' href='html/libxml-xmlerror.html#XML_FROM_CHECK'/>
@@ -1904,6 +1935,7 @@
     <reference name='xmlExpStringDerive' href='html/libxml-xmlregexp.html#xmlExpStringDerive'/>
     <reference name='xmlExpSubsume' href='html/libxml-xmlregexp.html#xmlExpSubsume'/>
     <reference name='xmlExternalEntityLoader' href='html/libxml-parser.html#xmlExternalEntityLoader'/>
+    <reference name='xmlFeature' href='html/libxml-parser.html#xmlFeature'/>
     <reference name='xmlFileClose' href='html/libxml-xmlIO.html#xmlFileClose'/>
     <reference name='xmlFileMatch' href='html/libxml-xmlIO.html#xmlFileMatch'/>
     <reference name='xmlFileOpen' href='html/libxml-xmlIO.html#xmlFileOpen'/>
@@ -1983,6 +2015,7 @@
     <reference name='xmlGlobalState' href='html/libxml-globals.html#xmlGlobalState'/>
     <reference name='xmlGlobalStatePtr' href='html/libxml-globals.html#xmlGlobalStatePtr'/>
     <reference name='xmlHandleEntity' href='html/libxml-parserInternals.html#xmlHandleEntity'/>
+    <reference name='xmlHasFeature' href='html/libxml-parser.html#xmlHasFeature'/>
     <reference name='xmlHasNsProp' href='html/libxml-tree.html#xmlHasNsProp'/>
     <reference name='xmlHasProp' href='html/libxml-tree.html#xmlHasProp'/>
     <reference name='xmlHashAddEntry' href='html/libxml-hash.html#xmlHashAddEntry'/>
@@ -2079,7 +2112,6 @@
     <reference name='xmlIsPubidChar_ch' href='html/libxml-chvalid.html#xmlIsPubidChar_ch'/>
     <reference name='xmlIsPubidChar_tab' href='html/libxml-chvalid.html#xmlIsPubidChar_tab'/>
     <reference name='xmlIsRef' href='html/libxml-valid.html#xmlIsRef'/>
-    <reference name='xmlIsThreadsEnabled' href='html/libxml-threads.html#xmlIsThreadsEnabled'/>
     <reference name='xmlIsXHTML' href='html/libxml-tree.html#xmlIsXHTML'/>
     <reference name='xmlKeepBlanksDefault' href='html/libxml-parser.html#xmlKeepBlanksDefault'/>
     <reference name='xmlKeepBlanksDefaultValue' href='html/libxml-globals.html#xmlKeepBlanksDefaultValue'/>
@@ -3848,6 +3880,37 @@
       <ref name='XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
       <ref name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY'/>
       <ref name='XML_EXTERNAL_PARAMETER_ENTITY'/>
+      <ref name='XML_FEATURE_AUTOMATA'/>
+      <ref name='XML_FEATURE_C14N'/>
+      <ref name='XML_FEATURE_CATALOG'/>
+      <ref name='XML_FEATURE_DEBUG'/>
+      <ref name='XML_FEATURE_DEBUG_MEM'/>
+      <ref name='XML_FEATURE_DEBUG_RUN'/>
+      <ref name='XML_FEATURE_EXPR'/>
+      <ref name='XML_FEATURE_FTP'/>
+      <ref name='XML_FEATURE_HTML'/>
+      <ref name='XML_FEATURE_HTTP'/>
+      <ref name='XML_FEATURE_ICONV'/>
+      <ref name='XML_FEATURE_ISO8859X'/>
+      <ref name='XML_FEATURE_LEGACY'/>
+      <ref name='XML_FEATURE_MODULES'/>
+      <ref name='XML_FEATURE_NONE'/>
+      <ref name='XML_FEATURE_OUTPUT'/>
+      <ref name='XML_FEATURE_PATTERN'/>
+      <ref name='XML_FEATURE_PUSH'/>
+      <ref name='XML_FEATURE_READER'/>
+      <ref name='XML_FEATURE_REGEXP'/>
+      <ref name='XML_FEATURE_SAX1'/>
+      <ref name='XML_FEATURE_SCHEMAS'/>
+      <ref name='XML_FEATURE_SCHEMATRON'/>
+      <ref name='XML_FEATURE_THREAD'/>
+      <ref name='XML_FEATURE_TREE'/>
+      <ref name='XML_FEATURE_UNICODE'/>
+      <ref name='XML_FEATURE_VALID'/>
+      <ref name='XML_FEATURE_WRITER'/>
+      <ref name='XML_FEATURE_XINCLUDE'/>
+      <ref name='XML_FEATURE_XPATH'/>
+      <ref name='XML_FEATURE_XPTR'/>
       <ref name='XML_FROM_C14N'/>
       <ref name='XML_FROM_CATALOG'/>
       <ref name='XML_FROM_CHECK'/>
@@ -5381,6 +5444,7 @@
       <ref name='xmlExpStringDerive'/>
       <ref name='xmlExpSubsume'/>
       <ref name='xmlExternalEntityLoader'/>
+      <ref name='xmlFeature'/>
       <ref name='xmlFileClose'/>
       <ref name='xmlFileMatch'/>
       <ref name='xmlFileOpen'/>
@@ -5460,6 +5524,7 @@
       <ref name='xmlGlobalState'/>
       <ref name='xmlGlobalStatePtr'/>
       <ref name='xmlHandleEntity'/>
+      <ref name='xmlHasFeature'/>
       <ref name='xmlHasNsProp'/>
       <ref name='xmlHasProp'/>
       <ref name='xmlHashAddEntry'/>
@@ -5556,7 +5621,6 @@
       <ref name='xmlIsPubidChar_ch'/>
       <ref name='xmlIsPubidChar_tab'/>
       <ref name='xmlIsRef'/>
-      <ref name='xmlIsThreadsEnabled'/>
       <ref name='xmlIsXHTML'/>
       <ref name='xmlKeepBlanksDefault'/>
       <ref name='xmlKeepBlanksDefaultValue'/>
@@ -9115,6 +9179,9 @@
     <type name='xmlExternalEntityLoader'>
       <ref name='xmlSetExternalEntityLoader'/>
     </type>
+    <type name='xmlFeature'>
+      <ref name='xmlHasFeature'/>
+    </type>
     <type name='xmlFreeFunc'>
       <ref name='xmlGcMemSetup'/>
       <ref name='xmlMemSetup'/>
@@ -10907,6 +10974,37 @@
       <ref name='XML_COMPLETE_ATTRS'/>
       <ref name='XML_DEFAULT_VERSION'/>
       <ref name='XML_DETECT_IDS'/>
+      <ref name='XML_FEATURE_AUTOMATA'/>
+      <ref name='XML_FEATURE_C14N'/>
+      <ref name='XML_FEATURE_CATALOG'/>
+      <ref name='XML_FEATURE_DEBUG'/>
+      <ref name='XML_FEATURE_DEBUG_MEM'/>
+      <ref name='XML_FEATURE_DEBUG_RUN'/>
+      <ref name='XML_FEATURE_EXPR'/>
+      <ref name='XML_FEATURE_FTP'/>
+      <ref name='XML_FEATURE_HTML'/>
+      <ref name='XML_FEATURE_HTTP'/>
+      <ref name='XML_FEATURE_ICONV'/>
+      <ref name='XML_FEATURE_ISO8859X'/>
+      <ref name='XML_FEATURE_LEGACY'/>
+      <ref name='XML_FEATURE_MODULES'/>
+      <ref name='XML_FEATURE_NONE'/>
+      <ref name='XML_FEATURE_OUTPUT'/>
+      <ref name='XML_FEATURE_PATTERN'/>
+      <ref name='XML_FEATURE_PUSH'/>
+      <ref name='XML_FEATURE_READER'/>
+      <ref name='XML_FEATURE_REGEXP'/>
+      <ref name='XML_FEATURE_SAX1'/>
+      <ref name='XML_FEATURE_SCHEMAS'/>
+      <ref name='XML_FEATURE_SCHEMATRON'/>
+      <ref name='XML_FEATURE_THREAD'/>
+      <ref name='XML_FEATURE_TREE'/>
+      <ref name='XML_FEATURE_UNICODE'/>
+      <ref name='XML_FEATURE_VALID'/>
+      <ref name='XML_FEATURE_WRITER'/>
+      <ref name='XML_FEATURE_XINCLUDE'/>
+      <ref name='XML_FEATURE_XPATH'/>
+      <ref name='XML_FEATURE_XPTR'/>
       <ref name='XML_PARSER_ATTRIBUTE_VALUE'/>
       <ref name='XML_PARSER_CDATA_SECTION'/>
       <ref name='XML_PARSER_COMMENT'/>
@@ -11003,10 +11101,12 @@
       <ref name='xmlCtxtResetPush'/>
       <ref name='xmlCtxtUseOptions'/>
       <ref name='xmlExternalEntityLoader'/>
+      <ref name='xmlFeature'/>
       <ref name='xmlFreeParserCtxt'/>
       <ref name='xmlGetExternalEntityLoader'/>
       <ref name='xmlGetFeature'/>
       <ref name='xmlGetFeaturesList'/>
+      <ref name='xmlHasFeature'/>
       <ref name='xmlIOParseDTD'/>
       <ref name='xmlInitNodeInfoSeq'/>
       <ref name='xmlInitParser'/>
@@ -11546,7 +11646,6 @@
       <ref name='xmlGetThreadId'/>
       <ref name='xmlInitThreads'/>
       <ref name='xmlIsMainThread'/>
-      <ref name='xmlIsThreadsEnabled'/>
       <ref name='xmlLockLibrary'/>
       <ref name='xmlMutex'/>
       <ref name='xmlMutexLock'/>
@@ -15167,6 +15266,9 @@
           <ref name='setDocumentLocatorSAXFunc'/>
           <ref name='xmlSAX2SetDocumentLocator'/>
         </word>
+        <word name='Examines'>
+          <ref name='xmlHasFeature'/>
+        </word>
         <word name='Exclusive'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
@@ -16915,6 +17017,7 @@
           <ref name='xmlGetDocEntity'/>
           <ref name='xmlGetDtdEntity'/>
           <ref name='xmlGetParameterEntity'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlLinkGetData'/>
           <ref name='xmlXPathCheckError'/>
           <ref name='xmlXPathGetContextNode'/>
@@ -16936,9 +17039,6 @@
         <word name='Root'>
           <ref name='xmlParseDocTypeDecl'/>
           <ref name='xmlValidateRoot'/>
-        </word>
-        <word name='Run-time'>
-          <ref name='xmlIsThreadsEnabled'/>
         </word>
         <word name='Runic'>
           <ref name='xmlUCSIsRunic'/>
@@ -18091,7 +18191,6 @@
         <word name='about'>
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlDebugDumpString'/>
-          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlShellDir'/>
           <ref name='xmlTextWriterWriteRawLen'/>
         </word>
@@ -19764,7 +19863,7 @@
           <ref name='xmlExpDump'/>
           <ref name='xmlExpMaxToken'/>
           <ref name='xmlGetLastError'/>
-          <ref name='xmlIsThreadsEnabled'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
@@ -21030,38 +21129,6 @@
           <ref name='xmlSAXParseMemoryWithData'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
-        <word name='does'>
-          <ref name='_xmlEntity'/>
-          <ref name='xmlCheckUTF8'/>
-          <ref name='xmlCtxtResetLastError'/>
-          <ref name='xmlGetNoNsProp'/>
-          <ref name='xmlGetNsProp'/>
-          <ref name='xmlGetProp'/>
-          <ref name='xmlHasNsProp'/>
-          <ref name='xmlModuleFree'/>
-          <ref name='xmlNodeGetBase'/>
-          <ref name='xmlParseMarkupDecl'/>
-          <ref name='xmlResetLastError'/>
-          <ref name='xmlSaveDoc'/>
-          <ref name='xmlSaveTree'/>
-          <ref name='xmlSchemaGetCanonValue'/>
-          <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
-          <ref name='xmlURIEscape'/>
-          <ref name='xmlURIUnescapeString'/>
-          <ref name='xmlValidateAttributeDecl'/>
-          <ref name='xmlValidateDocument'/>
-          <ref name='xmlValidateDocumentFinal'/>
-          <ref name='xmlValidateDtd'/>
-          <ref name='xmlValidateDtdFinal'/>
-          <ref name='xmlValidateElementDecl'/>
-          <ref name='xmlValidateNotationDecl'/>
-          <ref name='xmlValidateOneAttribute'/>
-          <ref name='xmlValidateOneElement'/>
-          <ref name='xmlValidateOneNamespace'/>
-          <ref name='xmlValidateRoot'/>
-          <ref name='xmlXPathSubstringAfterFunction'/>
-          <ref name='xmlXPathSubstringBeforeFunction'/>
-        </word>
         <word name='doesn'>
           <ref name='_htmlElemDesc'/>
           <ref name='htmlElementAllowedHere'/>
@@ -21314,7 +21381,6 @@
           <ref name='xmlCatalogSetDebug'/>
         </word>
         <word name='enabled'>
-          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlSaveFile'/>
           <ref name='xmlSaveFormatFile'/>
         </word>
@@ -21632,6 +21698,9 @@
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlSetBufferAllocationScheme'/>
         </word>
+        <word name='examined'>
+          <ref name='xmlHasFeature'/>
+        </word>
         <word name='example'>
           <ref name='xmlParserInputBufferCreateStatic'/>
           <ref name='xmlReconciliateNs'/>
@@ -21683,6 +21752,7 @@
           <ref name='xmlRegExecPushString2'/>
         </word>
         <word name='exist'>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlXPtrLocationSetAdd'/>
         </word>
         <word name='existent'>
@@ -21901,6 +21971,7 @@
         <word name='feature'>
           <ref name='xmlGetFeature'/>
           <ref name='xmlGetFeaturesList'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlSetFeature'/>
         </word>
         <word name='features'>
@@ -23133,7 +23204,6 @@
           <ref name='xmlDebugDumpNode'/>
           <ref name='xmlDebugDumpNodeList'/>
           <ref name='xmlDebugDumpOneNode'/>
-          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlNanoFTPUpdateURL'/>
           <ref name='xmlNanoHTTPFetch'/>
           <ref name='xmlNanoHTTPMethod'/>
@@ -23765,9 +23835,9 @@
           <ref name='xmlCleanupMemory'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlInitThreads'/>
           <ref name='xmlInitializeGlobalState'/>
-          <ref name='xmlIsThreadsEnabled'/>
           <ref name='xmlLockLibrary'/>
           <ref name='xmlModuleFree'/>
           <ref name='xmlModuleOpen'/>
@@ -24453,9 +24523,6 @@
         <word name='multiply'>
           <ref name='xmlXPathMultValues'/>
         </word>
-        <word name='multithread'>
-          <ref name='xmlIsThreadsEnabled'/>
-        </word>
         <word name='multithreaded'>
           <ref name='htmlInitAutoClose'/>
           <ref name='xmlInitParser'/>
@@ -24757,6 +24824,7 @@
         </word>
         <word name='non-zero'>
           <ref name='initxmlDefaultSAXHandler'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlIsLetter'/>
           <ref name='xmlSAX2InitDefaultSAXHandler'/>
           <ref name='xmlXPathBooleanFunction'/>
@@ -26704,6 +26772,7 @@
         </word>
         <word name='requested'>
           <ref name='xmlExternalEntityLoader'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlIsID'/>
           <ref name='xmlMallocFunc'/>
           <ref name='xmlReallocFunc'/>
@@ -28833,6 +28902,7 @@
           <ref name='XML_SCHEMAS_FACET_UNKNOWN'/>
           <ref name='htmlCtxtUseOptions'/>
           <ref name='xmlCtxtUseOptions'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlUCSIsBlock'/>
           <ref name='xmlUCSIsCat'/>
         </word>
@@ -30506,6 +30576,7 @@
           <ref name='xmlCopyDoc'/>
           <ref name='xmlCtxtReadDoc'/>
           <ref name='xmlDocDumpMemory'/>
+          <ref name='xmlHasFeature'/>
           <ref name='xmlOutputBufferWriteEscape'/>
           <ref name='xmlOutputBufferWriteString'/>
           <ref name='xmlParseBalancedChunkMemory'/>

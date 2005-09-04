@@ -1163,6 +1163,52 @@ XMLPUBFUN xmlDocPtr XMLCALL
 					 const char *encoding,
 					 int options);
 
+/*
+ * Library wide options
+ */
+/**
+ * xmlFeature:
+ *
+ * Used to examine the existance of features that can be enabled
+ * or disabled at compile-time.
+ */
+typedef enum {
+    XML_FEATURE_THREAD = 1,
+    XML_FEATURE_TREE = 2,
+    XML_FEATURE_OUTPUT = 3,
+    XML_FEATURE_PUSH = 4,
+    XML_FEATURE_READER = 5,
+    XML_FEATURE_PATTERN = 6,
+    XML_FEATURE_WRITER = 7,
+    XML_FEATURE_SAX1 = 8,
+    XML_FEATURE_FTP = 9,
+    XML_FEATURE_HTTP = 10,
+    XML_FEATURE_VALID = 11,
+    XML_FEATURE_HTML = 12,
+    XML_FEATURE_LEGACY = 13,
+    XML_FEATURE_C14N = 14,
+    XML_FEATURE_CATALOG = 15,
+    XML_FEATURE_XPATH = 16,
+    XML_FEATURE_XPTR = 17,
+    XML_FEATURE_XINCLUDE = 18,
+    XML_FEATURE_ICONV = 19,
+    XML_FEATURE_ISO8859X = 20,
+    XML_FEATURE_UNICODE = 21,
+    XML_FEATURE_REGEXP = 22,
+    XML_FEATURE_AUTOMATA = 23,
+    XML_FEATURE_EXPR = 24,
+    XML_FEATURE_SCHEMAS = 25,
+    XML_FEATURE_SCHEMATRON = 26,
+    XML_FEATURE_MODULES = 27,
+    XML_FEATURE_DEBUG = 28,
+    XML_FEATURE_DEBUG_MEM = 29,
+    XML_FEATURE_DEBUG_RUN = 30,
+    XML_FEATURE_NONE = 99999 /* just to be sure of allocation size */
+} xmlFeature;
+
+XMLPUBFUN int XMLCALL
+		xmlHasFeature		(xmlFeature feature);
+
 #ifdef __cplusplus
 }
 #endif

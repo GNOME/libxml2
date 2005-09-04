@@ -15,6 +15,45 @@ ChangeLog.html
 to the CVS at 
 http://cvs.gnome.org/viewcvs/libxml2/
  code base.There is the list of public releases:
+2.6.21: Sep 4 2005:
+   - build fixes: Cygwin portability fixes (Gerrit P. Haase), calling
+      convention problems on Windows (Marcus Boerger), cleanups based on
+      Linus' sparse tool, update of win32/configure.js (Rob Richards),
+      remove warnings on Windows(Marcus Boerger), compilation without SAX1,
+      detection of the Python binary, use $GCC inestad of $CC = 'gcc' (Andrew
+      W. Nosenko), compilation/link with threads and old gcc, compile
+      problem by C370 on Z/OS, 
+   - bug fixes: http_proxy environments (Peter Breitenlohner), HTML UTF-8
+      bug (Jiri Netolicky), XPath NaN compare bug (William Brack), 
+      htmlParseScript potential bug, Schemas regexp handling of spaces,
+      Base64 Schemas comparisons NIST passes, automata build error xsd:all,
+      xmlGetNodePath for namespaced attributes (Alexander Pohoyda),
+      xmlSchemas foreign namespaces handling, XML Schemas facet comparison
+      (Kupriyanov Anatolij), xmlSchemaPSimpleTypeErr error report (Kasimier
+      Buchcik), xml: namespace ahndling in Schemas (Kasimier), empty model
+      group in Schemas (Kasimier), wilcard in Schemas (Kasimier), URI 
+      composition (William), xs:anyType in Schemas (Kasimier), Python resolver
+      emmitting error messages directly, Python xmlAttr.parent (Jakub Piotr
+      Clapa), trying to fix the file path/URI conversion, 
+      xmlTextReaderGetAttribute fix (Rob Richards), xmlSchemaFreeAnnot memleak
+      (Kasimier), HTML UTF-8 serialization, streaming XPath, Schemas determinism
+      detection problem, XInclude bug, Schemas context type (Dean Hill),
+      validation fix (Derek Poon), xmlTextReaderGetAttribute[Ns] namespaces
+      (Rob Richards), Schemas type fix (Kuba Nowakowski), UTF-8 parser bug,
+      error in encoding handling, xmlGetLineNo fixes, bug on entities handling,
+      entity name extraction in error handling with XInclude, text nodes
+      in HTML body tags (Gary Coady), xml:id and IDness at the treee level
+      fixes, XPath streaming patterns bugs.
+   - improvements: structured interfaces for schemas and RNG error reports
+      (Marcus Boerger), optimization of the char data inner loop parsing
+      (thanks to Behdad Esfahbod for the idea), schematron validation
+      though not finished yet, xmlSaveOption to omit XML declaration,
+      keyref match error reports (Kasimier), formal expression handling
+      code not plugged yet, more lax mode for the HTML parser, 
+      parser XML_PARSE_COMPACT option for text nodes allocation.
+   - documentation: xmllint man page had --nonet duplicated
+
+
 2.6.20: Jul 10 2005:
    -  build fixes: Windows build (Rob Richards), Mingw compilation (Igor
        Zlatkovic), Windows Makefile (Igor), gcc warnings (Kasimier and

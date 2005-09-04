@@ -663,52 +663,84 @@
      <exports symbol='XML_SAX2_MAGIC' type='macro'/>
      <exports symbol='XML_DETECT_IDS' type='macro'/>
      <exports symbol='XML_DEFAULT_VERSION' type='macro'/>
-     <exports symbol='XML_PARSER_ENTITY_DECL' type='enum'/>
+     <exports symbol='XML_FEATURE_SCHEMAS' type='enum'/>
+     <exports symbol='XML_FEATURE_TREE' type='enum'/>
      <exports symbol='XML_PARSER_CONTENT' type='enum'/>
+     <exports symbol='XML_FEATURE_XINCLUDE' type='enum'/>
      <exports symbol='XML_PARSE_NOBLANKS' type='enum'/>
-     <exports symbol='XML_PARSE_NODICT' type='enum'/>
-     <exports symbol='XML_PARSER_SYSTEM_LITERAL' type='enum'/>
+     <exports symbol='XML_FEATURE_OUTPUT' type='enum'/>
+     <exports symbol='XML_FEATURE_PUSH' type='enum'/>
+     <exports symbol='XML_FEATURE_FTP' type='enum'/>
      <exports symbol='XML_PARSER_PI' type='enum'/>
-     <exports symbol='XML_PARSE_PUSH_DOM' type='enum'/>
+     <exports symbol='XML_FEATURE_EXPR' type='enum'/>
+     <exports symbol='XML_FEATURE_UNICODE' type='enum'/>
+     <exports symbol='XML_FEATURE_WRITER' type='enum'/>
+     <exports symbol='XML_PARSER_ENTITY_DECL' type='enum'/>
      <exports symbol='XML_PARSER_PROLOG' type='enum'/>
-     <exports symbol='XML_PARSE_NONET' type='enum'/>
-     <exports symbol='XML_PARSER_EPILOG' type='enum'/>
+     <exports symbol='XML_PARSER_MISC' type='enum'/>
+     <exports symbol='XML_FEATURE_C14N' type='enum'/>
      <exports symbol='XML_PARSER_END_TAG' type='enum'/>
      <exports symbol='XML_PARSE_DTDVALID' type='enum'/>
-     <exports symbol='XML_PARSE_DOM' type='enum'/>
-     <exports symbol='XML_PARSER_ATTRIBUTE_VALUE' type='enum'/>
+     <exports symbol='XML_FEATURE_DEBUG_MEM' type='enum'/>
+     <exports symbol='XML_PARSE_READER' type='enum'/>
+     <exports symbol='XML_FEATURE_THREAD' type='enum'/>
+     <exports symbol='XML_FEATURE_SAX1' type='enum'/>
      <exports symbol='XML_PARSE_PUSH_SAX' type='enum'/>
      <exports symbol='XML_PARSE_RECOVER' type='enum'/>
+     <exports symbol='XML_FEATURE_ICONV' type='enum'/>
+     <exports symbol='XML_FEATURE_READER' type='enum'/>
+     <exports symbol='XML_PARSE_NONET' type='enum'/>
      <exports symbol='XML_PARSE_PEDANTIC' type='enum'/>
+     <exports symbol='XML_FEATURE_AUTOMATA' type='enum'/>
      <exports symbol='XML_PARSER_EOF' type='enum'/>
+     <exports symbol='XML_FEATURE_LEGACY' type='enum'/>
      <exports symbol='XML_PARSER_CDATA_SECTION' type='enum'/>
-     <exports symbol='XML_PARSE_XINCLUDE' type='enum'/>
-     <exports symbol='XML_PARSE_NOXINCNODE' type='enum'/>
-     <exports symbol='XML_PARSE_READER' type='enum'/>
-     <exports symbol='XML_PARSE_SAX' type='enum'/>
+     <exports symbol='XML_FEATURE_REGEXP' type='enum'/>
      <exports symbol='XML_PARSE_NOENT' type='enum'/>
+     <exports symbol='XML_PARSE_XINCLUDE' type='enum'/>
+     <exports symbol='XML_PARSE_NOCDATA' type='enum'/>
+     <exports symbol='XML_PARSER_ATTRIBUTE_VALUE' type='enum'/>
+     <exports symbol='XML_PARSE_NODICT' type='enum'/>
+     <exports symbol='XML_FEATURE_DEBUG' type='enum'/>
+     <exports symbol='XML_PARSE_SAX' type='enum'/>
+     <exports symbol='XML_FEATURE_PATTERN' type='enum'/>
      <exports symbol='XML_PARSER_ENTITY_VALUE' type='enum'/>
      <exports symbol='XML_PARSE_DTDLOAD' type='enum'/>
+     <exports symbol='XML_FEATURE_HTML' type='enum'/>
      <exports symbol='XML_PARSE_DTDATTR' type='enum'/>
      <exports symbol='XML_PARSE_NOWARNING' type='enum'/>
+     <exports symbol='XML_PARSER_EPILOG' type='enum'/>
      <exports symbol='XML_PARSE_NOERROR' type='enum'/>
+     <exports symbol='XML_PARSE_DOM' type='enum'/>
+     <exports symbol='XML_PARSE_PUSH_DOM' type='enum'/>
+     <exports symbol='XML_FEATURE_CATALOG' type='enum'/>
+     <exports symbol='XML_FEATURE_MODULES' type='enum'/>
+     <exports symbol='XML_FEATURE_NONE' type='enum'/>
      <exports symbol='XML_PARSE_NSCLEAN' type='enum'/>
-     <exports symbol='XML_PARSE_NOCDATA' type='enum'/>
+     <exports symbol='XML_FEATURE_XPATH' type='enum'/>
      <exports symbol='XML_PARSE_COMPACT' type='enum'/>
      <exports symbol='XML_PARSE_SAX1' type='enum'/>
+     <exports symbol='XML_PARSE_NOXINCNODE' type='enum'/>
      <exports symbol='XML_PARSER_DTD' type='enum'/>
-     <exports symbol='XML_PARSER_MISC' type='enum'/>
+     <exports symbol='XML_FEATURE_SCHEMATRON' type='enum'/>
      <exports symbol='XML_PARSER_START' type='enum'/>
+     <exports symbol='XML_PARSER_SYSTEM_LITERAL' type='enum'/>
      <exports symbol='XML_PARSE_UNKNOWN' type='enum'/>
      <exports symbol='XML_PARSER_START_TAG' type='enum'/>
+     <exports symbol='XML_FEATURE_ISO8859X' type='enum'/>
      <exports symbol='XML_PARSER_IGNORE' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
      <exports symbol='XML_PARSER_PUBLIC_LITERAL' type='enum'/>
+     <exports symbol='XML_FEATURE_DEBUG_RUN' type='enum'/>
+     <exports symbol='XML_FEATURE_HTTP' type='enum'/>
+     <exports symbol='XML_FEATURE_XPTR' type='enum'/>
+     <exports symbol='XML_FEATURE_VALID' type='enum'/>
      <exports symbol='xmlParserNodeInfoSeqPtr' type='typedef'/>
      <exports symbol='xmlSAXHandlerV1' type='typedef'/>
      <exports symbol='xmlParserInputState' type='typedef'/>
      <exports symbol='xmlParserNodeInfoPtr' type='typedef'/>
      <exports symbol='xmlParserNodeInfoSeq' type='typedef'/>
+     <exports symbol='xmlFeature' type='typedef'/>
      <exports symbol='xmlParserMode' type='typedef'/>
      <exports symbol='xmlParserOption' type='typedef'/>
      <exports symbol='xmlSAXHandlerV1Ptr' type='typedef'/>
@@ -797,6 +829,7 @@
      <exports symbol='xmlParserInputRead' type='function'/>
      <exports symbol='xmlReadFile' type='function'/>
      <exports symbol='xmlGetFeaturesList' type='function'/>
+     <exports symbol='xmlHasFeature' type='function'/>
      <exports symbol='unparsedEntityDeclSAXFunc' type='function'/>
      <exports symbol='xmlSAXUserParseFile' type='function'/>
      <exports symbol='fatalErrorSAXFunc' type='function'/>
@@ -1330,7 +1363,6 @@
      <exports symbol='xmlInitThreads' type='function'/>
      <exports symbol='xmlUnlockLibrary' type='function'/>
      <exports symbol='xmlFreeMutex' type='function'/>
-     <exports symbol='xmlIsThreadsEnabled' type='function'/>
     </file>
     <file name='tree'>
      <summary>interfaces for tree manipulation</summary>
@@ -4751,6 +4783,37 @@
     <enum name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' file='entities' value='2' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities' value='3' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
+    <enum name='XML_FEATURE_AUTOMATA' file='parser' value='23' type='xmlFeature'/>
+    <enum name='XML_FEATURE_C14N' file='parser' value='14' type='xmlFeature'/>
+    <enum name='XML_FEATURE_CATALOG' file='parser' value='15' type='xmlFeature'/>
+    <enum name='XML_FEATURE_DEBUG' file='parser' value='28' type='xmlFeature'/>
+    <enum name='XML_FEATURE_DEBUG_MEM' file='parser' value='29' type='xmlFeature'/>
+    <enum name='XML_FEATURE_DEBUG_RUN' file='parser' value='30' type='xmlFeature'/>
+    <enum name='XML_FEATURE_EXPR' file='parser' value='24' type='xmlFeature'/>
+    <enum name='XML_FEATURE_FTP' file='parser' value='9' type='xmlFeature'/>
+    <enum name='XML_FEATURE_HTML' file='parser' value='12' type='xmlFeature'/>
+    <enum name='XML_FEATURE_HTTP' file='parser' value='10' type='xmlFeature'/>
+    <enum name='XML_FEATURE_ICONV' file='parser' value='19' type='xmlFeature'/>
+    <enum name='XML_FEATURE_ISO8859X' file='parser' value='20' type='xmlFeature'/>
+    <enum name='XML_FEATURE_LEGACY' file='parser' value='13' type='xmlFeature'/>
+    <enum name='XML_FEATURE_MODULES' file='parser' value='27' type='xmlFeature'/>
+    <enum name='XML_FEATURE_NONE' file='parser' value='99999' type='xmlFeature' info=' just to be sure of allocation size'/>
+    <enum name='XML_FEATURE_OUTPUT' file='parser' value='3' type='xmlFeature'/>
+    <enum name='XML_FEATURE_PATTERN' file='parser' value='6' type='xmlFeature'/>
+    <enum name='XML_FEATURE_PUSH' file='parser' value='4' type='xmlFeature'/>
+    <enum name='XML_FEATURE_READER' file='parser' value='5' type='xmlFeature'/>
+    <enum name='XML_FEATURE_REGEXP' file='parser' value='22' type='xmlFeature'/>
+    <enum name='XML_FEATURE_SAX1' file='parser' value='8' type='xmlFeature'/>
+    <enum name='XML_FEATURE_SCHEMAS' file='parser' value='25' type='xmlFeature'/>
+    <enum name='XML_FEATURE_SCHEMATRON' file='parser' value='26' type='xmlFeature'/>
+    <enum name='XML_FEATURE_THREAD' file='parser' value='1' type='xmlFeature'/>
+    <enum name='XML_FEATURE_TREE' file='parser' value='2' type='xmlFeature'/>
+    <enum name='XML_FEATURE_UNICODE' file='parser' value='21' type='xmlFeature'/>
+    <enum name='XML_FEATURE_VALID' file='parser' value='11' type='xmlFeature'/>
+    <enum name='XML_FEATURE_WRITER' file='parser' value='7' type='xmlFeature'/>
+    <enum name='XML_FEATURE_XINCLUDE' file='parser' value='18' type='xmlFeature'/>
+    <enum name='XML_FEATURE_XPATH' file='parser' value='16' type='xmlFeature'/>
+    <enum name='XML_FEATURE_XPTR' file='parser' value='17' type='xmlFeature'/>
     <enum name='XML_FROM_C14N' file='xmlerror' value='21' type='xmlErrorDomain' info='The Canonicalization module'/>
     <enum name='XML_FROM_CATALOG' file='xmlerror' value='20' type='xmlErrorDomain' info='The Catalog module'/>
     <enum name='XML_FROM_CHECK' file='xmlerror' value='24' type='xmlErrorDomain' info='The error checking module'/>
@@ -5883,6 +5946,7 @@ actually an xmlCharEncoding'/>
     <struct name='xmlExpNode' file='xmlregexp' type='struct _xmlExpNode'/>
     <typedef name='xmlExpNodePtr' file='xmlregexp' type='xmlExpNode *'/>
     <typedef name='xmlExpNodeType' file='xmlregexp' type='enum'/>
+    <typedef name='xmlFeature' file='parser' type='enum'/>
     <struct name='xmlGlobalState' file='globals' type='struct _xmlGlobalState'>
       <field name='xmlParserVersion' type='const char *' info=''/>
       <field name='xmlDefaultSAXLocator' type='xmlSAXLocator' info=''/>
@@ -9826,6 +9890,11 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='entity' type='xmlEntityPtr' info='an XML entity pointer.'/>
     </function>
+    <function name='xmlHasFeature' file='parser' module='parser'>
+      <info>Examines if the library has been compiled with a given feature.</info>
+      <return type='int' info='a non-zero value if the feature exist, otherwise zero. Returns zero (0) if the feature does not exist or an unknown unknown feature is requested, non-zero otherwise.'/>
+      <arg name='feature' type='xmlFeature' info='the feature to be examined'/>
+    </function>
     <function name='xmlHasNsProp' file='tree' module='tree'>
       <info>Search for an attribute associated to a node This attribute has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off. Note that a namespace of NULL indicates to use the default namespace.</info>
       <return type='xmlAttrPtr' info='the attribute or the attribute declaration or NULL if neither was found.'/>
@@ -10259,10 +10328,6 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
-    </function>
-    <function name='xmlIsThreadsEnabled' file='threads' module='threads'>
-      <info>Run-time information about whether multithread support is compiled in</info>
-      <return type='int' info='1 (true) if library was compiled with multithread support enabled or 0 (false) otherwise.'/>
     </function>
     <function name='xmlIsXHTML' file='tree' module='xmlsave'>
       <info>Try to find if the document correspond to an XHTML DTD</info>

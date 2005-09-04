@@ -11003,7 +11003,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
  */
 static xmlXPathObjectPtr
 xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
-    int max_depth;
+    int max_depth, min_depth;
     int from_root;
     int ret, depth;
     xmlNodePtr cur = NULL, limit = NULL;
@@ -11019,6 +11019,9 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
         return(NULL);
     if (max_depth == -2)
         max_depth = 10000;
+    min_depth = xmlPatternMinDepth(comp);
+    if (min_depth == -1)
+        return(NULL);
     from_root = xmlPatternFromRoot(comp);
     if (from_root < 0)
         return(NULL);
@@ -11030,13 +11033,20 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
     if (retval == NULL)
         return(NULL);
     
-    if ((from_root) && (max_depth == 0)) {
-	xmlXPathNodeSetAddUnique(retval->nodesetval, (xmlNodePtr) ctxt->doc);
-	return(retval);
-    } else if (max_depth == 0) {
-	xmlXPathNodeSetAddUnique(retval->nodesetval, ctxt->node);
+    /*
+     * handle the special cases of / amd . being matched
+     */
+    if (min_depth == 0) {
+	if (from_root) {
+	    xmlXPathNodeSetAddUnique(retval->nodesetval, (xmlNodePtr) ctxt->doc);
+	} else {
+	    xmlXPathNodeSetAddUnique(retval->nodesetval, ctxt->node);
+	}
+    }
+    if (max_depth == 0) {
 	return(retval);
     }
+
     if (from_root) {
         cur = (xmlNodePtr)ctxt->doc;
     } else if (ctxt->node != NULL) {

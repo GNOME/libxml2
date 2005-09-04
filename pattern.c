@@ -1635,6 +1635,14 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	*/
 	if (comp->nbStep == 0) {
 	    /*
+	     * / and . are handled at the XPath node set creation
+	     * level by checking min depth
+	     */
+	    if (stream->flags & XML_PATTERN_XPATH) {
+		stream = stream->next;
+		continue; /* while */
+	    }
+	    /*
 	    * For non-pattern like evaluation like XML Schema IDCs
 	    * or traditional XPath expressions, this will match if
 	    * we are at the first level only, otherwise on every level.
@@ -2157,7 +2165,33 @@ xmlPatternMaxDepth(xmlPatternPtr comp) {
 	comp = comp->next;
     }
     return(ret);
+}
 
+/**
+ * xmlPatternMinDepth:
+ * @comp: the precompiled pattern
+ *
+ * Check the minimum depth reachable by a pattern, 0 mean the / or . are
+ * part of the set.
+ *
+ * Returns -1 in case of error otherwise the depth,
+ *         
+ */
+int
+xmlPatternMinDepth(xmlPatternPtr comp) {
+    int ret = 12345678;
+    if (comp == NULL)
+        return(-1);
+    while (comp != NULL) {
+        if (comp->stream == NULL)
+	    return(-1);
+	if (comp->stream->nbStep < ret)
+	    ret = comp->stream->nbStep;
+	if (ret == 0)
+	    return(0);
+	comp = comp->next;
+    }
+    return(ret);
 }
 
 /**

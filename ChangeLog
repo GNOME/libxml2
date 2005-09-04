@@ -1,3 +1,9 @@
+Sun Sep  4 14:01:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c xpath.c include/libxml/pattern.h: fixing yet another
+	  pattern induced XPath bug #314282
+	* relaxng.c: reverted back last change it was seriously broken
+
 Sat Sep  3 16:51:55 CEST 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlsave.c: check for NULL to prevent crash with meta elements

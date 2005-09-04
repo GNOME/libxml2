@@ -67,6 +67,8 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 			xmlPatternMaxDepth	(xmlPatternPtr comp);
 XMLPUBFUN int XMLCALL
+			xmlPatternMinDepth	(xmlPatternPtr comp);
+XMLPUBFUN int XMLCALL
 			xmlPatternFromRoot	(xmlPatternPtr comp);
 XMLPUBFUN xmlStreamCtxtPtr XMLCALL
 			xmlPatternGetStreamCtxt	(xmlPatternPtr comp);

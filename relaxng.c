@@ -2220,6 +2220,9 @@ xmlRelaxNGShowValidError(xmlRelaxNGValidCtxtPtr ctxt,
 {
     xmlChar *msg;
 
+    if (ctxt->error == NULL)
+        return;
+
 #ifdef DEBUG_ERROR
     xmlGenericError(xmlGenericErrorContext, "Show error %d\n", err);
 #endif
@@ -2329,7 +2332,7 @@ xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt,
                         xmlRelaxNGValidErr err, const xmlChar * arg1,
                         const xmlChar * arg2, int dup)
 {
-    if (ctxt == NULL)
+    if ((ctxt == NULL) || (ctxt->error == NULL))
         return;
 
 #ifdef DEBUG_ERROR

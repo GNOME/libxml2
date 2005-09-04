@@ -143,8 +143,8 @@ rm -fr %{buildroot}
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog.gz NEWS README Copyright
-%{_libdir}/python*/site-packages/libxml2.py
-%{_libdir}/python*/site-packages/drv_libxml2.py
+%{_libdir}/python*/site-packages/libxml2.py*
+%{_libdir}/python*/site-packages/drv_libxml2.py*
 %{_libdir}/python*/site-packages/libxml2mod*
 %doc python/TODO
 %doc python/libxml2class.txt

@@ -254,6 +254,7 @@ struct _xmlRelaxNGParserCtxt {
 #define FLAGS_IGNORABLE		1
 #define FLAGS_NEGATIVE		2
 #define FLAGS_MIXED_CONTENT	4
+#define FLAGS_NOERROR		8
 
 /**
  * xmlRelaxNGInterleaveGroup:
@@ -435,10 +436,12 @@ xmlRngPErrMemory(xmlRelaxNGParserCtxtPtr ctxt, const char *extra)
     void *data = NULL;
 
     if (ctxt != NULL) {
-        channel = ctxt->error;
+        if (ctxt->serror != NULL)
+	    schannel = ctxt->serror;
+	else
+	    channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
-        schannel = ctxt->serror;
     }
     if (extra)
         __xmlRaiseError(schannel, channel, data,
@@ -468,10 +471,12 @@ xmlRngVErrMemory(xmlRelaxNGValidCtxtPtr ctxt, const char *extra)
     void *data = NULL;
 
     if (ctxt != NULL) {
-        channel = ctxt->error;
+        if (ctxt->serror != NULL)
+	    schannel = ctxt->serror;
+	else
+	    channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
-        schannel = ctxt->serror;
     }
     if (extra)
         __xmlRaiseError(schannel, channel, data,
@@ -506,10 +511,12 @@ xmlRngPErr(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node, int error,
     void *data = NULL;
 
     if (ctxt != NULL) {
-        channel = ctxt->error;
+        if (ctxt->serror != NULL)
+	    schannel = ctxt->serror;
+	else
+	    channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
-        schannel = ctxt->serror;
     }
     __xmlRaiseError(schannel, channel, data,
                     NULL, node, XML_FROM_RELAXNGP,
@@ -538,10 +545,12 @@ xmlRngVErr(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node, int error,
     void *data = NULL;
 
     if (ctxt != NULL) {
-        channel = ctxt->error;
+        if (ctxt->serror != NULL)
+	    schannel = ctxt->serror;
+	else
+	    channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
-        schannel = ctxt->serror;
     }
     __xmlRaiseError(schannel, channel, data,
                     NULL, node, XML_FROM_RELAXNGV,
@@ -2220,7 +2229,7 @@ xmlRelaxNGShowValidError(xmlRelaxNGValidCtxtPtr ctxt,
 {
     xmlChar *msg;
 
-    if (ctxt->error == NULL)
+    if (ctxt->flags & FLAGS_NOERROR)
         return;
 
 #ifdef DEBUG_ERROR
@@ -2332,7 +2341,9 @@ xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt,
                         xmlRelaxNGValidErr err, const xmlChar * arg1,
                         const xmlChar * arg2, int dup)
 {
-    if ((ctxt == NULL) || (ctxt->error == NULL))
+    if (ctxt == NULL)
+        return;
+    if (ctxt->flags & FLAGS_NOERROR)
         return;
 
 #ifdef DEBUG_ERROR
@@ -3739,9 +3750,9 @@ xmlRelaxNGCompareNameClasses(xmlRelaxNGDefinePtr def1,
     xmlNs ns;
     xmlRelaxNGValidCtxt ctxt;
 
-    ctxt.flags = FLAGS_IGNORABLE;
-
     memset(&ctxt, 0, sizeof(xmlRelaxNGValidCtxt));
+
+    ctxt.flags = FLAGS_IGNORABLE | FLAGS_NOERROR;
 
     if ((def1->type == XML_RELAXNG_ELEMENT) ||
         (def1->type == XML_RELAXNG_ATTRIBUTE)) {
@@ -7469,6 +7480,7 @@ xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
         return;
     ctxt->error = err;
     ctxt->warning = warn;
+    ctxt->serror = NULL;
     ctxt->userData = ctx;
 }
 
@@ -10589,7 +10601,8 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema)
     ret->errMax = 0;
     ret->err = NULL;
     ret->errTab = NULL;
-    ret->idref = schema->idref;
+    if (schema != NULL)
+	ret->idref = schema->idref;
     ret->states = NULL;
     ret->freeState = NULL;
     ret->freeStates = NULL;
@@ -10658,6 +10671,7 @@ xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
     ctxt->error = err;
     ctxt->warning = warn;
     ctxt->userData = ctx;
+    ctxt->serror = NULL;
 }
 
 /**
@@ -10670,11 +10684,11 @@ xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
  */
 void
 xmlRelaxNGSetValidStructuredErrors(xmlRelaxNGValidCtxtPtr ctxt,
-								  xmlStructuredErrorFunc serror, void *ctx)
+                                   xmlStructuredErrorFunc serror, void *ctx)
 {
     if (ctxt == NULL)
         return;
-	ctxt->serror = serror;
+    ctxt->serror = serror;
     ctxt->error = NULL;
     ctxt->warning = NULL;
     ctxt->userData = ctx;

@@ -1,3 +1,9 @@
+Sun Sep  4 15:48:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: real fix for #314881 and #314759 is was a bit more complex
+	  than initially expected as ctxt->error == NULL had behaviour side
+	  effects at the compilation level itself.
+
 Sun Sep  4 14:01:00 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c xpath.c include/libxml/pattern.h: fixing yet another

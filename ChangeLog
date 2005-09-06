@@ -1,3 +1,8 @@
+Wed Sep  7 00:16:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: patch from Oleg Paraschenko to fix xmlDebugDumpNode()
+	  when handled a namespace node.
+
 Sun Sep  4 23:36:45 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS elfgcchack.h testapi.c doc/*: updated the docs and rebuild

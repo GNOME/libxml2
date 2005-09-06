@@ -1065,7 +1065,8 @@ xmlCtxtDumpNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
         return;
     }
     xmlCtxtDumpOneNode(ctxt, node);
-    if ((node->children != NULL) && (node->type != XML_ENTITY_REF_NODE)) {
+    if ((node->type != XML_NAMESPACE_DECL) && 
+        (node->children != NULL) && (node->type != XML_ENTITY_REF_NODE)) {
         ctxt->depth++;
         xmlCtxtDumpNodeList(ctxt, node->children);
         ctxt->depth--;

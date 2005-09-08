@@ -146,7 +146,7 @@ static xmlRelaxNGPtr relaxngschemas = NULL;
 static char * schema = NULL;
 static xmlSchemaPtr wxschemas = NULL;
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_SCHEMATRON_ENABLED
 static char * schematron = NULL;
 static xmlSchematronPtr wxschematron = NULL;
 #endif

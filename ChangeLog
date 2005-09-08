@@ -1,3 +1,7 @@
+Thu Sep  8 23:39:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: patch from Stéphane Bidoul to compile without schematron
+
 Wed Sep  7 00:16:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: patch from Oleg Paraschenko to fix xmlDebugDumpNode()

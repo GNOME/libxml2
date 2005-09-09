@@ -9432,8 +9432,8 @@ xmlCheckCdataPush(const xmlChar *utf, int len) {
 	    if (ix + 2 > len) return(ix);
 	    if ((utf[ix+1] & 0xc0 ) != 0x80)
 	        return(-ix);
-	    codepoint = (utf[0] & 0x1f) << 6;
-	    codepoint |= utf[1] & 0x3f;
+	    codepoint = (utf[ix] & 0x1f) << 6;
+	    codepoint |= utf[ix+1] & 0x3f;
 	    if (!xmlIsCharQ(codepoint))
 	        return(-ix);
 	    ix += 2;
@@ -9442,9 +9442,9 @@ xmlCheckCdataPush(const xmlChar *utf, int len) {
 	    if (((utf[ix+1] & 0xc0) != 0x80) ||
 	        ((utf[ix+2] & 0xc0) != 0x80))
 		    return(-ix);
-	    codepoint = (utf[0] & 0xf) << 12;
-	    codepoint |= (utf[1] & 0x3f) << 6;
-	    codepoint |= utf[2] & 0x3f;
+	    codepoint = (utf[ix] & 0xf) << 12;
+	    codepoint |= (utf[ix+1] & 0x3f) << 6;
+	    codepoint |= utf[ix+2] & 0x3f;
 	    if (!xmlIsCharQ(codepoint))
 	        return(-ix);
 	    ix += 3;
@@ -9454,10 +9454,10 @@ xmlCheckCdataPush(const xmlChar *utf, int len) {
 	        ((utf[ix+2] & 0xc0) != 0x80) ||
 		((utf[ix+3] & 0xc0) != 0x80))
 		    return(-ix);
-	    codepoint = (utf[0] & 0x7) << 18;
-	    codepoint |= (utf[1] & 0x3f) << 12;
-	    codepoint |= (utf[2] & 0x3f) << 6;
-	    codepoint |= utf[3] & 0x3f;
+	    codepoint = (utf[ix] & 0x7) << 18;
+	    codepoint |= (utf[ix+1] & 0x3f) << 12;
+	    codepoint |= (utf[ix+2] & 0x3f) << 6;
+	    codepoint |= utf[ix+3] & 0x3f;
 	    if (!xmlIsCharQ(codepoint))
 	        return(-ix);
 	    ix += 4;

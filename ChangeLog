@@ -1,3 +1,7 @@
+Fri Sep  9 12:56:19 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixes bug #315617 when using push CDATA in some cases.
+
 Thu Sep  8 23:39:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: patch from Stéphane Bidoul to compile without schematron

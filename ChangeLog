@@ -1,3 +1,8 @@
+Mon Sep 12 01:26:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/devhelp/devhelp.xsl: improvements on the html generation,
+	  should be complete with navigation, what is left done is glueing
+
 Mon Sep 12 00:03:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/Makefile.am doc/apibuild.py doc/libxml2-api.xml

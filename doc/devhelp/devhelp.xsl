@@ -56,6 +56,8 @@
   </xsl:template>
   <xsl:template match="/api/files/file">
     <xsl:variable name="module" select="@name"/>
+    <xsl:variable name="prev" select="string(preceding-sibling::file[position()=1]/@name)"/>
+    <xsl:variable name="next" select="string(following-sibling::file[position()=1]/@name)"/>
     <sub name="{@name}" link="libxml2-{@name}.html"/>
     <xsl:document xmlns="" href="libxml2-{@name}.html" method="xml" indent="yes" encoding="UTF-8">
       <html>
@@ -72,9 +74,14 @@
 
           <table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 	    <tr valign="middle">
-              <td><a accesskey="p" href="ORBit2-orbit2-allocators.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"/></a></td>
+	      <xsl:if test="$prev != ''">
+		<td><a accesskey="p" href="libxml2-{$prev}.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"/></a></td>
+	      </xsl:if>
               <td><a accesskey="u" href="general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"/></a></td>
               <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"/></a></td>
+	      <xsl:if test="$next != ''">
+		<td><a accesskey="n" href="libxml2-{$next}.html"><img src="right.png" width="24" height="24" border="0" alt="Next"/></a></td>
+	      </xsl:if>
               <th width="100%" align="center">libxml2 Reference Manual</th>
             </tr>
 	  </table>
@@ -99,7 +106,9 @@
 	  <div class="refsect2" lang="en">
 	    <xsl:apply-templates mode="details" select="/api/symbols/macro[@file=$module]"/>
 	    <xsl:apply-templates mode="details" select="/api/symbols/typedef[@file=$module] | /api/symbols/struct[@file=$module]"/>
-	    <xsl:apply-templates mode="details" select="/api/symbols/function[@module=$module]"/>
+	    <xsl:apply-templates mode="details" select="/api/symbols/functype[@file=$module]"/>
+	    <xsl:apply-templates mode="details" select="/api/symbols/variable[@file=$module]"/>
+	    <xsl:apply-templates mode="details" select="/api/symbols/function[@file=$module]"/>
 	  </div>
 	  </div>
 	</body>
@@ -269,7 +278,7 @@
 	<xsl:if test="@info != ''">
 	  <xsl:text>&#9;: </xsl:text>
 	  <xsl:call-template name="dumptext">
-	    <xsl:with-param name="text" select="substring(@info, 1, 40)"/>
+	    <xsl:with-param name="text" select="substring(@info, 1, 70)"/>
 	  </xsl:call-template>
 	</xsl:if>
 	<xsl:text>
@@ -293,6 +302,28 @@
     <xsl:variable name="name" select="string(@name)"/>
     <div class="refsect2" lang="en">
     <h3><a name="{$name}">Typedef </a><xsl:value-of select="$name"/></h3>
+    <pre class="programlisting">
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="string(@type)"/>
+    </xsl:call-template>
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="$name"/>
+    <xsl:text>;
+</xsl:text>
+    </pre>
+    <p>
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="info"/>
+    </xsl:call-template>
+    </p><xsl:text>
+</xsl:text>
+    </div><hr/>
+  </xsl:template>
+
+  <xsl:template mode="details" match="variable" xmlns="">
+    <xsl:variable name="name" select="string(@name)"/>
+    <div class="refsect2" lang="en">
+    <h3><a name="{$name}">Variable </a><xsl:value-of select="$name"/></h3>
     <pre class="programlisting">
     <xsl:call-template name="dumptext">
       <xsl:with-param name="text" select="string(@type)"/>
@@ -399,6 +430,83 @@
     <xsl:variable name="blen" select="(($nlen + 8) - (($nlen + 8) mod 8)) + (($tlen + 8) - (($tlen + 8) mod 8))"/>
     <div class="refsect2" lang="en">
     <h3><a name="{$name}"></a><xsl:value-of select="$name"/> ()</h3>
+    <pre class="programlisting">
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="return/@type"/>
+    </xsl:call-template>
+    <xsl:text>&#9;</xsl:text>
+    <xsl:value-of select="@name"/>
+    <xsl:if test="$blen - 40 &lt; -8">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:if test="$blen - 40 &lt; 0">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:text>&#9;(</xsl:text>
+    <xsl:if test="not(arg)">
+      <xsl:text>void</xsl:text>
+    </xsl:if>
+    <xsl:for-each select="arg">
+      <xsl:call-template name="dumptext">
+        <xsl:with-param name="text" select="@type"/>
+      </xsl:call-template>
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="@name"/>
+      <xsl:if test="position() != last()">
+        <xsl:text>, </xsl:text><br/>
+	<xsl:if test="$blen - 40 &gt; 8">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:if test="$blen - 40 &gt; 0">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:text>&#9;&#9;&#9;&#9;&#9; </xsl:text>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:text>)</xsl:text><br/>
+    <xsl:text>
+</xsl:text>
+    </pre>
+    <p>
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="info"/>
+    </xsl:call-template>
+    </p><xsl:text>
+</xsl:text>
+    <xsl:if test="arg | return/@info">
+      <div class="variablelist"><table border="0"><col align="left"/><tbody>
+      <xsl:for-each select="arg">
+        <tr>
+          <td><span class="term"><i><tt><xsl:value-of select="@name"/></tt></i>:</span></td>
+	  <td>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="@info"/>
+	    </xsl:call-template>
+	  </td>
+        </tr>
+      </xsl:for-each>
+      <xsl:if test="return/@info">
+        <tr>
+          <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+	  <td>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="return/@info"/>
+	    </xsl:call-template>
+	  </td>
+        </tr>
+      </xsl:if>
+      </tbody></table></div>
+    </xsl:if>
+    </div><hr/>
+  </xsl:template>
+
+  <xsl:template mode="details" match="functype" xmlns="">
+    <xsl:variable name="name" select="string(@name)"/>
+    <xsl:variable name="nlen" select="string-length($name)"/>
+    <xsl:variable name="tlen" select="string-length(return/@type)"/>
+    <xsl:variable name="blen" select="(($nlen + 8) - (($nlen + 8) mod 8)) + (($tlen + 8) - (($tlen + 8) mod 8))"/>
+    <div class="refsect2" lang="en">
+    <h3><a name="{$name}"></a>Function type <xsl:value-of select="$name"/> </h3>
     <pre class="programlisting">
     <xsl:call-template name="dumptext">
       <xsl:with-param name="text" select="return/@type"/>

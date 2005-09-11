@@ -5767,9 +5767,13 @@ if necessary or NULL'/>
     <typedef name='xmlAttributeTablePtr' file='valid' type='xmlAttributeTable *'/>
     <typedef name='xmlAttributeType' file='tree' type='enum'/>
     <struct name='xmlAutomata' file='xmlautomata' type='struct _xmlAutomata'/>
-    <typedef name='xmlAutomataPtr' file='xmlautomata' type='xmlAutomata *'/>
+    <typedef name='xmlAutomataPtr' file='xmlautomata' type='xmlAutomata *'>
+      <info>A libxml automata description, It can be compiled into a regexp</info>
+    </typedef>
     <struct name='xmlAutomataState' file='xmlautomata' type='struct _xmlAutomataState'/>
-    <typedef name='xmlAutomataStatePtr' file='xmlautomata' type='xmlAutomataState *'/>
+    <typedef name='xmlAutomataStatePtr' file='xmlautomata' type='xmlAutomataState *'>
+      <info>A state int the automata description,</info>
+    </typedef>
     <struct name='xmlBuffer' file='tree' type='struct _xmlBuffer'>
       <field name='content' type='xmlChar *' info=' The buffer content UTF8'/>
       <field name='use' type='unsigned int' info=' The buffer size used'/>
@@ -5799,7 +5803,9 @@ if necessary or NULL'/>
       <field name='high' type='unsigned short' info=''/>
     </struct>
     <typedef name='xmlChSRangePtr' file='chvalid' type='xmlChSRange *'/>
-    <typedef name='xmlChar' file='xmlstring' type='unsigned char'/>
+    <typedef name='xmlChar' file='xmlstring' type='unsigned char'>
+      <info>This is a basic byte in an UTF-8 encoded string. It&apos;s unsigned allowing to pinpoint case where char * are assigned to xmlChar * (possibly making serialization back impossible).</info>
+    </typedef>
     <typedef name='xmlCharEncoding' file='encoding' type='enum'/>
     <struct name='xmlCharEncodingHandler' file='encoding' type='struct _xmlCharEncodingHandler'>
       <field name='name' type='char *' info=''/>
@@ -6007,7 +6013,9 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlLocationSetPtr' file='xpointer' type='xmlLocationSet *'/>
     <struct name='xmlModule' file='xmlmodule' type='struct _xmlModule'/>
     <typedef name='xmlModuleOption' file='xmlmodule' type='enum'/>
-    <typedef name='xmlModulePtr' file='xmlmodule' type='xmlModule *'/>
+    <typedef name='xmlModulePtr' file='xmlmodule' type='xmlModule *'>
+      <info>A handle to a dynamically loaded module</info>
+    </typedef>
     <struct name='xmlMutex' file='threads' type='struct _xmlMutex'/>
     <typedef name='xmlMutexPtr' file='threads' type='xmlMutex *'/>
     <struct name='xmlNode' file='tree' type='struct _xmlNode'>
@@ -6222,9 +6230,13 @@ actually an xmlCharEncoding'/>
     <struct name='xmlRefTable' file='valid' type='struct _xmlHashTable'/>
     <typedef name='xmlRefTablePtr' file='valid' type='xmlRefTable *'/>
     <struct name='xmlRegExecCtxt' file='xmlregexp' type='struct _xmlRegExecCtxt'/>
-    <typedef name='xmlRegExecCtxtPtr' file='xmlregexp' type='xmlRegExecCtxt *'/>
+    <typedef name='xmlRegExecCtxtPtr' file='xmlregexp' type='xmlRegExecCtxt *'>
+      <info>A libxml progressive regular expression evaluation context</info>
+    </typedef>
     <struct name='xmlRegexp' file='xmlregexp' type='struct _xmlRegexp'/>
-    <typedef name='xmlRegexpPtr' file='xmlregexp' type='xmlRegexp *'/>
+    <typedef name='xmlRegexpPtr' file='xmlregexp' type='xmlRegexp *'>
+      <info>A libxml regular expression, they can actually be far more complex thank the POSIX regex expressions.</info>
+    </typedef>
     <struct name='xmlRelaxNG' file='relaxng' type='struct _xmlRelaxNG'/>
     <struct name='xmlRelaxNGParserCtxt' file='relaxng' type='struct _xmlRelaxNGParserCtxt'/>
     <typedef name='xmlRelaxNGParserCtxtPtr' file='relaxng' type='xmlRelaxNGParserCtxt *'/>
@@ -6529,7 +6541,9 @@ actually an xmlCharEncoding'/>
     <struct name='xmlTextReader' file='xmlreader' type='struct _xmlTextReader'/>
     <typedef name='xmlTextReaderLocatorPtr' file='xmlreader' type='void *'/>
     <typedef name='xmlTextReaderMode' file='xmlreader' type='enum'/>
-    <typedef name='xmlTextReaderPtr' file='xmlreader' type='xmlTextReader *'/>
+    <typedef name='xmlTextReaderPtr' file='xmlreader' type='xmlTextReader *'>
+      <info>Pointer to an xmlReader context.</info>
+    </typedef>
     <struct name='xmlTextWriter' file='xmlwriter' type='struct _xmlTextWriter'/>
     <typedef name='xmlTextWriterPtr' file='xmlwriter' type='xmlTextWriter *'/>
     <struct name='xmlURI' file='uri' type='struct _xmlURI'>

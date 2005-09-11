@@ -25,7 +25,6 @@ extern "C" {
  * It's unsigned allowing to pinpoint case where char * are assigned
  * to xmlChar * (possibly making serialization back impossible).
  */
-
 typedef unsigned char xmlChar;
 
 /**

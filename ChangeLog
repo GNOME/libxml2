@@ -1,3 +1,9 @@
+Mon Sep 12 00:03:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/Makefile.am doc/apibuild.py doc/libxml2-api.xml
+	  doc/devhelp/*: started work needed to generate devhelp content,
+	  not too hard based on the existing format and extractor.
+
 Fri Sep  9 12:56:19 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixes bug #315617 when using push CDATA in some cases.

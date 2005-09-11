@@ -679,9 +679,54 @@ class CParser:
 
 	return token
 
-     #
-     # Parse a comment block associate to a macro
-     #
+    #
+    # Parse a comment block associate to a typedef
+    #
+    def parseTypeComment(self, name, quiet = 0):
+        if name[0:2] == '__':
+	    quiet = 1
+
+        args = []
+	desc = ""
+
+        if self.comment == None:
+	    if not quiet:
+		self.warning("Missing comment for type %s" % (name))
+	    return((args, desc))
+        if self.comment[0] != '*':
+	    if not quiet:
+		self.warning("Missing * in type comment for %s" % (name))
+	    return((args, desc))
+	lines = string.split(self.comment, '\n')
+	if lines[0] == '*':
+	    del lines[0]
+	if lines[0] != "* %s:" % (name):
+	    if not quiet:
+		self.warning("Misformatted type comment for %s" % (name))
+		self.warning("  Expecting '* %s:' got '%s'" % (name, lines[0]))
+	    return((args, desc))
+	del lines[0]
+	while len(lines) > 0 and lines[0] == '*':
+	    del lines[0]
+	desc = ""
+	while len(lines) > 0:
+	    l = lines[0]
+	    while len(l) > 0 and l[0] == '*':
+	        l = l[1:]
+	    l = string.strip(l)
+	    desc = desc + " " + l
+	    del lines[0]
+		     
+	desc = string.strip(desc)
+
+	if quiet == 0:
+	    if desc == "":
+	        self.warning("Type comment for %s lack description of the macro" % (name))
+
+	return(desc)
+    #
+    # Parse a comment block associate to a macro
+    #
     def parseMacroComment(self, name, quiet = 0):
         if name[0:2] == '__':
 	    quiet = 1
@@ -1025,8 +1070,10 @@ class CParser:
 					"struct", type)
 			base_type = "struct " + name
 	            else:
+			# TODO report missing or misformatted comments
+			info = self.parseTypeComment(name, 1)
 			self.index_add(name, self.filename, not self.is_header,
-		                    "typedef", type)
+		                    "typedef", type, info)
 		token = self.token()
 	    else:
 		self.error("parsing typedef: expecting a name")
@@ -1690,6 +1737,8 @@ class docBuilder:
 
     def serialize_typedef(self, output, name):
         id = self.idx.typedefs[name]
+	if name == 'xmlChar':
+	    print id
 	if id.info[0:7] == 'struct ':
 	    output.write("    <struct name='%s' file='%s' type='%s'" % (
 	             name, self.modulename_file(id.header), id.info))
@@ -1713,8 +1762,17 @@ class docBuilder:
 	    else:
 	        output.write("/>\n");
 	else :
-	    output.write("    <typedef name='%s' file='%s' type='%s'/>\n" % (
-	             name, self.modulename_file(id.header), id.info))
+	    output.write("    <typedef name='%s' file='%s' type='%s'" % (
+	                 name, self.modulename_file(id.header), id.info))
+            try:
+		desc = id.extra
+		if desc != None and desc != "":
+		    output.write(">\n      <info>%s</info>\n" % (escape(desc)))
+		    output.write("    </typedef>\n")
+		else:
+		    output.write("/>\n")
+	    except:
+		output.write("/>\n")
 
     def serialize_variable(self, output, name):
         id = self.idx.variables[name]

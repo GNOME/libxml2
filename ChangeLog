@@ -1,3 +1,10 @@
+Mon Sep 12 11:12:03 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parser.h parser.c xmllint.c: damn XML_FEATURE_UNICODE
+	  clashes with Expat headers rename to XML_WITH_ to fix bug #316053. 
+	* doc/Makefile.am: build devhelp before the examples.
+	* doc/*: regenerated the API
+
 Mon Sep 12 02:03:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: fix bug #316034, where xmlElemDump() can crash if 

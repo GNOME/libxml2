@@ -25,7 +25,9 @@ The content of this structure is not made public by the API.
     <a name="XML_MODULE_LAZY" id="XML_MODULE_LAZY">XML_MODULE_LAZY</a> = 1 : lazy binding
     <a name="XML_MODULE_LOCAL" id="XML_MODULE_LOCAL">XML_MODULE_LOCAL</a> = 2 : local binding
 }
-</pre><h3><a name="xmlModuleClose" id="xmlModuleClose"></a>Function: xmlModuleClose</h3><pre class="programlisting">int	xmlModuleClose			(<a href="libxml-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module)<br />
+</pre>
+      A handle to a dynamically loaded module
+    <h3><a name="xmlModuleClose" id="xmlModuleClose"></a>Function: xmlModuleClose</h3><pre class="programlisting">int	xmlModuleClose			(<a href="libxml-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module)<br />
 </pre><p>The close operations unload the associated module and free the data associated to the module.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>module</tt></i>:</span></td><td>the module handle</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success, -1 in case of argument error and -2 if the module could not be closed/unloaded.</td></tr></tbody></table></div><h3><a name="xmlModuleFree" id="xmlModuleFree"></a>Function: xmlModuleFree</h3><pre class="programlisting">int	xmlModuleFree			(<a href="libxml-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module)<br />
 </pre><p>The free operations free the data associated to the module but does not unload the associated shared library which may still be in use.</p>

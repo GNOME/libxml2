@@ -407,37 +407,6 @@
     <reference name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' href='html/libxml-entities.html#XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
     <reference name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' href='html/libxml-entities.html#XML_EXTERNAL_GENERAL_UNPARSED_ENTITY'/>
     <reference name='XML_EXTERNAL_PARAMETER_ENTITY' href='html/libxml-entities.html#XML_EXTERNAL_PARAMETER_ENTITY'/>
-    <reference name='XML_FEATURE_AUTOMATA' href='html/libxml-parser.html#XML_FEATURE_AUTOMATA'/>
-    <reference name='XML_FEATURE_C14N' href='html/libxml-parser.html#XML_FEATURE_C14N'/>
-    <reference name='XML_FEATURE_CATALOG' href='html/libxml-parser.html#XML_FEATURE_CATALOG'/>
-    <reference name='XML_FEATURE_DEBUG' href='html/libxml-parser.html#XML_FEATURE_DEBUG'/>
-    <reference name='XML_FEATURE_DEBUG_MEM' href='html/libxml-parser.html#XML_FEATURE_DEBUG_MEM'/>
-    <reference name='XML_FEATURE_DEBUG_RUN' href='html/libxml-parser.html#XML_FEATURE_DEBUG_RUN'/>
-    <reference name='XML_FEATURE_EXPR' href='html/libxml-parser.html#XML_FEATURE_EXPR'/>
-    <reference name='XML_FEATURE_FTP' href='html/libxml-parser.html#XML_FEATURE_FTP'/>
-    <reference name='XML_FEATURE_HTML' href='html/libxml-parser.html#XML_FEATURE_HTML'/>
-    <reference name='XML_FEATURE_HTTP' href='html/libxml-parser.html#XML_FEATURE_HTTP'/>
-    <reference name='XML_FEATURE_ICONV' href='html/libxml-parser.html#XML_FEATURE_ICONV'/>
-    <reference name='XML_FEATURE_ISO8859X' href='html/libxml-parser.html#XML_FEATURE_ISO8859X'/>
-    <reference name='XML_FEATURE_LEGACY' href='html/libxml-parser.html#XML_FEATURE_LEGACY'/>
-    <reference name='XML_FEATURE_MODULES' href='html/libxml-parser.html#XML_FEATURE_MODULES'/>
-    <reference name='XML_FEATURE_NONE' href='html/libxml-parser.html#XML_FEATURE_NONE'/>
-    <reference name='XML_FEATURE_OUTPUT' href='html/libxml-parser.html#XML_FEATURE_OUTPUT'/>
-    <reference name='XML_FEATURE_PATTERN' href='html/libxml-parser.html#XML_FEATURE_PATTERN'/>
-    <reference name='XML_FEATURE_PUSH' href='html/libxml-parser.html#XML_FEATURE_PUSH'/>
-    <reference name='XML_FEATURE_READER' href='html/libxml-parser.html#XML_FEATURE_READER'/>
-    <reference name='XML_FEATURE_REGEXP' href='html/libxml-parser.html#XML_FEATURE_REGEXP'/>
-    <reference name='XML_FEATURE_SAX1' href='html/libxml-parser.html#XML_FEATURE_SAX1'/>
-    <reference name='XML_FEATURE_SCHEMAS' href='html/libxml-parser.html#XML_FEATURE_SCHEMAS'/>
-    <reference name='XML_FEATURE_SCHEMATRON' href='html/libxml-parser.html#XML_FEATURE_SCHEMATRON'/>
-    <reference name='XML_FEATURE_THREAD' href='html/libxml-parser.html#XML_FEATURE_THREAD'/>
-    <reference name='XML_FEATURE_TREE' href='html/libxml-parser.html#XML_FEATURE_TREE'/>
-    <reference name='XML_FEATURE_UNICODE' href='html/libxml-parser.html#XML_FEATURE_UNICODE'/>
-    <reference name='XML_FEATURE_VALID' href='html/libxml-parser.html#XML_FEATURE_VALID'/>
-    <reference name='XML_FEATURE_WRITER' href='html/libxml-parser.html#XML_FEATURE_WRITER'/>
-    <reference name='XML_FEATURE_XINCLUDE' href='html/libxml-parser.html#XML_FEATURE_XINCLUDE'/>
-    <reference name='XML_FEATURE_XPATH' href='html/libxml-parser.html#XML_FEATURE_XPATH'/>
-    <reference name='XML_FEATURE_XPTR' href='html/libxml-parser.html#XML_FEATURE_XPTR'/>
     <reference name='XML_FROM_C14N' href='html/libxml-xmlerror.html#XML_FROM_C14N'/>
     <reference name='XML_FROM_CATALOG' href='html/libxml-xmlerror.html#XML_FROM_CATALOG'/>
     <reference name='XML_FROM_CHECK' href='html/libxml-xmlerror.html#XML_FROM_CHECK'/>
@@ -1295,6 +1264,37 @@
     <reference name='XML_WAR_SPACE_VALUE' href='html/libxml-xmlerror.html#XML_WAR_SPACE_VALUE'/>
     <reference name='XML_WAR_UNDECLARED_ENTITY' href='html/libxml-xmlerror.html#XML_WAR_UNDECLARED_ENTITY'/>
     <reference name='XML_WAR_UNKNOWN_VERSION' href='html/libxml-xmlerror.html#XML_WAR_UNKNOWN_VERSION'/>
+    <reference name='XML_WITH_AUTOMATA' href='html/libxml-parser.html#XML_WITH_AUTOMATA'/>
+    <reference name='XML_WITH_C14N' href='html/libxml-parser.html#XML_WITH_C14N'/>
+    <reference name='XML_WITH_CATALOG' href='html/libxml-parser.html#XML_WITH_CATALOG'/>
+    <reference name='XML_WITH_DEBUG' href='html/libxml-parser.html#XML_WITH_DEBUG'/>
+    <reference name='XML_WITH_DEBUG_MEM' href='html/libxml-parser.html#XML_WITH_DEBUG_MEM'/>
+    <reference name='XML_WITH_DEBUG_RUN' href='html/libxml-parser.html#XML_WITH_DEBUG_RUN'/>
+    <reference name='XML_WITH_EXPR' href='html/libxml-parser.html#XML_WITH_EXPR'/>
+    <reference name='XML_WITH_FTP' href='html/libxml-parser.html#XML_WITH_FTP'/>
+    <reference name='XML_WITH_HTML' href='html/libxml-parser.html#XML_WITH_HTML'/>
+    <reference name='XML_WITH_HTTP' href='html/libxml-parser.html#XML_WITH_HTTP'/>
+    <reference name='XML_WITH_ICONV' href='html/libxml-parser.html#XML_WITH_ICONV'/>
+    <reference name='XML_WITH_ISO8859X' href='html/libxml-parser.html#XML_WITH_ISO8859X'/>
+    <reference name='XML_WITH_LEGACY' href='html/libxml-parser.html#XML_WITH_LEGACY'/>
+    <reference name='XML_WITH_MODULES' href='html/libxml-parser.html#XML_WITH_MODULES'/>
+    <reference name='XML_WITH_NONE' href='html/libxml-parser.html#XML_WITH_NONE'/>
+    <reference name='XML_WITH_OUTPUT' href='html/libxml-parser.html#XML_WITH_OUTPUT'/>
+    <reference name='XML_WITH_PATTERN' href='html/libxml-parser.html#XML_WITH_PATTERN'/>
+    <reference name='XML_WITH_PUSH' href='html/libxml-parser.html#XML_WITH_PUSH'/>
+    <reference name='XML_WITH_READER' href='html/libxml-parser.html#XML_WITH_READER'/>
+    <reference name='XML_WITH_REGEXP' href='html/libxml-parser.html#XML_WITH_REGEXP'/>
+    <reference name='XML_WITH_SAX1' href='html/libxml-parser.html#XML_WITH_SAX1'/>
+    <reference name='XML_WITH_SCHEMAS' href='html/libxml-parser.html#XML_WITH_SCHEMAS'/>
+    <reference name='XML_WITH_SCHEMATRON' href='html/libxml-parser.html#XML_WITH_SCHEMATRON'/>
+    <reference name='XML_WITH_THREAD' href='html/libxml-parser.html#XML_WITH_THREAD'/>
+    <reference name='XML_WITH_TREE' href='html/libxml-parser.html#XML_WITH_TREE'/>
+    <reference name='XML_WITH_UNICODE' href='html/libxml-parser.html#XML_WITH_UNICODE'/>
+    <reference name='XML_WITH_VALID' href='html/libxml-parser.html#XML_WITH_VALID'/>
+    <reference name='XML_WITH_WRITER' href='html/libxml-parser.html#XML_WITH_WRITER'/>
+    <reference name='XML_WITH_XINCLUDE' href='html/libxml-parser.html#XML_WITH_XINCLUDE'/>
+    <reference name='XML_WITH_XPATH' href='html/libxml-parser.html#XML_WITH_XPATH'/>
+    <reference name='XML_WITH_XPTR' href='html/libxml-parser.html#XML_WITH_XPTR'/>
     <reference name='XML_XINCLUDE_BUILD_FAILED' href='html/libxml-xmlerror.html#XML_XINCLUDE_BUILD_FAILED'/>
     <reference name='XML_XINCLUDE_DEPRECATED_NS' href='html/libxml-xmlerror.html#XML_XINCLUDE_DEPRECATED_NS'/>
     <reference name='XML_XINCLUDE_END' href='html/libxml-tree.html#XML_XINCLUDE_END'/>
@@ -3880,37 +3880,6 @@
       <ref name='XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
       <ref name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY'/>
       <ref name='XML_EXTERNAL_PARAMETER_ENTITY'/>
-      <ref name='XML_FEATURE_AUTOMATA'/>
-      <ref name='XML_FEATURE_C14N'/>
-      <ref name='XML_FEATURE_CATALOG'/>
-      <ref name='XML_FEATURE_DEBUG'/>
-      <ref name='XML_FEATURE_DEBUG_MEM'/>
-      <ref name='XML_FEATURE_DEBUG_RUN'/>
-      <ref name='XML_FEATURE_EXPR'/>
-      <ref name='XML_FEATURE_FTP'/>
-      <ref name='XML_FEATURE_HTML'/>
-      <ref name='XML_FEATURE_HTTP'/>
-      <ref name='XML_FEATURE_ICONV'/>
-      <ref name='XML_FEATURE_ISO8859X'/>
-      <ref name='XML_FEATURE_LEGACY'/>
-      <ref name='XML_FEATURE_MODULES'/>
-      <ref name='XML_FEATURE_NONE'/>
-      <ref name='XML_FEATURE_OUTPUT'/>
-      <ref name='XML_FEATURE_PATTERN'/>
-      <ref name='XML_FEATURE_PUSH'/>
-      <ref name='XML_FEATURE_READER'/>
-      <ref name='XML_FEATURE_REGEXP'/>
-      <ref name='XML_FEATURE_SAX1'/>
-      <ref name='XML_FEATURE_SCHEMAS'/>
-      <ref name='XML_FEATURE_SCHEMATRON'/>
-      <ref name='XML_FEATURE_THREAD'/>
-      <ref name='XML_FEATURE_TREE'/>
-      <ref name='XML_FEATURE_UNICODE'/>
-      <ref name='XML_FEATURE_VALID'/>
-      <ref name='XML_FEATURE_WRITER'/>
-      <ref name='XML_FEATURE_XINCLUDE'/>
-      <ref name='XML_FEATURE_XPATH'/>
-      <ref name='XML_FEATURE_XPTR'/>
       <ref name='XML_FROM_C14N'/>
       <ref name='XML_FROM_CATALOG'/>
       <ref name='XML_FROM_CHECK'/>
@@ -4768,6 +4737,37 @@
       <ref name='XML_WAR_SPACE_VALUE'/>
       <ref name='XML_WAR_UNDECLARED_ENTITY'/>
       <ref name='XML_WAR_UNKNOWN_VERSION'/>
+      <ref name='XML_WITH_AUTOMATA'/>
+      <ref name='XML_WITH_C14N'/>
+      <ref name='XML_WITH_CATALOG'/>
+      <ref name='XML_WITH_DEBUG'/>
+      <ref name='XML_WITH_DEBUG_MEM'/>
+      <ref name='XML_WITH_DEBUG_RUN'/>
+      <ref name='XML_WITH_EXPR'/>
+      <ref name='XML_WITH_FTP'/>
+      <ref name='XML_WITH_HTML'/>
+      <ref name='XML_WITH_HTTP'/>
+      <ref name='XML_WITH_ICONV'/>
+      <ref name='XML_WITH_ISO8859X'/>
+      <ref name='XML_WITH_LEGACY'/>
+      <ref name='XML_WITH_MODULES'/>
+      <ref name='XML_WITH_NONE'/>
+      <ref name='XML_WITH_OUTPUT'/>
+      <ref name='XML_WITH_PATTERN'/>
+      <ref name='XML_WITH_PUSH'/>
+      <ref name='XML_WITH_READER'/>
+      <ref name='XML_WITH_REGEXP'/>
+      <ref name='XML_WITH_SAX1'/>
+      <ref name='XML_WITH_SCHEMAS'/>
+      <ref name='XML_WITH_SCHEMATRON'/>
+      <ref name='XML_WITH_THREAD'/>
+      <ref name='XML_WITH_TREE'/>
+      <ref name='XML_WITH_UNICODE'/>
+      <ref name='XML_WITH_VALID'/>
+      <ref name='XML_WITH_WRITER'/>
+      <ref name='XML_WITH_XINCLUDE'/>
+      <ref name='XML_WITH_XPATH'/>
+      <ref name='XML_WITH_XPTR'/>
       <ref name='XML_XINCLUDE_BUILD_FAILED'/>
       <ref name='XML_XINCLUDE_DEPRECATED_NS'/>
       <ref name='XML_XINCLUDE_END'/>
@@ -10974,37 +10974,6 @@
       <ref name='XML_COMPLETE_ATTRS'/>
       <ref name='XML_DEFAULT_VERSION'/>
       <ref name='XML_DETECT_IDS'/>
-      <ref name='XML_FEATURE_AUTOMATA'/>
-      <ref name='XML_FEATURE_C14N'/>
-      <ref name='XML_FEATURE_CATALOG'/>
-      <ref name='XML_FEATURE_DEBUG'/>
-      <ref name='XML_FEATURE_DEBUG_MEM'/>
-      <ref name='XML_FEATURE_DEBUG_RUN'/>
-      <ref name='XML_FEATURE_EXPR'/>
-      <ref name='XML_FEATURE_FTP'/>
-      <ref name='XML_FEATURE_HTML'/>
-      <ref name='XML_FEATURE_HTTP'/>
-      <ref name='XML_FEATURE_ICONV'/>
-      <ref name='XML_FEATURE_ISO8859X'/>
-      <ref name='XML_FEATURE_LEGACY'/>
-      <ref name='XML_FEATURE_MODULES'/>
-      <ref name='XML_FEATURE_NONE'/>
-      <ref name='XML_FEATURE_OUTPUT'/>
-      <ref name='XML_FEATURE_PATTERN'/>
-      <ref name='XML_FEATURE_PUSH'/>
-      <ref name='XML_FEATURE_READER'/>
-      <ref name='XML_FEATURE_REGEXP'/>
-      <ref name='XML_FEATURE_SAX1'/>
-      <ref name='XML_FEATURE_SCHEMAS'/>
-      <ref name='XML_FEATURE_SCHEMATRON'/>
-      <ref name='XML_FEATURE_THREAD'/>
-      <ref name='XML_FEATURE_TREE'/>
-      <ref name='XML_FEATURE_UNICODE'/>
-      <ref name='XML_FEATURE_VALID'/>
-      <ref name='XML_FEATURE_WRITER'/>
-      <ref name='XML_FEATURE_XINCLUDE'/>
-      <ref name='XML_FEATURE_XPATH'/>
-      <ref name='XML_FEATURE_XPTR'/>
       <ref name='XML_PARSER_ATTRIBUTE_VALUE'/>
       <ref name='XML_PARSER_CDATA_SECTION'/>
       <ref name='XML_PARSER_COMMENT'/>
@@ -11048,6 +11017,37 @@
       <ref name='XML_PARSE_XINCLUDE'/>
       <ref name='XML_SAX2_MAGIC'/>
       <ref name='XML_SKIP_IDS'/>
+      <ref name='XML_WITH_AUTOMATA'/>
+      <ref name='XML_WITH_C14N'/>
+      <ref name='XML_WITH_CATALOG'/>
+      <ref name='XML_WITH_DEBUG'/>
+      <ref name='XML_WITH_DEBUG_MEM'/>
+      <ref name='XML_WITH_DEBUG_RUN'/>
+      <ref name='XML_WITH_EXPR'/>
+      <ref name='XML_WITH_FTP'/>
+      <ref name='XML_WITH_HTML'/>
+      <ref name='XML_WITH_HTTP'/>
+      <ref name='XML_WITH_ICONV'/>
+      <ref name='XML_WITH_ISO8859X'/>
+      <ref name='XML_WITH_LEGACY'/>
+      <ref name='XML_WITH_MODULES'/>
+      <ref name='XML_WITH_NONE'/>
+      <ref name='XML_WITH_OUTPUT'/>
+      <ref name='XML_WITH_PATTERN'/>
+      <ref name='XML_WITH_PUSH'/>
+      <ref name='XML_WITH_READER'/>
+      <ref name='XML_WITH_REGEXP'/>
+      <ref name='XML_WITH_SAX1'/>
+      <ref name='XML_WITH_SCHEMAS'/>
+      <ref name='XML_WITH_SCHEMATRON'/>
+      <ref name='XML_WITH_THREAD'/>
+      <ref name='XML_WITH_TREE'/>
+      <ref name='XML_WITH_UNICODE'/>
+      <ref name='XML_WITH_VALID'/>
+      <ref name='XML_WITH_WRITER'/>
+      <ref name='XML_WITH_XINCLUDE'/>
+      <ref name='XML_WITH_XPATH'/>
+      <ref name='XML_WITH_XPTR'/>
       <ref name='_xmlParserCtxt'/>
       <ref name='_xmlParserInput'/>
       <ref name='_xmlParserNodeInfo'/>

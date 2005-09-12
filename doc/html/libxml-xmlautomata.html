@@ -38,9 +38,13 @@ The content of this structure is not made public by the API.
 <h2>Description</h2>
 <h3><a name="xmlAutomata" id="xmlAutomata">Structure xmlAutomata</a></h3><pre class="programlisting">Structure xmlAutomata<br />struct _xmlAutomata {
 The content of this structure is not made public by the API.
-}</pre><h3><a name="xmlAutomataState" id="xmlAutomataState">Structure xmlAutomataState</a></h3><pre class="programlisting">Structure xmlAutomataState<br />struct _xmlAutomataState {
+}</pre>
+      A libxml automata description, It can be compiled into a regexp
+    <h3><a name="xmlAutomataState" id="xmlAutomataState">Structure xmlAutomataState</a></h3><pre class="programlisting">Structure xmlAutomataState<br />struct _xmlAutomataState {
 The content of this structure is not made public by the API.
-}</pre><h3><a name="xmlAutomataCompile" id="xmlAutomataCompile"></a>Function: xmlAutomataCompile</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	xmlAutomataCompile	(<a href="libxml-xmlautomata.html#xmlAutomataPtr">xmlAutomataPtr</a> am)<br />
+}</pre>
+      A state int the automata description,
+    <h3><a name="xmlAutomataCompile" id="xmlAutomataCompile"></a>Function: xmlAutomataCompile</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	xmlAutomataCompile	(<a href="libxml-xmlautomata.html#xmlAutomataPtr">xmlAutomataPtr</a> am)<br />
 </pre><p>Compile the automata into a Reg Exp ready for being executed. The automata should be free after this point.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>am</tt></i>:</span></td><td>an automata</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the compiled regexp or NULL in case of error</td></tr></tbody></table></div><h3><a name="xmlAutomataGetInitState" id="xmlAutomataGetInitState"></a>Function: xmlAutomataGetInitState</h3><pre class="programlisting"><a href="libxml-xmlautomata.html#xmlAutomataStatePtr">xmlAutomataStatePtr</a>	xmlAutomataGetInitState	(<a href="libxml-xmlautomata.html#xmlAutomataPtr">xmlAutomataPtr</a> am)<br />
 </pre><p>Initial state lookup</p>

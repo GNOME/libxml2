@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-SUBDIRS=examples devhelp
+SUBDIRS=devhelp examples
 
 # The top-level SGML file.
 DOC_MAIN_XML_FILE=gnome-xml.xml

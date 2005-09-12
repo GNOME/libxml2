@@ -193,37 +193,37 @@ void	<a href="#xmlParserInputDeallocate">xmlParserInputDeallocate</a>	(<a href="
 <h3><a name="XML_SAX2_MAGIC" id="XML_SAX2_MAGIC"></a>Macro: XML_SAX2_MAGIC</h3><pre>#define XML_SAX2_MAGIC</pre><p>Special constant found in SAX2 blocks initialized fields</p>
 <h3><a name="XML_SKIP_IDS" id="XML_SKIP_IDS"></a>Macro: XML_SKIP_IDS</h3><pre>#define XML_SKIP_IDS</pre><p>Bit in the loadsubset context field to tell to not do ID/REFs registration. Used to initialize <a href="libxml-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a> in some special cases.</p>
 <h3>Enum <a name="xmlFeature" id="xmlFeature">xmlFeature</a></h3><pre class="programlisting">Enum xmlFeature {
-    <a name="XML_FEATURE_THREAD" id="XML_FEATURE_THREAD">XML_FEATURE_THREAD</a> = 1
-    <a name="XML_FEATURE_TREE" id="XML_FEATURE_TREE">XML_FEATURE_TREE</a> = 2
-    <a name="XML_FEATURE_OUTPUT" id="XML_FEATURE_OUTPUT">XML_FEATURE_OUTPUT</a> = 3
-    <a name="XML_FEATURE_PUSH" id="XML_FEATURE_PUSH">XML_FEATURE_PUSH</a> = 4
-    <a name="XML_FEATURE_READER" id="XML_FEATURE_READER">XML_FEATURE_READER</a> = 5
-    <a name="XML_FEATURE_PATTERN" id="XML_FEATURE_PATTERN">XML_FEATURE_PATTERN</a> = 6
-    <a name="XML_FEATURE_WRITER" id="XML_FEATURE_WRITER">XML_FEATURE_WRITER</a> = 7
-    <a name="XML_FEATURE_SAX1" id="XML_FEATURE_SAX1">XML_FEATURE_SAX1</a> = 8
-    <a name="XML_FEATURE_FTP" id="XML_FEATURE_FTP">XML_FEATURE_FTP</a> = 9
-    <a name="XML_FEATURE_HTTP" id="XML_FEATURE_HTTP">XML_FEATURE_HTTP</a> = 10
-    <a name="XML_FEATURE_VALID" id="XML_FEATURE_VALID">XML_FEATURE_VALID</a> = 11
-    <a name="XML_FEATURE_HTML" id="XML_FEATURE_HTML">XML_FEATURE_HTML</a> = 12
-    <a name="XML_FEATURE_LEGACY" id="XML_FEATURE_LEGACY">XML_FEATURE_LEGACY</a> = 13
-    <a name="XML_FEATURE_C14N" id="XML_FEATURE_C14N">XML_FEATURE_C14N</a> = 14
-    <a name="XML_FEATURE_CATALOG" id="XML_FEATURE_CATALOG">XML_FEATURE_CATALOG</a> = 15
-    <a name="XML_FEATURE_XPATH" id="XML_FEATURE_XPATH">XML_FEATURE_XPATH</a> = 16
-    <a name="XML_FEATURE_XPTR" id="XML_FEATURE_XPTR">XML_FEATURE_XPTR</a> = 17
-    <a name="XML_FEATURE_XINCLUDE" id="XML_FEATURE_XINCLUDE">XML_FEATURE_XINCLUDE</a> = 18
-    <a name="XML_FEATURE_ICONV" id="XML_FEATURE_ICONV">XML_FEATURE_ICONV</a> = 19
-    <a name="XML_FEATURE_ISO8859X" id="XML_FEATURE_ISO8859X">XML_FEATURE_ISO8859X</a> = 20
-    <a name="XML_FEATURE_UNICODE" id="XML_FEATURE_UNICODE">XML_FEATURE_UNICODE</a> = 21
-    <a name="XML_FEATURE_REGEXP" id="XML_FEATURE_REGEXP">XML_FEATURE_REGEXP</a> = 22
-    <a name="XML_FEATURE_AUTOMATA" id="XML_FEATURE_AUTOMATA">XML_FEATURE_AUTOMATA</a> = 23
-    <a name="XML_FEATURE_EXPR" id="XML_FEATURE_EXPR">XML_FEATURE_EXPR</a> = 24
-    <a name="XML_FEATURE_SCHEMAS" id="XML_FEATURE_SCHEMAS">XML_FEATURE_SCHEMAS</a> = 25
-    <a name="XML_FEATURE_SCHEMATRON" id="XML_FEATURE_SCHEMATRON">XML_FEATURE_SCHEMATRON</a> = 26
-    <a name="XML_FEATURE_MODULES" id="XML_FEATURE_MODULES">XML_FEATURE_MODULES</a> = 27
-    <a name="XML_FEATURE_DEBUG" id="XML_FEATURE_DEBUG">XML_FEATURE_DEBUG</a> = 28
-    <a name="XML_FEATURE_DEBUG_MEM" id="XML_FEATURE_DEBUG_MEM">XML_FEATURE_DEBUG_MEM</a> = 29
-    <a name="XML_FEATURE_DEBUG_RUN" id="XML_FEATURE_DEBUG_RUN">XML_FEATURE_DEBUG_RUN</a> = 30
-    <a name="XML_FEATURE_NONE" id="XML_FEATURE_NONE">XML_FEATURE_NONE</a> = 99999 : just to be sure of allocation size
+    <a name="XML_WITH_THREAD" id="XML_WITH_THREAD">XML_WITH_THREAD</a> = 1
+    <a name="XML_WITH_TREE" id="XML_WITH_TREE">XML_WITH_TREE</a> = 2
+    <a name="XML_WITH_OUTPUT" id="XML_WITH_OUTPUT">XML_WITH_OUTPUT</a> = 3
+    <a name="XML_WITH_PUSH" id="XML_WITH_PUSH">XML_WITH_PUSH</a> = 4
+    <a name="XML_WITH_READER" id="XML_WITH_READER">XML_WITH_READER</a> = 5
+    <a name="XML_WITH_PATTERN" id="XML_WITH_PATTERN">XML_WITH_PATTERN</a> = 6
+    <a name="XML_WITH_WRITER" id="XML_WITH_WRITER">XML_WITH_WRITER</a> = 7
+    <a name="XML_WITH_SAX1" id="XML_WITH_SAX1">XML_WITH_SAX1</a> = 8
+    <a name="XML_WITH_FTP" id="XML_WITH_FTP">XML_WITH_FTP</a> = 9
+    <a name="XML_WITH_HTTP" id="XML_WITH_HTTP">XML_WITH_HTTP</a> = 10
+    <a name="XML_WITH_VALID" id="XML_WITH_VALID">XML_WITH_VALID</a> = 11
+    <a name="XML_WITH_HTML" id="XML_WITH_HTML">XML_WITH_HTML</a> = 12
+    <a name="XML_WITH_LEGACY" id="XML_WITH_LEGACY">XML_WITH_LEGACY</a> = 13
+    <a name="XML_WITH_C14N" id="XML_WITH_C14N">XML_WITH_C14N</a> = 14
+    <a name="XML_WITH_CATALOG" id="XML_WITH_CATALOG">XML_WITH_CATALOG</a> = 15
+    <a name="XML_WITH_XPATH" id="XML_WITH_XPATH">XML_WITH_XPATH</a> = 16
+    <a name="XML_WITH_XPTR" id="XML_WITH_XPTR">XML_WITH_XPTR</a> = 17
+    <a name="XML_WITH_XINCLUDE" id="XML_WITH_XINCLUDE">XML_WITH_XINCLUDE</a> = 18
+    <a name="XML_WITH_ICONV" id="XML_WITH_ICONV">XML_WITH_ICONV</a> = 19
+    <a name="XML_WITH_ISO8859X" id="XML_WITH_ISO8859X">XML_WITH_ISO8859X</a> = 20
+    <a name="XML_WITH_UNICODE" id="XML_WITH_UNICODE">XML_WITH_UNICODE</a> = 21
+    <a name="XML_WITH_REGEXP" id="XML_WITH_REGEXP">XML_WITH_REGEXP</a> = 22
+    <a name="XML_WITH_AUTOMATA" id="XML_WITH_AUTOMATA">XML_WITH_AUTOMATA</a> = 23
+    <a name="XML_WITH_EXPR" id="XML_WITH_EXPR">XML_WITH_EXPR</a> = 24
+    <a name="XML_WITH_SCHEMAS" id="XML_WITH_SCHEMAS">XML_WITH_SCHEMAS</a> = 25
+    <a name="XML_WITH_SCHEMATRON" id="XML_WITH_SCHEMATRON">XML_WITH_SCHEMATRON</a> = 26
+    <a name="XML_WITH_MODULES" id="XML_WITH_MODULES">XML_WITH_MODULES</a> = 27
+    <a name="XML_WITH_DEBUG" id="XML_WITH_DEBUG">XML_WITH_DEBUG</a> = 28
+    <a name="XML_WITH_DEBUG_MEM" id="XML_WITH_DEBUG_MEM">XML_WITH_DEBUG_MEM</a> = 29
+    <a name="XML_WITH_DEBUG_RUN" id="XML_WITH_DEBUG_RUN">XML_WITH_DEBUG_RUN</a> = 30
+    <a name="XML_WITH_NONE" id="XML_WITH_NONE">XML_WITH_NONE</a> = 99999 : just to be sure of allocation size
 }
 </pre><h3>Enum <a name="xmlParserInputState" id="xmlParserInputState">xmlParserInputState</a></h3><pre class="programlisting">Enum xmlParserInputState {
     <a name="XML_PARSER_EOF" id="XML_PARSER_EOF">XML_PARSER_EOF</a> = -1 : nothing is to be parsed

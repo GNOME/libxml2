@@ -1054,10 +1054,10 @@ static void des_xmlElementTypeVal(int no ATTRIBUTE_UNUSED, xmlElementTypeVal val
 
 #define gen_nb_xmlFeature 4
 static xmlFeature gen_xmlFeature(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_FEATURE_AUTOMATA);
-    if (no == 2) return(XML_FEATURE_C14N);
-    if (no == 3) return(XML_FEATURE_CATALOG);
-    if (no == 4) return(XML_FEATURE_DEBUG);
+    if (no == 1) return(XML_WITH_AUTOMATA);
+    if (no == 2) return(XML_WITH_C14N);
+    if (no == 3) return(XML_WITH_CATALOG);
+    if (no == 4) return(XML_WITH_DEBUG);
     return(0);
 }
 

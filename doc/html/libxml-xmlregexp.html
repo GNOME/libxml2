@@ -71,9 +71,13 @@ The content of this structure is not made public by the API.
 }
 </pre><h3><a name="xmlRegExecCtxt" id="xmlRegExecCtxt">Structure xmlRegExecCtxt</a></h3><pre class="programlisting">Structure xmlRegExecCtxt<br />struct _xmlRegExecCtxt {
 The content of this structure is not made public by the API.
-}</pre><h3><a name="xmlRegexp" id="xmlRegexp">Structure xmlRegexp</a></h3><pre class="programlisting">Structure xmlRegexp<br />struct _xmlRegexp {
+}</pre>
+      A libxml progressive regular expression evaluation context
+    <h3><a name="xmlRegexp" id="xmlRegexp">Structure xmlRegexp</a></h3><pre class="programlisting">Structure xmlRegexp<br />struct _xmlRegexp {
 The content of this structure is not made public by the API.
-}</pre><h3><a name="xmlExpCtxtNbCons" id="xmlExpCtxtNbCons"></a>Function: xmlExpCtxtNbCons</h3><pre class="programlisting">int	xmlExpCtxtNbCons		(<a href="libxml-xmlregexp.html#xmlExpCtxtPtr">xmlExpCtxtPtr</a> ctxt)<br />
+}</pre>
+      A libxml regular expression, they can actually be far more complex thank the POSIX regex expressions.
+    <h3><a name="xmlExpCtxtNbCons" id="xmlExpCtxtNbCons"></a>Function: xmlExpCtxtNbCons</h3><pre class="programlisting">int	xmlExpCtxtNbCons		(<a href="libxml-xmlregexp.html#xmlExpCtxtPtr">xmlExpCtxtPtr</a> ctxt)<br />
 </pre><p>Debugging facility provides the number of allocated nodes over lifetime</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an expression context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of nodes ever allocated or -1 in case of error</td></tr></tbody></table></div><h3><a name="xmlExpCtxtNbNodes" id="xmlExpCtxtNbNodes"></a>Function: xmlExpCtxtNbNodes</h3><pre class="programlisting">int	xmlExpCtxtNbNodes		(<a href="libxml-xmlregexp.html#xmlExpCtxtPtr">xmlExpCtxtPtr</a> ctxt)<br />
 </pre><p>Debugging facility provides the number of allocated nodes at a that point</p>

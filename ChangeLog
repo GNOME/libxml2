@@ -1,3 +1,7 @@
+Mon Sep 12 21:29:35 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/derivation-ok-extension_0_0: Adapted result.
+
 Mon Sep 12 21:20:41 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/allsg_0_3.err result/schemas/allsg_0_4.err

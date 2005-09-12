@@ -1,3 +1,8 @@
+Mon Sep 12 02:03:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: fix bug #316034, where xmlElemDump() can crash if 
+	  given a document pointer instead of an element
+
 Mon Sep 12 01:26:16 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* doc/devhelp/devhelp.xsl: improvements on the html generation,

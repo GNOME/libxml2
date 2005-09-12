@@ -1086,6 +1086,11 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     xmlOutputBufferPtr buf;
 
     if (cur == NULL) return;
+    if ((cur->type == XML_DOCUMENT_NODE) ||
+        (cur->type == XML_HTML_DOCUMENT_NODE)) {
+        xmlDocContentDumpOutput(ctxt, (xmlDocPtr) cur);
+	return;
+    }
     if (cur->type == XML_XINCLUDE_START)
 	return;
     if (cur->type == XML_XINCLUDE_END)

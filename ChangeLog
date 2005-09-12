@@ -1,3 +1,16 @@
+Mon Sep 12 21:00:53 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/schemasInternals.h
+	  include/libxml/xmlerror.h: Completion of the schema graph.
+	  Centralisation, more robustness of the schema document
+	  aquisition story. Centralised and restructured component fixup.
+	  Fixed attribute derivation when 'prohibiting' attribute uses.
+	  Added warnings: when schema documents cannot be localized
+	  during imports; when we get duplicate and pointless attribute
+	  prohibitions. Changed error reports for IDCs to report
+	  the relevant IDC designation as well (requested by GUY Fabrice).
+	  Misc code-cleanup.
+
 Mon Sep 12 16:02:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: applied second patch from David Madore to be less intrusive

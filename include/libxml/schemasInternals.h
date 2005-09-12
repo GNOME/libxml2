@@ -356,6 +356,7 @@ struct _xmlSchemaAttributeGroup {
     const xmlChar *refPrefix;
     xmlSchemaAttributeGroupPtr refItem; /* The referenced attribute group */
     const xmlChar *targetNamespace;
+    /* xmlSchemaAttributeGroupPtr redef;*/  /* Redefinitions */
 };
 
 /**
@@ -551,6 +552,13 @@ struct _xmlSchemaFacetLink {
  * indicates if the facets (pattern) need a normalized value
  */
 #define XML_SCHEMAS_TYPE_NORMVALUENEEDED    1 << 28
+
+/**
+ * XML_SCHEMAS_TYPE_FIXUP_1:
+ *
+ * First stage of fixup was done.
+ */
+#define XML_SCHEMAS_TYPE_FIXUP_1    1 << 29
 
 /**
  * _xmlSchemaType:
@@ -801,16 +809,24 @@ struct _xmlSchemaNotation {
     const xmlChar *targetNamespace;
 };
 
+/*
+* Actually all those flags used for the schema should sit
+* on the schema parser context, since they are used only
+* during parsing an XML schema document, and not available
+* on the component level as per spec.
+*/
 /**
  * XML_SCHEMAS_QUALIF_ELEM:
  *
- * the schema requires qualified elements
+ * Reflects elementFormDefault == qualified in
+ * an XML schema document.
  */
 #define XML_SCHEMAS_QUALIF_ELEM                1 << 0
 /**
  * XML_SCHEMAS_QUALIF_ATTR:
  *
- * the schema requires qualified attributes
+ * Reflects attributeFormDefault == qualified in
+ * an XML schema document.
  */
 #define XML_SCHEMAS_QUALIF_ATTR            1 << 1
 /**
@@ -891,7 +907,7 @@ struct _xmlSchema {
     int preserve;        /* whether to free the document */
     int counter; /* used to give ononymous components unique names */
     xmlHashTablePtr idcDef;
-    void *volatiles; /* Misc. helper items (e.g. reference items) */    
+    void *volatiles; /* Deprecated; not used anymore. */
 };
 
 XMLPUBFUN void XMLCALL         xmlSchemaFreeType        (xmlSchemaTypePtr type);

@@ -6,8 +6,7 @@
 	xmlns:bar="http://BAR"
 	elementFormDefault="qualified">
 	<xsd:import namespace="http://BAR" />
-	<!-- This document is not a XML schema document. -->
-	<xsd:import namespace="http://BAR" schemaLocation="import-bad-1_0.imp" />
+		
 	<!-- This document does not exist. -->
 	<xsd:import namespace="http://BAR" schemaLocation="import1_0bc.imp" />
 	<!-- This document is ok. -->
@@ -22,6 +21,8 @@
 			<xsd:sequence>
 				<xsd:element name="bar"/>								
 				<xsd:element ref="bar:bar.A"/>
+				<!-- The reference cannot be resolved since
+				     "import1_0b.imp" was skipped -->
 				<xsd:element ref="bar:bar.B"/>				
 			</xsd:sequence>	
 		</xsd:complexType>

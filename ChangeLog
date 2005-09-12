@@ -1,3 +1,7 @@
+Mon Sep 12 21:42:47 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+	
+	* test/schemas/import1_0.xsd: And adapting another one.
+
 Mon Sep 12 21:29:35 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/derivation-ok-extension_0_0: Adapted result.

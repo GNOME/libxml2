@@ -1321,25 +1321,26 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlNodePtr child = cur->children;
 
 	while (child != NULL) {
-	    if ((child->type == XML_TEXT_NODE) ||
-		(child->type == XML_CDATA_SECTION_NODE)) {
-		/*
-		 * Apparently CDATA escaping for style just break on IE,
-		 * mozilla and galeon, so ...
-		 */
-		if (xmlStrEqual(cur->name, BAD_CAST "style") &&
-		    (xmlStrchr(child->content, '<') == NULL) &&
-		    (xmlStrchr(child->content, '>') == NULL) &&
-		    (xmlStrchr(child->content, '&') == NULL)) {
+	    if (child->type == XML_TEXT_NODE) {
+		if ((xmlStrchr(child->content, '<') == NULL) &&
+		    (xmlStrchr(child->content, '&') == NULL) &&
+		    (xmlStrstr(child->content, BAD_CAST "]]>") == NULL)) {
+		    /* Nothing to escape, so just output as is... */
+		    /* FIXME: Should we do something about "--" also? */
 		    int level = ctxt->level;
 		    int indent = ctxt->format;
 
 		    ctxt->level = 0;
 		    ctxt->format = 0;
-		    xhtmlNodeDumpOutput(ctxt, child);
+		    xmlOutputBufferWriteString(buf, (const char *) child->content);
+		    /* (We cannot use xhtmlNodeDumpOutput() here because
+		     * we wish to leave '>' unescaped!) */
 		    ctxt->level = level;
 		    ctxt->format = indent;
 		} else {
+		    /* We must use a CDATA section.  Unfortunately,
+		     * this will break CSS and JavaScript when read by
+		     * a browser in HTML4-compliant mode. :-( */
 		    start = end = child->content;
 		    while (*end != '\0') {
 			if (*end == ']' &&

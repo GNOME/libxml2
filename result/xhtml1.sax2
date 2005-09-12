@@ -22,7 +22,11 @@ SAX.characters(
   , 3)
 SAX.startElementNs(script, NULL, NULL, 0, 1, 0, type='text...', 15)
 SAX.characters(
-  ... unescaped script conten, 38)
+  ... unescaped script , 24)
+SAX.getEntity(lt)
+SAX.characters(<, 1)
+SAX.characters( content ...
+  , 15)
 SAX.endElementNs(script, NULL, NULL)
 SAX.characters(
   , 3)

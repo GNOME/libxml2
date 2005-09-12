@@ -19,7 +19,7 @@
   
 1 1 script 0 0
 2 3 #text 0 1 
-  ... unescaped script content ...
+  ... unescaped script < content ...
   
 1 15 script 0 0
 1 14 #text 0 1 

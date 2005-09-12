@@ -9,7 +9,7 @@
   </head>
   <!-- 4.8 -->
   <script type="text/javascript">
-  ... unescaped script content ...
+  ... unescaped script &lt; content ...
   </script>
   <body>
     <p>Moved to <a href="http://example.org/">example.org</a>.</p>

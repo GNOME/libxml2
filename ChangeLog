@@ -1,3 +1,9 @@
+Mon Sep 12 16:02:12 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: applied second patch from David Madore to be less intrusive
+	  when handling scripts and style elements in XHTML1 should fix #316041
+	* test/xhtml1 result//xhtml1\*: updated the test accordingly
+
 Mon Sep 12 15:09:09 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in doc/devhelp/*: finished the integration with

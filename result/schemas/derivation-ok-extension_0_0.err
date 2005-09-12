@@ -1,1 +1,1 @@
-./test/schemas/derivation-ok-extension_0.xsd:10: element attribute: Schemas parser error : local complex type, attribute decl. 'barA_1': Duplicate attribute use specified.
+./test/schemas/derivation-ok-extension_0.xsd:10: element attribute: Schemas parser warning : Element '{http://www.w3.org/2001/XMLSchema}attribute': Attribute use prohibitions are pointless when extending a type.

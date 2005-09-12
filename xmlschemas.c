@@ -16890,6 +16890,7 @@ xmlSchemaFixupSimpleTypeStageOne(xmlSchemaParserCtxtPtr pctxt,
 }
 
 #ifdef DEBUG_TYPE
+static void
 xmlSchemaDebugFixedType(xmlSchemaParserCtxtPtr pctxt,
 		       xmlSchemaTypePtr type)
 {

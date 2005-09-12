@@ -716,6 +716,23 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
 
 <p>There is the list of public releases:</p>
 
+<h3>2.6.22: Sep 12 2005</h3>
+<ul>
+  <li>build fixes: compile without schematron (Stéphane Bidoul)</li>
+  <li>bug fixes: xmlDebugDumpNode on namespace node (Oleg Paraschenko)i,
+      CDATA push parser bug, xmlElemDump problem with XHTML1 doc, 
+      XML_FEATURE_xxx clash with expat headers renamed XML_WITH_xxx,
+      fix some output formatting for meta element (Rob Richards),
+      script and style XHTML1 serialization (David Madore), Attribute
+      derivation fixups in XSD (Kasimier Buchcik), better IDC error
+      reports (Kasimier Buchcik)
+      </li>
+  <li>improvements: add XML_SAVE_NO_EMPTY xmlSaveOption (Rob Richards),
+      add XML_SAVE_NO_XHTML xmlSaveOption, XML Schemas improvements
+      preparing for derive (Kasimier Buchcik).</li>
+  <li>documentation: generation of gtk-doc like docs, integration with
+      devhelp.</li>
+</ul>
 <h3>2.6.21: Sep 4 2005</h3>
 <ul>
   <li>build fixes: Cygwin portability fixes (Gerrit P. Haase), calling

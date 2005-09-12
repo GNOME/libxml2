@@ -1097,7 +1097,7 @@
      <author>Daniel Veillard </author>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_VARIETY_UNION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FIXUP_1' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_CIRCULAR' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ATTR' type='macro'/>
@@ -1106,7 +1106,7 @@
      <exports symbol='XML_SCHEMAS_ATTR_USE_REQUIRED' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_WHITESPACE_COLLAPSE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_WHITESPACE_REPLACE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_VARIETY_UNION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_STRICT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
@@ -1129,6 +1129,7 @@
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_LIST' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_USE_OPTIONAL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_WHITESPACE_REPLACE' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_STRICT' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_UNKNOWN' type='macro'/>
@@ -1921,6 +1922,7 @@
      <exports symbol='XML_SCHEMAP_ELEM_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_CHECK_NOT_DTD' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ATTR_MISSING' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT' type='enum'/>
      <exports symbol='XML_SCHEMAV_VALUE' type='enum'/>
      <exports symbol='XML_XPATH_UNKNOWN_FUNC_ERROR' type='enum'/>
      <exports symbol='XML_ERR_DOCUMENT_START' type='enum'/>
@@ -1967,6 +1969,7 @@
      <exports symbol='XML_FROM_MODULE' type='enum'/>
      <exports symbol='XML_SCHEMAV_EXTRACONTENT' type='enum'/>
      <exports symbol='XML_RNGP_ELEM_CONTENT_EMPTY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_WARN_UNLOCATED_SCHEMA' type='enum'/>
      <exports symbol='XML_IO_EMLINK' type='enum'/>
      <exports symbol='XML_CHECK_X' type='enum'/>
      <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR' type='enum'/>
@@ -2118,6 +2121,7 @@
      <exports symbol='XML_ERR_ENTITYREF_IN_PROLOG' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_IDC' type='enum'/>
      <exports symbol='XML_IO_ENOTTY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_WARN_SKIP_SCHEMA' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_NOTATION' type='enum'/>
      <exports symbol='XML_FROM_DATATYPE' type='enum'/>
      <exports symbol='XML_ERR_WARNING' type='enum'/>
@@ -2127,6 +2131,7 @@
      <exports symbol='XML_SCHEMAP_UNKNOWN_UNION_CHILD' type='enum'/>
      <exports symbol='XML_XPATH_MEMORY_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOROOT' type='enum'/>
+     <exports symbol='XML_SCHEMAP_WARN_ATTR_REDECL_PROH' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_3_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_3_2_2' type='enum'/>
      <exports symbol='XML_XPATH_UNCLOSED_ERROR' type='enum'/>
@@ -2620,6 +2625,7 @@
      <exports symbol='XML_ERR_TAG_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_ERR_LTSLASH_REQUIRED' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ATTRGROUP' type='enum'/>
+     <exports symbol='XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH' type='enum'/>
      <exports symbol='XML_ERR_PEREF_IN_INT_SUBSET' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3' type='enum'/>
@@ -2926,7 +2932,9 @@
      <summary>the XML document serializer</summary>
      <description>API to save document or subtree of document </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_SAVE_NO_EMPTY' type='enum'/>
      <exports symbol='XML_SAVE_NO_DECL' type='enum'/>
+     <exports symbol='XML_SAVE_NO_XHTML' type='enum'/>
      <exports symbol='XML_SAVE_FORMAT' type='enum'/>
      <exports symbol='xmlSaveOption' type='typedef'/>
      <exports symbol='xmlSaveCtxt' type='typedef'/>
@@ -4176,10 +4184,10 @@
       <info>the schema is currently including an other schema with no target namespace.</info>
     </macro>
     <macro name='XML_SCHEMAS_QUALIF_ATTR' file='schemasInternals'>
-      <info>the schema requires qualified attributes</info>
+      <info>Reflects attributeFormDefault == qualified in an XML schema document.</info>
     </macro>
     <macro name='XML_SCHEMAS_QUALIF_ELEM' file='schemasInternals'>
-      <info>the schema requires qualified elements</info>
+      <info>Reflects elementFormDefault == qualified in an XML schema document.</info>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_ABSTRACT' file='schemasInternals'>
       <info>the simple/complexType is abstract.</info>
@@ -4219,6 +4227,9 @@
     </macro>
     <macro name='XML_SCHEMAS_TYPE_FINAL_UNION' file='schemasInternals'>
       <info>the simpleType has a final of &quot;union&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_FIXUP_1' file='schemasInternals'>
+      <info>First stage of fixup was done.</info>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_GLOBAL' file='schemasInternals'>
       <info>the type is global</info>
@@ -5139,8 +5150,10 @@
     <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors' info='1401'/>
     <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info='format save output'/>
     <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
-    <enum name='XML_SAVE_NO_DECL' file='xmlsave' value='2' type='xmlSaveOption' info=' drop the xml declaration'/>
+    <enum name='XML_SAVE_NO_DECL' file='xmlsave' value='2' type='xmlSaveOption' info='drop the xml declaration'/>
     <enum name='XML_SAVE_NO_DOCTYPE' file='xmlerror' value='1402' type='xmlParserErrors' info='1402'/>
+    <enum name='XML_SAVE_NO_EMPTY' file='xmlsave' value='4' type='xmlSaveOption' info='no empty tags'/>
+    <enum name='XML_SAVE_NO_XHTML' file='xmlsave' value='8' type='xmlSaveOption' info=' disable XHTML1 specific rules'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>
@@ -5272,6 +5285,7 @@
     <enum name='XML_SCHEMAP_SRC_ELEMENT_2_1' file='xmlerror' value='3039' type='xmlParserErrors' info='3039'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_2_2' file='xmlerror' value='3040' type='xmlParserErrors' info='3040'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_3' file='xmlerror' value='3041' type='xmlParserErrors' info='3041'/>
+    <enum name='XML_SCHEMAP_SRC_IMPORT' file='xmlerror' value='3082' type='xmlParserErrors' info='3082'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_1_1' file='xmlerror' value='3064' type='xmlParserErrors' info='3064'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_1_2' file='xmlerror' value='3065' type='xmlParserErrors' info='3065'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_2' file='xmlerror' value='3066' type='xmlParserErrors' info='3066'/>
@@ -5324,6 +5338,10 @@
     <enum name='XML_SCHEMAP_UNKNOWN_SIMPLETYPE_CHILD' file='xmlerror' value='1752' type='xmlParserErrors' info='1752'/>
     <enum name='XML_SCHEMAP_UNKNOWN_TYPE' file='xmlerror' value='1753' type='xmlParserErrors' info='1753'/>
     <enum name='XML_SCHEMAP_UNKNOWN_UNION_CHILD' file='xmlerror' value='1754' type='xmlParserErrors' info='1754'/>
+    <enum name='XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH' file='xmlerror' value='3086' type='xmlParserErrors' info='3085'/>
+    <enum name='XML_SCHEMAP_WARN_ATTR_REDECL_PROH' file='xmlerror' value='3085' type='xmlParserErrors' info='3085'/>
+    <enum name='XML_SCHEMAP_WARN_SKIP_SCHEMA' file='xmlerror' value='3083' type='xmlParserErrors' info='3083'/>
+    <enum name='XML_SCHEMAP_WARN_UNLOCATED_SCHEMA' file='xmlerror' value='3084' type='xmlParserErrors' info='3084'/>
     <enum name='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER' file='xmlerror' value='1792' type='xmlParserErrors' info='1792'/>
     <enum name='XML_SCHEMAS_ANYSIMPLETYPE' file='schemasInternals' value='46' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAS_ANYTYPE' file='schemasInternals' value='45' type='xmlSchemaValType'/>
@@ -6342,7 +6360,7 @@ actually an xmlCharEncoding'/>
       <field name='preserve' type='int' info=' whether to free the document'/>
       <field name='counter' type='int' info=' used to give ononymous components unique names'/>
       <field name='idcDef' type='xmlHashTablePtr' info=''/>
-      <field name='volatiles' type='void *' info=' Misc. helper items (e.g. reference items)'/>
+      <field name='volatiles' type='void *' info=' Deprecated; not used anymore.'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
@@ -6384,7 +6402,7 @@ actually an xmlCharEncoding'/>
       <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
       <field name='refItem' type='xmlSchemaAttributeGroupPtr' info=' The referenced attribute group'/>
-      <field name='targetNamespace' type='const xmlChar *' info=''/>
+      <field name='targetNamespace' type='const xmlChar *' info=' xmlSchemaAttributeGroupPtr redef Redefinitions'/>
     </struct>
     <typedef name='xmlSchemaAttributeGroupPtr' file='schemasInternals' type='xmlSchemaAttributeGroup *'/>
     <struct name='xmlSchemaAttributeLink' file='schemasInternals' type='struct _xmlSchemaAttributeLink'>

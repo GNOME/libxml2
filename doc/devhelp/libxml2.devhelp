@@ -221,6 +221,7 @@
     <function name="XML_SCHEMAS_TYPE_FINAL_LIST" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_LIST"/>
     <function name="XML_SCHEMAS_TYPE_FINAL_RESTRICTION" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_RESTRICTION"/>
     <function name="XML_SCHEMAS_TYPE_FINAL_UNION" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_UNION"/>
+    <function name="XML_SCHEMAS_TYPE_FIXUP_1" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_FIXUP_1"/>
     <function name="XML_SCHEMAS_TYPE_GLOBAL" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_GLOBAL"/>
     <function name="XML_SCHEMAS_TYPE_HAS_FACETS" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_HAS_FACETS"/>
     <function name="XML_SCHEMAS_TYPE_INTERNAL_INVALID" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_INTERNAL_INVALID"/>
@@ -952,6 +953,8 @@
     <function name="XML_SAVE_NOT_UTF8" link="libxml2-xmlerror.html#XML_SAVE_NOT_UTF8"/>
     <function name="XML_SAVE_NO_DECL" link="libxml2-xmlsave.html#XML_SAVE_NO_DECL"/>
     <function name="XML_SAVE_NO_DOCTYPE" link="libxml2-xmlerror.html#XML_SAVE_NO_DOCTYPE"/>
+    <function name="XML_SAVE_NO_EMPTY" link="libxml2-xmlsave.html#XML_SAVE_NO_EMPTY"/>
+    <function name="XML_SAVE_NO_XHTML" link="libxml2-xmlsave.html#XML_SAVE_NO_XHTML"/>
     <function name="XML_SAVE_UNKNOWN_ENCODING" link="libxml2-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING"/>
     <function name="XML_SCHEMAP_ATTRFORMDEFAULT_VALUE" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRFORMDEFAULT_VALUE"/>
     <function name="XML_SCHEMAP_ATTRGRP_NONAME_NOREF" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRGRP_NONAME_NOREF"/>
@@ -1083,6 +1086,7 @@
     <function name="XML_SCHEMAP_SRC_ELEMENT_2_1" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_1"/>
     <function name="XML_SCHEMAP_SRC_ELEMENT_2_2" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_2"/>
     <function name="XML_SCHEMAP_SRC_ELEMENT_3" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_3"/>
+    <function name="XML_SCHEMAP_SRC_IMPORT" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_IMPORT"/>
     <function name="XML_SCHEMAP_SRC_IMPORT_1_1" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_1_1"/>
     <function name="XML_SCHEMAP_SRC_IMPORT_1_2" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_1_2"/>
     <function name="XML_SCHEMAP_SRC_IMPORT_2" link="libxml2-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_2"/>
@@ -1135,6 +1139,10 @@
     <function name="XML_SCHEMAP_UNKNOWN_SIMPLETYPE_CHILD" link="libxml2-xmlerror.html#XML_SCHEMAP_UNKNOWN_SIMPLETYPE_CHILD"/>
     <function name="XML_SCHEMAP_UNKNOWN_TYPE" link="libxml2-xmlerror.html#XML_SCHEMAP_UNKNOWN_TYPE"/>
     <function name="XML_SCHEMAP_UNKNOWN_UNION_CHILD" link="libxml2-xmlerror.html#XML_SCHEMAP_UNKNOWN_UNION_CHILD"/>
+    <function name="XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH" link="libxml2-xmlerror.html#XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH"/>
+    <function name="XML_SCHEMAP_WARN_ATTR_REDECL_PROH" link="libxml2-xmlerror.html#XML_SCHEMAP_WARN_ATTR_REDECL_PROH"/>
+    <function name="XML_SCHEMAP_WARN_SKIP_SCHEMA" link="libxml2-xmlerror.html#XML_SCHEMAP_WARN_SKIP_SCHEMA"/>
+    <function name="XML_SCHEMAP_WARN_UNLOCATED_SCHEMA" link="libxml2-xmlerror.html#XML_SCHEMAP_WARN_UNLOCATED_SCHEMA"/>
     <function name="XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER" link="libxml2-xmlerror.html#XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER"/>
     <function name="XML_SCHEMAS_ANYSIMPLETYPE" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANYSIMPLETYPE"/>
     <function name="XML_SCHEMAS_ANYTYPE" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANYTYPE"/>

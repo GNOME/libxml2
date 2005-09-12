@@ -15,6 +15,23 @@ ChangeLog.html
 to the CVS at 
 http://cvs.gnome.org/viewcvs/libxml2/
  code base.There is the list of public releases:
+2.6.22: Sep 12 2005:
+   - build fixes: compile without schematron (Stéphane Bidoul)
+   - bug fixes: xmlDebugDumpNode on namespace node (Oleg Paraschenko)i,
+      CDATA push parser bug, xmlElemDump problem with XHTML1 doc, 
+      XML_FEATURE_xxx clash with expat headers renamed XML_WITH_xxx,
+      fix some output formatting for meta element (Rob Richards),
+      script and style XHTML1 serialization (David Madore), Attribute
+      derivation fixups in XSD (Kasimier Buchcik), better IDC error
+      reports (Kasimier Buchcik)
+      
+   - improvements: add XML_SAVE_NO_EMPTY xmlSaveOption (Rob Richards),
+      add XML_SAVE_NO_XHTML xmlSaveOption, XML Schemas improvements
+      preparing for derive (Kasimier Buchcik).
+   - documentation: generation of gtk-doc like docs, integration with
+      devhelp.
+
+
 2.6.21: Sep 4 2005:
    - build fixes: Cygwin portability fixes (Gerrit P. Haase), calling
       convention problems on Windows (Marcus Boerger), cleanups based on

@@ -1737,8 +1737,6 @@ class docBuilder:
 
     def serialize_typedef(self, output, name):
         id = self.idx.typedefs[name]
-	if name == 'xmlChar':
-	    print id
 	if id.info[0:7] == 'struct ':
 	    output.write("    <struct name='%s' file='%s' type='%s'" % (
 	             name, self.modulename_file(id.header), id.info))

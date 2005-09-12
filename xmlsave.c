@@ -865,10 +865,12 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
     }
 
 #ifdef LIBXML_HTML_ENABLED
-    dtd = xmlGetIntSubset(cur);
-    if (dtd != NULL) {
-	is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
-	if (is_xhtml < 0) is_xhtml = 0;
+    if ((ctxt->options & XML_SAVE_NO_XHTML) == 0) {
+	dtd = xmlGetIntSubset(cur);
+	if (dtd != NULL) {
+	    is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
+	    if (is_xhtml < 0) is_xhtml = 0;
+	}
     }
 #endif
     if (cur->children != NULL) {
@@ -1904,9 +1906,9 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 #ifdef LIBXML_HTML_ENABLED
     dtd = xmlGetIntSubset(doc);
     if (dtd != NULL) {
-        is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
-        if (is_xhtml < 0)
-            is_xhtml = 0;
+	is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
+	if (is_xhtml < 0)
+	    is_xhtml = 0;
     }
 
     if (is_xhtml)

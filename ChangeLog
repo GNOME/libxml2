@@ -1,3 +1,11 @@
+Mon Sep 12 23:41:40 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in doc//*: release of 2.6.22 updated doc and
+	  rebuild.
+	* xmlsave.c include/libxml/xmlsave.h: added XML_SAVE_NO_XHTML
+	  xmlSaveOption
+	* xmlschemas.c: minor cleanups
+
 Mon Sep 12 21:42:47 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 	
 	* test/schemas/import1_0.xsd: And adapting another one.

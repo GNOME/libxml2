@@ -1,3 +1,9 @@
+Mon Sep 12 15:09:09 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in doc/devhelp/*: finished the integration with
+	  devhelp, completing the index and inserted into the gtk-doc
+	  database at "make install" stage
+
 Mon Sep 12 14:14:12 CEST 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* include/libxml/xmlsave.h xmlsave.c: add XML_SAVE_NO_EMPTY save option

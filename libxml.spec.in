@@ -131,6 +131,10 @@ rm -fr %{buildroot}
 %doc doc/*.html doc/html doc/*.gif doc/*.png
 %doc doc/tutorial doc/libxml2-api.xml.gz
 %doc doc/examples
+%doc %{_datadir}/gtk-doc/html/libxml2/*.devhelp
+%doc %{_datadir}/gtk-doc/html/libxml2/*.html
+%doc %{_datadir}/gtk-doc/html/libxml2/*.png
+%doc %{_datadir}/gtk-doc/html/libxml2/*.css
 
 %{_libdir}/lib*.so
 %{_libdir}/*a

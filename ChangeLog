@@ -1,3 +1,9 @@
+Mon Sep 12 14:14:12 CEST 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* include/libxml/xmlsave.h xmlsave.c: add XML_SAVE_NO_EMPTY save option
+	  and use option from xmlSaveCtxtPtr rather than global during output.
+	* xmlsave.c: fix some output formatting for meta element under XHTML.
+
 Mon Sep 12 11:12:03 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parser.h parser.c xmllint.c: damn XML_FEATURE_UNICODE

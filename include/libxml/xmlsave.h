@@ -28,7 +28,8 @@ extern "C" {
  */
 typedef enum {
     XML_SAVE_FORMAT     = 1<<0,	/* format save output */
-    XML_SAVE_NO_DECL    = 1<<1	/* drop the xml declaration */
+    XML_SAVE_NO_DECL    = 1<<1,	/* drop the xml declaration */
+    XML_SAVE_NO_EMPTY	= 1<<2  /* no empty tags */
 } xmlSaveOption;
 
 

@@ -343,6 +343,10 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt)
 		   ctxt->indent_size);
         ctxt->indent[ctxt->indent_nr * ctxt->indent_size] = 0;
     }
+
+	if (xmlSaveNoEmptyTags) {
+		ctxt->options |= XML_SAVE_NO_EMPTY;
+	}
 }
 
 /**
@@ -380,13 +384,6 @@ xmlNewSaveCtxt(const char *encoding, int options)
     }
     memset(ret, 0, sizeof(xmlSaveCtxt));
 
-    /*
-     * Use the options
-     */
-    ret->options = options;
-    if (options & XML_SAVE_FORMAT)
-        ret->format = 1;
-
     if (encoding != NULL) {
         ret->handler = xmlFindCharEncodingHandler(encoding);
 	if (ret->handler == NULL) {
@@ -398,6 +395,19 @@ xmlNewSaveCtxt(const char *encoding, int options)
 	ret->escape = xmlEscapeEntities;
     }
     xmlSaveCtxtInit(ret);
+
+    /*
+     * Use the options
+     */
+
+	/* Re-check this option as it may already have been set */
+	if ((ret->options & XML_SAVE_NO_EMPTY) && ! (options & XML_SAVE_NO_EMPTY)) {
+		options |= XML_SAVE_NO_EMPTY;
+	}
+
+    ret->options = options;
+    if (options & XML_SAVE_FORMAT)
+        ret->format = 1;
 
     return(ret);
 }
@@ -773,7 +783,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         xmlAttrListDumpOutput(ctxt, cur->properties);
 
     if (((cur->type == XML_ELEMENT_NODE) || (cur->content == NULL)) &&
-	(cur->children == NULL) && (!xmlSaveNoEmptyTags)) {
+	(cur->children == NULL) && ((ctxt->options & XML_SAVE_NO_EMPTY) == 0)) {
         xmlOutputBufferWrite(buf, 2, "/>");
 	ctxt->format = format;
 	return;
@@ -1245,6 +1255,13 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	} else {
 		if (addmeta == 1) {
 			xmlOutputBufferWrite(buf, 1, ">");
+			if (ctxt->format) {
+				xmlOutputBufferWrite(buf, 1, "\n");
+				if (xmlIndentTreeOutput)
+					xmlOutputBufferWrite(buf, ctxt->indent_size *
+					(ctxt->level + 1 > ctxt->indent_nr ? 
+					ctxt->indent_nr : ctxt->level + 1), ctxt->indent);
+			}
 			xmlOutputBufferWriteString(buf,
 				"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
 			if (ctxt->encoding) {
@@ -1252,12 +1269,16 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 			} else {
 				xmlOutputBufferWrite(buf, 5, "UTF-8");
 			}
-			xmlOutputBufferWrite(buf, 3, "\" /");
+			xmlOutputBufferWrite(buf, 4, "\" />");
+			if (ctxt->format)
+				xmlOutputBufferWrite(buf, 1, "\n");
+		} else {
+			xmlOutputBufferWrite(buf, 1, ">");
 		}
 	    /*
 	     * C.3. Element Minimization and Empty Element Content
 	     */
-	    xmlOutputBufferWrite(buf, 3, "></");
+	    xmlOutputBufferWrite(buf, 2, "</");
 	    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
 		xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
 		xmlOutputBufferWrite(buf, 1, ":");
@@ -1269,6 +1290,13 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     xmlOutputBufferWrite(buf, 1, ">");
 	if (addmeta == 1) {
+		if (ctxt->format) {
+			xmlOutputBufferWrite(buf, 1, "\n");
+			if (xmlIndentTreeOutput)
+				xmlOutputBufferWrite(buf, ctxt->indent_size *
+				(ctxt->level + 1 > ctxt->indent_nr ? 
+				ctxt->indent_nr : ctxt->level + 1), ctxt->indent);
+		}
 		xmlOutputBufferWriteString(buf,
 			"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
 		if (ctxt->encoding) {

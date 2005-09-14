@@ -1,3 +1,8 @@
+Wed Sep 14 13:24:27 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* uri.c: fixed problem when xmlBuildRelativeURI was given a
+	  blank path (bug 316224)
+
 Mon Sep 12 23:41:40 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in doc//*: release of 2.6.22 updated doc and

@@ -2130,6 +2130,7 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     int ix;
     int pos = 0;
     int nbslash = 0;
+    int len;
     xmlURIPtr ref = NULL;
     xmlURIPtr bas = NULL;
     xmlChar *bptr, *uptr, *vptr;
@@ -2183,53 +2184,76 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     /*
      * At this point (at last!) we can compare the two paths
      *
-     * First we compare the two strings and find where they first differ
+     * First we take care of the special case where either of the
+     * two path components may be missing (bug 316224)
      */
+    if (bas->path == NULL) {
+	if (ref->path != NULL) {
+	    uptr = ref->path;
+	    if (*uptr == '/')
+		uptr++;
+	    val = xmlStrdup(uptr);
+	}
+	goto done;
+    }
     bptr = (xmlChar *)bas->path;
-    if ((ref->path[pos] == '.') && (ref->path[pos+1] == '/'))
-        pos += 2;
-    if ((*bptr == '.') && (bptr[1] == '/'))
-        bptr += 2;
-    else if ((*bptr == '/') && (ref->path[pos] != '/'))
-	bptr++;
-    while ((bptr[pos] == ref->path[pos]) && (bptr[pos] != 0))
-	pos++;
-
-    if (bptr[pos] == ref->path[pos]) {
-	val = NULL;		/* if no differences, return NULL */
-	goto done;		/* (I can't imagine why anyone would do this) */
-    }
-
-    /*
-     * In URI, "back up" to the last '/' encountered.  This will be the
-     * beginning of the "unique" suffix of URI
-     */
-    ix = pos;
-    if ((ref->path[ix] == '/') && (ix > 0))
-	ix--;
-    for (; ix > 0; ix--) {
-	if (ref->path[ix] == '/')
-	    break;
-    }
-    if (ix == 0) {
-	uptr = (xmlChar *)ref->path;
-    } else {
-	ix++;
-	uptr = (xmlChar *)&ref->path[ix];
-    }
-
-    /*
-     * In base, count the number of '/' from the differing point
-     */
-    if (bptr[pos] != ref->path[pos]) {	/* check for trivial URI == base */
-	for (; bptr[ix] != 0; ix++) {
+    if (ref->path == NULL) {
+	for (ix = 0; bptr[ix] != 0; ix++) {
 	    if (bptr[ix] == '/')
 		nbslash++;
 	}
-    }
+	uptr = NULL;
+	len = 1;	/* this is for a string terminator only */
+    } else {
+    /*
+     * Next we compare the two strings and find where they first differ
+     */
+	if ((ref->path[pos] == '.') && (ref->path[pos+1] == '/'))
+            pos += 2;
+	if ((*bptr == '.') && (bptr[1] == '/'))
+            bptr += 2;
+	else if ((*bptr == '/') && (ref->path[pos] != '/'))
+	    bptr++;
+	while ((bptr[pos] == ref->path[pos]) && (bptr[pos] != 0))
+	    pos++;
 
+	if (bptr[pos] == ref->path[pos]) {
+	    goto done;		/* (I can't imagine why anyone would do this) */
+	}
+
+	/*
+	 * In URI, "back up" to the last '/' encountered.  This will be the
+	 * beginning of the "unique" suffix of URI
+	 */
+	ix = pos;
+	if ((ref->path[ix] == '/') && (ix > 0))
+	    ix--;
+	for (; ix > 0; ix--) {
+	    if (ref->path[ix] == '/')
+		break;
+	}
+	if (ix == 0) {
+	    uptr = (xmlChar *)ref->path;
+	} else {
+	    ix++;
+	    uptr = (xmlChar *)&ref->path[ix];
+	}
+
+	/*
+	 * In base, count the number of '/' from the differing point
+	 */
+	if (bptr[pos] != ref->path[pos]) {/* check for trivial URI == base */
+	    for (; bptr[ix] != 0; ix++) {
+		if (bptr[ix] == '/')
+		    nbslash++;
+	    }
+	}
+	len = xmlStrlen (uptr) + 1;
+    }
+    
     if (nbslash == 0) {
-	val = xmlStrdup (uptr);
+	if (uptr != NULL)
+	    val = xmlStrdup (uptr);
 	goto done;
     }
 
@@ -2238,8 +2262,7 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
      * length of the remainder of the URI, plus enough space
      * for the "../" groups, plus one for the terminator
      */
-    ix = xmlStrlen (uptr) + 1;
-    val = (xmlChar *) xmlMalloc (ix + 3 * nbslash);
+    val = (xmlChar *) xmlMalloc (len + 3 * nbslash);
     if (val == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlBuildRelativeURI: out of memory\n");
@@ -2257,7 +2280,10 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     /*
      * Finish up with the end of the URI
      */
-    memcpy (vptr, uptr, ix);
+    if (uptr != NULL)
+	memcpy (vptr, uptr, len);
+    else
+	vptr[len - 1] = 0;
 
   done:
     /*

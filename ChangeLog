@@ -1,3 +1,7 @@
+Thu Sep 15 16:12:44 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: more fixes to the behaviour of xmlBuildRelativeURI
+
 Thu Sep 15 15:08:21 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: detect combinatory explosion and return with

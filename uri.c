@@ -2134,6 +2134,7 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     xmlURIPtr ref = NULL;
     xmlURIPtr bas = NULL;
     xmlChar *bptr, *uptr, *vptr;
+    int remove_path = 0;
 
     if ((URI == NULL) || (*URI == 0))
 	return NULL;
@@ -2174,11 +2175,23 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
      * just return the URI
      */
     if ((ref->scheme != NULL) &&
-	  ((bas->scheme == NULL) ||
-	   xmlStrcmp ((xmlChar *)bas->scheme, (xmlChar *)ref->scheme) ||
-	   xmlStrcmp ((xmlChar *)bas->server, (xmlChar *)ref->server))) {
+	((bas->scheme == NULL) ||
+	 (xmlStrcmp ((xmlChar *)bas->scheme, (xmlChar *)ref->scheme)) ||
+	 (xmlStrcmp ((xmlChar *)bas->server, (xmlChar *)ref->server)))) {
 	val = xmlStrdup (URI);
 	goto done;
+    }
+    if (xmlStrEqual((xmlChar *)bas->path, (xmlChar *)ref->path)) {
+	val = xmlStrdup(BAD_CAST "");
+	goto done;
+    }
+    if (bas->path == NULL) {
+	val = xmlStrdup((xmlChar *)ref->path);
+	goto done;
+    }
+    if (ref->path == NULL) {
+        ref->path = (char *) "/";
+	remove_path = 1;
     }
 
     /*
@@ -2189,7 +2202,7 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
      */
     if (bas->path == NULL) {
 	if (ref->path != NULL) {
-	    uptr = ref->path;
+	    uptr = (xmlChar *) ref->path;
 	    if (*uptr == '/')
 		uptr++;
 	    val = xmlStrdup(uptr);
@@ -2218,6 +2231,7 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 	    pos++;
 
 	if (bptr[pos] == ref->path[pos]) {
+	    val = xmlStrdup(BAD_CAST "");
 	    goto done;		/* (I can't imagine why anyone would do this) */
 	}
 
@@ -2228,6 +2242,8 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 	ix = pos;
 	if ((ref->path[ix] == '/') && (ix > 0))
 	    ix--;
+	else if ((ref->path[ix] == 0) && (ix > 1) && (ref->path[ix - 1] == '/'))
+	    ix -= 2;
 	for (; ix > 0; ix--) {
 	    if (ref->path[ix] == '/')
 		break;
@@ -2280,15 +2296,25 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     /*
      * Finish up with the end of the URI
      */
-    if (uptr != NULL)
-	memcpy (vptr, uptr, len);
-    else
+    if (uptr != NULL) {
+        if ((vptr > val) && (len > 0) &&
+	    (uptr[0] == '/') && (vptr[-1] == '/')) {
+	    memcpy (vptr, uptr + 1, len - 1);
+	    vptr[len - 2] = 0;
+	} else {
+	    memcpy (vptr, uptr, len);
+	    vptr[len - 1] = 0;
+	}
+    } else {
 	vptr[len - 1] = 0;
+    }
 
-  done:
+done:
     /*
      * Free the working variables
      */
+    if (remove_path != 0)
+        ref->path = NULL;
     if (ref != NULL)
 	xmlFreeURI (ref);
     if (bas != NULL)

@@ -42,6 +42,8 @@
 /* #define DEBUG_PUSH */
 /* #define DEBUG_COMPACTION */
 
+#define MAX_PUSH 100000
+
 #define ERROR(str)							\
     ctxt->error = XML_REGEXP_COMPILE_ERROR;				\
     xmlRegexpErrCompile(ctxt, str);
@@ -326,6 +328,7 @@ struct _xmlRegExecCtxt {
     xmlRegStatePtr errState;    /* the error state */
     xmlChar *errString;		/* the string raising the error */
     int *errCounts;		/* counters at the error state */
+    int nbPush;
 };
 
 #define REGEXP_ALL_COUNTER	0x123456
@@ -2336,6 +2339,12 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
     xmlFARegDebugExec(exec);
     exec->transno--;
 #endif
+#ifdef MAX_PUSH
+    if (exec->nbPush > MAX_PUSH) {
+        return;
+    }
+    exec->nbPush++;
+#endif
 
     if (exec->maxRollbacks == 0) {
 	exec->maxRollbacks = 4;
@@ -2426,6 +2435,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 
     exec->inputString = content;
     exec->index = 0;
+    exec->nbPush = 0;
     exec->determinist = 1;
     exec->maxRollbacks = 0;
     exec->nbRollbacks = 0;
@@ -2632,8 +2642,11 @@ progress:
 	xmlFree(exec->counts);
     if (exec->status == 0)
 	return(1);
-    if (exec->status == -1)
+    if (exec->status == -1) {
+	if (exec->nbPush > MAX_PUSH)
+	    return(-1);
 	return(0);
+    }
     return(exec->status);
 }
 
@@ -2708,6 +2721,7 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
     exec->inputStack = NULL;
     exec->errStateNo = -1;
     exec->errString = NULL;
+    exec->nbPush = 0;
     return(exec);
 }
 

@@ -3481,6 +3481,13 @@ set of encodings supported by iconv can be instantly be used by libxml. On a
 linux machine with glibc-2.1 the list of supported encodings and aliases fill
 3 full pages, and include UCS-4, the full set of ISO-Latin encodings, and the
 various Japanese ones.</p>
+<p>To convert from the UTF-8 values returned from the API to another encoding
+then it is possible to use the function provided from
+<a href="html/libxml-encoding.html">the encoding module</a> like
+<a href="html/libxml-encoding.html#UTF8Toisolat1">UTF8Toisolat1</a>, or
+use the POSIX
+<a href="http://www.opengroup.org/onlinepubs/009695399/functions/iconv.html"
+>iconv()</a> API directly.</p>
 
 <h4>Encoding aliases</h4>
 

@@ -318,7 +318,7 @@
     </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="index.html">Home</a></li>
-      <li><a href="http://xmlsoft.org/wiki">Wiki</a></li>
+      <!--<li><a href="http://xmlsoft.org/wiki">Wiki</a></li> -->
       <li><a href="html/index.html">Reference Manual</a></li>
       <xsl:for-each select="/html/body/h2">
         <xsl:variable name="filename">

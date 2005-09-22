@@ -1200,8 +1200,14 @@ xmlTextReaderCollectSiblings(xmlNodePtr node)
        case XML_CDATA_SECTION_NODE:
            xmlBufferCat(buffer, node->content);
            break;
-       case XML_ELEMENT_NODE:
-           xmlBufferCat(buffer, xmlTextReaderCollectSiblings(node->children));
+       case XML_ELEMENT_NODE: {
+           xmlChar *tmp;
+
+	   tmp = xmlTextReaderCollectSiblings(node->children);
+           xmlBufferCat(buffer, tmp);
+	   xmlFree(tmp);
+	   break;
+       }
        default:
            break;
        }

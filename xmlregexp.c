@@ -1238,7 +1238,7 @@ xmlRegStateAddTransTo(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr target,
 static void 
 xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	            xmlRegAtomPtr atom, xmlRegStatePtr target,
-		    int counter, int count, int nchk) {
+		    int counter, int count) {
 
     int nrtrans;
 
@@ -1256,19 +1256,17 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
      * so, silently ignore this request.
      */
 
-    if (nchk == 0) {
-	for (nrtrans = state->nbTrans - 1; nrtrans >= 0; nrtrans--) {
-	    xmlRegTransPtr trans = &(state->trans[nrtrans]);
-	    if ((trans->atom == atom) &&
-		(trans->to == target->no) &&
-		(trans->counter == counter) &&
-		(trans->count == count)) {
+    for (nrtrans = state->nbTrans - 1; nrtrans >= 0; nrtrans--) {
+	xmlRegTransPtr trans = &(state->trans[nrtrans]);
+	if ((trans->atom == atom) &&
+	    (trans->to == target->no) &&
+	    (trans->counter == counter) &&
+	    (trans->count == count)) {
 #ifdef DEBUG_REGEXP_GRAPH
-		printf("Ignoring duplicate transition from %d to %d\n",
-			state->no, target->no);
+	    printf("Ignoring duplicate transition from %d to %d\n",
+		    state->no, target->no);
 #endif
-		return;
-	    }
+	    return;
 	}
     }
 
@@ -1362,9 +1360,9 @@ xmlFAGenerateAllTransition(xmlRegParserCtxtPtr ctxt,
 	ctxt->state = to;
     }
     if (lax)
-	xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_LAX_COUNTER, 0);
+	xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_LAX_COUNTER);
     else
-	xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_COUNTER, 0);
+	xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_COUNTER);
 }
 
 /**
@@ -1382,7 +1380,7 @@ xmlFAGenerateEpsilonTransition(xmlRegParserCtxtPtr ctxt,
 	xmlRegStatePush(ctxt, to);
 	ctxt->state = to;
     }
-    xmlRegStateAddTrans(ctxt, from, NULL, to, -1, -1, 0);
+    xmlRegStateAddTrans(ctxt, from, NULL, to, -1, -1);
 }
 
 /**
@@ -1401,7 +1399,7 @@ xmlFAGenerateCountedEpsilonTransition(xmlRegParserCtxtPtr ctxt,
 	xmlRegStatePush(ctxt, to);
 	ctxt->state = to;
     }
-    xmlRegStateAddTrans(ctxt, from, NULL, to, counter, -1, 0);
+    xmlRegStateAddTrans(ctxt, from, NULL, to, counter, -1);
 }
 
 /**
@@ -1420,7 +1418,7 @@ xmlFAGenerateCountedTransition(xmlRegParserCtxtPtr ctxt,
 	xmlRegStatePush(ctxt, to);
 	ctxt->state = to;
     }
-    xmlRegStateAddTrans(ctxt, from, NULL, to, -1, counter, 0);
+    xmlRegStateAddTrans(ctxt, from, NULL, to, -1, counter);
 }
 
 /**
@@ -1545,7 +1543,7 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 	if (xmlRegAtomPush(ctxt, atom) < 0) {
 	    return(-1);
 	}
-	xmlRegStateAddTrans(ctxt, from, atom, to, -1, -1, 0);
+	xmlRegStateAddTrans(ctxt, from, atom, to, -1, -1);
 	ctxt->state = to;
     }
     switch (atom->quant) {
@@ -1556,11 +1554,11 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 	case XML_REGEXP_QUANT_MULT:
 	    atom->quant = XML_REGEXP_QUANT_ONCE;
 	    xmlFAGenerateEpsilonTransition(ctxt, from, to);
-	    xmlRegStateAddTrans(ctxt, to, atom, to, -1, -1, 0);
+	    xmlRegStateAddTrans(ctxt, to, atom, to, -1, -1);
 	    break;
 	case XML_REGEXP_QUANT_PLUS:
 	    atom->quant = XML_REGEXP_QUANT_ONCE;
-	    xmlRegStateAddTrans(ctxt, to, atom, to, -1, -1, 0);
+	    xmlRegStateAddTrans(ctxt, to, atom, to, -1, -1);
 	    break;
 	default:
 	    break;
@@ -1617,7 +1615,7 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 
 		    xmlRegStateAddTrans(ctxt, from, NULL,
 					ctxt->states[newto], 
-					-1, to->trans[transnr].count, 0);
+					-1, to->trans[transnr].count);
 		} else {
 #ifdef DEBUG_REGEXP_GRAPH
 		    printf("Found epsilon trans %d from %d to %d\n",
@@ -1640,10 +1638,10 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 	    if (to->trans[transnr].counter >= 0) {
 		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom, 
 				    ctxt->states[newto], 
-				    to->trans[transnr].counter, -1, 1);
+				    to->trans[transnr].counter, -1);
 	    } else {
 		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom, 
-				    ctxt->states[newto], counter, -1, 1);
+				    ctxt->states[newto], counter, -1);
 	    }
 	}
     }
@@ -1926,12 +1924,17 @@ static int
 xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	                 int to, xmlRegAtomPtr atom) {
     int ret = 1;
-    int transnr;
+    int transnr, nbTrans;
     xmlRegTransPtr t1;
 
     if (state == NULL)
 	return(ret);
-    for (transnr = 0;transnr < state->nbTrans;transnr++) {
+    /*
+     * don't recurse on transitions potentially added in the course of
+     * the elimination.
+     */
+    nbTrans = state->nbTrans;
+    for (transnr = 0;transnr < nbTrans;transnr++) {
 	t1 = &(state->trans[transnr]);
 	/*
 	 * check transitions conflicting with the one looked at
@@ -5095,7 +5098,7 @@ xmlAutomataNewCountTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
         to = xmlRegNewState(am);
 	xmlRegStatePush(am, to);
     }
-    xmlRegStateAddTrans(am, from, atom, to, counter, -1, 0);
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
     xmlRegAtomPush(am, atom);
     am->state = to;
 
@@ -5161,7 +5164,7 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
         to = xmlRegNewState(am);
 	xmlRegStatePush(am, to);
     }
-    xmlRegStateAddTrans(am, from, atom, to, counter, -1, 0);
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
     xmlRegAtomPush(am, atom);
     am->state = to;
 
@@ -5250,7 +5253,7 @@ xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	to = xmlRegNewState(am);
 	xmlRegStatePush(am, to);
     }
-    xmlRegStateAddTrans(am, from, atom, to, counter, -1, 0);
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
     xmlRegAtomPush(am, atom);
     am->state = to;
     return(to);
@@ -5312,7 +5315,7 @@ xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	to = xmlRegNewState(am);
 	xmlRegStatePush(am, to);
     }
-    xmlRegStateAddTrans(am, from, atom, to, counter, -1, 0);
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
     xmlRegAtomPush(am, atom);
     am->state = to;
     return(to);

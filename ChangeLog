@@ -1,3 +1,9 @@
+Mon Sep 26 19:18:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: seems a test to avoid duplicate transition is 
+	  really needed at all times. Luka Por gave an example hitting
+	  this. Changed back the internal API.
+
 Thu Sep 22 13:14:07 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixing leak in xmlTextReaderReadString() #316924

@@ -1,3 +1,7 @@
+Tue Sep 27 11:20:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: Adrian Mouat pointed out redundancies in xmlReportError()
+
 Mon Sep 26 19:18:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: seems a test to avoid duplicate transition is 

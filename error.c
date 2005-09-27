@@ -293,8 +293,6 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
     if (name != NULL) {
         channel(data, "element %s: ", name);
     }
-    if (code == XML_ERR_OK)
-        return;
     switch (domain) {
         case XML_FROM_PARSER:
             channel(data, "parser ");
@@ -360,8 +358,6 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         default:
             break;
     }
-    if (code == XML_ERR_OK)
-        return;
     switch (level) {
         case XML_ERR_NONE:
             channel(data, ": ");
@@ -376,8 +372,6 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
             channel(data, "error : ");
             break;
     }
-    if (code == XML_ERR_OK)
-        return;
     if (str != NULL) {
         int len;
 	len = xmlStrlen((const xmlChar *)str);
@@ -388,8 +382,6 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
     } else {
         channel(data, "%s\n", "out of memory error");
     }
-    if (code == XML_ERR_OK)
-        return;
 
     if (ctxt != NULL) {
         xmlParserPrintFileContextInternal(input, channel, data);

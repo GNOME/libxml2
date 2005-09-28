@@ -1,3 +1,8 @@
+Wed Sep 28 23:42:14 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from Massimo Morara fixing bug #317447
+	  about risk of invalid write in xmlStringLenDecodeEntities
+
 Tue Sep 27 11:20:57 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: Adrian Mouat pointed out redundancies in xmlReportError()

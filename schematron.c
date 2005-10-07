@@ -562,7 +562,7 @@ xmlSchematronFree(xmlSchematronPtr schema)
         xmlFreeDoc(schema->doc);
 
     if (schema->namespaces != NULL)
-        xmlFree(schema->namespaces);
+        xmlFree((char **) schema->namespaces);
     
     xmlSchematronFreeRules(schema->rules);
     xmlSchematronFreePatterns(schema->patterns);
@@ -709,7 +709,7 @@ xmlSchematronFreeParserCtxt(xmlSchematronParserCtxtPtr ctxt)
         xmlXPathFreeContext(ctxt->xctxt);
     }
     if (ctxt->namespaces != NULL)
-        xmlFree(ctxt->namespaces);
+        xmlFree((char **) ctxt->namespaces);
     xmlDictFree(ctxt->dict);
     xmlFree(ctxt);
 }
@@ -809,7 +809,7 @@ xmlSchematronAddNamespace(xmlSchematronParserCtxtPtr ctxt,
         const xmlChar **tmp;
 
 	tmp = (const xmlChar **)
-	    xmlRealloc(ctxt->namespaces, ctxt->maxNamespaces * 4 *
+	    xmlRealloc((xmlChar **) ctxt->namespaces, ctxt->maxNamespaces * 4 *
 	               sizeof(const xmlChar *));
 	if (tmp == NULL) {
 	    xmlSchematronPErrMemory(NULL, "allocating parser namespaces",

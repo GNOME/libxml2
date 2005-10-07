@@ -6878,10 +6878,10 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
     len = xmlExpGetStartInt(ctxt, sub, tab, ctxt->tabSize, 0);
     while (len < 0) {
         const xmlChar **temp;
-	temp = (const xmlChar **) xmlRealloc(tab, ctxt->tabSize * 2 *
+	temp = (const xmlChar **) xmlRealloc((xmlChar **) tab, ctxt->tabSize * 2 *
 	                                     sizeof(const xmlChar *));
 	if (temp == NULL) {
-	    xmlFree(tab);
+	    xmlFree((xmlChar **) tab);
 	    return(NULL);
 	}
 	tab = temp;
@@ -6892,14 +6892,14 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
         tmp = xmlExpStringDeriveInt(ctxt, exp, tab[i]);
 	if ((tmp == NULL) || (tmp == forbiddenExp)) {
 	    xmlExpFree(ctxt, ret);
-	    xmlFree(tab);
+	    xmlFree((xmlChar **) tab);
 	    return(tmp);
 	}
 	tmp2 = xmlExpStringDeriveInt(ctxt, sub, tab[i]);
 	if ((tmp2 == NULL) || (tmp2 == forbiddenExp)) {
 	    xmlExpFree(ctxt, tmp);
 	    xmlExpFree(ctxt, ret);
-	    xmlFree(tab);
+	    xmlFree((xmlChar **) tab);
 	    return(tmp);
 	}
 	tmp3 = xmlExpExpDeriveInt(ctxt, tmp, tmp2);
@@ -6908,7 +6908,7 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 
 	if ((tmp3 == NULL) || (tmp3 == forbiddenExp)) {
 	    xmlExpFree(ctxt, ret);
-	    xmlFree(tab);
+	    xmlFree((xmlChar **) tab);
 	    return(tmp3);
 	}
 
@@ -6917,12 +6917,12 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 	else {
 	    ret = xmlExpHashGetEntry(ctxt, XML_EXP_OR, ret, tmp3, NULL, 0, 0);
 	    if (ret == NULL) {
-		xmlFree(tab);
+		xmlFree((xmlChar **) tab);
 	        return(NULL);
 	    }
 	}
     }
-    xmlFree(tab);
+    xmlFree((xmlChar **) tab);
     return(ret);
 }
     

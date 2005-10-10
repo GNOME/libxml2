@@ -1,3 +1,7 @@
+Mon Oct 10 15:33:48 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/*: Adapted regression test results.
+
 Mon Oct 10 15:12:43 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/schemasInternals.h

@@ -1,3 +1,24 @@
+Mon Oct 10 15:12:43 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/schemasInternals.h
+	  include/libxml/xmlerror.h: Initial implementation for
+	  redefinitions; this still misses checks for restrictions
+	  of the content model of complex types.
+	  Fixed default/fixed values for attributes (looks like they
+	  did not work in the last  releases).
+	  Completed constraints for attribute uses.
+	  Seperated attribute derivation from attribute constraints.
+	  Completed constraints for attribute group definitions.
+	  Disallowing <import>s of schemas in no target namespace if the
+	  importing schema is a chameleon schema. This contradicts
+	  the way Saxon, Xerces-J, XSV and IBM's SQC works, but the
+	  W3C XML Schema WG, thinks it is correct to dissalow such
+	  imports.
+	  Added cos-all-limited constraints.
+	  Restructured reference resolution to model groups and element
+	  declarations.
+	  Misc cleanup.
+
 Fri Oct  7 04:34:12 CEST 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* schematron.c xmlregexp.c: remove warnings under Windows.

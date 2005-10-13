@@ -1,3 +1,7 @@
+Mon Oct 14 01:15:14 CEST 2005 Rob Richards <rrichards@ctindustries.net>
+	* nanohttp.c include/wsockcompat.h: applied patch from Kolja Nowak 
+	  to use getaddrinfo() if supported in Windows build (bug# 317431).
+
 Mon Oct 10 15:33:48 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/*: Adapted regression test results.

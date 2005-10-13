@@ -946,14 +946,21 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     memset (&sockin, 0, sizeof(sockin));
 #ifdef SUPPORT_IP6
     memset (&sockin6, 0, sizeof(sockin6));
+#endif
+
+#if !defined(HAVE_GETADDRINFO) && defined(SUPPORT_IP6) && defined(RES_USE_INET6)
     if (have_ipv6 ())
-#if !defined(HAVE_GETADDRINFO) && defined(RES_USE_INET6)
     {
 	if (!(_res.options & RES_INIT))
 	    res_init();
 	_res.options |= RES_USE_INET6;
     }
-#elif defined(HAVE_GETADDRINFO)
+#endif
+
+#if defined(HAVE_GETADDRINFO) && defined(SUPPORT_IP6) && !defined(_WIN32)
+    if (have_ipv6 ())
+#endif
+#if defined(HAVE_GETADDRINFO) && (defined(SUPPORT_IP6) || defined(_WIN32))
     {
 	int status;
 	struct addrinfo hints, *res, *result;
@@ -969,42 +976,45 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 	}
 
 	for (res = result; res; res = res->ai_next) {
-	    if (res->ai_family == AF_INET || res->ai_family == AF_INET6) {
-		if (res->ai_family == AF_INET6) {
-		    if (res->ai_addrlen > sizeof(sockin6)) {
-			__xmlIOErr(XML_FROM_HTTP, 0, "address size mismatch\n");
-			freeaddrinfo (result);
-			return (-1);
-		    }
-		    memcpy (&sockin6, res->ai_addr, res->ai_addrlen);
-		    sockin6.sin6_port = htons (port);
-		    addr = (struct sockaddr *)&sockin6;
-		}
-		else {
-		    if (res->ai_addrlen > sizeof(sockin)) {
-			__xmlIOErr(XML_FROM_HTTP, 0, "address size mismatch\n");
-			freeaddrinfo (result);
-			return (-1);
-		    }
-		    memcpy (&sockin, res->ai_addr, res->ai_addrlen);
-		    sockin.sin_port = htons (port);
-		    addr = (struct sockaddr *)&sockin;
-		}
-
-		s = xmlNanoHTTPConnectAttempt (addr);
-		if (s != -1) {
+	    if (res->ai_family == AF_INET) {
+		if (res->ai_addrlen > sizeof(sockin)) {
+		    __xmlIOErr(XML_FROM_HTTP, 0, "address size mismatch\n");
 		    freeaddrinfo (result);
-		    return (s);
+		    return (-1);
 		}
+		memcpy (&sockin, res->ai_addr, res->ai_addrlen);
+		sockin.sin_port = htons (port);
+		addr = (struct sockaddr *)&sockin;
+#ifdef SUPPORT_IP6
+	    } else if (have_ipv6 () && (res->ai_family == AF_INET6)) {
+		if (res->ai_addrlen > sizeof(sockin6)) {
+		    __xmlIOErr(XML_FROM_HTTP, 0, "address size mismatch\n");
+		    freeaddrinfo (result);
+		    return (-1);
+		}
+		memcpy (&sockin6, res->ai_addr, res->ai_addrlen);
+		sockin6.sin6_port = htons (port);
+		addr = (struct sockaddr *)&sockin6;
+#endif
+	    } else
+		continue;              /* for */
+
+	    s = xmlNanoHTTPConnectAttempt (addr);
+	    if (s != -1) {
+		freeaddrinfo (result);
+		return (s);
 	    }
 	}
+
 	if (result)
 	    freeaddrinfo (result);
-	return (-1);
-    } else
+    }
 #endif
+#if defined(HAVE_GETADDRINFO) && defined(SUPPORT_IP6) && !defined(_WIN32)
+    else
 #endif
-    {   
+#if !defined(HAVE_GETADDRINFO) || !defined(_WIN32)
+    {
 	h = gethostbyname (host);
 	if (h == NULL) {
 
@@ -1080,6 +1090,8 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 		return (s);
 	}
     }
+#endif
+
 #ifdef DEBUG_HTTP
     xmlGenericError(xmlGenericErrorContext,
                     "xmlNanoHTTPConnectHost:  unable to connect to '%s'.\n",

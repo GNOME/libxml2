@@ -1,3 +1,7 @@
+Fri Oct 14 16:40:18 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/*.err: Adapted regression test results.
+
 Fri Oct 14 16:21:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 	
 	* xmlschemas.c: Fixed some identity-constraint issues:

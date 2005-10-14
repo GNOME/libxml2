@@ -1710,9 +1710,14 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	    /* 
 	    * Check for correct node-type.
 	    */
-	    if ((nodeType == XML_ATTRIBUTE_NODE) && 
-		((comp->steps[step].flags & XML_STREAM_STEP_ATTR) == 0))
-		goto next_state;
+	    if (nodeType == XML_ELEMENT_NODE) {
+		if (comp->steps[step].flags & XML_STREAM_STEP_ATTR)
+		    goto next_state;
+		
+	    } else if (nodeType == XML_ATTRIBUTE_NODE) {
+		if ((comp->steps[step].flags & XML_STREAM_STEP_ATTR) == 0)
+		    goto next_state;
+	    }
 	    /*
 	    * Compare local/namespace-name.
 	    */
@@ -1816,9 +1821,14 @@ compare:
 	/*
 	* Check expected node-type.
 	*/
-	if ((nodeType == XML_ATTRIBUTE_NODE) && 
-	    ((comp->steps[0].flags & XML_STREAM_STEP_ATTR) == 0))
-	    goto stream_next;
+	if (nodeType == XML_ELEMENT_NODE) {
+	    if (comp->steps[0].flags & XML_STREAM_STEP_ATTR)
+		goto stream_next;
+
+	} else if (nodeType == XML_ATTRIBUTE_NODE) {
+	    if ((comp->steps[0].flags & XML_STREAM_STEP_ATTR) == 0)
+		goto stream_next;
+	}
 	/*
 	* Compare local/namespace-name.
 	*/

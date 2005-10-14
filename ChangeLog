@@ -1,3 +1,28 @@
+Fri Oct 14 16:21:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+	
+	* xmlschemas.c: Fixed some identity-constraint issues:
+	  Restructured IDC node-tables
+	  Allowed IDCs to resolve also to nodes of complex type with
+	  simple content.
+	  Added check for keyrefs with references to keyrefs.
+	  IDC target-nodes were interferring with IDC node-tables,
+	  since they used one list of entries only. I separated this
+	  one big list into 3 lists: 1 for IDC node-table entries,
+	  1 for _duplicates_ of IDC node-table entries and 1 for
+	  IDC target-nodes. More code, but cleaner and it works at last.
+	  Keyrefs will fail to resolve to duplicate key/unique entries.
+	  I thought this was already working this way, but it didn't.
+	  The wording of the definition for [node table] in the spec
+	  can lead to a scenario, where keyrefs resolve perfectly, even
+	  if the relevant key-sequences of the referenced key/unique have
+	  duplicates in the subtree. Currently only Saxon 8.5.1 is
+	  dissallowing resolution to duplicate entries correctly - we
+	  will follow Saxon here.
+	  Removed some intel compiler warnings (reported by
+	  Kjartan Maraas, bug #318517).
+	* pattern.c: Fixed an IDC-XPath problem when resolving to
+	  attributes.	  
+
 Mon Oct 14 01:15:14 CEST 2005 Rob Richards <rrichards@ctindustries.net>
 	* nanohttp.c include/wsockcompat.h: applied patch from Kolja Nowak 
 	  to use getaddrinfo() if supported in Windows build (bug# 317431).

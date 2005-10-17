@@ -4093,6 +4093,9 @@ xmlSchemaFree(xmlSchemaPtr schema)
 
 #ifdef LIBXML_OUTPUT_ENABLED
 
+static void
+xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output); /* forward */
+
 /**
  * xmlSchemaElementDump:
  * @elem:  an element
@@ -4113,9 +4116,9 @@ xmlSchemaElementDump(xmlSchemaElementPtr elem, FILE * output,
     fprintf(output, "Element");
     if (elem->flags & XML_SCHEMAS_ELEM_GLOBAL)
 	fprintf(output, " (global)");
-    fprintf(output, ": %s ", elem->name);
+    fprintf(output, ": '%s' ", elem->name);
     if (namespace != NULL)
-	fprintf(output, "ns %s", namespace);
+	fprintf(output, "ns '%s'", namespace);
     fprintf(output, "\n");
 #if 0
     if ((elem->minOccurs != 1) || (elem->maxOccurs != 1)) {
@@ -4155,19 +4158,24 @@ xmlSchemaElementDump(xmlSchemaElementPtr elem, FILE * output,
     * Type.
     */
     if (elem->namedType != NULL) {
-	fprintf(output, "  type: %s ", elem->namedType);
+	fprintf(output, "  type: '%s' ", elem->namedType);
 	if (elem->namedTypeNs != NULL)
-	    fprintf(output, "ns %s\n", elem->namedTypeNs);
+	    fprintf(output, "ns '%s'\n", elem->namedTypeNs);
 	else
 	    fprintf(output, "\n");
+    } else if (elem->subtypes != NULL) {
+	/*
+	* Dump local types.
+	*/
+	xmlSchemaTypeDump(elem->subtypes, output);
     }
     /*
     * Substitution group.
     */
     if (elem->substGroup != NULL) {
-	fprintf(output, "  substitutionGroup: %s ", elem->substGroup);
+	fprintf(output, "  substitutionGroup: '%s' ", elem->substGroup);
 	if (elem->substGroupNs != NULL)
-	    fprintf(output, "ns %s\n", elem->substGroupNs);
+	    fprintf(output, "ns '%s'\n", elem->substGroupNs);
 	else
 	    fprintf(output, "\n");
     }
@@ -4197,9 +4205,10 @@ xmlSchemaAnnotDump(FILE * output, xmlSchemaAnnotPtr annot)
 }
 
 /**
- * xmlSchemaTypeDump:
- * @output:  the file output
- * @type:  a type structure
+ * xmlSchemaContentModelDump:
+ * @particle: the schema particle
+ * @output: the file output
+ * @depth: the depth used for intentation
  *
  * Dump a SchemaType structure
  */
@@ -4230,6 +4239,7 @@ xmlSchemaContentModelDump(xmlSchemaParticlePtr particle, FILE * output, int dept
 		fprintf(output, "ELEM '%s'", xmlSchemaFormatQName(&str,
 		    ((xmlSchemaElementPtr)term)->targetNamespace,
 		    ((xmlSchemaElementPtr)term)->name));
+		FREE_AND_NULL(str);
 		break;
 	    case XML_SCHEMA_TYPE_SEQUENCE:
 		fprintf(output, "SEQUENCE");
@@ -4288,7 +4298,7 @@ xmlSchemaAttrUsesDump(xmlSchemaItemListPtr uses, FILE * output)
     if ((uses == NULL) || (uses->nbItems == 0))
         return;
 
-    fprintf(output, "uses:\n");    
+    fprintf(output, "  attributes:\n");    
     for (i = 0; i < uses->nbItems; i++) {
 	use = uses->items[i];
 	if (use->type == XML_SCHEMA_EXTRA_ATTR_USE_PROHIB) {
@@ -4306,7 +4316,7 @@ xmlSchemaAttrUsesDump(xmlSchemaItemListPtr uses, FILE * output)
 	    name = WXS_ATTRUSE_DECL_NAME(use);
 	    tns = WXS_ATTRUSE_DECL_TNS(use);
 	}
-	fprintf(output, "%s\n",
+	fprintf(output, "'%s'\n",
 	    (const char *) xmlSchemaFormatQName(&str, tns, name));
 	FREE_AND_NULL(str);
     }
@@ -4328,11 +4338,11 @@ xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output)
     }
     fprintf(output, "Type: ");
     if (type->name != NULL)
-        fprintf(output, "%s ", type->name);
+        fprintf(output, "'%s' ", type->name);
     else
-        fprintf(output, "no name ");
+        fprintf(output, "(no name) ");
     if (type->targetNamespace != NULL)
-	fprintf(output, "ns %s ", type->targetNamespace);
+	fprintf(output, "ns '%s' ", type->targetNamespace);
     switch (type->type) {
         case XML_SCHEMA_TYPE_BASIC:
             fprintf(output, "[basic] ");
@@ -4394,9 +4404,9 @@ xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output)
     }
     fprintf(output, "\n");
     if (type->base != NULL) {
-        fprintf(output, "  base type: %s", type->base);
+        fprintf(output, "  base type: '%s'", type->base);
 	if (type->baseNs != NULL)
-	    fprintf(output, " ns %s\n", type->baseNs);
+	    fprintf(output, " ns '%s'\n", type->baseNs);
 	else
 	    fprintf(output, "\n");
     }
@@ -4441,7 +4451,6 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
     fprintf(output, "\n");
     if (schema->annot != NULL)
         xmlSchemaAnnotDump(output, schema->annot);
-
     xmlHashScan(schema->typeDecl, (xmlHashScanner) xmlSchemaTypeDump,
                 output);
     xmlHashScanFull(schema->elemDecl,

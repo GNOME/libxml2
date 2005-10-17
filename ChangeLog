@@ -1,3 +1,10 @@
+Mon Oct 17 16:12:02 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a memory leak in
+	  xmlSchemaContentModelDump(). Added output of local types
+	  in xmlSchemaElementDump(). Tiny cosmetical changes to the
+	  dump output.
+
 Mon Oct 17 14:29:08 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c pattern.c: Silenced intel compiler warnings (reported

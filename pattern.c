@@ -1931,11 +1931,9 @@ xmlStreamPushAttr(xmlStreamCtxtPtr stream,
 int
 xmlStreamPop(xmlStreamCtxtPtr stream) {
     int i, lev;
-    int ret;
-
+    
     if (stream == NULL)
         return(-1);
-    ret = 0;
     while (stream != NULL) {
 	/*
 	* Reset block-level.
@@ -1945,7 +1943,7 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
 
 	stream->level--;
 	if (stream->level < 0)
-	    ret = -1;		
+	    return(-1);		
 	/*
 	 * Check evolution of existing states
 	 */	

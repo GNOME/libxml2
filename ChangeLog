@@ -1,3 +1,14 @@
+Mon Oct 17 14:29:08 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c pattern.c: Silenced intel compiler warnings (reported
+	  by Kjartan Maraas, bug #318517).
+	* xmlschemas.c: The above changes in pattern.c revealed an
+	  inconsistency wrt IDCs: we now _only_ pop XPath states, if
+	  we really pushed them beforehand; this was previously not
+	  checked for the case when we discover an element node to be
+	  invalid wrt the content model.
+	  Fixed segfault in xmlSchemaGetEffectiveValueConstraint().
+
 Fri Oct 14 16:40:18 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/*.err: Adapted regression test results.

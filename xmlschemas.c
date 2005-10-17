@@ -896,6 +896,7 @@ struct _xmlSchemaNodeInfo {
     int sizeNsBindings;    
 
     int hasKeyrefs;
+    int appliedXPath; /* Indicates that an XPath has been applied. */
 };
 
 #define XML_SCHEMAS_ATTR_UNKNOWN 1
@@ -13867,15 +13868,17 @@ xmlSchemaGetEffectiveValueConstraint(xmlSchemaAttributeUsePtr attruse,
 
     if (attruse->defValue != NULL) {	    
 	*value = attruse->defValue;
-	*val = attruse->defVal;
+	if (val != NULL)
+	    *val = attruse->defVal;
 	if (attruse->flags & XML_SCHEMA_ATTR_USE_FIXED)
 	    *fixed = 1;
 	return(1);
-    } else if ((WXS_ATTRUSE_DECL(attruse) != NULL) &&
-	(WXS_ATTRUSE_DECL(attruse)->defValue != NULL)) {
-	*value = (WXS_ATTRUSE_DECL(attruse))->defValue;
-	*val = (WXS_ATTRUSE_DECL(attruse))->defVal;
-	if ((WXS_ATTRUSE_DECL(attruse))->flags & XML_SCHEMAS_ATTR_FIXED)
+    } else if ((attruse->attrDecl != NULL) &&
+	(attruse->attrDecl->defValue != NULL)) {
+	*value = attruse->attrDecl->defValue;
+	if (val != NULL)
+	    *val = attruse->attrDecl->defVal;
+	if (attruse->attrDecl->flags & XML_SCHEMAS_ATTR_FIXED)
 	    *fixed = 1;
 	return(1);
     }
@@ -20965,7 +20968,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     if (res == -1)
 	goto exit_failure;
     if (res != 0)
-	goto exit;
+	goto exit;   
 
     if (bucket == NULL) {
 	/* TODO: Error code, actually we failed to *locate* the schema. */
@@ -23510,6 +23513,7 @@ static void
 xmlSchemaClearElemInfo(xmlSchemaNodeInfoPtr ielem)
 {
     ielem->hasKeyrefs = 0;
+    ielem->appliedXPath = 0;
     if (ielem->flags & XML_SCHEMA_NODE_INFO_FLAG_OWNED_NAMES) {
 	FREE_AND_NULL(ielem->localName);
 	FREE_AND_NULL(ielem->nsName);
@@ -25811,7 +25815,8 @@ end_elem:
     /*
     * Evaluate the history of XPath state objects.
     */    
-    if (xmlSchemaXPathProcessHistory(vctxt, vctxt->depth) == -1)
+    if (inode->appliedXPath &&
+	(xmlSchemaXPathProcessHistory(vctxt, vctxt->depth) == -1))
 	goto internal_error;
     /*
     * MAYBE TODO:
@@ -26390,6 +26395,7 @@ type_validation:
     */
     if (vctxt->xpathStates != NULL) {
 	ret = xmlSchemaXPathEvaluate(vctxt, XML_ELEMENT_NODE);
+	vctxt->inode->appliedXPath = 1;
 	if (ret == -1) {
 	    VERROR_INT("xmlSchemaValidateElem",
 		"calling xmlSchemaXPathEvaluate()");

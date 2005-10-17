@@ -6258,7 +6258,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  */
 int
 xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
-    xmlAttrPtr prop, prev = NULL;;
+    xmlAttrPtr prop;
 
     if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
 	return(-1);
@@ -6270,7 +6270,6 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
 	    xmlFreeProp(prop);
 	    return(0);
 	}
-	prev = prop;
 	prop = prop->next;
     }
     return(-1);
@@ -6287,7 +6286,7 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
  */
 int
 xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
-    xmlAttrPtr prop, prev = NULL;;
+    xmlAttrPtr prop;
 
     if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
 	return(-1);
@@ -6303,7 +6302,6 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
 	    xmlFreeProp(prop);
 	    return(0);
 	}
-	prev = prop;
 	prop = prop->next;
     }
     return(-1);

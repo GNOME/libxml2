@@ -1,3 +1,12 @@
+Mon Oct 17 15:06:05 EDT 2005 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c: removed the error message
+	* relaxng.c xmlschemas.c: removed 2 instability warnings from function
+	  documentation
+	* include/libxml/schemasInternals.h: changed warning about API stability
+	* xmlregexp.c: trying to improve runtime execution of non-deterministic
+	  regexps and automata. Not fully finished but should be way better.
+
 Mon Oct 17 16:12:02 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a memory leak in

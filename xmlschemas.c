@@ -20926,7 +20926,6 @@ exit_failure:
  *
  * parse a schema definition resource and build an internal
  * XML Shema struture which can be used to validate instances.
- * *WARNING* this interface is highly subject to change
  *
  * Returns the internal XML Schema structure built from the resource or
  *         NULL in case of error

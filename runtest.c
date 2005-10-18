@@ -2926,13 +2926,12 @@ schemasOneTest(const char *sch,
     unlink(temp);
     free(temp);
 
-    if (err != NULL) {
+    if ((ret != 0) && (err != NULL)) {
 	if (compareFileMem(err, testErrors, testErrorsSize)) {
 	    fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
 	    ret = 1;
 	}
     }
-
 
     xmlSchemaFreeValidCtxt(ctxt);
     xmlFreeDoc(doc);

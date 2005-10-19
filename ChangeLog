@@ -1,3 +1,16 @@
+Wed Oct 19 18:49:52 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a potential memory leak in
+	  xmlSchemaCheckCSelectorXPath() when an internal error occurs.
+	  Fixed setting of ctxt->err to the given error code in
+	  the parsing error functions.
+	* pattern.c: Added internal xmlCompileIDCXPathPath() as a
+	  starting point for IDC XPath compilation; this and some other
+	  tiny changes fixes issues regarding whitespace in the
+	  expressions and IDC selector/field relevant restrictions of
+	  the subset of XPath. Fixed a missing blocking of attributes
+	  in xmlStreamPushInternal().
+
 Mon Oct 17 15:06:05 EDT 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: removed the error message

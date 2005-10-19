@@ -1876,6 +1876,7 @@ xmlSchemaPErr(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
 
     if (ctxt != NULL) {
         ctxt->nberrors++;
+	ctxt->err = error;
         channel = ctxt->error;
         data = ctxt->userData;
 	schannel = ctxt->serror;
@@ -1941,6 +1942,7 @@ xmlSchemaPErrExt(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
 
     if (ctxt != NULL) {
         ctxt->nberrors++;
+	ctxt->err = error;
         channel = ctxt->error;
         data = ctxt->userData;
 	schannel = ctxt->serror;
@@ -7983,6 +7985,7 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	    if (nsArray == NULL) {
 		xmlSchemaPErrMemory(ctxt, "allocating a namespace array",
 		    NULL);
+		xmlFree(nsList);
 		return (-1);
 	    }
 	    for (i = 0; i < count; i++) {

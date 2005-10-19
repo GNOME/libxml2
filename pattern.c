@@ -57,8 +57,12 @@
 				 XML_PATTERN_XSSEL | \
 				 XML_PATTERN_XSFIELD)
 
-#define XML_STREAM_XS_IDC(item) (item->flags & \
+#define XML_STREAM_XS_IDC(c) ((c)->flags & \
     (XML_PATTERN_XSSEL | XML_PATTERN_XSFIELD))
+
+#define XML_STREAM_XS_IDC_SEL(c) ((c)->flags & XML_PATTERN_XSSEL)
+
+#define XML_STREAM_XS_IDC_FIELD(c) ((c)->flags & XML_PATTERN_XSFIELD)
 
 typedef struct _xmlStreamStep xmlStreamStep;
 typedef xmlStreamStep *xmlStreamStepPtr;
@@ -690,6 +694,7 @@ rollback:
 #define CUR (*ctxt->cur)
 #define SKIP(val) ctxt->cur += (val)
 #define NXT(val) ctxt->cur[(val)]
+#define PEEKPREV(val) ctxt->cur[-(val)]
 #define CUR_PTR ctxt->cur
 
 #define SKIP_BLANKS 							\
@@ -884,6 +889,7 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
     xmlChar *name = NULL;
     xmlChar *URL = NULL;
     
+    SKIP_BLANKS;
     name = xmlPatScanNCName(ctxt);
     if (name == NULL) {
 	if (CUR == '*') {
@@ -901,6 +907,13 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
 	xmlChar *prefix = name;
 	
 	NEXT;
+
+	if (IS_BLANK_CH(CUR)) {	    
+	    ERROR5(NULL, NULL, NULL, "Invalid QName.\n", NULL);
+	    xmlFree(prefix);
+	    ctxt->error = 1;
+	    goto error;
+	}
 	/*
 	* This is a namespace match
 	*/
@@ -967,11 +980,31 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
     xmlChar *token = NULL;
     xmlChar *name = NULL;
     xmlChar *URL = NULL;
+    int hasBlanks = 0;
 
     SKIP_BLANKS;
     if (CUR == '.') {
+	/*
+	* Context node.
+	*/
 	NEXT;
 	PUSH(XML_OP_ELEM, NULL, NULL);
+	return;
+    }
+    if (CUR == '@') {
+	/*
+	* Attribute test.
+	*/
+	if (XML_STREAM_XS_IDC_SEL(ctxt->comp)) {
+	    ERROR5(NULL, NULL, NULL,
+		"Unexpected attribute axis in '%s'.\n", ctxt->base);
+	    ctxt->error = 1;
+	    return;
+	}
+	NEXT;
+	xmlCompileAttributeTest(ctxt);
+	if (ctxt->error != 0) 
+	    goto error;
 	return;
     }
     name = xmlPatScanNCName(ctxt);
@@ -980,12 +1013,6 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	    NEXT;
 	    PUSH(XML_OP_ALL, NULL, NULL);
 	    return;
-	} else if (CUR == '@') {
-	    NEXT;
-	    xmlCompileAttributeTest(ctxt);
-	    if (ctxt->error != 0) 
-		goto error;
-	    return;
 	} else {
 	    ERROR(NULL, NULL, NULL,
 		    "xmlCompileStepPattern : Name expected\n");
@@ -993,13 +1020,21 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	    return;
 	}
     }
-    SKIP_BLANKS;
+    if (IS_BLANK_CH(CUR)) {
+	hasBlanks = 1;
+	SKIP_BLANKS;
+    }
     if (CUR == ':') {
 	NEXT;
 	if (CUR != ':') {
 	    xmlChar *prefix = name;
-	    int i;
+	    int i;	    
 
+	    if (hasBlanks || IS_BLANK_CH(CUR)) {
+		ERROR5(NULL, NULL, NULL, "Invalid QName.\n", NULL);
+		ctxt->error = 1;
+		goto error;
+	    }
 	    /*
 	     * This is a namespace match
 	     */
@@ -1060,6 +1095,11 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		    int i;
 		    
 		    NEXT;
+		    if (IS_BLANK_CH(CUR)) {
+			ERROR5(NULL, NULL, NULL, "Invalid QName.\n", NULL);
+			ctxt->error = 1;
+			goto error;
+		    }
 		    /*
 		    * This is a namespace match
 		    */
@@ -1104,13 +1144,19 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	    } else if (xmlStrEqual(name, (const xmlChar *) "attribute")) {
 		xmlFree(name);
 		name = NULL;
+		if (XML_STREAM_XS_IDC_SEL(ctxt->comp)) {
+		    ERROR5(NULL, NULL, NULL,
+			"Unexpected attribute axis in '%s'.\n", ctxt->base);
+		    ctxt->error = 1;
+		    goto error;
+		}
 		xmlCompileAttributeTest(ctxt);
 		if (ctxt->error != 0)
 		    goto error;
 		return;
 	    } else {
-		ERROR(NULL, NULL, NULL,
-		    "xmlCompileStepPattern : 'child' or 'attribute' expected\n");
+		ERROR5(NULL, NULL, NULL,
+		    "The 'element' or 'attribute' axis is expected.\n", NULL);
 		ctxt->error = 1;
 		goto error;
 	    }
@@ -1205,6 +1251,107 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
 	ctxt->error = 1;
     }
 error:
+    return;
+}
+
+/**
+ * xmlCompileIDCXPathPath:
+ * @ctxt:  the compilation context
+ *
+ * Compile the Path Pattern and generates a precompiled
+ * form suitable for fast matching.
+ *
+ * [5]    Path    ::=    ('.//')? ( Step '/' )* ( Step | '@' NameTest ) 
+ */
+static void
+xmlCompileIDCXPathPath(xmlPatParserContextPtr ctxt) {
+    SKIP_BLANKS;
+    if (CUR == '/') {
+	ERROR5(NULL, NULL, NULL,
+	    "Unexpected selection of the document root in '%s'.\n",
+	    ctxt->base);
+	goto error;
+    }
+    ctxt->comp->flags |= PAT_FROM_CUR;
+
+    if (CUR == '.') {
+	/* "." - "self::node()" */
+	NEXT;
+	SKIP_BLANKS;
+	if (CUR == 0) {
+	    /*
+	    * Selection of the context node.
+	    */
+	    PUSH(XML_OP_ELEM, NULL, NULL);
+	    return;
+	}
+	if (CUR != '/') {
+	    /* TODO: A more meaningful error message. */
+	    ERROR5(NULL, NULL, NULL,
+	    "Unexpected token after '.' in '%s'.\n", ctxt->base);
+	    goto error;
+	}
+	/* "./" - "self::node()/" */
+	NEXT;
+	SKIP_BLANKS;
+	if (CUR == '/') {
+	    if (IS_BLANK_CH(PEEKPREV(1))) {
+		/*
+		* Disallow "./ /"
+		*/
+		ERROR5(NULL, NULL, NULL,
+		    "Unexpected '/' token in '%s'.\n", ctxt->base);
+		goto error;
+	    }
+	    /* ".//" - "self:node()/descendant-or-self::node()/" */
+	    PUSH(XML_OP_ANCESTOR, NULL, NULL);
+	    NEXT;
+	    SKIP_BLANKS;
+	}
+	if (CUR == 0)
+	    goto error_unfinished;
+    }
+    /*
+    * Process steps.
+    */
+    do {
+	xmlCompileStepPattern(ctxt);
+	if (ctxt->error != 0) 
+	    goto error;
+	SKIP_BLANKS;
+	if (CUR != '/')
+	    break;
+	PUSH(XML_OP_PARENT, NULL, NULL);
+	NEXT;
+	SKIP_BLANKS;
+	if (CUR == '/') {
+	    /*
+	    * Disallow subsequent '//'.
+	    */
+	    ERROR5(NULL, NULL, NULL,
+		"Unexpected subsequent '//' in '%s'.\n",
+		ctxt->base);
+	    goto error;
+	}
+	if (CUR == 0)
+	    goto error_unfinished;
+	
+    } while (CUR != 0);
+
+    if (CUR != 0) {
+	ERROR5(NULL, NULL, NULL,
+	    "Failed to compile expression '%s'.\n", ctxt->base);
+	ctxt->error = 1;
+    }
+    return;
+error:
+    ctxt->error = 1;
+    return;
+
+error_unfinished:
+    ctxt->error = 1;
+    ERROR5(NULL, NULL, NULL,
+	"Unfinished expression '%s'.\n", ctxt->base);    
     return;
 }
 
@@ -1711,8 +1858,14 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	    * Check for correct node-type.
 	    */
 	    if (nodeType == XML_ELEMENT_NODE) {
-		if (comp->steps[step].flags & XML_STREAM_STEP_ATTR)
+		if (comp->steps[step].flags & XML_STREAM_STEP_ATTR) {
+		    /*
+		    * Block this expression for deeper evaluation.
+		    */
+		    if ((comp->flags & XML_STREAM_DESC) == 0)
+			stream->blockLevel = stream->level +1;
 		    goto next_state;
+		}
 		
 	    } else if (nodeType == XML_ATTRIBUTE_NODE) {
 		if ((comp->steps[step].flags & XML_STREAM_STEP_ATTR) == 0)
@@ -1865,7 +2018,7 @@ compare:
 	    */
 	    stream->blockLevel = stream->level;
 	}
-	
+
 stream_next:
         stream = stream->next;
     } /* while stream != NULL */
@@ -2016,7 +2169,10 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict, int flags,
 	cur->flags = flags;
 	ctxt->comp = cur;
 
-	xmlCompilePathPattern(ctxt);
+	if (XML_STREAM_XS_IDC(cur))
+	    xmlCompileIDCXPathPath(ctxt);
+	else
+	    xmlCompilePathPattern(ctxt);
 	if (ctxt->error != 0)
 	    goto error;
 	xmlFreePatParserContext(ctxt);

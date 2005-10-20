@@ -1464,6 +1464,14 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 	     * Generate an epsilon transition to link to the target
 	     */
 	    xmlFAGenerateEpsilonTransition(ctxt, atom->stop, to);
+#ifdef DV
+	} else if ((to == NULL) && (atom->quant != XML_REGEXP_QUANT_RANGE) && 
+		   (atom->quant != XML_REGEXP_QUANT_ONCE)) {
+	    to = xmlRegNewState(ctxt);
+	    xmlRegStatePush(ctxt, to);
+	    ctxt->state = to;
+	    xmlFAGenerateEpsilonTransition(ctxt, atom->stop, to);
+#endif
 	}
 	switch (atom->quant) {
 	    case XML_REGEXP_QUANT_OPT:
@@ -2160,7 +2168,7 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 		                           to, atom);
 	    if (res == 0) {
 	        ret = 0;
-		t1->nd = 1;
+		/* t1->nd = 1; */
 	    }
 	    continue;
 	}
@@ -2214,7 +2222,7 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 	     * will have to be handled separately
 	     */
 	    if (t1->atom == NULL) {
-		t1->nd = 1;
+		/* t1->nd = 1; */
 		continue;
 	    }
 	    if (t1->to == -1) /* eliminated */
@@ -2278,10 +2286,11 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 		    /* don't shortcut the computation so all non deterministic
 		       transition get marked down
 		    if (ret == 0)
-			return(0); */
+			return(0);
+		     */
 		    if (ret == 0) {
 			t1->nd = 1;
-			t2->nd = 1;
+			/* t2->nd = 1; */
 			last = t1;
 		    }
 		}
@@ -2873,6 +2882,14 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		if ((trans->nd == 1) ||
 		    ((trans->count >= 0) && (deter == 0) &&
 		     (exec->state->nbTrans > exec->transno + 1))) {
+#ifdef DEBUG_REGEXP_EXEC
+		    if (trans->nd == 1)
+		        printf("Saving on nd transition atom %d for %c at %d\n",
+			       trans->atom->no, codepoint, exec->index);
+		    else
+		        printf("Saving on counted transition count %d for %c at %d\n",
+			       trans->count, codepoint, exec->index);
+#endif
 		    xmlFARegExecSave(exec);
 		}
 		if (trans->counter >= 0) {
@@ -2909,6 +2926,10 @@ rollback:
 	     * Failed to find a way out
 	     */
 	    exec->determinist = 0;
+#ifdef DEBUG_REGEXP_EXEC
+	    printf("rollback from state %d on %d:%c\n", exec->state->no,
+	           codepoint,codepoint);
+#endif
 	    xmlFARegExecRollBack(exec);
 	}
 progress:

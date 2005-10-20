@@ -1,3 +1,8 @@
+Wed Oct 19 16:53:47 BST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: commiting a some fixes and debug done yesterday in
+	  the London airport.
+
 Thu Oct 20 12:54:23 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Removed creation of a temporary parser context

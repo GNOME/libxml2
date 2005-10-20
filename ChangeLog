@@ -1,3 +1,11 @@
+Thu Oct 20 12:54:23 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Removed creation of a temporary parser context
+	  during validation when processing xsi:type; this previously
+	  added a string to the dict of the schema - to assure thread
+	  safety, we don't want to modify a given schema during
+	  validation.
+
 Thu Oct 20 17:05:29 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xmlwriter.c: fixed problem in xmlTextWriterVSprintf caused by

@@ -130,6 +130,8 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 * Come casting macros.
 */
 #define ACTXT_CAST (xmlSchemaAbstractCtxtPtr)
+#define PCTXT_CAST (xmlSchemaParserCtxtPtr)
+#define VCTXT_CAST (xmlSchemaValidCtxtPtr)
 #define WXS_BASIC_CAST (xmlSchemaBasicItemPtr)
 #define WXS_TREE_CAST (xmlSchemaTreeItemPtr)
 #define WXS_PTC_CAST (xmlSchemaParticlePtr)
@@ -1047,7 +1049,7 @@ static int xmlSchemaParseRedefine(xmlSchemaParserCtxtPtr ctxt,
                                  xmlNodePtr node);
 static int
 xmlSchemaTypeFixup(xmlSchemaTypePtr type,
-                   xmlSchemaParserCtxtPtr ctxt);
+                   xmlSchemaAbstractCtxtPtr ctxt);
 static const xmlChar *
 xmlSchemaFacetTypeToString(xmlSchemaTypeType type);
 static int
@@ -1073,7 +1075,7 @@ xmlSchemaInternalErr(xmlSchemaAbstractCtxtPtr actxt,
 		     const char *funcName,
 		     const char *message);
 static int
-xmlSchemaCheckCOSSTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaCheckCOSSTDerivedOK(xmlSchemaAbstractCtxtPtr ctxt,
 			     xmlSchemaTypePtr type,
 			     xmlSchemaTypePtr baseType,
 			     int subset);
@@ -14005,7 +14007,7 @@ xmlSchemaCheckDerivationOKRestriction2to4(xmlSchemaParserCtxtPtr pctxt,
 			    NULL, NULL);
 			FREE_AND_NULL(str);
 			/* err = pctxt->err; */
-		    } else if (xmlSchemaCheckCOSSTDerivedOK(pctxt,
+		    } else if (xmlSchemaCheckCOSSTDerivedOK(ACTXT_CAST pctxt,
 			WXS_ATTRUSE_TYPEDEF(cur),
 			WXS_ATTRUSE_TYPEDEF(bcur), 0) != 0)
 		    {
@@ -14267,7 +14269,7 @@ xmlSchemaFixupTypeAttributeUses(xmlSchemaParserCtxtPtr pctxt,
     }
     baseType = type->baseType;        
     if (WXS_IS_TYPE_NOT_FIXED(baseType))
-	if (xmlSchemaTypeFixup(baseType, pctxt) == -1)
+	if (xmlSchemaTypeFixup(baseType, ACTXT_CAST pctxt) == -1)
 	    return(-1);
 
     uses = type->attrUses;
@@ -14626,8 +14628,10 @@ xmlSchemaIsParticleEmptiable(xmlSchemaParticlePtr particle)
 
 /**
  * xmlSchemaCheckCOSSTDerivedOK:
+ * @actxt: a context
  * @type:  the derived simple type definition
  * @baseType:  the base type definition
+ * @subset: the subset of ('restriction', ect.)
  *
  * Schema Component Constraint:
  * Type Derivation OK (Simple) (cos-st-derived-OK)
@@ -14638,7 +14642,7 @@ xmlSchemaIsParticleEmptiable(xmlSchemaParticlePtr particle)
  * Returns 0 on success, an positive error code otherwise.
  */
 static int
-xmlSchemaCheckCOSSTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaCheckCOSSTDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
 			     xmlSchemaTypePtr type,
 			     xmlSchemaTypePtr baseType,
 			     int subset)
@@ -14652,13 +14656,17 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
     /*
     * 2.1 restriction is not in the subset, or in the {final}
     * of its own {base type definition};
-    * TODO: Revise this, it looks strange.
+    *
+    * NOTE that this will be used also via "xsi:type".
+    *
+    * TODO: Revise this, it looks strange. How can the "type"
+    * not be fixed or *in* fixing?
     */
     if (WXS_IS_TYPE_NOT_FIXED(type))
-	if (xmlSchemaTypeFixup(type, ctxt) == -1)
+	if (xmlSchemaTypeFixup(type, actxt) == -1)
 	    return(-1);
     if (WXS_IS_TYPE_NOT_FIXED(baseType))
-	if (xmlSchemaTypeFixup(baseType, ctxt) == -1)
+	if (xmlSchemaTypeFixup(baseType, actxt) == -1)
 	    return(-1);
     if ((subset & SUBSET_RESTRICTION) ||
 	(xmlSchemaTypeFinalContains(type->baseType,
@@ -14678,7 +14686,7 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
     * constraint.
     */
     if ((! WXS_IS_ANYTYPE(type->baseType)) &&
-	(xmlSchemaCheckCOSSTDerivedOK(ctxt, type->baseType,
+	(xmlSchemaCheckCOSSTDerivedOK(actxt, type->baseType,
 	    baseType, subset) == 0)) {
 	return (0);
     }
@@ -14704,9 +14712,9 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
 	cur = baseType->memberTypes;
 	while (cur != NULL) {
 	    if (WXS_IS_TYPE_NOT_FIXED(cur->type))
-		if (xmlSchemaTypeFixup(cur->type, ctxt) == -1)
+		if (xmlSchemaTypeFixup(cur->type, actxt) == -1)
 		    return(-1);
-	    if (xmlSchemaCheckCOSSTDerivedOK(ctxt,
+	    if (xmlSchemaCheckCOSSTDerivedOK(actxt,
 		    type, cur->type, subset) == 0)
 	    {
 		/*
@@ -15175,7 +15183,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 	    return (-1);
 	}
 	if (WXS_IS_TYPE_NOT_FIXED(itemType))
-	    xmlSchemaTypeFixup(itemType, pctxt);
+	    xmlSchemaTypeFixup(itemType, ACTXT_CAST pctxt);
 	/*
 	* 2.1 The {item type definition} must have a {variety} of atomic or
 	* union (in which case all the {member type definitions}
@@ -15301,7 +15309,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 		    return (-1);
 		}
 		if ((itemType != baseItemType) &&
-		    (xmlSchemaCheckCOSSTDerivedOK(pctxt, itemType,
+		    (xmlSchemaCheckCOSSTDerivedOK(ACTXT_CAST pctxt, itemType,
 			baseItemType, 0) != 0)) {
 		    xmlChar *strBIT = NULL, *strBT = NULL;
 		    xmlSchemaPCustomErrExt(pctxt,
@@ -15374,7 +15382,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 	member = type->memberTypes;
 	while (member != NULL) {
 	    if (WXS_IS_TYPE_NOT_FIXED(member->type))
-		xmlSchemaTypeFixup(member->type, pctxt);
+		xmlSchemaTypeFixup(member->type, ACTXT_CAST pctxt);
 
 	    if ((! WXS_IS_ATOMIC(member->type)) &&
 		(! WXS_IS_LIST(member->type))) {
@@ -15482,7 +15490,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 			    "different number of member types in base");
 			}
 			if ((member->type != baseMember->type) &&
-			    (xmlSchemaCheckCOSSTDerivedOK(pctxt,
+			    (xmlSchemaCheckCOSSTDerivedOK(ACTXT_CAST pctxt,
 				member->type, baseMember->type, 0) != 0)) {
 			    xmlChar *strBMT = NULL, *strBT = NULL;
 
@@ -15859,7 +15867,7 @@ xmlSchemaAreEqualTypes(xmlSchemaTypePtr typeA,
  * if not.
  */
 static int
-xmlSchemaCheckCOSCTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaCheckCOSCTDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
 			     xmlSchemaTypePtr type,
 			     xmlSchemaTypePtr baseType,
 			     int set)
@@ -15904,7 +15912,7 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
 	* must be validly derived from B given the subset as defined by this
 	* constraint."
 	*/
-	return (xmlSchemaCheckCOSCTDerivedOK(ctxt, type->baseType,
+	return (xmlSchemaCheckCOSCTDerivedOK(actxt, type->baseType,
 	    baseType, set));
     } else {
 	/*
@@ -15912,7 +15920,7 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
 	* must be validly derived from B given the subset as defined in Type
 	* Derivation OK (Simple) (§3.14.6).
 	*/
-	return (xmlSchemaCheckCOSSTDerivedOK(ctxt, type->baseType,
+	return (xmlSchemaCheckCOSSTDerivedOK(actxt, type->baseType,
 	    baseType, set));
     }
 }
@@ -15930,15 +15938,15 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaParserCtxtPtr ctxt,
  * Returns 0 on success, an positive error code otherwise.
  */
 static int
-xmlSchemaCheckCOSDerivedOK(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaCheckCOSDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
 			   xmlSchemaTypePtr type,
 			   xmlSchemaTypePtr baseType,
 			   int set)
 {
     if (WXS_IS_SIMPLE(type))
-	return (xmlSchemaCheckCOSSTDerivedOK(ctxt, type, baseType, set));
+	return (xmlSchemaCheckCOSSTDerivedOK(actxt, type, baseType, set));
     else
-	return (xmlSchemaCheckCOSCTDerivedOK(ctxt, type, baseType, set));
+	return (xmlSchemaCheckCOSCTDerivedOK(actxt, type, baseType, set));
 }
 
 /**
@@ -16291,8 +16299,8 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 	    * derived from the base type.
 	    * 
 	    */
-	    err = xmlSchemaCheckCOSSTDerivedOK(ctxt, type->contentTypeDef,
-		base->contentTypeDef, 0);
+	    err = xmlSchemaCheckCOSSTDerivedOK(ACTXT_CAST ctxt,
+		type->contentTypeDef, base->contentTypeDef, 0);
 	    if (err != 0) {
 		xmlChar *strA = NULL, *strB = NULL;
 
@@ -16716,7 +16724,7 @@ xmlSchemaCheckRCaseNameAndTypeOK(xmlSchemaParserCtxtPtr ctxt,
 	set |= SUBSET_EXTENSION;
 	set |= SUBSET_LIST;
 	set |= SUBSET_UNION;
-	if (xmlSchemaCheckCOSDerivedOK(elemR->subtypes,
+	if (xmlSchemaCheckCOSDerivedOK(ACTXT_CAST ctxt, elemR->subtypes,
 	    elemB->subtypes, set) != 0)
 	    return (1);
     }
@@ -17603,7 +17611,7 @@ xmlSchemaFinishMemberTypeDefinitionsProperty(xmlSchemaParserCtxtPtr pctxt,
     while (link != NULL) {
 
 	if (WXS_IS_TYPE_NOT_FIXED(link->type))
-	    xmlSchemaTypeFixup(link->type, pctxt);
+	    xmlSchemaTypeFixup(link->type, ACTXT_CAST pctxt);
 
 	if (WXS_IS_UNION(link->type)) {
 	    subLink = xmlSchemaGetUnionSimpleTypeMemberTypes(link->type);
@@ -17902,7 +17910,7 @@ xmlSchemaFixupSimpleTypeStageTwo(xmlSchemaParserCtxtPtr pctxt,
 	goto exit_failure;
     }
     if (WXS_IS_TYPE_NOT_FIXED(type->baseType))
-	xmlSchemaTypeFixup(type->baseType, pctxt);
+	xmlSchemaTypeFixup(type->baseType, ACTXT_CAST pctxt);
     /* 
     * If a member type of a union is a union itself, we need to substitute
     * that member type for its member types.
@@ -17993,7 +18001,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
     * Fixup the base type.
     */
     if (WXS_IS_TYPE_NOT_FIXED(baseType))
-	xmlSchemaTypeFixup(baseType, pctxt);
+	xmlSchemaTypeFixup(baseType, ACTXT_CAST pctxt);
     if (baseType->flags & XML_SCHEMAS_TYPE_INTERNAL_INVALID) {
 	/*
 	* Skip fixup if the base type is invalid.
@@ -18082,7 +18090,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 	    
 	    type->contentTypeDef = content;
 	    if (WXS_IS_TYPE_NOT_FIXED(contentBase))
-		xmlSchemaTypeFixup(contentBase, pctxt);
+		xmlSchemaTypeFixup(contentBase, ACTXT_CAST pctxt);
 	    /*
 	    * Fixup the newly created type. We don't need to check
 	    * for circularity here.
@@ -18418,16 +18426,21 @@ exit_failure:
  */
 static int
 xmlSchemaTypeFixup(xmlSchemaTypePtr type,
-                   xmlSchemaParserCtxtPtr pctxt)
+                   xmlSchemaAbstractCtxtPtr actxt)
 {
     if (type == NULL)
         return(0);
+    if (actxt->type != XML_SCHEMA_CTXT_PARSER) {
+	AERROR_INT("xmlSchemaTypeFixup",
+	    "this function needs a parser context");
+	return(-1);
+    }
     if (! WXS_IS_TYPE_NOT_FIXED(type))
 	return(0);
     if (type->type == XML_SCHEMA_TYPE_COMPLEX)
-	return(xmlSchemaFixupComplexType(pctxt, type));
+	return(xmlSchemaFixupComplexType(PCTXT_CAST actxt, type));
     else if (type->type == XML_SCHEMA_TYPE_SIMPLE)
-	return(xmlSchemaFixupSimpleTypeStageTwo(pctxt, type));
+	return(xmlSchemaFixupSimpleTypeStageTwo(PCTXT_CAST actxt, type));
     return(0);
 }
 
@@ -19469,7 +19482,7 @@ xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
 	    if (head->flags & XML_SCHEMAS_ELEM_FINAL_RESTRICTION)
 		set |= SUBSET_RESTRICTION;
 
-	    if (xmlSchemaCheckCOSDerivedOK(pctxt, typeDef,
+	    if (xmlSchemaCheckCOSDerivedOK(ACTXT_CAST pctxt, typeDef,
 		WXS_ELEM_TYPEDEF(head), set) != 0) {
 		xmlChar *strA = NULL, *strB = NULL, *strC = NULL;
 
@@ -24433,6 +24446,11 @@ xmlSchemaProcessXSIType(xmlSchemaValidCtxtPtr vctxt,
 	    * {disallowed substitutions}: the "block" on the element decl.
 	    * {prohibited substitutions}: the "block" on the type def.
 	    */
+	    /*
+	    * OPTIMIZE TODO: We could map types already evaluated
+	    * to be validly derived from other types to avoid checking
+	    * this over and over for the same types.
+	    */
 	    if ((elemDecl->flags & XML_SCHEMAS_ELEM_BLOCK_EXTENSION) ||
 		(elemDecl->subtypes->flags &
 		    XML_SCHEMAS_TYPE_BLOCK_EXTENSION))
@@ -24443,10 +24461,18 @@ xmlSchemaProcessXSIType(xmlSchemaValidCtxtPtr vctxt,
 		    XML_SCHEMAS_TYPE_BLOCK_RESTRICTION))
 		set |= SUBSET_RESTRICTION;
 
-	    if ((vctxt->pctxt == NULL) &&
-		(xmlSchemaCreatePCtxtOnVCtxt(vctxt) == -1))
-		    return (-1);
-	    if (xmlSchemaCheckCOSDerivedOK(vctxt->pctxt, *localType,
+	    /*
+	    * REMOVED and CHANGED since this produced a parser context
+	    * which adds to the string dict of the schema. So this would
+	    * change the schema and we don't want this. We don't need
+	    * the parser context anymore.
+	    *
+	    * if ((vctxt->pctxt == NULL) &&
+	    *	(xmlSchemaCreatePCtxtOnVCtxt(vctxt) == -1))
+	    *	    return (-1);
+	    */
+
+	    if (xmlSchemaCheckCOSDerivedOK(ACTXT_CAST vctxt, *localType,
 		elemDecl->subtypes, set) != 0) {
 		xmlChar *str = NULL;
 

@@ -3549,6 +3549,8 @@ get_more:
 		    ctxt->input->line++; ctxt->input->col = 1;
 		    continue; /* while */
 		}
+		if (!*in)	/* if end of current chunk return */
+		    return;
 		in--;
 	    }
 	    if (*in == '<') {

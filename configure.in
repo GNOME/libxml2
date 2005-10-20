@@ -432,6 +432,27 @@ dnl Checking the standard string functions availability
 AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
                NEED_TRIO=1)
 
+dnl Checking for va_copy availability
+AC_MSG_CHECKING([for va_copy])
+AC_TRY_LINK([#include <stdarg.h>
+va_list ap1,ap2;], [va_copy(ap1,ap2);],
+have_va_copy=yes,
+have_va_copy=no)
+AC_MSG_RESULT($have_va_copy)
+if test x"$have_va_copy" = x"yes"; then
+    AC_DEFINE(HAVE_VA_COPY,1,[Whether va_copy() is available])
+else
+    AC_MSG_CHECKING([for __va_copy])
+    AC_TRY_LINK([#include <stdarg.h>
+    va_list ap1,ap2;], [__va_copy(ap1,ap2);],
+    have___va_copy=yes,
+    have___va_copy=no)
+    AC_MSG_RESULT($have___va_copy)
+    if test x"$have___va_copy" = x"yes"; then
+        AC_DEFINE(HAVE___VA_COPY,1,[Whether __va_copy() is available])
+    fi
+fi
+
 dnl Checks for inet libraries:
 AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))

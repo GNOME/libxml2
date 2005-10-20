@@ -1,3 +1,12 @@
+Thu Oct 20 17:05:29 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xmlwriter.c: fixed problem in xmlTextWriterVSprintf caused by
+	  misuse of vsnprintf
+	* configure.in, config.h.in: added a configuration check for
+	  va_copy and added a define for VA_COPY for xmlwriter.c fix
+	* parser.c: fixed problem with CRLF split between chunks (bug
+	  #319279) (fix provided by Brion Vibber)
+
 Wed Oct 19 18:49:52 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a potential memory leak in

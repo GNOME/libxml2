@@ -25,6 +25,25 @@
 #define B64CRLF "\r\n"
 
 /*
+ * The following VA_COPY was coded following an example in
+ * the Samba project.  It may not be sufficient for some
+ * esoteric implementations of va_list (i.e. it may need
+ * something involving a memcpy) but (hopefully) will be
+ * sufficient for libxml2.
+ */
+#ifndef VA_COPY
+  #ifdef HAVE_VA_COPY
+    #define VA_COPY(dest, src) va_copy(dest, src)
+  #else
+    #ifdef HAVE___VA_COPY
+      #define VA_COPY(dest,src) __va_copy(dest, src)
+    #else
+      #define VA_COPY(dest,src) (dest) = (src)
+    #endif
+  #endif
+#endif
+
+/*
  * Types are kept private
  */
 typedef enum {
@@ -4373,6 +4392,7 @@ xmlTextWriterVSprintf(const char *format, va_list argptr)
     int size;
     int count;
     xmlChar *buf;
+    va_list locarg;
 
     size = BUFSIZ;
     buf = (xmlChar *) xmlMalloc(size);
@@ -4382,8 +4402,10 @@ xmlTextWriterVSprintf(const char *format, va_list argptr)
         return NULL;
     }
 
-    while (((count = vsnprintf((char *) buf, size, format, argptr)) < 0)
+    VA_COPY(locarg, argptr);
+    while (((count = vsnprintf((char *) buf, size, format, locarg)) < 0)
            || (count == size - 1) || (count == size) || (count > size)) {
+	va_end(locarg);
         xmlFree(buf);
         size += BUFSIZ;
         buf = (xmlChar *) xmlMalloc(size);
@@ -4392,7 +4414,9 @@ xmlTextWriterVSprintf(const char *format, va_list argptr)
                             "xmlTextWriterVSprintf : out of memory!\n");
             return NULL;
         }
+	VA_COPY(locarg, argptr);
     }
+    va_end(locarg);
 
     return buf;
 }

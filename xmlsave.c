@@ -1111,6 +1111,10 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         xmlDtdDumpOutput(ctxt, (xmlDtdPtr) cur);
 	return;
     }
+    if (cur->type == XML_DOCUMENT_FRAG_NODE) {
+        xhtmlNodeListDumpOutput(ctxt, cur->children);
+	return;
+    }
     buf = ctxt->buf;
     if (cur->type == XML_ELEMENT_DECL) {
         xmlDumpElementDecl(buf->buffer, (xmlElementPtr) cur);

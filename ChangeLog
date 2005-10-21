@@ -1,3 +1,7 @@
+Fri Oct 21 10:50:14 EDT 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlsave.c: prevent output of fragment tags when serializing XHTML.
+
 Wed Oct 19 16:53:47 BST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: commiting a some fixes and debug done yesterday in

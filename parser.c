@@ -3543,6 +3543,8 @@ get_more:
 	    ctxt->input->cur = in;
 	    if (*in == 0xD) {
 		in++;
+		if (!*in)	/* if end of current chunk return */
+		    return;
 		if (*in == 0xA) {
 		    ctxt->input->cur = in;
 		    in++;
@@ -3937,6 +3939,8 @@ get_more:
 		ctxt->input->line++; ctxt->input->col = 1;
 		continue; /* while */
 	    }
+	    if (!*in)	/* if end of current chunk return */
+		return;
 	    in--;
 	}
 	SHRINK;

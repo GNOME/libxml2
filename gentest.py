@@ -46,6 +46,7 @@ modules_defines = {
     "DOCBparser" : "LIBXML_DOCB_ENABLED",
     "xmlmodule" : "LIBXML_MODULES_ENABLED",
     "pattern" : "LIBXML_PATTERN_ENABLED",
+    "schematron" : "LIBXML_SCHEMATRON_ENABLED",
 }
 
 #

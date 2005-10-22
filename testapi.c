@@ -8,7 +8,13 @@
  * daniel@veillard.com
  */
 
-#include <stdio.h>
+#include "config.h"
+#ifndef	WITH_TRIO
+ #include <stdio.h>
+#else
+ #define TRIO_REPLACE_STDIO
+ #include "trio.h"
+#endif
 #include <string.h>
 #include <libxml/xmlerror.h>
 #include <libxml/relaxng.h>
@@ -688,6 +694,24 @@ static xmlCharEncoding gen_xmlCharEncoding(int no, int nr ATTRIBUTE_UNUSED) {
 }
 static void des_xmlCharEncoding(int no ATTRIBUTE_UNUSED, xmlCharEncoding val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_EXPR_ENABLED)
+
+#define gen_nb_xmlExpCtxtPtr 1
+static xmlExpCtxtPtr gen_xmlExpCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlExpCtxtPtr(int no ATTRIBUTE_UNUSED, xmlExpCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_xmlExpNodePtr 1
+static xmlExpNodePtr gen_xmlExpNodePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlExpNodePtr(int no ATTRIBUTE_UNUSED, xmlExpNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#endif
 
 #define gen_nb_xmlHashDeallocator 2
 static void 
@@ -17757,6 +17781,7 @@ test_xmlSchematronNewParserCtxt(void) {
     return(test_ret);
 }
 
+#ifdef LIBXML_SCHEMATRON_ENABLED
 
 #define gen_nb_xmlSchematronPtr 1
 static xmlSchematronPtr gen_xmlSchematronPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -17764,6 +17789,8 @@ static xmlSchematronPtr gen_xmlSchematronPtr(int no ATTRIBUTE_UNUSED, int nr ATT
 }
 static void des_xmlSchematronPtr(int no ATTRIBUTE_UNUSED, xmlSchematronPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
+
 
 static int
 test_xmlSchematronNewValidCtxt(void) {
@@ -17774,6 +17801,7 @@ test_xmlSchematronNewValidCtxt(void) {
     return(test_ret);
 }
 
+#ifdef LIBXML_SCHEMATRON_ENABLED
 
 #define gen_nb_xmlSchematronParserCtxtPtr 1
 static xmlSchematronParserCtxtPtr gen_xmlSchematronParserCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -17781,6 +17809,8 @@ static xmlSchematronParserCtxtPtr gen_xmlSchematronParserCtxtPtr(int no ATTRIBUT
 }
 static void des_xmlSchematronParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchematronParserCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
+
 
 static int
 test_xmlSchematronParse(void) {
@@ -17791,6 +17821,7 @@ test_xmlSchematronParse(void) {
     return(test_ret);
 }
 
+#ifdef LIBXML_SCHEMATRON_ENABLED
 
 #define gen_nb_xmlSchematronValidCtxtPtr 1
 static xmlSchematronValidCtxtPtr gen_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -17798,6 +17829,8 @@ static xmlSchematronValidCtxtPtr gen_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_
 }
 static void des_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchematronValidCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
+
 
 static int
 test_xmlSchematronValidateDoc(void) {
@@ -31935,16 +31968,6 @@ test_xmlreader(void) {
 	printf("Module xmlreader: %d errors\n", test_ret);
     return(test_ret);
 }
-#ifdef LIBXML_REGEXP_ENABLED
-
-#define gen_nb_xmlExpCtxtPtr 1
-static xmlExpCtxtPtr gen_xmlExpCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlExpCtxtPtr(int no ATTRIBUTE_UNUSED, xmlExpCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-#endif
-
 
 static int
 test_xmlExpCtxtNbCons(void) {
@@ -32012,16 +32035,6 @@ test_xmlExpCtxtNbNodes(void) {
 
     return(test_ret);
 }
-
-#ifdef LIBXML_REGEXP_ENABLED
-
-#define gen_nb_xmlExpNodePtr 1
-static xmlExpNodePtr gen_xmlExpNodePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlExpNodePtr(int no ATTRIBUTE_UNUSED, xmlExpNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-#endif
 
 
 static int

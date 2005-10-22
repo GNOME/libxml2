@@ -1,3 +1,11 @@
+Sat Oct 22 10:00:41 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: fixed second spot where CRLF split between chunks
+	  could cause trouble (bug #319279)
+	* gentest.py, testapi.c: fixed two problems involved with
+	  --with-minimum compilation (compilation errors with schematron
+	  and formal expressions tests)
+
 Fri Oct 21 10:50:14 EDT 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlsave.c: prevent output of fragment tags when serializing XHTML.

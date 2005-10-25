@@ -2855,10 +2855,11 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	xmlAttrPtr attr;
 
 	if (elem->ns == NULL)
-	    attr = xmlHasProp(cur->parent, elem->name);
+	    attr = xmlHasNsProp(cur->parent, elem->name, NULL);
 	else
 	    attr = xmlHasNsProp(cur->parent, elem->name, elem->ns->href);
-	if ((attr != NULL) && (attr != (xmlAttrPtr) elem)) {
+	/* elem has already been unlinked so can never be attr */
+	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
 	    /* different instance, destroy it (attributes must be unique) */
 	    xmlFreeProp(attr);
 	}
@@ -2935,10 +2936,11 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	xmlAttrPtr attr;
 
 	if (elem->ns == NULL)
-	    attr = xmlHasProp(cur->parent, elem->name);
+	    attr = xmlHasNsProp(cur->parent, elem->name, NULL);
 	else
 	    attr = xmlHasNsProp(cur->parent, elem->name, elem->ns->href);
-	if ((attr != NULL) && (attr != (xmlAttrPtr) elem)) {
+	/* elem has already been unlinked so can never be attr */
+	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
 	    /* different instance, destroy it (attributes must be unique) */
 	    xmlFreeProp(attr);
 	}
@@ -3203,10 +3205,10 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    xmlAttrPtr lastattr;
 
 	    if (cur->ns == NULL)
-		lastattr = xmlHasProp(parent, cur->name);
+		lastattr = xmlHasNsProp(parent, cur->name, NULL);
 	    else
 		lastattr = xmlHasNsProp(parent, cur->name, cur->ns->href);
-	    if ((lastattr != NULL) && (lastattr != (xmlAttrPtr) cur)) {
+	    if ((lastattr != NULL) && (lastattr != (xmlAttrPtr) cur) && (lastattr->type != XML_ATTRIBUTE_DECL)) {
 		/* different instance, destroy it (attributes must be unique) */
 		xmlFreeProp(lastattr);
 	    }

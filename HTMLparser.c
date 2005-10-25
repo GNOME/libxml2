@@ -2678,7 +2678,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
                     break; /* while */
                 } else {
 		    htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
-				 "Element %s embbeds close tag\n",
+				 "Element %s embeds close tag\n",
 		                 ctxt->name, NULL);
 		}
             } else {

@@ -1,3 +1,9 @@
+Tue Oct 25 14:34:58 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: script HTML parser error fix, corrects bug #319715
+	* result/HTML/53867* test/HTML/53867.html: added test from Michael Day
+	  to the regression suite 
+
 Tue Oct 25 14:21:11 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: typo fix from Michael Day

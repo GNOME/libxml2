@@ -1,3 +1,8 @@
+Wed Oct 26 10:59:21 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: fix a problem in some error case on Solaris
+	  when passed a NULL filename, pointed by Albert Chin.
+
 Tue Oct 25 14:34:58 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: script HTML parser error fix, corrects bug #319715

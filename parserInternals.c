@@ -1492,8 +1492,13 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     if (ctxt == NULL) return(NULL);
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
-        __xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
-                     (const char *) filename);
+	if (filename == NULL)
+	    __xmlLoaderErr(ctxt,
+	                   "failed to load external entity: NULL filename \n",
+			   NULL);
+	else
+	    __xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
+			   (const char *) filename);
 	return(NULL);
     }
 

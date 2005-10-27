@@ -6455,7 +6455,7 @@ tail:
  * xmlExpGetLanguage:
  * @ctxt: the expression context
  * @exp: the expression
- * @list: where to store the tokens
+ * @langList: where to store the tokens
  * @len: the allocated lenght of @list
  *
  * Find all the strings used in @exp and store them in @list
@@ -6465,10 +6465,10 @@ tail:
  */
 int
 xmlExpGetLanguage(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, 
-                  const xmlChar**list, int len) {
-    if ((ctxt == NULL) || (exp == NULL) || (list == NULL) || (len <= 0))
+                  const xmlChar**langList, int len) {
+    if ((ctxt == NULL) || (exp == NULL) || (langList == NULL) || (len <= 0))
         return(-1);
-    return(xmlExpGetLanguageInt(ctxt, exp, list, len, 0));
+    return(xmlExpGetLanguageInt(ctxt, exp, langList, len, 0));
 }
 
 static int
@@ -6521,7 +6521,7 @@ tail:
  * xmlExpGetStart:
  * @ctxt: the expression context
  * @exp: the expression
- * @list: where to store the tokens
+ * @tokList: where to store the tokens
  * @len: the allocated lenght of @list
  *
  * Find all the strings that appears at the start of the languages
@@ -6533,10 +6533,10 @@ tail:
  */
 int
 xmlExpGetStart(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, 
-               const xmlChar**list, int len) {
-    if ((ctxt == NULL) || (exp == NULL) || (list == NULL) || (len <= 0))
+               const xmlChar**tokList, int len) {
+    if ((ctxt == NULL) || (exp == NULL) || (tokList == NULL) || (len <= 0))
         return(-1);
-    return(xmlExpGetStartInt(ctxt, exp, list, len, 0));
+    return(xmlExpGetStartInt(ctxt, exp, tokList, len, 0));
 }
 
 /**

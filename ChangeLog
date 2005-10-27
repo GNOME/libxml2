@@ -1,3 +1,10 @@
+Thu Oct 27 13:54:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c xmlregexp.c include/libxml/valid.h
+	  include/libxml/xmlregexp.h: avoid function parameters names 'list'
+	  as this seems to give troubles with VC6 and stl as reported by
+	  Samuel Diaz Garcia.
+
 Wed Oct 26 10:59:21 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: fix a problem in some error case on Solaris

@@ -410,7 +410,7 @@ XMLPUBFUN xmlElementPtr XMLCALL
 
 XMLPUBFUN int XMLCALL		
 		xmlValidGetPotentialChildren(xmlElementContent *ctree,
-					 const xmlChar **list,
+					 const xmlChar **names,
 					 int *len,
 					 int max);
 

@@ -183,12 +183,12 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 			xmlExpGetLanguage(xmlExpCtxtPtr ctxt,
 					 xmlExpNodePtr expr,
-					 const xmlChar**list,
+					 const xmlChar**langList,
 					 int len);
 XMLPUBFUN int XMLCALL
 			xmlExpGetStart	(xmlExpCtxtPtr ctxt,
 					 xmlExpNodePtr expr,
-					 const xmlChar**list,
+					 const xmlChar**tokList,
 					 int len);
 XMLPUBFUN xmlExpNodePtr XMLCALL
 			xmlExpStringDerive(xmlExpCtxtPtr ctxt,

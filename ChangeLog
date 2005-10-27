@@ -1,3 +1,7 @@
+Thu Oct 27 16:10:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.py: remove warnings to stdout patch from Nic Ferrier
+
 Thu Oct 27 13:54:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c xmlregexp.c include/libxml/valid.h

@@ -211,7 +211,8 @@ class SAXCallback:
         pass
 
     def warning(self, msg):
-        print msg
+        #print msg
+	pass
 
     def error(self, msg):
         raise parserError(msg)

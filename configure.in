@@ -724,18 +724,34 @@ if test "$with_modules" != "no" ; then
   ])
   ;;
   *)
-  MODULE_EXTENSION=".so"
-  AC_CHECK_LIB(dld, shl_load, [
+  AC_CHECK_FUNC(shl_load, libxml_have_shl_load=yes, [
+    AC_CHECK_LIB(dld, shl_load, [
+      MODULE_PLATFORM_LIBS="-ldld"
+      libxml_have_shl_load=yes], [
+      AC_CHECK_FUNC(dlopen, libxml_have_dlopen=yes, [
+        AC_CHECK_LIB(dl, dlopen, [
+          MODULE_PLATFORM_LIBS="-ldl"
+          libxml_have_dlopen=yes])])])])
+
+  if test "${libxml_have_shl_load}" = "yes"; then
+    MODULE_EXTENSION=".sl"
     WITH_MODULES=1
-    MODULE_PLATFORM_LIBS="-ldld"
     AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])
-  ])
+  fi
  
-  AC_CHECK_LIB(dl, dlopen, [
+  if test "${libxml_have_dlopen}" = "yes"; then
+    case "${host}" in
+      *-*-hpux* )
+	MODULE_EXTENSION=".sl"
+	;;
+      * )
+	MODULE_EXTENSION=".so"
+	;;
+    esac
+
     WITH_MODULES=1
-    MODULE_PLATFORM_LIBS="-ldl"
     AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
-  ])
+  fi
  ;;
  esac
 fi

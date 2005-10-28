@@ -1,3 +1,8 @@
+Fri Oct 28 10:36:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmodule.c configure.in: applied 2 patches from Albert Chin for
+	  module portability
+
 Fri Oct 28 10:24:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: fixing a portability problem on some old Unices with

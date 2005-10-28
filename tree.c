@@ -2012,6 +2012,8 @@ xmlRemoveProp(xmlAttrPtr cur) {
     tmp = cur->parent->properties;
     if (tmp == cur) {
         cur->parent->properties = cur->next;
+		if (cur->next != NULL)
+			cur->next->prev = NULL;
 	xmlFreeProp(cur);
 	return(0);
     }
@@ -2831,6 +2833,14 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
+    if (cur == elem) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddNextSibling : cur == elem\n");
+#endif
+	return(NULL);
+    }
+
     xmlUnlinkNode(elem);
 
     if (elem->type == XML_TEXT_NODE) {
@@ -2854,6 +2864,8 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
         /* check if an attribute with the same name exists */
 	xmlAttrPtr attr;
 
+		if (cur->type != XML_ATTRIBUTE_NODE)
+			return(NULL);
 	if (elem->ns == NULL)
 	    attr = xmlHasNsProp(cur->parent, elem->name, NULL);
 	else
@@ -2861,6 +2873,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	/* elem has already been unlinked so can never be attr */
 	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
 	    /* different instance, destroy it (attributes must be unique) */
+		xmlUnlinkNode((xmlNodePtr) attr);
 	    xmlFreeProp(attr);
 	}
     }
@@ -2912,6 +2925,14 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
+    if (cur == elem) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddPrevSibling : cur == elem\n");
+#endif
+	return(NULL);
+    }
+
     xmlUnlinkNode(elem);
 
     if (elem->type == XML_TEXT_NODE) {
@@ -2935,6 +2956,8 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
         /* check if an attribute with the same name exists */
 	xmlAttrPtr attr;
 
+		if (cur->type != XML_ATTRIBUTE_NODE)
+			return(NULL);
 	if (elem->ns == NULL)
 	    attr = xmlHasNsProp(cur->parent, elem->name, NULL);
 	else
@@ -2942,6 +2965,7 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	/* elem has already been unlinked so can never be attr */
 	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
 	    /* different instance, destroy it (attributes must be unique) */
+		xmlUnlinkNode((xmlNodePtr) attr);
 	    xmlFreeProp(attr);
 	}
     }
@@ -3151,6 +3175,13 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
+    if (parent == cur) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddChild : parent == cur\n");
+#endif
+	return(NULL);
+    }
     /*
      * If cur is a TEXT node, merge its content with adjacent TEXT nodes
      * cur is then freed.
@@ -3158,8 +3189,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (cur->type == XML_TEXT_NODE) {
 	if ((parent->type == XML_TEXT_NODE) &&
 	    (parent->content != NULL) &&
-	    (parent->name == cur->name) &&
-	    (parent != cur)) {
+	    (parent->name == cur->name)) {
 	    xmlNodeAddContent(parent, cur->content);
 	    xmlFreeNode(cur);
 	    return(parent);
@@ -3198,6 +3228,8 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(parent);
     }
     if (cur->type == XML_ATTRIBUTE_NODE) {
+		if (parent->type != XML_ELEMENT_NODE)
+			return(NULL);
 	if (parent->properties == NULL) {
 	    parent->properties = (xmlAttrPtr) cur;
 	} else {
@@ -3210,8 +3242,11 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 		lastattr = xmlHasNsProp(parent, cur->name, cur->ns->href);
 	    if ((lastattr != NULL) && (lastattr != (xmlAttrPtr) cur) && (lastattr->type != XML_ATTRIBUTE_DECL)) {
 		/* different instance, destroy it (attributes must be unique) */
+			xmlUnlinkNode((xmlNodePtr) lastattr);
 		xmlFreeProp(lastattr);
 	    }
+		if (lastattr == (xmlAttrPtr) cur)
+			return(cur);
 	    /* find the end */
 	    lastattr = parent->properties;
 	    while (lastattr->next != NULL) {
@@ -3577,22 +3612,16 @@ xmlCopyNamespaceList(xmlNsPtr cur) {
 
 static xmlNodePtr
 xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
-/**
- * xmlCopyProp:
- * @target:  the element where the attribute will be grafted
- * @cur:  the attribute
- *
- * Do a copy of the attribute.
- *
- * Returns: a new #xmlAttrPtr, or NULL in case of error.
- */
-xmlAttrPtr
-xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
+
+static xmlAttrPtr
+xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
     xmlAttrPtr ret;
 
     if (cur == NULL) return(NULL);
     if (target != NULL)
 	ret = xmlNewDocProp(target->doc, cur->name, NULL);
+    else if (doc != NULL)
+	ret = xmlNewDocProp(doc, cur->name, NULL);
     else if (cur->parent != NULL)
 	ret = xmlNewDocProp(cur->parent->doc, cur->name, NULL);
     else if (cur->children != NULL)
@@ -3681,6 +3710,20 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
 }
 
 /**
+ * xmlCopyProp:
+ * @target:  the element where the attribute will be grafted
+ * @cur:  the attribute
+ *
+ * Do a copy of the attribute.
+ *
+ * Returns: a new #xmlAttrPtr, or NULL in case of error.
+ */
+xmlAttrPtr
+xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
+	return xmlCopyPropInternal(NULL, target, cur);
+}
+
+/**
  * xmlCopyPropList:
  * @target:  the element where the attributes will be grafted
  * @cur:  the first attribute
@@ -3748,7 +3791,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         case XML_XINCLUDE_END:
 	    break;
         case XML_ATTRIBUTE_NODE:
-	    return((xmlNodePtr) xmlCopyProp(parent, (xmlAttrPtr) node));
+		return((xmlNodePtr) xmlCopyPropInternal(doc, parent, (xmlAttrPtr) node));
         case XML_NAMESPACE_DECL:
 	    return((xmlNodePtr) xmlCopyNamespaceList((xmlNsPtr) node));
 	    

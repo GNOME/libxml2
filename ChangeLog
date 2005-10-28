@@ -1,3 +1,8 @@
+Fri Oct 28 12:21:39 EDT 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* tree.c: add additional checks to prevent tree corruption. fix problem 
+	  copying attribute using xmlDocCopyNode from one document to another.
+
 Fri Oct 28 17:58:13 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* config.h.in configure.in vms/config.vms macos/src/config-mac.h:

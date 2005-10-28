@@ -11,11 +11,16 @@
  * daniel@veillard.com
  */
 
+#ifdef HAVE_CONFIG_H
+#include "libxml.h"
+#else
+#include <stdio.h>
+#endif
+
 #if !defined(_WIN32) || defined(__CYGWIN__)
 #include <unistd.h>
 #endif
 #include <string.h>
-#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

@@ -8,13 +8,12 @@
  * daniel@veillard.com
  */
 
-#include "config.h"
-#ifndef	WITH_TRIO
- #include <stdio.h>
+#ifdef HAVE_CONFIG_H
+#include "libxml.h"
 #else
- #define TRIO_REPLACE_STDIO
- #include "trio.h"
+#include <stdio.h>
 #endif
+
 #include <string.h>
 #include <libxml/xmlerror.h>
 #include <libxml/relaxng.h>

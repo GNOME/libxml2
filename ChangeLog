@@ -1,3 +1,9 @@
+Fri Oct 28 18:36:08 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.3: tiny fix from Albert Chin
+	* runsuite.c runtest.c testapi.c: portability cleanup for arch
+	  needing trio for *printf
+
 Fri Oct 28 12:21:39 EDT 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* tree.c: add additional checks to prevent tree corruption. fix problem 

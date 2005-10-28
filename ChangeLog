@@ -1,3 +1,9 @@
+2005-10-27  Aleksey Sanin <aleksey@aleksey.com>
+	* c14n.c  result/c14n/exc-without-comments/test-2
+	  test/c14n/exc-without-comments/test-2.xml
+	  test/c14n/exc-without-comments/test-2.xpath: fixing
+	  bug in exc-c14n namespace visibility + test case (bug #319367)
+
 Thu Oct 27 16:10:31 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py: remove warnings to stdout patch from Nic Ferrier

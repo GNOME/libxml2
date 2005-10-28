@@ -21,7 +21,7 @@ void XMLCDECL xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
 				 ...);
 
 #define XML_GET_VAR_STR(msg, str) {				\
-    int       size;						\
+    int       size, prev_size = -1;				\
     int       chars;						\
     char      *larger;						\
     va_list   ap;						\
@@ -35,8 +35,13 @@ void XMLCDECL xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
 	va_start(ap, msg);					\
   	chars = vsnprintf(str, size, msg, ap);			\
 	va_end(ap);						\
-	if ((chars > -1) && (chars < size))			\
-	    break;						\
+	if ((chars > -1) && (chars < size)) {			\
+	    if (prev_size == chars) {				\
+		break;						\
+	    } else {						\
+		prev_size = chars;				\
+	    }							\
+	}							\
 	if (chars > -1)						\
 	    size += chars + 1;					\
 	else							\

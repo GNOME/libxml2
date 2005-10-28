@@ -1,4 +1,10 @@
+Fri Oct 28 10:24:39 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: fixing a portability problem on some old Unices with
+	  patch from Albert Chin
+
 2005-10-27  Aleksey Sanin <aleksey@aleksey.com>
+
 	* c14n.c  result/c14n/exc-without-comments/test-2
 	  test/c14n/exc-without-comments/test-2.xml
 	  test/c14n/exc-without-comments/test-2.xpath: fixing

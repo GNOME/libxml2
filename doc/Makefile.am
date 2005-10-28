@@ -110,7 +110,6 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)/html
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(HTML_DIR)/html
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.png $(DESTDIR)$(HTML_DIR)/html
-	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(HTML_DIR)/html
 	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)/tutorial
 	-@INSTALL@ -m 0644 $(srcdir)/tutorial/*.* \
 		$(DESTDIR)$(HTML_DIR)/tutorial

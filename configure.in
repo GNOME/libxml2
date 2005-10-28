@@ -454,10 +454,9 @@ else
 fi
 
 dnl Checks for inet libraries:
-AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
-AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
-AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(net, setsockopt))
-AC_CHECK_FUNC(connect, , AC_CHECK_LIB(inet, connect))
+AC_SEARCH_LIBS(gethostent, [nsl])
+AC_SEARCH_LIBS(setsockopt, [socket net])
+AC_SEARCH_LIBS(connect, [inet])
 
 dnl Determine what socket length (socklen_t) data type is
 AC_MSG_CHECKING([for type of socket length (socklen_t)])

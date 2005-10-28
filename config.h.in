@@ -97,23 +97,11 @@
 /* Define if history library is there (-lhistory) */
 #undef HAVE_LIBHISTORY
 
-/* Define to 1 if you have the `inet' library (-linet). */
-#undef HAVE_LIBINET
-
-/* Define to 1 if you have the `net' library (-lnet). */
-#undef HAVE_LIBNET
-
-/* Define to 1 if you have the `nsl' library (-lnsl). */
-#undef HAVE_LIBNSL
-
 /* Define if pthread library is there (-lpthread) */
 #undef HAVE_LIBPTHREAD
 
 /* Define if readline library is there (-lreadline) */
 #undef HAVE_LIBREADLINE
-
-/* Define to 1 if you have the `socket' library (-lsocket). */
-#undef HAVE_LIBSOCKET
 
 /* Have compression library */
 #undef HAVE_LIBZ

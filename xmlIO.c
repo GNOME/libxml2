@@ -610,10 +610,12 @@ xmlFdRead (void * context, char * buffer, int len) {
  */
 static int
 xmlFdWrite (void * context, const char * buffer, int len) {
-    int ret;
+    int ret = 0;
 
-    ret = write((int) (long) context, &buffer[0], len);
-    if (ret < 0) xmlIOErr(0, "write()");
+    if (len > 0) {
+	ret = write((int) (long) context, &buffer[0], len);
+	if (ret < 0) xmlIOErr(0, "write()");
+    }
     return(ret);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

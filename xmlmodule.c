@@ -195,6 +195,10 @@ xmlModuleFree(xmlModulePtr module)
 #include <dlfcn.h>
 #endif
 
+#ifndef RTLD_GLOBAL            /* For Tru64 UNIX 4.0 */
+#define RTLD_GLOBAL 0
+#endif
+
 /**
  * xmlModulePlatformOpen:
  * @name: path to the module
@@ -277,10 +281,7 @@ xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
     int rc;
 
     errno = 0;
-    rc = shl_findsym(&handle, name, TYPE_PROCEDURE, symbol);
-    if ((-1 == rc) && (0 == errno)) {
-        rc = shl_findsym(handle, name, TYPE_DATA, symbol);
-    }
+    rc = shl_findsym(&handle, name, TYPE_UNDEFINED, symbol);
     return rc;
 }
 

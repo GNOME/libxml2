@@ -1,3 +1,8 @@
+Fri Oct 28 16:53:51 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c xmlmodule.c: more portability patches from Albert Chin for
+	  HP-UX and AIX
+
 Fri Oct 28 10:36:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmodule.c configure.in: applied 2 patches from Albert Chin for

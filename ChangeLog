@@ -1,3 +1,10 @@
+Tue Nov  1 16:22:29 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: fix bug #319897, problem with counted atoms
+	  when the transition itself is counted too
+	* result/regexp/hard test/regexp/hard: augmented the regression
+	  tests with the problem exposed.
+
 Tue Nov  1 11:54:39 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.mingw include/win32config.h: applied patch from

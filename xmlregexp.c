@@ -2812,7 +2812,15 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 
 		    /*
 		     * this is a multiple input sequence
+		     * If there is a counter associated increment it now.
+		     * before potentially saving and rollback
 		     */
+		    if (trans->counter >= 0) {
+#ifdef DEBUG_REGEXP_EXEC
+			printf("Increasing count %d\n", trans->counter);
+#endif
+			exec->counts[trans->counter]++;
+		    }
 		    if (exec->state->nbTrans > exec->transno + 1) {
 			xmlFARegExecSave(exec);
 		    }
@@ -2861,6 +2869,12 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 			ret = 0;
 		    if (ret == 0) {
 			goto rollback;
+		    }
+		    if (trans->counter >= 0) {
+#ifdef DEBUG_REGEXP_EXEC
+			printf("Decreasing count %d\n", trans->counter);
+#endif
+			exec->counts[trans->counter]--;
 		    }
 		} else if ((ret == 0) && (atom->min == 0) && (atom->max > 0)) {
 		    /*

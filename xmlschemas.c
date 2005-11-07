@@ -2137,6 +2137,18 @@ xmlSchemaFormatNodeForError(xmlChar ** msg,
     xmlChar *str = NULL;
 
     *msg = NULL;
+    if ((node != NULL) &&
+	(node->type != XML_ELEMENT_NODE) &&
+	(node->type != XML_ATTRIBUTE_NODE))
+    {
+	/* 
+	* Don't try to format other nodes than element and
+	* attribute nodes.
+	* Play save and return an empty string.
+	*/
+	*msg = xmlStrdup(BAD_CAST "");
+	return(*msg);
+    }
     if (node != NULL) {
 	/*
 	* Work on tree nodes.
@@ -6225,7 +6237,8 @@ xmlSchemaPValAttrNodeValue(xmlSchemaParserCtxtPtr pctxt,
 	    break;
 	default: {
 	    PERROR_INT("xmlSchemaPValAttrNodeValue",
-		"validation using the given type is not supported");
+		"validation using the given type is not supported while "
+		"parsing a schema");
 	    return (-1);
 	}
     }
@@ -18588,33 +18601,43 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
         case XML_SCHEMA_FACET_FRACTIONDIGITS:
         case XML_SCHEMA_FACET_LENGTH:
         case XML_SCHEMA_FACET_MAXLENGTH:
-        case XML_SCHEMA_FACET_MINLENGTH:{
+        case XML_SCHEMA_FACET_MINLENGTH:
+
+	    if (facet->type == XML_SCHEMA_FACET_TOTALDIGITS) {
+		ret = xmlSchemaValidatePredefinedType(
+		    xmlSchemaGetBuiltInType(XML_SCHEMAS_PINTEGER),
+		    facet->value, &(facet->val));
+	    } else {
 		ret = xmlSchemaValidatePredefinedType(
 		    xmlSchemaGetBuiltInType(XML_SCHEMAS_NNINTEGER),
 		    facet->value, &(facet->val));
-                if (ret != 0) {
-		    if (ret < 0) {
-			/* No error message for RelaxNG. */
-			if (ctxtGiven) {
-			    PERROR_INT("xmlSchemaCheckFacet",
-				"validating facet value");
-			}
-			goto internal_error;
-		    }
-		    ret = XML_SCHEMAP_INVALID_FACET_VALUE;
+	    }
+	    if (ret != 0) {
+		if (ret < 0) {
 		    /* No error message for RelaxNG. */
 		    if (ctxtGiven) {
-			/* error code */
-                        xmlSchemaCustomErr(ACTXT_CAST pctxt,
-			    ret, facet->node, WXS_BASIC_CAST typeDecl,
-			    "The value '%s' of the facet '%s' is not a valid "
-			    "'nonNegativeInteger'",
-			    facet->value,
-			    xmlSchemaFacetTypeToString(facet->type));
-                    }
-                }
-                break;
-            }
+			PERROR_INT("xmlSchemaCheckFacet",
+			    "validating facet value");
+		    }
+		    goto internal_error;
+		}
+		ret = XML_SCHEMAP_INVALID_FACET_VALUE;
+		/* No error message for RelaxNG. */
+		if (ctxtGiven) {
+		    /* error code */
+		    xmlSchemaCustomErr4(ACTXT_CAST pctxt,
+			ret, facet->node, WXS_BASIC_CAST typeDecl,
+			"The value '%s' of the facet '%s' is not a valid '%s'",			
+			facet->value,
+			xmlSchemaFacetTypeToString(facet->type),
+			(facet->type != XML_SCHEMA_FACET_TOTALDIGITS) ? 
+			    BAD_CAST "nonNegativeInteger" :
+			    BAD_CAST "positiveInteger",
+			NULL);
+		}
+	    }
+	    break;
+            
         case XML_SCHEMA_FACET_WHITESPACE:{
                 if (xmlStrEqual(facet->value, BAD_CAST "preserve")) {
                     facet->whitespace = XML_SCHEMAS_FACET_PRESERVE;

@@ -434,9 +434,7 @@ xmlSchemaInitTypes(void)
 	}
 	memset(wild, 0, sizeof(xmlSchemaWildcard));
 	wild->type = XML_SCHEMA_TYPE_ANY;
-	wild->any = 1;
-	wild->minOccurs = 1;
-	wild->maxOccurs = 1;
+	wild->any = 1;	
 	wild->processContents = XML_SCHEMAS_ANY_LAX;	
 	particle->children = (xmlSchemaTreeItemPtr) wild;    
 	/*
@@ -450,9 +448,7 @@ xmlSchemaInitTypes(void)
 	}
 	memset(wild, 0, sizeof(xmlSchemaWildcard));
 	wild->any = 1;
-	wild->processContents = XML_SCHEMAS_ANY_LAX;
-	wild->minOccurs = 1;
-	wild->maxOccurs = 1;
+	wild->processContents = XML_SCHEMAS_ANY_LAX;	
 	xmlSchemaTypeAnyTypeDef->attributeWildcard = wild;
     }
     xmlSchemaTypeAnySimpleTypeDef = xmlSchemaInitBasicType("anySimpleType", 
@@ -5377,7 +5373,7 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	case XML_SCHEMA_FACET_FRACTIONDIGITS:
 
 	    if ((facet->val == NULL) ||
-		((facet->val->type != XML_SCHEMAS_DECIMAL) &&
+		((facet->val->type != XML_SCHEMAS_PINTEGER) &&
 		 (facet->val->type != XML_SCHEMAS_NNINTEGER)) ||
 		(facet->val->value.decimal.frac != 0)) {
 		return(-1);

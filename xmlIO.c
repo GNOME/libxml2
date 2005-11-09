@@ -862,6 +862,41 @@ xmlFileFlush (void * context) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
+/**
+ * xmlBufferWrite:
+ * @context:  the xmlBuffer
+ * @buffer:  the data to write
+ * @len:  number of bytes to write
+ *
+ * Write @len bytes from @buffer to the xml buffer
+ *
+ * Returns the number of bytes written
+ */
+static int
+xmlBufferWrite (void * context, const char * buffer, int len) {
+    int ret;
+
+    ret = xmlBufferAdd((xmlBufferPtr) context, (const xmlChar *) buffer, len);
+    if (ret != 0)
+        return(-1);
+    return(len);
+}
+
+/**
+ * xmlBufferClose:
+ * @context:  the xmlBuffer
+ *
+ * Close a buffer
+ *
+ * Returns 0 or -1 in case of error
+ */
+static int
+xmlBufferClose (void * context) {
+    return(0);
+}
+#endif
+
 #ifdef HAVE_ZLIB_H
 /************************************************************************
  *									*
@@ -2438,6 +2473,33 @@ xmlOutputBufferCreateFile(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
     return(ret);
 }
+
+/**
+ * xmlOutputBufferCreateBuffer:
+ * @buffer:  a xmlBufferPtr
+ * @encoder:  the encoding converter or NULL
+ *
+ * Create a buffered output for the progressive saving to a xmlBuffer
+ *
+ * Returns the new parser output or NULL
+ */
+xmlOutputBufferPtr
+xmlOutputBufferCreateBuffer(xmlBufferPtr buffer,
+                            xmlCharEncodingHandlerPtr encoder) {
+    xmlOutputBufferPtr ret;
+
+    if (buffer == NULL) return(NULL);
+
+    ret = xmlAllocOutputBuffer(encoder);
+    if (ret != NULL) {
+        ret->context = buffer;
+        ret->writecallback = xmlBufferWrite;
+        ret->closecallback = xmlBufferClose;
+    }
+
+    return(ret);
+}
+
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**

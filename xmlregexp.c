@@ -1526,8 +1526,8 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		} else {
 		    newstate = xmlRegNewState(ctxt);
 		    xmlRegStatePush(ctxt, newstate);
-		    ctxt->state = newstate;
 		}
+		ctxt->state = newstate;
 		xmlFAGenerateCountedTransition(ctxt, atom->stop,
 			                       newstate, counter);
 	    }

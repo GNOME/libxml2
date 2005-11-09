@@ -344,9 +344,9 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt)
         ctxt->indent[ctxt->indent_nr * ctxt->indent_size] = 0;
     }
 
-	if (xmlSaveNoEmptyTags) {
-		ctxt->options |= XML_SAVE_NO_EMPTY;
-	}
+    if (xmlSaveNoEmptyTags) {
+	ctxt->options |= XML_SAVE_NO_EMPTY;
+    }
 }
 
 /**
@@ -400,10 +400,10 @@ xmlNewSaveCtxt(const char *encoding, int options)
      * Use the options
      */
 
-	/* Re-check this option as it may already have been set */
-	if ((ret->options & XML_SAVE_NO_EMPTY) && ! (options & XML_SAVE_NO_EMPTY)) {
-		options |= XML_SAVE_NO_EMPTY;
-	}
+    /* Re-check this option as it may already have been set */
+    if ((ret->options & XML_SAVE_NO_EMPTY) && ! (options & XML_SAVE_NO_EMPTY)) {
+	options |= XML_SAVE_NO_EMPTY;
+    }
 
     ret->options = options;
     if (options & XML_SAVE_FORMAT)
@@ -1477,13 +1477,36 @@ xmlSaveToFilename(const char *filename, const char *encoding, int options)
  * with the encoding and the options given
  *
  * Returns a new serialization context or NULL in case of error.
+ */
+
 xmlSaveCtxtPtr
 xmlSaveToBuffer(xmlBufferPtr buffer, const char *encoding, int options)
 {
-    TODO
-    return(NULL);
+    xmlSaveCtxtPtr ret;
+    xmlOutputBufferPtr out_buff;
+    xmlCharEncodingHandlerPtr handler;
+
+    ret = xmlNewSaveCtxt(encoding, options);
+    if (ret == NULL) return(NULL);
+
+    if (encoding != NULL) {
+        handler = xmlFindCharEncodingHandler(encoding);
+        if (handler == NULL) {
+            xmlFree(ret);
+            return(NULL);
+        }
+    } else
+        handler = NULL;
+    out_buff = xmlOutputBufferCreateBuffer(buffer, handler);
+    if (out_buff == NULL) {
+        xmlFree(ret);
+        if (handler) xmlCharEncCloseFunc(handler);
+        return(NULL);
+    }
+
+    ret->buf = out_buff;
+    return(ret);
 }
- */
 
 /**
  * xmlSaveToIO:

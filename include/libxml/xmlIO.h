@@ -232,6 +232,10 @@ XMLPUBFUN xmlOutputBufferPtr XMLCALL
 					 xmlCharEncodingHandlerPtr encoder);
 
 XMLPUBFUN xmlOutputBufferPtr XMLCALL
+	xmlOutputBufferCreateBuffer	(xmlBufferPtr buffer,
+					 xmlCharEncodingHandlerPtr encoder);
+
+XMLPUBFUN xmlOutputBufferPtr XMLCALL
 	xmlOutputBufferCreateFd		(int fd,
 					 xmlCharEncodingHandlerPtr encoder);
 

@@ -1,3 +1,9 @@
+Wed Nov  9 09:54:54 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c xmlIO.c include/libxml/xmlIO.h include/libxml/xmlsave.h:
+	  applied patch from Geert Jansen to implement the save function to 
+	  a xmlBuffer, and a bit of cleanup.
+
 Mon Nov  7 14:58:39 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c xmlschemastypes.c: Fixed the type of the

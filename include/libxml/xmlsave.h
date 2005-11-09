@@ -45,14 +45,12 @@ XMLPUBFUN xmlSaveCtxtPtr XMLCALL
 		xmlSaveToFilename	(const char *filename,
 					 const char *encoding,
 					 int options);
-/******
-  Not yet implemented.
 
 XMLPUBFUN xmlSaveCtxtPtr XMLCALL
 		xmlSaveToBuffer		(xmlBufferPtr buffer,
 					 const char *encoding,
 					 int options);
- ******/
+
 XMLPUBFUN xmlSaveCtxtPtr XMLCALL
 		xmlSaveToIO		(xmlOutputWriteCallback iowrite,
 					 xmlOutputCloseCallback ioclose,

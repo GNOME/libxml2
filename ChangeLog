@@ -1,3 +1,8 @@
+Wed Nov  9 13:07:24 EST 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlIO.c xmlwriter.c: function consolidation when writing to xmlBuffer.
+	  Return error condition not len if xmlwriter fails writing to buffer.
+
 Wed Nov  9 09:54:54 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c xmlIO.c include/libxml/xmlIO.h include/libxml/xmlsave.h:

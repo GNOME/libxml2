@@ -99,9 +99,6 @@ static int xmlCmpTextWriterStackEntry(const void *data0,
 static void xmlFreeTextWriterNsStackEntry(xmlLinkPtr lk);
 static int xmlCmpTextWriterNsStackEntry(const void *data0,
                                         const void *data1);
-static int xmlTextWriterWriteMemCallback(void *context,
-                                         const xmlChar * str, int len);
-static int xmlTextWriterCloseMemCallback(void *context);
 static int xmlTextWriterWriteDocCallback(void *context,
                                          const xmlChar * str, int len);
 static int xmlTextWriterCloseDocCallback(void *context);
@@ -275,11 +272,8 @@ xmlNewTextWriterMemory(xmlBufferPtr buf, int compression ATTRIBUTE_UNUSED)
     xmlOutputBufferPtr out;
 
 /*::todo handle compression */
-    out = xmlOutputBufferCreateIO((xmlOutputWriteCallback)
-                                  xmlTextWriterWriteMemCallback,
-                                  (xmlOutputCloseCallback)
-                                  xmlTextWriterCloseMemCallback,
-                                  (void *) buf, NULL);
+    out = xmlOutputBufferCreateBuffer(buf, NULL);
+
     if (out == NULL) {
         xmlWriterErrMsg(NULL, XML_ERR_NO_MEMORY,
                         "xmlNewTextWriterMemory : out of memory!\n");

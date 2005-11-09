@@ -2490,12 +2490,11 @@ xmlOutputBufferCreateBuffer(xmlBufferPtr buffer,
 
     if (buffer == NULL) return(NULL);
 
-    ret = xmlAllocOutputBuffer(encoder);
-    if (ret != NULL) {
-        ret->context = buffer;
-        ret->writecallback = xmlBufferWrite;
-        ret->closecallback = xmlBufferClose;
-    }
+    ret = xmlOutputBufferCreateIO((xmlOutputWriteCallback)
+                                  xmlBufferWrite,
+                                  (xmlOutputCloseCallback)
+                                  xmlBufferClose,
+                                  (void *) buffer, encoder);
 
     return(ret);
 }

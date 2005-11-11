@@ -22156,15 +22156,16 @@ xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
 			      int count)
 {
     int i, res;
-    const xmlChar *value = NULL;
+    xmlChar *value = NULL;
 
     *buf = xmlStrdup(BAD_CAST "[");
     for (i = 0; i < count; i++) {
 	*buf = xmlStrcat(*buf, BAD_CAST "'");
-	res = xmlSchemaGetCanonValueWhtsp(seq[i]->val, &value,
-	    xmlSchemaGetWhiteSpaceFacetValue(seq[i]->type));
+	res = xmlSchemaGetCanonValueWhtspExt(seq[i]->val, 
+	    xmlSchemaGetWhiteSpaceFacetValue(seq[i]->type),
+	    &value);
 	if (res == 0)
-	    *buf = xmlStrcat(*buf, value);
+	    *buf = xmlStrcat(*buf, BAD_CAST value);
 	else {
 	    VERROR_INT("xmlSchemaFormatIDCKeySequence",
 		"failed to compute a canonical value");
@@ -22175,7 +22176,7 @@ xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
 	else
 	    *buf = xmlStrcat(*buf, BAD_CAST "'");
 	if (value != NULL) {
-	    xmlFree((xmlChar *) value);
+	    xmlFree(value);
 	    value = NULL;
 	}
     }

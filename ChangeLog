@@ -1,3 +1,11 @@
+Fri Nov 11 13:48:52 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Changed xmlSchemaFormatIDCKeySequence()
+	  to use xmlSchemaGetCanonValueWhtspExt() in order to
+	  correctly report values for xs:anySimpleType.
+	* test/schemas/idc-keyref-err1*
+	  result/schemas/idc-keyref-err1*: Added a test for this change.
+
 Wed Nov  9 13:07:24 EST 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlIO.c xmlwriter.c: function consolidation when writing to xmlBuffer.

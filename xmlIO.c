@@ -882,19 +882,6 @@ xmlBufferWrite (void * context, const char * buffer, int len) {
         return(-1);
     return(len);
 }
-
-/**
- * xmlBufferClose:
- * @context:  the xmlBuffer
- *
- * Close a buffer
- *
- * Returns 0 or -1 in case of error
- */
-static int
-xmlBufferClose (void * context) {
-    return(0);
-}
 #endif
 
 #ifdef HAVE_ZLIB_H
@@ -2493,8 +2480,7 @@ xmlOutputBufferCreateBuffer(xmlBufferPtr buffer,
     ret = xmlOutputBufferCreateIO((xmlOutputWriteCallback)
                                   xmlBufferWrite,
                                   (xmlOutputCloseCallback)
-                                  xmlBufferClose,
-                                  (void *) buffer, encoder);
+                                  NULL, (void *) buffer, encoder);
 
     return(ret);
 }

@@ -2935,6 +2935,8 @@ schemasOneTest(const char *sch,
 	if (compareFileMem(err, testErrors, testErrorsSize)) {
 	    fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
 	    ret = 1;
+	} else {
+	    ret = 0;
 	}
     }
 
@@ -3033,8 +3035,8 @@ schemasTest(const char *filename,
 	    nb_tests++;
 	    ret = schemasOneTest(filename, instance, result, err,
 	                         options, schemas);
-	    if (res != 0)
-		ret = res;
+	    if (ret != 0)
+		res = ret;
 	}
     }
     globfree(&globbuf);

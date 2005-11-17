@@ -1,3 +1,8 @@
+Thu Nov 17 14:11:43 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: removed unreachable code pointed out by 
+	  Oleksandr Kononenko, fixes bug #321695
+
 Thu Nov 17 08:24:31 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: use ctxt->standalone = -2 to indicate that the

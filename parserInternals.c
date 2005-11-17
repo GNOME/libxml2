@@ -1206,50 +1206,13 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
         }
         return (0);
-    } else {
-        if ((input->length == 0) || (input->buf == NULL)) {
-            /*
-             * When parsing a static memory array one must know the
-             * size to be able to convert the buffer.
-             */
-            xmlErrInternal(ctxt, "switching encoding : no input\n", NULL);
-            return (-1);
-        } else {
-            int processed;
-
-            /*
-             * Shrink the current input buffer.
-             * Move it as the raw buffer and create a new input buffer
-             */
-            processed = input->cur - input->base;
-
-            input->buf->raw = xmlBufferCreate();
-            xmlBufferAdd(input->buf->raw, input->cur,
-                         input->length - processed);
-            input->buf->buffer = xmlBufferCreate();
-
-            /*
-             * convert as much as possible of the raw input
-             * to the parser reading buffer.
-             */
-            nbchars = xmlCharEncInFunc(input->buf->encoder,
-                                       input->buf->buffer,
-                                       input->buf->raw);
-            if (nbchars < 0) {
-                xmlErrInternal(ctxt,
-                               "switching encoding: encoder error\n",
-                               NULL);
-                return (-1);
-            }
-
-            /*
-             * Conversion succeeded, get rid of the old buffer
-             */
-            if ((input->free != NULL) && (input->base != NULL))
-                input->free((xmlChar *) input->base);
-            input->base = input->cur = input->buf->buffer->content;
-            input->end = &input->base[input->buf->buffer->use];
-        }
+    } else if (input->length == 0) {
+	/*
+	 * When parsing a static memory array one must know the
+	 * size to be able to convert the buffer.
+	 */
+	xmlErrInternal(ctxt, "switching encoding : no input\n", NULL);
+	return (-1);
     }
     return (0);
 }

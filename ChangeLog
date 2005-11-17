@@ -1,3 +1,9 @@
+Thu Nov 17 08:24:31 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: use ctxt->standalone = -2 to indicate that the
+	  XMLDecl was parsed but no standalone attribute was found,
+	  suggested by Michael Day to detect if an XMLDecl was found.
+
 Tue Nov 15 09:49:24 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c: Hisashi Fujinaka pointed that errors in Schemas tests

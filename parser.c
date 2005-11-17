@@ -8901,6 +8901,13 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *version;
 
     /*
+     * This value for standalone indicates that the document has an
+     * XML declaration but it does not have a standalone attribute.
+     * It will be overwritten later if a standalone attribute is found.
+     */
+    ctxt->input->standalone = -2;
+
+    /*
      * We know that '<?xml' is here.
      */
     SKIP(5);

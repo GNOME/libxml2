@@ -113,6 +113,10 @@ XMLPUBFUN void XMLCALL
 					 xmlSchemaValidityErrorFunc err,
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
+XMLPUBFUN void XMLCALL
+	    xmlSchemaSetParserStructuredErrors(xmlSchemaParserCtxtPtr ctxt,
+					 xmlStructuredErrorFunc serror,
+					 void *ctx);
 XMLPUBFUN int XMLCALL
 		xmlSchemaGetParserErrors(xmlSchemaParserCtxtPtr ctxt,
 					xmlSchemaValidityErrorFunc * err,
@@ -140,7 +144,8 @@ XMLPUBFUN void XMLCALL
 					 void *ctx);
 XMLPUBFUN void XMLCALL
 	    xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
-								  xmlStructuredErrorFunc serror, void *ctx);
+					 xmlStructuredErrorFunc serror,
+					 void *ctx);
 XMLPUBFUN int XMLCALL
 	    xmlSchemaGetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc *err,

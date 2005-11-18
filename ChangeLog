@@ -1,3 +1,10 @@
+Fri Nov 18 18:13:38 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/xmlschemas.h:
+	  Added xmlSchemaSetParserStructuredErrors() to the API.
+	  Fixed channeling of error relevant information to
+	  subsequent parser/validation contexts.
+
 Thu Nov 17 14:11:43 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: removed unreachable code pointed out by 

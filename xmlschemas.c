@@ -580,7 +580,7 @@ struct _xmlSchemaConstructionCtxt {
 
 struct _xmlSchemaParserCtxt {
     int type;
-    void *userData;             /* user specific data block */    
+    void *errCtxt;             /* user specific error context */    
     xmlSchemaValidityErrorFunc error;   /* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning;       /* the callback in case of warning */
     xmlSchemaValidError err;
@@ -957,7 +957,7 @@ struct _xmlSchemaAttrInfo {
  */
 struct _xmlSchemaValidCtxt {
     int type;
-    void *userData;             /* user specific data block */
+    void *errCtxt;             /* user specific data block */
     xmlSchemaValidityErrorFunc error;   /* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning; /* the callback in case of warning */
     xmlStructuredErrorFunc serror;
@@ -1880,7 +1880,7 @@ xmlSchemaPErr(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
         ctxt->nberrors++;
 	ctxt->err = error;
         channel = ctxt->error;
-        data = ctxt->userData;
+        data = ctxt->errCtxt;
 	schannel = ctxt->serror;
     }
     __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASP,
@@ -1946,7 +1946,7 @@ xmlSchemaPErrExt(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
         ctxt->nberrors++;
 	ctxt->err = error;
         channel = ctxt->error;
-        data = ctxt->userData;
+        data = ctxt->errCtxt;
 	schannel = ctxt->serror;
     }
     __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASP,
@@ -2026,7 +2026,7 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		channel = vctxt->warning;
 	    }
 	    schannel = vctxt->serror;
-	    data = vctxt->userData;
+	    data = vctxt->errCtxt;
 
 	    /*
 	    * Error node. If we specify a line number, then
@@ -2078,7 +2078,7 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		channel = pctxt->warning;
 	    }
 	    schannel = pctxt->serror;
-	    data = pctxt->userData;
+	    data = pctxt->errCtxt;
 	    __xmlRaiseError(schannel, channel, data, ctxt,
 		node, XML_FROM_SCHEMASP, error,
 		errorLevel, NULL, 0,
@@ -9951,7 +9951,9 @@ xmlSchemaCreatePCtxtOnVCtxt(xmlSchemaValidCtxtPtr vctxt)
 	}
 	/* TODO: Pass user data. */
 	xmlSchemaSetParserErrors(vctxt->pctxt, vctxt->error,
-	    vctxt->warning, vctxt->userData);
+	    vctxt->warning, vctxt->errCtxt);
+	xmlSchemaSetParserStructuredErrors(vctxt->pctxt, vctxt->serror,
+	    vctxt->errCtxt);
     }
     return (0);
 }
@@ -10149,7 +10151,9 @@ xmlSchemaParseNewDoc(xmlSchemaParserCtxtPtr pctxt,
     */
     newpctxt->schema = schema;
     xmlSchemaSetParserErrors(newpctxt, pctxt->error, pctxt->warning,
-	pctxt->userData);
+	pctxt->errCtxt);
+    xmlSchemaSetParserStructuredErrors(newpctxt, pctxt->serror,
+	pctxt->errCtxt);
     newpctxt->counter = pctxt->counter;
     
 
@@ -15623,7 +15627,9 @@ xmlSchemaCreateVCtxtOnPCtxt(xmlSchemaParserCtxtPtr ctxt)
 	}
 	/* TODO: Pass user data. */
 	xmlSchemaSetValidErrors(ctxt->vctxt,
-	    ctxt->error, ctxt->warning, ctxt->userData);
+	    ctxt->error, ctxt->warning, ctxt->errCtxt);
+	xmlSchemaSetValidStructuredErrors(ctxt->vctxt,
+	    ctxt->serror, ctxt->errCtxt);
     }
     return (0);
 }
@@ -21106,7 +21112,30 @@ xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
         return;
     ctxt->error = err;
     ctxt->warning = warn;
-    ctxt->userData = ctx;
+    ctxt->errCtxt = ctx;
+    if (ctxt->vctxt != NULL)
+	xmlSchemaSetValidErrors(ctxt->vctxt, err, warn, ctx);
+}
+
+/**
+ * xmlSchemaSetParserStructuredErrors:
+ * @ctxt:  a schema parser context
+ * @serror:  the structured error function
+ * @ctx: the functions context
+ *
+ * Set the structured error callback
+ */
+void
+xmlSchemaSetParserStructuredErrors(xmlSchemaParserCtxtPtr ctxt,
+				   xmlStructuredErrorFunc serror,
+				   void *ctx)
+{
+    if (ctxt == NULL)
+	return;
+    ctxt->serror = serror;
+    ctxt->errCtxt = ctx;
+    if (ctxt->vctxt != NULL)
+	xmlSchemaSetValidStructuredErrors(ctxt->vctxt, serror, ctx);
 }
 
 /**
@@ -21122,8 +21151,8 @@ xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
  */
 int
 xmlSchemaGetParserErrors(xmlSchemaParserCtxtPtr ctxt,
-							 xmlSchemaValidityErrorFunc * err,
-							 xmlSchemaValidityWarningFunc * warn, void **ctx)
+			 xmlSchemaValidityErrorFunc * err,
+			 xmlSchemaValidityWarningFunc * warn, void **ctx)
 {
 	if (ctxt == NULL)
 		return(-1);
@@ -21132,7 +21161,7 @@ xmlSchemaGetParserErrors(xmlSchemaParserCtxtPtr ctxt,
 	if (warn != NULL)
 		*warn = ctxt->warning;
 	if (ctx != NULL)
-		*ctx = ctxt->userData;
+		*ctx = ctxt->errCtxt;
 	return(0);
 }
 
@@ -27185,7 +27214,7 @@ xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,
         return;
     ctxt->error = err;
     ctxt->warning = warn;
-    ctxt->userData = ctx;
+    ctxt->errCtxt = ctx;
     if (ctxt->pctxt != NULL)
 	xmlSchemaSetParserErrors(ctxt->pctxt, err, warn, ctx);
 }
@@ -27200,14 +27229,16 @@ xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,
  */
 void
 xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
-								  xmlStructuredErrorFunc serror, void *ctx)
+				  xmlStructuredErrorFunc serror, void *ctx)
 {
     if (ctxt == NULL)
         return;
 	ctxt->serror = serror;
     ctxt->error = NULL;
     ctxt->warning = NULL;
-    ctxt->userData = ctx;
+    ctxt->errCtxt = ctx;
+    if (ctxt->pctxt != NULL)
+	xmlSchemaSetParserStructuredErrors(ctxt->pctxt, serror, ctx);
 }
 
 /**
@@ -27223,8 +27254,8 @@ xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
  */
 int
 xmlSchemaGetValidErrors(xmlSchemaValidCtxtPtr ctxt,
-						xmlSchemaValidityErrorFunc * err,
-						xmlSchemaValidityWarningFunc * warn, void **ctx)
+			xmlSchemaValidityErrorFunc * err,
+			xmlSchemaValidityWarningFunc * warn, void **ctx)
 {
 	if (ctxt == NULL)
 		return (-1);
@@ -27233,7 +27264,7 @@ xmlSchemaGetValidErrors(xmlSchemaValidCtxtPtr ctxt,
 	if (warn != NULL)
 		*warn = ctxt->warning;
 	if (ctx != NULL)
-		*ctx = ctxt->userData;
+		*ctx = ctxt->errCtxt;
 	return (0);
 }
 

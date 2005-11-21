@@ -1,3 +1,8 @@
+Mon Nov 21 12:23:28 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: Albert Chin found another signed/unsigned problem
+	  in the date and time code raised on IRIX 6.5
+
 Fri Nov 18 18:13:38 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/xmlschemas.h:

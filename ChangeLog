@@ -1,3 +1,11 @@
+Tue Nov 22 18:31:34 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a bug in xmlSchemaFindRedefCompInGraph()
+	  which caused the search for components to stop at the
+	  first encountered attribute group component.
+	  Fixed error report in xmlSchemaCheckSRCRedefineFirst(): the
+	  designation of a not-found component was not reported.
+
 Mon Nov 21 12:23:28 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: Albert Chin found another signed/unsigned problem

@@ -5024,6 +5024,7 @@ xmlSchemaFindRedefCompInGraph(xmlSchemaBucketPtr bucket,
 		    {
 			return(ret);
 		    }
+		    break;
 		default:
 		    /* Should not be hit. */
 		    return(NULL);
@@ -20238,7 +20239,7 @@ xmlSchemaCheckSRCRedefineFirst(xmlSchemaParserCtxtPtr pctxt)
 		* reference kind.		
 		*/
 		XML_SCHEMAP_SRC_REDEFINE, node, NULL,
-		"The %s to be redefined could not be found in "
+		"The %s '%s' to be redefined could not be found in "
 		"the redefined schema",
 		WXS_ITEM_TYPE_NAME(item),
 		xmlSchemaFormatQName(&str, redef->refTargetNs,

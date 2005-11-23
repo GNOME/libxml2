@@ -21423,7 +21423,7 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
     iattr = xmlSchemaGetMetaAttrInfo(vctxt,
 	XML_SCHEMA_ATTR_INFO_META_XSI_SCHEMA_LOC);
     if (iattr == NULL)
-	xmlSchemaGetMetaAttrInfo(vctxt,
+	iattr = xmlSchemaGetMetaAttrInfo(vctxt,
 	XML_SCHEMA_ATTR_INFO_META_XSI_NO_NS_SCHEMA_LOC);
     if (iattr == NULL)
 	return (0);

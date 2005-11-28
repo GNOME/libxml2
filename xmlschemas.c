@@ -98,7 +98,7 @@
 
 /* #define ENABLE_NAMED_LOCALS */
 
-#define ENABLE_IDC_NODE_TABLES
+/* #define ENABLE_IDC_NODE_TABLES_TEST */
 
 #define DUMP_CONTENT_MODEL
 
@@ -23261,13 +23261,14 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
 				xmlSchemaVErrMemory(NULL, 
 				    "re-allocating IDC list of node-table items", NULL);
 				goto internal_error;
-			    }
-			}						
+			    }			    
+			}
+			parNodes = parBind->nodeTable;
 			/*
 			* Append the new node-table entry to the 'new node-table
 			* entries' section.
 			*/
-			parBind->nodeTable[parBind->nbNodes++] = node;
+			parNodes[parBind->nbNodes++] = node;
 		    }
 
 		}	
@@ -27491,7 +27492,7 @@ xmlSchemaPreRun(xmlSchemaValidCtxtPtr vctxt) {
     vctxt->skipDepth = -1;
     vctxt->xsiAssemble = 0;
     vctxt->hasKeyrefs = 0;
-#ifdef ENABLE_IDC_NODE_TABLES
+#ifdef ENABLE_IDC_NODE_TABLES_TEST
     vctxt->createIDCNodeTables = 1;
 #else
     vctxt->createIDCNodeTables = 0;

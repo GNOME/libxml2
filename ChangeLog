@@ -1,3 +1,15 @@
+Mon Nov 28 13:25:11 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: An assignment to a local variable, which was
+	  used to access the IDC node list, was missing after the
+	  reallocation of the list (reported by Fabrice GUY
+	  bug #322411). Renamed the define ENABLE_IDC_NODE_TABLES
+	  to ENABLE_IDC_NODE_TABLES_TEST and *disabled* it, since
+	  it is used to force bubbling of IDC node tables even
+	  if not necessary; this was intended to be used for test
+	  purposes, but I obviously missed to disable it (although
+	  it apparently helped finding the bug).
+
 Wed Nov 23 17:34:52 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: In xmlSchemaAssembleByXSI() the return value

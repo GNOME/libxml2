@@ -1,3 +1,13 @@
+Mon Nov 28 17:28:53 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Fixed parsing of xs:decimal to
+	  allow/deny special lexical forms. Fixed the totalDigits
+	  for values in the range (x < 1) &&  (x > -1) && (x != 0);
+	  E.g "0.123" has now a totalDigits of 3 (was 4 previously).
+	  Adjusted the comparison function for decimals due to this
+	  change. As a side effect comparison against zeroes was
+	  optimized.
+
 Mon Nov 28 13:25:11 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: An assignment to a local variable, which was

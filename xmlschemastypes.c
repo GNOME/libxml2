@@ -2244,100 +2244,122 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
             }
         case XML_SCHEMAS_DECIMAL:{
                 const xmlChar *cur = value;
-                unsigned int len, neg = 0;
+                unsigned int len, neg, integ, hasLeadingZeroes;
 		xmlChar cval[25];
-		xmlChar *cptr = cval;
-		unsigned int dec = ~0u;
+		xmlChar *cptr = cval;		
 
-                if (cur == NULL)
+                if ((cur == NULL) || (*cur == 0))
                     goto return1;
 
+		/*
+		* xs:decimal has a whitespace-facet value of 'collapse'.
+		*/
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
 
-		/* First we handle an optional sign */
-                if (*cur == '+')
+		/*
+		* First we handle an optional sign.
+		*/
+		neg = 0;
+                if (*cur == '-') {
+		    neg = 1;
                     cur++;
-                else if (*cur == '-') {
-                    neg = 1;
+		} else if (*cur == '+')
                     cur++;
-                }
+		/*
+		* Disallow: "", "-", "- "
+		*/
+		if (*cur == 0)
+		    goto return1;
 		/*
 		 * Next we "pre-parse" the number, in preparation for calling
 		 * the common routine xmlSchemaParseUInt.  We get rid of any
 		 * leading zeroes (because we have reserved only 25 chars),
-		 * and note the position of any decimal point.
+		 * and note the position of a decimal point.
 		 */
 		len = 0;
+		integ = ~0u;
+		hasLeadingZeroes = 0;
 		/*
 		* Skip leading zeroes.
 		*/
-		while (*cur == '0')
+		while (*cur == '0') {
 		    cur++;
+		    hasLeadingZeroes = 1;
+		}
 		if (*cur != 0) {
-		    while (len < 24) {
+		    do {
 			if ((*cur >= '0') && (*cur <= '9')) {
 			    *cptr++ = *cur++;
 			    len++;
 			} else if (*cur == '.') {
-			    if (len == 0)
-			        len++;
-			    if (dec != ~0u)
-				goto return1;	/* multiple decimal points */
 			    cur++;
-			    if ((*cur == 0) && (cur -1 == value))
+			    integ = len;
+			    do {
+				if ((*cur >= '0') && (*cur <= '9')) {
+				    *cptr++ = *cur++;
+				    len++;
+				} else
+				    break;
+			    } while (len < 24);
+			    /*
+			    * Disallow "." but allow "00."
+			    */
+			    if ((len == 0) && (!hasLeadingZeroes))
 				goto return1;
-			    
-			    dec = len;
-			    while ((len < 24) && (*cur >= '0') &&
-				(*cur <= '9')) {
-				*cptr++ = *cur++;
-				len++;
-			    }
 			    break;
 			} else
 			    break;
-		    }
+		    } while (len < 24);
 		}
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
 		if (*cur != 0)
-		    goto return1;	/* error if any extraneous chars */
+		    goto return1; /* error if any extraneous chars */
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_DECIMAL);
                     if (v != NULL) {
 			/*
-		 	* If a mixed decimal, get rid of trailing zeroes
-		 	*/
-			if (dec != ~0u) {
-			    while ((len > dec) && (cptr > cval) &&
-				(*(cptr-1) == '0')) {
-				cptr--;
-				len--;
-			    }
-			}
-			*cptr = 0;	/* Terminate our (preparsed) string */
-			cptr = cval;
-			/*
 		 	* Now evaluate the significant digits of the number
 		 	*/
-			if (*cptr != 0) 
-			    xmlSchemaParseUInt((const xmlChar **)&cptr,
-					    &v->value.decimal.lo,
-					    &v->value.decimal.mi,
-					    &v->value.decimal.hi);
+			if (len != 0) {
+			    
+			    if (integ != ~0u) {
+				/*
+				* Get rid of trailing zeroes in the
+				* fractional part.
+				*/
+				while ((len != integ) && (*(cptr-1) == '0')) {
+				    cptr--;
+				    len--;
+				}
+			    }
+			    /*
+			    * Terminate the (preparsed) string.
+			    */
+			    if (len != 0) {
+				*cptr = 0; 
+				cptr = cval;
+				
+				xmlSchemaParseUInt((const xmlChar **)&cptr,
+				    &v->value.decimal.lo,
+				    &v->value.decimal.mi,
+				    &v->value.decimal.hi);
+			    }
+			}
 			/*
 			* Set the total digits to 1 if a zero value.
 			*/
-			if (len == 0)
-			    len++;
                         v->value.decimal.sign = neg;
-			if (dec == ~0u) {
-			    v->value.decimal.frac = 0;
-			    v->value.decimal.total = len;
+			if (len == 0) {
+			    /* Speedup for zero values. */
+			    v->value.decimal.total = 1;
 			} else {
-			    v->value.decimal.frac = len - dec;
 			    v->value.decimal.total = len;
+			    if (integ == ~0u)
+				v->value.decimal.frac = 0;
+			    else
+				v->value.decimal.frac = len - integ;
 			}
                         *val = v;
                     }
@@ -3402,10 +3424,42 @@ xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
      */
     integx = x->value.decimal.total - x->value.decimal.frac;
     integy = y->value.decimal.total - y->value.decimal.frac;
+    /*
+    * NOTE: We changed the "total" for values like "0.1"
+    *   (or "-0.1" or ".1") to be 1, which was 2 previously.
+    *   Therefore the special case, when such values are
+    *   compared with 0, needs to be handled separately;
+    *   otherwise a zero would be recognized incorrectly as
+    *   greater than those values. This has the nice side effect
+    *   that we gain an overall optimized comparison with zeroes.
+    * Note that a "0" has a "total" of 1 already.
+    */
+    if (integx == 1) {
+	if (x->value.decimal.lo == 0) {
+	    if (integy != 1)
+		return -order;
+	    else if (y->value.decimal.lo != 0)
+		return -order;
+	    else
+		return(0);
+	}
+    }
+    if (integy == 1) {
+	if (y->value.decimal.lo == 0) {
+	    if (integx != 1)
+		return order;
+	    else if (x->value.decimal.lo != 0)
+		return order;
+	    else
+		return(0);
+	}
+    }
+
     if (integx > integy)
 	return order;
     else if (integy > integx)
 	return -order;
+
     /*
      * If the number of integral digits is the same for both numbers,
      * then things get a little more complicated.  We need to "normalize"

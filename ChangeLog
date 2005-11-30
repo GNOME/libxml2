@@ -1,3 +1,8 @@
+Wed Nov 30 12:22:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/decimal* test/schemas/bug322411*: Added
+	  regression tests for the latest IDC and xs:decimal bugs.
+
 Wed Nov 30 11:57:35 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed bubbling of duplicate IDC nodes: the

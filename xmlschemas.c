@@ -80,8 +80,6 @@
 
 /* #define DEBUG_AUTOMATA 1 */
 
-#define DEBUG_ATTR_VALIDATION 0
-
 /* #define DEBUG_IDC */
 
 /* #define DEBUG_IDC_NODE_TABLE */
@@ -2677,12 +2675,12 @@ xmlSchemaFacetErr(xmlSchemaAbstractCtxtPtr actxt,
 	    xmlSchemaErr(actxt, error, node, (const char *) msg, value,
 		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_MINEXCLUSIVE) {
-	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' must be less than "
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' must be greater than "
 		"'%s'.\n");
 	    xmlSchemaErr(actxt, error, node, (const char *) msg, value,
 		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_MAXEXCLUSIVE) {
-	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' must be more than "
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' must be less than "
 		"'%s'.\n");
 	    xmlSchemaErr(actxt, error, node, (const char *) msg, value,
 		facet->value);
@@ -4492,16 +4490,16 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
     xmlSchemaPSVIIDCKeyPtr key;
     int i, j, res;
 
-    fprintf(output, "IDC: TABLES on %s\n",
+    fprintf(output, "IDC: TABLES on '%s'\n",
 	xmlSchemaFormatQName(&str, namespaceName, localName));
     FREE_AND_NULL(str)
 
     if (bind == NULL)
 	return;
     do {
-	fprintf(output, "IDC:   BINDING %s\n",
+	fprintf(output, "IDC:   BINDING '%s' (%d)\n",
 	    xmlSchemaGetComponentQName(&str, 
-		bind->definition));
+		bind->definition), bind->nbNodes);
 	FREE_AND_NULL(str)
 	for (i = 0; i < bind->nbNodes; i++) {
 	    tab = bind->nodeTable[i];
@@ -4511,7 +4509,7 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
 		if ((key != NULL) && (key->val != NULL)) {
 		    res = xmlSchemaGetCanonValue(key->val, &value);
 		    if (res >= 0)
-			fprintf(output, "\"%s\" ", value);
+			fprintf(output, "'%s' ", value);
 		    else
 			fprintf(output, "CANON-VALUE-FAILED ");
 		    if (res == 0)
@@ -4524,7 +4522,7 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
 	    fprintf(output, ")\n");
 	}
 	if (bind->dupls && bind->dupls->nbItems) {
-	    fprintf(output, "IDC:     dupls:\n");
+	    fprintf(output, "IDC:     dupls (%d):\n", bind->dupls->nbItems);
 	    for (i = 0; i < bind->dupls->nbItems; i++) {
 		tab = bind->dupls->items[i];
 		fprintf(output, "         ( ");
@@ -4533,7 +4531,7 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
 		    if ((key != NULL) && (key->val != NULL)) {
 			res = xmlSchemaGetCanonValue(key->val, &value);
 			if (res >= 0)
-			    fprintf(output, "\"%s\" ", value);
+			    fprintf(output, "'%s' ", value);
 			else
 			    fprintf(output, "CANON-VALUE-FAILED ");
 			if (res == 0)
@@ -23184,18 +23182,18 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
 		if (oldNum) {
 		    j = 0; 
 		    while (j < oldNum) {
+			parNode = parNodes[j];
 			if (nbFields == 1) {
 			    ret = xmlSchemaAreValuesEqual(
 				node->keys[0]->val,
-				parNodes[j]->keys[0]->val);
+				parNode->keys[0]->val);
 			    if (ret == -1)
 				goto internal_error;
 			    if (ret == 0) {
 				j++;
 				continue;
 			    }
-			} else {
-			    parNode = parNodes[j];
+			} else {			    
 			    for (k = 0; k < nbFields; k++) {
 				ret = xmlSchemaAreValuesEqual(
 				    node->keys[k]->val,

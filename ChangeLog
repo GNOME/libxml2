@@ -1,3 +1,10 @@
+Wed Nov 30 11:57:35 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed bubbling of duplicate IDC nodes: the
+	  parent's list of duplicates was filled with NULLs instead
+	  of the nodes under certain conditions. This lead to a
+	  segfault when the list's entries were accessed.
+
 Mon Nov 28 17:28:53 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Fixed parsing of xs:decimal to

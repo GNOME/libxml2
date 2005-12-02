@@ -1,3 +1,9 @@
+Fri Dec  2 13:51:14 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/schemas/decimal* result/schemas/bug322411*:
+	  Added missing regression test results for the latest IDC
+	  and xs:decimal bugs.
+
 Wed Nov 30 12:22:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/decimal* test/schemas/bug322411*: Added

@@ -1,3 +1,12 @@
+Mon Dec  5 16:23:49 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* Makefile.am: Tiny change for 'make tests': raised
+	  the number of expected failures for James Clark's
+	  XML Schema datatype tests from 10 to 11. The additional
+	  reported error was agreed to be correct long time ago,
+	  but we missed to adjust the message reported by
+	  the testing script.
+
 Fri Dec  2 13:51:14 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/schemas/decimal* result/schemas/bug322411*:

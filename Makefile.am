@@ -1070,7 +1070,7 @@ SchemasPythonTests:
 	    LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
 	    export LD_LIBRARY_PATH; \
 	    echo "## XML Schemas datatypes Python based test suite" ; \
-	    echo "## It is normal to see 10 errors reported" ; \
+	    echo "## It is normal to see 11 errors reported" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
 	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" MAKEFLAGS+=--silent pytests ; fi)

@@ -1,3 +1,8 @@
+Tue Dec  6 18:57:23 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: small doc patch from Aron Stansvik
+	* legacy.c: another doc patch for a deprecated API
+
 Mon Dec  5 16:23:49 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* Makefile.am: Tiny change for 'make tests': raised

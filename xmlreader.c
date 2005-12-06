@@ -4233,7 +4233,7 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
  *
  * Use W3C XSD schema to validate the document as it is processed.
  * Activation is only possible before the first Read().
- * if @xsd is NULL, then RelaxNG validation is desactivated.
+ * if @xsd is NULL, then XSD validation is desactivated.
  *
  * Returns 0 in case the schemas validation could be (des)activated and
  *         -1 in case of error.

@@ -1,3 +1,8 @@
+Wed Dec  7 14:59:01 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlreader.c include/libxml/xmlreader.h: Added
+	  xmlTextReaderSchemaValidateCtxt() to the API.
+
 Wed Dec  7 12:59:56 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a segfault: the instance document was

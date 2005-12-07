@@ -21357,6 +21357,13 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
 	* no error yet.
 	*/
 	xmlSchemaFixupComponents(pctxt);
+	ret = pctxt->err;
+	/*
+	* Not nice, but we need somehow to channel the schema parser
+	* error to the validation context.
+	*/
+	if ((ret != 0) && (vctxt->err == 0))
+	    vctxt->err = ret;
 	vctxt->nberrors += pctxt->nberrors;
     } else {
 	/* Add to validation error sum. */ 
@@ -26369,11 +26376,22 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
     }
     if (vctxt->xsiAssemble) {
 	/* 
-	* URGENT TODO: Better to fully stop validation
-	* if there was an error during dynamic schema construction.
+	* We will stop validation if there was an error during
+	* dynamic schema construction.
+	* Note that we simply set @skipDepth to 0, this could
+	* mean that a streaming document via SAX would be
+	* still read to the end but it won't be validated any more.
+	* TODO: If we are sure how to stop the validation at once
+	*   for all input scenarios, then this should be changed to
+	*   instantly stop the validation.
 	*/
-	if (xmlSchemaAssembleByXSI(vctxt) == -1)
-	    goto internal_error;
+	ret = xmlSchemaAssembleByXSI(vctxt);
+	if (ret != 0) {
+	    if (ret == -1)
+		goto internal_error;
+	    vctxt->skipDepth = 0;
+	    return(ret);
+	}
     }
     if (vctxt->depth > 0) {
 	/*

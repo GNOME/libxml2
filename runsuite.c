@@ -38,9 +38,14 @@
 static FILE *logfile = NULL;
 static int verbose = 0;
 
+
+
 #if defined(_WIN32) && !defined(__CYGWIN__)
+
 #define vsnprintf _vsnprintf
+
 #define snprintf _snprintf
+
 #endif
 
 /************************************************************************
@@ -936,9 +941,17 @@ xstcTestGroup(xmlNodePtr cur, const char *base) {
 	}
 	instance = getNext(cur, "./ts:instanceTest[1]");
 	while (instance != NULL) {
-            xstcTestInstance(instance, schemas, path, base);
+	    if (schemas != NULL) {
+		xstcTestInstance(instance, schemas, path, base);		
+	    } else {
+		/*
+		* We'll automatically mark the instances as failed
+		* if the schema was broken.
+		*/
+		nb_errors++;
+	    }
 	    instance = getNext(instance,
-	                       "following-sibling::ts:instanceTest[1]");
+		"following-sibling::ts:instanceTest[1]");
 	}
     } else if (xmlStrEqual(validity, BAD_CAST "invalid")) {
         nb_schematas++;

@@ -1,4 +1,12 @@
-Wed Dec  7 14:59:01 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+Fri Dec  9 11:01:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+
+	* runsuite.c: Changed to instantly mark instance-tests as
+	  failed if the corresponding schema was invalid. This
+	  reflects the side of the Python code for the XML Schema test
+	  suite. We now get the same number of failed tests on both
+	  sides.
+
+Wed Dec  7 14:59:01 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* xmlreader.c include/libxml/xmlreader.h: Added
 	  xmlTextReaderSchemaValidateCtxt() to the API.

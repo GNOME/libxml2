@@ -1,3 +1,9 @@
+Fri Dec  9 18:57:31 CET 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlwriter.c: Insert space between pubid and sysid when both 
+	  passed to xmlTextWriterStartDTD and indenting not being used.
+	  Remove no longer used Mem callbacks.
+
 Fri Dec  9 11:01:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* runsuite.c: Changed to instantly mark instance-tests as

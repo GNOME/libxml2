@@ -2855,8 +2855,11 @@ xmlTextWriterStartDTD(xmlTextWriterPtr writer,
             if (count < 0)
                 return -1;
             sum += count;
-        } else if (writer->indent) {
+        } else {
+			if (writer->indent)
             count = xmlOutputBufferWriteString(writer->out, "\n       ");
+            else
+                count = xmlOutputBufferWrite(writer->out, 1, " ");
             if (count < 0)
                 return -1;
             sum += count;
@@ -4285,40 +4288,6 @@ xmlCmpTextWriterNsStackEntry(const void *data0, const void *data1)
         rc = p0->elem == p1->elem;
 
     return rc;
-}
-
-/**
- * xmlTextWriterWriteMemCallback:
- * @context:  the xmlBufferPtr
- * @str:  the data to write
- * @len:  the length of the data
- *
- * Write callback for the xmlOutputBuffer with target xmlBuffer
- *
- * Returns -1, 0, 1
- */
-static int
-xmlTextWriterWriteMemCallback(void *context, const xmlChar * str, int len)
-{
-    xmlBufferPtr buf = (xmlBufferPtr) context;
-
-    xmlBufferAdd(buf, str, len);
-
-    return len;
-}
-
-/**
- * xmlTextWriterCloseMemCallback:
- * @context:  the xmlBufferPtr
- *
- * Close callback for the xmlOutputBuffer with target xmlBuffer
- *
- * Returns -1, 0, 1
- */
-static int
-xmlTextWriterCloseMemCallback(void *context ATTRIBUTE_UNUSED)
-{
-    return 0;
 }
 
 /**

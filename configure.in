@@ -589,7 +589,7 @@ dnl  DEC : Enable NaN/Inf
 dnl
 if test "${GCC}" != "yes" ; then
     case "${host}" in
-          *-*-hpux* )
+          hppa*-*-hpux* )
 	       CFLAGS="${CFLAGS} -Wp,-H30000"
 	       ;;
           *-dec-osf* )

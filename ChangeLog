@@ -1,3 +1,9 @@
+Sat Dec 10 12:08:28 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c configure.in parserInternals.c runsuite.c runtest.c
+	  testapi.c xmlschemas.c xmlschemastypes.c xmlstring.c: fixed a number
+	  of warnings shown by HP-UX compiler and reported by Rick Jones
+
 Fri Dec  9 18:57:31 CET 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlwriter.c: Insert space between pubid and sysid when both 

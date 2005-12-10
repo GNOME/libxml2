@@ -4779,7 +4779,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		}
 		break;
             case XML_PARSER_START_TAG: {
-	        const xmlChar *name, *oldname;
+	        const xmlChar *name;
 		int failed;
 		const htmlElemDesc * info;
 
@@ -4832,7 +4832,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    SKIP(2);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 			ctxt->sax->endElement(ctxt->userData, name);
-		    oldname = htmlnamePop(ctxt);
+		    htmlnamePop(ctxt);
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -4853,7 +4853,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		     */
 		    if (xmlStrEqual(name, ctxt->name)) { 
 			nodePop(ctxt);
-			oldname = htmlnamePop(ctxt);
+			htmlnamePop(ctxt);
 		    }    
 
 		    ctxt->instate = XML_PARSER_CONTENT;
@@ -4870,7 +4870,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((info != NULL) && (info->empty)) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 			ctxt->sax->endElement(ctxt->userData, name);
-		    oldname = htmlnamePop(ctxt);
+		    htmlnamePop(ctxt);
 		}
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH

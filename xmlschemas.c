@@ -2497,7 +2497,7 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
     xmlChar *str = NULL, *msg = NULL;
     xmlChar *localName, *nsName;
     const xmlChar *cur, *end;
-    int i, is_not;
+    int i;
     
     xmlSchemaFormatNodeForError(&msg, actxt, node);
     msg = xmlStrcat(msg, (const xmlChar *) message);
@@ -2520,11 +2520,8 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
 	        continue;
 	    if ((cur[0] == 'n') && (cur[1] == 'o') && (cur[2] == 't') &&
 	        (cur[3] == ' ')) {
-	        is_not = 1;
 		cur += 4;
 		str = xmlStrcat(str, BAD_CAST "##other");
-	    } else {
-	        is_not = 0;
 	    }
 	    /*
 	    * Get the local name.
@@ -7989,7 +7986,6 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	*/
 	if (nsList != NULL) {
 	    int i, count = 0;
-	    xmlNsPtr ns;
 
 	    for (i = 0; nsList[i] != NULL; i++)
 		count++;
@@ -8003,7 +7999,6 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 		return (-1);
 	    }
 	    for (i = 0; i < count; i++) {
-		ns = nsList[i];
 		nsArray[2 * i] = nsList[i]->href;
 		nsArray[2 * i + 1] = nsList[i]->prefix;
 	    }
@@ -13229,10 +13224,8 @@ xmlSchemaIsDerivedFromBuiltInType(xmlSchemaTypePtr type, int valType)
 	    (type->builtInType == XML_SCHEMAS_ANYTYPE))
 	    return (0);
 	return(xmlSchemaIsDerivedFromBuiltInType(type->subtypes, valType));
-    } else
-	return(xmlSchemaIsDerivedFromBuiltInType(type->subtypes, valType));
-
-    return (0);
+    }
+    return(xmlSchemaIsDerivedFromBuiltInType(type->subtypes, valType));
 }
 
 #if 0
@@ -13272,11 +13265,8 @@ xmlSchemaQueryBuiltInType(xmlSchemaTypePtr type)
     if (WXS_IS_COMPLEX(type))
 	return (NULL);
     if (type->type == XML_SCHEMA_TYPE_BASIC)
-	    return(type);
-    else
-	return(xmlSchemaQueryBuiltInType(type->subtypes));
-
-    return (NULL);
+	return(type);
+    return(xmlSchemaQueryBuiltInType(type->subtypes));
 }
 
 /**
@@ -17776,7 +17766,6 @@ xmlSchemaTypeFixupWhitespace(xmlSchemaTypePtr type)
 		break;
 	    }
 	}
-	return (0);
     }
     return (0);
 }

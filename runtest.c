@@ -209,7 +209,6 @@ static void globfree(glob_t *pglob) {
 static int nb_tests = 0;
 static int nb_errors = 0;
 static int nb_leaks = 0;
-static long libxmlMemoryAllocatedBase = 0;
 static int extraMemoryFromResolver = 0;
 
 static int
@@ -541,7 +540,6 @@ initializeLibxml2(void) {
     xmlSchemaInitTypes();
     xmlRelaxNGInitTypes();
 #endif
-    libxmlMemoryAllocatedBase = xmlMemUsed();
 }
 
 

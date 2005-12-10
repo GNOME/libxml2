@@ -283,7 +283,7 @@ static void des_long(int no ATTRIBUTE_UNUSED, long val ATTRIBUTE_UNUSED, int nr 
 static xmlChar gen_xmlChar(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return('a');
     if (no == 1) return(' ');
-    if (no == 2) return('ø');
+    if (no == 2) return((xmlChar) 'ø');
     return(0);
 }
 
@@ -296,7 +296,7 @@ static unsigned int gen_unsigned_int(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(0);
     if (no == 1) return(1);
     if (no == 2) return(122);
-    return(-1);
+    return((unsigned int) -1);
 }
 
 static void des_unsigned_int(int no ATTRIBUTE_UNUSED, unsigned int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -308,7 +308,7 @@ static unsigned long gen_unsigned_long(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(0);
     if (no == 1) return(1);
     if (no == 2) return(122);
-    return(-1);
+    return((unsigned long) -1);
 }
 
 static void des_unsigned_long(int no ATTRIBUTE_UNUSED, unsigned long val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {

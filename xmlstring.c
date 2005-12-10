@@ -148,7 +148,7 @@ xmlStrcmp(const xmlChar *str1, const xmlChar *str2) {
  * @str2:  the second xmlChar *
  *
  * Check if both string are equal of have same content
- * Should be a bit more readable and faster than xmlStrEqual()
+ * Should be a bit more readable and faster than xmlStrcmp()
  *
  * Returns 1 if they are equal, 0 if they are different
  */

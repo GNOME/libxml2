@@ -1880,7 +1880,7 @@ xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
     int found = 0;
 
     if ((seq == NULL) || (node == NULL))
-        return (-1);
+        return ((unsigned long) -1);
 
     /* Do a binary search for the key */
     lower = 1;

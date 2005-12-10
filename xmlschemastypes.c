@@ -1696,7 +1696,7 @@ xmlSchemaValidateDates (xmlSchemaValType type,
     ret = _xmlSchemaParseTimeZone(&(dt->value.date), &cur);
     if (collapse)
 	while IS_WSP_BLANK_CH(*cur) cur++;
-    if ((ret != 0) || (*cur != 0) || !VALID_DATETIME((&(dt->value.date))))
+    if ((ret != 0) || (*cur != 0) || (!(VALID_DATETIME((&(dt->value.date))))))
 	goto error;
 
 

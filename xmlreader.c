@@ -1664,6 +1664,9 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
         xmlBufferFree(buff2);
     }
     resbuf = buff->content;
+    buff->content = NULL;
+
+    xmlBufferFree(buff);
     return resbuf;
 }
 

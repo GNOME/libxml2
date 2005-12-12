@@ -5,10 +5,11 @@ Mon Dec 12 16:19:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 Mon Dec 12 15:11:13 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
-	* xmlschemas.c: Workaround for bug #323510: substituted the
-	  epsilon transition for a labelled transition, in order to
-	  avoid a bug in xmlregexp.c which eliminated the epsilon
-	  transition and marked the initial state as final.
+	* xmlschemas.c: Workaround for bug #323510 (reported by
+	  Jonathan Filiatrault): substituted the epsilon transition
+	  for a labelled transition, in order to avoid a bug in
+	  xmlregexp.c which eliminated the epsilon transition and
+	  marked the initial state as final.
 
 Mon Dec 12 14:25:46 CET 2005 Daniel Veillard <daniel@veillard.com>
 

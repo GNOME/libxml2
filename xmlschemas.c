@@ -12595,10 +12595,11 @@ xmlSchemaBuildContentModelForElement(xmlSchemaParserCtxtPtr ctxt,
 	} else if ((particle->maxOccurs >= UNBOUNDED) &&
 	           (particle->minOccurs < 2)) {
 	    /* Special case. */
-	    start = ctxt->state;
+	    start = ctxt->state;	    
 	    ctxt->state = xmlAutomataNewTransition2(ctxt->am, start, NULL,
-		elemDecl->name, elemDecl->targetNamespace, elemDecl);
-	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, start);
+		elemDecl->name, elemDecl->targetNamespace, elemDecl);	    
+	    ctxt->state = xmlAutomataNewTransition2(ctxt->am, ctxt->state, ctxt->state,
+		elemDecl->name, elemDecl->targetNamespace, elemDecl);	    
 	} else {
 	    int counter;
 	    int maxOccurs = particle->maxOccurs == UNBOUNDED ?

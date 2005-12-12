@@ -1,3 +1,8 @@
+Mon Dec 12 16:19:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+
+	* test/schemas/bug323510* result/schemas/bug323510*:
+	  Added regression test for bug #323510.
+
 Mon Dec 12 15:11:13 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* xmlschemas.c: Workaround for bug #323510: substituted the

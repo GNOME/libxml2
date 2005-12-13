@@ -1,3 +1,10 @@
+Tue Dec 13 12:49:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+
+	* test/schemas/bug321475* result/schemas/bug321475*:
+	  Added regression test for bug #321475 (reported by
+	  Gabor Nagy). Fixing of bug #323510 seemed to have
+	  fixed this bug as well.
+
 Mon Dec 12 16:19:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* test/schemas/bug323510* result/schemas/bug323510*:

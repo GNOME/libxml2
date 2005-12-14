@@ -1,3 +1,8 @@
+Wed Dec 14 18:11:50 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+
+	* include/libxml/xmlversion.h.in: Fixed to define
+	  LIBXML_DEBUG_RUNTIME on the basis of @WITH_RUN_DEBUG@.
+
 Tue Dec 13 12:49:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* test/schemas/bug321475* result/schemas/bug321475*:

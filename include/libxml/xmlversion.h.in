@@ -299,7 +299,7 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  *
  * Whether the runtime debugging is configured in
  */
-#if @WITH_MEM_DEBUG@
+#if @WITH_RUN_DEBUG@
 #define LIBXML_DEBUG_RUNTIME
 #endif
 

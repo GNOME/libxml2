@@ -11,9 +11,6 @@
  * daniel@veillard.com
  */
  
-/* TODO add compression support, Send the Accept- , and decompress on the
-        fly with ZLIB if found at compile-time */
-
 #define NEED_SOCKETS
 #define IN_LIBXML
 #include "libxml.h"
@@ -66,6 +63,10 @@
 #ifdef SUPPORT_IP6
 #include <resolv.h>
 #endif
+#ifdef HAVE_ZLIB_H
+#include <zlib.h>
+#endif
+
 
 #ifdef VMS
 #include <stropts>
@@ -152,6 +153,10 @@ typedef struct xmlNanoHTTPCtxt {
     char *authHeader;	/* contents of {WWW,Proxy}-Authenticate header */
     char *encoding;	/* encoding extracted from the contentType */
     char *mimeType;	/* Mime-Type extracted from the contentType */
+#ifdef HAVE_ZLIB_H
+    z_stream *strm;	/* Zlib stream object */
+    int usesGzip;	/* "Content-Encoding: gzip" was detected */
+#endif
 } xmlNanoHTTPCtxt, *xmlNanoHTTPCtxtPtr;
 
 static int initialized = 0;
@@ -413,6 +418,13 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->mimeType != NULL) xmlFree(ctxt->mimeType);
     if (ctxt->location != NULL) xmlFree(ctxt->location);
     if (ctxt->authHeader != NULL) xmlFree(ctxt->authHeader);
+#ifdef HAVE_ZLIB_H
+    if (ctxt->strm != NULL) {
+	inflateEnd(ctxt->strm);
+	xmlFree(ctxt->strm);
+    }
+#endif
+
     ctxt->state = XML_NANO_HTTP_NONE;
     if (ctxt->fd >= 0) closesocket(ctxt->fd);
     ctxt->fd = -1;
@@ -752,6 +764,26 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 	if (ctxt->authHeader != NULL)
 	    xmlFree(ctxt->authHeader);
 	ctxt->authHeader = xmlMemStrdup(cur);
+#ifdef HAVE_ZLIB_H
+    } else if ( !xmlStrncasecmp( BAD_CAST line, BAD_CAST"Content-Encoding:", 17) ) {
+	cur += 17;
+	while ((*cur == ' ') || (*cur == '\t')) cur++;
+	if ( !xmlStrncasecmp( BAD_CAST cur, BAD_CAST"gzip", 4) ) {
+	    ctxt->usesGzip = 1;
+
+	    ctxt->strm = xmlMalloc(sizeof(z_stream));
+
+	    if (ctxt->strm != NULL) {
+		ctxt->strm->zalloc = Z_NULL;
+		ctxt->strm->zfree = Z_NULL;
+		ctxt->strm->opaque = Z_NULL;
+		ctxt->strm->avail_in = 0;
+		ctxt->strm->next_in = Z_NULL;
+
+		inflateInit2( ctxt->strm, 31 );
+	    }
+	}
+#endif
     } else if ( !xmlStrncasecmp( BAD_CAST line, BAD_CAST"Content-Length:", 15) ) {
 	cur += 15;
 	ctxt->ContentLength = strtol( cur, NULL, 10 );
@@ -1156,10 +1188,37 @@ xmlNanoHTTPOpenRedir(const char *URL, char **contentType, char **redir) {
 int
 xmlNanoHTTPRead(void *ctx, void *dest, int len) {
     xmlNanoHTTPCtxtPtr ctxt = (xmlNanoHTTPCtxtPtr) ctx;
+#ifdef HAVE_ZLIB_H
+    int bytes_read = 0;
+    int orig_avail_in;
+    int z_ret;
+#endif
 
     if (ctx == NULL) return(-1);
     if (dest == NULL) return(-1);
     if (len <= 0) return(0);
+
+#ifdef HAVE_ZLIB_H
+    if (ctxt->usesGzip == 1) {
+        if (ctxt->strm == NULL) return(0);
+ 
+        ctxt->strm->next_out = dest;
+        ctxt->strm->avail_out = len;
+
+        do {
+            orig_avail_in = ctxt->strm->avail_in = ctxt->inptr - ctxt->inrptr - bytes_read;
+            ctxt->strm->next_in = BAD_CAST (ctxt->inrptr + bytes_read);
+
+            z_ret = inflate(ctxt->strm, Z_NO_FLUSH);
+            bytes_read += orig_avail_in - ctxt->strm->avail_in;
+
+            if (z_ret != Z_OK) break;
+        } while (ctxt->strm->avail_out > 0 && xmlNanoHTTPRecv(ctxt) > 0);
+
+        ctxt->inrptr += bytes_read;
+        return(len - ctxt->strm->avail_out);
+    }
+#endif
 
     while (ctxt->inptr - ctxt->inrptr < len) {
         if (xmlNanoHTTPRecv(ctxt) <= 0) break;
@@ -1275,6 +1334,9 @@ retry:
     if (ctxt->query != NULL)
 	blen += strlen(ctxt->query) + 1;
     blen += strlen(method) + strlen(ctxt->path) + 24;
+#ifdef HAVE_ZLIB_H
+    blen += 23;
+#endif
     bp = (char*)xmlMallocAtomic(blen);
     if ( bp == NULL ) {
         xmlNanoHTTPFreeCtxt( ctxt );
@@ -1302,6 +1364,10 @@ retry:
 
     p += snprintf( p, blen - (p - bp), " HTTP/1.0\r\nHost: %s\r\n", 
 		    ctxt->hostname);
+
+#ifdef HAVE_ZLIB_H
+    p += snprintf(p, blen - (p - bp), "Accept-Encoding: gzip\r\n");
+#endif
 
     if (contentType != NULL && *contentType) 
 	p += snprintf(p, blen - (p - bp), "Content-Type: %s\r\n", *contentType);

@@ -26336,7 +26336,9 @@ xmlSchemaVPushText(xmlSchemaValidCtxtPtr vctxt,
 	    default:
 		break;
 	}
-    } else {	
+    } else {
+	if (len < 0)
+	    len = xmlStrlen(value);
 	/*
 	* Concat the value.
 	*/	

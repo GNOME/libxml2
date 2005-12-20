@@ -437,7 +437,8 @@ xmlStrlen(const xmlChar *str) {
  * @len:  the length of @add
  *
  * a strncat for array of xmlChar's, it will extend @cur with the len
- * first bytes of @add.
+ * first bytes of @add. Note that if @len < 0 then this is an API error
+ * and NULL will be returned.
  *
  * Returns a new xmlChar *, the original @cur is reallocated if needed
  * and should not be freed
@@ -450,6 +451,8 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
 
     if ((add == NULL) || (len == 0))
         return(cur);
+    if (len < 0)
+	return(NULL);
     if (cur == NULL)
         return(xmlStrndup(add, len));
 
@@ -468,10 +471,11 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
  * xmlStrncatNew:
  * @str1:  first xmlChar string
  * @str2:  second xmlChar string
- * @len:  the len of @str2
+ * @len:  the len of @str2 or < 0
  *
  * same as xmlStrncat, but creates a new string.  The original
- * two strings are not freed.
+ * two strings are not freed. If @len is < 0 then the length
+ * will be calculated automatically.
  *
  * Returns a new xmlChar * or NULL
  */

@@ -4906,8 +4906,8 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
                                 xmlBufferCat(buffer, tmp->content);
                             break;
                         case XML_ENTITY_REF_NODE:
-			    xmlNodeBufGetContent(buffer, tmp->children);
-			    break;
+                            xmlNodeBufGetContent(buffer, tmp);
+                            break;
                         default:
                             break;
                     }

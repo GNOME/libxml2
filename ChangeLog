@@ -1,3 +1,9 @@
+Tue Dec 20 16:55:31 CET 2005 Rob Richards <rrichards@ctindustries.net>
+
+	* tree.c: fix bug #322136 in xmlNodeBufGetContent when entity ref is 
+	  a child of an element (fix by Oleksandr Kononenko).
+	* HTMLtree.c include/libxml/HTMLtree.h: Add htmlDocDumpMemoryFormat.
+
 Tue Dec 20 11:43:06 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* xmlschemas.c xmlstring.c: Fixed a segfault during

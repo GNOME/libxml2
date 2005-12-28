@@ -1,3 +1,8 @@
+Wed Dec 28 22:12:34 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: bug in xmlRegExecPushString2() pointed out by 
+	  Sreeni Nair.
+
 Tue Dec 20 16:55:31 CET 2005 Rob Richards <rrichards@ctindustries.net>
 
 	* tree.c: fix bug #322136 in xmlNodeBufGetContent when entity ref is 

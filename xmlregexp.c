@@ -3679,7 +3679,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
         ret = xmlRegExecPushStringInternal(exec, str, data, 1);
 
     if (str != buf)
-        xmlFree(buf);
+        xmlFree(str);
     return(ret);
 }
 

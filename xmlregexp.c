@@ -5119,11 +5119,11 @@ xmlNewAutomata(void) {
     /* initialize the parser */
     ctxt->end = NULL;
     ctxt->start = ctxt->state = xmlRegNewState(ctxt);
-    ctxt->start->type = XML_REGEXP_START_STATE;
     if (ctxt->start == NULL) {
 	xmlFreeAutomata(ctxt);
 	return(NULL);
     }
+    ctxt->start->type = XML_REGEXP_START_STATE;
     if (xmlRegStatePush(ctxt, ctxt->start) < 0) {
         xmlRegFreeState(ctxt->start);
 	xmlFreeAutomata(ctxt);

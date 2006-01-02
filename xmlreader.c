@@ -1626,6 +1626,7 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
     return(xmlTextReaderRead(reader));
 }
 
+#ifdef LIBXML_WRITER_ENABLED
 /**
  * xmlTextReaderReadInnerXml:
  * @reader:  the xmlTextReaderPtr used
@@ -1669,7 +1670,9 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
     xmlBufferFree(buff);
     return resbuf;
 }
+#endif
 
+#ifdef LIBXML_WRITER_ENABLED
 /**
  * xmlTextReaderReadOuterXml:
  * @reader:  the xmlTextReaderPtr used
@@ -1708,6 +1711,7 @@ xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
     xmlBufferFree(buff);
     return resbuf;
 }
+#endif
 
 /**
  * xmlTextReaderReadString:

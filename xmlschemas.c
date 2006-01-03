@@ -581,7 +581,7 @@ struct _xmlSchemaParserCtxt {
     void *errCtxt;             /* user specific error context */    
     xmlSchemaValidityErrorFunc error;   /* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning;       /* the callback in case of warning */
-    xmlSchemaValidError err;
+    int err;
     int nberrors;
     xmlStructuredErrorFunc serror;
 

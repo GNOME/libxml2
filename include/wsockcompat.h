@@ -17,6 +17,13 @@
 #endif
 #endif
 
+#ifdef __MINGW32__
+/* Include <errno.h> here to ensure that it doesn't get included later
+ * (e.g. by iconv.h) and overwrites the definition of EWOULDBLOCK. */
+#include <errno.h>
+#undef EWOULDBLOCK
+#endif
+
 #if !defined SOCKLEN_T
 #define SOCKLEN_T int
 #endif

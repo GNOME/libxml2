@@ -1,3 +1,8 @@
+Wed Jan  4 10:53:56 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* include/wsockcompat.h: applied patch from Mark Junker, fixing a 
+	  MinGW compilation problem, should close bug #324943
+
 Tue Jan  3 11:49:54 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 
 	* xmlschemas.c: Removed last dependency on the obsolete enum

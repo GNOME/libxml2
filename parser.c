@@ -3455,12 +3455,10 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 get_more_space:
 	    while (*in == 0x20) in++;
 	    if (*in == 0xA) {
-		ctxt->input->line++; ctxt->input->col = 1;
-		in++;
-		while (*in == 0xA) {
+		do {
 		    ctxt->input->line++; ctxt->input->col = 1;
 		    in++;
-		}
+		} while (*in == 0xA);
 		goto get_more_space;
 	    }
 	    if (*in == '<') {
@@ -3496,12 +3494,10 @@ get_more:
 	    }
 	    ctxt->input->col = ccol;
 	    if (*in == 0xA) {
-		ctxt->input->line++; ctxt->input->col = 1;
-		in++;
-		while (*in == 0xA) {
+		do {
 		    ctxt->input->line++; ctxt->input->col = 1;
 		    in++;
-		}
+		} while (*in == 0xA);
 		goto get_more;
 	    }
 	    if (*in == ']') {
@@ -3866,12 +3862,10 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     in = ctxt->input->cur;
     do {
 	if (*in == 0xA) {
-	    ctxt->input->line++; ctxt->input->col = 1;
-	    in++;
-	    while (*in == 0xA) {
+	    do {
 		ctxt->input->line++; ctxt->input->col = 1;
 		in++;
-	    }
+	    } while (*in == 0xA);
 	}
 get_more:
         ccol = ctxt->input->col;
@@ -3883,12 +3877,10 @@ get_more:
 	}
 	ctxt->input->col = ccol;
 	if (*in == 0xA) {
-	    ctxt->input->line++; ctxt->input->col = 1;
-	    in++;
-	    while (*in == 0xA) {
+	    do {
 		ctxt->input->line++; ctxt->input->col = 1;
 		in++;
-	    }
+	    } while (*in == 0xA);
 	    goto get_more;
 	}
 	nbchar = in - ctxt->input->cur;

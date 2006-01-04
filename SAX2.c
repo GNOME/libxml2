@@ -2233,9 +2233,13 @@ xmlSAX2StartElementNs(void *ctx,
      */
     if ((URI != NULL) && (ret->ns == NULL)) {
         ret->ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
+	if ((ret->ns == NULL) && (xmlStrEqual(prefix, BAD_CAST "xml"))) {
+	    ret->ns = xmlSearchNs(ctxt->myDoc, ret, prefix);
+	}
 	if (ret->ns == NULL) {
 	    ns = xmlNewNs(ret, NULL, prefix);
 	    if (ns == NULL) {
+
 	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 		return;
 	    }

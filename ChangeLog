@@ -1,3 +1,8 @@
+Wed Jan  4 15:00:51 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fix bug #324432 with <xml:foo/>
+	* test/ns7 resul//ns7*: added to the regression tests
+
 Wed Jan  4 10:53:56 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* include/wsockcompat.h: applied patch from Mark Junker, fixing a 

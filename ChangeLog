@@ -1,3 +1,16 @@
+Thu Jan  5 13:22:29 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* pattern.c xpath.c include/libxml/pattern.h:
+	  Fixed bug #322928, reported by Erich Schubert: The bug was
+	  in pattern.c, which is used for a tiny subset of xpath
+	  expression which can be evaluated in an optimized way.
+	  The doc-node was never considered when evaluating "//"
+	  expressions. Additionally, we fixed resolution
+	  to nodes of any type in pattern.c; i.e. a "//." didn't work
+	  yet, as it did select only element-nodes. Due to this
+	  issue the pushing of nodes in xpath.c needed to be adjusted
+	  as well.
+
 Wed Jan  4 18:07:47 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: tiny refactoring patch from Bjorn Reese
@@ -12,7 +25,7 @@ Wed Jan  4 10:53:56 CET 2006 Daniel Veillard <daniel@veillard.com>
 	* include/wsockcompat.h: applied patch from Mark Junker, fixing a 
 	  MinGW compilation problem, should close bug #324943
 
-Tue Jan  3 11:49:54 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Tue Jan  3 11:49:54 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Removed last dependency on the obsolete enum
 	  xmlSchemaValidError.
@@ -33,7 +46,7 @@ Tue Dec 20 16:55:31 CET 2005 Rob Richards <rrichards@ctindustries.net>
 	  a child of an element (fix by Oleksandr Kononenko).
 	* HTMLtree.c include/libxml/HTMLtree.h: Add htmlDocDumpMemoryFormat.
 
-Tue Dec 20 11:43:06 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Tue Dec 20 11:43:06 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c xmlstring.c: Fixed a segfault during
 	  text concatenation when validating a node tree:
@@ -49,29 +62,29 @@ Thu Dec 15 12:11:07 CET 2005 Daniel Veillard <daniel@veillard.com>
 	* nanohttp.c: applied patch from Gary Coady to accept gzipped
 	  http resources.
 
-Wed Dec 14 18:41:26 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Wed Dec 14 18:41:26 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* win32/configure.js: Added enable/disable of runtime
 	  debugging (LIBXML_DEBUG_RUNTIME).
 
-Wed Dec 14 18:11:50 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Wed Dec 14 18:11:50 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* include/libxml/xmlversion.h.in: Fixed to define
 	  LIBXML_DEBUG_RUNTIME on the basis of @WITH_RUN_DEBUG@.
 
-Tue Dec 13 12:49:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Tue Dec 13 12:49:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/bug321475* result/schemas/bug321475*:
 	  Added regression test for bug #321475 (reported by
 	  Gabor Nagy). Fixing of bug #323510 seemed to have
 	  fixed this bug as well.
 
-Mon Dec 12 16:19:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Mon Dec 12 16:19:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/bug323510* result/schemas/bug323510*:
 	  Added regression test for bug #323510.
 
-Mon Dec 12 16:11:13 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Mon Dec 12 16:11:13 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Workaround for bug #323510 (reported by
 	  Jonathan Filiatrault): substituted the epsilon transition
@@ -96,7 +109,7 @@ Fri Dec  9 18:57:31 CET 2005 Rob Richards <rrichards@ctindustries.net>
 	  passed to xmlTextWriterStartDTD and indenting not being used.
 	  Remove no longer used Mem callbacks.
 
-Fri Dec  9 11:01:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Fri Dec  9 11:01:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* runsuite.c: Changed to instantly mark instance-tests as
 	  failed if the corresponding schema was invalid. This
@@ -104,7 +117,7 @@ Fri Dec  9 11:01:16 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
 	  suite. We now get the same number of failed tests on both
 	  sides.
 
-Wed Dec  7 14:59:01 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.ne>
+Wed Dec  7 14:59:01 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlreader.c include/libxml/xmlreader.h: Added
 	  xmlTextReaderSchemaValidateCtxt() to the API.

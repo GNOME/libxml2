@@ -65,12 +65,23 @@
             __FILE__, __LINE__);
 
 /*
+* XP_PATTERN_TO_ANY_NODE_ENABLED: when an XPath expression can be
+*   evaluated using the streaming mode (pattern.c) then this is used to
+*   enable resolution to nodes of type text-node, cdata-section-node,
+*   comment-node and pi-node. The only known scenario where this is
+*   needed is an expression like "foo//.", "//.", etc.; i.e. an expression
+*   where the final node to be selected can be of any type.
+*   Disabling this #define will result in an incorrect evaluation to
+*   only element-nodes and the document node.
+*/
+#define XP_PATTERN_TO_ANY_NODE_ENABLED
+/*
  * TODO:
  * There are a few spots where some tests are done which depend upon ascii
  * data.  These should be enhanced for full UTF8 support (see particularly
  * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
  */
- 
+
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /************************************************************************
  * 									*
@@ -808,7 +819,8 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
 
-    fprintf(output, shift);
+
+    fprintf(output, shift);    
 
     if (cur == NULL) {
         fprintf(output, "Object is empty (NULL)\n");
@@ -10998,13 +11010,16 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 static xmlXPathObjectPtr
 xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
     int max_depth, min_depth;
-    int from_root;
+    int from_root;    
     int ret, depth;
+#ifdef XP_PATTERN_TO_ANY_NODE_ENABLED
+    int eval_all_nodes;
+#endif
     xmlNodePtr cur = NULL, limit = NULL;
     xmlXPathObjectPtr retval;
     xmlStreamCtxtPtr patstream;
-
-    int nb_nodes = 0;
+    
+    int nb_nodes = 0;    
 
     if ((ctxt == NULL) || (comp == NULL))
         return(NULL);
@@ -11082,6 +11097,10 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
         return(retval);
     }
 
+#ifdef XP_PATTERN_TO_ANY_NODE_ENABLED
+    eval_all_nodes = xmlStreamWantsAnyNode(patstream);
+#endif
+
     if (from_root) {
 	ret = xmlStreamPush(patstream, NULL, NULL);
 	if (ret < 0) {
@@ -11089,34 +11108,53 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
 	    xmlXPathNodeSetAddUnique(retval->nodesetval, cur);
 	}
     }
-
     depth = 0;
     goto scan_children;
     do {
 next_node:
         nb_nodes++;
-	if (cur->type == XML_ELEMENT_NODE) {
-	    ret = xmlStreamPush(patstream, cur->name,
+
+	switch (cur->type) {
+	    case XML_ELEMENT_NODE:
+#ifdef XP_PATTERN_TO_ANY_NODE_ENABLED
+	    case XML_TEXT_NODE:
+	    case XML_CDATA_SECTION_NODE:
+	    case XML_COMMENT_NODE:
+	    case XML_PI_NODE:		
+#endif	    
+		if (cur->type == XML_ELEMENT_NODE) {
+		    ret = xmlStreamPush(patstream, cur->name,
 				(cur->ns ? cur->ns->href : NULL));
-	    if (ret < 0) {
-	    } else if (ret == 1) {
-		xmlXPathNodeSetAddUnique(retval->nodesetval, cur);
-	    }
-	    if ((cur->children == NULL) || (depth >= max_depth)) {
-		ret = xmlStreamPop(patstream);
-		while (cur->next != NULL) {
-		    cur = cur->next;
-		    if ((cur->type != XML_ENTITY_DECL) &&
-			(cur->type != XML_DTD_NODE))
-			goto next_node;
 		}
-	    }
-	}
+#ifdef XP_PATTERN_TO_ANY_NODE_ENABLED
+		else if (eval_all_nodes)		    
+		    ret = xmlStreamPushNode(patstream, NULL, NULL, cur->type);
+		else
+		    break;
+#endif
+		
+		if (ret < 0) {
+		    /* NOP. */
+		} else if (ret == 1) {
+		    xmlXPathNodeSetAddUnique(retval->nodesetval, cur);
+		}
+		if ((cur->children == NULL) || (depth >= max_depth)) {
+		    ret = xmlStreamPop(patstream);
+		    while (cur->next != NULL) {
+			cur = cur->next;
+			if ((cur->type != XML_ENTITY_DECL) &&
+			    (cur->type != XML_DTD_NODE))
+			    goto next_node;
+		    }
+		}
+	    default:
+		break;
+	}	    	
         
 scan_children:
 	if ((cur->children != NULL) && (depth < max_depth)) {
 	    /*
-	     * Do not descend on entities declarations
+	     * Do not descend on entities declarations	     
 	     */
 	    if (cur->children->type != XML_ENTITY_DECL) {
 		cur = cur->children;
@@ -11144,8 +11182,19 @@ scan_children:
 	    depth--;
 	    if ((cur == NULL) || (cur == limit))
 	        goto done;
-	    if (cur->type == XML_ELEMENT_NODE)
-	        ret = xmlStreamPop(patstream);
+	    if (cur->type == XML_ELEMENT_NODE) {
+		ret = xmlStreamPop(patstream);
+	    }
+#ifdef XP_PATTERN_TO_ANY_NODE_ENABLED
+	    else if ((eval_all_nodes) &&
+		((cur->type == XML_TEXT_NODE) ||
+		 (cur->type == XML_CDATA_SECTION_NODE) ||
+		 (cur->type == XML_COMMENT_NODE) ||
+		 (cur->type == XML_PI_NODE)))
+	    {
+		ret = xmlStreamPop(patstream);
+	    }
+#endif
 	    if (cur->next != NULL) {
 		cur = cur->next;
 		break;

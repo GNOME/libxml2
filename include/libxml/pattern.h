@@ -75,6 +75,11 @@ XMLPUBFUN xmlStreamCtxtPtr XMLCALL
 XMLPUBFUN void XMLCALL
 			xmlFreeStreamCtxt	(xmlStreamCtxtPtr stream);
 XMLPUBFUN int XMLCALL
+			xmlStreamPushNode	(xmlStreamCtxtPtr stream,
+						 const xmlChar *name,
+						 const xmlChar *ns,
+						 int nodeType);
+XMLPUBFUN int XMLCALL
 			xmlStreamPush		(xmlStreamCtxtPtr stream,
 						 const xmlChar *name,
 						 const xmlChar *ns);
@@ -84,6 +89,8 @@ XMLPUBFUN int XMLCALL
 						 const xmlChar *ns);
 XMLPUBFUN int XMLCALL
 			xmlStreamPop		(xmlStreamCtxtPtr stream);
+XMLPUBFUN int XMLCALL
+			xmlStreamWantsAnyNode	(xmlStreamCtxtPtr stream);
 #ifdef __cplusplus
 }
 #endif

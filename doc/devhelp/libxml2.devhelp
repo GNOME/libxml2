@@ -166,7 +166,9 @@
     <function name="XML_SCHEMAS_ANY_SKIP" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANY_SKIP"/>
     <function name="XML_SCHEMAS_ANY_STRICT" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANY_STRICT"/>
     <function name="XML_SCHEMAS_ATTRGROUP_GLOBAL" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_GLOBAL"/>
+    <function name="XML_SCHEMAS_ATTRGROUP_HAS_REFS" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_HAS_REFS"/>
     <function name="XML_SCHEMAS_ATTRGROUP_MARKED" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_MARKED"/>
+    <function name="XML_SCHEMAS_ATTRGROUP_REDEFINED" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_REDEFINED"/>
     <function name="XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED"/>
     <function name="XML_SCHEMAS_ATTR_FIXED" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTR_FIXED"/>
     <function name="XML_SCHEMAS_ATTR_GLOBAL" link="libxml2-schemasInternals.html#XML_SCHEMAS_ATTR_GLOBAL"/>
@@ -230,6 +232,7 @@
     <function name="XML_SCHEMAS_TYPE_MIXED" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_MIXED"/>
     <function name="XML_SCHEMAS_TYPE_NORMVALUENEEDED" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_NORMVALUENEEDED"/>
     <function name="XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD"/>
+    <function name="XML_SCHEMAS_TYPE_REDEFINED" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_REDEFINED"/>
     <function name="XML_SCHEMAS_TYPE_VARIETY_ABSENT" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_VARIETY_ABSENT"/>
     <function name="XML_SCHEMAS_TYPE_VARIETY_ATOMIC" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_VARIETY_ATOMIC"/>
     <function name="XML_SCHEMAS_TYPE_VARIETY_LIST" link="libxml2-schemasInternals.html#XML_SCHEMAS_TYPE_VARIETY_LIST"/>
@@ -956,13 +959,18 @@
     <function name="XML_SAVE_NO_EMPTY" link="libxml2-xmlsave.html#XML_SAVE_NO_EMPTY"/>
     <function name="XML_SAVE_NO_XHTML" link="libxml2-xmlsave.html#XML_SAVE_NO_XHTML"/>
     <function name="XML_SAVE_UNKNOWN_ENCODING" link="libxml2-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING"/>
+    <function name="XML_SCHEMAP_AG_PROPS_CORRECT" link="libxml2-xmlerror.html#XML_SCHEMAP_AG_PROPS_CORRECT"/>
     <function name="XML_SCHEMAP_ATTRFORMDEFAULT_VALUE" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRFORMDEFAULT_VALUE"/>
     <function name="XML_SCHEMAP_ATTRGRP_NONAME_NOREF" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRGRP_NONAME_NOREF"/>
     <function name="XML_SCHEMAP_ATTR_NONAME_NOREF" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTR_NONAME_NOREF"/>
+    <function name="XML_SCHEMAP_AU_PROPS_CORRECT" link="libxml2-xmlerror.html#XML_SCHEMAP_AU_PROPS_CORRECT"/>
     <function name="XML_SCHEMAP_AU_PROPS_CORRECT_2" link="libxml2-xmlerror.html#XML_SCHEMAP_AU_PROPS_CORRECT_2"/>
     <function name="XML_SCHEMAP_A_PROPS_CORRECT_2" link="libxml2-xmlerror.html#XML_SCHEMAP_A_PROPS_CORRECT_2"/>
+    <function name="XML_SCHEMAP_A_PROPS_CORRECT_3" link="libxml2-xmlerror.html#XML_SCHEMAP_A_PROPS_CORRECT_3"/>
     <function name="XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF" link="libxml2-xmlerror.html#XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF"/>
+    <function name="XML_SCHEMAP_COS_ALL_LIMITED" link="libxml2-xmlerror.html#XML_SCHEMAP_COS_ALL_LIMITED"/>
     <function name="XML_SCHEMAP_COS_CT_EXTENDS_1_1" link="libxml2-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_1"/>
+    <function name="XML_SCHEMAP_COS_CT_EXTENDS_1_2" link="libxml2-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_2"/>
     <function name="XML_SCHEMAP_COS_CT_EXTENDS_1_3" link="libxml2-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_3"/>
     <function name="XML_SCHEMAP_COS_ST_DERIVED_OK_2_1" link="libxml2-xmlerror.html#XML_SCHEMAP_COS_ST_DERIVED_OK_2_1"/>
     <function name="XML_SCHEMAP_COS_ST_DERIVED_OK_2_2" link="libxml2-xmlerror.html#XML_SCHEMAP_COS_ST_DERIVED_OK_2_2"/>
@@ -1309,6 +1317,7 @@
     <function name="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS" link="libxml2-schemasInternals.html#XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS"/>
     <function name="XML_SCHEMA_CONTENT_SIMPLE" link="libxml2-schemasInternals.html#XML_SCHEMA_CONTENT_SIMPLE"/>
     <function name="XML_SCHEMA_CONTENT_UNKNOWN" link="libxml2-schemasInternals.html#XML_SCHEMA_CONTENT_UNKNOWN"/>
+    <function name="XML_SCHEMA_EXTRA_ATTR_USE_PROHIB" link="libxml2-schemasInternals.html#XML_SCHEMA_EXTRA_ATTR_USE_PROHIB"/>
     <function name="XML_SCHEMA_EXTRA_QNAMEREF" link="libxml2-schemasInternals.html#XML_SCHEMA_EXTRA_QNAMEREF"/>
     <function name="XML_SCHEMA_FACET_ENUMERATION" link="libxml2-schemasInternals.html#XML_SCHEMA_FACET_ENUMERATION"/>
     <function name="XML_SCHEMA_FACET_FRACTIONDIGITS" link="libxml2-schemasInternals.html#XML_SCHEMA_FACET_FRACTIONDIGITS"/>
@@ -1327,6 +1336,7 @@
     <function name="XML_SCHEMA_TYPE_ANY_ATTRIBUTE" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_ANY_ATTRIBUTE"/>
     <function name="XML_SCHEMA_TYPE_ATTRIBUTE" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_ATTRIBUTE"/>
     <function name="XML_SCHEMA_TYPE_ATTRIBUTEGROUP" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_ATTRIBUTEGROUP"/>
+    <function name="XML_SCHEMA_TYPE_ATTRIBUTE_USE" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_ATTRIBUTE_USE"/>
     <function name="XML_SCHEMA_TYPE_BASIC" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_BASIC"/>
     <function name="XML_SCHEMA_TYPE_CHOICE" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_CHOICE"/>
     <function name="XML_SCHEMA_TYPE_COMPLEX" link="libxml2-schemasInternals.html#XML_SCHEMA_TYPE_COMPLEX"/>
@@ -1922,6 +1932,7 @@
     <function name="htmlDocContentDumpOutput ()" link="libxml2-HTMLtree.html#htmlDocContentDumpOutput"/>
     <function name="htmlDocDump ()" link="libxml2-HTMLtree.html#htmlDocDump"/>
     <function name="htmlDocDumpMemory ()" link="libxml2-HTMLtree.html#htmlDocDumpMemory"/>
+    <function name="htmlDocDumpMemoryFormat ()" link="libxml2-HTMLtree.html#htmlDocDumpMemoryFormat"/>
     <function name="htmlElementAllowedHere ()" link="libxml2-HTMLparser.html#htmlElementAllowedHere"/>
     <function name="htmlElementStatusHere ()" link="libxml2-HTMLparser.html#htmlElementStatusHere"/>
     <function name="htmlEncodeEntities ()" link="libxml2-HTMLparser.html#htmlEncodeEntities"/>
@@ -2521,6 +2532,7 @@
     <function name="xmlNormalizeURIPath ()" link="libxml2-uri.html#xmlNormalizeURIPath"/>
     <function name="xmlNormalizeWindowsPath ()" link="libxml2-xmlIO.html#xmlNormalizeWindowsPath"/>
     <function name="xmlOutputBufferClose ()" link="libxml2-xmlIO.html#xmlOutputBufferClose"/>
+    <function name="xmlOutputBufferCreateBuffer ()" link="libxml2-xmlIO.html#xmlOutputBufferCreateBuffer"/>
     <function name="xmlOutputBufferCreateFd ()" link="libxml2-xmlIO.html#xmlOutputBufferCreateFd"/>
     <function name="xmlOutputBufferCreateFile ()" link="libxml2-xmlIO.html#xmlOutputBufferCreateFile"/>
     <function name="xmlOutputBufferCreateFilename ()" link="libxml2-xmlIO.html#xmlOutputBufferCreateFilename"/>
@@ -2757,6 +2769,7 @@
     <function name="xmlSaveFormatFileTo ()" link="libxml2-tree.html#xmlSaveFormatFileTo"/>
     <function name="xmlSaveSetAttrEscape ()" link="libxml2-xmlsave.html#xmlSaveSetAttrEscape"/>
     <function name="xmlSaveSetEscape ()" link="libxml2-xmlsave.html#xmlSaveSetEscape"/>
+    <function name="xmlSaveToBuffer ()" link="libxml2-xmlsave.html#xmlSaveToBuffer"/>
     <function name="xmlSaveToFd ()" link="libxml2-xmlsave.html#xmlSaveToFd"/>
     <function name="xmlSaveToFilename ()" link="libxml2-xmlsave.html#xmlSaveToFilename"/>
     <function name="xmlSaveToIO ()" link="libxml2-xmlsave.html#xmlSaveToIO"/>
@@ -2801,6 +2814,7 @@
     <function name="xmlSchemaSAXPlug ()" link="libxml2-xmlschemas.html#xmlSchemaSAXPlug"/>
     <function name="xmlSchemaSAXUnplug ()" link="libxml2-xmlschemas.html#xmlSchemaSAXUnplug"/>
     <function name="xmlSchemaSetParserErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetParserErrors"/>
+    <function name="xmlSchemaSetParserStructuredErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetParserStructuredErrors"/>
     <function name="xmlSchemaSetValidErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetValidErrors"/>
     <function name="xmlSchemaSetValidOptions ()" link="libxml2-xmlschemas.html#xmlSchemaSetValidOptions"/>
     <function name="xmlSchemaSetValidStructuredErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetValidStructuredErrors"/>
@@ -2881,6 +2895,8 @@
     <function name="xmlStreamPop ()" link="libxml2-pattern.html#xmlStreamPop"/>
     <function name="xmlStreamPush ()" link="libxml2-pattern.html#xmlStreamPush"/>
     <function name="xmlStreamPushAttr ()" link="libxml2-pattern.html#xmlStreamPushAttr"/>
+    <function name="xmlStreamPushNode ()" link="libxml2-pattern.html#xmlStreamPushNode"/>
+    <function name="xmlStreamWantsAnyNode ()" link="libxml2-pattern.html#xmlStreamWantsAnyNode"/>
     <function name="xmlStringCurrentChar ()" link="libxml2-parserInternals.html#xmlStringCurrentChar"/>
     <function name="xmlStringDecodeEntities ()" link="libxml2-parserInternals.html#xmlStringDecodeEntities"/>
     <function name="xmlStringGetNodeList ()" link="libxml2-tree.html#xmlStringGetNodeList"/>
@@ -2961,6 +2977,7 @@
     <function name="xmlTextReaderRelaxNGSetSchema ()" link="libxml2-xmlreader.html#xmlTextReaderRelaxNGSetSchema"/>
     <function name="xmlTextReaderRelaxNGValidate ()" link="libxml2-xmlreader.html#xmlTextReaderRelaxNGValidate"/>
     <function name="xmlTextReaderSchemaValidate ()" link="libxml2-xmlreader.html#xmlTextReaderSchemaValidate"/>
+    <function name="xmlTextReaderSchemaValidateCtxt ()" link="libxml2-xmlreader.html#xmlTextReaderSchemaValidateCtxt"/>
     <function name="xmlTextReaderSetErrorHandler ()" link="libxml2-xmlreader.html#xmlTextReaderSetErrorHandler"/>
     <function name="xmlTextReaderSetParserProp ()" link="libxml2-xmlreader.html#xmlTextReaderSetParserProp"/>
     <function name="xmlTextReaderSetSchema ()" link="libxml2-xmlreader.html#xmlTextReaderSetSchema"/>

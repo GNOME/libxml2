@@ -50,6 +50,7 @@ typedef <a href="libxml2-xmlsave.html#xmlSaveCtxt">xmlSaveCtxt</a> * <a href="#x
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFd">xmlSaveToFd</a>		(int fd, <br/>					 const char * encoding, <br/>					 int options);
 int	<a href="#xmlSaveClose">xmlSaveClose</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 int	<a href="#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
+<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToBuffer">xmlSaveToBuffer</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>					 const char * encoding, <br/>					 int options);
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFilename">xmlSaveToFilename</a>	(const char * filename, <br/>					 const char * encoding, <br/>					 int options);
 int	<a href="#xmlSaveFlush">xmlSaveFlush</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 long	<a href="#xmlSaveDoc">xmlSaveDoc</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
@@ -101,6 +102,10 @@ The content of this structure is not made public by the API.
         <div class="refsect2" lang="en"><h3><a name="xmlSaveSetEscape"/>xmlSaveSetEscape ()</h3><pre class="programlisting">int	xmlSaveSetEscape		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape)<br/>
 </pre><p>Set a custom escaping function to be used for text in element content</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a document saving context</td></tr><tr><td><span class="term"><i><tt>escape</tt></i>:</span></td><td>the escaping function</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if successful or -1 in case of error.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlSaveToBuffer"/>xmlSaveToBuffer ()</h3><pre class="programlisting"><a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	xmlSaveToBuffer		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>					 const char * encoding, <br/>					 int options)<br/>
+</pre><p>Create a document saving context serializing to a buffer with the encoding and the options given</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>a buffer</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i>:</span></td><td>the encoding name to use or NULL</td></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td>a set of xmlSaveOptions</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a new serialization context or NULL in case of error.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSaveToFd"/>xmlSaveToFd ()</h3><pre class="programlisting"><a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	xmlSaveToFd		(int fd, <br/>					 const char * encoding, <br/>					 int options)<br/>
 </pre><p>Create a document saving context serializing to a file descriptor with the encoding and the options given.</p>

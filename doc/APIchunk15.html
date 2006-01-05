@@ -55,6 +55,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>facets</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_FACETSNEEDVALUE">XML_SCHEMAS_TYPE_FACETSNEEDVALUE</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_HAS_FACETS">XML_SCHEMAS_TYPE_HAS_FACETS</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_NORMVALUENEEDED">XML_SCHEMAS_TYPE_NORMVALUENEEDED</a><br />
+<a href="html/libxml-schemasInternals.html#_xmlSchemaType">_xmlSchemaType</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a><br />
 </dd><dt>facility</dt><dd><a href="html/libxml-xmlregexp.html#xmlExpCtxtNbCons">xmlExpCtxtNbCons</a><br />
 <a href="html/libxml-xmlregexp.html#xmlExpCtxtNbNodes">xmlExpCtxtNbNodes</a><br />
@@ -102,7 +103,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#xmlSAXParseMemoryWithData">xmlSAXParseMemoryWithData</a><br />
 </dd><dt>far</dt><dd><a href="html/libxml-parser.html#_xmlParserCtxt">_xmlParserCtxt</a><br />
 <a href="html/libxml-parser.html#fatalErrorSAXFunc">fatalErrorSAXFunc</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaIsValid">xmlSchemaIsValid</a><br />
 </dd><dt>fashion</dt><dd><a href="html/libxml-threads.html#xmlNewRMutex">xmlNewRMutex</a><br />
 </dd><dt>fast</dt><dd><a href="html/libxml-parserInternals.html#htmlInitAutoClose">htmlInitAutoClose</a><br />
 </dd><dt>faster</dt><dd><a href="html/libxml-HTMLparser.html#htmlNodeStatus">htmlNodeStatus</a><br />
@@ -118,6 +118,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>fed</dt><dd><a href="html/libxml-parser.html#xmlCreatePushParserCtxt">xmlCreatePushParserCtxt</a><br />
 <a href="html/libxml-xmlreader.html#xmlNewTextReader">xmlNewTextReader</a><br />
 <a href="html/libxml-xmlreader.html#xmlNewTextReaderFilename">xmlNewTextReaderFilename</a><br />
+<a href="html/libxml-pattern.html#xmlStreamPushNode">xmlStreamPushNode</a><br />
+<a href="html/libxml-pattern.html#xmlStreamWantsAnyNode">xmlStreamWantsAnyNode</a><br />
 </dd><dt>fetch</dt><dd><a href="html/libxml-nanoftp.html#xmlNanoFTPGetSocket">xmlNanoFTPGetSocket</a><br />
 <a href="html/libxml-nanoftp.html#xmlNanoFTPOpen">xmlNanoFTPOpen</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPFetch">xmlNanoHTTPFetch</a><br />
@@ -202,7 +204,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlreader.html#xmlTextReaderIsValid">xmlTextReaderIsValid</a><br />
 </dd><dt>flagged</dt><dd><a href="html/libxml-HTMLparser.html#_htmlElemDesc">_htmlElemDesc</a><br />
 <a href="html/libxml-HTMLtree.html#htmlGetMetaEncoding">htmlGetMetaEncoding</a><br />
-</dd><dt>flags</dt><dd><a href="html/libxml-xpath.html#_xmlXPathContext">_xmlXPathContext</a><br />
+</dd><dt>flags</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_VARIETY_ABSENT">XML_SCHEMAS_TYPE_VARIETY_ABSENT</a><br />
+<a href="html/libxml-xpath.html#_xmlXPathContext">_xmlXPathContext</a><br />
 <a href="html/libxml-tree.html#xmlDOMWrapAdoptNode">xmlDOMWrapAdoptNode</a><br />
 <a href="html/libxml-tree.html#xmlDOMWrapReconcileNamespaces">xmlDOMWrapReconcileNamespaces</a><br />
 <a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
@@ -222,9 +225,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlStringLenGetNodeList">xmlStringLenGetNodeList</a><br />
 </dd><dt>floor</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathFloorFunction">xmlXPathFloorFunction</a><br />
 </dd><dt>flow</dt><dd><a href="html/libxml-parserInternals.html#xmlScanName">xmlScanName</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaSAXPlug">xmlSchemaSAXPlug</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaSAXUnplug">xmlSchemaSAXUnplug</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 </dd><dt>flushes</dt><dd><a href="html/libxml-xmlIO.html#xmlOutputBufferClose">xmlOutputBufferClose</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferFlush">xmlOutputBufferFlush</a><br />
 </dd><dt>follow</dt><dd><a href="html/libxml-xmlautomata.html#xmlAutomataNewNegTrans">xmlAutomataNewNegTrans</a><br />
@@ -285,6 +285,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlwriter.html#xmlTextWriterWriteVFormatRaw">xmlTextWriterWriteVFormatRaw</a><br />
 <a href="html/libxml-xmlwriter.html#xmlTextWriterWriteVFormatString">xmlTextWriterWriteVFormatString</a><br />
 </dd><dt>formatting</dt><dd><a href="html/libxml-HTMLtree.html#htmlDocContentDumpFormatOutput">htmlDocContentDumpFormatOutput</a><br />
+<a href="html/libxml-HTMLtree.html#htmlDocDumpMemoryFormat">htmlDocDumpMemoryFormat</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDump">htmlNodeDump</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDumpFile">htmlNodeDumpFile</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDumpFileFormat">htmlNodeDumpFileFormat</a><br />
@@ -307,7 +308,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-HTMLparser.html#htmlSAXParseFile">htmlSAXParseFile</a><br />
 <a href="html/libxml-parser.html#xmlParseCtxtExternalEntity">xmlParseCtxtExternalEntity</a><br />
 <a href="html/libxml-parser.html#xmlParseExternalEntity">xmlParseExternalEntity</a><br />
-</dd><dt>forward</dt><dd><a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 </dd><dt>fptr</dt><dd><a href="html/libxml-hash.html#XML_CAST_FPTR">XML_CAST_FPTR</a><br />
 </dd><dt>fragment</dt><dd><a href="html/libxml-uri.html#_xmlURI">_xmlURI</a><br />
 <a href="html/libxml-tree.html#xmlNewDocFragment">xmlNewDocFragment</a><br />
@@ -381,10 +381,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-relaxng.html#xmlRelaxNGSetParserErrors">xmlRelaxNGSetParserErrors</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGSetValidErrors">xmlRelaxNGSetValidErrors</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaGetValidErrors">xmlSchemaGetValidErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a><br />
 <a href="html/libxml-debugXML.html#xmlShellCmd">xmlShellCmd</a><br />
 <a href="html/libxml-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a><br />
 <a href="html/libxml-parserInternals.html#xmlSwitchInputEncoding">xmlSwitchInputEncoding</a><br />
@@ -396,7 +394,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-valid.html#xmlValidCtxtNormalizeAttributeValue">xmlValidCtxtNormalizeAttributeValue</a><br />
 <a href="html/libxml-valid.html#xmlValidNormalizeAttributeValue">xmlValidNormalizeAttributeValue</a><br />
 <a href="html/libxml-xinclude.html#xmlXIncludeSetFlags">xmlXIncludeSetFlags</a><br />
-</dd><dt>future</dt><dd><a href="html/libxml-xmlschemas.html#xmlSchemaValidateFile">xmlSchemaValidateFile</a><br />
 </dd></dl><h2 align="center"><a href="APIchunk0.html">A-B</a>
 <a href="APIchunk1.html">C-C</a>
 <a href="APIchunk2.html">D-E</a>

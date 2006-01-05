@@ -71,9 +71,10 @@ int	<a href="#xmlRegisterInputCallbacks">xmlRegisterInputCallbacks</a>	(<a href=
 void	<a href="#xmlFreeParserInputBuffer">xmlFreeParserInputBuffer</a>	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in);
 void	<a href="#xmlRegisterDefaultInputCallbacks">xmlRegisterDefaultInputCallbacks</a>	(void);
 int	<a href="#xmlParserInputBufferGrow">xmlParserInputBufferGrow</a>	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in, <br/>					 int len);
+typedef int <a href="#xmlOutputCloseCallback">xmlOutputCloseCallback</a>		(void * context);
 <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	<a href="#xmlAllocOutputBuffer">xmlAllocOutputBuffer</a>	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlNoNetExternalEntityLoader">xmlNoNetExternalEntityLoader</a>	(const char * URL, <br/>							 const char * ID, <br/>							 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-typedef int <a href="#xmlOutputCloseCallback">xmlOutputCloseCallback</a>		(void * context);
+<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	<a href="#xmlOutputBufferCreateBuffer">xmlOutputBufferCreateBuffer</a>	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);
 int	<a href="#xmlIOHTTPMatch">xmlIOHTTPMatch</a>			(const char * filename);
 void *	<a href="#xmlIOHTTPOpen">xmlIOHTTPOpen</a>			(const char * filename);
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateIO">xmlParserInputBufferCreateIO</a>	(<a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br/>							 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br/>							 void * ioctx, <br/>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
@@ -229,6 +230,10 @@ void *	<a href="#xmlIOHTTPOpenW">xmlIOHTTPOpenW</a>			(const char * post_uri, <b
         <div class="refsect2" lang="en"><h3><a name="xmlOutputBufferClose"/>xmlOutputBufferClose ()</h3><pre class="programlisting">int	xmlOutputBufferClose		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out)<br/>
 </pre><p>flushes and close the output I/O channel and free up all the associated resources</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>out</tt></i>:</span></td><td>a buffered output</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of byte written or -1 in case of error.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateBuffer"/>xmlOutputBufferCreateBuffer ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateBuffer	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br/>
+</pre><p>Create a buffered output for the progressive saving to a <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a></p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>a <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a></td></tr><tr><td><span class="term"><i><tt>encoder</tt></i>:</span></td><td>the encoding converter or NULL</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the new parser output or NULL</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateFd"/>xmlOutputBufferCreateFd ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateFd	(int fd, <br/>						 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br/>
 </pre><p>Create a buffered output for the progressive saving to a file descriptor</p>

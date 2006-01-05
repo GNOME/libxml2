@@ -1,3 +1,9 @@
+Thu Jan  5 16:25:06 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in libxml.spec.in testapi.c doc/*: upated the news
+	  regenerated the docs, preparing for release of 2.6.23
+	* pattern.c xmlschemas.c: fixed some comments
+	
 Thu Jan  5 15:48:27 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/XPath/docs/nodes test/XPath/tests/nodespat

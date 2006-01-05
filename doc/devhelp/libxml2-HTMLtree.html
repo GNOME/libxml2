@@ -51,9 +51,10 @@
 int	<a href="#htmlNodeDumpFileFormat">htmlNodeDumpFileFormat</a>		(FILE * out, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
 void	<a href="#htmlDocDumpMemory">htmlDocDumpMemory</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** mem, <br/>					 int * size);
 int	<a href="#htmlSaveFile">htmlSaveFile</a>			(const char * filename, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur);
-<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlNewDocNoDtD">htmlNewDocNoDtD</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID);
 int	<a href="#htmlDocDump">htmlDocDump</a>			(FILE * f, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur);
+void	<a href="#htmlDocDumpMemoryFormat">htmlDocDumpMemoryFormat</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** mem, <br/>					 int * size, <br/>					 int format);
 int	<a href="#htmlIsBooleanAttr">htmlIsBooleanAttr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+int	<a href="#htmlSaveFileFormat">htmlSaveFileFormat</a>		(const char * filename, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
 void	<a href="#htmlNodeDumpFormatOutput">htmlNodeDumpFormatOutput</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
 int	<a href="#htmlSetMetaEncoding">htmlSetMetaEncoding</a>		(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * encoding);
 int	<a href="#htmlSaveFileEnc">htmlSaveFileEnc</a>			(const char * filename, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding);
@@ -63,7 +64,7 @@ int	<a href="#htmlNodeDump">htmlNodeDump</a>			(<a href="libxml2-tree.html#xmlBu
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#htmlGetMetaEncoding">htmlGetMetaEncoding</a>	(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc);
 void	<a href="#htmlNodeDumpFile">htmlNodeDumpFile</a>		(FILE * out, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 void	<a href="#htmlDocContentDumpFormatOutput">htmlDocContentDumpFormatOutput</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
-int	<a href="#htmlSaveFileFormat">htmlSaveFileFormat</a>		(const char * filename, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
+<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlNewDocNoDtD">htmlNewDocNoDtD</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID);
 void	<a href="#htmlDocContentDumpOutput">htmlDocContentDumpOutput</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding);
 </pre>
     </div>
@@ -108,6 +109,10 @@ void	<a href="#htmlDocContentDumpOutput">htmlDocContentDumpOutput</a>	(<a href="
         <div class="refsect2" lang="en"><h3><a name="htmlDocDumpMemory"/>htmlDocDumpMemory ()</h3><pre class="programlisting">void	htmlDocDumpMemory		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** mem, <br/>					 int * size)<br/>
 </pre><p>Dump an HTML document in memory and return the <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * and it's size. It's up to the caller to free the memory.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>mem</tt></i>:</span></td><td>OUT: the memory pointer</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>OUT: the memory length</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="htmlDocDumpMemoryFormat"/>htmlDocDumpMemoryFormat ()</h3><pre class="programlisting">void	htmlDocDumpMemoryFormat		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** mem, <br/>					 int * size, <br/>					 int format)<br/>
+</pre><p>Dump an HTML document in memory and return the <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * and it's size. It's up to the caller to free the memory.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>mem</tt></i>:</span></td><td>OUT: the memory pointer</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>OUT: the memory length</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>should formatting spaces been added</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlGetMetaEncoding"/>htmlGetMetaEncoding ()</h3><pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	htmlGetMetaEncoding	(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc)<br/>
 </pre><p>Encoding definition lookup in the Meta tags</p>

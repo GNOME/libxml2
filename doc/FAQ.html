@@ -118,40 +118,47 @@ A:link, A:visited, A:active { text-decoration: underline }
     <p><code>CFLAGS=`xml2-config --cflags`</code></p>
     <p><code>LIBS=`xml2-config --libs`</code></p>
   </li>
-  <li><em>I want to install my own copy of libxml2 in my home directory and link
-    my programs against it, but it doesn't work</em>
+  <li><em>I want to install my own copy of libxml2 in my home directory and
+    link my programs against it, but it doesn't work</em>
     <p>There are many different ways to accomplish this.  Here is one way to
-      do this under Linux.  Suppose your home directory is <code>/home/user.
-      </code>Then:</p>
+    do this under Linux.  Suppose your home directory is <code>/home/user.
+    </code>Then:</p>
     <ul><li>Create a subdirectory, let's call it <code>myxml</code></li>
       <li>unpack the libxml2 distribution into that subdirectory</li>
-      <li>chdir into the unpacked distribution (<code>/home/user/myxml/libxml2
-        </code>)</li>
+      <li>chdir into the unpacked distribution
+        (<code>/home/user/myxml/libxml2 </code>)</li>
       <li>configure the library using the "<code>--prefix</code>" switch,
-      specifying an installation subdirectory in <code>/home/user/myxml</code>,
-      e.g.
-      <p><code>./configure --prefix /home/user/myxml/xmlinst</code> {other
-      configuration options}</p></li>
+        specifying an installation subdirectory in
+        <code>/home/user/myxml</code>, e.g.
+        <p><code>./configure --prefix /home/user/myxml/xmlinst</code> {other
+        configuration options}</p>
+      </li>
       <li>now run <code>make</code> followed by <code>make install</code></li>
       <li>At this point, the installation subdirectory contains the complete
-      "private" include files, library files and binary program files (e.g.
-      xmllint), located in
-      <p> <code>/home/user/myxml/xmlinst/lib, /home/user/myxml/xmlinst/include
-      </code> and <code> /home/user/myxml/xmlinst/bin</code></p>
-      respectively.</li>
-      <li>In order to use this "private" library, you should first add it
-      to the beginning of your default PATH (so that your own private
-      program files such as xmllint will be used instead of the normal
-      system ones).  To do this, the Bash command would be
-      <p><code>export PATH=/home/user/myxml/xmlinst/bin:$PATH</code></p></li>
+        "private" include files, library files and binary program files (e.g.
+        xmllint), located in
+        <p><code>/home/user/myxml/xmlinst/lib,
+        /home/user/myxml/xmlinst/include </code> and <code>
+        /home/user/myxml/xmlinst/bin</code></p>
+        respectively.</li>
+      <li>In order to use this "private" library, you should first add it to
+        the beginning of your default PATH (so that your own private program
+        files such as xmllint will be used instead of the normal system
+        ones).  To do this, the Bash command would be
+        <p><code>export PATH=/home/user/myxml/xmlinst/bin:$PATH</code></p>
+      </li>
       <li>Now suppose you have a program <code>test1.c</code> that you would
-      like to compile with your "private" library.  Simply compile it
-      using the command <p><code>gcc `xml2-config --cflags --libs` -o test
-      test.c</code></p>  Note that, because your PATH has been set with <code>
-      /home/user/myxml/xmlinst/bin</code> at the beginning, the
-      xml2-config program which you just installed will be used instead of
-      the system default one, and this will <em>automatically</em> get the
-      correct libraries linked with your program.</li></ul></li><p></p>
+        like to compile with your "private" library.  Simply compile it using
+        the command
+        <p><code>gcc `xml2-config --cflags --libs` -o test test.c</code></p>
+        Note that, because your PATH has been set with <code>
+        /home/user/myxml/xmlinst/bin</code> at the beginning, the xml2-config
+        program which you just installed will be used instead of the system
+        default one, and this will <em>automatically</em> get the correct
+        libraries linked with your program.</li>
+    </ul></li>
+
+  <p></p>
   <li><em>xmlDocDump() generates output on one line.</em>
     <p>Libxml2 will not <strong>invent</strong> spaces in the content of a
     document since <strong>all spaces in the content of a document are

@@ -301,6 +301,18 @@ extern __typeof (htmlDocDumpMemory) htmlDocDumpMemory__internal_alias __attribut
 #endif
 #endif
 
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+#ifdef bottom_HTMLtree
+#undef htmlDocDumpMemoryFormat
+extern __typeof (htmlDocDumpMemoryFormat) htmlDocDumpMemoryFormat __attribute((alias("htmlDocDumpMemoryFormat__internal_alias")));
+#else
+#ifndef htmlDocDumpMemoryFormat
+extern __typeof (htmlDocDumpMemoryFormat) htmlDocDumpMemoryFormat__internal_alias __attribute((visibility("hidden")));
+#define htmlDocDumpMemoryFormat htmlDocDumpMemoryFormat__internal_alias
+#endif
+#endif
+#endif
+
 #if defined(LIBXML_HTML_ENABLED)
 #ifdef bottom_HTMLparser
 #undef htmlElementAllowedHere
@@ -6573,6 +6585,18 @@ extern __typeof (xmlOutputBufferClose) xmlOutputBufferClose__internal_alias __at
 
 #if defined(LIBXML_OUTPUT_ENABLED)
 #ifdef bottom_xmlIO
+#undef xmlOutputBufferCreateBuffer
+extern __typeof (xmlOutputBufferCreateBuffer) xmlOutputBufferCreateBuffer __attribute((alias("xmlOutputBufferCreateBuffer__internal_alias")));
+#else
+#ifndef xmlOutputBufferCreateBuffer
+extern __typeof (xmlOutputBufferCreateBuffer) xmlOutputBufferCreateBuffer__internal_alias __attribute((visibility("hidden")));
+#define xmlOutputBufferCreateBuffer xmlOutputBufferCreateBuffer__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_OUTPUT_ENABLED)
+#ifdef bottom_xmlIO
 #undef xmlOutputBufferCreateFd
 extern __typeof (xmlOutputBufferCreateFd) xmlOutputBufferCreateFd __attribute((alias("xmlOutputBufferCreateFd__internal_alias")));
 #else
@@ -9155,6 +9179,18 @@ extern __typeof (xmlSaveSetEscape) xmlSaveSetEscape__internal_alias __attribute(
 
 #if defined(LIBXML_OUTPUT_ENABLED)
 #ifdef bottom_xmlsave
+#undef xmlSaveToBuffer
+extern __typeof (xmlSaveToBuffer) xmlSaveToBuffer __attribute((alias("xmlSaveToBuffer__internal_alias")));
+#else
+#ifndef xmlSaveToBuffer
+extern __typeof (xmlSaveToBuffer) xmlSaveToBuffer__internal_alias __attribute((visibility("hidden")));
+#define xmlSaveToBuffer xmlSaveToBuffer__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_OUTPUT_ENABLED)
+#ifdef bottom_xmlsave
 #undef xmlSaveToFd
 extern __typeof (xmlSaveToFd) xmlSaveToFd __attribute((alias("xmlSaveToFd__internal_alias")));
 #else
@@ -9675,6 +9711,18 @@ extern __typeof (xmlSchemaSetParserErrors) xmlSchemaSetParserErrors __attribute(
 #ifndef xmlSchemaSetParserErrors
 extern __typeof (xmlSchemaSetParserErrors) xmlSchemaSetParserErrors__internal_alias __attribute((visibility("hidden")));
 #define xmlSchemaSetParserErrors xmlSchemaSetParserErrors__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
+#undef xmlSchemaSetParserStructuredErrors
+extern __typeof (xmlSchemaSetParserStructuredErrors) xmlSchemaSetParserStructuredErrors __attribute((alias("xmlSchemaSetParserStructuredErrors__internal_alias")));
+#else
+#ifndef xmlSchemaSetParserStructuredErrors
+extern __typeof (xmlSchemaSetParserStructuredErrors) xmlSchemaSetParserStructuredErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaSetParserStructuredErrors xmlSchemaSetParserStructuredErrors__internal_alias
 #endif
 #endif
 #endif
@@ -11423,7 +11471,7 @@ extern __typeof (xmlTextReaderReadAttributeValue) xmlTextReaderReadAttributeValu
 #endif
 #endif
 
-#if defined(LIBXML_READER_ENABLED)
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_WRITER_ENABLED)
 #ifdef bottom_xmlreader
 #undef xmlTextReaderReadInnerXml
 extern __typeof (xmlTextReaderReadInnerXml) xmlTextReaderReadInnerXml __attribute((alias("xmlTextReaderReadInnerXml__internal_alias")));
@@ -11435,7 +11483,7 @@ extern __typeof (xmlTextReaderReadInnerXml) xmlTextReaderReadInnerXml__internal_
 #endif
 #endif
 
-#if defined(LIBXML_READER_ENABLED)
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_WRITER_ENABLED)
 #ifdef bottom_xmlreader
 #undef xmlTextReaderReadOuterXml
 extern __typeof (xmlTextReaderReadOuterXml) xmlTextReaderReadOuterXml __attribute((alias("xmlTextReaderReadOuterXml__internal_alias")));
@@ -11503,6 +11551,18 @@ extern __typeof (xmlTextReaderSchemaValidate) xmlTextReaderSchemaValidate __attr
 #ifndef xmlTextReaderSchemaValidate
 extern __typeof (xmlTextReaderSchemaValidate) xmlTextReaderSchemaValidate__internal_alias __attribute((visibility("hidden")));
 #define xmlTextReaderSchemaValidate xmlTextReaderSchemaValidate__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlreader
+#undef xmlTextReaderSchemaValidateCtxt
+extern __typeof (xmlTextReaderSchemaValidateCtxt) xmlTextReaderSchemaValidateCtxt __attribute((alias("xmlTextReaderSchemaValidateCtxt__internal_alias")));
+#else
+#ifndef xmlTextReaderSchemaValidateCtxt
+extern __typeof (xmlTextReaderSchemaValidateCtxt) xmlTextReaderSchemaValidateCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlTextReaderSchemaValidateCtxt xmlTextReaderSchemaValidateCtxt__internal_alias
 #endif
 #endif
 #endif

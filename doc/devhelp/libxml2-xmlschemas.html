@@ -68,7 +68,7 @@ void	<a href="#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErr
 void	<a href="#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a>		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn, <br/>					 void * ctx);
 int	<a href="#xmlSchemaValidCtxtGetOptions">xmlSchemaValidCtxtGetOptions</a>	(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt);
 int	<a href="#xmlSchemaValidateFile">xmlSchemaValidateFile</a>		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 const char * filename, <br/>					 int options);
-int	<a href="#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a>		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a>		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> instance);
 void	<a href="#xmlSchemaFree">xmlSchemaFree</a>			(<a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
 <a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a>	<a href="#xmlSchemaNewMemParserCtxt">xmlSchemaNewMemParserCtxt</a>	(const char * buffer, <br/>							 int size);
 int	<a href="#xmlSchemaGetValidErrors">xmlSchemaGetValidErrors</a>		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> * err, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> * warn, <br/>					 void ** ctx);
@@ -77,6 +77,7 @@ void	<a href="#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a>	(<a href="
 typedef void <a href="#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
 void	<a href="#xmlSchemaDump">xmlSchemaDump</a>			(FILE * output, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
 void	<a href="#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a>		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt);
+void	<a href="#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a>	(<a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
 <a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a>	<a href="#xmlSchemaNewValidCtxt">xmlSchemaNewValidCtxt</a>	(<a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
 </pre>
     </div>
@@ -90,7 +91,7 @@ void	<a href="#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a>		(<a href="lib
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name	: schema name
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	targetNamespace	: the target namespace
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	version
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	id
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	id	: Obsolete
     <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	doc
     <a href="libxml2-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     int	flags
@@ -106,8 +107,8 @@ void	<a href="#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a>		(<a href="lib
     void *	includes	: the includes, this is opaque for now
     int	preserve	: whether to free the document
     int	counter	: used to give ononymous components unique names
-    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	idcDef
-    void *	volatiles	: Deprecated; not used anymore.
+    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	idcDef	: All identity-constraint defs.
+    void *	volatiles	: Obsolete
 } xmlSchema;
 </pre><p/>
 </div>
@@ -204,20 +205,20 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the schema parser context</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeValidCtxt"/>xmlSchemaFreeValidCtxt ()</h3><pre class="programlisting">void	xmlSchemaFreeValidCtxt		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt)<br/>
-</pre><p>Free the resources associated to the schema validation context</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the schema validation context</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaGetParserErrors"/>xmlSchemaGetParserErrors ()</h3><pre class="programlisting">int	xmlSchemaGetParserErrors	(<a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> * err, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> * warn, <br/>					 void ** ctx)<br/>
 </pre><p>Get the callback information used to handle errors for a parser context</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a XMl-Schema parser context</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>the error callback result</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>the warning callback result</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>contextual data for the callbacks result</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of failure, 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaGetValidErrors"/>xmlSchemaGetValidErrors ()</h3><pre class="programlisting">int	xmlSchemaGetValidErrors		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> * err, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> * warn, <br/>					 void ** ctx)<br/>
-</pre><p>Get the error and warning callback informations</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a XML-Schema validation context</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>the error function result</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>the warning function result</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the functions context result</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error and 0 otherwise</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaIsValid"/>xmlSchemaIsValid ()</h3><pre class="programlisting">int	xmlSchemaIsValid		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt)<br/>
-</pre><p>Check if any error was detected during validation.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the schema validation context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if valid so far, 0 if errors were detected, and -1 in case of internal error.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaNewDocParserCtxt"/>xmlSchemaNewDocParserCtxt ()</h3><pre class="programlisting"><a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a>	xmlSchemaNewDocParserCtxt	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br/>
 </pre><p>Create an XML Schemas parse context for that document. NB. The document may be modified during the parsing process.</p>
@@ -232,56 +233,60 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>the location of the schema</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the parser context or NULL in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaNewValidCtxt"/>xmlSchemaNewValidCtxt ()</h3><pre class="programlisting"><a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a>	xmlSchemaNewValidCtxt	(<a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema)<br/>
-</pre><p>Create an XML Schemas validation context based on the given schema.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>a precompiled XML Schemas</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the validation context or NULL in case of error</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaParse"/>xmlSchemaParse ()</h3><pre class="programlisting"><a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a>	xmlSchemaParse		(<a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt)<br/>
-</pre><p>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances. *WARNING* this interface is highly subject to change</p>
+</pre><p>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the internal XML Schema structure built from the resource or NULL in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaSAXPlug"/>xmlSchemaSAXPlug ()</h3><pre class="programlisting"><a href="libxml2-xmlschemas.html#xmlSchemaSAXPlugPtr">xmlSchemaSAXPlugPtr</a>	xmlSchemaSAXPlug	(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> * sax, <br/>						 void ** user_data)<br/>
-</pre><p>Plug a SAX based validation layer in a SAX parsing event flow. The original @saxptr and @dataptr data are replaced by new pointers but the calls to the original will be maintained.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>sax</tt></i>:</span></td><td>a pointer to the original <a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a></td></tr><tr><td><span class="term"><i><tt>user_data</tt></i>:</span></td><td>a pointer to the original SAX user data pointer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to a data structure needed to unplug the validation layer or NULL in case of errors.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>sax</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>user_data</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaSAXUnplug"/>xmlSchemaSAXUnplug ()</h3><pre class="programlisting">int	xmlSchemaSAXUnplug		(<a href="libxml2-xmlschemas.html#xmlSchemaSAXPlugPtr">xmlSchemaSAXPlugPtr</a> plug)<br/>
-</pre><p>Unplug a SAX based validation layer in a SAX parsing event flow. The original pointers used in the call are restored.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>plug</tt></i>:</span></td><td>a data structure returned by <a href="libxml2-xmlschemas.html#xmlSchemaSAXPlug">xmlSchemaSAXPlug</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success and -1 in case of failure.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>plug</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaSetParserErrors"/>xmlSchemaSetParserErrors ()</h3><pre class="programlisting">void	xmlSchemaSetParserErrors	(<a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn, <br/>					 void * ctx)<br/>
 </pre><p>Set the callback functions used to handle errors for a validation context</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>the error callback</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>the warning callback</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>contextual data for the callbacks</td></tr></tbody></table></div></div>
         <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlSchemaSetParserStructuredErrors"/>xmlSchemaSetParserStructuredErrors ()</h3><pre class="programlisting">void	xmlSchemaSetParserStructuredErrors	(<a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx)<br/>
+</pre><p>Set the structured error callback</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema parser context</td></tr><tr><td><span class="term"><i><tt>serror</tt></i>:</span></td><td>the structured error function</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the functions context</td></tr></tbody></table></div></div>
+        <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaSetValidErrors"/>xmlSchemaSetValidErrors ()</h3><pre class="programlisting">void	xmlSchemaSetValidErrors		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err, <br/>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn, <br/>					 void * ctx)<br/>
-</pre><p>Set the error and warning callback informations</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>the error function</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>the warning function</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the functions context</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaSetValidOptions"/>xmlSchemaSetValidOptions ()</h3><pre class="programlisting">int	xmlSchemaSetValidOptions	(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 int options)<br/>
-</pre><p>Sets the options to be used during the validation.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td>a combination of <a href="libxml2-xmlschemas.html#xmlSchemaValidOption">xmlSchemaValidOption</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success, -1 in case of an API error.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaSetValidStructuredErrors"/>xmlSchemaSetValidStructuredErrors ()</h3><pre class="programlisting">void	xmlSchemaSetValidStructuredErrors	(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx)<br/>
-</pre><p>Set the structured error callback</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>serror</tt></i>:</span></td><td>the structured error function</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the functions context</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>serror</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaValidCtxtGetOptions"/>xmlSchemaValidCtxtGetOptions ()</h3><pre class="programlisting">int	xmlSchemaValidCtxtGetOptions	(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt)<br/>
-</pre><p>Get the validation context options.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the option combination or -1 on error.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateDoc"/>xmlSchemaValidateDoc ()</h3><pre class="programlisting">int	xmlSchemaValidateDoc		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br/>
-</pre><p>Validate a document tree in memory.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>a parsed document tree</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.</td></tr></tbody></table></div></div>
+        <div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateDoc"/>xmlSchemaValidateDoc ()</h3><pre class="programlisting">int	xmlSchemaValidateDoc		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> instance)<br/>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>instance</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateFile"/>xmlSchemaValidateFile ()</h3><pre class="programlisting">int	xmlSchemaValidateFile		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 const char * filename, <br/>					 int options)<br/>
-</pre><p>Do a schemas validation of the given resource, it will use the SAX streamable validation internally.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the URI of the instance</td></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td>a future set of options, currently unused</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if the document is valid, a positive error code number otherwise and -1 in case of an internal or API error.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateOneElement"/>xmlSchemaValidateOneElement ()</h3><pre class="programlisting">int	xmlSchemaValidateOneElement	(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem)<br/>
-</pre><p>Validate a branch of a tree, starting with the given @elem.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>elem</tt></i>:</span></td><td>an element node</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if the element and its subtree is valid, a positive error code number otherwise and -1 in case of an internal or API error.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>elem</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateStream"/>xmlSchemaValidateStream ()</h3><pre class="programlisting">int	xmlSchemaValidateStream		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input, <br/>					 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br/>					 <a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br/>					 void * user_data)<br/>
-</pre><p>Validate an input based on a flow of SAX event from the parser and forward the events to the @sax handler with the provided @user_data the user provided @sax handler must be a SAX2 one.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td>the input to use for reading the data</td></tr><tr><td><span class="term"><i><tt>enc</tt></i>:</span></td><td>an optional encoding information</td></tr><tr><td><span class="term"><i><tt>sax</tt></i>:</span></td><td>a SAX handler for the resulting events</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i>:</span></td><td>the context to provide to the SAX handler.</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.</td></tr></tbody></table></div></div>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>enc</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>sax</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>user_data</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
       </div>
     </div>

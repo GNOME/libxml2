@@ -371,6 +371,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlstring.html#xmlStrdup">xmlStrdup</a><br />
 <a href="html/libxml-pattern.html#xmlStreamPush">xmlStreamPush</a><br />
 <a href="html/libxml-pattern.html#xmlStreamPushAttr">xmlStreamPushAttr</a><br />
+<a href="html/libxml-pattern.html#xmlStreamPushNode">xmlStreamPushNode</a><br />
 <a href="html/libxml-parserInternals.html#xmlStringCurrentChar">xmlStringCurrentChar</a><br />
 <a href="html/libxml-parserInternals.html#xmlStringDecodeEntities">xmlStringDecodeEntities</a><br />
 <a href="html/libxml-tree.html#xmlStringGetNodeList">xmlStringGetNodeList</a><br />
@@ -557,6 +558,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-encoding.html#UTF8Toisolat1">UTF8Toisolat1</a><br />
 <a href="html/libxml-DOCBparser.html#docbEncodeEntities">docbEncodeEntities</a><br />
 <a href="html/libxml-HTMLtree.html#htmlDocDumpMemory">htmlDocDumpMemory</a><br />
+<a href="html/libxml-HTMLtree.html#htmlDocDumpMemoryFormat">htmlDocDumpMemoryFormat</a><br />
 <a href="html/libxml-HTMLparser.html#htmlEncodeEntities">htmlEncodeEntities</a><br />
 <a href="html/libxml-encoding.html#isolat1ToUTF8">isolat1ToUTF8</a><br />
 <a href="html/libxml-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a><br />
@@ -839,6 +841,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#xmlSAXUserParseMemory">xmlSAXUserParseMemory</a><br />
 <a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
@@ -960,6 +963,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlwriter.html#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a><br />
 <a href="html/libxml-tree.html#xmlNodeBufGetContent">xmlNodeBufGetContent</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
+<a href="html/libxml-xmlIO.html#xmlOutputBufferCreateBuffer">xmlOutputBufferCreateBuffer</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
 </p><h2>Type xmlC14NIsVisibleCallback:</h2><p><a href="html/libxml-c14n.html#xmlC14NExecute">xmlC14NExecute</a><br />
 </p><h2>Type xmlCatalogAllow:</h2><p><a href="html/libxml-catalog.html#xmlCatalogSetDefaults">xmlCatalogSetDefaults</a><br />
 </p><h2>Type xmlCatalogPrefer:</h2><p><a href="html/libxml-catalog.html#xmlCatalogSetDefaultPrefer">xmlCatalogSetDefaultPrefer</a><br />
@@ -1003,6 +1008,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlstring.html#xmlStrncat">xmlStrncat</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathWrapString">xmlXPathWrapString</a><br />
 </p><h2>Type xmlChar **:</h2><p><a href="html/libxml-HTMLtree.html#htmlDocDumpMemory">htmlDocDumpMemory</a><br />
+<a href="html/libxml-HTMLtree.html#htmlDocDumpMemoryFormat">htmlDocDumpMemoryFormat</a><br />
 <a href="html/libxml-c14n.html#xmlC14NDocDumpMemory">xmlC14NDocDumpMemory</a><br />
 <a href="html/libxml-c14n.html#xmlC14NDocSave">xmlC14NDocSave</a><br />
 <a href="html/libxml-c14n.html#xmlC14NDocSaveTo">xmlC14NDocSaveTo</a><br />
@@ -1042,6 +1048,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-encoding.html#xmlCharEncInFunc">xmlCharEncInFunc</a><br />
 <a href="html/libxml-encoding.html#xmlCharEncOutFunc">xmlCharEncOutFunc</a><br />
 </p><h2>Type xmlCharEncodingHandlerPtr:</h2><p><a href="html/libxml-xmlIO.html#xmlAllocOutputBuffer">xmlAllocOutputBuffer</a><br />
+<a href="html/libxml-xmlIO.html#xmlOutputBufferCreateBuffer">xmlOutputBufferCreateBuffer</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFd">xmlOutputBufferCreateFd</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFile">xmlOutputBufferCreateFile</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFilename">xmlOutputBufferCreateFilename</a><br />
@@ -1076,6 +1083,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-HTMLtree.html#htmlDocContentDumpOutput">htmlDocContentDumpOutput</a><br />
 <a href="html/libxml-HTMLtree.html#htmlDocDump">htmlDocDump</a><br />
 <a href="html/libxml-HTMLtree.html#htmlDocDumpMemory">htmlDocDumpMemory</a><br />
+<a href="html/libxml-HTMLtree.html#htmlDocDumpMemoryFormat">htmlDocDumpMemoryFormat</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDump">htmlNodeDump</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDumpFile">htmlNodeDumpFile</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDumpFileFormat">htmlNodeDumpFileFormat</a><br />
@@ -1865,6 +1873,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaGetParserErrors">xmlSchemaGetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaParse">xmlSchemaParse</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a><br />
 </p><h2>Type xmlSchemaPtr:</h2><p><a href="html/libxml-xmlschemas.html#xmlSchemaDump">xmlSchemaDump</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaFree">xmlSchemaFree</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaNewValidCtxt">xmlSchemaNewValidCtxt</a><br />
@@ -1913,6 +1922,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateFile">xmlSchemaValidateFile</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateOneElement">xmlSchemaValidateOneElement</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderSchemaValidateCtxt">xmlTextReaderSchemaValidateCtxt</a><br />
 </p><h2>Type xmlSchemaValidityErrorFunc:</h2><p><a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a><br />
 </p><h2>Type xmlSchemaValidityErrorFunc *:</h2><p><a href="html/libxml-xmlschemas.html#xmlSchemaGetParserErrors">xmlSchemaGetParserErrors</a><br />
@@ -1952,7 +1962,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-pattern.html#xmlStreamPop">xmlStreamPop</a><br />
 <a href="html/libxml-pattern.html#xmlStreamPush">xmlStreamPush</a><br />
 <a href="html/libxml-pattern.html#xmlStreamPushAttr">xmlStreamPushAttr</a><br />
+<a href="html/libxml-pattern.html#xmlStreamPushNode">xmlStreamPushNode</a><br />
+<a href="html/libxml-pattern.html#xmlStreamWantsAnyNode">xmlStreamWantsAnyNode</a><br />
 </p><h2>Type xmlStructuredErrorFunc:</h2><p><a href="html/libxml-relaxng.html#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErrors</a><br />
 <a href="html/libxml-xmlerror.html#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a><br />
@@ -2028,6 +2041,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema">xmlTextReaderRelaxNGSetSchema</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate">xmlTextReaderRelaxNGValidate</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSchemaValidate">xmlTextReaderSchemaValidate</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderSchemaValidateCtxt">xmlTextReaderSchemaValidateCtxt</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetParserProp">xmlTextReaderSetParserProp</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetSchema">xmlTextReaderSetSchema</a><br />

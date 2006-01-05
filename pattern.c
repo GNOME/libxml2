@@ -2188,7 +2188,7 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 }
 
 /**
- * xmlStreamPush:
+ * xmlStreamPushNode:
  * @stream: the stream context
  * @name: the current name
  * @ns: the namespace name
@@ -2279,7 +2279,7 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
 
 /**
  * xmlStreamWantsAnyNode:
- * @stream: the stream context
+ * @streamCtxt: the stream context
  *
  * Query if the streaming pattern additionally needs to be fed with
  * text-, cdata-section-, comment- and processing-instruction-nodes.

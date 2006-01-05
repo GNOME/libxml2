@@ -290,6 +290,9 @@ htmlDocDump
 htmlDocDumpMemory
 #endif
 #ifdef LIBXML_HTML_ENABLED
+htmlDocDumpMemoryFormat
+#endif
+#ifdef LIBXML_HTML_ENABLED
 htmlElementAllowedHere
 #endif
 #ifdef LIBXML_HTML_ENABLED
@@ -1270,6 +1273,7 @@ xmlNodeSetSpacePreserve
 xmlNormalizeURIPath
 xmlNormalizeWindowsPath
 xmlOutputBufferClose
+xmlOutputBufferCreateBuffer
 xmlOutputBufferCreateFd
 xmlOutputBufferCreateFile
 xmlOutputBufferCreateFilename
@@ -1580,6 +1584,7 @@ xmlSaveFormatFileEnc
 xmlSaveFormatFileTo
 xmlSaveSetAttrEscape
 xmlSaveSetEscape
+xmlSaveToBuffer
 xmlSaveToFd
 xmlSaveToFilename
 xmlSaveToIO
@@ -1695,6 +1700,9 @@ xmlSchemaSAXUnplug
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaSetParserErrors
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaSetParserStructuredErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaSetValidErrors
@@ -1930,6 +1938,7 @@ xmlTextReaderRelaxNGSetSchema
 xmlTextReaderRelaxNGValidate
 #endif
 xmlTextReaderSchemaValidate
+xmlTextReaderSchemaValidateCtxt
 xmlTextReaderSetErrorHandler
 xmlTextReaderSetParserProp
 xmlTextReaderSetSchema

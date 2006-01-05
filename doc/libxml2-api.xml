@@ -110,9 +110,10 @@
      <exports symbol='htmlNodeDumpFileFormat' type='function'/>
      <exports symbol='htmlDocDumpMemory' type='function'/>
      <exports symbol='htmlSaveFile' type='function'/>
-     <exports symbol='htmlNewDocNoDtD' type='function'/>
      <exports symbol='htmlDocDump' type='function'/>
+     <exports symbol='htmlDocDumpMemoryFormat' type='function'/>
      <exports symbol='htmlIsBooleanAttr' type='function'/>
+     <exports symbol='htmlSaveFileFormat' type='function'/>
      <exports symbol='htmlNodeDumpFormatOutput' type='function'/>
      <exports symbol='htmlSetMetaEncoding' type='function'/>
      <exports symbol='htmlSaveFileEnc' type='function'/>
@@ -122,7 +123,7 @@
      <exports symbol='htmlGetMetaEncoding' type='function'/>
      <exports symbol='htmlNodeDumpFile' type='function'/>
      <exports symbol='htmlDocContentDumpFormatOutput' type='function'/>
-     <exports symbol='htmlSaveFileFormat' type='function'/>
+     <exports symbol='htmlNewDocNoDtD' type='function'/>
      <exports symbol='htmlDocContentDumpOutput' type='function'/>
     </file>
     <file name='SAX'>
@@ -1003,11 +1004,13 @@
      <exports symbol='xmlPatternStreamable' type='function'/>
      <exports symbol='xmlStreamPushAttr' type='function'/>
      <exports symbol='xmlPatternMatch' type='function'/>
+     <exports symbol='xmlStreamWantsAnyNode' type='function'/>
      <exports symbol='xmlStreamPop' type='function'/>
      <exports symbol='xmlFreePattern' type='function'/>
      <exports symbol='xmlStreamPush' type='function'/>
      <exports symbol='xmlPatternMaxDepth' type='function'/>
      <exports symbol='xmlPatterncompile' type='function'/>
+     <exports symbol='xmlStreamPushNode' type='function'/>
      <exports symbol='xmlFreeStreamCtxt' type='function'/>
     </file>
     <file name='relaxng'>
@@ -1093,7 +1096,7 @@
     </file>
     <file name='schemasInternals'>
      <summary>internal interfaces for XML Schemas</summary>
-     <description>internal interfaces for the XML Schemas handling and schema validity checking </description>
+     <description>internal interfaces for the XML Schemas handling and schema validity checking The Schemas development is a Work In Progress. Some of those interfaces are not garanteed to be API or ABI stable ! </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION' type='macro'/>
@@ -1118,11 +1121,12 @@
      <exports symbol='XML_SCHEMAS_ATTR_USE_PROHIBITED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_NILLABLE' type='macro'/>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_SUBSTITUTION' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTRGROUP_REDEFINED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_DEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_EXTENSION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_REDEFINED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ATOMIC' type='macro'/>
@@ -1142,7 +1146,9 @@
      <exports symbol='XML_SCHEMAS_ANYATTR_LAX' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_GLOBAL' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_ABSTRACT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_FIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_SKIP' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_LIST' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ABSENT' type='macro'/>
@@ -1151,7 +1157,7 @@
      <exports symbol='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_GLOBAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_LAX' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_HAS_FACETS' type='macro'/>
@@ -1160,7 +1166,7 @@
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_ABSENT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_INTERNAL_INVALID' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTRGROUP_HAS_REFS' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT' type='macro'/>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_UNION' type='macro'/>
@@ -1223,6 +1229,7 @@
      <exports symbol='XML_SCHEMAS_GMONTH' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_ELEMENTS' type='enum'/>
      <exports symbol='XML_SCHEMAS_GYEAR' type='enum'/>
+     <exports symbol='XML_SCHEMA_EXTRA_ATTR_USE_PROHIB' type='enum'/>
      <exports symbol='XML_SCHEMAS_BYTE' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ALL' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_IDC_KEYREF' type='enum'/>
@@ -1230,6 +1237,7 @@
      <exports symbol='XML_SCHEMA_FACET_MAXINCLUSIVE' type='enum'/>
      <exports symbol='XML_SCHEMAS_NAME' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_LIST' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTE_USE' type='enum'/>
      <exports symbol='XML_SCHEMAS_GDAY' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ANY' type='enum'/>
      <exports symbol='XML_SCHEMAS_ANYURI' type='enum'/>
@@ -1853,9 +1861,10 @@
      <exports symbol='xmlFreeParserInputBuffer' type='function'/>
      <exports symbol='xmlRegisterDefaultInputCallbacks' type='function'/>
      <exports symbol='xmlParserInputBufferGrow' type='function'/>
+     <exports symbol='xmlOutputCloseCallback' type='function'/>
      <exports symbol='xmlAllocOutputBuffer' type='function'/>
      <exports symbol='xmlNoNetExternalEntityLoader' type='function'/>
-     <exports symbol='xmlOutputCloseCallback' type='function'/>
+     <exports symbol='xmlOutputBufferCreateBuffer' type='function'/>
      <exports symbol='xmlIOHTTPMatch' type='function'/>
      <exports symbol='xmlIOHTTPOpen' type='function'/>
      <exports symbol='xmlParserInputBufferCreateIO' type='function'/>
@@ -1927,7 +1936,7 @@
      <exports symbol='XML_XPATH_UNKNOWN_FUNC_ERROR' type='enum'/>
      <exports symbol='XML_ERR_DOCUMENT_START' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_TEXT' type='enum'/>
-     <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_AG_PROPS_CORRECT' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_1' type='enum'/>
      <exports symbol='XML_DTD_NOT_STANDALONE' type='enum'/>
      <exports symbol='XML_HTTP_USE_IP' type='enum'/>
@@ -2064,6 +2073,7 @@
      <exports symbol='XML_SAVE_CHAR_INVALID' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_NO_NAME' type='enum'/>
      <exports symbol='XML_DTD_ID_FIXED' type='enum'/>
+     <exports symbol='XML_SCHEMAP_A_PROPS_CORRECT_3' type='enum'/>
      <exports symbol='XML_SCHEMAP_A_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_WAR_NS_COLUMN' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_1' type='enum'/>
@@ -2083,6 +2093,7 @@
      <exports symbol='XML_FROM_HTTP' type='enum'/>
      <exports symbol='XML_DTD_NOTATION_REDEFINED' type='enum'/>
      <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_AU_PROPS_CORRECT' type='enum'/>
      <exports symbol='XML_ERR_SEPARATOR_REQUIRED' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ATTR_NOT_ALLOWED' type='enum'/>
      <exports symbol='XML_XINCLUDE_FALLBACK_NOT_IN_INCLUDE' type='enum'/>
@@ -2220,7 +2231,7 @@
      <exports symbol='XML_XINCLUDE_PARSE_VALUE' type='enum'/>
      <exports symbol='XML_RNGP_NSNAME_NO_NS' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNION_NOT_EXPRESSIBLE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_2' type='enum'/>
      <exports symbol='XML_CHECK_FOUND_ELEMENT' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NAME_INVALID' type='enum'/>
      <exports symbol='XML_NS_ERR_QNAME' type='enum'/>
@@ -2230,6 +2241,7 @@
      <exports symbol='XML_I18N_NO_NAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_1' type='enum'/>
      <exports symbol='XML_RNGP_EXCEPT_MISSING' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_CT_EXTENDS_1_2' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MAXINCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ALL_CHILD' type='enum'/>
      <exports symbol='XML_DTD_MIXED_CORRUPT' type='enum'/>
@@ -2333,6 +2345,7 @@
      <exports symbol='XML_ERR_VALUE_REQUIRED' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_TEXT' type='enum'/>
      <exports symbol='XML_RNGP_URI_NOT_ABSOLUTE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNION_NOT_EXPRESSIBLE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ATTR' type='enum'/>
      <exports symbol='XML_FTP_PASV_ANSWER' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_BOOLEAN' type='enum'/>
@@ -2521,6 +2534,7 @@
      <exports symbol='XML_CHECK_NAME_NOT_NULL' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_MINOCCURS' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ALL_LIMITED' type='enum'/>
      <exports symbol='XML_CHECK_' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_IO_EPIPE' type='enum'/>
@@ -2864,6 +2878,7 @@
      <exports symbol='xmlTextReaderConstValue' type='function'/>
      <exports symbol='xmlNewTextReader' type='function'/>
      <exports symbol='xmlTextReaderGetAttributeNo' type='function'/>
+     <exports symbol='xmlTextReaderSchemaValidateCtxt' type='function'/>
      <exports symbol='xmlTextReaderLocalName' type='function'/>
      <exports symbol='xmlTextReaderExpand' type='function'/>
      <exports symbol='xmlTextReaderConstName' type='function'/>
@@ -2943,6 +2958,7 @@
      <exports symbol='xmlSaveToFd' type='function'/>
      <exports symbol='xmlSaveClose' type='function'/>
      <exports symbol='xmlSaveSetAttrEscape' type='function'/>
+     <exports symbol='xmlSaveToBuffer' type='function'/>
      <exports symbol='xmlSaveToFilename' type='function'/>
      <exports symbol='xmlSaveFlush' type='function'/>
      <exports symbol='xmlSaveDoc' type='function'/>
@@ -3014,6 +3030,7 @@
      <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
      <exports symbol='xmlSchemaDump' type='function'/>
      <exports symbol='xmlSchemaFreeValidCtxt' type='function'/>
+     <exports symbol='xmlSchemaSetParserStructuredErrors' type='function'/>
      <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
     </file>
     <file name='xmlschemastypes'>
@@ -4063,8 +4080,14 @@
     <macro name='XML_SCHEMAS_ATTRGROUP_GLOBAL' file='schemasInternals'>
       <info>The attribute wildcard has been already builded.</info>
     </macro>
+    <macro name='XML_SCHEMAS_ATTRGROUP_HAS_REFS' file='schemasInternals'>
+      <info>Whether this attr. group contains attr. group references.</info>
+    </macro>
     <macro name='XML_SCHEMAS_ATTRGROUP_MARKED' file='schemasInternals'>
       <info>Marks the attr group as marked; used for circular checks.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ATTRGROUP_REDEFINED' file='schemasInternals'>
+      <info>The attr group was redefined.</info>
     </macro>
     <macro name='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED' file='schemasInternals'>
       <info>The attribute wildcard has been already builded.</info>
@@ -4255,8 +4278,11 @@
     <macro name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' file='schemasInternals'>
       <info>the complexType owns an attribute wildcard, i.e. it can be freed by the complexType</info>
     </macro>
+    <macro name='XML_SCHEMAS_TYPE_REDEFINED' file='schemasInternals'>
+      <info>The type was redefined.</info>
+    </macro>
     <macro name='XML_SCHEMAS_TYPE_VARIETY_ABSENT' file='schemasInternals'>
-      <info>the simpleType has a variety of &quot;absent&quot;.</info>
+      <info>the simpleType has a variety of &quot;absent&quot;. TODO: Actually not necessary :-/, since if none of the variety flags occur then it&apos;s automatically absent.</info>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_VARIETY_ATOMIC' file='schemasInternals'>
       <info>the simpleType has a variety of &quot;union&quot;.</info>
@@ -5155,13 +5181,18 @@
     <enum name='XML_SAVE_NO_EMPTY' file='xmlsave' value='4' type='xmlSaveOption' info='no empty tags'/>
     <enum name='XML_SAVE_NO_XHTML' file='xmlsave' value='8' type='xmlSaveOption' info=' disable XHTML1 specific rules'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
+    <enum name='XML_SCHEMAP_AG_PROPS_CORRECT' file='xmlerror' value='3087' type='xmlParserErrors' info='3086'/>
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>
     <enum name='XML_SCHEMAP_ATTR_NONAME_NOREF' file='xmlerror' value='1703' type='xmlParserErrors' info='1703'/>
+    <enum name='XML_SCHEMAP_AU_PROPS_CORRECT' file='xmlerror' value='3089' type='xmlParserErrors' info='3088'/>
     <enum name='XML_SCHEMAP_AU_PROPS_CORRECT_2' file='xmlerror' value='3078' type='xmlParserErrors' info='3078'/>
     <enum name='XML_SCHEMAP_A_PROPS_CORRECT_2' file='xmlerror' value='3079' type='xmlParserErrors' info='3079'/>
+    <enum name='XML_SCHEMAP_A_PROPS_CORRECT_3' file='xmlerror' value='3090' type='xmlParserErrors' info='3089'/>
     <enum name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF' file='xmlerror' value='1704' type='xmlParserErrors' info='1704'/>
+    <enum name='XML_SCHEMAP_COS_ALL_LIMITED' file='xmlerror' value='3091' type='xmlParserErrors' info='3090'/>
     <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_1' file='xmlerror' value='3063' type='xmlParserErrors' info='3063'/>
+    <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_2' file='xmlerror' value='3088' type='xmlParserErrors' info='3087'/>
     <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_3' file='xmlerror' value='1800' type='xmlParserErrors' info='1800'/>
     <enum name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1' file='xmlerror' value='3031' type='xmlParserErrors' info='3031'/>
     <enum name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2' file='xmlerror' value='3032' type='xmlParserErrors' info='3032'/>
@@ -5505,9 +5536,10 @@
     <enum name='XML_SCHEMA_CONTENT_ELEMENTS' file='schemasInternals' value='2' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_EMPTY' file='schemasInternals' value='1' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_MIXED' file='schemasInternals' value='3' type='xmlSchemaContentType'/>
-    <enum name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' file='schemasInternals' value='5' type='xmlSchemaContentType' info='obsolete, not used'/>
+    <enum name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' file='schemasInternals' value='5' type='xmlSchemaContentType' info='Obsolete'/>
     <enum name='XML_SCHEMA_CONTENT_SIMPLE' file='schemasInternals' value='4' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_EXTRA_ATTR_USE_PROHIB' file='schemasInternals' value='2001' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_EXTRA_QNAMEREF' file='schemasInternals' value='2000' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_FACET_ENUMERATION' file='schemasInternals' value='1007' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_FACET_FRACTIONDIGITS' file='schemasInternals' value='1005' type='xmlSchemaTypeType'/>
@@ -5526,6 +5558,7 @@
     <enum name='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' file='schemasInternals' value='21' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_ATTRIBUTE' file='schemasInternals' value='15' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_ATTRIBUTEGROUP' file='schemasInternals' value='16' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_ATTRIBUTE_USE' file='schemasInternals' value='26' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_BASIC' file='schemasInternals' value='1' type='xmlSchemaTypeType' info='A built-in datatype'/>
     <enum name='XML_SCHEMA_TYPE_CHOICE' file='schemasInternals' value='7' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_COMPLEX' file='schemasInternals' value='5' type='xmlSchemaTypeType'/>
@@ -6343,7 +6376,7 @@ actually an xmlCharEncoding'/>
       <field name='name' type='const xmlChar *' info=' schema name'/>
       <field name='targetNamespace' type='const xmlChar *' info=' the target namespace'/>
       <field name='version' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=' Obsolete'/>
       <field name='doc' type='xmlDocPtr' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='flags' type='int' info=''/>
@@ -6359,8 +6392,8 @@ actually an xmlCharEncoding'/>
       <field name='includes' type='void *' info=' the includes, this is opaque for now'/>
       <field name='preserve' type='int' info=' whether to free the document'/>
       <field name='counter' type='int' info=' used to give ononymous components unique names'/>
-      <field name='idcDef' type='xmlHashTablePtr' info=''/>
-      <field name='volatiles' type='void *' info=' Deprecated; not used anymore.'/>
+      <field name='idcDef' type='xmlHashTablePtr' info=' All identity-constraint defs.'/>
+      <field name='volatiles' type='void *' info=' Obsolete'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
@@ -6368,41 +6401,42 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlSchemaAnnotPtr' file='schemasInternals' type='xmlSchemaAnnot *'/>
     <struct name='xmlSchemaAttribute' file='schemasInternals' type='struct _xmlSchemaAttribute'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
-      <field name='name' type='const xmlChar *' info=' name of the declaration or empty if particle'/>
-      <field name='id' type='const xmlChar *' info=''/>
-      <field name='ref' type='const xmlChar *' info=' the local name of the attribute decl. if a particle'/>
-      <field name='refNs' type='const xmlChar *' info=' the ns URI of the attribute decl. if a particle'/>
+      <field name='type' type='xmlSchemaTypeType' info=''/>
+      <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute (not used?)'/>
+      <field name='name' type='const xmlChar *' info=' the name of the declaration'/>
+      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
       <field name='typeName' type='const xmlChar *' info=' the local name of the type definition'/>
       <field name='typeNs' type='const xmlChar *' info=' the ns URI of the type definition'/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='base' type='xmlSchemaTypePtr' info=' obsolete, not used'/>
-      <field name='occurs' type='int' info=''/>
-      <field name='defValue' type='const xmlChar *' info=''/>
+      <field name='base' type='xmlSchemaTypePtr' info=' Deprecated; not used'/>
+      <field name='occurs' type='int' info=' Deprecated; not used'/>
+      <field name='defValue' type='const xmlChar *' info=' The initial value of the value constraint'/>
       <field name='subtypes' type='xmlSchemaTypePtr' info=' the type definition'/>
       <field name='node' type='xmlNodePtr' info=''/>
       <field name='targetNamespace' type='const xmlChar *' info=''/>
       <field name='flags' type='int' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=''/>
-      <field name='defVal' type='xmlSchemaValPtr' info=''/>
-      <field name='refDecl' type='xmlSchemaAttributePtr' info=''/>
+      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='defVal' type='xmlSchemaValPtr' info=' The compiled value constraint'/>
+      <field name='refDecl' type='xmlSchemaAttributePtr' info=' Deprecated; not used'/>
     </struct>
     <struct name='xmlSchemaAttributeGroup' file='schemasInternals' type='struct _xmlSchemaAttributeGroup'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
       <field name='name' type='const xmlChar *' info=''/>
       <field name='id' type='const xmlChar *' info=''/>
-      <field name='ref' type='const xmlChar *' info=''/>
-      <field name='refNs' type='const xmlChar *' info=''/>
+      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
+      <field name='attributes' type='xmlSchemaAttributePtr' info=' Deprecated; not used'/>
       <field name='node' type='xmlNodePtr' info=''/>
       <field name='flags' type='int' info=''/>
       <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=''/>
-      <field name='refItem' type='xmlSchemaAttributeGroupPtr' info=' The referenced attribute group'/>
-      <field name='targetNamespace' type='const xmlChar *' info=' xmlSchemaAttributeGroupPtr redef Redefinitions'/>
+      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='refItem' type='xmlSchemaAttributeGroupPtr' info=' Deprecated; not used'/>
+      <field name='targetNamespace' type='const xmlChar *' info=''/>
+      <field name='attrUses' type='void *' info=''/>
     </struct>
     <typedef name='xmlSchemaAttributeGroupPtr' file='schemasInternals' type='xmlSchemaAttributeGroup *'/>
     <struct name='xmlSchemaAttributeLink' file='schemasInternals' type='struct _xmlSchemaAttributeLink'>
@@ -6414,17 +6448,17 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlSchemaContentType' file='schemasInternals' type='enum'/>
     <struct name='xmlSchemaElement' file='schemasInternals' type='struct _xmlSchemaElement'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
+      <field name='next' type='struct _xmlSchemaType *' info=' Not used?'/>
       <field name='name' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=''/>
-      <field name='ref' type='const xmlChar *' info=' the local name of the element declaration if a particle'/>
-      <field name='refNs' type='const xmlChar *' info=' the ns URI of the element declaration if a particle'/>
+      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='subtypes' type='xmlSchemaTypePtr' info=' the type definition'/>
       <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
       <field name='node' type='xmlNodePtr' info=''/>
-      <field name='minOccurs' type='int' info=''/>
-      <field name='maxOccurs' type='int' info=''/>
+      <field name='minOccurs' type='int' info=' Deprecated; not used'/>
+      <field name='maxOccurs' type='int' info=' Deprecated; not used'/>
       <field name='flags' type='int' info=''/>
       <field name='targetNamespace' type='const xmlChar *' info=''/>
       <field name='namedType' type='const xmlChar *' info=''/>
@@ -6432,26 +6466,27 @@ actually an xmlCharEncoding'/>
       <field name='substGroup' type='const xmlChar *' info=''/>
       <field name='substGroupNs' type='const xmlChar *' info=''/>
       <field name='scope' type='const xmlChar *' info=''/>
-      <field name='value' type='const xmlChar *' info=''/>
-      <field name='refDecl' type='struct _xmlSchemaElement *' info=' This will now be used for the substitution group affiliation'/>
-      <field name='contModel' type='xmlRegexpPtr' info=''/>
+      <field name='value' type='const xmlChar *' info=' The original value of the value constraint.'/>
+      <field name='refDecl' type='struct _xmlSchemaElement *' info=' This will now be used for the
+substitution group affiliation'/>
+      <field name='contModel' type='xmlRegexpPtr' info=' Obsolete for WXS, maybe used for RelaxNG'/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=''/>
-      <field name='defVal' type='xmlSchemaValPtr' info=''/>
-      <field name='idcs' type='void *' info=''/>
+      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='defVal' type='xmlSchemaValPtr' info=' The compiled value contraint.'/>
+      <field name='idcs' type='void *' info=' The identity-constraint defs'/>
     </struct>
     <typedef name='xmlSchemaElementPtr' file='schemasInternals' type='xmlSchemaElement *'/>
     <struct name='xmlSchemaFacet' file='schemasInternals' type='struct _xmlSchemaFacet'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaFacet *' info=' the next type if in a sequence ...'/>
-      <field name='value' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=''/>
+      <field name='value' type='const xmlChar *' info=' The original value'/>
+      <field name='id' type='const xmlChar *' info=' Obsolete'/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='node' type='xmlNodePtr' info=''/>
-      <field name='fixed' type='int' info=''/>
+      <field name='fixed' type='int' info=' XML_SCHEMAS_FACET_PRESERVE, etc.'/>
       <field name='whitespace' type='int' info=''/>
-      <field name='val' type='xmlSchemaValPtr' info=''/>
-      <field name='regexp' type='xmlRegexpPtr' info=''/>
+      <field name='val' type='xmlSchemaValPtr' info=' The compiled value'/>
+      <field name='regexp' type='xmlRegexpPtr' info=' The regex for patterns'/>
     </struct>
     <struct name='xmlSchemaFacetLink' file='schemasInternals' type='struct _xmlSchemaFacetLink'>
       <field name='next' type='struct _xmlSchemaFacetLink *' info=' the next facet link ...'/>
@@ -6476,36 +6511,38 @@ actually an xmlCharEncoding'/>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
       <field name='name' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=''/>
-      <field name='ref' type='const xmlChar *' info=''/>
-      <field name='refNs' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
-      <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
+      <field name='attributes' type='xmlSchemaAttributePtr' info=' Deprecated; not used'/>
       <field name='node' type='xmlNodePtr' info=''/>
-      <field name='minOccurs' type='int' info=''/>
-      <field name='maxOccurs' type='int' info=''/>
+      <field name='minOccurs' type='int' info=' Deprecated; not used'/>
+      <field name='maxOccurs' type='int' info=' Deprecated; not used'/>
       <field name='flags' type='int' info=''/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
-      <field name='base' type='const xmlChar *' info=''/>
-      <field name='baseNs' type='const xmlChar *' info=''/>
-      <field name='baseType' type='xmlSchemaTypePtr' info=''/>
-      <field name='facets' type='xmlSchemaFacetPtr' info=''/>
-      <field name='redef' type='struct _xmlSchemaType *' info=' possible redefinitions for the type'/>
-      <field name='recurse' type='int' info=''/>
-      <field name='attributeUses' type='xmlSchemaAttributeLinkPtr' info=''/>
+      <field name='base' type='const xmlChar *' info=' Base type&apos;s local name'/>
+      <field name='baseNs' type='const xmlChar *' info=' Base type&apos;s target namespace'/>
+      <field name='baseType' type='xmlSchemaTypePtr' info=' The base type component'/>
+      <field name='facets' type='xmlSchemaFacetPtr' info=' Local facets'/>
+      <field name='redef' type='struct _xmlSchemaType *' info=' Deprecated; not used'/>
+      <field name='recurse' type='int' info=' Obsolete'/>
+      <field name='attributeUses' type='xmlSchemaAttributeLinkPtr *' info=' Deprecated; not used'/>
       <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
-      <field name='builtInType' type='int' info=''/>
-      <field name='memberTypes' type='xmlSchemaTypeLinkPtr' info=''/>
-      <field name='facetSet' type='xmlSchemaFacetLinkPtr' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=''/>
-      <field name='contentTypeDef' type='xmlSchemaTypePtr' info=''/>
-      <field name='contModel' type='xmlRegexpPtr' info=''/>
+      <field name='builtInType' type='int' info=' Type of built-in types.'/>
+      <field name='memberTypes' type='xmlSchemaTypeLinkPtr' info=' member-types if a union type.'/>
+      <field name='facetSet' type='xmlSchemaFacetLinkPtr' info=' All facets (incl. inherited)'/>
+      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
+      <field name='contentTypeDef' type='xmlSchemaTypePtr' info=' Used for the simple content of complex types.
+Could we use @subtypes for this?'/>
+      <field name='contModel' type='xmlRegexpPtr' info=' Holds the automaton of the content model'/>
       <field name='targetNamespace' type='const xmlChar *' info=''/>
+      <field name='attrUses' type='void *' info=''/>
     </struct>
     <struct name='xmlSchemaTypeLink' file='schemasInternals' type='struct _xmlSchemaTypeLink'>
       <field name='next' type='struct _xmlSchemaTypeLink *' info=' the next type link ...'/>
-      <field name='type' type='xmlSchemaTypePtr' info=' the linked typ'/>
+      <field name='type' type='xmlSchemaTypePtr' info=' the linked type'/>
     </struct>
     <typedef name='xmlSchemaTypeLinkPtr' file='schemasInternals' type='xmlSchemaTypeLink *'/>
     <typedef name='xmlSchemaTypePtr' file='schemasInternals' type='xmlSchemaType *'/>
@@ -6520,11 +6557,11 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlSchemaWhitespaceValueType' file='xmlschemastypes' type='enum'/>
     <struct name='xmlSchemaWildcard' file='schemasInternals' type='struct _xmlSchemaWildcard'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='id' type='const xmlChar *' info=''/>
+      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='node' type='xmlNodePtr' info=''/>
-      <field name='minOccurs' type='int' info=''/>
-      <field name='maxOccurs' type='int' info=''/>
+      <field name='minOccurs' type='int' info=' Deprecated; not used'/>
+      <field name='maxOccurs' type='int' info=' Deprecated; not used'/>
       <field name='processContents' type='int' info=''/>
       <field name='any' type='int' info=' Indicates if the ns constraint is of ##any'/>
       <field name='nsSet' type='xmlSchemaWildcardNsPtr' info=' The list of allowed namespaces'/>
@@ -7287,6 +7324,15 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer'/>
       <arg name='size' type='int *' info='OUT: the memory length'/>
+    </function>
+    <function name='htmlDocDumpMemoryFormat' file='HTMLtree' module='HTMLtree'>
+      <cond>defined(LIBXML_HTML_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Dump an HTML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory.</info>
+      <return type='void'/>
+      <arg name='cur' type='xmlDocPtr' info='the document'/>
+      <arg name='mem' type='xmlChar **' info='OUT: the memory pointer'/>
+      <arg name='size' type='int *' info='OUT: the memory length'/>
+      <arg name='format' type='int' info='should formatting spaces been added'/>
     </function>
     <function name='htmlElementAllowedHere' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
@@ -9412,7 +9458,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the number of unique strings found, -1 in case of errors and -2 if there is more than @len strings'/>
       <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
       <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-      <arg name='list' type='const xmlChar **' info='where to store the tokens'/>
+      <arg name='langList' type='const xmlChar **' info='where to store the tokens'/>
       <arg name='len' type='int' info='the allocated lenght of @list'/>
     </function>
     <function name='xmlExpGetStart' file='xmlregexp' module='xmlregexp'>
@@ -9421,7 +9467,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the number of unique strings found, -1 in case of errors and -2 if there is more than @len strings'/>
       <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
       <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-      <arg name='list' type='const xmlChar **' info='where to store the tokens'/>
+      <arg name='tokList' type='const xmlChar **' info='where to store the tokens'/>
       <arg name='len' type='int' info='the allocated lenght of @list'/>
     </function>
     <function name='xmlExpIsNillable' file='xmlregexp' module='xmlregexp'>
@@ -11139,7 +11185,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlNewGlobalNs' file='tree' module='legacy'>
       <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Creation of a Namespace, the old way using PI and without scoping DEPRECATED !!! It now create a namespace on the root element of the document if found.</info>
+      <info>Creation of a Namespace, the old way using PI and without scoping DEPRECATED !!!</info>
       <return type='xmlNsPtr' info='NULL this functionality had been removed'/>
       <arg name='doc' type='xmlDocPtr' info='the document carrying the namespace'/>
       <arg name='href' type='const xmlChar *' info='the URI associated'/>
@@ -11466,6 +11512,13 @@ actually an xmlCharEncoding'/>
       <info>flushes and close the output I/O channel and free up all the associated resources</info>
       <return type='int' info='the number of byte written or -1 in case of error.'/>
       <arg name='out' type='xmlOutputBufferPtr' info='a buffered output'/>
+    </function>
+    <function name='xmlOutputBufferCreateBuffer' file='xmlIO' module='xmlIO'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Create a buffered output for the progressive saving to a xmlBuffer</info>
+      <return type='xmlOutputBufferPtr' info='the new parser output or NULL'/>
+      <arg name='buffer' type='xmlBufferPtr' info='a xmlBufferPtr'/>
+      <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
     </function>
     <function name='xmlOutputBufferCreateFd' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -12611,7 +12664,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlRelaxNGParse' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances. *WARNING* this interface is highly subject to change</info>
+      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</info>
       <return type='xmlRelaxNGPtr' info='the internal XML RelaxNG structure built from the resource or NULL in case of error'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG parser context'/>
     </function>
@@ -13133,6 +13186,14 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
       <arg name='escape' type='xmlCharEncodingOutputFunc' info='the escaping function'/>
     </function>
+    <function name='xmlSaveToBuffer' file='xmlsave' module='xmlsave'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Create a document saving context serializing to a buffer with the encoding and the options given</info>
+      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
+      <arg name='buffer' type='xmlBufferPtr' info='a buffer'/>
+      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
+      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
+    </function>
     <function name='xmlSaveToFd' file='xmlsave' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Create a document saving context serializing to a file descriptor with the encoding and the options given.</info>
@@ -13252,9 +13313,9 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaFreeValidCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Free the resources associated to the schema validation context</info>
+      <info></info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
     </function>
     <function name='xmlSchemaFreeValue' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13325,12 +13386,12 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaGetValidErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Get the error and warning callback informations</info>
-      <return type='int' info='-1 in case of error and 0 otherwise'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a XML-Schema validation context'/>
-      <arg name='err' type='xmlSchemaValidityErrorFunc *' info='the error function result'/>
-      <arg name='warn' type='xmlSchemaValidityWarningFunc *' info='the warning function result'/>
-      <arg name='ctx' type='void **' info='the functions context result'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc *' info=''/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc *' info=''/>
+      <arg name='ctx' type='void **' info=''/>
     </function>
     <function name='xmlSchemaInitTypes' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13346,9 +13407,9 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaIsValid' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Check if any error was detected during validation.</info>
-      <return type='int' info='1 if valid so far, 0 if errors were detected, and -1 in case of internal error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
     </function>
     <function name='xmlSchemaNewDocParserCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13397,29 +13458,29 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaNewValidCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Create an XML Schemas validation context based on the given schema.</info>
-      <return type='xmlSchemaValidCtxtPtr' info='the validation context or NULL in case of error'/>
-      <arg name='schema' type='xmlSchemaPtr' info='a precompiled XML Schemas'/>
+      <info></info>
+      <return type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='schema' type='xmlSchemaPtr' info=''/>
     </function>
     <function name='xmlSchemaParse' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances. *WARNING* this interface is highly subject to change</info>
+      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</info>
       <return type='xmlSchemaPtr' info='the internal XML Schema structure built from the resource or NULL in case of error'/>
       <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='a schema validation context'/>
     </function>
     <function name='xmlSchemaSAXPlug' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Plug a SAX based validation layer in a SAX parsing event flow. The original @saxptr and @dataptr data are replaced by new pointers but the calls to the original will be maintained.</info>
-      <return type='xmlSchemaSAXPlugPtr' info='a pointer to a data structure needed to unplug the validation layer or NULL in case of errors.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='sax' type='xmlSAXHandlerPtr *' info='a pointer to the original xmlSAXHandlerPtr'/>
-      <arg name='user_data' type='void **' info='a pointer to the original SAX user data pointer'/>
+      <info></info>
+      <return type='xmlSchemaSAXPlugPtr' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='sax' type='xmlSAXHandlerPtr *' info=''/>
+      <arg name='user_data' type='void **' info=''/>
     </function>
     <function name='xmlSchemaSAXUnplug' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Unplug a SAX based validation layer in a SAX parsing event flow. The original pointers used in the call are restored.</info>
-      <return type='int' info='0 in case of success and -1 in case of failure.'/>
-      <arg name='plug' type='xmlSchemaSAXPlugPtr' info='a data structure returned by xmlSchemaSAXPlug'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='plug' type='xmlSchemaSAXPlugPtr' info=''/>
     </function>
     <function name='xmlSchemaSetParserErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13430,29 +13491,37 @@ actually an xmlCharEncoding'/>
       <arg name='warn' type='xmlSchemaValidityWarningFunc' info='the warning callback'/>
       <arg name='ctx' type='void *' info='contextual data for the callbacks'/>
     </function>
-    <function name='xmlSchemaSetValidErrors' file='xmlschemas' module='xmlschemas'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Set the error and warning callback informations</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='err' type='xmlSchemaValidityErrorFunc' info='the error function'/>
-      <arg name='warn' type='xmlSchemaValidityWarningFunc' info='the warning function'/>
-      <arg name='ctx' type='void *' info='the functions context'/>
-    </function>
-    <function name='xmlSchemaSetValidOptions' file='xmlschemas' module='xmlschemas'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Sets the options to be used during the validation.</info>
-      <return type='int' info='0 in case of success, -1 in case of an API error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='options' type='int' info='a combination of xmlSchemaValidOption'/>
-    </function>
-    <function name='xmlSchemaSetValidStructuredErrors' file='xmlschemas' module='xmlschemas'>
+    <function name='xmlSchemaSetParserStructuredErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Set the structured error callback</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='a schema parser context'/>
       <arg name='serror' type='xmlStructuredErrorFunc' info='the structured error function'/>
       <arg name='ctx' type='void *' info='the functions context'/>
+    </function>
+    <function name='xmlSchemaSetValidErrors' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc' info=''/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc' info=''/>
+      <arg name='ctx' type='void *' info=''/>
+    </function>
+    <function name='xmlSchemaSetValidOptions' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='options' type='int' info=''/>
+    </function>
+    <function name='xmlSchemaSetValidStructuredErrors' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info=''/>
+      <arg name='ctx' type='void *' info=''/>
     </function>
     <function name='xmlSchemaValPredefTypeNode' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13474,16 +13543,16 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaValidCtxtGetOptions' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Get the validation context options.</info>
-      <return type='int' info='the option combination or -1 on error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
     </function>
     <function name='xmlSchemaValidateDoc' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Validate a document tree in memory.</info>
-      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='instance' type='xmlDocPtr' info=''/>
     </function>
     <function name='xmlSchemaValidateFacet' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13507,11 +13576,11 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaValidateFile' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Do a schemas validation of the given resource, it will use the SAX streamable validation internally.</info>
-      <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of an internal or API error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='filename' type='const char *' info='the URI of the instance'/>
-      <arg name='options' type='int' info='a future set of options, currently unused'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='filename' type='const char *' info=''/>
+      <arg name='options' type='int' info=''/>
     </function>
     <function name='xmlSchemaValidateLengthFacet' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13545,10 +13614,10 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaValidateOneElement' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Validate a branch of a tree, starting with the given @elem.</info>
-      <return type='int' info='0 if the element and its subtree is valid, a positive error code number otherwise and -1 in case of an internal or API error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='elem' type='xmlNodePtr' info='an element node'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='elem' type='xmlNodePtr' info=''/>
     </function>
     <function name='xmlSchemaValidatePredefinedType' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13560,13 +13629,13 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaValidateStream' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Validate an input based on a flow of SAX event from the parser and forward the events to the @sax handler with the provided @user_data the user provided @sax handler must be a SAX2 one.</info>
-      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
-      <arg name='input' type='xmlParserInputBufferPtr' info='the input to use for reading the data'/>
-      <arg name='enc' type='xmlCharEncoding' info='an optional encoding information'/>
-      <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler for the resulting events'/>
-      <arg name='user_data' type='void *' info='the context to provide to the SAX handler.'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='input' type='xmlParserInputBufferPtr' info=''/>
+      <arg name='enc' type='xmlCharEncoding' info=''/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info=''/>
+      <arg name='user_data' type='void *' info=''/>
     </function>
     <functype name='xmlSchemaValidityErrorFunc' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13971,7 +14040,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlStrEqual' file='xmlstring' module='xmlstring'>
-      <info>Check if both string are equal of have same content Should be a bit more readable and faster than xmlStrEqual()</info>
+      <info>Check if both strings are equal of have same content. Should be a bit more readable and faster than xmlStrcmp()</info>
       <return type='int' info='1 if they are equal, 0 if they are different'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
@@ -14047,7 +14116,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlStreamPush' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>Push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <info>Push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset. Otherwise the function will act as if it has been given an element-node.</info>
       <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
       <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
       <arg name='name' type='const xmlChar *' info='the current name'/>
@@ -14055,11 +14124,26 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlStreamPushAttr' file='pattern' module='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>Push new attribute data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <info>Push new attribute data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset. Otherwise the function will act as if it has been given an attribute-node.</info>
       <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
       <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
       <arg name='name' type='const xmlChar *' info='the current name'/>
       <arg name='ns' type='const xmlChar *' info='the namespace name'/>
+    </function>
+    <function name='xmlStreamPushNode' file='pattern' module='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>Push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset. Different from xmlStreamPush() this function can be fed with nodes of type: element-, attribute-, text-, cdata-section-, comment- and processing-instruction-node.</info>
+      <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+      <arg name='name' type='const xmlChar *' info='the current name'/>
+      <arg name='ns' type='const xmlChar *' info='the namespace name'/>
+      <arg name='nodeType' type='int' info='the type of the node being pushed'/>
+    </function>
+    <function name='xmlStreamWantsAnyNode' file='pattern' module='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>Query if the streaming pattern additionally needs to be fed with text-, cdata-section-, comment- and processing-instruction-nodes. If the result is 0 then only element-nodes and attribute-nodes need to be pushed.</info>
+      <return type='int' info='1 in case of need of nodes of the above described types, 0 otherwise. -1 on API errors.'/>
+      <arg name='streamCtxt' type='xmlStreamCtxtPtr' info='the stream context'/>
     </function>
     <function name='xmlStringCurrentChar' file='parserInternals' module='parserInternals'>
       <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer.</info>
@@ -14115,18 +14199,18 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the max comparison length'/>
     </function>
     <function name='xmlStrncat' file='xmlstring' module='xmlstring'>
-      <info>a strncat for array of xmlChar&apos;s, it will extend @cur with the len first bytes of @add.</info>
+      <info>a strncat for array of xmlChar&apos;s, it will extend @cur with the len first bytes of @add. Note that if @len &lt; 0 then this is an API error and NULL will be returned.</info>
       <return type='xmlChar *' info='a new xmlChar *, the original @cur is reallocated if needed and should not be freed'/>
       <arg name='cur' type='xmlChar *' info='the original xmlChar * array'/>
       <arg name='add' type='const xmlChar *' info='the xmlChar * array added'/>
       <arg name='len' type='int' info='the length of @add'/>
     </function>
     <function name='xmlStrncatNew' file='xmlstring' module='xmlstring'>
-      <info>same as xmlStrncat, but creates a new string.  The original two strings are not freed.</info>
+      <info>same as xmlStrncat, but creates a new string.  The original two strings are not freed. If @len is &lt; 0 then the length will be calculated automatically.</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
       <arg name='str1' type='const xmlChar *' info='first xmlChar string'/>
       <arg name='str2' type='const xmlChar *' info='second xmlChar string'/>
-      <arg name='len' type='int' info='the len of @str2'/>
+      <arg name='len' type='int' info='the len of @str2 or &lt; 0'/>
     </function>
     <function name='xmlStrncmp' file='xmlstring' module='xmlstring'>
       <info>a strncmp for xmlChar&apos;s</info>
@@ -14546,13 +14630,13 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderReadInnerXml' file='xmlreader' module='xmlreader'>
-      <cond>defined(LIBXML_READER_ENABLED)</cond>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Reads the contents of the current node, including child nodes and markup.</info>
       <return type='xmlChar *' info='a string containing the XML content, or NULL if the current node is neither an element nor attribute, or has no child nodes. The string must be deallocated by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderReadOuterXml' file='xmlreader' module='xmlreader'>
-      <cond>defined(LIBXML_READER_ENABLED)</cond>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Reads the contents of the current node, including child nodes and markup.</info>
       <return type='xmlChar *' info='a string containing the XML content, or NULL if the current node is neither an element nor attribute, or has no child nodes. The string must be deallocated by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
@@ -14585,10 +14669,18 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlTextReaderSchemaValidate' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Use W3C XSD schema to validate the document as it is processed. Activation is only possible before the first Read(). if @xsd is NULL, then RelaxNG validation is desactivated.</info>
-      <return type='int' info='0 in case the schemas validation could be (des)activated and -1 in case of error.'/>
+      <info>Use W3C XSD schema to validate the document as it is processed. Activation is only possible before the first Read(). If @xsd is NULL, then XML Schema validation is deactivated.</info>
+      <return type='int' info='0 in case the schemas validation could be (de)activated and -1 in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='xsd' type='const char *' info='the path to a W3C XSD schema or NULL'/>
+    </function>
+    <function name='xmlTextReaderSchemaValidateCtxt' file='xmlreader' module='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Use W3C XSD schema context to validate the document as it is processed. Activation is only possible before the first Read(). If @ctxt is NULL, then XML Schema validation is deactivated.</info>
+      <return type='int' info='0 in case the schemas validation could be (de)activated and -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the XML Schema validation context or NULL'/>
+      <arg name='options' type='int' info='options (not used yet)'/>
     </function>
     <function name='xmlTextReaderSetErrorHandler' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
@@ -16436,7 +16528,7 @@ actually an xmlCharEncoding'/>
       <info>Build/extend a list of  potential children allowed by the content tree</info>
       <return type='int' info='the number of element in the list, or -1 in case of error.'/>
       <arg name='ctree' type='xmlElementContent *' info='an element content tree'/>
-      <arg name='list' type='const xmlChar **' info='an array to store the list of child names'/>
+      <arg name='names' type='const xmlChar **' info='an array to store the list of child names'/>
       <arg name='len' type='int *' info='a pointer to the number of element in the list'/>
       <arg name='max' type='int' info='the size of the array'/>
     </function>

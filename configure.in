@@ -5,7 +5,7 @@ AC_CANONICAL_HOST
 
 LIBXML_MAJOR_VERSION=2
 LIBXML_MINOR_VERSION=6
-LIBXML_MICRO_VERSION=22
+LIBXML_MICRO_VERSION=23
 LIBXML_MICRO_VERSION_SUFFIX=
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION$LIBXML_MICRO_VERSION_SUFFIX
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
@@ -49,8 +49,6 @@ test "x$U" != "x" && AC_MSG_ERROR(Compiler not ANSI compliant)
 
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
-
-# AM_MAINTAINER_MODE
 
 dnl
 dnl We process the AC_ARG_WITH first so that later we can modify
@@ -1356,3 +1354,4 @@ ln -s Copyright COPYING
 AC_OUTPUT(libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py)
 
 chmod +x xml2-config python/setup.py
+echo Done configuring

@@ -47,6 +47,7 @@
 #define XML_STREAM_STEP_ROOT	4
 #define XML_STREAM_STEP_ATTR	8
 #define XML_STREAM_STEP_NODE	16
+#define XML_STREAM_STEP_IN_SET	32
 
 /*
 * NOTE: Those private flags (XML_STREAM_xxx) are used
@@ -1555,7 +1556,7 @@ xmlStreamCompAddStep(xmlStreamCompPtr comp, const xmlChar *name,
 static int
 xmlStreamCompile(xmlPatternPtr comp) {
     xmlStreamCompPtr stream;
-    int i, s = 0, root = 0, flags = 0;
+    int i, s = 0, root = 0, flags = 0, prevs = -1;
     xmlStepOp step;
 
     if ((comp == NULL) || (comp->steps == NULL))
@@ -1584,24 +1585,7 @@ xmlStreamCompile(xmlPatternPtr comp) {
 	xmlDictReference(stream->dict);
     }
 
-    /*
-     * Skip leading ./ on relative paths
-     */
-    i = 0;
-    /*
-    * TODO: Won't this be handled later on as well (inside the for-loop)?
-    */
-    /*
-    if (comp->flags & PAT_FROM_CUR) {
-	while ((comp->flags & PAT_FROM_CUR) && (comp->nbStep > i + 2) &&
-	    (comp->steps[i].op == XML_OP_ELEM) &&
-	    (comp->steps[i].value == NULL) &&
-	    (comp->steps[i].value2 == NULL) &&
-	    (comp->steps[i + 1].op == XML_OP_PARENT)) {
-	    i += 2;
-	}
-    }*/
-    
+    i = 0;        
     if (comp->flags & PAT_FROM_ROOT)
 	stream->flags |= XML_STREAM_FROM_ROOT;
 
@@ -1617,13 +1601,15 @@ xmlStreamCompile(xmlPatternPtr comp) {
 		break;
 	    case XML_OP_NS:
 		s = xmlStreamCompAddStep(stream, NULL, step.value,
-		    XML_ELEMENT_NODE, flags);
-		flags = 0;
+		    XML_ELEMENT_NODE, flags);		
 		if (s < 0)
 		    goto error;
+		prevs = s;
+		flags = 0;		
 		break;	    
 	    case XML_OP_ATTR:
 		flags |= XML_STREAM_STEP_ATTR;
+		prevs = -1;
 		s = xmlStreamCompAddStep(stream,
 		    step.value, step.value2, XML_ATTRIBUTE_NODE, flags);
 		flags = 0;
@@ -1649,13 +1635,22 @@ xmlStreamCompile(xmlPatternPtr comp) {
 			if (comp->nbStep == i + 1) {
 			    stream->flags |= XML_STREAM_FINAL_IS_ANY_NODE;
 			}
-			flags |= XML_STREAM_STEP_NODE;
-			
+			flags |= XML_STREAM_STEP_NODE;			
 			s = xmlStreamCompAddStep(stream, NULL, NULL,
 			    XML_STREAM_ANY_NODE, flags);
-			flags = 0;
 			if (s < 0)
 			    goto error;
+			flags = 0;
+			/*
+			* If there was a previous step, mark it to be added to
+			* the result node-set; this is needed since only
+			* the last step will be marked as "final" and only
+			* "final" nodes are added to the resulting set.
+			*/
+			if (prevs != -1) {
+			    stream->steps[prevs].flags |= XML_STREAM_STEP_IN_SET;
+			    prevs = -1;
+			}
 			break;	
 
 		    } else {
@@ -1663,38 +1658,32 @@ xmlStreamCompile(xmlPatternPtr comp) {
 			continue;
 		    }
 		}
-		/* An element node. */
+		/* An element node. */		
 	        s = xmlStreamCompAddStep(stream, step.value, step.value2,
-		    XML_ELEMENT_NODE, flags);
-		flags = 0;
+		    XML_ELEMENT_NODE, flags);		
 		if (s < 0)
 		    goto error;
+		prevs = s;
+		flags = 0;		
 		break;		
 	    case XML_OP_CHILD:
 		/* An element node child. */
 	        s = xmlStreamCompAddStep(stream, step.value, step.value2,
-		    XML_ELEMENT_NODE, flags);
-		flags = 0;
+		    XML_ELEMENT_NODE, flags);		
 		if (s < 0)
 		    goto error;
+		prevs = s;
+		flags = 0;
 		break;	    
 	    case XML_OP_ALL:
 	        s = xmlStreamCompAddStep(stream, NULL, NULL,
-		    XML_ELEMENT_NODE, flags);
-		flags = 0;
+		    XML_ELEMENT_NODE, flags);		
 		if (s < 0)
 		    goto error;
+		prevs = s;
+		flags = 0;
 		break;
-	    case XML_OP_PARENT:
-		/*
-	        if ((comp->nbStep > i + 1) &&
-		    (comp->steps[i + 1].op == XML_OP_ELEM) &&
-		    (comp->steps[i + 1].value == NULL) &&
-		    (comp->steps[i + 1].value2 == NULL)) {
-		    i++;
-		    continue;
-		 }
-		*/
+	    case XML_OP_PARENT:	
 	        break;
 	    case XML_OP_ANCESTOR:
 		/* Skip redundant continuations. */
@@ -2041,7 +2030,15 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 			                      stream->level + 1);
 		    }
 		}
-	    }
+		if ((ret != 1) &&
+		    (comp->steps[step].flags & XML_STREAM_STEP_IN_SET)) {
+		    /*
+		    * Check if we have a special case like "foo/bar//.", where
+		    * "foo" is selected as well.
+		    */
+		    ret = 1;
+		}
+	    }	    
 	    if (((comp->flags & XML_STREAM_DESC) == 0) &&
 		((! match) || final))  {
 		/*
@@ -2138,6 +2135,14 @@ compare:
 		ret = 1;
 	    else
 		xmlStreamCtxtAddState(stream, 1, stream->level);
+	    if ((ret != 1) &&
+		(comp->steps[0].flags & XML_STREAM_STEP_IN_SET)) {
+		/*
+		* Check if we have a special case like "foo//.", where
+		* "foo" is selected as well.
+		*/
+		ret = 1;
+	    }
 	}
 	if (((comp->flags & XML_STREAM_DESC) == 0) &&
 	    ((! match) || final))  {

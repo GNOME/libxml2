@@ -1,3 +1,8 @@
+Thu Jan  5 15:43:38 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* pattern.c: Another fix to handle "foo//.": "foo" was not
+	  included in the resulting node-set.
+
 Thu Jan  5 13:22:29 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* pattern.c xpath.c include/libxml/pattern.h:

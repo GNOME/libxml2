@@ -1,3 +1,9 @@
+Thu Jan  5 15:48:27 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/XPath/docs/nodes test/XPath/tests/nodespat
+	  result/XPath/tests/nodespat: Added regression tests for
+	  the latest XPath/pattern fixes.
+
 Thu Jan  5 15:43:38 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* pattern.c: Another fix to handle "foo//.": "foo" was not

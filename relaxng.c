@@ -7510,6 +7510,20 @@ xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
     return (0);
 }
 
+void
+xmlRelaxNGSetParserStructuredErrors(
+				    xmlRelaxNGParserCtxtPtr ctxt,
+				    xmlStructuredErrorFunc serror,
+				    void *ctx)
+{
+    if (ctxt == NULL)
+        return;
+    ctxt->serror = serror;
+    ctxt->error = NULL;
+    ctxt->warning = NULL;
+    ctxt->userData = ctx;
+}
+
 #ifdef LIBXML_OUTPUT_ENABLED
 
 /************************************************************************

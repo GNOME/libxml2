@@ -1,3 +1,8 @@
+Mon Jan  9 17:27:15 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* relaxng.c include/libxml/relaxng.h: Added
+	  xmlRelaxNGSetParserStructuredErrors() to the API.
+
 Mon Jan  9 15:33:16 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: reverted first patches for #319279 which led to #326295

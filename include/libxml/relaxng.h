@@ -127,6 +127,11 @@ XMLPUBFUN int XMLCALL
 					 xmlRelaxNGValidityErrorFunc *err,
 					 xmlRelaxNGValidityWarningFunc *warn,
 					 void **ctx);
+XMLPUBFUN void XMLCALL
+		    xmlRelaxNGSetParserStructuredErrors(
+					 xmlRelaxNGParserCtxtPtr ctxt,
+					 xmlStructuredErrorFunc serror,
+					 void *ctx);
 XMLPUBFUN xmlRelaxNGPtr XMLCALL	
 		    xmlRelaxNGParse		(xmlRelaxNGParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL		

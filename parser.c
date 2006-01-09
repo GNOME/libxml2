@@ -3539,16 +3539,12 @@ get_more:
 	    ctxt->input->cur = in;
 	    if (*in == 0xD) {
 		in++;
-		if (!*in)	/* if end of current chunk return */
-		    return;
 		if (*in == 0xA) {
 		    ctxt->input->cur = in;
 		    in++;
 		    ctxt->input->line++; ctxt->input->col = 1;
 		    continue; /* while */
 		}
-		if (!*in)	/* if end of current chunk return */
-		    return;
 		in--;
 	    }
 	    if (*in == '<') {
@@ -3931,8 +3927,6 @@ get_more:
 		ctxt->input->line++; ctxt->input->col = 1;
 		continue; /* while */
 	    }
-	    if (!*in)	/* if end of current chunk return */
-		return;
 	    in--;
 	}
 	SHRINK;
@@ -10407,12 +10401,19 @@ encoding_error:
 int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
+    int end_in_lf = 0;
+
     if (ctxt == NULL)
         return(XML_ERR_INTERNAL_ERROR);
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
     if (ctxt->instate == XML_PARSER_START)
         xmlDetectSAX2(ctxt);
+    if ((size > 0) && (chunk != NULL) && (!terminate) &&
+        (chunk[size - 1] == '\r')) {
+	end_in_lf = 1;
+	size--;
+    }
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
@@ -10451,6 +10452,10 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	}
     }
     xmlParseTryOrFinish(ctxt, terminate);
+    if ((end_in_lf == 1) && (ctxt->input != NULL) &&
+        (ctxt->input->buf != NULL)) {
+	xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
+    }
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
     if (terminate) {

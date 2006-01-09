@@ -1,3 +1,10 @@
+Mon Jan  9 15:33:16 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: reverted first patches for #319279 which led to #326295
+	  and fixed the problem in xmlParseChunk() instead
+	* test/ent11 result//ent11*: added test for #326295 to the regression
+	  suite
+
 Thu Jan  5 16:25:06 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in libxml.spec.in testapi.c doc/*: upated the news

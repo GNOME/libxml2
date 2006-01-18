@@ -11709,7 +11709,13 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 	ctxt->loadsubset |= XML_SKIP_IDS;
     }
 
-    xmlParseContent(ctxt);
+#ifdef LIBXML_HTML_ENABLED
+    if (doc->type == XML_HTML_DOCUMENT_NODE)
+        __htmlParseContent(ctxt);
+    else
+#endif
+	xmlParseContent(ctxt);
+
     nsPop(ctxt, nsnr);
     if ((RAW == '<') && (NXT(1) == '/')) {
 	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);

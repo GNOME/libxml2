@@ -3753,10 +3753,8 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 /**
  * htmlParseContent:
  * @ctxt:  an HTML parser context
- * @name:  the node name
  *
  * Parse a content: comment, sub-element, reference or text.
- *
  */
 
 static void
@@ -3872,6 +3870,19 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
         GROW;
     }
     if (currentNode != NULL) xmlFree(currentNode);
+}
+
+/**
+ * htmlParseContent:
+ * @ctxt:  an HTML parser context
+ *
+ * Parse a content: comment, sub-element, reference or text.
+ */
+
+void
+__htmlParseContent(void *ctxt) {
+    if (ctxt != NULL)
+	htmlParseContent((htmlParserCtxtPtr) ctxt);
 }
 
 /**

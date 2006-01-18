@@ -49,6 +49,14 @@ extern int __xmlRegisterCallbacks;
  */
 void __xmlIOErr(int domain, int code, const char *extra);
 void __xmlLoaderErr(void *ctx, const char *msg, const char *filename);
+#ifdef LIBXML_HTML_ENABLED
+/*
+ * internal function of HTML parser needed for xmlParseInNodeContext
+ * but not part of the API
+ */
+void __htmlParseContent(void *ctx);
+#endif
+
 
 #ifdef IN_LIBXML
 #ifdef __GNUC__

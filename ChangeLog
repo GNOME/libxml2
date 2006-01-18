@@ -1,3 +1,8 @@
+Wed Jan 18 18:21:15 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c libxml.h parser.c: try to fix xmlParseInNodeContext
+	  when operating on an HTML document.
+
 Mon Jan  9 17:27:15 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* relaxng.c include/libxml/relaxng.h: Added

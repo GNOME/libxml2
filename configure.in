@@ -624,6 +624,17 @@ case ${host} in
     hppa*-hp-mpeix)
         NEED_TRIO=1
 	;;
+    *-*-mingw* | *-*-cygwin* | *-*-msvc* )
+        # If the host is Windows, and shared libraries are disabled, we
+        # need to add -DLIBXML_STATIC to CFLAGS in order for linking to
+        # work properly (without it, xmlexports.h would force the use of
+        # DLL imports, which obviously aren't present in a static
+        # library).
+        if test "x$enable_shared" = "xno"; then
+            XML_CFLAGS="$XML_CFLAGS -DLIBXML_STATIC"
+            CFLAGS="$CFLAGS -DLIBXML_STATIC"
+        fi
+        ;;
 esac
 
 

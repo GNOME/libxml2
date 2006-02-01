@@ -1,3 +1,9 @@
+Wed Feb  1 12:21:08 CET 2006
+
+	* tapi.c win32/Makefile.*: Added changed as proposed on
+	  the mailing list by venkat naidu in order to compile
+	  testapi.c on windows.
+
 Thu Jan 19 09:57:28 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xml2-config.in: trying to fix windows/configure

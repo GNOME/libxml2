@@ -197,7 +197,8 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testURI.exe\
 	$(BINDIR)\testXPath.exe\
 	$(BINDIR)\runtest.exe\
-	$(BINDIR)\runsuite.exe
+	$(BINDIR)\runsuite.exe\
+	$(BINDIR)\testapi.exe
 	
 !if "$(WITH_THREADS)" == "yes" || "$(WITH_THREADS)" == "ctls" || "$(WITH_THREADS)" == "native"
 UTILS = $(UTILS) $(BINDIR)\testThreadsWin32.exe

@@ -7291,9 +7291,9 @@ struct xmlNsMapItem {
     * depth:
     * >= 0 == @node's ns-decls
     * -1   == @parent's ns-decls
-    * -2   == @parent's out-of-scope ns-decls
-    * -3   == the doc->oldNs XML ns-decl
-    * -4   == the doc->oldNs storage ns-decls
+    * -2   == the doc->oldNs XML ns-decl
+    * -3   == the doc->oldNs storage ns-decls
+    * -4   == ns-decls provided via custom ns-handling
     */
     int depth;
 };
@@ -7488,7 +7488,7 @@ xmlTreeNSListLookupByPrefix(xmlNsPtr nsList, const xmlChar *prefix)
 
 /*
 *
-* xmlTreeGetInScopeNamespaces:
+* xmlDOMWrapNSNormGatherInScopeNs:
 * @map: the namespace map
 * @node: the node to start with
 * 
@@ -8069,6 +8069,10 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
     return (0);
 }
 
+typedef enum {
+    XML_DOM_RECONNS_REMOVEREDUND = 1<<0    
+} xmlDOMReconcileNSOptions;
+
 /*
 * xmlDOMWrapReconcileNamespaces:
 * @ctxt: DOM wrapper context, unused at the moment
@@ -8083,19 +8087,24 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 * WARNING: This function is in a experimental state.
 *
 * Returns 0 if succeeded, -1 otherwise and on API/internal errors.
-*/
+*/   
+
 int
 xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			      xmlNodePtr elem,
-			      int options ATTRIBUTE_UNUSED)
+			      int options)
 {
     int depth = -1, adoptns = 0, parnsdone = 0;
-    xmlNsPtr ns;
+    xmlNsPtr ns, prevns;
     xmlDocPtr doc;
     xmlNodePtr cur, curElem = NULL;
     xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
     /* @ancestorsOnly should be set by an option flag. */
     int ancestorsOnly = 0;
+    int optRemoveDedundantNS = 
+	((xmlDOMReconcileNSOptions) options & XML_DOM_RECONNS_REMOVEREDUND) ? 1 : 0;
+    xmlNsPtr *listRedund = NULL;
+    int sizeRedund = 0, nbRedund = 0, ret, i, j;
 
     if ((elem == NULL) || (elem->doc == NULL) ||
 	(elem->type != XML_ELEMENT_NODE))
@@ -8113,6 +8122,7 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 		* Namespace declarations.
 		*/
 		if (cur->nsDef != NULL) {
+		    prevns = NULL;
 		    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
 			if (! parnsdone) {
 			    if ((elem->parent) &&
@@ -8128,6 +8138,38 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			    }
 			    parnsdone = 1;
 			}
+			
+			/*
+			* Lookup the ns ancestor-axis for equal ns-decls in scope.
+			*/
+			if (optRemoveDedundantNS && nsMap) {
+			    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
+				    (mi->shadowDepth == -1) &&
+				    ((ns->prefix == mi->newNs->prefix) ||
+				      xmlStrEqual(ns->prefix, mi->newNs->prefix)) &&
+				    ((ns->href == mi->newNs->href) ||
+				      xmlStrEqual(ns->href, mi->newNs->href)))
+				{				    
+				    /*
+				    * A redundant ns-decl was found.
+				    * Add it to the list of redundant ns-decls.
+				    */
+				    if (xmlDOMWrapNSNormAddNsMapItem2(&listRedund,
+					&sizeRedund, &nbRedund, ns, mi->newNs) == -1)
+					goto internal_error;
+				    /*
+				    * Remove the ns-decl from the element-node.
+				    */
+				    if (prevns)
+					prevns->next = ns->next;
+				    else
+					cur->nsDef = ns->next;
+				    goto adopt_ns;
+				}
+			    }
+			}
+
 			/*
 			* Skip ns-references handling if the referenced
 			* ns-decl is declared on the same element.
@@ -8154,15 +8196,19 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi, ns, ns,
 			    depth) == NULL)
 			    goto internal_error;
+
+			prevns = ns;
 		    }
 		}
 		if (! adoptns)
 		    goto ns_end;
-
+adopt_ns:
 		/* No break on purpose. */
 	    case XML_ATTRIBUTE_NODE:
+		/* No ns, no fun. */
 		if (cur->ns == NULL)
 		    goto ns_end;
+		
 		if (! parnsdone) {
 		    if ((elem->parent) &&
 			((xmlNodePtr) elem->parent->doc != elem->parent)) {
@@ -8173,6 +8219,17 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			    topmi = nsMap->prev;
 		    }
 		    parnsdone = 1;
+		}
+		/*
+		* Adjust the reference if this was a redundant ns-decl.
+		*/
+		if (listRedund) {
+		   for (i = 0, j = 0; i < nbRedund; i++, j += 2) {
+		       if (cur->ns == listRedund[j]) {
+			   cur->ns = listRedund[++j];
+			   break;
+		       }
+		   } 
 		}
 		/*
 		* Adopt ns-references.
@@ -8214,6 +8271,7 @@ ns_end:
 	    default:
 		goto next_sibling;
 	}
+into_content:
 	if ((cur->type == XML_ELEMENT_NODE) &&
 	    (cur->children != NULL)) {
 	    /*
@@ -8244,18 +8302,29 @@ next_sibling:
 	if (cur->next != NULL)
 	    cur = cur->next;
 	else {
+	    if (cur->type == XML_ATTRIBUTE_NODE) {
+		cur = cur->parent;
+		goto into_content;
+	    }
 	    cur = cur->parent;
 	    goto next_sibling;
 	}
     } while (cur != NULL);
-
+    
+    ret = 0;
+    goto exit;
+internal_error:
+    ret = -1;
+exit:
+    if (listRedund) {
+	for (i = 0, j = 0; i < nbRedund; i++, j += 2) {
+	    xmlFreeNs(listRedund[j]);
+	}
+	xmlFree(listRedund);
+    }
     if (nsMap != NULL)
 	xmlDOMWrapNSNormFreeNsMap(nsMap);
-    return (0);
-internal_error:
-    if (nsMap != NULL)
-	xmlDOMWrapNSNormFreeNsMap(nsMap);    
-    return (-1);
+    return (ret);
 }
 
 /*
@@ -8264,7 +8333,7 @@ internal_error:
 * @sourceDoc: the optional sourceDoc
 * @node: the element-node to start with
 * @destDoc: the destination doc for adoption
-* @parent: the optional new parent of @node in @destDoc
+* @destParent: the optional new parent of @node in @destDoc
 * @options: option flags
 *
 * Ensures that ns-references point to @destDoc: either to

@@ -1,4 +1,12 @@
-Wed Feb  1 12:21:08 CET 2006
+Wed Feb  1 17:32:25 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Enhanced xmlDOMWrapReconcileNamespaces() to remove
+	  redundant ns-decls if the option XML_DOM_RECONNS_REMOVEREDUND
+	  was given. Note that I haven't moved this option to the
+	  header file yet; so just call this function with an @option
+	  of 1 to test the behaviour.	  
+
+Wed Feb  1 12:21:08 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tapi.c win32/Makefile.*: Added changed as proposed on
 	  the mailing list by venkat naidu in order to compile

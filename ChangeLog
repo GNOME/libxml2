@@ -1,3 +1,8 @@
+Thu Feb  2 13:11:26 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Fixed some bugs xmlDOMWrapReconcileNamespaces() wrt
+	  the previous addition of the removal of redundant ns-decls.
+
 Wed Feb  1 17:32:25 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Enhanced xmlDOMWrapReconcileNamespaces() to remove

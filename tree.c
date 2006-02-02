@@ -8123,7 +8123,8 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 		*/
 		if (cur->nsDef != NULL) {
 		    prevns = NULL;
-		    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+		    ns = cur->nsDef;
+		    while (ns != NULL) {
 			if (! parnsdone) {
 			    if ((elem->parent) &&
 				((xmlNodePtr) elem->parent->doc != elem->parent)) {
@@ -8160,12 +8161,12 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 					goto internal_error;
 				    /*
 				    * Remove the ns-decl from the element-node.
-				    */
+				    */				    
 				    if (prevns)
 					prevns->next = ns->next;
 				    else
-					cur->nsDef = ns->next;
-				    goto adopt_ns;
+					cur->nsDef = ns->next;				    				    
+				    goto next_ns_decl;
 				}
 			    }
 			}
@@ -8195,14 +8196,15 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			*/
 			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi, ns, ns,
 			    depth) == NULL)
-			    goto internal_error;
+			    goto internal_error;			
 
 			prevns = ns;
+next_ns_decl:
+			ns = ns->next;			
 		    }
 		}
 		if (! adoptns)
 		    goto ns_end;
-adopt_ns:
 		/* No break on purpose. */
 	    case XML_ATTRIBUTE_NODE:
 		/* No ns, no fun. */
@@ -8316,7 +8318,7 @@ next_sibling:
 internal_error:
     ret = -1;
 exit:
-    if (listRedund) {
+    if (listRedund) {	
 	for (i = 0, j = 0; i < nbRedund; i++, j += 2) {
 	    xmlFreeNs(listRedund[j]);
 	}

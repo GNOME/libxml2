@@ -8639,6 +8639,500 @@ internal_error:
 }
 
 /*
+* xmlDOMWrapCloneNode:
+* @ctxt: the optional context for custom processing
+* @sourceDoc: the optional sourceDoc
+* @node: the node to start with
+* @resNode: the clone of the given @node
+* @destDoc: the destination doc
+* @destParent: the optional new parent of @node in @destDoc
+* @options: option flags
+*
+* References of out-of scope ns-decls are remapped to point to @destDoc:
+* 1) If @destParent is given, then nsDef entries on element-nodes are used
+* 2) If *no* @destParent is given, then @destDoc->oldNs entries are used
+*    This is the case when you have an unliked node and just want to move it
+*    to the context of 
+* 
+* If @destParent is given, it ensures that the tree is namespace
+* wellformed by creating additional ns-decls where needed.
+* Note that, since prefixes of already existent ns-decls can be
+* shadowed by this process, it could break QNames in attribute
+* values or element content.
+* TODO:
+*   1) Support dicts
+*      Optimize string adoption for equal or none dicts.
+*   2) XInclude
+* WARNING: This function is in a experimental state and should only be currently
+*    only be used to test it.
+*
+* Returns 0 if the operation succeeded,
+*         1 if a node of unsupported (or not yet supported) type was given,
+*         -1 on API/internal errors.
+*/
+
+int
+xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
+		      xmlDocPtr sourceDoc,
+		      xmlNodePtr node,
+		      xmlNodePtr *resNode,
+		      xmlDocPtr destDoc,
+		      xmlNodePtr destParent,
+		      int deep,
+		      int options ATTRIBUTE_UNUSED)
+{
+    int ret = 0;
+    xmlNodePtr cur, curElem = NULL;
+    xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
+    xmlNsPtr ns;
+    int depth = -1;
+    /* int adoptStr = 1; */
+    /* gather @parent's ns-decls. */
+    int parnsdone = 0;
+    /* @ancestorsOnly should be set per option. */
+    int ancestorsOnly = 0;
+    xmlNodePtr resultClone = NULL, clone = NULL, parentClone = NULL, prevClone = NULL;
+    xmlNsPtr cloneNs = NULL, *cloneNsDefSlot = NULL;    
+        
+    if ((node == NULL) || (resNode == NULL) ||
+	(sourceDoc == NULL) || (destDoc == NULL))
+	return(-1);
+    /*
+    * TODO: Initially we support only element-nodes.
+    */
+    if (node->type != XML_ELEMENT_NODE)
+	return(1);    
+    /*
+    * Check node->doc sanity.
+    */    
+    if ((node->doc != NULL) && (sourceDoc != NULL) &&
+	(node->doc != sourceDoc)) {
+	/*
+	* Might be an XIncluded node.
+	*/
+	return (-1);
+    }
+    if (sourceDoc == NULL)
+	sourceDoc = node->doc;
+    if (sourceDoc == destDoc)
+	return (-1);        
+
+    *resNode = NULL;
+    
+    deep = 1;
+    cur = node;
+    while (cur != NULL) {
+	if (cur->doc != sourceDoc) {
+	    /*
+	    * We'll assume XIncluded nodes if the doc differs.
+	    * TODO: Do we need to reconciliate XIncluded nodes?
+	    * TODO: This here returns -1 in this case.
+	    */
+	    goto internal_error;	
+	}
+	/*
+	* Create a new node.
+	*/
+	switch (cur->type) {
+	    case XML_XINCLUDE_START:
+	    case XML_XINCLUDE_END:
+		/* TODO: What to do with XInclude? */
+		goto internal_error;
+		break;
+	    case XML_TEXT_NODE:
+	    case XML_CDATA_SECTION_NODE:
+	    case XML_ELEMENT_NODE:
+	    case XML_DOCUMENT_FRAG_NODE:
+	    case XML_ENTITY_REF_NODE:
+	    case XML_ENTITY_NODE:
+	    case XML_PI_NODE:
+	    case XML_COMMENT_NODE:
+		/*
+		* Nodes of xmlNode structure.
+		*/
+		clone = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
+		if (clone == NULL) {
+		    xmlTreeErrMemory("xmlDOMWrapCloneBranch(): allocating a node");
+		    goto internal_error;
+		}
+		memset(clone, 0, sizeof(xmlNode));		
+		/*
+		* Set hierachical links.
+		*/
+		if (resultClone != NULL) {	    
+		    clone->parent = parentClone;
+		    if (prevClone) {
+			prevClone->next = clone;
+			clone->prev = prevClone;
+		    } else 
+			parentClone->children = clone;
+		} else
+		    resultClone = clone;
+		
+		break;
+	    case XML_ATTRIBUTE_NODE:
+		/*
+		* Attributes (xmlAttr).
+		*/
+		clone = (xmlNodePtr) xmlMalloc(sizeof(xmlAttr));
+		if (clone == NULL) {
+		    xmlTreeErrMemory("xmlDOMWrapCloneBranch(): allocating an attr-node");
+		    goto internal_error;
+		}
+		memset(clone, 0, sizeof(xmlAttr));		
+		/*
+		* Set hierachical links.
+		*/
+		if (resultClone != NULL) {
+		    clone->parent = parentClone;
+		    if (prevClone) {
+			prevClone->next = clone;
+			clone->prev = prevClone;
+		    } else 
+			parentClone->properties = (xmlAttrPtr) clone;
+		} else
+		    resultClone = clone;
+		break;
+	    default:
+		/* TODO */
+		goto internal_error;
+	}
+
+	clone->type = cur->type;
+	clone->doc = destDoc;	
+			
+	if (cur->name == xmlStringText)
+	    clone->name = xmlStringText;
+	else if (cur->name == xmlStringTextNoenc)
+	    /*
+	    * TODO: xmlStringTextNoenc is never assigned to a node
+	    * in tree.c.
+	    */
+	    clone->name = xmlStringTextNoenc;
+	else if (cur->name == xmlStringComment)
+	    clone->name = xmlStringComment;
+	else if (cur->name != NULL) {
+	    if ((destDoc != NULL) && (destDoc->dict != NULL))
+		clone->name = xmlDictLookup(destDoc->dict, cur->name, -1);
+	    else
+		clone->name = xmlStrdup(cur->name);
+	}				    
+
+	switch (cur->type) {
+	    case XML_XINCLUDE_START:
+	    case XML_XINCLUDE_END:
+		/*
+		* TODO
+		*/
+		return (-1);
+	    case XML_ELEMENT_NODE:
+		curElem = cur;
+		depth++;
+		/*
+		* Namespace declarations.
+		*/
+		if ((ctxt == NULL) && (cur->nsDef != NULL)) {
+		    if (! parnsdone) {
+			if (destParent && (ctxt == NULL)) {
+			    /*
+			    * Gather @parent's in-scope ns-decls.
+			    */
+			    if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
+				destParent) == -1)
+				goto internal_error;
+			    if (nsMap != NULL)
+				topmi = nsMap->prev;
+			}
+			parnsdone = 1;
+		    }
+		    /*
+		    * Clone namespace declarations.
+		    */
+		    cloneNsDefSlot = &(clone->nsDef);
+		    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+			/*
+			* Create a new xmlNs.
+			*/
+			cloneNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+			if (cloneNs == NULL) {
+			    xmlTreeErrMemory("xmlDOMWrapCloneBranch(): "
+				"allocating namespace");
+			    return(-1);
+			}
+			memset(cloneNs, 0, sizeof(xmlNs));
+			cloneNs->type = XML_LOCAL_NAMESPACE;
+			
+			if (ns->href != NULL)
+			    cloneNs->href = xmlStrdup(ns->href);
+			if (ns->prefix != NULL)
+			    cloneNs->prefix = xmlStrdup(ns->prefix);
+
+			*cloneNsDefSlot = cloneNs;
+			cloneNsDefSlot = &(cloneNs->next);
+
+			/*
+			* Does it shadow any ns-decl?
+			*/
+			if (nsMap) {
+			    for (mi = nsMap; mi != topmi->next;
+			    mi = mi->next) {
+				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
+				    (mi->shadowDepth == -1) &&
+				    ((ns->prefix == mi->newNs->prefix) ||
+				     xmlStrEqual(ns->prefix,
+					mi->newNs->prefix))) {
+				    /* Mark as shadowed at the current depth. */
+				    mi->shadowDepth = depth;
+				}
+			    }
+			}
+			/*
+			* Push mapping.
+			*/
+			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+			    ns, cloneNs, depth) == NULL)
+			    goto internal_error;
+		    }
+		}
+		/* cur->ns will be processed further down. */
+		break;
+	    case XML_ATTRIBUTE_NODE:				
+		/* IDs will be processed further down. */
+		/* cur->ns will be processed further down. */
+		break;
+	    case XML_TEXT_NODE:
+	    case XML_CDATA_SECTION_NODE:
+		if (cur->content)
+		    clone->content = xmlStrdup(cur->content);
+		goto leave_node;
+	    case XML_ENTITY_REF_NODE:		
+		if (sourceDoc != destDoc) {
+		    if ((destDoc->intSubset) || (destDoc->extSubset)) {
+			xmlEntityPtr ent;
+			/*
+			* Assign new entity-node if available.
+			*/
+			ent = xmlGetDocEntity(destDoc, cur->name);
+			if (ent != NULL) {
+			    clone->content = ent->content;
+			    clone->children = (xmlNodePtr) ent;
+			    clone->last = (xmlNodePtr) ent;
+			}
+		    }
+		} else {
+		    /*
+		    * Use the current node's entity declaration and value.
+		    */
+		    clone->content = cur->content;
+		    clone->children = cur->children;
+		    clone->last = cur->last;
+		}
+		goto leave_node;
+	    case XML_PI_NODE:
+		if (cur->content)
+		    clone->content = xmlStrdup(cur->content);
+		goto leave_node;
+	    case XML_COMMENT_NODE:
+		if (cur->content)
+		    clone->content = xmlStrdup(cur->content);
+		goto leave_node;
+	    default:
+		goto internal_error;
+	}
+
+	if (cur->ns == NULL)
+	    goto end_ns_reference;
+
+/* handle_ns_reference: */
+	/*
+	** The following will take care of references to ns-decls ********
+	** and is intended only for element- and attribute-nodes.	
+	**
+	*/
+	if (! parnsdone) {
+	    if (destParent && (ctxt == NULL)) {
+		if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
+		    destParent) == -1)
+		    goto internal_error;
+		if (nsMap != NULL)
+		    topmi = nsMap->prev;
+	    }
+	    parnsdone = 1;
+	}
+	/*
+	* Adopt ns-references.
+	*/
+	if (nsMap != NULL) {
+	    /*
+	    * Search for a mapping.
+	    */
+	    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+		if ((mi->shadowDepth == -1) &&
+		    (cur->ns == mi->oldNs)) {
+		    /*
+		    * This is the nice case: a mapping was found.
+		    */
+		    clone->ns = mi->newNs;
+		    goto end_ns_reference;
+		}
+	    }
+	}
+	/*
+	* Start searching for an in-scope ns-decl.
+	*/
+	if (ctxt != NULL) {
+	    /*
+	    * User-defined behaviour.
+	    */
+#if 0
+	    ctxt->aquireNsDecl(ctxt, cur->ns, &ns);
+#endif
+	    /*
+	    * Add user's mapping.
+	    */
+	    if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+		cur->ns, ns, XML_TREE_NSMAP_CUSTOM) == NULL)
+		goto internal_error;
+	    clone->ns = ns;
+	} else {
+	    /*
+	    * Aquire a normalized ns-decl and add it to the map.
+	    */
+	    if (xmlDOMWrapNSNormAquireNormalizedNs(destDoc,
+		/* ns-decls on curElem or on destDoc->oldNs */			
+		destParent ? curElem : NULL,
+		cur->ns, &ns,
+		&nsMap, &topmi, depth,
+		ancestorsOnly,
+		/* ns-decls must be prefixed for attributes. */
+		(cur->type == XML_ATTRIBUTE_NODE) ? 1 : 0) == -1)
+		goto internal_error;
+	    clone->ns = ns;
+	}
+
+end_ns_reference:
+
+	/*
+	* Some post-processing.
+	*
+	* Handle ID attributes.
+	*/
+	if ((clone->type == XML_ATTRIBUTE_NODE) &&
+	    (clone->parent != NULL)) {
+	    if (xmlIsID(destDoc, clone->parent, (xmlAttrPtr) clone)) {
+	   
+		xmlChar *idVal;
+		
+		idVal = xmlNodeListGetString(cur->doc, cur->children, 1);
+		if (idVal != NULL) {
+		    if (xmlAddID(NULL, destDoc, idVal, (xmlAttrPtr) cur) == NULL) {
+			/* TODO: error message. */
+			xmlFree(idVal);
+			goto internal_error;
+		    }
+		    xmlFree(idVal);
+		}
+	    }
+	}
+	/*
+	**
+	** The following will traversing the tree ************************
+	**
+	*	
+	* Walk the element's attributes before descending into child-nodes.
+	*/
+	if ((cur->type == XML_ELEMENT_NODE) && (cur->properties != NULL)) {
+	    prevClone = NULL;
+	    parentClone = clone;	    
+	    cur = (xmlNodePtr) cur->properties;
+	    continue;
+	}
+into_content:
+	/*
+	* Descend into child-nodes.
+	*/
+	if (cur->children != NULL) {
+	    prevClone = NULL;
+	    parentClone = clone;
+	    cur = cur->children;
+	    continue;
+	}
+
+leave_node:
+	/*
+	* At this point we are done with the node, its content
+	* and an element-nodes's attribute-nodes.
+	*/
+	if (cur == node)
+	    break;
+	if ((cur->type == XML_ELEMENT_NODE) ||
+	    (cur->type == XML_XINCLUDE_START) ||
+	    (cur->type == XML_XINCLUDE_END)) {
+	    /*
+	    * TODO: Do we expect nsDefs on XML_XINCLUDE_START?
+	    */
+	    if (nsMap != NULL) {
+		/*
+		* Pop mappings.
+		*/
+		while (topmi->depth >= depth)
+		    topmi = topmi->prev;
+		/*
+		* Unshadow.
+		* TODO: How to optimize this?
+		*/
+		for (mi = nsMap; mi != topmi->next; mi = mi->next)
+		    if (mi->shadowDepth >= depth)
+			mi->shadowDepth = -1;
+	    }
+	    depth--;
+	}
+	if (cur->next != NULL) {
+	    prevClone = clone;
+	    cur = cur->next;
+	} else if (cur->type != XML_ATTRIBUTE_NODE) {
+	    /*
+	    * Set clone->last.
+	    */
+	    clone->parent->last = clone;
+	    clone = clone->parent;
+	    parentClone = clone->parent; 
+	    /*
+	    * Process parent --> next;
+	    */
+	    cur = cur->parent;
+	    goto leave_node;
+	} else {
+	    /* This is for attributes only. */
+	    clone = clone->parent;
+	    parentClone = clone->parent; 
+	    /*
+	    * Process parent-element --> children.
+	    */
+	    cur = cur->parent;
+	    goto into_content;	    
+	}
+    }        
+    goto exit;
+
+internal_error:
+    ret = -1;
+
+exit:
+    /*
+    * Cleanup.
+    */
+    if (nsMap != NULL)
+	xmlDOMWrapNSNormFreeNsMap(nsMap);
+    /*
+    * TODO: Should we try a cleanup of the cloned node in case of a
+    * fatal error?
+    */
+    *resNode = resultClone;
+    return (ret);
+}
+
+/*
 * xmlDOMWrapAdoptAttr:
 * @ctxt: the optional context for custom processing
 * @sourceDoc: the optional source document of attr
@@ -8768,9 +9262,12 @@ internal_error:
 * @destParent: the optional new parent of @node in @destDoc
 * @options: option flags
 *
-* Ensures that ns-references point to @destDoc: either to
-* elements->nsDef entries if @destParent is given, or to
-* @destDoc->oldNs otherwise.
+* References of out-of scope ns-decls are remapped to point to @destDoc:
+* 1) If @destParent is given, then nsDef entries on element-nodes are used
+* 2) If *no* @destParent is given, then @destDoc->oldNs entries are used
+*    This is the case when you have an unliked node and just want to move it
+*    to the context of 
+* 
 * If @destParent is given, it ensures that the tree is namespace
 * wellformed by creating additional ns-decls where needed.
 * Note that, since prefixes of already existent ns-decls can be
@@ -8778,7 +9275,10 @@ internal_error:
 * values or element content.
 * WARNING: This function is in a experimental state.
 *
-* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
+* Returns 0 if the operation succeeded,
+*         1 if a node of unsupported type was given,
+*         2 if a node of not yet supported type was given and
+*         -1 on API/internal errors.
 */
 int
 xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
@@ -8787,7 +9287,7 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 		    xmlDocPtr destDoc,		    
 		    xmlNodePtr destParent,
 		    int options)
-{    
+{
     if ((node == NULL) || (destDoc == NULL) ||
 	((destParent != NULL) && (destParent->doc != destDoc)))
 	return(-1);
@@ -8815,6 +9315,7 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 	case XML_COMMENT_NODE:
 	    break;
 	case XML_DOCUMENT_FRAG_NODE:
+	    /* TODO: Support document-fragment-nodes. */
 	    return (2);
 	default:
 	    return (1);
@@ -8879,6 +9380,7 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
     }	
     return (0);
 }
+
 
 
 #define bottom_tree

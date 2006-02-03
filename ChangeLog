@@ -1,3 +1,13 @@
+Fri Feb  3 17:29:22 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Added an initial version of xmlDOMWrapCloneNode() to
+	  the API. It will be used to reflect DOM's Node.cloneNode and
+	  Document.importNode methods.
+	  The pros: 1) non-recursive, 2) optimized ns-lookup
+	  (mostly pointer comparison), 3) user defined ns-lookup,
+	  4) save ns-processing. The function is in an unfinished
+	  and experimental state and should be only used to test it.
+
 Fri Feb  3 10:42:48 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: applied patch from Rob Richards fixing the URI regressions

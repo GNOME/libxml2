@@ -2419,7 +2419,13 @@ path_processing:
         xmlFreeURI(uri);
         return(NULL);
     }
-    ret = xmlSaveUri(uri);
+
+	if (uri->scheme == NULL) {
+		ret = xmlStrdup((const xmlChar *) path);
+	} else {
+		ret = xmlSaveUri(uri);
+	}
+
     xmlFreeURI(uri);
 #else
     ret = xmlStrdup((const xmlChar *) path);

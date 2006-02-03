@@ -1,3 +1,8 @@
+Fri Feb  3 10:42:48 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: applied patch from Rob Richards fixing the URI regressions
+	  tests on Windows which seems to indicate bad escaping.
+
 Thu Feb  2 13:11:26 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Fixed some bugs xmlDOMWrapReconcileNamespaces() wrt

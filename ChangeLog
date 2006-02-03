@@ -1,3 +1,8 @@
+Fri Feb  3 17:36:41 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* include/libxml/tree.h: Added the xmlDOMWrapCloneNode() to
+	  the header file.
+
 Fri Feb  3 17:29:22 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Added an initial version of xmlDOMWrapCloneNode() to

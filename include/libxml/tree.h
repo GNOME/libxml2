@@ -1142,6 +1142,15 @@ XMLPUBFUN int XMLCALL
 					 xmlDocPtr doc,
 					 xmlNodePtr node,
 					 int options);
+XMLPUBFUN int XMLCALL
+	    xmlDOMWrapCloneNode		(xmlDOMWrapCtxtPtr ctxt,
+					 xmlDocPtr sourceDoc,
+					 xmlNodePtr node,
+					 xmlNodePtr *clonedNode,
+					 xmlDocPtr destDoc,
+					 xmlNodePtr destParent,
+					 int deep,
+					 int options);
 
 #ifdef __cplusplus
 }

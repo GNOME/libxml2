@@ -3917,8 +3917,10 @@ get_more:
 	    }
 	}
 	ctxt->input->cur = in;
-	if (*in == 0xA)
-	    
+	if (*in == 0xA) {
+	    in++;
+	    ctxt->input->line++; ctxt->input->col = 1;
+	}
 	if (*in == 0xD) {
 	    in++;
 	    if (*in == 0xA) {

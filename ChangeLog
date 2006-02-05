@@ -1,3 +1,8 @@
+Sun Feb  5 04:03:59 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: bill pointed out a missing block in xmlParseComment
+	  trying to fill with a normal processing of the given character.
+
 Sun Feb  5 03:41:39 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed the comment streaming bug raised by Graham Bennett

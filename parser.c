@@ -9838,8 +9838,14 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else if ((cur == '<') && (next == '!') &&
 		           (ctxt->input->cur[2] == '-') &&
 			   (ctxt->input->cur[3] == '-')) {
-		    if ((!terminate) &&
-		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		    int term;
+
+	            if (avail < 4)
+		        goto done;
+		    ctxt->input->cur += 4;
+		    term = xmlParseLookupSequence(ctxt, '-', '-', '>');
+		    ctxt->input->cur -= 4;
+		    if ((!terminate) && (term < 0))
 			goto done;
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_CONTENT;

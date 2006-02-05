@@ -1,3 +1,9 @@
+Sun Feb  5 03:41:39 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed the comment streaming bug raised by Graham Bennett
+	* test/badcomment.xml result//badcomment.xml*: added to the regression
+	  suite.
+
 Fri Feb  3 17:36:41 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* include/libxml/tree.h: Added the xmlDOMWrapCloneNode() to

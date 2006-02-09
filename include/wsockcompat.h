@@ -10,7 +10,15 @@
 #else
 #undef HAVE_ERRNO_H
 #include <winsock2.h>
+
+/* the following is a workaround a problem for 'inline' keyword in said
+   header when compiled with Borland C++ 6 */
+#if defined(__BORLANDC__) && !defined(__cplusplus)
+#define inline __inline
+#endif
+
 #include <ws2tcpip.h>
+
 /* Check if ws2tcpip.h is a recent version which provides getaddrinfo() */
 #if defined(GetAddrInfo)
 #define HAVE_GETADDRINFO

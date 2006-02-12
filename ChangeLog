@@ -1,3 +1,8 @@
+Sun Feb 12 20:12:22 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: bug fixes for #327167 as well as some cleanups
+	  and more thorough tests on atoms comparisons.
+
 Thu Feb  9 10:07:20 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* include/wsockcompat.h: patch from Eric Zurcher to compile with

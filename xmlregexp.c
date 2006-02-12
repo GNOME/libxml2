@@ -71,6 +71,9 @@
  * 									*
  ************************************************************************/
 
+/*
+ * Note: the order of the enums below is significant, do not shuffle
+ */
 typedef enum {
     XML_REGEXP_EPSILON = 1,
     XML_REGEXP_CHARVAL,
@@ -2054,34 +2057,281 @@ xmlFACompareRanges(xmlRegRangePtr range1, xmlRegRangePtr range2) {
 }
 
 /**
- * xmlFACompareAtoms:
+ * xmlFACompareAtomTypes:
+ * @type1:  an atom type
+ * @type2:  an atom type
+ *
+ * Compares two atoms type to check whether they intersect in some ways,
+ * this is used by xmlFACompareAtoms only
+ *
+ * Returns 1 if they may intersect and 0 otherwise
+ */
+static int
+xmlFACompareAtomTypes(xmlRegAtomType type1, xmlRegAtomType type2) {
+    if ((type1 == XML_REGEXP_EPSILON) ||
+        (type1 == XML_REGEXP_CHARVAL) ||
+	(type1 == XML_REGEXP_RANGES) ||
+	(type1 == XML_REGEXP_SUBREG) ||
+	(type1 == XML_REGEXP_STRING) ||
+	(type1 == XML_REGEXP_ANYCHAR))
+	return(1);
+    if ((type2 == XML_REGEXP_EPSILON) ||
+        (type2 == XML_REGEXP_CHARVAL) ||
+	(type2 == XML_REGEXP_RANGES) ||
+	(type2 == XML_REGEXP_SUBREG) ||
+	(type2 == XML_REGEXP_STRING) ||
+	(type2 == XML_REGEXP_ANYCHAR))
+	return(1);
+
+    if (type1 == type2) return(1);
+
+    /* simplify subsequent compares by making sure type1 < type2 */
+    if (type1 > type2) {
+        xmlRegAtomType tmp = type1;
+	type1 = type2;
+	type2 = tmp;
+    }
+    switch (type1) {
+        case XML_REGEXP_ANYSPACE: /* \s */
+	    /* can't be a letter, number, mark, pontuation, symbol */
+	    if ((type2 == XML_REGEXP_NOTSPACE) ||
+		((type2 >= XML_REGEXP_LETTER) &&
+		 (type2 <= XML_REGEXP_LETTER_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_NUMBER) &&
+		 (type2 <= XML_REGEXP_NUMBER_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_MARK) &&
+		 (type2 <= XML_REGEXP_MARK_ENCLOSING)) ||
+	        ((type2 >= XML_REGEXP_PUNCT) &&
+		 (type2 <= XML_REGEXP_PUNCT_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_SYMBOL) &&
+		 (type2 <= XML_REGEXP_SYMBOL_OTHERS))
+	        ) return(0);
+	    break;
+        case XML_REGEXP_NOTSPACE: /* \S */
+	    break;
+        case XML_REGEXP_INITNAME: /* \l */
+	    /* can't be a number, mark, separator, pontuation, symbol or other */
+	    if ((type2 == XML_REGEXP_NOTINITNAME) ||
+	        ((type2 >= XML_REGEXP_NUMBER) &&
+		 (type2 <= XML_REGEXP_NUMBER_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_MARK) &&
+		 (type2 <= XML_REGEXP_MARK_ENCLOSING)) ||
+	        ((type2 >= XML_REGEXP_SEPAR) &&
+		 (type2 <= XML_REGEXP_SEPAR_PARA)) ||
+	        ((type2 >= XML_REGEXP_PUNCT) &&
+		 (type2 <= XML_REGEXP_PUNCT_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_SYMBOL) &&
+		 (type2 <= XML_REGEXP_SYMBOL_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_OTHER) &&
+		 (type2 <= XML_REGEXP_OTHER_NA))
+		) return(0);
+	    break;
+        case XML_REGEXP_NOTINITNAME: /* \L */
+	    break;
+        case XML_REGEXP_NAMECHAR: /* \c */
+	    /* can't be a mark, separator, pontuation, symbol or other */
+	    if ((type2 == XML_REGEXP_NOTNAMECHAR) ||
+	        ((type2 >= XML_REGEXP_MARK) &&
+		 (type2 <= XML_REGEXP_MARK_ENCLOSING)) ||
+	        ((type2 >= XML_REGEXP_PUNCT) &&
+		 (type2 <= XML_REGEXP_PUNCT_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_SEPAR) &&
+		 (type2 <= XML_REGEXP_SEPAR_PARA)) ||
+	        ((type2 >= XML_REGEXP_SYMBOL) &&
+		 (type2 <= XML_REGEXP_SYMBOL_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_OTHER) &&
+		 (type2 <= XML_REGEXP_OTHER_NA))
+		) return(0);
+	    break;
+        case XML_REGEXP_NOTNAMECHAR: /* \C */
+	    break;
+        case XML_REGEXP_DECIMAL: /* \d */
+	    /* can't be a letter, mark, separator, pontuation, symbol or other */
+	    if ((type2 == XML_REGEXP_NOTDECIMAL) ||
+	        (type2 == XML_REGEXP_REALCHAR) ||
+		((type2 >= XML_REGEXP_LETTER) &&
+		 (type2 <= XML_REGEXP_LETTER_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_MARK) &&
+		 (type2 <= XML_REGEXP_MARK_ENCLOSING)) ||
+	        ((type2 >= XML_REGEXP_PUNCT) &&
+		 (type2 <= XML_REGEXP_PUNCT_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_SEPAR) &&
+		 (type2 <= XML_REGEXP_SEPAR_PARA)) ||
+	        ((type2 >= XML_REGEXP_SYMBOL) &&
+		 (type2 <= XML_REGEXP_SYMBOL_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_OTHER) &&
+		 (type2 <= XML_REGEXP_OTHER_NA))
+		)return(0);
+	    break;
+        case XML_REGEXP_NOTDECIMAL: /* \D */
+	    break;
+        case XML_REGEXP_REALCHAR: /* \w */
+	    /* can't be a mark, separator, pontuation, symbol or other */
+	    if ((type2 == XML_REGEXP_NOTDECIMAL) ||
+	        ((type2 >= XML_REGEXP_MARK) &&
+		 (type2 <= XML_REGEXP_MARK_ENCLOSING)) ||
+	        ((type2 >= XML_REGEXP_PUNCT) &&
+		 (type2 <= XML_REGEXP_PUNCT_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_SEPAR) &&
+		 (type2 <= XML_REGEXP_SEPAR_PARA)) ||
+	        ((type2 >= XML_REGEXP_SYMBOL) &&
+		 (type2 <= XML_REGEXP_SYMBOL_OTHERS)) ||
+	        ((type2 >= XML_REGEXP_OTHER) &&
+		 (type2 <= XML_REGEXP_OTHER_NA))
+		)return(0);
+	    break;
+        case XML_REGEXP_NOTREALCHAR: /* \W */
+	    break;
+	/*
+	 * at that point we know both type 1 and type2 are from
+	 * character categories are ordered and are different,
+	 * it becomes simple because this is a partition
+	 */
+        case XML_REGEXP_LETTER:
+	    if (type2 <= XML_REGEXP_LETTER_OTHERS)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_LETTER_UPPERCASE:
+        case XML_REGEXP_LETTER_LOWERCASE:
+        case XML_REGEXP_LETTER_TITLECASE:
+        case XML_REGEXP_LETTER_MODIFIER:
+        case XML_REGEXP_LETTER_OTHERS:
+	    return(0);
+        case XML_REGEXP_MARK:
+	    if (type2 <= XML_REGEXP_MARK_ENCLOSING)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_MARK_NONSPACING:
+        case XML_REGEXP_MARK_SPACECOMBINING:
+        case XML_REGEXP_MARK_ENCLOSING:
+	    return(0);
+        case XML_REGEXP_NUMBER:
+	    if (type2 <= XML_REGEXP_NUMBER_OTHERS)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_NUMBER_DECIMAL:
+        case XML_REGEXP_NUMBER_LETTER:
+        case XML_REGEXP_NUMBER_OTHERS:
+	    return(0);
+        case XML_REGEXP_PUNCT:
+	    if (type2 <= XML_REGEXP_PUNCT_OTHERS)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_PUNCT_CONNECTOR:
+        case XML_REGEXP_PUNCT_DASH:
+        case XML_REGEXP_PUNCT_OPEN:
+        case XML_REGEXP_PUNCT_CLOSE:
+        case XML_REGEXP_PUNCT_INITQUOTE:
+        case XML_REGEXP_PUNCT_FINQUOTE:
+        case XML_REGEXP_PUNCT_OTHERS:
+	    return(0);
+        case XML_REGEXP_SEPAR:
+	    if (type2 <= XML_REGEXP_SEPAR_PARA)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_SEPAR_SPACE:
+        case XML_REGEXP_SEPAR_LINE:
+        case XML_REGEXP_SEPAR_PARA:
+	    return(0);
+        case XML_REGEXP_SYMBOL:
+	    if (type2 <= XML_REGEXP_SYMBOL_OTHERS)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_SYMBOL_MATH:
+        case XML_REGEXP_SYMBOL_CURRENCY:
+        case XML_REGEXP_SYMBOL_MODIFIER:
+        case XML_REGEXP_SYMBOL_OTHERS:
+	    return(0);
+        case XML_REGEXP_OTHER:
+	    if (type2 <= XML_REGEXP_OTHER_NA)
+	        return(1);
+	    return(0);
+        case XML_REGEXP_OTHER_CONTROL:
+        case XML_REGEXP_OTHER_FORMAT:
+        case XML_REGEXP_OTHER_PRIVATE:
+        case XML_REGEXP_OTHER_NA:
+	    return(0);
+	default:
+	    break;
+    }
+    return(1);
+}
+
+/**
+ * xmlFAEqualAtoms:
  * @atom1:  an atom
  * @atom2:  an atom
  *
- * Compares two atoms to check whether they intersect in some ways,
- * this is used by xmlFAComputesDeterminism only
+ * Compares two atoms to check whether they are the same exactly
+ * this is used to remove equivalent transitions
  *
- * Returns 1 if yes and 0 otherwise
+ * Returns 1 if same and 0 otherwise
  */
 static int
-xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
-    int ret;
+xmlFAEqualAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
+    int ret = 0;
 
     if (atom1 == atom2)
 	return(1);
     if ((atom1 == NULL) || (atom2 == NULL))
 	return(0);
 
-    if ((atom1->type == XML_REGEXP_RANGES) &&
-        (atom2->type == XML_REGEXP_CHARVAL)) {
-    } else if ((atom1->type == XML_REGEXP_CHARVAL) &&
-	       (atom2->type == XML_REGEXP_RANGES)) {
+    if (atom1->type != atom2->type)
+        return(0);
+    switch (atom1->type) {
+        case XML_REGEXP_EPSILON:
+	    ret = 0;
+	    break;
+        case XML_REGEXP_STRING:
+	    ret = xmlStrEqual((xmlChar *)atom1->valuep,
+	                      (xmlChar *)atom2->valuep);
+	    break;
+        case XML_REGEXP_CHARVAL:
+	    ret = (atom1->codepoint == atom2->codepoint);
+	    break;
+	case XML_REGEXP_RANGES:
+	    /* too hard to do in the general case */
+	    ret = 0;
+	default:
+	    break;
+    }
+    return(ret);
+}
+
+/**
+ * xmlFACompareAtoms:
+ * @atom1:  an atom
+ * @atom2:  an atom
+ *
+ * Compares two atoms to check whether they intersect in some ways,
+ * this is used by xmlFAComputesDeterminism and xmlFARecurseDeterminism only
+ *
+ * Returns 1 if yes and 0 otherwise
+ */
+static int
+xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
+    int ret = 1;
+
+    if (atom1 == atom2)
+	return(1);
+    if ((atom1 == NULL) || (atom2 == NULL))
+	return(0);
+
+    if ((atom1->type == XML_REGEXP_ANYCHAR) ||
+        (atom2->type == XML_REGEXP_ANYCHAR))
+	return(1);
+
+    if (atom1->type > atom2->type) {
 	xmlRegAtomPtr tmp;
 	tmp = atom1;
 	atom1 = atom2;
 	atom2 = tmp;
-    } else if (atom1->type != atom2->type) {
-	return(0);
+    }
+    if (atom1->type != atom2->type) {
+        ret = xmlFACompareAtomTypes(atom1->type, atom2->type);
+	/* if they can't intersect at the type level break now */
+	if (ret == 0)
+	    return(0);
     }
     switch (atom1->type) {
         case XML_REGEXP_STRING:
@@ -2091,15 +2341,16 @@ xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
         case XML_REGEXP_EPSILON:
 	    goto not_determinist;
         case XML_REGEXP_CHARVAL:
-	    ret = (atom1->codepoint == atom2->codepoint);
+	    if (atom2->type == XML_REGEXP_CHARVAL) {
+		ret = (atom1->codepoint == atom2->codepoint);
+	    } else {
+	        ret = xmlRegCheckCharacter(atom2, atom1->codepoint);
+		if (ret < 0)
+		    ret = 1;
+	    }
 	    break;
         case XML_REGEXP_RANGES:
-	    if (atom2->type == XML_REGEXP_CHARVAL) {
-	        ret = xmlRegCheckCharacter(atom1, atom2->codepoint);
-		if (ret < 0)
-		    return(-1);
-		break;
-	    } else {
+	    if (atom2->type == XML_REGEXP_RANGES) {
 	        int i, j, res;
 		xmlRegRangePtr r1, r2;
 
@@ -2233,7 +2484,7 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 		    continue;
 		if (t2->atom != NULL) {
 		    if (t1->to == t2->to) {
-			if (xmlFACompareAtoms(t1->atom, t2->atom))
+			if (xmlFAEqualAtoms(t1->atom, t2->atom))
 			    t2->to = -1; /* eliminated */
 		    }
 		}

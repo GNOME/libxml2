@@ -3575,21 +3575,6 @@ called automatically if the parser(s) encounter such an encoding name
 their arguments and expected return values are described in the encoding.h
 header.</p>
 
-<p>A quick note on the topic of subverting the parser to use a different
-internal encoding than UTF-8, in some case people will absolutely want to
-keep the internal encoding different, I think it's still possible (but the
-encoding must be compliant with ASCII on the same subrange) though I didn't
-tried it. The key is to override the default conversion routines (by
-registering null encoders/decoders for your charsets), and bypass the UTF-8
-checking of the parser by setting the parser context charset
-(ctxt-&gt;charset) to something different than XML_CHAR_ENCODING_UTF8, but
-there is no guarantee that this will work. You may also have some troubles
-saving back.</p>
-
-<p>Basically proper I18N support is important, this requires at least
-libxml-2.0.0, but a lot of features and corrections are really available only
-starting 2.2.</p>
-
 <h2><a name="IO">I/O Interfaces</a></h2>
 
 <p>Table of Content:</p>

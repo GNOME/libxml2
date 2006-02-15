@@ -4341,21 +4341,26 @@ xmlGetNodePath(xmlNodePtr node)
              */
             tmp = cur->prev;
             while (tmp != NULL) {
-                if ((cur->type == XML_TEXT_NODE) ||
-		    (cur->type == XML_CDATA_SECTION_NODE))
+                if ((tmp->type == XML_TEXT_NODE) ||
+		    (tmp->type == XML_CDATA_SECTION_NODE))
 		    occur++;
                 tmp = tmp->prev;
             }
+	    /*
+	    * Evaluate if this is the only text- or CDATA-section-node;
+	    * if yes, then we'll get "text()", otherwise "text()[1]".
+	    */
             if (occur == 0) {
                 tmp = cur->next;
-                while (tmp != NULL && occur == 0) {
-		  if ((tmp->type == XML_TEXT_NODE) ||
-		      (tmp->type == XML_CDATA_SECTION_NODE))
-		    occur++;
-                    tmp = tmp->next;
-                }
-                if (occur != 0)
-                    occur = 1;
+                while (tmp != NULL) {
+		    if ((tmp->type == XML_TEXT_NODE) ||
+			(tmp->type == XML_CDATA_SECTION_NODE))
+		    {
+			occur = 1;
+			break;
+		    }			
+		    tmp = tmp->next;
+		}
             } else
                 occur++;
         } else if (cur->type == XML_PI_NODE) {

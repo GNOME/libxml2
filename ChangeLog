@@ -1,3 +1,9 @@
+Wed Feb 15 11:55:22 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Fixed bug #328896 reported by Liron. The path
+	  for text- and CDATA-section-nodes was computed incorrectly
+	  in xmlGetNodePath().
+
 Sun Feb 12 20:12:22 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: bug fixes for #327167 as well as some cleanups

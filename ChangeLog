@@ -1,3 +1,8 @@
+Sun Feb 19 22:31:33 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmllint.1 doc/xmllint.xml: man page improvements from Daniel
+	  Leidert, c.f. #331290
+
 Sun Feb 19 17:54:04 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: fix an error report when using --path and --valid

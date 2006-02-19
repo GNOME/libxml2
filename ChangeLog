@@ -1,3 +1,10 @@
+Sun Feb 19 16:20:43 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: trying to fix #331062, this is again a problem
+	  around interleave, there is no good fix unless reimplementing
+	  but this works around some cases and allow to validate in that
+	  case.
+
 Wed Feb 15 11:55:22 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Fixed bug #328896 reported by Liron. The path

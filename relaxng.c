@@ -45,27 +45,29 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     (xmlStrEqual(node->ns->href, xmlRelaxNGNs)))
 
 
-/* #define DEBUG 1 */
+#if 0
+#define DEBUG 1
 
-/* #define DEBUG_GRAMMAR 1 */
+#define DEBUG_GRAMMAR 1
 
-/* #define DEBUG_CONTENT 1 */
+#define DEBUG_CONTENT 1
 
-/* #define DEBUG_TYPE 1 */
+#define DEBUG_TYPE 1
 
-/* #define DEBUG_VALID 1 */
+#define DEBUG_VALID 1
 
-/* #define DEBUG_INTERLEAVE 1 */
+#define DEBUG_INTERLEAVE 1
 
-/* #define DEBUG_LIST 1 */
+#define DEBUG_LIST 1
 
-/* #define DEBUG_INCLUDE */
+#define DEBUG_INCLUDE 1 
 
-/* #define DEBUG_ERROR 1 */
+#define DEBUG_ERROR 1
 
-/* #define DEBUG_COMPILE 1 */
+#define DEBUG_COMPILE 1
 
-/* #define DEBUG_PROGRESSIVE 1 */
+#define DEBUG_PROGRESSIVE 1
+#endif
 
 #define MAX_ERROR 5
 
@@ -9267,21 +9269,56 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
         } else if (ctxt->states != NULL) {
             int j;
             int found = 0;
+	    int best = -1;
+	    int lowattr = -1;
+
+	    /*
+	     * PBM: what happen if there is attributes checks in the interleaves
+	     */
 
             for (j = 0; j < ctxt->states->nbState; j++) {
                 cur = ctxt->states->tabState[j]->seq;
                 cur = xmlRelaxNGSkipIgnored(ctxt, cur);
                 if (cur == NULL) {
+		    if (found == 0) {
+		        lowattr = ctxt->states->tabState[j]->nbAttrLeft;
+			best = j;
+		    }
                     found = 1;
-                    break;
-                }
+		    if (ctxt->states->tabState[j]->nbAttrLeft <= lowattr) {
+		        /* try  to keep the latest one to mach old heuristic */
+		        lowattr = ctxt->states->tabState[j]->nbAttrLeft;
+			best = j;
+		    }
+                    if (lowattr == 0)
+		        break;
+                } else if (found == 0) {
+                    if (lowattr == -1) {
+		        lowattr = ctxt->states->tabState[j]->nbAttrLeft;
+			best = j;
+		    } else
+		    if (ctxt->states->tabState[j]->nbAttrLeft <= lowattr)  {
+		        /* try  to keep the latest one to mach old heuristic */
+		        lowattr = ctxt->states->tabState[j]->nbAttrLeft;
+			best = j;
+		    }
+		}
             }
+	    /*
+	     * BIG PBM: here we pick only one restarting point :-(
+	     */
             if (ctxt->states->nbState > 0) {
                 xmlRelaxNGFreeValidState(ctxt, oldstate);
-                oldstate =
-                    ctxt->states->tabState[ctxt->states->nbState - 1];
+		if (best != -1) {
+		    oldstate = ctxt->states->tabState[best];
+		    ctxt->states->tabState[best] = NULL;
+		} else {
+		    oldstate =
+			ctxt->states->tabState[ctxt->states->nbState - 1];
+                    ctxt->states->tabState[ctxt->states->nbState - 1] = NULL;
+		}
             }
-            for (j = 0; j < ctxt->states->nbState - 1; j++) {
+            for (j = 0; j < ctxt->states->nbState ; j++) {
                 xmlRelaxNGFreeValidState(ctxt, ctxt->states->tabState[j]);
             }
             xmlRelaxNGFreeStates(ctxt, ctxt->states);

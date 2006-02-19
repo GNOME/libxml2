@@ -1,3 +1,8 @@
+Sun Feb 19 17:54:04 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: fix an error report when using --path and --valid
+	  closes bug #331290
+
 Sun Feb 19 16:20:43 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: trying to fix #331062, this is again a problem

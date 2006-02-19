@@ -242,6 +242,7 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
 			     xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret;
     warningSAXFunc warning = NULL;
+    errorSAXFunc err = NULL;
 
     int i;
     const char *lastsegment = URL;
@@ -257,7 +258,9 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
 
     if ((ctxt != NULL) && (ctxt->sax != NULL)) {
 	warning = ctxt->sax->warning;
+	err = ctxt->sax->error;
 	ctxt->sax->warning = NULL;
+	ctxt->sax->error = NULL;
     }
 
     if (defaultEntityLoader != NULL) {
@@ -265,6 +268,8 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
 	if (ret != NULL) {
 	    if (warning != NULL)
 		ctxt->sax->warning = warning;
+	    if (err != NULL)
+		ctxt->sax->error = err;
 	    if (load_trace) {
 		fprintf \
 			(stderr,
@@ -286,6 +291,8 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
 	    if (ret != NULL) {
 		if (warning != NULL)
 		    ctxt->sax->warning = warning;
+		if (err != NULL)
+		    ctxt->sax->error = err;
 		if (load_trace) {
 		    fprintf \
 		    	(stderr,
@@ -299,6 +306,8 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
 	    xmlFree(newURL);
 	}
     }
+    if (err != NULL)
+        ctxt->sax->error = err;
     if (warning != NULL) {
 	ctxt->sax->warning = warning;
 	if (URL != NULL)

@@ -2543,7 +2543,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			    ret = 0;
 			} else
 			    goto return1;
-		    }
+		    } else
+			goto return1;
 		    if (*cur != 0) {
 			while IS_WSP_BLANK_CH(*cur) cur++;
 			if (*cur != 0)

@@ -1,3 +1,13 @@
+Mon Feb 20 14:32:36 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c xmlschemastypes.c: Fixed xs:boolean to reject
+	  the empty string (reported by Bas Driessen on the mailing-list).
+	  Fixed schema XSI-acquisition and construction: the schemata
+	  (xmlSchema) didn't get the targetNamespace in some cases, thus	  
+	  the component resolution mechanism failed to work. The XSI
+	  stuff needs to be tested more intensively; think about how
+	  to test this for regression.
+
 Mon Feb 20 09:57:41 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmllint.1 doc/xmllint.xml: more man page improvements from

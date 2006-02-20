@@ -3537,6 +3537,8 @@ xmlSchemaBucketCreate(xmlSchemaParserCtxtPtr pctxt,
     * The following will assure that only the first bucket is marked as
     * XML_SCHEMA_SCHEMA_MAIN and it points to the *main* schema.
     * For each following import buckets an xmlSchema will be created.
+    * An xmlSchema will be created for every distinct targetNamespace.
+    * We assign the targetNamespace to the schemata here.
     */
     if (! WXS_HAS_BUCKETS(pctxt)) {
 	if (WXS_IS_BUCKET_INCREDEF(type)) {
@@ -3550,6 +3552,10 @@ xmlSchemaBucketCreate(xmlSchemaParserCtxtPtr pctxt,
 	/* Point to the *main* schema. */
 	WXS_CONSTRUCTOR(pctxt)->mainBucket = ret;
 	WXS_IMPBUCKET(ret)->schema = mainSchema;
+	/*
+	* Ensure that the main schema gets a targetNamespace.
+	*/
+	mainSchema->targetNamespace = targetNamespace;
     } else {
 	if (type == XML_SCHEMA_SCHEMA_MAIN) {	    
 	    PERROR_INT("xmlSchemaBucketCreate",
@@ -3558,18 +3564,24 @@ xmlSchemaBucketCreate(xmlSchemaParserCtxtPtr pctxt,
 	    return(NULL);
 	} else if (type == XML_SCHEMA_SCHEMA_IMPORT) {	    
 	    /*
-	    * Create a schema for imports.
+	    * Create a schema for imports and assign the
+	    * targetNamespace.
 	    */
 	    WXS_IMPBUCKET(ret)->schema = xmlSchemaNewSchema(pctxt);
 	    if (WXS_IMPBUCKET(ret)->schema == NULL) {
 		xmlSchemaBucketFree(ret);
 		return(NULL);
 	    }
+	    WXS_IMPBUCKET(ret)->schema->targetNamespace = targetNamespace;
 	}
     }    
     if (WXS_IS_BUCKET_IMPMAIN(type)) {
 	int res;
-	/* Imports go into the "schemasImports" slot of the main *schema*. */
+	/*
+	* Imports go into the "schemasImports" slot of the main *schema*.
+	* Note that we create an import entry for the main schema as well; i.e.,
+	* even if there's only one schema, we'll get an import.
+	*/
 	if (mainSchema->schemasImports == NULL) {
 	    mainSchema->schemasImports = xmlHashCreateDict(5,
 		WXS_CONSTRUCTOR(pctxt)->dict);
@@ -6451,8 +6463,7 @@ xmlSchemaParseLocalAttributes(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  *         1 in case of success.
  */
 static xmlSchemaAnnotPtr
-xmlSchemaParseAnnotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
-                         xmlNodePtr node, int needed)
+xmlSchemaParseAnnotation(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int needed)
 {
     xmlSchemaAnnotPtr ret;
     xmlNodePtr child = NULL;
@@ -6467,7 +6478,7 @@ xmlSchemaParseAnnotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     * {any attributes with non-schema namespace . . .}>
     * Content: (appinfo | documentation)*
     */
-    if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
+    if ((ctxt == NULL) || (node == NULL))
         return (NULL);
     if (needed)
 	ret = xmlSchemaNewAnnot(ctxt, node);
@@ -6639,7 +6650,7 @@ xmlSchemaParseFacet(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     child = node->children;
 
     if (IS_SCHEMA(child, "annotation")) {
-        facet->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        facet->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     if (child != NULL) {
@@ -6884,7 +6895,7 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     if (child != NULL) {
@@ -6945,13 +6956,13 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlSchemaPValAttrID(ctxt, node, BAD_CAST "id");
 
      if (IS_SCHEMA(child, "annotation")) {
-        ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        ret->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
 
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        ret->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     if (child != NULL) {
@@ -7020,7 +7031,7 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        ret->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     if (child != NULL) {
@@ -7311,7 +7322,7 @@ check_children:
 	xmlSchemaAttributeUseProhibPtr prohib;	
 
 	if (IS_SCHEMA(child, "annotation")) {
-	    xmlSchemaParseAnnotation(pctxt, schema, child, 0);
+	    xmlSchemaParseAnnotation(pctxt, child, 0);
 	    child = child->next;
 	}
 	if (child != NULL) {
@@ -7390,7 +7401,7 @@ check_children:
 	    /*
 	    * TODO: Should this go into the attr decl?
 	    */
-	    use->annot = xmlSchemaParseAnnotation(pctxt, schema, child, 1);
+	    use->annot = xmlSchemaParseAnnotation(pctxt, child, 1);
 	    child = child->next;
 	}
 	if (isRef) {
@@ -7552,7 +7563,7 @@ xmlSchemaParseGlobalAttribute(xmlSchemaParserCtxtPtr pctxt,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        ret->annot = xmlSchemaParseAnnotation(pctxt, schema, child, 1);
+        ret->annot = xmlSchemaParseAnnotation(pctxt, child, 1);
         child = child->next;
     }
     if (IS_SCHEMA(child, "simpleType")) {
@@ -7644,7 +7655,7 @@ xmlSchemaParseAttributeGroupRef(xmlSchemaParserCtxtPtr pctxt,
 	/*
 	* TODO: We do not have a place to store the annotation, do we?
 	*/
-        xmlSchemaParseAnnotation(pctxt, schema, child, 0);
+        xmlSchemaParseAnnotation(pctxt, child, 0);
         child = child->next;
     }
     if (child != NULL) {
@@ -7779,7 +7790,7 @@ xmlSchemaParseAttributeGroupDefinition(xmlSchemaParserCtxtPtr pctxt,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        ret->annot = xmlSchemaParseAnnotation(pctxt, schema, child, 1);
+        ret->annot = xmlSchemaParseAnnotation(pctxt, child, 1);
         child = child->next;
     }
     /*
@@ -8150,8 +8161,7 @@ xmlSchemaAddAnnotation(xmlSchemaAnnotItemPtr annItem,
  * Returns the parsed identity-constraint definition.
  */
 static xmlSchemaIDCSelectPtr
-xmlSchemaParseIDCSelectorAndField(xmlSchemaParserCtxtPtr ctxt,
-			  xmlSchemaPtr schema,
+xmlSchemaParseIDCSelectorAndField(xmlSchemaParserCtxtPtr ctxt,			  
 			  xmlSchemaIDCPtr idc,
 			  xmlNodePtr node,
 			  int isField)
@@ -8224,7 +8234,7 @@ xmlSchemaParseIDCSelectorAndField(xmlSchemaParserCtxtPtr ctxt,
 	* Add the annotation to the parent IDC.
 	*/
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) idc,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
 	child = child->next;
     }
     if (child != NULL) {
@@ -8332,7 +8342,7 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-	item->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+	item->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
 	child = child->next;
     }
     if (child == NULL) {
@@ -8346,7 +8356,7 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
     * Child element <selector>.
     */
     if (IS_SCHEMA(child, "selector")) {
-	item->selector = xmlSchemaParseIDCSelectorAndField(ctxt, schema,
+	item->selector = xmlSchemaParseIDCSelectorAndField(ctxt,
 	    item, child, 0);
 	child = child->next;
 	/*
@@ -8354,7 +8364,7 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
 	*/
 	if (IS_SCHEMA(child, "field")) {
 	    do {
-		field = xmlSchemaParseIDCSelectorAndField(ctxt, schema,
+		field = xmlSchemaParseIDCSelectorAndField(ctxt,
 		    item, child, 1);
 		if (field != NULL) {
 		    field->index = item->nbFields;
@@ -8437,7 +8447,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlSchemaPValAttrID(ctxt, node, BAD_CAST "id");
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-	annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+	annot = xmlSchemaParseAnnotation(ctxt, child, 1);
 	child = child->next;
     }
     /*
@@ -8906,7 +8916,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	* Add the annotation to the simple type ancestor.
 	*/
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) type,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
         child = child->next;
     }
     if (IS_SCHEMA(child, "simpleType")) {
@@ -9020,7 +9030,7 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) type,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
         child = child->next;
     }
     if (IS_SCHEMA(child, "simpleType")) {
@@ -9237,7 +9247,7 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        type->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        type->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     if (child == NULL) {
@@ -9356,7 +9366,7 @@ xmlSchemaParseModelGroupDefRef(xmlSchemaParserCtxtPtr ctxt,
 	/*
 	* TODO: What to do exactly with the annotation?
 	*/
-	item->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+	item->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
 	child = child->next;
     }
     if (child != NULL) {
@@ -9442,7 +9452,7 @@ xmlSchemaParseModelGroupDefinition(xmlSchemaParserCtxtPtr ctxt,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-	item->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+	item->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
 	child = child->next;
     }
     if (IS_SCHEMA(child, "all")) {
@@ -9707,7 +9717,7 @@ xmlSchemaParseSchemaTopLevel(xmlSchemaParserCtxtPtr ctxt,
 	   (IS_SCHEMA(child, "redefine")) ||
 	   (IS_SCHEMA(child, "annotation"))) {
 	if (IS_SCHEMA(child, "annotation")) {
-	    annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+	    annot = xmlSchemaParseAnnotation(ctxt, child, 1);
 	    if (schema->annot == NULL)
 		schema->annot = annot;
 	    else
@@ -9775,7 +9785,7 @@ xmlSchemaParseSchemaTopLevel(xmlSchemaParserCtxtPtr ctxt,
 	    /*
 	    * TODO: We should add all annotations.
 	    */
-	    annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+	    annot = xmlSchemaParseAnnotation(ctxt, child, 1);
 	    if (schema->annot == NULL)
 		schema->annot = annot;
 	    else
@@ -10052,14 +10062,14 @@ xmlSchemaParseNewDocWithContext(xmlSchemaParserCtxtPtr pctxt,
     /* 
     * Save old values; reset the *main* schema.
     * URGENT TODO: This is not good; move the per-document information
-    * to the parser.
+    * to the parser. Get rid of passing the main schema to the
+    * parsing functions.
     */
     oldFlags = schema->flags;
     oldDoc = schema->doc;
     if (schema->flags != 0)
 	xmlSchemaClearSchemaDefaults(schema);
-    schema->doc = bucket->doc;
-    /* !! REMOVED: schema->targetNamespace = bucket->targetNamespace; */
+    schema->doc = bucket->doc;    
     pctxt->schema = schema;
     /* 
     * Keep the current target namespace on the parser *not* on the
@@ -11221,7 +11231,7 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        item->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        item->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     if (type == XML_SCHEMA_TYPE_ALL) {
@@ -11499,7 +11509,7 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	* Add the annotation to the simple type ancestor.
 	*/
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) type,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
         child = child->next;
     }
     if (parentType == XML_SCHEMA_TYPE_SIMPLE) {
@@ -11760,7 +11770,7 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	* Add the annotation to the type ancestor.
 	*/
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) type,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
         child = child->next;
     }
     if (parentType == XML_SCHEMA_TYPE_COMPLEX_CONTENT) {
@@ -11886,7 +11896,7 @@ xmlSchemaParseSimpleContent(xmlSchemaParserCtxtPtr ctxt,
 	* Add the annotation to the complex type ancestor.
 	*/
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) type,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
         child = child->next;
     }
     if (child == NULL) {
@@ -11981,7 +11991,7 @@ xmlSchemaParseComplexContent(xmlSchemaParserCtxtPtr ctxt,
 	* Add the annotation to the complex type ancestor.
 	*/
 	xmlSchemaAddAnnotation((xmlSchemaAnnotItemPtr) type,
-	    xmlSchemaParseAnnotation(ctxt, schema, child, 1));
+	    xmlSchemaParseAnnotation(ctxt, child, 1));
         child = child->next;
     }
     if (child == NULL) {
@@ -12202,7 +12212,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     */
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
-        type->annot = xmlSchemaParseAnnotation(ctxt, schema, child, 1);
+        type->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
         child = child->next;
     }
     ctxt->ctxtType = type;
@@ -20430,7 +20440,7 @@ xmlSchemaAddComponents(xmlSchemaParserCtxtPtr pctxt,
     const xmlChar *name;
     int i;
 
-#define WXS_GET_GLOBAL_HASH(c, s, slot) { \
+#define WXS_GET_GLOBAL_HASH(c, slot) { \
     if (WXS_IS_BUCKET_IMPMAIN((c)->type)) \
 	table = &(WXS_IMPBUCKET((c))->schema->slot); \
     else \
@@ -20463,37 +20473,37 @@ xmlSchemaAddComponents(xmlSchemaParserCtxtPtr pctxt,
 		if (WXS_REDEFINED_TYPE(item))
 		    continue;
 		name = (WXS_TYPE_CAST item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, typeDecl)
+		WXS_GET_GLOBAL_HASH(bucket, typeDecl)
 		break;
 	    case XML_SCHEMA_TYPE_ELEMENT:
 		name = (WXS_ELEM_CAST item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, elemDecl)
+		WXS_GET_GLOBAL_HASH(bucket, elemDecl)
 		break;
 	    case XML_SCHEMA_TYPE_ATTRIBUTE:
 		name = (WXS_ATTR_CAST item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, attrDecl)
+		WXS_GET_GLOBAL_HASH(bucket, attrDecl)
 		break;
 	    case XML_SCHEMA_TYPE_GROUP:
 		if (WXS_REDEFINED_MODEL_GROUP_DEF(item))
 		    continue;
 		name = (WXS_MODEL_GROUPDEF_CAST item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, groupDecl)
+		WXS_GET_GLOBAL_HASH(bucket, groupDecl)
 		break;
 	    case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
 		if (WXS_REDEFINED_ATTR_GROUP(item))
 		    continue;
 		name = (WXS_ATTR_GROUP_CAST item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, attrgrpDecl)
+		WXS_GET_GLOBAL_HASH(bucket, attrgrpDecl)
 		break;
 	    case XML_SCHEMA_TYPE_IDC_KEY:
 	    case XML_SCHEMA_TYPE_IDC_UNIQUE:
 	    case XML_SCHEMA_TYPE_IDC_KEYREF:
 		name = (WXS_IDC_CAST item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, idcDef)
+		WXS_GET_GLOBAL_HASH(bucket, idcDef)
 		break;
 	    case XML_SCHEMA_TYPE_NOTATION:
 		name = ((xmlSchemaNotationPtr) item)->name;
-		WXS_GET_GLOBAL_HASH(bucket, schema, notaDecl)
+		WXS_GET_GLOBAL_HASH(bucket, notaDecl)
 		break;	    
 	    default:
 		PERROR_INT("xmlSchemaAddComponents",
@@ -20540,11 +20550,12 @@ xmlSchemaAddComponents(xmlSchemaParserCtxtPtr pctxt,
 }
 
 static int
-xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt)
+xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
+			 xmlSchemaBucketPtr rootBucket)
 {
     xmlSchemaConstructionCtxtPtr con = pctxt->constructor;
     xmlSchemaTreeItemPtr item, *items;
-    int nbItems, i;
+    int nbItems, i, ret = 0;
 
 #define FIXHFAILURE if (pctxt->err == XML_SCHEMAP_INTERNAL) goto exit_failure;
 
@@ -20568,7 +20579,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt)
     /*
     * Add global components to the schemata's hash tables.
     */
-    xmlSchemaAddComponents(pctxt, WXS_CONSTRUCTOR(pctxt)->mainBucket);
+    xmlSchemaAddComponents(pctxt, rootBucket);
 
     pctxt->ctxtType = NULL;
     items = (xmlSchemaTreeItemPtr *) con->pending->items;
@@ -20945,15 +20956,32 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt)
 	goto exit_error;
     /*
     * URGENT TODO: cos-element-consistent
-    */    
-    con->pending->nbItems = 0;
-    return(0);
-exit_error:
-    con->pending->nbItems = 0;
-    return(pctxt->err);
+    */        
+    goto exit;    
+
+exit_error:    
+    ret = pctxt->err;
+
 exit_failure:
+    ret = -1;
+
+exit:
+    /*
+    * Reset the constructor. This is needed for XSI acquisition, since
+    * those items will be processed over and over again for every XSI
+    * if not cleared here.
+    */
     con->pending->nbItems = 0;
-    return(-1);
+    if (con->substGroups != NULL) {
+	xmlHashFree(con->substGroups,
+	    (xmlHashDeallocator) xmlSchemaSubstGroupFree);
+	con->substGroups = NULL;
+    }
+    if (con->redefs != NULL) {
+	xmlSchemaRedefListFree(con->redefs);
+	con->redefs = NULL;
+    }
+    return(ret);
 }
 /**
  * xmlSchemaParse:
@@ -20968,7 +20996,7 @@ exit_failure:
 xmlSchemaPtr
 xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 {
-    xmlSchemaPtr schema = NULL;
+    xmlSchemaPtr mainSchema = NULL;
     xmlSchemaBucketPtr bucket = NULL;
     int res;
 
@@ -20988,8 +21016,8 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     ctxt->counter = 0;
 
     /* Create the *main* schema. */
-    schema = xmlSchemaNewSchema(ctxt);
-    if (schema == NULL)
+    mainSchema = xmlSchemaNewSchema(ctxt);
+    if (mainSchema == NULL)
 	goto exit_failure;
     /*
     * Create the schema constructor.
@@ -21001,7 +21029,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 	/* Take ownership of the constructor to be able to free it. */
 	ctxt->ownsConstructor = 1;
     }
-    ctxt->constructor->mainSchema = schema;
+    ctxt->constructor->mainSchema = mainSchema;
     /*
     * Locate and add the schema document.
     */
@@ -21026,24 +21054,19 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 		"Failed to locate the main schema resource",
 		    NULL, NULL);
 	goto exit;
-    }
-    /* Set the main schema bucket. */
-    ctxt->constructor->bucket = bucket;
-    ctxt->targetNamespace = bucket->targetNamespace;    
-    schema->targetNamespace = bucket->targetNamespace;
-    
+    }        
     /* Then do the parsing for good. */
-    if (xmlSchemaParseNewDocWithContext(ctxt, schema, bucket) == -1)
+    if (xmlSchemaParseNewDocWithContext(ctxt, mainSchema, bucket) == -1)
 	goto exit_failure;
     if (ctxt->nberrors != 0)
 	goto exit;
+    
+    mainSchema->doc = bucket->doc;
+    mainSchema->preserve = ctxt->preserve;
+    
+    ctxt->schema = mainSchema;
 
-    schema->doc = bucket->doc;
-    schema->preserve = ctxt->preserve;
-
-    ctxt->schema = schema;
-
-    if (xmlSchemaFixupComponents(ctxt) == -1)
+    if (xmlSchemaFixupComponents(ctxt, WXS_CONSTRUCTOR(ctxt)->mainBucket) == -1)
 	goto exit_failure;
 
     /*
@@ -21052,9 +21075,9 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     */
 exit:       
     if (ctxt->nberrors != 0) {	
-	if (schema) {
-	    xmlSchemaFree(schema);
-	    schema = NULL;
+	if (mainSchema) {
+	    xmlSchemaFree(mainSchema);
+	    mainSchema = NULL;
 	}
 	if (ctxt->constructor) {
 	    xmlSchemaConstructionCtxtFree(ctxt->constructor);
@@ -21063,15 +21086,15 @@ exit:
 	}
     }
     ctxt->schema = NULL;
-    return(schema);
+    return(mainSchema);
 exit_failure:
     /* 
     * Quite verbose, but should catch internal errors, which were
     * not communitated.
     */
-    if (schema) {
-        xmlSchemaFree(schema);
-	schema = NULL;
+    if (mainSchema) {
+        xmlSchemaFree(mainSchema);
+	mainSchema = NULL;
     }
     if (ctxt->constructor) {
 	xmlSchemaConstructionCtxtFree(ctxt->constructor);
@@ -21346,8 +21369,10 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
 	/* 
 	* Only bother to fixup pending components, if there was
 	* no error yet.
+	* For every XSI acquired schema (and its sub-schemata) we will
+	* fixup the components.
 	*/
-	xmlSchemaFixupComponents(pctxt);
+	xmlSchemaFixupComponents(pctxt, bucket);
 	ret = pctxt->err;
 	/*
 	* Not nice, but we need somehow to channel the schema parser

@@ -1,3 +1,8 @@
+Mon Feb 20 09:57:41 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmllint.1 doc/xmllint.xml: more man page improvements from
+	  Daniel Leidert
+
 Sun Feb 19 22:31:33 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmllint.1 doc/xmllint.xml: man page improvements from Daniel

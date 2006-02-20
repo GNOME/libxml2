@@ -1,3 +1,9 @@
+Mon Feb 20 15:45:19 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a side-effect of the previous XSI bugfix:
+	  The constructor needs a bucket to be assigned during component
+	  fixup.
+
 Mon Feb 20 14:32:36 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c xmlschemastypes.c: Fixed xs:boolean to reject

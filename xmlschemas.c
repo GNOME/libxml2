@@ -5457,11 +5457,11 @@ xmlSchemaAddModelGroup(xmlSchemaParserCtxtPtr ctxt,
  * Returns the new struture or NULL in case of error
  */
 static xmlSchemaParticlePtr
-xmlSchemaAddParticle(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
+xmlSchemaAddParticle(xmlSchemaParserCtxtPtr ctxt,
 		     xmlNodePtr node, int min, int max)
 {
     xmlSchemaParticlePtr ret = NULL;
-    if ((ctxt == NULL) || (schema == NULL))
+    if (ctxt == NULL)
         return (NULL);
 
 #ifdef DEBUG
@@ -6914,7 +6914,7 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * Create the particle.
     */
-    particle = xmlSchemaAddParticle(ctxt, schema, node, min, max);
+    particle = xmlSchemaAddParticle(ctxt, node, min, max);
     if (particle == NULL)
         return (NULL);
     particle->annot = annot;
@@ -8461,7 +8461,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     min = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "xs:nonNegativeInteger");
     max = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, "(xs:nonNegativeInteger | unbounded)");
     xmlSchemaPCheckParticleCorrect_2(ctxt, NULL, node, min, max);
-    particle = xmlSchemaAddParticle(ctxt, schema, node, min, max);
+    particle = xmlSchemaAddParticle(ctxt, node, min, max);
     if (particle == NULL)
 	goto return_null;
 
@@ -9347,7 +9347,7 @@ xmlSchemaParseModelGroupDefRef(xmlSchemaParserCtxtPtr ctxt,
 	attr = attr->next;
     }
     xmlSchemaPValAttrID(ctxt, node, BAD_CAST "id");
-    item = xmlSchemaAddParticle(ctxt, schema, node, min, max);
+    item = xmlSchemaAddParticle(ctxt, node, min, max);
     if (item == NULL)
 	return (NULL);    
     /*
@@ -11181,7 +11181,7 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	/*
 	* Create a particle
 	*/
-	particle = xmlSchemaAddParticle(ctxt, schema, node, min, max);
+	particle = xmlSchemaAddParticle(ctxt, node, min, max);
 	if (particle == NULL)
 	    return (NULL);
 	particle->children = (xmlSchemaTreeItemPtr) item;
@@ -18216,7 +18216,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 		    /*
 		    * Create the particle.
 		    */
-		    particle = xmlSchemaAddParticle(pctxt, pctxt->schema,
+		    particle = xmlSchemaAddParticle(pctxt,
 			type->node, 1, 1);
 		    if (particle == NULL)
 			goto exit_failure;
@@ -18333,7 +18333,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 		    /*
 		    * Create the particle.
 		    */
-		    particle = xmlSchemaAddParticle(pctxt, pctxt->schema,
+		    particle = xmlSchemaAddParticle(pctxt,
 			type->node, 1, 1);
 		    if (particle == NULL)
 			goto exit_failure;
@@ -18354,7 +18354,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 		    */
 		    particle->children->children =
 			(xmlSchemaTreeItemPtr) xmlSchemaAddParticle(pctxt,
-			pctxt->schema, type->node,
+			type->node,
 			((xmlSchemaParticlePtr) type->subtypes)->minOccurs,
 			((xmlSchemaParticlePtr) type->subtypes)->maxOccurs);
 		    if (particle->children->children == NULL)
@@ -20556,12 +20556,23 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
     xmlSchemaConstructionCtxtPtr con = pctxt->constructor;
     xmlSchemaTreeItemPtr item, *items;
     int nbItems, i, ret = 0;
+    xmlSchemaBucketPtr oldbucket = con->bucket;
 
 #define FIXHFAILURE if (pctxt->err == XML_SCHEMAP_INTERNAL) goto exit_failure;
 
     if ((con->pending == NULL) ||
 	(con->pending->nbItems == 0))
 	return(0);    
+
+    /*
+    * Since xmlSchemaFixupComplexType() will create new particles
+    * (local components), and those particle components need a bucket
+    * on the constructor, we'll assure here that the constructor has
+    * a bucket.
+    * TODO: Think about storing locals _only_ on the main bucket.    
+    */    
+    if (con->bucket == NULL)
+	con->bucket = rootBucket;    
 
     /* TODO:
     * SPEC (src-redefine):
@@ -20578,7 +20589,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
 
     /*
     * Add global components to the schemata's hash tables.
-    */
+    */    
     xmlSchemaAddComponents(pctxt, rootBucket);
 
     pctxt->ctxtType = NULL;
@@ -20961,6 +20972,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
 
 exit_error:    
     ret = pctxt->err;
+    goto exit;
 
 exit_failure:
     ret = -1;
@@ -20971,12 +20983,13 @@ exit:
     * those items will be processed over and over again for every XSI
     * if not cleared here.
     */
-    con->pending->nbItems = 0;
+    con->bucket = oldbucket;
+    con->pending->nbItems = 0;    
     if (con->substGroups != NULL) {
 	xmlHashFree(con->substGroups,
 	    (xmlHashDeallocator) xmlSchemaSubstGroupFree);
 	con->substGroups = NULL;
-    }
+    }    
     if (con->redefs != NULL) {
 	xmlSchemaRedefListFree(con->redefs);
 	con->redefs = NULL;
@@ -21365,7 +21378,7 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
     /* Paranoid error channelling. */
     if ((ret == 0) && (pctxt->nberrors != 0))
 	ret = pctxt->err;    
-    if (pctxt->nberrors == 0) {
+    if (pctxt->nberrors == 0) {	
 	/* 
 	* Only bother to fixup pending components, if there was
 	* no error yet.

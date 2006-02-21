@@ -137,6 +137,11 @@
 		itself.
 	</para>
 	<para>&xmllint; is included in <application>libxml2</application>.</para>
+	<para>
+		More information can be found at the <application>libxml</application> web pages
+		at <ulink url="http://www.xmlsoft.org/"/> and the W3C <acronym>XSLT</acronym>
+		pages at <ulink url="http://www.w3.org/TR/xslt"/>.
+	</para>
 </refsect1>
 
 <refsect1 id="options">

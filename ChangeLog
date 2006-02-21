@@ -1,3 +1,8 @@
+Tue Feb 21 20:23:14 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmllint.1 doc/xmllint.xml: small man page improvements from
+	  Daniel Leidert
+
 Mon Feb 20 15:45:19 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a side-effect of the previous XSI bugfix:

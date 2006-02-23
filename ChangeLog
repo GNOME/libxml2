@@ -1,3 +1,8 @@
+Thu Feb 23 23:06:18 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* doc//*: updated the Ruby bindings links, and regenerated the
+	  docs.
+
 Thu Feb 23 09:12:27 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: improve catalog debugging message patch from Rick Jones

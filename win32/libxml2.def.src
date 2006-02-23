@@ -712,6 +712,7 @@ xmlCtxtResetPush
 xmlCtxtUseOptions
 xmlCurrentChar
 xmlDOMWrapAdoptNode
+xmlDOMWrapCloneNode
 xmlDOMWrapFreeCtxt
 xmlDOMWrapNewCtxt
 xmlDOMWrapReconcileNamespaces
@@ -1500,6 +1501,9 @@ xmlRelaxNGParse
 xmlRelaxNGSetParserErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGSetParserStructuredErrors
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlRelaxNGSetValidErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1854,6 +1858,8 @@ xmlStrdup
 xmlStreamPop
 xmlStreamPush
 xmlStreamPushAttr
+xmlStreamPushNode
+xmlStreamWantsAnyNode
 xmlStringCurrentChar
 xmlStringDecodeEntities
 xmlStringGetNodeList

@@ -2157,6 +2157,7 @@
     <function name="xmlCtxtUseOptions ()" link="libxml2-parser.html#xmlCtxtUseOptions"/>
     <function name="xmlCurrentChar ()" link="libxml2-parserInternals.html#xmlCurrentChar"/>
     <function name="xmlDOMWrapAdoptNode ()" link="libxml2-tree.html#xmlDOMWrapAdoptNode"/>
+    <function name="xmlDOMWrapCloneNode ()" link="libxml2-tree.html#xmlDOMWrapCloneNode"/>
     <function name="xmlDOMWrapFreeCtxt ()" link="libxml2-tree.html#xmlDOMWrapFreeCtxt"/>
     <function name="xmlDOMWrapNewCtxt ()" link="libxml2-tree.html#xmlDOMWrapNewCtxt"/>
     <function name="xmlDOMWrapReconcileNamespaces ()" link="libxml2-tree.html#xmlDOMWrapReconcileNamespaces"/>
@@ -2700,6 +2701,7 @@
     <function name="xmlRelaxNGNewValidCtxt ()" link="libxml2-relaxng.html#xmlRelaxNGNewValidCtxt"/>
     <function name="xmlRelaxNGParse ()" link="libxml2-relaxng.html#xmlRelaxNGParse"/>
     <function name="xmlRelaxNGSetParserErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetParserErrors"/>
+    <function name="xmlRelaxNGSetParserStructuredErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetParserStructuredErrors"/>
     <function name="xmlRelaxNGSetValidErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetValidErrors"/>
     <function name="xmlRelaxNGSetValidStructuredErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetValidStructuredErrors"/>
     <function name="xmlRelaxNGValidateDoc ()" link="libxml2-relaxng.html#xmlRelaxNGValidateDoc"/>

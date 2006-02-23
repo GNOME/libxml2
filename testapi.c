@@ -17568,6 +17568,16 @@ test_xmlRelaxNGSetParserErrors(void) {
 
 
 static int
+test_xmlRelaxNGSetParserStructuredErrors(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlRelaxNGSetValidErrors(void) {
     int test_ret = 0;
 
@@ -17864,7 +17874,7 @@ static int
 test_relaxng(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing relaxng : 14 of 23 functions ...\n");
+    if (quiet == 0) printf("Testing relaxng : 14 of 24 functions ...\n");
     test_ret += test_xmlRelaxNGDump();
     test_ret += test_xmlRelaxNGDumpTree();
     test_ret += test_xmlRelaxNGGetParserErrors();
@@ -17876,6 +17886,7 @@ test_relaxng(void) {
     test_ret += test_xmlRelaxNGNewValidCtxt();
     test_ret += test_xmlRelaxNGParse();
     test_ret += test_xmlRelaxNGSetParserErrors();
+    test_ret += test_xmlRelaxNGSetParserStructuredErrors();
     test_ret += test_xmlRelaxNGSetValidErrors();
     test_ret += test_xmlRelaxNGSetValidStructuredErrors();
     test_ret += test_xmlRelaxNGValidateDoc();
@@ -19338,6 +19349,87 @@ test_xmlDOMWrapAdoptNode(void) {
             printf(" %d", n_options);
             printf("\n");
         }
+    }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlDOMWrapCloneNode(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlDOMWrapCtxtPtr ctxt; /* the optional context for custom processing */
+    int n_ctxt;
+    xmlDocPtr sourceDoc; /* the optional sourceDoc */
+    int n_sourceDoc;
+    xmlNodePtr node; /* the node to start with */
+    int n_node;
+    xmlNodePtr * resNode; /* the clone of the given @node */
+    int n_resNode;
+    xmlDocPtr destDoc; /* the destination doc */
+    int n_destDoc;
+    xmlNodePtr destParent; /* the optional new parent of @node in @destDoc */
+    int n_destParent;
+    int deep; /*  */
+    int n_deep;
+    int options; /* option flags */
+    int n_options;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlDOMWrapCtxtPtr;n_ctxt++) {
+    for (n_sourceDoc = 0;n_sourceDoc < gen_nb_xmlDocPtr;n_sourceDoc++) {
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+    for (n_resNode = 0;n_resNode < gen_nb_xmlNodePtr_ptr;n_resNode++) {
+    for (n_destDoc = 0;n_destDoc < gen_nb_xmlDocPtr;n_destDoc++) {
+    for (n_destParent = 0;n_destParent < gen_nb_xmlNodePtr;n_destParent++) {
+    for (n_deep = 0;n_deep < gen_nb_int;n_deep++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlDOMWrapCtxtPtr(n_ctxt, 0);
+        sourceDoc = gen_xmlDocPtr(n_sourceDoc, 1);
+        node = gen_xmlNodePtr(n_node, 2);
+        resNode = gen_xmlNodePtr_ptr(n_resNode, 3);
+        destDoc = gen_xmlDocPtr(n_destDoc, 4);
+        destParent = gen_xmlNodePtr(n_destParent, 5);
+        deep = gen_int(n_deep, 6);
+        options = gen_int(n_options, 7);
+
+        ret_val = xmlDOMWrapCloneNode(ctxt, sourceDoc, node, resNode, destDoc, destParent, deep, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDOMWrapCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDocPtr(n_sourceDoc, sourceDoc, 1);
+        des_xmlNodePtr(n_node, node, 2);
+        des_xmlNodePtr_ptr(n_resNode, resNode, 3);
+        des_xmlDocPtr(n_destDoc, destDoc, 4);
+        des_xmlNodePtr(n_destParent, destParent, 5);
+        des_int(n_deep, deep, 6);
+        des_int(n_options, options, 7);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlDOMWrapCloneNode",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_sourceDoc);
+            printf(" %d", n_node);
+            printf(" %d", n_resNode);
+            printf(" %d", n_destDoc);
+            printf(" %d", n_destParent);
+            printf(" %d", n_deep);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
     }
     }
     }
@@ -23642,7 +23734,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing tree : 132 of 151 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 133 of 152 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();
@@ -23677,6 +23769,7 @@ test_tree(void) {
     test_ret += test_xmlCopyPropList();
     test_ret += test_xmlCreateIntSubset();
     test_ret += test_xmlDOMWrapAdoptNode();
+    test_ret += test_xmlDOMWrapCloneNode();
     test_ret += test_xmlDOMWrapNewCtxt();
     test_ret += test_xmlDOMWrapReconcileNamespaces();
     test_ret += test_xmlDOMWrapRemoveNode();

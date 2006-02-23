@@ -2532,6 +2532,16 @@ extern __typeof (xmlDOMWrapAdoptNode) xmlDOMWrapAdoptNode__internal_alias __attr
 #endif
 
 #ifdef bottom_tree
+#undef xmlDOMWrapCloneNode
+extern __typeof (xmlDOMWrapCloneNode) xmlDOMWrapCloneNode __attribute((alias("xmlDOMWrapCloneNode__internal_alias")));
+#else
+#ifndef xmlDOMWrapCloneNode
+extern __typeof (xmlDOMWrapCloneNode) xmlDOMWrapCloneNode__internal_alias __attribute((visibility("hidden")));
+#define xmlDOMWrapCloneNode xmlDOMWrapCloneNode__internal_alias
+#endif
+#endif
+
+#ifdef bottom_tree
 #undef xmlDOMWrapFreeCtxt
 extern __typeof (xmlDOMWrapFreeCtxt) xmlDOMWrapFreeCtxt __attribute((alias("xmlDOMWrapFreeCtxt__internal_alias")));
 #else
@@ -8419,6 +8429,18 @@ extern __typeof (xmlRelaxNGSetParserErrors) xmlRelaxNGSetParserErrors__internal_
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_relaxng
+#undef xmlRelaxNGSetParserStructuredErrors
+extern __typeof (xmlRelaxNGSetParserStructuredErrors) xmlRelaxNGSetParserStructuredErrors __attribute((alias("xmlRelaxNGSetParserStructuredErrors__internal_alias")));
+#else
+#ifndef xmlRelaxNGSetParserStructuredErrors
+extern __typeof (xmlRelaxNGSetParserStructuredErrors) xmlRelaxNGSetParserStructuredErrors__internal_alias __attribute((visibility("hidden")));
+#define xmlRelaxNGSetParserStructuredErrors xmlRelaxNGSetParserStructuredErrors__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_relaxng
 #undef xmlRelaxNGSetValidErrors
 extern __typeof (xmlRelaxNGSetValidErrors) xmlRelaxNGSetValidErrors __attribute((alias("xmlRelaxNGSetValidErrors__internal_alias")));
 #else
@@ -10629,6 +10651,30 @@ extern __typeof (xmlStreamPushAttr) xmlStreamPushAttr __attribute((alias("xmlStr
 #ifndef xmlStreamPushAttr
 extern __typeof (xmlStreamPushAttr) xmlStreamPushAttr__internal_alias __attribute((visibility("hidden")));
 #define xmlStreamPushAttr xmlStreamPushAttr__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
+#ifdef bottom_pattern
+#undef xmlStreamPushNode
+extern __typeof (xmlStreamPushNode) xmlStreamPushNode __attribute((alias("xmlStreamPushNode__internal_alias")));
+#else
+#ifndef xmlStreamPushNode
+extern __typeof (xmlStreamPushNode) xmlStreamPushNode__internal_alias __attribute((visibility("hidden")));
+#define xmlStreamPushNode xmlStreamPushNode__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
+#ifdef bottom_pattern
+#undef xmlStreamWantsAnyNode
+extern __typeof (xmlStreamWantsAnyNode) xmlStreamWantsAnyNode __attribute((alias("xmlStreamWantsAnyNode__internal_alias")));
+#else
+#ifndef xmlStreamWantsAnyNode
+extern __typeof (xmlStreamWantsAnyNode) xmlStreamWantsAnyNode__internal_alias __attribute((visibility("hidden")));
+#define xmlStreamWantsAnyNode xmlStreamWantsAnyNode__internal_alias
 #endif
 #endif
 #endif

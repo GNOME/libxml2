@@ -1,3 +1,7 @@
+Thu Feb 23 09:12:27 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: improve catalog debugging message patch from Rick Jones
+
 Wed Feb 22 16:09:10 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/types.c: Nic Ferrier found debug statement left in the

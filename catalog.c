@@ -1648,7 +1648,8 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 		    if (xmlStrEqual(sysID, cur->name)) {
 			if (xmlDebugCatalogs)
 			    xmlGenericError(xmlGenericErrorContext,
-				    "Found system match %s\n", cur->name);
+				    "Found system match %s, using %s\n",
+				            cur->name, cur->URL);
 			catal->depth--;
 			return(xmlStrdup(cur->URL));
 		    }

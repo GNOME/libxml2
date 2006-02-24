@@ -1,3 +1,8 @@
+Fri Feb 24 21:20:33 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: Martin Cole pointed out a bug in xmlCatalogAdd()
+	  if /etc/xml/catalog doesn't exist.
+
 Thu Feb 23 23:06:18 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* doc//*: updated the Ruby bindings links, and regenerated the

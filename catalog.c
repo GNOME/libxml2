@@ -1546,6 +1546,7 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
 	cur->next = xmlNewCatalogEntry(typ, orig, replace,
 		                       NULL, catal->prefer, NULL);
     if (doregister) {
+        catal->type = XML_CATA_CATALOG;
 	cur = xmlHashLookup(xmlCatalogXMLFiles, catal->URL);
 	if (cur != NULL)
 	    cur->children = catal->children;

@@ -1,3 +1,9 @@
+Sat Feb 25 18:12:10 CET 2006 Rob Richards <rrichards@ctindustries.net>
+
+	* tree.c: Fix the add sibling functions when passing attributes.
+	  Modify testing for ID in xmlSetProp.
+	  No longer remove IDness when unlinking or replacing an attribute.
+
 Fri Feb 24 21:20:33 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: Martin Cole pointed out a bug in xmlCatalogAdd()

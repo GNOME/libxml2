@@ -2803,6 +2803,55 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 #endif /* LIBXML_TREE_ENABLED */
 
 /**
+ * xmlAddPropSibling:
+ * @prev:  the attribute to which @prop is added after 
+ * @cur:   the base attribute passed to calling function
+ * @prop:  the new attribute
+ *
+ * Add a new attribute after @prev using @cur as base attribute.
+ * When inserting before @cur, @prev is passed as @cur->prev.
+ * When inserting after @cur, @prev is passed as @cur.
+ * If an existing attribute is found it is detroyed prior to adding @prop. 
+ *
+ * Returns the attribute being inserted or NULL in case of error.
+ */
+static xmlNodePtr
+xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
+	xmlAttrPtr attr;
+
+	if (cur->type != XML_ATTRIBUTE_NODE)
+		return(NULL);
+
+	/* check if an attribute with the same name exists */
+	if (prop->ns == NULL)
+		attr = xmlHasNsProp(cur->parent, prop->name, NULL);
+	else
+		attr = xmlHasNsProp(cur->parent, prop->name, prop->ns->href);
+
+	if (prop->doc != cur->doc) {
+		xmlSetTreeDoc(prop, cur->doc);
+	}
+	prop->parent = cur->parent;
+	prop->prev = prev;
+	if (prev != NULL) {
+		prop->next = prev->next;
+		prev->next = prop;
+		if (prop->next)
+			prop->next->prev = prop;
+	} else {
+		prop->next = cur;
+		cur->prev = prop;
+	}
+	if (prop->prev == NULL && prop->parent != NULL)
+		prop->parent->properties = (xmlAttrPtr) prop;
+	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
+		/* different instance, destroy it (attributes must be unique) */
+		xmlRemoveProp((xmlAttrPtr) attr);
+	}
+	return prop;
+}
+
+/**
  * xmlAddNextSibling:
  * @cur:  the child node
  * @elem:  the new node
@@ -2861,21 +2910,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    return(cur->next);
 	}
     } else if (elem->type == XML_ATTRIBUTE_NODE) {
-        /* check if an attribute with the same name exists */
-	xmlAttrPtr attr;
-
-		if (cur->type != XML_ATTRIBUTE_NODE)
-			return(NULL);
-	if (elem->ns == NULL)
-	    attr = xmlHasNsProp(cur->parent, elem->name, NULL);
-	else
-	    attr = xmlHasNsProp(cur->parent, elem->name, elem->ns->href);
-	/* elem has already been unlinked so can never be attr */
-	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
-	    /* different instance, destroy it (attributes must be unique) */
-		xmlUnlinkNode((xmlNodePtr) attr);
-	    xmlFreeProp(attr);
-	}
+		return xmlAddPropSibling(cur, cur, elem);
     }
 
     if (elem->doc != cur->doc) {
@@ -2887,7 +2922,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     cur->next = elem;
     if (elem->next != NULL)
 	elem->next->prev = elem;
-    if ((elem->parent != NULL) && (elem->parent->last == cur) && (elem->type != XML_ATTRIBUTE_NODE))
+    if ((elem->parent != NULL) && (elem->parent->last == cur))
 	elem->parent->last = elem;
     return(elem);
 }
@@ -2953,21 +2988,7 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    return(cur->prev);
 	}
     } else if (elem->type == XML_ATTRIBUTE_NODE) {
-        /* check if an attribute with the same name exists */
-	xmlAttrPtr attr;
-
-		if (cur->type != XML_ATTRIBUTE_NODE)
-			return(NULL);
-	if (elem->ns == NULL)
-	    attr = xmlHasNsProp(cur->parent, elem->name, NULL);
-	else
-	    attr = xmlHasNsProp(cur->parent, elem->name, elem->ns->href);
-	/* elem has already been unlinked so can never be attr */
-	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
-	    /* different instance, destroy it (attributes must be unique) */
-		xmlUnlinkNode((xmlNodePtr) attr);
-	    xmlFreeProp(attr);
-	}
+		return xmlAddPropSibling(cur->prev, cur, elem);
     }
 
     if (elem->doc != cur->doc) {
@@ -2979,16 +3000,8 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
     cur->prev = elem;
     if (elem->prev != NULL)
 	elem->prev->next = elem;
-    if (elem->parent != NULL) {
-	if (elem->type == XML_ATTRIBUTE_NODE) {
-	    if (elem->parent->properties == (xmlAttrPtr) cur) {
-		elem->parent->properties = (xmlAttrPtr) elem;
-	    }
-	} else {
-	    if (elem->parent->children == cur) {
+    if ((elem->parent != NULL) && (elem->parent->children == cur)) {
 		elem->parent->children = elem;
-	    }
-	}
     }
     return(elem);
 }
@@ -3030,7 +3043,7 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
      * Constant time is we can rely on the ->parent->last to find
      * the last sibling.
      */
-    if ((cur->parent != NULL) && 
+    if ((cur->type != XML_ATTRIBUTE_NODE) && (cur->parent != NULL) && 
 	(cur->parent->children != NULL) &&
 	(cur->parent->last != NULL) &&
 	(cur->parent->last->next == NULL)) {
@@ -3046,6 +3059,8 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	xmlNodeAddContent(cur, elem->content);
 	xmlFreeNode(elem);
 	return(cur);
+    } else if (elem->type == XML_ATTRIBUTE_NODE) {
+		return xmlAddPropSibling(cur, cur, elem);
     }
 
     if (elem->doc != cur->doc) {
@@ -3454,11 +3469,6 @@ xmlUnlinkNode(xmlNodePtr cur) {
 	xmlNodePtr parent;
 	parent = cur->parent;
 	if (cur->type == XML_ATTRIBUTE_NODE) {
-		/* If attribute is an ID from subset then remove it */
-		if ((((xmlAttrPtr) cur)->atype == XML_ATTRIBUTE_ID) &&
-			xmlIsID(parent->doc, parent, (xmlAttrPtr) cur)) {
-			xmlRemoveID(cur->doc, (xmlAttrPtr) cur);
-		}
 	    if (parent->properties == (xmlAttrPtr) cur)
 		parent->properties = ((xmlAttrPtr) cur)->next;
 	} else {
@@ -3532,12 +3542,6 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	if (cur->type == XML_ATTRIBUTE_NODE) {
 	    if (cur->parent->properties == (xmlAttrPtr)old)
 		cur->parent->properties = ((xmlAttrPtr) cur);
-
-		/* If old attribute is ID and defined in DTD then remove ID */
-		if ((((xmlAttrPtr) old)->atype == XML_ATTRIBUTE_ID) &&
-			xmlIsID(old->doc, old->parent, (xmlAttrPtr) old)) {
-			xmlRemoveID(old->doc, (xmlAttrPtr) old);
-		}
 	} else {
 	    if (cur->parent->children == old)
 		cur->parent->children = cur;
@@ -6397,11 +6401,12 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns == NULL)){
+	    int id = 0;
 	    xmlNodePtr oldprop = prop->children;
-	    int id = xmlIsID(node->doc, node, prop);
-
-	    if (id == 1)
+	    if (prop->atype == XML_ATTRIBUTE_ID) {
+	        id = 1;
 	        xmlRemoveID(node->doc, prop);
+	    }
 	    prop->children = NULL;
 	    prop->last = NULL;
 	    if (value != NULL) {
@@ -6468,10 +6473,11 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
-	    int id = xmlIsID(node->doc, node, prop);
-
-	    if (id == 1)
+	    int id = 0;
+	    if (prop->atype == XML_ATTRIBUTE_ID) {
+	        id = 1;
 	        xmlRemoveID(node->doc, prop);
+	    }
 	    if (prop->children != NULL) 
 	        xmlFreeNodeList(prop->children);
 	    prop->children = NULL;

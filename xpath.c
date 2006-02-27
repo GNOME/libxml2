@@ -11110,8 +11110,8 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
     }
     depth = 0;
     goto scan_children;
-    do {
 next_node:
+    do {
         nb_nodes++;
 
 	switch (cur->type) {

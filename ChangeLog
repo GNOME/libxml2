@@ -1,3 +1,7 @@
+Mon Feb 27 20:42:04 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: workaround HP-UX compiler bug by Rick Jones
+
 Mon Feb 27 10:57:05 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml2.py: remove a tab, as pointed out on IRC

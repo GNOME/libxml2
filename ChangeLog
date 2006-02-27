@@ -1,3 +1,7 @@
+Mon Feb 27 10:57:05 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml2.py: remove a tab, as pointed out on IRC
+
 Sat Feb 25 18:12:10 CET 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* tree.c: Fix the add sibling functions when passing attributes.

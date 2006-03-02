@@ -1,3 +1,10 @@
+Thu Mar  2 18:59:50 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Bundled lookup of attr-nodes and retrieving their
+	  values into the functions xmlGetPropNodeInternal() and
+	  xmlGetPropNodeValueInternal(). Changed relevant code
+	  to use those functions.
+
 Mon Feb 27 20:42:04 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: workaround HP-UX compiler bug by Rick Jones

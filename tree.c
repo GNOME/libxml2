@@ -5960,6 +5960,154 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 }
 #endif /* LIBXML_TREE_ENABLED */
 
+static xmlAttrPtr
+xmlGetPropNodeInternal(xmlNodePtr node, const xmlChar *name,
+		       const xmlChar *nsName, int useDTD)
+{
+    xmlAttrPtr prop;
+
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+	return(NULL);
+
+    if (node->properties != NULL) {
+	prop = node->properties;
+	if (nsName == NULL) {
+	    /*
+	    * We want the attr to be in no namespace.
+	    */
+	    do {
+		if ((prop->ns == NULL) && xmlStrEqual(prop->name, name)) {
+		    return(prop);
+		}
+		prop = prop->next;
+	    } while (prop != NULL);
+	} else {
+	    /*
+	    * We want the attr to be in the specified namespace.
+	    */
+	    do {
+		if ((prop->ns != NULL) && xmlStrEqual(prop->name, name) &&
+		    ((prop->ns->href == nsName) ||
+		     xmlStrEqual(prop->ns->href, nsName)))
+		{
+		    return(prop);
+		}
+		prop = prop->next;
+	    } while (prop != NULL);
+	}
+    }
+
+#ifdef LIBXML_TREE_ENABLED
+    if (! useDTD)
+	return(NULL);
+    /*
+     * Check if there is a default/fixed attribute declaration in
+     * the internal or external subset.
+     */    
+    if ((node->doc != NULL) && (node->doc->intSubset != NULL)) {
+	xmlDocPtr doc = node->doc;
+	xmlAttributePtr attrDecl = NULL;
+	xmlChar *elemQName, *tmpstr = NULL;
+
+	/*
+	* We need the QName of the element for the DTD-lookup.	
+	*/
+	if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
+	    tmpstr = xmlStrdup(node->ns->prefix);
+	    tmpstr = xmlStrcat(tmpstr, BAD_CAST ":");
+	    tmpstr = xmlStrcat(tmpstr, node->name);
+	    if (tmpstr == NULL)
+		return(NULL);
+	    elemQName = tmpstr;
+	} else
+	    elemQName = (xmlChar *) node->name;
+	if (nsName == NULL) {
+	    /*
+	    * The common and nice case: Attr in no namespace.
+	    */
+	    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset,
+		elemQName, name, NULL);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
+		attrDecl = xmlGetDtdQAttrDesc(doc->extSubset,
+		    elemQName, name, NULL);
+	    }
+	} else {
+	    xmlNsPtr *nsList, *cur;
+
+	    /*
+	    * The ugly case: Search using the prefixes of in-scope
+	    * ns-decls corresponding to @nsName.
+	    */
+	    nsList = xmlGetNsList(node->doc, node);
+	    if (nsList == NULL) {
+		if (tmpstr != NULL)
+		    xmlFree(tmpstr);
+		return(NULL);
+	    }
+	    cur = nsList;
+	    while (*cur != NULL) {
+		if (xmlStrEqual((*cur)->href, nsName)) {
+		    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, elemQName,
+			name, (*cur)->prefix);
+		    if (attrDecl)
+			break;
+		    if (doc->extSubset != NULL) {
+			attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, elemQName,
+			    name, (*cur)->prefix);
+			if (attrDecl)
+			    break;
+		    }
+		}
+		cur++;
+	    }
+	    xmlFree(nsList);
+	}	
+	if (tmpstr != NULL)
+	    xmlFree(tmpstr);
+	/*
+	* Only default/fixed attrs are relevant.
+	*/
+	if ((attrDecl != NULL) && (attrDecl->defaultValue != NULL))
+	    return((xmlAttrPtr) attrDecl);
+    }
+#endif /* LIBXML_TREE_ENABLED */
+    return(NULL);
+}
+
+static xmlChar*
+xmlGetPropNodeValueInternal(xmlAttrPtr prop)
+{
+    if (prop == NULL)
+	return(NULL);
+    if (prop->type == XML_ATTRIBUTE_NODE) {
+	/*
+	* Note that we return at least the empty string.
+	*   TODO: Do we really always want that?
+	*/
+	if (prop->children != NULL) {
+	    if ((prop->children == prop->last) &&
+		((prop->children->type == XML_TEXT_NODE) ||
+		(prop->children->type == XML_CDATA_SECTION_NODE)))
+	    {
+		/*
+		* Optimization for the common case: only 1 text node.
+		*/
+		return(xmlStrdup(prop->children->content));
+	    } else {
+		xmlChar *ret;
+
+		ret = xmlNodeListGetString(prop->doc, prop->children, 1);
+		if (ret != NULL)
+		    return(ret);
+	    }
+	}
+	return(xmlStrdup((xmlChar *)""));
+    } else if (prop->type == XML_ATTRIBUTE_DECL) {
+	return(xmlStrdup(((xmlAttributePtr)prop)->defaultValue));
+    }
+    return(NULL); 
+}
+
 /**
  * xmlHasProp:
  * @node:  the node
@@ -6029,86 +6177,8 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
  */
 xmlAttrPtr
 xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
-    xmlAttrPtr prop;
-#ifdef LIBXML_TREE_ENABLED
-    xmlDocPtr doc;
-#endif /* LIBXML_TREE_ENABLED */
 
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
-	return(NULL);
-
-    prop = node->properties;
-    while (prop != NULL) {
-	/*
-	 * One need to have
-	 *   - same attribute names
-	 *   - and the attribute carrying that namespace
-	 */
-        if (xmlStrEqual(prop->name, name)) {
-	    if (((prop->ns != NULL) &&
-	    	 (xmlStrEqual(prop->ns->href, nameSpace))) ||
-		((prop->ns == NULL) && (nameSpace == NULL))) {
-		return(prop);
-	    }
-        }
-	prop = prop->next;
-    }
-    if (!xmlCheckDTD) return(NULL);
-
-#ifdef LIBXML_TREE_ENABLED
-    /*
-     * Check if there is a default declaration in the internal
-     * or external subsets
-     */
-    doc =  node->doc;
-    if (doc != NULL) {
-        if (doc->intSubset != NULL) {
-	    xmlAttributePtr attrDecl = NULL;
-	    xmlNsPtr *nsList, *cur;
-	    xmlChar *ename;
-
-	    nsList = xmlGetNsList(node->doc, node);
-	    if (nsList == NULL)
-		return(NULL);
-	    if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
-		ename = xmlStrdup(node->ns->prefix);
-		ename = xmlStrcat(ename, BAD_CAST ":");
-		ename = xmlStrcat(ename, node->name);
-	    } else {
-		ename = xmlStrdup(node->name);
-	    }
-	    if (ename == NULL) {
-		xmlFree(nsList);
-		return(NULL);
-	    }
-
-	    if (nameSpace == NULL) {
-	        attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, ename,
-					      name, NULL);
-		if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
-		    attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, ename,
-		    				  name, NULL);
-		}
-	    } else {
-		cur = nsList;
-		while (*cur != NULL) {
-		    if (xmlStrEqual((*cur)->href, nameSpace)) {
-			attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, ename,
-						      name, (*cur)->prefix);
-			if ((attrDecl == NULL) && (doc->extSubset != NULL))
-			    attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, ename,
-							  name, (*cur)->prefix);
-		    }
-		    cur++;
-		}
-	    }
-	    xmlFree(nsList);
-	    xmlFree(ename);
-	    return((xmlAttrPtr) attrDecl);
-	}
-    }
-#endif /* LIBXML_TREE_ENABLED */
-    return(NULL);
+    return(xmlGetPropNodeInternal(node, name, nameSpace, xmlCheckDTD));
 }
 
 /**
@@ -6129,46 +6199,12 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  */
 xmlChar *
 xmlGetProp(xmlNodePtr node, const xmlChar *name) {
-    xmlAttrPtr prop;
-    xmlDocPtr doc;
+    xmlAttrPtr prop;    
 
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
-        return(NULL);
-
-    /*
-     * Check on the properties attached to the node
-     */
-    prop = node->properties;
-    while (prop != NULL) {
-        if (xmlStrEqual(prop->name, name))  {
-	    xmlChar *ret;
-
-	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
-	    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
-	    return(ret);
-        }
-	prop = prop->next;
-    }
-    if (!xmlCheckDTD) return(NULL);
-
-    /*
-     * Check if there is a default declaration in the internal
-     * or external subsets
-     */
-    doc =  node->doc;
-    if (doc != NULL) {
-        xmlAttributePtr attrDecl;
-        if (doc->intSubset != NULL) {
-	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
-	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-            if ((attrDecl != NULL) && (attrDecl->defaultValue != NULL))
-              /* return attribute declaration only if a default value is given
-                 (that includes #FIXED declarations) */
-		return(xmlStrdup(attrDecl->defaultValue));
-	}
-    }
-    return(NULL);
+    prop = xmlHasProp(node, name);
+    if (prop == NULL)
+	return(NULL);
+    return(xmlGetPropNodeValueInternal(prop));     
 }
 
 /**
@@ -6189,44 +6225,11 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
 xmlChar *
 xmlGetNoNsProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop;
-    xmlDocPtr doc;
-
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+    
+    prop = xmlGetPropNodeInternal(node, name, NULL, xmlCheckDTD);
+    if (prop == NULL)
 	return(NULL);
-    /*
-     * Check on the properties attached to the node
-     */
-    prop = node->properties;
-    while (prop != NULL) {
-        if ((prop->ns == NULL) && (xmlStrEqual(prop->name, name)))  {
-	    xmlChar *ret;
-
-	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
-	    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
-	    return(ret);
-        }
-	prop = prop->next;
-    }
-    if (!xmlCheckDTD) return(NULL);
-
-    /*
-     * Check if there is a default declaration in the internal
-     * or external subsets
-     */
-    doc =  node->doc;
-    if (doc != NULL) {
-        xmlAttributePtr attrDecl;
-        if (doc->intSubset != NULL) {
-	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
-	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-            if ((attrDecl != NULL) && (attrDecl->defaultValue != NULL))
-              /* return attribute declaration only if a default value is given
-                 (that includes #FIXED declarations) */
-		return(xmlStrdup(attrDecl->defaultValue));
-	}
-    }
-    return(NULL);
+    return(xmlGetPropNodeValueInternal(prop));
 }
 
 /**
@@ -6247,58 +6250,11 @@ xmlGetNoNsProp(xmlNodePtr node, const xmlChar *name) {
 xmlChar *
 xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlAttrPtr prop;
-    xmlDocPtr doc;
-    xmlNsPtr ns;
 
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE))
+    prop = xmlGetPropNodeInternal(node, name, nameSpace, xmlCheckDTD);
+    if (prop == NULL)
 	return(NULL);
-
-    prop = node->properties;
-    if (nameSpace == NULL)
-	return(xmlGetNoNsProp(node, name));
-    while (prop != NULL) {
-	/*
-	 * One need to have
-	 *   - same attribute names
-	 *   - and the attribute carrying that namespace
-	 */
-        if ((xmlStrEqual(prop->name, name)) &&
-	    ((prop->ns != NULL) &&
-	     (xmlStrEqual(prop->ns->href, nameSpace)))) {
-	    xmlChar *ret;
-
-	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
-	    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
-	    return(ret);
-        }
-	prop = prop->next;
-    }
-    if (!xmlCheckDTD) return(NULL);
-
-    /*
-     * Check if there is a default declaration in the internal
-     * or external subsets
-     */
-    doc =  node->doc;
-    if (doc != NULL) {
-        if (doc->intSubset != NULL) {
-	    xmlAttributePtr attrDecl;
-
-	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
-	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-		
-	    if ((attrDecl != NULL) && (attrDecl->prefix != NULL)) {
-	        /*
-		 * The DTD declaration only allows a prefix search
-		 */
-		ns = xmlSearchNs(doc, node, attrDecl->prefix);
-		if ((ns != NULL) && (xmlStrEqual(ns->href, nameSpace)))
-		    return(xmlStrdup(attrDecl->defaultValue));
-	    }
-	}
-    }
-    return(NULL);
+    return(xmlGetPropNodeValueInternal(prop));
 }
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
@@ -6308,25 +6264,19 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  * @name:  the attribute name
  *
  * Remove an attribute carried by a node.
+ * This handles only attributes in no namespace.
  * Returns 0 if successful, -1 if not found
  */
 int
 xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop;
 
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+    prop = xmlGetPropNodeInternal(node, name, NULL, 0);
+    if (prop == NULL)
 	return(-1);
-    prop = node->properties;
-    while (prop != NULL) {
-        if ((xmlStrEqual(prop->name, name)) &&
-	    (prop->ns == NULL)) {
-		xmlUnlinkNode((xmlNodePtr) prop);
-	    xmlFreeProp(prop);
-	    return(0);
-	}
-	prop = prop->next;
-    }
-    return(-1);
+    xmlUnlinkNode((xmlNodePtr) prop);
+    xmlFreeProp(prop);
+    return(0);
 }
 
 /**
@@ -6341,24 +6291,13 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
 int
 xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
     xmlAttrPtr prop;
-
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE) || (name == NULL))
+    
+    prop = xmlGetPropNodeInternal(node, name, (ns != NULL) ? ns->href : NULL, 0);
+    if (prop == NULL)
 	return(-1);
-    prop = node->properties;
-    if (ns == NULL)
-	return(xmlUnsetProp(node, name));
-    if (ns->href == NULL)
-	return(-1);
-    while (prop != NULL) {
-        if ((xmlStrEqual(prop->name, name)) &&
-	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
-	    xmlUnlinkNode((xmlNodePtr) prop);
-	    xmlFreeProp(prop);
-	    return(0);
-	}
-	prop = prop->next;
-    }
-    return(-1);
+    xmlUnlinkNode((xmlNodePtr) prop);
+    xmlFreeProp(prop);
+    return(0);
 }
 #endif
 
@@ -6366,16 +6305,19 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
 /**
  * xmlSetProp:
  * @node:  the node
- * @name:  the attribute name
+ * @name:  the attribute name (a QName)
  * @value:  the attribute value
  *
  * Set (or reset) an attribute carried by a node.
+ * If @name has a prefix, then the corresponding
+ * namespace-binding will be used, if in scope; it is an
+ * error it there's no such ns-binding for the prefix in
+ * scope.
  * Returns the attribute pointer.
+ * 
  */
 xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
-    xmlAttrPtr prop;
-    xmlDocPtr doc;
     int len;
     const xmlChar *nqname;
 
@@ -6394,49 +6336,15 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	    xmlFree(prefix);
 	if (ns != NULL)
 	    return(xmlSetNsProp(node, ns, nqname, value));
+	/*
+	* If we get a QName and the prefix has no namespace-
+	* binding in scope, then this is an error.
+	* TODO: Previously this falled-back to non-ns handling.
+	*   Should we revert this?
+	*/
+	return(NULL);
     }
-
-    doc = node->doc;
-    prop = node->properties;
-    while (prop != NULL) {
-        if ((xmlStrEqual(prop->name, name)) &&
-	    (prop->ns == NULL)){
-	    int id = 0;
-	    xmlNodePtr oldprop = prop->children;
-	    if (prop->atype == XML_ATTRIBUTE_ID) {
-	        id = 1;
-	        xmlRemoveID(node->doc, prop);
-	    }
-	    prop->children = NULL;
-	    prop->last = NULL;
-	    if (value != NULL) {
-	        xmlChar *buffer;
-		xmlNodePtr tmp;
-
-		buffer = xmlEncodeEntitiesReentrant(node->doc, value);
-		prop->children = xmlStringGetNodeList(node->doc, buffer);
-		prop->last = NULL;
-		prop->doc = doc;
-		tmp = prop->children;
-		while (tmp != NULL) {
-		    tmp->parent = (xmlNodePtr) prop;
-		    tmp->doc = doc;
-		    if (tmp->next == NULL)
-			prop->last = tmp;
-		    tmp = tmp->next;
-		}
-		xmlFree(buffer);
-	    }
-	    if (oldprop != NULL) 
-	        xmlFreeNodeList(oldprop);
-	    if (id)
-	        xmlAddID(NULL, node->doc, value, prop);
-	    return(prop);
-	}
-	prop = prop->next;
-    }
-    prop = xmlNewProp(node, name, value);
-    return(prop);
+    return(xmlSetNsProp(node, NULL, name, value));
 }
 
 /**
@@ -6447,66 +6355,56 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
  * @value:  the attribute value
  *
  * Set (or reset) an attribute carried by a node.
- * The ns structure must be in scope, this is not checked.
+ * The ns structure must be in scope, this is not checked
  *
  * Returns the attribute pointer.
  */
 xmlAttrPtr
 xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
-	     const xmlChar *value) {
+	     const xmlChar *value)
+{
     xmlAttrPtr prop;
     
-    if ((node == NULL) || (name == NULL) || (node->type != XML_ELEMENT_NODE))
+    if (ns && (ns->href == NULL))
 	return(NULL);
-
-    if (ns == NULL)
-	return(xmlSetProp(node, name, value));
-    if (ns->href == NULL)
-	return(NULL);
-    prop = node->properties;
-
-    while (prop != NULL) {
+    prop = xmlGetPropNodeInternal(node, name, (ns != NULL) ? ns->href : NULL, 0);
+    if (prop != NULL) {
 	/*
-	 * One need to have
-	 *   - same attribute names
-	 *   - and the attribute carrying that namespace
-	 */
-        if ((xmlStrEqual(prop->name, name)) &&
-	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
-	    int id = 0;
-	    if (prop->atype == XML_ATTRIBUTE_ID) {
-	        id = 1;
-	        xmlRemoveID(node->doc, prop);
-	    }
-	    if (prop->children != NULL) 
-	        xmlFreeNodeList(prop->children);
-	    prop->children = NULL;
+	* Modify the attribute's value.
+	*/
+	if (prop->atype == XML_ATTRIBUTE_ID) {
+	    xmlRemoveID(node->doc, prop);
+	    prop->atype = XML_ATTRIBUTE_ID;
+	}
+	if (prop->children != NULL) 
+	    xmlFreeNodeList(prop->children);
+	prop->children = NULL;
+	prop->last = NULL;
+	prop->ns = ns;
+	if (value != NULL) {
+	    xmlChar *buffer;
+	    xmlNodePtr tmp;
+	    
+	    buffer = xmlEncodeEntitiesReentrant(node->doc, value);
+	    prop->children = xmlStringGetNodeList(node->doc, buffer);
 	    prop->last = NULL;
-	    prop->ns = ns;
-	    if (value != NULL) {
-	        xmlChar *buffer;
-		xmlNodePtr tmp;
-
-		buffer = xmlEncodeEntitiesReentrant(node->doc, value);
-		prop->children = xmlStringGetNodeList(node->doc, buffer);
-		prop->last = NULL;
-		tmp = prop->children;
-		while (tmp != NULL) {
-		    tmp->parent = (xmlNodePtr) prop;
-		    if (tmp->next == NULL)
-			prop->last = tmp;
-		    tmp = tmp->next;
-		}
-		xmlFree(buffer);
-	    }	
-	    if (id)
-	        xmlAddID(NULL, node->doc, value, prop);
-	    return(prop);
-        }
-	prop = prop->next;
+	    tmp = prop->children;
+	    while (tmp != NULL) {
+		tmp->parent = (xmlNodePtr) prop;
+		if (tmp->next == NULL)
+		    prop->last = tmp;
+		tmp = tmp->next;
+	    }
+	    xmlFree(buffer);
+	}
+	if (prop->atype == XML_ATTRIBUTE_ID)
+	    xmlAddID(NULL, node->doc, value, prop);
+	return(prop);
     }
-    prop = xmlNewNsProp(node, ns, name, value);
-    return(prop);
+    /*
+    * No equal attr found; create a new one.
+    */
+    return(xmlNewPropInternal(node, ns, name, value, 0));
 }
 
 #endif /* LIBXML_TREE_ENABLED */
@@ -9391,7 +9289,6 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
     }	
     return (0);
 }
-
 
 
 #define bottom_tree

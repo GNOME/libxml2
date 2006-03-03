@@ -2712,9 +2712,9 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
 	return(0);
     } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
-        if (((xmlStrEqual(BAD_CAST "id", attr->name)) ||
-	    (xmlStrEqual(BAD_CAST "name", attr->name))) &&
-	    ((elem != NULL) && (!xmlStrEqual(elem->name, BAD_CAST "input"))))
+        if ((xmlStrEqual(BAD_CAST "id", attr->name)) ||
+	    ((xmlStrEqual(BAD_CAST "name", attr->name)) &&
+	    ((elem == NULL) || (!xmlStrEqual(elem->name, BAD_CAST "input")))))
 	    return(1);
 	return(0);    
     } else if (elem == NULL) {

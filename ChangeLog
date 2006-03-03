@@ -1,3 +1,8 @@
+Fri Mar  3 17:44:10 CET 2006 Rob Richards <rrichards@ctindustries.net>
+
+	* valid.c: fix HTML attribute ID checking for input element.
+	  Maintain current attribute "name" behavior for now.
+
 Thu Mar  2 18:59:50 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Bundled lookup of attr-nodes and retrieving their

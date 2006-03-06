@@ -1,3 +1,10 @@
+Mon Mar  6 14:21:08 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Simplified usage of the internal xmlNsMap. Added a
+	  "strict" lookup for namespaces based on a prefix. Fixed a
+	  namespace processing issue in the clone-node function, which
+	  occured if a @ctxt argument was given.
+	  
 Fri Mar  3 17:44:10 CET 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* valid.c: fix HTML attribute ID checking for input element.

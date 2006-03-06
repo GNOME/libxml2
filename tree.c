@@ -119,6 +119,9 @@ static int xmlCheckDTD = 1;
 	(n)->last = ulccur;						\
 }}
 
+#define IS_STR_XML(str) ((str != NULL) && (str[0] == 'x') && \
+  (str[1] == 'm') && (str[2] == 'l') && (str[3] == 0))
+
 /* #define DEBUG_BUFFER */
 /* #define DEBUG_TREE */
 
@@ -7207,88 +7210,136 @@ struct xmlNsMapItem {
     int depth;
 };
 
+typedef struct xmlNsMap *xmlNsMapPtr;
+struct xmlNsMap {
+    xmlNsMapItemPtr first;
+    xmlNsMapItemPtr last;
+    xmlNsMapItemPtr pool;
+};
+
+#define XML_NSMAP_NOTEMPTY(m) (((m) != NULL) && ((m)->first != NULL))
+#define XML_NSMAP_FOREACH(m, i) for (i = (m)->first; i != NULL; i = (i)->next)
+#define XML_NSMAP_POP(m, i) \
+    i = (m)->last; \
+    (m)->last = (i)->prev; \
+    if ((m)->last == NULL) \
+	(m)->first = NULL; \
+    else \
+	(m)->last->next = NULL; \
+    (i)->next = (m)->pool; \
+    (m)->pool = i;
+
 /*
-* xmlTreeAddNsMapItem:
+* xmlDOMWrapNsMapFree:
+* @map: the ns-map
+* 
+* Frees the ns-map
+*/
+static void
+xmlDOMWrapNsMapFree(xmlNsMapPtr nsmap)
+{
+    xmlNsMapItemPtr cur, tmp;
+
+    if (nsmap == NULL)
+	return;
+    cur = nsmap->pool;
+    while (cur != NULL) {
+	tmp = cur;
+	cur = cur->next;
+	xmlFree(tmp);
+    }
+    cur = nsmap->first;
+    while (cur != NULL) {
+	tmp = cur;
+	cur = cur->next;
+	xmlFree(tmp);
+    }
+    xmlFree(nsmap);
+}
+
+/*
+* xmlDOMWrapNsMapAddItem:
 * @map: the ns-map
 * @cur: the current map entry to append a new entry to
 * @oldNs: the old ns-struct
 * @newNs: the new ns-struct
 * @depth: depth and ns-kind information
 * 
-* Frees the ns-map
+* Adds an ns-mapping item.
 */
 static xmlNsMapItemPtr
-xmlDOMWrapNSNormAddNsMapItem(xmlNsMapItemPtr *map,
-			     xmlNsMapItemPtr *cur,
-			     xmlNsPtr oldNs,
-			     xmlNsPtr newNs,
-			     int depth)
+xmlDOMWrapNsMapAddItem(xmlNsMapPtr *nsmap, int position, /* xmlNsMapItemPtr *cur, */
+		       xmlNsPtr oldNs, xmlNsPtr newNs, int depth)
 {
     xmlNsMapItemPtr ret;
-     
-    if ((cur != NULL) && (*cur != NULL) && ((*cur)->next != NULL)) {
+    xmlNsMapPtr map;
+
+    if (nsmap == NULL)
+	return(NULL);
+    if ((position != -1) && (position != 0))
+	return(NULL);
+    map = *nsmap;
+
+    if (map == NULL) {
 	/*
-	* Reuse.
+	* Create the ns-map.
 	*/
-	ret = (*cur)->next;
-	*cur = ret;
+	map = (xmlNsMapPtr) xmlMalloc(sizeof(struct xmlNsMap));
+	if (map == NULL) {
+	    xmlTreeErrMemory("allocating namespace map");
+	    return (NULL);
+	}
+	memset(map, 0, sizeof(struct xmlNsMap));
+	*nsmap = map;
+    }
+    
+    if (map->pool != NULL) {
+	/*
+	* Reuse an item from the pool.
+	*/
+	ret = map->pool;
+	map->pool = ret->next;
+	memset(ret, 0, sizeof(struct xmlNsMapItem));
     } else {
+	/*
+	* Create a new item.
+	*/
 	ret = (xmlNsMapItemPtr) xmlMalloc(sizeof(struct xmlNsMapItem));
 	if (ret == NULL) {
 	    xmlTreeErrMemory("allocating namespace map item");
 	    return (NULL);
 	}
 	memset(ret, 0, sizeof(struct xmlNsMapItem));
-	if (*map == NULL) {
-	    /*
-	    * First ever.
-	    */
-	    *map = ret;
-	    ret->prev = ret;
-	    if (cur != NULL)
-		*cur = ret;
-	} else {
-	    if (cur) {
-		/*
-		* Append.
-		*/
-		(*cur)->next = ret;
-		ret->prev = *cur;
-		*cur = ret;
-	    } else {
-		/*
-		* Set on first position.
-		*/
-		ret->next = (*map);
-		ret->prev = (*map)->prev;
-		(*map)->prev = ret;
-		*map = ret;
-	    }
-	}
     }
+    
+    if (map->first == NULL) {
+	/*
+	* First ever.
+	*/	 
+	map->first = ret;
+	map->last = ret;
+    } else if (position == -1) {
+	/*
+	* Append.
+	*/
+	ret->prev = map->last;
+	map->last->next = ret;
+	map->last = ret;		
+    } else if (position == 0) {
+	/*
+	* Set on first position.
+	*/
+	map->first->prev = ret;
+	ret->next = map->first;		
+	map->first = ret;		
+    } else
+	return(NULL);
+
     ret->oldNs = oldNs;
     ret->newNs = newNs;
     ret->shadowDepth = -1;
     ret->depth = depth;
     return (ret);
-}
-
-/*
-* xmlTreeFreeNsMap:
-* @map: the ns-map
-* 
-* Frees the ns-map
-*/
-static void
-xmlDOMWrapNSNormFreeNsMap(xmlNsMapItemPtr map)
-{    
-    xmlNsMapItemPtr mi = map, miprev;
-
-    while (mi != NULL) {
-	miprev = mi;
-	mi = mi->next;
-	xmlFree(miprev);
-    }
 }
 
 /*
@@ -7406,7 +7457,7 @@ xmlTreeNSListLookupByPrefix(xmlNsPtr nsList, const xmlChar *prefix)
 * Returns 0 on success, -1 on API or internal errors.
 */
 static int
-xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapItemPtr *map,
+xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapPtr *map,
 				xmlNodePtr node)
 {
     xmlNodePtr cur;
@@ -7426,11 +7477,11 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapItemPtr *map,
 		ns = cur->nsDef;
 		do {
 		    shadowed = 0;
-		    if (*map != NULL) {
+		    if (XML_NSMAP_NOTEMPTY(*map)) {
 			/*
 			* Skip shadowed prefixes.
 			*/
-			for (mi = *map; mi != NULL; mi = mi->next) {
+			XML_NSMAP_FOREACH(*map, mi) {
 			    if ((ns->prefix == mi->newNs->prefix) ||
 				xmlStrEqual(ns->prefix, mi->newNs->prefix)) {
 				shadowed = 1;
@@ -7441,7 +7492,7 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapItemPtr *map,
 		    /*
 		    * Insert mapping.
 		    */
-		    mi = xmlDOMWrapNSNormAddNsMapItem(map, NULL, NULL,
+		    mi = xmlDOMWrapNsMapAddItem(map, 0, NULL,
 			ns, XML_TREE_NSMAP_PARENT);
 		    if (mi == NULL)
 			return (-1);
@@ -7659,7 +7710,7 @@ internal_error:
 }
 
 /*
-* xmlSearchNsByHrefStrict:
+* xmlSearchNsByNamespaceStrict:
 * @doc: the document
 * @node: the start node
 * @nsName: the searched namespace name
@@ -7673,8 +7724,9 @@ internal_error:
 *         and internal errors.
 */
 static int
-xmlSearchNsByHrefStrict(xmlDocPtr doc, xmlNodePtr node, const xmlChar* nsName,
-			 xmlNsPtr *retNs, int prefixed)
+xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
+			     const xmlChar* nsName,
+			     xmlNsPtr *retNs, int prefixed)
 {
     xmlNodePtr cur, prev = NULL, out = NULL;
     xmlNsPtr ns, prevns;
@@ -7750,9 +7802,72 @@ xmlSearchNsByHrefStrict(xmlDocPtr doc, xmlNodePtr node, const xmlChar* nsName,
 		out = prev;
 		prev = cur;
 	    }
-	} else if ((node->type == XML_ENTITY_REF_NODE) ||
-            (node->type == XML_ENTITY_NODE) ||
-            (node->type == XML_ENTITY_DECL))
+	} else if ((cur->type == XML_ENTITY_NODE) ||
+            (cur->type == XML_ENTITY_DECL))
+	    return (0);
+	cur = cur->parent;
+    } while ((cur != NULL) && (cur->doc != (xmlDocPtr) cur));
+    return (0);
+}
+
+/*
+* xmlSearchNsByPrefixStrict:
+* @doc: the document
+* @node: the start node
+* @prefix: the searched namespace prefix
+* @retNs: the resulting ns-decl
+* @prefixed: if the found ns-decl must have a prefix (for attributes)
+*
+* Dynamically searches for a ns-declaration which matches
+* the given @nsName in the ancestor-or-self axis of @node.
+*
+* Returns 1 if a ns-decl was found, 0 if not and -1 on API
+*         and internal errors.
+*/
+static int
+xmlSearchNsByPrefixStrict(xmlDocPtr doc, xmlNodePtr node,
+			  const xmlChar* prefix,
+			  xmlNsPtr *retNs)
+{
+    xmlNodePtr cur;
+    xmlNsPtr ns;
+
+    if ((doc == NULL) || (node == NULL))
+	return (-1);
+
+    if (retNs)
+	*retNs = NULL;
+    if (IS_STR_XML(prefix)) {
+	if (retNs) {
+	    *retNs = xmlTreeEnsureXMLDecl(doc);
+	    if (*retNs == NULL)
+		return (-1);
+	}
+	return (1);
+    }
+    cur = node;
+    do {
+	if (cur->type == XML_ELEMENT_NODE) {
+	    if (cur->nsDef != NULL) {
+		ns = cur->nsDef;
+		do {		
+		    if ((prefix == ns->prefix) ||
+			xmlStrEqual(prefix, ns->prefix))
+		    {
+			/*
+			* Disabled namespaces, e.g. xmlns:abc="".
+			*/
+			if (ns->href == NULL)
+			    return(0);
+			if (retNs)
+			    *retNs = ns;
+			return (1);
+		    }
+		    ns = ns->next;
+		} while (ns != NULL);	
+	    }
+	} else if ((cur->type == XML_ENTITY_NODE) ||
+            (cur->type == XML_ENTITY_DECL))
 	    return (0);
 	cur = cur->parent;
     } while ((cur != NULL) && (cur->doc != (xmlDocPtr) cur));
@@ -7802,7 +7917,7 @@ xmlDOMWrapNSNormDeclareNsForced(xmlDocPtr doc,
 	    /*
 	    * Does it shadow ancestor ns-decls?
 	    */
-	    if (xmlSearchNs(doc, elem->parent, pref) != NULL)
+	    if (xmlSearchNsByPrefixStrict(doc, elem->parent, pref, NULL) == 1)
 		goto ns_next_prefix;
 	}
 	ret = xmlNewNs(NULL, nsName, pref);
@@ -7856,8 +7971,8 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 				   xmlNodePtr elem,
 				   xmlNsPtr ns,
 				   xmlNsPtr *retNs,
-				   xmlNsMapItemPtr *nsMap,
-				   xmlNsMapItemPtr *topmi,
+				   xmlNsMapPtr *nsMap,
+				   
 				   int depth,
 				   int ancestorsOnly,
 				   int prefixed)
@@ -7865,18 +7980,14 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
     xmlNsMapItemPtr mi;    
 
     if ((doc == NULL) || (ns == NULL) || (retNs == NULL) ||
-	(nsMap == NULL) || (topmi == NULL))
+	(nsMap == NULL))
 	return (-1);
 
     *retNs = NULL;
     /*
     * Handle XML namespace.
     */
-    if ((ns->prefix) &&
-	(ns->prefix[0] == 'x') &&
-	(ns->prefix[1] == 'm') &&
-	(ns->prefix[2] == 'l') &&
-	(ns->prefix[3] == 0)) {
+    if (IS_STR_XML(ns->prefix)) {
 	/*
 	* Insert XML namespace mapping.
 	*/
@@ -7889,20 +8000,18 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
     * If the search should be done in ancestors only and no
     * @elem (the first ancestor) was specified, then skip the search.
     */
-    if ((! (ancestorsOnly && (elem == NULL))) &&
-	(*nsMap != NULL)) {
-	
+    if ((! (ancestorsOnly && (elem == NULL))) && (XML_NSMAP_NOTEMPTY(*nsMap)))
+    {	
 	/*
 	* Try to find an equal ns-name in in-scope ns-decls.
 	*/
-	for (mi = *nsMap; mi != (*topmi)->next; mi = mi->next) {
-	    
+	XML_NSMAP_FOREACH(*nsMap, mi) {
 	    if ((mi->depth >= XML_TREE_NSMAP_PARENT) && 				
 		/* 
-		* This should be turned on to gain speed, if one knows
-		* that the branch itself was already ns-wellformed and no
-		* stale references existed. I.e. it searches in the ancestor
-		* axis only.
+		* ancestorsOnly: This should be turned on to gain speed,
+		* if one knows that the branch itself was already
+		* ns-wellformed and no stale references existed.
+		* I.e. it searches in the ancestor axis only.
 		*/
 		((! ancestorsOnly) || (mi->depth == XML_TREE_NSMAP_PARENT)) &&
 		/* Skip shadowed prefixes. */
@@ -7937,7 +8046,7 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 	/*
 	* Insert mapping.
 	*/	
-	if (xmlDOMWrapNSNormAddNsMapItem(nsMap, NULL, ns,
+	if (xmlDOMWrapNsMapAddItem(nsMap, -1, ns,
 		tmpns, XML_TREE_NSMAP_DOC) == NULL) {
 	    xmlFreeNs(tmpns);
 	    return (-1);
@@ -7954,8 +8063,8 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 	if (*nsMap != NULL) {
 	    /*
 	    * Does it shadow ancestor ns-decls?
-	    */		
-	    for (mi = *nsMap; mi != (*topmi)->next; mi = mi->next) {
+	    */
+	    XML_NSMAP_FOREACH(*nsMap, mi) {
 		if ((mi->depth < depth) &&
 		    (mi->shadowDepth == -1) &&
 		    ((ns->prefix == mi->newNs->prefix) ||
@@ -7968,8 +8077,7 @@ xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
 		}
 	    }
 	}
-	if (xmlDOMWrapNSNormAddNsMapItem(nsMap, topmi, ns,
-		tmpns, depth) == NULL) {
+	if (xmlDOMWrapNsMapAddItem(nsMap, -1, ns, tmpns, depth) == NULL) {
 	    xmlFreeNs(tmpns);
 	    return (-1);
 	}
@@ -8007,7 +8115,8 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
     xmlNsPtr ns, prevns;
     xmlDocPtr doc;
     xmlNodePtr cur, curElem = NULL;
-    xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
+    xmlNsMapPtr nsMap = NULL;
+    xmlNsMapItemPtr /* topmi = NULL, */ mi;
     /* @ancestorsOnly should be set by an option flag. */
     int ancestorsOnly = 0;
     int optRemoveDedundantNS = 
@@ -8043,8 +8152,6 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 				if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
 				    elem->parent) == -1)
 				    goto internal_error;
-				if (nsMap != NULL)
-				    topmi = nsMap->prev;
 			    }
 			    parnsdone = 1;
 			}
@@ -8052,8 +8159,8 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			/*
 			* Lookup the ns ancestor-axis for equal ns-decls in scope.
 			*/
-			if (optRemoveDedundantNS && nsMap) {
-			    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+			if (optRemoveDedundantNS && XML_NSMAP_NOTEMPTY(nsMap)) {
+			    XML_NSMAP_FOREACH(nsMap, mi) {
 				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
 				    (mi->shadowDepth == -1) &&
 				    ((ns->prefix == mi->newNs->prefix) ||
@@ -8089,8 +8196,8 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			/*
 			* Does it shadow any ns-decl?
 			*/
-			if (nsMap) {
-			    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+			if (XML_NSMAP_NOTEMPTY(nsMap)) {
+			    XML_NSMAP_FOREACH(nsMap, mi) {
 				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
 				    (mi->shadowDepth == -1) &&
 				    ((ns->prefix == mi->newNs->prefix) ||
@@ -8103,7 +8210,7 @@ xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			/*
 			* Push mapping.
 			*/
-			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi, ns, ns,
+			if (xmlDOMWrapNsMapAddItem(&nsMap, -1, ns, ns,
 			    depth) == NULL)
 			    goto internal_error;			
 
@@ -8126,8 +8233,6 @@ next_ns_decl:
 			if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
 				elem->parent) == -1)
 			    goto internal_error;
-			if (nsMap != NULL)
-			    topmi = nsMap->prev;
 		    }
 		    parnsdone = 1;
 		}
@@ -8145,11 +8250,11 @@ next_ns_decl:
 		/*
 		* Adopt ns-references.
 		*/
-		if (nsMap != NULL) {
+		if (XML_NSMAP_NOTEMPTY(nsMap)) {
 		    /*
 		    * Search for a mapping.
 		    */
-		    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+		    XML_NSMAP_FOREACH(nsMap, mi) {
 			if ((mi->shadowDepth == -1) &&
 			    (cur->ns == mi->oldNs)) {
 
@@ -8163,7 +8268,7 @@ next_ns_decl:
 		*/
 		if (xmlDOMWrapNSNormAquireNormalizedNs(doc, curElem,
 			cur->ns, &ns,
-			&nsMap, &topmi, depth,
+			&nsMap, depth,
 			ancestorsOnly,
 			(cur->type == XML_ATTRIBUTE_NODE) ? 1 : 0) == -1)
 		    goto internal_error;
@@ -8195,19 +8300,23 @@ next_sibling:
 	if (cur == elem)
 	    break;
 	if (cur->type == XML_ELEMENT_NODE) {
-	    if (nsMap != NULL) {
+	    if (XML_NSMAP_NOTEMPTY(nsMap)) {	    
 		/*
 		* Pop mappings.
 		*/
-		while ((topmi->depth >= 0) && (topmi->depth >= depth))
-		    topmi = topmi->prev;
+		while ((nsMap->last != NULL) &&
+		    (nsMap->last->depth >= depth))
+		{
+		    XML_NSMAP_POP(nsMap, mi)		    
+		}
 		/*
 		* Unshadow.
 		*/
-		for (mi = nsMap; mi != topmi->next; mi = mi->next)
+		XML_NSMAP_FOREACH(nsMap, mi) {
 		    if (mi->shadowDepth >= depth)
 			mi->shadowDepth = -1;
-	    }
+		}
+	    }	    
 	    depth--;
 	}
 	if (cur->next != NULL)
@@ -8234,7 +8343,7 @@ exit:
 	xmlFree(listRedund);
     }
     if (nsMap != NULL)
-	xmlDOMWrapNSNormFreeNsMap(nsMap);
+	xmlDOMWrapNsMapFree(nsMap);
     return (ret);
 }
 
@@ -8268,7 +8377,8 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 {
     int ret = 0;
     xmlNodePtr cur, curElem = NULL;
-    xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
+    xmlNsMapPtr nsMap = NULL;
+    xmlNsMapItemPtr mi;
     xmlNsPtr ns;
     int depth = -1, adoptStr = 1;
     /* gather @parent's ns-decls. */
@@ -8328,9 +8438,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 			    */
 			    if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
 				destParent) == -1)
-				goto internal_error;
-			    if (nsMap != NULL)
-				topmi = nsMap->prev;
+				goto internal_error;			    
 			}
 			parnsdone = 1;
 		    }
@@ -8343,9 +8451,8 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 			/*
 			* Does it shadow any ns-decl?
 			*/			
-			if (nsMap) {
-			    for (mi = nsMap; mi != topmi->next;
-			    mi = mi->next) {
+			if (XML_NSMAP_NOTEMPTY(nsMap)) {
+			    XML_NSMAP_FOREACH(nsMap, mi) {			    
 				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
 				    (mi->shadowDepth == -1) &&
 				    ((ns->prefix == mi->newNs->prefix) ||
@@ -8359,7 +8466,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 			/*
 			* Push mapping.
 			*/
-			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+			if (xmlDOMWrapNsMapAddItem(&nsMap, -1,
 			    ns, ns, depth) == NULL)
 			    goto internal_error;
 		    }
@@ -8373,20 +8480,18 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 		    if (destParent && (ctxt == NULL)) {
 			if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
 			    destParent) == -1)
-			    goto internal_error;
-			if (nsMap != NULL)
-			    topmi = nsMap->prev;
+			    goto internal_error;			
 		    }
 		    parnsdone = 1;
 		}
 		/*
 		* Adopt ns-references.
 		*/
-		if (nsMap != NULL) {
+		if (XML_NSMAP_NOTEMPTY(nsMap)) {			    		
 		    /*
 		    * Search for a mapping.
 		    */
-		    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+		    XML_NSMAP_FOREACH(nsMap, mi) {		    
 			if ((mi->shadowDepth == -1) &&
 			    (cur->ns == mi->oldNs)) {
 
@@ -8409,7 +8514,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 		    * Insert mapping if ns is available; it's the users fault
 		    * if not.
 		    */
-		    if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+		    if (xmlDOMWrapNsMapAddItem(&nsMap, -1,
 			    ns, ns, XML_TREE_NSMAP_CUSTOM) == NULL)
 			goto internal_error;
 		    cur->ns = ns;
@@ -8421,7 +8526,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 			/* ns-decls on curElem or on destDoc->oldNs */			
 			destParent ? curElem : NULL,
 			cur->ns, &ns,
-			&nsMap, &topmi, depth,
+			&nsMap, depth,
 			ancestorsOnly,
 			/* ns-decls must be prefixed for attributes. */
 			(cur->type == XML_ATTRIBUTE_NODE) ? 1 : 0) == -1)
@@ -8513,18 +8618,22 @@ leave_node:
 	    /*
 	    * TODO: Do we expect nsDefs on XML_XINCLUDE_START?
 	    */
-	    if (nsMap != NULL) {
+	    if (XML_NSMAP_NOTEMPTY(nsMap)) {	    
 		/*
 		* Pop mappings.
 		*/
-		while (topmi->depth >= depth)
-		    topmi = topmi->prev;
+		while ((nsMap->last != NULL) &&
+		    (nsMap->last->depth >= depth))
+		{
+		    XML_NSMAP_POP(nsMap, mi)		    
+		}		
 		/*
 		* Unshadow.
 		*/
-		for (mi = nsMap; mi != topmi->next; mi = mi->next)
+		XML_NSMAP_FOREACH(nsMap, mi) {
 		    if (mi->shadowDepth >= depth)
 			mi->shadowDepth = -1;
+		}
 	    }
 	    depth--;
 	}
@@ -8535,16 +8644,19 @@ leave_node:
 	    goto leave_node;
 	}
     }
+    
+    goto exit;
+
+internal_error:    
+    ret = -1;
+
+exit:
     /*
     * Cleanup.
     */
     if (nsMap != NULL)
-	xmlDOMWrapNSNormFreeNsMap(nsMap);
-    return (ret);
-internal_error:
-    if (nsMap != NULL)
-	xmlDOMWrapNSNormFreeNsMap(nsMap);
-    return (-1);
+	xmlDOMWrapNsMapFree(nsMap);
+    return(ret);
 }
 
 /*
@@ -8592,7 +8704,8 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 {
     int ret = 0;
     xmlNodePtr cur, curElem = NULL;
-    xmlNsMapItemPtr nsMap = NULL, topmi = NULL, mi;
+    xmlNsMapPtr nsMap = NULL;
+    xmlNsMapItemPtr mi;
     xmlNsPtr ns;
     int depth = -1;
     /* int adoptStr = 1; */
@@ -8602,7 +8715,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     int ancestorsOnly = 0;
     xmlNodePtr resultClone = NULL, clone = NULL, parentClone = NULL, prevClone = NULL;
     xmlNsPtr cloneNs = NULL, *cloneNsDefSlot = NULL;    
-        
+
     if ((node == NULL) || (resNode == NULL) ||
 	(sourceDoc == NULL) || (destDoc == NULL))
 	return(-1);
@@ -8610,10 +8723,10 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     * TODO: Initially we support only element-nodes.
     */
     if (node->type != XML_ELEMENT_NODE)
-	return(1);    
+	return(1);
     /*
     * Check node->doc sanity.
-    */    
+    */
     if ((node->doc != NULL) && (sourceDoc != NULL) &&
 	(node->doc != sourceDoc)) {
 	/*
@@ -8622,13 +8735,10 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	return (-1);
     }
     if (sourceDoc == NULL)
-	sourceDoc = node->doc;
-    if (sourceDoc == destDoc)
-	return (-1);        
+	sourceDoc = node->doc;    
 
     *resNode = NULL;
-    
-    deep = 1;
+   
     cur = node;
     while (cur != NULL) {
 	if (cur->doc != sourceDoc) {
@@ -8740,7 +8850,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		/*
 		* Namespace declarations.
 		*/
-		if ((ctxt == NULL) && (cur->nsDef != NULL)) {
+		if (cur->nsDef != NULL) {
 		    if (! parnsdone) {
 			if (destParent && (ctxt == NULL)) {
 			    /*
@@ -8748,9 +8858,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 			    */
 			    if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
 				destParent) == -1)
-				goto internal_error;
-			    if (nsMap != NULL)
-				topmi = nsMap->prev;
+				goto internal_error;			    
 			}
 			parnsdone = 1;
 		    }
@@ -8779,28 +8887,32 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 			*cloneNsDefSlot = cloneNs;
 			cloneNsDefSlot = &(cloneNs->next);
 
-			/*
-			* Does it shadow any ns-decl?
-			*/
-			if (nsMap) {
-			    for (mi = nsMap; mi != topmi->next;
-			    mi = mi->next) {
-				if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
-				    (mi->shadowDepth == -1) &&
-				    ((ns->prefix == mi->newNs->prefix) ||
-				     xmlStrEqual(ns->prefix,
+			if (ctxt == NULL) {
+			    /*
+			    * Does it shadow any ns-decl?
+			    */
+			    if (XML_NSMAP_NOTEMPTY(nsMap)) {
+				XML_NSMAP_FOREACH(nsMap, mi) {				
+				    if ((mi->depth >= XML_TREE_NSMAP_PARENT) &&
+					(mi->shadowDepth == -1) &&
+					((ns->prefix == mi->newNs->prefix) ||
+					xmlStrEqual(ns->prefix,
 					mi->newNs->prefix))) {
-				    /* Mark as shadowed at the current depth. */
-				    mi->shadowDepth = depth;
+					/*
+					* Mark as shadowed at the current
+					* depth.
+					*/
+					mi->shadowDepth = depth;
+				    }
 				}
 			    }
+			    /*
+			    * Push mapping.
+			    */
+			    if (xmlDOMWrapNsMapAddItem(&nsMap, -1,
+				ns, cloneNs, depth) == NULL)
+				goto internal_error;
 			}
-			/*
-			* Push mapping.
-			*/
-			if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
-			    ns, cloneNs, depth) == NULL)
-			    goto internal_error;
 		    }
 		}
 		/* cur->ns will be processed further down. */
@@ -8814,12 +8926,15 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		if (cur->content)
 		    clone->content = xmlStrdup(cur->content);
 		goto leave_node;
+	    case XML_ENTITY_NODE:
+		/* TODO: What to do here? */
+		goto leave_node;
 	    case XML_ENTITY_REF_NODE:		
 		if (sourceDoc != destDoc) {
 		    if ((destDoc->intSubset) || (destDoc->extSubset)) {
 			xmlEntityPtr ent;
 			/*
-			* Assign new entity-node if available.
+			* Different doc: Assign new entity-node if available.
 			*/
 			ent = xmlGetDocEntity(destDoc, cur->name);
 			if (ent != NULL) {
@@ -8830,12 +8945,13 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		    }
 		} else {
 		    /*
-		    * Use the current node's entity declaration and value.
+		    * Same doc: Use the current node's entity declaration
+		    * and value.
 		    */
 		    clone->content = cur->content;
 		    clone->children = cur->children;
 		    clone->last = cur->last;
-		}
+		}		
 		goto leave_node;
 	    case XML_PI_NODE:
 		if (cur->content)
@@ -8860,22 +8976,19 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	*/
 	if (! parnsdone) {
 	    if (destParent && (ctxt == NULL)) {
-		if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap,
-		    destParent) == -1)
-		    goto internal_error;
-		if (nsMap != NULL)
-		    topmi = nsMap->prev;
+		if (xmlDOMWrapNSNormGatherInScopeNs(&nsMap, destParent) == -1)
+		    goto internal_error;		
 	    }
 	    parnsdone = 1;
 	}
 	/*
 	* Adopt ns-references.
 	*/
-	if (nsMap != NULL) {
+	if (XML_NSMAP_NOTEMPTY(nsMap)) {
 	    /*
 	    * Search for a mapping.
 	    */
-	    for (mi = nsMap; mi != topmi->next; mi = mi->next) {
+	    XML_NSMAP_FOREACH(nsMap, mi) {	    
 		if ((mi->shadowDepth == -1) &&
 		    (cur->ns == mi->oldNs)) {
 		    /*
@@ -8899,7 +9012,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	    /*
 	    * Add user's mapping.
 	    */
-	    if (xmlDOMWrapNSNormAddNsMapItem(&nsMap, &topmi,
+	    if (xmlDOMWrapNsMapAddItem(&nsMap, -1,
 		cur->ns, ns, XML_TREE_NSMAP_CUSTOM) == NULL)
 		goto internal_error;
 	    clone->ns = ns;
@@ -8911,7 +9024,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		/* ns-decls on curElem or on destDoc->oldNs */			
 		destParent ? curElem : NULL,
 		cur->ns, &ns,
-		&nsMap, &topmi, depth,
+		&nsMap, depth,
 		ancestorsOnly,
 		/* ns-decls must be prefixed for attributes. */
 		(cur->type == XML_ATTRIBUTE_NODE) ? 1 : 0) == -1)
@@ -8961,10 +9074,12 @@ into_content:
 	* Descend into child-nodes.
 	*/
 	if (cur->children != NULL) {
-	    prevClone = NULL;
-	    parentClone = clone;
-	    cur = cur->children;
-	    continue;
+	    if (deep || (cur->type == XML_ATTRIBUTE_NODE)) {
+		prevClone = NULL;
+		parentClone = clone;
+		cur = cur->children;
+		continue;
+	    }
 	}
 
 leave_node:
@@ -8980,20 +9095,23 @@ leave_node:
 	    /*
 	    * TODO: Do we expect nsDefs on XML_XINCLUDE_START?
 	    */
-	    if (nsMap != NULL) {
+	    if (XML_NSMAP_NOTEMPTY(nsMap)) {	    
 		/*
 		* Pop mappings.
 		*/
-		while (topmi->depth >= depth)
-		    topmi = topmi->prev;
+		while ((nsMap->last != NULL) &&
+		    (nsMap->last->depth >= depth))
+		{
+		    XML_NSMAP_POP(nsMap, mi)		    
+		}
 		/*
 		* Unshadow.
-		* TODO: How to optimize this?
 		*/
-		for (mi = nsMap; mi != topmi->next; mi = mi->next)
+		XML_NSMAP_FOREACH(nsMap, mi) {
 		    if (mi->shadowDepth >= depth)
 			mi->shadowDepth = -1;
-	    }
+		}
+	    }	    
 	    depth--;
 	}
 	if (cur->next != NULL) {
@@ -9032,7 +9150,7 @@ exit:
     * Cleanup.
     */
     if (nsMap != NULL)
-	xmlDOMWrapNSNormFreeNsMap(nsMap);
+	xmlDOMWrapNsMapFree(nsMap);
     /*
     * TODO: Should we try a cleanup of the cloned node in case of a
     * fatal error?
@@ -9079,8 +9197,7 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 	    /* TODO: User defined. */
 	}
 	/* XML Namespace. */
-	if ((attr->ns->prefix[0] == 'x') && (attr->ns->prefix[1] == 'm') &&
-	    (attr->ns->prefix[2] == 'l') && (attr->ns->prefix[3] == 0)) {
+	if (IS_STR_XML(attr->ns->prefix)) {
 	    ns = xmlTreeEnsureXMLDecl(destDoc);
 	} else if (destParent == NULL) {
 	    /*
@@ -9091,7 +9208,7 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 	    /*
 	    * Declare on @destParent.
 	    */
-	    if (xmlSearchNsByHrefStrict(destDoc, destParent, attr->ns->href,
+	    if (xmlSearchNsByNamespaceStrict(destDoc, destParent, attr->ns->href,
 		&ns, 1) == -1)
 		goto internal_error;
 	    if (ns == NULL) {
@@ -9289,7 +9406,6 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
     }	
     return (0);
 }
-
 
 #define bottom_tree
 #include "elfgcchack.h"

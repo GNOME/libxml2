@@ -1,3 +1,7 @@
+Tue Mar  7 09:50:09 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xml2-config.in: fix Red Hat bug #184170
+
 Mon Mar  6 14:21:08 CET 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Simplified usage of the internal xmlNsMap. Added a

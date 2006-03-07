@@ -71,7 +71,10 @@ while test $# -gt 0; do
        	;;
 
     --libtool-libs)
-	echo ${libdir}/@XML_LIBTOOLLIBS@
+	if [ -r ${libdir}/@XML_LIBTOOLLIBS@ ]
+	then
+	    echo ${libdir}/@XML_LIBTOOLLIBS@
+	fi
         ;;
 
     --modules)

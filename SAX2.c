@@ -83,15 +83,21 @@ xmlErrValid(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 	ctxt->errNo = error;
 	if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
 	    schannel = ctxt->sax->serror;
-    }
-    __xmlRaiseError(schannel,
-                    ctxt->vctxt.error, ctxt->vctxt.userData,
-                    ctxt, NULL, XML_FROM_DTD, error,
-                    XML_ERR_ERROR, NULL, 0, (const char *) str1,
-		    (const char *) str2, NULL, 0, 0,
-		    msg, (const char *) str1, (const char *) str2);
-    if (ctxt != NULL)
+	__xmlRaiseError(schannel,
+			ctxt->vctxt.error, ctxt->vctxt.userData,
+			ctxt, NULL, XML_FROM_DTD, error,
+			XML_ERR_ERROR, NULL, 0, (const char *) str1,
+			(const char *) str2, NULL, 0, 0,
+			msg, (const char *) str1, (const char *) str2);
 	ctxt->valid = 0;
+    } else {
+	__xmlRaiseError(schannel,
+			NULL, NULL,
+			ctxt, NULL, XML_FROM_DTD, error,
+			XML_ERR_ERROR, NULL, 0, (const char *) str1,
+			(const char *) str2, NULL, 0, 0,
+			msg, (const char *) str1, (const char *) str2);
+    }
 }
 
 /**
@@ -694,7 +700,9 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
     xmlAttributePtr attr;
     xmlChar *name = NULL, *prefix = NULL;
 
-    if (ctx == NULL) return;
+    if ((ctxt == NULL) || (ctxt->myDoc == NULL))
+        return;
+
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2AttributeDecl(%s, %s, %d, %d, %s, ...)\n",
@@ -732,7 +740,7 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
     if (ctxt->vctxt.valid == 0)
 	ctxt->valid = 0;
     if ((attr != NULL) && (ctxt->validate) && (ctxt->wellFormed) &&
-        (ctxt->myDoc != NULL) && (ctxt->myDoc->intSubset != NULL))
+        (ctxt->myDoc->intSubset != NULL))
 	ctxt->valid &= xmlValidateAttributeDecl(&ctxt->vctxt, ctxt->myDoc,
 	                                        attr);
 #endif /* LIBXML_VALID_ENABLED */
@@ -758,7 +766,9 @@ xmlSAX2ElementDecl(void *ctx, const xmlChar * name, int type,
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlElementPtr elem = NULL;
 
-    if (ctx == NULL) return;
+    if ((ctxt == NULL) || (ctxt->myDoc == NULL))
+        return;
+
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
                     "SAX.xmlSAX2ElementDecl(%s, %d, ...)\n", name, type);
@@ -802,7 +812,9 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNotationPtr nota = NULL;
 
-    if (ctx == NULL) return;
+    if ((ctxt == NULL) || (ctxt->myDoc == NULL))
+        return;
+
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2NotationDecl(%s, %s, %s)\n", name, publicId, systemId);
@@ -827,8 +839,8 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
     }
 #ifdef LIBXML_VALID_ENABLED
     if (nota == NULL) ctxt->valid = 0;
-    if (ctxt->validate && ctxt->wellFormed &&
-        ctxt->myDoc && ctxt->myDoc->intSubset)
+    if ((ctxt->validate) && (ctxt->wellFormed) &&
+        (ctxt->myDoc->intSubset != NULL))
 	ctxt->valid &= xmlValidateNotationDecl(&ctxt->vctxt, ctxt->myDoc,
 	                                       nota);
 #endif /* LIBXML_VALID_ENABLED */

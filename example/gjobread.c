@@ -237,12 +237,14 @@ parseGjobFile(char *filename) {
      */
     /* First level we expect just Jobs */
     cur = cur->xmlChildrenNode;
-    while ( cur && xmlIsBlankNode ( cur ) )
-      {
+    while ( cur && xmlIsBlankNode ( cur ) ) {
 	cur = cur -> next;
-      }
-    if ( cur == 0 )
-      return ( NULL );
+    }
+    if ( cur == 0 ) {
+	xmlFreeDoc(doc);
+	free(ret);
+	return ( NULL );
+    }
     if ((xmlStrcmp(cur->name, (const xmlChar *) "Jobs")) || (cur->ns != ns)) {
         fprintf(stderr,"document of the wrong type, was '%s', Jobs expected",
 		cur->name);

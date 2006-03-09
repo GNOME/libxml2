@@ -132,21 +132,16 @@ asciiToUTF8(unsigned char* out, int *outlen,
     while ((in < inend) && (out - outstart + 5 < *outlen)) {
 	c= *in++;
 
-	/* assertion: c is a single UTF-4 value */
         if (out >= outend)
 	    break;
-        if      (c <    0x80) {  *out++=  c;                bits= -6; }
-        else { 
+        if (c < 0x80) {
+	    *out++ = c;
+	} else { 
 	    *outlen = out - outstart;
 	    *inlen = processed - base;
 	    return(-1);
 	}
  
-        for ( ; bits >= 0; bits-= 6) {
-            if (out >= outend)
-	        break;
-            *out++= ((c >> bits) & 0x3F) | 0x80;
-        }
 	processed = (const unsigned char*) in;
     }
     *outlen = out - outstart;
@@ -529,7 +524,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     const unsigned char *const instart = in;
     unsigned short* outstart= out;
     unsigned short* outend;
-    const unsigned char* inend= in+*inlen;
+    const unsigned char* inend;
     unsigned int c, d;
     int trailing;
     unsigned char *tmp;
@@ -542,6 +537,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 	*inlen = 0;
 	return(0);
     }
+    inend= in + *inlen;
     outend = out + (*outlen / 2);
     while (in < inend) {
       d= *in++;
@@ -770,7 +766,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     const unsigned char *const instart = in;
     unsigned short* outstart= out;
     unsigned short* outend;
-    const unsigned char* inend= in+*inlen;
+    const unsigned char* inend;
     unsigned int c, d;
     int trailing;
     unsigned char *tmp;
@@ -783,6 +779,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 	*inlen = 0;
 	return(0);
     }
+    inend= in + *inlen;
     outend = out + (*outlen / 2);
     while (in < inend) {
       d= *in++;
@@ -1702,13 +1699,8 @@ xmlIconvWrapper(iconv_t cd, unsigned char *out, int *outlen,
     icv_inlen = *inlen;
     icv_outlen = *outlen;
     ret = iconv(cd, (char **) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
-    if (in != NULL) {
-        *inlen -= icv_inlen;
-        *outlen -= icv_outlen;
-    } else {
-        *inlen = 0;
-        *outlen = 0;
-    }
+    *inlen -= icv_inlen;
+    *outlen -= icv_outlen;
     if ((icv_inlen != 0) || (ret == -1)) {
 #ifdef EILSEQ
         if (errno == EILSEQ) {

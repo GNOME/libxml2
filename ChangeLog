@@ -1,3 +1,8 @@
+Thu Mar  9 17:47:40 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c catalog.c encoding.c entities.c example/gjobread.c
+	  python/libxml.c: more cleanups based on coverity reports.
+
 Thu Mar  9 15:12:19 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c parser.c parserInternals.c pattern.c uri.c: a bunch

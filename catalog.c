@@ -1200,8 +1200,6 @@ static void
 xmlParseXMLCatalogNode(xmlNodePtr cur, xmlCatalogPrefer prefer,
 	               xmlCatalogEntryPtr parent, xmlCatalogEntryPtr cgroup)
 {
-    xmlChar *uri = NULL;
-    xmlChar *URL = NULL;
     xmlChar *base = NULL;
     xmlCatalogEntryPtr entry = NULL;
 
@@ -1288,10 +1286,6 @@ xmlParseXMLCatalogNode(xmlNodePtr cur, xmlCatalogPrefer prefer,
     }
     if (base != NULL)
 	xmlFree(base);
-    if (uri != NULL)
-	xmlFree(uri);
-    if (URL != NULL)
-	xmlFree(URL);
 }
 
 /**
@@ -3220,7 +3214,7 @@ xmlLoadCatalogs(const char *pathss) {
 	return;
 
     cur = pathss;
-    while ((cur != NULL) && (*cur != 0)) {
+    while (*cur != 0) {
 	while (xmlIsBlank_ch(*cur)) cur++;
 	if (*cur != 0) {
 	    paths = cur;

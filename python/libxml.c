@@ -2323,13 +2323,13 @@ static PyObject *
 libxml_properties(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
     PyObject *resultobj, *obj;
-    xmlNodePtr cur = NULL;
+    xmlNodePtr cur;
     xmlAttrPtr res;
 
     if (!PyArg_ParseTuple(args, (char *) "O:properties", &obj))
         return NULL;
     cur = PyxmlNode_Get(obj);
-    if (cur->type == XML_ELEMENT_NODE)
+    if ((cur != NULL) && (cur->type == XML_ELEMENT_NODE))
         res = cur->properties;
     else
         res = NULL;

@@ -1,3 +1,7 @@
+Thu Mar  9 09:42:10 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.bcb: added schematron as pointed out by Eric Zurcher
+
 Tue Mar  7 09:50:09 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xml2-config.in: fix Red Hat bug #184170

@@ -136,6 +136,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\relaxng.obj\
 	$(XML_INTDIR)\SAX.obj\
 	$(XML_INTDIR)\SAX2.obj\
+	$(XML_INTDIR)\schematron.obj\
 	$(XML_INTDIR)\threads.obj\
 	$(XML_INTDIR)\tree.obj\
 	$(XML_INTDIR)\uri.obj\
@@ -180,6 +181,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\relaxng.obj\
 	$(XML_INTDIR_A)\SAX.obj\
 	$(XML_INTDIR_A)\SAX2.obj\
+	$(XML_INTDIR_A)\schematron.obj\
 	$(XML_INTDIR_A)\threads.obj\
 	$(XML_INTDIR_A)\tree.obj\
 	$(XML_INTDIR_A)\uri.obj\

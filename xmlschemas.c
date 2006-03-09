@@ -2232,6 +2232,8 @@ xmlSchemaInternalErr2(xmlSchemaAbstractCtxtPtr actxt,
 {
     xmlChar *msg = NULL;
 
+    if (actxt == NULL)
+        return;
     msg = xmlStrdup(BAD_CAST "Internal error: ");
     msg = xmlStrcat(msg, BAD_CAST funcName);
     msg = xmlStrcat(msg, BAD_CAST ", ");    
@@ -2820,9 +2822,15 @@ xmlSchemaPCustomAttrErr(xmlSchemaParserCtxtPtr ctxt,
 	des = *ownerDes;
     } else
 	des = *ownerDes;
-    xmlSchemaPErrExt(ctxt, (xmlNodePtr) attr, error, NULL, NULL, NULL,
-	"%s, attribute '%s': %s.\n",
-	BAD_CAST des, attr->name, (const xmlChar *) msg, NULL, NULL);
+    if (attr == NULL) {
+	xmlSchemaPErrExt(ctxt, NULL, error, NULL, NULL, NULL,
+	    "%s, attribute '%s': %s.\n",
+	    BAD_CAST des, "Unknown", (const xmlChar *) msg, NULL, NULL);
+    } else {
+	xmlSchemaPErrExt(ctxt, (xmlNodePtr) attr, error, NULL, NULL, NULL,
+	    "%s, attribute '%s': %s.\n",
+	    BAD_CAST des, attr->name, (const xmlChar *) msg, NULL, NULL);
+    }
     if (ownerDes == NULL)
 	FREE_AND_NULL(des);
 }
@@ -7991,7 +7999,10 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	* TODO: Call xmlPatterncompile with different options for selector/
 	* field.
 	*/
-	nsList = xmlGetNsList(attr->doc, attr->parent);
+	if (attr == NULL)
+	    nsList == NULL;
+	else
+	    nsList = xmlGetNsList(attr->doc, attr->parent);
 	/*
 	* Build an array of prefixes and namespaces.
 	*/
@@ -15505,8 +15516,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 			if (baseMember == NULL) {
 			    PERROR_INT("xmlSchemaCheckCOSSTRestricts",
 			    "different number of member types in base");
-			}
-			if ((member->type != baseMember->type) &&
+			} else if ((member->type != baseMember->type) &&
 			    (xmlSchemaCheckCOSSTDerivedOK(ACTXT_CAST pctxt,
 				member->type, baseMember->type, 0) != 0)) {
 			    xmlChar *strBMT = NULL, *strBT = NULL;
@@ -24592,7 +24602,7 @@ static int
 xmlSchemaValidateElemDecl(xmlSchemaValidCtxtPtr vctxt)
 {
     xmlSchemaElementPtr elemDecl = vctxt->inode->decl;
-    xmlSchemaTypePtr actualType = WXS_ELEM_TYPEDEF(elemDecl);
+    xmlSchemaTypePtr actualType;
 
     /*
     * cvc-elt (3.3.4) : 1
@@ -24602,6 +24612,7 @@ xmlSchemaValidateElemDecl(xmlSchemaValidCtxtPtr vctxt)
 	    "No matching declaration available");
         return (vctxt->err);
     }
+    actualType = WXS_ELEM_TYPEDEF(elemDecl);
     /*
     * cvc-elt (3.3.4) : 2
     */
@@ -27460,7 +27471,7 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
 	    /*
 	    * Process character content.
 	    */
-	    if (ielem->flags & XML_SCHEMA_ELEM_INFO_EMPTY)
+	    if ((ielem != NULL) && (ielem->flags & XML_SCHEMA_ELEM_INFO_EMPTY))
 		ielem->flags ^= XML_SCHEMA_ELEM_INFO_EMPTY;
 	    ret = xmlSchemaVPushText(vctxt, node->type, node->content,
 		-1, XML_SCHEMA_PUSH_TEXT_PERSIST, NULL);
@@ -27991,6 +28002,8 @@ static void
 referenceSplit(void *ctx, const xmlChar *name)
 {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
+    if (ctxt == NULL)
+        return;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
         (ctxt->user_sax->reference != NULL))
 	ctxt->user_sax->reference(ctxt->user_data, name);

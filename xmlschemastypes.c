@@ -237,6 +237,9 @@ xmlSchemaNewMinLengthFacet(int value)
     xmlSchemaFacetPtr ret;
 
     ret = xmlSchemaNewFacet();
+    if (ret == NULL) {
+        return(NULL);
+    }
     ret->type = XML_SCHEMA_FACET_MINLENGTH;
     ret->val = xmlSchemaNewValue(XML_SCHEMAS_NNINTEGER);
     ret->val->value.decimal.lo = value;
@@ -1390,11 +1393,12 @@ _xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
  */
 static int
 _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
-    const xmlChar *cur = *str;
+    const xmlChar *cur;
     int ret = 0;
 
     if (str == NULL)
 	return -1;
+    cur = *str;
 
     switch (*cur) {
     case 0:
@@ -2385,9 +2389,6 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_DOUBLE:{
                 const xmlChar *cur = value;
                 int neg = 0;
-
-                if (cur == NULL)
-                    goto return1;
 
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
@@ -3818,6 +3819,14 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
             long tyr  = r->year + (long)FQUOTIENT_RANGE((int)r->mon-1, 1, 13);
             if (tyr == 0)
                 tyr--;
+	    /*
+	     * Coverity detected an overrun in daysInMonth 
+	     * of size 12 at position 12 with index variable "((r)->mon - 1)"
+	     */
+	    if (tmon < 0)
+	        tmon = 0;
+	    if (tmon > 12)
+	        tmon = 12;
             tempdays += MAX_DAYINMONTH(tyr, tmon);
             carry = -1;
         } else if (tempdays > (long) MAX_DAYINMONTH(r->year, r->mon)) {

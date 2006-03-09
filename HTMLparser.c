@@ -3389,9 +3389,9 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     const xmlChar *name;
     const xmlChar *attname;
     xmlChar *attvalue;
-    const xmlChar **atts = ctxt->atts;
+    const xmlChar **atts;
     int nbatts = 0;
-    int maxatts = ctxt->maxatts;
+    int maxatts;
     int meta = 0;
     int i;
 
@@ -3402,6 +3402,9 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     }
     if (CUR != '<') return -1;
     NEXT;
+
+    atts = ctxt->atts;
+    maxatts = ctxt->maxatts;
 
     GROW;
     name = htmlParseHTMLName(ctxt);
@@ -3963,7 +3966,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	/*
 	 * Capture end position and add node
 	 */
-	if ( currentNode != NULL && ctxt->record_info ) {
+	if (ctxt->record_info) {
 	   node_info.end_pos = ctxt->input->consumed +
 			      (CUR_PTR - ctxt->input->base);
 	   node_info.end_line = ctxt->input->line;

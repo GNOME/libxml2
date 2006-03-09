@@ -1078,10 +1078,12 @@ xmlURIEscape(const xmlChar * str)
 static int
 xmlParseURIFragment(xmlURIPtr uri, const char **str)
 {
-    const char *cur = *str;
-
+    const char *cur;
+    
     if (str == NULL)
         return (-1);
+
+    cur = *str;
 
     while (IS_URIC(cur) || IS_UNWISE(cur))
         NEXT(cur);
@@ -1111,10 +1113,12 @@ xmlParseURIFragment(xmlURIPtr uri, const char **str)
 static int
 xmlParseURIQuery(xmlURIPtr uri, const char **str)
 {
-    const char *cur = *str;
+    const char *cur;
 
     if (str == NULL)
         return (-1);
+
+    cur = *str;
 
     while ((IS_URIC(cur)) ||
            ((uri != NULL) && (uri->cleanup & 1) && (IS_UNWISE(cur))))

@@ -941,7 +941,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	case XML_CHAR_ENCODING_ERROR:
 	    __xmlErrEncoding(ctxt, XML_ERR_UNKNOWN_ENCODING,
 	                   "encoding unknown\n", NULL, NULL);
-	    break;
+	    return(-1);
 	case XML_CHAR_ENCODING_NONE:
 	    /* let's assume it's UTF-8 without the XML decl */
 	    ctxt->charset = XML_CHAR_ENCODING_UTF8;
@@ -972,7 +972,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
          *has also been converted into
          *an UTF-8 BOM. Let's skip that BOM.
          */
-        if ((ctxt->input != NULL) &&
+        if ((ctxt->input != NULL) && (ctxt->input->cur != NULL) &&
             (ctxt->input->cur[0] == 0xEF) &&
             (ctxt->input->cur[1] == 0xBB) &&
             (ctxt->input->cur[2] == 0xBF)) {
@@ -988,15 +988,6 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	 * Default handlers.
 	 */
 	switch (enc) {
-	    case XML_CHAR_ENCODING_ERROR:
-		__xmlErrEncoding(ctxt, XML_ERR_UNKNOWN_ENCODING,
-			       "encoding unknown\n", NULL, NULL);
-		break;
-	    case XML_CHAR_ENCODING_NONE:
-		/* let's assume it's UTF-8 without the XML decl */
-		ctxt->charset = XML_CHAR_ENCODING_UTF8;
-		return(0);
-	    case XML_CHAR_ENCODING_UTF8:
 	    case XML_CHAR_ENCODING_ASCII:
 		/* default encoding, no conversion should be needed */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
@@ -1052,6 +1043,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		 */
 		if ((ctxt->inputNr == 1) &&
 		    (ctxt->encoding == NULL) &&
+		    (ctxt->input != NULL) &&
 		    (ctxt->input->encoding != NULL)) {
 		    ctxt->encoding = xmlStrdup(ctxt->input->encoding);
 		}
@@ -1072,6 +1064,8 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 			       "encoding not supported %s\n",
 			       BAD_CAST "EUC-JP", NULL);
 		break;
+	    default:
+	        break;
 	}
     }
     if (handler == NULL)
@@ -1466,11 +1460,9 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     }
 
     inputStream = xmlNewInputStream(ctxt);
-    if (inputStream == NULL) {
-	if (directory != NULL) xmlFree((char *) directory);
-	if (URI != NULL) xmlFree((char *) URI);
+    if (inputStream == NULL)
 	return(NULL);
-    }
+
     inputStream->buf = buf;
     inputStream = xmlCheckHTTPInput(ctxt, inputStream);
     if (inputStream == NULL)
@@ -1922,8 +1914,10 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
     /* Find pos and check to see if node is already in the sequence */
     pos = xmlParserFindNodeInfoIndex(&ctxt->node_seq, (xmlNodePtr)
                                      info->node);
-    if (pos < ctxt->node_seq.length
-        && ctxt->node_seq.buffer[pos].node == info->node) {
+
+    if ((pos < ctxt->node_seq.length) && 
+        (ctxt->node_seq.buffer != NULL) &&
+        (ctxt->node_seq.buffer[pos].node == info->node)) {
         ctxt->node_seq.buffer[pos] = *info;
     }
 

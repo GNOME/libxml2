@@ -624,8 +624,6 @@ restart:
 		    goto rollback;
 		node = node->parent;
 		while (node != NULL) {
-		    if (node == NULL)
-			goto rollback;
 		    if ((node->type == XML_ELEMENT_NODE) &&
 			(step->value[0] == node->name[0]) &&
 			(xmlStrEqual(step->value, node->name))) {
@@ -1183,10 +1181,6 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	NEXT;
 	PUSH(XML_OP_ALL, token, NULL);
     } else {
-	if (name == NULL) {
-	    ctxt->error = 1;
-	    goto error;
-	}
 	PUSH(XML_OP_ELEM, name, NULL);
     }
     return;

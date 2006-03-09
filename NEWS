@@ -21,8 +21,8 @@ http://cvs.gnome.org/viewcvs/libxml2/
     --with-minimum compilation fixes (William Brack), error case handling fix
     on Solaris (Albert Chin), don't use 'list' as parameter name reported by
     Samuel Diaz Garcia, more old Unices portability fixes (Albert Chin),
-    MinGW compilation (Mark Junker), HP-UX compiler warnings (Rick Jones),
-  
+    MinGW compilation (Mark Junker), HP-UX compiler warnings (Rick
+  Jones),
    - code cleanup: xmlReportError (Adrian Mouat), remove xmlBufferClose
     (Geert Jansen), unreachable code (Oleksandr Kononenko), refactoring
     parsing code (Bjorn Reese)
@@ -55,10 +55,9 @@ http://cvs.gnome.org/viewcvs/libxml2/
     standalone attribute was found, add xmlSchemaSetParserStructuredErrors()
     (Kasimier Buchcik), add xmlTextReaderSchemaValidateCtxt() to API
     (Kasimier), handle gzipped HTTP resources (Gary Coady), add
-    htmlDocDumpMemoryFormat. (Rob Richards), 
+    htmlDocDumpMemoryFormat. (Rob Richards),
    - documentation: typo (Michael Day), libxml man page (Albert Chin), save
     function to XML buffer (Geert Jansen), small doc fix (Aron Stansvik),
-  
 
 
 2.6.22: Sep 12 2005:

@@ -1,3 +1,8 @@
+Thu Mar  9 15:12:19 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c parser.c parserInternals.c pattern.c uri.c: a bunch
+	  of small cleanups based on coverity reports.
+
 Thu Mar  9 09:42:10 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.bcb: added schematron as pointed out by Eric Zurcher

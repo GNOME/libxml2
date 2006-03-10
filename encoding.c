@@ -126,7 +126,6 @@ asciiToUTF8(unsigned char* out, int *outlen,
     unsigned char* outend = out + *outlen;
     const unsigned char* inend;
     unsigned int c;
-    int bits;
 
     inend = in + (*inlen);
     while ((in < inend) && (out - outstart + 5 < *outlen)) {

@@ -1,3 +1,8 @@
+Fri Mar 10 08:40:55 EST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c encoding.c xmlschemas.c xpath.c xpointer.c: fix a few
+	  warning raised by gcc-4.1 and latests changes
+
 Fri Mar 10 01:34:42 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* runtest.c schematron.c testAutomata.c tree.c valid.c xinclude.c

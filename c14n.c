@@ -1139,6 +1139,7 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
     /* 
      * Save ns_rendered stack position
      */
+    memset(&state, 0, sizeof(state));
     xmlC14NVisibleNsStackSave(ctx->ns_rendered, &state);
 
     if (visible) {	

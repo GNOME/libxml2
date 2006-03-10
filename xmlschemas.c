@@ -2825,7 +2825,8 @@ xmlSchemaPCustomAttrErr(xmlSchemaParserCtxtPtr ctxt,
     if (attr == NULL) {
 	xmlSchemaPErrExt(ctxt, NULL, error, NULL, NULL, NULL,
 	    "%s, attribute '%s': %s.\n",
-	    BAD_CAST des, "Unknown", (const xmlChar *) msg, NULL, NULL);
+	    BAD_CAST des, (const xmlChar *) "Unknown",
+	    (const xmlChar *) msg, NULL, NULL);
     } else {
 	xmlSchemaPErrExt(ctxt, (xmlNodePtr) attr, error, NULL, NULL, NULL,
 	    "%s, attribute '%s': %s.\n",
@@ -8000,7 +8001,7 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	* field.
 	*/
 	if (attr == NULL)
-	    nsList == NULL;
+	    nsList = NULL;
 	else
 	    nsList = xmlGetNsList(attr->doc, attr->parent);
 	/*

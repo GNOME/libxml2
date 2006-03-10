@@ -8872,9 +8872,9 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
     } else {
 	xmlChar *name = NULL;
 	const xmlChar *prefix = NULL;
-	xmlXPathTestVal test;
+	xmlXPathTestVal test = (xmlXPathTestVal) 0;
 	xmlXPathAxisVal axis = (xmlXPathAxisVal) 0;
-	xmlXPathTypeVal type;
+	xmlXPathTypeVal type = (xmlXPathTypeVal) 0;
 	int op1;
 
 	/*
@@ -8937,8 +8937,6 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 
 	CHECK_ERROR;
 
-	type = (xmlXPathTypeVal) 0;
-	test = (xmlXPathTestVal) 0;
 	name = xmlXPathCompNodeTest(ctxt, &test, &type, &prefix, name);
 	if (test == 0)
 	    return;

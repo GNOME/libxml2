@@ -2759,8 +2759,8 @@ xmlXPtrGetEndPoint(xmlXPathObjectPtr obj, xmlNodePtr *node, int *indx) {
  */
 void
 xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    int i, startindex, endindex, fendindex;
-    xmlNodePtr start, end, fend;
+    int i, startindex, endindex = 0, fendindex;
+    xmlNodePtr start, end = 0, fend;
     xmlXPathObjectPtr set;
     xmlLocationSetPtr oldset;
     xmlLocationSetPtr newset;

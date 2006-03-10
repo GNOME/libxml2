@@ -1,3 +1,9 @@
+Fri Mar 10 01:34:42 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* runtest.c schematron.c testAutomata.c tree.c valid.c xinclude.c
+	  xmlcatalog.c xmlreader.c xmlregexp.c xpath.c: end of first
+	  pass on coverity reports.
+
 Thu Mar  9 19:36:14 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c xmlschemas.c xmlschemastypes.c: more cleanups based

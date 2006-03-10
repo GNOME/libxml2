@@ -1044,11 +1044,10 @@ done:
         if (doc != NULL)
 	    xmlFreeDoc(doc);
     }
-    if (href == NULL)
-        xmlFree(href);
-    if (base == NULL)
+    xmlFree(href);
+    if (base != NULL)
         xmlFree(base);
-    if (URI == NULL)
+    if (URI != NULL)
         xmlFree(URI);
     return(ret);
 }
@@ -1207,13 +1206,15 @@ exit:
     if (!preserve) {
 	xmlFreeDoc(doc);
     }
-    if (ctxt->nberrors != 0) {
-        xmlSchematronFree(ret);
-        ret = NULL;
-    } else {
-        ret->namespaces = ctxt->namespaces;
-        ret->nbNamespaces = ctxt->nbNamespaces;
-	ctxt->namespaces = NULL;
+    if (ret != NULL) {
+	if (ctxt->nberrors != 0) {
+	    xmlSchematronFree(ret);
+	    ret = NULL;
+	} else {
+	    ret->namespaces = ctxt->namespaces;
+	    ret->nbNamespaces = ctxt->nbNamespaces;
+	    ctxt->namespaces = NULL;
+	}
     }
     return (ret);
 }
@@ -1519,7 +1520,7 @@ xmlSchematronNextNode(xmlNodePtr cur) {
     
     do {
 	cur = cur->parent;
-	if (cur == NULL) return(NULL);
+	if (cur == NULL) break;
 	if (cur->type == XML_DOCUMENT_NODE) return(NULL);
 	if (cur->next != NULL) {
 	    cur = cur->next;

@@ -388,9 +388,11 @@ xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
 	if (ctxt->incTab[i] != NULL)
 	    xmlXIncludeFreeRef(ctxt->incTab[i]);
     }
-    for (i = 0;i < ctxt->txtNr;i++) {
-	if (ctxt->txturlTab[i] != NULL)
-	    xmlFree(ctxt->txturlTab[i]);
+    if (ctxt->txturlTab != NULL) {
+	for (i = 0;i < ctxt->txtNr;i++) {
+	    if (ctxt->txturlTab[i] != NULL)
+		xmlFree(ctxt->txturlTab[i]);
+	}
     }
     if (ctxt->incTab != NULL)
 	xmlFree(ctxt->incTab);
@@ -1401,9 +1403,14 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
     if (URL == NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
-	               XML_XINCLUDE_HREF_URI,
-		       "invalid value URI %s\n", url);
+        if (ctxt->incTab != NULL)
+	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
+			   XML_XINCLUDE_HREF_URI,
+			   "invalid value URI %s\n", url);
+	else
+	    xmlXIncludeErr(ctxt, NULL,
+			   XML_XINCLUDE_HREF_URI,
+			   "invalid value URI %s\n", url);
 	if (fragment != NULL)
 	    xmlFree(fragment);
 	return(-1);
@@ -2315,10 +2322,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
 	if (ret < 0)
 	    return(-1);
     }
-    if (tree)
-	start = ctxt->incNr;
-    else
-        start = ctxt->incBase;
+    start = ctxt->incNr;
 
     /*
      * First phase: lookup the elements in the document

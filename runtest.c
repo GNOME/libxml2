@@ -617,7 +617,7 @@ static int compareFiles(const char *r1, const char *r2) {
     while (1) {
         res1 = read(fd1, bytes1, 4096);
         res2 = read(fd2, bytes2, 4096);
-	if (res1 != res2) {
+	if ((res1 != res2) || (res1 < 0)) {
 	    close(fd1);
 	    close(fd2);
 	    return(1);
@@ -2545,7 +2545,7 @@ static void
 handleURI(const char *str, const char *base, FILE *o) {
     int ret;
     xmlURIPtr uri;
-    xmlChar *res = NULL, *parsed = NULL;
+    xmlChar *res = NULL;
 
     uri = xmlCreateURI();
 
@@ -2568,8 +2568,6 @@ handleURI(const char *str, const char *base, FILE *o) {
     }
     if (res != NULL)
 	xmlFree(res);
-    if (parsed != NULL)
-	xmlFree(parsed);
     xmlFreeURI(uri);
 }
 

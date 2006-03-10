@@ -53,6 +53,7 @@ testRegexpFile(const char *filename) {
         xmlGenericError(xmlGenericErrorContext,
 		"Cannot create automata\n");
 	fclose(input);
+	return;
     }
     states[0] = xmlAutomataGetInitState(am);
     if (states[0] == NULL) {
@@ -60,6 +61,7 @@ testRegexpFile(const char *filename) {
 		"Cannot get start state\n");
 	xmlFreeAutomata(am);
 	fclose(input);
+	return;
     }
     ret = 0;
 

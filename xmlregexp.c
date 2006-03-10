@@ -3010,6 +3010,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 	 * if we are working on a range like "AB{0,2}", where B is not present,
 	 * we don't want to break.
 	 */
+	len = 1;
 	if ((exec->inputString[exec->index] == 0) && (exec->counts == NULL)) {
 	    /*
 	     * if there is a transition, we must check if
@@ -3038,6 +3039,10 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		int count;
 		xmlRegCounterPtr counter;
 
+		if (exec->counts == NULL) {
+		    exec->status = -1;
+		    goto error;
+		}
 		/*
 		 * A counted transition.
 		 */
@@ -3067,6 +3072,10 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		     * before potentially saving and rollback
 		     */
 		    if (trans->counter >= 0) {
+			if (exec->counts == NULL) {
+			    exec->status = -1;
+			    goto error;
+			}
 #ifdef DEBUG_REGEXP_EXEC
 			printf("Increasing count %d\n", trans->counter);
 #endif
@@ -3122,6 +3131,10 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 			goto rollback;
 		    }
 		    if (trans->counter >= 0) {
+			if (exec->counts == NULL) {
+			    exec->status = -1;
+			    goto error;
+			}
 #ifdef DEBUG_REGEXP_EXEC
 			printf("Decreasing count %d\n", trans->counter);
 #endif
@@ -3158,6 +3171,10 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    xmlFARegExecSave(exec);
 		}
 		if (trans->counter >= 0) {
+		    if (exec->counts == NULL) {
+		        exec->status = -1;
+			goto error;
+		    }
 #ifdef DEBUG_REGEXP_EXEC
 		    printf("Increasing count %d\n", trans->counter);
 #endif
@@ -3165,6 +3182,10 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		}
 		if ((trans->count >= 0) &&
 		    (trans->count < REGEXP_ALL_COUNTER)) {
+		    if (exec->counts == NULL) {
+		        exec->status = -1;
+			goto error;
+		    }
 #ifdef DEBUG_REGEXP_EXEC
 		    printf("resetting count %d on transition\n",
 		           trans->count);
@@ -3200,6 +3221,7 @@ rollback:
 progress:
 	continue;
     }
+error:
     if (exec->rollbacks != NULL) {
 	if (exec->counts != NULL) {
 	    int i;
@@ -3606,6 +3628,7 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 			}
 			if ((count >= counter->min) &&
 			    (count < counter->max) &&
+			    (t->atom != NULL) &&
 			    (xmlStrEqual(value, t->atom->valuep))) {
 			    ret = 1;
 			    break;
@@ -4035,15 +4058,16 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 	        /* this should not be reached but ... */
 	        TODO;
 	    } else if (trans->counter >= 0) {
-		xmlRegCounterPtr counter;
+		xmlRegCounterPtr counter = NULL;
 		int count;
 
 		if (err)
 		    count = exec->errCounts[trans->counter];
 		else
 		    count = exec->counts[trans->counter];
-		counter = &exec->comp->counters[trans->counter];
-		if (count < counter->max) {
+		if (exec->comp != NULL)
+		    counter = &exec->comp->counters[trans->counter];
+		if ((counter == NULL) || (count < counter->max)) {
 		    if (atom->neg)
 			values[nb++] = (xmlChar *) atom->valuep2;
 		    else
@@ -4711,6 +4735,7 @@ xmlFAParseCharRef(xmlRegParserCtxtPtr ctxt) {
 	    ((cur >= 'a') && (cur <= 'f')) ||
 	    ((cur >= 'A') && (cur <= 'F'))) {
 	    while (((cur >= '0') && (cur <= '9')) ||
+	           ((cur >= 'a') && (cur <= 'f')) ||
 		   ((cur >= 'A') && (cur <= 'F'))) {
 		if ((cur >= '0') && (cur <= '9'))
 		    ret = ret * 16 + cur - '0';
@@ -5492,9 +5517,9 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
     if ((am == NULL) || (from == NULL) || (token == NULL))
 	return(NULL);
     atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
-    atom->data = data;
     if (atom == NULL)
 	return(NULL);
+    atom->data = data;
     if ((token2 == NULL) || (*token2 == 0)) {
 	atom->valuep = xmlStrdup(token);
     } else {
@@ -5805,10 +5830,7 @@ xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
     }    
     atom->data = data;
     atom->quant = XML_REGEXP_QUANT_ONCEONLY;
-    if (min == 0)
-	atom->min = 1;
-    else
-	atom->min = min;
+    atom->min = min;
     atom->max = max;
     /*
      * associate a counter to the transition.
@@ -5867,10 +5889,7 @@ xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
     atom->valuep = xmlStrdup(token);
     atom->data = data;
     atom->quant = XML_REGEXP_QUANT_ONCEONLY;
-    if (min == 0)
-	atom->min = 1;
-    else
-	atom->min = min;
+    atom->min = min;
     atom->max = max;
     /*
      * associate a counter to the transition.
@@ -6621,7 +6640,9 @@ xmlExpNewAtom(xmlExpCtxtPtr ctxt, const xmlChar *name, int len) {
  */
 xmlExpNodePtr
 xmlExpNewOr(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
-    if ((ctxt == NULL) || (left == NULL) || (right == NULL)) {
+    if (ctxt == NULL)
+        return(NULL);
+    if ((left == NULL) || (right == NULL)) {
         xmlExpFree(ctxt, left);
         xmlExpFree(ctxt, right);
         return(NULL);
@@ -6644,7 +6665,9 @@ xmlExpNewOr(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
  */
 xmlExpNodePtr
 xmlExpNewSeq(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
-    if ((ctxt == NULL) || (left == NULL) || (right == NULL)) {
+    if (ctxt == NULL)
+        return(NULL);
+    if ((left == NULL) || (right == NULL)) {
         xmlExpFree(ctxt, left);
         xmlExpFree(ctxt, right);
         return(NULL);
@@ -6668,7 +6691,9 @@ xmlExpNewSeq(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
  */
 xmlExpNodePtr
 xmlExpNewRange(xmlExpCtxtPtr ctxt, xmlExpNodePtr subset, int min, int max) {
-    if ((ctxt == NULL) || (subset == NULL) || (min < 0) || (max < -1) ||
+    if (ctxt == NULL)
+        return(NULL);
+    if ((subset == NULL) || (min < 0) || (max < -1) ||
         ((max >= 0) && (min > max))) {
 	xmlExpFree(ctxt, subset);
         return(NULL);

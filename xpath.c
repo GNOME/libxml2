@@ -292,11 +292,12 @@ xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
 static void
 xmlXPathPErrMemory(xmlXPathParserContextPtr ctxt, const char *extra)
 {
-    ctxt->error = XPATH_MEMORY_ERROR;
     if (ctxt == NULL)
 	xmlXPathErrMemory(NULL, extra);
-    else
+    else {
+	ctxt->error = XPATH_MEMORY_ERROR;
 	xmlXPathErrMemory(ctxt->context, extra);
+    }
 }
 
 /**
@@ -1112,10 +1113,6 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
 
     fprintf(output, shift);
 
-    if (comp == NULL) {
-	fprintf(output, "Compiled Expression is NULL\n");
-	return;
-    }
     fprintf(output, "Compiled Expression : %d elements\n",
 	    comp->nbStep);
     i = comp->last;
@@ -1452,9 +1449,11 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 		/* Use scientific notation */
 		integer_place = DBL_DIG + EXPONENT_DIGITS + 1;
 		fraction_place = DBL_DIG - 1;
-		snprintf(work, sizeof(work),"%*.*e",
+		size = snprintf(work, sizeof(work),"%*.*e",
 			 integer_place, fraction_place, number);
-		after_fraction = strchr(work + DBL_DIG, 'e');
+		while ((size > 0) && (work[size] != 'e')) size--;
+		after_fraction = work + size;
+
 	    }
 	    else {
 		/* Use regular notation */
@@ -3507,7 +3506,8 @@ xmlXPathCastNumberToString (double val) {
 	} else {
 	    /* could be improved */
 	    char buf[100];
-	    xmlXPathFormatNumber(val, buf, 100);
+	    xmlXPathFormatNumber(val, buf, 99);
+	    buf[99] = 0;
 	    ret = xmlStrdup((const xmlChar *) buf);
 	}
     }
@@ -5516,7 +5516,7 @@ xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     
     do {
         cur = cur->parent;
-	if (cur == NULL) return(NULL);
+	if (cur == NULL) break;
 	if (cur == ctxt->context->node) return(NULL);
 	if (cur->next != NULL) {
 	    cur = cur->next;
@@ -5846,7 +5846,7 @@ xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if (cur->next != NULL) return(cur->next) ;
     do {
         cur = cur->parent;
-        if (cur == NULL) return(NULL);
+        if (cur == NULL) break;
         if (cur == (xmlNodePtr) ctxt->context->doc) return(NULL);
         if (cur->next != NULL) return(cur->next);
     } while (cur != NULL);

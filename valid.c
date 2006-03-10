@@ -4064,9 +4064,11 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	     * element in the external subset.
 	     */
 	    nbId = 0;
-	    table = (xmlAttributeTablePtr) doc->intSubset->attributes;
-	    xmlHashScan3(table, NULL, NULL, attr->elem, (xmlHashScanner)
-		         xmlValidateAttributeIdCallback, &nbId);
+	    if (doc->intSubset != NULL) {
+		table = (xmlAttributeTablePtr) doc->intSubset->attributes;
+		xmlHashScan3(table, NULL, NULL, attr->elem, (xmlHashScanner)
+			     xmlValidateAttributeIdCallback, &nbId);
+	    }
 	}
 	if (nbId > 1) {
 	    

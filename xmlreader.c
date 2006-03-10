@@ -1136,7 +1136,7 @@ xmlTextReaderGetSuccessor(xmlNodePtr cur) {
     if (cur->next != NULL) return(cur->next) ;
     do {
         cur = cur->parent;
-        if (cur == NULL) return(NULL);
+        if (cur == NULL) break;
         if (cur->next != NULL) return(cur->next);
     } while (cur != NULL);
     return(cur);
@@ -1469,11 +1469,11 @@ node_found:
 	    return -1;
 	xmlXIncludeProcessNode(reader->xincctxt, reader->node);
     }
-    if (reader->node->type == XML_XINCLUDE_START) {
+    if ((reader->node != NULL) && (reader->node->type == XML_XINCLUDE_START)) {
         reader->in_xinclude++;
 	goto get_next_node;
     } 
-    if (reader->node->type == XML_XINCLUDE_END) {
+    if ((reader->node != NULL) && (reader->node->type == XML_XINCLUDE_END)) {
         reader->in_xinclude--;
 	goto get_next_node;
     }

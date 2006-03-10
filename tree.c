@@ -5513,6 +5513,11 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	    node->nsDef = cur;
 	    return(cur);
 	}
+	if (doc == NULL) {
+	    doc = node->doc;
+	    if (doc == NULL)
+		return(NULL);
+	}
 	if (doc->oldNs == NULL) {
 	    /*
 	     * Allocate a new Namespace and fill the fields.
@@ -5650,6 +5655,11 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
             node->nsDef = cur;
             return (cur);
         }
+	if (doc == NULL) {
+	    doc = node->doc;
+	    if (doc == NULL)
+		return(NULL);
+	}
         if (doc->oldNs == NULL) {
             /*
              * Allocate a new Namespace and fill the fields.
@@ -8379,7 +8389,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
     xmlNodePtr cur, curElem = NULL;
     xmlNsMapPtr nsMap = NULL;
     xmlNsMapItemPtr mi;
-    xmlNsPtr ns;
+    xmlNsPtr ns = NULL;
     int depth = -1, adoptStr = 1;
     /* gather @parent's ns-decls. */
     int parnsdone = 0;
@@ -8716,8 +8726,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     xmlNodePtr resultClone = NULL, clone = NULL, parentClone = NULL, prevClone = NULL;
     xmlNsPtr cloneNs = NULL, *cloneNsDefSlot = NULL;    
 
-    if ((node == NULL) || (resNode == NULL) ||
-	(sourceDoc == NULL) || (destDoc == NULL))
+    if ((node == NULL) || (resNode == NULL) || (destDoc == NULL))
 	return(-1);
     /*
     * TODO: Initially we support only element-nodes.
@@ -8736,6 +8745,8 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     }
     if (sourceDoc == NULL)
 	sourceDoc = node->doc;    
+    if (sourceDoc == NULL)
+        return (-1);
 
     *resNode = NULL;
    
@@ -9121,7 +9132,8 @@ leave_node:
 	    /*
 	    * Set clone->last.
 	    */
-	    clone->parent->last = clone;
+	    if (clone->parent != NULL)
+		clone->parent->last = clone;
 	    clone = clone->parent;
 	    parentClone = clone->parent; 
 	    /*

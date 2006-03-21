@@ -1,3 +1,11 @@
+Wed Mar 22 00:14:34 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: applied patch from Youri Golovanov fixing bug
+	  #316338 and adding a couple of optimizations in the regexp
+	  compilation engine.
+	* test/regexp/bug316338 result/regexp/bug316338: added regression
+	  tests based on the examples provided in the bug report.
+
 Fri Mar 10 08:40:55 EST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c encoding.c xmlschemas.c xpath.c xpointer.c: fix a few

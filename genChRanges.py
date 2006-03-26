@@ -223,6 +223,7 @@ header.write(
 #define __XML_CHVALID_H__
 
 #include <libxml/xmlversion.h>
+#include <libxml/xmlstring.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -311,7 +312,7 @@ for f in fkeys:
         rangeTable = makeRange(Functs[f][0])
 	numRanges = len(rangeTable)
 	if numRanges >= minTableSize:	# table is worthwhile
-	    header.write("XMLPUBVAR unsigned char %s_tab[256];\n" % f)
+	    header.write("XMLPUBVAR const unsigned char %s_tab[256];\n" % f)
 	    header.write("""
 /**
  * %s_ch:
@@ -323,7 +324,7 @@ for f in fkeys:
 	    header.write("#define %s_ch(c)\t(%s_tab[(c)])\n" % (f, f))
 
 	    # write the constant data to the code file
-	    output.write("unsigned char %s_tab[256] = {\n" % f)
+	    output.write("const unsigned char %s_tab[256] = {\n" % f)
 	    pline = "   "
 	    for n in range(255):
 		pline += " 0x%02x," % Functs[f][0][n]
@@ -490,6 +491,8 @@ xmlCharInRange (unsigned int val, const xmlChRangeGroupPtr rptr) {
     int low, high, mid;
     xmlChSRangePtr sptr;
     xmlChLRangePtr lptr;
+
+    if (rptr == NULL) return(0);
     if (val < 0x10000) {	/* is val in 'short' or 'long'  array? */
 	if (rptr->nbShortRange == 0)
 	    return 0;
@@ -564,8 +567,12 @@ header.write("""
 }
 #endif
 #endif /* __XML_CHVALID_H__ */
-""");
+""")
 
 header.close()
+
+output.write("""#define bottom_chvalid
+#include "elfgcchack.h"
+""")
 output.close()
 

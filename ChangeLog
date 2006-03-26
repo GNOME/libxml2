@@ -1,3 +1,8 @@
+Mon Mar 27 00:51:40 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* chvalid.c genChRanges.py include/libxml/chvalid.h: fixed bug
+	  #335603 and resync'ed genChRanges.py to the expected output.
+
 Wed Mar 22 00:14:34 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: applied patch from Youri Golovanov fixing bug

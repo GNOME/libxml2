@@ -252,15 +252,15 @@ typedef xmlChRangeGroup *xmlChRangeGroupPtr;
 struct _xmlChRangeGroup {
     int			nbShortRange;
     int			nbLongRange;
-    xmlChSRangePtr	shortRange;	/* points to an array of ranges */
-    xmlChLRangePtr	longRange;
+    const xmlChSRange	*shortRange;	/* points to an array of ranges */
+    const xmlChLRange	*longRange;
 };
 
 /**
  * Range checking routine
  */
 XMLPUBFUN int XMLCALL
-		xmlCharInRange(unsigned int val, const xmlChRangeGroupPtr group);
+		xmlCharInRange(unsigned int val, const xmlChRangeGroup *group);
 
 """ % (date, sources));
 output.write(
@@ -424,7 +424,7 @@ for f in fkeys:
 
 
     if len(Functs[f][1]) > 0:
-	header.write("XMLPUBVAR xmlChRangeGroup %sGroup;\n" % f)
+	header.write("XMLPUBVAR const xmlChRangeGroup %sGroup;\n" % f)
 
 
 #
@@ -440,7 +440,7 @@ for f in fkeys:
 	for rg in rangeTable:
 	    if rg[1] < 0x10000:	# if short value
 		if numShort == 0:	# first occurence
-		    pline = "static xmlChSRange %s_srng[] = { " % f
+		    pline = "static const xmlChSRange %s_srng[] = { " % f
 		else:
 		    pline += ", "
 		numShort += 1
@@ -452,7 +452,7 @@ for f in fkeys:
 		if numLong == 0:	# first occurence
 		    if numShort > 0:	# if there were shorts, finish them off
 			output.write(pline + "};\n")
-		    pline = "static xmlChLRange %s_lrng[] = { " % f
+		    pline = "static const xmlChLRange %s_lrng[] = { " % f
 		else:
 		    pline += ", "
 		numLong += 1
@@ -462,7 +462,7 @@ for f in fkeys:
 		pline += "{0x%x, 0x%x}" % (rg[0], rg[1])
 	output.write(pline + "};\n")	# finish off last group
 
-	pline = "xmlChRangeGroup %sGroup =\n\t{%d, %d, " % (f, numShort, numLong)
+	pline = "const xmlChRangeGroup %sGroup =\n\t{%d, %d, " % (f, numShort, numLong)
 	if numShort > 0:
 	    pline += "%s_srng" % f
 	else:
@@ -487,10 +487,10 @@ output.write(
  * Returns: true if character valid, false otherwise
  */
 int
-xmlCharInRange (unsigned int val, const xmlChRangeGroupPtr rptr) {
+xmlCharInRange (unsigned int val, const xmlChRangeGroup *rptr) {
     int low, high, mid;
-    xmlChSRangePtr sptr;
-    xmlChLRangePtr lptr;
+    const xmlChSRange *sptr;
+    const xmlChLRange *lptr;
 
     if (rptr == NULL) return(0);
     if (val < 0x10000) {	/* is val in 'short' or 'long'  array? */

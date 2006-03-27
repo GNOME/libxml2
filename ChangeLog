@@ -1,3 +1,11 @@
+Mon Mar 27 11:23:39 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* chvalid.c genChRanges.py genUnicode.py xmlunicode.c
+	  include/libxml/chvalid.h include/libxml/xmlunicode.h: applied
+	  patches from Aivars Kalvans to make unicode tables const, fixes
+	  bug #336096, this also updates to Unicode 4.01 final with a couple
+	  of character ranges fixes.
+
 Mon Mar 27 00:51:40 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* chvalid.c genChRanges.py include/libxml/chvalid.h: fixed bug

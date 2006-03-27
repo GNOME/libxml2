@@ -3010,7 +3010,7 @@ xmlSchemaPIllegalFacetListUnionErr(xmlSchemaParserCtxtPtr ctxt,
 			  xmlSchemaTypePtr type,
 			  xmlSchemaFacetPtr facet)
 {
-    xmlChar *des = NULL, *strT = NULL;
+    xmlChar *des = NULL;
 
     xmlSchemaFormatItemForReport(&des, NULL, WXS_BASIC_CAST type,
 	type->node);
@@ -3018,7 +3018,6 @@ xmlSchemaPIllegalFacetListUnionErr(xmlSchemaParserCtxtPtr ctxt,
 	"%s: The facet '%s' is not allowed.\n",
 	BAD_CAST des, xmlSchemaFacetTypeToString(facet->type));
     FREE_AND_NULL(des);
-    FREE_AND_NULL(strT);
 }
 
 /**
@@ -6963,11 +6962,6 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (ret == NULL)
         return (NULL);
     xmlSchemaPValAttrID(ctxt, node, BAD_CAST "id");
-
-     if (IS_SCHEMA(child, "annotation")) {
-        ret->annot = xmlSchemaParseAnnotation(ctxt, child, 1);
-        child = child->next;
-    }
 
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {

@@ -1,3 +1,8 @@
+Mon Mar 27 11:44:07 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: removed unused code or variables, from Stefan Kost
+	  fixing #336163 and #336164
+
 Mon Mar 27 11:38:21 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: applied patch from Stefan Kost fixing #336160

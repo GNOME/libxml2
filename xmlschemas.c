@@ -11502,7 +11502,7 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		    "value '%s' of the 'base' attribute does not match the "
 		    "type's designation '%s'",
 		    xmlSchemaFormatQName(&str1, type->baseNs, type->base),
-		    xmlSchemaFormatQName(&str1, type->targetNamespace,
+		    xmlSchemaFormatQName(&str2, type->targetNamespace,
 			type->name), NULL);
 		FREE_AND_NULL(str1);
 		FREE_AND_NULL(str2);

@@ -1,3 +1,7 @@
+Mon Mar 27 11:38:21 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: applied patch from Stefan Kost fixing #336160
+
 Mon Mar 27 11:23:39 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* chvalid.c genChRanges.py genUnicode.py xmlunicode.c

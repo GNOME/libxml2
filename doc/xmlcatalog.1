@@ -124,7 +124,8 @@ super catalog.
 .TP
 \fB\-\-shell\fR
 Run a shell allowing interactive queries on catalog file
-\fICATALOGFILE\fR.
+\fICATALOGFILE\fR. For the set of available commands see
+the section called \(lqSHELL COMMANDS\(rq.
 .TP
 \fB\-\-sgml\fR
 Uses
@@ -204,7 +205,22 @@ default catalog.
 .SH "DIAGNOSTICS"
 .PP
 \fBxmlcatalog\fR's return codes provide information that can be used when calling it from scripts.
-Errorcode: \fB0\fRError: No errorErrorcode: \fB1\fRError: Failed to remove an entry from the catalogErrorcode: \fB2\fRError: Failed to save to the catalog, check file permissionsErrorcode: \fB3\fRError: Failed to add an entry to the catalogErrorcode: \fB4\fRError: Failed to lookup and entry in the catalog.SH "SEE ALSO"
+.TP
+\fB0\fR
+No error
+.TP
+\fB1\fR
+Failed to remove an entry from the catalog
+.TP
+\fB2\fR
+Failed to save to the catalog, check file permissions
+.TP
+\fB3\fR
+Failed to add an entry to the catalog
+.TP
+\fB4\fR
+Failed to lookup an entry in the catalog
+.SH "SEE ALSO"
 .PP
 \fBlibxml\fR(3)
 .SH "AUTHOR"

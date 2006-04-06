@@ -232,7 +232,8 @@
 	<listitem>
 		<para>
 			Run a shell allowing interactive queries on catalog
-			file <replaceable>CATALOGFILE</replaceable>.
+			file <replaceable>CATALOGFILE</replaceable>. For the set of available
+			commands see <xref linkend="shell"/>.
 		</para>
 	</listitem>
 		</varlistentry>
@@ -393,31 +394,44 @@
 		&xmlcatalog;'s return codes provide information that can be used when
 		calling it from scripts.
 	</para>
-	<segmentedlist>
-		<!-- <title>Error codes</title> -->
-		<segtitle>Errorcode</segtitle>
-		<segtitle>Error</segtitle>
-		<seglistitem>
-			<seg><errorcode>0</errorcode></seg>
-			<seg>No error</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>1</errorcode></seg>
-			<seg>Failed to remove an entry from the catalog</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>2</errorcode></seg>
-			<seg>Failed to save to the catalog, check file permissions</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>3</errorcode></seg>
-			<seg>Failed to add an entry to the catalog</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>4</errorcode></seg>
-			<seg>Failed to lookup and entry in the catalog</seg>
-		</seglistitem>
-	</segmentedlist>
+	<variablelist>
+
+		<varlistentry>
+	<term><errorcode>0</errorcode></term>
+	<listitem>
+		<para>No error</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>1</errorcode></term>
+	<listitem>
+		<para>Failed to remove an entry from the catalog</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>2</errorcode></term>
+	<listitem>
+		<para>Failed to save to the catalog, check file permissions</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>3</errorcode></term>
+	<listitem>
+		<para>Failed to add an entry to the catalog</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>4</errorcode></term>
+	<listitem>
+		<para>Failed to lookup an entry in the catalog</para>
+	</listitem>
+		</varlistentry>
+
+	</variablelist>
 </refsect1>
 
 <refsect1 id="seealso">

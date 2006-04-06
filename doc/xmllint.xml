@@ -813,51 +813,86 @@
 	<para>
 		On the completion of execution, &xmllint; returns the following error codes:
 	</para>
-	<segmentedlist>
-		<!-- <title>Error codes</title> -->
-		<segtitle>Errorcode</segtitle>
-		<segtitle>Error</segtitle>
-		<seglistitem>
-			<seg><errorcode>0</errorcode></seg>
-			<seg>No error</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>1</errorcode></seg>
-			<seg>Unclassified</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>2</errorcode></seg>
-			<seg>Error in DTD</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>3</errorcode></seg>
-			<seg>Validation error</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>4</errorcode></seg>
-			<seg>Validation error</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>5</errorcode></seg>
-			<seg>Error in schema compilation</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>6</errorcode></seg>
-			<seg>Error writing output</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>7</errorcode></seg>
-			<seg>Error in pattern (generated when <option>--pattern</option> option is used)</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>8</errorcode></seg>
-			<seg>Error in reader registration (generated when <option>--chkregister</option> option is used)</seg>
-		</seglistitem>
-		<seglistitem>
-			<seg><errorcode>9</errorcode></seg>
-			<seg>Out of memory</seg>
-		</seglistitem>
-	</segmentedlist>
+	<!-- better use segmentedlist element later,
+	     which is currently only supported in snapshots -->
+	<variablelist>
+
+		<varlistentry>
+	<term><errorcode>0</errorcode></term>
+	<listitem>
+		<para>No error</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>1</errorcode></term>
+	<listitem>
+		<para>Unclassified</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>2</errorcode></term>
+	<listitem>
+		<para>Error in <acronym>DTD</acronym></para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>3</errorcode></term>
+	<listitem>
+		<para>Validation error</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>4</errorcode></term>
+	<listitem>
+		<para>Validation error</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>5</errorcode></term>
+	<listitem>
+		<para>Error in schema compilation</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>6</errorcode></term>
+	<listitem>
+		<para>Error writing output</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>7</errorcode></term>
+	<listitem>
+		<para>
+			Error in pattern (generated when <option>--pattern</option> option is used)
+		</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>8</errorcode></term>
+	<listitem>
+		<para>
+			Error in Reader registration (generated
+			when <option>--chkregister</option> option is used)
+		</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><errorcode>9</errorcode></term>
+	<listitem>
+		<para>Out of memory error</para>
+	</listitem>
+		</varlistentry>
+
+	</variablelist>
 </refsect1>
 
 <refsect1 id="seealso">

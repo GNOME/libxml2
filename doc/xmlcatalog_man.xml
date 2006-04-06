@@ -46,7 +46,7 @@
 </refnamediv>
 
 <refsynopsisdiv>
-	<cmdsynopsis>
+	<cmdsynopsis sepchar="|">
 	<command>xmlcatalog</command>
 	<group choice="opt">
 		<arg choice="plain"><option>--sgml</option></arg>

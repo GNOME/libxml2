@@ -63,7 +63,7 @@
 </refnamediv>
 
 <refsynopsisdiv>
-	<cmdsynopsis>
+	<cmdsynopsis sepchar="|">
 	<command>xmllint</command>
 		<group choice="opt">
 			<arg choice="plain"><option>--version</option></arg>
@@ -121,7 +121,7 @@
 			<arg choice="plain" rep="norepeat">-</arg>
 		</group>
 	</cmdsynopsis>
-	<cmdsynopsis>
+	<cmdsynopsis sepchar="|">
 		<command>xmllint</command>
 		<arg choice="plain"><option>--help</option></arg>
 	</cmdsynopsis>

@@ -45,9 +45,11 @@
 			</affiliation>
 		</author>
 	</authorgroup>
-	<releaseinfo>This is release 0.5 of the xmllint Manual.</releaseinfo>
 	<!-- date should be the date of the latest change or the release version -->
-	<date>2006-02-20</date>
+	<date>2006-03-05</date>
+	<!-- still a bit buggy output, will talk to docbook-xsl upstream to fix this -->
+	<!-- <releaseinfo>This is release 0.5 of the xmllint Manual.</releaseinfo> -->
+	<!-- <edition>0.5</edition> -->
 </refentryinfo>
 
 <refmeta>
@@ -73,7 +75,7 @@
 			<arg choice="plain"><option>--noent</option></arg>
 			<arg choice="plain"><option>--noout</option></arg>
 			<arg choice="plain"><option>--nonet</option></arg>
-			<arg choice="plain"><option>--path <replaceable class="option">"PATHS"</replaceable></option></arg>
+			<arg choice="plain"><option>--path "<replaceable class="option">PATH(S)</replaceable>"</option></arg>
 			<arg choice="plain"><option>--load-trace</option></arg>
 			<arg choice="plain"><option>--htmlout</option></arg>
 			<arg choice="plain"><option>--nowrap</option></arg>
@@ -125,7 +127,7 @@
 	</cmdsynopsis>
 </refsynopsisdiv>
 
-<refsect1 id="introduction">
+<refsect1 id="description">
 	<title>DESCRIPTION</title>
 	<para>
 		The &xmllint; program parses one or more XML files, specified on the
@@ -136,11 +138,25 @@
 		in <acronym>XML</acronym> code and in the <acronym>XML</acronym> parser
 		itself.
 	</para>
-	<para>&xmllint; is included in <application>libxml2</application>.</para>
-	<para>
-		More information can be found at the <application>libxml</application> web pages
-		at <ulink url="http://www.xmlsoft.org/"/> and the W3C <acronym>XSLT</acronym>
-		pages at <ulink url="http://www.w3.org/TR/xslt"/>.
+	<para>&xmllint; is included in <citerefentry>
+		<refentrytitle>libxml</refentrytitle>
+		<manvolnum>3</manvolnum>
+	</citerefentry>.</para>
+	<para>More information can be found at
+		<itemizedlist>
+			<listitem>
+				<para><citerefentry>
+						<refentrytitle>libxml</refentrytitle>
+						<manvolnum>3</manvolnum>
+					</citerefentry> web page <ulink url="http://www.xmlsoft.org/"/>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					W3C <acronym>XSLT</acronym> page <ulink url="http://www.w3.org/TR/xslt"/>
+				</para>
+			</listitem>
+		</itemizedlist>
 	</para>
 </refsect1>
 
@@ -173,8 +189,10 @@
 	<term><option>--chkregister</option></term>
 	<listitem>
 		<para>
-			Turn on node registration. Useful for developers
-			testing <application>libxml2</application> node tracking code.
+			Turn on node registration. Useful for developers testing <citerefentry>
+		<refentrytitle>libxml</refentrytitle>
+		<manvolnum>3</manvolnum>
+	</citerefentry> node tracking code.
 		</para>
 	</listitem>
 		</varlistentry>
@@ -441,7 +459,7 @@
 		</varlistentry>
 
 		<varlistentry>
-	<term><option>--path <replaceable class="option">"PATHS"</replaceable></option></term>
+	<term><option>--path "<replaceable class="option">PATH(S)</replaceable>"</option></term>
 	<listitem>
 		<para>
 			Use the (space- or colon-separated) list of filesystem paths specified
@@ -516,7 +534,7 @@
 	<listitem>
 		<para>
 			Run a navigating shell. Details on available commands in shell mode
-			are below (see section <emphasis role="bold">SHELL COMMANDS</emphasis>).
+			are below (see <xref linkend="shell"/>).
 		</para>
 	</listitem>
 		</varlistentry>
@@ -567,7 +585,10 @@
 	<term><option>--version</option></term>
 	<listitem>
 		<para>
-			Display the version of <application>libxml2</application> used.
+			Display the version of <citerefentry>
+		<refentrytitle>libxml</refentrytitle>
+		<manvolnum>3</manvolnum>
+	</citerefentry> used.
 		</para>
 	</listitem>
 		</varlistentry>
@@ -742,14 +763,14 @@
 	</variablelist>
 </refsect1>
 
-<refsect1>
+<refsect1 id="environment">
 	<title>ENVIRONMENT</title>
 	<variablelist>
 
 		<varlistentry>
 	<term><envar>SGML_CATALOG_FILES</envar></term>
 	<listitem>
-		<para>...</para>
+		<para>to be written ...</para>
 	</listitem>
 		</varlistentry>
 
@@ -780,96 +801,73 @@
 		<varlistentry>
 	<term><envar>XMLLINT_INDENT</envar></term>
 	<listitem>
-		<para>...</para>
+		<para>to be written ...</para>
 	</listitem>
 		</varlistentry>
 		
 	</variablelist>
 </refsect1>
 
-<refsect1>
+<refsect1 id="diagnostics">
 	<title>DIAGNOSTICS</title>
 	<para>
 		On the completion of execution, &xmllint; returns the following error codes:
 	</para>
-	<variablelist>
+	<segmentedlist>
+		<!-- <title>Error codes</title> -->
+		<segtitle>Errorcode</segtitle>
+		<segtitle>Error</segtitle>
+		<seglistitem>
+			<seg><errorcode>0</errorcode></seg>
+			<seg>No error</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>1</errorcode></seg>
+			<seg>Unclassified</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>2</errorcode></seg>
+			<seg>Error in DTD</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>3</errorcode></seg>
+			<seg>Validation error</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>4</errorcode></seg>
+			<seg>Validation error</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>5</errorcode></seg>
+			<seg>Error in schema compilation</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>6</errorcode></seg>
+			<seg>Error writing output</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>7</errorcode></seg>
+			<seg>Error in pattern (generated when <option>--pattern</option> option is used)</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>8</errorcode></seg>
+			<seg>Error in reader registration (generated when <option>--chkregister</option> option is used)</seg>
+		</seglistitem>
+		<seglistitem>
+			<seg><errorcode>9</errorcode></seg>
+			<seg>Out of memory</seg>
+		</seglistitem>
+	</segmentedlist>
+</refsect1>
 
-		<varlistentry>
-	<term><errorcode>0</errorcode></term>
-	<listitem>
-		<para>No error</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>1</errorcode></term>
-	<listitem>
-		<para>Unclassified</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>2</errorcode></term>
-	<listitem>
-		<para>Error in <acronym>DTD</acronym></para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>3</errorcode></term>
-	<listitem>
-		<para>Validation error</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>4</errorcode></term>
-	<listitem>
-		<para>Validation error</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>5</errorcode></term>
-	<listitem>
-		<para>Error in schema compilation</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>6</errorcode></term>
-	<listitem>
-		<para>Error writing output</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>7</errorcode></term>
-	<listitem>
-		<para>
-			Error in pattern (generated when <option>--pattern</option> option is used)
-		</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>8</errorcode></term>
-	<listitem>
-		<para>
-			Error in Reader registration (generated
-			when <option>--chkregister</option> option is used)
-		</para>
-	</listitem>
-		</varlistentry>
-
-		<varlistentry>
-	<term><errorcode>9</errorcode></term>
-	<listitem>
-		<para>Out of memory error</para>
-	</listitem>
-		</varlistentry>
-
-	</variablelist>
+<refsect1 id="seealso">
+	<title>SEE ALSO</title>
+	<para>
+		<citerefentry>
+			<refentrytitle>libxml</refentrytitle>
+			<manvolnum>3</manvolnum>
+		</citerefentry>
+	</para>
 </refsect1>
 
 </refentry>

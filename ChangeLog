@@ -1,3 +1,8 @@
+Thu Apr  6 10:22:17 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmlcatalog.1 doc/xmlcatalog_man.xml doc/xmllint.1 doc/xmllint.xml:
+	  applied man page improvements from Daniel Leidert
+
 Mon Mar 27 11:44:07 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: removed unused code or variables, from Stefan Kost

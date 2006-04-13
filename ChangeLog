@@ -1,3 +1,8 @@
+Thu Apr 13 09:31:45 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixing a deallocation problem in xmlRelaxNGParse() 
+	  in case of errors, should fix bug #338306
+
 Thu Apr  6 10:22:17 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmlcatalog.1 doc/xmlcatalog_man.xml doc/xmllint.1 doc/xmllint.xml:

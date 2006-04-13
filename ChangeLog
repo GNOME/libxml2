@@ -1,3 +1,8 @@
+Thu Apr 13 09:47:25 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixing a deallocation problem in xmlSchemaAddSchemaDoc()
+	  in case of errors, should fix bug #338303
+
 Thu Apr 13 09:31:45 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixing a deallocation problem in xmlRelaxNGParse() 

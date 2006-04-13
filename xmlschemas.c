@@ -10556,8 +10556,6 @@ doc_load:
 		invokingNode, NULL, 
 		"The document '%s' has no document element",
 		schemaLocation, NULL);
-	    xmlFreeDoc(doc);
-	    doc = NULL;
 	    goto exit_error;
 	}
 	/*
@@ -10572,8 +10570,6 @@ doc_load:
 		invokingNode, NULL,
 		"The XML document '%s' is not a schema document",
 		schemaLocation, NULL);
-	    xmlFreeDoc(doc);
-	    doc = NULL;
 	    goto exit_error;
 	}
 	/* 

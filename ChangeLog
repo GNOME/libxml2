@@ -1,3 +1,10 @@
+Wed Apr 19 13:16:23 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c test/schemas/restriction-enum-1*
+	  result/schemas/restriction-enum-1*: Fixed incorrect
+	  validation of restricted enumerations. Added related
+	  regression tests.
+
 Thu Apr 13 09:47:25 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixing a deallocation problem in xmlSchemaAddSchemaDoc()

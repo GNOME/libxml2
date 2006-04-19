@@ -578,7 +578,7 @@ struct _xmlSchemaConstructionCtxt {
 
 struct _xmlSchemaParserCtxt {
     int type;
-    void *errCtxt;             /* user specific error context */    
+    void *errCtxt;             /* user specific error context */
     xmlSchemaValidityErrorFunc error;   /* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning;       /* the callback in case of warning */
     int err;
@@ -1774,7 +1774,7 @@ xmlSchemaFormatFacetEnumSet(xmlSchemaAbstractCtxtPtr actxt,
     xmlSchemaFacetPtr facet;
     xmlSchemaWhitespaceValueType ws;
     xmlChar *value = NULL;
-    int res;
+    int res, found = 0;
 
     if (*buf != NULL)
 	xmlFree(*buf);    
@@ -1788,6 +1788,7 @@ xmlSchemaFormatFacetEnumSet(xmlSchemaAbstractCtxtPtr actxt,
 	for (facet = type->facets; facet != NULL; facet = facet->next) {
 	    if (facet->type != XML_SCHEMA_FACET_ENUMERATION)
 		continue;
+	    found = 1;
 	    res = xmlSchemaGetCanonValueWhtspExt(facet->val,
 		ws, &value);
 	    if (res == -1) {
@@ -1810,6 +1811,14 @@ xmlSchemaFormatFacetEnumSet(xmlSchemaAbstractCtxtPtr actxt,
 		value = NULL;
 	    }
 	}
+	/*
+	* The enumeration facet of a type restricts the enumeration
+	* facet of the ancestor type; i.e., such restricted enumerations
+	* do not belong to the set of the given type. Thus we break
+	* on the first found enumeration.
+	*/
+	if (found)
+	    break;
 	type = type->baseType;
     } while ((type != NULL) && (type->type != XML_SCHEMA_TYPE_BASIC));
 
@@ -23911,6 +23920,14 @@ pattern_and_enum:
 		}
 	    }
 	    if (ret != 0)
+		break;
+	    /*
+	    * Break on the first set of enumerations. Any additional
+	    *  enumerations which might be existent on the ancestors
+	    *  of the current type are restricted by this set; thus
+	    *  *must* *not* be taken into account.
+	    */
+	    if (found)
 		break;
 	    tmpType = tmpType->baseType;
 	} while ((tmpType != NULL) &&

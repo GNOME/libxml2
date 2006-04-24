@@ -1,3 +1,8 @@
+Mon Apr 24 10:50:19 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix the error message for invalid code point in content
+	  c.f. bug #339311
+
 Wed Apr 19 13:16:23 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c test/schemas/restriction-enum-1*

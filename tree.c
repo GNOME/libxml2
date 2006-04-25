@@ -1985,7 +1985,6 @@ xmlFreeProp(xmlAttrPtr cur) {
     xmlFree(cur);
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlRemoveProp:
  * @cur:  an attribute
@@ -2036,7 +2035,6 @@ xmlRemoveProp(xmlAttrPtr cur) {
 #endif
     return(-1);
 }
-#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNewDocPI:

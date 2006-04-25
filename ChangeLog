@@ -1,3 +1,8 @@
+Tue Apr 25 18:17:37 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: applied patch from Gary Coady to really make sure
+	  xmllint --nonet would not reach the network, should fix #337483.
+
 Tue Apr 25 14:52:15 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: applied patch from Joseph Sacco changing slightly

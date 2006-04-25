@@ -3164,6 +3164,7 @@ main(int argc, char **argv) {
         } else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
+	    xmlSetExternalEntityLoader(xmlNoNetExternalEntityLoader);
         } else if ((!strcmp(argv[i], "-nocompact")) ||
                    (!strcmp(argv[i], "--nocompact"))) {
 	    options &= ~XML_PARSE_COMPACT;

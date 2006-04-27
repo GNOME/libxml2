@@ -36,6 +36,10 @@
 #include <zlib.h>
 #endif
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 /* Figure a portable way to know if a file is a directory. */
 #ifndef HAVE_STAT
 #  ifdef HAVE__STAT
@@ -188,6 +192,39 @@ static const char *IOerr[] = {
     "already in use",		/* EALREADY */
     "unknown address familly",	/* EAFNOSUPPORT */
 };
+
+#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+/**
+ * __xmlIOWin32UTF8ToWChar:
+ * @u8String:  uft-8 string
+ *
+ * Convert a string from utf-8 to wchar (WINDOWS ONLY!)
+ */
+static wchar_t *
+__xmlIOWin32UTF8ToWChar(const char *u8String)
+{
+	wchar_t *wString = NULL;
+
+	if (u8String)
+	{
+		int wLen = MultiByteToWideChar(CP_UTF8,0,u8String,-1,NULL,0);
+		if (wLen)
+		{
+			wString = malloc((wLen+1) * sizeof(wchar_t));
+			if (wString)
+			{
+				if (MultiByteToWideChar(CP_UTF8,0,u8String,-1,wString,wLen+1) == 0)
+				{
+					free(wString);
+					wString = NULL;
+				}
+			}
+		}
+	}
+	
+	return wString;
+}
+#endif
 
 /**
  * xmlIOErrMemory:
@@ -552,23 +589,44 @@ xmlCleanupOutputCallbacks(void)
 int
 xmlCheckFilename (const char *path)
 {
+	if (path == NULL)
+      return(0);
+  
+#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+	{
+		int retval = 0;
+	
+		wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
+		if (wPath)
+		{
+			struct _stat stat_buffer;
+			
+			if (_wstat(wPath,&stat_buffer) == 0)
+			{
+				retval = 1;
+				
+				if (((stat_buffer.st_mode & S_IFDIR) == S_IFDIR))
+					retval = 2;
+			}
+	
+			free(wPath);
+		}
+
+		return retval;
+	}
+#else
 #ifdef HAVE_STAT
     struct stat stat_buffer;
-
-    if (path == NULL)
-        return(0);
 
     if (stat(path, &stat_buffer) == -1)
         return 0;
 
 #ifdef S_ISDIR
-    if (S_ISDIR(stat_buffer.st_mode)) {
+    if (S_ISDIR(stat_buffer.st_mode))
         return 2;
-    }
-#endif
-#endif
-    if (path == NULL)
-        return(0);
+#endif /* S_ISDIR */
+#endif /* HAVE_STAT */
+#endif /* WIN32 */
 
     return 1;
 }
@@ -692,7 +750,18 @@ xmlFileOpen_real (const char *filename) {
         return(NULL);
 
 #if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
-    fd = fopen(path, "rb");
+	{
+		wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
+		if (wPath)
+		{
+			fd = _wfopen(wPath, L"rb");
+			free(wPath);
+   	}
+   	else
+   	{
+   	   fd = fopen(path, "rb");
+	   }
+	}	
 #else
     fd = fopen(path, "r");
 #endif /* WIN32 */
@@ -762,8 +831,24 @@ xmlFileOpenW (const char *filename) {
     if (path == NULL)
 	return(NULL);
 
-    fd = fopen(path, "wb");
-    if (fd == NULL) xmlIOErr(0, path);
+#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+	{
+		wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
+		if (wPath)
+		{
+			fd = _wfopen(wPath, L"wb");
+			free(wPath);
+   	}
+   	else
+   	{
+	  	   fd = fopen(path, "wb");
+	  	}
+	}
+#else
+  	   fd = fopen(path, "wb");
+#endif /* WIN32 */
+
+	 if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

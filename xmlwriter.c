@@ -2442,6 +2442,13 @@ xmlTextWriterEndPI(xmlTextWriterPtr writer)
             return -1;
     }
 
+    if (writer->indent) {
+        count = xmlOutputBufferWriteString(writer->out, "\n");
+      	if (count < 0)
+       	return -1;
+        sum += count;
+    }
+
     xmlListPopFront(writer->nodes);
     return sum;
 }

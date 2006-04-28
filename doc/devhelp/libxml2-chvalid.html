@@ -67,7 +67,7 @@ int	<a href="#xmlIsChar">xmlIsChar</a>			(unsigned int ch);
 int	<a href="#xmlIsDigit">xmlIsDigit</a>			(unsigned int ch);
 int	<a href="#xmlIsBlank">xmlIsBlank</a>			(unsigned int ch);
 int	<a href="#xmlIsIdeographic">xmlIsIdeographic</a>		(unsigned int ch);
-int	<a href="#xmlCharInRange">xmlCharInRange</a>			(unsigned int val, <br/>					 const <a href="libxml2-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a> rptr);
+int	<a href="#xmlCharInRange">xmlCharInRange</a>			(unsigned int val, <br/>					 const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * rptr);
 int	<a href="#xmlIsPubidChar">xmlIsPubidChar</a>			(unsigned int ch);
 int	<a href="#xmlIsCombining">xmlIsCombining</a>			(unsigned int ch);
 int	<a href="#xmlIsBaseChar">xmlIsBaseChar</a>			(unsigned int ch);
@@ -150,8 +150,8 @@ int	<a href="#xmlIsExtender">xmlIsExtender</a>			(unsigned int ch);
         <div class="refsect2" lang="en"><h3><a name="xmlChRangeGroup">Structure </a>xmlChRangeGroup</h3><pre class="programlisting">struct _xmlChRangeGroup {
     int	nbShortRange
     int	nbLongRange
-    <a href="libxml2-chvalid.html#xmlChSRangePtr">xmlChSRangePtr</a>	shortRange	: points to an array of ranges
-    <a href="libxml2-chvalid.html#xmlChLRangePtr">xmlChLRangePtr</a>	longRange
+    const <a href="libxml2-chvalid.html#xmlChSRange">xmlChSRange</a> *	shortRange	: points to an array of ranges
+    const <a href="libxml2-chvalid.html#xmlChLRange">xmlChLRange</a> *	longRange
 } xmlChRangeGroup;
 </pre><p/>
 </div>
@@ -171,35 +171,35 @@ int	<a href="#xmlIsExtender">xmlIsExtender</a>			(unsigned int ch);
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsBaseCharGroup">Variable </a>xmlIsBaseCharGroup</h3><pre class="programlisting"><a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsBaseCharGroup;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsBaseCharGroup">Variable </a>xmlIsBaseCharGroup</h3><pre class="programlisting">const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsBaseCharGroup;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsCharGroup">Variable </a>xmlIsCharGroup</h3><pre class="programlisting"><a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsCharGroup;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsCharGroup">Variable </a>xmlIsCharGroup</h3><pre class="programlisting">const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsCharGroup;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsCombiningGroup">Variable </a>xmlIsCombiningGroup</h3><pre class="programlisting"><a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsCombiningGroup;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsCombiningGroup">Variable </a>xmlIsCombiningGroup</h3><pre class="programlisting">const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsCombiningGroup;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsDigitGroup">Variable </a>xmlIsDigitGroup</h3><pre class="programlisting"><a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsDigitGroup;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsDigitGroup">Variable </a>xmlIsDigitGroup</h3><pre class="programlisting">const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsDigitGroup;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsExtenderGroup">Variable </a>xmlIsExtenderGroup</h3><pre class="programlisting"><a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsExtenderGroup;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsExtenderGroup">Variable </a>xmlIsExtenderGroup</h3><pre class="programlisting">const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsExtenderGroup;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsIdeographicGroup">Variable </a>xmlIsIdeographicGroup</h3><pre class="programlisting"><a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsIdeographicGroup;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsIdeographicGroup">Variable </a>xmlIsIdeographicGroup</h3><pre class="programlisting">const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> xmlIsIdeographicGroup;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlIsPubidChar_tab">Variable </a>xmlIsPubidChar_tab</h3><pre class="programlisting">unsigned charxmlIsPubidChar_tab[256] xmlIsPubidChar_tab;
+        <div class="refsect2" lang="en"><h3><a name="xmlIsPubidChar_tab">Variable </a>xmlIsPubidChar_tab</h3><pre class="programlisting">const unsigned charxmlIsPubidChar_tab[256] xmlIsPubidChar_tab;
 </pre><p/>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlCharInRange"/>xmlCharInRange ()</h3><pre class="programlisting">int	xmlCharInRange			(unsigned int val, <br/>					 const <a href="libxml2-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a> rptr)<br/>
+        <div class="refsect2" lang="en"><h3><a name="xmlCharInRange"/>xmlCharInRange ()</h3><pre class="programlisting">int	xmlCharInRange			(unsigned int val, <br/>					 const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * rptr)<br/>
 </pre><p>Does a binary search of the range table to determine if char is valid</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>character to be validated</td></tr><tr><td><span class="term"><i><tt>rptr</tt></i>:</span></td><td>pointer to range to be used to validate</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>true if character valid, false otherwise</td></tr></tbody></table></div></div>
         <hr/>

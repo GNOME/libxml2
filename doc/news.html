@@ -12,7 +12,31 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p><p>There is the list of public releases:</p><h3>2.6.23: Jan 5 2006</h3><ul><li>portability fixes: Windows (Rob Richards), getaddrinfo on Windows
+to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p><p>There is the list of public releases:</p><h3>2.6.24: Apr 28 2006</h3><ul><li>Portability fixes: configure on Windows, testapi compile on windows
+      (Kasimier Buchcik, venkat naidu), Borland C++ 6 compile (Eric Zurcher),
+      HP-UX compiler workaround (Rick Jones), xml2-config bugfix, gcc-4.1
+      cleanups, Python detection scheme (Joseph Sacco), UTF-8 file paths on
+      Windows (Roland Schwingel).
+      </li>
+  <li>Improvements: xmlDOMWrapReconcileNamespaces xmlDOMWrapCloneNode (Kasimier
+      Buchcik), XML catalog debugging (Rick Jones), update to Unicode 4.01.</li>
+  <li>Bug fixes: xmlParseChunk() problem in 2.6.23, xmlParseInNodeContext()
+      on HTML docs, URI behaviour on Windows (Rob Richards), comment streaming
+      bug, xmlParseComment (with William Brack), regexp bug fixes (DV &amp;
+      Youri Golovanov), xmlGetNodePath on text/CDATA (Kasimier),
+      one Relax-NG interleave bug, xmllint --path and --valid,
+      XSD bugfixes (Kasimier), remove debug
+      left in Python bindings (Nic Ferrier), xmlCatalogAdd bug (Martin Cole),
+      xmlSetProp fixes (Rob Richards), HTML IDness (Rob Richards), a large
+      number of cleanups and small fixes based on Coverity reports, bug
+      in character ranges, Unicode tables const (Aivars Kalvans), schemas
+      fix (Stefan Kost), xmlRelaxNGParse error deallocation, 
+      xmlSchemaAddSchemaDoc error deallocation, error handling on unallowed
+      code point, ixmllint --nonet to never reach the net (Gary Coady),
+      line break in writer after end PI (Jason Viers). </li>
+  <li>Documentation: man pages updates and cleanups (Daniel Leidert).</li>
+  <li>New features: Relax NG structure error handlers.</li>
+</ul><h3>2.6.23: Jan 5 2006</h3><ul><li>portability fixes: Windows (Rob Richards), getaddrinfo on Windows
     (Kolja Nowak, Rob Richards), icc warnings (Kjartan Maraas),
     --with-minimum compilation fixes (William Brack), error case handling fix
     on Solaris (Albert Chin), don't use 'list' as parameter name reported by

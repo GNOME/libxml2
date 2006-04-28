@@ -16,7 +16,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </pre><pre class="programlisting">Typedef <a href="libxml-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * <a name="xmlChRangeGroupPtr" id="xmlChRangeGroupPtr">xmlChRangeGroupPtr</a>
 </pre><pre class="programlisting">Structure <a href="#xmlChSRange">xmlChSRange</a><br />struct _xmlChSRange
 </pre><pre class="programlisting">Typedef <a href="libxml-chvalid.html#xmlChSRange">xmlChSRange</a> * <a name="xmlChSRangePtr" id="xmlChSRangePtr">xmlChSRangePtr</a>
-</pre><pre class="programlisting">int	<a href="#xmlCharInRange">xmlCharInRange</a>			(unsigned int val, <br />					 const <a href="libxml-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a> rptr)</pre>
+</pre><pre class="programlisting">int	<a href="#xmlCharInRange">xmlCharInRange</a>			(unsigned int val, <br />					 const <a href="libxml-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * rptr)</pre>
 <pre class="programlisting">int	<a href="#xmlIsBaseChar">xmlIsBaseChar</a>			(unsigned int ch)</pre>
 <pre class="programlisting">int	<a href="#xmlIsBlank">xmlIsBlank</a>			(unsigned int ch)</pre>
 <pre class="programlisting">int	<a href="#xmlIsChar">xmlIsChar</a>			(unsigned int ch)</pre>
@@ -46,12 +46,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 }</pre><h3><a name="xmlChRangeGroup" id="xmlChRangeGroup">Structure xmlChRangeGroup</a></h3><pre class="programlisting">Structure xmlChRangeGroup<br />struct _xmlChRangeGroup {
     int	nbShortRange
     int	nbLongRange
-    <a href="libxml-chvalid.html#xmlChSRangePtr">xmlChSRangePtr</a>	shortRange	: points to an array of ranges
-    <a href="libxml-chvalid.html#xmlChLRangePtr">xmlChLRangePtr</a>	longRange
+    const <a href="libxml-chvalid.html#xmlChSRange">xmlChSRange</a> *	shortRange	: points to an array of ranges
+    const <a href="libxml-chvalid.html#xmlChLRange">xmlChLRange</a> *	longRange
 }</pre><h3><a name="xmlChSRange" id="xmlChSRange">Structure xmlChSRange</a></h3><pre class="programlisting">Structure xmlChSRange<br />struct _xmlChSRange {
     unsigned short	low
     unsigned short	high
-}</pre><h3><a name="xmlCharInRange" id="xmlCharInRange"></a>Function: xmlCharInRange</h3><pre class="programlisting">int	xmlCharInRange			(unsigned int val, <br />					 const <a href="libxml-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a> rptr)<br />
+}</pre><h3><a name="xmlCharInRange" id="xmlCharInRange"></a>Function: xmlCharInRange</h3><pre class="programlisting">int	xmlCharInRange			(unsigned int val, <br />					 const <a href="libxml-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * rptr)<br />
 </pre><p>Does a binary search of the range table to determine if char is valid</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>character to be validated</td></tr><tr><td><span class="term"><i><tt>rptr</tt></i>:</span></td><td>pointer to range to be used to validate</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>true if character valid, false otherwise</td></tr></tbody></table></div><h3><a name="xmlIsBaseChar" id="xmlIsBaseChar"></a>Function: xmlIsBaseChar</h3><pre class="programlisting">int	xmlIsBaseChar			(unsigned int ch)<br />
 </pre><p>This function is DEPRECATED. Use <a href="libxml-chvalid.html#xmlIsBaseChar_ch">xmlIsBaseChar_ch</a> or <a href="libxml-chvalid.html#xmlIsBaseCharQ">xmlIsBaseCharQ</a> instead</p>

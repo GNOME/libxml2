@@ -6547,11 +6547,11 @@ test_catalog(void) {
     return(test_ret);
 }
 
-#define gen_nb_const_xmlChRangeGroupPtr 1
-static xmlChRangeGroupPtr gen_const_xmlChRangeGroupPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+#define gen_nb_const_xmlChRangeGroup_ptr 1
+static xmlChRangeGroup * gen_const_xmlChRangeGroup_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
-static void des_const_xmlChRangeGroupPtr(int no ATTRIBUTE_UNUSED, const xmlChRangeGroupPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+static void des_const_xmlChRangeGroup_ptr(int no ATTRIBUTE_UNUSED, const xmlChRangeGroup * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
 static int
@@ -6562,20 +6562,20 @@ test_xmlCharInRange(void) {
     int ret_val;
     unsigned int val; /* character to be validated */
     int n_val;
-    xmlChRangeGroupPtr rptr; /* pointer to range to be used to validate */
+    xmlChRangeGroup * rptr; /* pointer to range to be used to validate */
     int n_rptr;
 
     for (n_val = 0;n_val < gen_nb_unsigned_int;n_val++) {
-    for (n_rptr = 0;n_rptr < gen_nb_const_xmlChRangeGroupPtr;n_rptr++) {
+    for (n_rptr = 0;n_rptr < gen_nb_const_xmlChRangeGroup_ptr;n_rptr++) {
         mem_base = xmlMemBlocks();
         val = gen_unsigned_int(n_val, 0);
-        rptr = gen_const_xmlChRangeGroupPtr(n_rptr, 1);
+        rptr = gen_const_xmlChRangeGroup_ptr(n_rptr, 1);
 
-        ret_val = xmlCharInRange(val, (const xmlChRangeGroupPtr)rptr);
+        ret_val = xmlCharInRange(val, (const xmlChRangeGroup *)rptr);
         desret_int(ret_val);
         call_tests++;
         des_unsigned_int(n_val, val, 0);
-        des_const_xmlChRangeGroupPtr(n_rptr, (const xmlChRangeGroupPtr)rptr, 1);
+        des_const_xmlChRangeGroup_ptr(n_rptr, (const xmlChRangeGroup *)rptr, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlCharInRange",
@@ -19379,7 +19379,7 @@ test_xmlDOMWrapCloneNode(void) {
     int n_destDoc;
     xmlNodePtr destParent; /* the optional new parent of @node in @destDoc */
     int n_destParent;
-    int deep; /*  */
+    int deep; /* descend into child if set */
     int n_deep;
     int options; /* option flags */
     int n_options;
@@ -22514,7 +22514,6 @@ static int
 test_xmlRemoveProp(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     int ret_val;
     xmlAttrPtr cur; /* an attribute */
@@ -22539,7 +22538,6 @@ test_xmlRemoveProp(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23180,7 +23178,7 @@ test_xmlSetProp(void) {
     xmlAttrPtr ret_val;
     xmlNodePtr node; /* the node */
     int n_node;
-    xmlChar * name; /* the attribute name */
+    xmlChar * name; /* the attribute name (a QName) */
     int n_name;
     xmlChar * value; /* the attribute value */
     int n_value;

@@ -8,21 +8,51 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.22</version>
-    <last-release> Sep 12 2005</last-release>
+    <version>2.6.23</version>
+    <last-release> Jan 5 2006</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - build fixes: compile without schematron (Stéphane Bidoul)
-   - bug fixes: xmlDebugDumpNode on namespace node (Oleg Paraschenko)i,
-    CDATA push parser bug, xmlElemDump problem with XHTML1 doc,
-    XML_FEATURE_xxx clash with expat headers renamed XML_WITH_xxx, fix some
-    output formatting for meta element (Rob Richards), script and style
-    XHTML1 serialization (David Madore), Attribute derivation fixups in XSD
-    (Kasimier Buchcik), better IDC error reports (Kasimier Buchcik)
-   - improvements: add XML_SAVE_NO_EMPTY xmlSaveOption (Rob Richards), add
-    XML_SAVE_NO_XHTML xmlSaveOption, XML Schemas improvements preparing for
-    derive (Kasimier Buchcik).
-   - documentation: generation of gtk-doc like docs, integration with
-    devhelp.
+    <changes>   - portability fixes: Windows (Rob Richards), getaddrinfo on Windows
+    (Kolja Nowak, Rob Richards), icc warnings (Kjartan Maraas),
+    --with-minimum compilation fixes (William Brack), error case handling fix
+    on Solaris (Albert Chin), don't use 'list' as parameter name reported by
+    Samuel Diaz Garcia, more old Unices portability fixes (Albert Chin),
+    MinGW compilation (Mark Junker), HP-UX compiler warnings (Rick
+  Jones),
+   - code cleanup: xmlReportError (Adrian Mouat), remove xmlBufferClose
+    (Geert Jansen), unreachable code (Oleksandr Kononenko), refactoring
+    parsing code (Bjorn Reese)
+   - bug fixes: xmlBuildRelativeURI and empty path (William Brack),
+    combinatory explosion and performances in regexp code, leak in
+    xmlTextReaderReadString(), xmlStringLenDecodeEntities problem (Massimo
+    Morara), Identity Constraints bugs and a segfault (Kasimier Buchcik),
+    XPath pattern based evaluation bugs (DV &amp; Kasimier),
+    xmlSchemaContentModelDump() memory leak (Kasimier), potential leak in
+    xmlSchemaCheckCSelectorXPath(), xmlTextWriterVSprintf() misuse of
+    vsnprintf (William Brack), XHTML serialization fix (Rob Richards), CRLF
+    split problem (William), issues with non-namespaced attributes in
+    xmlAddChild() xmlAddNextSibling() and xmlAddPrevSibling() (Rob Richards),
+    HTML parsing of script, Python must not output to stdout (Nic Ferrier),
+    exclusive C14N namespace visibility (Aleksey Sanin), XSD dataype
+    totalDigits bug (Kasimier Buchcik), error handling when writing to an
+    xmlBuffer (Rob Richards), runtest schemas error not reported (Hisashi
+    Fujinaka), signed/unsigned problem in date/time code (Albert Chin), fix
+    XSI driven XSD validation (Kasimier), parsing of xs:decimal (Kasimier),
+    fix DTD writer output (Rob Richards), leak in xmlTextReaderReadInnerXml
+    (Gary Coady), regexp bug affecting schemas (Kasimier), configuration of
+    runtime debugging (Kasimier), xmlNodeBufGetContent bug on entity refs
+    (Oleksandr Kononenko), xmlRegExecPushString2 bug (Sreeni Nair),
+    compilation and build fixes (Michael Day), removed dependancies on
+    xmlSchemaValidError (Kasimier), bug with &lt;xml:foo/&gt;, more XPath
+    pattern based evaluation fixes (Kasimier)
+   - improvements: XSD Schemas redefinitions/restrictions (Kasimier
+    Buchcik), node copy checks and fix for attribute (Rob Richards), counted
+    transition bug in regexps, ctxt-&gt;standalone = -2 to indicate no
+    standalone attribute was found, add xmlSchemaSetParserStructuredErrors()
+    (Kasimier Buchcik), add xmlTextReaderSchemaValidateCtxt() to API
+    (Kasimier), handle gzipped HTTP resources (Gary Coady), add
+    htmlDocDumpMemoryFormat. (Rob Richards),
+   - documentation: typo (Michael Day), libxml man page (Albert Chin), save
+    function to XML buffer (Geert Jansen), small doc fix (Aron Stansvik),
 
 </changes>
   </product>

@@ -1,3 +1,9 @@
+Fri Apr 28 18:29:22 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in doc//*: preparing 2.6.24 release, fixed Python
+	  paths at the last moment
+	* relaxng.c testapi.c tree.c: fix some comments
+
 Thu Apr 27 10:15:45 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied patch from Roland Schwingel to allow UTF-8

@@ -978,10 +978,8 @@ XMLPUBFUN void XMLCALL
 /*
  * Removing content.
  */
-#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN int XMLCALL		
 		xmlRemoveProp		(xmlAttrPtr cur);
-#endif /* LIBXML_TREE_ENABLED */
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 XMLPUBFUN int XMLCALL		
 		xmlUnsetNsProp		(xmlNodePtr node,

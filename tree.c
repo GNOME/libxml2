@@ -8675,6 +8675,7 @@ exit:
 * @resNode: the clone of the given @node
 * @destDoc: the destination doc
 * @destParent: the optional new parent of @node in @destDoc
+* @deep: descend into child if set
 * @options: option flags
 *
 * References of out-of scope ns-decls are remapped to point to @destDoc:

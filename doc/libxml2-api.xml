@@ -5847,8 +5847,8 @@ if necessary or NULL'/>
     <struct name='xmlChRangeGroup' file='chvalid' type='struct _xmlChRangeGroup'>
       <field name='nbShortRange' type='int' info=''/>
       <field name='nbLongRange' type='int' info=''/>
-      <field name='shortRange' type='xmlChSRangePtr' info=' points to an array of ranges'/>
-      <field name='longRange' type='xmlChLRangePtr' info=''/>
+      <field name='shortRange' type='const xmlChSRange *' info=' points to an array of ranges'/>
+      <field name='longRange' type='const xmlChLRange *' info=''/>
     </struct>
     <typedef name='xmlChRangeGroupPtr' file='chvalid' type='xmlChRangeGroup *'/>
     <struct name='xmlChSRange' file='chvalid' type='struct _xmlChSRange'>
@@ -6748,13 +6748,13 @@ Could we use @subtypes for this?'/>
     <variable name='xmlGenericErrorContext' file='globals' type='void *'/>
     <variable name='xmlGetWarningsDefaultValue' file='globals' type='int'/>
     <variable name='xmlIndentTreeOutput' file='globals' type='int'/>
-    <variable name='xmlIsBaseCharGroup' file='chvalid' type='xmlChRangeGroup'/>
-    <variable name='xmlIsCharGroup' file='chvalid' type='xmlChRangeGroup'/>
-    <variable name='xmlIsCombiningGroup' file='chvalid' type='xmlChRangeGroup'/>
-    <variable name='xmlIsDigitGroup' file='chvalid' type='xmlChRangeGroup'/>
-    <variable name='xmlIsExtenderGroup' file='chvalid' type='xmlChRangeGroup'/>
-    <variable name='xmlIsIdeographicGroup' file='chvalid' type='xmlChRangeGroup'/>
-    <variable name='xmlIsPubidChar_tab' file='chvalid' type='unsigned charxmlIsPubidChar_tab[256]'/>
+    <variable name='xmlIsBaseCharGroup' file='chvalid' type='const xmlChRangeGroup'/>
+    <variable name='xmlIsCharGroup' file='chvalid' type='const xmlChRangeGroup'/>
+    <variable name='xmlIsCombiningGroup' file='chvalid' type='const xmlChRangeGroup'/>
+    <variable name='xmlIsDigitGroup' file='chvalid' type='const xmlChRangeGroup'/>
+    <variable name='xmlIsExtenderGroup' file='chvalid' type='const xmlChRangeGroup'/>
+    <variable name='xmlIsIdeographicGroup' file='chvalid' type='const xmlChRangeGroup'/>
+    <variable name='xmlIsPubidChar_tab' file='chvalid' type='const unsigned charxmlIsPubidChar_tab[256]'/>
     <variable name='xmlKeepBlanksDefaultValue' file='globals' type='int'/>
     <variable name='xmlLastError' file='globals' type='xmlError'/>
     <variable name='xmlLineNumbersDefaultValue' file='globals' type='int'/>
@@ -8682,7 +8682,7 @@ Could we use @subtypes for this?'/>
       <info>Does a binary search of the range table to determine if char is valid</info>
       <return type='int' info='true if character valid, false otherwise'/>
       <arg name='val' type='unsigned int' info='character to be validated'/>
-      <arg name='rptr' type='const xmlChRangeGroupPtr' info='pointer to range to be used to validate'/>
+      <arg name='rptr' type='const xmlChRangeGroup *' info='pointer to range to be used to validate'/>
     </function>
     <function name='xmlCharStrdup' file='xmlstring' module='xmlstring'>
       <info>a strdup for char&apos;s to xmlChar&apos;s</info>
@@ -9053,7 +9053,7 @@ Could we use @subtypes for this?'/>
       <arg name='resNode' type='xmlNodePtr *' info='the clone of the given @node'/>
       <arg name='destDoc' type='xmlDocPtr' info='the destination doc'/>
       <arg name='destParent' type='xmlNodePtr' info='the optional new parent of @node in @destDoc'/>
-      <arg name='deep' type='int' info=''/>
+      <arg name='deep' type='int' info='descend into child if set'/>
       <arg name='options' type='int' info='option flags'/>
     </function>
     <function name='xmlDOMWrapFreeCtxt' file='tree' module='tree'>
@@ -12693,11 +12693,11 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlRelaxNGSetParserStructuredErrors' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Set the callback functions used to handle errors for a parsing context</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info=''/>
-      <arg name='serror' type='xmlStructuredErrorFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
+      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG parser context'/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info='the error callback'/>
+      <arg name='ctx' type='void *' info='contextual data for the callbacks'/>
     </function>
     <function name='xmlRelaxNGSetValidErrors' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -12785,7 +12785,6 @@ Could we use @subtypes for this?'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
     </function>
     <function name='xmlRemoveProp' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Unlink and free one attribute, all the content is freed too Note this doesn&apos;t work for namespace definition attributes</info>
       <return type='int' info='0 if success and -1 in case of error.'/>
       <arg name='cur' type='xmlAttrPtr' info='an attribute'/>
@@ -13848,7 +13847,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSetNsProp' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Set (or reset) an attribute carried by a node. The ns structure must be in scope, this is not checked.</info>
+      <info>Set (or reset) an attribute carried by a node. The ns structure must be in scope, this is not checked</info>
       <return type='xmlAttrPtr' info='the attribute pointer.'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
       <arg name='ns' type='xmlNsPtr' info='the namespace definition'/>
@@ -13857,10 +13856,10 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSetProp' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Set (or reset) an attribute carried by a node.</info>
+      <info>Set (or reset) an attribute carried by a node. If @name has a prefix, then the corresponding namespace-binding will be used, if in scope; it is an error it there&apos;s no such ns-binding for the prefix in scope.</info>
       <return type='xmlAttrPtr' info='the attribute pointer.'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
-      <arg name='name' type='const xmlChar *' info='the attribute name'/>
+      <arg name='name' type='const xmlChar *' info='the attribute name (a QName)'/>
       <arg name='value' type='const xmlChar *' info='the attribute value'/>
     </function>
     <function name='xmlSetStructuredErrorFunc' file='xmlerror' module='error'>
@@ -16523,7 +16522,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlUnsetProp' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Remove an attribute carried by a node.</info>
+      <info>Remove an attribute carried by a node. This handles only attributes in no namespace.</info>
       <return type='int' info='0 if successful, -1 if not found'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>

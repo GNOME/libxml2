@@ -7513,9 +7513,16 @@ xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
     return (0);
 }
 
+/**
+ * xmlRelaxNGSetParserStructuredErrors:
+ * @ctxt:  a Relax-NG parser context
+ * @serror:  the error callback
+ * @ctx:  contextual data for the callbacks
+ *
+ * Set the callback functions used to handle errors for a parsing context
+ */
 void
-xmlRelaxNGSetParserStructuredErrors(
-				    xmlRelaxNGParserCtxtPtr ctxt,
+xmlRelaxNGSetParserStructuredErrors(xmlRelaxNGParserCtxtPtr ctxt,
 				    xmlStructuredErrorFunc serror,
 				    void *ctx)
 {

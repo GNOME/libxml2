@@ -5,7 +5,7 @@ AC_CANONICAL_HOST
 
 LIBXML_MAJOR_VERSION=2
 LIBXML_MINOR_VERSION=6
-LIBXML_MICRO_VERSION=23
+LIBXML_MICRO_VERSION=24
 LIBXML_MICRO_VERSION_SUFFIX=
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION$LIBXML_MICRO_VERSION_SUFFIX
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
@@ -678,17 +678,17 @@ if test "$with_python" != "no" ; then
 	   -d $with_python/lib/python$PYTHON_VERSION/site-packages
 	then
 	    PYTHON_INCLUDES=$with_python/include/python$PYTHON_VERSION
-	    PYTHON_SITE_PACKAGES=$libdir/lib/python$PYTHON_VERSION/site-packages
+	    PYTHON_SITE_PACKAGES='$(libdir)/lib/python$(PYTHON_VERSION)/site-packages'
 	else
 	    if test -r $prefix/include/python$PYTHON_VERSION/Python.h
 	    then
 	        PYTHON_INCLUDES=$prefix/include/python$PYTHON_VERSION
-		PYTHON_SITE_PACKAGES=$libdir/python$PYTHON_VERSION/site-packages
+		PYTHON_SITE_PACKAGES='$(libdir)/python$(PYTHON_VERSION)/site-packages'
 	    else
 		if test -r /usr/include/python$PYTHON_VERSION/Python.h
 		then
 		    PYTHON_INCLUDES=/usr/include/python$PYTHON_VERSION
-		    PYTHON_SITE_PACKAGES=$(libdir)/python$(PYTHON_VERSION)/site-packages
+		    PYTHON_SITE_PACKAGES='$(libdir)/python$(PYTHON_VERSION)/site-packages'
 		else
 		    echo could not find python$PYTHON_VERSION/Python.h
 		fi
@@ -701,9 +701,9 @@ if test "$with_python" != "no" ; then
     fi
     if test "$with_python" != ""
     then
-        pythondir=$PYTHON_SITE_PACKAGES
+        pythondir=$(PYTHON_SITE_PACKAGES)
     else
-        pythondir=$libdir/python$PYTHON_VERSION/site-packages
+        pythondir='$(libdir)/python$(PYTHON_VERSION)/site-packages'
     fi
 else
     PYTHON=

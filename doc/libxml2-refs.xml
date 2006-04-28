@@ -7909,7 +7909,7 @@
       <ref name='xmlBufferContent'/>
       <ref name='xmlBufferLength'/>
     </type>
-    <type name='const xmlChRangeGroupPtr'>
+    <type name='const xmlChRangeGroup *'>
       <ref name='xmlCharInRange'/>
     </type>
     <type name='const xmlChar *'>
@@ -16871,6 +16871,7 @@
           <ref name='xmlParseStartTag'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaNewQNameValue'/>
+          <ref name='xmlSetProp'/>
           <ref name='xmlSplitQName'/>
           <ref name='xmlSplitQName2'/>
           <ref name='xmlSplitQName3'/>
@@ -17064,6 +17065,7 @@
           <ref name='xmlRelaxNGGetValidErrors'/>
           <ref name='xmlRelaxNGParse'/>
           <ref name='xmlRelaxNGSetParserErrors'/>
+          <ref name='xmlRelaxNGSetParserStructuredErrors'/>
           <ref name='xmlRelaxNGSetValidErrors'/>
           <ref name='xmlRelaxNGSetValidStructuredErrors'/>
           <ref name='xmlRelaxNGValidateDoc'/>
@@ -20428,6 +20430,7 @@
         <word name='contextual'>
           <ref name='xmlRelaxNGGetParserErrors'/>
           <ref name='xmlRelaxNGSetParserErrors'/>
+          <ref name='xmlRelaxNGSetParserStructuredErrors'/>
           <ref name='xmlSchemaGetParserErrors'/>
           <ref name='xmlSchemaSetParserErrors'/>
         </word>
@@ -20548,6 +20551,7 @@
           <ref name='xmlGetDocEntity'/>
           <ref name='xmlGetDtdEntity'/>
           <ref name='xmlGetParameterEntity'/>
+          <ref name='xmlSetProp'/>
           <ref name='xmlXPathTranslateFunction'/>
         </word>
         <word name='cost'>
@@ -20981,6 +20985,9 @@
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
           <ref name='xmlTextReaderSetSchema'/>
+        </word>
+        <word name='descend'>
+          <ref name='xmlDOMWrapCloneNode'/>
         </word>
         <word name='descendant'>
           <ref name='xmlXPathNextDescendant'/>
@@ -22578,6 +22585,7 @@
           <ref name='xmlReaderNewIO'/>
           <ref name='xmlRelaxNGGetValidErrors'/>
           <ref name='xmlRelaxNGSetParserErrors'/>
+          <ref name='xmlRelaxNGSetParserStructuredErrors'/>
           <ref name='xmlRelaxNGSetValidErrors'/>
           <ref name='xmlRelaxNGSetValidStructuredErrors'/>
           <ref name='xmlSchemaSetParserErrors'/>
@@ -22834,6 +22842,7 @@
           <ref name='xmlSaveFileTo'/>
           <ref name='xmlSaveFormatFileTo'/>
           <ref name='xmlStructuredErrorFunc'/>
+          <ref name='xmlUnsetProp'/>
           <ref name='xmlXPathStringEvalNumber'/>
         </word>
         <word name='handling'>
@@ -23661,37 +23670,6 @@
         </word>
         <word name='intersection'>
           <ref name='xmlXPathIntersection'/>
-        </word>
-        <word name='into'>
-          <ref name='attribute'/>
-          <ref name='attributeSAXFunc'/>
-          <ref name='xmlAddChild'/>
-          <ref name='xmlAddNextSibling'/>
-          <ref name='xmlAddPrevSibling'/>
-          <ref name='xmlAutomataCompile'/>
-          <ref name='xmlBoolToText'/>
-          <ref name='xmlBuildRelativeURI'/>
-          <ref name='xmlC14NDocDumpMemory'/>
-          <ref name='xmlC14NDocSave'/>
-          <ref name='xmlC14NDocSaveTo'/>
-          <ref name='xmlC14NExecute'/>
-          <ref name='xmlCharEncFirstLine'/>
-          <ref name='xmlCharEncInFunc'/>
-          <ref name='xmlCharEncOutFunc'/>
-          <ref name='xmlDocDumpFormatMemoryEnc'/>
-          <ref name='xmlDocDumpMemoryEnc'/>
-          <ref name='xmlGetFeaturesList'/>
-          <ref name='xmlNewIOInputStream'/>
-          <ref name='xmlParserAddNodeInfo'/>
-          <ref name='xmlSchemaValidateFacetWhtsp'/>
-          <ref name='xmlStrPrintf'/>
-          <ref name='xmlStrVPrintf'/>
-          <ref name='xmlTextMerge'/>
-          <ref name='xmlTextReaderReadAttributeValue'/>
-          <ref name='xmlXPathIdFunction'/>
-          <ref name='xmlXPathWrapCString'/>
-          <ref name='xmlXPathWrapExternal'/>
-          <ref name='xmlXPathWrapString'/>
         </word>
         <word name='invalid'>
           <ref name='XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
@@ -24760,6 +24738,9 @@
           <ref name='xmlValidGetPotentialChildren'/>
           <ref name='xmlValidGetValidElements'/>
         </word>
+        <word name='namespace-binding'>
+          <ref name='xmlSetProp'/>
+        </word>
         <word name='namespace-uri'>
           <ref name='xmlXPathNamespaceURIFunction'/>
         </word>
@@ -25102,6 +25083,9 @@
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlScanName'/>
+        </word>
+        <word name='ns-binding'>
+          <ref name='xmlSetProp'/>
         </word>
         <word name='ns-decls'>
           <ref name='xmlDOMWrapAdoptNode'/>
@@ -27402,6 +27386,7 @@
           <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlSetNsProp'/>
+          <ref name='xmlSetProp'/>
           <ref name='xmlTextReaderConstXmlLang'/>
           <ref name='xmlTextReaderLookupNamespace'/>
           <ref name='xmlTextReaderXmlLang'/>
@@ -28437,6 +28422,7 @@
         <word name='such'>
           <ref name='xmlNewTextChild'/>
           <ref name='xmlParseEntityRef'/>
+          <ref name='xmlSetProp'/>
           <ref name='xmlValidityErrorFunc'/>
           <ref name='xmlValidityWarningFunc'/>
           <ref name='xmlXPathLangFunction'/>

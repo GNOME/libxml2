@@ -1,3 +1,8 @@
+Tue May  2 14:24:40 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: fixing bug #340398 xmlCharEncOutFunc writing to
+	  input buffer
+
 Fri Apr 28 18:29:22 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in doc//*: preparing 2.6.24 release, fixed Python

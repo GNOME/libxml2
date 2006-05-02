@@ -1,3 +1,8 @@
+Tue May  2 22:34:54 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fix a mix of code and declarations showing up on Windows
+	  patch from Kjartan Maraas, fixing #340404
+
 Tue May  2 14:24:40 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: fixing bug #340398 xmlCharEncOutFunc writing to

@@ -589,8 +589,11 @@ xmlCleanupOutputCallbacks(void)
 int
 xmlCheckFilename (const char *path)
 {
+#ifdef HAVE_STAT
+	struct stat stat_buffer;
+#endif
 	if (path == NULL)
-      return(0);
+		return(0);
   
 #if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 	{
@@ -616,8 +619,6 @@ xmlCheckFilename (const char *path)
 	}
 #else
 #ifdef HAVE_STAT
-    struct stat stat_buffer;
-
     if (stat(path, &stat_buffer) == -1)
         return 0;
 

@@ -1,3 +1,9 @@
+Wed May  3 15:16:00 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: applied another Python detection patch from Joseph Sacco
+	* libxml.spec.in: cleanup the changelog section, asciifies the spec file
+	  too
+
 Tue May  2 22:34:54 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fix a mix of code and declarations showing up on Windows

@@ -1,3 +1,11 @@
+Thu May  4 19:14:03 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: We'll raise an internal error and stop
+	  validation now when an entity is found in the instance
+	  document, since we don't support automatic entity
+	  substitution by the schema processor (yet?) -
+	  see bug #340316, reported by Nick Wellnhofer.
+
 Wed May  3 15:16:00 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: applied another Python detection patch from Joseph Sacco

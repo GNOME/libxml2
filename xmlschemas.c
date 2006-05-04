@@ -27496,8 +27496,13 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
 	    (node->type == XML_ENTITY_REF_NODE)) {
 	    /*
 	    * DOC VAL TODO: What to do with entities?
-	    */
-	    TODO
+	    */	    
+	    VERROR_INT("xmlSchemaVDocWalk",
+		"there is at least one entity reference in the node-tree "
+		"currently being validated. Processing of entities with "
+		"this XML Schema processor is not supported (yet). Please "
+		"substitute entities before validation.");
+	    goto internal_error;
 	} else {
 	    goto leave_node;
 	    /*

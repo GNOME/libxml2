@@ -7394,7 +7394,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
     if (root == NULL) {
         xmlRngPErr(ctxt, (xmlNodePtr) doc,
 	           XML_RNGP_EMPTY, "xmlRelaxNGParse: %s is empty\n",
-                   (ctxt->URL ? ctxt->URL : "schemas"), NULL);
+                   (ctxt->URL ? ctxt->URL : BAD_CAST "schemas"), NULL);
 	
         xmlFreeDoc(ctxt->document);
         ctxt->document = NULL;

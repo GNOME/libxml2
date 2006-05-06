@@ -1,7 +1,7 @@
 Sat May  6 11:05:24 HKT 2006 William M. Brack <wbrack@mmm.com.hk>
 
-	* relaxng.c: Fixed compilation error (bug 340765) reported by
-	  dmacks with patch supplied by Graham Bennett.
+	* relaxng.c: Fixed compilation error with patch supplied by
+	  Graham Bennett.
 
 Thu May  4 19:14:03 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 

@@ -12551,9 +12551,21 @@ xmlSchemaBuildContentModelForSubstGroup(xmlSchemaParserCtxtPtr pctxt,
 	*/
 	for (i = 0; i < substGroup->members->nbItems; i++) {
 	    member = (xmlSchemaElementPtr) substGroup->members->items[i];
-	    tmp = xmlAutomataNewOnceTrans2(pctxt->am, start, NULL,
-		               member->name, member->targetNamespace,
-			       1, 1, member);
+	    /*
+	    * NOTE: This fixes bug #341150. xmlAutomataNewOnceTrans2()
+	    *  was incorrectly used instead of xmlAutomataNewTransition2()
+	    *  (seems like a copy&paste bug from the XML_SCHEMA_TYPE_ALL
+	    *  section in xmlSchemaBuildAContentModel() ).
+	    * TODO: Check if xmlAutomataNewOnceTrans2() was instead 
+	    *  intended for the above "counter" section originally. I.e.,
+	    *  check xs:all with subst-groups.
+	    *
+	    * tmp = xmlAutomataNewOnceTrans2(pctxt->am, start, NULL,
+	    *	               member->name, member->targetNamespace,
+	    *		       1, 1, member);
+	    */
+	    tmp = xmlAutomataNewTransition2(pctxt->am, start, NULL,
+		member->name, member->targetNamespace, member);	    
 	    xmlAutomataNewEpsilon(pctxt->am, tmp, end);
 	}
     } else {

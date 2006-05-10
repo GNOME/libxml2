@@ -6,3 +6,6 @@ ms-test.py
 nist-test.py
 sun-test.py
 test.log
+Makefile
+Makefile.in
+

@@ -48,3 +48,8 @@ autom4te.cache
 .project
 .cdtproject
 .externalToolBuilders
+runsuite
+runtest
+testModule
+testapi
+

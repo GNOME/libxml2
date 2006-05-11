@@ -1,3 +1,17 @@
+Thu May 11 18:03:49 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed bug #341337, reported by David Grohmann.
+	  The code expected a node (xmlNodePtr) on the info for a
+	  non-existent default attribute, which clearly cannot be
+	  expected, since the attribute does not exist. I can only
+	  guess that this sneaked trying to eliminate the query
+	  for the owner-element, which is unavoidable actually.
+	  Note that creation of default attributes won't have an
+	  effect if validating via SAX/XMLReader; i.e., the processor
+	  won't fire additional start-attribute events (I'm not even
+	  sure if Libxml2 has such a SAX-event; I think it hands them
+	  all over in the start-element event).
+
 Tue May  9 21:47:58 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed bug #341150, reported by Michael Romer.
@@ -10,7 +24,6 @@ Tue May  9 21:47:58 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 	  result/schemas/subst-group-1_0_1
 	  result/schemas/subst-group-1_0_1.err: Added regression test
 	  supplied by Michael Romer for bug #341150.
-
 
 Sat May  6 11:05:24 HKT 2006 William M. Brack <wbrack@mmm.com.hk>
 

@@ -24823,9 +24823,10 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
     xmlSchemaItemListPtr attrUseList;
     xmlSchemaAttributeUsePtr attrUse = NULL;
     xmlSchemaAttributePtr attrDecl = NULL;
-    xmlSchemaAttrInfoPtr iattr, tmpiattr;
+    xmlSchemaAttrInfoPtr iattr, tmpiattr;    
     int i, j, found, nbAttrs, nbUses;
     int xpathRes = 0, res, wildIDs = 0, fixed;
+    xmlNodePtr defAttrOwnerElem = NULL;
 
     /*
     * SPEC (cvc-attribute)
@@ -25068,6 +25069,15 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	return (0);
 
     /*
+    * Get the owner element; needed for creation of default attributes.
+    * This fixes bug #341337, reported by David Grohmann.
+    */
+    if (vctxt->options & XML_SCHEMA_VAL_VC_I_CREATE) {
+	xmlSchemaNodeInfoPtr ielem = vctxt->elemInfos[vctxt->depth];
+	if (ielem && ielem->node && ielem->node->doc)
+	    defAttrOwnerElem = ielem->node;
+    }
+    /*
     * Validate values, create default attributes, evaluate IDCs.
     */
     for (i = 0; i < vctxt->nbAttrInfos; i++) {
@@ -25108,8 +25118,10 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	if (iattr->state == XML_SCHEMAS_ATTR_DEFAULT) {
 	    /*
 	    * Default/fixed attributes.
+	    * We need the value only if we need to resolve IDCs or
+	    * will create default attributes.
 	    */
-	    if (xpathRes) {
+	    if ((xpathRes) || (defAttrOwnerElem)) {
 		if (iattr->use->defValue != NULL) {
 		    iattr->value = (xmlChar *) iattr->use->defValue;
 		    iattr->val = iattr->use->defVal;
@@ -25139,8 +25151,8 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	    * VAL TODO: Should we use the *normalized* value? This currently
 	    *   uses the *initial* value.
 	    */
-	    if ((vctxt->options & XML_SCHEMA_VAL_VC_I_CREATE) &&
-		(iattr->node != NULL) && (iattr->node->doc != NULL)) {
+	    
+	    if (defAttrOwnerElem) {
 		xmlChar *normValue;
 		const xmlChar *value;
 
@@ -25154,7 +25166,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		    value = BAD_CAST normValue;
 
 		if (iattr->nsName == NULL) {
-		    if (xmlNewProp(iattr->node->parent,
+		    if (xmlNewProp(defAttrOwnerElem,
 			iattr->localName, value) == NULL) {
 			VERROR_INT("xmlSchemaVAttributesComplex",
 			    "callling xmlNewProp()");
@@ -25165,8 +25177,8 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		} else {
 		    xmlNsPtr ns;
 
-		    ns = xmlSearchNsByHref(iattr->node->doc,
-			iattr->node->parent, iattr->nsName);
+		    ns = xmlSearchNsByHref(defAttrOwnerElem->doc,
+			defAttrOwnerElem, iattr->nsName);
 		    if (ns == NULL) {
 			xmlChar prefix[12];
 			int counter = 0;
@@ -25177,8 +25189,8 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 			*/
 			do {
 			    snprintf((char *) prefix, 12, "p%d", counter++);
-			    ns = xmlSearchNs(iattr->node->doc,
-				iattr->node->parent, BAD_CAST prefix);
+			    ns = xmlSearchNs(defAttrOwnerElem->doc,
+				defAttrOwnerElem, BAD_CAST prefix);
 			    if (counter > 1000) {
 				VERROR_INT(
 				    "xmlSchemaVAttributesComplex",
@@ -25198,8 +25210,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		    * If we have QNames: do we need to ensure there's a
 		    * prefix defined for the QName?
 		    */
-		    xmlNewNsProp(iattr->node->parent, ns,
-			iattr->localName, value);
+		    xmlNewNsProp(defAttrOwnerElem, ns, iattr->localName, value);
 		}
 		if (normValue != NULL)
 		    xmlFree(normValue);

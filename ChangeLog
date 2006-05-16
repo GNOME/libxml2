@@ -1,3 +1,29 @@
+Tue May 16 16:55:13 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Applied patch from Rob Richards, fixing a potential
+	  memory leak in xmlXPathTryStreamCompile(), when a list of
+	  namespaces was assigned to the XPath compilation context;
+	  here a new namespace list was created and passed to
+	  xmlPatterncompile(); but this list was not freed afterwards.
+	  Additionally we avoid now in xmlXPathTryStreamCompile() to
+	  compile the expression, if it has a colon - indicating
+	  prefixed name tests - and no namespace list was given. The
+	  streaming XPath mechanism needs a namespace list at
+	  compilation time (unlike normal XPath, where we can bind
+	  namespace names to prefixes at execution time).
+	* pattern.c: Enhanced to use a string dict for local-names,
+	  ns-prefixes and and namespace-names.
+	  Fixed xmlStreamPushInternal() not to use string-pointer
+	  comparison if a dict is available; this won't work, since
+	  one does not know it the given strings originate from the
+	  same dict - and they normally don't do, since e.g.
+	  namespaces are hold on xmlNs->href. I think this would be
+	  worth an investigation: if we can add a @doc field to xmlNs
+	  and put the @href in to a additionan namespace dict hold
+	  in xmlDoc. Daniel will surely not like this idea :-) But
+	  evaluation of tons of elements/attributes in namespaces
+	  with xmlStrEqual() isn't the way we should go forever.
+	  
 Thu May 11 18:03:49 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed bug #341337, reported by David Grohmann.

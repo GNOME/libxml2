@@ -11378,12 +11378,18 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	const xmlChar *tmp;
 
 	/*
-	 * We don't try to handle :: constructs, just the simplied form at
-	 * this point
+	 * We don't try to handle expressions using the verbose axis
+	 * specifiers ("::"), just the simplied form at this point.
+	 * Additionally, if there is no list of namespaces available and
+	 *  there's a ":" in the expression, indicating a prefixed QName,
+	 *  then we won't try to compile either. xmlPatterncompile() needs
+	 *  to have a list of namespaces at compilation time in order to
+	 *  compile prefixed name tests.
 	 */
 	tmp = xmlStrchr(str, ':');
-	if ((tmp != NULL) && (tmp[1] == ':'))
-	    return(NULL);
+	if ((tmp != NULL) &&
+	    ((ctxt == NULL) || (ctxt->nsNr == 0) || (tmp[1] == ':')))
+	    return(NULL);	    
 
 	if (ctxt != NULL) {
 	    dict = ctxt->dict;
@@ -11405,6 +11411,9 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 
 	stream = xmlPatterncompile(str, dict, XML_PATTERN_XPATH,
 			&namespaces[0]);
+	if (namespaces != NULL) {
+	    xmlFree((xmlChar **)namespaces);
+ 	}
 	if ((stream != NULL) && (xmlPatternStreamable(stream) == 1)) {
 	    comp = xmlXPathNewCompExpr();
 	    if (comp == NULL) {

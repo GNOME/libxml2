@@ -1,3 +1,13 @@
+Fri May 19 13:16:58 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Optimized the comparison for non-element nodes
+	  in xmlXPathCmpNodesExt(); the comparison is used for sorting
+	  of node-sets. This enhancement is related to bug #165547.
+	  There are other places where the old comparison function
+	  xmlXPathCmpNodes() is still called, but I currently don't
+	  know exactly what those calls are for; thus if they can be
+	  substituted (if it makes sense) for the new function.
+
 Tue May 16 16:55:13 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Applied patch from Rob Richards, fixing a potential

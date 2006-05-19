@@ -1,3 +1,12 @@
+Fri May 19 21:56:43 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Substituted all remaining calls to xmlXPathCmpNodes()
+	  for xmlXPathCmpNodesExt(). Tiny further enhancement of
+	  xmlXPathCmpNodesExt(). Added additional checks in various code
+	  parts to avoid calling sorting or merging functions if the
+	  node-set(s) don't need them; i.e., if they are empty or contain
+	  just one node.
+
 Fri May 19 13:16:58 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Optimized the comparison for non-element nodes

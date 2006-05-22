@@ -1,3 +1,10 @@
+Mon May 22 17:14:00 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Optimization of count(): eliminated sorting
+	  (see bug #165547). Optimization of XPATH_OP_FILTER if the
+	  predicate is a [1] (disable with XP_OPTIMIZED_FILTER_FIRST if
+	  it produces trouble). Tiny opt in xmlXPathNodeSetMerge().
+	  
 Mon May 22 13:33:12 CEST 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* tree.c: Revert behavior change in xmlSetProp to handle attributes

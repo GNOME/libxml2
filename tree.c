@@ -6347,13 +6347,6 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	    xmlFree(prefix);
 	if (ns != NULL)
 	    return(xmlSetNsProp(node, ns, nqname, value));
-	/*
-	* If we get a QName and the prefix has no namespace-
-	* binding in scope, then this is an error.
-	* TODO: Previously this falled-back to non-ns handling.
-	*   Should we revert this?
-	*/
-	return(NULL);
     }
     return(xmlSetNsProp(node, NULL, name, value));
 }

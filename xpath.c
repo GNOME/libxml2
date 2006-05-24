@@ -2141,6 +2141,7 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
     return(ret);
 }
 
+#if 0 /* enable if needed */
 /**
  * xmlXPathNodeSetCreateSize:
  * @val:  an initial xmlNodePtr, or NULL
@@ -2175,6 +2176,7 @@ xmlXPathNodeSetCreateSize(int size)
     }
     return(ret);
 }
+#endif
 
 /**
  * xmlXPathNodeSetContains:
@@ -2399,14 +2401,22 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 
     if (val2 == NULL) return(val1);
     if (val1 == NULL) {
-	/*
-	* Optimization: Create an equally sized node-set
-	* and memcpy the content.
-	*/
-	val1 = xmlXPathNodeSetCreateSize(val2->nodeNr);
-	if (val1 == NULL)
-	    return(NULL);
-	if (val2->nodeNr != 0) {
+	val1 = xmlXPathNodeSetCreate(NULL);
+#if 0
+        /*
+        * TODO: The optimization won't work in every case, since
+        *  those nasty namespace nodes need to be added with
+        *  xmlXPathNodeSetDupNs() to the set; thus a pure
+        *  memcpy is not possible.
+        */
+        /*
+        * Optimization: Create an equally sized node-set
+        * and memcpy the content.
+        */
+        val1 = xmlXPathNodeSetCreateSize(val2->nodeNr);
+        if (val1 == NULL)
+            return(NULL);
+        if (val2->nodeNr != 0) {
 	    if (val2->nodeNr == 1)
 		*(val1->nodeTab) = *(val2->nodeTab);
 	    else {
@@ -2414,8 +2424,9 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 		    val2->nodeNr * sizeof(xmlNodePtr));
 	    }
 	    val1->nodeNr = val2->nodeNr;
-	}
+	}			
 	return(val1);
+#endif /* if 0 */
     }
 
     /* @@ with_ns to check whether namespace nodes should be looked at @@ */

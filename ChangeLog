@@ -1,3 +1,22 @@
+Wed May 24 10:54:25 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Removed a memcpy if xmlXPathNodeSetMerge(); it
+	  seems we really need to walk the whole list, since those
+	  nastly namespace nodes need to be added with
+	  xmlXPathNodeSetDupNs(); thus a pure memcpy is not possible.
+	  A flag on the node-set indicating if namespace nodes are in
+	  the set would help here; this is the 3rd flag which would
+	  be usefull with node-sets. The current flags I have in mind:
+	  1) Is a node-set already sorted?
+	     This would allow for rebust and optimizable sorting
+	     behaviour.
+	  2) Of what type are the nodes in the set (or of mixed type)?
+	     This would allow for faster merging of node-sets.
+	  3) Are namespace nodes in the set?
+	     This would allow to skipp all the namespace node specific
+	     special handling. Faster node-set merging if the first
+	     set is empty; just memcpy the set.
+
 Mon May 22 17:14:00 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Optimization of count(): eliminated sorting

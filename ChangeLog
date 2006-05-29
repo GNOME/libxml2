@@ -1,3 +1,21 @@
+Mon May 29 18:06:17 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c include/libxml/xpath.h: Added an XPath object cache.
+	  It sits on an xmlXPathContext and need to be explicitely
+	  activated (or deactivated again) with
+	  xmlXPathContextSetObjectCache(). The cache consists of 5
+	  lists for node-set, string, number, boolean and misc XPath
+	  objects. Internally the xpath.c module will use object-
+	  deposition and -acquisition functions which will try to reuse
+	  as many XPath objects as possible, and fallback to normal
+	  free/create behaviour if no cache is available or if the cache
+	  is full.
+	* runsuite.c: Adjusted to deactivate the cache for XML Schema
+	  tests if a cache-creation is turned on by default for the whole
+	  library, e.g. for testing purposes of the cache. It is
+	  deactivated here in order to avoid confusion of the memory leak
+	  detection in runsuite.c.
+
 Wed May 24 10:54:25 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Removed a memcpy if xmlXPathNodeSetMerge(); it

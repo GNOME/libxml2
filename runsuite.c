@@ -225,6 +225,16 @@ initializeLibxml2(void) {
     xmlInitParser();
     xmlSetExternalEntityLoader(testExternalEntityLoader);
     ctxtXPath = xmlXPathNewContext(NULL);
+    /*
+    * Deactivate the cache if created; otherwise we have to create/free it
+    * for every test, since it will confuse the memory leak detection.
+    * Note that normally this need not be done, since the cache is not
+    * created until set explicitely with xmlXPathContextSetObjectCache();
+    * but for test purposes it is sometimes usefull to activate the
+    * cache by default for the whole library.
+    */
+    if (ctxtXPath->objCache != NULL)
+	xmlXPathContextSetObjectCache(ctxtXPath, 0, -1, 0);
     /* used as default nanemspace in xstc tests */
     xmlXPathRegisterNs(ctxtXPath, BAD_CAST "ts", BAD_CAST "TestSuite");
     xmlXPathRegisterNs(ctxtXPath, BAD_CAST "xlink",
@@ -1158,7 +1168,6 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 	printf("Total %d tests, %d errors, %d leaks\n",
 	       nb_tests, nb_errors, nb_leaks);
     }
-
     xmlXPathFreeContext(ctxtXPath);
     xmlCleanupParser();
     xmlMemoryDump();

@@ -35,6 +35,7 @@ extern "C" {
 #endif /* LIBXML_XPATH_ENABLED or LIBXML_SCHEMAS_ENABLED */
 	
 #ifdef LIBXML_XPATH_ENABLED
+
 typedef struct _xmlXPathContext xmlXPathContext;
 typedef xmlXPathContext *xmlXPathContextPtr;
 typedef struct _xmlXPathParserContext xmlXPathParserContext;
@@ -343,6 +344,7 @@ struct _xmlXPathContext {
     xmlDictPtr dict;			/* dictionnary if any */
 
     int flags;				/* flags to control compilation */
+    void *objCache; /* Cache for reusal of XPath objects. */
 };
 
 /*
@@ -485,9 +487,13 @@ XMLPUBFUN xmlXPathObjectPtr XMLCALL
  */
 XMLPUBFUN xmlXPathContextPtr XMLCALL 
 		    xmlXPathNewContext		(xmlDocPtr doc);
-XMLPUBFUN void XMLCALL		   
+XMLPUBFUN void XMLCALL
 		    xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
-
+XMLPUBFUN int XMLCALL
+		    xmlXPathContextSetObjectCache(xmlXPathContextPtr ctxt,
+						 int active,
+						 int maxNumberPerSlot,
+						 int options);
 /**
  * Evaluation functions.
  */

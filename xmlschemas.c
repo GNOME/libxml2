@@ -21365,12 +21365,17 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
 	location, NULL, NULL, 0, node, NULL, nsName, 
 	&bucket);
     if (ret != 0)
+	return(ret);    
+    if (bucket == NULL) {	
+	/*
+	* Generate a warning that the document could not be located.
+	*/
+	xmlSchemaCustomWarning(ACTXT_CAST vctxt, XML_SCHEMAV_MISC,
+	    node, NULL,
+	    "The document at location '%s' could not be acquired",
+	    location, NULL, NULL);
 	return(ret);
-    if (bucket == NULL) {
-	PERROR_INT("xmlSchemaAssembleByLocation",
-	    "no schema bucket acquired");
-	return(-1);
-    } 
+    }
     /*
     * The first located schema will be handled as if all other
     * schemas imported by XSI were imported by this first schema.
@@ -21485,6 +21490,9 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
 	return (0);
     cur = iattr->value;
     do {
+	/*
+	* TODO: Move the string parsing mechanism away from here.
+	*/
 	if (iattr->metaType == XML_SCHEMA_ATTR_INFO_META_XSI_SCHEMA_LOC) {
 	    /*
 	    * Get the namespace name.
@@ -21496,7 +21504,7 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
 		end++;
 	    if (end == cur)
 		break;
-	    count++;
+	    count++; /* TODO: Don't use the schema's dict. */
 	    nsname = xmlDictLookup(vctxt->schema->dict, cur, end - cur);
 	    cur = end;
 	}
@@ -21508,9 +21516,22 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
 	end = cur;
 	while ((*end != 0) && (!(IS_BLANK_CH(*end))))
 	    end++;
-	if (end == cur)
+	if (end == cur) {
+	    if (iattr->metaType ==
+		XML_SCHEMA_ATTR_INFO_META_XSI_SCHEMA_LOC)
+	    {
+		/*
+		* If using @schemaLocation then tuples are expected.
+		* I.e. the namespace name *and* the document's URI.
+		*/		
+		xmlSchemaCustomWarning(ACTXT_CAST vctxt, XML_SCHEMAV_MISC,
+		    iattr->node, NULL,
+		    "The value must consist of tuples: the target namespace "
+		    "name and the document's URI", NULL, NULL, NULL);
+	    }
 	    break;
-	count++;
+	}
+	count++; /* TODO: Don't use the schema's dict. */
 	location = xmlDictLookup(vctxt->schema->dict, cur, end - cur);
 	cur = end;
 	ret = xmlSchemaAssembleByLocation(vctxt, vctxt->schema,

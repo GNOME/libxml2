@@ -1,3 +1,14 @@
+Tue May 30 11:38:47 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: A warning will now be reported in the value of
+	  the XSD attribute 'schemaLocation' does not consist of tuples
+	  (namespace-name, document-URI). A warning will be reported
+	  if a schema document could not be found at the specified
+	  location (via 'schemaLocation' or
+	  'noNamespaceSchemaLocation').
+	* include/libxml/xmlerror.h: Added XML_SCHEMAV_MISC to
+	  xmlParserErrors.
+
 Tue May 30 11:21:34 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Enhanced xmlXPathNodeCollectAndTest() to avoid

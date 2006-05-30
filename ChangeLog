@@ -1,3 +1,15 @@
+Tue May 30 11:21:34 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Enhanced xmlXPathNodeCollectAndTest() to avoid
+	  recreation (if possible) of the node-set which is used to
+	  collect the nodes in the current axis for the currect context
+	  node. Especially for "//foo" this will decrease dramatically
+	  the number of created node-sets, since for each node in the
+	  result node-set of the evaluation of descendant-or-self::node()
+	  a new temporary node-set was created. Added node iterator
+	  xmlXPathNextChildElement() as a tiny optimization for
+	  child::foo.
+
 Mon May 29 18:06:17 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c include/libxml/xpath.h: Added an XPath object cache.

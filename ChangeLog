@@ -1,3 +1,20 @@
+Tue May 30 21:36:16 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Optimized xmlXPathNodeCollectAndTest() and
+	  xmlXPathNodeCollectAndTestNth() to evaluate a compound
+	  traversal of 2 axes when we have a "//foo" expression.
+	  This is done with a rewrite of the XPath AST in
+	  xmlXPathRewriteDOSExpression(); I added an additional field
+	  to xmlXPathStepOp for this (but the field's name should be
+	  changed). The mechanism: the embracing descendant-or-self
+	  axis traversal (also optimized to return only nodes which
+	  can hold elements), will produce context nodes for the
+	  inner traversal of the child axis. This way we avoid a full
+	  node-collecting traversal of the descendant-or-self axis.
+	  Some tests indicate that this can reduce execution time of
+	  "//foo" to 50%. Together with the XPath object cache this
+	  all significantly speeds up libxslt.
+
 Tue May 30 11:38:47 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: A warning will now be reported in the value of

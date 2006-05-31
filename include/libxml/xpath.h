@@ -344,7 +344,8 @@ struct _xmlXPathContext {
     xmlDictPtr dict;			/* dictionnary if any */
 
     int flags;				/* flags to control compilation */
-    void *objCache; /* Cache for reusal of XPath objects. */
+    /* Cache for reusal of XPath objects */
+    void *cache;
 };
 
 /*
@@ -490,10 +491,10 @@ XMLPUBFUN xmlXPathContextPtr XMLCALL
 XMLPUBFUN void XMLCALL
 		    xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
 XMLPUBFUN int XMLCALL
-		    xmlXPathContextSetObjectCache(xmlXPathContextPtr ctxt,
-						 int active,
-						 int maxNumberPerSlot,
-						 int options);
+		    xmlXPathContextSetCache(xmlXPathContextPtr ctxt,
+				            int active,
+					    int value,
+					    int options);
 /**
  * Evaluation functions.
  */

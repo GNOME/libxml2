@@ -812,11 +812,11 @@ xmlXPathCompExprAdd(ctxt->comp, (ch1), (ch2), (op),			\
 
 /* #define XP_DEFAULT_CACHE_ON */
 
-#define XP_HAS_CACHE(c) ((c != NULL) && ((c)->objCache != NULL))
+#define XP_HAS_CACHE(c) ((c != NULL) && ((c)->cache != NULL))
 
-typedef struct _xmlXPathObjectCache xmlXPathObjectCache;
-typedef xmlXPathObjectCache *xmlXPathObjectCachePtr;
-struct _xmlXPathObjectCache {
+typedef struct _xmlXPathContextCache xmlXPathContextCache;
+typedef xmlXPathContextCache *xmlXPathContextCachePtr;
+struct _xmlXPathContextCache {
     xmlPointerListPtr nodesetObjs;  /* contains xmlXPathObjectPtr */
     xmlPointerListPtr stringObjs;   /* contains xmlXPathObjectPtr */
     xmlPointerListPtr booleanObjs;  /* contains xmlXPathObjectPtr */
@@ -1350,9 +1350,9 @@ static void
 xmlXPathDebugObjUsageReset(xmlXPathContextPtr ctxt)
 {
     if (ctxt != NULL) {
-	if (ctxt->objCache != NULL) {
-	    xmlXPathObjectCachePtr cache =
-		(xmlXPathObjectCachePtr) ctxt->objCache;
+	if (ctxt->cache != NULL) {
+	    xmlXPathContextCachePtr cache =
+		(xmlXPathContextCachePtr) ctxt->cache;
 
 	    cache->dbgCachedAll = 0;
 	    cache->dbgCachedNodeset = 0;
@@ -1425,9 +1425,9 @@ xmlXPathDebugObjUsageRequested(xmlXPathContextPtr ctxt,
     int isCached = 0;
 
     if (ctxt != NULL) {
-	if (ctxt->objCache != NULL) {
-	    xmlXPathObjectCachePtr cache =
-		(xmlXPathObjectCachePtr) ctxt->objCache;
+	if (ctxt->cache != NULL) {
+	    xmlXPathContextCachePtr cache =
+		(xmlXPathContextCachePtr) ctxt->cache;
 	    
 	    isCached = 1;
 	    
@@ -1579,9 +1579,9 @@ xmlXPathDebugObjUsageReleased(xmlXPathContextPtr ctxt,
     int isCached = 0;
 
     if (ctxt != NULL) {
-	if (ctxt->objCache != NULL) {
-	    xmlXPathObjectCachePtr cache =
-		(xmlXPathObjectCachePtr) ctxt->objCache;
+	if (ctxt->cache != NULL) {
+	    xmlXPathContextCachePtr cache =
+		(xmlXPathContextCachePtr) ctxt->cache;
 
 	    isCached = 1;	    
 	    
@@ -1683,9 +1683,9 @@ xmlXPathDebugObjUsageDisplay(xmlXPathContextPtr ctxt)
     printf("# XPath object usage:\n");
 
     if (ctxt != NULL) {
-	if (ctxt->objCache != NULL) {
-	    xmlXPathObjectCachePtr cache =
-		(xmlXPathObjectCachePtr) ctxt->objCache;
+	if (ctxt->cache != NULL) {
+	    xmlXPathContextCachePtr cache =
+		(xmlXPathContextCachePtr) ctxt->cache;
 
 	    reAll = cache->dbgReusedAll;
 	    reqAll += reAll;
@@ -1779,23 +1779,23 @@ xmlXPathDebugObjUsageDisplay(xmlXPathContextPtr ctxt)
  ************************************************************************/
 
 /**
- * xmlXPathNewObjectCache:
+ * xmlXPathNewCache:
  *
  * Create a new object cache
  *
- * Returns the xmlXPathObjectCahce just allocated.
+ * Returns the xmlXPathCache just allocated.
  */
-static xmlXPathObjectCachePtr
-xmlXPathNewObjectCache(void)
+static xmlXPathContextCachePtr
+xmlXPathNewCache(void)
 {
-    xmlXPathObjectCachePtr ret;
+    xmlXPathContextCachePtr ret;
 
-    ret = (xmlXPathObjectCachePtr) xmlMalloc(sizeof(xmlXPathObjectCache));
+    ret = (xmlXPathContextCachePtr) xmlMalloc(sizeof(xmlXPathContextCache));
     if (ret == NULL) {
         xmlXPathErrMemory(NULL, "creating object cache\n");
 	return(NULL);
     }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObjectCache));
+    memset(ret, 0 , (size_t) sizeof(xmlXPathContextCache));
     ret->maxNodeset = 100;
     ret->maxString = 100;
     ret->maxBoolean = 100;
@@ -1805,7 +1805,7 @@ xmlXPathNewObjectCache(void)
 }
 
 static void
-xmlXPathFreeObjectCacheList(xmlPointerListPtr list)
+xmlXPathCacheFreeObjectList(xmlPointerListPtr list)
 {
     int i;
     xmlXPathObjectPtr obj;
@@ -1833,67 +1833,74 @@ xmlXPathFreeObjectCacheList(xmlPointerListPtr list)
 }
 
 static void
-xmlXPathFreeObjectCache(xmlXPathObjectCachePtr cache)
+xmlXPathFreeCache(xmlXPathContextCachePtr cache)
 {
     if (cache == NULL)
 	return;
     if (cache->nodesetObjs)
-	xmlXPathFreeObjectCacheList(cache->nodesetObjs);
+	xmlXPathCacheFreeObjectList(cache->nodesetObjs);
     if (cache->stringObjs)
-	xmlXPathFreeObjectCacheList(cache->stringObjs);
+	xmlXPathCacheFreeObjectList(cache->stringObjs);
     if (cache->booleanObjs)
-	xmlXPathFreeObjectCacheList(cache->booleanObjs);
+	xmlXPathCacheFreeObjectList(cache->booleanObjs);
     if (cache->numberObjs)
-	xmlXPathFreeObjectCacheList(cache->numberObjs);
+	xmlXPathCacheFreeObjectList(cache->numberObjs);
     if (cache->miscObjs)
-	xmlXPathFreeObjectCacheList(cache->miscObjs);    
+	xmlXPathCacheFreeObjectList(cache->miscObjs);    
     xmlFree(cache);
 }
 
 /**
- * xmlXPathContextSetObjectCache:
+ * xmlXPathContextSetCache:
  *
  * @ctxt:  the XPath context
  * @active: enables/disables (creates/frees) the cache
- * @maxNumberPerSlot: the maximum number of XPath objects to be cached per slot
- * @options: currently not used
+ * @value: a value with semantics dependant on @options 
+ * @options: options (currently only the value 0 is used)
  *
  * Creates/frees an object cache on the XPath context.
  * If activates XPath objects (xmlXPathObject) will be cached internally
  * to be reused.
- * @maxNumberPerSlot is the maximum number of XPath objects to be cached per
- * slot. There are 5 slots for: node-set, string, number, boolean, and
- * misc objects. Use <0 for the default number (100).
+ * @options:
+ *   0: This will set the XPath object caching:
+ *      @value:
+ *        This will set the maximum number of XPath objects
+ *        to be cached per slot
+ *        There are 5 slots for: node-set, string, number, boolean, and
+ *        misc objects. Use <0 for the default number (100).
+ *   Other values for @options have currently no effect.
  *
  * Returns 0 if the setting succeeded, and -1 on API or internal errors.
  */
 int
-xmlXPathContextSetObjectCache(xmlXPathContextPtr ctxt,
-			      int active,
-			      int maxNumberPerSlot,
-			      int options ATTRIBUTE_UNUSED)
+xmlXPathContextSetCache(xmlXPathContextPtr ctxt,
+			int active,
+			int value,
+			int options)
 {
     if (ctxt == NULL)
 	return(-1);
     if (active) {
-	xmlXPathObjectCachePtr cache;
+	xmlXPathContextCachePtr cache;
 	
-	if (ctxt->objCache == NULL) {
-	    ctxt->objCache = xmlXPathNewObjectCache();
-	    if (ctxt->objCache == NULL)
+	if (ctxt->cache == NULL) {
+	    ctxt->cache = xmlXPathNewCache();
+	    if (ctxt->cache == NULL)
 		return(-1);
 	}
-	cache = (xmlXPathObjectCachePtr) ctxt->objCache;
-	if (maxNumberPerSlot < 0)
-	    maxNumberPerSlot = 100;
-	cache->maxNodeset = maxNumberPerSlot;
-	cache->maxString = maxNumberPerSlot;
-	cache->maxNumber = maxNumberPerSlot;
-	cache->maxBoolean = maxNumberPerSlot;
-	cache->maxMisc = maxNumberPerSlot;
-    } else if (ctxt->objCache != NULL) {
-	xmlXPathFreeObjectCache((xmlXPathObjectCachePtr) ctxt->objCache);
-	ctxt->objCache = NULL;
+	cache = (xmlXPathContextCachePtr) ctxt->cache;
+	if (options == 0) {
+	    if (value < 0)
+		value = 100;
+	    cache->maxNodeset = value;
+	    cache->maxString = value;
+	    cache->maxNumber = value;
+	    cache->maxBoolean = value;
+	    cache->maxMisc = value;
+	}
+    } else if (ctxt->cache != NULL) {
+	xmlXPathFreeCache((xmlXPathContextCachePtr) ctxt->cache);
+	ctxt->cache = NULL;
     }
     return(0);
 }
@@ -1911,9 +1918,9 @@ xmlXPathContextSetObjectCache(xmlXPathContextPtr ctxt,
 static xmlXPathObjectPtr
 xmlXPathCacheWrapNodeSet(xmlXPathContextPtr ctxt, xmlNodeSetPtr val)
 {    
-    if ((ctxt != NULL) && (ctxt->objCache != NULL)) {
-	xmlXPathObjectCachePtr cache =
-	    (xmlXPathObjectCachePtr) ctxt->objCache;
+    if ((ctxt != NULL) && (ctxt->cache != NULL)) {
+	xmlXPathContextCachePtr cache =
+	    (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->miscObjs != NULL) &&
 	    (cache->miscObjs->number != 0))
@@ -1948,8 +1955,8 @@ xmlXPathCacheWrapNodeSet(xmlXPathContextPtr ctxt, xmlNodeSetPtr val)
 static xmlXPathObjectPtr
 xmlXPathCacheWrapString(xmlXPathContextPtr ctxt, xmlChar *val)
 {    
-    if ((ctxt != NULL) && (ctxt->objCache != NULL)) {
-	xmlXPathObjectCachePtr cache = (xmlXPathObjectCachePtr) ctxt->objCache;
+    if ((ctxt != NULL) && (ctxt->cache != NULL)) {
+	xmlXPathContextCachePtr cache = (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->stringObjs != NULL) &&
 	    (cache->stringObjs->number != 0))
@@ -2000,8 +2007,8 @@ xmlXPathCacheWrapString(xmlXPathContextPtr ctxt, xmlChar *val)
 static xmlXPathObjectPtr
 xmlXPathCacheNewNodeSet(xmlXPathContextPtr ctxt, xmlNodePtr val)
 {
-    if ((ctxt != NULL) && (ctxt->objCache)) {
-	xmlXPathObjectCachePtr cache = (xmlXPathObjectCachePtr) ctxt->objCache;
+    if ((ctxt != NULL) && (ctxt->cache)) {
+	xmlXPathContextCachePtr cache = (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->nodesetObjs != NULL) &&
 	    (cache->nodesetObjs->number != 0))
@@ -2064,8 +2071,8 @@ xmlXPathCacheNewNodeSet(xmlXPathContextPtr ctxt, xmlNodePtr val)
 static xmlXPathObjectPtr
 xmlXPathCacheNewCString(xmlXPathContextPtr ctxt, const char *val)
 {    
-    if ((ctxt != NULL) && (ctxt->objCache)) {
-	xmlXPathObjectCachePtr cache = (xmlXPathObjectCachePtr) ctxt->objCache;
+    if ((ctxt != NULL) && (ctxt->cache)) {
+	xmlXPathContextCachePtr cache = (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->stringObjs != NULL) &&
 	    (cache->stringObjs->number != 0))
@@ -2113,8 +2120,8 @@ xmlXPathCacheNewCString(xmlXPathContextPtr ctxt, const char *val)
 static xmlXPathObjectPtr
 xmlXPathCacheNewString(xmlXPathContextPtr ctxt, const xmlChar *val)
 {    
-    if ((ctxt != NULL) && (ctxt->objCache)) {
-	xmlXPathObjectCachePtr cache = (xmlXPathObjectCachePtr) ctxt->objCache;
+    if ((ctxt != NULL) && (ctxt->cache)) {
+	xmlXPathContextCachePtr cache = (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->stringObjs != NULL) &&
 	    (cache->stringObjs->number != 0))
@@ -2167,8 +2174,8 @@ xmlXPathCacheNewString(xmlXPathContextPtr ctxt, const xmlChar *val)
 static xmlXPathObjectPtr
 xmlXPathCacheNewBoolean(xmlXPathContextPtr ctxt, int val)
 {    
-    if ((ctxt != NULL) && (ctxt->objCache)) {
-	xmlXPathObjectCachePtr cache = (xmlXPathObjectCachePtr) ctxt->objCache;
+    if ((ctxt != NULL) && (ctxt->cache)) {
+	xmlXPathContextCachePtr cache = (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->booleanObjs != NULL) &&
 	    (cache->booleanObjs->number != 0))
@@ -2215,8 +2222,8 @@ xmlXPathCacheNewBoolean(xmlXPathContextPtr ctxt, int val)
 static xmlXPathObjectPtr
 xmlXPathCacheNewFloat(xmlXPathContextPtr ctxt, double val)
 {
-     if ((ctxt != NULL) && (ctxt->objCache)) {
-	xmlXPathObjectCachePtr cache = (xmlXPathObjectCachePtr) ctxt->objCache;
+     if ((ctxt != NULL) && (ctxt->cache)) {
+	xmlXPathContextCachePtr cache = (xmlXPathContextCachePtr) ctxt->cache;
 
 	if ((cache->numberObjs != NULL) &&
 	    (cache->numberObjs->number != 0))
@@ -5129,11 +5136,11 @@ xmlXPathReleaseObject(xmlXPathContextPtr ctxt, xmlXPathObjectPtr obj)
 
     if (obj == NULL)
 	return;
-    if ((ctxt == NULL) || (ctxt->objCache == NULL)) {
+    if ((ctxt == NULL) || (ctxt->cache == NULL)) {
 	 xmlXPathFreeObject(obj);
     } else {       
-	xmlXPathObjectCachePtr cache =
-	    (xmlXPathObjectCachePtr) ctxt->objCache;
+	xmlXPathContextCachePtr cache =
+	    (xmlXPathContextCachePtr) ctxt->cache;
 
 	switch (obj->type) {
 	    case XPATH_NODESET:
@@ -5737,7 +5744,7 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->proximityPosition = -1;
 
 #ifdef XP_DEFAULT_CACHE_ON
-    if (xmlXPathContextSetObjectCache(ret, 1, -1, 0) == -1) {
+    if (xmlXPathContextSetCache(ret, 1, -1, 0) == -1) {
 	xmlXPathFreeContext(ret);
 	return(NULL);
     }
@@ -5758,8 +5765,8 @@ void
 xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
     if (ctxt == NULL) return;
 
-    if (ctxt->objCache != NULL)
-	xmlXPathFreeObjectCache((xmlXPathObjectCachePtr) ctxt->objCache);
+    if (ctxt->cache != NULL)
+	xmlXPathFreeCache((xmlXPathContextCachePtr) ctxt->cache);
     xmlXPathRegisteredNsCleanup(ctxt);
     xmlXPathRegisteredFuncsCleanup(ctxt);
     xmlXPathRegisteredVariablesCleanup(ctxt);

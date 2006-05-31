@@ -229,12 +229,12 @@ initializeLibxml2(void) {
     * Deactivate the cache if created; otherwise we have to create/free it
     * for every test, since it will confuse the memory leak detection.
     * Note that normally this need not be done, since the cache is not
-    * created until set explicitely with xmlXPathContextSetObjectCache();
+    * created until set explicitely with xmlXPathContextSetCache();
     * but for test purposes it is sometimes usefull to activate the
     * cache by default for the whole library.
     */
-    if (ctxtXPath->objCache != NULL)
-	xmlXPathContextSetObjectCache(ctxtXPath, 0, -1, 0);
+    if (ctxtXPath->cache != NULL)
+	xmlXPathContextSetCache(ctxtXPath, 0, -1, 0);
     /* used as default nanemspace in xstc tests */
     xmlXPathRegisterNs(ctxtXPath, BAD_CAST "ts", BAD_CAST "TestSuite");
     xmlXPathRegisterNs(ctxtXPath, BAD_CAST "xlink",

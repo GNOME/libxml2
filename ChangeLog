@@ -1,3 +1,12 @@
+Wed May 31 14:33:00 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c include/libxml/xpath.h runsuite.c:
+	  Changed the name of the recently added public function
+	  xmlXPathContextSetObjectCache() to
+	  xmlXPathContextSetCache(); so a more generic one, in
+	  case we decide to cache more things than only XPath
+	  objects.
+
 Tue May 30 21:36:16 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Optimized xmlXPathNodeCollectAndTest() and

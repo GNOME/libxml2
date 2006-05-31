@@ -368,6 +368,10 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 			xmlXPathErrorMessages[error]);
 	return;
     }
+
+    /* cleanup current last error */
+    xmlResetError(&ctxt->context->lastError); 
+
     ctxt->context->lastError.domain = XML_FROM_XPATH;
     ctxt->context->lastError.code = error + XML_XPATH_EXPRESSION_OK -
                            XPATH_EXPRESSION_OK;

@@ -1,3 +1,7 @@
+Wed May 31 15:30:16 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.h triodef.h: applied patch from Olli Savia for LynxOS
+
 Wed May 31 14:33:00 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c include/libxml/xpath.h runsuite.c:

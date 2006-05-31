@@ -56,6 +56,8 @@
 # define TRIO_PLATFORM_UNIX
 #elif defined(__NetBSD__)
 # define TRIO_PLATFORM_UNIX
+#elif defined(__Lynx__)
+# define TRIO_PLATFORM_UNIX
 #elif defined(__QNX__)
 # define TRIO_PLATFORM_UNIX
 # define TRIO_PLATFORM_QNX

@@ -1,3 +1,9 @@
+Fri Jun  2 22:47:08 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Disabled the compound traversal for the release;
+	  I need first to assure that this is done only if we have
+	  1 initial node.
+
 Wed May 31 13:53:41 PST 2006 Aleksey Sanin <aleksey@aleksey.com>
       
 	* xpath.c: fixed memory leak in xpath error reporting

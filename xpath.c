@@ -14033,7 +14033,7 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 }
 #endif /* XPATH_STREAMING */
 
-
+#if 0
 static int
 xmlXPathCanRewriteDosExpression(xmlChar *expr)
 {
@@ -14085,6 +14085,7 @@ xmlXPathRewriteDOSExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
     if (op->ch2 != -1)
 	xmlXPathRewriteDOSExpression(comp, &comp->steps[op->ch2]);
 }
+#endif
 
 /**
  * xmlXPathCtxtCompile:
@@ -14139,13 +14140,13 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	comp->nb = 0;
 #endif
     }
-
+#if 0
     if ((comp->nbStep > 2) &&
 	(xmlXPathCanRewriteDosExpression(comp->expr) == 1))
     {
 	xmlXPathRewriteDOSExpression(comp, &comp->steps[comp->last]);
     }
-
+#endif
     return(comp);
 }
 

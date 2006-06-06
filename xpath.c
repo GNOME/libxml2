@@ -14137,12 +14137,12 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 #ifdef DEBUG_EVAL_COUNTS
 	comp->string = xmlStrdup(str);
 	comp->nb = 0;
-#endif
-    }
-    if ((comp->nbStep > 2) &&
-	(xmlXPathCanRewriteDosExpression(comp->expr) == 1))
-    {
-	xmlXPathRewriteDOSExpression(comp, &comp->steps[comp->last]);
+#endif    
+	if ((comp->nbStep > 2) &&
+	    (xmlXPathCanRewriteDosExpression(comp->expr) == 1))
+	{
+	    xmlXPathRewriteDOSExpression(comp, &comp->steps[comp->last]);
+	}
     }
     return(comp);
 }
@@ -14263,7 +14263,8 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 #endif
     {
 	xmlXPathCompileExpr(ctxt, 1);
-	if ((ctxt->comp->nbStep > 2) &&
+	if ((ctxt->comp != NULL) &&
+	    (ctxt->comp->nbStep > 2) &&
 	    (xmlXPathCanRewriteDosExpression(ctxt->comp->expr) == 1))
 	{
 	    xmlXPathRewriteDOSExpression(ctxt->comp,

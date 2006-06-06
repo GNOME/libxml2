@@ -1,3 +1,7 @@
+Tue Jun  6 15:19:57 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* configure.ini NEWS doc//* libxml.spec.in : preparing release of 2.6.25
+
 Tue Jun  6 11:28:15 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Enabled the compound traversal again; I added a

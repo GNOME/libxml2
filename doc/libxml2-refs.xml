@@ -1193,6 +1193,7 @@
     <reference name='XML_SCHEMAV_INVALIDATTR' href='html/libxml-xmlerror.html#XML_SCHEMAV_INVALIDATTR'/>
     <reference name='XML_SCHEMAV_INVALIDELEM' href='html/libxml-xmlerror.html#XML_SCHEMAV_INVALIDELEM'/>
     <reference name='XML_SCHEMAV_ISABSTRACT' href='html/libxml-xmlerror.html#XML_SCHEMAV_ISABSTRACT'/>
+    <reference name='XML_SCHEMAV_MISC' href='html/libxml-xmlerror.html#XML_SCHEMAV_MISC'/>
     <reference name='XML_SCHEMAV_MISSING' href='html/libxml-xmlerror.html#XML_SCHEMAV_MISSING'/>
     <reference name='XML_SCHEMAV_NOROLLBACK' href='html/libxml-xmlerror.html#XML_SCHEMAV_NOROLLBACK'/>
     <reference name='XML_SCHEMAV_NOROOT' href='html/libxml-xmlerror.html#XML_SCHEMAV_NOROOT'/>
@@ -3286,6 +3287,7 @@
     <reference name='xmlXPathContainsFunction' href='html/libxml-xpathInternals.html#xmlXPathContainsFunction'/>
     <reference name='xmlXPathContext' href='html/libxml-xpath.html#xmlXPathContext'/>
     <reference name='xmlXPathContextPtr' href='html/libxml-xpath.html#xmlXPathContextPtr'/>
+    <reference name='xmlXPathContextSetCache' href='html/libxml-xpath.html#xmlXPathContextSetCache'/>
     <reference name='xmlXPathConvertBoolean' href='html/libxml-xpath.html#xmlXPathConvertBoolean'/>
     <reference name='xmlXPathConvertFunc' href='html/libxml-xpath.html#xmlXPathConvertFunc'/>
     <reference name='xmlXPathConvertNumber' href='html/libxml-xpath.html#xmlXPathConvertNumber'/>
@@ -4693,6 +4695,7 @@
       <ref name='XML_SCHEMAV_INVALIDATTR'/>
       <ref name='XML_SCHEMAV_INVALIDELEM'/>
       <ref name='XML_SCHEMAV_ISABSTRACT'/>
+      <ref name='XML_SCHEMAV_MISC'/>
       <ref name='XML_SCHEMAV_MISSING'/>
       <ref name='XML_SCHEMAV_NOROLLBACK'/>
       <ref name='XML_SCHEMAV_NOROOT'/>
@@ -6822,6 +6825,7 @@
       <ref name='xmlXPathContainsFunction'/>
       <ref name='xmlXPathContext'/>
       <ref name='xmlXPathContextPtr'/>
+      <ref name='xmlXPathContextSetCache'/>
       <ref name='xmlXPathConvertBoolean'/>
       <ref name='xmlXPathConvertFunc'/>
       <ref name='xmlXPathConvertNumber'/>
@@ -10313,6 +10317,7 @@
     </type>
     <type name='xmlXPathContextPtr'>
       <ref name='xmlXPathCompiledEval'/>
+      <ref name='xmlXPathContextSetCache'/>
       <ref name='xmlXPathCtxtCompile'/>
       <ref name='xmlXPathEval'/>
       <ref name='xmlXPathEvalExpression'/>
@@ -12960,6 +12965,7 @@
       <ref name='XML_SCHEMAV_INVALIDATTR'/>
       <ref name='XML_SCHEMAV_INVALIDELEM'/>
       <ref name='XML_SCHEMAV_ISABSTRACT'/>
+      <ref name='XML_SCHEMAV_MISC'/>
       <ref name='XML_SCHEMAV_MISSING'/>
       <ref name='XML_SCHEMAV_NOROLLBACK'/>
       <ref name='XML_SCHEMAV_NOROOT'/>
@@ -13803,6 +13809,7 @@
       <ref name='xmlXPathCompiledEval'/>
       <ref name='xmlXPathContext'/>
       <ref name='xmlXPathContextPtr'/>
+      <ref name='xmlXPathContextSetCache'/>
       <ref name='xmlXPathConvertBoolean'/>
       <ref name='xmlXPathConvertFunc'/>
       <ref name='xmlXPathConvertNumber'/>
@@ -14490,6 +14497,9 @@
         <word name='CWD'>
           <ref name='xmlNanoFTPCwd'/>
         </word>
+        <word name='Cache'>
+          <ref name='_xmlXPathContext'/>
+        </word>
         <word name='Call'>
           <ref name='htmlInitAutoClose'/>
           <ref name='xmlInitParser'/>
@@ -14821,6 +14831,7 @@
           <ref name='xmlExpNewCtxt'/>
           <ref name='xmlNewDoc'/>
           <ref name='xmlXIncludeNewContext'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='Creation'>
           <ref name='xmlNewCDataBlock'/>
@@ -16553,6 +16564,9 @@
         <word name='Osmanya'>
           <ref name='xmlUCSIsOsmanya'/>
         </word>
+        <word name='Other'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
         <word name='Otherwise'>
           <ref name='xmlStreamPush'/>
           <ref name='xmlStreamPushAttr'/>
@@ -17683,6 +17697,7 @@
         </word>
         <word name='There'>
           <ref name='xmlExpParse'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='Those'>
           <ref name='_xmlParserCtxt'/>
@@ -17892,6 +17907,7 @@
           <ref name='xmlTextReaderSchemaValidate'/>
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
           <ref name='xmlTextReaderSetSchema'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='Used'>
           <ref name='XML_SCHEMAS_ANY_LAX'/>
@@ -18444,6 +18460,9 @@
           <ref name='xmlTextReaderSchemaValidate'/>
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
           <ref name='xmlTextReaderSetSchema'/>
+        </word>
+        <word name='activates'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='activation'>
           <ref name='xmlGetLineNo'/>
@@ -19468,6 +19487,15 @@
     </chunk>
     <chunk name='chunk12'>
       <letter name='c'>
+        <word name='cache'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
+        <word name='cached'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
+        <word name='caching:'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
         <word name='calculated'>
           <ref name='xmlStrncatNew'/>
         </word>
@@ -20627,6 +20655,7 @@
           <ref name='xmlAutomataNewTransition2'/>
           <ref name='xmlCreateURI'/>
           <ref name='xmlStrncatNew'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='creating'>
           <ref name='xmlDOMWrapAdoptNode'/>
@@ -20677,6 +20706,7 @@
           <ref name='xmlMemGet'/>
           <ref name='xmlMemUsed'/>
           <ref name='xmlOutputBufferCreateFilename'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='custom'>
           <ref name='xmlDOMWrapAdoptNode'/>
@@ -20937,6 +20967,9 @@
         </word>
         <word name='deletion'>
           <ref name='xmlCatalogSetDefaultPrefer'/>
+        </word>
+        <word name='dependant'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='depending'>
           <ref name='xmlIsID'/>
@@ -21266,6 +21299,9 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlParseURIRaw'/>
         </word>
+        <word name='disables'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
         <word name='disabling'>
           <ref name='xmlNoNetExternalEntityLoader'/>
         </word>
@@ -21499,6 +21535,9 @@
         <word name='edition'>
           <ref name='xmlCheckLanguageID'/>
         </word>
+        <word name='effect'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
         <word name='effective'>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
@@ -21600,6 +21639,9 @@
         <word name='enabled'>
           <ref name='xmlSaveFile'/>
           <ref name='xmlSaveFormatFile'/>
+        </word>
+        <word name='enables'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='enabling'>
           <ref name='xmlLineNumbersDefault'/>
@@ -22396,6 +22438,7 @@
         </word>
         <word name='for:'>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='forbid'>
           <ref name='XML_XPATH_NOVAR'/>
@@ -22499,6 +22542,7 @@
         </word>
         <word name='frees'>
           <ref name='xmlBufferFree'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='front'>
           <ref name='xmlValidateNCName'/>
@@ -23650,6 +23694,7 @@
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
           <ref name='xmlRemoveID'/>
           <ref name='xmlRemoveRef'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='interned'>
           <ref name='xmlPatterncompile'/>
@@ -24429,6 +24474,7 @@
           <ref name='xmlExpMaxToken'/>
           <ref name='xmlExpNewCtxt'/>
           <ref name='xmlPatternMaxDepth'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='maybe'>
           <ref name='_xmlSchemaElement'/>
@@ -24565,6 +24611,9 @@
         </word>
         <word name='minute'>
           <ref name='ftpListCallback'/>
+        </word>
+        <word name='misc'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='misleading'>
           <ref name='xmlParsePEReference'/>
@@ -25147,7 +25196,9 @@
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='objects'>
+          <ref name='_xmlXPathContext'/>
           <ref name='xmlXPathCompareValues'/>
+          <ref name='xmlXPathContextSetCache'/>
           <ref name='xmlXPathDivValues'/>
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathFreeNodeSetList'/>
@@ -25416,6 +25467,7 @@
           <ref name='xmlSaveToFilename'/>
           <ref name='xmlSaveToIO'/>
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='ordered'>
           <ref name='xmlListAppend'/>
@@ -25725,6 +25777,7 @@
           <ref name='xmlGetLastError'/>
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlValidateElementDecl'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='performance'>
           <ref name='xmlGetBufferAllocationScheme'/>
@@ -27125,10 +27178,16 @@
         <word name='returning'>
           <ref name='xmlXPathStringFunction'/>
         </word>
+        <word name='reusal'>
+          <ref name='_xmlXPathContext'/>
+        </word>
         <word name='reuse'>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlRegExecPushString2'/>
+        </word>
+        <word name='reused'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='reuses'>
           <ref name='htmlCtxtReadDoc'/>
@@ -27449,6 +27508,9 @@
           <ref name='xmlAutomataNewNegTrans'/>
           <ref name='xmlXPathNodeSetFreeNs'/>
         </word>
+        <word name='semantics'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
         <word name='sense'>
           <ref name='xmlCreateEntitiesTable'/>
         </word>
@@ -27565,6 +27627,7 @@
         </word>
         <word name='setting'>
           <ref name='xmlSetGenericErrorFunc'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='setups'>
           <ref name='xmlParseEncodingDecl'/>
@@ -27750,6 +27813,12 @@
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseElementMixedContentDecl'/>
           <ref name='xmlSkipBlankChars'/>
+        </word>
+        <word name='slot'>
+          <ref name='xmlXPathContextSetCache'/>
+        </word>
+        <word name='slots'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='smallest'>
           <ref name='xmlXPathCeilingFunction'/>
@@ -28377,6 +28446,7 @@
           <ref name='xmlHashUpdateEntry3'/>
           <ref name='xmlSchemaValueAppend'/>
           <ref name='xmlXPathCompareValues'/>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='succeeds'>
           <ref name='xmlCheckFilename'/>
@@ -30697,6 +30767,9 @@
         </word>
         <word name='xmlXPathNodeTrailingSorted'>
           <ref name='xmlXPathNodeTrailing'/>
+        </word>
+        <word name='xmlXPathObject'>
+          <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='xmlXPathObjectPtr'>
           <ref name='xmlXPathCompiledEval'/>

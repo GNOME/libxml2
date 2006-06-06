@@ -990,6 +990,7 @@ Class xpathContext()
     registerXPathFunction()
 
     # functions from module xpath
+    xpathContextSetCache()
     xpathEval()
     xpathEvalExpression()
     xpathFreeContext()

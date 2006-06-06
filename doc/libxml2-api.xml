@@ -2270,6 +2270,7 @@
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_3' type='enum'/>
      <exports symbol='XML_ERR_ENCODING_NAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_5' type='enum'/>
+     <exports symbol='XML_SCHEMAV_MISC' type='enum'/>
      <exports symbol='XML_IO_ECONNREFUSED' type='enum'/>
      <exports symbol='XML_ERR_XMLDECL_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_P_PROPS_CORRECT_1' type='enum'/>
@@ -3498,6 +3499,7 @@
      <exports symbol='xmlXPathFuncLookupFunc' type='function'/>
      <exports symbol='xmlXPathCastNodeToString' type='function'/>
      <exports symbol='xmlXPathIsNaN' type='function'/>
+     <exports symbol='xmlXPathContextSetCache' type='function'/>
      <exports symbol='xmlXPathConvertString' type='function'/>
      <exports symbol='xmlXPathConvertBoolean' type='function'/>
      <exports symbol='xmlXPathIsInf' type='function'/>
@@ -5521,6 +5523,7 @@
     <enum name='XML_SCHEMAV_INVALIDATTR' file='xmlerror' value='1814' type='xmlParserErrors' info='1814'/>
     <enum name='XML_SCHEMAV_INVALIDELEM' file='xmlerror' value='1815' type='xmlParserErrors' info='1815'/>
     <enum name='XML_SCHEMAV_ISABSTRACT' file='xmlerror' value='1808' type='xmlParserErrors' info='1808'/>
+    <enum name='XML_SCHEMAV_MISC' file='xmlerror' value='1879' type='xmlParserErrors' info='1879'/>
     <enum name='XML_SCHEMAV_MISSING' file='xmlerror' value='1804' type='xmlParserErrors' info='1804'/>
     <enum name='XML_SCHEMAV_NOROLLBACK' file='xmlerror' value='1807' type='xmlParserErrors' info='1807'/>
     <enum name='XML_SCHEMAV_NOROOT' file='xmlerror' value='1801' type='xmlParserErrors'/>
@@ -6686,7 +6689,8 @@ Could we use @subtypes for this?'/>
       <field name='lastError' type='xmlError' info=' the last error'/>
       <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT dictionnary'/>
       <field name='dict' type='xmlDictPtr' info=' dictionnary if any'/>
-      <field name='flags' type='int' info=' flags to control compilation'/>
+      <field name='flags' type='int' info=' flags to control compilation Cache for reusal of XPath objects'/>
+      <field name='cache' type='void *' info=''/>
     </struct>
     <typedef name='xmlXPathContextPtr' file='xpath' type='xmlXPathContext *'/>
     <typedef name='xmlXPathError' file='xpath' type='enum'/>
@@ -16979,6 +16983,15 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
+    </function>
+    <function name='xmlXPathContextSetCache' file='xpath' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Creates/frees an object cache on the XPath context. If activates XPath objects (xmlXPathObject) will be cached internally to be reused. @options: 0: This will set the XPath object caching: @value: This will set the maximum number of XPath objects to be cached per slot There are 5 slots for: node-set, string, number, boolean, and misc objects. Use &lt;0 for the default number (100). Other values for @options have currently no effect.</info>
+      <return type='int' info='0 if the setting succeeded, and -1 on API or internal errors.'/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+      <arg name='active' type='int' info='enables/disables (creates/frees) the cache'/>
+      <arg name='value' type='int' info='a value with semantics dependant on @options'/>
+      <arg name='options' type='int' info='options (currently only the value 0 is used)'/>
     </function>
     <function name='xmlXPathConvertBoolean' file='xpath' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>

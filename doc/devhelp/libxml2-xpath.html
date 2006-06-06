@@ -72,6 +72,7 @@ int	<a href="#xmlXPathCastNodeSetToBoolean">xmlXPathCastNodeSetToBoolean</a>	(<a
 typedef <a href="libxml2-xpath.html#xmlXPathFunction">xmlXPathFunction</a> <a href="#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>	(void * ctxt, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns_uri);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlXPathCastNodeToString">xmlXPathCastNodeToString</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 int	<a href="#xmlXPathIsNaN">xmlXPathIsNaN</a>			(double val);
+int	<a href="#xmlXPathContextSetCache">xmlXPathContextSetCache</a>		(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br/>					 int active, <br/>					 int value, <br/>					 int options);
 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathConvertString">xmlXPathConvertString</a>	(<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);
 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathConvertBoolean">xmlXPathConvertBoolean</a>	(<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);
 int	<a href="#xmlXPathIsInf">xmlXPathIsInf</a>			(double val);
@@ -209,7 +210,8 @@ The content of this structure is not made public by the API.
     <a href="libxml2-xmlerror.html#xmlError">xmlError</a>	lastError	: the last error
     <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	debugNode	: the source node XSLT dictionnary
     <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	dict	: dictionnary if any
-    int	flags	: flags to control compilation
+    int	flags	: flags to control compilation Cache for reusal of XPath objects
+    void *	cache
 } xmlXPathContext;
 </pre><p/>
 </div>
@@ -435,6 +437,10 @@ The content of this structure is not made public by the API.
         <div class="refsect2" lang="en"><h3><a name="xmlXPathCompiledEval"/>xmlXPathCompiledEval ()</h3><pre class="programlisting"><a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	xmlXPathCompiledEval	(<a href="libxml2-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a> comp, <br/>						 <a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctx)<br/>
 </pre><p>Evaluate the Precompiled XPath expression in the given context.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td>the compiled XPath expression</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the XPath context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> resulting from the evaluation or NULL. the caller has to free the object.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlXPathContextSetCache"/>xmlXPathContextSetCache ()</h3><pre class="programlisting">int	xmlXPathContextSetCache		(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br/>					 int active, <br/>					 int value, <br/>					 int options)<br/>
+</pre><p>Creates/frees an object cache on the XPath context. If activates XPath objects (xmlXPathObject) will be cached internally to be reused. @options: 0: This will set the XPath object caching: @value: This will set the maximum number of XPath objects to be cached per slot There are 5 slots for: node-set, string, number, boolean, and misc objects. Use &lt;0 for the default number (100). Other values for @options have currently no effect.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the XPath context</td></tr><tr><td><span class="term"><i><tt>active</tt></i>:</span></td><td>enables/disables (creates/frees) the cache</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>a value with semantics dependant on @options</td></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td>options (currently only the value 0 is used)</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if the setting succeeded, and -1 on API or internal errors.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathConvertBoolean"/>xmlXPathConvertBoolean ()</h3><pre class="programlisting"><a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	xmlXPathConvertBoolean	(<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val)<br/>
 </pre><p>Converts an existing object to its boolean() equivalent</p>

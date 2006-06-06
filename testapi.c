@@ -45559,6 +45559,61 @@ test_xmlXPathCompiledEval(void) {
 
 
 static int
+test_xmlXPathContextSetCache(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_XPATH_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlXPathContextPtr ctxt; /* the XPath context */
+    int n_ctxt;
+    int active; /* enables/disables (creates/frees) the cache */
+    int n_active;
+    int value; /* a value with semantics dependant on @options */
+    int n_value;
+    int options; /* options (currently only the value 0 is used) */
+    int n_options;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlXPathContextPtr;n_ctxt++) {
+    for (n_active = 0;n_active < gen_nb_int;n_active++) {
+    for (n_value = 0;n_value < gen_nb_int;n_value++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlXPathContextPtr(n_ctxt, 0);
+        active = gen_int(n_active, 1);
+        value = gen_int(n_value, 2);
+        options = gen_int(n_options, 3);
+
+        ret_val = xmlXPathContextSetCache(ctxt, active, value, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlXPathContextPtr(n_ctxt, ctxt, 0);
+        des_int(n_active, active, 1);
+        des_int(n_value, value, 2);
+        des_int(n_options, options, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlXPathContextSetCache",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_active);
+            printf(" %d", n_value);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlXPathConvertBoolean(void) {
     int test_ret = 0;
 
@@ -46004,7 +46059,7 @@ static int
 test_xpath(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xpath : 28 of 36 functions ...\n");
+    if (quiet == 0) printf("Testing xpath : 29 of 37 functions ...\n");
     test_ret += test_xmlXPathCastBooleanToNumber();
     test_ret += test_xmlXPathCastBooleanToString();
     test_ret += test_xmlXPathCastNodeSetToBoolean();
@@ -46022,6 +46077,7 @@ test_xpath(void) {
     test_ret += test_xmlXPathCmpNodes();
     test_ret += test_xmlXPathCompile();
     test_ret += test_xmlXPathCompiledEval();
+    test_ret += test_xmlXPathContextSetCache();
     test_ret += test_xmlXPathConvertBoolean();
     test_ret += test_xmlXPathConvertNumber();
     test_ret += test_xmlXPathConvertString();

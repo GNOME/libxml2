@@ -1297,6 +1297,7 @@
     <function name="XML_SCHEMAV_INVALIDATTR" link="libxml2-xmlerror.html#XML_SCHEMAV_INVALIDATTR"/>
     <function name="XML_SCHEMAV_INVALIDELEM" link="libxml2-xmlerror.html#XML_SCHEMAV_INVALIDELEM"/>
     <function name="XML_SCHEMAV_ISABSTRACT" link="libxml2-xmlerror.html#XML_SCHEMAV_ISABSTRACT"/>
+    <function name="XML_SCHEMAV_MISC" link="libxml2-xmlerror.html#XML_SCHEMAV_MISC"/>
     <function name="XML_SCHEMAV_MISSING" link="libxml2-xmlerror.html#XML_SCHEMAV_MISSING"/>
     <function name="XML_SCHEMAV_NOROLLBACK" link="libxml2-xmlerror.html#XML_SCHEMAV_NOROLLBACK"/>
     <function name="XML_SCHEMAV_NOROOT" link="libxml2-xmlerror.html#XML_SCHEMAV_NOROOT"/>
@@ -3320,6 +3321,7 @@
     <function name="xmlXPathCompiledEval ()" link="libxml2-xpath.html#xmlXPathCompiledEval"/>
     <function name="xmlXPathConcatFunction ()" link="libxml2-xpathInternals.html#xmlXPathConcatFunction"/>
     <function name="xmlXPathContainsFunction ()" link="libxml2-xpathInternals.html#xmlXPathContainsFunction"/>
+    <function name="xmlXPathContextSetCache ()" link="libxml2-xpath.html#xmlXPathContextSetCache"/>
     <function name="xmlXPathConvertBoolean ()" link="libxml2-xpath.html#xmlXPathConvertBoolean"/>
     <function name="xmlXPathConvertNumber ()" link="libxml2-xpath.html#xmlXPathConvertNumber"/>
     <function name="xmlXPathConvertString ()" link="libxml2-xpath.html#xmlXPathConvertString"/>

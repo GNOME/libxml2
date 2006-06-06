@@ -8,51 +8,32 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.23</version>
-    <last-release> Jan 5 2006</last-release>
+    <version>2.6.24</version>
+    <last-release> Apr 28 2006</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - portability fixes: Windows (Rob Richards), getaddrinfo on Windows
-    (Kolja Nowak, Rob Richards), icc warnings (Kjartan Maraas),
-    --with-minimum compilation fixes (William Brack), error case handling fix
-    on Solaris (Albert Chin), don't use 'list' as parameter name reported by
-    Samuel Diaz Garcia, more old Unices portability fixes (Albert Chin),
-    MinGW compilation (Mark Junker), HP-UX compiler warnings (Rick
-  Jones),
-   - code cleanup: xmlReportError (Adrian Mouat), remove xmlBufferClose
-    (Geert Jansen), unreachable code (Oleksandr Kononenko), refactoring
-    parsing code (Bjorn Reese)
-   - bug fixes: xmlBuildRelativeURI and empty path (William Brack),
-    combinatory explosion and performances in regexp code, leak in
-    xmlTextReaderReadString(), xmlStringLenDecodeEntities problem (Massimo
-    Morara), Identity Constraints bugs and a segfault (Kasimier Buchcik),
-    XPath pattern based evaluation bugs (DV &amp; Kasimier),
-    xmlSchemaContentModelDump() memory leak (Kasimier), potential leak in
-    xmlSchemaCheckCSelectorXPath(), xmlTextWriterVSprintf() misuse of
-    vsnprintf (William Brack), XHTML serialization fix (Rob Richards), CRLF
-    split problem (William), issues with non-namespaced attributes in
-    xmlAddChild() xmlAddNextSibling() and xmlAddPrevSibling() (Rob Richards),
-    HTML parsing of script, Python must not output to stdout (Nic Ferrier),
-    exclusive C14N namespace visibility (Aleksey Sanin), XSD dataype
-    totalDigits bug (Kasimier Buchcik), error handling when writing to an
-    xmlBuffer (Rob Richards), runtest schemas error not reported (Hisashi
-    Fujinaka), signed/unsigned problem in date/time code (Albert Chin), fix
-    XSI driven XSD validation (Kasimier), parsing of xs:decimal (Kasimier),
-    fix DTD writer output (Rob Richards), leak in xmlTextReaderReadInnerXml
-    (Gary Coady), regexp bug affecting schemas (Kasimier), configuration of
-    runtime debugging (Kasimier), xmlNodeBufGetContent bug on entity refs
-    (Oleksandr Kononenko), xmlRegExecPushString2 bug (Sreeni Nair),
-    compilation and build fixes (Michael Day), removed dependancies on
-    xmlSchemaValidError (Kasimier), bug with &lt;xml:foo/&gt;, more XPath
-    pattern based evaluation fixes (Kasimier)
-   - improvements: XSD Schemas redefinitions/restrictions (Kasimier
-    Buchcik), node copy checks and fix for attribute (Rob Richards), counted
-    transition bug in regexps, ctxt-&gt;standalone = -2 to indicate no
-    standalone attribute was found, add xmlSchemaSetParserStructuredErrors()
-    (Kasimier Buchcik), add xmlTextReaderSchemaValidateCtxt() to API
-    (Kasimier), handle gzipped HTTP resources (Gary Coady), add
-    htmlDocDumpMemoryFormat. (Rob Richards),
-   - documentation: typo (Michael Day), libxml man page (Albert Chin), save
-    function to XML buffer (Geert Jansen), small doc fix (Aron Stansvik),
+    <changes>   - Portability fixes: configure on Windows, testapi compile on
+    windows(Kasimier Buchcik, venkat naidu), Borland C++ 6 compile (Eric
+    Zurcher),HP-UX compiler workaround (Rick Jones), xml2-config bugfix,
+    gcc-4.1cleanups, Python detection scheme (Joseph Sacco), UTF-8 file paths
+    onWindows (Roland Schwingel).
+   - Improvements: xmlDOMWrapReconcileNamespaces xmlDOMWrapCloneNode
+    (KasimierBuchcik), XML catalog debugging (Rick Jones), update to Unicode
+    4.01.
+   - Bug fixes: xmlParseChunk() problem in 2.6.23, xmlParseInNodeContext()on
+    HTML docs, URI behaviour on Windows (Rob Richards), comment streamingbug,
+    xmlParseComment (with William Brack), regexp bug fixes (DV &amp;Youri
+    Golovanov), xmlGetNodePath on text/CDATA (Kasimier),one Relax-NG
+    interleave bug, xmllint --path and --valid,XSD bugfixes (Kasimier),
+    remove debugleft in Python bindings (Nic Ferrier), xmlCatalogAdd bug
+    (Martin Cole),xmlSetProp fixes (Rob Richards), HTML IDness (Rob
+    Richards), a largenumber of cleanups and small fixes based on Coverity
+    reports, bugin character ranges, Unicode tables const (Aivars Kalvans),
+    schemasfix (Stefan Kost), xmlRelaxNGParse error
+    deallocation,xmlSchemaAddSchemaDoc error deallocation, error handling on
+    unallowedcode point, ixmllint --nonet to never reach the net (Gary
+    Coady),line break in writer after end PI (Jason Viers).
+   - Documentation: man pages updates and cleanups (Daniel Leidert).
+   - New features: Relax NG structure error handlers.
 
 </changes>
   </product>

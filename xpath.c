@@ -14033,7 +14033,6 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 }
 #endif /* XPATH_STREAMING */
 
-#if 0
 static int
 xmlXPathCanRewriteDosExpression(xmlChar *expr)
 {
@@ -14069,7 +14068,8 @@ xmlXPathRewriteDOSExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
 		    AXIS_DESCENDANT_OR_SELF) &&
 		(prevop->ch2 == -1) &&
 		((xmlXPathTestVal) prevop->value2 == NODE_TEST_TYPE) &&
-		((xmlXPathTypeVal) prevop->value3 == NODE_TYPE_NODE))
+		((xmlXPathTypeVal) prevop->value3 == NODE_TYPE_NODE) &&
+		(comp->steps[prevop->ch1].op == XPATH_OP_ROOT))
 	    {		
 		/*
 		* This is a "descendant-or-self::node()" without predicates.
@@ -14085,7 +14085,6 @@ xmlXPathRewriteDOSExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
     if (op->ch2 != -1)
 	xmlXPathRewriteDOSExpression(comp, &comp->steps[op->ch2]);
 }
-#endif
 
 /**
  * xmlXPathCtxtCompile:
@@ -14140,13 +14139,11 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	comp->nb = 0;
 #endif
     }
-#if 0
     if ((comp->nbStep > 2) &&
 	(xmlXPathCanRewriteDosExpression(comp->expr) == 1))
     {
 	xmlXPathRewriteDOSExpression(comp, &comp->steps[comp->last]);
     }
-#endif
     return(comp);
 }
 
@@ -14266,6 +14263,12 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 #endif
     {
 	xmlXPathCompileExpr(ctxt, 1);
+	if ((ctxt->comp->nbStep > 2) &&
+	    (xmlXPathCanRewriteDosExpression(ctxt->comp->expr) == 1))
+	{
+	    xmlXPathRewriteDOSExpression(ctxt->comp,
+		&ctxt->comp->steps[comp->last]);
+	}
     }
     CHECK_ERROR;
     xmlXPathRunEval(ctxt);    

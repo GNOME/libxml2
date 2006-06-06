@@ -1,3 +1,12 @@
+Tue Jun  6 11:28:15 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Enabled the compound traversal again; I added a
+	  check to use this only if the have an expression starting
+	  with the document node; so in the case of "//foo", we
+	  already know at compilation-time, that there will be only
+	  1 initial context node. Added the rewrite also to
+	  xmlXPathEvalExpr().
+
 Tue Jun  6 10:23:10 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fix bug #343968, include='text' can't lead to a 

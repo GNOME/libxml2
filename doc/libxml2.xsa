@@ -8,33 +8,9 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.24</version>
-    <last-release> Apr 28 2006</last-release>
+    <version>2.6.25</version>
+    <last-release> Jun 6 2006:</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Portability fixes: configure on Windows, testapi compile on
-    windows(Kasimier Buchcik, venkat naidu), Borland C++ 6 compile (Eric
-    Zurcher),HP-UX compiler workaround (Rick Jones), xml2-config bugfix,
-    gcc-4.1cleanups, Python detection scheme (Joseph Sacco), UTF-8 file paths
-    onWindows (Roland Schwingel).
-   - Improvements: xmlDOMWrapReconcileNamespaces xmlDOMWrapCloneNode
-    (KasimierBuchcik), XML catalog debugging (Rick Jones), update to Unicode
-    4.01.
-   - Bug fixes: xmlParseChunk() problem in 2.6.23, xmlParseInNodeContext()on
-    HTML docs, URI behaviour on Windows (Rob Richards), comment streamingbug,
-    xmlParseComment (with William Brack), regexp bug fixes (DV &amp;Youri
-    Golovanov), xmlGetNodePath on text/CDATA (Kasimier),one Relax-NG
-    interleave bug, xmllint --path and --valid,XSD bugfixes (Kasimier),
-    remove debugleft in Python bindings (Nic Ferrier), xmlCatalogAdd bug
-    (Martin Cole),xmlSetProp fixes (Rob Richards), HTML IDness (Rob
-    Richards), a largenumber of cleanups and small fixes based on Coverity
-    reports, bugin character ranges, Unicode tables const (Aivars Kalvans),
-    schemasfix (Stefan Kost), xmlRelaxNGParse error
-    deallocation,xmlSchemaAddSchemaDoc error deallocation, error handling on
-    unallowedcode point, ixmllint --nonet to never reach the net (Gary
-    Coady),line break in writer after end PI (Jason Viers).
-   - Documentation: man pages updates and cleanups (Daniel Leidert).
-   - New features: Relax NG structure error handlers.
-
-</changes>
+    <changes>Do not use or package 2.6.25</changes>
   </product>
 </xsa>

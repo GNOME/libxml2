@@ -12,92 +12,91 @@ A:link, A:visited, A:active { text-decoration: underline }
   <li><a href="#cleanup">Cleaning up after parsing</a></li>
   <li><a href="#Debugging">Debugging routines</a></li>
   <li><a href="#General4">General memory requirements</a></li>
-</ol><h3><a name="General3" id="General3">General overview</a></h3><p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlmemory.h</a></code>provides
-the interfaces to the libxml2 memory system:</p><ul><li>libxml2 does not use the libc memory allocator directly but
-    xmlFree(),xmlMalloc() and xmlRealloc()</li>
-  <li>those routines can be reallocated to a specific set of routine,
-    bydefault the libc ones i.e. free(), malloc() and realloc()</li>
+</ol><h3><a name="General3" id="General3">General overview</a></h3><p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlmemory.h</a></code>providesthe
+interfaces to the libxml2 memory system:</p><ul><li>libxml2 does not use the libc memory allocator directly
+    butxmlFree(),xmlMalloc() and xmlRealloc()</li>
+  <li>those routines can be reallocated to a specific set of
+    routine,bydefault the libc ones i.e. free(), malloc() and realloc()</li>
   <li>the xmlmemory.c module includes a set of debugging routine</li>
-</ul><h3><a name="setting" id="setting">Setting libxml2 set of memory routines</a></h3><p>It is sometimes useful to not use the default memory allocator, either
-fordebugging, analysis or to implement a specific behaviour on memory
-management(like on embedded systems). Two function calls are available to do
-so:</p><ul><li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet()</a>which
-    return the current set of functions in use by the parser</li>
-  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemSetup()</a>which
-    allow to set up a new set of memory allocation functions</li>
-</ul><p>Of course a call to xmlMemSetup() should probably be done before
-callingany other libxml2 routines (unless you are sure your allocations
-routines arecompatibles).</p><h3><a name="cleanup" id="cleanup">Cleaning up after parsing</a></h3><p>Libxml2 is not stateless, there is a few set of memory structures
-needingallocation before the parser is fully functional (some encoding
-structuresfor example). This also mean that once parsing is finished there is
-a tinyamount of memory (a few hundred bytes) which can be recollected if you
-don'treuse the parser immediately:</p><ul><li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlCleanupParser()</a>is
-    a centralized routine to free the parsing states. Note that itwon't
-    deallocate any produced tree if any (use the xmlFreeDoc() andrelated
-    routines for this).</li>
-  <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser()</a>is
-    the dual routine allowing to preallocate the parsing statewhich can be
-    useful for example to avoid initialization reentrancyproblems when using
-    libxml2 in multithreaded applications</li>
-</ul><p>Generally xmlCleanupParser() is safe, if needed the state will be
-rebuildat the next invocation of parser routines, but be careful of the
-consequencesin multithreaded applications.</p><h3><a name="Debugging" id="Debugging">Debugging routines</a></h3><p>When configured using --with-mem-debug flag (off by default), libxml2
-usesa set of memory allocation debugging routines keeping track of all
-allocatedblocks and the location in the code where the routine was called. A
-couple ofother debugging routines allow to dump the memory allocated infos to
-a fileor call a specific routine when a given block number is allocated:</p><ul><li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMallocLoc()</a><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlReallocLoc()</a>and
-    <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemStrdupLoc()</a>are
-    the memory debugging replacement allocation routines</li>
-  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump()</a>dumps
-    all the informations about the allocated memory block leftsin the
-    <code>.memdump</code>file</li>
-</ul><p>When developing libxml2 memory debug is enabled, the tests programs
-callxmlMemoryDump () and the "make test" regression tests will check for
-anymemory leak during the full regression test sequence, this helps a
-lotensuring that libxml2  does not leak memory and bullet proof
-memoryallocations use (some libc implementations are known to be far too
-permissiveresulting in major portability problems!).</p><p>If the .memdump reports a leak, it displays the allocation function
-andalso tries to give some informations about the content and structure of
-theallocated blocks left. This is sufficient in most cases to find the
-culprit,but not always. Assuming the allocation problem is reproducible, it
-ispossible to find more easily:</p><ol><li>write down the block number xxxx not allocated</li>
-  <li>export the environment variable XML_MEM_BREAKPOINT=xxxx , the
-    easiestwhen using GDB is to simply give the command
+</ul><h3><a name="setting" id="setting">Setting libxml2 set of memory routines</a></h3><p>It is sometimes useful to not use the default memory allocator,
+eitherfordebugging, analysis or to implement a specific behaviour on
+memorymanagement(like on embedded systems). Two function calls are available
+to doso:</p><ul><li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet()</a>whichreturn
+    the current set of functions in use by the parser</li>
+  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemSetup()</a>whichallow
+    to set up a new set of memory allocation functions</li>
+</ul><p>Of course a call to xmlMemSetup() should probably be done beforecallingany
+other libxml2 routines (unless you are sure your allocationsroutines
+arecompatibles).</p><h3><a name="cleanup" id="cleanup">Cleaning up after parsing</a></h3><p>Libxml2 is not stateless, there is a few set of memory
+structuresneedingallocation before the parser is fully functional (some
+encodingstructuresfor example). This also mean that once parsing is finished
+there isa tinyamount of memory (a few hundred bytes) which can be recollected
+if youdon'treuse the parser immediately:</p><ul><li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlCleanupParser()</a>isa
+    centralized routine to free the parsing states. Note that
+    itwon'tdeallocate any produced tree if any (use the xmlFreeDoc()
+    andrelatedroutines for this).</li>
+  <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser()</a>isthe
+    dual routine allowing to preallocate the parsing statewhich can beuseful
+    for example to avoid initialization reentrancyproblems when usinglibxml2
+    in multithreaded applications</li>
+</ul><p>Generally xmlCleanupParser() is safe, if needed the state will berebuildat
+the next invocation of parser routines, but be careful of theconsequencesin
+multithreaded applications.</p><h3><a name="Debugging" id="Debugging">Debugging routines</a></h3><p>When configured using --with-mem-debug flag (off by default), libxml2usesa
+set of memory allocation debugging routines keeping track of
+allallocatedblocks and the location in the code where the routine was called.
+Acouple ofother debugging routines allow to dump the memory allocated infos
+toa fileor call a specific routine when a given block number is allocated:</p><ul><li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMallocLoc()</a><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlReallocLoc()</a>and<a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemStrdupLoc()</a>arethe
+    memory debugging replacement allocation routines</li>
+  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump()</a>dumpsall
+    the informations about the allocated memory block leftsin
+    the<code>.memdump</code>file</li>
+</ul><p>When developing libxml2 memory debug is enabled, the tests
+programscallxmlMemoryDump () and the "make test" regression tests will check
+foranymemory leak during the full regression test sequence, this helps
+alotensuring that libxml2  does not leak memory and bullet
+proofmemoryallocations use (some libc implementations are known to be far
+toopermissiveresulting in major portability problems!).</p><p>If the .memdump reports a leak, it displays the allocation functionandalso
+tries to give some informations about the content and structure
+oftheallocated blocks left. This is sufficient in most cases to find
+theculprit,but not always. Assuming the allocation problem is reproducible,
+itispossible to find more easily:</p><ol><li>write down the block number xxxx not allocated</li>
+  <li>export the environment variable XML_MEM_BREAKPOINT=xxxx ,
+    theeasiestwhen using GDB is to simply give the command
     <p><code>set environment XML_MEM_BREAKPOINT xxxx</code></p>
     <p>before running the program.</p>
   </li>
-  <li>run the program under a debugger and set a breakpoint
-    onxmlMallocBreakpoint() a specific function called when this precise
-    blockis allocated</li>
-  <li>when the breakpoint is reached you can then do a fine analysis of
-    theallocation an step  to see the condition resulting in the
-    missingdeallocation.</li>
-</ol><p>I used to use a commercial tool to debug libxml2 memory problems but
-afternoticing that it was not detecting memory leaks that simple mechanism
-wasused and proved extremely efficient until now. Lately I have also used <a href="http://developer.kde.org/~sewardj/">valgrind</a>with quite somesuccess,
-it is tied to the i386 architecture since it works by emulating theprocessor
-and instruction set, it is slow but  extremely efficient, i.e. itspot memory
-usage errors in a very precise way.</p><h3><a name="General4" id="General4">General memory requirements</a></h3><p>How much libxml2 memory require ? It's hard to tell in average it
-dependsof a number of things:</p><ul><li>the parser itself should work  in a fixed amount of memory, except
-    forinformation maintained about the stacks of names and  entities
-    locations.The I/O and encoding handlers will probably account for a few
-    KBytes.This is true for both the XML and HTML parser (though the HTML
-    parserneed more state).</li>
-  <li>If you are generating the DOM tree then memory requirements will
-    grownearly linear with the size of the data. In general for a
-    balancedtextual document the internal memory requirement is about 4 times
-    thesize of the UTF8 serialization of this document (example the
-    XML-1.0recommendation is a bit more of 150KBytes and takes 650KBytes of
-    mainmemory when parsed). Validation will add a amount of memory required
-    formaintaining the external Dtd state which should be linear with
-    thecomplexity of the content model defined by the Dtd</li>
-  <li>If you need to work with fixed memory requirements or don't need
-    thefull DOM tree then using the <a href="xmlreader.html">xmlReaderinterface</a>is probably the best way to
-    proceed, it still allows tovalidate or operate on subset of the tree if
-    needed.</li>
-  <li>If you don't care about the advanced features of libxml2
-    likevalidation, DOM, XPath or XPointer, don't use entities, need to work
-    withfixed memory requirements, and try to get the fastest parsing
-    possiblethen the SAX interface should be used, but it has known
-    restrictions.</li>
+  <li>run the program under a debugger and set a
+    breakpointonxmlMallocBreakpoint() a specific function called when this
+    preciseblockis allocated</li>
+  <li>when the breakpoint is reached you can then do a fine analysis
+    oftheallocation an step  to see the condition resulting in
+    themissingdeallocation.</li>
+</ol><p>I used to use a commercial tool to debug libxml2 memory problems
+butafternoticing that it was not detecting memory leaks that simple
+mechanismwasused and proved extremely efficient until now. Lately I have also
+used <a href="http://developer.kde.org/~sewardj/">valgrind</a>with quite
+somesuccess,it is tied to the i386 architecture since it works by emulating
+theprocessorand instruction set, it is slow but  extremely efficient, i.e.
+itspot memoryusage errors in a very precise way.</p><h3><a name="General4" id="General4">General memory requirements</a></h3><p>How much libxml2 memory require ? It's hard to tell in average itdependsof
+a number of things:</p><ul><li>the parser itself should work  in a fixed amount of memory,
+    exceptforinformation maintained about the stacks of names and 
+    entitieslocations.The I/O and encoding handlers will probably account for
+    a fewKBytes.This is true for both the XML and HTML parser (though the
+    HTMLparserneed more state).</li>
+  <li>If you are generating the DOM tree then memory requirements
+    willgrownearly linear with the size of the data. In general for
+    abalancedtextual document the internal memory requirement is about 4
+    timesthesize of the UTF8 serialization of this document (example
+    theXML-1.0recommendation is a bit more of 150KBytes and takes 650KBytes
+    ofmainmemory when parsed). Validation will add a amount of memory
+    requiredformaintaining the external Dtd state which should be linear
+    withthecomplexity of the content model defined by the Dtd</li>
+  <li>If you need to work with fixed memory requirements or don't needthefull
+    DOM tree then using the <a href="xmlreader.html">xmlReaderinterface</a>is
+    probably the best way toproceed, it still allows tovalidate or operate on
+    subset of the tree ifneeded.</li>
+  <li>If you don't care about the advanced features of libxml2likevalidation,
+    DOM, XPath or XPointer, don't use entities, need to workwithfixed memory
+    requirements, and try to get the fastest parsingpossiblethen the SAX
+    interface should be used, but it has knownrestrictions.</li>
 </ul><p></p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

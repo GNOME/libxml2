@@ -1,3 +1,7 @@
+Tue Jun  6 17:50:43 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* configure.ini NEWS doc//* libxml.spec.in : preparing release of 2.6.26
+
 Tue Jun  6 17:25:23 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Fixed self-invented a segfault in xmlXPathCtxtCompile(),

@@ -1,3 +1,10 @@
+Fri Jun  9 21:45:02 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* include/libxml/parser.h: Clarified in the docs that the tree
+	  must not  be tried to be modified if using the parser flag
+	  XML_PARSE_COMPACT as suggested by Stefan Behnel
+	  (#344390).
+
 Tue Jun  6 17:50:43 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* configure.ini NEWS doc//* libxml.spec.in : preparing release of 2.6.26

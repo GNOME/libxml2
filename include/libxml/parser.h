@@ -1089,7 +1089,9 @@ typedef enum {
     XML_PARSE_NSCLEAN	= 1<<13,/* remove redundant namespaces declarations */
     XML_PARSE_NOCDATA	= 1<<14,/* merge CDATA as text nodes */
     XML_PARSE_NOXINCNODE= 1<<15,/* do not generate XINCLUDE START/END nodes */
-    XML_PARSE_COMPACT   = 1<<16 /* compact small text nodes */
+    XML_PARSE_COMPACT   = 1<<16 /* compact small text nodes; no modification of
+                                   the tree allowed afterwards (will possibly
+				   crash if you try to modify the tree) */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

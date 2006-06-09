@@ -13,64 +13,64 @@ A:link, A:visited, A:active { text-decoration: underline }
   <li><a href="#Output">Output I/O handlers</a></li>
   <li><a href="#entities">The entities loader</a></li>
   <li><a href="#Example2">Example of customized I/O</a></li>
-</ol><h3><a name="General1" id="General1">General overview</a></h3><p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlio.html">xmlIO.h</a></code>providestheinterfaces
-to the libxml2 I/O system. This consists of 4 main parts:</p><ul><li>Entities loader, this is a routine which tries to fetch
-    theentities(files) based on their PUBLIC and SYSTEM identifiers. The
-    defaultloaderdon't look at the public identifier since libxml2 do not
-    maintainacatalog. You can redefine you own entity loader
-    byusing<code>xmlGetExternalEntityLoader()</code>and<code>xmlSetExternalEntityLoader()</code>.<a href="#entities">Check theexample</a>.</li>
-  <li>Input I/O buffers which are a commodity structure used by
-    theparser(s)input layer to handle fetching the informations to feed
-    theparser. Thisprovides buffering and is also a placeholder where
-    theencodingconverters to UTF8 are piggy-backed.</li>
-  <li>Output I/O buffers are similar to the Input ones and fulfillsimilartask
-    but when generating a serialization from a tree.</li>
-  <li>A mechanism to register sets of I/O callbacks and associate
-    themwithspecific naming schemes like the protocol part of the URIs.
-    <p>This affect the default I/O operations and allows to use
-    specificI/Ohandlers for certain names.</p>
+</ol><h3><a name="General1" id="General1">General overview</a></h3><p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlio.html">xmlIO.h</a></code> provides
+the interfaces to the libxml2 I/O system. This consists of 4 main parts:</p><ul><li>Entities loader, this is a routine which tries to fetch the entities
+    (files) based on their PUBLIC and SYSTEM identifiers. The default loader
+    don't look at the public identifier since libxml2 do not maintain a
+    catalog. You can redefine you own entity loader by using
+    <code>xmlGetExternalEntityLoader()</code> and
+    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the
+    example</a>.</li>
+  <li>Input I/O buffers which are a commodity structure used by the parser(s)
+    input layer to handle fetching the informations to feed the parser. This
+    provides buffering and is also a placeholder where the encoding
+    converters to UTF8 are piggy-backed.</li>
+  <li>Output I/O buffers are similar to the Input ones and fulfill similar
+    task but when generating a serialization from a tree.</li>
+  <li>A mechanism to register sets of I/O callbacks and associate them with
+    specific naming schemes like the protocol part of the URIs.
+    <p>This affect the default I/O operations and allows to use specific I/O
+    handlers for certain names.</p>
   </li>
-</ul><p>The general mechanism used when loading
-http://rpmfind.net/xml.htmlforexample in the HTML parser is the following:</p><ol><li>The default entity loader
-    calls<code>xmlNewInputFromFile()</code>withthe parsing context and the
-    URIstring.</li>
-  <li>the URI string is checked against the existing registered
-    handlersusingtheir match() callback function, if the HTTP module was
-    compiledin, it isregistered and its match() function will succeeds</li>
-  <li>the open() function of the handler is called and if
-    successfulwillreturn an I/O Input buffer</li>
-  <li>the parser will the start reading from this buffer
-    andprogressivelyfetch information from the resource, calling the
-    read()function of thehandler until the resource is exhausted</li>
-  <li>if an encoding change is detected it will be installed on
-    theinputbuffer, providing buffering and efficient use of
-    theconversionroutines</li>
-  <li>once the parser has finished, the close() function of the
-    handleriscalled once and the Input buffer and associated
-    resourcesaredeallocated.</li>
-</ol><p>The user defined callbacks are checked first to allow overriding
-ofthedefault libxml2 I/O routines.</p><h3><a name="basic" id="basic">The basic buffer type</a></h3><p>All the buffer manipulation handling is done
-usingthe<code>xmlBuffer</code>type define in <code><a href="http://xmlsoft.org/html/libxml-tree.html">tree.h</a></code>which
-isaresizable memory buffer. The buffer allocation strategy can be selected
-tobeeither best-fit or use an exponential doubling one (CPU vs.
-memoryusetrade-off). The values
-are<code>XML_BUFFER_ALLOC_EXACT</code>and<code>XML_BUFFER_ALLOC_DOUBLEIT</code>,and
-can be set individually or on asystem wide basis
-using<code>xmlBufferSetAllocationScheme()</code>. A numberof functions allows
-tomanipulate buffers with names starting
-withthe<code>xmlBuffer...</code>prefix.</p><h3><a name="Input" id="Input">Input I/O handlers</a></h3><p>An Input I/O handler is a
-simplestructure<code>xmlParserInputBuffer</code>containing a context
-associated totheresource (file descriptor, or pointer to a protocol handler),
-the read()andclose() callbacks to use and an xmlBuffer. And extra xmlBuffer
-and acharsetencoding handler are also present to support charset
-conversionwhenneeded.</p><h3><a name="Output" id="Output">Output I/O handlers</a></h3><p>An Output handler <code>xmlOutputBuffer</code>is completely similar
-toanInput one except the callbacks are write() and close().</p><h3><a name="entities" id="entities">The entities loader</a></h3><p>The entity loader resolves requests for new entities and create
-inputsforthe parser. Creating an input from a filename or an URI string
-isdonethrough the xmlNewInputFromFile() routine.  The default entity loader
-donothandle the PUBLIC identifier associated with an entity (if any). So
-itjustcalls xmlNewInputFromFile() with the SYSTEM identifier (which
-ismandatory inXML).</p><p>If you want to hook up a catalog mechanism then you simply need
-tooverridethe default entity loader, here is an example:</p><pre>#include &lt;libxml/xmlIO.h&gt;
+</ul><p>The general mechanism used when loading http://rpmfind.net/xml.html for
+example in the HTML parser is the following:</p><ol><li>The default entity loader calls <code>xmlNewInputFromFile()</code> with
+    the parsing context and the URI string.</li>
+  <li>the URI string is checked against the existing registered handlers
+    using their match() callback function, if the HTTP module was compiled
+    in, it is registered and its match() function will succeeds</li>
+  <li>the open() function of the handler is called and if successful will
+    return an I/O Input buffer</li>
+  <li>the parser will the start reading from this buffer and progressively
+    fetch information from the resource, calling the read() function of the
+    handler until the resource is exhausted</li>
+  <li>if an encoding change is detected it will be installed on the input
+    buffer, providing buffering and efficient use of the conversion
+  routines</li>
+  <li>once the parser has finished, the close() function of the handler is
+    called once and the Input buffer and associated resources are
+  deallocated.</li>
+</ol><p>The user defined callbacks are checked first to allow overriding of the
+default libxml2 I/O routines.</p><h3><a name="basic" id="basic">The basic buffer type</a></h3><p>All the buffer manipulation handling is done using the
+<code>xmlBuffer</code> type define in <code><a href="http://xmlsoft.org/html/libxml-tree.html">tree.h</a> </code>which is a
+resizable memory buffer. The buffer allocation strategy can be selected to be
+either best-fit or use an exponential doubling one (CPU vs. memory use
+trade-off). The values are <code>XML_BUFFER_ALLOC_EXACT</code> and
+<code>XML_BUFFER_ALLOC_DOUBLEIT</code>, and can be set individually or on a
+system wide basis using <code>xmlBufferSetAllocationScheme()</code>. A number
+of functions allows to manipulate buffers with names starting with the
+<code>xmlBuffer...</code> prefix.</p><h3><a name="Input" id="Input">Input I/O handlers</a></h3><p>An Input I/O handler is a simple structure
+<code>xmlParserInputBuffer</code> containing a context associated to the
+resource (file descriptor, or pointer to a protocol handler), the read() and
+close() callbacks to use and an xmlBuffer. And extra xmlBuffer and a charset
+encoding handler are also present to support charset conversion when
+needed.</p><h3><a name="Output" id="Output">Output I/O handlers</a></h3><p>An Output handler <code>xmlOutputBuffer</code> is completely similar to an
+Input one except the callbacks are write() and close().</p><h3><a name="entities" id="entities">The entities loader</a></h3><p>The entity loader resolves requests for new entities and create inputs for
+the parser. Creating an input from a filename or an URI string is done
+through the xmlNewInputFromFile() routine.  The default entity loader do not
+handle the PUBLIC identifier associated with an entity (if any). So it just
+calls xmlNewInputFromFile() with the SYSTEM identifier (which is mandatory in
+XML).</p><p>If you want to hook up a catalog mechanism then you simply need to
+override the default entity loader, here is an example:</p><pre>#include &lt;libxml/xmlIO.h&gt;
 
 xmlExternalEntityLoader defaultLoader = NULL;
 
@@ -99,10 +99,11 @@ int main(..) {
     xmlSetExternalEntityLoader(xmlMyExternalEntityLoader);
 
     ...
-}</pre><h3><a name="Example2" id="Example2">Example of customized I/O</a></h3><p>This example come from <a href="http://xmlsoft.org/messages/0708.html">areal use case</a>,xmlDocDump()
-closes the FILE * passed by the applicationand this was aproblem. The <a href="http://xmlsoft.org/messages/0711.html">solution</a>wasto redefine anew
-output handler with the closing call deactivated:</p><ol><li>First define a new I/O output allocator where the output don't
-    closethefile:
+}</pre><h3><a name="Example2" id="Example2">Example of customized I/O</a></h3><p>This example come from <a href="http://xmlsoft.org/messages/0708.html">a
+real use case</a>,  xmlDocDump() closes the FILE * passed by the application
+and this was a problem. The <a href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
+new output handler with the closing call deactivated:</p><ol><li>First define a new I/O output allocator where the output don't close
+    the file:
     <pre>xmlOutputBufferPtr
 xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
     xmlOutputBufferPtr ret;

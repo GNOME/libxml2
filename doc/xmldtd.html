@@ -17,84 +17,84 @@ A:link, A:visited, A:active { text-decoration: underline }
   <li><a href="#Some">Some examples</a></li>
   <li><a href="#validate">How to validate</a></li>
   <li><a href="#Other">Other resources</a></li>
-</ol><h3><a name="General5" id="General5">General overview</a></h3><p>Well what is validation and what is a DTD ?</p><p>DTD is the acronym for Document Type Definition. This is a
-descriptionofthe content for a family of XML files. This is part of the
-XML1.0specification, and allows one to describe and verify that a
-givendocumentinstance conforms to the set of rules detailing its structure
-andcontent.</p><p>Validation is the process of checking a document against a
-DTD(moregenerally against a set of construction rules).</p><p>The validation process and building DTDs are the two most difficultpartsof
-the XML life cycle. Briefly a DTD defines all the possible elementsto befound
-within your document, what is the formal shape of your documenttree(by
-defining the allowed content of an element; either text, aregularexpression
-for the allowed list of children, or mixed content i.e.both textand
-children). The DTD also defines the valid attributes for allelements andthe
-types of those attributes.</p><h3><a name="definition1" id="definition1">The definition</a></h3><p>The <a href="http://www.w3.org/TR/REC-xml">W3C XML Recommendation</a>(<a href="http://www.xml.com/axml/axml.html">Tim Bray's annotated
-versionofRev1</a>):</p><ul><li><a href="http://www.w3.org/TR/REC-xml#elemdecls">Declaringelements</a></li>
-  <li><a href="http://www.w3.org/TR/REC-xml#attdecls">Declaringattributes</a></li>
-</ul><p>(unfortunately) all this is inherited from the SGML world, the
-syntaxisancient...</p><h3><a name="Simple1" id="Simple1">Simple rules</a></h3><p>Writing DTDs can be done in many ways. The rules to build them if
-youneedsomething permanent or something which can evolve over time can
-beradicallydifferent. Really complex DTDs like DocBook ones are flexible
-butquiteharder to design. I will just focus on DTDs for a formats with a
-fixedsimplestructure. It is just a set of basic rules, and definitely
-notexhaustive norusable for complex DTD design.</p><h4><a name="reference1" id="reference1">How to reference a DTD from a document</a>:</h4><p>Assuming the top element of the document is <code>spec</code>and the
-dtdisplaced in the file <code>mydtd</code>in the
-subdirectory<code>dtds</code>ofthe directory from where the document were
-loaded:</p><p><code>&lt;!DOCTYPE spec SYSTEM "dtds/mydtd"&gt;</code></p><p>Notes:</p><ul><li>The system string is actually an URI-Reference (as defined in <a href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can
-    useafull URL string indicating the location of your DTD on the Web. This
-    isareally good thing to do if you want others to validate
-  yourdocument.</li>
-  <li>It is also possible to associate a <code>PUBLIC</code>identifier(amagic
-    string) so that the DTD is looked up in catalogs on the clientsidewithout
-    having to locate it on the web.</li>
-  <li>A DTD contains a set of element and attribute declarations,
-    buttheydon't define what the root of the document should be. This
-    isexplicitlytold to the parser/validator as the first element
-    ofthe<code>DOCTYPE</code>declaration.</li>
-</ul><h4><a name="Declaring2" id="Declaring2">Declaring elements</a>:</h4><p>The following declares an element <code>spec</code>:</p><p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p><p>It also expresses that the spec element contains one<code>front</code>,one
-<code>body</code>and one optional<code>back</code>children elements inthis
-order. The declaration of oneelement of the structure and its contentare done
-in a single declaration.Similarly the following
-declares<code>div1</code>elements:</p><p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2?)&gt;</code></p><p>which means div1 contains one <code>head</code>then a series
-ofoptional<code>p</code>, <code>list</code>s and <code>note</code>s and
-thenanoptional <code>div2</code>. And last but not least an element
-cancontaintext:</p><p><code>&lt;!ELEMENT b (#PCDATA)&gt;</code></p><p><code>b</code>contains text or being of mixed content (text and
-elementsinno particular order):</p><p><code>&lt;!ELEMENT p (#PCDATA|a|ul|b|i|em)*&gt;</code></p><p><code>p </code>can contain text or
-<code>a</code>,<code>ul</code>,<code>b</code>, <code>i </code>or
-<code>em</code>elements inno particularorder.</p><h4><a name="Declaring1" id="Declaring1">Declaring attributes</a>:</h4><p>Again the attributes declaration includes their content definition:</p><p><code>&lt;!ATTLIST termdef name CDATA #IMPLIED&gt;</code></p><p>means that the element <code>termdef</code>can have
-a<code>name</code>attribute containing text (<code>CDATA</code>) and which
-isoptional(<code>#IMPLIED</code>). The attribute value can also be
-definedwithin aset:</p><p><code>&lt;!ATTLIST list
-type(bullets|ordered|glossary)"ordered"&gt;</code></p><p>means <code>list</code>element have a <code>type</code>attribute
-with3allowed values "bullets", "ordered" or "glossary" and which
-defaultto"ordered" if the attribute is not explicitly specified.</p><p>The content type of an attribute can be
-text(<code>CDATA</code>),anchor/reference/references(<code>ID</code>/<code>IDREF</code>/<code>IDREFS</code>),entity(ies)(<code>ENTITY</code>/<code>ENTITIES</code>)
-orname(s)(<code>NMTOKEN</code>/<code>NMTOKENS</code>). The following
-definesthat a<code>chapter</code>element can have an
-optional<code>id</code>attributeof type <code>ID</code>, usable for reference
-fromattribute of typeIDREF:</p><p><code>&lt;!ATTLIST chapter id ID #IMPLIED&gt;</code></p><p>The last value of an attribute definition can
-be<code>#REQUIRED</code>meaning that the attribute has to be
-given,<code>#IMPLIED</code>meaning that it is optional, or the default
-value(possibly prefixed by<code>#FIXED</code>if it is the only allowed).</p><p>Notes:</p><ul><li>Usually the attributes pertaining to a given element are declared
-    inasingle expression, but it is just a convention adopted by a lot
-    ofDTDwriters:
+</ol><h3><a name="General5" id="General5">General overview</a></h3><p>Well what is validation and what is a DTD ?</p><p>DTD is the acronym for Document Type Definition. This is a description of
+the content for a family of XML files. This is part of the XML 1.0
+specification, and allows one to describe and verify that a given document
+instance conforms to the set of rules detailing its structure and content.</p><p>Validation is the process of checking a document against a DTD (more
+generally against a set of construction rules).</p><p>The validation process and building DTDs are the two most difficult parts
+of the XML life cycle. Briefly a DTD defines all the possible elements to be
+found within your document, what is the formal shape of your document tree
+(by defining the allowed content of an element; either text, a regular
+expression for the allowed list of children, or mixed content i.e. both text
+and children). The DTD also defines the valid attributes for all elements and
+the types of those attributes.</p><h3><a name="definition1" id="definition1">The definition</a></h3><p>The <a href="http://www.w3.org/TR/REC-xml">W3C XML Recommendation</a> (<a href="http://www.xml.com/axml/axml.html">Tim Bray's annotated version of
+Rev1</a>):</p><ul><li><a href="http://www.w3.org/TR/REC-xml#elemdecls">Declaring
+  elements</a></li>
+  <li><a href="http://www.w3.org/TR/REC-xml#attdecls">Declaring
+  attributes</a></li>
+</ul><p>(unfortunately) all this is inherited from the SGML world, the syntax is
+ancient...</p><h3><a name="Simple1" id="Simple1">Simple rules</a></h3><p>Writing DTDs can be done in many ways. The rules to build them if you need
+something permanent or something which can evolve over time can be radically
+different. Really complex DTDs like DocBook ones are flexible but quite
+harder to design. I will just focus on DTDs for a formats with a fixed simple
+structure. It is just a set of basic rules, and definitely not exhaustive nor
+usable for complex DTD design.</p><h4><a name="reference1" id="reference1">How to reference a DTD from a document</a>:</h4><p>Assuming the top element of the document is <code>spec</code> and the dtd
+is placed in the file <code>mydtd</code> in the subdirectory
+<code>dtds</code> of the directory from where the document were loaded:</p><p><code>&lt;!DOCTYPE spec SYSTEM "dtds/mydtd"&gt;</code></p><p>Notes:</p><ul><li>The system string is actually an URI-Reference (as defined in <a href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
+    full URL string indicating the location of your DTD on the Web. This is a
+    really good thing to do if you want others to validate your document.</li>
+  <li>It is also possible to associate a <code>PUBLIC</code> identifier (a
+    magic string) so that the DTD is looked up in catalogs on the client side
+    without having to locate it on the web.</li>
+  <li>A DTD contains a set of element and attribute declarations, but they
+    don't define what the root of the document should be. This is explicitly
+    told to the parser/validator as the first element of the
+    <code>DOCTYPE</code> declaration.</li>
+</ul><h4><a name="Declaring2" id="Declaring2">Declaring elements</a>:</h4><p>The following declares an element <code>spec</code>:</p><p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p><p>It also expresses that the spec element contains one <code>front</code>,
+one <code>body</code> and one optional <code>back</code> children elements in
+this order. The declaration of one element of the structure and its content
+are done in a single declaration. Similarly the following declares
+<code>div1</code> elements:</p><p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2?)&gt;</code></p><p>which means div1 contains one <code>head</code> then a series of optional
+<code>p</code>, <code>list</code>s and <code>note</code>s and then an
+optional <code>div2</code>. And last but not least an element can contain
+text:</p><p><code>&lt;!ELEMENT b (#PCDATA)&gt;</code></p><p><code>b</code> contains text or being of mixed content (text and elements
+in no particular order):</p><p><code>&lt;!ELEMENT p (#PCDATA|a|ul|b|i|em)*&gt;</code></p><p><code>p </code>can contain text or <code>a</code>, <code>ul</code>,
+<code>b</code>, <code>i </code>or <code>em</code> elements in no particular
+order.</p><h4><a name="Declaring1" id="Declaring1">Declaring attributes</a>:</h4><p>Again the attributes declaration includes their content definition:</p><p><code>&lt;!ATTLIST termdef name CDATA #IMPLIED&gt;</code></p><p>means that the element <code>termdef</code> can have a <code>name</code>
+attribute containing text (<code>CDATA</code>) and which is optional
+(<code>#IMPLIED</code>). The attribute value can also be defined within a
+set:</p><p><code>&lt;!ATTLIST list type (bullets|ordered|glossary)
+"ordered"&gt;</code></p><p>means <code>list</code> element have a <code>type</code> attribute with 3
+allowed values "bullets", "ordered" or "glossary" and which default to
+"ordered" if the attribute is not explicitly specified.</p><p>The content type of an attribute can be text (<code>CDATA</code>),
+anchor/reference/references
+(<code>ID</code>/<code>IDREF</code>/<code>IDREFS</code>), entity(ies)
+(<code>ENTITY</code>/<code>ENTITIES</code>) or name(s)
+(<code>NMTOKEN</code>/<code>NMTOKENS</code>). The following defines that a
+<code>chapter</code> element can have an optional <code>id</code> attribute
+of type <code>ID</code>, usable for reference from attribute of type
+IDREF:</p><p><code>&lt;!ATTLIST chapter id ID #IMPLIED&gt;</code></p><p>The last value of an attribute definition can be <code>#REQUIRED
+</code>meaning that the attribute has to be given, <code>#IMPLIED</code>
+meaning that it is optional, or the default value (possibly prefixed by
+<code>#FIXED</code> if it is the only allowed).</p><p>Notes:</p><ul><li>Usually the attributes pertaining to a given element are declared in a
+    single expression, but it is just a convention adopted by a lot of DTD
+    writers:
     <pre>&lt;!ATTLIST termdef
           id      ID      #REQUIRED
           name    CDATA   #IMPLIED&gt;</pre>
-    <p>The previous construct defines
-    both<code>id</code>and<code>name</code>attributes for the
-    element<code>termdef</code>.</p>
+    <p>The previous construct defines both <code>id</code> and
+    <code>name</code> attributes for the element <code>termdef</code>.</p>
   </li>
-</ul><h3><a name="Some1" id="Some1">Some examples</a></h3><p>The directory <code>test/valid/dtds/</code>in the
-libxml2distributioncontains some complex DTD examples. The example in
-thefile<code>test/valid/dia.xml</code>shows an XML file where the simple
-DTDisdirectly included within the document.</p><h3><a name="validate1" id="validate1">How to validate</a></h3><p>The simplest way is to use the xmllint program included with
-libxml.The<code>--valid</code>option turns-on validation of the files given
-asinput.For example the following validates a copy of the first revision of
-theXML1.0 specification:</p><p><code>xmllint --valid --noout test/valid/REC-xml-19980210.xml</code></p><p>the -- noout is used to disable output of the resulting tree.</p><p>The <code>--dtdvalid dtd</code>allows validation of the
-document(s)againsta given DTD.</p><p>Libxml2 exports an API to handle DTDs and validation, check the <a href="http://xmlsoft.org/html/libxml-valid.html">associateddescription</a>.</p><h3><a name="Other1" id="Other1">Other resources</a></h3><p>DTDs are as old as SGML. So there may be a number of examples
-on-line,Iwill just list one for now, others pointers welcome:</p><ul><li><a href="http://www.xml101.com:8081/dtd/">XML-101 DTD</a></li>
-</ul><p>I suggest looking at the examples found under test/valid/dtd and any
-ofthelarge number of books available on XML. The dia example in
-test/validshouldbe both simple and complete enough to allow you to build your
-own.</p><p></p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+</ul><h3><a name="Some1" id="Some1">Some examples</a></h3><p>The directory <code>test/valid/dtds/</code> in the libxml2 distribution
+contains some complex DTD examples. The example in the file
+<code>test/valid/dia.xml</code> shows an XML file where the simple DTD is
+directly included within the document.</p><h3><a name="validate1" id="validate1">How to validate</a></h3><p>The simplest way is to use the xmllint program included with libxml. The
+<code>--valid</code> option turns-on validation of the files given as input.
+For example the following validates a copy of the first revision of the XML
+1.0 specification:</p><p><code>xmllint --valid --noout test/valid/REC-xml-19980210.xml</code></p><p>the -- noout is used to disable output of the resulting tree.</p><p>The <code>--dtdvalid dtd</code> allows validation of the document(s)
+against a given DTD.</p><p>Libxml2 exports an API to handle DTDs and validation, check the <a href="http://xmlsoft.org/html/libxml-valid.html">associated
+description</a>.</p><h3><a name="Other1" id="Other1">Other resources</a></h3><p>DTDs are as old as SGML. So there may be a number of examples on-line, I
+will just list one for now, others pointers welcome:</p><ul><li><a href="http://www.xml101.com:8081/dtd/">XML-101 DTD</a></li>
+</ul><p>I suggest looking at the examples found under test/valid/dtd and any of
+the large number of books available on XML. The dia example in test/valid
+should be both simple and complete enough to allow you to build your own.</p><p></p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

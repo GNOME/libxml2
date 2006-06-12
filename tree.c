@@ -4236,7 +4236,7 @@ xmlGetNodePath(xmlNodePtr node)
     const char *sep;
     const char *name;
     char nametemp[100];
-    int occur = 0;
+    int occur = 0, generic;
 
     if (node == NULL)
         return (NULL);
@@ -4267,17 +4267,23 @@ xmlGetNodePath(xmlNodePtr node)
             sep = "/";
             next = NULL;
         } else if (cur->type == XML_ELEMENT_NODE) {
+	    generic = 0;
             sep = "/";
             name = (const char *) cur->name;
             if (cur->ns) {
-	        if (cur->ns->prefix != NULL)
+		if (cur->ns->prefix != NULL) {
                     snprintf(nametemp, sizeof(nametemp) - 1, "%s:%s",
 		    	(char *)cur->ns->prefix, (char *)cur->name);
-		else
-		    snprintf(nametemp, sizeof(nametemp) - 1, "%s",
-		    	(char *)cur->name);
-                nametemp[sizeof(nametemp) - 1] = 0;
-                name = nametemp;
+		    nametemp[sizeof(nametemp) - 1] = 0;
+		    name = nametemp;
+		} else {
+		    /*
+		    * We cannot express named elements in the default
+		    * namespace, so use "*".
+		    */
+		    generic = 1;
+		    name = "*";
+		}                
             }
             next = cur->parent;
 
@@ -4288,10 +4294,11 @@ xmlGetNodePath(xmlNodePtr node)
             tmp = cur->prev;
             while (tmp != NULL) {
                 if ((tmp->type == XML_ELEMENT_NODE) &&
-		    (xmlStrEqual(cur->name, tmp->name)) &&
-		    ((tmp->ns == cur->ns) ||
-		     ((tmp->ns != NULL) && (cur->ns != NULL) &&
-		      (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix)))))
+		    (generic ||
+		     (xmlStrEqual(cur->name, tmp->name)) &&
+		     ((tmp->ns == cur->ns) ||
+		      ((tmp->ns != NULL) && (cur->ns != NULL) &&
+		       (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix))))))
                     occur++;
                 tmp = tmp->prev;
             }
@@ -4299,10 +4306,11 @@ xmlGetNodePath(xmlNodePtr node)
                 tmp = cur->next;
                 while (tmp != NULL && occur == 0) {
                     if ((tmp->type == XML_ELEMENT_NODE) &&
-			(xmlStrEqual(cur->name, tmp->name)) &&
-			((tmp->ns == cur->ns) ||
-			 ((tmp->ns != NULL) && (cur->ns != NULL) &&
-			  (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix)))))
+			(generic ||
+			 (xmlStrEqual(cur->name, tmp->name)) &&
+			 ((tmp->ns == cur->ns) ||
+			  ((tmp->ns != NULL) && (cur->ns != NULL) &&
+			   (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix))))))
                         occur++;
                     tmp = tmp->next;
                 }

@@ -1,3 +1,10 @@
+Mon Jun 12 12:54:25 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Fixed xmlGetNodePath() to generate the node test "*"
+	  for elements in the default namespace, rather than generating
+	  an unprefixed named node test and loosing the namespace
+	  information.
+
 Fri Jun  9 21:45:02 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* include/libxml/parser.h: Clarified in the docs that the tree

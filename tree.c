@@ -4295,10 +4295,10 @@ xmlGetNodePath(xmlNodePtr node)
             while (tmp != NULL) {
                 if ((tmp->type == XML_ELEMENT_NODE) &&
 		    (generic ||
-		     (xmlStrEqual(cur->name, tmp->name)) &&
+		     (xmlStrEqual(cur->name, tmp->name) &&
 		     ((tmp->ns == cur->ns) ||
 		      ((tmp->ns != NULL) && (cur->ns != NULL) &&
-		       (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix))))))
+		       (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix)))))))
                     occur++;
                 tmp = tmp->prev;
             }
@@ -4307,10 +4307,10 @@ xmlGetNodePath(xmlNodePtr node)
                 while (tmp != NULL && occur == 0) {
                     if ((tmp->type == XML_ELEMENT_NODE) &&
 			(generic ||
-			 (xmlStrEqual(cur->name, tmp->name)) &&
+			 (xmlStrEqual(cur->name, tmp->name) &&
 			 ((tmp->ns == cur->ns) ||
 			  ((tmp->ns != NULL) && (cur->ns != NULL) &&
-			   (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix))))))
+			   (xmlStrEqual(cur->ns->prefix, tmp->ns->prefix)))))))
                         occur++;
                     tmp = tmp->next;
                 }

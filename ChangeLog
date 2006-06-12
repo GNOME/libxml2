@@ -1,3 +1,9 @@
+Mon Jun 12 13:23:11 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* result/pattern/namespaces: Adjusted the result of a
+	  regression test, since the fix of xmlGetNodePath() revealed a
+	  bug in this test result.
+
 Mon Jun 12 13:06:03 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Got rid of a compiler warning in xmlGetNodePath().

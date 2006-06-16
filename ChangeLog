@@ -1,3 +1,20 @@
+Fri Jun 16 21:37:44 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c include/libxml/tree.h: Fixed a bug in
+	  xmlDOMWrapAdoptNode(); the tree traversal stopped if the
+	  very first given node had an attribute node :-( This was due
+	  to a missed check in the traversal mechanism.
+	  Expanded the xmlDOMWrapCtxt: it now holds the namespace map
+	  used in xmlDOMWrapAdoptNode() and xmlDOMWrapCloneNode() for
+	  reusal; so the map-items don't need to be created for every
+	  cloning/adoption. Added a callback function to it for
+	  retrieval of xmlNsPtr to be set on node->ns; this is needed
+	  for my custom handling of ns-references in my DOM wrapper.
+	  Substituted code which created the XML namespace decl on
+	  the doc for a call to xmlTreeEnsureXMLDecl(). Removed
+	  those nastly "warnigns" from the docs of the clone/adopt
+	  functions; they work fine on my side.
+	  
 Mon Jun 12 13:23:11 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* result/pattern/namespaces: Adjusted the result of a

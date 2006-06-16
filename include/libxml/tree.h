@@ -55,6 +55,15 @@ typedef xmlEntity *xmlEntityPtr;
 #define BASE_BUFFER_SIZE 4096
 
 /**
+ * LIBXML_NAMESPACE_DICT:
+ *
+ * Defines experimental behaviour:
+ * 1) xmlNs gets an additional field @context (a xmlDoc)
+ * 2) when creating a tree, xmlNs->href is stored in the dict of xmlDoc.
+ */
+/* #define LIBXML_NAMESPACE_DICT */
+
+/**
  * xmlBufferAllocationScheme:
  *
  * A buffer allocation scheme can be defined to either match exactly the
@@ -342,6 +351,7 @@ struct _xmlNs {
     const xmlChar *href;	/* URL for the namespace */
     const xmlChar *prefix;	/* prefix for the namespace */
     void           *_private;   /* application data */
+    struct _xmlDoc *context;		/* normally an xmlDoc */
 };
 
 /**
@@ -508,10 +518,47 @@ struct _xmlDoc {
     void           *psvi;	/* for type/PSVI informations */
 };
 
+
 typedef struct _xmlDOMWrapCtxt xmlDOMWrapCtxt;
 typedef xmlDOMWrapCtxt *xmlDOMWrapCtxtPtr;
+
+/**
+ * xmlDOMWrapAcquireNsFunction:
+ * @ctxt:  a DOM wrapper context
+ * @node:  the context node (element or attribute) 
+ * @nsName:  the requested namespace name
+ * @nsPrefix:  the requested namespace prefix 
+ *
+ * A function called to acquire namespaces (xmlNs) from the wrapper.
+ *
+ * Returns an xmlNsPtr or NULL in case of an error.
+ */
+typedef xmlNsPtr (*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxtPtr ctxt,
+						 xmlNodePtr node,
+						 const xmlChar *nsName,
+						 const xmlChar *nsPrefix);
+
+/**
+ * xmlDOMWrapCtxt:
+ *
+ * Context for DOM wrapper-operations.
+ */
 struct _xmlDOMWrapCtxt {
     void * _private;
+    /*
+    * The type of this context, just in case we need specialized
+    * contexts in the future.
+    */
+    int type;
+    /*
+    * Internal namespace map used for various operations.
+    */
+    void * namespaceMap;
+    /*
+    * Use this one to acquire an xmlNsPtr intended for node->ns.
+    * (Note that this is not intended for elem->nsDef).
+    */
+    xmlDOMWrapAcquireNsFunction getNsForNodeFunc;
 };
 
 /**

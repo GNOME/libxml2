@@ -1442,7 +1442,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
     if (ctxt->spaceNr > 0)
 	ctxt->space = &ctxt->spaceTab[ctxt->spaceNr - 1];
     else
-        ctxt->space = NULL;
+        ctxt->space = &ctxt->spaceTab[0];
     ret = ctxt->spaceTab[ctxt->spaceNr];
     ctxt->spaceTab[ctxt->spaceNr] = -1;
     return(ret);
@@ -2356,7 +2356,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     /*
      * Check for xml:space value.
      */
-    if (*(ctxt->space) == 1)
+    if ((ctxt->space == NULL) || (*(ctxt->space) == 1))
 	return(0);
 
     /*

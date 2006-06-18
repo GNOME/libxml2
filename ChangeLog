@@ -1,3 +1,8 @@
+Sun Jun 18 20:59:02 EDT 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: try to fix the crash raised by the parser in
+	  recover mode as pointed by Ryan Phillips
+
 Sun Jun 18 18:44:56 EDT 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/types.c: patch from Nic Ferrier to provide a better type

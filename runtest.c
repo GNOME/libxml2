@@ -565,6 +565,7 @@ static char *resultFilename(const char *filename, const char *out,
                             const char *suffix) {
     const char *base;
     char res[500];
+    char suffixbuff[500];
 
 /*************
     if ((filename[0] == 't') && (filename[1] == 'e') &&
@@ -578,7 +579,14 @@ static char *resultFilename(const char *filename, const char *out,
         suffix = ".tmp";
     if (out == NULL)
         out = "";
-    snprintf(res, 499, "%s%s%s", out, base, suffix);
+
+    strncpy(suffixbuff,suffix,499);
+#ifdef VMS
+    if(strstr(base,".") && suffixbuff[0]=='.')
+      suffixbuff[0]='_';
+#endif
+
+    snprintf(res, 499, "%s%s%s", out, base, suffixbuff);
     res[499] = 0;
     return(strdup(res));
 }
@@ -2881,6 +2889,7 @@ schemasOneTest(const char *sch,
     xmlDocPtr doc;
     xmlSchemaValidCtxtPtr ctxt;
     int ret = 0;
+    int validResult = 0;
     char *temp;
     FILE *schemasOutput;
 
@@ -2908,10 +2917,10 @@ schemasOneTest(const char *sch,
          (xmlSchemaValidityErrorFunc) testErrorHandler,
          (xmlSchemaValidityWarningFunc) testErrorHandler,
 	 ctxt);
-    ret = xmlSchemaValidateDoc(ctxt, doc);
-    if (ret == 0) {
+    validResult = xmlSchemaValidateDoc(ctxt, doc);
+    if (validResult == 0) {
 	fprintf(schemasOutput, "%s validates\n", filename);
-    } else if (ret > 0) {
+    } else if (validResult > 0) {
 	fprintf(schemasOutput, "%s fails to validate\n", filename);
     } else {
 	fprintf(schemasOutput, "%s validation generated an internal error\n",
@@ -2927,12 +2936,10 @@ schemasOneTest(const char *sch,
     unlink(temp);
     free(temp);
 
-    if ((ret != 0) && (err != NULL)) {
+    if ((validResult != 0) && (err != NULL)) {
 	if (compareFileMem(err, testErrors, testErrorsSize)) {
 	    fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
 	    ret = 1;
-	} else {
-	    ret = 0;
 	}
     }
 

@@ -15,6 +15,21 @@ ChangeLog.html
 to the CVS at 
 http://cvs.gnome.org/viewcvs/libxml2/
  code base.There is the list of public releases:
+2.6.26: Jun 6 2006:
+   - portability fixes: Python detection (Joseph Sacco), compilation
+    error(William Brack and Graham Bennett), LynxOS patch (Olli Savia)
+   - bug fixes: encoding buffer problem, mix of code and data in
+    xmlIO.c(Kjartan Maraas), entities in XSD validation (Kasimier Buchcik),
+    variousXSD validation fixes (Kasimier), memory leak in pattern (Rob
+    Richards andKasimier), attribute with colon in name (Rob Richards), XPath
+    leak inerror reporting (Aleksey Sanin), XInclude text include of
+    selfdocument.
+   - improvements: Xpath optimizations (Kasimier), XPath object
+    cache(Kasimier)
+
+
+2.6.25: Jun 6 2006::
+Do not use or package 2.6.25
 2.6.24: Apr 28 2006:
    - Portability fixes: configure on Windows, testapi compile on windows
       (Kasimier Buchcik, venkat naidu), Borland C++ 6 compile (Eric Zurcher),

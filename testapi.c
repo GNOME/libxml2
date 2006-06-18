@@ -30599,7 +30599,7 @@ static int
 test_xmlTextReaderGetErrorHandler(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_READER_ENABLED)
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
     int n_reader;
@@ -31943,7 +31943,7 @@ test_xmlTextReaderSchemaValidate(void) {
     return(test_ret);
 }
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
 
 #define gen_nb_xmlSchemaValidCtxtPtr 1
 static xmlSchemaValidCtxtPtr gen_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -32059,7 +32059,7 @@ test_xmlTextReaderSetParserProp(void) {
     return(test_ret);
 }
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
 
 #define gen_nb_xmlSchemaPtr 1
 static xmlSchemaPtr gen_xmlSchemaPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {

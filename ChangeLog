@@ -1,3 +1,8 @@
+Sun Jun 18 18:22:25 EDT 2006 Daniel Veillard <daniel@veillard.com>
+
+	* testapi.c: applied patch from Felipe Contreras when compiling
+	  with --with-minimum
+
 Fri Jun 16 21:37:44 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c include/libxml/tree.h: Fixed a bug in

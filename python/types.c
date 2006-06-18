@@ -422,6 +422,20 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
     if PyFloat_Check
         (obj) {
         ret = xmlXPathNewFloat((double) PyFloat_AS_DOUBLE(obj));
+
+    } else if PyInt_Check(obj) {
+
+        ret = xmlXPathNewFloat((double) PyInt_AS_LONG(obj));
+
+    } else if PyBool_Check (obj) {
+
+        if (obj == Py_True) {
+          ret = xmlXPathNewBoolean(1);
+        }
+        else {
+          ret = xmlXPathNewBoolean(0);
+        }
+
     } else if PyString_Check
         (obj) {
         xmlChar *str;

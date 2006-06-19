@@ -1,3 +1,9 @@
+Mon Jun 19 12:23:41 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Added optimization for positional predicates
+	  (only short-hand form "[n]"), which have a preceding
+	  predicate: "/foo[descendant::bar][3]".
+
 Sun Jun 18 20:59:02 EDT 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: try to fix the crash raised by the parser in

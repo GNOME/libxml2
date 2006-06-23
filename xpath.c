@@ -14404,13 +14404,14 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 #ifdef DEBUG_EVAL_COUNTS
 	comp->string = xmlStrdup(str);
 	comp->nb = 0;
-#endif    
-	if ((comp->nbStep > 2) &&
+#endif
+	if ((comp->expr != NULL) &&
+	    (comp->nbStep > 2) &&
+	    (comp->last >= 0) &&
 	    (xmlXPathCanRewriteDosExpression(comp->expr) == 1))
 	{
 	    xmlXPathRewriteDOSExpression(comp, &comp->steps[comp->last]);
 	}
-
     }
     return(comp);
 }
@@ -14531,12 +14532,18 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 #endif
     {
 	xmlXPathCompileExpr(ctxt, 1);
-	if ((ctxt->comp != NULL) &&
+	/*
+	* In this scenario the expression string will sit in ctxt->base.
+	*/
+	if ((ctxt->error == XPATH_EXPRESSION_OK) &&
+	    (ctxt->comp != NULL) &&
+	    (ctxt->base != NULL) &&
 	    (ctxt->comp->nbStep > 2) &&
-	    (xmlXPathCanRewriteDosExpression(ctxt->comp->expr) == 1))
+	    (ctxt->comp->last >= 0) &&
+	    (xmlXPathCanRewriteDosExpression((xmlChar *) ctxt->base) == 1))
 	{
 	    xmlXPathRewriteDOSExpression(ctxt->comp,
-		&ctxt->comp->steps[comp->last]);
+		&ctxt->comp->steps[ctxt->comp->last]);
 	}
     }
     CHECK_ERROR;

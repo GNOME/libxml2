@@ -1,3 +1,13 @@
+Fri Jun 23 18:26:08 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Fixed an error in xmlXPathEvalExpr(), which
+	  was introduced with the addition of the d-o-s rewrite
+	  and made xpath.c unable to compile if XPATH_STREAMING
+	  was not defined (reported by Kupriyanov Anatolij -
+	  #345752). Fixed the check for d-o-s rewrite
+	  to work on the correct XPath string, which is ctxt->base
+	  and not comp->expr in this case.
+
 Mon Jun 19 12:23:41 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Added optimization for positional predicates

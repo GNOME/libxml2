@@ -736,6 +736,7 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
 	comp->steps = real;
     }
     comp->last = comp->nbStep;
+    comp->steps[comp->nbStep].rewriteType = 0;
     comp->steps[comp->nbStep].ch1 = ch1;
     comp->steps[comp->nbStep].ch2 = ch2;
     comp->steps[comp->nbStep].op = op;

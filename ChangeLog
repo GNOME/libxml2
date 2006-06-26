@@ -1,3 +1,15 @@
+Mon Jun 26 16:22:50 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Fixed an bug in xmlXPathCompExprAdd(): the newly
+	  introduced field @rewriteType on xmlXPathStepOp was not
+	  initialized to zero here; this could lead to the activation
+	  of the axis rewrite code in xmlXPathNodeCollectAndTest() when
+	  @rewriteType is randomly set to the value 1. A test
+	  (hardcoding the intial value to 1) revealed that the
+	  resulting incorrect behaviour is similar to the behaviour
+	  as described by Arnold Hendriks on the mailing list; so I
+	  hope that will fix the issue.	  
+
 Fri Jun 23 18:26:08 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Fixed an error in xmlXPathEvalExpr(), which

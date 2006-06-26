@@ -232,6 +232,23 @@ class xmlCore:
             self._o = _obj;
             return
         self._o = None
+
+    def __eq__(self, other):
+        if other == None:
+	    return False
+        ret = libxml2mod.compareNodesEqual(self._o, other._o)
+	if ret == None:
+	    return False
+	return ret == True
+    def __ne__(self, other):
+        if other == None:
+	    return True
+        ret = libxml2mod.compareNodesEqual(self._o, other._o)
+	return not ret
+    def __hash__(self):
+    	ret = libxml2mod.nodeHash(self._o)
+	return ret
+
     def __str__(self):
         return self.serialize()
     def get_parent(self):

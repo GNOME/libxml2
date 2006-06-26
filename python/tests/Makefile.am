@@ -43,7 +43,8 @@ PYTESTS=	\
     tstmem.py	\
     validDTD.py	\
     validSchemas.py \
-    validRNG.py
+    validRNG.py \
+    compareNodes.py
 
 XMLS=		\
     tst.xml	\

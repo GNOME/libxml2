@@ -3677,6 +3677,40 @@ libxml_getObjDesc(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     return Py_BuildValue((char *)"s", str);
 }
 
+static PyObject *
+libxml_compareNodesEqual(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+    
+    PyObject *py_node1, *py_node2;
+    xmlNodePtr node1, node2;
+
+    if (!PyArg_ParseTuple(args, (char *)"OO:compareNodesEqual",
+		&py_node1, &py_node2))
+        return NULL;
+    /* To compare two node objects, we compare their pointer addresses */
+    node1 = PyxmlNode_Get(py_node1);
+    node2 = PyxmlNode_Get(py_node2);
+    if ( node1 == node2 )
+        return Py_BuildValue((char *)"i", 1);
+    else
+        return Py_BuildValue((char *)"i", 0);
+    
+}
+
+static PyObject *
+libxml_nodeHash(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+
+    PyObject *py_node1;
+    xmlNodePtr node1;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:nodeHash", &py_node1))
+	    return NULL;
+    /* For simplicity, we use the node pointer address as a hash value */
+    node1 = PyxmlNode_Get(py_node1);
+
+    return PyLong_FromVoidPtr(node1);
+
+}
+
 /************************************************************************
  *									*
  *			The registration stuff				*
@@ -3730,6 +3764,8 @@ static PyMethodDef libxmlMethods[] = {
 #endif
 #endif
     {(char *) "getObjDesc", libxml_getObjDesc, METH_VARARGS, NULL},
+    {(char *) "compareNodesEqual", libxml_compareNodesEqual, METH_VARARGS, NULL},
+    {(char *) "nodeHash", libxml_nodeHash, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 

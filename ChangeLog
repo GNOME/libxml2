@@ -1,3 +1,11 @@
+Mon Jun 26 17:24:28 UTC 2006 William Brack <wbrack@mmm.com.hk>
+
+	* python/libxml.c, python/libxml.py, python/tests/compareNodes.py,
+	  python/tests/Makefile.am:
+	  Added code submitted by Andreas Pakulat to provide node
+	  equality, inequality and hash functions, plus a single
+	  test program to check the functions (bugs 345779 + 345961).
+
 Mon Jun 26 18:38:51 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Added xmlXPathCompiledEvalToBoolean() to the API and

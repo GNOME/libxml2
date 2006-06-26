@@ -1,3 +1,11 @@
+Mon Jun 26 18:38:51 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Added xmlXPathCompiledEvalToBoolean() to the API and
+	  adjusted/added xmlXPathRunEval(), xmlXPathRunStreamEval(),
+	  xmlXPathCompOpEvalToBoolean(), xmlXPathNodeCollectAndTest()
+	  to be aware of a boolean result request. The new function
+	  is now used to evaluate predicates.
+
 Mon Jun 26 16:22:50 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Fixed an bug in xmlXPathCompExprAdd(): the newly

@@ -344,6 +344,7 @@ struct _xmlXPathContext {
     xmlDictPtr dict;			/* dictionnary if any */
 
     int flags;				/* flags to control compilation */
+
     /* Cache for reusal of XPath objects */
     void *cache;
 };
@@ -520,6 +521,9 @@ XMLPUBFUN xmlXPathCompExprPtr XMLCALL
 XMLPUBFUN xmlXPathObjectPtr XMLCALL   
 		    xmlXPathCompiledEval	(xmlXPathCompExprPtr comp,
 						 xmlXPathContextPtr ctx);
+XMLPUBFUN int XMLCALL   
+		    xmlXPathCompiledEvalToBoolean(xmlXPathCompExprPtr comp,
+						 xmlXPathContextPtr ctxt);
 XMLPUBFUN void XMLCALL                
 		    xmlXPathFreeCompExpr	(xmlXPathCompExprPtr comp);
 #endif /* LIBXML_XPATH_ENABLED */

@@ -1,3 +1,8 @@
+Wed Jun 28 19:11:16 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Fix a memory leak which occurred when using
+	  xmlXPathCompiledEvalToBoolean().
+
 Mon Jun 26 17:24:28 UTC 2006 William Brack <wbrack@mmm.com.hk>
 
 	* python/libxml.c, python/libxml.py, python/tests/compareNodes.py,

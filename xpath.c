@@ -13997,7 +13997,7 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp,
     int ret, depth;
     int eval_all_nodes;
     xmlNodePtr cur = NULL, limit = NULL;
-    xmlStreamCtxtPtr patstream;
+    xmlStreamCtxtPtr patstream = NULL;
     
     int nb_nodes = 0;    
 
@@ -14027,15 +14027,17 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp,
     }
     
     /*
-     * handle the special cases of / amd . being matched
+     * handle the special cases of "/" amd "." being matched
      */
     if (min_depth == 0) {
 	if (from_root) {
+	    /* Select "/" */
 	    if (toBool)
 		return(1);
 	    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval,
 		(xmlNodePtr) ctxt->doc);
 	} else {
+	    /* Select "self::node()" */
 	    if (toBool)
 		return(1);
 	    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval, ctxt->node);
@@ -14097,7 +14099,7 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp,
 	if (ret < 0) {
 	} else if (ret == 1) {
 	    if (toBool)
-		return(1);
+		goto return_1;
 	    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval, cur);
 	}
     }
@@ -14125,7 +14127,7 @@ next_node:
 		    /* NOP. */
 		} else if (ret == 1) {
 		    if (toBool)
-			return(1);
+			goto return_1;
 		    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval, cur);
 		}
 		if ((cur->children == NULL) || (depth >= max_depth)) {
@@ -14197,8 +14199,14 @@ done:
            nb_nodes, retObj->nodesetval->nodeNr);
 #endif
 
-    xmlFreeStreamCtxt(patstream);
+    if (patstream)
+	xmlFreeStreamCtxt(patstream);
     return(0);
+
+return_1:
+    if (patstream)
+	xmlFreeStreamCtxt(patstream);
+    return(1);
 }
 #endif /* XPATH_STREAMING */
 

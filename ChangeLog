@@ -1,3 +1,8 @@
+Thu Jun 29 12:48:00 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Fixed a double-free in xmlXPathCompOpEvalToBoolean(),
+	  revealed by a Libxslt regression test.
+
 Thu Jun 29 12:28:07 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Enhanced xmlXPathCompOpEvalToBoolean() to be also

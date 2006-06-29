@@ -13915,7 +13915,9 @@ start:
             return (0);
 	case XPATH_OP_VALUE:
 	    resObj = (xmlXPathObjectPtr) op->value4;
-	    break;
+	    if (isPredicate)
+		return(xmlXPathEvaluatePredicateResult(ctxt, resObj));
+	    return(xmlXPathCastToBoolean(resObj));
 	case XPATH_OP_SORT:
 	    /*
 	    * We don't need sorting for boolean results. Skip this one.
@@ -13951,7 +13953,7 @@ start:
 	    
 	    resObj = valuePop(ctxt);
 	    if (resObj == NULL)
-		return(-1);	    	    
+		return(-1);
 	    break;
     }
 

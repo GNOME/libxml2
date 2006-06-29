@@ -599,7 +599,8 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
                         xmlXPathStepOpPtr op, xmlNodePtr *first);
 static int
 xmlXPathCompOpEvalToBoolean(xmlXPathParserContextPtr ctxt,
-			    xmlXPathStepOpPtr op);
+			    xmlXPathStepOpPtr op,
+			    int isPredicate);
 
 /************************************************************************
  * 									*
@@ -11542,7 +11543,7 @@ xmlXPathCompOpEvalPredicate(xmlXPathParserContextPtr ctxt,
 
 	    valuePush(ctxt, contextObj);
 
-	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp);
+	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
 
 	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1))
 		goto evaluation_error;
@@ -11688,7 +11689,7 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
 		    contextNode);
 
 	    valuePush(ctxt, contextObj);
-	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp);
+	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
 	    
 	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1))
 		goto evaluation_error;
@@ -13902,8 +13903,10 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
  */
 static int
 xmlXPathCompOpEvalToBoolean(xmlXPathParserContextPtr ctxt,
-			    xmlXPathStepOpPtr op)
+			    xmlXPathStepOpPtr op,
+			    int isPredicate)
 {
+    xmlXPathObjectPtr resObj = NULL;
 
 start:
     /* comp = ctxt->comp; */
@@ -13911,12 +13914,8 @@ start:
         case XPATH_OP_END:
             return (0);
 	case XPATH_OP_VALUE:
-	    if (xmlXPathEvaluatePredicateResult(ctxt,
-		    (xmlXPathObjectPtr) op->value4))
-		{
-		    return(1);
-		} else
-		    return(0);
+	    resObj = (xmlXPathObjectPtr) op->value4;
+	    break;
 	case XPATH_OP_SORT:
 	    /*
 	    * We don't need sorting for boolean results. Skip this one.
@@ -13926,9 +13925,7 @@ start:
 		goto start;
 	    }
 	    return(0);
-	case XPATH_OP_COLLECT: {
-	    xmlXPathObjectPtr resObj;
-
+	case XPATH_OP_COLLECT:
 	    if (op->ch1 == -1)
 		return(0);
 
@@ -13943,19 +13940,8 @@ start:
 	    resObj = valuePop(ctxt);
 	    if (resObj == NULL)
 		return(-1);
-
-	    if (xmlXPathEvaluatePredicateResult(ctxt, resObj)) {
-		xmlXPathReleaseObject(ctxt->context, resObj);
-		return(1);
-	    } else {
-		xmlXPathReleaseObject(ctxt->context, resObj);
-		return(0);
-	    }            
-	}
-	break;
-	default: {
-	    xmlXPathObjectPtr resObj;
-
+	    break;
+	default:
 	    /*
 	    * Fallback to call xmlXPathCompOpEval().
 	    */
@@ -13965,19 +13951,32 @@ start:
 	    
 	    resObj = valuePop(ctxt);
 	    if (resObj == NULL)
-		return(-1);
-	    /*
-	    * This checks if the result of the evaluation is 'true'.
-	    */
-	    if (xmlXPathEvaluatePredicateResult(ctxt, resObj)) {
-		xmlXPathReleaseObject(ctxt->context, resObj);
-		return(1);
-	    } else {
-		xmlXPathReleaseObject(ctxt->context, resObj);
-		return(0);
-	    }
-	}
+		return(-1);	    	    
+	    break;
     }
+
+    if (resObj) {
+	int res;
+
+	if (resObj->type == XPATH_BOOLEAN) {
+	    res = resObj->boolval;
+	} else if (isPredicate) {
+	    /*
+	    * For predicates a result of type "number" is handled
+	    * differently:
+	    * SPEC XPath 1.0:
+	    * "If the result is a number, the result will be converted
+	    *  to true if the number is equal to the context position
+	    *  and will be converted to false otherwise;"
+	    */
+	    res = xmlXPathEvaluatePredicateResult(ctxt, resObj); 
+	} else {
+	    res = xmlXPathCastToBoolean(resObj);
+	}
+	xmlXPathReleaseObject(ctxt->context, resObj);
+	return(res);
+    }
+
     return(0);
 }
 
@@ -14278,7 +14277,8 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt, int toBool)
 	return(-1);
     }
     if (toBool)
-	return(xmlXPathCompOpEvalToBoolean(ctxt, &comp->steps[comp->last]));
+	return(xmlXPathCompOpEvalToBoolean(ctxt,
+	    &comp->steps[comp->last], 0));
     else
 	xmlXPathCompOpEval(ctxt, &comp->steps[comp->last]);
 

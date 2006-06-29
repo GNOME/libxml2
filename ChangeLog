@@ -1,3 +1,10 @@
+Thu Jun 29 12:28:07 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Enhanced xmlXPathCompOpEvalToBoolean() to be also
+	  usable outside predicate evaluation; the intention is to
+	  use it via xmlXPathCompiledEvalToBoolean() for XSLT tests,
+	  like in <xsl:if test="/foo">.
+	  
 Wed Jun 28 19:11:16 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Fix a memory leak which occurred when using

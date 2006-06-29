@@ -1,3 +1,8 @@
+Thu Jun 29 13:51:12 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: patch from Andrew W. Nosenko, xmlFreeRMutex forgot to
+	  destroy the condition associated to the mutex.
+
 Thu Jun 29 12:48:00 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Fixed a double-free in xmlXPathCompOpEvalToBoolean(),

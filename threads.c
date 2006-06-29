@@ -319,8 +319,10 @@ xmlFreeRMutex(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
     if (tok == NULL)
         return;
 #ifdef HAVE_PTHREAD_H
-    if (libxml_is_threaded != 0)
+    if (libxml_is_threaded != 0) {
 	pthread_mutex_destroy(&tok->lock);
+	pthread_cond_destroy(&tok->cv);
+    }
 #elif defined HAVE_WIN32_THREADS
     DeleteCriticalSection(&tok->cs);
 #elif defined HAVE_BEOS_THREADS

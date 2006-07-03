@@ -1,3 +1,8 @@
+Mon Jul  3 10:57:33 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied const'ification of strings patch from
+	  Matthias Clasen
+
 Thu Jun 29 13:51:12 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: patch from Andrew W. Nosenko, xmlFreeRMutex forgot to

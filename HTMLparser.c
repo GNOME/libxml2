@@ -493,11 +493,11 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 #define EMPTY NULL
 
 
-static const char* html_flow[] = { FLOW, NULL } ;
-static const char* html_inline[] = { INLINE, NULL } ;
+static const char* const html_flow[] = { FLOW, NULL } ;
+static const char* const html_inline[] = { INLINE, NULL } ;
 
 /* placeholders: elts with content but no subelements */
-static const char* html_pcdata[] = { NULL } ;
+static const char* const html_pcdata[] = { NULL } ;
 #define html_cdata html_pcdata
 
 
@@ -516,103 +516,104 @@ static const char* html_pcdata[] = { NULL } ;
 #define CELLVALIGN "valign"
 #define NB_CELLVALIGN 1
 
-static const char* html_attrs[] = { ATTRS, NULL } ;
-static const char* core_i18n_attrs[] = { COREATTRS, I18N, NULL } ;
-static const char* core_attrs[] = { COREATTRS, NULL } ;
-static const char* i18n_attrs[] = { I18N, NULL } ;
+static const char* const html_attrs[] = { ATTRS, NULL } ;
+static const char* const core_i18n_attrs[] = { COREATTRS, I18N, NULL } ;
+static const char* const core_attrs[] = { COREATTRS, NULL } ;
+static const char* const i18n_attrs[] = { I18N, NULL } ;
 
 
 /* Other declarations that should go inline ... */
-static const char* a_attrs[] = { ATTRS, "charset", "type", "name",
+static const char* const a_attrs[] = { ATTRS, "charset", "type", "name",
 	"href", "hreflang", "rel", "rev", "accesskey", "shape", "coords",
 	"tabindex", "onfocus", "onblur", NULL } ;
-static const char* target_attr[] = { "target", NULL } ;
-static const char* rows_cols_attr[] = { "rows", "cols", NULL } ;
-static const char* alt_attr[] = { "alt", NULL } ;
-static const char* src_alt_attrs[] = { "src", "alt", NULL } ;
-static const char* href_attrs[] = { "href", NULL } ;
-static const char* clear_attrs[] = { "clear", NULL } ;
-static const char* inline_p[] = { INLINE, "p", NULL } ;
-static const char* flow_param[] = { FLOW, "param", NULL } ;
-static const char* applet_attrs[] = { COREATTRS , "codebase",
+static const char* const target_attr[] = { "target", NULL } ;
+static const char* const rows_cols_attr[] = { "rows", "cols", NULL } ;
+static const char* const alt_attr[] = { "alt", NULL } ;
+static const char* const src_alt_attrs[] = { "src", "alt", NULL } ;
+static const char* const href_attrs[] = { "href", NULL } ;
+static const char* const clear_attrs[] = { "clear", NULL } ;
+static const char* const inline_p[] = { INLINE, "p", NULL } ;
+
+static const char* const flow_param[] = { FLOW, "param", NULL } ;
+static const char* const applet_attrs[] = { COREATTRS , "codebase",
 		"archive", "alt", "name", "height", "width", "align",
 		"hspace", "vspace", NULL } ;
-static const char* area_attrs[] = { "shape", "coords", "href", "nohref",
+static const char* const area_attrs[] = { "shape", "coords", "href", "nohref",
 	"tabindex", "accesskey", "onfocus", "onblur", NULL } ;
-static const char* basefont_attrs[] =
+static const char* const basefont_attrs[] =
 	{ "id", "size", "color", "face", NULL } ;
-static const char* quote_attrs[] = { ATTRS, "cite", NULL } ;
-static const char* body_contents[] = { FLOW, "ins", "del", NULL } ;
-static const char* body_attrs[] = { ATTRS, "onload", "onunload", NULL } ;
-static const char* body_depr[] = { "background", "bgcolor", "text",
+static const char* const quote_attrs[] = { ATTRS, "cite", NULL } ;
+static const char* const body_contents[] = { FLOW, "ins", "del", NULL } ;
+static const char* const body_attrs[] = { ATTRS, "onload", "onunload", NULL } ;
+static const char* const body_depr[] = { "background", "bgcolor", "text",
 	"link", "vlink", "alink", NULL } ;
-static const char* button_attrs[] = { ATTRS, "name", "value", "type",
+static const char* const button_attrs[] = { ATTRS, "name", "value", "type",
 	"disabled", "tabindex", "accesskey", "onfocus", "onblur", NULL } ;
 
 
-static const char* col_attrs[] = { ATTRS, "span", "width", CELLHALIGN, CELLVALIGN, NULL } ;
-static const char* col_elt[] = { "col", NULL } ;
-static const char* edit_attrs[] = { ATTRS, "datetime", "cite", NULL } ;
-static const char* compact_attrs[] = { ATTRS, "compact", NULL } ;
-static const char* dl_contents[] = { "dt", "dd", NULL } ;
-static const char* compact_attr[] = { "compact", NULL } ;
-static const char* label_attr[] = { "label", NULL } ;
-static const char* fieldset_contents[] = { FLOW, "legend" } ;
-static const char* font_attrs[] = { COREATTRS, I18N, "size", "color", "face" , NULL } ;
-static const char* form_contents[] = { HEADING, LIST, INLINE, "pre", "p", "div", "center", "noscript", "noframes", "blockquote", "isindex", "hr", "table", "fieldset", "address", NULL } ;
-static const char* form_attrs[] = { ATTRS, "method", "enctype", "accept", "name", "onsubmit", "onreset", "accept-charset", NULL } ;
-static const char* frame_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "noresize", "scrolling" , NULL } ;
-static const char* frameset_attrs[] = { COREATTRS, "rows", "cols", "onload", "onunload", NULL } ;
-static const char* frameset_contents[] = { "frameset", "frame", "noframes", NULL } ;
-static const char* head_attrs[] = { I18N, "profile", NULL } ;
-static const char* head_contents[] = { "title", "isindex", "base", "script", "style", "meta", "link", "object", NULL } ;
-static const char* hr_depr[] = { "align", "noshade", "size", "width", NULL } ;
-static const char* version_attr[] = { "version", NULL } ;
-static const char* html_content[] = { "head", "body", "frameset", NULL } ;
-static const char* iframe_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "scrolling", "align", "height", "width", NULL } ;
-static const char* img_attrs[] = { ATTRS, "longdesc", "name", "height", "width", "usemap", "ismap", NULL } ;
-static const char* input_attrs[] = { ATTRS, "type", "name", "value", "checked", "disabled", "readonly", "size", "maxlength", "src", "alt", "usemap", "ismap", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", "accept", NULL } ;
-static const char* prompt_attrs[] = { COREATTRS, I18N, "prompt", NULL } ;
-static const char* label_attrs[] = { ATTRS, "for", "accesskey", "onfocus", "onblur", NULL } ;
-static const char* legend_attrs[] = { ATTRS, "accesskey", NULL } ;
-static const char* align_attr[] = { "align", NULL } ;
-static const char* link_attrs[] = { ATTRS, "charset", "href", "hreflang", "type", "rel", "rev", "media", NULL } ;
-static const char* map_contents[] = { BLOCK, "area", NULL } ;
-static const char* name_attr[] = { "name", NULL } ;
-static const char* action_attr[] = { "action", NULL } ;
-static const char* blockli_elt[] = { BLOCK, "li", NULL } ;
-static const char* meta_attrs[] = { I18N, "http-equiv", "name", "scheme", NULL } ;
-static const char* content_attr[] = { "content", NULL } ;
-static const char* type_attr[] = { "type", NULL } ;
-static const char* noframes_content[] = { "body", FLOW MODIFIER, NULL } ;
-static const char* object_contents[] = { FLOW, "param", NULL } ;
-static const char* object_attrs[] = { ATTRS, "declare", "classid", "codebase", "data", "type", "codetype", "archive", "standby", "height", "width", "usemap", "name", "tabindex", NULL } ;
-static const char* object_depr[] = { "align", "border", "hspace", "vspace", NULL } ;
-static const char* ol_attrs[] = { "type", "compact", "start", NULL} ;
-static const char* option_elt[] = { "option", NULL } ;
-static const char* optgroup_attrs[] = { ATTRS, "disabled", NULL } ;
-static const char* option_attrs[] = { ATTRS, "disabled", "label", "selected", "value", NULL } ;
-static const char* param_attrs[] = { "id", "value", "valuetype", "type", NULL } ;
-static const char* width_attr[] = { "width", NULL } ;
-static const char* pre_content[] = { PHRASE, "tt", "i", "b", "u", "s", "strike", "a", "br", "script", "map", "q", "span", "bdo", "iframe", NULL } ;
-static const char* script_attrs[] = { "charset", "src", "defer", "event", "for", NULL } ;
-static const char* language_attr[] = { "language", NULL } ;
-static const char* select_content[] = { "optgroup", "option", NULL } ;
-static const char* select_attrs[] = { ATTRS, "name", "size", "multiple", "disabled", "tabindex", "onfocus", "onblur", "onchange", NULL } ;
-static const char* style_attrs[] = { I18N, "media", "title", NULL } ;
-static const char* table_attrs[] = { ATTRS "summary", "width", "border", "frame", "rules", "cellspacing", "cellpadding", "datapagesize", NULL } ;
-static const char* table_depr[] = { "align", "bgcolor", NULL } ;
-static const char* table_contents[] = { "caption", "col", "colgroup", "thead", "tfoot", "tbody", "tr", NULL} ;
-static const char* tr_elt[] = { "tr", NULL } ;
-static const char* talign_attrs[] = { ATTRS, CELLHALIGN, CELLVALIGN, NULL} ;
-static const char* th_td_depr[] = { "nowrap", "bgcolor", "width", "height", NULL } ;
-static const char* th_td_attr[] = { ATTRS, "abbr", "axis", "headers", "scope", "rowspan", "colspan", CELLHALIGN, CELLVALIGN, NULL } ;
-static const char* textarea_attrs[] = { ATTRS, "name", "disabled", "readonly", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", NULL } ;
-static const char* tr_contents[] = { "th", "td", NULL } ;
-static const char* bgcolor_attr[] = { "bgcolor", NULL } ;
-static const char* li_elt[] = { "li", NULL } ;
-static const char* ul_depr[] = { "type", "compact", NULL} ;
-static const char* dir_attr[] = { "dir", NULL} ;
+static const char* const col_attrs[] = { ATTRS, "span", "width", CELLHALIGN, CELLVALIGN, NULL } ;
+static const char* const col_elt[] = { "col", NULL } ;
+static const char* const edit_attrs[] = { ATTRS, "datetime", "cite", NULL } ;
+static const char* const compact_attrs[] = { ATTRS, "compact", NULL } ;
+static const char* const dl_contents[] = { "dt", "dd", NULL } ;
+static const char* const compact_attr[] = { "compact", NULL } ;
+static const char* const label_attr[] = { "label", NULL } ;
+static const char* const fieldset_contents[] = { FLOW, "legend" } ;
+static const char* const font_attrs[] = { COREATTRS, I18N, "size", "color", "face" , NULL } ;
+static const char* const form_contents[] = { HEADING, LIST, INLINE, "pre", "p", "div", "center", "noscript", "noframes", "blockquote", "isindex", "hr", "table", "fieldset", "address", NULL } ;
+static const char* const form_attrs[] = { ATTRS, "method", "enctype", "accept", "name", "onsubmit", "onreset", "accept-charset", NULL } ;
+static const char* const frame_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "noresize", "scrolling" , NULL } ;
+static const char* const frameset_attrs[] = { COREATTRS, "rows", "cols", "onload", "onunload", NULL } ;
+static const char* const frameset_contents[] = { "frameset", "frame", "noframes", NULL } ;
+static const char* const head_attrs[] = { I18N, "profile", NULL } ;
+static const char* const head_contents[] = { "title", "isindex", "base", "script", "style", "meta", "link", "object", NULL } ;
+static const char* const hr_depr[] = { "align", "noshade", "size", "width", NULL } ;
+static const char* const version_attr[] = { "version", NULL } ;
+static const char* const html_content[] = { "head", "body", "frameset", NULL } ;
+static const char* const iframe_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "scrolling", "align", "height", "width", NULL } ;
+static const char* const img_attrs[] = { ATTRS, "longdesc", "name", "height", "width", "usemap", "ismap", NULL } ;
+static const char* const input_attrs[] = { ATTRS, "type", "name", "value", "checked", "disabled", "readonly", "size", "maxlength", "src", "alt", "usemap", "ismap", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", "accept", NULL } ;
+static const char* const prompt_attrs[] = { COREATTRS, I18N, "prompt", NULL } ;
+static const char* const label_attrs[] = { ATTRS, "for", "accesskey", "onfocus", "onblur", NULL } ;
+static const char* const legend_attrs[] = { ATTRS, "accesskey", NULL } ;
+static const char* const align_attr[] = { "align", NULL } ;
+static const char* const link_attrs[] = { ATTRS, "charset", "href", "hreflang", "type", "rel", "rev", "media", NULL } ;
+static const char* const map_contents[] = { BLOCK, "area", NULL } ;
+static const char* const name_attr[] = { "name", NULL } ;
+static const char* const action_attr[] = { "action", NULL } ;
+static const char* const blockli_elt[] = { BLOCK, "li", NULL } ;
+static const char* const meta_attrs[] = { I18N, "http-equiv", "name", "scheme", NULL } ;
+static const char* const content_attr[] = { "content", NULL } ;
+static const char* const type_attr[] = { "type", NULL } ;
+static const char* const noframes_content[] = { "body", FLOW MODIFIER, NULL } ;
+static const char* const object_contents[] = { FLOW, "param", NULL } ;
+static const char* const object_attrs[] = { ATTRS, "declare", "classid", "codebase", "data", "type", "codetype", "archive", "standby", "height", "width", "usemap", "name", "tabindex", NULL } ;
+static const char* const object_depr[] = { "align", "border", "hspace", "vspace", NULL } ;
+static const char* const ol_attrs[] = { "type", "compact", "start", NULL} ;
+static const char* const option_elt[] = { "option", NULL } ;
+static const char* const optgroup_attrs[] = { ATTRS, "disabled", NULL } ;
+static const char* const option_attrs[] = { ATTRS, "disabled", "label", "selected", "value", NULL } ;
+static const char* const param_attrs[] = { "id", "value", "valuetype", "type", NULL } ;
+static const char* const width_attr[] = { "width", NULL } ;
+static const char* const pre_content[] = { PHRASE, "tt", "i", "b", "u", "s", "strike", "a", "br", "script", "map", "q", "span", "bdo", "iframe", NULL } ;
+static const char* const script_attrs[] = { "charset", "src", "defer", "event", "for", NULL } ;
+static const char* const language_attr[] = { "language", NULL } ;
+static const char* const select_content[] = { "optgroup", "option", NULL } ;
+static const char* const select_attrs[] = { ATTRS, "name", "size", "multiple", "disabled", "tabindex", "onfocus", "onblur", "onchange", NULL } ;
+static const char* const style_attrs[] = { I18N, "media", "title", NULL } ;
+static const char* const table_attrs[] = { ATTRS "summary", "width", "border", "frame", "rules", "cellspacing", "cellpadding", "datapagesize", NULL } ;
+static const char* const table_depr[] = { "align", "bgcolor", NULL } ;
+static const char* const table_contents[] = { "caption", "col", "colgroup", "thead", "tfoot", "tbody", "tr", NULL} ;
+static const char* const tr_elt[] = { "tr", NULL } ;
+static const char* const talign_attrs[] = { ATTRS, CELLHALIGN, CELLVALIGN, NULL} ;
+static const char* const th_td_depr[] = { "nowrap", "bgcolor", "width", "height", NULL } ;
+static const char* const th_td_attr[] = { ATTRS, "abbr", "axis", "headers", "scope", "rowspan", "colspan", CELLHALIGN, CELLVALIGN, NULL } ;
+static const char* const textarea_attrs[] = { ATTRS, "name", "disabled", "readonly", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", NULL } ;
+static const char* const tr_contents[] = { "th", "td", NULL } ;
+static const char* const bgcolor_attr[] = { "bgcolor", NULL } ;
+static const char* const li_elt[] = { "li", NULL } ;
+static const char* const ul_depr[] = { "type", "compact", NULL} ;
+static const char* const dir_attr[] = { "dir", NULL} ;
 
 #define DECL (const char**)
 
@@ -896,7 +897,7 @@ html40ElementTable[] = {
 /*
  * start tags that imply the end of current element
  */
-static const char *htmlStartClose[] = {
+static const char * const htmlStartClose[] = {
 "form",		"form", "p", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
 		"dl", "ul", "ol", "menu", "dir", "address", "pre",
 		"listing", "xmp", "head", NULL,
@@ -961,7 +962,7 @@ NULL
  * TODO: extend that list by reading the HTML SGML DTD on
  *       implied paragraph
  */
-static const char *htmlNoContentElements[] = {
+static const char *const htmlNoContentElements[] = {
     "html",
     "head",
     NULL
@@ -972,7 +973,7 @@ static const char *htmlNoContentElements[] = {
  * NOTE: when adding ones, check htmlIsScriptAttribute() since
  *       it assumes the name starts with 'on'
  */
-static const char *htmlScriptAttributes[] = {
+static const char *const htmlScriptAttributes[] = {
     "onclick",
     "ondblclick",
     "onmousedown",

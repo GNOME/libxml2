@@ -1,3 +1,12 @@
+Mon Jul  3 13:36:43 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Changed xmlXPathCollectAndTest() to use
+	  xmlXPathNodeSetAddNs() when adding a ns-node in case of
+	  NODE_TEST_TYPE (the ns-node was previously added plainly
+	  to the list). Since for NODE_TEST_ALL and NODE_TEST_NAME
+	  this specialized ns-addition function was already used,
+	  I assume it was missed to be used with NODE_TEST_TYPE.
+
 Mon Jul  3 10:57:33 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied const'ification of strings patch from

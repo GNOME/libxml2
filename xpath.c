@@ -12195,7 +12195,10 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 				break;
 			}
 		    } else if (cur->type == type) {
-			XP_TEST_HIT
+			if (type == XML_NAMESPACE_DECL)
+			    XP_TEST_HIT_NS
+			else
+			    XP_TEST_HIT
 		    } else if ((type == NODE_TYPE_TEXT) &&
 			 (cur->type == XML_CDATA_SECTION_NODE))
 		    {

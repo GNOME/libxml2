@@ -1,3 +1,11 @@
+Wed Jul 12 17:13:03 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed bug #347316, reported by David Belius:
+	  The simple type, which was the content type definition
+	  of a complex type, which in turn was the base type of a
+	  extending complex type, was missed to be set on this
+	  extending complex type in the derivation machinery.
+
 Mon Jul  3 13:36:43 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Changed xmlXPathCollectAndTest() to use

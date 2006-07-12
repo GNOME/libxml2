@@ -18287,9 +18287,17 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 	    if (type->contentType == XML_SCHEMA_CONTENT_EMPTY) {
 		/*
 		* SPEC (3.2.1)
+		* "If the ·effective content· is empty, then the
+		*  {content type} of the [...] base ..."
 		*/
 		type->contentType = baseType->contentType;
 		type->subtypes = baseType->subtypes;
+		/*
+		* Fixes bug #347316:
+		* This is the case when the base type has a simple
+		* type definition as content.
+		*/
+		type->contentTypeDef = baseType->contentTypeDef;
 		/*
 		* NOTE that the effective mixed is ignored here.
 		*/

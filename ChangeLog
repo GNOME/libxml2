@@ -1,3 +1,8 @@
+Thu Jul 13 08:24:14 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: refactor to use normal warnings for entities problem
+	  and not straight SAX callbacks.
+
 Wed Jul 12 17:13:03 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed bug #347316, reported by David Belius:

@@ -1645,9 +1645,9 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
     if ((prefix != NULL) && (ns == NULL)) {
 	ns = xmlNewNs(ret, NULL, prefix);
-	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt->userData, 
-		 "Namespace prefix %s is not defined\n", prefix);
+	xmlNsWarnMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
+		     "Namespace prefix %s is not defined\n",
+		     prefix, NULL);
     }
 
     /*
@@ -2255,9 +2255,9 @@ xmlSAX2StartElementNs(void *ctx,
 	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 		return;
 	    }
-	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-		ctxt->sax->warning(ctxt->userData, 
-		     "Namespace prefix %s was not found\n", prefix);
+	    xmlNsWarnMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
+			"Namespace prefix %s was not found\n",
+			prefix, NULL);
 	}
     }
 

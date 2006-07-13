@@ -1,3 +1,12 @@
+Thu Jul 13 15:03:11 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlsave.c: Removed the automatic generation of CDATA sections
+	  for the content of the "script" and "style" elements when
+	  serializing XHTML. The issue was reported by Vincent Lefevre,
+	  bug #345147.
+	* result/xhtml1 result/noent/xhtml1: Adjusted regression test
+	  results due to the serialization change described above.
+
 Thu Jul 13 08:32:21 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in parser.c xmllint.c include/libxml/parser.h

@@ -6,9 +6,9 @@
     <title>Virtual Library</title>
   </head>
   <!-- 4.8 -->
-  <script type="text/javascript"><![CDATA[
-  ... unescaped script < content ...
-  ]]></script>
+  <script type="text/javascript">
+  ... unescaped script &lt; content ...
+  </script>
   <body>
     <p>Moved to <a href="http://example.org/">example.org</a>.</p>
   </body>

@@ -1316,6 +1316,11 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
     }
 
+#if 0
+    /*
+    * This was removed due to problems with HTML processors.
+    * See bug #345147.
+    *
     /*
      * 4.8. Script and Style elements
      */
@@ -1380,7 +1385,10 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    }
 	    child = child->next;
 	}
-    } else if (cur->children != NULL) {
+    }
+#endif
+
+    if (cur->children != NULL) {
 	int indent = ctxt->format;
 	
 	if (format) xmlOutputBufferWrite(buf, 1, "\n");

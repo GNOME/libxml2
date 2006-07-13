@@ -373,6 +373,15 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_ZLIB_ENABLED:
+ *
+ * Whether the Zlib support is compiled in
+ */
+#if @WITH_ZLIB@
+#define LIBXML_ZLIB_ENABLED
+#endif
+
+/**
  * ATTRIBUTE_UNUSED:
  *
  * Macro used to signal to GCC unused function parameters

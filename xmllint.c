@@ -2752,6 +2752,7 @@ static void showVersion(const char *name) {
     if (xmlHasFeature(XML_WITH_DEBUG)) fprintf(stderr, "Debug "); 
     if (xmlHasFeature(XML_WITH_DEBUG_MEM)) fprintf(stderr, "MemDebug "); 
     if (xmlHasFeature(XML_WITH_DEBUG_RUN)) fprintf(stderr, "RunDebug "); 
+    if (xmlHasFeature(XML_WITH_ZLIB)) fprintf(stderr, "Zlib ");
     fprintf(stderr, "\n");
 }
 

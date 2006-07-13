@@ -1,3 +1,10 @@
+Thu Jul 13 08:32:21 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in parser.c xmllint.c include/libxml/parser.h
+	  include/libxml/xmlversion.h.in: applied patch from Andrew W. Nosenko
+	  to expose if zlib support was compiled in, in the header, in the
+	  feature API and in the xmllint --version output.
+
 Thu Jul 13 08:24:14 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: refactor to use normal warnings for entities problem

@@ -231,7 +231,7 @@ skipped_types = {
 py_types = {
     'void': (None, None, None, None),
     'int':  ('i', None, "int", "int"),
-    'long':  ('i', None, "int", "int"),
+    'long':  ('l', None, "long", "long"),
     'double':  ('d', None, "double", "double"),
     'unsigned int':  ('i', None, "int", "int"),
     'xmlChar':  ('c', None, "int", "int"),

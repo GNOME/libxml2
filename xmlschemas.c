@@ -27179,6 +27179,7 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
 	}
 	xmlFree(vctxt->idcNodes);
 	vctxt->idcNodes = NULL;
+	vctxt->nbIdcNodes = 0;
     }
     /*
     * Note that we won't delete the XPath state pool here.

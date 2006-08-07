@@ -1,3 +1,8 @@
+Mon Aug  7 13:08:46 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: applied patch from Bertrand Fritsch to fix a bug in
+	  xmlSchemaClearValidCtxt
+
 Fri Aug  4 14:50:41 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py: fixed the conversion of long parameters

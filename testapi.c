@@ -30599,7 +30599,7 @@ static int
 test_xmlTextReaderGetErrorHandler(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
     int n_reader;
@@ -31943,7 +31943,7 @@ test_xmlTextReaderSchemaValidate(void) {
     return(test_ret);
 }
 
-#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef LIBXML_READER_ENABLED
 
 #define gen_nb_xmlSchemaValidCtxtPtr 1
 static xmlSchemaValidCtxtPtr gen_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -32059,7 +32059,7 @@ test_xmlTextReaderSetParserProp(void) {
     return(test_ret);
 }
 
-#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef LIBXML_READER_ENABLED
 
 #define gen_nb_xmlSchemaPtr 1
 static xmlSchemaPtr gen_xmlSchemaPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -45559,6 +45559,47 @@ test_xmlXPathCompiledEval(void) {
 
 
 static int
+test_xmlXPathCompiledEvalToBoolean(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_XPATH_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlXPathCompExprPtr comp; /* the compiled XPath expression */
+    int n_comp;
+    xmlXPathContextPtr ctxt; /* the XPath context */
+    int n_ctxt;
+
+    for (n_comp = 0;n_comp < gen_nb_xmlXPathCompExprPtr;n_comp++) {
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlXPathContextPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        comp = gen_xmlXPathCompExprPtr(n_comp, 0);
+        ctxt = gen_xmlXPathContextPtr(n_ctxt, 1);
+
+        ret_val = xmlXPathCompiledEvalToBoolean(comp, ctxt);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlXPathCompExprPtr(n_comp, comp, 0);
+        des_xmlXPathContextPtr(n_ctxt, ctxt, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlXPathCompiledEvalToBoolean",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_comp);
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlXPathContextSetCache(void) {
     int test_ret = 0;
 
@@ -46059,7 +46100,7 @@ static int
 test_xpath(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xpath : 29 of 37 functions ...\n");
+    if (quiet == 0) printf("Testing xpath : 30 of 38 functions ...\n");
     test_ret += test_xmlXPathCastBooleanToNumber();
     test_ret += test_xmlXPathCastBooleanToString();
     test_ret += test_xmlXPathCastNodeSetToBoolean();
@@ -46077,6 +46118,7 @@ test_xpath(void) {
     test_ret += test_xmlXPathCmpNodes();
     test_ret += test_xmlXPathCompile();
     test_ret += test_xmlXPathCompiledEval();
+    test_ret += test_xmlXPathCompiledEvalToBoolean();
     test_ret += test_xmlXPathContextSetCache();
     test_ret += test_xmlXPathConvertBoolean();
     test_ret += test_xmlXPathConvertNumber();

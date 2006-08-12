@@ -22197,7 +22197,7 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 		    "allocating the state object history", NULL);
 		return(-1);
 	    }
-	    sto->sizeHistory = 10;
+	    sto->sizeHistory = 5;
 	} else if (sto->sizeHistory <= sto->nbHistory) {
 	    sto->sizeHistory *= 2;
 	    sto->history = (int *) xmlRealloc(sto->history,

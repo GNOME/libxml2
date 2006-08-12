@@ -223,6 +223,7 @@ void	<a href="#xmlParserInputDeallocate">xmlParserInputDeallocate</a>	(<a href="
     <a name="XML_WITH_DEBUG" id="XML_WITH_DEBUG">XML_WITH_DEBUG</a> = 28
     <a name="XML_WITH_DEBUG_MEM" id="XML_WITH_DEBUG_MEM">XML_WITH_DEBUG_MEM</a> = 29
     <a name="XML_WITH_DEBUG_RUN" id="XML_WITH_DEBUG_RUN">XML_WITH_DEBUG_RUN</a> = 30
+    <a name="XML_WITH_ZLIB" id="XML_WITH_ZLIB">XML_WITH_ZLIB</a> = 31
     <a name="XML_WITH_NONE" id="XML_WITH_NONE">XML_WITH_NONE</a> = 99999 : just to be sure of allocation size
 }
 </pre><h3>Enum <a name="xmlParserInputState" id="xmlParserInputState">xmlParserInputState</a></h3><pre class="programlisting">Enum xmlParserInputState {
@@ -280,7 +281,7 @@ void	<a href="#xmlParserInputDeallocate">xmlParserInputDeallocate</a>	(<a href="
     <a name="XML_PARSE_NSCLEAN" id="XML_PARSE_NSCLEAN">XML_PARSE_NSCLEAN</a> = 8192 : remove redundant namespaces declarations
     <a name="XML_PARSE_NOCDATA" id="XML_PARSE_NOCDATA">XML_PARSE_NOCDATA</a> = 16384 : merge CDATA as text nodes
     <a name="XML_PARSE_NOXINCNODE" id="XML_PARSE_NOXINCNODE">XML_PARSE_NOXINCNODE</a> = 32768 : do not generate XINCLUDE START/END nodes
-    <a name="XML_PARSE_COMPACT" id="XML_PARSE_COMPACT">XML_PARSE_COMPACT</a> = 65536 : compact small text nodes
+    <a name="XML_PARSE_COMPACT" id="XML_PARSE_COMPACT">XML_PARSE_COMPACT</a> = 65536 : compact small text nodes; no modification of the tree allowed afterwards (will possibly crash if you try to modify the tree)
 }
 </pre><h3><a name="xmlSAXHandlerV1" id="xmlSAXHandlerV1">Structure xmlSAXHandlerV1</a></h3><pre class="programlisting">Structure xmlSAXHandlerV1<br />struct _xmlSAXHandlerV1 {
     <a href="libxml-parser.html#internalSubsetSAXFunc">internalSubsetSAXFunc</a>	internalSubset

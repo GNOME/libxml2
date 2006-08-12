@@ -722,6 +722,7 @@
      <exports symbol='XML_PARSE_NOCDATA' type='enum'/>
      <exports symbol='XML_PARSE_COMPACT' type='enum'/>
      <exports symbol='XML_PARSE_SAX1' type='enum'/>
+     <exports symbol='XML_WITH_ZLIB' type='enum'/>
      <exports symbol='XML_WITH_READER' type='enum'/>
      <exports symbol='XML_PARSER_DTD' type='enum'/>
      <exports symbol='XML_PARSER_MISC' type='enum'/>
@@ -1587,6 +1588,7 @@
      <exports symbol='xmlCopyNode' type='function'/>
      <exports symbol='xmlUnlinkNode' type='function'/>
      <exports symbol='xmlSplitQName3' type='function'/>
+     <exports symbol='xmlDOMWrapAcquireNsFunction' type='function'/>
      <exports symbol='xmlDocSetRootElement' type='function'/>
      <exports symbol='xmlGetLineNo' type='function'/>
      <exports symbol='xmlBufferContent' type='function'/>
@@ -3322,6 +3324,7 @@
      <exports symbol='LIBXML_UNICODE_ENABLED' type='macro'/>
      <exports symbol='LIBXML_FTP_ENABLED' type='macro'/>
      <exports symbol='LIBXML_AUTOMATA_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_ZLIB_ENABLED' type='macro'/>
      <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_C14N_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SCHEMAS_ENABLED' type='macro'/>
@@ -3501,7 +3504,7 @@
      <exports symbol='xmlXPathIsNaN' type='function'/>
      <exports symbol='xmlXPathContextSetCache' type='function'/>
      <exports symbol='xmlXPathConvertString' type='function'/>
-     <exports symbol='xmlXPathConvertBoolean' type='function'/>
+     <exports symbol='xmlXPathCompiledEvalToBoolean' type='function'/>
      <exports symbol='xmlXPathIsInf' type='function'/>
      <exports symbol='xmlXPathOrderDocElems' type='function'/>
      <exports symbol='xmlXPathNodeSetCreate' type='function'/>
@@ -3523,11 +3526,12 @@
      <exports symbol='xmlXPathCompiledEval' type='function'/>
      <exports symbol='xmlXPathEvalExpression' type='function'/>
      <exports symbol='xmlXPathInit' type='function'/>
-     <exports symbol='xmlXPathCtxtCompile' type='function'/>
+     <exports symbol='xmlXPathConvertBoolean' type='function'/>
      <exports symbol='xmlXPathConvertFunc' type='function'/>
      <exports symbol='xmlXPathFunction' type='function'/>
      <exports symbol='xmlXPathCmpNodes' type='function'/>
      <exports symbol='xmlXPathCastToString' type='function'/>
+     <exports symbol='xmlXPathCtxtCompile' type='function'/>
      <exports symbol='xmlXPathEvalFunc' type='function'/>
      <exports symbol='xmlXPathCastBooleanToString' type='function'/>
      <exports symbol='xmlXPathCastNumberToBoolean' type='function'/>
@@ -3966,6 +3970,9 @@
     </macro>
     <macro name='LIBXML_XPTR_ENABLED' file='xmlversion'>
       <info>Whether XPointer is configured in</info>
+    </macro>
+    <macro name='LIBXML_ZLIB_ENABLED' file='xmlversion'>
+      <info>Whether the Zlib support is compiled in</info>
     </macro>
     <macro name='MOVETO_ENDTAG' file='parserInternals'>
       <info>Skips to the next &apos;&gt;&apos; char.</info>
@@ -4964,7 +4971,9 @@
     <enum name='XML_PARSER_SUBST_ENTITIES' file='xmlreader' value='4' type='xmlParserProperties'/>
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
-    <enum name='XML_PARSE_COMPACT' file='parser' value='65536' type='xmlParserOption' info=' compact small text nodes'/>
+    <enum name='XML_PARSE_COMPACT' file='parser' value='65536' type='xmlParserOption' info=' compact small text nodes; no modification of
+the tree allowed afterwards (will possibly
+crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_DOM' file='parser' value='1' type='xmlParserMode'/>
     <enum name='XML_PARSE_DTDATTR' file='parser' value='8' type='xmlParserOption' info='default DTD attributes'/>
     <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
@@ -5641,6 +5650,7 @@
     <enum name='XML_WITH_XINCLUDE' file='parser' value='18' type='xmlFeature'/>
     <enum name='XML_WITH_XPATH' file='parser' value='16' type='xmlFeature'/>
     <enum name='XML_WITH_XPTR' file='parser' value='17' type='xmlFeature'/>
+    <enum name='XML_WITH_ZLIB' file='parser' value='31' type='xmlFeature'/>
     <enum name='XML_XINCLUDE_BUILD_FAILED' file='xmlerror' value='1609' type='xmlParserErrors' info='1609'/>
     <enum name='XML_XINCLUDE_DEPRECATED_NS' file='xmlerror' value='1617' type='xmlParserErrors' info='1617'/>
     <enum name='XML_XINCLUDE_END' file='tree' value='20' type='xmlElementType'/>
@@ -5872,7 +5882,15 @@ if necessary or NULL'/>
     </struct>
     <typedef name='xmlCharEncodingHandlerPtr' file='encoding' type='xmlCharEncodingHandler *'/>
     <struct name='xmlDOMWrapCtxt' file='tree' type='struct _xmlDOMWrapCtxt'>
-      <field name='_private' type='void *' info=''/>
+      <field name='_private' type='void *' info='* The type of this context, just in case we need specialized
+* contexts in the future.
+*'/>
+      <field name='type' type='int' info='* Internal namespace map used for various operations.
+*'/>
+      <field name='namespaceMap' type='void *' info='* Use this one to acquire an xmlNsPtr intended for node-&gt;ns.
+* (Note that this is not intended for elem-&gt;nsDef).
+*'/>
+      <field name='getNsForNodeFunc' type='xmlDOMWrapAcquireNsFunction' info=''/>
     </struct>
     <typedef name='xmlDOMWrapCtxtPtr' file='tree' type='xmlDOMWrapCtxt *'/>
     <struct name='xmlDict' file='dict' type='struct _xmlDict'/>
@@ -6113,6 +6131,7 @@ actually an xmlCharEncoding'/>
       <field name='href' type='const xmlChar *' info=' URL for the namespace'/>
       <field name='prefix' type='const xmlChar *' info=' prefix for the namespace'/>
       <field name='_private' type='void *' info=' application data'/>
+      <field name='context' type='struct _xmlDoc *' info=' normally an xmlDoc'/>
     </struct>
     <typedef name='xmlNsPtr' file='tree' type='xmlNs *'/>
     <typedef name='xmlNsType' file='tree' type='xmlElementType'/>
@@ -9038,8 +9057,16 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
       <arg name='len' type='int *' info='pointer to the length of the char read'/>
     </function>
+    <functype name='xmlDOMWrapAcquireNsFunction' file='tree' module='tree'>
+      <info>A function called to acquire namespaces (xmlNs) from the wrapper.</info>
+      <return type='xmlNsPtr' info='an xmlNsPtr or NULL in case of an error.'/>
+      <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='a DOM wrapper context'/>
+      <arg name='node' type='xmlNodePtr' info='the context node (element or attribute)'/>
+      <arg name='nsName' type='const xmlChar *' info='the requested namespace name'/>
+      <arg name='nsPrefix' type='const xmlChar *' info='the requested namespace prefix'/>
+    </functype>
     <function name='xmlDOMWrapAdoptNode' file='tree' module='tree'>
-      <info>References of out-of scope ns-decls are remapped to point to @destDoc: 1) If @destParent is given, then nsDef entries on element-nodes are used 2) If *no* @destParent is given, then @destDoc-&gt;oldNs entries are used This is the case when you have an unliked node and just want to move it to the context of  If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. WARNING: This function is in a experimental state.</info>
+      <info>References of out-of scope ns-decls are remapped to point to @destDoc: 1) If @destParent is given, then nsDef entries on element-nodes are used 2) If *no* @destParent is given, then @destDoc-&gt;oldNs entries are used This is the case when you have an unliked node and just want to move it to the context of  If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. NOTE: This function was not intensively tested.</info>
       <return type='int' info='0 if the operation succeeded, 1 if a node of unsupported type was given, 2 if a node of not yet supported type was given and -1 on API/internal errors.'/>
       <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='the optional context for custom processing'/>
       <arg name='sourceDoc' type='xmlDocPtr' info='the optional sourceDoc'/>
@@ -9049,7 +9076,7 @@ Could we use @subtypes for this?'/>
       <arg name='options' type='int' info='option flags'/>
     </function>
     <function name='xmlDOMWrapCloneNode' file='tree' module='tree'>
-      <info>References of out-of scope ns-decls are remapped to point to @destDoc: 1) If @destParent is given, then nsDef entries on element-nodes are used 2) If *no* @destParent is given, then @destDoc-&gt;oldNs entries are used This is the case when you have an unliked node and just want to move it to the context of  If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. TODO: 1) Support dicts Optimize string adoption for equal or none dicts. 2) XInclude WARNING: This function is in a experimental state and should only be currently only be used to test it.</info>
+      <info>References of out-of scope ns-decls are remapped to point to @destDoc: 1) If @destParent is given, then nsDef entries on element-nodes are used 2) If *no* @destParent is given, then @destDoc-&gt;oldNs entries are used. This is the case when you don&apos;t know already where the cloned branch will be added to.  If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. TODO: 1) What to do with XInclude? Currently this returns an error for XInclude.</info>
       <return type='int' info='0 if the operation succeeded, 1 if a node of unsupported (or not yet supported) type was given, -1 on API/internal errors.'/>
       <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='the optional context for custom processing'/>
       <arg name='sourceDoc' type='xmlDocPtr' info='the optional sourceDoc'/>
@@ -9070,14 +9097,14 @@ Could we use @subtypes for this?'/>
       <return type='xmlDOMWrapCtxtPtr' info='the xmlDOMWrapCtxtPtr or NULL in case of an internal errror.'/>
     </function>
     <function name='xmlDOMWrapReconcileNamespaces' file='tree' module='tree'>
-      <info>Ensures that ns-references point to ns-decls hold on element-nodes. Ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. WARNING: This function is in a experimental state.</info>
+      <info>Ensures that ns-references point to ns-decls hold on element-nodes. Ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content.  NOTE: This function was not intensively tested.</info>
       <return type='int' info='0 if succeeded, -1 otherwise and on API/internal errors.'/>
       <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='DOM wrapper context, unused at the moment'/>
       <arg name='elem' type='xmlNodePtr' info='the element-node'/>
       <arg name='options' type='int' info='option flags'/>
     </function>
     <function name='xmlDOMWrapRemoveNode' file='tree' module='tree'>
-      <info>Unlinks the given node from its owner. This will substitute ns-references to node-&gt;nsDef for ns-references to doc-&gt;oldNs, thus ensuring the removed branch to be autark wrt ns-references. WARNING: This function is in a experimental state.</info>
+      <info>Unlinks the given node from its owner. This will substitute ns-references to node-&gt;nsDef for ns-references to doc-&gt;oldNs, thus ensuring the removed branch to be autark wrt ns-references.  NOTE: This function was not intensively tested.</info>
       <return type='int' info='0 on success, 1 if the node is not supported, -1 on API and internal errors.'/>
       <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='a DOM wrapper context'/>
       <arg name='doc' type='xmlDocPtr' info='the doc'/>
@@ -16969,6 +16996,13 @@ Could we use @subtypes for this?'/>
       <return type='xmlXPathObjectPtr' info='the xmlXPathObjectPtr resulting from the evaluation or NULL. the caller has to free the object.'/>
       <arg name='comp' type='xmlXPathCompExprPtr' info='the compiled XPath expression'/>
       <arg name='ctx' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathCompiledEvalToBoolean' file='xpath' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Applies the XPath boolean() function on the result of the given compiled expression.</info>
+      <return type='int' info='1 if the expression evaluated to true, 0 if to false and -1 in API and internal errors.'/>
+      <arg name='comp' type='xmlXPathCompExprPtr' info='the compiled XPath expression'/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathConcatFunction' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>

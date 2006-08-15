@@ -84,6 +84,8 @@
 
 /* #define DEBUG_IDC_NODE_TABLE */
 
+/* #define WXS_ELEM_DECL_CONS_ENABLED */
+
 #ifdef DEBUG_IDC
  #ifndef DEBUG_IDC_NODE_TABLE
   #define DEBUG_IDC_NODE_TABLE
@@ -183,6 +185,8 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 
 #define WXS_PARTICLE_TERM(p) (WXS_PARTICLE(p))->children
 
+#define WXS_PARTICLE_TERM_AS_ELEM(p) (WXS_ELEM_CAST WXS_PARTICLE_TERM(p))
+
 #define WXS_PARTICLE_MODEL(p) WXS_MODEL_GROUP_CAST WXS_PARTICLE(p)->children
 /*
 * Macros for model groups definitions.
@@ -242,6 +246,10 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 #define WXS_IS_TYPE_NOT_FIXED_1(item) \
     (((item)->type != XML_SCHEMA_TYPE_BASIC) && \
      (((item)->flags & XML_SCHEMAS_TYPE_FIXUP_1) == 0))
+
+#define WXS_TYPE_IS_GLOBAL(t) ((t)->flags & XML_SCHEMAS_TYPE_GLOBAL)
+
+#define WXS_TYPE_IS_LOCAL(t) (((t)->flags & XML_SCHEMAS_TYPE_GLOBAL) == 0)
 /*
 * Macros for exclusively for complex types.
 */
@@ -836,12 +844,12 @@ struct _xmlSchemaIDCMatcher {
     int type;
     int depth; /* the tree depth at creation time */
     xmlSchemaIDCMatcherPtr next; /* next in the list */
+    xmlSchemaIDCMatcherPtr nextCached; /* next in the cache list */
     xmlSchemaIDCAugPtr aidc; /* the augmented IDC item */
     int idcType;
     xmlSchemaPSVIIDCKeyPtr **keySeqs; /* the key-sequences of the target
                                          elements */
     int sizeKeySeqs;
-    int targetDepth;
     xmlSchemaItemListPtr targets; /* list of target-node
                                      (xmlSchemaPSVIIDCNodePtr) entries */
 };
@@ -993,6 +1001,7 @@ struct _xmlSchemaValidCtxt {
 
     xmlSchemaIDCStateObjPtr xpathStates; /* first active state object. */
     xmlSchemaIDCStateObjPtr xpathStatePool; /* first stored state object. */
+    xmlSchemaIDCMatcherPtr idcMatcherCache; /* Cache for IDC matcher objects. */
 
     xmlSchemaPSVIIDCNodePtr *idcNodes; /* list of all IDC node-table entries*/
     int nbIdcNodes;
@@ -19744,6 +19753,123 @@ add_member:
     }
 }
 
+#ifdef WXS_ELEM_DECL_CONS_ENABLED /* enable when finished */
+/**
+ * xmlSchemaCheckElementDeclComponent
+ * @pctxt: the schema parser context
+ * @ctxtComponent: the context component (an element declaration)
+ * @ctxtParticle: the first particle of the context component
+ * @searchParticle: the element declaration particle to be analysed
+ *
+ * Schema Component Constraint: Element Declarations Consistent 
+ */
+static int
+xmlSchemaCheckElementDeclConsistent(xmlSchemaParserCtxtPtr pctxt,
+				    xmlSchemaBasicItemPtr ctxtComponent,
+				    xmlSchemaParticlePtr ctxtParticle,				    
+				    xmlSchemaParticlePtr searchParticle,
+				    xmlSchemaParticlePtr curParticle,
+				    int search)
+{
+    return(0);
+
+    int ret = 0;
+    xmlSchemaParticlePtr cur = curParticle;
+    if (curParticle == NULL) {	
+	return(0);
+    }
+    if (WXS_PARTICLE_TERM(curParticle) == NULL) {
+	/*
+	* Just return in this case. A missing "term" of the particle
+	* might arise due to an invalid "term" component.
+	*/
+	return(0);
+    }    
+    while (cur != NULL) {
+	switch (WXS_PARTICLE_TERM(cur)->type) {
+	    case XML_SCHEMA_TYPE_ANY:
+		break;
+	    case XML_SCHEMA_TYPE_ELEMENT:
+		if (search == 0) {
+		    ret = xmlSchemaCheckElementDeclConsistent(pctxt,
+			ctxtComponent, ctxtParticle, cur, ctxtParticle, 1);
+		    if (ret != 0)
+			return(ret);		    
+		} else {
+		    xmlSchemaElementPtr elem =
+			WXS_ELEM_CAST(WXS_PARTICLE_TERM(cur));
+		    /*
+		    * SPEC Element Declarations Consistent:
+		    * "If the {particles} contains, either directly,
+		    * indirectly (that is, within the {particles} of a
+		    * contained model group, recursively) or ·implicitly·
+		    * two or more element declaration particles with
+		    * the same {name} and {target namespace}, then
+		    * all their type definitions must be the same
+		    * top-level definition [...]"
+		    */
+		    if (xmlStrEqual(WXS_PARTICLE_TERM_AS_ELEM(cur)->name,
+			    WXS_PARTICLE_TERM_AS_ELEM(searchParticle)->name) &&
+			xmlStrEqual(WXS_PARTICLE_TERM_AS_ELEM(cur)->targetNamespace,
+			    WXS_PARTICLE_TERM_AS_ELEM(searchParticle)->targetNamespace))
+		    {
+			xmlChar *strA = NULL, *strB = NULL;
+			
+			xmlSchemaCustomErr(ACTXT_CAST pctxt,
+			    /* TODO: error code */
+			    XML_SCHEMAP_COS_NONAMBIG,
+			    WXS_ITEM_NODE(cur), NULL,
+			    "In the content model of %s, there are multiple "
+			    "element declarations for '%s' with different "
+			    "type definitions",
+			    xmlSchemaGetComponentDesignation(&strA,
+				ctxtComponent),
+			    xmlSchemaFormatQName(&strB,
+				WXS_PARTICLE_TERM_AS_ELEM(cur)->targetNamespace,
+				WXS_PARTICLE_TERM_AS_ELEM(cur)->name));
+			FREE_AND_NULL(strA);
+			FREE_AND_NULL(strB);
+			return(XML_SCHEMAP_COS_NONAMBIG);
+		    }
+		}	    
+		break;
+	    case XML_SCHEMA_TYPE_SEQUENCE: {		
+		break;
+		}
+	    case XML_SCHEMA_TYPE_CHOICE:{
+		/*
+		xmlSchemaTreeItemPtr sub;
+		
+		sub = WXS_PARTICLE_TERM(particle)->children;  (xmlSchemaParticlePtr) 
+		while (sub != NULL) {
+		    ret = xmlSchemaCheckElementDeclConsistent(pctxt, ctxtComponent,
+			ctxtParticle, ctxtElem);
+		    if (ret != 0)
+			return(ret);
+		    sub = sub->next;
+		}
+		*/
+		break;
+		}
+	    case XML_SCHEMA_TYPE_ALL:
+		break;
+	    case XML_SCHEMA_TYPE_GROUP:
+		break;
+	    default:
+		xmlSchemaInternalErr2(ACTXT_CAST pctxt,
+		    "xmlSchemaCheckElementDeclConsistent",
+		    "found unexpected term of type '%s' in content model",
+		    WXS_ITEM_TYPE_NAME(WXS_PARTICLE_TERM(cur)), NULL);
+		return(-1);
+	}
+	cur = (xmlSchemaParticlePtr) cur->next;
+    }
+
+exit:
+    return(ret);
+}
+#endif
+
 /**
  * xmlSchemaCheckElementDeclComponent
  * @item:  an schema element declaration/particle
@@ -19751,8 +19877,7 @@ add_member:
  * @name:  the name of the attribute
  *
  * Validates the value constraints of an element declaration.
- *
- * Fixes finish doing the computations on the element declarations.
+ * Adds substitution group members. 
  */
 static void
 xmlSchemaCheckElementDeclComponent(xmlSchemaElementPtr elemDecl,
@@ -19763,8 +19888,12 @@ xmlSchemaCheckElementDeclComponent(xmlSchemaElementPtr elemDecl,
     if (elemDecl->flags & XML_SCHEMAS_ELEM_INTERNAL_CHECKED)
 	return;
     elemDecl->flags |= XML_SCHEMAS_ELEM_INTERNAL_CHECKED;
-    if (xmlSchemaCheckElemPropsCorrect(ctxt, elemDecl) == 0)
-	xmlSchemaCheckElemSubstGroup(ctxt, elemDecl);
+    if (xmlSchemaCheckElemPropsCorrect(ctxt, elemDecl) == 0) {
+	/*
+	* Adds substitution group members.
+	*/
+	xmlSchemaCheckElemSubstGroup(ctxt, elemDecl);	
+    }
 }
 
 /**
@@ -20587,6 +20716,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
     xmlSchemaTreeItemPtr item, *items;
     int nbItems, i, ret = 0;
     xmlSchemaBucketPtr oldbucket = con->bucket;
+    xmlSchemaElementPtr elemDecl;
 
 #define FIXHFAILURE if (pctxt->err == XML_SCHEMAP_INTERNAL) goto exit_failure;
 
@@ -20860,7 +20990,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
     if (pctxt->nberrors != 0)
 	goto exit_error;
     /*
-    * At this point we need all simple types to be builded and checked.
+    * At this point we need build and check all simple types.
     */
     /*
     * Apply contraints for attribute declarations.
@@ -20927,8 +21057,8 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
     if (pctxt->nberrors != 0)
 	goto exit_error;
 
-    /*
-    * Fixup complex types.
+    /*    
+    * Complex types are builded and checked.
     */
     for (i = 0; i < nbItems; i++) {
 	item = con->pending->items[i];
@@ -20951,11 +21081,8 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
     * will create particles and model groups in some cases.
     */
     items = (xmlSchemaTreeItemPtr *) con->pending->items;
-    nbItems = con->pending->nbItems;
-
-    /*
-    * At this point all complex types need to be builded and checked.
-    */
+    nbItems = con->pending->nbItems;    
+    
     /*
     * Apply some constraints for element declarations.
     */
@@ -20963,13 +21090,30 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
 	item = items[i];
 	switch (item->type) {
 	    case XML_SCHEMA_TYPE_ELEMENT:
+		elemDecl = (xmlSchemaElementPtr) item;
 		
-		if ((((xmlSchemaElementPtr) item)->flags & 
-		    XML_SCHEMAS_ELEM_INTERNAL_CHECKED) == 0) {
+		if ((elemDecl->flags & XML_SCHEMAS_ELEM_INTERNAL_CHECKED) == 0)
+		{
 		    xmlSchemaCheckElementDeclComponent(
-			(xmlSchemaElementPtr) item, pctxt);
+			(xmlSchemaElementPtr) elemDecl, pctxt);
 		    FIXHFAILURE;
 		}
+
+#ifdef WXS_ELEM_DECL_CONS_ENABLED
+		/*
+		* Schema Component Constraint: Element Declarations Consistent
+		* Apply this constraint to local types of element declarations.
+		*/
+		if ((WXS_ELEM_TYPEDEF(elemDecl) != NULL) &&
+		    (WXS_IS_COMPLEX(WXS_ELEM_TYPEDEF(elemDecl))) &&
+		    (WXS_TYPE_IS_LOCAL(WXS_ELEM_TYPEDEF(elemDecl))))
+		{
+		    xmlSchemaCheckElementDeclConsistent(pctxt,
+			WXS_BASIC_CAST elemDecl,
+			WXS_TYPE_PARTICLE(WXS_ELEM_TYPEDEF(elemDecl)),
+			NULL, NULL, 0);
+		}
+#endif
 		break;
 	    default:
 		break;
@@ -20977,6 +21121,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
     }
     if (pctxt->nberrors != 0)
 	goto exit_error;
+ 
     /*
     * Finally we can build the automaton from the content model of
     * complex types.
@@ -22013,7 +22158,7 @@ xmlSchemaIDCFreeMatcherList(xmlSchemaIDCMatcherPtr matcher)
 
     while (matcher != NULL) {
 	next = matcher->next;
-	if (matcher->keySeqs != NULL) {
+	if (matcher->keySeqs != NULL) {	    
 	    int i;
 	    for (i = 0; i < matcher->sizeKeySeqs; i++)
 		if (matcher->keySeqs[i] != NULL)
@@ -22039,6 +22184,63 @@ xmlSchemaIDCFreeMatcherList(xmlSchemaIDCMatcherPtr matcher)
 	    xmlSchemaItemListFree(matcher->targets);
 	}
 	xmlFree(matcher);
+	matcher = next;
+    }
+}
+
+/**
+ * xmlSchemaIDCReleaseMatcherList:
+ * @vctxt: the WXS validation context
+ * @matcher: the first IDC matcher in the list
+ *
+ * Caches a list of IDC matchers for reuse.
+ */
+static void
+xmlSchemaIDCReleaseMatcherList(xmlSchemaValidCtxtPtr vctxt,
+			       xmlSchemaIDCMatcherPtr matcher)
+{
+    xmlSchemaIDCMatcherPtr next;
+
+    while (matcher != NULL) {
+	next = matcher->next;
+	if (matcher->keySeqs != NULL) {	    
+	    int i;
+	    /*
+	    * Don't free the array, but only the content.
+	    */
+	    for (i = 0; i < matcher->sizeKeySeqs; i++)
+		if (matcher->keySeqs[i] != NULL) {
+		    xmlFree(matcher->keySeqs[i]);
+		    matcher->keySeqs[i] = NULL;
+		}
+	}
+	if (matcher->targets) {
+	    if (matcher->idcType == XML_SCHEMA_TYPE_IDC_KEYREF) {
+		int i;
+		xmlSchemaPSVIIDCNodePtr idcNode;
+		/*
+		* Node-table items for keyrefs are not stored globally
+		* to the validation context, since they are not bubbled.
+		* We need to free them here.
+		*/
+		for (i = 0; i < matcher->targets->nbItems; i++) {
+		    idcNode =
+			(xmlSchemaPSVIIDCNodePtr) matcher->targets->items[i];
+		    xmlFree(idcNode->keys);
+		    xmlFree(idcNode);
+		}
+	    }
+	    xmlSchemaItemListFree(matcher->targets);
+	    matcher->targets = NULL;
+	}	
+	matcher->next = NULL;
+	/*
+	* Cache the matcher.
+	*/
+	if (vctxt->idcMatcherCache != NULL)
+	    matcher->nextCached = vctxt->idcMatcherCache;
+	vctxt->idcMatcherCache = matcher;
+
 	matcher = next;
     }
 }
@@ -22823,7 +23025,7 @@ deregister_check:
 	    /*
 	    * Link it to the pool of reusable state objects.
 	    */
-	    vctxt->xpathStatePool = sto;	    
+	    vctxt->xpathStatePool = sto;
 	    sto = nextsto;
 	} else
 	    sto = sto->next;
@@ -22920,14 +23122,23 @@ xmlSchemaIDCRegisterMatchers(xmlSchemaValidCtxtPtr vctxt,
 	/*
 	* Create an IDC matcher for every IDC definition.
 	*/
-	matcher = (xmlSchemaIDCMatcherPtr) 
-	    xmlMalloc(sizeof(xmlSchemaIDCMatcher));
-	if (matcher == NULL) {
-	    xmlSchemaVErrMemory(vctxt, 
-		"allocating an IDC matcher", NULL);
-	    return (-1);
+	if (vctxt->idcMatcherCache != NULL) {
+	    /*
+	    * Reuse a cached matcher.
+	    */
+	    matcher = vctxt->idcMatcherCache;
+	    vctxt->idcMatcherCache = matcher->nextCached;
+	    matcher->nextCached = NULL;
+	} else {
+	    matcher = (xmlSchemaIDCMatcherPtr) 
+		xmlMalloc(sizeof(xmlSchemaIDCMatcher));
+	    if (matcher == NULL) {
+		xmlSchemaVErrMemory(vctxt, 
+		    "allocating an IDC matcher", NULL);
+		return (-1);
+	    }
+	    memset(matcher, 0, sizeof(xmlSchemaIDCMatcher));
 	}
-	memset(matcher, 0, sizeof(xmlSchemaIDCMatcher));
 	if (last == NULL)
 	    vctxt->inode->idcMatchers = matcher;
 	else
@@ -23673,8 +23884,14 @@ xmlSchemaValidatorPushAttribute(xmlSchemaValidCtxtPtr vctxt,
     return (0);
 }
 
+/**
+ * xmlSchemaClearElemInfo:
+ * @vctxt: the WXS validation context
+ * @ielem: the element information item
+ */
 static void
-xmlSchemaClearElemInfo(xmlSchemaNodeInfoPtr ielem)
+xmlSchemaClearElemInfo(xmlSchemaValidCtxtPtr vctxt,
+		       xmlSchemaNodeInfoPtr ielem)
 {
     ielem->hasKeyrefs = 0;
     ielem->appliedXPath = 0;
@@ -23700,9 +23917,13 @@ xmlSchemaClearElemInfo(xmlSchemaNodeInfoPtr ielem)
     }
     if (ielem->idcMatchers != NULL) {
 	/*
-	* URGENT OPTIMIZE TODO: Use a pool of IDC matchers.
+	* REVISIT OPTIMIZE TODO: Use a pool of IDC matchers.
+	*   Does it work?
 	*/
+	xmlSchemaIDCReleaseMatcherList(vctxt, ielem->idcMatchers);
+#if 0
 	xmlSchemaIDCFreeMatcherList(ielem->idcMatchers);
+#endif
 	ielem->idcMatchers = NULL;
     }
     if (ielem->idcTable != NULL) {
@@ -26068,7 +26289,7 @@ end_elem:
     * VAL TODO: Don't free the PSVI IDC tables if they are
     * requested for the PSVI.
     */
-    xmlSchemaClearElemInfo(inode);
+    xmlSchemaClearElemInfo(vctxt, inode);
     /*
     * Skip further processing if we are on the validation root.
     */
@@ -27168,6 +27389,18 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
 	} while (cur != NULL);
 	vctxt->aidcs = NULL;
     }
+    if (vctxt->idcMatcherCache != NULL) {
+	xmlSchemaIDCMatcherPtr matcher = vctxt->idcMatcherCache, tmp;
+
+	while (matcher) {
+	    tmp = matcher;
+	    matcher = matcher->nextCached;
+	    xmlSchemaIDCFreeMatcherList(tmp);
+	}
+	vctxt->idcMatcherCache = NULL;
+    }
+
+
     if (vctxt->idcNodes != NULL) {
 	int i;
 	xmlSchemaPSVIIDCNodePtr item;
@@ -27180,6 +27413,7 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
 	xmlFree(vctxt->idcNodes);
 	vctxt->idcNodes = NULL;
 	vctxt->nbIdcNodes = 0;
+	vctxt->sizeIdcNodes = 0;
     }
     /*
     * Note that we won't delete the XPath state pool here.
@@ -27205,7 +27439,7 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
 	    ei = vctxt->elemInfos[i];
 	    if (ei == NULL)
 		break;
-	    xmlSchemaClearElemInfo(ei);
+	    xmlSchemaClearElemInfo(vctxt, ei);
 	}
     }    
     xmlSchemaItemListClear(vctxt->nodeQNames);
@@ -27251,10 +27485,14 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
 	xmlFree(ctxt->idcKeys);
     }
 
-    if (ctxt->xpathStates != NULL)
+    if (ctxt->xpathStates != NULL) {
 	xmlSchemaFreeIDCStateObjList(ctxt->xpathStates);
-    if (ctxt->xpathStatePool != NULL)
+	ctxt->xpathStates = NULL;
+    }
+    if (ctxt->xpathStatePool != NULL) {
 	xmlSchemaFreeIDCStateObjList(ctxt->xpathStatePool);
+	ctxt->xpathStatePool = NULL;
+    }
 
     /*
     * Augmented IDC information.
@@ -27288,7 +27526,7 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
 	    ei = ctxt->elemInfos[i];
 	    if (ei == NULL)
 		break;
-	    xmlSchemaClearElemInfo(ei);
+	    xmlSchemaClearElemInfo(ctxt, ei);
 	    xmlFree(ei);
 	}
 	xmlFree(ctxt->elemInfos);

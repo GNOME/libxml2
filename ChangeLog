@@ -1,3 +1,8 @@
+Mon Aug 16 01:15:12 CEST 2006 Rob Richards <rrichards@ctindustries.net>
+
+	* HTMLtree.c xmlsave.c: Add linefeeds to error messages allowing 
+	  for consistant handling.
+
 Tue Aug 15 15:02:18 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xpath.c: Applied the proposed fix for the documentation

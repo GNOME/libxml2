@@ -5597,9 +5597,8 @@ xmlXPathCastNodeSetToString (xmlNodeSetPtr ns) {
  *
  * Converts an existing object to its string() equivalent
  *
- * Returns the string value of the object, NULL in case of error.
- *         A new string is allocated only if needed (@val isn't a
- *         string object).
+ * Returns the allocated string value of the object, NULL in case of error.
+ *         It's up to the caller to free the string memory with xmlFree(). 
  */
 xmlChar *
 xmlXPathCastToString(xmlXPathObjectPtr val) {

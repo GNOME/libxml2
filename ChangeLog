@@ -1,3 +1,8 @@
+Tue Aug 15 15:02:18 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xpath.c: Applied the proposed fix for the documentation
+	  of xmlXPathCastToString(); see bug #346202.
+
 Tue Aug 15 14:49:18 CEST 2006 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: While investigating bug #350247, I noticed

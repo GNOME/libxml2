@@ -1,4 +1,9 @@
-Mon Aug 16 01:15:12 CEST 2006 Rob Richards <rrichards@ctindustries.net>
+Thu Aug 17 00:48:31 CEST 2006 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlwriter.c: Add a document to the xmlwriter structure and 
+	  pass document when writing attribute content for encoding support.
+
+Wed Aug 16 01:15:12 CEST 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* HTMLtree.c xmlsave.c: Add linefeeds to error messages allowing 
 	  for consistant handling.

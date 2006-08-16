@@ -91,6 +91,7 @@ struct _xmlTextWriter {
     char qchar;                 /* character used for quoting attribute values */
     xmlParserCtxtPtr ctxt;
     int no_doc_free;
+    xmlDocPtr doc;
 };
 
 static void xmlFreeTextWriterStackEntry(xmlLinkPtr lk);
@@ -215,6 +216,9 @@ xmlNewTextWriter(xmlOutputBufferPtr out)
                         "xmlNewTextWriter : out of memory!\n");
         return NULL;
     }
+
+    ret->doc = xmlNewDoc(NULL);
+
     ret->no_doc_free = 0;
 
     return ret;
@@ -487,6 +491,9 @@ xmlFreeTextWriter(xmlTextWriterPtr writer)
         xmlFreeParserCtxt(writer->ctxt);
     }
 
+    if (writer->doc != NULL)
+        xmlFreeDoc(writer->doc);
+
     if (writer->ichar != NULL)
         xmlFree(writer->ichar);
     xmlFree(writer);
@@ -539,6 +546,8 @@ xmlTextWriterStartDocument(xmlTextWriterPtr writer, const char *version,
     if (encoder != NULL) {
         writer->out->conv = xmlBufferCreateSize(4000);
         xmlCharEncOutFunc(encoder, writer->out->conv, NULL);
+        if ((writer->doc != NULL) && (writer->doc->encoding == NULL))
+            writer->doc->encoding = xmlStrdup((xmlChar *)writer->out->encoder->name);
     } else
         writer->out->conv = NULL;
 
@@ -1425,7 +1434,7 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
                     break;
                 case XML_TEXTWRITER_ATTRIBUTE:
                     buf = NULL;
-                    xmlAttrSerializeTxtContent(writer->out->buffer, NULL,
+                    xmlAttrSerializeTxtContent(writer->out->buffer, writer->doc,
                                                NULL, content);
                     break;
 		default:

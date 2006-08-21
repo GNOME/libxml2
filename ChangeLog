@@ -1,3 +1,8 @@
+Mon Aug 21 10:40:10 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmlcatalog.1 doc/xmlcatalog_man.xml doc/xmllint.1 doc/xmllint.xml:
+	  applied patch to man pages from Daniel Leidert and regenerated
+
 Thu Aug 17 00:48:31 CEST 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlwriter.c: Add a document to the xmlwriter structure and 

@@ -2,7 +2,7 @@
 .\" It was generated using the DocBook XSL Stylesheets (version 1.69.1).
 .\" Instead of manually editing it, you probably should edit the DocBook XML
 .\" source for it and then use the DocBook XSL Stylesheets to regenerate it.
-.TH "XMLCATALOG" "1" "2006\-03\-05" "libxml2" ""
+.TH "XMLCATALOG" "1" "$Date$" "libxml2" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -27,29 +27,6 @@ XML
 and
 SGML
 files.
-.PP
-More information can be found at
-.TP 3
-\(bu
-\fBlibxml\fR(3)
-web page
-\fI\%http://www.xmlsoft.org/\fR
-.TP
-\(bu
-\fBlibxml\fR(3)
-catalog support web page at
-\fI\%http://www.xmlsoft.org/catalog.html\fR
-.TP
-\(bu
-James Clark's
-SGML
-catalog page
-\fI\%http://www.jclark.com/sp/catalog.htm\fR
-.TP
-\(bu
-OASISXML
-catalog specification
-\fI\%http://www.oasis\-open.org/committees/entity/spec.html\fR
 .SH "OPTIONS"
 .PP
 \fBxmlcatalog\fR
@@ -185,26 +162,28 @@ Print the current catalog.
 Quit the shell.
 .TP
 \fBpublic \fR\fB\fIPUBLIC\-ID\fR\fR
-Execute a public identifier lookup of the catalog entry for
+Execute a Formal Public Identifier look\-up of the catalog entry for
 \fIPUBLIC\-ID\fR. The corresponding entry will be output to the command line.
 .TP
 \fBquiet\fR
 Stop printing debugging statements.
 .TP
 \fBsystem \fR\fB\fISYSTEM\-ID\fR\fR
-Execute a public identifier lookup of the catalog entry for
+Execute a Formal Public Identifier look\-up of the catalog entry for
 \fISYSTEM\-ID\fR. The corresponding entry will be output to the command line.
 .SH "ENVIRONMENT"
 .TP
 \fBXML_CATALOG_FILES\fR
-Catalog behavior can be changed by redirecting queries to the user's own set of catalogs. This can be done by setting the
+XML
+catalog behavior can be changed by redirecting queries to the user's own set of catalogs. This can be done by setting the
 \fBXML_CATALOG_FILES\fR
 environment variable to a list of catalogs. An empty one should deactivate loading the default
 \fI/etc/xml/catalog\fR
-default catalog.
+catalog.
 .SH "DIAGNOSTICS"
 .PP
-\fBxmlcatalog\fR's return codes provide information that can be used when calling it from scripts.
+\fBxmlcatalog\fR
+return codes provide information that can be used when calling it from scripts.
 .TP
 \fB0\fR
 No error
@@ -219,9 +198,32 @@ Failed to save to the catalog, check file permissions
 Failed to add an entry to the catalog
 .TP
 \fB4\fR
-Failed to lookup an entry in the catalog
+Failed to look up an entry in the catalog
 .SH "SEE ALSO"
 .PP
 \fBlibxml\fR(3)
+.PP
+More information can be found at
+.TP 3
+\(bu
+\fBlibxml\fR(3)
+web page
+\fI\%http://www.xmlsoft.org/\fR
+.TP
+\(bu
+\fBlibxml\fR(3)
+catalog support web page at
+\fI\%http://www.xmlsoft.org/catalog.html\fR
+.TP
+\(bu
+James Clark's
+SGML
+catalog page
+\fI\%http://www.jclark.com/sp/catalog.htm\fR
+.TP
+\(bu
+OASISXML
+catalog specification
+\fI\%http://www.oasis\-open.org/committees/entity/spec.html\fR
 .SH "AUTHOR"
 John Fleck <jfleck@inkstain.net>. 

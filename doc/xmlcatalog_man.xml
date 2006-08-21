@@ -26,7 +26,7 @@
 		</affiliation>
 	</author>
 	<!-- date should be the date of the latest change or the release version -->
-	<date>2006-03-05</date>
+	<date>$Date$</date>
 	<!-- still a bit buggy output, will talk to docbook-xsl upstream to fix this -->
 	<!-- <releaseinfo>This is release 0.3 of the xmlcatalog Manual.</releaseinfo> -->
 	<!-- <edition>0.3</edition> -->
@@ -93,35 +93,6 @@
 		Its functions can be invoked from a single command from the command line,
 		or it can perform multiple functions in interactive mode. It can operate
 		on both <acronym>XML</acronym> and <acronym>SGML</acronym> files.
-	</para>
-	<para>More information can be found at
-		<itemizedlist>
-			<listitem>
-				<para><citerefentry>
-						<refentrytitle>libxml</refentrytitle>
-						<manvolnum>3</manvolnum>
-					</citerefentry> web page <ulink url="http://www.xmlsoft.org/"/>
-				</para>
-			</listitem>
-			<listitem>
-				<para><citerefentry>
-						<refentrytitle>libxml</refentrytitle>
-						<manvolnum>3</manvolnum>
-					</citerefentry> catalog support web page
-					at <ulink url="http://www.xmlsoft.org/catalog.html"/>
-				</para>
-			</listitem>
-			<listitem>
-				<para>James Clark's <acronym>SGML</acronym> catalog
-					page <ulink url="http://www.jclark.com/sp/catalog.htm"/>
-				</para>
-			</listitem>
-			<listitem>
-				<para><acronym>OASIS</acronym> <acronym>XML</acronym> catalog specification
-					<ulink url="http://www.oasis-open.org/committees/entity/spec.html"/>
-				</para>
-			</listitem>
-		</itemizedlist>
 	</para>
 </refsect1>
 
@@ -340,7 +311,7 @@
 	<term><option>public <replaceable>PUBLIC-ID</replaceable></option></term>
 	<listitem>
 		<para>
-			Execute a public identifier lookup of the catalog entry
+			Execute a Formal Public Identifier look-up of the catalog entry
 			for <replaceable>PUBLIC-ID</replaceable>. The corresponding entry will be
 			output to the command line.
 		</para>
@@ -358,7 +329,7 @@
 	<term><option>system <replaceable>SYSTEM-ID</replaceable></option></term>
 	<listitem>
 		<para>
-			Execute a public identifier lookup of the catalog entry
+			Execute a Formal Public Identifier look-up of the catalog entry
 			for <replaceable>SYSTEM-ID</replaceable>. The corresponding entry will be
 			output to the command line.
 		</para>
@@ -375,12 +346,11 @@
 		<varlistentry>
 	<term><envar>XML_CATALOG_FILES</envar></term>
 	<listitem>
-		<para>
-			Catalog behavior can be changed by redirecting queries to the user's
-			own set of catalogs. This can be done by setting
+		<para><acronym>XML</acronym> catalog behavior can be changed by redirecting
+			queries to the user's own set of catalogs. This can be done by setting
 			the <envar>XML_CATALOG_FILES</envar> environment variable to a list
 			of catalogs. An empty one should deactivate loading the
-			default <filename>/etc/xml/catalog</filename> default catalog.
+			default <filename>/etc/xml/catalog</filename> catalog.
 		</para>
 	</listitem>
 		</varlistentry>
@@ -391,7 +361,7 @@
 <refsect1 id="diagnostics">
 	<title>DIAGNOSTICS</title>
 	<para>
-		&xmlcatalog;'s return codes provide information that can be used when
+		&xmlcatalog; return codes provide information that can be used when
 		calling it from scripts.
 	</para>
 	<variablelist>
@@ -427,7 +397,7 @@
 		<varlistentry>
 	<term><errorcode>4</errorcode></term>
 	<listitem>
-		<para>Failed to lookup an entry in the catalog</para>
+		<para>Failed to look up an entry in the catalog</para>
 	</listitem>
 		</varlistentry>
 
@@ -436,11 +406,40 @@
 
 <refsect1 id="seealso">
 	<title>SEE ALSO</title>
-	<para>
-		<citerefentry>
+	<para><citerefentry>
 			<refentrytitle>libxml</refentrytitle>
 			<manvolnum>3</manvolnum>
 		</citerefentry>
+	</para>
+	<para>
+		More information can be found at
+		<itemizedlist>
+			<listitem>
+				<para><citerefentry>
+						<refentrytitle>libxml</refentrytitle>
+						<manvolnum>3</manvolnum>
+					</citerefentry> web page <ulink url="http://www.xmlsoft.org/"/>
+				</para>
+			</listitem>
+			<listitem>
+				<para><citerefentry>
+						<refentrytitle>libxml</refentrytitle>
+						<manvolnum>3</manvolnum>
+					</citerefentry> catalog support web page
+					at <ulink url="http://www.xmlsoft.org/catalog.html"/>
+				</para>
+			</listitem>
+			<listitem>
+				<para>James Clark's <acronym>SGML</acronym> catalog
+					page <ulink url="http://www.jclark.com/sp/catalog.htm"/>
+				</para>
+			</listitem>
+			<listitem>
+				<para><acronym>OASIS</acronym> <acronym>XML</acronym> catalog specification
+					<ulink url="http://www.oasis-open.org/committees/entity/spec.html"/>
+				</para>
+			</listitem>
+		</itemizedlist>
 	</para>
 </refsect1>
 

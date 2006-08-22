@@ -63,7 +63,9 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
 	   context */
 	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
 	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
-	    pctxt = ctxt->userData;
+	    long delta = (char *) ctxt - (char *) ctxt->userData;
+	    if ((delta > 0) && (delta < 250))
+		pctxt = ctxt->userData;
 	}
     }
     if (extra)
@@ -101,7 +103,9 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
 	   context */
 	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
 	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
-	    pctxt = ctxt->userData;
+	    long delta = (char *) ctxt - (char *) ctxt->userData;
+	    if ((delta > 0) && (delta < 250))
+		pctxt = ctxt->userData;
 	}
     }
     if (extra)
@@ -146,7 +150,9 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
 	   context */
 	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
 	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
-	    pctxt = ctxt->userData;
+	    long delta = (char *) ctxt - (char *) ctxt->userData;
+	    if ((delta > 0) && (delta < 250))
+		pctxt = ctxt->userData;
 	}
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
@@ -187,7 +193,9 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
 	   context */
 	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
 	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
-	    pctxt = ctxt->userData;
+	    long delta = (char *) ctxt - (char *) ctxt->userData;
+	    if ((delta > 0) && (delta < 250))
+		pctxt = ctxt->userData;
 	}
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
@@ -226,7 +234,9 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt,
 	   context */
 	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
 	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
-	    pctxt = ctxt->userData;
+	    long delta = (char *) ctxt - (char *) ctxt->userData;
+	    if ((delta > 0) && (delta < 250))
+		pctxt = ctxt->userData;
 	}
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,

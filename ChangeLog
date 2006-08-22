@@ -1,3 +1,9 @@
+Tue Aug 22 16:51:22 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed a bug #203125 in Red hat bugzilla, crashing PHP4
+	  on validation errors, the heuristic to guess is a vctxt user
+	  pointer is the parsing context was insufficient.
+
 Mon Aug 21 10:40:10 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmlcatalog.1 doc/xmlcatalog_man.xml doc/xmllint.1 doc/xmllint.xml:

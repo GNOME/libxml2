@@ -207,13 +207,13 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 
 	if (u8String)
 	{
-		int wLen = MultiByteToWideChar(CP_UTF8,0,u8String,-1,NULL,0);
+		int wLen = MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,u8String,-1,NULL,0);
 		if (wLen)
 		{
 			wString = malloc((wLen+1) * sizeof(wchar_t));
 			if (wString)
 			{
-				if (MultiByteToWideChar(CP_UTF8,0,u8String,-1,wString,wLen+1) == 0)
+				if (MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,u8String,-1,wString,wLen+1) == 0)
 				{
 					free(wString);
 					wString = NULL;
@@ -223,6 +223,73 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 	}
 	
 	return wString;
+}
+
+/**
+ * __xmlIOWin32GetWcharFunc:
+ * @name:  name of function
+ *
+ * returns function pointer to certain wide character functions
+ * contained in msvcrt.dll on Windows NT or better. 
+ * There is no (really working) support for it on win95/98/Me
+ * but to retain compatibility on ascii basis the capabilities
+ * of the os are depicted during runtime (see use of this function in this file)
+ */
+static void *
+__xmlIOWin32GetWcharFunc(const char *name)
+{
+	void *function = NULL;
+	static HANDLE msvcrt = INVALID_HANDLE_VALUE;
+	static HANDLE winMutex = INVALID_HANDLE_VALUE;
+
+	// create Mutex if not already there
+	if (winMutex == INVALID_HANDLE_VALUE)
+	{
+		winMutex = CreateMutexA(NULL, FALSE, "__xmlIOWin32GetWcharFunc mutex");
+		if (!winMutex)
+			return NULL;
+	}
+
+	// Be atomic
+	if (WaitForSingleObject(winMutex, INFINITE) == WAIT_OBJECT_0)
+	{
+		if (msvcrt == INVALID_HANDLE_VALUE)
+		{
+			msvcrt = NULL; // ensure to enter this code just once
+			OSVERSIONINFOEX osvi;
+	 
+	    	ZeroMemory(&osvi,sizeof(OSVERSIONINFOEX));
+	   	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	
+			// Get Operatingsystemversion. If something is wrong here, the system
+			// is heavily damaged. Refuse to deliver pointers in this case.
+	   	if (!GetVersionEx((OSVERSIONINFO *)&osvi))
+	   	{
+	      	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	      	if (!GetVersionEx((OSVERSIONINFO *)&osvi))
+	      	{
+	      		ReleaseMutex(winMutex);
+	         	return NULL;
+	         }
+	   	}
+	
+			// Only continue on NT or better
+			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)
+			{
+				unsigned int oldErrorMode = SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOOPENFILEERRORBOX);
+		
+				msvcrt = LoadLibraryA("msvcrt.dll");
+				SetErrorMode(oldErrorMode);
+			}
+		}
+	
+		if (msvcrt && name)
+			function = (void *)GetProcAddress(msvcrt,name);
+			
+		ReleaseMutex(winMutex);
+	}
+	
+	return function;
 }
 #endif
 
@@ -589,7 +656,7 @@ xmlCleanupOutputCallbacks(void)
 int
 xmlCheckFilename (const char *path)
 {
-#ifdef HAVE_STAT
+#if defined(HAVE_STAT) && !defined(WIN32)
 	struct stat stat_buffer;
 #endif
 	if (path == NULL)
@@ -598,23 +665,47 @@ xmlCheckFilename (const char *path)
 #if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 	{
 		int retval = 0;
-	
-		wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
-		if (wPath)
+
+		// One-time autodetect presence of _wstat. Not available for Win9x
+		static int (*winwstat)(const wchar_t *path,struct _stat *buffer) = INVALID_HANDLE_VALUE;
+
+		if (winwstat == INVALID_HANDLE_VALUE)
+			winwstat = (int (*)(const wchar_t *,struct _stat *))__xmlIOWin32GetWcharFunc("_wstat");
+
+		// Try utf-8 path first on systems capable
+		if (winwstat)
 		{
-			struct _stat stat_buffer;
-			
-			if (_wstat(wPath,&stat_buffer) == 0)
+			wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
+			if (wPath)
 			{
-				retval = 1;
+				struct _stat stat_buffer;
 				
-				if (((stat_buffer.st_mode & S_IFDIR) == S_IFDIR))
-					retval = 2;
+				if (winwstat(wPath,&stat_buffer) == 0)
+				{
+					retval = 1;
+					
+					if (((stat_buffer.st_mode & S_IFDIR) == S_IFDIR))
+						retval = 2;
+				}
+		
+				free(wPath);
 			}
-	
-			free(wPath);
 		}
 
+		// Fallback: Path in utf-8 representation not present or win9x		
+		if ((winwstat == NULL) || (retval == 0))
+		{
+				struct _stat stat_buffer;
+				
+				if (_stat(path,&stat_buffer) == 0)
+				{
+					retval = 1;
+					
+					if (((stat_buffer.st_mode & S_IFDIR) == S_IFDIR))
+						retval = 2;
+				}
+		}
+		
 		return retval;
 	}
 #else
@@ -720,7 +811,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
 static void *
 xmlFileOpen_real (const char *filename) {
     const char *path = NULL;
-    FILE *fd;
+    FILE *fd = NULL;
 
     if (filename == NULL)
         return(NULL);
@@ -752,21 +843,28 @@ xmlFileOpen_real (const char *filename) {
 
 #if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 	{
-		wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
-		if (wPath)
+		// One-time autodetect presence of _wfopen. Not available for Win9x
+		static FILE *(*winwfopen)(const wchar_t *path,const wchar_t *mode) = INVALID_HANDLE_VALUE;
+
+		if (winwfopen == INVALID_HANDLE_VALUE)
+			winwfopen = (FILE *(*)(const wchar_t *,const wchar_t *))__xmlIOWin32GetWcharFunc("_wfopen");
+
+		// Try to open file unicode path safe. If not available or win9x fall thru to non-unicode safe fopen()
+		if (winwfopen)
 		{
-			fd = _wfopen(wPath, L"rb");
-			free(wPath);
+			wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
+			if (wPath)
+			{
+				fd = winwfopen(wPath, L"rb");
+				free(wPath);
+	   	}
    	}
-   	else
-   	{
-   	   fd = fopen(path, "rb");
-	   }
 	}	
-#else
-    fd = fopen(path, "r");
 #endif /* WIN32 */
-    if (fd == NULL) xmlIOErr(0, path);
+
+	if (fd == NULL)
+    	fd = fopen(path, "r");
+   if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
 }
 
@@ -807,7 +905,7 @@ xmlFileOpen (const char *filename) {
 static void *
 xmlFileOpenW (const char *filename) {
     const char *path = NULL;
-    FILE *fd;
+    FILE *fd = NULL;
 
     if (!strcmp(filename, "-")) {
 	fd = stdout;
@@ -834,20 +932,27 @@ xmlFileOpenW (const char *filename) {
 
 #if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 	{
-		wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
-		if (wPath)
+		// One-time autodetect presence of _wfopen. Not available for Win9x
+		static FILE *(*winwfopen)(const wchar_t *path,const wchar_t *mode) = INVALID_HANDLE_VALUE;
+
+		if (winwfopen == INVALID_HANDLE_VALUE)
+			winwfopen = (FILE *(*)(const wchar_t *,const wchar_t *))__xmlIOWin32GetWcharFunc("_wfopen");
+
+		// Try to open file unicode path safe. If not available or win9x fall thru to non-unicode safe fopen()
+		if (winwfopen)
 		{
-			fd = _wfopen(wPath, L"wb");
-			free(wPath);
-   	}
-   	else
-   	{
-	  	   fd = fopen(path, "wb");
-	  	}
+			wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
+			if (wPath)
+			{
+				fd = winwfopen(wPath, L"wb");
+				free(wPath);
+	   	}
+	   }
 	}
-#else
-  	   fd = fopen(path, "wb");
 #endif /* WIN32 */
+
+	if (fd == NULL)
+  	   fd = fopen(path, "wb");
 
 	 if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
@@ -3499,10 +3604,7 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
     return(ret);
 }
 
-static int xmlSysIDExists(const char *URL) {
-#ifdef HAVE_STAT
-    int ret;
-    struct stat info;
+static int xmlNoNetExists(const char *URL) {
     const char *path;
 
     if (URL == NULL)
@@ -3522,11 +3624,8 @@ static int xmlSysIDExists(const char *URL) {
 #endif
     } else 
 	path = URL;
-    ret = stat(path, &info);
-    if (ret == 0)
-	return(1);
-#endif
-    return(0);
+	
+    return xmlCheckFilename(path);
 }
 
 /**
@@ -3570,7 +3669,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
      */
     pref = xmlCatalogGetDefaults();
 
-    if ((pref != XML_CATA_ALLOW_NONE) && (!xmlSysIDExists(URL))) {
+    if ((pref != XML_CATA_ALLOW_NONE) && (!xmlNoNetExists(URL))) {
         /*
          * Do a local lookup
          */
@@ -3597,7 +3696,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
          * TODO: do an URI lookup on the reference
          */
         if ((resource != NULL)
-            && (!xmlSysIDExists((const char *) resource))) {
+            && (!xmlNoNetExists((const char *) resource))) {
             xmlChar *tmp = NULL;
 
             if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
@@ -3674,7 +3773,7 @@ xmlGetExternalEntityLoader(void) {
 xmlParserInputPtr
 xmlLoadExternalEntity(const char *URL, const char *ID,
                       xmlParserCtxtPtr ctxt) {
-    if ((URL != NULL) && (xmlSysIDExists(URL) == 0)) {
+    if ((URL != NULL) && (xmlNoNetExists(URL) == 0)) {
 	char *canonicFilename;
 	xmlParserInputPtr ret;
 
@@ -3696,40 +3795,6 @@ xmlLoadExternalEntity(const char *URL, const char *ID,
  * 		Disabling Network access				*
  * 									*
  ************************************************************************/
-
-#ifdef LIBXML_CATALOG_ENABLED
-static int
-xmlNoNetExists(const char *URL)
-{
-#ifdef HAVE_STAT
-    int ret;
-    struct stat info;
-    const char *path;
-
-    if (URL == NULL)
-        return (0);
-
-    if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
-	path = &URL[17];
-#else
-	path = &URL[16];
-#endif
-    else if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
-        path = &URL[8];
-#else
-        path = &URL[7];
-#endif
-    } else
-        path = URL;
-    ret = stat(path, &info);
-    if (ret == 0)
-        return (1);
-#endif
-    return (0);
-}
-#endif
 
 /**
  * xmlNoNetExternalEntityLoader:

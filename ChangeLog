@@ -1,3 +1,9 @@
+Wed Aug 30 15:10:09 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied patch from Roland Schwingel to fix the problem
+	  with file names in UTF-8 on Windows, and compat on older win9x 
+	  versions.
+
 Tue Aug 22 16:51:22 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed a bug #203125 in Red hat bugzilla, crashing PHP4

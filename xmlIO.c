@@ -50,6 +50,10 @@
 #    endif
 #    define HAVE_STAT
 #  endif
+#else
+#  ifdef HAVE__STAT
+#      define stat _stat
+#  endif
 #endif
 #ifdef HAVE_STAT
 #  ifndef S_ISDIR
@@ -193,7 +197,7 @@ static const char *IOerr[] = {
     "unknown address familly",	/* EAFNOSUPPORT */
 };
 
-#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 /**
  * __xmlIOWin32UTF8ToWChar:
  * @u8String:  uft-8 string
@@ -210,12 +214,12 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 		int wLen = MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,u8String,-1,NULL,0);
 		if (wLen)
 		{
-			wString = malloc((wLen+1) * sizeof(wchar_t));
+			wString = xmlMalloc(wLen * sizeof(wchar_t));
 			if (wString)
 			{
-				if (MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,u8String,-1,wString,wLen+1) == 0)
+				if (MultiByteToWideChar(CP_UTF8,0,u8String,-1,wString,wLen) == 0)
 				{
-					free(wString);
+					xmlFree(wString);
 					wString = NULL;
 				}
 			}
@@ -223,73 +227,6 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 	}
 	
 	return wString;
-}
-
-/**
- * __xmlIOWin32GetWcharFunc:
- * @name:  name of function
- *
- * returns function pointer to certain wide character functions
- * contained in msvcrt.dll on Windows NT or better. 
- * There is no (really working) support for it on win95/98/Me
- * but to retain compatibility on ascii basis the capabilities
- * of the os are depicted during runtime (see use of this function in this file)
- */
-static void *
-__xmlIOWin32GetWcharFunc(const char *name)
-{
-	void *function = NULL;
-	static HANDLE msvcrt = INVALID_HANDLE_VALUE;
-	static HANDLE winMutex = INVALID_HANDLE_VALUE;
-
-	// create Mutex if not already there
-	if (winMutex == INVALID_HANDLE_VALUE)
-	{
-		winMutex = CreateMutexA(NULL, FALSE, "__xmlIOWin32GetWcharFunc mutex");
-		if (!winMutex)
-			return NULL;
-	}
-
-	// Be atomic
-	if (WaitForSingleObject(winMutex, INFINITE) == WAIT_OBJECT_0)
-	{
-		if (msvcrt == INVALID_HANDLE_VALUE)
-		{
-			msvcrt = NULL; // ensure to enter this code just once
-			OSVERSIONINFOEX osvi;
-	 
-	    	ZeroMemory(&osvi,sizeof(OSVERSIONINFOEX));
-	   	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	
-			// Get Operatingsystemversion. If something is wrong here, the system
-			// is heavily damaged. Refuse to deliver pointers in this case.
-	   	if (!GetVersionEx((OSVERSIONINFO *)&osvi))
-	   	{
-	      	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	      	if (!GetVersionEx((OSVERSIONINFO *)&osvi))
-	      	{
-	      		ReleaseMutex(winMutex);
-	         	return NULL;
-	         }
-	   	}
-	
-			// Only continue on NT or better
-			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)
-			{
-				unsigned int oldErrorMode = SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOOPENFILEERRORBOX);
-		
-				msvcrt = LoadLibraryA("msvcrt.dll");
-				SetErrorMode(oldErrorMode);
-			}
-		}
-	
-		if (msvcrt && name)
-			function = (void *)GetProcAddress(msvcrt,name);
-			
-		ReleaseMutex(winMutex);
-	}
-	
-	return function;
 }
 #endif
 
@@ -639,6 +576,130 @@ xmlCleanupOutputCallbacks(void)
  *									*
  ************************************************************************/
 
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+
+/**
+ *  xmlWrapOpenUtf8:
+ * @path:  the path in utf-8 encoding
+ * @mode:  type of access (0 - read, 1 - write)
+ *
+ * function opens the file specified by @path
+ *
+ */
+static FILE*
+xmlWrapOpenUtf8(const char *path,int mode)
+{
+    FILE *fd = NULL;
+    wchar_t *wPath;
+
+    wPath = __xmlIOWin32UTF8ToWChar(path);
+    if(wPath)
+    {
+       fd = _wfopen(wPath, mode ? L"wb" : L"rb");
+       xmlFree(wPath);
+    }
+    // maybe path in native encoding
+    if(fd == NULL)
+       fd = fopen(path, mode ? "wb" : "rb");
+
+    return fd;
+}
+
+/**
+ *  xmlWrapStatUtf8:
+ * @path:  the path in utf-8 encoding
+ * @info:  structure that stores results
+ *
+ * function obtains information about the file or directory
+ *
+ */
+static int
+xmlWrapStatUtf8(const char *path,struct stat *info)
+{
+#ifdef HAVE_STAT
+    int retval = -1;
+    wchar_t *wPath;
+
+    wPath = __xmlIOWin32UTF8ToWChar(path);
+    if (wPath)
+    {
+       retval = _wstat(wPath,info);
+       xmlFree(wPath);
+    }
+    // maybe path in native encoding
+    if(retval < 0)
+       retval = stat(path,info);
+    return retval;
+#else
+    return -1;
+#endif
+}
+
+/**
+ *  xmlWrapOpenNative:
+ * @path:  the path
+ * @mode:  type of access (0 - read, 1 - write)
+ *
+ * function opens the file specified by @path
+ *
+ */
+static FILE*
+xmlWrapOpenNative(const char *path,int mode)
+{
+    return fopen(path,mode ? "wb" : "rb");
+}
+
+/**
+ *  xmlWrapStatNative:
+ * @path:  the path
+ * @info:  structure that stores results
+ *
+ * function obtains information about the file or directory
+ *
+ */
+static int
+xmlWrapStatNative(const char *path,struct stat *info)
+{
+#ifdef HAVE_STAT
+    return stat(path,info);
+#else
+    return -1;
+#endif
+}
+
+static int   (* xmlWrapStat)(const char *,struct stat *) = xmlWrapStatNative;
+static FILE* (* xmlWrapOpen)(const char *,int mode)      = xmlWrapOpenNative;
+
+/**
+ * xmlInitPlatformSpecificIo:
+ *
+ * Initialize platform specific features.
+ */
+static void
+xmlInitPlatformSpecificIo
+(void) {
+    static int xmlPlatformIoInitialized = 0;
+    OSVERSIONINFO osvi;
+
+    if(xmlPlatformIoInitialized)
+      return;
+
+    osvi.dwOSVersionInfoSize = sizeof(osvi);
+
+    if(GetVersionEx(&osvi) && (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)) {
+      xmlWrapStat = xmlWrapStatUtf8;
+      xmlWrapOpen = xmlWrapOpenUtf8;
+    } else {
+      xmlWrapStat = xmlWrapStatNative;
+      xmlWrapOpen = xmlWrapOpenNative;
+    }
+
+    xmlPlatformIoInitialized = 1;
+    return;
+}
+
+#endif
+
 /**
  * xmlCheckFilename:
  * @path:  the path to check
@@ -656,70 +717,25 @@ xmlCleanupOutputCallbacks(void)
 int
 xmlCheckFilename (const char *path)
 {
-#if defined(HAVE_STAT) && !defined(WIN32)
+#ifdef HAVE_STAT
 	struct stat stat_buffer;
 #endif
 	if (path == NULL)
 		return(0);
-  
-#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
-	{
-		int retval = 0;
 
-		// One-time autodetect presence of _wstat. Not available for Win9x
-		static int (*winwstat)(const wchar_t *path,struct _stat *buffer) = INVALID_HANDLE_VALUE;
-
-		if (winwstat == INVALID_HANDLE_VALUE)
-			winwstat = (int (*)(const wchar_t *,struct _stat *))__xmlIOWin32GetWcharFunc("_wstat");
-
-		// Try utf-8 path first on systems capable
-		if (winwstat)
-		{
-			wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
-			if (wPath)
-			{
-				struct _stat stat_buffer;
-				
-				if (winwstat(wPath,&stat_buffer) == 0)
-				{
-					retval = 1;
-					
-					if (((stat_buffer.st_mode & S_IFDIR) == S_IFDIR))
-						retval = 2;
-				}
-		
-				free(wPath);
-			}
-		}
-
-		// Fallback: Path in utf-8 representation not present or win9x		
-		if ((winwstat == NULL) || (retval == 0))
-		{
-				struct _stat stat_buffer;
-				
-				if (_stat(path,&stat_buffer) == 0)
-				{
-					retval = 1;
-					
-					if (((stat_buffer.st_mode & S_IFDIR) == S_IFDIR))
-						retval = 2;
-				}
-		}
-		
-		return retval;
-	}
-#else
 #ifdef HAVE_STAT
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+    if (xmlWrapStat(path, &stat_buffer) == -1)
+        return 0;
+#else
     if (stat(path, &stat_buffer) == -1)
         return 0;
-
+#endif
 #ifdef S_ISDIR
     if (S_ISDIR(stat_buffer.st_mode))
         return 2;
-#endif /* S_ISDIR */
+#endif
 #endif /* HAVE_STAT */
-#endif /* WIN32 */
-
     return 1;
 }
 
@@ -811,7 +827,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
 static void *
 xmlFileOpen_real (const char *filename) {
     const char *path = NULL;
-    FILE *fd = NULL;
+    FILE *fd;
 
     if (filename == NULL)
         return(NULL);
@@ -841,30 +857,12 @@ xmlFileOpen_real (const char *filename) {
     if (!xmlCheckFilename(path))
         return(NULL);
 
-#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
-	{
-		// One-time autodetect presence of _wfopen. Not available for Win9x
-		static FILE *(*winwfopen)(const wchar_t *path,const wchar_t *mode) = INVALID_HANDLE_VALUE;
-
-		if (winwfopen == INVALID_HANDLE_VALUE)
-			winwfopen = (FILE *(*)(const wchar_t *,const wchar_t *))__xmlIOWin32GetWcharFunc("_wfopen");
-
-		// Try to open file unicode path safe. If not available or win9x fall thru to non-unicode safe fopen()
-		if (winwfopen)
-		{
-			wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
-			if (wPath)
-			{
-				fd = winwfopen(wPath, L"rb");
-				free(wPath);
-	   	}
-   	}
-	}	
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+    fd = xmlWrapOpen(path, 0);
+#else
+    fd = fopen(path, "r");
 #endif /* WIN32 */
-
-	if (fd == NULL)
-    	fd = fopen(path, "r");
-   if (fd == NULL) xmlIOErr(0, path);
+    if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
 }
 
@@ -905,7 +903,7 @@ xmlFileOpen (const char *filename) {
 static void *
 xmlFileOpenW (const char *filename) {
     const char *path = NULL;
-    FILE *fd = NULL;
+    FILE *fd;
 
     if (!strcmp(filename, "-")) {
 	fd = stdout;
@@ -930,29 +928,11 @@ xmlFileOpenW (const char *filename) {
     if (path == NULL)
 	return(NULL);
 
-#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
-	{
-		// One-time autodetect presence of _wfopen. Not available for Win9x
-		static FILE *(*winwfopen)(const wchar_t *path,const wchar_t *mode) = INVALID_HANDLE_VALUE;
-
-		if (winwfopen == INVALID_HANDLE_VALUE)
-			winwfopen = (FILE *(*)(const wchar_t *,const wchar_t *))__xmlIOWin32GetWcharFunc("_wfopen");
-
-		// Try to open file unicode path safe. If not available or win9x fall thru to non-unicode safe fopen()
-		if (winwfopen)
-		{
-			wchar_t *wPath = __xmlIOWin32UTF8ToWChar(path);
-			if (wPath)
-			{
-				fd = winwfopen(wPath, L"wb");
-				free(wPath);
-	   	}
-	   }
-	}
-#endif /* WIN32 */
-
-	if (fd == NULL)
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+    fd = xmlWrapOpen(path, 1);
+#else
   	   fd = fopen(path, "wb");
+#endif /* WIN32 */
 
 	 if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
@@ -2128,6 +2108,10 @@ xmlRegisterDefaultInputCallbacks
     if (xmlInputCallbackInitialized)
 	return;
 
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+    xmlInitPlatformSpecificIo();
+#endif
+
     xmlRegisterInputCallbacks(xmlFileMatch, xmlFileOpen,
 	                      xmlFileRead, xmlFileClose);
 #ifdef HAVE_ZLIB_H
@@ -2158,6 +2142,10 @@ xmlRegisterDefaultOutputCallbacks
 (void) {
     if (xmlOutputCallbackInitialized)
 	return;
+
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+    xmlInitPlatformSpecificIo();
+#endif
 
     xmlRegisterOutputCallbacks(xmlFileMatch, xmlFileOpenW,
 	                      xmlFileWrite, xmlFileClose);

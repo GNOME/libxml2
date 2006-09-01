@@ -1,3 +1,8 @@
+Fri Sep  1 11:52:55 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: another patch from Emelyanov Alexey to clean up a few things
+	  in the previous patch.
+
 Wed Aug 30 15:10:09 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied patch from Roland Schwingel to fix the problem

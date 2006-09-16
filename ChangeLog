@@ -1,3 +1,9 @@
+Sat Sep 16 16:02:23 CEST 2006 Rob Richards <rrichards@ctindustries.net>
+
+	* tree.c: xmlTextConcat works with comments and PI nodes (bug #355962).
+	* parser.c: fix resulting tree corruption when using XML namespace 
+	  with existing doc in xmlParseBalancedChunkMemoryRecover.
+
 Fri Sep  1 11:52:55 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: another patch from Emelyanov Alexey to clean up a few things

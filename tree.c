@@ -6529,7 +6529,9 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
     if (node == NULL) return(-1);
 
     if ((node->type != XML_TEXT_NODE) &&
-        (node->type != XML_CDATA_SECTION_NODE)) {
+        (node->type != XML_CDATA_SECTION_NODE) &&
+	(node->type != XML_COMMENT_NODE) &&
+	(node->type != XML_PI_NODE)) {
 #ifdef DEBUG_TREE
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlTextConcat: node is not text nor CDATA\n");

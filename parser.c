@@ -8355,7 +8355,8 @@ void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
     GROW;
     while ((RAW != 0) &&
-	   ((RAW != '<') || (NXT(1) != '/'))) {
+	   ((RAW != '<') || (NXT(1) != '/')) &&
+	   (ctxt->instate != XML_PARSER_EOF)) {
 	const xmlChar *test = CUR_PTR;
 	unsigned int cons = ctxt->input->consumed;
 	const xmlChar *cur = ctxt->input->cur;
@@ -8447,6 +8448,14 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     int line, tlen;
     xmlNodePtr ret;
     int nsNr = ctxt->nsNr;
+
+    if ((unsigned int) ctxt->nameNr > xmlParserMaxDepth) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
+	      "Excessive depth in document: change xmlParserMaxDepth = %d\n",
+	                  xmlParserMaxDepth);
+	ctxt->instate = XML_PARSER_EOF;
+	return;
+    }
 
     /* Capture start position */
     if (ctxt->record_info) {

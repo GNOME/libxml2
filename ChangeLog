@@ -1,3 +1,8 @@
+Tue Sep 19 14:42:59 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from Ben Darnell on #321545, I could not
+	  reproduce the problem but 1/ this is safe 2/ it's better to be safe.
+
 Sat Sep 16 16:02:23 CEST 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* tree.c: xmlTextConcat works with comments and PI nodes (bug #355962).

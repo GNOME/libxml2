@@ -106,6 +106,9 @@ XMLPUBFUN void XMLCALL
 			htmlParseElement(htmlParserCtxtPtr ctxt);
 
 XMLPUBFUN htmlParserCtxtPtr XMLCALL	
+			htmlNewParserCtxt(void);
+
+XMLPUBFUN htmlParserCtxtPtr XMLCALL	
 			htmlCreateMemoryParserCtxt(const char *buffer,
 						   int size);
 

@@ -4261,10 +4261,10 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
  *
  * Allocate and initialize a new parser context.
  *
- * Returns the xmlParserCtxtPtr or NULL
+ * Returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
 
-static htmlParserCtxtPtr
+htmlParserCtxtPtr
 htmlNewParserCtxt(void)
 {
     xmlParserCtxtPtr ctxt;

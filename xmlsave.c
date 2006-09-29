@@ -1570,7 +1570,7 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
 /**
  * xmlSaveTree:
  * @ctxt:  a document saving context
- * @node:  a document
+ * @node:  the top node of the subtree to save
  *
  * Save a subtree starting at the node parameter to a saving context
  * TODO: The function is not fully implemented yet as it does not return the

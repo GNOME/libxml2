@@ -1,3 +1,10 @@
+Fri Sep 29 11:13:59 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: fixed a comment
+	* xinclude.c include/libxml/xinclude.h: applied a patch from Michael Day
+	  to add a new function providing the _private field for the generated
+	  parser contexts xmlXIncludeProcessFlagsData()
+
 Thu Sep 21 10:36:11 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied patch from Michael Day doing some refactoring

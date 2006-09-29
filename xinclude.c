@@ -82,6 +82,8 @@ struct _xmlXIncludeCtxt {
     int                legacy; /* using XINCLUDE_OLD_NS */
     int            parseFlags; /* the flags used for parsing XML documents */
     xmlChar *		 base; /* the current xml:base */
+
+    void            *_private; /* application data */
 };
 
 static int
@@ -427,6 +429,12 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 	xmlXIncludeErrMemory(ctxt, NULL, "cannot allocate parser context");
 	return(NULL);
     }
+
+    /*
+     * pass in the application data to the parser context.
+     */
+    pctxt->_private = ctxt->_private;
+    
     /*
      * try to ensure that new documents included are actually
      * built with the same dictionary as the including document.
@@ -2409,9 +2417,11 @@ xmlXIncludeSetFlags(xmlXIncludeCtxtPtr ctxt, int flags) {
 }
  
 /**
- * xmlXIncludeProcessFlags:
+ * xmlXIncludeProcessFlagsData:
  * @doc: an XML document
  * @flags: a set of xmlParserOption used for parsing XML includes
+ * @data: application data that will be passed to the parser context
+ *        in the _private field of the parser context(s)
  *
  * Implement the XInclude substitution on the XML document @doc
  *
@@ -2419,7 +2429,7 @@ xmlXIncludeSetFlags(xmlXIncludeCtxtPtr ctxt, int flags) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
+xmlXIncludeProcessFlagsData(xmlDocPtr doc, int flags, void *data) {
     xmlXIncludeCtxtPtr ctxt;
     xmlNodePtr tree;
     int ret = 0;
@@ -2432,6 +2442,7 @@ xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
     ctxt = xmlXIncludeNewContext(doc);
     if (ctxt == NULL)
 	return(-1);
+    ctxt->_private = data;
     ctxt->base = xmlStrdup((xmlChar *)doc->URL);
     xmlXIncludeSetFlags(ctxt, flags);
     ret = xmlXIncludeDoProcess(ctxt, doc, tree);
@@ -2440,6 +2451,21 @@ xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
 
     xmlXIncludeFreeContext(ctxt);
     return(ret);
+}
+
+/**
+ * xmlXIncludeProcessFlags:
+ * @doc: an XML document
+ * @flags: a set of xmlParserOption used for parsing XML includes
+ *
+ * Implement the XInclude substitution on the XML document @doc
+ *
+ * Returns 0 if no substitution were done, -1 if some processing failed
+ *    or the number of substitutions done.
+ */
+int
+xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
+    return xmlXIncludeProcessFlagsData(doc, flags, NULL);
 }
 
 /**

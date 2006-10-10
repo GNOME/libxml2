@@ -1,3 +1,7 @@
+Tue Oct 10 11:05:59 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied a portability patch from Emelyanov Alexey
+
 Tue Oct 10 10:52:01 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied and slightly modified a patch from Michael Day to 

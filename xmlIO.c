@@ -52,7 +52,9 @@
 #  endif
 #else
 #  ifdef HAVE__STAT
+#    if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 #      define stat _stat
+#    endif
 #  endif
 #endif
 #ifdef HAVE_STAT
@@ -598,7 +600,7 @@ xmlWrapOpenUtf8(const char *path,int mode)
        fd = _wfopen(wPath, mode ? L"wb" : L"rb");
        xmlFree(wPath);
     }
-    // maybe path in native encoding
+    /* maybe path in native encoding */
     if(fd == NULL)
        fd = fopen(path, mode ? "wb" : "rb");
 
@@ -626,7 +628,7 @@ xmlWrapStatUtf8(const char *path,struct stat *info)
        retval = _wstat(wPath,info);
        xmlFree(wPath);
     }
-    // maybe path in native encoding
+    /* maybe path in native encoding */
     if(retval < 0)
        retval = stat(path,info);
     return retval;

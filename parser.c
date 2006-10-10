@@ -5929,10 +5929,13 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		ctxt->sax->characters(ctxt->userData, out, i);
 	}
     } else {
+        int was_checked;
+
 	ent = xmlParseEntityRef(ctxt);
 	if (ent == NULL) return;
 	if (!ctxt->wellFormed)
 	    return;
+	was_checked = ent->checked;
 	if ((ent->name != NULL) && 
 	    (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
 	    xmlNodePtr list = NULL;
@@ -5944,8 +5947,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	     * where the ent->children is filled with the result from
 	     * the parsing.
 	     */
-	    if (ent->children == NULL) {
+	    if (ent->checked == 0) {
 		xmlChar *value;
+
 		value = ent->content;
 
 		/*
@@ -6080,15 +6084,69 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			list = NULL;
 		    }
 		}
+		ent->checked = 1;
+	    }
+
+            if (ent->children == NULL) {
+		/*
+		 * Probably running in SAX mode and the callbacks don't
+		 * build the entity content. So unless we already went
+		 * though parsing for first checking go though the entity
+		 * content to generate callbacks associated to the entity
+		 */
+		if (was_checked == 1) {
+		    void *user_data;
+		    /*
+		     * This is a bit hackish but this seems the best
+		     * way to make sure both SAX and DOM entity support
+		     * behaves okay.
+		     */
+		    if (ctxt->userData == ctxt)
+			user_data = NULL;
+		    else
+			user_data = ctxt->userData;
+
+		    if (ent->etype == XML_INTERNAL_GENERAL_ENTITY) {
+			ctxt->depth++;
+			ret = xmlParseBalancedChunkMemoryInternal(ctxt,
+					   ent->content, user_data, NULL);
+			ctxt->depth--;
+		    } else if (ent->etype ==
+			       XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
+			ctxt->depth++;
+			ret = xmlParseExternalEntityPrivate(ctxt->myDoc, ctxt,
+				   ctxt->sax, user_data, ctxt->depth,
+				   ent->URI, ent->ExternalID, NULL);
+			ctxt->depth--;
+		    } else {
+			ret = XML_ERR_ENTITY_PE_INTERNAL;
+			xmlErrMsgStr(ctxt, XML_ERR_INTERNAL_ERROR,
+				     "invalid entity type found\n", NULL);
+		    }
+		    if (ret == XML_ERR_ENTITY_LOOP) {
+			xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+			return;
+		    }
+		}
+		if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
+		    (ctxt->replaceEntities == 0) && (!ctxt->disableSAX)) {
+		    /*
+		     * Entity reference callback comes second, it's somewhat
+		     * superfluous but a compatibility to historical behaviour
+		     */
+		    ctxt->sax->reference(ctxt->userData, ent->name);
+		}
+		return;
 	    }
 	    if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
-		(ctxt->replaceEntities == 0) && (!ctxt->disableSAX)) {
+	        (ctxt->replaceEntities == 0) && (!ctxt->disableSAX)) {
 		/*
 		 * Create a node.
 		 */
 		ctxt->sax->reference(ctxt->userData, ent->name);
 		return;
-	    } else if (ctxt->replaceEntities) {
+	    }
+	    if ((ctxt->replaceEntities) || (ent->children == NULL))  {
 		/*
 		 * There is a problem on the handling of _private for entities
 		 * (bug 155816): Should we copy the content of the field from
@@ -6211,31 +6269,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		     */
 		    ctxt->nodemem = 0;
 		    ctxt->nodelen = 0;
-		    return;
-		} else {
-		    /*
-		     * Probably running in SAX mode
-		     */
-		    xmlParserInputPtr input;
-
-		    input = xmlNewEntityInputStream(ctxt, ent);
-		    xmlPushInput(ctxt, input);
-		    if ((ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) &&
-			(CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) &&
-			(IS_BLANK_CH(NXT(5)))) {
-			xmlParseTextDecl(ctxt);
-			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-			    /*
-			     * The XML REC instructs us to stop parsing right here
-			     */
-			    ctxt->instate = XML_PARSER_EOF;
-			    return;
-			}
-			if (input->standalone == 1) {
-			    xmlFatalErr(ctxt, XML_ERR_EXT_ENTITY_STANDALONE,
-			                NULL);
-			}
-		    }
 		    return;
 		}
 	    }

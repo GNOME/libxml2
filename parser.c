@@ -11047,6 +11047,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     int ret = 0;
     xmlChar start[4];
     xmlCharEncoding enc;
+    xmlParserInputPtr inputStream;
+    char *directory = NULL;
 
     if (ctx == NULL) return(-1);
 
@@ -11061,11 +11063,27 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     if (ctx->myDoc == NULL) /* @@ relax but check for dereferences */
 	return(-1);
 
-
-    ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
-    if (ctxt == NULL) return(-1);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+	return(-1);
+    }
+    
     ctxt->userData = ctxt;
     ctxt->_private = ctx->_private;
+    
+    inputStream = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
+    if (inputStream == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(-1);
+    }
+
+    inputPush(ctxt, inputStream);
+
+    if ((ctxt->directory == NULL) && (directory == NULL))
+	directory = xmlParserGetDirectory((char *)URL);
+    if ((ctxt->directory == NULL) && (directory != NULL))
+	ctxt->directory = directory;
+    
     oldsax = ctxt->sax;
     ctxt->sax = ctx->sax;
     xmlDetectSAX2(ctxt);

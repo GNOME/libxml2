@@ -1,3 +1,8 @@
+Tue Oct 10 10:52:01 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied and slightly modified a patch from Michael Day to 
+	  keep _private in the parser context when parsing external entities
+
 Tue Oct 10 10:33:43 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py python/types.c: applied patch from Ross Reedstrom,

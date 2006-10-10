@@ -2343,7 +2343,7 @@ done:
 	 (((p[0] >= 'a') && (p[0] <= 'z')) ||			\
 	  ((p[0] >= 'A') && (p[0] <= 'Z'))) &&			\
 	 (p[1] == ':') && ((p[2] == '/') || (p[2] == '\\')))
-xmlChar*
+xmlChar *
 xmlCanonicPath(const xmlChar *path)
 {
 #if defined(_WIN32) && !defined(__CYGWIN__)    
@@ -2406,12 +2406,20 @@ path_processing:
     len = xmlStrlen(path);
     if ((len > 2) && IS_WINDOWS_PATH(path)) {
 	uri->scheme = xmlStrdup(BAD_CAST "file");
-	uri->path = xmlMallocAtomic(len + 2);	/* FIXME - check alloc! */
+	uri->path = xmlMallocAtomic(len + 2);
+	if (uri->path == NULL) {
+	    xmlFreeURI(uri);
+	    return(NULL);
+	}
 	uri->path[0] = '/';
 	p = uri->path + 1;
 	strncpy(p, path, len + 1);
     } else {
-	uri->path = xmlStrdup(path);		/* FIXME - check alloc! */
+	uri->path = xmlStrdup(path);
+	if (uri->path == NULL) {
+	    xmlFreeURI(uri);
+	    return(NULL);
+	}
 	p = uri->path;
     }
     while (*p != '\0') {
@@ -2424,11 +2432,11 @@ path_processing:
         return(NULL);
     }
 
-	if (uri->scheme == NULL) {
-		ret = xmlStrdup((const xmlChar *) path);
-	} else {
-		ret = xmlSaveUri(uri);
-	}
+    if (uri->scheme == NULL) {
+	ret = xmlStrdup((const xmlChar *) path);
+    } else {
+	ret = xmlSaveUri(uri);
+    }
 
     xmlFreeURI(uri);
 #else
@@ -2437,5 +2445,39 @@ path_processing:
     return(ret);
 }
 
+/**
+ * xmlPathToURI:
+ * @path:  the resource locator in a filesystem notation
+ *
+ * Constructs an URI expressing the existing path
+ *
+ * Returns a new URI, or a duplicate of the path parameter if the 
+ * construction fails. The caller is responsible for freeing the memory
+ * occupied by the returned string. If there is insufficient memory available,
+ * or the argument is NULL, the function returns NULL.
+ */
+xmlChar *
+xmlPathToURI(const xmlChar *path)
+{
+    xmlURIPtr uri;
+    xmlURI temp;
+    xmlChar *ret, *cal;
+
+    if (path == NULL)
+        return(NULL);
+
+    if ((uri = xmlParseURI((const char *) path)) != NULL) {
+	xmlFreeURI(uri);
+	return xmlStrdup(path);
+    }
+    cal = xmlCanonicPath(path);
+    if (cal == NULL)
+        return(NULL);
+    memset(&temp, 0, sizeof(temp));
+    temp.path = (char *) cal;
+    ret = xmlSaveUri(&temp);
+    xmlFree(cal);
+    return(ret);
+}
 #define bottom_uri
 #include "elfgcchack.h"

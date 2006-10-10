@@ -80,6 +80,8 @@ XMLPUBFUN void XMLCALL
 		xmlFreeURI		(xmlURIPtr uri);
 XMLPUBFUN xmlChar* XMLCALL	
 		xmlCanonicPath		(const xmlChar *path);
+XMLPUBFUN xmlChar* XMLCALL	
+		xmlPathToURI		(const xmlChar *path);
 
 #ifdef __cplusplus
 }

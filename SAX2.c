@@ -987,7 +987,7 @@ xmlSAX2StartDocument(void *ctx)
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
-	ctxt->myDoc->URL = xmlCanonicPath((const xmlChar *) ctxt->input->filename);
+	ctxt->myDoc->URL = xmlPathToURI((const xmlChar *)ctxt->input->filename);
 	if (ctxt->myDoc->URL == NULL)
 	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartDocument");
     }

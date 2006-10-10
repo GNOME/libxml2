@@ -4800,6 +4800,7 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
 void
 xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
     xmlNsPtr ns;
+    const xmlChar* fixed;
 
     if (cur == NULL) return;
     switch(cur->type) {
@@ -4835,7 +4836,7 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
 	    if (uri == NULL)
 		doc->URL = NULL;
 	    else
-		doc->URL = xmlStrdup(uri);
+		doc->URL = xmlPathToURI(uri);
 	    return;
 	}
     }
@@ -4843,7 +4844,13 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
     ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
     if (ns == NULL)
 	return;
-    xmlSetNsProp(cur, ns, BAD_CAST "base", uri);
+    fixed = xmlPathToURI(uri);
+    if (fixed != NULL) {
+	xmlSetNsProp(cur, ns, BAD_CAST "base", fixed);
+	xmlFree(fixed);
+    } else {
+	xmlSetNsProp(cur, ns, BAD_CAST "base", uri);
+    }
 }
 #endif /* LIBXML_TREE_ENABLED */
 

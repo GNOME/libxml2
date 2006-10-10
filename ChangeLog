@@ -1,3 +1,8 @@
+Tue Oct 10 10:33:43 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.py python/types.c: applied patch from Ross Reedstrom,
+	  Brian West and Stefan Anca to add XPointer suport to the Python bindings
+
 Fri Sep 29 11:13:59 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: fixed a comment

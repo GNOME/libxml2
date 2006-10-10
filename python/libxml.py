@@ -552,10 +552,17 @@ def nodeWrap(o):
     return xmlNode(_obj=o)
 
 def xpathObjectRet(o):
-    if type(o) == type([]) or type(o) == type(()):
-        ret = map(lambda x: nodeWrap(x), o)
+    otype = type(o)
+    if otype == type([]):
+        ret = map(xpathObjectRet, o)
         return ret
-    return o
+    elif otype == type(()):
+        ret = map(xpathObjectRet, o)
+        return tuple(ret)
+    elif otype == type('') or otype == type(0) or otype == type(0.0):
+        return o
+    else:
+        return nodeWrap(o)
 
 #
 # register an XPath function

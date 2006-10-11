@@ -1,3 +1,8 @@
+Wed Oct 11 11:27:37 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: remove the build path recorded in the python
+	  shared module as Peter Breitenlohner pointed out, should fix #346022
+
 Wed Oct 11 11:14:51 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied patch from Mikhail Zabaluev fixing the conditions

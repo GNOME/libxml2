@@ -25,7 +25,7 @@ EXTRA_DIST = 			\
 	libxml2-python-api.xml	\
 	$(DOCS)
 
-libxml2mod_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -module -avoid-version -L$(top_builddir)/.libs
+libxml2mod_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -module -avoid-version 
 
 if WITH_PYTHON
 mylibs = \

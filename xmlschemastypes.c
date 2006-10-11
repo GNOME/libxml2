@@ -5715,6 +5715,8 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		if ((dec.frac == 0) || (dec.frac == dec.total))
 		    bufsize++;
 		buf = xmlMalloc(bufsize);
+		if (buf == NULL)
+		    return(-1);
 		offs = buf;
 		if (dec.sign)
 		    *offs++ = '-';
@@ -5788,6 +5790,8 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		if (dec.sign)
 		    bufsize++;
 		*retValue = xmlMalloc(bufsize);
+		if (*retValue == NULL)
+		    return(-1);
 		if (dec.hi != 0) {
 		    if (dec.sign)
 			snprintf((char *) *retValue, bufsize,
@@ -5863,7 +5867,9 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 	case XML_SCHEMAS_GMONTH: {
 		/* TODO: Unclear in XML Schema 1.0 */
 		/* TODO: What to do with the timezone? */
-		*retValue = xmlMalloc(5);
+		*retValue = xmlMalloc(6);
+		if (*retValue == NULL)
+		    return(-1);
 		snprintf((char *) *retValue, 6, "--%02u",
 		    val->value.date.mon);
 	    }
@@ -5872,6 +5878,8 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		/* TODO: Unclear in XML Schema 1.0 */
 		/* TODO: What to do with the timezone? */
 		*retValue = xmlMalloc(6);
+		if (*retValue == NULL)
+		    return(-1);
 		snprintf((char *) *retValue, 6, "---%02u",
 		    val->value.date.day);
 	    }
@@ -5880,6 +5888,8 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		/* TODO: Unclear in XML Schema 1.0 */
 		/* TODO: What to do with the timezone? */
 		*retValue = xmlMalloc(8);
+		if (*retValue == NULL)
+		    return(-1);
 		snprintf((char *) *retValue, 8, "--%02u-%02u",
 		    val->value.date.mon, val->value.date.day);
 	    }
@@ -6024,6 +6034,8 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 	    *retValue = BAD_CAST xmlStrdup(BAD_CAST "???");
 	    return (1);
     }
+    if (*retValue == NULL)
+	return(-1);
     return (0);
 }
 

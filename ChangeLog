@@ -1,3 +1,9 @@
+Wed Oct 11 14:32:00 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* libxml-2.0.pc.in: applied patch from Mikhail Zabaluev to separate
+	  library flags for shared and static builds, fixes #344594. If this
+	  bites you, use xml2-config.
+
 Wed Oct 11 11:27:37 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: remove the build path recorded in the python

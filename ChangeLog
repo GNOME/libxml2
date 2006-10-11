@@ -1,3 +1,8 @@
+Wed Oct 11 23:11:58 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlversion.h.in: fix comment on versions
+	* xmlmemory.c: do not spend too much time digging in dumped memory
+
 Wed Oct 11 18:40:00 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed a weird error where validity context whould not

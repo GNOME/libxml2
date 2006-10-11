@@ -577,7 +577,7 @@ xmlMemBlocks(void) {
 static void
 xmlMemContentShow(FILE *fp, MEMHDR *p)
 {
-    int i,j,len = p->mh_size;
+    int i,j,k,len = p->mh_size;
     const char *buf = (const char *) HDR_2_CLIENT(p);
 
     if (p == NULL) {
@@ -594,13 +594,15 @@ xmlMemContentShow(FILE *fp, MEMHDR *p)
 	    MEMHDR *q;
 	    void *cur;
 
-            for (j = 0;j < len -3;j += 4) {
+            for (j = 0;(j < len -3) && (j < 40);j += 4) {
 		cur = *((void **) &buf[j]);
 		q = CLIENT_2_HDR(cur);
 		p = memlist;
+		k = 0;
 		while (p != NULL) {
 		    if (p == q) break;
 		    p = p->mh_next;
+		    if (k++ > 100) break;
 		}
 		if ((p != NULL) && (p == q)) {
 		    fprintf(fp, " pointer to #%lu at index %d",

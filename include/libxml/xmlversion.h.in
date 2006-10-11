@@ -34,14 +34,14 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 /**
  * LIBXML_VERSION:
  *
- * the version number: 1.2.3 value is 1002003
+ * the version number: 1.2.3 value is 10203
  */
 #define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
 
 /**
  * LIBXML_VERSION_STRING:
  *
- * the version number string, 1.2.3 value is "1002003"
+ * the version number string, 1.2.3 value is "10203"
  */
 #define LIBXML_VERSION_STRING "@LIBXML_VERSION_NUMBER@"
 

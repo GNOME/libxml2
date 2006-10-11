@@ -33,20 +33,24 @@ $(TESTDIRS) Tests/Metadata/$(NISTTESTDEF_2) Tests/Metadata/$(MSTTESTDEF) Tests/M
 	   mkdir Tests ; \
 	   fi)
 	-@(if [ ! -f $(TARBALL_2) ] ; then \
+	   if [ -f $(srcdir)/$(TARBALL_2) ] ; then \
+	   $(LN_S) $(srcdir)/$(TARBALL_2) $(TARBALL_2) ; else \
 	   echo "Missing the test suite description (2004-01-14), trying to fetch it" ;\
-	   if [ -x /usr/bin/wget ] ; then \
-	   wget $(TARBALLURL_2) ; \
-	   else echo "Dont' know how to fetch $(TARBALLURL_2)" ; fi ; fi)
+	   if [ -x "$(WGET)" ] ; then \
+	   $(WGET) $(TARBALLURL_2) ; \
+	   else echo "Dont' know how to fetch $(TARBALLURL_2)" ; fi ; fi ; fi)
 	-@(if [ -f $(TARBALL_2) ] ; then \
 	   echo -n "extracting test data (NIST)..." ; \
 	   $(TAR) -xzf $(TARBALL_2) '*/Datatypes' '*/Metadata/$(NISTTESTDEF_2)' ; \
 	   echo "done" ; \
 	   fi)
 	-@(if [ ! -f $(TARBALL) ] ; then \
+	   if [ -f $(srcdir)/$(TARBALL) ] ; then \
+	   $(LN_S) $(srcdir)/$(TARBALL) $(TARBALL) ; else \
 	   echo "Missing the test suite description (2002-01-16), trying to fetch it" ;\
-	   if [ -x /usr/bin/wget ] ; then \
-	   wget $(TARBALLURL) ; \
-	   else echo "Dont' know how to fetch $(TARBALLURL)" ; fi ; fi)
+	   if [ -x "$(WGET)" ] ; then \
+	   $(WGET) $(TARBALLURL) ; \
+	   else echo "Dont' know how to fetch $(TARBALLURL)" ; fi ; fi ; fi)
 	-@(if [ -f $(TARBALL) ] ; then \
 	   echo -n "extracting test data (Sun, Microsoft)..." ; \
 	   $(TAR) -C Tests -xzf $(TARBALL) '*/suntest' '*/msxsdtest' '*/$(MSTESTDEF)' '*/$(SUNTESTDEF)' ; \
@@ -92,21 +96,21 @@ sun-test.py: Tests/Metadata/$(SUNTESTDEF) xstc-to-python.xsl
 pytests: $(PYSCRIPTS) $(TESTDIRS)
 	-@(if [ -x nist-test.py -a -d $(TESTDIR)/Datatypes ] ; then 		\
 	   echo "## Running XML Schema tests (NIST)";			\
-	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
+	   PYTHONPATH="../python:../python/.libs:..:../.libs:$$PYTHONPATH" ;\
 	   export PYTHONPATH;						\
 	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;	\
 	   export LD_LIBRARY_PATH;					\
 	   $(CHECKER) $(PYTHON) nist-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x sun-test.py -a -d $(TESTDIR)/suntest ] ; then 			\
 	   echo "## Running Schema tests (Sun)";				\
-	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
+	   PYTHONPATH="../python:../python/.libs:..:../.libs:$$PYTHONPATH" ;\
 	   export PYTHONPATH;						\
 	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;	\
 	   export LD_LIBRARY_PATH;					\
 	   $(CHECKER) $(PYTHON) sun-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x ms-test.py -a -d $(TESTDIR)/msxsdtest ] ; then 			\
 	   echo "## Running Schema tests (Microsoft)";			\
-	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
+	   PYTHONPATH="../python:../python/.libs:..:../.libs:$$PYTHONPATH" ;\
 	   export PYTHONPATH;						\
 	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;	\
 	   export LD_LIBRARY_PATH;					\

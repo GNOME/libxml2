@@ -1,3 +1,9 @@
+Wed Oct 11 10:24:58 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xstc/Makefile.am: applied patch from Peter Breitenlohner
+	  for wget detection and fix of a Python path problem, should fix
+	  #340993
+
 Tue Oct 10 22:02:29 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/entities.h entities.c SAX2.c parser.c: trying to

@@ -1,3 +1,8 @@
+Wed Oct 11 11:14:51 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied patch from Mikhail Zabaluev fixing the conditions
+	  of unescaping from URL to filepath, should fix #344588.
+
 Wed Oct 11 10:24:58 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xstc/Makefile.am: applied patch from Peter Breitenlohner

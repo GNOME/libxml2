@@ -2463,7 +2463,8 @@ __xmlOutputBufferCreateFilename(const char *URI,
 	/*
 	 * try to limit the damages of the URI unescaping code.
 	 */
-	if (puri->scheme != NULL)
+	if ((puri->scheme == NULL) ||
+	    (xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
 	    unescaped = xmlURIUnescapeString(URI, 0, NULL);
 	xmlFreeURI(puri);
     }

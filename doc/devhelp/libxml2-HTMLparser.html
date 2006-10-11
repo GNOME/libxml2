@@ -95,6 +95,7 @@ void	<a href="#htmlFreeParserCtxt">htmlFreeParserCtxt</a>		(<a href="libxml2-HTM
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlReadFile">htmlReadFile</a>		(const char * filename, <br/>					 const char * encoding, <br/>					 int options);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadFile">htmlCtxtReadFile</a>	(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br/>					 const char * filename, <br/>					 const char * encoding, <br/>					 int options);
 int	<a href="#htmlParseDocument">htmlParseDocument</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);
+<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlNewParserCtxt">htmlNewParserCtxt</a>	(void);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlSAXParseDoc">htmlSAXParseDoc</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 const char * encoding, <br/>					 <a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br/>					 void * userData);
 int	<a href="#htmlCtxtUseOptions">htmlCtxtUseOptions</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br/>					 int options);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlParseDoc">htmlParseDoc</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 const char * encoding);
@@ -294,6 +295,10 @@ int	<a href="#htmlCtxtUseOptions">htmlCtxtUseOptions</a>		(<a href="libxml2-HTML
         <div class="refsect2" lang="en"><h3><a name="htmlIsScriptAttribute"/>htmlIsScriptAttribute ()</h3><pre class="programlisting">int	htmlIsScriptAttribute		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br/>
 </pre><p>Check if an <a href="libxml2-SAX.html#attribute">attribute</a> is of content type Script</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>an <a href="libxml2-SAX.html#attribute">attribute</a> name</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 is the <a href="libxml2-SAX.html#attribute">attribute</a> is a script 0 otherwise</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="htmlNewParserCtxt"/>htmlNewParserCtxt ()</h3><pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	htmlNewParserCtxt	(void)<br/>
+</pre><p>Allocate and initialize a new parser context.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the <a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> or NULL in case of allocation error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlNodeStatus"/>htmlNodeStatus ()</h3><pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	htmlNodeStatus		(const <a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> node, <br/>					 int legacy)<br/>
 </pre><p>Checks whether the tree node is valid. Experimental (the author only uses the HTML enhancements in a SAX parser)</p>

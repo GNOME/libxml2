@@ -1951,6 +1951,7 @@
     <function name="htmlIsScriptAttribute ()" link="libxml2-HTMLparser.html#htmlIsScriptAttribute"/>
     <function name="htmlNewDoc ()" link="libxml2-HTMLtree.html#htmlNewDoc"/>
     <function name="htmlNewDocNoDtD ()" link="libxml2-HTMLtree.html#htmlNewDocNoDtD"/>
+    <function name="htmlNewParserCtxt ()" link="libxml2-HTMLparser.html#htmlNewParserCtxt"/>
     <function name="htmlNodeDump ()" link="libxml2-HTMLtree.html#htmlNodeDump"/>
     <function name="htmlNodeDumpFile ()" link="libxml2-HTMLtree.html#htmlNodeDumpFile"/>
     <function name="htmlNodeDumpFileFormat ()" link="libxml2-HTMLtree.html#htmlNodeDumpFileFormat"/>
@@ -2636,6 +2637,7 @@
     <function name="xmlParserValidityError ()" link="libxml2-xmlerror.html#xmlParserValidityError"/>
     <function name="xmlParserValidityWarning ()" link="libxml2-xmlerror.html#xmlParserValidityWarning"/>
     <function name="xmlParserWarning ()" link="libxml2-xmlerror.html#xmlParserWarning"/>
+    <function name="xmlPathToURI ()" link="libxml2-uri.html#xmlPathToURI"/>
     <function name="xmlPatternFromRoot ()" link="libxml2-pattern.html#xmlPatternFromRoot"/>
     <function name="xmlPatternGetStreamCtxt ()" link="libxml2-pattern.html#xmlPatternGetStreamCtxt"/>
     <function name="xmlPatternMatch ()" link="libxml2-pattern.html#xmlPatternMatch"/>
@@ -3297,6 +3299,7 @@
     <function name="xmlXIncludeNewContext ()" link="libxml2-xinclude.html#xmlXIncludeNewContext"/>
     <function name="xmlXIncludeProcess ()" link="libxml2-xinclude.html#xmlXIncludeProcess"/>
     <function name="xmlXIncludeProcessFlags ()" link="libxml2-xinclude.html#xmlXIncludeProcessFlags"/>
+    <function name="xmlXIncludeProcessFlagsData ()" link="libxml2-xinclude.html#xmlXIncludeProcessFlagsData"/>
     <function name="xmlXIncludeProcessNode ()" link="libxml2-xinclude.html#xmlXIncludeProcessNode"/>
     <function name="xmlXIncludeProcessTree ()" link="libxml2-xinclude.html#xmlXIncludeProcessTree"/>
     <function name="xmlXIncludeProcessTreeFlags ()" link="libxml2-xinclude.html#xmlXIncludeProcessTreeFlags"/>

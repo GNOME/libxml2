@@ -49,6 +49,7 @@ ignored_files = {
   "runtest.c": "regression tests program",
   "runsuite.c": "regression tests program",
   "tst.c": "not part of the library",
+  "test.c": "not part of the library",
   "testdso.c": "test for dynamid shared libraries",
 }
 

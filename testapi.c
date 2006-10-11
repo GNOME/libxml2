@@ -2125,6 +2125,33 @@ test_htmlIsScriptAttribute(void) {
 
 
 static int
+test_htmlNewParserCtxt(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_HTML_ENABLED)
+    int mem_base;
+    htmlParserCtxtPtr ret_val;
+
+        mem_base = xmlMemBlocks();
+
+        ret_val = htmlNewParserCtxt();
+        desret_htmlParserCtxtPtr(ret_val);
+        call_tests++;
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlNewParserCtxt",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf("\n");
+        }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_htmlNodeStatus(void) {
     int test_ret = 0;
 
@@ -2723,7 +2750,7 @@ static int
 test_HTMLparser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing HTMLparser : 31 of 37 functions ...\n");
+    if (quiet == 0) printf("Testing HTMLparser : 32 of 38 functions ...\n");
     test_ret += test_UTF8ToHtml();
     test_ret += test_htmlAttrAllowed();
     test_ret += test_htmlAutoCloseTag();
@@ -2742,6 +2769,7 @@ test_HTMLparser(void) {
     test_ret += test_htmlHandleOmittedElem();
     test_ret += test_htmlIsAutoClosed();
     test_ret += test_htmlIsScriptAttribute();
+    test_ret += test_htmlNewParserCtxt();
     test_ret += test_htmlNodeStatus();
     test_ret += test_htmlParseCharRef();
     test_ret += test_htmlParseChunk();
@@ -24095,6 +24123,38 @@ test_xmlParseURIReference(void) {
 
 
 static int
+test_xmlPathToURI(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlChar * ret_val;
+    xmlChar * path; /* the resource locator in a filesystem notation */
+    int n_path;
+
+    for (n_path = 0;n_path < gen_nb_const_xmlChar_ptr;n_path++) {
+        mem_base = xmlMemBlocks();
+        path = gen_const_xmlChar_ptr(n_path, 0);
+
+        ret_val = xmlPathToURI((const xmlChar *)path);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_const_xmlChar_ptr(n_path, (const xmlChar *)path, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlPathToURI",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_path);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlPrintURI(void) {
     int test_ret = 0;
 
@@ -24247,7 +24307,7 @@ static int
 test_uri(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing uri : 9 of 14 functions ...\n");
+    if (quiet == 0) printf("Testing uri : 10 of 15 functions ...\n");
     test_ret += test_xmlBuildRelativeURI();
     test_ret += test_xmlBuildURI();
     test_ret += test_xmlCanonicPath();
@@ -24256,6 +24316,7 @@ test_uri(void) {
     test_ret += test_xmlParseURI();
     test_ret += test_xmlParseURIRaw();
     test_ret += test_xmlParseURIReference();
+    test_ret += test_xmlPathToURI();
     test_ret += test_xmlPrintURI();
     test_ret += test_xmlSaveUri();
     test_ret += test_xmlURIEscape();
@@ -26889,6 +26950,54 @@ test_xmlXIncludeProcessFlags(void) {
     return(test_ret);
 }
 
+
+static int
+test_xmlXIncludeProcessFlagsData(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_XINCLUDE_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlDocPtr doc; /* an XML document */
+    int n_doc;
+    int flags; /* a set of xmlParserOption used for parsing XML includes */
+    int n_flags;
+    void * data; /* application data that will be passed to the parser context in the _private field of the parser context(s) */
+    int n_data;
+
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+    for (n_data = 0;n_data < gen_nb_userdata;n_data++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        flags = gen_int(n_flags, 1);
+        data = gen_userdata(n_data, 2);
+
+        ret_val = xmlXIncludeProcessFlagsData(doc, flags, data);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_int(n_flags, flags, 1);
+        des_userdata(n_data, data, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlXIncludeProcessFlagsData",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_flags);
+            printf(" %d", n_data);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
 #ifdef LIBXML_XINCLUDE_ENABLED
 
 #define gen_nb_xmlXIncludeCtxtPtr 1
@@ -27060,10 +27169,11 @@ static int
 test_xinclude(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xinclude : 6 of 8 functions ...\n");
+    if (quiet == 0) printf("Testing xinclude : 7 of 9 functions ...\n");
     test_ret += test_xmlXIncludeNewContext();
     test_ret += test_xmlXIncludeProcess();
     test_ret += test_xmlXIncludeProcessFlags();
+    test_ret += test_xmlXIncludeProcessFlagsData();
     test_ret += test_xmlXIncludeProcessNode();
     test_ret += test_xmlXIncludeProcessTree();
     test_ret += test_xmlXIncludeProcessTreeFlags();
@@ -33356,7 +33466,7 @@ test_xmlSaveTree(void) {
     long ret_val;
     xmlSaveCtxtPtr ctxt; /* a document saving context */
     int n_ctxt;
-    xmlNodePtr node; /* a document */
+    xmlNodePtr node; /* the top node of the subtree to save */
     int n_node;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSaveCtxtPtr;n_ctxt++) {

@@ -425,7 +425,7 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathCastToString"/>xmlXPathCastToString ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlXPathCastToString	(<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val)<br/>
 </pre><p>Converts an existing object to its string() equivalent</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>an XPath object</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the string value of the object, NULL in case of error. A new string is allocated only if needed (@val isn't a string object).</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>an XPath object</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the allocated string value of the object, NULL in case of error. It's up to the caller to free the string memory with xmlFree().</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathCmpNodes"/>xmlXPathCmpNodes ()</h3><pre class="programlisting">int	xmlXPathCmpNodes		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node1, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node2)<br/>
 </pre><p>Compare two nodes w.r.t document order</p>

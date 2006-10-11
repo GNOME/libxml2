@@ -5350,7 +5350,7 @@ fail:
     }
 #endif /* LIBXML_REGEXP_ENABLED */
     if ((warn) && ((ret != 1) && (ret != -3))) {
-	if ((ctxt != NULL) && (ctxt->warning != NULL)) {
+	if (ctxt != NULL) {
 	    char expr[5000];
 	    char list[5000];
 

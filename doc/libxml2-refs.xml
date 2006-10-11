@@ -1562,6 +1562,7 @@
     <reference name='htmlIsScriptAttribute' href='html/libxml-HTMLparser.html#htmlIsScriptAttribute'/>
     <reference name='htmlNewDoc' href='html/libxml-HTMLtree.html#htmlNewDoc'/>
     <reference name='htmlNewDocNoDtD' href='html/libxml-HTMLtree.html#htmlNewDocNoDtD'/>
+    <reference name='htmlNewParserCtxt' href='html/libxml-HTMLparser.html#htmlNewParserCtxt'/>
     <reference name='htmlNodeDump' href='html/libxml-HTMLtree.html#htmlNodeDump'/>
     <reference name='htmlNodeDumpFile' href='html/libxml-HTMLtree.html#htmlNodeDumpFile'/>
     <reference name='htmlNodeDumpFileFormat' href='html/libxml-HTMLtree.html#htmlNodeDumpFileFormat'/>
@@ -2469,6 +2470,7 @@
     <reference name='xmlParserValidityWarning' href='html/libxml-xmlerror.html#xmlParserValidityWarning'/>
     <reference name='xmlParserVersion' href='html/libxml-globals.html#xmlParserVersion'/>
     <reference name='xmlParserWarning' href='html/libxml-xmlerror.html#xmlParserWarning'/>
+    <reference name='xmlPathToURI' href='html/libxml-uri.html#xmlPathToURI'/>
     <reference name='xmlPattern' href='html/libxml-pattern.html#xmlPattern'/>
     <reference name='xmlPatternFlags' href='html/libxml-pattern.html#xmlPatternFlags'/>
     <reference name='xmlPatternFromRoot' href='html/libxml-pattern.html#xmlPatternFromRoot'/>
@@ -3255,6 +3257,7 @@
     <reference name='xmlXIncludeNewContext' href='html/libxml-xinclude.html#xmlXIncludeNewContext'/>
     <reference name='xmlXIncludeProcess' href='html/libxml-xinclude.html#xmlXIncludeProcess'/>
     <reference name='xmlXIncludeProcessFlags' href='html/libxml-xinclude.html#xmlXIncludeProcessFlags'/>
+    <reference name='xmlXIncludeProcessFlagsData' href='html/libxml-xinclude.html#xmlXIncludeProcessFlagsData'/>
     <reference name='xmlXIncludeProcessNode' href='html/libxml-xinclude.html#xmlXIncludeProcessNode'/>
     <reference name='xmlXIncludeProcessTree' href='html/libxml-xinclude.html#xmlXIncludeProcessTree'/>
     <reference name='xmlXIncludeProcessTreeFlags' href='html/libxml-xinclude.html#xmlXIncludeProcessTreeFlags'/>
@@ -5084,6 +5087,7 @@
       <ref name='htmlIsScriptAttribute'/>
       <ref name='htmlNewDoc'/>
       <ref name='htmlNewDocNoDtD'/>
+      <ref name='htmlNewParserCtxt'/>
       <ref name='htmlNodeDump'/>
       <ref name='htmlNodeDumpFile'/>
       <ref name='htmlNodeDumpFileFormat'/>
@@ -6011,6 +6015,7 @@
       <ref name='xmlParserValidityWarning'/>
       <ref name='xmlParserVersion'/>
       <ref name='xmlParserWarning'/>
+      <ref name='xmlPathToURI'/>
       <ref name='xmlPattern'/>
       <ref name='xmlPatternFlags'/>
       <ref name='xmlPatternFromRoot'/>
@@ -6797,6 +6802,7 @@
       <ref name='xmlXIncludeNewContext'/>
       <ref name='xmlXIncludeProcess'/>
       <ref name='xmlXIncludeProcessFlags'/>
+      <ref name='xmlXIncludeProcessFlagsData'/>
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
       <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -7116,6 +7122,7 @@
       <ref name='htmlCreateFileParserCtxt'/>
       <ref name='htmlCreateMemoryParserCtxt'/>
       <ref name='htmlCreatePushParserCtxt'/>
+      <ref name='htmlNewParserCtxt'/>
     </type>
     <type name='htmlStatus'>
       <ref name='htmlAttrAllowed'/>
@@ -7282,6 +7289,7 @@
       <ref name='xmlParseSystemLiteral'/>
       <ref name='xmlParseVersionInfo'/>
       <ref name='xmlParseVersionNum'/>
+      <ref name='xmlPathToURI'/>
       <ref name='xmlSaveUri'/>
       <ref name='xmlScanName'/>
       <ref name='xmlSchemaCollapseString'/>
@@ -8121,6 +8129,7 @@
       <ref name='xmlParseElementContentDecl'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlParseExternalSubset'/>
+      <ref name='xmlPathToURI'/>
       <ref name='xmlPatterncompile'/>
       <ref name='xmlReadDoc'/>
       <ref name='xmlReaderForDoc'/>
@@ -8724,6 +8733,7 @@
       <ref name='xmlThrDefSetStructuredErrorFunc'/>
       <ref name='xmlValidityErrorFunc'/>
       <ref name='xmlValidityWarningFunc'/>
+      <ref name='xmlXIncludeProcessFlagsData'/>
       <ref name='xmlXPathFuncLookupFunc'/>
       <ref name='xmlXPathRegisterFuncLookup'/>
       <ref name='xmlXPathRegisterVariableLookup'/>
@@ -9140,6 +9150,7 @@
       <ref name='xmlXIncludeNewContext'/>
       <ref name='xmlXIncludeProcess'/>
       <ref name='xmlXIncludeProcessFlags'/>
+      <ref name='xmlXIncludeProcessFlagsData'/>
       <ref name='xmlXPathNewContext'/>
       <ref name='xmlXPathOrderDocElems'/>
       <ref name='xmlXPtrNewContext'/>
@@ -10528,6 +10539,7 @@
       <ref name='htmlHandleOmittedElem'/>
       <ref name='htmlIsAutoClosed'/>
       <ref name='htmlIsScriptAttribute'/>
+      <ref name='htmlNewParserCtxt'/>
       <ref name='htmlNodePtr'/>
       <ref name='htmlNodeStatus'/>
       <ref name='htmlParseCharRef'/>
@@ -12055,6 +12067,7 @@
       <ref name='xmlParseURI'/>
       <ref name='xmlParseURIRaw'/>
       <ref name='xmlParseURIReference'/>
+      <ref name='xmlPathToURI'/>
       <ref name='xmlPrintURI'/>
       <ref name='xmlSaveUri'/>
       <ref name='xmlURI'/>
@@ -12171,6 +12184,7 @@
       <ref name='xmlXIncludeNewContext'/>
       <ref name='xmlXIncludeProcess'/>
       <ref name='xmlXIncludeProcessFlags'/>
+      <ref name='xmlXIncludeProcessFlagsData'/>
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
       <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -14157,6 +14171,7 @@
           <ref name='xmlTextWriterEndDocument'/>
         </word>
         <word name='Allocate'>
+          <ref name='htmlNewParserCtxt'/>
           <ref name='xmlNanoFTPNewCtxt'/>
           <ref name='xmlNewDocElementContent'/>
           <ref name='xmlNewElementContent'/>
@@ -14781,6 +14796,7 @@
         </word>
         <word name='Constructs'>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='Content'>
           <ref name='xmlNodeGetBase'/>
@@ -18098,6 +18114,7 @@
           <ref name='xmlXIncludeNewContext'/>
           <ref name='xmlXIncludeProcess'/>
           <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -18671,6 +18688,7 @@
           <ref name='xmlXPathObjectCopy'/>
         </word>
         <word name='allocation'>
+          <ref name='htmlNewParserCtxt'/>
           <ref name='xmlBufferSetAllocationScheme'/>
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlMallocAtomicLoc'/>
@@ -18949,6 +18967,7 @@
           <ref name='xmlParseAttValue'/>
           <ref name='xmlSAX2ResolveEntity'/>
           <ref name='xmlSetExternalEntityLoader'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
         </word>
         <word name='applications'>
           <ref name='xmlSetGenericErrorFunc'/>
@@ -19723,6 +19742,7 @@
         </word>
         <word name='checked'>
           <ref name='XML_SCHEMAS_ELEM_INTERNAL_CHECKED'/>
+          <ref name='_xmlEntity'/>
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlNodeGetLang'/>
           <ref name='xmlNodeGetSpacePreserve'/>
@@ -20304,6 +20324,7 @@
         </word>
         <word name='construction'>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='constructs'>
           <ref name='xmlExpParse'/>
@@ -21464,6 +21485,7 @@
         </word>
         <word name='duplicate'>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='duplicated'>
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
@@ -22028,6 +22050,9 @@
         <word name='exposing'>
           <ref name='xmlTextReaderRead'/>
         </word>
+        <word name='expressing'>
+          <ref name='xmlPathToURI'/>
+        </word>
         <word name='expressions'>
           <ref name='LIBXML_EXPR_ENABLED'/>
           <ref name='LIBXML_REGEXP_ENABLED'/>
@@ -22139,6 +22164,7 @@
           <ref name='xmlShellLoad'/>
           <ref name='xmlXIncludeProcess'/>
           <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -22156,6 +22182,7 @@
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlCheckFilename'/>
           <ref name='xmlFileOpen'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='fallback'>
           <ref name='XINCLUDE_FALLBACK'/>
@@ -22229,6 +22256,7 @@
           <ref name='XML_SKIP_IDS'/>
           <ref name='_xmlError'/>
           <ref name='xmlParseMisc'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
         <word name='fields'>
@@ -22246,6 +22274,7 @@
           <ref name='htmlReadFile'/>
           <ref name='xmlCanonicPath'/>
           <ref name='xmlCtxtReadFile'/>
+          <ref name='xmlPathToURI'/>
           <ref name='xmlReadFile'/>
           <ref name='xmlReaderForFile'/>
           <ref name='xmlReaderNewFile'/>
@@ -22505,6 +22534,7 @@
         <word name='freeing'>
           <ref name='xmlCanonicPath'/>
           <ref name='xmlParserInputDeallocate'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='frees'>
           <ref name='xmlBufferFree'/>
@@ -23013,6 +23043,9 @@
         <word name='htmlNodePtr'>
           <ref name='htmlNodeStatus'/>
         </word>
+        <word name='htmlParserCtxtPtr'>
+          <ref name='htmlNewParserCtxt'/>
+        </word>
         <word name='htmlParserOption'>
           <ref name='htmlCtxtReadDoc'/>
           <ref name='htmlCtxtReadFd'/>
@@ -23230,6 +23263,7 @@
           <ref name='xmlCleanupOutputCallbacks'/>
           <ref name='xmlPopInputCallbacks'/>
           <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
           <ref name='xmlXIncludeSetFlags'/>
         </word>
@@ -23504,6 +23538,7 @@
           <ref name='XML_DETECT_IDS'/>
           <ref name='XML_SKIP_IDS'/>
           <ref name='htmlNewDocNoDtD'/>
+          <ref name='htmlNewParserCtxt'/>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlCreateEnumeration'/>
@@ -23608,6 +23643,7 @@
         </word>
         <word name='insufficient'>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='intact'>
           <ref name='xmlParseURIRaw'/>
@@ -23707,7 +23743,6 @@
         </word>
         <word name='isn'>
           <ref name='xmlRegisterCharEncodingHandler'/>
-          <ref name='xmlXPathCastToString'/>
         </word>
         <word name='isnan'>
           <ref name='xmlXPathIsNaN'/>
@@ -24191,6 +24226,7 @@
           <ref name='xlinkExtendedLinkFunk'/>
           <ref name='xlinkExtendedLinkSetFunk'/>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
           <ref name='xmlSAX2SetDocumentLocator'/>
           <ref name='xmlTextReaderLocatorBaseURI'/>
           <ref name='xmlTextReaderLocatorLineNumber'/>
@@ -24869,7 +24905,6 @@
           <ref name='xmlTextReaderCurrentDoc'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
-          <ref name='xmlXPathCastToString'/>
           <ref name='xmlXPathPopBoolean'/>
           <ref name='xmlXPathPopExternal'/>
           <ref name='xmlXPathPopNodeSet'/>
@@ -25204,6 +25239,7 @@
         </word>
         <word name='occupied'>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='occur'>
           <ref name='XML_SCHEMAS_TYPE_VARIETY_ABSENT'/>
@@ -25695,6 +25731,7 @@
           <ref name='xmlParseAttValue'/>
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetStructuredErrorFunc'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXPathEvalFunc'/>
           <ref name='xmlXPathIntersection'/>
         </word>
@@ -25726,6 +25763,7 @@
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlNormalizeWindowsPath'/>
           <ref name='xmlParserGetDirectory'/>
+          <ref name='xmlPathToURI'/>
           <ref name='xmlShellPwd'/>
           <ref name='xmlShellValidate'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
@@ -27119,6 +27157,7 @@
         <word name='responsible'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlCanonicPath'/>
+          <ref name='xmlPathToURI'/>
         </word>
         <word name='restored'>
           <ref name='xmlTextReaderSetErrorHandler'/>
@@ -27326,6 +27365,7 @@
           <ref name='xmlGcMemGet'/>
           <ref name='xmlMemGet'/>
           <ref name='xmlNanoHTTPFetch'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlShell'/>
           <ref name='xmlShellSave'/>
         </word>
@@ -27836,6 +27876,7 @@
           <ref name='xmlValidatePushCData'/>
           <ref name='xmlXIncludeProcess'/>
           <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -28369,6 +28410,7 @@
           <ref name='xmlStringLenDecodeEntities'/>
           <ref name='xmlXIncludeProcess'/>
           <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -28866,6 +28908,7 @@
           <ref name='xmlPopInputCallbacks'/>
           <ref name='xmlPushInput'/>
           <ref name='xmlReconciliateNs'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlSetTreeDoc'/>
         </word>
         <word name='total'>
@@ -29591,6 +29634,7 @@
           <ref name='xmlMemShow'/>
           <ref name='xmlXIncludeProcess'/>
           <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -30158,6 +30202,7 @@
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlTextReaderValue'/>
+          <ref name='xmlXPathCastToString'/>
         </word>
         <word name='xmlFreeDoc'>
           <ref name='xmlTextReaderCurrentDoc'/>

@@ -9,6 +9,7 @@
 htmlCreateMemoryParserCtxt()
 htmlHandleOmittedElem()
 htmlIsScriptAttribute()
+htmlNewParserCtxt()
 htmlParseDoc()
 htmlParseFile()
 htmlReadDoc()
@@ -189,6 +190,7 @@ createURI()
 normalizeURIPath()
 parseURI()
 parseURIRaw()
+pathToURI()
 
 # functions from module valid
 newValidCtxt()

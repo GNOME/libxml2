@@ -209,26 +209,25 @@ static const char *IOerr[] = {
 static wchar_t *
 __xmlIOWin32UTF8ToWChar(const char *u8String)
 {
-	wchar_t *wString = NULL;
+    wchar_t *wString = NULL;
 
-	if (u8String)
-	{
-		int wLen = MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,u8String,-1,NULL,0);
-		if (wLen)
-		{
-			wString = xmlMalloc(wLen * sizeof(wchar_t));
-			if (wString)
-			{
-				if (MultiByteToWideChar(CP_UTF8,0,u8String,-1,wString,wLen) == 0)
-				{
-					xmlFree(wString);
-					wString = NULL;
-				}
-			}
-		}
-	}
-	
-	return wString;
+    if (u8String) {
+        int wLen =
+            MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, u8String,
+                                -1, NULL, 0);
+        if (wLen) {
+            wString = xmlMalloc(wLen * sizeof(wchar_t));
+            if (wString) {
+                if (MultiByteToWideChar
+                    (CP_UTF8, 0, u8String, -1, wString, wLen) == 0) {
+                    xmlFree(wString);
+                    wString = NULL;
+                }
+            }
+        }
+    }
+
+    return wString;
 }
 #endif
 
@@ -669,8 +668,10 @@ xmlWrapStatNative(const char *path,struct stat *info)
 #endif
 }
 
-static int   (* xmlWrapStat)(const char *,struct stat *) = xmlWrapStatNative;
-static FILE* (* xmlWrapOpen)(const char *,int mode)      = xmlWrapOpenNative;
+typedef int (* xmlWrapStatFunc) (const char *f, struct stat *s);
+static xmlWrapStatFunc xmlWrapStat = xmlWrapStatNative;
+typedef FILE* (* xmlWrapOpenFunc)(const char *f,int mode);
+static xmlWrapOpenFunc = xmlWrapOpenNative;
 
 /**
  * xmlInitPlatformSpecificIo:
@@ -678,8 +679,8 @@ static FILE* (* xmlWrapOpen)(const char *,int mode)      = xmlWrapOpenNative;
  * Initialize platform specific features.
  */
 static void
-xmlInitPlatformSpecificIo
-(void) {
+xmlInitPlatformSpecificIo(void)
+{
     static int xmlPlatformIoInitialized = 0;
     OSVERSIONINFO osvi;
 
@@ -2105,8 +2106,7 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
  * Registers the default compiled-in I/O handlers.
  */
 void
-xmlRegisterDefaultInputCallbacks
-(void) {
+xmlRegisterDefaultInputCallbacks(void) {
     if (xmlInputCallbackInitialized)
 	return;
 
@@ -2140,8 +2140,7 @@ xmlRegisterDefaultInputCallbacks
  * Registers the default compiled-in I/O handlers.
  */
 void
-xmlRegisterDefaultOutputCallbacks
-(void) {
+xmlRegisterDefaultOutputCallbacks (void) {
     if (xmlOutputCallbackInitialized)
 	return;
 

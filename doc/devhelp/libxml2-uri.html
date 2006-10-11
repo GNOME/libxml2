@@ -52,6 +52,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlParseURI">xmlParseURI</a>		(const char * str);
 <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlCreateURI">xmlCreateURI</a>		(void);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlURIEscapeStr">xmlURIEscapeStr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * list);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlPathToURI">xmlPathToURI</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCanonicPath">xmlCanonicPath</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path);
 void	<a href="#xmlFreeURI">xmlFreeURI</a>			(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri);
 int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri, <br/>					 const char * str);
@@ -121,6 +122,10 @@ int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-
         <div class="refsect2" lang="en"><h3><a name="xmlParseURIReference"/>xmlParseURIReference ()</h3><pre class="programlisting">int	xmlParseURIReference		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri, <br/>					 const char * str)<br/>
 </pre><p>Parse an URI <a href="libxml2-SAX.html#reference">reference</a> string and fills in the appropriate fields of the @uri structure URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>uri</tt></i>:</span></td><td>pointer to an URI structure</td></tr><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the string to analyze</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 or the error code</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlPathToURI"/>xmlPathToURI ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlPathToURI		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path)<br/>
+</pre><p>Constructs an URI expressing the existing path</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>path</tt></i>:</span></td><td>the resource locator in a filesystem notation</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a new URI, or a duplicate of the path parameter if the construction fails. The caller is responsible for freeing the memory occupied by the returned string. If there is insufficient memory available, or the argument is NULL, the function returns NULL.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlPrintURI"/>xmlPrintURI ()</h3><pre class="programlisting">void	xmlPrintURI			(FILE * stream, <br/>					 <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri)<br/>
 </pre><p>Prints the URI in the stream @stream.</p>

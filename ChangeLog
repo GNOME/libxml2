@@ -1,3 +1,10 @@
+Wed Oct 11 18:40:00 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed a weird error where validity context whould not
+	  show up if warnings were disabled pointed out by Bob Stayton
+	* xmlIO.c doc/generator.py: cleanup and fix to regenerate the docs
+	* doc//* testapi.c: rebuilt the docs
+
 Wed Oct 11 14:32:00 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* libxml-2.0.pc.in: applied patch from Mikhail Zabaluev to separate

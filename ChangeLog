@@ -1,3 +1,8 @@
+Thu Oct 12 14:52:38 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix a first arg error in SAX callback pointed out by
+	  Mike Hommey, and another one still hanging around. Should fix #342737
+
 Wed Oct 11 23:11:58 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlversion.h.in: fix comment on versions

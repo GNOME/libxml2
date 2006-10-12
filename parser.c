@@ -6376,7 +6376,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 			if ((ctxt->inSubset == 0) &&
 		            (ctxt->sax != NULL) &&
 		            (ctxt->sax->reference != NULL)) {
-			    ctxt->sax->reference(ctxt, name);
+			    ctxt->sax->reference(ctxt->userData, name);
 			}
 		    }
 		    ctxt->valid = 0;
@@ -10967,7 +10967,8 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      */
 
     if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
-	input = ctxt->sax->resolveEntity(ctxt, ExternalID, systemIdCanonic);
+	input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID,
+	                                 systemIdCanonic);
     if (input == NULL) {
         if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);

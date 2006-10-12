@@ -2362,7 +2362,8 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     /*
      * Check for xml:space value.
      */
-    if ((ctxt->space == NULL) || (*(ctxt->space) == 1))
+    if ((ctxt->space == NULL) || (*(ctxt->space) == 1) ||
+        (*(ctxt->space) == -2))
 	return(0);
 
     /*
@@ -3506,9 +3507,13 @@ get_more_space:
 			    if (ctxt->sax->ignorableWhitespace != NULL)
 				ctxt->sax->ignorableWhitespace(ctxt->userData,
 						       tmp, nbchar);
-			} else if (ctxt->sax->characters != NULL)
-			    ctxt->sax->characters(ctxt->userData,
-						  tmp, nbchar);
+			} else {
+			    if (ctxt->sax->characters != NULL)
+				ctxt->sax->characters(ctxt->userData,
+						      tmp, nbchar);
+			    if (*ctxt->space == -1)
+			        *ctxt->space = -2;
+			}
 		    } else if ((ctxt->sax != NULL) &&
 		               (ctxt->sax->characters != NULL)) {
 			ctxt->sax->characters(ctxt->userData,
@@ -3555,9 +3560,13 @@ get_more:
 		        if (ctxt->sax->ignorableWhitespace != NULL)
 			    ctxt->sax->ignorableWhitespace(ctxt->userData,
 							   tmp, nbchar);
-		    } else if (ctxt->sax->characters != NULL)
-			ctxt->sax->characters(ctxt->userData,
-					      tmp, nbchar);
+		    } else {
+		        if (ctxt->sax->characters != NULL)
+			    ctxt->sax->characters(ctxt->userData,
+						  tmp, nbchar);
+			if (*ctxt->space == -1)
+			    *ctxt->space = -2;
+		    }
                     line = ctxt->input->line;
                     col = ctxt->input->col;
 		} else if (ctxt->sax != NULL) {
@@ -3640,6 +3649,10 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 		} else {
 		    if (ctxt->sax->characters != NULL)
 			ctxt->sax->characters(ctxt->userData, buf, nbchar);
+		    if ((ctxt->sax->characters !=
+		         ctxt->sax->ignorableWhitespace) &&
+			(*ctxt->space == -1))
+			*ctxt->space = -2;
 		}
 	    }
 	    nbchar = 0;
@@ -3664,6 +3677,9 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	    } else {
 		if (ctxt->sax->characters != NULL)
 		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
+		if ((ctxt->sax->characters != ctxt->sax->ignorableWhitespace) &&
+		    (*ctxt->space == -1))
+		    *ctxt->space = -2;
 	    }
 	}
     }
@@ -8499,6 +8515,8 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 
     if (ctxt->spaceNr == 0)
 	spacePush(ctxt, -1);
+    else if (*ctxt->space == -2)
+	spacePush(ctxt, -1);
     else
 	spacePush(ctxt, *ctxt->space);
 
@@ -9814,6 +9832,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    }
 		}
 		if (ctxt->spaceNr == 0)
+		    spacePush(ctxt, -1);
+		else if (*ctxt->space == -2)
 		    spacePush(ctxt, -1);
 		else
 		    spacePush(ctxt, *ctxt->space);

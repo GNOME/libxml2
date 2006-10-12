@@ -1,3 +1,9 @@
+Thu Oct 12 18:21:18 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed the heuristic used when trying to detect mixed-content
+	  elememts if the parser wants to treat ignorable whitespaces 
+	  in a non-standard way, should fix bug #300263
+
 Thu Oct 12 14:52:38 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix a first arg error in SAX callback pointed out by

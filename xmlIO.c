@@ -671,7 +671,7 @@ xmlWrapStatNative(const char *path,struct stat *info)
 typedef int (* xmlWrapStatFunc) (const char *f, struct stat *s);
 static xmlWrapStatFunc xmlWrapStat = xmlWrapStatNative;
 typedef FILE* (* xmlWrapOpenFunc)(const char *f,int mode);
-static xmlWrapOpenFunc = xmlWrapOpenNative;
+static xmlWrapOpenFunc xmlWrapOpen = xmlWrapOpenNative;
 
 /**
  * xmlInitPlatformSpecificIo:

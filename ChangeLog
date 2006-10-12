@@ -1,3 +1,7 @@
+Thu Oct 12 23:07:43 CEST 2006 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlIO.c: fix Windows compile - missing xmlWrapOpen.
+
 Thu Oct 12 18:21:18 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed the heuristic used when trying to detect mixed-content

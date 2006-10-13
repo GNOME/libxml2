@@ -1,3 +1,10 @@
+Fri Oct 13 12:27:22 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed xmlIOParseDTD handling of @input in error case,
+	  Should fix #335085
+	* testapi.c: reset the http_proxy env variable to not waste time
+	  on regression tests
+
 Thu Oct 12 23:07:43 CEST 2006 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlIO.c: fix Windows compile - missing xmlWrapOpen.

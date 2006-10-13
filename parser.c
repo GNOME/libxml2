@@ -10827,7 +10827,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  * Load and parse a DTD
  * 
  * Returns the resulting xmlDtdPtr or NULL in case of error.
- * @input will be freed at parsing end.
+ * @input will be freed by the function in any case.
  */
 
 xmlDtdPtr
@@ -10843,6 +10843,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(input);
 	return(NULL);
     }
 
@@ -10864,6 +10865,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     pinput = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (pinput == NULL) {
         if (sax != NULL) ctxt->sax = NULL;
+        xmlFreeParserInputBuffer(input);
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }

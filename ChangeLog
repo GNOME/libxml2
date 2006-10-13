@@ -2,6 +2,8 @@ Fri Oct 13 18:30:55 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fix a Relax-NG bug related to element content processing,
 	  fixes bug #302836
+	* test/relaxng/302836.rng test/relaxng/302836_0.xml
+	  result/relaxng/302836*: added to regression tests
 
 Fri Oct 13 14:42:44 CEST 2006 Daniel Veillard <daniel@veillard.com>
 

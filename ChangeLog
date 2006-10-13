@@ -1,3 +1,8 @@
+Fri Oct 13 18:30:55 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fix a Relax-NG bug related to element content processing,
+	  fixes bug #302836
+
 Fri Oct 13 14:42:44 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix a problem in xmlSplitQName resulting in bug #334669

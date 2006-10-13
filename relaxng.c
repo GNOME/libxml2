@@ -9899,8 +9899,10 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 if ((ctxt->flags & FLAGS_IGNORABLE) == 0) {
                     xmlRelaxNGDumpValidError(ctxt);
                     ret = 0;
+#if 0
                 } else {
                     ret = -2;
+#endif
                 }
             } else {
                 if (ctxt->errNr > errNr)

@@ -5728,6 +5728,7 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     if (ctxt == NULL)
         return;
 
+    xmlInitParser();
     dict = ctxt->dict;
 
     while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
@@ -5915,6 +5916,7 @@ htmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int opti
     if (cur == NULL)
         return (NULL);
 
+    xmlInitParser();
     ctxt = xmlCreateDocParserCtxt(cur);
     if (ctxt == NULL)
         return (NULL);
@@ -5936,6 +5938,7 @@ htmlReadFile(const char *filename, const char *encoding, int options)
 {
     htmlParserCtxtPtr ctxt;
 
+    xmlInitParser();
     ctxt = htmlCreateFileParserCtxt(filename, encoding);
     if (ctxt == NULL)
         return (NULL);
@@ -5959,9 +5962,11 @@ htmlReadMemory(const char *buffer, int size, const char *URL, const char *encodi
 {
     htmlParserCtxtPtr ctxt;
 
+    xmlInitParser();
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL)
         return (NULL);
+    htmlDefaultSAXHandlerInit();
     if (ctxt->sax != NULL)
         memcpy(ctxt->sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandlerV1));
     return (htmlDoRead(ctxt, URL, encoding, options, 0));
@@ -5988,6 +5993,7 @@ htmlReadFd(int fd, const char *URL, const char *encoding, int options)
     if (fd < 0)
         return (NULL);
 
+    xmlInitParser();
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
@@ -6029,6 +6035,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 
     if (ioread == NULL)
         return (NULL);
+    xmlInitParser();
 
     input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
                                          XML_CHAR_ENCODING_NONE);

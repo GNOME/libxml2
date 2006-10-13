@@ -1,3 +1,13 @@
+Sat Oct 14 00:31:49 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: added --html --memory to test htmlReadMemory to 
+	  test #321632
+	* HTMLparser.c: added various initialization calls which may help 
+	  #321632 but not conclusive
+	* testapi.c tree.c include/libxml/tree.h: fixed compilation with
+	  --with-minimum --with-sax1 and --with-minimum --with-schemas
+	  fixing #326442
+
 Fri Oct 13 18:30:55 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fix a Relax-NG bug related to element content processing,

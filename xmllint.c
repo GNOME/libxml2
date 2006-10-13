@@ -2089,6 +2089,26 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
         }
     }
 #endif /* LIBXML_PUSH_ENABLED */
+#ifdef HAVE_SYS_MMAN_H
+    else if ((html) && (memory)) {
+	int fd;
+	struct stat info;
+	const char *base;
+	if (stat(filename, &info) < 0) 
+	    return;
+	if ((fd = open(filename, O_RDONLY)) < 0)
+	    return;
+	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
+	if (base == (void *) MAP_FAILED)
+	    return;
+
+	doc = htmlReadMemory((char *) base, info.st_size, filename,
+	                     NULL, options);
+	    
+	munmap((char *) base, info.st_size);
+	close(fd);
+    }
+#endif
     else if (html) {
 	doc = htmlReadFile(filename, NULL, options);
     }
@@ -2203,6 +2223,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 			                filename, NULL, options);
 	        
 	    munmap((char *) base, info.st_size);
+	    close(fd);
 #endif
 #ifdef LIBXML_VALID_ENABLED
 	} else if (valid) {

@@ -2492,10 +2492,12 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	buffer[len] = 0;
     }
     
-    /* nasty but well=formed
     if ((c == ':') && (*cur == 0)) {
+        if (buffer != NULL)
+	    xmlFree(buffer);
+	*prefix = NULL;
 	return(xmlStrdup(name));
-    } */
+    }
 
     if (buffer == NULL)
 	ret = xmlStrndup(buf, len);

@@ -1,3 +1,7 @@
+Sat Oct 14 10:46:46 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixing bug #344390 with xmlReconciliateNs
+
 Sat Oct 14 00:31:49 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: added --html --memory to test htmlReadMemory to 

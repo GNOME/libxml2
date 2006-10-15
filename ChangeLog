@@ -1,3 +1,13 @@
+Sun Oct 15 22:31:42 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix the patch for unreproductable #343000 but
+	  also fix a line/column keeping error
+	* result/errors/attr1.xml.err result/errors/attr2.xml.err
+	  result/errors/name.xml.err result/errors/name2.xml.err 
+	  result/schemas/anyAttr-processContents-err1_0_0.err 
+	  result/schemas/bug312957_1_0.err: affected lines in error output
+	  of the regression tests
+
 Sat Oct 14 10:46:46 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixing bug #344390 with xmlReconciliateNs

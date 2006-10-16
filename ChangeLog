@@ -1,3 +1,9 @@
+Mon Oct 16 15:14:53 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fix #348252 if the document clains to be in a
+	  different encoding in the meta tag and it's obviously wrong,
+	  don't screw up the end of the content.
+
 Mon Oct 16 11:32:09 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fix a chunking and script bug #347708

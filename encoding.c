@@ -1613,6 +1613,12 @@ xmlFindCharEncodingHandler(const char *name) {
     /* check whether iconv can handle this */
     icv_in = iconv_open("UTF-8", name);
     icv_out = iconv_open(name, "UTF-8");
+    if (icv_in == (iconv_t) -1) {
+        icv_in = iconv_open("UTF-8", upper);
+    }
+    if (icv_out == (iconv_t) -1) {
+	icv_out = iconv_open(upper, "UTF-8");
+    }
     if ((icv_in != (iconv_t) -1) && (icv_out != (iconv_t) -1)) {
 	    enc = (xmlCharEncodingHandlerPtr)
 	          xmlMalloc(sizeof(xmlCharEncodingHandler));

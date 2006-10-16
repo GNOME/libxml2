@@ -9,6 +9,7 @@ examples.xml: index.py *.c
 	-@($(srcdir)/index.py)
 
 index.html: examples.xml examples.xsl
+	-@(touch index.html)
 	-@(xsltproc examples.xsl examples.xml && echo "Rebuilt web page" && xmllint --valid --noout index.html)
 
 install-data-local: 

@@ -1047,7 +1047,7 @@ htmlInitAutoClose(void) {
     for (indx = 0;indx < 100;indx ++) htmlStartCloseIndex[indx] = NULL;
     indx = 0;
     while ((htmlStartClose[i] != NULL) && (indx < 100 - 1)) {
-        htmlStartCloseIndex[indx++] = &htmlStartClose[i];
+        htmlStartCloseIndex[indx++] = (const char**) &htmlStartClose[i];
 	while (htmlStartClose[i] != NULL) i++;
 	i++;
     }

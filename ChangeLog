@@ -1,3 +1,9 @@
+Mon Oct 16 09:51:05 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: remove a warning
+	* encoding.c: check with uppercase for AIX iconv() should fix #352644
+	* doc/examples/Makefile.am: partially handle one bug report
+
 Sun Oct 15 22:31:42 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix the patch for unreproductable #343000 but

@@ -98,6 +98,9 @@
 #ifdef LIBXML_C14N_ENABLED
 #include <libxml/c14n.h>
 #endif
+#ifdef LIBXML_OUTPUT_ENABLED
+#include <libxml/xmlsave.h>
+#endif
 
 #ifndef XML_XML_DEFAULT_CATALOG
 #define XML_XML_DEFAULT_CATALOG "file:///etc/xml/catalog"
@@ -133,6 +136,7 @@ static int nowrap = 0;
 static int format = 0;
 static const char *output = NULL;
 static int compress = 0;
+static int oldout = 0;
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_VALID_ENABLED
 static int valid = 0;
@@ -2464,48 +2468,71 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    write(1, result, len);
 		    xmlFree(result);
 		}
+
 	    } else
 #endif /* HAVE_SYS_MMAN_H */
 	    if (compress) {
 		xmlSaveFile(output ? output : "-", doc);
-	    }
-	    else if (encoding != NULL) {
-	        if ( format ) {
-		    ret = xmlSaveFormatFileEnc(output ? output : "-", doc,
-		                               encoding, 1);
-		}
-		else {
-		    ret = xmlSaveFileEnc(output ? output : "-", doc, encoding);
-		}
-		if (ret < 0) {
-		    fprintf(stderr, "failed save to %s\n",
-		            output ? output : "-");
-		    progresult = XMLLINT_ERR_OUT;
-		}
-	    }
-	    else if (format) {
-		ret = xmlSaveFormatFile(output ? output : "-", doc, 1);
-		if (ret < 0) {
-		    fprintf(stderr, "failed save to %s\n",
-		            output ? output : "-");
-		    progresult = XMLLINT_ERR_OUT;
-		}
-	    }
-	    else {
-		FILE *out;
-		if (output == NULL)
-		    out = stdout;
-		else {
-		    out = fopen(output,"wb");
-		}
-		if (out != NULL) {
-		    if (xmlDocDump(out, doc) < 0)
-		        progresult = XMLLINT_ERR_OUT;
-
-		    if (output != NULL)
-			fclose(out);
+	    } else if (oldout) {
+	        if (encoding != NULL) {
+		    if ( format ) {
+			ret = xmlSaveFormatFileEnc(output ? output : "-", doc,
+						   encoding, 1);
+		    }
+		    else {
+			ret = xmlSaveFileEnc(output ? output : "-", doc,
+			                     encoding);
+		    }
+		    if (ret < 0) {
+			fprintf(stderr, "failed save to %s\n",
+				output ? output : "-");
+			progresult = XMLLINT_ERR_OUT;
+		    }
+		} else if (format) {
+		    ret = xmlSaveFormatFile(output ? output : "-", doc, 1);
+		    if (ret < 0) {
+			fprintf(stderr, "failed save to %s\n",
+				output ? output : "-");
+			progresult = XMLLINT_ERR_OUT;
+		    }
 		} else {
-		    fprintf(stderr, "failed to open %s\n", output);
+		    FILE *out;
+		    if (output == NULL)
+			out = stdout;
+		    else {
+			out = fopen(output,"wb");
+		    }
+		    if (out != NULL) {
+			if (xmlDocDump(out, doc) < 0)
+			    progresult = XMLLINT_ERR_OUT;
+
+			if (output != NULL)
+			    fclose(out);
+		    } else {
+			fprintf(stderr, "failed to open %s\n", output);
+			progresult = XMLLINT_ERR_OUT;
+		    }
+		}
+	    } else {
+	        xmlSaveCtxtPtr ctxt;
+		int saveOpts = 0;
+
+                if (format)
+		    saveOpts |= XML_SAVE_FORMAT;
+
+		if (output == NULL)
+		    ctxt = xmlSaveToFd(1, encoding, saveOpts);
+		else
+		    ctxt = xmlSaveToFilename(output, encoding, saveOpts);
+
+		if (ctxt != NULL) {
+		    if (xmlSaveDoc(ctxt, doc) < 0) {
+			fprintf(stderr, "failed save to %s\n",
+				output ? output : "-");
+			progresult = XMLLINT_ERR_OUT;
+		    }
+		    xmlSaveClose(ctxt);
+		} else {
 		    progresult = XMLLINT_ERR_OUT;
 		}
 	    }

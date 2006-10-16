@@ -1,3 +1,10 @@
+Tue Oct 17 01:21:37 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: started to switch xmllint to use xmlSaveDoc to test
+	  #342556
+	* xmlsave.c: fixed #342556 easy and a whole set of problems with
+	  encodings, BOM and xmlSaveDoc()
+
 Mon Oct 16 15:14:53 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fix #348252 if the document clains to be in a

@@ -1,3 +1,7 @@
+Mon Oct 16 11:32:09 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fix a chunking and script bug #347708
+
 Mon Oct 16 09:51:05 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: remove a warning

@@ -2707,7 +2707,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	cur = CUR_CHAR(l);
     }
 
-    if (!(IS_CHAR_CH(cur))) {
+    if ((!(IS_CHAR_CH(cur))) && (!((cur == 0) && (ctxt->progressive)))) {
 	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
 	                "Invalid char in CDATA 0x%X\n", cur);
 	NEXT;
@@ -4940,9 +4940,17 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    /*
 		     * Handle SCRIPT/STYLE separately
 		     */
-		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '<', '/', 0, 0) < 0))
-			goto done;
+		    if (!terminate) {
+		        int idx;
+			xmlChar val;
+
+			idx = htmlParseLookupSequence(ctxt, '<', '/', 0, 0);
+			if (idx < 0)
+			    goto done;
+		        val = in->cur[idx + 2];
+			if (val == 0) /* bad cut of input */
+			    goto done;
+		    }
 		    htmlParseScript(ctxt);
 		    if ((cur == '<') && (next == '/')) {
 			ctxt->instate = XML_PARSER_END_TAG;
@@ -5380,6 +5388,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);
 #endif
     }
+    ctxt->progressive = 1;
 
     return(ctxt);
 }

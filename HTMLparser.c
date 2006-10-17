@@ -5864,6 +5864,7 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
         ctxt->keepBlanks = 1;
     if (options & HTML_PARSE_RECOVER) {
         ctxt->recovery = 1;
+	options -= HTML_PARSE_RECOVER;
     } else
         ctxt->recovery = 0;
     if (options & HTML_PARSE_COMPACT) {

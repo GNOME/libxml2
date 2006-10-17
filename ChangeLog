@@ -1,3 +1,8 @@
+Tue Oct 17 22:19:02 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fix one problem found in htmlCtxtUseOptions()
+	  and pointed in #340591
+
 Tue Oct 17 22:04:31 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed teh 2 stupid bugs affecting htmlReadDoc() and

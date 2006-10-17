@@ -4807,6 +4807,11 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
     int start = -1;
     int end = -1;
 
+    if (CUR == '\0') {
+        ERROR("Expecting ']'");
+	return;
+    }
+
     if ((CUR == '&') && (NXT(1) == '#')) {
 	end = start = xmlFAParseCharRef(ctxt);
         xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
@@ -4897,7 +4902,7 @@ xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
 	    xmlFAParseCharRange(ctxt);
 	}
     } while ((CUR != ']') && (CUR != '^') && (CUR != '-') &&
-	     (ctxt->error == 0));
+             (CUR != 0) && (ctxt->error == 0));
 }
 
 /**

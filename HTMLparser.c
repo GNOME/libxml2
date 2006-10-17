@@ -3235,12 +3235,11 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
         NEXT;
 	SKIP_BLANKS;
 	val = htmlParseAttValue(ctxt);
-	/******
-    } else {
-        * TODO : some attribute must have values, some may not
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->warning(ctxt->userData,
-	       "No value for attribute %s\n", name); */
+    } else if (htmlIsBooleanAttr(name)) {
+        /*
+	 * assume a minimized attribute
+	 */
+	val = xmlStrdup(name);
     }
 
     *value = val;

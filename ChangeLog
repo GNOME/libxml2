@@ -1,3 +1,11 @@
+Tue Oct 17 18:12:34 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixing HTML minimized attribute values to be generated
+	  internally if not present, fixes bug #332124
+	* result/HTML/doc2.htm.sax result/HTML/doc3.htm.sax 
+	  result/HTML/wired.html.sax: this affects the SAX event strem for
+	  a few test cases
+
 Tue Oct 17 17:56:31 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixing HTML entities in attributes parsing bug #362552

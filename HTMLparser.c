@@ -4347,7 +4347,8 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
  * Returns the new parser context or NULL
  */
 static htmlParserCtxtPtr
-htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
+htmlCreateDocParserCtxt(const xmlChar *cur,
+                        const char *encoding ATTRIBUTE_UNUSED) {
     int len;
     htmlParserCtxtPtr ctxt;
 
@@ -5936,7 +5937,7 @@ htmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int opti
         return (NULL);
 
     xmlInitParser();
-    ctxt = xmlCreateDocParserCtxt(cur);
+    ctxt = htmlCreateDocParserCtxt(cur, NULL);
     if (ctxt == NULL)
         return (NULL);
     return (htmlDoRead(ctxt, URL, encoding, options, 0));
@@ -6060,7 +6061,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
                                          XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
-    ctxt = xmlNewParserCtxt();
+    ctxt = htmlNewParserCtxt();
     if (ctxt == NULL) {
         xmlFreeParserInputBuffer(input);
         return (NULL);

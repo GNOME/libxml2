@@ -1,3 +1,9 @@
+Tue Oct 17 17:56:31 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixing HTML entities in attributes parsing bug #362552
+	* result/HTML/entities2.html* test/HTML/entities2.html: added to
+	  the regression suite
+
 Tue Oct 17 01:21:37 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: started to switch xmllint to use xmlSaveDoc to test

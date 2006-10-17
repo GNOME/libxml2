@@ -14856,7 +14856,7 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     pctxt = xmlXPathNewParserContext(str, ctxt);
     xmlXPathEvalExpr(pctxt);
 
-    if (*pctxt->cur != 0) {
+    if ((*pctxt->cur != 0) || (pctxt->error != XPATH_EXPRESSION_OK)) {
 	xmlXPatherror(pctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
 	res = NULL;
     } else {

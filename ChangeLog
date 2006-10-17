@@ -1,3 +1,7 @@
+Tue Oct 17 21:39:23 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: applied patch from Olaf Walkowiak which should fix #334104
+
 Tue Oct 17 18:12:34 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixing HTML minimized attribute values to be generated

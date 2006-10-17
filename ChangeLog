@@ -1,3 +1,8 @@
+Tue Oct 17 22:32:42 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: applied patch from Marius Konitzer to avoid
+	  leaking in xmlNewInputFromFile() in case of HTTP redirection
+
 Tue Oct 17 22:19:02 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fix one problem found in htmlCtxtUseOptions()

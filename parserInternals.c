@@ -1473,6 +1473,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     else
 	URI = xmlStrdup((xmlChar *) inputStream->filename);
     directory = xmlParserGetDirectory((const char *) URI);
+    if (inputStream->filename != NULL) xmlFree((char *)inputStream->filename);
     inputStream->filename = (char *) xmlCanonicPath((const xmlChar *) URI);
     if (URI != NULL) xmlFree((char *) URI);
     inputStream->directory = directory;

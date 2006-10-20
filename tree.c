@@ -4534,12 +4534,13 @@ xmlDocGetRootElement(xmlDocPtr doc) {
 /**
  * xmlDocSetRootElement:
  * @doc:  the document
- * @root:  the new document root element
+ * @root:  the new document root element, if root is NULL no action is taken,
+ *         to remove a node from a document use xmlUnlinkNode(root) instead.
  *
  * Set the root element of the document (doc->children is a list
  * containing possibly comments, PIs, etc ...).
  *
- * Returns the old root element if any was found
+ * Returns the old root element if any was found, NULL if root was NULL
  */
 xmlNodePtr
 xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {

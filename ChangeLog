@@ -1,3 +1,8 @@
+Fri Oct 20 14:55:47 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fix comment for xmlDocSetRootElement c.f. #351981
+	* xmllint.c: order XPath elements when using --shell
+
 Tue Oct 17 23:23:26 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: applied fix from Christopher Boumenot for bug

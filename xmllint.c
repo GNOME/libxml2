@@ -2305,8 +2305,10 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     /*
      * shell interaction
      */
-    if (shell)  
+    if (shell) {
+        xmlXPathOrderDocElems(doc);
         xmlShell(doc, filename, xmlShellReadline, stdout);
+    }
 #endif
 #endif
 

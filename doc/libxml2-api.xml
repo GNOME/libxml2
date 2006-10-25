@@ -3954,13 +3954,13 @@
       <info>Whether the DTD validation support is configured in</info>
     </macro>
     <macro name='LIBXML_VERSION' file='xmlversion'>
-      <info>the version number: 1.2.3 value is 1002003</info>
+      <info>the version number: 1.2.3 value is 10203</info>
     </macro>
     <macro name='LIBXML_VERSION_EXTRA' file='xmlversion'>
       <info>extra version information, used to show a CVS compilation</info>
     </macro>
     <macro name='LIBXML_VERSION_STRING' file='xmlversion'>
-      <info>the version number string, 1.2.3 value is &quot;1002003&quot;</info>
+      <info>the version number string, 1.2.3 value is &quot;10203&quot;</info>
     </macro>
     <macro name='LIBXML_WRITER_ENABLED' file='xmlversion'>
       <info>Whether the xmlWriter saving interface is configured in</info>
@@ -9365,9 +9365,9 @@ Could we use @subtypes for this?'/>
     <function name='xmlDocSetRootElement' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Set the root element of the document (doc-&gt;children is a list containing possibly comments, PIs, etc ...).</info>
-      <return type='xmlNodePtr' info='the old root element if any was found'/>
+      <return type='xmlNodePtr' info='the old root element if any was found, NULL if root was NULL'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
-      <arg name='root' type='xmlNodePtr' info='the new document root element'/>
+      <arg name='root' type='xmlNodePtr' info='the new document root element, if root is NULL no action is taken, to remove a node from a document use xmlUnlinkNode(root) instead.'/>
     </function>
     <function name='xmlDumpAttributeDecl' file='valid' module='valid'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -9969,7 +9969,7 @@ Could we use @subtypes for this?'/>
       <arg name='node' type='xmlNodePtr' info='a node'/>
     </function>
     <function name='xmlGetNsList' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED)</cond>
+      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Search all the namespace applying to a given element.</info>
       <return type='xmlNsPtr *' info='an NULL terminated array of all the #xmlNsPtr found that need to be freed by the caller or NULL if no namespace if defined'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -10315,7 +10315,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlIOParseDTD' file='parser' module='parser'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
       <info>Load and parse a DTD</info>
-      <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error. @input will be freed at parsing end.'/>
+      <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error. @input will be freed by the function in any case.'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block or NULL'/>
       <arg name='input' type='xmlParserInputBufferPtr' info='an Input Buffer'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
@@ -16677,7 +16677,7 @@ Could we use @subtypes for this?'/>
       <arg name='elem' type='xmlElementPtr' info='an element definition'/>
     </function>
     <function name='xmlValidateNCName' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED)</cond>
+      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)</cond>
       <info>Check that a value conforms to the lexical space of NCName</info>
       <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='value' type='const xmlChar *' info='the value to check'/>

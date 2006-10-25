@@ -15,6 +15,59 @@ ChangeLog.html
 to the CVS at 
 http://cvs.gnome.org/viewcvs/libxml2/
  code base.There is the list of public releases:
+2.6.27: Oct 25 2006:
+   - Portability fixes: file names on windows (Roland Schwingel, 
+      Emelyanov Alexey), windows compile fixup (Rob Richards), 
+      AIX iconv() is apparently case sensitive
+   - improvements: Python XPath types mapping (Nic Ferrier), XPath optimization
+      (Kasimier), add xmlXPathCompiledEvalToBoolean (Kasimier), Python node
+      equality and comparison (Andreas Pakulat), xmlXPathCollectAndTest
+      improvememt (Kasimier), expose if library was compiled with zlib 
+      support (Andrew Nosenko), cache for xmlSchemaIDCMatcher structs
+      (Kasimier), xmlTextConcat should work with comments and PIs (Rob
+      Richards), export htmlNewParserCtxt needed by Michael Day, refactoring
+      of catalog entity loaders (Michael Day), add XPointer support to 
+      python bindings (Ross Reedstrom, Brian West and Stefan Anca), 
+      try to sort out most file path to URI conversions and xmlPathToUri,
+      add --html --memory case to xmllint
+   - building fix: fix --with-minimum (Felipe Contreras), VMS fix, 
+      const'ification of HTML parser structures (Matthias Clasen),
+      portability fix (Emelyanov Alexey), wget autodetection (Peter
+      Breitenlohner),  remove the build path recorded in the python
+      shared module, separate library flags for shared and static builds
+      (Mikhail Zabaluev), fix --with-minimum --with-sax1 builds, fix
+      --with-minimum --with-schemas builds
+   - bug fix: xmlGetNodePath fix (Kasimier), xmlDOMWrapAdoptNode and
+      attribute (Kasimier), crash when using the recover mode, 
+      xmlXPathEvalExpr problem (Kasimier), xmlXPathCompExprAdd bug (Kasimier),
+      missing destry in xmlFreeRMutex (Andrew Nosenko), XML Schemas fixes
+      (Kasimier), warning on entities processing, XHTML script and style
+      serialization (Kasimier), python generator for long types, bug in
+      xmlSchemaClearValidCtxt (Bertrand Fritsch), xmlSchemaXPathEvaluate
+      allocation bug (Marton Illes), error message end of line (Rob Richards),
+      fix attribute serialization in writer (Rob Richards), PHP4 DTD validation
+      crasher, parser safety patch (Ben Darnell), _private context propagation
+      when parsing entities (with Michael Day), fix entities behaviour when 
+      using SAX, URI to file path fix (Mikhail Zabaluev), disapearing validity
+      context, arg error in SAX callback (Mike Hommey), fix mixed-content
+      autodetect when using --noblanks, fix xmlIOParseDTD error handling,
+      fix bug in xmlSplitQName on special Names, fix Relax-NG element content
+      validation bug, fix xmlReconciliateNs bug, fix potential attribute 
+      XML parsing bug, fix line/column accounting in XML parser, chunking bug
+      in the HTML parser on script, try to detect obviously buggy HTML
+      meta encoding indications, bugs with encoding BOM and xmlSaveDoc, 
+      HTML entities in attributes parsing, HTML minimized attribute values,
+      htmlReadDoc and htmlReadIO were broken, error handling bug in
+      xmlXPathEvalExpression (Olaf Walkowiak), fix a problem in
+      htmlCtxtUseOptions, xmlNewInputFromFile could leak (Marius Konitzer),
+      bug on misformed SSD regexps (Christopher Boumenot)
+      
+   - documentation: warning about XML_PARSE_COMPACT (Kasimier Buchcik),
+      fix xmlXPathCastToString documentation, improve man pages for
+      xmllitn and xmlcatalog (Daniel Leidert), fixed comments of a few
+      functions
+
+
 2.6.26: Jun 6 2006:
    - portability fixes: Python detection (Joseph Sacco), compilation
     error(William Brack and Graham Bennett), LynxOS patch (Olli Savia)

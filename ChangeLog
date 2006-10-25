@@ -1,3 +1,9 @@
+Wed Oct 25 18:04:50 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in testapi.c doc//*: preparing release of
+	  libxml2-2.6.27
+	* include/libxml/tree.h: fix a small problem with preproc flags
+
 Fri Oct 20 14:55:47 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fix comment for xmlDocSetRootElement c.f. #351981

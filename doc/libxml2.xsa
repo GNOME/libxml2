@@ -8,9 +8,20 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.25</version>
-    <last-release> Jun 6 2006:</last-release>
+    <version>2.6.26</version>
+    <last-release> Jun 6 2006</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>Do not use or package 2.6.25</changes>
+    <changes>   - portability fixes: Python detection (Joseph Sacco), compilation
+    error(William Brack and Graham Bennett), LynxOS patch (Olli Savia)
+   - bug fixes: encoding buffer problem, mix of code and data in
+    xmlIO.c(Kjartan Maraas), entities in XSD validation (Kasimier Buchcik),
+    variousXSD validation fixes (Kasimier), memory leak in pattern (Rob
+    Richards andKasimier), attribute with colon in name (Rob Richards), XPath
+    leak inerror reporting (Aleksey Sanin), XInclude text include of
+    selfdocument.
+   - improvements: Xpath optimizations (Kasimier), XPath object
+    cache(Kasimier)
+
+</changes>
   </product>
 </xsa>

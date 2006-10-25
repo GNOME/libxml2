@@ -18455,6 +18455,9 @@
           <ref name='xmlStreamPushAttr'/>
           <ref name='xmlStreamPushNode'/>
         </word>
+        <word name='action'>
+          <ref name='xmlDocSetRootElement'/>
+        </word>
         <word name='activate'>
           <ref name='xmlTextReaderSetParserProp'/>
         </word>
@@ -23617,6 +23620,7 @@
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
           <ref name='xmlCopyElementContent'/>
+          <ref name='xmlDocSetRootElement'/>
           <ref name='xmlFreeElementContent'/>
           <ref name='xmlIsBaseChar'/>
           <ref name='xmlIsBlank'/>
@@ -26914,6 +26918,7 @@
           <ref name='xmlBufferShrink'/>
           <ref name='xmlCatalogRemove'/>
           <ref name='xmlDecodeEntities'/>
+          <ref name='xmlDocSetRootElement'/>
           <ref name='xmlEncodeEntities'/>
           <ref name='xmlHashRemoveEntry'/>
           <ref name='xmlHashRemoveEntry2'/>
@@ -28631,6 +28636,9 @@
         </word>
         <word name='take'>
           <ref name='xmlLockLibrary'/>
+        </word>
+        <word name='taken'>
+          <ref name='xmlDocSetRootElement'/>
         </word>
         <word name='takes'>
           <ref name='xmlSchemaValidateFacetWhtsp'/>
@@ -30754,6 +30762,7 @@
           <ref name='xmlParseURIRaw'/>
         </word>
         <word name='xmlUnlinkNode'>
+          <ref name='xmlDocSetRootElement'/>
           <ref name='xmlFreeNode'/>
         </word>
         <word name='xmlUnlockLibrary'>

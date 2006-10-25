@@ -20010,7 +20010,7 @@ test_xmlDocSetRootElement(void) {
     xmlNodePtr ret_val;
     xmlDocPtr doc; /* the document */
     int n_doc;
-    xmlNodePtr root; /* the new document root element */
+    xmlNodePtr root; /* the new document root element, if root is NULL no action is taken, to remove a node from a document use xmlUnlinkNode(root) instead. */
     int n_root;
 
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
@@ -23593,7 +23593,7 @@ static int
 test_xmlValidateNCName(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
@@ -32057,7 +32057,7 @@ test_xmlTextReaderSchemaValidate(void) {
     return(test_ret);
 }
 
-#if defined(LIBXML_READER_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef LIBXML_READER_ENABLED
 
 #define gen_nb_xmlSchemaValidCtxtPtr 1
 static xmlSchemaValidCtxtPtr gen_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {

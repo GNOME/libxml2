@@ -1,3 +1,7 @@
+Thu Oct 26 10:54:40 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: William spotted an obvious bug
+
 Wed Oct 25 18:04:50 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in testapi.c doc//*: preparing release of

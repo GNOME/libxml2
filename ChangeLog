@@ -1,3 +1,9 @@
+Fri Oct 27 14:54:07 CEST 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied a reworked version of Usamah Malik patch
+	  to avoid growing the parser stack in some autoclose cases, should
+	  fix #361221
+
 Thu Oct 26 10:54:40 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: William spotted an obvious bug

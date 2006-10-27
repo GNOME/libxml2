@@ -2205,6 +2205,38 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
     return(xmlDictLookup(ctxt->dict, loc, i));
 }
 
+
+/**
+ * htmlParseHTMLName_nonInvasive:
+ * @ctxt:  an HTML parser context
+ *
+ * parse an HTML tag or attribute name, note that we convert it to lowercase
+ * since HTML names are not case-sensitive, this doesn't consume the data
+ * from the stream, it's a look-ahead
+ *
+ * Returns the Tag Name parsed or NULL
+ */
+
+static const xmlChar *
+htmlParseHTMLName_nonInvasive(htmlParserCtxtPtr ctxt) {
+    int i = 0;
+    xmlChar loc[HTML_PARSER_BUFFER_SIZE];
+
+    if (!IS_ASCII_LETTER(NXT(1)) && (NXT(1) != '_') &&
+        (NXT(1) != ':')) return(NULL);
+ 
+    while ((i < HTML_PARSER_BUFFER_SIZE) &&
+           ((IS_ASCII_LETTER(NXT(1+i))) || (IS_ASCII_DIGIT(NXT(1+i))) ||
+	   (NXT(1+i) == ':') || (NXT(1+i) == '-') || (NXT(1+i) == '_'))) {
+	if ((NXT(1+i) >= 'A') && (NXT(1+i) <= 'Z')) loc[i] = NXT(1+i) + 0x20;
+        else loc[i] = NXT(1+i);
+	i++;
+    }
+    
+    return(xmlDictLookup(ctxt->dict, loc, i));
+}
+
+
 /**
  * htmlParseName:
  * @ctxt:  an HTML parser context
@@ -3775,6 +3807,7 @@ static void
 htmlParseContent(htmlParserCtxtPtr ctxt) {
     xmlChar *currentNode;
     int depth;
+    const xmlChar *name;
 
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
@@ -3794,6 +3827,31 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    }
 	    continue; /* while */
         }
+
+	else if ((CUR == '<') &&
+	         ((IS_ASCII_LETTER(NXT(1))) ||
+		  (NXT(1) == '_') || (NXT(1) == ':'))) {
+	    name = htmlParseHTMLName_nonInvasive(ctxt);
+	    if (name == NULL) {
+	        htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
+			 "htmlParseStartTag: invalid element name\n",
+			 NULL, NULL);
+	        /* Dump the bogus tag like browsers do */
+ 	        while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
+	            NEXT;
+
+	        if (currentNode != NULL)
+	            xmlFree(currentNode);
+	        return;
+	    }
+
+	    if (ctxt->name != NULL) {
+	        if (htmlCheckAutoClose(name, ctxt->name) == 1) {
+	            htmlAutoClose(ctxt, name);
+	            continue;
+	        }
+	    }	  
+	}
 
 	/*
 	 * Has this node been popped out during parsing of

@@ -1,3 +1,9 @@
+Wed Nov  1 16:33:10 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied documentation patches from Markus Keim
+	* xmlregexp.c: fixed one bug and added a couple of optimisations
+	  while working on bug #362989
+
 Fri Oct 27 14:54:07 CEST 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied a reworked version of Usamah Malik patch

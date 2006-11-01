@@ -145,7 +145,8 @@ typedef enum {
     XML_REGEXP_START_STATE = 1,
     XML_REGEXP_FINAL_STATE,
     XML_REGEXP_TRANS_STATE,
-    XML_REGEXP_SINK_STATE
+    XML_REGEXP_SINK_STATE,
+    XML_REGEXP_UNREACH_STATE
 } xmlRegStateType;
 
 typedef enum {
@@ -1709,6 +1710,8 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 	    continue;
 	if (state->nbTrans != 1)
 	    continue;
+	if (state->type == XML_REGEXP_UNREACH_STATE)
+	    continue;
 	/* is the only transition out a basic transition */
 	if ((state->trans[0].atom == NULL) &&
 	    (state->trans[0].to >= 0) &&
@@ -1731,13 +1734,20 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 		    tmp = ctxt->states[state->transTo[i]];
 		    for (j = 0;j < tmp->nbTrans;j++) {
 			if (tmp->trans[j].to == statenr) {
-			    tmp->trans[j].to = newto;
 #ifdef DEBUG_REGEXP_GRAPH
 			    printf("Changed transition %d on %d to go to %d\n",
 				   j, tmp->no, newto);
 #endif     
+#if 0
+			    tmp->trans[j].to = newto;
                             xmlRegStateAddTransTo(ctxt, ctxt->states[newto],
 			                          tmp->no);
+#endif
+			    tmp->trans[j].to = -1;
+			    xmlRegStateAddTrans(ctxt, tmp, tmp->trans[j].atom,
+			    			ctxt->states[newto],
+					        tmp->trans[j].counter,
+						tmp->trans[j].count);
 			}
 		    }
 		}
@@ -1760,6 +1770,7 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 		/* eliminate the transition completely */
 		state->nbTrans = 0;
 
+                state->type = XML_REGEXP_UNREACH_STATE;
 
 	    }
             
@@ -1779,7 +1790,21 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 
     if (ctxt->states == NULL) return;
 
+    /*
+     * Eliminate simple epsilon transition and the associated unreachable
+     * states.
+     */
     xmlFAEliminateSimpleEpsilonTransitions(ctxt);
+    for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
+	state = ctxt->states[statenr];
+	if ((state != NULL) && (state->type == XML_REGEXP_UNREACH_STATE)) {
+#ifdef DEBUG_REGEXP_GRAPH
+	    printf("Removed unreachable state %d\n", statenr);
+#endif
+	    xmlRegFreeState(state);
+	    ctxt->states[statenr] = NULL;
+	}
+    }
 
     has_epsilon = 0;
 
@@ -1812,8 +1837,9 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 		    printf("Found epsilon trans %d from %d to %d\n",
 			   transnr, statenr, newto);
 #endif
-		    state->mark = XML_REGEXP_MARK_START;
 		    has_epsilon = 1;
+		    state->trans[transnr].to = -2;
+		    state->mark = XML_REGEXP_MARK_START;
 		    xmlFAReduceEpsilonTransitions(ctxt, statenr,
 				      newto, state->trans[transnr].counter);
 		    state->mark = XML_REGEXP_MARK_NORMAL;
@@ -2424,7 +2450,7 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	 * check transitions conflicting with the one looked at
 	 */
 	if (t1->atom == NULL) {
-	    if (t1->to == -1)
+	    if (t1->to < 0)
 		continue;
 	    res = xmlFARecurseDeterminism(ctxt, ctxt->states[t1->to],
 		                           to, atom);
@@ -2875,7 +2901,8 @@ xmlFARegDebugExec(xmlRegExecCtxtPtr exec) {
 	int i;
 	printf(": ");
 	for (i = 0;(i < 3) && (i < exec->inputStackNr);i++)
-	    printf("%s ", exec->inputStack[exec->inputStackNr - (i + 1)]);
+	    printf("%s ", (const char *)
+	           exec->inputStack[exec->inputStackNr - (i + 1)].value);
     } else {
 	printf(": %s", &(exec->inputString[exec->index]));
     }

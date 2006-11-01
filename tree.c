@@ -5199,6 +5199,9 @@ xmlNodeGetContent(xmlNodePtr cur)
  * @content:  the new value of the content
  *
  * Replace the content of a node.
+ * NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity
+ *       references, but XML special chars need to be escaped first by using
+ *       xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().
  */
 void
 xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
@@ -5273,6 +5276,9 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
  * @len:  the size of @content
  *
  * Replace the content of a node.
+ * NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity
+ *       references, but XML special chars need to be escaped first by using
+ *       xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().
  */
 void
 xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
@@ -5344,6 +5350,9 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
  * @len:  the size of @content
  * 
  * Append the extra substring to the node content.
+ * NOTE: In contrast to xmlNodeSetContentLen(), @content is supposed to be
+ *       raw text, so unescaped XML special chars are allowed, entity
+ *       references are not supported.
  */
 void
 xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
@@ -5416,6 +5425,9 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
  * @content:  extra content
  * 
  * Append the extra substring to the node content.
+ * NOTE: In contrast to xmlNodeSetContent(), @content is supposed to be
+ *       raw text, so unescaped XML special chars are allowed, entity
+ *       references are not supported.
  */
 void
 xmlNodeAddContent(xmlNodePtr cur, const xmlChar *content) {

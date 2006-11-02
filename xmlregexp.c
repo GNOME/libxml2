@@ -1738,11 +1738,6 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 			    printf("Changed transition %d on %d to go to %d\n",
 				   j, tmp->no, newto);
 #endif     
-#if 0
-			    tmp->trans[j].to = newto;
-                            xmlRegStateAddTransTo(ctxt, ctxt->states[newto],
-			                          tmp->no);
-#endif
 			    tmp->trans[j].to = -1;
 			    xmlRegStateAddTrans(ctxt, tmp, tmp->trans[j].atom,
 			    			ctxt->states[newto],
@@ -1751,20 +1746,6 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 			}
 		    }
 		}
-#if 0
-	        for (i = 0;i < ctxt->nbStates;i++) {
-		    tmp = ctxt->states[i];
-		    for (j = 0;j < tmp->nbTrans;j++) {
-			if (tmp->trans[j].to == statenr) {
-			    tmp->trans[j].to = newto;
-#ifdef DEBUG_REGEXP_GRAPH
-			    printf("Changed transition %d on %d to go to %d\n",
-				   j, tmp->no, newto);
-#endif     
-			}
-		    }
-		}
-#endif
 		if (state->type == XML_REGEXP_FINAL_STATE)
 		    ctxt->states[newto]->type = XML_REGEXP_FINAL_STATE;
 		/* eliminate the transition completely */
@@ -1809,11 +1790,14 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
     has_epsilon = 0;
 
     /*
-     * build the completed transitions bypassing the epsilons
+     * Build the completed transitions bypassing the epsilons
      * Use a marking algorithm to avoid loops
-     * mark sink states too.
+     * Mark sink states too.
+     * Process from the latests states backward to the start when
+     * there is long cascading epsilon chains this minimize the
+     * recursions and transition compares when adding the new ones
      */
-    for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
+    for (statenr = ctxt->nbStates - 1;statenr >= 0;statenr--) {
 	state = ctxt->states[statenr];
 	if (state == NULL)
 	    continue;

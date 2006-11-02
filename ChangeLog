@@ -1,3 +1,8 @@
+Thu Nov  2 11:29:17 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: another small change on the algorithm for the
+	  elimination of epsilon transitions, should help on #362989 too
+
 Wed Nov  1 16:33:10 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied documentation patches from Markus Keim

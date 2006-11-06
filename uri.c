@@ -2473,6 +2473,24 @@ xmlPathToURI(const xmlChar *path)
     cal = xmlCanonicPath(path);
     if (cal == NULL)
         return(NULL);
+#if defined(_WIN32) && !defined(__CYGWIN__)
+    /* xmlCanonicPath can return an URI on Windows (is that the intended behaviour?) 
+       If 'cal' is a valid URI allready then we are done here, as continuing would make
+       it invalid. */
+    if ((uri = xmlParseURI((const char *) cal)) != NULL) {
+	xmlFreeURI(uri);
+	return cal;
+    }
+    /* 'cal' can contain a relative path with backslashes. If that is processed
+       by xmlSaveURI, they will be escaped and the external entity loader machinery
+       will fail. So convert them to slashes. Misuse 'ret' for walking. */
+    ret = cal;
+    while (*ret != '\0') {
+	if (*ret == '\\')
+	    *ret = '/';
+	ret++;
+    }
+#endif
     memset(&temp, 0, sizeof(temp));
     temp.path = (char *) cal;
     ret = xmlSaveUri(&temp);

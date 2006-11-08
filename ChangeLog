@@ -1,3 +1,8 @@
+Wed Nov  8 10:19:27 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: change htmlCtxtReset() following Michael Day bug
+	  report and suggestion.
+
 Mon Nov  6 09:56:41 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: applied patch from Igor for path conversion on Windows

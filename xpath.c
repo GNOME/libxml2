@@ -12163,6 +12163,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #ifdef DEBUG_STEP
             xmlGenericError(xmlGenericErrorContext, " %s", cur->name);
 #endif
+            
 	    switch (test) {
                 case NODE_TEST_NONE:
 		    total = 0;
@@ -12241,6 +12242,16 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
                         break;
                     }
                 case NODE_TEST_NAME:
+                    if (axis == AXIS_ATTRIBUTE) {
+                        if (cur->type != XML_ATTRIBUTE_NODE)
+			    break;
+		    } else if (axis == AXIS_NAMESPACE) {
+                        if (cur->type != XML_NAMESPACE_DECL)
+			    break;
+		    } else {
+		        if (cur->type != XML_ELEMENT_NODE)
+			    break;
+		    }
                     switch (cur->type) {
                         case XML_ELEMENT_NODE:
                             if (xmlStrEqual(name, cur->name)) {

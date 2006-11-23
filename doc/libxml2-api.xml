@@ -11429,13 +11429,13 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the context in which the entity is called or NULL'/>
     </function>
     <function name='xmlNodeAddContent' file='tree' module='tree'>
-      <info>Append the extra substring to the node content.</info>
+      <info>Append the extra substring to the node content. NOTE: In contrast to xmlNodeSetContent(), @content is supposed to be raw text, so unescaped XML special chars are allowed, entity references are not supported.</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node being modified'/>
       <arg name='content' type='const xmlChar *' info='extra content'/>
     </function>
     <function name='xmlNodeAddContentLen' file='tree' module='tree'>
-      <info>Append the extra substring to the node content.</info>
+      <info>Append the extra substring to the node content. NOTE: In contrast to xmlNodeSetContentLen(), @content is supposed to be raw text, so unescaped XML special chars are allowed, entity references are not supported.</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node being modified'/>
       <arg name='content' type='const xmlChar *' info='extra content'/>
@@ -11517,14 +11517,14 @@ Could we use @subtypes for this?'/>
       <arg name='uri' type='const xmlChar *' info='the new base URI'/>
     </function>
     <function name='xmlNodeSetContent' file='tree' module='tree'>
-      <info>Replace the content of a node.</info>
+      <info>Replace the content of a node. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node being modified'/>
       <arg name='content' type='const xmlChar *' info='the new value of the content'/>
     </function>
     <function name='xmlNodeSetContentLen' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED)</cond>
-      <info>Replace the content of a node.</info>
+      <info>Replace the content of a node. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node being modified'/>
       <arg name='content' type='const xmlChar *' info='the new value of the content'/>

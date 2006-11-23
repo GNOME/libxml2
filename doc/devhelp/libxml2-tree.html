@@ -1288,11 +1288,11 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the text content</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>the text len.</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the new node object.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeAddContent"/>xmlNodeAddContent ()</h3><pre class="programlisting">void	xmlNodeAddContent		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br/>
-</pre><p>Append the extra substring to the node content.</p>
+</pre><p>Append the extra substring to the node content. NOTE: In contrast to xmlNodeSetContent(), @content is supposed to be raw text, so unescaped XML special chars are allowed, entity references are not supported.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being modified</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>extra content</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeAddContentLen"/>xmlNodeAddContentLen ()</h3><pre class="programlisting">void	xmlNodeAddContentLen		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br/>					 int len)<br/>
-</pre><p>Append the extra substring to the node content.</p>
+</pre><p>Append the extra substring to the node content. NOTE: In contrast to xmlNodeSetContentLen(), @content is supposed to be raw text, so unescaped XML special chars are allowed, entity references are not supported.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being modified</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>extra content</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>the size of @content</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeBufGetContent"/>xmlNodeBufGetContent ()</h3><pre class="programlisting">int	xmlNodeBufGetContent		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br/>
@@ -1340,11 +1340,11 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being changed</td></tr><tr><td><span class="term"><i><tt>uri</tt></i>:</span></td><td>the new base URI</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeSetContent"/>xmlNodeSetContent ()</h3><pre class="programlisting">void	xmlNodeSetContent		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br/>
-</pre><p>Replace the content of a node.</p>
+</pre><p>Replace the content of a node. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being modified</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the new value of the content</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeSetContentLen"/>xmlNodeSetContentLen ()</h3><pre class="programlisting">void	xmlNodeSetContentLen		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br/>					 int len)<br/>
-</pre><p>Replace the content of a node.</p>
+</pre><p>Replace the content of a node. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being modified</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the new value of the content</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>the size of @content</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeSetLang"/>xmlNodeSetLang ()</h3><pre class="programlisting">void	xmlNodeSetLang			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang)<br/>

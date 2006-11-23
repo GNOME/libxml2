@@ -1,3 +1,8 @@
+Thu Nov 23 17:11:23 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed a bug where the principal node type of an axis
+	  wasn't tested on name check, fixes bug #377432
+
 Wed Nov  8 10:19:27 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: change htmlCtxtReset() following Michael Day bug

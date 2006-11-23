@@ -14468,6 +14468,8 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseAttValue'/>
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlParseCDSect'/>
@@ -16348,6 +16350,10 @@
           <ref name='xmlNewTextChild'/>
           <ref name='xmlNewTextWriter'/>
           <ref name='xmlNewTextWriterPushParser'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
@@ -18751,6 +18757,8 @@
           <ref name='xmlAutomataNewAllTrans'/>
           <ref name='xmlAutomataNewCounterTrans'/>
           <ref name='xmlIsLetter'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlNodeDump'/>
           <ref name='xmlNodeDumpOutput'/>
           <ref name='xmlParseBalancedChunkMemory'/>
@@ -18769,6 +18777,8 @@
           <ref name='htmlIsAutoClosed'/>
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlNewChild'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseURIRaw'/>
           <ref name='xmlTextReaderConstString'/>
         </word>
@@ -20468,6 +20478,10 @@
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlXPathFreeNodeSetList'/>
         </word>
+        <word name='contrast'>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
+        </word>
         <word name='control'>
           <ref name='_xmlXPathContext'/>
           <ref name='resolveEntity'/>
@@ -21869,6 +21883,8 @@
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseCDSect'/>
           <ref name='xmlParseCharData'/>
           <ref name='xmlSaveUri'/>
@@ -24879,6 +24895,8 @@
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlRegExecErrInfo'/>
@@ -25830,6 +25848,8 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
         </word>
         <word name='pieces'>
           <ref name='xmlParseURIRaw'/>
@@ -26534,6 +26554,8 @@
           <ref name='xmlNamespaceParseNCName'/>
           <ref name='xmlNamespaceParseNSDef'/>
           <ref name='xmlNamespaceParseQName'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlParseCDSect'/>
           <ref name='xmlParserInputBufferGrow'/>
           <ref name='xmlTextWriterWriteFormatRaw'/>
@@ -26755,8 +26777,12 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlNodeBufGetContent'/>
           <ref name='xmlNodeGetContent'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseAttribute'/>
           <ref name='xmlParseCharRef'/>
           <ref name='xmlParseEntityRef'/>
@@ -27147,6 +27173,10 @@
           <ref name='xmlSchematronFreeValidCtxt'/>
           <ref name='xmlTextReaderClose'/>
           <ref name='xmlXIncludeSetFlags'/>
+        </word>
+        <word name='resp'>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
         </word>
         <word name='respect'>
           <ref name='xmlExpStringDerive'/>
@@ -27980,6 +28010,10 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlTextWriterWriteRawLen'/>
         </word>
         <word name='specialized'>
@@ -28560,6 +28594,8 @@
           <ref name='xmlDOMWrapRemoveNode'/>
           <ref name='xmlInitCharEncodingHandlers'/>
           <ref name='xmlNanoFTPGetConnection'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaGetCanonValueWhtsp'/>
           <ref name='xmlTextReaderNormalization'/>
@@ -28569,6 +28605,10 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlStrcat'/>
           <ref name='xmlStrdup'/>
         </word>
@@ -29189,6 +29229,8 @@
         </word>
         <word name='unescaped'>
           <ref name='xmlFileOpen'/>
+          <ref name='xmlNodeAddContent'/>
+          <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlURIUnescapeString'/>
         </word>
         <word name='unescaping'>
@@ -30160,6 +30202,12 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
+        </word>
+        <word name='xmlEncodeSpecialChars'>
+          <ref name='xmlNodeSetContent'/>
+          <ref name='xmlNodeSetContentLen'/>
         </word>
         <word name='xmlEntitiesTablePtr'>
           <ref name='xmlCopyEntitiesTable'/>
@@ -30415,6 +30463,12 @@
           <ref name='xmlXPathNodeSetDel'/>
           <ref name='xmlXPathNodeSetItem'/>
           <ref name='xmlXPtrBuildNodeList'/>
+        </word>
+        <word name='xmlNodeSetContent'>
+          <ref name='xmlNodeAddContent'/>
+        </word>
+        <word name='xmlNodeSetContentLen'>
+          <ref name='xmlNodeAddContentLen'/>
         </word>
         <word name='xmlNodeSetPtr'>
           <ref name='xmlXPathFreeNodeSet'/>

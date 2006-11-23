@@ -1842,6 +1842,8 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 	} else {
 	    int len;
 	    const htmlEntityDesc * ent;
+	    const char *cp;
+	    char nbuf[16];
 
 	    /*
 	     * Try to lookup a predefined HTML entity for it
@@ -1849,16 +1851,16 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 
 	    ent = htmlEntityValueLookup(c);
 	    if (ent == NULL) {
-		/* no chance for this in Ascii */
-		*outlen = out - outstart;
-		*inlen = processed - instart;
-		return(-2);
+	      snprintf(nbuf, sizeof(nbuf), "#%u", c);
+	      cp = nbuf;
 	    }
-	    len = strlen(ent->name);
+	    else
+	      cp = ent->name;
+	    len = strlen(cp);
 	    if (out + 2 + len >= outend)
 		break;
 	    *out++ = '&';
-	    memcpy(out, ent->name, len);
+	    memcpy(out, cp, len);
 	    out += len;
 	    *out++ = ';';
 	}

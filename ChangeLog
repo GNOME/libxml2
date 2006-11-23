@@ -1,3 +1,9 @@
+Thu Nov 23 17:22:03 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied patch from Steven Rainwater to fix 
+	  UTF8ToHtml behaviour on code points which are not mappable to
+	  predefined HTML entities, fixes #377544
+
 Thu Nov 23 17:11:23 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed a bug where the principal node type of an axis

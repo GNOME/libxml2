@@ -673,6 +673,10 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
     newctxt = xmlXIncludeNewContext(doc);
     if (newctxt != NULL) {
 	/*
+	 * Copy the private user data
+	 */
+	newctxt->_private = ctxt->_private;	
+	/*
 	 * Copy the existing document set
 	 */
 	newctxt->incMax = ctxt->incMax;
@@ -1930,6 +1934,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt = xmlXIncludeNewContext(ctxt->doc);
 	if (newctxt == NULL)
 	    return (-1);
+	newctxt->_private = ctxt->_private;
 	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
 	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);

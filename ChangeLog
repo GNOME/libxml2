@@ -1,3 +1,8 @@
+Mon Dec  4 10:27:01 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: anothe XInclude user data propagation patch from
+	  Michael Day
+
 Thu Nov 23 17:22:03 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied patch from Steven Rainwater to fix 

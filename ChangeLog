@@ -1,6 +1,11 @@
+Mon Dec  4 10:30:25 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/tree.h: patch from Michael Day on standalone
+	  and XML declaration detection, and associated documentation change
+
 Mon Dec  4 10:27:01 CET 2006 Daniel Veillard <daniel@veillard.com>
 
-	* xinclude.c: anothe XInclude user data propagation patch from
+	* xinclude.c: another XInclude user data propagation patch from
 	  Michael Day
 
 Thu Nov 23 17:22:03 CET 2006 Daniel Veillard <daniel@veillard.com>

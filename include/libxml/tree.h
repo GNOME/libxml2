@@ -503,7 +503,12 @@ struct _xmlDoc {
 
     /* End of common part */
     int             compression;/* level of zlib compression */
-    int             standalone; /* standalone document (no external refs) */
+    int             standalone; /* standalone document (no external refs) 
+				     1 if standalone="yes"
+				     0 if standalone="no"
+				    -1 if there is no XML declaration
+				    -2 if there is an XML declaration, but no
+					standalone attribute was specified */
     struct _xmlDtd  *intSubset;	/* the document internal subset */
     struct _xmlDtd  *extSubset;	/* the document external subset */
     struct _xmlNs   *oldNs;	/* Global namespace, the old way */

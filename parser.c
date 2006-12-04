@@ -8925,12 +8925,17 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
  *  - element types with element content, if white space occurs directly
  *    within any instance of those types.
  *
- * Returns 1 if standalone, 0 otherwise
+ * Returns:
+ *   1 if standalone="yes"
+ *   0 if standalone="no"
+ *  -2 if standalone attribute is missing or invalid
+ *	  (A standalone value of -2 means that the XML declaration was found,
+ *	   but no value was specified for the standalone attribute).
  */
 
 int
 xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
-    int standalone = -1;
+    int standalone = -2;
 
     SKIP_BLANKS;
     if (CMP10(CUR_PTR, 's', 't', 'a', 'n', 'd', 'a', 'l', 'o', 'n', 'e')) {

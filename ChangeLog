@@ -1,3 +1,8 @@
+Thu Dec 14 16:52:34 CET 2006 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.py: apparently id() sometimes
+	  generate negative values and %X outputs -XXXX :-(
+
 Mon Dec  4 10:30:25 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/tree.h: patch from Michael Day on standalone

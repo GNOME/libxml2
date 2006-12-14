@@ -1,8 +1,18 @@
 import libxml2mod
 import types
+import sys
 
 # The root of all libxml2 errors.
 class libxmlError(Exception): pass
+
+#
+# id() is sometimes negative ...
+#
+def pos_id(o):
+    i = id(o)
+    if (i < 0):
+        return (sys.maxint - i)
+    return i
 
 #
 # Errors raised by the wrappers when some tree handling failed.

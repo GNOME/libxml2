@@ -1055,7 +1055,7 @@ def buildWrappers():
 		   classes_ancestor[classname] == "xmlNode":
 		    classes.write("    def __repr__(self):\n")
 		    format = "<%s (%%s) object at 0x%%x>" % (classname)
-		    classes.write("        return \"%s\" %% (self.name, long(id (self)))\n\n" % (
+		    classes.write("        return \"%s\" %% (self.name, long(pos_id (self)))\n\n" % (
 				  format))
 	    else:
 		txt.write("Class %s()\n" % (classname))

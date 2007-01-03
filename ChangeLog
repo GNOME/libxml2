@@ -1,3 +1,7 @@
+Wed Jan  3 16:14:13 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: adapt the extra versioning code to SVN
+
 Thu Dec 14 16:52:34 CET 2006 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.py: apparently id() sometimes

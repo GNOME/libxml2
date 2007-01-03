@@ -1,3 +1,7 @@
+Wed Jan  3 16:05:21 PST 2007 Aleksey Sanin <aleksey@aleksey.com>
+	* xmlreader.c include/libxml/xmlreader.h win32/libxml2.def.src:
+	expose xmlTextReaderSetup() function
+
 Wed Jan  3 16:14:13 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: adapt the extra versioning code to SVN

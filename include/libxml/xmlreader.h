@@ -113,8 +113,14 @@ XMLPUBFUN xmlTextReaderPtr XMLCALL
 	                                         const char *URI);
 XMLPUBFUN xmlTextReaderPtr XMLCALL	
 			xmlNewTextReaderFilename(const char *URI);
+
 XMLPUBFUN void XMLCALL			
 			xmlFreeTextReader	(xmlTextReaderPtr reader);
+
+XMLPUBFUN int XMLCALL			
+            xmlTextReaderSetup(xmlTextReaderPtr reader,
+                   xmlParserInputBufferPtr input, const char *URL,
+                   const char *encoding, int options);
 
 /*
  * Iterators

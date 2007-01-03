@@ -4855,7 +4855,7 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
  * 
  * Returns 0 in case of success and -1 in case of error.
  */
-static int
+int
 xmlTextReaderSetup(xmlTextReaderPtr reader,
                    xmlParserInputBufferPtr input, const char *URL,
                    const char *encoding, int options)

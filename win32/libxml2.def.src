@@ -1949,6 +1949,7 @@ xmlTextReaderSetErrorHandler
 xmlTextReaderSetParserProp
 xmlTextReaderSetSchema
 xmlTextReaderSetStructuredErrorHandler
+xmlTextReaderSetup
 xmlTextReaderStandalone
 xmlTextReaderValue
 xmlTextReaderXmlLang

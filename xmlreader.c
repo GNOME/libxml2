@@ -4846,10 +4846,11 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
 /**
  * xmlTextReaderSetup:
  * @reader:  an XML reader
+ * @input: xmlParserInputBufferPtr used to feed the reader, will
+ *         be destroyed with it.
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption
- * @reuse:  keep the context for reuse
  *
  * Setup an XML reader with new options
  * 

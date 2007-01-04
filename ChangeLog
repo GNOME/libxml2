@@ -1,4 +1,14 @@
+Thu Jan  4 18:27:49 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fix xmlTextReaderSetup() description
+	* test/relaxng/empty1.rng test/relaxng/comps_0.xml
+	  test/relaxng/empty1_0.xml test/relaxng/comps.rng
+	  test/relaxng/empty0.rng test/relaxng/empty0_0.xml
+	  test/relaxng/empty1_1.xml: tests which were apparently 
+	  never commited to CVS
+
 Wed Jan  3 16:05:21 PST 2007 Aleksey Sanin <aleksey@aleksey.com>
+
 	* xmlreader.c include/libxml/xmlreader.h win32/libxml2.def.src:
 	expose xmlTextReaderSetup() function
 

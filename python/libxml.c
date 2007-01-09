@@ -773,6 +773,8 @@ pythonStartElement(void *user_data, const xmlChar * name,
                     attrvalue = Py_None;
                 }
                 PyDict_SetItem(dict, attrname, attrvalue);
+		Py_DECREF(attrname);
+		Py_DECREF(attrvalue);
             }
         }
 
@@ -1170,6 +1172,7 @@ pythonAttributeDecl(void *user_data,
         for (node = tree; node != NULL; node = node->next) {
             newName = PyString_FromString((char *) node->name);
             PyList_SetItem(nameList, count, newName);
+	    Py_DECREF(newName);
             count++;
         }
         result = PyObject_CallMethod(handler, (char *) "attributeDecl",

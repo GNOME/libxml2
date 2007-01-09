@@ -1,3 +1,8 @@
+Tue Jan  9 22:24:26 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: fix a memory leak in the python string handling
+	  when SAX event are passed back to the python handlers
+
 Thu Jan  4 18:27:49 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fix xmlTextReaderSetup() description

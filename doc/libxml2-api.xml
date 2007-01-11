@@ -2812,91 +2812,92 @@
      <exports symbol='xmlTextReader' type='typedef'/>
      <exports symbol='xmlTextReaderLocatorPtr' type='typedef'/>
      <exports symbol='xmlReaderTypes' type='typedef'/>
-     <exports symbol='xmlTextReaderConstXmlVersion' type='function'/>
-     <exports symbol='xmlTextReaderBaseUri' type='function'/>
-     <exports symbol='xmlTextReaderValue' type='function'/>
      <exports symbol='xmlNewTextReaderFilename' type='function'/>
-     <exports symbol='xmlTextReaderRead' type='function'/>
-     <exports symbol='xmlTextReaderReadString' type='function'/>
-     <exports symbol='xmlTextReaderMoveToAttributeNo' type='function'/>
-     <exports symbol='xmlTextReaderDepth' type='function'/>
-     <exports symbol='xmlTextReaderErrorFunc' type='function'/>
      <exports symbol='xmlTextReaderHasAttributes' type='function'/>
-     <exports symbol='xmlTextReaderIsNamespaceDecl' type='function'/>
-     <exports symbol='xmlTextReaderLocatorLineNumber' type='function'/>
-     <exports symbol='xmlTextReaderLookupNamespace' type='function'/>
-     <exports symbol='xmlTextReaderMoveToAttributeNs' type='function'/>
-     <exports symbol='xmlTextReaderNext' type='function'/>
-     <exports symbol='xmlTextReaderReadAttributeValue' type='function'/>
-     <exports symbol='xmlTextReaderNamespaceUri' type='function'/>
-     <exports symbol='xmlTextReaderIsDefault' type='function'/>
+     <exports symbol='xmlTextReaderReadState' type='function'/>
      <exports symbol='xmlReaderForFile' type='function'/>
      <exports symbol='xmlTextReaderConstNamespaceUri' type='function'/>
-     <exports symbol='xmlTextReaderMoveToNextAttribute' type='function'/>
-     <exports symbol='xmlTextReaderQuoteChar' type='function'/>
-     <exports symbol='xmlTextReaderReadOuterXml' type='function'/>
+     <exports symbol='xmlTextReaderCurrentDoc' type='function'/>
      <exports symbol='xmlTextReaderGetParserLineNumber' type='function'/>
-     <exports symbol='xmlTextReaderGetAttributeNs' type='function'/>
-     <exports symbol='xmlReaderNewWalker' type='function'/>
-     <exports symbol='xmlReaderNewDoc' type='function'/>
+     <exports symbol='xmlTextReaderExpand' type='function'/>
      <exports symbol='xmlTextReaderXmlLang' type='function'/>
-     <exports symbol='xmlTextReaderStandalone' type='function'/>
      <exports symbol='xmlReaderForDoc' type='function'/>
-     <exports symbol='xmlTextReaderSchemaValidate' type='function'/>
      <exports symbol='xmlReaderNewIO' type='function'/>
-     <exports symbol='xmlTextReaderMoveToElement' type='function'/>
-     <exports symbol='xmlTextReaderSetStructuredErrorHandler' type='function'/>
      <exports symbol='xmlTextReaderClose' type='function'/>
      <exports symbol='xmlTextReaderReadInnerXml' type='function'/>
-     <exports symbol='xmlReaderWalker' type='function'/>
-     <exports symbol='xmlReaderForIO' type='function'/>
-     <exports symbol='xmlTextReaderIsValid' type='function'/>
-     <exports symbol='xmlTextReaderSetErrorHandler' type='function'/>
-     <exports symbol='xmlTextReaderConstXmlLang' type='function'/>
-     <exports symbol='xmlTextReaderConstLocalName' type='function'/>
      <exports symbol='xmlTextReaderConstEncoding' type='function'/>
-     <exports symbol='xmlTextReaderNodeType' type='function'/>
      <exports symbol='xmlTextReaderNormalization' type='function'/>
-     <exports symbol='xmlTextReaderGetErrorHandler' type='function'/>
-     <exports symbol='xmlTextReaderConstPrefix' type='function'/>
      <exports symbol='xmlTextReaderGetParserProp' type='function'/>
-     <exports symbol='xmlTextReaderGetParserColumnNumber' type='function'/>
-     <exports symbol='xmlTextReaderGetRemainder' type='function'/>
-     <exports symbol='xmlReaderNewFile' type='function'/>
-     <exports symbol='xmlFreeTextReader' type='function'/>
      <exports symbol='xmlTextReaderMoveToAttribute' type='function'/>
-     <exports symbol='xmlTextReaderRelaxNGSetSchema' type='function'/>
-     <exports symbol='xmlTextReaderName' type='function'/>
-     <exports symbol='xmlReaderNewFd' type='function'/>
-     <exports symbol='xmlTextReaderNextSibling' type='function'/>
-     <exports symbol='xmlTextReaderRelaxNGValidate' type='function'/>
-     <exports symbol='xmlTextReaderIsEmptyElement' type='function'/>
+     <exports symbol='xmlTextReaderQuoteChar' type='function'/>
      <exports symbol='xmlTextReaderSetSchema' type='function'/>
-     <exports symbol='xmlTextReaderCurrentDoc' type='function'/>
-     <exports symbol='xmlReaderForMemory' type='function'/>
-     <exports symbol='xmlTextReaderCurrentNode' type='function'/>
-     <exports symbol='xmlReaderForFd' type='function'/>
+     <exports symbol='xmlTextReaderValue' type='function'/>
+     <exports symbol='xmlTextReaderIsValid' type='function'/>
      <exports symbol='xmlTextReaderMoveToFirstAttribute' type='function'/>
-     <exports symbol='xmlTextReaderPrefix' type='function'/>
-     <exports symbol='xmlTextReaderByteConsumed' type='function'/>
-     <exports symbol='xmlTextReaderPreservePattern' type='function'/>
-     <exports symbol='xmlTextReaderLocatorBaseURI' type='function'/>
-     <exports symbol='xmlTextReaderGetAttribute' type='function'/>
-     <exports symbol='xmlReaderNewMemory' type='function'/>
+     <exports symbol='xmlTextReaderGetParserColumnNumber' type='function'/>
      <exports symbol='xmlTextReaderConstValue' type='function'/>
      <exports symbol='xmlNewTextReader' type='function'/>
      <exports symbol='xmlTextReaderGetAttributeNo' type='function'/>
-     <exports symbol='xmlTextReaderSchemaValidateCtxt' type='function'/>
-     <exports symbol='xmlTextReaderLocalName' type='function'/>
-     <exports symbol='xmlTextReaderExpand' type='function'/>
+     <exports symbol='xmlTextReaderGetAttributeNs' type='function'/>
      <exports symbol='xmlTextReaderConstName' type='function'/>
-     <exports symbol='xmlTextReaderHasValue' type='function'/>
-     <exports symbol='xmlTextReaderPreserve' type='function'/>
-     <exports symbol='xmlTextReaderAttributeCount' type='function'/>
-     <exports symbol='xmlTextReaderReadState' type='function'/>
-     <exports symbol='xmlTextReaderConstBaseUri' type='function'/>
      <exports symbol='xmlTextReaderConstString' type='function'/>
+     <exports symbol='xmlTextReaderConstXmlVersion' type='function'/>
+     <exports symbol='xmlTextReaderDepth' type='function'/>
+     <exports symbol='xmlTextReaderReadString' type='function'/>
+     <exports symbol='xmlTextReaderIsDefault' type='function'/>
+     <exports symbol='xmlTextReaderMoveToNextAttribute' type='function'/>
+     <exports symbol='xmlReaderNewWalker' type='function'/>
+     <exports symbol='xmlTextReaderConstPrefix' type='function'/>
+     <exports symbol='xmlReaderWalker' type='function'/>
+     <exports symbol='xmlTextReaderConstLocalName' type='function'/>
+     <exports symbol='xmlTextReaderNodeType' type='function'/>
+     <exports symbol='xmlFreeTextReader' type='function'/>
+     <exports symbol='xmlTextReaderName' type='function'/>
+     <exports symbol='xmlTextReaderRead' type='function'/>
+     <exports symbol='xmlTextReaderIsEmptyElement' type='function'/>
+     <exports symbol='xmlReaderNewMemory' type='function'/>
+     <exports symbol='xmlTextReaderSchemaValidateCtxt' type='function'/>
+     <exports symbol='xmlTextReaderHasValue' type='function'/>
+     <exports symbol='xmlTextReaderConstBaseUri' type='function'/>
+     <exports symbol='xmlTextReaderBaseUri' type='function'/>
+     <exports symbol='xmlTextReaderMoveToAttributeNo' type='function'/>
+     <exports symbol='xmlTextReaderLocatorLineNumber' type='function'/>
+     <exports symbol='xmlTextReaderMoveToAttributeNs' type='function'/>
+     <exports symbol='xmlTextReaderNext' type='function'/>
+     <exports symbol='xmlTextReaderAttributeCount' type='function'/>
+     <exports symbol='xmlTextReaderLookupNamespace' type='function'/>
+     <exports symbol='xmlTextReaderMoveToElement' type='function'/>
+     <exports symbol='xmlReaderForIO' type='function'/>
+     <exports symbol='xmlTextReaderReadOuterXml' type='function'/>
+     <exports symbol='xmlTextReaderPrefix' type='function'/>
+     <exports symbol='xmlTextReaderReadAttributeValue' type='function'/>
+     <exports symbol='xmlTextReaderNextSibling' type='function'/>
+     <exports symbol='xmlTextReaderErrorFunc' type='function'/>
+     <exports symbol='xmlReaderForFd' type='function'/>
+     <exports symbol='xmlTextReaderGetAttribute' type='function'/>
+     <exports symbol='xmlTextReaderLocalName' type='function'/>
+     <exports symbol='xmlTextReaderPreserve' type='function'/>
+     <exports symbol='xmlTextReaderCurrentNode' type='function'/>
      <exports symbol='xmlTextReaderSetParserProp' type='function'/>
+     <exports symbol='xmlTextReaderGetRemainder' type='function'/>
+     <exports symbol='xmlTextReaderSetErrorHandler' type='function'/>
+     <exports symbol='xmlTextReaderIsNamespaceDecl' type='function'/>
+     <exports symbol='xmlReaderNewDoc' type='function'/>
+     <exports symbol='xmlTextReaderPreservePattern' type='function'/>
+     <exports symbol='xmlTextReaderConstXmlLang' type='function'/>
+     <exports symbol='xmlTextReaderGetErrorHandler' type='function'/>
+     <exports symbol='xmlTextReaderSetStructuredErrorHandler' type='function'/>
+     <exports symbol='xmlReaderNewFile' type='function'/>
+     <exports symbol='xmlTextReaderRelaxNGSetSchema' type='function'/>
+     <exports symbol='xmlReaderNewFd' type='function'/>
+     <exports symbol='xmlTextReaderRelaxNGValidate' type='function'/>
+     <exports symbol='xmlReaderForMemory' type='function'/>
+     <exports symbol='xmlTextReaderSetup' type='function'/>
+     <exports symbol='xmlTextReaderByteConsumed' type='function'/>
+     <exports symbol='xmlTextReaderLocatorBaseURI' type='function'/>
+     <exports symbol='xmlTextReaderNamespaceUri' type='function'/>
+     <exports symbol='xmlTextReaderSchemaValidate' type='function'/>
+     <exports symbol='xmlTextReaderStandalone' type='function'/>
     </file>
     <file name='xmlregexp'>
      <summary>regular expressions handling</summary>
@@ -5909,7 +5910,12 @@ if necessary or NULL'/>
       <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
       <field name='doc' type='struct _xmlDoc *' info=' autoreference to itself End of common part'/>
       <field name='compression' type='int' info=' level of zlib compression'/>
-      <field name='standalone' type='int' info=' standalone document (no external refs)'/>
+      <field name='standalone' type='int' info=' standalone document (no external refs)
+1 if standalone=&quot;yes&quot;
+0 if standalone=&quot;no&quot;
+-1 if there is no XML declaration
+-2 if there is an XML declaration, but no
+standalone attribute was specified'/>
       <field name='intSubset' type='struct _xmlDtd *' info=' the document internal subset'/>
       <field name='extSubset' type='struct _xmlDtd *' info=' the document external subset'/>
       <field name='oldNs' type='struct _xmlNs *' info=' Global namespace, the old way'/>
@@ -12001,7 +12007,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlParseSDDecl' file='parserInternals' module='parser'>
       <info>parse the XML standalone declaration  [32] SDDecl ::= S &apos;standalone&apos; Eq ((&quot;&apos;&quot; (&apos;yes&apos; | &apos;no&apos;) &quot;&apos;&quot;) | (&apos;&quot;&apos; (&apos;yes&apos; | &apos;no&apos;)&apos;&quot;&apos;))  [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value &quot;no&quot; if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the attribute appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</info>
-      <return type='int' info='1 if standalone, 0 otherwise'/>
+      <return type='int' info='1 if standalone=&quot;yes&quot; 0 if standalone=&quot;no&quot; -2 if standalone attribute is missing or invalid (A standalone value of -2 means that the XML declaration was found, but no value was specified for the standalone attribute).'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseStartTag' file='parserInternals' module='parser'>
@@ -14778,6 +14784,16 @@ Could we use @subtypes for this?'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='f' type='xmlStructuredErrorFunc' info='the callback function to call on error and warnings'/>
       <arg name='arg' type='void *' info='a user argument to pass to the callback function'/>
+    </function>
+    <function name='xmlTextReaderSetup' file='xmlreader' module='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED)</cond>
+      <info>Setup an XML reader with new options</info>
+      <return type='int' info='0 in case of success and -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
+      <arg name='input' type='xmlParserInputBufferPtr' info='xmlParserInputBufferPtr used to feed the reader, will be destroyed with it.'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlTextReaderStandalone' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>

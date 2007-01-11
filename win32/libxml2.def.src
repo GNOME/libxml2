@@ -335,6 +335,9 @@ htmlNewDoc
 htmlNewDocNoDtD
 #endif
 #ifdef LIBXML_HTML_ENABLED
+htmlNewParserCtxt
+#endif
+#ifdef LIBXML_HTML_ENABLED
 htmlNodeDump
 #endif
 #ifdef LIBXML_HTML_ENABLED
@@ -1375,6 +1378,7 @@ xmlParserPrintFileInfo
 xmlParserValidityError
 xmlParserValidityWarning
 xmlParserWarning
+xmlPathToURI
 xmlPatternFromRoot
 xmlPatternGetStreamCtxt
 xmlPatternMatch
@@ -2602,6 +2606,9 @@ xmlXIncludeProcess
 xmlXIncludeProcessFlags
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeProcessFlagsData
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
 xmlXIncludeProcessNode
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -2677,10 +2684,16 @@ xmlXPathCompile
 xmlXPathCompiledEval
 #endif
 #ifdef LIBXML_XPATH_ENABLED
+xmlXPathCompiledEvalToBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
 xmlXPathConcatFunction
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathContainsFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathContextSetCache
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathConvertBoolean

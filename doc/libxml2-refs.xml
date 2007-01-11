@@ -2933,6 +2933,7 @@
     <reference name='xmlTextReaderSetParserProp' href='html/libxml-xmlreader.html#xmlTextReaderSetParserProp'/>
     <reference name='xmlTextReaderSetSchema' href='html/libxml-xmlreader.html#xmlTextReaderSetSchema'/>
     <reference name='xmlTextReaderSetStructuredErrorHandler' href='html/libxml-xmlreader.html#xmlTextReaderSetStructuredErrorHandler'/>
+    <reference name='xmlTextReaderSetup' href='html/libxml-xmlreader.html#xmlTextReaderSetup'/>
     <reference name='xmlTextReaderStandalone' href='html/libxml-xmlreader.html#xmlTextReaderStandalone'/>
     <reference name='xmlTextReaderValue' href='html/libxml-xmlreader.html#xmlTextReaderValue'/>
     <reference name='xmlTextReaderXmlLang' href='html/libxml-xmlreader.html#xmlTextReaderXmlLang'/>
@@ -6478,6 +6479,7 @@
       <ref name='xmlTextReaderSetParserProp'/>
       <ref name='xmlTextReaderSetSchema'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
+      <ref name='xmlTextReaderSetup'/>
       <ref name='xmlTextReaderStandalone'/>
       <ref name='xmlTextReaderValue'/>
       <ref name='xmlTextReaderXmlLang'/>
@@ -9820,6 +9822,7 @@
       <ref name='xmlParserInputBufferPush'/>
       <ref name='xmlParserInputBufferRead'/>
       <ref name='xmlSchemaValidateStream'/>
+      <ref name='xmlTextReaderSetup'/>
     </type>
     <type name='xmlParserInputPtr'>
       <ref name='inputPush'/>
@@ -10217,6 +10220,7 @@
       <ref name='xmlTextReaderSetParserProp'/>
       <ref name='xmlTextReaderSetSchema'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
+      <ref name='xmlTextReaderSetup'/>
       <ref name='xmlTextReaderStandalone'/>
       <ref name='xmlTextReaderValue'/>
       <ref name='xmlTextReaderXmlLang'/>
@@ -13260,6 +13264,7 @@
       <ref name='xmlTextReaderSetParserProp'/>
       <ref name='xmlTextReaderSetSchema'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
+      <ref name='xmlTextReaderSetup'/>
       <ref name='xmlTextReaderStandalone'/>
       <ref name='xmlTextReaderValue'/>
       <ref name='xmlTextReaderXmlLang'/>
@@ -17422,6 +17427,7 @@
           <ref name='xmlReaderNewMemory'/>
           <ref name='xmlReaderNewWalker'/>
           <ref name='xmlSetupParserForBuffer'/>
+          <ref name='xmlTextReaderSetup'/>
         </word>
         <word name='Shavian'>
           <ref name='xmlUCSIsShavian'/>
@@ -21120,6 +21126,7 @@
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
           <ref name='xmlTextReaderCurrentNode'/>
+          <ref name='xmlTextReaderSetup'/>
         </word>
         <word name='destruction'>
           <ref name='xmlDeregisterNodeDefault'/>
@@ -22255,6 +22262,9 @@
           <ref name='xmlNewTextReaderFilename'/>
           <ref name='xmlStreamPushNode'/>
           <ref name='xmlStreamWantsAnyNode'/>
+        </word>
+        <word name='feed'>
+          <ref name='xmlTextReaderSetup'/>
         </word>
         <word name='fetch'>
           <ref name='xmlNanoFTPGetSocket'/>
@@ -23749,6 +23759,7 @@
         </word>
         <word name='invalid'>
           <ref name='XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
+          <ref name='xmlParseSDDecl'/>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
@@ -24519,6 +24530,7 @@
         </word>
         <word name='means'>
           <ref name='xmlExpNewRange'/>
+          <ref name='xmlParseSDDecl'/>
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetStructuredErrorFunc'/>
           <ref name='xmlStreamPush'/>
@@ -24653,6 +24665,9 @@
         <word name='misleading'>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
+        </word>
+        <word name='missing'>
+          <ref name='xmlParseSDDecl'/>
         </word>
         <word name='mixed'>
           <ref name='XML_SCHEMAS_TYPE_MIXED'/>
@@ -25508,6 +25523,7 @@
           <ref name='xmlSaveToFilename'/>
           <ref name='xmlSaveToIO'/>
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
+          <ref name='xmlTextReaderSetup'/>
           <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='ordered'>
@@ -28078,8 +28094,10 @@
           <ref name='xmlTextReaderStandalone'/>
         </word>
         <word name='standalone='>
+          <ref name='_xmlDoc'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParsePEReference'/>
+          <ref name='xmlParseSDDecl'/>
           <ref name='xmlParserHandlePEReference'/>
         </word>
         <word name='standalone?'>
@@ -30563,6 +30581,7 @@
         <word name='xmlParserInputBufferPtr'>
           <ref name='xmlNewTextReader'/>
           <ref name='xmlTextReaderGetRemainder'/>
+          <ref name='xmlTextReaderSetup'/>
         </word>
         <word name='xmlParserInputPtr'>
           <ref name='resolveEntity'/>
@@ -30945,6 +30964,7 @@
           <ref name='ftpListCallback'/>
         </word>
         <word name='yes'>
+          <ref name='_xmlDoc'/>
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlIsBlankNode'/>
           <ref name='xmlIsMixedElement'/>

@@ -32236,6 +32236,68 @@ test_xmlTextReaderSetStructuredErrorHandler(void) {
 
 
 static int
+test_xmlTextReaderSetup(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_READER_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* an XML reader */
+    int n_reader;
+    xmlParserInputBufferPtr input; /* xmlParserInputBufferPtr used to feed the reader, will be destroyed with it. */
+    int n_input;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of xmlParserOption */
+    int n_options;
+
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_input = 0;n_input < gen_nb_xmlParserInputBufferPtr;n_input++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader, 0);
+        input = gen_xmlParserInputBufferPtr(n_input, 1);
+        URL = gen_filepath(n_URL, 2);
+        encoding = gen_const_char_ptr(n_encoding, 3);
+        options = gen_parseroptions(n_options, 4);
+
+        ret_val = xmlTextReaderSetup(reader, input, URL, (const char *)encoding, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader, 0);
+        des_xmlParserInputBufferPtr(n_input, input, 1);
+        des_filepath(n_URL, URL, 2);
+        des_const_char_ptr(n_encoding, (const char *)encoding, 3);
+        des_parseroptions(n_options, options, 4);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderSetup",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_input);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlTextReaderStandalone(void) {
     int test_ret = 0;
 
@@ -32340,7 +32402,7 @@ static int
 test_xmlreader(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlreader : 74 of 84 functions ...\n");
+    if (quiet == 0) printf("Testing xmlreader : 75 of 85 functions ...\n");
     test_ret += test_xmlNewTextReader();
     test_ret += test_xmlNewTextReaderFilename();
     test_ret += test_xmlReaderForDoc();
@@ -32414,6 +32476,7 @@ test_xmlreader(void) {
     test_ret += test_xmlTextReaderSetParserProp();
     test_ret += test_xmlTextReaderSetSchema();
     test_ret += test_xmlTextReaderSetStructuredErrorHandler();
+    test_ret += test_xmlTextReaderSetup();
     test_ret += test_xmlTextReaderStandalone();
     test_ret += test_xmlTextReaderValue();
     test_ret += test_xmlTextReaderXmlLang();

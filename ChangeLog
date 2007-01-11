@@ -1,3 +1,9 @@
+Thu Jan 11 15:38:08 PST 2007 William Brack <wbrack@mmm.com.hk>
+
+	* Re-generated the documentation (API chunks 27-29 were missing)
+	  (also causes changes to testapi.c, elfgcchack.h and
+	  win32/libxml2.def.src)
+
 Tue Jan  9 22:24:26 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: fix a memory leak in the python string handling

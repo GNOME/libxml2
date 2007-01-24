@@ -14554,6 +14554,8 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
     xmlXPathInit();
 
     pctxt = xmlXPathNewParserContext(str, ctxt);
+    if (pctxt == NULL)
+        return NULL;
     xmlXPathCompileExpr(pctxt, 1);
 
     if( pctxt->error != XPATH_EXPRESSION_OK )
@@ -14805,6 +14807,8 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathInit();
 
     ctxt = xmlXPathNewParserContext(str, ctx);
+    if (ctxt == NULL)
+        return NULL;
     xmlXPathEvalExpr(ctxt);
 
     if (ctxt->value == NULL) {
@@ -14865,6 +14869,8 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathInit();
 
     pctxt = xmlXPathNewParserContext(str, ctxt);
+    if (pctxt == NULL)
+        return NULL;
     xmlXPathEvalExpr(pctxt);
 
     if ((*pctxt->cur != 0) || (pctxt->error != XPATH_EXPRESSION_OK)) {

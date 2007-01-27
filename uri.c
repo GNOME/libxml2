@@ -2346,6 +2346,10 @@ done:
 xmlChar *
 xmlCanonicPath(const xmlChar *path)
 {
+/*
+ * For Windows implementations, additional work needs to be done to
+ * replace backslashes in pathnames with "forward slashes"
+ */
 #if defined(_WIN32) && !defined(__CYGWIN__)    
     int len = 0;
     int i = 0;
@@ -2362,6 +2366,7 @@ xmlCanonicPath(const xmlChar *path)
 	return xmlStrdup(path);
     }
 
+    /* Check if this is an "absolute uri" */
     absuri = xmlStrstr(path, BAD_CAST "://");
     if (absuri != NULL) {
         int l, j;
@@ -2370,47 +2375,55 @@ xmlCanonicPath(const xmlChar *path)
 
         /*
 	 * this looks like an URI where some parts have not been
-	 * escaped leading to a parsing problem check that the first
+	 * escaped leading to a parsing problem.  Check that the first
 	 * part matches a protocol.
 	 */
 	l = absuri - path;
+	/* Bypass if first part (part before the '://') is > 20 chars */
 	if ((l <= 0) || (l > 20))
 	    goto path_processing;
+	/* Bypass if any non-alpha characters are present in first part */
 	for (j = 0;j < l;j++) {
 	    c = path[j];
 	    if (!(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'))))
 	        goto path_processing;
 	}
 
+	/* Escape all except the characters specified in the supplied path */
         escURI = xmlURIEscapeStr(path, BAD_CAST ":/?_.#&;=");
 	if (escURI != NULL) {
+	    /* Try parsing the escaped path */
 	    uri = xmlParseURI((const char *) escURI);
+	    /* If successful, return the escaped string */
 	    if (uri != NULL) {
 	        xmlFreeURI(uri);
 		return escURI;
 	    }
-	    xmlFreeURI(uri);
 	}
     }
 
 path_processing:
+/* For Windows implementations, replace backslashes with 'forward slashes' */
 #if defined(_WIN32) && !defined(__CYGWIN__)    
     /*
-     * This really need to be cleaned up by someone with a Windows box
+     * Create a URI structure
      */
     uri = xmlCreateURI();
-    if (uri == NULL) {
+    if (uri == NULL) {		/* Guard against 'out of memory' */
         return(NULL);
     }
 
     len = xmlStrlen(path);
     if ((len > 2) && IS_WINDOWS_PATH(path)) {
+        /* make the scheme 'file' */
 	uri->scheme = xmlStrdup(BAD_CAST "file");
+	/* allocate space for leading '/' + path + string terminator */
 	uri->path = xmlMallocAtomic(len + 2);
 	if (uri->path == NULL) {
-	    xmlFreeURI(uri);
+	    xmlFreeURI(uri);	/* Guard agains 'out of memory' */
 	    return(NULL);
 	}
+	/* Put in leading '/' plus path */
 	uri->path[0] = '/';
 	p = uri->path + 1;
 	strncpy(p, path, len + 1);
@@ -2422,18 +2435,15 @@ path_processing:
 	}
 	p = uri->path;
     }
+    /* Now change all occurences of '\' to '/' */
     while (*p != '\0') {
 	if (*p == '\\')
 	    *p = '/';
 	p++;
     }
-    if (uri->path == NULL) {
-        xmlFreeURI(uri);
-        return(NULL);
-    }
 
     if (uri->scheme == NULL) {
-	ret = xmlStrdup((const xmlChar *) path);
+	ret = xmlStrdup((const xmlChar *) uri->path);
     } else {
 	ret = xmlSaveUri(uri);
     }

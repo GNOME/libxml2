@@ -1,3 +1,7 @@
+Fri Jan 28 00:05:18 PST 2007 William Brack <wbrack@mmm.com.hk>
+
+	* implemented patch from Stéphane Bidoul for uri.c (bug #389767)
+
 Wed Jan 25 11:15:08 PST 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: added checks for alloc fail on calls to

@@ -1,6 +1,7 @@
+#include "libxml.h"
+
 #include <stdlib.h>
 #include <stdio.h>
-#include "libxml.h"
 
 #if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 #include <libxml/globals.h>

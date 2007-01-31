@@ -9,9 +9,9 @@
  */
 
 #define IN_LIBXML
+#include "libxml.h"
 #include <string.h>
 
-#include "libxml.h"
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/uri.h>

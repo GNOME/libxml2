@@ -6,9 +6,10 @@
  * Daniel Veillard <veillard@redhat.com>
  */
 
-#include <string.h>
 #include "libxml.h"
 #ifdef LIBXML_REGEXP_ENABLED
+#include <string.h>
+
 #include <libxml/tree.h>
 #include <libxml/xmlregexp.h>
 

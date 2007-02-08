@@ -32269,7 +32269,6 @@ test_xmlTextReaderSetup(void) {
         desret_int(ret_val);
         call_tests++;
         des_xmlTextReaderPtr(n_reader, reader, 0);
-        des_xmlParserInputBufferPtr(n_input, input, 1);
         des_filepath(n_URL, URL, 2);
         des_const_char_ptr(n_encoding, (const char *)encoding, 3);
         des_parseroptions(n_options, options, 4);

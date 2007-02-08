@@ -4167,9 +4167,9 @@ xmlTextReaderSetSchema(xmlTextReaderPtr reader, xmlSchemaPtr schema) {
  *
  * Use RelaxNG to validate the document as it is processed.
  * Activation is only possible before the first Read().
- * if @rng is NULL, then RelaxNG validation is desactivated.
+ * if @rng is NULL, then RelaxNG validation is deactivated.
  *
- * Returns 0 in case the RelaxNG validation could be (des)activated and
+ * Returns 0 in case the RelaxNG validation could be (de)activated and
  *         -1 in case of error.
  */
 int
@@ -4207,8 +4207,8 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
 			 xmlTextReaderValidityWarningRelay,
 			 reader);
     }
-	if (reader->sErrorFunc != NULL) {
-		xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, 
+    if (reader->sErrorFunc != NULL) {
+	xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, 
 			xmlTextReaderValidityStructuredRelay,
 			reader);
     }
@@ -4861,8 +4861,11 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
                    xmlParserInputBufferPtr input, const char *URL,
                    const char *encoding, int options)
 {
-    if (reader == NULL)
-        return (-1);
+    if (reader == NULL) {
+/*        if (input != NULL)
+	    xmlFreeParserInputBuffer(input);
+*/        return (-1);
+    }
 
     /*
      * we force the generation of compact text nodes on the reader

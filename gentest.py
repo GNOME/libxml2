@@ -819,11 +819,14 @@ test_%s(void) {
     i = 0;
     for arg in t_args:
         (nam, type, rtype, crtype, info) = arg;
-	#
-	test.write("        des_%s(n_%s, " % (type, nam))
-	if rtype != crtype:
-	    test.write("(%s)" % rtype)
-	test.write("%s, %d);\n" % (nam, i))
+	# This is a hack to prevent generating a destructor for the
+	# 'input' argument in xmlTextReaderSetup.  There should be
+	# a better, more generic way to do this!
+	if string.find(info, 'destroy') == -1:
+	    test.write("        des_%s(n_%s, " % (type, nam))
+	    if rtype != crtype:
+	        test.write("(%s)" % rtype)
+	    test.write("%s, %d);\n" % (nam, i))
 	i = i + 1;
 
     test.write("        xmlResetLastError();\n");

@@ -3808,6 +3808,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
 	    return;
 	}
     }
+;    GROW;	/* Assure there's enough input data */
     q = CUR_CHAR(ql);
     if (q == 0)
         goto not_terminated;

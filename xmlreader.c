@@ -4862,9 +4862,9 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
                    const char *encoding, int options)
 {
     if (reader == NULL) {
-/*        if (input != NULL)
+        if (input != NULL)
 	    xmlFreeParserInputBuffer(input);
-*/        return (-1);
+        return (-1);
     }
 
     /*

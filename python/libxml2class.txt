@@ -1074,6 +1074,7 @@ Class xmlTextReader(xmlTextReaderCore)
     SchemaValidateCtxt()
     SetParserProp()
     SetSchema()
+    Setup()
     Standalone()
     String()
     Value()
@@ -1124,6 +1125,7 @@ Class inputBuffer(ioReadWrapper)
     read()
 
     # functions from module xmlreader
+    Setup()
     newTextReader()
 
 

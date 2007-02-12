@@ -64,6 +64,11 @@ void __xmlLoaderErr(void *ctx, const char *msg, const char *filename);
 void __htmlParseContent(void *ctx);
 #endif
 
+/*
+ * internal global initialization critical section routines.
+ */
+void __xmlGlobalInitMutexLock(void);
+void __xmlGlobalInitMutexUnlock(void);
 
 #ifdef IN_LIBXML
 #ifdef __GNUC__

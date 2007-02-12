@@ -139,6 +139,7 @@ struct _xmlRMutex {
 static pthread_key_t	globalkey;
 static pthread_t	mainthread;
 static pthread_once_t once_control = PTHREAD_ONCE_INIT;
+static pthread_mutex_t global_init_lock = PTHREAD_MUTEX_INITIALIZER;
 #elif defined HAVE_WIN32_THREADS
 #if defined(HAVE_COMPILER_TLS)
 static __declspec(thread) xmlGlobalState tlstate;
@@ -152,11 +153,14 @@ static struct
     DWORD done;
     DWORD control;
 } run_once = { 0, 0 };
+static volatile LPCRITICAL_SECTION global_init_lock = NULL;
 /* endif HAVE_WIN32_THREADS */
 #elif defined HAVE_BEOS_THREADS
 int32 globalkey = 0;
 thread_id mainthread = 0;
 int32 run_once_init = 0;
+static int32 global_init_lock = -1;
+static vint32 global_init_count = 0;
 #endif
 
 static xmlRMutexPtr	xmlLibraryLock = NULL;
@@ -410,6 +414,85 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 		}
 		return;
 	}
+#endif
+}
+
+/**
+ * xmlGlobalInitMutexLock
+ *
+ * Makes sure that the global initialization mutex is initialized and
+ * locks it.
+ */
+void
+__xmlGlobalInitMutexLock(void)
+{
+    /* Make sure the global init lock is initialized and then lock it. */
+#ifdef HAVE_PTHREAD_H
+    int err;
+
+    /* The mutex is statically initialized, so we just lock it. */
+    pthread_mutex_lock(&global_init_lock);
+#elif defined HAVE_WIN32_THREADS
+    LPCRITICAL_SECTION cs;
+
+    /* Create a new critical section */
+    if (global_init_lock == NULL) {
+	cs = malloc(sizeof(CRITICAL_SECTION));
+	InitializeCriticalSection(cs);
+
+	/* Swap it into the global_init_lock */
+	InterlockedCompareExchangePointer(&global_init_lock, cs, NULL);
+
+	/* If another thread successfully recorded its critical
+	 * section in the global_init_lock then discard the one
+	 * allocated by this thread. */
+	if (global_init_lock != cs) {
+	    free(cs);
+	}
+    }
+
+    /* Lock the chosen critical section */
+    EnterCriticalSection(global_init_lock);
+#elif defined HAVE_BEOS_THREADS
+    int32 sem;
+
+    /* Allocate a new semaphore */
+    sem = create_sem(1, "xmlGlobalinitMutex");
+
+    while (global_init_lock == -1) {
+	if (atomic_add(&global_init_count, 1) == 0) {
+	    global_init_lock = sem;
+	} else {
+	    snooze(1);
+	    atomic_add(&global_init_count, -1);
+	}
+    }
+
+    /* If another thread successfully recorded its critical
+     * section in the global_init_lock then discard the one
+     * allocated by this thread. */
+    if (global_init_lock != sem)
+	delete_sem(sem);
+
+    /* Acquire the chosen semaphore */
+    if (acquire_sem(global_init_lock) != B_NO_ERROR) {
+#ifdef DEBUG_THREADS
+	xmlGenericError(xmlGenericErrorContext, "xmlGlobalInitMutexLock():BeOS:Couldn't acquire semaphore\n");
+	exit();
+#endif
+    }
+#endif
+}
+
+void
+__xmlGlobalInitMutexUnlock(void)
+{
+#ifdef HAVE_PTHREAD_H
+    pthread_mutex_unlock(&global_init_lock);
+#elif defined HAVE_WIN32_THREADS
+    LeaveCriticalSection(global_init_lock);
+#elif defined HAVE_BEOS_THREADS
+    release_sem(global_init_lock);
 #endif
 }
 

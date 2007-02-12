@@ -1,3 +1,9 @@
+Mon Feb 12 18:30:01 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: small cleanup to avoid packaging .svn
+	* libxml.h threads.c parser.c: applied patch to avoid a problem
+	  in concurrent threaded initialization fix from Ted Phelps
+
 Thu Feb 08 15:35:18 PST 2007 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: added a GROW when parsing complex comments (bug #405666)

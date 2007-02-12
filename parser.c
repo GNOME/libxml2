@@ -12845,26 +12845,34 @@ xmlInitParser(void) {
     if (xmlParserInitialized != 0)
 	return;
 
-    if ((xmlGenericError == xmlGenericErrorDefaultFunc) ||
-	(xmlGenericError == NULL))
-	initGenericErrorDefaultFunc(NULL);
-    xmlInitGlobals();
-    xmlInitThreads();
-    xmlInitMemory();
-    xmlInitCharEncodingHandlers();
-    xmlDefaultSAXHandlerInit();
-    xmlRegisterDefaultInputCallbacks();
+#ifdef LIBXML_THREAD_ENABLED
+    __xmlGlobalInitMutexLock();
+    if (xmlParserInitialized == 0) {
+#endif
+	if ((xmlGenericError == xmlGenericErrorDefaultFunc) ||
+	    (xmlGenericError == NULL))
+	    initGenericErrorDefaultFunc(NULL);
+	xmlInitGlobals();
+	xmlInitThreads();
+	xmlInitMemory();
+	xmlInitCharEncodingHandlers();
+	xmlDefaultSAXHandlerInit();
+	xmlRegisterDefaultInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED
-    xmlRegisterDefaultOutputCallbacks();
+	xmlRegisterDefaultOutputCallbacks();
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
-    htmlInitAutoClose();
-    htmlDefaultSAXHandlerInit();
+	htmlInitAutoClose();
+	htmlDefaultSAXHandlerInit();
 #endif
 #ifdef LIBXML_XPATH_ENABLED
-    xmlXPathInit();
+	xmlXPathInit();
 #endif
-    xmlParserInitialized = 1;
+	xmlParserInitialized = 1;
+#ifdef LIBXML_THREAD_ENABLED
+    }
+    __xmlGlobalInitMutexUnlock();
+#endif
 }
 
 /**

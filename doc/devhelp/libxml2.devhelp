@@ -2990,6 +2990,7 @@
     <function name="xmlTextReaderSetParserProp ()" link="libxml2-xmlreader.html#xmlTextReaderSetParserProp"/>
     <function name="xmlTextReaderSetSchema ()" link="libxml2-xmlreader.html#xmlTextReaderSetSchema"/>
     <function name="xmlTextReaderSetStructuredErrorHandler ()" link="libxml2-xmlreader.html#xmlTextReaderSetStructuredErrorHandler"/>
+    <function name="xmlTextReaderSetup ()" link="libxml2-xmlreader.html#xmlTextReaderSetup"/>
     <function name="xmlTextReaderStandalone ()" link="libxml2-xmlreader.html#xmlTextReaderStandalone"/>
     <function name="xmlTextReaderValue ()" link="libxml2-xmlreader.html#xmlTextReaderValue"/>
     <function name="xmlTextReaderXmlLang ()" link="libxml2-xmlreader.html#xmlTextReaderXmlLang"/>

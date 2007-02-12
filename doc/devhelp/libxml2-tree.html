@@ -409,7 +409,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     struct _xmlNode *	prev	: previous sibling link
     struct _xmlDoc *	doc	: autoreference to itself End of common part
     int	compression	: level of zlib compression
-    int	standalone	: standalone document (no external refs)
+    int	standalone	: standalone document (no external refs) 1 if standalone="yes" 0 if sta
     struct _xmlDtd *	intSubset	: the document internal subset
     struct _xmlDtd *	extSubset	: the document external subset
     struct _xmlNs *	oldNs	: Global namespace, the old way

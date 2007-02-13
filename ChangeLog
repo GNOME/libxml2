@@ -1,3 +1,8 @@
+Mon Feb 12 16:40:48 PST 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed problem with invalid char encountered
+	  during text include (reported on xslt mailing list)
+
 Mon Feb 12 18:30:01 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: small cleanup to avoid packaging .svn

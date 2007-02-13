@@ -1889,6 +1889,9 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 		xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 		               XML_XINCLUDE_INVALID_CHAR,
 			       "%s contains invalid char\n", URL);
+		xmlFreeParserInputBuffer(buf);
+		xmlFree(URL);
+		return(-1);
 	    } else {
 		xmlNodeAddContentLen(node, &content[i], l);
 	    }

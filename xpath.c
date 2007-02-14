@@ -11544,8 +11544,11 @@ xmlXPathCompOpEvalPredicate(xmlXPathParserContextPtr ctxt,
 
 	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
 
-	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1))
-		goto evaluation_error;
+	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1)) {
+		xmlXPathNodeSetClear(set, hasNsNodes);
+		newContextSize = 0;
+		goto evaluation_exit;
+	    }
 
 	    if (res != 0) {
 		newContextSize++;
@@ -11573,18 +11576,13 @@ xmlXPathCompOpEvalPredicate(xmlXPathParserContextPtr ctxt,
 		contextObj = NULL;
 	    }
 	}
-	goto evaluation_exit;
 
-evaluation_error:	
-	xmlXPathNodeSetClear(set, hasNsNodes);
-	newContextSize = 0;
-
-evaluation_exit:
 	if (contextObj != NULL) {
 	    if (ctxt->value == contextObj)
 		valuePop(ctxt);
 	    xmlXPathReleaseObject(xpctxt, contextObj);
 	}	
+evaluation_exit:
 	if (exprRes != NULL)
 	    xmlXPathReleaseObject(ctxt->context, exprRes);
 	/*

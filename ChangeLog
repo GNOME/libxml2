@@ -1,3 +1,8 @@
+Tue Feb 13 18:15:58 PST 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: Fixed memory bug with invalid function reported by
+	  Francois Delyon on mailing list
+
 Mon Feb 12 16:40:48 PST 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: fixed problem with invalid char encountered

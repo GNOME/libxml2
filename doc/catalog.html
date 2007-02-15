@@ -108,7 +108,7 @@ to its own set of catalogs, this can be done by setting the
 <code>XML_CATALOG_FILES</code> environment variable to a list of catalogs, an
 empty one should deactivate loading the default <code>/etc/xml/catalog</code>
 default catalog</p><h3><a name="validate" id="validate">How to debug catalog processing:</a></h3><p>Setting up the <code>XML_DEBUG_CATALOG</code> environment variable will
-make libxml2 output debugging informations for each catalog operations, for
+make libxml2 output debugging information for each catalog operations, for
 example:</p><pre>orchis:~/XML -&gt; xmllint --memory --noout test/ent2
 warning: failed to load external entity "title.xml"
 orchis:~/XML -&gt; export XML_DEBUG_CATALOG=
@@ -225,7 +225,7 @@ try to avoid troubles in multithreaded environments. The code is now thread
 safe assuming that the libxml2 library has been compiled with threads
 support.</p><p></p><h3><a name="Other" id="Other">Other resources</a></h3><p>The XML Catalog specification is relatively recent so there isn't much
 literature to point at:</p><ul><li>You can find a good rant from Norm Walsh about <a href="http://www.arbortext.com/Think_Tank/XML_Resources/Issue_Three/issue_three.html">the
-    need for catalogs</a>, it provides a lot of context informations even if
+    need for catalogs</a>, it provides a lot of context information even if
     I don't agree with everything presented. Norm also wrote a more recent
     article <a href="http://wwws.sun.com/software/xml/developers/resolver/article/">XML
     entities and URI resolvers</a> describing them.</li>

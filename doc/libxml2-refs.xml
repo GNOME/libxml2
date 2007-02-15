@@ -20753,6 +20753,7 @@
         </word>
         <word name='deactivated'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
+          <ref name='xmlTextReaderRelaxNGValidate'/>
           <ref name='xmlTextReaderSchemaValidate'/>
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
           <ref name='xmlTextReaderSetSchema'/>
@@ -21026,12 +21027,10 @@
         </word>
         <word name='des'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
-          <ref name='xmlTextReaderRelaxNGValidate'/>
           <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='desactivated'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
-          <ref name='xmlTextReaderRelaxNGValidate'/>
           <ref name='xmlTextReaderSetSchema'/>
         </word>
         <word name='descend'>

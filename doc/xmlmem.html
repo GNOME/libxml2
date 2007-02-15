@@ -49,7 +49,7 @@ or call a specific routine when a given block number is allocated:</p><ul><li><a
     and <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemStrdupLoc()</a>
     are the memory debugging replacement allocation routines</li>
   <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump
-    ()</a> dumps all the informations about the allocated memory block lefts
+    ()</a> dumps all the information about the allocated memory block lefts
     in the <code>.memdump</code> file</li>
 </ul><p>When developing libxml2 memory debug is enabled, the tests programs call
 xmlMemoryDump () and the "make test" regression tests will check for any
@@ -57,7 +57,7 @@ memory leak during the full regression test sequence, this helps a lot
 ensuring that libxml2  does not leak memory and bullet proof memory
 allocations use (some libc implementations are known to be far too permissive
 resulting in major portability problems!).</p><p>If the .memdump reports a leak, it displays the allocation function and
-also tries to give some informations about the content and structure of the
+also tries to give some information about the content and structure of the
 allocated blocks left. This is sufficient in most cases to find the culprit,
 but not always. Assuming the allocation problem is reproducible, it is
 possible to find more easily:</p><ol><li>write down the block number xxxx not allocated</li>

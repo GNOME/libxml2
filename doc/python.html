@@ -38,7 +38,7 @@ or libxslt wrappers or bindings:</p><ul><li><a href="http://libxmlplusplus.sourc
     maintained by Tobias Peters.</li>
   <li>Steve Ball and contributors maintains <a href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
     Tcl</a>.</li>
-  <li>libxml2 and libxslt is the default XML library for PHP5.</li>
+  <li>libxml2 and libxslt are the default XML libraries for PHP5.</li>
   <li><a href="http://savannah.gnu.org/projects/classpathx/">LibxmlJ</a> is
     an effort to create a 100% JAXP-compatible Java wrapper for libxml2 and
     libxslt as part of GNU ClasspathX project.</li>
@@ -123,8 +123,8 @@ if valid != 0:
 defines a new error handler global to the library. It is used to avoid seeing
 the error messages when trying to validate the invalid document.</p><p>The main interest of that test is the creation of a parser context with
 createFileParserCtxt() and how the behaviour can be changed before calling
-parseDocument() . Similarly the informations resulting from the parsing phase
-are also available using context methods.</p><p>Contexts like nodes are defined as class and the libxml2 wrappers maps the
+parseDocument() . Similarly the information resulting from the parsing phase
+is also available using context methods.</p><p>Contexts like nodes are defined as class and the libxml2 wrappers maps the
 C function interfaces in terms of objects method as much as possible. The
 best to get a complete view of what methods are supported is to look at the
 libxml2.py module containing all the wrappers.</p><h3>push.py:</h3><p>This test show how to activate the push parser interface:</p><pre>import libxml2

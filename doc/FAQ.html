@@ -24,12 +24,14 @@ A:link, A:visited, A:active { text-decoration: underline }
   </li>
 </ol><h3><a name="Installati" id="Installati">Installation</a></h3><ol><li><strong><span style="background-color: #FF0000">Do Not Use
     libxml1</span></strong>, use libxml2</li>
+  <p></p>
   <li><em>Where can I get libxml</em> ?
     <p>The original distribution comes from <a href="ftp://xmlsoft.org/libxml2/">xmlsoft.org</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">gnome.org</a></p>
     <p>Most Linux and BSD distributions include libxml, this is probably the
     safer way for end-users to use libxml.</p>
     <p>David Doolin provides precompiled Windows versions at <a href="http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/         ">http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/</a></p>
   </li>
+  <p></p>
   <li><em>I see libxml and libxml2 releases, which one should I install ?</em>
     <ul><li>If you are not constrained by backward compatibility issues with
         existing applications, install libxml2 only</li>
@@ -86,6 +88,7 @@ A:link, A:visited, A:active { text-decoration: underline }
         of the official UNIX</a> specification. Here is one <a href="http://www.gnu.org/software/libiconv/">implementation of the
         library</a> which source can be found <a href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
     </ul></li>
+  <p></p>
   <li><em>Make check fails on some platforms</em>
     <p>Sometimes the regression tests' results don't completely match the
     value produced by the parser, and the makefile uses diff to print the
@@ -94,7 +97,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     <p>Sometimes (especially on Solaris) make checks fail due to limitations
     in make. Try using GNU-make instead.</p>
   </li>
-  <li><em>I use the CVS version and there is no configure script</em>
+  <li><em>I use the SVN version and there is no configure script</em>
     <p>The configure script (and other Makefiles) are generated. Use the
     autogen.sh script to regenerate the configure script and Makefiles,
     like:</p>
@@ -173,8 +176,9 @@ A:link, A:visited, A:active { text-decoration: underline }
         ()</a> and <a href="http://xmlsoft.org/html/libxml-tree.html#xmlSaveFormatFile">xmlSaveFormatFile
         ()</a></li>
     </ol></li>
-  <li>Extra nodes in the document:
-    <p><em>For a XML file as below:</em></p>
+  <p></p>
+  <li><em>Extra nodes in the document:</em>
+    <p><em>For an XML file as below:</em></p>
     <pre>&lt;?xml version="1.0"?&gt;
 &lt;PLAN xmlns="http://www.argus.ca/autotest/1.0/"&gt;
 &lt;NODE CommFlag="0"/&gt;
@@ -232,19 +236,23 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
       <li>have a look at <a href="examples/index.html">the set of
         examples</a>.</li>
       <li>look for examples of use for libxml2 function using the Gnome code.
+<!--
         For example the following will query the full Gnome CVS base for the
         use of the <strong>xmlAddChild()</strong> function:
-        <p><a href="http://cvs.gnome.org/lxr/search?string=xmlAddChild">http://cvs.gnome.org/lxr/search?string=xmlAddChild</a></p>
+        <p><a
+        href="http://cvs.gnome.org/lxr/search?string=xmlAddChild">http://cvs.gnome.org/lxr/search?string=xmlAddChild</a></p>
         <p>This may be slow, a large hardware donation to the gnome project
         could cure this :-)</p>
+-->
       </li>
-      <li><a href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
+      <li><a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">Browse
         the libxml2 source</a> , I try to write code as clean and documented
         as possible, so looking at it may be helpful. In particular the code
-        of xmllint.c and of the various testXXX.c test programs should
+        of <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/xmllint.c?view=markup">xmllint.c</a> and of the various testXXX.c test programs should
         provide good examples of how to do things with the library.</li>
     </ul></li>
-  <li>What about C++ ?
+  <p></p>
+  <li><em>What about C++ ?</em>
     <p>libxml2 is written in pure C in order to allow easy reuse on a number
     of platforms, including embedded systems. I don't intend to convert to
     C++.</p>
@@ -260,7 +268,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
       </li>
       -->
     </ul></li>
-  <li>How to validate a document a posteriori ?
+  <li><em>How to validate a document a posteriori ?</em>
     <p>It is possible to validate documents which had not been validated at
     initial parsing time or documents which have been built from scratch
     using the API. Use the <a href="http://xmlsoft.org/html/libxml-valid.html#xmlValidateDtd">xmlValidateDtd()</a>
@@ -276,7 +284,7 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
         else xmlAddPrevSibling(doc-&gt;children, (xmlNodePtr)dtd);
           </pre>
   </li>
-  <li>So what is this funky "xmlChar" used all the time?
+  <li><em>So what is this funky "xmlChar" used all the time?</em>
     <p>It is a null terminated sequence of utf-8 characters. And only utf-8!
     You need to convert strings encoded in different ways to utf-8 before
     passing them to the API.  This can be accomplished with the iconv library

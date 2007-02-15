@@ -14734,8 +14734,8 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlTextReaderRelaxNGValidate' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Use RelaxNG to validate the document as it is processed. Activation is only possible before the first Read(). if @rng is NULL, then RelaxNG validation is desactivated.</info>
-      <return type='int' info='0 in case the RelaxNG validation could be (des)activated and -1 in case of error.'/>
+      <info>Use RelaxNG to validate the document as it is processed. Activation is only possible before the first Read(). if @rng is NULL, then RelaxNG validation is deactivated.</info>
+      <return type='int' info='0 in case the RelaxNG validation could be (de)activated and -1 in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='rng' type='const char *' info='the path to a RelaxNG schema or NULL'/>
     </function>

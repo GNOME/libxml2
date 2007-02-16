@@ -12,9 +12,9 @@ to help those   - More testing on RelaxNG
 The change log at 
 ChangeLog.html
  describes the recents commits
-to the CVS at 
-http://cvs.gnome.org/viewcvs/libxml2/
- code base.There is the list of public releases:
+to the SVN at 
+http://svn.gnome.org/viewcvs/libxml2/trunk/
+ code base.Here is the list of public releases:
 2.6.27: Oct 25 2006:
    - Portability fixes: file names on windows (Roland Schwingel, 
       Emelyanov Alexey), windows compile fixup (Rob Richards), 
@@ -683,7 +683,7 @@ Do not use or package 2.6.25
    - New xmlWriter API provided by Alfred Mickautsch
    - Schemas: base64 support by Anthony Carrico
    - Parser<->HTTP integration fix, proper processing of the Mime-Type
-    and charset informations if available.
+    and charset information if available.
    - Relax-NG: bug fixes including the one reported by Martijn Faassen and
     zeroOrMore, better error reporting.
    - Python bindings (Stéphane Bidoul), never use stdout for errors
@@ -901,7 +901,7 @@ A bugfixes only release   - Windows Makefiles (William Brack)
    - Fix for HTTP URL escaping problem
    - added an TextXmlReader (C#) like API (work in progress)
    - Rewrote the API in XML generation script, includes a C parser and saves
-    more informations needed for C# bindings
+    more information needed for C# bindings
 
 
 2.4.28: Nov 22 2002:

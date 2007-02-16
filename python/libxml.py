@@ -245,19 +245,19 @@ class xmlCore:
 
     def __eq__(self, other):
         if other == None:
-	    return False
+            return False
         ret = libxml2mod.compareNodesEqual(self._o, other._o)
-	if ret == None:
-	    return False
-	return ret == True
+        if ret == None:
+            return False
+        return ret == True
     def __ne__(self, other):
         if other == None:
-	    return True
+            return True
         ret = libxml2mod.compareNodesEqual(self._o, other._o)
-	return not ret
+        return not ret
     def __hash__(self):
-    	ret = libxml2mod.nodeHash(self._o)
-	return ret
+        ret = libxml2mod.nodeHash(self._o)
+        return ret
 
     def __str__(self):
         return self.serialize()

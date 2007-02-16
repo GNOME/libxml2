@@ -1,4 +1,9 @@
-Thu Feb 15 12:43:28 PST 2007 William Brack <wbrack#mmm.com.hk>
+Fri Feb 16 09:13:38 PST 2007 William Brack <wbrack@mmm.com.hk>
+
+	* python/libxml.py: fixed tab problem with patch from
+	  Andreas Hanke (bug #408626)
+
+Thu Feb 15 12:43:28 PST 2007 William Brack <wbrack@mmm.com.hk>
 
 	* doc/xml.html: Changed all references to libxml2 CVS over to
 	  the corresponding SVN.  A few other spelling/grammar/links

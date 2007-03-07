@@ -198,6 +198,7 @@ static xmlNs xmlXPathXMLNamespaceStruct = {
     XML_NAMESPACE_DECL,
     XML_XML_NAMESPACE,
     BAD_CAST "xml",
+    NULL,
     NULL
 };
 static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
@@ -2840,6 +2841,8 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     /*
      * a couple of optimizations which will avoid computations in most cases
      */
+    if (node1 == node2)		/* trivial case */
+	return(0);
     if (node1->type == XML_ATTRIBUTE_NODE) {
 	attr1 = 1;
 	attrNode1 = node1;

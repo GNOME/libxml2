@@ -1,3 +1,9 @@
+Wed Mar  7 16:18:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed xmlXPathCmpNodes for incorrect result on certain
+	  cases when comparing identical nodes (bug #415567) with patch
+	  from Oleg Paraschenko
+
 Fri Feb 16 09:13:38 PST 2007 William Brack <wbrack@mmm.com.hk>
 
 	* python/libxml.py: fixed tab problem with patch from

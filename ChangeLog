@@ -1,3 +1,8 @@
+Fri Mar  9 17:54:40 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: applied patch from Julien Reichel cleaning up mode
+	  and state internal flags mixups
+
 Wed Mar  7 16:18:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed xmlXPathCmpNodes for incorrect result on certain

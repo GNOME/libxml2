@@ -19139,7 +19139,8 @@ xmlSchemaExpandAttributeGroupRefs(xmlSchemaParserCtxtPtr pctxt,
 	    * Just remove the reference if the referenced group does not
 	    * contain any attribute uses.
 	    */
-	    if (gr->attrUses == NULL) {
+	    sublist = ((xmlSchemaItemListPtr) gr->attrUses);
+	    if ((sublist == NULL) || sublist->nbItems == 0) {
 		if (xmlSchemaItemListRemove(list, i) == -1)
 		    return(-1);
 		i--;
@@ -19148,18 +19149,15 @@ xmlSchemaExpandAttributeGroupRefs(xmlSchemaParserCtxtPtr pctxt,
 	    /*
 	    * Add the attribute uses.
 	    */
-	    sublist = ((xmlSchemaItemListPtr) gr->attrUses);
-	    if (sublist->nbItems != 0) {
-		list->items[i] = sublist->items[0];
-		if (sublist->nbItems != 1) {
-		    for (j = 1; j < sublist->nbItems; j++) {
-			i++;
-			if (xmlSchemaItemListInsert(list,
-				sublist->items[j], i) == -1)
-			    return(-1);
-		    }
+	    list->items[i] = sublist->items[0];
+	    if (sublist->nbItems != 1) {
+		for (j = 1; j < sublist->nbItems; j++) {
+		    i++;
+		    if (xmlSchemaItemListInsert(list,
+			    sublist->items[j], i) == -1)
+			return(-1);
 		}
-	    }	      
+	    }
 	}
 
     }

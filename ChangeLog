@@ -1,3 +1,10 @@
+Wed Mar 14 19:35:28 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: fixed problem with referenced attribute groups
+	  (bug #417621)
+	* configure.in: re-ordered some includes for types.h / socket.h
+	  (bug #416001)
+
 Fri Mar  9 17:54:40 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: applied patch from Julien Reichel cleaning up mode

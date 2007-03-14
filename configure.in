@@ -506,8 +506,8 @@ fi
 if test $enable_ipv6 = yes; then
   have_ipv6=no
   AC_TRY_COMPILE([
-    #include <sys/socket.h>
     #include <sys/types.h>], [
+    #include <sys/socket.h>
     struct sockaddr_storage ss;
     socket(AF_INET6, SOCK_STREAM, 0)
     ],
@@ -529,8 +529,8 @@ if test $enable_ipv6 = yes; then
     dnl ********************************************************************
     AC_MSG_CHECKING([struct sockaddr::ss_family])
     AC_TRY_COMPILE([
-      #include <sys/socket.h>
       #include <sys/types.h>], [
+      #include <sys/socket.h>
       struct sockaddr_storage ss ;
       ss.ss_family = 0 ;
       ],
@@ -541,8 +541,8 @@ if test $enable_ipv6 = yes; then
     if test x$have_ss_family = xno ; then
       AC_MSG_CHECKING([broken struct sockaddr::ss_family])
       AC_TRY_COMPILE([
-        #include <sys/socket.h>
         #include <sys/types.h>], [
+        #include <sys/socket.h>
         struct sockaddr_storage ss ;
         ss.__ss_family = 0 ;
         ],

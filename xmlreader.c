@@ -1170,7 +1170,7 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
 	    return(1);
 	val = xmlTextReaderPushData(reader);
 	if (val < 0){
-		reader->mode == XML_TEXTREADER_MODE_ERROR;
+	    reader->mode = XML_TEXTREADER_MODE_ERROR;
 	    return(-1);
 	}
     } while(reader->mode != XML_TEXTREADER_MODE_EOF);

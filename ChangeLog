@@ -1,3 +1,8 @@
+Wed Mar 14 20:30:38 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* configure.in: corrected small error in last commit
+	* xmlreader.c: corrected small typo in last commit
+
 Wed Mar 14 19:35:28 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: fixed problem with referenced attribute groups

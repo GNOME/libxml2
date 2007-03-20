@@ -1,3 +1,8 @@
+Tue Mar 20 09:58:13 CET 2007  Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: applied patch from Björn Wiberg to try to fix again
+	  the silly __ss_familly problem on various AIXes, should fix #420184
+
 Wed Mar 14 20:30:38 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* configure.in: corrected small error in last commit

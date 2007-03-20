@@ -102,7 +102,9 @@
 #endif
 
 #ifdef _AIX
+#ifdef HAVE_BROKEN_SS_FAMILY
 #define ss_family __ss_family
+#endif
 #endif
 
 #ifndef XML_SOCKLEN_T

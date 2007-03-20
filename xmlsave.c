@@ -623,7 +623,9 @@ xmlNodeListDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     buf = ctxt->buf;
     while (cur != NULL) {
 	if ((ctxt->format) && (xmlIndentTreeOutput) &&
-	    (cur->type == XML_ELEMENT_NODE))
+	    ((cur->type == XML_ELEMENT_NODE) ||
+	     (cur->type == XML_COMMENT_NODE) ||
+	     (cur->type == XML_PI_NODE)))
 	    xmlOutputBufferWrite(buf, ctxt->indent_size *
 	                         (ctxt->level > ctxt->indent_nr ? 
 				  ctxt->indent_nr : ctxt->level),

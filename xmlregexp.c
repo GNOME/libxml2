@@ -54,6 +54,11 @@
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
 #define NEXTL(l) ctxt->cur += l;
 #define XML_REG_STRING_SEPARATOR '|'
+/*
+ * Need PREV to check on a '-' within a Character Group. May only be used
+ * when it's guaranteed that cur is not at the beginning of ctxt->string!
+ */
+#define PREV (ctxt->cur[-1])
 
 /**
  * TODO:
@@ -4853,10 +4858,15 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	ERROR("Expecting a char range");
 	return;
     }
-    NEXTL(len);
-    if (start == '-') {
+    /*
+     * Since we are "inside" a range, we can assume ctxt->cur is past
+     * the start of ctxt->string, and PREV should be safe
+     */
+    if ((start == '-') && (NXT(1) != ']') && (PREV != '[') && (PREV != '^')) {
+	NEXTL(len);
 	return;
     }
+    NEXTL(len);
     cur = CUR;
     if ((cur != '-') || (NXT(1) == ']')) {
         xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,

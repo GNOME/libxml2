@@ -1,3 +1,9 @@
+Wed Mar 21 21:20:48 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: fixed problem with 0x2d in Char Range (bug #420596)
+	* test/regexp/bug420596, result/regexp/bug420596: added regression
+	  test for this
+
 Wed Mar 21 14:23:08 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* HTMLparser.c: fixed memory access error on parsing of meta data

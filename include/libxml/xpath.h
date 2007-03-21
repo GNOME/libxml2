@@ -310,7 +310,7 @@ struct _xmlXPathContext {
     int proximityPosition;		/* the proximity position */
 
     /* extra stuff for XPointer */
-    int xptr;				/* it this an XPointer context */
+    int xptr;				/* is this an XPointer context? */
     xmlNodePtr here;			/* for here() */
     xmlNodePtr origin;			/* for origin() */
 
@@ -332,7 +332,7 @@ struct _xmlXPathContext {
 
     /* temporary namespace lists kept for walking the namespace axis */
     xmlNsPtr *tmpNsList;		/* Array of namespaces */
-    int tmpNsNr;			/* number of namespace in scope */
+    int tmpNsNr;			/* number of namespaces in scope */
 
     /* error reporting mechanism */
     void *userData;                     /* user specific data block */
@@ -340,8 +340,8 @@ struct _xmlXPathContext {
     xmlError lastError;			/* the last error */
     xmlNodePtr debugNode;		/* the source node XSLT */
 
-    /* dictionnary */
-    xmlDictPtr dict;			/* dictionnary if any */
+    /* dictionary */
+    xmlDictPtr dict;			/* dictionary if any */
 
     int flags;				/* flags to control compilation */
 

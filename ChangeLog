@@ -1,3 +1,7 @@
+Wed Mar 21 17:58:13 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xpath.h: applied documentation patch from James Dennett
+
 Wed Mar 21 21:20:48 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: fixed problem with 0x2d in Char Range (bug #420596)

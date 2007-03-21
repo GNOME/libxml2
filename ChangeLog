@@ -1,3 +1,9 @@
+Wed Mar 21 14:23:08 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* HTMLparser.c: fixed memory access error on parsing of meta data
+	  which had errors (bug #382206).  Also cleaned up a few warnings
+	  by adding some additional DECL macros.
+
 Tue Mar 20 09:58:13 CET 2007  Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c: applied patch from Björn Wiberg to try to fix again

@@ -883,13 +883,15 @@ xmlFileOpen (const char *filename) {
     char *unescaped;
     void *retval;
 
-    unescaped = xmlURIUnescapeString(filename, 0, NULL);
-    if (unescaped != NULL) {
-	retval = xmlFileOpen_real(unescaped);
-	xmlFree(unescaped);
-    } else {
-	retval = xmlFileOpen_real(filename);
+    retval = xmlFileOpen_real(filename);
+    if (retval == NULL) {
+	unescaped = xmlURIUnescapeString(filename, 0, NULL);
+	if (unescaped != NULL) {
+	    retval = xmlFileOpen_real(unescaped);
+	    xmlFree(unescaped);
+	}
     }
+
     return retval;
 }
 

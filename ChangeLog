@@ -1,3 +1,8 @@
+Fri Mar 30 14:41:57 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied change from Michael Day to avoid a problem when
+	  compiled without zlib support.
+
 Wed Mar 21 17:58:13 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xpath.h: applied documentation patch from James Dennett

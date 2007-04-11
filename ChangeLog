@@ -1,3 +1,8 @@
+Wed Apr 11 22:38:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: small enhancement for quantifier range with
+	  min occurs of 0; fixes bug 425542.
+	
 Fri Mar 30 14:41:57 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied change from Michael Day to avoid a problem when

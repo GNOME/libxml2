@@ -1601,6 +1601,11 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 	    atom->quant = XML_REGEXP_QUANT_ONCE;
 	    xmlRegStateAddTrans(ctxt, to, atom, to, -1, -1);
 	    break;
+	case XML_REGEXP_QUANT_RANGE: 
+	    if (atom->min == 0) {
+		xmlFAGenerateEpsilonTransition(ctxt, from, to);
+	    }
+	    break;
 	default:
 	    break;
     }

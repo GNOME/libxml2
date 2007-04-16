@@ -1,3 +1,9 @@
+Mon Apr 16 09:05:01 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: change the way script/style are parsed to
+	  not try to detect comments, reported by Mike Day
+	* result/HTML/doc3.*: affects the result of that test
+
 Wed Apr 11 22:38:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: small enhancement for quantifier range with

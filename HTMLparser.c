@@ -2678,23 +2678,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
     SHRINK;
     cur = CUR_CHAR(l);
     while (IS_CHAR_CH(cur)) {
-	if ((cur == '<') && (NXT(1) == '!') && (NXT(2) == '-') &&
-	    (NXT(3) == '-')) {
-	    if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-		if (ctxt->sax->cdataBlock!= NULL) {
-		    /*
-		     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
-		     */
-		    ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
-		} else if (ctxt->sax->characters != NULL) {
-		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
-		}
-	    }
-	    nbchar = 0;
-	    htmlParseComment(ctxt);
-	    cur = CUR_CHAR(l);
-	    continue;
-	} else if ((cur == '<') && (NXT(1) == '/')) {
+	if ((cur == '<') && (NXT(1) == '/')) {
             /*
              * One should break here, the specification is clear:
              * Authors should therefore escape "</" within the content.

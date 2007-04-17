@@ -209,6 +209,11 @@ static int sax = 0;
  *									*
  ************************************************************************/
 #define MAX_PATHS 64
+#ifdef _WIN32
+# define PATH_SEPARATOR ';'
+#else
+# define PATH_SEPARATOR ':'
+#endif
 static xmlChar *paths[MAX_PATHS + 1];
 static int nbpaths = 0;
 static int load_trace = 0;
@@ -225,10 +230,10 @@ void parsePath(const xmlChar *path) {
 	    return;
 	}
 	cur = path;
-	while ((*cur == ' ') || (*cur == ':'))
+	while ((*cur == ' ') || (*cur == PATH_SEPARATOR))
 	    cur++;
 	path = cur;
-	while ((*cur != 0) && (*cur != ' ') && (*cur != ':'))
+	while ((*cur != 0) && (*cur != ' ') && (*cur != PATH_SEPARATOR))
 	    cur++;
 	if (cur != path) {
 	    paths[nbpaths] = xmlStrndup(path, cur - path);

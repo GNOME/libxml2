@@ -1,3 +1,8 @@
+Tue Apr 17 14:34:45 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c catalog.c: "xmllint unusable on win32" so applied
+	  a libxml2 patch from Christian Ehrlicher
+
 Mon Apr 16 09:05:01 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: change the way script/style are parsed to

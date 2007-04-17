@@ -77,7 +77,7 @@
 #endif
 
 
-#ifdef __MINGW32__
+#if defined(__MINGW32__) || defined(_WIN32_WCE)
 #define _WINSOCKAPI_
 #include <wsockcompat.h>
 #include <winsock2.h>

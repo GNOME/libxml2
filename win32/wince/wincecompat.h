@@ -12,6 +12,7 @@
 #define __WINCECOMPAT_H__
 
 #include <stdio.h>
+#include <winbase.h>
 
 #define MAX_STRERROR 31
 
@@ -24,6 +25,8 @@
 #define O_TRUNC        0x0200  /* open and truncate */
 #define O_EXCL         0x0400  /* open only if file doesn't already exist */
 
+#define BUFSIZ 4096
+
 extern int errno;
 /* 
 	Prototypes 
@@ -33,6 +36,7 @@ int write(int handle, const char *buffer, unsigned int len);
 int open(const char *filename,int oflag, ...);
 int close(int handle);
 char *getenv( const char *varname );
+char *getcwd( char *buffer, unsigned int size);
 char *strerror(int errnum);
 
 /*

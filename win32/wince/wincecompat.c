@@ -47,6 +47,14 @@ int close(int handle)
 }
 
 
+char *getcwd( char *buffer, unsigned int size)
+{
+    /* Windows CE don't have the concept of a current directory
+     * so we just return NULL to indicate an error
+     */
+    return NULL;
+}
+
 char *getenv( const char *varname )
 {
 	return NULL;

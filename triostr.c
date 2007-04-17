@@ -73,7 +73,11 @@
 # endif
 #elif defined(TRIO_PLATFORM_WIN32)
 # define USE_STRCASECMP
-# define strcasecmp(x,y) strcmpi(x,y)
+# if defined(_WIN32_WCE)
+#  define strcasecmp(x,y) _stricmp(x,y)
+# else
+#  define strcasecmp(x,y) strcmpi(x,y)
+# endif
 #endif
 
 #if !(defined(TRIO_PLATFORM_SUNOS))
@@ -574,7 +578,7 @@ TRIO_ARGS1((error_number),
 }
 
 
-#if !defined(TRIO_MINIMAL)
+#if !defined(TRIO_MINIMAL) && !defined(_WIN32_WCE)
 /**
    Format the date/time according to @p format.
 
@@ -1887,7 +1891,7 @@ TRIO_ARGS3((self, max, other),
 #endif /* !defined(TRIO_MINIMAL) */
 
 
-#if !defined(TRIO_MINIMAL)
+#if !defined(TRIO_MINIMAL) && !defined(_WIN32_WCE)
 /*
  * trio_string_format_data_max
  */

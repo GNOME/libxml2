@@ -62,7 +62,9 @@
 #include <limits.h>
 #include <float.h>
 
-#if defined(__STDC_ISO_10646__) || defined(MB_LEN_MAX) || defined(USE_MULTIBYTE) || TRIO_WIDECHAR
+#if (defined(__STDC_ISO_10646__) || defined(MB_LEN_MAX) \
+     || defined(USE_MULTIBYTE) || TRIO_WIDECHAR) \
+    && !defined(_WIN32_WCE)
 # define TRIO_COMPILER_SUPPORTS_MULTIBYTE
 # if !defined(MB_LEN_MAX)
 #  define MB_LEN_MAX 6
@@ -71,6 +73,10 @@
 
 #if (defined(TRIO_COMPILER_MSVC) && (_MSC_VER >= 1100)) || defined(TRIO_COMPILER_BCB)
 # define TRIO_COMPILER_SUPPORTS_MSVC_INT
+#endif
+
+#if defined(_WIN32_WCE)
+#include <wincecompat.h>
 #endif
 
 /*************************************************************************
@@ -92,7 +98,10 @@
 # include <stdarg.h>
 #endif
 #include <stddef.h>
+
+#ifdef HAVE_ERRNO_H
 #include <errno.h>
+#endif
 
 #ifndef NULL
 # define NULL 0
@@ -133,9 +142,13 @@ typedef unsigned long trio_flags_t;
 # include <unistd.h>
 #endif
 #if defined(TRIO_PLATFORM_WIN32)
-# include <io.h>
-# define read _read
-# define write _write
+# if defined(_WIN32_WCE)
+#  include <wincecompat.h>
+# else
+#  include <io.h>
+#  define read _read
+#  define write _write
+# endif
 #endif /* TRIO_PLATFORM_WIN32 */
 
 #if TRIO_WIDECHAR
@@ -243,8 +256,9 @@ typedef trio_longlong_t trio_int64_t;
 # endif
 #endif
 
-#if !(defined(TRIO_COMPILER_SUPPORTS_C99) \
- || defined(TRIO_COMPILER_SUPPORTS_UNIX01))
+#if (!(defined(TRIO_COMPILER_SUPPORTS_C99) \
+ || defined(TRIO_COMPILER_SUPPORTS_UNIX01))) \
+ && !defined(_WIN32_WCE)
 # define floorl(x) floor((double)(x))
 # define fmodl(x,y) fmod((double)(x),(double)(y))
 # define powl(x,y) pow((double)(x),(double)(y))

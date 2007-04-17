@@ -1,3 +1,9 @@
+Tue Apr 17 14:47:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c libxml.h win32/wince/wincecompat.h win32/wince/wincecompat.c
+	  xmlIO.c nanohttp.c nanoftp.c trio.c triostr.c triostr.h: applied 
+	  patch from Andreas Stricke to ease the compilation on Windows CE
+
 Tue Apr 17 14:34:45 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c catalog.c: "xmllint unusable on win32" so applied

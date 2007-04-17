@@ -36,8 +36,12 @@
 #include <zlib.h>
 #endif
 
-#ifdef WIN32
+#if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
+#endif
+
+#if defined(_WIN32_WCE)
+#include <winnls.h> /* for CP_UTF8 */
 #endif
 
 /* Figure a portable way to know if a file is a directory. */

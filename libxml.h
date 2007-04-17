@@ -32,6 +32,15 @@ int snprintf(char *, size_t, const char *, ...);
 int vfprintf(FILE *, const char *, va_list);
 #endif
 
+/*
+ * Windows CE compatibility definitions and functions
+ * This is needed to compile libxml2 for Windows CE.
+ * At least I tested it with WinCE 4.2 for Emulator and SH4 target
+ */
+#if defined(_WIN32_WCE)
+#include <wincecompat.h>
+#endif
+
 #ifndef WITH_TRIO
 #include <stdio.h>
 #else

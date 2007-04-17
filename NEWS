@@ -15,6 +15,32 @@ ChangeLog.html
 to the SVN at 
 http://svn.gnome.org/viewcvs/libxml2/trunk/
  code base.Here is the list of public releases:
+2.6.28: Apr 17 2007:
+   - Documentation: comment fixes (Markus Keim), xpath comments fixes too
+      (James Dennett)
+   - Bug fixes: XPath bug (William Brack), HTML parser autoclose stack usage
+      (Usamah Malik), various regexp bug fixes (DV and William), path conversion
+      on Windows (Igor Zlatkovic), htmlCtxtReset fix (Michael Day), XPath
+      principal node of axis bug, HTML serialization of some codepoint
+      (Steven Rainwater), user data propagation in XInclude (Michael Day),
+      standalone and XML decl detection (Michael Day), Python id ouptut
+      for some id, fix the big python string memory leak, URI parsing fixes
+      (Stéphane Bidoul and William), long comments parsing bug (William),
+      concurrent threads initialization (Ted Phelps), invalid char
+      in text XInclude (William), XPath memory leak (William), tab in
+      python problems (Andreas Hanke), XPath node comparison error
+      (Oleg Paraschenko), cleanup patch for reader (Julien Reichel),
+      XML Schemas attribute group (William), HTML parsing problem (William),
+      fix char 0x2d in regexps (William), regexp quantifier range with
+      min occurs of 0 (William), HTML script/style parsing (Mike Day)
+   - Improvement: make xmlTextReaderSetup() public
+   - Compilation and postability: fix a missing include problem (William),
+      __ss_familly on AIX again (Björn Wiberg), compilation without zlib
+      (Michael Day), catalog patch for Win32 (Christian Ehrlicher),
+      Windows CE fixes (Andreas Stricke)
+   - Various CVS to SVN infrastructure changes
+
+
 2.6.27: Oct 25 2006:
    - Portability fixes: file names on windows (Roland Schwingel, 
       Emelyanov Alexey), windows compile fixup (Rob Richards), 

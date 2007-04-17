@@ -1,3 +1,7 @@
+Tue Apr 17 16:50:12 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* doc/* configure.in NEWS: release of libxml2 2.6.28
+
 Tue Apr 17 14:47:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c libxml.h win32/wince/wincecompat.h win32/wince/wincecompat.c

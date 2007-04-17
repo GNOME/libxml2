@@ -122,7 +122,7 @@ The content of this structure is not made public by the API.
     void *	user	: function to free extra variables
     int	contextSize	: the context size
     int	proximityPosition	: the proximity position extra stuff for
-    int	xptr	: it this an XPointer context
+    int	xptr	: is this an XPointer context?
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	here	: for here()
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	origin	: for origin() the set of namespace decla
     <a href="libxml-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	nsHash	: The namespaces hash table
@@ -134,12 +134,12 @@ The content of this structure is not made public by the API.
     <a href="libxml-xpath.html#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>	funcLookupFunc	: function lookup func
     void *	funcLookupData	: function lookup data temporary namespac
     <a href="libxml-tree.html#xmlNsPtr">xmlNsPtr</a> *	tmpNsList	: Array of namespaces
-    int	tmpNsNr	: number of namespace in scope error repo
+    int	tmpNsNr	: number of namespaces in scope error rep
     void *	userData	: user specific data block
     <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>	error	: the callback in case of errors
     <a href="libxml-xmlerror.html#xmlError">xmlError</a>	lastError	: the last error
-    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	debugNode	: the source node XSLT dictionnary
-    <a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>	dict	: dictionnary if any
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	debugNode	: the source node XSLT dictionary
+    <a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>	dict	: dictionary if any
     int	flags	: flags to control compilation Cache for
     void *	cache
 }</pre><h3>Enum <a name="xmlXPathError" id="xmlXPathError">xmlXPathError</a></h3><pre class="programlisting">Enum xmlXPathError {

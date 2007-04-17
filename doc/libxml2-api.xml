@@ -6700,7 +6700,7 @@ Could we use @subtypes for this?'/>
       <field name='user' type='void *' info=' function to free extra variables'/>
       <field name='contextSize' type='int' info=' the context size'/>
       <field name='proximityPosition' type='int' info=' the proximity position extra stuff for XPointer'/>
-      <field name='xptr' type='int' info=' it this an XPointer context'/>
+      <field name='xptr' type='int' info=' is this an XPointer context?'/>
       <field name='here' type='xmlNodePtr' info=' for here()'/>
       <field name='origin' type='xmlNodePtr' info=' for origin() the set of namespace declarations in scope for the expression'/>
       <field name='nsHash' type='xmlHashTablePtr' info=' The namespaces hash table'/>
@@ -6712,12 +6712,12 @@ Could we use @subtypes for this?'/>
       <field name='funcLookupFunc' type='xmlXPathFuncLookupFunc' info=' function lookup func'/>
       <field name='funcLookupData' type='void *' info=' function lookup data temporary namespace lists kept for walking the namespace axis'/>
       <field name='tmpNsList' type='xmlNsPtr *' info=' Array of namespaces'/>
-      <field name='tmpNsNr' type='int' info=' number of namespace in scope error reporting mechanism'/>
+      <field name='tmpNsNr' type='int' info=' number of namespaces in scope error reporting mechanism'/>
       <field name='userData' type='void *' info=' user specific data block'/>
       <field name='error' type='xmlStructuredErrorFunc' info=' the callback in case of errors'/>
       <field name='lastError' type='xmlError' info=' the last error'/>
-      <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT dictionnary'/>
-      <field name='dict' type='xmlDictPtr' info=' dictionnary if any'/>
+      <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT dictionary'/>
+      <field name='dict' type='xmlDictPtr' info=' dictionary if any'/>
       <field name='flags' type='int' info=' flags to control compilation Cache for reusal of XPath objects'/>
       <field name='cache' type='void *' info=''/>
     </struct>

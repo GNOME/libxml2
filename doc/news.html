@@ -12,7 +12,30 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.6.27: Oct 25 2006</h3><ul><li>Portability fixes: file names on windows (Roland Schwingel, 
+to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.6.28: Apr 17 2007</h3><ul><li>Documentation: comment fixes (Markus Keim), xpath comments fixes too
+      (James Dennett)</li>
+  <li>Bug fixes: XPath bug (William Brack), HTML parser autoclose stack usage
+      (Usamah Malik), various regexp bug fixes (DV and William), path conversion
+      on Windows (Igor Zlatkovic), htmlCtxtReset fix (Michael Day), XPath
+      principal node of axis bug, HTML serialization of some codepoint
+      (Steven Rainwater), user data propagation in XInclude (Michael Day),
+      standalone and XML decl detection (Michael Day), Python id ouptut
+      for some id, fix the big python string memory leak, URI parsing fixes
+      (Stéphane Bidoul and William), long comments parsing bug (William),
+      concurrent threads initialization (Ted Phelps), invalid char
+      in text XInclude (William), XPath memory leak (William), tab in
+      python problems (Andreas Hanke), XPath node comparison error
+      (Oleg Paraschenko), cleanup patch for reader (Julien Reichel),
+      XML Schemas attribute group (William), HTML parsing problem (William),
+      fix char 0x2d in regexps (William), regexp quantifier range with
+      min occurs of 0 (William), HTML script/style parsing (Mike Day)</li>
+  <li>Improvement: make xmlTextReaderSetup() public</li>
+  <li>Compilation and postability: fix a missing include problem (William),
+      __ss_familly on AIX again (Björn Wiberg), compilation without zlib
+      (Michael Day), catalog patch for Win32 (Christian Ehrlicher),
+      Windows CE fixes (Andreas Stricke)</li>
+  <li>Various CVS to SVN infrastructure changes</li>
+</ul><h3>2.6.27: Oct 25 2006</h3><ul><li>Portability fixes: file names on windows (Roland Schwingel, 
       Emelyanov Alexey), windows compile fixup (Rob Richards), 
       AIX iconv() is apparently case sensitive</li>
   <li>improvements: Python XPath types mapping (Nic Ferrier), XPath optimization

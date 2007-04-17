@@ -20464,6 +20464,9 @@
           <ref name='xmlParseElementContentDecl'/>
           <ref name='xmlParseElementDecl'/>
         </word>
+        <word name='context?'>
+          <ref name='_xmlXPathContext'/>
+        </word>
         <word name='contexts'>
           <ref name='_xmlDOMWrapCtxt'/>
         </word>
@@ -21197,6 +21200,7 @@
         </word>
         <word name='dictionary'>
           <ref name='_xmlParserCtxt'/>
+          <ref name='_xmlXPathContext'/>
           <ref name='xmlDictCleanup'/>
           <ref name='xmlDictCreate'/>
           <ref name='xmlDictCreateSub'/>
@@ -21209,7 +21213,6 @@
         </word>
         <word name='dictionnary'>
           <ref name='_xmlParserCtxt'/>
-          <ref name='_xmlXPathContext'/>
           <ref name='xmlDictCreate'/>
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlDictExists'/>

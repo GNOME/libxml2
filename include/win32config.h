@@ -6,7 +6,7 @@
 #define HAVE_MALLOC_H
 #define HAVE_ERRNO_H
 
-#ifdef _WIN32_WCE
+#if defined(_WIN32_WCE)
 #undef HAVE_ERRNO_H
 #include <windows.h>
 #include "wincecompat.h"
@@ -26,6 +26,11 @@
 #ifdef NEED_SOCKETS
 #include <wsockcompat.h>
 #endif
+
+/*
+ * Windows platforms may define except 
+ */
+#undef except
 
 #define HAVE_ISINF
 #define HAVE_ISNAN
@@ -95,7 +100,7 @@ static int isnan (double d) {
 /* Threading API to use should be specified here for compatibility reasons.
    This is however best specified on the compiler's command-line. */
 #if defined(LIBXML_THREAD_ENABLED)
-#if !defined(HAVE_PTHREAD_H) && !defined(HAVE_WIN32_THREADS)
+#if !defined(HAVE_PTHREAD_H) && !defined(HAVE_WIN32_THREADS) && !defined(_WIN32_WCE)
 #define HAVE_WIN32_THREADS
 #endif
 #endif

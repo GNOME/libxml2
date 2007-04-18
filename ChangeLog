@@ -1,3 +1,8 @@
+Wed Apr 18 09:52:25 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* include/win32config.h libxml.h: new patch from Andreas Stricke to
+	  better integrate support for Windows CE
+
 Tue Apr 17 16:50:12 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* doc/* configure.in NEWS: release of libxml2 2.6.28

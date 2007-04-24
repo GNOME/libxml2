@@ -1,3 +1,7 @@
+Tue Apr 24 20:15:14 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: Richard Jones reported xmlBufferAdd (buf, "", -1), fixing it
+
 Tue Apr 24 10:59:28 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: fix xmlURIUnescapeString comments which was confusing

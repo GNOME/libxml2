@@ -6968,7 +6968,8 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     if (len < 0)
         len = xmlStrlen(str);
 
-    if (len <= 0) return -1;
+    if (len < 0) return -1;
+    if (len == 0) return 0;
 
     needSize = buf->use + len + 2;
     if (needSize > buf->size){

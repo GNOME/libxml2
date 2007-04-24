@@ -1,3 +1,7 @@
+Tue Apr 24 10:59:28 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: fix xmlURIUnescapeString comments which was confusing
+
 Wed Apr 18 09:52:25 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* include/win32config.h libxml.h: new patch from Andreas Stricke to

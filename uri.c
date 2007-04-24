@@ -807,8 +807,11 @@ static int is_hex(char c) {
  *
  * Unescaping routine, but does not check that the string is an URI. The
  * output is a direct unsigned char translation of %XX values (no encoding)
+ * Note that the length of the result can only be smaller or same size as
+ * the input string.
  *
- * Returns a copy of the string, but unescaped
+ * Returns a copy of the string, but unescaped, will return NULL only in case
+ * of error
  */
 char *
 xmlURIUnescapeString(const char *str, int len, char *target) {

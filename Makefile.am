@@ -167,7 +167,7 @@ tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TES
 valgrind:
 	@echo '## Running the regression tests under Valgrind'
 	@echo '## Go get a cup of coffee it is gonna take a while ...'
-	$(MAKE) CHECKER='valgrind' tests
+	$(MAKE) CHECKER='valgrind -q' tests
 
 APItests: testapi$(EXEEXT)
 	@echo "## Running the API regression tests this may take a little while"

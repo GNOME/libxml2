@@ -96,7 +96,7 @@ xpath2_DEPENDENCIES= $(DEPS)
 xpath2_LDADD= @RDL_LIBS@ $(LDADDS)
 
 valgrind: 
-	$(MAKE) CHECKER='valgrind' tests
+	$(MAKE) CHECKER='valgrind -q' tests
 
 tests: $(noinst_PROGRAMS)
 	@(echo '## examples regression tests')

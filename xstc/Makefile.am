@@ -126,7 +126,7 @@ tests:
 valgrind:
 	-@(if [ -x $(PYTHON) ] ; then 					\
 	   echo '## Running the regression tests under Valgrind' ;	\
-	   $(MAKE) CHECKER='valgrind' MAKEFLAGS+=--silent pytests ; fi);
+	   $(MAKE) CHECKER='valgrind -q' MAKEFLAGS+=--silent pytests ; fi);
 
 clean:
 	rm -f $(PYSCRIPTS) test.log

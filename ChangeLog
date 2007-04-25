@@ -1,3 +1,11 @@
+Wed Apr 25 15:57:32 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/Makefile.am doc/examples/Makefile.am Makefile.am: applied
+	  patch from Richard Jones to for the silent flag on valgrind
+	  when doing "make valgrind"
+	* xmlregexp.c: raise a regexp error when '\' is misused to escape
+	  a standard character.
+
 Tue Apr 24 20:15:14 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: Richard Jones reported xmlBufferAdd (buf, "", -1), fixing it

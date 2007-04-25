@@ -4751,6 +4751,8 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 	    xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 			       type, 0, 0, NULL);
 	}
+    } else {
+	ERROR("Wrong escape sequence, misuse of character '\\'");
     }
 }
 
@@ -5306,6 +5308,10 @@ xmlRegexpCompile(const xmlChar *regexp) {
     xmlFAParseRegExp(ctxt, 1);
     if (CUR != 0) {
 	ERROR("xmlFAParseRegExp: extra characters");
+    }
+    if (ctxt->error != 0) {
+	xmlRegFreeParserCtxt(ctxt);
+	return(NULL);
     }
     ctxt->end = ctxt->state;
     ctxt->start->type = XML_REGEXP_START_STATE;

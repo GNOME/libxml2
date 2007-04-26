@@ -265,6 +265,17 @@
       <arg name='URI' type='xmlURIPtr' info='the URI'/>
       <arg name='query' type='char *' info='The URI query part'/>
     </function>
+    <function name='xmlURIGetQueryRaw' file='python_accessor'>
+      <info>Get the raw query part from an URI (i.e. the unescaped form).</info>
+      <return type='const char *' info="The URI query" field="query_raw"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetQueryRaw' file='python_accessor'>
+      <info>Set the raw query part of an URI (i.e. the unescaped form).</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='query_raw' type='char *' info='The raw URI query part'/>
+    </function>
     <function name='xmlURIGetFragment' file='python_accessor'>
       <info>Get the fragment part from an URI</info>
       <return type='const char *' info="The URI fragment" field="fragment"/>

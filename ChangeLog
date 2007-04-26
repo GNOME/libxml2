@@ -2,6 +2,7 @@ Thu Apr 26 10:36:26 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c include/libxml/uri.h: patch from Richard Jones to save
 	  the query part in raw form.
+	* libxml2-python-api.xml: also added accessor for the python bindings
 
 Wed Apr 25 15:57:32 CEST 2007 Daniel Veillard <daniel@veillard.com>
 

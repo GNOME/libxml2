@@ -4391,8 +4391,7 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
  * Returns the new parser context or NULL
  */
 static htmlParserCtxtPtr
-htmlCreateDocParserCtxt(const xmlChar *cur,
-                        const char *encoding ATTRIBUTE_UNUSED) {
+htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding) {
     int len;
     htmlParserCtxtPtr ctxt;
 
@@ -4400,6 +4399,7 @@ htmlCreateDocParserCtxt(const xmlChar *cur,
 	return(NULL);
     len = xmlStrlen(cur);
     ctxt = htmlCreateMemoryParserCtxt((char *)cur, len);
+    return(NULL);
 
     if (encoding != NULL) {
 	xmlCharEncoding enc;

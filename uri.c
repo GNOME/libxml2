@@ -446,7 +446,33 @@ xmlSaveUri(xmlURIPtr uri) {
 		}
 	    }
 	}
-	if (uri->query != NULL) {
+	if (uri->query_raw != NULL) {
+	    if (len + 1 >= max) {
+		max *= 2;
+		ret = (xmlChar *) xmlRealloc(ret,
+			(max + 1) * sizeof(xmlChar));
+		if (ret == NULL) {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "xmlSaveUri: out of memory\n");
+		    return(NULL);
+		}
+	    }
+	    ret[len++] = '?';
+	    p = uri->query_raw;
+	    while (*p != 0) {
+		if (len + 1 >= max) {
+		    max *= 2;
+		    ret = (xmlChar *) xmlRealloc(ret,
+			    (max + 1) * sizeof(xmlChar));
+		    if (ret == NULL) {
+			xmlGenericError(xmlGenericErrorContext,
+				"xmlSaveUri: out of memory\n");
+			return(NULL);
+		    }
+		}
+		ret[len++] = *p++;
+	    }
+	} else if (uri->query != NULL) {
 	    if (len + 3 >= max) {
 		max *= 2;
 		ret = (xmlChar *) xmlRealloc(ret,
@@ -574,6 +600,8 @@ xmlCleanURI(xmlURIPtr uri) {
     uri->authority = NULL;
     if (uri->query != NULL) xmlFree(uri->query);
     uri->query = NULL;
+    if (uri->query_raw != NULL) xmlFree(uri->query_raw);
+    uri->query_raw = NULL;
 }
 
 /**
@@ -594,6 +622,7 @@ xmlFreeURI(xmlURIPtr uri) {
     if (uri->opaque != NULL) xmlFree(uri->opaque);
     if (uri->authority != NULL) xmlFree(uri->authority);
     if (uri->query != NULL) xmlFree(uri->query);
+    if (uri->query_raw != NULL) xmlFree(uri->query_raw);
     xmlFree(uri);
 }
 
@@ -1030,7 +1059,11 @@ xmlURIEscape(const xmlChar * str)
         xmlFree(segment);
     }
 
-    if (uri->query) {
+    if (uri->query_raw) {
+        ret = xmlStrcat(ret, BAD_CAST "?");
+        ret = xmlStrcat(ret, BAD_CAST uri->query_raw);
+    }
+    else if (uri->query) {
         segment =
             xmlURIEscapeStr(BAD_CAST uri->query, BAD_CAST ";/?:@&=+,$");
         NULLCHK(segment)
@@ -1133,6 +1166,13 @@ xmlParseURIQuery(xmlURIPtr uri, const char **str)
 	    uri->query = STRNDUP(*str, cur - *str);
 	else
 	    uri->query = xmlURIUnescapeString(*str, cur - *str, NULL);
+
+	/* Save the raw bytes of the query as well.
+	 * See: http://mail.gnome.org/archives/xml/2007-April/thread.html#00114
+	 */
+	if (uri->query_raw != NULL)
+	    xmlFree (uri->query_raw);
+	uri->query_raw = STRNDUP (*str, cur - *str);
     }
     *str = cur;
     return (0);
@@ -1946,8 +1986,12 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	}
 	if (bas->path != NULL)
 	    res->path = xmlMemStrdup(bas->path);
-	if (ref->query != NULL)
+	if (ref->query_raw != NULL)
+	    res->query_raw = xmlMemStrdup (ref->query_raw);
+	else if (ref->query != NULL)
 	    res->query = xmlMemStrdup(ref->query);
+	else if (bas->query_raw != NULL)
+	    res->query_raw = xmlMemStrdup(bas->query_raw);
 	else if (bas->query != NULL)
 	    res->query = xmlMemStrdup(bas->query);
 	if (ref->fragment != NULL)
@@ -1968,7 +2012,9 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     if (bas->scheme != NULL)
 	res->scheme = xmlMemStrdup(bas->scheme);
  
-    if (ref->query != NULL)
+    if (ref->query_raw != NULL)
+	res->query_raw = xmlMemStrdup(ref->query_raw);
+    else if (ref->query != NULL)
 	res->query = xmlMemStrdup(ref->query);
     if (ref->fragment != NULL)
 	res->fragment = xmlMemStrdup(ref->fragment);

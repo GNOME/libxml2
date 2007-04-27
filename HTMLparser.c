@@ -4399,7 +4399,8 @@ htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding) {
 	return(NULL);
     len = xmlStrlen(cur);
     ctxt = htmlCreateMemoryParserCtxt((char *)cur, len);
-    return(NULL);
+    if (ctxt == NULL)
+	return(NULL);
 
     if (encoding != NULL) {
 	xmlCharEncoding enc;

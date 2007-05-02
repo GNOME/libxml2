@@ -6097,7 +6097,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			}
 		    } else if ((ret != XML_ERR_OK) &&
 		               (ret != XML_WAR_UNDECLARED_ENTITY)) {
-			xmlFatalErr(ctxt, ret, NULL);
+			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
+				 "Entity '%s' failed to parse\n", ent->name);
 		    } else if (list != NULL) {
 			xmlFreeNodeList(list);
 			list = NULL;

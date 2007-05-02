@@ -1,3 +1,8 @@
+Wed May  2 18:47:33 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: tried to fix an error problem on entity content failure
+	  reported by Michael Day
+
 Wed May  2 18:23:35 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: typo patch from Bjorn Reese

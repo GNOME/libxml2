@@ -1,3 +1,8 @@
+Wed May  2 18:12:58 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied patch from Michael Day to add support for
+	  <embed>
+
 Thu Apr 26 10:58:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: Jean-Daniel Dupas pointed a couple of problems

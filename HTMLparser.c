@@ -472,8 +472,8 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 #define NB_FONTSTYLE 8
 #define PHRASE "em", "strong", "dfn", "code", "samp", "kbd", "var", "cite", "abbr", "acronym"
 #define NB_PHRASE 10
-#define SPECIAL "a", "img", "applet", "object", "font", "basefont", "br", "script", "map", "q", "sub", "sup", "span", "bdo", "iframe"
-#define NB_SPECIAL 15
+#define SPECIAL "a", "img", "applet", "embed", "object", "font", "basefont", "br", "script", "map", "q", "sub", "sup", "span", "bdo", "iframe"
+#define NB_SPECIAL 16
 #define INLINE PCDATA FONTSTYLE PHRASE SPECIAL FORMCTRL
 #define NB_INLINE NB_PCDATA + NB_FONTSTYLE + NB_PHRASE + NB_SPECIAL + NB_FORMCTRL
 #define BLOCK HEADING, LIST "pre", "p", "dl", "div", "center", "noscript", "noframes", "blockquote", "form", "isindex", "hr", "table", "fieldset", "address"
@@ -572,6 +572,7 @@ static const char* const version_attr[] = { "version", NULL } ;
 static const char* const html_content[] = { "head", "body", "frameset", NULL } ;
 static const char* const iframe_attrs[] = { COREATTRS, "longdesc", "name", "src", "frameborder", "marginwidth", "marginheight", "scrolling", "align", "height", "width", NULL } ;
 static const char* const img_attrs[] = { ATTRS, "longdesc", "name", "height", "width", "usemap", "ismap", NULL } ;
+static const char* const embed_attrs[] = { COREATTRS, "align", "alt", "border", "code", "codebase", "frameborder", "height", "hidden", "hspace", "name", "palette", "pluginspace", "pluginurl", "src", "type", "units", "vspace", "width", NULL } ;
 static const char* const input_attrs[] = { ATTRS, "type", "name", "value", "checked", "disabled", "readonly", "size", "maxlength", "src", "alt", "usemap", "ismap", "tabindex", "accesskey", "onfocus", "onblur", "onselect", "onchange", "accept", NULL } ;
 static const char* const prompt_attrs[] = { COREATTRS, I18N, "prompt", NULL } ;
 static const char* const label_attrs[] = { ATTRS, "for", "accesskey", "onfocus", "onblur", NULL } ;
@@ -705,6 +706,9 @@ html40ElementTable[] = {
 },
 { "em",		0, 3, 0, 0, 0, 0, 1, "emphasis",
 	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+},
+{ "embed",	0, 1, 2, 0, 1, 1, 1, "generic embedded object ",
+	EMPTY, NULL, DECL embed_attrs, NULL, NULL
 },
 { "fieldset",	0, 0, 0, 0, 0, 0, 0, "form control group ",
 	DECL fieldset_contents , NULL, DECL html_attrs, NULL, NULL

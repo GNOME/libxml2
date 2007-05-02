@@ -1,3 +1,7 @@
+Wed May  2 18:23:35 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: typo patch from Bjorn Reese
+
 Wed May  2 18:12:58 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied patch from Michael Day to add support for

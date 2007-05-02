@@ -170,7 +170,7 @@ dnl
 if test "$with_schemas" = "yes"
 then
     with_pattern=yes
-    with_regexp=yes
+    with_regexps=yes
 fi
 if test "$with_schematron" = "yes"
 then
@@ -268,9 +268,9 @@ then
     then
       with_readline=no
     fi
-    if test "$with_regexp" = ""
+    if test "$with_regexps" = ""
     then
-      with_regexp=no
+      with_regexps=no
     fi
     if test "$with_run_debug" = ""
     then

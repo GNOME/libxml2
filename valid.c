@@ -2998,19 +2998,32 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
 		    "xmlAddRef: Reference list creation failed!\n",
 		    NULL);
-            return(NULL);
+	    goto failed;
         }
         if (xmlHashAddEntry(table, value, ref_list) < 0) {
             xmlListDelete(ref_list);
 	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
 		    "xmlAddRef: Reference list insertion failed!\n",
 		    NULL);
-            return(NULL);
+	    goto failed;
         }
     }
-/*    xmlListInsert(ref_list, ret); */
-    xmlListAppend(ref_list, ret);
+    if (xmlListAppend(ref_list, ret) != 0) {
+	xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
+		    "xmlAddRef: Reference list insertion failed!\n",
+		    NULL);
+        goto failed;
+    }
     return(ret);
+failed:
+    if (ret != NULL) {
+        if (ret->value != NULL)
+	    xmlFree((char *)ret->value);
+        if (ret->name != NULL)
+	    xmlFree((char *)ret->name);
+        xmlFree(ret);
+    }
+    return(NULL);
 }
 
 /**

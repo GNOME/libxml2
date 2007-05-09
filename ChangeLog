@@ -1,3 +1,9 @@
+Thu May 10 01:52:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* list.c: applied patch to fix xmlListAppend() from 
+	  Georges-André SILBER
+	* valid.c: also fix the place wher it was called.
+
 Wed May  2 18:47:33 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: tried to fix an error problem on entity content failure

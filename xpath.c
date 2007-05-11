@@ -2648,9 +2648,10 @@ xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
 
 #define UPPER_DOUBLE 1E9
 #define LOWER_DOUBLE 1E-5
+#define	LOWER_DOUBLE_EXP 5
 
 #define INTEGER_DIGITS DBL_DIG
-#define FRACTION_DIGITS (DBL_DIG + 1)
+#define FRACTION_DIGITS (DBL_DIG + 1 + (LOWER_DOUBLE_EXP))
 #define EXPONENT_DIGITS (3 + 2)
 
 /**
@@ -2701,8 +2702,16 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 		*ptr = 0;
 	    }
 	} else {
-	    /* 3 is sign, decimal point, and terminating zero */
-	    char work[DBL_DIG + EXPONENT_DIGITS + 3];
+	    /*
+	      For the dimension of work,
+	          DBL_DIG is number of significant digits
+		  EXPONENT is only needed for "scientific notation"
+	          3 is sign, decimal point, and terminating zero
+		  LOWER_DOUBLE_EXP is max number of leading zeroes in fraction
+	      Note that this dimension is slightly (a few characters)
+	      larger than actually necessary.
+	    */
+	    char work[DBL_DIG + EXPONENT_DIGITS + 3 + LOWER_DOUBLE_EXP];
 	    int integer_place, fraction_place;
 	    char *ptr;
 	    char *after_fraction;
@@ -2725,24 +2734,25 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 		size = snprintf(work, sizeof(work),"%*.*e",
 			 integer_place, fraction_place, number);
 		while ((size > 0) && (work[size] != 'e')) size--;
-		after_fraction = work + size;
 
 	    }
 	    else {
 		/* Use regular notation */
-		if (absolute_value > 0.0)
-		    integer_place = 1 + (int)log10(absolute_value);
-		else
-		    integer_place = 0;
-		fraction_place = (integer_place > 0)
-		    ? DBL_DIG - integer_place
-		    : DBL_DIG;
+		if (absolute_value > 0.0) {
+		    integer_place = (int)log10(absolute_value);
+		    if (integer_place > 0)
+		        fraction_place = DBL_DIG - integer_place - 1;
+		    else
+		        fraction_place = DBL_DIG - integer_place;
+		} else {
+		    fraction_place = 1;
+		}
 		size = snprintf(work, sizeof(work), "%0.*f",
 				fraction_place, number);
-		after_fraction = work + size;
 	    }
 
 	    /* Remove fractional trailing zeroes */
+	    after_fraction = work + size;
 	    ptr = after_fraction;
 	    while (*(--ptr) == '0')
 		;

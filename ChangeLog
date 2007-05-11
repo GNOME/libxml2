@@ -1,3 +1,9 @@
+Fri May 11 22:45:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: enhanced the coding for xmlXPathCastNumberToString
+	  in order to produce the required number of significant digits
+	  (bug #437179)
+
 Thu May 10 01:52:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* list.c: applied patch to fix xmlListAppend() from 

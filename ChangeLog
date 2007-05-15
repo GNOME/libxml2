@@ -1,3 +1,8 @@
+Tue May 15 12:38:38 PDT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c: fixed problem on gzip streams (bug #438045)
+	* xpath.c: fixed minor spot of redundant code - no logic change.
+
 Fri May 11 22:45:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: enhanced the coding for xmlXPathCastNumberToString

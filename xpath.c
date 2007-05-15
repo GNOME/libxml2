@@ -14688,8 +14688,7 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
 	do {
 	    tmp = valuePop(pctxt);
 	    if (tmp != NULL) {
-		if (tmp != NULL)
-		    stack++; 
+		stack++; 
 		xmlXPathReleaseObject(ctxt, tmp);
 	    }
 	} while (tmp != NULL);

@@ -1204,17 +1204,19 @@ xmlNanoHTTPRead(void *ctx, void *dest, int len) {
         ctxt->strm->next_out = dest;
         ctxt->strm->avail_out = len;
 
-        do {
-            orig_avail_in = ctxt->strm->avail_in = ctxt->inptr - ctxt->inrptr - bytes_read;
+        while (ctxt->strm->avail_out > 0 && xmlNanoHTTPRecv(ctxt) > 0) {
+            orig_avail_in = ctxt->strm->avail_in =
+			    ctxt->inptr - ctxt->inrptr - bytes_read;
             ctxt->strm->next_in = BAD_CAST (ctxt->inrptr + bytes_read);
 
             z_ret = inflate(ctxt->strm, Z_NO_FLUSH);
             bytes_read += orig_avail_in - ctxt->strm->avail_in;
 
             if (z_ret != Z_OK) break;
-        } while (ctxt->strm->avail_out > 0 && xmlNanoHTTPRecv(ctxt) > 0);
+	}
 
         ctxt->inrptr += bytes_read;
+	ctxt->strm->avail_in = ctxt->inptr - ctxt->inrptr;
         return(len - ctxt->strm->avail_out);
     }
 #endif

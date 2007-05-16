@@ -1,3 +1,8 @@
+Tue May 15 22:18:08 PDT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c: small enhancement to last fix, pointed out
+	  by Alex Cornejo
+
 Tue May 15 12:38:38 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* nanohttp.c: fixed problem on gzip streams (bug #438045)

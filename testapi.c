@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
     int blocks, mem;
 
     /* access to the proxy can slow up regression tests a lot */
-    putenv("http_proxy=");
+    putenv((char *) "http_proxy=");
 
     memset(chartab, 0, sizeof(chartab));
     strncpy((char *) chartab, "  chartab\n", 20);

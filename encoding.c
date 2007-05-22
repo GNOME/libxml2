@@ -1761,19 +1761,20 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     if (out == NULL) return(-1);
     if (in == NULL) return(-1);
 
+    /* calculate space available */
     written = out->size - out->use;
     toconv = in->use;
-    if (toconv * 2 >= written) {
-        xmlBufferGrow(out, toconv);
-	written = out->size - out->use - 1;
-    }
-
     /*
      * echo '<?xml version="1.0" encoding="UCS4"?>' | wc -c => 38
      * 45 chars should be sufficient to reach the end of the encoding
      * declaration without going too far inside the document content.
      */
-    written = 45;
+    if (toconv > 45)
+	toconv  = 45;
+    if (toconv * 2 >= written) {
+        xmlBufferGrow(out, toconv);
+	written = out->size - out->use - 1;
+    }
 
     if (handler->input != NULL) {
 	ret = handler->input(&out->content[out->use], &written,

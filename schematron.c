@@ -714,6 +714,7 @@ xmlSchematronFreeParserCtxt(xmlSchematronParserCtxtPtr ctxt)
     xmlFree(ctxt);
 }
 
+#if 0
 /**
  * xmlSchematronPushInclude:
  * @ctxt:  the schema parser context
@@ -782,6 +783,7 @@ xmlSchematronPopInclude(xmlSchematronParserCtxtPtr ctxt)
         return(xmlSchematronPopInclude(ctxt));
     return(ret);
 }
+#endif
 
 /**
  * xmlSchematronAddNamespace:
@@ -987,6 +989,7 @@ xmlSchematronParsePattern(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr pat)
     }
 }
 
+#if 0
 /**
  * xmlSchematronLoadInclude:
  * @ctxt:  a schema validation context
@@ -1051,6 +1054,7 @@ done:
         xmlFree(URI);
     return(ret);
 }
+#endif
 
 /**
  * xmlSchematronParse:

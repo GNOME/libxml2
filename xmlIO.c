@@ -3638,7 +3638,7 @@ static int xmlNoNetExists(const char *URL) {
  *
  * Returns a new allocated URL, or NULL.
  */
-xmlChar *
+static xmlChar *
 xmlResolveResourceFromCatalog(const char *URL, const char *ID,
                               xmlParserCtxtPtr ctxt) {
     xmlChar *resource = NULL;

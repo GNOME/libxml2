@@ -1,3 +1,13 @@
+Tue May 22 08:59:48 PDT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c: Fixed typo in xmlCharEncFirstLine pointed out
+	  by Mark Rowe (bug #440159)
+	* include/libxml/xmlversion.h.in: Added check for definition of
+	  _POSIX_C_SOURCE to avoid warnings on Apple OS/X (patch from
+	  Wendy Doyle and Mark Rowe, bug #346675)
+	* schematron.c, testapi.c, tree.c, xmlIO.c, xmlsave.c: minor
+	  changes to fix compilation warnings - no change to logic.
+
 Tue May 15 22:18:08 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* nanohttp.c: small enhancement to last fix, pointed out

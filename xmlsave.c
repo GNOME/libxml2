@@ -834,7 +834,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
     xmlCharEncodingOutputFunc oldescape = ctxt->escape;
     xmlCharEncodingOutputFunc oldescapeAttr = ctxt->escapeAttr;
     xmlOutputBufferPtr buf = ctxt->buf;
-    xmlCharEncodingHandlerPtr handler = NULL;
     xmlCharEncoding enc;
 
     xmlInitParser();

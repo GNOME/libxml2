@@ -1,3 +1,7 @@
+Mon May 28 16:14:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: fix bug reported by François Delyon
+
 Tue May 22 08:59:48 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* encoding.c: Fixed typo in xmlCharEncFirstLine pointed out

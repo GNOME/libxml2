@@ -1296,7 +1296,7 @@ xmlParseURIServer(xmlURIPtr uri, const char **str) {
 	if (uri != NULL) {
 	    if (uri->user != NULL) xmlFree(uri->user);
 	    if (uri->cleanup & 2)
-		uri->path = STRNDUP(*str, cur - *str);
+		uri->user = STRNDUP(*str, cur - *str);
 	    else
 		uri->user = xmlURIUnescapeString(*str, cur - *str, NULL);
 	}

@@ -3194,6 +3194,11 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 
 turtle_comparison:
 
+    if (miscNode1 != NULL)
+	node1 = miscNode1;
+    if (miscNode2 != NULL)
+	node2 = miscNode2;
+
     if (node1 == node2->prev)
 	return(1);
     if (node1 == node2->next)
@@ -4612,12 +4617,13 @@ xmlXPathNodeTrailingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
 	return(ret);
 
     l = xmlXPathNodeSetGetLength(nodes);
-    for (i = l; i > 0; i--) {
+    for (i = l - 1; i >= 0; i--) {
 	cur = xmlXPathNodeSetItem(nodes, i);
 	if (cur == node)
 	    break;
 	xmlXPathNodeSetAddUnique(ret, cur);
     }
+    xmlXPathNodeSetSort(ret);	/* bug 413451 */
     return(ret);
 }
 

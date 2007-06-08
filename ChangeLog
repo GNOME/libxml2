@@ -1,3 +1,8 @@
+Fri Jun  8 10:51:28 CEST 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlwriter.c: fixed problem with namespace declaration being 
+	  written more than once per element start tag
+
 Wed Jun  6 10:18:28 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed problem with xmlXPathNodeSetSort;

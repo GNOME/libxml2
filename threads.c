@@ -441,7 +441,11 @@ __xmlGlobalInitMutexLock(void)
 	InitializeCriticalSection(cs);
 
 	/* Swap it into the global_init_lock */
+#ifdef InterlockedCompareExchangePointer
 	InterlockedCompareExchangePointer(&global_init_lock, cs, NULL);
+#else  /* Use older void* version */
+    InterlockedCompareExchange((void **)&global_init_lock, (void *)cs, NULL);
+#endif /* InterlockedCompareExchangePointer */
 
 	/* If another thread successfully recorded its critical
 	 * section in the global_init_lock then discard the one
@@ -912,7 +916,7 @@ xmlOnceInit(void) {
  */
 #if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #if defined(LIBXML_STATIC_FOR_DLL)
-BOOL WINAPI xmlDllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 
+BOOL XMLCALL xmlDllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 
 #else
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 
 #endif

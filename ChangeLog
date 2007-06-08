@@ -1,3 +1,9 @@
+Fri Jun  8 21:37:46 CEST 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* threads.c include/libxml/threads.h: use specified calling convention 
+	  for xmlDllMain. Old SDKs (VC6) only support InterlockedCompareExchange.
+	  add xmlDllMain to header for win32 when building for static dll
+
 Fri Jun  8 10:51:28 CEST 2007 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlwriter.c: fixed problem with namespace declaration being 

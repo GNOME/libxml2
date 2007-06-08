@@ -65,6 +65,7 @@ var dirSep = "\\";
 var compiler = "msvc";
 var cruntime = "/MD";
 var dynruntime = true;
+var vcmanifest = false;
 var buildDebug = 0;
 var buildStatic = 0;
 var buildPrefix = ".";
@@ -147,6 +148,7 @@ function usage()
 	txt += "  compiler:   Compiler to be used [msvc|mingw|bcb] (" + compiler + ")\n";
 	txt += "  cruntime:   C-runtime compiler option (only msvc) (" + cruntime + ")\n";
 	txt += "  dynruntime: Use the dynamic RTL (only bcb) (" + dynruntime + ")\n";
+	txt += "  vcmanifest: Embed VC manifest (only msvc) (" + (vcmanifest? "yes" : "no") + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "              Note: automatically enabled if cruntime is not /MD or /MDd\n";
@@ -262,13 +264,14 @@ function discoverVersion()
 		vf.WriteLine("INCLUDE=$(INCLUDE);" + buildInclude);
 		vf.WriteLine("LIB=$(LIB);" + buildLib);
 		vf.WriteLine("CRUNTIME=" + cruntime);
+		vf.WriteLine("VCMANIFEST=" + (vcmanifest? "1" : "0"));
 	} else if (compiler == "mingw") {
 		vf.WriteLine("INCLUDE+=;" + buildInclude);
 		vf.WriteLine("LIB+=;" + buildLib);
 	} else if (compiler == "bcb") {
 		vf.WriteLine("INCLUDE=" + buildInclude);
 		vf.WriteLine("LIB=" + buildLib);
-                vf.WriteLine("DYNRUNTIME=" + (dynruntime? "1" : "0"));
+		vf.WriteLine("DYNRUNTIME=" + (dynruntime? "1" : "0"));
 	}
 	vf.Close();
 }
@@ -505,6 +508,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			cruntime = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "dynruntime")
 			dynruntime = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "vcmanifest")
+			vcmanifest = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -661,9 +666,10 @@ txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
 txtOut += "          Compiler: " + compiler + "\n";
-if (compiler == "msvc")
+if (compiler == "msvc") {
 	txtOut += "  C-Runtime option: " + cruntime + "\n";
-else if (compiler == "bcb")
+	txtOut += "    Embed Manifest: " + boolToStr(vcmanifest) + "\n";
+} else if (compiler == "bcb")
 	txtOut += "   Use dynamic RTL: " + dynruntime + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "    Static xmllint: " + boolToStr(buildStatic) + "\n";

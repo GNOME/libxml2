@@ -844,17 +844,24 @@ xmlFileOpen_real (const char *filename) {
 	return((void *) fd);
     }
 
-    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
 #if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[17];
 #else
 	path = &filename[16];
 #endif
-    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
+    } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
+#endif
+    } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:/", 6)) {
+        /* lots of generators seems to lazy to read RFC 1738 */
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
+	path = &filename[6];
+#else
+	path = &filename[5];
 #endif
     } else 
 	path = filename;

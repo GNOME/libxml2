@@ -1,3 +1,7 @@
+Tue Jun 12 11:37:55 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: workaround misgenerated file: URIs c.f. #437385
+
 Tue Jun 12 11:22:47 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed bug #407436 a crash in a specific case of

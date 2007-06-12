@@ -2193,6 +2193,7 @@
     <function name="xmlDictQLookup ()" link="libxml2-dict.html#xmlDictQLookup"/>
     <function name="xmlDictReference ()" link="libxml2-dict.html#xmlDictReference"/>
     <function name="xmlDictSize ()" link="libxml2-dict.html#xmlDictSize"/>
+    <function name="xmlDllMain ()" link="libxml2-threads.html#xmlDllMain"/>
     <function name="xmlDocCopyNode ()" link="libxml2-tree.html#xmlDocCopyNode"/>
     <function name="xmlDocCopyNodeList ()" link="libxml2-tree.html#xmlDocCopyNodeList"/>
     <function name="xmlDocDump ()" link="libxml2-tree.html#xmlDocDump"/>

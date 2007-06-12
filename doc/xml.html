@@ -739,6 +739,33 @@ to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.<
 
 <p>Here is the list of public releases:</p>
 
+<h3>2.6.29: Jun 12 2007</h3>
+<ul>
+  <li>Portability: patches from Andreas Stricke for WinCEi,
+      fix compilation warnings (William Brack), avoid warnings on Apple OS/X
+      (Wendy Doyle and Mark Rowe), Windows compilation and threading
+      improvements (Rob Richards), compilation against old Python versions,
+      new GNU tar changes (Ryan Hill)</li>
+  <li>Documentation: xmlURIUnescapeString comment, </li>
+  <li>Bugfixes: xmlBufferAdd problem (Richard Jones), 'make valgrind'
+      flag fix (Richard Jones), regexp interpretation of \,
+      htmlCreateDocParserCtxt (Jean-Daniel Dupas), configure.in
+      typo (Bjorn Reese), entity content failure, xmlListAppend() fix
+      (Georges-André Silber), XPath number serialization (William Brack),
+      nanohttp gzipped stream fix (William Brack and Alex Cornejo),
+      xmlCharEncFirstLine typo (Mark Rowe), uri bug (François Delyon),
+      XPath string value of PI nodes (William Brack), XPath node set
+      sorting bugs (William Brack), avoid outputting namespace decl
+      dups in the writer (Rob Richards), xmlCtxtReset bug, UTF-8 encoding
+      error handling, recustion on next in catalogs, fix a Relax-NG crash,
+      workaround wrong file: URIs, htmlNodeDumpFormatOutput on attributes,
+      invalid character in attribute detection bug, big comments before 
+      internal subset streaming bug, HTML parsing of attributes with : in
+      the name, IDness of name in HTML (Dagfinn I. Mannsåker) </li>
+  <li>Improvement: keep URI query parts in raw form (Richard Jones),
+      embed tag support in HTML (Michael Day) </li>
+</ul>
+
 <h3>2.6.28: Apr 17 2007</h3>
 <ul>
   <li>Documentation: comment fixes (Markus Keim), xpath comments fixes too

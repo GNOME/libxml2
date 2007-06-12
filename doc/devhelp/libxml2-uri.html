@@ -76,9 +76,10 @@ int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-
     char *	user	: the user part
     int	port	: the port number
     char *	path	: the path string
-    char *	query	: the query string
+    char *	query	: the query string (deprecated - use with caution)
     char *	fragment	: the fragment identifier
     int	cleanup	: parsing potentially unclean URI
+    char *	query_raw	: the query string (as it appears in the URI)
 } xmlURI;
 </pre><p/>
 </div>
@@ -144,8 +145,8 @@ int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>string to escape</td></tr><tr><td><span class="term"><i><tt>list</tt></i>:</span></td><td>exception list string of chars not to escape</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a new escaped string or NULL in case of error.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlURIUnescapeString"/>xmlURIUnescapeString ()</h3><pre class="programlisting">char *	xmlURIUnescapeString		(const char * str, <br/>					 int len, <br/>					 char * target)<br/>
-</pre><p>Unescaping routine, does not do validity checks ! Output is direct unsigned char translation of %XX values (no encoding)</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the string to unescape</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>the length in bytes to unescape (or &lt;= 0 to indicate full string)</td></tr><tr><td><span class="term"><i><tt>target</tt></i>:</span></td><td>optional destination buffer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>an copy of the string, but unescaped</td></tr></tbody></table></div></div>
+</pre><p>Unescaping routine, but does not check that the string is an URI. The output is a direct unsigned char translation of %XX values (no encoding) Note that the length of the result can only be smaller or same size as the input string.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the string to unescape</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>the length in bytes to unescape (or &lt;= 0 to indicate full string)</td></tr><tr><td><span class="term"><i><tt>target</tt></i>:</span></td><td>optional destination buffer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a copy of the string, but unescaped, will return NULL only in case of error</td></tr></tbody></table></div></div>
         <hr/>
       </div>
     </div>

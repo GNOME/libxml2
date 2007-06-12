@@ -1885,6 +1885,7 @@
     <reference name='xmlDictQLookup' href='html/libxml-dict.html#xmlDictQLookup'/>
     <reference name='xmlDictReference' href='html/libxml-dict.html#xmlDictReference'/>
     <reference name='xmlDictSize' href='html/libxml-dict.html#xmlDictSize'/>
+    <reference name='xmlDllMain' href='html/libxml-threads.html#xmlDllMain'/>
     <reference name='xmlDoValidityCheckingDefaultValue' href='html/libxml-globals.html#xmlDoValidityCheckingDefaultValue'/>
     <reference name='xmlDoc' href='html/libxml-tree.html#xmlDoc'/>
     <reference name='xmlDocCopyNode' href='html/libxml-tree.html#xmlDocCopyNode'/>
@@ -5431,6 +5432,7 @@
       <ref name='xmlDictQLookup'/>
       <ref name='xmlDictReference'/>
       <ref name='xmlDictSize'/>
+      <ref name='xmlDllMain'/>
       <ref name='xmlDoValidityCheckingDefaultValue'/>
       <ref name='xmlDoc'/>
       <ref name='xmlDocCopyNode'/>
@@ -8473,6 +8475,7 @@
     </type>
     <type name='unsigned long'>
       <ref name='ftpListCallback'/>
+      <ref name='xmlDllMain'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
     </type>
     <type name='unsigned long *'>
@@ -8594,6 +8597,7 @@
       <ref name='xmlCtxtGetLastError'/>
       <ref name='xmlCtxtReadIO'/>
       <ref name='xmlCtxtResetLastError'/>
+      <ref name='xmlDllMain'/>
       <ref name='xmlFileClose'/>
       <ref name='xmlFileRead'/>
       <ref name='xmlFreeFunc'/>
@@ -11763,6 +11767,7 @@
     </file>
     <file name='threads'>
       <ref name='xmlCleanupThreads'/>
+      <ref name='xmlDllMain'/>
       <ref name='xmlFreeMutex'/>
       <ref name='xmlFreeRMutex'/>
       <ref name='xmlGetGlobalState'/>
@@ -16594,7 +16599,6 @@
           <ref name='xmlOutputMatchCallback'/>
           <ref name='xmlOutputOpenCallback'/>
           <ref name='xmlOutputWriteCallback'/>
-          <ref name='xmlURIUnescapeString'/>
         </word>
         <word name='OutputBufferCreateFilenameFunc'>
           <ref name='xmlOutputBufferCreateFilenameDefault'/>
@@ -18943,6 +18947,7 @@
           <ref name='xmlValidatePushElement'/>
         </word>
         <word name='appears'>
+          <ref name='_xmlURI'/>
           <ref name='xmlExpGetStart'/>
           <ref name='xmlParseCharData'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
@@ -19665,6 +19670,9 @@
         <word name='cause'>
           <ref name='xmlShellPrintXPathError'/>
         </word>
+        <word name='caution'>
+          <ref name='_xmlURI'/>
+        </word>
         <word name='cdata-section-'>
           <ref name='xmlStreamPushNode'/>
           <ref name='xmlStreamWantsAnyNode'/>
@@ -19796,7 +19804,6 @@
           <ref name='xmlParseElementMixedContentDecl'/>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlURIEscape'/>
-          <ref name='xmlURIUnescapeString'/>
           <ref name='xmlValidateAttributeDecl'/>
           <ref name='xmlValidateDocument'/>
           <ref name='xmlValidateDocumentFinal'/>
@@ -21002,6 +21009,7 @@
         <word name='deprecated'>
           <ref name='LIBXML_LEGACY_ENABLED'/>
           <ref name='_htmlElemDesc'/>
+          <ref name='_xmlURI'/>
           <ref name='htmlAttrAllowed'/>
           <ref name='htmlElementAllowedHere'/>
           <ref name='htmlElementStatusHere'/>
@@ -27405,6 +27413,7 @@
           <ref name='xmlReplaceNode'/>
           <ref name='xmlStrEqual'/>
           <ref name='xmlStrncatNew'/>
+          <ref name='xmlURIUnescapeString'/>
           <ref name='xmlXPathCmpNodes'/>
           <ref name='xmlXPathIdFunction'/>
           <ref name='xmlXPathLangFunction'/>
@@ -27896,6 +27905,9 @@
         </word>
         <word name='slots'>
           <ref name='xmlXPathContextSetCache'/>
+        </word>
+        <word name='smaller'>
+          <ref name='xmlURIUnescapeString'/>
         </word>
         <word name='smallest'>
           <ref name='xmlXPathCeilingFunction'/>
@@ -29525,7 +29537,6 @@
           <ref name='xmlParserValidityWarning'/>
           <ref name='xmlTextReaderIsValid'/>
           <ref name='xmlURIEscape'/>
-          <ref name='xmlURIUnescapeString'/>
           <ref name='xmlValidGetValidElements'/>
           <ref name='xmlValidateDocumentFinal'/>
           <ref name='xmlValidateNotationDecl'/>

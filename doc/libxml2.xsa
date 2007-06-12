@@ -8,59 +8,32 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.27</version>
-    <last-release> Oct 25 2006</last-release>
+    <version>2.6.28</version>
+    <last-release> Apr 17 2007</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Portability fixes: file names on windows (Roland Schwingel, 
-      Emelyanov Alexey), windows compile fixup (Rob Richards), 
-      AIX iconv() is apparently case sensitive
-   - improvements: Python XPath types mapping (Nic Ferrier), XPath optimization
-      (Kasimier), add xmlXPathCompiledEvalToBoolean (Kasimier), Python node
-      equality and comparison (Andreas Pakulat), xmlXPathCollectAndTest
-      improvememt (Kasimier), expose if library was compiled with zlib 
-      support (Andrew Nosenko), cache for xmlSchemaIDCMatcher structs
-      (Kasimier), xmlTextConcat should work with comments and PIs (Rob
-      Richards), export htmlNewParserCtxt needed by Michael Day, refactoring
-      of catalog entity loaders (Michael Day), add XPointer support to 
-      python bindings (Ross Reedstrom, Brian West and Stefan Anca), 
-      try to sort out most file path to URI conversions and xmlPathToUri,
-      add --html --memory case to xmllint
-   - building fix: fix --with-minimum (Felipe Contreras), VMS fix, 
-      const'ification of HTML parser structures (Matthias Clasen),
-      portability fix (Emelyanov Alexey), wget autodetection (Peter
-      Breitenlohner),  remove the build path recorded in the python
-      shared module, separate library flags for shared and static builds
-      (Mikhail Zabaluev), fix --with-minimum --with-sax1 builds, fix
-      --with-minimum --with-schemas builds
-   - bug fix: xmlGetNodePath fix (Kasimier), xmlDOMWrapAdoptNode and
-      attribute (Kasimier), crash when using the recover mode, 
-      xmlXPathEvalExpr problem (Kasimier), xmlXPathCompExprAdd bug (Kasimier),
-      missing destry in xmlFreeRMutex (Andrew Nosenko), XML Schemas fixes
-      (Kasimier), warning on entities processing, XHTML script and style
-      serialization (Kasimier), python generator for long types, bug in
-      xmlSchemaClearValidCtxt (Bertrand Fritsch), xmlSchemaXPathEvaluate
-      allocation bug (Marton Illes), error message end of line (Rob Richards),
-      fix attribute serialization in writer (Rob Richards), PHP4 DTD validation
-      crasher, parser safety patch (Ben Darnell), _private context propagation
-      when parsing entities (with Michael Day), fix entities behaviour when 
-      using SAX, URI to file path fix (Mikhail Zabaluev), disapearing validity
-      context, arg error in SAX callback (Mike Hommey), fix mixed-content
-      autodetect when using --noblanks, fix xmlIOParseDTD error handling,
-      fix bug in xmlSplitQName on special Names, fix Relax-NG element content
-      validation bug, fix xmlReconciliateNs bug, fix potential attribute 
-      XML parsing bug, fix line/column accounting in XML parser, chunking bug
-      in the HTML parser on script, try to detect obviously buggy HTML
-      meta encoding indications, bugs with encoding BOM and xmlSaveDoc, 
-      HTML entities in attributes parsing, HTML minimized attribute values,
-      htmlReadDoc and htmlReadIO were broken, error handling bug in
-      xmlXPathEvalExpression (Olaf Walkowiak), fix a problem in
-      htmlCtxtUseOptions, xmlNewInputFromFile could leak (Marius Konitzer),
-      bug on misformed SSD regexps (Christopher Boumenot)
-      
-   - documentation: warning about XML_PARSE_COMPACT (Kasimier Buchcik),
-      fix xmlXPathCastToString documentation, improve man pages for
-      xmllitn and xmlcatalog (Daniel Leidert), fixed comments of a few
-      functions
+    <changes>   - Documentation: comment fixes (Markus Keim), xpath comments fixes too
+      (James Dennett)
+   - Bug fixes: XPath bug (William Brack), HTML parser autoclose stack usage
+      (Usamah Malik), various regexp bug fixes (DV and William), path conversion
+      on Windows (Igor Zlatkovic), htmlCtxtReset fix (Michael Day), XPath
+      principal node of axis bug, HTML serialization of some codepoint
+      (Steven Rainwater), user data propagation in XInclude (Michael Day),
+      standalone and XML decl detection (Michael Day), Python id ouptut
+      for some id, fix the big python string memory leak, URI parsing fixes
+      (Stéphane Bidoul and William), long comments parsing bug (William),
+      concurrent threads initialization (Ted Phelps), invalid char
+      in text XInclude (William), XPath memory leak (William), tab in
+      python problems (Andreas Hanke), XPath node comparison error
+      (Oleg Paraschenko), cleanup patch for reader (Julien Reichel),
+      XML Schemas attribute group (William), HTML parsing problem (William),
+      fix char 0x2d in regexps (William), regexp quantifier range with
+      min occurs of 0 (William), HTML script/style parsing (Mike Day)
+   - Improvement: make xmlTextReaderSetup() public
+   - Compilation and postability: fix a missing include problem (William),
+      __ss_familly on AIX again (Björn Wiberg), compilation without zlib
+      (Michael Day), catalog patch for Win32 (Christian Ehrlicher),
+      Windows CE fixes (Andreas Stricke)
+   - Various CVS to SVN infrastructure changes
 
 </changes>
   </product>

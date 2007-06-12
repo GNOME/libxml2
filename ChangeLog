@@ -1,3 +1,9 @@
+Tue Jun 12 18:17:28 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* doc/* configure.in NEWS: release of libxml2 2.6.28
+	* valid.c: patch from Dagfinn I. Mannsåker for idness of name
+	  in HTML, c.f. bug #305885.
+
 Tue Jun 12 17:14:08 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: fixing bug #319964, parsing of HTML attribute really

@@ -17,6 +17,7 @@ The content of this structure is not made public by the API.
 The content of this structure is not made public by the API.
 </pre><pre class="programlisting">Typedef <a href="libxml-threads.html#xmlRMutex">xmlRMutex</a> * <a name="xmlRMutexPtr" id="xmlRMutexPtr">xmlRMutexPtr</a>
 </pre><pre class="programlisting">void	<a href="#xmlCleanupThreads">xmlCleanupThreads</a>		(void)</pre>
+<pre class="programlisting">int	<a href="#xmlDllMain">xmlDllMain</a>			(void * hinstDLL, <br />					 unsigned long fdwReason, <br />					 void * lpvReserved)</pre>
 <pre class="programlisting">void	<a href="#xmlFreeMutex">xmlFreeMutex</a>			(<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)</pre>
 <pre class="programlisting">void	<a href="#xmlFreeRMutex">xmlFreeRMutex</a>			(<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok)</pre>
 <pre class="programlisting"><a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>	<a href="#xmlGetGlobalState">xmlGetGlobalState</a>	(void)</pre>
@@ -38,7 +39,9 @@ The content of this structure is not made public by the API.
 The content of this structure is not made public by the API.
 }</pre><h3><a name="xmlCleanupThreads" id="xmlCleanupThreads"></a>Function: xmlCleanupThreads</h3><pre class="programlisting">void	xmlCleanupThreads		(void)<br />
 </pre><p>xmlCleanupThreads() is used to to cleanup all the thread related data of the libxml2 library once processing has ended.</p>
-<h3><a name="xmlFreeMutex" id="xmlFreeMutex"></a>Function: xmlFreeMutex</h3><pre class="programlisting">void	xmlFreeMutex			(<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)<br />
+<h3><a name="xmlDllMain" id="xmlDllMain"></a>Function: xmlDllMain</h3><pre class="programlisting">int	xmlDllMain			(void * hinstDLL, <br />					 unsigned long fdwReason, <br />					 void * lpvReserved)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>hinstDLL</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>fdwReason</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>lpvReserved</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlFreeMutex" id="xmlFreeMutex"></a>Function: xmlFreeMutex</h3><pre class="programlisting">void	xmlFreeMutex			(<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)<br />
 </pre><p>xmlFreeMutex() is used to reclaim resources associated with a libxml2 token struct.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>tok</tt></i>:</span></td><td>the simple mutex</td></tr></tbody></table></div><h3><a name="xmlFreeRMutex" id="xmlFreeRMutex"></a>Function: xmlFreeRMutex</h3><pre class="programlisting">void	xmlFreeRMutex			(<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok)<br />
 </pre><p>xmlRFreeMutex() is used to reclaim resources associated with a reentrant mutex.</p>

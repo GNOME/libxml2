@@ -58,10 +58,11 @@ int	<a href="#xmlIsMainThread">xmlIsMainThread</a>			(void);
 void	<a href="#xmlRMutexUnlock">xmlRMutexUnlock</a>			(<a href="libxml2-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);
 <a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>	<a href="#xmlGetGlobalState">xmlGetGlobalState</a>	(void);
 <a href="libxml2-threads.html#xmlMutexPtr">xmlMutexPtr</a>	<a href="#xmlNewMutex">xmlNewMutex</a>		(void);
-void	<a href="#xmlRMutexLock">xmlRMutexLock</a>			(<a href="libxml2-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);
-void	<a href="#xmlInitThreads">xmlInitThreads</a>			(void);
-void	<a href="#xmlUnlockLibrary">xmlUnlockLibrary</a>		(void);
+int	<a href="#xmlDllMain">xmlDllMain</a>			(void * hinstDLL, <br/>					 unsigned long fdwReason, <br/>					 void * lpvReserved);
 void	<a href="#xmlFreeMutex">xmlFreeMutex</a>			(<a href="libxml2-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);
+void	<a href="#xmlUnlockLibrary">xmlUnlockLibrary</a>		(void);
+void	<a href="#xmlInitThreads">xmlInitThreads</a>			(void);
+void	<a href="#xmlRMutexLock">xmlRMutexLock</a>			(<a href="libxml2-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);
 </pre>
     </div>
     <div class="refsect1" lang="en">
@@ -93,6 +94,10 @@ The content of this structure is not made public by the API.
         <div class="refsect2" lang="en"><h3><a name="xmlCleanupThreads"/>xmlCleanupThreads ()</h3><pre class="programlisting">void	xmlCleanupThreads		(void)<br/>
 </pre><p>xmlCleanupThreads() is used to to cleanup all the thread related data of the libxml2 library once processing has ended.</p>
 </div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlDllMain"/>xmlDllMain ()</h3><pre class="programlisting">int	xmlDllMain			(void * hinstDLL, <br/>					 unsigned long fdwReason, <br/>					 void * lpvReserved)<br/>
+</pre><p/>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>hinstDLL</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>fdwReason</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>lpvReserved</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td/></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFreeMutex"/>xmlFreeMutex ()</h3><pre class="programlisting">void	xmlFreeMutex			(<a href="libxml2-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)<br/>
 </pre><p>xmlFreeMutex() is used to reclaim resources associated with a libxml2 token struct.</p>

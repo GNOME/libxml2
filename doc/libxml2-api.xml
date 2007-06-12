@@ -1371,10 +1371,11 @@
      <exports symbol='xmlRMutexUnlock' type='function'/>
      <exports symbol='xmlGetGlobalState' type='function'/>
      <exports symbol='xmlNewMutex' type='function'/>
-     <exports symbol='xmlRMutexLock' type='function'/>
-     <exports symbol='xmlInitThreads' type='function'/>
-     <exports symbol='xmlUnlockLibrary' type='function'/>
+     <exports symbol='xmlDllMain' type='function'/>
      <exports symbol='xmlFreeMutex' type='function'/>
+     <exports symbol='xmlUnlockLibrary' type='function'/>
+     <exports symbol='xmlInitThreads' type='function'/>
+     <exports symbol='xmlRMutexLock' type='function'/>
     </file>
     <file name='tree'>
      <summary>interfaces for tree manipulation</summary>
@@ -6643,9 +6644,10 @@ Could we use @subtypes for this?'/>
       <field name='user' type='char *' info=' the user part'/>
       <field name='port' type='int' info=' the port number'/>
       <field name='path' type='char *' info=' the path string'/>
-      <field name='query' type='char *' info=' the query string'/>
+      <field name='query' type='char *' info=' the query string (deprecated - use with caution)'/>
       <field name='fragment' type='char *' info=' the fragment identifier'/>
       <field name='cleanup' type='int' info=' parsing potentially unclean URI'/>
+      <field name='query_raw' type='char *' info=' the query string (as it appears in the URI)'/>
     </struct>
     <typedef name='xmlURIPtr' file='uri' type='xmlURI *'/>
     <struct name='xmlValidCtxt' file='valid' type='struct _xmlValidCtxt'>
@@ -9298,6 +9300,13 @@ Could we use @subtypes for this?'/>
       <info>Query the number of elements installed in the hash @dict.</info>
       <return type='int' info='the number of elements in the dictionnary or -1 in case of error'/>
       <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+    </function>
+    <function name='xmlDllMain' file='threads' module='threads'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='hinstDLL' type='void *' info=''/>
+      <arg name='fdwReason' type='unsigned long' info=''/>
+      <arg name='lpvReserved' type='void *' info=''/>
     </function>
     <function name='xmlDocCopyNode' file='tree' module='tree'>
       <info>Do a copy of the node to a given document.</info>
@@ -16511,8 +16520,8 @@ Could we use @subtypes for this?'/>
       <arg name='list' type='const xmlChar *' info='exception list string of chars not to escape'/>
     </function>
     <function name='xmlURIUnescapeString' file='uri' module='uri'>
-      <info>Unescaping routine, does not do validity checks ! Output is direct unsigned char translation of %XX values (no encoding)</info>
-      <return type='char *' info='an copy of the string, but unescaped'/>
+      <info>Unescaping routine, but does not check that the string is an URI. The output is a direct unsigned char translation of %XX values (no encoding) Note that the length of the result can only be smaller or same size as the input string.</info>
+      <return type='char *' info='a copy of the string, but unescaped, will return NULL only in case of error'/>
       <arg name='str' type='const char *' info='the string to unescape'/>
       <arg name='len' type='int' info='the length in bytes to unescape (or &lt;= 0 to indicate full string)'/>
       <arg name='target' type='char *' info='optional destination buffer'/>

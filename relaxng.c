@@ -9828,7 +9828,8 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                         ret = -1;
                 } else {
                     state = ctxt->state;
-                    ctxt->state->seq = nseq;
+		    if (ctxt->state != NULL)
+			ctxt->state->seq = nseq;
                     if (ret == 0)
                         ret = xmlRelaxNGValidateElementEnd(ctxt, 1);
                     xmlRelaxNGFreeValidState(ctxt, state);

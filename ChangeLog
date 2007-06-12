@@ -1,3 +1,8 @@
+Tue Jun 12 11:22:47 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed bug #407436 a crash in a specific case of
+	  Relax-NG validation
+
 Tue Jun 12 11:12:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: fixed bug #383687, some case of recursion on next

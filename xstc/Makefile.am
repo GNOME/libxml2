@@ -41,7 +41,7 @@ $(TESTDIRS) Tests/Metadata/$(NISTTESTDEF_2) Tests/Metadata/$(MSTTESTDEF) Tests/M
 	   else echo "Dont' know how to fetch $(TARBALLURL_2)" ; fi ; fi ; fi)
 	-@(if [ -f $(TARBALL_2) ] ; then \
 	   echo -n "extracting test data (NIST)..." ; \
-	   $(TAR) -xzf $(TARBALL_2) '*/Datatypes' '*/Metadata/$(NISTTESTDEF_2)' ; \
+	   $(TAR) -xzf $(TARBALL_2) --wildcards '*/Datatypes' '*/Metadata/$(NISTTESTDEF_2)' ; \
 	   echo "done" ; \
 	   fi)
 	-@(if [ ! -f $(TARBALL) ] ; then \
@@ -53,7 +53,7 @@ $(TESTDIRS) Tests/Metadata/$(NISTTESTDEF_2) Tests/Metadata/$(MSTTESTDEF) Tests/M
 	   else echo "Dont' know how to fetch $(TARBALLURL)" ; fi ; fi ; fi)
 	-@(if [ -f $(TARBALL) ] ; then \
 	   echo -n "extracting test data (Sun, Microsoft)..." ; \
-	   $(TAR) -C Tests -xzf $(TARBALL) '*/suntest' '*/msxsdtest' '*/$(MSTESTDEF)' '*/$(SUNTESTDEF)' ; \
+	   $(TAR) -C Tests -xzf $(TARBALL) --wildcards '*/suntest' '*/msxsdtest' '*/$(MSTESTDEF)' '*/$(SUNTESTDEF)' ; \
 	   if [ -d Tests/suntest ] ; then rm -r Tests/suntest ; fi ; \
 	   if [ -d Tests/msxsdtest ] ; then rm -r Tests/msxsdtest ; fi ; \
 	   mv Tests/xmlschema2002-01-16/* Tests ; \

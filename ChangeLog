@@ -1,3 +1,8 @@
+Tue Jun 12 14:23:24 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/Makefile.am: apply patch from Ryan Hill to cope with changes
+	  in GNU tar, should fix #396751
+
 Tue Jun 12 12:03:36 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* python/types.c: try to allow compilation on old python version

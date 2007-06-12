@@ -3074,7 +3074,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
      */
     c = CUR_CHAR(l);
     while ((NXT(0) != limit) && /* checked */
-	   (c != '<')) {
+           (IS_CHAR(c)) && (c != '<')) {
 	if (c == 0) break;
 	if (c == '&') {
 	    in_space = 0;
@@ -3208,8 +3208,13 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
     if (RAW == '<') {
 	xmlFatalErr(ctxt, XML_ERR_LT_IN_ATTRIBUTE, NULL);
     } else if (RAW != limit) {
-        xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-	               "AttValue: ' expected\n");
+	if ((c != 0) && (!IS_CHAR(c))) {
+	    xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,
+			   "invalid character in attribute value\n");
+	} else {
+	    xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+			   "AttValue: ' expected\n");
+        }
     } else
 	NEXT;
     if (attlen != NULL) *attlen = len;

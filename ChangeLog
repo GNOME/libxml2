@@ -1,3 +1,10 @@
+Tue Jun 12 15:41:09 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix bug #414846 where invalid characters in attributes
+	  would sometimes not be detected.
+	* test/errors/attr4.xml result/errors/attr4.xml*: added a specific
+	  test case to the regression tests
+
 Tue Jun 12 14:23:24 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/Makefile.am: apply patch from Ryan Hill to cope with changes

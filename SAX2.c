@@ -1059,25 +1059,31 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
     xmlChar *nval;
     xmlNsPtr namespace;
 
-    /*
-     * Split the full name into a namespace prefix and the tag name
-     */
-    name = xmlSplitQName(ctxt, fullname, &ns);
-    if ((name != NULL) && (name[0] == 0)) {
-        if (xmlStrEqual(ns, BAD_CAST "xmlns")) {
-	    xmlNsErrMsg(ctxt, XML_ERR_NS_DECL_ERROR,
-			"invalid namespace declaration '%s'\n",
-		        fullname, NULL);
-	} else {
-	    xmlNsWarnMsg(ctxt, XML_WAR_NS_COLUMN,
-		         "Avoid attribute ending with ':' like '%s'\n",
-			 fullname, NULL);
-	}
-	if (ns != NULL)
-	    xmlFree(ns);
-	ns = NULL;
-	xmlFree(name);
+    if (ctxt->html) {
 	name = xmlStrdup(fullname);
+	ns = NULL;
+	namespace = NULL;
+    } else {
+	/*
+	 * Split the full name into a namespace prefix and the tag name
+	 */
+	name = xmlSplitQName(ctxt, fullname, &ns);
+	if ((name != NULL) && (name[0] == 0)) {
+	    if (xmlStrEqual(ns, BAD_CAST "xmlns")) {
+		xmlNsErrMsg(ctxt, XML_ERR_NS_DECL_ERROR,
+			    "invalid namespace declaration '%s'\n",
+			    fullname, NULL);
+	    } else {
+		xmlNsWarnMsg(ctxt, XML_WAR_NS_COLUMN,
+			     "Avoid attribute ending with ':' like '%s'\n",
+			     fullname, NULL);
+	    }
+	    if (ns != NULL)
+		xmlFree(ns);
+	    ns = NULL;
+	    xmlFree(name);
+	    name = xmlStrdup(fullname);
+	}
     }
     if (name == NULL) {
         xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");

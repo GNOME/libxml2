@@ -1,3 +1,8 @@
+Tue Jun 12 17:14:08 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fixing bug #319964, parsing of HTML attribute really
+	  should not have namespace processing.
+
 Tue Jun 12 16:42:14 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed the push mode when a big comment occurs before

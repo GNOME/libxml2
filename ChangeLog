@@ -1,3 +1,10 @@
+Tue Jun 12 16:42:14 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed the push mode when a big comment occurs before
+	  an internal subset, should close bug #438835
+	* test/comment6.xml result//comment6.xml*: added a special
+	  test in the regression suite
+
 Tue Jun 12 15:41:09 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix bug #414846 where invalid characters in attributes

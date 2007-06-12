@@ -780,6 +780,10 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	htmlDocContentDumpOutput(buf, (xmlDocPtr) cur, encoding);
 	return;
     }
+    if (cur->type == XML_ATTRIBUTE_NODE) {
+        htmlAttrDumpOutput(buf, doc, (xmlAttrPtr) cur, encoding);
+	return;
+    }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
 	    if (((cur->name == (const xmlChar *)xmlStringText) ||

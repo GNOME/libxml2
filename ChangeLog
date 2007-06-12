@@ -1,3 +1,8 @@
+Tue Jun 12 11:48:15 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: htmlNodeDumpFormatOutput didn't handle XML_ATTRIBUTE_NODe
+	  fixes bug #438390
+
 Tue Jun 12 11:37:55 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: workaround misgenerated file: URIs c.f. #437385

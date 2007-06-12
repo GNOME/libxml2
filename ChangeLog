@@ -1,3 +1,8 @@
+Tue Jun 12 11:12:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: fixed bug #383687, some case of recursion on next
+	  were not caught in the catalog code.
+
 Tue Jun 12 10:37:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed bug #381877, avoid reading over the end

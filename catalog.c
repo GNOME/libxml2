@@ -1828,6 +1828,8 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 		    if (ret != NULL) {
 			catal->depth--;
 			return(ret);
+		    } else if (catal->depth > MAX_CATAL_DEPTH) {
+		        return(NULL);
 		    }
 		}
 	    }
@@ -1867,6 +1869,13 @@ xmlCatalogXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
 
     if (URI == NULL)
 	return(NULL);
+
+    if (catal->depth > MAX_CATAL_DEPTH) {
+	xmlCatalogErr(catal, NULL, XML_CATALOG_RECURSION,
+		      "Detected recursion in catalog %s\n",
+		      catal->name, NULL, NULL);
+	return(NULL);
+    }
 
     /*
      * First tries steps 2/ 3/ 4/ if a system ID is provided.
@@ -2053,16 +2062,18 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	    if (catal->children != NULL) {
 		ret = xmlCatalogXMLResolve(catal->children, pubID, sysID);
 		if (ret != NULL) {
-                    if (normid != NULL)
-                        xmlFree(normid);
-		    return(ret);
-                }
+		    break;
+                } else if ((catal->children != NULL) &&
+		           (catal->children->depth > MAX_CATAL_DEPTH)) {
+	            ret = NULL;
+		    break;
+	        }
 	    }
 	}
 	catal = catal->next;
     }
-	if (normid != NULL)
-	    xmlFree(normid);
+    if (normid != NULL)
+	xmlFree(normid);
     return(ret);
 }
 

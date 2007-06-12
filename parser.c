@@ -12954,8 +12954,12 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->input = NULL;
 
     ctxt->spaceNr = 0;
-    ctxt->spaceTab[0] = -1;
-    ctxt->space = &ctxt->spaceTab[0];
+    if (ctxt->spaceTab != NULL) {
+	ctxt->spaceTab[0] = -1;
+	ctxt->space = &ctxt->spaceTab[0];
+    } else {
+        ctxt->space = NULL;
+    }
 
 
     ctxt->nodeNr = 0;

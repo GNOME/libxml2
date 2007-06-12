@@ -1,3 +1,8 @@
+Tue Jun 12 12:03:36 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* python/types.c: try to allow compilation on old python version
+	  should fix #398125
+
 Tue Jun 12 11:48:15 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: htmlNodeDumpFormatOutput didn't handle XML_ATTRIBUTE_NODe

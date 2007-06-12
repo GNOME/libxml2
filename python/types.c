@@ -525,6 +525,7 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
 
         ret = xmlXPathNewFloat((double) PyInt_AS_LONG(obj));
 
+#ifdef PyBool_Check
     } else if PyBool_Check (obj) {
 
         if (obj == Py_True) {
@@ -533,7 +534,7 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
         else {
           ret = xmlXPathNewBoolean(0);
         }
-
+#endif
     } else if PyString_Check
         (obj) {
         xmlChar *str;

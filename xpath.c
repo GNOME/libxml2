@@ -3057,7 +3057,8 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 		precedence1 = 2; /* element is parent */
 		node1 = node1->parent;
 	    }
-	    if ((node1 == NULL) || (node1->type != XML_ELEMENT_NODE)) {
+	    if ((node1 == NULL) || (node1->type != XML_ELEMENT_NODE) ||
+		(0 <= (long) node1->content)) {
 		/*
 		* Fallback for whatever case.
 		*/
@@ -3193,11 +3194,6 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
     }
 
 turtle_comparison:
-
-    if (miscNode1 != NULL)
-	node1 = miscNode1;
-    if (miscNode2 != NULL)
-	node2 = miscNode2;
 
     if (node1 == node2->prev)
 	return(1);

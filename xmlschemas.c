@@ -10346,6 +10346,8 @@ xmlSchemaAddSchemaDoc(xmlSchemaParserCtxtPtr pctxt,
 	/* TODO: The following nasty cases will produce an error. */
 	if ((WXS_IS_BUCKET_IMPMAIN(type)) && (! bkt->imported)) {
 	    /* We included/redefined and then try to import a schema. */
+	    if (schemaLocation == NULL)
+		schemaLocation = BAD_CAST "in_memory_buffer";
 	    xmlSchemaCustomErr(ACTXT_CAST pctxt, err,
 		invokingNode, NULL,
 		"The schema document '%s' cannot be imported, since "
@@ -10354,6 +10356,8 @@ xmlSchemaAddSchemaDoc(xmlSchemaParserCtxtPtr pctxt,
 	    goto exit;
 	} else if ((! WXS_IS_BUCKET_IMPMAIN(type)) && (bkt->imported)) {
 	    /* We imported and then try to include/redefine a schema. */
+	    if (schemaLocation == NULL)
+		schemaLocation = BAD_CAST "in_memory_buffer";
 	    xmlSchemaCustomErr(ACTXT_CAST pctxt, err,
 		invokingNode, NULL,
 		"The schema document '%s' cannot be included or "
@@ -10404,6 +10408,9 @@ xmlSchemaAddSchemaDoc(xmlSchemaParserCtxtPtr pctxt,
 		    * URGENT TODO: We should report a warning here.
 		    * res = XML_SCHEMAP_SRC_IMPORT;
 		    */
+		    if (schemaLocation == NULL)
+			schemaLocation = BAD_CAST "in_memory_buffer";
+
 		    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
 			XML_SCHEMAP_WARN_SKIP_SCHEMA,
 			invokingNode, NULL,
@@ -10484,7 +10491,8 @@ doc_load:
 	if (schemaDoc->URL != NULL)
 	    schemaLocation = xmlDictLookup(pctxt->dict,
 		schemaDoc->URL, -1);
-
+        else
+	    schemaLocation = BAD_CAST "in_memory_buffer";
     } else if ((schemaLocation != NULL) || (schemaBuffer != NULL)) {
 	xmlParserCtxtPtr parserCtxt;
 
@@ -10547,7 +10555,7 @@ doc_load:
 		xmlSchemaCustomErr(ACTXT_CAST pctxt, res,
 		    invokingNode, NULL,
 		    "Failed to parse the XML resource '%s'",
-		    schemaLocation, NULL);		
+		    schemaLocation, NULL);
 	    }
 	}
 	xmlFreeParserCtxt(parserCtxt);

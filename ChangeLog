@@ -1,3 +1,8 @@
+Tue Jun 26 13:30:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fix a crash on solaris when a printf %s with a NULL
+	  argument occurs, should fix #450936
+
 Wed Jun 13 13:33:38 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed problem in previous fix to xmlXPathNodeSetSort

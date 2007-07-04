@@ -1,3 +1,8 @@
+Wed Jul  4 17:44:20 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: patch from Dodji Seketeli to avoid a leak on repeated
+	  uses of xmlTextWriterStartDocument()
+
 Tue Jun 26 13:30:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fix a crash on solaris when a printf %s with a NULL

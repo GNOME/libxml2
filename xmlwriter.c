@@ -545,7 +545,9 @@ xmlTextWriterStartDocument(xmlTextWriterPtr writer, const char *version,
 
     writer->out->encoder = encoder;
     if (encoder != NULL) {
-        writer->out->conv = xmlBufferCreateSize(4000);
+	if (writer->out->conv == NULL) {
+	    writer->out->conv = xmlBufferCreateSize(4000);
+	}
         xmlCharEncOutFunc(encoder, writer->out->conv, NULL);
         if ((writer->doc != NULL) && (writer->doc->encoding == NULL))
             writer->doc->encoding = xmlStrdup((xmlChar *)writer->out->encoder->name);

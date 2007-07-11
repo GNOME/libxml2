@@ -25951,7 +25951,7 @@ xmlSchemaValidatorPopElem(xmlSchemaValidCtxtPtr vctxt)
 	    xmlRegExecNextValues(inode->regexCtxt,
 		&nbval, &nbneg, &values[0], &terminal);
 	    ret = xmlRegExecPushString(inode->regexCtxt, NULL, NULL);
-	    if (ret <= 0) {		
+	    if ((ret<0) || ((ret==0) && (!INODE_NILLED(inode)))) {
 		/*
 		* Still missing something.
 		*/

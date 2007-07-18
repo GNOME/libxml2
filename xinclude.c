@@ -1606,6 +1606,7 @@ loaded:
 		if (set->nodeTab[i] == NULL)
 		    continue;
 		switch (set->nodeTab[i]->type) {
+		    case XML_ELEMENT_NODE:
 		    case XML_TEXT_NODE:
 		    case XML_CDATA_SECTION_NODE:
 		    case XML_ENTITY_REF_NODE:
@@ -1618,18 +1619,6 @@ loaded:
 		    case XML_DOCB_DOCUMENT_NODE:
 #endif
 			continue;
-		    case XML_ELEMENT_NODE: {
-			xmlChar *nodeBase;
-			xmlNodePtr el = set->nodeTab[i];
-
-			nodeBase = xmlNodeGetBase(el->doc, el);
-			if (nodeBase != NULL) {
-			    if (!xmlStrEqual(nodeBase, el->doc->URL))
-			        xmlNodeSetBase(el, nodeBase);
-			    xmlFree(nodeBase);
-			}
-			continue;
-		    }
 
 		    case XML_ATTRIBUTE_NODE:
 			xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 

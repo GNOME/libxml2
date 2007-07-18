@@ -1,3 +1,8 @@
+Wed Jul 18 11:05:08 PDT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: applied patch from bug #454608 from Patrik Fimml.
+	  Fixes bug #454608.
+
 Wed Jul 11 19:57:59 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: applied patch for xsi:nil from Frank Gross, this

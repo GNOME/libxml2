@@ -1,3 +1,7 @@
+Thu Jul 19 18:10:58 PDT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* uri.c: applied patch from from Patrik Fimml.  Fixes bug #458268.
+
 Wed Jul 18 11:05:08 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: applied patch from bug #454608 from Patrik Fimml.

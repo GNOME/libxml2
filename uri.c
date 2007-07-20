@@ -2258,7 +2258,8 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 	    uptr = (xmlChar *) ref->path;
 	    if (*uptr == '/')
 		uptr++;
-	    val = xmlStrdup(uptr);
+	    /* exception characters from xmlSaveUri */
+	    val = xmlURIEscapeStr(uptr, BAD_CAST "/;&=+$,");
 	}
 	goto done;
     }
@@ -2322,7 +2323,8 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     
     if (nbslash == 0) {
 	if (uptr != NULL)
-	    val = xmlStrdup (uptr);
+	    /* exception characters from xmlSaveUri */
+	    val = xmlURIEscapeStr(uptr, BAD_CAST "/;&=+$,");
 	goto done;
     }
 
@@ -2361,6 +2363,12 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     } else {
 	vptr[len - 1] = 0;
     }
+
+    /* escape the freshly-built path */
+    vptr = val;
+	/* exception characters from xmlSaveUri */
+    val = xmlURIEscapeStr(vptr, BAD_CAST "/;&=+$,");
+    xmlFree(vptr);
 
 done:
     /*

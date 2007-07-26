@@ -2187,12 +2187,13 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-		handler = xmlFindCharEncodingHandler(encoding);
-	    if (handler == NULL) {
-		xmlFree((char *) cur->encoding);
-		cur->encoding = NULL;
-	    }
+	handler = xmlFindCharEncodingHandler(encoding);
+	if (handler == NULL) {
+	    xmlFree((char *) cur->encoding);
+	    cur->encoding = NULL;
+	    encoding = NULL;
 	}
+    }
     buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL) return(-1);
     memset(&ctxt, 0, sizeof(ctxt));

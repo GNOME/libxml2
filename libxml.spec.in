@@ -25,7 +25,7 @@ URI library.
 %package devel
 Summary: Libraries, includes, etc. to develop XML and HTML applications
 Group: Development/Libraries
-Requires: libxml2 = %{version}
+Requires: libxml2 = %{version}-%{release}
 Requires: zlib-devel
 Requires: pkgconfig
 
@@ -44,8 +44,8 @@ URI library.
 %package python
 Summary: Python bindings for the libxml2 library
 Group: Development/Libraries
-Requires: libxml2 = %{version}
-Requires: %{_libdir}/python%(echo `python -c "import sys; print sys.version[0:3]"`)
+Requires: libxml2 = %{version}-%{release}
+Requires: python
 
 %description python
 The libxml2-python package contains a module that permits applications

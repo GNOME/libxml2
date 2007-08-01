@@ -1,3 +1,10 @@
+Wed Aug  1 09:50:12 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a parser bug where invalid char in comment may
+	  not be detected, reported by Ashwin Sinha
+	* test/errors/comment1.xml result/errors/comment1.xml*: added
+	  the example to the regression suite
+
 Thu Jul 26 13:42:26 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: fixed problem reported on bug #460415

@@ -3817,10 +3817,24 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
     q = CUR_CHAR(ql);
     if (q == 0)
         goto not_terminated;
+    if (!IS_CHAR(q)) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                          "xmlParseComment: invalid xmlChar value %d\n",
+	                  q);
+	xmlFree (buf);
+	return;
+    }
     NEXTL(ql);
     r = CUR_CHAR(rl);
     if (r == 0)
         goto not_terminated;
+    if (!IS_CHAR(r)) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                          "xmlParseComment: invalid xmlChar value %d\n",
+	                  q);
+	xmlFree (buf);
+	return;
+    }
     NEXTL(rl);
     cur = CUR_CHAR(l);
     if (cur == 0)
@@ -3862,10 +3876,13 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
 	}
     }
     buf[len] = 0;
-    if (!IS_CHAR(cur)) {
+    if (cur == 0) {
 	xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
 	                     "Comment not terminated \n<!--%.50s\n", buf);
-	xmlFree(buf);
+    } else if (!IS_CHAR(cur)) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                          "xmlParseComment: invalid xmlChar value %d\n",
+	                  cur);
     } else {
 	if (input != ctxt->input) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
@@ -3875,14 +3892,16 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
 	    (!ctxt->disableSAX))
 	    ctxt->sax->comment(ctxt->userData, buf);
-	xmlFree(buf);
     }
+    xmlFree(buf);
     return;
 not_terminated:
     xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
 			 "Comment not terminated\n", NULL);
     xmlFree(buf);
+    return;
 }
+
 /**
  * xmlParseComment:
  * @ctxt:  an XML parser context

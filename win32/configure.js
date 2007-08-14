@@ -565,8 +565,6 @@ if (cruntime == "/MT" || cruntime == "/MTd" ||
 }
 
 dirSep = "\\";
-if (compiler == "mingw")
-	dirSep = "/";
 if (buildBinPrefix == "")
 	buildBinPrefix = "$(PREFIX)" + dirSep + "bin";
 if (buildIncPrefix == "")

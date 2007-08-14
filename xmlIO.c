@@ -3493,7 +3493,6 @@ xmlParserGetDirectory(const char *filename) {
     char *ret = NULL;
     char dir[1024];
     char *cur;
-    char sep = '/';
 
 #ifdef _WIN32_WCE  /* easy way by now ... wince does not have dirs! */
     return NULL;
@@ -3503,18 +3502,21 @@ xmlParserGetDirectory(const char *filename) {
 	xmlRegisterDefaultInputCallbacks();
 
     if (filename == NULL) return(NULL);
+
 #if defined(WIN32) && !defined(__CYGWIN__)
-    sep = '\\';
+#   define IS_XMLPGD_SEP(ch) ((ch=='/')||(ch=='\\'))
+#else
+#   define IS_XMLPGD_SEP(ch) (ch=='/')
 #endif
 
     strncpy(dir, filename, 1023);
     dir[1023] = 0;
     cur = &dir[strlen(dir)];
     while (cur > dir) {
-         if (*cur == sep) break;
+         if (IS_XMLPGD_SEP(*cur)) break;
 	 cur --;
     }
-    if (*cur == sep) {
+    if (IS_XMLPGD_SEP(*cur)) {
         if (cur == dir) dir[1] = 0;
 	else *cur = 0;
 	ret = xmlMemStrdup(dir);
@@ -3525,6 +3527,7 @@ xmlParserGetDirectory(const char *filename) {
 	}
     }
     return(ret);
+#undef IS_XMLPGD_SEP
 }
 
 /****************************************************************

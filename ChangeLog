@@ -1,3 +1,10 @@
+Tue Aug 14 11:42:27 CEST 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* xmlIO.c: fixed windows path determination (patch from
+	  Roland Schwarz, bug #462877)
+	* win32/Makefile.mingw win32/configure.js: fixed mingw build
+	  (patch from Roland Schwarz, bug #462877)
+
 Wed Aug  1 09:50:12 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a parser bug where invalid char in comment may

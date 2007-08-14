@@ -237,33 +237,33 @@ libxmla : $(BINDIR)/$(XML_A)
 utils : $(UTILS)
 
 clean :
-	cmd.exe /C if exist $(XML_INTDIR) rmdir /S /Q $(XML_INTDIR)
-	cmd.exe /C if exist $(XML_INTDIR_A) rmdir /S /Q $(XML_INTDIR_A)
-	cmd.exe /C if exist $(UTILS_INTDIR) rmdir /S /Q $(UTILS_INTDIR)
-	cmd.exe /C if exist $(BINDIR) rmdir /S /Q $(BINDIR)
-	cmd.exe /C if exist depends.mingw del depends.mingw
+	cmd.exe /C "if exist $(XML_INTDIR) rmdir /S /Q $(XML_INTDIR)"
+	cmd.exe /C "if exist $(XML_INTDIR_A) rmdir /S /Q $(XML_INTDIR_A)"
+	cmd.exe /C "if exist $(UTILS_INTDIR) rmdir /S /Q $(UTILS_INTDIR)"
+	cmd.exe /C "if exist $(BINDIR) rmdir /S /Q $(BINDIR)"
+	cmd.exe /C "if exist depends.mingw del depends.mingw"
 
 distclean : clean
-	cmd.exe /C if exist config.* del config.*
-	cmd.exe /C if exist Makefile del Makefile
+	cmd.exe /C "if exist config.* del config.*"
+	cmd.exe /C "if exist Makefile del Makefile"
 
 rebuild : clean all
 
 install-libs : all
-	cmd.exe /C if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
-	cmd.exe /C if not exist $(BINPREFIX) mkdir $(BINPREFIX)
-	cmd.exe /C if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
-	cmd.exe /C copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml
-	cmd.exe /C copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
-	cmd.exe /C copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
-	cmd.exe /C copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
-	cmd.exe /C copy $(BINDIR)\xml*.exe $(BINPREFIX)
+	cmd.exe /C "if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml"
+	cmd.exe /C "if not exist $(BINPREFIX) mkdir $(BINPREFIX)"
+	cmd.exe /C "if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)"
+	cmd.exe /C "copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml"
+	cmd.exe /C "copy $(BINDIR)\$(XML_SO) $(SOPREFIX)"
+	cmd.exe /C "copy $(BINDIR)\$(XML_A) $(LIBPREFIX)"
+	cmd.exe /C "copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)"
+	cmd.exe /C "copy $(BINDIR)\xml*.exe $(BINPREFIX)"
 
 install : install-libs
-	cmd.exe /C copy $(BINDIR)\*.exe $(BINPREFIX)
+	cmd.exe /C "copy $(BINDIR)\*.exe $(BINPREFIX)"
 
 install-dist : install-libs
-	cmd.exe /C copy $(BINDIR)\xml*.exe $(BINPREFIX)
+	cmd.exe /C "copy $(BINDIR)\xml*.exe $(BINPREFIX)"
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)

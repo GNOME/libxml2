@@ -1,3 +1,9 @@
+Tue Aug 14 15:51:05 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: aligned xmlSAXUserParseMemory() to match 
+	  xmlSAXUserParseFile() logic based on Ashwin post, and ifdef
+	  cleanup
+
 Tue Aug 14 11:42:27 CEST 2007 Rob Richards <rrichards@ctindustries.net>
 
 	* xmlIO.c: fixed windows path determination (patch from

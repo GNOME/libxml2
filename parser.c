@@ -12487,9 +12487,7 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) return -1;
-#ifdef LIBXML_SAX1_ENABLED
     if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
-#endif /* LIBXML_SAX1_ENABLED */
 	xmlFree(ctxt->sax);
     ctxt->sax = sax;
     xmlDetectSAX2(ctxt);
@@ -12693,14 +12691,14 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 			  const char *buffer, int size) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
-    xmlSAXHandlerPtr oldsax = NULL;
     
-    if (sax == NULL) return -1;
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL) return -1;
-    oldsax = ctxt->sax;
+    if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
+        xmlFree(ctxt->sax);
     ctxt->sax = sax;
     xmlDetectSAX2(ctxt);
+
     if (user_data != NULL)
 	ctxt->userData = user_data;
     
@@ -12714,7 +12712,8 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 	else
 	    ret = -1;
     }
-    ctxt->sax = oldsax;
+    if (sax != NULL)
+        ctxt->sax = NULL;
     if (ctxt->myDoc != NULL) {
         xmlFreeDoc(ctxt->myDoc);
 	ctxt->myDoc = NULL;

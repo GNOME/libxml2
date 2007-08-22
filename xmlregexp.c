@@ -189,6 +189,7 @@ struct _xmlRegAtom {
     int neg;
     int codepoint;
     xmlRegStatePtr start;
+    xmlRegStatePtr start0;
     xmlRegStatePtr stop;
     int maxRanges;
     int nbRanges;
@@ -733,11 +734,41 @@ xmlRegFreeRange(xmlRegRangePtr range) {
 }
 
 /**
+ * xmlRegCopyRange:
+ * @range:  the regexp range
+ *
+ * Copy a regexp range
+ *
+ * Returns the new copy or NULL in case of error.
+ */
+static xmlRegRangePtr
+xmlRegCopyRange(xmlRegParserCtxtPtr ctxt, xmlRegRangePtr range) {
+    xmlRegRangePtr ret;
+
+    if (range == NULL)
+	return(NULL);
+
+    ret = xmlRegNewRange(ctxt, range->neg, range->type, range->start,
+                         range->end);
+    if (ret == NULL)
+        return(NULL);
+    if (range->blockName != NULL) {
+	ret->blockName = xmlStrdup(range->blockName);
+	if (ret->blockName == NULL) {
+	    xmlRegexpErrMemory(ctxt, "allocating range");
+	    xmlRegFreeRange(ret);
+	    return(NULL);
+	}
+    }
+    return(ret);
+}
+
+/**
  * xmlRegNewAtom:
  * @ctxt:  the regexp parser context
  * @type:  the type of atom
  *
- * Allocate a new regexp range
+ * Allocate a new atom
  *
  * Returns the new atom or NULL in case of error
  */
@@ -782,6 +813,52 @@ xmlRegFreeAtom(xmlRegAtomPtr atom) {
     if ((atom->type == XML_REGEXP_BLOCK_NAME) && (atom->valuep != NULL))
 	xmlFree(atom->valuep);
     xmlFree(atom);
+}
+
+/**
+ * xmlRegCopyAtom:
+ * @ctxt:  the regexp parser context
+ * @atom:  the oiginal atom
+ *
+ * Allocate a new regexp range
+ *
+ * Returns the new atom or NULL in case of error
+ */
+static xmlRegAtomPtr
+xmlRegCopyAtom(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom) {
+    xmlRegAtomPtr ret;
+
+    ret = (xmlRegAtomPtr) xmlMalloc(sizeof(xmlRegAtom));
+    if (ret == NULL) {
+	xmlRegexpErrMemory(ctxt, "copying atom");
+	return(NULL);
+    }
+    memset(ret, 0, sizeof(xmlRegAtom));
+    ret->type = atom->type;
+    ret->quant = atom->quant;
+    ret->min = atom->min;
+    ret->max = atom->max;
+    if (atom->nbRanges > 0) {
+        int i;
+
+        ret->ranges = (xmlRegRangePtr *) xmlMalloc(sizeof(xmlRegRangePtr) *
+	                                           atom->nbRanges);
+	if (ret->ranges == NULL) {
+	    xmlRegexpErrMemory(ctxt, "copying atom");
+	    goto error;
+	}
+	for (i = 0;i < atom->nbRanges;i++) {
+	    ret->ranges[i] = xmlRegCopyRange(ctxt, atom->ranges[i]);
+	    if (ret->ranges[i] == NULL)
+	        goto error;
+	    ret->nbRanges = i + 1;
+	}
+    }
+    return(ret);
+
+error:
+    xmlRegFreeAtom(ret);
+    return(NULL);
 }
 
 static xmlRegStatePtr
@@ -1504,52 +1581,84 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		break;
 	    case XML_REGEXP_QUANT_RANGE: {
 		int counter;
-		xmlRegStatePtr newstate;
+		xmlRegStatePtr inter, newstate;
 
 		/*
-		 * This one is nasty:
-		 *   1/ if range has minOccurs == 0, create a new state
-		 *	and create epsilon transitions from atom->start
-		 *	to atom->stop, as well as atom->start to the new
-		 *	state
-		 *   2/ register a new counter
-		 *   3/ register an epsilon transition associated to
-		 *      this counter going from atom->stop to atom->start
-		 *   4/ create a new state
-		 *   5/ generate a counted transition from atom->stop to
-		 *      that state
+		 * create the final state now if needed
 		 */
-		if (atom->min == 0) {
-		    xmlFAGenerateEpsilonTransition(ctxt, atom->start,
-			atom->stop);
-		    newstate = xmlRegNewState(ctxt);
-		    xmlRegStatePush(ctxt, newstate);
-		    ctxt->state = newstate;
-		    xmlFAGenerateEpsilonTransition(ctxt, atom->start,
-			newstate);
-		}
-		counter = xmlRegGetCounter(ctxt);
-		ctxt->counters[counter].min = atom->min - 1;
-		ctxt->counters[counter].max = atom->max - 1;
-		atom->min = 0;
-		atom->max = 0;
-		atom->quant = XML_REGEXP_QUANT_ONCE;
 		if (to != NULL) {
 		    newstate = to;
 		} else {
 		    newstate = xmlRegNewState(ctxt);
 		    xmlRegStatePush(ctxt, newstate);
 		}
-		ctxt->state = newstate;
-		xmlFAGenerateCountedTransition(ctxt, atom->stop,
-			                       newstate, counter);
-                
-                /*
-		 * first check count and if OK jump forward; 
-                 * if checking fail increment count and jump back
+
+		/*
+		 * The principle here is to use counted transition
+		 * to avoid explosion in the number of states in the
+		 * graph. This is clearly more complex but should not
+		 * be exploitable at runtime.
 		 */
-		xmlFAGenerateCountedEpsilonTransition(ctxt, atom->stop,
-			                              atom->start, counter);
+		if ((atom->min == 0) && (atom->start0 == NULL)) {
+		    xmlRegAtomPtr copy;
+		    /*
+		     * duplicate a transition based on atom to count next
+		     * occurences after 1. We cannot loop to atom->start
+		     * directly because we need an epsilon transition to 
+		     * newstate.
+		     */
+		     /* ???? For some reason it seems we never reach that
+		        case, I suppose this got optimized out before when
+			building the automata */
+
+		    if (copy == NULL)
+		        return(-1);
+		    copy = xmlRegCopyAtom(ctxt, atom);
+		    copy->quant = XML_REGEXP_QUANT_ONCE;
+		    copy->min = 0;
+		    copy->max = 0;
+
+		    if (xmlFAGenerateTransitions(ctxt, atom->start, NULL, copy)
+		        < 0)
+			return(-1);
+		    inter = ctxt->state;
+		    counter = xmlRegGetCounter(ctxt);
+		    ctxt->counters[counter].min = atom->min - 1;
+		    ctxt->counters[counter].max = atom->max - 1;
+		    /* count the number of times we see it again */
+		    xmlFAGenerateCountedEpsilonTransition(ctxt, inter,
+						   atom->stop, counter);
+		    /* allow a way out based on the count */
+		    xmlFAGenerateCountedTransition(ctxt, inter,
+			                           newstate, counter);
+		    /* and also allow a direct exit for 0 */
+		    xmlFAGenerateEpsilonTransition(ctxt, atom->start,
+		                                   newstate);
+		} else {
+		    /*
+		     * either we need the atom at least once or there
+		     * is an atom->start0 allowing to easilly plug the
+		     * epsilon transition.
+		     */
+		    counter = xmlRegGetCounter(ctxt);
+		    ctxt->counters[counter].min = atom->min - 1;
+		    ctxt->counters[counter].max = atom->max - 1;
+		    /* count the number of times we see it again */
+		    xmlFAGenerateCountedEpsilonTransition(ctxt, atom->stop,
+						   atom->start, counter);
+		    /* allow a way out based on the count */
+		    xmlFAGenerateCountedTransition(ctxt, atom->stop,
+			                           newstate, counter);
+		    /* and if needed allow a direct exit for 0 */
+		    if (atom->min == 0)
+			xmlFAGenerateEpsilonTransition(ctxt, atom->start0,
+						       newstate);
+
+		}
+		atom->min = 0;
+		atom->max = 0;
+		atom->quant = XML_REGEXP_QUANT_ONCE;
+		ctxt->state = newstate;
 	    }
 	    default:
 		break;
@@ -5113,9 +5222,15 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
     } else if (CUR == ')') {
 	return(0);
     } else if (CUR == '(') {
-	xmlRegStatePtr start, oldend;
+	xmlRegStatePtr start, oldend, start0;
 
 	NEXT;
+	/*
+	 * this extra Epsilon transition is needed if we count with 0 allowed
+	 * unfortunately this can't be known at that point
+	 */
+	xmlFAGenerateEpsilonTransition(ctxt, ctxt->state, NULL);
+	start0 = ctxt->state;
 	xmlFAGenerateEpsilonTransition(ctxt, ctxt->state, NULL);
 	start = ctxt->state;
 	oldend = ctxt->end;
@@ -5131,6 +5246,7 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
 	if (ctxt->atom == NULL)
 	    return(-1);
 	ctxt->atom->start = start;
+	ctxt->atom->start0 = start0;
 	ctxt->atom->stop = ctxt->state;
 	ctxt->end = oldend;
 	return(1);

@@ -1,6 +1,10 @@
+Thu Aug 23 17:00:49 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/*: preparing release of 2.6.30
+
 Thu Aug 23 20:58:28 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
-	* xpath.c: fixed mlXPathCompOpEvalPositionalPredicate problem
+	* xpath.c: fixed xmlXPathCompOpEvalPositionalPredicate problem
 	  with object caching (bug #469410)
 
 Thu Aug 23 11:28:38 CEST 2007 Daniel Veillard <daniel@veillard.com>
@@ -68,7 +72,7 @@ Wed Jun 13 13:33:38 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 Tue Jun 12 18:17:28 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
-	* doc/* configure.in NEWS: release of libxml2 2.6.28
+	* doc/* configure.in NEWS: release of libxml2 2.6.29
 	* valid.c: patch from Dagfinn I. Mannsåker for idness of name
 	  in HTML, c.f. bug #305885.
 

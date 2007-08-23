@@ -11706,8 +11706,15 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
 	    valuePush(ctxt, contextObj);
 	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
 	    
-	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1))
+	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1)) {
+	        xmlXPathObjectPtr tmp;
+		/* pop the result */
+		tmp = valuePop(ctxt);
+		xmlXPathReleaseObject(xpctxt, tmp);
+		/* then pop off contextObj, which will be freed later */
+		valuePop(ctxt);
 		goto evaluation_error;
+	    }
 
 	    if (res)
 		pos++;

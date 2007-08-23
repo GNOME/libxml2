@@ -1585,7 +1585,7 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
     if (!strcmp(filename, "-")) 
         fd = 0;
     else {
-        fd = open(filename, O_CREAT | O_WRONLY);
+        fd = open(filename, O_CREAT | O_WRONLY, 0666);
 	if (fd < 0) {
 	    xmlNanoHTTPClose(ctxt);
 	    return(-1);

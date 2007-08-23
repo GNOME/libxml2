@@ -1,3 +1,8 @@
+Thu Aug 23 22:48:20 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* nanohttp.c: fix an open() call with creation without 3rd argument
+	  hopefully that interface is never used.
+
 Thu Aug 23 17:00:49 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/*: preparing release of 2.6.30

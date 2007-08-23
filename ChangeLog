@@ -1,3 +1,9 @@
+Thu Aug 23 11:28:38 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c test/schemas/*455953* result/schemas/bug455953*:
+	  applied patch from Frank Gross fixing Schemas IDC import bug
+	  #455953 and also add the test to the regression suite
+
 Wed Aug 22 18:29:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: try to fix for the nth time the automata generation

@@ -21906,6 +21906,20 @@ xmlSchemaAugmentIDC(xmlSchemaIDCPtr idcDef,
 }
 
 /**
+ * xmlSchemaAugmentImportedIDC:
+ * @imported: the imported schema
+ *
+ * Creates an augmented IDC definition for the imported schema.
+ */
+static void
+xmlSchemaAugmentImportedIDC(xmlSchemaImportPtr imported, xmlSchemaValidCtxtPtr vctxt) {
+    if (imported->schema->idcDef != NULL) {
+	    xmlHashScan(imported->schema->idcDef ,
+	    (xmlHashScanner) xmlSchemaAugmentIDC, vctxt);
+    }
+}
+
+/**
  * xmlSchemaIDCNewBinding:
  * @idcDef: the IDC definition of this binding
  *
@@ -27901,13 +27915,12 @@ xmlSchemaPreRun(xmlSchemaValidCtxtPtr vctxt) {
 	*/
 	pctxt->ownsConstructor = 1;
     }	
-    /*
-    * Augment the IDC definitions.
+    /* 
+    * Augment the IDC definitions for the main schema and all imported ones 
+    * NOTE: main schema if the first in the imported list
     */
-    if (vctxt->schema->idcDef != NULL) {
-	xmlHashScan(vctxt->schema->idcDef,
-	    (xmlHashScanner) xmlSchemaAugmentIDC, vctxt);
-    }
+    xmlHashScan(vctxt->schema->schemasImports,(xmlHashScanner)xmlSchemaAugmentImportedIDC, vctxt);
+    
     return(0);
 }
 

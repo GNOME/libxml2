@@ -1,3 +1,9 @@
+Fri Aug 24 10:58:58 HKT 2007 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c: Enhanced to include port number (if not == 80) on the
+	  "Header:" URL (bug #469681).
+	* xmlregexp.c: Fixed a typo causing a warning message.
+
 Thu Aug 23 22:48:20 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* nanohttp.c: fix an open() call with creation without 3rd argument

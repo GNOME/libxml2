@@ -1364,8 +1364,13 @@ retry:
     if (ctxt->query != NULL)
 	p += snprintf( p, blen - (p - bp), "?%s", ctxt->query);
 
-    p += snprintf( p, blen - (p - bp), " HTTP/1.0\r\nHost: %s\r\n", 
+    if (ctxt->port == 80) {
+        p += snprintf( p, blen - (p - bp), " HTTP/1.0\r\nHost: %s\r\n", 
 		    ctxt->hostname);
+    } else {
+        p += snprintf( p, blen - (p - bp), " HTTP/1.0\r\nHost: %s:%d\r\n",
+		    ctxt->hostname, ctxt->port);
+    }
 
 #ifdef HAVE_ZLIB_H
     p += snprintf(p, blen - (p - bp), "Accept-Encoding: gzip\r\n");

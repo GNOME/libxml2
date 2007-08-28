@@ -1610,7 +1610,7 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		     /* ???? For some reason it seems we never reach that
 		        case, I suppose this got optimized out before when
 			building the automata */
-
+		    copy = xmlRegCopyAtom(ctxt, atom);
 		    copy = xmlRegCopyAtom(ctxt, atom);
 		    if (copy == NULL)
 		        return(-1);
@@ -1711,9 +1711,11 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 	    xmlRegStateAddTrans(ctxt, to, atom, to, -1, -1);
 	    break;
 	case XML_REGEXP_QUANT_RANGE: 
+#if DV_test
 	    if (atom->min == 0) {
 		xmlFAGenerateEpsilonTransition(ctxt, from, to);
 	    }
+#endif
 	    break;
 	default:
 	    break;
@@ -3211,12 +3213,22 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		     * this is a multiple input sequence
 		     * If there is a counter associated increment it now.
 		     * before potentially saving and rollback
+		     * do not increment if the counter is already over the
+		     * maximum limit in which case get to next transition
 		     */
 		    if (trans->counter >= 0) {
-			if (exec->counts == NULL) {
+			xmlRegCounterPtr counter;
+
+			if ((exec->counts == NULL) ||
+			    (exec->comp == NULL) ||
+			    (exec->comp->counters == NULL)) {
 			    exec->status = -1;
 			    goto error;
 			}
+			counter = &exec->comp->counters[trans->counter];
+			if (exec->counts[trans->counter] >= counter->max)
+			    continue; /* for loop on transitions */
+
 #ifdef DEBUG_REGEXP_EXEC
 			printf("Increasing count %d\n", trans->counter);
 #endif
@@ -3312,10 +3324,18 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    xmlFARegExecSave(exec);
 		}
 		if (trans->counter >= 0) {
-		    if (exec->counts == NULL) {
-		        exec->status = -1;
+		    xmlRegCounterPtr counter;
+
+                    /* make sure we don't go over the counter maximum value */
+		    if ((exec->counts == NULL) ||
+			(exec->comp == NULL) ||
+			(exec->comp->counters == NULL)) {
+			exec->status = -1;
 			goto error;
 		    }
+		    counter = &exec->comp->counters[trans->counter];
+		    if (exec->counts[trans->counter] >= counter->max)
+			continue; /* for loop on transitions */
 #ifdef DEBUG_REGEXP_EXEC
 		    printf("Increasing count %d\n", trans->counter);
 #endif

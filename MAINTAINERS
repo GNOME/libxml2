@@ -1,3 +1,9 @@
 See first http://xmlsoft.org/bugs.html and use the list please.
-Email: daniel@redhat.com
-Windows port: igor@zlatkovic.com
+
+Daniel Veillard
+E-mail: veillard@redhat.com
+Userid: veillard
+
+Co-maintainer: William Brack <wbrack@mmm.com.hk>
+Windows port: Igor Zlatkovic <igor@zlatkovic.com>
+              Rob Richards <rrichards@ctindustries.net>

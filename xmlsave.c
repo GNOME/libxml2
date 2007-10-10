@@ -1254,6 +1254,10 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	}
 	return;
     }
+    if (cur->type == XML_ATTRIBUTE_NODE) {
+        xmlAttrDumpOutput(ctxt, (xmlAttrPtr) cur);
+	return;
+    }
 
     format = ctxt->format;
     if (format == 1) {

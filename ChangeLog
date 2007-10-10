@@ -1,3 +1,8 @@
+Wed Oct 10 10:25:52 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: fix to avoid a crash when dumping an attribute from
+	  an XHTML document, patch contributed to fix #485298
+
 Tue Aug 28 19:32:28 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: another nasty regexp case fixed.

@@ -1,3 +1,8 @@
+Tue Oct 16 13:58:41 CEST 2007 Daniel Veillard <daniel@veillard.com>
+
+	* testURI.c: add a debug option printing all the fields within
+	  the parsed URI structure
+
 Wed Oct 10 10:25:52 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: fix to avoid a crash when dumping an attribute from

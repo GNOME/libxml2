@@ -409,6 +409,9 @@ xmlMemFree(void *ptr)
     size_t size;
 #endif
 
+    if (ptr == NULL)
+	return;
+
     if (ptr == (void *) -1) {
 	xmlGenericError(xmlGenericErrorContext,
 	    "trying to free pointer from freed area\n");

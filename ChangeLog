@@ -1,3 +1,8 @@
+Tue Oct 30 21:24:55 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: xmlFree(NULL) should not crash in debug mode
+	  should fix #491651
+
 Tue Oct 16 13:58:41 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* testURI.c: add a debug option printing all the fields within

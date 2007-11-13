@@ -1,3 +1,8 @@
+Tue Nov 13 21:26:27 CET 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* schematron.c: fix crash/leaks from xmlSchematronParse due to improper
+	  schema document ownership for bug #495215
+
 Tue Oct 30 21:24:55 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c: xmlFree(NULL) should not crash in debug mode

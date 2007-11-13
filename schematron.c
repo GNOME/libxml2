@@ -1204,6 +1204,9 @@ xmlSchematronParse(xmlSchematronParserCtxtPtr ctxt)
     }
     /* the original document must be kept for reporting */
     ret->doc = doc;
+    if (preserve) {
+	    ret->preserve = 1;
+    }
     preserve = 1;
 
 exit:

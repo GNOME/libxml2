@@ -1,3 +1,9 @@
+Fri Nov 16 11:55:36 CET 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* globals.c threads.c include/libxml/threads.h: 
+	  __xmlGlobalInitMutexDestroy() will free global_init_lock on Win32.
+	  Patch from Marc-Antoine Ruel.
+
 Tue Nov 13 21:26:27 CET 2007 Rob Richards <rrichards@ctindustries.net>
 
 	* schematron.c: fix crash/leaks from xmlSchematronParse due to improper

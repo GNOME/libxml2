@@ -451,6 +451,7 @@ __xmlGlobalInitMutexLock(void)
 	 * section in the global_init_lock then discard the one
 	 * allocated by this thread. */
 	if (global_init_lock != cs) {
+		DeleteCriticalSection(cs);
 	    free(cs);
 	}
     }
@@ -497,6 +498,24 @@ __xmlGlobalInitMutexUnlock(void)
     LeaveCriticalSection(global_init_lock);
 #elif defined HAVE_BEOS_THREADS
     release_sem(global_init_lock);
+#endif
+}
+
+/**
+ * xmlGlobalInitMutexDestroy
+ *
+ * Makes sure that the global initialization mutex is destroyed before
+ * application termination.
+ */
+void __xmlGlobalInitMutexDestroy(void)
+{
+#if defined HAVE_WIN32_THREADS
+    if (global_init_lock != NULL)
+    {
+	DeleteCriticalSection(global_init_lock);
+	free(global_init_lock);
+	global_init_lock = NULL;
+    }
 #endif
 }
 

@@ -60,6 +60,7 @@ void xmlCleanupGlobals(void)
 	xmlFreeMutex(xmlThrDefMutex);
 	xmlThrDefMutex = NULL;
     }
+	__xmlGlobalInitMutexDestroy();
 }
 
 /************************************************************************

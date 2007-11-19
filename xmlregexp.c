@@ -1611,7 +1611,6 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		        case, I suppose this got optimized out before when
 			building the automata */
 		    copy = xmlRegCopyAtom(ctxt, atom);
-		    copy = xmlRegCopyAtom(ctxt, atom);
 		    if (copy == NULL)
 		        return(-1);
 		    copy->quant = XML_REGEXP_QUANT_ONCE;

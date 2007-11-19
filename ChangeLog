@@ -1,3 +1,7 @@
+Mon Nov 19 18:39:26 CET 2007 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: remove a cut-and-paste copy error
+
 Fri Nov 16 11:55:36 CET 2007 Rob Richards <rrichards@ctindustries.net>
 
 	* globals.c threads.c include/libxml/threads.h: 

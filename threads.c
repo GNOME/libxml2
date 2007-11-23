@@ -428,8 +428,6 @@ __xmlGlobalInitMutexLock(void)
 {
     /* Make sure the global init lock is initialized and then lock it. */
 #ifdef HAVE_PTHREAD_H
-    int err;
-
     /* The mutex is statically initialized, so we just lock it. */
     pthread_mutex_lock(&global_init_lock);
 #elif defined HAVE_WIN32_THREADS

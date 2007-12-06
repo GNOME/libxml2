@@ -1,3 +1,7 @@
+Tue Dec  6 11:07:42 CET 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* pattern.c: fix crash from double free of name for bug #501760
+
 Fri Nov 23 11:47:48 CET 2007 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: remove unused variable in __xmlGlobalInitMutexLock

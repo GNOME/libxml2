@@ -1091,6 +1091,7 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		}
 	    }
 	    XML_PAT_FREE_STRING(ctxt, prefix);
+	    name = NULL;
 	    if (token == NULL) {
 		if (CUR == '*') {
 		    NEXT;
@@ -1157,6 +1158,7 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 			}
 		    }
 		    XML_PAT_FREE_STRING(ctxt, prefix);
+		    name = NULL;
 		    if (token == NULL) {
 			if (CUR == '*') {
 			    NEXT;

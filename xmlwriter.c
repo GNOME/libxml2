@@ -1256,6 +1256,11 @@ xmlTextWriterFullEndElement(xmlTextWriterPtr writer)
             return -1;
     }
 
+    if (writer->indent) {
+        count = xmlOutputBufferWriteString(writer->out, "\n");
+        sum += count;
+    }
+
     xmlListPopFront(writer->nodes);
     return sum;
 }

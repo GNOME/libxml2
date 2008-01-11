@@ -638,14 +638,13 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 
 	c = *cur;
 	if (c & 0x80) {
-	    if (c == 0xC0)
+	    if (((c & 0x40) == 0) || (c == 0xC0))
 		goto encoding_error;
 	    if (cur[1] == 0)
 		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
 	    if ((cur[1] & 0xc0) != 0x80)
 		goto encoding_error;
 	    if ((c & 0xe0) == 0xe0) {
-
 		if (cur[2] == 0)
 		    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
 		if ((cur[2] & 0xc0) != 0x80)
@@ -662,18 +661,24 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		    val |= (cur[1] & 0x3f) << 12;
 		    val |= (cur[2] & 0x3f) << 6;
 		    val |= cur[3] & 0x3f;
+		    if (val < 0x10000)
+			goto encoding_error;
 		} else {
 		  /* 3-byte code */
 		    *len = 3;
 		    val = (cur[0] & 0xf) << 12;
 		    val |= (cur[1] & 0x3f) << 6;
 		    val |= cur[2] & 0x3f;
+		    if (val < 0x800)
+			goto encoding_error;
 		}
 	    } else {
 	      /* 2-byte code */
 		*len = 2;
 		val = (cur[0] & 0x1f) << 6;
 		val |= cur[1] & 0x3f;
+		if (val < 0x80)
+		    goto encoding_error;
 	    }
 	    if (!IS_CHAR(val)) {
 	        xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
@@ -683,6 +688,13 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	} else {
 	    /* 1-byte code */
 	    *len = 1;
+	    if (*ctxt->input->cur == 0)
+		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+	    if ((*ctxt->input->cur == 0) &&
+	        (ctxt->input->end > ctxt->input->cur)) {
+	        xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
+				  "Char 0x0 out of allowed range\n", 0);
+	    }
 	    if (*ctxt->input->cur == 0xD) {
 		if (ctxt->input->cur[1] == 0xA) {
 		    ctxt->nbChars++;

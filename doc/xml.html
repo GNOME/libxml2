@@ -739,6 +739,26 @@ to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.<
 
 <p>Here is the list of public releases:</p>
 
+<h3>2.6.31: Jan 11 2008</h3>
+<ul>
+  <li>Security fix: missing of checks in UTF-8 parsing</li>
+  <li>Bug fixes: regexp bug, dump attribute from XHTML document, fix
+      xmlFree(NULL) to not crash in debug mode, Schematron parsing crash
+      (Rob Richards), global lock free on Windows (Marc-Antoine Ruel),
+      XSD crash due to double free (Rob Richards), indentation fix in
+      xmlTextWriterFullEndElement (Felipe Pena), error in attribute type
+      parsing if attribute redeclared, avoid crash in hash list scanner if
+      deleting elements, column counter bug fix (Christian Schmidt),
+      HTML embed element saving fix (Stefan Behnel), avoid -L/usr/lib
+      output from xml2-config (Fred Crozat), avoid an xmllint crash 
+      (Stefan Kost), don't stop HTML parsing on out of range chars.
+      </li>
+  <li>Code cleanup: fix open() call third argument, regexp cut'n paste
+      copy error, unused variable in __xmlGlobalInitMutexLock (Hannes Eder),
+      some make distcheck realted fixes (John Carr)</li>
+  <li>Improvements: HTTP Header: includes port number (William Brack),
+      testURI --debug option, </li>
+</ul>
 <h3>2.6.30: Aug 23 2007</h3>
 <ul>
   <li>Portability: Solaris crash on error handling, windows path fixes

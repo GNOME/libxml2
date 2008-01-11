@@ -3535,7 +3535,7 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 	in = ctxt->input->cur;
 	do {
 get_more_space:
-	    while (*in == 0x20) in++;
+	    while (*in == 0x20) { in++; ctxt->input->col++; }
 	    if (*in == 0xA) {
 		do {
 		    ctxt->input->line++; ctxt->input->col = 1;

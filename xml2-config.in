@@ -84,7 +84,7 @@ while test $# -gt 0; do
     --libs)
         if [ "`uname`" = "Linux" ]
 	then
-	    if [ "@XML_LIBDIR@" = "-L/usr/lib64" ]
+	    if [ "@XML_LIBDIR@" = "-L/usr/lib" -o "@XML_LIBDIR@" = "-L/usr/lib64" ]
 	    then
 		echo @XML_LIBS@ 
 	    else

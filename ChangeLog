@@ -1,3 +1,8 @@
+Fri Jan 11 14:39:03 CST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xml2-config.in: apply patch from Fred Crozat to avoid
+	  outputting -L/usr/lib from xml2-config, fixes #497012
+
 Fri Jan 11 14:18:09 CST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fix definition for <embed> to avoid error

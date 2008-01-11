@@ -1211,13 +1211,13 @@
      <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
      <exports symbol='XML_SCHEMAS_NCNAME' type='enum'/>
      <exports symbol='XML_SCHEMAS_LONG' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_FRACTIONDIGITS' type='enum'/>
      <exports symbol='XML_SCHEMAS_BOOLEAN' type='enum'/>
      <exports symbol='XML_SCHEMAS_ENTITY' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_GROUP' type='enum'/>
      <exports symbol='XML_SCHEMAS_GYEARMONTH' type='enum'/>
      <exports symbol='XML_SCHEMAS_BASE64BINARY' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_FRACTIONDIGITS' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_WHITESPACE' type='enum'/>
      <exports symbol='XML_SCHEMAS_IDREF' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTE' type='enum'/>
@@ -1744,7 +1744,6 @@
      <exports symbol='xmlCopyDocElementContent' type='function'/>
      <exports symbol='xmlAddID' type='function'/>
      <exports symbol='xmlFreeRefTable' type='function'/>
-     <exports symbol='xmlValidateNamesValue' type='function'/>
      <exports symbol='xmlRemoveID' type='function'/>
      <exports symbol='xmlFreeElementTable' type='function'/>
      <exports symbol='xmlFreeIDTable' type='function'/>
@@ -1756,6 +1755,7 @@
      <exports symbol='xmlValidityWarningFunc' type='function'/>
      <exports symbol='xmlValidatePopElement' type='function'/>
      <exports symbol='xmlFreeEnumeration' type='function'/>
+     <exports symbol='xmlValidateNamesValue' type='function'/>
      <exports symbol='xmlCopyEnumeration' type='function'/>
      <exports symbol='xmlGetDtdAttrDesc' type='function'/>
      <exports symbol='xmlValidateDtd' type='function'/>
@@ -3452,15 +3452,15 @@
      <exports symbol='XPATH_ENCODING_ERROR' type='enum'/>
      <exports symbol='XPTR_RESOURCE_ERROR' type='enum'/>
      <exports symbol='XPATH_NUMBER' type='enum'/>
-     <exports symbol='XPATH_POINT' type='enum'/>
+     <exports symbol='XPATH_INVALID_CTXT_SIZE' type='enum'/>
      <exports symbol='XPATH_USERS' type='enum'/>
      <exports symbol='XPATH_UNDEF_PREFIX_ERROR' type='enum'/>
      <exports symbol='XPATH_UNKNOWN_FUNC_ERROR' type='enum'/>
-     <exports symbol='XPATH_INVALID_CTXT_SIZE' type='enum'/>
      <exports symbol='XPATH_RANGE' type='enum'/>
      <exports symbol='XPTR_SYNTAX_ERROR' type='enum'/>
      <exports symbol='XPATH_LOCATIONSET' type='enum'/>
      <exports symbol='XPATH_INVALID_CTXT' type='enum'/>
+     <exports symbol='XPATH_POINT' type='enum'/>
      <exports symbol='XPATH_INVALID_ARITY' type='enum'/>
      <exports symbol='XPATH_STRING' type='enum'/>
      <exports symbol='XPATH_INVALID_PREDICATE_ERROR' type='enum'/>

@@ -257,7 +257,7 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
     const char *lastsegment = URL;
     const char *iter = URL;
 
-    if (nbpaths > 0) {
+    if ((nbpaths > 0) && (iter != NULL)) {
 	while (*iter != 0) {
 	    if (*iter == '/')
 		lastsegment = iter + 1;

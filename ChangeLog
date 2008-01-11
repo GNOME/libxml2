@@ -1,3 +1,8 @@
+Fri Jan 11 14:48:40 CST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: apply fix from Stefan Kost to avoid a crash
+	  in xmllint, fixes 504284
+
 Fri Jan 11 14:39:03 CST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xml2-config.in: apply patch from Fred Crozat to avoid

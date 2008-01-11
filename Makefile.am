@@ -856,23 +856,23 @@ Automatatests: testAutomata$(EXEEXT)
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-$(srcdir)/dba100000.xml: dbgenattr.pl
+dba100000.xml: dbgenattr.pl
 	@echo "## generating dba100000.xml"
-	@($(PERL) $(top_srcdir)/dbgenattr.pl 100000 > $(srcdir)/dba100000.xml)
+	@($(PERL) $(top_srcdir)/dbgenattr.pl 100000 > dba100000.xml)
 
-Timingtests: xmllint$(EXEEXT) $(srcdir)/dba100000.xml
+Timingtests: xmllint$(EXEEXT) dba100000.xml
 	@echo "## Timing tests to try to detect performance"
 	@echo "## as well a memory usage breakage when streaming"
 	@echo "## 1/ using the file interface"
 	@echo "## 2/ using the memory interface"
 	@echo "## 3/ repeated DOM parsing"
 	@echo "## 4/ repeated DOM validation"
-	-@($(top_builddir)/xmllint --stream --timing $(srcdir)/dba100000.xml; \
+	-@($(top_builddir)/xmllint --stream --timing dba100000.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
-	-@($(top_builddir)/xmllint --stream --timing --memory $(srcdir)/dba100000.xml; \
+	-@($(top_builddir)/xmllint --stream --timing --memory dba100000.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
@@ -1176,6 +1176,15 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
+
+uninstall-local:
+	rm $(DESTDIR)$(EXAMPLES_DIR)/testXPath.c
+	rm $(DESTDIR)$(EXAMPLES_DIR)/testHTML.c
+	rm $(DESTDIR)$(EXAMPLES_DIR)/testSAX.c
+	rm $(DESTDIR)$(EXAMPLES_DIR)/xmllint.c
+	rm -rf $(DESTDIR)$(EXAMPLES_DIR)
+	rm $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)/Copyright
+	rm -rf $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
 
 tst: tst.c
 	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz

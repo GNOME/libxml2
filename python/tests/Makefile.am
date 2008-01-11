@@ -77,3 +77,7 @@ install-data-local:
 	-(for test in $(PYTESTS) $(XMLS); \
 	  do @INSTALL@ -m 0644 $(srcdir)/$$test $(DESTDIR)$(EXAMPLE_DIR) ; done)
 
+uninstall-local:
+	@(for test in $(PYTESTS) $(XMLS) ; \
+	   do rm $(DESTDIR)$(EXAMPLE_DIR)/`basename $$test` ; done)
+

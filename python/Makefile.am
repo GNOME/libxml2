@@ -49,6 +49,12 @@ install-data-local:
 	@(for doc in $(DOCS) ; \
 	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
 
+uninstall-local:
+	@(for doc in $(DOCS) ; \
+	   do rm $(DESTDIR)$(DOCS_DIR)/`basename $$doc` ; done)
+	rm $(DESTDIR)$(pythondir)/drv_libxml2.py
+	rm $(DESTDIR)$(pythondir)/libxml2.py
+	
 GENERATE = generator.py
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
 GENERATED= libxml2class.py \

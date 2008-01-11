@@ -1,3 +1,11 @@
+Fri Jan 11 13:22:14 CST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: handle a erroneous parsing of attributes in 
+	  case said attribute has been redeclared in the DTD with a
+	  different type
+	* hash.c: fix the hash scanner to not crash if a first element
+	  from the hash list is been removed in the callback
+
 Wed Jan  9 10:15:50 CST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: fix indentation in xmlTextWriterFullEndElement,

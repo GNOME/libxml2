@@ -957,7 +957,7 @@ mem_error:
  * @fullattr:  the attribute fullname
  * @type:  the attribute type
  *
- * Register that this attribute is not CDATA
+ * Register this attribute type
  */
 static void
 xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
@@ -971,12 +971,54 @@ xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
 	    goto mem_error;
     }
 
+    if (xmlHashLookup2(ctxt->attsSpecial, fullname, fullattr) != NULL)
+        return;
+
     xmlHashAddEntry2(ctxt->attsSpecial, fullname, fullattr,
                      (void *) (long) type);
     return;
 
 mem_error:
     xmlErrMemory(ctxt, NULL);
+    return;
+}
+
+/**
+ * xmlCleanSpecialAttrCallback:
+ *
+ * Removes CDATA attributes from the special attribute table
+ */
+static void
+xmlCleanSpecialAttrCallback(void *payload, void *data,
+                            const xmlChar *fullname, const xmlChar *fullattr,
+                            const xmlChar *unused ATTRIBUTE_UNUSED) {
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) data;
+
+    if (((int) payload) == XML_ATTRIBUTE_CDATA) {
+        xmlHashRemoveEntry2(ctxt->attsSpecial, fullname, fullattr, NULL);
+    }
+}
+
+/**
+ * xmlCleanSpecialAttr:
+ * @ctxt:  an XML parser context
+ *
+ * Trim the list of attributes defined to remove all those of type
+ * CDATA as they are not special. This call should be done when finishing
+ * to parse the DTD and before starting to parse the document root.
+ */
+static void
+xmlCleanSpecialAttr(xmlParserCtxtPtr ctxt)
+{
+    if (ctxt->attsSpecial == NULL)
+        return;
+
+    xmlHashScanFull(ctxt->attsSpecial, xmlCleanSpecialAttrCallback, ctxt);
+
+    if (xmlHashSize(ctxt->attsSpecial) == 0) {
+        xmlHashFree(ctxt->attsSpecial, NULL);
+        ctxt->attsSpecial = NULL;
+    }
     return;
 }
 
@@ -5006,7 +5048,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 		(def != XML_ATTRIBUTE_REQUIRED)) {
 		xmlAddDefAttrs(ctxt, elemName, attrName, defaultValue);
 	    }
-	    if ((ctxt->sax2) && (type != XML_ATTRIBUTE_CDATA)) {
+	    if (ctxt->sax2) {
 		xmlAddSpecialAttr(ctxt, elemName, attrName, type);
 	    }
 	    if (defaultValue != NULL)
@@ -9245,6 +9287,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	                              ctxt->extSubSystem, ctxt->extSubURI);
 	ctxt->inSubset = 0;
 
+        xmlCleanSpecialAttr(ctxt);
 
 	ctxt->instate = XML_PARSER_PROLOG;
 	xmlParseMisc(ctxt);
@@ -10208,6 +10251,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 				    ctxt->intSubName, ctxt->extSubSystem,
 				    ctxt->extSubURI);
 			ctxt->inSubset = 0;
+			xmlCleanSpecialAttr(ctxt);
 			ctxt->instate = XML_PARSER_PROLOG;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -10435,6 +10479,7 @@ found_end_int_subset:
 		    ctxt->sax->externalSubset(ctxt->userData, ctxt->intSubName,
 			    ctxt->extSubSystem, ctxt->extSubURI);
 		ctxt->inSubset = 0;
+		xmlCleanSpecialAttr(ctxt);
 		ctxt->instate = XML_PARSER_PROLOG;
 		ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH

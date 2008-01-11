@@ -1,3 +1,8 @@
+Fri Jan 11 14:18:09 CST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fix definition for <embed> to avoid error
+	  when saving back, patch from Stefan Behnel fixing 495213
+
 Fri Jan 11 14:06:09 CST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch from Christian Schmidt fixing a 

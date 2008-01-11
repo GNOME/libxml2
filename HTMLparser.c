@@ -711,7 +711,7 @@ html40ElementTable[] = {
 { "em",		0, 3, 0, 0, 0, 0, 1, "emphasis",
 	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
 },
-{ "embed",	0, 1, 2, 0, 1, 1, 1, "generic embedded object ",
+{ "embed",	0, 1, 0, 0, 1, 1, 1, "generic embedded object ",
 	EMPTY, NULL, DECL embed_attrs, NULL, NULL
 },
 { "fieldset",	0, 0, 0, 0, 0, 0, 0, "form control group ",

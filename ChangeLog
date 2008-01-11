@@ -1,3 +1,9 @@
+Fri Jan 11 15:37:05 CST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: avoid stopping parsing when encountering
+	  out of range characters in an HTML file, report and 
+	  continue processing instead, should fix #472696
+
 Fri Jan 11 15:13:35 CST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* check-relaxng-test-suite2.py check-relaxng-test-suite.py

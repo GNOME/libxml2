@@ -1,3 +1,7 @@
+Fri Jan 11 09:00:09 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/*: preparing release of 2.6.31
+
 Fri Jan 11 08:58:49 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: avoid a warning on 64bits introduced earlier

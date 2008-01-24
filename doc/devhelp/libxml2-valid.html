@@ -101,6 +101,7 @@ int	<a href="#xmlIsRef">xmlIsRef</a>			(<a href="libxml2-tree.html#xmlDocPtr">xm
 <a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a>	<a href="#xmlCopyDocElementContent">xmlCopyDocElementContent</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>							 <a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> cur);
 <a href="libxml2-tree.html#xmlIDPtr">xmlIDPtr</a>	<a href="#xmlAddID">xmlAddID</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);
 void	<a href="#xmlFreeRefTable">xmlFreeRefTable</a>			(<a href="libxml2-valid.html#xmlRefTablePtr">xmlRefTablePtr</a> table);
+int	<a href="#xmlValidateNamesValue">xmlValidateNamesValue</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 int	<a href="#xmlRemoveID">xmlRemoveID</a>			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);
 void	<a href="#xmlFreeElementTable">xmlFreeElementTable</a>		(<a href="libxml2-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> table);
 void	<a href="#xmlFreeIDTable">xmlFreeIDTable</a>			(<a href="libxml2-valid.html#xmlIDTablePtr">xmlIDTablePtr</a> table);
@@ -112,7 +113,6 @@ int	<a href="#xmlRemoveRef">xmlRemoveRef</a>			(<a href="libxml2-tree.html#xmlDo
 typedef void <a href="#xmlValidityWarningFunc">xmlValidityWarningFunc</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
 int	<a href="#xmlValidatePopElement">xmlValidatePopElement</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * qname);
 void	<a href="#xmlFreeEnumeration">xmlFreeEnumeration</a>		(<a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> cur);
-int	<a href="#xmlValidateNamesValue">xmlValidateNamesValue</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a>	<a href="#xmlCopyEnumeration">xmlCopyEnumeration</a>	(<a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> cur);
 <a href="libxml2-tree.html#xmlAttributePtr">xmlAttributePtr</a>	<a href="#xmlGetDtdAttrDesc">xmlGetDtdAttrDesc</a>	(<a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elem, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 int	<a href="#xmlValidateDtd">xmlValidateDtd</a>			(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd);

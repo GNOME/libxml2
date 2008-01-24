@@ -5332,6 +5332,8 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	    }
 	} else {
 	    xmlFatalErr(ctxt, XML_ERR_ELEMCONTENT_NOT_FINISHED, NULL);
+	    if ((last != NULL) && (last != ret))
+	        xmlFreeDocElementContent(ctxt->myDoc, last);
 	    if (ret != NULL)
 		xmlFreeDocElementContent(ctxt->myDoc, ret);
 	    return(NULL);

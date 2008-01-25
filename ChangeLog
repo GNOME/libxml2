@@ -1,3 +1,8 @@
+Fri Jan 25 20:01:42 CET 2007 Rob Richards <rrichards@ctindustries.net>
+
+	* include/win32config.h win32/Makefile.msvc: fix build under VS 2008.
+	  patch by David Wimsey
+
 Thu Jan 24 15:37:04 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix a memeory leak in internal subset parsing with

@@ -12,6 +12,7 @@ A:link, A:visited, A:active { text-decoration: underline }
   <li><a href="#cleanup">Cleaning up after parsing</a></li>
   <li><a href="#Debugging">Debugging routines</a></li>
   <li><a href="#General4">General memory requirements</a></li>
+  <li><a href="#Compacting">Returning memory to the kernel</a></li>
 </ol><h3><a name="General3" id="General3">General overview</a></h3><p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlmemory.h</a></code>
 provides the interfaces to the libxml2 memory system:</p><ul><li>libxml2 does not use the libc memory allocator directly but xmlFree(),
     xmlMalloc() and xmlRealloc()</li>
@@ -99,4 +100,14 @@ of a number of things:</p><ul><li>the parser itself should work  in a fixed amou
     validation, DOM, XPath or XPointer, don't use entities, need to work with
     fixed memory requirements, and try to get the fastest parsing possible
     then the SAX interface should be used, but it has known restrictions.</li>
-</ul><p></p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+</ul><p></p><h3><a name="Compacting" id="Compacting">Returning memory to the kernel</a></h3><p>You may encounter that your process using libxml2 does not have a
+reduced memory usage although you freed the trees. This is because
+libxml2 allocates memory in a number of small chunks. When freeing one
+of those chunks, the OS may decide that giving this little memory back
+to the kernel will cause too much overhead and delay the operation. As
+all chunks are this small, they get actually freed but not returned to
+the kernel. On systems using glibc, there is a function call
+"malloc_trim" from malloc.h which does this missing operation (note that
+it is allowed to fail). Thus, after freeing your tree you may simply try
+"malloc_trim(0);" to really get the memory back. If your OS does not
+provide malloc_trim, try searching for a similar function.</p><p></p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

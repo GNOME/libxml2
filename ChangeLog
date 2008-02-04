@@ -1,3 +1,8 @@
+Mon Feb  4 17:48:30 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xml.html doc/xmlmem.html: added a small section on returning
+	  memory to the kernel by compacting the heap provided by Wolfram Sang
+
 Fri Jan 25 20:01:42 CET 2007 Rob Richards <rrichards@ctindustries.net>
 
 	* include/win32config.h win32/Makefile.msvc: fix build under VS 2008.

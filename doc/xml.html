@@ -3359,6 +3359,7 @@ should be both simple and complete enough to allow you to build your own.</p>
   <li><a href="#cleanup">Cleaning up after parsing</a></li>
   <li><a href="#Debugging">Debugging routines</a></li>
   <li><a href="#General4">General memory requirements</a></li>
+  <li><a href="#Compacting">Returning memory to the kernel</a></li>
 </ol>
 
 <h3><a name="General3">General overview</a></h3>
@@ -3496,6 +3497,20 @@ of a number of things:</p>
     then the SAX interface should be used, but it has known restrictions.</li>
 </ul>
 
+<p></p>
+<h3><a name="Compacting">Returning memory to the kernel</a></h3>
+
+<p>You may encounter that your process using libxml2 does not have a
+reduced memory usage although you freed the trees. This is because
+libxml2 allocates memory in a number of small chunks. When freeing one
+of those chunks, the OS may decide that giving this little memory back
+to the kernel will cause too much overhead and delay the operation. As
+all chunks are this small, they get actually freed but not returned to
+the kernel. On systems using glibc, there is a function call
+"malloc_trim" from malloc.h which does this missing operation (note that
+it is allowed to fail). Thus, after freeing your tree you may simply try
+"malloc_trim(0);" to really get the memory back. If your OS does not
+provide malloc_trim, try searching for a similar function.</p>
 <p></p>
 
 <h2><a name="Encodings">Encodings support</a></h2>

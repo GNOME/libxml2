@@ -1,3 +1,9 @@
+Tue Feb  5 09:41:46 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* schemas.c: apply fix suggested by Ashwin correcting a cut-n-paste
+	  error about the SAX callback in cdataBlockSplit when streaming
+	  XSD validation 
+
 Tue Feb  5 09:36:46 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: applied a patch based on Petr Sumbera one to avoid a 

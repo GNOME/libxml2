@@ -28315,8 +28315,8 @@ cdataBlockSplit(void *ctx, const xmlChar *value, int len)
     if (ctxt == NULL)
         return;
     if ((ctxt->user_sax != NULL) &&
-        (ctxt->user_sax->ignorableWhitespace != NULL))
-	ctxt->user_sax->ignorableWhitespace(ctxt->user_data, value, len);
+        (ctxt->user_sax->cdataBlock != NULL))
+	ctxt->user_sax->cdataBlock(ctxt->user_data, value, len);
     if (ctxt->ctxt != NULL)
 	xmlSchemaSAXHandleCDataSection(ctxt->ctxt, value, len);
 }

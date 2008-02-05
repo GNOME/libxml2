@@ -1,3 +1,8 @@
+Tue Feb  5 09:36:46 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: applied a patch based on Petr Sumbera one to avoid a 
+	  problem with paths starting with //
+
 Mon Feb  4 17:48:30 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xml.html doc/xmlmem.html: added a small section on returning

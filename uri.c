@@ -2418,6 +2418,11 @@ xmlCanonicPath(const xmlChar *path)
 
     if (path == NULL)
 	return(NULL);
+
+    /* sanitize filename starting with // so it can be used as URI */
+    if ((path[0] == '/') && (path[1] == '/') && (path[2] != '/'))
+        path++;
+
     if ((uri = xmlParseURI((const char *) path)) != NULL) {
 	xmlFreeURI(uri);
 	return xmlStrdup(path);

@@ -1,3 +1,9 @@
+Wed Feb  6 12:10:08 HKT 2008 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c: added space for port number (when not 80) in
+	  xmlNanoHTTPMethodRedir, plus a few more comments. Should
+	  fix #514521.
+
 Tue Feb  5 09:41:46 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* schemas.c: apply fix suggested by Ashwin correcting a cut-n-paste

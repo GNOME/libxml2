@@ -1,3 +1,7 @@
+Fri Feb  8 11:57:03 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/examples.xml: regenerated, it was truncated.
+
 Fri Feb  8 11:47:18 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmodule.c: apply simple patch from Carlo Bramini to avoid

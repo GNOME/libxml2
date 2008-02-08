@@ -1,3 +1,10 @@
+Fri Feb  8 11:33:15 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: apply patch from Andrew Tosh to fix behaviour
+	  when '.' is used in a posCharGroup
+	* test/schemas/poschargrp0_0.* result/schemas/poschargrp0_0_0*:
+	  added the test to the regression suite
+
 Fri Feb  8 10:54:09 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: applied patch from Florent Guilian to remove an

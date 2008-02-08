@@ -1,3 +1,8 @@
+Fri Feb  8 11:47:18 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmodule.c: apply simple patch from Carlo Bramini to avoid
+	  compilation problems with Mingw32
+
 Fri Feb  8 11:33:15 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: apply patch from Andrew Tosh to fix behaviour

@@ -1,3 +1,14 @@
+Fri Feb  8 10:54:09 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c: applied patch from Florent Guilian to remove an
+	  useless mutex in the xmlDict structure.
+
+Wed Feb  6 17:00:20 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: another leak reported by Ashwin
+	* xinclude.c: fixed the behaviour when XIncluding a fragment
+	  of the current document, patch from Chris Ryan
+
 Wed Feb  6 12:10:08 HKT 2008 William Brack <wbrack@mmm.com.hk>
 
 	* nanohttp.c: added space for port number (when not 80) in

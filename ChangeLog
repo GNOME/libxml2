@@ -1,3 +1,8 @@
+Wed Feb 13 10:56:38 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: applied patch from Alfred Mickautsch to flush the
+	  output at the end of document.
+
 Fri Feb  8 11:57:03 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/examples.xml: regenerated, it was truncated.

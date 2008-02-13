@@ -626,9 +626,10 @@ xmlTextWriterStartDocument(xmlTextWriterPtr writer, const char *version,
  * xmlTextWriterEndDocument:
  * @writer:  the xmlTextWriterPtr
  *
- * End an xml document. All open elements are closed
+ * End an xml document. All open elements are closed, and
+ * the content is flushed to the output.
  *
- * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ * Returns the bytes written or -1 in case of error
  */
 int
 xmlTextWriterEndDocument(xmlTextWriterPtr writer)
@@ -702,6 +703,9 @@ xmlTextWriterEndDocument(xmlTextWriterPtr writer)
             return -1;
         sum += count;
     }
+
+    sum += xmlTextWriterFlush(writer);
+
     return sum;
 }
 

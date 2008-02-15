@@ -1,3 +1,8 @@
+Fri Feb 15 09:32:11 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlerror.h tree.c: patch from Julien Charbon
+	  to simplify the processing of xmlSetProp()
+
 Fri Feb 15 08:45:32 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* config.h.in configure.in encoding.c: patch from Roumen Petrov

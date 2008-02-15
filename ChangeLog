@@ -1,3 +1,8 @@
+Fri Feb 15 08:45:32 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* config.h.in configure.in encoding.c: patch from Roumen Petrov
+	  to detect if iconv() needs a const for the second parameter
+
 Fri Feb 15 08:41:31 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* macos/src/XMLTestPrefix2.h win32/Makefile.msvc: EOL cleanups

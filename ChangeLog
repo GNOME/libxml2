@@ -1,3 +1,8 @@
+Sat Feb 16 11:06:54 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fix output bug reported by Petr Pajas and analyzed by
+	  Bill
+
 Fri Feb 15 09:32:11 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlerror.h tree.c: patch from Julien Charbon

@@ -1,3 +1,8 @@
+Tue Feb 19 08:49:32 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am python/tests/Makefile.am: applied cleanup
+	  patches for cross compilation and MinGW from Roumen Petrov
+
 Sat Feb 16 11:06:54 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fix output bug reported by Petr Pajas and analyzed by

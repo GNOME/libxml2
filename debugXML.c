@@ -3244,6 +3244,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                             "Unknown command %s\n", command);
         }
         free(cmdline);          /* not xmlFree here ! */
+	cmdline = NULL;
     }
 #ifdef LIBXML_XPATH_ENABLED
     xmlXPathFreeContext(ctxt->pctxt);

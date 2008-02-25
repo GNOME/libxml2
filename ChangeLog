@@ -1,3 +1,8 @@
+Mon Feb 25 16:42:19 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* testModule.c: patch from Florent Guiliani to fix build on
+	  SCO OpenServer
+
 Thu Feb 21 22:46:08 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: made one of the changes suggested by Brian Krahmer

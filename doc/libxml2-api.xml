@@ -2593,6 +2593,7 @@
      <exports symbol='XML_CHECK_NO_PREV' type='enum'/>
      <exports symbol='XML_RNGP_VALUE_NO_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SIMPLECONTENT_CHILD' type='enum'/>
+     <exports symbol='XML_TREE_NOT_UTF8' type='enum'/>
      <exports symbol='XML_IO_EAFNOSUPPORT' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_1' type='enum'/>
      <exports symbol='XML_CATALOG_NOT_CATALOG' type='enum'/>
@@ -5614,6 +5615,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_TEXT_NODE' file='tree' value='3' type='xmlElementType'/>
     <enum name='XML_TREE_INVALID_DEC' file='xmlerror' value='1301' type='xmlParserErrors' info='1301'/>
     <enum name='XML_TREE_INVALID_HEX' file='xmlerror' value='1300' type='xmlParserErrors'/>
+    <enum name='XML_TREE_NOT_UTF8' file='xmlerror' value='1303' type='xmlParserErrors' info='1303'/>
     <enum name='XML_TREE_UNTERMINATED_ENTITY' file='xmlerror' value='1302' type='xmlParserErrors' info='1302'/>
     <enum name='XML_WAR_CATALOG_PI' file='xmlerror' value='93' type='xmlParserErrors' info='93'/>
     <enum name='XML_WAR_ENTITY_REDEFINED' file='xmlerror' value='107' type='xmlParserErrors' info='107'/>
@@ -14866,8 +14868,8 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlTextWriterEndDocument' file='xmlwriter' module='xmlwriter'>
       <cond>defined(LIBXML_WRITER_ENABLED)</cond>
-      <info>End an xml document. All open elements are closed</info>
-      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <info>End an xml document. All open elements are closed, and the content is flushed to the output.</info>
+      <return type='int' info='the bytes written or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
     </function>
     <function name='xmlTextWriterEndElement' file='xmlwriter' module='xmlwriter'>

@@ -209,8 +209,8 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>the <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextWriterEndDocument"/>xmlTextWriterEndDocument ()</h3><pre class="programlisting">int	xmlTextWriterEndDocument	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer)<br/>
-</pre><p>End an xml document. All open elements are closed</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>the <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error</td></tr></tbody></table></div></div>
+</pre><p>End an xml document. All open elements are closed, and the content is flushed to the output.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>the <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the bytes written or -1 in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextWriterEndElement"/>xmlTextWriterEndElement ()</h3><pre class="programlisting">int	xmlTextWriterEndElement		(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer)<br/>
 </pre><p>End the current xml element.</p>

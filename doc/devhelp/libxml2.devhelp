@@ -1373,6 +1373,7 @@
     <function name="XML_TEXT_NODE" link="libxml2-tree.html#XML_TEXT_NODE"/>
     <function name="XML_TREE_INVALID_DEC" link="libxml2-xmlerror.html#XML_TREE_INVALID_DEC"/>
     <function name="XML_TREE_INVALID_HEX" link="libxml2-xmlerror.html#XML_TREE_INVALID_HEX"/>
+    <function name="XML_TREE_NOT_UTF8" link="libxml2-xmlerror.html#XML_TREE_NOT_UTF8"/>
     <function name="XML_TREE_UNTERMINATED_ENTITY" link="libxml2-xmlerror.html#XML_TREE_UNTERMINATED_ENTITY"/>
     <function name="XML_WAR_CATALOG_PI" link="libxml2-xmlerror.html#XML_WAR_CATALOG_PI"/>
     <function name="XML_WAR_ENTITY_REDEFINED" link="libxml2-xmlerror.html#XML_WAR_ENTITY_REDEFINED"/>

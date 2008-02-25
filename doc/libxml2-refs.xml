@@ -1274,6 +1274,7 @@
     <reference name='XML_TEXT_NODE' href='html/libxml-tree.html#XML_TEXT_NODE'/>
     <reference name='XML_TREE_INVALID_DEC' href='html/libxml-xmlerror.html#XML_TREE_INVALID_DEC'/>
     <reference name='XML_TREE_INVALID_HEX' href='html/libxml-xmlerror.html#XML_TREE_INVALID_HEX'/>
+    <reference name='XML_TREE_NOT_UTF8' href='html/libxml-xmlerror.html#XML_TREE_NOT_UTF8'/>
     <reference name='XML_TREE_UNTERMINATED_ENTITY' href='html/libxml-xmlerror.html#XML_TREE_UNTERMINATED_ENTITY'/>
     <reference name='XML_WAR_CATALOG_PI' href='html/libxml-xmlerror.html#XML_WAR_CATALOG_PI'/>
     <reference name='XML_WAR_ENTITY_REDEFINED' href='html/libxml-xmlerror.html#XML_WAR_ENTITY_REDEFINED'/>
@@ -4785,6 +4786,7 @@
       <ref name='XML_TEXT_NODE'/>
       <ref name='XML_TREE_INVALID_DEC'/>
       <ref name='XML_TREE_INVALID_HEX'/>
+      <ref name='XML_TREE_NOT_UTF8'/>
       <ref name='XML_TREE_UNTERMINATED_ENTITY'/>
       <ref name='XML_WAR_CATALOG_PI'/>
       <ref name='XML_WAR_ENTITY_REDEFINED'/>
@@ -13019,6 +13021,7 @@
       <ref name='XML_SCHEMAV_WRONGELEM'/>
       <ref name='XML_TREE_INVALID_DEC'/>
       <ref name='XML_TREE_INVALID_HEX'/>
+      <ref name='XML_TREE_NOT_UTF8'/>
       <ref name='XML_TREE_UNTERMINATED_ENTITY'/>
       <ref name='XML_WAR_CATALOG_PI'/>
       <ref name='XML_WAR_ENTITY_REDEFINED'/>
@@ -22441,6 +22444,9 @@
         </word>
         <word name='flow'>
           <ref name='xmlScanName'/>
+        </word>
+        <word name='flushed'>
+          <ref name='xmlTextWriterEndDocument'/>
         </word>
         <word name='flushes'>
           <ref name='xmlOutputBufferClose'/>

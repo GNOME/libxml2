@@ -1,3 +1,10 @@
+Tue Mar  4 14:16:38 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: patch from Alex Khesin fixing CDATA output after
+	  a text node.
+	* parser.c: fixed the comment for xmlParserCleanup
+	* globals.c: fixed indentation
+
 Mon Feb 25 16:42:19 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* testModule.c: patch from Florent Guiliani to fix build on

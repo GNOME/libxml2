@@ -2614,6 +2614,7 @@ xmlTextWriterStartCDATA(xmlTextWriterPtr writer)
         if (p != 0) {
             switch (p->state) {
                 case XML_TEXTWRITER_NONE:
+		case XML_TEXTWRITER_TEXT:
                 case XML_TEXTWRITER_PI:
                 case XML_TEXTWRITER_PI_TEXT:
                     break;

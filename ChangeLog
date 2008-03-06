@@ -1,3 +1,11 @@
+Thu Mar  6 15:23:10 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: poblem with encoding detection for UTF-16 reported by
+	  Ashwin and found by Bill
+	* test/valid/dtds/utf16b.ent test/valid/dtds/utf16l.ent
+	  test/valid/UTF16Entity.xml result/valid/UTF16Entity.xml*: added
+	  the example to the regression tests
+
 Tue Mar  4 14:16:38 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: patch from Alex Khesin fixing CDATA output after

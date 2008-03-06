@@ -1768,9 +1768,10 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
      * echo '<?xml version="1.0" encoding="UCS4"?>' | wc -c => 38
      * 45 chars should be sufficient to reach the end of the encoding
      * declaration without going too far inside the document content.
+     * on UTF-16 this means 90bytes, on UCS4 this means 180
      */
-    if (toconv > 45)
-	toconv  = 45;
+    if (toconv > 180)
+	toconv  = 180;
     if (toconv * 2 >= written) {
         xmlBufferGrow(out, toconv);
 	written = out->size - out->use - 1;

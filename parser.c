@@ -10165,7 +10165,20 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->input->cur += tmp;
 			goto encoding_error;
 		    }
-		    if ((ctxt->sax != NULL) && (base > 0) &&
+		    if ((ctxt->sax != NULL) && (base == 0) &&
+		        (ctxt->sax->cdataBlock != NULL) &&
+		        (!ctxt->disableSAX)) {
+			/*
+			 * Special case to provide identical behaviour
+			 * between pull and push parsers on enpty CDATA
+			 * sections
+			 */
+			 if ((ctxt->input->cur - ctxt->input->base >= 9) &&
+			     (!strncmp((const char *)&ctxt->input->cur[-9],
+			               "<![CDATA[", 9)))
+			     ctxt->sax->cdataBlock(ctxt->userData,
+			                           BAD_CAST "", 0);
+		    } else if ((ctxt->sax != NULL) && (base > 0) &&
 			(!ctxt->disableSAX)) {
 			if (ctxt->sax->cdataBlock != NULL)
 			    ctxt->sax->cdataBlock(ctxt->userData,

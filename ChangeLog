@@ -1,3 +1,11 @@
+Fri Mar  7 17:45:27 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c parser.c: fix handling of empty CDATA nodes as 
+	  reported and discussed around #514181 and associated patches
+	* test/emptycdata.xml result/emptycdata.xml* 
+	  result/noent/emptycdata.xml: added a specific test in the
+	  regression suite.
+
 Thu Mar  6 15:23:10 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: poblem with encoding detection for UTF-16 reported by

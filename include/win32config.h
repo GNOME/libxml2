@@ -23,6 +23,10 @@
 
 #include <libxml/xmlversion.h>
 
+#ifndef ICONV_CONST
+#define ICONV_CONST const
+#endif
+
 #ifdef NEED_SOCKETS
 #include <wsockcompat.h>
 #endif

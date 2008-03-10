@@ -1,3 +1,8 @@
+Mon Mar 10 16:25:32 CET 2008 Rob Richards <rrichards@ctindustries.net>
+
+	* include/win32config.h: add ICONV_CONST define for win32 build
+	  to satisfy encoding.c change in rev 3693
+
 Fri Mar  7 17:45:27 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c parser.c: fix handling of empty CDATA nodes as 

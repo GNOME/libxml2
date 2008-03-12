@@ -1,3 +1,10 @@
+Wed Mar 12 10:22:01 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* python/types.c: fix a memory errro when using namespace nodes
+	  returned from XPath queries, should fix #521699
+	* python/tests/Makefile.am python/tests/xpathns.py: add a specific
+	  regression test for it
+
 Mon Mar 10 16:25:32 CET 2008 Rob Richards <rrichards@ctindustries.net>
 
 	* include/win32config.h: add ICONV_CONST define for win32 build

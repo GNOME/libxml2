@@ -45,7 +45,8 @@ PYTESTS=	\
     validDTD.py	\
     validSchemas.py \
     validRNG.py \
-    compareNodes.py
+    compareNodes.py \
+    xpathns.py
 
 XMLS=		\
     tst.xml	\

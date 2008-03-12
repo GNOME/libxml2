@@ -1,3 +1,8 @@
+Wed Mar 12 18:56:22 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: patch from Arnold Hendriks improving parsing of
+	  html within html bogus data, still not a complete fix though
+
 Wed Mar 12 10:22:01 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* python/types.c: fix a memory errro when using namespace nodes

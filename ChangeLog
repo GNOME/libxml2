@@ -1,3 +1,8 @@
+Thu Mar 13 08:17:58 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: found a nasty bug in regexp automata build,
+	  reported by Ashwin and Bjorn Reese
+
 Wed Mar 12 18:56:22 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: patch from Arnold Hendriks improving parsing of

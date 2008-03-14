@@ -61,7 +61,8 @@ typedef enum {
     XML_FROM_CHECK,	/* The error checking module */
     XML_FROM_WRITER,	/* The xmlwriter module */
     XML_FROM_MODULE,	/* The dynamically loaded module module*/
-    XML_FROM_I18N 	/* The module handling character conversion */
+    XML_FROM_I18N, 	/* The module handling character conversion */
+    XML_FROM_SCHEMATRONV	/* The Schematron validator module */
 } xmlErrorDomain;
 
 /**
@@ -774,6 +775,8 @@ typedef enum {
     XML_SCHEMAP_AU_PROPS_CORRECT, /* 3088 */
     XML_SCHEMAP_A_PROPS_CORRECT_3, /* 3089 */
     XML_SCHEMAP_COS_ALL_LIMITED, /* 3090 */
+    XML_SCHEMATRONV_ASSERT = 4000, /* 4000 */
+    XML_SCHEMATRONV_REPORT,
     XML_MODULE_OPEN = 4900, /* 4900 */
     XML_MODULE_CLOSE, /* 4901 */
     XML_CHECK_FOUND_ELEMENT = 5000,

@@ -1,3 +1,9 @@
+Fri Mar 14 13:44:29 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/schematron.h include/libxml/xmlerror.h schematron.c:
+	  applied patch from Tobias Minich to allow plugin schematron error
+	  reporting in the normal error system, should fix #513998
+
 Fri Mar 14 11:52:09 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xinclude.c: patch from Vasily Chekalkin fixes memory

@@ -12376,7 +12376,6 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
                         int recovery, void *data) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
-    char *directory = NULL;
 
     xmlInitParser();
 
@@ -12394,10 +12393,8 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
 	ctxt->_private = data;
     }
 
-    if ((ctxt->directory == NULL) && (directory == NULL))
-        directory = xmlParserGetDirectory(filename);
-    if ((ctxt->directory == NULL) && (directory != NULL))
-        ctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
+    if (ctxt->directory == NULL)
+        ctxt->directory = xmlParserGetDirectory(filename);
 
     ctxt->recovery = recovery;
 

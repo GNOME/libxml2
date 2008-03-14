@@ -419,7 +419,6 @@ static xmlDocPtr
 xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
     xmlDocPtr ret;
     xmlParserCtxtPtr pctxt;
-    char *directory = NULL;
     xmlParserInputPtr inputStream;
 
     xmlInitParser();
@@ -456,10 +455,8 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 
     inputPush(pctxt, inputStream);
 
-    if ((pctxt->directory == NULL) && (directory == NULL))
-        directory = xmlParserGetDirectory(URL);
-    if ((pctxt->directory == NULL) && (directory != NULL))
-        pctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
+    if (pctxt->directory == NULL)
+        pctxt->directory = xmlParserGetDirectory(URL);
 
     pctxt->loadsubset |= XML_DETECT_IDS;
 

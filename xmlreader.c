@@ -234,8 +234,6 @@ xmlTextReaderRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
     if (table == NULL) 
         return(-1);
 
-    if (attr == NULL)
-	return(-1);
     ID = xmlNodeListGetString(doc, attr->children, 1);
     if (ID == NULL)
 	return(-1);
@@ -3960,8 +3958,7 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 	return(NULL);
     if (reader->doc != NULL)
         return(reader->doc);
-    if ((reader == NULL) || (reader->ctxt == NULL) ||
-        (reader->ctxt->myDoc == NULL))
+    if ((reader->ctxt == NULL) || (reader->ctxt->myDoc == NULL))
 	return(NULL);
     
     reader->preserve = 1;

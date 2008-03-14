@@ -1,3 +1,7 @@
+Fri Mar 14 15:28:43 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: patch from Ashwin removing duplicate tests
+
 Fri Mar 14 13:44:29 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/schematron.h include/libxml/xmlerror.h schematron.c:

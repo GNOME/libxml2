@@ -1,3 +1,8 @@
+Tue Mar 18 09:23:05 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: check some malloc returns with Ashwin patch, add
+	  error messages and reindent the module.
+
 Fri Mar 14 15:28:43 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: patch from Ashwin removing duplicate tests

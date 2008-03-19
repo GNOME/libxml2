@@ -6,16 +6,20 @@ $! Arguments:
 $!
 $!   	"DEBUG"  - build everything in debug
 $!
-$! This procedure creates an object library XML_LIBDIR:LIBXML.OLB directory.  
+$! This procedure creates an object library XML_LIBDIR:LIBXML.OLB directory.
 $! After the library is built, you can link LIBXML routines into
-$! your code with the command  
+$! your code with the command
 $!
 $!	$ LINK your_modules,XML_LIBDIR:LIBXML.OLB/LIBRARY
-$! 
+$!
 $! Change History
 $! --------------
 $! Command file author : John A Fotheringham (jaf@jafsoft.com)
-$! Update history      : 13 October 2003	Craig Berry (craigberry@mac.com)
+$! Update history      : 19 March 2008	Tycho Hilhorst
+$!                       - added module schematron.c (prevent xmllint errors)
+$!                       - added /DEF and /INCLUDE options to cc_opts to tell
+$!                         config.h is available, and where to find it
+$!                     : 13 October 2003	Craig Berry (craigberry@mac.com)
 $!			 more new module additions
 $!                     : 25 April 2003		Craig Berry (craigberry@mac.com)
 $!			 added xmlreader.c and relaxng.c to source list
@@ -27,7 +31,7 @@ $!- configuration -------------------------------------------------------------
 $!
 $!- compile command.  If p1="nowarn" suppress the expected warning types
 $!
-$   cc_opts = "/NAMES=(SHORTENED)/FLOAT=IEEE/IEEE_MODE=DENORM_RESULTS"
+$   cc_opts = "/DEF=HAVE_CONFIG_H/NAMES=(SHORTENED)/FLOAT=IEEE/IEEE_MODE=DENORM_RESULTS/INCLUDE=xml_srcdir"
 $!
 $   if p1.eqs."DEBUG" .or. p2.eqs."DEBUG"
 $   then
@@ -50,6 +54,7 @@ $   sources = sources + " catalog.c globals.c threads.c c14n.c xmlstring.c"
 $   sources = sources + " xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c"
 $   sources = sources + " triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c"
 $   sources = sources + " xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c"
+$   sources = sources + " schematron.c"
 $!
 $!- list of main modules to compile and link.  Compare this list to the
 $!  definition of bin_PROGRAMS in MAKEFILE.IN
@@ -98,8 +103,8 @@ $   endif
 $!
 $   copy/log config.vms xml_srcdir:config.h
 $!
-$   if f$trnlnm("libxml").eqs."" 
-$   then 
+$   if f$trnlnm("libxml").eqs.""
+$   then
 $     globfile = f$search("[-...]globals.h")
 $     if globfile.eqs.""
 $     then
@@ -116,16 +121,16 @@ $!- set up error handling (such as it is) -------------------------------------
 $!
 $ exit_status = 1
 $ saved_default = f$environment("default")
-$ on error then goto ERROR_OUT 
-$ on control_y then goto ERROR_OUT 
+$ on error then goto ERROR_OUT
+$ on control_y then goto ERROR_OUT
 $!
-$!- move to the source directory and create any necessary subdirs and the 
+$!- move to the source directory and create any necessary subdirs and the
 $!  object library
 $!
 $ set default xml_srcdir
 $ if f$search("DEBUG.DIR").eqs."" then create/dir [.DEBUG]
-$ if f$search("XML_LIBDIR:LIBXML.OLB").eqs."" 
-$ then 
+$ if f$search("XML_LIBDIR:LIBXML.OLB").eqs.""
+$ then
 $   write sys$output "Creating new object library XML_LIBDIR:LIBXML.OLB"
 $   library/create XML_LIBDIR:LIBXML.OLB
 $ endif
@@ -151,8 +156,8 @@ $   next_source = f$element (S_no," ",sources)
 $   if next_source.nes."" .and. next_source.nes." "
 $   then
 $!
-$     on error then goto ERROR_OUT 
-$     on control_y then goto ERROR_OUT 
+$     on error then goto ERROR_OUT
+$     on control_y then goto ERROR_OUT
 $     call build 'next_source'
 $     s_no = s_no + 1
 $     goto source_loop
@@ -164,7 +169,7 @@ $!
 $! these programs are built as ordinary modules into XML_LIBDIR:LIBXML.OLB.  Here they
 $! are built a second time with /DEFINE=(STANDALONE) in which case a main()
 $! is also compiled into the module
-$ 
+$
 $ lib_command	= ""
 $ link_command	= "LINK"
 $!
@@ -199,8 +204,8 @@ $   next_prog = f$element (p_no," ",all_progs)
 $   if next_prog.nes."" .and. next_prog.nes." "
 $   then
 $!
-$     on error then goto ERROR_OUT 
-$     on control_y then goto ERROR_OUT 
+$     on error then goto ERROR_OUT
+$     on control_y then goto ERROR_OUT
 $     call build 'next_prog'.c
 $     p_no = p_no + 1
 $     goto prog_loop
@@ -210,9 +215,9 @@ $!
 $!- Th-th-th-th-th-that's all folks! ------------------------------------------
 $!
 $ goto exit_here ! move this line to avoid parts of this command file
-$ exit_here:	  
+$ exit_here:
 $!
-$ exit       
+$ exit
 $ goto exit_out
 $!
 $!
@@ -246,7 +251,7 @@ $!
 $   if lib_command.nes.""  then lib_command 'object_file'
 $!
 $!- link module if command defined
-$   if link_command.nes."" 
+$   if link_command.nes.""
 $   then
 $	opts = ""
 $	if debug then opts = "/DEBUG"

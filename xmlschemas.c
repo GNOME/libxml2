@@ -21808,9 +21808,9 @@ xmlSchemaValidateNotation(xmlSchemaValidCtxtPtr vctxt,
 		return (1);
 	    }
 	    if (xmlSchemaGetNotation(schema, localName, nsName) != NULL) {
-		if (valNeeded && (val != NULL)) {
-		    (*val) = xmlSchemaNewNOTATIONValue(BAD_CAST localName,
-			BAD_CAST xmlStrdup(nsName));
+		if ((valNeeded) && (val != NULL)) {
+		    (*val) = xmlSchemaNewNOTATIONValue(xmlStrdup(localName),
+						       xmlStrdup(nsName));
 		    if (*val == NULL)
 			ret = -1;
 		}

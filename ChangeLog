@@ -1,3 +1,8 @@
+Mon Mar 24 15:04:54 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fix an XML Schemas crash raised by Stefan Behnel
+	  when testing with W3C test suite
+
 Mon Mar 24 12:12:00 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: check some allocation with Ashwin patch

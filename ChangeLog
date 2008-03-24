@@ -1,3 +1,12 @@
+Mon Mar 24 21:42:33 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix a problem reported by Ashwin for system parameter
+	  entities referenced from entities in external subset, add a
+	  specific loading routine.
+	* test/valid/dtds/external.ent test/valid/dtds/external2.ent
+	  test/valid/t11.xml result/valid/t11.xml*: added the test to
+	  the regression suite
+
 Mon Mar 24 15:04:54 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fix an XML Schemas crash raised by Stefan Behnel

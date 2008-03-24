@@ -126,6 +126,9 @@ static xmlParserErrors
 xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 		      const xmlChar *string, void *user_data, xmlNodePtr *lst);
 
+static int
+xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
+
 /************************************************************************
  *									*
  * 		Some factorized error routines				*
@@ -2309,6 +2312,10 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	    if (ent != NULL) {
 		xmlChar *rep;
 
+                if (ent->content == NULL) {
+		    if (xmlLoadEntityContent(ctxt, ent) < 0) {
+		    }
+		}
 		ctxt->depth++;
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
 			                      0, 0, 0);
@@ -2456,7 +2463,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
  * xmlSplitQName:
  * @ctxt:  an XML parser context
  * @name:  an XML parser context
- * @prefix:  a xmlChar ** 
+ * @prefix:  a xmlChar **
  *
  * parse an UTF8 encoded XML qualified name string
  *
@@ -2507,7 +2514,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	 * for the processing speed.
 	 */
 	max = len * 2;
-	
+
 	buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	if (buffer == NULL) {
 	    xmlErrMemory(ctxt, NULL);
@@ -2533,7 +2540,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	}
 	buffer[len] = 0;
     }
-    
+
     if ((c == ':') && (*cur == 0)) {
         if (buffer != NULL)
 	    xmlFree(buffer);
@@ -6828,6 +6835,86 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 }
 
 /**
+ * xmlLoadEntityContent:
+ * @ctxt:  an XML parser context
+ * @entity: an unloaded system entity
+ *
+ * Load the original content of the given system entity from the
+ * ExternalID/SystemID given. This is to be used for Included in Literal
+ * http://www.w3.org/TR/REC-xml/#inliteral processing of entities references
+ *
+ * Returns 0 in case of success and -1 in case of failure
+ */
+static int
+xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
+    xmlParserInputPtr input;
+    xmlBufferPtr buf;
+    int l, c;
+    int count = 0;
+
+    if ((ctxt == NULL) || (entity == NULL) ||
+        ((entity->etype != XML_EXTERNAL_PARAMETER_ENTITY) &&
+	 (entity->etype != XML_EXTERNAL_GENERAL_PARSED_ENTITY)) ||
+	(entity->content != NULL)) {
+	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+	            "xmlLoadEntityContent parameter error");
+        return(-1);
+    }
+
+    if (xmlParserDebugEntities)
+	xmlGenericError(xmlGenericErrorContext,
+		"Reading %s entity content input\n", entity->name);
+
+    buf = xmlBufferCreate();
+    if (buf == NULL) {
+	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+	            "xmlLoadEntityContent parameter error");
+        return(-1);
+    }
+
+    input = xmlNewEntityInputStream(ctxt, entity);
+    if (input == NULL) {
+	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+	            "xmlLoadEntityContent input error");
+	xmlBufferFree(buf);
+        return(-1);
+    }
+
+    /*
+     * Push the entity as the current input, read char by char
+     * saving to the buffer until the end of the entity or an error
+     */
+    xmlPushInput(ctxt, input);
+    GROW;
+    c = CUR_CHAR(l);
+    while ((ctxt->input == input) && (ctxt->input->cur < ctxt->input->end) &&
+           (IS_CHAR(c))) {
+        xmlBufferAdd(buf, ctxt->input->cur, l);
+	if (count++ > 100) {
+	    count = 0;
+	    GROW;
+	}
+	NEXTL(l);
+	c = CUR_CHAR(l);
+    }
+
+    if ((ctxt->input == input) && (ctxt->input->cur >= ctxt->input->end)) {
+        xmlPopInput(ctxt);
+    } else if (!IS_CHAR(c)) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                          "xmlLoadEntityContent: invalid char value %d\n",
+	                  c);
+	xmlBufferFree(buf);
+	return(-1);
+    }
+    entity->content = buf->content;
+    buf->content = NULL;
+    xmlBufferFree(buf);
+
+    return(0);
+}
+
+/**
  * xmlParseStringPEReference:
  * @ctxt:  an XML parser context
  * @str:  a pointer to an index in the string
@@ -6838,7 +6925,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
  *
  * [ WFC: No Recursion ]
  * A parsed entity must not contain a recursive
- * reference to itself, either directly or indirectly. 
+ * reference to itself, either directly or indirectly.
  *
  * [ WFC: Entity Declared ]
  * In a document without any DTD, a document with only an internal DTD

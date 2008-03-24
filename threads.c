@@ -504,7 +504,9 @@ __xmlGlobalInitMutexUnlock(void)
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_unlock(&global_init_lock);
 #elif defined HAVE_WIN32_THREADS
-    LeaveCriticalSection(global_init_lock);
+    if (global_init_lock != NULL) {
+	LeaveCriticalSection(global_init_lock);
+    }
 #elif defined HAVE_BEOS_THREADS
     release_sem(global_init_lock);
 #endif
@@ -657,6 +659,8 @@ xmlGetGlobalState(void)
     if ((globalval = (xmlGlobalState *)
          pthread_getspecific(globalkey)) == NULL) {
         xmlGlobalState *tsd = xmlNewGlobalState();
+	if (tsd == NULL)
+	    return(NULL);
 
         pthread_setspecific(globalkey, tsd);
         return (tsd);
@@ -720,9 +724,10 @@ xmlGetGlobalState(void)
 
     xmlOnceInit();
 
-    if ((globalval = (xmlGlobalState *)
-         tls_get(globalkey)) == NULL) {
+    if ((globalval = (xmlGlobalState *) tls_get(globalkey)) == NULL) {
         xmlGlobalState *tsd = xmlNewGlobalState();
+	if (tsd == NULL)
+	    return (NULL);
 
         tls_set(globalkey, tsd);
         on_exit_thread(xmlGlobalStateCleanup, NULL);

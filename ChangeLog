@@ -1,3 +1,7 @@
+Mon Mar 24 12:12:00 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: check some allocation with Ashwin patch
+
 Wed Mar 19 16:41:52 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* vms/build_libxml.com: update from Tycho Hilhorst, should fix #523378

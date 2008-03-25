@@ -1,3 +1,8 @@
+Tue Mar 25 14:20:49 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: fix saving for file:///X:/ URI embedding Windows file paths
+	  should fix #524253 
+
 Mon Mar 24 21:42:33 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix a problem reported by Ashwin for system parameter

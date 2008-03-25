@@ -421,6 +421,30 @@ xmlSaveUri(xmlURIPtr uri) {
 	}
 	if (uri->path != NULL) {
 	    p = uri->path;
+	    /*
+	     * the colon in file:///d: should not be escaped or
+	     * Windows accesses fail later.
+	     */
+	    if ((uri->scheme != NULL) &&
+		(p[0] == '/') &&
+		(((p[1] >= 'a') && (p[1] <= 'z')) ||
+		 ((p[1] >= 'A') && (p[1] <= 'Z'))) &&
+		(p[2] == ':') &&
+	        (xmlStrEqual(uri->scheme, BAD_CAST "file"))) {
+		if (len + 3 >= max) {
+		    max *= 2;
+		    ret = (xmlChar *) xmlRealloc(ret,
+			    (max + 1) * sizeof(xmlChar));
+		    if (ret == NULL) {
+			xmlGenericError(xmlGenericErrorContext,
+				"xmlSaveUri: out of memory\n");
+			return(NULL);
+		    }
+		}
+		ret[len++] = *p++;
+		ret[len++] = *p++;
+		ret[len++] = *p++;
+	    }
 	    while (*p != 0) {
 		if (len + 3 >= max) {
 		    max *= 2;

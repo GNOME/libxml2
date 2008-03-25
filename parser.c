@@ -863,6 +863,103 @@ struct _xmlDefAttrs {
 };
 
 /**
+ * xmlAttrNormalizeSpace:
+ * @src: the source string
+ * @dst: the target string
+ *
+ * Normalize the space in non CDATA attribute values:
+ * If the attribute type is not CDATA, then the XML processor MUST further
+ * process the normalized attribute value by discarding any leading and
+ * trailing space (#x20) characters, and by replacing sequences of space
+ * (#x20) characters by a single space (#x20) character.
+ * Note that the size of dst need to be at least src, and if one doesn't need
+ * to preserve dst (and it doesn't come from a dictionary or read-only) then
+ * passing src as dst is just fine.
+ *
+ * Returns a pointer to the normalized value (dst) or NULL if no conversion
+ *         is needed.
+ */
+static xmlChar *
+xmlAttrNormalizeSpace(const xmlChar *src, xmlChar *dst)
+{
+    if ((src == NULL) || (dst == NULL))
+        return(NULL);
+
+    while (*src == 0x20) src++;
+    while (*src != 0) {
+	if (*src == 0x20) {
+	    while (*src == 0x20) src++;
+	    if (*src != 0)
+		*dst++ = 0x20;
+	} else {
+	    *dst++ = *src++;
+	}
+    }
+    *dst = 0;
+    if (dst == src)
+       return(NULL);
+    return(dst);
+}
+
+/**
+ * xmlAttrNormalizeSpace2:
+ * @src: the source string
+ *
+ * Normalize the space in non CDATA attribute values, a slightly more complex
+ * front end to avoid allocation problems when running on attribute values
+ * coming from the input.
+ *
+ * Returns a pointer to the normalized value (dst) or NULL if no conversion
+ *         is needed.
+ */
+static const xmlChar *
+xmlAttrNormalizeSpace2(xmlParserCtxtPtr ctxt, const xmlChar *src, int *len)
+{
+    int i;
+    int remove_head = 0;
+    int need_realloc = 0;
+    const xmlChar *cur;
+
+    if ((ctxt == NULL) || (src == NULL) || (len == NULL))
+        return(NULL);
+    i = *len;
+    if (i <= 0)
+        return(NULL);
+
+    cur = src;
+    while (*cur == 0x20) {
+        cur++;
+	remove_head++;
+    }
+    while (*cur != 0) {
+	if (*cur == 0x20) {
+	    cur++;
+	    if ((*cur == 0x20) || (*cur == 0)) {
+	        need_realloc = 1;
+		break;
+	    }
+	} else
+	    cur++;
+    }
+    if (need_realloc) {
+        xmlChar *ret;
+
+	ret = xmlStrndup(src + remove_head, i - remove_head + 1);
+	if (ret == NULL) {
+	    xmlErrMemory(ctxt, NULL);
+	    return(NULL);
+	}
+	xmlAttrNormalizeSpace(ret, ret);
+	*len = (int) strlen((const char *)ret);
+        return(ret);
+    } else if (remove_head) {
+        *len -= remove_head;
+	return(src + remove_head);
+    }
+    return(NULL);
+}
+
+/**
  * xmlAddDefAttrs:
  * @ctxt:  an XML parser context
  * @fullname:  the element fullname
@@ -5020,6 +5117,8 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 		    xmlFreeEnumeration(tree);
 	        break;
 	    }
+	    if ((type != XML_ATTRIBUTE_CDATA) && (defaultValue != NULL))
+	        xmlAttrNormalizeSpace(defaultValue, defaultValue);
 
 	    GROW;
             if (RAW != '>') {
@@ -7900,9 +7999,10 @@ need_complex:
 
 static const xmlChar *
 xmlParseAttribute2(xmlParserCtxtPtr ctxt,
-                   const xmlChar *pref, const xmlChar *elem,
-                   const xmlChar **prefix, xmlChar **value,
-		   int *len, int *alloc) {
+                   const xmlChar * pref, const xmlChar * elem,
+                   const xmlChar ** prefix, xmlChar ** value,
+                   int *len, int *alloc)
+{
     const xmlChar *name;
     xmlChar *val, *internal_val = NULL;
     int normalize = 0;
@@ -7911,9 +8011,9 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
     GROW;
     name = xmlParseQName(ctxt, prefix);
     if (name == NULL) {
-	xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
-	               "error parsing attribute name\n");
-        return(NULL);
+        xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
+                       "error parsing attribute name\n");
+        return (NULL);
     }
 
     /*
@@ -7923,8 +8023,9 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
         int type;
 
         type = (int) (long) xmlHashQLookup2(ctxt->attsSpecial,
-	                                    pref, elem, *prefix, name);
-	if (type != 0) normalize = 1;
+                                            pref, elem, *prefix, name);
+        if (type != 0)
+            normalize = 1;
     }
 
     /*
@@ -7933,54 +8034,71 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
     SKIP_BLANKS;
     if (RAW == '=') {
         NEXT;
-	SKIP_BLANKS;
-	val = xmlParseAttValueInternal(ctxt, len, alloc, normalize);
-	ctxt->instate = XML_PARSER_CONTENT;
+        SKIP_BLANKS;
+        val = xmlParseAttValueInternal(ctxt, len, alloc, normalize);
+	if (normalize) {
+	    /*
+	     * Sometimes a second normalisation pass for spaces is needed
+	     * but that only happens if charrefs or entities refernces
+	     * have been used in the attribute value, i.e. the attribute
+	     * value have been extracted in an allocated string already.
+	     */
+	    if (*alloc) {
+	        const xmlChar *val2;
+
+	        val2 = xmlAttrNormalizeSpace2(ctxt, val, len);
+		if (val2 != NULL) {
+		    xmlFree(val);
+		    val = val2;
+		}
+	    }
+	}
+        ctxt->instate = XML_PARSER_CONTENT;
     } else {
-	xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
-	       "Specification mandate value for attribute %s\n", name);
-	return(NULL);
+        xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
+                          "Specification mandate value for attribute %s\n",
+                          name);
+        return (NULL);
     }
 
-	if (*prefix == ctxt->str_xml) {
-		/*
-		 * Check that xml:lang conforms to the specification
-		 * No more registered as an error, just generate a warning now
-		 * since this was deprecated in XML second edition
-		 */
-		if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "lang"))) {
-			internal_val = xmlStrndup(val, *len);
-			if (!xmlCheckLanguageID(internal_val)) {
-				xmlWarningMsg(ctxt, XML_WAR_LANG_VALUE,
-						  "Malformed value for xml:lang : %s\n",
-					  internal_val, NULL);
-			}
-		}
+    if (*prefix == ctxt->str_xml) {
+        /*
+         * Check that xml:lang conforms to the specification
+         * No more registered as an error, just generate a warning now
+         * since this was deprecated in XML second edition
+         */
+        if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "lang"))) {
+            internal_val = xmlStrndup(val, *len);
+            if (!xmlCheckLanguageID(internal_val)) {
+                xmlWarningMsg(ctxt, XML_WAR_LANG_VALUE,
+                              "Malformed value for xml:lang : %s\n",
+                              internal_val, NULL);
+            }
+        }
 
-		/*
-		 * Check that xml:space conforms to the specification
-		 */
-		if (xmlStrEqual(name, BAD_CAST "space")) {
-			internal_val = xmlStrndup(val, *len);
-			if (xmlStrEqual(internal_val, BAD_CAST "default"))
-				*(ctxt->space) = 0;
-			else if (xmlStrEqual(internal_val, BAD_CAST "preserve"))
-				*(ctxt->space) = 1;
-			else {
-				xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
-"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
-                                 internal_val, NULL);
-			}
-		}
-		if (internal_val) {
-			xmlFree(internal_val);
-		}
-	}
+        /*
+         * Check that xml:space conforms to the specification
+         */
+        if (xmlStrEqual(name, BAD_CAST "space")) {
+            internal_val = xmlStrndup(val, *len);
+            if (xmlStrEqual(internal_val, BAD_CAST "default"))
+                *(ctxt->space) = 0;
+            else if (xmlStrEqual(internal_val, BAD_CAST "preserve"))
+                *(ctxt->space) = 1;
+            else {
+                xmlWarningMsg(ctxt, XML_WAR_SPACE_VALUE,
+                              "Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
+                              internal_val, NULL);
+            }
+        }
+        if (internal_val) {
+            xmlFree(internal_val);
+        }
+    }
 
     *value = val;
-    return(name);
+    return (name);
 }
-
 /**
  * xmlParseStartTag2:
  * @ctxt:  an XML parser context

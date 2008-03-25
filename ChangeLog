@@ -1,3 +1,14 @@
+Tue Mar 25 17:48:02 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix various attribute normalisation problems reported
+	  by Ashwin
+	* result/c14n/without-comments/example-4
+	  result/c14n/with-comments/example-4: this impacted the result of
+	  two c14n tests :-\
+	* test/att9 test/att10 test/att11 result//att9* result//att10*
+	  result//att11*: added 3 specific regression tests coming from the
+	  XML spec revision and from Ashwin
+
 Tue Mar 25 14:20:49 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: fix saving for file:///X:/ URI embedding Windows file paths

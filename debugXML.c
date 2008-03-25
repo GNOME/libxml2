@@ -320,7 +320,8 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
     }
     if (node->next == NULL) {
 	if ((node->parent != NULL) && (node->type != XML_ATTRIBUTE_NODE) &&
-	    (node->parent->last != node))
+	    (node->parent->last != node) &&
+	    (node->parent->type == XML_ELEMENT_NODE))
 	    xmlDebugErr(ctxt, XML_CHECK_NO_NEXT,
                     "Node has no next and not last of parent list\n");
     } else {

@@ -28108,8 +28108,8 @@ externalSubsetSplit(void *ctx, const xmlChar *name,
 {
     xmlSchemaSAXPlugPtr ctxt = (xmlSchemaSAXPlugPtr) ctx;
     if ((ctxt != NULL) && (ctxt->user_sax != NULL) &&
-        (ctxt->user_sax->internalSubset != NULL))
-	ctxt->user_sax->internalSubset(ctxt->user_data, name, ExternalID,
+        (ctxt->user_sax->externalSubset != NULL))
+	ctxt->user_sax->externalSubset(ctxt->user_data, name, ExternalID,
 	                               SystemID);
 }
 

@@ -1,3 +1,8 @@
+Wed Mar 26 14:38:31 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fix a problem in externalSubsetSplit with a patch
+	  from Ashwin
+
 Tue Mar 25 17:48:02 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix various attribute normalisation problems reported

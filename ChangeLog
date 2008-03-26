@@ -1,3 +1,8 @@
+Wed Mar 26 18:39:58 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: changes based on  Alex Khesin patch where xmlParseCharRef
+	  seems to not be checked correctly, fixes #520198
+
 Wed Mar 26 15:03:49 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: patch from Ashwin to avoid a problem of attribute

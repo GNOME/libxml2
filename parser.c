@@ -3255,7 +3255,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 			buf[len++] = '8';
 			buf[len++] = ';';
 		    }
-		} else {
+		} else if (val != 0) {
 		    if (len > buf_size - 10) {
 			growBuffer(buf);
 		    }
@@ -6098,6 +6098,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	int hex = NXT(2);
 	int value = xmlParseCharRef(ctxt);
 	
+	if (value == 0)
+	    return;
 	if (ctxt->charset != XML_CHAR_ENCODING_UTF8) {
 	    /*
 	     * So we are using non-UTF-8 buffers

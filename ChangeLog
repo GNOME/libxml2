@@ -1,3 +1,8 @@
+Wed Mar 26 15:03:49 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: patch from Ashwin to avoid a problem of attribute
+	  redefinition in the DTD. Remove a warning too.
+
 Wed Mar 26 14:38:31 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fix a problem in externalSubsetSplit with a patch

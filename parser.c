@@ -978,6 +978,14 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     const xmlChar *name;
     const xmlChar *prefix;
 
+    /*
+     * Allows to detect attribute redefinitions
+     */
+    if (ctxt->attsSpecial != NULL) {
+        if (xmlHashLookup2(ctxt->attsSpecial, fullname, fullattr) != NULL)
+	    return;
+    }
+
     if (ctxt->attsDefault == NULL) {
         ctxt->attsDefault = xmlHashCreateDict(10, ctxt->dict);
 	if (ctxt->attsDefault == NULL)
@@ -8049,7 +8057,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 	        val2 = xmlAttrNormalizeSpace2(ctxt, val, len);
 		if (val2 != NULL) {
 		    xmlFree(val);
-		    val = val2;
+		    val = (xmlChar *) val2;
 		}
 	    }
 	}

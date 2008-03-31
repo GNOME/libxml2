@@ -1,3 +1,9 @@
+Mon Mar 31 11:23:19 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: lot of out of memory handling fixes from Ashwin
+	* elfgcchack.h doc/elfgcchack.xsl: work around a problem with xmlDllMain
+	* include/libxml/threads.h: indenting cleanups
+
 Mon Mar 31 10:25:37 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c docs/*: trying to clarify even more the xmlCleanupParser()

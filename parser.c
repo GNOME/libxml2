@@ -1016,7 +1016,11 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
 	    goto mem_error;
 	defaults->nbAttrs = 0;
 	defaults->maxAttrs = 4;
-	xmlHashUpdateEntry2(ctxt->attsDefault, name, prefix, defaults, NULL);
+	if (xmlHashUpdateEntry2(ctxt->attsDefault, name, prefix,
+	                        defaults, NULL) < 0) {
+	    xmlFree(defaults);
+	    goto mem_error;
+	}
     } else if (defaults->nbAttrs >= defaults->maxAttrs) {
         xmlDefAttrsPtr temp;
 
@@ -1026,7 +1030,11 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
 	    goto mem_error;
 	defaults = temp;
 	defaults->maxAttrs *= 2;
-	xmlHashUpdateEntry2(ctxt->attsDefault, name, prefix, defaults, NULL);
+	if (xmlHashUpdateEntry2(ctxt->attsDefault, name, prefix,
+	                        defaults, NULL) < 0) {
+	    xmlFree(defaults);
+	    goto mem_error;
+	}
     }
 
     /*
@@ -2074,6 +2082,7 @@ xmlNewBlanksWrapperInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     buffer = xmlMallocAtomic(length);
     if (buffer == NULL) {
 	xmlErrMemory(ctxt, NULL);
+        xmlFree(input);
     	return(NULL);
     }
     buffer [0] = ' ';
@@ -2290,7 +2299,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     xmlChar *tmp;							\
     buffer##_size *= 2;							\
     tmp = (xmlChar *)							\
-    		xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
+		xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
     if (tmp == NULL) goto mem_error;					\
     buffer = tmp;							\
 }
@@ -2321,6 +2330,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     int buffer_size = 0;
 
     xmlChar *current = NULL;
+    xmlChar *rep = NULL;
     const xmlChar *last;
     xmlEntityPtr ent;
     int c,l;
@@ -2380,8 +2390,6 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			    "predefined entity has no content\n");
 		}
 	    } else if ((ent != NULL) && (ent->content != NULL)) {
-		xmlChar *rep;
-
 		ctxt->depth++;
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
 			                      0, 0, 0);
@@ -2396,6 +2404,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			}
 		    }
 		    xmlFree(rep);
+		    rep = NULL;
 		}
 	    } else if (ent != NULL) {
 		int i = xmlStrlen(ent->name);
@@ -2415,8 +2424,6 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			"String decoding PE Reference: %.30s\n", str);
 	    ent = xmlParseStringPEReference(ctxt, &str);
 	    if (ent != NULL) {
-		xmlChar *rep;
-
                 if (ent->content == NULL) {
 		    if (xmlLoadEntityContent(ctxt, ent) < 0) {
 		    }
@@ -2435,6 +2442,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			}
 		    }
 		    xmlFree(rep);
+		    rep = NULL;
 		}
 	    }
 	} else {
@@ -2454,6 +2462,10 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 
 mem_error:
     xmlErrMemory(ctxt, NULL);
+    if (rep != NULL)
+        xmlFree(rep);
+    if (buffer != NULL)
+        xmlFree(buffer);
     return(NULL);
 }
 
@@ -2634,7 +2646,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 		tmp = (xmlChar *) xmlRealloc(buffer,
 						max * sizeof(xmlChar));
 		if (tmp == NULL) {
-		    xmlFree(tmp);
+		    xmlFree(buffer);
 		    xmlErrMemory(ctxt, NULL);
 		    return(NULL);
 		}
@@ -2698,7 +2710,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	     * for the processing speed.
 	     */
 	    max = len * 2;
-	    
+
 	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 	        xmlErrMemory(ctxt, NULL);
@@ -2724,7 +2736,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	    }
 	    buffer[len] = 0;
 	}
-	
+
 	if (buffer == NULL)
 	    ret = xmlStrndup(buf, len);
 	else {
@@ -3197,6 +3209,7 @@ static xmlChar *
 xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
     xmlChar limit = 0;
     xmlChar *buf = NULL;
+    xmlChar *rep = NULL;
     int len = 0;
     int buf_size = 0;
     int c, l, in_space = 0;
@@ -3215,7 +3228,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 	xmlFatalErr(ctxt, XML_ERR_ATTRIBUTE_NOT_STARTED, NULL);
 	return(NULL);
     }
-    
+
     /*
      * allocate a translation buffer.
      */
@@ -3280,8 +3293,6 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		    }
 		} else if ((ent != NULL) && 
 		           (ctxt->replaceEntities != 0)) {
-		    xmlChar *rep;
-
 		    if (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) {
 			rep = xmlStringDecodeEntities(ctxt, ent->content,
 						      XML_SUBSTITUTE_REF,
@@ -3295,6 +3306,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 				}
 			    }
 			    xmlFree(rep);
+			    rep = NULL;
 			}
 		    } else {
 			if (len > buf_size - 10) {
@@ -3315,9 +3327,11 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 			(ent->content != NULL)) {
 			xmlChar *rep;
 			rep = xmlStringDecodeEntities(ctxt, ent->content,
-						      XML_SUBSTITUTE_REF, 0, 0, 0);
-			if (rep != NULL)
+						  XML_SUBSTITUTE_REF, 0, 0, 0);
+			if (rep != NULL) {
 			    xmlFree(rep);
+			    rep = NULL;
+			}
 		    }
 
 		    /*
@@ -3376,6 +3390,10 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 
 mem_error:
     xmlErrMemory(ctxt, NULL);
+    if (buf != NULL)
+        xmlFree(buf);
+    if (rep != NULL)
+        xmlFree(rep);
     return(NULL);
 }
 
@@ -4644,6 +4662,10 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    (xmlStrEqual(ctxt->myDoc->version, SAX_COMPAT_MODE))) {
 		    if (ctxt->myDoc == NULL) {
 			ctxt->myDoc = xmlNewDoc(SAX_COMPAT_MODE);
+			if (ctxt->myDoc == NULL) {
+			    xmlErrMemory(ctxt, "New Doc failed");
+			    return;
+			}
 		    }
 		    if (ctxt->myDoc->intSubset == NULL)
 			ctxt->myDoc->intSubset = xmlNewDtd(ctxt->myDoc,
@@ -4712,6 +4734,10 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			(xmlStrEqual(ctxt->myDoc->version, SAX_COMPAT_MODE)))) {
 			if (ctxt->myDoc == NULL) {
 			    ctxt->myDoc = xmlNewDoc(SAX_COMPAT_MODE);
+			    if (ctxt->myDoc == NULL) {
+			        xmlErrMemory(ctxt, "New Doc failed");
+				return;
+			    }
 			}
 
 			if (ctxt->myDoc->intSubset == NULL)
@@ -5216,6 +5242,8 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	    }
 	    NEXT;
 	    ret = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_PCDATA);
+	    if (ret == NULL)
+	        return(NULL);
 	    if (RAW == '*') {
 		ret->ocur = XML_ELEMENT_CONTENT_MULT;
 		NEXT;
@@ -5471,6 +5499,11 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 		return(NULL);
 	    }
 	    last = xmlNewDocElementContent(ctxt->myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT);
+	    if (last == NULL) {
+		if (ret != NULL)
+		    xmlFreeDocElementContent(ctxt->myDoc, ret);
+		return(NULL);
+	    }
 	    if (RAW == '?') {
 		last->ocur = XML_ELEMENT_CONTENT_OPT;
 		NEXT;
@@ -8980,6 +9013,7 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 	    size *= 2;
 	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (tmp == NULL) {
+	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
 		return(NULL);
 	    }
@@ -8996,11 +9030,11 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseVersionInfo:
  * @ctxt:  an XML parser context
- * 
+ *
  * parse the XML version.
  *
  * [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
- * 
+ *
  * [25] Eq ::= S? '=' S?
  *
  * Returns the version string, e.g. "1.0"

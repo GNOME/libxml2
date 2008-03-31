@@ -2877,16 +2877,6 @@ extern __typeof (xmlDictSize) xmlDictSize__internal_alias __attribute((visibilit
 #endif
 #endif
 
-#ifdef bottom_threads
-#undef xmlDllMain
-extern __typeof (xmlDllMain) xmlDllMain __attribute((alias("xmlDllMain__internal_alias")));
-#else
-#ifndef xmlDllMain
-extern __typeof (xmlDllMain) xmlDllMain__internal_alias __attribute((visibility("hidden")));
-#define xmlDllMain xmlDllMain__internal_alias
-#endif
-#endif
-
 #ifdef bottom_tree
 #undef xmlDocCopyNode
 extern __typeof (xmlDocCopyNode) xmlDocCopyNode __attribute((alias("xmlDocCopyNode__internal_alias")));

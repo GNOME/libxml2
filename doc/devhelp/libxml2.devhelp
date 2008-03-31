@@ -620,6 +620,7 @@
     <function name="XML_FROM_RELAXNGV" link="libxml2-xmlerror.html#XML_FROM_RELAXNGV"/>
     <function name="XML_FROM_SCHEMASP" link="libxml2-xmlerror.html#XML_FROM_SCHEMASP"/>
     <function name="XML_FROM_SCHEMASV" link="libxml2-xmlerror.html#XML_FROM_SCHEMASV"/>
+    <function name="XML_FROM_SCHEMATRONV" link="libxml2-xmlerror.html#XML_FROM_SCHEMATRONV"/>
     <function name="XML_FROM_TREE" link="libxml2-xmlerror.html#XML_FROM_TREE"/>
     <function name="XML_FROM_VALID" link="libxml2-xmlerror.html#XML_FROM_VALID"/>
     <function name="XML_FROM_WRITER" link="libxml2-xmlerror.html#XML_FROM_WRITER"/>
@@ -1226,7 +1227,10 @@
     <function name="XML_SCHEMAS_ULONG" link="libxml2-schemasInternals.html#XML_SCHEMAS_ULONG"/>
     <function name="XML_SCHEMAS_UNKNOWN" link="libxml2-schemasInternals.html#XML_SCHEMAS_UNKNOWN"/>
     <function name="XML_SCHEMAS_USHORT" link="libxml2-schemasInternals.html#XML_SCHEMAS_USHORT"/>
+    <function name="XML_SCHEMATRONV_ASSERT" link="libxml2-xmlerror.html#XML_SCHEMATRONV_ASSERT"/>
+    <function name="XML_SCHEMATRONV_REPORT" link="libxml2-xmlerror.html#XML_SCHEMATRONV_REPORT"/>
     <function name="XML_SCHEMATRON_OUT_BUFFER" link="libxml2-schematron.html#XML_SCHEMATRON_OUT_BUFFER"/>
+    <function name="XML_SCHEMATRON_OUT_ERROR" link="libxml2-schematron.html#XML_SCHEMATRON_OUT_ERROR"/>
     <function name="XML_SCHEMATRON_OUT_FILE" link="libxml2-schematron.html#XML_SCHEMATRON_OUT_FILE"/>
     <function name="XML_SCHEMATRON_OUT_IO" link="libxml2-schematron.html#XML_SCHEMATRON_OUT_IO"/>
     <function name="XML_SCHEMATRON_OUT_QUIET" link="libxml2-schematron.html#XML_SCHEMATRON_OUT_QUIET"/>
@@ -2854,6 +2858,7 @@
     <function name="xmlSchematronNewParserCtxt ()" link="libxml2-schematron.html#xmlSchematronNewParserCtxt"/>
     <function name="xmlSchematronNewValidCtxt ()" link="libxml2-schematron.html#xmlSchematronNewValidCtxt"/>
     <function name="xmlSchematronParse ()" link="libxml2-schematron.html#xmlSchematronParse"/>
+    <function name="xmlSchematronSetValidStructuredErrors ()" link="libxml2-schematron.html#xmlSchematronSetValidStructuredErrors"/>
     <function name="xmlSchematronValidateDoc ()" link="libxml2-schematron.html#xmlSchematronValidateDoc"/>
     <function name="xmlSearchNs ()" link="libxml2-tree.html#xmlSearchNs"/>
     <function name="xmlSearchNsByHref ()" link="libxml2-tree.html#xmlSearchNsByHref"/>

@@ -1,3 +1,8 @@
+Mon Mar 31 10:25:37 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c docs/*: trying to clarify even more the xmlCleanupParser()
+	  use and the memory documentation
+
 Wed Mar 26 18:39:58 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: changes based on  Alex Khesin patch where xmlParseCharRef

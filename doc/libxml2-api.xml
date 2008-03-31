@@ -1328,6 +1328,7 @@
      <description>interface to the XML Schematron validity checking. </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_SCHEMATRON_OUT_IO' type='enum'/>
+     <exports symbol='XML_SCHEMATRON_OUT_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMATRON_OUT_BUFFER' type='enum'/>
      <exports symbol='XML_SCHEMATRON_OUT_FILE' type='enum'/>
      <exports symbol='XML_SCHEMATRON_OUT_XML' type='enum'/>
@@ -1347,6 +1348,7 @@
      <exports symbol='xmlSchematronNewParserCtxt' type='function'/>
      <exports symbol='xmlSchematronValidityWarningFunc' type='function'/>
      <exports symbol='xmlSchematronFree' type='function'/>
+     <exports symbol='xmlSchematronSetValidStructuredErrors' type='function'/>
      <exports symbol='xmlSchematronFreeValidCtxt' type='function'/>
      <exports symbol='xmlSchematronParse' type='function'/>
      <exports symbol='xmlSchematronNewDocParserCtxt' type='function'/>
@@ -2011,6 +2013,7 @@
      <exports symbol='XML_IO_EFAULT' type='enum'/>
      <exports symbol='XML_HTML_STRUCURE_ERROR' type='enum'/>
      <exports symbol='XML_DTD_INVALID_DEFAULT' type='enum'/>
+     <exports symbol='XML_FROM_SCHEMATRONV' type='enum'/>
      <exports symbol='XML_DTD_EMPTY_NOTATION' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ELEM_NOT_ALLOWED' type='enum'/>
@@ -2512,6 +2515,7 @@
      <exports symbol='XML_RNGP_PAT_LIST_ATTR' type='enum'/>
      <exports symbol='XML_IO_EACCES' type='enum'/>
      <exports symbol='XML_ERR_NOTATION_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMATRONV_ASSERT' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAV_INVALIDATTR' type='enum'/>
      <exports symbol='XML_SCHEMAP_RECURSIVE' type='enum'/>
@@ -2619,6 +2623,7 @@
      <exports symbol='XML_ERR_NS_DECL_ERROR' type='enum'/>
      <exports symbol='XML_ERR_INTERNAL_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_3_1' type='enum'/>
+     <exports symbol='XML_SCHEMATRONV_REPORT' type='enum'/>
      <exports symbol='XML_ERR_ELEMCONTENT_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_FROM_NAMESPACE' type='enum'/>
      <exports symbol='XML_IO_EBUSY' type='enum'/>
@@ -4845,7 +4850,7 @@
     <enum name='XML_FROM_FTP' file='xmlerror' value='9' type='xmlErrorDomain' info='The FTP module'/>
     <enum name='XML_FROM_HTML' file='xmlerror' value='5' type='xmlErrorDomain' info='The HTML parser'/>
     <enum name='XML_FROM_HTTP' file='xmlerror' value='10' type='xmlErrorDomain' info='The HTTP module'/>
-    <enum name='XML_FROM_I18N' file='xmlerror' value='27' type='xmlErrorDomain' info=' The module handling character conversion'/>
+    <enum name='XML_FROM_I18N' file='xmlerror' value='27' type='xmlErrorDomain' info='The module handling character conversion'/>
     <enum name='XML_FROM_IO' file='xmlerror' value='8' type='xmlErrorDomain' info='The Input/Output stack'/>
     <enum name='XML_FROM_MEMORY' file='xmlerror' value='6' type='xmlErrorDomain' info='The memory allocator'/>
     <enum name='XML_FROM_MODULE' file='xmlerror' value='26' type='xmlErrorDomain' info='The dynamically loaded module modul'/>
@@ -4858,6 +4863,7 @@
     <enum name='XML_FROM_RELAXNGV' file='xmlerror' value='19' type='xmlErrorDomain' info='The Relax-NG validator module'/>
     <enum name='XML_FROM_SCHEMASP' file='xmlerror' value='16' type='xmlErrorDomain' info='The W3C XML Schemas parser module'/>
     <enum name='XML_FROM_SCHEMASV' file='xmlerror' value='17' type='xmlErrorDomain' info='The W3C XML Schemas validation module'/>
+    <enum name='XML_FROM_SCHEMATRONV' file='xmlerror' value='28' type='xmlErrorDomain' info=' The Schematron validator module'/>
     <enum name='XML_FROM_TREE' file='xmlerror' value='2' type='xmlErrorDomain' info='The tree module'/>
     <enum name='XML_FROM_VALID' file='xmlerror' value='23' type='xmlErrorDomain' info='The XML DTD validation with valid context'/>
     <enum name='XML_FROM_WRITER' file='xmlerror' value='25' type='xmlErrorDomain' info='The xmlwriter module'/>
@@ -5466,7 +5472,10 @@ crash if you try to modify the tree)'/>
     <enum name='XML_SCHEMAS_ULONG' file='schemasInternals' value='38' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAS_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAS_USHORT' file='schemasInternals' value='40' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMATRONV_ASSERT' file='xmlerror' value='4000' type='xmlParserErrors' info='4000'/>
+    <enum name='XML_SCHEMATRONV_REPORT' file='xmlerror' value='4001' type='xmlParserErrors'/>
     <enum name='XML_SCHEMATRON_OUT_BUFFER' file='schematron' value='512' type='xmlSchematronValidOptions' info='output to a buffer'/>
+    <enum name='XML_SCHEMATRON_OUT_ERROR' file='schematron' value='8' type='xmlSchematronValidOptions' info='output via xmlStructuredErrorFunc'/>
     <enum name='XML_SCHEMATRON_OUT_FILE' file='schematron' value='256' type='xmlSchematronValidOptions' info='output to a file descriptor'/>
     <enum name='XML_SCHEMATRON_OUT_IO' file='schematron' value='1024' type='xmlSchematronValidOptions' info=' output to I/O mechanism'/>
     <enum name='XML_SCHEMATRON_OUT_QUIET' file='schematron' value='1' type='xmlSchematronValidOptions' info='quiet no report'/>
@@ -8789,7 +8798,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupParser' file='parser' module='parser'>
-      <info>Cleanup function for the XML library. It tries to reclaim all parsing related global memory allocated for the library processing. It doesn&apos;t deallocate any document related memory. Calling this function should not prevent reusing the library but one should call xmlCleanupParser() only when the process has finished using the library or XML document built with it.</info>
+      <info>This function name is somewhat misleading. It does not clean up parser state, it cleans up memory allocated by the library itself. It is a cleanup function for the XML library. It tries to reclaim all related global memory allocated for the library processing. It doesn&apos;t deallocate any document related memory. One should call xmlCleanupParser() only when the process has finished using the library and all XML/HTML documents built with it. See also xmlInitParser() which has the opposite function of preparing the library for operations.</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupPredefinedEntities' file='entities' module='legacy'>
@@ -13816,6 +13825,14 @@ Could we use @subtypes for this?'/>
       <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</info>
       <return type='xmlSchematronPtr' info='the internal XML Schematron structure built from the resource or NULL in case of error'/>
       <arg name='ctxt' type='xmlSchematronParserCtxtPtr' info='a schema validation context'/>
+    </function>
+    <function name='xmlSchematronSetValidStructuredErrors' file='schematron' module='schematron'>
+      <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
+      <info>Set the structured error callback</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchematronValidCtxtPtr' info='a Schematron validation context'/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info='the structured error function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
     </function>
     <function name='xmlSchematronValidateDoc' file='schematron' module='schematron'>
       <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>

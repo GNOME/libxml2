@@ -3356,7 +3356,7 @@ should be both simple and complete enough to allow you to build your own.</p>
 <ol>
   <li><a href="#General3">General overview</a></li>
   <li><a href="#setting">Setting libxml2 set of memory routines</a></li>
-  <li><a href="#cleanup">Cleaning up after parsing</a></li>
+  <li><a href="#cleanup">Cleaning up after using the library</a></li>
   <li><a href="#Debugging">Debugging routines</a></li>
   <li><a href="#General4">General memory requirements</a></li>
   <li><a href="#Compacting">Returning memory to the kernel</a></li>
@@ -3392,27 +3392,29 @@ debugging, analysis or to implement a specific behaviour on memory management
 any other libxml2 routines (unless you are sure your allocations routines are
 compatibles).</p>
 
-<h3><a name="cleanup">Cleaning up after parsing</a></h3>
+<h3><a name="cleanup">Cleaning up after using the library</a></h3>
 
 <p>Libxml2 is not stateless, there is a few set of memory structures needing
 allocation before the parser is fully functional (some encoding structures
 for example). This also mean that once parsing is finished there is a tiny
 amount of memory (a few hundred bytes) which can be recollected if you don't
-reuse the parser immediately:</p>
+reuse the library or any document built with it:</p>
 <ul>
   <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlCleanupParser
-    ()</a> is a centralized routine to free the parsing states. Note that it
-    won't deallocate any produced tree if any (use the xmlFreeDoc() and
-    related routines for this).</li>
+    ()</a> is a centralized routine to free the library state and data. Note
+    that it won't deallocate any produced tree if any (use the xmlFreeDoc()
+    and related routines for this). This should be called only when the library
+    is not used anymore.</li>
   <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser
     ()</a> is the dual routine allowing to preallocate the parsing state
     which can be useful for example to avoid initialization reentrancy
     problems when using libxml2 in multithreaded applications</li>
 </ul>
 
-<p>Generally xmlCleanupParser() is safe, if needed the state will be rebuild
-at the next invocation of parser routines, but be careful of the consequences
-in multithreaded applications.</p>
+<p>Generally xmlCleanupParser() is safe assuming no parsing is ongoing and
+no document is still being used, if needed the state will be rebuild at the
+next invocation of parser routines (or by xmlInitParser()), but be careful
+of the consequences in multithreaded applications.</p>
 
 <h3><a name="Debugging">Debugging routines</a></h3>
 

@@ -57,6 +57,7 @@ typedef void <a href="#xmlSchematronValidityErrorFunc">xmlSchematronValidityErro
 <a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewParserCtxt">xmlSchematronNewParserCtxt</a>	(const char * URL);
 typedef void <a href="#xmlSchematronValidityWarningFunc">xmlSchematronValidityWarningFunc</a>	(void * ctx, <br/>						 const char * msg, <br/>						 ... ...);
 void	<a href="#xmlSchematronFree">xmlSchematronFree</a>		(<a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a> schema);
+void	<a href="#xmlSchematronSetValidStructuredErrors">xmlSchematronSetValidStructuredErrors</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
 void	<a href="#xmlSchematronFreeValidCtxt">xmlSchematronFreeValidCtxt</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt);
 <a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a>	<a href="#xmlSchematronParse">xmlSchematronParse</a>	(<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a> ctxt);
 <a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewDocParserCtxt">xmlSchematronNewDocParserCtxt</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
@@ -103,6 +104,7 @@ The content of this structure is not made public by the API.
     <a name="XML_SCHEMATRON_OUT_QUIET">XML_SCHEMATRON_OUT_QUIET</a> = 1 /* quiet no report */
     <a name="XML_SCHEMATRON_OUT_TEXT">XML_SCHEMATRON_OUT_TEXT</a> = 2 /* build a textual report */
     <a name="XML_SCHEMATRON_OUT_XML">XML_SCHEMATRON_OUT_XML</a> = 4 /* output SVRL */
+    <a name="XML_SCHEMATRON_OUT_ERROR">XML_SCHEMATRON_OUT_ERROR</a> = 8 /* output via xmlStructuredErrorFunc */
     <a name="XML_SCHEMATRON_OUT_FILE">XML_SCHEMATRON_OUT_FILE</a> = 256 /* output to a file descriptor */
     <a name="XML_SCHEMATRON_OUT_BUFFER">XML_SCHEMATRON_OUT_BUFFER</a> = 512 /* output to a buffer */
     <a name="XML_SCHEMATRON_OUT_IO">XML_SCHEMATRON_OUT_IO</a> = 1024 /*  output to I/O mechanism */
@@ -149,6 +151,10 @@ The content of this structure is not made public by the API.
         <div class="refsect2" lang="en"><h3><a name="xmlSchematronParse"/>xmlSchematronParse ()</h3><pre class="programlisting"><a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a>	xmlSchematronParse	(<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a> ctxt)<br/>
 </pre><p>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a schema validation context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the internal XML Schematron structure built from the resource or NULL in case of error</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlSchematronSetValidStructuredErrors"/>xmlSchematronSetValidStructuredErrors ()</h3><pre class="programlisting">void	xmlSchematronSetValidStructuredErrors	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx)<br/>
+</pre><p>Set the structured error callback</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>a Schematron validation context</td></tr><tr><td><span class="term"><i><tt>serror</tt></i>:</span></td><td>the structured error function</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the functions context</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchematronValidateDoc"/>xmlSchematronValidateDoc ()</h3><pre class="programlisting">int	xmlSchematronValidateDoc	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> instance)<br/>
 </pre><p>Validate a tree instance against the schematron</p>

@@ -429,6 +429,7 @@
     <reference name='XML_FROM_RELAXNGV' href='html/libxml-xmlerror.html#XML_FROM_RELAXNGV'/>
     <reference name='XML_FROM_SCHEMASP' href='html/libxml-xmlerror.html#XML_FROM_SCHEMASP'/>
     <reference name='XML_FROM_SCHEMASV' href='html/libxml-xmlerror.html#XML_FROM_SCHEMASV'/>
+    <reference name='XML_FROM_SCHEMATRONV' href='html/libxml-xmlerror.html#XML_FROM_SCHEMATRONV'/>
     <reference name='XML_FROM_TREE' href='html/libxml-xmlerror.html#XML_FROM_TREE'/>
     <reference name='XML_FROM_VALID' href='html/libxml-xmlerror.html#XML_FROM_VALID'/>
     <reference name='XML_FROM_WRITER' href='html/libxml-xmlerror.html#XML_FROM_WRITER'/>
@@ -1122,7 +1123,10 @@
     <reference name='XML_SCHEMAS_UNKNOWN' href='html/libxml-schemasInternals.html#XML_SCHEMAS_UNKNOWN'/>
     <reference name='XML_SCHEMAS_USHORT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_USHORT'/>
     <reference name='XML_SCHEMAS_WILDCARD_COMPLETE' href='html/libxml-schemasInternals.html#XML_SCHEMAS_WILDCARD_COMPLETE'/>
+    <reference name='XML_SCHEMATRONV_ASSERT' href='html/libxml-xmlerror.html#XML_SCHEMATRONV_ASSERT'/>
+    <reference name='XML_SCHEMATRONV_REPORT' href='html/libxml-xmlerror.html#XML_SCHEMATRONV_REPORT'/>
     <reference name='XML_SCHEMATRON_OUT_BUFFER' href='html/libxml-schematron.html#XML_SCHEMATRON_OUT_BUFFER'/>
+    <reference name='XML_SCHEMATRON_OUT_ERROR' href='html/libxml-schematron.html#XML_SCHEMATRON_OUT_ERROR'/>
     <reference name='XML_SCHEMATRON_OUT_FILE' href='html/libxml-schematron.html#XML_SCHEMATRON_OUT_FILE'/>
     <reference name='XML_SCHEMATRON_OUT_IO' href='html/libxml-schematron.html#XML_SCHEMATRON_OUT_IO'/>
     <reference name='XML_SCHEMATRON_OUT_QUIET' href='html/libxml-schematron.html#XML_SCHEMATRON_OUT_QUIET'/>
@@ -2774,6 +2778,7 @@
     <reference name='xmlSchematronParserCtxt' href='html/libxml-schematron.html#xmlSchematronParserCtxt'/>
     <reference name='xmlSchematronParserCtxtPtr' href='html/libxml-schematron.html#xmlSchematronParserCtxtPtr'/>
     <reference name='xmlSchematronPtr' href='html/libxml-schematron.html#xmlSchematronPtr'/>
+    <reference name='xmlSchematronSetValidStructuredErrors' href='html/libxml-schematron.html#xmlSchematronSetValidStructuredErrors'/>
     <reference name='xmlSchematronValidCtxt' href='html/libxml-schematron.html#xmlSchematronValidCtxt'/>
     <reference name='xmlSchematronValidCtxtPtr' href='html/libxml-schematron.html#xmlSchematronValidCtxtPtr'/>
     <reference name='xmlSchematronValidOptions' href='html/libxml-schematron.html#xmlSchematronValidOptions'/>
@@ -3941,6 +3946,7 @@
       <ref name='XML_FROM_RELAXNGV'/>
       <ref name='XML_FROM_SCHEMASP'/>
       <ref name='XML_FROM_SCHEMASV'/>
+      <ref name='XML_FROM_SCHEMATRONV'/>
       <ref name='XML_FROM_TREE'/>
       <ref name='XML_FROM_VALID'/>
       <ref name='XML_FROM_WRITER'/>
@@ -4634,7 +4640,10 @@
       <ref name='XML_SCHEMAS_UNKNOWN'/>
       <ref name='XML_SCHEMAS_USHORT'/>
       <ref name='XML_SCHEMAS_WILDCARD_COMPLETE'/>
+      <ref name='XML_SCHEMATRONV_ASSERT'/>
+      <ref name='XML_SCHEMATRONV_REPORT'/>
       <ref name='XML_SCHEMATRON_OUT_BUFFER'/>
+      <ref name='XML_SCHEMATRON_OUT_ERROR'/>
       <ref name='XML_SCHEMATRON_OUT_FILE'/>
       <ref name='XML_SCHEMATRON_OUT_IO'/>
       <ref name='XML_SCHEMATRON_OUT_QUIET'/>
@@ -6322,6 +6331,7 @@
       <ref name='xmlSchematronParserCtxt'/>
       <ref name='xmlSchematronParserCtxtPtr'/>
       <ref name='xmlSchematronPtr'/>
+      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidCtxt'/>
       <ref name='xmlSchematronValidCtxtPtr'/>
       <ref name='xmlSchematronValidOptions'/>
@@ -8728,6 +8738,7 @@
       <ref name='xmlSchemaValidateStream'/>
       <ref name='xmlSchemaValidityErrorFunc'/>
       <ref name='xmlSchemaValidityWarningFunc'/>
+      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidityErrorFunc'/>
       <ref name='xmlSchematronValidityWarningFunc'/>
       <ref name='xmlSetFeature'/>
@@ -10100,6 +10111,7 @@
     </type>
     <type name='xmlSchematronValidCtxtPtr'>
       <ref name='xmlSchematronFreeValidCtxt'/>
+      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidateDoc'/>
     </type>
     <type name='xmlShellCtxtPtr'>
@@ -10139,6 +10151,7 @@
       <ref name='xmlRelaxNGSetValidStructuredErrors'/>
       <ref name='xmlSchemaSetParserStructuredErrors'/>
       <ref name='xmlSchemaSetValidStructuredErrors'/>
+      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSetStructuredErrorFunc'/>
       <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlThrDefSetStructuredErrorFunc'/>
@@ -11743,6 +11756,7 @@
     </file>
     <file name='schematron'>
       <ref name='XML_SCHEMATRON_OUT_BUFFER'/>
+      <ref name='XML_SCHEMATRON_OUT_ERROR'/>
       <ref name='XML_SCHEMATRON_OUT_FILE'/>
       <ref name='XML_SCHEMATRON_OUT_IO'/>
       <ref name='XML_SCHEMATRON_OUT_QUIET'/>
@@ -11760,6 +11774,7 @@
       <ref name='xmlSchematronParserCtxt'/>
       <ref name='xmlSchematronParserCtxtPtr'/>
       <ref name='xmlSchematronPtr'/>
+      <ref name='xmlSchematronSetValidStructuredErrors'/>
       <ref name='xmlSchematronValidCtxt'/>
       <ref name='xmlSchematronValidCtxtPtr'/>
       <ref name='xmlSchematronValidOptions'/>
@@ -12534,6 +12549,7 @@
       <ref name='XML_FROM_RELAXNGV'/>
       <ref name='XML_FROM_SCHEMASP'/>
       <ref name='XML_FROM_SCHEMASV'/>
+      <ref name='XML_FROM_SCHEMATRONV'/>
       <ref name='XML_FROM_TREE'/>
       <ref name='XML_FROM_VALID'/>
       <ref name='XML_FROM_WRITER'/>
@@ -12940,6 +12956,8 @@
       <ref name='XML_SCHEMAP_WARN_SKIP_SCHEMA'/>
       <ref name='XML_SCHEMAP_WARN_UNLOCATED_SCHEMA'/>
       <ref name='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER'/>
+      <ref name='XML_SCHEMATRONV_ASSERT'/>
+      <ref name='XML_SCHEMATRONV_REPORT'/>
       <ref name='XML_SCHEMAV_ATTRINVALID'/>
       <ref name='XML_SCHEMAV_ATTRUNKNOWN'/>
       <ref name='XML_SCHEMAV_CONSTRUCT'/>
@@ -14593,7 +14611,6 @@
           <ref name='startElementSAXFunc'/>
         </word>
         <word name='Calling'>
-          <ref name='xmlCleanupParser'/>
           <ref name='xmlRegisterHTTPPostCallbacks'/>
         </word>
         <word name='Canonical'>
@@ -14710,7 +14727,6 @@
         </word>
         <word name='Cleanup'>
           <ref name='xmlCleanupCharEncodingHandlers'/>
-          <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupPredefinedEntities'/>
           <ref name='xmlCtxtResetLastError'/>
           <ref name='xmlNanoFTPCleanup'/>
@@ -16568,6 +16584,7 @@
         </word>
         <word name='One'>
           <ref name='INPUT_CHUNK'/>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlValidateElementDecl'/>
@@ -17342,6 +17359,7 @@
           <ref name='LIBXML_SCHEMATRON_ENABLED'/>
           <ref name='xmlSchematronFree'/>
           <ref name='xmlSchematronParse'/>
+          <ref name='xmlSchematronSetValidStructuredErrors'/>
         </word>
         <word name='Schematrons'>
           <ref name='xmlSchematronNewDocParserCtxt'/>
@@ -17392,6 +17410,7 @@
           <ref name='xmlNormalizeURIPath'/>
         </word>
         <word name='See'>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlLinkGetData'/>
           <ref name='xmlParseNotationDecl'/>
           <ref name='xmlTextReaderByteConsumed'/>
@@ -18821,6 +18840,7 @@
         <word name='also'>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlCheckHTTPInput'/>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlHasProp'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlNanoFTPProxy'/>
@@ -19860,15 +19880,20 @@
           <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
           <ref name='XML_SCHEMAS_TYPE_MARKED'/>
         </word>
+        <word name='clean'>
+          <ref name='xmlCleanupParser'/>
+        </word>
         <word name='cleanly'>
           <ref name='xmlCheckHTTPInput'/>
         </word>
         <word name='cleans'>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlNanoFTPScanProxy'/>
           <ref name='xmlNanoHTTPScanProxy'/>
         </word>
         <word name='cleanup'>
           <ref name='xmlCleanupGlobals'/>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlNanoFTPCleanup'/>
         </word>
@@ -21397,6 +21422,7 @@
           <ref name='xmlParseDocument'/>
         </word>
         <word name='documents'>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlIsID'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParserHandleReference'/>
@@ -22675,6 +22701,7 @@
           <ref name='xmlRelaxNGSetValidStructuredErrors'/>
           <ref name='xmlSchemaSetParserErrors'/>
           <ref name='xmlSchemaSetParserStructuredErrors'/>
+          <ref name='xmlSchematronSetValidStructuredErrors'/>
           <ref name='xmlShellCmd'/>
           <ref name='xmlSwitchEncoding'/>
           <ref name='xmlSwitchInputEncoding'/>
@@ -23829,6 +23856,7 @@
           <ref name='_xmlDoc'/>
           <ref name='xlinkIsLink'/>
           <ref name='xmlCharEncFirstLine'/>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlXPathNextSelf'/>
@@ -24679,6 +24707,7 @@
           <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='misleading'>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
         </word>
@@ -25503,6 +25532,7 @@
         </word>
         <word name='operations'>
           <ref name='_xmlDOMWrapCtxt'/>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlModuleClose'/>
           <ref name='xmlModuleFree'/>
           <ref name='xmlReconciliateNs'/>
@@ -25519,6 +25549,9 @@
           <ref name='xmlXPathMultValues'/>
           <ref name='xmlXPathSubValues'/>
           <ref name='xmlXPathValueFlipSign'/>
+        </word>
+        <word name='opposite'>
+          <ref name='xmlCleanupParser'/>
         </word>
         <word name='optimized'>
           <ref name='xmlXPathNodeSetAddUnique'/>
@@ -26119,6 +26152,9 @@
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlDOMWrapReconcileNamespaces'/>
         </word>
+        <word name='preparing'>
+          <ref name='xmlCleanupParser'/>
+        </word>
         <word name='preparsed'>
           <ref name='xmlReaderNewWalker'/>
           <ref name='xmlReaderWalker'/>
@@ -26166,7 +26202,6 @@
         </word>
         <word name='prevent'>
           <ref name='_xmlParserCtxt'/>
-          <ref name='xmlCleanupParser'/>
         </word>
         <word name='previous'>
           <ref name='_xmlAttr'/>
@@ -27298,7 +27333,6 @@
           <ref name='xmlReaderNewWalker'/>
         </word>
         <word name='reusing'>
-          <ref name='xmlCleanupParser'/>
           <ref name='xmlXIncludeProcessNode'/>
         </word>
         <word name='reverse'>
@@ -27957,6 +27991,7 @@
         </word>
         <word name='somewhat'>
           <ref name='xmlCheckLanguageID'/>
+          <ref name='xmlCleanupParser'/>
         </word>
         <word name='sorted'>
           <ref name='xmlParserAddNodeInfo'/>
@@ -28395,6 +28430,7 @@
         <word name='structured'>
           <ref name='xmlRelaxNGSetValidStructuredErrors'/>
           <ref name='xmlSchemaSetParserStructuredErrors'/>
+          <ref name='xmlSchematronSetValidStructuredErrors'/>
           <ref name='xmlSetStructuredErrorFunc'/>
         </word>
         <word name='structures'>
@@ -30342,6 +30378,7 @@
         </word>
         <word name='xmlInitParser'>
           <ref name='htmlInitAutoClose'/>
+          <ref name='xmlCleanupParser'/>
         </word>
         <word name='xmlInitThreads'>
           <ref name='xmlInitThreads'/>

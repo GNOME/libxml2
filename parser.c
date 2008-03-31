@@ -13176,12 +13176,15 @@ xmlInitParser(void) {
 /**
  * xmlCleanupParser:
  *
- * Cleanup function for the XML library. It tries to reclaim all
- * parsing related global memory allocated for the library processing.
- * It doesn't deallocate any document related memory. Calling this
- * function should not prevent reusing the library but one should
- * call xmlCleanupParser() only when the process has
- * finished using the library and all XML document built with it.
+ * This function name is somewhat misleading. It does not clean up
+ * parser state, it cleans up memory allocated by the library itself.
+ * It is a cleanup function for the XML library. It tries to reclaim all
+ * related global memory allocated for the library processing.
+ * It doesn't deallocate any document related memory. One should
+ * call xmlCleanupParser() only when the process has finished using
+ * the library and all XML/HTML documents built with it.
+ * See also xmlInitParser() which has the opposite function of preparing
+ * the library for operations.
  */
 
 void

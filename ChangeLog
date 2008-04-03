@@ -1,3 +1,8 @@
+Thu Apr  3 11:44:57 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: buffer may not be  large enough to convert to
+	  UCS4, patch from Christian Fruth , fixes #504015
+
 Thu Apr  3 11:02:02 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: apparently it's okay to forget the semicolumn after

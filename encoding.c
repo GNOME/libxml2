@@ -1992,8 +1992,8 @@ retry:
     toconv = in->use;
     if (toconv == 0)
 	return(0);
-    if (toconv * 2 >= written) {
-        xmlBufferGrow(out, toconv * 2);
+    if (toconv * 4 >= written) {
+        xmlBufferGrow(out, toconv * 4);
 	written = out->size - out->use - 1;
     }
     if (handler->output != NULL) {

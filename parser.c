@@ -6059,6 +6059,21 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
     xmlDetectSAX2(ctxt);
     GROW;
+
+    if ((ctxt->encoding == (const xmlChar *)XML_CHAR_ENCODING_NONE) &&
+        (ctxt->input->end - ctxt->input->cur >= 4)) {
+        xmlChar start[4];
+	xmlCharEncoding enc;
+
+	start[0] = RAW;
+	start[1] = NXT(1);
+	start[2] = NXT(2);
+	start[3] = NXT(3);
+	enc = xmlDetectCharEncoding(start, 4);
+	if (enc != XML_CHAR_ENCODING_NONE)
+	    xmlSwitchEncoding(ctxt, enc);
+    }
+
     if (CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) {
 	xmlParseTextDecl(ctxt);
 	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {

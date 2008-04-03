@@ -1,3 +1,9 @@
+Thu Apr  3 11:02:02 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: apparently it's okay to forget the semicolumn after
+	  entity refs in HTML, fixing char refs parsing accordingly based on
+	  T. Manske patch, this should fix #517653
+
 Thu Apr  3 09:30:29 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: avoid a scary realloc() loop should fix #520383

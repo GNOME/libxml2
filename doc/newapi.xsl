@@ -556,6 +556,7 @@
     </xsl:if>
   </xsl:template>
 
+<!--
   <xsl:template name="docomponents">
     <xsl:param name="mode"/>
     <xsl:apply-templates select="exports[@type='macro']" mode="$mode">
@@ -574,7 +575,8 @@
       <xsl:sort select='@symbol'/>
     </xsl:apply-templates>
   </xsl:template>
-  
+-->
+
   <xsl:template match="file">
     <xsl:variable name="name" select="@name"/>
     <xsl:variable name="title">Module <xsl:value-of select="$name"/> from <xsl:value-of select="/api/@name"/></xsl:variable>

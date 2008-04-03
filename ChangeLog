@@ -1,3 +1,9 @@
+Thu Apr  3 06:52:32 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xpath.h: small doc improvement for xmlXPathContext
+	  from Jack Jansen, fixes #524759
+	* doc/newapi.xsl doc/*: fixed a problem and regenerated the docs
+
 Tue Apr  1 09:59:22 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: two patches from Alvaro Herrera to avoid problem when

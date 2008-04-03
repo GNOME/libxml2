@@ -128,8 +128,5 @@ valgrind:
 	   echo '## Running the regression tests under Valgrind' ;	\
 	   $(MAKE) CHECKER='valgrind -q' MAKEFLAGS+=--silent pytests ; fi);
 
-clean:
-	rm -f $(PYSCRIPTS) test.log
+CLEANFILES=$(PYSCRIPTS) test.log
 
-distclean:
-	rm -rf $(PYSCRIPTS) test.log # TESTDIRS

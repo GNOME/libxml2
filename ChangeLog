@@ -1,3 +1,8 @@
+Thu Apr  3 07:40:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/Makefile.am: applied patch from Mike Hommey fixing distclean,
+	  fixes #520387
+
 Thu Apr  3 06:52:32 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xpath.h: small doc improvement for xmlXPathContext

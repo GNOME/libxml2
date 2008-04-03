@@ -1,3 +1,8 @@
+Thu Apr  3 13:16:01 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fix some problems with the *EatName functions when
+	  running out of memory raised by Eric Schrock , should fix #438208
+
 Thu Apr  3 12:41:29 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: horror around the definition of the lexical

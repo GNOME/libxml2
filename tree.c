@@ -1783,7 +1783,9 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
     xmlDocPtr doc = NULL;
 
     if ((node != NULL) && (node->type != XML_ELEMENT_NODE)) {
-        if (eatname == 1)
+        if ((eatname == 1) &&
+	    ((node->doc == NULL) ||
+	     (!(xmlDictOwns(node->doc->dict, name) == 0))))
             xmlFree((xmlChar *) name);
         return (NULL);
     }
@@ -1793,7 +1795,9 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-        if (eatname == 1)
+        if ((eatname == 1) &&
+	    ((node->doc == NULL) ||
+	     (!(xmlDictOwns(node->doc->dict, name) == 0))))
             xmlFree((xmlChar *) name);
         xmlTreeErrMemory("building attribute");
         return (NULL);
@@ -1933,7 +1937,7 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
 	return(NULL);
     }
 
-	return xmlNewPropInternal(node, ns, name, value, 1);
+    return xmlNewPropInternal(node, ns, name, value, 1);
 }
 
 /**
@@ -2216,8 +2220,8 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-	xmlFree(name);
 	xmlTreeErrMemory("building node");
+	/* we can't check here that name comes from the doc dictionnary */
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2296,6 +2300,11 @@ xmlNewDocNodeEatName(xmlDocPtr doc, xmlNsPtr ns,
 	    cur->children = xmlStringGetNodeList(doc, content);
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	}
+    } else {
+        /* if name don't come from the doc dictionnary free it here */
+        if ((name != NULL) && (doc != NULL) &&
+	    (!(xmlDictOwns(doc->dict, name))))
+	    xmlFree(name);
     }
     return(cur);
 }

@@ -1,3 +1,9 @@
+Thu Apr  3 12:41:29 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: horror around the definition of the lexical
+	  values for decimal and derived types, fixing to reject empty 
+	  values, should fix #503268
+
 Thu Apr  3 11:44:57 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: buffer may not be  large enough to convert to

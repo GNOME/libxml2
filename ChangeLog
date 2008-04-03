@@ -1,3 +1,7 @@
+Thu Apr  3 09:30:29 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: avoid a scary realloc() loop should fix #520383
+
 Thu Apr  3 08:22:52 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: more realloc problems pointed out by Ashwin

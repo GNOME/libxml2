@@ -1257,15 +1257,16 @@ nsPush(xmlParserCtxtPtr ctxt, const xmlChar *prefix, const xmlChar *URL)
             return (-1);
 	}
     } else if (ctxt->nsNr >= ctxt->nsMax) {
+        const xmlChar ** tmp;
         ctxt->nsMax *= 2;
-        ctxt->nsTab = (const xmlChar **)
-	              xmlRealloc((char *) ctxt->nsTab,
-				 ctxt->nsMax * sizeof(ctxt->nsTab[0]));
-        if (ctxt->nsTab == NULL) {
+        tmp = (const xmlChar **) xmlRealloc((char *) ctxt->nsTab,
+				    ctxt->nsMax * sizeof(ctxt->nsTab[0]));
+        if (tmp == NULL) {
             xmlErrMemory(ctxt, NULL);
 	    ctxt->nsMax /= 2;
             return (-1);
         }
+	ctxt->nsTab = tmp;
     }
     ctxt->nsTab[ctxt->nsNr++] = prefix;
     ctxt->nsTab[ctxt->nsNr++] = URL;
@@ -1586,13 +1587,16 @@ namePop(xmlParserCtxtPtr ctxt)
 
 static int spacePush(xmlParserCtxtPtr ctxt, int val) {
     if (ctxt->spaceNr >= ctxt->spaceMax) {
+        int *tmp;
+
 	ctxt->spaceMax *= 2;
-        ctxt->spaceTab = (int *) xmlRealloc(ctxt->spaceTab,
-	             ctxt->spaceMax * sizeof(ctxt->spaceTab[0]));
-        if (ctxt->spaceTab == NULL) {
+        tmp = (int *) xmlRealloc(ctxt->spaceTab,
+	                         ctxt->spaceMax * sizeof(ctxt->spaceTab[0]));
+        if (tmp == NULL) {
 	    xmlErrMemory(ctxt, NULL);
 	    return(0);
 	}
+	ctxt->spaceTab = tmp;
     }
     ctxt->spaceTab[ctxt->spaceNr] = val;
     ctxt->space = &ctxt->spaceTab[ctxt->spaceNr];
@@ -3325,7 +3329,6 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		     */
 		    if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 			(ent->content != NULL)) {
-			xmlChar *rep;
 			rep = xmlStringDecodeEntities(ctxt, ent->content,
 						  XML_SUBSTITUTE_REF, 0, 0, 0);
 			if (rep != NULL) {

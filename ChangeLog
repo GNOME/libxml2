@@ -1,3 +1,7 @@
+Thu Apr  3 08:22:52 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: more realloc problems pointed out by Ashwin
+
 Thu Apr  3 07:40:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/Makefile.am: applied patch from Mike Hommey fixing distclean,

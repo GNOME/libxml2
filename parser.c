@@ -12285,13 +12285,14 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
  *
  * Returns 0 if the chunk is well balanced, -1 in case of args problem and
  *    the parser error code otherwise
- *    
+ *
  * In case recover is set to 1, the nodelist will not be empty even if
- * the parsed chunk is not well balanced. 
+ * the parsed chunk is not well balanced, assuming the parsing succeeded to
+ * some extent.
  */
 int
 xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
-     void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst, 
+     void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst,
      int recover) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
@@ -12714,9 +12715,10 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
  * @cur:  a pointer to an array of xmlChar
  *
  * parse an XML in-memory document and build a tree.
- * In the case the document is not Well Formed, a tree is built anyway
- * 
- * Returns the resulting document tree
+ * In the case the document is not Well Formed, a attempt to build a
+ * tree is tried anyway
+ *
+ * Returns the resulting document tree or NULL in case of failure
  */
 
 xmlDocPtr
@@ -12746,9 +12748,10 @@ xmlParseFile(const char *filename) {
  *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
- * In the case the document is not Well Formed, a tree is built anyway
+ * In the case the document is not Well Formed, it attempts to build
+ * a tree anyway
  *
- * Returns the resulting document tree
+ * Returns the resulting document tree or NULL in case of failure
  */
 
 xmlDocPtr
@@ -12990,9 +12993,10 @@ xmlDocPtr xmlParseMemory(const char *buffer, int size) {
  * @size:  the size of the array
  *
  * parse an XML in-memory block and build a tree.
- * In the case the document is not Well Formed, a tree is built anyway
- * 
- * Returns the resulting document tree
+ * In the case the document is not Well Formed, an attempt to
+ * build a tree is tried anyway
+ *
+ * Returns the resulting document tree or NULL in case of error
  */
 
 xmlDocPtr xmlRecoverMemory(const char *buffer, int size) {

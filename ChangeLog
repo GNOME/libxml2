@@ -1,3 +1,7 @@
+Fri Apr  4 18:09:50 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: improve the *Recover* functions documentation
+
 Thu Apr  3 14:57:15 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: patch from Mark Rowe fixing BOM or encoding detection

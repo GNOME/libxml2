@@ -11735,7 +11735,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlParseBalancedChunkMemoryRecover' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
       <info>Parse a well-balanced chunk of an XML document called by the parser The allowed sequence for the Well Balanced Chunk is the one defined by the content production in the XML grammar:  [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</info>
-      <return type='int' info='0 if the chunk is well balanced, -1 in case of args problem and the parser error code otherwise  In case recover is set to 1, the nodelist will not be empty even if the parsed chunk is not well balanced.'/>
+      <return type='int' info='0 if the chunk is well balanced, -1 in case of args problem and the parser error code otherwise  In case recover is set to 1, the nodelist will not be empty even if the parsed chunk is not well balanced, assuming the parsing succeeded to some extent.'/>
       <arg name='doc' type='xmlDocPtr' info='the document the chunk pertains to'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler bloc (possibly NULL)'/>
       <arg name='user_data' type='void *' info='The user data returned on SAX callbacks (possibly NULL)'/>
@@ -12506,20 +12506,20 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlRecoverDoc' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a tree is built anyway</info>
-      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <info>parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a attempt to build a tree is tried anyway</info>
+      <return type='xmlDocPtr' info='the resulting document tree or NULL in case of failure'/>
       <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
     <function name='xmlRecoverFile' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. In the case the document is not Well Formed, a tree is built anyway</info>
-      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <info>parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. In the case the document is not Well Formed, it attempts to build a tree anyway</info>
+      <return type='xmlDocPtr' info='the resulting document tree or NULL in case of failure'/>
       <arg name='filename' type='const char *' info='the filename'/>
     </function>
     <function name='xmlRecoverMemory' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory block and build a tree. In the case the document is not Well Formed, a tree is built anyway</info>
-      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <info>parse an XML in-memory block and build a tree. In the case the document is not Well Formed, an attempt to build a tree is tried anyway</info>
+      <return type='xmlDocPtr' info='the resulting document tree or NULL in case of error'/>
       <arg name='buffer' type='const char *' info='an pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
     </function>
@@ -14681,7 +14681,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlTextReaderNodeType' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
-      <info>Get the node type of the current node Reference: http://dotgnu.org/pnetlib-doc/System/Xml/XmlNodeType.html</info>
+      <info>Get the node type of the current node Reference: http://www.gnu.org/software/dotgnu/pnetlib-doc/System/Xml/XmlNodeType.html</info>
       <return type='int' info='the xmlNodeType of the current node or -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>

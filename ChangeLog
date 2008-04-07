@@ -1,3 +1,8 @@
+Mon Apr  7 14:44:51 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fix a link to XmlNodeType doc reported by Martijn Arts
+	* docs/*: rebuilt
+
 Fri Apr  4 18:09:50 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: improve the *Recover* functions documentation

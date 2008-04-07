@@ -19099,6 +19099,7 @@
           <ref name='xmlBuildRelativeURI'/>
         </word>
         <word name='assuming'>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlSaveFileTo'/>
           <ref name='xmlSaveFormatFileTo'/>
         </word>
@@ -19117,6 +19118,13 @@
         </word>
         <word name='attached'>
           <ref name='xmlTextReaderGetRemainder'/>
+        </word>
+        <word name='attempt'>
+          <ref name='xmlRecoverDoc'/>
+          <ref name='xmlRecoverMemory'/>
+        </word>
+        <word name='attempts'>
+          <ref name='xmlRecoverFile'/>
         </word>
         <word name='attr'>
           <ref name='XML_SCHEMAS_ATTRGROUP_HAS_REFS'/>
@@ -19514,9 +19522,6 @@
           <ref name='xmlParseNotationType'/>
           <ref name='xmlParseURI'/>
           <ref name='xmlParseURIRaw'/>
-          <ref name='xmlRecoverDoc'/>
-          <ref name='xmlRecoverFile'/>
-          <ref name='xmlRecoverMemory'/>
           <ref name='xmlRelaxNGParse'/>
           <ref name='xmlSchemaGetBuiltInType'/>
           <ref name='xmlSchemaGetCanonValue'/>
@@ -22172,6 +22177,9 @@
         <word name='extensions'>
           <ref name='_xmlSAXHandler'/>
         </word>
+        <word name='extent'>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
+        </word>
         <word name='extract'>
           <ref name='XML_GET_CONTENT'/>
           <ref name='XML_GET_LINE'/>
@@ -22884,6 +22892,9 @@
         </word>
         <word name='globally'>
           <ref name='xmlSAXDefaultVersion'/>
+        </word>
+        <word name='gnu'>
+          <ref name='xmlTextReaderNodeType'/>
         </word>
         <word name='good'>
           <ref name='xmlTextReaderGetRemainder'/>
@@ -27958,6 +27969,7 @@
         </word>
         <word name='software'>
           <ref name='LIBXML_TEST_VERSION'/>
+          <ref name='xmlTextReaderNodeType'/>
         </word>
         <word name='solution'>
           <ref name='xmlNormalizeWindowsPath'/>
@@ -27973,6 +27985,7 @@
           <ref name='xmlHandleEntity'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParserInputDeallocate'/>
           <ref name='xmlRelaxNGValidatePushCData'/>
           <ref name='xmlSAX2Characters'/>
@@ -28584,6 +28597,7 @@
           <ref name='xmlHashUpdateEntry'/>
           <ref name='xmlHashUpdateEntry2'/>
           <ref name='xmlHashUpdateEntry3'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlSchemaValueAppend'/>
           <ref name='xmlXPathCompareValues'/>
           <ref name='xmlXPathContextSetCache'/>
@@ -29141,6 +29155,10 @@
         </word>
         <word name='treated'>
           <ref name='xmlParseAttValue'/>
+        </word>
+        <word name='tried'>
+          <ref name='xmlRecoverDoc'/>
+          <ref name='xmlRecoverMemory'/>
         </word>
         <word name='tries'>
           <ref name='INPUT_CHUNK'/>
@@ -30001,6 +30019,7 @@
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlSAX2GetSystemId'/>
           <ref name='xmlSchemaGetPredefinedType'/>
+          <ref name='xmlTextReaderNodeType'/>
         </word>
       </letter>
     </chunk>

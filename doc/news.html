@@ -12,7 +12,40 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.6.31: Jan 11 2008</h3><ul><li>Security fix: missing of checks in UTF-8 parsing</li>
+to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.6.32: Apr 8 2008</h3><ul><li>Documentation: returning heap memory to kernel (Wolfram Sang),
+      trying to clarify xmlCleanupParser() use, xmlXPathContext improvement
+      (Jack Jansen), improve the *Recover* functions documentation,
+      XmlNodeType doc link fix (Martijn Arts)</li>
+  <li>Bug fixes: internal subset memory leak (Ashwin), avoid problem with
+      paths starting with // (Petr Sumbera), streaming XSD validation callback
+      patches (Ashwin), fix redirection on port other than 80 (William Brack),
+      SAX2 leak (Ashwin), XInclude fragment of own document (Chris Ryan),
+      regexp bug with '.' (Andrew Tosh), flush the writer at the end of the
+      document (Alfred Mickautsch), output I/O bug fix (William Brack),
+      writer CDATA output after a text node (Alex Khesin), UTF-16 encoding
+      detection (William Brack), fix handling of empty CDATA nodes for Safari
+      team, python binding problem with namespace nodes, improve HTML parsing
+      (Arnold Hendriks), regexp automata build bug, memory leak fix (Vasily
+      Chekalkin), XSD test crash, weird system parameter entity parsing problem,
+      allow save to file:///X:/ windows paths, various attribute normalisation
+      problems, externalSubsetSplit fix (Ashwin), attribute redefinition in
+      the DTD (Ashwin), fix in char ref parsing check (Alex Khesin), many
+      out of memory handling fixes (Ashwin), XPath out of memory handling fixes
+      (Alvaro Herrera), various realloc problems (Ashwin), UCS4 encoding
+      conversion buffer size (Christian Fruth), problems with EatName
+      functions on memory errors, BOM handling in external parsed entities
+      (Mark Rowe)</li>
+  <li>Code cleanup: fix build under VS 2008 (David Wimsey), remove useless
+      mutex in xmlDict (Florent Guilian), Mingw32 compilation fix (Carlo
+      Bramini), Win and MacOS EOL cleanups (Florent Guiliani), iconv need
+      a const detection (Roumen Petrov), simplify xmlSetProp (Julien Charbon),
+      cross compilation fixes for Mingw (Roumen Petrov), SCO Openserver build
+      fix (Florent Guiliani), iconv uses const on Win32 (Rob Richards),
+      duplicate code removal (Ashwin), missing malloc test and error reports
+      (Ashwin), VMS makefile fix (Tycho Hilhorst)</li>
+  <li>improvements: better plug of schematron in the normal error handling
+      (Tobias Minich)</li>
+</ul><h3>2.6.31: Jan 11 2008</h3><ul><li>Security fix: missing of checks in UTF-8 parsing</li>
   <li>Bug fixes: regexp bug, dump attribute from XHTML document, fix
       xmlFree(NULL) to not crash in debug mode, Schematron parsing crash
       (Rob Richards), global lock free on Windows (Marc-Antoine Ruel),

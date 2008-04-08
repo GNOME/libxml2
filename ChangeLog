@@ -1,3 +1,9 @@
+Tue Apr  8 10:19:01 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fix a bug introduced when fixing #438208 and reported by
+	  Ashwin
+	* python/generator.py: fix an infinite loop bug
+
 Mon Apr  7 14:44:51 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fix a link to XmlNodeType doc reported by Martijn Arts

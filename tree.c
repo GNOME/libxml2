@@ -1785,7 +1785,7 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
     if ((node != NULL) && (node->type != XML_ELEMENT_NODE)) {
         if ((eatname == 1) &&
 	    ((node->doc == NULL) ||
-	     (!(xmlDictOwns(node->doc->dict, name) == 0))))
+	     (!(xmlDictOwns(node->doc->dict, name)))))
             xmlFree((xmlChar *) name);
         return (NULL);
     }
@@ -1797,7 +1797,7 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
     if (cur == NULL) {
         if ((eatname == 1) &&
 	    ((node->doc == NULL) ||
-	     (!(xmlDictOwns(node->doc->dict, name) == 0))))
+	     (!(xmlDictOwns(node->doc->dict, name)))))
             xmlFree((xmlChar *) name);
         xmlTreeErrMemory("building attribute");
         return (NULL);

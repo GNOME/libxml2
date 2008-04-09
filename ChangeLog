@@ -1,3 +1,8 @@
+Wed Apr  9 19:43:25 CEST 2008 Rob Richards <rrichards@ctindustries.net>
+
+	* include/wsockcompat.h: support older win32 platforms when building
+	  with newer versions of VS
+
 Tue Apr  8 16:56:07 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS doc/*: preparing release of 2.6.32

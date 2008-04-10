@@ -1,3 +1,8 @@
+Thu Apr 10 10:07:00 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: extend the cleanup rule
+	* xmlschemas.c: space cleanup
+
 Wed Apr  9 19:43:25 CEST 2008 Rob Richards <rrichards@ctindustries.net>
 
 	* include/wsockcompat.h: support older win32 platforms when building

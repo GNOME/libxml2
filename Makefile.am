@@ -1105,6 +1105,7 @@ ModuleTests: testModule$(EXEEXT) testdso.la
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)
+	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm {} \;)
 
 dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)

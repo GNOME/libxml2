@@ -28619,7 +28619,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
 	ret = ctxt->parserCtxt->errNo;
 	if (ret == 0)
 	    ret = 1;
-    }    
+    }
 
 done:
     ctxt->parserCtxt = NULL;

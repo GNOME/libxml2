@@ -143,8 +143,8 @@ The content of this structure is not made public by the API.
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRegExecCallbacks"/>Function type xmlRegExecCallbacks</h3><pre class="programlisting">void	xmlRegExecCallbacks		(<a href="libxml2-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * token, <br/>					 void * transdata, <br/>					 void * inputdata)<br/>
-</pre><p/>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>token</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>transdata</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>inputdata</tt></i>:</span></td><td/></tr></tbody></table></div></div>
+</pre><p>Callback function when doing a transition in the automata</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td>the regular expression context</td></tr><tr><td><span class="term"><i><tt>token</tt></i>:</span></td><td>the current token string</td></tr><tr><td><span class="term"><i><tt>transdata</tt></i>:</span></td><td>transition data</td></tr><tr><td><span class="term"><i><tt>inputdata</tt></i>:</span></td><td>input data</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="emptyExp">Variable </a>emptyExp</h3><pre class="programlisting"><a href="libxml2-xmlregexp.html#xmlExpNodePtr">xmlExpNodePtr</a> emptyExp;
 </pre><p/>

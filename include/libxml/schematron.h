@@ -38,11 +38,28 @@ typedef struct _xmlSchematron xmlSchematron;
 typedef xmlSchematron *xmlSchematronPtr;
 
 /**
- * A schemas validation context
+ * xmlSchematronValidityErrorFunc:
+ * @ctx: the validation context
+ * @msg: the message
+ * @...: extra arguments
+ *
+ * Signature of an error callback from a Schematron validation
  */
 typedef void (*xmlSchematronValidityErrorFunc) (void *ctx, const char *msg, ...);
+
+/**
+ * xmlSchematronValidityWarningFunc:
+ * @ctx: the validation context
+ * @msg: the message
+ * @...: extra arguments
+ *
+ * Signature of a warning callback from a Schematron validation
+ */
 typedef void (*xmlSchematronValidityWarningFunc) (void *ctx, const char *msg, ...);
 
+/**
+ * A schemas validation context
+ */
 typedef struct _xmlSchematronParserCtxt xmlSchematronParserCtxt;
 typedef xmlSchematronParserCtxt *xmlSchematronParserCtxtPtr;
 

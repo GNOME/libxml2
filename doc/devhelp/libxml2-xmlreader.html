@@ -211,8 +211,8 @@ The content of this structure is not made public by the API.
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderErrorFunc"/>Function type xmlTextReaderErrorFunc</h3><pre class="programlisting">void	xmlTextReaderErrorFunc		(void * arg, <br/>					 const char * msg, <br/>					 <a href="libxml2-xmlreader.html#xmlParserSeverities">xmlParserSeverities</a> severity, <br/>					 <a href="libxml2-xmlreader.html#xmlTextReaderLocatorPtr">xmlTextReaderLocatorPtr</a> locator)<br/>
-</pre><p/>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>arg</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>severity</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>locator</tt></i>:</span></td><td/></tr></tbody></table></div></div>
+</pre><p>Signature of an error callback from a reader parser</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>arg</tt></i>:</span></td><td>the user argument</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>severity</tt></i>:</span></td><td>the severity of the error</td></tr><tr><td><span class="term"><i><tt>locator</tt></i>:</span></td><td>a locator indicating where the error occured</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFreeTextReader"/>xmlFreeTextReader ()</h3><pre class="programlisting">void	xmlFreeTextReader		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>Deallocate all the resources associated to the reader</p>

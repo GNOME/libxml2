@@ -1,5 +1,5 @@
 /**
- * threads.c: set of generic threading related routines 
+ * threads.c: set of generic threading related routines
  *
  * See Copyright for the status of this software.
  *

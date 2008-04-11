@@ -2835,6 +2835,7 @@
     <function name="xmlSchemaValPredefTypeNode ()" link="libxml2-xmlschemastypes.html#xmlSchemaValPredefTypeNode"/>
     <function name="xmlSchemaValPredefTypeNodeNoNorm ()" link="libxml2-xmlschemastypes.html#xmlSchemaValPredefTypeNodeNoNorm"/>
     <function name="xmlSchemaValidCtxtGetOptions ()" link="libxml2-xmlschemas.html#xmlSchemaValidCtxtGetOptions"/>
+    <function name="xmlSchemaValidCtxtGetParserCtxt ()" link="libxml2-xmlschemas.html#xmlSchemaValidCtxtGetParserCtxt"/>
     <function name="xmlSchemaValidateDoc ()" link="libxml2-xmlschemas.html#xmlSchemaValidateDoc"/>
     <function name="xmlSchemaValidateFacet ()" link="libxml2-xmlschemastypes.html#xmlSchemaValidateFacet"/>
     <function name="xmlSchemaValidateFacetWhtsp ()" link="libxml2-xmlschemastypes.html#xmlSchemaValidateFacetWhtsp"/>

@@ -169,12 +169,12 @@ The content of this structure is not made public by the API.
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidityErrorFunc"/>Function type xmlRelaxNGValidityErrorFunc</h3><pre class="programlisting">void	xmlRelaxNGValidityErrorFunc	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...)<br/>
-</pre><p/>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td/></tr></tbody></table></div></div>
+</pre><p>Signature of an error callback from a Relax-NG validation</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra arguments</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidityWarningFunc"/>Function type xmlRelaxNGValidityWarningFunc</h3><pre class="programlisting">void	xmlRelaxNGValidityWarningFunc	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...)<br/>
-</pre><p/>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td/></tr></tbody></table></div></div>
+</pre><p>Signature of a warning callback from a Relax-NG validation</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra arguments</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRelaxNGCleanupTypes"/>xmlRelaxNGCleanupTypes ()</h3><pre class="programlisting">void	xmlRelaxNGCleanupTypes		(void)<br/>
 </pre><p>Cleanup the default Schemas type library associated to RelaxNG</p>

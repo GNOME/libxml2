@@ -25,11 +25,28 @@ typedef xmlRelaxNG *xmlRelaxNGPtr;
 
 
 /**
- * A schemas validation context
+ * xmlRelaxNGValidityErrorFunc:
+ * @ctx: the validation context
+ * @msg: the message
+ * @...: extra arguments
+ *
+ * Signature of an error callback from a Relax-NG validation
  */
 typedef void (XMLCDECL *xmlRelaxNGValidityErrorFunc) (void *ctx, const char *msg, ...);
+
+/**
+ * xmlRelaxNGValidityWarningFunc:
+ * @ctx: the validation context
+ * @msg: the message
+ * @...: extra arguments
+ *
+ * Signature of a warning callback from a Relax-NG validation
+ */
 typedef void (XMLCDECL *xmlRelaxNGValidityWarningFunc) (void *ctx, const char *msg, ...);
 
+/**
+ * A schemas validation context
+ */
 typedef struct _xmlRelaxNGParserCtxt xmlRelaxNGParserCtxt;
 typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;
 

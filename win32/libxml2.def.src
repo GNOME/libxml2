@@ -1732,6 +1732,9 @@ xmlSchemaValPredefTypeNodeNoNorm
 xmlSchemaValidCtxtGetOptions
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidCtxtGetParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateDoc
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED

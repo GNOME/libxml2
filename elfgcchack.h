@@ -9843,6 +9843,18 @@ extern __typeof (xmlSchemaValidCtxtGetOptions) xmlSchemaValidCtxtGetOptions__int
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef bottom_xmlschemas
+#undef xmlSchemaValidCtxtGetParserCtxt
+extern __typeof (xmlSchemaValidCtxtGetParserCtxt) xmlSchemaValidCtxtGetParserCtxt __attribute((alias("xmlSchemaValidCtxtGetParserCtxt__internal_alias")));
+#else
+#ifndef xmlSchemaValidCtxtGetParserCtxt
+extern __typeof (xmlSchemaValidCtxtGetParserCtxt) xmlSchemaValidCtxtGetParserCtxt__internal_alias __attribute((visibility("hidden")));
+#define xmlSchemaValidCtxtGetParserCtxt xmlSchemaValidCtxtGetParserCtxt__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef bottom_xmlschemas
 #undef xmlSchemaValidateDoc
 extern __typeof (xmlSchemaValidateDoc) xmlSchemaValidateDoc __attribute((alias("xmlSchemaValidateDoc__internal_alias")));
 #else

@@ -356,7 +356,7 @@ class index:
 	self.analyze_dict("structs", self.structs)
 	self.analyze_dict("typedefs", self.typedefs)
 	self.analyze_dict("macros", self.macros)
-         
+
 class CLexer:
     """A lexer for the C language, tokenize the input by reading and
        analyzing it line by line"""
@@ -388,7 +388,7 @@ class CLexer:
 		else:
 		    line = line + n
         return line
-	 
+
     def getlineno(self):
         return self.lineno
 
@@ -557,12 +557,12 @@ class CLexer:
 		    else:
 		        break
 		self.tokens.append(('name', line[s:i]))
-             
+
 	tok = self.tokens[0]
 	self.tokens = self.tokens[1:]
 	self.last = tok
 	return tok
-      
+
 class CParser:
     """The C module parser"""
     def __init__(self, filename, idx = None):
@@ -717,7 +717,7 @@ class CParser:
 	    l = string.strip(l)
 	    desc = desc + " " + l
 	    del lines[0]
-		     
+
 	desc = string.strip(desc)
 
 	if quiet == 0:
@@ -787,7 +787,7 @@ class CParser:
 	    l = string.strip(l)
 	    desc = desc + " " + l
 	    del lines[0]
-		     
+
 	desc = string.strip(desc)
 
 	if quiet == 0:
@@ -888,7 +888,7 @@ class CParser:
 	    else:
 	        desc = desc + " " + l
 		del lines[0]
-		     
+
 	retdesc = string.strip(retdesc)
 	desc = string.strip(desc)
 
@@ -898,14 +898,14 @@ class CParser:
 	     #
 	    i = 0
 	    while i < nbargs:
-	        if args[i][2] == None and args[i][0] != "void" and args[i][1] != None:
+	        if args[i][2] == None and args[i][0] != "void" and \
+		   ((args[i][1] != None) or (args[i][1] == '')):
 		    self.warning("Function comment for %s lacks description of arg %s" % (name, args[i][1]))
 		i = i + 1
 	    if retdesc == "" and ret[0] != "void":
 		self.warning("Function comment for %s lacks description of return value" % (name))
 	    if desc == "":
 	        self.warning("Function comment for %s lacks description of the function" % (name))
-
 
 	return(((ret[0], retdesc), args, desc))
 
@@ -966,7 +966,7 @@ class CParser:
 	    try:
 	        self.defines.append(apstr)
 		if string.find(apstr, 'ENABLED') != -1:
-		    self.conditionals.append("defined(%s)" % apstr)    
+		    self.conditionals.append("defined(%s)" % apstr)
 	    except:
 	        pass
 	elif name == "#ifndef":
@@ -974,7 +974,7 @@ class CParser:
 	    try:
 	        self.defines.append(apstr)
 		if string.find(apstr, 'ENABLED') != -1:
-		    self.conditionals.append("!defined(%s)" % apstr)    
+		    self.conditionals.append("!defined(%s)" % apstr)
 	    except:
 	        pass
 	elif name == "#if":
@@ -1096,7 +1096,7 @@ class CParser:
 		return token
 	token = self.token()
 	return token
-	     
+
      #
      # Parse a C code block, used for functions it parse till
      # the balancing } included
@@ -1131,7 +1131,7 @@ class CParser:
 		    elif oldtok[0] == "name" and oldtok[1][0:7] == "LIBXML_":
 			self.index_add_ref(oldtok[1], self.filename,
 					    0, "typedef")
-			 
+
 		else:
 		    token = self.token()
 	return token
@@ -1264,7 +1264,7 @@ class CParser:
 	if token == None:
 	    return token
 
-	while token[0] == "name" and ( 
+	while token[0] == "name" and (
 	      token[1] == "const" or \
 	      token[1] == "unsigned" or \
 	      token[1] == "signed"):
@@ -1284,7 +1284,7 @@ class CParser:
 		    self.type = tmp[1]
 		else:
 		    self.type = self.type + " " + tmp[1]
-	     
+
         elif token[0] == "name" and token[1] == "struct":
 	    if self.type == "":
 	        self.type = token[1]
@@ -1574,7 +1574,7 @@ class CParser:
 			token = self.token()
 		else:
 		    break
-		    
+
 	return token
 
     def parse(self):
@@ -1590,7 +1590,7 @@ class CParser:
 		return
 	self.parseTopComment(self.top_comment)
         return self.index
-	         
+
 
 class docBuilder:
     """A documentation builder"""
@@ -1687,7 +1687,7 @@ class docBuilder:
 		    self.headers[file] = None;
 	self.scanHeaders()
 	self.scanModules()
-         
+
     def modulename_file(self, file):
         module = os.path.basename(file)
 	if module[-2:] == '.h':
@@ -1781,7 +1781,7 @@ class docBuilder:
 	else:
 	    output.write("    <variable name='%s' file='%s'/>\n" % (
 	            name, self.modulename_file(id.header)))
-	              
+
     def serialize_function(self, output, name):
         id = self.idx.functions[name]
 	if name == debugsym:
@@ -1802,6 +1802,11 @@ class docBuilder:
 	    output.write("      <cond>%s</cond>\n"% (apstr));
 	try:
 	    (ret, params, desc) = id.info
+	    if (desc == None or desc == '') and \
+	       name[0:9] != "xmlThrDef" and name != "xmlDllMain":
+	        print "%s %s from %s has no description" % (id.type, name,
+		       self.modulename_file(id.module))
+
 	    output.write("      <info>%s</info>\n" % (escape(desc)))
 	    self.indexString(name, desc)
 	    if ret[0] != None:

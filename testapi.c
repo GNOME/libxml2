@@ -34116,6 +34116,40 @@ test_xmlSchemaValidCtxtGetOptions(void) {
 
 
 static int
+test_xmlSchemaValidCtxtGetParserCtxt(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+    int mem_base;
+    xmlParserCtxtPtr ret_val;
+    xmlSchemaValidCtxtPtr ctxt; /*  */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlSchemaValidCtxtPtr(n_ctxt, 0);
+
+        ret_val = xmlSchemaValidCtxtGetParserCtxt(ctxt);
+        desret_xmlParserCtxtPtr(ret_val);
+        call_tests++;
+        des_xmlSchemaValidCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlSchemaValidCtxtGetParserCtxt",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlSchemaValidateDoc(void) {
     int test_ret = 0;
 
@@ -34310,7 +34344,7 @@ static int
 test_xmlschemas(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlschemas : 14 of 24 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemas : 15 of 25 functions ...\n");
     test_ret += test_xmlSchemaDump();
     test_ret += test_xmlSchemaGetParserErrors();
     test_ret += test_xmlSchemaGetValidErrors();
@@ -34328,6 +34362,7 @@ test_xmlschemas(void) {
     test_ret += test_xmlSchemaSetValidOptions();
     test_ret += test_xmlSchemaSetValidStructuredErrors();
     test_ret += test_xmlSchemaValidCtxtGetOptions();
+    test_ret += test_xmlSchemaValidCtxtGetParserCtxt();
     test_ret += test_xmlSchemaValidateDoc();
     test_ret += test_xmlSchemaValidateFile();
     test_ret += test_xmlSchemaValidateOneElement();

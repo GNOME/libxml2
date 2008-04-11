@@ -3046,6 +3046,7 @@
      <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
      <exports symbol='xmlSchemaDump' type='function'/>
      <exports symbol='xmlSchemaFreeValidCtxt' type='function'/>
+     <exports symbol='xmlSchemaValidCtxtGetParserCtxt' type='function'/>
      <exports symbol='xmlSchemaSetParserStructuredErrors' type='function'/>
      <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
     </file>
@@ -8552,11 +8553,11 @@ Could we use @subtypes for this?'/>
     </function>
     <functype name='xmlC14NIsVisibleCallback' file='c14n' module='c14n'>
       <cond>defined(LIBXML_C14N_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='user_data' type='void *' info=''/>
-      <arg name='node' type='xmlNodePtr' info=''/>
-      <arg name='parent' type='xmlNodePtr' info=''/>
+      <info>Signature for a C14N callback on visible nodes</info>
+      <return type='int' info='1 if the node should be included'/>
+      <arg name='user_data' type='void *' info='user data'/>
+      <arg name='node' type='xmlNodePtr' info='the curent node'/>
+      <arg name='parent' type='xmlNodePtr' info='the parent node'/>
     </functype>
     <function name='xmlCanonicPath' file='uri' module='uri'>
       <info>Constructs a canonic path from the specified path.</info>
@@ -9247,9 +9248,9 @@ Could we use @subtypes for this?'/>
       <arg name='func' type='xmlDeregisterNodeFunc' info='function pointer to the new DeregisterNodeFunc'/>
     </function>
     <functype name='xmlDeregisterNodeFunc' file='globals' module='globals'>
-      <info></info>
+      <info>Signature for the deregistration callback of a discarded node</info>
       <return type='void'/>
-      <arg name='node' type='xmlNodePtr' info=''/>
+      <arg name='node' type='xmlNodePtr' info='the current node'/>
     </functype>
     <function name='xmlDetectCharEncoding' file='encoding' module='encoding'>
       <info>Guess the encoding of the entity using the first bytes of the entity content according to the non-normative appendix F of the XML-1.0 recommendation.</info>
@@ -11628,9 +11629,9 @@ Could we use @subtypes for this?'/>
       <arg name='func' type='xmlOutputBufferCreateFilenameFunc' info='function pointer to the new OutputBufferCreateFilenameFunc'/>
     </function>
     <functype name='xmlOutputBufferCreateFilenameFunc' file='globals' module='globals'>
-      <info></info>
-      <return type='xmlOutputBufferPtr' info=''/>
-      <arg name='URI' type='const char *' info=''/>
+      <info>Signature for the function doing the lookup for a suitable output method corresponding to an URI.</info>
+      <return type='xmlOutputBufferPtr' info='the new xmlOutputBufferPtr in case of success or NULL if no method was found.'/>
+      <arg name='URI' type='const char *' info='the URI to write to'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info=''/>
       <arg name='compression' type='int' info=''/>
     </functype>
@@ -12143,10 +12144,10 @@ Could we use @subtypes for this?'/>
       <arg name='func' type='xmlParserInputBufferCreateFilenameFunc' info='function pointer to the new ParserInputBufferCreateFilenameFunc'/>
     </function>
     <functype name='xmlParserInputBufferCreateFilenameFunc' file='globals' module='globals'>
-      <info></info>
-      <return type='xmlParserInputBufferPtr' info=''/>
-      <arg name='URI' type='const char *' info=''/>
-      <arg name='enc' type='xmlCharEncoding' info=''/>
+      <info>Signature for the function doing the lookup for a suitable input method corresponding to an URI.</info>
+      <return type='xmlParserInputBufferPtr' info='the new xmlParserInputBufferPtr in case of success or NULL if no method was found.'/>
+      <arg name='URI' type='const char *' info='the URI to read from'/>
+      <arg name='enc' type='xmlCharEncoding' info='the requested source encoding'/>
     </functype>
     <function name='xmlParserInputBufferCreateIO' file='xmlIO' module='xmlIO'>
       <info>Create a buffered parser input for the progressive parsing for the input from an I/O handler</info>
@@ -12525,12 +12526,12 @@ Could we use @subtypes for this?'/>
     </function>
     <functype name='xmlRegExecCallbacks' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED)</cond>
-      <info></info>
+      <info>Callback function when doing a transition in the automata</info>
       <return type='void'/>
-      <arg name='exec' type='xmlRegExecCtxtPtr' info=''/>
-      <arg name='token' type='const xmlChar *' info=''/>
-      <arg name='transdata' type='void *' info=''/>
-      <arg name='inputdata' type='void *' info=''/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='the regular expression context'/>
+      <arg name='token' type='const xmlChar *' info='the current token string'/>
+      <arg name='transdata' type='void *' info='transition data'/>
+      <arg name='inputdata' type='void *' info='input data'/>
     </functype>
     <function name='xmlRegExecErrInfo' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED)</cond>
@@ -12649,9 +12650,9 @@ Could we use @subtypes for this?'/>
       <arg name='func' type='xmlRegisterNodeFunc' info='function pointer to the new RegisterNodeFunc'/>
     </function>
     <functype name='xmlRegisterNodeFunc' file='globals' module='globals'>
-      <info></info>
+      <info>Signature for the registration callback of a created node</info>
       <return type='void'/>
-      <arg name='node' type='xmlNodePtr' info=''/>
+      <arg name='node' type='xmlNodePtr' info='the current node'/>
     </functype>
     <function name='xmlRegisterOutputCallbacks' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -12828,19 +12829,19 @@ Could we use @subtypes for this?'/>
     </function>
     <functype name='xmlRelaxNGValidityErrorFunc' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Signature of an error callback from a Relax-NG validation</info>
       <return type='void'/>
-      <arg name='ctx' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='...' type='...' info=''/>
+      <arg name='ctx' type='void *' info='the validation context'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <functype name='xmlRelaxNGValidityWarningFunc' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Signature of a warning callback from a Relax-NG validation</info>
       <return type='void'/>
-      <arg name='ctx' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='...' type='...' info=''/>
+      <arg name='ctx' type='void *' info='the validation context'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <function name='xmlRelaxParserSetFlag' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13405,9 +13406,9 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaFreeValidCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Free the resources associated to the schema validation context</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
     </function>
     <function name='xmlSchemaFreeValue' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13478,12 +13479,12 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaGetValidErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='err' type='xmlSchemaValidityErrorFunc *' info=''/>
-      <arg name='warn' type='xmlSchemaValidityWarningFunc *' info=''/>
-      <arg name='ctx' type='void **' info=''/>
+      <info>Get the error and warning callback informations</info>
+      <return type='int' info='-1 in case of error and 0 otherwise'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a XML-Schema validation context'/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc *' info='the error function result'/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc *' info='the warning function result'/>
+      <arg name='ctx' type='void **' info='the functions context result'/>
     </function>
     <function name='xmlSchemaInitTypes' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13499,9 +13500,9 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaIsValid' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <info>Check if any error was detected during validation.</info>
+      <return type='int' info='1 if valid so far, 0 if errors were detected, and -1 in case of internal error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
     </function>
     <function name='xmlSchemaNewDocParserCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13550,9 +13551,9 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaNewValidCtxt' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='schema' type='xmlSchemaPtr' info=''/>
+      <info>Create an XML Schemas validation context based on the given schema.</info>
+      <return type='xmlSchemaValidCtxtPtr' info='the validation context or NULL in case of error'/>
+      <arg name='schema' type='xmlSchemaPtr' info='a precompiled XML Schemas'/>
     </function>
     <function name='xmlSchemaParse' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13562,17 +13563,17 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaSAXPlug' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='xmlSchemaSAXPlugPtr' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='sax' type='xmlSAXHandlerPtr *' info=''/>
-      <arg name='user_data' type='void **' info=''/>
+      <info>Plug a SAX based validation layer in a SAX parsing event flow. The original @saxptr and @dataptr data are replaced by new pointers but the calls to the original will be maintained.</info>
+      <return type='xmlSchemaSAXPlugPtr' info='a pointer to a data structure needed to unplug the validation layer or NULL in case of errors.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='sax' type='xmlSAXHandlerPtr *' info='a pointer to the original xmlSAXHandlerPtr'/>
+      <arg name='user_data' type='void **' info='a pointer to the original SAX user data pointer'/>
     </function>
     <function name='xmlSchemaSAXUnplug' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='plug' type='xmlSchemaSAXPlugPtr' info=''/>
+      <info>Unplug a SAX based validation layer in a SAX parsing event flow. The original pointers used in the call are restored.</info>
+      <return type='int' info='0 in case of success and -1 in case of failure.'/>
+      <arg name='plug' type='xmlSchemaSAXPlugPtr' info='a data structure returned by xmlSchemaSAXPlug'/>
     </function>
     <function name='xmlSchemaSetParserErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13593,27 +13594,27 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaSetValidErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Set the error and warning callback informations</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='err' type='xmlSchemaValidityErrorFunc' info=''/>
-      <arg name='warn' type='xmlSchemaValidityWarningFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc' info='the error function'/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc' info='the warning function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
     </function>
     <function name='xmlSchemaSetValidOptions' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='options' type='int' info=''/>
+      <info>Sets the options to be used during the validation.</info>
+      <return type='int' info='0 in case of success, -1 in case of an API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='options' type='int' info='a combination of xmlSchemaValidOption'/>
     </function>
     <function name='xmlSchemaSetValidStructuredErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Set the structured error callback</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='serror' type='xmlStructuredErrorFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='serror' type='xmlStructuredErrorFunc' info='the structured error function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
     </function>
     <function name='xmlSchemaValPredefTypeNode' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13635,16 +13636,22 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaValidCtxtGetOptions' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <info>Get the validation context options.</info>
+      <return type='int' info='the option combination or -1 on error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+    </function>
+    <function name='xmlSchemaValidCtxtGetParserCtxt' file='xmlschemas' module='xmlschemas'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>allow access to the parser context of the schema validation context</info>
+      <return type='xmlParserCtxtPtr' info='the parser context of the schema validation context or NULL in case of error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
     </function>
     <function name='xmlSchemaValidateDoc' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='instance' type='xmlDocPtr' info=''/>
+      <info>Validate a document tree in memory.</info>
+      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
     </function>
     <function name='xmlSchemaValidateFacet' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13668,11 +13675,11 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaValidateFile' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='filename' type='const char *' info=''/>
-      <arg name='options' type='int' info=''/>
+      <info>Do a schemas validation of the given resource, it will use the SAX streamable validation internally.</info>
+      <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of an internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='filename' type='const char *' info='the URI of the instance'/>
+      <arg name='options' type='int' info='a future set of options, currently unused'/>
     </function>
     <function name='xmlSchemaValidateLengthFacet' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13706,10 +13713,10 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaValidateOneElement' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='elem' type='xmlNodePtr' info=''/>
+      <info>Validate a branch of a tree, starting with the given @elem.</info>
+      <return type='int' info='0 if the element and its subtree is valid, a positive error code number otherwise and -1 in case of an internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='elem' type='xmlNodePtr' info='an element node'/>
     </function>
     <function name='xmlSchemaValidatePredefinedType' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13721,29 +13728,29 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaValidateStream' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='input' type='xmlParserInputBufferPtr' info=''/>
-      <arg name='enc' type='xmlCharEncoding' info=''/>
-      <arg name='sax' type='xmlSAXHandlerPtr' info=''/>
-      <arg name='user_data' type='void *' info=''/>
+      <info>Validate an input based on a flow of SAX event from the parser and forward the events to the @sax handler with the provided @user_data the user provided @sax handler must be a SAX2 one.</info>
+      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='input' type='xmlParserInputBufferPtr' info='the input to use for reading the data'/>
+      <arg name='enc' type='xmlCharEncoding' info='an optional encoding information'/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler for the resulting events'/>
+      <arg name='user_data' type='void *' info='the context to provide to the SAX handler.'/>
     </function>
     <functype name='xmlSchemaValidityErrorFunc' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Signature of an error callback from an XSD validation</info>
       <return type='void'/>
-      <arg name='ctx' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='...' type='...' info=''/>
+      <arg name='ctx' type='void *' info='the validation context'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <functype name='xmlSchemaValidityWarningFunc' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
+      <info>Signature of a warning callback from an XSD validation</info>
       <return type='void'/>
-      <arg name='ctx' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='...' type='...' info=''/>
+      <arg name='ctx' type='void *' info='the validation context'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <function name='xmlSchemaValueAppend' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13843,19 +13850,19 @@ Could we use @subtypes for this?'/>
     </function>
     <functype name='xmlSchematronValidityErrorFunc' file='schematron' module='schematron'>
       <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
-      <info></info>
+      <info>Signature of an error callback from a Schematron validation</info>
       <return type='void'/>
-      <arg name='ctx' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='...' type='...' info=''/>
+      <arg name='ctx' type='void *' info='the validation context'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <functype name='xmlSchematronValidityWarningFunc' file='schematron' module='schematron'>
       <cond>defined(LIBXML_SCHEMATRON_ENABLED)</cond>
-      <info></info>
+      <info>Signature of a warning callback from a Schematron validation</info>
       <return type='void'/>
-      <arg name='ctx' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='...' type='...' info=''/>
+      <arg name='ctx' type='void *' info='the validation context'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <function name='xmlSearchNs' file='tree' module='tree'>
       <info>Search a Ns registered under a given name space for a document. recurse on the parents until it finds the defined namespace or return NULL otherwise. @nameSpace can be NULL, this is a search for the default namespace. We don&apos;t allow to cross entities boundaries. If you don&apos;t declare the namespace within those you will be in troubles !!! A warning is generated to cover this case.</info>
@@ -14486,12 +14493,12 @@ Could we use @subtypes for this?'/>
     </function>
     <functype name='xmlTextReaderErrorFunc' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
-      <info></info>
+      <info>Signature of an error callback from a reader parser</info>
       <return type='void'/>
-      <arg name='arg' type='void *' info=''/>
-      <arg name='msg' type='const char *' info=''/>
-      <arg name='severity' type='xmlParserSeverities' info=''/>
-      <arg name='locator' type='xmlTextReaderLocatorPtr' info=''/>
+      <arg name='arg' type='void *' info='the user argument'/>
+      <arg name='msg' type='const char *' info='the message'/>
+      <arg name='severity' type='xmlParserSeverities' info='the severity of the error'/>
+      <arg name='locator' type='xmlTextReaderLocatorPtr' info='a locator indicating where the error occured'/>
     </functype>
     <function name='xmlTextReaderExpand' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>

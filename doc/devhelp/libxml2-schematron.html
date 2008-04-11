@@ -113,12 +113,12 @@ The content of this structure is not made public by the API.
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchematronValidityErrorFunc"/>Function type xmlSchematronValidityErrorFunc</h3><pre class="programlisting">void	xmlSchematronValidityErrorFunc	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...)<br/>
-</pre><p/>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td/></tr></tbody></table></div></div>
+</pre><p>Signature of an error callback from a Schematron validation</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra arguments</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchematronValidityWarningFunc"/>Function type xmlSchematronValidityWarningFunc</h3><pre class="programlisting">void	xmlSchematronValidityWarningFunc	(void * ctx, <br/>						 const char * msg, <br/>						 ... ...)<br/>
-</pre><p/>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td/></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td/></tr></tbody></table></div></div>
+</pre><p>Signature of a warning callback from a Schematron validation</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra arguments</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchematronFree"/>xmlSchematronFree ()</h3><pre class="programlisting">void	xmlSchematronFree		(<a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a> schema)<br/>
 </pre><p>Deallocate a Schematron structure.</p>

@@ -1,3 +1,17 @@
+Fri Apr 11 14:44:00 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlschemas.h xmlschemas.c: added new function
+	  xmlSchemaValidCtxtGetParserCtxt based on Holger Kaelberer patch
+	* doc/apibuild.py doc/*: regenerated the doc, chased why the new
+	  function didn't got any documentation, added more checking in the
+	  generator
+	* include/libxml/relaxng.h include/libxml/schematron.h
+	  include/libxml/xmlschemas.h include/libxml/c14n.h
+	  include/libxml/xmlregexp.h include/libxml/globals.h
+	  include/libxml/xmlreader.h threads.c xmlschemas.c: various changes
+	  and cleanups following the new reports
+
+
 Thu Apr 10 10:07:00 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: extend the cleanup rule

@@ -20,15 +20,29 @@
 #include "libxml.h"
 
 #include <string.h>
+#include <stdint.h>
 #include <libxml/tree.h>
 #include <libxml/dict.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
 
-#define MAX_HASH_LEN 4
+#define MAX_HASH_LEN 3
 #define MIN_DICT_SIZE 128
 #define MAX_DICT_HASH 8 * 2048
+
+#define xmlDictComputeKey(dict, name, len)             \
+    (((dict)->size == MIN_DICT_SIZE) ?		       \
+     xmlDictComputeFastKey(name, len) :	       \
+     xmlDictComputeBigKey(name, len, len))	       \
+
+#define xmlDictComputeQKey(dict, prefix, name, len)  		     \
+    (((prefix) == NULL) ?					     \
+      (xmlDictComputeKey(dict, name, len)) :			     \
+      (((dict)->size == MIN_DICT_SIZE) ?			     \
+       xmlDictComputeFastQKey(prefix, name, len) :		     \
+       xmlDictComputeBigKey(prefix, xmlStrlen(prefix),		     \
+			    xmlDictComputeBigKey(name, len, len))))
 
 /* #define ALLOW_REMOVAL */
 /* #define DEBUG_GROW */
@@ -223,11 +237,80 @@ found_pool:
 }
 
 /*
- * xmlDictComputeKey:
- * Calculate the hash key
+ * xmlDictComputeBigKey:
+ *
+ * Calculate a hash key using a good hash function that works well for
+ * larger hash table sizes.
+ *
+ * Hash function by Paul Hsieh, see
+ * http://www.azillionmonkeys.com/qed/hash.html
+ * http://burtleburtle.net/bob/hash/doobs.html
+ */
+#undef get16bits
+#if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) \
+  || defined(_MSC_VER) || defined (__BORLANDC__) || defined (__TURBOC__)
+#define get16bits(d) (*((const uint16_t *) (d)))
+#endif
+
+#if !defined (get16bits)
+#define get16bits(d) ((((uint32_t)(((const uint8_t *)(d))[1])) << 8)\
+                       +(uint32_t)(((const uint8_t *)(d))[0]) )
+#endif
+
+static uint32_t
+xmlDictComputeBigKey(const xmlChar* data, int len, uint32_t hash) {
+    uint32_t tmp;
+    int rem;
+
+    if (len <= 0 || data == NULL) return hash;
+
+    rem = len & 3;
+    len >>= 2;
+
+    /* Main loop */
+    for (;len > 0; len--) {
+        hash  += get16bits (data);
+        tmp    = (get16bits (data+2) << 11) ^ hash;
+        hash   = (hash << 16) ^ tmp;
+        data  += 2*sizeof (uint16_t);
+        hash  += hash >> 11;
+    }
+
+    /* Handle end cases */
+    switch (rem) {
+        case 3: hash += get16bits (data);
+                hash ^= hash << 16;
+                hash ^= data[sizeof (uint16_t)] << 18;
+                hash += hash >> 11;
+                break;
+        case 2: hash += get16bits (data);
+                hash ^= hash << 11;
+                hash += hash >> 17;
+                break;
+        case 1: hash += *data;
+                hash ^= hash << 10;
+                hash += hash >> 1;
+    }
+
+    /* Force "avalanching" of final 127 bits */
+    hash ^= hash << 3;
+    hash += hash >> 5;
+    hash ^= hash << 4;
+    hash += hash >> 17;
+    hash ^= hash << 25;
+    hash += hash >> 6;
+
+    return hash;
+}
+
+/*
+ * xmlDictComputeFastKey:
+ *
+ * Calculate a hash key using a fast hash function that works well
+ * for low hash table fill.
  */
 static unsigned long
-xmlDictComputeKey(const xmlChar *name, int namelen) {
+xmlDictComputeFastKey(const xmlChar *name, int namelen) {
     unsigned long value = 0L;
     
     if (name == NULL) return(0);
@@ -253,17 +336,18 @@ xmlDictComputeKey(const xmlChar *name, int namelen) {
 }
 
 /*
- * xmlDictComputeQKey:
- * Calculate the hash key
+ * xmlDictComputeFastQKey:
+ *
+ * Calculate a hash key for two strings using a fast hash function
+ * that works well for low hash table fill.
+ *
+ * Neither of the two strings must be NULL.
  */
 static unsigned long
-xmlDictComputeQKey(const xmlChar *prefix, const xmlChar *name, int len)
+xmlDictComputeFastQKey(const xmlChar *prefix, const xmlChar *name, int len)
 {
     unsigned long value = 0L;
     int plen;
-    
-    if (prefix == NULL)
-        return(xmlDictComputeKey(name, len));
 
     plen = xmlStrlen(prefix);
     if (plen == 0)
@@ -435,7 +519,7 @@ xmlDictGrow(xmlDictPtr dict, int size) {
     for (i = 0; i < oldsize; i++) {
 	if (olddict[i].valid == 0) 
 	    continue;
-	key = xmlDictComputeKey(olddict[i].name, olddict[i].len) % dict->size;
+	key = xmlDictComputeKey(dict, olddict[i].name, olddict[i].len) % dict->size;
 	memcpy(&(dict->dict[key]), &(olddict[i]), sizeof(xmlDictEntry));
 	dict->dict[key].next = NULL;
 #ifdef DEBUG_GROW
@@ -452,7 +536,7 @@ xmlDictGrow(xmlDictPtr dict, int size) {
 	     * put back the entry in the new dict
 	     */
 
-	    key = xmlDictComputeKey(iter->name, iter->len) % dict->size;
+	    key = xmlDictComputeKey(dict, iter->name, iter->len) % dict->size;
 	    if (dict->dict[key].valid == 0) {
 		memcpy(&(dict->dict[key]), iter, sizeof(xmlDictEntry));
 		dict->dict[key].next = NULL;
@@ -570,7 +654,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     /*
      * Check for duplicate and insertion location.
      */
-    okey = xmlDictComputeKey(name, len);
+    okey = xmlDictComputeKey(dict, name, len);
     key = okey % dict->size;
     if (dict->dict[key].valid == 0) {
 	insert = NULL;
@@ -687,7 +771,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
     /*
      * Check for duplicate and insertion location.
      */
-    okey = xmlDictComputeKey(name, len);
+    okey = xmlDictComputeKey(dict, name, len);
     key = okey % dict->size;
     if (dict->dict[key].valid == 0) {
 	insert = NULL;
@@ -783,7 +867,7 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
     /*
      * Check for duplicate and insertion location.
      */
-    okey = xmlDictComputeQKey(prefix, name, len);
+    okey = xmlDictComputeQKey(dict, prefix, name, len);
     key = okey % dict->size;
     if (dict->dict[key].valid == 0) {
 	insert = NULL;

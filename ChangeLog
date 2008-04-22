@@ -1,3 +1,9 @@
+Tue Apr 22 10:27:17 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c: improvement on the hashing of the dictionnary, with visible
+	  speed up as the number of strings in the hash increases, work from
+	  Stefan Behnel
+
 Fri Apr 11 14:44:00 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlschemas.h xmlschemas.c: added new function

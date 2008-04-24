@@ -1,3 +1,8 @@
+Thu Apr 24 13:56:53 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: applied patch from Ashwin fixing a number of realloc problems
+	* HTMLparser.c: improve handling for misplaced html/head/body
+
 Tue Apr 22 10:27:17 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: improvement on the hashing of the dictionnary, with visible

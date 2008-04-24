@@ -3482,6 +3482,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	             "htmlParseStartTag: misplaced <html> tag\n",
 		     name, NULL);
 	discardtag = 1;
+	ctxt->depth++;
     }
     if ((ctxt->nameNr != 1) && 
 	(xmlStrEqual(name, BAD_CAST"head"))) {
@@ -3489,6 +3490,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	             "htmlParseStartTag: misplaced <head> tag\n",
 		     name, NULL);
 	discardtag = 1;
+	ctxt->depth++;
     }
     if (xmlStrEqual(name, BAD_CAST"body")) {
 	int indx;
@@ -3498,6 +3500,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 		             "htmlParseStartTag: misplaced <body> tag\n",
 			     name, NULL);
 		discardtag = 1;
+		ctxt->depth++;
 	    }
 	}
     }
@@ -3648,7 +3651,6 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     name = htmlParseHTMLName(ctxt);
     if (name == NULL)
         return (0);
-
     /*
      * We should definitely be at the ending "S? '>'" part
      */
@@ -3667,6 +3669,18 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
 	}
     } else
         NEXT;
+
+    /*
+     * if we ignored misplaced tags in htmlParseStartTag don't pop them
+     * out now.
+     */
+    if ((ctxt->depth > 0) &&
+        (xmlStrEqual(name, BAD_CAST "html") ||
+         xmlStrEqual(name, BAD_CAST "body") ||
+	 xmlStrEqual(name, BAD_CAST "head"))) {
+	ctxt->depth--;
+	return (0);
+    }
 
     /*
      * If the name read is not one of the element in the parsing stack

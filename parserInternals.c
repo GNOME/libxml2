@@ -1399,7 +1399,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     if (input == NULL) {
 	return(NULL);
     }
-    input->filename = (char *) entity->URI;
+    if (entity->URI != NULL)
+	input->filename = (char *) xmlStrdup((xmlChar *) entity->URI);
     input->base = entity->content;
     input->cur = entity->content;
     input->length = entity->length;

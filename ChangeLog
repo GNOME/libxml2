@@ -1,3 +1,7 @@
+Sat May  3 14:33:29 CEST 2008 Rob Richards <rrichards@ctindustries.net>
+
+	* dict.c: check for stdint.h and define types when using MSVC
+
 Mon Apr 28 20:06:12 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: applied patch from Ashwin to avoid a potential
@@ -525,7 +529,7 @@ Wed Jun 13 13:33:38 PDT 2007 William Brack <wbrack@mmm.com.hk>
 Tue Jun 12 18:17:28 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* doc/* configure.in NEWS: release of libxml2 2.6.29
-	* valid.c: patch from Dagfinn I. Mannsåker for idness of name
+	* valid.c: patch from Dagfinn I. Mannsï¿½ker for idness of name
 	  in HTML, c.f. bug #305885.
 
 Tue Jun 12 17:14:08 CEST 2007 Daniel Veillard <daniel@veillard.com>
@@ -615,7 +619,7 @@ Wed May 30 22:05:08 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
 Mon May 28 16:14:50 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
-	* uri.c: fix bug reported by François Delyon
+	* uri.c: fix bug reported by Franï¿½ois Delyon
 
 Tue May 22 08:59:48 PDT 2007 William Brack <wbrack@mmm.com.hk>
 
@@ -646,7 +650,7 @@ Fri May 11 22:45:18 HKT 2007 William Brack <wbrack@mmm.com.hk>
 Thu May 10 01:52:42 CEST 2007 Daniel Veillard <daniel@veillard.com>
 
 	* list.c: applied patch to fix xmlListAppend() from 
-	  Georges-André SILBER
+	  Georges-Andrï¿½ SILBER
 	* valid.c: also fix the place wher it was called.
 
 Wed May  2 18:47:33 CEST 2007 Daniel Veillard <daniel@veillard.com>
@@ -744,7 +748,7 @@ Wed Mar 21 14:23:08 HKT 2007 William Brack <wbrack@mmm.com.hk>
 
 Tue Mar 20 09:58:13 CET 2007  Daniel Veillard <daniel@veillard.com>
 
-	* nanoftp.c: applied patch from Björn Wiberg to try to fix again
+	* nanoftp.c: applied patch from Bjï¿½rn Wiberg to try to fix again
 	  the silly __ss_familly problem on various AIXes, should fix #420184
 
 Wed Mar 14 20:30:38 HKT 2007 William Brack <wbrack@mmm.com.hk>
@@ -816,7 +820,7 @@ Wed Jan 31 10:25:38 PST 2007 William Brack <wbrack@mmm.com.hk>
 
 Fri Jan 26 00:05:18 PST 2007 William Brack <wbrack@mmm.com.hk>
 
-	* implemented patch from Stéphane Bidoul for uri.c (bug #389767)
+	* implemented patch from Stï¿½phane Bidoul for uri.c (bug #389767)
 
 Thu Jan 25 11:15:08 PST 2007 William Brack <wbrack@mmm.com.hk>
 
@@ -2525,7 +2529,7 @@ Fri Sep  9 12:56:19 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 Thu Sep  8 23:39:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
-	* xmllint.c: patch from Stéphane Bidoul to compile without schematron
+	* xmllint.c: patch from Stï¿½phane Bidoul to compile without schematron
 
 Wed Sep  7 00:16:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
@@ -5947,7 +5951,7 @@ Thu Jul  1 14:53:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c python/generator.py python/libxml.py
 	  python/libxml2-python-api.xml python/libxml2class.txt:
-	  applied patch from Stéphane Bidoul to fix some Python bindings
+	  applied patch from Stï¿½phane Bidoul to fix some Python bindings
 	  initialization, then had to change the parserCleanup() 
 	  to handle memory released there.
 	* xmlmemory.c: added more debugging comments.
@@ -7329,7 +7333,7 @@ Sun Jan  4 08:57:51 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 Fri Jan  2 21:22:18 CET 2004 Daniel Veillard <daniel@veillard.com>
 
-	* error.c: applied patch from Stéphane Bidoul for structured error
+	* error.c: applied patch from Stï¿½phane Bidoul for structured error
 	  reporting.
 
 Fri Jan  2 21:03:17 CET 2004 Daniel Veillard <daniel@veillard.com>
@@ -7358,7 +7362,7 @@ Wed Dec 31 22:02:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
 Wed Dec 31 15:55:55 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* python/generator.py, python/libxml2class.txt: fixed problem
-	  pointed out by Stéphane Bidoul on the list.
+	  pointed out by Stï¿½phane Bidoul on the list.
 	* xinclude.c, xpointer.c, xpath.c, include/libxml/xpointer.h:
 	  completed modifications required to fix Bug 129967 (at last!).
 	  Now wait to see how long before further trouble...
@@ -8618,7 +8622,7 @@ Tue Oct  7 13:30:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
 Mon Oct  6 10:46:35 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.bcb win32/Makefile.mingw win32/Makefile.msvc
-	  win32/configure.js: applied patch from Stéphane Bidoul to
+	  win32/configure.js: applied patch from Stï¿½phane Bidoul to
 	  fix the compilation of 2.6.0 code on Win32
 
 Mon Oct  6 10:16:30 CEST 2003 Daniel Veillard <daniel@veillard.com>
@@ -9161,7 +9165,7 @@ Sat Sep  6 10:55:01 PTD 2003 William Brack <wbrack@mmm.com.hk>
 
 Fri Sep  5 10:33:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
-	* include/libxml/globals.h: patch from Stéphane Bidoul to export
+	* include/libxml/globals.h: patch from Stï¿½phane Bidoul to export
 	  globals entry points to the python bindings
 
 Wed Sep  3 15:24:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
@@ -9886,7 +9890,7 @@ Tue May 20 14:21:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 Sat May 17 12:53:11 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
-	* threads.c: applied the patch from Stéphane Bidoul for getting
+	* threads.c: applied the patch from Stï¿½phane Bidoul for getting
 	  rid of extra threads in a dynamic library.
 	* win32/configure.js: threads default to 'native' now.
 
@@ -9898,7 +9902,7 @@ Fri May 16 13:17:52 EDT 2003 Daniel Veillard <daniel@veillard.com>
 Thu May 15 18:06:18 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* build_glob.py global.data globals.c parser.c
-	  include/libxml/globals.h: patch from Stéphane Bidoul for setting
+	  include/libxml/globals.h: patch from Stï¿½phane Bidoul for setting
 	  up threads global defaults.
 	* doc/libxml2-api.xml: this extends the API with new functions
 	* python/tests/Makefile.am python/tests/reader2.py
@@ -9955,7 +9959,7 @@ Sun May 11 16:13:20 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 Sat May 10 16:01:21 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
-	* relaxng.c: Stéphane Bidoul found an off by one addressing
+	* relaxng.c: Stï¿½phane Bidoul found an off by one addressing
 	  error on the error handling.
 
 Fri May  9 19:08:20 EDT 2003 Daniel Veillard <daniel@veillard.com>
@@ -10014,7 +10018,7 @@ Mon Apr 28 02:19:00 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 Mon Apr 28 00:12:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/configure.js python/setup.py.in: applied patch
-	  from Stéphane Bidoul for the Python bindings on the new
+	  from Stï¿½phane Bidoul for the Python bindings on the new
 	  release.
 
 Sun Apr 27 17:56:21 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
@@ -10045,7 +10049,7 @@ Sat Apr 26 14:00:58 CEST 2003 Daniel Veillard <daniel@veillard.com>
 	* python/generator.py: fixed a problem in the generator where
 	  the way functions are remapped as methods on classes was
 	  not symetric and dependant on python internal hash order,
-	  as reported by Stéphane Bidoul
+	  as reported by Stï¿½phane Bidoul
 
 Fri Apr 25 21:52:33 MDT 2003 John Fleck <jfleck@inkstain.net>
 
@@ -10986,7 +10990,7 @@ Wed Feb  5 12:00:36 CET 2003 Daniel Veillard <daniel@veillard.com>
 Wed Feb  5 11:43:58 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: added the redefinition of namespaced attribute
-	  check that was missing as Fabrice Desré pointed out.
+	  check that was missing as Fabrice Desrï¿½ pointed out.
 
 Wed Feb  5 11:09:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
@@ -11209,7 +11213,7 @@ Thu Jan 23 17:41:37 CET 2003 Daniel Veillard <daniel@veillard.com>
 Tue Jan 21 13:19:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c doc/apibuild.py: applied a new patch from
-	  Stéphane Bidoul for cleanups
+	  Stï¿½phane Bidoul for cleanups
 	* doc/libxml2-api.xml: rebuilt the API description with
 	  new entry points
 
@@ -11217,7 +11221,7 @@ Mon Jan 20 23:25:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/drv_libxml2.py python/generator.py
 	  python/libxml.c python/libxml.py python/libxml_wrap.h
-	  python/types.c: patch from Stéphane Bidoul for better per
+	  python/types.c: patch from Stï¿½phane Bidoul for better per
 	  context error message APIs
 	* python/tests/ctxterror.py python/tests/readererr.py:
 	  update of the tests
@@ -11231,7 +11235,7 @@ Fri Jan 17 00:31:30 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c include/libxml/xmlreader.h python/generator.py
 	  python/libxml.c python/libxml.py win32/libxml2.def.src: applied
-	  a patch from Stéphane Bidoul to allow per XMLtextReader error
+	  a patch from Stï¿½phane Bidoul to allow per XMLtextReader error
 	  and warning handling
 	* python/tests/Makefile.am python/tests/readererr.py: adding the
 	  specific regression test
@@ -11243,7 +11247,7 @@ Tue Jan 14 17:00:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 Tue Jan 14 15:39:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
-	* python/libxml.c: cleanup patch from Stéphane Bidoul
+	* python/libxml.c: cleanup patch from Stï¿½phane Bidoul
 
 Tue Jan 14 14:41:18 CET 2003 Daniel Veillard <daniel@veillard.com>
 
@@ -11253,7 +11257,7 @@ Tue Jan 14 12:40:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml.py
 	  python/libxml_wrap.h python/types.c: applied and fixed a patch
-	  from Stéphane Bidoul to provide per parser error handlers at the
+	  from Stï¿½phane Bidoul to provide per parser error handlers at the
 	  Python level.
 	* python/tests/Makefile.am python/tests/ctxterror.py: added a
 	  regression test for it.
@@ -11305,7 +11309,7 @@ Fri Jan 10 00:16:49 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 Thu Jan  9 22:35:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
-	* python/drv_libxml2.py: update from Stéphane Bidoul: python 2.1
+	* python/drv_libxml2.py: update from Stï¿½phane Bidoul: python 2.1
 	  support and improved error handler registration
 
 Thu Jan  9 14:16:38 CET 2003 Daniel Veillard <daniel@veillard.com>
@@ -11395,7 +11399,7 @@ Sat Jan  4 17:33:17 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 Sat Jan  4 13:46:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
-	* python/setup.py.in: patch from Stéphane Bidoul to include
+	* python/setup.py.in: patch from Stï¿½phane Bidoul to include
 	  drv_libxml2.py in setup.py
 
 Sat Jan  4 01:43:06 CET 2003 Daniel Veillard <daniel@veillard.com>
@@ -11422,13 +11426,13 @@ Fri Jan  3 02:17:18 CET 2003 Daniel Veillard <daniel@veillard.com>
 Thu Jan  2 15:15:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: another couple of problem
-	  related to IsEmptyElement reported by Stéphane Bidoul needed 
+	  related to IsEmptyElement reported by Stï¿½phane Bidoul needed 
 	  some fixes.
 
 Thu Jan  2 13:57:07 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in python/Makefile.am python/drv_libxml2.py:
-	  integrated drv_libxml2.py Python xml.sax driver from Stéphane Bidoul
+	  integrated drv_libxml2.py Python xml.sax driver from Stï¿½phane Bidoul
 	  based on the python XmlTextReader interface.
 
 Wed Jan  1 22:05:40 CET 2003 Daniel Veillard <daniel@veillard.com>
@@ -11451,38 +11455,38 @@ Wed Jan  1 20:12:07 CET 2003 Daniel Veillard <daniel@veillard.com>
 Wed Jan  1 16:09:57 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed another couple of
-	  xmlreader bugs reported by Stéphane Bidoul and added tests.
+	  xmlreader bugs reported by Stï¿½phane Bidoul and added tests.
 
 Wed Jan  1 15:42:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader2.py: fixed another validity
-	  checking in external parsed entities raised by Stéphane Bidoul
+	  checking in external parsed entities raised by Stï¿½phane Bidoul
 	  and added a specific regression test.
 	* python/tests/reader3.py: cleanup
 
 Tue Dec 31 15:44:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader2.py: fixed a problem with
-	  validation within entities pointed by Stéphane Bidoul, augmented
+	  validation within entities pointed by Stï¿½phane Bidoul, augmented
 	  the tests to catch those.
 
 Tue Dec 31 12:15:37 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py: modified the generator to allow keeping
 	  class references when creating new classes, needed to fix a bug
-	  pointed by Stéphane Bidoul where the input buffer of the
+	  pointed by Stï¿½phane Bidoul where the input buffer of the
 	  xmlTextReader instance gets destroyed if the python wrapper for
 	  the input is not referenced anymore.
 
 Mon Dec 30 19:39:36 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed another pair of problem
-	  pointed by Stéphane Bidoul: depth start at 0 and a parse problem.
+	  pointed by Stï¿½phane Bidoul: depth start at 0 and a parse problem.
 
 Mon Dec 30 13:36:50 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed another problem
-	  pointed by Stéphane Bidoul
+	  pointed by Stï¿½phane Bidoul
 
 Mon Dec 30 12:39:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
@@ -11504,7 +11508,7 @@ Mon Dec 30 00:59:07 CET 2002 Daniel Veillard <daniel@veillard.com>
 Sun Dec 29 12:13:18 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed a bug pointed out
-	  by Stéphane Bidoul and integrated it into the tests
+	  by Stï¿½phane Bidoul and integrated it into the tests
 
 Sat Dec 28 23:49:12 CET 2002 Daniel Veillard <daniel@veillard.com>
 
@@ -11566,7 +11570,7 @@ Mon Dec 23 16:54:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Mon Dec 23 15:42:24 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* python/libxml.c python/setup.py.in: patch from Stéphane Bidoul
+	* python/libxml.c python/setup.py.in: patch from Stï¿½phane Bidoul
 	  for Python 2.1
 
 Sun Dec 22 11:24:06 CET 2002 Daniel Veillard <daniel@veillard.com>
@@ -11768,7 +11772,7 @@ Wed Nov 27 12:40:16 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Wed Nov 27 09:00:00 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* python/setup.py.in: another patch from Stéphane Bidoul for 
+	* python/setup.py.in: another patch from Stï¿½phane Bidoul for 
 	  Python bindings on Windows
 	* doc/parsedecl.py: small cleanup
 
@@ -11793,7 +11797,7 @@ Sat Nov 23 17:22:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 Sat Nov 23 12:21:24 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/setup.py.in: trying
-	  to fix the Python bindings build on Windows (Stéphane Bidoul)
+	  to fix the Python bindings build on Windows (Stï¿½phane Bidoul)
 
 Fri Nov 22 22:41:34 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
@@ -13183,7 +13187,7 @@ Mon Apr  1 10:02:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 Fri Mar 29 23:41:53 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* libxml.m4: Frédéric Crozat gave a patch related to the change
+	* libxml.m4: Frï¿½dï¿½ric Crozat gave a patch related to the change
 	  of Include paths breaking the libxml.m4
 
 Fri Mar 29 18:25:54 CET 2002 Daniel Veillard <daniel@veillard.com>
@@ -16025,7 +16029,7 @@ Fri May 11 19:37:30 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Fri May 11 16:07:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* HTMLparser.c: Patch from Jonas Borgström
+	* HTMLparser.c: Patch from Jonas Borgstrï¿½m
 	(htmlGetEndPriority): New function, returns 
 	the priority of a certain element.
 	(htmlAutoCloseOnClose): Only close inline elements if they 
@@ -16093,7 +16097,7 @@ Thu May  3 12:47:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Thu May  3 10:25:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* HTMLparser.c: trying to fix the problem reported by Jonas Borgström
+	* HTMLparser.c: trying to fix the problem reported by Jonas Borgstrï¿½m
 	* results/HTML/ : a few changes in the output of the HTML tests as
 	  a result.
 	* configure.in: tying to fix -liconv where needed
@@ -16109,7 +16113,7 @@ Wed May  2 18:39:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Wed May  2 14:39:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* DOCBparser.c: patche from  László Kovács, fixed entities refs
+	* DOCBparser.c: patche from  Lï¿½szlï¿½ Kovï¿½cs, fixed entities refs
 	  in attributes handling
 
 Wed May  2 12:56:04 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
@@ -16191,7 +16195,7 @@ Thu Apr 26 16:35:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Thu Apr 26 12:57:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* DOCBparser.c: patche from  László Kovács
+	* DOCBparser.c: patche from  Lï¿½szlï¿½ Kovï¿½cs
 
 Thu Apr 26 11:31:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
@@ -16199,7 +16203,7 @@ Thu Apr 26 11:31:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Thu Apr 26 11:14:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* error.c: Jean François Lecomte provided a complete description
+	* error.c: Jean Franï¿½ois Lecomte provided a complete description
 	  and a fix to bug #53537
 
 Thu Apr 26 09:42:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
@@ -16213,7 +16217,7 @@ Wed Apr 25 21:05:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Wed Apr 25 17:52:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* DOCBparser.c include/Makefile.am: two patches from  László Kovács
+	* DOCBparser.c include/Makefile.am: two patches from  Lï¿½szlï¿½ Kovï¿½cs
 
 Wed Apr 25 14:56:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
@@ -16255,7 +16259,7 @@ Tue Apr 24 14:10:38 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Tue Apr 24 13:21:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* HTMLparser.c: Jonas Borgström patch, the <td>, and <th> elements
+	* HTMLparser.c: Jonas Borgstrï¿½m patch, the <td>, and <th> elements
 	  now means the end of any open <span>,<font>,<a>,<b>,<i>,<u>.
 
 Mon Apr 23 15:40:04 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
@@ -17057,7 +17061,7 @@ Wed Jan  3 21:51:13 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 Wed Jan  3 18:56:00 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: htmlCheckParagraph to check htmlOmittedDefaultValue,
-	  reported by Jonas Borgström
+	  reported by Jonas Borgstrï¿½m
 	* nanohttp.c: Applied Bjorn Reese' IPV6 first patch
 
 Wed Jan  3 16:19:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
@@ -18680,7 +18684,7 @@ Sun Jul 11 18:16:34 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 	* example/Makefile.am, configure.in: added the makefile for the
 	  gjobread example
 
-Sat Jul 10 14:19:11 CEST 1999 Tomasz K³oczko  <kloczek@pld.org.pl>
+Sat Jul 10 14:19:11 CEST 1999 Tomasz Kï¿½oczko  <kloczek@pld.org.pl>
 
 	* doc/Makefile.am:
 	- fix which allow "make install DESTDIR=</install/prefix>".
@@ -18783,7 +18787,7 @@ Wed Mar 24 21:37:02 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c, parserInternals.h: moved the chars macro definitions
 	  to parserInternals.h
-	* parser.c, error.c: applied patches from "Knut Åkesson"
+	* parser.c, error.c: applied patches from "Knut ï¿½kesson"
 	  <ka@s2.chalmers.se> for clean compilation under MSVC 6 :-o
 
 Tue Mar 23 11:10:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>

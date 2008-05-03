@@ -20,7 +20,12 @@
 #include "libxml.h"
 
 #include <string.h>
+#ifdef HAVE_STDINT_H
 #include <stdint.h>
+#elif defined(WIN32)
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int16 uint16_t;
+#endif
 #include <libxml/tree.h>
 #include <libxml/dict.h>
 #include <libxml/xmlmemory.h>

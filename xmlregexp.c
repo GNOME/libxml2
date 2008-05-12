@@ -3162,7 +3162,8 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 	exec->counts = NULL;
     while ((exec->status == 0) &&
 	   ((exec->inputString[exec->index] != 0) ||
-	    (exec->state->type != XML_REGEXP_FINAL_STATE))) {
+	    ((exec->state != NULL) &&
+	     (exec->state->type != XML_REGEXP_FINAL_STATE)))) {
 	xmlRegTransPtr trans;
 	xmlRegAtomPtr atom;
 

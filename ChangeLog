@@ -1,3 +1,7 @@
+Mon May 12 15:12:44 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: avoid a regexp crash, should fix #523738
+
 Mon May 12 14:56:06 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c runtest.c testapi.c include/libxml/xmlreader.h

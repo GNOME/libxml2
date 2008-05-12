@@ -720,6 +720,7 @@ libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp)
 }
 #endif /* LIBXML_REGEXP_ENABLED */
 
+#ifdef LIBXML_READER_ENABLED
 PyObject *
 libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader)
 {
@@ -755,6 +756,7 @@ libxml_xmlTextReaderLocatorPtrWrap(xmlTextReaderLocatorPtr locator)
                                      (char *) "xmlTextReaderLocatorPtr", NULL);
     return (ret);
 }
+#endif /* LIBXML_READER_ENABLED */
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 PyObject *

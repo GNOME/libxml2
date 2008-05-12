@@ -23,6 +23,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
 #include <libxml/c14n.h>
+#include <libxml/xmlreader.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
@@ -1890,6 +1891,7 @@ libxml_xmlFreeValidCtxt(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     return(Py_None);
 }
 
+#ifdef LIBXML_READER_ENABLED
 /************************************************************************
  *									*
  *                      Per xmlTextReader error handler                 *
@@ -2059,6 +2061,7 @@ libxml_xmlFreeTextReader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
     Py_INCREF(Py_None);
     return(Py_None);
 }
+#endif
 
 /************************************************************************
  *									*
@@ -3750,9 +3753,11 @@ static PyMethodDef libxmlMethods[] = {
     {(char *)"xmlParserCtxtSetErrorHandler", libxml_xmlParserCtxtSetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlParserCtxtGetErrorHandler", libxml_xmlParserCtxtGetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlFreeParserCtxt", libxml_xmlFreeParserCtxt, METH_VARARGS, NULL },
+#ifdef LIBXML_READER_ENABLED
     {(char *)"xmlTextReaderSetErrorHandler", libxml_xmlTextReaderSetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlTextReaderGetErrorHandler", libxml_xmlTextReaderGetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlFreeTextReader", libxml_xmlFreeTextReader, METH_VARARGS, NULL },
+#endif
     {(char *)"addLocalCatalog", libxml_addLocalCatalog, METH_VARARGS, NULL },
 #ifdef LIBXML_SCHEMAS_ENABLED
     {(char *)"xmlRelaxNGSetValidErrors", libxml_xmlRelaxNGSetValidErrors, METH_VARARGS, NULL},

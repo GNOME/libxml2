@@ -99,6 +99,7 @@ typedef struct {
 } PyxmlReg_Object;
 #endif /* LIBXML_REGEXP_ENABLED */
 
+#ifdef LIBXML_READER_ENABLED
 #define PyxmlTextReader_Get(v) (((v) == Py_None) ? NULL : \
         (((PyxmlTextReader_Object *)(v))->obj))
 
@@ -114,6 +115,7 @@ typedef struct {
     PyObject_HEAD
     xmlTextReaderLocatorPtr obj;
 } PyxmlTextReaderLocator_Object;
+#endif
 
 #define PyURI_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyURI_Object *)(v))->obj))
@@ -229,8 +231,10 @@ PyObject * libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer);
 #ifdef LIBXML_REGEXP_ENABLED
 PyObject * libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp);
 #endif /* LIBXML_REGEXP_ENABLED */
+#ifdef LIBXML_READER_ENABLED
 PyObject * libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader);
 PyObject * libxml_xmlTextReaderLocatorPtrWrap(xmlTextReaderLocatorPtr locator);
+#endif
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);
 #ifdef LIBXML_SCHEMAS_ENABLED

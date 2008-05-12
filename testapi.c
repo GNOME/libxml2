@@ -720,6 +720,23 @@ static void des_xmlExpNodePtr(int no ATTRIBUTE_UNUSED, xmlExpNodePtr val ATTRIBU
 
 #endif
 
+#if defined(LIBXML_SCHEMAS_ENABLED)
+#define gen_nb_xmlSchemaPtr 1
+static xmlSchemaPtr gen_xmlSchemaPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlSchemaPtr(int no ATTRIBUTE_UNUSED, xmlSchemaPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_xmlSchemaValidCtxtPtr 1
+static xmlSchemaValidCtxtPtr gen_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchemaValidCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
 #define gen_nb_xmlHashDeallocator 2
 static void 
 test_xmlHashDeallocator(void *payload ATTRIBUTE_UNUSED, xmlChar *name ATTRIBUTE_UNUSED) {
@@ -32068,16 +32085,6 @@ test_xmlTextReaderSchemaValidate(void) {
     return(test_ret);
 }
 
-#ifdef LIBXML_READER_ENABLED
-
-#define gen_nb_xmlSchemaValidCtxtPtr 1
-static xmlSchemaValidCtxtPtr gen_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchemaValidCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-#endif
-
 
 static int
 test_xmlTextReaderSchemaValidateCtxt(void) {
@@ -32183,16 +32190,6 @@ test_xmlTextReaderSetParserProp(void) {
 
     return(test_ret);
 }
-
-#ifdef LIBXML_READER_ENABLED
-
-#define gen_nb_xmlSchemaPtr 1
-static xmlSchemaPtr gen_xmlSchemaPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaPtr(int no ATTRIBUTE_UNUSED, xmlSchemaPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-#endif
 
 
 static int
@@ -33725,13 +33722,13 @@ test_xmlSchemaGetValidErrors(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a XML-Schema validation context */
     int n_ctxt;
-    xmlSchemaValidityErrorFunc * err; /*  */
+    xmlSchemaValidityErrorFunc * err; /* the error function result */
     int n_err;
-    xmlSchemaValidityWarningFunc * warn; /*  */
+    xmlSchemaValidityWarningFunc * warn; /* the warning function result */
     int n_warn;
-    void ** ctx; /*  */
+    void ** ctx; /* the functions context result */
     int n_ctx;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -33780,7 +33777,7 @@ test_xmlSchemaIsValid(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* the schema validation context */
     int n_ctxt;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -33973,7 +33970,7 @@ test_xmlSchemaSAXUnplug(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaSAXPlugPtr plug; /*  */
+    xmlSchemaSAXPlugPtr plug; /* a data structure returned by xmlSchemaSAXPlug */
     int n_plug;
 
     for (n_plug = 0;n_plug < gen_nb_xmlSchemaSAXPlugPtr;n_plug++) {
@@ -34037,9 +34034,9 @@ test_xmlSchemaSetValidOptions(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
-    int options; /*  */
+    int options; /* a combination of xmlSchemaValidOption */
     int n_options;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -34088,7 +34085,7 @@ test_xmlSchemaValidCtxtGetOptions(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -34122,7 +34119,7 @@ test_xmlSchemaValidCtxtGetParserCtxt(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlParserCtxtPtr ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -34156,29 +34153,29 @@ test_xmlSchemaValidateDoc(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
-    xmlDocPtr instance; /*  */
-    int n_instance;
+    xmlDocPtr doc; /* a parsed document tree */
+    int n_doc;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
-    for (n_instance = 0;n_instance < gen_nb_xmlDocPtr;n_instance++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlSchemaValidCtxtPtr(n_ctxt, 0);
-        instance = gen_xmlDocPtr(n_instance, 1);
+        doc = gen_xmlDocPtr(n_doc, 1);
 
-        ret_val = xmlSchemaValidateDoc(ctxt, instance);
+        ret_val = xmlSchemaValidateDoc(ctxt, doc);
         desret_int(ret_val);
         call_tests++;
         des_xmlSchemaValidCtxtPtr(n_ctxt, ctxt, 0);
-        des_xmlDocPtr(n_instance, instance, 1);
+        des_xmlDocPtr(n_doc, doc, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlSchemaValidateDoc",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
             printf(" %d", n_ctxt);
-            printf(" %d", n_instance);
+            printf(" %d", n_doc);
             printf("\n");
         }
     }
@@ -34197,11 +34194,11 @@ test_xmlSchemaValidateFile(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
-    const char * filename; /*  */
+    const char * filename; /* the URI of the instance */
     int n_filename;
-    int options; /*  */
+    int options; /* a future set of options, currently unused */
     int n_options;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -34245,9 +34242,9 @@ test_xmlSchemaValidateOneElement(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
-    xmlNodePtr elem; /*  */
+    xmlNodePtr elem; /* an element node */
     int n_elem;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {
@@ -34286,15 +34283,15 @@ test_xmlSchemaValidateStream(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
-    xmlSchemaValidCtxtPtr ctxt; /*  */
+    xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
     int n_ctxt;
-    xmlParserInputBufferPtr input; /*  */
+    xmlParserInputBufferPtr input; /* the input to use for reading the data */
     int n_input;
-    xmlCharEncoding enc; /*  */
+    xmlCharEncoding enc; /* an optional encoding information */
     int n_enc;
-    xmlSAXHandlerPtr sax; /*  */
+    xmlSAXHandlerPtr sax; /* a SAX handler for the resulting events */
     int n_sax;
-    void * user_data; /*  */
+    void * user_data; /* the context to provide to the SAX handler. */
     int n_user_data;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchemaValidCtxtPtr;n_ctxt++) {

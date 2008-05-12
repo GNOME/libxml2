@@ -4183,18 +4183,22 @@ testDesc testDescriptions[] = {
       errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", NULL,
       /* Ignore errors at this point ".err", */
       XML_PARSE_XINCLUDE },
+#ifdef LIBXML_READER_ENABLED
     { "XInclude xmlReader regression tests",
       streamParseTest, "./test/XInclude/docs/*", "result/XInclude/", ".rdr",
       /* Ignore errors at this point ".err", */
       NULL, XML_PARSE_XINCLUDE },
+#endif
     { "XInclude regression tests stripping include nodes" ,
       errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", NULL,
       /* Ignore errors at this point ".err", */
       XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
+#ifdef LIBXML_READER_ENABLED
     { "XInclude xmlReader regression tests stripping include nodes",
       streamParseTest, "./test/XInclude/docs/*", "result/XInclude/", ".rdr",
       /* Ignore errors at this point ".err", */
       NULL, XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
+#endif
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 #ifdef LIBXML_DEBUG_ENABLED

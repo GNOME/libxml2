@@ -1,3 +1,10 @@
+Mon May 12 14:56:06 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c runtest.c testapi.c include/libxml/xmlreader.h
+	  python/types.c python/libxml_wrap.h python/libxml.c: fx compilation
+	  when configured without the reader should fix #513110
+	* doc/*: regenerated
+
 Sat May  3 14:33:29 CEST 2008 Rob Richards <rrichards@ctindustries.net>
 
 	* dict.c: check for stdint.h and define types when using MSVC

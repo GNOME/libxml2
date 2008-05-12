@@ -18,11 +18,24 @@
 #include <libxml/xmlschemas.h>
 #endif
 
-#ifdef LIBXML_READER_ENABLED
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * xmlParserSeverities:
+ *
+ * How severe an error callback is when the per-reader error callback API
+ * is used.
+ */
+typedef enum {
+    XML_PARSER_SEVERITY_VALIDITY_WARNING = 1,
+    XML_PARSER_SEVERITY_VALIDITY_ERROR = 2,
+    XML_PARSER_SEVERITY_WARNING = 3,
+    XML_PARSER_SEVERITY_ERROR = 4
+} xmlParserSeverities;
+
+#ifdef LIBXML_READER_ENABLED
 
 /**
  * xmlTextReaderMode:
@@ -51,19 +64,6 @@ typedef enum {
     XML_PARSER_VALIDATE = 3,
     XML_PARSER_SUBST_ENTITIES = 4
 } xmlParserProperties;
-
-/**
- * xmlParserSeverities:
- *
- * How severe an error callback is when the per-reader error callback API
- * is used.
- */
-typedef enum {
-    XML_PARSER_SEVERITY_VALIDITY_WARNING = 1,
-    XML_PARSER_SEVERITY_VALIDITY_ERROR = 2,
-    XML_PARSER_SEVERITY_WARNING = 3,
-    XML_PARSER_SEVERITY_ERROR = 4
-} xmlParserSeverities;
 
 /**
  * xmlReaderTypes:
@@ -414,11 +414,11 @@ XMLPUBFUN void XMLCALL
 						 xmlTextReaderErrorFunc *f,
 						 void **arg);
 
+#endif /* LIBXML_READER_ENABLED */
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* LIBXML_READER_ENABLED */
 
 #endif /* __XML_XMLREADER_H__ */
 

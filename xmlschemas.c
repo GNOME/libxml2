@@ -21731,7 +21731,7 @@ xmlSchemaLookupNamespace(xmlSchemaValidCtxtPtr vctxt,
 	    }
 	}
 	return (NULL);
-#ifdef LIBXML_WRITER_ENABLED
+#ifdef LIBXML_READER_ENABLED
     } else if (vctxt->reader != NULL) {
 	xmlChar *nsName;
 

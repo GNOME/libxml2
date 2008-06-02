@@ -45,7 +45,6 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     (xmlStrEqual(node->ns->href, xmlRelaxNGNs)))
 
 
-#if 0
 #define DEBUG 1
 
 #define DEBUG_GRAMMAR 1
@@ -67,6 +66,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 #define DEBUG_COMPILE 1
 
 #define DEBUG_PROGRESSIVE 1
+#if 0
 #endif
 
 #define MAX_ERROR 5
@@ -6495,6 +6495,8 @@ xmlRelaxNGParseGrammar(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes)
                     ctxt);
     }
 
+    /* @@@@ */
+
     ctxt->grammar = old;
     return (ret);
 }
@@ -8812,6 +8814,8 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
             }
         case XML_RELAXNG_REF:
         case XML_RELAXNG_PARENTREF:
+	    if (define->content == NULL) {
+	    }
             ret = xmlRelaxNGValidateValue(ctxt, define->content);
             break;
         default:

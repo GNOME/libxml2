@@ -95,9 +95,9 @@ http://svn.gnome.org/viewcvs/libxml2/trunk/
       flag fix (Richard Jones), regexp interpretation of \,
       htmlCreateDocParserCtxt (Jean-Daniel Dupas), configure.in
       typo (Bjorn Reese), entity content failure, xmlListAppend() fix
-      (Georges-André Silber), XPath number serialization (William Brack),
+      (Georges-AndrÃ© Silber), XPath number serialization (William Brack),
       nanohttp gzipped stream fix (William Brack and Alex Cornejo),
-      xmlCharEncFirstLine typo (Mark Rowe), uri bug (François Delyon),
+      xmlCharEncFirstLine typo (Mark Rowe), uri bug (FranÃ§ois Delyon),
       XPath string value of PI nodes (William Brack), XPath node set
       sorting bugs (William Brack), avoid outputting namespace decl
       dups in the writer (Rob Richards), xmlCtxtReset bug, UTF-8 encoding
@@ -105,7 +105,7 @@ http://svn.gnome.org/viewcvs/libxml2/trunk/
       workaround wrong file: URIs, htmlNodeDumpFormatOutput on attributes,
       invalid character in attribute detection bug, big comments before 
       internal subset streaming bug, HTML parsing of attributes with : in
-      the name, IDness of name in HTML (Dagfinn I. Mannsåker) 
+      the name, IDness of name in HTML (Dagfinn I. MannsÃ¥ker) 
    - Improvement: keep URI query parts in raw form (Richard Jones),
       embed tag support in HTML (Michael Day) 
 
@@ -120,7 +120,7 @@ http://svn.gnome.org/viewcvs/libxml2/trunk/
       (Steven Rainwater), user data propagation in XInclude (Michael Day),
       standalone and XML decl detection (Michael Day), Python id ouptut
       for some id, fix the big python string memory leak, URI parsing fixes
-      (Stéphane Bidoul and William), long comments parsing bug (William),
+      (StÃ©phane Bidoul and William), long comments parsing bug (William),
       concurrent threads initialization (Ted Phelps), invalid char
       in text XInclude (William), XPath memory leak (William), tab in
       python problems (Andreas Hanke), XPath node comparison error
@@ -130,7 +130,7 @@ http://svn.gnome.org/viewcvs/libxml2/trunk/
       min occurs of 0 (William), HTML script/style parsing (Mike Day)
    - Improvement: make xmlTextReaderSetup() public
    - Compilation and postability: fix a missing include problem (William),
-      __ss_familly on AIX again (Björn Wiberg), compilation without zlib
+      __ss_familly on AIX again (BjÃ¶rn Wiberg), compilation without zlib
       (Michael Day), catalog patch for Win32 (Christian Ehrlicher),
       Windows CE fixes (Andreas Stricke)
    - Various CVS to SVN infrastructure changes
@@ -277,7 +277,7 @@ Do not use or package 2.6.25
 
 
 2.6.22: Sep 12 2005:
-   - build fixes: compile without schematron (Stéphane Bidoul)
+   - build fixes: compile without schematron (StÃ©phane Bidoul)
    - bug fixes: xmlDebugDumpNode on namespace node (Oleg Paraschenko)i,
     CDATA push parser bug, xmlElemDump problem with XHTML1 doc,
     XML_FEATURE_xxx clash with expat headers renamed XML_WITH_xxx, fix some
@@ -550,7 +550,7 @@ Do not use or package 2.6.25
     streaming problem (Steve Ball), DTD serialization problem (William),
     libxml.m4 fixes (Mike Hommey), do not provide destructors as methods on
     Python classes, xmlReader buffer bug, Python bindings memory interfaces
-    improvement (with Stéphane Bidoul), Fixed the push parser to be back to
+    improvement (with StÃ©phane Bidoul), Fixed the push parser to be back to
     synchronous behaviour.
    - improvement: custom per-thread I/O enhancement (Rob Richards), register
     namespace in debug shell (Stefano Debenedetti), Python based regression
@@ -676,8 +676,8 @@ Do not use or package 2.6.25
     callbacks order for XPath callbacks (Frederic Peters)
    - Documentation: python scripts (William Brack), xslt stylesheets (John
     Fleck), doc (Sven Zimmerman), I/O example.
-   - Python bindings: fixes (William), enum support (Stéphane Bidoul),
-    structured error reporting (Stéphane Bidoul)
+   - Python bindings: fixes (William), enum support (StÃ©phane Bidoul),
+    structured error reporting (StÃ©phane Bidoul)
    - XInclude: various fixes for conformance, problem related to dictionnary
     references (William & me), recursion (William)
    - xmlWriter: indentation (Lucas Brasilino), memory leaks (Alfred
@@ -807,7 +807,7 @@ Do not use or package 2.6.25
     and charset information if available.
    - Relax-NG: bug fixes including the one reported by Martijn Faassen and
     zeroOrMore, better error reporting.
-   - Python bindings (Stéphane Bidoul), never use stdout for errors
+   - Python bindings (StÃ©phane Bidoul), never use stdout for errors
   output
    - Portability: all the headers have macros for export and calling
     convention definitions (Igor Zlatkovic), VMS update (Craig A. Berry),
@@ -888,11 +888,11 @@ A bugfixes only release   - Windows Makefiles (William Brack)
    - portability: DJGPP (MsDos) , OpenVMS (Craig A. Berry)
    - William Brack fixed multithreading lock problems
    - IPv6 patch for FTP and HTTP accesses (Archana Shah/Wipro)
-   - Windows fixes (Igor Zlatkovic,  Eric Zurcher), threading (Stéphane
+   - Windows fixes (Igor Zlatkovic,  Eric Zurcher), threading (StÃ©phane
     Bidoul)
    - A few W3C Schemas Structure improvements
    - W3C Schemas Datatype improvements (Charlie Bozeman)
-   - Python bindings for thread globals (Stéphane Bidoul), and method/class
+   - Python bindings for thread globals (StÃ©phane Bidoul), and method/class
     generator
    - added --nonet option to xmllint
    - documentation improvements (John Fleck)
@@ -968,7 +968,7 @@ A bugfixes only release   - Windows Makefiles (William Brack)
    - First implementation of RelaxNG, added --relaxng flag to xmllint
    - Schemas support now compiled in by default.
    - Bug fixes: DTD validation, namespace checking, XInclude and entities,
-    delegateURI in XML Catalogs, HTML parser, XML reader (Stéphane Bidoul),
+    delegateURI in XML Catalogs, HTML parser, XML reader (StÃ©phane Bidoul),
     XPath parser and evaluation,  UTF8ToUTF8 serialization, XML reader memory
     consumption, HTML parser, HTML serialization in the presence of
   namespaces
@@ -977,7 +977,7 @@ A bugfixes only release   - Windows Makefiles (William Brack)
     patches (Stefan Kost)
    - Portability fixes: NetBSD (Julio Merino), Windows (Igor Zlatkovic)
    - Added python bindings for XPointer, contextual error reporting
-    (Stéphane Bidoul)
+    (StÃ©phane Bidoul)
    - URI/file escaping problems (Stefano Zacchiroli)
 
 
@@ -989,11 +989,11 @@ A bugfixes only release   - Windows Makefiles (William Brack)
 
 2.5.0: Jan 6 2003:
    - New XmltextReader interface based on C#
-    API (with help of Stéphane Bidoul)
+    API (with help of StÃ©phane Bidoul)
    - Windows: more exports, including the new API (Igor)
    - XInclude fallback fix
-   - Python: bindings for the new API, packaging (Stéphane Bidoul),
-    drv_libxml2.py Python xml.sax driver (Stéphane Bidoul), fixes, speedup
+   - Python: bindings for the new API, packaging (StÃ©phane Bidoul),
+    drv_libxml2.py Python xml.sax driver (StÃ©phane Bidoul), fixes, speedup
     and iterators for Python-2.2 (Hannu Krosing)
    - Tutorial fixes (john Fleck and Niraj Tolia) xmllint man update
   (John)
@@ -1013,7 +1013,7 @@ A bugfixes only release   - Windows Makefiles (William Brack)
 
 2.4.29: Dec 11 2002:
    - Windows fixes (Igor): Windows CE port, pthread linking, python bindings
-    (Stéphane Bidoul), Mingw (Magnus Henoch), and export list updates
+    (StÃ©phane Bidoul), Mingw (Magnus Henoch), and export list updates
    - Fix for prev in python bindings (ERDI Gergo)
    - Fix for entities handling (Marcus Clarke)
    - Refactored the XML and HTML dumps to a single code path, fixed XHTML1
@@ -1360,7 +1360,7 @@ it's actually not compiled in by default. The real fixes are:   - a couple of bu
 
 
 2.3.9: May 19 2001:
-Lots of bugfixes, and added a basic SGML catalog support:   - HTML push bugfix #54891 and another patch from Jonas Borgström
+Lots of bugfixes, and added a basic SGML catalog support:   - HTML push bugfix #54891 and another patch from Jonas BorgstrÃ¶m
    - some serious speed optimization again
    - some documentation cleanups
    - trying to get better linking on Solaris (-R)

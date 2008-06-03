@@ -1,3 +1,9 @@
+Tue Jun  3 18:07:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/setup.py: apply patch from Martin fixing
+	  python whitespaces
+	* NEWS: following previous commit rebuilt now in UTF-8
+
 Mon Jun  2 17:39:42 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* ChangeLog: patch from Hans de Goede to switch the file to UTF-8

@@ -2616,6 +2616,8 @@ xmlCatalogSGMLResolve(xmlCatalogPtr catal, const xmlChar *pubID,
 	return(ret);
     if (sysID != NULL)
 	ret = xmlCatalogGetSGMLSystem(catal->sgml, sysID);
+    if (ret != NULL)
+	return(ret);
     return(NULL);
 }
 
@@ -2912,7 +2914,7 @@ xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
 
 	sgml = xmlCatalogSGMLResolve(catal, NULL, URI);
 	if (sgml != NULL)
-            sgml = xmlStrdup(sgml);
+            ret = xmlStrdup(sgml);
     }
     return(ret);
 }

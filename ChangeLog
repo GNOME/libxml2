@@ -1,3 +1,11 @@
+Tue Jun 10 16:52:17 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: apply a couple of fixes based on a Coverity report
+	  forwarded by Derrick Price.
+	* VxWorks/README VxWorks/Makefile VxWorks/build.sh: instructions
+	  Makefile, and shell script to build on VxWorks 6.4+ provided by
+	  Jim Wert.
+
 Tue Jun  3 18:07:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/setup.py: apply patch from Martin fixing

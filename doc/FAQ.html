@@ -217,9 +217,11 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     and libxml2, but you need to install a more recent version:
     libxml(-devel) &gt;= 1.8.8 or libxml2(-devel) &gt;= 2.1.0</p>
   </li>
-  <li><em>XPath implementation looks seriously broken</em>
-    <p>XPath implementation prior to 2.3.0 was really incomplete. Upgrade to
-    a recent version, there are no known bugs in the current version.</p>
+  <li><em>Random crashes in threaded applications</em>
+    <p>Read and follow all advices on the <a href="threads.html">thread
+    safety</a> page, and make 100% sure you never call xmlCleanupParser()
+    while the library or an XML document might still be in use by another
+    thread.</p>
   </li>
   <li><em>The example provided in the web page does not compile.</em>
     <p>It's hard to maintain the documentation in sync with the code
@@ -235,16 +237,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
         generated doc</a></li>
       <li>have a look at <a href="examples/index.html">the set of
         examples</a>.</li>
-      <li>look for examples of use for libxml2 function using the Gnome code.
-<!--
-        For example the following will query the full Gnome CVS base for the
-        use of the <strong>xmlAddChild()</strong> function:
-        <p><a
-        href="http://cvs.gnome.org/lxr/search?string=xmlAddChild">http://cvs.gnome.org/lxr/search?string=xmlAddChild</a></p>
-        <p>This may be slow, a large hardware donation to the gnome project
-        could cure this :-)</p>
--->
-      </li>
+      <li>look for examples of use for libxml2 function using the Gnome code
+          or by asking on Google.</li>
       <li><a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">Browse
         the libxml2 source</a> , I try to write code as clean and documented
         as possible, so looking at it may be helpful. In particular the code
@@ -261,12 +255,6 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
         <p>Website: <a href="http://libxmlplusplus.sourceforge.net/">http://libxmlplusplus.sourceforge.net/</a></p>
         <p>Download: <a href="http://sourceforge.net/project/showfiles.php?group_id=12999">http://sourceforge.net/project/showfiles.php?group_id=12999</a></p>
       </li>
-      <!-- Website is currently unavailable as of 2003-08-02
-      <li>by Peter Jones &lt;pjones@pmade.org&gt;
-      <p>Website: <a
-      href="http://pmade.org/pjones/software/xmlwrapp/">http://pmade.org/pjones/software/xmlwrapp/</a></p>
-      </li>
-      -->
     </ul></li>
   <li><em>How to validate a document a posteriori ?</em>
     <p>It is possible to validate documents which had not been validated at

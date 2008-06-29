@@ -1,3 +1,6 @@
+Sun Jun 29 17:04:28 CEST 2008 Rob Richards <rrichards@ctindustries.net>
+	* xmlschemas.c: fix crash with invalid whitespace facet
+
 Wed Jun 11 10:13:02 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xml.html doc/FAQ.html: add a section in the FAQ about

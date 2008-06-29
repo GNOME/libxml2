@@ -6120,7 +6120,7 @@ xmlSchemaPGetBoolNodeValue(xmlSchemaParserCtxtPtr ctxt,
     value = xmlNodeGetContent(node);
     /*
     * 3.2.2.1 Lexical representation
-    * An instance of a datatype that is defined as ·boolean·
+    * An instance of a datatype that is defined as ï¿½booleanï¿½
     * can have the following legal literals {true, false, 1, 0}.
     */
     if (xmlStrEqual(BAD_CAST value, BAD_CAST "true"))
@@ -6168,7 +6168,7 @@ xmlGetBooleanProp(xmlSchemaParserCtxtPtr ctxt,
         return (def);
     /*
     * 3.2.2.1 Lexical representation
-    * An instance of a datatype that is defined as ·boolean·
+    * An instance of a datatype that is defined as ï¿½booleanï¿½
     * can have the following legal literals {true, false, 1, 0}.
     */
     if (xmlStrEqual(val, BAD_CAST "true"))
@@ -7698,8 +7698,8 @@ xmlSchemaParseAttributeGroupRef(xmlSchemaParserCtxtPtr pctxt,
 	/*
 	* SPEC src-redefine:
 	* (7.1) "If it has an <attributeGroup> among its contents
-	* the ·actual value· of whose ref [attribute] is the same
-	* as the ·actual value· of its own name attribute plus
+	* the ï¿½actual valueï¿½ of whose ref [attribute] is the same
+	* as the ï¿½actual valueï¿½ of its own name attribute plus
 	* target namespace, then it must have exactly one such group."
 	*/
 	if (pctxt->redefCounter != 0) {
@@ -8848,7 +8848,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->flags |= XML_SCHEMAS_TYPE_VARIETY_UNION;
     /*
     * SPEC (Base type) (2) "If the <list> or <union> alternative is chosen,
-    * then the ·simple ur-type definition·."
+    * then the ï¿½simple ur-type definitionï¿½."
     */
     type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE);
     /*
@@ -9016,7 +9016,7 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->flags |= XML_SCHEMAS_TYPE_VARIETY_LIST;
     /*
     * SPEC (Base type) (2) "If the <list> or <union> alternative is chosen,
-    * then the ·simple ur-type definition·."
+    * then the ï¿½simple ur-type definitionï¿½."
     */
     type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYSIMPLETYPE);
     /*
@@ -9161,9 +9161,9 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     /*
     * TargetNamespace:
-    * SPEC "The ·actual value· of the targetNamespace [attribute]
+    * SPEC "The ï¿½actual valueï¿½ of the targetNamespace [attribute]
     * of the <schema> ancestor element information item if present,
-    * otherwise ·absent·.
+    * otherwise ï¿½absentï¿½.
     */
     if (topLevel == 0) {
 #ifdef ENABLE_NAMED_LOCALS
@@ -9298,8 +9298,8 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * REDEFINE: SPEC src-redefine (5)
     * "Within the [children], each <simpleType> must have a
-    * <restriction> among its [children] ... the ·actual value· of whose
-    * base [attribute] must be the same as the ·actual value· of its own
+    * <restriction> among its [children] ... the ï¿½actual valueï¿½ of whose
+    * base [attribute] must be the same as the ï¿½actual valueï¿½ of its own
     * name attribute plus target namespace;"
     */
     if (topLevel && ctxt->isRedefine && (! hasRestriction)) {
@@ -10371,7 +10371,7 @@ xmlSchemaAddSchemaDoc(xmlSchemaParserCtxtPtr pctxt,
 	/*
 	* Given that the schemaLocation [attribute] is only a hint, it is open
 	* to applications to ignore all but the first <import> for a given
-	* namespace, regardless of the ·actual value· of schemaLocation, but
+	* namespace, regardless of the ï¿½actual valueï¿½ of schemaLocation, but
 	* such a strategy risks missing useful information when new
 	* schemaLocations are offered.
 	*
@@ -10755,8 +10755,8 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr pctxt, xmlSchemaPtr schema,
     thisTargetNamespace = WXS_BUCKET(pctxt)->origTargetNamespace;
     if (namespaceName != NULL) {
 	/*
-	* 1.1 If the namespace [attribute] is present, then its ·actual value·
-	* must not match the ·actual value· of the enclosing <schema>'s
+	* 1.1 If the namespace [attribute] is present, then its ï¿½actual valueï¿½
+	* must not match the ï¿½actual valueï¿½ of the enclosing <schema>'s
 	* targetNamespace [attribute].
 	*/
 	if (xmlStrEqual(thisTargetNamespace, namespaceName)) {
@@ -10957,7 +10957,7 @@ xmlSchemaParseIncludeOrRedefine(xmlSchemaParserCtxtPtr pctxt,
 	    * for inclusions, since the that was the feedback from the
 	    * schema people. I.e. the following spec piece will *not* be
 	    * satisfied:
-	    * SPEC src-include: "It is not an error for the ·actual value· of the
+	    * SPEC src-include: "It is not an error for the ï¿½actual valueï¿½ of the
 	    * schemaLocation [attribute] to fail to resolve it all, in which
 	    * case no corresponding inclusion is performed.
 	    * So do we need a warning report here?"
@@ -10974,7 +10974,7 @@ xmlSchemaParseIncludeOrRedefine(xmlSchemaParserCtxtPtr pctxt,
 	    *
 	    * SPEC src-redefine (1)
 	    * "If there are any element information items among the [children]
-	    * other than <annotation> then the ·actual value· of the
+	    * other than <annotation> then the ï¿½actual valueï¿½ of the
 	    * schemaLocation [attribute] must successfully resolve."
 	    * TODO: Ask the WG if a the location has always to resolve
 	    * here as well!
@@ -10994,9 +10994,9 @@ xmlSchemaParseIncludeOrRedefine(xmlSchemaParserCtxtPtr pctxt,
 	if (bucket->origTargetNamespace != NULL) {
 	    /*
 	    * SPEC src-include (2.1)
-	    * "SII has a targetNamespace [attribute], and its ·actual
-	    * value· is identical to the ·actual value· of the targetNamespace
-	    * [attribute] of SII’ (which must have such an [attribute])."
+	    * "SII has a targetNamespace [attribute], and its ï¿½actual
+	    * valueï¿½ is identical to the ï¿½actual valueï¿½ of the targetNamespace
+	    * [attribute] of SIIï¿½ (which must have such an [attribute])."
 	    */
 	    if (pctxt->targetNamespace == NULL) {
 		xmlSchemaCustomErr(ACTXT_CAST pctxt,
@@ -11343,8 +11343,8 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 			/*
 			* SPEC src-redefine:
 			* (6.1) "If it has a <group> among its contents at
-			* some level the ·actual value· of whose ref
-			* [attribute] is the same as the ·actual value· of
+			* some level the ï¿½actual valueï¿½ of whose ref
+			* [attribute] is the same as the ï¿½actual valueï¿½ of
 			* its own name attribute plus target namespace, then
 			* all of the following must be true:"
 			* (6.1.1) "It must have exactly one such group."
@@ -11369,9 +11369,9 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 			    xmlChar *str = NULL;
 			    /*
 			    * SPEC src-redefine:
-			    * (6.1.2) "The ·actual value· of both that
+			    * (6.1.2) "The ï¿½actual valueï¿½ of both that
 			    * group's minOccurs and maxOccurs [attribute]
-			    * must be 1 (or ·absent·).
+			    * must be 1 (or ï¿½absentï¿½).
 			    */
 			    xmlSchemaCustomErr(ACTXT_CAST ctxt,
 				XML_SCHEMAP_SRC_REDEFINE, child, NULL,
@@ -11485,8 +11485,8 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     *
     * SPEC (1.2) "...otherwise (<restriction> has no <simpleType> "
     * among its [children]), the simple type definition which is
-    * the {content type} of the type definition ·resolved· to by
-    * the ·actual value· of the base [attribute]"
+    * the {content type} of the type definition ï¿½resolvedï¿½ to by
+    * the ï¿½actual valueï¿½ of the base [attribute]"
     */
     if (xmlSchemaPValAttrQName(ctxt, schema, NULL, node, "base",
 	&(type->baseNs), &(type->base)) == 0)
@@ -11509,8 +11509,8 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		/*
 		* REDEFINE: SPEC src-redefine (5)
 		* "Within the [children], each <simpleType> must have a
-		* <restriction> among its [children] ... the ·actual value· of
-		* whose base [attribute] must be the same as the ·actual value·
+		* <restriction> among its [children] ... the ï¿½actual valueï¿½ of
+		* whose base [attribute] must be the same as the ï¿½actual valueï¿½
 		* of its own name attribute plus target namespace;"
 		*/
 		xmlSchemaPCustomErrExt(ctxt, XML_SCHEMAP_SRC_REDEFINE,
@@ -12271,7 +12271,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	* SPEC
 	* "...the third alternative (neither <simpleContent> nor
 	* <complexContent>) is chosen. This case is understood as shorthand
-	* for complex content restricting the ·ur-type definition·, and the
+	* for complex content restricting the ï¿½ur-type definitionï¿½, and the
 	* details of the mappings should be modified as necessary.
 	*/
 	type->baseType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
@@ -13115,8 +13115,8 @@ xmlSchemaResolveElementReferences(xmlSchemaElementPtr elemDecl,
     if ((elemDecl->subtypes == NULL) && (elemDecl->namedType != NULL)) {
 	xmlSchemaTypePtr type;
 
-	/* (type definition) ... otherwise the type definition ·resolved·
-	* to by the ·actual value· of the type [attribute] ...
+	/* (type definition) ... otherwise the type definition ï¿½resolvedï¿½
+	* to by the ï¿½actual valueï¿½ of the type [attribute] ...
 	*/
 	type = xmlSchemaGetType(ctxt->schema, elemDecl->namedType,
 	    elemDecl->namedTypeNs);
@@ -13154,7 +13154,7 @@ xmlSchemaResolveElementReferences(xmlSchemaElementPtr elemDecl,
 	    /*
 	    * The type definitions is set to:
 	    * SPEC "...the {type definition} of the element
-	    * declaration ·resolved· to by the ·actual value·
+	    * declaration ï¿½resolvedï¿½ to by the ï¿½actual valueï¿½
 	    * of the substitutionGroup [attribute], if present"
 	    */
 	    if (elemDecl->subtypes == NULL)
@@ -13192,8 +13192,8 @@ xmlSchemaResolveUnionMemberTypes(xmlSchemaParserCtxtPtr ctxt,
 
     /*
     * SPEC (1) "If the <union> alternative is chosen, then [Definition:]
-    * define the explicit members as the type definitions ·resolved·
-    * to by the items in the ·actual value· of the memberTypes [attribute],
+    * define the explicit members as the type definitions ï¿½resolvedï¿½
+    * to by the items in the ï¿½actual valueï¿½ of the memberTypes [attribute],
     * if any, followed by the type definitions corresponding to the
     * <simpleType>s among the [children] of <union>, if any."
     */
@@ -13488,7 +13488,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	return (0);
     }
     /*
-    * 3 If both O1 and O2 are sets of (namespace names or ·absent·),
+    * 3 If both O1 and O2 are sets of (namespace names or ï¿½absentï¿½),
     * then the union of those sets must be the value.
     */
     if ((completeWild->nsSet != NULL) && (curWild->nsSet != NULL)) {
@@ -13522,7 +13522,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
     }
     /*
     * 4 If the two are negations of different values (namespace names
-    * or ·absent·), then a pair of not and ·absent· must be the value.
+    * or ï¿½absentï¿½), then a pair of not and ï¿½absentï¿½ must be the value.
     */
     if ((completeWild->negNsSet != NULL) &&
 	(curWild->negNsSet != NULL) &&
@@ -13564,7 +13564,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	if (nsFound && absentFound) {
 	    /*
 	    * 5.1 If the set S includes both the negated namespace
-	    * name and ·absent·, then any must be the value.
+	    * name and ï¿½absentï¿½, then any must be the value.
 	    */
 	    completeWild->any = 1;
 	    if (completeWild->nsSet != NULL) {
@@ -13578,7 +13578,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	} else if (nsFound && (!absentFound)) {
 	    /*
 	    * 5.2 If the set S includes the negated namespace name
-	    * but not ·absent·, then a pair of not and ·absent· must
+	    * but not ï¿½absentï¿½, then a pair of not and ï¿½absentï¿½ must
 	    * be the value.
 	    */
 	    if (completeWild->nsSet != NULL) {
@@ -13593,7 +13593,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	    completeWild->negNsSet->value = NULL;
 	} else if ((!nsFound) && absentFound) {
 	    /*
-	    * 5.3 If the set S includes ·absent· but not the negated
+	    * 5.3 If the set S includes ï¿½absentï¿½ but not the negated
 	    * namespace name, then the union is not expressible.
 	    */
 	    xmlSchemaPErr(ctxt, completeWild->node,
@@ -13604,7 +13604,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	} else if ((!nsFound) && (!absentFound)) {
 	    /*
 	    * 5.4 If the set S does not include either the negated namespace
-	    * name or ·absent·, then whichever of O1 or O2 is a pair of not
+	    * name or ï¿½absentï¿½, then whichever of O1 or O2 is a pair of not
 	    * and a namespace name must be the value.
 	    */
 	    if (completeWild->negNsSet == NULL) {
@@ -13638,7 +13638,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	while (cur != NULL) {
 	    if (cur->value == NULL) {
 		/*
-		* 6.1 If the set S includes ·absent·, then any must be the
+		* 6.1 If the set S includes ï¿½absentï¿½, then any must be the
 		* value.
 		*/
 		completeWild->any = 1;
@@ -13656,8 +13656,8 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	}
 	if (completeWild->negNsSet == NULL) {
 	    /*
-	    * 6.2 If the set S does not include ·absent·, then a pair of not
-	    * and ·absent· must be the value.
+	    * 6.2 If the set S does not include ï¿½absentï¿½, then a pair of not
+	    * and ï¿½absentï¿½ must be the value.
 	    */
 	    if (completeWild->nsSet != NULL) {
 		xmlSchemaFreeWildcardNsSet(completeWild->nsSet);
@@ -13740,9 +13740,9 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
     }
     /*
     * 3 If either O1 or O2 is a pair of not and a value (a namespace
-    * name or ·absent·) and the other is a set of (namespace names or
-    * ·absent·), then that set, minus the negated value if it was in
-    * the set, minus ·absent· if it was in the set, must be the value.
+    * name or ï¿½absentï¿½) and the other is a set of (namespace names or
+    * ï¿½absentï¿½), then that set, minus the negated value if it was in
+    * the set, minus ï¿½absentï¿½ if it was in the set, must be the value.
     */
     if (((completeWild->negNsSet != NULL) && (curWild->nsSet != NULL)) ||
 	((curWild->negNsSet != NULL) && (completeWild->nsSet != NULL))) {
@@ -13791,7 +13791,7 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
 	return(0);
     }
     /*
-    * 4 If both O1 and O2 are sets of (namespace names or ·absent·),
+    * 4 If both O1 and O2 are sets of (namespace names or ï¿½absentï¿½),
     * then the intersection of those sets must be the value.
     */
     if ((completeWild->nsSet != NULL) && (curWild->nsSet != NULL)) {
@@ -13841,7 +13841,7 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
     }
     /*
     * 6 If the one is a negation of a namespace name and the other
-    * is a negation of ·absent·, then the one which is the negation
+    * is a negation of ï¿½absentï¿½, then the one which is the negation
     * of a namespace name must be the value.
     */
     if ((completeWild->negNsSet != NULL) && (curWild->negNsSet != NULL) &&
@@ -13873,7 +13873,7 @@ xmlSchemaCheckCOSNSSubset(xmlSchemaWildcardPtr sub,
     if (super->any)
 	return (0);
     /*
-    * 2.1 sub must be a pair of not and a namespace name or ·absent·.
+    * 2.1 sub must be a pair of not and a namespace name or ï¿½absentï¿½.
     * 2.2 super must be a pair of not and the same value.
     */
     if ((sub->negNsSet != NULL) &&
@@ -13881,7 +13881,7 @@ xmlSchemaCheckCOSNSSubset(xmlSchemaWildcardPtr sub,
 	(sub->negNsSet->value == sub->negNsSet->value))
 	return (0);
     /*
-    * 3.1 sub must be a set whose members are either namespace names or ·absent·.
+    * 3.1 sub must be a set whose members are either namespace names or ï¿½absentï¿½.
     */
     if (sub->nsSet != NULL) {
 	/*
@@ -13912,7 +13912,7 @@ xmlSchemaCheckCOSNSSubset(xmlSchemaWildcardPtr sub,
 	    xmlSchemaWildcardNsPtr cur;
 	    /*
 	    * 3.2.2 super must be a pair of not and a namespace name or
-	    * ·absent· and that value must not be in sub's set.
+	    * ï¿½absentï¿½ and that value must not be in sub's set.
 	    */
 	    cur = sub->nsSet;
 	    while (cur != NULL) {
@@ -14074,7 +14074,7 @@ xmlSchemaCheckDerivationOKRestriction2to4(xmlSchemaParserCtxtPtr pctxt,
 			* SPEC (2.1.2) "R's {attribute declaration}'s
 			* {type definition} must be validly derived from
 			* B's {type definition} given the empty set as
-			* defined in Type Derivation OK (Simple) (§3.14.6)."
+			* defined in Type Derivation OK (Simple) (ï¿½3.14.6)."
 			*/
 			xmlSchemaPAttrUseErr4(pctxt,
 			    XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2,
@@ -14106,8 +14106,8 @@ xmlSchemaCheckDerivationOKRestriction2to4(xmlSchemaParserCtxtPtr pctxt,
 			/*
 			* 2.1.3 ... one of the following must be true
 			*
-			* 2.1.3.1 B's ·effective value constraint· is
-			* ·absent· or default.
+			* 2.1.3.1 B's ï¿½effective value constraintï¿½ is
+			* ï¿½absentï¿½ or default.
 			*/
 			if ((bEffValue != NULL) &&
 			    (effFixed == 1)) {
@@ -14116,7 +14116,7 @@ xmlSchemaCheckDerivationOKRestriction2to4(xmlSchemaParserCtxtPtr pctxt,
 			    xmlSchemaGetEffectiveValueConstraint(bcur,
 				&effFixed, &rEffValue, NULL);
 			    /*
-			    * 2.1.3.2 R's ·effective value constraint· is
+			    * 2.1.3.2 R's ï¿½effective value constraintï¿½ is
 			    * fixed with the same string as B's.
 			    * MAYBE TODO: Compare the computed values.
 			    *       Hmm, it says "same string" so
@@ -14150,9 +14150,9 @@ not_found:
 		/*
 		* (2.2) "otherwise the {base type definition} must have an
 		* {attribute wildcard} and the {target namespace} of the
-		* R's {attribute declaration} must be ·valid· with respect
+		* R's {attribute declaration} must be ï¿½validï¿½ with respect
 		* to that wildcard, as defined in Wildcard allows Namespace
-		* Name (§3.10.4)."
+		* Name (ï¿½3.10.4)."
 		*/
 		if ((baseWild == NULL) ||
 		    (xmlSchemaCheckCVCWildcardNamespace(baseWild,
@@ -14250,7 +14250,7 @@ not_found:
 	    * (4.2) "The complex type definition's {attribute wildcard}'s
 	    * {namespace constraint} must be a subset of the {base type
 	    * definition}'s {attribute wildcard}'s {namespace constraint},
-	    * as defined by Wildcard Subset (§3.10.6)."
+	    * as defined by Wildcard Subset (ï¿½3.10.6)."
 	    */
 	    xmlSchemaCustomErr4(ACTXT_CAST pctxt,
 		XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_2,
@@ -14264,8 +14264,8 @@ not_found:
 	    FREE_AND_NULL(str);
 	    return(pctxt->err);
 	}
-	/* 4.3 Unless the {base type definition} is the ·ur-type
-	* definition·, the complex type definition's {attribute
+	/* 4.3 Unless the {base type definition} is the ï¿½ur-type
+	* definitionï¿½, the complex type definition's {attribute
 	* wildcard}'s {process contents} must be identical to or
 	* stronger than the {base type definition}'s {attribute
 	* wildcard}'s {process contents}, where strict is stronger
@@ -14451,7 +14451,7 @@ inherit_next: {}
     if (WXS_IS_EXTENSION(type)) {
 	if (baseType->attributeWildcard != NULL) {
 	    /*
-	    * (3.2.2.1) "If the ·base wildcard· is non-·absent·, then
+	    * (3.2.2.1) "If the ï¿½base wildcardï¿½ is non-ï¿½absentï¿½, then
 	    * the appropriate case among the following:"
 	    */
 	    if (type->attributeWildcard != NULL) {
@@ -14459,26 +14459,26 @@ inherit_next: {}
 		* Union the complete wildcard with the base wildcard.
 		* SPEC {attribute wildcard}
 		* (3.2.2.1.2) "otherwise a wildcard whose {process contents}
-		* and {annotation} are those of the ·complete wildcard·,
+		* and {annotation} are those of the ï¿½complete wildcardï¿½,
 		* and whose {namespace constraint} is the intensional union
-		* of the {namespace constraint} of the ·complete wildcard·
-		* and of the ·base wildcard·, as defined in Attribute
-		* Wildcard Union (§3.10.6)."
+		* of the {namespace constraint} of the ï¿½complete wildcardï¿½
+		* and of the ï¿½base wildcardï¿½, as defined in Attribute
+		* Wildcard Union (ï¿½3.10.6)."
 		*/
 		if (xmlSchemaUnionWildcards(pctxt, type->attributeWildcard,
 		    baseType->attributeWildcard) == -1)
 		    goto exit_failure;
 	    } else {
 		/*
-		* (3.2.2.1.1) "If the ·complete wildcard· is ·absent·,
-		* then the ·base wildcard·."
+		* (3.2.2.1.1) "If the ï¿½complete wildcardï¿½ is ï¿½absentï¿½,
+		* then the ï¿½base wildcardï¿½."
 		*/
 		type->attributeWildcard = baseType->attributeWildcard;
 	    }
 	} else {
 	    /*
-	    * (3.2.2.2) "otherwise (the ·base wildcard· is ·absent·) the
-	    * ·complete wildcard"
+	    * (3.2.2.2) "otherwise (the ï¿½base wildcardï¿½ is ï¿½absentï¿½) the
+	    * ï¿½complete wildcard"
 	    * NOOP
 	    */
 	}
@@ -14486,7 +14486,7 @@ inherit_next: {}
 	/*
 	* SPEC {attribute wildcard}
 	* (3.1) "If the <restriction> alternative is chosen, then the
-	* ·complete wildcard·;"
+	* ï¿½complete wildcardï¿½;"
 	* NOOP
 	*/
     }
@@ -14733,12 +14733,12 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
     /* 2.2 */
     if (type->baseType == baseType) {
 	/*
-	* 2.2.1 D's ·base type definition· is B.
+	* 2.2.1 D's ï¿½base type definitionï¿½ is B.
 	*/
 	return (0);
     }
     /*
-    * 2.2.2 D's ·base type definition· is not the ·ur-type definition·
+    * 2.2.2 D's ï¿½base type definitionï¿½ is not the ï¿½ur-type definitionï¿½
     * and is validly derived from B given the subset, as defined by this
     * constraint.
     */
@@ -14748,8 +14748,8 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
 	return (0);
     }
     /*
-    * 2.2.3 D's {variety} is list or union and B is the ·simple ur-type
-    * definition·.
+    * 2.2.3 D's {variety} is list or union and B is the ï¿½simple ur-type
+    * definitionï¿½.
     */
     if (WXS_IS_ANY_SIMPLE_TYPE(baseType) &&
 	(WXS_IS_LIST(type) || WXS_IS_UNION(type))) {
@@ -15061,14 +15061,14 @@ xmlSchemaCheckSTPropsCorrect(xmlSchemaParserCtxtPtr ctxt,
     * NOTE: This is somehow redundant, since we actually built a simple type
     * to have all the needed information; this acts as an self test.
     */
-    /* Base type: If the datatype has been ·derived· by ·restriction·
-    * then the Simple Type Definition component from which it is ·derived·,
-    * otherwise the Simple Type Definition for anySimpleType (§4.1.6).
+    /* Base type: If the datatype has been ï¿½derivedï¿½ by ï¿½restrictionï¿½
+    * then the Simple Type Definition component from which it is ï¿½derivedï¿½,
+    * otherwise the Simple Type Definition for anySimpleType (ï¿½4.1.6).
     */
     if (baseType == NULL) {
 	/*
 	* TODO: Think about: "modulo the impact of Missing
-	* Sub-components (§5.3)."
+	* Sub-components (ï¿½5.3)."
 	*/
 	xmlSchemaPCustomErr(ctxt,
 	    XML_SCHEMAP_ST_PROPS_CORRECT_1,
@@ -15127,10 +15127,10 @@ xmlSchemaCheckSTPropsCorrect(xmlSchemaParserCtxtPtr ctxt,
     }
 
     /*
-    * 2 All simple type definitions must be derived ultimately from the ·simple
-    * ur-type definition (so· circular definitions are disallowed). That is, it
-    * must be possible to reach a built-in primitive datatype or the ·simple
-    * ur-type definition· by repeatedly following the {base type definition}.
+    * 2 All simple type definitions must be derived ultimately from the ï¿½simple
+    * ur-type definition (soï¿½ circular definitions are disallowed). That is, it
+    * must be possible to reach a built-in primitive datatype or the ï¿½simple
+    * ur-type definitionï¿½ by repeatedly following the {base type definition}.
     *
     * NOTE: this is done in xmlSchemaCheckTypeDefCircular().
     */
@@ -15314,10 +15314,10 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 	    }
 	    /*
 	    * MAYBE TODO: (Hmm, not really) Datatypes states:
-	    * A ·list· datatype can be ·derived· from an ·atomic· datatype
-	    * whose ·lexical space· allows space (such as string or anyURI)or
-	    * a ·union· datatype any of whose {member type definitions}'s
-	    * ·lexical space· allows space.
+	    * A ï¿½listï¿½ datatype can be ï¿½derivedï¿½ from an ï¿½atomicï¿½ datatype
+	    * whose ï¿½lexical spaceï¿½ allows space (such as string or anyURI)or
+	    * a ï¿½unionï¿½ datatype any of whose {member type definitions}'s
+	    * ï¿½lexical spaceï¿½ allows space.
 	    */
 	} else {
 	    /*
@@ -15354,7 +15354,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 	    /*
 	    * 2.3.2.3 The {item type definition} must be validly derived
 	    * from the {base type definition}'s {item type definition} given
-	    * the empty set, as defined in Type Derivation OK (Simple) (§3.14.6).
+	    * the empty set, as defined in Type Derivation OK (Simple) (ï¿½3.14.6).
 	    */
 	    {
 		xmlSchemaTypePtr baseItemType;
@@ -15401,7 +15401,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 			case XML_SCHEMA_FACET_WHITESPACE:
 			    /*
 			    * TODO: 2.5.1.2 List datatypes
-			    * The value of ·whiteSpace· is fixed to the value collapse.
+			    * The value of ï¿½whiteSpaceï¿½ is fixed to the value collapse.
 			    */
 			case XML_SCHEMA_FACET_PATTERN:
 			case XML_SCHEMA_FACET_ENUMERATION:
@@ -15454,8 +15454,8 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 	    member = member->next;
 	}
 	/*
-	* 3.3.1 If the {base type definition} is the ·simple ur-type
-	* definition·
+	* 3.3.1 If the {base type definition} is the ï¿½simple ur-type
+	* definitionï¿½
 	*/
 	if (type->baseType->builtInType == XML_SCHEMAS_ANYSIMPLETYPE) {
 	    /*
@@ -15517,7 +15517,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 	    * 3.3.2.3 The {member type definitions}, in order, must be validly
 	    * derived from the corresponding type definitions in the {base
 	    * type definition}'s {member type definitions} given the empty set,
-	    * as defined in Type Derivation OK (Simple) (§3.14.6).
+	    * as defined in Type Derivation OK (Simple) (ï¿½3.14.6).
 	    */
 	    {
 		xmlSchemaTypeLinkPtr baseMember;
@@ -15623,7 +15623,7 @@ xmlSchemaCheckSRCSimpleType(xmlSchemaParserCtxtPtr ctxt,
     /*
     * src-simple-type.1 The corresponding simple type definition, if any,
     * must satisfy the conditions set out in Constraints on Simple Type
-    * Definition Schema Components (§3.14.6).
+    * Definition Schema Components (ï¿½3.14.6).
     */
     if (WXS_IS_RESTRICTION(type)) {
 	/*
@@ -15721,8 +15721,8 @@ xmlSchemaParseCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
 	* SPEC (2.1) "its {content type} must be a simple type definition
 	* or mixed."
 	* SPEC (2.2.2) "If the {content type} is mixed, then the {content
-	* type}'s particle must be ·emptiable· as defined by
-	* Particle Emptiable (§3.9.6)."
+	* type}'s particle must be ï¿½emptiableï¿½ as defined by
+	* Particle Emptiable (ï¿½3.9.6)."
 	*/
 	if ((! WXS_HAS_SIMPLE_CONTENT(type)) &&
 	    ((! WXS_HAS_MIXED_CONTENT(type)) || (! WXS_EMPTIABLE(type)))) {
@@ -15738,14 +15738,14 @@ xmlSchemaParseCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
     }
     /*
     * 1 If the type definition is a simple type definition, then the string
-    * must be ·valid· with respect to that definition as defined by String
-    * Valid (§3.14.4).
+    * must be ï¿½validï¿½ with respect to that definition as defined by String
+    * Valid (ï¿½3.14.4).
     *
     * AND
     *
     * 2.2.1 If the {content type} is a simple type definition, then the
-    * string must be ·valid· with respect to that simple type definition
-    * as defined by String Valid (§3.14.4).
+    * string must be ï¿½validï¿½ with respect to that simple type definition
+    * as defined by String Valid (ï¿½3.14.4).
     */
     if (WXS_IS_SIMPLE(type))
 	ret = xmlSchemaVCheckCVCSimpleType(ACTXT_CAST pctxt, node,
@@ -15786,8 +15786,8 @@ xmlSchemaCheckCTPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
     *
     * SPEC (1) "The values of the properties of a complex type definition must
     * be as described in the property tableau in The Complex Type Definition
-    * Schema Component (§3.4.1), modulo the impact of Missing
-    * Sub-components (§5.3)."
+    * Schema Component (ï¿½3.4.1), modulo the impact of Missing
+    * Sub-components (ï¿½5.3)."
     */
     if ((type->baseType != NULL) &&
 	(WXS_IS_SIMPLE(type->baseType)) &&
@@ -15804,8 +15804,8 @@ xmlSchemaCheckCTPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
 	return (XML_SCHEMAP_SRC_CT_1);
     }
     /*
-    * SPEC (3) "Circular definitions are disallowed, except for the ·ur-type
-    * definition·. That is, it must be possible to reach the ·ur-type
+    * SPEC (3) "Circular definitions are disallowed, except for the ï¿½ur-type
+    * definitionï¿½. That is, it must be possible to reach the ï¿½ur-type
     * definition by repeatedly following the {base type definition}."
     *
     * NOTE (3) is done in xmlSchemaCheckTypeDefCircular().
@@ -15958,8 +15958,8 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
     if (type->baseType == baseType)
 	return (0);
     /*
-    * SPEC (2.3.1) "D's {base type definition} must not be the ·ur-type
-    * definition·."
+    * SPEC (2.3.1) "D's {base type definition} must not be the ï¿½ur-type
+    * definitionï¿½."
     */
     if (WXS_IS_ANYTYPE(type->baseType))
 	return (1);
@@ -15976,7 +15976,7 @@ xmlSchemaCheckCOSCTDerivedOK(xmlSchemaAbstractCtxtPtr actxt,
 	/*
 	* SPEC (2.3.2.2) "If D's {base type definition} is simple, then it
 	* must be validly derived from B given the subset as defined in Type
-	* Derivation OK (Simple) (§3.14.6).
+	* Derivation OK (Simple) (ï¿½3.14.6).
 	*/
 	return (xmlSchemaCheckCOSSTDerivedOK(actxt, type->baseType,
 	    baseType, set));
@@ -16116,7 +16116,7 @@ xmlSchemaCheckCOSCTExtends(xmlSchemaParserCtxtPtr ctxt,
 	* definition must also have one, and the base type definition's
 	* {attribute  wildcard}'s {namespace constraint} must be a subset
 	* of the complex  type definition's {attribute wildcard}'s {namespace
-	* constraint}, as defined by Wildcard Subset (§3.10.6)."
+	* constraint}, as defined by Wildcard Subset (ï¿½3.10.6)."
 	*/
 
 	/*
@@ -16213,9 +16213,9 @@ xmlSchemaCheckCOSCTExtends(xmlSchemaParserCtxtPtr ctxt,
 		}
 		/*
 		* URGENT TODO SPEC (1.4.3.2.2.2) "The particle of the
-		* complex type definition must be a ·valid extension·
+		* complex type definition must be a ï¿½valid extensionï¿½
 		* of the {base type definition}'s particle, as defined
-		* in Particle Valid (Extension) (§3.9.6)."
+		* in Particle Valid (Extension) (ï¿½3.9.6)."
 		*
 		* NOTE that we won't check "Particle Valid (Extension)",
 		* since it is ensured by the derivation process in
@@ -16332,7 +16332,7 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
     if (base->builtInType == XML_SCHEMAS_ANYTYPE) {
 	/*
 	* SPEC (5.1) "The {base type definition} must be the
-	* ·ur-type definition·."
+	* ï¿½ur-type definitionï¿½."
 	* PASS
 	*/
     } else if ((type->contentType == XML_SCHEMA_CONTENT_SIMPLE) ||
@@ -16351,7 +16351,7 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 	    * SPEC (5.2.2.1) "The {content type} of the {base type
 	    * definition} must be a simple type definition from which
 	    * the {content type} is validly derived given the empty
-	    * set as defined in Type Derivation OK (Simple) (§3.14.6)."
+	    * set as defined in Type Derivation OK (Simple) (ï¿½3.14.6)."
 	    *
 	    * ATTENTION TODO: This seems not needed if the type implicitely
 	    * derived from the base type.
@@ -16382,8 +16382,8 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 		(xmlSchemaParticlePtr) base->subtypes))) {
 	    /*
 	    * SPEC (5.2.2.2) "The {base type definition} must be mixed
-	    * and have a particle which is ·emptiable· as defined in
-	    * Particle Emptiable (§3.9.6)."
+	    * and have a particle which is ï¿½emptiableï¿½ as defined in
+	    * Particle Emptiable (ï¿½3.9.6)."
 	    * PASS
 	    */
 	} else {
@@ -16412,7 +16412,7 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 	    /*
 	    * SPEC (5.3.2.2) "The {content type} of the {base type
 	    * definition} must be elementOnly or mixed and have a particle
-	    * which is ·emptiable· as defined in Particle Emptiable (§3.9.6)."
+	    * which is ï¿½emptiableï¿½ as defined in Particle Emptiable (ï¿½3.9.6)."
 	    * PASS
 	    */
 	} else {
@@ -16445,9 +16445,9 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 	}
 	/*
 	* SPEC (5.4.2) "The particle of the complex type definition itself
-	* must be a ·valid restriction· of the particle of the {content
+	* must be a ï¿½valid restrictionï¿½ of the particle of the {content
 	* type} of the {base type definition} as defined in Particle Valid
-	* (Restriction) (§3.9.6).
+	* (Restriction) (ï¿½3.9.6).
 	*
 	* URGENT TODO: (5.4.2)
 	*/
@@ -16516,7 +16516,7 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
     if (! WXS_HAS_SIMPLE_CONTENT(type)) {
 	/*
 	* 1 If the <complexContent> alternative is chosen, the type definition
-	* ·resolved· to by the ·actual value· of the base [attribute]
+	* ï¿½resolvedï¿½ to by the ï¿½actual valueï¿½ of the base [attribute]
 	* must be a complex type definition;
 	*/
 	if (! WXS_IS_COMPLEX(base)) {
@@ -16536,7 +16536,7 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
 	* SPEC
 	* 2 If the <simpleContent> alternative is chosen, all of the
 	* following must be true:
-	* 2.1 The type definition ·resolved· to by the ·actual value· of the
+	* 2.1 The type definition ï¿½resolvedï¿½ to by the ï¿½actual valueï¿½ of the
 	* base [attribute] must be one of the following:
 	*/
 	if (WXS_IS_SIMPLE(base)) {
@@ -16642,14 +16642,14 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
     /*
     * SPEC (3) "The corresponding complex type definition component must
     * satisfy the conditions set out in Constraints on Complex Type
-    * Definition Schema Components (§3.4.6);"
+    * Definition Schema Components (ï¿½3.4.6);"
     * NOTE (3) will be done in xmlSchemaTypeFixup().
     */
     /*
     * SPEC (4) If clause 2.2.1 or clause 2.2.2 in the correspondence specification
     * above for {attribute wildcard} is satisfied, the intensional
     * intersection must be expressible, as defined in Attribute Wildcard
-    * Intersection (§3.10.6).
+    * Intersection (ï¿½3.10.6).
     * NOTE (4) is done in xmlSchemaFixupTypeAttributeUses().
     */
     return (ret);
@@ -16720,7 +16720,7 @@ xmlSchemaCheckRCaseNameAndTypeOK(xmlSchemaParserCtxtPtr ctxt,
 	return (1);
     /*
     * SPEC (2) "R's occurrence range is a valid restriction of B's
-    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    * occurrence range as defined by Occurrence Range OK (ï¿½3.9.6)."
     */
     if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
 	    b->minOccurs, b->maxOccurs) != 0)
@@ -16812,19 +16812,19 @@ xmlSchemaCheckRCaseNSCompat(xmlSchemaParserCtxtPtr ctxt,
 {
     /* TODO:Error codes (rcase-NSCompat). */
     /*
-    * SPEC "For an element declaration particle to be a ·valid restriction·
+    * SPEC "For an element declaration particle to be a ï¿½valid restrictionï¿½
     * of a wildcard particle all of the following must be true:"
     *
-    * SPEC (1) "The element declaration's {target namespace} is ·valid·
+    * SPEC (1) "The element declaration's {target namespace} is ï¿½validï¿½
     * with respect to the wildcard's {namespace constraint} as defined by
-    * Wildcard allows Namespace Name (§3.10.4)."
+    * Wildcard allows Namespace Name (ï¿½3.10.4)."
     */
     if (xmlSchemaCheckCVCWildcardNamespace((xmlSchemaWildcardPtr) b->children,
 	((xmlSchemaElementPtr) r->children)->targetNamespace) != 0)
 	return (1);
     /*
     * SPEC (2) "R's occurrence range is a valid restriction of B's
-    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    * occurrence range as defined by Occurrence Range OK (ï¿½3.9.6)."
     */
     if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
 	    b->minOccurs, b->maxOccurs) != 0)
@@ -16884,21 +16884,21 @@ xmlSchemaCheckRCaseNSSubset(xmlSchemaParserCtxtPtr ctxt,
     /* TODO: Error codes (rcase-NSSubset). */
     /*
     * SPEC (1) "R's occurrence range is a valid restriction of B's
-    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    * occurrence range as defined by Occurrence Range OK (ï¿½3.9.6)."
     */
     if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
 	    b->minOccurs, b->maxOccurs))
 	return (1);
     /*
     * SPEC (2) "R's {namespace constraint} must be an intensional subset
-    * of B's {namespace constraint} as defined by Wildcard Subset (§3.10.6)."
+    * of B's {namespace constraint} as defined by Wildcard Subset (ï¿½3.10.6)."
     */
     if (xmlSchemaCheckCOSNSSubset((xmlSchemaWildcardPtr) r->children,
 	(xmlSchemaWildcardPtr) b->children))
 	return (1);
     /*
-    * SPEC (3) "Unless B is the content model wildcard of the ·ur-type
-    * definition·, R's {process contents} must be identical to or stronger
+    * SPEC (3) "Unless B is the content model wildcard of the ï¿½ur-type
+    * definitionï¿½, R's {process contents} must be identical to or stronger
     * than B's {process contents}, where strict is stronger than lax is
     * stronger than skip."
     */
@@ -16975,12 +16975,12 @@ xmlSchemaCheckRCaseNSRecurseCheckCardinality(xmlSchemaParserCtxtPtr ctxt,
     if ((r->children == NULL) || (r->children->children == NULL))
 	return (-1);
     /*
-    * SPEC "For a group particle to be a ·valid restriction· of a
+    * SPEC "For a group particle to be a ï¿½valid restrictionï¿½ of a
     * wildcard particle..."
     *
-    * SPEC (1) "Every member of the {particles} of the group is a ·valid
-    * restriction· of the wildcard as defined by
-    * Particle Valid (Restriction) (§3.9.6)."
+    * SPEC (1) "Every member of the {particles} of the group is a ï¿½valid
+    * restrictionï¿½ of the wildcard as defined by
+    * Particle Valid (Restriction) (ï¿½3.9.6)."
     */
     part = (xmlSchemaParticlePtr) r->children->children;
     do {
@@ -16991,7 +16991,7 @@ xmlSchemaCheckRCaseNSRecurseCheckCardinality(xmlSchemaParserCtxtPtr ctxt,
     /*
     * SPEC (2) "The effective total range of the group [...] is a
     * valid restriction of B's occurrence range as defined by
-    * Occurrence Range OK (§3.9.6)."
+    * Occurrence Range OK (ï¿½3.9.6)."
     */
     if (xmlSchemaCheckParticleRangeOK(
 	    xmlSchemaGetParticleTotalRangeMin(r),
@@ -17030,11 +17030,11 @@ xmlSchemaCheckRCaseRecurse(xmlSchemaParserCtxtPtr ctxt,
 	(r->children->type != b->children->type))
 	return (-1);
     /*
-    * SPEC "For an all or sequence group particle to be a ·valid
-    * restriction· of another group particle with the same {compositor}..."
+    * SPEC "For an all or sequence group particle to be a ï¿½valid
+    * restrictionï¿½ of another group particle with the same {compositor}..."
     *
     * SPEC (1) "R's occurrence range is a valid restriction of B's
-    * occurrence range as defined by Occurrence Range OK (§3.9.6)."
+    * occurrence range as defined by Occurrence Range OK (ï¿½3.9.6)."
     */
     if (xmlSchemaCheckParticleRangeOK(r->minOccurs, r->maxOccurs,
 	    b->minOccurs, b->maxOccurs))
@@ -17603,7 +17603,7 @@ xmlSchemaDeriveAndValidateFacets(xmlSchemaParserCtxtPtr pctxt,
 			* The whitespace must be stronger.
 			*/
 			if (facet->whitespace < bfacet->whitespace) {
-			    FACET_RESTR_ERR(flength,
+			    FACET_RESTR_ERR(facet,
 				"The 'whitespace' value has to be equal to "
 				"or stronger than the 'whitespace' value of "
 				"the base type")
@@ -17658,7 +17658,7 @@ xmlSchemaFinishMemberTypeDefinitionsProperty(xmlSchemaParserCtxtPtr pctxt,
     xmlSchemaTypeLinkPtr link, lastLink, prevLink, subLink, newLink;
     /*
     * The actual value is then formed by replacing any union type
-    * definition in the ·explicit members· with the members of their
+    * definition in the ï¿½explicit membersï¿½ with the members of their
     * {member type definitions}, in order.
     *
     * TODO: There's a bug entry at
@@ -17792,8 +17792,8 @@ xmlSchemaTypeFixupWhitespace(xmlSchemaTypePtr type)
 	}
     }
     /*
-    * For all ·atomic· datatypes other than string (and types ·derived·
-    * by ·restriction· from it) the value of whiteSpace is fixed to
+    * For all ï¿½atomicï¿½ datatypes other than string (and types ï¿½derivedï¿½
+    * by ï¿½restrictionï¿½ from it) the value of whiteSpace is fixed to
     * collapse
     */
     {
@@ -17982,7 +17982,7 @@ xmlSchemaFixupSimpleTypeStageTwo(xmlSchemaParserCtxtPtr pctxt,
     * SPEC src-simple-type 1
     * "The corresponding simple type definition, if any, must satisfy
     * the conditions set out in Constraints on Simple Type Definition
-    * Schema Components (§3.14.6)."
+    * Schema Components (ï¿½3.14.6)."
     */
     /*
     * Schema Component Constraint: Simple Type Definition Properties Correct
@@ -18242,7 +18242,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 	    ( ((xmlSchemaTreeItemPtr) particle->children)->children == NULL))) {
 	    if (type->flags & XML_SCHEMAS_TYPE_MIXED) {
 		/*
-		* SPEC (2.1.4) "If the ·effective mixed· is true, then
+		* SPEC (2.1.4) "If the ï¿½effective mixedï¿½ is true, then
 		* a particle whose properties are as follows:..."
 		*
 		* Empty sequence model group with
@@ -18304,7 +18304,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 	    if (type->contentType == XML_SCHEMA_CONTENT_EMPTY) {
 		/*
 		* SPEC (3.2.1)
-		* "If the ·effective content· is empty, then the
+		* "If the ï¿½effective contentï¿½ is empty, then the
 		*  {content type} of the [...] base ..."
 		*/
 		type->contentType = baseType->contentType;
@@ -18411,7 +18411,7 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 		    particle->children =
 			((xmlSchemaParticlePtr) baseType->subtypes)->children;
 		    /*
-		    * SPEC "followed by the ·effective content·."
+		    * SPEC "followed by the ï¿½effective contentï¿½."
 		    */
 		    particle->next = effectiveContent;
 		    /*
@@ -18555,12 +18555,12 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 
 		/* 4.3.5.5 Constraints on enumeration Schema Components
 		* Schema Component Constraint: enumeration valid restriction
-		* It is an ·error· if any member of {value} is not in the
-		* ·value space· of {base type definition}.
+		* It is an ï¿½errorï¿½ if any member of {value} is not in the
+		* ï¿½value spaceï¿½ of {base type definition}.
 		*
 		* minInclusive, maxInclusive, minExclusive, maxExclusive:
-		* The value ·must· be in the
-		* ·value space· of the ·base type·.
+		* The value ï¿½mustï¿½ be in the
+		* ï¿½value spaceï¿½ of the ï¿½base typeï¿½.
 		*/
 		/*
 		* This function is intended to deliver a compiled value
@@ -18995,9 +18995,9 @@ xmlSchemaCheckAttrGroupCircular(xmlSchemaAttributeGroupPtr attrGr,
     * not be an <attributeGroup> with ref [attribute] which resolves
     * to the component corresponding to this <attributeGroup>. Indirect
     * circularity is also ruled out. That is, when QName resolution
-    * (Schema Document) (§3.15.3) is applied to a ·QName· arising from
+    * (Schema Document) (ï¿½3.15.3) is applied to a ï¿½QNameï¿½ arising from
     * any <attributeGroup>s with a ref [attribute] among the [children],
-    * it must not be the case that a ·QName· is encountered at any depth
+    * it must not be the case that a ï¿½QNameï¿½ is encountered at any depth
     * which resolves to the component corresponding to this <attributeGroup>.
     */
     if (attrGr->attrUses == NULL)
@@ -19254,8 +19254,8 @@ xmlSchemaCheckAGPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
     * SPEC ag-props-correct
     * (1) "The values of the properties of an attribute group definition
     * must be as described in the property tableau in The Attribute
-    * Group Definition Schema Component (§3.6.1), modulo the impact of
-    * Missing Sub-components (§5.3);"
+    * Group Definition Schema Component (ï¿½3.6.1), modulo the impact of
+    * Missing Sub-components (ï¿½5.3);"
     */
 
     if ((attrGr->attrUses != NULL) &&
@@ -19389,8 +19389,8 @@ xmlSchemaCheckAttrPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
     * SPEC a-props-correct (1)
     * "The values of the properties of an attribute declaration must
     * be as described in the property tableau in The Attribute
-    * Declaration Schema Component (§3.2.1), modulo the impact of
-    * Missing Sub-components (§5.3)."
+    * Declaration Schema Component (ï¿½3.2.1), modulo the impact of
+    * Missing Sub-components (ï¿½5.3)."
     */
 
     if (WXS_ATTR_TYPEDEF(attr) == NULL)
@@ -19418,8 +19418,8 @@ xmlSchemaCheckAttrPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
 	/*
 	* SPEC a-props-correct (2)
 	* "if there is a {value constraint}, the canonical lexical
-	* representation of its value must be ·valid· with respect
-	* to the {type definition} as defined in String Valid (§3.14.4)."
+	* representation of its value must be ï¿½validï¿½ with respect
+	* to the {type definition} as defined in String Valid (ï¿½3.14.4)."
 	* TODO: Don't care about the *cononical* stuff here, this requirement
 	* will be removed in WXS 1.1 anyway.
 	*/
@@ -19487,15 +19487,15 @@ xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
     /*
     * SPEC (1) "The values of the properties of an element declaration
     * must be as described in the property tableau in The Element
-    * Declaration Schema Component (§3.3.1), modulo the impact of Missing
-    * Sub-components (§5.3)."
+    * Declaration Schema Component (ï¿½3.3.1), modulo the impact of Missing
+    * Sub-components (ï¿½5.3)."
     */
     if (WXS_SUBST_HEAD(elemDecl) != NULL) {
 	xmlSchemaElementPtr head = WXS_SUBST_HEAD(elemDecl), circ;
 
 	xmlSchemaCheckElementDeclComponent(head, pctxt);
 	/*
-	* SPEC (3) "If there is a non-·absent· {substitution group
+	* SPEC (3) "If there is a non-ï¿½absentï¿½ {substitution group
 	* affiliation}, then {scope} must be global."
 	*/
 	if ((elemDecl->flags & XML_SCHEMAS_ELEM_GLOBAL) == 0) {
@@ -19539,9 +19539,9 @@ xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
 	* of the element declaration must be validly derived from the {type
 	* definition} of the {substitution group affiliation}, given the value
 	* of the {substitution group exclusions} of the {substitution group
-	* affiliation}, as defined in Type Derivation OK (Complex) (§3.4.6)
+	* affiliation}, as defined in Type Derivation OK (Complex) (ï¿½3.4.6)
 	* (if the {type definition} is complex) or as defined in
-	* Type Derivation OK (Simple) (§3.14.6) (if the {type definition} is
+	* Type Derivation OK (Simple) (ï¿½3.14.6) (if the {type definition} is
 	* simple)."
 	*
 	* NOTE: {substitution group exclusions} means the values of the
@@ -19605,9 +19605,9 @@ xmlSchemaCheckElemPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
 
 	/*
 	* SPEC (2) "If there is a {value constraint}, the canonical lexical
-	* representation of its value must be ·valid· with respect to the
+	* representation of its value must be ï¿½validï¿½ with respect to the
 	* {type definition} as defined in Element Default Valid (Immediate)
-	* (§3.3.6)."
+	* (ï¿½3.3.6)."
 	*/
 	if (typeDef == NULL) {
 	    xmlSchemaPErr(pctxt, elemDecl->node,
@@ -19675,7 +19675,7 @@ xmlSchemaCheckElemSubstGroup(xmlSchemaParserCtxtPtr ctxt,
 	/*
 	* SPEC (2) "It is validly substitutable for HEAD subject to HEAD's
 	* {disallowed substitutions} as the blocking constraint, as defined in
-	* Substitution Group OK (Transitive) (§3.3.6)."
+	* Substitution Group OK (Transitive) (ï¿½3.3.6)."
 	*/
 	for (head = WXS_SUBST_HEAD(elemDecl); head != NULL;
 	    head = WXS_SUBST_HEAD(head)) {
@@ -19808,7 +19808,7 @@ xmlSchemaCheckElementDeclConsistent(xmlSchemaParserCtxtPtr pctxt,
 		    * SPEC Element Declarations Consistent:
 		    * "If the {particles} contains, either directly,
 		    * indirectly (that is, within the {particles} of a
-		    * contained model group, recursively) or ·implicitly·
+		    * contained model group, recursively) or ï¿½implicitlyï¿½
 		    * two or more element declaration particles with
 		    * the same {name} and {target namespace}, then
 		    * all their type definitions must be the same
@@ -20006,12 +20006,12 @@ xmlSchemaAreValuesEqual(xmlSchemaValPtr x,
 	ptx = xmlSchemaGetPrimitiveType(tx);
 	pty = xmlSchemaGetPrimitiveType(ty);
 	/*
-	* (1) if a datatype T' is ·derived· by ·restriction· from an
-	* atomic datatype T then the ·value space· of T' is a subset of
-	* the ·value space· of T. */
+	* (1) if a datatype T' is ï¿½derivedï¿½ by ï¿½restrictionï¿½ from an
+	* atomic datatype T then the ï¿½value spaceï¿½ of T' is a subset of
+	* the ï¿½value spaceï¿½ of T. */
 	/*
-	* (2) if datatypes T' and T'' are ·derived· by ·restriction·
-	* from a common atomic ancestor T then the ·value space·s of T'
+	* (2) if datatypes T' and T'' are ï¿½derivedï¿½ by ï¿½restrictionï¿½
+	* from a common atomic ancestor T then the ï¿½value spaceï¿½s of T'
 	* and T'' may overlap.
 	*/
 	if (ptx != pty)
@@ -20112,8 +20112,8 @@ xmlSchemaCheckAttrUsePropsCorrect(xmlSchemaParserCtxtPtr ctxt,
     * SPEC au-props-correct (1)
     * "The values of the properties of an attribute use must be as
     * described in the property tableau in The Attribute Use Schema
-    * Component (§3.5.1), modulo the impact of Missing
-    * Sub-components (§5.3)."
+    * Component (ï¿½3.5.1), modulo the impact of Missing
+    * Sub-components (ï¿½5.3)."
     */
 
     if (((WXS_ATTRUSE_DECL(use))->defValue != NULL) &&
@@ -20214,8 +20214,8 @@ xmlSchemaResolveAttrTypeReferences(xmlSchemaAttributePtr item,
     /*
     * The simple type definition corresponding to the <simpleType> element
     * information item in the [children], if present, otherwise the simple
-    * type definition ·resolved· to by the ·actual value· of the type
-    * [attribute], if present, otherwise the ·simple ur-type definition·.
+    * type definition ï¿½resolvedï¿½ to by the ï¿½actual valueï¿½ of the type
+    * [attribute], if present, otherwise the ï¿½simple ur-type definitionï¿½.
     */
     if (item->flags & XML_SCHEMAS_ATTR_INTERNAL_RESOLVED)
 	return(0);
@@ -20379,11 +20379,11 @@ xmlSchemaCheckSRCRedefineFirst(xmlSchemaParserCtxtPtr pctxt)
 
 	    /*
 	    * SPEC src-redefine:
-	    * (6.2.1) "The ·actual value· of its own name attribute plus
-	    * target namespace must successfully ·resolve· to a model
+	    * (6.2.1) "The ï¿½actual valueï¿½ of its own name attribute plus
+	    * target namespace must successfully ï¿½resolveï¿½ to a model
 	    * group definition in I."
-	    * (7.2.1) "The ·actual value· of its own name attribute plus
-	    * target namespace must successfully ·resolve· to an attribute
+	    * (7.2.1) "The ï¿½actual valueï¿½ of its own name attribute plus
+	    * target namespace must successfully ï¿½resolveï¿½ to an attribute
 	    * group definition in I."
 
 	    *
@@ -20556,10 +20556,10 @@ xmlSchemaCheckSRCRedefineSecond(xmlSchemaParserCtxtPtr pctxt)
 		* SPEC src-redefine:
 		* (6.2.2) "The {model group} of the model group definition
 		* which corresponds to it per XML Representation of Model
-		* Group Definition Schema Components (§3.7.2) must be a
-		* ·valid restriction· of the {model group} of that model
+		* Group Definition Schema Components (ï¿½3.7.2) must be a
+		* ï¿½valid restrictionï¿½ of the {model group} of that model
 		* group definition in I, as defined in Particle Valid
-		* (Restriction) (§3.9.6)."
+		* (Restriction) (ï¿½3.9.6)."
 		*/
 		break;
 	    case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
@@ -20568,11 +20568,11 @@ xmlSchemaCheckSRCRedefineSecond(xmlSchemaParserCtxtPtr pctxt)
 		* (7.2.2) "The {attribute uses} and {attribute wildcard} of
 		* the attribute group definition which corresponds to it
 		* per XML Representation of Attribute Group Definition Schema
-		* Components (§3.6.2) must be ·valid restrictions· of the
+		* Components (ï¿½3.6.2) must be ï¿½valid restrictionsï¿½ of the
 		* {attribute uses} and {attribute wildcard} of that attribute
 		* group definition in I, as defined in clause 2, clause 3 and
 		* clause 4 of Derivation Valid (Restriction, Complex)
-		* (§3.4.6) (where references to the base type definition are
+		* (ï¿½3.4.6) (where references to the base type definition are
 		* understood as references to the attribute group definition
 		* in I)."
 		*/
@@ -20747,9 +20747,9 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
 
     * (6.2.2) The {model group} of the model group definition which
     * corresponds to it per XML Representation of Model Group
-    * Definition Schema Components (§3.7.2) must be a ·valid
-    * restriction· of the {model group} of that model group definition
-    * in I, as defined in Particle Valid (Restriction) (§3.9.6)."
+    * Definition Schema Components (ï¿½3.7.2) must be a ï¿½valid
+    * restrictionï¿½ of the {model group} of that model group definition
+    * in I, as defined in Particle Valid (Restriction) (ï¿½3.9.6)."
     */
     xmlSchemaCheckSRCRedefineFirst(pctxt);
 
@@ -21433,8 +21433,8 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 	    return(XML_SCHEMA_WHITESPACE_REPLACE);
 	else {
 	    /*
-	    * For all ·atomic· datatypes other than string (and types ·derived·
-	    * by ·restriction· from it) the value of whiteSpace is fixed to
+	    * For all ï¿½atomicï¿½ datatypes other than string (and types ï¿½derivedï¿½
+	    * by ï¿½restrictionï¿½ from it) the value of whiteSpace is fixed to
 	    * collapse
 	    * Note that this includes built-in list datatypes.
 	    */
@@ -22739,7 +22739,7 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
 		    xmlChar *str = NULL;
 		    /*
 		    * cvc-identity-constraint:
-		    * 3 For each node in the ·target node set· all
+		    * 3 For each node in the ï¿½target node setï¿½ all
 		    * of the {fields}, with that node as the context
 		    * node, evaluate to either an empty node-set or
 		    * a node-set with exactly one member, which must
@@ -22869,8 +22869,8 @@ create_key:
 
 	    /*
 	    * 4.1 If the {identity-constraint category} is unique(/key),
-	    * then no two members of the ·qualified node set· have
-	    * ·key-sequences· whose members are pairwise equal, as
+	    * then no two members of the ï¿½qualified node setï¿½ have
+	    * ï¿½key-sequencesï¿½ whose members are pairwise equal, as
 	    * defined by Equal in [XML Schemas: Datatypes].
 	    *
 	    * Get the IDC binding from the matcher and check for
@@ -22998,10 +22998,10 @@ selector_key_error:
 	    {
 		xmlChar *str = NULL;
 		/*
-		* 4.2.1 (KEY) The ·target node set· and the
-		* ·qualified node set· are equal, that is, every
-		* member of the ·target node set· is also a member
-		* of the ·qualified node set· and vice versa.
+		* 4.2.1 (KEY) The ï¿½target node setï¿½ and the
+		* ï¿½qualified node setï¿½ are equal, that is, every
+		* member of the ï¿½target node setï¿½ is also a member
+		* of the ï¿½qualified node setï¿½ and vice versa.
 		*/
 		xmlSchemaCustomErr(ACTXT_CAST vctxt,
 		    XML_SCHEMAV_CVC_IDC, NULL,
@@ -24395,14 +24395,14 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
     */
     /*
     * 2.1 If The definition is ENTITY or is validly derived from ENTITY given
-    * the empty set, as defined in Type Derivation OK (Simple) (§3.14.6), then
-    * the string must be a ·declared entity name·.
+    * the empty set, as defined in Type Derivation OK (Simple) (ï¿½3.14.6), then
+    * the string must be a ï¿½declared entity nameï¿½.
     */
     /*
     * 2.2 If The definition is ENTITIES or is validly derived from ENTITIES
-    * given the empty set, as defined in Type Derivation OK (Simple) (§3.14.6),
-    * then every whitespace-delimited substring of the string must be a ·declared
-    * entity name·.
+    * given the empty set, as defined in Type Derivation OK (Simple) (ï¿½3.14.6),
+    * then every whitespace-delimited substring of the string must be a ï¿½declared
+    * entity nameï¿½.
     */
     /*
     * 2.3 otherwise no further condition applies.
@@ -24414,8 +24414,8 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
     if (WXS_IS_ANY_SIMPLE_TYPE(type) || WXS_IS_ATOMIC(type)) {
 	xmlSchemaTypePtr biType; /* The built-in type. */
 	/*
-	* SPEC (1.2.1) "if {variety} is ·atomic· then the string must ·match·
-	* a literal in the ·lexical space· of {base type definition}"
+	* SPEC (1.2.1) "if {variety} is ï¿½atomicï¿½ then the string must ï¿½matchï¿½
+	* a literal in the ï¿½lexical spaceï¿½ of {base type definition}"
 	*/
 	/*
 	* Whitespace-normalize.
@@ -24526,9 +24526,9 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
 	xmlChar *tmpValue = NULL;
 	unsigned long len = 0;
 	xmlSchemaValPtr prevVal = NULL, curVal = NULL;
-	/* 1.2.2 if {variety} is ·list· then the string must be a sequence
-	* of white space separated tokens, each of which ·match·es a literal
-	* in the ·lexical space· of {item type definition}
+	/* 1.2.2 if {variety} is ï¿½listï¿½ then the string must be a sequence
+	* of white space separated tokens, each of which ï¿½matchï¿½es a literal
+	* in the ï¿½lexical spaceï¿½ of {item type definition}
 	*/
 	/*
 	* Note that XML_SCHEMAS_TYPE_NORMVALUENEEDED will be set if
@@ -24609,10 +24609,10 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
     } else if (WXS_IS_UNION(type)) {
 	xmlSchemaTypeLinkPtr memberLink;
 	/*
-	* TODO: For all datatypes ·derived· by ·union·  whiteSpace does
-	* not apply directly; however, the normalization behavior of ·union·
+	* TODO: For all datatypes ï¿½derivedï¿½ by ï¿½unionï¿½  whiteSpace does
+	* not apply directly; however, the normalization behavior of ï¿½unionï¿½
 	* types is controlled by the value of whiteSpace on that one of the
-	* ·memberTypes· against which the ·union· is successfully validated.
+	* ï¿½memberTypesï¿½ against which the ï¿½unionï¿½ is successfully validated.
 	*
 	* This means that the value is normalized by the first validating
 	* member type, then the facets of the union type are applied. This
@@ -24620,8 +24620,8 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
 	*/
 
 	/*
-	* 1.2.3 if {variety} is ·union· then the string must ·match· a
-	* literal in the ·lexical space· of at least one member of
+	* 1.2.3 if {variety} is ï¿½unionï¿½ then the string must ï¿½matchï¿½ a
+	* literal in the ï¿½lexical spaceï¿½ of at least one member of
 	* {member type definitions}
 	*/
 	memberLink = xmlSchemaGetUnionSimpleTypeMemberTypes(type);
@@ -24660,9 +24660,9 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
 	*/
 	if ((ret == 0) && (type->flags & XML_SCHEMAS_TYPE_HAS_FACETS)) {
 	    /*
-	    * The normalization behavior of ·union· types is controlled by
-	    * the value of whiteSpace on that one of the ·memberTypes·
-	    * against which the ·union· is successfully validated.
+	    * The normalization behavior of ï¿½unionï¿½ types is controlled by
+	    * the value of whiteSpace on that one of the ï¿½memberTypesï¿½
+	    * against which the ï¿½unionï¿½ is successfully validated.
 	    */
 	    NORMALIZE(memberLink->type);
 	    ret = xmlSchemaValidateFacets(actxt, node, type,
@@ -24822,14 +24822,14 @@ xmlSchemaProcessXSIType(xmlSchemaValidCtxtPtr vctxt,
 
 	    /*
 	    * SPEC cvc-elt (3.3.4) : (4.3) (Type Derivation OK)
-	    * "The ·local type definition· must be validly
+	    * "The ï¿½local type definitionï¿½ must be validly
 	    * derived from the {type definition} given the union of
 	    * the {disallowed substitutions} and the {type definition}'s
 	    * {prohibited substitutions}, as defined in
-	    * Type Derivation OK (Complex) (§3.4.6)
+	    * Type Derivation OK (Complex) (ï¿½3.4.6)
 	    * (if it is a complex type definition),
 	    * or given {disallowed substitutions} as defined in Type
-	    * Derivation OK (Simple) (§3.14.6) (if it is a simple type
+	    * Derivation OK (Simple) (ï¿½3.14.6) (if it is a simple type
 	    * definition)."
 	    *
 	    * {disallowed substitutions}: the "block" on the element decl.
@@ -25100,8 +25100,8 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 
     /*
     * SPEC (cvc-attribute)
-    * (1) "The declaration must not be ·absent· (see Missing
-    * Sub-components (§5.3) for how this can fail to be
+    * (1) "The declaration must not be ï¿½absentï¿½ (see Missing
+    * Sub-components (ï¿½5.3) for how this can fail to be
     * the case)."
     * (2) "Its {type definition} must not be absent."
     *
@@ -25151,15 +25151,15 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	    * use with an {attribute declaration} whose {name} matches
 	    * the attribute information item's [local name] and whose
 	    * {target namespace} is identical to the attribute information
-	    * item's [namespace name] (where an ·absent· {target namespace}
+	    * item's [namespace name] (where an ï¿½absentï¿½ {target namespace}
 	    * is taken to be identical to a [namespace name] with no value),
-	    * then the attribute information must be ·valid· with respect
+	    * then the attribute information must be ï¿½validï¿½ with respect
 	    * to that attribute use as per Attribute Locally Valid (Use)
-	    * (§3.5.4). In this case the {attribute declaration} of that
-	    * attribute use is the ·context-determined declaration· for the
+	    * (ï¿½3.5.4). In this case the {attribute declaration} of that
+	    * attribute use is the ï¿½context-determined declarationï¿½ for the
 	    * attribute information item with respect to Schema-Validity
-	    * Assessment (Attribute) (§3.2.4) and
-	    * Assessment Outcome (Attribute) (§3.2.5).
+	    * Assessment (Attribute) (ï¿½3.2.4) and
+	    * Assessment Outcome (Attribute) (ï¿½3.2.5).
 	    */
 	    iattr->state = XML_SCHEMAS_ATTR_ASSESSED;
 	    iattr->use = attrUse;
@@ -25237,13 +25237,13 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		continue;
 	    /*
 	    * SPEC (cvc-complex-type)
-	    * (3.2.2) "The attribute information item must be ·valid· with
-	    * respect to it as defined in Item Valid (Wildcard) (§3.10.4)."
+	    * (3.2.2) "The attribute information item must be ï¿½validï¿½ with
+	    * respect to it as defined in Item Valid (Wildcard) (ï¿½3.10.4)."
 	    *
 	    * SPEC Item Valid (Wildcard) (cvc-wildcard)
-	    * "... its [namespace name] must be ·valid· with respect to
+	    * "... its [namespace name] must be ï¿½validï¿½ with respect to
 	    * the wildcard constraint, as defined in Wildcard allows
-	    * Namespace Name (§3.10.4)."
+	    * Namespace Name (ï¿½3.10.4)."
 	    */
 	    if (xmlSchemaCheckCVCWildcardNamespace(type->attributeWildcard,
 		    iattr->nsName) == 0) {
@@ -25279,11 +25279,11 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		    * SPEC (cvc-complex-type)
 		    * (5) "Let [Definition:]  the wild IDs be the set of
 		    * all attribute information item to which clause 3.2
-		    * applied and whose ·validation· resulted in a
-		    * ·context-determined declaration· of mustFind or no
-		    * ·context-determined declaration· at all, and whose
+		    * applied and whose ï¿½validationï¿½ resulted in a
+		    * ï¿½context-determined declarationï¿½ of mustFind or no
+		    * ï¿½context-determined declarationï¿½ at all, and whose
 		    * [local name] and [namespace name] resolve (as
-		    * defined by QName resolution (Instance) (§3.15.4)) to
+		    * defined by QName resolution (Instance) (ï¿½3.15.4)) to
 		    * an attribute declaration whose {type definition} is
 		    * or is derived from ID. Then all of the following
 		    * must be true:"
@@ -25293,7 +25293,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 			iattr->typeDef, XML_SCHEMAS_ID)) {
 			/*
 			* SPEC (5.1) "There must be no more than one
-			* item in ·wild IDs·."
+			* item in ï¿½wild IDsï¿½."
 			*/
 			if (wildIDs != 0) {
 			    /* VAL TODO */
@@ -25304,7 +25304,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 			wildIDs++;
 			/*
 			* SPEC (cvc-complex-type)
-			* (5.2) "If ·wild IDs· is non-empty, there must not
+			* (5.2) "If ï¿½wild IDsï¿½ is non-empty, there must not
 			* be any attribute uses among the {attribute uses}
 			* whose {attribute declaration}'s {type definition}
 			* is or is derived from ID."
@@ -25512,9 +25512,9 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	    fixed = 0;
 	/*
 	* SPEC (cvc-attribute)
-	* (3) "The item's ·normalized value· must be locally ·valid·
+	* (3) "The item's ï¿½normalized valueï¿½ must be locally ï¿½validï¿½
 	* with respect to that {type definition} as per
-	* String Valid (§3.14.4)."
+	* String Valid (ï¿½3.14.4)."
 	*
 	* VAL TODO: Do we already have the
 	* "normalized attribute value" here?
@@ -25552,9 +25552,9 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	if (fixed) {
 	    /*
 	    * SPEC Attribute Locally Valid (Use) (cvc-au)
-	    * "For an attribute information item to be·valid·
+	    * "For an attribute information item to beï¿½validï¿½
 	    * with respect to an attribute use its *normalized*
-	    * value· must match the *canonical* lexical
+	    * valueï¿½ must match the *canonical* lexical
 	    * representation of the attribute use's {value
 	    * constraint}value, if it is present and fixed."
 	    *
@@ -25563,7 +25563,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 	    */
 	    /*
 	    * SPEC Attribute Locally Valid (cvc-attribute)
-	    * (4) "The item's *actual* value· must match the *value* of
+	    * (4) "The item's *actual* valueï¿½ must match the *value* of
 	    * the {value constraint}, if it is present and fixed."
 	    */
 	    if (iattr->val == NULL) {
@@ -25793,8 +25793,8 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaValidCtxtPtr vctxt,
 	* SPEC (2.1) "its {content type} must be a simple type definition
 	* or mixed."
 	* SPEC (2.2.2) "If the {content type} is mixed, then the {content
-	* type}'s particle must be ·emptiable· as defined by
-	* Particle Emptiable (§3.9.6)."
+	* type}'s particle must be ï¿½emptiableï¿½ as defined by
+	* Particle Emptiable (ï¿½3.9.6)."
 	*/
 	if ((! WXS_HAS_SIMPLE_CONTENT(inode->typeDef)) &&
 	    ((! WXS_HAS_MIXED_CONTENT(inode->typeDef)) ||
@@ -25810,14 +25810,14 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaValidCtxtPtr vctxt,
     }
     /*
     * 1 If the type definition is a simple type definition, then the string
-    * must be ·valid· with respect to that definition as defined by String
-    * Valid (§3.14.4).
+    * must be ï¿½validï¿½ with respect to that definition as defined by String
+    * Valid (ï¿½3.14.4).
     *
     * AND
     *
     * 2.2.1 If the {content type} is a simple type definition, then the
-    * string must be ·valid· with respect to that simple type definition
-    * as defined by String Valid (§3.14.4).
+    * string must be ï¿½validï¿½ with respect to that simple type definition
+    * as defined by String Valid (ï¿½3.14.4).
     */
     if (WXS_IS_SIMPLE(inode->typeDef)) {
 
@@ -26041,10 +26041,10 @@ character_content:
 	(! INODE_NILLED(inode))) {
 	/*
 	* cvc-elt (3.3.4) : 5.1.1
-	* If the ·actual type definition· is a ·local type definition·
+	* If the ï¿½actual type definitionï¿½ is a ï¿½local type definitionï¿½
 	* then the canonical lexical representation of the {value constraint}
-	* value must be a valid default for the ·actual type definition· as
-	* defined in Element Default Valid (Immediate) (§3.3.6).
+	* value must be a valid default for the ï¿½actual type definitionï¿½ as
+	* defined in Element Default Valid (Immediate) (ï¿½3.3.6).
 	*/
 	/*
 	* NOTE: 'local' above means types acquired by xsi:type.
@@ -26074,9 +26074,9 @@ character_content:
 	* cvc-elt (3.3.4) : 5.1.2
 	* The element information item with the canonical lexical
 	* representation of the {value constraint} value used as its
-	* ·normalized value· must be ·valid· with respect to the
-	* ·actual type definition· as defined by Element Locally Valid (Type)
-	* (§3.3.4).
+	* ï¿½normalized valueï¿½ must be ï¿½validï¿½ with respect to the
+	* ï¿½actual type definitionï¿½ as defined by Element Locally Valid (Type)
+	* (ï¿½3.3.4).
 	*/
 	if (WXS_IS_SIMPLE(inode->typeDef)) {
 	    ret = xmlSchemaVCheckINodeDataType(vctxt,
@@ -26123,18 +26123,18 @@ default_psvi:
 
     } else if (! INODE_NILLED(inode)) {
 	/*
-	* 5.2.1 The element information item must be ·valid· with respect
-	* to the ·actual type definition· as defined by Element Locally
-	* Valid (Type) (§3.3.4).
+	* 5.2.1 The element information item must be ï¿½validï¿½ with respect
+	* to the ï¿½actual type definitionï¿½ as defined by Element Locally
+	* Valid (Type) (ï¿½3.3.4).
 	*/
 	if (WXS_IS_SIMPLE(inode->typeDef)) {
 	     /*
 	    * SPEC (cvc-type) (3.1)
 	    * "If the type definition is a simple type definition, ..."
 	    * (3.1.3) "If clause 3.2 of Element Locally Valid
-	    * (Element) (§3.3.4) did not apply, then the ·normalized value·
-	    * must be ·valid· with respect to the type definition as defined
-	    * by String Valid (§3.14.4).
+	    * (Element) (ï¿½3.3.4) did not apply, then the ï¿½normalized valueï¿½
+	    * must be ï¿½validï¿½ with respect to the type definition as defined
+	    * by String Valid (ï¿½3.14.4).
 	    */
 	    ret = xmlSchemaVCheckINodeDataType(vctxt,
 		    inode, inode->typeDef, inode->value);
@@ -26142,14 +26142,14 @@ default_psvi:
 	    /*
 	    * SPEC (cvc-type) (3.2) "If the type definition is a complex type
 	    * definition, then the element information item must be
-	    * ·valid· with respect to the type definition as per
-	    * Element Locally Valid (Complex Type) (§3.4.4);"
+	    * ï¿½validï¿½ with respect to the type definition as per
+	    * Element Locally Valid (Complex Type) (ï¿½3.4.4);"
 	    *
 	    * SPEC (cvc-complex-type) (2.2)
 	    * "If the {content type} is a simple type definition, ...
-	    * the ·normalized value· of the element information item is
-	    * ·valid· with respect to that simple type definition as
-	    * defined by String Valid (§3.14.4)."
+	    * the ï¿½normalized valueï¿½ of the element information item is
+	    * ï¿½validï¿½ with respect to that simple type definition as
+	    * defined by String Valid (ï¿½3.14.4)."
 	    */
 	    ret = xmlSchemaVCheckINodeDataType(vctxt,
 		inode, inode->typeDef->contentTypeDef, inode->value);
@@ -26191,8 +26191,8 @@ default_psvi:
 		*/
 		if (WXS_HAS_MIXED_CONTENT(inode->typeDef)) {
 		    /*
-		    * 5.2.2.2.1 If the {content type} of the ·actual type
-		    * definition· is mixed, then the *initial value* of the
+		    * 5.2.2.2.1 If the {content type} of the ï¿½actual type
+		    * definitionï¿½ is mixed, then the *initial value* of the
 		    * item must match the canonical lexical representation
 		    * of the {value constraint} value.
 		    *
@@ -26216,8 +26216,8 @@ default_psvi:
 		    }
 		} else if (WXS_HAS_SIMPLE_CONTENT(inode->typeDef)) {
 		    /*
-		    * 5.2.2.2.2 If the {content type} of the ·actual type
-		    * definition· is a simple type definition, then the
+		    * 5.2.2.2.2 If the {content type} of the ï¿½actual type
+		    * definitionï¿½ is a simple type definition, then the
 		    * *actual value* of the item must match the canonical
 		    * lexical representation of the {value constraint} value.
 		    */
@@ -26258,9 +26258,9 @@ end_elem:
 	goto internal_error;
     /*
     * MAYBE TODO:
-    * SPEC (6) "The element information item must be ·valid· with
+    * SPEC (6) "The element information item must be ï¿½validï¿½ with
     * respect to each of the {identity-constraint definitions} as per
-    * Identity-constraint Satisfied (§3.11.4)."
+    * Identity-constraint Satisfied (ï¿½3.11.4)."
     */
     /*
     * PSVI TODO: If we expose IDC node-tables via PSVI then the tables
@@ -26338,8 +26338,8 @@ end_elem:
     vctxt->depth--;
     vctxt->inode = vctxt->elemInfos[vctxt->depth];
     /*
-    * VAL TODO: 7 If the element information item is the ·validation root·, it must be
-    * ·valid· per Validation Root Valid (ID/IDREF) (§3.3.4).
+    * VAL TODO: 7 If the element information item is the ï¿½validation rootï¿½, it must be
+    * ï¿½validï¿½ per Validation Root Valid (ID/IDREF) (ï¿½3.3.4).
     */
     return (ret);
 
@@ -26420,11 +26420,11 @@ xmlSchemaValidateChildElem(xmlSchemaValidCtxtPtr vctxt)
 		 * Fallback to "anyType".
 		 *
 		 * SPEC (cvc-assess-elt)
-		 * "If the item cannot be ·strictly assessed·, [...]
+		 * "If the item cannot be ï¿½strictly assessedï¿½, [...]
 		 * an element information item's schema validity may be laxly
-		 * assessed if its ·context-determined declaration· is not
-		 * skip by ·validating· with respect to the ·ur-type
-		 * definition· as per Element Locally Valid (Type) (§3.3.4)."
+		 * assessed if its ï¿½context-determined declarationï¿½ is not
+		 * skip by ï¿½validatingï¿½ with respect to the ï¿½ur-type
+		 * definitionï¿½ as per Element Locally Valid (Type) (ï¿½3.3.4)."
 		*/
 		vctxt->inode->typeDef =
 		    xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
@@ -26496,9 +26496,9 @@ xmlSchemaValidateChildElem(xmlSchemaValidCtxtPtr vctxt)
 	    * SPEC (2.4) "If the {content type} is element-only or mixed,
 	    * then the sequence of the element information item's
 	    * element information item [children], if any, taken in
-	    * order, is ·valid· with respect to the {content type}'s
+	    * order, is ï¿½validï¿½ with respect to the {content type}'s
 	    * particle, as defined in Element Sequence Locally Valid
-	    * (Particle) (§3.9.4)."
+	    * (Particle) (ï¿½3.9.4)."
 	    */
 	    ret = xmlRegExecPushString2(regexCtxt,
 		vctxt->inode->localName,

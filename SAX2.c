@@ -1837,6 +1837,9 @@ skip:
     } else
 	ret->content = (xmlChar *) intern;
 
+    if (ctxt->input != NULL)
+        ret->line = ctxt->input->line;
+
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(ret);
     return(ret);

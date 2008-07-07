@@ -1,3 +1,7 @@
+Mon Jul  7 15:49:59 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fix line number on text nodes, problem raised by Ralf Junker
+
 Sun Jun 29 17:04:28 CEST 2008 Rob Richards <rrichards@ctindustries.net>
 	* xmlschemas.c: fix crash with invalid whitespace facet
 

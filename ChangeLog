@@ -1,3 +1,8 @@
+Wed Jul 16 22:28:48 PDT 2008 William Brack <wbrack@mmm.com.hk>
+
+	* pattern.c: fix problem with xmlStreamPop when pattern includes
+	  a "." element (see discussion on libxslt list)
+
 Mon Jul  7 15:49:59 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: fix line number on text nodes, problem raised by Ralf Junker

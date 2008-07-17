@@ -2285,9 +2285,13 @@ xmlStreamPop(xmlStreamCtxtPtr stream) {
 	if (stream->blockLevel == stream->level)
 	    stream->blockLevel = -1;
 
-	stream->level--;
-	if (stream->level < 0)
-	    return(-1);		
+	/*
+	 *  stream->level can be zero when XML_FINAL_IS_ANY_NODE is set
+	 *  (see the thread at
+	 *  http://mail.gnome.org/archives/xslt/2008-July/msg00027.html)
+	 */
+	if (stream->level)
+	    stream->level--;
 	/*
 	 * Check evolution of existing states
 	 */	

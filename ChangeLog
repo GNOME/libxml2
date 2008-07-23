@@ -1,3 +1,7 @@
+Wed Jul 23 15:32:39 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: fix the build root
+
 Wed Jul 16 22:28:48 PDT 2008 William Brack <wbrack@mmm.com.hk>
 
 	* pattern.c: fix problem with xmlStreamPop when pattern includes

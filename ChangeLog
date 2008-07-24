@@ -1,3 +1,9 @@
+Thu Jul 24 16:57:20 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am testchar.c Makefile.tests README.tests: add a
+	  new regression test program for testing character ranges and
+	  UTF8 encoding/decoding
+
 Wed Jul 23 15:32:39 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: fix the build root

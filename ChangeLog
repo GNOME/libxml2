@@ -1,3 +1,11 @@
+Tue Jul 29 18:09:26 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* runxmlconf.c Makefile.am: add a C program to run the W3C test
+	  suite, work in progress
+	* xmllint.c: add a new option --oldxml10 to use the old parser
+	* parser.c: fix the XML_PARSE_OLD10 processing of the new option
+	  and a bug in version parsing
+
 Tue Jul 29 11:12:40 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: space and tabs cleanup

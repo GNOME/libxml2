@@ -8,7 +8,8 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
-                testReader testapi testModule runtest runsuite testchar
+                testReader testapi testModule runtest runsuite testchar \
+		runxmlconf
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -154,6 +155,11 @@ testapi_SOURCES=testapi.c
 testapi_LDFLAGS = 
 testapi_DEPENDENCIES = $(DEPS)
 testapi_LDADD= $(LDADDS)
+
+runxmlconf_SOURCES=runxmlconf.c
+runxmlconf_LDFLAGS = 
+runxmlconf_DEPENDENCIES = $(DEPS)
+runxmlconf_LDADD= $(LDADDS)
 
 #testOOM_SOURCES=testOOM.c testOOMlib.h testOOMlib.c
 #testOOM_LDFLAGS = 

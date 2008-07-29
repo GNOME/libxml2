@@ -202,6 +202,7 @@ static xmlStreamCtxtPtr patstream = NULL;
 #endif
 static int options = XML_PARSE_COMPACT;
 static int sax = 0;
+static int oldxml10 = 0;
 
 /************************************************************************
  *									*
@@ -2912,6 +2913,7 @@ static void usage(const char *name) {
     printf("\t--sax1: use the old SAX1 interfaces for processing\n");
 #endif
     printf("\t--sax: do not build a tree but work just at the SAX level\n");
+    printf("\t--oldxml10: use XML-1.0 parsing rules before the 5th edition\n");
 
     printf("\nLibxml project home page: http://xmlsoft.org/\n");
     printf("To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
@@ -3237,6 +3239,10 @@ main(int argc, char **argv) {
 	    i++;
 	    pattern = argv[i];
 #endif
+	} else if ((!strcmp(argv[i], "-oldxml10")) ||
+	           (!strcmp(argv[i], "--oldxml10"))) {
+	    oldxml10++;
+	    options |= XML_PARSE_OLD10;
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);

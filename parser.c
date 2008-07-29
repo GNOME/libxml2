@@ -9168,14 +9168,14 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
     }
     cur = CUR;
     if (!((cur >= '0') && (cur <= '9'))) {
-	free(buf);
+	xmlFree(buf);
 	return(NULL);
     }
     buf[len++] = cur;
     NEXT;
     cur=CUR;
     if (cur != '.') {
-	free(buf);
+	xmlFree(buf);
 	return(NULL);
     }
     buf[len++] = cur;
@@ -13752,6 +13752,10 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
     if (options & XML_PARSE_COMPACT) {
 	ctxt->options |= XML_PARSE_COMPACT;
         options -= XML_PARSE_COMPACT;
+    }
+    if (options & XML_PARSE_OLD10) {
+	ctxt->options |= XML_PARSE_OLD10;
+        options -= XML_PARSE_OLD10;
     }
     ctxt->linenumbers = 1;
     return (options);

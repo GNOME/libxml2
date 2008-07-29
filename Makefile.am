@@ -166,7 +166,10 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_DEPENDENCIES = $(DEPS)
 #testOOM_LDADD= $(LDADDS)
 
-check-local: all tests
+runtests:
+	runtest$(EXEEXT) && testapi$(EXEEXT) && runxmlconf$(EXEEXT)
+
+check-local: all runtests
 
 testall : tests SVGtests SAXtests
 

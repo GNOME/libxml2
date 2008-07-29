@@ -4203,8 +4203,10 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
     int q, ql;
     int r, rl;
     int cur, l;
-    xmlParserInputPtr input = ctxt->input;
     int count = 0;
+    int inputid;
+
+    inputid = ctxt->input->id;
 
     if (buf == NULL) {
         len = 0;
@@ -4286,7 +4288,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
                           "xmlParseComment: invalid xmlChar value %d\n",
 	                  cur);
     } else {
-	if (input != ctxt->input) {
+	if (inputid != ctxt->input->id) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
 		"Comment doesn't start and stop in the same entity\n");
 	}
@@ -4322,15 +4324,16 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     xmlParserInputState state;
     const xmlChar *in;
     int nbchar = 0, ccol;
+    int inputid;
 
     /*
      * Check that there is a comment right here.
      */
     if ((RAW != '<') || (NXT(1) != '!') ||
         (NXT(2) != '-') || (NXT(3) != '-')) return;
-
     state = ctxt->instate;
     ctxt->instate = XML_PARSER_COMMENT;
+    inputid = ctxt->input->id;
     SKIP(4);
     SHRINK;
     GROW;
@@ -4421,6 +4424,10 @@ get_more:
 	if (*in == '-') {
 	    if (in[1] == '-') {
 	        if (in[2] == '>') {
+		    if (ctxt->input->id != inputid) {
+			xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+			"comment doesn't start and stop in the same entity\n");
+		    }
 		    SKIP(3);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
 		        (!ctxt->disableSAX)) {

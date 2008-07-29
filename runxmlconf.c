@@ -29,7 +29,7 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 
-#define LOGFILE "runsuite.log"
+#define LOGFILE "runxmlconf.log"
 static FILE *logfile = NULL;
 static int verbose = 0;
 

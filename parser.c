@@ -418,7 +418,7 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
     xmlStructuredErrorFunc schannel = NULL;
-    
+
     if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
         (ctxt->instate == XML_PARSER_EOF))
 	return;
@@ -809,7 +809,7 @@ xmlHasFeature(xmlFeature feature)
             return(1);
 #else
             return(0);
-#endif 
+#endif
         case XML_WITH_ZLIB:
 #ifdef LIBXML_ZLIB_ENABLED
             return(1);
@@ -1293,7 +1293,7 @@ nsPop(xmlParserCtxtPtr ctxt, int nr)
     }
     if (ctxt->nsNr <= 0)
         return (0);
-    
+
     for (i = 0;i < nr;i++) {
          ctxt->nsNr--;
 	 ctxt->nsTab[ctxt->nsNr] = NULL;
@@ -2758,9 +2758,197 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
  *									*
  ************************************************************************/
 
-static const xmlChar * xmlParseNameComplex(xmlParserCtxtPtr ctxt);
+/************************************************************************
+ *									*
+ *	Routines to parse Name, NCName and NmToken			*
+ *									*
+ ************************************************************************/
+unsigned long nbParseName = 0;
+unsigned long nbParseNmToken = 0;
+unsigned long nbParseNCName = 0;
+unsigned long nbParseNCNameComplex = 0;
+unsigned long nbParseNameComplex = 0;
+unsigned long nbParseStringName = 0;
+/*
+ * The two following functions are related to the change of accepted
+ * characters for Name and NmToken in the Revision 5 of XML-1.0
+ * They correspond to the modified production [4] and the new production [4a]
+ * changes in that revision. Also note that the macros used for the
+ * productions Letter, Digit, CombiningChar and Extender are not needed
+ * anymore.
+ * We still keep compatibility to pre-revision5 parsing semantic if the
+ * new XML_PARSE_OLD10 option is given to the parser.
+ */
+static int
+xmlIsNameStartChar(xmlParserCtxtPtr ctxt, int c) {
+    if ((ctxt->options & XML_PARSE_OLD10) == 0) {
+        /*
+	 * Use the new checks of production [4] [4a] amd [5] of the
+	 * Update 5 of XML-1.0
+	 */
+	if ((c != ' ') && (c != '>') && (c != '/') && /* accelerators */
+	    (((c >= 'a') && (c <= 'z')) ||
+	     ((c >= 'A') && (c <= 'Z')) ||
+	     (c == '_') || (c == ':') ||
+	     ((c >= 0xC0) && (c <= 0xD6)) ||
+	     ((c >= 0xD8) && (c <= 0xF6)) ||
+	     ((c >= 0xF8) && (c <= 0x2FF)) ||
+	     ((c >= 0x370) && (c <= 0x37D)) ||
+	     ((c >= 0x37F) && (c <= 0x1FFF)) ||
+	     ((c >= 0x200C) && (c <= 0x200D)) ||
+	     ((c >= 0x2070) && (c <= 0x218F)) ||
+	     ((c >= 0x2C00) && (c <= 0x2FEF)) ||
+	     ((c >= 0x3001) && (c <= 0xD7FF)) ||
+	     ((c >= 0xF900) && (c <= 0xFDCF)) ||
+	     ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
+	     ((c >= 0x10000) && (c <= 0xEFFFF))))
+	    return(1);
+    } else {
+        if (IS_LETTER(c) || (c == '_') || (c == ':'))
+	    return(1);
+    }
+    return(0);
+}
+
+static int
+xmlIsNameChar(xmlParserCtxtPtr ctxt, int c) {
+    if ((ctxt->options & XML_PARSE_OLD10) == 0) {
+        /*
+	 * Use the new checks of production [4] [4a] amd [5] of the
+	 * Update 5 of XML-1.0
+	 */
+	if ((c != ' ') && (c != '>') && (c != '/') && /* accelerators */
+	    (((c >= 'a') && (c <= 'z')) ||
+	     ((c >= 'A') && (c <= 'Z')) ||
+	     ((c >= '0') && (c <= '9')) || /* !start */
+	     (c == '_') || (c == ':') ||
+	     (c == '-') || (c == '.') || (c == 0xB7) || /* !start */
+	     ((c >= 0xC0) && (c <= 0xD6)) ||
+	     ((c >= 0xD8) && (c <= 0xF6)) ||
+	     ((c >= 0xF8) && (c <= 0x2FF)) ||
+	     ((c >= 0x300) && (c <= 0x36F)) || /* !start */
+	     ((c >= 0x370) && (c <= 0x37D)) ||
+	     ((c >= 0x37F) && (c <= 0x1FFF)) ||
+	     ((c >= 0x200C) && (c <= 0x200D)) ||
+	     ((c >= 0x203F) && (c <= 0x2040)) || /* !start */
+	     ((c >= 0x2070) && (c <= 0x218F)) ||
+	     ((c >= 0x2C00) && (c <= 0x2FEF)) ||
+	     ((c >= 0x3001) && (c <= 0xD7FF)) ||
+	     ((c >= 0xF900) && (c <= 0xFDCF)) ||
+	     ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
+	     ((c >= 0x10000) && (c <= 0xEFFFF))))
+	     return(1);
+    } else {
+        if ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+            (c == '.') || (c == '-') ||
+	    (c == '_') || (c == ':') || 
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))
+	    return(1);
+    }
+    return(0);
+}
+
 static xmlChar * xmlParseAttValueInternal(xmlParserCtxtPtr ctxt,
                                           int *len, int *alloc, int normalize);
+
+static const xmlChar *
+xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
+    int len = 0, l;
+    int c;
+    int count = 0;
+
+    nbParseNameComplex++;
+
+    /*
+     * Handler for more complex cases
+     */
+    GROW;
+    c = CUR_CHAR(l);
+    if ((ctxt->options & XML_PARSE_OLD10) == 0) {
+        /*
+	 * Use the new checks of production [4] [4a] amd [5] of the
+	 * Update 5 of XML-1.0
+	 */
+	if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	    (!(((c >= 'a') && (c <= 'z')) ||
+	       ((c >= 'A') && (c <= 'Z')) ||
+	       (c == '_') || (c == ':') ||
+	       ((c >= 0xC0) && (c <= 0xD6)) ||
+	       ((c >= 0xD8) && (c <= 0xF6)) ||
+	       ((c >= 0xF8) && (c <= 0x2FF)) ||
+	       ((c >= 0x370) && (c <= 0x37D)) ||
+	       ((c >= 0x37F) && (c <= 0x1FFF)) ||
+	       ((c >= 0x200C) && (c <= 0x200D)) ||
+	       ((c >= 0x2070) && (c <= 0x218F)) ||
+	       ((c >= 0x2C00) && (c <= 0x2FEF)) ||
+	       ((c >= 0x3001) && (c <= 0xD7FF)) ||
+	       ((c >= 0xF900) && (c <= 0xFDCF)) ||
+	       ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
+	       ((c >= 0x10000) && (c <= 0xEFFFF))))) {
+	    return(NULL);
+	}
+	len += l;
+	NEXTL(l);
+	c = CUR_CHAR(l);
+	while ((c != ' ') && (c != '>') && (c != '/') && /* accelerators */
+	       (((c >= 'a') && (c <= 'z')) ||
+	        ((c >= 'A') && (c <= 'Z')) ||
+	        ((c >= '0') && (c <= '9')) || /* !start */
+	        (c == '_') || (c == ':') ||
+	        (c == '-') || (c == '.') || (c == 0xB7) || /* !start */
+	        ((c >= 0xC0) && (c <= 0xD6)) ||
+	        ((c >= 0xD8) && (c <= 0xF6)) ||
+	        ((c >= 0xF8) && (c <= 0x2FF)) ||
+	        ((c >= 0x300) && (c <= 0x36F)) || /* !start */
+	        ((c >= 0x370) && (c <= 0x37D)) ||
+	        ((c >= 0x37F) && (c <= 0x1FFF)) ||
+	        ((c >= 0x200C) && (c <= 0x200D)) ||
+	        ((c >= 0x203F) && (c <= 0x2040)) || /* !start */
+	        ((c >= 0x2070) && (c <= 0x218F)) ||
+	        ((c >= 0x2C00) && (c <= 0x2FEF)) ||
+	        ((c >= 0x3001) && (c <= 0xD7FF)) ||
+	        ((c >= 0xF900) && (c <= 0xFDCF)) ||
+	        ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
+	        ((c >= 0x10000) && (c <= 0xEFFFF))
+		)) {
+	    if (count++ > 100) {
+		count = 0;
+		GROW;
+	    }
+	    len += l;
+	    NEXTL(l);
+	    c = CUR_CHAR(l);
+	}
+    } else {
+	if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	    (!IS_LETTER(c) && (c != '_') &&
+	     (c != ':'))) {
+	    return(NULL);
+	}
+	len += l;
+	NEXTL(l);
+	c = CUR_CHAR(l);
+
+	while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
+	       ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+		(c == '.') || (c == '-') ||
+		(c == '_') || (c == ':') || 
+		(IS_COMBINING(c)) ||
+		(IS_EXTENDER(c)))) {
+	    if (count++ > 100) {
+		count = 0;
+		GROW;
+	    }
+	    len += l;
+	    NEXTL(l);
+	    c = CUR_CHAR(l);
+	}
+    }
+    if ((*ctxt->input->cur == '\n') && (ctxt->input->cur[-1] == '\r'))
+        return(xmlDictLookup(ctxt->dict, ctxt->input->cur - (len + 1), len));
+    return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
+}
 
 /**
  * xmlParseName:
@@ -2785,6 +2973,8 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
     int count = 0;
 
     GROW;
+
+    nbParseName++;
 
     /*
      * Accelerator for simple ASCII names
@@ -2811,7 +3001,91 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	    return(ret);
 	}
     }
+    /* accelerator for special cases */
     return(xmlParseNameComplex(ctxt));
+}
+
+static const xmlChar *
+xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
+    int len = 0, l;
+    int c;
+    int count = 0;
+
+    nbParseNCNameComplex++;
+
+    /*
+     * Handler for more complex cases
+     */
+    GROW;
+    c = CUR_CHAR(l);
+    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	(!xmlIsNameStartChar(ctxt, c) || (c == ':'))) {
+	return(NULL);
+    }
+
+    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
+	   (xmlIsNameChar(ctxt, c) && (c != ':'))) {
+	if (count++ > 100) {
+	    count = 0;
+	    GROW;
+	}
+	len += l;
+	NEXTL(l);
+	c = CUR_CHAR(l);
+    }
+    return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
+}
+
+/**
+ * xmlParseNCName:
+ * @ctxt:  an XML parser context
+ * @len:  lenght of the string parsed
+ *
+ * parse an XML name.
+ *
+ * [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
+ *                      CombiningChar | Extender
+ *
+ * [5NS] NCName ::= (Letter | '_') (NCNameChar)*
+ *
+ * Returns the Name parsed or NULL
+ */
+
+static const xmlChar *
+xmlParseNCName(xmlParserCtxtPtr ctxt) {
+    const xmlChar *in;
+    const xmlChar *ret;
+    int count = 0;
+
+    nbParseNCName++;
+
+    /*
+     * Accelerator for simple ASCII names
+     */
+    in = ctxt->input->cur;
+    if (((*in >= 0x61) && (*in <= 0x7A)) ||
+	((*in >= 0x41) && (*in <= 0x5A)) ||
+	(*in == '_')) {
+	in++;
+	while (((*in >= 0x61) && (*in <= 0x7A)) ||
+	       ((*in >= 0x41) && (*in <= 0x5A)) ||
+	       ((*in >= 0x30) && (*in <= 0x39)) ||
+	       (*in == '_') || (*in == '-') ||
+	       (*in == '.'))
+	    in++;
+	if ((*in > 0) && (*in < 0x80)) {
+	    count = in - ctxt->input->cur;
+	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
+	    ctxt->input->cur = in;
+	    ctxt->nbChars += count;
+	    ctxt->input->col += count;
+	    if (ret == NULL) {
+	        xmlErrMemory(ctxt, NULL);
+	    }
+	    return(ret);
+	}
+    }
+    return(xmlParseNCNameComplex(ctxt));
 }
 
 /**
@@ -2832,15 +3106,15 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
     const xmlChar *ret;
 
     GROW;
-    
+
     in = ctxt->input->cur;
     while (*in != 0 && *in == *cmp) {
-    	++in;
+	++in;
 	++cmp;
 	ctxt->input->col++;
     }
     if (*cmp == 0 && (*in == '>' || IS_BLANK_CH (*in))) {
-    	/* success */
+	/* success */
 	ctxt->input->cur = in;
 	return (const xmlChar*) 1;
     }
@@ -2851,42 +3125,6 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
 	return (const xmlChar*) 1;
     }
     return ret;
-}
-
-static const xmlChar *
-xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
-    int len = 0, l;
-    int c;
-    int count = 0;
-
-    /*
-     * Handler for more complex cases
-     */
-    GROW;
-    c = CUR_CHAR(l);
-    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-	(!IS_LETTER(c) && (c != '_') &&
-         (c != ':'))) {
-	return(NULL);
-    }
-
-    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') ||
-	    (c == '_') || (c == ':') || 
-	    (IS_COMBINING(c)) ||
-	    (IS_EXTENDER(c)))) {
-	if (count++ > 100) {
-	    count = 0;
-	    GROW;
-	}
-	len += l;
-	NEXTL(l);
-	c = CUR_CHAR(l);
-    }
-    if ((*ctxt->input->cur == '\n') && (ctxt->input->cur[-1] == '\r'))
-        return(xmlDictLookup(ctxt->dict, ctxt->input->cur - (len + 1), len));
-    return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
 }
 
 /**
@@ -2914,17 +3152,17 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
     int len = 0, l;
     int c;
 
+    nbParseStringName++;
+
     c = CUR_SCHAR(cur, l);
-    if (!IS_LETTER(c) && (c != '_') &&
-        (c != ':')) {
+    if (!xmlIsNameStartChar(ctxt, c)) {
 	return(NULL);
     }
 
-    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigentname.xml */
-           (c == '.') || (c == '-') ||
-	   (c == '_') || (c == ':') || 
-	   (IS_COMBINING(c)) ||
-	   (IS_EXTENDER(c))) {
+    COPY_BUF(l,buf,len,c);
+    cur += l;
+    c = CUR_SCHAR(cur, l);
+    while (xmlIsNameChar(ctxt, c)) {
 	COPY_BUF(l,buf,len,c);
 	cur += l;
 	c = CUR_SCHAR(cur, l);
@@ -2935,19 +3173,14 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 	     */
 	    xmlChar *buffer;
 	    int max = len * 2;
-	    
+
 	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 	        xmlErrMemory(ctxt, NULL);
 		return(NULL);
 	    }
 	    memcpy(buffer, buf, len);
-	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-	             /* test bigentname.xml */
-		   (c == '.') || (c == '-') ||
-		   (c == '_') || (c == ':') || 
-		   (IS_COMBINING(c)) ||
-		   (IS_EXTENDER(c))) {
+	    while (xmlIsNameChar(ctxt, c)) {
 		if (len + 10 > max) {
 		    xmlChar *tmp;
 		    max *= 2;
@@ -2976,7 +3209,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 /**
  * xmlParseNmtoken:
  * @ctxt:  an XML parser context
- * 
+ *
  * parse an XML Nmtoken.
  *
  * [7] Nmtoken ::= (NameChar)+
@@ -2993,14 +3226,12 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     int c;
     int count = 0;
 
+    nbParseNmToken++;
+
     GROW;
     c = CUR_CHAR(l);
 
-    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigtoken.xml */
-           (c == '.') || (c == '-') ||
-	   (c == '_') || (c == ':') || 
-	   (IS_COMBINING(c)) ||
-	   (IS_EXTENDER(c))) {
+    while (xmlIsNameChar(ctxt, c)) {
 	if (count++ > 100) {
 	    count = 0;
 	    GROW;
@@ -3015,18 +3246,14 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 	     */
 	    xmlChar *buffer;
 	    int max = len * 2;
-	    
+
 	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 	        xmlErrMemory(ctxt, NULL);
 		return(NULL);
 	    }
 	    memcpy(buffer, buf, len);
-	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigtoken.xml */
-		   (c == '.') || (c == '-') ||
-		   (c == '_') || (c == ':') || 
-		   (IS_COMBINING(c)) ||
-		   (IS_EXTENDER(c))) {
+	    while (xmlIsNameChar(ctxt, c)) {
 		if (count++ > 100) {
 		    count = 0;
 		    GROW;
@@ -7652,38 +7879,6 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
  *									*
  ************************************************************************/
 
-static const xmlChar *
-xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
-    int len = 0, l;
-    int c;
-    int count = 0;
-
-    /*
-     * Handler for more complex cases
-     */
-    GROW;
-    c = CUR_CHAR(l);
-    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-	(!IS_LETTER(c) && (c != '_'))) {
-	return(NULL);
-    }
-
-    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') || (c == '_') ||
-	    (IS_COMBINING(c)) ||
-	    (IS_EXTENDER(c)))) {
-	if (count++ > 100) {
-	    count = 0;
-	    GROW;
-	}
-	len += l;
-	NEXTL(l);
-	c = CUR_CHAR(l);
-    }
-    return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
-}
-
 /*
  * xmlGetNamespace:
  * @ctxt:  an XML parser context
@@ -7706,56 +7901,6 @@ xmlGetNamespace(xmlParserCtxtPtr ctxt, const xmlChar *prefix) {
 	    return(ctxt->nsTab[i + 1]);
 	}
     return(NULL);
-}
-
-/**
- * xmlParseNCName:
- * @ctxt:  an XML parser context
- * @len:  lenght of the string parsed
- *
- * parse an XML name.
- *
- * [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
- *                      CombiningChar | Extender
- *
- * [5NS] NCName ::= (Letter | '_') (NCNameChar)*
- *
- * Returns the Name parsed or NULL
- */
-
-static const xmlChar *
-xmlParseNCName(xmlParserCtxtPtr ctxt) {
-    const xmlChar *in;
-    const xmlChar *ret;
-    int count = 0;
-
-    /*
-     * Accelerator for simple ASCII names
-     */
-    in = ctxt->input->cur;
-    if (((*in >= 0x61) && (*in <= 0x7A)) ||
-	((*in >= 0x41) && (*in <= 0x5A)) ||
-	(*in == '_')) {
-	in++;
-	while (((*in >= 0x61) && (*in <= 0x7A)) ||
-	       ((*in >= 0x41) && (*in <= 0x5A)) ||
-	       ((*in >= 0x30) && (*in <= 0x39)) ||
-	       (*in == '_') || (*in == '-') ||
-	       (*in == '.'))
-	    in++;
-	if ((*in > 0) && (*in < 0x80)) {
-	    count = in - ctxt->input->cur;
-	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
-	    ctxt->input->cur = in;
-	    ctxt->nbChars += count;
-	    ctxt->input->col += count;
-	    if (ret == NULL) {
-	        xmlErrMemory(ctxt, NULL);
-	    }
-	    return(ret);
-	}
-    }
-    return(xmlParseNCNameComplex(ctxt));
 }
 
 /**
@@ -9003,7 +9148,9 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
  *
  * parse the XML version value.
  *
- * [26] VersionNum ::= ([a-zA-Z0-9_.:] | '-')+
+ * [26] VersionNum ::= '1.' [0-9]+
+ *
+ * In practice allow [0-9].[0-9]+ at that level
  *
  * Returns the string giving the XML version number, or NULL
  */
@@ -9020,11 +9167,21 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 	return(NULL);
     }
     cur = CUR;
-    while (((cur >= 'a') && (cur <= 'z')) ||
-           ((cur >= 'A') && (cur <= 'Z')) ||
-           ((cur >= '0') && (cur <= '9')) ||
-           (cur == '_') || (cur == '.') ||
-	   (cur == ':') || (cur == '-')) {
+    if (!((cur >= '0') && (cur <= '9'))) {
+	free(buf);
+	return(NULL);
+    }
+    buf[len++] = cur;
+    NEXT;
+    cur=CUR;
+    if (cur != '.') {
+	free(buf);
+	return(NULL);
+    }
+    buf[len++] = cur;
+    NEXT;
+    cur=CUR;
+    while ((cur >= '0') && (cur <= '9')) {
 	if (len + 1 >= size) {
 	    xmlChar *tmp;
 
@@ -9117,7 +9274,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 	    xmlErrMemory(ctxt, NULL);
 	    return(NULL);
 	}
-	
+
 	buf[len++] = cur;
 	NEXT;
 	cur = CUR;
@@ -9363,11 +9520,23 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     } else {
 	if (!xmlStrEqual(version, (const xmlChar *) XML_DEFAULT_VERSION)) {
 	    /*
-	     * TODO: Blueberry should be detected here
+	     * Changed here for XML-1.0 5th edition
 	     */
-	    xmlWarningMsg(ctxt, XML_WAR_UNKNOWN_VERSION,
-		          "Unsupported version '%s'\n",
-			  version, NULL);
+	    if (ctxt->options & XML_PARSE_OLD10) {
+		xmlFatalErrMsgStr(ctxt, XML_ERR_UNKNOWN_VERSION,
+			          "Unsupported version '%s'\n",
+			          version);
+	    } else {
+	        if ((version[0] == '1') && ((version[1] == '.'))) {
+		    xmlWarningMsg(ctxt, XML_WAR_UNKNOWN_VERSION,
+		                  "Unsupported version '%s'\n",
+				  version, NULL);
+		} else {
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_UNKNOWN_VERSION,
+				      "Unsupported version '%s'\n",
+				      version);
+		}
+	    }
 	}
 	if (ctxt->version != NULL)
 	    xmlFree((void *) ctxt->version);

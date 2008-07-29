@@ -1,3 +1,11 @@
+Tue Jul 29 10:59:36 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parser.h include/libxml/xmlerror.h parser.c:
+	  implement XML-1.0 5th edition, add parser option XML_PARSE_OLD10
+	  to stick to old behaviour
+	* testapi.c gentest.py: modified slightly and regenerated
+	* Makefile.am: add testchar
+
 Thu Jul 24 16:57:20 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am testchar.c Makefile.tests README.tests: add a

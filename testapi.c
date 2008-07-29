@@ -6181,7 +6181,6 @@ test_xmlCatalogResolve(void) {
     int test_ret = 0;
 
 #if defined(LIBXML_CATALOG_ENABLED)
-    int mem_base;
     xmlChar * ret_val;
     xmlChar * pubID; /* the public ID string */
     int n_pubID;
@@ -6190,7 +6189,6 @@ test_xmlCatalogResolve(void) {
 
     for (n_pubID = 0;n_pubID < gen_nb_const_xmlChar_ptr;n_pubID++) {
     for (n_sysID = 0;n_sysID < gen_nb_const_xmlChar_ptr;n_sysID++) {
-        mem_base = xmlMemBlocks();
         pubID = gen_const_xmlChar_ptr(n_pubID, 0);
         sysID = gen_const_xmlChar_ptr(n_sysID, 1);
 
@@ -6200,14 +6198,6 @@ test_xmlCatalogResolve(void) {
         des_const_xmlChar_ptr(n_pubID, (const xmlChar *)pubID, 0);
         des_const_xmlChar_ptr(n_sysID, (const xmlChar *)sysID, 1);
         xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCatalogResolve",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_pubID);
-            printf(" %d", n_sysID);
-            printf("\n");
-        }
     }
     }
     function_tests++;
@@ -13153,7 +13143,6 @@ test_xmlIOParseDTD(void) {
 
 #if defined(LIBXML_VALID_ENABLED)
 #ifdef LIBXML_VALID_ENABLED
-    int mem_base;
     xmlDtdPtr ret_val;
     xmlSAXHandlerPtr sax; /* the SAX handler block or NULL */
     int n_sax;
@@ -13165,7 +13154,6 @@ test_xmlIOParseDTD(void) {
     for (n_sax = 0;n_sax < gen_nb_xmlSAXHandlerPtr;n_sax++) {
     for (n_input = 0;n_input < gen_nb_xmlParserInputBufferPtr;n_input++) {
     for (n_enc = 0;n_enc < gen_nb_xmlCharEncoding;n_enc++) {
-        mem_base = xmlMemBlocks();
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         input = gen_xmlParserInputBufferPtr(n_input, 1);
         enc = gen_xmlCharEncoding(n_enc, 2);
@@ -13178,15 +13166,6 @@ test_xmlIOParseDTD(void) {
         des_xmlParserInputBufferPtr(n_input, input, 1);
         des_xmlCharEncoding(n_enc, enc, 2);
         xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOParseDTD",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_sax);
-            printf(" %d", n_input);
-            printf(" %d", n_enc);
-            printf("\n");
-        }
     }
     }
     }

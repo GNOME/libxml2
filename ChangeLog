@@ -1,3 +1,10 @@
+Wed Jul 30 14:55:54 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlmemory.h xmlmemory.c: add xmlMemDisplayLast to
+	  help debug incremental memory leaks, and some cleanups
+	* runxmlconf.c: use that new call and avoid ever touching the
+	  system catalog in the regression tests
+
 Wed Jul 30 14:33:33 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/xmlerror.h: an XML-1.0 document can't load

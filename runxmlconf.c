@@ -125,38 +125,14 @@ static int addEntity(char *name, char *content) {
 
 /*
  * We need to trap calls to the resolver to not account memory for the catalog
- * which is shared to the current running test. We also don't want to have
- * network downloads modifying tests.
+ * and not rely on any external resources.
  */
 static xmlParserInputPtr
 testExternalEntityLoader(const char *URL, const char *ID,
 			 xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret;
-    int i;
 
-    for (i = 0;i < nb_entities;i++) {
-        if (!strcmp(testEntitiesName[i], URL)) {
-	    ret = xmlNewStringInputStream(ctxt,
-	                (const xmlChar *) testEntitiesValue[i]);
-	    if (ret != NULL) {
-	        ret->filename = (const char *)
-		                xmlStrdup((xmlChar *)testEntitiesName[i]);
-	    }
-	    return(ret);
-	}
-    }
-    if (checkTestFile(URL)) {
-	ret = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
-    } else {
-	int memused = xmlMemUsed();
-	ret = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
-	extraMemoryFromResolver += xmlMemUsed() - memused;
-    }
-#if 0
-    if (ret == NULL) {
-        fprintf(stderr, "Failed to find resource %s\n", URL);
-    }
-#endif
+    ret = xmlNewInputFromFile(ctxt, (const char *) URL);
 
     return(ret);
 }
@@ -377,6 +353,7 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
         test_log("test %s : %s leaked %d bytes\n",
 	         id, filename, final - mem);
         nb_leaks++;
+	xmlMemDisplayLast(logfile, final - mem);
     }
     nb_tests++;
 

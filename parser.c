@@ -6204,12 +6204,10 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseTextDecl:
  * @ctxt:  an XML parser context
- * 
+ *
  * parse an XML declaration header for external entities
  *
  * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
- *
- * Question: Seems that EncodingDecl is mandatory ? Is that a typo ?
  */
 
 void
@@ -11671,10 +11669,10 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     if (ctxt == NULL) {
 	return(-1);
     }
-    
+
     ctxt->userData = ctxt;
     ctxt->_private = ctx->_private;
-    
+
     inputStream = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -11687,7 +11685,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	directory = xmlParserGetDirectory((char *)URL);
     if ((ctxt->directory == NULL) && (directory != NULL))
 	ctxt->directory = directory;
-    
+
     oldsax = ctxt->sax;
     ctxt->sax = ctx->sax;
     xmlDetectSAX2(ctxt);
@@ -11725,7 +11723,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	newDoc->children->doc = ctx->myDoc;
     }
 
-    /* 
+    /*
      * Get the 4 first bytes and decode the charset
      * if enc != XML_CHAR_ENCODING_NONE
      * plug some encoding conversion routines.
@@ -11747,6 +11745,14 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
      */
     if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 	xmlParseTextDecl(ctxt);
+	/*
+	 * An XML-1.0 document can't reference an entity not XML-1.0
+	 */
+	if ((xmlStrEqual(ctx->version, BAD_CAST "1.0")) &&
+	    (!xmlStrEqual(ctxt->input->version, BAD_CAST "1.0"))) {
+	    xmlFatalErrMsg(ctxt, XML_ERR_VERSION_MISMATCH, 
+	                   "Version mismatch between document and entity\n");
+	}
     }
 
     /*
@@ -11780,7 +11786,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     ctxt->linenumbers = ctx->linenumbers;
 
     xmlParseContent(ctxt);
-   
+
     ctx->validate = ctxt->validate;
     ctx->valid = ctxt->valid;
     if ((RAW == '<') && (NXT(1) == '/')) {
@@ -11823,7 +11829,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     newDoc->intSubset = NULL;
     newDoc->extSubset = NULL;
     xmlFreeDoc(newDoc);
-    
+
     return(ret);
 }
 

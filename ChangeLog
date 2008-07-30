@@ -1,3 +1,9 @@
+Wed Jul 30 14:33:33 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/xmlerror.h: an XML-1.0 document can't load
+	  an 1.1 entity
+	* runxmlconf.c: when using entities make sure we load them
+
 Tue Jul 29 18:43:07 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix a bug not detecting cross entity comments probably

@@ -322,6 +322,7 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
     entities = xmlGetProp(cur, BAD_CAST "ENTITIES");
     if (!xmlStrEqual(entities, BAD_CAST "none")) {
         options |= XML_PARSE_DTDLOAD;
+        options |= XML_PARSE_NOENT;
     }
     rec = xmlGetProp(cur, BAD_CAST "RECOMMENDATION");
     if ((rec == NULL) ||

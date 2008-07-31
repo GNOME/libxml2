@@ -169,7 +169,7 @@ runxmlconf_LDADD= $(LDADDS)
 runtests:
 	runtest$(EXEEXT) && testapi$(EXEEXT) && runxmlconf$(EXEEXT)
 
-check-local: all runtests
+check: all runtests
 
 testall : tests SVGtests SAXtests
 

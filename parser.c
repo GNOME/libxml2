@@ -116,6 +116,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 		      void *user_data, int depth, const xmlChar *URL,
 		      const xmlChar *ID, xmlNodePtr *list);
 
+static int
+xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options,
+                          const char *encoding);
 #ifdef LIBXML_LEGACY_ENABLED
 static void
 xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
@@ -608,6 +611,33 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                     info1, info2, info3);
     if (ctxt != NULL)
 	ctxt->nsWellFormed = 0;
+}
+
+/**
+ * xmlNsWarn
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the message
+ * @info1:  extra information string
+ * @info2:  extra information string
+ *
+ * Handle a fatal parser error, i.e. violating Well-Formedness constraints
+ */
+static void
+xmlNsWarn(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+         const char *msg,
+         const xmlChar * info1, const xmlChar * info2,
+         const xmlChar * info3)
+{
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
+                    XML_ERR_WARNING, NULL, 0, (const char *) info1,
+                    (const char *) info2, (const char *) info3, 0, 0, msg,
+                    info1, info2, info3);
 }
 
 /************************************************************************
@@ -4501,6 +4531,10 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
 		      "xmlParsePITarget: invalid name prefix 'xml'\n",
 		      NULL, NULL);
     }
+    if ((name != NULL) && (xmlStrchr(name, ':') != NULL)) {
+	xmlNsErr(ctxt, XML_NS_ERR_COLON, 
+		 "colon are forbidden from PI names '%s'\n", name, NULL, NULL);
+    }
     return(name);
 }
 
@@ -4744,6 +4778,11 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 		     "Space required after the NOTATION name'\n");
 	    return;
 	}
+	if (xmlStrchr(name, ':') != NULL) {
+	    xmlNsErr(ctxt, XML_NS_ERR_COLON, 
+		     "colon are forbidden from notation names '%s'\n",
+		     name, NULL, NULL);
+	}
 	SKIP_BLANKS;
 
 	/*
@@ -4827,6 +4866,11 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
 	                   "xmlParseEntityDecl: no name\n");
             return;
+	}
+	if (xmlStrchr(name, ':') != NULL) {
+	    xmlNsErr(ctxt, XML_NS_ERR_COLON, 
+		     "colon are forbidden from entities names '%s'\n",
+		     name, NULL, NULL);
 	}
         skipped = SKIP_BLANKS;
 	if (skipped == 0) {
@@ -8421,16 +8465,32 @@ reparse:
                 if (*URL != 0) {
 		    uri = xmlParseURI((const char *) URL);
 		    if (uri == NULL) {
-			xmlWarningMsg(ctxt, XML_WAR_NS_URI,
-				      "xmlns: %s not a valid URI\n",
-				      URL, NULL);
+			xmlNsErr(ctxt, XML_WAR_NS_URI,
+			         "xmlns: '%s' is not a valid URI\n",
+					   URL, NULL, NULL);
 		    } else {
-			if (uri->scheme == NULL) {
-			    xmlWarningMsg(ctxt, XML_WAR_NS_URI_RELATIVE,
-				   "xmlns: URI %s is not absolute\n",
-				          URL, NULL);
+			if ((ctxt->pedantic) && (uri->scheme == NULL)) {
+			    xmlNsWarn(ctxt, XML_WAR_NS_URI_RELATIVE,
+				      "xmlns: URI %s is not absolute\n",
+				      URL, NULL, NULL);
 			}
 			xmlFreeURI(uri);
+		    }
+		    if (URL == ctxt->str_xml_ns) {
+			if (attname != ctxt->str_xml) {
+			    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+			 "xml namespace URI cannot be the default namespace\n",
+				     NULL, NULL, NULL);
+			}
+			goto skip_default_ns;
+		    }
+		    if ((len == 29) &&
+			(xmlStrEqual(URL,
+				 BAD_CAST "http://www.w3.org/2000/xmlns/"))) {
+			xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+			     "reuse of the xmlns namespace name is forbidden\n",
+				 NULL, NULL, NULL);
+			goto skip_default_ns;
 		    }
 		}
 		/*
@@ -8443,6 +8503,7 @@ reparse:
 		    xmlErrAttributeDup(ctxt, NULL, attname);
 		else
 		    if (nsPush(ctxt, NULL, URL) > 0) nbNs++;
+skip_default_ns:
 		if (alloc != 0) xmlFree(attvalue);
 		SKIP_BLANKS;
 		continue;
@@ -8460,22 +8521,49 @@ reparse:
 		    /*
 		     * Do not keep a namespace definition node
 		     */
-		    if (alloc != 0) xmlFree(attvalue);
-		    SKIP_BLANKS;
-		    continue;
+		    goto skip_ns;
 		}
-		uri = xmlParseURI((const char *) URL);
-		if (uri == NULL) {
-		    xmlWarningMsg(ctxt, XML_WAR_NS_URI,
-			 "xmlns:%s: '%s' is not a valid URI\n",
-				       attname, URL);
-		} else {
-		    if ((ctxt->pedantic) && (uri->scheme == NULL)) {
-			xmlWarningMsg(ctxt, XML_WAR_NS_URI_RELATIVE,
-				      "xmlns:%s: URI %s is not absolute\n",
-			              attname, URL);
+                if (URL == ctxt->str_xml_ns) {
+		    if (attname != ctxt->str_xml) {
+		        xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+			         "xml namespace URI mapped to wrong prefix\n",
+			         NULL, NULL, NULL);
 		    }
-		    xmlFreeURI(uri);
+		    goto skip_ns;
+		}
+                if (attname == ctxt->str_xmlns) {
+		    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+			     "redefinition of the xmlns prefix is forbidden\n",
+			     NULL, NULL, NULL);
+		    goto skip_ns;
+		}
+		if ((len == 29) &&
+		    (xmlStrEqual(URL,
+		                 BAD_CAST "http://www.w3.org/2000/xmlns/"))) {
+		    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+			     "reuse of the xmlns namespace name is forbidden\n",
+			     NULL, NULL, NULL);
+		    goto skip_ns;
+		}
+		if ((URL == NULL) || (URL[0] == 0)) {
+		    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+		             "xmlns:%s: Empty XML namespace is not allowed\n",
+			          attname, NULL, NULL);
+		    goto skip_ns;
+		} else {
+		    uri = xmlParseURI((const char *) URL);
+		    if (uri == NULL) {
+			xmlNsErr(ctxt, XML_WAR_NS_URI,
+			     "xmlns:%s: '%s' is not a valid URI\n",
+					   attname, URL, NULL);
+		    } else {
+			if ((ctxt->pedantic) && (uri->scheme == NULL)) {
+			    xmlNsWarn(ctxt, XML_WAR_NS_URI_RELATIVE,
+				      "xmlns:%s: URI %s is not absolute\n",
+				      attname, URL, NULL);
+			}
+			xmlFreeURI(uri);
+		    }
 		}
 
 		/*
@@ -8488,6 +8576,7 @@ reparse:
 		    xmlErrAttributeDup(ctxt, aprefix, attname);
 		else
 		    if (nsPush(ctxt, attname, URL) > 0) nbNs++;
+skip_ns:
 		if (alloc != 0) xmlFree(attvalue);
 		SKIP_BLANKS;
 		if (ctxt->input->base != base) goto base_changed;
@@ -8522,7 +8611,7 @@ reparse:
 		xmlFree(attvalue);
 	}
 
-failed:     
+failed:
 
 	GROW
 	if (ctxt->input->base != base) goto base_changed;
@@ -9367,6 +9456,18 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
         if ((encoding != NULL) &&
 	    ((!xmlStrcasecmp(encoding, BAD_CAST "UTF-16")) ||
 	     (!xmlStrcasecmp(encoding, BAD_CAST "UTF16")))) {
+	    /*
+	     * If no encoding was passed to the parser, that we are
+	     * using UTF-16 and no decoder is present i.e. the 
+	     * document is apparently UTF-8 compatible, then raise an
+	     * encoding mismatch fatal error
+	     */
+	    if ((ctxt->encoding == NULL) &&
+	        (ctxt->input->buf != NULL) &&
+	        (ctxt->input->buf->encoder == NULL)) {
+		xmlFatalErrMsg(ctxt, XML_ERR_INVALID_ENCODING,
+		  "Document labelled UTF-16 but has UTF-8 content\n");
+	    }
 	    if (ctxt->encoding != NULL)
 		xmlFree((xmlChar *) ctxt->encoding);
 	    ctxt->encoding = encoding;
@@ -12339,7 +12440,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
     } else
         options |= XML_PARSE_NODICT;
 
-    xmlCtxtUseOptions(ctxt, options);
+    xmlCtxtUseOptionsInternal(ctxt, options, NULL);
     xmlDetectSAX2(ctxt);
     ctxt->myDoc = doc;
 
@@ -12518,7 +12619,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
 	ctxt->dictNames = 1;
     } else {
-	xmlCtxtUseOptions(ctxt, XML_PARSE_NODICT);
+	xmlCtxtUseOptionsInternal(ctxt, XML_PARSE_NODICT, NULL);
     }
     if (doc != NULL) {
 	newDoc->intSubset = doc->intSubset;
@@ -12767,9 +12868,9 @@ xmlCreateURLParserCtxt(const char *filename, int options)
     }
 
     if (options)
-	xmlCtxtUseOptions(ctxt, options);
+	xmlCtxtUseOptionsInternal(ctxt, options, NULL);
     ctxt->linenumbers = 1;
-    
+
     inputStream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -13656,6 +13757,10 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     if (encoding != NULL) {
         xmlCharEncodingHandlerPtr hdlr;
 
+        if (ctxt->encoding != NULL)
+	    xmlFree((xmlChar *) ctxt->encoding);
+        ctxt->encoding = xmlStrdup((const xmlChar *) encoding);
+
         hdlr = xmlFindCharEncodingHandler(encoding);
         if (hdlr != NULL) {
             xmlSwitchToEncoding(ctxt, hdlr);
@@ -13670,21 +13775,28 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     return(0);
 }
 
+
 /**
- * xmlCtxtUseOptions:
+ * xmlCtxtUseOptionsInternal:
  * @ctxt: an XML parser context
  * @options:  a combination of xmlParserOption
+ * @encoding:  the user provided encoding to use
  *
  * Applies the options to the parser context
  *
  * Returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
  */
-int
-xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
+static int
+xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encoding)
 {
     if (ctxt == NULL)
         return(-1);
+    if (encoding != NULL) {
+        if (ctxt->encoding != NULL)
+	    xmlFree((xmlChar *) ctxt->encoding);
+        ctxt->encoding = xmlStrdup((const xmlChar *) encoding);
+    }
     if (options & XML_PARSE_RECOVER) {
         ctxt->recovery = 1;
         options -= XML_PARSE_RECOVER;
@@ -13775,6 +13887,22 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 }
 
 /**
+ * xmlCtxtUseOptions:
+ * @ctxt: an XML parser context
+ * @options:  a combination of xmlParserOption
+ *
+ * Applies the options to the parser context
+ *
+ * Returns 0 in case of success, the set of unknown or unimplemented options
+ *         in case of error.
+ */
+int
+xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
+{
+   return(xmlCtxtUseOptionsInternal(ctxt, options, NULL));
+}
+
+/**
  * xmlDoRead:
  * @ctxt:  an XML parser context
  * @URL:  the base URL to use for the document
@@ -13783,7 +13911,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
  * @reuse:  keep the context for reuse
  *
  * Common front-end for the xmlRead functions
- * 
+ *
  * Returns the resulting document tree or NULL
  */
 static xmlDocPtr
@@ -13791,8 +13919,8 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
           int options, int reuse)
 {
     xmlDocPtr ret;
-    
-    xmlCtxtUseOptions(ctxt, options);
+
+    xmlCtxtUseOptionsInternal(ctxt, options, encoding);
     if (encoding != NULL) {
         xmlCharEncodingHandlerPtr hdlr;
 

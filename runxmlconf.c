@@ -43,6 +43,12 @@ static int verbose = 0;
 
 #endif
 
+const char *skipped_tests[] = {
+/* http://lists.w3.org/Archives/Public/public-xml-testsuite/2008Jul/0000.html */
+    "rmt-ns10-035",
+    NULL
+};
+
 /************************************************************************
  *									*
  *		File name and path utilities				*
@@ -271,11 +277,21 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
     int options = 0;
     int nstest = 0;
     int mem, final;
+    int i;
 
+    testErrorsSize = 0; testErrors[0] = 0;
     id = xmlGetProp(cur, BAD_CAST "ID");
     if (id == NULL) {
         test_log("test missing ID, line %ld\n", xmlGetLineNo(cur));
 	goto error;
+    }
+    for (i = 0;skipped_tests[i] != NULL;i++) {
+        if (!strcmp(skipped_tests[i], (char *) id)) {
+	    test_log("Skipping test %s from skipped list\n", (char *) id);
+	    ret = 0;
+	    nb_skipped++;
+	    goto error;
+	}
     }
     type = xmlGetProp(cur, BAD_CAST "TYPE");
     if (type == NULL) {
@@ -312,6 +328,7 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
 	ret = 1;
 	nstest = 1;
     } else {
+        testErrorsSize = 0; testErrors[0] = 0;
         test_log("Skipping test %s for REC %s\n", (char *) id, (char *) rec);
 	ret = 0;
 	nb_skipped++;

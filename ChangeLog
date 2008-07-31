@@ -1,3 +1,14 @@
+Thu Jul 31 10:15:53 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* runxmlconf.c: added a skipped list, insert rmt-ns10-035
+	* Makefile.am: improve 'make check'
+	* include/libxml/xmlerror.h parser.c: clean up namespace errors
+	  checking and reporting, errors when a document is labelled
+	  as UTF-16 while it is parsed as UTF-8 and no encoding was given
+	  explicitely.
+	* result/errors/webdav.xml.*: some warnings are no recategorized
+	  as Namespace errors
+
 Wed Jul 30 14:55:54 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlmemory.h xmlmemory.c: add xmlMemDisplayLast to

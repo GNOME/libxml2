@@ -1,3 +1,17 @@
+Thu Jul 31 21:49:45 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* runxmlconf.c: more progresses against the official regression tests
+	* runsuite.c: small cleanup for non-leak reports
+	* include/libxml/tree.h: parsing flags and other properties are
+	  now added to the document node, this is generally useful and
+	  allow to make Name and NmToken validations based on the parser
+	  flags, more specifically the 5th edition of XML or not
+	* HTMLparser.c tree.c: small side effects for the previous changes
+	* parser.c SAX2.c valid.c: the bulk of teh changes are here,
+	  the parser and validation behaviour can be affected, parsing
+	  flags need to be copied, lot of changes. Also fixing various
+	  validation problems in the regression tests.
+
 Thu Jul 31 10:15:53 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* runxmlconf.c: added a skipped list, insert rmt-ns10-035

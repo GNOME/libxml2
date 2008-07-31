@@ -358,7 +358,7 @@ done:
     if (rng != NULL)
         xmlRelaxNGFree(rng);
     xmlResetLastError();
-    if ((memt != xmlMemUsed()) && (extraMemoryFromResolver == 0)) {
+    if ((memt < xmlMemUsed()) && (extraMemoryFromResolver == 0)) {
 	test_log("Validation of tests starting line %ld leaked %d\n",
 		xmlGetLineNo(cur), xmlMemUsed() - memt);
 	nb_leaks++;

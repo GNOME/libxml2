@@ -448,7 +448,7 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  */
 static void
 xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
-              const char *msg, const xmlChar *str1)
+              const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
     xmlStructuredErrorFunc schannel = NULL;
 
@@ -464,8 +464,8 @@ xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                     ctxt->vctxt.error, ctxt->vctxt.userData,
                     ctxt, NULL, XML_FROM_DTD, error,
                     XML_ERR_ERROR, NULL, 0, (const char *) str1,
-		    NULL, NULL, 0, 0,
-		    msg, (const char *) str1);
+		    (const char *) str2, NULL, 0, 0,
+		    msg, (const char *) str1, (const char *) str2);
     if (ctxt != NULL) {
 	ctxt->valid = 0;
     }
@@ -889,7 +889,7 @@ typedef xmlDefAttrs *xmlDefAttrsPtr;
 struct _xmlDefAttrs {
     int nbAttrs;	/* number of defaulted attributes on that element */
     int maxAttrs;       /* the size of the array */
-    const xmlChar *values[4]; /* array of localname/prefix/values */
+    const xmlChar *values[5]; /* array of localname/prefix/values/external */
 };
 
 /**
@@ -943,7 +943,7 @@ xmlAttrNormalizeSpace(const xmlChar *src, xmlChar *dst)
  *         is needed.
  */
 static const xmlChar *
-xmlAttrNormalizeSpace2(xmlParserCtxtPtr ctxt, const xmlChar *src, int *len)
+xmlAttrNormalizeSpace2(xmlParserCtxtPtr ctxt, xmlChar *src, int *len)
 {
     int i;
     int remove_head = 0;
@@ -984,7 +984,8 @@ xmlAttrNormalizeSpace2(xmlParserCtxtPtr ctxt, const xmlChar *src, int *len)
         return(ret);
     } else if (remove_head) {
         *len -= remove_head;
-	return(src + remove_head);
+        memmove(src, src + remove_head, 1 + *len);
+	return(src);
     }
     return(NULL);
 }
@@ -1041,7 +1042,7 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     defaults = xmlHashLookup2(ctxt->attsDefault, name, prefix);
     if (defaults == NULL) {
         defaults = (xmlDefAttrsPtr) xmlMalloc(sizeof(xmlDefAttrs) +
-	                   (4 * 4) * sizeof(const xmlChar *));
+	                   (4 * 5) * sizeof(const xmlChar *));
 	if (defaults == NULL)
 	    goto mem_error;
 	defaults->nbAttrs = 0;
@@ -1055,7 +1056,7 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
         xmlDefAttrsPtr temp;
 
         temp = (xmlDefAttrsPtr) xmlRealloc(defaults, sizeof(xmlDefAttrs) +
-		       (2 * defaults->maxAttrs * 4) * sizeof(const xmlChar *));
+		       (2 * defaults->maxAttrs * 5) * sizeof(const xmlChar *));
 	if (temp == NULL)
 	    goto mem_error;
 	defaults = temp;
@@ -1080,13 +1081,17 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
 	prefix = xmlDictLookup(ctxt->dict, fullattr, len);
     }
 
-    defaults->values[4 * defaults->nbAttrs] = name;
-    defaults->values[4 * defaults->nbAttrs + 1] = prefix;
+    defaults->values[5 * defaults->nbAttrs] = name;
+    defaults->values[5 * defaults->nbAttrs + 1] = prefix;
     /* intern the string and precompute the end */
     len = xmlStrlen(value);
     value = xmlDictLookup(ctxt->dict, value, len);
-    defaults->values[4 * defaults->nbAttrs + 2] = value;
-    defaults->values[4 * defaults->nbAttrs + 3] = value + len;
+    defaults->values[5 * defaults->nbAttrs + 2] = value;
+    defaults->values[5 * defaults->nbAttrs + 3] = value + len;
+    if (ctxt->external)
+        defaults->values[5 * defaults->nbAttrs + 4] = BAD_CAST "external";
+    else
+        defaults->values[5 * defaults->nbAttrs + 4] = NULL;
     defaults->nbAttrs++;
 
     return;
@@ -2264,7 +2269,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		    if ((ctxt->validate) && (ctxt->vctxt.error != NULL)) {
 		        xmlValidityError(ctxt, XML_WAR_UNDECLARED_ENTITY,
 			                 "PEReference: %%%s; not found\n",
-				         name);
+				         name, NULL);
 		    } else 
 		        xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
 			              "PEReference: %%%s; not found\n",
@@ -4947,6 +4952,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			    xmlErrMemory(ctxt, "New Doc failed");
 			    return;
 			}
+			ctxt->myDoc->properties = XML_DOC_INTERNAL;
 		    }
 		    if (ctxt->myDoc->intSubset == NULL)
 			ctxt->myDoc->intSubset = xmlNewDtd(ctxt->myDoc,
@@ -5019,6 +5025,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			        xmlErrMemory(ctxt, "New Doc failed");
 				return;
 			    }
+			    ctxt->myDoc->properties = XML_DOC_INTERNAL;
 			}
 
 			if (ctxt->myDoc->intSubset == NULL)
@@ -5519,7 +5526,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	    if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
 "Element content declaration doesn't start and stop in the same entity\n",
-                                 NULL);
+                                 NULL, NULL);
 	    }
 	    NEXT;
 	    ret = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_PCDATA);
@@ -5577,7 +5584,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	    if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
 "Element content declaration doesn't start and stop in the same entity\n",
-				 NULL);
+				 NULL, NULL);
 	    }
 	    SKIP(2);
 	} else {
@@ -5809,7 +5816,7 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
     if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
 	xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
 "Element content declaration doesn't start and stop in the same entity\n",
-			 NULL);
+			 NULL, NULL);
     }
     NEXT;
     if (RAW == '?') {
@@ -6362,6 +6369,11 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     }
     if (ctxt->myDoc == NULL) {
         ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+	if (ctxt->myDoc == NULL) {
+	    xmlErrMemory(ctxt, "New Doc failed");
+	    return;
+	}
+	ctxt->myDoc->properties = XML_DOC_INTERNAL;
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->intSubset == NULL))
         xmlCreateIntSubset(ctxt->myDoc, NULL, ExternalID, SystemID);
@@ -7994,7 +8006,13 @@ xmlParseQName(xmlParserCtxtPtr ctxt, const xmlChar **prefix) {
 
             xmlNsErr(ctxt, XML_NS_ERR_QNAME,
 	             "Failed to parse QName '%s:'\n", p, NULL, NULL);
-	    tmp = xmlBuildQName(BAD_CAST "", p, NULL, 0);
+	    l = xmlParseNmtoken(ctxt);
+	    if (l == NULL)
+		tmp = xmlBuildQName(BAD_CAST "", p, NULL, 0);
+	    else {
+		tmp = xmlBuildQName(l, p, NULL, 0);
+		xmlFree((char *)l);
+	    }
 	    p = xmlDictLookup(ctxt->dict, tmp, -1);
 	    if (tmp != NULL) xmlFree(tmp);
 	    *prefix = NULL;
@@ -8302,7 +8320,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 	        const xmlChar *val2;
 
 	        val2 = xmlAttrNormalizeSpace2(ctxt, val, len);
-		if (val2 != NULL) {
+		if ((val2 != NULL) && (val2 != val)) {
 		    xmlFree(val);
 		    val = (xmlChar *) val2;
 		}
@@ -8642,8 +8660,8 @@ failed:
 	defaults = xmlHashLookup2(ctxt->attsDefault, localname, prefix);
 	if (defaults != NULL) {
 	    for (i = 0;i < defaults->nbAttrs;i++) {
-	        attname = defaults->values[4 * i];
-		aprefix = defaults->values[4 * i + 1];
+	        attname = defaults->values[5 * i];
+		aprefix = defaults->values[5 * i + 1];
 
                 /*
 		 * special work for namespaces defaulted defs
@@ -8658,9 +8676,9 @@ failed:
 	            if (j <= nbNs) continue;
 
 		    nsname = xmlGetNamespace(ctxt, NULL);
-		    if (nsname != defaults->values[4 * i + 2]) {
+		    if (nsname != defaults->values[5 * i + 2]) {
 			if (nsPush(ctxt, NULL,
-			           defaults->values[4 * i + 2]) > 0)
+			           defaults->values[5 * i + 2]) > 0)
 			    nbNs++;
 		    }
 		} else if (aprefix == ctxt->str_xmlns) {
@@ -8675,7 +8693,7 @@ failed:
 		    nsname = xmlGetNamespace(ctxt, attname);
 		    if (nsname != defaults->values[2]) {
 			if (nsPush(ctxt, attname,
-			           defaults->values[4 * i + 2]) > 0)
+			           defaults->values[5 * i + 2]) > 0)
 			    nbNs++;
 		    }
 		} else {
@@ -8701,8 +8719,14 @@ failed:
 			atts[nbatts++] = NULL;
 		    else
 		        atts[nbatts++] = xmlGetNamespace(ctxt, aprefix);
-		    atts[nbatts++] = defaults->values[4 * i + 2];
-		    atts[nbatts++] = defaults->values[4 * i + 3];
+		    atts[nbatts++] = defaults->values[5 * i + 2];
+		    atts[nbatts++] = defaults->values[5 * i + 3];
+		    if ((ctxt->standalone == 1) &&
+		        (defaults->values[5 * i + 4] != NULL)) {
+			xmlValidityError(ctxt, XML_DTD_STANDALONE_DEFAULTED, 
+	  "standalone: attribute %s on %s defaulted from external subset\n",
+	                                 attname, localname);
+		    }
 		    nbdef++;
 		}
 	    }
@@ -9876,6 +9900,15 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	ctxt->myDoc = NULL;
     }
 
+    if ((ctxt->wellFormed) && (ctxt->myDoc != NULL)) {
+        ctxt->myDoc->properties |= XML_DOC_WELLFORMED;
+	if (ctxt->valid)
+	    ctxt->myDoc->properties |= XML_DOC_DTDVALID;
+	if (ctxt->nsWellFormed)
+	    ctxt->myDoc->properties |= XML_DOC_NSVALID;
+	if (ctxt->options & XML_PARSE_OLD10)
+	    ctxt->myDoc->properties |= XML_DOC_OLD10;
+    }
     if (! ctxt->wellFormed) {
 	ctxt->valid = 0;
 	return(-1);
@@ -11537,6 +11570,11 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
      */
     ctxt->inSubset = 2;
     ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+    if (ctxt->myDoc == NULL) {
+	xmlErrMemory(ctxt, "New Doc failed");
+	return(NULL);
+    }
+    ctxt->myDoc->properties = XML_DOC_INTERNAL;
     ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
 	                               BAD_CAST "none", BAD_CAST "none");
 
@@ -11670,6 +11708,13 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      */
     ctxt->inSubset = 2;
     ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+    if (ctxt->myDoc == NULL) {
+	xmlErrMemory(ctxt, "New Doc failed");
+        if (sax != NULL) ctxt->sax = NULL;
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+    ctxt->myDoc->properties = XML_DOC_INTERNAL;
     ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
 	                               ExternalID, SystemID);
     xmlParseExternalSubset(ctxt, ExternalID, SystemID);
@@ -11795,6 +11840,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	xmlFreeParserCtxt(ctxt);
 	return(-1);
     }
+    newDoc->properties = XML_DOC_INTERNAL;
     if (ctx->myDoc->dict) {
 	newDoc->dict = ctx->myDoc->dict;
 	xmlDictReference(newDoc->dict);
@@ -12015,6 +12061,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	xmlFreeParserCtxt(ctxt);
 	return(XML_ERR_INTERNAL_ERROR);
     }
+    newDoc->properties = XML_DOC_INTERNAL;
     newDoc->intSubset = doc->intSubset;
     newDoc->extSubset = doc->extSubset;
     newDoc->dict = doc->dict;
@@ -12246,6 +12293,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	    xmlFreeParserCtxt(ctxt);
 	    return(XML_ERR_INTERNAL_ERROR);
 	}
+	newDoc->properties = XML_DOC_INTERNAL;
 	newDoc->dict = ctxt->dict;
 	xmlDictReference(newDoc->dict);
 	ctxt->myDoc = newDoc;
@@ -12610,6 +12658,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	xmlFreeParserCtxt(ctxt);
 	return(-1);
     }
+    newDoc->properties = XML_DOC_INTERNAL;
     if ((doc != NULL) && (doc->dict != NULL)) {
         xmlDictFree(ctxt->dict);
 	ctxt->dict = doc->dict;
@@ -13800,32 +13849,38 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
     if (options & XML_PARSE_RECOVER) {
         ctxt->recovery = 1;
         options -= XML_PARSE_RECOVER;
+	ctxt->options |= XML_PARSE_RECOVER;
     } else
         ctxt->recovery = 0;
     if (options & XML_PARSE_DTDLOAD) {
         ctxt->loadsubset = XML_DETECT_IDS;
         options -= XML_PARSE_DTDLOAD;
+	ctxt->options |= XML_PARSE_DTDLOAD;
     } else
         ctxt->loadsubset = 0;
     if (options & XML_PARSE_DTDATTR) {
         ctxt->loadsubset |= XML_COMPLETE_ATTRS;
         options -= XML_PARSE_DTDATTR;
+	ctxt->options |= XML_PARSE_DTDATTR;
     }
     if (options & XML_PARSE_NOENT) {
         ctxt->replaceEntities = 1;
         /* ctxt->loadsubset |= XML_DETECT_IDS; */
         options -= XML_PARSE_NOENT;
+	ctxt->options |= XML_PARSE_NOENT;
     } else
         ctxt->replaceEntities = 0;
     if (options & XML_PARSE_PEDANTIC) {
         ctxt->pedantic = 1;
         options -= XML_PARSE_PEDANTIC;
+	ctxt->options |= XML_PARSE_PEDANTIC;
     } else
         ctxt->pedantic = 0;
     if (options & XML_PARSE_NOBLANKS) {
         ctxt->keepBlanks = 0;
         ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
         options -= XML_PARSE_NOBLANKS;
+	ctxt->options |= XML_PARSE_NOBLANKS;
     } else
         ctxt->keepBlanks = 1;
     if (options & XML_PARSE_DTDVALID) {
@@ -13835,6 +13890,7 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
         if (options & XML_PARSE_NOERROR)
             ctxt->vctxt.error = NULL;
         options -= XML_PARSE_DTDVALID;
+	ctxt->options |= XML_PARSE_DTDVALID;
     } else
         ctxt->validate = 0;
     if (options & XML_PARSE_NOWARNING) {
@@ -13854,17 +13910,20 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
         ctxt->sax->endElementNs = NULL;
         ctxt->sax->initialized = 1;
         options -= XML_PARSE_SAX1;
+	ctxt->options |= XML_PARSE_SAX1;
     }
 #endif /* LIBXML_SAX1_ENABLED */
     if (options & XML_PARSE_NODICT) {
         ctxt->dictNames = 0;
         options -= XML_PARSE_NODICT;
+	ctxt->options |= XML_PARSE_NODICT;
     } else {
         ctxt->dictNames = 1;
     }
     if (options & XML_PARSE_NOCDATA) {
         ctxt->sax->cdataBlock = NULL;
         options -= XML_PARSE_NOCDATA;
+	ctxt->options |= XML_PARSE_NOCDATA;
     }
     if (options & XML_PARSE_NSCLEAN) {
 	ctxt->options |= XML_PARSE_NSCLEAN;

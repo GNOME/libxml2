@@ -957,6 +957,8 @@ xmlSAX2StartDocument(void *ctx)
 #ifdef LIBXML_HTML_ENABLED
 	if (ctxt->myDoc == NULL)
 	    ctxt->myDoc = htmlNewDocNoDtD(NULL, NULL);
+	ctxt->myDoc->properties = XML_DOC_HTML;
+	ctxt->myDoc->parseFlags = ctxt->options;
 	if (ctxt->myDoc == NULL) {
 	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartDocument");
 	    return;
@@ -972,6 +974,10 @@ xmlSAX2StartDocument(void *ctx)
     } else {
 	doc = ctxt->myDoc = xmlNewDoc(ctxt->version);
 	if (doc != NULL) {
+	    doc->properties = 0;
+	    if (ctxt->options & XML_PARSE_OLD10)
+	        doc->properties |= XML_DOC_OLD10;
+	    doc->parseFlags = ctxt->options;
 	    if (ctxt->encoding != NULL)
 		doc->encoding = xmlStrdup(ctxt->encoding);
 	    else

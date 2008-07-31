@@ -92,49 +92,13 @@ static int nb_skipped = 0;
 static int nb_tests = 0;
 static int nb_errors = 0;
 static int nb_leaks = 0;
-static int extraMemoryFromResolver = 0;
-
-static int
-fatalError(void) {
-    fprintf(stderr, "Exitting tests on fatal error\n");
-    exit(1);
-}
-
-/*
- * that's needed to implement <resource>
- */
-#define MAX_ENTITIES 20
-static char *testEntitiesName[MAX_ENTITIES];
-static char *testEntitiesValue[MAX_ENTITIES];
-static int nb_entities = 0;
-static void resetEntities(void) {
-    int i;
-
-    for (i = 0;i < nb_entities;i++) {
-        if (testEntitiesName[i] != NULL)
-	    xmlFree(testEntitiesName[i]);
-        if (testEntitiesValue[i] != NULL)
-	    xmlFree(testEntitiesValue[i]);
-    }
-    nb_entities = 0;
-}
-static int addEntity(char *name, char *content) {
-    if (nb_entities >= MAX_ENTITIES) {
-	fprintf(stderr, "Too many entities defined\n");
-	return(-1);
-    }
-    testEntitiesName[nb_entities] = name;
-    testEntitiesValue[nb_entities] = content;
-    nb_entities++;
-    return(0);
-}
 
 /*
  * We need to trap calls to the resolver to not account memory for the catalog
  * and not rely on any external resources.
  */
 static xmlParserInputPtr
-testExternalEntityLoader(const char *URL, const char *ID,
+testExternalEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
 			 xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret;
 
@@ -149,6 +113,8 @@ testExternalEntityLoader(const char *URL, const char *ID,
  */
 static char testErrors[32769];
 static int testErrorsSize = 0;
+static int nbError = 0;
+static int nbFatal = 0;
 
 static void test_log(const char *msg, ...) {
     va_list args;
@@ -168,17 +134,19 @@ static void test_log(const char *msg, ...) {
 }
 
 static void
-testErrorHandler(void *ctx  ATTRIBUTE_UNUSED, const char *msg, ...) {
-    va_list args;
+testErrorHandler(void *userData ATTRIBUTE_UNUSED, xmlErrorPtr error) {
     int res;
 
     if (testErrorsSize >= 32768)
         return;
-    va_start(args, msg);
-    res = vsnprintf(&testErrors[testErrorsSize],
+    res = snprintf(&testErrors[testErrorsSize],
                     32768 - testErrorsSize,
-		    msg, args);
-    va_end(args);
+		   "%s:%d: %s\n", (error->file ? error->file : "entity"),
+		   error->line, error->message);
+    if (error->level == XML_ERR_FATAL)
+        nbFatal++;
+    else if (error->level == XML_ERR_ERROR)
+        nbError++;
     if (testErrorsSize + res >= 32768) {
         /* buffer is full */
 	testErrorsSize = 32768;
@@ -210,7 +178,7 @@ initializeLibxml2(void) {
     */
     if (ctxtXPath->cache != NULL)
 	xmlXPathContextSetCache(ctxtXPath, 0, -1, 0);
-    xmlSetGenericErrorFunc(NULL, testErrorHandler);
+    xmlSetStructuredErrorFunc(NULL, testErrorHandler);
 }
 
 /************************************************************************
@@ -218,6 +186,68 @@ initializeLibxml2(void) {
  *		Run the xmlconf test if found				*
  *									*
  ************************************************************************/
+
+static int
+xmlconfTestInvalid(const char *id, const char *filename, int options) {
+    xmlDocPtr doc;
+    xmlParserCtxtPtr ctxt;
+    int ret = 1;
+
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+        test_log("test %s : %s out of memory\n",
+	         id, filename);
+        return(0);
+    }
+    doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+    if (doc == NULL) {
+        test_log("test %s : %s invalid document turned not well-formed too\n",
+	         id, filename);
+    } else {
+    /* invalidity should be reported both in the context and in the document */
+        if ((ctxt->valid != 0) || (doc->properties & XML_DOC_DTDVALID)) {
+	    test_log("test %s : %s failed to detect invalid document\n",
+		     id, filename);
+	    nb_errors++;
+	    ret = 0;
+	}
+	xmlFreeDoc(doc);
+    }
+    xmlFreeParserCtxt(ctxt);
+    return(ret);
+}
+
+static int
+xmlconfTestValid(const char *id, const char *filename, int options) {
+    xmlDocPtr doc;
+    xmlParserCtxtPtr ctxt;
+    int ret = 1;
+
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+        test_log("test %s : %s out of memory\n",
+	         id, filename);
+        return(0);
+    }
+    doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+    if (doc == NULL) {
+        test_log("test %s : %s failed to parse a valid document\n",
+	         id, filename);
+        nb_errors++;
+	ret = 0;
+    } else {
+    /* validity should be reported both in the context and in the document */
+        if ((ctxt->valid == 0) || ((doc->properties & XML_DOC_DTDVALID) == 0)) {
+	    test_log("test %s : %s failed to validate a valid document\n",
+		     id, filename);
+	    nb_errors++;
+	    ret = 0;
+	}
+	xmlFreeDoc(doc);
+    }
+    xmlFreeParserCtxt(ctxt);
+    return(ret);
+}
 
 static int
 xmlconfTestNotNSWF(const char *id, const char *filename, int options) {
@@ -272,6 +302,7 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
     xmlChar *base = NULL;
     xmlChar *id = NULL;
     xmlChar *rec = NULL;
+    xmlChar *version = NULL;
     xmlChar *entities = NULL;
     xmlChar *edition = NULL;
     int options = 0;
@@ -280,6 +311,8 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
     int i;
 
     testErrorsSize = 0; testErrors[0] = 0;
+    nbError = 0;
+    nbFatal = 0;
     id = xmlGetProp(cur, BAD_CAST "ID");
     if (id == NULL) {
         test_log("test missing ID, line %ld\n", xmlGetLineNo(cur));
@@ -311,6 +344,8 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
 	goto error;
     }
 
+    version = xmlGetProp(cur, BAD_CAST "VERSION");
+
     entities = xmlGetProp(cur, BAD_CAST "ENTITIES");
     if (!xmlStrEqual(entities, BAD_CAST "none")) {
         options |= XML_PARSE_DTDLOAD;
@@ -322,13 +357,19 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
 	(xmlStrEqual(rec, BAD_CAST "XML1.0-errata2e")) ||
 	(xmlStrEqual(rec, BAD_CAST "XML1.0-errata3e")) ||
 	(xmlStrEqual(rec, BAD_CAST "XML1.0-errata4e"))) {
+	if ((version != NULL) && (!xmlStrEqual(version, BAD_CAST "1.0"))) {
+	    test_log("Skipping test %s for %s\n", (char *) id,
+	             (char *) version);
+	    ret = 0;
+	    nb_skipped++;
+	    goto error;
+	}
 	ret = 1;
     } else if ((xmlStrEqual(rec, BAD_CAST "NS1.0")) ||
 	       (xmlStrEqual(rec, BAD_CAST "NS1.0-errata1e"))) {
 	ret = 1;
 	nstest = 1;
     } else {
-        testErrorsSize = 0; testErrors[0] = 0;
         test_log("Skipping test %s for REC %s\n", (char *) id, (char *) rec);
 	ret = 0;
 	nb_skipped++;
@@ -353,8 +394,16 @@ xmlconfTestItem(xmlDocPtr doc, xmlNodePtr cur) {
         else 
 	    xmlconfTestNotNSWF((char *) id, (char *) filename, options);
     } else if (xmlStrEqual(type, BAD_CAST "valid")) {
+        options |= XML_PARSE_DTDVALID;
+	xmlconfTestValid((char *) id, (char *) filename, options);
     } else if (xmlStrEqual(type, BAD_CAST "invalid")) {
+        options |= XML_PARSE_DTDVALID;
+	xmlconfTestInvalid((char *) id, (char *) filename, options);
     } else if (xmlStrEqual(type, BAD_CAST "error")) {
+        test_log("Skipping error test %s \n", (char *) id);
+	ret = 0;
+	nb_skipped++;
+	goto error;
     } else {
         test_log("test %s unknown TYPE value %s\n", (char *) id, (char *)type);
 	ret = -1;
@@ -381,6 +430,8 @@ error:
         xmlFree(entities);
     if (edition != NULL)
         xmlFree(edition);
+    if (version != NULL)
+        xmlFree(version);
     if (filename != NULL)
         xmlFree(filename);
     if (uri != NULL)

@@ -1148,11 +1148,13 @@ xmlNewDoc(const xmlChar *version) {
     if (cur->version == NULL) {
 	xmlTreeErrMemory("building doc");
 	xmlFree(cur);
-    	return(NULL);
+	return(NULL);
     }
     cur->standalone = -1;
     cur->compression = -1; /* not initialized */
     cur->doc = cur;
+    cur->parseFlags = 0;
+    cur->properties = XML_DOC_USERBUILT;
     /*
      * The in memory encoding is always UTF8
      * This field will never change and would

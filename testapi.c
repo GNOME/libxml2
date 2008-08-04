@@ -212,7 +212,7 @@ void xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra);
  name resolution delays, so we use these
 */
 #define	REMOTE1GOOD	"http://localhost/"
-#define	REMOTE1BAD	"http://missing. example.org/"
+#define	REMOTE1BAD	"http:http://http"
 #define	REMOTE2GOOD	"ftp://localhost/foo"
 
 #define gen_nb_void_ptr 2

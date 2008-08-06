@@ -201,7 +201,11 @@ xmlParse3986Scheme(xmlURIPtr uri, const char **str) {
  *
  * Parse the query part of an URI
  *
- * query = *uric
+ * fragment      = *( pchar / "/" / "?" )
+ * NOTE: the strict syntax as defined by 3986 does not allow '[' and ']'
+ *       in the fragment identifier but this is used very broadly for
+ *       xpointer scheme selection, so we are allowing it here to not break
+ *       for example all the DocBook processing chains.
  *
  * Returns 0 or the error code
  */
@@ -216,6 +220,7 @@ xmlParse3986Fragment(xmlURIPtr uri, const char **str)
     cur = *str;
 
     while ((ISA_PCHAR(cur)) || (*cur == '/') || (*cur == '?') ||
+           (*cur == '[') || (*cur == ']') ||
            ((uri != NULL) && (uri->cleanup & 1) && (IS_UNWISE(cur))))
         NEXT(cur);
     if (uri != NULL) {

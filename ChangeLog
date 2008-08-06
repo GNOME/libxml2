@@ -1,3 +1,9 @@
+Wed Aug  6 12:24:33 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: allow [ and ] in fragment identifiers, 3986 disallow them
+	  but it's widely used for XPointer, and would break DocBook
+	  processing among others
+
 Wed Aug  6 11:32:21 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: change the big key algorithm to work properly with QName

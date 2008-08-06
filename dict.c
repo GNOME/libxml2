@@ -32,25 +32,33 @@ typedef unsigned __int16 uint16_t;
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
 
+/* #define DEBUG_GROW */
+/* #define DICT_DEBUG_PATTERNS */
+
 #define MAX_HASH_LEN 3
 #define MIN_DICT_SIZE 128
 #define MAX_DICT_HASH 8 * 2048
+#define WITH_BIG_KEY
 
-#define xmlDictComputeKey(dict, name, len)             \
-    (((dict)->size == MIN_DICT_SIZE) ?		       \
-     xmlDictComputeFastKey(name, len) :	       \
-     xmlDictComputeBigKey(name, len, len))	       \
+#ifdef WITH_BIG_KEY
+#define xmlDictComputeKey(dict, name, len)			\
+    (((dict)->size == MIN_DICT_SIZE) ?				\
+     xmlDictComputeFastKey(name, len) :				\
+     xmlDictComputeBigKey(name, len))
 
-#define xmlDictComputeQKey(dict, prefix, name, len)  		     \
-    (((prefix) == NULL) ?					     \
-      (xmlDictComputeKey(dict, name, len)) :			     \
-      (((dict)->size == MIN_DICT_SIZE) ?			     \
-       xmlDictComputeFastQKey(prefix, name, len) :		     \
-       xmlDictComputeBigKey(prefix, xmlStrlen(prefix),		     \
-			    xmlDictComputeBigKey(name, len, len))))
+#define xmlDictComputeQKey(dict, prefix, name, len)		\
+    (((prefix) == NULL) ?					\
+      (xmlDictComputeKey(dict, name, len)) :			\
+      (((dict)->size == MIN_DICT_SIZE) ?			\
+       xmlDictComputeFastQKey(prefix, name, len) :		\
+       xmlDictComputeBigQKey(prefix, name, len)))
 
-/* #define ALLOW_REMOVAL */
-/* #define DEBUG_GROW */
+#else /* !WITH_BIG_KEY */
+#define xmlDictComputeKey(dict, name, len)			\
+        xmlDictComputeFastKey(name, len)
+#define xmlDictComputeQKey(dict, prefix, name, len)		\
+        xmlDictComputeFastQKey(prefix, name, len)
+#endif /* WITH_BIG_KEY */
 
 /*
  * An entry in the dictionnary
@@ -148,6 +156,9 @@ xmlDictAddString(xmlDictPtr dict, const xmlChar *name, int namelen) {
     const xmlChar *ret;
     int size = 0; /* + sizeof(_xmlDictStrings) == 1024 */
 
+#ifdef DICT_DEBUG_PATTERNS
+    fprintf(stderr, "-");
+#endif
     pool = dict->strings;
     while (pool != NULL) {
 	if (pool->end - pool->free > namelen)
@@ -172,12 +183,16 @@ xmlDictAddString(xmlDictPtr dict, const xmlChar *name, int namelen) {
 	pool->end = &pool->array[size];
 	pool->next = dict->strings;
 	dict->strings = pool;
+#ifdef DICT_DEBUG_PATTERNS
+        fprintf(stderr, "+");
+#endif
     }
 found_pool:
     ret = pool->free;
     memcpy(pool->free, name, namelen);
     pool->free += namelen;
     *(pool->free++) = 0;
+    pool->nbStrings++;
     return(ret);
 }
 
@@ -204,6 +219,9 @@ xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix,
     if (prefix == NULL) return(xmlDictAddString(dict, name, namelen));
     plen = xmlStrlen(prefix);
 
+#ifdef DICT_DEBUG_PATTERNS
+    fprintf(stderr, "=");
+#endif
     pool = dict->strings;
     while (pool != NULL) {
 	if (pool->end - pool->free > namelen)
@@ -217,8 +235,8 @@ xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix,
     if (pool == NULL) {
         if (size == 0) size = 1000;
 	else size *= 4; /* exponential growth */
-        if (size < 4 * namelen) 
-	    size = 4 * namelen; /* just in case ! */
+        if (size < 4 * (namelen + plen))
+	    size = 4 * (namelen + plen); /* just in case ! */
 	pool = (xmlDictStringsPtr) xmlMalloc(sizeof(xmlDictStrings) + size);
 	if (pool == NULL)
 	    return(NULL);
@@ -228,6 +246,9 @@ xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix,
 	pool->end = &pool->array[size];
 	pool->next = dict->strings;
 	dict->strings = pool;
+#ifdef DICT_DEBUG_PATTERNS
+        fprintf(stderr, "+");
+#endif
     }
 found_pool:
     ret = pool->free;
@@ -238,75 +259,85 @@ found_pool:
     memcpy(pool->free, name, namelen);
     pool->free += namelen;
     *(pool->free++) = 0;
+    pool->nbStrings++;
     return(ret);
 }
 
+#ifdef WITH_BIG_KEY
 /*
  * xmlDictComputeBigKey:
  *
  * Calculate a hash key using a good hash function that works well for
  * larger hash table sizes.
  *
- * Hash function by Paul Hsieh, see
- * http://www.azillionmonkeys.com/qed/hash.html
+ * Hash function by "One-at-a-Time Hash" see
  * http://burtleburtle.net/bob/hash/doobs.html
  */
-#undef get16bits
-#if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) \
-  || defined(_MSC_VER) || defined (__BORLANDC__) || defined (__TURBOC__)
-#define get16bits(d) (*((const uint16_t *) (d)))
-#endif
-
-#if !defined (get16bits)
-#define get16bits(d) ((((uint32_t)(((const uint8_t *)(d))[1])) << 8)\
-                       +(uint32_t)(((const uint8_t *)(d))[0]) )
-#endif
 
 static uint32_t
-xmlDictComputeBigKey(const xmlChar* data, int len, uint32_t hash) {
-    uint32_t tmp;
-    int rem;
+xmlDictComputeBigKey(const xmlChar* data, int namelen) {
+    uint32_t hash;
+    int i;
 
-    if (len <= 0 || data == NULL) return hash;
+    if (namelen <= 0 || data == NULL) return(0);
 
-    rem = len & 3;
-    len >>= 2;
+    hash = 0;
 
-    /* Main loop */
-    for (;len > 0; len--) {
-        hash  += get16bits (data);
-        tmp    = (get16bits (data+2) << 11) ^ hash;
-        hash   = (hash << 16) ^ tmp;
-        data  += 2*sizeof (uint16_t);
-        hash  += hash >> 11;
+    for (i = 0;i < namelen; i++) {
+        hash += data[i];
+	hash += (hash << 10);
+	hash ^= (hash >> 6);
     }
-
-    /* Handle end cases */
-    switch (rem) {
-        case 3: hash += get16bits (data);
-                hash ^= hash << 16;
-                hash ^= data[sizeof (uint16_t)] << 18;
-                hash += hash >> 11;
-                break;
-        case 2: hash += get16bits (data);
-                hash ^= hash << 11;
-                hash += hash >> 17;
-                break;
-        case 1: hash += *data;
-                hash ^= hash << 10;
-                hash += hash >> 1;
-    }
-
-    /* Force "avalanching" of final 127 bits */
-    hash ^= hash << 3;
-    hash += hash >> 5;
-    hash ^= hash << 4;
-    hash += hash >> 17;
-    hash ^= hash << 25;
-    hash += hash >> 6;
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
 
     return hash;
 }
+
+/*
+ * xmlDictComputeBigQKey:
+ *
+ * Calculate a hash key for two strings using a good hash function
+ * that works well for larger hash table sizes.
+ *
+ * Hash function by "One-at-a-Time Hash" see
+ * http://burtleburtle.net/bob/hash/doobs.html
+ *
+ * Neither of the two strings must be NULL.
+ */
+static unsigned long
+xmlDictComputeBigQKey(const xmlChar *prefix, const xmlChar *name, int len)
+{
+    uint32_t hash;
+    int i;
+    int plen;
+
+    plen = xmlStrlen(prefix);
+
+    hash = 0;
+
+    for (i = 0;i < plen; i++) {
+        hash += prefix[i];
+	hash += (hash << 10);
+	hash ^= (hash >> 6);
+    }
+    hash += ':';
+    hash += (hash << 10);
+    hash ^= (hash >> 6);
+
+    for (i = 0;i < len; i++) {
+        hash += name[i];
+	hash += (hash << 10);
+	hash ^= (hash >> 6);
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+
+    return hash;
+}
+#endif /* WITH_BIG_KEY */
 
 /*
  * xmlDictComputeFastKey:
@@ -317,7 +348,7 @@ xmlDictComputeBigKey(const xmlChar* data, int len, uint32_t hash) {
 static unsigned long
 xmlDictComputeFastKey(const xmlChar *name, int namelen) {
     unsigned long value = 0L;
-    
+
     if (name == NULL) return(0);
     value = *name;
     value <<= 5;
@@ -359,7 +390,7 @@ xmlDictComputeFastQKey(const xmlChar *prefix, const xmlChar *name, int len)
 	value += 30 * (unsigned long) ':';
     else
 	value += 30 * (*prefix);
-    
+
     if (len > 10) {
         value += name[len - (plen + 1 + 1)];
         len = 10;
@@ -414,7 +445,11 @@ xmlDictCreate(void) {
     if (!xmlDictInitialized)
         if (!xmlInitializeDict())
             return(NULL);
- 
+
+#ifdef DICT_DEBUG_PATTERNS
+    fprintf(stderr, "C");
+#endif
+
     dict = xmlMalloc(sizeof(xmlDict));
     if (dict) {
         dict->ref_counter = 1;
@@ -447,8 +482,11 @@ xmlDictCreate(void) {
 xmlDictPtr
 xmlDictCreateSub(xmlDictPtr sub) {
     xmlDictPtr dict = xmlDictCreate();
-  
+
     if ((dict != NULL) && (sub != NULL)) {
+#ifdef DICT_DEBUG_PATTERNS
+        fprintf(stderr, "R");
+#endif
         dict->subdict = sub;
 	xmlDictReference(dict->subdict);
     }
@@ -494,7 +532,7 @@ xmlDictGrow(xmlDictPtr dict, int size) {
 #ifdef DEBUG_GROW
     unsigned long nbElem = 0;
 #endif
-  
+
     if (dict == NULL)
 	return(-1);
     if (size < 8)
@@ -502,11 +540,15 @@ xmlDictGrow(xmlDictPtr dict, int size) {
     if (size > 8 * 2048)
 	return(-1);
 
+#ifdef DICT_DEBUG_PATTERNS
+    fprintf(stderr, "*");
+#endif
+
     oldsize = dict->size;
     olddict = dict->dict;
     if (olddict == NULL)
         return(-1);
-  
+
     dict->dict = xmlMalloc(size * sizeof(xmlDictEntry));
     if (dict->dict == NULL) {
 	dict->dict = olddict;
@@ -516,13 +558,13 @@ xmlDictGrow(xmlDictPtr dict, int size) {
     dict->size = size;
 
     /*	If the two loops are merged, there would be situations where
-	a new entry needs to allocated and data copied into it from 
+	a new entry needs to allocated and data copied into it from
 	the main dict. So instead, we run through the array twice, first
 	copying all the elements in the main array (where we can't get
 	conflicts) and then the rest, so we only free (and don't allocate)
     */
     for (i = 0; i < oldsize; i++) {
-	if (olddict[i].valid == 0) 
+	if (olddict[i].valid == 0)
 	    continue;
 	key = xmlDictComputeKey(dict, olddict[i].name, olddict[i].len) % dict->size;
 	memcpy(&(dict->dict[key]), &(olddict[i]), sizeof(xmlDictEntry));
@@ -548,8 +590,8 @@ xmlDictGrow(xmlDictPtr dict, int size) {
 		dict->dict[key].valid = 1;
 		xmlFree(iter);
 	    } else {
-	    	iter->next = dict->dict[key].next;
-	    	dict->dict[key].next = iter;
+		iter->next = dict->dict[key].next;
+		dict->dict[key].next = iter;
 	    }
 
 #ifdef DEBUG_GROW
@@ -691,7 +733,18 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     }
 
     if (dict->subdict) {
-	key = okey % dict->subdict->size;
+        unsigned long skey;
+
+        /* we cannot always reuse the same okey for the subdict */
+        if (((dict->size == MIN_DICT_SIZE) &&
+	     (dict->subdict->size != MIN_DICT_SIZE)) ||
+            ((dict->size != MIN_DICT_SIZE) &&
+	     (dict->subdict->size == MIN_DICT_SIZE)))
+	    skey = xmlDictComputeKey(dict->subdict, name, len);
+	else
+	    skey = okey;
+
+	key = skey % dict->subdict->size;
 	if (dict->subdict->dict[key].valid != 0) {
 	    xmlDictEntryPtr tmp;
 
@@ -808,7 +861,18 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
     }
 
     if (dict->subdict) {
-	key = okey % dict->subdict->size;
+        unsigned long skey;
+
+        /* we cannot always reuse the same okey for the subdict */
+        if (((dict->size == MIN_DICT_SIZE) &&
+	     (dict->subdict->size != MIN_DICT_SIZE)) ||
+            ((dict->size != MIN_DICT_SIZE) &&
+	     (dict->subdict->size == MIN_DICT_SIZE)))
+	    skey = xmlDictComputeKey(dict->subdict, name, len);
+	else
+	    skey = okey;
+
+	key = skey % dict->subdict->size;
 	if (dict->subdict->dict[key].valid != 0) {
 	    xmlDictEntryPtr tmp;
 
@@ -837,7 +901,6 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 		return(tmp->name);
 #endif
 	}
-	key = okey % dict->size;
     }
 
     /* not found */
@@ -890,7 +953,18 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
     }
 
     if (dict->subdict) {
-	key = okey % dict->subdict->size;
+        unsigned long skey;
+
+        /* we cannot always reuse the same okey for the subdict */
+        if (((dict->size == MIN_DICT_SIZE) &&
+	     (dict->subdict->size != MIN_DICT_SIZE)) ||
+            ((dict->size != MIN_DICT_SIZE) &&
+	     (dict->subdict->size == MIN_DICT_SIZE)))
+	    skey = xmlDictComputeQKey(dict->subdict, prefix, name, len);
+	else
+	    skey = okey;
+
+	key = skey % dict->subdict->size;
 	if (dict->subdict->dict[key].valid != 0) {
 	    xmlDictEntryPtr tmp;
 	    for (tmp = &(dict->subdict->dict[key]); tmp->next != NULL;

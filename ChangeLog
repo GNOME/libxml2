@@ -1,3 +1,10 @@
+Thu Aug  7 15:51:31 CEST 2008 Sven Herzberg <sven@imendio.com>
+
+	Bug 546629 – runtests doesn't pass on my mac
+	Reviewed by William M. Brack.
+
+	* runtest.c: use libpthread on Mac OS X as well
+
 Wed Aug  6 12:24:33 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: allow [ and ] in fragment identifiers, 3986 disallow them

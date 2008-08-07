@@ -1,3 +1,7 @@
+Thu Aug  7 18:30:55 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c: chased and found a couple of nasty issues
+
 Thu Aug  7 15:51:31 CEST 2008 Sven Herzberg <sven@imendio.com>
 
 	Bug 546629 – runtests doesn't pass on my mac

@@ -1,3 +1,8 @@
+Fri Aug  8 12:07:20 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* testdict.c: added a program to regression test the dictionary code
+	* dict.c: improve the lookup efficiency by caching the key.
+
 Thu Aug  7 18:30:55 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: chased and found a couple of nasty issues

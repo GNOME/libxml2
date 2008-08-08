@@ -24,7 +24,6 @@
 #include <stdint.h>
 #elif defined(WIN32)
 typedef unsigned __int32 uint32_t;
-typedef unsigned __int16 uint16_t;
 #endif
 #include <libxml/tree.h>
 #include <libxml/dict.h>
@@ -70,6 +69,7 @@ struct _xmlDictEntry {
     const xmlChar *name;
     int len;
     int valid;
+    unsigned long okey;
 };
 
 typedef struct _xmlDictStrings xmlDictStrings;
@@ -520,7 +520,7 @@ xmlDictReference(xmlDictPtr dict) {
  */
 static int
 xmlDictGrow(xmlDictPtr dict, int size) {
-    unsigned long key;
+    unsigned long key, okey;
     int oldsize, i;
     xmlDictEntryPtr iter, next;
     struct _xmlDictEntry *olddict;
@@ -528,6 +528,7 @@ xmlDictGrow(xmlDictPtr dict, int size) {
     unsigned long nbElem = 0;
 #endif
     int ret = 0;
+    int keep_keys = 1;
 
     if (dict == NULL)
 	return(-1);
@@ -544,6 +545,8 @@ xmlDictGrow(xmlDictPtr dict, int size) {
     olddict = dict->dict;
     if (olddict == NULL)
         return(-1);
+    if (oldsize == MIN_DICT_SIZE)
+        keep_keys = 0;
 
     dict->dict = xmlMalloc(size * sizeof(xmlDictEntry));
     if (dict->dict == NULL) {
@@ -562,10 +565,17 @@ xmlDictGrow(xmlDictPtr dict, int size) {
     for (i = 0; i < oldsize; i++) {
 	if (olddict[i].valid == 0)
 	    continue;
-	key = xmlDictComputeKey(dict, olddict[i].name, olddict[i].len) % dict->size;
+
+	if (keep_keys)
+	    okey = olddict[i].okey;
+	else
+	    okey = xmlDictComputeKey(dict, olddict[i].name, olddict[i].len);
+	key = okey % dict->size;
+
 	if (dict->dict[key].valid == 0) {
 	    memcpy(&(dict->dict[key]), &(olddict[i]), sizeof(xmlDictEntry));
 	    dict->dict[key].next = NULL;
+	    dict->dict[key].okey = okey;
 	} else {
 	    xmlDictEntryPtr entry;
 
@@ -573,11 +583,15 @@ xmlDictGrow(xmlDictPtr dict, int size) {
 	    if (entry != NULL) {
 		entry->name = olddict[i].name;
 		entry->len = olddict[i].len;
+		entry->okey = okey;
 		entry->next = dict->dict[key].next;
 		entry->valid = 1;
 		dict->dict[key].next = entry;
 	    } else {
-	        /* we don't have much ways to alert from here */
+	        /*
+		 * we don't have much ways to alert from herei
+		 * result is loosing an entry and unicity garantee
+		 */
 	        ret = -1;
 	    }
 	}
@@ -595,14 +609,20 @@ xmlDictGrow(xmlDictPtr dict, int size) {
 	     * put back the entry in the new dict
 	     */
 
-	    key = xmlDictComputeKey(dict, iter->name, iter->len) % dict->size;
+	    if (keep_keys)
+		okey = iter->okey;
+	    else
+		okey = xmlDictComputeKey(dict, iter->name, iter->len);
+	    key = okey % dict->size;
 	    if (dict->dict[key].valid == 0) {
 		memcpy(&(dict->dict[key]), iter, sizeof(xmlDictEntry));
 		dict->dict[key].next = NULL;
 		dict->dict[key].valid = 1;
+		dict->dict[key].okey = okey;
 		xmlFree(iter);
 	    } else {
 		iter->next = dict->dict[key].next;
+		iter->okey = okey;
 		dict->dict[key].next = iter;
 	    }
 
@@ -721,24 +741,24 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 	for (insert = &(dict->dict[key]); insert->next != NULL;
 	     insert = insert->next) {
 #ifdef __GNUC__
-	    if (insert->len == len) {
+	    if ((insert->okey == okey) && (insert->len == len)) {
 		if (!memcmp(insert->name, name, len))
 		    return(insert->name);
 	    }
 #else
-	    if ((insert->len == len) &&
+	    if ((insert->okey == okey) && (insert->len == len) &&
 	        (!xmlStrncmp(insert->name, name, len)))
 		return(insert->name);
 #endif
 	    nbi++;
 	}
 #ifdef __GNUC__
-	if (insert->len == len) {
+	if ((insert->okey == okey) && (insert->len == len)) {
 	    if (!memcmp(insert->name, name, len))
 		return(insert->name);
 	}
 #else
-	if ((insert->len == len) &&
+	if ((insert->okey == okey) && (insert->len == len) &&
 	    (!xmlStrncmp(insert->name, name, len)))
 	    return(insert->name);
 #endif
@@ -763,24 +783,24 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 	    for (tmp = &(dict->subdict->dict[key]); tmp->next != NULL;
 		 tmp = tmp->next) {
 #ifdef __GNUC__
-		if (tmp->len == len) {
+		if ((tmp->okey == skey) && (tmp->len == len)) {
 		    if (!memcmp(tmp->name, name, len))
 			return(tmp->name);
 		}
 #else
-		if ((tmp->len == len) &&
+		if ((tmp->okey == skey) && (tmp->len == len) &&
 		    (!xmlStrncmp(tmp->name, name, len)))
 		    return(tmp->name);
 #endif
 		nbi++;
 	    }
 #ifdef __GNUC__
-	    if (tmp->len == len) {
+	    if ((tmp->okey == skey) && (tmp->len == len)) {
 		if (!memcmp(tmp->name, name, len))
 		    return(tmp->name);
 	    }
 #else
-	    if ((tmp->len == len) &&
+	    if ((tmp->okey == skey) && (tmp->len == len) &&
 		(!xmlStrncmp(tmp->name, name, len)))
 		return(tmp->name);
 #endif
@@ -802,6 +822,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     entry->len = len;
     entry->next = NULL;
     entry->valid = 1;
+    entry->okey = okey;
 
 
     if (insert != NULL) 
@@ -851,24 +872,24 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 	for (insert = &(dict->dict[key]); insert->next != NULL;
 	     insert = insert->next) {
 #ifdef __GNUC__
-	    if (insert->len == len) {
+	    if ((insert->okey == okey) && (insert->len == len)) {
 		if (!memcmp(insert->name, name, len))
 		    return(insert->name);
 	    }
 #else
-	    if ((insert->len == len) &&
+	    if ((insert->okey == okey) && (insert->len == len) &&
 	        (!xmlStrncmp(insert->name, name, len)))
 		return(insert->name);
 #endif
 	    nbi++;
 	}
 #ifdef __GNUC__
-	if (insert->len == len) {
+	if ((insert->okey == okey) && (insert->len == len)) {
 	    if (!memcmp(insert->name, name, len))
 		return(insert->name);
 	}
 #else
-	if ((insert->len == len) &&
+	if ((insert->okey == okey) && (insert->len == len)) &&
 	    (!xmlStrncmp(insert->name, name, len)))
 	    return(insert->name);
 #endif
@@ -893,24 +914,24 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 	    for (tmp = &(dict->subdict->dict[key]); tmp->next != NULL;
 		 tmp = tmp->next) {
 #ifdef __GNUC__
-		if (tmp->len == len) {
+		if ((tmp->okey == skey) && (tmp->len == len)) {
 		    if (!memcmp(tmp->name, name, len))
 			return(tmp->name);
 		}
 #else
-		if ((tmp->len == len) &&
+		if ((tmp->okey == skey) && (tmp->len == len) &&
 		    (!xmlStrncmp(tmp->name, name, len)))
 		    return(tmp->name);
 #endif
 		nbi++;
 	    }
 #ifdef __GNUC__
-	    if (tmp->len == len) {
+	    if ((tmp->okey == skey) && (tmp->len == len)) {
 		if (!memcmp(tmp->name, name, len))
 		    return(tmp->name);
 	    }
 #else
-	    if ((tmp->len == len) &&
+	    if ((tmp->okey == skey) && (tmp->len == len) &&
 		(!xmlStrncmp(tmp->name, name, len)))
 		return(tmp->name);
 #endif
@@ -924,7 +945,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 /**
  * xmlDictQLookup:
  * @dict: the dictionnary
- * @prefix: the prefix 
+ * @prefix: the prefix
  * @name: the name
  *
  * Add the QName @prefix:@name to the hash @dict if not present.
@@ -958,12 +979,12 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
     } else {
 	for (insert = &(dict->dict[key]); insert->next != NULL;
 	     insert = insert->next) {
-	    if ((insert->len == len) &&
+	    if ((insert->okey == okey) && (insert->len == len) &&
 	        (xmlStrQEqual(prefix, name, insert->name)))
 		return(insert->name);
 	    nbi++;
 	}
-	if ((insert->len == len) &&
+	if ((insert->okey == okey) && (insert->len == len) &&
 	    (xmlStrQEqual(prefix, name, insert->name)))
 	    return(insert->name);
     }
@@ -985,12 +1006,12 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
 	    xmlDictEntryPtr tmp;
 	    for (tmp = &(dict->subdict->dict[key]); tmp->next != NULL;
 		 tmp = tmp->next) {
-		if ((tmp->len == len) &&
+		if ((tmp->okey == skey) && (tmp->len == len) &&
 		    (xmlStrQEqual(prefix, name, tmp->name)))
 		    return(tmp->name);
 		nbi++;
 	    }
-	    if ((tmp->len == len) &&
+	    if ((tmp->okey == skey) && (tmp->len == len) &&
 		(xmlStrQEqual(prefix, name, tmp->name)))
 		return(tmp->name);
 	}
@@ -1011,6 +1032,7 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
     entry->len = len;
     entry->next = NULL;
     entry->valid = 1;
+    entry->okey = okey;
 
     if (insert != NULL) 
 	insert->next = entry;

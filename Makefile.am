@@ -9,7 +9,7 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
                 testReader testapi testModule runtest runsuite testchar \
-		runxmlconf
+		testdict runxmlconf
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -60,6 +60,11 @@ testchar_SOURCES=testchar.c
 testchar_LDFLAGS = 
 testchar_DEPENDENCIES = $(DEPS)
 testchar_LDADD= @RDL_LIBS@ $(LDADDS)
+
+testdict_SOURCES=testdict.c
+testdict_LDFLAGS = 
+testdict_DEPENDENCIES = $(DEPS)
+testdict_LDADD= @RDL_LIBS@ $(LDADDS)
 
 runsuite_SOURCES=runsuite.c
 runsuite_LDFLAGS = 
@@ -167,7 +172,7 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_LDADD= $(LDADDS)
 
 runtests:
-	./runtest$(EXEEXT) && ./testapi$(EXEEXT) && ./runxmlconf$(EXEEXT)
+	./runtest$(EXEEXT) && ./testapi$(EXEEXT) && ./testdict$(EXEEXT) && ./runxmlconf$(EXEEXT)
 
 check: all runtests
 

@@ -1,3 +1,8 @@
+Fri Aug  8 14:01:59 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am testdict.c: add the new test in 'make check' and
+	  update it to check subdictionaries processing.
+
 Fri Aug  8 12:07:20 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* testdict.c: added a program to regression test the dictionary code

@@ -172,9 +172,14 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_LDADD= $(LDADDS)
 
 runtests:
-	./runtest$(EXEEXT) && ./testapi$(EXEEXT) && ./testdict$(EXEEXT) && ./runxmlconf$(EXEEXT)
+	$(CHECKER) ./runtest$(EXEEXT) && $(CHECKER) ./testapi$(EXEEXT) && $(CHECKER) ./testdict$(EXEEXT) && $(CHECKER) ./runxmlconf$(EXEEXT)
 
 check: all runtests
+
+check-valgrind: all
+	@echo '## Running the regression tests under Valgrind'
+	@echo '## Go get a cup of coffee it is gonna take a while ...'
+	$(MAKE) CHECKER='valgrind -q' check
 
 testall : tests SVGtests SAXtests
 

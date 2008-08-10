@@ -1,3 +1,7 @@
+Sun Aug 10 17:06:13 CEST 2008 Rob Richards <rrichards@ctindustries.net>
+
+	* dict.c: fix non GNUC builds.
+
 Fri Aug  8 14:13:06 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* makefile.am: adding a check-valgrind target

@@ -889,7 +889,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 		return(insert->name);
 	}
 #else
-	if ((insert->okey == okey) && (insert->len == len)) &&
+	if ((insert->okey == okey) && (insert->len == len) &&
 	    (!xmlStrncmp(insert->name, name, len)))
 	    return(insert->name);
 #endif

@@ -1670,6 +1670,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->depth = 0;
     ctxt->charset = XML_CHAR_ENCODING_UTF8;
     ctxt->catalogs = NULL;
+    ctxt->nbentities = 0;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
     return(0);
 }

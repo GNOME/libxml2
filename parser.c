@@ -2379,7 +2379,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	return(NULL);
     last = str + len;
 
-    if (ctxt->depth > 40) {
+    if ((ctxt->depth > 40) || (ctxt->nbentities >= 500000)) {
 	xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
 	return(NULL);
     }
@@ -2417,6 +2417,11 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			"String decoding Entity Reference: %.30s\n",
 			str);
 	    ent = xmlParseStringEntityRef(ctxt, &str);
+	    if (ctxt->lastError.code == XML_ERR_ENTITY_LOOP)
+	        goto int_error;
+	    ctxt->nbentities++;
+	    if (ent != NULL)
+	        ctxt->nbentities += ent->nbentities;
 	    if ((ent != NULL) &&
 		(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		if (ent->content != NULL) {
@@ -2462,6 +2467,11 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		xmlGenericError(xmlGenericErrorContext,
 			"String decoding PE Reference: %.30s\n", str);
 	    ent = xmlParseStringPEReference(ctxt, &str);
+	    if (ctxt->lastError.code == XML_ERR_ENTITY_LOOP)
+	        goto int_error;
+	    ctxt->nbentities++;
+	    if (ent != NULL)
+	        ctxt->nbentities += ent->nbentities;
 	    if (ent != NULL) {
                 if (ent->content == NULL) {
 		    if (xmlLoadEntityContent(ctxt, ent) < 0) {
@@ -2501,6 +2511,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 
 mem_error:
     xmlErrMemory(ctxt, NULL);
+int_error:
     if (rep != NULL)
         xmlFree(rep);
     if (buffer != NULL)
@@ -3542,6 +3553,9 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		}
 	    } else {
 		ent = xmlParseEntityRef(ctxt);
+		ctxt->nbentities++;
+		if (ent != NULL)
+		    ctxt->nbentities += ent->nbentities;
 		if ((ent != NULL) &&
 		    (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		    if (len > buf_size - 10) {
@@ -4844,6 +4858,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
     int isParameter = 0;
     xmlChar *orig = NULL;
     int skipped;
+    unsigned long oldnbent = ctxt->nbentities;
     
     /* GROW; done in the caller */
     if (CMP8(CUR_PTR, '<', '!', 'E', 'N', 'T', 'I', 'T', 'Y')) {
@@ -5068,6 +5083,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		}
 	    }
             if (cur != NULL) {
+	        cur->nbentities = ctxt->nbentities - oldnbent;
 	        if (cur->orig != NULL)
 		    xmlFree(orig);
 		else
@@ -6477,6 +6493,11 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	if (ent == NULL) return;
 	if (!ctxt->wellFormed)
 	    return;
+	ctxt->nbentities++;
+	if (ctxt->nbentities >= 500000) {
+	    xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+	    return;
+	}
 	was_checked = ent->checked;
 	if ((ent->name != NULL) && 
 	    (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
@@ -6537,6 +6558,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			xmlFreeNodeList(list);
 		    }
 		} else {
+		    unsigned long oldnbent = ctxt->nbentities;
 		    /*
 		     * 4.3.2: An internal general parsed entity is well-formed
 		     * if its replacement text matches the production labeled
@@ -6559,6 +6581,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			ret = xmlParseBalancedChunkMemoryInternal(ctxt,
 					   value, user_data, &list);
 			ctxt->depth--;
+
 		    } else if (ent->etype ==
 			       XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
 			ctxt->depth++;
@@ -6571,6 +6594,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			xmlErrMsgStr(ctxt, XML_ERR_INTERNAL_ERROR,
 				     "invalid entity type found\n", NULL);
 		    }
+		    ent->nbentities = ctxt->nbentities - oldnbent;
 		    if (ret == XML_ERR_ENTITY_LOOP) {
 			xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
 			return;
@@ -6629,6 +6653,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		}
 		ent->checked = 1;
 	    }
+	    ctxt->nbentities += ent->nbentities;
 
             if (ent->children == NULL) {
 		/*
@@ -11800,7 +11825,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 
     if (ctx == NULL) return(-1);
 
-    if (ctx->depth > 40) {
+    if ((ctx->depth > 40) || (ctx->nbentities >= 500000)) {
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -12010,7 +12035,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     xmlChar start[4];
     xmlCharEncoding enc;
 
-    if (depth > 40) {
+    if ((depth > 40) ||
+        ((oldctxt != NULL) && (oldctxt->nbentities >= 500000))) {
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -12154,6 +12180,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     oldctxt->node_seq.maximum = ctxt->node_seq.maximum;
     oldctxt->node_seq.length = ctxt->node_seq.length;
     oldctxt->node_seq.buffer = ctxt->node_seq.buffer;
+    oldctxt->nbentities += ctxt->nbentities;
     ctxt->node_seq.maximum = 0;
     ctxt->node_seq.length = 0;
     ctxt->node_seq.buffer = NULL;
@@ -12254,7 +12281,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     int size;
     xmlParserErrors ret = XML_ERR_OK;
 
-    if (oldctxt->depth > 40) {
+    if ((oldctxt->depth > 40) || (oldctxt->nbentities >= 500000)) {
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -12379,6 +12406,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
         ctxt->myDoc->last = last;
     }
 	
+    oldctxt->nbentities += ctxt->nbentities;
     ctxt->sax = oldsax;
     ctxt->dict = NULL;
     ctxt->attsDefault = NULL;
@@ -13695,6 +13723,7 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->depth = 0;
     ctxt->charset = XML_CHAR_ENCODING_UTF8;
     ctxt->catalogs = NULL;
+    ctxt->nbentities = 0;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 
     if (ctxt->attsDefault != NULL) {

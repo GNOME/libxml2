@@ -580,7 +580,8 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 	    return(NULL);
 	}
 	ret->owner = 1;
-	ret->checked = 1;
+	if (ret->checked == 0)
+	    ret->checked = 1;
     }
     return(ret);
 }

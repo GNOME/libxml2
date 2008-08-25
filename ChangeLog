@@ -1,3 +1,9 @@
+Mon Aug 25 10:56:30 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/entities.h entities.c SAX2.c parser.c: rework
+	  the patch to avoid some ABI issue with people allocating
+	  entities structure directly
+
 Wed Aug 20 19:02:01 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parser.h include/libxml/entities.h entities.c

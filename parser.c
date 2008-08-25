@@ -2421,7 +2421,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	        goto int_error;
 	    ctxt->nbentities++;
 	    if (ent != NULL)
-	        ctxt->nbentities += ent->nbentities;
+	        ctxt->nbentities += ent->checked;
 	    if ((ent != NULL) &&
 		(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		if (ent->content != NULL) {
@@ -2471,7 +2471,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	        goto int_error;
 	    ctxt->nbentities++;
 	    if (ent != NULL)
-	        ctxt->nbentities += ent->nbentities;
+	        ctxt->nbentities += ent->checked;
 	    if (ent != NULL) {
                 if (ent->content == NULL) {
 		    if (xmlLoadEntityContent(ctxt, ent) < 0) {
@@ -3555,7 +3555,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		ent = xmlParseEntityRef(ctxt);
 		ctxt->nbentities++;
 		if (ent != NULL)
-		    ctxt->nbentities += ent->nbentities;
+		    ctxt->nbentities += ent->checked;
 		if ((ent != NULL) &&
 		    (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		    if (len > buf_size - 10) {
@@ -5083,7 +5083,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		}
 	    }
             if (cur != NULL) {
-	        cur->nbentities = ctxt->nbentities - oldnbent;
+	        cur->checked = ctxt->nbentities - oldnbent;
 	        if (cur->orig != NULL)
 		    xmlFree(orig);
 		else
@@ -6594,7 +6594,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			xmlErrMsgStr(ctxt, XML_ERR_INTERNAL_ERROR,
 				     "invalid entity type found\n", NULL);
 		    }
-		    ent->nbentities = ctxt->nbentities - oldnbent;
+		    ent->checked = ctxt->nbentities - oldnbent;
 		    if (ret == XML_ERR_ENTITY_LOOP) {
 			xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
 			return;
@@ -6651,9 +6651,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			list = NULL;
 		    }
 		}
-		ent->checked = 1;
+		if (ent->checked == 0)
+		    ent->checked = 1;
 	    }
-	    ctxt->nbentities += ent->nbentities;
+	    ctxt->nbentities += ent->checked;
 
             if (ent->children == NULL) {
 		/*
@@ -6662,7 +6663,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		 * though parsing for first checking go though the entity
 		 * content to generate callbacks associated to the entity
 		 */
-		if (was_checked == 1) {
+		if (was_checked != 0) {
 		    void *user_data;
 		    /*
 		     * This is a bit hackish but this seems the best

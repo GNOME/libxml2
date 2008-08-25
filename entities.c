@@ -139,45 +139,19 @@ xmlFreeEntity(xmlEntityPtr entity)
 }
 
 /*
- * xmlAddEntity : register a new entity for an entities table.
+ * xmlCreateEntity:
+ *
+ * internal routine doing the entity node strutures allocations
  */
 static xmlEntityPtr
-xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
-	  const xmlChar *ExternalID, const xmlChar *SystemID,
-	  const xmlChar *content) {
-    xmlDictPtr dict = NULL;
-    xmlEntitiesTablePtr table = NULL;
+xmlCreateEntity(xmlDictPtr dict, const xmlChar *name, int type,
+	        const xmlChar *ExternalID, const xmlChar *SystemID,
+	        const xmlChar *content) {
     xmlEntityPtr ret;
 
-    if (name == NULL)
-	return(NULL);
-    if (dtd == NULL)
-	return(NULL);
-    if (dtd->doc != NULL)
-        dict = dtd->doc->dict;
-
-    switch (type) {
-        case XML_INTERNAL_GENERAL_ENTITY:
-        case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-        case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-	    if (dtd->entities == NULL)
-		dtd->entities = xmlHashCreateDict(0, dict);
-	    table = dtd->entities;
-	    break;
-        case XML_INTERNAL_PARAMETER_ENTITY:
-        case XML_EXTERNAL_PARAMETER_ENTITY:
-	    if (dtd->pentities == NULL)
-		dtd->pentities = xmlHashCreateDict(0, dict);
-	    table = dtd->pentities;
-	    break;
-        case XML_INTERNAL_PREDEFINED_ENTITY:
-	    return(NULL);
-    }
-    if (table == NULL)
-	return(NULL);
     ret = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
     if (ret == NULL) {
-        xmlEntitiesErrMemory("xmlAddEntity:: malloc failed");
+        xmlEntitiesErrMemory("xmlCreateEntity: malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlEntity));
@@ -216,6 +190,50 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 			the defining entity */
     ret->orig = NULL;
     ret->owner = 0;
+
+    return(ret);
+}
+
+/*
+ * xmlAddEntity : register a new entity for an entities table.
+ */
+static xmlEntityPtr
+xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
+	  const xmlChar *ExternalID, const xmlChar *SystemID,
+	  const xmlChar *content) {
+    xmlDictPtr dict = NULL;
+    xmlEntitiesTablePtr table = NULL;
+    xmlEntityPtr ret;
+
+    if (name == NULL)
+	return(NULL);
+    if (dtd == NULL)
+	return(NULL);
+    if (dtd->doc != NULL)
+        dict = dtd->doc->dict;
+
+    switch (type) {
+        case XML_INTERNAL_GENERAL_ENTITY:
+        case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
+        case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
+	    if (dtd->entities == NULL)
+		dtd->entities = xmlHashCreateDict(0, dict);
+	    table = dtd->entities;
+	    break;
+        case XML_INTERNAL_PARAMETER_ENTITY:
+        case XML_EXTERNAL_PARAMETER_ENTITY:
+	    if (dtd->pentities == NULL)
+		dtd->pentities = xmlHashCreateDict(0, dict);
+	    table = dtd->pentities;
+	    break;
+        case XML_INTERNAL_PREDEFINED_ENTITY:
+	    return(NULL);
+    }
+    if (table == NULL)
+	return(NULL);
+    ret = xmlCreateEntity(dict, name, type, ExternalID, SystemID, content);
+    if (ret == NULL)
+        return(NULL);
     ret->doc = dtd->doc;
 
     if (xmlHashAddEntry(table, name, ret)) {
@@ -359,6 +377,44 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
 	ret->prev = dtd->last;
 	dtd->last = (xmlNodePtr) ret;
     }
+    return(ret);
+}
+
+/**
+ * xmlNewEntity:
+ * @doc:  the document
+ * @name:  the entity name
+ * @type:  the entity type XML_xxx_yyy_ENTITY
+ * @ExternalID:  the entity external ID if available
+ * @SystemID:  the entity system ID if available
+ * @content:  the entity content
+ *
+ * Create a new entity, this differs from xmlAddDocEntity() that if
+ * the document is NULL or has no internal subset defined, then an
+ * unlinked entity structure will be returned, it is then the responsability
+ * of the caller to link it to the document later or free it when not needed
+ * anymore.
+ *
+ * Returns a pointer to the entity or NULL in case of error
+ */
+xmlEntityPtr
+xmlNewEntity(xmlDocPtr doc, const xmlChar *name, int type,
+	     const xmlChar *ExternalID, const xmlChar *SystemID,
+	     const xmlChar *content) {
+    xmlEntityPtr ret;
+    xmlDictPtr dict;
+
+    if ((doc != NULL) && (doc->intSubset != NULL)) {
+	return(xmlAddDocEntity(doc, name, type, ExternalID, SystemID, content));
+    }
+    if (doc != NULL)
+        dict = doc->dict;
+    else
+        dict = NULL;
+    ret = xmlCreateEntity(dict, name, type, ExternalID, SystemID, content);
+    if (ret == NULL)
+        return(NULL);
+    ret->doc = doc;
     return(ret);
 }
 

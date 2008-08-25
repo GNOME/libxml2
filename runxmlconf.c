@@ -446,22 +446,27 @@ error:
 }
 
 static int
-xmlconfTestCases(xmlDocPtr doc, xmlNodePtr cur) {
+xmlconfTestCases(xmlDocPtr doc, xmlNodePtr cur, int level) {
     xmlChar *profile;
     int ret = 0;
     int tests = 0;
+    int output = 0;
 
-    profile = xmlGetProp(cur, BAD_CAST "PROFILE");
-    if (profile != NULL) {
-        printf("Test cases: %s\n", (char *) profile);
-	xmlFree(profile);
+    if (level == 1) {
+	profile = xmlGetProp(cur, BAD_CAST "PROFILE");
+	if (profile != NULL) {
+	    output = 1;
+	    level++;
+	    printf("Test cases: %s\n", (char *) profile);
+	    xmlFree(profile);
+	}
     }
     cur = cur->children;
     while (cur != NULL) {
         /* look only at elements we ignore everything else */
         if (cur->type == XML_ELEMENT_NODE) {
 	    if (xmlStrEqual(cur->name, BAD_CAST "TESTCASES")) {
-	        ret += xmlconfTestCases(doc, cur);
+	        ret += xmlconfTestCases(doc, cur, level);
 	    } else if (xmlStrEqual(cur->name, BAD_CAST "TEST")) {
 	        if (xmlconfTestItem(doc, cur) >= 0)
 		    ret++;
@@ -472,8 +477,10 @@ xmlconfTestCases(xmlDocPtr doc, xmlNodePtr cur) {
 	}
         cur = cur->next;
     }
-    if (tests > 0)
-	printf("Test cases: %d tests\n", tests);
+    if (output == 1) {
+	if (tests > 0)
+	    printf("Test cases: %d tests\n", tests);
+    }
     return(ret);
 }
 
@@ -493,7 +500,7 @@ xmlconfTestSuite(xmlDocPtr doc, xmlNodePtr cur) {
         /* look only at elements we ignore everything else */
         if (cur->type == XML_ELEMENT_NODE) {
 	    if (xmlStrEqual(cur->name, BAD_CAST "TESTCASES")) {
-	        ret += xmlconfTestCases(doc, cur);
+	        ret += xmlconfTestCases(doc, cur, 1);
 	    } else {
 	        fprintf(stderr, "Unhandled element %s\n", (char *)cur->name);
 	    }
@@ -584,6 +591,7 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
         ret = 1;
 	printf("Total %d tests, %d errors, %d leaks\n",
 	       nb_tests, nb_errors, nb_leaks);
+	printf("See %s for detailed output\n", LOGFILE);
     }
     xmlXPathFreeContext(ctxtXPath);
     xmlCleanupParser();

@@ -2891,6 +2891,7 @@ static void usage(const char *name) {
 #ifdef LIBXML_XINCLUDE_ENABLED
     printf("\t--xinclude : do XInclude processing\n");
     printf("\t--noxincludenode : same but do not generate XInclude nodes\n");
+    printf("\t--nofixup-base-uris : do not fixup xml:base uris\n");
 #endif
     printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
@@ -3092,6 +3093,12 @@ main(int argc, char **argv) {
 	    xinclude++;
 	    options |= XML_PARSE_XINCLUDE;
 	    options |= XML_PARSE_NOXINCNODE;
+	}
+	else if ((!strcmp(argv[i], "-nofixup-base-uris")) ||
+	         (!strcmp(argv[i], "--nofixup-base-uris"))) {
+	    xinclude++;
+	    options |= XML_PARSE_XINCLUDE;
+	    options |= XML_PARSE_NOBASEFIX;
 	}
 #endif
 #ifdef LIBXML_OUTPUT_ENABLED

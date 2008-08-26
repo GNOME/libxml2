@@ -1,3 +1,9 @@
+Tue Aug 26 09:25:39 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parser.h xinclude.c xmllint.c: patch based on
+	  Wieant Nielander contribution to add the option of not doing
+	  URI base fixup in XInclude
+
 Mon Aug 25 16:52:53 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: applied patch from Aswin to fix tree skipping

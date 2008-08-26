@@ -1093,7 +1093,8 @@ typedef enum {
     XML_PARSE_COMPACT   = 1<<16,/* compact small text nodes; no modification of
                                    the tree allowed afterwards (will possibly
 				   crash if you try to modify the tree) */
-    XML_PARSE_OLD10	= 1<<17 /* parse using XML-1.0 before update 5 */
+    XML_PARSE_OLD10	= 1<<17,/* parse using XML-1.0 before update 5 */
+    XML_PARSE_NOBASEFIX = 1<<18 /* do not fixup XINCLUDE xml:base uris */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

@@ -1,3 +1,15 @@
+Tue Aug 26 09:42:08 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: add the testchar to 'make check'
+	* xmlschemas.c: Volker Grabsch pointed out a typo
+	* xmlregexp.c: production [19] from XML Schemas regexps were a
+	  mistake removed in version REC-xmlschema-2-20041028, Volker Grabsch
+	  provided a patch to remove it
+	* test/schemas/regexp-char-ref_0.xml test/schemas/regexp-char-ref_0.xsd
+	  test/schemas/regexp-char-ref_1.xsd result/schemas/regexp-char-ref_0_0
+	  result/schemas/regexp-char-ref_1_0: Volker Grabsch also provided
+	  regession tests for this
+
 Tue Aug 26 09:25:39 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parser.h xinclude.c xmllint.c: patch based on

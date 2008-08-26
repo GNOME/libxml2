@@ -15092,7 +15092,7 @@ xmlSchemaCheckSTPropsCorrect(xmlSchemaParserCtxtPtr ctxt,
 	xmlSchemaPCustomErr(ctxt,
 	    XML_SCHEMAP_ST_PROPS_CORRECT_1,
 	    WXS_BASIC_CAST type, NULL,
-	    "A type, derived by list or union, must have"
+	    "A type, derived by list or union, must have "
 	    "the simple ur-type definition as base type, not '%s'",
 	    xmlSchemaGetComponentQName(&str, baseType));
 	FREE_AND_NULL(str)

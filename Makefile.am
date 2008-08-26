@@ -172,7 +172,7 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_LDADD= $(LDADDS)
 
 runtests:
-	$(CHECKER) ./runtest$(EXEEXT) && $(CHECKER) ./testapi$(EXEEXT) && $(CHECKER) ./testdict$(EXEEXT) && $(CHECKER) ./runxmlconf$(EXEEXT)
+	$(CHECKER) ./runtest$(EXEEXT) && $(CHECKER) ./testapi$(EXEEXT) && $(CHECKER) ./testchar$(EXEEXT)&& $(CHECKER) ./testdict$(EXEEXT) && $(CHECKER) ./runxmlconf$(EXEEXT)
 
 check: all runtests
 

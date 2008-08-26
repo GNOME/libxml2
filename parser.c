@@ -83,11 +83,12 @@
 /**
  * xmlParserMaxDepth:
  *
- * arbitrary depth limit for the XML documents that we allow to 
- * process. This is not a limitation of the parser but a safety 
- * boundary feature.
+ * arbitrary depth limit for the XML documents that we allow to
+ * process. This is not a limitation of the parser but a safety
+ * boundary feature. It can be disabled with the XML_PARSE_HUGE
+ * parser option.
  */
-unsigned int xmlParserMaxDepth = 1024;
+unsigned int xmlParserMaxDepth = 256;
 
 #define SAX2 1
 
@@ -1452,9 +1453,10 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
         ctxt->nodeTab = tmp;
 	ctxt->nodeMax *= 2;
     }
-    if (((unsigned int) ctxt->nodeNr) > xmlParserMaxDepth) {
+    if ((((unsigned int) ctxt->nodeNr) > xmlParserMaxDepth) &&
+        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
 	xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
-		 "Excessive depth in document: change xmlParserMaxDepth = %d\n",
+		 "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
 			  xmlParserMaxDepth);
 	ctxt->instate = XML_PARSER_EOF;
 	return(0);
@@ -1463,6 +1465,7 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
     ctxt->node = value;
     return (ctxt->nodeNr++);
 }
+
 /**
  * nodePop:
  * @ctxt: an XML parser context
@@ -2379,7 +2382,8 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	return(NULL);
     last = str + len;
 
-    if ((ctxt->depth > 40) || (ctxt->nbentities >= 500000)) {
+    if (((ctxt->depth > 20) || (ctxt->nbentities >= 100000)) &&
+        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
 	xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
 	return(NULL);
     }
@@ -2417,7 +2421,8 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			"String decoding Entity Reference: %.30s\n",
 			str);
 	    ent = xmlParseStringEntityRef(ctxt, &str);
-	    if (ctxt->lastError.code == XML_ERR_ENTITY_LOOP)
+	    if ((ctxt->lastError.code == XML_ERR_ENTITY_LOOP) ||
+	        (ctxt->lastError.code == XML_ERR_INTERNAL_ERROR))
 	        goto int_error;
 	    ctxt->nbentities++;
 	    if (ent != NULL)
@@ -2505,6 +2510,14 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	    c = CUR_SCHAR(str, l);
 	else
 	    c = 0;
+        if ((nbchars > 100000) &&
+	    (ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
+	    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+	    xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
+	     "Excessive lenght of attribute: %d use XML_PARSE_HUGE option\n",
+			  nbchars);
+	    goto int_error;
+        }
     }
     buffer[nbchars++] = 0;
     return(buffer);
@@ -3647,6 +3660,13 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 	}
 	GROW;
 	c = CUR_CHAR(l);
+        if ((len > 100000) &&
+	    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+	    xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
+	     "Excessive lenght of attribute: %d use XML_PARSE_HUGE option\n",
+			  len);
+	    goto int_error;
+        }
     }
     if ((in_space) && (normalize)) {
         while (buf[len - 1] == 0x20) len--;
@@ -3669,6 +3689,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 
 mem_error:
     xmlErrMemory(ctxt, NULL);
+int_error:
     if (buf != NULL)
         xmlFree(buf);
     if (rep != NULL)
@@ -6494,7 +6515,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	if (!ctxt->wellFormed)
 	    return;
 	ctxt->nbentities++;
-	if (ctxt->nbentities >= 500000) {
+	if ((ctxt->nbentities >= 100000) &&
+	    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
 	    xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
 	    return;
 	}
@@ -9135,10 +9157,11 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     xmlNodePtr ret;
     int nsNr = ctxt->nsNr;
 
-    if ((unsigned int) ctxt->nameNr > xmlParserMaxDepth) {
-        xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
-	      "Excessive depth in document: change xmlParserMaxDepth = %d\n",
-	                  xmlParserMaxDepth);
+    if (((unsigned int) ctxt->nameNr > xmlParserMaxDepth) &&
+        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+	xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
+		 "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
+			  xmlParserMaxDepth);
 	ctxt->instate = XML_PARSER_EOF;
 	return;
     }
@@ -11826,7 +11849,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 
     if (ctx == NULL) return(-1);
 
-    if ((ctx->depth > 40) || (ctx->nbentities >= 500000)) {
+    if (((ctx->depth > 20) || (ctx->nbentities >= 100000)) &&
+        ((ctx->options & XML_PARSE_HUGE) == 0)) {
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -12036,12 +12060,11 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     xmlChar start[4];
     xmlCharEncoding enc;
 
-    if ((depth > 40) ||
-        ((oldctxt != NULL) && (oldctxt->nbentities >= 500000))) {
+    if (((depth > 20) ||
+         ((oldctxt != NULL) && (oldctxt->nbentities >= 100000))) &&
+	 ((oldctxt == NULL) || (oldctxt->options & XML_PARSE_HUGE) == 0)) {
 	return(XML_ERR_ENTITY_LOOP);
     }
-
-
 
     if (list != NULL)
         *list = NULL;
@@ -12282,7 +12305,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     int size;
     xmlParserErrors ret = XML_ERR_OK;
 
-    if ((oldctxt->depth > 40) || (oldctxt->nbentities >= 500000)) {
+    if (((oldctxt->depth > 20) || (oldctxt->nbentities >= 100000)) &&
+        ((oldctxt->options & XML_PARSE_HUGE) == 0)) {
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -12661,7 +12685,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     int size;
     int ret = 0;
 
-    if (depth > 40) {
+    if (depth > 20) {
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -13970,6 +13994,14 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
     if (options & XML_PARSE_OLD10) {
 	ctxt->options |= XML_PARSE_OLD10;
         options -= XML_PARSE_OLD10;
+    }
+    if (options & XML_PARSE_NOBASEFIX) {
+	ctxt->options |= XML_PARSE_NOBASEFIX;
+        options -= XML_PARSE_NOBASEFIX;
+    }
+    if (options & XML_PARSE_HUGE) {
+	ctxt->options |= XML_PARSE_HUGE;
+        options -= XML_PARSE_HUGE;
     }
     ctxt->linenumbers = 1;
     return (options);

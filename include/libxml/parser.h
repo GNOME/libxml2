@@ -1094,7 +1094,8 @@ typedef enum {
                                    the tree allowed afterwards (will possibly
 				   crash if you try to modify the tree) */
     XML_PARSE_OLD10	= 1<<17,/* parse using XML-1.0 before update 5 */
-    XML_PARSE_NOBASEFIX = 1<<18 /* do not fixup XINCLUDE xml:base uris */
+    XML_PARSE_NOBASEFIX = 1<<18,/* do not fixup XINCLUDE xml:base uris */
+    XML_PARSE_HUGE      = 1<<19 /* relax any hardcoded limit from the parser */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

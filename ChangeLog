@@ -1,3 +1,10 @@
+Tue Aug 26 15:02:58 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parser.h parser.c xmllint.c: strengthen some
+	  of the internal parser limits, add an XML_PARSE_HUGE option
+	  to bypass them all. More internal parser limits will still need
+	  to be added.
+
 Tue Aug 26 09:42:08 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: add the testchar to 'make check'

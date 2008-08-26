@@ -2833,6 +2833,7 @@ static void usage(const char *name) {
     printf("\t--copy : used to test the internal copy implementation\n");
 #endif /* LIBXML_TREE_ENABLED */
     printf("\t--recover : output what was parsable on broken XML documents\n");
+    printf("\t--huge : remove any internal arbitrary parser limits\n");
     printf("\t--noent : substitute entity references by their value\n");
     printf("\t--noout : don't output the result tree\n");
     printf("\t--path 'paths': provide a set of paths for resources\n");
@@ -2972,6 +2973,9 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--recover"))) {
 	    recovery++;
 	    options |= XML_PARSE_RECOVER;
+	} else if ((!strcmp(argv[i], "-huge")) ||
+	         (!strcmp(argv[i], "--huge"))) {
+	    options |= XML_PARSE_HUGE;
 	} else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent"))) {
 	    noent++;

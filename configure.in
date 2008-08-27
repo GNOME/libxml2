@@ -163,6 +163,8 @@ AC_ARG_WITH(zlib,
     LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
 ])
+AC_ARG_WITH(coverage,
+[  --with-coverage         build for code coverage with GCC (off)])
 
 dnl
 dnl hard dependancies on options
@@ -1371,8 +1373,18 @@ AC_SUBST(WIN32_EXTRA_LDFLAGS)
 AC_SUBST(CYGWIN_EXTRA_LDFLAGS)
 AC_SUBST(CYGWIN_EXTRA_PYTHON_LIBADD)
 
+if test "$with_coverage" = "yes" -a "${GCC}" = "yes"
+then
+    echo Enabling code coverage for GCC
+    CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
+    LDFLAGS="$LDFLAGS -fprofile-arcs -ftest-coverage"
+else
+    echo Disabling code coverage for GCC
+fi
+
 AC_SUBST(CPPFLAGS)
 AC_SUBST(CFLAGS)
+AC_SUBST(LDFLAGS)
 AC_SUBST(XML_CFLAGS)
 
 AC_SUBST(XML_LIBDIR)

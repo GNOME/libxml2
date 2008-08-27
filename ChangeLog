@@ -1,3 +1,11 @@
+Wed Aug 27 17:30:48 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in Makefile.am: add an --with-coverage configure option
+	  and a 'make cov' target based on gcc profiling and the lcov
+	  tool. Currently at 68.9% coverage out of 'make check' and 
+	  runsuite executions.
+	* xmlreader.c: remove warnings due to C++ comments
+
 Wed Aug 27 15:00:54 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parserInternals.h parser.c: cleanup entity

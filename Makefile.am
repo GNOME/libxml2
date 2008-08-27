@@ -1129,6 +1129,7 @@ ModuleTests: testModule$(EXEEXT) testdso.la
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)
+	-@(find . -name \*.gcda -o *.gcno -exec rm {} \;)
 	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm {} \;)
 
 dist-hook: cleanup libxml2.spec
@@ -1164,7 +1165,7 @@ xml2Conf.sh: xml2Conf.sh.in Makefile
 	       < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
 	&& mv xml2Conf.tmp xml2Conf.sh
 
-CLEANFILES=xml2Conf.sh
+CLEANFILES=xml2Conf.sh *.gcda *.gcno
 
 confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
@@ -1216,3 +1217,28 @@ tst: tst.c
 
 sparse: clean
 	$(MAKE) CC=cgcc
+
+#
+# Coverage support, largely borrowed from libvirt
+# Both binaries comes from the lcov package in Fedora
+#
+LCOV = /usr/bin/lcov
+GENHTML = /usr/bin/genhtml
+
+cov: clean-cov
+	if [ "`echo $(LDFLAGS) | grep coverage`" = "" ] ; then \
+	    echo not configured with coverage; exit 1 ; fi
+	if [ ! -x $(LCOV) -o ! -x $(GENHTML) ] ; then \
+	    echo Need $(LCOV) and $(GENHTML) excecutables; exit 1 ; fi
+	-@($(MAKE) check)
+	-@(./runsuite$(EXEEXT))
+	mkdir $(top_builddir)/coverage
+	$(LCOV) -c -o $(top_builddir)/coverage/libxml2.info.tmp -d $(top_srcdir)
+	$(LCOV) -r $(top_builddir)/coverage/libxml2.info.tmp -o $(top_builddir)/coverage/libxml2.info *usr*
+	rm $(top_builddir)/coverage/libxml2.info.tmp
+	$(GENHTML) -s -t "libxml2" -o $(top_builddir)/coverage --legend $(top_builddir)/coverage/libxml2.info
+	echo "Coverage report is in $(top_builddir)/coverage/index.html"
+
+clean-cov:
+	rm -rf $(top_builddir)/coverage
+

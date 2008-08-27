@@ -1847,22 +1847,22 @@ xmlTextReaderNextTree(xmlTextReaderPtr reader)
     }
 
     if (reader->state != XML_TEXTREADER_BACKTRACK) {
-	/* Here removed traversal to child, because we want to skip the subtree, 
+	/* Here removed traversal to child, because we want to skip the subtree,
 	replace with traversal to sibling to skip subtree */
         if (reader->node->next != 0) {
-            reader->node = reader->node->next;// Move to sibling if present,skipping sub-tree
-            //reader->depth++;
+	    /* Move to sibling if present,skipping sub-tree */
+            reader->node = reader->node->next;
             reader->state = XML_TEXTREADER_START;
             return(1);
         }
-	
-	/* if reader->node->next is NULL mean no subtree for current node, 
+
+	/* if reader->node->next is NULL mean no subtree for current node,
 	so need to move to sibling of parent node if present */
         if ((reader->node->type == XML_ELEMENT_NODE) ||
             (reader->node->type == XML_ATTRIBUTE_NODE)) {
             reader->state = XML_TEXTREADER_BACKTRACK;
-            xmlTextReaderRead(reader);// This will move to parent if present
-            //return(xmlTextReaderReadTree(reader));
+	    /* This will move to parent if present */
+            xmlTextReaderRead(reader);
         }
     }
 
@@ -1881,8 +1881,8 @@ xmlTextReaderNextTree(xmlTextReaderPtr reader)
         reader->node = reader->node->parent;
         reader->depth--;
         reader->state = XML_TEXTREADER_BACKTRACK;
-        xmlTextReaderNextTree(reader); //Repeat process to move to sibling of parent node if present
-        //return(1);
+	/* Repeat process to move to sibling of parent node if present */
+        xmlTextReaderNextTree(reader);
     }
 
     reader->state = XML_TEXTREADER_END;

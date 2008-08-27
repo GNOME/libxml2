@@ -22,6 +22,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </pre><pre class="programlisting">Structure <a href="#xmlDOMWrapCtxt">xmlDOMWrapCtxt</a><br />struct _xmlDOMWrapCtxt
 </pre><pre class="programlisting">Typedef <a href="libxml-tree.html#xmlDOMWrapCtxt">xmlDOMWrapCtxt</a> * <a name="xmlDOMWrapCtxtPtr" id="xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a>
 </pre><pre class="programlisting">Structure <a href="#xmlDoc">xmlDoc</a><br />struct _xmlDoc
+</pre><pre class="programlisting">Enum <a href="#xmlDocProperties">xmlDocProperties</a>
 </pre><pre class="programlisting">Typedef <a href="libxml-tree.html#xmlDoc">xmlDoc</a> * <a name="xmlDocPtr" id="xmlDocPtr">xmlDocPtr</a>
 </pre><pre class="programlisting">Structure <a href="#xmlDtd">xmlDtd</a><br />struct _xmlDtd
 </pre><pre class="programlisting">Typedef <a href="libxml-tree.html#xmlDtd">xmlDtd</a> * <a name="xmlDtdPtr" id="xmlDtdPtr">xmlDtdPtr</a>
@@ -310,7 +311,19 @@ A:link, A:visited, A:active { text-decoration: underline }
     int	charset	: encoding of the in-memory content actua
     struct _xmlDict *	dict	: dict used to allocate names or NULL
     void *	psvi	: for type/PSVI informations
-}</pre><h3><a name="xmlDtd" id="xmlDtd">Structure xmlDtd</a></h3><pre class="programlisting">Structure xmlDtd<br />struct _xmlDtd {
+    int	parseFlags	: set of <a href="libxml-parser.html#xmlParserOption">xmlParserOption</a> used to parse th
+    int	properties	: set of <a href="libxml-tree.html#xmlDocProperties">xmlDocProperties</a> for this docume
+}</pre><h3>Enum <a name="xmlDocProperties" id="xmlDocProperties">xmlDocProperties</a></h3><pre class="programlisting">Enum xmlDocProperties {
+    <a name="XML_DOC_WELLFORMED" id="XML_DOC_WELLFORMED">XML_DOC_WELLFORMED</a> = 1 : document is XML well formed
+    <a name="XML_DOC_NSVALID" id="XML_DOC_NSVALID">XML_DOC_NSVALID</a> = 2 : document is Namespace valid
+    <a name="XML_DOC_OLD10" id="XML_DOC_OLD10">XML_DOC_OLD10</a> = 4 : parsed with old XML-1.0 parser
+    <a name="XML_DOC_DTDVALID" id="XML_DOC_DTDVALID">XML_DOC_DTDVALID</a> = 8 : DTD validation was successful
+    <a name="XML_DOC_XINCLUDE" id="XML_DOC_XINCLUDE">XML_DOC_XINCLUDE</a> = 16 : XInclude substitution was done
+    <a name="XML_DOC_USERBUILT" id="XML_DOC_USERBUILT">XML_DOC_USERBUILT</a> = 32 : Document was built using the API and not by parsing an instance
+    <a name="XML_DOC_INTERNAL" id="XML_DOC_INTERNAL">XML_DOC_INTERNAL</a> = 64 : built for internal processing
+    <a name="XML_DOC_HTML" id="XML_DOC_HTML">XML_DOC_HTML</a> = 128 : parsed or built HTML document
+}
+</pre><h3><a name="xmlDtd" id="xmlDtd">Structure xmlDtd</a></h3><pre class="programlisting">Structure xmlDtd<br />struct _xmlDtd {
     void *	_private	: application data
     <a href="libxml-tree.html#xmlElementType">xmlElementType</a>	type	: XML_DTD_NODE, must be second !
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name	: Name of the DTD
@@ -412,7 +425,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     struct _xmlEntity *	nexte	: unused
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	URI	: the full URI as computed
     int	owner	: does the entity own the childrens
-    int	checked	: was the entity content checked
+    int	checked	: was the entity content checked this is
 }</pre><h3><a name="xmlEnumeration" id="xmlEnumeration">Structure xmlEnumeration</a></h3><pre class="programlisting">Structure xmlEnumeration<br />struct _xmlEnumeration {
     struct _xmlEnumeration *	next	: next one
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name	: Enumeration name
@@ -542,6 +555,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a>	freeAttrs	: * the complete error informations for th
     <a href="libxml-xmlerror.html#xmlError">xmlError</a>	lastError
     <a href="libxml-parser.html#xmlParserMode">xmlParserMode</a>	parseMode	: the parser mode
+    unsigned long	nbentities	: number of entities references
 }</pre><h3><a name="xmlParserInput" id="xmlParserInput">Structure xmlParserInput</a></h3><pre class="programlisting">Structure xmlParserInput<br />struct _xmlParserInput {
     <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	buf	: UTF-8 encoded buffer
     const char *	filename	: The file analyzed, if any

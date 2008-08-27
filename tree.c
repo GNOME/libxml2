@@ -3467,6 +3467,11 @@ xmlFreeNode(xmlNodePtr cur) {
 
     if (cur->doc != NULL) dict = cur->doc->dict;
 
+    if (cur->type == XML_ENTITY_DECL) {
+        xmlEntityPtr ent = (xmlEntityPtr) cur;
+	DICT_FREE(ent->SystemID);
+	DICT_FREE(ent->ExternalID);
+    }
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);
@@ -3525,6 +3530,28 @@ xmlUnlinkNode(xmlNodePtr cur) {
 		doc->intSubset = NULL;
 	    if (doc->extSubset == (xmlDtdPtr) cur)
 		doc->extSubset = NULL;
+	}
+    }
+    if (cur->type == XML_ENTITY_DECL) {
+        xmlDocPtr doc;
+	doc = cur->doc;
+	if (doc != NULL) {
+	    if (doc->intSubset != NULL) {
+	        if (xmlHashLookup(doc->intSubset->entities, cur->name) == cur)
+		    xmlHashRemoveEntry(doc->intSubset->entities, cur->name,
+		                       NULL);
+	        if (xmlHashLookup(doc->intSubset->pentities, cur->name) == cur)
+		    xmlHashRemoveEntry(doc->intSubset->pentities, cur->name,
+		                       NULL);
+	    }
+	    if (doc->extSubset != NULL) {
+	        if (xmlHashLookup(doc->extSubset->entities, cur->name) == cur)
+		    xmlHashRemoveEntry(doc->extSubset->entities, cur->name,
+		                       NULL);
+	        if (xmlHashLookup(doc->extSubset->pentities, cur->name) == cur)
+		    xmlHashRemoveEntry(doc->extSubset->pentities, cur->name,
+		                       NULL);
+	    }
 	}
     }
     if (cur->parent != NULL) {

@@ -113,15 +113,15 @@ int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>path</tt></i>:</span></td><td>pointer to the path string</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 or an error code</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseURI"/>xmlParseURI ()</h3><pre class="programlisting"><a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	xmlParseURI		(const char * str)<br/>
-</pre><p>Parse an URI URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</p>
+</pre><p>Parse an URI based on RFC 3986 URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the URI string to analyze</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a newly built <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> or NULL in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseURIRaw"/>xmlParseURIRaw ()</h3><pre class="programlisting"><a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	xmlParseURIRaw		(const char * str, <br/>					 int raw)<br/>
-</pre><p>Parse an URI but allows to keep intact the original fragments. URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</p>
+</pre><p>Parse an URI but allows to keep intact the original fragments. URI-reference = URI / relative-ref</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the URI string to analyze</td></tr><tr><td><span class="term"><i><tt>raw</tt></i>:</span></td><td>if 1 unescaping of URI pieces are disabled</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a newly built <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> or NULL in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseURIReference"/>xmlParseURIReference ()</h3><pre class="programlisting">int	xmlParseURIReference		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri, <br/>					 const char * str)<br/>
-</pre><p>Parse an URI <a href="libxml2-SAX.html#reference">reference</a> string and fills in the appropriate fields of the @uri structure URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</p>
+</pre><p>Parse an URI <a href="libxml2-SAX.html#reference">reference</a> string based on RFC 3986 and fills in the appropriate fields of the @uri structure URI-reference = URI / relative-ref</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>uri</tt></i>:</span></td><td>pointer to an URI structure</td></tr><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the string to analyze</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 or the error code</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlPathToURI"/>xmlPathToURI ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlPathToURI		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path)<br/>

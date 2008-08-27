@@ -494,10 +494,11 @@ static void des_xmlParserInputBufferPtr(int no ATTRIBUTE_UNUSED, xmlParserInputB
     xmlFreeParserInputBuffer(val);
 }
 
-#define gen_nb_xmlDocPtr 3
+#define gen_nb_xmlDocPtr 4
 static xmlDocPtr gen_xmlDocPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNewDoc(BAD_CAST "1.0"));
     if (no == 1) return(xmlReadMemory("<foo/>", 6, "test", NULL, 0));
+    if (no == 2) return(xmlReadMemory("<!DOCTYPE foo []> <foo/>", 24, "test", NULL, 0));
     return(NULL);
 }
 static void des_xmlDocPtr(int no ATTRIBUTE_UNUSED, xmlDocPtr val, int nr ATTRIBUTE_UNUSED) {
@@ -9614,11 +9615,78 @@ test_xmlInitializePredefinedEntities(void) {
     return(test_ret);
 }
 
+
+static int
+test_xmlNewEntity(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlEntityPtr ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlChar * name; /* the entity name */
+    int n_name;
+    int type; /* the entity type XML_xxx_yyy_ENTITY */
+    int n_type;
+    xmlChar * ExternalID; /* the entity external ID if available */
+    int n_ExternalID;
+    xmlChar * SystemID; /* the entity system ID if available */
+    int n_SystemID;
+    xmlChar * content; /* the entity content */
+    int n_content;
+
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_type = 0;n_type < gen_nb_int;n_type++) {
+    for (n_ExternalID = 0;n_ExternalID < gen_nb_const_xmlChar_ptr;n_ExternalID++) {
+    for (n_SystemID = 0;n_SystemID < gen_nb_const_xmlChar_ptr;n_SystemID++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        name = gen_const_xmlChar_ptr(n_name, 1);
+        type = gen_int(n_type, 2);
+        ExternalID = gen_const_xmlChar_ptr(n_ExternalID, 3);
+        SystemID = gen_const_xmlChar_ptr(n_SystemID, 4);
+        content = gen_const_xmlChar_ptr(n_content, 5);
+
+        ret_val = xmlNewEntity(doc, (const xmlChar *)name, type, (const xmlChar *)ExternalID, (const xmlChar *)SystemID, (const xmlChar *)content);
+        desret_xmlEntityPtr(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
+        des_int(n_type, type, 2);
+        des_const_xmlChar_ptr(n_ExternalID, (const xmlChar *)ExternalID, 3);
+        des_const_xmlChar_ptr(n_SystemID, (const xmlChar *)SystemID, 4);
+        des_const_xmlChar_ptr(n_content, (const xmlChar *)content, 5);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewEntity",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf(" %d", n_type);
+            printf(" %d", n_ExternalID);
+            printf(" %d", n_SystemID);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
 static int
 test_entities(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing entities : 12 of 16 functions ...\n");
+    if (quiet == 0) printf("Testing entities : 13 of 17 functions ...\n");
     test_ret += test_xmlAddDocEntity();
     test_ret += test_xmlAddDtdEntity();
     test_ret += test_xmlCleanupPredefinedEntities();
@@ -9633,6 +9701,7 @@ test_entities(void) {
     test_ret += test_xmlGetParameterEntity();
     test_ret += test_xmlGetPredefinedEntity();
     test_ret += test_xmlInitializePredefinedEntities();
+    test_ret += test_xmlNewEntity();
 
     if (test_ret != 0)
 	printf("Module entities: %d errors\n", test_ret);
@@ -25895,9 +25964,9 @@ test_xmlValidateAttributeValue(void) {
 #if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
-    xmlAttributeType type; /* an attribute type */
+    xmlAttributeType type; /*  */
     int n_type;
-    xmlChar * value; /* an attribute value */
+    xmlChar * value; /*  */
     int n_value;
 
     for (n_type = 0;n_type < gen_nb_xmlAttributeType;n_type++) {

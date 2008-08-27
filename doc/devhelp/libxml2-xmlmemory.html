@@ -52,6 +52,7 @@ void *	<a href="#xmlMemRealloc">xmlMemRealloc</a>			(void * ptr, <br/>					 size
 int	<a href="#xmlInitMemory">xmlInitMemory</a>			(void);
 void	<a href="#xmlMemFree">xmlMemFree</a>			(void * ptr);
 void *	<a href="#xmlMemMalloc">xmlMemMalloc</a>			(size_t size);
+void	<a href="#xmlMemDisplayLast">xmlMemDisplayLast</a>		(FILE * fp, <br/>					 long nbBytes);
 int	<a href="#xmlMemGet">xmlMemGet</a>			(<a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> * freeFunc, <br/>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> * mallocFunc, <br/>					 <a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> * reallocFunc, <br/>					 <a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> * strdupFunc);
 void	<a href="#xmlMemoryDump">xmlMemoryDump</a>			(void);
 void *	<a href="#xmlMallocLoc">xmlMallocLoc</a>			(size_t size, <br/>					 const char * file, <br/>					 int line);
@@ -130,6 +131,10 @@ char *	<a href="#xmlMemStrdupLoc">xmlMemStrdupLoc</a>			(const char * str, <br/>
         <div class="refsect2" lang="en"><h3><a name="xmlMemDisplay"/>xmlMemDisplay ()</h3><pre class="programlisting">void	xmlMemDisplay			(FILE * fp)<br/>
 </pre><p>show in-extenso the memory blocks allocated</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>fp</tt></i>:</span></td><td>a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlMemDisplayLast"/>xmlMemDisplayLast ()</h3><pre class="programlisting">void	xmlMemDisplayLast		(FILE * fp, <br/>					 long nbBytes)<br/>
+</pre><p>the last nbBytes of memory allocated and not freed, useful for dumping the memory left allocated between two places at runtime.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>fp</tt></i>:</span></td><td>a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist</td></tr><tr><td><span class="term"><i><tt>nbBytes</tt></i>:</span></td><td>the amount of memory to dump</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlMemFree"/>xmlMemFree ()</h3><pre class="programlisting">void	xmlMemFree			(void * ptr)<br/>
 </pre><p>a free() equivalent, with error checking.</p>

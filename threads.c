@@ -73,6 +73,10 @@ extern int pthread_mutex_unlock ()
 	   __attribute((weak));
 extern int pthread_cond_init ()
 	   __attribute((weak));
+extern int pthread_cond_destroy ()
+	   __attribute((weak));
+extern int pthread_cond_wait ()
+	   __attribute((weak));
 extern int pthread_equal ()
 	   __attribute((weak));
 extern pthread_t pthread_self ()
@@ -860,6 +864,8 @@ xmlInitThreads(void)
             (pthread_mutex_lock != NULL) &&
             (pthread_mutex_unlock != NULL) &&
             (pthread_cond_init != NULL) &&
+            (pthread_cond_destroy != NULL) &&
+            (pthread_cond_wait != NULL) &&
             (pthread_equal != NULL) &&
             (pthread_self != NULL) &&
             (pthread_cond_signal != NULL)) {

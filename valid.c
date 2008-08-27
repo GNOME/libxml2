@@ -6786,7 +6786,7 @@ xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlAttributeTablePtr table;
     xmlEntitiesTablePtr entities;
 
-    if (doc == NULL) return(0);
+    if ((doc == NULL) || (ctxt == NULL)) return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL))
 	return(0);
     ctxt->doc = doc;

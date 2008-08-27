@@ -445,6 +445,7 @@
      <exports symbol='xmlEntitiesTablePtr' type='typedef'/>
      <exports symbol='_xmlEntity' type='struct'/>
      <exports symbol='xmlAddDocEntity' type='function'/>
+     <exports symbol='xmlNewEntity' type='function'/>
      <exports symbol='xmlEncodeEntitiesReentrant' type='function'/>
      <exports symbol='xmlGetDocEntity' type='function'/>
      <exports symbol='xmlGetDtdEntity' type='function'/>
@@ -665,6 +666,7 @@
      <exports symbol='XML_SAX2_MAGIC' type='macro'/>
      <exports symbol='XML_DETECT_IDS' type='macro'/>
      <exports symbol='XML_DEFAULT_VERSION' type='macro'/>
+     <exports symbol='XML_WITH_NONE' type='enum'/>
      <exports symbol='XML_WITH_SCHEMATRON' type='enum'/>
      <exports symbol='XML_PARSER_ENTITY_DECL' type='enum'/>
      <exports symbol='XML_PARSER_CONTENT' type='enum'/>
@@ -674,9 +676,10 @@
      <exports symbol='XML_PARSER_SYSTEM_LITERAL' type='enum'/>
      <exports symbol='XML_WITH_REGEXP' type='enum'/>
      <exports symbol='XML_PARSER_PI' type='enum'/>
-     <exports symbol='XML_WITH_FTP' type='enum'/>
+     <exports symbol='XML_PARSE_UNKNOWN' type='enum'/>
      <exports symbol='XML_WITH_XPATH' type='enum'/>
      <exports symbol='XML_WITH_HTML' type='enum'/>
+     <exports symbol='XML_WITH_FTP' type='enum'/>
      <exports symbol='XML_WITH_WRITER' type='enum'/>
      <exports symbol='XML_WITH_C14N' type='enum'/>
      <exports symbol='XML_PARSE_PUSH_DOM' type='enum'/>
@@ -699,7 +702,7 @@
      <exports symbol='XML_WITH_LEGACY' type='enum'/>
      <exports symbol='XML_PARSE_XINCLUDE' type='enum'/>
      <exports symbol='XML_PARSE_NOXINCNODE' type='enum'/>
-     <exports symbol='XML_WITH_NONE' type='enum'/>
+     <exports symbol='XML_PARSE_NOBASEFIX' type='enum'/>
      <exports symbol='XML_WITH_OUTPUT' type='enum'/>
      <exports symbol='XML_WITH_XINCLUDE' type='enum'/>
      <exports symbol='XML_WITH_PUSH' type='enum'/>
@@ -711,7 +714,7 @@
      <exports symbol='XML_PARSE_DTDLOAD' type='enum'/>
      <exports symbol='XML_PARSE_DTDATTR' type='enum'/>
      <exports symbol='XML_PARSE_NOWARNING' type='enum'/>
-     <exports symbol='XML_WITH_VALID' type='enum'/>
+     <exports symbol='XML_PARSE_OLD10' type='enum'/>
      <exports symbol='XML_PARSE_NOERROR' type='enum'/>
      <exports symbol='XML_WITH_ISO8859X' type='enum'/>
      <exports symbol='XML_WITH_EXPR' type='enum'/>
@@ -729,7 +732,7 @@
      <exports symbol='XML_PARSER_MISC' type='enum'/>
      <exports symbol='XML_PARSER_START' type='enum'/>
      <exports symbol='XML_WITH_DEBUG_MEM' type='enum'/>
-     <exports symbol='XML_PARSE_UNKNOWN' type='enum'/>
+     <exports symbol='XML_PARSE_HUGE' type='enum'/>
      <exports symbol='XML_PARSER_START_TAG' type='enum'/>
      <exports symbol='XML_PARSER_IGNORE' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
@@ -738,6 +741,7 @@
      <exports symbol='XML_WITH_AUTOMATA' type='enum'/>
      <exports symbol='XML_WITH_DEBUG_RUN' type='enum'/>
      <exports symbol='XML_WITH_SAX1' type='enum'/>
+     <exports symbol='XML_WITH_VALID' type='enum'/>
      <exports symbol='xmlParserNodeInfoSeqPtr' type='typedef'/>
      <exports symbol='xmlSAXHandlerV1' type='typedef'/>
      <exports symbol='xmlParserInputState' type='typedef'/>
@@ -1393,36 +1397,43 @@
      <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
      <exports symbol='XML_ATTRIBUTE_IMPLIED' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_ELEMENT' type='enum'/>
+     <exports symbol='XML_ENTITY_REF_NODE' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_IDREFS' type='enum'/>
      <exports symbol='XML_BUFFER_ALLOC_DOUBLEIT' type='enum'/>
      <exports symbol='XML_XINCLUDE_END' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_NODE' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_IDREF' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_ELEMENT' type='enum'/>
+     <exports symbol='XML_TEXT_NODE' type='enum'/>
      <exports symbol='XML_CDATA_SECTION_NODE' type='enum'/>
      <exports symbol='XML_ELEMENT_NODE' type='enum'/>
      <exports symbol='XML_ELEMENT_DECL' type='enum'/>
-     <exports symbol='XML_ELEMENT_CONTENT_SEQ' type='enum'/>
+     <exports symbol='XML_DOC_USERBUILT' type='enum'/>
+     <exports symbol='XML_DOC_INTERNAL' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_REQUIRED' type='enum'/>
      <exports symbol='XML_DOCUMENT_FRAG_NODE' type='enum'/>
+     <exports symbol='XML_DOC_DTDVALID' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_ANY' type='enum'/>
+     <exports symbol='XML_DOC_NSVALID' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_ONCE' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_PCDATA' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_FIXED' type='enum'/>
      <exports symbol='XML_DOCUMENT_TYPE_NODE' type='enum'/>
+     <exports symbol='XML_DOC_HTML' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_OPT' type='enum'/>
      <exports symbol='XML_NAMESPACE_DECL' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_NOTATION' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_MIXED' type='enum'/>
      <exports symbol='XML_XINCLUDE_START' type='enum'/>
-     <exports symbol='XML_TEXT_NODE' type='enum'/>
+     <exports symbol='XML_DOC_XINCLUDE' type='enum'/>
      <exports symbol='XML_BUFFER_ALLOC_EXACT' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_ENTITIES' type='enum'/>
      <exports symbol='XML_BUFFER_ALLOC_IMMUTABLE' type='enum'/>
      <exports symbol='XML_NOTATION_NODE' type='enum'/>
-     <exports symbol='XML_ENTITY_REF_NODE' type='enum'/>
+     <exports symbol='XML_ELEMENT_CONTENT_SEQ' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_EMPTY' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_ENUMERATION' type='enum'/>
+     <exports symbol='XML_DOC_OLD10' type='enum'/>
      <exports symbol='XML_HTML_DOCUMENT_NODE' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_UNDEFINED' type='enum'/>
      <exports symbol='XML_DOCUMENT_NODE' type='enum'/>
@@ -1436,6 +1447,7 @@
      <exports symbol='XML_ATTRIBUTE_NMTOKENS' type='enum'/>
      <exports symbol='XML_ENTITY_NODE' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_ENTITY' type='enum'/>
+     <exports symbol='XML_DOC_WELLFORMED' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_DECL' type='enum'/>
      <exports symbol='XML_ENTITY_DECL' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_ID' type='enum'/>
@@ -1487,6 +1499,7 @@
      <exports symbol='xmlSAXLocator' type='typedef'/>
      <exports symbol='xmlElementContentPtr' type='typedef'/>
      <exports symbol='xmlElementContentType' type='typedef'/>
+     <exports symbol='xmlDocProperties' type='typedef'/>
      <exports symbol='xmlIDPtr' type='typedef'/>
      <exports symbol='xmlDtd' type='typedef'/>
      <exports symbol='xmlAttribute' type='typedef'/>
@@ -2010,7 +2023,6 @@
      <exports symbol='XML_ERR_ENTITY_LOOP' type='enum'/>
      <exports symbol='XML_IO_EINPROGRESS' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_NOTATION' type='enum'/>
-     <exports symbol='XML_IO_EFAULT' type='enum'/>
      <exports symbol='XML_HTML_STRUCURE_ERROR' type='enum'/>
      <exports symbol='XML_DTD_INVALID_DEFAULT' type='enum'/>
      <exports symbol='XML_FROM_SCHEMATRONV' type='enum'/>
@@ -2062,7 +2074,7 @@
      <exports symbol='XML_SCHEMAV_NOTDETERMINIST' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_EXTENSION_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAV_MISSING' type='enum'/>
-     <exports symbol='XML_RNGP_GRAMMAR_CONTENT' type='enum'/>
+     <exports symbol='XML_IO_EFAULT' type='enum'/>
      <exports symbol='XML_XINCLUDE_XPTR_FAILED' type='enum'/>
      <exports symbol='XML_FROM_FTP' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_CREATE_FAILED' type='enum'/>
@@ -2193,6 +2205,7 @@
      <exports symbol='XML_ERR_NOTATION_NOT_STARTED' type='enum'/>
      <exports symbol='XML_DTD_ENTITY_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_4' type='enum'/>
+     <exports symbol='XML_RNGP_GRAMMAR_CONTENT' type='enum'/>
      <exports symbol='XML_FTP_URL_SYNTAX' type='enum'/>
      <exports symbol='XML_ERR_NONE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_COMPLEXTYPE_CHILD' type='enum'/>
@@ -2266,7 +2279,7 @@
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE' type='enum'/>
-     <exports symbol='XML_RNGP_GRAMMAR_EMPTY' type='enum'/>
+     <exports symbol='XML_IO_EINVAL' type='enum'/>
      <exports symbol='XML_IO_ENAMETOOLONG' type='enum'/>
      <exports symbol='XML_RNGP_EXTERNAL_REF_FAILURE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_TEXT' type='enum'/>
@@ -2360,6 +2373,7 @@
      <exports symbol='XML_SCHEMAP_UNION_NOT_EXPRESSIBLE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ATTR' type='enum'/>
      <exports symbol='XML_FTP_PASV_ANSWER' type='enum'/>
+     <exports symbol='XML_ERR_VERSION_MISMATCH' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_BOOLEAN' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_4_2' type='enum'/>
      <exports symbol='XML_DTD_ELEM_DEFAULT_NAMESPACE' type='enum'/>
@@ -2470,7 +2484,7 @@
      <exports symbol='XML_ERR_ENTITY_PROCESSING' type='enum'/>
      <exports symbol='XML_FROM_XINCLUDE' type='enum'/>
      <exports symbol='XML_SCHEMAP_CVC_SIMPLE_TYPE' type='enum'/>
-     <exports symbol='XML_IO_EINVAL' type='enum'/>
+     <exports symbol='XML_RNGP_GRAMMAR_EMPTY' type='enum'/>
      <exports symbol='XML_CHECK_NOT_NCNAME' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_NO_CONTENT' type='enum'/>
      <exports symbol='XML_XINCLUDE_NO_HREF' type='enum'/>
@@ -2505,6 +2519,7 @@
      <exports symbol='XML_I18N_NO_HANDLER' type='enum'/>
      <exports symbol='XML_RNGP_MISSING_HREF' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_ERR_UNKNOWN_VERSION' type='enum'/>
      <exports symbol='XML_FROM_RELAXNGP' type='enum'/>
      <exports symbol='XML_FROM_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ATTR_INVALID_VALUE' type='enum'/>
@@ -2666,6 +2681,7 @@
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1' type='enum'/>
      <exports symbol='XML_ERR_OK' type='enum'/>
+     <exports symbol='XML_NS_ERR_COLON' type='enum'/>
      <exports symbol='XML_WAR_ENTITY_REDEFINED' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_REDEFINED' type='enum'/>
      <exports symbol='XML_SCHEMAP_SIMPLETYPE_NONAME' type='enum'/>
@@ -2742,6 +2758,7 @@
      <exports symbol='xmlInitMemory' type='function'/>
      <exports symbol='xmlMemFree' type='function'/>
      <exports symbol='xmlMemMalloc' type='function'/>
+     <exports symbol='xmlMemDisplayLast' type='function'/>
      <exports symbol='xmlMemGet' type='function'/>
      <exports symbol='xmlMemoryDump' type='function'/>
      <exports symbol='xmlMallocLoc' type='function'/>
@@ -4671,6 +4688,15 @@
     <enum name='XML_DOCUMENT_FRAG_NODE' file='tree' value='11' type='xmlElementType'/>
     <enum name='XML_DOCUMENT_NODE' file='tree' value='9' type='xmlElementType'/>
     <enum name='XML_DOCUMENT_TYPE_NODE' file='tree' value='10' type='xmlElementType'/>
+    <enum name='XML_DOC_DTDVALID' file='tree' value='8' type='xmlDocProperties' info='DTD validation was successful'/>
+    <enum name='XML_DOC_HTML' file='tree' value='128' type='xmlDocProperties' info=' parsed or built HTML document'/>
+    <enum name='XML_DOC_INTERNAL' file='tree' value='64' type='xmlDocProperties' info='built for internal processing'/>
+    <enum name='XML_DOC_NSVALID' file='tree' value='2' type='xmlDocProperties' info='document is Namespace valid'/>
+    <enum name='XML_DOC_OLD10' file='tree' value='4' type='xmlDocProperties' info='parsed with old XML-1.0 parser'/>
+    <enum name='XML_DOC_USERBUILT' file='tree' value='32' type='xmlDocProperties' info='Document was built using the API
+and not by parsing an instance'/>
+    <enum name='XML_DOC_WELLFORMED' file='tree' value='1' type='xmlDocProperties' info='document is XML well formed'/>
+    <enum name='XML_DOC_XINCLUDE' file='tree' value='16' type='xmlDocProperties' info='XInclude substitution was done'/>
     <enum name='XML_DTD_ATTRIBUTE_DEFAULT' file='xmlerror' value='500' type='xmlParserErrors'/>
     <enum name='XML_DTD_ATTRIBUTE_REDEFINED' file='xmlerror' value='501' type='xmlParserErrors' info='501'/>
     <enum name='XML_DTD_ATTRIBUTE_VALUE' file='xmlerror' value='502' type='xmlParserErrors' info='502'/>
@@ -4825,11 +4851,13 @@
     <enum name='XML_ERR_TAG_NOT_FINISHED' file='xmlerror' value='77' type='xmlParserErrors' info='77'/>
     <enum name='XML_ERR_UNDECLARED_ENTITY' file='xmlerror' value='26' type='xmlParserErrors' info='26'/>
     <enum name='XML_ERR_UNKNOWN_ENCODING' file='xmlerror' value='31' type='xmlParserErrors' info='31'/>
+    <enum name='XML_ERR_UNKNOWN_VERSION' file='xmlerror' value='108' type='xmlParserErrors' info='108'/>
     <enum name='XML_ERR_UNPARSED_ENTITY' file='xmlerror' value='28' type='xmlParserErrors' info='28'/>
     <enum name='XML_ERR_UNSUPPORTED_ENCODING' file='xmlerror' value='32' type='xmlParserErrors' info='32'/>
     <enum name='XML_ERR_URI_FRAGMENT' file='xmlerror' value='92' type='xmlParserErrors' info='92'/>
     <enum name='XML_ERR_URI_REQUIRED' file='xmlerror' value='70' type='xmlParserErrors' info='70'/>
     <enum name='XML_ERR_VALUE_REQUIRED' file='xmlerror' value='84' type='xmlParserErrors' info='84'/>
+    <enum name='XML_ERR_VERSION_MISMATCH' file='xmlerror' value='109' type='xmlParserErrors' info='109'/>
     <enum name='XML_ERR_VERSION_MISSING' file='xmlerror' value='96' type='xmlParserErrors' info='96'/>
     <enum name='XML_ERR_WARNING' file='xmlerror' value='1' type='xmlErrorLevel' info='A simple warning'/>
     <enum name='XML_ERR_XMLDECL_NOT_FINISHED' file='xmlerror' value='57' type='xmlParserErrors' info='57'/>
@@ -4954,6 +4982,7 @@
     <enum name='XML_NAMESPACE_DECL' file='tree' value='18' type='xmlElementType'/>
     <enum name='XML_NOTATION_NODE' file='tree' value='12' type='xmlElementType'/>
     <enum name='XML_NS_ERR_ATTRIBUTE_REDEFINED' file='xmlerror' value='203' type='xmlParserErrors' info='203'/>
+    <enum name='XML_NS_ERR_COLON' file='xmlerror' value='205' type='xmlParserErrors' info='205'/>
     <enum name='XML_NS_ERR_EMPTY' file='xmlerror' value='204' type='xmlParserErrors' info='204'/>
     <enum name='XML_NS_ERR_QNAME' file='xmlerror' value='202' type='xmlParserErrors' info='202'/>
     <enum name='XML_NS_ERR_UNDEFINED_NAMESPACE' file='xmlerror' value='201' type='xmlParserErrors' info='201'/>
@@ -4984,13 +5013,15 @@
     <enum name='XML_PARSER_SUBST_ENTITIES' file='xmlreader' value='4' type='xmlParserProperties'/>
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
-    <enum name='XML_PARSE_COMPACT' file='parser' value='65536' type='xmlParserOption' info=' compact small text nodes; no modification of
+    <enum name='XML_PARSE_COMPACT' file='parser' value='65536' type='xmlParserOption' info='compact small text nodes; no modification of
 the tree allowed afterwards (will possibly
 crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_DOM' file='parser' value='1' type='xmlParserMode'/>
     <enum name='XML_PARSE_DTDATTR' file='parser' value='8' type='xmlParserOption' info='default DTD attributes'/>
     <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
     <enum name='XML_PARSE_DTDVALID' file='parser' value='16' type='xmlParserOption' info='validate with the DTD'/>
+    <enum name='XML_PARSE_HUGE' file='parser' value='524288' type='xmlParserOption' info=' relax any hardcoded limit from the parser'/>
+    <enum name='XML_PARSE_NOBASEFIX' file='parser' value='262144' type='xmlParserOption' info='do not fixup XINCLUDE xml:base uris'/>
     <enum name='XML_PARSE_NOBLANKS' file='parser' value='256' type='xmlParserOption' info='remove blank nodes'/>
     <enum name='XML_PARSE_NOCDATA' file='parser' value='16384' type='xmlParserOption' info='merge CDATA as text nodes'/>
     <enum name='XML_PARSE_NODICT' file='parser' value='4096' type='xmlParserOption' info='Do not reuse the context dictionnary'/>
@@ -5000,6 +5031,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_NOWARNING' file='parser' value='64' type='xmlParserOption' info='suppress warning reports'/>
     <enum name='XML_PARSE_NOXINCNODE' file='parser' value='32768' type='xmlParserOption' info='do not generate XINCLUDE START/END nodes'/>
     <enum name='XML_PARSE_NSCLEAN' file='parser' value='8192' type='xmlParserOption' info='remove redundant namespaces declarations'/>
+    <enum name='XML_PARSE_OLD10' file='parser' value='131072' type='xmlParserOption' info='parse using XML-1.0 before update 5'/>
     <enum name='XML_PARSE_PEDANTIC' file='parser' value='128' type='xmlParserOption' info='pedantic error reporting'/>
     <enum name='XML_PARSE_PUSH_DOM' file='parser' value='3' type='xmlParserMode'/>
     <enum name='XML_PARSE_PUSH_SAX' file='parser' value='4' type='xmlParserMode'/>
@@ -5941,7 +5973,12 @@ standalone attribute was specified'/>
 actually an xmlCharEncoding'/>
       <field name='dict' type='struct _xmlDict *' info=' dict used to allocate names or NULL'/>
       <field name='psvi' type='void *' info=' for type/PSVI informations'/>
+      <field name='parseFlags' type='int' info=' set of xmlParserOption used to parse the
+document'/>
+      <field name='properties' type='int' info=' set of xmlDocProperties for this document
+set at the end of parsing'/>
     </struct>
+    <typedef name='xmlDocProperties' file='tree' type='enum'/>
     <typedef name='xmlDocPtr' file='tree' type='xmlDoc *'/>
     <struct name='xmlDtd' file='tree' type='struct _xmlDtd'>
       <field name='_private' type='void *' info=' application data'/>
@@ -6017,7 +6054,8 @@ actually an xmlCharEncoding'/>
       <field name='nexte' type='struct _xmlEntity *' info=' unused'/>
       <field name='URI' type='const xmlChar *' info=' the full URI as computed'/>
       <field name='owner' type='int' info=' does the entity own the childrens'/>
-      <field name='checked' type='int' info=' was the entity content checked'/>
+      <field name='checked' type='int' info=' was the entity content checked this is also used to count entites
+* references done from that entity'/>
     </struct>
     <typedef name='xmlEntityPtr' file='tree' type='xmlEntity *'/>
     <typedef name='xmlEntityType' file='entities' type='enum'/>
@@ -6256,6 +6294,7 @@ actually an xmlCharEncoding'/>
 *'/>
       <field name='lastError' type='xmlError' info=''/>
       <field name='parseMode' type='xmlParserMode' info=' the parser mode'/>
+      <field name='nbentities' type='unsigned long' info=' number of entities references'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -10743,6 +10782,12 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
+    <function name='xmlMemDisplayLast' file='xmlmemory' module='xmlmemory'>
+      <info>the last nbBytes of memory allocated and not freed, useful for dumping the memory left allocated between two places at runtime.</info>
+      <return type='void'/>
+      <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
+      <arg name='nbBytes' type='long' info='the amount of memory to dump'/>
+    </function>
     <function name='xmlMemFree' file='xmlmemory' module='xmlmemory'>
       <info>a free() equivalent, with error checking.</info>
       <return type='void'/>
@@ -11257,6 +11302,16 @@ Could we use @subtypes for this?'/>
       <return type='xmlElementContentPtr' info='NULL if not, otherwise the new element content structure'/>
       <arg name='name' type='const xmlChar *' info='the subelement name or NULL'/>
       <arg name='type' type='xmlElementContentType' info='the type of element content decl'/>
+    </function>
+    <function name='xmlNewEntity' file='entities' module='entities'>
+      <info>Create a new entity, this differs from xmlAddDocEntity() that if the document is NULL or has no internal subset defined, then an unlinked entity structure will be returned, it is then the responsability of the caller to link it to the document later or free it when not needed anymore.</info>
+      <return type='xmlEntityPtr' info='a pointer to the entity or NULL in case of error'/>
+      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='name' type='const xmlChar *' info='the entity name'/>
+      <arg name='type' type='int' info='the entity type XML_xxx_yyy_ENTITY'/>
+      <arg name='ExternalID' type='const xmlChar *' info='the entity external ID if available'/>
+      <arg name='SystemID' type='const xmlChar *' info='the entity system ID if available'/>
+      <arg name='content' type='const xmlChar *' info='the entity content'/>
     </function>
     <function name='xmlNewEntityInputStream' file='parserInternals' module='parserInternals'>
       <info>Create a new input stream based on an xmlEntityPtr</info>
@@ -12043,23 +12098,23 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseTextDecl' file='parserInternals' module='parser'>
-      <info>parse an XML declaration header for external entities  [77] TextDecl ::= &apos;&lt;?xml&apos; VersionInfo? EncodingDecl S? &apos;?&gt;&apos;  Question: Seems that EncodingDecl is mandatory ? Is that a typo ?</info>
+      <info>parse an XML declaration header for external entities  [77] TextDecl ::= &apos;&lt;?xml&apos; VersionInfo? EncodingDecl S? &apos;?&gt;&apos;</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseURI' file='uri' module='uri'>
-      <info>Parse an URI  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
+      <info>Parse an URI based on RFC 3986  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
       <return type='xmlURIPtr' info='a newly built xmlURIPtr or NULL in case of error'/>
       <arg name='str' type='const char *' info='the URI string to analyze'/>
     </function>
     <function name='xmlParseURIRaw' file='uri' module='uri'>
-      <info>Parse an URI but allows to keep intact the original fragments.  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
+      <info>Parse an URI but allows to keep intact the original fragments.  URI-reference = URI / relative-ref</info>
       <return type='xmlURIPtr' info='a newly built xmlURIPtr or NULL in case of error'/>
       <arg name='str' type='const char *' info='the URI string to analyze'/>
       <arg name='raw' type='int' info='if 1 unescaping of URI pieces are disabled'/>
     </function>
     <function name='xmlParseURIReference' file='uri' module='uri'>
-      <info>Parse an URI reference string and fills in the appropriate fields of the @uri structure  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
+      <info>Parse an URI reference string based on RFC 3986 and fills in the appropriate fields of the @uri structure  URI-reference = URI / relative-ref</info>
       <return type='int' info='0 or the error code'/>
       <arg name='uri' type='xmlURIPtr' info='pointer to an URI structure'/>
       <arg name='str' type='const char *' info='the string to analyze'/>
@@ -12070,7 +12125,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseVersionNum' file='parserInternals' module='parser'>
-      <info>parse the XML version value.  [26] VersionNum ::= ([a-zA-Z0-9_.:] | &apos;-&apos;)+</info>
+      <info>parse the XML version value.  [26] VersionNum ::= &apos;1.&apos; [0-9]+  In practice allow [0-9].[0-9]+ at that level</info>
       <return type='xmlChar *' info='the string giving the XML version number, or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -16677,10 +16732,10 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlValidateAttributeValue' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
-      <info>Validate that the given attribute value match  the proper production  [ VC: ID ] Values of type ID must match the Name production....  [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names ...  [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names ...  [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</info>
-      <return type='int' info='1 if valid or 0 otherwise'/>
-      <arg name='type' type='xmlAttributeType' info='an attribute type'/>
-      <arg name='value' type='const xmlChar *' info='an attribute value'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='type' type='xmlAttributeType' info=''/>
+      <arg name='value' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlValidateDocument' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>

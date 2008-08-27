@@ -208,6 +208,8 @@ extra_pre_call = {
 extra_post_call = {
    "xmlAddChild": 
        "if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }",
+   "xmlAddEntity":
+       "if (ret_val != NULL) { xmlFreeNode(ret_val) ; ret_val = NULL; }",
    "xmlAddChildList": 
        "if (ret_val == NULL) { xmlFreeNodeList(cur) ; cur = NULL ; }",
    "xmlAddSibling":

@@ -587,7 +587,7 @@ void	<a href="#xmlParseEntityDecl">xmlParseEntityDecl</a>		(<a href="libxml2-tre
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the SystemLiteral parsed or NULL</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseTextDecl"/>xmlParseTextDecl ()</h3><pre class="programlisting">void	xmlParseTextDecl		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br/>
-</pre><p>parse an XML declaration header for external entities [77] TextDecl ::= '&lt;?xml' VersionInfo? EncodingDecl S? '?&gt;' Question: Seems that EncodingDecl is mandatory ? Is that a typo ?</p>
+</pre><p>parse an XML declaration header for external entities [77] TextDecl ::= '&lt;?xml' VersionInfo? EncodingDecl S? '?&gt;'</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseVersionInfo"/>xmlParseVersionInfo ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseVersionInfo	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br/>
@@ -595,7 +595,7 @@ void	<a href="#xmlParseEntityDecl">xmlParseEntityDecl</a>		(<a href="libxml2-tre
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the version string, e.g. "1.0"</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseVersionNum"/>xmlParseVersionNum ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseVersionNum	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br/>
-</pre><p>parse the XML version value. [26] VersionNum ::= ([a-zA-Z0-9_.:] | '-')+</p>
+</pre><p>parse the XML version value. [26] VersionNum ::= '1.' [0-9]+ In practice allow [0-9].[0-9]+ at that level</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the string giving the XML version number, or NULL</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseXMLDecl"/>xmlParseXMLDecl ()</h3><pre class="programlisting">void	xmlParseXMLDecl			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br/>

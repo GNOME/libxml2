@@ -578,6 +578,7 @@ Class xmlDoc(xmlNode)
     encodeEntities()
     encodeEntitiesReentrant()
     encodeSpecialChars()
+    newEntity()
     parameterEntity()
 
     # functions from module relaxng

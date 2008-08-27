@@ -490,6 +490,7 @@ xmlParse3986Authority(xmlURIPtr uri, const char **str)
     ret = xmlParse3986Host(uri, &cur);
     if (ret != 0) return(ret);
     if (*cur == ':') {
+        cur++;
         ret = xmlParse3986Port(uri, &cur);
 	if (ret != 0) return(ret);
     }

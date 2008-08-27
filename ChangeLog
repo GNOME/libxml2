@@ -1,3 +1,7 @@
+Wed Aug 27 19:22:35 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: bug in parsing RFC 3986 uris with port numbers
+
 Wed Aug 27 17:30:48 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in Makefile.am: add an --with-coverage configure option

@@ -1,3 +1,8 @@
+Wed Aug 27 15:00:54 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parserInternals.h parser.c: cleanup entity
+	  pushing error handling based on a patch from Ashwin
+
 Wed Aug 27 13:41:26 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: fix a small initialization problem raised by Ashwin

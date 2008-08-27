@@ -321,7 +321,7 @@ XMLPUBFUN xmlParserInputPtr XMLCALL
 XMLPUBFUN xmlParserInputPtr XMLCALL	
 			xmlNewEntityInputStream	(xmlParserCtxtPtr ctxt,
 						 xmlEntityPtr entity);
-XMLPUBFUN void XMLCALL			
+XMLPUBFUN int XMLCALL			
 			xmlPushInput		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr input);
 XMLPUBFUN xmlChar XMLCALL			

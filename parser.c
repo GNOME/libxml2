@@ -1379,13 +1379,13 @@ mem_error:
  *
  * Pushes a new parser input on top of the input stack
  *
- * Returns 0 in case of error, the index in the stack otherwise
+ * Returns -1 in case of error, the index in the stack otherwise
  */
 int
 inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
 {
     if ((ctxt == NULL) || (value == NULL))
-        return(0);
+        return(-1);
     if (ctxt->inputNr >= ctxt->inputMax) {
         ctxt->inputMax *= 2;
         ctxt->inputTab =
@@ -1394,7 +1394,10 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
                                              sizeof(ctxt->inputTab[0]));
         if (ctxt->inputTab == NULL) {
             xmlErrMemory(ctxt, NULL);
-            return (0);
+	    xmlFreeInputStream(value);
+	    ctxt->inputMax /= 2;
+	    value = NULL;
+            return (-1);
         }
     }
     ctxt->inputTab[ctxt->inputNr] = value;
@@ -1434,7 +1437,7 @@ inputPop(xmlParserCtxtPtr ctxt)
  *
  * Pushes a new element node on top of the node stack
  *
- * Returns 0 in case of error, the index in the stack otherwise
+ * Returns -1 in case of error, the index in the stack otherwise
  */
 int
 nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
@@ -1448,7 +1451,7 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
                                       sizeof(ctxt->nodeTab[0]));
         if (tmp == NULL) {
             xmlErrMemory(ctxt, NULL);
-            return (0);
+            return (-1);
         }
         ctxt->nodeTab = tmp;
 	ctxt->nodeMax *= 2;
@@ -1459,7 +1462,7 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 		 "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
 			  xmlParserMaxDepth);
 	ctxt->instate = XML_PARSER_EOF;
-	return(0);
+	return(-1);
     }
     ctxt->nodeTab[ctxt->nodeNr] = value;
     ctxt->node = value;
@@ -1632,7 +1635,8 @@ static int spacePush(xmlParserCtxtPtr ctxt, int val) {
 	                         ctxt->spaceMax * sizeof(ctxt->spaceTab[0]));
         if (tmp == NULL) {
 	    xmlErrMemory(ctxt, NULL);
-	    return(0);
+	    ctxt->spaceMax /=2;
+	    return(-1);
 	}
 	ctxt->spaceTab = tmp;
     }
@@ -1880,10 +1884,12 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
  *
  * xmlPushInput: switch to a new input stream which is stacked on top
  *               of the previous one(s).
+ * Returns -1 in case of error or the index in the input stack
  */
-void
+int
 xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
-    if (input == NULL) return;
+    int ret;
+    if (input == NULL) return(-1);
 
     if (xmlParserDebugEntities) {
 	if ((ctxt->input != NULL) && (ctxt->input->filename))
@@ -1893,8 +1899,9 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Pushing input %d : %.30s\n", ctxt->inputNr+1, input->cur);
     }
-    inputPush(ctxt, input);
+    ret = inputPush(ctxt, input);
     GROW;
+    return(ret);
 }
 
 /**
@@ -2281,7 +2288,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		}
 	    } else if (ctxt->input->free != deallocblankswrapper) {
 		    input = xmlNewBlanksWrapperInputStream(ctxt, entity);
-		    xmlPushInput(ctxt, input);
+		    if (xmlPushInput(ctxt, input) < 0)
+		        return;
 	    } else {
 	        if ((entity->etype == XML_INTERNAL_PARAMETER_ENTITY) ||
 		    (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)) {
@@ -2294,7 +2302,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * this is done independently.
 		     */
 		    input = xmlNewEntityInputStream(ctxt, entity);
-		    xmlPushInput(ctxt, input);
+		    if (xmlPushInput(ctxt, input) < 0)
+		        return;
 
 		    /* 
 		     * Get the 4 first bytes and decode the charset
@@ -2479,8 +2488,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	        ctxt->nbentities += ent->checked;
 	    if (ent != NULL) {
                 if (ent->content == NULL) {
-		    if (xmlLoadEntityContent(ctxt, ent) < 0) {
-		    }
+		    xmlLoadEntityContent(ctxt, ent);
 		}
 		ctxt->depth++;
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
@@ -7297,7 +7305,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                     } else if (ctxt->input->free != deallocblankswrapper) {
                         input =
                             xmlNewBlanksWrapperInputStream(ctxt, entity);
-                        xmlPushInput(ctxt, input);
+                        if (xmlPushInput(ctxt, input) < 0)
+			    return;
                     } else {
                         /*
                          * TODO !!!
@@ -7305,7 +7314,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                          * c.f. http://www.w3.org/TR/REC-xml#as-PE
                          */
                         input = xmlNewEntityInputStream(ctxt, entity);
-                        xmlPushInput(ctxt, input);
+                        if (xmlPushInput(ctxt, input) < 0)
+			    return;
                         if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
 			    (CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) &&
 			    (IS_BLANK_CH(NXT(5)))) {
@@ -7380,7 +7390,11 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
      * Push the entity as the current input, read char by char
      * saving to the buffer until the end of the entity or an error
      */
-    xmlPushInput(ctxt, input);
+    if (xmlPushInput(ctxt, input) < 0) {
+        xmlBufferFree(buf);
+	return(-1);
+    }
+
     GROW;
     c = CUR_CHAR(l);
     while ((ctxt->input == input) && (ctxt->input->cur < ctxt->input->end) &&
@@ -11602,7 +11616,11 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     /*
      * plug some encoding conversion routines here.
      */
-    xmlPushInput(ctxt, pinput);
+    if (xmlPushInput(ctxt, pinput) < 0) {
+        if (sax != NULL) ctxt->sax = NULL;
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
     if (enc != XML_CHAR_ENCODING_NONE) {
         xmlSwitchEncoding(ctxt, enc);
     }
@@ -11736,7 +11754,13 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     /*
      * plug some encoding conversion routines here.
      */
-    xmlPushInput(ctxt, input);
+    if (xmlPushInput(ctxt, input) < 0) {
+        if (sax != NULL) ctxt->sax = NULL;
+	xmlFreeParserCtxt(ctxt);
+	if (systemIdCanonic != NULL)
+	    xmlFree(systemIdCanonic);
+	return(NULL);
+    }
     if ((ctxt->input->end - ctxt->input->cur) >= 4) {
 	enc = xmlDetectCharEncoding(ctxt->input->cur, 4);
 	xmlSwitchEncoding(ctxt, enc);

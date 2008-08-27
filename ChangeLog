@@ -1,3 +1,8 @@
+Wed Aug 27 21:55:34 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlerror.h parser.c: a bit of cleanup and
+	  added checks based on the regression tests of the xmlconf suite
+
 Wed Aug 27 19:22:35 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: bug in parsing RFC 3986 uris with port numbers

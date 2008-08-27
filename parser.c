@@ -5209,7 +5209,7 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
 xmlEnumerationPtr
 xmlParseNotationType(xmlParserCtxtPtr ctxt) {
     const xmlChar *name;
-    xmlEnumerationPtr ret = NULL, last = NULL, cur;
+    xmlEnumerationPtr ret = NULL, last = NULL, cur, tmp;
 
     if (RAW != '(') {
 	xmlFatalErr(ctxt, XML_ERR_NOTATION_NOT_STARTED, NULL);
@@ -5225,12 +5225,26 @@ xmlParseNotationType(xmlParserCtxtPtr ctxt) {
 			   "Name expected in NOTATION declaration\n");
 	    return(ret);
 	}
-	cur = xmlCreateEnumeration(name);
-	if (cur == NULL) return(ret);
-	if (last == NULL) ret = last = cur;
-	else {
-	    last->next = cur;
-	    last = cur;
+	tmp = ret;
+	while (tmp != NULL) {
+	    if (xmlStrEqual(name, tmp->name)) {
+		xmlValidityError(ctxt, XML_DTD_DUP_TOKEN,
+	  "standalone: attribute notation value token %s duplicated\n",
+				 name, NULL);
+		if (!xmlDictOwns(ctxt->dict, name))
+		    xmlFree((xmlChar *) name);
+		break;
+	    }
+	    tmp = tmp->next;
+	}
+	if (tmp == NULL) {
+	    cur = xmlCreateEnumeration(name);
+	    if (cur == NULL) return(ret);
+	    if (last == NULL) ret = last = cur;
+	    else {
+		last->next = cur;
+		last = cur;
+	    }
 	}
 	SKIP_BLANKS;
     } while (RAW == '|');
@@ -5262,7 +5276,7 @@ xmlParseNotationType(xmlParserCtxtPtr ctxt) {
 xmlEnumerationPtr
 xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
     xmlChar *name;
-    xmlEnumerationPtr ret = NULL, last = NULL, cur;
+    xmlEnumerationPtr ret = NULL, last = NULL, cur, tmp;
 
     if (RAW != '(') {
 	xmlFatalErr(ctxt, XML_ERR_ATTLIST_NOT_STARTED, NULL);
@@ -5277,13 +5291,28 @@ xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
 	    xmlFatalErr(ctxt, XML_ERR_NMTOKEN_REQUIRED, NULL);
 	    return(ret);
 	}
-	cur = xmlCreateEnumeration(name);
-	xmlFree(name);
-	if (cur == NULL) return(ret);
-	if (last == NULL) ret = last = cur;
-	else {
-	    last->next = cur;
-	    last = cur;
+	tmp = ret;
+	while (tmp != NULL) {
+	    if (xmlStrEqual(name, tmp->name)) {
+		xmlValidityError(ctxt, XML_DTD_DUP_TOKEN,
+	  "standalone: attribute enumeration value token %s duplicated\n",
+				 name, NULL);
+		if (!xmlDictOwns(ctxt->dict, name))
+		    xmlFree(name);
+		break;
+	    }
+	    tmp = tmp->next;
+	}
+	if (tmp == NULL) {
+	    cur = xmlCreateEnumeration(name);
+	    if (!xmlDictOwns(ctxt->dict, name))
+		xmlFree(name);
+	    if (cur == NULL) return(ret);
+	    if (last == NULL) ret = last = cur;
+	    else {
+		last->next = cur;
+		last = cur;
+	    }
 	}
 	SKIP_BLANKS;
     } while (RAW == '|');
@@ -5530,8 +5559,9 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	}
 	if (RAW == '>') {
 	    if (input != ctxt->input) {
-		xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-    "Attribute list declaration doesn't start and stop in the same entity\n");
+		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+    "Attribute list declaration doesn't start and stop in the same entity\n",
+                                 NULL, NULL);
 	    }
 	    NEXT;
 	}
@@ -6103,6 +6133,8 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 
 static void
 xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
+    int id = ctxt->input->id;
+
     SKIP(3);
     SKIP_BLANKS;
     if (CMP7(CUR_PTR, 'I', 'N', 'C', 'L', 'U', 'D', 'E')) {
@@ -6111,6 +6143,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	if (RAW != '[') {
 	    xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
 	} else {
+	    if (ctxt->input->id != id) {
+		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+	    "All markup of the conditional section is not in the same entity\n",
+				     NULL, NULL);
+	    }
 	    NEXT;
 	}
 	if (xmlParserDebugEntities) {
@@ -6166,6 +6203,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	if (RAW != '[') {
 	    xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
 	} else {
+	    if (ctxt->input->id != id) {
+		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+	    "All markup of the conditional section is not in the same entity\n",
+				     NULL, NULL);
+	    }
 	    NEXT;
 	}
 	if (xmlParserDebugEntities) {
@@ -6222,6 +6264,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     if (RAW == 0) {
 	xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
     } else {
+	if (ctxt->input->id != id) {
+	    xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+	"All markup of the conditional section is not in the same entity\n",
+				 NULL, NULL);
+	}
         SKIP(3);
     }
 }

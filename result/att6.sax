@@ -6,10 +6,8 @@ SAX.characters(
 SAX.startElement(cat:ReferencedOrder)
 SAX.characters(
       , 7)
-SAX.getEntity(gt)
 SAX.startElement(cat:SellersOrderID, schemeID='pvalue->ReferencedOrder.SellersOrderID.schemeID', schemeAgencyID='pvalue->ReferencedOrder.SellersOrderID.schemeAgencyID', schemeVersionID='pvalue->ReferencedOrder.SellersOrderID.schemeVersionID', schemeAgencySchemeID='pvalue->ReferencedOrder.SellersOrderID.schemeAgencySchemeID', schemeAgencySchemeAgencyID='pvalue->ReferencedOrder.SellersOrderID.schemeAgencySchemeAgencyID', schemeDataURI='pvalue->ReferencedOrder.SellersOrderID.schemeDataURI', schemeURI='pvalue->ReferencedOrder.SellersOrderID.schemeURI', UID='pvalue->ReferencedOrder.SellersOrderID.UID', UIDRef='pvalue->ReferencedOrder.SellersOrderID.UIDRef', UIDRefs='pvalue->ReferencedOrder.SellersOrderID.UIDRefs0', language='pvalue->ReferencedOrder.SellersOrderID.language')
 SAX.characters(pvalue-, 7)
-SAX.getEntity(gt)
 SAX.characters(>, 1)
 SAX.characters(ReferencedOrder.SellersOrderID, 30)
 SAX.endElement(cat:SellersOrderID)

@@ -18,9 +18,7 @@ SAX.endElement(Content)
 SAX.characters(
    , 4)
 SAX.startElement(Content)
-SAX.getEntity(lt)
 SAX.characters(<, 1)
-SAX.getEntity(gt)
 SAX.characters(>, 1)
 SAX.endElement(Content)
 SAX.characters(

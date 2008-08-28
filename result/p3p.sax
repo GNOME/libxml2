@@ -41,7 +41,6 @@ SAX.characters(
 SAX.startElement(USES)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(STATEMENT, action='read&#38;write', purp='0', recpnt='0', id='1')
 SAX.characters(
     , 5)

@@ -6,10 +6,8 @@ SAX.characters(
 SAX.startElementNs(ReferencedOrder, cat, 'urn:oasis:names:tc:ubl:CommonAggregateTypes:1.0:0.70', 0, 0, 0)
 SAX.characters(
       , 7)
-SAX.getEntity(gt)
 SAX.startElementNs(SellersOrderID, cat, 'urn:oasis:names:tc:ubl:CommonAggregateTypes:1.0:0.70', 0, 11, 0, schemeID='pval...', 47, schemeAgencyID='pval...', 53, schemeVersionID='pval...', 54, schemeAgencySchemeID='pval...', 59, schemeAgencySchemeAgencyID='pval...', 65, schemeDataURI='pval...', 52, schemeURI='pval...', 48, UID='pval...', 42, UIDRef='pval...', 45, UIDRefs='pval...', 47, language='pval...', 47)
 SAX.characters(pvalue-, 7)
-SAX.getEntity(gt)
 SAX.characters(>, 1)
 SAX.characters(ReferencedOrder.SellersOrderID, 30)
 SAX.endElementNs(SellersOrderID, cat, 'urn:oasis:names:tc:ubl:CommonAggregateTypes:1.0:0.70')

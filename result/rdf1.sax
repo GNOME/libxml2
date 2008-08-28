@@ -43,10 +43,8 @@ SAX.characters(
     , 5)
 SAX.startElement(RPM:Packager)
 SAX.characters(Red Hat Software , 17)
-SAX.getEntity(lt)
 SAX.characters(<, 1)
 SAX.characters(bugs@redhat.com, 15)
-SAX.getEntity(gt)
 SAX.characters(>, 1)
 SAX.endElement(RPM:Packager)
 SAX.characters(
@@ -73,10 +71,8 @@ SAX.characters(
     , 5)
 SAX.startElement(RPM:Changelog)
 SAX.characters(* Sun May 10 1998 Prospector S, 36)
-SAX.getEntity(lt)
 SAX.characters(<, 1)
 SAX.characters(bugs@redhat.com, 15)
-SAX.getEntity(gt)
 SAX.characters(>, 1)
 SAX.characters(
   - translations modified for, 42)

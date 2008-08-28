@@ -7,7 +7,6 @@ SAX.startElement(test)
 SAX.pcdata(
     <![CDATA[abc], 18)
 SAX.characters(], 1)
-SAX.getEntity(gt)
 SAX.characters(>, 1)
 SAX.pcdata(
   , 3)

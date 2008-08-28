@@ -1,3 +1,15 @@
+Thu Aug 28 17:31:46 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/parser.h: completely different fix for
+	  the recursion detection based on entity density, big cleanups
+	  in the entity parsing code too
+	* result/*.sax*: the parser should not ask for used defined versions
+	  of the predefined entities
+	* testrecurse.c: automatic test for entity recursion checks
+	* Makefile.am: added testrecurse
+	* test/recurse/lol* test/recurse/good*: a first set of tests for
+	  the recursion
+
 Wed Aug 27 21:55:34 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlerror.h parser.c: a bit of cleanup and

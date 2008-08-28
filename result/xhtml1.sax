@@ -23,7 +23,6 @@ SAX.characters(
 SAX.startElement(script, type='text/javascript')
 SAX.characters(
   ... unescaped script , 24)
-SAX.getEntity(lt)
 SAX.characters(<, 1)
 SAX.characters( content ...
   , 15)

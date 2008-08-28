@@ -9,7 +9,7 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
                 testReader testapi testModule runtest runsuite testchar \
-		testdict runxmlconf
+		testdict runxmlconf testrecurse
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -55,6 +55,11 @@ runtest_SOURCES=runtest.c
 runtest_LDFLAGS = 
 runtest_DEPENDENCIES = $(DEPS)
 runtest_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
+
+testrecurse_SOURCES=testrecurse.c
+testrecurse_LDFLAGS = 
+testrecurse_DEPENDENCIES = $(DEPS)
+testrecurse_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
 
 testchar_SOURCES=testchar.c
 testchar_LDFLAGS = 

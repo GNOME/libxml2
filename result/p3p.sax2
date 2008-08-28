@@ -42,7 +42,6 @@ SAX.characters(
 SAX.startElementNs(USES, NULL, NULL, 0, 0, 0)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(STATEMENT, NULL, NULL, 0, 4, 0, action='read...', 14, purp='0" r...', 1, recpnt='0" i...', 1, id='1">
 ...', 1)
 SAX.characters(

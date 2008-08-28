@@ -29,52 +29,42 @@ SAX.startElement(norm, attr='foobar  ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(norm, attr=' &#38; ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(norm, attr='   foo&#38;bar   ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(norm, attr='  foobar&#38;')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(norm, attr='&#38;foo bar ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(norm, attr='foobar  &#38;')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(norm, attr=' < ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(norm, attr='   foo<bar   ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(norm, attr='  foobar<')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(norm, attr='<foo bar ')
 SAX.endElement(norm)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(norm, attr='foobar  <')
 SAX.endElement(norm)
 SAX.characters(
@@ -107,52 +97,42 @@ SAX.startElement(normId, attr='foobar  ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(normId, attr=' &#38; ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(normId, attr='   foo&#38;bar   ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(normId, attr='  foobar&#38;')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(normId, attr='&#38;foo bar ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElement(normId, attr='foobar  &#38;')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(normId, attr=' < ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(normId, attr='   foo<bar   ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(normId, attr='  foobar<')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(normId, attr='<foo bar ')
 SAX.endElement(normId)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElement(normId, attr='foobar  <')
 SAX.endElement(normId)
 SAX.characters(

@@ -29,52 +29,42 @@ SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='foob...', 8)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr=' &#3...', 7)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='   f...', 17)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='  fo...', 13)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='&#38...', 13)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='foob...', 13)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr=' < ...', 3)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='   f...', 13)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='  fo...', 9)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='<foo...', 9)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(norm, NULL, NULL, 0, 1, 0, attr='foob...', 9)
 SAX.endElementNs(norm, NULL, NULL)
 SAX.characters(
@@ -108,52 +98,42 @@ SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foob...', 6)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='&#38...', 5)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foo&...', 11)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foob...', 11)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='&#38...', 12)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(amp)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foob...', 12)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='<...', 1)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foo<...', 7)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foob...', 7)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='<foo...', 8)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(
   , 3)
-SAX.getEntity(lt)
 SAX.startElementNs(normId, NULL, NULL, 0, 1, 0, attr='foob...', 8)
 SAX.endElementNs(normId, NULL, NULL)
 SAX.characters(

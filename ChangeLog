@@ -1,7 +1,17 @@
+Fri Aug 29 21:53:12 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/reader3.c: patch from  Robert Schwebel , allows to
+	  compile the example if configured without output support fixes
+	  #545582
+	* Makefile.am: add testrecurse to the make check tests
+	* HTMLparser.c: if the parser got a encoding argument it should be
+	  used over what the meta specifies, patch fixing #536346
+
 Fri Aug 29 14:41:38 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: a couple more fixes
-	* nanohttp.c nanoftp.c: patch from Andreas Färber  to compile on Haiku
+	* nanohttp.c nanoftp.c: patch from Andreas Färber to compile on Haiku
+	  fixes #527880
 	* doc/examples/*: regenerated
 
 Thu Aug 28 17:31:46 CEST 2008 Daniel Veillard <daniel@veillard.com>

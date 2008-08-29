@@ -5973,8 +5973,12 @@ htmlDoRead(htmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
         xmlCharEncodingHandlerPtr hdlr;
 
 	hdlr = xmlFindCharEncodingHandler(encoding);
-	if (hdlr != NULL)
+	if (hdlr != NULL) {
 	    xmlSwitchToEncoding(ctxt, hdlr);
+	    if (ctxt->input->encoding != NULL)
+	      xmlFree((xmlChar *) ctxt->input->encoding);
+            ctxt->input->encoding = xmlStrdup((xmlChar *)encoding);
+        }
     }
     if ((URL != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->filename == NULL))

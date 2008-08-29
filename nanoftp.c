@@ -89,7 +89,7 @@
  * A couple portability macros
  */
 #ifndef _WINSOCKAPI_
-#ifndef __BEOS__
+#if !defined(__BEOS__) || defined(__HAIKU__)
 #define closesocket(s) close(s)
 #endif
 #define SOCKET int

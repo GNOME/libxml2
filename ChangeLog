@@ -1,3 +1,9 @@
+Fri Aug 29 14:41:38 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: a couple more fixes
+	* nanohttp.c nanoftp.c: patch from Andreas Färber  to compile on Haiku
+	* doc/examples/*: regenerated
+
 Thu Aug 28 17:31:46 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/parser.h: completely different fix for

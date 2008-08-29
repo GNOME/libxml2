@@ -113,7 +113,7 @@ static int
 xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long size,
                      xmlEntityPtr ent)
 {
-    int consumed = 0;
+    unsigned long consumed = 0;
 
     if ((ctxt == NULL) || (ctxt->options & XML_PARSE_HUGE))
         return (0);
@@ -3661,6 +3661,9 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		}
 	    } else {
 		ent = xmlParseEntityRef(ctxt);
+		ctxt->nbentities++;
+		if (ent != NULL)
+		    ctxt->nbentities += ent->owner;
 		if ((ent != NULL) &&
 		    (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		    if (len > buf_size - 10) {
@@ -6951,7 +6954,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			break;
 		    cur = next;
 		}
-		ent->owner = 1;
+		if (ent->owner == 0)
+		    ent->owner = 1;
 #ifdef LIBXML_LEGACY_ENABLED
 		if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
 		  xmlAddEntityReference(ent, firstChild, nw);

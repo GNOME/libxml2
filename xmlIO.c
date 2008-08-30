@@ -3382,7 +3382,6 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	if ((nbchars < MINLEN) && (len <= 0))
 	    goto done;
 
-flush:
 	if (out->writecallback) {
 	    /*
 	     * second write the stuff to the I/O channel

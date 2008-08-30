@@ -12,7 +12,31 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.6.32: Apr 8 2008</h3><ul><li>Documentation: returning heap memory to kernel (Wolfram Sang),
+to the <a href="http://svn.gnome.org/viewcvs/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.7.0: Aug 30 2008</h3><ul><li>Documentation: switch ChangeLog to UTF-8, improve mutithreads and
+      xmlParserCleanup docs</li>
+  <li>Portability fixes: Older Win32 platforms (Rob Richards), MSVC
+      porting fix (Rob Richards), Mac OS X regression tests (Sven Herzberg),
+      non GNUCC builds (Rob Richards), compilation on Haiku (Andreas Färber)
+      </li>
+  <li>Bug fixes: various realloc problems (Ashwin), potential double-free
+      (Ashwin), regexp crash, icrash with invalid whitespace facets (Rob
+      Richards), pattern fix when streaming (William Brack), various XML
+      parsing and validation fixes based on the W3C regression tests, reader
+      tree skipping function fix (Ashwin), Schemas regexps escaping fix
+      (Volker Grabsch), handling of entity push errors (Ashwin), fix a slowdown
+      when encoder cant serialize characters on output</li>
+  <li>Code cleanup: compilation fix without the reader, without the output
+      (Robert Schwebel), python whitespace (Martin), many space/tabs cleanups,
+      serious cleanup of the entity handling code</li>
+  <li>Improvement: switch parser to XML-1.0 5th edition, add parsing flags
+      for old versions, switch URI parsing to RFC 3986,
+      add xmlSchemaValidCtxtGetParserCtxt (Holger Kaelberer),
+      new hashing functions for dictionnaries (based on Stefan Behnel work),
+      improve handling of misplaced html/head/body in HTML parser, better
+      regression test tools and code coverage display, better algorithms
+      to detect various versions of the billion laughts attacks, make
+      arbitrary parser limits avoidable as a parser option</li>
+</ul><h3>2.6.32: Apr 8 2008</h3><ul><li>Documentation: returning heap memory to kernel (Wolfram Sang),
       trying to clarify xmlCleanupParser() use, xmlXPathContext improvement
       (Jack Jansen), improve the *Recover* functions documentation,
       XmlNodeType doc link fix (Martijn Arts)</li>

@@ -1402,6 +1402,7 @@
      <exports symbol='XML_BUFFER_ALLOC_DOUBLEIT' type='enum'/>
      <exports symbol='XML_XINCLUDE_END' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_NODE' type='enum'/>
+     <exports symbol='XML_ATTRIBUTE_NMTOKENS' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_IDREF' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_ELEMENT' type='enum'/>
      <exports symbol='XML_TEXT_NODE' type='enum'/>
@@ -1444,7 +1445,7 @@
      <exports symbol='XML_ELEMENT_CONTENT_OR' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_NMTOKEN' type='enum'/>
      <exports symbol='XML_PI_NODE' type='enum'/>
-     <exports symbol='XML_ATTRIBUTE_NMTOKENS' type='enum'/>
+     <exports symbol='XML_BUFFER_ALLOC_IO' type='enum'/>
      <exports symbol='XML_ENTITY_NODE' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_ENTITY' type='enum'/>
      <exports symbol='XML_DOC_WELLFORMED' type='enum'/>
@@ -4598,9 +4599,10 @@
     <enum name='XML_ATTRIBUTE_NONE' file='tree' value='1' type='xmlAttributeDefault'/>
     <enum name='XML_ATTRIBUTE_NOTATION' file='tree' value='10' type='xmlAttributeType'/>
     <enum name='XML_ATTRIBUTE_REQUIRED' file='tree' value='2' type='xmlAttributeDefault'/>
-    <enum name='XML_BUFFER_ALLOC_DOUBLEIT' file='tree' value='1' type='xmlBufferAllocationScheme'/>
-    <enum name='XML_BUFFER_ALLOC_EXACT' file='tree' value='2' type='xmlBufferAllocationScheme'/>
-    <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme'/>
+    <enum name='XML_BUFFER_ALLOC_DOUBLEIT' file='tree' value='1' type='xmlBufferAllocationScheme' info='double each time one need to grow'/>
+    <enum name='XML_BUFFER_ALLOC_EXACT' file='tree' value='2' type='xmlBufferAllocationScheme' info='grow only to the minimal size'/>
+    <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme' info='immutable buffer'/>
+    <enum name='XML_BUFFER_ALLOC_IO' file='tree' value='4' type='xmlBufferAllocationScheme' info=' special allocation scheme used for I/O'/>
     <enum name='XML_C14N_CREATE_CTXT' file='xmlerror' value='1950' type='xmlParserErrors'/>
     <enum name='XML_C14N_CREATE_STACK' file='xmlerror' value='1952' type='xmlParserErrors' info='1952'/>
     <enum name='XML_C14N_INVALID_NODE' file='xmlerror' value='1953' type='xmlParserErrors' info='1953'/>
@@ -5896,6 +5898,7 @@ if necessary or NULL'/>
       <field name='use' type='unsigned int' info=' The buffer size used'/>
       <field name='size' type='unsigned int' info=' The buffer size'/>
       <field name='alloc' type='xmlBufferAllocationScheme' info=' The realloc method'/>
+      <field name='contentIO' type='xmlChar *' info=' in IO mode we may have a different base'/>
     </struct>
     <typedef name='xmlBufferAllocationScheme' file='tree' type='enum'/>
     <typedef name='xmlBufferPtr' file='tree' type='xmlBuffer *'/>

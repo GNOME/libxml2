@@ -3777,7 +3777,6 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 
 mem_error:
     xmlErrMemory(ctxt, NULL);
-int_error:
     if (buf != NULL)
         xmlFree(buf);
     if (rep != NULL)

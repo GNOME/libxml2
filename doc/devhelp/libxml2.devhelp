@@ -339,6 +339,7 @@
     <function name="XML_BUFFER_ALLOC_DOUBLEIT" link="libxml2-tree.html#XML_BUFFER_ALLOC_DOUBLEIT"/>
     <function name="XML_BUFFER_ALLOC_EXACT" link="libxml2-tree.html#XML_BUFFER_ALLOC_EXACT"/>
     <function name="XML_BUFFER_ALLOC_IMMUTABLE" link="libxml2-tree.html#XML_BUFFER_ALLOC_IMMUTABLE"/>
+    <function name="XML_BUFFER_ALLOC_IO" link="libxml2-tree.html#XML_BUFFER_ALLOC_IO"/>
     <function name="XML_C14N_CREATE_CTXT" link="libxml2-xmlerror.html#XML_C14N_CREATE_CTXT"/>
     <function name="XML_C14N_CREATE_STACK" link="libxml2-xmlerror.html#XML_C14N_CREATE_STACK"/>
     <function name="XML_C14N_INVALID_NODE" link="libxml2-xmlerror.html#XML_C14N_INVALID_NODE"/>

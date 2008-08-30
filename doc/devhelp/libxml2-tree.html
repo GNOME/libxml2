@@ -370,14 +370,16 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     unsigned int	use	: The buffer size used
     unsigned int	size	: The buffer size
     <a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	alloc	: The realloc method
+    <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	contentIO	: in IO mode we may have a different base
 } xmlBuffer;
 </pre><p/>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlBufferAllocationScheme">Enum </a>xmlBufferAllocationScheme</h3><pre class="programlisting">enum <a href="#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> {
-    <a name="XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a> = 1
-    <a name="XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a> = 2
-    <a name="XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a> = 3
+    <a name="XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a> = 1 /* double each time one need to grow */
+    <a name="XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a> = 2 /* grow only to the minimal size */
+    <a name="XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a> = 3 /* immutable buffer */
+    <a name="XML_BUFFER_ALLOC_IO">XML_BUFFER_ALLOC_IO</a> = 4 /*  special allocation scheme used for I/O */
 };
 </pre><p/>
 </div>

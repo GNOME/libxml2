@@ -8,26 +8,42 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.31</version>
-    <last-release> Jan 11 2008</last-release>
+    <version>2.6.32</version>
+    <last-release> Apr 8 2008</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Security fix: missing of checks in UTF-8 parsing
-   - Bug fixes: regexp bug, dump attribute from XHTML document, fix
-      xmlFree(NULL) to not crash in debug mode, Schematron parsing crash
-      (Rob Richards), global lock free on Windows (Marc-Antoine Ruel),
-      XSD crash due to double free (Rob Richards), indentation fix in
-      xmlTextWriterFullEndElement (Felipe Pena), error in attribute type
-      parsing if attribute redeclared, avoid crash in hash list scanner if
-      deleting elements, column counter bug fix (Christian Schmidt),
-      HTML embed element saving fix (Stefan Behnel), avoid -L/usr/lib
-      output from xml2-config (Fred Crozat), avoid an xmllint crash 
-      (Stefan Kost), don't stop HTML parsing on out of range chars.
-      
-   - Code cleanup: fix open() call third argument, regexp cut'n paste
-      copy error, unused variable in __xmlGlobalInitMutexLock (Hannes Eder),
-      some make distcheck realted fixes (John Carr)
-   - Improvements: HTTP Header: includes port number (William Brack),
-      testURI --debug option, 
+    <changes>   - Documentation: returning heap memory to kernel (Wolfram Sang),
+      trying to clarify xmlCleanupParser() use, xmlXPathContext improvement
+      (Jack Jansen), improve the *Recover* functions documentation,
+      XmlNodeType doc link fix (Martijn Arts)
+   - Bug fixes: internal subset memory leak (Ashwin), avoid problem with
+      paths starting with // (Petr Sumbera), streaming XSD validation callback
+      patches (Ashwin), fix redirection on port other than 80 (William Brack),
+      SAX2 leak (Ashwin), XInclude fragment of own document (Chris Ryan),
+      regexp bug with '.' (Andrew Tosh), flush the writer at the end of the
+      document (Alfred Mickautsch), output I/O bug fix (William Brack),
+      writer CDATA output after a text node (Alex Khesin), UTF-16 encoding
+      detection (William Brack), fix handling of empty CDATA nodes for Safari
+      team, python binding problem with namespace nodes, improve HTML parsing
+      (Arnold Hendriks), regexp automata build bug, memory leak fix (Vasily
+      Chekalkin), XSD test crash, weird system parameter entity parsing problem,
+      allow save to file:///X:/ windows paths, various attribute normalisation
+      problems, externalSubsetSplit fix (Ashwin), attribute redefinition in
+      the DTD (Ashwin), fix in char ref parsing check (Alex Khesin), many
+      out of memory handling fixes (Ashwin), XPath out of memory handling fixes
+      (Alvaro Herrera), various realloc problems (Ashwin), UCS4 encoding
+      conversion buffer size (Christian Fruth), problems with EatName
+      functions on memory errors, BOM handling in external parsed entities
+      (Mark Rowe)
+   - Code cleanup: fix build under VS 2008 (David Wimsey), remove useless
+      mutex in xmlDict (Florent Guilian), Mingw32 compilation fix (Carlo
+      Bramini), Win and MacOS EOL cleanups (Florent Guiliani), iconv need
+      a const detection (Roumen Petrov), simplify xmlSetProp (Julien Charbon),
+      cross compilation fixes for Mingw (Roumen Petrov), SCO Openserver build
+      fix (Florent Guiliani), iconv uses const on Win32 (Rob Richards),
+      duplicate code removal (Ashwin), missing malloc test and error reports
+      (Ashwin), VMS makefile fix (Tycho Hilhorst)
+   - improvements: better plug of schematron in the normal error handling
+      (Tobias Minich)
 
 </changes>
   </product>

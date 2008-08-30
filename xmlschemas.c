@@ -13306,7 +13306,6 @@ xmlSchemaIsUserDerivedFromBuiltInType(xmlSchemaTypePtr type, int valType)
 
     return (0);
 }
-#endif
 
 static xmlSchemaTypePtr
 xmlSchemaQueryBuiltInType(xmlSchemaTypePtr type)
@@ -13319,6 +13318,7 @@ xmlSchemaQueryBuiltInType(xmlSchemaTypePtr type)
 	return(type);
     return(xmlSchemaQueryBuiltInType(type->subtypes));
 }
+#endif
 
 /**
  * xmlSchemaGetPrimitiveType:
@@ -14594,6 +14594,7 @@ xmlSchemaGetParticleTotalRangeMin(xmlSchemaParticlePtr particle)
     }
 }
 
+#if 0
 /**
  * xmlSchemaGetParticleTotalRangeMax:
  * @particle: the particle
@@ -14653,6 +14654,7 @@ xmlSchemaGetParticleTotalRangeMax(xmlSchemaParticlePtr particle)
 	return (particle->maxOccurs * sum);
     }
 }
+#endif
 
 /**
  * xmlSchemaIsParticleEmptiable:
@@ -16948,6 +16950,7 @@ xmlSchemaCheckCOSParticleRestrict(xmlSchemaParserCtxtPtr ctxt,
     return (0);
 }
 
+#if 0
 /**
  * xmlSchemaCheckRCaseNSRecurseCheckCardinality:
  * @ctxt:  the schema parser context
@@ -17000,6 +17003,7 @@ xmlSchemaCheckRCaseNSRecurseCheckCardinality(xmlSchemaParserCtxtPtr ctxt,
 	return (1);
     return (0);
 }
+#endif
 
 /**
  * xmlSchemaCheckRCaseRecurse:

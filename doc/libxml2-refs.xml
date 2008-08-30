@@ -140,6 +140,7 @@
     <reference name='XML_BUFFER_ALLOC_DOUBLEIT' href='html/libxml-tree.html#XML_BUFFER_ALLOC_DOUBLEIT'/>
     <reference name='XML_BUFFER_ALLOC_EXACT' href='html/libxml-tree.html#XML_BUFFER_ALLOC_EXACT'/>
     <reference name='XML_BUFFER_ALLOC_IMMUTABLE' href='html/libxml-tree.html#XML_BUFFER_ALLOC_IMMUTABLE'/>
+    <reference name='XML_BUFFER_ALLOC_IO' href='html/libxml-tree.html#XML_BUFFER_ALLOC_IO'/>
     <reference name='XML_C14N_CREATE_CTXT' href='html/libxml-xmlerror.html#XML_C14N_CREATE_CTXT'/>
     <reference name='XML_C14N_CREATE_STACK' href='html/libxml-xmlerror.html#XML_C14N_CREATE_STACK'/>
     <reference name='XML_C14N_INVALID_NODE' href='html/libxml-xmlerror.html#XML_C14N_INVALID_NODE'/>
@@ -3676,6 +3677,7 @@
       <ref name='XML_BUFFER_ALLOC_DOUBLEIT'/>
       <ref name='XML_BUFFER_ALLOC_EXACT'/>
       <ref name='XML_BUFFER_ALLOC_IMMUTABLE'/>
+      <ref name='XML_BUFFER_ALLOC_IO'/>
       <ref name='XML_C14N_CREATE_CTXT'/>
       <ref name='XML_C14N_CREATE_STACK'/>
       <ref name='XML_C14N_INVALID_NODE'/>
@@ -11876,6 +11878,7 @@
       <ref name='XML_BUFFER_ALLOC_DOUBLEIT'/>
       <ref name='XML_BUFFER_ALLOC_EXACT'/>
       <ref name='XML_BUFFER_ALLOC_IMMUTABLE'/>
+      <ref name='XML_BUFFER_ALLOC_IO'/>
       <ref name='XML_CDATA_SECTION_NODE'/>
       <ref name='XML_COMMENT_NODE'/>
       <ref name='XML_DOCB_DOCUMENT_NODE'/>
@@ -21380,6 +21383,7 @@
           <ref name='xmlXPathDifference'/>
         </word>
         <word name='different'>
+          <ref name='_xmlBuffer'/>
           <ref name='xmlACatalogAdd'/>
           <ref name='xmlBuildQName'/>
           <ref name='xmlCatalogAdd'/>
@@ -24878,6 +24882,7 @@
           <ref name='xmlXPathModValues'/>
         </word>
         <word name='mode'>
+          <ref name='_xmlBuffer'/>
           <ref name='_xmlParserCtxt'/>
           <ref name='docbCreatePushParserCtxt'/>
           <ref name='htmlCreatePushParserCtxt'/>

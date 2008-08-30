@@ -1,3 +1,9 @@
+Sat Aug 30 16:58:40 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in, doc/*: preparing 2.7.0 release
+	* tree.c: remove some testing traces
+	* parser.c xmlIO.c xmlschemas.c: remove some warnings
+
 Sat Aug 30 14:50:16 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/tree.h tree.c: make a new kind of buffer where

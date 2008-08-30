@@ -6791,9 +6791,6 @@ xmlBufferEmpty(xmlBufferPtr buf) {
     } else {
         buf->content[0] = 0;
     }
-    if (buf->size > 10000000) {
-        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
-    }
 }
 
 /**
@@ -6837,9 +6834,6 @@ xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
     } else {
 	memmove(buf->content, &buf->content[len], buf->use);
 	buf->content[buf->use] = 0;
-    }
-    if (buf->size > 10000000) {
-        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
     }
     return(len);
 }
@@ -6895,9 +6889,6 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
 	buf->content = newbuf;
     }
     buf->size = size;
-    if (buf->size > 10000000) {
-        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
-    }
     return(buf->size - buf->use);
 }
 
@@ -7053,9 +7044,6 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	buf->content = rebuf;
     }
     buf->size = newSize;
-    if (buf->size > 10000000) {
-        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
-    }
 
     return 1;
 }

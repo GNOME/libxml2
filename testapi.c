@@ -16359,6 +16359,7 @@ test_xmlPushInput(void) {
     int test_ret = 0;
 
     int mem_base;
+    int ret_val;
     xmlParserCtxtPtr ctxt; /* an XML parser context */
     int n_ctxt;
     xmlParserInputPtr input; /* an XML parser input fragment (entity, XML fragment ...). */
@@ -16370,7 +16371,8 @@ test_xmlPushInput(void) {
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         input = gen_xmlParserInputPtr(n_input, 1);
 
-        xmlPushInput(ctxt, input);
+        ret_val = xmlPushInput(ctxt, input);
+        desret_int(ret_val);
         call_tests++;
         des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
         des_xmlParserInputPtr(n_input, input, 1);

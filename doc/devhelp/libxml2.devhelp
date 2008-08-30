@@ -442,6 +442,7 @@
     <function name="XML_DTD_CONTENT_MODEL" link="libxml2-xmlerror.html#XML_DTD_CONTENT_MODEL"/>
     <function name="XML_DTD_CONTENT_NOT_DETERMINIST" link="libxml2-xmlerror.html#XML_DTD_CONTENT_NOT_DETERMINIST"/>
     <function name="XML_DTD_DIFFERENT_PREFIX" link="libxml2-xmlerror.html#XML_DTD_DIFFERENT_PREFIX"/>
+    <function name="XML_DTD_DUP_TOKEN" link="libxml2-xmlerror.html#XML_DTD_DUP_TOKEN"/>
     <function name="XML_DTD_ELEM_DEFAULT_NAMESPACE" link="libxml2-xmlerror.html#XML_DTD_ELEM_DEFAULT_NAMESPACE"/>
     <function name="XML_DTD_ELEM_NAMESPACE" link="libxml2-xmlerror.html#XML_DTD_ELEM_NAMESPACE"/>
     <function name="XML_DTD_ELEM_REDEFINED" link="libxml2-xmlerror.html#XML_DTD_ELEM_REDEFINED"/>

@@ -2035,7 +2035,7 @@
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SIMPLETYPE_CHILD' type='enum'/>
      <exports symbol='XML_ERR_PEREF_AT_EOF' type='enum'/>
-     <exports symbol='XML_IO_LOAD_ERROR' type='enum'/>
+     <exports symbol='XML_DTD_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_LIST' type='enum'/>
      <exports symbol='XML_ERR_LT_REQUIRED' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_2' type='enum'/>
@@ -2536,6 +2536,7 @@
      <exports symbol='XML_SCHEMAP_RECURSIVE' type='enum'/>
      <exports symbol='XML_HTTP_URL_SYNTAX' type='enum'/>
      <exports symbol='XML_SCHEMAP_GROUP_NONAME_NOREF' type='enum'/>
+     <exports symbol='XML_DTD_DUP_TOKEN' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_4' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ELEM_MISSING' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_5_1_1' type='enum'/>
@@ -2572,7 +2573,7 @@
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_3' type='enum'/>
-     <exports symbol='XML_DTD_NOT_EMPTY' type='enum'/>
+     <exports symbol='XML_IO_LOAD_ERROR' type='enum'/>
      <exports symbol='XML_CHECK_NOT_ENTITY_DECL' type='enum'/>
      <exports symbol='XML_RNGP_CREATE_FAILURE' type='enum'/>
      <exports symbol='XML_IO_EBADF' type='enum'/>
@@ -4704,6 +4705,7 @@ and not by parsing an instance'/>
     <enum name='XML_DTD_CONTENT_MODEL' file='xmlerror' value='504' type='xmlParserErrors' info='504'/>
     <enum name='XML_DTD_CONTENT_NOT_DETERMINIST' file='xmlerror' value='505' type='xmlParserErrors' info='505'/>
     <enum name='XML_DTD_DIFFERENT_PREFIX' file='xmlerror' value='506' type='xmlParserErrors' info='506'/>
+    <enum name='XML_DTD_DUP_TOKEN' file='xmlerror' value='541' type='xmlParserErrors' info='541'/>
     <enum name='XML_DTD_ELEM_DEFAULT_NAMESPACE' file='xmlerror' value='507' type='xmlParserErrors' info='507'/>
     <enum name='XML_DTD_ELEM_NAMESPACE' file='xmlerror' value='508' type='xmlParserErrors' info='508'/>
     <enum name='XML_DTD_ELEM_REDEFINED' file='xmlerror' value='509' type='xmlParserErrors' info='509'/>
@@ -6295,6 +6297,7 @@ actually an xmlCharEncoding'/>
       <field name='lastError' type='xmlError' info=''/>
       <field name='parseMode' type='xmlParserMode' info=' the parser mode'/>
       <field name='nbentities' type='unsigned long' info=' number of entities references'/>
+      <field name='sizeentities' type='unsigned long' info=' size of parsed entities'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -7767,7 +7770,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='inputPush' file='parserInternals' module='parser'>
       <info>Pushes a new parser input on top of the input stack</info>
-      <return type='int' info='0 in case of error, the index in the stack otherwise'/>
+      <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlParserInputPtr' info='the parser input'/>
     </function>
@@ -7833,7 +7836,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='nodePush' file='parserInternals' module='parser'>
       <info>Pushes a new element node on top of the node stack</info>
-      <return type='int' info='0 in case of error, the index in the stack otherwise'/>
+      <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlNodePtr' info='the element node'/>
     </function>
@@ -12371,7 +12374,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlPushInput' file='parserInternals' module='parser'>
       <info>xmlPushInput: switch to a new input stream which is stacked on top of the previous one(s).</info>
-      <return type='void'/>
+      <return type='int' info='-1 in case of error or the index in the input stack'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='input' type='xmlParserInputPtr' info='an XML parser input fragment (entity, XML fragment ...).'/>
     </function>

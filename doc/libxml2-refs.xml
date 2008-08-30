@@ -251,6 +251,7 @@
     <reference name='XML_DTD_CONTENT_MODEL' href='html/libxml-xmlerror.html#XML_DTD_CONTENT_MODEL'/>
     <reference name='XML_DTD_CONTENT_NOT_DETERMINIST' href='html/libxml-xmlerror.html#XML_DTD_CONTENT_NOT_DETERMINIST'/>
     <reference name='XML_DTD_DIFFERENT_PREFIX' href='html/libxml-xmlerror.html#XML_DTD_DIFFERENT_PREFIX'/>
+    <reference name='XML_DTD_DUP_TOKEN' href='html/libxml-xmlerror.html#XML_DTD_DUP_TOKEN'/>
     <reference name='XML_DTD_ELEM_DEFAULT_NAMESPACE' href='html/libxml-xmlerror.html#XML_DTD_ELEM_DEFAULT_NAMESPACE'/>
     <reference name='XML_DTD_ELEM_NAMESPACE' href='html/libxml-xmlerror.html#XML_DTD_ELEM_NAMESPACE'/>
     <reference name='XML_DTD_ELEM_REDEFINED' href='html/libxml-xmlerror.html#XML_DTD_ELEM_REDEFINED'/>
@@ -3786,6 +3787,7 @@
       <ref name='XML_DTD_CONTENT_MODEL'/>
       <ref name='XML_DTD_CONTENT_NOT_DETERMINIST'/>
       <ref name='XML_DTD_DIFFERENT_PREFIX'/>
+      <ref name='XML_DTD_DUP_TOKEN'/>
       <ref name='XML_DTD_ELEM_DEFAULT_NAMESPACE'/>
       <ref name='XML_DTD_ELEM_NAMESPACE'/>
       <ref name='XML_DTD_ELEM_REDEFINED'/>
@@ -12449,6 +12451,7 @@
       <ref name='XML_DTD_CONTENT_MODEL'/>
       <ref name='XML_DTD_CONTENT_NOT_DETERMINIST'/>
       <ref name='XML_DTD_DIFFERENT_PREFIX'/>
+      <ref name='XML_DTD_DUP_TOKEN'/>
       <ref name='XML_DTD_ELEM_DEFAULT_NAMESPACE'/>
       <ref name='XML_DTD_ELEM_NAMESPACE'/>
       <ref name='XML_DTD_ELEM_REDEFINED'/>
@@ -23557,6 +23560,7 @@
           <ref name='nodePush'/>
           <ref name='xmlByteConsumed'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
+          <ref name='xmlPushInput'/>
           <ref name='xmlStrsub'/>
           <ref name='xmlTextReaderByteConsumed'/>
           <ref name='xmlTextReaderGetAttributeNo'/>

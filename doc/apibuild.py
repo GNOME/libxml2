@@ -51,6 +51,7 @@ ignored_files = {
   "tst.c": "not part of the library",
   "test.c": "not part of the library",
   "testdso.c": "test for dynamid shared libraries",
+  "testrecurse.c": "test for entities recursions",
 }
 
 ignored_words = {

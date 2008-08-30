@@ -1,3 +1,11 @@
+Sat Aug 30 14:50:16 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h tree.c: make a new kind of buffer where
+	  shrinking and adding in head can avoid reallocation or full
+	  buffer memmoves
+	* encoding.c xmlIO.c: use the new kind of buffers for output
+	  buffers
+
 Sat Aug 30 10:18:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* doc/* testapi.c: regenerated

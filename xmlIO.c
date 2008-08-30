@@ -2274,10 +2274,21 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
         xmlFree(ret);
 	return(NULL);
     }
-    ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
+
+    /*
+     * For conversion buffers we use the special IO handling
+     */
+    ret->buffer->alloc = XML_BUFFER_ALLOC_IO;
+    ret->buffer->contentIO = ret->buffer->content;
+
     ret->encoder = encoder;
     if (encoder != NULL) {
         ret->conv = xmlBufferCreateSize(4000);
+	if (ret->conv == NULL) {
+	    xmlFree(ret);
+	    return(NULL);
+	}
+
 	/*
 	 * This call is designed to initiate the encoder state
 	 */
@@ -3320,9 +3331,10 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	 * not the case force a flush, but make sure we stay in the loop
 	 */
 	if (chunk < 40) {
-	    nbchars = 0;
-	    oldwritten = -1;
-	    goto flush;
+	    if (xmlBufferGrow(out->buffer, out->buffer->size + 100) < 0)
+	        return(-1);
+            oldwritten = -1;
+	    continue;
 	}
 
 	/*

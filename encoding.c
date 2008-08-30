@@ -1999,9 +1999,11 @@ retry:
     if (handler->output != NULL) {
 	ret = handler->output(&out->content[out->use], &written,
 	                      in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	writtentot += written;
+	if (written > 0) {
+	    xmlBufferShrink(in, toconv);
+	    out->use += written;
+	    writtentot += written;
+	} 
 	out->content[out->use] = 0;
     }
 #ifdef LIBXML_ICONV_ENABLED

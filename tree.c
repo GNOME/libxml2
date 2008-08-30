@@ -6652,6 +6652,7 @@ xmlBufferCreate(void) {
         return(NULL);
     }
     ret->content[0] = 0;
+    ret->contentIO = NULL;
     return(ret);
 }
 
@@ -6684,6 +6685,7 @@ xmlBufferCreateSize(size_t size) {
         ret->content[0] = 0;
     } else
 	ret->content = NULL;
+    ret->contentIO = NULL;
     return(ret);
 }
 
@@ -6756,7 +6758,10 @@ xmlBufferFree(xmlBufferPtr buf) {
 	return;
     }
 
-    if ((buf->content != NULL) &&
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) &&
+        (buf->contentIO != NULL)) {
+        xmlFree(buf->contentIO);
+    } else if ((buf->content != NULL) &&
         (buf->alloc != XML_BUFFER_ALLOC_IMMUTABLE)) {
         xmlFree(buf->content);
     }
@@ -6776,8 +6781,18 @@ xmlBufferEmpty(xmlBufferPtr buf) {
     buf->use = 0;
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) {
         buf->content = BAD_CAST "";
+    } else if ((buf->alloc == XML_BUFFER_ALLOC_IO) &&
+               (buf->contentIO != NULL)) {
+        size_t start_buf = buf->content - buf->contentIO;
+
+	buf->size += start_buf;
+        buf->content = buf->contentIO;
+        buf->content[0] = 0;
     } else {
-	memset(buf->content, 0, buf->size);
+        buf->content[0] = 0;
+    }
+    if (buf->size > 10000000) {
+        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
     }
 }
 
@@ -6797,11 +6812,34 @@ xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
     if (len > buf->use) return(-1);
 
     buf->use -= len;
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) {
+    if ((buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) ||
+        ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL))) {
+	/*
+	 * we just move the content pointer, but also make sure
+	 * the perceived buffer size has shrinked accordingly
+	 */
         buf->content += len;
+	buf->size -= len;
+
+        /*
+	 * sometimes though it maybe be better to really shrink
+	 * on IO buffers
+	 */
+	if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
+	    size_t start_buf = buf->content - buf->contentIO;
+	    if (start_buf >= buf->size) {
+		memmove(buf->contentIO, &buf->content[0], buf->use);
+		buf->content = buf->contentIO;
+		buf->content[buf->use] = 0;
+		buf->size += start_buf;
+	    }
+	}
     } else {
-	memmove(buf->content, &buf->content[len], buf->use * sizeof(xmlChar));
+	memmove(buf->content, &buf->content[len], buf->use);
 	buf->content[buf->use] = 0;
+    }
+    if (buf->size > 10000000) {
+        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
     }
     return(len);
 }
@@ -6838,13 +6876,28 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     size = buf->use + len + 100;
 #endif
 
-    newbuf = (xmlChar *) xmlRealloc(buf->content, size);
-    if (newbuf == NULL) {
-	xmlTreeErrMemory("growing buffer");
-        return(-1);
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
+        size_t start_buf = buf->content - buf->contentIO;
+
+	newbuf = (xmlChar *) xmlRealloc(buf->contentIO, start_buf + size);
+	if (newbuf == NULL) {
+	    xmlTreeErrMemory("growing buffer");
+	    return(-1);
+	}
+	buf->contentIO = newbuf;
+	buf->content = newbuf + start_buf;
+    } else {
+	newbuf = (xmlChar *) xmlRealloc(buf->content, size);
+	if (newbuf == NULL) {
+	    xmlTreeErrMemory("growing buffer");
+	    return(-1);
+	}
+	buf->content = newbuf;
     }
-    buf->content = newbuf;
     buf->size = size;
+    if (buf->size > 10000000) {
+        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
+    }
     return(buf->size - buf->use);
 }
 
@@ -6930,6 +6983,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 {
     unsigned int newSize;
     xmlChar* rebuf = NULL;
+    size_t start_buf;
 
     if (buf == NULL)
         return(0);
@@ -6942,43 +6996,66 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 
     /* figure out new size */
     switch (buf->alloc){
-    case XML_BUFFER_ALLOC_DOUBLEIT:
-	/*take care of empty case*/
-        newSize = (buf->size ? buf->size*2 : size + 10);
-        while (size > newSize) newSize *= 2;
-        break;
-    case XML_BUFFER_ALLOC_EXACT:
-        newSize = size+10;
-        break;
-    default:
-        newSize = size+10;
-        break;
+	case XML_BUFFER_ALLOC_IO:
+	case XML_BUFFER_ALLOC_DOUBLEIT:
+	    /*take care of empty case*/
+	    newSize = (buf->size ? buf->size*2 : size + 10);
+	    while (size > newSize) newSize *= 2;
+	    break;
+	case XML_BUFFER_ALLOC_EXACT:
+	    newSize = size+10;
+	    break;
+	default:
+	    newSize = size+10;
+	    break;
     }
 
-    if (buf->content == NULL)
-	rebuf = (xmlChar *) xmlMallocAtomic(newSize * sizeof(xmlChar));
-    else if (buf->size - buf->use < 100) {
-	rebuf = (xmlChar *) xmlRealloc(buf->content,
-				       newSize * sizeof(xmlChar));
-   } else {
-        /*
-	 * if we are reallocating a buffer far from being full, it's
-	 * better to make a new allocation and copy only the used range
-	 * and free the old one.
-	 */
-	rebuf = (xmlChar *) xmlMallocAtomic(newSize * sizeof(xmlChar));
-	if (rebuf != NULL) {
-	    memcpy(rebuf, buf->content, buf->use);
-	    xmlFree(buf->content);
-	    rebuf[buf->use] = 0;
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
+        start_buf = buf->content - buf->contentIO;
+
+        if (start_buf > newSize) {
+	    /* move data back to start */
+	    memmove(buf->contentIO, buf->content, buf->use);
+	    buf->content = buf->contentIO;
+	    buf->content[buf->use] = 0;
+	    buf->size += start_buf;
+	} else {
+	    rebuf = (xmlChar *) xmlRealloc(buf->contentIO, start_buf + newSize);
+	    if (rebuf == NULL) {
+		xmlTreeErrMemory("growing buffer");
+		return 0;
+	    }
+	    buf->contentIO = rebuf;
+	    buf->content = rebuf + start_buf;
 	}
+    } else {
+	if (buf->content == NULL) {
+	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
+	} else if (buf->size - buf->use < 100) {
+	    rebuf = (xmlChar *) xmlRealloc(buf->content, newSize);
+        } else {
+	    /*
+	     * if we are reallocating a buffer far from being full, it's
+	     * better to make a new allocation and copy only the used range
+	     * and free the old one.
+	     */
+	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
+	    if (rebuf != NULL) {
+		memcpy(rebuf, buf->content, buf->use);
+		xmlFree(buf->content);
+		rebuf[buf->use] = 0;
+	    }
+	}
+	if (rebuf == NULL) {
+	    xmlTreeErrMemory("growing buffer");
+	    return 0;
+	}
+	buf->content = rebuf;
     }
-    if (rebuf == NULL) {
-	xmlTreeErrMemory("growing buffer");
-        return 0;
-    }
-    buf->content = rebuf;
     buf->size = newSize;
+    if (buf->size > 10000000) {
+        xmlTreeErr(XML_ERR_INTERNAL_ERROR, NULL,"Buffer grew too much");
+    }
 
     return 1;
 }
@@ -7072,6 +7149,20 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
 
     if (len <= 0) return -1;
 
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
+        size_t start_buf = buf->content - buf->contentIO;
+
+	if (start_buf > (unsigned int) len) {
+	    /*
+	     * We can add it in the space previously shrinked
+	     */
+	    buf->content -= len;
+            memmove(&buf->content[0], str, len);
+	    buf->use += len;
+	    buf->size += len;
+	    return(0);
+	}
+    }
     needSize = buf->use + len + 2;
     if (needSize > buf->size){
         if (!xmlBufferResize(buf, needSize)){
@@ -7080,8 +7171,8 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
         }
     }
 
-    memmove(&buf->content[len], &buf->content[0], buf->use * sizeof(xmlChar));
-    memmove(&buf->content[0], str, len * sizeof(xmlChar));
+    memmove(&buf->content[len], &buf->content[0], buf->use);
+    memmove(&buf->content[0], str, len);
     buf->use += len;
     buf->content[buf->use] = 0;
     return 0;

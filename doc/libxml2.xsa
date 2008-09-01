@@ -8,42 +8,33 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.32</version>
-    <last-release> Apr 8 2008</last-release>
+    <version>2.7.0</version>
+    <last-release> Aug 30 2008</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Documentation: returning heap memory to kernel (Wolfram Sang),
-      trying to clarify xmlCleanupParser() use, xmlXPathContext improvement
-      (Jack Jansen), improve the *Recover* functions documentation,
-      XmlNodeType doc link fix (Martijn Arts)
-   - Bug fixes: internal subset memory leak (Ashwin), avoid problem with
-      paths starting with // (Petr Sumbera), streaming XSD validation callback
-      patches (Ashwin), fix redirection on port other than 80 (William Brack),
-      SAX2 leak (Ashwin), XInclude fragment of own document (Chris Ryan),
-      regexp bug with '.' (Andrew Tosh), flush the writer at the end of the
-      document (Alfred Mickautsch), output I/O bug fix (William Brack),
-      writer CDATA output after a text node (Alex Khesin), UTF-16 encoding
-      detection (William Brack), fix handling of empty CDATA nodes for Safari
-      team, python binding problem with namespace nodes, improve HTML parsing
-      (Arnold Hendriks), regexp automata build bug, memory leak fix (Vasily
-      Chekalkin), XSD test crash, weird system parameter entity parsing problem,
-      allow save to file:///X:/ windows paths, various attribute normalisation
-      problems, externalSubsetSplit fix (Ashwin), attribute redefinition in
-      the DTD (Ashwin), fix in char ref parsing check (Alex Khesin), many
-      out of memory handling fixes (Ashwin), XPath out of memory handling fixes
-      (Alvaro Herrera), various realloc problems (Ashwin), UCS4 encoding
-      conversion buffer size (Christian Fruth), problems with EatName
-      functions on memory errors, BOM handling in external parsed entities
-      (Mark Rowe)
-   - Code cleanup: fix build under VS 2008 (David Wimsey), remove useless
-      mutex in xmlDict (Florent Guilian), Mingw32 compilation fix (Carlo
-      Bramini), Win and MacOS EOL cleanups (Florent Guiliani), iconv need
-      a const detection (Roumen Petrov), simplify xmlSetProp (Julien Charbon),
-      cross compilation fixes for Mingw (Roumen Petrov), SCO Openserver build
-      fix (Florent Guiliani), iconv uses const on Win32 (Rob Richards),
-      duplicate code removal (Ashwin), missing malloc test and error reports
-      (Ashwin), VMS makefile fix (Tycho Hilhorst)
-   - improvements: better plug of schematron in the normal error handling
-      (Tobias Minich)
+    <changes>   - Documentation: switch ChangeLog to UTF-8, improve mutithreads and
+      xmlParserCleanup docs
+   - Portability fixes: Older Win32 platforms (Rob Richards), MSVC
+      porting fix (Rob Richards), Mac OS X regression tests (Sven Herzberg),
+      non GNUCC builds (Rob Richards), compilation on Haiku (Andreas Färber)
+      
+   - Bug fixes: various realloc problems (Ashwin), potential double-free
+      (Ashwin), regexp crash, icrash with invalid whitespace facets (Rob
+      Richards), pattern fix when streaming (William Brack), various XML
+      parsing and validation fixes based on the W3C regression tests, reader
+      tree skipping function fix (Ashwin), Schemas regexps escaping fix
+      (Volker Grabsch), handling of entity push errors (Ashwin), fix a slowdown
+      when encoder cant serialize characters on output
+   - Code cleanup: compilation fix without the reader, without the output
+      (Robert Schwebel), python whitespace (Martin), many space/tabs cleanups,
+      serious cleanup of the entity handling code
+   - Improvement: switch parser to XML-1.0 5th edition, add parsing flags
+      for old versions, switch URI parsing to RFC 3986,
+      add xmlSchemaValidCtxtGetParserCtxt (Holger Kaelberer),
+      new hashing functions for dictionnaries (based on Stefan Behnel work),
+      improve handling of misplaced html/head/body in HTML parser, better
+      regression test tools and code coverage display, better algorithms
+      to detect various versions of the billion laughts attacks, make
+      arbitrary parser limits avoidable as a parser option
 
 </changes>
   </product>

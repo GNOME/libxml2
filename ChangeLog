@@ -1,3 +1,8 @@
+Mon Sep  1 16:49:05 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xml.html doc/news.html configure.in python/setup.py NEWS:
+	  prepare release of 2.7.1
+
 Mon Sep  1 15:35:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* schematron.c xpath.c: applied a couple of patches from Martin

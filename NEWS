@@ -15,6 +15,14 @@ ChangeLog.html
 to the SVN at 
 http://svn.gnome.org/viewcvs/libxml2/trunk/
  code base.Here is the list of public releases:
+2.7.1: Sep 1 2008:
+   - Portability fix: Borland C fix (Moritz Both)
+   - Bug fixes: python serialization wrappers, XPath QName corner
+        case handking and leaks (Martin)
+   - Improvement: extend the xmlSave to handle HTML documents and trees
+   - Cleanup: python serialization wrappers
+
+
 2.7.0: Aug 30 2008:
    - Documentation: switch ChangeLog to UTF-8, improve mutithreads and
       xmlParserCleanup docs

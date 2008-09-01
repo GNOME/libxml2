@@ -46,7 +46,8 @@ PYTESTS=	\
     validSchemas.py \
     validRNG.py \
     compareNodes.py \
-    xpathns.py
+    xpathns.py \
+    xpathleak.py
 
 XMLS=		\
     tst.xml	\

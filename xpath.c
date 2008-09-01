@@ -187,11 +187,11 @@ xmlXPathGetSign(double val) {
  * TODO: when compatibility allows remove all "fake node libxslt" strings
  *       the test should just be name[0] = ' '
  */
-/* #define DEBUG */
-/* #define DEBUG_STEP */
-/* #define DEBUG_STEP_NTH */
-/* #define DEBUG_EXPR */
-/* #define DEBUG_EVAL_COUNTS */
+#ifdef DEBUG_XPATH_EXPRESSION
+#define DEBUG_STEP
+#define DEBUG_EXPR
+#define DEBUG_EVAL_COUNTS
+#endif
 
 static xmlNs xmlXPathXMLNamespaceStruct = {
     NULL,
@@ -9778,7 +9778,7 @@ xmlXPathParseQName(xmlXPathParserContextPtr ctxt, xmlChar **prefix) {
 
     *prefix = NULL;
     ret = xmlXPathParseNCName(ctxt);
-    if (CUR == ':') {
+    if (ret && CUR == ':') {
         *prefix = ret;
 	NEXT;
 	ret = xmlXPathParseNCName(ctxt);
@@ -10274,6 +10274,7 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
 
     name = xmlXPathParseQName(ctxt, &prefix);
     if (name == NULL) {
+	xmlFree(prefix);
 	XP_ERROR(XPATH_EXPR_ERROR);
     }
     SKIP_BLANKS;
@@ -10306,7 +10307,11 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
 	    int op1 = ctxt->comp->last;
 	    ctxt->comp->last = -1;
 	    xmlXPathCompileExpr(ctxt, sort);
-	    CHECK_ERROR;
+	    if (ctxt->error != XPATH_EXPRESSION_OK) {
+		xmlFree(name);
+		xmlFree(prefix);
+		return;
+	    }
 	    PUSH_BINARY_EXPR(XPATH_OP_ARG, op1, ctxt->comp->last, 0, 0);
 	    nbargs++;
 	    if (CUR == ')') break;
@@ -11401,12 +11406,11 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op);
 
 #ifdef DEBUG_STEP
 static void
-xmlXPathDebugDumpStepAxis(xmlXPathAxisVal axis,
-			  xmlXPathTestVal test,
+xmlXPathDebugDumpStepAxis(xmlXPathStepOpPtr op,
 			  int nbNodes)
 {
     xmlGenericError(xmlGenericErrorContext, "new step : ");
-    switch (axis) {
+    switch (op->value) {
         case AXIS_ANCESTOR:
             xmlGenericError(xmlGenericErrorContext, "axis 'ancestors' ");
             break;
@@ -11453,14 +11457,14 @@ xmlXPathDebugDumpStepAxis(xmlXPathAxisVal axis,
     }
     xmlGenericError(xmlGenericErrorContext,
 	" context contains %d nodes\n", nbNodes);
-    switch (test) {
+    switch (op->value2) {
         case NODE_TEST_NONE:
             xmlGenericError(xmlGenericErrorContext,
                             "           searching for none !!!\n");
             break;
         case NODE_TEST_TYPE:
             xmlGenericError(xmlGenericErrorContext,
-                            "           searching for type %d\n", type);
+                            "           searching for type %d\n", op->value3);
             break;
         case NODE_TEST_PI:
             xmlGenericError(xmlGenericErrorContext,
@@ -11473,14 +11477,14 @@ xmlXPathDebugDumpStepAxis(xmlXPathAxisVal axis,
         case NODE_TEST_NS:
             xmlGenericError(xmlGenericErrorContext,
                             "           searching for namespace %s\n",
-                            prefix);
+                            op->value5);
             break;
         case NODE_TEST_NAME:
             xmlGenericError(xmlGenericErrorContext,
-                            "           searching for name %s\n", name);
-            if (prefix != NULL)
+                            "           searching for name %s\n", op->value5);
+            if (op->value4)
                 xmlGenericError(xmlGenericErrorContext,
-                                "           with namespace %s\n", prefix);
+                                "           with namespace %s\n", op->value4);
             break;
     }
     xmlGenericError(xmlGenericErrorContext, "Testing : ");
@@ -12055,8 +12059,8 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     }
 
 #ifdef DEBUG_STEP
-    xmlXPathDebugDumpStepAxis(axis, test,
-	(obj->nodesetval != NULL) ? obj->nodsetval->nodeNr : 0);
+    xmlXPathDebugDumpStepAxis(op,
+	(obj->nodesetval != NULL) ? obj->nodesetval->nodeNr : 0);
 #endif
 
     if (next == NULL) {

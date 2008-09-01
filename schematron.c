@@ -1691,7 +1691,7 @@ xmlSchematronValidateDoc(xmlSchematronValidCtxtPtr ctxt, xmlDocPtr instance)
 		if (xmlPatternMatch(rule->pattern, cur) == 1) {
 		    test = rule->tests;
 		    while (test != NULL) {
-			xmlSchematronRunTest(ctxt, test, instance, cur, rule->pattern);
+			xmlSchematronRunTest(ctxt, test, instance, cur, (xmlSchematronPatternPtr)rule->pattern);
 			test = test->next;
 		    }
 		}

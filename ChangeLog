@@ -1,3 +1,11 @@
+Mon Sep  1 15:35:13 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* schematron.c xpath.c: applied a couple of patches from Martin
+	  avoiding some leaks, fixinq QName checks in XPath, XPath debugging
+	  and schematron code cleanups.
+	* python/tests/Makefile.am python/tests/xpathleak.py: add the
+	  specific regression tests, just tweak it to avoid output by default
+
 Mon Sep  1 15:02:05 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* trionan.c: Borland C fix from Moritz Both

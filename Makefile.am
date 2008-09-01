@@ -157,7 +157,7 @@ rebuild_testapi:
 
 # that one is just to make sure it is rebuilt if missing
 # but adding the dependances generate mess
-testapi.c:
+testapi.c: $(srcdir)/gentest.py
 	-@(if [ "$(PYTHON)" != "" ] ; then \
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 
@@ -178,6 +178,8 @@ runxmlconf_LDADD= $(LDADDS)
 
 runtests:
 	$(CHECKER) ./runtest$(EXEEXT) && $(CHECKER) ./testrecurse$(EXEEXT) &&$(CHECKER) ./testapi$(EXEEXT) && $(CHECKER) ./testchar$(EXEEXT)&& $(CHECKER) ./testdict$(EXEEXT) && $(CHECKER) ./runxmlconf$(EXEEXT)
+	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
+	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 
 check: all runtests
 

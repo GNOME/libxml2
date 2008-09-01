@@ -129,7 +129,11 @@ static TRIO_CONST char rcsid[] = "@(#)$Id$";
  */
 #define TRIO_DOUBLE_INDEX(x) (((unsigned char *)&internalEndianMagic)[7-(x)])
 
+#if (defined(__BORLANDC__) && __BORLANDC__ >= 0x0590)
+static TRIO_CONST double internalEndianMagic = 7.949928895127362e-275;
+#else
 static TRIO_CONST double internalEndianMagic = 7.949928895127363e-275;
+#endif
 
 /* Mask for the exponent */
 static TRIO_CONST unsigned char ieee_754_exponent_mask[] = {

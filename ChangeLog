@@ -1,3 +1,19 @@
+Mon Sep  1 15:02:05 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* trionan.c: Borland C fix from Moritz Both
+	* testapi.c: regenerate, workaround a problem for buffer testing
+	* xmlIO.c HTMLtree.c: new internal entry point to hide even better
+	  xmlAllocOutputBufferInternal
+	* tree.c: harden the code around buffer allocation schemes
+	* parser.c: restore the warning when namespace names are not absolute
+	  URIs
+	* runxmlconf.c: continue regression tests if we get the expected
+	  number of errors
+	* Makefile.am: run the python tests on make check
+	* xmlsave.c: handle the HTML documents and trees
+	* python/libxml.c: convert python serialization to the xmlSave APIs
+	  and avoid some horrible hacks
+
 Sat Aug 30 16:58:40 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in, doc/*: preparing 2.7.0 release

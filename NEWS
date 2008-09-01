@@ -15,6 +15,33 @@ ChangeLog.html
 to the SVN at 
 http://svn.gnome.org/viewcvs/libxml2/trunk/
  code base.Here is the list of public releases:
+2.7.0: Aug 30 2008:
+   - Documentation: switch ChangeLog to UTF-8, improve mutithreads and
+      xmlParserCleanup docs
+   - Portability fixes: Older Win32 platforms (Rob Richards), MSVC
+      porting fix (Rob Richards), Mac OS X regression tests (Sven Herzberg),
+      non GNUCC builds (Rob Richards), compilation on Haiku (Andreas Färber)
+      
+   - Bug fixes: various realloc problems (Ashwin), potential double-free
+      (Ashwin), regexp crash, icrash with invalid whitespace facets (Rob
+      Richards), pattern fix when streaming (William Brack), various XML
+      parsing and validation fixes based on the W3C regression tests, reader
+      tree skipping function fix (Ashwin), Schemas regexps escaping fix
+      (Volker Grabsch), handling of entity push errors (Ashwin), fix a slowdown
+      when encoder cant serialize characters on output
+   - Code cleanup: compilation fix without the reader, without the output
+      (Robert Schwebel), python whitespace (Martin), many space/tabs cleanups,
+      serious cleanup of the entity handling code
+   - Improvement: switch parser to XML-1.0 5th edition, add parsing flags
+      for old versions, switch URI parsing to RFC 3986,
+      add xmlSchemaValidCtxtGetParserCtxt (Holger Kaelberer),
+      new hashing functions for dictionnaries (based on Stefan Behnel work),
+      improve handling of misplaced html/head/body in HTML parser, better
+      regression test tools and code coverage display, better algorithms
+      to detect various versions of the billion laughts attacks, make
+      arbitrary parser limits avoidable as a parser option
+
+
 2.6.32: Apr 8 2008:
    - Documentation: returning heap memory to kernel (Wolfram Sang),
       trying to clarify xmlCleanupParser() use, xmlXPathContext improvement

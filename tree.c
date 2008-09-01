@@ -680,7 +680,9 @@ try_complex:
  */
 void
 xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
-    xmlBufferAllocScheme = scheme;
+    if ((scheme == XML_BUFFER_ALLOC_EXACT) ||
+        (scheme == XML_BUFFER_ALLOC_DOUBLEIT))
+	xmlBufferAllocScheme = scheme;
 }
 
 /**
@@ -6736,9 +6738,12 @@ xmlBufferSetAllocationScheme(xmlBufferPtr buf,
 #endif
         return;
     }
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return;
-
-    buf->alloc = scheme;
+    if ((buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) ||
+        (buf->alloc == XML_BUFFER_ALLOC_IO)) return;
+    if ((scheme == XML_BUFFER_ALLOC_DOUBLEIT) ||
+        (scheme == XML_BUFFER_ALLOC_EXACT) ||
+        (scheme == XML_BUFFER_ALLOC_IMMUTABLE))
+	buf->alloc = scheme;
 }
 
 /**

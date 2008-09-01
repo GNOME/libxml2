@@ -33,7 +33,7 @@
 static FILE *logfile = NULL;
 static int verbose = 0;
 
-
+#define NB_EXPECTED_ERRORS 15
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
 
@@ -588,10 +588,14 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 	printf("Total %d tests, no errors\n",
 	       nb_tests);
     } else {
-        ret = 1;
+	ret = 1;
 	printf("Total %d tests, %d errors, %d leaks\n",
 	       nb_tests, nb_errors, nb_leaks);
 	printf("See %s for detailed output\n", LOGFILE);
+	if ((nb_leaks == 0) && (nb_errors == NB_EXPECTED_ERRORS)) {
+	    printf("%d errors were expected\n", nb_errors);
+	    ret = 0;
+	}
     }
     xmlXPathFreeContext(ctxtXPath);
     xmlCleanupParser();

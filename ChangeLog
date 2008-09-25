@@ -1,3 +1,8 @@
+Thu Sep 25 16:30:11 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlsave.h xmlsave.c: new options to serialize
+	  as XML/HTML/XHTML and restore old entry point behaviours
+
 Mon Sep  1 16:49:05 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xml.html doc/news.html configure.in python/setup.py NEWS:

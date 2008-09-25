@@ -1,3 +1,11 @@
+Thu Sep 25 18:04:20 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fix an HTML parsing error on large data sections
+	  reported by Mike Day
+	* test/HTML/utf8bug.html result/HTML/utf8bug.html.err
+	  result/HTML/utf8bug.html.sax result/HTML/utf8bug.html: add the
+	  reproducer to the test suite
+
 Thu Sep 25 17:35:57 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* runxmlconf.c: fix compilation if XPath is not included

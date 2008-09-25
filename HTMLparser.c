@@ -2768,6 +2768,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
     xmlChar buf[HTML_PARSER_BIG_BUFFER_SIZE + 5];
     int nbchar = 0;
     int cur, l;
+    int chunk = 0;
 
     SHRINK;
     cur = CUR_CHAR(l);
@@ -2798,6 +2799,12 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 	    nbchar = 0;
 	}
 	NEXTL(l);
+        chunk++;
+        if (chunk > HTML_PARSER_BUFFER_SIZE) {
+            chunk = 0;
+            SHRINK;
+            GROW;
+        }
 	cur = CUR_CHAR(l);
 	if (cur == 0) {
 	    SHRINK;

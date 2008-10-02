@@ -1,3 +1,8 @@
+Thu Oct  2 22:53:39 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix a nasty bug introduced when cleaning up
+	  entities processing in 2.7.x , fixes #554660
+
 Thu Sep 25 18:04:20 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fix an HTML parsing error on large data sections

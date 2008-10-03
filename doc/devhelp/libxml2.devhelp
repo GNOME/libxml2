@@ -969,6 +969,8 @@
     <function name="XML_RNGP_VALUE_NO_CONTENT" link="libxml2-xmlerror.html#XML_RNGP_VALUE_NO_CONTENT"/>
     <function name="XML_RNGP_XMLNS_NAME" link="libxml2-xmlerror.html#XML_RNGP_XMLNS_NAME"/>
     <function name="XML_RNGP_XML_NS" link="libxml2-xmlerror.html#XML_RNGP_XML_NS"/>
+    <function name="XML_SAVE_AS_HTML" link="libxml2-xmlsave.html#XML_SAVE_AS_HTML"/>
+    <function name="XML_SAVE_AS_XML" link="libxml2-xmlsave.html#XML_SAVE_AS_XML"/>
     <function name="XML_SAVE_CHAR_INVALID" link="libxml2-xmlerror.html#XML_SAVE_CHAR_INVALID"/>
     <function name="XML_SAVE_FORMAT" link="libxml2-xmlsave.html#XML_SAVE_FORMAT"/>
     <function name="XML_SAVE_NOT_UTF8" link="libxml2-xmlerror.html#XML_SAVE_NOT_UTF8"/>
@@ -977,6 +979,7 @@
     <function name="XML_SAVE_NO_EMPTY" link="libxml2-xmlsave.html#XML_SAVE_NO_EMPTY"/>
     <function name="XML_SAVE_NO_XHTML" link="libxml2-xmlsave.html#XML_SAVE_NO_XHTML"/>
     <function name="XML_SAVE_UNKNOWN_ENCODING" link="libxml2-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING"/>
+    <function name="XML_SAVE_XHTML" link="libxml2-xmlsave.html#XML_SAVE_XHTML"/>
     <function name="XML_SCHEMAP_AG_PROPS_CORRECT" link="libxml2-xmlerror.html#XML_SCHEMAP_AG_PROPS_CORRECT"/>
     <function name="XML_SCHEMAP_ATTRFORMDEFAULT_VALUE" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRFORMDEFAULT_VALUE"/>
     <function name="XML_SCHEMAP_ATTRGRP_NONAME_NOREF" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRGRP_NONAME_NOREF"/>

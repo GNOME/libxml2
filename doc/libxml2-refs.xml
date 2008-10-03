@@ -782,6 +782,8 @@
     <reference name='XML_RNGP_VALUE_NO_CONTENT' href='html/libxml-xmlerror.html#XML_RNGP_VALUE_NO_CONTENT'/>
     <reference name='XML_RNGP_XMLNS_NAME' href='html/libxml-xmlerror.html#XML_RNGP_XMLNS_NAME'/>
     <reference name='XML_RNGP_XML_NS' href='html/libxml-xmlerror.html#XML_RNGP_XML_NS'/>
+    <reference name='XML_SAVE_AS_HTML' href='html/libxml-xmlsave.html#XML_SAVE_AS_HTML'/>
+    <reference name='XML_SAVE_AS_XML' href='html/libxml-xmlsave.html#XML_SAVE_AS_XML'/>
     <reference name='XML_SAVE_CHAR_INVALID' href='html/libxml-xmlerror.html#XML_SAVE_CHAR_INVALID'/>
     <reference name='XML_SAVE_FORMAT' href='html/libxml-xmlsave.html#XML_SAVE_FORMAT'/>
     <reference name='XML_SAVE_NOT_UTF8' href='html/libxml-xmlerror.html#XML_SAVE_NOT_UTF8'/>
@@ -790,6 +792,7 @@
     <reference name='XML_SAVE_NO_EMPTY' href='html/libxml-xmlsave.html#XML_SAVE_NO_EMPTY'/>
     <reference name='XML_SAVE_NO_XHTML' href='html/libxml-xmlsave.html#XML_SAVE_NO_XHTML'/>
     <reference name='XML_SAVE_UNKNOWN_ENCODING' href='html/libxml-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING'/>
+    <reference name='XML_SAVE_XHTML' href='html/libxml-xmlsave.html#XML_SAVE_XHTML'/>
     <reference name='XML_SAX2_MAGIC' href='html/libxml-parser.html#XML_SAX2_MAGIC'/>
     <reference name='XML_SCHEMAP_AG_PROPS_CORRECT' href='html/libxml-xmlerror.html#XML_SCHEMAP_AG_PROPS_CORRECT'/>
     <reference name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' href='html/libxml-xmlerror.html#XML_SCHEMAP_ATTRFORMDEFAULT_VALUE'/>
@@ -4319,6 +4322,8 @@
       <ref name='XML_RNGP_VALUE_NO_CONTENT'/>
       <ref name='XML_RNGP_XMLNS_NAME'/>
       <ref name='XML_RNGP_XML_NS'/>
+      <ref name='XML_SAVE_AS_HTML'/>
+      <ref name='XML_SAVE_AS_XML'/>
       <ref name='XML_SAVE_CHAR_INVALID'/>
       <ref name='XML_SAVE_FORMAT'/>
       <ref name='XML_SAVE_NOT_UTF8'/>
@@ -4327,6 +4332,7 @@
       <ref name='XML_SAVE_NO_EMPTY'/>
       <ref name='XML_SAVE_NO_XHTML'/>
       <ref name='XML_SAVE_UNKNOWN_ENCODING'/>
+      <ref name='XML_SAVE_XHTML'/>
       <ref name='XML_SAX2_MAGIC'/>
       <ref name='XML_SCHEMAP_AG_PROPS_CORRECT'/>
       <ref name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE'/>
@@ -13414,10 +13420,13 @@
       <ref name='xmlRegexpPtr'/>
     </file>
     <file name='xmlsave'>
+      <ref name='XML_SAVE_AS_HTML'/>
+      <ref name='XML_SAVE_AS_XML'/>
       <ref name='XML_SAVE_FORMAT'/>
       <ref name='XML_SAVE_NO_DECL'/>
       <ref name='XML_SAVE_NO_EMPTY'/>
       <ref name='XML_SAVE_NO_XHTML'/>
+      <ref name='XML_SAVE_XHTML'/>
       <ref name='xmlSaveClose'/>
       <ref name='xmlSaveCtxt'/>
       <ref name='xmlSaveCtxtPtr'/>

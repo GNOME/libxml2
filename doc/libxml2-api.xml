@@ -2982,9 +2982,12 @@
      <summary>the XML document serializer</summary>
      <description>API to save document or subtree of document </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_SAVE_XHTML' type='enum'/>
+     <exports symbol='XML_SAVE_AS_XML' type='enum'/>
      <exports symbol='XML_SAVE_NO_EMPTY' type='enum'/>
-     <exports symbol='XML_SAVE_NO_DECL' type='enum'/>
      <exports symbol='XML_SAVE_NO_XHTML' type='enum'/>
+     <exports symbol='XML_SAVE_NO_DECL' type='enum'/>
+     <exports symbol='XML_SAVE_AS_HTML' type='enum'/>
      <exports symbol='XML_SAVE_FORMAT' type='enum'/>
      <exports symbol='xmlSaveOption' type='typedef'/>
      <exports symbol='xmlSaveCtxt' type='typedef'/>
@@ -5235,14 +5238,17 @@ crash if you try to modify the tree)'/>
     <enum name='XML_RNGP_VALUE_NO_CONTENT' file='xmlerror' value='1120' type='xmlParserErrors' info='1120'/>
     <enum name='XML_RNGP_XMLNS_NAME' file='xmlerror' value='1121' type='xmlParserErrors' info='1121'/>
     <enum name='XML_RNGP_XML_NS' file='xmlerror' value='1122' type='xmlParserErrors' info='1122'/>
+    <enum name='XML_SAVE_AS_HTML' file='xmlsave' value='64' type='xmlSaveOption' info=' force HTML serialization on XML doc'/>
+    <enum name='XML_SAVE_AS_XML' file='xmlsave' value='32' type='xmlSaveOption' info='force XML serialization on HTML doc'/>
     <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors' info='1401'/>
     <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info='format save output'/>
     <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
     <enum name='XML_SAVE_NO_DECL' file='xmlsave' value='2' type='xmlSaveOption' info='drop the xml declaration'/>
     <enum name='XML_SAVE_NO_DOCTYPE' file='xmlerror' value='1402' type='xmlParserErrors' info='1402'/>
     <enum name='XML_SAVE_NO_EMPTY' file='xmlsave' value='4' type='xmlSaveOption' info='no empty tags'/>
-    <enum name='XML_SAVE_NO_XHTML' file='xmlsave' value='8' type='xmlSaveOption' info=' disable XHTML1 specific rules'/>
+    <enum name='XML_SAVE_NO_XHTML' file='xmlsave' value='8' type='xmlSaveOption' info='disable XHTML1 specific rules'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
+    <enum name='XML_SAVE_XHTML' file='xmlsave' value='16' type='xmlSaveOption' info='force XHTML1 specific rules'/>
     <enum name='XML_SCHEMAP_AG_PROPS_CORRECT' file='xmlerror' value='3087' type='xmlParserErrors' info='3086'/>
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>

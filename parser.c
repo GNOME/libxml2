@@ -7215,6 +7215,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
     }
     if (*ptr != ';') {
 	xmlFatalErr(ctxt, XML_ERR_ENTITYREF_SEMICOL_MISSING, NULL);
+        xmlFree(name);
 	*str = ptr;
 	return(NULL);
     }
@@ -7226,6 +7227,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
      */
     ent = xmlGetPredefinedEntity(name);
     if (ent != NULL) {
+        xmlFree(name);
         *str = ptr;
         return(ent);
     }

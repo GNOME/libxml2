@@ -26,7 +26,11 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
 
 man_MANS = xmllint.1 xmlcatalog.1
 
+if REBUILD_DOCS
 all: web $(top_builddir)/NEWS libxml2.xsa $(man_MANS)
+else
+all:
+endif
 
 api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src ../elfgcchack.h
 

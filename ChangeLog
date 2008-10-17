@@ -1,3 +1,8 @@
+Fri Oct 17 15:24:08 CEST 2008 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/Makefile.am: patch from Adrian Bunk which
+	  adds --disable-rebuild-docs to avoid rebuilding them
+
 Fri Oct  3 09:43:45 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/* NEWS: preparing the release of 2.7.2

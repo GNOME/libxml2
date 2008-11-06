@@ -1,3 +1,8 @@
+Thu Nov  6 14:34:35 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: Matthias Kaehlcke reported a build problem when
+	  not compiling HTML support in.
+
 Fri Oct 17 15:24:08 CEST 2008 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/Makefile.am: patch from Adrian Bunk which

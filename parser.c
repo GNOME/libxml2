@@ -4142,6 +4142,9 @@ get_more:
                     line = ctxt->input->line;
                     col = ctxt->input->col;
 		}
+                /* something really bad happened in the SAX callback */
+                if (ctxt->instate != XML_PARSER_CONTENT)
+                    return;
 	    }
 	    ctxt->input->cur = in;
 	    if (*in == 0xD) {
@@ -4222,6 +4225,9 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 		}
 	    }
 	    nbchar = 0;
+            /* something really bad happened in the SAX callback */
+            if (ctxt->instate != XML_PARSER_CONTENT)
+                return;
 	}
 	count++;
 	if (count > 50) {

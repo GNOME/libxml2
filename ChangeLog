@@ -1,3 +1,11 @@
+Mon Nov 17 16:56:18 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c parser.c: fix for CVE-2008-4226, a memory overflow
+	  when building gigantic text nodes, and a bit of cleanup
+	  to better handled out of memory problem in that code.
+	* tree.c: fix for CVE-2008-4225, lack of testing leads to
+	  a busy loop test assuming one have enough core memory.
+
 Thu Nov  6 14:34:35 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: Matthias Kaehlcke reported a build problem when

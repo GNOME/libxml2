@@ -14,7 +14,7 @@
 #include "libxml.h"
 
 #include <string.h> /* for memset() only ! */
-
+#include <limits.h>
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
@@ -6996,7 +6996,13 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	case XML_BUFFER_ALLOC_DOUBLEIT:
 	    /*take care of empty case*/
 	    newSize = (buf->size ? buf->size*2 : size + 10);
-	    while (size > newSize) newSize *= 2;
+	    while (size > newSize) {
+	        if (newSize > UINT_MAX / 2) {
+	            xmlTreeErrMemory("growing buffer");
+	            return 0;
+	        }
+	        newSize *= 2;
+	    }
 	    break;
 	case XML_BUFFER_ALLOC_EXACT:
 	    newSize = size+10;

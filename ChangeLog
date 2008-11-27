@@ -1,3 +1,10 @@
+Thu Nov 27 16:24:52 CET 2008 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h tree.c python/generator.py: adds
+	  element traversal support
+	* valid.c: avoid a warning
+	* doc/*: regenerated
+
 Mon Nov 17 16:56:18 CET 2008 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c parser.c: fix for CVE-2008-4226, a memory overflow

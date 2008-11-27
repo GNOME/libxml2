@@ -2134,6 +2134,7 @@
     <function name="xmlCheckLanguageID ()" link="libxml2-parserInternals.html#xmlCheckLanguageID"/>
     <function name="xmlCheckUTF8 ()" link="libxml2-xmlstring.html#xmlCheckUTF8"/>
     <function name="xmlCheckVersion ()" link="libxml2-xmlversion.html#xmlCheckVersion"/>
+    <function name="xmlChildElementCount ()" link="libxml2-tree.html#xmlChildElementCount"/>
     <function name="xmlCleanupCharEncodingHandlers ()" link="libxml2-encoding.html#xmlCleanupCharEncodingHandlers"/>
     <function name="xmlCleanupEncodingAliases ()" link="libxml2-encoding.html#xmlCleanupEncodingAliases"/>
     <function name="xmlCleanupGlobals ()" link="libxml2-globals.html#xmlCleanupGlobals"/>
@@ -2266,6 +2267,7 @@
     <function name="xmlFileOpen ()" link="libxml2-xmlIO.html#xmlFileOpen"/>
     <function name="xmlFileRead ()" link="libxml2-xmlIO.html#xmlFileRead"/>
     <function name="xmlFindCharEncodingHandler ()" link="libxml2-encoding.html#xmlFindCharEncodingHandler"/>
+    <function name="xmlFirstElementChild ()" link="libxml2-tree.html#xmlFirstElementChild"/>
     <function name="xmlFreeAttributeTable ()" link="libxml2-valid.html#xmlFreeAttributeTable"/>
     <function name="xmlFreeAutomata ()" link="libxml2-xmlautomata.html#xmlFreeAutomata"/>
     <function name="xmlFreeCatalog ()" link="libxml2-catalog.html#xmlFreeCatalog"/>
@@ -2395,6 +2397,7 @@
     <function name="xmlIsRef ()" link="libxml2-valid.html#xmlIsRef"/>
     <function name="xmlIsXHTML ()" link="libxml2-tree.html#xmlIsXHTML"/>
     <function name="xmlKeepBlanksDefault ()" link="libxml2-parser.html#xmlKeepBlanksDefault"/>
+    <function name="xmlLastElementChild ()" link="libxml2-tree.html#xmlLastElementChild"/>
     <function name="xmlLineNumbersDefault ()" link="libxml2-parser.html#xmlLineNumbersDefault"/>
     <function name="xmlLinkGetData ()" link="libxml2-list.html#xmlLinkGetData"/>
     <function name="xmlListAppend ()" link="libxml2-list.html#xmlListAppend"/>
@@ -2544,6 +2547,7 @@
     <function name="xmlNewTextWriterTree ()" link="libxml2-xmlwriter.html#xmlNewTextWriterTree"/>
     <function name="xmlNewValidCtxt ()" link="libxml2-valid.html#xmlNewValidCtxt"/>
     <function name="xmlNextChar ()" link="libxml2-parserInternals.html#xmlNextChar"/>
+    <function name="xmlNextElementSibling ()" link="libxml2-tree.html#xmlNextElementSibling"/>
     <function name="xmlNoNetExternalEntityLoader ()" link="libxml2-xmlIO.html#xmlNoNetExternalEntityLoader"/>
     <function name="xmlNodeAddContent ()" link="libxml2-tree.html#xmlNodeAddContent"/>
     <function name="xmlNodeAddContentLen ()" link="libxml2-tree.html#xmlNodeAddContentLen"/>
@@ -2676,6 +2680,7 @@
     <function name="xmlPedanticParserDefault ()" link="libxml2-parser.html#xmlPedanticParserDefault"/>
     <function name="xmlPopInput ()" link="libxml2-parserInternals.html#xmlPopInput"/>
     <function name="xmlPopInputCallbacks ()" link="libxml2-xmlIO.html#xmlPopInputCallbacks"/>
+    <function name="xmlPreviousElementSibling ()" link="libxml2-tree.html#xmlPreviousElementSibling"/>
     <function name="xmlPrintURI ()" link="libxml2-uri.html#xmlPrintURI"/>
     <function name="xmlPushInput ()" link="libxml2-parserInternals.html#xmlPushInput"/>
     <function name="xmlRMutexLock ()" link="libxml2-threads.html#xmlRMutexLock"/>

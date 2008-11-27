@@ -1543,11 +1543,12 @@
      <exports symbol='xmlBufferAddHead' type='function'/>
      <exports symbol='xmlNewPI' type='function'/>
      <exports symbol='xmlDocDumpFormatMemoryEnc' type='function'/>
-     <exports symbol='xmlUnsetNsProp' type='function'/>
+     <exports symbol='xmlChildElementCount' type='function'/>
      <exports symbol='xmlElemDump' type='function'/>
      <exports symbol='xmlSaveFormatFileTo' type='function'/>
      <exports symbol='xmlGetIntSubset' type='function'/>
      <exports symbol='xmlNodeBufGetContent' type='function'/>
+     <exports symbol='xmlNextElementSibling' type='function'/>
      <exports symbol='xmlBufferWriteChar' type='function'/>
      <exports symbol='xmlBufferFree' type='function'/>
      <exports symbol='xmlDOMWrapCloneNode' type='function'/>
@@ -1577,6 +1578,8 @@
      <exports symbol='xmlGetNodePath' type='function'/>
      <exports symbol='xmlFreePropList' type='function'/>
      <exports symbol='xmlNodeAddContent' type='function'/>
+     <exports symbol='xmlUnsetNsProp' type='function'/>
+     <exports symbol='xmlFirstElementChild' type='function'/>
      <exports symbol='xmlAddNextSibling' type='function'/>
      <exports symbol='xmlIsBlankNode' type='function'/>
      <exports symbol='xmlNewGlobalNs' type='function'/>
@@ -1597,6 +1600,7 @@
      <exports symbol='xmlTextConcat' type='function'/>
      <exports symbol='xmlNodeGetSpacePreserve' type='function'/>
      <exports symbol='xmlBufferShrink' type='function'/>
+     <exports symbol='xmlPreviousElementSibling' type='function'/>
      <exports symbol='xmlNodeSetContentLen' type='function'/>
      <exports symbol='xmlNodeAddContentLen' type='function'/>
      <exports symbol='xmlBufferWriteQuotedString' type='function'/>
@@ -1611,6 +1615,7 @@
      <exports symbol='xmlGetLineNo' type='function'/>
      <exports symbol='xmlBufferContent' type='function'/>
      <exports symbol='xmlRemoveProp' type='function'/>
+     <exports symbol='xmlLastElementChild' type='function'/>
      <exports symbol='xmlNodeGetLang' type='function'/>
      <exports symbol='xmlGetDocCompressMode' type='function'/>
      <exports symbol='xmlGetNsProp' type='function'/>
@@ -8824,6 +8829,12 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='version' type='int' info='the include version number'/>
     </function>
+    <function name='xmlChildElementCount' file='tree' module='tree'>
+      <cond>defined(LIBXML_TREE_ENABLED)</cond>
+      <info>Finds the current number of child nodes of that element which are element nodes. Note the handling of entities references is different than in the W3C DOM element traversal spec since we don&apos;t have back reference from entities content to entities references.</info>
+      <return type='unsigned long' info='the count of element child or 0 if not available'/>
+      <arg name='parent' type='xmlNodePtr' info='the parent node'/>
+    </function>
     <function name='xmlCleanupCharEncodingHandlers' file='encoding' module='encoding'>
       <info>Cleanup the memory allocated for the char encoding support, it unregisters all the encoding handlers and the aliases.</info>
       <return type='void'/>
@@ -9718,6 +9729,12 @@ Could we use @subtypes for this?'/>
       <return type='xmlCharEncodingHandlerPtr' info='the handler or NULL if not found'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
     </function>
+    <function name='xmlFirstElementChild' file='tree' module='tree'>
+      <cond>defined(LIBXML_TREE_ENABLED)</cond>
+      <info>Finds the first child node of that element which is a Element node Note the handling of entities references is different than in the W3C DOM element traversal spec since we don&apos;t have back reference from entities content to entities references.</info>
+      <return type='xmlNodePtr' info='the first element child or NULL if not available'/>
+      <arg name='parent' type='xmlNodePtr' info='the parent node'/>
+    </function>
     <function name='xmlFreeAttributeTable' file='valid' module='valid'>
       <info>Deallocate the memory used by an entities hash table.</info>
       <return type='void'/>
@@ -10549,6 +10566,12 @@ Could we use @subtypes for this?'/>
       <info>Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
+    </function>
+    <function name='xmlLastElementChild' file='tree' module='tree'>
+      <cond>defined(LIBXML_TREE_ENABLED)</cond>
+      <info>Finds the last child node of that element which is a Element node Note the handling of entities references is different than in the W3C DOM element traversal spec since we don&apos;t have back reference from entities content to entities references.</info>
+      <return type='xmlNodePtr' info='the last element child or NULL if not available'/>
+      <arg name='parent' type='xmlNodePtr' info='the parent node'/>
     </function>
     <function name='xmlLineNumbersDefault' file='parser' module='parserInternals'>
       <info>Set and return the previous value for enabling line numbers in elements contents. This may break on old application and is turned off by default.</info>
@@ -11515,6 +11538,12 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
     </function>
+    <function name='xmlNextElementSibling' file='tree' module='tree'>
+      <cond>defined(LIBXML_TREE_ENABLED)</cond>
+      <info>Finds the first closest next sibling of the node which is an element node. Note the handling of entities references is different than in the W3C DOM element traversal spec since we don&apos;t have back reference from entities content to entities references.</info>
+      <return type='xmlNodePtr' info='the next element sibling or NULL if not available'/>
+      <arg name='node' type='xmlNodePtr' info='the current node'/>
+    </function>
     <function name='xmlNoNetExternalEntityLoader' file='xmlIO' module='xmlIO'>
       <info>A specific entity loader disabling network accesses, though still allowing local catalog accesses for resolution.</info>
       <return type='xmlParserInputPtr' info='a new allocated xmlParserInputPtr, or NULL.'/>
@@ -12374,6 +12403,12 @@ Could we use @subtypes for this?'/>
     <function name='xmlPopInputCallbacks' file='xmlIO' module='xmlIO'>
       <info>Clear the top input callback from the input stack. this includes the compiled-in I/O.</info>
       <return type='int' info='the number of input callback registered or -1 in case of error.'/>
+    </function>
+    <function name='xmlPreviousElementSibling' file='tree' module='tree'>
+      <cond>defined(LIBXML_TREE_ENABLED)</cond>
+      <info>Finds the first closest previous sibling of the node which is an element node. Note the handling of entities references is different than in the W3C DOM element traversal spec since we don&apos;t have back reference from entities content to entities references.</info>
+      <return type='xmlNodePtr' info='the previous element sibling or NULL if not available'/>
+      <arg name='node' type='xmlNodePtr' info='the current node'/>
     </function>
     <function name='xmlPrintURI' file='uri' module='uri'>
       <info>Prints the URI in the stream @stream.</info>

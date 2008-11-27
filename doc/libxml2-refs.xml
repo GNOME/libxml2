@@ -1814,6 +1814,7 @@
     <reference name='xmlCheckLanguageID' href='html/libxml-parserInternals.html#xmlCheckLanguageID'/>
     <reference name='xmlCheckUTF8' href='html/libxml-xmlstring.html#xmlCheckUTF8'/>
     <reference name='xmlCheckVersion' href='html/libxml-xmlversion.html#xmlCheckVersion'/>
+    <reference name='xmlChildElementCount' href='html/libxml-tree.html#xmlChildElementCount'/>
     <reference name='xmlChildrenNode' href='html/libxml-tree.html#xmlChildrenNode'/>
     <reference name='xmlCleanupCharEncodingHandlers' href='html/libxml-encoding.html#xmlCleanupCharEncodingHandlers'/>
     <reference name='xmlCleanupEncodingAliases' href='html/libxml-encoding.html#xmlCleanupEncodingAliases'/>
@@ -1992,6 +1993,7 @@
     <reference name='xmlFileOpen' href='html/libxml-xmlIO.html#xmlFileOpen'/>
     <reference name='xmlFileRead' href='html/libxml-xmlIO.html#xmlFileRead'/>
     <reference name='xmlFindCharEncodingHandler' href='html/libxml-encoding.html#xmlFindCharEncodingHandler'/>
+    <reference name='xmlFirstElementChild' href='html/libxml-tree.html#xmlFirstElementChild'/>
     <reference name='xmlFree' href='html/libxml-globals.html#xmlFree'/>
     <reference name='xmlFreeAttributeTable' href='html/libxml-valid.html#xmlFreeAttributeTable'/>
     <reference name='xmlFreeAutomata' href='html/libxml-xmlautomata.html#xmlFreeAutomata'/>
@@ -2166,6 +2168,7 @@
     <reference name='xmlIsXHTML' href='html/libxml-tree.html#xmlIsXHTML'/>
     <reference name='xmlKeepBlanksDefault' href='html/libxml-parser.html#xmlKeepBlanksDefault'/>
     <reference name='xmlKeepBlanksDefaultValue' href='html/libxml-globals.html#xmlKeepBlanksDefaultValue'/>
+    <reference name='xmlLastElementChild' href='html/libxml-tree.html#xmlLastElementChild'/>
     <reference name='xmlLastError' href='html/libxml-globals.html#xmlLastError'/>
     <reference name='xmlLineNumbersDefault' href='html/libxml-parser.html#xmlLineNumbersDefault'/>
     <reference name='xmlLineNumbersDefaultValue' href='html/libxml-globals.html#xmlLineNumbersDefaultValue'/>
@@ -2336,6 +2339,7 @@
     <reference name='xmlNewTextWriterTree' href='html/libxml-xmlwriter.html#xmlNewTextWriterTree'/>
     <reference name='xmlNewValidCtxt' href='html/libxml-valid.html#xmlNewValidCtxt'/>
     <reference name='xmlNextChar' href='html/libxml-parserInternals.html#xmlNextChar'/>
+    <reference name='xmlNextElementSibling' href='html/libxml-tree.html#xmlNextElementSibling'/>
     <reference name='xmlNoNetExternalEntityLoader' href='html/libxml-xmlIO.html#xmlNoNetExternalEntityLoader'/>
     <reference name='xmlNode' href='html/libxml-tree.html#xmlNode'/>
     <reference name='xmlNodeAddContent' href='html/libxml-tree.html#xmlNodeAddContent'/>
@@ -2513,6 +2517,7 @@
     <reference name='xmlPedanticParserDefaultValue' href='html/libxml-globals.html#xmlPedanticParserDefaultValue'/>
     <reference name='xmlPopInput' href='html/libxml-parserInternals.html#xmlPopInput'/>
     <reference name='xmlPopInputCallbacks' href='html/libxml-xmlIO.html#xmlPopInputCallbacks'/>
+    <reference name='xmlPreviousElementSibling' href='html/libxml-tree.html#xmlPreviousElementSibling'/>
     <reference name='xmlPrintURI' href='html/libxml-uri.html#xmlPrintURI'/>
     <reference name='xmlPushInput' href='html/libxml-parserInternals.html#xmlPushInput'/>
     <reference name='xmlRMutex' href='html/libxml-threads.html#xmlRMutex'/>
@@ -5390,6 +5395,7 @@
       <ref name='xmlCheckLanguageID'/>
       <ref name='xmlCheckUTF8'/>
       <ref name='xmlCheckVersion'/>
+      <ref name='xmlChildElementCount'/>
       <ref name='xmlChildrenNode'/>
       <ref name='xmlCleanupCharEncodingHandlers'/>
       <ref name='xmlCleanupEncodingAliases'/>
@@ -5568,6 +5574,7 @@
       <ref name='xmlFileOpen'/>
       <ref name='xmlFileRead'/>
       <ref name='xmlFindCharEncodingHandler'/>
+      <ref name='xmlFirstElementChild'/>
       <ref name='xmlFree'/>
       <ref name='xmlFreeAttributeTable'/>
       <ref name='xmlFreeAutomata'/>
@@ -5742,6 +5749,7 @@
       <ref name='xmlIsXHTML'/>
       <ref name='xmlKeepBlanksDefault'/>
       <ref name='xmlKeepBlanksDefaultValue'/>
+      <ref name='xmlLastElementChild'/>
       <ref name='xmlLastError'/>
       <ref name='xmlLineNumbersDefault'/>
       <ref name='xmlLineNumbersDefaultValue'/>
@@ -5912,6 +5920,7 @@
       <ref name='xmlNewTextWriterTree'/>
       <ref name='xmlNewValidCtxt'/>
       <ref name='xmlNextChar'/>
+      <ref name='xmlNextElementSibling'/>
       <ref name='xmlNoNetExternalEntityLoader'/>
       <ref name='xmlNode'/>
       <ref name='xmlNodeAddContent'/>
@@ -6089,6 +6098,7 @@
       <ref name='xmlPedanticParserDefaultValue'/>
       <ref name='xmlPopInput'/>
       <ref name='xmlPopInputCallbacks'/>
+      <ref name='xmlPreviousElementSibling'/>
       <ref name='xmlPrintURI'/>
       <ref name='xmlPushInput'/>
       <ref name='xmlRMutex'/>
@@ -7200,6 +7210,7 @@
       <ref name='xmlXPathOrderDocElems'/>
     </type>
     <type name='unsigned long'>
+      <ref name='xmlChildElementCount'/>
       <ref name='xmlParserFindNodeInfoIndex'/>
       <ref name='xmlSchemaGetFacetValueAsULong'/>
     </type>
@@ -7558,7 +7569,9 @@
       <ref name='xmlDocCopyNodeList'/>
       <ref name='xmlDocGetRootElement'/>
       <ref name='xmlDocSetRootElement'/>
+      <ref name='xmlFirstElementChild'/>
       <ref name='xmlGetLastChild'/>
+      <ref name='xmlLastElementChild'/>
       <ref name='xmlNewCDataBlock'/>
       <ref name='xmlNewCharRef'/>
       <ref name='xmlNewChild'/>
@@ -7578,6 +7591,8 @@
       <ref name='xmlNewText'/>
       <ref name='xmlNewTextChild'/>
       <ref name='xmlNewTextLen'/>
+      <ref name='xmlNextElementSibling'/>
+      <ref name='xmlPreviousElementSibling'/>
       <ref name='xmlReplaceNode'/>
       <ref name='xmlStringGetNodeList'/>
       <ref name='xmlStringLenGetNodeList'/>
@@ -9527,6 +9542,7 @@
       <ref name='xmlAddPrevSibling'/>
       <ref name='xmlAddSibling'/>
       <ref name='xmlC14NIsVisibleCallback'/>
+      <ref name='xmlChildElementCount'/>
       <ref name='xmlCopyProp'/>
       <ref name='xmlCopyPropList'/>
       <ref name='xmlDOMWrapAcquireNsFunction'/>
@@ -9541,6 +9557,7 @@
       <ref name='xmlDocSetRootElement'/>
       <ref name='xmlElemDump'/>
       <ref name='xmlEntityReferenceFunc'/>
+      <ref name='xmlFirstElementChild'/>
       <ref name='xmlFreeNode'/>
       <ref name='xmlFreeNodeList'/>
       <ref name='xmlGetLastChild'/>
@@ -9555,6 +9572,7 @@
       <ref name='xmlIsBlankNode'/>
       <ref name='xmlIsID'/>
       <ref name='xmlIsRef'/>
+      <ref name='xmlLastElementChild'/>
       <ref name='xmlLsCountNode'/>
       <ref name='xmlLsOneNode'/>
       <ref name='xmlNewChild'/>
@@ -9564,6 +9582,7 @@
       <ref name='xmlNewProp'/>
       <ref name='xmlNewTextChild'/>
       <ref name='xmlNewTextWriterTree'/>
+      <ref name='xmlNextElementSibling'/>
       <ref name='xmlNodeAddContent'/>
       <ref name='xmlNodeAddContentLen'/>
       <ref name='xmlNodeBufGetContent'/>
@@ -9584,6 +9603,7 @@
       <ref name='xmlNodeSetSpacePreserve'/>
       <ref name='xmlParseInNodeContext'/>
       <ref name='xmlPatternMatch'/>
+      <ref name='xmlPreviousElementSibling'/>
       <ref name='xmlReconciliateNs'/>
       <ref name='xmlRegisterNodeFunc'/>
       <ref name='xmlRelaxNGValidateFullElement'/>
@@ -11979,6 +11999,7 @@
       <ref name='xmlBufferWriteChar'/>
       <ref name='xmlBufferWriteQuotedString'/>
       <ref name='xmlBuildQName'/>
+      <ref name='xmlChildElementCount'/>
       <ref name='xmlChildrenNode'/>
       <ref name='xmlCopyDoc'/>
       <ref name='xmlCopyDtd'/>
@@ -12026,6 +12047,7 @@
       <ref name='xmlEntityPtr'/>
       <ref name='xmlEnumeration'/>
       <ref name='xmlEnumerationPtr'/>
+      <ref name='xmlFirstElementChild'/>
       <ref name='xmlFreeDoc'/>
       <ref name='xmlFreeDtd'/>
       <ref name='xmlFreeNode'/>
@@ -12051,6 +12073,7 @@
       <ref name='xmlIDPtr'/>
       <ref name='xmlIsBlankNode'/>
       <ref name='xmlIsXHTML'/>
+      <ref name='xmlLastElementChild'/>
       <ref name='xmlNewCDataBlock'/>
       <ref name='xmlNewCharRef'/>
       <ref name='xmlNewChild'/>
@@ -12078,6 +12101,7 @@
       <ref name='xmlNewText'/>
       <ref name='xmlNewTextChild'/>
       <ref name='xmlNewTextLen'/>
+      <ref name='xmlNextElementSibling'/>
       <ref name='xmlNode'/>
       <ref name='xmlNodeAddContent'/>
       <ref name='xmlNodeAddContentLen'/>
@@ -12111,6 +12135,7 @@
       <ref name='xmlParserInputBuffer'/>
       <ref name='xmlParserInputBufferPtr'/>
       <ref name='xmlParserInputPtr'/>
+      <ref name='xmlPreviousElementSibling'/>
       <ref name='xmlReconciliateNs'/>
       <ref name='xmlRef'/>
       <ref name='xmlRefPtr'/>
@@ -15075,36 +15100,6 @@
         <word name='DOCTYPE'>
           <ref name='xmlParseDocTypeDecl'/>
         </word>
-        <word name='DOM'>
-          <ref name='LIBXML_TREE_ENABLED'/>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='attribute'/>
-          <ref name='attributeSAXFunc'/>
-          <ref name='docbSAXParseDoc'/>
-          <ref name='docbSAXParseFile'/>
-          <ref name='htmlSAXParseDoc'/>
-          <ref name='htmlSAXParseFile'/>
-          <ref name='ignorableWhitespace'/>
-          <ref name='ignorableWhitespaceSAXFunc'/>
-          <ref name='resolveEntity'/>
-          <ref name='resolveEntitySAXFunc'/>
-          <ref name='xmlDOMWrapAcquireNsFunction'/>
-          <ref name='xmlDOMWrapReconcileNamespaces'/>
-          <ref name='xmlDOMWrapRemoveNode'/>
-          <ref name='xmlDocDumpFormatMemoryEnc'/>
-          <ref name='xmlDocDumpMemoryEnc'/>
-          <ref name='xmlKeepBlanksDefault'/>
-          <ref name='xmlSAX2IgnorableWhitespace'/>
-          <ref name='xmlSAX2ResolveEntity'/>
-          <ref name='xmlSAXParseDoc'/>
-          <ref name='xmlSAXParseEntity'/>
-          <ref name='xmlSAXParseFile'/>
-          <ref name='xmlSAXParseFileWithData'/>
-          <ref name='xmlSAXParseMemory'/>
-          <ref name='xmlSAXParseMemoryWithData'/>
-          <ref name='xmlXPathNodeSetGetLength'/>
-          <ref name='xmlXPathNodeSetItem'/>
-        </word>
         <word name='DOM-wrapper'>
           <ref name='xmlDOMWrapFreeCtxt'/>
           <ref name='xmlDOMWrapNewCtxt'/>
@@ -15368,6 +15363,8 @@
           <ref name='_xmlElement'/>
           <ref name='_xmlElementContent'/>
           <ref name='htmlNodeStatus'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlParseDocTypeDecl'/>
           <ref name='xmlParseElement'/>
@@ -15659,7 +15656,12 @@
           <ref name='xmlParserFindNodeInfoIndex'/>
         </word>
         <word name='Finds'>
+          <ref name='xmlChildElementCount'/>
           <ref name='xmlExpIsNillable'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
+          <ref name='xmlNextElementSibling'/>
+          <ref name='xmlPreviousElementSibling'/>
         </word>
         <word name='First'>
           <ref name='XML_SCHEMAS_TYPE_FIXUP_1'/>
@@ -18130,6 +18132,11 @@
       </letter>
       <letter name='W'>
         <word name='W3C'>
+          <ref name='xmlChildElementCount'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
+          <ref name='xmlNextElementSibling'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlTextReaderSchemaValidate'/>
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
         </word>
@@ -19308,10 +19315,15 @@
     <chunk name='chunk11'>
       <letter name='b'>
         <word name='back'>
+          <ref name='xmlChildElementCount'/>
           <ref name='xmlEntityReferenceFunc'/>
+          <ref name='xmlFirstElementChild'/>
           <ref name='xmlKeepBlanksDefault'/>
+          <ref name='xmlLastElementChild'/>
           <ref name='xmlNanoFTPGet'/>
           <ref name='xmlNanoFTPList'/>
+          <ref name='xmlNextElementSibling'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlRelaxNGDump'/>
           <ref name='xmlSetEntityReferenceFunc'/>
         </word>
@@ -20059,6 +20071,8 @@
           <ref name='xmlNanoHTTPSave'/>
         </word>
         <word name='closest'>
+          <ref name='xmlNextElementSibling'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlXPathCeilingFunction'/>
           <ref name='xmlXPathFloorFunction'/>
           <ref name='xmlXPathRoundFunction'/>
@@ -20776,6 +20790,7 @@
         <word name='count'>
           <ref name='_xmlEntity'/>
           <ref name='ftpListCallback'/>
+          <ref name='xmlChildElementCount'/>
           <ref name='xmlExpRef'/>
           <ref name='xmlLsCountNode'/>
           <ref name='xmlSaveDoc'/>
@@ -21396,7 +21411,12 @@
           <ref name='xmlACatalogAdd'/>
           <ref name='xmlBuildQName'/>
           <ref name='xmlCatalogAdd'/>
+          <ref name='xmlChildElementCount'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
+          <ref name='xmlNextElementSibling'/>
           <ref name='xmlNodeGetBase'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlStrEqual'/>
           <ref name='xmlStrQEqual'/>
         </word>
@@ -21594,11 +21614,16 @@
         <word name='don'>
           <ref name='XML_SCHEMAS_ANY_LAX'/>
           <ref name='xlinkIsLink'/>
+          <ref name='xmlChildElementCount'/>
           <ref name='xmlCreatePushParserCtxt'/>
           <ref name='xmlDOMWrapCloneNode'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNextElementSibling'/>
           <ref name='xmlParseStartTag'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlRegExecErrInfo'/>
           <ref name='xmlRegExecNextValues'/>
           <ref name='xmlSearchNs'/>
@@ -23130,15 +23155,20 @@
           <ref name='attribute'/>
           <ref name='attributeSAXFunc'/>
           <ref name='htmlHandleOmittedElem'/>
+          <ref name='xmlChildElementCount'/>
+          <ref name='xmlFirstElementChild'/>
           <ref name='xmlHandleEntity'/>
+          <ref name='xmlLastElementChild'/>
           <ref name='xmlNamespaceParseNCName'/>
           <ref name='xmlNamespaceParseNSDef'/>
           <ref name='xmlNamespaceParseQName'/>
+          <ref name='xmlNextElementSibling'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlOutputBufferCreateFilenameDefault'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlParserInputBufferCreateFilenameDefault'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlRegNewExecCtxt'/>
           <ref name='xmlRegisterInputCallbacks'/>
           <ref name='xmlRegisterOutputCallbacks'/>
@@ -26371,6 +26401,7 @@
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlLineNumbersDefault'/>
           <ref name='xmlPedanticParserDefault'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlPushInput'/>
           <ref name='xmlSAXDefaultVersion'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
@@ -27993,6 +28024,8 @@
           <ref name='_xmlNode'/>
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlNextElementSibling'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlSchemaValueAppend'/>
           <ref name='xmlSchemaValueGetNext'/>
           <ref name='xmlXPathNextPrecedingSibling'/>
@@ -28062,10 +28095,15 @@
         <word name='since'>
           <ref name='XML_SCHEMAS_TYPE_VARIETY_ABSENT'/>
           <ref name='xmlBuildRelativeURI'/>
+          <ref name='xmlChildElementCount'/>
           <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlDOMWrapReconcileNamespaces'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
+          <ref name='xmlNextElementSibling'/>
           <ref name='xmlParseExternalID'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
         </word>
         <word name='single'>
@@ -28232,7 +28270,12 @@
         </word>
         <word name='spec'>
           <ref name='xmlCatalogSetDefaultPrefer'/>
+          <ref name='xmlChildElementCount'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
+          <ref name='xmlNextElementSibling'/>
           <ref name='xmlParseComment'/>
+          <ref name='xmlPreviousElementSibling'/>
         </word>
         <word name='spec:'>
           <ref name='IS_BASECHAR'/>
@@ -29013,27 +29056,6 @@
         <word name='textDecl?'>
           <ref name='xmlParseExternalSubset'/>
         </word>
-        <word name='than'>
-          <ref name='xmlCheckUTF8'/>
-          <ref name='xmlExpExpDerive'/>
-          <ref name='xmlExpGetLanguage'/>
-          <ref name='xmlExpGetStart'/>
-          <ref name='xmlNewNs'/>
-          <ref name='xmlParseAttribute'/>
-          <ref name='xmlParseAttributeType'/>
-          <ref name='xmlParseElementDecl'/>
-          <ref name='xmlParseElementMixedContentDecl'/>
-          <ref name='xmlParseSDDecl'/>
-          <ref name='xmlParseStartTag'/>
-          <ref name='xmlSetGenericErrorFunc'/>
-          <ref name='xmlStrEqual'/>
-          <ref name='xmlTextReaderIsNamespaceDecl'/>
-          <ref name='xmlXPathCeilingFunction'/>
-          <ref name='xmlXPathCompareValues'/>
-          <ref name='xmlXPathFloorFunction'/>
-          <ref name='xmlXPathSubstringFunction'/>
-          <ref name='xmlXPathTranslateFunction'/>
-        </word>
         <word name='their'>
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlEncodeEntities'/>
@@ -29297,6 +29319,11 @@
           <ref name='xmlNanoFTPClose'/>
         </word>
         <word name='traversal'>
+          <ref name='xmlChildElementCount'/>
+          <ref name='xmlFirstElementChild'/>
+          <ref name='xmlLastElementChild'/>
+          <ref name='xmlNextElementSibling'/>
+          <ref name='xmlPreviousElementSibling'/>
           <ref name='xmlXPathAxisFunc'/>
           <ref name='xmlXPathNextAncestor'/>
           <ref name='xmlXPathNextAncestorOrSelf'/>

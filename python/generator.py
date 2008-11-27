@@ -725,6 +725,10 @@ functions_noexcept = {
     "xmlDocSetRootElement": 1,
     "xmlNodeGetNs": 1,
     "xmlNodeGetNsDefs": 1,
+    "xmlNextElementSibling": 1,
+    "xmlPreviousElementSibling": 1,
+    "xmlFirstElementChild": 1,
+    "xmlLastElementChild": 1,
 }
 
 reference_keepers = {

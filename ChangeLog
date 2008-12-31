@@ -1,3 +1,9 @@
+Wed Dec 31 23:11:37 CET 2008 Rob Richards <rrichards@cdatazone.org>
+
+	* tree.c: set doc on last child tree in xmlAddChildList for 
+	  bug #546772. Fix problem adding an attribute via with xmlAddChild 
+	  reported by Kris Breuker.
+
 Sun Dec 27 14:16:13 CET 2008 Rob Richards <rrichards@cdatazone.org>
 
 	* xmlwriter.c: fix indenting in xmlTextWriterFullEndElement for 

@@ -3216,7 +3216,10 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
         cur = cur->next;
     }
     cur->parent = parent;
-    cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
+    /* the parent may not be linked to a doc ! */
+    if (cur->doc != parent->doc) {
+        xmlSetTreeDoc(cur, parent->doc);
+    }
     parent->last = cur;
 
     return(cur);
@@ -3309,9 +3312,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (cur->type == XML_ATTRIBUTE_NODE) {
 		if (parent->type != XML_ELEMENT_NODE)
 			return(NULL);
-	if (parent->properties == NULL) {
-	    parent->properties = (xmlAttrPtr) cur;
-	} else {
+	if (parent->properties != NULL) {
 	    /* check if an attribute with the same name exists */
 	    xmlAttrPtr lastattr;
 
@@ -3326,8 +3327,13 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    }
 		if (lastattr == (xmlAttrPtr) cur)
 			return(cur);
+
+	}
+	if (parent->properties == NULL) {
+	    parent->properties = (xmlAttrPtr) cur;
+	} else {
 	    /* find the end */
-	    lastattr = parent->properties;
+	    xmlAttrPtr lastattr = parent->properties;
 	    while (lastattr->next != NULL) {
 		lastattr = lastattr->next;
 	    }

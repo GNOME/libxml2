@@ -1,3 +1,8 @@
+Mon Jan 05 18:28:41 CET 2009 Rob Richards <rrichards@cdatazone.org>
+
+	* include/libxml/parser.h parser.c: add XML_PARSE_OLDSAX parser 
+	  option to enable pre 2.7 SAX behavior.
+
 Wed Dec 31 23:11:37 CET 2008 Rob Richards <rrichards@cdatazone.org>
 
 	* tree.c: set doc on last child tree in xmlAddChildList for 

@@ -52,6 +52,8 @@
     </sub>
   </chapters>
   <functions>
+    <function name="ATTRIBUTE_ALLOC_SIZE" link="libxml2-xmlversion.html#ATTRIBUTE_ALLOC_SIZE"/>
+    <function name="ATTRIBUTE_PRINTF" link="libxml2-xmlversion.html#ATTRIBUTE_PRINTF"/>
     <function name="ATTRIBUTE_UNUSED" link="libxml2-xmlversion.html#ATTRIBUTE_UNUSED"/>
     <function name="BAD_CAST" link="libxml2-xmlstring.html#BAD_CAST"/>
     <function name="BASE_BUFFER_SIZE" link="libxml2-tree.html#BASE_BUFFER_SIZE"/>

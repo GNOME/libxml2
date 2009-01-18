@@ -3336,7 +3336,7 @@
      <description>compile-time version informations for the XML library </description>
      <author>Daniel Veillard </author>
      <exports symbol='LIBXML_VERSION_EXTRA' type='macro'/>
-     <exports symbol='LIBXML_MODULES_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
      <exports symbol='LIBXML_LEGACY_ENABLED' type='macro'/>
      <exports symbol='LIBXML_READER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_THREAD_ENABLED' type='macro'/>
@@ -3345,8 +3345,8 @@
      <exports symbol='LIBXML_DEBUG_ENABLED' type='macro'/>
      <exports symbol='LIBXML_XINCLUDE_ENABLED' type='macro'/>
      <exports symbol='ATTRIBUTE_UNUSED' type='macro'/>
-     <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
-     <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_MODULES_ENABLED' type='macro'/>
+     <exports symbol='ATTRIBUTE_PRINTF' type='macro'/>
      <exports symbol='LIBXML_SAX1_ENABLED' type='macro'/>
      <exports symbol='WITHOUT_TRIO' type='macro'/>
      <exports symbol='LIBXML_SCHEMATRON_ENABLED' type='macro'/>
@@ -3362,11 +3362,13 @@
      <exports symbol='LIBXML_MODULE_EXTENSION' type='macro'/>
      <exports symbol='LIBXML_ICONV_ENABLED' type='macro'/>
      <exports symbol='LIBXML_HTML_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_UNICODE_ENABLED' type='macro'/>
      <exports symbol='LIBXML_FTP_ENABLED' type='macro'/>
      <exports symbol='LIBXML_AUTOMATA_ENABLED' type='macro'/>
      <exports symbol='LIBXML_ZLIB_ENABLED' type='macro'/>
-     <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
+     <exports symbol='ATTRIBUTE_ALLOC_SIZE' type='macro'/>
+     <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_C14N_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SCHEMAS_ENABLED' type='macro'/>
      <exports symbol='DEBUG_MEMORY_LOCATION' type='macro'/>
@@ -3766,6 +3768,12 @@
     </file>
   </files>
   <symbols>
+    <macro name='ATTRIBUTE_ALLOC_SIZE' file='xmlversion'>
+      <info>Macro used to indicate to GCC this is an allocator function</info>
+    </macro>
+    <macro name='ATTRIBUTE_PRINTF' file='xmlversion'>
+      <info>Macro used to indicate to GCC the parameter are printf like</info>
+    </macro>
     <macro name='ATTRIBUTE_UNUSED' file='xmlversion'>
       <info>Macro used to signal to GCC unused function parameters</info>
     </macro>
@@ -4109,6 +4117,7 @@
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
     </macro>
     <macro name='XML_MAX_TEXT_LENGHT' file='parserInternals'>
+      <info>Maximum size allowed for a single text node when building a tree. This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it.</info>
     </macro>
     <macro name='XML_SAX2_MAGIC' file='parser'>
       <info>Special constant found in SAX2 blocks initialized fields</info>

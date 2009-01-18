@@ -919,7 +919,7 @@ xmlCleanupThreads(void)
     }
     DeleteCriticalSection(&cleanup_helpers_cs);
 #elif defined HAVE_PTHREAD_H
-    if ((pthread_key_delete != NULL) && (globalkey != NULL))
+    if ((libxml_is_threaded)  && (pthread_key_delete != NULL))
         pthread_key_delete(globalkey);
 #endif
 }

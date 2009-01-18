@@ -242,18 +242,27 @@ extern void xmlCheckVersion(int version);
 #endif
 #endif
 
+#ifdef __GNUC__
+#ifdef HAVE_ANSIDECL_H
+#include <ansidecl.h>
+#endif
+
 /**
  * ATTRIBUTE_UNUSED:
  *
  * Macro used to signal to GCC unused function parameters
  */
-#ifdef __GNUC__
-#ifdef HAVE_ANSIDECL_H
-#include <ansidecl.h>
-#endif
+
 #ifndef ATTRIBUTE_UNUSED
 #define ATTRIBUTE_UNUSED
 #endif
+
+/**
+ * ATTRIBUTE_ALLOC_SIZE:
+ *
+ * Macro used to indicate to GCC this is an allocator function
+ */
+
 #ifndef ATTRIBUTE_ALLOC_SIZE
 # if ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 3)))
 #  define ATTRIBUTE_ALLOC_SIZE(x) __attribute__((alloc_size(x)))
@@ -263,10 +272,28 @@ extern void xmlCheckVersion(int version);
 #else
 # define ATTRIBUTE_ALLOC_SIZE(x)
 #endif
+
+/**
+ * ATTRIBUTE_PRINTF:
+ *
+ * Macro used to indicate to GCC the parameter are printf like
+ */
+
+#ifndef ATTRIBUTE_PRINTF
+# if ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3)))
+#  define ATTRIBUTE_PRINTF(fmt,args) __attribute__((__format__(__printf__,fmt,args)))
+# else
+#  define ATTRIBUTE_PRINTF(fmt,args)
+# endif
 #else
-#define ATTRIBUTE_UNUSED
-#define ATTRIBUTE_ALLOC_SIZE(x)
+# define ATTRIBUTE_PRINTF(fmt,args)
 #endif
+
+#else /* !__GNUC__ */
+#define ATTRIBUTE_UNUSED
+#define ATTRIBUTE_PRINTF(fmt,args)
+#define ATTRIBUTE_ALLOC_SIZE(x)
+#endif /* __GNUC__ */
 
 /*
  * #pragma comment(lib, "iconv.lib")

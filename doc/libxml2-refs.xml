@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <apirefs name='libxml2'>
   <references>
+    <reference name='ATTRIBUTE_ALLOC_SIZE' href='html/libxml-xmlversion.html#ATTRIBUTE_ALLOC_SIZE'/>
+    <reference name='ATTRIBUTE_PRINTF' href='html/libxml-xmlversion.html#ATTRIBUTE_PRINTF'/>
     <reference name='ATTRIBUTE_UNUSED' href='html/libxml-xmlversion.html#ATTRIBUTE_UNUSED'/>
     <reference name='BAD_CAST' href='html/libxml-xmlstring.html#BAD_CAST'/>
     <reference name='BASE_BUFFER_SIZE' href='html/libxml-tree.html#BASE_BUFFER_SIZE'/>
@@ -3526,6 +3528,8 @@
   </references>
   <alpha>
     <letter name='A'>
+      <ref name='ATTRIBUTE_ALLOC_SIZE'/>
+      <ref name='ATTRIBUTE_PRINTF'/>
       <ref name='ATTRIBUTE_UNUSED'/>
     </letter>
     <letter name='B'>
@@ -13782,6 +13786,8 @@
       <ref name='xmlUCSIsYijingHexagramSymbols'/>
     </file>
     <file name='xmlversion'>
+      <ref name='ATTRIBUTE_ALLOC_SIZE'/>
+      <ref name='ATTRIBUTE_PRINTF'/>
       <ref name='ATTRIBUTE_UNUSED'/>
       <ref name='DEBUG_MEMORY_LOCATION'/>
       <ref name='LIBXML_AUTOMATA_ENABLED'/>
@@ -15751,6 +15757,8 @@
       </letter>
       <letter name='G'>
         <word name='GCC'>
+          <ref name='ATTRIBUTE_ALLOC_SIZE'/>
+          <ref name='ATTRIBUTE_PRINTF'/>
           <ref name='ATTRIBUTE_UNUSED'/>
         </word>
         <word name='GEDecl'>
@@ -16321,6 +16329,9 @@
         <word name='Max'>
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlValidCtxt'/>
+        </word>
+        <word name='Maximum'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
         </word>
         <word name='May'>
           <ref name='xmlURIEscape'/>
@@ -18370,6 +18381,9 @@
         <word name='XML_ERR_OK'>
           <ref name='xmlParseInNodeContext'/>
         </word>
+        <word name='XML_PARSE_HUGE'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
+        </word>
         <word name='XML_SCHEMAS_ELEM_GLOBAL'>
           <ref name='XML_SCHEMAS_ELEM_TOPLEVEL'/>
         </word>
@@ -18869,6 +18883,7 @@
           <ref name='xmlParserInputDeallocate'/>
         </word>
         <word name='allocator'>
+          <ref name='ATTRIBUTE_ALLOC_SIZE'/>
           <ref name='DEBUG_MEMORY'/>
         </word>
         <word name='allocators'>
@@ -18901,6 +18916,7 @@
           <ref name='xmlSkipBlankChars'/>
         </word>
         <word name='allowed'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='_htmlElemDesc'/>
           <ref name='_xmlElement'/>
           <ref name='_xmlSchemaWildcard'/>
@@ -19566,6 +19582,7 @@
           <ref name='xmlSearchNs'/>
         </word>
         <word name='boundary'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseElementMixedContentDecl'/>
         </word>
@@ -19631,6 +19648,7 @@
           <ref name='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED'/>
         </word>
         <word name='building'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='_xmlParserCtxt'/>
           <ref name='docbSAXParseDoc'/>
           <ref name='docbSAXParseFile'/>
@@ -22485,6 +22503,7 @@
           <ref name='xmlNewElementContent'/>
         </word>
         <word name='feature'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='xmlGetFeature'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlHasFeature'/>
@@ -23632,6 +23651,8 @@
           <ref name='xmlXPtrNewRange'/>
         </word>
         <word name='indicate'>
+          <ref name='ATTRIBUTE_ALLOC_SIZE'/>
+          <ref name='ATTRIBUTE_PRINTF'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParserInputGrow'/>
           <ref name='xmlParserInputRead'/>
@@ -24401,6 +24422,7 @@
           <ref name='xmlExpCtxtNbCons'/>
         </word>
         <word name='like'>
+          <ref name='ATTRIBUTE_PRINTF'/>
           <ref name='IS_CHAR_CH'/>
           <ref name='IS_DIGIT_CH'/>
           <ref name='IS_EXTENDER_CH'/>
@@ -24421,6 +24443,9 @@
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlPatternMaxDepth'/>
+        </word>
+        <word name='limitation'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
         </word>
         <word name='limited'>
           <ref name='_htmlElemDesc'/>
@@ -25776,6 +25801,7 @@
           <ref name='xmlXPathNodeSetAddUnique'/>
         </word>
         <word name='option'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlDOMWrapReconcileNamespaces'/>
@@ -25911,6 +25937,7 @@
           <ref name='_xmlParserInput'/>
         </word>
         <word name='override'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
           <ref name='xmlCatalogAdd'/>
@@ -27626,6 +27653,9 @@
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
         </word>
+        <word name='safety'>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
+        </word>
         <word name='same'>
           <ref name='HTML_COMMENT_NODE'/>
           <ref name='HTML_ENTITY_REF_NODE'/>
@@ -28102,6 +28132,7 @@
         </word>
         <word name='single'>
           <ref name='IS_DIGIT_CH'/>
+          <ref name='XML_MAX_TEXT_LENGHT'/>
           <ref name='xmlCurrentChar'/>
           <ref name='xmlParseAttValue'/>
           <ref name='xmlParseElementMixedContentDecl'/>

@@ -1,3 +1,15 @@
+Sun Jan 18 21:48:28 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parser.h include/libxml/xmlwriter.h
+	  include/libxml/relaxng.h include/libxml/xmlversion.h.in
+	  include/libxml/xmlwin32version.h.in include/libxml/valid.h
+	  include/libxml/xmlschemas.h include/libxml/xmlerror.h:
+	  port patch from Marcus Meissner to add gcc checking for
+	  printf like functions parameters, should fix #65068
+	* doc/apibuild.py doc/*: modified the script accordingly
+	  and regenerated
+	* xpath.c xmlmemory.c threads.c: fix a few warnings
+
 Sun Jan 18 20:40:42 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlwin32version.h.in: windows header should

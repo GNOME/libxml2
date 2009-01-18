@@ -1,3 +1,8 @@
+Sun Jan 18 16:39:01 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: also remove pthread key when stopping thread
+	  support, patch based on Alex Ott one should fix #564723
+
 Sun Jan 18 15:55:18 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: patch from Daniel Zimmermann fixing a memory leak

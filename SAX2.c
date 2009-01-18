@@ -2461,10 +2461,15 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	               (xmlDictOwns(ctxt->dict, lastChild->content))) {
 		lastChild->content = xmlStrdup(lastChild->content);
 	    }
+            if (((size_t)ctxt->nodelen + (size_t)len > XML_MAX_TEXT_LENGHT) &&
+                ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters: huge text node");
+                return;
+            }
 	    if ((size_t)ctxt->nodelen > SIZE_T_MAX - (size_t)len || 
 	        (size_t)ctxt->nodemem + (size_t)len > SIZE_T_MAX / 2) {
-	            xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters overflow prevented");
-	            return;
+                xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters overflow prevented");
+                return;
 	    }
 	    if (ctxt->nodelen + len >= ctxt->nodemem) {
 		xmlChar *newbuf;

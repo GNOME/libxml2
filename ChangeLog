@@ -1,3 +1,10 @@
+Sun Jan 18 15:06:05 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parserInternals.h SAX2.c: add a new define
+	  XML_MAX_TEXT_LENGHT limiting the maximum size of a single text
+	  node, the defaultis 10MB and can be removed with the HUGE
+	  parsing option
+
 Mon Jan 05 18:28:41 CET 2009 Rob Richards <rrichards@cdatazone.org>
 
 	* include/libxml/parser.h parser.c: add XML_PARSE_OLDSAX parser 

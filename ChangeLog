@@ -1,3 +1,8 @@
+Sun Jan 18 20:40:42 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlwin32version.h.in: windows header should
+	  get the same define
+
 Sun Jan 18 18:22:33 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlversion.h.in include/libxml/xmlmemory.h:

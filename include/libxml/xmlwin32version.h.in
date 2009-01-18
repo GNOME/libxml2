@@ -254,8 +254,18 @@ extern void xmlCheckVersion(int version);
 #ifndef ATTRIBUTE_UNUSED
 #define ATTRIBUTE_UNUSED
 #endif
+#ifndef ATTRIBUTE_ALLOC_SIZE
+# if ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 3)))
+#  define ATTRIBUTE_ALLOC_SIZE(x) __attribute__((alloc_size(x)))
+# else
+#  define ATTRIBUTE_ALLOC_SIZE(x)
+# endif
+#else
+# define ATTRIBUTE_ALLOC_SIZE(x)
+#endif
 #else
 #define ATTRIBUTE_UNUSED
+#define ATTRIBUTE_ALLOC_SIZE(x)
 #endif
 
 /*

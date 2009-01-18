@@ -1,3 +1,12 @@
+Sun Jan 18 18:22:33 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlversion.h.in include/libxml/xmlmemory.h:
+	  apply patch from Marcus Meissner to add gcc attribute alloc_size
+	  should fix #552505
+	* doc/apibuild.py doc/* testapi.c: regenerate the API
+	* include/libxml/parserInternals.h: fix a comment problem raised
+	  by apibuild.py
+
 Sun Jan 18 16:39:01 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: also remove pthread key when stopping thread

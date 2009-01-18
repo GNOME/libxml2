@@ -159,6 +159,7 @@
     <function name="XML_GET_LINE" link="libxml2-tree.html#XML_GET_LINE"/>
     <function name="XML_LOCAL_NAMESPACE" link="libxml2-tree.html#XML_LOCAL_NAMESPACE"/>
     <function name="XML_MAX_NAMELEN" link="libxml2-parserInternals.html#XML_MAX_NAMELEN"/>
+    <function name="XML_MAX_TEXT_LENGHT" link="libxml2-parserInternals.html#XML_MAX_TEXT_LENGHT"/>
     <function name="XML_SAX2_MAGIC" link="libxml2-parser.html#XML_SAX2_MAGIC"/>
     <function name="XML_SCHEMAS_ANYATTR_LAX" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANYATTR_LAX"/>
     <function name="XML_SCHEMAS_ANYATTR_SKIP" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANYATTR_SKIP"/>
@@ -770,6 +771,7 @@
     <function name="XML_PARSE_NOXINCNODE" link="libxml2-parser.html#XML_PARSE_NOXINCNODE"/>
     <function name="XML_PARSE_NSCLEAN" link="libxml2-parser.html#XML_PARSE_NSCLEAN"/>
     <function name="XML_PARSE_OLD10" link="libxml2-parser.html#XML_PARSE_OLD10"/>
+    <function name="XML_PARSE_OLDSAX" link="libxml2-parser.html#XML_PARSE_OLDSAX"/>
     <function name="XML_PARSE_PEDANTIC" link="libxml2-parser.html#XML_PARSE_PEDANTIC"/>
     <function name="XML_PARSE_PUSH_DOM" link="libxml2-parser.html#XML_PARSE_PUSH_DOM"/>
     <function name="XML_PARSE_PUSH_SAX" link="libxml2-parser.html#XML_PARSE_PUSH_SAX"/>

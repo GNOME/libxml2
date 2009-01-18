@@ -31,7 +31,7 @@ extern "C" {
 XMLPUBVAR unsigned int xmlParserMaxDepth;
 
 /**
- * XML_MAX_TEXT_LENGHT
+ * XML_MAX_TEXT_LENGHT:
  *
  * Maximum size allowed for a single text node when building a tree.
  * This is not a limitation of the parser but a safety boundary feature,

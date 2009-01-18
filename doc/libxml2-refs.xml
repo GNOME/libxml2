@@ -528,6 +528,7 @@
     <reference name='XML_IO_WRITE' href='html/libxml-xmlerror.html#XML_IO_WRITE'/>
     <reference name='XML_LOCAL_NAMESPACE' href='html/libxml-tree.html#XML_LOCAL_NAMESPACE'/>
     <reference name='XML_MAX_NAMELEN' href='html/libxml-parserInternals.html#XML_MAX_NAMELEN'/>
+    <reference name='XML_MAX_TEXT_LENGHT' href='html/libxml-parserInternals.html#XML_MAX_TEXT_LENGHT'/>
     <reference name='XML_MODULE_CLOSE' href='html/libxml-xmlerror.html#XML_MODULE_CLOSE'/>
     <reference name='XML_MODULE_LAZY' href='html/libxml-xmlmodule.html#XML_MODULE_LAZY'/>
     <reference name='XML_MODULE_LOCAL' href='html/libxml-xmlmodule.html#XML_MODULE_LOCAL'/>
@@ -583,6 +584,7 @@
     <reference name='XML_PARSE_NOXINCNODE' href='html/libxml-parser.html#XML_PARSE_NOXINCNODE'/>
     <reference name='XML_PARSE_NSCLEAN' href='html/libxml-parser.html#XML_PARSE_NSCLEAN'/>
     <reference name='XML_PARSE_OLD10' href='html/libxml-parser.html#XML_PARSE_OLD10'/>
+    <reference name='XML_PARSE_OLDSAX' href='html/libxml-parser.html#XML_PARSE_OLDSAX'/>
     <reference name='XML_PARSE_PEDANTIC' href='html/libxml-parser.html#XML_PARSE_PEDANTIC'/>
     <reference name='XML_PARSE_PUSH_DOM' href='html/libxml-parser.html#XML_PARSE_PUSH_DOM'/>
     <reference name='XML_PARSE_PUSH_SAX' href='html/libxml-parser.html#XML_PARSE_PUSH_SAX'/>
@@ -4073,6 +4075,7 @@
       <ref name='XML_IO_WRITE'/>
       <ref name='XML_LOCAL_NAMESPACE'/>
       <ref name='XML_MAX_NAMELEN'/>
+      <ref name='XML_MAX_TEXT_LENGHT'/>
       <ref name='XML_MODULE_CLOSE'/>
       <ref name='XML_MODULE_LAZY'/>
       <ref name='XML_MODULE_LOCAL'/>
@@ -4128,6 +4131,7 @@
       <ref name='XML_PARSE_NOXINCNODE'/>
       <ref name='XML_PARSE_NSCLEAN'/>
       <ref name='XML_PARSE_OLD10'/>
+      <ref name='XML_PARSE_OLDSAX'/>
       <ref name='XML_PARSE_PEDANTIC'/>
       <ref name='XML_PARSE_PUSH_DOM'/>
       <ref name='XML_PARSE_PUSH_SAX'/>
@@ -11217,6 +11221,7 @@
       <ref name='XML_PARSE_NOXINCNODE'/>
       <ref name='XML_PARSE_NSCLEAN'/>
       <ref name='XML_PARSE_OLD10'/>
+      <ref name='XML_PARSE_OLDSAX'/>
       <ref name='XML_PARSE_PEDANTIC'/>
       <ref name='XML_PARSE_PUSH_DOM'/>
       <ref name='XML_PARSE_PUSH_SAX'/>
@@ -11405,6 +11410,7 @@
       <ref name='MOVETO_STARTTAG'/>
       <ref name='SKIP_EOL'/>
       <ref name='XML_MAX_NAMELEN'/>
+      <ref name='XML_MAX_TEXT_LENGHT'/>
       <ref name='XML_SUBSTITUTE_BOTH'/>
       <ref name='XML_SUBSTITUTE_NONE'/>
       <ref name='XML_SUBSTITUTE_PEREF'/>
@@ -15318,6 +15324,7 @@
         </word>
         <word name='ENTITIES'>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='ENTITY'>
@@ -15325,6 +15332,7 @@
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParseEntityValue'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='ENTITY_REF'>
@@ -15459,6 +15467,7 @@
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlParserHandleReference'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneNamespace'/>
         </word>
@@ -15905,6 +15914,7 @@
         <word name='IDREF'>
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlValidateAttributeDecl'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateDocumentFinal'/>
           <ref name='xmlValidateDtd'/>
           <ref name='xmlValidateOneAttribute'/>
@@ -15913,6 +15923,7 @@
         </word>
         <word name='IDREFS'>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateDocumentFinal'/>
         </word>
         <word name='IDREFs'>
@@ -16417,9 +16428,11 @@
         </word>
         <word name='NMTOKEN'>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlValidateAttributeValue'/>
         </word>
         <word name='NMTOKENS'>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlValidateAttributeValue'/>
         </word>
         <word name='NMToken'>
           <ref name='xmlValidateNMToken'/>
@@ -16487,6 +16500,7 @@
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlParseName'/>
           <ref name='xmlScanName'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateNamesValue'/>
         </word>
         <word name='Namespace'>
@@ -16515,11 +16529,13 @@
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlParseEnumerationType'/>
           <ref name='xmlParseNmtoken'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateNmtokenValue'/>
         </word>
         <word name='Nmtokens'>
           <ref name='xmlParseAttributeType'/>
           <ref name='xmlParseNmtoken'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateNmtokensValue'/>
         </word>
         <word name='Node'>
@@ -17842,6 +17858,7 @@
         </word>
         <word name='Token'>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateNmtokenValue'/>
           <ref name='xmlValidateNmtokensValue'/>
           <ref name='xmlValidateOneAttribute'/>
@@ -18085,6 +18102,7 @@
           <ref name='xmlSchemaValidateStream'/>
           <ref name='xmlSchematronValidateDoc'/>
           <ref name='xmlShellValidate'/>
+          <ref name='xmlValidateAttributeValue'/>
           <ref name='xmlValidateNameValue'/>
           <ref name='xmlValidateNamesValue'/>
           <ref name='xmlValidateNmtokenValue'/>
@@ -18107,6 +18125,7 @@
           <ref name='xmlParseDefaultDecl'/>
           <ref name='xmlParseEnumerationType'/>
           <ref name='xmlParseNotationType'/>
+          <ref name='xmlValidateAttributeValue'/>
         </word>
         <word name='Variable'>
           <ref name='xmlXPathVariableLookup'/>
@@ -26524,34 +26543,6 @@
         <word name='producing'>
           <ref name='xmlCheckUTF8'/>
         </word>
-        <word name='production'>
-          <ref name='IS_BASECHAR'/>
-          <ref name='IS_BLANK'/>
-          <ref name='IS_BYTE_CHAR'/>
-          <ref name='IS_CHAR'/>
-          <ref name='IS_COMBINING'/>
-          <ref name='IS_DIGIT'/>
-          <ref name='IS_EXTENDER'/>
-          <ref name='IS_IDEOGRAPHIC'/>
-          <ref name='IS_LETTER'/>
-          <ref name='IS_PUBIDCHAR'/>
-          <ref name='xmlIsLetter'/>
-          <ref name='xmlParseAttributeType'/>
-          <ref name='xmlParseBalancedChunkMemory'/>
-          <ref name='xmlParseBalancedChunkMemoryRecover'/>
-          <ref name='xmlParseCharRef'/>
-          <ref name='xmlParseCtxtExternalEntity'/>
-          <ref name='xmlParseExtParsedEnt'/>
-          <ref name='xmlParseExternalEntity'/>
-          <ref name='xmlParseExternalID'/>
-          <ref name='xmlParseInNodeContext'/>
-          <ref name='xmlValidateNameValue'/>
-          <ref name='xmlValidateNamesValue'/>
-          <ref name='xmlValidateNmtokenValue'/>
-          <ref name='xmlValidateNmtokensValue'/>
-          <ref name='xmlXPathIdFunction'/>
-          <ref name='xmlXPathNormalizeFunction'/>
-        </word>
         <word name='production:'>
           <ref name='xmlCheckLanguageID'/>
         </word>
@@ -26597,6 +26588,9 @@
         </word>
         <word name='prompt'>
           <ref name='xmlShellReadlineFunc'/>
+        </word>
+        <word name='proper'>
+          <ref name='xmlValidateAttributeValue'/>
         </word>
         <word name='properly'>
           <ref name='xmlParseElementChildrenContentDecl'/>

@@ -72,6 +72,7 @@ ignored_words = {
   "ATTRIBUTE_UNUSED": (0, "macro keyword"),
   "LIBEXSLT_PUBLIC": (0, "macro keyword"),
   "X_IN_Y": (5, "macro function builder"),
+  "ATTRIBUTE_ALLOC_SIZE": (3, "macro for gcc chaking extension"),
 }
 
 def escape(raw):

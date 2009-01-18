@@ -26144,9 +26144,9 @@ test_xmlValidateAttributeValue(void) {
 #if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
-    xmlAttributeType type; /*  */
+    xmlAttributeType type; /* an attribute type */
     int n_type;
-    xmlChar * value; /*  */
+    xmlChar * value; /* an attribute value */
     int n_value;
 
     for (n_type = 0;n_type < gen_nb_xmlAttributeType;n_type++) {

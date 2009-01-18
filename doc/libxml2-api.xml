@@ -679,7 +679,7 @@
      <exports symbol='XML_PARSE_UNKNOWN' type='enum'/>
      <exports symbol='XML_WITH_XPATH' type='enum'/>
      <exports symbol='XML_WITH_HTML' type='enum'/>
-     <exports symbol='XML_WITH_FTP' type='enum'/>
+     <exports symbol='XML_PARSE_OLDSAX' type='enum'/>
      <exports symbol='XML_WITH_WRITER' type='enum'/>
      <exports symbol='XML_WITH_C14N' type='enum'/>
      <exports symbol='XML_PARSE_PUSH_DOM' type='enum'/>
@@ -733,6 +733,7 @@
      <exports symbol='XML_PARSER_START' type='enum'/>
      <exports symbol='XML_WITH_DEBUG_MEM' type='enum'/>
      <exports symbol='XML_PARSE_HUGE' type='enum'/>
+     <exports symbol='XML_WITH_FTP' type='enum'/>
      <exports symbol='XML_PARSER_START_TAG' type='enum'/>
      <exports symbol='XML_PARSER_IGNORE' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
@@ -878,6 +879,7 @@
      <exports symbol='IS_LETTER' type='macro'/>
      <exports symbol='IS_IDEOGRAPHIC' type='macro'/>
      <exports symbol='MOVETO_STARTTAG' type='macro'/>
+     <exports symbol='XML_MAX_TEXT_LENGHT' type='macro'/>
      <exports symbol='IS_ASCII_LETTER' type='macro'/>
      <exports symbol='IS_DIGIT' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_PEREF' type='macro'/>
@@ -4106,6 +4108,8 @@
     <macro name='XML_MAX_NAMELEN' file='parserInternals'>
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
     </macro>
+    <macro name='XML_MAX_TEXT_LENGHT' file='parserInternals'>
+    </macro>
     <macro name='XML_SAX2_MAGIC' file='parser'>
       <info>Special constant found in SAX2 blocks initialized fields</info>
     </macro>
@@ -5032,7 +5036,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_DTDATTR' file='parser' value='8' type='xmlParserOption' info='default DTD attributes'/>
     <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
     <enum name='XML_PARSE_DTDVALID' file='parser' value='16' type='xmlParserOption' info='validate with the DTD'/>
-    <enum name='XML_PARSE_HUGE' file='parser' value='524288' type='xmlParserOption' info=' relax any hardcoded limit from the parser'/>
+    <enum name='XML_PARSE_HUGE' file='parser' value='524288' type='xmlParserOption' info='relax any hardcoded limit from the parser'/>
     <enum name='XML_PARSE_NOBASEFIX' file='parser' value='262144' type='xmlParserOption' info='do not fixup XINCLUDE xml:base uris'/>
     <enum name='XML_PARSE_NOBLANKS' file='parser' value='256' type='xmlParserOption' info='remove blank nodes'/>
     <enum name='XML_PARSE_NOCDATA' file='parser' value='16384' type='xmlParserOption' info='merge CDATA as text nodes'/>
@@ -5044,6 +5048,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_NOXINCNODE' file='parser' value='32768' type='xmlParserOption' info='do not generate XINCLUDE START/END nodes'/>
     <enum name='XML_PARSE_NSCLEAN' file='parser' value='8192' type='xmlParserOption' info='remove redundant namespaces declarations'/>
     <enum name='XML_PARSE_OLD10' file='parser' value='131072' type='xmlParserOption' info='parse using XML-1.0 before update 5'/>
+    <enum name='XML_PARSE_OLDSAX' file='parser' value='1048576' type='xmlParserOption' info=' parse using SAX2 interface from before 2.7.0'/>
     <enum name='XML_PARSE_PEDANTIC' file='parser' value='128' type='xmlParserOption' info='pedantic error reporting'/>
     <enum name='XML_PARSE_PUSH_DOM' file='parser' value='3' type='xmlParserMode'/>
     <enum name='XML_PARSE_PUSH_SAX' file='parser' value='4' type='xmlParserMode'/>
@@ -16779,10 +16784,10 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlValidateAttributeValue' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='type' type='xmlAttributeType' info=''/>
-      <arg name='value' type='const xmlChar *' info=''/>
+      <info>Validate that the given attribute value match  the proper production  [ VC: ID ] Values of type ID must match the Name production....  [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names ...  [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names ...  [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</info>
+      <return type='int' info='1 if valid or 0 otherwise'/>
+      <arg name='type' type='xmlAttributeType' info='an attribute type'/>
+      <arg name='value' type='const xmlChar *' info='an attribute value'/>
     </function>
     <function name='xmlValidateDocument' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>

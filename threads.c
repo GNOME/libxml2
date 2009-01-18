@@ -698,6 +698,7 @@ xmlGetGlobalState(void)
 	if (p == NULL) {
             xmlGenericError(xmlGenericErrorContext,
                             "xmlGetGlobalState: out of memory\n");
+            xmlFreeGlobalState(tsd);
 	    return(NULL);
 	}
         p->memory = tsd;

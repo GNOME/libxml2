@@ -8,14 +8,17 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.7.1</version>
-    <last-release> Sep 1 2008</last-release>
+    <version>2.7.2</version>
+    <last-release> Oct 3 2008</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Portability fix: Borland C fix (Moritz Both)
-   - Bug fixes: python serialization wrappers, XPath QName corner
-        case handking and leaks (Martin)
-   - Improvement: extend the xmlSave to handle HTML documents and trees
-   - Cleanup: python serialization wrappers
+    <changes>   - Portability fix: fix solaris compilation problem, fix compilation
+        if XPath is not configured in
+   - Bug fixes: nasty entity bug introduced in 2.7.0, restore old behaviour
+        when saving an HTML doc with an xml dump function, HTML UTF-8 parsing
+        bug, fix reader custom error handlers (Riccardo Scussat)
+    
+   - Improvement: xmlSave options for more flexibility to save as
+        XML/HTML/XHTML, handle leading BOM in HTML documents
 
 </changes>
   </product>

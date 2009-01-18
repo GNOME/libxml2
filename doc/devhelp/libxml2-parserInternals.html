@@ -55,7 +55,6 @@
 #define <a href="#IS_LETTER">IS_LETTER</a>(c);
 #define <a href="#IS_IDEOGRAPHIC">IS_IDEOGRAPHIC</a>(c);
 #define <a href="#MOVETO_STARTTAG">MOVETO_STARTTAG</a>(p);
-#define <a href="#XML_MAX_TEXT_LENGHT">XML_MAX_TEXT_LENGHT</a>;
 #define <a href="#IS_ASCII_LETTER">IS_ASCII_LETTER</a>(c);
 #define <a href="#IS_DIGIT">IS_DIGIT</a>(c);
 #define <a href="#XML_SUBSTITUTE_PEREF">XML_SUBSTITUTE_PEREF</a>;
@@ -64,6 +63,7 @@
 #define <a href="#IS_EXTENDER_CH">IS_EXTENDER_CH</a>(c);
 #define <a href="#IS_BLANK_CH">IS_BLANK_CH</a>(c);
 #define <a href="#IS_LETTER_CH">IS_LETTER_CH</a>(c);
+#define <a href="#XML_MAX_TEXT_LENGTH">XML_MAX_TEXT_LENGTH</a>;
 #define <a href="#XML_SUBSTITUTE_NONE">XML_SUBSTITUTE_NONE</a>;
 #define <a href="#IS_COMBINING">IS_COMBINING</a>(c);
 #define <a href="#XML_MAX_NAMELEN">XML_MAX_NAMELEN</a>;
@@ -267,7 +267,7 @@ void	<a href="#xmlParseEntityDecl">xmlParseEntityDecl</a>		(<a href="libxml2-tre
 </pre><p>Identifiers can be longer, but this will be more costly at runtime.</p>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="XML_MAX_TEXT_LENGHT">Macro </a>XML_MAX_TEXT_LENGHT</h3><pre class="programlisting">#define <a href="#XML_MAX_TEXT_LENGHT">XML_MAX_TEXT_LENGHT</a>;
+        <div class="refsect2" lang="en"><h3><a name="XML_MAX_TEXT_LENGTH">Macro </a>XML_MAX_TEXT_LENGTH</h3><pre class="programlisting">#define <a href="#XML_MAX_TEXT_LENGTH">XML_MAX_TEXT_LENGTH</a>;
 </pre><p>Maximum size allowed for a single text node when building a tree. This is not a limitation of the parser but a safety boundary feature, use <a href="libxml2-parser.html#XML_PARSE_HUGE">XML_PARSE_HUGE</a> option to override it.</p>
 </div>
         <hr/>

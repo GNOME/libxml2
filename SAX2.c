@@ -2461,7 +2461,7 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	               (xmlDictOwns(ctxt->dict, lastChild->content))) {
 		lastChild->content = xmlStrdup(lastChild->content);
 	    }
-            if (((size_t)ctxt->nodelen + (size_t)len > XML_MAX_TEXT_LENGHT) &&
+            if (((size_t)ctxt->nodelen + (size_t)len > XML_MAX_TEXT_LENGTH) &&
                 ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                 xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters: huge text node");
                 return;

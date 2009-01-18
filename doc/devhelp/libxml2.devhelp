@@ -161,7 +161,7 @@
     <function name="XML_GET_LINE" link="libxml2-tree.html#XML_GET_LINE"/>
     <function name="XML_LOCAL_NAMESPACE" link="libxml2-tree.html#XML_LOCAL_NAMESPACE"/>
     <function name="XML_MAX_NAMELEN" link="libxml2-parserInternals.html#XML_MAX_NAMELEN"/>
-    <function name="XML_MAX_TEXT_LENGHT" link="libxml2-parserInternals.html#XML_MAX_TEXT_LENGHT"/>
+    <function name="XML_MAX_TEXT_LENGTH" link="libxml2-parserInternals.html#XML_MAX_TEXT_LENGTH"/>
     <function name="XML_SAX2_MAGIC" link="libxml2-parser.html#XML_SAX2_MAGIC"/>
     <function name="XML_SCHEMAS_ANYATTR_LAX" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANYATTR_LAX"/>
     <function name="XML_SCHEMAS_ANYATTR_SKIP" link="libxml2-schemasInternals.html#XML_SCHEMAS_ANYATTR_SKIP"/>

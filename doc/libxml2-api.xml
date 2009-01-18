@@ -879,7 +879,6 @@
      <exports symbol='IS_LETTER' type='macro'/>
      <exports symbol='IS_IDEOGRAPHIC' type='macro'/>
      <exports symbol='MOVETO_STARTTAG' type='macro'/>
-     <exports symbol='XML_MAX_TEXT_LENGHT' type='macro'/>
      <exports symbol='IS_ASCII_LETTER' type='macro'/>
      <exports symbol='IS_DIGIT' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_PEREF' type='macro'/>
@@ -888,6 +887,7 @@
      <exports symbol='IS_EXTENDER_CH' type='macro'/>
      <exports symbol='IS_BLANK_CH' type='macro'/>
      <exports symbol='IS_LETTER_CH' type='macro'/>
+     <exports symbol='XML_MAX_TEXT_LENGTH' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_NONE' type='macro'/>
      <exports symbol='IS_COMBINING' type='macro'/>
      <exports symbol='XML_MAX_NAMELEN' type='macro'/>
@@ -4116,7 +4116,7 @@
     <macro name='XML_MAX_NAMELEN' file='parserInternals'>
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
     </macro>
-    <macro name='XML_MAX_TEXT_LENGHT' file='parserInternals'>
+    <macro name='XML_MAX_TEXT_LENGTH' file='parserInternals'>
       <info>Maximum size allowed for a single text node when building a tree. This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it.</info>
     </macro>
     <macro name='XML_SAX2_MAGIC' file='parser'>

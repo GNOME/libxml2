@@ -530,7 +530,7 @@
     <reference name='XML_IO_WRITE' href='html/libxml-xmlerror.html#XML_IO_WRITE'/>
     <reference name='XML_LOCAL_NAMESPACE' href='html/libxml-tree.html#XML_LOCAL_NAMESPACE'/>
     <reference name='XML_MAX_NAMELEN' href='html/libxml-parserInternals.html#XML_MAX_NAMELEN'/>
-    <reference name='XML_MAX_TEXT_LENGHT' href='html/libxml-parserInternals.html#XML_MAX_TEXT_LENGHT'/>
+    <reference name='XML_MAX_TEXT_LENGTH' href='html/libxml-parserInternals.html#XML_MAX_TEXT_LENGTH'/>
     <reference name='XML_MODULE_CLOSE' href='html/libxml-xmlerror.html#XML_MODULE_CLOSE'/>
     <reference name='XML_MODULE_LAZY' href='html/libxml-xmlmodule.html#XML_MODULE_LAZY'/>
     <reference name='XML_MODULE_LOCAL' href='html/libxml-xmlmodule.html#XML_MODULE_LOCAL'/>
@@ -4079,7 +4079,7 @@
       <ref name='XML_IO_WRITE'/>
       <ref name='XML_LOCAL_NAMESPACE'/>
       <ref name='XML_MAX_NAMELEN'/>
-      <ref name='XML_MAX_TEXT_LENGHT'/>
+      <ref name='XML_MAX_TEXT_LENGTH'/>
       <ref name='XML_MODULE_CLOSE'/>
       <ref name='XML_MODULE_LAZY'/>
       <ref name='XML_MODULE_LOCAL'/>
@@ -11414,7 +11414,7 @@
       <ref name='MOVETO_STARTTAG'/>
       <ref name='SKIP_EOL'/>
       <ref name='XML_MAX_NAMELEN'/>
-      <ref name='XML_MAX_TEXT_LENGHT'/>
+      <ref name='XML_MAX_TEXT_LENGTH'/>
       <ref name='XML_SUBSTITUTE_BOTH'/>
       <ref name='XML_SUBSTITUTE_NONE'/>
       <ref name='XML_SUBSTITUTE_PEREF'/>
@@ -16331,7 +16331,7 @@
           <ref name='_xmlValidCtxt'/>
         </word>
         <word name='Maximum'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
         </word>
         <word name='May'>
           <ref name='xmlURIEscape'/>
@@ -18382,7 +18382,7 @@
           <ref name='xmlParseInNodeContext'/>
         </word>
         <word name='XML_PARSE_HUGE'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
         </word>
         <word name='XML_SCHEMAS_ELEM_GLOBAL'>
           <ref name='XML_SCHEMAS_ELEM_TOPLEVEL'/>
@@ -18916,7 +18916,7 @@
           <ref name='xmlSkipBlankChars'/>
         </word>
         <word name='allowed'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='_htmlElemDesc'/>
           <ref name='_xmlElement'/>
           <ref name='_xmlSchemaWildcard'/>
@@ -19582,7 +19582,7 @@
           <ref name='xmlSearchNs'/>
         </word>
         <word name='boundary'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseElementMixedContentDecl'/>
         </word>
@@ -19648,7 +19648,7 @@
           <ref name='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED'/>
         </word>
         <word name='building'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='_xmlParserCtxt'/>
           <ref name='docbSAXParseDoc'/>
           <ref name='docbSAXParseFile'/>
@@ -22503,7 +22503,7 @@
           <ref name='xmlNewElementContent'/>
         </word>
         <word name='feature'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='xmlGetFeature'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlHasFeature'/>
@@ -24445,7 +24445,7 @@
           <ref name='xmlPatternMaxDepth'/>
         </word>
         <word name='limitation'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
         </word>
         <word name='limited'>
           <ref name='_htmlElemDesc'/>
@@ -25801,7 +25801,7 @@
           <ref name='xmlXPathNodeSetAddUnique'/>
         </word>
         <word name='option'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlDOMWrapReconcileNamespaces'/>
@@ -25937,7 +25937,7 @@
           <ref name='_xmlParserInput'/>
         </word>
         <word name='override'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
           <ref name='xmlCatalogAdd'/>
@@ -27654,7 +27654,7 @@
           <ref name='xmlLoadCatalogs'/>
         </word>
         <word name='safety'>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
         </word>
         <word name='same'>
           <ref name='HTML_COMMENT_NODE'/>
@@ -28132,7 +28132,7 @@
         </word>
         <word name='single'>
           <ref name='IS_DIGIT_CH'/>
-          <ref name='XML_MAX_TEXT_LENGHT'/>
+          <ref name='XML_MAX_TEXT_LENGTH'/>
           <ref name='xmlCurrentChar'/>
           <ref name='xmlParseAttValue'/>
           <ref name='xmlParseElementMixedContentDecl'/>

@@ -1,3 +1,8 @@
+Fri Feb 20 09:40:04 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: cleanups and error reports when xmlTextWriterVSprintf
+	  fails, by Jinmei Tatuya
+
 Fri Feb 20 09:18:56 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: remove a couple of leaks on errors reported by

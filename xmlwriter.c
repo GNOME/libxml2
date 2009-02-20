@@ -370,7 +370,7 @@ xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
     ctxt = xmlCreatePushParserCtxt(&saxHandler, NULL, NULL, 0, NULL);
     if (ctxt == NULL) {
         xmlWriterErrMsg(NULL, XML_ERR_INTERNAL_ERROR,
-                        "xmlNewTextWriterDoc : error at xmlCreatePushParserCtxt!\n");
+                "xmlNewTextWriterDoc : error at xmlCreatePushParserCtxt!\n");
         return NULL;
     }
     /*
@@ -389,8 +389,10 @@ xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
 
     ret = xmlNewTextWriterPushParser(ctxt, compression);
     if (ret == NULL) {
+        xmlFreeDoc(ctxt->myDoc);
+        xmlFreeParserCtxt(ctxt);
         xmlWriterErrMsg(NULL, XML_ERR_INTERNAL_ERROR,
-                        "xmlNewTextWriterDoc : error at xmlNewTextWriterPushParser!\n");
+                "xmlNewTextWriterDoc : error at xmlNewTextWriterPushParser!\n");
         return NULL;
     }
 
@@ -1510,12 +1512,13 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
 
     if (buf != NULL) {
         count = xmlTextWriterWriteRaw(writer, buf);
-        if (count < 0)
-            return -1;
-        sum += count;
 
         if (buf != content)     /* buf was allocated by us, so free it */
             xmlFree(buf);
+
+        if (count < 0)
+            return -1;
+        sum += count;
     }
 
     return sum;

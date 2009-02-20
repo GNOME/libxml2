@@ -1,3 +1,8 @@
+Fri Feb 20 09:18:56 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: remove a couple of leaks on errors reported by
+	  Jinmei Tatuya
+
 Sun Jan 18 22:37:59 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/xml.html doc/*: preparing 0.7.3 release

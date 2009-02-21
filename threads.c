@@ -892,6 +892,14 @@ xmlInitThreads(void)
  *
  * xmlCleanupThreads() is used to to cleanup all the thread related
  * data of the libxml2 library once processing has ended.
+ *
+ * WARNING: if your application is multithreaded or has plugin support
+ *          calling this may crash the application if another thread or
+ *          a plugin is still using libxml2. It's sometimes very hard to
+ *          guess if libxml2 is in use in the application, some libraries
+ *          or plugins may use it without notice. In case of doubt abstain
+ *          from calling this function or do it just before calling exit()
+ *          to avoid leak reports from valgrind !
  */
 void
 xmlCleanupThreads(void)

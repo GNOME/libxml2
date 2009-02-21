@@ -1,3 +1,8 @@
+Sat Feb 21 10:20:34 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c parser.c: more warnings about xmlCleanupThreads and
+	  xmlCleanupParser to avoid troubles like #571409
+
 Fri Feb 20 09:40:04 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: cleanups and error reports when xmlTextWriterVSprintf

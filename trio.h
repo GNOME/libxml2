@@ -29,7 +29,7 @@
  * HAVE_CONFIG_H as a compiler option themselves.
  */
 #if defined(HAVE_CONFIG_H)
-# include <config.h>
+# include "config.h"
 #endif
 
 #include "triodef.h"

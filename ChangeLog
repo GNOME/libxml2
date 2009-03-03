@@ -1,3 +1,8 @@
+Tue Mar  3 14:30.28 HKT 2009 William Brack <wbrack@mmm.com.hk>
+
+	* trio.h: changed include of config.h to be surrounded by
+	  quotation marks #570806
+
 Sat Feb 21 10:20:34 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c parser.c: more warnings about xmlCleanupThreads and

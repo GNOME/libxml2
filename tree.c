@@ -3103,6 +3103,14 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
+    if (cur == elem) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAddSibling : cur == elem\n");
+#endif
+	return(NULL);
+    }
+
     /*
      * Constant time is we can rely on the ->parent->last to find
      * the last sibling.

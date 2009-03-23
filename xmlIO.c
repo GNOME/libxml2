@@ -2278,6 +2278,10 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
 	return(NULL);
     }
 
+    /* try to avoid a performance problem with Windows realloc() */
+    if (ret->buffer->alloc == XML_BUFFER_ALLOC_EXACT)
+        ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
+
     ret->encoder = encoder;
     if (encoder != NULL) {
         ret->conv = xmlBufferCreateSize(4000);

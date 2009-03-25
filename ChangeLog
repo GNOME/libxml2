@@ -1,3 +1,8 @@
+Wed Mar 25 11:21:26 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: hide the nbParse* variables used for debugging
+	  as pointed by Mike Hommey
+
 Wed Mar 25 10:50:05 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* include/wsockcompat.h win32/Makefile.bcb xpath.c: fixes for

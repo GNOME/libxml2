@@ -2917,12 +2917,15 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
  *	Routines to parse Name, NCName and NmToken			*
  *									*
  ************************************************************************/
-unsigned long nbParseName = 0;
-unsigned long nbParseNmToken = 0;
-unsigned long nbParseNCName = 0;
-unsigned long nbParseNCNameComplex = 0;
-unsigned long nbParseNameComplex = 0;
-unsigned long nbParseStringName = 0;
+#ifdef DEBUG
+static unsigned long nbParseName = 0;
+static unsigned long nbParseNmToken = 0;
+static unsigned long nbParseNCName = 0;
+static unsigned long nbParseNCNameComplex = 0;
+static unsigned long nbParseNameComplex = 0;
+static unsigned long nbParseStringName = 0;
+#endif
+
 /*
  * The two following functions are related to the change of accepted
  * characters for Name and NmToken in the Revision 5 of XML-1.0
@@ -3012,7 +3015,9 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     int c;
     int count = 0;
 
+#ifdef DEBUG
     nbParseNameComplex++;
+#endif
 
     /*
      * Handler for more complex cases
@@ -3128,7 +3133,9 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 
     GROW;
 
+#ifdef DEBUG
     nbParseName++;
+#endif
 
     /*
      * Accelerator for simple ASCII names
@@ -3165,7 +3172,9 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     int c;
     int count = 0;
 
+#ifdef DEBUG
     nbParseNCNameComplex++;
+#endif
 
     /*
      * Handler for more complex cases
@@ -3211,7 +3220,9 @@ xmlParseNCName(xmlParserCtxtPtr ctxt) {
     const xmlChar *ret;
     int count = 0;
 
+#ifdef DEBUG
     nbParseNCName++;
+#endif
 
     /*
      * Accelerator for simple ASCII names
@@ -3306,7 +3317,9 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
     int len = 0, l;
     int c;
 
+#ifdef DEBUG
     nbParseStringName++;
+#endif
 
     c = CUR_SCHAR(cur, l);
     if (!xmlIsNameStartChar(ctxt, c)) {
@@ -3380,7 +3393,9 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     int c;
     int count = 0;
 
+#ifdef DEBUG
     nbParseNmToken++;
+#endif
 
     GROW;
     c = CUR_CHAR(l);

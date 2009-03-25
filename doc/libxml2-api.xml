@@ -8875,7 +8875,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupParser' file='parser' module='parser'>
-      <info>This function name is somewhat misleading. It does not clean up parser state, it cleans up memory allocated by the library itself. It is a cleanup function for the XML library. It tries to reclaim all related global memory allocated for the library processing. It doesn&apos;t deallocate any document related memory. One should call xmlCleanupParser() only when the process has finished using the library and all XML/HTML documents built with it. See also xmlInitParser() which has the opposite function of preparing the library for operations.</info>
+      <info>This function name is somewhat misleading. It does not clean up parser state, it cleans up memory allocated by the library itself. It is a cleanup function for the XML library. It tries to reclaim all related global memory allocated for the library processing. It doesn&apos;t deallocate any document related memory. One should call xmlCleanupParser() only when the process has finished using the library and all XML/HTML documents built with it. See also xmlInitParser() which has the opposite function of preparing the library for operations.  WARNING: if your application is multithreaded or has plugin support calling this may crash the application if another thread or a plugin is still using libxml2. It&apos;s sometimes very hard to guess if libxml2 is in use in the application, some libraries or plugins may use it without notice. In case of doubt abstain from calling this function or do it just before calling exit() to avoid leak reports from valgrind !</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupPredefinedEntities' file='entities' module='legacy'>
@@ -8884,7 +8884,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupThreads' file='threads' module='threads'>
-      <info>xmlCleanupThreads() is used to to cleanup all the thread related data of the libxml2 library once processing has ended.</info>
+      <info>xmlCleanupThreads() is used to to cleanup all the thread related data of the libxml2 library once processing has ended.  WARNING: if your application is multithreaded or has plugin support calling this may crash the application if another thread or a plugin is still using libxml2. It&apos;s sometimes very hard to guess if libxml2 is in use in the application, some libraries or plugins may use it without notice. In case of doubt abstain from calling this function or do it just before calling exit() to avoid leak reports from valgrind !</info>
       <return type='void'/>
     </function>
     <function name='xmlClearNodeInfoSeq' file='parser' module='parserInternals'>
@@ -17901,7 +17901,7 @@ Could we use @subtypes for this?'/>
       <info>Register a new namespace. If @ns_uri is NULL it unregisters the namespace</info>
       <return type='int' info='0 in case of success, -1 in case of error'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
-      <arg name='prefix' type='const xmlChar *' info='the namespace prefix'/>
+      <arg name='prefix' type='const xmlChar *' info='the namespace prefix cannot be NULL or empty string'/>
       <arg name='ns_uri' type='const xmlChar *' info='the namespace name'/>
     </function>
     <function name='xmlXPathRegisterVariable' file='xpathInternals' module='xpath'>

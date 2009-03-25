@@ -49648,7 +49648,7 @@ test_xmlXPathRegisterNs(void) {
     int ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
     int n_ctxt;
-    xmlChar * prefix; /* the namespace prefix */
+    xmlChar * prefix; /* the namespace prefix cannot be NULL or empty string */
     int n_prefix;
     xmlChar * ns_uri; /* the namespace name */
     int n_ns_uri;

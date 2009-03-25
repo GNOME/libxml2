@@ -1,3 +1,8 @@
+Wed Mar 25 11:40:34 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* doc/*: updated SVN URL for GNOME as pointed by Vincent Lefevre
+	  and regenerated docs
+
 Wed Mar 25 11:21:26 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: hide the nbParse* variables used for debugging

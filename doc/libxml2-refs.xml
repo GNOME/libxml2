@@ -18171,6 +18171,8 @@
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
         </word>
         <word name='WARNING:'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaNewStringValue'/>
         </word>
@@ -18471,6 +18473,8 @@
           <ref name='xmlUCSIsYijingHexagramSymbols'/>
         </word>
       </letter>
+    </chunk>
+    <chunk name='chunk10'>
       <letter name='Z'>
         <word name='ZLIB'>
           <ref name='docbCreateFileParserCtxt'/>
@@ -18498,8 +18502,6 @@
           <ref name='LIBXML_ZLIB_ENABLED'/>
         </word>
       </letter>
-    </chunk>
-    <chunk name='chunk10'>
       <letter name='a'>
         <word name='a-z'>
           <ref name='xmlCheckLanguageID'/>
@@ -18546,6 +18548,10 @@
         </word>
         <word name='absoluteURI'>
           <ref name='xmlParseURI'/>
+        </word>
+        <word name='abstain'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
         </word>
         <word name='abstract'>
           <ref name='XML_SCHEMAS_ELEM_ABSTRACT'/>
@@ -19062,6 +19068,8 @@
         </word>
         <word name='another'>
           <ref name='xmlCharEncodingOutputFunc'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlOutputMatchCallback'/>
           <ref name='xmlSetGenericErrorFunc'/>
@@ -19148,6 +19156,8 @@
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
           <ref name='xmlCheckVersion'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlCurrentChar'/>
           <ref name='xmlGetExternalEntityLoader'/>
           <ref name='xmlLineNumbersDefault'/>
@@ -19338,6 +19348,10 @@
         <word name='autoreference'>
           <ref name='_xmlDoc'/>
         </word>
+        <word name='avoid'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
         <word name='avoiding'>
           <ref name='xmlTextReaderNext'/>
           <ref name='xmlTextReaderNextSibling'/>
@@ -19430,6 +19444,8 @@
           <ref name='htmlInitAutoClose'/>
           <ref name='xmlBuildRelativeURI'/>
           <ref name='xmlCatalogAdd'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlCurrentChar'/>
           <ref name='xmlGcMemSetup'/>
           <ref name='xmlGetLineNo'/>
@@ -19728,6 +19744,8 @@
           <ref name='xmlBuildRelativeURI'/>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlCheckFilename'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlGetLineNo'/>
           <ref name='xmlTextReaderCurrentDoc'/>
           <ref name='xmlXPathAddValues'/>
@@ -19747,6 +19765,7 @@
         </word>
         <word name='cannot'>
           <ref name='xmlParseAttribute'/>
+          <ref name='xmlXPathRegisterNs'/>
         </word>
         <word name='canonic'>
           <ref name='xmlCanonicPath'/>
@@ -20851,6 +20870,10 @@
         <word name='cover'>
           <ref name='xmlSearchNs'/>
         </word>
+        <word name='crash'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
         <word name='create'>
           <ref name='xmlBufferCreate'/>
           <ref name='xmlBufferCreateSize'/>
@@ -21692,6 +21715,10 @@
         <word name='doublequotes'>
           <ref name='xmlParseQuotedString'/>
         </word>
+        <word name='doubt'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
         <word name='down'>
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlSetBufferAllocationScheme'/>
@@ -22294,6 +22321,10 @@
           <ref name='xmlTextReaderConstXmlLang'/>
           <ref name='xmlTextReaderXmlLang'/>
           <ref name='xmlValidateNotationDecl'/>
+        </word>
+        <word name='exit'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
         </word>
         <word name='expand'>
           <ref name='xmlLoadSGMLSuperCatalog'/>
@@ -23156,6 +23187,10 @@
           <ref name='xmlBufferWriteChar'/>
           <ref name='xmlBufferWriteQuotedString'/>
         </word>
+        <word name='guess'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
       </letter>
       <letter name='h'>
         <word name='had'>
@@ -23217,6 +23252,10 @@
           <ref name='xmlXPathPopNodeSet'/>
           <ref name='xmlXPathPopNumber'/>
           <ref name='xmlXPathPopString'/>
+        </word>
+        <word name='hard'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
         </word>
         <word name='has-same-nodes'>
           <ref name='xmlXPathHasSameNodes'/>
@@ -24114,6 +24153,8 @@
           <ref name='namePop'/>
           <ref name='nodePop'/>
           <ref name='valuePop'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlCopyEnumeration'/>
           <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlCreateEnumeration'/>
@@ -24267,6 +24308,10 @@
           <ref name='xmlXPathNormalizeFunction'/>
           <ref name='xmlXPathStringFunction'/>
         </word>
+        <word name='leak'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
         <word name='least'>
           <ref name='xmlDetectCharEncoding'/>
           <ref name='xmlXPathStringFunction'/>
@@ -24361,6 +24406,8 @@
         </word>
         <word name='libraries'>
           <ref name='LIBXML_MODULE_EXTENSION'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlRelaxNGInitTypes'/>
         </word>
         <word name='library'>
@@ -24406,6 +24453,7 @@
           <ref name='xmlRootNode'/>
         </word>
         <word name='libxml2'>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlFreeMutex'/>
           <ref name='xmlInitThreads'/>
@@ -25073,6 +25121,8 @@
         </word>
         <word name='multithreaded'>
           <ref name='htmlInitAutoClose'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlInitParser'/>
         </word>
         <word name='mutex'>
@@ -25465,6 +25515,10 @@
         <word name='note'>
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlLoadExternalEntity'/>
+        </word>
+        <word name='notice'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
         </word>
         <word name='now'>
           <ref name='XML_CAST_FPTR'/>
@@ -26186,6 +26240,14 @@
         <word name='plug'>
           <ref name='xmlXPathFuncLookupFunc'/>
           <ref name='xmlXPathVariableLookupFunc'/>
+        </word>
+        <word name='plugin'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
+        <word name='plugins'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
         </word>
         <word name='plus'>
           <ref name='UTF8ToHtml'/>
@@ -27314,6 +27376,8 @@
         <word name='reports'>
           <ref name='docbCreatePushParserCtxt'/>
           <ref name='htmlCreatePushParserCtxt'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlCreatePushParserCtxt'/>
         </word>
         <word name='repr'>
@@ -28202,6 +28266,8 @@
           <ref name='ignorableWhitespace'/>
           <ref name='ignorableWhitespaceSAXFunc'/>
           <ref name='xmlBuildRelativeURI'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlGcMemSetup'/>
           <ref name='xmlHandleEntity'/>
           <ref name='xmlMemSetup'/>
@@ -28221,6 +28287,8 @@
           <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
         <word name='sometimes'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlExpExpDerive'/>
         </word>
         <word name='somewhat'>
@@ -28516,6 +28584,8 @@
           <ref name='xmlValidateDocumentFinal'/>
         </word>
         <word name='still'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlModuleFree'/>
           <ref name='xmlNoNetExternalEntityLoader'/>
           <ref name='xmlParseNamespace'/>
@@ -29151,6 +29221,7 @@
         </word>
         <word name='thread'>
           <ref name='LIBXML_THREAD_ENABLED'/>
+          <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlGetGlobalState'/>
           <ref name='xmlGetLastError'/>
@@ -29785,6 +29856,10 @@
         <word name='val1'>
           <ref name='xmlXPtrLocationSetMerge'/>
         </word>
+        <word name='valgrind'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
         <word name='validated'>
           <ref name='xmlCharInRange'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
@@ -29864,6 +29939,8 @@
           <ref name='_htmlElemDesc'/>
           <ref name='_xmlParserInput'/>
           <ref name='xmlCharEncFirstLine'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
         </word>
         <word name='via'>
           <ref name='xmlNanoHTTPFetch'/>
@@ -30146,6 +30223,8 @@
           <ref name='entityDecl'/>
           <ref name='entityDeclSAXFunc'/>
           <ref name='htmlNewDocNoDtD'/>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
           <ref name='xmlNewGlobalNs'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParsePEReference'/>
@@ -31319,6 +31398,10 @@
           <ref name='xmlSchemaGetBuiltInType'/>
           <ref name='xmlSearchNs'/>
         </word>
+        <word name='your'>
+          <ref name='xmlCleanupParser'/>
+          <ref name='xmlCleanupThreads'/>
+        </word>
       </letter>
       <letter name='z'>
         <word name='zero'>
@@ -31371,8 +31454,8 @@
       <chunk name='chunk6' start='Q' end='R'/>
       <chunk name='chunk7' start='S' end='S'/>
       <chunk name='chunk8' start='T' end='U'/>
-      <chunk name='chunk9' start='V' end='Z'/>
-      <chunk name='chunk10' start='a' end='a'/>
+      <chunk name='chunk9' start='V' end='Y'/>
+      <chunk name='chunk10' start='Z' end='a'/>
       <chunk name='chunk11' start='b' end='b'/>
       <chunk name='chunk12' start='c' end='c'/>
       <chunk name='chunk13' start='d' end='d'/>

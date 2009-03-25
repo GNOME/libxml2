@@ -5003,7 +5003,7 @@ xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
 /**
  * xmlXPathRegisterNs:
  * @ctxt:  the XPath context
- * @prefix:  the namespace prefix
+ * @prefix:  the namespace prefix cannot be NULL or empty string
  * @ns_uri:  the namespace name
  *
  * Register a new namespace. If @ns_uri is NULL it unregisters
@@ -5017,6 +5017,8 @@ xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
     if (ctxt == NULL)
 	return(-1);
     if (prefix == NULL)
+	return(-1);
+    if (prefix[0] == 0)
 	return(-1);
 
     if (ctxt->nsHash == NULL)

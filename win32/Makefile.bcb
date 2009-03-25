@@ -72,7 +72,7 @@ CFLAGS = $(CFLAGS) -DHAVE_ZLIB_H
 # The linker and its options.
 LD = ilink32.exe
 LDFLAGS = -q -U$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION)
-LDFLAGS = $(LDFLAGS) -L"$(BINDIR);$(LIBPREFIX);$(LIB);$(BCB)\lib\PSdk"
+LDFLAGS = $(LDFLAGS) -L"$(BINDIR);$(LIBPREFIX);$(LIB);$(BCB)\lib;$(BCB)\lib\PSdk"
 LIBS = import32.lib
 !if "$(WITH_THREADS)" != "no" && "$(DYNRUNTIME)" == "1"
 LIBS = $(LIBS) cw32mti.lib
@@ -84,7 +84,7 @@ LIBS = $(LIBS) cw32i.lib
 LIBS = $(LIBS) cw32.lib
 !endif
 !if "$(WITH_FTP)" == "1" || "$(WITH_HTTP)" == "1"
-LIBS = $(LIBS) wsock32.lib
+LIBS = $(LIBS) wsock32.lib ws2_32.lib
 !endif 
 !if "$(WITH_ICONV)" == "1"
 LIBS = $(LIBS) iconvomf.lib

@@ -15,6 +15,7 @@
    header when compiled with Borland C++ 6 */
 #if defined(__BORLANDC__) && !defined(__cplusplus)
 #define inline __inline
+#define _inline __inline
 #endif
 
 #include <ws2tcpip.h>

@@ -1,3 +1,8 @@
+Wed Mar 25 10:50:05 CET 2009 Daniel Veillard <daniel@veillard.com>
+
+	* include/wsockcompat.h win32/Makefile.bcb xpath.c: fixes for
+	  Borland/CodeGear/Embarcadero compilers by Eric Zurcher
+
 Wed Mar 25 10:43:07 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: xmlXPathRegisterNs should not allow enpty prefixes

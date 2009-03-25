@@ -9022,7 +9022,7 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
      * the index is NaN, the length is NaN, or both
      * arguments are infinity (relying on Inf + -Inf = NaN)
      */
-    if (!xmlXPathIsNaN(in + le) && !xmlXPathIsInf(in)) {
+    if (!xmlXPathIsInf(in) && !xmlXPathIsNaN(in + le)) {
         /*
          * To meet the requirements of the spec, the arguments
 	 * must be converted to integer format before

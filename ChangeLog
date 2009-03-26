@@ -1,3 +1,8 @@
+Thu Mar 26 19:08:08 CET 2009 Rob Richards <rrichards@cdatazone.org>
+
+	* parser.c: use options from current parser context when creating 
+	  an entity parser context
+
 Wed Mar 25 11:40:34 CET 2009 Daniel Veillard <daniel@veillard.com>
 
 	* doc/*: updated SVN URL for GNOME as pointed by Vincent Lefevre

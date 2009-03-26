@@ -83,6 +83,10 @@
 static void
 xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info);
 
+static xmlParserCtxtPtr
+xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
+	                  const xmlChar *base, xmlParserCtxtPtr pctx);
+
 /************************************************************************
  *									*
  *	Arbitrary limits set in the parser. See XML_PARSE_HUGE		*
@@ -12279,7 +12283,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	return(XML_ERR_INTERNAL_ERROR);
 
 
-    ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
+    ctxt = xmlCreateEntityParserCtxtInternal(URL, ID, NULL, oldctxt);
     if (ctxt == NULL) return(XML_WAR_UNDECLARED_ENTITY);
     ctxt->userData = ctxt;
     if (oldctxt != NULL) {
@@ -13114,10 +13118,11 @@ xmlParseEntity(const char *filename) {
 #endif /* LIBXML_SAX1_ENABLED */
 
 /**
- * xmlCreateEntityParserCtxt:
+ * xmlCreateEntityParserCtxtInternal:
  * @URL:  the entity URL
  * @ID:  the entity PUBLIC ID
  * @base:  a possible base for the target URI
+ * @pctx:  parser context used to set options on new context
  *
  * Create a parser context for an external entity
  * Automatic support for ZLIB/Compress compressed document is provided
@@ -13125,9 +13130,9 @@ xmlParseEntity(const char *filename) {
  *
  * Returns the new parser context or NULL
  */
-xmlParserCtxtPtr
-xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
-	                  const xmlChar *base) {
+static xmlParserCtxtPtr
+xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
+	                  const xmlChar *base, xmlParserCtxtPtr pctx) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
     char *directory = NULL;
@@ -13136,6 +13141,10 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
 	return(NULL);
+    }
+
+	if (pctx != NULL) {
+		ctxt->options = pctx->options;
     }
 
     uri = xmlBuildURI(URL, base);
@@ -13170,6 +13179,25 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
 	xmlFree(uri);
     }
     return(ctxt);
+}
+
+/**
+ * xmlCreateEntityParserCtxt:
+ * @URL:  the entity URL
+ * @ID:  the entity PUBLIC ID
+ * @base:  a possible base for the target URI
+ *
+ * Create a parser context for an external entity
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * by default if found at compile-time.
+ *
+ * Returns the new parser context or NULL
+ */
+xmlParserCtxtPtr
+xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
+	                  const xmlChar *base) {
+    return xmlCreateEntityParserCtxtInternal(URL, ID, base, NULL);
+
 }
 
 /************************************************************************

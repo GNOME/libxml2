@@ -600,12 +600,12 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    channel = ctxt->sax->error;
 	data = ctxt->userData;
     } else if (channel == NULL) {
-        if (xmlStructuredError != NULL)
+        if ((schannel == NULL) && (xmlStructuredError != NULL))
 	    schannel = xmlStructuredError;
 	else
 	    channel = xmlGenericError;
 	if (!data) {
-	data = xmlGenericErrorContext;
+            data = xmlGenericErrorContext;
     }
     }
     if (schannel != NULL) {

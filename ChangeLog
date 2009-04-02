@@ -1,3 +1,7 @@
+Thu Apr  2 13:57:15 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: fix structured error handling problems #564217
+
 Thu Mar 26 19:08:08 CET 2009 Rob Richards <rrichards@cdatazone.org>
 
 	* parser.c: use options from current parser context when creating 

@@ -274,24 +274,24 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
- * ATTRIBUTE_PRINTF:
+ * LIBXML_ATTR_FORMAT:
  *
  * Macro used to indicate to GCC the parameter are printf like
  */
 
-#ifndef ATTRIBUTE_PRINTF
+#ifndef LIBXML_ATTR_FORMAT
 # if ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3)))
-#  define ATTRIBUTE_PRINTF(fmt,args) __attribute__((__format__(__printf__,fmt,args)))
+#  define LIBXML_ATTR_FORMAT(fmt,args) __attribute__((__format__(__printf__,fmt,args)))
 # else
-#  define ATTRIBUTE_PRINTF(fmt,args)
+#  define LIBXML_ATTR_FORMAT(fmt,args)
 # endif
 #else
-# define ATTRIBUTE_PRINTF(fmt,args)
+# define LIBXML_ATTR_FORMAT(fmt,args)
 #endif
 
 #else /* !__GNUC__ */
 #define ATTRIBUTE_UNUSED
-#define ATTRIBUTE_PRINTF(fmt,args)
+#define LIBXML_ATTR_FORMAT(fmt,args)
 #define ATTRIBUTE_ALLOC_SIZE(x)
 #endif /* __GNUC__ */
 

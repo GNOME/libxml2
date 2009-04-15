@@ -594,7 +594,7 @@ typedef void (*cdataBlockSAXFunc) (
  * Display and format a warning messages, callback.
  */
 typedef void (XMLCDECL *warningSAXFunc) (void *ctx,
-				const char *msg, ...) ATTRIBUTE_PRINTF(2,3);
+				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
  * errorSAXFunc:
  * @ctx:  an XML parser context
@@ -604,7 +604,7 @@ typedef void (XMLCDECL *warningSAXFunc) (void *ctx,
  * Display and format an error messages, callback.
  */
 typedef void (XMLCDECL *errorSAXFunc) (void *ctx,
-				const char *msg, ...) ATTRIBUTE_PRINTF(2,3);
+				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
  * fatalErrorSAXFunc:
  * @ctx:  an XML parser context
@@ -616,7 +616,7 @@ typedef void (XMLCDECL *errorSAXFunc) (void *ctx,
  *       get all the callbacks for errors.
  */
 typedef void (XMLCDECL *fatalErrorSAXFunc) (void *ctx,
-				const char *msg, ...) ATTRIBUTE_PRINTF(2,3);
+				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
  * isStandaloneSAXFunc:
  * @ctx:  the user data (XML parser context)

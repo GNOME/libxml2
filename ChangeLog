@@ -1,3 +1,7 @@
+Wed Apr 29 16:09:38 CEST 2009 Rob Richards <rrichards@cdatazone.org>
+
+	* parser.c: do not set error code in xmlNsWarn
+
 Wed Apr 15 11:18:24 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parser.h include/libxml/xmlwriter.h

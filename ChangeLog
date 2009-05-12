@@ -1,3 +1,8 @@
+Tue May 12 09:13:58 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: a broken HTML table attributes initialization,
+	  by Roland Steiner <rolandsteiner@google.com>
+
 Tue May 12 08:54:20 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* libxml2.doap: adding RDF dope file.

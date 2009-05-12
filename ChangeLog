@@ -1,3 +1,7 @@
+Tue May 12 08:54:20 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* libxml2.doap: adding RDF dope file.
+
 Tue May 12 08:42:52 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: adapt the extra version detection code to git

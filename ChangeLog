@@ -1,3 +1,7 @@
+Tue May 12 08:42:52 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: adapt the extra version detection code to git
+
 Wed Apr 29 16:09:38 CEST 2009 Rob Richards <rrichards@cdatazone.org>
 
 	* parser.c: do not set error code in xmlNsWarn

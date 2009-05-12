@@ -26,6 +26,14 @@ else if test -d .svn ; then
   then
       LIBXML_VERSION_EXTRA="-SVN$extra"
   fi
+else if test -d .git ; then
+  extra=`git describe | sed 's+LIBXML[[0-9.]]*-++'`
+  echo extra=$extra
+  if test "$extra" != ""
+  then
+      LIBXML_VERSION_EXTRA="-GIT$extra"
+  fi
+fi
 fi
 fi
 AC_SUBST(LIBXML_MAJOR_VERSION)

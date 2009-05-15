@@ -1,7 +1,12 @@
+Fri May 15 17:54:48 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: make sure we keep line numbers fixes #580705
+	  based Aaron Patterson patch
+
 Tue May 12 09:13:58 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: a broken HTML table attributes initialization,
-	  by Roland Steiner <rolandsteiner@google.com>
+	  fixes #581803, by Roland Steiner <rolandsteiner@google.com>
 
 Tue May 12 08:54:20 CEST 2009 Daniel Veillard <daniel@veillard.com>
 

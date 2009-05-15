@@ -4134,6 +4134,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 	return(XML_ERR_INTERNAL_ERROR);
     }
     ctxt->html = 1;
+    ctxt->linenumbers = 1;
     GROW;
     /*
      * SAX: beginning of the document processing.

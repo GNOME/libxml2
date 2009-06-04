@@ -1,3 +1,10 @@
+Thu Jun  4 11:06:07 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c threads.c: change the threading initialization sequence
+	  as suggested by Igor Novoseltsev to avoid crash if xmlInitParser()
+	  is called from a thread which is not the main one, should fix
+	  #584605
+
 Fri May 15 17:54:48 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: make sure we keep line numbers fixes #580705

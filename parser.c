@@ -13847,11 +13847,11 @@ xmlInitParser(void) {
     __xmlGlobalInitMutexLock();
     if (xmlParserInitialized == 0) {
 #endif
+	xmlInitGlobals();
+	xmlInitThreads();
 	if ((xmlGenericError == xmlGenericErrorDefaultFunc) ||
 	    (xmlGenericError == NULL))
 	    initGenericErrorDefaultFunc(NULL);
-	xmlInitGlobals();
-	xmlInitThreads();
 	xmlInitMemory();
 	xmlInitCharEncodingHandlers();
 	xmlDefaultSAXHandlerInit();

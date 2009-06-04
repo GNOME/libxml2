@@ -334,7 +334,7 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 			error + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
 			XML_ERR_ERROR, NULL, 0,
 			NULL, NULL, NULL, 0, 0,
-			xmlXPathErrorMessages[error]);
+			"%s", xmlXPathErrorMessages[error]);
 	return;
     }
     ctxt->error = error;
@@ -345,7 +345,7 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 			XML_ERR_ERROR, NULL, 0,
 			(const char *) ctxt->base, NULL, NULL,
 			ctxt->cur - ctxt->base, 0,
-			xmlXPathErrorMessages[error]);
+			"%s", xmlXPathErrorMessages[error]);
 	return;
     }
 
@@ -369,7 +369,7 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 			XML_ERR_ERROR, NULL, 0,
 			(const char *) ctxt->base, NULL, NULL,
 			ctxt->cur - ctxt->base, 0,
-			xmlXPathErrorMessages[error]);
+			"%s", xmlXPathErrorMessages[error]);
     }
 
 }
@@ -879,7 +879,7 @@ xmlXPathDebugDumpNode(FILE *output, xmlNodePtr cur, int depth) {
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
     if (cur == NULL) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
 	fprintf(output, "Node is NULL !\n");
 	return;
 
@@ -887,7 +887,7 @@ xmlXPathDebugDumpNode(FILE *output, xmlNodePtr cur, int depth) {
 
     if ((cur->type == XML_DOCUMENT_NODE) ||
 	     (cur->type == XML_HTML_DOCUMENT_NODE)) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
 	fprintf(output, " /\n");
     } else if (cur->type == XML_ATTRIBUTE_NODE)
 	xmlDebugDumpAttr(output, (xmlAttrPtr)cur, depth);
@@ -904,7 +904,7 @@ xmlXPathDebugDumpNodeList(FILE *output, xmlNodePtr cur, int depth) {
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
     if (cur == NULL) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
 	fprintf(output, "Node is NULL !\n");
 	return;
 
@@ -927,7 +927,7 @@ xmlXPathDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     if (cur == NULL) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
 	fprintf(output, "NodeSet is NULL !\n");
 	return;
 
@@ -936,7 +936,7 @@ xmlXPathDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur, int depth) {
     if (cur != NULL) {
 	fprintf(output, "Set contains %d nodes:\n", cur->nodeNr);
 	for (i = 0;i < cur->nodeNr;i++) {
-	    fprintf(output, shift);
+	    fprintf(output, "%s", shift);
 	    fprintf(output, "%d", i + 1);
 	    xmlXPathDebugDumpNode(output, cur->nodeTab[i], depth + 1);
 	}
@@ -953,13 +953,13 @@ xmlXPathDebugDumpValueTree(FILE *output, xmlNodeSetPtr cur, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     if ((cur == NULL) || (cur->nodeNr == 0) || (cur->nodeTab[0] == NULL)) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
 	fprintf(output, "Value Tree is NULL !\n");
 	return;
 
     }
 
-    fprintf(output, shift);
+    fprintf(output, "%s", shift);
     fprintf(output, "%d", i + 1);
     xmlXPathDebugDumpNodeList(output, cur->nodeTab[0]->children, depth + 1);
 }
@@ -974,14 +974,14 @@ xmlXPathDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     if (cur == NULL) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
 	fprintf(output, "LocationSet is NULL !\n");
 	return;
 
     }
 
     for (i = 0;i < cur->locNr;i++) {
-	fprintf(output, shift);
+	fprintf(output, "%s", shift);
         fprintf(output, "%d : ", i + 1);
 	xmlXPathDebugDumpObject(output, cur->locTab[i], depth + 1);
     }
@@ -1008,7 +1008,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
 
-    fprintf(output, shift);
+    fprintf(output, "%s", shift);
 
     if (cur == NULL) {
         fprintf(output, "Object is empty (NULL)\n");
@@ -1063,7 +1063,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    if ((cur->user2 == NULL) ||
 		((cur->user2 == cur->user) && (cur->index == cur->index2))) {
 		fprintf(output, "Object is a collapsed range :\n");
-		fprintf(output, shift);
+		fprintf(output, "%s", shift);
 		if (cur->index >= 0)
 		    fprintf(output, "index %d in ", cur->index);
 		fprintf(output, "node\n");
@@ -1071,14 +1071,14 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 			              depth + 1);
 	    } else  {
 		fprintf(output, "Object is a range :\n");
-		fprintf(output, shift);
+		fprintf(output, "%s", shift);
 		fprintf(output, "From ");
 		if (cur->index >= 0)
 		    fprintf(output, "index %d in ", cur->index);
 		fprintf(output, "node\n");
 		xmlXPathDebugDumpNode(output, (xmlNodePtr) cur->user,
 			              depth + 1);
-		fprintf(output, shift);
+		fprintf(output, "%s", shift);
 		fprintf(output, "To ");
 		if (cur->index2 >= 0)
 		    fprintf(output, "index %d in ", cur->index2);
@@ -1111,7 +1111,7 @@ xmlXPathDebugDumpStepOp(FILE *output, xmlXPathCompExprPtr comp,
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
 
-    fprintf(output, shift);
+    fprintf(output, "%s", shift);
     if (op == NULL) {
 	fprintf(output, "Step is NULL\n");
 	return;
@@ -1298,7 +1298,7 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
 
-    fprintf(output, shift);
+    fprintf(output, "%s", shift);
 
     fprintf(output, "Compiled Expression : %d elements\n",
 	    comp->nbStep);

@@ -129,10 +129,10 @@ xmlWriterErrMsg(xmlTextWriterPtr ctxt, xmlParserErrors error,
     if (ctxt != NULL) {
 	__xmlRaiseError(NULL, NULL, NULL, ctxt->ctxt,
 	            NULL, XML_FROM_WRITER, error, XML_ERR_FATAL,
-		    NULL, 0, NULL, NULL, NULL, 0, 0, msg);
+		    NULL, 0, NULL, NULL, NULL, 0, 0, "%s", msg);
     } else {
 	__xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_WRITER, error,
-                    XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0, msg);
+                    XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0, "%s", msg);
     }
 }
 

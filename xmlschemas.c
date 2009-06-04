@@ -4274,7 +4274,7 @@ xmlSchemaContentModelDump(xmlSchemaParticlePtr particle, FILE * output, int dept
     for (i = 0;((i < depth) && (i < 25));i++)
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
-    fprintf(output, shift);
+    fprintf(output, "%s", shift);
     if (particle->children == NULL) {
 	fprintf(output, "MISSING particle term\n");
 	return;

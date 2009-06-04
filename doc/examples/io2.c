@@ -34,7 +34,7 @@ main(void)
      * for demonstration purposes.
      */
     xmlDocDumpFormatMemory(doc, &xmlbuff, &buffersize, 1);
-    printf((char *) xmlbuff);
+    printf("%s", (char *) xmlbuff);
 
     /*
      * Free associated memory.

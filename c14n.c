@@ -234,7 +234,7 @@ xmlC14NErr(xmlC14NCtxPtr ctxt, xmlNodePtr node, int error,
     __xmlRaiseError(NULL, NULL, NULL,
 		    ctxt, node, XML_FROM_C14N, error,
 		    XML_ERR_ERROR, NULL, 0,
-		    NULL, NULL, NULL, 0, 0, msg);
+		    NULL, NULL, NULL, 0, 0, "%s", msg);
 }
 
 /************************************************************************

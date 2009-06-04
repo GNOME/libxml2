@@ -122,7 +122,7 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
         __xmlRaiseError(NULL, channel, data,
                         pctxt, NULL, XML_FROM_VALID, error,
                         XML_ERR_ERROR, NULL, 0, NULL, NULL, NULL, 0, 0,
-                        msg);
+                        "%s", msg);
 }
 
 #if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)

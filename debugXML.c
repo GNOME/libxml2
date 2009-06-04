@@ -141,9 +141,9 @@ xmlCtxtDumpSpaces(xmlDebugCtxtPtr ctxt)
         return;
     if ((ctxt->output != NULL) && (ctxt->depth > 0)) {
         if (ctxt->depth < 50)
-            fprintf(ctxt->output, &ctxt->shift[100 - 2 * ctxt->depth]);
+            fprintf(ctxt->output, "%s", &ctxt->shift[100 - 2 * ctxt->depth]);
         else
-            fprintf(ctxt->output, ctxt->shift);
+            fprintf(ctxt->output, "%s", ctxt->shift);
     }
 }
 
@@ -162,7 +162,7 @@ xmlDebugErr(xmlDebugCtxtPtr ctxt, int error, const char *msg)
 		    NULL, ctxt->node, XML_FROM_CHECK,
 		    error, XML_ERR_ERROR, NULL, 0,
 		    NULL, NULL, NULL, 0, 0,
-		    msg);
+		    "%s", msg);
 }
 static void
 xmlDebugErr2(xmlDebugCtxtPtr ctxt, int error, const char *msg, int extra)

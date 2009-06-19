@@ -1,3 +1,9 @@
+Fri Jun 19 19:51:08 CEST 2009 Rob Richards <rrichards@cdatazone.org>
+
+	* parser.c: use options from current parser context when creating 
+	  a parser context within xmlParseCtxtExternalEntity
+	* xmlwriter.c: fix error message when unable to create output file
+
 Thu Jun  4 11:17:23 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c debugXML.c doc/examples/io2.c parser.c schematron.c

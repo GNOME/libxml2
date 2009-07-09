@@ -1,8 +1,13 @@
+Thu Jul  9 08:43:06 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: avoid calling xmlAddID with NULL values
+	* parser.c: add a few xmlInitParser in some entry points
+
 Thu Jun  4 11:17:23 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c debugXML.c doc/examples/io2.c parser.c schematron.c
 	  valid.c xmlschemas.c xmlwriter.c xpath.c: use %s to printf string
-	  patch by Christian Persch
+	  patch by Christian Persch, fixes #581612
 
 Thu Jun  4 11:06:07 CEST 2009 Daniel Veillard <daniel@veillard.com>
 

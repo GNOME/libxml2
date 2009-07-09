@@ -1860,7 +1860,8 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
         }
     }
 
-    if (xmlIsID((node == NULL) ? NULL : node->doc, node, cur) == 1)
+    if ((value != NULL) &&
+        (xmlIsID((node == NULL) ? NULL : node->doc, node, cur) == 1))
         xmlAddID(NULL, node->doc, value, cur);
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))

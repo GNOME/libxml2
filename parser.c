@@ -13568,6 +13568,8 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
 
+    xmlInitParser();
+
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) {
@@ -13593,7 +13595,7 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
     if (sax != NULL) 
 	ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
-    
+
     return(ret);
 }
 
@@ -13656,14 +13658,16 @@ xmlDocPtr xmlRecoverMemory(const char *buffer, int size) {
  *
  * A better SAX parsing routine.
  * parse an XML in-memory buffer and call the given SAX handler routines.
- * 
+ *
  * Returns 0 in case of success or a error number otherwise
  */
 int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 			  const char *buffer, int size) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
-    
+
+    xmlInitParser();
+
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL) return -1;
     if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
@@ -13673,7 +13677,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 
     if (user_data != NULL)
 	ctxt->userData = user_data;
-    
+
     xmlParseDocument(ctxt);
     
     if (ctxt->wellFormed)

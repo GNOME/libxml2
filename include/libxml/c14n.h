@@ -75,7 +75,7 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 		xmlC14NDocDumpMemory	(xmlDocPtr doc,
 					 xmlNodeSetPtr nodes,
-					 xmlC14NMode mode,
+					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
 					 xmlChar **doc_txt_ptr);
@@ -83,7 +83,7 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 		xmlC14NDocSave		(xmlDocPtr doc,
 					 xmlNodeSetPtr nodes,
-					 xmlC14NMode mode,
+					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
 					 const char* filename,
@@ -111,7 +111,7 @@ XMLPUBFUN int XMLCALL
 		xmlC14NExecute		(xmlDocPtr doc,
 					 xmlC14NIsVisibleCallback is_visible_callback,
 					 void* user_data,
-					 xmlC14NMode mode,
+					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
 					 xmlOutputBufferPtr buf);

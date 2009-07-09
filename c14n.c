@@ -1863,14 +1863,28 @@ xmlC14NNewCtx(xmlDocPtr doc,
  */
 int 		
 xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
-	 void* user_data, xmlC14NMode mode, xmlChar **inclusive_ns_prefixes,
+	 void* user_data, int mode, xmlChar **inclusive_ns_prefixes,
 	 int with_comments, xmlOutputBufferPtr buf) {
 
     xmlC14NCtxPtr ctx;
+    xmlC14NMode c14n_mode = XML_C14N_1_0;
     int ret;
 
     if ((buf == NULL) || (doc == NULL)) {
         xmlC14NErrParam("executing c14n");
+        return (-1);
+    }
+
+    /* for backward compatibility, we have to have "mode" as "int" 
+       and here we check that user gives valid value */
+    switch(mode) {
+    case XML_C14N_1_0:
+    case XML_C14N_EXCLUSIVE_1_0:
+    case XML_C14N_1_1: 
+         c14n_mode = (xmlC14NMode)mode;
+         break;
+    default:       
+        xmlC14NErrParam("invalid mode for executing c14n");
         return (-1);
     }
 
@@ -1884,8 +1898,8 @@ xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
     }
 
     ctx = xmlC14NNewCtx(doc, is_visible_callback, user_data, 
-			            mode, inclusive_ns_prefixes,
-                        with_comments, buf);
+	            c14n_mode, inclusive_ns_prefixes,
+                    with_comments, buf);
     if (ctx == NULL) {
         xmlC14NErr(NULL, (xmlNodePtr) doc, XML_C14N_CREATE_CTXT,
 		   "xmlC14NExecute: unable to create C14N context\n");
@@ -1986,7 +2000,7 @@ xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
  */
 int
 xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
-                     xmlC14NMode mode, xmlChar ** inclusive_ns_prefixes,
+                     int mode, xmlChar ** inclusive_ns_prefixes,
                      int with_comments, xmlChar ** doc_txt_ptr)
 {
     int ret;
@@ -2057,7 +2071,7 @@ xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
  */
 int
 xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
-               xmlC14NMode mode, xmlChar ** inclusive_ns_prefixes,
+               int mode, xmlChar ** inclusive_ns_prefixes,
                int with_comments, const char *filename, int compression)
 {
     xmlOutputBufferPtr buf;

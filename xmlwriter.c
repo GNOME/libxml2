@@ -242,8 +242,8 @@ xmlNewTextWriterFilename(const char *uri, int compression)
 
     out = xmlOutputBufferCreateFilename(uri, NULL, compression);
     if (out == NULL) {
-        xmlWriterErrMsg(NULL, XML_ERR_NO_MEMORY,
-                        "xmlNewTextWriterFilename : out of memory!\n");
+        xmlWriterErrMsg(NULL, XML_IO_EIO,
+                        "xmlNewTextWriterFilename : cannot open uri\n");
         return NULL;
     }
 

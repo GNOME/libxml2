@@ -1,7 +1,19 @@
+Thu Jul  9 08:52:35 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* config.h.in: update of libtool seems to have modified it
+	* python/libxml2class.txt: python update modified the order
+	  of classes apparently
+
 Thu Jul  9 08:43:06 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: avoid calling xmlAddID with NULL values
 	* parser.c: add a few xmlInitParser in some entry points
+
+Fri Jun 19 19:51:08 CEST 2009 Rob Richards <rrichards@cdatazone.org>
+
+	* parser.c: use options from current parser context when creating 
+	  a parser context within xmlParseCtxtExternalEntity
+	* xmlwriter.c: fix error message when unable to create output file
 
 Thu Jun  4 11:17:23 CEST 2009 Daniel Veillard <daniel@veillard.com>
 

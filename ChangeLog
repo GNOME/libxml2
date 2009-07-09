@@ -1,3 +1,13 @@
+Thu Jul  9 10:21:00 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	Aleksey Sanin support for c14n 1.1
+	* c14n.c include/libxml/c14n.h: adds support for C14N 1.1,
+	  new flags at the API level
+	* runtest.c Makefile.am testC14N.c xmllint.c: add support in CLI
+	  tools and test binaries
+	* result/c14n/1-1-without-comments/* test/c14n/1-1-without-comments/*:
+	  add a new batch of tests
+
 Thu Jul  9 08:52:35 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	* config.h.in: update of libtool seems to have modified it

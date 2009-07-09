@@ -923,7 +923,7 @@ VTimingtests: xmllint$(EXEEXT)
 
 C14Ntests : testC14N$(EXEEXT)
 	@echo "## C14N and XPath regression tests"
-	-@(for m in with-comments without-comments exc-without-comments ; do \
+	-@(for m in with-comments without-comments 1-1-without-comments exc-without-comments ; do \
 	    for i in $(srcdir)/test/c14n/$$m/*.xml ; do  \
 		if [ ! -d $$i ] ; then \
 		    name=`basename $$i .xml`; \

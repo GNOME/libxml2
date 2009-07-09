@@ -3671,7 +3671,7 @@ parse_list(xmlChar *str) {
 }
 
 static int
-c14nRunTest(const char* xml_filename, int with_comments, int exclusive,
+c14nRunTest(const char* xml_filename, int with_comments, int mode,
 	    const char* xpath_filename, const char *ns_filename,
 	    const char* result_file) {
     xmlDocPtr doc;
@@ -3733,12 +3733,13 @@ c14nRunTest(const char* xml_filename, int with_comments, int exclusive,
     /* fprintf(stderr,"File \"%s\" loaded: start canonization\n", xml_filename); */
     ret = xmlC14NDocDumpMemory(doc,
 	    (xpath) ? xpath->nodesetval : NULL,
-	    exclusive, inclusive_namespaces,
+	    mode, inclusive_namespaces,
 	    with_comments, &result);
     if (ret >= 0) {
 	if(result != NULL) {
 	    if (compareFileMem(result_file, (const char *) result, ret)) {
 		fprintf(stderr, "Result mismatch for %s\n", xml_filename);
+		fprintf(stderr, "RESULT:\n%s\n", (const char*)result);
 	        ret = -1;
 	    }
 	}
@@ -3760,7 +3761,7 @@ c14nRunTest(const char* xml_filename, int with_comments, int exclusive,
 }
 
 static int
-c14nCommonTest(const char *filename, int with_comments, int exclusive,
+c14nCommonTest(const char *filename, int with_comments, int mode,
                const char *subdir) {
     char buf[500];
     char prefix[500];
@@ -3793,7 +3794,7 @@ c14nCommonTest(const char *filename, int with_comments, int exclusive,
     }
 
     nb_tests++;
-    if (c14nRunTest(filename, with_comments, exclusive,
+    if (c14nRunTest(filename, with_comments, mode,
                     xpath, ns, result) < 0)
         ret = 1;
 
@@ -3808,21 +3809,28 @@ c14nWithCommentTest(const char *filename,
                     const char *resul ATTRIBUTE_UNUSED,
 		    const char *err ATTRIBUTE_UNUSED,
 		    int options ATTRIBUTE_UNUSED) {
-    return(c14nCommonTest(filename, 1, 0, "with-comments"));
+    return(c14nCommonTest(filename, 1, XML_C14N_1_0, "with-comments"));
 }
 static int
 c14nWithoutCommentTest(const char *filename,
                     const char *resul ATTRIBUTE_UNUSED,
 		    const char *err ATTRIBUTE_UNUSED,
 		    int options ATTRIBUTE_UNUSED) {
-    return(c14nCommonTest(filename, 0, 0, "without-comments"));
+    return(c14nCommonTest(filename, 0, XML_C14N_1_0, "without-comments"));
 }
 static int
 c14nExcWithoutCommentTest(const char *filename,
                     const char *resul ATTRIBUTE_UNUSED,
 		    const char *err ATTRIBUTE_UNUSED,
 		    int options ATTRIBUTE_UNUSED) {
-    return(c14nCommonTest(filename, 0, 1, "exc-without-comments"));
+    return(c14nCommonTest(filename, 0, XML_C14N_EXCLUSIVE_1_0, "exc-without-comments"));
+}
+static int
+c14n11WithoutCommentTest(const char *filename,
+                    const char *resul ATTRIBUTE_UNUSED,
+		    const char *err ATTRIBUTE_UNUSED,
+		    int options ATTRIBUTE_UNUSED) {
+    return(c14nCommonTest(filename, 0, XML_C14N_1_1, "1-1-without-comments"));
 }
 #endif
 #if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined (LIBXML_SAX1_ENABLED)
@@ -4256,6 +4264,9 @@ testDesc testDescriptions[] = {
       0 },
     { "C14N exclusive without comments regression tests" ,
       c14nExcWithoutCommentTest, "./test/c14n/exc-without-comments/*.xml", NULL, NULL, NULL,
+      0 },
+    { "C14N 1.1 without comments regression tests" ,
+      c14n11WithoutCommentTest, "./test/c14n/1-1-without-comments/*.xml", NULL, NULL, NULL,
       0 },
 #endif
 #if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_SAX1_ENABLED)

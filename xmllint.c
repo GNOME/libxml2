@@ -184,6 +184,7 @@ static int nocatalogs = 0;
 #endif
 #ifdef LIBXML_C14N_ENABLED
 static int canonical = 0;
+static int canonical_11 = 0;
 static int exc_canonical = 0;
 #endif
 #ifdef LIBXML_READER_ENABLED
@@ -2429,7 +2430,19 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	        xmlChar *result = NULL;
 		int size;
 
-		size = xmlC14NDocDumpMemory(doc, NULL, 0, NULL, 1, &result);
+		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_1_0, NULL, 1, &result);
+		if (size >= 0) {
+		    write(1, result, size);
+		    xmlFree(result);
+		} else {
+		    fprintf(stderr, "Failed to canonicalize\n");
+		    progresult = XMLLINT_ERR_OUT;
+		}
+	    } else if (canonical) {
+	        xmlChar *result = NULL;
+		int size;
+
+		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_1_1, NULL, 1, &result);
 		if (size >= 0) {
 		    write(1, result, size);
 		    xmlFree(result);
@@ -2442,7 +2455,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	        xmlChar *result = NULL;
 		int size;
 
-		size = xmlC14NDocDumpMemory(doc, NULL, 1, NULL, 1, &result);
+		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_EXCLUSIVE_1_0, NULL, 1, &result);
 		if (size >= 0) {
 		    write(1, result, size);
 		    xmlFree(result);
@@ -2878,7 +2891,8 @@ static void usage(const char *name) {
     printf("\t--encode encoding : output in the given encoding\n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
 #endif /* LIBXML_OUTPUT_ENABLED */
-    printf("\t--c14n : save in W3C canonical format (with comments)\n");
+    printf("\t--c14n : save in W3C canonical format v1.0 (with comments)\n");
+    printf("\t--c14n11 : save in W3C canonical format v1.1 (with comments)\n");
     printf("\t--exc-c14n : save in W3C exclusive canonical format (with comments)\n");
 #ifdef LIBXML_C14N_ENABLED
 #endif /* LIBXML_C14N_ENABLED */
@@ -3139,6 +3153,11 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-c14n")) ||
 		 (!strcmp(argv[i], "--c14n"))) {
 	    canonical++;
+	    options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
+	} 
+	else if ((!strcmp(argv[i], "-c14n11")) ||
+		 (!strcmp(argv[i], "--c14n11"))) {
+	    canonical_11++;
 	    options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
 	} 
 	else if ((!strcmp(argv[i], "-exc-c14n")) ||

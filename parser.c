@@ -13125,8 +13125,9 @@ xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
 	return(NULL);
     }
 
-	if (pctx != NULL) {
-		ctxt->options = pctx->options;
+    if (pctx != NULL) {
+        ctxt->options = pctx->options;
+        ctxt->_private = pctx->_private;
     }
 
     uri = xmlBuildURI(URL, base);

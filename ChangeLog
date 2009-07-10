@@ -1,3 +1,9 @@
+Fri Jul 10 16:11:34 CEST 2009 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix a regression in entity parsing when using the reader
+	  introduced because we were not reusing _private on entities parsing
+	  context
+
 Thu Jul  9 10:21:00 CEST 2009 Daniel Veillard <daniel@veillard.com>
 
 	Aleksey Sanin support for c14n 1.1

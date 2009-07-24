@@ -217,6 +217,10 @@
      <summary>Provide Canonical XML and Exclusive XML Canonicalization</summary>
      <description>the c14n modules provides a  &quot;Canonical XML&quot; implementation</description>
      <author>Aleksey Sanin &lt;aleksey@aleksey.com&gt; </author>
+     <exports symbol='XML_C14N_1_1' type='enum'/>
+     <exports symbol='XML_C14N_1_0' type='enum'/>
+     <exports symbol='XML_C14N_EXCLUSIVE_1_0' type='enum'/>
+     <exports symbol='xmlC14NMode' type='typedef'/>
      <exports symbol='xmlC14NExecute' type='function'/>
      <exports symbol='xmlC14NDocSaveTo' type='function'/>
      <exports symbol='xmlC14NIsVisibleCallback' type='function'/>
@@ -3336,7 +3340,7 @@
      <description>compile-time version informations for the XML library </description>
      <author>Daniel Veillard </author>
      <exports symbol='LIBXML_VERSION_EXTRA' type='macro'/>
-     <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_MODULES_ENABLED' type='macro'/>
      <exports symbol='LIBXML_LEGACY_ENABLED' type='macro'/>
      <exports symbol='LIBXML_READER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_THREAD_ENABLED' type='macro'/>
@@ -3345,8 +3349,8 @@
      <exports symbol='LIBXML_DEBUG_ENABLED' type='macro'/>
      <exports symbol='LIBXML_XINCLUDE_ENABLED' type='macro'/>
      <exports symbol='ATTRIBUTE_UNUSED' type='macro'/>
-     <exports symbol='LIBXML_MODULES_ENABLED' type='macro'/>
-     <exports symbol='ATTRIBUTE_PRINTF' type='macro'/>
+     <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SAX1_ENABLED' type='macro'/>
      <exports symbol='WITHOUT_TRIO' type='macro'/>
      <exports symbol='LIBXML_SCHEMATRON_ENABLED' type='macro'/>
@@ -3368,10 +3372,10 @@
      <exports symbol='LIBXML_AUTOMATA_ENABLED' type='macro'/>
      <exports symbol='LIBXML_ZLIB_ENABLED' type='macro'/>
      <exports symbol='ATTRIBUTE_ALLOC_SIZE' type='macro'/>
-     <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_C14N_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SCHEMAS_ENABLED' type='macro'/>
      <exports symbol='DEBUG_MEMORY_LOCATION' type='macro'/>
+     <exports symbol='LIBXML_ATTR_FORMAT' type='macro'/>
      <exports symbol='LIBXML_TEST_VERSION' type='macro'/>
      <exports symbol='LIBXML_XPATH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_EXPR_ENABLED' type='macro'/>
@@ -3771,9 +3775,6 @@
     <macro name='ATTRIBUTE_ALLOC_SIZE' file='xmlversion'>
       <info>Macro used to indicate to GCC this is an allocator function</info>
     </macro>
-    <macro name='ATTRIBUTE_PRINTF' file='xmlversion'>
-      <info>Macro used to indicate to GCC the parameter are printf like</info>
-    </macro>
     <macro name='ATTRIBUTE_UNUSED' file='xmlversion'>
       <info>Macro used to signal to GCC unused function parameters</info>
     </macro>
@@ -3909,6 +3910,9 @@
     <macro name='IS_PUBIDCHAR_CH' file='parserInternals'>
       <info>Same as IS_PUBIDCHAR but for single-byte value</info>
       <arg name='c' info='an xmlChar value (normally unsigned char)'/>
+    </macro>
+    <macro name='LIBXML_ATTR_FORMAT' file='xmlversion'>
+      <info>Macro used to indicate to GCC the parameter are printf like</info>
     </macro>
     <macro name='LIBXML_AUTOMATA_ENABLED' file='xmlversion'>
       <info>Whether the automata interfaces are compiled in</info>
@@ -4624,8 +4628,11 @@
     <enum name='XML_BUFFER_ALLOC_EXACT' file='tree' value='2' type='xmlBufferAllocationScheme' info='grow only to the minimal size'/>
     <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme' info='immutable buffer'/>
     <enum name='XML_BUFFER_ALLOC_IO' file='tree' value='4' type='xmlBufferAllocationScheme' info=' special allocation scheme used for I/O'/>
+    <enum name='XML_C14N_1_0' file='c14n' value='0' type='xmlC14NMode' info='Origianal C14N 1.0 spec'/>
+    <enum name='XML_C14N_1_1' file='c14n' value='2' type='xmlC14NMode' info=' C14N 1.1 spec'/>
     <enum name='XML_C14N_CREATE_CTXT' file='xmlerror' value='1950' type='xmlParserErrors'/>
     <enum name='XML_C14N_CREATE_STACK' file='xmlerror' value='1952' type='xmlParserErrors' info='1952'/>
+    <enum name='XML_C14N_EXCLUSIVE_1_0' file='c14n' value='1' type='xmlC14NMode' info='Exclusive C14N 1.0 spec'/>
     <enum name='XML_C14N_INVALID_NODE' file='xmlerror' value='1953' type='xmlParserErrors' info='1953'/>
     <enum name='XML_C14N_RELATIVE_NAMESPACE' file='xmlerror' value='1955' type='xmlParserErrors' info='1955'/>
     <enum name='XML_C14N_REQUIRES_UTF8' file='xmlerror' value='1951' type='xmlParserErrors' info='1951'/>
@@ -5927,6 +5934,7 @@ if necessary or NULL'/>
     </struct>
     <typedef name='xmlBufferAllocationScheme' file='tree' type='enum'/>
     <typedef name='xmlBufferPtr' file='tree' type='xmlBuffer *'/>
+    <typedef name='xmlC14NMode' file='c14n' type='enum'/>
     <struct name='xmlCatalog' file='catalog' type='struct _xmlCatalog'/>
     <typedef name='xmlCatalogAllow' file='catalog' type='enum'/>
     <typedef name='xmlCatalogPrefer' file='catalog' type='enum'/>
@@ -8581,7 +8589,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='the number of bytes written on success or a negative value on fail'/>
       <arg name='doc' type='xmlDocPtr' info='the XML document for canonization'/>
       <arg name='nodes' type='xmlNodeSetPtr' info='the nodes set to be included in the canonized image or NULL if all document nodes should be included'/>
-      <arg name='exclusive' type='int' info='the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization)'/>
+      <arg name='mode' type='int' info='the c14n mode (see @xmlC14NMode)'/>
       <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise)'/>
       <arg name='with_comments' type='int' info='include comments in the result (!=0) or not (==0)'/>
       <arg name='doc_txt_ptr' type='xmlChar **' info='the memory pointer for allocated canonical XML text; the caller of this functions is responsible for calling xmlFree() to free allocated memory'/>
@@ -8592,7 +8600,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='the number of bytes written success or a negative value on fail'/>
       <arg name='doc' type='xmlDocPtr' info='the XML document for canonization'/>
       <arg name='nodes' type='xmlNodeSetPtr' info='the nodes set to be included in the canonized image or NULL if all document nodes should be included'/>
-      <arg name='exclusive' type='int' info='the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization)'/>
+      <arg name='mode' type='int' info='the c14n mode (see @xmlC14NMode)'/>
       <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise)'/>
       <arg name='with_comments' type='int' info='include comments in the result (!=0) or not (==0)'/>
       <arg name='filename' type='const char *' info='the filename to store canonical XML image'/>
@@ -8604,7 +8612,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='non-negative value on success or a negative value on fail'/>
       <arg name='doc' type='xmlDocPtr' info='the XML document for canonization'/>
       <arg name='nodes' type='xmlNodeSetPtr' info='the nodes set to be included in the canonized image or NULL if all document nodes should be included'/>
-      <arg name='exclusive' type='int' info='the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization)'/>
+      <arg name='mode' type='int' info='the c14n mode (see @xmlC14NMode)'/>
       <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise)'/>
       <arg name='with_comments' type='int' info='include comments in the result (!=0) or not (==0)'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output'/>
@@ -8616,7 +8624,7 @@ Could we use @subtypes for this?'/>
       <arg name='doc' type='xmlDocPtr' info='the XML document for canonization'/>
       <arg name='is_visible_callback' type='xmlC14NIsVisibleCallback' info='the function to use to determine is node visible or not'/>
       <arg name='user_data' type='void *' info='the first parameter for @is_visible_callback function (in most cases, it is nodes set)'/>
-      <arg name='exclusive' type='int' info='the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization)'/>
+      <arg name='mode' type='int' info='the c14n mode (see @xmlC14NMode)'/>
       <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise)'/>
       <arg name='with_comments' type='int' info='include comments in the result (!=0) or not (==0)'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output'/>

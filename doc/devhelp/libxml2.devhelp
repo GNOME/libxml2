@@ -53,7 +53,6 @@
   </chapters>
   <functions>
     <function name="ATTRIBUTE_ALLOC_SIZE" link="libxml2-xmlversion.html#ATTRIBUTE_ALLOC_SIZE"/>
-    <function name="ATTRIBUTE_PRINTF" link="libxml2-xmlversion.html#ATTRIBUTE_PRINTF"/>
     <function name="ATTRIBUTE_UNUSED" link="libxml2-xmlversion.html#ATTRIBUTE_UNUSED"/>
     <function name="BAD_CAST" link="libxml2-xmlstring.html#BAD_CAST"/>
     <function name="BASE_BUFFER_SIZE" link="libxml2-tree.html#BASE_BUFFER_SIZE"/>
@@ -92,6 +91,7 @@
     <function name="IS_LETTER_CH" link="libxml2-parserInternals.html#IS_LETTER_CH"/>
     <function name="IS_PUBIDCHAR" link="libxml2-parserInternals.html#IS_PUBIDCHAR"/>
     <function name="IS_PUBIDCHAR_CH" link="libxml2-parserInternals.html#IS_PUBIDCHAR_CH"/>
+    <function name="LIBXML_ATTR_FORMAT" link="libxml2-xmlversion.html#LIBXML_ATTR_FORMAT"/>
     <function name="LIBXML_AUTOMATA_ENABLED" link="libxml2-xmlversion.html#LIBXML_AUTOMATA_ENABLED"/>
     <function name="LIBXML_C14N_ENABLED" link="libxml2-xmlversion.html#LIBXML_C14N_ENABLED"/>
     <function name="LIBXML_CATALOG_ENABLED" link="libxml2-xmlversion.html#LIBXML_CATALOG_ENABLED"/>
@@ -343,8 +343,11 @@
     <function name="XML_BUFFER_ALLOC_EXACT" link="libxml2-tree.html#XML_BUFFER_ALLOC_EXACT"/>
     <function name="XML_BUFFER_ALLOC_IMMUTABLE" link="libxml2-tree.html#XML_BUFFER_ALLOC_IMMUTABLE"/>
     <function name="XML_BUFFER_ALLOC_IO" link="libxml2-tree.html#XML_BUFFER_ALLOC_IO"/>
+    <function name="XML_C14N_1_0" link="libxml2-c14n.html#XML_C14N_1_0"/>
+    <function name="XML_C14N_1_1" link="libxml2-c14n.html#XML_C14N_1_1"/>
     <function name="XML_C14N_CREATE_CTXT" link="libxml2-xmlerror.html#XML_C14N_CREATE_CTXT"/>
     <function name="XML_C14N_CREATE_STACK" link="libxml2-xmlerror.html#XML_C14N_CREATE_STACK"/>
+    <function name="XML_C14N_EXCLUSIVE_1_0" link="libxml2-c14n.html#XML_C14N_EXCLUSIVE_1_0"/>
     <function name="XML_C14N_INVALID_NODE" link="libxml2-xmlerror.html#XML_C14N_INVALID_NODE"/>
     <function name="XML_C14N_RELATIVE_NAMESPACE" link="libxml2-xmlerror.html#XML_C14N_RELATIVE_NAMESPACE"/>
     <function name="XML_C14N_REQUIRES_UTF8" link="libxml2-xmlerror.html#XML_C14N_REQUIRES_UTF8"/>
@@ -1559,6 +1562,7 @@
     <function name="xmlAutomataStatePtr" link="libxml2-xmlautomata.html#xmlAutomataStatePtr"/>
     <function name="xmlBufferAllocationScheme" link="libxml2-tree.html#xmlBufferAllocationScheme"/>
     <function name="xmlBufferPtr" link="libxml2-tree.html#xmlBufferPtr"/>
+    <function name="xmlC14NMode" link="libxml2-c14n.html#xmlC14NMode"/>
     <function name="xmlCatalogAllow" link="libxml2-catalog.html#xmlCatalogAllow"/>
     <function name="xmlCatalogPrefer" link="libxml2-catalog.html#xmlCatalogPrefer"/>
     <function name="xmlCatalogPtr" link="libxml2-catalog.html#xmlCatalogPtr"/>

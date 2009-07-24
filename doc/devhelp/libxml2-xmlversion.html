@@ -44,7 +44,7 @@
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
       <pre class="synopsis">#define <a href="#LIBXML_VERSION_EXTRA">LIBXML_VERSION_EXTRA</a>;
-#define <a href="#LIBXML_DOCB_ENABLED">LIBXML_DOCB_ENABLED</a>;
+#define <a href="#LIBXML_MODULES_ENABLED">LIBXML_MODULES_ENABLED</a>;
 #define <a href="#LIBXML_LEGACY_ENABLED">LIBXML_LEGACY_ENABLED</a>;
 #define <a href="#LIBXML_READER_ENABLED">LIBXML_READER_ENABLED</a>;
 #define <a href="#LIBXML_THREAD_ENABLED">LIBXML_THREAD_ENABLED</a>;
@@ -53,8 +53,8 @@
 #define <a href="#LIBXML_DEBUG_ENABLED">LIBXML_DEBUG_ENABLED</a>;
 #define <a href="#LIBXML_XINCLUDE_ENABLED">LIBXML_XINCLUDE_ENABLED</a>;
 #define <a href="#ATTRIBUTE_UNUSED">ATTRIBUTE_UNUSED</a>;
-#define <a href="#LIBXML_MODULES_ENABLED">LIBXML_MODULES_ENABLED</a>;
-#define <a href="#ATTRIBUTE_PRINTF">ATTRIBUTE_PRINTF</a>;
+#define <a href="#LIBXML_DOCB_ENABLED">LIBXML_DOCB_ENABLED</a>;
+#define <a href="#LIBXML_PUSH_ENABLED">LIBXML_PUSH_ENABLED</a>;
 #define <a href="#LIBXML_SAX1_ENABLED">LIBXML_SAX1_ENABLED</a>;
 #define <a href="#WITHOUT_TRIO">WITHOUT_TRIO</a>;
 #define <a href="#LIBXML_SCHEMATRON_ENABLED">LIBXML_SCHEMATRON_ENABLED</a>;
@@ -76,10 +76,10 @@
 #define <a href="#LIBXML_AUTOMATA_ENABLED">LIBXML_AUTOMATA_ENABLED</a>;
 #define <a href="#LIBXML_ZLIB_ENABLED">LIBXML_ZLIB_ENABLED</a>;
 #define <a href="#ATTRIBUTE_ALLOC_SIZE">ATTRIBUTE_ALLOC_SIZE</a>;
-#define <a href="#LIBXML_PUSH_ENABLED">LIBXML_PUSH_ENABLED</a>;
 #define <a href="#LIBXML_C14N_ENABLED">LIBXML_C14N_ENABLED</a>;
 #define <a href="#LIBXML_SCHEMAS_ENABLED">LIBXML_SCHEMAS_ENABLED</a>;
 #define <a href="#DEBUG_MEMORY_LOCATION">DEBUG_MEMORY_LOCATION</a>;
+#define <a href="#LIBXML_ATTR_FORMAT">LIBXML_ATTR_FORMAT</a>;
 #define <a href="#LIBXML_TEST_VERSION">LIBXML_TEST_VERSION</a>;
 #define <a href="#LIBXML_XPATH_ENABLED">LIBXML_XPATH_ENABLED</a>;
 #define <a href="#LIBXML_EXPR_ENABLED">LIBXML_EXPR_ENABLED</a>;
@@ -99,16 +99,16 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
 </pre><p>Macro used to indicate to GCC this is an allocator function</p>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="ATTRIBUTE_PRINTF">Macro </a>ATTRIBUTE_PRINTF</h3><pre class="programlisting">#define <a href="#ATTRIBUTE_PRINTF">ATTRIBUTE_PRINTF</a>;
-</pre><p>Macro used to indicate to GCC the parameter are printf like</p>
-</div>
-        <hr/>
         <div class="refsect2" lang="en"><h3><a name="ATTRIBUTE_UNUSED">Macro </a>ATTRIBUTE_UNUSED</h3><pre class="programlisting">#define <a href="#ATTRIBUTE_UNUSED">ATTRIBUTE_UNUSED</a>;
 </pre><p>Macro used to signal to GCC unused function parameters</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="DEBUG_MEMORY_LOCATION">Macro </a>DEBUG_MEMORY_LOCATION</h3><pre class="programlisting">#define <a href="#DEBUG_MEMORY_LOCATION">DEBUG_MEMORY_LOCATION</a>;
 </pre><p>Whether the memory debugging is configured in</p>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="LIBXML_ATTR_FORMAT">Macro </a>LIBXML_ATTR_FORMAT</h3><pre class="programlisting">#define <a href="#LIBXML_ATTR_FORMAT">LIBXML_ATTR_FORMAT</a>;
+</pre><p>Macro used to indicate to GCC the parameter are printf like</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="LIBXML_AUTOMATA_ENABLED">Macro </a>LIBXML_AUTOMATA_ENABLED</h3><pre class="programlisting">#define <a href="#LIBXML_AUTOMATA_ENABLED">LIBXML_AUTOMATA_ENABLED</a>;

@@ -74,6 +74,7 @@ ignored_words = {
   "X_IN_Y": (5, "macro function builder"),
   "ATTRIBUTE_ALLOC_SIZE": (3, "macro for gcc checking extension"),
   "ATTRIBUTE_PRINTF": (5, "macro for gcc printf args checking extension"),
+  "LIBXML_ATTR_FORMAT": (5, "macro for gcc printf args checking extension"),
 }
 
 def escape(raw):

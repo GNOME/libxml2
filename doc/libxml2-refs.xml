@@ -2,7 +2,6 @@
 <apirefs name='libxml2'>
   <references>
     <reference name='ATTRIBUTE_ALLOC_SIZE' href='html/libxml-xmlversion.html#ATTRIBUTE_ALLOC_SIZE'/>
-    <reference name='ATTRIBUTE_PRINTF' href='html/libxml-xmlversion.html#ATTRIBUTE_PRINTF'/>
     <reference name='ATTRIBUTE_UNUSED' href='html/libxml-xmlversion.html#ATTRIBUTE_UNUSED'/>
     <reference name='BAD_CAST' href='html/libxml-xmlstring.html#BAD_CAST'/>
     <reference name='BASE_BUFFER_SIZE' href='html/libxml-tree.html#BASE_BUFFER_SIZE'/>
@@ -53,6 +52,7 @@
     <reference name='IS_LETTER_CH' href='html/libxml-parserInternals.html#IS_LETTER_CH'/>
     <reference name='IS_PUBIDCHAR' href='html/libxml-parserInternals.html#IS_PUBIDCHAR'/>
     <reference name='IS_PUBIDCHAR_CH' href='html/libxml-parserInternals.html#IS_PUBIDCHAR_CH'/>
+    <reference name='LIBXML_ATTR_FORMAT' href='html/libxml-xmlversion.html#LIBXML_ATTR_FORMAT'/>
     <reference name='LIBXML_AUTOMATA_ENABLED' href='html/libxml-xmlversion.html#LIBXML_AUTOMATA_ENABLED'/>
     <reference name='LIBXML_C14N_ENABLED' href='html/libxml-xmlversion.html#LIBXML_C14N_ENABLED'/>
     <reference name='LIBXML_CATALOG_ENABLED' href='html/libxml-xmlversion.html#LIBXML_CATALOG_ENABLED'/>
@@ -143,8 +143,11 @@
     <reference name='XML_BUFFER_ALLOC_EXACT' href='html/libxml-tree.html#XML_BUFFER_ALLOC_EXACT'/>
     <reference name='XML_BUFFER_ALLOC_IMMUTABLE' href='html/libxml-tree.html#XML_BUFFER_ALLOC_IMMUTABLE'/>
     <reference name='XML_BUFFER_ALLOC_IO' href='html/libxml-tree.html#XML_BUFFER_ALLOC_IO'/>
+    <reference name='XML_C14N_1_0' href='html/libxml-c14n.html#XML_C14N_1_0'/>
+    <reference name='XML_C14N_1_1' href='html/libxml-c14n.html#XML_C14N_1_1'/>
     <reference name='XML_C14N_CREATE_CTXT' href='html/libxml-xmlerror.html#XML_C14N_CREATE_CTXT'/>
     <reference name='XML_C14N_CREATE_STACK' href='html/libxml-xmlerror.html#XML_C14N_CREATE_STACK'/>
+    <reference name='XML_C14N_EXCLUSIVE_1_0' href='html/libxml-c14n.html#XML_C14N_EXCLUSIVE_1_0'/>
     <reference name='XML_C14N_INVALID_NODE' href='html/libxml-xmlerror.html#XML_C14N_INVALID_NODE'/>
     <reference name='XML_C14N_RELATIVE_NAMESPACE' href='html/libxml-xmlerror.html#XML_C14N_RELATIVE_NAMESPACE'/>
     <reference name='XML_C14N_REQUIRES_UTF8' href='html/libxml-xmlerror.html#XML_C14N_REQUIRES_UTF8'/>
@@ -1769,6 +1772,7 @@
     <reference name='xmlC14NDocSaveTo' href='html/libxml-c14n.html#xmlC14NDocSaveTo'/>
     <reference name='xmlC14NExecute' href='html/libxml-c14n.html#xmlC14NExecute'/>
     <reference name='xmlC14NIsVisibleCallback' href='html/libxml-c14n.html#xmlC14NIsVisibleCallback'/>
+    <reference name='xmlC14NMode' href='html/libxml-c14n.html#xmlC14NMode'/>
     <reference name='xmlCanonicPath' href='html/libxml-uri.html#xmlCanonicPath'/>
     <reference name='xmlCatalog' href='html/libxml-catalog.html#xmlCatalog'/>
     <reference name='xmlCatalogAdd' href='html/libxml-catalog.html#xmlCatalogAdd'/>
@@ -3529,7 +3533,6 @@
   <alpha>
     <letter name='A'>
       <ref name='ATTRIBUTE_ALLOC_SIZE'/>
-      <ref name='ATTRIBUTE_PRINTF'/>
       <ref name='ATTRIBUTE_UNUSED'/>
     </letter>
     <letter name='B'>
@@ -3592,6 +3595,7 @@
       <ref name='IS_PUBIDCHAR_CH'/>
     </letter>
     <letter name='L'>
+      <ref name='LIBXML_ATTR_FORMAT'/>
       <ref name='LIBXML_AUTOMATA_ENABLED'/>
       <ref name='LIBXML_C14N_ENABLED'/>
       <ref name='LIBXML_CATALOG_ENABLED'/>
@@ -3692,8 +3696,11 @@
       <ref name='XML_BUFFER_ALLOC_EXACT'/>
       <ref name='XML_BUFFER_ALLOC_IMMUTABLE'/>
       <ref name='XML_BUFFER_ALLOC_IO'/>
+      <ref name='XML_C14N_1_0'/>
+      <ref name='XML_C14N_1_1'/>
       <ref name='XML_C14N_CREATE_CTXT'/>
       <ref name='XML_C14N_CREATE_STACK'/>
+      <ref name='XML_C14N_EXCLUSIVE_1_0'/>
       <ref name='XML_C14N_INVALID_NODE'/>
       <ref name='XML_C14N_RELATIVE_NAMESPACE'/>
       <ref name='XML_C14N_REQUIRES_UTF8'/>
@@ -5354,6 +5361,7 @@
       <ref name='xmlC14NDocSaveTo'/>
       <ref name='xmlC14NExecute'/>
       <ref name='xmlC14NIsVisibleCallback'/>
+      <ref name='xmlC14NMode'/>
       <ref name='xmlCanonicPath'/>
       <ref name='xmlCatalog'/>
       <ref name='xmlCatalogAdd'/>
@@ -10779,11 +10787,15 @@
       <ref name='xmlSAXVersion'/>
     </file>
     <file name='c14n'>
+      <ref name='XML_C14N_1_0'/>
+      <ref name='XML_C14N_1_1'/>
+      <ref name='XML_C14N_EXCLUSIVE_1_0'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
       <ref name='xmlC14NDocSaveTo'/>
       <ref name='xmlC14NExecute'/>
       <ref name='xmlC14NIsVisibleCallback'/>
+      <ref name='xmlC14NMode'/>
     </file>
     <file name='catalog'>
       <ref name='XML_CATALOGS_NAMESPACE'/>
@@ -13787,9 +13799,9 @@
     </file>
     <file name='xmlversion'>
       <ref name='ATTRIBUTE_ALLOC_SIZE'/>
-      <ref name='ATTRIBUTE_PRINTF'/>
       <ref name='ATTRIBUTE_UNUSED'/>
       <ref name='DEBUG_MEMORY_LOCATION'/>
+      <ref name='LIBXML_ATTR_FORMAT'/>
       <ref name='LIBXML_AUTOMATA_ENABLED'/>
       <ref name='LIBXML_C14N_ENABLED'/>
       <ref name='LIBXML_CATALOG_ENABLED'/>
@@ -15758,8 +15770,8 @@
       <letter name='G'>
         <word name='GCC'>
           <ref name='ATTRIBUTE_ALLOC_SIZE'/>
-          <ref name='ATTRIBUTE_PRINTF'/>
           <ref name='ATTRIBUTE_UNUSED'/>
+          <ref name='LIBXML_ATTR_FORMAT'/>
         </word>
         <word name='GEDecl'>
           <ref name='xmlParseEntityDecl'/>
@@ -19724,6 +19736,12 @@
     </chunk>
     <chunk name='chunk12'>
       <letter name='c'>
+        <word name='c14n'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
+        </word>
         <word name='cache'>
           <ref name='xmlXPathContextSetCache'/>
         </word>
@@ -22678,10 +22696,6 @@
           <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
           <ref name='htmlSetMetaEncoding'/>
           <ref name='initxmlDefaultSAXHandler'/>
-          <ref name='xmlC14NDocDumpMemory'/>
-          <ref name='xmlC14NDocSave'/>
-          <ref name='xmlC14NDocSaveTo'/>
-          <ref name='xmlC14NExecute'/>
           <ref name='xmlSAX2InitDefaultSAXHandler'/>
           <ref name='xmlTextReaderIsValid'/>
         </word>
@@ -23691,7 +23705,7 @@
         </word>
         <word name='indicate'>
           <ref name='ATTRIBUTE_ALLOC_SIZE'/>
-          <ref name='ATTRIBUTE_PRINTF'/>
+          <ref name='LIBXML_ATTR_FORMAT'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParserInputGrow'/>
           <ref name='xmlParserInputRead'/>
@@ -24470,11 +24484,11 @@
           <ref name='xmlExpCtxtNbCons'/>
         </word>
         <word name='like'>
-          <ref name='ATTRIBUTE_PRINTF'/>
           <ref name='IS_CHAR_CH'/>
           <ref name='IS_DIGIT_CH'/>
           <ref name='IS_EXTENDER_CH'/>
           <ref name='IS_LETTER_CH'/>
+          <ref name='LIBXML_ATTR_FORMAT'/>
           <ref name='LIBXML_DOTTED_VERSION'/>
           <ref name='LIBXML_TREE_ENABLED'/>
           <ref name='xmlCharEncOutFunc'/>
@@ -25017,6 +25031,10 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='docbCreatePushParserCtxt'/>
           <ref name='htmlCreatePushParserCtxt'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCreatePushParserCtxt'/>
           <ref name='xmlGetCompressMode'/>
           <ref name='xmlKeepBlanksDefault'/>
@@ -25407,12 +25425,6 @@
         </word>
         <word name='non-empty'>
           <ref name='xmlXPathBooleanFunction'/>
-        </word>
-        <word name='non-exclusive'>
-          <ref name='xmlC14NDocDumpMemory'/>
-          <ref name='xmlC14NDocSave'/>
-          <ref name='xmlC14NDocSaveTo'/>
-          <ref name='xmlC14NExecute'/>
         </word>
         <word name='non-final'>
           <ref name='xmlRegExecPushString'/>

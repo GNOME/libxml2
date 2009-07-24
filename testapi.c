@@ -5345,8 +5345,8 @@ test_xmlC14NDocDumpMemory(void) {
     int n_doc;
     xmlNodeSetPtr nodes; /* the nodes set to be included in the canonized image or NULL if all document nodes should be included */
     int n_nodes;
-    int exclusive; /* the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) */
-    int n_exclusive;
+    int mode; /* the c14n mode (see @xmlC14NMode) */
+    int n_mode;
     xmlChar ** inclusive_ns_prefixes; /* the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) */
     int n_inclusive_ns_prefixes;
     int with_comments; /* include comments in the result (!=0) or not (==0) */
@@ -5356,24 +5356,24 @@ test_xmlC14NDocDumpMemory(void) {
 
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
     for (n_nodes = 0;n_nodes < gen_nb_xmlNodeSetPtr;n_nodes++) {
-    for (n_exclusive = 0;n_exclusive < gen_nb_int;n_exclusive++) {
+    for (n_mode = 0;n_mode < gen_nb_int;n_mode++) {
     for (n_inclusive_ns_prefixes = 0;n_inclusive_ns_prefixes < gen_nb_xmlChar_ptr_ptr;n_inclusive_ns_prefixes++) {
     for (n_with_comments = 0;n_with_comments < gen_nb_int;n_with_comments++) {
     for (n_doc_txt_ptr = 0;n_doc_txt_ptr < gen_nb_xmlChar_ptr_ptr;n_doc_txt_ptr++) {
         mem_base = xmlMemBlocks();
         doc = gen_xmlDocPtr(n_doc, 0);
         nodes = gen_xmlNodeSetPtr(n_nodes, 1);
-        exclusive = gen_int(n_exclusive, 2);
+        mode = gen_int(n_mode, 2);
         inclusive_ns_prefixes = gen_xmlChar_ptr_ptr(n_inclusive_ns_prefixes, 3);
         with_comments = gen_int(n_with_comments, 4);
         doc_txt_ptr = gen_xmlChar_ptr_ptr(n_doc_txt_ptr, 5);
 
-        ret_val = xmlC14NDocDumpMemory(doc, nodes, exclusive, inclusive_ns_prefixes, with_comments, doc_txt_ptr);
+        ret_val = xmlC14NDocDumpMemory(doc, nodes, mode, inclusive_ns_prefixes, with_comments, doc_txt_ptr);
         desret_int(ret_val);
         call_tests++;
         des_xmlDocPtr(n_doc, doc, 0);
         des_xmlNodeSetPtr(n_nodes, nodes, 1);
-        des_int(n_exclusive, exclusive, 2);
+        des_int(n_mode, mode, 2);
         des_xmlChar_ptr_ptr(n_inclusive_ns_prefixes, inclusive_ns_prefixes, 3);
         des_int(n_with_comments, with_comments, 4);
         des_xmlChar_ptr_ptr(n_doc_txt_ptr, doc_txt_ptr, 5);
@@ -5384,7 +5384,7 @@ test_xmlC14NDocDumpMemory(void) {
 	    test_ret++;
             printf(" %d", n_doc);
             printf(" %d", n_nodes);
-            printf(" %d", n_exclusive);
+            printf(" %d", n_mode);
             printf(" %d", n_inclusive_ns_prefixes);
             printf(" %d", n_with_comments);
             printf(" %d", n_doc_txt_ptr);
@@ -5414,8 +5414,8 @@ test_xmlC14NDocSave(void) {
     int n_doc;
     xmlNodeSetPtr nodes; /* the nodes set to be included in the canonized image or NULL if all document nodes should be included */
     int n_nodes;
-    int exclusive; /* the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) */
-    int n_exclusive;
+    int mode; /* the c14n mode (see @xmlC14NMode) */
+    int n_mode;
     xmlChar ** inclusive_ns_prefixes; /* the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) */
     int n_inclusive_ns_prefixes;
     int with_comments; /* include comments in the result (!=0) or not (==0) */
@@ -5427,7 +5427,7 @@ test_xmlC14NDocSave(void) {
 
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
     for (n_nodes = 0;n_nodes < gen_nb_xmlNodeSetPtr;n_nodes++) {
-    for (n_exclusive = 0;n_exclusive < gen_nb_int;n_exclusive++) {
+    for (n_mode = 0;n_mode < gen_nb_int;n_mode++) {
     for (n_inclusive_ns_prefixes = 0;n_inclusive_ns_prefixes < gen_nb_xmlChar_ptr_ptr;n_inclusive_ns_prefixes++) {
     for (n_with_comments = 0;n_with_comments < gen_nb_int;n_with_comments++) {
     for (n_filename = 0;n_filename < gen_nb_fileoutput;n_filename++) {
@@ -5435,18 +5435,18 @@ test_xmlC14NDocSave(void) {
         mem_base = xmlMemBlocks();
         doc = gen_xmlDocPtr(n_doc, 0);
         nodes = gen_xmlNodeSetPtr(n_nodes, 1);
-        exclusive = gen_int(n_exclusive, 2);
+        mode = gen_int(n_mode, 2);
         inclusive_ns_prefixes = gen_xmlChar_ptr_ptr(n_inclusive_ns_prefixes, 3);
         with_comments = gen_int(n_with_comments, 4);
         filename = gen_fileoutput(n_filename, 5);
         compression = gen_int(n_compression, 6);
 
-        ret_val = xmlC14NDocSave(doc, nodes, exclusive, inclusive_ns_prefixes, with_comments, filename, compression);
+        ret_val = xmlC14NDocSave(doc, nodes, mode, inclusive_ns_prefixes, with_comments, filename, compression);
         desret_int(ret_val);
         call_tests++;
         des_xmlDocPtr(n_doc, doc, 0);
         des_xmlNodeSetPtr(n_nodes, nodes, 1);
-        des_int(n_exclusive, exclusive, 2);
+        des_int(n_mode, mode, 2);
         des_xmlChar_ptr_ptr(n_inclusive_ns_prefixes, inclusive_ns_prefixes, 3);
         des_int(n_with_comments, with_comments, 4);
         des_fileoutput(n_filename, filename, 5);
@@ -5458,7 +5458,7 @@ test_xmlC14NDocSave(void) {
 	    test_ret++;
             printf(" %d", n_doc);
             printf(" %d", n_nodes);
-            printf(" %d", n_exclusive);
+            printf(" %d", n_mode);
             printf(" %d", n_inclusive_ns_prefixes);
             printf(" %d", n_with_comments);
             printf(" %d", n_filename);
@@ -5490,8 +5490,8 @@ test_xmlC14NDocSaveTo(void) {
     int n_doc;
     xmlNodeSetPtr nodes; /* the nodes set to be included in the canonized image or NULL if all document nodes should be included */
     int n_nodes;
-    int exclusive; /* the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) */
-    int n_exclusive;
+    int mode; /* the c14n mode (see @xmlC14NMode) */
+    int n_mode;
     xmlChar ** inclusive_ns_prefixes; /* the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) */
     int n_inclusive_ns_prefixes;
     int with_comments; /* include comments in the result (!=0) or not (==0) */
@@ -5501,24 +5501,24 @@ test_xmlC14NDocSaveTo(void) {
 
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
     for (n_nodes = 0;n_nodes < gen_nb_xmlNodeSetPtr;n_nodes++) {
-    for (n_exclusive = 0;n_exclusive < gen_nb_int;n_exclusive++) {
+    for (n_mode = 0;n_mode < gen_nb_int;n_mode++) {
     for (n_inclusive_ns_prefixes = 0;n_inclusive_ns_prefixes < gen_nb_xmlChar_ptr_ptr;n_inclusive_ns_prefixes++) {
     for (n_with_comments = 0;n_with_comments < gen_nb_int;n_with_comments++) {
     for (n_buf = 0;n_buf < gen_nb_xmlOutputBufferPtr;n_buf++) {
         mem_base = xmlMemBlocks();
         doc = gen_xmlDocPtr(n_doc, 0);
         nodes = gen_xmlNodeSetPtr(n_nodes, 1);
-        exclusive = gen_int(n_exclusive, 2);
+        mode = gen_int(n_mode, 2);
         inclusive_ns_prefixes = gen_xmlChar_ptr_ptr(n_inclusive_ns_prefixes, 3);
         with_comments = gen_int(n_with_comments, 4);
         buf = gen_xmlOutputBufferPtr(n_buf, 5);
 
-        ret_val = xmlC14NDocSaveTo(doc, nodes, exclusive, inclusive_ns_prefixes, with_comments, buf);
+        ret_val = xmlC14NDocSaveTo(doc, nodes, mode, inclusive_ns_prefixes, with_comments, buf);
         desret_int(ret_val);
         call_tests++;
         des_xmlDocPtr(n_doc, doc, 0);
         des_xmlNodeSetPtr(n_nodes, nodes, 1);
-        des_int(n_exclusive, exclusive, 2);
+        des_int(n_mode, mode, 2);
         des_xmlChar_ptr_ptr(n_inclusive_ns_prefixes, inclusive_ns_prefixes, 3);
         des_int(n_with_comments, with_comments, 4);
         des_xmlOutputBufferPtr(n_buf, buf, 5);
@@ -5529,7 +5529,7 @@ test_xmlC14NDocSaveTo(void) {
 	    test_ret++;
             printf(" %d", n_doc);
             printf(" %d", n_nodes);
-            printf(" %d", n_exclusive);
+            printf(" %d", n_mode);
             printf(" %d", n_inclusive_ns_prefixes);
             printf(" %d", n_with_comments);
             printf(" %d", n_buf);

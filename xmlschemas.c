@@ -25313,16 +25313,18 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 			* whose {attribute declaration}'s {type definition}
 			* is or is derived from ID."
 			*/
-			for (j = 0; j < attrUseList->nbItems; j++) {
-			    if (xmlSchemaIsDerivedFromBuiltInType(
-				WXS_ATTRUSE_TYPEDEF(attrUseList->items[j]),
-				XML_SCHEMAS_ID)) {
-				/* URGENT VAL TODO: implement */
-				iattr->state = XML_SCHEMAS_ATTR_ERR_WILD_AND_USE_ID;
-				TODO
-				break;
-			    }
-			}
+                        if (attrUseList != NULL) {
+                            for (j = 0; j < attrUseList->nbItems; j++) {
+                                if (xmlSchemaIsDerivedFromBuiltInType(
+                                    WXS_ATTRUSE_TYPEDEF(attrUseList->items[j]),
+                                    XML_SCHEMAS_ID)) {
+                                    /* URGENT VAL TODO: implement */
+                            iattr->state = XML_SCHEMAS_ATTR_ERR_WILD_AND_USE_ID;
+                                    TODO
+                                    break;
+                                }
+                            }
+                        }
 		    }
 		} else if (type->attributeWildcard->processContents ==
 		    XML_SCHEMAS_ANY_LAX) {

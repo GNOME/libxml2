@@ -1152,10 +1152,12 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     if (name == NULL)
 	XP_ERROR(XPATH_EXPR_ERROR);
     while (name != NULL) {
+	ctxt->error = XPATH_EXPRESSION_OK;
 	xmlXPtrEvalXPtrPart(ctxt, name);
 
 	/* in case of syntax error, break here */
-	if (ctxt->error != XPATH_EXPRESSION_OK)
+	if ((ctxt->error != XPATH_EXPRESSION_OK) &&
+            (ctxt->error != XML_XPTR_UNKNOWN_SCHEME))
 	    return;
 
 	/*

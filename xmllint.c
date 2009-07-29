@@ -3221,16 +3221,17 @@ main(int argc, char **argv) {
 #ifdef LIBXML_SAX1_ENABLED
 	else if ((!strcmp(argv[i], "-sax1")) ||
 	         (!strcmp(argv[i], "--sax1"))) {
-	     sax1++;
+	    sax1++;
+	    options |= XML_PARSE_SAX1;
 	}
 #endif /* LIBXML_SAX1_ENABLED */
 	else if ((!strcmp(argv[i], "-sax")) ||
 	         (!strcmp(argv[i], "--sax"))) {
-	     sax++;
+	    sax++;
 	}
 	else if ((!strcmp(argv[i], "-chkregister")) ||
 	         (!strcmp(argv[i], "--chkregister"))) {
-	     chkregister++;
+	    chkregister++;
 #ifdef LIBXML_SCHEMAS_ENABLED
 	} else if ((!strcmp(argv[i], "-relaxng")) ||
 	         (!strcmp(argv[i], "--relaxng"))) {

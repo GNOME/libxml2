@@ -259,7 +259,9 @@ xmlCtxtCheckName(xmlDebugCtxtPtr ctxt, const xmlChar * name)
 			 "Name is not an NCName '%s'", (const char *) name);
 	}
 	if ((ctxt->dict != NULL) &&
-	    (!xmlDictOwns(ctxt->dict, name))) {
+	    (!xmlDictOwns(ctxt->dict, name)) &&
+            ((ctxt->doc == NULL) ||
+             ((ctxt->doc->parseFlags & (XML_PARSE_SAX1 | XML_PARSE_NODICT)) == 0))) {
 	    xmlDebugErr3(ctxt, XML_CHECK_OUTSIDE_DICT,
 			 "Name is not from the document dictionnary '%s'",
 			 (const char *) name);

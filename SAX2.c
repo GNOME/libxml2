@@ -1446,6 +1446,7 @@ process_external_subset:
 				    (const char *)fulln,
 				    (const char *)attr->elem);
 		    }
+                    xmlFree(fulln);
 		}
 		attr = attr->nexth;
 	    }

@@ -481,10 +481,10 @@
 	        <set var="__subdir">$(value)</set>
             <set var="_custom_build_files" append="1">$(XMLBASEDIR)\include\$(CONFIG_SRCNAME)</set>
             <set var="_custom_build____include_win32config_h">
-Creating the configuration file ..\$(CONFIG_DSTNAME) from ..\include\win32\$(CONFIG_SRCNAME)
+Creating the configuration file ..\$(CONFIG_DSTNAME) from ..\include\$(CONFIG_SRCNAME)
 InputPath=..\include\$(CONFIG_SRCNAME)
 
-"..\include\$(CONFIG_SRCNAME)" : $(DOLLAR)(SOURCE) "$(DOLLAR)(INTDIR)" "$(DOLLAR)(OUTDIR)"
+"..\$(CONFIG_DSTNAME)" : $(DOLLAR)(SOURCE) "$(DOLLAR)(INTDIR)" "$(DOLLAR)(OUTDIR)"
 $(TAB)copy "$(DOLLAR)(InputPath)" ..\$(CONFIG_DSTNAME)
             </set>
         </if>

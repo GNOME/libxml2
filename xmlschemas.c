@@ -24474,10 +24474,10 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
 		    /* ws = xmlSchemaGetWhiteSpaceFacetValue(type); */
 		    if (valNeeded)
 			ret = xmlSchemaValPredefTypeNodeNoNorm(biType,
-			    value, &val, NULL);
+			    value, &val, node);
 		    else
 			ret = xmlSchemaValPredefTypeNodeNoNorm(biType,
-			    value, NULL, NULL);
+			    value, NULL, node);
 		    break;
 	    }
 	} else if (actxt->type == XML_SCHEMA_CTXT_PARSER) {

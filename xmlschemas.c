@@ -17289,7 +17289,7 @@ xmlSchemaDeriveAndValidateFacets(xmlSchemaParserCtxtPtr pctxt,
 	flength = bflength;
     if (flength) {
 	if (! fminlen)
-	    flength = bflength;
+	    fminlen = bfminlen;
 	if (fminlen) {
 	    /* (1.1) length >= minLength */
 	    res = xmlSchemaCompareValues(flength->val, fminlen->val);

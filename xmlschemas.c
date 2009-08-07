@@ -10343,27 +10343,39 @@ xmlSchemaAddSchemaDoc(xmlSchemaParserCtxtPtr pctxt,
 
     /* Did we already fetch the doc? */
     if (bkt != NULL) {
-	/* TODO: The following nasty cases will produce an error. */
 	if ((WXS_IS_BUCKET_IMPMAIN(type)) && (! bkt->imported)) {
-	    /* We included/redefined and then try to import a schema. */
+	    /*
+	    * We included/redefined and then try to import a schema,
+	    * but the new location provided for import was different.
+	    */
 	    if (schemaLocation == NULL)
 		schemaLocation = BAD_CAST "in_memory_buffer";
-	    xmlSchemaCustomErr(ACTXT_CAST pctxt, err,
-		invokingNode, NULL,
-		"The schema document '%s' cannot be imported, since "
-		"it was already included or redefined",
-		schemaLocation, NULL);
-	    goto exit;
+	    if (!xmlStrEqual(schemaLocation,
+		bkt->schemaLocation)) {
+		xmlSchemaCustomErr(ACTXT_CAST pctxt, err,
+		    invokingNode, NULL,
+		    "The schema document '%s' cannot be imported, since "
+		    "it was already included or redefined",
+		    schemaLocation, NULL);
+		goto exit;
+	    }
 	} else if ((! WXS_IS_BUCKET_IMPMAIN(type)) && (bkt->imported)) {
-	    /* We imported and then try to include/redefine a schema. */
+	    /*
+	    * We imported and then try to include/redefine a schema,
+	    * but the new location provided for the include/redefine
+	    * was different.
+	    */
 	    if (schemaLocation == NULL)
 		schemaLocation = BAD_CAST "in_memory_buffer";
-	    xmlSchemaCustomErr(ACTXT_CAST pctxt, err,
-		invokingNode, NULL,
-		"The schema document '%s' cannot be included or "
-		"redefined, since it was already imported",
-		schemaLocation, NULL);
-	    goto exit;
+	    if (!xmlStrEqual(schemaLocation,
+		bkt->schemaLocation)) {
+		xmlSchemaCustomErr(ACTXT_CAST pctxt, err,
+		    invokingNode, NULL,
+		    "The schema document '%s' cannot be included or "
+		    "redefined, since it was already imported",
+		    schemaLocation, NULL);
+		goto exit;
+	    }
 	}
     }
 

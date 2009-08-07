@@ -32,7 +32,7 @@ else
 all:
 endif
 
-api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src ../elfgcchack.h
+api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src ../elfgcchack.h $(srcdir)/site.xsl
 
 web: $(PAGES)
 

@@ -397,7 +397,7 @@
       <li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
       <li><a href="ftp://xmlsoft.org/">FTP</a></li>
       <li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li>
-      <li><a href="http://www.blastwave.org/packages.php/libxml2">Solaris binaries</a></li>
+      <li><a href="http://opencsw.org/packages/libxml2">Solaris binaries</a></li>
       <li><a href="http://www.explain.com.au/oss/libxml2xslt.html">MacOsX binaries</a></li>
       <li><a href="http://codespeak.net/lxml/">lxml Python bindings</a></li>
       <li><a href="http://cpan.uwinnipeg.ca/dist/XML-LibXML">Perl bindings</a></li>

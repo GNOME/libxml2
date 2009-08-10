@@ -991,6 +991,13 @@ static void des_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, xmlParserNodeIn
 static void desret_const_xmlParserNodeInfo_ptr(const xmlParserNodeInfo *val ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_void_ptr_ptr 1
+static void ** gen_void_ptr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_void_ptr_ptr(int no ATTRIBUTE_UNUSED, void ** val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
 /************************************************************************
  *									*
  *   WARNING: end of the manually maintained part of the test code	*
@@ -17373,12 +17380,6 @@ static void des_xmlRelaxNGValidityWarningFunc_ptr(int no ATTRIBUTE_UNUSED, xmlRe
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
-#define gen_nb_void_ptr_ptr 1
-static void ** gen_void_ptr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_void_ptr_ptr(int no ATTRIBUTE_UNUSED, void ** val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
 #endif
 
 

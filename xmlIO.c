@@ -613,6 +613,7 @@ xmlWrapOpenUtf8(const char *path,int mode)
     return fd;
 }
 
+#ifdef HAVE_ZLIB_H
 static gzFile
 xmlWrapGzOpenUtf8(const char *path, const char *mode)
 {
@@ -638,6 +639,7 @@ xmlWrapGzOpenUtf8(const char *path, const char *mode)
 
     return fd;
 }
+#endif
 
 /**
  *  xmlWrapStatUtf8:
@@ -705,9 +707,10 @@ typedef int (* xmlWrapStatFunc) (const char *f, struct stat *s);
 static xmlWrapStatFunc xmlWrapStat = xmlWrapStatNative;
 typedef FILE* (* xmlWrapOpenFunc)(const char *f,int mode);
 static xmlWrapOpenFunc xmlWrapOpen = xmlWrapOpenNative;
+#ifdef HAVE_ZLIB_H
 typedef gzFile (* xmlWrapGzOpenFunc) (const char *f, const char *mode);
 static xmlWrapGzOpenFunc xmlWrapGzOpen = gzopen;
-
+#endif
 /**
  * xmlInitPlatformSpecificIo:
  *
@@ -727,11 +730,15 @@ xmlInitPlatformSpecificIo(void)
     if(GetVersionEx(&osvi) && (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)) {
       xmlWrapStat = xmlWrapStatUtf8;
       xmlWrapOpen = xmlWrapOpenUtf8;
+#ifdef HAVE_ZLIB_H
       xmlWrapGzOpen = xmlWrapGzOpenUtf8;
+#endif
     } else {
       xmlWrapStat = xmlWrapStatNative;
       xmlWrapOpen = xmlWrapOpenNative;
+#ifdef HAVE_ZLIB_H
       xmlWrapGzOpen = gzopen;
+#endif
     }
 
     xmlPlatformIoInitialized = 1;

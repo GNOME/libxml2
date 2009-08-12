@@ -12966,17 +12966,19 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr pctxt,
                 break;
             }
         case XML_SCHEMA_TYPE_ALL:{
-                xmlAutomataStatePtr start;
+                xmlAutomataStatePtr start, tmp;
 		xmlSchemaParticlePtr sub;
 		xmlSchemaElementPtr elemDecl;
-                int lax;
 
 		sub = (xmlSchemaParticlePtr) particle->children->children;
                 if (sub == NULL)
                     break;
                 start = pctxt->state;
+                tmp = xmlAutomataNewState(pctxt->am);
+                xmlAutomataNewEpsilon(pctxt->am, pctxt->state, tmp);
+                pctxt->state = tmp;
                 while (sub != NULL) {
-                    pctxt->state = start;
+                    pctxt->state = tmp;
 
 		    elemDecl = (xmlSchemaElementPtr) sub->children;
 		    if (elemDecl == NULL) {
@@ -13024,9 +13026,11 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr pctxt,
 		    }
                     sub = (xmlSchemaParticlePtr) sub->next;
                 }
-                lax = particle->minOccurs == 0;
                 pctxt->state =
-                    xmlAutomataNewAllTrans(pctxt->am, pctxt->state, NULL, lax);
+                    xmlAutomataNewAllTrans(pctxt->am, pctxt->state, NULL, 0);
+                if (particle->minOccurs == 0) {
+                    xmlAutomataNewEpsilon(pctxt->am, start, pctxt->state);
+                }
                 break;
             }
 	case XML_SCHEMA_TYPE_GROUP:

@@ -3399,7 +3399,8 @@ int
 xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
                        const xmlChar *notationName) {
     xmlNotationPtr notaDecl;
-    if ((doc == NULL) || (doc->intSubset == NULL)) return(-1);
+    if ((doc == NULL) || (doc->intSubset == NULL) ||
+        (notationName == NULL)) return(-1);
 
     notaDecl = xmlGetDtdNotationDesc(doc->intSubset, notationName);
     if ((notaDecl == NULL) && (doc->extSubset != NULL))

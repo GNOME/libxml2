@@ -288,6 +288,58 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
     else i += xmlCopyChar(l,&b[i],v)
 
 /**
+ * htmlFindEncoding:
+ * @the HTML parser context
+ *
+ * Ty to find and encoding in the current data available in the input
+ * buffer this is needed to try to switch to the proper encoding when
+ * one face a character error.
+ * That's an heuristic, since it's operating outside of parsing it could
+ * try to use a meta which had been commented out, that's the reason it
+ * should only be used in case of error, not as a default.
+ *
+ * Returns an encoding string or NULL if not found, the string need to
+ *   be freed
+ */
+static xmlChar *
+htmlFindEncoding(xmlParserCtxtPtr ctxt) {
+    const xmlChar *start, *cur, *end;
+
+    if ((ctxt == NULL) || (ctxt->input == NULL) ||
+        (ctxt->input->encoding != NULL) || (ctxt->input->buf == NULL) ||
+        (ctxt->input->buf->encoder != NULL))
+        return(NULL);
+    if ((ctxt->input->cur == NULL) || (ctxt->input->end == NULL))
+        return(NULL);
+
+    start = ctxt->input->cur;
+    end = ctxt->input->end;
+    /* we also expect the input buffer to be zero terminated */
+    if (*end != 0)
+        return(NULL);
+
+    cur = xmlStrcasestr(start, BAD_CAST "HTTP-EQUIV");
+    if (cur == NULL)
+        return(NULL);
+    cur = xmlStrcasestr(cur, BAD_CAST  "CONTENT");
+    if (cur == NULL)
+        return(NULL);
+    cur = xmlStrcasestr(cur, BAD_CAST  "CHARSET=");
+    if (cur == NULL)
+        return(NULL);
+    cur += 8;
+    start = cur;
+    while (((*cur >= 'A') && (*cur <= 'Z')) ||
+           ((*cur >= 'a') && (*cur <= 'z')) ||
+           ((*cur >= '0') && (*cur <= '9')) ||
+           (*cur == '-') || (*cur == '_') || (*cur == ':') || (*cur == '/'))
+           cur++;
+    if (cur == start)
+        return(NULL);
+    return(xmlStrndup(start, cur - start));
+}
+
+/**
  * htmlCurrentChar:
  * @ctxt:  the HTML parser context
  * @len:  pointer to the length of the char read
@@ -386,8 +438,28 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     /*
      * Humm this is bad, do an automatic flow conversion
      */
-    xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
-    ctxt->charset = XML_CHAR_ENCODING_UTF8;
+    {
+        xmlChar * guess;
+        xmlCharEncodingHandlerPtr handler;
+
+        guess = htmlFindEncoding(ctxt);
+        if (guess == NULL) {
+            xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
+        } else {
+            if (ctxt->input->encoding != NULL)
+                xmlFree((xmlChar *) ctxt->input->encoding);
+            ctxt->input->encoding = guess;
+            handler = xmlFindCharEncodingHandler((const char *) guess);
+            if (handler != NULL) {
+                xmlSwitchToEncoding(ctxt, handler);
+            } else {
+                htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
+                             "Unsupported encoding %s", guess, NULL);
+            }
+        }
+        ctxt->charset = XML_CHAR_ENCODING_UTF8;
+    }
+
     return(xmlCurrentChar(ctxt, len));
 
 encoding_error:

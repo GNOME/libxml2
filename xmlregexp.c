@@ -2646,7 +2646,9 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 		    continue;
 		if (t2->atom != NULL) {
 		    if (t1->to == t2->to) {
-			if (xmlFAEqualAtoms(t1->atom, t2->atom))
+			if (xmlFAEqualAtoms(t1->atom, t2->atom) &&
+                            (t1->counter == t2->counter) &&
+                            (t1->count == t2->count))
 			    t2->to = -1; /* eliminated */
 		    }
 		}

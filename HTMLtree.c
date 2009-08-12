@@ -168,6 +168,10 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
     if (doc == NULL)
 	return(-1);
 
+    /* html isn't a real encoding it's just libxml2 way to get entities */
+    if (!xmlStrcasecmp(encoding, BAD_CAST "html"))
+        return(-1);
+
     if (encoding != NULL) {
 	snprintf(newcontent, sizeof(newcontent), "text/html; charset=%s",
                 (char *)encoding);

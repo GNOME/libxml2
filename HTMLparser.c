@@ -2273,11 +2273,12 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
     xmlChar loc[HTML_PARSER_BUFFER_SIZE];
 
     if (!IS_ASCII_LETTER(CUR) && (CUR != '_') &&
-        (CUR != ':')) return(NULL);
+        (CUR != ':') && (CUR != '.')) return(NULL);
 
     while ((i < HTML_PARSER_BUFFER_SIZE) &&
            ((IS_ASCII_LETTER(CUR)) || (IS_ASCII_DIGIT(CUR)) ||
-	   (CUR == ':') || (CUR == '-') || (CUR == '_'))) {
+	   (CUR == ':') || (CUR == '-') || (CUR == '_') ||
+           (CUR == '.'))) {
 	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
         else loc[i] = CUR;
 	i++;

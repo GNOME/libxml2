@@ -1006,7 +1006,7 @@ xmlRelaxNGNewStates(xmlRelaxNGValidCtxtPtr ctxt, int size)
     xmlRelaxNGStatesPtr ret;
 
     if ((ctxt != NULL) &&
-        (ctxt->freeState != NULL) && (ctxt->freeStatesNr > 0)) {
+        (ctxt->freeStates != NULL) && (ctxt->freeStatesNr > 0)) {
         ctxt->freeStatesNr--;
         ret = ctxt->freeStates[ctxt->freeStatesNr];
         ret->nbState = 0;
@@ -8345,7 +8345,7 @@ xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxtPtr ctxt,
         ret = -1;
     else
         ret = 1;
-    xmlRelaxNGFreeValidState(ctxt, state);
+    xmlRelaxNGFreeValidState(ctxt, ctxt->state);
     ctxt->state = NULL;
 #ifdef DEBUG_PROGRESSIVE
     if (ret < 0)
@@ -9323,6 +9323,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
 		    oldstate =
 			ctxt->states->tabState[ctxt->states->nbState - 1];
                     ctxt->states->tabState[ctxt->states->nbState - 1] = NULL;
+                    ctxt->states->nbState--;
 		}
             }
             for (j = 0; j < ctxt->states->nbState ; j++) {
@@ -9878,8 +9879,8 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                     }
                     for (i = 0; i < ctxt->states->nbState; i++) {
                         xmlRelaxNGFreeValidState(ctxt,
-                                                 ctxt->states->
-                                                 tabState[i]);
+                                                 ctxt->states->tabState[i]);
+                        ctxt->states->tabState[i] = NULL;
                     }
                     xmlRelaxNGFreeStates(ctxt, ctxt->states);
                     ctxt->flags = oldflags;
@@ -10001,11 +10002,8 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 } else {
                     for (j = 0; j < ctxt->states->nbState; j++) {
                         xmlRelaxNGAddStates(ctxt, res,
-                                            xmlRelaxNGCopyValidState(ctxt,
-                                                                     ctxt->
-                                                                     states->
-                                                                     tabState
-                                                                     [j]));
+                            xmlRelaxNGCopyValidState(ctxt,
+                                            ctxt->states->tabState[j]));
                     }
                 }
                 oldflags = ctxt->flags;
@@ -10034,10 +10032,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                                          j++) {
                                         tmp =
                                             xmlRelaxNGAddStates(ctxt, res,
-                                                                ctxt->
-                                                                states->
-                                                                tabState
-                                                                [j]);
+                                                   ctxt->states->tabState[j]);
                                         if (tmp == 1)
                                             progress = 1;
                                     }
@@ -10071,9 +10066,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                             } else if (ctxt->states != NULL) {
                                 for (j = 0; j < ctxt->states->nbState; j++) {
                                     tmp = xmlRelaxNGAddStates(ctxt, res,
-                                                              ctxt->
-                                                              states->
-                                                              tabState[j]);
+                                               ctxt->states->tabState[j]);
                                     if (tmp == 1)
                                         progress = 1;
                                 }
@@ -10111,8 +10104,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                             for (i = base; i < res->nbState; i++)
                                 xmlRelaxNGAddStates(ctxt, states,
                                                     xmlRelaxNGCopyValidState
-                                                    (ctxt,
-                                                     res->tabState[i]));
+                                                    (ctxt, res->tabState[i]));
                             ctxt->states = states;
                         }
                     }

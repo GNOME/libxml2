@@ -305,8 +305,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 			    $id = mysql_result($result, $i, 2);
 			    $module = mysql_result($result, $i, 3);
 			    $desc = mysql_result($result, $i, 4);
-			    if (strncmp($module, "libxml-", 7) == 0) {
-			    $url = "html/$module";
+			    if (strncmp($module, "libxml-", 7) == 0)
+			        $url = "html/$module";
 			    if ($id != "") {
 				$url = $url + "#$id";
 			    }

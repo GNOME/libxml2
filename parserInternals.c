@@ -2067,7 +2067,7 @@ xmlKeepBlanksDefault(int val) {
     int old = xmlKeepBlanksDefaultValue;
 
     xmlKeepBlanksDefaultValue = val;
-    xmlIndentTreeOutput = !val;
+    if (!val) xmlIndentTreeOutput = 1;
     return(old);
 }
 

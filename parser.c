@@ -13406,7 +13406,7 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
  */
 
 xmlDocPtr
-xmlRecoverDoc(xmlChar *cur) {
+xmlRecoverDoc(const xmlChar *cur) {
     return(xmlSAXParseDoc(NULL, cur, 1));
 }
 

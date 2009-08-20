@@ -850,7 +850,7 @@ XMLPUBFUN int XMLCALL
  * Recovery mode 
  */
 XMLPUBFUN xmlDocPtr XMLCALL	
-		xmlRecoverDoc		(xmlChar *cur);
+		xmlRecoverDoc		(const xmlChar *cur);
 XMLPUBFUN xmlDocPtr XMLCALL	
 		xmlRecoverMemory	(const char *buffer,
 					 int size);

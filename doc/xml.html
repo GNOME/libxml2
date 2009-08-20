@@ -641,16 +641,12 @@ database</a>:</p>
 <p>The latest versions of libxml2 can be found on the <a
 href="ftp://xmlsoft.org/libxml2/">xmlsoft.org</a> server ( <a
 href="ftp://xmlsoft.org/libxml2/">FTP</a> and rsync are available), there are also
-mirrors (<a href="ftp://ftp.planetmirror.com/pub/xmlsoft/">Australia</a>( <a
-href="http://xmlsoft.planetmirror.com/">Web</a>), <a
-href="ftp://fr.rpmfind.net/pub/libxml/">France</a>) or on the <a
-href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> as <a
-href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">source archive</a>
-, Antonin Sprinzl also provide <a href="ftp://gd.tuwien.ac.at/pub/libxml/">a
-mirror in Austria</a>. (NOTE that you need both the <a
+mirrors (<a href="ftp://fr.rpmfind.net/pub/libxml/">France</a> and
+Antonin Sprinzl also provide <a href="ftp://gd.tuwien.ac.at/pub/libxml/">a
+mirror in Austria</a>). (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
-packages installed to compile applications using libxml.)</p>
+packages installed to compile applications using libxml if using RPMs.)</p>
 
 <p>You can find all the history of libxml(2) and libxslt releases in the <a
 href="http://xmlsoft.org/sources/old/">old</a> directory. The precompiled
@@ -659,9 +655,9 @@ href="http://xmlsoft.org/sources/win32/">win32</a> directory.</p>
 
 <p>Binary ports:</p>
 <ul>
-  <li>Red Hat RPMs for i386 are available directly on <a
+  <li>RPMs for x86_64 are available directly on <a
     href="ftp://xmlsoft.org/libxml2/">xmlsoft.org</a>, the source RPM will compile on
-    any architecture supported by Red Hat.</li>
+    any architecture supported.</li>
   <li><a href="mailto:igor@zlatkovic.com">Igor Zlatkovic</a> is now the
     maintainer of the Windows port, <a
     href="http://www.zlatkovic.com/projects/libxml/index.html">he provides
@@ -684,8 +680,8 @@ href="http://veillard.com/">contact me</a>.</p>
 
 <p><a name="Snapshot">Snapshot:</a></p>
 <ul>
-  <li>Code from the W3C svn base libxml2 module, updated hourly <a
-    href="ftp://xmlsoft.org/libxml2/libxml2-cvs-snapshot.tar.gz">libxml2-cvs-snapshot.tar.gz</a>.</li>
+  <li>Code from the GNOME GIT base libxml2 module, updated hourly <a
+    href="ftp://xmlsoft.org/libxml2/libxml2-git-snapshot.tar.gz">libxml2-git-snapshot.tar.gz</a>.</li>
   <li>Docs, content of the web site, the list archive included <a
     href="ftp://xmlsoft.org/libxml2/libxml-docs.tar.gz">libxml-docs.tar.gz</a>.</li>
 </ul>
@@ -697,12 +693,11 @@ platform,  get in touch with the list to upload the package, wrappers for
 various languages have been provided, and can be found in the <a
 href="python.html">bindings section</a></p>
 
-<p>Libxml2 is also available from SVN:</p>
+<p>Libxml2 is also available from GIT:</p>
 <ul>
-  <li><p>The <a href="http://svn.gnome.org/viewvc/libxml2/trunk/">Gnome SVN
-    base</a>. Check the <a
-    href="http://developer.gnome.org/tools/svn.html">Gnome SVN Tools</a>
-    page; the SVN module is <b>libxml2</b>.</p>
+  <li><p>See <a href="http://git.gnome.org/cgit/libxml2/">libxml2 Git web</a>.
+         To checkout a local tree use:</p>
+       <pre>git clone git://git.gnome.org/libxml2</pre>
   </li>
   <li>The <strong>libxslt</strong> module is also present there</li>
 </ul>

@@ -202,8 +202,8 @@ static const char *xmlW3CPIs[] = {
 
 
 /* DEPR void xmlParserHandleReference(xmlParserCtxtPtr ctxt); */
-xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
-                                       const xmlChar **str);
+static xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
+                                              const xmlChar **str);
 
 static xmlParserErrors
 xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
@@ -1344,8 +1344,8 @@ xmlCheckLanguageID(const xmlChar * lang)
  *									*
  ************************************************************************/
 
-xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
-                                     const xmlChar ** str);
+static xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
+                                            const xmlChar ** str);
 
 #ifdef SAX2
 /**
@@ -3995,7 +3995,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     return(buf);
 }
 
-void xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata);
+static void xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata);
 
 /*
  * used for the test in the inner loop of the char data testing
@@ -4200,7 +4200,7 @@ get_more:
  * of xmlParseCharData() when the parsing requires handling
  * of non-ASCII characters.
  */
-void
+static void
 xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
     xmlChar buf[XML_PARSER_BIG_BUFFER_SIZE + 5];
     int nbchar = 0;
@@ -7274,7 +7274,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
  * Returns the xmlEntityPtr if found, or NULL otherwise. The str pointer
  * is updated to the current location in the string.
  */
-xmlEntityPtr
+static xmlEntityPtr
 xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
     xmlChar *name;
     const xmlChar *ptr;
@@ -7683,7 +7683,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
  * Returns the string of the entity content.
  *         str is updated to the current value of the index
  */
-xmlEntityPtr
+static xmlEntityPtr
 xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     const xmlChar *ptr;
     xmlChar cur;
@@ -12106,8 +12106,6 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     int ret = 0;
     xmlChar start[4];
     xmlCharEncoding enc;
-    xmlParserInputPtr inputStream;
-    char *directory = NULL;
 
     if (ctx == NULL) return(-1);
 

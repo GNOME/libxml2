@@ -637,8 +637,6 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
    else if ((doc->intSubset == NULL) &&				\
 	    (doc->extSubset == NULL)) return(0)
 
-xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
-
 #ifdef LIBXML_REGEXP_ENABLED
 
 /************************************************************************
@@ -1832,53 +1830,6 @@ xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_VALID_ENABLED
-/**
- * xmlScanAttributeDeclCallback:
- * @attr:  the attribute decl
- * @list:  the list to update
- *
- * Callback called by xmlScanAttributeDecl when a new attribute
- * has to be entered in the list.
- */
-static void
-xmlScanAttributeDeclCallback(xmlAttributePtr attr, xmlAttributePtr *list,
-	                     const xmlChar* name ATTRIBUTE_UNUSED) {
-    attr->nexth = *list;
-    *list = attr;
-}
-
-/**
- * xmlScanAttributeDecl:
- * @dtd:  pointer to the DTD
- * @elem:  the element name
- *
- * When inserting a new element scan the DtD for existing attributes
- * for that element and initialize the Attribute chain
- *
- * Returns the pointer to the first attribute decl in the chain,
- *         possibly NULL.
- */
-xmlAttributePtr
-xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
-    xmlAttributePtr ret = NULL;
-    xmlAttributeTablePtr table;
-
-    if (dtd == NULL) {
-	return(NULL);
-    }
-    if (elem == NULL) {
-	return(NULL);
-    }
-    table = (xmlAttributeTablePtr) dtd->attributes;
-    if (table == NULL) 
-        return(NULL);
-
-    /* WRONG !!! */
-    xmlHashScan3(table, NULL, NULL, elem,
-	        (xmlHashScanner) xmlScanAttributeDeclCallback, &ret);
-    return(ret);
-}
-
 /**
  * xmlScanIDAttributeDecl:
  * @ctxt:  the validation context

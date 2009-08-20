@@ -49,7 +49,8 @@ int __xmlRegisterCallbacks = 0;
  *									*
  ************************************************************************/
 
-xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
+static xmlNsPtr
+xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 static xmlChar* xmlGetPropNodeValueInternal(xmlAttrPtr prop);
 
@@ -6056,7 +6057,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
  * @tree or on one of its ancestors then a new prefix is generated.
  * Returns the (new) namespace definition or NULL in case of error
  */
-xmlNsPtr
+static xmlNsPtr
 xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     xmlNsPtr def;
     xmlChar prefix[50];

@@ -18,7 +18,16 @@ bin_SCRIPTS=xml2-config
 lib_LTLIBRARIES = libxml2.la
 libxml2_la_LIBADD = @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) @M_LIBS@ @WIN32_EXTRA_LIBADD@
 
-libxml2_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -version-info @LIBXML_VERSION_INFO@ @MODULE_PLATFORM_LIBS@
+if USE_VERSION_SCRIPT
+LIBXML2_VERSION_SCRIPT = $(VERSION_SCRIPT_FLAGS)$(srcdir)/libxml2.syms
+else
+LIBXML2_VERSION_SCRIPT =
+endif
+
+libxml2_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ \
+                     $(LIBXML2_VERSION_SCRIPT) \
+		     -version-info @LIBXML_VERSION_INFO@ \
+		     @MODULE_PLATFORM_LIBS@
 
 if WITH_TRIO_SOURCES
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
@@ -1187,7 +1196,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     triop.h triodef.h libxml.h elfgcchack.h \
 	     testThreadsWin32.c genUnicode.py TODO_SCHEMAS \
 	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
-	     README.tests Makefile.tests \
+	     README.tests Makefile.tests libxml2.syms \
 	     $(CVS_EXTRA_DIST)
 
 

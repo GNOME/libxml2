@@ -68,6 +68,18 @@ AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
 dnl
+dnl if the system support linker version scripts for symbol versioning
+dnl then add it
+dnl
+VERSION_SCRIPT_FLAGS=
+$(/usr/bin/ld --help 2>&1 | grep -- --version-script >/dev/null) && \
+    VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+test "`uname`" == "SunOS" && \
+    VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,"
+AC_SUBST(VERSION_SCRIPT_FLAGS)
+AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
+
+dnl
 dnl We process the AC_ARG_WITH first so that later we can modify
 dnl some of them to try to prevent impossible combinations.  This
 dnl also allows up so alphabetize the choices

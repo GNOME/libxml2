@@ -1301,12 +1301,19 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
  *									*
  ************************************************************************/
 
+static
 void xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs);
+static
 void xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs);
+static
 void xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs);
+static
 void xmlXPtrHereFunction(xmlXPathParserContextPtr ctxt, int nargs);
+static
 void xmlXPtrOriginFunction(xmlXPathParserContextPtr ctxt, int nargs);
+static
 void xmlXPtrRangeInsideFunction(xmlXPathParserContextPtr ctxt, int nargs);
+static
 void xmlXPtrRangeFunction(xmlXPathParserContextPtr ctxt, int nargs);
 
 /**
@@ -1734,7 +1741,7 @@ xmlXPtrNbLocChildren(xmlNodePtr node) {
  * Function implementing here() operation 
  * as described in 5.4.3
  */
-void
+static void
 xmlXPtrHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
 
@@ -1752,7 +1759,7 @@ xmlXPtrHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * Function implementing origin() operation 
  * as described in 5.4.3
  */
-void
+static void
 xmlXPtrOriginFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
 
@@ -1785,7 +1792,7 @@ xmlXPtrOriginFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * ----------------
  *
  */
-void
+static void
 xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr tmp, obj, point;
     xmlLocationSetPtr newset = NULL;
@@ -1879,7 +1886,7 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  *   syntax error.
  * ----------------------------
  */
-void
+static void
 xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr tmp, obj, point;
     xmlLocationSetPtr newset = NULL;
@@ -2024,7 +2031,7 @@ xmlXPtrCoveringRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
  *  location-set, a range location representing the covering range of
  *  x is added to the result location-set.
  */
-void
+static void
 xmlXPtrRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     int i;
     xmlXPathObjectPtr set;
@@ -2170,7 +2177,7 @@ xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
  *  location children of x.
  *
  */
-void
+static void
 xmlXPtrRangeInsideFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     int i;
     xmlXPathObjectPtr set;
@@ -2759,7 +2766,7 @@ xmlXPtrGetEndPoint(xmlXPathObjectPtr obj, xmlNodePtr *node, int *indx) {
  * all be character points.
  * ------------------------------
  */
-void
+static void
 xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     int i, startindex, endindex = 0, fendindex;
     xmlNodePtr start, end = 0, fend;

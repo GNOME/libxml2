@@ -4257,15 +4257,15 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		while (next != NULL) {
 		    if (next->type == XML_ELEMENT_CONTENT_ELEMENT) {
 		        if ((xmlStrEqual(next->name, name)) &&
-			    (xmlStrEqual(next->prefix, cur->prefix))) {
-			    if (cur->prefix == NULL) {
+			    (xmlStrEqual(next->prefix, cur->c1->prefix))) {
+			    if (cur->c1->prefix == NULL) {
 				xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 		   "Definition of %s has duplicate references of %s\n",
 				       elem->name, name, NULL);
 			    } else {
 				xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 		   "Definition of %s has duplicate references of %s:%s\n",
-				       elem->name, cur->prefix, name);
+				       elem->name, cur->c1->prefix, name);
 			    }
 			    ret = 0;
 			}
@@ -4274,15 +4274,15 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    if (next->c1 == NULL) break;
 		    if (next->c1->type != XML_ELEMENT_CONTENT_ELEMENT) break;
 		    if ((xmlStrEqual(next->c1->name, name)) &&
-		        (xmlStrEqual(next->c1->prefix, cur->prefix))) {
-			if (cur->prefix == NULL) {
+		        (xmlStrEqual(next->c1->prefix, cur->c1->prefix))) {
+			if (cur->c1->prefix == NULL) {
 			    xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 	       "Definition of %s has duplicate references to %s\n",
 				   elem->name, name, NULL);
 			} else {
 			    xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 	       "Definition of %s has duplicate references to %s:%s\n",
-				   elem->name, cur->prefix, name);
+				   elem->name, cur->c1->prefix, name);
 			}
 			ret = 0;
 		    }

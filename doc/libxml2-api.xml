@@ -11952,7 +11952,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseElementChildrenContentDecl' file='parserInternals' module='parser'>
-      <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl   [47] children ::= (choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [48] cp ::= (Name | choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [49] choice ::= &apos;(&apos; S? cp ( S? &apos;|&apos; S? cp )* S? &apos;)&apos;  [50] seq ::= &apos;(&apos; S? cp ( S? &apos;,&apos; S? cp )* S? &apos;)&apos;  [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity reference appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</info>
+      <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl  [47] children ::= (choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [48] cp ::= (Name | choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [49] choice ::= &apos;(&apos; S? cp ( S? &apos;|&apos; S? cp )* S? &apos;)&apos;  [50] seq ::= &apos;(&apos; S? cp ( S? &apos;,&apos; S? cp )* S? &apos;)&apos;  [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity reference appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</info>
       <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element hierarchy.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='inputchk' type='int' info='the input used for the current entity, needed for boundary checks'/>
@@ -12633,7 +12633,7 @@ Could we use @subtypes for this?'/>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
       <info>parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a attempt to build a tree is tried anyway</info>
       <return type='xmlDocPtr' info='the resulting document tree or NULL in case of failure'/>
-      <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
     <function name='xmlRecoverFile' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
@@ -14309,7 +14309,7 @@ Could we use @subtypes for this?'/>
       <info>a case-ignoring strstr for xmlChar&apos;s</info>
       <return type='const xmlChar *' info='the xmlChar * for the first occurrence or NULL.'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar * array (haystack)'/>
-      <arg name='val' type='xmlChar *' info='the xmlChar to search (needle)'/>
+      <arg name='val' type='const xmlChar *' info='the xmlChar to search (needle)'/>
     </function>
     <function name='xmlStrcat' file='xmlstring' module='xmlstring'>
       <info>a strcat for array of xmlChar&apos;s. Since they are supposed to be encoded in UTF-8 or an encoding with 8bit based chars, we assume a termination mark of &apos;0&apos;.</info>
@@ -14521,7 +14521,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderBaseUri' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>The base URI of the node.</info>
-      <return type='xmlChar *' info='the base URI or NULL if not available'/>
+      <return type='xmlChar *' info='the base URI or NULL if not available, if non NULL it need to be freed by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderByteConsumed' file='xmlreader' module='xmlreader'>
@@ -14724,13 +14724,13 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderLocalName' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>The local name of the node.</info>
-      <return type='xmlChar *' info='the local name or NULL if not available'/>
+      <return type='xmlChar *' info='the local name or NULL if not available, if non NULL it need to be freed by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderLocatorBaseURI' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>Obtain the base URI for the given locator.</info>
-      <return type='xmlChar *' info='the base URI or NULL in case of error.'/>
+      <return type='xmlChar *' info='the base URI or NULL in case of error, if non NULL it need to be freed by the caller.'/>
       <arg name='locator' type='xmlTextReaderLocatorPtr' info='the xmlTextReaderLocatorPtr used'/>
     </function>
     <function name='xmlTextReaderLocatorLineNumber' file='xmlreader' module='xmlreader'>
@@ -14789,13 +14789,13 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderName' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>The qualified name of the node, equal to Prefix :LocalName.</info>
-      <return type='xmlChar *' info='the local name or NULL if not available'/>
+      <return type='xmlChar *' info='the local name or NULL if not available, if non NULL it need to be freed by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderNamespaceUri' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>The URI defining the namespace associated with the node.</info>
-      <return type='xmlChar *' info='the namespace URI or NULL if not available'/>
+      <return type='xmlChar *' info='the namespace URI or NULL if not available, if non NULL it need to be freed by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderNext' file='xmlreader' module='xmlreader'>
@@ -14825,7 +14825,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderPrefix' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>A shorthand reference to the namespace associated with the node.</info>
-      <return type='xmlChar *' info='the prefix or NULL if not available'/>
+      <return type='xmlChar *' info='the prefix or NULL if not available, if non NULL it need to be freed by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderPreserve' file='xmlreader' module='xmlreader'>
@@ -14969,7 +14969,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderXmlLang' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>The xml:lang scope within which the node resides.</info>
-      <return type='xmlChar *' info='the xml:lang value or NULL if none exists.'/>
+      <return type='xmlChar *' info='the xml:lang value or NULL if none exists., if non NULL it need to be freed by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextWriterEndAttribute' file='xmlwriter' module='xmlwriter'>

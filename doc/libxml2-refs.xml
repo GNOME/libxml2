@@ -8231,6 +8231,7 @@
       <ref name='xmlReadDoc'/>
       <ref name='xmlReaderForDoc'/>
       <ref name='xmlReaderNewDoc'/>
+      <ref name='xmlRecoverDoc'/>
       <ref name='xmlRegExecCallbacks'/>
       <ref name='xmlRegExecPushString'/>
       <ref name='xmlRegExecPushString2'/>
@@ -9016,11 +9017,9 @@
       <ref name='xmlNewNodeEatName'/>
       <ref name='xmlNewNsPropEatName'/>
       <ref name='xmlParserInputDeallocate'/>
-      <ref name='xmlRecoverDoc'/>
       <ref name='xmlSAX2EntityDecl'/>
       <ref name='xmlStrPrintf'/>
       <ref name='xmlStrVPrintf'/>
-      <ref name='xmlStrcasestr'/>
       <ref name='xmlStrcat'/>
       <ref name='xmlStrncat'/>
       <ref name='xmlXPathWrapString'/>
@@ -25249,32 +25248,6 @@
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlDebugDumpString'/>
         </word>
-        <word name='need'>
-          <ref name='WITH_TRIO'/>
-          <ref name='XML_SCHEMAS_TYPE_FACETSNEEDVALUE'/>
-          <ref name='XML_SCHEMAS_TYPE_NORMVALUENEEDED'/>
-          <ref name='XML_SUBSTITUTE_BOTH'/>
-          <ref name='XML_SUBSTITUTE_NONE'/>
-          <ref name='XML_SUBSTITUTE_PEREF'/>
-          <ref name='XML_SUBSTITUTE_REF'/>
-          <ref name='_xmlDOMWrapCtxt'/>
-          <ref name='xmlCreatePushParserCtxt'/>
-          <ref name='xmlGetNsList'/>
-          <ref name='xmlInitCharEncodingHandlers'/>
-          <ref name='xmlNewDocNode'/>
-          <ref name='xmlNewDocNodeEatName'/>
-          <ref name='xmlNewTextChild'/>
-          <ref name='xmlNodeSetContent'/>
-          <ref name='xmlNodeSetContentLen'/>
-          <ref name='xmlParseEntityRef'/>
-          <ref name='xmlParserHandleReference'/>
-          <ref name='xmlRegExecErrInfo'/>
-          <ref name='xmlRegExecNextValues'/>
-          <ref name='xmlSchemaNewStringValue'/>
-          <ref name='xmlStreamWantsAnyNode'/>
-          <ref name='xmlValidGetValidElements'/>
-          <ref name='xmlXPathNewContext'/>
-        </word>
         <word name='needed'>
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlXPathContext'/>
@@ -25404,6 +25377,13 @@
           <ref name='xmlEncodeEntitiesReentrant'/>
           <ref name='xmlNewChild'/>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlTextReaderBaseUri'/>
+          <ref name='xmlTextReaderLocalName'/>
+          <ref name='xmlTextReaderLocatorBaseURI'/>
+          <ref name='xmlTextReaderName'/>
+          <ref name='xmlTextReaderNamespaceUri'/>
+          <ref name='xmlTextReaderPrefix'/>
+          <ref name='xmlTextReaderXmlLang'/>
           <ref name='xmlXPathParseNCName'/>
         </word>
         <word name='non-CDATA'>

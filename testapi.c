@@ -14625,14 +14625,14 @@ test_xmlRecoverDoc(void) {
     xmlChar * cur; /* a pointer to an array of xmlChar */
     int n_cur;
 
-    for (n_cur = 0;n_cur < gen_nb_xmlChar_ptr;n_cur++) {
+    for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
         mem_base = xmlMemBlocks();
-        cur = gen_xmlChar_ptr(n_cur, 0);
+        cur = gen_const_xmlChar_ptr(n_cur, 0);
 
-        ret_val = xmlRecoverDoc(cur);
+        ret_val = xmlRecoverDoc((const xmlChar *)cur);
         desret_xmlDocPtr(ret_val);
         call_tests++;
-        des_xmlChar_ptr(n_cur, cur, 0);
+        des_const_xmlChar_ptr(n_cur, (const xmlChar *)cur, 0);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlRecoverDoc",
@@ -17376,10 +17376,6 @@ static xmlRelaxNGValidityWarningFunc * gen_xmlRelaxNGValidityWarningFunc_ptr(int
 }
 static void des_xmlRelaxNGValidityWarningFunc_ptr(int no ATTRIBUTE_UNUSED, xmlRelaxNGValidityWarningFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-
 #endif
 
 
@@ -36167,16 +36163,16 @@ test_xmlStrcasestr(void) {
     int n_val;
 
     for (n_str = 0;n_str < gen_nb_const_xmlChar_ptr;n_str++) {
-    for (n_val = 0;n_val < gen_nb_xmlChar_ptr;n_val++) {
+    for (n_val = 0;n_val < gen_nb_const_xmlChar_ptr;n_val++) {
         mem_base = xmlMemBlocks();
         str = gen_const_xmlChar_ptr(n_str, 0);
-        val = gen_xmlChar_ptr(n_val, 1);
+        val = gen_const_xmlChar_ptr(n_val, 1);
 
-        ret_val = xmlStrcasestr((const xmlChar *)str, val);
+        ret_val = xmlStrcasestr((const xmlChar *)str, (const xmlChar *)val);
         desret_const_xmlChar_ptr(ret_val);
         call_tests++;
         des_const_xmlChar_ptr(n_str, (const xmlChar *)str, 0);
-        des_xmlChar_ptr(n_val, val, 1);
+        des_const_xmlChar_ptr(n_val, (const xmlChar *)val, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlStrcasestr",

@@ -6232,7 +6232,7 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
                 else
                     xmlRngPErr(ctxt, cur->node, XML_RNGP_REF_NO_DEF,
                                "Internal found no define for ref %s\n",
-                               (cur->name ? cur->name: "null"), NULL);
+                               (cur->name ? cur->name: BAD_CAST "null"), NULL);
             }
             if (cur->depth > -4) {
                 cur->depth = -4;
@@ -10707,6 +10707,60 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
     return (ret);
 }
 
+/**
+ * xmlRelaxNGCleanPSVI:
+ * @node:  an input element or document
+ *
+ * Call this routine to speed up XPath computation on static documents.
+ * This stamps all the element nodes with the document order
+ * Like for line information, the order is kept in the element->content
+ * field, the value stored is actually - the node number (starting at -1)
+ * to be able to differentiate from line numbers.
+ *
+ * Returns the number of elements found in the document or -1 in case
+ *    of error.
+ */
+static void
+xmlRelaxNGCleanPSVI(xmlNodePtr node) {
+    xmlNodePtr cur;
+
+    if ((node == NULL) ||
+        ((node->type != XML_ELEMENT_NODE) &&
+         (node->type != XML_DOCUMENT_NODE) &&
+         (node->type != XML_HTML_DOCUMENT_NODE)))
+	return;
+    if (node->type == XML_ELEMENT_NODE)
+        node->psvi = NULL;
+
+    cur = node->children;
+    while (cur != NULL) {
+	if (cur->type == XML_ELEMENT_NODE) {
+	    cur->psvi = NULL;
+	    if (cur->children != NULL) {
+		cur = cur->children;
+		continue;
+	    }
+	}
+	if (cur->next != NULL) {
+	    cur = cur->next;
+	    continue;
+	}
+	do {
+	    cur = cur->parent;
+	    if (cur == NULL)
+		break;
+	    if (cur == node) {
+		cur = NULL;
+		break;
+	    }
+	    if (cur->next != NULL) {
+		cur = cur->next;
+		break;
+	    }
+	} while (cur != NULL);
+    }
+    return;
+}
 /************************************************************************
  * 									*
  * 			Validation interfaces				*
@@ -10880,6 +10934,11 @@ xmlRelaxNGValidateDoc(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
     ctxt->doc = doc;
 
     ret = xmlRelaxNGValidateDocument(ctxt, doc);
+    /*
+     * Remove all left PSVI
+     */
+    xmlRelaxNGCleanPSVI((xmlNodePtr) doc);
+
     /*
      * TODO: build error codes
      */

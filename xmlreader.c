@@ -2214,6 +2214,9 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	xmlFree(reader->patternTab);
     }
 #endif
+    if (reader->faketext != NULL) {
+	xmlFreeNode(reader->faketext);
+    }
     if (reader->ctxt != NULL) {
         if (reader->dict == reader->ctxt->dict)
 	    reader->dict = NULL;
@@ -2235,9 +2238,6 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	xmlFree(reader->sax);
     if ((reader->input != NULL)  && (reader->allocs & XML_TEXTREADER_INPUT))
 	xmlFreeParserInputBuffer(reader->input);
-    if (reader->faketext != NULL) {
-	xmlFreeNode(reader->faketext);
-    }
     if (reader->buffer != NULL)
         xmlBufferFree(reader->buffer);
     if (reader->entTab != NULL)

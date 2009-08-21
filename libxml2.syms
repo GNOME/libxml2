@@ -2,6 +2,8 @@
 # Officially exported symbols, for which header
 # file definitions are installed in /usr/include/libxml2
 #
+# Automatically generated from symbols.xml and syms.xsl
+#
 # Versions here are *fixed* to match the libxml2 version
 # at which the symbol was introduced. This ensures that
 # a new client app requiring symbol foo() can't accidentally
@@ -72,7 +74,11 @@ LIBXML2_2.4.30 {
   characters;
   checkNamespace;
   comment;
+
+# SAX2
   docbDefaultSAXHandlerInit;
+
+# SAX
   elementDecl;
   endDocument;
   endElement;
@@ -88,7 +94,11 @@ LIBXML2_2.4.30 {
   globalNamespace;
   hasExternalSubset;
   hasInternalSubset;
+
+# SAX2
   htmlDefaultSAXHandlerInit;
+
+# SAX
   ignorableWhitespace;
   initdocbDefaultSAXHandler;
   inithtmlDefaultSAXHandler;
@@ -105,6 +115,8 @@ LIBXML2_2.4.30 {
   startDocument;
   startElement;
   unparsedEntityDecl;
+
+# SAX2
   xmlDefaultSAXHandlerInit;
 
 # parserInternals
@@ -126,6 +138,8 @@ LIBXML2_2.4.30 {
   xmlDecodeEntities;
   xmlFreeInputStream;
   xmlHandleEntity;
+
+# chvalid
   xmlIsBaseChar;
   xmlIsBlank;
   xmlIsChar;
@@ -133,15 +147,25 @@ LIBXML2_2.4.30 {
   xmlIsDigit;
   xmlIsExtender;
   xmlIsIdeographic;
+
+# parserInternals
   xmlIsLetter;
+
+# chvalid
   xmlIsPubidChar;
+
+# parserInternals
   xmlNamespaceParseNCName;
   xmlNamespaceParseNSDef;
   xmlNamespaceParseQName;
   xmlNewEntityInputStream;
   xmlNewInputFromFile;
   xmlNewInputStream;
+
+# parser
   xmlNewParserCtxt;
+
+# parserInternals
   xmlNewStringInputStream;
   xmlNextChar;
   xmlParseAttValue;
@@ -638,7 +662,11 @@ LIBXML2_2.4.30 {
   xmlRemoveID;
   xmlRemoveRef;
   xmlSnprintfElementContent;
+
+# tree
   xmlSplitQName2;
+
+# valid
   xmlSprintfElementContent;
   xmlValidBuildContentModel;
   xmlValidCtxtNormalizeAttributeValue;
@@ -686,9 +714,11 @@ LIBXML2_2.4.30 {
   htmlSAXParseFile;
   htmlTagLookup;
 
-# parser
+# xmlstring
   xmlCharStrdup;
   xmlCharStrndup;
+
+# parser
   xmlCleanupParser;
   xmlClearNodeInfoSeq;
   xmlClearParserCtxt;
@@ -699,7 +729,11 @@ LIBXML2_2.4.30 {
   xmlGetExternalEntityLoader;
   xmlGetFeature;
   xmlGetFeaturesList;
+
+# globals
   xmlGetWarningsDefaultValue; # variable
+
+# parser
   xmlIOParseDTD;
   xmlInitNodeInfoSeq;
   xmlInitParser;
@@ -742,6 +776,8 @@ LIBXML2_2.4.30 {
   xmlSetFeature;
   xmlSetupParserForBuffer;
   xmlStopParser;
+
+# xmlstring
   xmlStrEqual;
   xmlStrcasecmp;
   xmlStrcasestr;
@@ -756,6 +792,8 @@ LIBXML2_2.4.30 {
   xmlStrndup;
   xmlStrstr;
   xmlStrsub;
+
+# parser
   xmlSubstituteEntitiesDefault;
 
 # xmlreader
@@ -851,8 +889,10 @@ LIBXML2_2.4.30 {
   xmlParserWarning;
   xmlSetGenericErrorFunc;
 
-# tree
+# globals
   oldXMLWDcompatibility; # variable
+
+# tree
   xmlAddChild;
   xmlAddChildList;
   xmlAddNextSibling;
@@ -860,7 +900,11 @@ LIBXML2_2.4.30 {
   xmlAddSibling;
   xmlBufferAdd;
   xmlBufferAddHead;
+
+# globals
   xmlBufferAllocScheme; # variable
+
+# tree
   xmlBufferCCat;
   xmlBufferCat;
   xmlBufferContent;
@@ -886,7 +930,11 @@ LIBXML2_2.4.30 {
   xmlCopyProp;
   xmlCopyPropList;
   xmlCreateIntSubset;
+
+# globals
   xmlDefaultBufferSize; # variable
+
+# tree
   xmlDocCopyNode;
   xmlDocDump;
   xmlDocDumpFormatMemory;
@@ -917,7 +965,11 @@ LIBXML2_2.4.30 {
   xmlGetProp;
   xmlHasNsProp;
   xmlHasProp;
+
+# globals
   xmlIndentTreeOutput; # variable
+
+# tree
   xmlIsBlankNode;
   xmlIsXHTML;
   xmlNewCDataBlock;
@@ -1172,7 +1224,11 @@ LIBXML2_2.4.30 {
   xmlCharEncFirstLine;
   xmlCharEncInFunc;
   xmlCharEncOutFunc;
+
+# xmlstring
   xmlCheckUTF8;
+
+# encoding
   xmlCleanupCharEncodingHandlers;
   xmlCleanupEncodingAliases;
   xmlDelEncodingAlias;
@@ -1181,26 +1237,28 @@ LIBXML2_2.4.30 {
   xmlGetCharEncodingHandler;
   xmlGetCharEncodingName;
   xmlGetEncodingAlias;
+
+# xmlstring
   xmlGetUTF8Char;
+
+# encoding
   xmlInitCharEncodingHandlers;
   xmlNewCharEncodingHandler;
   xmlParseCharEncoding;
   xmlRegisterCharEncodingHandler;
+
+# xmlstring
   xmlUTF8Strlen;
   xmlUTF8Strloc;
   xmlUTF8Strndup;
   xmlUTF8Strpos;
   xmlUTF8Strsize;
   xmlUTF8Strsub;
-
-};
-
-#
-# from 2.6.30 we can precisely keep track of API additions
-#
+} ;
 
 LIBXML2_2.5.0 {
     global:
+
 # globals
   xmlDeregisterNodeDefault;
   xmlDeregisterNodeDefaultValue; # variable
@@ -1262,7 +1320,6 @@ LIBXML2_2.5.2 {
   xmlRelaxNGSetParserErrors;
   xmlRelaxNGSetValidErrors;
   xmlRelaxNGValidateDoc;
-#  xmlRelaxNGValidateStream; removed in 2.5.5
 
 # xmlreader
   xmlTextReaderGetErrorHandler;
@@ -1270,6 +1327,8 @@ LIBXML2_2.5.2 {
   xmlTextReaderLocatorLineNumber;
   xmlTextReaderSetErrorHandler;
 
+# relaxng
+# xmlRelaxNGValidateStream; removed in 2.5.5
 } LIBXML2_2.5.0;
 
 LIBXML2_2.5.4 {
@@ -1286,17 +1345,18 @@ LIBXML2_2.5.4 {
   xmlValidateNCName;
   xmlValidateNMToken;
   xmlValidateQName;
-
 } LIBXML2_2.5.2;
 
 LIBXML2_2.5.5 {
     global:
+
 # nanoftp
   xmlNanoFTPDele;
 } LIBXML2_2.5.4;
 
 LIBXML2_2.5.6 {
     global:
+
 # xpath
   xmlXPathOrderDocElems;
 } LIBXML2_2.5.5;
@@ -1336,7 +1396,6 @@ LIBXML2_2.5.7 {
   xmlTextReaderNext;
   xmlTextReaderRelaxNGSetSchema;
   xmlTextReaderRelaxNGValidate;
-
 } LIBXML2_2.5.6;
 
 LIBXML2_2.5.8 {
@@ -1397,7 +1456,6 @@ LIBXML2_2.5.8 {
   xmlThrDefSetGenericErrorFunc;
   xmlThrDefSubstituteEntitiesDefaultValue;
   xmlThrDefTreeIndentString;
-
 } LIBXML2_2.5.7;
 
 LIBXML2_2.5.9 {
@@ -1413,13 +1471,12 @@ LIBXML2_2.5.9 {
 # tree
   xmlSplitQName3;
 
-# encoding
+# xmlstring
   xmlUTF8Charcmp;
   xmlUTF8Size;
 
 # xinclude
   xmlXIncludeProcessTree;
-
 } LIBXML2_2.5.8;
 
 LIBXML2_2.6.0 {
@@ -1429,7 +1486,6 @@ LIBXML2_2.6.0 {
   xmlSAX2AttributeDecl;
   xmlSAX2CDataBlock;
   xmlSAX2Characters;
-#  xmlSAX2CheckNamespace; suppressed in 2.6.10
   xmlSAX2Comment;
   xmlSAX2ElementDecl;
   xmlSAX2EndDocument;
@@ -1440,11 +1496,9 @@ LIBXML2_2.6.0 {
   xmlSAX2GetColumnNumber;
   xmlSAX2GetEntity;
   xmlSAX2GetLineNumber;
-#  xmlSAX2GetNamespace; suppressed in 2.6.10
   xmlSAX2GetParameterEntity;
   xmlSAX2GetPublicId;
   xmlSAX2GetSystemId;
-#  xmlSAX2GlobalNamespace; suppressed in 2.6.10
   xmlSAX2HasExternalSubset;
   xmlSAX2HasInternalSubset;
   xmlSAX2IgnorableWhitespace;
@@ -1453,13 +1507,11 @@ LIBXML2_2.6.0 {
   xmlSAX2InitHtmlDefaultSAXHandler;
   xmlSAX2InternalSubset;
   xmlSAX2IsStandalone;
-#  xmlSAX2NamespaceDecl; suppressed in 2.6.10
   xmlSAX2NotationDecl;
   xmlSAX2ProcessingInstruction;
   xmlSAX2Reference;
   xmlSAX2ResolveEntity;
   xmlSAX2SetDocumentLocator;
-#  xmlSAX2SetNamespace; suppressed in 2.6.10
   xmlSAX2StartDocument;
   xmlSAX2StartElementNs;
   xmlSAX2StartElement;
@@ -1504,7 +1556,11 @@ LIBXML2_2.6.0 {
   xmlCtxtReadFile;
   xmlCtxtReadIO;
   xmlCtxtReadMemory;
+
+# xmlerror
   xmlCtxtResetLastError;
+
+# parser
   xmlCtxtReset;
   xmlCtxtUseOptions;
   xmlReadDoc;
@@ -1512,6 +1568,8 @@ LIBXML2_2.6.0 {
   xmlReadFile;
   xmlReadIO;
   xmlReadMemory;
+
+# xmlstring
   xmlStrPrintf;
   xmlStrQEqual;
 
@@ -1600,7 +1658,6 @@ LIBXML2_2.6.0 {
   xmlTextWriterWriteVFormatRaw;
   xmlTextWriterWriteVFormatString;
 
-
 # hash
   xmlHashQLookup2;
   xmlHashQLookup3;
@@ -1660,6 +1717,12 @@ LIBXML2_2.6.0 {
 # xpathInternals
   xmlXPathErr;
 
+# SAX2
+# xmlSAX2CheckNamespace; removed in 2.6.10
+# xmlSAX2GetNamespace; removed in 2.6.10
+# xmlSAX2GlobalNamespace; removed in 2.6.10
+# xmlSAX2NamespaceDecl; removed in 2.6.10
+# xmlSAX2SetNamespace; removed in 2.6.10
 } LIBXML2_2.5.9;
 
 LIBXML2_2.6.1 {
@@ -1678,14 +1741,13 @@ LIBXML2_2.6.2 {
 # xmlschemas
   xmlSchemaNewDocParserCtxt;
 
-# parser
+# xmlstring
   xmlStrVPrintf;
 
 # xinclude
   xmlXIncludeFreeContext;
   xmlXIncludeNewContext;
   xmlXIncludeProcessNode;
-
 } LIBXML2_2.6.1;
 
 LIBXML2_2.6.3 {
@@ -1743,7 +1805,6 @@ LIBXML2_2.6.3 {
   xmlXIncludeProcessFlags;
   xmlXIncludeProcessTreeFlags;
   xmlXIncludeSetFlags;
-
 } LIBXML2_2.6.2;
 
 LIBXML2_2.6.5 {
@@ -1767,7 +1828,6 @@ LIBXML2_2.6.5 {
 
 # xpath
   xmlXPathCtxtCompile;
-
 } LIBXML2_2.6.3;
 
 LIBXML2_2.6.6 {
@@ -1781,7 +1841,6 @@ LIBXML2_2.6.6 {
 
 # xmlreader
   xmlTextReaderSetStructuredErrorHandler;
-
 } LIBXML2_2.6.5;
 
 LIBXML2_2.6.7 {
@@ -1790,7 +1849,6 @@ LIBXML2_2.6.7 {
 # xmlwriter
   xmlTextWriterEndComment;
   xmlTextWriterStartComment;
-
 } LIBXML2_2.6.6;
 
 LIBXML2_2.6.8 {
@@ -1800,7 +1858,6 @@ LIBXML2_2.6.8 {
   xmlSaveClose;
   xmlSaveDoc;
   xmlSaveFlush;
-#  xmlSaveToBuffer; suppressed in 2.6.11, readded in 2.6.23
   xmlSaveToFd;
   xmlSaveToFilename;
   xmlSaveToIO;
@@ -1815,13 +1872,13 @@ LIBXML2_2.6.8 {
 
 LIBXML2_2.6.10 {
     global:
+
 # xmlIO
   xmlOutputBufferWriteEscape;
-# xmlIO
   xmlPopInputCallbacks;
+
 # xmlsave
   xmlSaveSetAttrEscape;
-# xmlsave
   xmlSaveSetEscape;
 } LIBXML2_2.6.8;
 
@@ -1848,7 +1905,6 @@ LIBXML2_2.6.11 {
   xmlSchemaGetBuiltInType;
   xmlSchemaIsBuiltInTypeFacet;
   xmlSchemaValidateListSimpleTypeFacet;
-
 } LIBXML2_2.6.10;
 
 LIBXML2_2.6.12 {
@@ -1865,7 +1921,6 @@ LIBXML2_2.6.12 {
 # xmlschemas
   xmlSchemaGetParserErrors;
   xmlSchemaGetValidErrors;
-
 } LIBXML2_2.6.11;
 
 LIBXML2_2.6.14 {
@@ -1882,7 +1937,6 @@ LIBXML2_2.6.14 {
   xmlSchemaSetValidOptions;
   xmlSchemaValidateOneElement;
   xmlSchemaValidCtxtGetOptions;
-
 } LIBXML2_2.6.12;
 
 LIBXML2_2.6.15 {
@@ -1900,7 +1954,6 @@ LIBXML2_2.6.15 {
   xmlTextReaderConstXmlVersion;
   xmlTextReaderIsNamespaceDecl;
   xmlTextReaderStandalone;
-
 } LIBXML2_2.6.14;
 
 LIBXML2_2.6.16 {
@@ -1911,7 +1964,6 @@ LIBXML2_2.6.16 {
 
 # relaxng
   xmlRelaxNGInitTypes;
-
 } LIBXML2_2.6.15;
 
 LIBXML2_2.6.17 {
@@ -1936,7 +1988,6 @@ LIBXML2_2.6.17 {
 # xmlreader
   xmlTextReaderGetParserColumnNumber;
   xmlTextReaderGetParserLineNumber;
-
 } LIBXML2_2.6.16;
 
 LIBXML2_2.6.18 {
@@ -2078,7 +2129,8 @@ LIBXML2_2.6.23 {
   xmlOutputBufferCreateBuffer;
 
 # xmlsave
-  xmlSaveToBuffer;
+  xmlSaveToBuffer;# suppressed in 2.6.11, readded in 2.6.23
+
 
 # xmlschemas
   xmlSchemaSetParserStructuredErrors;
@@ -2093,8 +2145,10 @@ LIBXML2_2.6.23 {
 
 LIBXML2_2.6.24 {
     global:
+
 # tree
   xmlDOMWrapCloneNode;
+
 # relaxng
   xmlRelaxNGSetParserStructuredErrors;
 } LIBXML2_2.6.23;
@@ -2166,3 +2220,4 @@ LIBXML2_2.7.3 {
   xmlNextElementSibling;
   xmlPreviousElementSibling;
 } LIBXML2_2.7.0;
+

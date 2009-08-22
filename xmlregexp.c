@@ -1569,8 +1569,13 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		 *      1. set transition from atom start to new state
 		 *      2. set transition from atom end to this state. 
 		 */
-		xmlFAGenerateEpsilonTransition(ctxt, atom->start, 0);
-		xmlFAGenerateEpsilonTransition(ctxt, atom->stop, ctxt->state);
+                if (to == NULL) {
+                    xmlFAGenerateEpsilonTransition(ctxt, atom->start, 0);
+                    xmlFAGenerateEpsilonTransition(ctxt, atom->stop,
+                                                   ctxt->state);
+                } else {
+                    xmlFAGenerateEpsilonTransition(ctxt, atom->start, to);
+                }
 		break;
 	    case XML_REGEXP_QUANT_MULT:
 		atom->quant = XML_REGEXP_QUANT_ONCE;

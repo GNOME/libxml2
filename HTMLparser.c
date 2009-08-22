@@ -4080,14 +4080,15 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     int depth;
     const xmlChar *oldptr;
 
-    if (ctxt->instate == XML_PARSER_EOF)
-        return;
-
     if ((ctxt == NULL) || (ctxt->input == NULL)) {
 	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
 		     "htmlParseElement: context error\n", NULL, NULL);
 	return;
     }
+
+    if (ctxt->instate == XML_PARSER_EOF)
+        return;
+
     /* Capture start position */
     if (ctxt->record_info) {
         node_info.begin_pos = ctxt->input->consumed +

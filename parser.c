@@ -9181,6 +9181,8 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
      */
     if (name != (xmlChar*)1) {
         if (name == NULL) name = BAD_CAST "unparseable";
+        if ((line == 0) && (ctxt->node != NULL))
+            line = ctxt->node->line;
         xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
 		     "Opening and ending tag mismatch: %s line %d and %s\n",
 		                ctxt->name, line, name);

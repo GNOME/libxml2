@@ -434,6 +434,7 @@ AC_CHECK_HEADERS([arpa/inet.h], [], [],
 AC_CHECK_HEADERS([netdb.h])
 AC_CHECK_HEADERS([sys/time.h])
 AC_CHECK_HEADERS([sys/select.h])
+AC_CHECK_HEADERS([poll.h])
 AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([sys/timeb.h])
 AC_CHECK_HEADERS([signal.h])

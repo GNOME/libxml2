@@ -2549,6 +2549,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
                 if (format)
 		    saveOpts |= XML_SAVE_FORMAT;
+                if (xmlout)
+                    saveOpts |= XML_SAVE_AS_XML;
 
 		if (output == NULL)
 		    ctxt = xmlSaveToFd(1, encoding, saveOpts);

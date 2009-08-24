@@ -132,7 +132,7 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  */
 void
 xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
-    xmlGenericErrorContext = ctx;
+    xmlStructuredErrorContext = ctx;
     xmlStructuredError = handler;
 }
 
@@ -471,7 +471,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	 * if user has defined handler, change data ptr to user's choice
 	 */
 	if (schannel != NULL)
-	    data = xmlGenericErrorContext;
+	    data = xmlStructuredErrorContext;
     }
     if ((domain == XML_FROM_VALID) &&
         ((channel == xmlParserValidityError) ||
@@ -593,20 +593,23 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     /*
      * Find the callback channel if channel param is NULL
      */
-    if ((ctxt != NULL) && (channel == NULL) && (xmlStructuredError == NULL) && (ctxt->sax != NULL)) {
+    if ((ctxt != NULL) && (channel == NULL) &&
+        (xmlStructuredError == NULL) && (ctxt->sax != NULL)) {
         if (level == XML_ERR_WARNING)
 	    channel = ctxt->sax->warning;
         else
 	    channel = ctxt->sax->error;
 	data = ctxt->userData;
     } else if (channel == NULL) {
-        if ((schannel == NULL) && (xmlStructuredError != NULL))
+        if ((schannel == NULL) && (xmlStructuredError != NULL)) {
 	    schannel = xmlStructuredError;
-	else
+	    data = xmlStructuredErrorContext;
+	} else {
 	    channel = xmlGenericError;
-	if (!data) {
-            data = xmlGenericErrorContext;
-    }
+	    if (!data) {
+		data = xmlGenericErrorContext;
+	    }
+	}
     }
     if (schannel != NULL) {
         schannel(data, to);

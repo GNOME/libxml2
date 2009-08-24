@@ -2,11 +2,13 @@
 int,oldXMLWDcompatibility,,
 xmlBufferAllocationScheme,xmlBufferAllocScheme,,1
 int,xmlDefaultBufferSize,,1
-xmlSAXHandler,xmlDefaultSAXHandler,,
+xmlSAXHandlerV1,xmlDefaultSAXHandler,,
 xmlSAXLocator,xmlDefaultSAXLocator,,
 int,xmlDoValidityCheckingDefaultValue,,1
 xmlGenericErrorFunc,xmlGenericError,,
+xmlStructuredErrorFunc,xmlStructuredError,,
 void *,xmlGenericErrorContext,,
+void *,xmlStructuredErrorContext,,
 int,xmlGetWarningsDefaultValue,,1
 int,xmlIndentTreeOutput,,1
 const char *,xmlTreeIndentString,,1
@@ -23,3 +25,5 @@ int,xmlSaveNoEmptyTags,,1
 int,xmlSubstituteEntitiesDefaultValue,,1
 xmlRegisterNodeFunc,xmlRegisterNodeDefaultValue,,
 xmlDeregisterNodeFunc,xmlDeregisterNodeDefaultValue,,
+xmlParserInputBufferCreateFilenameFunc,xmlParserInputBufferCreateFilenameValue,,
+xmlOutputBufferCreateFilenameFunc,xmlOutputBufferCreateFilenameValue,,

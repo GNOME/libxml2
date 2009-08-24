@@ -466,7 +466,7 @@ class xmlCore:
 
         Note: If any child nodes referred to the removed namespaces,
         they will be left with dangling links.  You should call
-        renciliateNs() to fix those pointers.
+        renconciliateNs() to fix those pointers.
 
         Note: This method does not free memory taken by the ns
         definitions.  You will need to free it manually with the

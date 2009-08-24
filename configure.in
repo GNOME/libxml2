@@ -1286,6 +1286,8 @@ case "$host" in
 	;;
 	*beos*) M_LIBS=""
 	;;
+        *haiku*) M_LIBS=""
+        ;;
 	*) M_LIBS="-lm"
 	;;
 esac

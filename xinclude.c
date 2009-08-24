@@ -2423,7 +2423,42 @@ xmlXIncludeSetFlags(xmlXIncludeCtxtPtr ctxt, int flags) {
     ctxt->parseFlags = flags;
     return(0);
 }
- 
+
+/**
+ * xmlXIncludeProcessTreeFlagsData:
+ * @tree: an XML node
+ * @flags: a set of xmlParserOption used for parsing XML includes
+ * @data: application data that will be passed to the parser context
+ *        in the _private field of the parser context(s)
+ *
+ * Implement the XInclude substitution on the XML node @tree
+ *
+ * Returns 0 if no substitution were done, -1 if some processing failed
+ *    or the number of substitutions done.
+ */
+
+int
+xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree, int flags, void *data) {
+    xmlXIncludeCtxtPtr ctxt;
+    int ret = 0;
+
+    if ((tree == NULL) || (tree->doc == NULL))
+        return(-1);
+
+    ctxt = xmlXIncludeNewContext(tree->doc);
+    if (ctxt == NULL)
+        return(-1);
+    ctxt->_private = data;
+    ctxt->base = xmlStrdup((xmlChar *)tree->doc->URL);
+    xmlXIncludeSetFlags(ctxt, flags);
+    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree);
+    if ((ret >= 0) && (ctxt->nbErrors > 0))
+        ret = -1;
+
+    xmlXIncludeFreeContext(ctxt);
+    return(ret);
+}
+
 /**
  * xmlXIncludeProcessFlagsData:
  * @doc: an XML document
@@ -2440,25 +2475,13 @@ int
 xmlXIncludeProcessFlagsData(xmlDocPtr doc, int flags, void *data) {
     xmlXIncludeCtxtPtr ctxt;
     xmlNodePtr tree;
-    int ret = 0;
 
     if (doc == NULL)
 	return(-1);
     tree = xmlDocGetRootElement(doc);
     if (tree == NULL)
 	return(-1);
-    ctxt = xmlXIncludeNewContext(doc);
-    if (ctxt == NULL)
-	return(-1);
-    ctxt->_private = data;
-    ctxt->base = xmlStrdup((xmlChar *)doc->URL);
-    xmlXIncludeSetFlags(ctxt, flags);
-    ret = xmlXIncludeDoProcess(ctxt, doc, tree);
-    if ((ret >= 0) && (ctxt->nbErrors > 0))
-	ret = -1;
-
-    xmlXIncludeFreeContext(ctxt);
-    return(ret);
+    return(xmlXIncludeProcessTreeFlagsData(tree, flags, data));
 }
 
 /**

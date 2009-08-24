@@ -2149,7 +2149,7 @@ int
 xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
 	xmlOutputOpenCallback openFunc, xmlOutputWriteCallback writeFunc,
 	xmlOutputCloseCallback closeFunc) {
-    if (xmlOutputCallbackNr >= MAX_INPUT_CALLBACK) {
+    if (xmlOutputCallbackNr >= MAX_OUTPUT_CALLBACK) {
 	return(-1);
     }
     xmlOutputCallbackTable[xmlOutputCallbackNr].matchcallback = matchFunc;

@@ -10,7 +10,7 @@ import sys
 libxml2.debugMemory(1)
 
 expect="""--> (3) test1:1:xmlns: URI foo is not absolute
---> (4) test1:1:Opening and ending tag mismatch: c line 0 and a
+--> (4) test1:1:Opening and ending tag mismatch: c line 1 and a
 """
 err=""
 def myErrorHandler(arg,msg,severity,locator):

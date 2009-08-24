@@ -1458,6 +1458,8 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
             if (handler != NULL) return(handler);
             handler = xmlFindCharEncodingHandler("ebcdic");
             if (handler != NULL) return(handler);
+            handler = xmlFindCharEncodingHandler("EBCDIC-US");
+            if (handler != NULL) return(handler);
 	    break;
         case XML_CHAR_ENCODING_UCS4BE:
             handler = xmlFindCharEncodingHandler("ISO-10646-UCS-4");

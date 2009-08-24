@@ -163,6 +163,10 @@ htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 static int
 htmlnamePush(htmlParserCtxtPtr ctxt, const xmlChar * value)
 {
+    if ((ctxt->html < 3) && (xmlStrEqual(value, BAD_CAST "head")))
+        ctxt->html = 3;
+    if ((ctxt->html < 10) && (xmlStrEqual(value, BAD_CAST "body")))
+        ctxt->html = 10;
     if (ctxt->nameNr >= ctxt->nameMax) {
         ctxt->nameMax *= 2;
         ctxt->nameTab = (const xmlChar * *)
@@ -1393,16 +1397,24 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	 (xmlStrEqual(newtag, BAD_CAST"link")) ||
 	 (xmlStrEqual(newtag, BAD_CAST"title")) ||
 	 (xmlStrEqual(newtag, BAD_CAST"base")))) {
-	    /*
-	     * dropped OBJECT ... i you put it first BODY will be
-	     * assumed !
-	     */
-	    htmlnamePush(ctxt, BAD_CAST"head");
-	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
-		ctxt->sax->startElement(ctxt->userData, BAD_CAST"head", NULL);
+        if (ctxt->html >= 3) {
+            /* we already saw or generated an <head> before */
+            return;
+        }
+        /*
+         * dropped OBJECT ... i you put it first BODY will be
+         * assumed !
+         */
+        htmlnamePush(ctxt, BAD_CAST"head");
+        if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+            ctxt->sax->startElement(ctxt->userData, BAD_CAST"head", NULL);
     } else if ((!xmlStrEqual(newtag, BAD_CAST"noframes")) &&
 	       (!xmlStrEqual(newtag, BAD_CAST"frame")) &&
 	       (!xmlStrEqual(newtag, BAD_CAST"frameset"))) {
+        if (ctxt->html >= 10) {
+            /* we already saw or generated a <body> before */
+            return;
+        }
 	int i;
 	for (i = 0;i < ctxt->nameNr;i++) {
 	    if (xmlStrEqual(ctxt->nameTab[i], BAD_CAST"body")) {

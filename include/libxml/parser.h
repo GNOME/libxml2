@@ -190,7 +190,10 @@ struct _xmlParserCtxt {
     const xmlChar    *version;        /* the XML version string */
     const xmlChar   *encoding;        /* the declared encoding, if any */
     int            standalone;        /* standalone document */
-    int                  html;        /* an HTML(1)/Docbook(2) document */
+    int                  html;        /* an HTML(1)/Docbook(2) document
+                                       * 3 is HTML after <head>
+                                       * 10 is HTML after <body>
+                                       */
 
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */

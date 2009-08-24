@@ -2897,6 +2897,7 @@
     <reference name='xmlStrstr' href='html/libxml-xmlstring.html#xmlStrstr'/>
     <reference name='xmlStrsub' href='html/libxml-xmlstring.html#xmlStrsub'/>
     <reference name='xmlStructuredError' href='html/libxml-globals.html#xmlStructuredError'/>
+    <reference name='xmlStructuredErrorContext' href='html/libxml-globals.html#xmlStructuredErrorContext'/>
     <reference name='xmlStructuredErrorFunc' href='html/libxml-xmlerror.html#xmlStructuredErrorFunc'/>
     <reference name='xmlSubstituteEntitiesDefault' href='html/libxml-parser.html#xmlSubstituteEntitiesDefault'/>
     <reference name='xmlSubstituteEntitiesDefaultValue' href='html/libxml-globals.html#xmlSubstituteEntitiesDefaultValue'/>
@@ -6486,6 +6487,7 @@
       <ref name='xmlStrstr'/>
       <ref name='xmlStrsub'/>
       <ref name='xmlStructuredError'/>
+      <ref name='xmlStructuredErrorContext'/>
       <ref name='xmlStructuredErrorFunc'/>
       <ref name='xmlSubstituteEntitiesDefault'/>
       <ref name='xmlSubstituteEntitiesDefaultValue'/>
@@ -11062,6 +11064,7 @@
       <ref name='xmlRegisterNodeFunc'/>
       <ref name='xmlSaveNoEmptyTags'/>
       <ref name='xmlStructuredError'/>
+      <ref name='xmlStructuredErrorContext'/>
       <ref name='xmlSubstituteEntitiesDefaultValue'/>
       <ref name='xmlThrDefBufferAllocScheme'/>
       <ref name='xmlThrDefDefaultBufferSize'/>
@@ -18810,6 +18813,7 @@
         <word name='after'>
           <ref name='UTF8ToHtml'/>
           <ref name='UTF8Toisolat1'/>
+          <ref name='_xmlParserCtxt'/>
           <ref name='docbEncodeEntities'/>
           <ref name='htmlEncodeEntities'/>
           <ref name='isolat1ToUTF8'/>
@@ -19583,6 +19587,9 @@
           <ref name='xmlMemBlocks'/>
           <ref name='xmlMemDisplay'/>
           <ref name='xmlMemoryDump'/>
+        </word>
+        <word name='body'>
+          <ref name='_xmlParserCtxt'/>
         </word>
         <word name='book1'>
           <ref name='xmlBuildRelativeURI'/>
@@ -23280,6 +23287,7 @@
         </word>
         <word name='head'>
           <ref name='XML_SCHEMAS_ELEM_SUBST_GROUP_HEAD'/>
+          <ref name='_xmlParserCtxt'/>
         </word>
         <word name='header'>
           <ref name='xmlNanoHTTPAuthHeader'/>

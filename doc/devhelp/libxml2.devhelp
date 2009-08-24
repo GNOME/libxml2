@@ -1913,6 +1913,7 @@
     <function name="xmlStringText" link="libxml2-parserInternals.html#xmlStringText"/>
     <function name="xmlStringTextNoenc" link="libxml2-parserInternals.html#xmlStringTextNoenc"/>
     <function name="xmlStructuredError" link="libxml2-globals.html#xmlStructuredError"/>
+    <function name="xmlStructuredErrorContext" link="libxml2-globals.html#xmlStructuredErrorContext"/>
     <function name="xmlSubstituteEntitiesDefaultValue" link="libxml2-globals.html#xmlSubstituteEntitiesDefaultValue"/>
     <function name="xmlTreeIndentString" link="libxml2-globals.html#xmlTreeIndentString"/>
     <function name="xmlXPathNAN" link="libxml2-xpath.html#xmlXPathNAN"/>

@@ -2221,3 +2221,10 @@ LIBXML2_2.7.3 {
   xmlPreviousElementSibling;
 } LIBXML2_2.7.0;
 
+LIBXML2_2.7.4 {
+    global:
+
+# globals
+  xmlStructuredErrorContext; # variable
+} LIBXML2_2.7.3;
+

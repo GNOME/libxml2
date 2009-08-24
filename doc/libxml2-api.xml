@@ -485,6 +485,7 @@
      <exports symbol='xmlMalloc' type='variable'/>
      <exports symbol='xmlParserVersion' type='variable'/>
      <exports symbol='xmlStructuredError' type='variable'/>
+     <exports symbol='xmlStructuredErrorContext' type='variable'/>
      <exports symbol='xmlDoValidityCheckingDefaultValue' type='variable'/>
      <exports symbol='xmlOutputBufferCreateFilenameValue' type='variable'/>
      <exports symbol='xmlPedanticParserDefaultValue' type='variable'/>
@@ -6159,6 +6160,7 @@ set at the end of parsing'/>
       <field name='xmlLastError' type='xmlError' info=''/>
       <field name='xmlParserInputBufferCreateFilenameValue' type='xmlParserInputBufferCreateFilenameFunc' info=''/>
       <field name='xmlOutputBufferCreateFilenameValue' type='xmlOutputBufferCreateFilenameFunc' info=''/>
+      <field name='xmlStructuredErrorContext' type='void *' info=''/>
     </struct>
     <typedef name='xmlGlobalStatePtr' file='globals' type='xmlGlobalState *'/>
     <struct name='xmlHashTable' file='hash' type='struct _xmlHashTable'/>
@@ -6254,7 +6256,10 @@ set at the end of parsing'/>
       <field name='version' type='const xmlChar *' info=' the XML version string'/>
       <field name='encoding' type='const xmlChar *' info=' the declared encoding, if any'/>
       <field name='standalone' type='int' info=' standalone document'/>
-      <field name='html' type='int' info=' an HTML(1)/Docbook(2) document Input stream stack'/>
+      <field name='html' type='int' info=' an HTML(1)/Docbook(2) document
+* 3 is HTML after &lt;head&gt;
+* 10 is HTML after &lt;body&gt;
+* Input stream stack'/>
       <field name='input' type='xmlParserInputPtr' info=' Current input stream'/>
       <field name='inputNr' type='int' info=' Number of current input streams'/>
       <field name='inputMax' type='int' info=' Max number of input streams'/>
@@ -6900,6 +6905,7 @@ Could we use @subtypes for this?'/>
     <variable name='xmlStringText' file='parserInternals' type='const xmlCharxmlStringText[]'/>
     <variable name='xmlStringTextNoenc' file='parserInternals' type='const xmlCharxmlStringTextNoenc[]'/>
     <variable name='xmlStructuredError' file='globals' type='xmlStructuredErrorFunc'/>
+    <variable name='xmlStructuredErrorContext' file='globals' type='void *'/>
     <variable name='xmlSubstituteEntitiesDefaultValue' file='globals' type='int'/>
     <variable name='xmlTreeIndentString' file='globals' type='const char *'/>
     <variable name='xmlXPathNAN' file='xpath' type='double'/>

@@ -161,6 +161,7 @@ xmlStringComment DATA
 xmlStringText DATA
 xmlStringTextNoenc DATA
 xmlStructuredError DATA
+xmlStructuredErrorContext DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlSubstituteEntitiesDefaultValue
 #else

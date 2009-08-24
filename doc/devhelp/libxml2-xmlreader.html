@@ -280,7 +280,7 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderBaseUri"/>xmlTextReaderBaseUri ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderBaseUri	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>The base URI of the node.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the base URI or NULL if not available</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the base URI or NULL if not available, if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderByteConsumed"/>xmlTextReaderByteConsumed ()</h3><pre class="programlisting">long	xmlTextReaderByteConsumed	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>This function provides the current index of the parser used by the reader, relative to the start of the current entity. This function actually just wraps a call to xmlBytesConsumed() for the parser context associated with the reader. See xmlBytesConsumed() for more information.</p>
@@ -404,11 +404,11 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderLocalName"/>xmlTextReaderLocalName ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderLocalName	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>The local name of the node.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the local name or NULL if not available</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the local name or NULL if not available, if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderLocatorBaseURI"/>xmlTextReaderLocatorBaseURI ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderLocatorBaseURI	(<a href="libxml2-xmlreader.html#xmlTextReaderLocatorPtr">xmlTextReaderLocatorPtr</a> locator)<br/>
 </pre><p>Obtain the base URI for the given locator.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>locator</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderLocatorPtr">xmlTextReaderLocatorPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the base URI or NULL in case of error.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>locator</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderLocatorPtr">xmlTextReaderLocatorPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the base URI or NULL in case of error, if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderLocatorLineNumber"/>xmlTextReaderLocatorLineNumber ()</h3><pre class="programlisting">int	xmlTextReaderLocatorLineNumber	(<a href="libxml2-xmlreader.html#xmlTextReaderLocatorPtr">xmlTextReaderLocatorPtr</a> locator)<br/>
 </pre><p>Obtain the line number for the given locator.</p>
@@ -444,11 +444,11 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderName"/>xmlTextReaderName ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderName	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>The qualified name of the node, equal to Prefix :LocalName.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the local name or NULL if not available</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the local name or NULL if not available, if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderNamespaceUri"/>xmlTextReaderNamespaceUri ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderNamespaceUri	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>The URI defining the namespace associated with the node.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the namespace URI or NULL if not available</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the namespace URI or NULL if not available, if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderNext"/>xmlTextReaderNext ()</h3><pre class="programlisting">int	xmlTextReaderNext		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>Skip to the node following the current one in document order while avoiding the subtree if any.</p>
@@ -468,7 +468,7 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderPrefix"/>xmlTextReaderPrefix ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderPrefix	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>A shorthand <a href="libxml2-SAX.html#reference">reference</a> to the namespace associated with the node.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the prefix or NULL if not available</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the prefix or NULL if not available, if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderPreserve"/>xmlTextReaderPreserve ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlTextReaderPreserve	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>This tells the XML Reader to preserve the current node. The caller must also use xmlTextReaderCurrentDoc() to keep an handle on the resulting document once parsing has finished</p>
@@ -552,7 +552,7 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderXmlLang"/>xmlTextReaderXmlLang ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderXmlLang	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>The xml:lang scope within which the node resides.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the xml:lang value or NULL if none exists.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the xml:lang value or NULL if none exists., if non NULL it need to be freed by the caller.</td></tr></tbody></table></div></div>
         <hr/>
       </div>
     </div>

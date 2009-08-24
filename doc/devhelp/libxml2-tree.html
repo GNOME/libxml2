@@ -707,7 +707,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	version	: the XML version string
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	encoding	: the declared encoding, if any
     int	standalone	: standalone document
-    int	html	: an HTML(1)/Docbook(2) document Input stream stack
+    int	html	: an HTML(1)/Docbook(2) document * 3 is HTML after &lt;head&gt; * 10 is HTML
     <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	input	: Current input stream
     int	inputNr	: Number of current input streams
     int	inputMax	: Max number of input streams

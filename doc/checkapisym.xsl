@@ -19,7 +19,7 @@
     <xsl:message terminate="no">
       <xsl:text>Found </xsl:text>
       <xsl:value-of select="count(/api/symbols/function)"/>
-      <xsl:text>functions</xsl:text>
+      <xsl:text> functions</xsl:text>
     </xsl:message>
     <xsl:message terminate="no">
       <xsl:text>Looking for variables in symbols.xml</xsl:text>
@@ -28,7 +28,7 @@
     <xsl:message terminate="no">
       <xsl:text>Found </xsl:text>
       <xsl:value-of select="count(/api/symbols/variable)"/>
-      <xsl:text>variables</xsl:text>
+      <xsl:text> variables</xsl:text>
     </xsl:message>
   </xsl:template>
 

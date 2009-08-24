@@ -47,7 +47,7 @@
 typedef unsigned char <a href="#xmlChar">xmlChar</a>;
 int	<a href="#xmlStrcmp">xmlStrcmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCharStrndup">xmlCharStrndup</a>		(const char * cur, <br/>					 int len);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrcasestr">xmlStrcasestr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val);
+const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrcasestr">xmlStrcasestr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrcat">xmlStrcat</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * add);
 int	<a href="#xmlStrPrintf">xmlStrPrintf</a>			(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buf, <br/>					 int len, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * msg, <br/>					 ... ...);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrstr">xmlStrstr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val);
@@ -127,7 +127,7 @@ int	<a href="#xmlUTF8Strloc">xmlUTF8Strloc</a>			(const <a href="libxml2-xmlstri
 </pre><p>a strcasecmp for xmlChar's</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str1</tt></i>:</span></td><td>the first <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *</td></tr><tr><td><span class="term"><i><tt>str2</tt></i>:</span></td><td>the second <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the integer result of the comparison</td></tr></tbody></table></div></div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlStrcasestr"/>xmlStrcasestr ()</h3><pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlStrcasestr		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val)<br/>
+        <div class="refsect2" lang="en"><h3><a name="xmlStrcasestr"/>xmlStrcasestr ()</h3><pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlStrcasestr		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val)<br/>
 </pre><p>a case-ignoring strstr for xmlChar's</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>the <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * array (haystack)</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>the <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> to search (needle)</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * for the first occurrence or NULL.</td></tr></tbody></table></div></div>
         <hr/>

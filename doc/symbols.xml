@@ -1737,4 +1737,7 @@
     <symbol file="tree">xmlNextElementSibling</symbol>
     <symbol file="tree">xmlPreviousElementSibling</symbol>
   </release>
+  <release version="2.7.4">
+    <symbol file="globals">xmlStructuredErrorContext</symbol>
+  </release>
 </symbols>

@@ -425,6 +425,13 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	    }
 	    return(val);
 	} else {
+            if ((*ctxt->input->cur == 0) &&
+                (ctxt->input->cur < ctxt->input->end)) {
+                    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+				"Char 0x%X out of allowed range\n", 0);
+                *len = 1;
+                return(' ');
+            }
 	    /* 1-byte code */
 	    *len = 1;
 	    return((int) *ctxt->input->cur);

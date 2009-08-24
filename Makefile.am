@@ -1220,12 +1220,12 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
 
 uninstall-local:
-	rm $(DESTDIR)$(EXAMPLES_DIR)/testXPath.c
-	rm $(DESTDIR)$(EXAMPLES_DIR)/testHTML.c
-	rm $(DESTDIR)$(EXAMPLES_DIR)/testSAX.c
-	rm $(DESTDIR)$(EXAMPLES_DIR)/xmllint.c
+	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testXPath.c
+	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testHTML.c
+	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testSAX.c
+	rm -f $(DESTDIR)$(EXAMPLES_DIR)/xmllint.c
 	rm -rf $(DESTDIR)$(EXAMPLES_DIR)
-	rm $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)/Copyright
+	rm -f $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)/Copyright
 	rm -rf $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
 
 tst: tst.c

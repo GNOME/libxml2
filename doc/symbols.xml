@@ -1739,5 +1739,6 @@
   </release>
   <release version="2.7.4">
     <symbol file="globals">xmlStructuredErrorContext</symbol>
+    <symbol file="xinclude">xmlXIncludeProcessTreeFlagsData</symbol>
   </release>
 </symbols>

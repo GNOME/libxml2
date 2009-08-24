@@ -1819,6 +1819,7 @@
      <exports symbol='XINCLUDE_OLD_NS' type='macro'/>
      <exports symbol='xmlXIncludeCtxt' type='typedef'/>
      <exports symbol='xmlXIncludeCtxtPtr' type='typedef'/>
+     <exports symbol='xmlXIncludeProcessTreeFlagsData' type='function'/>
      <exports symbol='xmlXIncludeProcessFlagsData' type='function'/>
      <exports symbol='xmlXIncludeProcessFlags' type='function'/>
      <exports symbol='xmlXIncludeProcessTree' type='function'/>
@@ -17053,6 +17054,14 @@ Could we use @subtypes for this?'/>
       <return type='int' info='0 if no substitution were done, -1 if some processing failed or the number of substitutions done.'/>
       <arg name='tree' type='xmlNodePtr' info='a node in an XML document'/>
       <arg name='flags' type='int' info='a set of xmlParserOption used for parsing XML includes'/>
+    </function>
+    <function name='xmlXIncludeProcessTreeFlagsData' file='xinclude' module='xinclude'>
+      <cond>defined(LIBXML_XINCLUDE_ENABLED)</cond>
+      <info>Implement the XInclude substitution on the XML node @tree</info>
+      <return type='int' info='0 if no substitution were done, -1 if some processing failed or the number of substitutions done.'/>
+      <arg name='tree' type='xmlNodePtr' info='an XML node'/>
+      <arg name='flags' type='int' info='a set of xmlParserOption used for parsing XML includes'/>
+      <arg name='data' type='void *' info='application data that will be passed to the parser context in the _private field of the parser context(s)'/>
     </function>
     <function name='xmlXIncludeSetFlags' file='xinclude' module='xinclude'>
       <cond>defined(LIBXML_XINCLUDE_ENABLED)</cond>

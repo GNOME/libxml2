@@ -2226,5 +2226,8 @@ LIBXML2_2.7.4 {
 
 # globals
   xmlStructuredErrorContext; # variable
+
+# xinclude
+  xmlXIncludeProcessTreeFlagsData;
 } LIBXML2_2.7.3;
 

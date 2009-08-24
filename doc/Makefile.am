@@ -91,8 +91,8 @@ $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 
 libxml2-api.xml libxml2-refs.xml ../libxml2.syms: apibuild.py symbols.xml syms.xsl checkapisym.xsl ../include/libxml/*.h ../*.c
 	-(./apibuild.py)
-	-($(XSLTPROC) checkapisym.xsl libxml2-api.xml)
-	-($(XSLTPROC) -o ../libxml2.syms syms.xsl symbols.xml)
+	($(XSLTPROC) checkapisym.xsl libxml2-api.xml)
+	($(XSLTPROC) -o ../libxml2.syms syms.xsl symbols.xml)
 	-@(cd .. ; $(MAKE) rebuild_testapi)
 
 

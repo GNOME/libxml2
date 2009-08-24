@@ -3348,6 +3348,7 @@
     <function name="xmlXIncludeProcessNode ()" link="libxml2-xinclude.html#xmlXIncludeProcessNode"/>
     <function name="xmlXIncludeProcessTree ()" link="libxml2-xinclude.html#xmlXIncludeProcessTree"/>
     <function name="xmlXIncludeProcessTreeFlags ()" link="libxml2-xinclude.html#xmlXIncludeProcessTreeFlags"/>
+    <function name="xmlXIncludeProcessTreeFlagsData ()" link="libxml2-xinclude.html#xmlXIncludeProcessTreeFlagsData"/>
     <function name="xmlXIncludeSetFlags ()" link="libxml2-xinclude.html#xmlXIncludeSetFlags"/>
     <function name="xmlXPathAddValues ()" link="libxml2-xpathInternals.html#xmlXPathAddValues"/>
     <function name="xmlXPathBooleanFunction ()" link="libxml2-xpathInternals.html#xmlXPathBooleanFunction"/>

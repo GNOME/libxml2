@@ -55,6 +55,7 @@
 #define <a href="#XINCLUDE_OLD_NS">XINCLUDE_OLD_NS</a>;
 typedef struct _xmlXIncludeCtxt <a href="#xmlXIncludeCtxt">xmlXIncludeCtxt</a>;
 typedef <a href="libxml2-xinclude.html#xmlXIncludeCtxt">xmlXIncludeCtxt</a> * <a href="#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a>;
+int	<a href="#xmlXIncludeProcessTreeFlagsData">xmlXIncludeProcessTreeFlagsData</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br/>					 int flags, <br/>					 void * data);
 int	<a href="#xmlXIncludeProcessFlagsData">xmlXIncludeProcessFlagsData</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int flags, <br/>					 void * data);
 int	<a href="#xmlXIncludeProcessFlags">xmlXIncludeProcessFlags</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int flags);
 int	<a href="#xmlXIncludeProcessTree">xmlXIncludeProcessTree</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
@@ -153,6 +154,10 @@ The content of this structure is not made public by the API.
         <div class="refsect2" lang="en"><h3><a name="xmlXIncludeProcessTreeFlags"/>xmlXIncludeProcessTreeFlags ()</h3><pre class="programlisting">int	xmlXIncludeProcessTreeFlags	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br/>					 int flags)<br/>
 </pre><p>Implement the XInclude substitution for the given subtree</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>tree</tt></i>:</span></td><td>a node in an XML document</td></tr><tr><td><span class="term"><i><tt>flags</tt></i>:</span></td><td>a set of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a> used for parsing XML includes</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if no substitution were done, -1 if some processing failed or the number of substitutions done.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlXIncludeProcessTreeFlagsData"/>xmlXIncludeProcessTreeFlagsData ()</h3><pre class="programlisting">int	xmlXIncludeProcessTreeFlagsData	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br/>					 int flags, <br/>					 void * data)<br/>
+</pre><p>Implement the XInclude substitution on the XML node @tree</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>tree</tt></i>:</span></td><td>an XML node</td></tr><tr><td><span class="term"><i><tt>flags</tt></i>:</span></td><td>a set of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a> used for parsing XML includes</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>application data that will be passed to the parser context in the _private field of the parser context(s)</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if no substitution were done, -1 if some processing failed or the number of substitutions done.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXIncludeSetFlags"/>xmlXIncludeSetFlags ()</h3><pre class="programlisting">int	xmlXIncludeSetFlags		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br/>					 int flags)<br/>
 </pre><p>Set the flags used for further processing of XML resources.</p>

@@ -3306,6 +3306,7 @@
     <reference name='xmlXIncludeProcessNode' href='html/libxml-xinclude.html#xmlXIncludeProcessNode'/>
     <reference name='xmlXIncludeProcessTree' href='html/libxml-xinclude.html#xmlXIncludeProcessTree'/>
     <reference name='xmlXIncludeProcessTreeFlags' href='html/libxml-xinclude.html#xmlXIncludeProcessTreeFlags'/>
+    <reference name='xmlXIncludeProcessTreeFlagsData' href='html/libxml-xinclude.html#xmlXIncludeProcessTreeFlagsData'/>
     <reference name='xmlXIncludeSetFlags' href='html/libxml-xinclude.html#xmlXIncludeSetFlags'/>
     <reference name='xmlXPathAddValues' href='html/libxml-xpathInternals.html#xmlXPathAddValues'/>
     <reference name='xmlXPathAxis' href='html/libxml-xpath.html#xmlXPathAxis'/>
@@ -6896,6 +6897,7 @@
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
       <ref name='xmlXIncludeProcessTreeFlags'/>
+      <ref name='xmlXIncludeProcessTreeFlagsData'/>
       <ref name='xmlXIncludeSetFlags'/>
       <ref name='xmlXPathAddValues'/>
       <ref name='xmlXPathAxis'/>
@@ -8840,6 +8842,7 @@
       <ref name='xmlValidityErrorFunc'/>
       <ref name='xmlValidityWarningFunc'/>
       <ref name='xmlXIncludeProcessFlagsData'/>
+      <ref name='xmlXIncludeProcessTreeFlagsData'/>
       <ref name='xmlXPathFuncLookupFunc'/>
       <ref name='xmlXPathRegisterFuncLookup'/>
       <ref name='xmlXPathRegisterVariableLookup'/>
@@ -9666,6 +9669,7 @@
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
       <ref name='xmlXIncludeProcessTreeFlags'/>
+      <ref name='xmlXIncludeProcessTreeFlagsData'/>
       <ref name='xmlXPathCastNodeToNumber'/>
       <ref name='xmlXPathCastNodeToString'/>
       <ref name='xmlXPathCmpNodes'/>
@@ -12332,6 +12336,7 @@
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
       <ref name='xmlXIncludeProcessTreeFlags'/>
+      <ref name='xmlXIncludeProcessTreeFlagsData'/>
       <ref name='xmlXIncludeSetFlags'/>
     </file>
     <file name='xlink'>
@@ -18300,6 +18305,7 @@
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
           <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='XInclude?'>
@@ -19180,6 +19186,7 @@
           <ref name='xmlSAX2ResolveEntity'/>
           <ref name='xmlSetExternalEntityLoader'/>
           <ref name='xmlXIncludeProcessFlagsData'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
         </word>
         <word name='applications'>
           <ref name='xmlSetGenericErrorFunc'/>
@@ -22503,6 +22510,7 @@
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
           <ref name='xmlXPathCompareValues'/>
         </word>
         <word name='fails'>
@@ -22597,6 +22605,7 @@
           <ref name='_xmlError'/>
           <ref name='xmlParseMisc'/>
           <ref name='xmlXIncludeProcessFlagsData'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
         <word name='fields'>
@@ -23631,6 +23640,7 @@
           <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
           <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='including'>
@@ -26125,6 +26135,7 @@
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetStructuredErrorFunc'/>
           <ref name='xmlXIncludeProcessFlagsData'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
           <ref name='xmlXPathEvalFunc'/>
           <ref name='xmlXPathIntersection'/>
         </word>
@@ -28285,6 +28296,7 @@
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
         </word>
         <word name='sometimes'>
           <ref name='xmlCleanupParser'/>
@@ -28840,6 +28852,7 @@
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
         </word>
         <word name='substitutions:'>
           <ref name='XML_SCHEMAS_ELEM_BLOCK_RESTRICTION'/>
@@ -30085,6 +30098,7 @@
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlagsData'/>
         </word>
         <word name='wether'>
           <ref name='_xmlNodeSet'/>

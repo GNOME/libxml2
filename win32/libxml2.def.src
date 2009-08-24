@@ -2631,6 +2631,9 @@ xmlXIncludeProcessTree
 xmlXIncludeProcessTreeFlags
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeProcessTreeFlagsData
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
 xmlXIncludeSetFlags
 #endif
 #ifdef LIBXML_XPATH_ENABLED

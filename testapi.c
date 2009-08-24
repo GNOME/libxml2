@@ -27383,6 +27383,54 @@ test_xmlXIncludeProcessTreeFlags(void) {
 
 
 static int
+test_xmlXIncludeProcessTreeFlagsData(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_XINCLUDE_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlNodePtr tree; /* an XML node */
+    int n_tree;
+    int flags; /* a set of xmlParserOption used for parsing XML includes */
+    int n_flags;
+    void * data; /* application data that will be passed to the parser context in the _private field of the parser context(s) */
+    int n_data;
+
+    for (n_tree = 0;n_tree < gen_nb_xmlNodePtr;n_tree++) {
+    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+    for (n_data = 0;n_data < gen_nb_userdata;n_data++) {
+        mem_base = xmlMemBlocks();
+        tree = gen_xmlNodePtr(n_tree, 0);
+        flags = gen_int(n_flags, 1);
+        data = gen_userdata(n_data, 2);
+
+        ret_val = xmlXIncludeProcessTreeFlagsData(tree, flags, data);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNodePtr(n_tree, tree, 0);
+        des_int(n_flags, flags, 1);
+        des_userdata(n_data, data, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlXIncludeProcessTreeFlagsData",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_tree);
+            printf(" %d", n_flags);
+            printf(" %d", n_data);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlXIncludeSetFlags(void) {
     int test_ret = 0;
 
@@ -27426,7 +27474,7 @@ static int
 test_xinclude(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xinclude : 7 of 9 functions ...\n");
+    if (quiet == 0) printf("Testing xinclude : 8 of 10 functions ...\n");
     test_ret += test_xmlXIncludeNewContext();
     test_ret += test_xmlXIncludeProcess();
     test_ret += test_xmlXIncludeProcessFlags();
@@ -27434,6 +27482,7 @@ test_xinclude(void) {
     test_ret += test_xmlXIncludeProcessNode();
     test_ret += test_xmlXIncludeProcessTree();
     test_ret += test_xmlXIncludeProcessTreeFlags();
+    test_ret += test_xmlXIncludeProcessTreeFlagsData();
     test_ret += test_xmlXIncludeSetFlags();
 
     if (test_ret != 0)

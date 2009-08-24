@@ -4726,6 +4726,80 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
 }
 
 /**
+ * htmlParseLookupChars:
+ * @ctxt: an HTML parser context
+ * @stop: Array of chars, which stop the lookup.
+ * @stopLen: Length of stop-Array
+ *
+ * Try to find if any char of the stop-Array is available in the input 
+ * stream.
+ * This function has a side effect of (possibly) incrementing ctxt->checkIndex
+ * to avoid rescanning sequences of bytes, it DOES change the state of the
+ * parser, do not use liberally.
+ *
+ * Returns the index to the current parsing point if a stopChar 
+ *      is available, -1 otherwise.
+ */
+static int
+htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
+                     int stopLen)
+{
+    int base, len;
+    htmlParserInputPtr in;
+    const xmlChar *buf;
+    int incomment = 0;
+    int i;
+
+    in = ctxt->input;
+    if (in == NULL)
+        return (-1);
+
+    base = in->cur - in->base;
+    if (base < 0)
+        return (-1);
+
+    if (ctxt->checkIndex > base)
+        base = ctxt->checkIndex;
+
+    if (in->buf == NULL) {
+        buf = in->base;
+        len = in->length;
+    } else {
+        buf = in->buf->buffer->content;
+        len = in->buf->buffer->use;
+    }
+
+    for (; base < len; base++) {
+        if (!incomment && (base + 4 < len)) {
+            if ((buf[base] == '<') && (buf[base + 1] == '!') &&
+                (buf[base + 2] == '-') && (buf[base + 3] == '-')) {
+                incomment = 1;
+                /* do not increment past <! - some people use <!--> */
+                base += 2;
+            }
+        }
+        if (incomment) {
+            if (base + 3 > len)
+                return (-1);
+            if ((buf[base] == '-') && (buf[base + 1] == '-') &&
+                (buf[base + 2] == '>')) {
+                incomment = 0;
+                base += 2;
+            }
+            continue;
+        }
+        for (i = 0; i < stopLen; ++i) {
+            if (buf[base] == stop[i]) {
+                ctxt->checkIndex = 0;
+                return (base - (in->cur - in->base));
+            }
+        }
+    }
+    ctxt->checkIndex = base;
+    return (-1);
+}
+
+/**
  * htmlParseTryOrFinish:
  * @ctxt:  an HTML parser context
  * @terminate:  last chunk indicator
@@ -5254,7 +5328,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			break;
 		    } else if (cur == '&') {
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, ';', 0, 0, 0, 1) < 0))
+			    (htmlParseLookupChars(ctxt,
+                                                  BAD_CAST "; >/", 4) < 0))
 			    goto done;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -5270,7 +5345,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			 * data detection.
 			 */
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, '<', 0, 0, 0, 1) < 0))
+                            (htmlParseLookupChars(ctxt, BAD_CAST "<&", 2) < 0))
 			    goto done;
 			ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH

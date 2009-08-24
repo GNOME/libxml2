@@ -1010,7 +1010,7 @@ static const char * const htmlStartClose[] = {
 		"listing", "xmp", NULL,
 "ol",		"p", "head", "ul", NULL,
 "menu",		"p", "head", "ul", NULL,
-"p",		"p", "head", "h1", "h2", "h3", "h4", "h5", "h6", NULL,
+"p",		"p", "head", "h1", "h2", "h3", "h4", "h5", "h6", FONTSTYLE, NULL,
 "div",		"p", "head", NULL,
 "noscript",	"p", "head", NULL,
 "center",	"font", "b", "i", "p", "head", NULL,

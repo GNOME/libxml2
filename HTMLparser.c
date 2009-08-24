@@ -1386,6 +1386,8 @@ htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
  */
 static void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
+    int i;
+
     if (!htmlOmittedDefaultValue)
 	return;
     if (xmlStrEqual(newtag, BAD_CAST"html"))
@@ -1422,7 +1424,6 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
             /* we already saw or generated a <body> before */
             return;
         }
-	int i;
 	for (i = 0;i < ctxt->nameNr;i++) {
 	    if (xmlStrEqual(ctxt->nameTab[i], BAD_CAST"body")) {
 		return;

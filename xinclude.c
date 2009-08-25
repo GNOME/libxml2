@@ -438,9 +438,9 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
      * try to ensure that new documents included are actually
      * built with the same dictionary as the including document.
      */
-    if ((ctxt->doc != NULL) && (ctxt->doc->dict != NULL) &&
-        (pctxt->dict != NULL)) {
-	xmlDictFree(pctxt->dict);
+    if ((ctxt->doc != NULL) && (ctxt->doc->dict != NULL)) {
+       if (pctxt->dict != NULL)
+            xmlDictFree(pctxt->dict);
 	pctxt->dict = ctxt->doc->dict;
 	xmlDictReference(pctxt->dict);
     }
@@ -798,6 +798,10 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
  *									*
  ************************************************************************/
 
+static xmlNodePtr
+xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
+	                xmlDocPtr source, xmlNodePtr elem);
+
 /**
  * xmlXIncludeCopyNode:
  * @ctxt:  the XInclude context
@@ -818,7 +822,10 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	return(NULL);
     if (elem->type == XML_DTD_NODE)
 	return(NULL);
-    result = xmlDocCopyNode(elem, target, 1);
+    if (elem->type == XML_DOCUMENT_NODE)
+	result = xmlXIncludeCopyNodeList(ctxt, target, source, elem->children);
+    else
+        result = xmlDocCopyNode(elem, target, 1);
     return(result);
 }
 

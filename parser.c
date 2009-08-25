@@ -3705,7 +3705,12 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 			if (rep != NULL) {
 			    current = rep;
 			    while (*current != 0) { /* non input consuming */
-				buf[len++] = *current++;
+                                if ((*current == 0xD) || (*current == 0xA) ||
+                                    (*current == 0x9)) {
+                                    buf[len++] = 0x20;
+                                    current++;
+                                } else
+                                    buf[len++] = *current++;
 				if (len > buf_size - 10) {
 				    growBuffer(buf, 10);
 				}

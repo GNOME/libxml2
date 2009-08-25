@@ -494,20 +494,26 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
             if (c & 0x80) {
 	        if (c == 0xC0)
 		    goto encoding_error;
-                if (cur[1] == 0)
+                if (cur[1] == 0) {
                     xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                    cur = ctxt->input->cur;
+                }
                 if ((cur[1] & 0xc0) != 0x80)
                     goto encoding_error;
                 if ((c & 0xe0) == 0xe0) {
                     unsigned int val;
 
-                    if (cur[2] == 0)
+                    if (cur[2] == 0) {
                         xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                        cur = ctxt->input->cur;
+                    }
                     if ((cur[2] & 0xc0) != 0x80)
                         goto encoding_error;
                     if ((c & 0xf0) == 0xf0) {
-                        if (cur[3] == 0)
+                        if (cur[3] == 0) {
                             xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                            cur = ctxt->input->cur;
+                        }
                         if (((c & 0xf8) != 0xf0) ||
                             ((cur[3] & 0xc0) != 0x80))
                             goto encoding_error;
@@ -640,18 +646,24 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	if (c & 0x80) {
 	    if (((c & 0x40) == 0) || (c == 0xC0))
 		goto encoding_error;
-	    if (cur[1] == 0)
+	    if (cur[1] == 0) {
 		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                cur = ctxt->input->cur;
+            }
 	    if ((cur[1] & 0xc0) != 0x80)
 		goto encoding_error;
 	    if ((c & 0xe0) == 0xe0) {
-		if (cur[2] == 0)
+		if (cur[2] == 0) {
 		    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                    cur = ctxt->input->cur;
+                }
 		if ((cur[2] & 0xc0) != 0x80)
 		    goto encoding_error;
 		if ((c & 0xf0) == 0xf0) {
-		    if (cur[3] == 0)
+		    if (cur[3] == 0) {
 			xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                        cur = ctxt->input->cur;
+                    }
 		    if (((c & 0xf8) != 0xf0) ||
 			((cur[3] & 0xc0) != 0x80))
 			goto encoding_error;

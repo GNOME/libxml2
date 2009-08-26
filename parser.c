@@ -10007,6 +10007,12 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	}
 	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED, "Blank needed here\n");
     }
+
+    /*
+     * We can grow the input buffer freely at that point
+     */
+    GROW;
+
     SKIP_BLANKS;
     ctxt->input->standalone = xmlParseSDDecl(ctxt);
 
@@ -11493,6 +11499,7 @@ int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     int end_in_lf = 0;
+    int remain = 0;
 
     if (ctxt == NULL)
         return(XML_ERR_INTERNAL_ERROR);
@@ -11505,12 +11512,41 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	end_in_lf = 1;
 	size--;
     }
+
+xmldecl_done:
+
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
 	int cur = ctxt->input->cur - ctxt->input->base;
 	int res;
-	
+
+        /*
+         * Specific handling if we autodetected an encoding, we should not
+         * push more than the first line ... which depend on the encoding
+         * And only push the rest once the final encoding was detected
+         */
+        if ((ctxt->instate == XML_PARSER_START) && (ctxt->input != NULL) &&
+            (ctxt->input->buf != NULL) && (ctxt->input->buf->encoder != NULL)) {
+            int len = 45;
+
+            if ((xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
+                               BAD_CAST "UTF-16")) ||
+                (xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
+                               BAD_CAST "UTF16")))
+                len = 90;
+            else if ((xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
+                                    BAD_CAST "UCS-4")) ||
+                     (xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
+                                    BAD_CAST "UCS4")))
+                len = 180;
+
+            if (ctxt->input->buf->rawconsumed < len)
+                len -= ctxt->input->buf->rawconsumed;
+
+            remain = size - len;
+            size = len;
+        }
 	res =xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
 	if (res < 0) {
 	    ctxt->errNo = XML_PARSER_EOF;
@@ -11531,7 +11567,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
 		    (in->raw != NULL)) {
 		int nbchars;
-		    
+
 		nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 		if (nbchars < 0) {
 		    /* TODO 2.6.0 */
@@ -11542,13 +11578,23 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    }
 	}
     }
-    xmlParseTryOrFinish(ctxt, terminate);
+    if (remain != 0)
+        xmlParseTryOrFinish(ctxt, 0);
+    else
+        xmlParseTryOrFinish(ctxt, terminate);
+    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
+        return(ctxt->errNo);
+
+    if (remain != 0) {
+        chunk += size;
+        size = remain;
+        remain = 0;
+        goto xmldecl_done;
+    }
     if ((end_in_lf == 1) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL)) {
 	xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
     }
-    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
-        return(ctxt->errNo);
     if (terminate) {
 	/*
 	 * Check for termination

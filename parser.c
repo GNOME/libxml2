@@ -10109,8 +10109,9 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 
     /*
      * Check for the XMLDecl in the Prolog.
+     * do not GROW here to avoid the detected encoder to decode more
+     * than just the first line
      */
-    GROW;
     if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 
 	/*

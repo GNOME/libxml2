@@ -2283,9 +2283,14 @@ xmlSAX2StartElementNs(void *ctx,
 	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 		return;
 	    }
-	    xmlNsWarnMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
-			"Namespace prefix %s was not found\n",
-			prefix, NULL);
+            if (prefix != NULL)
+                xmlNsWarnMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
+                             "Namespace prefix %s was not found\n",
+                             prefix, NULL);
+            else
+                xmlNsWarnMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
+                             "Namespace default prefix was not found\n",
+                             NULL, NULL);
 	}
     }
 

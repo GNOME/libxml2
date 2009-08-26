@@ -12618,6 +12618,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     xmlNodePtr last = NULL;
     int size;
     xmlParserErrors ret = XML_ERR_OK;
+#ifdef SAX2
+    int i;
+#endif
 
     if (((oldctxt->depth > 40) && ((oldctxt->options & XML_PARSE_HUGE) == 0)) ||
         (oldctxt->depth >  1024)) {
@@ -12643,6 +12646,13 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
     ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
     ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
+
+#ifdef SAX2
+    /* propagate namespaces down the entity */
+    for (i = 0;i < oldctxt->nsNr;i += 2) {
+        nsPush(ctxt, oldctxt->nsTab[i], oldctxt->nsTab[i+1]);
+    }
+#endif
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;

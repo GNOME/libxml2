@@ -2374,6 +2374,9 @@ xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt,
         } else {
             node = seq = NULL;
         }
+        if ((node == NULL) && (seq == NULL)) {
+            node = ctxt->pnode;
+        }
         xmlRelaxNGShowValidError(ctxt, err, node, seq, arg1, arg2);
     }
     /*
@@ -4682,6 +4685,7 @@ xmlRelaxNGParseImportRefs(xmlRelaxNGParserCtxtPtr ctxt,
         return(-1);
     }
     xmlHashScan(grammar->refs, xmlRelaxNGParseImportRef, ctxt);
+    return(0);
 }
 
 /**

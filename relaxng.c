@@ -3100,7 +3100,11 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def)
         case XML_RELAXNG_OPTIONAL:{
                 xmlAutomataStatePtr oldstate = ctxt->state;
 
-                xmlRelaxNGCompile(ctxt, def->content);
+                list = def->content;
+                while (list != NULL) {
+                    xmlRelaxNGCompile(ctxt, list);
+                    list = list->next;
+                }
                 xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
                 break;
             }

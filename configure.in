@@ -494,7 +494,7 @@ fi
 
 dnl Checks for inet libraries:
 AC_SEARCH_LIBS(gethostent, [nsl])
-AC_SEARCH_LIBS(setsockopt, [socket net])
+AC_SEARCH_LIBS(setsockopt, [socket net network])
 AC_SEARCH_LIBS(connect, [inet])
 
 dnl Determine what socket length (socklen_t) data type is

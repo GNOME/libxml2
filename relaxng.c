@@ -2854,6 +2854,10 @@ xmlRelaxNGCleanupTypes(void)
  * 									*
  ************************************************************************/
 
+/* from automata.c but not exported */
+void xmlAutomataSetFlags(xmlAutomataPtr am, int flags);
+
+
 static int xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt,
                                 xmlRelaxNGDefinePtr def);
 
@@ -3037,6 +3041,17 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def)
                 ctxt->am = xmlNewAutomata();
                 if (ctxt->am == NULL)
                     return (-1);
+
+                /*
+                 * assume identical strings but not same pointer are different
+                 * atoms, needed for non-determinism detection
+                 * That way if 2 elements with the same name are in a choice
+                 * branch the automata is found non-deterministic and
+                 * we fallback to the normal validation which does the right
+                 * thing of exploring both choices.
+                 */
+                xmlAutomataSetFlags(ctxt->am, 1);
+
                 ctxt->state = xmlAutomataGetInitState(ctxt->am);
                 while (list != NULL) {
                     xmlRelaxNGCompile(ctxt, list);
@@ -3068,6 +3083,7 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def)
                 ctxt->am = xmlNewAutomata();
                 if (ctxt->am == NULL)
                     return (-1);
+                xmlAutomataSetFlags(ctxt->am, 1);
                 ctxt->state = xmlAutomataGetInitState(ctxt->am);
                 while (list != NULL) {
                     xmlRelaxNGCompile(ctxt, list);
@@ -3076,6 +3092,11 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def)
                 xmlAutomataSetFinalState(ctxt->am, ctxt->state);
                 def->contModel = xmlAutomataCompile(ctxt->am);
                 if (!xmlRegexpIsDeterminist(def->contModel)) {
+#ifdef DEBUG_COMPILE
+                    xmlGenericError(xmlGenericErrorContext,
+                        "Content model not determinist %s\n",
+                                    def->name);
+#endif
                     /*
                      * we can only use the automata if it is determinist
                      */

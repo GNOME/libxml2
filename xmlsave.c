@@ -690,8 +690,8 @@ htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
     xmlInitParser();
 
-    doc = cur->doc; {
-    if (doc != NULL)
+    doc = cur->doc;
+    if (doc != NULL) {
         oldenc = doc->encoding;
 	if (ctxt->encoding != NULL) {
 	    doc->encoding = BAD_CAST ctxt->encoding;

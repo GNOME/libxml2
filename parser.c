@@ -9407,8 +9407,8 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 void
 xmlParseElement(xmlParserCtxtPtr ctxt) {
     const xmlChar *name;
-    const xmlChar *prefix;
-    const xmlChar *URI;
+    const xmlChar *prefix = NULL;
+    const xmlChar *URI = NULL;
     xmlParserNodeInfo node_info;
     int line, tlen;
     xmlNodePtr ret;
@@ -10784,8 +10784,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		break;
             case XML_PARSER_START_TAG: {
 	        const xmlChar *name;
-		const xmlChar *prefix;
-		const xmlChar *URI;
+		const xmlChar *prefix = NULL;
+		const xmlChar *URI = NULL;
 		int nsNr = ctxt->nsNr;
 
 		if ((avail < 2) && (ctxt->inputNr == 1))

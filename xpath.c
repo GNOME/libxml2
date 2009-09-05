@@ -14505,7 +14505,7 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 		    namespaces[i++] = ns->prefix;
 		}
 		namespaces[i++] = NULL;
-		namespaces[i++] = NULL;
+		namespaces[i] = NULL;
 	    }
 	}
 

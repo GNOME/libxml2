@@ -1373,7 +1373,7 @@ xmlSaveUri(xmlURIPtr uri) {
 		    }
 		    ret = temp;
     }
-    ret[len++] = 0;
+    ret[len] = 0;
     return(ret);
 }
 

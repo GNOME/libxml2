@@ -1704,9 +1704,11 @@ saxParseTest(const char *filename, const char *result,
     if (compareFiles(temp, result)) {
         fprintf(stderr, "Got a difference for %s\n", filename);
         ret = 1;
-    } else
-    unlink(temp);
-    free(temp);
+    }
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
 
     /* switch back to structured error handling */
     xmlSetGenericErrorFunc(NULL, NULL);
@@ -1779,8 +1781,10 @@ oldParseTest(const char *filename, const char *result,
     }
     xmlFreeDoc(doc);
 
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
     return(res);
 }
 
@@ -1980,8 +1984,10 @@ noentParseTest(const char *filename, const char *result,
     }
     xmlFreeDoc(doc);
 
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
     return(res);
 }
 
@@ -2120,8 +2126,10 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 	    testErrorHandler(NULL, "Relax-NG schema %s failed to compile\n",
 	                     rng);
 	    fclose(t);
-	    unlink(temp);
-	    free(temp);
+            if (temp != NULL) {
+                unlink(temp);
+                free(temp);
+            }
 	    return(0);
 	}
     }
@@ -2147,8 +2155,10 @@ streamProcessTest(const char *filename, const char *result, const char *err,
     if (t != NULL) {
         fclose(t);
 	ret = compareFiles(temp, result);
-	unlink(temp);
-	free(temp);
+        if (temp != NULL) {
+            unlink(temp);
+            free(temp);
+        }
 	if (ret) {
 	    fprintf(stderr, "Result for %s failed\n", filename);
 	    return(-1);
@@ -2357,8 +2367,10 @@ xpathCommonTest(const char *filename, const char *result,
 	}
     }
 
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
     return(ret);
 }
 
@@ -2527,8 +2539,10 @@ xmlidDocTest(const char *filename,
 	}
     }
 
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
     xmlFreeDoc(xpathDocument);
 
     if (err != NULL) {
@@ -2614,8 +2628,10 @@ uriCommonTest(const char *filename,
     if (f == NULL) {
 	fprintf(stderr, "failed to open input file %s\n", filename);
 	fclose(o);
-	unlink(temp);
-        free(temp);
+        if (temp != NULL) {
+            unlink(temp);
+            free(temp);
+        }
 	return(-1);
     }
 
@@ -2658,8 +2674,10 @@ uriCommonTest(const char *filename,
 	}
     }
 
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
     return(res);
 }
 
@@ -2933,8 +2951,10 @@ schemasOneTest(const char *sch,
 	    ret = 1;
 	}
     }
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
 
     if ((validResult != 0) && (err != NULL)) {
 	if (compareFileMem(err, testErrors, testErrorsSize)) {
@@ -3106,8 +3126,10 @@ rngOneTest(const char *sch,
 	    ret = 1;
 	}
     }
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
 
     if (err != NULL) {
 	if (compareFileMem(err, testErrors, testErrorsSize)) {
@@ -3464,7 +3486,7 @@ patternTest(const char *filename,
 		namespaces[j++] = ns->prefix;
 	    }
 	    namespaces[j++] = NULL;
-	    namespaces[j++] = NULL;
+	    namespaces[j] = NULL;
 
 	    patternc = xmlPatterncompile((const xmlChar *) str, doc->dict,
 					 0, &namespaces[0]);
@@ -3512,8 +3534,10 @@ patternTest(const char *filename,
 	fprintf(stderr, "Result for %s failed\n", filename);
 	ret = 1;
     }
-    unlink(temp);
-    free(temp);
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
     return(ret);
 }
 #endif /* READER */
@@ -3643,7 +3667,6 @@ parse_list(xmlChar *str) {
     if((str[0] == '\'') && (str[len - 1] == '\'')) {
 	str[len - 1] = '\0';
 	str++;
-	len -= 2;
     }
     /*
      * allocate an translation buffer.

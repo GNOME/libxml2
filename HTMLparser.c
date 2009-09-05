@@ -2560,7 +2560,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 	    NEXT;
 	}
     }
-    *out++ = 0;
+    *out = 0;
     return(buffer);
 }
 

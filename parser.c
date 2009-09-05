@@ -2616,7 +2616,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	else
 	    c = 0;
     }
-    buffer[nbchars++] = 0;
+    buffer[nbchars] = 0;
     return(buffer);
 
 mem_error:

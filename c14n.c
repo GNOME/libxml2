@@ -2226,7 +2226,7 @@ xmlC11NNormalizeString(const xmlChar * input,
         }
         cur++;
     }
-    *out++ = 0;
+    *out = 0;
     return (buffer);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

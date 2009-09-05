@@ -1990,7 +1990,7 @@ static void walkDoc(xmlDocPtr doc) {
         namespaces[i++] = ns->prefix;
     }
     namespaces[i++] = NULL;
-    namespaces[i++] = NULL;
+    namespaces[i] = NULL;
 
     if (pattern != NULL) {
         patternc = xmlPatterncompile((const xmlChar *) pattern, doc->dict,

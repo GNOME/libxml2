@@ -170,7 +170,7 @@ int main(int argc, char **argv) {
      */
     xmlCleanupParser();
     xmlMemoryDump();
-    
+
     return((ret >= 0) ? 0 : 1);
 }
 
@@ -180,7 +180,7 @@ int main(int argc, char **argv) {
 #define growBufferReentrant() {						\
     buffer_size *= 2;							\
     buffer = (xmlChar **)						\
-    		xmlRealloc(buffer, buffer_size * sizeof(xmlChar*));	\
+		xmlRealloc(buffer, buffer_size * sizeof(xmlChar*));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
 	return(NULL);							\
@@ -202,7 +202,6 @@ parse_list(xmlChar *str) {
     if((str[0] == '\'') && (str[len - 1] == '\'')) {
 	str[len - 1] = '\0';
 	str++;
-	len -= 2;
     }
     /*
      * allocate an translation buffer.
@@ -214,7 +213,7 @@ parse_list(xmlChar *str) {
 	return(NULL);
     }
     out = buffer;
-    
+
     while(*str != '\0') {
 	if (out - buffer > buffer_size - 10) {
 	    int indx = out - buffer;

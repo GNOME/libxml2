@@ -6923,7 +6923,7 @@ tail:
 		    return(0);
             if (nb >= len)
 	        return(-2);
-	    list[nb++] = exp->exp_str;
+	    list[nb] = exp->exp_str;
 	    return(1);
         case XML_EXP_COUNT:
 	    exp = exp->exp_left;
@@ -6978,7 +6978,7 @@ tail:
 		    return(0);
             if (nb >= len)
 	        return(-2);
-	    list[nb++] = exp->exp_str;
+	    list[nb] = exp->exp_str;
 	    return(1);
         case XML_EXP_COUNT:
 	    exp = exp->exp_left;

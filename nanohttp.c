@@ -150,6 +150,7 @@ typedef struct xmlNanoHTTPCtxt {
     int inlen;		/* len of the input buffer */
     int last;		/* return code for last operation */
     int returnValue;	/* the protocol return value */
+    int version;        /* the protocol version */
     int ContentLength;  /* specified content length from HTTP header */
     char *contentType;	/* the MIME type for the input */
     char *location;	/* the new URL in case of redirect */
@@ -722,6 +723,7 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 	}
 	if ((*cur != 0) && (*cur != ' ') && (*cur != '\t')) return;
 	ctxt->returnValue = ret;
+        ctxt->version = version;
     } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"Content-Type:", 13)) {
         const xmlChar *charset, *last, *mime;
         cur += 13;

@@ -1421,9 +1421,9 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 	    node = xmlNewDocTextLen(doc, q, cur - q);
 	    if (node == NULL) return(ret);
 	    if (last == NULL) {
-		last = ret = node;
+		ret = node;
 	    } else {
-		last = xmlAddNextSibling(last, node);
+		xmlAddNextSibling(last, node);
 	    }
 	}
     }
@@ -1590,8 +1590,6 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 			last = xmlAddNextSibling(last, node);
 		    }
 		}
-
-		charval = 0;
 	    }
 	} else
 	    cur++;

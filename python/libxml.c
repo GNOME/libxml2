@@ -2416,6 +2416,7 @@ libxml_prev(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 
                 res = (xmlNodePtr) attr->prev;
             }
+            break;
         case XML_NAMESPACE_DECL:
             res = NULL;
             break;

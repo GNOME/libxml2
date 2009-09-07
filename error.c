@@ -573,7 +573,6 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	if ((to->file == NULL) && (node != NULL) && (node->doc != NULL)) {
 	    to->file = (char *) xmlStrdup(node->doc->URL);
 	}
-	file = to->file;
     }
     to->line = line;
     if (str1 != NULL)

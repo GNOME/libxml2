@@ -7308,7 +7308,6 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 	return(NULL);
 
     ptr++;
-    cur = *ptr;
     name = xmlParseStringName(ctxt, &ptr);
     if (name == NULL) {
 	xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
@@ -7715,7 +7714,6 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     if (cur != '%')
         return(NULL);
     ptr++;
-    cur = *ptr;
     name = xmlParseStringName(ctxt, &ptr);
     if (name == NULL) {
 	xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,

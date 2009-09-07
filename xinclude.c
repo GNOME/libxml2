@@ -974,7 +974,6 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    if ((cur == start) && (index1 > 1)) {
 			content += (index1 - 1);
 			len -= (index1 - 1);
-			index1 = 0;
 		    } else {
 			len = index2;
 		    }

@@ -10868,7 +10868,6 @@ xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt, int sort) {
         xmlXPathCompAndExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_OR, op1, ctxt->comp->last, 0, 0);
-	op1 = ctxt->comp->nbStep;
 	SKIP_BLANKS;
     }
     if ((sort) && (ctxt->comp->steps[ctxt->comp->last].op != XPATH_OP_VALUE)) {
@@ -11981,7 +11980,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     *   avoid a duplicate-aware merge, if the axis to be traversed is e.g.
     *   the descendant-or-self axis.
     */
-    addNode = xmlXPathNodeSetAdd;
     mergeAndClear = xmlXPathNodeSetMergeAndClear;
     switch (axis) {
         case AXIS_ANCESTOR:

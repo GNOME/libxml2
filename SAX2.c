@@ -2566,7 +2566,6 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
 
     ret = xmlNewDocPI(ctxt->myDoc, target, data);
     if (ret == NULL) return;
-    parent = ctxt->node;
 
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {

@@ -976,7 +976,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 		cur->encoding = oldenc;
 		return(-1);
 	    }
-	    switched_encoding = 1;
 	}
         if (ctxt->options & XML_SAVE_FORMAT)
 	    htmlDocContentDumpFormatOutput(buf, cur,

@@ -3120,6 +3120,7 @@ rngOneTest(const char *sch,
 	       filename);
     }
     fclose(schemasOutput);
+    ret = 0;
     if (result) {
 	if (compareFiles(temp, result)) {
 	    fprintf(stderr, "Result for %s on %s failed\n", filename, sch);
@@ -3229,7 +3230,7 @@ rngTest(const char *filename,
     globfree(&globbuf);
     xmlRelaxNGFree(schemas);
 
-    return(res);
+    return(ret);
 }
 
 #ifdef LIBXML_READER_ENABLED

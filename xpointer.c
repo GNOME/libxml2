@@ -2631,13 +2631,12 @@ xmlXPtrGetLastChar(xmlNodePtr *node, int *indx) {
 
     if (cur == NULL)
 	return(-1);
-    
+
     if ((cur->type == XML_ELEMENT_NODE) ||
 	(cur->type == XML_DOCUMENT_NODE) ||
 	(cur->type == XML_HTML_DOCUMENT_NODE)) {
 	if (pos > 0) {
 	    cur = xmlXPtrGetNthChild(cur, pos);
-	    pos = 0;
 	}
     }
     while (cur != NULL) {

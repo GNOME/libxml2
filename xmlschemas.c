@@ -25293,7 +25293,6 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 
     if (vctxt->nbAttrInfos == 0)
 	return (0);
-    nbUses = vctxt->nbAttrInfos;
     /*
     * Validate against the wildcard.
     */

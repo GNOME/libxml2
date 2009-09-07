@@ -1337,7 +1337,6 @@ xmlNanoHTTPMethodRedir(const char *URL, const char *method, const char *input,
     xmlNanoHTTPCtxtPtr ctxt;
     char *bp, *p;
     int blen, ret;
-    int head;
     int nbRedirects = 0;
     char *redirURL = NULL;
 #ifdef DEBUG_HTTP
@@ -1499,11 +1498,9 @@ retry:
     }
 
     ctxt->state = XML_NANO_HTTP_READ;
-    head = 1;
 
     while ((p = xmlNanoHTTPReadLine(ctxt)) != NULL) {
-        if (head && (*p == 0)) {
-	    head = 0;
+        if (*p == 0) {
 	    ctxt->content = ctxt->inrptr;
 	    xmlFree(p);
 	    break;

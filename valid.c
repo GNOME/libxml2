@@ -4052,13 +4052,10 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
     if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
 	xmlChar fn[50];
 	xmlChar *fullname;
-	
+
 	fullname = xmlBuildQName(elem->name, elem->ns->prefix, fn, 50);
 	if (fullname == NULL)
 	    return(NULL);
-	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, fullname, name);
-	if ((attrDecl == NULL) && (doc->extSubset != NULL))
-	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, fullname, name);
 	if ((fullname != fn) && (fullname != elem->name))
 	    xmlFree(fullname);
     }

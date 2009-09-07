@@ -2227,7 +2227,7 @@ xmlFACompareRanges(xmlRegRangePtr range1, xmlRegRangePtr range2) {
     if (((range1->neg == 0) && (range2->neg != 0)) ||
         ((range1->neg != 0) && (range2->neg == 0)))
 	ret = !ret;
-    return(1);
+    return(ret);
 }
 
 /**
@@ -6309,6 +6309,7 @@ struct _xmlExpCtxt {
     int size;
     int nbElems;
     int nb_nodes;
+    int maxNodes;
     const char *expr;
     const char *cur;
     int nb_cons;
@@ -6338,6 +6339,7 @@ xmlExpNewCtxt(int maxNodes, xmlDictPtr dict) {
     memset(ret, 0, sizeof(xmlExpCtxt));
     ret->size = size;
     ret->nbElems = 0;
+    ret->maxNodes = maxNodes;
     ret->table = xmlMalloc(size * sizeof(xmlExpNodePtr));
     if (ret->table == NULL) {
         xmlFree(ret);

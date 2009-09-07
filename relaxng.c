@@ -6517,6 +6517,10 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
         if (ptype == XML_RELAXNG_GROUP) {
             val = xmlRelaxNGGroupContentType(val, ret);
         } else if (ptype == XML_RELAXNG_INTERLEAVE) {
+            /*
+             * TODO: scan complain that tmp is never used, seems on purpose
+             *       need double-checking
+             */
             tmp = xmlRelaxNGGroupContentType(val, ret);
             if (tmp != XML_RELAXNG_CONTENT_ERROR)
                 tmp = xmlRelaxNGMaxContentType(val, ret);

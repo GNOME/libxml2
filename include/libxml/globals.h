@@ -362,7 +362,7 @@ XMLPUBFUN void * * XMLCALL __xmlStructuredErrorContext(void);
 #define xmlStructuredErrorContext \
 (*(__xmlStructuredErrorContext()))
 #else
-LIBXML_DLL_IMPORT void * xmlStructuredErrorContext;
+XMLPUBVAR void * xmlStructuredErrorContext;
 #endif
 
 XMLPUBFUN int * XMLCALL __xmlGetWarningsDefaultValue(void);

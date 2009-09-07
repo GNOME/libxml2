@@ -1602,14 +1602,17 @@ xmlFindCharEncodingHandler(const char *name) {
     }
     upper[i] = 0;
 
-    for (i = 0;i < nbCharEncodingHandler; i++)
-        if (!strcmp(upper, handlers[i]->name)) {
+    if (handlers != NULL) {
+        for (i = 0;i < nbCharEncodingHandler; i++) {
+            if (!strcmp(upper, handlers[i]->name)) {
 #ifdef DEBUG_ENCODING
-            xmlGenericError(xmlGenericErrorContext,
-		    "Found registered handler for encoding %s\n", name);
+                xmlGenericError(xmlGenericErrorContext,
+                        "Found registered handler for encoding %s\n", name);
 #endif
-	    return(handlers[i]);
-	}
+                return(handlers[i]);
+            }
+        }
+    }
 
 #ifdef LIBXML_ICONV_ENABLED
     /* check whether iconv can handle this */

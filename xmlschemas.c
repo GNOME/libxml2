@@ -15635,7 +15635,8 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr pctxt,
 			    return (XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3);
 			}
 			member = member->next;
-			baseMember = baseMember->next;
+                        if (baseMember != NULL)
+                            baseMember = baseMember->next;
 		    }
 		}
 	    }

@@ -524,13 +524,21 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
     if ((ctxt != NULL) && (ctxt->sax != NULL) &&
         (ctxt->sax->initialized == XML_SAX2_MAGIC))
         schannel = ctxt->sax->serror;
-    __xmlRaiseError(schannel,
+    if (ctxt != NULL) {
+        __xmlRaiseError(schannel,
                     (ctxt->sax) ? ctxt->sax->warning : NULL,
                     ctxt->userData,
                     ctxt, NULL, XML_FROM_PARSER, error,
                     XML_ERR_WARNING, NULL, 0,
 		    (const char *) str1, (const char *) str2, NULL, 0, 0,
 		    msg, (const char *) str1, (const char *) str2);
+    } else {
+        __xmlRaiseError(schannel, NULL, NULL,
+                    ctxt, NULL, XML_FROM_PARSER, error,
+                    XML_ERR_WARNING, NULL, 0,
+		    (const char *) str1, (const char *) str2, NULL, 0, 0,
+		    msg, (const char *) str1, (const char *) str2);
+    }
 }
 
 /**
@@ -5773,7 +5781,8 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 		if (cur->c2 != NULL)
 		    cur->c2->parent = cur;
             }
-	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
+            if (ret != NULL)
+                ret->ocur = XML_ELEMENT_CONTENT_MULT;
 	    if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
 "Element content declaration doesn't start and stop in the same entity\n",
@@ -8370,7 +8379,7 @@ xmlParseQName(xmlParserCtxtPtr ctxt, const xmlChar **prefix) {
 static const xmlChar *
 xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
                         xmlChar const *prefix) {
-    const xmlChar *cmp = name;
+    const xmlChar *cmp;
     const xmlChar *in;
     const xmlChar *ret;
     const xmlChar *prefix2;
@@ -8379,7 +8388,7 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
 
     GROW;
     in = ctxt->input->cur;
-    
+
     cmp = prefix;
     while (*in != 0 && *in == *cmp) {
     	++in;
@@ -12768,7 +12777,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
      * Record in the parent context the number of entities replacement
      * done when parsing that reference.
      */
-    oldctxt->nbentities += ctxt->nbentities;
+    if (oldctxt != NULL)
+        oldctxt->nbentities += ctxt->nbentities;
+
     /*
      * Also record the last error if any
      */

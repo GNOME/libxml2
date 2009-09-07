@@ -1436,7 +1436,7 @@ get_next_node:
 	/*
 	 * Cleanup of the old node
 	 */
-	if ((reader->preserves == 0) &&
+	if ((oldnode != NULL) && (reader->preserves == 0) &&
 #ifdef LIBXML_XINCLUDE_ENABLED
 	    (reader->in_xinclude == 0) &&
 #endif

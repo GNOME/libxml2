@@ -1801,7 +1801,7 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
         if ((eatname == 1) &&
-	    ((node->doc == NULL) ||
+	    ((node == NULL) || (node->doc == NULL) ||
 	     (!(xmlDictOwns(node->doc->dict, name)))))
             xmlFree((xmlChar *) name);
         xmlTreeErrMemory("building attribute");
@@ -1861,8 +1861,8 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
         }
     }
 
-    if ((value != NULL) &&
-        (xmlIsID((node == NULL) ? NULL : node->doc, node, cur) == 1))
+    if ((value != NULL) && (node != NULL) &&
+        (xmlIsID(node->doc, node, cur) == 1))
         xmlAddID(NULL, node->doc, value, cur);
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
@@ -7779,8 +7779,11 @@ xmlDOMWrapStoreNs(xmlDocPtr doc,
 	}
     }
     /* Create. */
-    ns->next = xmlNewNs(NULL, nsName, prefix);
-    return (ns->next);
+    if (ns != NULL) {
+        ns->next = xmlNewNs(NULL, nsName, prefix);
+        return (ns->next);
+    }
+    return(NULL);
 }
 
 /*

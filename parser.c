@@ -250,14 +250,15 @@ xmlErrAttributeDup(xmlParserCtxtPtr ctxt, const xmlChar * prefix,
 	return;
     if (ctxt != NULL)
 	ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
+
     if (prefix == NULL)
         __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
-                        ctxt->errNo, XML_ERR_FATAL, NULL, 0,
+                        XML_ERR_ATTRIBUTE_REDEFINED, XML_ERR_FATAL, NULL, 0,
                         (const char *) localname, NULL, NULL, 0, 0,
                         "Attribute %s redefined\n", localname);
     else
         __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
-                        ctxt->errNo, XML_ERR_FATAL, NULL, 0,
+                        XML_ERR_ATTRIBUTE_REDEFINED, XML_ERR_FATAL, NULL, 0,
                         (const char *) prefix, (const char *) localname,
                         NULL, 0, 0, "Attribute %s:%s redefined\n", prefix,
                         localname);
@@ -555,14 +556,20 @@ xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 	if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
 	    schannel = ctxt->sax->serror;
     }
-    __xmlRaiseError(schannel,
+    if (ctxt != NULL) {
+        __xmlRaiseError(schannel,
                     ctxt->vctxt.error, ctxt->vctxt.userData,
                     ctxt, NULL, XML_FROM_DTD, error,
                     XML_ERR_ERROR, NULL, 0, (const char *) str1,
 		    (const char *) str2, NULL, 0, 0,
 		    msg, (const char *) str1, (const char *) str2);
-    if (ctxt != NULL) {
 	ctxt->valid = 0;
+    } else {
+        __xmlRaiseError(schannel, NULL, NULL,
+                    ctxt, NULL, XML_FROM_DTD, error,
+                    XML_ERR_ERROR, NULL, 0, (const char *) str1,
+		    (const char *) str2, NULL, 0, 0,
+		    msg, (const char *) str1, (const char *) str2);
     }
 }
 
@@ -12500,7 +12507,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
      * Record in the parent context the number of entities replacement
      * done when parsing that reference.
      */
-    oldctxt->nbentities += ctxt->nbentities;
+    if (oldctxt != NULL)
+        oldctxt->nbentities += ctxt->nbentities;
+
     /*
      * Also record the size of the entity parsed
      */

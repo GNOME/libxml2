@@ -5363,7 +5363,7 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
     } else {
         xmlRngPErr(ctxt, node, XML_RNGP_CHOICE_CONTENT,
                    "expecting name, anyName, nsName or choice : got %s\n",
-                   node->name, NULL);
+                   (node == NULL ? 'nothing' : node->name), NULL);
         return (NULL);
     }
     if (ret != def) {
@@ -9442,7 +9442,11 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
             xmlRelaxNGFreeStates(ctxt, ctxt->states);
             ctxt->states = NULL;
             if (found == 0) {
-                VALID_ERR2(XML_RELAXNG_ERR_INTEREXTRA, cur->name);
+                if (cur == NULL) {
+                    VALID_ERR2(XML_RELAXNG_ERR_INTEREXTRA, 'noname');
+                } else {
+                    VALID_ERR2(XML_RELAXNG_ERR_INTEREXTRA, cur->name);
+                }
                 ret = -1;
                 ctxt->state = oldstate;
                 goto done;

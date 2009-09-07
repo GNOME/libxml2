@@ -1414,7 +1414,7 @@ xmlCleanupCharEncodingHandlers(void) {
 void
 xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
     if (handlers == NULL) xmlInitCharEncodingHandlers();
-    if (handler == NULL) {
+    if ((handler == NULL) || (handlers == NULL)) {
         xmlEncodingErr(XML_I18N_NO_HANDLER,
 		"xmlRegisterCharEncodingHandler: NULL handler !\n", NULL);
 	return;

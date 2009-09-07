@@ -6797,7 +6797,7 @@ xmlSchemaParseWildcardNs(xmlSchemaParserCtxtPtr ctxt,
 		    tmp->next = NULL;
 		    if (wildc->nsSet == NULL)
 			wildc->nsSet = tmp;
-		    else
+		    else if (lastNs != NULL)
 			lastNs->next = tmp;
 		    lastNs = tmp;
 		}
@@ -23721,12 +23721,14 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
 		parBind->dupls = bind->dupls;
 		bind->dupls = NULL;
 	    }
-	    if (*parTable == NULL)
-		*parTable = parBind;
-	    else {
-		parBind->next = *parTable;
-		*parTable = parBind;
-	    }
+            if (parTable != NULL) {
+                if (*parTable == NULL)
+                    *parTable = parBind;
+                else {
+                    parBind->next = *parTable;
+                    *parTable = parBind;
+                }
+            }
 	}
 
 next_binding:

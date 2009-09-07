@@ -88,11 +88,11 @@ typedef char *(XMLCALL *xmlStrdupFunc)(const char *str);
 
 /*
  * The 4 interfaces used for all memory handling within libxml.
-LIBXML_DLL_IMPORT extern xmlFreeFunc xmlFree;
-LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMalloc;
-LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMallocAtomic;
-LIBXML_DLL_IMPORT extern xmlReallocFunc xmlRealloc;
-LIBXML_DLL_IMPORT extern xmlStrdupFunc xmlMemStrdup;
+LIBXML_DLL_IMPORT xmlFreeFunc xmlFree;
+LIBXML_DLL_IMPORT xmlMallocFunc xmlMalloc;
+LIBXML_DLL_IMPORT xmlMallocFunc xmlMallocAtomic;
+LIBXML_DLL_IMPORT xmlReallocFunc xmlRealloc;
+LIBXML_DLL_IMPORT xmlStrdupFunc xmlMemStrdup;
  */
 
 /*

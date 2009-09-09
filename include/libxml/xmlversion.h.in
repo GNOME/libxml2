@@ -398,19 +398,19 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
- * ATTRIBUTE_ALLOC_SIZE:
+ * LIBXML_ATTR_ALLOC_SIZE:
  *
  * Macro used to indicate to GCC this is an allocator function
  */
 
-#ifndef ATTRIBUTE_ALLOC_SIZE
+#ifndef LIBXML_ATTR_ALLOC_SIZE
 # if ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 3)))
-#  define ATTRIBUTE_ALLOC_SIZE(x) __attribute__((alloc_size(x)))
+#  define LIBXML_ATTR_ALLOC_SIZE(x) __attribute__((alloc_size(x)))
 # else
-#  define ATTRIBUTE_ALLOC_SIZE(x)
+#  define LIBXML_ATTR_ALLOC_SIZE(x)
 # endif
 #else
-# define ATTRIBUTE_ALLOC_SIZE(x)
+# define LIBXML_ATTR_ALLOC_SIZE(x)
 #endif
 
 /**
@@ -437,11 +437,11 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  */
 #define ATTRIBUTE_UNUSED
 /**
- * ATTRIBUTE_ALLOC_SIZE:
+ * LIBXML_ATTR_ALLOC_SIZE:
  *
  * Macro used to indicate to GCC this is an allocator function
  */
-#define ATTRIBUTE_ALLOC_SIZE(x)
+#define LIBXML_ATTR_ALLOC_SIZE(x)
 /**
  * LIBXML_ATTR_FORMAT:
  *

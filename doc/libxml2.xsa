@@ -8,17 +8,21 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.7.2</version>
-    <last-release> Oct 3 2008</last-release>
+    <version>2.7.3</version>
+    <last-release> Jan 18 2009</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Portability fix: fix solaris compilation problem, fix compilation
-        if XPath is not configured in
-   - Bug fixes: nasty entity bug introduced in 2.7.0, restore old behaviour
-        when saving an HTML doc with an xml dump function, HTML UTF-8 parsing
-        bug, fix reader custom error handlers (Riccardo Scussat)
-    
-   - Improvement: xmlSave options for more flexibility to save as
-        XML/HTML/XHTML, handle leading BOM in HTML documents
+    <changes>   - Build fix: fix build when HTML support is not included.
+   - Bug fixes: avoid memory overflow in gigantic text nodes,
+      indentation problem on the writed (Rob Richards),
+      xmlAddChildList pointer problem (Rob Richards and Kevin Milburn),
+      xmlAddChild problem with attribute (Rob Richards and Kris Breuker),
+      avoid a memory leak in an edge case (Daniel Zimmermann),
+      deallocate some pthread data (Alex Ott).
+   - Improvements: configure option to avoid rebuilding docs (Adrian Bunk),
+      limit text nodes to 10MB max by default, add element traversal
+      APIs, add a parser option to enable pre 2.7 SAX behavior (Rob Richards),
+      add gcc malloc checking (Marcus Meissner), add gcc printf like functions
+      parameters checking (Marcus Meissner).
 
 </changes>
   </product>

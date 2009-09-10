@@ -3364,16 +3364,16 @@
      <exports symbol='LIBXML_XPTR_ENABLED' type='macro'/>
      <exports symbol='LIBXML_VERSION_STRING' type='macro'/>
      <exports symbol='LIBXML_CATALOG_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_ATTR_ALLOC_SIZE' type='macro'/>
      <exports symbol='LIBXML_REGEXP_ENABLED' type='macro'/>
      <exports symbol='LIBXML_MODULE_EXTENSION' type='macro'/>
      <exports symbol='LIBXML_ICONV_ENABLED' type='macro'/>
      <exports symbol='LIBXML_HTML_ENABLED' type='macro'/>
-     <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_UNICODE_ENABLED' type='macro'/>
      <exports symbol='LIBXML_FTP_ENABLED' type='macro'/>
      <exports symbol='LIBXML_AUTOMATA_ENABLED' type='macro'/>
      <exports symbol='LIBXML_ZLIB_ENABLED' type='macro'/>
-     <exports symbol='ATTRIBUTE_ALLOC_SIZE' type='macro'/>
+     <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_C14N_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SCHEMAS_ENABLED' type='macro'/>
      <exports symbol='DEBUG_MEMORY_LOCATION' type='macro'/>
@@ -3774,9 +3774,6 @@
     </file>
   </files>
   <symbols>
-    <macro name='ATTRIBUTE_ALLOC_SIZE' file='xmlversion'>
-      <info>Macro used to indicate to GCC this is an allocator function</info>
-    </macro>
     <macro name='ATTRIBUTE_UNUSED' file='xmlversion'>
       <info>Macro used to signal to GCC unused function parameters</info>
     </macro>
@@ -3912,6 +3909,9 @@
     <macro name='IS_PUBIDCHAR_CH' file='parserInternals'>
       <info>Same as IS_PUBIDCHAR but for single-byte value</info>
       <arg name='c' info='an xmlChar value (normally unsigned char)'/>
+    </macro>
+    <macro name='LIBXML_ATTR_ALLOC_SIZE' file='xmlversion'>
+      <info>Macro used to indicate to GCC this is an allocator function</info>
     </macro>
     <macro name='LIBXML_ATTR_FORMAT' file='xmlversion'>
       <info>Macro used to indicate to GCC the parameter are printf like</info>
@@ -10130,7 +10130,7 @@ Could we use @subtypes for this?'/>
       <arg name='ID' type='const xmlChar *' info='the ID value'/>
     </function>
     <function name='xmlGetThreadId' file='threads' module='threads'>
-      <info>xmlGetThreadId() find the current thread ID number</info>
+      <info>xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn&apos;t mandate pthread_t to be an integer type</info>
       <return type='int' info='the current thread ID number'/>
     </function>
     <function name='xmlGetUTF8Char' file='xmlstring' module='xmlstring'>

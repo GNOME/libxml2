@@ -112,7 +112,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the thread global state or NULL in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetThreadId"/>xmlGetThreadId ()</h3><pre class="programlisting">int	xmlGetThreadId			(void)<br/>
-</pre><p>xmlGetThreadId() find the current thread ID number</p>
+</pre><p>xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn't mandate pthread_t to be an integer type</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the current thread ID number</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlInitThreads"/>xmlInitThreads ()</h3><pre class="programlisting">void	xmlInitThreads			(void)<br/>

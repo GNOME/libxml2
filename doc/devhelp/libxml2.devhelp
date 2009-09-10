@@ -52,7 +52,6 @@
     </sub>
   </chapters>
   <functions>
-    <function name="ATTRIBUTE_ALLOC_SIZE" link="libxml2-xmlversion.html#ATTRIBUTE_ALLOC_SIZE"/>
     <function name="ATTRIBUTE_UNUSED" link="libxml2-xmlversion.html#ATTRIBUTE_UNUSED"/>
     <function name="BAD_CAST" link="libxml2-xmlstring.html#BAD_CAST"/>
     <function name="BASE_BUFFER_SIZE" link="libxml2-tree.html#BASE_BUFFER_SIZE"/>
@@ -91,6 +90,7 @@
     <function name="IS_LETTER_CH" link="libxml2-parserInternals.html#IS_LETTER_CH"/>
     <function name="IS_PUBIDCHAR" link="libxml2-parserInternals.html#IS_PUBIDCHAR"/>
     <function name="IS_PUBIDCHAR_CH" link="libxml2-parserInternals.html#IS_PUBIDCHAR_CH"/>
+    <function name="LIBXML_ATTR_ALLOC_SIZE" link="libxml2-xmlversion.html#LIBXML_ATTR_ALLOC_SIZE"/>
     <function name="LIBXML_ATTR_FORMAT" link="libxml2-xmlversion.html#LIBXML_ATTR_FORMAT"/>
     <function name="LIBXML_AUTOMATA_ENABLED" link="libxml2-xmlversion.html#LIBXML_AUTOMATA_ENABLED"/>
     <function name="LIBXML_C14N_ENABLED" link="libxml2-xmlversion.html#LIBXML_C14N_ENABLED"/>

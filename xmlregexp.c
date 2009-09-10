@@ -5610,7 +5610,7 @@ xmlFreeAutomata(xmlAutomataPtr am) {
 }
 
 /**
- * xmlAutomataSetFlags
+ * xmlAutomataSetFlags:
  * @am: an automata
  * @flags:  a set of internal flags
  *

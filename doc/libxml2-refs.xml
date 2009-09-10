@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <apirefs name='libxml2'>
   <references>
-    <reference name='ATTRIBUTE_ALLOC_SIZE' href='html/libxml-xmlversion.html#ATTRIBUTE_ALLOC_SIZE'/>
     <reference name='ATTRIBUTE_UNUSED' href='html/libxml-xmlversion.html#ATTRIBUTE_UNUSED'/>
     <reference name='BAD_CAST' href='html/libxml-xmlstring.html#BAD_CAST'/>
     <reference name='BASE_BUFFER_SIZE' href='html/libxml-tree.html#BASE_BUFFER_SIZE'/>
@@ -52,6 +51,7 @@
     <reference name='IS_LETTER_CH' href='html/libxml-parserInternals.html#IS_LETTER_CH'/>
     <reference name='IS_PUBIDCHAR' href='html/libxml-parserInternals.html#IS_PUBIDCHAR'/>
     <reference name='IS_PUBIDCHAR_CH' href='html/libxml-parserInternals.html#IS_PUBIDCHAR_CH'/>
+    <reference name='LIBXML_ATTR_ALLOC_SIZE' href='html/libxml-xmlversion.html#LIBXML_ATTR_ALLOC_SIZE'/>
     <reference name='LIBXML_ATTR_FORMAT' href='html/libxml-xmlversion.html#LIBXML_ATTR_FORMAT'/>
     <reference name='LIBXML_AUTOMATA_ENABLED' href='html/libxml-xmlversion.html#LIBXML_AUTOMATA_ENABLED'/>
     <reference name='LIBXML_C14N_ENABLED' href='html/libxml-xmlversion.html#LIBXML_C14N_ENABLED'/>
@@ -3534,7 +3534,6 @@
   </references>
   <alpha>
     <letter name='A'>
-      <ref name='ATTRIBUTE_ALLOC_SIZE'/>
       <ref name='ATTRIBUTE_UNUSED'/>
     </letter>
     <letter name='B'>
@@ -3597,6 +3596,7 @@
       <ref name='IS_PUBIDCHAR_CH'/>
     </letter>
     <letter name='L'>
+      <ref name='LIBXML_ATTR_ALLOC_SIZE'/>
       <ref name='LIBXML_ATTR_FORMAT'/>
       <ref name='LIBXML_AUTOMATA_ENABLED'/>
       <ref name='LIBXML_C14N_ENABLED'/>
@@ -13805,9 +13805,9 @@
       <ref name='xmlUCSIsYijingHexagramSymbols'/>
     </file>
     <file name='xmlversion'>
-      <ref name='ATTRIBUTE_ALLOC_SIZE'/>
       <ref name='ATTRIBUTE_UNUSED'/>
       <ref name='DEBUG_MEMORY_LOCATION'/>
+      <ref name='LIBXML_ATTR_ALLOC_SIZE'/>
       <ref name='LIBXML_ATTR_FORMAT'/>
       <ref name='LIBXML_AUTOMATA_ENABLED'/>
       <ref name='LIBXML_C14N_ENABLED'/>
@@ -15776,8 +15776,8 @@
       </letter>
       <letter name='G'>
         <word name='GCC'>
-          <ref name='ATTRIBUTE_ALLOC_SIZE'/>
           <ref name='ATTRIBUTE_UNUSED'/>
+          <ref name='LIBXML_ATTR_ALLOC_SIZE'/>
           <ref name='LIBXML_ATTR_FORMAT'/>
         </word>
         <word name='GEDecl'>
@@ -18910,8 +18910,8 @@
           <ref name='xmlParserInputDeallocate'/>
         </word>
         <word name='allocator'>
-          <ref name='ATTRIBUTE_ALLOC_SIZE'/>
           <ref name='DEBUG_MEMORY'/>
+          <ref name='LIBXML_ATTR_ALLOC_SIZE'/>
         </word>
         <word name='allocators'>
           <ref name='xmlGcMemGet'/>
@@ -19652,6 +19652,7 @@
           <ref name='XML_CAST_FPTR'/>
         </word>
         <word name='broken'>
+          <ref name='xmlGetThreadId'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlTextReaderNormalization'/>
         </word>
@@ -21680,6 +21681,7 @@
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlFreeNode'/>
+          <ref name='xmlGetThreadId'/>
           <ref name='xmlInitCharEncodingHandlers'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlNodeListGetRawString'/>
@@ -23721,7 +23723,7 @@
           <ref name='xmlXPtrNewRange'/>
         </word>
         <word name='indicate'>
-          <ref name='ATTRIBUTE_ALLOC_SIZE'/>
+          <ref name='LIBXML_ATTR_ALLOC_SIZE'/>
           <ref name='LIBXML_ATTR_FORMAT'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParserInputGrow'/>
@@ -24033,6 +24035,7 @@
           <ref name='xmlParseURIRaw'/>
         </word>
         <word name='integer'>
+          <ref name='xmlGetThreadId'/>
           <ref name='xmlStrcasecmp'/>
           <ref name='xmlStrcmp'/>
           <ref name='xmlStrncasecmp'/>
@@ -24518,6 +24521,9 @@
           <ref name='xmlValidityErrorFunc'/>
           <ref name='xmlValidityWarningFunc'/>
         </word>
+        <word name='likely'>
+          <ref name='xmlGetThreadId'/>
+        </word>
         <word name='limit'>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlDecodeEntities'/>
@@ -24775,6 +24781,9 @@
         </word>
         <word name='manages'>
           <ref name='xmlBufferWriteCHAR'/>
+        </word>
+        <word name='mandate'>
+          <ref name='xmlGetThreadId'/>
         </word>
         <word name='manipulated'>
           <ref name='xmlNewRMutex'/>
@@ -26248,6 +26257,9 @@
           <ref name='xmlStrPrintf'/>
           <ref name='xmlStrVPrintf'/>
         </word>
+        <word name='platforms'>
+          <ref name='xmlGetThreadId'/>
+        </word>
         <word name='plug'>
           <ref name='xmlXPathFuncLookupFunc'/>
           <ref name='xmlXPathVariableLookupFunc'/>
@@ -26779,6 +26791,12 @@
         </word>
         <word name='prune'>
           <ref name='xmlReplaceNode'/>
+        </word>
+        <word name='pthread_t'>
+          <ref name='xmlGetThreadId'/>
+        </word>
+        <word name='pthreads'>
+          <ref name='xmlGetThreadId'/>
         </word>
         <word name='publicID'>
           <ref name='xmlParseExternalID'/>
@@ -28280,6 +28298,7 @@
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlGcMemSetup'/>
+          <ref name='xmlGetThreadId'/>
           <ref name='xmlHandleEntity'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlParseAttributeType'/>
@@ -28422,6 +28441,7 @@
         </word>
         <word name='specification'>
           <ref name='XML_XML_NAMESPACE'/>
+          <ref name='xmlGetThreadId'/>
           <ref name='xmlTextReaderNormalization'/>
         </word>
         <word name='specifications'>

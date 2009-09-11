@@ -2175,6 +2175,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 			doc = NULL;
 		    }
 	        }
+                if (f != stdin)
+                    fclose(f);
 	    }
 	} else
 #endif /* LIBXML_PUSH_ENABLED */

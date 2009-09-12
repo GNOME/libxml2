@@ -742,6 +742,7 @@ if test "$with_python" != "no" ; then
 		    PYTHON_SITE_PACKAGES=`$PYTHON -c "from distutils import sysconfig; print sysconfig.get_python_lib()"`
 	    fi
 	fi
+	PYTHON_LIBS=`python$PYTHON_VERSION-config --libs`
     fi
     if test "$with_python" != ""
     then
@@ -761,6 +762,7 @@ else
 fi
 AC_SUBST(pythondir)
 AC_SUBST(PYTHON_SUBDIR)
+AC_SUBST(PYTHON_LIBS)
 
 dnl check for dso support
 WITH_MODULES=0

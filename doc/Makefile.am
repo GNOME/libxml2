@@ -21,7 +21,7 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
 	   API*.html *.1 *.xsl *.html *.gif w3c.png html/*.html \
 	   html/*.png libxml2-api.xml index.py search.php \
 	   apibuild.py libxml2.xsa xmllint.xml xmlcatalog_man.xml \
-	   README.docs
+	   README.docs symbols.xml
 
 
 man_MANS = xmllint.1 xmlcatalog.1

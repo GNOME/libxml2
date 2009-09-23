@@ -2095,12 +2095,13 @@ xmlFACompareRanges(xmlRegRangePtr range1, xmlRegRangePtr range2) {
                (range2->type == XML_REGEXP_EPSILON)) {
 	return(0);
     } else if (range1->type == range2->type) {
-        if ((range1->type != XML_REGEXP_CHARVAL) ||
-	    (range1->end < range2->start) ||
-	    (range2->end < range1->start))
-	    ret = 1;
-	else
+        if (range1->type != XML_REGEXP_CHARVAL)
+            ret = 1;
+        else if ((range1->end < range2->start) ||
+	         (range2->end < range1->start))
 	    ret = 0;
+	else
+	    ret = 1;
     } else if (range1->type == XML_REGEXP_CHARVAL) {
         int codepoint;
 	int neg = 0;

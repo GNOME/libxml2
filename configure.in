@@ -886,7 +886,7 @@ if test "$with_threads" = "no" ; then
 else
     echo Enabling multithreaded support
     dnl Use pthread by default
-    if test "$with_threads" = "pthread" | test "$with_threads" = "" ; then
+    if test "$with_threads" = "pthread" | test "$with_threads" = "" | test "$with_threads" = "yes" ; then
         AC_CHECK_HEADER(pthread.h,
 	    AC_CHECK_LIB(pthread, pthread_join,[
 	       THREAD_LIBS="-lpthread"

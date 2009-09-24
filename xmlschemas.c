@@ -10531,9 +10531,9 @@ doc_load:
 	    /* Parse from memory buffer. */
 	    doc = xmlCtxtReadMemory(parserCtxt, schemaBuffer, schemaBufferLen,
 		NULL, NULL, SCHEMAS_PARSE_OPTIONS);
-	    schemaLocation = xmlStrdup(BAD_CAST "in_memory_buffer");
+	    schemaLocation = BAD_CAST "in_memory_buffer";
 	    if (doc != NULL)
-		doc->URL = schemaLocation;
+		doc->URL = xmlStrdup(schemaLocation);
 	}
 	/*
 	* For <import>:

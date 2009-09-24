@@ -149,6 +149,7 @@ typedef enum {
 #define IS_PROCESSED		(1 << 5)
 #define IS_COMPILABLE		(1 << 6)
 #define IS_NOT_COMPILABLE	(1 << 7)
+#define IS_EXTERNAL_REF	        (1 << 8)
 
 struct _xmlRelaxNGDefine {
     xmlRelaxNGType type;        /* the type of definition */
@@ -4662,6 +4663,8 @@ xmlRelaxNGParseImportRef(void *payload, void *data, xmlChar *name) {
     xmlRelaxNGDefinePtr def = (xmlRelaxNGDefinePtr) payload;
     int tmp;
 
+    def->dflags |= IS_EXTERNAL_REF;
+
     tmp = xmlHashAddEntry(ctxt->grammar->refs, name, def);
     if (tmp < 0) {
         xmlRelaxNGDefinePtr prev;
@@ -5667,6 +5670,12 @@ xmlRelaxNGCheckReference(xmlRelaxNGDefinePtr ref,
 {
     xmlRelaxNGGrammarPtr grammar;
     xmlRelaxNGDefinePtr def, cur;
+
+    /*
+     * Those rules don't apply to imported ref from xmlRelaxNGParseImportRef
+     */
+    if (ref->dflags & IS_EXTERNAL_REF)
+        return;
 
     grammar = ctxt->grammar;
     if (grammar == NULL) {

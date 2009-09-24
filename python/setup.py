@@ -11,7 +11,7 @@ from distutils.core import setup, Extension
 ROOT = r'/usr' 
 
 # Thread-enabled libxml2
-with_threads = 1
+with_threads = 0
 
 # If this flag is set (windows only), 
 # a private copy of the dlls are included in the package.
@@ -226,7 +226,7 @@ else:
 setup (name = "libxml2-python",
        # On *nix, the version number is created from setup.py.in
        # On windows, it is set by configure.js
-       version = "2.7.4",
+       version = "2.7.5",
        description = descr,
        author = "Daniel Veillard",
        author_email = "veillard@redhat.com",

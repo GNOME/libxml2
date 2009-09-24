@@ -12,7 +12,19 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://svn.gnome.org/viewvc/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.7.4: Sep 10 2009</h3><ul><li>Improvements:
+to the <a href="http://svn.gnome.org/viewvc/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.7.5: Sep 24 2009</h3><ul><li> Bug Fixes:
+    Restore behavior of --with-threads without argument (Andrew W. Nosenko),
+    Fix memory leak when doc is NULL (Rob Richards),
+    595792 fixing a RelaxNG bug introduced in 2.7.4 (Daniel Veillard),
+    Fix a Relaxng bug raised by libvirt test suite (Daniel Veillard),
+    Fix a parsing problem with little data at startup (Daniel Veillard),
+    link python module with python library (Frederic Crozat),
+    594874 Forgot an fclose in xmllint (Daniel Veillard)
+  </li>
+  <li> Cleanup:
+    Adding symbols.xml to EXTRA_DIST (Daniel Veillard)
+  </li>
+</ul><h3>2.7.4: Sep 10 2009</h3><ul><li>Improvements:
     Switch to GIT (GNOME),
     Add symbol versioning to libxml2 shared libs (Daniel Veillard)
   </li>

@@ -26,7 +26,7 @@
 #endif
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#elif HAVE_WIN32_THREADS
+#elif defined HAVE_WIN32_THREADS
 #include <windows.h>
 #ifndef HAVE_COMPILER_TLS
 #include <process.h>
@@ -593,7 +593,7 @@ xmlNewGlobalState(void)
 #endif /* LIBXML_THREAD_ENABLED */
 
 #ifdef HAVE_PTHREAD_H
-#elif HAVE_WIN32_THREADS
+#elif defined HAVE_WIN32_THREADS
 #if !defined(HAVE_COMPILER_TLS)
 #if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
 typedef struct _xmlGlobalStateCleanupHelperParams {
@@ -967,7 +967,7 @@ xmlOnceInit(void)
                 Sleep(0);
         }
     }
-#elif HAVE_BEOS_THREADS
+#elif defined HAVE_BEOS_THREADS
     if (atomic_add(&run_once_init, 1) == 0) {
         globalkey = tls_allocate();
         tls_set(globalkey, NULL);

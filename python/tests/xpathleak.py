@@ -15,6 +15,14 @@ expect="""--> Invalid expression
 --> xmlXPathEval: evaluation failed
 --> Invalid expression
 --> xmlXPathEval: evaluation failed
+--> Invalid expression
+--> xmlXPathEval: evaluation failed
+--> Invalid expression
+--> xmlXPathEval: evaluation failed
+--> Invalid expression
+--> xmlXPathEval: evaluation failed
+--> Invalid expression
+--> xmlXPathEval: evaluation failed
 """
 err=""
 def callback(ctx, str):
@@ -27,7 +35,11 @@ libxml2.registerErrorHandler(callback, "-->")
 doc = libxml2.parseDoc("<fish/>")
 ctxt = doc.xpathNewContext()
 ctxt.setContextNode(doc)
-for expr in (":false()","bad:()","bad(:)",":bad(:)","bad:(:)","bad:bad(:)"):
+badexprs = (
+	":false()", "bad:()", "bad(:)", ":bad(:)", "bad:(:)", "bad:bad(:)",
+	"a:/b", "/c:/d", "//e:/f", "g://h"
+	)
+for expr in badexprs:
 	try:
 		ctxt.xpathEval(expr)
 	except libxml2.xpathError, e:

@@ -11546,7 +11546,7 @@ xmldecl_done:
          */
         if ((ctxt->instate == XML_PARSER_START) && (ctxt->input != NULL) &&
             (ctxt->input->buf != NULL) && (ctxt->input->buf->encoder != NULL)) {
-            int len = 45;
+            unsigned int len = 45;
 
             if ((xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
                                BAD_CAST "UTF-16")) ||

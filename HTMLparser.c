@@ -567,9 +567,9 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 #define NB_PHRASE 10
 #define SPECIAL "a", "img", "applet", "embed", "object", "font", "basefont", "br", "script", "map", "q", "sub", "sup", "span", "bdo", "iframe"
 #define NB_SPECIAL 16
-#define INLINE PCDATA FONTSTYLE PHRASE SPECIAL FORMCTRL
+#define INLINE FONTSTYLE, PHRASE, SPECIAL, FORMCTRL
 #define NB_INLINE NB_PCDATA + NB_FONTSTYLE + NB_PHRASE + NB_SPECIAL + NB_FORMCTRL
-#define BLOCK HEADING, LIST "pre", "p", "dl", "div", "center", "noscript", "noframes", "blockquote", "form", "isindex", "hr", "table", "fieldset", "address"
+#define BLOCK HEADING, LIST, "pre", "p", "dl", "div", "center", "noscript", "noframes", "blockquote", "form", "isindex", "hr", "table", "fieldset", "address"
 #define NB_BLOCK NB_HEADING + NB_LIST + 14
 #define FORMCTRL "input", "select", "textarea", "label", "button"
 #define NB_FORMCTRL 5

@@ -5056,7 +5056,7 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
 void
 xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
     xmlNsPtr ns;
-    const xmlChar* fixed;
+    xmlChar* fixed;
 
     if (cur == NULL) return;
     switch(cur->type) {
@@ -5103,7 +5103,7 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
     fixed = xmlPathToURI(uri);
     if (fixed != NULL) {
 	xmlSetNsProp(cur, ns, BAD_CAST "base", fixed);
-	xmlFree((xmlChar *)fixed);
+	xmlFree(fixed);
     } else {
 	xmlSetNsProp(cur, ns, BAD_CAST "base", uri);
     }

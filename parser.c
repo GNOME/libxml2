@@ -12870,8 +12870,14 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
     if (doc->type == XML_DOCUMENT_NODE)
 	ctxt = xmlCreateMemoryParserCtxt((char *) data, datalen);
 #ifdef LIBXML_HTML_ENABLED
-    else if (doc->type == XML_HTML_DOCUMENT_NODE)
+    else if (doc->type == XML_HTML_DOCUMENT_NODE) {
 	ctxt = htmlCreateMemoryParserCtxt((char *) data, datalen);
+        /*
+         * When parsing in context, it makes no sense to add implied
+         * elements like html/body/etc...
+         */
+        options |= HTML_PARSE_NOIMPLIED;
+    }
 #endif
     else
         return(XML_ERR_INTERNAL_ERROR);

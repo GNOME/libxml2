@@ -1394,6 +1394,8 @@ static void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
     int i;
 
+    if (ctxt->options & HTML_PARSE_NOIMPLIED)
+        return;
     if (!htmlOmittedDefaultValue)
 	return;
     if (xmlStrEqual(newtag, BAD_CAST"html"))

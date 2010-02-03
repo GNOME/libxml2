@@ -3527,7 +3527,7 @@ xmlPreviousElementSibling(xmlNodePtr node) {
     while (node != NULL) {
         if (node->type == XML_ELEMENT_NODE)
             return(node);
-        node = node->next;
+        node = node->prev;
     }
     return(NULL);
 }

@@ -12884,14 +12884,8 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 
     if (ctxt == NULL)
         return(XML_ERR_NO_MEMORY);
-    fake = xmlNewComment(NULL);
-    if (fake == NULL) {
-        xmlFreeParserCtxt(ctxt);
-	return(XML_ERR_NO_MEMORY);
-    }
-    xmlAddChild(node, fake);
 
-    /* 
+    /*
      * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
      * We need a dictionary for xmlDetectSAX2, so if there's no doc dict
      * we must wait until the last moment to free the original one.
@@ -12903,9 +12897,31 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
     } else
         options |= XML_PARSE_NODICT;
 
+    if (doc->encoding != NULL) {
+        xmlCharEncodingHandlerPtr hdlr;
+
+        if (ctxt->encoding != NULL)
+	    xmlFree((xmlChar *) ctxt->encoding);
+        ctxt->encoding = xmlStrdup((const xmlChar *) doc->encoding);
+
+        hdlr = xmlFindCharEncodingHandler(doc->encoding);
+        if (hdlr != NULL) {
+            xmlSwitchToEncoding(ctxt, hdlr);
+	} else {
+            return(XML_ERR_UNSUPPORTED_ENCODING);
+        }
+    }
+
     xmlCtxtUseOptionsInternal(ctxt, options, NULL);
     xmlDetectSAX2(ctxt);
     ctxt->myDoc = doc;
+
+    fake = xmlNewComment(NULL);
+    if (fake == NULL) {
+        xmlFreeParserCtxt(ctxt);
+	return(XML_ERR_NO_MEMORY);
+    }
+    xmlAddChild(node, fake);
 
     if (node->type == XML_ELEMENT_NODE) {
 	nodePush(ctxt, node);

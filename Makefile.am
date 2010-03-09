@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+ACLOCAL_AMFLAGS = -I m4
+
 SUBDIRS = include . doc example xstc @PYTHON_SUBDIR@
 
 DIST_SUBDIRS = include . doc example python xstc

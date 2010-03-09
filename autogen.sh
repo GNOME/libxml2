@@ -48,7 +48,7 @@ fi
 
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS
-automake --add-missing
+automake --force-missing --add-missing --copy --foreign
 autoconf
 
 cd $THEDIR

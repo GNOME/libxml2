@@ -5124,7 +5124,7 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
  * and
  * 5.1.2. Base URI from the Encapsulating Entity
  * However it does not return the document base (5.1.3), use
- * xmlDocumentGetBase() for this
+ * doc->URL in this case
  *
  * Returns a pointer to the base URL, or NULL if not found
  *     It's up to the caller to free the memory with xmlFree().

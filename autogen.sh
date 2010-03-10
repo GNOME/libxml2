@@ -46,10 +46,12 @@ if test -z "$*"; then
         echo "to pass any to it, please specify them on the $0 command line."
 fi
 
-libtoolize --copy --force
-aclocal $ACLOCAL_FLAGS
-automake --force-missing --add-missing --copy --foreign
-autoconf
+# Replaced by autoreconf below
+#libtoolize --copy --force
+#aclocal $ACLOCAL_FLAGS
+#automake --force-missing --add-missing --copy --foreign
+#autoconf
+autoreconf -if
 
 cd $THEDIR
 

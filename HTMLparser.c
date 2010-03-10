@@ -3478,6 +3478,8 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
 	    }
 	    ctxt->input->base =
 	    ctxt->input->cur = ctxt->input->buf->buffer->content;
+            ctxt->input->end =
+                          &ctxt->input->base[ctxt->input->buf->buffer->use];
 	}
     }
 }

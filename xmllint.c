@@ -2655,8 +2655,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
                 if (format)
 		    saveOpts |= XML_SAVE_FORMAT;
+
+#if defined(LIBXML_HTML_ENABLED) || defined(LIBXML_VALID_ENABLED)
                 if (xmlout)
                     saveOpts |= XML_SAVE_AS_XML;
+#endif
 
 		if (output == NULL)
 		    ctxt = xmlSaveToFd(1, encoding, saveOpts);

@@ -779,6 +779,10 @@ if test "$with_modules" != "no" ; then
     AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
   ])
   ;;
+  *-*-mingw*)
+  MODULE_EXTENSION=".dll"
+  WITH_MODULES=1
+  ;;
   *)
   AC_CHECK_FUNC(shl_load, libxml_have_shl_load=yes, [
     AC_CHECK_LIB(dld, shl_load, [

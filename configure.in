@@ -73,10 +73,14 @@ dnl if the system support linker version scripts for symbol versioning
 dnl then add it
 dnl
 VERSION_SCRIPT_FLAGS=
-$(/usr/bin/ld --help 2>&1 | grep -- --version-script >/dev/null) && \
-    VERSION_SCRIPT_FLAGS=-Wl,--version-script=
-test "`uname`" == "SunOS" && \
-    VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,"
+# lt_cv_prog_gnu_ld is from libtool 2.+
+if test "$lt_cv_prog_gnu_ld" = yes; then
+  VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+else
+  case $host in
+  *-*-sunos*) VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,";;
+  esac
+fi
 AC_SUBST(VERSION_SCRIPT_FLAGS)
 AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
 

@@ -267,8 +267,6 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
 #define NEXT xmlNextChar(ctxt)
 
 #define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
-#define NXT(val) ctxt->input->cur[(val)]
-#define CUR_PTR ctxt->input->cur
 
 
 #define NEXTL(l) do {							\
@@ -4428,7 +4426,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     if (ctxt->nameTab == NULL) {
         htmlErrMemory(NULL, "htmlInitParserCtxt: out of memory\n");
 	ctxt->nameNr = 0;
-	ctxt->nameMax = 10;
+	ctxt->nameMax = 0;
 	ctxt->name = NULL;
 	ctxt->nodeNr = 0;
 	ctxt->nodeMax = 0;

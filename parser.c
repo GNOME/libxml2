@@ -11562,8 +11562,17 @@ xmldecl_done:
             if (ctxt->input->buf->rawconsumed < len)
                 len -= ctxt->input->buf->rawconsumed;
 
-            remain = size - len;
-            size = len;
+            /*
+             * Change size for reading the initial declaration only
+             * if size is greater than len. Otherwise, memmove in xmlBufferAdd
+             * will blindly copy extra bytes from memory.
+             */
+            if (size > len) {
+                remain = size - len;
+                size = len;
+            } else {
+                remain = 0;
+            }
         }
 	res =xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
 	if (res < 0) {

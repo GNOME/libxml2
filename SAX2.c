@@ -1108,7 +1108,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 #ifdef LIBXML_HTML_ENABLED
     if ((ctxt->html) &&
         (value == NULL) && (htmlIsBooleanAttr(fullname))) {
-            nval = value = xmlStrdup(fullname);
+            nval = xmlStrdup(fullname);
+            value = (const xmlChar *) nval;
     } else
 #endif
     {

@@ -4291,8 +4291,6 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     const htmlElemDesc * info;
     htmlParserNodeInfo node_info;
     int failed;
-    int depth;
-    const xmlChar *oldptr;
 
     if ((ctxt == NULL) || (ctxt->input == NULL)) {
 	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,

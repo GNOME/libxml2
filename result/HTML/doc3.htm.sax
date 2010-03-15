@@ -2566,7 +2566,7 @@ SAX.characters(
             , 14)
 SAX.endElement(font)
 SAX.startElement(center)
-SAX.startElement(iframe, frameborder='0', height='60', marginheight='0', marginwidth='0', noresize='noresize', scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
+SAX.startElement(iframe, frameborder='0', height='60', marginheight='0', marginwidth='0', noresize, scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
 SAX.startElement(a, href='http://ads.adflight.com/go_static.asp?asid=7708', target='_top')
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
@@ -2713,7 +2713,7 @@ SAX.startElement(noscript)
 SAX.endElement(noscript)
 SAX.endElement(b)
 SAX.startElement(a, href='http://www.goto.com/d/search/ssn/?fromGIF=true', target='_blank')
-SAX.startElement(img, align='bottom', border='0', height='90', ismap='ismap', src='doc3_files/100x90.gif', width='100')
+SAX.startElement(img, align='bottom', border='0', height='90', ismap, src='doc3_files/100x90.gif', width='100')
 SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(b)

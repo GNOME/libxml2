@@ -49,7 +49,7 @@ SAX.characters(
 SAX.startElement(select, name='state')
 SAX.characters(
 , 2)
-SAX.startElement(option, value='WA', selected='selected')
+SAX.startElement(option, value='WA', selected)
 SAX.characters(WA
 , 4)
 SAX.endElement(option)
@@ -442,7 +442,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&amp;Filter=docs_filter.hts&amp;ResultTemplate=vignette.hts&amp;Collection=vignette&amp;QueryMode=Internet&amp;Query=', selected='selected')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&amp;Filter=docs_filter.hts&amp;ResultTemplate=vignette.hts&amp;Collection=vignette&amp;QueryMode=Internet&amp;Query=', selected)
 SAX.characters(Wired News, 10)
 SAX.endElement(option)
 SAX.characters(

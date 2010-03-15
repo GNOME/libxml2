@@ -3426,11 +3426,6 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
         NEXT;
 	SKIP_BLANKS;
 	val = htmlParseAttValue(ctxt);
-    } else if (htmlIsBooleanAttr(name)) {
-        /*
-	 * assume a minimized attribute
-	 */
-	val = xmlStrdup(name);
     }
 
     *value = val;

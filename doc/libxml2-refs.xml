@@ -22,6 +22,7 @@
     <reference name='HTML_PARSE_COMPACT' href='html/libxml-HTMLparser.html#HTML_PARSE_COMPACT'/>
     <reference name='HTML_PARSE_NOBLANKS' href='html/libxml-HTMLparser.html#HTML_PARSE_NOBLANKS'/>
     <reference name='HTML_PARSE_NOERROR' href='html/libxml-HTMLparser.html#HTML_PARSE_NOERROR'/>
+    <reference name='HTML_PARSE_NOIMPLIED' href='html/libxml-HTMLparser.html#HTML_PARSE_NOIMPLIED'/>
     <reference name='HTML_PARSE_NONET' href='html/libxml-HTMLparser.html#HTML_PARSE_NONET'/>
     <reference name='HTML_PARSE_NOWARNING' href='html/libxml-HTMLparser.html#HTML_PARSE_NOWARNING'/>
     <reference name='HTML_PARSE_PEDANTIC' href='html/libxml-HTMLparser.html#HTML_PARSE_PEDANTIC'/>
@@ -3563,6 +3564,7 @@
       <ref name='HTML_PARSE_COMPACT'/>
       <ref name='HTML_PARSE_NOBLANKS'/>
       <ref name='HTML_PARSE_NOERROR'/>
+      <ref name='HTML_PARSE_NOIMPLIED'/>
       <ref name='HTML_PARSE_NONET'/>
       <ref name='HTML_PARSE_NOWARNING'/>
       <ref name='HTML_PARSE_PEDANTIC'/>
@@ -10622,6 +10624,7 @@
       <ref name='HTML_PARSE_COMPACT'/>
       <ref name='HTML_PARSE_NOBLANKS'/>
       <ref name='HTML_PARSE_NOERROR'/>
+      <ref name='HTML_PARSE_NOIMPLIED'/>
       <ref name='HTML_PARSE_NONET'/>
       <ref name='HTML_PARSE_NOWARNING'/>
       <ref name='HTML_PARSE_PEDANTIC'/>
@@ -16575,6 +16578,9 @@
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlXPathNewNodeSet'/>
         </word>
+        <word name='NodeInfo'>
+          <ref name='_xmlParserCtxt'/>
+        </word>
         <word name='NodeList'>
           <ref name='xmlXPathNodeSetGetLength'/>
           <ref name='xmlXPathNodeSetItem'/>
@@ -20305,6 +20311,7 @@
         </word>
         <word name='compatibility'>
           <ref name='LIBXML_LEGACY_ENABLED'/>
+          <ref name='htmlParseElement'/>
           <ref name='xmlChildrenNode'/>
           <ref name='xmlCopyChar'/>
           <ref name='xmlEncodeEntities'/>
@@ -21655,6 +21662,7 @@
           <ref name='xmlDocGetRootElement'/>
           <ref name='xmlDocSetRootElement'/>
           <ref name='xmlNewTextWriterTree'/>
+          <ref name='xmlNodeGetBase'/>
         </word>
         <word name='docs'>
           <ref name='xmlBuildRelativeURI'/>
@@ -24225,6 +24233,7 @@
           <ref name='_xmlXPathContext'/>
           <ref name='htmlAutoCloseTag'/>
           <ref name='htmlIsAutoClosed'/>
+          <ref name='htmlParseElement'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
@@ -25384,6 +25393,9 @@
           <ref name='xmlXPathLocalNameFunction'/>
           <ref name='xmlXPathNamespaceURIFunction'/>
         </word>
+        <word name='nodeInfos'>
+          <ref name='_xmlParserCtxt'/>
+        </word>
         <word name='nodelist'>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
@@ -25446,6 +25458,9 @@
         </word>
         <word name='non-null'>
           <ref name='xmlShellPrintNode'/>
+        </word>
+        <word name='non-recursive'>
+          <ref name='_xmlParserCtxt'/>
         </word>
         <word name='non-stateless'>
           <ref name='xmlCharEncOutFunc'/>
@@ -26525,6 +26540,7 @@
           <ref name='_xmlEntity'/>
           <ref name='_xmlNode'/>
           <ref name='htmlHandleOmittedElem'/>
+          <ref name='htmlParseElement'/>
           <ref name='xmlAddPrevSibling'/>
           <ref name='xmlCatalogSetDebug'/>
           <ref name='xmlCatalogSetDefaultPrefer'/>
@@ -29968,6 +29984,9 @@
         <word name='various'>
           <ref name='_xmlDOMWrapCtxt'/>
         </word>
+        <word name='versions'>
+          <ref name='htmlParseElement'/>
+        </word>
         <word name='very'>
           <ref name='_htmlElemDesc'/>
           <ref name='_xmlParserInput'/>
@@ -30612,9 +30631,6 @@
           <ref name='xmlNewTextWriterDoc'/>
           <ref name='xmlNewTextWriterTree'/>
           <ref name='xmlTextReaderCurrentDoc'/>
-        </word>
-        <word name='xmlDocumentGetBase'>
-          <ref name='xmlNodeGetBase'/>
         </word>
         <word name='xmlDtdPtr'>
           <ref name='xmlCopyDtd'/>

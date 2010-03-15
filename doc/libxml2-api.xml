@@ -42,6 +42,7 @@
      <exports symbol='HTML_DEPRECATED' type='enum'/>
      <exports symbol='HTML_PARSE_PEDANTIC' type='enum'/>
      <exports symbol='HTML_PARSE_RECOVER' type='enum'/>
+     <exports symbol='HTML_PARSE_NOIMPLIED' type='enum'/>
      <exports symbol='HTML_PARSE_NOWARNING' type='enum'/>
      <exports symbol='htmlParserNodeInfo' type='typedef'/>
      <exports symbol='htmlParserInput' type='typedef'/>
@@ -4593,6 +4594,7 @@
     <enum name='HTML_PARSE_COMPACT' file='HTMLparser' value='65536' type='htmlParserOption' info=' compact small text nodes'/>
     <enum name='HTML_PARSE_NOBLANKS' file='HTMLparser' value='256' type='htmlParserOption' info='remove blank nodes'/>
     <enum name='HTML_PARSE_NOERROR' file='HTMLparser' value='32' type='htmlParserOption' info='suppress error reports'/>
+    <enum name='HTML_PARSE_NOIMPLIED' file='HTMLparser' value='8192' type='htmlParserOption' info='Do not add implied html/body... elements'/>
     <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info='Forbid network access'/>
     <enum name='HTML_PARSE_NOWARNING' file='HTMLparser' value='64' type='htmlParserOption' info='suppress warning reports'/>
     <enum name='HTML_PARSE_PEDANTIC' file='HTMLparser' value='128' type='htmlParserOption' info='pedantic error reporting'/>
@@ -6339,7 +6341,11 @@ actually an xmlCharEncoding'/>
       <field name='lastError' type='xmlError' info=''/>
       <field name='parseMode' type='xmlParserMode' info=' the parser mode'/>
       <field name='nbentities' type='unsigned long' info=' number of entities references'/>
-      <field name='sizeentities' type='unsigned long' info=' size of parsed entities'/>
+      <field name='sizeentities' type='unsigned long' info=' size of parsed entities for use by HTML non-recursive parser'/>
+      <field name='nodeInfo' type='xmlParserNodeInfo *' info=' Current NodeInfo'/>
+      <field name='nodeInfoNr' type='int' info=' Depth of the parsing stack'/>
+      <field name='nodeInfoMax' type='int' info=' Max depth of the parsing stack'/>
+      <field name='nodeInfoTab' type='xmlParserNodeInfo *' info=' array of nodeInfos'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -7647,7 +7653,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlParseElement' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>parse an HTML element, this is highly recursive  [39] element ::= EmptyElemTag | STag content ETag  [41] Attribute ::= Name Eq AttValue</info>
+      <info>parse an HTML element, this is highly recursive this is kept for compatibility with previous code versions  [39] element ::= EmptyElemTag | STag content ETag  [41] Attribute ::= Name Eq AttValue</info>
       <return type='void'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
     </function>
@@ -11621,7 +11627,7 @@ Could we use @subtypes for this?'/>
       <arg name='encoding' type='const char *' info='an optional encoding string'/>
     </function>
     <function name='xmlNodeGetBase' file='tree' module='tree'>
-      <info>Searches for the BASE URL. The code should work on both XML and HTML document even if base mechanisms are completely different. It returns the base as defined in RFC 2396 sections 5.1.1. Base URI within Document Content and 5.1.2. Base URI from the Encapsulating Entity However it does not return the document base (5.1.3), use xmlDocumentGetBase() for this</info>
+      <info>Searches for the BASE URL. The code should work on both XML and HTML document even if base mechanisms are completely different. It returns the base as defined in RFC 2396 sections 5.1.1. Base URI within Document Content and 5.1.2. Base URI from the Encapsulating Entity However it does not return the document base (5.1.3), use doc-&gt;URL in this case</info>
       <return type='xmlChar *' info='a pointer to the base URL, or NULL if not found It&apos;s up to the caller to free the memory with xmlFree().'/>
       <arg name='doc' type='xmlDocPtr' info='the document the node pertains to'/>
       <arg name='cur' type='xmlNodePtr' info='the node being checked'/>

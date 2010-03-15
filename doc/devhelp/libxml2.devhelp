@@ -306,6 +306,7 @@
     <function name="HTML_PARSE_COMPACT" link="libxml2-HTMLparser.html#HTML_PARSE_COMPACT"/>
     <function name="HTML_PARSE_NOBLANKS" link="libxml2-HTMLparser.html#HTML_PARSE_NOBLANKS"/>
     <function name="HTML_PARSE_NOERROR" link="libxml2-HTMLparser.html#HTML_PARSE_NOERROR"/>
+    <function name="HTML_PARSE_NOIMPLIED" link="libxml2-HTMLparser.html#HTML_PARSE_NOIMPLIED"/>
     <function name="HTML_PARSE_NONET" link="libxml2-HTMLparser.html#HTML_PARSE_NONET"/>
     <function name="HTML_PARSE_NOWARNING" link="libxml2-HTMLparser.html#HTML_PARSE_NOWARNING"/>
     <function name="HTML_PARSE_PEDANTIC" link="libxml2-HTMLparser.html#HTML_PARSE_PEDANTIC"/>

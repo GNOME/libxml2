@@ -36,14 +36,14 @@ UTILS_INTDIR = int.utils.msvc
 
 # The preprocessor and its options.
 CPP = cl.exe /EP
-CPPFLAGS = /nologo /I$(XML_SRCDIR)\include
+CPPFLAGS = /nologo /I$(XML_SRCDIR)\include /D "NOLIBTOOL" 
 !if "$(WITH_THREADS)" != "no"
 CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
 !endif
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 $(CRUNTIME)
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS"  /D "NOLIBTOOL" /W1 $(CRUNTIME)
 CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"

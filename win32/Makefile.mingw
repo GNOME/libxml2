@@ -33,14 +33,14 @@ UTILS_INTDIR = int.utils.mingw
 
 # The preprocessor and its options.
 CPP = gcc.exe -E
-CPPFLAGS += -I$(XML_SRCDIR)/include
+CPPFLAGS += -I$(XML_SRCDIR)/include -DNOLIBTOOL 
 ifeq ($(WITH_THREADS),1)
 CPPFLAGS += -D_REENTRANT
 endif
 
 # The compiler and its options.
 CC = gcc.exe
-CFLAGS += -DWIN32 -D_WINDOWS -D_MBCS
+CFLAGS += -DWIN32 -D_WINDOWS -D_MBCS -DNOLIBTOOL 
 CFLAGS += -I$(XML_SRCDIR) -I$(XML_SRCDIR)/include -I$(INCPREFIX)
 ifneq ($(WITH_THREADS),no)
 CFLAGS += -D_REENTRANT

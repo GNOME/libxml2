@@ -90,7 +90,7 @@ void __xmlGlobalInitMutexDestroy(void);
 #endif
 #endif
 #endif
-#ifndef PIC
+#if !defined(PIC) && !defined(NOLIBTOOL)
 #  define LIBXML_STATIC
 #endif
 #endif /* ! __XML_LIBXML_H__ */

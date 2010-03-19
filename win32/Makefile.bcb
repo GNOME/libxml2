@@ -43,14 +43,14 @@ UTILS_INTDIR = int.utils.bcb
 
 # The preprocessor and its options.
 CPP = cpp32.exe -P- -DWIN32
-CPPFLAGS = -I"$(XML_SRCDIR)\include"
+CPPFLAGS = -I"$(XML_SRCDIR)\include" -DNOLIBTOOL 
 !if "$(WITH_THREADS)" != "no"
 CPPFLAGS = $(CPPFLAGS) -D_REENTRANT -D__MT__
 !endif
 
 # The compiler and its options.
 CC = bcc32.exe
-CFLAGS = -q -DWIN32 -D_NO_VCL -D_WINDOWS -D_MBCS -DEILSEQ=2 -w-
+CFLAGS = -q -DWIN32 -D_NO_VCL -D_WINDOWS -D_MBCS -DEILSEQ=2 -DNOLIBTOOL -w-
 CFLAGS = $(CFLAGS) -I"$(XML_SRCDIR)" -I"$(XML_SRCDIR)\include" -I"$(INCPREFIX)" -I"$(INCLUDE)"
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) -D_REENTRANT -tWM

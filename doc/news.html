@@ -12,7 +12,50 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://svn.gnome.org/viewvc/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.7.6: Oct  6 2009</h3><ul><li> Bug Fixes:
+to the <a href="http://svn.gnome.org/viewvc/libxml2/trunk/">SVN</a> code base.</p><p>Here is the list of public releases:</p><h3>2.7.7: Mar 15 2010</h3><ul><li> Improvements:
+    Adding a --xpath option to xmllint (Daniel Veillard),
+    Make HTML parser non-recursive (Eugene Pimenov)
+  </li>
+  <li> Portability:
+    relaxng.c: cast to allow compilation with sun studio 11 (Ben Walton),
+    Fix build failure on Sparc solaris (Roumen Petrov),
+    use autoreconf in autogen.sh (Daniel Veillard),
+    Fix build with mingw (Roumen Petrov),
+    Upgrade some of the configure and autogen (Daniel Veillard),
+    Fix relaxNG tests in runtest for Windows runtest.c: initialize ret (Rob Richards),
+    Fix a const warning in xmlNodeSetBase (Martin Trappel),
+    Fix python generator to not use deprecated xmllib (Daniel Veillard),
+    Update some automake files (Daniel Veillard),
+    598785 Fix nanohttp on Windows (spadix)
+  </li>
+  <li> Bug Fixes:
+    libxml violates the zlib interface and crashes (Mark Adler),
+    Fix broken escape behaviour in regexp ranges (Daniel Veillard),
+    Fix  missing win32 libraries in libxml-2.0.pc (Volker Grabsch),
+    Fix detection of python linker flags (Daniel Macks),
+    fix build error in libxml2/python (Paul Smith),
+    ChunkParser: Incorrect decoding of small xml files (Raul Hudea),
+    htmlCheckEncoding doesn't update input-end after shrink (Eugene Pimenov),
+    Fix a missing #ifdef (Daniel Veillard),
+    Fix encoding selection for xmlParseInNodeContext (Daniel Veillard),
+    xmlPreviousElementSibling mistake (François Delyon),
+    608773 add a missing check in xmlGROW (Daniel Veillard),
+    Fix xmlParseInNodeContext for HTML content (Daniel Veillard),
+    Fix lost namespace when copying node * tree.c: reconcile namespace if not found (Rob Richards),
+    Fix some missing commas in HTML element lists (Eugene Pimenov),
+    Correct variable type to unsigned (Nikolay Sivov),
+    Recognize ID attribute in HTML without DOCTYPE (Daniel Veillard),
+    Fix memory leak in xmlXPathEvalExpression() (Martin),
+    Fix an init bug in global.c (Kai Henning),
+    Fix xmlNodeSetBase() comment (Daniel Veillard),
+    Fix broken escape behaviour in regexp ranges (Daniel Veillard),
+    Don't give default HTML boolean attribute values in parser (Daniel Veillard),
+    xmlCtxtResetLastError should reset ctxt-errNo (Daniel Veillard)
+  </li>
+  <li> Cleanups:
+    Cleanup a couple of weirdness in HTML parser (Eugene Pimenov)
+  </li>
+</ul><h3>2.7.6: Oct  6 2009</h3><ul><li> Bug Fixes:
      Restore thread support in default configuration (Andrew W. Nosenko),
      URI with no path parsing problem (Daniel Veillard),
      Minor patch for conditional defines in threads.c (Eric Zurcher)

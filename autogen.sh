@@ -46,6 +46,10 @@ if test -z "$*"; then
         echo "to pass any to it, please specify them on the $0 command line."
 fi
 
+if [ ! -d $srcdir/m4 ]; then
+        mkdir $srcdir/m4
+fi
+
 # Replaced by autoreconf below
 #libtoolize --copy --force
 #aclocal $ACLOCAL_FLAGS

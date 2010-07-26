@@ -162,6 +162,9 @@ static int html = 0;
 static int xmlout = 0;
 #endif
 static int htmlout = 0;
+#if defined(LIBXML_HTML_ENABLED)
+static int nodefdtd = 0;
+#endif
 #ifdef LIBXML_PUSH_ENABLED
 static int push = 0;
 #endif /* LIBXML_PUSH_ENABLED */
@@ -2995,6 +2998,7 @@ static void usage(const char *name) {
 #ifdef LIBXML_HTML_ENABLED
     printf("\t--html : use the HTML parser\n");
     printf("\t--xmlout : force to use the XML serializer when using --html\n");
+    printf("\t--nodefdtd : do not default HTML doctype\n");
 #endif
 #ifdef LIBXML_PUSH_ENABLED
     printf("\t--push : use the push mode of the parser\n");
@@ -3157,6 +3161,10 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-xmlout")) ||
 	         (!strcmp(argv[i], "--xmlout"))) {
 	    xmlout++;
+	} else if ((!strcmp(argv[i], "-nodefdtd")) ||
+	         (!strcmp(argv[i], "--nodefdtd"))) {
+            nodefdtd++;
+	    options |= HTML_PARSE_NODEFDTD;
         }
 #endif /* LIBXML_HTML_ENABLED */
 	else if ((!strcmp(argv[i], "-loaddtd")) ||

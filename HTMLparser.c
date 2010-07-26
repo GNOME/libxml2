@@ -4670,7 +4670,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
 
-    if (ctxt->myDoc != NULL) {
+    if ((!(ctxt->options & HTML_PARSE_NODEFDTD)) && (ctxt->myDoc != NULL)) {
 	dtd = xmlGetIntSubset(ctxt->myDoc);
 	if (dtd == NULL)
 	    ctxt->myDoc->intSubset =
@@ -6529,6 +6529,10 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
     if (options & XML_PARSE_HUGE) {
 	ctxt->options |= XML_PARSE_HUGE;
         options -= XML_PARSE_HUGE;
+    }
+    if (options & HTML_PARSE_NODEFDTD) {
+	ctxt->options |= HTML_PARSE_NODEFDTD;
+        options -= HTML_PARSE_NODEFDTD;
     }
     ctxt->dictNames = 0;
     return (options);

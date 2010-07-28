@@ -2475,7 +2475,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         digits_after++;
                     }
                 }
-                if (digits_before + digits_after == 0)
+                if ((digits_before == 0) && (digits_after == 0))
                     goto return1;
                 if ((*cur == 'e') || (*cur == 'E')) {
                     cur++;

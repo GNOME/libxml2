@@ -3275,7 +3275,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 	        val = val * 16 + (CUR - 'A') + 10;
 	    else {
 	        htmlParseErr(ctxt, XML_ERR_INVALID_HEX_CHARREF,
-		             "htmlParseCharRef: missing semicolumn\n",
+		             "htmlParseCharRef: missing semicolon\n",
 			     NULL, NULL);
 		break;
 	    }
@@ -3290,7 +3290,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 	        val = val * 10 + (CUR - '0');
 	    else {
 	        htmlParseErr(ctxt, XML_ERR_INVALID_DEC_CHARREF,
-		             "htmlParseCharRef: missing semicolumn\n",
+		             "htmlParseCharRef: missing semicolon\n",
 			     NULL, NULL);
 		break;
 	    }

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
 H1 {font-family: Verdana,Arial,Helvetica}
@@ -33,7 +33,7 @@ allows the document to be encoded in other encodings at the condition that
 they are clearly labeled as such. For example the following is a wellformed
 XML document encoded in ISO-8859-1 and using accentuated letters that we
 French like for both markup and content:</p><pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
-&lt;très&gt;là&lt;/très&gt;</pre><p>Having internationalization support in libxml2 means the following:</p><ul><li>the document is properly parsed</li>
+&lt;très&gt;là &lt;/très&gt;</pre><p>Having internationalization support in libxml2 means the following:</p><ul><li>the document is properly parsed</li>
   <li>information about it's encoding is saved</li>
   <li>it can be modified</li>
   <li>it can be saved in its original encoding</li>
@@ -107,10 +107,10 @@ sequence:</p><ol><li>when a document is processed, we usually don't know the enc
     You may end-up with a garbled document, or no document at all ! Example:
     <pre>~/XML -&gt; ./xmllint err.xml 
 err.xml:1: error: Input is not proper UTF-8, indicate encoding !
-&lt;très&gt;là&lt;/très&gt;
+&lt;très&gt;là &lt;/très&gt;
    ^
 err.xml:1: error: Bytes: 0xE8 0x73 0x3E 0x6C
-&lt;très&gt;là&lt;/très&gt;
+&lt;très&gt;là &lt;/très&gt;
    ^</pre>
   </li>
   <li>xmlSwitchEncoding() does an encoding name lookup, canonicalize it, and
@@ -161,12 +161,13 @@ encoding:</p><ol><li>if no encoding is given, libxml2 will look for an encoding 
     characters for tag or attribute names). A special "ascii" encoding name
     is used to save documents to a pure ascii form can be used when
     portability is really crucial</li>
-</ol><p>Here are a few examples based on the same test document:</p><pre>~/XML -&gt; ./xmllint isolat1 
+</ol><p>Here are a few examples based on the same test document and assumin a
+terminal using ISO-8859-1 as the text encoding:</p><pre>~/XML -&gt; ./xmllint isolat1 
 &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
-&lt;très&gt;là&lt;/très&gt;
+&lt;très&gt;lÃ &lt;/très&gt;
 ~/XML -&gt; ./xmllint --encode UTF-8 isolat1 
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;trÃ¨s&gt;lÃ �&lt;/trÃ¨s&gt;
+&lt;trÃ¨s&gt;lÃ  &lt;/trÃ¨s&gt;
 ~/XML -&gt; </pre><p>The same processing is applied (and reuse most of the code) for HTML I18N
 processing. Looking up and modifying the content encoding is a bit more
 difficult since it is located in a &lt;meta&gt; tag under the &lt;head&gt;,

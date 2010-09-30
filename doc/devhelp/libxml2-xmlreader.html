@@ -496,7 +496,7 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderReadOuterXml"/>xmlTextReaderReadOuterXml ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderReadOuterXml	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>Reads the contents of the current node, including child nodes and markup.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a string containing the XML content, or NULL if the current node is neither an element nor attribute, or has no child nodes. The string must be deallocated by the caller.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>reader</tt></i>:</span></td><td>the <a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> used</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a string containing the node and any XML content, or NULL if the current node cannot be serialized. The string must be deallocated by the caller.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTextReaderReadState"/>xmlTextReaderReadState ()</h3><pre class="programlisting">int	xmlTextReaderReadState		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br/>
 </pre><p>Gets the read state of the reader.</p>

@@ -37,9 +37,10 @@
      <exports symbol='HTML_NA' type='enum'/>
      <exports symbol='HTML_PARSE_COMPACT' type='enum'/>
      <exports symbol='HTML_VALID' type='enum'/>
-     <exports symbol='HTML_PARSE_NOERROR' type='enum'/>
      <exports symbol='HTML_PARSE_NOBLANKS' type='enum'/>
+     <exports symbol='HTML_PARSE_NODEFDTD' type='enum'/>
      <exports symbol='HTML_DEPRECATED' type='enum'/>
+     <exports symbol='HTML_PARSE_NOERROR' type='enum'/>
      <exports symbol='HTML_PARSE_PEDANTIC' type='enum'/>
      <exports symbol='HTML_PARSE_RECOVER' type='enum'/>
      <exports symbol='HTML_PARSE_NOIMPLIED' type='enum'/>
@@ -4593,6 +4594,7 @@
     <enum name='HTML_NA' file='HTMLparser' value='0' type='htmlStatus' info='something we don&apos;t check at all'/>
     <enum name='HTML_PARSE_COMPACT' file='HTMLparser' value='65536' type='htmlParserOption' info=' compact small text nodes'/>
     <enum name='HTML_PARSE_NOBLANKS' file='HTMLparser' value='256' type='htmlParserOption' info='remove blank nodes'/>
+    <enum name='HTML_PARSE_NODEFDTD' file='HTMLparser' value='4' type='htmlParserOption' info='do not default a doctype if not found'/>
     <enum name='HTML_PARSE_NOERROR' file='HTMLparser' value='32' type='htmlParserOption' info='suppress error reports'/>
     <enum name='HTML_PARSE_NOIMPLIED' file='HTMLparser' value='8192' type='htmlParserOption' info='Do not add implied html/body... elements'/>
     <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info='Forbid network access'/>
@@ -14882,7 +14884,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderReadOuterXml' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Reads the contents of the current node, including child nodes and markup.</info>
-      <return type='xmlChar *' info='a string containing the XML content, or NULL if the current node is neither an element nor attribute, or has no child nodes. The string must be deallocated by the caller.'/>
+      <return type='xmlChar *' info='a string containing the node and any XML content, or NULL if the current node cannot be serialized. The string must be deallocated by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderReadState' file='xmlreader' module='xmlreader'>

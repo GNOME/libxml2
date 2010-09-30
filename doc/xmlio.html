@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
 H1 {font-family: Verdana,Arial,Helvetica}
@@ -106,19 +106,19 @@ new output handler with the closing call deactivated:</p><ol><li>First define a 
     the file:
     <pre>xmlOutputBufferPtr
 xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
-    xmlOutputBufferPtr ret;
-    
-    if (xmlOutputCallbackInitialized == 0)
-        xmlRegisterDefaultOutputCallbacks();
+Â Â Â Â xmlOutputBufferPtr ret;
+Â Â Â Â 
+Â Â Â Â if (xmlOutputCallbackInitialized == 0)
+Â Â Â Â Â Â Â Â xmlRegisterDefaultOutputCallbacks();
 
-    if (file == NULL) return(NULL);
-    ret = xmlAllocOutputBuffer(encoder);
-    if (ret != NULL) {
-        ret-&gt;context = file;
-        ret-&gt;writecallback = xmlFileWrite;
-        ret-&gt;closecallback = NULL;  /* No close callback */
-    }
-    return(ret);
+Â Â Â Â if (file == NULL) return(NULL);
+Â Â Â Â ret = xmlAllocOutputBuffer(encoder);
+Â Â Â Â if (ret != NULL) {
+Â Â Â Â Â Â Â Â ret-&gt;context = file;
+Â Â Â Â Â Â Â Â ret-&gt;writecallback = xmlFileWrite;
+Â Â Â Â Â Â Â Â ret-&gt;closecallback = NULL;  /* No close callback */
+Â Â Â Â }
+Â Â Â Â return(ret);
 } </pre>
   </li>
   <li>And then use it to save the document:

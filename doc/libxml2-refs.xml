@@ -21,6 +21,7 @@
     <reference name='HTML_NA' href='html/libxml-HTMLparser.html#HTML_NA'/>
     <reference name='HTML_PARSE_COMPACT' href='html/libxml-HTMLparser.html#HTML_PARSE_COMPACT'/>
     <reference name='HTML_PARSE_NOBLANKS' href='html/libxml-HTMLparser.html#HTML_PARSE_NOBLANKS'/>
+    <reference name='HTML_PARSE_NODEFDTD' href='html/libxml-HTMLparser.html#HTML_PARSE_NODEFDTD'/>
     <reference name='HTML_PARSE_NOERROR' href='html/libxml-HTMLparser.html#HTML_PARSE_NOERROR'/>
     <reference name='HTML_PARSE_NOIMPLIED' href='html/libxml-HTMLparser.html#HTML_PARSE_NOIMPLIED'/>
     <reference name='HTML_PARSE_NONET' href='html/libxml-HTMLparser.html#HTML_PARSE_NONET'/>
@@ -3563,6 +3564,7 @@
       <ref name='HTML_NA'/>
       <ref name='HTML_PARSE_COMPACT'/>
       <ref name='HTML_PARSE_NOBLANKS'/>
+      <ref name='HTML_PARSE_NODEFDTD'/>
       <ref name='HTML_PARSE_NOERROR'/>
       <ref name='HTML_PARSE_NOIMPLIED'/>
       <ref name='HTML_PARSE_NONET'/>
@@ -10623,6 +10625,7 @@
       <ref name='HTML_NA'/>
       <ref name='HTML_PARSE_COMPACT'/>
       <ref name='HTML_PARSE_NOBLANKS'/>
+      <ref name='HTML_PARSE_NODEFDTD'/>
       <ref name='HTML_PARSE_NOERROR'/>
       <ref name='HTML_PARSE_NOIMPLIED'/>
       <ref name='HTML_PARSE_NONET'/>
@@ -19803,6 +19806,7 @@
         </word>
         <word name='cannot'>
           <ref name='xmlParseAttribute'/>
+          <ref name='xmlTextReaderReadOuterXml'/>
           <ref name='xmlXPathRegisterNs'/>
         </word>
         <word name='canonic'>
@@ -25353,7 +25357,6 @@
           <ref name='xmlHasProp'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlTextReaderReadInnerXml'/>
-          <ref name='xmlTextReaderReadOuterXml'/>
           <ref name='xmlXPathBooleanFunction'/>
           <ref name='xmlXPathCompareValues'/>
         </word>
@@ -25496,7 +25499,6 @@
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetStructuredErrorFunc'/>
           <ref name='xmlTextReaderReadInnerXml'/>
-          <ref name='xmlTextReaderReadOuterXml'/>
           <ref name='xmlXPathBooleanFunction'/>
         </word>
         <word name='normal'>
@@ -28026,6 +28028,9 @@
           <ref name='xmlShellWrite'/>
           <ref name='xmlValidatePopElement'/>
           <ref name='xmlValidatePushElement'/>
+        </word>
+        <word name='serialized'>
+          <ref name='xmlTextReaderReadOuterXml'/>
         </word>
         <word name='serializing'>
           <ref name='xmlSaveToBuffer'/>

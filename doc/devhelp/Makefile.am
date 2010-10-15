@@ -67,7 +67,7 @@ libxml2.devhelp $(HTML_FILES): devhelp.xsl html.xsl $(top_srcdir)/doc/libxml2-ap
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(DEVHELP_DIR)
-	-@INSTALL@ -m 0644 libxml2.devhelp $(DESTDIR)$(DEVHELP_DIR)
-	-@INSTALL@ -m 0644 $(EXTRA_FORMAT) $(DESTDIR)$(DEVHELP_DIR)
-	-@INSTALL@ -m 0644 $(HTML_FILES) $(DESTDIR)$(DEVHELP_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/libxml2.devhelp $(DESTDIR)$(DEVHELP_DIR)
+	-@INSTALL@ -m 0644 $(EXTRA_FORMAT:%=$(srcdir)/%) $(DESTDIR)$(DEVHELP_DIR)
+	-@INSTALL@ -m 0644 $(HTML_FILES:%=$(srcdir)/%) $(DESTDIR)$(DEVHELP_DIR)
 

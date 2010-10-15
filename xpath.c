@@ -8106,8 +8106,16 @@ xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
-    if (cur != NULL && cur->children != NULL)
-        return cur->children ;
+    if ((ctxt->context->node->type == XML_ATTRIBUTE_NODE) ||
+	(ctxt->context->node->type == XML_NAMESPACE_DECL))
+	return(NULL);
+    if (cur != NULL) {
+        if ((cur->type == XML_ATTRIBUTE_NODE) ||
+            (cur->type == XML_NAMESPACE_DECL))
+            return(NULL);
+        if (cur->children != NULL)
+            return cur->children ;
+    }
     if (cur == NULL) cur = ctxt->context->node;
     if (cur == NULL) return(NULL) ; /* ERROR */
     if (cur->next != NULL) return(cur->next) ;
@@ -8162,6 +8170,9 @@ xmlNodePtr
 xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur)
 {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
+    if ((ctxt->context->node->type == XML_ATTRIBUTE_NODE) ||
+	(ctxt->context->node->type == XML_NAMESPACE_DECL))
+	return(NULL);
     if (cur == NULL)
         cur = ctxt->context->node;
     if (cur == NULL)
@@ -8203,12 +8214,13 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
                               xmlNodePtr cur)
 {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
+    if ((ctxt->context->node->type == XML_ATTRIBUTE_NODE) ||
+	(ctxt->context->node->type == XML_NAMESPACE_DECL))
+	return(NULL);
     if (cur == NULL) {
         cur = ctxt->context->node;
         if (cur == NULL)
             return (NULL);
-	if (cur->type == XML_NAMESPACE_DECL)
-	    cur = (xmlNodePtr)((xmlNsPtr)cur)->next;
         ctxt->ancestor = cur->parent;
     }
     if ((cur->prev != NULL) && (cur->prev->type == XML_DTD_NODE))

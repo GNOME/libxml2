@@ -553,7 +553,7 @@ def buildStubs():
     wrapper.write("#include <libxml/xmlschemastypes.h>\n")
     wrapper.write("#include \"libxml_wrap.h\"\n")
     wrapper.write("#include \"libxml2-py.h\"\n\n")
-    for function in functions.keys():
+    for function in sorted(functions.keys()):
         ret = print_function_wrapper(function, wrapper, export, include)
         if ret < 0:
             failed = failed + 1
@@ -856,7 +856,7 @@ def buildWrappers():
             if tinfo[2] == classe:
                 ctypes.append(type)
                 ctypes_processed[type] = ()
-    for type in classes_type.keys():
+    for type in sorted(classes_type.keys()):
         if ctypes_processed.has_key(type):
             continue
         tinfo = classes_type[type]

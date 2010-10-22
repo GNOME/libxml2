@@ -8106,17 +8106,17 @@ xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
-    if ((ctxt->context->node->type == XML_ATTRIBUTE_NODE) ||
-	(ctxt->context->node->type == XML_NAMESPACE_DECL))
-	return(NULL);
-    if (cur != NULL) {
-        if ((cur->type == XML_ATTRIBUTE_NODE) ||
-            (cur->type == XML_NAMESPACE_DECL))
+    if ((cur != NULL) && (cur->type  != XML_ATTRIBUTE_NODE) &&
+        (cur->type != XML_NAMESPACE_DECL) && (cur->children != NULL))
+        return(cur->children);
+
+    if (cur == NULL) {
+        cur = ctxt->context->node;
+        if (cur->type == XML_NAMESPACE_DECL)
             return(NULL);
-        if (cur->children != NULL)
-            return cur->children ;
+        if (cur->type == XML_ATTRIBUTE_NODE)
+            cur = cur->parent;
     }
-    if (cur == NULL) cur = ctxt->context->node;
     if (cur == NULL) return(NULL) ; /* ERROR */
     if (cur->next != NULL) return(cur->next) ;
     do {
@@ -8170,11 +8170,13 @@ xmlNodePtr
 xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur)
 {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
-    if ((ctxt->context->node->type == XML_ATTRIBUTE_NODE) ||
-	(ctxt->context->node->type == XML_NAMESPACE_DECL))
-	return(NULL);
-    if (cur == NULL)
+    if (cur == NULL) {
         cur = ctxt->context->node;
+        if (cur->type == XML_NAMESPACE_DECL)
+            return(NULL);
+        if (cur->type == XML_ATTRIBUTE_NODE)
+            return(cur->parent);
+    }
     if (cur == NULL)
 	return (NULL);
     if ((cur->prev != NULL) && (cur->prev->type == XML_DTD_NODE))
@@ -8214,12 +8216,11 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
                               xmlNodePtr cur)
 {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
-    if ((ctxt->context->node->type == XML_ATTRIBUTE_NODE) ||
-	(ctxt->context->node->type == XML_NAMESPACE_DECL))
-	return(NULL);
     if (cur == NULL) {
         cur = ctxt->context->node;
         if (cur == NULL)
+            return (NULL);
+        if (cur->type == XML_NAMESPACE_DECL)
             return (NULL);
         ctxt->ancestor = cur->parent;
     }

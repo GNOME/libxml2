@@ -656,7 +656,7 @@ xmlNodeListDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     if (cur == NULL) return;
     buf = ctxt->buf;
     while (cur != NULL) {
-	if ((ctxt->format) && (xmlIndentTreeOutput) &&
+	if ((ctxt->format == 1) && (xmlIndentTreeOutput) &&
 	    ((cur->type == XML_ELEMENT_NODE) ||
 	     (cur->type == XML_COMMENT_NODE) ||
 	     (cur->type == XML_PI_NODE)))
@@ -665,7 +665,7 @@ xmlNodeListDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 				  ctxt->indent_nr : ctxt->level),
 				 ctxt->indent);
         xmlNodeDumpOutputInternal(ctxt, cur);
-	if (ctxt->format) {
+	if (ctxt->format == 1) {
 	    xmlOutputBufferWrite(buf, 1, "\n");
 	}
 	cur = cur->next;
@@ -902,11 +902,11 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
     }
     if (cur->children != NULL) {
-	if (ctxt->format) xmlOutputBufferWrite(buf, 1, "\n");
+	if (ctxt->format == 1) xmlOutputBufferWrite(buf, 1, "\n");
 	if (ctxt->level >= 0) ctxt->level++;
 	xmlNodeListDumpOutput(ctxt, cur->children);
 	if (ctxt->level > 0) ctxt->level--;
-	if ((xmlIndentTreeOutput) && (ctxt->format))
+	if ((xmlIndentTreeOutput) && (ctxt->format == 1))
 	    xmlOutputBufferWrite(buf, ctxt->indent_size *
 	                         (ctxt->level > ctxt->indent_nr ? 
 				  ctxt->indent_nr : ctxt->level),
@@ -1254,14 +1254,14 @@ xhtmlNodeListDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     if (cur == NULL) return;
     buf = ctxt->buf;
     while (cur != NULL) {
-	if ((ctxt->format) && (xmlIndentTreeOutput) &&
+	if ((ctxt->format == 1) && (xmlIndentTreeOutput) &&
 	    (cur->type == XML_ELEMENT_NODE))
 	    xmlOutputBufferWrite(buf, ctxt->indent_size *
 	                         (ctxt->level > ctxt->indent_nr ? 
 				  ctxt->indent_nr : ctxt->level),
 				 ctxt->indent);
         xhtmlNodeDumpOutput(ctxt, cur);
-	if (ctxt->format) {
+	if (ctxt->format == 1) {
 	    xmlOutputBufferWrite(buf, 1, "\n");
 	}
 	cur = cur->next;
@@ -1458,7 +1458,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	} else {
 		if (addmeta == 1) {
 			xmlOutputBufferWrite(buf, 1, ">");
-			if (ctxt->format) {
+			if (ctxt->format == 1) {
 				xmlOutputBufferWrite(buf, 1, "\n");
 				if (xmlIndentTreeOutput)
 					xmlOutputBufferWrite(buf, ctxt->indent_size *
@@ -1473,7 +1473,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 				xmlOutputBufferWrite(buf, 5, "UTF-8");
 			}
 			xmlOutputBufferWrite(buf, 4, "\" />");
-			if (ctxt->format)
+			if (ctxt->format == 1)
 				xmlOutputBufferWrite(buf, 1, "\n");
 		} else {
 			xmlOutputBufferWrite(buf, 1, ">");
@@ -1493,7 +1493,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     xmlOutputBufferWrite(buf, 1, ">");
 	if (addmeta == 1) {
-		if (ctxt->format) {
+		if (ctxt->format == 1) {
 			xmlOutputBufferWrite(buf, 1, "\n");
 			if (xmlIndentTreeOutput)
 				xmlOutputBufferWrite(buf, ctxt->indent_size *
@@ -1588,13 +1588,13 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     if (cur->children != NULL) {
 	int indent = ctxt->format;
 	
-	if (format) xmlOutputBufferWrite(buf, 1, "\n");
+	if (format == 1) xmlOutputBufferWrite(buf, 1, "\n");
 	if (ctxt->level >= 0) ctxt->level++;
 	ctxt->format = format;
 	xhtmlNodeListDumpOutput(ctxt, cur->children);
 	if (ctxt->level > 0) ctxt->level--;
 	ctxt->format = indent;
-	if ((xmlIndentTreeOutput) && (format))
+	if ((xmlIndentTreeOutput) && (format == 1))
 	    xmlOutputBufferWrite(buf, ctxt->indent_size *
 	                         (ctxt->level > ctxt->indent_nr ? 
 				  ctxt->indent_nr : ctxt->level),
@@ -2132,7 +2132,7 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     ctxt.doc = doc;
     ctxt.buf = buf;
     ctxt.level = level;
-    ctxt.format = format;
+    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
     xmlSaveCtxtInit(&ctxt);
     ctxt.options |= XML_SAVE_AS_XML;
@@ -2218,7 +2218,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     ctxt.doc = out_doc;
     ctxt.buf = out_buff;
     ctxt.level = 0;
-    ctxt.format = format;
+    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) txt_encoding;
     xmlSaveCtxtInit(&ctxt);
     ctxt.options |= XML_SAVE_AS_XML;
@@ -2337,7 +2337,7 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = format;
+    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
     xmlSaveCtxtInit(&ctxt);
     ctxt.options |= XML_SAVE_AS_XML;
@@ -2427,7 +2427,7 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
     ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = format;
+    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
     xmlSaveCtxtInit(&ctxt);
     ctxt.options |= XML_SAVE_AS_XML;
@@ -2482,7 +2482,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
     ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = format;
+    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
     xmlSaveCtxtInit(&ctxt);
     ctxt.options |= XML_SAVE_AS_XML;

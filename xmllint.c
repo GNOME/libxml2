@@ -2510,14 +2510,14 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    htmlSaveFile(output ? output : "-", doc);
 		}
 		else if (encoding != NULL) {
-		    if ( format ) {
+		    if (format == 1) {
 			htmlSaveFileFormat(output ? output : "-", doc, encoding, 1);
 		    }
 		    else {
 			htmlSaveFileFormat(output ? output : "-", doc, encoding, 0);
 		    }
 		}
-		else if (format) {
+		else if (format == 1) {
 		    htmlSaveFileFormat(output ? output : "-", doc, NULL, 1);
 		}
 		else {
@@ -2589,13 +2589,13 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		int len;
 
 		if (encoding != NULL) {
-		    if ( format ) {
+		    if (format == 1) {
 		        xmlDocDumpFormatMemoryEnc(doc, &result, &len, encoding, 1);
 		    } else {
 			xmlDocDumpMemoryEnc(doc, &result, &len, encoding);
 		    }
 		} else {
-		    if (format)
+		    if (format == 1)
 			xmlDocDumpFormatMemory(doc, &result, &len, 1);
 		    else
 			xmlDocDumpMemory(doc, &result, &len);
@@ -2614,7 +2614,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		xmlSaveFile(output ? output : "-", doc);
 	    } else if (oldout) {
 	        if (encoding != NULL) {
-		    if ( format ) {
+		    if (format == 1) {
 			ret = xmlSaveFormatFileEnc(output ? output : "-", doc,
 						   encoding, 1);
 		    }
@@ -2627,7 +2627,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 				output ? output : "-");
 			progresult = XMLLINT_ERR_OUT;
 		    }
-		} else if (format) {
+		} else if (format == 1) {
 		    ret = xmlSaveFormatFile(output ? output : "-", doc, 1);
 		    if (ret < 0) {
 			fprintf(stderr, "failed save to %s\n",
@@ -2656,7 +2656,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	        xmlSaveCtxtPtr ctxt;
 		int saveOpts = 0;
 
-                if (format)
+                if (format == 1)
 		    saveOpts |= XML_SAVE_FORMAT;
 
 #if defined(LIBXML_HTML_ENABLED) || defined(LIBXML_VALID_ENABLED)
@@ -3334,7 +3334,7 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--format"))) {
 	     noblanks++;
 #ifdef LIBXML_OUTPUT_ENABLED
-	     format++;
+	     format = 1;
 #endif /* LIBXML_OUTPUT_ENABLED */
 	     xmlKeepBlanksDefault(0);
 	}

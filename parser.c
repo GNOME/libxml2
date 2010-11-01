@@ -6609,7 +6609,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     xmlDetectSAX2(ctxt);
     GROW;
 
-    if ((ctxt->encoding == (const xmlChar *)XML_CHAR_ENCODING_NONE) &&
+    if ((ctxt->encoding == NULL) &&
         (ctxt->input->end - ctxt->input->cur >= 4)) {
         xmlChar start[4];
 	xmlCharEncoding enc;
@@ -10105,7 +10105,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
         ctxt->sax->setDocumentLocator(ctxt->userData, &xmlDefaultSAXLocator);
 
-    if ((ctxt->encoding == (const xmlChar *)XML_CHAR_ENCODING_NONE) &&
+    if ((ctxt->encoding == NULL) &&
         ((ctxt->input->end - ctxt->input->cur) >= 4)) {
 	/* 
 	 * Get the 4 first bytes and decode the charset

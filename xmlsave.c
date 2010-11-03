@@ -408,6 +408,8 @@ xmlNewSaveCtxt(const char *encoding, int options)
     ret->options = options;
     if (options & XML_SAVE_FORMAT)
         ret->format = 1;
+    else if (options & XML_SAVE_WSNONSIG)
+        ret->format = 2;
 
     return(ret);
 }
@@ -501,28 +503,86 @@ void xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur);
 static int xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur);
 
 /**
+ * xmlOutputBufferWriteWSNonSig:
+ * @ctxt:  The save context
+ * @extra: Number of extra indents to apply to ctxt->level
+ *
+ * Write out formatting for non-significant whitespace output.
+ */
+static void
+xmlOutputBufferWriteWSNonSig(xmlSaveCtxtPtr ctxt, int extra)
+{
+    int i;
+    if ((ctxt == NULL) || (ctxt->buf == NULL))
+        return;
+    xmlOutputBufferWrite(ctxt->buf, 1, "\n");
+    for (i = 0; i < (ctxt->level + extra); i += ctxt->indent_nr) {
+        xmlOutputBufferWrite(ctxt->buf, ctxt->indent_size *
+                ((ctxt->level + extra - i) > ctxt->indent_nr ?
+                 ctxt->indent_nr : (ctxt->level + extra - i)),
+                ctxt->indent);
+    }
+}
+
+/**
  * xmlNsDumpOutput:
  * @buf:  the XML buffer output
  * @cur:  a namespace
+ * @ctxt: the output save context. Optional.
  *
  * Dump a local Namespace definition.
  * Should be called in the context of attributes dumps.
+ * If @ctxt is supplied, @buf should be its buffer.
  */
 static void
-xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
+xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur, xmlSaveCtxtPtr ctxt) {
     if ((cur == NULL) || (buf == NULL)) return;
     if ((cur->type == XML_LOCAL_NAMESPACE) && (cur->href != NULL)) {
 	if (xmlStrEqual(cur->prefix, BAD_CAST "xml"))
 	    return;
 
+	if (ctxt != NULL && ctxt->format == 2)
+	    xmlOutputBufferWriteWSNonSig(ctxt, 2);
+	else
+	    xmlOutputBufferWrite(buf, 1, " ");
+
         /* Within the context of an element attributes */
 	if (cur->prefix != NULL) {
-	    xmlOutputBufferWrite(buf, 7, " xmlns:");
+	    xmlOutputBufferWrite(buf, 6, "xmlns:");
 	    xmlOutputBufferWriteString(buf, (const char *)cur->prefix);
 	} else
-	    xmlOutputBufferWrite(buf, 6, " xmlns");
+	    xmlOutputBufferWrite(buf, 5, "xmlns");
 	xmlOutputBufferWrite(buf, 1, "=");
 	xmlBufferWriteQuotedString(buf->buffer, cur->href);
+    }
+}
+
+/**
+ * xmlNsDumpOutputCtxt
+ * @ctxt: the save context
+ * @cur:  a namespace
+ *
+ * Dump a local Namespace definition to a save context.
+ * Should be called in the context of attribute dumps.
+ */
+static void
+xmlNsDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
+    xmlNsDumpOutput(ctxt->buf, cur, ctxt);
+}
+
+/**
+ * xmlNsListDumpOutputCtxt
+ * @ctxt: the save context
+ * @cur:  the first namespace
+ *
+ * Dump a list of local namespace definitions to a save context.
+ * Should be called in the context of attribute dumps.
+ */
+static void
+xmlNsListDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
+    while (cur != NULL) {
+        xmlNsDumpOutput(ctxt->buf, cur, ctxt);
+	cur = cur->next;
     }
 }
 
@@ -537,7 +597,7 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
 void
 xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
     while (cur != NULL) {
-        xmlNsDumpOutput(buf, cur);
+        xmlNsDumpOutput(buf, cur, NULL);
 	cur = cur->next;
     }
 }
@@ -612,7 +672,10 @@ xmlAttrDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
     if (cur == NULL) return;
     buf = ctxt->buf;
     if (buf == NULL) return;
-    xmlOutputBufferWrite(buf, 1, " ");
+    if (ctxt->format == 2)
+        xmlOutputBufferWriteWSNonSig(ctxt, 2);
+    else
+        xmlOutputBufferWrite(buf, 1, " ");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
         xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
 	xmlOutputBufferWrite(buf, 1, ":");
@@ -808,13 +871,18 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    xmlOutputBufferWrite(buf, 2, "<?");
 	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
 	    if (cur->content != NULL) {
-		xmlOutputBufferWrite(buf, 1, " ");
+	        if (ctxt->format == 2)
+	            xmlOutputBufferWriteWSNonSig(ctxt, 0);
+	        else
+	            xmlOutputBufferWrite(buf, 1, " ");
 		xmlOutputBufferWriteString(buf, (const char *)cur->content);
 	    }
 	    xmlOutputBufferWrite(buf, 2, "?>");
 	} else {
 	    xmlOutputBufferWrite(buf, 2, "<?");
 	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+	    if (ctxt->format == 2)
+	        xmlOutputBufferWriteWSNonSig(ctxt, 0);
 	    xmlOutputBufferWrite(buf, 2, "?>");
 	}
 	return;
@@ -862,7 +930,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	return;
     }
     if (cur->type == XML_NAMESPACE_DECL) {
-	xmlNsDumpOutput(buf, (xmlNsPtr) cur);
+	xmlNsDumpOutputCtxt(ctxt, (xmlNsPtr) cur);
 	return;
     }
 
@@ -887,16 +955,20 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if (cur->nsDef)
-        xmlNsListDumpOutput(buf, cur->nsDef);
+        xmlNsListDumpOutputCtxt(ctxt, cur->nsDef);
     if (cur->properties != NULL)
         xmlAttrListDumpOutput(ctxt, cur->properties);
 
     if (((cur->type == XML_ELEMENT_NODE) || (cur->content == NULL)) &&
 	(cur->children == NULL) && ((ctxt->options & XML_SAVE_NO_EMPTY) == 0)) {
+        if (ctxt->format == 2)
+            xmlOutputBufferWriteWSNonSig(ctxt, 0);
         xmlOutputBufferWrite(buf, 2, "/>");
 	ctxt->format = format;
 	return;
     }
+    if (ctxt->format == 2)
+        xmlOutputBufferWriteWSNonSig(ctxt, 1);
     xmlOutputBufferWrite(buf, 1, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
@@ -919,6 +991,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
 
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
+    if (ctxt->format == 2)
+        xmlOutputBufferWriteWSNonSig(ctxt, 0);
     xmlOutputBufferWrite(buf, 1, ">");
     ctxt->format = format;
 }
@@ -1410,7 +1484,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if (cur->nsDef)
-        xmlNsListDumpOutput(buf, cur->nsDef);
+        xmlNsListDumpOutputCtxt(ctxt, cur->nsDef);
     if ((xmlStrEqual(cur->name, BAD_CAST "html") &&
 	(cur->ns == NULL) && (cur->nsDef == NULL))) {
 	/*

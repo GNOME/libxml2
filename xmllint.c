@@ -2658,6 +2658,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
                 if (format == 1)
 		    saveOpts |= XML_SAVE_FORMAT;
+                else if (format == 2)
+                    saveOpts |= XML_SAVE_WSNONSIG;
 
 #if defined(LIBXML_HTML_ENABLED) || defined(LIBXML_VALID_ENABLED)
                 if (xmlout)
@@ -3014,6 +3016,10 @@ static void usage(const char *name) {
     printf("\t--format : reformat/reindent the input\n");
     printf("\t--encode encoding : output in the given encoding\n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
+    printf("\t--pretty STYLE : pretty-print in a particular style\n");
+    printf("\t                 0 Do not pretty print\n");
+    printf("\t                 1 Format the XML content, as --format\n");
+    printf("\t                 2 Add whitespace inside tags, preserving content\n");
 #endif /* LIBXML_OUTPUT_ENABLED */
     printf("\t--c14n : save in W3C canonical format v1.0 (with comments)\n");
     printf("\t--c14n11 : save in W3C canonical format v1.1 (with comments)\n");
@@ -3338,6 +3344,17 @@ main(int argc, char **argv) {
 #endif /* LIBXML_OUTPUT_ENABLED */
 	     xmlKeepBlanksDefault(0);
 	}
+	else if ((!strcmp(argv[i], "-pretty")) ||
+	         (!strcmp(argv[i], "--pretty"))) {
+	     i++;
+#ifdef LIBXML_OUTPUT_ENABLED
+	     format = atoi(argv[i]);
+#endif /* LIBXML_OUTPUT_ENABLED */
+	     if (format == 1) {
+	         noblanks++;
+	         xmlKeepBlanksDefault(0);
+	     }
+	}
 #ifdef LIBXML_READER_ENABLED
 	else if ((!strcmp(argv[i], "-stream")) ||
 	         (!strcmp(argv[i], "--stream"))) {
@@ -3621,6 +3638,11 @@ main(int argc, char **argv) {
         }
 	if ((!strcmp(argv[i], "-maxmem")) ||
 	         (!strcmp(argv[i], "--maxmem"))) {
+	    i++;
+	    continue;
+        }
+	if ((!strcmp(argv[i], "-pretty")) ||
+	         (!strcmp(argv[i], "--pretty"))) {
 	    i++;
 	    continue;
         }

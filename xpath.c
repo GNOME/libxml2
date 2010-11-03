@@ -10080,15 +10080,23 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
     }
 #endif
     if (CUR == '.') {
+	int v, frac = 0;
+	double fraction = 0;
+
         NEXT;
         if (((CUR < '0') || (CUR > '9')) && (!ok)) {
             XP_ERROR(XPATH_NUMBER_ERROR);
         }
-        while ((CUR >= '0') && (CUR <= '9')) {
-            mult /= 10;
-            ret = ret + (CUR - '0') * mult;
+        while ((CUR >= '0') && (CUR <= '9') && (frac < MAX_FRAC)) {
+	    v = (CUR - '0');
+	    fraction = fraction * 10 + v;
+	    frac = frac + 1;
             NEXT;
         }
+        fraction /= my_pow10[frac];
+        ret = ret + fraction;
+        while ((CUR >= '0') && (CUR <= '9'))
+            NEXT;
     }
     if ((CUR == 'e') || (CUR == 'E')) {
         NEXT;

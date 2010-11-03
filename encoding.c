@@ -2039,11 +2039,7 @@ retry:
 	    xmlBufferShrink(in, toconv);
 	    out->use += written;
 	    writtentot += written;
-            /* multichar cut at end of buffer can generate that problem */
-            if (ret == -2) {
-                ret = -3;
-            }
-	}
+	} 
 	out->content[out->use] = 0;
     }
 #ifdef LIBXML_ICONV_ENABLED
@@ -2319,7 +2315,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 /* trailing byte not in input buffer */
                 *outlen = out - outstart;
                 *inlen = processed - instart;
-                return(-2);
+                return(-3);
             }
             c = *in++;
             if ((c & 0xC0) != 0x80) {
@@ -2345,7 +2341,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 /* trailing bytes not in input buffer */
                 *outlen = out - outstart;
                 *inlen = processed - instart;
-                return(-2);
+                return(-3);
             }
             c1 = *in++;
             if ((c1 & 0xC0) != 0x80) {

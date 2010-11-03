@@ -30,7 +30,7 @@
 
 #if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(vsnprintf)
 #define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
-#elif defined(WITH_TRIO)
+#elif defined(WITH_TRIO) && !defined(vsnprintf)
 #include "trio.h"
 #define vsnprintf trio_vsnprintf
 #endif

@@ -263,19 +263,19 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
     outend = out + *outlen;
     inend = in + (*inlen);
     instop = inend;
-    
-    while (in < inend && out < outend - 1) {
-    	if (*in >= 0x80) {
+
+    while ((in < inend) && (out < outend - 1)) {
+	if (*in >= 0x80) {
 	    *out++ = (((*in) >>  6) & 0x1F) | 0xC0;
-        *out++ = ((*in) & 0x3F) | 0x80;
+            *out++ = ((*in) & 0x3F) | 0x80;
 	    ++in;
 	}
-	if (instop - in > outend - out) instop = in + (outend - out); 
-	while (in < instop && *in < 0x80) {
+	if ((instop - in) > (outend - out)) instop = in + (outend - out);
+	while ((in < instop) && (*in < 0x80)) {
 	    *out++ = *in++;
 	}
-    }	
-    if (in < inend && out < outend && *in < 0x80) {
+    }
+    if ((in < inend) && (out < outend) && (*in < 0x80)) {
         *out++ = *in++;
     }
     *outlen = out - outstart;
@@ -2290,6 +2290,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
     const unsigned char* outstart = out;
     const unsigned char* inend;
     const unsigned char* instart = in;
+    const unsigned char* processed = in;
 
     if ((out == NULL) || (outlen == NULL) || (inlen == NULL) ||
         (xlattable == NULL))
@@ -2306,25 +2307,25 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
     while (in < inend) {
         unsigned char d = *in++;
         if  (d < 0x80)  {
-            *out++ = d; 
+            *out++ = d;
         } else if (d < 0xC0) {
             /* trailing byte in leading position */
             *outlen = out - outstart;
-            *inlen = in - instart - 1;
+            *inlen = processed - instart;
             return(-2);
         } else if (d < 0xE0) {
             unsigned char c;
             if (!(in < inend)) {
                 /* trailing byte not in input buffer */
                 *outlen = out - outstart;
-                *inlen = in - instart - 1;
+                *inlen = processed - instart;
                 return(-2);
             }
             c = *in++;
             if ((c & 0xC0) != 0x80) {
                 /* not a trailing byte */
                 *outlen = out - outstart;
-                *inlen = in - instart - 2;
+                *inlen = processed - instart;
                 return(-2);
             }
             c = c & 0x3F; 
@@ -2333,7 +2334,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
             if (d == 0) {
                 /* not in character set */
                 *outlen = out - outstart;
-                *inlen = in - instart - 2;
+                *inlen = processed - instart;
                 return(-2);
             }
             *out++ = d; 
@@ -2343,21 +2344,21 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
             if (!(in < inend - 1)) {
                 /* trailing bytes not in input buffer */
                 *outlen = out - outstart;
-                *inlen = in - instart - 1;
+                *inlen = processed - instart;
                 return(-2);
             }
             c1 = *in++;
             if ((c1 & 0xC0) != 0x80) {
                 /* not a trailing byte (c1) */
                 *outlen = out - outstart;
-                *inlen = in - instart - 2;
+                *inlen = processed - instart;
                 return(-2);
             }
             c2 = *in++;
             if ((c2 & 0xC0) != 0x80) {
                 /* not a trailing byte (c2) */
                 *outlen = out - outstart;
-                *inlen = in - instart - 2;
+                *inlen = processed - instart;
                 return(-2);
             }
             c1 = c1 & 0x3F; 
@@ -2368,19 +2369,20 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
             if (d == 0) {
                 /* not in character set */
                 *outlen = out - outstart;
-                *inlen = in - instart - 3;
+                *inlen = processed - instart;
                 return(-2);
             }
             *out++ = d; 
         } else {
             /* cannot transcode >= U+010000 */
             *outlen = out - outstart;
-            *inlen = in - instart - 1;
+            *inlen = processed - instart;
             return(-2);
         }
+        processed = in;
     }
     *outlen = out - outstart;
-    *inlen = in - instart;
+    *inlen = processed - instart;
     return(*outlen);
 }
 
@@ -2414,16 +2416,16 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
     outend = out + *outlen;
     inend = in + *inlen;
     instop = inend;
-    c = *in;
-    while (in < inend && out < outend - 1) {
-        if (c >= 0x80) {
-            c = unicodetable [c - 0x80];
+
+    while ((in < inend) && (out < outend - 2)) {
+        if (*in >= 0x80) {
+            c = unicodetable [*in - 0x80];
             if (c == 0) {
                 /* undefined code point */
                 *outlen = out - outstart;
                 *inlen = in - instart;
                 return (-1);
-            } 
+            }
             if (c < 0x800) {
                 *out++ = ((c >>  6) & 0x1F) | 0xC0;
                 *out++ = (c & 0x3F) | 0x80;
@@ -2431,27 +2433,26 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
                 *out++ = ((c >>  12) & 0x0F) | 0xE0;
                 *out++ = ((c >>  6) & 0x3F) | 0x80;
                 *out++ = (c & 0x3F) | 0x80;
-            }    
+            }
             ++in;
-            c = *in;
         }
-        if (instop - in > outend - out) instop = in + (outend - out); 
-        while (c < 0x80 && in < instop) {
-            *out++ =  c;
-            ++in;
-            c = *in;
+        if (instop - in > outend - out) instop = in + (outend - out);
+        while ((*in < 0x80) && (in < instop)) {
+            *out++ = *in++;
         }
-    }   
-    if (in < inend && out < outend && c < 0x80) {
-        *out++ =  c;
-        ++in;
+    }
+    if ((in < inend) && (out < outend) && (*in < 0x80)) {
+        *out++ =  *in++;
+    }
+    if ((in < inend) && (out < outend) && (*in < 0x80)) {
+        *out++ =  *in++;
     }
     *outlen = out - outstart;
     *inlen = in - instart;
     return (*outlen);
 }
 
-    
+
 /************************************************************************
  * Lookup tables for ISO-8859-2..ISO-8859-16 transcoding                *
  ************************************************************************/

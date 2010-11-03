@@ -2039,7 +2039,11 @@ retry:
 	    xmlBufferShrink(in, toconv);
 	    out->use += written;
 	    writtentot += written;
-	} 
+            /* multichar cut at end of buffer can generate that problem */
+            if (ret == -2) {
+                ret = -3;
+            }
+	}
 	out->content[out->use] = 0;
     }
 #ifdef LIBXML_ICONV_ENABLED

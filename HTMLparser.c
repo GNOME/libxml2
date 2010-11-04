@@ -5611,7 +5611,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		        int idx;
 			xmlChar val;
 
-			idx = htmlParseLookupSequence(ctxt, '<', '/', 0, 0, 1);
+			idx = htmlParseLookupSequence(ctxt, '<', '/', 0, 0, 0);
 			if (idx < 0)
 			    goto done;
 		        val = in->cur[idx + 2];

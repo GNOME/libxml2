@@ -84,7 +84,7 @@ else
   esac
 fi
 AC_SUBST(VERSION_SCRIPT_FLAGS)
-AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -z "$VERSION_SCRIPT_FLAGS"])
+AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
 
 dnl
 dnl We process the AC_ARG_WITH first so that later we can modify

@@ -111,18 +111,18 @@ maintainer-clean-local: clean-local
 rebuild: api all
 
 install-data-local: 
-	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)
+	@MKDIR_P@ $(DESTDIR)$(HTML_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/xml.html $(srcdir)/encoding.html $(srcdir)/FAQ.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(srcdir)/smallfootonly.gif $(srcdir)/redhat.gif $(srcdir)/libxml.gif $(srcdir)/w3c.png $(srcdir)/Libxml2-Logo-180x168.gif $(srcdir)/Libxml2-Logo-90x34.gif $(DESTDIR)$(HTML_DIR)
-	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)/html
+	@MKDIR_P@ $(DESTDIR)$(HTML_DIR)/html
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(HTML_DIR)/html
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.png $(DESTDIR)$(HTML_DIR)/html
-	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)/tutorial
+	@MKDIR_P@ $(DESTDIR)$(HTML_DIR)/tutorial
 	-@INSTALL@ -m 0644 $(srcdir)/tutorial/*.* \
 		$(DESTDIR)$(HTML_DIR)/tutorial
-	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)/tutorial/images
+	@MKDIR_P@ $(DESTDIR)$(HTML_DIR)/tutorial/images
 	-@INSTALL@ -m 0644 $(srcdir)/tutorial/images/*.* \
 		$(DESTDIR)$(HTML_DIR)/tutorial/images
-	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)/tutorial/images/callouts
+	@MKDIR_P@ $(DESTDIR)$(HTML_DIR)/tutorial/images/callouts
 	-@INSTALL@ -m 0644 $(srcdir)/tutorial/images/callouts/*.* \
 		$(DESTDIR)$(HTML_DIR)/tutorial/images/callouts
 

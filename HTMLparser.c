@@ -2887,9 +2887,11 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
     }
 
     if ((!(IS_CHAR_CH(cur))) && (!((cur == 0) && (ctxt->progressive)))) {
-	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-	                "Invalid char in CDATA 0x%X\n", cur);
-	NEXT;
+        htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                    "Invalid char in CDATA 0x%X\n", cur);
+        if (ctxt->input->cur < ctxt->input->end) {
+            NEXT;
+        }
     }
 
     if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {

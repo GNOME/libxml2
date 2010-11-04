@@ -34,6 +34,7 @@
     <reference name='HTML_TEXT_NODE' href='html/libxml-HTMLtree.html#HTML_TEXT_NODE'/>
     <reference name='HTML_VALID' href='html/libxml-HTMLparser.html#HTML_VALID'/>
     <reference name='INPUT_CHUNK' href='html/libxml-parserInternals.html#INPUT_CHUNK'/>
+    <reference name='INVALID_SOCKET' href='html/libxml-nanoftp.html#INVALID_SOCKET'/>
     <reference name='IS_ASCII_DIGIT' href='html/libxml-parserInternals.html#IS_ASCII_DIGIT'/>
     <reference name='IS_ASCII_LETTER' href='html/libxml-parserInternals.html#IS_ASCII_LETTER'/>
     <reference name='IS_BASECHAR' href='html/libxml-parserInternals.html#IS_BASECHAR'/>
@@ -96,6 +97,7 @@
     <reference name='MOVETO_ENDTAG' href='html/libxml-parserInternals.html#MOVETO_ENDTAG'/>
     <reference name='MOVETO_STARTTAG' href='html/libxml-parserInternals.html#MOVETO_STARTTAG'/>
     <reference name='SKIP_EOL' href='html/libxml-parserInternals.html#SKIP_EOL'/>
+    <reference name='SOCKET' href='html/libxml-nanoftp.html#SOCKET'/>
     <reference name='UTF8ToHtml' href='html/libxml-HTMLparser.html#UTF8ToHtml'/>
     <reference name='UTF8Toisolat1' href='html/libxml-encoding.html#UTF8Toisolat1'/>
     <reference name='WITHOUT_TRIO' href='html/libxml-xmlversion.html#WITHOUT_TRIO'/>
@@ -801,6 +803,7 @@
     <reference name='XML_SAVE_NO_EMPTY' href='html/libxml-xmlsave.html#XML_SAVE_NO_EMPTY'/>
     <reference name='XML_SAVE_NO_XHTML' href='html/libxml-xmlsave.html#XML_SAVE_NO_XHTML'/>
     <reference name='XML_SAVE_UNKNOWN_ENCODING' href='html/libxml-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING'/>
+    <reference name='XML_SAVE_WSNONSIG' href='html/libxml-xmlsave.html#XML_SAVE_WSNONSIG'/>
     <reference name='XML_SAVE_XHTML' href='html/libxml-xmlsave.html#XML_SAVE_XHTML'/>
     <reference name='XML_SAX2_MAGIC' href='html/libxml-parser.html#XML_SAX2_MAGIC'/>
     <reference name='XML_SCHEMAP_AG_PROPS_CORRECT' href='html/libxml-xmlerror.html#XML_SCHEMAP_AG_PROPS_CORRECT'/>
@@ -3579,6 +3582,7 @@
     </letter>
     <letter name='I'>
       <ref name='INPUT_CHUNK'/>
+      <ref name='INVALID_SOCKET'/>
       <ref name='IS_ASCII_DIGIT'/>
       <ref name='IS_ASCII_LETTER'/>
       <ref name='IS_BASECHAR'/>
@@ -3647,6 +3651,7 @@
     </letter>
     <letter name='S'>
       <ref name='SKIP_EOL'/>
+      <ref name='SOCKET'/>
     </letter>
     <letter name='U'>
       <ref name='UTF8ToHtml'/>
@@ -4358,6 +4363,7 @@
       <ref name='XML_SAVE_NO_EMPTY'/>
       <ref name='XML_SAVE_NO_XHTML'/>
       <ref name='XML_SAVE_UNKNOWN_ENCODING'/>
+      <ref name='XML_SAVE_WSNONSIG'/>
       <ref name='XML_SAVE_XHTML'/>
       <ref name='XML_SAX2_MAGIC'/>
       <ref name='XML_SCHEMAP_AG_PROPS_CORRECT'/>
@@ -7129,6 +7135,10 @@
     </letter>
   </alpha>
   <constructors>
+    <type name='SOCKET'>
+      <ref name='xmlNanoFTPGetConnection'/>
+      <ref name='xmlNanoFTPGetSocket'/>
+    </type>
     <type name='const htmlElemDesc *'>
       <ref name='htmlTagLookup'/>
     </type>
@@ -11166,6 +11176,8 @@
       <ref name='xmlListWalker'/>
     </file>
     <file name='nanoftp'>
+      <ref name='INVALID_SOCKET'/>
+      <ref name='SOCKET'/>
       <ref name='ftpDataCallback'/>
       <ref name='ftpListCallback'/>
       <ref name='xmlNanoFTPCheckResponse'/>
@@ -13486,6 +13498,7 @@
       <ref name='XML_SAVE_NO_DECL'/>
       <ref name='XML_SAVE_NO_EMPTY'/>
       <ref name='XML_SAVE_NO_XHTML'/>
+      <ref name='XML_SAVE_WSNONSIG'/>
       <ref name='XML_SAVE_XHTML'/>
       <ref name='xmlSaveClose'/>
       <ref name='xmlSaveCtxt'/>

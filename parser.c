@@ -1297,60 +1297,182 @@ xmlCleanSpecialAttr(xmlParserCtxtPtr ctxt)
  * [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
  * [38] Subcode ::= ([a-z] | [A-Z])+
  *
+ * The current REC reference the sucessors of RFC 1766, currently 5646
+ *
+ * http://www.rfc-editor.org/rfc/rfc5646.txt
+ * langtag       = language
+ *                 ["-" script]
+ *                 ["-" region]
+ *                 *("-" variant)
+ *                 *("-" extension)
+ *                 ["-" privateuse]
+ * language      = 2*3ALPHA            ; shortest ISO 639 code
+ *                 ["-" extlang]       ; sometimes followed by
+ *                                     ; extended language subtags
+ *               / 4ALPHA              ; or reserved for future use
+ *               / 5*8ALPHA            ; or registered language subtag
+ *
+ * extlang       = 3ALPHA              ; selected ISO 639 codes
+ *                 *2("-" 3ALPHA)      ; permanently reserved
+ *
+ * script        = 4ALPHA              ; ISO 15924 code
+ *
+ * region        = 2ALPHA              ; ISO 3166-1 code
+ *               / 3DIGIT              ; UN M.49 code
+ *
+ * variant       = 5*8alphanum         ; registered variants
+ *               / (DIGIT 3alphanum)
+ *
+ * extension     = singleton 1*("-" (2*8alphanum))
+ *
+ *                                     ; Single alphanumerics
+ *                                     ; "x" reserved for private use
+ * singleton     = DIGIT               ; 0 - 9
+ *               / %x41-57             ; A - W
+ *               / %x59-5A             ; Y - Z
+ *               / %x61-77             ; a - w
+ *               / %x79-7A             ; y - z
+ *
+ * it sounds right to still allow Irregular i-xxx IANA and user codes too
+ * The parser below doesn't try to cope with extension or privateuse
+ * that could be added but that's not interoperable anyway
+ *
  * Returns 1 if correct 0 otherwise
  **/
 int
 xmlCheckLanguageID(const xmlChar * lang)
 {
-    const xmlChar *cur = lang;
+    const xmlChar *cur = lang, *nxt;
 
     if (cur == NULL)
         return (0);
     if (((cur[0] == 'i') && (cur[1] == '-')) ||
-        ((cur[0] == 'I') && (cur[1] == '-'))) {
+        ((cur[0] == 'I') && (cur[1] == '-')) ||
+        ((cur[0] == 'x') && (cur[1] == '-')) ||
+        ((cur[0] == 'X') && (cur[1] == '-'))) {
         /*
-         * IANA code
+         * Still allow IANA code and user code which were coming
+         * from the previous version of the XML-1.0 specification
+         * it's deprecated but we should not fail
          */
         cur += 2;
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
                ((cur[0] >= 'a') && (cur[0] <= 'z')))
             cur++;
-    } else if (((cur[0] == 'x') && (cur[1] == '-')) ||
-               ((cur[0] == 'X') && (cur[1] == '-'))) {
-        /*
-         * User code
-         */
-        cur += 2;
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
-               ((cur[0] >= 'a') && (cur[0] <= 'z')))
-            cur++;
-    } else if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
-               ((cur[0] >= 'a') && (cur[0] <= 'z'))) {
-        /*
-         * ISO639
-         */
-        cur++;
-        if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
-            ((cur[0] >= 'a') && (cur[0] <= 'z')))
-            cur++;
-        else
-            return (0);
-    } else
-        return (0);
-    while (cur[0] != 0) {       /* non input consuming */
-        if (cur[0] != '-')
-            return (0);
-        cur++;
-        if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
-            ((cur[0] >= 'a') && (cur[0] <= 'z')))
-            cur++;
-        else
-            return (0);
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
-               ((cur[0] >= 'a') && (cur[0] <= 'z')))
-            cur++;
+        return(cur[0] == 0);
     }
+    nxt = cur;
+    while (((nxt[0] >= 'A') && (nxt[0] <= 'Z')) ||
+           ((nxt[0] >= 'a') && (nxt[0] <= 'z')))
+           nxt++;
+    if (nxt - cur >= 4) {
+        /*
+         * Reserved
+         */
+        if ((nxt - cur > 8) || (nxt[0] != 0))
+            return(0);
+        return(1);
+    }
+    if (nxt - cur < 2)
+        return(0);
+    /* we got an ISO 639 code */
+    if (nxt[0] == 0)
+        return(1);
+    if (nxt[0] != '-')
+        return(0);
+
+    nxt++;
+    cur = nxt;
+    /* now we can have extlang or script or region or variant */
+    if ((nxt[0] >= '0') && (nxt[0] <= '9'))
+        goto region_m49;
+
+    while (((nxt[0] >= 'A') && (nxt[0] <= 'Z')) ||
+           ((nxt[0] >= 'a') && (nxt[0] <= 'z')))
+           nxt++;
+    if (nxt - cur == 4)
+        goto script;
+    if (nxt - cur == 2)
+        goto region;
+    if ((nxt - cur >= 5) && (nxt - cur <= 8))
+        goto variant;
+    if (nxt - cur != 3)
+        return(0);
+    /* we parsed an extlang */
+    if (nxt[0] == 0)
+        return(1);
+    if (nxt[0] != '-')
+        return(0);
+
+    nxt++;
+    cur = nxt;
+    /* now we can have script or region or variant */
+    if ((nxt[0] >= '0') && (nxt[0] <= '9'))
+        goto region_m49;
+
+    while (((nxt[0] >= 'A') && (nxt[0] <= 'Z')) ||
+           ((nxt[0] >= 'a') && (nxt[0] <= 'z')))
+           nxt++;
+    if (nxt - cur == 2)
+        goto region;
+    if ((nxt - cur >= 5) && (nxt - cur <= 8))
+        goto variant;
+    if (nxt - cur != 4)
+        return(0);
+    /* we parsed a script */
+script:
+    if (nxt[0] == 0)
+        return(1);
+    if (nxt[0] != '-')
+        return(0);
+
+    nxt++;
+    cur = nxt;
+    /* now we can have region or variant */
+    if ((nxt[0] >= '0') && (nxt[0] <= '9'))
+        goto region_m49;
+
+    while (((nxt[0] >= 'A') && (nxt[0] <= 'Z')) ||
+           ((nxt[0] >= 'a') && (nxt[0] <= 'z')))
+           nxt++;
+
+    if ((nxt - cur >= 5) && (nxt - cur <= 8))
+        goto variant;
+    if (nxt - cur != 2)
+        return(0);
+    /* we parsed a region */
+region:
+    if (nxt[0] == 0)
+        return(1);
+    if (nxt[0] != '-')
+        return(0);
+
+    nxt++;
+    cur = nxt;
+    /* now we can just have a variant */
+    while (((nxt[0] >= 'A') && (nxt[0] <= 'Z')) ||
+           ((nxt[0] >= 'a') && (nxt[0] <= 'z')))
+           nxt++;
+
+    if ((nxt - cur < 5) || (nxt - cur > 8))
+        return(0);
+
+    /* we parsed a variant */
+variant:
+    if (nxt[0] == 0)
+        return(1);
+    if (nxt[0] != '-')
+        return(0);
+    /* extensions and private use subtags not checked */
     return (1);
+
+region_m49:
+    if (((nxt[1] >= '0') && (nxt[1] <= '9')) &&
+        ((nxt[2] >= '0') && (nxt[2] <= '9'))) {
+        nxt += 3;
+        goto region;
+    }
+    return(0);
 }
 
 /************************************************************************
@@ -11567,7 +11689,7 @@ xmldecl_done:
              * if size is greater than len. Otherwise, memmove in xmlBufferAdd
              * will blindly copy extra bytes from memory.
              */
-            if (size > len) {
+            if ((unsigned int) size > len) {
                 remain = size - len;
                 size = len;
             } else {

@@ -106,6 +106,7 @@
     <function name="LIBXML_HTML_ENABLED" link="libxml2-xmlversion.html#LIBXML_HTML_ENABLED"/>
     <function name="LIBXML_HTTP_ENABLED" link="libxml2-xmlversion.html#LIBXML_HTTP_ENABLED"/>
     <function name="LIBXML_ICONV_ENABLED" link="libxml2-xmlversion.html#LIBXML_ICONV_ENABLED"/>
+    <function name="LIBXML_ICU_ENABLED" link="libxml2-xmlversion.html#LIBXML_ICU_ENABLED"/>
     <function name="LIBXML_ISO8859X_ENABLED" link="libxml2-xmlversion.html#LIBXML_ISO8859X_ENABLED"/>
     <function name="LIBXML_LEGACY_ENABLED" link="libxml2-xmlversion.html#LIBXML_LEGACY_ENABLED"/>
     <function name="LIBXML_MODULES_ENABLED" link="libxml2-xmlversion.html#LIBXML_MODULES_ENABLED"/>
@@ -1430,6 +1431,7 @@
     <function name="XML_WITH_HTML" link="libxml2-parser.html#XML_WITH_HTML"/>
     <function name="XML_WITH_HTTP" link="libxml2-parser.html#XML_WITH_HTTP"/>
     <function name="XML_WITH_ICONV" link="libxml2-parser.html#XML_WITH_ICONV"/>
+    <function name="XML_WITH_ICU" link="libxml2-parser.html#XML_WITH_ICU"/>
     <function name="XML_WITH_ISO8859X" link="libxml2-parser.html#XML_WITH_ISO8859X"/>
     <function name="XML_WITH_LEGACY" link="libxml2-parser.html#XML_WITH_LEGACY"/>
     <function name="XML_WITH_MODULES" link="libxml2-parser.html#XML_WITH_MODULES"/>
@@ -1695,6 +1697,7 @@
     <function name="xmlXPathVariablePtr" link="libxml2-xpath.html#xmlXPathVariablePtr"/>
     <function name="htmlElemDesc" link="libxml2-HTMLparser.html#htmlElemDesc"/>
     <function name="htmlEntityDesc" link="libxml2-HTMLparser.html#htmlEntityDesc"/>
+    <function name="uconv_t" link="libxml2-encoding.html#uconv_t"/>
     <function name="xlinkHandler" link="libxml2-xlink.html#xlinkHandler"/>
     <function name="xmlAttr" link="libxml2-tree.html#xmlAttr"/>
     <function name="xmlAttribute" link="libxml2-tree.html#xmlAttribute"/>

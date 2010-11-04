@@ -716,6 +716,60 @@ to the <a href="http://svn.gnome.org/viewvc/libxml2/trunk/">SVN</a> code base.</
 
 <p>Here is the list of public releases:</p>
 
+<h3>2.7.8: Nov 4 2010</h3>
+<ul>
+  <li> Features:
+    480323 add code to plug in ICU converters by default (Giuseppe Iuculano),
+    Add xmlSaveOption XML_SAVE_WSNONSIG (Adam Spragg)
+  </li>
+  <li> Documentation:
+    Fix devhelp documentation installation (Mike Hommey),
+    Fix web site encoding problems (Daniel Veillard),
+    Fix a couple of typo in HTML parser error messages (Michael Day),
+    Forgot to update the news page for 0.7.7 (Daniel Veillard)
+  </li>
+  <li> Portability:
+    607273 Fix python detection on MSys/Windows (LRN),
+    614087 Fix Socket API usage to allow Windows64 compilation (Ozkan Sezer),
+    Fix compilation with Clang (Koop Mast),
+    Fix Win32 build (Rob Richards)
+  </li>
+  <li> Bug Fixes:
+    595789 fix a remaining potential Solaris problem (Daniel Veillard),
+    617468 fix progressive HTML parsing with style using "'" (Denis Pauk),
+    616478 Fix xmllint shell write command (Gwenn Kahz),
+    614005 Possible erroneous HTML parsing on unterminated script (Pierre Belzile),
+    627987 Fix XSD IDC errors in imported schemas (Jim Panetta),
+    629325 XPath rounding errors first cleanup (Phil Shafer),
+    630140 fix iso995x encoding error (Daniel Veillard),
+    make sure htmlCtxtReset do reset the disableSAX field (Daniel Veillard),
+    Fix a change of semantic on XPath preceding and following axis (Daniel Veillard),
+    Fix a potential segfault due to weak symbols on pthreads (Mike Hommey),
+    Fix a leak in XPath compilation (Daniel Veillard),
+    Fix the semantic of XPath axis for namespace/attribute context nodes (Daniel Veillard),
+    Avoid a descriptor leak in catalog loading code (Carlo Bramini),
+    Fix a small bug in XPath evaluation code (Marius Wachtler),
+    Fix handling of XML-1.0 XML namespace declaration (Daniel Veillard),
+    Fix errors in XSD double validation check (Csaba Raduly),
+    Fix handling of apos in URIs (Daniel Veillard),
+    xmlTextReaderReadOuterXml should handle DTD (Rob Richards),
+    Autogen.sh needs to create m4 directory (Rob Richards)
+  </li>
+  <li> Improvements:
+    606592 update language ID parser to RFC 5646 (Daniel Veillard),
+    Sort python generated stubs (Mike Hommey),
+    Add an HTML parser option to avoid a default doctype (Daniel Veillard)
+  </li>
+  <li> Cleanups:
+    618831 don't ship generated files in git (Adrian Bunk),
+    Switch from the obsolete mkinstalldirs to AC_PROG_MKDIR_P (Adrian Bunk),
+    Various cleanups on encoding handling (Daniel Veillard),
+    Fix xmllint to use format=1 for default formatting (Adam Spragg),
+    Force _xmlSaveCtxt.format to be 0 or 1 (Adam Spragg),
+    Cleanup encoding pointer comparison (Nikolay Sivov),
+    Small code cleanup on previous patch (Daniel Veillard)
+  </li>
+</ul>
 <h3>2.7.7: Mar 15 2010</h3>
 <ul>
   <li> Improvements:

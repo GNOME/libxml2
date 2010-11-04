@@ -954,6 +954,12 @@ xmlHasFeature(xmlFeature feature)
 #else
             return(0);
 #endif
+        case XML_WITH_ICU:
+#ifdef LIBXML_ICU_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
         default:
 	    break;
      }

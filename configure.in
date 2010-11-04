@@ -128,6 +128,8 @@ AC_ARG_WITH(http,
 [  --with-http             add the HTTP support (on)])
 AC_ARG_WITH(iconv,
 [  --with-iconv[[=DIR]]      add ICONV support (on)])
+AC_ARG_WITH(icu,
+[  --with-icu                add ICU support (off)])
 AC_ARG_WITH(iso8859x,
 [  --with-iso8859x         add ISO8859X support if no iconv (on)])
 AC_ARG_WITH(legacy,
@@ -1320,6 +1322,23 @@ esac
 XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICONV)
+
+WITH_ICU=0
+if test "$with_icu" != "yes" ; then
+    echo Disabling ICU support
+else
+    ICU_CONFIG=icu-config
+    if ${ICU_CONFIG} --cflags >/dev/null 2>&1
+    then
+        ICU_LIBS=`icu-config --ldflags`
+        LDFLAGS="$LDFLAGS $ICU_LIBS"
+        WITH_ICU=1
+        echo Enabling ICU support
+    else
+        AC_MSG_ERROR([libicu config program icu-config not found])
+    fi
+fi
+AC_SUBST(WITH_ICU)
 
 WITH_ISO8859X=1
 if test "$WITH_ICONV" != "1" ; then

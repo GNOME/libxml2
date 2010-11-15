@@ -3575,13 +3575,13 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
     } else if (cur->nodeNr == cur->nodeMax) {
         xmlNodePtr *temp;
 
-        cur->nodeMax *= 2;
-	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
+	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax * 2 *
 				      sizeof(xmlNodePtr));
 	if (temp == NULL) {
 	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
+        cur->nodeMax *= 2;
 	cur->nodeTab = temp;
     }
     if (val->type == XML_NAMESPACE_DECL) {

@@ -11765,13 +11765,14 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
 	        xmlXPathObjectPtr tmp;
 		/* pop the result if any */
 		tmp = valuePop(ctxt);
-                if (tmp != contextObj)
+                if (tmp != contextObj) {
                     /*
                      * Free up the result
                      * then pop off contextObj, which will be freed later
                      */
                     xmlXPathReleaseObject(xpctxt, tmp);
                     valuePop(ctxt);
+                }
 		goto evaluation_error;
 	    }
 

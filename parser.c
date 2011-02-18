@@ -6992,6 +6992,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    ent->owner = 1;
 		    while (list != NULL) {
 			list->parent = (xmlNodePtr) ent;
+			xmlSetTreeDoc(list, ent->doc);
 			if (list->next == NULL)
 			    ent->last = list;
 			list = list->next;

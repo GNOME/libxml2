@@ -475,14 +475,6 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	if (schannel != NULL)
 	    data = xmlStructuredErrorContext;
     }
-    if ((domain == XML_FROM_VALID) &&
-        ((channel == xmlParserValidityError) ||
-	 (channel == xmlParserValidityWarning))) {
-	ctxt = (xmlParserCtxtPtr) ctx;
-	if ((schannel == NULL) && (ctxt != NULL) && (ctxt->sax != NULL) &&
-	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
-	    schannel = ctxt->sax->serror;
-    }
     /*
      * Formatting the message
      */

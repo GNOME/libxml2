@@ -452,6 +452,8 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     xmlErrorPtr to = &xmlLastError;
     xmlNodePtr baseptr = NULL;
 
+    if (code == XML_ERR_OK)
+        return;
     if ((xmlGetWarningsDefaultValue == 0) && (level == XML_ERR_WARNING))
         return;
     if ((domain == XML_FROM_PARSER) || (domain == XML_FROM_HTML) ||
@@ -481,8 +483,6 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
 	    schannel = ctxt->sax->serror;
     }
-    if (code == XML_ERR_OK)
-        return;
     /*
      * Formatting the message
      */

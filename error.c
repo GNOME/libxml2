@@ -584,6 +584,11 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     if (to != &xmlLastError)
         xmlCopyError(to,&xmlLastError);
 
+    if (schannel != NULL) {
+	schannel(data, to);
+	return;
+    }
+
     /*
      * Find the callback channel if channel param is NULL
      */
@@ -595,19 +600,9 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    channel = ctxt->sax->error;
 	data = ctxt->userData;
     } else if (channel == NULL) {
-        if ((schannel == NULL) && (xmlStructuredError != NULL)) {
-	    schannel = xmlStructuredError;
-	    data = xmlStructuredErrorContext;
-	} else {
-	    channel = xmlGenericError;
-	    if (!data) {
-		data = xmlGenericErrorContext;
-	    }
-	}
-    }
-    if (schannel != NULL) {
-        schannel(data, to);
-	return;
+	channel = xmlGenericError;
+	if (!data)
+	    data = xmlGenericErrorContext;
     }
     if (channel == NULL)
         return;

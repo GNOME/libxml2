@@ -461,8 +461,11 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	(domain == XML_FROM_IO) || (domain == XML_FROM_VALID)) {
 	ctxt = (xmlParserCtxtPtr) ctx;
 	if ((schannel == NULL) && (ctxt != NULL) && (ctxt->sax != NULL) &&
-	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
+	    (ctxt->sax->initialized == XML_SAX2_MAGIC) &&
+	    (ctxt->sax->serror != NULL)) {
 	    schannel = ctxt->sax->serror;
+	    data = ctxt->userData;
+	}
     }
     /*
      * Check if structured error handler set

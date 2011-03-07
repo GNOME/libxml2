@@ -3049,10 +3049,9 @@ interface have not yet reached the completeness of the C API.</p>
 
 <p>Note that some of the Python purist dislike the default set of Python
 bindings, rather than complaining I suggest they have a look at <a
-href="http://codespeak.net/lxml/">lxml the more pythonic bindings for libxml2
+href="http://lxml.de/">lxml the more pythonic bindings for libxml2
 and libxslt</a> and <a
-href="http://codespeak.net/mailman/listinfo/lxml-dev">help Martijn
-Faassen</a> complete those.</p>
+href="http://lxml.de/mailinglist/">check the mailing-list</a>.</p>
 
 <p><a href="mailto:stephane.bidoul@softwareag.com">StÃ©phane Bidoul</a>
 maintains <a href="http://users.skynet.be/sbi/libxml-python/">a Windows port
@@ -5179,8 +5178,9 @@ The parts of the library checked for thread safety are:</p>
   <li>memory handling</li>
 </ul>
 
-<p>XPath is supposed to be thread safe now, but this wasn't tested
-seriously.</p>
+<p>XPath has been tested for threaded usage on non-modified document
+   for example when using libxslt, but make 100% sure the documents
+   are accessed read-only !</p>
 
 <h2><a name="DOM"></a><a name="Principles">DOM Principles</a></h2>
 

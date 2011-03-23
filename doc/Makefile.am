@@ -45,7 +45,7 @@ web: $(PAGES)
 	    cp elfgcchack.h ../elfgcchack.h; \
 	  fi ; rm -f elfgcchack.h ;  fi );
 
-$(PAGES): xml.html site.xsl
+$(PAGES): xml.html $(srcdir)/site.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML Web pages from xml.html" ; \
 	  $(XSLTPROC) --nonet --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );

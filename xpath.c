@@ -10044,7 +10044,6 @@ static void
 xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
 {
     double ret = 0.0;
-    double mult = 1;
     int ok = 0;
     int exponent = 0;
     int is_exponent_negative = 0;

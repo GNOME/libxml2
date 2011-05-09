@@ -2550,7 +2550,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_1_0, NULL, 1, &result);
 		if (size >= 0) {
-		    write(1, result, size);
+		    if (write(1, result, size) == -1) {
+		        fprintf(stderr, "Can't write data\n");
+		    }
 		    xmlFree(result);
 		} else {
 		    fprintf(stderr, "Failed to canonicalize\n");
@@ -2562,7 +2564,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_1_1, NULL, 1, &result);
 		if (size >= 0) {
-		    write(1, result, size);
+		    if (write(1, result, size) == -1) {
+		        fprintf(stderr, "Can't write data\n");
+		    }
 		    xmlFree(result);
 		} else {
 		    fprintf(stderr, "Failed to canonicalize\n");
@@ -2575,7 +2579,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_EXCLUSIVE_1_0, NULL, 1, &result);
 		if (size >= 0) {
-		    write(1, result, size);
+		    if (write(1, result, size) == -1) {
+		        fprintf(stderr, "Can't write data\n");
+		    }
 		    xmlFree(result);
 		} else {
 		    fprintf(stderr, "Failed to canonicalize\n");
@@ -2604,7 +2610,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    fprintf(stderr, "Failed to save\n");
 		    progresult = XMLLINT_ERR_OUT;
 		} else {
-		    write(1, result, len);
+		    if (write(1, result, len) == -1) {
+		        fprintf(stderr, "Can't write data\n");
+		    }
 		    xmlFree(result);
 		}
 

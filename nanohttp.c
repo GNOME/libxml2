@@ -1615,7 +1615,8 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
     char *buf = NULL;
     int fd;
     int len;
-    
+    int ret = 0;
+
     if (filename == NULL) return(-1);
     ctxt = xmlNanoHTTPOpen(URL, contentType);
     if (ctxt == NULL) return(-1);
@@ -1636,12 +1637,14 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
 
     xmlNanoHTTPFetchContent( ctxt, &buf, &len );
     if ( len > 0 ) {
-	write(fd, buf, len);
+	if (write(fd, buf, len) == -1) {
+	    ret = -1;
+	}
     }
 
     xmlNanoHTTPClose(ctxt);
     close(fd);
-    return(0);
+    return(ret);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -1660,7 +1663,8 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
     char *buf = NULL;
     int fd;
     int len;
-    
+    int ret = 0;
+
     if ((ctxt == NULL) || (filename == NULL)) return(-1);
 
     if (!strcmp(filename, "-")) 
@@ -1675,12 +1679,14 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
 
     xmlNanoHTTPFetchContent( ctxt, &buf, &len );
     if ( len > 0 ) {
-	write(fd, buf, len);
+	if (write(fd, buf, len) == -1) {
+	    ret = -1;
+	}
     }
 
     xmlNanoHTTPClose(ctxt);
     close(fd);
-    return(0);
+    return(ret);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

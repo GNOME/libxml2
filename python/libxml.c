@@ -1745,7 +1745,7 @@ typedef struct
 typedef xmlValidCtxtPyCtxt *xmlValidCtxtPyCtxtPtr;
 
 static void
-libxml_xmlValidCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str) 
+libxml_xmlValidCtxtGenericErrorFuncHandler(void *ctx, ATTRIBUTE_UNUSED int severity, char *str)
 {
     PyObject *list;
     PyObject *result;
@@ -1772,7 +1772,7 @@ libxml_xmlValidCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str)
 }
 
 static void
-libxml_xmlValidCtxtGenericWarningFuncHandler(void *ctx, int severity, char *str) 
+libxml_xmlValidCtxtGenericWarningFuncHandler(void *ctx, ATTRIBUTE_UNUSED int severity, char *str)
 {
     PyObject *list;
     PyObject *result;

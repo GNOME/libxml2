@@ -160,7 +160,7 @@ testXmlwriterFilename(const char *uri)
 
     /* Write an element named "X_ORDER_ID" as child of HEADER. */
     rc = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X_ORDER_ID",
-                                         "%010d", 53535L);
+                                         "%010d", 53535);
     if (rc < 0) {
         printf
             ("testXmlwriterFilename: Error at xmlTextWriterWriteFormatElement\n");
@@ -439,7 +439,7 @@ testXmlwriterMemory(const char *file)
 
     /* Write an element named "X_ORDER_ID" as child of HEADER. */
     rc = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X_ORDER_ID",
-                                         "%010d", 53535L);
+                                         "%010d", 53535);
     if (rc < 0) {
         printf
             ("testXmlwriterMemory: Error at xmlTextWriterWriteFormatElement\n");
@@ -468,7 +468,7 @@ testXmlwriterMemory(const char *file)
     /* Write an element named "NAME_2" as child of HEADER. */
     tmp = ConvertInput("Jörg", MY_ENCODING);
     rc = xmlTextWriterWriteElement(writer, BAD_CAST "NAME_2", tmp);
-                                   
+
     if (rc < 0) {
         printf
             ("testXmlwriterMemory: Error at xmlTextWriterWriteElement\n");
@@ -709,7 +709,7 @@ testXmlwriterDoc(const char *file)
 
     /* Write an element named "X_ORDER_ID" as child of HEADER. */
     rc = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X_ORDER_ID",
-                                         "%010d", 53535L);
+                                         "%010d", 53535);
     if (rc < 0) {
         printf
             ("testXmlwriterDoc: Error at xmlTextWriterWriteFormatElement\n");
@@ -975,7 +975,7 @@ testXmlwriterTree(const char *file)
 
     /* Write an element named "X_ORDER_ID" as child of HEADER. */
     rc = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X_ORDER_ID",
-                                         "%010d", 53535L);
+                                         "%010d", 53535);
     if (rc < 0) {
         printf
             ("testXmlwriterTree: Error at xmlTextWriterWriteFormatElement\n");

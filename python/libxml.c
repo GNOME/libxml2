@@ -2762,7 +2762,6 @@ libxml_serializeNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     xmlDocPtr doc;
     const char *encoding;
     int format;
-    int len;
     xmlSaveCtxtPtr ctxt;
     xmlBufferPtr buf;
     int options = 0;

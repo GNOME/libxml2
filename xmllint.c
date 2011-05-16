@@ -130,6 +130,7 @@ static int copy = 0;
 #endif /* LIBXML_TREE_ENABLED */
 static int recovery = 0;
 static int noent = 0;
+static int noenc = 0;
 static int noblanks = 0;
 static int noout = 0;
 static int nowrap = 0;
@@ -2983,6 +2984,7 @@ static void usage(const char *name) {
     printf("\t--recover : output what was parsable on broken XML documents\n");
     printf("\t--huge : remove any internal arbitrary parser limits\n");
     printf("\t--noent : substitute entity references by their value\n");
+    printf("\t--noenc : ignore any encoding specified inside the document\n");
     printf("\t--noout : don't output the result tree\n");
     printf("\t--path 'paths': provide a set of paths for resources\n");
     printf("\t--load-trace : print trace of all external entites loaded\n");
@@ -3137,6 +3139,10 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--noent"))) {
 	    noent++;
 	    options |= XML_PARSE_NOENT;
+	} else if ((!strcmp(argv[i], "-noenc")) ||
+	         (!strcmp(argv[i], "--noenc"))) {
+	    noenc++;
+	    options |= XML_PARSE_IGNORE_ENC;
 	} else if ((!strcmp(argv[i], "-nsclean")) ||
 	         (!strcmp(argv[i], "--nsclean"))) {
 	    options |= XML_PARSE_NSCLEAN;

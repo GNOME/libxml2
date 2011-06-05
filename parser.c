@@ -197,6 +197,7 @@ unsigned int xmlParserMaxDepth = 256;
 
 static const char *xmlW3CPIs[] = {
     "xml-stylesheet",
+    "xml-model",
     NULL
 };
 

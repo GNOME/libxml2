@@ -1561,8 +1561,8 @@ xmlRelaxNGRemoveRedefine(xmlRelaxNGParserCtxtPtr ctxt,
                     href = xmlGetProp(tmp, BAD_CAST "href");
 #endif
                     if (xmlRelaxNGRemoveRedefine(ctxt, href,
-                                                 inc->doc->children->
-                                                 children, name) == 1) {
+                                                 xmlDocGetRootElement(inc->doc)->children,
+                                                 name) == 1) {
                         found = 1;
                     }
 #ifdef DEBUG_INCLUDE

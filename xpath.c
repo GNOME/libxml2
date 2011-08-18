@@ -252,6 +252,7 @@ static const char *xmlXPathErrorMessages[] = {
     "Encoding error\n",
     "Char out of XML range\n",
     "Invalid or incomplete context\n",
+    "Stack usage errror\n",
     "?? Unknown error ??\n"	/* Must be last in the list! */
 };
 #define MAXERRNO ((int)(sizeof(xmlXPathErrorMessages) /	\
@@ -2398,6 +2399,42 @@ xmlXPathCacheConvertNumber(xmlXPathContextPtr ctxt, xmlXPathObjectPtr val) {
  ************************************************************************/
 
 /**
+ * xmlXPathSetFrame:
+ * @ctxt: an XPath parser context
+ *
+ * Set the callee evaluation frame
+ *
+ * Returns the previous frame value to be restored once done
+ */
+static int
+xmlXPathSetFrame(xmlXPathParserContextPtr ctxt) {
+    int ret;
+
+    if (ctxt == NULL)
+        return(0);
+    ret = ctxt->valueFrame;
+    ctxt->valueFrame = ctxt->valueNr;
+    return(ret);
+}
+
+/**
+ * xmlXPathPopFrame:
+ * @ctxt: an XPath parser context
+ * @frame: the previous frame value
+ *
+ * Remove the callee evaluation frame
+ */
+static void
+xmlXPathPopFrame(xmlXPathParserContextPtr ctxt, int frame) {
+    if (ctxt == NULL)
+        return;
+    if (ctxt->valueNr < ctxt->valueFrame) {
+        xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_STACK_ERROR);
+    }
+    ctxt->valueFrame = frame;
+}
+
+/**
  * valuePop:
  * @ctxt: an XPath evaluation context
  *
@@ -2412,6 +2449,12 @@ valuePop(xmlXPathParserContextPtr ctxt)
 
     if ((ctxt == NULL) || (ctxt->valueNr <= 0))
         return (NULL);
+
+    if (ctxt->valueNr <= ctxt->valueFrame) {
+        xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_STACK_ERROR);
+        return (NULL);
+    }
+
     ctxt->valueNr--;
     if (ctxt->valueNr > 0)
         ctxt->value = ctxt->valueTab[ctxt->valueNr - 1];
@@ -6154,6 +6197,7 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
     ret->valueNr = 0;
     ret->valueMax = 10;
     ret->value = NULL;
+    ret->valueFrame = 0;
 
     ret->context = ctxt;
     ret->comp = comp;
@@ -11711,6 +11755,7 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
 	xmlXPathObjectPtr contextObj = NULL, exprRes = NULL;
 	xmlNodePtr oldContextNode, contextNode = NULL;
 	xmlXPathContextPtr xpctxt = ctxt->context;
+        int frame;
 
 #ifdef LIBXML_XPTR_ENABLED
 	    /*
@@ -11730,6 +11775,8 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
 	*/
 	exprOp = &ctxt->comp->steps[op->ch2];
 	for (i = 0; i < set->nodeNr; i++) {
+            xmlXPathObjectPtr tmp;
+
 	    if (set->nodeTab[i] == NULL)
 		continue;
 
@@ -11757,23 +11804,25 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
 		xmlXPathNodeSetAddUnique(contextObj->nodesetval,
 		    contextNode);
 
+            frame = xmlXPathSetFrame(ctxt);
 	    valuePush(ctxt, contextObj);
 	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
+            tmp = valuePop(ctxt);
+            xmlXPathPopFrame(ctxt, frame);
 
 	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1)) {
-	        xmlXPathObjectPtr tmp;
-		/* pop the result if any */
-		tmp = valuePop(ctxt);
-                if (tmp != contextObj) {
+                while (tmp != contextObj) {
                     /*
                      * Free up the result
                      * then pop off contextObj, which will be freed later
                      */
                     xmlXPathReleaseObject(xpctxt, tmp);
-                    valuePop(ctxt);
+                    tmp = valuePop(ctxt);
                 }
 		goto evaluation_error;
 	    }
+            /* push the result back onto the stack */
+            valuePush(ctxt, tmp);
 
 	    if (res)
 		pos++;
@@ -13377,7 +13426,9 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 xmlXPathFunction func;
                 const xmlChar *oldFunc, *oldFuncURI;
 		int i;
+                int frame;
 
+                frame = xmlXPathSetFrame(ctxt);
                 if (op->ch1 != -1)
                     total +=
                         xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
@@ -13385,15 +13436,18 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 		    xmlGenericError(xmlGenericErrorContext,
 			    "xmlXPathCompOpEval: parameter error\n");
 		    ctxt->error = XPATH_INVALID_OPERAND;
+                    xmlXPathPopFrame(ctxt, frame);
 		    return (total);
 		}
-		for (i = 0; i < op->value; i++)
+		for (i = 0; i < op->value; i++) {
 		    if (ctxt->valueTab[(ctxt->valueNr - 1) - i] == NULL) {
 			xmlGenericError(xmlGenericErrorContext,
 				"xmlXPathCompOpEval: parameter error\n");
 			ctxt->error = XPATH_INVALID_OPERAND;
+                        xmlXPathPopFrame(ctxt, frame);
 			return (total);
 		    }
+                }
                 if (op->cache != NULL)
                     XML_CAST_FPTR(func) = op->cache;
                 else {
@@ -13409,6 +13463,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             xmlGenericError(xmlGenericErrorContext,
             "xmlXPathCompOpEval: function %s bound to undefined prefix %s\n",
                                     (char *)op->value4, (char *)op->value5);
+                            xmlXPathPopFrame(ctxt, frame);
                             return (total);
                         }
                         func = xmlXPathFunctionLookupNS(ctxt->context,
@@ -13430,6 +13485,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 func(ctxt, op->value);
                 ctxt->context->function = oldFunc;
                 ctxt->context->functionURI = oldFuncURI;
+                xmlXPathPopFrame(ctxt, frame);
                 return (total);
             }
         case XPATH_OP_ARG:
@@ -14333,6 +14389,7 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt, int toBool)
 	ctxt->valueNr = 0;
 	ctxt->valueMax = 10;
 	ctxt->value = NULL;
+        ctxt->valueFrame = 0;
     }
 #ifdef XPATH_STREAMING
     if (ctxt->comp->stream) {

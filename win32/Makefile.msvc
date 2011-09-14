@@ -75,7 +75,9 @@ LIBS = $(LIBS) iconv.lib
 LIBS = $(LIBS) icu.lib
 !endif
 !if "$(WITH_ZLIB)" == "1"
-LIBS = $(LIBS) zdll.lib
+# could be named differently zdll or zlib
+# LIBS = $(LIBS) zdll.lib
+LIBS = $(LIBS) zlib.lib
 !endif
 !if "$(WITH_THREADS)" == "posix"
 LIBS = $(LIBS) pthreadVC.lib

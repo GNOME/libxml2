@@ -269,8 +269,8 @@ function discoverVersion()
 		vf.WriteLine("CRUNTIME=" + cruntime);
 		vf.WriteLine("VCMANIFEST=" + (vcmanifest? "1" : "0"));
 	} else if (compiler == "mingw") {
-		vf.WriteLine("INCLUDE+=;" + buildInclude);
-		vf.WriteLine("LIB+=;" + buildLib);
+		vf.WriteLine("INCLUDE+= -I" + buildInclude);
+		vf.WriteLine("LIB+= -L" + buildLib);
 	} else if (compiler == "bcb") {
 		vf.WriteLine("INCLUDE=" + buildInclude);
 		vf.WriteLine("LIB=" + buildLib);
@@ -579,7 +579,7 @@ if (buildIncPrefix == "")
 if (buildLibPrefix == "")
 	buildLibPrefix = "$(PREFIX)" + dirSep + "lib";
 if (buildSoPrefix == "")
-	buildSoPrefix = "$(PREFIX)" + dirSep + "lib";
+	buildSoPrefix = "$(PREFIX)" + dirSep + "bin";
 
 // Discover the version.
 discoverVersion();

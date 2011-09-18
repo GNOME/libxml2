@@ -79,6 +79,9 @@
 #ifdef HAVE_ZLIB_H
 #include <zlib.h>
 #endif
+#ifdef HAVE_LZMA_H
+#include <lzma.h>
+#endif
 
 static void
 xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info);
@@ -951,6 +954,12 @@ xmlHasFeature(xmlFeature feature)
 #endif
         case XML_WITH_ZLIB:
 #ifdef LIBXML_ZLIB_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
+        case XML_WITH_LZMA:
+#ifdef LIBXML_LZMA_ENABLED
             return(1);
 #else
             return(0);

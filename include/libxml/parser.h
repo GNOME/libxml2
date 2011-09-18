@@ -1224,6 +1224,7 @@ typedef enum {
     XML_WITH_DEBUG_RUN = 30,
     XML_WITH_ZLIB = 31,
     XML_WITH_ICU = 32,
+    XML_WITH_LZMA = 33,
     XML_WITH_NONE = 99999 /* just to be sure of allocation size */
 } xmlFeature;
 

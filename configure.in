@@ -197,6 +197,14 @@ AC_ARG_WITH(zlib,
     LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
 ])
+AC_ARG_WITH(lzma,
+[  --with-lzma[[=DIR]]       use liblzma in DIR],[
+  if test "$withval" != "no" -a "$withval" != "yes"; then
+    LZMA_DIR=$withval
+    CPPFLAGS="${CPPFLAGS} -I$withval/include"
+    LDFLAGS="${LDFLAGS} -L$withval/lib"
+  fi
+])
 AC_ARG_WITH(coverage,
 [  --with-coverage         build for code coverage with GCC (off)])
 
@@ -398,6 +406,30 @@ fi
 AC_SUBST(Z_CFLAGS)
 AC_SUBST(Z_LIBS)
 AC_SUBST(WITH_ZLIB)
+
+echo Checking lzma
+
+dnl Checks for lzma library.
+
+WITH_LZMA=0
+if test "$with_lzma" = "no"; then
+    echo "Disabling compression support"
+else
+    AC_CHECK_HEADERS(lzma.h,
+	AC_CHECK_LIB(lzma, lzma_code,[
+	    AC_DEFINE([HAVE_LIBLZMA], [1], [Have compression library])
+	    WITH_LZMA=1
+	    if test "x${LZMA_DIR}" != "x"; then
+		LZMA_CFLAGS="-I${LZMA_DIR}/include"
+		LZMA_LIBS="-L${LZMA_DIR}/lib -llzma"
+	    else
+		LZMA_LIBS="-llzma"
+	    fi]))
+fi
+
+AC_SUBST(LZMA_CFLAGS)
+AC_SUBST(LZMA_LIBS)
+AC_SUBST(WITH_LZMA)
 
 CPPFLAGS=${_cppflags}
 LDFLAGS=${_ldflags}

@@ -1453,6 +1453,7 @@
     <function name="XML_WITH_XPATH" link="libxml2-parser.html#XML_WITH_XPATH"/>
     <function name="XML_WITH_XPTR" link="libxml2-parser.html#XML_WITH_XPTR"/>
     <function name="XML_WITH_ZLIB" link="libxml2-parser.html#XML_WITH_ZLIB"/>
+    <function name="XML_WITH_LZMA" link="libxml2-parser.html#XML_WITH_LZMA"/>
     <function name="XML_XINCLUDE_BUILD_FAILED" link="libxml2-xmlerror.html#XML_XINCLUDE_BUILD_FAILED"/>
     <function name="XML_XINCLUDE_DEPRECATED_NS" link="libxml2-xmlerror.html#XML_XINCLUDE_DEPRECATED_NS"/>
     <function name="XML_XINCLUDE_END" link="libxml2-tree.html#XML_XINCLUDE_END"/>

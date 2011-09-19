@@ -746,6 +746,7 @@
      <exports symbol='XML_WITH_DEBUG_MEM' type='enum'/>
      <exports symbol='XML_PARSE_HUGE' type='enum'/>
      <exports symbol='XML_WITH_ZLIB' type='enum'/>
+     <exports symbol='XML_WITH_LZMA' type='enum'/>
      <exports symbol='XML_PARSER_START_TAG' type='enum'/>
      <exports symbol='XML_PARSER_IGNORE' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
@@ -5760,6 +5761,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_WITH_XPATH' file='parser' value='16' type='xmlFeature'/>
     <enum name='XML_WITH_XPTR' file='parser' value='17' type='xmlFeature'/>
     <enum name='XML_WITH_ZLIB' file='parser' value='31' type='xmlFeature'/>
+    <enum name='XML_WITH_LZMA' file='parser' value='33' type='xmlFeature'/>
     <enum name='XML_XINCLUDE_BUILD_FAILED' file='xmlerror' value='1609' type='xmlParserErrors' info='1609'/>
     <enum name='XML_XINCLUDE_DEPRECATED_NS' file='xmlerror' value='1617' type='xmlParserErrors' info='1617'/>
     <enum name='XML_XINCLUDE_END' file='tree' value='20' type='xmlElementType'/>

@@ -1335,6 +1335,7 @@
     <reference name='XML_WITH_ICU' href='html/libxml-parser.html#XML_WITH_ICU'/>
     <reference name='XML_WITH_ISO8859X' href='html/libxml-parser.html#XML_WITH_ISO8859X'/>
     <reference name='XML_WITH_LEGACY' href='html/libxml-parser.html#XML_WITH_LEGACY'/>
+    <reference name='XML_WITH_LZMA' href='html/libxml-parser.html#XML_WITH_LZMA'/>
     <reference name='XML_WITH_MODULES' href='html/libxml-parser.html#XML_WITH_MODULES'/>
     <reference name='XML_WITH_NONE' href='html/libxml-parser.html#XML_WITH_NONE'/>
     <reference name='XML_WITH_OUTPUT' href='html/libxml-parser.html#XML_WITH_OUTPUT'/>
@@ -4899,6 +4900,7 @@
       <ref name='XML_WITH_ICU'/>
       <ref name='XML_WITH_ISO8859X'/>
       <ref name='XML_WITH_LEGACY'/>
+      <ref name='XML_WITH_LZMA'/>
       <ref name='XML_WITH_MODULES'/>
       <ref name='XML_WITH_NONE'/>
       <ref name='XML_WITH_OUTPUT'/>
@@ -11297,6 +11299,7 @@
       <ref name='XML_WITH_ICU'/>
       <ref name='XML_WITH_ISO8859X'/>
       <ref name='XML_WITH_LEGACY'/>
+      <ref name='XML_WITH_LZMA'/>
       <ref name='XML_WITH_MODULES'/>
       <ref name='XML_WITH_NONE'/>
       <ref name='XML_WITH_OUTPUT'/>

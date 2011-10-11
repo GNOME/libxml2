@@ -2485,6 +2485,7 @@ valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
                                              sizeof(ctxt->valueTab[0]));
         if (tmp == NULL) {
             xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            ctxt->error = XPATH_MEMORY_ERROR;
             return (0);
         }
         ctxt->valueMax *= 2;
@@ -9340,6 +9341,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		if ( (ch & 0xc0) != 0xc0 ) {
 		    xmlGenericError(xmlGenericErrorContext,
 			"xmlXPathTranslateFunction: Invalid UTF8 string\n");
+                    /* not asserting an XPath error is probably better */
 		    break;
 		}
 		/* then skip over remaining bytes for this char */
@@ -9347,6 +9349,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		    if ( (*cptr++ & 0xc0) != 0x80 ) {
 			xmlGenericError(xmlGenericErrorContext,
 			    "xmlXPathTranslateFunction: Invalid UTF8 string\n");
+                        /* not asserting an XPath error is probably better */
 			break;
 		    }
 		if (ch & 0x80) /* must have had error encountered */
@@ -13410,6 +13413,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                         xmlGenericError(xmlGenericErrorContext,
             "xmlXPathCompOpEval: variable %s bound to undefined prefix %s\n",
                                     (char *) op->value4, (char *)op->value5);
+                        ctxt->error = XPATH_UNDEF_PREFIX_ERROR;
                         return (total);
                     }
 		    val = xmlXPathVariableLookupNS(ctxt->context,
@@ -13464,6 +13468,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             "xmlXPathCompOpEval: function %s bound to undefined prefix %s\n",
                                     (char *)op->value4, (char *)op->value5);
                             xmlXPathPopFrame(ctxt, frame);
+                            ctxt->error = XPATH_UNDEF_PREFIX_ERROR;
                             return (total);
                         }
                         func = xmlXPathFunctionLookupNS(ctxt->context,
@@ -14042,6 +14047,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
     }
     xmlGenericError(xmlGenericErrorContext,
                     "XPath: unknown precompiled operation %d\n", op->op);
+    ctxt->error = XPATH_INVALID_OPERAND;
     return (total);
 }
 

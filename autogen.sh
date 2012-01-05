@@ -41,7 +41,7 @@ test -f entities.c || {
 	exit 1
 }
 
-if test -z "$*"; then
+if test -z "$NOCONFIGURE" && test -z "$*"; then
 	echo "I am going to run ./configure with no arguments - if you wish "
         echo "to pass any to it, please specify them on the $0 command line."
 fi
@@ -64,7 +64,9 @@ if test x$OBJ_DIR != x; then
     cd "$OBJ_DIR"
 fi
 
-$srcdir/configure "$@"
+if test -z "$NOCONFIGURE"; then
+    $srcdir/configure "$@"
 
-echo 
-echo "Now type 'make' to compile libxml."
+    echo 
+    echo "Now type 'make' to compile libxml."
+fi

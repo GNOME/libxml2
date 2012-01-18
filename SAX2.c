@@ -2242,7 +2242,7 @@ xmlSAX2StartElementNs(void *ctx,
 	}
     }
 
-    if ((ctxt->myDoc->children == NULL) || (parent == NULL)) {
+    if (parent == NULL) {
         xmlAddChild((xmlNodePtr) ctxt->myDoc, (xmlNodePtr) ret);
     }
     /*
@@ -2640,7 +2640,7 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
 	xmlAddChild((xmlNodePtr) ctxt->myDoc->extSubset, ret);
 	return;
     }
-    if ((ctxt->myDoc->children == NULL) || (parent == NULL)) {
+    if (parent == NULL) {
 #ifdef DEBUG_SAX_TREE
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Setting PI %s as root\n", target);
@@ -2701,7 +2701,7 @@ xmlSAX2Comment(void *ctx, const xmlChar *value)
 	xmlAddChild((xmlNodePtr) ctxt->myDoc->extSubset, ret);
 	return;
     }
-    if ((ctxt->myDoc->children == NULL) || (parent == NULL)) {
+    if (parent == NULL) {
 #ifdef DEBUG_SAX_TREE
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Setting xmlSAX2Comment as root\n");

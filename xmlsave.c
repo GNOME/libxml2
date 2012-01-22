@@ -248,7 +248,7 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
 	    /*
 	     * We assume we have UTF-8 input.
 	     */
-	    if (outend - out < 10) break;
+	    if (outend - out < 11) break;
 
 	    if (*in < 0xC0) {
 		xmlSaveErr(XML_SAVE_NOT_UTF8, NULL, NULL);
@@ -2002,7 +2002,7 @@ xmlAttrSerializeTxtContent(xmlBufferPtr buf, xmlDocPtr doc,
             /*
              * We assume we have UTF-8 content.
              */
-            unsigned char tmp[10];
+            unsigned char tmp[12];
             int val = 0, l = 1;
 
             if (base != cur)

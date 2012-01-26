@@ -3732,6 +3732,8 @@ xmlFreeNode(xmlNodePtr cur) {
  * @cur:  the node
  *
  * Unlink a node from it's current context, the node is not freed
+ * If one need to free the node, use xmlNodeFree() routine after the
+ * unlink.
  */
 void
 xmlUnlinkNode(xmlNodePtr cur) {

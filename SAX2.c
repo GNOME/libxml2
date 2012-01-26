@@ -2163,6 +2163,7 @@ xmlSAX2StartElementNs(void *ctx,
     xmlNodePtr parent;
     xmlNsPtr last = NULL, ns;
     const xmlChar *uri, *pref;
+    xmlChar *lname = NULL;
     int i, j;
 
     if (ctx == NULL) return;
@@ -2182,6 +2183,20 @@ xmlSAX2StartElementNs(void *ctx,
     }
 
     /*
+     * Take care of the rare case of an undefined namespace prefix
+     */
+    if ((prefix != NULL) && (URI == NULL)) {
+        if (ctxt->dictNames) {
+	    const xmlChar *fullname;
+
+	    fullname = xmlDictQLookup(ctxt->dict, prefix, localname);
+	    if (fullname != NULL)
+	        localname = fullname;
+	} else {
+	    lname = xmlBuildQName(localname, prefix, NULL, 0);
+	}
+    }
+    /*
      * allocate the node
      */
     if (ctxt->freeElems != NULL) {
@@ -2194,7 +2209,10 @@ xmlSAX2StartElementNs(void *ctx,
 	if (ctxt->dictNames)
 	    ret->name = localname;
 	else {
-	    ret->name = xmlStrdup(localname);
+	    if (lname == NULL)
+		ret->name = xmlStrdup(localname);
+	    else
+	        ret->name = lname;
 	    if (ret->name == NULL) {
 	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 		return;
@@ -2206,8 +2224,11 @@ xmlSAX2StartElementNs(void *ctx,
 	if (ctxt->dictNames)
 	    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, 
 	                               (xmlChar *) localname, NULL);
-	else
+	else if (lname == NULL)
 	    ret = xmlNewDocNode(ctxt->myDoc, NULL, localname, NULL);
+	else
+	    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, 
+	                               (xmlChar *) lname, NULL);
 	if (ret == NULL) {
 	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 	    return;

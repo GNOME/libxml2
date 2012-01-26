@@ -1315,7 +1315,7 @@ xmlGzfileClose (void * context) {
  *		I/O for compressed file accesses			*
  *									*
  ************************************************************************/
-#include "xzlib.c"
+#include "xzlib.h"
 /**
  * xmlXzfileMatch:
  * @filename:  the URI for matching
@@ -1344,7 +1344,7 @@ xmlXzfileOpen_real (const char *filename) {
     xzFile fd;
 
     if (!strcmp(filename, "-")) {
-        fd = xzdopen(dup(0), "rb");
+        fd = __libxml2_xzdopen(dup(0), "rb");
 	return((void *) fd);
     }
 
@@ -1363,7 +1363,7 @@ xmlXzfileOpen_real (const char *filename) {
     if (!xmlCheckFilename(path))
         return(NULL);
 
-    fd = xzopen(path, "rb");
+    fd = __libxml2_xzopen(path, "rb");
     return((void *) fd);
 }
 
@@ -1407,7 +1407,7 @@ static int
 xmlXzfileRead (void * context, char * buffer, int len) {
     int ret;
 
-    ret = xzread((xzFile) context, &buffer[0], len);
+    ret = __libxml2_xzread((xzFile) context, &buffer[0], len);
     if (ret < 0) xmlIOErr(0, "xzread()");
     return(ret);
 }
@@ -1422,7 +1422,7 @@ static int
 xmlXzfileClose (void * context) {
     int ret;
 
-    ret =  (xzclose((xzFile) context) == LZMA_OK ) ? 0 : -1;
+    ret =  (__libxml2_xzclose((xzFile) context) == LZMA_OK ) ? 0 : -1;
     if (ret < 0) xmlIOErr(0, "xzclose()");
     return(ret);
 }

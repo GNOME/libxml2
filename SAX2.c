@@ -2335,8 +2335,33 @@ xmlSAX2StartElementNs(void *ctx,
      */
     if (nb_attributes > 0) {
         for (j = 0,i = 0;i < nb_attributes;i++,j+=5) {
+	    /*
+	     * Handle the rare case of an undefined atribute prefix
+	     */
+	    if ((attributes[j+1] != NULL) && (attributes[j+2] == NULL)) {
+		if (ctxt->dictNames) {
+		    const xmlChar *fullname;
+
+		    fullname = xmlDictQLookup(ctxt->dict, attributes[j+1],
+		                              attributes[j]);
+		    if (fullname != NULL) {
+			xmlSAX2AttributeNs(ctxt, fullname, NULL,
+			                   attributes[j+3], attributes[j+4]);
+		        continue;
+		    }
+		} else {
+		    lname = xmlBuildQName(attributes[j], attributes[j+1],
+		                          NULL, 0);
+		    if (lname != NULL) {
+			xmlSAX2AttributeNs(ctxt, lname, NULL,
+			                   attributes[j+3], attributes[j+4]);
+			xmlFree(lname);
+		        continue;
+		    }
+		}
+	    }
 	    xmlSAX2AttributeNs(ctxt, attributes[j], attributes[j+1],
-	                       attributes[j+3], attributes[j+4]);
+			       attributes[j+3], attributes[j+4]);
 	}
     }
 

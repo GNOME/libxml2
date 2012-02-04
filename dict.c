@@ -2,7 +2,7 @@
  * dict.c: dictionary of reusable strings, just used to avoid allocation
  *         and freeing operations.
  *
- * Copyright (C) 2003 Daniel Veillard.
+ * Copyright (C) 2003-2012 Daniel Veillard.
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,6 +18,28 @@
 
 #define IN_LIBXML
 #include "libxml.h"
+
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+#ifdef HAVE_TIME_H
+#include <time.h>
+#endif
+
+/*
+ * Following http://www.ocert.org/advisories/ocert-2011-003.html
+ * it seems that having hash randomization might be a good idea
+ * when using XML with untrusted data
+ * Note1: that it works correctly only if compiled with WITH_BIG_KEY
+ *  which is the default.
+ * Note2: the fast function used for a small dict won't protect very
+ *  well but since the attack is based on growing a very big hash
+ *  list we will use the BigKey algo as soon as the hash size grows
+ *  over MIN_DICT_SIZE so this actually works
+ */
+#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME)
+#define DICT_RANDOMIZATION
+#endif
 
 #include <string.h>
 #ifdef HAVE_STDINT_H
@@ -44,23 +66,23 @@ typedef unsigned __int32 uint32_t;
 #define WITH_BIG_KEY
 
 #ifdef WITH_BIG_KEY
-#define xmlDictComputeKey(dict, name, len)			\
-    (((dict)->size == MIN_DICT_SIZE) ?				\
-     xmlDictComputeFastKey(name, len) :				\
-     xmlDictComputeBigKey(name, len))
+#define xmlDictComputeKey(dict, name, len)                              \
+    (((dict)->size == MIN_DICT_SIZE) ?                                  \
+     xmlDictComputeFastKey(name, len, (dict)->seed) :                   \
+     xmlDictComputeBigKey(name, len, (dict)->seed))
 
-#define xmlDictComputeQKey(dict, prefix, plen, name, len)	\
-    (((prefix) == NULL) ?					\
-      (xmlDictComputeKey(dict, name, len)) :			\
-      (((dict)->size == MIN_DICT_SIZE) ?			\
-       xmlDictComputeFastQKey(prefix, plen, name, len) :	\
-       xmlDictComputeBigQKey(prefix, plen, name, len)))
+#define xmlDictComputeQKey(dict, prefix, plen, name, len)               \
+    (((prefix) == NULL) ?                                               \
+      (xmlDictComputeKey(dict, name, len)) :                             \
+      (((dict)->size == MIN_DICT_SIZE) ?                                \
+       xmlDictComputeFastQKey(prefix, plen, name, len, (dict)->seed) :	\
+       xmlDictComputeBigQKey(prefix, plen, name, len, (dict)->seed)))
 
 #else /* !WITH_BIG_KEY */
-#define xmlDictComputeKey(dict, name, len)			\
-        xmlDictComputeFastKey(name, len)
-#define xmlDictComputeQKey(dict, prefix, plen, name, len)	\
-        xmlDictComputeFastQKey(prefix, plen, name, len)
+#define xmlDictComputeKey(dict, name, len)                              \
+        xmlDictComputeFastKey(name, len, (dict)->seed)
+#define xmlDictComputeQKey(dict, prefix, plen, name, len)               \
+        xmlDictComputeFastQKey(prefix, plen, name, len, (dict)->seed)
 #endif /* WITH_BIG_KEY */
 
 /*
@@ -98,6 +120,8 @@ struct _xmlDict {
     xmlDictStringsPtr strings;
 
     struct _xmlDict *subdict;
+    /* used for randomization */
+    int seed;
 };
 
 /*
@@ -125,6 +149,9 @@ static int xmlInitializeDict(void) {
     if ((xmlDictMutex = xmlNewRMutex()) == NULL)
         return(0);
 
+#ifdef DICT_RANDOMIZATION
+    srand(time(NULL));
+#endif
     xmlDictInitialized = 1;
     return(1);
 }
@@ -277,13 +304,13 @@ found_pool:
  */
 
 static uint32_t
-xmlDictComputeBigKey(const xmlChar* data, int namelen) {
+xmlDictComputeBigKey(const xmlChar* data, int namelen, int seed) {
     uint32_t hash;
     int i;
 
     if (namelen <= 0 || data == NULL) return(0);
 
-    hash = 0;
+    hash = seed;
 
     for (i = 0;i < namelen; i++) {
         hash += data[i];
@@ -310,12 +337,12 @@ xmlDictComputeBigKey(const xmlChar* data, int namelen) {
  */
 static unsigned long
 xmlDictComputeBigQKey(const xmlChar *prefix, int plen,
-                      const xmlChar *name, int len)
+                      const xmlChar *name, int len, int seed)
 {
     uint32_t hash;
     int i;
 
-    hash = 0;
+    hash = seed;
 
     for (i = 0;i < plen; i++) {
         hash += prefix[i];
@@ -346,8 +373,8 @@ xmlDictComputeBigQKey(const xmlChar *prefix, int plen,
  * for low hash table fill.
  */
 static unsigned long
-xmlDictComputeFastKey(const xmlChar *name, int namelen) {
-    unsigned long value = 0L;
+xmlDictComputeFastKey(const xmlChar *name, int namelen, int seed) {
+    unsigned long value = seed;
 
     if (name == NULL) return(0);
     value = *name;
@@ -381,9 +408,9 @@ xmlDictComputeFastKey(const xmlChar *name, int namelen) {
  */
 static unsigned long
 xmlDictComputeFastQKey(const xmlChar *prefix, int plen,
-                       const xmlChar *name, int len)
+                       const xmlChar *name, int len, int seed)
 {
-    unsigned long value = 0L;
+    unsigned long value = (unsigned long) seed;
 
     if (plen == 0)
 	value += 30 * (unsigned long) ':';
@@ -460,6 +487,11 @@ xmlDictCreate(void) {
 	dict->subdict = NULL;
         if (dict->dict) {
 	    memset(dict->dict, 0, MIN_DICT_SIZE * sizeof(xmlDictEntry));
+#ifdef DICT_RANDOMIZATION
+            dict->seed = rand();
+#else
+            dict->seed = 0;
+#endif
 	    return(dict);
         }
         xmlFree(dict);
@@ -486,6 +518,7 @@ xmlDictCreateSub(xmlDictPtr sub) {
 #ifdef DICT_DEBUG_PATTERNS
         fprintf(stderr, "R");
 #endif
+        dict->seed = sub->seed;
         dict->subdict = sub;
 	xmlDictReference(dict->subdict);
     }

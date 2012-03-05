@@ -305,7 +305,8 @@ xmlNewPatParserContext(const xmlChar *pattern, xmlDictPtr dict,
     cur->base = pattern;
     if (namespaces != NULL) {
         int i;
-	for (i = 0;namespaces[2 * i] != NULL;i++);
+        for (i = 0;namespaces[2 * i] != NULL;i++)
+            ;
         cur->nb_namespaces = i;
     } else {
         cur->nb_namespaces = 0;

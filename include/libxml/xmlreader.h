@@ -285,6 +285,11 @@ XMLPUBFUN int XMLCALL
 		    xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader,
 						 const char *rng);
 XMLPUBFUN int XMLCALL
+		    xmlTextReaderRelaxNGValidateCtxt(xmlTextReaderPtr reader,
+						 xmlRelaxNGValidCtxtPtr ctxt,
+						 int options);
+
+XMLPUBFUN int XMLCALL
 		    xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader,
 						 xmlRelaxNGPtr schema);
 XMLPUBFUN int XMLCALL

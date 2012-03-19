@@ -22,7 +22,7 @@ that there isn't backward compatibility provided so if the installed
 version is older to the testsuite one, failing to compile or run the tests
 is likely. In any event this won't work with an installed libxml2 older
 than 2.6.20.
-Building on other platfroms should be a matter of compiling the C files
+Building on other platforms should be a matter of compiling the C files
 like any other program using libxml2, running the test should be done
 simply by launching the resulting executables.
 

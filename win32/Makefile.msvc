@@ -58,6 +58,9 @@ CFLAGS = $(CFLAGS) /D "HAVE_PTHREAD_H"
 !if "$(WITH_ZLIB)" == "1"
 CFLAGS = $(CFLAGS) /D "HAVE_ZLIB_H"
 !endif
+!if "$(WITH_LZMA)" == "1"
+CFLAGS = $(CFLAGS) /D "HAVE_LZMA_H"
+!endif
 CFLAGS = $(CFLAGS) /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE
 
 # The linker and its options.
@@ -78,6 +81,9 @@ LIBS = $(LIBS) icu.lib
 # could be named differently zdll or zlib
 # LIBS = $(LIBS) zdll.lib
 LIBS = $(LIBS) zlib.lib
+!endif
+!if "$(WITH_LZMA)" == "1"
+LIBS = $(LIBS) liblzma.lib
 !endif
 !if "$(WITH_THREADS)" == "posix"
 LIBS = $(LIBS) pthreadVC.lib

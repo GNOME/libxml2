@@ -2073,7 +2073,7 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
 #ifdef LIBXML_OUTPUT_ENABLED
             xmlSaveCtxtPtr ctxt;
 
-            if (cur->nodesetval->nodeNr <= 0) {
+            if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
                 fprintf(stderr, "XPath set is empty\n");
                 progresult = XMLLINT_ERR_XPATH;
                 break;

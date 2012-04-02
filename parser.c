@@ -12429,6 +12429,16 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     }
 
     /*
+     * If the user provided its own SAX callbacks then reuse the
+     * useData callback field, otherwise the expected setup in a
+     * DOM builder is to have userData == ctxt
+     */
+    if (ctx->userData == ctx)
+        ctxt->userData = ctxt;
+    else
+        ctxt->userData = ctx->userData;
+
+    /*
      * Doing validity checking on chunk doesn't make sense
      */
     ctxt->instate = XML_PARSER_CONTENT;

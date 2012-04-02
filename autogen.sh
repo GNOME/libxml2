@@ -77,5 +77,5 @@ fi
 if test -z "$NOCONFIGURE"; then
     $srcdir/configure $EXTRA_ARGS "$@"
     echo
-    echo "Now type 'make' to compile libvirt."
+    echo "Now type 'make' to compile libxml2."
 fi

@@ -1140,10 +1140,12 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 			"Non-recoverable errors:  FORMERR, REFUSED, or NOTIMP.";
 		    break;
 
+#ifdef NO_ADDRESS
 		case NO_ADDRESS:
 		    h_err_txt =
 			"Valid name, no data record of requested type.";
 		    break;
+#endif
 
 		default:
 		    h_err_txt = "No error text defined.";

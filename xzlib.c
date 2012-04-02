@@ -50,12 +50,12 @@ typedef struct {
     int fd;                     /* file descriptor */
     char *path;                 /* path or fd for error messages */
     uint64_t pos;               /* current position in uncompressed data */
-    unsigned size;              /* buffer size, zero if not allocated yet */
-    unsigned want;              /* requested buffer size, default is BUFSIZ */
+    unsigned int size;          /* buffer size, zero if not allocated yet */
+    unsigned int want;          /* requested buffer size, default is BUFSIZ */
     unsigned char *in;          /* input buffer */
     unsigned char *out;         /* output buffer (double-sized when reading) */
     unsigned char *next;        /* next output data to deliver or write */
-    unsigned have;              /* amount of output data unused at next */
+    unsigned int have;          /* amount of output data unused at next */
     int eof;                    /* true if end of input file reached */
     uint64_t start;             /* where the lzma data started, for rewinding */
     uint64_t raw;               /* where the raw data started, for seeking */
@@ -200,7 +200,8 @@ __libxml2_xzdopen(int fd, const char *mode)
 }
 
 static int
-xz_load(xz_statep state, unsigned char *buf, unsigned len, unsigned *have)
+xz_load(xz_statep state, unsigned char *buf, unsigned int len,
+        unsigned int *have)
 {
     int ret;
 
@@ -229,7 +230,7 @@ xz_avail(xz_statep state)
         return -1;
     if (state->eof == 0) {
         if (xz_load(state, state->in, state->size,
-                    (unsigned *) &(strm->avail_in)) == -1)
+                    (unsigned int *) &(strm->avail_in)) == -1)
             return -1;
         strm->next_in = state->in;
     }

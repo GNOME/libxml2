@@ -229,9 +229,14 @@ xz_avail(xz_statep state)
     if (state->err != LZMA_OK)
         return -1;
     if (state->eof == 0) {
-        if (xz_load(state, state->in, state->size,
-                    (unsigned int *) &(strm->avail_in)) == -1)
+        /* avail_in is size_t, which is not necessary sizeof(unsigned) */
+        unsigned tmp = strm->avail_in;
+
+        if (xz_load(state, state->in, state->size, &tmp) == -1) {
+            strm->avail_in = tmp;
             return -1;
+        }
+        strm->avail_in = tmp;
         strm->next_in = state->in;
     }
     return 0;

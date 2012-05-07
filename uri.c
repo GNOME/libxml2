@@ -5,6 +5,8 @@
  *
  * See Copyright for the status of this software.
  *
+ * TODO: that module behaves really badly on OOM situation
+ *
  * daniel@veillard.com
  */
 

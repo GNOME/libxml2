@@ -2920,6 +2920,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(ctxt->output, "\t             the default namespace if any uses 'defaultns' prefix\n");
 #endif /* LIBXML_XPATH_ENABLED */
 		  fprintf(ctxt->output, "\tpwd          display current working directory\n");
+		  fprintf(ctxt->output, "\twhereis      display absolute path of [path] or current working directory\n");
 		  fprintf(ctxt->output, "\tquit         leave shell\n");
 #ifdef LIBXML_OUTPUT_ENABLED
 		  fprintf(ctxt->output, "\tsave [name]  save this document to name or the original name\n");
@@ -3113,6 +3114,83 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                                         xmlShellList(ctxt, NULL,
                                                      list->nodesetval->
                                                      nodeTab[indx], NULL);
+                                }
+                                break;
+                            }
+                        case XPATH_BOOLEAN:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is a Boolean\n", arg);
+                            break;
+                        case XPATH_NUMBER:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is a number\n", arg);
+                            break;
+                        case XPATH_STRING:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is a string\n", arg);
+                            break;
+                        case XPATH_POINT:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is a point\n", arg);
+                            break;
+                        case XPATH_RANGE:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is a range\n", arg);
+                            break;
+                        case XPATH_LOCATIONSET:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is a range\n", arg);
+                            break;
+                        case XPATH_USERS:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is user-defined\n", arg);
+                            break;
+                        case XPATH_XSLT_TREE:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s is an XSLT value tree\n",
+                                            arg);
+                            break;
+                    }
+#ifdef LIBXML_XPATH_ENABLED
+                    xmlXPathFreeObject(list);
+#endif
+                } else {
+                    xmlGenericError(xmlGenericErrorContext,
+                                    "%s: no such node\n", arg);
+                }
+                ctxt->pctxt->node = NULL;
+            }
+        } else if (!strcmp(command, "whereis")) {
+            char dir[500];
+
+            if (arg[0] == 0) {
+                if (!xmlShellPwd(ctxt, dir, ctxt->node, NULL))
+                    fprintf(ctxt->output, "%s\n", dir);
+            } else {
+                ctxt->pctxt->node = ctxt->node;
+#ifdef LIBXML_XPATH_ENABLED
+                list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
+#else
+                list = NULL;
+#endif /* LIBXML_XPATH_ENABLED */
+                if (list != NULL) {
+                    switch (list->type) {
+                        case XPATH_UNDEFINED:
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "%s: no such node\n", arg);
+                            break;
+                        case XPATH_NODESET:{
+                                int indx;
+
+				if (list->nodesetval == NULL)
+				    break;
+
+                                for (indx = 0;
+                                     indx < list->nodesetval->nodeNr;
+                                     indx++) {
+                                    if (!xmlShellPwd(ctxt, dir, list->nodesetval->
+                                                     nodeTab[indx], NULL))
+                                        fprintf(ctxt->output, "%s\n", dir);
                                 }
                                 break;
                             }

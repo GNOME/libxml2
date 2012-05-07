@@ -735,7 +735,7 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @info1:  extra information string
  * @info2:  extra information string
  *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
+ * Handle a namespace warning error
  */
 static void
 xmlNsWarn(xmlParserCtxtPtr ctxt, xmlParserErrors error,

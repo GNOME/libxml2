@@ -3888,6 +3888,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     if ((oldname != NULL) && (xmlStrEqual(oldname, name))) {
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, name);
+	htmlNodeInfoPop(ctxt);
         htmlnamePop(ctxt);
         ret = 1;
     } else {
@@ -5176,6 +5177,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
     int avail = 0;
     xmlChar cur, next;
 
+    htmlParserNodeInfo node_info;
+
 #ifdef DEBUG_PUSH
     switch (ctxt->instate) {
 	case XML_PARSER_EOF:
@@ -5492,6 +5495,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
 		    goto done;
 
+                /* Capture start position */
+	        if (ctxt->record_info) {
+	             node_info.begin_pos = ctxt->input->consumed +
+	                                (CUR_PTR - ctxt->input->base);
+	             node_info.begin_line = ctxt->input->line;
+	        }
+
+
 		failed = htmlParseStartTag(ctxt);
 		name = ctxt->name;
 		if ((failed == -1) ||
@@ -5541,6 +5552,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			htmlnamePop(ctxt);
 		    }
 
+		    if (ctxt->record_info)
+		        htmlNodeInfoPush(ctxt, &node_info);
+
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5557,6 +5571,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->sax->endElement(ctxt->userData, name);
 		    htmlnamePop(ctxt);
 		}
+
+                if (ctxt->record_info)
+	            htmlNodeInfoPush(ctxt, &node_info);
+
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		xmlGenericError(xmlGenericErrorContext,

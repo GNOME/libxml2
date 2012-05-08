@@ -1756,7 +1756,6 @@ void
 xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserNodeInfo node_info;
     xmlNodePtr cur;
 
     if (ctx == NULL) return;
@@ -1770,10 +1769,10 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
     
     /* Capture end position and add node */
     if (cur != NULL && ctxt->record_info) {
-      node_info.end_pos = ctxt->input->cur - ctxt->input->base;
-      node_info.end_line = ctxt->input->line;
-      node_info.node = cur;
-      xmlParserAddNodeInfo(ctxt, &node_info);
+      ctxt->nodeInfo->end_pos = ctxt->input->cur - ctxt->input->base;
+      ctxt->nodeInfo->end_line = ctxt->input->line;
+      ctxt->nodeInfo->node = cur;
+      xmlParserAddNodeInfo(ctxt, ctxt->nodeInfo);
     }
     ctxt->nodemem = -1;
 

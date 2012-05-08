@@ -4778,13 +4778,14 @@ get_more:
 		    ctxt->instate = state;
 		    return;
 		}
-		if (buf != NULL)
-		    xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
-		                      "Comment not terminated \n<!--%.50s\n",
+		if (buf != NULL) {
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_HYPHEN_IN_COMMENT,
+		                      "Double hyphen within comment: "
+                                      "<!--%.50s\n",
 				      buf);
-		else
-		    xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
-		                      "Comment not terminated \n", NULL);
+		} else
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_HYPHEN_IN_COMMENT,
+		                      "Double hyphen within comment\n", NULL);
 		in++;
 		ctxt->input->col++;
 	    }

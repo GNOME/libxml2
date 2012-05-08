@@ -510,10 +510,6 @@ AC_CHECK_FUNCS(strftime localtime gettimeofday ftime)
 AC_CHECK_FUNCS(stat _stat signal)
 AC_CHECK_FUNCS(rand srand time)
 
-dnl Checking the standard string functions availability
-AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
-               NEED_TRIO=1)
-
 dnl Checking for va_copy availability
 AC_MSG_CHECKING([for va_copy])
 AC_TRY_LINK([#include <stdarg.h>
@@ -1473,8 +1469,6 @@ case "$host" in
  WIN32_EXTRA_LIBADD="-lws2_32"
  WIN32_EXTRA_LDFLAGS="-no-undefined"
  AC_DEFINE([_WINSOCKAPI_],1,[Using the Win32 Socket implementation])
- AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
- AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])
  if test "${PYTHON}" != ""
  then
    WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython${PYTHON_VERSION//./}"
@@ -1493,6 +1487,20 @@ AC_SUBST(WIN32_EXTRA_LDFLAGS)
 AC_SUBST(WIN32_EXTRA_PYTHON_LIBADD)
 AC_SUBST(CYGWIN_EXTRA_LDFLAGS)
 AC_SUBST(CYGWIN_EXTRA_PYTHON_LIBADD)
+
+dnl Checking the standard string functions availability
+case "$host" in
+ *-*-mingw*)
+ AC_CHECK_FUNCS(printf sprintf fprintf _snprintf vfprintf vsprintf _vsnprintf sscanf,
+               [AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
+                AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])],
+               NEED_TRIO=1)
+ ;;
+ *)
+ AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
+               NEED_TRIO=1)
+ ;;
+esac
 
 if test "$with_coverage" = "yes" -a "${GCC}" = "yes"
 then

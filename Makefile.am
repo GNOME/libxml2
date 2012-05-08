@@ -1231,7 +1231,7 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
 
 tst: tst.c
-	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz
+	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz -llzma
 
 sparse: clean
 	$(MAKE) CC=cgcc

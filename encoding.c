@@ -2161,6 +2161,7 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     int writtentot = 0;
     int toconv;
     int output = 0;
+    int charref_len = 0;
 
     if (handler == NULL) return(-1);
     if (out == NULL) return(-1);
@@ -2242,6 +2243,7 @@ retry:
 		/*
 		 * Can be a limitation of iconv
 		 */
+                charref_len = 0;
 		goto retry;
 	    }
 	    ret = -3;
@@ -2262,6 +2264,7 @@ retry:
 		/*
 		 * Can be a limitation of iconv
 		 */
+                charref_len = 0;
 		goto retry;
 	    }
 	    ret = -3;
@@ -2305,7 +2308,19 @@ retry:
 	    int cur;
 
 	    cur = xmlGetUTF8Char(utf, &len);
-	    if (cur > 0) {
+	    if ((charref_len != 0) && (written < charref_len)) {
+		/*
+		 * We attempted to insert a character reference and failed.
+		 * Undo what was written and skip the remaining charref.
+		 */
+		out->use -= written;
+		writtentot -= written;
+		xmlBufferShrink(in, charref_len - written);
+		charref_len = 0;
+
+		ret = -1;
+                break;
+	    } else if (cur > 0) {
 		xmlChar charref[20];
 
 #ifdef DEBUG_ENCODING
@@ -2321,7 +2336,8 @@ retry:
 		 * and continue the transcoding phase, hoping the error
 		 * did not mangle the encoder state.
 		 */
-		snprintf((char *) &charref[0], sizeof(charref), "&#%d;", cur);
+		charref_len = snprintf((char *) &charref[0], sizeof(charref),
+				 "&#%d;", cur);
 		xmlBufferShrink(in, len);
 		xmlBufferAddHead(in, charref, -1);
 

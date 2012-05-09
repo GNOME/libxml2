@@ -944,22 +944,30 @@ if test "$with_threads" = "no" ; then
     echo Disabling multithreaded support
 else
     echo Enabling multithreaded support
-    dnl Use pthread by default
-    if test "$with_threads" = "pthread" || test "$with_threads" = "" || test "$with_threads" = "yes" ; then
-        AC_CHECK_HEADER(pthread.h,
-	    AC_CHECK_LIB(pthread, pthread_join,[
-	       THREAD_LIBS="-lpthread"
-	       AC_DEFINE([HAVE_LIBPTHREAD], [], [Define if pthread library is there (-lpthread)])
-	       AC_DEFINE([HAVE_PTHREAD_H], [], [Define if <pthread.h> is there])
-	       WITH_THREADS="1"]))
-    fi
+
+    dnl Default to native threads on Win32
     case $host_os in
-       *mingw32*) if test "$THREAD_LIBS" != "-lpthread"; then
+       *mingw32*) if test "$with_threads" != "pthread" && test "$with_threads" != "no"; then
                WITH_THREADS="1"
                THREADS_W32="Win32"
-	       THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
+               THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
            fi
        ;;
+    esac
+
+    dnl Use pthread by default in other cases
+    if test -z "$THREADS_W32"; then
+        if test "$with_threads" = "pthread" || test "$with_threads" = "" || test "$with_threads" = "yes" ; then
+            AC_CHECK_HEADER(pthread.h,
+                AC_CHECK_LIB(pthread, pthread_join,[
+                THREAD_LIBS="-lpthread"
+                AC_DEFINE([HAVE_LIBPTHREAD], [], [Define if pthread library is there (-lpthread)])
+                AC_DEFINE([HAVE_PTHREAD_H], [], [Define if <pthread.h> is there])
+                WITH_THREADS="1"]))
+        fi
+    fi
+
+    case $host_os in
        *cygwin*) THREAD_LIBS=""
        ;;
        *beos*) WITH_THREADS="1"

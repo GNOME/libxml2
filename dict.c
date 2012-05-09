@@ -46,9 +46,11 @@
 #include <stdint.h>
 #else
 #ifdef HAVE_INTTYPES_H
+#ifdef HAVE_STDINT_H
 #include <inttypes.h>
 #elif defined(WIN32)
 typedef unsigned __int32 uint32_t;
+#endif
 #endif
 #endif
 #include <libxml/tree.h>

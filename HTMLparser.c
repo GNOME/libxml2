@@ -5343,10 +5343,23 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    avail = in->length - (in->cur - in->base);
 		else
 		    avail = in->buf->buffer->use - (in->cur - in->base);
-		if (avail < 2)
+		/*
+		 * no chars in buffer
+		 */
+		if (avail < 1)
 		    goto done;
+		/*
+		 * not enouth chars in buffer
+		 */
+		if (avail < 2) {
+		    if (!terminate)
+			goto done;
+		    else
+			next = ' ';
+		} else {
+		    next = in->cur[1];
+		}
 		cur = in->cur[0];
-		next = in->cur[1];
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
@@ -5496,8 +5509,22 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		int failed;
 		const htmlElemDesc * info;
 
-		if (avail < 2)
+		/*
+		 * no chars in buffer
+		 */
+		if (avail < 1)
 		    goto done;
+		/*
+		 * not enouth chars in buffer
+		 */
+		if (avail < 2) {
+		    if (!terminate)
+			goto done;
+		    else
+			next = ' ';
+		} else {
+		    next = in->cur[1];
+		}
 		cur = in->cur[0];
 	        if (cur != '<') {
 		    ctxt->instate = XML_PARSER_CONTENT;
@@ -5507,7 +5534,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
 		    break;
 		}
-		if (in->cur[1] == '/') {
+		if (next == '/') {
 		    ctxt->instate = XML_PARSER_END_TAG;
 		    ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH

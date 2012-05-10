@@ -29,7 +29,7 @@ else if test -d .svn ; then
       LIBXML_VERSION_EXTRA="-SVN$extra"
   fi
 else if test -d .git ; then
-  extra=`git describe | sed 's+LIBXML[[0-9.]]*-++'`
+  extra=`git describe 2>/dev/null | sed 's+LIBXML[[0-9.]]*-++'`
   echo extra=$extra
   if test "$extra" != ""
   then

@@ -6587,6 +6587,10 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 	ctxt->options |= HTML_PARSE_IGNORE_ENC;
         options -= HTML_PARSE_IGNORE_ENC;
     }
+    if (options & HTML_PARSE_NOIMPLIED) {
+        ctxt->options |= HTML_PARSE_NOIMPLIED;
+        options -= HTML_PARSE_NOIMPLIED;
+    }
     ctxt->dictNames = 0;
     return (options);
 }

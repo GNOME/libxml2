@@ -1,9 +1,6 @@
 *.o
 *.lo
-*.xml
 *.log
-*.rng
-*.html
 *.patch
 .deps
 .libs

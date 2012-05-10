@@ -727,7 +727,7 @@ static const char* const map_contents[] = { BLOCK, "area", NULL } ;
 static const char* const name_attr[] = { "name", NULL } ;
 static const char* const action_attr[] = { "action", NULL } ;
 static const char* const blockli_elt[] = { BLOCK, "li", NULL } ;
-static const char* const meta_attrs[] = { I18N, "http-equiv", "name", "scheme", NULL } ;
+static const char* const meta_attrs[] = { I18N, "http-equiv", "name", "scheme", "charset", NULL } ;
 static const char* const content_attr[] = { "content", NULL } ;
 static const char* const type_attr[] = { "type", NULL } ;
 static const char* const noframes_content[] = { "body", FLOW MODIFIER, NULL } ;
@@ -3435,20 +3435,19 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
 }
 
 /**
- * htmlCheckEncoding:
+ * htmlCheckEncodingDirect:
  * @ctxt:  an HTML parser context
  * @attvalue: the attribute value
  *
- * Checks an http-equiv attribute from a Meta tag to detect
+ * Checks an attribute value to detect
  * the encoding
  * If a new encoding is detected the parser is switched to decode
  * it and pass UTF8
  */
 static void
-htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
-    const xmlChar *encoding;
+htmlCheckEncodingDirect(htmlParserCtxtPtr ctxt, const xmlChar *encoding) {
 
-    if ((ctxt == NULL) || (attvalue == NULL) ||
+    if ((ctxt == NULL) || (encoding == NULL) ||
         (ctxt->options & HTML_PARSE_IGNORE_ENC))
 	return;
 
@@ -3456,14 +3455,6 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
     if (ctxt->input->encoding != NULL)
         return;
 
-    encoding = xmlStrcasestr(attvalue, BAD_CAST"charset=");
-    if (encoding != NULL) {
-	encoding += 8;
-    } else {
-	encoding = xmlStrcasestr(attvalue, BAD_CAST"charset =");
-	if (encoding != NULL)
-	    encoding += 9;
-    }
     if (encoding != NULL) {
 	xmlCharEncoding enc;
 	xmlCharEncodingHandlerPtr handler;
@@ -3536,6 +3527,38 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
 }
 
 /**
+ * htmlCheckEncoding:
+ * @ctxt:  an HTML parser context
+ * @attvalue: the attribute value
+ *
+ * Checks an http-equiv attribute from a Meta tag to detect
+ * the encoding
+ * If a new encoding is detected the parser is switched to decode
+ * it and pass UTF8
+ */
+static void
+htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
+    const xmlChar *encoding;
+
+    if (!attvalue)
+	return;
+
+    encoding = xmlStrcasestr(attvalue, BAD_CAST"charset");
+    if (encoding != NULL) {
+	encoding += 7;
+    }
+    /*
+     * skip blank
+     */
+    if (encoding && IS_BLANK_CH(*encoding))
+	encoding = xmlStrcasestr(attvalue, BAD_CAST"=");
+    if (encoding && *encoding == '=') {
+	encoding ++;
+	htmlCheckEncodingDirect(ctxt, encoding);
+    }
+}
+
+/**
  * htmlCheckMeta:
  * @ctxt:  an HTML parser context
  * @atts:  the attributes values
@@ -3559,6 +3582,8 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
 	if ((value != NULL) && (!xmlStrcasecmp(att, BAD_CAST"http-equiv"))
 	 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 	    http = 1;
+	else if ((value != NULL) && (!xmlStrcasecmp(att, BAD_CAST"charset")))
+	    htmlCheckEncodingDirect(ctxt, value);
 	else if ((value != NULL) && (!xmlStrcasecmp(att, BAD_CAST"content")))
 	    content = value;
 	att = atts[i++];

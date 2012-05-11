@@ -5625,7 +5625,7 @@ xmlReaderNewIO(xmlTextReaderPtr reader, xmlInputReadCallback ioread,
     if (input == NULL) {
         if (ioclose != NULL)
             ioclose(ioctx);
-        return (NULL);
+        return (-1);
     }
     return (xmlTextReaderSetup(reader, input, URL, encoding, options));
 }

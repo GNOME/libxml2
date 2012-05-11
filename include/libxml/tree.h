@@ -694,6 +694,8 @@ XMLPUBFUN void XMLCALL
 		xmlBufferEmpty		(xmlBufferPtr buf);
 XMLPUBFUN const xmlChar* XMLCALL	
 		xmlBufferContent	(const xmlBufferPtr buf);
+XMLPUBFUN xmlChar* XMLCALL
+		xmlBufferDetach         (const xmlBufferPtr buf);
 XMLPUBFUN void XMLCALL		
 		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
 					 xmlBufferAllocationScheme scheme);

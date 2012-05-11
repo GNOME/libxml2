@@ -1261,8 +1261,12 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
     const xmlChar *cur = value, *end = cur + len;
     const xmlChar *q;
     xmlEntityPtr ent;
+    xmlBufferPtr buffer;
 
     if (value == NULL) return(NULL);
+
+    buffer = xmlBufferCreateSize(0);
+    if (buffer == NULL) return(NULL);
 
     q = cur;
     while ((cur < end) && (*cur != 0)) {
@@ -1274,19 +1278,8 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 	     * Save the current text.
 	     */
             if (cur != q) {
-		if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
-		    xmlNodeAddContentLen(last, q, cur - q);
-		} else {
-		    node = xmlNewDocTextLen(doc, q, cur - q);
-		    if (node == NULL) return(ret);
-		    if (last == NULL)
-			last = ret = node;
-		    else {
-			last->next = node;
-			node->prev = last;
-			last = node;
-		    }
-		}
+		if (xmlBufferAdd(buffer, q, cur - q))
+		    goto out;
 	    }
 	    q = cur;
 	    if ((cur + 2 < end) && (cur[1] == '#') && (cur[2] == 'x')) {
@@ -1351,7 +1344,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		if ((cur >= end) || (*cur == 0)) {
 		    xmlTreeErr(XML_TREE_UNTERMINATED_ENTITY, (xmlNodePtr) doc,
 		               (const char *) q);
-		    return(ret);
+		    goto out;
 		}
 		if (cur != q) {
 		    /*
@@ -1361,23 +1354,36 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		    ent = xmlGetDocEntity(doc, val);
 		    if ((ent != NULL) &&
 			(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
-			if (last == NULL) {
-			    node = xmlNewDocText(doc, ent->content);
-			    last = ret = node;
-			} else if (last->type != XML_TEXT_NODE) {
-			    node = xmlNewDocText(doc, ent->content);
-			    last = xmlAddNextSibling(last, node);
-			} else
-			    xmlNodeAddContent(last, ent->content);
+
+			if (xmlBufferCat(buffer, ent->content))
+			    goto out;
 
 		    } else {
+			/*
+			 * Flush buffer so far
+			 */
+			if (buffer->use) {
+			    node = xmlNewDocText(doc, NULL);
+			    if (node == NULL) {
+				if (val != NULL) xmlFree(val);
+				goto out;
+			    }
+			    node->content = xmlBufferDetach(buffer);
+
+			    if (last == NULL) {
+				last = ret = node;
+			    } else {
+				last = xmlAddNextSibling(last, node);
+			    }
+			}
+
 			/*
 			 * Create a new REFERENCE_REF node
 			 */
 			node = xmlNewReference(doc, val);
 			if (node == NULL) {
 			    if (val != NULL) xmlFree(val);
-			    return(ret);
+			    goto out;
 			}
 			else if ((ent != NULL) && (ent->children == NULL)) {
 			    xmlNodePtr temp;
@@ -1409,35 +1415,39 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 
 		l = xmlCopyCharMultiByte(buf, charval);
 		buf[l] = 0;
-		node = xmlNewDocText(doc, buf);
-		if (node != NULL) {
-		    if (last == NULL) {
-			last = ret = node;
-		    } else {
-			last = xmlAddNextSibling(last, node);
-		    }
-		}
+
+		if (xmlBufferCat(buffer, buf))
+		    goto out;
 		charval = 0;
 	    }
 	} else
 	    cur++;
     }
-    if ((cur != q) || (ret == NULL)) {
+
+    if (cur != q) {
         /*
 	 * Handle the last piece of text.
 	 */
-	if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
-	    xmlNodeAddContentLen(last, q, cur - q);
-	} else {
-	    node = xmlNewDocTextLen(doc, q, cur - q);
-	    if (node == NULL) return(ret);
-	    if (last == NULL) {
-		ret = node;
-	    } else {
-		xmlAddNextSibling(last, node);
-	    }
-	}
+	if (xmlBufferAdd(buffer, q, cur - q))
+	    goto out;
     }
+
+    if (buffer->use) {
+	node = xmlNewDocText(doc, NULL);
+	if (node == NULL) goto out;
+	node->content = xmlBufferDetach(buffer);
+
+	if (last == NULL) {
+	    last = ret = node;
+	} else {
+	    last = xmlAddNextSibling(last, node);
+	}
+    } else if (ret == NULL) {
+        ret = xmlNewDocText(doc, BAD_CAST "");
+    }
+
+out:
+    xmlBufferFree(buffer);
     return(ret);
 }
 
@@ -1458,8 +1468,12 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
     const xmlChar *cur = value;
     const xmlChar *q;
     xmlEntityPtr ent;
+    xmlBufferPtr buffer;
 
     if (value == NULL) return(NULL);
+
+    buffer = xmlBufferCreateSize(0);
+    if (buffer == NULL) return(NULL);
 
     q = cur;
     while (*cur != 0) {
@@ -1471,19 +1485,8 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 	     * Save the current text.
 	     */
             if (cur != q) {
-		if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
-		    xmlNodeAddContentLen(last, q, cur - q);
-		} else {
-		    node = xmlNewDocTextLen(doc, q, cur - q);
-		    if (node == NULL) return(ret);
-		    if (last == NULL)
-			last = ret = node;
-		    else {
-			last->next = node;
-			node->prev = last;
-			last = node;
-		    }
-		}
+		if (xmlBufferAdd(buffer, q, cur - q))
+		    goto out;
 	    }
 	    q = cur;
 	    if ((cur[1] == '#') && (cur[2] == 'x')) {
@@ -1536,7 +1539,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		if (*cur == 0) {
 		    xmlTreeErr(XML_TREE_UNTERMINATED_ENTITY,
 		               (xmlNodePtr) doc, (const char *) q);
-		    return(ret);
+		    goto out;
 		}
 		if (cur != q) {
 		    /*
@@ -1546,23 +1549,32 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		    ent = xmlGetDocEntity(doc, val);
 		    if ((ent != NULL) &&
 			(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
-			if (last == NULL) {
-			    node = xmlNewDocText(doc, ent->content);
-			    last = ret = node;
-			} else if (last->type != XML_TEXT_NODE) {
-			    node = xmlNewDocText(doc, ent->content);
-			    last = xmlAddNextSibling(last, node);
-			} else
-			    xmlNodeAddContent(last, ent->content);
+
+			if (xmlBufferCat(buffer, ent->content))
+			    goto out;
 
 		    } else {
+			/*
+			 * Flush buffer so far
+			 */
+			if (buffer->use) {
+			    node = xmlNewDocText(doc, NULL);
+			    node->content = xmlBufferDetach(buffer);
+
+			    if (last == NULL) {
+				last = ret = node;
+			    } else {
+				last = xmlAddNextSibling(last, node);
+			    }
+			}
+
 			/*
 			 * Create a new REFERENCE_REF node
 			 */
 			node = xmlNewReference(doc, val);
 			if (node == NULL) {
 			    if (val != NULL) xmlFree(val);
-			    return(ret);
+			    goto out;
 			}
 			else if ((ent != NULL) && (ent->children == NULL)) {
 			    xmlNodePtr temp;
@@ -1593,14 +1605,10 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 
 		len = xmlCopyCharMultiByte(buf, charval);
 		buf[len] = 0;
-		node = xmlNewDocText(doc, buf);
-		if (node != NULL) {
-		    if (last == NULL) {
-			last = ret = node;
-		    } else {
-			last = xmlAddNextSibling(last, node);
-		    }
-		}
+
+		if (xmlBufferCat(buffer, buf))
+		    goto out;
+		charval = 0;
 	    }
 	} else
 	    cur++;
@@ -1609,18 +1617,22 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
         /*
 	 * Handle the last piece of text.
 	 */
-	if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
-	    xmlNodeAddContentLen(last, q, cur - q);
+	xmlBufferAdd(buffer, q, cur - q);
+    }
+
+    if (buffer->use) {
+	node = xmlNewDocText(doc, NULL);
+	node->content = xmlBufferDetach(buffer);
+
+	if (last == NULL) {
+	    last = ret = node;
 	} else {
-	    node = xmlNewDocTextLen(doc, q, cur - q);
-	    if (node == NULL) return(ret);
-	    if (last == NULL) {
-		last = ret = node;
-	    } else {
-		last = xmlAddNextSibling(last, node);
-	    }
+	    last = xmlAddNextSibling(last, node);
 	}
     }
+
+out:
+    xmlBufferFree(buffer);
     return(ret);
 }
 
@@ -6914,6 +6926,28 @@ xmlBufferCreateSize(size_t size) {
     ret->contentIO = NULL;
     return(ret);
 }
+
+/**
+ * xmlBufferDetach
+ * @buf:  the buffer
+ *
+ * Returns the previous string contained by the buffer.
+ *
+ */
+xmlChar *
+xmlBufferDetach(xmlBufferPtr buf) {
+    xmlChar *ret;
+
+    if (buf == NULL) return(NULL);
+
+    ret = buf->content;
+    buf->content = NULL;
+    buf->size = 0;
+    buf->use = 0;
+
+    return ret;
+}
+
 
 /**
  * xmlBufferCreateStatic:

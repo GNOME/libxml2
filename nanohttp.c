@@ -64,9 +64,6 @@
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
-#ifdef SUPPORT_IP6
-#include <resolv.h>
-#endif
 #ifdef HAVE_ZLIB_H
 #include <zlib.h>
 #endif

@@ -151,7 +151,7 @@ found_content:
  * htmlSetMetaEncoding:
  * @doc:  the document
  * @encoding:  the encoding string
- * 
+ *
  * Sets the current encoding in the Meta tags
  * NOTE: this will not change the document content encoding, just
  * the META flag associated.
@@ -164,6 +164,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
     const xmlChar *content = NULL;
     char newcontent[100];
 
+    newcontent[0] = 0;
 
     if (doc == NULL)
 	return(-1);
@@ -244,7 +245,7 @@ found_meta:
 			    http = 1;
 			else
                         {
-                           if ((value != NULL) && 
+                           if ((value != NULL) &&
                                (!xmlStrcasecmp(attr->name, BAD_CAST"content")))
 			       content = value;
                         }
@@ -278,8 +279,13 @@ create:
             xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
         }
     } else {
+        /* remove the meta tag if NULL is passed */
+        if (encoding == NULL) {
+            xmlUnlinkNode(meta);
+            xmlFreeNode(meta);
+        }
         /* change the document only if there is a real encoding change */
-        if (xmlStrcasestr(content, encoding) == NULL) {
+        else if (xmlStrcasestr(content, encoding) == NULL) {
             xmlSetProp(meta, BAD_CAST"content", BAD_CAST newcontent);
         }
     }

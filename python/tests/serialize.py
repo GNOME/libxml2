@@ -96,7 +96,7 @@ str = doc.serialize("iso-8859-1", 1)
 if str != """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Hello</title>
 </head>
 <body><p>hello</p></body>
@@ -131,7 +131,7 @@ if str != """<html>
 str = root.serialize("iso-8859-1", 1)
 if str != """<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Hello</title>
 </head>
 <body><p>hello</p></body>

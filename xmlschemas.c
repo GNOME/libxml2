@@ -18476,8 +18476,8 @@ xmlSchemaFixupComplexType(xmlSchemaParserCtxtPtr pctxt,
 		    particle->children->children =
 			(xmlSchemaTreeItemPtr) xmlSchemaAddParticle(pctxt,
 			type->node,
-			((xmlSchemaParticlePtr) type->subtypes)->minOccurs,
-			((xmlSchemaParticlePtr) type->subtypes)->maxOccurs);
+			((xmlSchemaParticlePtr) baseType->subtypes)->minOccurs,
+			((xmlSchemaParticlePtr) baseType->subtypes)->maxOccurs);
 		    if (particle->children->children == NULL)
 			goto exit_failure;
 		    particle = (xmlSchemaParticlePtr)

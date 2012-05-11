@@ -3365,11 +3365,11 @@ main(int argc, char **argv) {
 	     i++;
 #ifdef LIBXML_OUTPUT_ENABLED
 	     format = atoi(argv[i]);
-#endif /* LIBXML_OUTPUT_ENABLED */
 	     if (format == 1) {
 	         noblanks++;
 	         xmlKeepBlanksDefault(0);
 	     }
+#endif /* LIBXML_OUTPUT_ENABLED */
 	}
 #ifdef LIBXML_READER_ENABLED
 	else if ((!strcmp(argv[i], "-stream")) ||

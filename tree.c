@@ -682,7 +682,8 @@ try_complex:
 void
 xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
     if ((scheme == XML_BUFFER_ALLOC_EXACT) ||
-        (scheme == XML_BUFFER_ALLOC_DOUBLEIT))
+        (scheme == XML_BUFFER_ALLOC_DOUBLEIT) ||
+        (scheme == XML_BUFFER_ALLOC_HYBRID))
 	xmlBufferAllocScheme = scheme;
 }
 
@@ -693,6 +694,9 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
  * XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed,
  *                             improves performance
+ * XML_BUFFER_ALLOC_HYBRID - use exact sizes on small strings to keep memory usage tight
+ *                            in normal usage, and doubleit on large strings to avoid
+ *                            pathological performance.
  *
  * Returns the current allocation scheme
  */
@@ -1267,6 +1271,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 
     buffer = xmlBufferCreateSize(0);
     if (buffer == NULL) return(NULL);
+    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_HYBRID);
 
     q = cur;
     while ((cur < end) && (*cur != 0)) {
@@ -1474,6 +1479,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 
     buffer = xmlBufferCreateSize(0);
     if (buffer == NULL) return(NULL);
+    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_HYBRID);
 
     q = cur;
     while (*cur != 0) {
@@ -7000,6 +7006,7 @@ xmlBufferSetAllocationScheme(xmlBufferPtr buf,
         (buf->alloc == XML_BUFFER_ALLOC_IO)) return;
     if ((scheme == XML_BUFFER_ALLOC_DOUBLEIT) ||
         (scheme == XML_BUFFER_ALLOC_EXACT) ||
+        (scheme == XML_BUFFER_ALLOC_HYBRID) ||
         (scheme == XML_BUFFER_ALLOC_IMMUTABLE))
 	buf->alloc = scheme;
 }
@@ -7267,6 +7274,21 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	case XML_BUFFER_ALLOC_EXACT:
 	    newSize = size+10;
 	    break;
+        case XML_BUFFER_ALLOC_HYBRID:
+            if (buf->use < BASE_BUFFER_SIZE)
+                newSize = size;
+            else {
+                newSize = buf->size * 2;
+                while (size > newSize) {
+                    if (newSize > UINT_MAX / 2) {
+                        xmlTreeErrMemory("growing buffer");
+                        return 0;
+                    }
+                    newSize *= 2;
+                }
+            }
+            break;
+
 	default:
 	    newSize = size+10;
 	    break;

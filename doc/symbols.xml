@@ -1741,4 +1741,8 @@
     <symbol file="globals">xmlStructuredErrorContext</symbol>
     <symbol file="xinclude">xmlXIncludeProcessTreeFlagsData</symbol>
   </release>
+  <release version="2.7.9">
+    <symbol file="xmlreader">xmlTextReaderRelaxNGValidateCtxt</symbol>
+    <symbol file="tree">xmlBufferDetach</symbol>
+  </release>
 </symbols>

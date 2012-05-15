@@ -52,6 +52,7 @@ ignored_files = {
   "test.c": "not part of the library",
   "testdso.c": "test for dynamid shared libraries",
   "testrecurse.c": "test for entities recursions",
+  "xzlib.h": "Internal API only",
 }
 
 ignored_words = {

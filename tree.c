@@ -6934,11 +6934,13 @@ xmlBufferCreateSize(size_t size) {
 }
 
 /**
- * xmlBufferDetach
+ * xmlBufferDetach:
  * @buf:  the buffer
  *
- * Returns the previous string contained by the buffer.
+ * Remove the string contained in a buffer and gie it back to the
+ * caller. The buffer is reset to an emoty content.
  *
+ * Returns the previous string contained by the buffer.
  */
 xmlChar *
 xmlBufferDetach(xmlBufferPtr buf) {

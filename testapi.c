@@ -1040,8 +1040,8 @@ static void des_xmlAttributeType(int no ATTRIBUTE_UNUSED, xmlAttributeType val A
 static xmlBufferAllocationScheme gen_xmlBufferAllocationScheme(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 1) return(XML_BUFFER_ALLOC_DOUBLEIT);
     if (no == 2) return(XML_BUFFER_ALLOC_EXACT);
-    if (no == 3) return(XML_BUFFER_ALLOC_IMMUTABLE);
-    if (no == 4) return(XML_BUFFER_ALLOC_IO);
+    if (no == 3) return(XML_BUFFER_ALLOC_HYBRID);
+    if (no == 4) return(XML_BUFFER_ALLOC_IMMUTABLE);
     return(0);
 }
 
@@ -18614,6 +18614,38 @@ test_xmlBufferCreateStatic(void) {
 
 
 static int
+test_xmlBufferDetach(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlChar * ret_val;
+    xmlBufferPtr buf; /* the buffer */
+    int n_buf;
+
+    for (n_buf = 0;n_buf < gen_nb_xmlBufferPtr;n_buf++) {
+        mem_base = xmlMemBlocks();
+        buf = gen_xmlBufferPtr(n_buf, 0);
+
+        ret_val = xmlBufferDetach(buf);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlBufferPtr(n_buf, buf, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlBufferDetach",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_buf);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlBufferEmpty(void) {
     int test_ret = 0;
 
@@ -18770,9 +18802,7 @@ test_xmlBufferSetAllocationScheme(void) {
         scheme = gen_xmlBufferAllocationScheme(n_scheme, 1);
 
         xmlBufferSetAllocationScheme(buf, scheme);
-        if ((buf != NULL) && (scheme == XML_BUFFER_ALLOC_IMMUTABLE) && (buf->content != NULL) && (buf->content != static_buf_content)) {
-            xmlFree(buf->content); buf->content = NULL;
-        }
+        if ((buf != NULL) && (scheme == XML_BUFFER_ALLOC_IMMUTABLE) && (buf->content != NULL) && (buf->content != static_buf_content)) { xmlFree(buf->content); buf->content = NULL;}
         call_tests++;
         des_xmlBufferPtr(n_buf, buf, 0);
         des_xmlBufferAllocationScheme(n_scheme, scheme, 1);
@@ -23959,7 +23989,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing tree : 138 of 157 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 139 of 158 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();
@@ -23974,6 +24004,7 @@ test_tree(void) {
     test_ret += test_xmlBufferCreate();
     test_ret += test_xmlBufferCreateSize();
     test_ret += test_xmlBufferCreateStatic();
+    test_ret += test_xmlBufferDetach();
     test_ret += test_xmlBufferEmpty();
     test_ret += test_xmlBufferGrow();
     test_ret += test_xmlBufferLength();
@@ -32277,6 +32308,54 @@ test_xmlTextReaderRelaxNGValidate(void) {
 
 
 static int
+test_xmlTextReaderRelaxNGValidateCtxt(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    xmlRelaxNGValidCtxtPtr ctxt; /* the RelaxNG schema validation context or NULL */
+    int n_ctxt;
+    int options; /* options (not used yet) */
+    int n_options;
+
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlRelaxNGValidCtxtPtr;n_ctxt++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader, 0);
+        ctxt = gen_xmlRelaxNGValidCtxtPtr(n_ctxt, 1);
+        options = gen_parseroptions(n_options, 2);
+
+        ret_val = xmlTextReaderRelaxNGValidateCtxt(reader, ctxt, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader, 0);
+        des_xmlRelaxNGValidCtxtPtr(n_ctxt, ctxt, 1);
+        des_parseroptions(n_options, options, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderRelaxNGValidateCtxt",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_ctxt);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlTextReaderSchemaValidate(void) {
     int test_ret = 0;
 
@@ -32630,7 +32709,7 @@ static int
 test_xmlreader(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlreader : 75 of 85 functions ...\n");
+    if (quiet == 0) printf("Testing xmlreader : 76 of 86 functions ...\n");
     test_ret += test_xmlNewTextReader();
     test_ret += test_xmlNewTextReaderFilename();
     test_ret += test_xmlReaderForDoc();
@@ -32698,6 +32777,7 @@ test_xmlreader(void) {
     test_ret += test_xmlTextReaderReadState();
     test_ret += test_xmlTextReaderRelaxNGSetSchema();
     test_ret += test_xmlTextReaderRelaxNGValidate();
+    test_ret += test_xmlTextReaderRelaxNGValidateCtxt();
     test_ret += test_xmlTextReaderSchemaValidate();
     test_ret += test_xmlTextReaderSchemaValidateCtxt();
     test_ret += test_xmlTextReaderSetErrorHandler();

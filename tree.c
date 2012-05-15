@@ -6938,7 +6938,8 @@ xmlBufferCreateSize(size_t size) {
  * @buf:  the buffer
  *
  * Remove the string contained in a buffer and gie it back to the
- * caller. The buffer is reset to an emoty content.
+ * caller. The buffer is reset to an empty content.
+ * This doesn't work with immutable buffers as they can't be reset.
  *
  * Returns the previous string contained by the buffer.
  */
@@ -6946,7 +6947,10 @@ xmlChar *
 xmlBufferDetach(xmlBufferPtr buf) {
     xmlChar *ret;
 
-    if (buf == NULL) return(NULL);
+    if (buf == NULL)
+        return(NULL);
+    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
+        return(NULL);
 
     ret = buf->content;
     buf->content = NULL;

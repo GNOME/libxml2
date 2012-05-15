@@ -273,7 +273,7 @@ is_format_lzma(xz_statep state)
 
     opt = filter.options;
     dict_size = opt->dict_size;
-    xmlFree(opt);
+    free(opt); /* we can't use xmlFree on a string returned by zlib */
 
     /* A hack to ditch tons of false positives: We allow only dictionary
      * sizes that are 2^n or 2^n + 2^(n-1) or UINT32_MAX. LZMA_Alone

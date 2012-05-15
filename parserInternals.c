@@ -1372,13 +1372,13 @@ xmlFreeInputStream(xmlParserInputPtr input) {
  * xmlNewInputStream:
  * @ctxt:  an XML parser context
  *
- * Create a new input stream structure
+ * Create a new input stream structure.
+ *
  * Returns the new input stream or NULL
  */
 xmlParserInputPtr
 xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr input;
-    static int id = 0;
 
     input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
@@ -1389,11 +1389,15 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     input->line = 1;
     input->col = 1;
     input->standalone = -1;
+
     /*
-     * we don't care about thread reentrancy unicity for a single
-     * parser context (and hence thread) is sufficient.
+     * If the context is NULL the id cannot be initialized, but that
+     * should not happen while parsing which is the situation where
+     * the id is actually needed.
      */
-    input->id = id++;
+    if (ctxt != NULL)
+        input->id = ctxt->input_id++;
+
     return(input);
 }
 
@@ -1757,6 +1761,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->charset = XML_CHAR_ENCODING_UTF8;
     ctxt->catalogs = NULL;
     ctxt->nbentities = 0;
+    ctxt->input_id = 1;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
     return(0);
 }

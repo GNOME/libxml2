@@ -31,7 +31,7 @@ python_LTLIBRARIES = libxml2mod.la
 
 libxml2mod_la_SOURCES = $(srcdir)/libxml.c $(srcdir)/types.c
 nodist_libxml2mod_la_SOURCES = libxml2-py.c
-libxml2mod_la_LIBADD = $(mylibs) @CYGWIN_EXTRA_PYTHON_LIBADD@ @WIN32_EXTRA_PYTHON_LIBADD@ @PYTHON_LIBS@
+libxml2mod_la_LIBADD = $(mylibs) @CYGWIN_EXTRA_PYTHON_LIBADD@ @WIN32_EXTRA_PYTHON_LIBADD@ @PYTHON_LIBS@ -lpython$(PYTHON_VERSION)
 
 $(srcdir)/libxml.c: libxml2-py.h # to generate before to compile
 

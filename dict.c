@@ -135,6 +135,15 @@ static xmlRMutexPtr xmlDictMutex = NULL;
  */
 static int xmlDictInitialized = 0;
 
+#ifdef DICT_RANDOMIZATION
+#ifdef HAVE_RAND_R
+/*
+ * Internal data for random function, protected by xmlDictMutex
+ */
+unsigned int rand_seed = 0;
+#endif
+#endif
+
 /**
  * xmlInitializeDict:
  *
@@ -142,24 +151,50 @@ static int xmlDictInitialized = 0;
  * this function is not thread safe, initialization should
  * preferably be done once at startup
  */
-static int xmlInitializeDict(void) {
+int xmlInitializeDict(void) {
     if (xmlDictInitialized)
         return(1);
 
     if ((xmlDictMutex = xmlNewRMutex()) == NULL)
         return(0);
+    xmlRMutexLock(xmlDictMutex);
 
 #ifdef DICT_RANDOMIZATION
+#ifdef HAVE_RAND_R
+    rand_seed = time(NULL);
+    rand_r(& rand_seed);
+#else
     srand(time(NULL));
 #endif
+#endif
     xmlDictInitialized = 1;
+    xmlRMutexUnlock(xmlDictMutex);
     return(1);
 }
+
+#ifdef DICT_RANDOMIZATION
+int __xmlRandom(void) {
+    int ret;
+
+    if (xmlDictInitialized == 0)
+        xmlInitializeDict();
+
+    xmlRMutexLock(xmlDictMutex);
+#ifdef HAVE_RAND_R
+    ret = rand_r(& rand_seed);
+#else
+    ret = rand();
+#endif
+    xmlRMutexUnlock(xmlDictMutex);
+    return(ret);
+}
+#endif
 
 /**
  * xmlDictCleanup:
  *
- * Free the dictionary mutex.
+ * Free the dictionary mutex. Do not call unless sure the library
+ * is not in use anymore !
  */
 void
 xmlDictCleanup(void) {
@@ -488,7 +523,7 @@ xmlDictCreate(void) {
         if (dict->dict) {
 	    memset(dict->dict, 0, MIN_DICT_SIZE * sizeof(xmlDictEntry));
 #ifdef DICT_RANDOMIZATION
-            dict->seed = rand();
+            dict->seed = __xmlRandom();
 #else
             dict->seed = 0;
 #endif

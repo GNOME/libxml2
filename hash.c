@@ -47,10 +47,6 @@
 
 /* #define DEBUG_GROW */
 
-#ifdef HASH_RANDOMIZATION
-static int hash_initialized = 0;
-#endif
-
 /*
  * A single entry in the hash table
  */
@@ -186,11 +182,7 @@ xmlHashCreate(int size) {
         if (table->table) {
   	    memset(table->table, 0, size * sizeof(xmlHashEntry));
 #ifdef HASH_RANDOMIZATION
-            if (!hash_initialized) {
-                srand(time(NULL));
-                hash_initialized = 1;
-            }
-            table->random_seed = rand();
+            table->random_seed = __xmlRandom();
 #endif
   	    return(table);
         }

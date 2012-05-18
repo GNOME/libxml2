@@ -14178,6 +14178,7 @@ xmlInitParser(void) {
 	    (xmlGenericError == NULL))
 	    initGenericErrorDefaultFunc(NULL);
 	xmlInitMemory();
+        xmlInitializeDict();
 	xmlInitCharEncodingHandlers();
 	xmlDefaultSAXHandlerInit();
 	xmlRegisterDefaultInputCallbacks();

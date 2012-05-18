@@ -79,6 +79,13 @@ void __xmlGlobalInitMutexLock(void);
 void __xmlGlobalInitMutexUnlock(void);
 void __xmlGlobalInitMutexDestroy(void);
 
+#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME)
+/*
+ * internal thread safe random function
+ */
+int __xmlRandom(void);
+#endif
+
 #ifdef IN_LIBXML
 #ifdef __GNUC__
 #ifdef PIC

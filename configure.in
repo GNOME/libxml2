@@ -1497,18 +1497,22 @@ AC_SUBST(CYGWIN_EXTRA_LDFLAGS)
 AC_SUBST(CYGWIN_EXTRA_PYTHON_LIBADD)
 
 dnl Checking the standard string functions availability
-case "$host" in
- *-*-mingw*)
- AC_CHECK_FUNCS(printf sprintf fprintf _snprintf vfprintf vsprintf _vsnprintf sscanf,
-               [AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
-                AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])],
-               NEED_TRIO=1)
- ;;
- *)
- AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
-               NEED_TRIO=1)
- ;;
-esac
+dnl
+dnl Note mingw* has C99 implementation that produce expected xml numbers
+dnl if code use {v}snprintf functions.
+dnl If you like to activate at run-time C99 compatible number output
+dnl see release note for mingw runtime 3.15:
+dnl  http://sourceforge.net/project/shownotes.php?release_id=24832
+dnl
+dnl Also *win32*config.h files redefine them for various MSC compilers.
+dnl
+dnl So do not redefine {v}snprintf to _{v}snprintf like follwing:
+dnl  AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
+dnl  AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])
+dnl and do not redefine those functions is C-source files.
+dnl
+AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
+	NEED_TRIO=1)
 
 if test "$with_coverage" = "yes" -a "${GCC}" = "yes"
 then

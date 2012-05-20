@@ -37,13 +37,6 @@ static int verbose = 0;
 
 #define NB_EXPECTED_ERRORS 15
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
-
-#define vsnprintf _vsnprintf
-
-#define snprintf _snprintf
-
-#endif
 
 const char *skipped_tests[] = {
 /* http://lists.w3.org/Archives/Public/public-xml-testsuite/2008Jul/0000.html */

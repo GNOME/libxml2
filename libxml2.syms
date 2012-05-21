@@ -2239,5 +2239,8 @@ LIBXML2_2.8.0 {
 
 # tree
   xmlBufferDetach;
+
+# dict
+  xmlInitializeDict;
 } LIBXML2_2.7.4;
 

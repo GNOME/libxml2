@@ -150,6 +150,9 @@ unsigned int rand_seed = 0;
  * Do the dictionary mutex initialization.
  * this function is not thread safe, initialization should
  * preferably be done once at startup
+ *
+ * Returns 0 if initialization was already done, and 1 if that
+ * call led to the initialization
  */
 int xmlInitializeDict(void) {
     if (xmlDictInitialized)

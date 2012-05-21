@@ -2231,3 +2231,13 @@ LIBXML2_2.7.4 {
   xmlXIncludeProcessTreeFlagsData;
 } LIBXML2_2.7.3;
 
+LIBXML2_2.8.0 {
+    global:
+
+# xmlreader
+  xmlTextReaderRelaxNGValidateCtxt;
+
+# tree
+  xmlBufferDetach;
+} LIBXML2_2.7.4;
+

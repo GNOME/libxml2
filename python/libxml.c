@@ -28,7 +28,9 @@
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
-#if defined(WITH_TRIO)
+#if defined(_MSC_VER) && !defined(vsnprintf)
+#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
+#elif defined(WITH_TRIO) && !defined(vsnprintf)
 #include "trio.h"
 #define vsnprintf trio_vsnprintf
 #endif

@@ -19,7 +19,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/relaxng.h>
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__) && !defined(__MINGW32__)
 #define snprintf _snprintf
 #endif
 

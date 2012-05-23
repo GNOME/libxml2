@@ -194,6 +194,11 @@ static void globfree(glob_t *pglob) {
              free(pglob->gl_pathv[i]);
     }
 }
+
+#if !defined(__MINGW32__)
+#define vsnprintf _vsnprintf
+#define snprintf _snprintf
+#endif
 #else
 #include <glob.h>
 #endif

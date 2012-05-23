@@ -28,6 +28,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-HTMLparser.html#HTML_INVALID">HTML_INVALID</a><br />
 <a href="html/libxml-HTMLparser.html#HTML_NA">HTML_NA</a><br />
 <a href="html/libxml-HTMLparser.html#HTML_PARSE_COMPACT">HTML_PARSE_COMPACT</a><br />
+<a href="html/libxml-HTMLparser.html#HTML_PARSE_IGNORE_ENC">HTML_PARSE_IGNORE_ENC</a><br />
 <a href="html/libxml-HTMLparser.html#HTML_PARSE_NOBLANKS">HTML_PARSE_NOBLANKS</a><br />
 <a href="html/libxml-HTMLparser.html#HTML_PARSE_NODEFDTD">HTML_PARSE_NODEFDTD</a><br />
 <a href="html/libxml-HTMLparser.html#HTML_PARSE_NOERROR">HTML_PARSE_NOERROR</a><br />
@@ -336,6 +337,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-dict.html#xmlDictQLookup">xmlDictQLookup</a><br />
 <a href="html/libxml-dict.html#xmlDictReference">xmlDictReference</a><br />
 <a href="html/libxml-dict.html#xmlDictSize">xmlDictSize</a><br />
+<a href="html/libxml-dict.html#xmlInitializeDict">xmlInitializeDict</a><br />
 </p><h2><a name="encoding" id="encoding">Module encoding</a>:</h2><p><a href="html/libxml-encoding.html#UTF8Toisolat1">UTF8Toisolat1</a><br />
 <a href="html/libxml-encoding.html#XML_CHAR_ENCODING_2022_JP">XML_CHAR_ENCODING_2022_JP</a><br />
 <a href="html/libxml-encoding.html#XML_CHAR_ENCODING_8859_1">XML_CHAR_ENCODING_8859_1</a><br />
@@ -614,6 +616,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#XML_PARSE_DTDLOAD">XML_PARSE_DTDLOAD</a><br />
 <a href="html/libxml-parser.html#XML_PARSE_DTDVALID">XML_PARSE_DTDVALID</a><br />
 <a href="html/libxml-parser.html#XML_PARSE_HUGE">XML_PARSE_HUGE</a><br />
+<a href="html/libxml-parser.html#XML_PARSE_IGNORE_ENC">XML_PARSE_IGNORE_ENC</a><br />
 <a href="html/libxml-parser.html#XML_PARSE_NOBASEFIX">XML_PARSE_NOBASEFIX</a><br />
 <a href="html/libxml-parser.html#XML_PARSE_NOBLANKS">XML_PARSE_NOBLANKS</a><br />
 <a href="html/libxml-parser.html#XML_PARSE_NOCDATA">XML_PARSE_NOCDATA</a><br />
@@ -1301,6 +1304,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#XML_ATTRIBUTE_REQUIRED">XML_ATTRIBUTE_REQUIRED</a><br />
 <a href="html/libxml-tree.html#XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a><br />
 <a href="html/libxml-tree.html#XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a><br />
+<a href="html/libxml-tree.html#XML_BUFFER_ALLOC_HYBRID">XML_BUFFER_ALLOC_HYBRID</a><br />
 <a href="html/libxml-tree.html#XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a><br />
 <a href="html/libxml-tree.html#XML_BUFFER_ALLOC_IO">XML_BUFFER_ALLOC_IO</a><br />
 <a href="html/libxml-tree.html#XML_CDATA_SECTION_NODE">XML_CDATA_SECTION_NODE</a><br />
@@ -1384,6 +1388,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlBufferCreate">xmlBufferCreate</a><br />
 <a href="html/libxml-tree.html#xmlBufferCreateSize">xmlBufferCreateSize</a><br />
 <a href="html/libxml-tree.html#xmlBufferCreateStatic">xmlBufferCreateStatic</a><br />
+<a href="html/libxml-tree.html#xmlBufferDetach">xmlBufferDetach</a><br />
 <a href="html/libxml-tree.html#xmlBufferDump">xmlBufferDump</a><br />
 <a href="html/libxml-tree.html#xmlBufferEmpty">xmlBufferEmpty</a><br />
 <a href="html/libxml-tree.html#xmlBufferFree">xmlBufferFree</a><br />
@@ -2760,6 +2765,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlreader.html#xmlTextReaderReadString">xmlTextReaderReadString</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema">xmlTextReaderRelaxNGSetSchema</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate">xmlTextReaderRelaxNGValidate</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidateCtxt">xmlTextReaderRelaxNGValidateCtxt</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSchemaValidate">xmlTextReaderSchemaValidate</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSchemaValidateCtxt">xmlTextReaderSchemaValidateCtxt</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a><br />
@@ -3159,6 +3165,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlversion.html#LIBXML_ICU_ENABLED">LIBXML_ICU_ENABLED</a><br />
 <a href="html/libxml-xmlversion.html#LIBXML_ISO8859X_ENABLED">LIBXML_ISO8859X_ENABLED</a><br />
 <a href="html/libxml-xmlversion.html#LIBXML_LEGACY_ENABLED">LIBXML_LEGACY_ENABLED</a><br />
+<a href="html/libxml-xmlversion.html#LIBXML_LZMA_ENABLED">LIBXML_LZMA_ENABLED</a><br />
 <a href="html/libxml-xmlversion.html#LIBXML_MODULES_ENABLED">LIBXML_MODULES_ENABLED</a><br />
 <a href="html/libxml-xmlversion.html#LIBXML_MODULE_EXTENSION">LIBXML_MODULE_EXTENSION</a><br />
 <a href="html/libxml-xmlversion.html#LIBXML_OUTPUT_ENABLED">LIBXML_OUTPUT_ENABLED</a><br />
@@ -3289,6 +3296,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpath.html#XPATH_NUMBER_ERROR">XPATH_NUMBER_ERROR</a><br />
 <a href="html/libxml-xpath.html#XPATH_POINT">XPATH_POINT</a><br />
 <a href="html/libxml-xpath.html#XPATH_RANGE">XPATH_RANGE</a><br />
+<a href="html/libxml-xpath.html#XPATH_STACK_ERROR">XPATH_STACK_ERROR</a><br />
 <a href="html/libxml-xpath.html#XPATH_START_LITERAL_ERROR">XPATH_START_LITERAL_ERROR</a><br />
 <a href="html/libxml-xpath.html#XPATH_STRING">XPATH_STRING</a><br />
 <a href="html/libxml-xpath.html#XPATH_UNCLOSED_ERROR">XPATH_UNCLOSED_ERROR</a><br />

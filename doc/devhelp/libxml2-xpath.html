@@ -245,6 +245,7 @@ The content of this structure is not made public by the API.
     <a name="XPATH_ENCODING_ERROR">XPATH_ENCODING_ERROR</a> = 20
     <a name="XPATH_INVALID_CHAR_ERROR">XPATH_INVALID_CHAR_ERROR</a> = 21
     <a name="XPATH_INVALID_CTXT">XPATH_INVALID_CTXT</a> = 22
+    <a name="XPATH_STACK_ERROR">XPATH_STACK_ERROR</a> = 23
 };
 </pre><p/>
 </div>
@@ -305,6 +306,7 @@ The content of this structure is not made public by the API.
     <a href="libxml2-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a>	comp	: the precompiled expression
     int	xptr	: it this an XPointer expression
     <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	ancestor	: used for walking preceding axis
+    int	valueFrame	: used to limit Pop on the stack
 } xmlXPathParserContext;
 </pre><p/>
 </div>

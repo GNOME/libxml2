@@ -111,6 +111,7 @@ void	<a href="#xmlBufferWriteCHAR">xmlBufferWriteCHAR</a>		(<a href="libxml2-tre
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeGetBase">xmlNodeGetBase</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 void	<a href="#xmlBufferEmpty">xmlBufferEmpty</a>			(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBuildQName">xmlBuildQName</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ncname, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * memory, <br/>					 int len);
+int	<a href="#xmlValidateNMToken">xmlValidateNMToken</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 int space);
 int	<a href="#xmlSaveFormatFileEnc">xmlSaveFormatFileEnc</a>		(const char * filename, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddSibling">xmlAddSibling</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	<a href="#xmlBufferCreate">xmlBufferCreate</a>		(void);
@@ -205,7 +206,7 @@ int	<a href="#xmlGetDocCompressMode">xmlGetDocCompressMode</a>		(<a href="libxml
 void	<a href="#xmlFreeNode">xmlFreeNode</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlNewNsProp">xmlNewNsProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 void	<a href="#xmlDOMWrapFreeCtxt">xmlDOMWrapFreeCtxt</a>		(<a href="libxml2-tree.html#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a> ctxt);
-int	<a href="#xmlValidateNMToken">xmlValidateNMToken</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 int space);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBufferDetach">xmlBufferDetach</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf);
 void	<a href="#xmlBufferSetAllocationScheme">xmlBufferSetAllocationScheme</a>	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> scheme);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewChild">xmlNewChild</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a>	<a href="#xmlSearchNs">xmlSearchNs</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace);
@@ -384,7 +385,8 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     <a name="XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a> = 1 /* double each time one need to grow */
     <a name="XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a> = 2 /* grow only to the minimal size */
     <a name="XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a> = 3 /* immutable buffer */
-    <a name="XML_BUFFER_ALLOC_IO">XML_BUFFER_ALLOC_IO</a> = 4 /*  special allocation scheme used for I/O */
+    <a name="XML_BUFFER_ALLOC_IO">XML_BUFFER_ALLOC_IO</a> = 4 /* special allocation scheme used for I/O */
+    <a name="XML_BUFFER_ALLOC_HYBRID">XML_BUFFER_ALLOC_HYBRID</a> = 5 /*  exact up to a threshold, and doubleit thereafter */
 };
 </pre><p/>
 </div>
@@ -786,6 +788,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     int	nodeInfoNr	: Depth of the parsing stack
     int	nodeInfoMax	: Max depth of the parsing stack
     <a href="libxml2-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a> *	nodeInfoTab	: array of nodeInfos
+    int	input_id	: we need to label inputs
 } xmlParserCtxt;
 </pre><p/>
 </div>
@@ -963,6 +966,10 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
         <div class="refsect2" lang="en"><h3><a name="xmlBufferCreateStatic"/>xmlBufferCreateStatic ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	xmlBufferCreateStatic	(void * mem, <br/>					 size_t size)<br/>
 </pre><p>routine to create an XML buffer from an immutable memory area. The area won't be modified nor copied, and is expected to be present until the end of the buffer lifetime.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>mem</tt></i>:</span></td><td>the memory area</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>the size in byte</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the new structure.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufferDetach"/>xmlBufferDetach ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlBufferDetach		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf)<br/>
+</pre><p>Remove the string contained in a buffer and gie it back to the caller. The buffer is reset to an empty content. This doesn't work with immutable buffers as they can't be reset.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the buffer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the previous string contained by the buffer.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlBufferDump"/>xmlBufferDump ()</h3><pre class="programlisting">int	xmlBufferDump			(FILE * file, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf)<br/>
 </pre><p>Dumps an XML buffer to a FILE *.</p>
@@ -1157,7 +1164,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the first property in the list</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetBufferAllocationScheme"/>xmlGetBufferAllocationScheme ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	xmlGetBufferAllocationScheme	(void)<br/>
-</pre><p>Types are <a href="libxml2-tree.html#XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a> - use exact sizes, keeps memory usage down <a href="libxml2-tree.html#XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a> - double buffer when extra needed, improves performance</p>
+</pre><p>Types are <a href="libxml2-tree.html#XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a> - use exact sizes, keeps memory usage down <a href="libxml2-tree.html#XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a> - double buffer when extra needed, improves performance <a href="libxml2-tree.html#XML_BUFFER_ALLOC_HYBRID">XML_BUFFER_ALLOC_HYBRID</a> - use exact sizes on small strings to keep memory usage tight in normal usage, and doubleit on large strings to avoid pathological performance.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the current allocation scheme</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetCompressMode"/>xmlGetCompressMode ()</h3><pre class="programlisting">int	xmlGetCompressMode		(void)<br/>
@@ -1509,7 +1516,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>first</tt></i>:</span></td><td>the first text node</td></tr><tr><td><span class="term"><i><tt>second</tt></i>:</span></td><td>the second text node being merged</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the first text node augmented</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlUnlinkNode"/>xmlUnlinkNode ()</h3><pre class="programlisting">void	xmlUnlinkNode			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br/>
-</pre><p>Unlink a node from it's current context, the node is not freed</p>
+</pre><p>Unlink a node from it's current context, the node is not freed If one need to free the node, use xmlFreeNode() routine after the unlink to discard it.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlUnsetNsProp"/>xmlUnsetNsProp ()</h3><pre class="programlisting">int	xmlUnsetNsProp			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br/>

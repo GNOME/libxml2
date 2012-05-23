@@ -51,6 +51,7 @@ int	<a href="#xmlDictSize">xmlDictSize</a>			(<a href="libxml2-dict.html#xmlDict
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictExists">xmlDictExists</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int len);
 int	<a href="#xmlDictOwns">xmlDictOwns</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictQLookup">xmlDictQLookup</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+int	<a href="#xmlInitializeDict">xmlInitializeDict</a>		(void);
 <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	<a href="#xmlDictCreateSub">xmlDictCreateSub</a>	(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> sub);
 void	<a href="#xmlDictFree">xmlDictFree</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictLookup">xmlDictLookup</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int len);
@@ -74,7 +75,7 @@ The content of this structure is not made public by the API.
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDictCleanup"/>xmlDictCleanup ()</h3><pre class="programlisting">void	xmlDictCleanup			(void)<br/>
-</pre><p>Free the dictionary mutex.</p>
+</pre><p>Free the dictionary mutex. Do not call unless sure the library is not in use anymore !</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDictCreate"/>xmlDictCreate ()</h3><pre class="programlisting"><a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	xmlDictCreate		(void)<br/>
@@ -112,6 +113,10 @@ The content of this structure is not made public by the API.
         <div class="refsect2" lang="en"><h3><a name="xmlDictSize"/>xmlDictSize ()</h3><pre class="programlisting">int	xmlDictSize			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict)<br/>
 </pre><p>Query the number of elements installed in the hash @dict.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td>the dictionnary</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of elements in the dictionnary or -1 in case of error</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlInitializeDict"/>xmlInitializeDict ()</h3><pre class="programlisting">int	xmlInitializeDict		(void)<br/>
+</pre><p>Do the dictionary mutex initialization. this function is not thread safe, initialization should preferably be done once at startup</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if initialization was already done, and 1 if that call led to the initialization</td></tr></tbody></table></div></div>
         <hr/>
       </div>
     </div>

@@ -8446,11 +8446,36 @@ test_xmlDictSize(void) {
     return(test_ret);
 }
 
+
+static int
+test_xmlInitializeDict(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+
+        mem_base = xmlMemBlocks();
+
+        ret_val = xmlInitializeDict();
+        desret_int(ret_val);
+        call_tests++;
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlInitializeDict",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf("\n");
+        }
+    function_tests++;
+
+    return(test_ret);
+}
+
 static int
 test_dict(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing dict : 9 of 10 functions ...\n");
+    if (quiet == 0) printf("Testing dict : 10 of 11 functions ...\n");
     test_ret += test_xmlDictCleanup();
     test_ret += test_xmlDictCreate();
     test_ret += test_xmlDictCreateSub();
@@ -8460,6 +8485,7 @@ test_dict(void) {
     test_ret += test_xmlDictQLookup();
     test_ret += test_xmlDictReference();
     test_ret += test_xmlDictSize();
+    test_ret += test_xmlInitializeDict();
 
     if (test_ret != 0)
 	printf("Module dict: %d errors\n", test_ret);

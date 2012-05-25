@@ -2139,7 +2139,7 @@ static void doXPathQuery(xmlDocPtr doc, const char *query) {
         progresult = XMLLINT_ERR_MEM;
         return;
     }
-    ctxt->node = xmlDocGetRootElement(doc);
+    ctxt->node = (xmlNodePtr) doc;
     res = xmlXPathEval(BAD_CAST query, ctxt);
     xmlXPathFreeContext(ctxt);
 

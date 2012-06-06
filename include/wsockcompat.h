@@ -41,7 +41,7 @@
 #define EWOULDBLOCK             WSAEWOULDBLOCK
 #define ESHUTDOWN               WSAESHUTDOWN
 
-#ifndef _MSC_VER
+#if (!defined(_MSC_VER) || (_MSC_VER < 1600))
 #define EINPROGRESS             WSAEINPROGRESS
 #define EALREADY                WSAEALREADY
 #define ENOTSOCK                WSAENOTSOCK

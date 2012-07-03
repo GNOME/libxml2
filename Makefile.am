@@ -33,27 +33,29 @@ libxml2_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) \
 		     -version-info $(LIBXML_VERSION_INFO) \
 		     $(MODULE_PLATFORM_LIBS)
 
-if WITH_TRIO_SOURCES
-libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
-		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
-		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
-		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c globals.c threads.c c14n.c xmlstring.c buf.c \
-		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c \
-		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
-		xmlmodule.c schematron.c xzlib.c
+if WITH_SAX1_SOURCES
+docb_sources = DOCBparser.c
 else
+docb_sources =
+endif
+
+if WITH_TRIO_SOURCES
+trio_sources = triostr.c trio.c
+else
+trio_sources =
+endif
+
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
-		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
+		xpointer.c xinclude.c nanohttp.c nanoftp.c \
+		$(docb_sources) \
 		catalog.c globals.c threads.c c14n.c xmlstring.c buf.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
+		$(trio_sources) \
 		xmlreader.c relaxng.c dict.c SAX2.c \
 		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
 		xmlmodule.c schematron.c xzlib.c
-endif
 
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(STATIC_BINARIES) $(top_builddir)/libxml2.la $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(M_LIBS) $(WIN32_EXTRA_LIBADD)

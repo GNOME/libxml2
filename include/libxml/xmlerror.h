@@ -62,7 +62,8 @@ typedef enum {
     XML_FROM_WRITER,	/* The xmlwriter module */
     XML_FROM_MODULE,	/* The dynamically loaded module module*/
     XML_FROM_I18N,	/* The module handling character conversion */
-    XML_FROM_SCHEMATRONV	/* The Schematron validator module */
+    XML_FROM_SCHEMATRONV,/* The Schematron validator module */
+    XML_FROM_BUFFER     /* The buffers module */
 } xmlErrorDomain;
 
 /**
@@ -825,7 +826,8 @@ typedef enum {
     XML_I18N_NO_HANDLER, /* 6001 */
     XML_I18N_EXCESS_HANDLER, /* 6002 */
     XML_I18N_CONV_FAILED, /* 6003 */
-    XML_I18N_NO_OUTPUT /* 6004 */
+    XML_I18N_NO_OUTPUT, /* 6004 */
+    XML_BUF_OVERFLOW = 7000
 #if 0
     XML_CHECK_, /* 5033 */
     XML_CHECK_X /* 503 */

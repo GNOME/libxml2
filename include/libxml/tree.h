@@ -13,6 +13,7 @@
 #define __XML_TREE_H__
 
 #include <stdio.h>
+#include <limits.h>
 #include <libxml/xmlversion.h>
 #include <libxml/xmlstring.h>
 
@@ -81,7 +82,8 @@ typedef enum {
 /**
  * xmlBuffer:
  *
- * A buffer structure.
+ * A buffer structure, this old construct is limited to 2GB and
+ * is being deprecated, use API with xmlBuf instead
  */
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
@@ -92,6 +94,23 @@ struct _xmlBuffer {
     xmlBufferAllocationScheme alloc; /* The realloc method */
     xmlChar *contentIO;		/* in IO mode we may have a different base */
 };
+
+/**
+ * xmlBuf:
+ *
+ * A buffer structure, new one, the actual structure internals are not public
+ */
+
+typedef struct _xmlBuf xmlBuf;
+
+/**
+ * xmlBufPtr:
+ *
+ * A pointer to a buffer structure, the actual structure internals are not
+ * public
+ */
+
+typedef xmlBuf *xmlBufPtr;
 
 /**
  * XML_XML_NAMESPACE:

@@ -55,6 +55,8 @@
 #include <libxml/pattern.h>
 #endif
 
+#include "buf.h"
+
 #ifdef LIBXML_PATTERN_ENABLED
 #define XPATH_STREAMING
 #endif
@@ -9146,7 +9148,7 @@ void
 xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   xmlXPathObjectPtr str;
   xmlXPathObjectPtr find;
-  xmlBufferPtr target;
+  xmlBufPtr target;
   const xmlChar *point;
   int offset;
 
@@ -9156,16 +9158,16 @@ xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   CAST_TO_STRING;
   str = valuePop(ctxt);
 
-  target = xmlBufferCreate();
+  target = xmlBufCreate();
   if (target) {
     point = xmlStrstr(str->stringval, find->stringval);
     if (point) {
       offset = (int)(point - str->stringval);
-      xmlBufferAdd(target, str->stringval, offset);
+      xmlBufAdd(target, str->stringval, offset);
     }
     valuePush(ctxt, xmlXPathCacheNewString(ctxt->context,
-	xmlBufferContent(target)));
-    xmlBufferFree(target);
+	xmlBufContent(target)));
+    xmlBufFree(target);
   }
   xmlXPathReleaseObject(ctxt->context, str);
   xmlXPathReleaseObject(ctxt->context, find);
@@ -9189,7 +9191,7 @@ void
 xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   xmlXPathObjectPtr str;
   xmlXPathObjectPtr find;
-  xmlBufferPtr target;
+  xmlBufPtr target;
   const xmlChar *point;
   int offset;
 
@@ -9199,17 +9201,17 @@ xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   CAST_TO_STRING;
   str = valuePop(ctxt);
 
-  target = xmlBufferCreate();
+  target = xmlBufCreate();
   if (target) {
     point = xmlStrstr(str->stringval, find->stringval);
     if (point) {
       offset = (int)(point - str->stringval) + xmlStrlen(find->stringval);
-      xmlBufferAdd(target, &str->stringval[offset],
+      xmlBufAdd(target, &str->stringval[offset],
 		   xmlStrlen(str->stringval) - offset);
     }
     valuePush(ctxt, xmlXPathCacheNewString(ctxt->context,
-	xmlBufferContent(target)));
-    xmlBufferFree(target);
+	xmlBufContent(target)));
+    xmlBufFree(target);
   }
   xmlXPathReleaseObject(ctxt->context, str);
   xmlXPathReleaseObject(ctxt->context, find);
@@ -9233,7 +9235,7 @@ void
 xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   xmlXPathObjectPtr obj = NULL;
   xmlChar *source = NULL;
-  xmlBufferPtr target;
+  xmlBufPtr target;
   xmlChar blank;
 
   if (ctxt == NULL) return;
@@ -9251,7 +9253,7 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   obj = valuePop(ctxt);
   source = obj->stringval;
 
-  target = xmlBufferCreate();
+  target = xmlBufCreate();
   if (target && source) {
 
     /* Skip leading whitespaces */
@@ -9265,16 +9267,16 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	blank = 0x20;
       } else {
 	if (blank) {
-	  xmlBufferAdd(target, &blank, 1);
+	  xmlBufAdd(target, &blank, 1);
 	  blank = 0;
 	}
-	xmlBufferAdd(target, source, 1);
+	xmlBufAdd(target, source, 1);
       }
       source++;
     }
     valuePush(ctxt, xmlXPathCacheNewString(ctxt->context,
-	xmlBufferContent(target)));
-    xmlBufferFree(target);
+	xmlBufContent(target)));
+    xmlBufFree(target);
   }
   xmlXPathReleaseObject(ctxt->context, obj);
 }
@@ -9305,7 +9307,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr str;
     xmlXPathObjectPtr from;
     xmlXPathObjectPtr to;
-    xmlBufferPtr target;
+    xmlBufPtr target;
     int offset, max;
     xmlChar ch;
     const xmlChar *point;
@@ -9320,7 +9322,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_STRING;
     str = valuePop(ctxt);
 
-    target = xmlBufferCreate();
+    target = xmlBufCreate();
     if (target) {
 	max = xmlUTF8Strlen(to->stringval);
 	for (cptr = str->stringval; (ch=*cptr); ) {
@@ -9329,10 +9331,10 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		if (offset < max) {
 		    point = xmlUTF8Strpos(to->stringval, offset);
 		    if (point)
-			xmlBufferAdd(target, point, xmlUTF8Strsize(point, 1));
+			xmlBufAdd(target, point, xmlUTF8Strsize(point, 1));
 		}
 	    } else
-		xmlBufferAdd(target, cptr, xmlUTF8Strsize(cptr, 1));
+		xmlBufAdd(target, cptr, xmlUTF8Strsize(cptr, 1));
 
 	    /* Step to next character in input */
 	    cptr++;
@@ -9358,8 +9360,8 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	}
     }
     valuePush(ctxt, xmlXPathCacheNewString(ctxt->context,
-	xmlBufferContent(target)));
-    xmlBufferFree(target);
+	xmlBufContent(target)));
+    xmlBufFree(target);
     xmlXPathReleaseObject(ctxt->context, str);
     xmlXPathReleaseObject(ctxt->context, from);
     xmlXPathReleaseObject(ctxt->context, to);
@@ -15097,7 +15099,7 @@ static void
 xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr str;
     int escape_reserved;
-    xmlBufferPtr target;
+    xmlBufPtr target;
     xmlChar *cptr;
     xmlChar escape[4];
 
@@ -15108,7 +15110,7 @@ xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_STRING;
     str = valuePop(ctxt);
 
-    target = xmlBufferCreate();
+    target = xmlBufCreate();
 
     escape[0] = '%';
     escape[3] = 0;
@@ -15133,7 +15135,7 @@ xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		  *cptr == ':' || *cptr == '@' || *cptr == '&' ||
 		  *cptr == '=' || *cptr == '+' || *cptr == '$' ||
 		  *cptr == ','))) {
-		xmlBufferAdd(target, cptr, 1);
+		xmlBufAdd(target, cptr, 1);
 	    } else {
 		if ((*cptr >> 4) < 10)
 		    escape[1] = '0' + (*cptr >> 4);
@@ -15144,13 +15146,13 @@ xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		else
 		    escape[2] = 'A' - 10 + (*cptr & 0xF);
 
-		xmlBufferAdd(target, &escape[0], 3);
+		xmlBufAdd(target, &escape[0], 3);
 	    }
 	}
     }
     valuePush(ctxt, xmlXPathCacheNewString(ctxt->context,
-	xmlBufferContent(target)));
-    xmlBufferFree(target);
+	xmlBufContent(target)));
+    xmlBufFree(target);
     xmlXPathReleaseObject(ctxt->context, str);
 }
 

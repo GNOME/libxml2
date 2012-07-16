@@ -32,15 +32,19 @@
 /**
  * xmlBuf:
  *
- * A buffer structure
+ * A buffer structure. The base of the structure is somehow compatible
+ * with struct _xmlBuffer to limit risks on application which accessed
+ * directly the input->buf->buffer structures.
  */
 
 struct _xmlBuf {
     xmlChar *content;		/* The buffer content UTF8 */
-    size_t use;		        /* The buffer size used */
-    size_t size;		/* The buffer size */
+    unsigned int compat_use;    /* for binary compatibility */
+    unsigned int compat_size;   /* for binary compatibility */
     xmlBufferAllocationScheme alloc; /* The realloc method */
     xmlChar *contentIO;		/* in IO mode we may have a different base */
+    size_t use;		        /* The buffer size used */
+    size_t size;		/* The buffer size */
     xmlBufferPtr buffer;        /* wrapper for an old buffer */
     int error;                  /* an error code if a failure occured */
 };
@@ -91,6 +95,8 @@ xmlBufCreate(void) {
 	xmlBufMemoryError(NULL, "creating buffer");
         return(NULL);
     }
+    ret->compat_use = 0;
+    ret->compat_size = 0;
     ret->use = 0;
     ret->error = 0;
     ret->buffer = NULL;
@@ -123,6 +129,8 @@ xmlBufCreateSize(size_t size) {
 	xmlBufMemoryError(NULL, "creating buffer");
         return(NULL);
     }
+    ret->compat_use = 0;
+    ret->compat_size = 0;
     ret->use = 0;
     ret->error = 0;
     ret->buffer = NULL;
@@ -197,6 +205,13 @@ xmlBufCreateStatic(void *mem, size_t size) {
 	xmlBufMemoryError(NULL, "creating buffer");
         return(NULL);
     }
+    if (size < INT_MAX) {
+        ret->compat_use = size;
+        ret->compat_size = size;
+    } else {
+        ret->compat_use = 0;
+        ret->compat_size = 0;
+    }
     ret->use = size;
     ret->size = size;
     ret->alloc = XML_BUFFER_ALLOC_IMMUTABLE;
@@ -234,10 +249,10 @@ xmlBufGetAllocationScheme(xmlBufPtr buf) {
 int
 xmlBufSetAllocationScheme(xmlBufPtr buf,
                           xmlBufferAllocationScheme scheme) {
-    if (buf == NULL) {
+    if ((buf == NULL) || (buf->error != 0)) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
-		"xmlBufSetAllocationScheme: buf == NULL\n");
+		"xmlBufSetAllocationScheme: buf == NULL or in error\n");
 #endif
         return(-1);
     }
@@ -299,7 +314,7 @@ xmlBufFree(xmlBufPtr buf) {
  */
 void
 xmlBufEmpty(xmlBufPtr buf) {
-    if (buf == NULL) return;
+    if ((buf == NULL) || (buf->error != 0)) return;
     if (buf->content == NULL) return;
     buf->use = 0;
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) {
@@ -330,7 +345,7 @@ xmlBufEmpty(xmlBufPtr buf) {
  */
 size_t
 xmlBufShrink(xmlBufPtr buf, size_t len) {
-    if (buf == NULL) return(0);
+    if ((buf == NULL) || (buf->error != 0)) return(0);
     if (len == 0) return(0);
     if (len > buf->use) return(0);
 
@@ -380,7 +395,7 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
     size_t size;
     xmlChar *newbuf;
 
-    if (buf == NULL) return(0);
+    if ((buf == NULL) || (buf->error != 0)) return(0);
 
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return(0);
     if (buf->use + len < buf->size)
@@ -476,10 +491,10 @@ size_t
 xmlBufDump(FILE *file, xmlBufPtr buf) {
     size_t ret;
 
-    if (buf == NULL) {
+    if ((buf == NULL) || (buf->error != 0)) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
-		"xmlBufDump: buf == NULL\n");
+		"xmlBufDump: buf == NULL or in error\n");
 #endif
 	return(0);
     }
@@ -508,7 +523,7 @@ xmlBufDump(FILE *file, xmlBufPtr buf) {
 xmlChar *
 xmlBufContent(const xmlBufPtr buf)
 {
-    if(!buf)
+    if ((!buf) || (buf->error))
         return NULL;
 
     return(buf->content);
@@ -526,7 +541,7 @@ xmlBufContent(const xmlBufPtr buf)
 xmlChar *
 xmlBufEnd(const xmlBufPtr buf)
 {
-    if(!buf)
+    if ((!buf) || (buf->error))
         return NULL;
 
     return(&buf->content[buf->use]);
@@ -545,7 +560,7 @@ xmlBufEnd(const xmlBufPtr buf)
  */
 int
 xmlBufAddLen(xmlBufPtr buf, size_t len) {
-    if ((buf == NULL) || (len > (buf->size - buf->use)))
+    if ((buf == NULL) || (buf->error) || (len > (buf->size - buf->use)))
         return(-1);
     buf->use += len;
     if (buf->size > buf->use)
@@ -566,7 +581,7 @@ xmlBufAddLen(xmlBufPtr buf, size_t len) {
  */
 int
 xmlBufErase(xmlBufPtr buf, size_t len) {
-    if ((buf == NULL) || (len > buf->use))
+    if ((buf == NULL) || (buf->error) || (len > buf->use))
         return(-1);
     buf->use -= len;
     buf->content[buf->use] = 0;
@@ -585,7 +600,7 @@ xmlBufErase(xmlBufPtr buf, size_t len) {
 size_t
 xmlBufLength(const xmlBufPtr buf)
 {
-    if (!buf)
+    if ((!buf) || (buf->error))
         return 0;
 
     return(buf->use);
@@ -603,7 +618,7 @@ xmlBufLength(const xmlBufPtr buf)
 size_t
 xmlBufUse(const xmlBufPtr buf)
 {
-    if (!buf)
+    if ((!buf) || (buf->error))
         return 0;
 
     return(buf->use);
@@ -623,7 +638,7 @@ xmlBufUse(const xmlBufPtr buf)
 size_t
 xmlBufAvail(const xmlBufPtr buf)
 {
-    if (!buf)
+    if ((!buf) || (buf->error))
         return 0;
 
     return(buf->size - buf->use);
@@ -640,7 +655,7 @@ xmlBufAvail(const xmlBufPtr buf)
 int
 xmlBufIsEmpty(const xmlBufPtr buf)
 {
-    if(!buf)
+    if ((!buf) || (buf->error))
         return(-1);
 
     return(buf->use == 0);
@@ -662,7 +677,7 @@ xmlBufResize(xmlBufPtr buf, size_t size)
     xmlChar* rebuf = NULL;
     size_t start_buf;
 
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(0);
 
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return(0);
@@ -771,7 +786,7 @@ int
 xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
     unsigned int needSize;
 
-    if ((str == NULL) || (buf == NULL)) {
+    if ((str == NULL) || (buf == NULL) || (buf->error)) {
 	return -1;
     }
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
@@ -820,7 +835,7 @@ int
 xmlBufAddHead(xmlBufPtr buf, const xmlChar *str, int len) {
     unsigned int needSize;
 
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(-1);
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
     if (str == NULL) {
@@ -885,7 +900,7 @@ xmlBufAddHead(xmlBufPtr buf, const xmlChar *str, int len) {
  */
 int
 xmlBufCat(xmlBufPtr buf, const xmlChar *str) {
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(-1);
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
     if (str == NULL) return -1;
@@ -906,7 +921,7 @@ int
 xmlBufCCat(xmlBufPtr buf, const char *str) {
     const char *cur;
 
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(-1);
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
     if (str == NULL) {
@@ -942,7 +957,7 @@ xmlBufCCat(xmlBufPtr buf, const char *str) {
  */
 int
 xmlBufWriteCHAR(xmlBufPtr buf, const xmlChar *string) {
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(-1);
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
         return(-1);
@@ -962,7 +977,7 @@ xmlBufWriteCHAR(xmlBufPtr buf, const xmlChar *string) {
  */
 int
 xmlBufWriteChar(xmlBufPtr buf, const char *string) {
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(-1);
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
         return(-1);
@@ -985,7 +1000,7 @@ xmlBufWriteChar(xmlBufPtr buf, const char *string) {
 int
 xmlBufWriteQuotedString(xmlBufPtr buf, const xmlChar *string) {
     const xmlChar *cur, *base;
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(-1);
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
         return(-1);
@@ -1076,7 +1091,7 @@ xmlBufferPtr
 xmlBufBackToBuffer(xmlBufPtr buf) {
     xmlBufferPtr ret;
 
-    if (buf == NULL)
+    if ((buf == NULL) || (buf->error))
         return(NULL);
     if (buf->buffer == NULL) {
         xmlBufFree(buf);
@@ -1128,7 +1143,7 @@ int
 xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer) {
     int ret;
 
-    if (buffer == NULL)
+    if ((buf == NULL) || (buf->error))
         return(0);
     if ((buf != NULL) && (buffer->content != NULL) && (buffer->use > 0)) {
         ret = xmlBufAdd(buf, buffer->content, buffer->use);
@@ -1148,7 +1163,7 @@ xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer) {
  */
 int
 xmlBufResetInput(xmlBufPtr buf, xmlParserInputPtr input) {
-    if ((input == NULL) || (buf == NULL))
+    if ((input == NULL) || (buf == NULL) || (buf->error))
         return(-1);
     input->base = input->cur = buf->content;
     input->end = &buf->content[buf->use];
@@ -1168,6 +1183,8 @@ size_t
 xmlBufGetInputBase(xmlBufPtr buf, xmlParserInputPtr input) {
     size_t base;
 
+    if ((input == NULL) || (buf == NULL) || (buf->error))
+        return(-1);
     base = input->base - buf->content;
     /*
      * We could do some pointer arythmetic checks but that's probably
@@ -1193,7 +1210,7 @@ xmlBufGetInputBase(xmlBufPtr buf, xmlParserInputPtr input) {
 int
 xmlBufSetInputBaseCur(xmlBufPtr buf, xmlParserInputPtr input,
                       size_t base, size_t cur) {
-    if ((input == NULL) || (buf == NULL))
+    if ((input == NULL) || (buf == NULL) || (buf->error))
         return(-1);
     input->base = &buf->content[base];
     input->cur = input->base + cur;

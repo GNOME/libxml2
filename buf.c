@@ -1144,13 +1144,59 @@ xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer) {
  *
  * Update the input to use the current set of pointers from the buffer.
  *
- * Returns -1 in case of error, 0 otherwise, in any case @buffer is freed
+ * Returns -1 in case of error, 0 otherwise
  */
 int
 xmlBufResetInput(xmlBufPtr buf, xmlParserInputPtr input) {
     if ((input == NULL) || (buf == NULL))
         return(-1);
     input->base = input->cur = buf->content;
+    input->end = &buf->content[buf->use];
+    return(0);
+}
+
+/**
+ * xmlBufGetInputBase:
+ * @buf: an xmlBufPtr
+ * @input: an xmlParserInputPtr
+ *
+ * Get the base of the @input relative to the beginning of the buffer
+ *
+ * Returns the size_t corresponding to the displacement
+ */
+size_t
+xmlBufGetInputBase(xmlBufPtr buf, xmlParserInputPtr input) {
+    size_t base;
+
+    base = input->base - buf->content;
+    /*
+     * We could do some pointer arythmetic checks but that's probably
+     * sufficient.
+     */
+    if (base > buf->size) {
+        xmlBufOverflowError(buf, "Input reference outside of the buffer");
+        base = 0;
+    }
+    return(base);
+}
+
+/**
+ * xmlBufSetInputBaseCur:
+ * @buf: an xmlBufPtr
+ * @input: an xmlParserInputPtr
+ *
+ * Update the input to use the base and cur relative to the buffer
+ * after a possible reallocation of its content
+ *
+ * Returns -1 in case of error, 0 otherwise
+ */
+int
+xmlBufSetInputBaseCur(xmlBufPtr buf, xmlParserInputPtr input,
+                      size_t base, size_t cur) {
+    if ((input == NULL) || (buf == NULL))
+        return(-1);
+    input->base = &buf->content[base];
+    input->cur = input->base + cur;
     input->end = &buf->content[buf->use];
     return(0);
 }

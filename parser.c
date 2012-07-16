@@ -10835,15 +10835,13 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	     * buffer.
 	     */
 	    if (xmlBufIsEmpty(ctxt->input->buf->buffer) == 0) {
-		size_t base = ctxt->input->base -
-		           xmlBufContent(ctxt->input->buf->buffer);
+                size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
+                                                 ctxt->input);
 		size_t current = ctxt->input->cur - ctxt->input->base;
 
 		xmlParserInputBufferPush(ctxt->input->buf, 0, "");
-		ctxt->input->base = xmlBufContent(ctxt->input->buf->buffer) +
-                                    base;
-		ctxt->input->cur = ctxt->input->base + current;
-		ctxt->input->end = xmlBufEnd(ctxt->input->buf->buffer);
+                xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input,
+                                      base, current);
 	    }
 	    avail = xmlBufUse(ctxt->input->buf->buffer) -
 		    (ctxt->input->cur - ctxt->input->base);
@@ -11707,8 +11705,8 @@ xmldecl_done:
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
-	int base = ctxt->input->base - xmlBufContent(ctxt->input->buf->buffer);
-	int cur = ctxt->input->cur - ctxt->input->base;
+	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
+	size_t cur = ctxt->input->cur - ctxt->input->base;
 	int res;
 
         /*
@@ -11752,9 +11750,7 @@ xmldecl_done:
 	    ctxt->disableSAX = 1;
 	    return (XML_PARSER_EOF);
 	}
-	ctxt->input->base = xmlBufContent(ctxt->input->buf->buffer) + base;
-	ctxt->input->cur = ctxt->input->base + cur;
-	ctxt->input->end = xmlBufEnd(ctxt->input->buf->buffer);
+        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
@@ -11936,14 +11932,12 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     if ((size == 0) || (chunk == NULL)) {
 	ctxt->charset = XML_CHAR_ENCODING_NONE;
     } else if ((ctxt->input != NULL) && (ctxt->input->buf != NULL)) {
-	int base = ctxt->input->base - xmlBufContent(ctxt->input->buf->buffer);
-	int cur = ctxt->input->cur - ctxt->input->base;
+	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
+	size_t cur = ctxt->input->cur - ctxt->input->base;
 
 	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
 
-	ctxt->input->base = xmlBufContent(ctxt->input->buf->buffer) + base;
-	ctxt->input->cur = ctxt->input->base + cur;
-	ctxt->input->end = xmlBufEnd(ctxt->input->buf->buffer);
+        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
@@ -14443,14 +14437,12 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL)) {
-        int base = ctxt->input->base - xmlBufContent(ctxt->input->buf->buffer);
-        int cur = ctxt->input->cur - ctxt->input->base;
+	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
+        size_t cur = ctxt->input->cur - ctxt->input->base;
 
         xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
 
-        ctxt->input->base = xmlBufContent(ctxt->input->buf->buffer) + base;
-        ctxt->input->cur = ctxt->input->base + cur;
-        ctxt->input->end = xmlBufEnd(ctxt->input->buf->buffer);
+        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 #ifdef DEBUG_PUSH
         xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif

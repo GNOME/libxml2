@@ -1048,9 +1048,14 @@ XMLPUBFUN void XMLCALL
 					 int len);
 XMLPUBFUN xmlChar * XMLCALL	
 		xmlNodeGetContent	(xmlNodePtr cur);
+
 XMLPUBFUN int XMLCALL
 		xmlNodeBufGetContent	(xmlBufferPtr buffer,
 					 xmlNodePtr cur);
+XMLPUBFUN int XMLCALL
+		xmlBufGetNodeContent	(xmlBufPtr buf,
+					 xmlNodePtr cur);
+
 XMLPUBFUN xmlChar * XMLCALL	
 		xmlNodeGetLang		(xmlNodePtr cur);
 XMLPUBFUN int XMLCALL		
@@ -1157,6 +1162,12 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlSaveFormatFile	(const char *filename,
 					 xmlDocPtr cur,
+					 int format);
+XMLPUBFUN size_t XMLCALL
+		xmlBufNodeDump		(xmlBufPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
+					 int level,
 					 int format);
 XMLPUBFUN int XMLCALL		
 		xmlNodeDump		(xmlBufferPtr buf,

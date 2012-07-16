@@ -41,6 +41,8 @@
 #include <libxml/debugXML.h>
 #endif
 
+#include "buf.h"
+
 int __xmlRegisterCallbacks = 0;
 
 /************************************************************************
@@ -5246,11 +5248,39 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
 int
 xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
 {
+    xmlBufPtr buf;
+    int ret;
+
     if ((cur == NULL) || (buffer == NULL)) return(-1);
+    buf = xmlBufFromBuffer(buffer);
+    ret = xmlBufGetNodeContent(buf, cur);
+    buffer = xmlBufBackToBuffer(buf);
+    if ((ret < 0) || (buffer == NULL))
+        return(-1);
+    return(0);
+}
+
+/**
+ * xmlBufGetNodeContent:
+ * @buffer:  a buffer
+ * @cur:  the node being read
+ *
+ * Read the value of a node @cur, this can be either the text carried
+ * directly by this node if it's a TEXT node or the aggregate string
+ * of the values carried by this node child's (TEXT and ENTITY_REF).
+ * Entity references are substituted.
+ * Fills up the buffer @buffer with this value
+ *
+ * Returns 0 in case of success and -1 in case of error.
+ */
+int
+xmlBufGetNodeContent(xmlBufPtr buf, xmlNodePtr cur)
+{
+    if ((cur == NULL) || (buf == NULL)) return(-1);
     switch (cur->type) {
         case XML_CDATA_SECTION_NODE:
         case XML_TEXT_NODE:
-	    xmlBufferCat(buffer, cur->content);
+	    xmlBufCat(buf, cur->content);
             break;
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:{
@@ -5261,10 +5291,10 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
                         case XML_CDATA_SECTION_NODE:
                         case XML_TEXT_NODE:
                             if (tmp->content != NULL)
-                                xmlBufferCat(buffer, tmp->content);
+                                xmlBufCat(buf, tmp->content);
                             break;
                         case XML_ENTITY_REF_NODE:
-                            xmlNodeBufGetContent(buffer, tmp);
+                            xmlBufGetNodeContent(buf, tmp);
                             break;
                         default:
                             break;
@@ -5308,16 +5338,16 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
 
 		while (tmp != NULL) {
 		    if (tmp->type == XML_TEXT_NODE)
-		        xmlBufferCat(buffer, tmp->content);
+		        xmlBufCat(buf, tmp->content);
 		    else
-		        xmlNodeBufGetContent(buffer, tmp);
+		        xmlBufGetNodeContent(buf, tmp);
 		    tmp = tmp->next;
 		}
                 break;
             }
         case XML_COMMENT_NODE:
         case XML_PI_NODE:
-	    xmlBufferCat(buffer, cur->content);
+	    xmlBufCat(buf, cur->content);
             break;
         case XML_ENTITY_REF_NODE:{
                 xmlEntityPtr ent;
@@ -5335,7 +5365,7 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
                  * xmlNodeGetContent() which handles all possible node types */
                 tmp = ent->children;
                 while (tmp) {
-		    xmlNodeBufGetContent(buffer, tmp);
+		    xmlBufGetNodeContent(buf, tmp);
                     tmp = tmp->next;
                 }
 		break;
@@ -5357,13 +5387,13 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
 		if ((cur->type == XML_ELEMENT_NODE) ||
 		    (cur->type == XML_TEXT_NODE) ||
 		    (cur->type == XML_CDATA_SECTION_NODE)) {
-		    xmlNodeBufGetContent(buffer, cur);
+		    xmlBufGetNodeContent(buf, cur);
 		}
 		cur = cur->next;
 	    }
 	    break;
         case XML_NAMESPACE_DECL:
-	    xmlBufferCat(buffer, ((xmlNsPtr) cur)->href);
+	    xmlBufCat(buf, ((xmlNsPtr) cur)->href);
 	    break;
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
@@ -5372,6 +5402,7 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
     }
     return(0);
 }
+
 /**
  * xmlNodeGetContent:
  * @cur:  the node being read

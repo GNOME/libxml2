@@ -30,6 +30,8 @@
 #include <libxml/globals.h>
 #include <libxml/uri.h>
 
+#include "buf.h"
+
 /************************************************************************
  *									*
  *   		Getting/Setting encoding meta tags			*
@@ -391,13 +393,9 @@ htmlSaveErr(int code, xmlNodePtr node, const char *extra)
  *									*
  ************************************************************************/
 
-static int
-htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
-	           int format);
-
 /**
- * htmlNodeDumpFormat:
- * @buf:  the HTML buffer output
+ * htmlBufNodeDumpFormat:
+ * @buf:  the xmlBufPtr output
  * @doc:  the document
  * @cur:  the current node
  * @format:  should formatting spaces been added
@@ -406,10 +404,10 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  *
  * Returns the number of byte written or -1 in case of error
  */
-static int
-htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+static size_t
+htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	           int format) {
-    unsigned int use;
+    size_t use;
     int ret;
     xmlOutputBufferPtr outbuf;
 
@@ -432,10 +430,10 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     outbuf->context = NULL;
     outbuf->written = 0;
 
-    use = buf->use;
+    use = xmlBufUse(buf);
     htmlNodeDumpFormatOutput(outbuf, doc, cur, NULL, format);
     xmlFree(outbuf);
-    ret = buf->use - use;
+    ret = xmlBufUse(buf) - use;
     return (ret);
 }
 
@@ -452,9 +450,24 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  */
 int
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
-    xmlInitParser();
+    xmlBufPtr buffer;
+    size_t ret;
 
-    return(htmlNodeDumpFormat(buf, doc, cur, 1));
+    if ((buf == NULL) || (cur == NULL))
+        return(-1);
+
+    xmlInitParser();
+    buffer = xmlBufFromBuffer(buf);
+    if (buffer == NULL)
+        return(-1);
+
+    ret = htmlBufNodeDumpFormat(buffer, doc, cur, 1);
+
+    xmlBufBackToBuffer(buffer);
+
+    if (ret > INT_MAX)
+        return(-1);
+    return((int) ret);
 }
 
 /**
@@ -595,11 +608,11 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
 
     xmlOutputBufferFlush(buf);
     if (buf->conv != NULL) {
-	*size = buf->conv->use;
-	*mem = xmlStrndup(buf->conv->content, *size);
+	*size = xmlBufUse(buf->conv);
+	*mem = xmlStrndup(xmlBufContent(buf->conv), *size);
     } else {
-	*size = buf->buffer->use;
-	*mem = xmlStrndup(buf->buffer->content, *size);
+	*size = xmlBufUse(buf->buffer);
+	*mem = xmlStrndup(xmlBufContent(buf->buffer), *size);
     }
     (void)xmlOutputBufferClose(buf);
 }
@@ -650,14 +663,14 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if (cur->ExternalID != NULL) {
 	xmlOutputBufferWriteString(buf, " PUBLIC ");
-	xmlBufferWriteQuotedString(buf->buffer, cur->ExternalID);
+	xmlBufWriteQuotedString(buf->buffer, cur->ExternalID);
 	if (cur->SystemID != NULL) {
 	    xmlOutputBufferWriteString(buf, " ");
-	    xmlBufferWriteQuotedString(buf->buffer, cur->SystemID);
+	    xmlBufWriteQuotedString(buf->buffer, cur->SystemID);
 	} 
     }  else if (cur->SystemID != NULL) {
 	xmlOutputBufferWriteString(buf, " SYSTEM ");
-	xmlBufferWriteQuotedString(buf->buffer, cur->SystemID);
+	xmlBufWriteQuotedString(buf->buffer, cur->SystemID);
     }
     xmlOutputBufferWriteString(buf, ">\n");
 }
@@ -709,13 +722,13 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 
 		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%&,+");
 		if (escaped != NULL) {
-		    xmlBufferWriteQuotedString(buf->buffer, escaped);
+		    xmlBufWriteQuotedString(buf->buffer, escaped);
 		    xmlFree(escaped);
 		} else {
-		    xmlBufferWriteQuotedString(buf->buffer, value);
+		    xmlBufWriteQuotedString(buf->buffer, value);
 		}
 	    } else {
-		xmlBufferWriteQuotedString(buf->buffer, value);
+		xmlBufWriteQuotedString(buf->buffer, value);
 	    }
 	    xmlFree(value);
 	} else  {

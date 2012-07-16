@@ -26,6 +26,7 @@
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>
 
+#include "buf.h"
 
 #define XINCLUDE_MAX_DEPTH 40
 
@@ -1898,8 +1899,8 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	int len;
 	const xmlChar *content;
 
-	content = xmlBufferContent(buf->buffer);
-	len = xmlBufferLength(buf->buffer);
+	content = xmlBufContent(buf->buffer);
+	len = xmlBufLength(buf->buffer);
 	for (i = 0;i < len;) {
 	    int cur;
 	    int l;
@@ -1917,7 +1918,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	    }
 	    i += l;
 	}
-	xmlBufferShrink(buf->buffer, len);
+	xmlBufShrink(buf->buffer, len);
     }
     xmlFreeParserCtxt(pctxt);
     xmlXIncludeAddTxt(ctxt, node, URL);

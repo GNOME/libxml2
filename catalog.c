@@ -41,6 +41,8 @@
 #include <libxml/threads.h>
 #include <libxml/globals.h>
 
+#include "buf.h"
+
 #define MAX_DELEGATE	50
 #define MAX_CATAL_DEPTH	50
 
@@ -912,10 +914,9 @@ xmlParseCatalogFile(const char *filename) {
 
     inputStream->filename = (char *) xmlCanonicPath((const xmlChar *)filename);
     inputStream->buf = buf;
-    inputStream->base = inputStream->buf->buffer->content;
-    inputStream->cur = inputStream->buf->buffer->content;
-    inputStream->end = 
-	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
+    inputStream->cur =
+    inputStream->base = xmlBufContent(buf->buffer);
+    inputStream->end = xmlBufEnd(buf->buffer);
 
     inputPush(ctxt, inputStream);
     if ((ctxt->directory == NULL) && (directory == NULL))

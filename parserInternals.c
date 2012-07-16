@@ -1218,9 +1218,7 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                 return (-1);
             }
 	    input->buf->rawconsumed += use - xmlBufUse(input->buf->raw);
-            input->base = input->cur = xmlBufContent(input->buf->buffer);
-            input->end = xmlBufEnd(input->buf->buffer);
-
+            xmlBufResetInput(input->buf->buffer, input);
         }
         return (0);
     } else if (input->length == 0) {
@@ -1387,9 +1385,8 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
     }
     inputStream->filename = NULL;
     inputStream->buf = input;
-    inputStream->cur =
-    inputStream->base = xmlBufContent(inputStream->buf->buffer);
-    inputStream->end = xmlBufEnd(inputStream->buf->buffer);
+    xmlBufResetInput(inputStream->buf->buffer, inputStream);
+
     if (enc != XML_CHAR_ENCODING_NONE) {
         xmlSwitchEncoding(ctxt, enc);
     }
@@ -1542,9 +1539,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     if (URI != NULL) xmlFree((char *) URI);
     inputStream->directory = directory;
 
-    inputStream->base =
-    inputStream->cur = xmlBufContent(inputStream->buf->buffer);
-    inputStream->end = xmlBufEnd(inputStream->buf->buffer);
+    xmlBufResetInput(inputStream->buf->buffer, inputStream);
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = (char *) xmlStrdup((const xmlChar *) directory);
     return(inputStream);

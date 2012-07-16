@@ -1136,3 +1136,21 @@ xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer) {
     xmlBufferFree(buffer);
     return(ret);
 }
+
+/**
+ * xmlBufResetInput:
+ * @buf: an xmlBufPtr
+ * @input: an xmlParserInputPtr
+ *
+ * Update the input to use the current set of pointers from the buffer.
+ *
+ * Returns -1 in case of error, 0 otherwise, in any case @buffer is freed
+ */
+int
+xmlBufResetInput(xmlBufPtr buf, xmlParserInputPtr input) {
+    if ((input == NULL) || (buf == NULL))
+        return(-1);
+    input->base = input->cur = buf->content;
+    input->end = &buf->content[buf->use];
+    return(0);
+}

@@ -5126,9 +5126,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 		inputStream->filename = (char *)
 		    xmlCanonicPath((const xmlChar *) URL);
 	    inputStream->buf = buf;
-	    inputStream->cur =
-	    inputStream->base = xmlBufContent(buf->buffer);
-	    inputStream->end = xmlBufEnd(buf->buffer);
+            xmlBufResetInput(buf->buffer, inputStream);
 
 	    inputPush(reader->ctxt, inputStream);
 	    reader->cur = 0;

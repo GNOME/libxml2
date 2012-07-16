@@ -11925,10 +11925,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	}
     }
     inputStream->buf = buf;
-    inputStream->cur =
-    inputStream->base = xmlBufContent(inputStream->buf->buffer);
-    inputStream->end = xmlBufEnd(inputStream->buf->buffer);
-
+    xmlBufResetInput(inputStream->buf->buffer, inputStream);
     inputPush(ctxt, inputStream);
 
     /*
@@ -13870,9 +13867,7 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
 
     input->filename = NULL;
     input->buf = buf;
-    input->cur =
-    input->base = xmlBufContent(input->buf->buffer);
-    input->end = xmlBufEnd(input->buf->buffer);
+    xmlBufResetInput(input->buf->buffer, input);
 
     inputPush(ctxt, input);
     return(ctxt);
@@ -14442,9 +14437,7 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
         inputStream->filename = (char *)
             xmlCanonicPath((const xmlChar *) filename);
     inputStream->buf = buf;
-    inputStream->cur =
-    inputStream->base = xmlBufContent(buf->buffer);
-    inputStream->end = xmlBufEnd(buf->buffer);
+    xmlBufResetInput(buf->buffer, inputStream);
 
     inputPush(ctxt, inputStream);
 

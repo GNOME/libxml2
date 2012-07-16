@@ -3519,9 +3519,7 @@ htmlCheckEncodingDirect(htmlParserCtxtPtr ctxt, const xmlChar *encoding) {
 		             "htmlCheckEncoding: encoder error\n",
 			     NULL, NULL);
 	    }
-	    ctxt->input->base =
-	    ctxt->input->cur = xmlBufContent(ctxt->input->buf->buffer);
-            ctxt->input->end = xmlBufEnd(ctxt->input->buf->buffer);
+            xmlBufResetInput(ctxt->input->buf->buffer, ctxt->input);
 	}
     }
 }
@@ -4906,9 +4904,7 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 
     input->filename = NULL;
     input->buf = buf;
-    input->cur =
-    input->base = xmlBufContent(input->buf->buffer);
-    input->end = xmlBufEnd(input->buf->buffer);
+    xmlBufResetInput(buf->buffer, input);
 
     inputPush(ctxt, input);
     return(ctxt);
@@ -6106,9 +6102,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	inputStream->filename = (char *)
 	    xmlCanonicPath((const xmlChar *) filename);
     inputStream->buf = buf;
-    inputStream->cur =
-    inputStream->base = xmlBufContent(buf->buffer);
-    inputStream->end = xmlBufEnd(buf->buffer);
+    xmlBufResetInput(buf->buffer, inputStream);
 
     inputPush(ctxt, inputStream);
 

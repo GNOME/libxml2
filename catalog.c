@@ -914,9 +914,7 @@ xmlParseCatalogFile(const char *filename) {
 
     inputStream->filename = (char *) xmlCanonicPath((const xmlChar *)filename);
     inputStream->buf = buf;
-    inputStream->cur =
-    inputStream->base = xmlBufContent(buf->buffer);
-    inputStream->end = xmlBufEnd(buf->buffer);
+    xmlBufResetInput(buf->buffer, inputStream);
 
     inputPush(ctxt, inputStream);
     if ((ctxt->directory == NULL) && (directory == NULL))

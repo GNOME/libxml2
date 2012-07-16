@@ -57,6 +57,7 @@ xmlBufPtr xmlBufFromBuffer(xmlBufferPtr buffer);
 xmlBufferPtr xmlBufBackToBuffer(xmlBufPtr buf);
 int xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer);
 
+int xmlBufResetInput(xmlBufPtr buf, xmlParserInputPtr input);
 #ifdef __cplusplus
 }
 #endif

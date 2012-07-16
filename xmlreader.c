@@ -44,6 +44,8 @@
 #include <libxml/pattern.h>
 #endif
 
+#include "buf.h"
+
 #define MAX_ERR_MSG_SIZE 64000
 
 /*
@@ -135,7 +137,7 @@ struct _xmlTextReader {
     int				depth;  /* depth of the current node */
     xmlNodePtr			faketext;/* fake xmlNs chld */
     int				preserve;/* preserve the resulting document */
-    xmlBufferPtr		buffer; /* used to return const xmlChar * */
+    xmlBufPtr		        buffer; /* used to return const xmlChar * */
     xmlDictPtr			dict;	/* the context dictionnary */
 
     /* entity stack when traversing entities content */
@@ -807,9 +809,10 @@ xmlTextReaderCDataBlock(void *ctx, const xmlChar *ch, int len)
  */
 static int
 xmlTextReaderPushData(xmlTextReaderPtr reader) {
-    xmlBufferPtr inbuf;
+    xmlBufPtr inbuf;
     int val, s;
     xmlTextReaderState oldstate;
+    int alloc;
 
     if ((reader->input == NULL) || (reader->input->buffer == NULL))
 	return(-1);
@@ -817,17 +820,18 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
     oldstate = reader->state;
     reader->state = XML_TEXTREADER_NONE;
     inbuf = reader->input->buffer;
+    alloc = xmlBufGetAllocationScheme(inbuf);
 
     while (reader->state == XML_TEXTREADER_NONE) {
-	if (inbuf->use < reader->cur + CHUNK_SIZE) {
+	if (xmlBufUse(inbuf) < reader->cur + CHUNK_SIZE) {
 	    /*
 	     * Refill the buffer unless we are at the end of the stream
 	     */
 	    if (reader->mode != XML_TEXTREADER_MODE_EOF) {
 		val = xmlParserInputBufferRead(reader->input, 4096);
 		if ((val == 0) &&
-		    (inbuf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)) {
-		    if (inbuf->use == reader->cur) {
+		    (alloc == XML_BUFFER_ALLOC_IMMUTABLE)) {
+		    if (xmlBufUse(inbuf) == reader->cur) {
 			reader->mode = XML_TEXTREADER_MODE_EOF;
 			reader->state = oldstate;
 		    }
@@ -850,20 +854,20 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	 * parse by block of CHUNK_SIZE bytes, various tests show that
 	 * it's the best tradeoff at least on a 1.2GH Duron
 	 */
-	if (inbuf->use >= reader->cur + CHUNK_SIZE) {
+	if (xmlBufUse(inbuf) >= reader->cur + CHUNK_SIZE) {
 	    val = xmlParseChunk(reader->ctxt,
-		          (const char *) &inbuf->content[reader->cur],
-			  CHUNK_SIZE, 0);
+                 (const char *) xmlBufContent(inbuf) + reader->cur,
+                                CHUNK_SIZE, 0);
 	    reader->cur += CHUNK_SIZE;
 	    if (val != 0)
 		reader->ctxt->wellFormed = 0;
 	    if (reader->ctxt->wellFormed == 0)
 		break;
 	} else {
-	    s = inbuf->use - reader->cur;
+	    s = xmlBufUse(inbuf) - reader->cur;
 	    val = xmlParseChunk(reader->ctxt,
-		          (const char *) &inbuf->content[reader->cur],
-			  s, 0);
+		 (const char *) xmlBufContent(inbuf) + reader->cur,
+			        s, 0);
 	    reader->cur += s;
 	    if (val != 0)
 		reader->ctxt->wellFormed = 0;
@@ -875,10 +879,10 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
      * Discard the consumed input when needed and possible
      */
     if (reader->mode == XML_TEXTREADER_MODE_INTERACTIVE) {
-        if (inbuf->alloc != XML_BUFFER_ALLOC_IMMUTABLE) {
+        if (alloc != XML_BUFFER_ALLOC_IMMUTABLE) {
 	    if ((reader->cur >= 4096) &&
-		(inbuf->use - reader->cur <= CHUNK_SIZE)) {
-		val = xmlBufferShrink(inbuf, reader->cur);
+		(xmlBufUse(inbuf) - reader->cur <= CHUNK_SIZE)) {
+		val = xmlBufShrink(inbuf, reader->cur);
 		if (val >= 0) {
 		    reader->cur -= val;
 		}
@@ -892,11 +896,11 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
      */
     else if (reader->mode == XML_TEXTREADER_MODE_EOF) {
 	if (reader->state != XML_TEXTREADER_DONE) {
-	    s = inbuf->use - reader->cur;
+	    s = xmlBufUse(inbuf) - reader->cur;
 	    val = xmlParseChunk(reader->ctxt,
-		    (const char *) &inbuf->content[reader->cur],
-		    s, 1);
-	    reader->cur = inbuf->use;
+		 (const char *) xmlBufContent(inbuf) + reader->cur,
+			        s, 1);
+	    reader->cur = xmlBufUse(inbuf);
 	    reader->state  = XML_TEXTREADER_DONE;
 	    if (val != 0) {
 	        if (reader->ctxt->wellFormed)
@@ -2065,7 +2069,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->entMax = 0;
     ret->entNr = 0;
     ret->input = input;
-    ret->buffer = xmlBufferCreateSize(100);
+    ret->buffer = xmlBufCreateSize(100);
     if (ret->buffer == NULL) {
         xmlFree(ret);
         xmlGenericError(xmlGenericErrorContext,
@@ -2074,7 +2078,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     }
     ret->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ret->sax == NULL) {
-	xmlBufferFree(ret->buffer);
+	xmlBufFree(ret->buffer);
 	xmlFree(ret);
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewTextReader : malloc failed\n");
@@ -2107,12 +2111,13 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->mode = XML_TEXTREADER_MODE_INITIAL;
     ret->node = NULL;
     ret->curnode = NULL;
-    if (ret->input->buffer->use < 4) {
+    if (xmlBufUse(ret->input->buffer) < 4) {
 	xmlParserInputBufferRead(input, 4);
     }
-    if (ret->input->buffer->use >= 4) {
+    if (xmlBufUse(ret->input->buffer) >= 4) {
 	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL,
-			(const char *) ret->input->buffer->content, 4, URI);
+			     (const char *) xmlBufContent(ret->input->buffer),
+                                            4, URI);
 	ret->base = 0;
 	ret->cur = 4;
     } else {
@@ -2124,7 +2129,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     if (ret->ctxt == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewTextReader : malloc failed\n");
-	xmlBufferFree(ret->buffer);
+	xmlBufFree(ret->buffer);
 	xmlFree(ret->sax);
 	xmlFree(ret);
 	return(NULL);
@@ -2254,7 +2259,7 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
     if ((reader->input != NULL)  && (reader->allocs & XML_TEXTREADER_INPUT))
 	xmlFreeParserInputBuffer(reader->input);
     if (reader->buffer != NULL)
-        xmlBufferFree(reader->buffer);
+        xmlBufFree(reader->buffer);
     if (reader->entTab != NULL)
 	xmlFree(reader->entTab);
     if (reader->dict != NULL)
@@ -3602,16 +3607,17 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
 		(attr->children->next == NULL))
 		return(attr->children->content);
 	    else {
-		if (reader->buffer == NULL)
-		    reader->buffer = xmlBufferCreateSize(100);
 		if (reader->buffer == NULL) {
-		    xmlGenericError(xmlGenericErrorContext,
-				    "xmlTextReaderSetup : malloc failed\n");
-		    return (NULL);
-		}
-	        reader->buffer->use = 0;
-	        xmlNodeBufGetContent(reader->buffer, node);
-		return(reader->buffer->content);
+		    reader->buffer = xmlBufCreateSize(100);
+                    if (reader->buffer == NULL) {
+                        xmlGenericError(xmlGenericErrorContext,
+                                        "xmlTextReaderSetup : malloc failed\n");
+                        return (NULL);
+                    }
+                } else
+                    xmlBufEmpty(reader->buffer);
+	        xmlBufGetNodeContent(reader->buffer, node);
+		return(xmlBufContent(reader->buffer));
 	    }
 	    break;
 	}
@@ -5043,7 +5049,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 	reader->allocs |= XML_TEXTREADER_INPUT;
     }
     if (reader->buffer == NULL)
-        reader->buffer = xmlBufferCreateSize(100);
+        reader->buffer = xmlBufCreateSize(100);
     if (reader->buffer == NULL) {
         xmlGenericError(xmlGenericErrorContext,
                         "xmlTextReaderSetup : malloc failed\n");
@@ -5084,13 +5090,14 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
     reader->node = NULL;
     reader->curnode = NULL;
     if (input != NULL) {
-        if (reader->input->buffer->use < 4) {
+        if (xmlBufUse(reader->input->buffer) < 4) {
             xmlParserInputBufferRead(input, 4);
         }
         if (reader->ctxt == NULL) {
-            if (reader->input->buffer->use >= 4) {
+            if (xmlBufUse(reader->input->buffer) >= 4) {
                 reader->ctxt = xmlCreatePushParserCtxt(reader->sax, NULL,
-		       (const char *) reader->input->buffer->content, 4, URL);
+		       (const char *) xmlBufContent(reader->input->buffer),
+                                      4, URL);
                 reader->base = 0;
                 reader->cur = 4;
             } else {
@@ -5119,10 +5126,9 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 		inputStream->filename = (char *)
 		    xmlCanonicPath((const xmlChar *) URL);
 	    inputStream->buf = buf;
-	    inputStream->base = inputStream->buf->buffer->content;
-	    inputStream->cur = inputStream->buf->buffer->content;
-	    inputStream->end =
-            &inputStream->buf->buffer->content[inputStream->buf->buffer->use];
+	    inputStream->cur =
+	    inputStream->base = xmlBufContent(buf->buffer);
+	    inputStream->end = xmlBufEnd(buf->buffer);
 
 	    inputPush(reader->ctxt, inputStream);
 	    reader->cur = 0;

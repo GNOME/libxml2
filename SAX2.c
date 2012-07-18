@@ -57,12 +57,29 @@
  */
 static void
 xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt, const char *msg) {
+    xmlStructuredErrorFunc schannel = NULL;
+    const char *str1 = "out of memory\n";
+
     if (ctxt != NULL) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "%s: out of memory\n", msg);
+	ctxt->errNo = XML_ERR_NO_MEMORY;
+	if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
+	    schannel = ctxt->sax->serror;
+	__xmlRaiseError(schannel,
+			ctxt->vctxt.error, ctxt->vctxt.userData,
+			ctxt, NULL, XML_FROM_PARSER, XML_ERR_NO_MEMORY,
+			XML_ERR_ERROR, NULL, 0, (const char *) str1,
+			NULL, NULL, 0, 0,
+			msg, (const char *) str1, NULL);
 	ctxt->errNo = XML_ERR_NO_MEMORY;
 	ctxt->instate = XML_PARSER_EOF;
 	ctxt->disableSAX = 1;
+    } else {
+	__xmlRaiseError(schannel,
+			NULL, NULL,
+			ctxt, NULL, XML_FROM_PARSER, XML_ERR_NO_MEMORY,
+			XML_ERR_ERROR, NULL, 0, (const char *) str1,
+			NULL, NULL, 0, 0,
+			msg, (const char *) str1, NULL);
     }
 }
 

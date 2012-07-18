@@ -11,7 +11,7 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
                 testReader testapi testModule runtest runsuite testchar \
-		testdict runxmlconf testrecurse
+		testdict runxmlconf testrecurse testlimits
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -71,6 +71,11 @@ testrecurse_SOURCES=testrecurse.c
 testrecurse_LDFLAGS = 
 testrecurse_DEPENDENCIES = $(DEPS)
 testrecurse_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
+
+testlimits_SOURCES=testlimits.c
+testlimits_LDFLAGS = 
+testlimits_DEPENDENCIES = $(DEPS)
+testlimits_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
 
 testchar_SOURCES=testchar.c
 testchar_LDFLAGS = 

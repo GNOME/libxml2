@@ -907,8 +907,11 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	}
     }
     reader->state = oldstate;
-    if (reader->ctxt->wellFormed == 0)
+    if (reader->ctxt->wellFormed == 0) {
 	reader->mode = XML_TEXTREADER_MODE_EOF;
+        return(-1);
+    }
+
     return(0);
 }
 

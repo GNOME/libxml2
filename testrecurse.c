@@ -687,12 +687,10 @@ recursiveDetectTest(const char *filename,
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
-    int mem;
 
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
-    mem = xmlMemUsed();
     /*
      * base of the test, parse with the old API
      */
@@ -728,12 +726,10 @@ notRecursiveDetectTest(const char *filename,
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
-    int mem;
 
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
-    mem = xmlMemUsed();
     /*
      * base of the test, parse with the old API
      */

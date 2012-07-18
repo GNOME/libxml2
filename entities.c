@@ -528,13 +528,13 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
  * Macro used to grow the current buffer.
  */
 #define growBufferReentrant() {						\
-    buffer_size *= 2;							\
-    buffer = (xmlChar *)						\
-    		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
-    if (buffer == NULL) {						\
-        xmlEntitiesErrMemory("xmlEncodeEntitiesReentrant: realloc failed");\
-	return(NULL);							\
-    }									\
+    xmlChar *tmp;                                                       \
+    size_t new_size = buffer_size *= 2;                                 \
+    if (new_size < buffer_size) goto mem_error;                         \
+    tmp = (xmlChar *) xmlRealloc(buffer, new_size);	                \
+    if (tmp == NULL) goto mem_error;                                    \
+    buffer = tmp;							\
+    buffer_size = new_size;						\
 }
 
 
@@ -555,7 +555,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     const xmlChar *cur = input;
     xmlChar *buffer = NULL;
     xmlChar *out = NULL;
-    int buffer_size = 0;
+    size_t buffer_size = 0;
     int html = 0;
 
     if (input == NULL) return(NULL);
@@ -574,8 +574,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     out = buffer;
 
     while (*cur != '\0') {
-        if (out - buffer > buffer_size - 100) {
-	    int indx = out - buffer;
+        size_t indx = out - buffer;
+        if (indx + 100 > buffer_size) {
 
 	    growBufferReentrant();
 	    out = &buffer[indx];
@@ -692,6 +692,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     }
     *out = 0;
     return(buffer);
+
+mem_error:
+    xmlEntitiesErrMemory("xmlEncodeEntitiesReentrant: realloc failed");
+    xmlFree(buffer);
+    return(NULL);
 }
 
 /**
@@ -709,7 +714,7 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
     const xmlChar *cur = input;
     xmlChar *buffer = NULL;
     xmlChar *out = NULL;
-    int buffer_size = 0;
+    size_t buffer_size = 0;
     if (input == NULL) return(NULL);
 
     /*
@@ -724,8 +729,8 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
     out = buffer;
 
     while (*cur != '\0') {
-        if (out - buffer > buffer_size - 10) {
-	    int indx = out - buffer;
+        size_t indx = out - buffer;
+        if (indx + 10 > buffer_size) {
 
 	    growBufferReentrant();
 	    out = &buffer[indx];
@@ -774,6 +779,11 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
     }
     *out = 0;
     return(buffer);
+
+mem_error:
+    xmlEntitiesErrMemory("xmlEncodeSpecialChars: realloc failed");
+    xmlFree(buffer);
+    return(NULL);
 }
 
 /**

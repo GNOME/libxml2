@@ -4561,11 +4561,12 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
  * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
  */
 static void
-xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
+xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
+                       size_t len, size_t size) {
     int q, ql;
     int r, rl;
     int cur, l;
-    int count = 0;
+    size_t count = 0;
     int inputid;
 
     inputid = ctxt->input->id;
@@ -4611,16 +4612,26 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf, int len, int size) {
 	if ((r == '-') && (q == '-')) {
 	    xmlFatalErr(ctxt, XML_ERR_HYPHEN_IN_COMMENT, NULL);
 	}
+        if ((len > XML_MAX_TEXT_LENGTH) &&
+            ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+            xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
+                         "Comment too big found", NULL);
+            xmlFree (buf);
+            return;
+        }
 	if (len + 5 >= size) {
 	    xmlChar *new_buf;
-	    size *= 2;
-	    new_buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+            size_t new_size;
+
+	    new_size = size * 2;
+	    new_buf = (xmlChar *) xmlRealloc(buf, new_size);
 	    if (new_buf == NULL) {
 		xmlFree (buf);
 		xmlErrMemory(ctxt, NULL);
 		return;
 	    }
 	    buf = new_buf;
+            size = new_size;
 	}
 	COPY_BUF(ql,buf,len,q);
 	q = r;
@@ -4681,11 +4692,12 @@ not_terminated:
 void
 xmlParseComment(xmlParserCtxtPtr ctxt) {
     xmlChar *buf = NULL;
-    int size = XML_PARSER_BUFFER_SIZE;
-    int len = 0;
+    size_t size = XML_PARSER_BUFFER_SIZE;
+    size_t len = 0;
     xmlParserInputState state;
     const xmlChar *in;
-    int nbchar = 0, ccol;
+    size_t nbchar = 0;
+    int ccol;
     int inputid;
 
     /*
@@ -4765,6 +4777,13 @@ get_more:
 		buf[len] = 0;
 	    }
 	}
+        if ((len > XML_MAX_TEXT_LENGTH) &&
+            ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+            xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
+                         "Comment too big found", NULL);
+            xmlFree (buf);
+            return;
+        }
 	ctxt->input->cur = in;
 	if (*in == 0xA) {
 	    in++;

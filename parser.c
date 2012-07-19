@@ -7167,8 +7167,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	     * Seems we are generating the DOM content, do
 	     * a simple tree copy for all references except the first
 	     * In the first occurrence list contains the replacement.
-	     * progressive == 2 means we are operating on the Reader
-	     * and since nodes are discarded we must copy all the time.
 	     */
 	    if (((list == NULL) && (ent->owner == 0)) ||
 		(ctxt->parseMode == XML_PARSE_READER)) {
@@ -11120,6 +11118,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    } else {
 			ctxt->instate = XML_PARSER_CONTENT;
 		    }
+                    ctxt->progressive = 1;
 		    break;
 		}
 		if (RAW == '>') {
@@ -11139,6 +11138,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #endif /* LIBXML_SAX1_ENABLED */
 
 		ctxt->instate = XML_PARSER_CONTENT;
+                ctxt->progressive = 1;
                 break;
 	    }
             case XML_PARSER_CONTENT: {
@@ -11172,10 +11172,13 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->input->cur += 4;
 		    term = xmlParseLookupSequence(ctxt, '-', '-', '>');
 		    ctxt->input->cur -= 4;
-		    if ((!terminate) && (term < 0))
+		    if ((!terminate) && (term < 0)) {
+                        ctxt->progressive = XML_PARSER_COMMENT;
 			goto done;
+                    }
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_CONTENT;
+                    ctxt->progressive = 1;
 		} else if ((cur == '<') && (ctxt->input->cur[1] == '!') &&
 		    (ctxt->input->cur[2] == '[') &&
 		    (ctxt->input->cur[3] == 'C') &&
@@ -11366,14 +11369,17 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    (ctxt->input->cur[2] == '-') &&
 		    (ctxt->input->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0)) {
+                        ctxt->progressive = XML_PARSER_COMMENT;
 			goto done;
+                    }
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_MISC;
+                    ctxt->progressive = 1;
 		    ctxt->checkIndex = 0;
 		} else if ((cur == '<') && (next == '!') &&
 		    (ctxt->input->cur[2] == 'D') &&
@@ -11421,7 +11427,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		} else {
 		    ctxt->instate = XML_PARSER_START_TAG;
-		    ctxt->progressive = 1;
+		    ctxt->progressive = XML_PARSER_START_TAG;
 		    xmlParseGetLasts(ctxt, &lastlt, &lastgt);
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -11452,21 +11458,24 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else if ((cur == '<') && (next == '!') &&
 		    (ctxt->input->cur[2] == '-') && (ctxt->input->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0)) {
+                        ctxt->progressive = XML_PARSER_COMMENT;
 			goto done;
+                    }
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
+                    ctxt->progressive = 1;
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 4)) {
 		    goto done;
 		} else {
 		    ctxt->instate = XML_PARSER_START_TAG;
 		    if (ctxt->progressive == 0)
-			ctxt->progressive = 1;
+			ctxt->progressive = XML_PARSER_START_TAG;
 		    xmlParseGetLasts(ctxt, &lastlt, &lastgt);
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -11498,14 +11507,17 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else if ((cur == '<') && (next == '!') &&
 		    (ctxt->input->cur[2] == '-') && (ctxt->input->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0)) {
+                        ctxt->progressive = XML_PARSER_COMMENT;
 			goto done;
+                    }
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: Parsing Comment\n");
 #endif
 		    xmlParseComment(ctxt);
 		    ctxt->instate = XML_PARSER_EPILOG;
+                    ctxt->progressive = 1;
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 4)) {
 		    goto done;
@@ -11738,6 +11750,34 @@ encoding_error:
 }
 
 /**
+ * xmlParseCheckTransition:
+ * @ctxt:  an XML parser context
+ * @chunk:  a char array
+ * @size:  the size in byte of the chunk
+ *
+ * Check depending on the current parser state if the chunk given must be
+ * processed immediately or one need more data to advance on parsing.
+ *
+ * Returns -1 in case of error, 0 if the push is not needed and 1 if needed
+ */
+static int
+xmlParseCheckTransition(xmlParserCtxtPtr ctxt, const char *chunk, int size) {
+    if ((ctxt == NULL) || (chunk == NULL) || (size < 0))
+        return(-1);
+    if (ctxt->instate == XML_PARSER_START_TAG) {
+        if (memchr(chunk, '>', size) != NULL)
+            return(1);
+        return(0);
+    }
+    if (ctxt->progressive == XML_PARSER_COMMENT) {
+        if (memchr(chunk, '>', size) != NULL)
+            return(1);
+        return(0);
+    }
+    return(1);
+}
+
+/**
  * xmlParseChunk:
  * @ctxt:  an XML parser context
  * @chunk:  an char array
@@ -11753,6 +11793,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     int end_in_lf = 0;
     int remain = 0;
+    size_t old_avail = 0;
+    size_t avail = 0;
 
     if (ctxt == NULL)
         return(XML_ERR_INTERNAL_ERROR);
@@ -11774,6 +11816,7 @@ xmldecl_done:
 	size_t cur = ctxt->input->cur - ctxt->input->base;
 	int res;
 
+        old_avail = xmlBufUse(ctxt->input->buf->buffer);
         /*
          * Specific handling if we autodetected an encoding, we should not
          * push more than the first line ... which depend on the encoding
@@ -11837,10 +11880,24 @@ xmldecl_done:
 	    }
 	}
     }
-    if (remain != 0)
+    if (remain != 0) {
         xmlParseTryOrFinish(ctxt, 0);
-    else
-        xmlParseTryOrFinish(ctxt, terminate);
+    } else {
+        if ((ctxt->input != NULL) && (ctxt->input->buf != NULL))
+            avail = xmlBufUse(ctxt->input->buf->buffer);
+        /*
+         * Depending on the current state it may not be such
+         * a good idea to try parsing if there is nothing in the chunk
+         * which would be worth doing a parser state transition and we
+         * need to wait for more data
+         */
+        if ((terminate) || (avail > XML_MAX_TEXT_LENGTH) ||
+            (old_avail == 0) || (avail == 0) ||
+            (xmlParseCheckTransition(ctxt,
+                       (const char *)&ctxt->input->base[old_avail],
+                                     avail - old_avail)))
+            xmlParseTryOrFinish(ctxt, terminate);
+    }
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
 
@@ -11858,22 +11915,22 @@ xmldecl_done:
 	/*
 	 * Check for termination
 	 */
-	int avail = 0;
+	int cur_avail = 0;
 
 	if (ctxt->input != NULL) {
 	    if (ctxt->input->buf == NULL)
-		avail = ctxt->input->length -
-			(ctxt->input->cur - ctxt->input->base);
+		cur_avail = ctxt->input->length -
+			    (ctxt->input->cur - ctxt->input->base);
 	    else
-		avail = xmlBufUse(ctxt->input->buf->buffer) -
-			(ctxt->input->cur - ctxt->input->base);
+		cur_avail = xmlBufUse(ctxt->input->buf->buffer) -
+			              (ctxt->input->cur - ctxt->input->base);
 	}
 
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG)) {
 	    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
 	}
-	if ((ctxt->instate == XML_PARSER_EPILOG) && (avail > 0)) {
+	if ((ctxt->instate == XML_PARSER_EPILOG) && (cur_avail > 0)) {
 	    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
 	}
 	if (ctxt->instate != XML_PARSER_EOF) {

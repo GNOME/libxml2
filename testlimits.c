@@ -60,6 +60,7 @@ static struct hugeTest hugeTests[] = {
     { "Huge text node", "huge:textNode", "<foo>", "</foo>" },
     { "Huge attribute node", "huge:attrNode", "<foo bar='", "'/>" },
     { "Huge comment node", "huge:commentNode", "<foo><!--", "--></foo>" },
+    { "Huge PI node", "huge:piNode", "<foo><?bar ", "?></foo>" },
 };
 
 static const char *current;
@@ -1213,6 +1214,10 @@ static limitDesc limitDescriptions[] = {
     {"huge:commentNode", XML_MAX_TEXT_LENGTH - CHUNK, 0, 0},
     {"huge:commentNode", XML_MAX_TEXT_LENGTH + CHUNK, 0, 1},
     {"huge:commentNode", XML_MAX_TEXT_LENGTH + CHUNK, XML_PARSE_HUGE, 0},
+    /* max lenght of a PI node */
+    {"huge:piNode", XML_MAX_TEXT_LENGTH - CHUNK, 0, 0},
+    {"huge:piNode", XML_MAX_TEXT_LENGTH + CHUNK, 0, 1},
+    {"huge:piNode", XML_MAX_TEXT_LENGTH + CHUNK, XML_PARSE_HUGE, 0},
 };
 
 typedef struct testDesc testDesc;

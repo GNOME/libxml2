@@ -3800,6 +3800,16 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
     c = CUR_CHAR(l);
     while ((NXT(0) != limit) && /* checked */
            (IS_CHAR(c)) && (c != '<')) {
+        /*
+         * Impose a reasonable limit on attribute size, unless XML_PARSE_HUGE
+         * special option is given
+         */
+        if ((len > XML_MAX_TEXT_LENGTH) &&
+            ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+            xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                           "AttValue lenght too long\n");
+            goto mem_error;
+        }
 	if (c == 0) break;
 	if (c == '&') {
 	    in_space = 0;
@@ -8663,6 +8673,12 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 		    in = in + delta;
 		}
 		end = ctxt->input->end;
+                if (((in - start) > XML_MAX_TEXT_LENGTH) &&
+                    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                    xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                                   "AttValue lenght too long\n");
+                    return(NULL);
+                }
 	    }
 	}
 	while ((in < end) && (*in != limit) && (*in >= 0x20) &&
@@ -8677,6 +8693,12 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 		    in = in + delta;
 		}
 		end = ctxt->input->end;
+                if (((in - start) > XML_MAX_TEXT_LENGTH) &&
+                    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                    xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                                   "AttValue lenght too long\n");
+                    return(NULL);
+                }
 	    }
 	}
 	last = in;
@@ -8698,8 +8720,20 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 		    last = last + delta;
 		}
 		end = ctxt->input->end;
+                if (((in - start) > XML_MAX_TEXT_LENGTH) &&
+                    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                    xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                                   "AttValue lenght too long\n");
+                    return(NULL);
+                }
 	    }
 	}
+        if (((in - start) > XML_MAX_TEXT_LENGTH) &&
+            ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+            xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                           "AttValue lenght too long\n");
+            return(NULL);
+        }
 	if (*in != limit) goto need_complex;
     } else {
 	while ((in < end) && (*in != limit) && (*in >= 0x20) &&
@@ -8714,9 +8748,21 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 		    in = in + delta;
 		}
 		end = ctxt->input->end;
+                if (((in - start) > XML_MAX_TEXT_LENGTH) &&
+                    ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                    xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                                   "AttValue lenght too long\n");
+                    return(NULL);
+                }
 	    }
 	}
 	last = in;
+        if (((in - start) > XML_MAX_TEXT_LENGTH) &&
+            ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+            xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                           "AttValue lenght too long\n");
+            return(NULL);
+        }
 	if (*in != limit) goto need_complex;
     }
     in++;

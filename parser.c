@@ -4966,8 +4966,8 @@ error:
 void
 xmlParsePI(xmlParserCtxtPtr ctxt) {
     xmlChar *buf = NULL;
-    int len = 0;
-    int size = XML_PARSER_BUFFER_SIZE;
+    size_t len = 0;
+    size_t size = XML_PARSER_BUFFER_SIZE;
     int cur, l;
     const xmlChar *target;
     xmlParserInputState state;
@@ -5024,9 +5024,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		   ((cur != '?') || (NXT(1) != '>'))) {
 		if (len + 5 >= size) {
 		    xmlChar *tmp;
-
-		    size *= 2;
-		    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+                    size_t new_size = size * 2;
+		    tmp = (xmlChar *) xmlRealloc(buf, new_size);
 		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
 			xmlFree(buf);
@@ -5034,11 +5033,20 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 			return;
 		    }
 		    buf = tmp;
+                    size = new_size;
 		}
 		count++;
 		if (count > 50) {
 		    GROW;
 		    count = 0;
+                    if ((len > XML_MAX_TEXT_LENGTH) &&
+                        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                        xmlFatalErrMsgStr(ctxt, XML_ERR_PI_NOT_FINISHED,
+                                          "PI %s too big found", target);
+                        xmlFree(buf);
+                        ctxt->instate = state;
+                        return;
+                    }
 		}
 		COPY_BUF(l,buf,len,cur);
 		NEXTL(l);
@@ -5049,6 +5057,14 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    cur = CUR_CHAR(l);
 		}
 	    }
+            if ((len > XML_MAX_TEXT_LENGTH) &&
+                ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+                xmlFatalErrMsgStr(ctxt, XML_ERR_PI_NOT_FINISHED,
+                                  "PI %s too big found", target);
+                xmlFree(buf);
+                ctxt->instate = state;
+                return;
+            }
 	    buf[len] = 0;
 	    if (cur != '?') {
 		xmlFatalErrMsgStr(ctxt, XML_ERR_PI_NOT_FINISHED,

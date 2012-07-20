@@ -529,7 +529,7 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
  */
 #define growBufferReentrant() {						\
     xmlChar *tmp;                                                       \
-    size_t new_size = buffer_size *= 2;                                 \
+    size_t new_size = buffer_size * 2;                                  \
     if (new_size < buffer_size) goto mem_error;                         \
     tmp = (xmlChar *) xmlRealloc(buffer, new_size);	                \
     if (tmp == NULL) goto mem_error;                                    \

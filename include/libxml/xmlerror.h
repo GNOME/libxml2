@@ -63,7 +63,8 @@ typedef enum {
     XML_FROM_MODULE,	/* The dynamically loaded module module*/
     XML_FROM_I18N,	/* The module handling character conversion */
     XML_FROM_SCHEMATRONV,/* The Schematron validator module */
-    XML_FROM_BUFFER     /* The buffers module */
+    XML_FROM_BUFFER,    /* The buffers module */
+    XML_FROM_URI        /* The URI module */
 } xmlErrorDomain;
 
 /**

@@ -360,6 +360,15 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         case XML_FROM_I18N:
             channel(data, "encoding ");
             break;
+        case XML_FROM_SCHEMATRONV:
+            channel(data, "schematron ");
+            break;
+        case XML_FROM_BUFFER:
+            channel(data, "internal buffer ");
+            break;
+        case XML_FROM_URI:
+            channel(data, "URI ");
+            break;
         default:
             break;
     }

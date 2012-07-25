@@ -1141,11 +1141,12 @@ xmlBufBackToBuffer(xmlBufPtr buf) {
  */
 int
 xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer) {
-    int ret;
+    int ret = 0;
 
     if ((buf == NULL) || (buf->error))
-        return(0);
-    if ((buf != NULL) && (buffer->content != NULL) && (buffer->use > 0)) {
+        ret = -1;
+    else if ((buffer != NULL) && (buffer->content != NULL) &&
+             (buffer->use > 0)) {
         ret = xmlBufAdd(buf, buffer->content, buffer->use);
     }
     xmlBufferFree(buffer);

@@ -1085,7 +1085,7 @@ static const char * const htmlStartClose[] = {
 "div",		"p", "head", NULL,
 "noscript",	"p", NULL,
 "center",	"font", "b", "i", "p", "head", NULL,
-"a",		"a", NULL,
+"a",		"a", "head", NULL,
 "caption",	"p", NULL,
 "colgroup",	"caption", "colgroup", "col", "p", NULL,
 "col",		"caption", "col", "p", NULL,
@@ -1103,6 +1103,43 @@ static const char * const htmlStartClose[] = {
 "option",	"option", NULL,
 "fieldset",	"legend", "p", "head", "h1", "h2", "h3", "h4", "h5", "h6",
 		"pre", "listing", "xmp", "a", NULL,
+/* most tags in in FONTSTYLE, PHRASE and SPECIAL should close <head> */
+"tt",		"head", NULL,
+"i",		"head", NULL,
+"b",		"head", NULL,
+"u",		"head", NULL,
+"s",		"head", NULL,
+"strike",	"head", NULL,
+"big",		"head", NULL,
+"small",	"head", NULL,
+
+"em",		"head", NULL,
+"strong",	"head", NULL,
+"dfn",		"head", NULL,
+"code",		"head", NULL,
+"samp",		"head", NULL,
+"kbd",		"head", NULL,
+"var",		"head", NULL,
+"cite",		"head", NULL,
+"abbr",		"head", NULL,
+"acronym",	"head", NULL,
+
+/* "a" */
+"img",		"head", NULL,
+/* "applet" */
+/* "embed" */
+/* "object" */
+"font",		"head", NULL,
+/* "basefont" */
+"br",		"head", NULL,
+/* "script" */
+"map",		"head", NULL,
+"q",		"head", NULL,
+"sub",		"head", NULL,
+"sup",		"head", NULL,
+"span",		"head", NULL,
+"bdo",		"head", NULL,
+"iframe",	"head", NULL,
 NULL
 };
 

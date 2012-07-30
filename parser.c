@@ -2011,6 +2011,7 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
          ((ctxt->input->cur - ctxt->input->base) > XML_MAX_LOOKUP_LIMIT)) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Huge input lookup");
+        ctxt->instate = XML_PARSER_EOF;
     }
     xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
     if ((ctxt->input->cur != NULL) && (*ctxt->input->cur == 0) &&

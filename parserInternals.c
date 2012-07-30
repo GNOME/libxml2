@@ -1578,6 +1578,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	return(-1);
     }
+    xmlDictSetLimit(ctxt->dict, XML_MAX_DICTIONARY_LIMIT);
+
     if (ctxt->sax == NULL)
 	ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ctxt->sax == NULL) {

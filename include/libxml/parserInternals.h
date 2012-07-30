@@ -1,5 +1,5 @@
 /*
- * Summary: internals routines exported by the parser.
+ * Summary: internals routines and limits exported by the parser.
  * Description: this module exports a number of internal parsing routines
  *              they are not really all intended for applications but
  *              can prove useful doing low level processing.
@@ -36,8 +36,41 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  * Maximum size allowed for a single text node when building a tree.
  * This is not a limitation of the parser but a safety boundary feature,
  * use XML_PARSE_HUGE option to override it.
+ * Introduced in 2.9.0
  */
 #define XML_MAX_TEXT_LENGTH 10000000
+
+/**
+ * XML_MAX_NAME_LENGTH:
+ *
+ * Maximum size allowed for a markup identitier
+ * This is not a limitation of the parser but a safety boundary feature,
+ * use XML_PARSE_HUGE option to override it.
+ * Note that with the use of parsing dictionaries overriding the limit
+ * may result in more runtime memory usage in face of "unfriendly' content
+ * Introduced in 2.9.0
+ */
+#define XML_MAX_NAME_LENGTH 50000
+
+/**
+ * XML_MAX_DICTIONARY_LIMIT:
+ *
+ * Maximum size allowed by the parser for a dictionary by default
+ * This is not a limitation of the parser but a safety boundary feature,
+ * use XML_PARSE_HUGE option to override it.
+ * Introduced in 2.9.0
+ */
+#define XML_MAX_DICTIONARY_LIMIT 10000000
+
+/**
+ * XML_MAX_LOOKUP_LIMIT:
+ *
+ * Maximum size allowed by the parser for ahead lookup
+ * This is an upper boundary enforced by the parser to avoid bad
+ * behaviour on "unfriendly' content
+ * Introduced in 2.9.0
+ */
+#define XML_MAX_LOOKUP_LIMIT 10000000
 
 /**
  * XML_MAX_NAMELEN:

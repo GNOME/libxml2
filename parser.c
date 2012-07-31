@@ -11832,6 +11832,10 @@ not_end_of_int_subset:
 		/*
 		 * We didn't found the end of the Internal subset
 		 */
+                if (quote == 0)
+                    ctxt->checkIndex = base;
+                else
+                    ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
 		if (next == 0)
 		    xmlGenericError(xmlGenericErrorContext,
@@ -11840,6 +11844,7 @@ not_end_of_int_subset:
 	        goto done;
 
 found_end_int_subset:
+                ctxt->checkIndex = 0;
 		xmlParseInternalSubset(ctxt);
 		ctxt->inSubset = 2;
 		if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
@@ -11979,6 +11984,11 @@ xmlParseCheckTransition(xmlParserCtxtPtr ctxt, const char *chunk, int size) {
             return(1);
         return(0);
     }
+    if (ctxt->instate == XML_PARSER_DTD) {
+        if (memchr(chunk, ']', size) != NULL)
+            return(1);
+        return(0);
+    }
     return(1);
 }
 
@@ -12104,6 +12114,13 @@ xmldecl_done:
                        (const char *)&ctxt->input->base[old_avail],
                                      avail - old_avail)))
             xmlParseTryOrFinish(ctxt, terminate);
+    }
+    if ((ctxt->input != NULL) &&
+         (((ctxt->input->end - ctxt->input->cur) > XML_MAX_LOOKUP_LIMIT) ||
+         ((ctxt->input->cur - ctxt->input->base) > XML_MAX_LOOKUP_LIMIT)) &&
+        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Huge input lookup");
+        ctxt->instate = XML_PARSER_EOF;
     }
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);

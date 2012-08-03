@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/time.h>
 
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -34,6 +35,47 @@
 
 static int verbose = 0;
 static int tests_quiet = 0;
+
+/************************************************************************
+ *									*
+ *		time handling                                           *
+ *									*
+ ************************************************************************/
+
+/* maximum time for one parsing befor declaring a timeout */
+#define MAX_TIME 2 /* seconds */
+
+struct timeval t0;
+struct timeval tnow;
+int timeout = 0;
+
+static void reset_timout(void) {
+    timeout = 0;
+    gettimeofday(&t0, NULL);
+}
+
+static unsigned long delta_timeval(void) {
+    unsigned long ret;
+
+    if (tnow.tv_usec < t0.tv_usec) {
+        ret = 1000000 + tnow.tv_usec;
+        ret -= t0.tv_usec;
+        ret += (tnow.tv_sec - t0.tv_sec -1) * 1000000;
+    } else {
+        ret = tnow.tv_usec - t0.tv_usec;
+        ret += (tnow.tv_sec - t0.tv_sec) * 1000000;
+    }
+    return(ret);
+}
+
+static int check_time(void) {
+    gettimeofday(&tnow, NULL);
+    if (delta_timeval() > MAX_TIME * 1000000) {
+        timeout = 1;
+        return(0);
+    }
+    return(1);
+}
 
 /************************************************************************
  *									*
@@ -122,6 +164,7 @@ found:
 static int
 hugeClose(void * context) {
     if (context == NULL) return(-1);
+    fprintf(stderr, "\n");
     return(0);
 }
 
@@ -202,6 +245,146 @@ hugeRead(void *context, char *buffer, int len)
     return (len);
 }
 
+/************************************************************************
+ *									*
+ *		Crazy document generator				*
+ *									*
+ ************************************************************************/
+
+unsigned int crazy_indx = 0;
+
+const char *crazy = "<?xml version='1.0' encoding='UTF-8'?>\
+<?tst ?>\
+<!-- tst -->\
+<!DOCTYPE foo [\
+<?tst ?>\
+<!-- tst -->\
+<!ELEMENT foo (#PCDATA)>\
+<!ELEMENT p (#PCDATA|emph)* >\
+]>\
+<?tst ?>\
+<!-- tst -->\
+<foo bar='foo'>\
+<?tst ?>\
+<!-- tst -->\
+foo\
+<![CDATA[ ]]>\
+</foo>\
+<?tst ?>\
+<!-- tst -->";
+
+/**
+ * crazyMatch:
+ * @URI: an URI to test
+ *
+ * Check for a crazy: query
+ *
+ * Returns 1 if yes and 0 if another Input module should be used
+ */
+static int
+crazyMatch(const char * URI) {
+    if ((URI != NULL) && (!strncmp(URI, "crazy:", 6)))
+        return(1);
+    return(0);
+}
+
+/**
+ * crazyOpen:
+ * @URI: an URI to test
+ *
+ * Return a pointer to the crazy: query handler, in this example simply
+ * the current pointer...
+ *
+ * Returns an Input context or NULL in case or error
+ */
+static void *
+crazyOpen(const char * URI) {
+    if ((URI == NULL) || (strncmp(URI, "crazy:", 6)))
+        return(NULL);
+
+    if (crazy_indx > strlen(crazy))
+        return(NULL);
+    reset_timout();
+    rlen = crazy_indx;
+    current = &crazy[0];
+    instate = 0;
+    return((void *) current);
+}
+
+/**
+ * crazyClose:
+ * @context: the read context
+ *
+ * Close the crazy: query handler
+ *
+ * Returns 0 or -1 in case of error
+ */
+static int
+crazyClose(void * context) {
+    if (context == NULL) return(-1);
+    return(0);
+}
+
+
+/**
+ * crazyRead:
+ * @context: the read context
+ * @buffer: where to store data
+ * @len: number of bytes to read
+ *
+ * Implement an crazy: query read.
+ *
+ * Returns the number of bytes read or -1 in case of error
+ */
+static int
+crazyRead(void *context, char *buffer, int len)
+{
+    if ((context == NULL) || (buffer == NULL) || (len < 0))
+        return (-1);
+
+    if ((check_time() <= 0) && (instate == 1)) {
+        fprintf(stderr, "\ntimeout in crazy(%d)\n", crazy_indx);
+        rlen = strlen(crazy) - crazy_indx;
+        current = &crazy[crazy_indx];
+        instate = 2;
+    }
+    if (instate == 0) {
+        if (len >= rlen) {
+            len = rlen;
+            rlen = 0;
+            memcpy(buffer, current, len);
+            instate = 1;
+            curlen = 0;
+        } else {
+            memcpy(buffer, current, len);
+            rlen -= len;
+            current += len;
+        }
+    } else if (instate == 2) {
+        if (len >= rlen) {
+            len = rlen;
+            rlen = 0;
+            memcpy(buffer, current, len);
+            instate = 3;
+            curlen = 0;
+        } else {
+            memcpy(buffer, current, len);
+            rlen -= len;
+            current += len;
+        }
+    } else if (instate == 1) {
+        if (len > CHUNK) len = CHUNK;
+        memcpy(buffer, &filling[0], len);
+        curlen += len;
+        if (curlen >= maxlen) {
+            rlen = strlen(crazy) - crazy_indx;
+            current = &crazy[crazy_indx];
+            instate = 2;
+        }
+    } else
+      len = 0;
+    return (len);
+}
 /************************************************************************
  *									*
  *		Libxml2 specific routines				*
@@ -512,6 +695,11 @@ initializeLibxml2(void) {
     if (xmlRegisterInputCallbacks(hugeMatch, hugeOpen,
                                   hugeRead, hugeClose) < 0) {
         fprintf(stderr, "failed to register Huge handlers\n");
+	exit(1);
+    }
+    if (xmlRegisterInputCallbacks(crazyMatch, crazyOpen,
+                                  crazyRead, crazyClose) < 0) {
+        fprintf(stderr, "failed to register Crazy handlers\n");
 	exit(1);
     }
 }
@@ -1082,7 +1270,7 @@ static xmlSAXHandlerPtr callbackSAX2Handler = &callbackSAX2HandlerStruct;
  * @options: parsing options
  * @fail: should a failure be reported
  *
- * Parse a memory generated file using the xmlReader
+ * Parse a memory generated file using SAX
  *
  * Returns 0 in case of success, an error code otherwise
  */
@@ -1105,7 +1293,6 @@ saxTest(const char *filename, size_t limit, int options, int fail) {
     ctxt->sax = callbackSAX2Handler;
     ctxt->userData = NULL;
     doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
-    fprintf(stderr, "\n");
 
     if (doc != NULL) {
         fprintf(stderr, "SAX parsing generated a document !\n");
@@ -1161,22 +1348,32 @@ readerTest(const char *filename, size_t limit, int options, int fail) {
     while (ret == 1) {
         ret = xmlTextReaderRead(reader);
     }
-    fprintf(stderr, "\n");
     if (ret != 0) {
         if (fail)
             res = 0;
         else {
-            fprintf(stderr, "Failed to parse '%s' %lu\n", filename, limit);
+            if (strncmp(filename, "crazy:", 6) == 0) 
+                fprintf(stderr, "Failed to parse '%s' %u\n",
+                        filename, crazy_indx);
+            else
+                fprintf(stderr, "Failed to parse '%s' %lu\n",
+                        filename, limit);
             res = 1;
         }
     } else {
         if (fail) {
-            fprintf(stderr, "Failed to get failure for '%s' %lu\n",
-                    filename, limit);
+            if (strncmp(filename, "crazy:", 6) == 0) 
+                fprintf(stderr, "Failed to get failure for '%s' %u\n",
+                        filename, crazy_indx);
+            else
+                fprintf(stderr, "Failed to get failure for '%s' %lu\n",
+                        filename, limit);
             res = 1;
         } else
             res = 0;
     }
+    if (timeout)
+        res = 1;
     xmlFreeTextReader(reader);
 
     return(res);
@@ -1313,6 +1510,107 @@ runtest(unsigned int i) {
     return(ret);
 }
 
+static int
+launchCrazySAX(unsigned int test, int fail) {
+    int res = 0, err = 0;
+
+    crazy_indx = test;
+
+    res = saxTest("crazy::test", XML_MAX_LOOKUP_LIMIT - CHUNK, 0, fail);
+    if (res != 0) {
+        nb_errors++;
+        err++;
+    }
+    if (tests_quiet == 0)
+        fprintf(stderr, "%c", crazy[test]);
+
+    return(err);
+}
+
+static int
+launchCrazy(unsigned int test, int fail) {
+    int res = 0, err = 0;
+
+    crazy_indx = test;
+
+    res = readerTest("crazy::test", XML_MAX_LOOKUP_LIMIT - CHUNK, 0, fail);
+    if (res != 0) {
+        nb_errors++;
+        err++;
+    }
+    if (tests_quiet == 0)
+        fprintf(stderr, "%c", crazy[test]);
+
+    return(err);
+}
+
+static int get_crazy_fail(int test) {
+    /*
+     * adding 1000000 of character 'a' leads to parser failure mostly
+     * everywhere except in those special spots. Need to be updated
+     * each time crazy is updated
+     */
+    int fail = 1;
+    if ((test == 44) || /* PI in Misc */
+        ((test >= 50) && (test <= 55)) || /* Comment in Misc */
+        (test == 79) || /* PI in DTD */
+        ((test >= 85) && (test <= 90)) || /* Comment in DTD */
+        (test == 154) || /* PI in Misc */
+        ((test >= 160) && (test <= 165)) || /* Comment in Misc */
+        ((test >= 178) && (test <= 181)) || /* attribute value */
+        (test == 183) || /* Text */
+        (test == 189) || /* PI in Content */
+        (test == 191) || /* Text */
+        ((test >= 195) && (test <= 200)) || /* Comment in Content */
+        ((test >= 203) && (test <= 206)) || /* Text */
+        (test == 215) || (test == 216) || /* in CDATA */
+        (test == 219) || /* Text */
+        (test == 231) || /* PI in Misc */
+        ((test >= 237) && (test <= 242))) /* Comment in Misc */
+        fail = 0;
+    return(fail);
+}
+
+static int
+runcrazy(void) {
+    int ret = 0, res;
+    int old_errors, old_tests, old_leaks;
+    unsigned int i;
+
+    old_errors = nb_errors;
+    old_tests = nb_tests;
+    old_leaks = nb_leaks;
+    if (tests_quiet == 0) {
+	printf("## Crazy tests on reader\n");
+    }
+    for (i = 0;i < strlen(crazy);i++) {
+        res += launchCrazy(i, get_crazy_fail(i));
+        if (res != 0)
+            ret++;
+    }
+    if (tests_quiet == 0) {
+	printf("\n## Crazy tests on SAX\n");
+    }
+    for (i = 0;i < strlen(crazy);i++) {
+        res += launchCrazySAX(i, get_crazy_fail(i));
+        if (res != 0)
+            ret++;
+    }
+    if (tests_quiet == 0)
+        fprintf(stderr, "\n");
+    if (verbose) {
+	if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
+	    printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+	else
+	    printf("Ran %d tests, %d errors, %d leaks\n",
+		   nb_tests - old_tests,
+		   nb_errors - old_errors,
+		   nb_leaks - old_leaks);
+    }
+    return(ret);
+}
+
+
 int
 main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     int i, a, ret = 0;
@@ -1326,12 +1624,15 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 	    verbose = 1;
         else if (!strcmp(argv[a], "-quiet"))
 	    tests_quiet = 1;
+        else if (!strcmp(argv[a], "-crazy"))
+	    subset = 1;
     }
     if (subset == 0) {
 	for (i = 0; testDescriptions[i].func != NULL; i++) {
 	    ret += runtest(i);
 	}
     }
+    ret += runcrazy();
     if ((nb_errors == 0) && (nb_leaks == 0)) {
         ret = 0;
 	printf("Total %d tests, no errors\n",

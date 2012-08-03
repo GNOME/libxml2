@@ -11583,13 +11583,17 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    (ctxt->input->cur[7] == 'P') &&
 		    (ctxt->input->cur[8] == 'E')) {
 		    if ((!terminate) &&
-		        (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0)) {
+                        ctxt->progressive = XML_PARSER_DTD;
 			goto done;
+                    }
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: Parsing internal subset\n");
 #endif
 		    ctxt->inSubset = 1;
+                    ctxt->progressive = 1;
+		    ctxt->checkIndex = 0;
 		    xmlParseDocTypeDecl(ctxt);
 		    if (RAW == '[') {
 			ctxt->instate = XML_PARSER_DTD;
@@ -11979,12 +11983,23 @@ xmlParseCheckTransition(xmlParserCtxtPtr ctxt, const char *chunk, int size) {
             return(1);
         return(0);
     }
+    if (ctxt->instate == XML_PARSER_CDATA_SECTION) {
+        if (memchr(chunk, '>', size) != NULL)
+            return(1);
+        return(0);
+    }
     if (ctxt->progressive == XML_PARSER_PI) {
         if (memchr(chunk, '>', size) != NULL)
             return(1);
         return(0);
     }
-    if (ctxt->instate == XML_PARSER_DTD) {
+    if (ctxt->instate == XML_PARSER_END_TAG) {
+        if (memchr(chunk, '>', size) != NULL)
+            return(1);
+        return(0);
+    }
+    if ((ctxt->progressive == XML_PARSER_DTD) ||
+        (ctxt->instate == XML_PARSER_DTD)) {
         if (memchr(chunk, ']', size) != NULL)
             return(1);
         return(0);

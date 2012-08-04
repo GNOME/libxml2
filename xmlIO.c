@@ -3246,7 +3246,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,
 	    "I/O: pushed %d chars, buffer %d/%d\n",
-            nbchars, in->buffer->use, in->buffer->size);
+            nbchars, xmlBufUse(in->buffer), xmlBufLength(in->buffer));
 #endif
     return(nbchars);
 }

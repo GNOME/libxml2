@@ -2922,6 +2922,39 @@ xmlOutputBufferCreateBuffer(xmlBufferPtr buffer,
     return(ret);
 }
 
+/**
+ * xmlOutputBufferGetContent:
+ * @out:  an xmlOutputBufferPtr
+ *
+ * Gives a pointer to the data currently held in the output buffer
+ *
+ * Returns a pointer to the data or NULL in case of error
+ */
+const xmlChar *
+xmlOutputBufferGetContent(xmlOutputBufferPtr out) {
+    if ((out == NULL) || (out->buffer == NULL))
+        return(NULL);
+
+    return(xmlBufContent(out->buffer));
+}
+
+/**
+ * xmlOutputBufferGetSize:
+ * @out:  an xmlOutputBufferPtr
+ *
+ * Gives the length of the data currently held in the output buffer
+ *
+ * Returns 0 in case or error or no data is held, the size otherwise
+ */
+size_t
+xmlOutputBufferGetSize(xmlOutputBufferPtr out) {
+    if ((out == NULL) || (out->buffer == NULL))
+        return(0);
+
+    return(xmlBufUse(out->buffer));
+}
+
+
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**

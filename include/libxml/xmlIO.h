@@ -245,6 +245,12 @@ XMLPUBFUN xmlOutputBufferPtr XMLCALL
 					 void *ioctx,
 					 xmlCharEncodingHandlerPtr encoder);
 
+/* Couple of APIs to get the output without digging into the buffers */
+XMLPUBFUN const xmlChar * XMLCALL
+        xmlOutputBufferGetContent       (xmlOutputBufferPtr out);
+XMLPUBFUN size_t XMLCALL
+        xmlOutputBufferGetSize          (xmlOutputBufferPtr out);
+
 XMLPUBFUN int XMLCALL	
 	xmlOutputBufferWrite		(xmlOutputBufferPtr out,
 					 int len,

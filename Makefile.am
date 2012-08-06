@@ -1201,7 +1201,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     $(man_MANS) libxml-2.0.pc.in libxml-2.0-uninstalled.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h elfgcchack.h xzlib.h buf.h \
-	     testThreadsWin32.c genUnicode.py TODO_SCHEMAS \
+	     enc.h save.h testThreadsWin32.c genUnicode.py TODO_SCHEMAS \
 	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
 	     README.tests Makefile.tests libxml2.syms \
 	     $(CVS_EXTRA_DIST)

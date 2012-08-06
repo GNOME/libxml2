@@ -49,6 +49,12 @@ struct _xmlBuf {
     int error;                  /* an error code if a failure occured */
 };
 
+#define UPDATE_COMPAT(buf)				    \
+     if (buf->size < INT_MAX) buf->compat_size = buf->size; \
+     else buf->compat_size = INT_MAX;			    \
+     if (buf->use < INT_MAX) buf->compat_use = buf->use; \
+     else buf->compat_use = INT_MAX;
+
 /**
  * xmlBufMemoryError:
  * @extra:  extra informations
@@ -130,7 +136,7 @@ xmlBufCreateSize(size_t size) {
         return(NULL);
     }
     ret->compat_use = 0;
-    ret->compat_size = 0;
+    ret->compat_size = (int) size;
     ret->use = 0;
     ret->error = 0;
     ret->buffer = NULL;
@@ -177,6 +183,8 @@ xmlBufDetach(xmlBufPtr buf) {
     buf->content = NULL;
     buf->size = 0;
     buf->use = 0;
+    buf->compat_use = 0;
+    buf->compat_size = 0;
 
     return ret;
 }
@@ -209,8 +217,8 @@ xmlBufCreateStatic(void *mem, size_t size) {
         ret->compat_use = size;
         ret->compat_size = size;
     } else {
-        ret->compat_use = 0;
-        ret->compat_size = 0;
+        ret->compat_use = INT_MAX;
+        ret->compat_size = INT_MAX;
     }
     ret->use = size;
     ret->size = size;
@@ -329,6 +337,7 @@ xmlBufEmpty(xmlBufPtr buf) {
     } else {
         buf->content[0] = 0;
     }
+    UPDATE_COMPAT(buf)
 }
 
 /**
@@ -376,6 +385,7 @@ xmlBufShrink(xmlBufPtr buf, size_t len) {
 	memmove(buf->content, &buf->content[len], buf->use);
 	buf->content[buf->use] = 0;
     }
+    UPDATE_COMPAT(buf)
     return(len);
 }
 
@@ -435,6 +445,7 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
 	buf->content = newbuf;
     }
     buf->size = size;
+    UPDATE_COMPAT(buf)
     return(buf->size - buf->use);
 }
 
@@ -563,6 +574,7 @@ xmlBufAddLen(xmlBufPtr buf, size_t len) {
     if ((buf == NULL) || (buf->error) || (len > (buf->size - buf->use)))
         return(-1);
     buf->use += len;
+    UPDATE_COMPAT(buf)
     if (buf->size > buf->use)
         buf->content[buf->use] = 0;
     else
@@ -585,6 +597,7 @@ xmlBufErase(xmlBufPtr buf, size_t len) {
         return(-1);
     buf->use -= len;
     buf->content[buf->use] = 0;
+    UPDATE_COMPAT(buf)
     return(0);
 }
 
@@ -766,6 +779,7 @@ xmlBufResize(xmlBufPtr buf, size_t size)
 	buf->content = rebuf;
     }
     buf->size = newSize;
+    UPDATE_COMPAT(buf)
 
     return 1;
 }
@@ -816,6 +830,7 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
     memmove(&buf->content[buf->use], str, len*sizeof(xmlChar));
     buf->use += len;
     buf->content[buf->use] = 0;
+    UPDATE_COMPAT(buf)
     return 0;
 }
 
@@ -885,6 +900,7 @@ xmlBufAddHead(xmlBufPtr buf, const xmlChar *str, int len) {
     memmove(&buf->content[0], str, len);
     buf->use += len;
     buf->content[buf->use] = 0;
+    UPDATE_COMPAT(buf)
     return 0;
 }
 
@@ -941,6 +957,7 @@ xmlBufCCat(xmlBufPtr buf, const char *str) {
         buf->content[buf->use++] = *cur;
     }
     buf->content[buf->use] = 0;
+    UPDATE_COMPAT(buf)
     return 0;
 }
 

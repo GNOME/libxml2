@@ -39,15 +39,15 @@ int xmlBufWriteCHAR(xmlBufPtr buf, const xmlChar *string);
 int xmlBufWriteChar(xmlBufPtr buf, const char *string);
 int xmlBufWriteQuotedString(xmlBufPtr buf, const xmlChar *string);
 
-size_t xmlBufAvail(xmlBufPtr buf);
-size_t xmlBufLength(xmlBufPtr buf);
-size_t xmlBufUse(xmlBufPtr buf);
-int xmlBufIsEmpty(xmlBufPtr buf);
+size_t xmlBufAvail(const xmlBufPtr buf);
+size_t xmlBufLength(const xmlBufPtr buf);
+/* size_t xmlBufUse(const xmlBufPtr buf); */
+int xmlBufIsEmpty(const xmlBufPtr buf);
 int xmlBufAddLen(xmlBufPtr buf, size_t len);
 int xmlBufErase(xmlBufPtr buf, size_t len);
 
-xmlChar * xmlBufContent(const xmlBufPtr buf);
-xmlChar * xmlBufEnd(const xmlBufPtr buf);
+/* const xmlChar * xmlBufContent(const xmlBufPtr buf); */
+/* const xmlChar * xmlBufEnd(const xmlBufPtr buf); */
 
 xmlChar * xmlBufDetach(xmlBufPtr buf);
 

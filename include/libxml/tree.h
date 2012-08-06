@@ -112,6 +112,16 @@ typedef struct _xmlBuf xmlBuf;
 
 typedef xmlBuf *xmlBufPtr;
 
+/*
+ * A few public routines for xmlBuf. As those are expected to be used
+ * mostly internally the bulk of the routines are internal in buf.h
+ */
+XMLPUBFUN xmlChar* XMLCALL       xmlBufContent	(const xmlBufPtr buf);
+XMLPUBFUN xmlChar* XMLCALL       xmlBufEnd      (const xmlBufPtr buf);
+XMLPUBFUN size_t XMLCALL         xmlBufUse      (xmlBufPtr buf);
+
+#define LIBXML2_NEW_BUFFER
+
 /**
  * XML_XML_NAMESPACE:
  *
@@ -667,7 +677,7 @@ XMLPUBFUN const xmlChar * XMLCALL
 					 int *len);
 
 /*
- * Handling Buffers.
+ * Handling Buffers, the old ones see @xmlBuf for the new ones.
  */
 
 XMLPUBFUN void XMLCALL		

@@ -60,6 +60,9 @@ endif
 ifeq ($(WITH_ZLIB),1)
 CFLAGS += -DHAVE_ZLIB_H
 endif
+ifeq ($(WITH_LZMA),1)
+CFLAGS += -DHAVE_LZMA_H
+endif
 
 # The linker and its options.
 LD = gcc.exe
@@ -82,6 +85,9 @@ ifeq ($(WITH_ZLIB),1)
 # Could be named differently
 # LIBS += -lzdll
 LIBS += -lz
+endif
+ifeq ($(WITH_LZMA),1)
+LIBS += -llzma
 endif
 ifeq ($(WITH_THREADS),posix)
 LIBS += -lpthreadGC
@@ -254,10 +260,11 @@ distclean : clean
 rebuild : clean all
 
 install-libs : all
-	cmd.exe /C "if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml"
+	cmd.exe /C "if not exist $(INCPREFIX)\libxml2 mkdir $(INCPREFIX)\libxml2"
+	cmd.exe /C "if not exist $(INCPREFIX)\libxml2\libxml mkdir $(INCPREFIX)\libxml2\libxml"
 	cmd.exe /C "if not exist $(BINPREFIX) mkdir $(BINPREFIX)"
 	cmd.exe /C "if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)"
-	cmd.exe /C "copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml"
+	cmd.exe /C "copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml2\libxml"
 	cmd.exe /C "copy $(BINDIR)\$(XML_SO) $(SOPREFIX)"
 	cmd.exe /C "copy $(BINDIR)\$(XML_A) $(LIBPREFIX)"
 	cmd.exe /C "copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)"

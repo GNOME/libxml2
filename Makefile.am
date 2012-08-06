@@ -2,11 +2,11 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = include . doc example xstc @PYTHON_SUBDIR@
+SUBDIRS = include . doc example xstc $(PYTHON_SUBDIR)
 
 DIST_SUBDIRS = include . doc example python xstc
 
-INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@ @LZMA_CFLAGS@
+INCLUDES = -I$(top_builddir)/include -I$(srcdir)/include $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
 
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
@@ -18,7 +18,7 @@ bin_PROGRAMS = xmllint xmlcatalog
 bin_SCRIPTS=xml2-config
 
 lib_LTLIBRARIES = libxml2.la
-libxml2_la_LIBADD = @THREAD_LIBS@ @Z_LIBS@ @LZMA_LIBS@ $(ICONV_LIBS) @M_LIBS@ @WIN32_EXTRA_LIBADD@
+libxml2_la_LIBADD = $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(M_LIBS) $(WIN32_EXTRA_LIBADD)
 
 if USE_VERSION_SCRIPT
 LIBXML2_VERSION_SCRIPT = $(VERSION_SCRIPT_FLAGS)$(srcdir)/libxml2.syms
@@ -26,10 +26,10 @@ else
 LIBXML2_VERSION_SCRIPT =
 endif
 
-libxml2_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ \
-                     $(LIBXML2_VERSION_SCRIPT) \
-		     -version-info @LIBXML_VERSION_INFO@ \
-		     @MODULE_PLATFORM_LIBS@
+libxml2_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) \
+		     $(LIBXML2_VERSION_SCRIPT) \
+		     -version-info $(LIBXML_VERSION_INFO) \
+		     $(MODULE_PLATFORM_LIBS)
 
 if WITH_TRIO_SOURCES
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
@@ -54,7 +54,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 endif
 
 DEPS = $(top_builddir)/libxml2.la
-LDADDS = @STATIC_BINARIES@ $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ @LZMA_LIBS@ $(ICONV_LIBS) @M_LIBS@ @WIN32_EXTRA_LIBADD@
+LDADDS = $(STATIC_BINARIES) $(top_builddir)/libxml2.la $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(M_LIBS) $(WIN32_EXTRA_LIBADD)
 
 
 man_MANS = xml2-config.1 libxml.3
@@ -65,37 +65,37 @@ m4data_DATA = libxml.m4
 runtest_SOURCES=runtest.c
 runtest_LDFLAGS = 
 runtest_DEPENDENCIES = $(DEPS)
-runtest_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
+runtest_LDADD= $(BASE_THREAD_LIBS) $(RDL_LIBS) $(LDADDS)
 
 testrecurse_SOURCES=testrecurse.c
 testrecurse_LDFLAGS = 
 testrecurse_DEPENDENCIES = $(DEPS)
-testrecurse_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
+testrecurse_LDADD= $(BASE_THREAD_LIBS) $(RDL_LIBS) $(LDADDS)
 
 testlimits_SOURCES=testlimits.c
 testlimits_LDFLAGS = 
 testlimits_DEPENDENCIES = $(DEPS)
-testlimits_LDADD= @BASE_THREAD_LIBS@ @RDL_LIBS@ $(LDADDS)
+testlimits_LDADD= $(BASE_THREAD_LIBS) $(RDL_LIBS) $(LDADDS)
 
 testchar_SOURCES=testchar.c
 testchar_LDFLAGS = 
 testchar_DEPENDENCIES = $(DEPS)
-testchar_LDADD= @RDL_LIBS@ $(LDADDS)
+testchar_LDADD= $(RDL_LIBS) $(LDADDS)
 
 testdict_SOURCES=testdict.c
 testdict_LDFLAGS = 
 testdict_DEPENDENCIES = $(DEPS)
-testdict_LDADD= @RDL_LIBS@ $(LDADDS)
+testdict_LDADD= $(RDL_LIBS) $(LDADDS)
 
 runsuite_SOURCES=runsuite.c
 runsuite_LDFLAGS = 
 runsuite_DEPENDENCIES = $(DEPS)
-runsuite_LDADD= @RDL_LIBS@ $(LDADDS)
+runsuite_LDADD= $(RDL_LIBS) $(LDADDS)
 
 xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 
 xmllint_DEPENDENCIES = $(DEPS)
-xmllint_LDADD=  @RDL_LIBS@ $(LDADDS)
+xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)
 
 testSAX_SOURCES=testSAX.c
 testSAX_LDFLAGS = 
@@ -110,7 +110,7 @@ testHTML_LDADD= $(LDADDS)
 xmlcatalog_SOURCES=xmlcatalog.c
 xmlcatalog_LDFLAGS = 
 xmlcatalog_DEPENDENCIES = $(DEPS)
-xmlcatalog_LDADD= @RDL_LIBS@ $(LDADDS)
+xmlcatalog_LDADD = $(RDL_LIBS) $(LDADDS)
 
 testXPath_SOURCES=testXPath.c
 testXPath_LDFLAGS = 
@@ -122,10 +122,14 @@ testC14N_LDFLAGS =
 testC14N_DEPENDENCIES = $(DEPS)
 testC14N_LDADD= $(LDADDS)
 
-testThreads_SOURCES=testThreads@THREADS_W32@.c
+if THREADS_W32
+testThreads_SOURCES = testThreadsWin32.c
+else
+testThreads_SOURCES = testThreads.c
+endif
 testThreads_LDFLAGS = 
 testThreads_DEPENDENCIES = $(DEPS)
-testThreads_LDADD= @BASE_THREAD_LIBS@  $(LDADDS)
+testThreads_LDADD= $(BASE_THREAD_LIBS) $(LDADDS)
 
 testURI_SOURCES=testURI.c
 testURI_LDFLAGS = 
@@ -177,6 +181,8 @@ testapi.c: $(srcdir)/gentest.py
 	-@(if [ "$(PYTHON)" != "" ] ; then \
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 
+BUILT_SOURCES = testapi.c
+
 testapi_SOURCES=testapi.c
 testapi_LDFLAGS = 
 testapi_DEPENDENCIES = $(DEPS)
@@ -193,9 +199,11 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_LDADD= $(LDADDS)
 
 runtests:
+	[ -d test   ] || $(LN_S) $(srcdir)/test   .
+	[ -d result ] || $(LN_S) $(srcdir)/result .
 	$(CHECKER) ./runtest$(EXEEXT) && $(CHECKER) ./testrecurse$(EXEEXT) &&$(CHECKER) ./testapi$(EXEEXT) && $(CHECKER) ./testchar$(EXEEXT)&& $(CHECKER) ./testdict$(EXEEXT) && $(CHECKER) ./runxmlconf$(EXEEXT)
-	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
-	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
+	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
+	    $(MAKE) tests ; fi)
 
 check: all runtests
 
@@ -206,10 +214,10 @@ check-valgrind: all
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_PATTERN@ @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_SCHEMATRON@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@ @TEST_MODULES@
-	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
-	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
-	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
+tests: XMLtests XMLenttests NStests IDtests Errtests APItests $(READER_TEST) $(TEST_SAX) $(TEST_PUSH) $(TEST_HTML) $(TEST_PHTML) $(TEST_VALID) URItests $(TEST_PATTERN) $(TEST_XPATH) $(TEST_XPTR) $(TEST_XINCLUDE) $(TEST_C14N) $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMAS) $(TEST_SCHEMATRON) $(TEST_THREADS) Timingtests $(TEST_VTIME) $(PYTHON_TESTS) $(TEST_MODULES)
+	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
+	    $(MAKE) tests ; fi)
+	@(cd doc/examples ; $(MAKE) tests)
 
 valgrind:
 	@echo '## Running the regression tests under Valgrind'
@@ -1120,7 +1128,7 @@ SchemasPythonTests:
 	    echo "## It is normal to see 11 errors reported" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
-	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" MAKEFLAGS+=--silent pytests ; fi)
+	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" pytests ; fi)
 
 Patterntests: xmllint$(EXEEXT)
 	@(echo > .memdump)
@@ -1152,8 +1160,8 @@ ModuleTests: testModule$(EXEEXT) testdso.la
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)
-	-@(find . -name \*.gcda -o *.gcno -exec rm {} \;)
-	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm {} \;)
+	-@(find . -name \*.gcda -o -name \*.gcno -exec rm -f {} \;)
+	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm -f {} \;)
 
 dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)
@@ -1188,7 +1196,8 @@ xml2Conf.sh: xml2Conf.sh.in Makefile
 	       < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
 	&& mv xml2Conf.tmp xml2Conf.sh
 
-CLEANFILES=xml2Conf.sh *.gcda *.gcno
+CLEANFILES = runxmlconf.log test.out xml2Conf.sh *.gcda *.gcno *.res
+DISTCLEANFILES = COPYING libxml2.syms missing.lst
 
 confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
@@ -1218,13 +1227,13 @@ DOC_MODULE=libxml2-$(VERSION)
 EXAMPLES_DIR=$(BASE_DIR)/$(DOC_MODULE)/examples
 
 install-data-local: 
-	@MKDIR_P@ $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
-	-@INSTALL@ -m 0644 $(srcdir)/Copyright $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
-	@MKDIR_P@ $(DESTDIR)$(EXAMPLES_DIR)
-	-@INSTALL@ -m 0644 $(srcdir)/xmllint.c $(DESTDIR)$(EXAMPLES_DIR)
-	-@INSTALL@ -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
-	-@INSTALL@ -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
-	-@INSTALL@ -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
+	$(MKDIR_P) $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
+	-$(INSTALL) -m 0644 $(srcdir)/Copyright $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
+	$(MKDIR_P) $(DESTDIR)$(EXAMPLES_DIR)
+	-$(INSTALL) -m 0644 $(srcdir)/xmllint.c $(DESTDIR)$(EXAMPLES_DIR)
+	-$(INSTALL) -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
+	-$(INSTALL) -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
+	-$(INSTALL) -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
 
 uninstall-local:
 	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testXPath.c

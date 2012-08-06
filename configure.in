@@ -58,6 +58,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
+AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PROG_CPP
 AC_PATH_PROG(RM, rm, /bin/rm)
@@ -68,8 +69,7 @@ AC_PATH_PROG(WGET, wget, /usr/bin/wget)
 AC_PATH_PROG(XMLLINT, xmllint, /usr/bin/xmllint)
 AC_PATH_PROG(XSLTPROC, xsltproc, /usr/bin/xsltproc)
 
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+LT_INIT
 
 dnl
 dnl if the system support linker version scripts for symbol versioning
@@ -205,8 +205,8 @@ AC_ARG_WITH(coverage,
 [  --with-coverage         build for code coverage with GCC (off)])
 
 AC_ARG_ENABLE(rebuild-docs,
-[  --enable-rebuild-docs[[=yes/no]]  rebuild some generated docs [[default=yes]]])
-AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "no"])
+[  --enable-rebuild-docs[[=yes/no]]  rebuild some generated docs [[default=no]]])
+AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes"])
 
 dnl
 dnl hard dependancies on options
@@ -500,6 +500,11 @@ AC_CHECK_HEADERS([dl.h])
 AC_CHECK_HEADERS([dlfcn.h])
 
 
+echo Checking types
+
+AC_TYPE_UINT32_T
+
+
 echo Checking libraries
 
 dnl Checks for library functions.
@@ -509,6 +514,12 @@ AC_CHECK_FUNCS(finite isnand fp_class class fpclass)
 AC_CHECK_FUNCS(strftime localtime gettimeofday ftime)
 AC_CHECK_FUNCS(stat _stat signal)
 AC_CHECK_FUNCS(rand rand_r srand time)
+AC_CHECK_FUNCS(isascii mmap munmap putenv)
+
+AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
+#if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)
+#  undef /**/ HAVE_MMAP
+#endif])
 
 dnl Checking for va_copy availability
 AC_MSG_CHECKING([for va_copy])
@@ -949,7 +960,7 @@ else
     case $host_os in
        *mingw32*) if test "$with_threads" != "pthread" && test "$with_threads" != "no"; then
                WITH_THREADS="1"
-               THREADS_W32="Win32"
+               THREADS_W32="1"
                THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
            fi
        ;;
@@ -1010,7 +1021,7 @@ AC_SUBST(BASE_THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
 AC_SUBST(TEST_THREADS)
-AC_SUBST(THREADS_W32)
+AM_CONDITIONAL(THREADS_W32, test -n "$THREADS_WIN32")
 
 dnl
 dnl xmllint shell history
@@ -1550,7 +1561,7 @@ AC_SUBST(RELDATE)
 AC_SUBST(PYTHON_TESTS)
 
 rm -f COPYING.LIB COPYING
-ln -s Copyright COPYING
+ln -s $srcdir/Copyright COPYING
 
 # keep on one line for cygwin c.f. #130896
 AC_OUTPUT(libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py)

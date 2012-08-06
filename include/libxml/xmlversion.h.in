@@ -412,7 +412,11 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  */
 
 #ifndef ATTRIBUTE_UNUSED
-#define ATTRIBUTE_UNUSED __attribute__((unused))
+# if ((__GNUC__ > 2) || ((__GNUC__ == 2) && (__GNUC_MINOR__ >= 7)))
+#  define ATTRIBUTE_UNUSED __attribute__((unused))
+# else
+#  define ATTRIBUTE_UNUSED
+# endif
 #endif
 
 /**

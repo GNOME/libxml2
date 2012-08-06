@@ -55,6 +55,8 @@ XMLS=		\
     invalid.xml	\
     test.dtd
 
+CLEANFILES = core tmp.xml *.pyc
+
 if WITH_PYTHON
 tests: $(PYTESTS)
 	@echo "## running Python regression tests"
@@ -69,6 +71,3 @@ tests: $(PYTESTS)
 else
 tests:
 endif
-
-clean:
-	rm -f *.pyc core

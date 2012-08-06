@@ -227,7 +227,7 @@ LDADDS = @STATIC_BINARIES@ $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(I
 
 rebuild: examples.xml index.html
 
-examples.xml: index.py *.c
+examples.xml: index.py $(noinst_PROGRAMS:=.c)
 	-@($(srcdir)/index.py)
 
 index.html: examples.xml examples.xsl

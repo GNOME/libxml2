@@ -68,6 +68,9 @@ CFLAGS = $(CFLAGS) -DHAVE_PTHREAD_H
 !if "$(WITH_ZLIB)" == "1"
 CFLAGS = $(CFLAGS) -DHAVE_ZLIB_H
 !endif
+!if "$(WITH_LZMA)" == "1"
+CFLAGS = $(CFLAGS) -DHAVE_LZMA_H
+!endif
 
 # The linker and its options.
 LD = ilink32.exe
@@ -91,6 +94,9 @@ LIBS = $(LIBS) iconvomf.lib
 !endif 
 !if "$(WITH_ZLIB)" == "1"
 LIBS = $(LIBS) zlibomf.lib
+!endif
+!if "$(WITH_LZMA)" == "1"
+LIBS = $(LIBS) liblzma.lib
 !endif
 !if "$(WITH_THREADS)" == "posix"
 LIBS = $(LIBS) pthreadVC.lib
@@ -250,10 +256,11 @@ distclean : clean
 rebuild : clean all
 
 install-libs : all
-	if not exist "$(INCPREFIX)\libxml" mkdir "$(INCPREFIX)\libxml"
+	if not exist "$(INCPREFIX)\libxml2" mkdir "$(INCPREFIX)\libxml2"
+	if not exist "$(INCPREFIX)\libxml2\libxml" mkdir "$(INCPREFIX)\libxml2\libxml"
 	if not exist "$(BINPREFIX)" mkdir "$(BINPREFIX)"
 	if not exist "$(LIBPREFIX)" mkdir "$(LIBPREFIX)"
-	copy $(XML_SRCDIR)\include\libxml\*.h "$(INCPREFIX)\libxml"
+	copy $(XML_SRCDIR)\include\libxml\*.h "$(INCPREFIX)\libxml2\libxml"
 	copy $(BINDIR)\$(XML_SO) "$(SOPREFIX)"
 	copy $(BINDIR)\$(XML_A) "$(LIBPREFIX)"
 	copy $(BINDIR)\$(XML_IMP) "$(LIBPREFIX)"

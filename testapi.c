@@ -127,8 +127,10 @@ int main(int argc, char **argv) {
     int ret;
     int blocks, mem;
 
+#ifdef HAVE_PUTENV
     /* access to the proxy can slow up regression tests a lot */
     putenv((char *) "http_proxy=");
+#endif
 
     memset(chartab, 0, sizeof(chartab));
     strncpy((char *) chartab, "  chartab\n", 20);

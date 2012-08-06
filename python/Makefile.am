@@ -21,7 +21,7 @@ EXTRA_DIST = 			\
 	libxml.py		\
 	libxml2-python-api.xml
 
-libxml2mod_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -module -avoid-version 
+libxml2mod_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) -module -avoid-version
 
 if WITH_PYTHON
 mylibs = \
@@ -31,7 +31,7 @@ python_LTLIBRARIES = libxml2mod.la
 
 libxml2mod_la_SOURCES = $(srcdir)/libxml.c $(srcdir)/types.c
 nodist_libxml2mod_la_SOURCES = libxml2-py.c
-libxml2mod_la_LIBADD = $(mylibs) @CYGWIN_EXTRA_PYTHON_LIBADD@ @WIN32_EXTRA_PYTHON_LIBADD@ @PYTHON_LIBS@ -lpython$(PYTHON_VERSION)
+libxml2mod_la_LIBADD = $(mylibs) $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) $(PYTHON_LIBS) -lpython$(PYTHON_VERSION)
 
 $(srcdir)/libxml.c: libxml2-py.h # to generate before to compile
 
@@ -53,7 +53,7 @@ GENERATED= libxml2class.py \
 	   libxml2-py.c \
 	   libxml2-py.h
 
-CLEANFILES= $(GENERATED) gen_prog libxml2.py
+CLEANFILES = $(GENERATED) gen_prog libxml2.py *.pyc
 
 $(GENERATED): gen_prog
 
@@ -63,5 +63,5 @@ gen_prog: $(srcdir)/$(GENERATE) $(API_DESC)
 endif
 
 tests test: all
-	cd tests && $(MAKE) MAKEFLAGS+=--silent tests
+	cd tests && $(MAKE) tests
 

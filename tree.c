@@ -1267,13 +1267,13 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
     const xmlChar *cur = value, *end = cur + len;
     const xmlChar *q;
     xmlEntityPtr ent;
-    xmlBufferPtr buffer;
+    xmlBufPtr buf;
 
     if (value == NULL) return(NULL);
 
-    buffer = xmlBufferCreateSize(0);
-    if (buffer == NULL) return(NULL);
-    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_HYBRID);
+    buf = xmlBufCreateSize(0);
+    if (buf == NULL) return(NULL);
+    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_HYBRID);
 
     q = cur;
     while ((cur < end) && (*cur != 0)) {
@@ -1285,7 +1285,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 	     * Save the current text.
 	     */
             if (cur != q) {
-		if (xmlBufferAdd(buffer, q, cur - q))
+		if (xmlBufAdd(buf, q, cur - q))
 		    goto out;
 	    }
 	    q = cur;
@@ -1362,20 +1362,20 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		    if ((ent != NULL) &&
 			(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 
-			if (xmlBufferCat(buffer, ent->content))
+			if (xmlBufCat(buf, ent->content))
 			    goto out;
 
 		    } else {
 			/*
 			 * Flush buffer so far
 			 */
-			if (buffer->use) {
+			if (!xmlBufIsEmpty(buf)) {
 			    node = xmlNewDocText(doc, NULL);
 			    if (node == NULL) {
 				if (val != NULL) xmlFree(val);
 				goto out;
 			    }
-			    node->content = xmlBufferDetach(buffer);
+			    node->content = xmlBufDetach(buf);
 
 			    if (last == NULL) {
 				last = ret = node;
@@ -1417,13 +1417,13 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		q = cur;
 	    }
 	    if (charval != 0) {
-		xmlChar buf[10];
+		xmlChar buffer[10];
 		int l;
 
-		l = xmlCopyCharMultiByte(buf, charval);
-		buf[l] = 0;
+		l = xmlCopyCharMultiByte(buffer, charval);
+		buffer[l] = 0;
 
-		if (xmlBufferCat(buffer, buf))
+		if (xmlBufCat(buf, buffer))
 		    goto out;
 		charval = 0;
 	    }
@@ -1435,14 +1435,14 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
         /*
 	 * Handle the last piece of text.
 	 */
-	if (xmlBufferAdd(buffer, q, cur - q))
+	if (xmlBufAdd(buf, q, cur - q))
 	    goto out;
     }
 
-    if (buffer->use) {
+    if (!xmlBufIsEmpty(buf)) {
 	node = xmlNewDocText(doc, NULL);
 	if (node == NULL) goto out;
-	node->content = xmlBufferDetach(buffer);
+	node->content = xmlBufDetach(buf);
 
 	if (last == NULL) {
 	    last = ret = node;
@@ -1454,7 +1454,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
     }
 
 out:
-    xmlBufferFree(buffer);
+    xmlBufFree(buf);
     return(ret);
 }
 
@@ -1475,13 +1475,13 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
     const xmlChar *cur = value;
     const xmlChar *q;
     xmlEntityPtr ent;
-    xmlBufferPtr buffer;
+    xmlBufPtr buf;
 
     if (value == NULL) return(NULL);
 
-    buffer = xmlBufferCreateSize(0);
-    if (buffer == NULL) return(NULL);
-    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_HYBRID);
+    buf = xmlBufCreateSize(0);
+    if (buf == NULL) return(NULL);
+    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_HYBRID);
 
     q = cur;
     while (*cur != 0) {
@@ -1493,7 +1493,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 	     * Save the current text.
 	     */
             if (cur != q) {
-		if (xmlBufferAdd(buffer, q, cur - q))
+		if (xmlBufAdd(buf, q, cur - q))
 		    goto out;
 	    }
 	    q = cur;
@@ -1558,16 +1558,16 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		    if ((ent != NULL) &&
 			(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 
-			if (xmlBufferCat(buffer, ent->content))
+			if (xmlBufCat(buf, ent->content))
 			    goto out;
 
 		    } else {
 			/*
 			 * Flush buffer so far
 			 */
-			if (buffer->use) {
+			if (!xmlBufIsEmpty(buf)) {
 			    node = xmlNewDocText(doc, NULL);
-			    node->content = xmlBufferDetach(buffer);
+			    node->content = xmlBufDetach(buf);
 
 			    if (last == NULL) {
 				last = ret = node;
@@ -1608,13 +1608,13 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		q = cur;
 	    }
 	    if (charval != 0) {
-		xmlChar buf[10];
+		xmlChar buffer[10];
 		int len;
 
-		len = xmlCopyCharMultiByte(buf, charval);
-		buf[len] = 0;
+		len = xmlCopyCharMultiByte(buffer, charval);
+		buffer[len] = 0;
 
-		if (xmlBufferCat(buffer, buf))
+		if (xmlBufCat(buf, buffer))
 		    goto out;
 		charval = 0;
 	    }
@@ -1625,12 +1625,12 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
         /*
 	 * Handle the last piece of text.
 	 */
-	xmlBufferAdd(buffer, q, cur - q);
+	xmlBufAdd(buf, q, cur - q);
     }
 
-    if (buffer->use) {
+    if (!xmlBufIsEmpty(buf)) {
 	node = xmlNewDocText(doc, NULL);
-	node->content = xmlBufferDetach(buffer);
+	node->content = xmlBufDetach(buf);
 
 	if (last == NULL) {
 	    last = ret = node;
@@ -1640,7 +1640,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
     }
 
 out:
-    xmlBufferFree(buffer);
+    xmlBufFree(buf);
     return(ret);
 }
 
@@ -5422,16 +5422,15 @@ xmlNodeGetContent(xmlNodePtr cur)
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:{
-                xmlBufferPtr buffer;
+                xmlBufPtr buf;
                 xmlChar *ret;
 
-                buffer = xmlBufferCreateSize(64);
-                if (buffer == NULL)
+                buf = xmlBufCreateSize(64);
+                if (buf == NULL)
                     return (NULL);
-		xmlNodeBufGetContent(buffer, cur);
-                ret = buffer->content;
-                buffer->content = NULL;
-                xmlBufferFree(buffer);
+		xmlBufGetNodeContent(buf, cur);
+                ret = xmlBufDetach(buf);
+                xmlBufFree(buf);
                 return (ret);
             }
         case XML_ATTRIBUTE_NODE:
@@ -5443,7 +5442,7 @@ xmlNodeGetContent(xmlNodePtr cur)
             return (NULL);
         case XML_ENTITY_REF_NODE:{
                 xmlEntityPtr ent;
-                xmlBufferPtr buffer;
+                xmlBufPtr buf;
                 xmlChar *ret;
 
                 /* lookup entity declaration */
@@ -5451,15 +5450,14 @@ xmlNodeGetContent(xmlNodePtr cur)
                 if (ent == NULL)
                     return (NULL);
 
-                buffer = xmlBufferCreate();
-                if (buffer == NULL)
+                buf = xmlBufCreate();
+                if (buf == NULL)
                     return (NULL);
 
-                xmlNodeBufGetContent(buffer, cur);
+                xmlBufGetNodeContent(buf, cur);
 
-                ret = buffer->content;
-                buffer->content = NULL;
-                xmlBufferFree(buffer);
+                ret = xmlBufDetach(buf);
+                xmlBufFree(buf);
                 return (ret);
             }
         case XML_ENTITY_NODE:
@@ -5474,18 +5472,17 @@ xmlNodeGetContent(xmlNodePtr cur)
         case XML_DOCB_DOCUMENT_NODE:
 #endif
         case XML_HTML_DOCUMENT_NODE: {
-	    xmlBufferPtr buffer;
+	    xmlBufPtr buf;
 	    xmlChar *ret;
 
-	    buffer = xmlBufferCreate();
-	    if (buffer == NULL)
+	    buf = xmlBufCreate();
+	    if (buf == NULL)
 		return (NULL);
 
-	    xmlNodeBufGetContent(buffer, (xmlNodePtr) cur);
+	    xmlBufGetNodeContent(buf, (xmlNodePtr) cur);
 
-	    ret = buffer->content;
-	    buffer->content = NULL;
-	    xmlBufferFree(buffer);
+	    ret = xmlBufDetach(buf);
+	    xmlBufFree(buf);
 	    return (ret);
 	}
         case XML_NAMESPACE_DECL: {

@@ -3754,6 +3754,8 @@ xmlFreeNode(xmlNodePtr cur) {
  * Unlink a node from it's current context, the node is not freed
  * If one need to free the node, use xmlFreeNode() routine after the
  * unlink to discard it.
+ * Note that namespace nodes can't be unlinked as they do not have
+ * pointer to their parent.
  */
 void
 xmlUnlinkNode(xmlNodePtr cur) {
@@ -3764,6 +3766,8 @@ xmlUnlinkNode(xmlNodePtr cur) {
 #endif
 	return;
     }
+    if (cur->type == XML_NAMESPACE_DECL)
+        return;
     if (cur->type == XML_DTD_NODE) {
 	xmlDocPtr doc;
 	doc = cur->doc;

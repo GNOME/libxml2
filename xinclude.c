@@ -875,8 +875,8 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 static xmlNodePtr
 xmlXIncludeGetNthChild(xmlNodePtr cur, int no) {
     int i;
-    if (cur == NULL) 
-	return(cur);
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
+        return(NULL);
     cur = cur->children;
     for (i = 0;i <= no;cur = cur->next) {
 	if (cur == NULL) 
@@ -923,11 +923,13 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	return(NULL);
     start = (xmlNodePtr) range->user;
 
-    if (start == NULL)
+    if ((start == NULL) || (start->type == XML_NAMESPACE_DECL))
 	return(NULL);
     end = range->user2;
     if (end == NULL)
 	return(xmlDocCopyNode(start, target, 1));
+    if (end->type == XML_NAMESPACE_DECL)
+        return(NULL);
 
     cur = start;
     index1 = range->index;
@@ -1948,8 +1950,9 @@ static int
 xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
     xmlXIncludeCtxtPtr newctxt;
     int ret = 0;
-    
-    if ((fallback == NULL) || (ctxt == NULL))
+
+    if ((fallback == NULL) || (fallback->type == XML_NAMESPACE_DECL) ||
+        (ctxt == NULL))
 	return(-1);
     if (fallback->children != NULL) {
 	/*
@@ -2175,7 +2178,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     if ((nr < 0) || (nr >= ctxt->incNr))
 	return(-1);
     cur = ctxt->incTab[nr]->ref;
-    if (cur == NULL)
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
 	return(-1);
 
     /*
@@ -2350,7 +2353,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     int ret = 0;
     int i, start;
 
-    if ((doc == NULL) || (tree == NULL))
+    if ((doc == NULL) || (tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
 	return(-1);
     if (ctxt == NULL)
 	return(-1);
@@ -2464,7 +2467,8 @@ xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree, int flags, void *data) {
     xmlXIncludeCtxtPtr ctxt;
     int ret = 0;
 
-    if ((tree == NULL) || (tree->doc == NULL))
+    if ((tree == NULL) || (tree->type == XML_NAMESPACE_DECL) ||
+        (tree->doc == NULL))
         return(-1);
 
     ctxt = xmlXIncludeNewContext(tree->doc);
@@ -2549,7 +2553,8 @@ xmlXIncludeProcessTreeFlags(xmlNodePtr tree, int flags) {
     xmlXIncludeCtxtPtr ctxt;
     int ret = 0;
 
-    if ((tree == NULL) || (tree->doc == NULL))
+    if ((tree == NULL) || (tree->type == XML_NAMESPACE_DECL) ||
+        (tree->doc == NULL))
 	return(-1);
     ctxt = xmlXIncludeNewContext(tree->doc);
     if (ctxt == NULL)
@@ -2593,7 +2598,8 @@ int
 xmlXIncludeProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     int ret = 0;
 
-    if ((node == NULL) || (node->doc == NULL) || (ctxt == NULL))
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||
+        (node->doc == NULL) || (ctxt == NULL))
 	return(-1);
     ret = xmlXIncludeDoProcess(ctxt, node->doc, node);
     if ((ret >= 0) && (ctxt->nbErrors > 0))

@@ -1465,6 +1465,10 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	return;
     if (cur->type == XML_XINCLUDE_END)
 	return;
+    if (cur->type == XML_NAMESPACE_DECL) {
+	xmlNsDumpOutputCtxt(ctxt, (xmlNsPtr) cur);
+	return;
+    }
     if (cur->type == XML_DTD_NODE) {
         xmlDtdDumpOutput(ctxt, (xmlDtdPtr) cur);
 	return;

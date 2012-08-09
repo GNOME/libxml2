@@ -2779,7 +2779,7 @@ void
 xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
     xmlAttrPtr prop;
 
-    if (tree == NULL)
+    if ((tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
 	return;
     if (tree->doc != doc) {
 	if(tree->type == XML_ELEMENT_NODE) {
@@ -2807,7 +2807,7 @@ void
 xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
     xmlNodePtr cur;
 
-    if (list == NULL)
+    if ((list == NULL) || (list->type == XML_NAMESPACE_DECL))
 	return;
     cur = list;
     while (cur != NULL) {
@@ -2914,7 +2914,9 @@ static xmlNodePtr
 xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
 	xmlAttrPtr attr;
 
-	if (cur->type != XML_ATTRIBUTE_NODE)
+	if ((cur == NULL) || (cur->type != XML_ATTRIBUTE_NODE) ||
+	    (prop == NULL) || (prop->type != XML_ATTRIBUTE_NODE) ||
+	    ((prev != NULL) && (prev->type != XML_ATTRIBUTE_NODE)))
 		return(NULL);
 
 	/* check if an attribute with the same name exists */
@@ -2962,14 +2964,14 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
  */
 xmlNodePtr
 xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
-    if (cur == NULL) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddNextSibling : cur == NULL\n");
 #endif
 	return(NULL);
     }
-    if (elem == NULL) {
+    if ((elem == NULL) || (elem->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddNextSibling : elem == NULL\n");
@@ -3040,14 +3042,14 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
  */
 xmlNodePtr
 xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
-    if (cur == NULL) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddPrevSibling : cur == NULL\n");
 #endif
 	return(NULL);
     }
-    if (elem == NULL) {
+    if ((elem == NULL) || (elem->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddPrevSibling : elem == NULL\n");
@@ -3118,7 +3120,7 @@ xmlNodePtr
 xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
     xmlNodePtr parent;
 
-    if (cur == NULL) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddSibling : cur == NULL\n");
@@ -3126,7 +3128,7 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
-    if (elem == NULL) {
+    if ((elem == NULL) || (elem->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddSibling : elem == NULL\n");
@@ -3194,7 +3196,7 @@ xmlNodePtr
 xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     xmlNodePtr prev;
 
-    if (parent == NULL) {
+    if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddChildList : parent == NULL\n");
@@ -3202,7 +3204,7 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
-    if (cur == NULL) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddChildList : child == NULL\n");
@@ -3280,7 +3282,7 @@ xmlNodePtr
 xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     xmlNodePtr prev;
 
-    if (parent == NULL) {
+    if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddChild : parent == NULL\n");
@@ -3288,7 +3290,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
-    if (cur == NULL) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddChild : child == NULL\n");
@@ -3402,7 +3404,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlGetLastChild(xmlNodePtr parent) {
-    if (parent == NULL) {
+    if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlGetLastChild : parent == NULL\n");
@@ -3836,14 +3838,15 @@ xmlUnlinkNode(xmlNodePtr cur) {
 xmlNodePtr
 xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
     if (old == cur) return(NULL);
-    if ((old == NULL) || (old->parent == NULL)) {
+    if ((old == NULL) || (old->type == XML_NAMESPACE_DECL) ||
+        (old->parent == NULL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlReplaceNode : old == NULL or without parent\n");
 #endif
 	return(NULL);
     }
-    if (cur == NULL) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
 	xmlUnlinkNode(old);
 	return(old);
     }
@@ -3957,6 +3960,8 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
     xmlAttrPtr ret;
 
     if (cur == NULL) return(NULL);
+    if ((target != NULL) && (target->type != XML_ELEMENT_NODE))
+        return(NULL);
     if (target != NULL)
 	ret = xmlNewDocProp(target->doc, cur->name, NULL);
     else if (doc != NULL)
@@ -4076,6 +4081,8 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
     xmlAttrPtr ret = NULL;
     xmlAttrPtr p = NULL,q;
 
+    if ((target != NULL) && (target->type != XML_ELEMENT_NODE))
+        return(NULL);
     while (cur != NULL) {
         q = xmlCopyProp(target, cur);
 	if (q == NULL)
@@ -4576,7 +4583,7 @@ xmlGetNodePath(xmlNodePtr node)
     char nametemp[100];
     int occur = 0, generic;
 
-    if (node == NULL)
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
         return (NULL);
 
     buf_len = 500;
@@ -4841,7 +4848,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     xmlNodePtr old = NULL;
 
     if (doc == NULL) return(NULL);
-    if (root == NULL)
+    if ((root == NULL) || (root->type == XML_NAMESPACE_DECL))
 	return(NULL);
     xmlUnlinkNode(root);
     xmlSetTreeDoc(root, doc);
@@ -4928,6 +4935,8 @@ xmlChar *
 xmlNodeGetLang(xmlNodePtr cur) {
     xmlChar *lang;
 
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
+        return(NULL);
     while (cur != NULL) {
         lang = xmlGetNsProp(cur, BAD_CAST "lang", XML_XML_NAMESPACE);
 	if (lang != NULL)
@@ -5007,6 +5016,8 @@ int
 xmlNodeGetSpacePreserve(xmlNodePtr cur) {
     xmlChar *space;
 
+    if ((cur == NULL) || (cur->type != XML_ELEMENT_NODE))
+        return(-1);
     while (cur != NULL) {
 	space = xmlGetNsProp(cur, BAD_CAST "space", XML_XML_NAMESPACE);
 	if (space != NULL) {
@@ -5172,6 +5183,8 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
     xmlChar *base, *newbase;
 
     if ((cur == NULL) && (doc == NULL))
+        return(NULL);
+    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
         return(NULL);
     if (doc == NULL) doc = cur->doc;
     if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
@@ -5807,6 +5820,9 @@ xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node)
     int maxns = 10;
     int i;
 
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
+        return(NULL);
+
     while (node != NULL) {
         if (node->type == XML_ELEMENT_NODE) {
             cur = node->nsDef;
@@ -5905,7 +5921,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     xmlNsPtr cur;
     xmlNodePtr orig = node;
 
-    if (node == NULL) return(NULL);
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL)) return(NULL);
     if ((nameSpace != NULL) &&
 	(xmlStrEqual(nameSpace, (const xmlChar *)"xml"))) {
 	if ((doc == NULL) && (node->type == XML_ELEMENT_NODE)) {
@@ -6035,7 +6051,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
     xmlNodePtr orig = node;
     int is_attr;
 
-    if ((node == NULL) || (href == NULL))
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) || (href == NULL))
         return (NULL);
     if (xmlStrEqual(href, XML_XML_NAMESPACE)) {
         /*
@@ -6126,7 +6142,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     xmlChar prefix[50];
     int counter = 1;
 
-    if (tree == NULL) {
+    if ((tree == NULL) || (tree->type != XML_ELEMENT_NODE)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewReconciliedNs : tree == NULL\n");
@@ -7983,6 +7999,8 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapPtr *map,
 
     if ((map == NULL) || (*map != NULL))
 	return (-1);
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
+        return (-1);
     /*
     * Get in-scope ns-decls of @parent.
     */
@@ -8250,6 +8268,8 @@ xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
 
     if ((doc == NULL) || (nsName == NULL) || (retNs == NULL))
 	return (-1);
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
+        return(-1);
 
     *retNs = NULL;
     if (xmlStrEqual(nsName, XML_XML_NAMESPACE)) {
@@ -8348,8 +8368,8 @@ xmlSearchNsByPrefixStrict(xmlDocPtr doc, xmlNodePtr node,
     xmlNodePtr cur;
     xmlNsPtr ns;
 
-    if ((doc == NULL) || (node == NULL))
-	return (-1);
+    if ((doc == NULL) || (node == NULL) || (node->type == XML_NAMESPACE_DECL))
+        return(-1);
 
     if (retNs)
 	*retNs = NULL;
@@ -8417,6 +8437,9 @@ xmlDOMWrapNSNormDeclareNsForced(xmlDocPtr doc,
     char buf[50];
     const xmlChar *pref;
     int counter = 0;
+
+    if ((doc == NULL) || (elem == NULL) || (elem->type != XML_ELEMENT_NODE))
+        return(NULL);
     /*
     * Create a ns-decl on @anchor.
     */
@@ -8933,6 +8956,9 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 	parnsdone = 0;
 
     cur = node;
+    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
+	goto internal_error;
+
     while (cur != NULL) {
 	/*
 	* Paranoid source-doc sanity check.
@@ -9312,6 +9338,9 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     *resNode = NULL;
 
     cur = node;
+    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
+        return(-1);
+
     while (cur != NULL) {
 	if (cur->doc != sourceDoc) {
 	    /*
@@ -9829,6 +9858,8 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
     if (attr->children == NULL)
 	return (0);
     cur = attr->children;
+    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
+        goto internal_error;
     while (cur != NULL) {
 	cur->doc = destDoc;
 	switch (cur->type) {
@@ -9913,7 +9944,8 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 		    xmlNodePtr destParent,
 		    int options)
 {
-    if ((node == NULL) || (destDoc == NULL) ||
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||
+        (destDoc == NULL) ||
 	((destParent != NULL) && (destParent->doc != destDoc)))
 	return(-1);
     /*

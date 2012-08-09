@@ -7798,6 +7798,8 @@ xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
         return(ctxt->context->node->children);
     }
 
+    if (cur->type == XML_NAMESPACE_DECL)
+        return(NULL);
     if (cur->children != NULL) {
 	/*
 	 * Do not descend on entities declarations
@@ -8180,6 +8182,10 @@ xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 static int
 xmlXPathIsAncestor(xmlNodePtr ancestor, xmlNodePtr node) {
     if ((ancestor == NULL) || (node == NULL)) return(0);
+    if (node->type == XML_NAMESPACE_DECL)
+        return(0);
+    if (ancestor->type == XML_NAMESPACE_DECL)
+        return(0);
     /* nodes need to be in the same document */
     if (ancestor->doc != node->doc) return(0);
     /* avoid searching if ancestor or node is the root node */
@@ -8217,7 +8223,7 @@ xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur)
         if (cur->type == XML_ATTRIBUTE_NODE)
             return(cur->parent);
     }
-    if (cur == NULL)
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
 	return (NULL);
     if ((cur->prev != NULL) && (cur->prev->type == XML_DTD_NODE))
 	cur = cur->prev;
@@ -8264,6 +8270,8 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
             return (NULL);
         ctxt->ancestor = cur->parent;
     }
+    if (cur->type == XML_NAMESPACE_DECL)
+        return(NULL);
     if ((cur->prev != NULL) && (cur->prev->type == XML_DTD_NODE))
 	cur = cur->prev;
     while (cur->prev == NULL) {
@@ -8471,7 +8479,7 @@ xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    int i = 0;
 
 	    tmp = cur->nodesetval->nodeTab[0];
-	    if (tmp != NULL) {
+	    if ((tmp != NULL) && (tmp->type != XML_NAMESPACE_DECL)) {
 		tmp = tmp->children;
 		while (tmp != NULL) {
 		    tmp = tmp->next;
@@ -14308,6 +14316,7 @@ next_node:
 	}
 
 scan_children:
+	if (cur->type == XML_NAMESPACE_DECL) break;
 	if ((cur->children != NULL) && (depth < max_depth)) {
 	    /*
 	     * Do not descend on entities declarations

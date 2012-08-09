@@ -1228,6 +1228,9 @@ xmlTextReaderCollectSiblings(xmlNodePtr node)
     xmlBufferPtr buffer;
     xmlChar *ret;
 
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
+        return(NULL);
+
     buffer = xmlBufferCreate();
     if (buffer == NULL)
        return NULL;

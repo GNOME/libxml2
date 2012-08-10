@@ -44,15 +44,16 @@
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
       <pre class="synopsis">#define <a href="#XML_LOCAL_NAMESPACE">XML_LOCAL_NAMESPACE</a>;
-#define <a href="#XML_XML_NAMESPACE">XML_XML_NAMESPACE</a>;
+#define <a href="#BASE_BUFFER_SIZE">BASE_BUFFER_SIZE</a>;
 #define <a href="#XML_XML_ID">XML_XML_ID</a>;
 #define <a href="#xmlRootNode">xmlRootNode</a>;
 #define <a href="#XML_GET_LINE">XML_GET_LINE</a>;
 #define <a href="#XML_GET_CONTENT">XML_GET_CONTENT</a>;
 #define <a href="#xmlChildrenNode">xmlChildrenNode</a>;
-#define <a href="#BASE_BUFFER_SIZE">BASE_BUFFER_SIZE</a>;
+#define <a href="#XML_XML_NAMESPACE">XML_XML_NAMESPACE</a>;
+#define <a href="#LIBXML2_NEW_BUFFER">LIBXML2_NEW_BUFFER</a>;
 typedef struct _xmlNs <a href="#xmlNs">xmlNs</a>;
-typedef <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> * <a href="#xmlBufferPtr">xmlBufferPtr</a>;
+typedef struct _xmlElementContent <a href="#xmlElementContent">xmlElementContent</a>;
 typedef <a href="libxml2-tree.html#xmlEnumeration">xmlEnumeration</a> * <a href="#xmlEnumerationPtr">xmlEnumerationPtr</a>;
 typedef struct _xmlBuffer <a href="#xmlBuffer">xmlBuffer</a>;
 typedef <a href="libxml2-tree.html#xmlParserInput">xmlParserInput</a> * <a href="#xmlParserInputPtr">xmlParserInputPtr</a>;
@@ -63,7 +64,7 @@ typedef <a href="libxml2-tree.html#xmlElementType">xmlElementType</a> <a href="#
 typedef enum <a href="#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>;
 typedef struct _xmlNode <a href="#xmlNode">xmlNode</a>;
 typedef <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * <a href="#xmlDocPtr">xmlDocPtr</a>;
-typedef struct _xmlElementContent <a href="#xmlElementContent">xmlElementContent</a>;
+typedef <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> * <a href="#xmlBufferPtr">xmlBufferPtr</a>;
 typedef <a href="libxml2-tree.html#xmlDOMWrapCtxt">xmlDOMWrapCtxt</a> * <a href="#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a>;
 typedef <a href="libxml2-tree.html#xmlRef">xmlRef</a> * <a href="#xmlRefPtr">xmlRefPtr</a>;
 typedef struct _xmlParserInputBuffer <a href="#xmlParserInputBuffer">xmlParserInputBuffer</a>;
@@ -73,6 +74,7 @@ typedef <a href="libxml2-tree.html#xmlNode">xmlNode</a> * <a href="#xmlNodePtr">
 typedef struct _xmlParserCtxt <a href="#xmlParserCtxt">xmlParserCtxt</a>;
 typedef <a href="libxml2-tree.html#xmlDtd">xmlDtd</a> * <a href="#xmlDtdPtr">xmlDtdPtr</a>;
 typedef enum <a href="#xmlAttributeDefault">xmlAttributeDefault</a>;
+typedef struct _xmlBuf <a href="#xmlBuf">xmlBuf</a>;
 typedef struct _xmlNotation <a href="#xmlNotation">xmlNotation</a>;
 typedef enum <a href="#xmlElementType">xmlElementType</a>;
 typedef struct _xmlEntity <a href="#xmlEntity">xmlEntity</a>;
@@ -81,6 +83,7 @@ typedef <a href="libxml2-tree.html#xmlAttribute">xmlAttribute</a> * <a href="#xm
 typedef enum <a href="#xmlElementTypeVal">xmlElementTypeVal</a>;
 typedef <a href="libxml2-tree.html#xmlNotation">xmlNotation</a> * <a href="#xmlNotationPtr">xmlNotationPtr</a>;
 typedef <a href="libxml2-tree.html#xmlElement">xmlElement</a> * <a href="#xmlElementPtr">xmlElementPtr</a>;
+typedef <a href="libxml2-tree.html#xmlBuf">xmlBuf</a> * <a href="#xmlBufPtr">xmlBufPtr</a>;
 typedef enum <a href="#xmlElementContentOccur">xmlElementContentOccur</a>;
 typedef <a href="libxml2-tree.html#xmlAttr">xmlAttr</a> * <a href="#xmlAttrPtr">xmlAttrPtr</a>;
 typedef struct _xmlDoc <a href="#xmlDoc">xmlDoc</a>;
@@ -104,8 +107,9 @@ typedef <a href="libxml2-tree.html#xmlOutputBuffer">xmlOutputBuffer</a> * <a hre
 typedef <a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * <a href="#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a>;
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlDocCopyNode">xmlDocCopyNode</a>		(const <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int extended);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewDocRawNode">xmlNewDocRawNode</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetProp">xmlGetProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBufContent">xmlBufContent</a>		(const <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlNewNsPropEatName">xmlNewNsPropEatName</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
+<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlStringGetNodeList">xmlStringGetNodeList</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewCDataBlock">xmlNewCDataBlock</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br/>					 int len);
 void	<a href="#xmlBufferWriteCHAR">xmlBufferWriteCHAR</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * string);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeGetBase">xmlNodeGetBase</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
@@ -117,15 +121,16 @@ int	<a href="#xmlSaveFormatFileEnc">xmlSaveFormatFileEnc</a>		(const char * file
 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	<a href="#xmlBufferCreate">xmlBufferCreate</a>		(void);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewDocFragment">xmlNewDocFragment</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlDocGetRootElement">xmlDocGetRootElement</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlStringGetNodeList">xmlStringGetNodeList</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetProp">xmlGetProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 int	<a href="#xmlValidateName">xmlValidateName</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 int space);
-void	<a href="#xmlSetBufferAllocationScheme">xmlSetBufferAllocationScheme</a>	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> scheme);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBufEnd">xmlBufEnd</a>		(const <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf);
 int	<a href="#xmlValidateQName">xmlValidateQName</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 int space);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlHasNsProp">xmlHasNsProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddPrevSibling">xmlAddPrevSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
 int	<a href="#xmlBufferAddHead">xmlBufferAddHead</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 int len);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewPI">xmlNewPI</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
 void	<a href="#xmlDocDumpFormatMemoryEnc">xmlDocDumpFormatMemoryEnc</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> out_doc, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** doc_txt_ptr, <br/>					 int * doc_txt_len, <br/>					 const char * txt_encoding, <br/>					 int format);
+<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlSetProp">xmlSetProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 unsigned long	<a href="#xmlChildElementCount">xmlChildElementCount</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent);
 void	<a href="#xmlElemDump">xmlElemDump</a>			(FILE * f, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 int	<a href="#xmlSaveFormatFileTo">xmlSaveFormatFileTo</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 const char * encoding, <br/>					 int format);
@@ -171,6 +176,7 @@ int	<a href="#xmlBufferDump">xmlBufferDump</a>			(FILE * file, <br/>					 <a hre
 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCopyDoc">xmlCopyDoc</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int recursive);
 <a href="libxml2-tree.html#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a>	<a href="#xmlDOMWrapNewCtxt">xmlDOMWrapNewCtxt</a>	(void);
 void	<a href="#xmlDocDumpMemoryEnc">xmlDocDumpMemoryEnc</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> out_doc, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** doc_txt_ptr, <br/>					 int * doc_txt_len, <br/>					 const char * txt_encoding);
+int	<a href="#xmlBufGetNodeContent">xmlBufGetNodeContent</a>		(<a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlTextMerge">xmlTextMerge</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> first, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> second);
 void	<a href="#xmlDocDumpMemory">xmlDocDumpMemory</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** mem, <br/>					 int * size);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewDocPI">xmlNewDocPI</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
@@ -194,6 +200,7 @@ void	<a href="#xmlSetDocCompressMode">xmlSetDocCompressMode</a>		(<a href="libxm
 void	<a href="#xmlUnlinkNode">xmlUnlinkNode</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSplitQName3">xmlSplitQName3</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int * len);
 typedef <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> <a href="#xmlDOMWrapAcquireNsFunction">xmlDOMWrapAcquireNsFunction</a>	(<a href="libxml2-tree.html#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nsName, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nsPrefix);
+size_t	<a href="#xmlBufUse">xmlBufUse</a>			(const <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlDocSetRootElement">xmlDocSetRootElement</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> root);
 long	<a href="#xmlGetLineNo">xmlGetLineNo</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBufferContent">xmlBufferContent</a>	(const <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf);
@@ -201,6 +208,7 @@ int	<a href="#xmlRemoveProp">xmlRemoveProp</a>			(<a href="libxml2-tree.html#xml
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlLastElementChild">xmlLastElementChild</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeGetLang">xmlNodeGetLang</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 int	<a href="#xmlGetDocCompressMode">xmlGetDocCompressMode</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+size_t	<a href="#xmlBufNodeDump">xmlBufNodeDump</a>			(<a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 int level, <br/>					 int format);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetNsProp">xmlGetNsProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlNewDocProp">xmlNewDocProp</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 void	<a href="#xmlFreeNode">xmlFreeNode</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
@@ -245,7 +253,7 @@ int	<a href="#xmlBufferCCat">xmlBufferCCat</a>			(<a href="libxml2-tree.html#xml
 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	<a href="#xmlGetNsList">xmlGetNsList</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 int	<a href="#xmlBufferGrow">xmlBufferGrow</a>			(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 unsigned int len);
 int	<a href="#xmlNodeIsText">xmlNodeIsText</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlSetProp">xmlSetProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
+void	<a href="#xmlSetBufferAllocationScheme">xmlSetBufferAllocationScheme</a>	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> scheme);
 int	<a href="#xmlIsXHTML">xmlIsXHTML</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicID);
 void	<a href="#xmlNodeSetLang">xmlNodeSetLang</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang);
 void	<a href="#xmlFreeDtd">xmlFreeDtd</a>			(<a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> cur);
@@ -271,6 +279,10 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
       <div class="refsect2" lang="en">
         <div class="refsect2" lang="en"><h3><a name="BASE_BUFFER_SIZE">Macro </a>BASE_BUFFER_SIZE</h3><pre class="programlisting">#define <a href="#BASE_BUFFER_SIZE">BASE_BUFFER_SIZE</a>;
 </pre><p>default buffer size 4000.</p>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="LIBXML2_NEW_BUFFER">Macro </a>LIBXML2_NEW_BUFFER</h3><pre class="programlisting">#define <a href="#LIBXML2_NEW_BUFFER">LIBXML2_NEW_BUFFER</a>;
+</pre><p>Macro used to express that the API use the new buffers for <a href="libxml2-tree.html#xmlParserInputBuffer">xmlParserInputBuffer</a> and xmlOutputBuffer. The change was introduced in 2.9.0.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="XML_GET_CONTENT">Macro </a>XML_GET_CONTENT</h3><pre class="programlisting">#define <a href="#XML_GET_CONTENT">XML_GET_CONTENT</a>;
@@ -369,6 +381,16 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     <a name="XML_ATTRIBUTE_NOTATION">XML_ATTRIBUTE_NOTATION</a> = 10
 };
 </pre><p/>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBuf">Structure </a>xmlBuf</h3><pre class="programlisting">struct _xmlBuf {
+The content of this structure is not made public by the API.
+} xmlBuf;
+</pre><p/>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufPtr">Typedef </a>xmlBufPtr</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlBuf">xmlBuf</a> * xmlBufPtr;
+</pre><p>A pointer to a buffer structure, the actual structure internals are not public</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlBuffer">Structure </a>xmlBuffer</h3><pre class="programlisting">struct _xmlBuffer {
@@ -688,8 +710,8 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     <a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a>	writecallback
     <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a>	closecallback
     <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	encoder	: I18N conversions to UTF-8
-    <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	buffer	: Local buffer encoded in UTF-8 or ISOLatin
-    <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	conv	: if encoder != NULL buffer for output
+    <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a>	buffer	: Local buffer encoded in UTF-8 or ISOLatin
+    <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a>	conv	: if encoder != NULL buffer for output
     int	written	: total number of byte written
     int	error
 } xmlOutputBuffer;
@@ -822,8 +844,8 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a>	readcallback
     <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a>	closecallback
     <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	encoder	: I18N conversions to UTF-8
-    <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	buffer	: Local buffer encoded in UTF-8
-    <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	raw	: if encoder != NULL buffer for raw input
+    <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a>	buffer	: Local buffer encoded in UTF-8
+    <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a>	raw	: if encoder != NULL buffer for raw input
     int	compressed	: -1=unknown, 0=not compressed, 1=compressed
     int	error
     unsigned long	rawconsumed	: amount consumed from raw
@@ -934,6 +956,26 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
         <div class="refsect2" lang="en"><h3><a name="xmlAttrSerializeTxtContent"/>xmlAttrSerializeTxtContent ()</h3><pre class="programlisting">void	xmlAttrSerializeTxtContent	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * string)<br/>
 </pre><p>Serialize text <a href="libxml2-SAX.html#attribute">attribute</a> values to an xml simple buffer</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the XML buffer output</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>attr</tt></i>:</span></td><td>the <a href="libxml2-SAX.html#attribute">attribute</a> node</td></tr><tr><td><span class="term"><i><tt>string</tt></i>:</span></td><td>the text content</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufContent"/>xmlBufContent ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlBufContent		(const <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf)<br/>
+</pre><p>Function to extract the content of a buffer</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the buffer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the internal content</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufEnd"/>xmlBufEnd ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlBufEnd		(const <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf)<br/>
+</pre><p>Function to extract the end of the content of a buffer</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the buffer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the end of the internal content or NULL in case of error</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufGetNodeContent"/>xmlBufGetNodeContent ()</h3><pre class="programlisting">int	xmlBufGetNodeContent		(<a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br/>
+</pre><p>Read the value of a node @cur, this can be either the text carried directly by this node if it's a TEXT node or the aggregate string of the values carried by this node child's (TEXT and ENTITY_REF). Entity references are substituted. Fills up the buffer @buffer with this value</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>a buffer <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a></td></tr><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being read</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success and -1 in case of error.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufNodeDump"/>xmlBufNodeDump ()</h3><pre class="programlisting">size_t	xmlBufNodeDump			(<a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 int level, <br/>					 int format)<br/>
+</pre><p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the XML buffer output</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the current node</td></tr><tr><td><span class="term"><i><tt>level</tt></i>:</span></td><td>the imbrication level for indenting</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>is formatting allowed</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of bytes written to the buffer, in case of error 0 is returned or @buf stores the error</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlBufUse"/>xmlBufUse ()</h3><pre class="programlisting">size_t	xmlBufUse			(const <a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf)<br/>
+</pre><p>Function to get the length of a buffer</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the buffer</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the length of data in the internal content</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlBufferAdd"/>xmlBufferAdd ()</h3><pre class="programlisting">int	xmlBufferAdd			(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 int len)<br/>
 </pre><p>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</p>
@@ -1352,7 +1394,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>a buffer</td></tr><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node being read</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success and -1 in case of error.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeDump"/>xmlNodeDump ()</h3><pre class="programlisting">int	xmlNodeDump			(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 int level, <br/>					 int format)<br/>
-</pre><p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+</pre><p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called Since this is using <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> structures it is limited to 2GB and somehow deprecated, use xmlBufNodeDump() instead.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>the XML buffer output</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the current node</td></tr><tr><td><span class="term"><i><tt>level</tt></i>:</span></td><td>the imbrication level for indenting</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>is formatting allowed</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of bytes written to the buffer or -1 in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNodeDumpOutput"/>xmlNodeDumpOutput ()</h3><pre class="programlisting">void	xmlNodeDumpOutput		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br/>					 int level, <br/>					 int format, <br/>					 const char * encoding)<br/>
@@ -1516,7 +1558,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>first</tt></i>:</span></td><td>the first text node</td></tr><tr><td><span class="term"><i><tt>second</tt></i>:</span></td><td>the second text node being merged</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the first text node augmented</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlUnlinkNode"/>xmlUnlinkNode ()</h3><pre class="programlisting">void	xmlUnlinkNode			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br/>
-</pre><p>Unlink a node from it's current context, the node is not freed If one need to free the node, use xmlFreeNode() routine after the unlink to discard it.</p>
+</pre><p>Unlink a node from it's current context, the node is not freed If one need to free the node, use xmlFreeNode() routine after the unlink to discard it. Note that namespace nodes can't be unlinked as they do not have pointer to their parent.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>the node</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlUnsetNsProp"/>xmlUnsetNsProp ()</h3><pre class="programlisting">int	xmlUnsetNsProp			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br/>

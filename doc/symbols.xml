@@ -1746,4 +1746,15 @@
     <symbol file="tree">xmlBufferDetach</symbol>
     <symbol file="dict">xmlInitializeDict</symbol>
   </release>
+  <release version="2.9.0">
+    <symbol file="tree">xmlBufContent</symbol>
+    <symbol file="tree">xmlBufEnd</symbol>
+    <symbol file="tree">xmlBufGetNodeContent</symbol>
+    <symbol file="tree">xmlBufNodeDump</symbol>
+    <symbol file="tree">xmlBufUse</symbol>
+    <symbol file="dict">xmlDictGetUsage</symbol>
+    <symbol file="dict">xmlDictSetLimit</symbol>
+    <symbol file="xmlIO">xmlOutputBufferGetContent</symbol>
+    <symbol file="xmlIO">xmlOutputBufferGetSize</symbol>
+  </release>
 </symbols>

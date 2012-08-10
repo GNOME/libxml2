@@ -1,9 +1,13 @@
 /*
- * buf.h: Internal Interfaces for memory buffers in libxml2
+ * Summary: Internal Interfaces for memory buffers in libxml2
+ * Description: this module describes most of the new xmlBuf buffer
+ *              entry points, those are private routines, with a
+ *              few exceptions exported in tree.h. This was added
+ *              in 2.9.0.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_BUF_H__

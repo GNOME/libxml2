@@ -206,7 +206,7 @@ AC_ARG_WITH(coverage,
 
 AC_ARG_ENABLE(rebuild-docs,
 [  --enable-rebuild-docs[[=yes/no]]  rebuild some generated docs [[default=no]]])
-AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes"])
+AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes" -o "$USER" = "veillard"])
 
 dnl
 dnl hard dependancies on options

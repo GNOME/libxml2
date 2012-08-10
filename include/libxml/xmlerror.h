@@ -830,10 +830,6 @@ typedef enum {
     XML_I18N_CONV_FAILED, /* 6003 */
     XML_I18N_NO_OUTPUT, /* 6004 */
     XML_BUF_OVERFLOW = 7000
-#if 0
-    XML_CHECK_, /* 5033 */
-    XML_CHECK_X /* 503 */
-#endif
 } xmlParserErrors;
 
 /**

@@ -255,8 +255,12 @@ xmlBufCreateStatic(void *mem, size_t size) {
 }
 
 /**
+ * xmlBufGetAllocationScheme:
+ * @buf:  the buffer
  *
+ * Get the buffer allocation scheme
  *
+ * Returns the scheme or -1 in case of error
  */
 int
 xmlBufGetAllocationScheme(xmlBufPtr buf) {
@@ -1276,6 +1280,8 @@ xmlBufGetInputBase(xmlBufPtr buf, xmlParserInputPtr input) {
  * xmlBufSetInputBaseCur:
  * @buf: an xmlBufPtr
  * @input: an xmlParserInputPtr
+ * @base: the base value relative to the beginning of the buffer
+ * @cur: the cur value relative to the beginning of the buffer
  *
  * Update the input to use the base and cur relative to the buffer
  * after a possible reallocation of its content

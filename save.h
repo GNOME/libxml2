@@ -1,9 +1,12 @@
 /*
- * save.h: Internal Interfaces for saving
+ * Summary: Internal Interfaces for saving in libxml2
+ * Description: this module describes a few interfaces which were
+ *              addded along with the API changes in 2.9.0
+ *              those are private routines at this point
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_SAVE_H__
@@ -15,12 +18,14 @@
 extern "C" {
 #endif
 
+#ifdef LIBXML_OUTPUT_ENABLED
 void xmlBufAttrSerializeTxtContent(xmlBufPtr buf, xmlDocPtr doc,
                                    xmlAttrPtr attr, const xmlChar * string);
 void xmlBufDumpNotationTable(xmlBufPtr buf, xmlNotationTablePtr table);
 void xmlBufDumpElementDecl(xmlBufPtr buf, xmlElementPtr elem);
 void xmlBufDumpAttributeDecl(xmlBufPtr buf, xmlAttributePtr attr);
 void xmlBufDumpEntityDecl(xmlBufPtr buf, xmlEntityPtr ent);
+#endif
 
 #ifdef __cplusplus
 }

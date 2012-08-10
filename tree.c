@@ -5279,7 +5279,7 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, xmlNodePtr cur)
 
 /**
  * xmlBufGetNodeContent:
- * @buffer:  a buffer
+ * @buf:  a buffer xmlBufPtr
  * @cur:  the node being read
  *
  * Read the value of a node @cur, this can be either the text carried

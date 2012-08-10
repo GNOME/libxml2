@@ -372,10 +372,12 @@
      <author>Daniel Veillard </author>
      <exports symbol='xmlDict' type='typedef'/>
      <exports symbol='xmlDictPtr' type='typedef'/>
+     <exports symbol='xmlDictGetUsage' type='function'/>
      <exports symbol='xmlDictReference' type='function'/>
      <exports symbol='xmlDictCleanup' type='function'/>
      <exports symbol='xmlDictSize' type='function'/>
      <exports symbol='xmlDictExists' type='function'/>
+     <exports symbol='xmlDictSetLimit' type='function'/>
      <exports symbol='xmlDictOwns' type='function'/>
      <exports symbol='xmlDictQLookup' type='function'/>
      <exports symbol='xmlInitializeDict' type='function'/>
@@ -880,7 +882,7 @@
      <exports symbol='xmlSetExternalEntityLoader' type='function'/>
     </file>
     <file name='parserInternals'>
-     <summary>internals routines exported by the parser.</summary>
+     <summary>internals routines and limits exported by the parser.</summary>
      <description>this module exports a number of internal parsing routines they are not really all intended for applications but can prove useful doing low level processing. </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_SUBSTITUTE_REF' type='macro'/>
@@ -895,14 +897,17 @@
      <exports symbol='IS_LETTER' type='macro'/>
      <exports symbol='IS_IDEOGRAPHIC' type='macro'/>
      <exports symbol='MOVETO_STARTTAG' type='macro'/>
+     <exports symbol='XML_MAX_NAME_LENGTH' type='macro'/>
      <exports symbol='IS_ASCII_LETTER' type='macro'/>
      <exports symbol='IS_DIGIT' type='macro'/>
+     <exports symbol='XML_MAX_DICTIONARY_LIMIT' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_PEREF' type='macro'/>
      <exports symbol='MOVETO_ENDTAG' type='macro'/>
      <exports symbol='SKIP_EOL' type='macro'/>
      <exports symbol='IS_EXTENDER_CH' type='macro'/>
      <exports symbol='IS_BLANK_CH' type='macro'/>
      <exports symbol='IS_LETTER_CH' type='macro'/>
+     <exports symbol='XML_MAX_LOOKUP_LIMIT' type='macro'/>
      <exports symbol='XML_MAX_TEXT_LENGTH' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_NONE' type='macro'/>
      <exports symbol='IS_COMBINING' type='macro'/>
@@ -1406,13 +1411,14 @@
      <description>this module describes the structures found in an tree resulting from an XML or HTML parsing, as well as the API provided for various processing on that tree </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_LOCAL_NAMESPACE' type='macro'/>
-     <exports symbol='XML_XML_NAMESPACE' type='macro'/>
+     <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
      <exports symbol='XML_XML_ID' type='macro'/>
      <exports symbol='xmlRootNode' type='macro'/>
      <exports symbol='XML_GET_LINE' type='macro'/>
      <exports symbol='XML_GET_CONTENT' type='macro'/>
      <exports symbol='xmlChildrenNode' type='macro'/>
-     <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
+     <exports symbol='XML_XML_NAMESPACE' type='macro'/>
+     <exports symbol='LIBXML2_NEW_BUFFER' type='macro'/>
      <exports symbol='XML_ATTRIBUTE_IMPLIED' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_ELEMENT' type='enum'/>
      <exports symbol='XML_ENTITY_REF_NODE' type='enum'/>
@@ -1475,7 +1481,7 @@
      <exports symbol='XML_ELEMENT_CONTENT_MULT' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_PLUS' type='enum'/>
      <exports symbol='xmlNs' type='typedef'/>
-     <exports symbol='xmlBufferPtr' type='typedef'/>
+     <exports symbol='xmlElementContent' type='typedef'/>
      <exports symbol='xmlEnumerationPtr' type='typedef'/>
      <exports symbol='xmlBuffer' type='typedef'/>
      <exports symbol='xmlParserInputPtr' type='typedef'/>
@@ -1486,7 +1492,7 @@
      <exports symbol='xmlBufferAllocationScheme' type='typedef'/>
      <exports symbol='xmlNode' type='typedef'/>
      <exports symbol='xmlDocPtr' type='typedef'/>
-     <exports symbol='xmlElementContent' type='typedef'/>
+     <exports symbol='xmlBufferPtr' type='typedef'/>
      <exports symbol='xmlDOMWrapCtxtPtr' type='typedef'/>
      <exports symbol='xmlRefPtr' type='typedef'/>
      <exports symbol='xmlParserInputBuffer' type='typedef'/>
@@ -1496,6 +1502,7 @@
      <exports symbol='xmlParserCtxt' type='typedef'/>
      <exports symbol='xmlDtdPtr' type='typedef'/>
      <exports symbol='xmlAttributeDefault' type='typedef'/>
+     <exports symbol='xmlBuf' type='typedef'/>
      <exports symbol='xmlNotation' type='typedef'/>
      <exports symbol='xmlElementType' type='typedef'/>
      <exports symbol='xmlEntity' type='typedef'/>
@@ -1504,6 +1511,7 @@
      <exports symbol='xmlElementTypeVal' type='typedef'/>
      <exports symbol='xmlNotationPtr' type='typedef'/>
      <exports symbol='xmlElementPtr' type='typedef'/>
+     <exports symbol='xmlBufPtr' type='typedef'/>
      <exports symbol='xmlElementContentOccur' type='typedef'/>
      <exports symbol='xmlAttrPtr' type='typedef'/>
      <exports symbol='xmlDoc' type='typedef'/>
@@ -1541,8 +1549,9 @@
      <exports symbol='_xmlElementContent' type='struct'/>
      <exports symbol='xmlDocCopyNode' type='function'/>
      <exports symbol='xmlNewDocRawNode' type='function'/>
-     <exports symbol='xmlGetProp' type='function'/>
+     <exports symbol='xmlBufContent' type='function'/>
      <exports symbol='xmlNewNsPropEatName' type='function'/>
+     <exports symbol='xmlStringGetNodeList' type='function'/>
      <exports symbol='xmlNewCDataBlock' type='function'/>
      <exports symbol='xmlBufferWriteCHAR' type='function'/>
      <exports symbol='xmlNodeGetBase' type='function'/>
@@ -1554,15 +1563,16 @@
      <exports symbol='xmlBufferCreate' type='function'/>
      <exports symbol='xmlNewDocFragment' type='function'/>
      <exports symbol='xmlDocGetRootElement' type='function'/>
-     <exports symbol='xmlStringGetNodeList' type='function'/>
+     <exports symbol='xmlGetProp' type='function'/>
      <exports symbol='xmlValidateName' type='function'/>
-     <exports symbol='xmlSetBufferAllocationScheme' type='function'/>
+     <exports symbol='xmlBufEnd' type='function'/>
      <exports symbol='xmlValidateQName' type='function'/>
      <exports symbol='xmlHasNsProp' type='function'/>
      <exports symbol='xmlAddPrevSibling' type='function'/>
      <exports symbol='xmlBufferAddHead' type='function'/>
      <exports symbol='xmlNewPI' type='function'/>
      <exports symbol='xmlDocDumpFormatMemoryEnc' type='function'/>
+     <exports symbol='xmlSetProp' type='function'/>
      <exports symbol='xmlChildElementCount' type='function'/>
      <exports symbol='xmlElemDump' type='function'/>
      <exports symbol='xmlSaveFormatFileTo' type='function'/>
@@ -1608,6 +1618,7 @@
      <exports symbol='xmlCopyDoc' type='function'/>
      <exports symbol='xmlDOMWrapNewCtxt' type='function'/>
      <exports symbol='xmlDocDumpMemoryEnc' type='function'/>
+     <exports symbol='xmlBufGetNodeContent' type='function'/>
      <exports symbol='xmlTextMerge' type='function'/>
      <exports symbol='xmlDocDumpMemory' type='function'/>
      <exports symbol='xmlNewDocPI' type='function'/>
@@ -1631,6 +1642,7 @@
      <exports symbol='xmlUnlinkNode' type='function'/>
      <exports symbol='xmlSplitQName3' type='function'/>
      <exports symbol='xmlDOMWrapAcquireNsFunction' type='function'/>
+     <exports symbol='xmlBufUse' type='function'/>
      <exports symbol='xmlDocSetRootElement' type='function'/>
      <exports symbol='xmlGetLineNo' type='function'/>
      <exports symbol='xmlBufferContent' type='function'/>
@@ -1638,6 +1650,7 @@
      <exports symbol='xmlLastElementChild' type='function'/>
      <exports symbol='xmlNodeGetLang' type='function'/>
      <exports symbol='xmlGetDocCompressMode' type='function'/>
+     <exports symbol='xmlBufNodeDump' type='function'/>
      <exports symbol='xmlGetNsProp' type='function'/>
      <exports symbol='xmlNewDocProp' type='function'/>
      <exports symbol='xmlFreeNode' type='function'/>
@@ -1682,7 +1695,7 @@
      <exports symbol='xmlGetNsList' type='function'/>
      <exports symbol='xmlBufferGrow' type='function'/>
      <exports symbol='xmlNodeIsText' type='function'/>
-     <exports symbol='xmlSetProp' type='function'/>
+     <exports symbol='xmlSetBufferAllocationScheme' type='function'/>
      <exports symbol='xmlIsXHTML' type='function'/>
      <exports symbol='xmlNodeSetLang' type='function'/>
      <exports symbol='xmlFreeDtd' type='function'/>
@@ -1922,9 +1935,11 @@
      <exports symbol='xmlNormalizeWindowsPath' type='function'/>
      <exports symbol='xmlInputReadCallback' type='function'/>
      <exports symbol='xmlParserInputBufferCreateStatic' type='function'/>
+     <exports symbol='xmlOutputBufferGetContent' type='function'/>
      <exports symbol='xmlIOHTTPClose' type='function'/>
      <exports symbol='xmlOutputBufferWriteEscape' type='function'/>
      <exports symbol='xmlOutputBufferCreateFilename' type='function'/>
+     <exports symbol='xmlOutputBufferGetSize' type='function'/>
      <exports symbol='xmlCleanupOutputCallbacks' type='function'/>
      <exports symbol='xmlInputOpenCallback' type='function'/>
      <exports symbol='xmlParserInputBufferRead' type='function'/>
@@ -2030,7 +2045,7 @@
      <exports symbol='XML_RNGP_ELEM_CONTENT_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAP_WARN_UNLOCATED_SCHEMA' type='enum'/>
      <exports symbol='XML_IO_EMLINK' type='enum'/>
-     <exports symbol='XML_CHECK_X' type='enum'/>
+     <exports symbol='XML_ERR_NMTOKEN_REQUIRED' type='enum'/>
      <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_3_1' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_STARTED' type='enum'/>
@@ -2274,6 +2289,7 @@
      <exports symbol='XML_C14N_RELATIVE_NAMESPACE' type='enum'/>
      <exports symbol='XML_SCHEMAP_FAILED_LOAD' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_WITHOUT_VALUE' type='enum'/>
+     <exports symbol='XML_ERR_NAME_TOO_LONG' type='enum'/>
      <exports symbol='XML_XPTR_SYNTAX_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_TYPE' type='enum'/>
      <exports symbol='XML_CHECK_WRONG_DOC' type='enum'/>
@@ -2379,7 +2395,6 @@
      <exports symbol='XML_RNGP_PAT_START_ATTR' type='enum'/>
      <exports symbol='XML_CHECK_WRONG_NAME' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTEMPTY' type='enum'/>
-     <exports symbol='XML_ERR_NMTOKEN_REQUIRED' type='enum'/>
      <exports symbol='XML_IO_EROFS' type='enum'/>
      <exports symbol='XML_IO_EXDEV' type='enum'/>
      <exports symbol='XML_XINCLUDE_NO_FALLBACK' type='enum'/>
@@ -2449,7 +2464,7 @@
      <exports symbol='XML_RNGP_INCLUDE_FAILURE' type='enum'/>
      <exports symbol='XML_ERR_COMMENT_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_2' type='enum'/>
-     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_1' type='enum'/>
+     <exports symbol='XML_BUF_OVERFLOW' type='enum'/>
      <exports symbol='XML_IO_EMSGSIZE' type='enum'/>
      <exports symbol='XML_FROM_CATALOG' type='enum'/>
      <exports symbol='XML_SCHEMAV_ATTRINVALID' type='enum'/>
@@ -2576,6 +2591,7 @@
      <exports symbol='XML_RNGP_EMPTY_CONTENT' type='enum'/>
      <exports symbol='XML_IO_EALREADY' type='enum'/>
      <exports symbol='XML_IO_ERANGE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_1' type='enum'/>
      <exports symbol='XML_IO_ENOSYS' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTHING_TO_PARSE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_INTERLEAVE' type='enum'/>
@@ -2591,7 +2607,7 @@
      <exports symbol='XML_SCHEMAP_INVALID_MINOCCURS' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ALL_LIMITED' type='enum'/>
-     <exports symbol='XML_CHECK_' type='enum'/>
+     <exports symbol='XML_SCHEMATRONV_REPORT' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_IO_EPIPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTYPE_NOREF' type='enum'/>
@@ -2666,7 +2682,6 @@
      <exports symbol='XML_ERR_NS_DECL_ERROR' type='enum'/>
      <exports symbol='XML_ERR_INTERNAL_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_3_1' type='enum'/>
-     <exports symbol='XML_SCHEMATRONV_REPORT' type='enum'/>
      <exports symbol='XML_ERR_ELEMCONTENT_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_FROM_NAMESPACE' type='enum'/>
      <exports symbol='XML_IO_EBUSY' type='enum'/>
@@ -2674,6 +2689,7 @@
      <exports symbol='XML_ERR_INVALID_URI' type='enum'/>
      <exports symbol='XML_IO_ESRCH' type='enum'/>
      <exports symbol='XML_FROM_XPOINTER' type='enum'/>
+     <exports symbol='XML_FROM_BUFFER' type='enum'/>
      <exports symbol='XML_ERR_PEREF_IN_PROLOG' type='enum'/>
      <exports symbol='XML_RNGP_TEXT_HAS_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTNILLABLE' type='enum'/>
@@ -2730,6 +2746,7 @@
      <exports symbol='XML_IO_EEXIST' type='enum'/>
      <exports symbol='XML_SCHEMAP_MG_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_MG_PROPS_CORRECT_1' type='enum'/>
+     <exports symbol='XML_FROM_URI' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_ELEM' type='enum'/>
      <exports symbol='XML_SCHEMAV_UNDECLAREDELEM' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' type='enum'/>
@@ -3004,32 +3021,6 @@
      <exports symbol='xmlExpCtxtNbNodes' type='function'/>
      <exports symbol='xmlExpMaxToken' type='function'/>
      <exports symbol='xmlRegexpPrint' type='function'/>
-    </file>
-    <file name='xmlsave'>
-     <summary>the XML document serializer</summary>
-     <description>API to save document or subtree of document </description>
-     <author>Daniel Veillard </author>
-     <exports symbol='XML_SAVE_XHTML' type='enum'/>
-     <exports symbol='XML_SAVE_AS_XML' type='enum'/>
-     <exports symbol='XML_SAVE_NO_EMPTY' type='enum'/>
-     <exports symbol='XML_SAVE_NO_XHTML' type='enum'/>
-     <exports symbol='XML_SAVE_NO_DECL' type='enum'/>
-     <exports symbol='XML_SAVE_AS_HTML' type='enum'/>
-     <exports symbol='XML_SAVE_FORMAT' type='enum'/>
-     <exports symbol='XML_SAVE_WSNONSIG' type='enum'/>
-     <exports symbol='xmlSaveOption' type='typedef'/>
-     <exports symbol='xmlSaveCtxt' type='typedef'/>
-     <exports symbol='xmlSaveCtxtPtr' type='typedef'/>
-     <exports symbol='xmlSaveToIO' type='function'/>
-     <exports symbol='xmlSaveToFd' type='function'/>
-     <exports symbol='xmlSaveClose' type='function'/>
-     <exports symbol='xmlSaveSetAttrEscape' type='function'/>
-     <exports symbol='xmlSaveToBuffer' type='function'/>
-     <exports symbol='xmlSaveToFilename' type='function'/>
-     <exports symbol='xmlSaveFlush' type='function'/>
-     <exports symbol='xmlSaveDoc' type='function'/>
-     <exports symbol='xmlSaveSetEscape' type='function'/>
-     <exports symbol='xmlSaveTree' type='function'/>
     </file>
     <file name='xmlschemas'>
      <summary>incomplete XML Schemas structure implementation</summary>
@@ -3931,6 +3922,9 @@
       <info>Same as IS_PUBIDCHAR but for single-byte value</info>
       <arg name='c' info='an xmlChar value (normally unsigned char)'/>
     </macro>
+    <macro name='LIBXML2_NEW_BUFFER' file='tree'>
+      <info>Macro used to express that the API use the new buffers for xmlParserInputBuffer and xmlOutputBuffer. The change was introduced in 2.9.0.</info>
+    </macro>
     <macro name='LIBXML_ATTR_ALLOC_SIZE' file='xmlversion'>
       <info>Macro used to indicate to GCC this is an allocator function</info>
     </macro>
@@ -4149,11 +4143,20 @@
     <macro name='XML_LOCAL_NAMESPACE' file='tree'>
       <info>A namespace declaration node.</info>
     </macro>
+    <macro name='XML_MAX_DICTIONARY_LIMIT' file='parserInternals'>
+      <info>Maximum size allowed by the parser for a dictionary by default This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it. Introduced in 2.9.0</info>
+    </macro>
+    <macro name='XML_MAX_LOOKUP_LIMIT' file='parserInternals'>
+      <info>Maximum size allowed by the parser for ahead lookup This is an upper boundary enforced by the parser to avoid bad behaviour on &quot;unfriendly&apos; content Introduced in 2.9.0</info>
+    </macro>
     <macro name='XML_MAX_NAMELEN' file='parserInternals'>
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
     </macro>
+    <macro name='XML_MAX_NAME_LENGTH' file='parserInternals'>
+      <info>Maximum size allowed for a markup identitier This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it. Note that with the use of parsing dictionaries overriding the limit may result in more runtime memory usage in face of &quot;unfriendly&apos; content Introduced in 2.9.0</info>
+    </macro>
     <macro name='XML_MAX_TEXT_LENGTH' file='parserInternals'>
-      <info>Maximum size allowed for a single text node when building a tree. This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it.</info>
+      <info>Maximum size allowed for a single text node when building a tree. This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it. Introduced in 2.9.0</info>
     </macro>
     <macro name='XML_SAX2_MAGIC' file='parser'>
       <info>Special constant found in SAX2 blocks initialized fields</info>
@@ -4664,6 +4667,7 @@
     <enum name='XML_BUFFER_ALLOC_HYBRID' file='tree' value='5' type='xmlBufferAllocationScheme' info=' exact up to a threshold, and doubleit thereafter'/>
     <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme' info='immutable buffer'/>
     <enum name='XML_BUFFER_ALLOC_IO' file='tree' value='4' type='xmlBufferAllocationScheme' info='special allocation scheme used for I/O'/>
+    <enum name='XML_BUF_OVERFLOW' file='xmlerror' value='7000' type='xmlParserErrors'/>
     <enum name='XML_C14N_1_0' file='c14n' value='0' type='xmlC14NMode' info='Origianal C14N 1.0 spec'/>
     <enum name='XML_C14N_1_1' file='c14n' value='2' type='xmlC14NMode' info=' C14N 1.1 spec'/>
     <enum name='XML_C14N_CREATE_CTXT' file='xmlerror' value='1950' type='xmlParserErrors'/>
@@ -4710,7 +4714,6 @@
     <enum name='XML_CHAR_ENCODING_UTF16BE' file='encoding' value='3' type='xmlCharEncoding' info='UTF-16 big endian'/>
     <enum name='XML_CHAR_ENCODING_UTF16LE' file='encoding' value='2' type='xmlCharEncoding' info='UTF-16 little endian'/>
     <enum name='XML_CHAR_ENCODING_UTF8' file='encoding' value='1' type='xmlCharEncoding' info='UTF-8'/>
-    <enum name='XML_CHECK_' file='xmlerror' value='6005' type='xmlParserErrors' info='5033'/>
     <enum name='XML_CHECK_ENTITY_TYPE' file='xmlerror' value='5012' type='xmlParserErrors' info='5012'/>
     <enum name='XML_CHECK_FOUND_ATTRIBUTE' file='xmlerror' value='5001' type='xmlParserErrors' info='5001'/>
     <enum name='XML_CHECK_FOUND_CDATA' file='xmlerror' value='5003' type='xmlParserErrors' info='5003'/>
@@ -4749,7 +4752,6 @@
     <enum name='XML_CHECK_WRONG_NEXT' file='xmlerror' value='5021' type='xmlParserErrors' info='5021'/>
     <enum name='XML_CHECK_WRONG_PARENT' file='xmlerror' value='5029' type='xmlParserErrors' info='5029'/>
     <enum name='XML_CHECK_WRONG_PREV' file='xmlerror' value='5019' type='xmlParserErrors' info='5019'/>
-    <enum name='XML_CHECK_X' file='xmlerror' value='6006' type='xmlParserErrors' info=' 503'/>
     <enum name='XML_COMMENT_NODE' file='tree' value='8' type='xmlElementType'/>
     <enum name='XML_DOCB_DOCUMENT_NODE' file='tree' value='21' type='xmlElementType'/>
     <enum name='XML_DOCUMENT_FRAG_NODE' file='tree' value='11' type='xmlElementType'/>
@@ -4888,6 +4890,7 @@ and not by parsing an instance'/>
     <enum name='XML_ERR_MIXED_NOT_FINISHED' file='xmlerror' value='53' type='xmlParserErrors' info='53'/>
     <enum name='XML_ERR_MIXED_NOT_STARTED' file='xmlerror' value='52' type='xmlParserErrors' info='52'/>
     <enum name='XML_ERR_NAME_REQUIRED' file='xmlerror' value='68' type='xmlParserErrors' info='68'/>
+    <enum name='XML_ERR_NAME_TOO_LONG' file='xmlerror' value='110' type='xmlParserErrors' info='110'/>
     <enum name='XML_ERR_NMTOKEN_REQUIRED' file='xmlerror' value='67' type='xmlParserErrors' info='67'/>
     <enum name='XML_ERR_NONE' file='xmlerror' value='0' type='xmlErrorLevel'/>
     <enum name='XML_ERR_NOTATION_NOT_FINISHED' file='xmlerror' value='49' type='xmlParserErrors' info='49'/>
@@ -4939,6 +4942,7 @@ and not by parsing an instance'/>
     <enum name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' file='entities' value='2' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities' value='3' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
+    <enum name='XML_FROM_BUFFER' file='xmlerror' value='29' type='xmlErrorDomain' info='The buffers module'/>
     <enum name='XML_FROM_C14N' file='xmlerror' value='21' type='xmlErrorDomain' info='The Canonicalization module'/>
     <enum name='XML_FROM_CATALOG' file='xmlerror' value='20' type='xmlErrorDomain' info='The Catalog module'/>
     <enum name='XML_FROM_CHECK' file='xmlerror' value='24' type='xmlErrorDomain' info='The error checking module'/>
@@ -4960,8 +4964,9 @@ and not by parsing an instance'/>
     <enum name='XML_FROM_RELAXNGV' file='xmlerror' value='19' type='xmlErrorDomain' info='The Relax-NG validator module'/>
     <enum name='XML_FROM_SCHEMASP' file='xmlerror' value='16' type='xmlErrorDomain' info='The W3C XML Schemas parser module'/>
     <enum name='XML_FROM_SCHEMASV' file='xmlerror' value='17' type='xmlErrorDomain' info='The W3C XML Schemas validation module'/>
-    <enum name='XML_FROM_SCHEMATRONV' file='xmlerror' value='28' type='xmlErrorDomain' info=' The Schematron validator module'/>
+    <enum name='XML_FROM_SCHEMATRONV' file='xmlerror' value='28' type='xmlErrorDomain' info='The Schematron validator module'/>
     <enum name='XML_FROM_TREE' file='xmlerror' value='2' type='xmlErrorDomain' info='The tree module'/>
+    <enum name='XML_FROM_URI' file='xmlerror' value='30' type='xmlErrorDomain' info=' The URI module'/>
     <enum name='XML_FROM_VALID' file='xmlerror' value='23' type='xmlErrorDomain' info='The XML DTD validation with valid context'/>
     <enum name='XML_FROM_WRITER' file='xmlerror' value='25' type='xmlErrorDomain' info='The xmlwriter module'/>
     <enum name='XML_FROM_XINCLUDE' file='xmlerror' value='11' type='xmlErrorDomain' info='The XInclude processing'/>
@@ -5301,18 +5306,10 @@ crash if you try to modify the tree)'/>
     <enum name='XML_RNGP_VALUE_NO_CONTENT' file='xmlerror' value='1120' type='xmlParserErrors' info='1120'/>
     <enum name='XML_RNGP_XMLNS_NAME' file='xmlerror' value='1121' type='xmlParserErrors' info='1121'/>
     <enum name='XML_RNGP_XML_NS' file='xmlerror' value='1122' type='xmlParserErrors' info='1122'/>
-    <enum name='XML_SAVE_AS_HTML' file='xmlsave' value='64' type='xmlSaveOption' info='force HTML serialization on XML doc'/>
-    <enum name='XML_SAVE_AS_XML' file='xmlsave' value='32' type='xmlSaveOption' info='force XML serialization on HTML doc'/>
     <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors' info='1401'/>
-    <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info='format save output'/>
     <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
-    <enum name='XML_SAVE_NO_DECL' file='xmlsave' value='2' type='xmlSaveOption' info='drop the xml declaration'/>
     <enum name='XML_SAVE_NO_DOCTYPE' file='xmlerror' value='1402' type='xmlParserErrors' info='1402'/>
-    <enum name='XML_SAVE_NO_EMPTY' file='xmlsave' value='4' type='xmlSaveOption' info='no empty tags'/>
-    <enum name='XML_SAVE_NO_XHTML' file='xmlsave' value='8' type='xmlSaveOption' info='disable XHTML1 specific rules'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
-    <enum name='XML_SAVE_WSNONSIG' file='xmlsave' value='128' type='xmlSaveOption' info=' format with non-significant whitespace'/>
-    <enum name='XML_SAVE_XHTML' file='xmlsave' value='16' type='xmlSaveOption' info='force XHTML1 specific rules'/>
     <enum name='XML_SCHEMAP_AG_PROPS_CORRECT' file='xmlerror' value='3087' type='xmlParserErrors' info='3086'/>
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>
@@ -5970,6 +5967,10 @@ if necessary or NULL'/>
     <typedef name='xmlAutomataStatePtr' file='xmlautomata' type='xmlAutomataState *'>
       <info>A state int the automata description,</info>
     </typedef>
+    <struct name='xmlBuf' file='tree' type='struct _xmlBuf'/>
+    <typedef name='xmlBufPtr' file='tree' type='xmlBuf *'>
+      <info>A pointer to a buffer structure, the actual structure internals are not public</info>
+    </typedef>
     <struct name='xmlBuffer' file='tree' type='struct _xmlBuffer'>
       <field name='content' type='xmlChar *' info=' The buffer content UTF8'/>
       <field name='use' type='unsigned int' info=' The buffer size used'/>
@@ -6287,8 +6288,8 @@ set at the end of parsing'/>
       <field name='writecallback' type='xmlOutputWriteCallback' info=''/>
       <field name='closecallback' type='xmlOutputCloseCallback' info=''/>
       <field name='encoder' type='xmlCharEncodingHandlerPtr' info=' I18N conversions to UTF-8'/>
-      <field name='buffer' type='xmlBufferPtr' info=' Local buffer encoded in UTF-8 or ISOLatin'/>
-      <field name='conv' type='xmlBufferPtr' info=' if encoder != NULL buffer for output'/>
+      <field name='buffer' type='xmlBufPtr' info=' Local buffer encoded in UTF-8 or ISOLatin'/>
+      <field name='conv' type='xmlBufPtr' info=' if encoder != NULL buffer for output'/>
       <field name='written' type='int' info=' total number of byte written'/>
       <field name='error' type='int' info=''/>
     </struct>
@@ -6418,8 +6419,8 @@ actually an xmlCharEncoding'/>
       <field name='readcallback' type='xmlInputReadCallback' info=''/>
       <field name='closecallback' type='xmlInputCloseCallback' info=''/>
       <field name='encoder' type='xmlCharEncodingHandlerPtr' info=' I18N conversions to UTF-8'/>
-      <field name='buffer' type='xmlBufferPtr' info=' Local buffer encoded in UTF-8'/>
-      <field name='raw' type='xmlBufferPtr' info=' if encoder != NULL buffer for raw input'/>
+      <field name='buffer' type='xmlBufPtr' info=' Local buffer encoded in UTF-8'/>
+      <field name='raw' type='xmlBufPtr' info=' if encoder != NULL buffer for raw input'/>
       <field name='compressed' type='int' info=' -1=unknown, 0=not compressed, 1=compressed'/>
       <field name='error' type='int' info=''/>
       <field name='rawconsumed' type='unsigned long' info=' amount consumed from raw'/>
@@ -6550,9 +6551,6 @@ actually an xmlCharEncoding'/>
       <field name='getColumnNumber' type='int(*getColumnNumber)' info=''/>
     </struct>
     <typedef name='xmlSAXLocatorPtr' file='tree' type='xmlSAXLocator *'/>
-    <struct name='xmlSaveCtxt' file='xmlsave' type='struct _xmlSaveCtxt'/>
-    <typedef name='xmlSaveCtxtPtr' file='xmlsave' type='xmlSaveCtxt *'/>
-    <typedef name='xmlSaveOption' file='xmlsave' type='enum'/>
     <struct name='xmlSchema' file='xmlschemas' type='struct _xmlSchema'>
       <field name='name' type='const xmlChar *' info=' schema name'/>
       <field name='targetNamespace' type='const xmlChar *' info=' the target namespace'/>
@@ -8507,6 +8505,37 @@ Could we use @subtypes for this?'/>
       <return type='const char *' info='a pointer to either &quot;True&quot; or &quot;False&quot;'/>
       <arg name='boolval' type='int' info='a bool to turn into text'/>
     </function>
+    <function name='xmlBufContent' file='tree' module='buf'>
+      <info>Function to extract the content of a buffer</info>
+      <return type='xmlChar *' info='the internal content'/>
+      <arg name='buf' type='const xmlBufPtr' info='the buffer'/>
+    </function>
+    <function name='xmlBufEnd' file='tree' module='buf'>
+      <info>Function to extract the end of the content of a buffer</info>
+      <return type='xmlChar *' info='the end of the internal content or NULL in case of error'/>
+      <arg name='buf' type='const xmlBufPtr' info='the buffer'/>
+    </function>
+    <function name='xmlBufGetNodeContent' file='tree' module='tree'>
+      <info>Read the value of a node @cur, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted. Fills up the buffer @buffer with this value</info>
+      <return type='int' info='0 in case of success and -1 in case of error.'/>
+      <arg name='buf' type='xmlBufPtr' info='a buffer xmlBufPtr'/>
+      <arg name='cur' type='xmlNodePtr' info='the node being read'/>
+    </function>
+    <function name='xmlBufNodeDump' file='tree' module='xmlsave'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <return type='size_t' info='the number of bytes written to the buffer, in case of error 0 is returned or @buf stores the error'/>
+      <arg name='buf' type='xmlBufPtr' info='the XML buffer output'/>
+      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='cur' type='xmlNodePtr' info='the current node'/>
+      <arg name='level' type='int' info='the imbrication level for indenting'/>
+      <arg name='format' type='int' info='is formatting allowed'/>
+    </function>
+    <function name='xmlBufUse' file='tree' module='buf'>
+      <info>Function to get the length of a buffer</info>
+      <return type='size_t' info='the length of data in the internal content'/>
+      <arg name='buf' type='const xmlBufPtr' info='the buffer'/>
+    </function>
     <function name='xmlBufferAdd' file='tree' module='tree'>
       <info>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</info>
       <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
@@ -9430,6 +9459,11 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
     </function>
+    <function name='xmlDictGetUsage' file='dict' module='dict'>
+      <info>Get how much memory is used by a dictionary for strings Added in 2.9.0</info>
+      <return type='size_t' info='the amount of strings allocated'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+    </function>
     <function name='xmlDictLookup' file='dict' module='dict'>
       <info>Add the @name to the dictionnary @dict if not present.</info>
       <return type='const xmlChar *' info='the internal copy of the name or NULL in case of internal error'/>
@@ -9454,6 +9488,12 @@ Could we use @subtypes for this?'/>
       <info>Increment the reference counter of a dictionary</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+    </function>
+    <function name='xmlDictSetLimit' file='dict' module='dict'>
+      <info>Set a size limit for the dictionary Added in 2.9.0</info>
+      <return type='size_t' info='the previous limit of the dictionary or 0'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='limit' type='size_t' info='the limit in bytes'/>
     </function>
     <function name='xmlDictSize' file='dict' module='dict'>
       <info>Query the number of elements installed in the hash @dict.</info>
@@ -11661,7 +11701,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlNodeDump' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called Since this is using xmlBuffer structures it is limited to 2GB and somehow deprecated, use xmlBufNodeDump() instead.</info>
       <return type='int' info='the number of bytes written to the buffer or -1 in case of error'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -11834,6 +11874,18 @@ Could we use @subtypes for this?'/>
       <info>flushes the output I/O channel</info>
       <return type='int' info='the number of byte written or -1 in case of error.'/>
       <arg name='out' type='xmlOutputBufferPtr' info='a buffered output'/>
+    </function>
+    <function name='xmlOutputBufferGetContent' file='xmlIO' module='xmlIO'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Gives a pointer to the data currently held in the output buffer</info>
+      <return type='const xmlChar *' info='a pointer to the data or NULL in case of error'/>
+      <arg name='out' type='xmlOutputBufferPtr' info='an xmlOutputBufferPtr'/>
+    </function>
+    <function name='xmlOutputBufferGetSize' file='xmlIO' module='xmlIO'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Gives the length of the data currently held in the output buffer</info>
+      <return type='size_t' info='0 in case or error or no data is held, the size otherwise'/>
+      <arg name='out' type='xmlOutputBufferPtr' info='an xmlOutputBufferPtr'/>
     </function>
     <function name='xmlOutputBufferWrite' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -12382,13 +12434,13 @@ Could we use @subtypes for this?'/>
     </functype>
     <function name='xmlParserInputGrow' file='parser' module='parserInternals'>
       <info>This function increase the input for the parser. It tries to preserve pointers to the input buffer, and keep already read data</info>
-      <return type='int' info='the number of xmlChars read, or -1 in case of error, 0 indicate the end of this entity'/>
+      <return type='int' info='the amount of char read, or -1 in case of error, 0 indicate the end of this entity'/>
       <arg name='in' type='xmlParserInputPtr' info='an XML parser input'/>
       <arg name='len' type='int' info='an indicative size for the lookahead'/>
     </function>
     <function name='xmlParserInputRead' file='parser' module='parserInternals'>
-      <info>This function refresh the input for the parser. It doesn&apos;t try to preserve pointers to the input buffer, and discard already read data</info>
-      <return type='int' info='the number of xmlChars read, or -1 in case of error, 0 indicate the end of this entity'/>
+      <info>This function was internal and is deprecated.</info>
+      <return type='int' info='-1 as this is an error to use it.'/>
       <arg name='in' type='xmlParserInputPtr' info='an XML parser input'/>
       <arg name='len' type='int' info='an indicative size for the lookahead'/>
     </function>
@@ -13388,19 +13440,6 @@ Could we use @subtypes for this?'/>
       <arg name='hdlr' type='xmlSAXHandler *' info='the SAX handler'/>
       <arg name='version' type='int' info='the version, 1 or 2'/>
     </function>
-    <function name='xmlSaveClose' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Close a document saving context, i.e. make sure that all bytes have been output and free the associated data.</info>
-      <return type='int' info='the number of byte written or -1 in case of error.'/>
-      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
-    </function>
-    <function name='xmlSaveDoc' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Save a full document to a saving context TODO: The function is not fully implemented yet as it does not return the byte count but 0 instead</info>
-      <return type='long' info='the number of byte written or -1 in case of error'/>
-      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
-      <arg name='doc' type='xmlDocPtr' info='a document'/>
-    </function>
     <function name='xmlSaveFile' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is &quot;-&quot; the stdout file is used.</info>
@@ -13423,12 +13462,6 @@ Could we use @subtypes for this?'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='an output I/O buffer'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='encoding' type='const char *' info='the encoding if any assuming the I/O layer handles the trancoding'/>
-    </function>
-    <function name='xmlSaveFlush' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Flush a document saving context, i.e. make sure that all bytes have been output.</info>
-      <return type='int' info='the number of byte written or -1 in case of error.'/>
-      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
     </function>
     <function name='xmlSaveFormatFile' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -13455,61 +13488,6 @@ Could we use @subtypes for this?'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='encoding' type='const char *' info='the encoding if any assuming the I/O layer handles the trancoding'/>
       <arg name='format' type='int' info='should formatting spaces been added'/>
-    </function>
-    <function name='xmlSaveSetAttrEscape' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Set a custom escaping function to be used for text in attribute content</info>
-      <return type='int' info='0 if successful or -1 in case of error.'/>
-      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
-      <arg name='escape' type='xmlCharEncodingOutputFunc' info='the escaping function'/>
-    </function>
-    <function name='xmlSaveSetEscape' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Set a custom escaping function to be used for text in element content</info>
-      <return type='int' info='0 if successful or -1 in case of error.'/>
-      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
-      <arg name='escape' type='xmlCharEncodingOutputFunc' info='the escaping function'/>
-    </function>
-    <function name='xmlSaveToBuffer' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a document saving context serializing to a buffer with the encoding and the options given</info>
-      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
-      <arg name='buffer' type='xmlBufferPtr' info='a buffer'/>
-      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
-      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
-    </function>
-    <function name='xmlSaveToFd' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a document saving context serializing to a file descriptor with the encoding and the options given.</info>
-      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
-      <arg name='fd' type='int' info='a file descriptor number'/>
-      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
-      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
-    </function>
-    <function name='xmlSaveToFilename' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a document saving context serializing to a filename or possibly to an URL (but this is less reliable) with the encoding and the options given.</info>
-      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
-      <arg name='filename' type='const char *' info='a file name or an URL'/>
-      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
-      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
-    </function>
-    <function name='xmlSaveToIO' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a document saving context serializing to a file descriptor with the encoding and the options given</info>
-      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
-      <arg name='iowrite' type='xmlOutputWriteCallback' info='an I/O write function'/>
-      <arg name='ioclose' type='xmlOutputCloseCallback' info='an I/O close function'/>
-      <arg name='ioctx' type='void *' info='an I/O handler'/>
-      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
-      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
-    </function>
-    <function name='xmlSaveTree' file='xmlsave' module='xmlsave'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Save a subtree starting at the node parameter to a saving context TODO: The function is not fully implemented yet as it does not return the byte count but 0 instead</info>
-      <return type='long' info='the number of byte written or -1 in case of error'/>
-      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
-      <arg name='node' type='xmlNodePtr' info='the top node of the subtree to save'/>
     </function>
     <function name='xmlSaveUri' file='uri' module='uri'>
       <info>Save the URI as an escaped string</info>
@@ -16799,7 +16777,7 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='total number to copy'/>
     </function>
     <function name='xmlUnlinkNode' file='tree' module='tree'>
-      <info>Unlink a node from it&apos;s current context, the node is not freed If one need to free the node, use xmlFreeNode() routine after the unlink to discard it.</info>
+      <info>Unlink a node from it&apos;s current context, the node is not freed If one need to free the node, use xmlFreeNode() routine after the unlink to discard it. Note that namespace nodes can&apos;t be unlinked as they do not have pointer to their parent.</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node'/>
     </function>

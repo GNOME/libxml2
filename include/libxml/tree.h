@@ -120,6 +120,13 @@ XMLPUBFUN xmlChar* XMLCALL       xmlBufContent	(const xmlBufPtr buf);
 XMLPUBFUN xmlChar* XMLCALL       xmlBufEnd      (const xmlBufPtr buf);
 XMLPUBFUN size_t XMLCALL         xmlBufUse      (xmlBufPtr buf);
 
+/*
+ * LIBXML2_NEW_BUFFER:
+ *
+ * Macro used to express that the API use the new buffers for
+ * xmlParserInputBuffer and xmlOutputBuffer. The change was
+ * introduced in 2.9.0.
+ */
 #define LIBXML2_NEW_BUFFER
 
 /**

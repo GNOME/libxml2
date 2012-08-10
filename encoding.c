@@ -2030,7 +2030,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 }
 
 /**
- * xmlCharEncInput:
+ * xmlCharEncFirstLineInput:
  * @input: a parser input buffer
  * @len:  number of bytes to convert for the first line, or -1
  *
@@ -2383,7 +2383,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
 
 /**
  * xmlCharEncOutput:
- * @input: a parser input buffer
+ * @output: a parser output buffer
  * @init: is this an initialization call without data
  *
  * Generic front-end for the encoding handler on parser output

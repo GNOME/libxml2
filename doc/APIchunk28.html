@@ -16,8 +16,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk6.html">Q-R</a>
 <a href="APIchunk7.html">S-S</a>
 <a href="APIchunk8.html">T-U</a>
-<a href="APIchunk9.html">V-Y</a>
-<a href="APIchunk10.html">Z-a</a>
+<a href="APIchunk9.html">V-X</a>
+<a href="APIchunk10.html">Y-a</a>
 <a href="APIchunk11.html">b-b</a>
 <a href="APIchunk12.html">c-c</a>
 <a href="APIchunk13.html">d-d</a>
@@ -107,9 +107,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>xmlAttributePtr</dt><dd><a href="html/libxml-valid.html#xmlGetDtdAttrDesc">xmlGetDtdAttrDesc</a><br />
 <a href="html/libxml-valid.html#xmlGetDtdQAttrDesc">xmlGetDtdQAttrDesc</a><br />
 </dd><dt>xmlAttributeTablePtr</dt><dd><a href="html/libxml-valid.html#xmlCopyAttributeTable">xmlCopyAttributeTable</a><br />
+</dd><dt>xmlBufNodeDump</dt><dd><a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
+</dd><dt>xmlBufPtr</dt><dd><a href="html/libxml-tree.html#xmlBufGetNodeContent">xmlBufGetNodeContent</a><br />
 </dd><dt>xmlBuffer</dt><dd><a href="html/libxml-encoding.html#xmlCharEncFirstLine">xmlCharEncFirstLine</a><br />
 <a href="html/libxml-encoding.html#xmlCharEncInFunc">xmlCharEncInFunc</a><br />
 <a href="html/libxml-encoding.html#xmlCharEncOutFunc">xmlCharEncOutFunc</a><br />
+<a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateBuffer">xmlOutputBufferCreateBuffer</a><br />
 </dd><dt>xmlBufferPtr</dt><dd><a href="html/libxml-xmlwriter.html#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateBuffer">xmlOutputBufferCreateBuffer</a><br />
@@ -129,8 +132,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>xmlCharEncodingOutputFunc</dt><dd><a href="html/libxml-encoding.html#xmlNewCharEncodingHandler">xmlNewCharEncodingHandler</a><br />
 </dd><dt>xmlChars</dt><dd><a href="html/libxml-parser.html#_xmlParserInput">_xmlParserInput</a><br />
 <a href="html/libxml-tree.html#xmlBufferWriteCHAR">xmlBufferWriteCHAR</a><br />
-<a href="html/libxml-parser.html#xmlParserInputGrow">xmlParserInputGrow</a><br />
-<a href="html/libxml-parser.html#xmlParserInputRead">xmlParserInputRead</a><br />
 </dd><dt>xmlCleanupParser</dt><dd><a href="html/libxml-parser.html#xmlCleanupParser">xmlCleanupParser</a><br />
 </dd><dt>xmlCleanupThreads</dt><dd><a href="html/libxml-threads.html#xmlCleanupThreads">xmlCleanupThreads</a><br />
 </dd><dt>xmlCopyDocElementContent</dt><dd><a href="html/libxml-valid.html#xmlCopyElementContent">xmlCopyElementContent</a><br />
@@ -216,7 +217,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>xmlHashTablePtr</dt><dd><a href="html/libxml-hash.html#xmlHashCreate">xmlHashCreate</a><br />
 <a href="html/libxml-hash.html#xmlHashCreateDict">xmlHashCreateDict</a><br />
 </dd><dt>xmlIDPtr</dt><dd><a href="html/libxml-valid.html#xmlAddID">xmlAddID</a><br />
-</dd><dt>xmlIndentTreeOutput</dt><dd><a href="html/libxml-tree.html#xmlDocDumpFormatMemory">xmlDocDumpFormatMemory</a><br />
+</dd><dt>xmlIndentTreeOutput</dt><dd><a href="html/libxml-tree.html#xmlBufNodeDump">xmlBufNodeDump</a><br />
+<a href="html/libxml-tree.html#xmlDocDumpFormatMemory">xmlDocDumpFormatMemory</a><br />
 <a href="html/libxml-tree.html#xmlDocDumpFormatMemoryEnc">xmlDocDumpFormatMemoryEnc</a><br />
 <a href="html/libxml-tree.html#xmlDocFormatDump">xmlDocFormatDump</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
@@ -248,7 +250,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>xmlIsMainThread</dt><dd><a href="html/libxml-threads.html#xmlIsMainThread">xmlIsMainThread</a><br />
 </dd><dt>xmlIsPubidCharQ</dt><dd><a href="html/libxml-chvalid.html#xmlIsPubidChar">xmlIsPubidChar</a><br />
 </dd><dt>xmlIsPubidChar_ch</dt><dd><a href="html/libxml-chvalid.html#xmlIsPubidChar">xmlIsPubidChar</a><br />
-</dd><dt>xmlKeepBlanksDefault</dt><dd><a href="html/libxml-tree.html#xmlDocDumpFormatMemory">xmlDocDumpFormatMemory</a><br />
+</dd><dt>xmlKeepBlanksDefault</dt><dd><a href="html/libxml-tree.html#xmlBufNodeDump">xmlBufNodeDump</a><br />
+<a href="html/libxml-tree.html#xmlDocDumpFormatMemory">xmlDocDumpFormatMemory</a><br />
 <a href="html/libxml-tree.html#xmlDocDumpFormatMemoryEnc">xmlDocDumpFormatMemoryEnc</a><br />
 <a href="html/libxml-tree.html#xmlDocFormatDump">xmlDocFormatDump</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
@@ -311,10 +314,13 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlCopyNamespaceList">xmlCopyNamespaceList</a><br />
 <a href="html/libxml-tree.html#xmlDOMWrapAcquireNsFunction">xmlDOMWrapAcquireNsFunction</a><br />
 <a href="html/libxml-tree.html#xmlGetNsList">xmlGetNsList</a><br />
+</dd><dt>xmlOutputBuffer</dt><dd><a href="html/libxml-tree.html#LIBXML2_NEW_BUFFER">LIBXML2_NEW_BUFFER</a><br />
 </dd><dt>xmlOutputBufferClose</dt><dd><a href="html/libxml-tree.html#xmlSaveFileTo">xmlSaveFileTo</a><br />
 <a href="html/libxml-tree.html#xmlSaveFormatFileTo">xmlSaveFormatFileTo</a><br />
 </dd><dt>xmlOutputBufferPtr</dt><dd><a href="html/libxml-xmlwriter.html#xmlNewTextWriter">xmlNewTextWriter</a><br />
 <a href="html/libxml-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a><br />
+<a href="html/libxml-xmlIO.html#xmlOutputBufferGetContent">xmlOutputBufferGetContent</a><br />
+<a href="html/libxml-xmlIO.html#xmlOutputBufferGetSize">xmlOutputBufferGetSize</a><br />
 </dd><dt>xmlOutputCloseCallback</dt><dd><a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
 </dd><dt>xmlOutputMatchCallback</dt><dd><a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
 </dd><dt>xmlOutputOpenCallback</dt><dd><a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
@@ -338,6 +344,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#xmlParseChunk">xmlParseChunk</a><br />
 </dd><dt>xmlParserFindNodeInfoIndex</dt><dd><a href="html/libxml-parser.html#xmlParserFindNodeInfoIndex">xmlParserFindNodeInfoIndex</a><br />
 </dd><dt>xmlParserHandleReference</dt><dd><a href="html/libxml-parserInternals.html#xmlScanName">xmlScanName</a><br />
+</dd><dt>xmlParserInputBuffer</dt><dd><a href="html/libxml-tree.html#LIBXML2_NEW_BUFFER">LIBXML2_NEW_BUFFER</a><br />
 </dd><dt>xmlParserInputBufferPtr</dt><dd><a href="html/libxml-xmlreader.html#xmlNewTextReader">xmlNewTextReader</a><br />
 <a href="html/libxml-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderGetRemainder">xmlTextReaderGetRemainder</a><br />
@@ -407,10 +414,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>xmlSAX2UnparsedEntityDecl</dt><dd><a href="html/libxml-SAX.html#unparsedEntityDecl">unparsedEntityDecl</a><br />
 </dd><dt>xmlSAXHandlerPtr</dt><dd><a href="html/libxml-xmlschemas.html#xmlSchemaSAXPlug">xmlSchemaSAXPlug</a><br />
 </dd><dt>xmlSAXVersion</dt><dd><a href="html/libxml-SAX2.html#xmlSAXDefaultVersion">xmlSAXDefaultVersion</a><br />
-</dd><dt>xmlSaveOptions</dt><dd><a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveToFd">xmlSaveToFd</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveToFilename">xmlSaveToFilename</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 </dd><dt>xmlSchemaSAXPlug</dt><dd><a href="html/libxml-xmlschemas.html#xmlSchemaSAXUnplug">xmlSchemaSAXUnplug</a><br />
 </dd><dt>xmlSchemaValType</dt><dd><a href="html/libxml-xmlschemastypes.html#xmlSchemaGetValType">xmlSchemaGetValType</a><br />
 </dd><dt>xmlSchemaValidOption</dt><dd><a href="html/libxml-xmlschemas.html#xmlSchemaSetValidOptions">xmlSchemaSetValidOptions</a><br />
@@ -533,8 +536,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk6.html">Q-R</a>
 <a href="APIchunk7.html">S-S</a>
 <a href="APIchunk8.html">T-U</a>
-<a href="APIchunk9.html">V-Y</a>
-<a href="APIchunk10.html">Z-a</a>
+<a href="APIchunk9.html">V-X</a>
+<a href="APIchunk10.html">Y-a</a>
 <a href="APIchunk11.html">b-b</a>
 <a href="APIchunk12.html">c-c</a>
 <a href="APIchunk13.html">d-d</a>

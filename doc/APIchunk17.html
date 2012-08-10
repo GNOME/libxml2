@@ -16,8 +16,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk6.html">Q-R</a>
 <a href="APIchunk7.html">S-S</a>
 <a href="APIchunk8.html">T-U</a>
-<a href="APIchunk9.html">V-Y</a>
-<a href="APIchunk10.html">Z-a</a>
+<a href="APIchunk9.html">V-X</a>
+<a href="APIchunk10.html">Y-a</a>
 <a href="APIchunk11.html">b-b</a>
 <a href="APIchunk12.html">c-c</a>
 <a href="APIchunk13.html">d-d</a>
@@ -42,6 +42,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlversion.html#LIBXML_ISO8859X_ENABLED">LIBXML_ISO8859X_ENABLED</a><br />
 </dd><dt>icu</dt><dd><a href="html/libxml-xmlversion.html#LIBXML_ICU_ENABLED">LIBXML_ICU_ENABLED</a><br />
 </dd><dt>identify</dt><dd><a href="html/libxml-parserInternals.html#xmlParseAttributeType">xmlParseAttributeType</a><br />
+</dd><dt>identitier</dt><dd><a href="html/libxml-parserInternals.html#XML_MAX_NAME_LENGTH">XML_MAX_NAME_LENGTH</a><br />
 </dd><dt>identity-constraint</dt><dd><a href="html/libxml-schemasInternals.html#_xmlSchema">_xmlSchema</a><br />
 <a href="html/libxml-schemasInternals.html#_xmlSchemaElement">_xmlSchemaElement</a><br />
 </dd><dt>ignorable</dt><dd><a href="html/libxml-SAX.html#ignorableWhitespace">ignorableWhitespace</a><br />
@@ -59,7 +60,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-c14n.html#xmlC14NDocSave">xmlC14NDocSave</a><br />
 <a href="html/libxml-c14n.html#xmlC14NDocSaveTo">xmlC14NDocSaveTo</a><br />
 <a href="html/libxml-c14n.html#xmlC14NExecute">xmlC14NExecute</a><br />
-</dd><dt>imbrication</dt><dd><a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
+</dd><dt>imbrication</dt><dd><a href="html/libxml-tree.html#xmlBufNodeDump">xmlBufNodeDump</a><br />
+<a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
 <a href="html/libxml-tree.html#xmlNodeDumpOutput">xmlNodeDumpOutput</a><br />
 </dd><dt>img</dt><dd><a href="html/libxml-uri.html#xmlBuildRelativeURI">xmlBuildRelativeURI</a><br />
 </dd><dt>immediately</dt><dd><a href="html/libxml-xmlversion.html#xmlCheckVersion">xmlCheckVersion</a><br />
@@ -84,8 +86,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-HTMLtree.html#HTML_PRESERVE_NODE">HTML_PRESERVE_NODE</a><br />
 <a href="html/libxml-HTMLtree.html#HTML_TEXT_NODE">HTML_TEXT_NODE</a><br />
 <a href="html/libxml-xmlmodule.html#xmlModuleOpen">xmlModuleOpen</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveDoc">xmlSaveDoc</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaCopyValue">xmlSchemaCopyValue</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderNextSibling">xmlTextReaderNextSibling</a><br />
 </dd><dt>implicitly</dt><dd><a href="html/libxml-HTMLparser.html#htmlAutoCloseTag">htmlAutoCloseTag</a><br />
@@ -191,7 +191,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathInternals.html#xmlXPathDebugDumpObject">xmlXPathDebugDumpObject</a><br />
 </dd><dt>indentation?</dt><dd><a href="html/libxml-xmlwriter.html#xmlTextWriterSetIndent">xmlTextWriterSetIndent</a><br />
 </dd><dt>indented</dt><dd><a href="html/libxml-tree.html#xmlSaveFormatFile">xmlSaveFormatFile</a><br />
-</dd><dt>indenting</dt><dd><a href="html/libxml-tree.html#xmlDocDumpFormatMemory">xmlDocDumpFormatMemory</a><br />
+</dd><dt>indenting</dt><dd><a href="html/libxml-tree.html#xmlBufNodeDump">xmlBufNodeDump</a><br />
+<a href="html/libxml-tree.html#xmlDocDumpFormatMemory">xmlDocDumpFormatMemory</a><br />
 <a href="html/libxml-tree.html#xmlDocDumpFormatMemoryEnc">xmlDocDumpFormatMemoryEnc</a><br />
 <a href="html/libxml-tree.html#xmlDocFormatDump">xmlDocFormatDump</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
@@ -218,7 +219,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlversion.html#LIBXML_ATTR_FORMAT">LIBXML_ATTR_FORMAT</a><br />
 <a href="html/libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a><br />
 <a href="html/libxml-parser.html#xmlParserInputGrow">xmlParserInputGrow</a><br />
-<a href="html/libxml-parser.html#xmlParserInputRead">xmlParserInputRead</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegExecPushString">xmlRegExecPushString</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegExecPushString2">xmlRegExecPushString2</a><br />
 <a href="html/libxml-uri.html#xmlURIUnescapeString">xmlURIUnescapeString</a><br />
@@ -429,9 +429,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-chvalid.html#xmlIsIdeographic">xmlIsIdeographic</a><br />
 <a href="html/libxml-chvalid.html#xmlIsPubidChar">xmlIsPubidChar</a><br />
 <a href="html/libxml-parser.html#xmlKeepBlanksDefault">xmlKeepBlanksDefault</a><br />
+<a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
 <a href="html/libxml-xmlIO.html#xmlRegisterHTTPPostCallbacks">xmlRegisterHTTPPostCallbacks</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveDoc">xmlSaveDoc</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 <a href="html/libxml-parser.html#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a><br />
 <a href="html/libxml-xpointer.html#xmlXPtrEvalRangePredicate">xmlXPtrEvalRangePredicate</a><br />
 </dd><dt>instruction</dt><dd><a href="html/libxml-HTMLtree.html#HTML_PI_NODE">HTML_PI_NODE</a><br />
@@ -497,6 +496,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>interprestation</dt><dd><a href="html/libxml-xpath.html#xmlXPathFunction">xmlXPathFunction</a><br />
 </dd><dt>interpreter</dt><dd><a href="html/libxml-xpath.html#xmlXPathAxisFunc">xmlXPathAxisFunc</a><br />
 </dd><dt>intersection</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathIntersection">xmlXPathIntersection</a><br />
+</dd><dt>introduced</dt><dd><a href="html/libxml-tree.html#LIBXML2_NEW_BUFFER">LIBXML2_NEW_BUFFER</a><br />
 </dd><dt>invalid</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_INTERNAL_INVALID">XML_SCHEMAS_TYPE_INTERNAL_INVALID</a><br />
 <a href="html/libxml-parserInternals.html#xmlParseSDDecl">xmlParseSDDecl</a><br />
 <a href="html/libxml-tree.html#xmlReconciliateNs">xmlReconciliateNs</a><br />
@@ -545,8 +545,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk6.html">Q-R</a>
 <a href="APIchunk7.html">S-S</a>
 <a href="APIchunk8.html">T-U</a>
-<a href="APIchunk9.html">V-Y</a>
-<a href="APIchunk10.html">Z-a</a>
+<a href="APIchunk9.html">V-X</a>
+<a href="APIchunk10.html">Y-a</a>
 <a href="APIchunk11.html">b-b</a>
 <a href="APIchunk12.html">c-c</a>
 <a href="APIchunk13.html">d-d</a>

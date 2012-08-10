@@ -81,6 +81,8 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_FROM_MODULE" id="XML_FROM_MODULE">XML_FROM_MODULE</a> = 26 : The dynamically loaded module modul
     <a name="XML_FROM_I18N" id="XML_FROM_I18N">XML_FROM_I18N</a> = 27 : The module handling character conversion
     <a name="XML_FROM_SCHEMATRONV" id="XML_FROM_SCHEMATRONV">XML_FROM_SCHEMATRONV</a> = 28 : The Schematron validator module
+    <a name="XML_FROM_BUFFER" id="XML_FROM_BUFFER">XML_FROM_BUFFER</a> = 29 : The buffers module
+    <a name="XML_FROM_URI" id="XML_FROM_URI">XML_FROM_URI</a> = 30 : The URI module
 }
 </pre><h3>Enum <a name="xmlErrorLevel" id="xmlErrorLevel">xmlErrorLevel</a></h3><pre class="programlisting">Enum xmlErrorLevel {
     <a name="XML_ERR_NONE" id="XML_ERR_NONE">XML_ERR_NONE</a> = 0
@@ -199,6 +201,7 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_WAR_ENTITY_REDEFINED" id="XML_WAR_ENTITY_REDEFINED">XML_WAR_ENTITY_REDEFINED</a> = 107 : 107
     <a name="XML_ERR_UNKNOWN_VERSION" id="XML_ERR_UNKNOWN_VERSION">XML_ERR_UNKNOWN_VERSION</a> = 108 : 108
     <a name="XML_ERR_VERSION_MISMATCH" id="XML_ERR_VERSION_MISMATCH">XML_ERR_VERSION_MISMATCH</a> = 109 : 109
+    <a name="XML_ERR_NAME_TOO_LONG" id="XML_ERR_NAME_TOO_LONG">XML_ERR_NAME_TOO_LONG</a> = 110 : 110
     <a name="XML_NS_ERR_XML_NAMESPACE" id="XML_NS_ERR_XML_NAMESPACE">XML_NS_ERR_XML_NAMESPACE</a> = 200
     <a name="XML_NS_ERR_UNDEFINED_NAMESPACE" id="XML_NS_ERR_UNDEFINED_NAMESPACE">XML_NS_ERR_UNDEFINED_NAMESPACE</a> = 201 : 201
     <a name="XML_NS_ERR_QNAME" id="XML_NS_ERR_QNAME">XML_NS_ERR_QNAME</a> = 202 : 202
@@ -820,8 +823,7 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_I18N_EXCESS_HANDLER" id="XML_I18N_EXCESS_HANDLER">XML_I18N_EXCESS_HANDLER</a> = 6002 : 6002
     <a name="XML_I18N_CONV_FAILED" id="XML_I18N_CONV_FAILED">XML_I18N_CONV_FAILED</a> = 6003 : 6003
     <a name="XML_I18N_NO_OUTPUT" id="XML_I18N_NO_OUTPUT">XML_I18N_NO_OUTPUT</a> = 6004 : 6004
-    <a name="XML_CHECK_" id="XML_CHECK_">XML_CHECK_</a> = 6005 : 5033
-    <a name="XML_CHECK_X" id="XML_CHECK_X">XML_CHECK_X</a> = 6006 : 503
+    <a name="XML_BUF_OVERFLOW" id="XML_BUF_OVERFLOW">XML_BUF_OVERFLOW</a> = 7000
 }
 </pre><h3><a name="initGenericErrorDefaultFunc" id="initGenericErrorDefaultFunc"></a>Function: initGenericErrorDefaultFunc</h3><pre class="programlisting">void	initGenericErrorDefaultFunc	(<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler)<br />
 </pre><p>Set or reset (if NULL) the default handler for generic errors to the builtin error function.</p>

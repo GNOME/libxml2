@@ -16,9 +16,6 @@
 #include <libxml/xmlerror.h>
 #include <libxml/relaxng.h>
 
-#if defined(_WIN32) && !defined(__CYGWIN__) && !defined(__MINGW32__)
-#define snprintf _snprintf
-#endif
 
 static int testlibxml2(void);
 static int test_module(const char *module);

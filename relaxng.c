@@ -39,9 +39,10 @@
 static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     "http://relaxng.org/ns/structure/1.0";
 
-#define IS_RELAXNG(node, type)						\
+#define IS_RELAXNG(node, typ)						\
    ((node != NULL) && (node->ns != NULL) &&				\
-    (xmlStrEqual(node->name, (const xmlChar *) type)) &&		\
+    (node->type == XML_ELEMENT_NODE) &&					\
+    (xmlStrEqual(node->name, (const xmlChar *) typ)) &&		\
     (xmlStrEqual(node->ns->href, xmlRelaxNGNs)))
 
 

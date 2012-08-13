@@ -843,7 +843,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 		    return(insert->name);
 	    }
 #else
-	    if ((insert->okey == okey) && (insert->l == l) &&
+	    if ((insert->okey == okey) && (insert->len == l) &&
 	        (!xmlStrncmp(insert->name, name, l)))
 		return(insert->name);
 #endif

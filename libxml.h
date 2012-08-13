@@ -29,6 +29,11 @@
 #include <win32config.h>
 #include <libxml/xmlversion.h>
 #else
+/*
+ * Currently supported platforms use either autoconf or
+ * copy to config.h own "preset" configuration file.
+ * As result ifdef HAVE_CONFIG_H is omited here.
+ */
 #include "config.h"
 #include <libxml/xmlversion.h>
 #endif

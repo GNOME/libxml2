@@ -6,11 +6,8 @@
  * daniel@veillard.com
  */
 
-#ifdef HAVE_CONFIG_H
 #include "libxml.h"
-#else
 #include <stdio.h>
-#endif
 
 #ifdef LIBXML_XPATH_ENABLED
 

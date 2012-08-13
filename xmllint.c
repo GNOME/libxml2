@@ -209,7 +209,7 @@ static xmlStreamCtxtPtr patstream = NULL;
 #ifdef LIBXML_XPATH_ENABLED
 static const char *xpathquery = NULL;
 #endif
-static int options = XML_PARSE_COMPACT;
+static int options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
 static int sax = 0;
 static int oldxml10 = 0;
 

@@ -530,6 +530,8 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 
 	if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
 	    line = node->line;
+	if ((line == 0) || (line == 65535))
+	    line = xmlGetLineNo(node);
     }
 
     /*

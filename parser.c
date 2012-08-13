@@ -14965,6 +14965,10 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
 	ctxt->options |= XML_PARSE_IGNORE_ENC;
         options -= XML_PARSE_IGNORE_ENC;
     }
+    if (options & XML_PARSE_BIG_LINES) {
+	ctxt->options |= XML_PARSE_BIG_LINES;
+        options -= XML_PARSE_BIG_LINES;
+    }
     ctxt->linenumbers = 1;
     return (options);
 }

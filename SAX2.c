@@ -1817,7 +1817,7 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
  * @str:  the input string
  * @len: the string length
  * 
- * Remove the entities from an attribute value
+ * Callback for a text node
  *
  * Returns the newly allocated string or NULL if not needed or error
  */
@@ -1850,7 +1850,7 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 
 	if ((len < (int) (2 * sizeof(void *))) &&
 	    (ctxt->options & XML_PARSE_COMPACT)) {
-	    /* store the string in the node overrithing properties and nsDef */
+	    /* store the string in the node overriding properties and nsDef */
 	    xmlChar *tmp = (xmlChar *) &(ret->properties);
 	    memcpy(tmp, str, len);
 	    tmp[len] = 0;
@@ -1882,8 +1882,17 @@ skip:
     } else
 	ret->content = (xmlChar *) intern;
 
-    if (ctxt->input != NULL)
-        ret->line = ctxt->input->line;
+    if (ctxt->linenumbers) {
+	if (ctxt->input != NULL) {
+	    if (ctxt->input->line < 65535)
+		ret->line = (short) ctxt->input->line;
+	    else {
+	        ret->line = 65535;
+		if (ctxt->options & XML_PARSE_BIG_LINES)
+		    ret->psvi = (void *) ctxt->input->line;
+	    }
+	}
+    }
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(ret);

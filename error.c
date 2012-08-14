@@ -292,7 +292,10 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
     } else {
         if (file != NULL)
             channel(data, "%s:%d: ", file, line);
-        else if ((line != 0) && (domain == XML_FROM_PARSER))
+        else if ((line != 0) && 
+	         ((domain == XML_FROM_PARSER) || (domain == XML_FROM_SCHEMASV)||
+		  (domain == XML_FROM_SCHEMASP)||(domain == XML_FROM_DTD) ||
+		  (domain == XML_FROM_RELAXNGP)||(domain == XML_FROM_RELAXNGV)))
             channel(data, "Entity: line %d: ", line);
     }
     if (name != NULL) {

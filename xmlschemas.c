@@ -975,6 +975,7 @@ struct _xmlSchemaValidCtxt {
     xmlSAXHandlerPtr sax;
     xmlParserCtxtPtr parserCtxt;
     void *user_data; /* TODO: What is this for? */
+    char *filename;
 
     int err;
     int nberrors;
@@ -1028,6 +1029,10 @@ struct _xmlSchemaValidCtxt {
     int hasKeyrefs;
     int createIDCNodeTables;
     int psviExposeIDCNodeTables;
+
+    /* Locator for error reporting in streaming mode */
+    xmlSchemaValidityLocatorFunc locFunc;
+    void *locCtxt;
 };
 
 /**
@@ -2078,6 +2083,20 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		    (vctxt->parserCtxt->input != NULL))
 		    file = vctxt->parserCtxt->input->filename;
 	    }
+	    if (vctxt->locFunc != NULL) {
+	        if ((file == NULL) || (line == 0)) {
+		    unsigned long l;
+		    const char *f;
+		    vctxt->locFunc(vctxt->locCtxt, &f, &l);
+		    if (file == NULL)
+		        file = f;
+		    if (line == 0)
+		        line = (int) l;
+		}
+	    }
+	    if ((file == NULL) && (vctxt->filename != NULL))
+	        file = vctxt->filename;
+
 	    __xmlRaiseError(schannel, channel, data, ctxt,
 		node, XML_FROM_SCHEMASV,
 		error, errorLevel, file, line,
@@ -27450,8 +27469,28 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
 }
 
 /**
- * xmlSchemaClearValidCtxt:
+ * xmlSchemaValidateSetFilename:
  * @ctxt: the schema validation context
+ * @filename: the file name
+ *
+ * Workaround to provide file error reporting information when this is
+ * not provided by current APIs
+ */
+void
+xmlSchemaValidateSetFilename(xmlSchemaValidCtxtPtr vctxt, const char *filename) {
+    if (vctxt == NULL)
+        return;
+    if (vctxt->filename != NULL)
+        xmlFree(vctxt->filename);
+    if (filename != NULL)
+        vctxt->filename = (char *) xmlStrdup((const xmlChar *) filename);
+    else
+        vctxt->filename = NULL;
+}
+
+/**
+ * xmlSchemaClearValidCtxt:
+ * @vctxt: the schema validation context
  *
  * Free the resources associated to the schema validation context;
  * leaves some fields alive intended for reuse of the context.
@@ -27552,6 +27591,11 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
     * where the user provides the dict?
     */
     vctxt->dict = xmlDictCreate();
+
+    if (vctxt->filename != NULL) {
+        xmlFree(vctxt->filename);
+	vctxt->filename = NULL;
+    }
 }
 
 /**
@@ -27637,6 +27681,8 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
 	xmlSchemaItemListFree(ctxt->nodeQNames);
     if (ctxt->dict != NULL)
 	xmlDictFree(ctxt->dict);
+    if (ctxt->filename != NULL)
+	xmlFree(ctxt->filename);
     xmlFree(ctxt);
 }
 
@@ -28631,6 +28677,63 @@ xmlSchemaSAXUnplug(xmlSchemaSAXPlugPtr plug)
 }
 
 /**
+ * xmlSchemaValidateSetLocator:
+ * @vctxt: a schema validation context
+ * @f: the locator function pointer
+ * @ctxt: the locator context
+ *
+ * Allows to set a locator function to the validation context,
+ * which will be used to provide file and line information since
+ * those are not provided as part of the SAX validation flow
+ * Setting @f to NULL disable the locator.
+ */
+
+void
+xmlSchemaValidateSetLocator(xmlSchemaValidCtxtPtr vctxt,
+                            xmlSchemaValidityLocatorFunc f,
+			    void *ctxt)
+{
+    if (vctxt == NULL) return;
+    vctxt->locFunc = f;
+    vctxt->locCtxt = ctxt;
+}
+
+/**
+ * xmlSchemaValidateStreamLocator:
+ * @ctx: the xmlTextReaderPtr used
+ * @file: returned file information
+ * @line: returned line information
+ *
+ * Internal locator function for the readers
+ *
+ * Returns 0 in case the Schema validation could be (des)activated and
+ *         -1 in case of error.
+ */
+static int
+xmlSchemaValidateStreamLocator(void *ctx, const char **file,
+                               unsigned long *line) {
+    xmlParserCtxtPtr ctxt;
+
+    if ((ctx == NULL) || ((file == NULL) && (line == NULL)))
+        return(-1);
+
+    if (file != NULL)
+        *file = NULL;
+    if (line != NULL)
+        *line = 0;
+
+    ctxt = (xmlParserCtxtPtr) ctx;
+    if (ctxt->input != NULL) {
+       if (file != NULL)
+           *file = ctxt->input->filename;
+       if (line != NULL)
+           *line = ctxt->input->line;
+       return(0);
+    }
+    return(-1);
+}
+
+/**
  * xmlSchemaValidateStream:
  * @ctxt:  a schema validation context
  * @input:  the input to use for reading the data
@@ -28673,6 +28776,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
         xmlCtxtUseOptions(pctxt, options);
 #endif
     pctxt->linenumbers = 1;
+    xmlSchemaValidateSetLocator(ctxt, xmlSchemaValidateStreamLocator, pctxt);
 
     inputStream = xmlNewIOInputStream(pctxt, input, enc);;
     if (inputStream == NULL) {

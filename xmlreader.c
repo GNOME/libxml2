@@ -4155,6 +4155,60 @@ xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
 }
 
 /**
+ * xmlTextReaderLocator:
+ * @ctx: the xmlTextReaderPtr used
+ * @file: returned file information
+ * @line: returned line information
+ *
+ * Internal locator function for the readers
+ *
+ * Returns 0 in case the Schema validation could be (des)activated and
+ *         -1 in case of error.
+ */
+static int
+xmlTextReaderLocator(void *ctx, const char **file, unsigned long *line) {
+    xmlTextReaderPtr reader;
+
+    if ((ctx == NULL) || ((file == NULL) && (line == NULL)))
+        return(-1);
+
+    if (file != NULL)
+        *file = NULL;
+    if (line != NULL)
+        *line = 0;
+
+    reader = (xmlTextReaderPtr) ctx;
+    if ((reader->ctxt != NULL) && (reader->ctxt->input != NULL)) {
+	if (file != NULL)
+	    *file = reader->ctxt->input->filename;
+	if (line != NULL)
+	    *line = reader->ctxt->input->line;
+	return(0);
+    }
+    if (reader->node != NULL) {
+        long res;
+	int ret = 0;
+
+	if (line != NULL) {
+	    res = xmlGetLineNo(reader->node);
+	    if (res > 0)
+	        *line = (unsigned long) res;
+	    else
+                ret = -1;
+	}
+        if (file != NULL) {
+	    xmlDocPtr doc = reader->node->doc;
+	    if ((doc != NULL) && (doc->URL != NULL))
+	        *file = (const char *) doc->URL;
+	    else
+                ret = -1;
+	}
+	return(ret);
+    }
+    return(-1);
+}
+
+/**
  * xmlTextReaderSetSchema:
  * @reader:  the xmlTextReaderPtr used
  * @schema:  a precompiled Schema schema
@@ -4221,6 +4275,10 @@ xmlTextReaderSetSchema(xmlTextReaderPtr reader, xmlSchemaPtr schema) {
 	reader->xsdValidCtxt = NULL;
 	return(-1);
     }
+    xmlSchemaValidateSetLocator(reader->xsdValidCtxt,
+                                xmlTextReaderLocator,
+				(void *) reader);
+
     if (reader->errorFunc != NULL) {
 	xmlSchemaSetValidErrors(reader->xsdValidCtxt,
 			xmlTextReaderValidityErrorRelay,
@@ -4435,6 +4493,9 @@ xmlTextReaderSchemaValidateInternal(xmlTextReaderPtr reader,
 	    return(-1);
 	}
     }
+    xmlSchemaValidateSetLocator(reader->xsdValidCtxt,
+                                xmlTextReaderLocator,
+				(void *) reader);
     /*
     * Redirect the validation context's error channels to use
     * the reader channels.

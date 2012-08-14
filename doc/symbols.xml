@@ -1754,6 +1754,8 @@
     <symbol file="tree">xmlBufUse</symbol>
     <symbol file="dict">xmlDictGetUsage</symbol>
     <symbol file="dict">xmlDictSetLimit</symbol>
+    <symbol file="xmlschemas">xmlSchemaValidateSetFilename</symbol>
+    <symbol file="xmlschemas">xmlSchemaValidateSetLocator</symbol>
     <symbol file="xmlIO">xmlOutputBufferGetContent</symbol>
     <symbol file="xmlIO">xmlOutputBufferGetSize</symbol>
   </release>

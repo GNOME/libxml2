@@ -1669,6 +1669,7 @@ testSAX(const char *filename) {
 		(xmlSchemaValidityErrorFunc) fprintf,
 		(xmlSchemaValidityWarningFunc) fprintf,
 		stderr);
+	xmlSchemaValidateSetFilename(vctxt, filename);
 
 	ret = xmlSchemaValidateStream(vctxt, buf, 0, handler,
 	                              (void *)user_data);

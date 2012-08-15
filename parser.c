@@ -198,6 +198,17 @@ unsigned int xmlParserMaxDepth = 256;
 #define XML_PARSER_BUFFER_SIZE 100
 #define SAX_COMPAT_MODE BAD_CAST "SAX compatibility mode document"
 
+/**
+ * XML_PARSER_CHUNK_SIZE
+ *
+ * When calling GROW that's the minimal amount of data
+ * the parser expected to have received. It is not a hard
+ * limit but an optimization when reading strings like Names
+ * It is not strictly needed as long as inputs available characters
+ * are followed by 0, which should be provided by the I/O level
+ */
+#define XML_PARSER_CHUNK_SIZE 100
+
 /*
  * List of XML prefixed PI allowed by W3C specs
  */
@@ -3253,7 +3264,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	        ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
 	        ((c >= 0x10000) && (c <= 0xEFFFF))
 		)) {
-	    if (count++ > 100) {
+	    if (count++ > XML_PARSER_CHUNK_SIZE) {
 		count = 0;
 		GROW;
                 if (ctxt->instate == XML_PARSER_EOF)
@@ -3279,7 +3290,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 		(c == '_') || (c == ':') || 
 		(IS_COMBINING(c)) ||
 		(IS_EXTENDER(c)))) {
-	    if (count++ > 100) {
+	    if (count++ > XML_PARSER_CHUNK_SIZE) {
 		count = 0;
 		GROW;
                 if (ctxt->instate == XML_PARSER_EOF)
@@ -3288,6 +3299,13 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	    len += l;
 	    NEXTL(l);
 	    c = CUR_CHAR(l);
+	    if (c == 0) {
+		count = 0;
+		GROW;
+                if (ctxt->instate == XML_PARSER_EOF)
+                    return(NULL);
+		c = CUR_CHAR(l);
+	    }
 	}
     }
     if ((len > XML_MAX_NAME_LENGTH) &&
@@ -3384,7 +3402,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
 	   (xmlIsNameChar(ctxt, c) && (c != ':'))) {
-	if (count++ > 100) {
+	if (count++ > XML_PARSER_CHUNK_SIZE) {
             if ((len > XML_MAX_NAME_LENGTH) &&
                 ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                 xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
@@ -3398,6 +3416,13 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 	len += l;
 	NEXTL(l);
 	c = CUR_CHAR(l);
+	if (c == 0) {
+	    count = 0;
+	    GROW;
+            if (ctxt->instate == XML_PARSER_EOF)
+                return(NULL);
+	    c = CUR_CHAR(l);
+	}
     }
     if ((len > XML_MAX_NAME_LENGTH) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
@@ -3630,13 +3655,20 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     c = CUR_CHAR(l);
 
     while (xmlIsNameChar(ctxt, c)) {
-	if (count++ > 100) {
+	if (count++ > XML_PARSER_CHUNK_SIZE) {
 	    count = 0;
 	    GROW;
 	}
 	COPY_BUF(l,buf,len,c);
 	NEXTL(l);
 	c = CUR_CHAR(l);
+	if (c == 0) {
+	    count = 0;
+	    GROW;
+	    if (ctxt->instate == XML_PARSER_EOF)
+		return(NULL);
+            c = CUR_CHAR(l);
+	}
 	if (len >= XML_MAX_NAMELEN) {
 	    /*
 	     * Okay someone managed to make a huge token, so he's ready to pay
@@ -3652,7 +3684,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 	    }
 	    memcpy(buffer, buf, len);
 	    while (xmlIsNameChar(ctxt, c)) {
-		if (count++ > 100) {
+		if (count++ > XML_PARSER_CHUNK_SIZE) {
 		    count = 0;
 		    GROW;
                     if (ctxt->instate == XML_PARSER_EOF) {
@@ -7993,7 +8025,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     while ((ctxt->input == input) && (ctxt->input->cur < ctxt->input->end) &&
            (IS_CHAR(c))) {
         xmlBufferAdd(buf, ctxt->input->cur, l);
-	if (count++ > 100) {
+	if (count++ > XML_PARSER_CHUNK_SIZE) {
 	    count = 0;
 	    GROW;
             if (ctxt->instate == XML_PARSER_EOF) {
@@ -8003,6 +8035,15 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	}
 	NEXTL(l);
 	c = CUR_CHAR(l);
+	if (c == 0) {
+	    count = 0;
+	    GROW;
+            if (ctxt->instate == XML_PARSER_EOF) {
+                xmlBufferFree(buf);
+                return(-1);
+            }
+	    c = CUR_CHAR(l);
+	}
     }
 
     if ((ctxt->input == input) && (ctxt->input->cur >= ctxt->input->end)) {

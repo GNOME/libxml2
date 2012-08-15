@@ -55,7 +55,7 @@ ignored_files = {
   "xzlib.h": "Internal API only 2.8.0",
   "buf.h": "Internal API only 2.9.0",
   "enc.h": "Internal API only 2.9.0",
-  "save.h": "Internal API only 2.9.0",
+  "/save.h": "Internal API only 2.9.0",
 }
 
 ignored_words = {
@@ -1681,7 +1681,8 @@ class docBuilder:
 	        skip = 0
 		for excl in self.excludes:
 		    if string.find(file, excl) != -1:
-		        skip = 1;
+		        print "Skipping %s" % file
+		        skip = 1
 			break
 		if skip == 0:
 		    self.modules[file] = None;
@@ -1690,7 +1691,8 @@ class docBuilder:
 	        skip = 0
 		for excl in self.excludes:
 		    if string.find(file, excl) != -1:
-		        skip = 1;
+		        print "Skipping %s" % file
+		        skip = 1
 			break
 		if skip == 0:
 		    self.headers[file] = None;

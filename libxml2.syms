@@ -2244,3 +2244,26 @@ LIBXML2_2.8.0 {
   xmlInitializeDict;
 } LIBXML2_2.7.4;
 
+LIBXML2_2.9.0 {
+    global:
+
+# tree
+  xmlBufContent;
+  xmlBufEnd;
+  xmlBufGetNodeContent;
+  xmlBufNodeDump;
+  xmlBufUse;
+
+# dict
+  xmlDictGetUsage;
+  xmlDictSetLimit;
+
+# xmlschemas
+  xmlSchemaValidateSetFilename;
+  xmlSchemaValidateSetLocator;
+
+# xmlIO
+  xmlOutputBufferGetContent;
+  xmlOutputBufferGetSize;
+} LIBXML2_2.8.0;
+

@@ -553,6 +553,11 @@ xmlAutomataSetFinalState
 #ifdef LIBXML_DEBUG_ENABLED
 xmlBoolToText
 #endif
+xmlBufContent
+xmlBufEnd
+xmlBufGetNodeContent
+xmlBufNodeDump
+xmlBufUse
 xmlBufferAdd
 xmlBufferAddHead
 xmlBufferCCat
@@ -561,6 +566,7 @@ xmlBufferContent
 xmlBufferCreate
 xmlBufferCreateSize
 xmlBufferCreateStatic
+xmlBufferDetach
 xmlBufferDump
 xmlBufferEmpty
 xmlBufferFree
@@ -765,10 +771,12 @@ xmlDictCreate
 xmlDictCreateSub
 xmlDictExists
 xmlDictFree
+xmlDictGetUsage
 xmlDictLookup
 xmlDictOwns
 xmlDictQLookup
 xmlDictReference
+xmlDictSetLimit
 xmlDictSize
 xmlDllMain
 xmlDocCopyNode
@@ -992,6 +1000,7 @@ xmlInitThreads
 #ifdef LIBXML_CATALOG_ENABLED
 xmlInitializeCatalog
 #endif
+xmlInitializeDict
 xmlInitializeGlobalState
 xmlInitializePredefinedEntities
 xmlIsBaseChar
@@ -1292,6 +1301,8 @@ xmlOutputBufferCreateFilename
 xmlOutputBufferCreateFilenameDefault
 xmlOutputBufferCreateIO
 xmlOutputBufferFlush
+xmlOutputBufferGetContent
+xmlOutputBufferGetSize
 xmlOutputBufferWrite
 xmlOutputBufferWriteEscape
 xmlOutputBufferWriteString
@@ -1590,22 +1601,12 @@ xmlSAXParseMemoryWithData
 xmlSAXUserParseFile
 xmlSAXUserParseMemory
 xmlSAXVersion
-xmlSaveClose
-xmlSaveDoc
 xmlSaveFile
 xmlSaveFileEnc
 xmlSaveFileTo
-xmlSaveFlush
 xmlSaveFormatFile
 xmlSaveFormatFileEnc
 xmlSaveFormatFileTo
-xmlSaveSetAttrEscape
-xmlSaveSetEscape
-xmlSaveToBuffer
-xmlSaveToFd
-xmlSaveToFilename
-xmlSaveToIO
-xmlSaveTree
 xmlSaveUri
 xmlScanName
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1960,6 +1961,7 @@ xmlTextReaderRelaxNGSetSchema
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlTextReaderRelaxNGValidate
 #endif
+xmlTextReaderRelaxNGValidateCtxt
 xmlTextReaderSchemaValidate
 xmlTextReaderSchemaValidateCtxt
 xmlTextReaderSetErrorHandler

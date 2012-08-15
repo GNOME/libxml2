@@ -23,7 +23,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <sys/time.h>
+#include <time.h>
 
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -42,35 +42,20 @@ static int tests_quiet = 0;
  *									*
  ************************************************************************/
 
-/* maximum time for one parsing befor declaring a timeout */
+/* maximum time for one parsing before declaring a timeout */
 #define MAX_TIME 2 /* seconds */
 
-struct timeval t0;
-struct timeval tnow;
+static clock_t t0;
 int timeout = 0;
 
 static void reset_timout(void) {
     timeout = 0;
-    gettimeofday(&t0, NULL);
-}
-
-static unsigned long delta_timeval(void) {
-    unsigned long ret;
-
-    if (tnow.tv_usec < t0.tv_usec) {
-        ret = 1000000 + tnow.tv_usec;
-        ret -= t0.tv_usec;
-        ret += (tnow.tv_sec - t0.tv_sec -1) * 1000000;
-    } else {
-        ret = tnow.tv_usec - t0.tv_usec;
-        ret += (tnow.tv_sec - t0.tv_sec) * 1000000;
-    }
-    return(ret);
+    t0 = clock();
 }
 
 static int check_time(void) {
-    gettimeofday(&tnow, NULL);
-    if (delta_timeval() > MAX_TIME * 1000000) {
+    clock_t tnow = clock();
+    if (((tnow - t0) / CLOCKS_PER_SEC) > MAX_TIME) {
         timeout = 1;
         return(0);
     }

@@ -11,11 +11,13 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifndef STDOUT_FILENO
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #else
 #define STDOUT_FILENO fileno(stdout)
 #endif /* HAVE_UNISTD_H */
+#endif
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif

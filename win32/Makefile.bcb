@@ -119,7 +119,8 @@ LDFLAGS = $(LDFLAGS)
 !endif
 
 # Libxml object files.
-XML_OBJS = $(XML_INTDIR)\c14n.obj\
+XML_OBJS = $(XML_INTDIR)\buf.obj\
+	$(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\catalog.obj\
 	$(XML_INTDIR)\chvalid.obj\
 	$(XML_INTDIR)\debugXML.obj\
@@ -164,7 +165,8 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\xmlstring.obj
 
 # Static libxml object files.
-XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
+XML_OBJS_A = $(XML_INTDIR_A)\buf.obj\
+	$(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\catalog.obj\
 	$(XML_INTDIR_A)\chvalid.obj\
 	$(XML_INTDIR_A)\debugXML.obj\
@@ -225,7 +227,8 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testXPath.exe\
 	$(BINDIR)\runtest.exe\
 	$(BINDIR)\runsuite.exe\
-	$(BINDIR)\testapi.exe
+	$(BINDIR)\testapi.exe\
+	$(BINDIR)\testlimits.exe
 
 
 !if "$(WITH_THREADS)" == "yes" || "$(WITH_THREADS)" == "ctls" || "$(WITH_THREADS)" == "native"

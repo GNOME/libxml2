@@ -113,7 +113,8 @@ endif
 
 
 # Libxml object files.
-XML_OBJS = $(XML_INTDIR)/c14n.o\
+XML_OBJS = $(XML_INTDIR)/buf.o\
+	$(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/catalog.o\
 	$(XML_INTDIR)/chvalid.o\
 	$(XML_INTDIR)/debugXML.o\
@@ -160,7 +161,8 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 XML_SRCS = $(subst .o,.c,$(subst $(XML_INTDIR)/,$(XML_SRCDIR)/,$(XML_OBJS)))
 
 # Static libxml object files.
-XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
+XML_OBJS_A = $(XML_INTDIR_A)/buf.o\
+	$(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/catalog.o\
 	$(XML_INTDIR_A)/chvalid.o\
 	$(XML_INTDIR_A)/debugXML.o\
@@ -223,7 +225,8 @@ UTILS = $(BINDIR)/xmllint.exe\
 	$(BINDIR)/testXPath.exe\
 	$(BINDIR)/runtest.exe\
 	$(BINDIR)/runsuite.exe\
-	$(BINDIR)/testapi.exe
+	$(BINDIR)/testapi.exe\
+	$(BINDIR)/testlimits.exe
 
 ifeq ($(WITH_THREADS),yes)
 UTILS += $(BINDIR)/testThreadsWin32.exe

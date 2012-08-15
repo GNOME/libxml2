@@ -69,6 +69,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\buf.c" />
     <ClCompile Include="..\..\c14n.c" />
     <ClCompile Include="..\..\catalog.c" />
     <ClCompile Include="..\..\chvalid.c" />

@@ -27470,7 +27470,7 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
 
 /**
  * xmlSchemaValidateSetFilename:
- * @ctxt: the schema validation context
+ * @vctxt: the schema validation context
  * @filename: the file name
  *
  * Workaround to provide file error reporting information when this is

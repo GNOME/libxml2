@@ -334,7 +334,14 @@ xmlModulePlatformClose(void *handle)
 static int
 xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
+#ifdef _WIN32_WCE
+    /*
+     * GetProcAddressA seems only available on WinCE
+     */
     *symbol = GetProcAddressA(handle, name);
+#else
+    *symbol = GetProcAddress(handle, name);
+#endif
     return (NULL == *symbol) ? -1 : 0;
 }
 

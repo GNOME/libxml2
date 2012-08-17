@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-SUBDIRS=devhelp examples
+SUBDIRS = . devhelp examples
 
 # The top-level SGML file.
 DOC_MAIN_XML_FILE=gnome-xml.xml
@@ -256,25 +256,25 @@ web: $(PAGES)
 $(PAGES): xml.html $(srcdir)/site.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML Web pages from xml.html" ; \
-	  $(XSLTPROC) --nonet --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
+	  $(XSLTPROC) --nonet --html --path $(srcdir) $(srcdir)/site.xsl $(srcdir)/xml.html > index.html ; fi );
 	-@(if [ -x $(XMLLINT) ] ; then \
 	  echo "Validating the HTML Web pages" ; \
 	  $(XMLLINT) --nonet --valid --noout $(PAGES) ; fi );
 
-$(top_builddir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
+$(top_builddir)/NEWS: $(srcdir)/news.xsl $(srcdir)/news.html
 	-@(if [ -x $(XSLTPROC) ] ; then \
-	  $(XSLTPROC) --nonet $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_builddir)/NEWS ; fi );
+	  $(XSLTPROC) --nonet $(srcdir)/news.xsl $(srcdir)/news.html > $(top_builddir)/NEWS ; fi );
 
-libxml2.xsa: $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html
+libxml2.xsa: $(srcdir)/xsa.xsl $(srcdir)/news.html
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the NEWS file" ; \
-	  $(XSLTPROC) --nonet $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
+	  $(XSLTPROC) --nonet $(srcdir)/xsa.xsl $(srcdir)/news.html > libxml2.xsa ; fi );
 
-$(APIPAGES): libxml2-api.xml libxml2-refs.xml $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/api.xsl
+$(APIPAGES): libxml2-api.xml libxml2-refs.xml $(srcdir)/site.xsl $(srcdir)/api.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML API pages from libxml2-refs.xml" ; \
-	  $(XSLTPROC) --nonet --html $(top_srcdir)/doc/api.xsl \
-	                     $(top_srcdir)/doc/xml.html ; fi );
+	  $(XSLTPROC) --nonet --html $(srcdir)/api.xsl \
+	                     $(srcdir)/xml.html ; fi );
 	-@(if [ -x $(XMLLINT) ] ; then \
 	  echo "Validating the HTML API pages" ; \
 	  $(XMLLINT) --nonet --valid --noout API*.html ; fi );
@@ -282,7 +282,7 @@ $(APIPAGES): libxml2-api.xml libxml2-refs.xml $(top_srcdir)/doc/site.xsl $(top_s
 $(srcdir)/html/index.html: libxml2-api.xml $(srcdir)/newapi.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML pages from the XML API" ; \
-	  $(XSLTPROC) --nonet $(srcdir)/newapi.xsl libxml2-api.xml ; fi )
+	  $(XSLTPROC) --nonet $(srcdir)/newapi.xsl $(srcdir)/libxml2-api.xml ; fi )
 	-@(if [ -x $(XMLLINT) ] ; then \
 	  echo "Validating the resulting XHTML pages" ; \
 	  $(XMLLINT) --nonet --valid --noout html/*.html ; fi );
@@ -290,15 +290,20 @@ $(srcdir)/html/index.html: libxml2-api.xml $(srcdir)/newapi.xsl
 wiki: libxml2-api.xml $(srcdir)/wiki.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \
 		echo "Rebuilding the wiki HTML pages from the XML API" ; \
-		$(XSLTPROC) --nonet $(srcdir)/wiki.xsl libxml2-api.xml; fi )
+		$(XSLTPROC) --nonet $(srcdir)/wiki.xsl $(srcdir)/libxml2-api.xml; fi )
 
 $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  $(XSLTPROC) -o $(WIN32_DIR)/libxml2.def.src \
 	  --nonet $(WIN32_DIR)/defgen.xsl libxml2-api.xml ; fi )
 
-libxml2-api.xml libxml2-refs.xml ../libxml2.syms: apibuild.py symbols.xml syms.xsl checkapisym.xsl $(wildcard $(top_srcdir)/include/libxml/*.h) $(wildcard $(top_srcdir)/*.c)
-	-($(srcdir)/apibuild.py)
+source_file_deps = \
+	$(filter-out %/xmlversion.h, $(wildcard $(top_srcdir)/include/libxml/*.h)) \
+	$(top_srcdir)/include/libxml/xmlversion.h.in \
+	$(wildcard $(top_srcdir)/*.c)
+
+libxml2-api.xml libxml2-refs.xml ../libxml2.syms: apibuild.py symbols.xml syms.xsl checkapisym.xsl $(source_file_deps)
+	(cd $(srcdir) && ./apibuild.py)
 	($(XSLTPROC) $(srcdir)/checkapisym.xsl $(srcdir)/libxml2-api.xml)
 	($(XSLTPROC) -o ../libxml2.syms $(srcdir)/syms.xsl $(srcdir)/symbols.xml)
 	-@(cd .. ; $(MAKE) rebuild_testapi)

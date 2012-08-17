@@ -7,7 +7,7 @@
  *          do encoding string conversions too. The resulting
  *          documents are then serialized.
  * usage: testWriter
- * test: testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res
+ * test: testWriter && for i in 1 2 3 4 ; do diff $(srcdir)/writer.xml writer$$i.tmp || break ; done
  * author: Alfred Mickautsch
  * copy: see Copyright for the status of this software.
  */
@@ -37,16 +37,16 @@ main(void)
     LIBXML_TEST_VERSION
 
     /* first, the file version */
-    testXmlwriterFilename("writer1.res");
+    testXmlwriterFilename("writer1.tmp");
 
     /* next, the memory version */
-    testXmlwriterMemory("writer2.res");
+    testXmlwriterMemory("writer2.tmp");
 
     /* next, the DOM version */
-    testXmlwriterDoc("writer3.res");
+    testXmlwriterDoc("writer3.tmp");
 
     /* next, the tree version */
-    testXmlwriterTree("writer4.res");
+    testXmlwriterTree("writer4.tmp");
 
     /*
      * Cleanup function for the XML library.

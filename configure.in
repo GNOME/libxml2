@@ -1,7 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.59)
-AC_INIT(entities.c)
-AM_CONFIG_HEADER(config.h)
+AC_PREREQ([2.68])
+AC_INIT
+AC_CONFIG_SRCDIR([entities.c])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_HOST
 
@@ -116,11 +117,11 @@ AC_ARG_WITH(history,
 AC_ARG_WITH(html,
 [  --with-html             add the HTML support (on)])
 dnl Specific dir for HTML output ?
-AC_ARG_WITH(html-dir, AC_HELP_STRING([--with-html-dir=path],
+AC_ARG_WITH(html-dir, AS_HELP_STRING([--with-html-dir=path],
             [path to base html directory, default $datadir/doc/html]),
             [HTML_DIR=$withval], [HTML_DIR='$(datadir)/doc'])
 
-AC_ARG_WITH(html-subdir, AC_HELP_STRING([--with-html-subdir=path],
+AC_ARG_WITH(html-subdir, AS_HELP_STRING([--with-html-subdir=path],
             [directory used under html-dir, default $PACKAGE-$VERSION/html]),
             [test "x$withval" != "x" && HTML_DIR="$HTML_DIR/$withval"],
             [HTML_DIR="$HTML_DIR/\$(PACKAGE)-\$(VERSION)/html"])
@@ -523,8 +524,8 @@ AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 
 dnl Checking for va_copy availability
 AC_MSG_CHECKING([for va_copy])
-AC_TRY_LINK([#include <stdarg.h>
-va_list ap1,ap2;], [va_copy(ap1,ap2);],
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h>
+va_list ap1,ap2;]], [[va_copy(ap1,ap2);]])],
 have_va_copy=yes,
 have_va_copy=no)
 AC_MSG_RESULT($have_va_copy)
@@ -532,8 +533,8 @@ if test x"$have_va_copy" = x"yes"; then
     AC_DEFINE(HAVE_VA_COPY,1,[Whether va_copy() is available])
 else
     AC_MSG_CHECKING([for __va_copy])
-    AC_TRY_LINK([#include <stdarg.h>
-    va_list ap1,ap2;], [__va_copy(ap1,ap2);],
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h>
+    va_list ap1,ap2;]], [[__va_copy(ap1,ap2);]])],
     have___va_copy=yes,
     have___va_copy=no)
     AC_MSG_RESULT($have___va_copy)
@@ -584,13 +585,13 @@ then
 fi
 if test $enable_ipv6 = yes; then
   have_ipv6=no
-  AC_TRY_COMPILE([
-    #include <sys/types.h>
-    #include <sys/socket.h>
-    ], [
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#   include <sys/types.h>
+#   include <sys/socket.h>
+    ]], [[
     struct sockaddr_storage ss;
     socket(AF_INET6, SOCK_STREAM, 0)
-    ],
+    ]])],
     have_ipv6=yes,
     have_ipv6=no
   )
@@ -608,26 +609,26 @@ if test $enable_ipv6 = yes; then
     dnl present.
     dnl ********************************************************************
     AC_MSG_CHECKING([struct sockaddr::ss_family])
-    AC_TRY_COMPILE([
-      #include <sys/types.h>
-      #include <sys/socket.h>
-      ], [
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#     include <sys/types.h>
+#     include <sys/socket.h>
+      ]], [[
       struct sockaddr_storage ss ;
       ss.ss_family = 0 ;
-      ],
+      ]])],
       have_ss_family=yes,
       have_ss_family=no
     )
     AC_MSG_RESULT($have_ss_family)
     if test x$have_ss_family = xno ; then
       AC_MSG_CHECKING([broken struct sockaddr::ss_family])
-      AC_TRY_COMPILE([
-        #include <sys/types.h>
-        #include <sys/socket.h>
-        ], [
+      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#       include <sys/types.h>
+#       include <sys/socket.h>
+        ]], [[
         struct sockaddr_storage ss ;
         ss.__ss_family = 0 ;
-        ],
+        ]])],
         have_broken_ss_family=yes,
         have_broken_ss_family=no
       )
@@ -1311,10 +1312,10 @@ else
 
     AC_CHECK_HEADER(iconv.h,
 	AC_MSG_CHECKING(for iconv)
-	AC_TRY_LINK([#include <stdlib.h>
-#include <iconv.h>],[
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>
+#include <iconv.h>]],[[
 iconv_t cd = iconv_open ("","");
-iconv (cd, NULL, NULL, NULL, NULL);],[
+iconv (cd, NULL, NULL, NULL, NULL);]])],[
 	    AC_MSG_RESULT(yes)
 	    WITH_ICONV=1],[
 	    AC_MSG_RESULT(no)
@@ -1325,10 +1326,10 @@ iconv (cd, NULL, NULL, NULL, NULL);],[
 	    LDFLAGS="${LDFLAGS} ${ICONV_LIBS}"
 	    LIBS="${LIBS} -liconv"
 
-	    AC_TRY_LINK([#include <stdlib.h>
-#include <iconv.h>],[
+	    AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>
+#include <iconv.h>]],[[
 iconv_t cd = iconv_open ("","");
-iconv (cd, NULL, NULL, NULL, NULL);],[
+iconv (cd, NULL, NULL, NULL, NULL);]])],[
 		AC_MSG_RESULT(yes)
 		WITH_ICONV=1
 		ICONV_LIBS="${ICONV_LIBS} -liconv"
@@ -1341,7 +1342,7 @@ iconv (cd, NULL, NULL, NULL, NULL);],[
 	if test "$WITH_ICONV" = "1" ; then
 		AC_MSG_CHECKING([for iconv declaration])
 		AC_CACHE_VAL(xml_cv_iconv_arg2, [
-			AC_TRY_COMPILE([#include <stdlib.h>
+			AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>
 #include <iconv.h>
 extern
 #ifdef __cplusplus
@@ -1352,7 +1353,7 @@ size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, si
 #else
 size_t iconv();
 #endif
-], [], xml_cv_iconv_arg2="", xml_cv_iconv_arg2="const")])
+]], [])], xml_cv_iconv_arg2="", xml_cv_iconv_arg2="const")])
 
 		xml_cv_iconv_decl="extern size_t iconv (iconv_t cd, $xml_cv_iconv_arg2 char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);"
 		AC_MSG_RESULT([${xml_xxx:-
@@ -1564,7 +1565,8 @@ rm -f COPYING.LIB COPYING
 ln -s $srcdir/Copyright COPYING
 
 # keep on one line for cygwin c.f. #130896
-AC_OUTPUT(libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py)
+AC_CONFIG_FILES([libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py])
+AC_OUTPUT
 
 chmod +x xml2-config python/setup.py
 echo Done configuring

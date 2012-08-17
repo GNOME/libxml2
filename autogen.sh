@@ -65,7 +65,7 @@ if [ ! -d $srcdir/m4 ]; then
 fi
 
 # Replaced by autoreconf below
-autoreconf -if
+autoreconf -if -Wall
 
 cd $THEDIR
 

@@ -6,7 +6,9 @@ SUBDIRS = include . doc example xstc $(PYTHON_SUBDIR)
 
 DIST_SUBDIRS = include . doc example python xstc
 
-INCLUDES = -I$(top_builddir)/include -I$(srcdir)/include $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
+AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include
+
+AM_CFLAGS = $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
 
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \

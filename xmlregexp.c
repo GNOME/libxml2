@@ -3202,7 +3202,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
         memset(exec->counts, 0, comp->nbCounters * sizeof(int));
     } else
 	exec->counts = NULL;
-    while ((exec->status == 0) &&
+    while ((exec->status == 0) && (exec->state != NULL) &&
 	   ((exec->inputString[exec->index] != 0) ||
 	    ((exec->state != NULL) &&
 	     (exec->state->type != XML_REGEXP_FINAL_STATE)))) {
@@ -3456,6 +3456,8 @@ error:
 	}
 	xmlFree(exec->rollbacks);
     }
+    if (exec->state == NULL)
+        return(-1);
     if (exec->counts != NULL)
 	xmlFree(exec->counts);
     if (exec->status == 0)
@@ -5373,6 +5375,10 @@ xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top) {
     end = ctxt->state;
     while ((CUR == '|') && (ctxt->error == 0)) {
 	NEXT;
+	if (CUR == 0) {
+	    ERROR("expecting a branch after |")
+	    return;
+	}
 	ctxt->state = start;
 	ctxt->end = NULL;
 	xmlFAParseBranch(ctxt, end);

@@ -1801,6 +1801,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlCharEncoding enc = (xmlCharEncoding) 0;
     xmlParserCtxtPtr pctxt;
     xmlParserInputPtr inputStream;
+    int xinclude_multibyte_fallback_used = 0;
 
     /*
      * Check the URL and remove any fragment identifier
@@ -1897,6 +1898,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     /*
      * Scan all chars from the resource and add the to the node
      */
+xinclude_multibyte_fallback:
     while (xmlParserInputBufferRead(buf, 128) > 0) {
 	int len;
 	const xmlChar *content;
@@ -1909,13 +1911,21 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 
 	    cur = xmlStringCurrentChar(NULL, &content[i], &l);
 	    if (!IS_CHAR(cur)) {
-		xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-		               XML_XINCLUDE_INVALID_CHAR,
-			       "%s contains invalid char\n", URL);
-		xmlFreeParserInputBuffer(buf);
-		xmlFree(URL);
-		return(-1);
+		/* Handle splitted multibyte char at buffer boundary */
+		if (((len - i) < 4) && (!xinclude_multibyte_fallback_used)) {
+		    xinclude_multibyte_fallback_used = 1;
+		    xmlBufShrink(buf->buffer, i);
+		    goto xinclude_multibyte_fallback;
+		} else {
+		    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
+				   XML_XINCLUDE_INVALID_CHAR,
+				   "%s contains invalid char\n", URL);
+		    xmlFreeParserInputBuffer(buf);
+		    xmlFree(URL);
+		    return(-1);
+		}
 	    } else {
+		xinclude_multibyte_fallback_used = 0;
 		xmlNodeAddContentLen(node, &content[i], l);
 	    }
 	    i += l;

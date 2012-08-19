@@ -587,8 +587,6 @@ typedef enum {
     NODE_TYPE_PI = XML_PI_NODE
 } xmlXPathTypeVal;
 
-#define XP_REWRITE_DOS_CHILD_ELEM 1
-
 typedef struct _xmlXPathStepOp xmlXPathStepOp;
 typedef xmlXPathStepOp *xmlXPathStepOpPtr;
 struct _xmlXPathStepOp {
@@ -602,7 +600,6 @@ struct _xmlXPathStepOp {
     void *value5;
     void *cache;
     void *cacheURI;
-    int rewriteType;
 };
 
 struct _xmlXPathCompExpr {
@@ -772,7 +769,6 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
 	comp->steps = real;
     }
     comp->last = comp->nbStep;
-    comp->steps[comp->nbStep].rewriteType = 0;
     comp->steps[comp->nbStep].ch1 = ch1;
     comp->steps[comp->nbStep].ch2 = ch2;
     comp->steps[comp->nbStep].op = op;
@@ -12042,8 +12038,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     int breakOnFirstHit;
 
     xmlXPathTraversalFunction next = NULL;
-    /* compound axis traversal */
-    xmlXPathTraversalFunctionExt outerNext = NULL;
     void (*addNode) (xmlNodeSetPtr, xmlNodePtr);
     xmlXPathNodeSetMergeFunction mergeAndClear;
     xmlNodePtr oldContextNode;
@@ -12093,13 +12087,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
             break;
         case AXIS_CHILD:
 	    last = NULL;
-	    if (op->rewriteType == XP_REWRITE_DOS_CHILD_ELEM) {
-		/*
-		* This iterator will give us only nodes which can
-		* hold element nodes.
-		*/
-		outerNext = xmlXPathNextDescendantOrSelfElemParent;
-	    }
 	    if (((test == NODE_TEST_NAME) || (test == NODE_TEST_ALL)) &&
 		(type == NODE_TYPE_NODE))
 	    {
@@ -12235,26 +12222,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 
 
     while ((contextIdx < contextSeq->nodeNr) || (contextNode != NULL)) {
-	if (outerNext != NULL) {
-	    /*
-	    * This is a compound traversal.
-	    */
-	    if (contextNode == NULL) {
-		/*
-		* Set the context for the outer traversal.
-		*/
-		outerContextNode = contextSeq->nodeTab[contextIdx++];
-		contextNode = outerNext(NULL, outerContextNode);
-	    } else
-		contextNode = outerNext(contextNode, outerContextNode);
-	    if (contextNode == NULL)
-		continue;
-	    /*
-	    * Set the context for the main traversal.
-	    */
-	    xpctxt->node = contextNode;
-	} else
-	    xpctxt->node = contextSeq->nodeTab[contextIdx++];
+	xpctxt->node = contextSeq->nodeTab[contextIdx++];
 
 	if (seq == NULL) {
 	    seq = xmlXPathNodeSetCreate(NULL);
@@ -14637,57 +14605,63 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 }
 #endif /* XPATH_STREAMING */
 
-static int
-xmlXPathCanRewriteDosExpression(xmlChar *expr)
-{
-    if (expr == NULL)
-	return(0);
-    do {
-        if ((*expr == '/') && (*(++expr) == '/'))
-	    return(1);
-    } while (*expr++);
-    return(0);
-}
 static void
-xmlXPathRewriteDOSExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
+xmlXPathOptimizeExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
 {
     /*
     * Try to rewrite "descendant-or-self::node()/foo" to an optimized
     * internal representation.
     */
-    if (op->ch1 != -1) {
-	if ((op->op == XPATH_OP_COLLECT /* 11 */) &&
-	    ((xmlXPathAxisVal) op->value == AXIS_CHILD /* 4 */) &&
-	    ((xmlXPathTestVal) op->value2 == NODE_TEST_NAME /* 5 */) &&
-	    ((xmlXPathTypeVal) op->value3 == NODE_TYPE_NODE /* 0 */))
-	{
-	    /*
-	    * This is a "child::foo"
-	    */
-	    xmlXPathStepOpPtr prevop = &comp->steps[op->ch1];
 
-	    if ((prevop->op == XPATH_OP_COLLECT /* 11 */) &&
-		(prevop->ch1 != -1) &&
-		((xmlXPathAxisVal) prevop->value ==
-		    AXIS_DESCENDANT_OR_SELF) &&
-		(prevop->ch2 == -1) &&
-		((xmlXPathTestVal) prevop->value2 == NODE_TEST_TYPE) &&
-		((xmlXPathTypeVal) prevop->value3 == NODE_TYPE_NODE) &&
-		(comp->steps[prevop->ch1].op == XPATH_OP_ROOT))
-	    {
-		/*
-		* This is a "/descendant-or-self::node()" without predicates.
-		* Eliminate it.
-		*/
-		op->ch1 = prevop->ch1;
-		op->rewriteType = XP_REWRITE_DOS_CHILD_ELEM;
-	    }
+    if ((op->ch1 != -1) &&
+        (op->op == XPATH_OP_COLLECT /* 11 */))
+    {
+        xmlXPathStepOpPtr prevop = &comp->steps[op->ch1];
+
+        if ((prevop->op == XPATH_OP_COLLECT /* 11 */) &&
+            ((xmlXPathAxisVal) prevop->value ==
+                AXIS_DESCENDANT_OR_SELF) &&
+            (prevop->ch2 == -1) &&
+            ((xmlXPathTestVal) prevop->value2 == NODE_TEST_TYPE) &&
+            ((xmlXPathTypeVal) prevop->value3 == NODE_TYPE_NODE))
+        {
+            /*
+            * This is a "descendant-or-self::node()" without predicates.
+            * Try to eliminate it.
+            */
+
+            switch ((xmlXPathAxisVal) op->value) {
+                case AXIS_CHILD:
+                case AXIS_DESCENDANT:
+                    /*
+                    * Convert "descendant-or-self::node()/child::" or
+                    * "descendant-or-self::node()/descendant::" to
+                    * "descendant::"
+                    */
+                    op->ch1   = prevop->ch1;
+                    op->value = AXIS_DESCENDANT;
+                    break;
+                case AXIS_SELF:
+                case AXIS_DESCENDANT_OR_SELF:
+                    /*
+                    * Convert "descendant-or-self::node()/self::" or
+                    * "descendant-or-self::node()/descendant-or-self::" to
+                    * to "descendant-or-self::"
+                    */
+                    op->ch1   = prevop->ch1;
+                    op->value = AXIS_DESCENDANT_OR_SELF;
+                    break;
+                default:
+                    break;
+            }
 	}
-	if (op->ch1 != -1)
-	    xmlXPathRewriteDOSExpression(comp, &comp->steps[op->ch1]);
     }
+
+    /* Recurse */
+    if (op->ch1 != -1)
+        xmlXPathOptimizeExpression(comp, &comp->steps[op->ch1]);
     if (op->ch2 != -1)
-	xmlXPathRewriteDOSExpression(comp, &comp->steps[op->ch2]);
+	xmlXPathOptimizeExpression(comp, &comp->steps[op->ch2]);
 }
 
 /**
@@ -14745,12 +14719,8 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	comp->string = xmlStrdup(str);
 	comp->nb = 0;
 #endif
-	if ((comp->expr != NULL) &&
-	    (comp->nbStep > 2) &&
-	    (comp->last >= 0) &&
-	    (xmlXPathCanRewriteDosExpression(comp->expr) == 1))
-	{
-	    xmlXPathRewriteDOSExpression(comp, &comp->steps[comp->last]);
+	if ((comp->nbStep > 1) && (comp->last >= 0)) {
+	    xmlXPathOptimizeExpression(comp, &comp->steps[comp->last]);
 	}
     }
     return(comp);
@@ -14927,17 +14897,12 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 #endif
     {
 	xmlXPathCompileExpr(ctxt, 1);
-	/*
-	* In this scenario the expression string will sit in ctxt->base.
-	*/
 	if ((ctxt->error == XPATH_EXPRESSION_OK) &&
 	    (ctxt->comp != NULL) &&
-	    (ctxt->base != NULL) &&
-	    (ctxt->comp->nbStep > 2) &&
-	    (ctxt->comp->last >= 0) &&
-	    (xmlXPathCanRewriteDosExpression((xmlChar *) ctxt->base) == 1))
+	    (ctxt->comp->nbStep > 1) &&
+	    (ctxt->comp->last >= 0))
 	{
-	    xmlXPathRewriteDOSExpression(ctxt->comp,
+	    xmlXPathOptimizeExpression(ctxt->comp,
 		&ctxt->comp->steps[ctxt->comp->last]);
 	}
     }

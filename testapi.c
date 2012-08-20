@@ -287,7 +287,7 @@ static void des_long(int no ATTRIBUTE_UNUSED, long val ATTRIBUTE_UNUSED, int nr 
 static xmlChar gen_xmlChar(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return('a');
     if (no == 1) return(' ');
-    if (no == 2) return((xmlChar) 'ø');
+    if (no == 2) return((xmlChar) '\xf8');
     return(0);
 }
 
@@ -395,7 +395,7 @@ static void des_debug_FILE_ptr(int no ATTRIBUTE_UNUSED, FILE *val, int nr ATTRIB
 static xmlChar *gen_const_xmlChar_ptr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return((xmlChar *) "foo");
     if (no == 1) return((xmlChar *) "<foo/>");
-    if (no == 2) return((xmlChar *) "nøne");
+    if (no == 2) return((xmlChar *) "n" "\xf8" "ne");
     if (no == 3) return((xmlChar *) " 2ab ");
     return(NULL);
 }

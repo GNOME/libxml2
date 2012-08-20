@@ -2724,7 +2724,7 @@ static const char *urip_testURLs[] = {
     "file:///path/to/a%20b.html",
     "/path/to/a b.html",
     "/path/to/a%20b.html",
-    "urip://example.com/résumé.html",
+    "urip://example.com/r" "\xe9" "sum" "\xe9" ".html",
     "urip://example.com/test?a=1&b=2%263&c=4#foo",
     NULL
 };

@@ -30,7 +30,7 @@ int xmlBufGetAllocationScheme(xmlBufPtr buf);
 void xmlBufFree(xmlBufPtr buf);
 void xmlBufEmpty(xmlBufPtr buf);
 
-size_t xmlBufShrink(xmlBufPtr buf, size_t len);
+/* size_t xmlBufShrink(xmlBufPtr buf, size_t len); */
 int xmlBufGrow(xmlBufPtr buf, int len);
 int xmlBufInflate(xmlBufPtr buf, size_t len);
 int xmlBufResize(xmlBufPtr buf, size_t len);

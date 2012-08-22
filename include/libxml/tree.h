@@ -119,6 +119,7 @@ typedef xmlBuf *xmlBufPtr;
 XMLPUBFUN xmlChar* XMLCALL       xmlBufContent	(const xmlBufPtr buf);
 XMLPUBFUN xmlChar* XMLCALL       xmlBufEnd      (const xmlBufPtr buf);
 XMLPUBFUN size_t XMLCALL         xmlBufUse      (xmlBufPtr buf);
+XMLPUBFUN size_t XMLCALL         xmlBufShrink	(xmlBufPtr buf, size_t len);
 
 /*
  * LIBXML2_NEW_BUFFER:

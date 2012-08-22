@@ -18531,6 +18531,16 @@ test_xmlBufNodeDump(void) {
 
 
 static int
+test_xmlBufShrink(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlBufUse(void) {
     int test_ret = 0;
 
@@ -24170,7 +24180,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing tree : 142 of 163 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 142 of 164 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();
@@ -24181,6 +24191,7 @@ test_tree(void) {
     test_ret += test_xmlBufEnd();
     test_ret += test_xmlBufGetNodeContent();
     test_ret += test_xmlBufNodeDump();
+    test_ret += test_xmlBufShrink();
     test_ret += test_xmlBufUse();
     test_ret += test_xmlBufferAdd();
     test_ret += test_xmlBufferAddHead();

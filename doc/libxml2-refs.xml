@@ -1768,6 +1768,7 @@
     <reference name='xmlBufGetNodeContent' href='html/libxml-tree.html#xmlBufGetNodeContent'/>
     <reference name='xmlBufNodeDump' href='html/libxml-tree.html#xmlBufNodeDump'/>
     <reference name='xmlBufPtr' href='html/libxml-tree.html#xmlBufPtr'/>
+    <reference name='xmlBufShrink' href='html/libxml-tree.html#xmlBufShrink'/>
     <reference name='xmlBufUse' href='html/libxml-tree.html#xmlBufUse'/>
     <reference name='xmlBuffer' href='html/libxml-tree.html#xmlBuffer'/>
     <reference name='xmlBufferAdd' href='html/libxml-tree.html#xmlBufferAdd'/>
@@ -5398,6 +5399,7 @@
       <ref name='xmlBufGetNodeContent'/>
       <ref name='xmlBufNodeDump'/>
       <ref name='xmlBufPtr'/>
+      <ref name='xmlBufShrink'/>
       <ref name='xmlBufUse'/>
       <ref name='xmlBuffer'/>
       <ref name='xmlBufferAdd'/>
@@ -7314,6 +7316,7 @@
     </type>
     <type name='size_t'>
       <ref name='xmlBufNodeDump'/>
+      <ref name='xmlBufShrink'/>
       <ref name='xmlBufUse'/>
       <ref name='xmlDictGetUsage'/>
       <ref name='xmlDictSetLimit'/>
@@ -8639,6 +8642,7 @@
       <ref name='xmlMemDisplayLast'/>
     </type>
     <type name='size_t'>
+      <ref name='xmlBufShrink'/>
       <ref name='xmlBufferCreateSize'/>
       <ref name='xmlBufferCreateStatic'/>
       <ref name='xmlDictSetLimit'/>
@@ -9043,6 +9047,7 @@
     <type name='xmlBufPtr'>
       <ref name='xmlBufGetNodeContent'/>
       <ref name='xmlBufNodeDump'/>
+      <ref name='xmlBufShrink'/>
     </type>
     <type name='xmlBufferAllocationScheme'>
       <ref name='xmlBufferSetAllocationScheme'/>
@@ -12151,6 +12156,7 @@
       <ref name='xmlBufGetNodeContent'/>
       <ref name='xmlBufNodeDump'/>
       <ref name='xmlBufPtr'/>
+      <ref name='xmlBufShrink'/>
       <ref name='xmlBufUse'/>
       <ref name='xmlBuffer'/>
       <ref name='xmlBufferAdd'/>
@@ -16675,6 +16681,7 @@
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='NOTE'>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlCtxtReadFd'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParseNotationDecl'/>
@@ -17482,6 +17489,7 @@
         </word>
         <word name='Remove'>
           <ref name='xmlACatalogRemove'/>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlBufferDetach'/>
           <ref name='xmlBufferShrink'/>
           <ref name='xmlCatalogRemove'/>
@@ -19745,6 +19753,7 @@
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='beginning'>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlBufferAddHead'/>
           <ref name='xmlBufferShrink'/>
           <ref name='xmlByteConsumed'/>
@@ -19776,6 +19785,7 @@
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
           <ref name='xmlBufNodeDump'/>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlElemDump'/>
           <ref name='xmlFreeNode'/>
           <ref name='xmlFreeNodeList'/>
@@ -21832,6 +21842,7 @@
           <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='differs'>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlNewEntity'/>
         </word>
         <word name='digit'>
@@ -22101,10 +22112,12 @@
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='due'>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlModuleOpen'/>
           <ref name='xmlModuleSymbol'/>
         </word>
         <word name='dump'>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlBufferAdd'/>
           <ref name='xmlBufferCCat'/>
           <ref name='xmlBufferDump'/>
@@ -24385,6 +24398,7 @@
           <ref name='xmlAddChild'/>
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlCopyElementContent'/>
           <ref name='xmlDocSetRootElement'/>
           <ref name='xmlFreeElementContent'/>
@@ -27779,6 +27793,7 @@
         </word>
         <word name='remove'>
           <ref name='xmlACatalogRemove'/>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlBufferShrink'/>
           <ref name='xmlCatalogRemove'/>
           <ref name='xmlDecodeEntities'/>
@@ -27798,6 +27813,7 @@
           <ref name='nodePop'/>
           <ref name='valuePop'/>
           <ref name='xmlACatalogRemove'/>
+          <ref name='xmlBufShrink'/>
           <ref name='xmlBufferShrink'/>
           <ref name='xmlCatalogRemove'/>
           <ref name='xmlCheckLanguageID'/>
@@ -28758,6 +28774,9 @@
         </word>
         <word name='site2'>
           <ref name='xmlBuildRelativeURI'/>
+        </word>
+        <word name='size_t'>
+          <ref name='xmlBufShrink'/>
         </word>
         <word name='sizes'>
           <ref name='xmlGetBufferAllocationScheme'/>
@@ -31127,6 +31146,9 @@
         <word name='xmlBufferPtr'>
           <ref name='xmlNewTextWriterMemory'/>
           <ref name='xmlOutputBufferCreateBuffer'/>
+        </word>
+        <word name='xmlBufferShrink'>
+          <ref name='xmlBufShrink'/>
         </word>
         <word name='xmlBuildURI'>
           <ref name='xmlBuildRelativeURI'/>

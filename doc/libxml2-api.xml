@@ -1702,6 +1702,7 @@
      <exports symbol='xmlFreeDtd' type='function'/>
      <exports symbol='xmlFreeNodeList' type='function'/>
      <exports symbol='xmlFreeDoc' type='function'/>
+     <exports symbol='xmlBufShrink' type='function'/>
      <exports symbol='xmlNewDocNode' type='function'/>
      <exports symbol='xmlSaveFileEnc' type='function'/>
      <exports symbol='xmlSetNsProp' type='function'/>
@@ -8572,6 +8573,12 @@ Could we use @subtypes for this?'/>
       <arg name='cur' type='xmlNodePtr' info='the current node'/>
       <arg name='level' type='int' info='the imbrication level for indenting'/>
       <arg name='format' type='int' info='is formatting allowed'/>
+    </function>
+    <function name='xmlBufShrink' file='tree' module='buf'>
+      <info>Remove the beginning of an XML buffer. NOTE that this routine behaviour differs from xmlBufferShrink() as it will return 0 on error instead of -1 due to size_t being used as the return type.</info>
+      <return type='size_t' info='the number of byte removed or 0 in case of failure'/>
+      <arg name='buf' type='xmlBufPtr' info='the buffer to dump'/>
+      <arg name='len' type='size_t' info='the number of xmlChar to remove'/>
     </function>
     <function name='xmlBufUse' file='tree' module='buf'>
       <info>Function to get the length of a buffer</info>

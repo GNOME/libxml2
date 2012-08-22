@@ -1751,6 +1751,7 @@
     <symbol file="tree">xmlBufEnd</symbol>
     <symbol file="tree">xmlBufGetNodeContent</symbol>
     <symbol file="tree">xmlBufNodeDump</symbol>
+    <symbol file="tree">xmlBufShrink</symbol>
     <symbol file="tree">xmlBufUse</symbol>
     <symbol file="dict">xmlDictGetUsage</symbol>
     <symbol file="dict">xmlDictSetLimit</symbol>

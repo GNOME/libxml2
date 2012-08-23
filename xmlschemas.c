@@ -12957,6 +12957,15 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr pctxt,
                         if (tmp2 != 1) ret = 0;
                         sub = sub->next;
                     }
+
+		    /*
+		     * epsilon needed to block previous trans from
+		     * being allowed to enter back from another
+		     * construct
+		     */
+		    pctxt->state = xmlAutomataNewEpsilon(pctxt->am,
+					pctxt->state, NULL);
+
                     if (particle->minOccurs == 0) {
                         xmlAutomataNewEpsilon(pctxt->am, oldstate,
                                               pctxt->state);

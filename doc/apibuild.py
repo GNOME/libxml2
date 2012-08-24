@@ -56,6 +56,7 @@ ignored_files = {
   "buf.h": "Internal API only 2.9.0",
   "enc.h": "Internal API only 2.9.0",
   "/save.h": "Internal API only 2.9.0",
+  "timsort.h": "Internal header only for xpath.c 2.9.0",
 }
 
 ignored_words = {

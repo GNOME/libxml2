@@ -1209,7 +1209,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     triop.h triodef.h libxml.h elfgcchack.h xzlib.h buf.h \
 	     enc.h save.h testThreadsWin32.c genUnicode.py TODO_SCHEMAS \
 	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
-	     README.tests Makefile.tests libxml2.syms \
+	     README.tests Makefile.tests libxml2.syms timsort.h \
 	     $(CVS_EXTRA_DIST)
 
 

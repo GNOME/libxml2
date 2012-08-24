@@ -66,6 +66,15 @@
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
+/**
+ * WITH_TIM_SORT:
+ *
+ * Use the Timsort algorithm provided in timsort.h to sort
+ * nodeset as this is a great improvement over the old Shell sort
+ * used in xmlXPathNodeSetSort()
+ */
+#define WITH_TIM_SORT
+
 /*
 * XP_OPTIMIZED_NON_ELEM_COMPARISON:
 * If defined, this will use xmlXPathCmpNodesExt() instead of
@@ -125,6 +134,41 @@
  * data.  These should be enhanced for full UTF8 support (see particularly
  * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
  */
+
+/*
+ * Wrapper for the Timsort argorithm from timsort.h
+ */
+#ifdef WITH_TIM_SORT
+#define SORT_NAME libxml_domnode
+#define SORT_TYPE xmlNodePtr
+/**
+ * wrap_cmp:
+ * @x: a node
+ * @y: another node
+ *
+ * Comparison function for the Timsort implementation
+ *
+ * Returns -2 or +2 based on the order
+ */
+static
+int wrap_cmp( xmlNodePtr x, xmlNodePtr y );
+#ifdef XP_OPTIMIZED_NON_ELEM_COMPARISON
+    static int xmlXPathCmpNodesExt(xmlNodePtr, xmlNodePtr);
+    static int wrap_cmp( xmlNodePtr x, xmlNodePtr y )
+    {
+        int res = xmlXPathCmpNodesExt(x, y);
+        return res == -2 ? res : -res;
+    }
+#else
+    static int wrap_cmp( xmlNodePtr x, xmlNodePtr y )
+    {
+        int res = xmlXPathCmpNodes(x, y);
+        return res == -2 ? res : -res;
+    }
+#endif
+#define SORT_CMP(x, y)  (wrap_cmp(x, y))
+#include "timsort.h"
+#endif /* WITH_TIM_SORT */
 
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 
@@ -3359,13 +3403,19 @@ turtle_comparison:
  */
 void
 xmlXPathNodeSetSort(xmlNodeSetPtr set) {
+#ifndef WITH_TIM_SORT
     int i, j, incr, len;
     xmlNodePtr tmp;
+#endif
 
     if (set == NULL)
 	return;
 
-    /* Use Shell's sort to sort the node-set */
+#ifndef WITH_TIM_SORT
+    /*
+     * Use the old Shell's sort implementation to sort the node-set
+     * Timsort ought to be quite faster
+     */
     len = set->nodeNr;
     for (incr = len / 2; incr > 0; incr /= 2) {
 	for (i = incr; i < len; i++) {
@@ -3388,6 +3438,9 @@ xmlXPathNodeSetSort(xmlNodeSetPtr set) {
 	    }
 	}
     }
+#else /* WITH_TIM_SORT */
+    libxml_domnode_tim_sort(set->nodeTab, set->nodeNr);
+#endif /* WITH_TIM_SORT */
 }
 
 #define XML_NODESET_DEFAULT	10

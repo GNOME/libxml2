@@ -209,10 +209,10 @@ runtests:
 
 check: all runtests
 
-check-valgrind: all
+check-valgrind valgrind: all
 	@echo '## Running the regression tests under Valgrind'
 	@echo '## Go get a cup of coffee it is gonna take a while ...'
-	$(MAKE) CHECKER='valgrind -q' check
+	$(MAKE) CHECKER='valgrind -q' runtests
 
 testall : tests SVGtests SAXtests
 
@@ -220,11 +220,6 @@ tests: XMLtests XMLenttests NStests IDtests Errtests APItests $(READER_TEST) $(T
 	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
 	    $(MAKE) tests ; fi)
 	@(cd doc/examples ; $(MAKE) tests)
-
-valgrind:
-	@echo '## Running the regression tests under Valgrind'
-	@echo '## Go get a cup of coffee it is gonna take a while ...'
-	$(MAKE) CHECKER='valgrind -q' tests
 
 APItests: testapi$(EXEEXT)
 	@echo "## Running the API regression tests this may take a little while"

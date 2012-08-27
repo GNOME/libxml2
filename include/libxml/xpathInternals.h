@@ -296,7 +296,9 @@ XMLPUBFUN void * XMLCALL
 #define CHECK_ARITY(x)							\
     if (ctxt == NULL) return;						\
     if (nargs != (x))							\
-        XP_ERROR(XPATH_INVALID_ARITY);
+        XP_ERROR(XPATH_INVALID_ARITY);					\
+    if (ctxt->valueNr < ctxt->valueFrame + (x))				\
+        XP_ERROR(XPATH_STACK_ERROR);
 
 /**
  * CAST_TO_STRING:

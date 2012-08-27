@@ -19,7 +19,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef HAVE_STDINT_H
 #include <stdint.h>
+#else
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#elif defined(WIN32)
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#endif
+#endif
 
 #ifndef MAX
 #define MAX(x,y) (((x) > (y) ? (x) : (y)))

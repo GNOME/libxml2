@@ -615,8 +615,11 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	data = ctxt->userData;
     } else if (channel == NULL) {
 	channel = xmlGenericError;
-	if (!data)
+	if (ctxt != NULL) {
+	    data = ctxt;
+	} else {
 	    data = xmlGenericErrorContext;
+	}
     }
     if (channel == NULL)
         return;

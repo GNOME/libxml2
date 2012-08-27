@@ -1558,7 +1558,7 @@ static int get_crazy_fail(int test) {
 
 static int
 runcrazy(void) {
-    int ret = 0, res;
+    int ret = 0, res = 0;
     int old_errors, old_tests, old_leaks;
     unsigned int i;
 

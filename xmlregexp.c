@@ -222,6 +222,7 @@ struct _xmlRegTrans {
 struct _xmlAutomataState {
     xmlRegStateType type;
     xmlRegMarkedType mark;
+    xmlRegMarkedType markd;
     xmlRegMarkedType reached;
     int no;
     int maxTrans;
@@ -2589,6 +2590,8 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 
     if (state == NULL)
 	return(ret);
+    if (state->markd == XML_REGEXP_MARK_VISITED)
+	return(ret);
 
     if (ctxt->flags & AM_AUTOMATA_RNG)
         deep = 0;
@@ -2606,8 +2609,10 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	if (t1->atom == NULL) {
 	    if (t1->to < 0)
 		continue;
+	    state->markd = XML_REGEXP_MARK_VISITED;
 	    res = xmlFARecurseDeterminism(ctxt, ctxt->states[t1->to],
 		                           to, atom);
+	    state->markd = 0;
 	    if (res == 0) {
 	        ret = 0;
 		/* t1->nd = 1; */

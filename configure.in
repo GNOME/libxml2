@@ -98,7 +98,7 @@ dnl
 dnl zlib option might change flags, so we save them initially
 dnl
 _cppflags="${CPPFLAGS}"
-_ldflags="${LDFLAGS}"
+_libs="${LIBS}"
 
 AC_ARG_WITH(c14n,
 [  --with-c14n             add the Canonicalization support (on)])
@@ -155,7 +155,7 @@ AC_ARG_WITH(readline,
   if test "$withval" != "no" -a "$withval" != "yes"; then
     RDL_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
-    LDFLAGS="${LDFLAGS} -L$withval/lib"
+    LIBS="${LIBS} -L$withval/lib"
   fi
 ])
 AC_ARG_WITH(regexps,
@@ -191,7 +191,7 @@ AC_ARG_WITH(zlib,
   if test "$withval" != "no" -a "$withval" != "yes"; then
     Z_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
-    LDFLAGS="${LDFLAGS} -L$withval/lib"
+    LIBS="${LIBS} -L$withval/lib"
   fi
 ])
 AC_ARG_WITH(lzma,
@@ -199,7 +199,7 @@ AC_ARG_WITH(lzma,
   if test "$withval" != "no" -a "$withval" != "yes"; then
     LZMA_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
-    LDFLAGS="${LDFLAGS} -L$withval/lib"
+    LIBS="${LIBS} -L$withval/lib"
   fi
 ])
 AC_ARG_WITH(coverage,
@@ -429,7 +429,7 @@ AC_SUBST(LZMA_LIBS)
 AC_SUBST(WITH_LZMA)
 
 CPPFLAGS=${_cppflags}
-LDFLAGS=${_ldflags}
+LIBS=${_libs}
 
 echo Checking headers
 
@@ -1378,14 +1378,14 @@ XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICONV)
 
 WITH_ICU=0
+ICU_LIBS=""
 if test "$with_icu" != "yes" ; then
     echo Disabling ICU support
 else
     ICU_CONFIG=icu-config
     if ${ICU_CONFIG} --cflags >/dev/null 2>&1
     then
-        ICU_LIBS=`icu-config --ldflags`
-        LDFLAGS="$LDFLAGS $ICU_LIBS"
+        ICU_LIBS=`${ICU_CONFIG} --ldflags`
         WITH_ICU=1
         echo Enabling ICU support
     else
@@ -1393,6 +1393,7 @@ else
     fi
 fi
 AC_SUBST(WITH_ICU)
+AC_SUBST(ICU_LIBS)
 
 WITH_ISO8859X=1
 if test "$WITH_ICONV" != "1" ; then

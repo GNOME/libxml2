@@ -148,7 +148,8 @@
  *
  * Comparison function for the Timsort implementation
  *
- * Returns -2 or +2 based on the order
+ * Returns -2 in case of error -1 if first point < second point, 0 if
+ *         it's the same node, +1 otherwise
  */
 static
 int wrap_cmp( xmlNodePtr x, xmlNodePtr y );

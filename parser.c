@@ -7396,7 +7396,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
 		  xmlAddEntityReference(ent, firstChild, nw);
 #endif /* LIBXML_LEGACY_ENABLED */
-	    } else if (list == NULL) {
+	    } else if ((list == NULL) || (ctxt->inputNr > 0)) {
 		xmlNodePtr nw = NULL, cur, next, last,
 			   firstChild = NULL;
 		/*

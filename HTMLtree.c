@@ -690,9 +690,10 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
     xmlChar *value;
 
     /*
-     * TODO: The html output method should not escape a & character
-     *       occurring in an attribute value immediately followed by
-     *       a { character (see Section B.7.1 of the HTML 4.0 Recommendation).
+     * The html output method should not escape a & character
+     * occurring in an attribute value immediately followed by
+     * a { character (see Section B.7.1 of the HTML 4.0 Recommendation).
+     * This is implemented in xmlEncodeEntitiesReentrant
      */
 
     if (cur == NULL) {
@@ -720,7 +721,11 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 
 		while (IS_BLANK_CH(*tmp)) tmp++;
 
-		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%&,+");
+		/*
+		 * the < and > have already been escaped at the entity level
+		 * And doing so here breaks server side includes
+		 */
+		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%&,+<>");
 		if (escaped != NULL) {
 		    xmlBufWriteQuotedString(buf->buffer, escaped);
 		    xmlFree(escaped);

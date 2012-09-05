@@ -42,6 +42,7 @@
 #endif
 
 #include "buf.h"
+#include "save.h"
 
 int __xmlRegisterCallbacks = 0;
 
@@ -1661,9 +1662,14 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
     xmlNodePtr node = list;
     xmlChar *ret = NULL;
     xmlEntityPtr ent;
+    int attr;
 
     if (list == NULL)
         return (NULL);
+    if ((list->parent != NULL) && (list->parent->type == XML_ATTRIBUTE_NODE))
+        attr = 1;
+    else
+        attr = 0;
 
     while (node != NULL) {
         if ((node->type == XML_TEXT_NODE) ||
@@ -1673,7 +1679,10 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
             } else {
                 xmlChar *buffer;
 
-                buffer = xmlEncodeEntitiesReentrant(doc, node->content);
+		if (attr)
+		    buffer = xmlEncodeAttributeEntities(doc, node->content);
+		else
+		    buffer = xmlEncodeEntitiesReentrant(doc, node->content);
                 if (buffer != NULL) {
                     ret = xmlStrcat(ret, buffer);
                     xmlFree(buffer);

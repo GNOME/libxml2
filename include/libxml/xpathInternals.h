@@ -500,13 +500,13 @@ XMLPUBFUN xmlXPathObjectPtr XMLCALL
 		xmlXPathNewNodeSet		(xmlNodePtr val);
 XMLPUBFUN xmlXPathObjectPtr XMLCALL 
 		xmlXPathNewValueTree		(xmlNodePtr val);
-XMLPUBFUN void XMLCALL		  
+XMLPUBFUN int XMLCALL		  
 		xmlXPathNodeSetAdd		(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
-XMLPUBFUN void XMLCALL              
+XMLPUBFUN int XMLCALL              
 		xmlXPathNodeSetAddUnique	(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
-XMLPUBFUN void XMLCALL		  
+XMLPUBFUN int XMLCALL		  
 		xmlXPathNodeSetAddNs		(xmlNodeSetPtr cur, 
 						 xmlNodePtr node, 
 						 xmlNsPtr ns);

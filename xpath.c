@@ -328,6 +328,7 @@ static const char *xmlXPathErrorMessages[] = {
     "Char out of XML range\n",
     "Invalid or incomplete context\n",
     "Stack usage errror\n",
+    "Forbidden variable\n",
     "?? Unknown error ??\n"	/* Must be last in the list! */
 };
 #define MAXERRNO ((int)(sizeof(xmlXPathErrorMessages) /	\
@@ -10378,7 +10379,7 @@ xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
 	           name, prefix);
     SKIP_BLANKS;
     if ((ctxt->context != NULL) && (ctxt->context->flags & XML_XPATH_NOVAR)) {
-	XP_ERROR(XPATH_UNDEF_VARIABLE_ERROR);
+	XP_ERROR(XPATH_FORBID_VARIABLE_ERROR);
     }
 }
 

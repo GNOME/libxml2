@@ -771,13 +771,21 @@ int
 xmlCheckFilename (const char *path)
 {
 #ifdef HAVE_STAT
-	struct stat stat_buffer;
+    struct stat stat_buffer;
 #endif
-	if (path == NULL)
-		return(0);
+    if (path == NULL)
+	return(0);
 
 #ifdef HAVE_STAT
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+    /*
+     * On Windows stat and wstat do not work with long pathname,
+     * which start with '\\?\'
+     */
+    if ((path[0] == '\\') && (path[1] == '\\') && (path[2] == '?') &&
+	(path[3] == '\\') )
+	    return 1;
+
     if (xmlWrapStat(path, &stat_buffer) == -1)
         return 0;
 #else

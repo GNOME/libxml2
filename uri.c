@@ -2397,7 +2397,20 @@ xmlCanonicPath(const xmlChar *path)
     if (path == NULL)
 	return(NULL);
 
-    /* sanitize filename starting with // so it can be used as URI */
+#if defined(_WIN32)
+    /*
+     * We must not change the backslashes to slashes if the the path
+     * starts with \\?\
+     * Those paths can be up to 32k characters long.
+     * Was added specifically for OpenOffice, those paths can't be converted
+     * to URIs anyway.
+     */
+    if ((path[0] == '\\') && (path[1] == '\\') && (path[2] == '?') &&
+        (path[3] == '\\') )
+	return xmlStrdup((const xmlChar *) path);
+#endif
+
+	/* sanitize filename starting with // so it can be used as URI */
     if ((path[0] == '/') && (path[1] == '/') && (path[2] != '/'))
         path++;
 

@@ -13,7 +13,7 @@ sys.path.insert(0, "..")
 from apibuild import CParser, escape
 
 examples = []
-extras = ['examples.xsl', 'index.py']
+extras = ['examples.xsl', 'index.html', 'index.py']
 tests = []
 sections = {}
 symbols = {}
@@ -231,7 +231,9 @@ LDADD = $(RDL_LIBS) $(STATIC_BINARIES) $(top_builddir)/libxml2.la $(THREAD_LIBS)
 
 CLEANFILES = *.tmp
 
+if REBUILD_DOCS
 rebuild: examples.xml index.html
+.PHONY: rebuild
 
 examples.xml: index.py $(noinst_PROGRAMS:=.c)
 	cd $(srcdir) && $(PYTHON) index.py
@@ -240,6 +242,7 @@ examples.xml: index.py $(noinst_PROGRAMS:=.c)
 index.html: examples.xml examples.xsl
 	cd $(srcdir) && xsltproc examples.xsl examples.xml && echo "Rebuilt web page"
 	-cd $(srcdir) && xmllint --valid --noout index.html
+endif
 
 install-data-local: 
 	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)

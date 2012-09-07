@@ -303,6 +303,7 @@ source_file_deps = \
 	$(wildcard $(top_srcdir)/*.c)
 
 libxml2-api.xml libxml2-refs.xml ../libxml2.syms: apibuild.py symbols.xml syms.xsl checkapisym.xsl $(source_file_deps)
+	test -f $(top_srcdir)/include/libxml/xmlversion.h
 	(cd $(srcdir) && ./apibuild.py)
 	($(XSLTPROC) $(srcdir)/checkapisym.xsl $(srcdir)/libxml2-api.xml)
 	($(XSLTPROC) -o ../libxml2.syms $(srcdir)/syms.xsl $(srcdir)/symbols.xml)
@@ -346,4 +347,4 @@ install-data-local:
 	-$(INSTALL) -m 0644 $(srcdir)/tutorial/images/callouts/*.* \
 		$(DESTDIR)$(HTML_DIR)/tutorial/images/callouts
 
-.PHONY : html xml templates scan
+.PHONY: docs api web wiki rebuild

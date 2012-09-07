@@ -2981,9 +2981,14 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 	     */
 	    if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
 		if (areBlanks(ctxt, buf, nbchar)) {
-		    if (ctxt->sax->ignorableWhitespace != NULL)
-			ctxt->sax->ignorableWhitespace(ctxt->userData,
-			                               buf, nbchar);
+		    if (ctxt->keepBlanks) {
+			if (ctxt->sax->characters != NULL)
+			    ctxt->sax->characters(ctxt->userData, buf, nbchar);
+		    } else {
+			if (ctxt->sax->ignorableWhitespace != NULL)
+			    ctxt->sax->ignorableWhitespace(ctxt->userData,
+			                                   buf, nbchar);
+		    }
 		} else {
 		    htmlCheckParagraph(ctxt);
 		    if (ctxt->sax->characters != NULL)
@@ -3014,8 +3019,14 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 	 */
 	if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
 	    if (areBlanks(ctxt, buf, nbchar)) {
-		if (ctxt->sax->ignorableWhitespace != NULL)
-		    ctxt->sax->ignorableWhitespace(ctxt->userData, buf, nbchar);
+		if (ctxt->keepBlanks) {
+		    if (ctxt->sax->characters != NULL)
+			ctxt->sax->characters(ctxt->userData, buf, nbchar);
+		} else {
+		    if (ctxt->sax->ignorableWhitespace != NULL)
+			ctxt->sax->ignorableWhitespace(ctxt->userData,
+			                               buf, nbchar);
+		}
 	    } else {
 		htmlCheckParagraph(ctxt);
 		if (ctxt->sax->characters != NULL)
@@ -5687,9 +5698,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    if ((cur != '<') && (cur != '&')) {
 			if (ctxt->sax != NULL) {
 			    if (IS_BLANK_CH(cur)) {
-				if (ctxt->sax->ignorableWhitespace != NULL)
-				    ctxt->sax->ignorableWhitespace(
-					    ctxt->userData, &cur, 1);
+				if (ctxt->keepBlanks) {
+				    if (ctxt->sax->characters != NULL)
+					ctxt->sax->characters(
+						ctxt->userData, &cur, 1);
+				} else {
+				    if (ctxt->sax->ignorableWhitespace != NULL)
+					ctxt->sax->ignorableWhitespace(
+						ctxt->userData, &cur, 1);
+				}
 			    } else {
 				htmlCheckParagraph(ctxt);
 				if (ctxt->sax->characters != NULL)

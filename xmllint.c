@@ -3340,8 +3340,9 @@ main(int argc, char **argv) {
         }
 	else if ((!strcmp(argv[i], "-noblanks")) ||
 	         (!strcmp(argv[i], "--noblanks"))) {
-	     noblanks++;
-	     xmlKeepBlanksDefault(0);
+	    noblanks++;
+	    xmlKeepBlanksDefault(0);
+	    options |= XML_PARSE_NOBLANKS;
         }
 	else if ((!strcmp(argv[i], "-maxmem")) ||
 	         (!strcmp(argv[i], "--maxmem"))) {

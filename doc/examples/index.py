@@ -177,10 +177,10 @@ def parse(filename, output):
 	    type = id.get_type()
 	    output.write("      <%s line='%d' name='%s'/>\n" % (type,
 	                 line, name))
-	    
+
     output.write("    </uses>\n")
     output.write("  </example>\n")
-    
+
     return idx
 
 def dump_symbols(output):
@@ -280,23 +280,23 @@ clean-local:
 	    print "Updated Makefile.am"
     except:
         print "Failed to read or save Makefile.am"
-    #
-    # Autogenerate the .cvsignore too ...
-    #
-    ignore = """.memdump
-Makefile.in
-Makefile
-"""
-    for example in examples:
-        ignore = ignore + "%s\n" % (example)
-    try:
-	old = open(".cvsignore", "r").read()
-	if old != ignore:
-	    n = open(".cvsignore", "w").write(ignore)
-	    print "Updated .cvsignore"
-    except:
-        print "Failed to read or save .cvsignore"
-    
+#    #
+#    # Autogenerate the .cvsignore too ... DEPRECATED
+#    #
+#    ignore = """.memdump
+#Makefile.in
+#Makefile
+#"""
+#    for example in examples:
+#        ignore = ignore + "%s\n" % (example)
+#    try:
+#	old = open(".cvsignore", "r").read()
+#	if old != ignore:
+#	    n = open(".cvsignore", "w").write(ignore)
+#	    print "Updated .cvsignore"
+#    except:
+#        print "Failed to read or save .cvsignore"
+
 if __name__ == "__main__":
     load_api()
     output = open("examples.xml", "w")

@@ -3,7 +3,7 @@
     <synopsis>Evaluate XPath expression and prints result node set.</synopsis>
     <purpose>Shows how to evaluate XPath expression and register known namespaces in XPath context.</purpose>
     <usage>xpath1 &lt;xml-file&gt; &lt;xpath-expr&gt; [&lt;known-ns-list&gt;]</usage>
-    <test>./xpath1 test3.xml &apos;//child2&apos; &gt; xpath1.tmp ; diff xpath1.tmp xpath1.res ; rm xpath1.tmp</test>
+    <test>xpath1 test3.xml &apos;//child2&apos; &gt; xpath1.tmp &amp;&amp; diff xpath1.tmp $(srcdir)/xpath1.res</test>
     <author>Aleksey Sanin</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>XPath</section>
@@ -62,7 +62,7 @@
     <synopsis>Parse and validate an XML file with an xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file validating the content in the process and activating options like entities substitution, and DTD attributes defaulting. (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
     <usage>reader2 &lt;valid_xml_filename&gt;</usage>
-    <test>reader2 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp</test>
+    <test>reader2 test2.xml &gt; reader1.tmp &amp;&amp; diff reader1.tmp $(srcdir)/reader1.res</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>
@@ -94,7 +94,7 @@
     <synopsis>Creates a tree</synopsis>
     <purpose>Shows how to create document, nodes and dump it to stdout or file.</purpose>
     <usage>tree2 &lt;filename&gt;  -Default output: stdout</usage>
-    <test>tree2 &gt; tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp</test>
+    <test>tree2 &gt; tree2.tmp &amp;&amp; diff tree2.tmp $(srcdir)/tree2.res</test>
     <author>Lucas Brasilino &lt;brasilino@recife.pe.gov.br&gt;</author>
     <copy>see Copyright for the status of this software </copy>
     <section>Tree</section>
@@ -122,7 +122,7 @@
     <synopsis>Example of custom Input/Output</synopsis>
     <purpose>Demonstrate the use of xmlRegisterInputCallbacks to build a custom I/O layer, this is used in an XInclude method context to show how dynamic document can be built in a clean way.</purpose>
     <usage>io1</usage>
-    <test>io1 &gt; io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp</test>
+    <test>io1 &gt; io1.tmp &amp;&amp; diff io1.tmp $(srcdir)/io1.res</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>InputOutput</section>
@@ -172,7 +172,7 @@
     <synopsis>Load a document, locate subelements with XPath, modify said elements and save the resulting document.</synopsis>
     <purpose>Shows how to make a full round-trip from a load/edit/save</purpose>
     <usage>xpath2 &lt;xml-file&gt; &lt;xpath-expr&gt; &lt;new-value&gt;</usage>
-    <test>xpath2 test3.xml &apos;//discarded&apos; discarded &gt; xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp</test>
+    <test>xpath2 test3.xml &apos;//discarded&apos; discarded &gt; xpath2.tmp &amp;&amp; diff xpath2.tmp $(srcdir)/xpath2.res</test>
     <author>Aleksey Sanin and Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>XPath</section>
@@ -202,7 +202,7 @@
     <synopsis>Output to char buffer</synopsis>
     <purpose>Demonstrate the use of xmlDocDumpMemory to output document to a character buffer</purpose>
     <usage>io2</usage>
-    <test>io2 &gt; io2.tmp ; diff io2.tmp io2.res ; rm -f io2.tmp</test>
+    <test>io2 &gt; io2.tmp &amp;&amp; diff io2.tmp $(srcdir)/io2.res</test>
     <author>John Fleck</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>InputOutput</section>
@@ -224,7 +224,7 @@
     <synopsis>Parse an XML file with an xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file and dump the informations about the nodes found in the process. (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
     <usage>reader1 &lt;filename&gt;</usage>
-    <test>reader1 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp</test>
+    <test>reader1 test2.xml &gt; reader1.tmp &amp;&amp; diff reader1.tmp $(srcdir)/reader1.res</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>
@@ -249,7 +249,7 @@
     <synopsis>Navigates a tree to print element names</synopsis>
     <purpose>Parse a file to a tree, use xmlDocGetRootElement() to get the root element, then walk the document and print all the element name in document order.</purpose>
     <usage>tree1 filename_or_URL</usage>
-    <test>tree1 test2.xml &gt; tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp</test>
+    <test>tree1 test2.xml &gt; tree1.tmp &amp;&amp; diff tree1.tmp $(srcdir)/tree1.res</test>
     <author>Dodji Seketeli</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>Tree</section>
@@ -267,7 +267,7 @@
     <synopsis>Show how to extract subdocuments with xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlTextReaderPreservePattern() to parse an XML file with the xmlReader while collecting only some subparts of the document. (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
     <usage>reader3</usage>
-    <test>reader3 &gt; reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp</test>
+    <test>reader3 &gt; reader3.tmp &amp;&amp; diff reader3.tmp $(srcdir)/reader3.res</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>
@@ -324,7 +324,7 @@
     <synopsis>Parse multiple XML files reusing an xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlReaderForFile() and xmlReaderNewFile to parse XML files while reusing the reader object and parser context.  (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
     <usage>reader4 &lt;filename&gt; [ filename ... ]</usage>
-    <test>reader4 test1.xml test2.xml test3.xml &gt; reader4.tmp ; diff reader4.tmp reader4.res ; rm reader4.tmp</test>
+    <test>reader4 test1.xml test2.xml test3.xml &gt; reader4.tmp &amp;&amp; diff reader4.tmp $(srcdir)/reader4.res</test>
     <author>Graham Bennett</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>
@@ -344,7 +344,7 @@
     <synopsis>use various APIs for the xmlWriter</synopsis>
     <purpose>tests a number of APIs for the xmlWriter, especially the various methods to write to a filename, to a memory buffer, to a new document, or to a subtree. It shows how to do encoding string conversions too. The resulting documents are then serialized.</purpose>
     <usage>testWriter</usage>
-    <test>testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res</test>
+    <test>testWriter &amp;&amp; for i in 1 2 3 4 ; do diff $(srcdir)/writer.xml writer$$i.tmp || break ; done</test>
     <author>Alfred Mickautsch</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlWriter</section>

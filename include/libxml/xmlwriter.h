@@ -471,6 +471,10 @@ extern "C" {
         xmlTextWriterSetIndentString(xmlTextWriterPtr writer,
                                      const xmlChar * str);
 
+    XMLPUBFUN int XMLCALL
+        xmlTextWriterSetQuoteChar(xmlTextWriterPtr writer, xmlChar quotechar);
+
+
 /*
  * misc
  */

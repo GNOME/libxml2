@@ -4610,6 +4610,26 @@ xmlTextWriterSetIndentString(xmlTextWriterPtr writer, const xmlChar * str)
 }
 
 /**
+ * xmlTextWriterSetQuoteChar:
+ * @writer:  the xmlTextWriterPtr
+ * @quotechar:  the quote character
+ *
+ * Set the character used for quoting attributes.
+ *
+ * Returns -1 on error or 0 otherwise.
+ */
+int
+xmlTextWriterSetQuoteChar(xmlTextWriterPtr writer, xmlChar quotechar)
+{
+    if ((writer == NULL) || ((quotechar != '\'') && (quotechar != '"')))
+        return -1;
+
+    writer->qchar = quotechar;
+
+    return 0;
+}
+
+/**
  * xmlTextWriterWriteIndent:
  * @writer:  the xmlTextWriterPtr
  *

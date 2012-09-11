@@ -557,6 +557,7 @@ xmlBufContent
 xmlBufEnd
 xmlBufGetNodeContent
 xmlBufNodeDump
+xmlBufShrink
 xmlBufUse
 xmlBufferAdd
 xmlBufferAddHead
@@ -1601,12 +1602,22 @@ xmlSAXParseMemoryWithData
 xmlSAXUserParseFile
 xmlSAXUserParseMemory
 xmlSAXVersion
+xmlSaveClose
+xmlSaveDoc
 xmlSaveFile
 xmlSaveFileEnc
 xmlSaveFileTo
+xmlSaveFlush
 xmlSaveFormatFile
 xmlSaveFormatFileEnc
 xmlSaveFormatFileTo
+xmlSaveSetAttrEscape
+xmlSaveSetEscape
+xmlSaveToBuffer
+xmlSaveToFd
+xmlSaveToFilename
+xmlSaveToIO
+xmlSaveTree
 xmlSaveUri
 xmlScanName
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1769,6 +1780,12 @@ xmlSchemaValidateOneElement
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidatePredefinedType
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateSetFilename
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateSetLocator
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateStream
@@ -1986,6 +2003,7 @@ xmlTextWriterFlush
 xmlTextWriterFullEndElement
 xmlTextWriterSetIndent
 xmlTextWriterSetIndentString
+xmlTextWriterSetQuoteChar
 xmlTextWriterStartAttribute
 xmlTextWriterStartAttributeNS
 xmlTextWriterStartCDATA
@@ -2913,6 +2931,9 @@ xmlXPathNextPrecedingSibling
 xmlXPathNextSelf
 #endif
 #ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeEval
+#endif
+#ifdef LIBXML_XPATH_ENABLED
 xmlXPathNodeLeading
 #endif
 #ifdef LIBXML_XPATH_ENABLED
@@ -3037,6 +3058,9 @@ xmlXPathRoot
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathRoundFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathSetContextNode
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathStartsWithFunction

@@ -13552,7 +13552,7 @@ test_xmlParseBalancedChunkMemory(void) {
         depth = gen_int(n_depth, 3);
         string = gen_const_xmlChar_ptr(n_string, 4);
         lst = gen_xmlNodePtr_ptr(n_lst, 5);
-
+        
 #ifdef LIBXML_SAX1_ENABLED
         if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
 #endif
@@ -13632,7 +13632,7 @@ test_xmlParseBalancedChunkMemoryRecover(void) {
         string = gen_const_xmlChar_ptr(n_string, 4);
         lst = gen_xmlNodePtr_ptr(n_lst, 5);
         recover = gen_int(n_recover, 6);
-
+        
 #ifdef LIBXML_SAX1_ENABLED
         if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
 #endif
@@ -15111,7 +15111,7 @@ test_xmlSAXUserParseFile(void) {
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         user_data = gen_userdata(n_user_data, 1);
         filename = gen_filepath(n_filename, 2);
-
+        
 #ifdef LIBXML_SAX1_ENABLED
         if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
 #endif
@@ -15170,7 +15170,7 @@ test_xmlSAXUserParseMemory(void) {
         user_data = gen_userdata(n_user_data, 1);
         buffer = gen_const_char_ptr(n_buffer, 2);
         size = gen_int(n_size, 3);
-
+        
 #ifdef LIBXML_SAX1_ENABLED
         if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
 #endif
@@ -43839,6 +43839,47 @@ test_xmlTextWriterSetIndentString(void) {
 
 
 static int
+test_xmlTextWriterSetQuoteChar(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_WRITER_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    xmlChar quotechar; /* the quote character */
+    int n_quotechar;
+
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_quotechar = 0;n_quotechar < gen_nb_xmlChar;n_quotechar++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer, 0);
+        quotechar = gen_xmlChar(n_quotechar, 1);
+
+        ret_val = xmlTextWriterSetQuoteChar(writer, quotechar);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer, 0);
+        des_xmlChar(n_quotechar, quotechar, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterSetQuoteChar",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_quotechar);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlTextWriterStartAttribute(void) {
     int test_ret = 0;
 
@@ -45700,7 +45741,7 @@ static int
 test_xmlwriter(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlwriter : 51 of 79 functions ...\n");
+    if (quiet == 0) printf("Testing xmlwriter : 52 of 80 functions ...\n");
     test_ret += test_xmlNewTextWriter();
     test_ret += test_xmlNewTextWriterFilename();
     test_ret += test_xmlNewTextWriterMemory();
@@ -45720,6 +45761,7 @@ test_xmlwriter(void) {
     test_ret += test_xmlTextWriterFullEndElement();
     test_ret += test_xmlTextWriterSetIndent();
     test_ret += test_xmlTextWriterSetIndentString();
+    test_ret += test_xmlTextWriterSetQuoteChar();
     test_ret += test_xmlTextWriterStartAttribute();
     test_ret += test_xmlTextWriterStartAttributeNS();
     test_ret += test_xmlTextWriterStartCDATA();
@@ -49083,6 +49125,7 @@ test_xmlXPathNodeSetAdd(void) {
 
 #if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
+    int ret_val;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
     xmlNodePtr val; /* a new xmlNodePtr */
@@ -49094,7 +49137,8 @@ test_xmlXPathNodeSetAdd(void) {
         cur = gen_xmlNodeSetPtr(n_cur, 0);
         val = gen_xmlNodePtr(n_val, 1);
 
-        xmlXPathNodeSetAdd(cur, val);
+        ret_val = xmlXPathNodeSetAdd(cur, val);
+        desret_int(ret_val);
         call_tests++;
         des_xmlNodeSetPtr(n_cur, cur, 0);
         des_xmlNodePtr(n_val, val, 1);
@@ -49122,6 +49166,7 @@ test_xmlXPathNodeSetAddNs(void) {
 
 #if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
+    int ret_val;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
     xmlNodePtr node; /* the hosting node */
@@ -49137,7 +49182,8 @@ test_xmlXPathNodeSetAddNs(void) {
         node = gen_xmlNodePtr(n_node, 1);
         ns = gen_xmlNsPtr(n_ns, 2);
 
-        xmlXPathNodeSetAddNs(cur, node, ns);
+        ret_val = xmlXPathNodeSetAddNs(cur, node, ns);
+        desret_int(ret_val);
         call_tests++;
         des_xmlNodeSetPtr(n_cur, cur, 0);
         des_xmlNodePtr(n_node, node, 1);
@@ -49168,6 +49214,7 @@ test_xmlXPathNodeSetAddUnique(void) {
 
 #if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
+    int ret_val;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
     xmlNodePtr val; /* a new xmlNodePtr */
@@ -49179,7 +49226,8 @@ test_xmlXPathNodeSetAddUnique(void) {
         cur = gen_xmlNodeSetPtr(n_cur, 0);
         val = gen_xmlNodePtr(n_val, 1);
 
-        xmlXPathNodeSetAddUnique(cur, val);
+        ret_val = xmlXPathNodeSetAddUnique(cur, val);
+        desret_int(ret_val);
         call_tests++;
         des_xmlNodeSetPtr(n_cur, cur, 0);
         des_xmlNodePtr(n_val, val, 1);

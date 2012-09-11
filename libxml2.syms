@@ -2266,5 +2266,8 @@ LIBXML2_2.9.0 {
 # xmlIO
   xmlOutputBufferGetContent;
   xmlOutputBufferGetSize;
+
+# xmlwriter
+  xmlTextWriterSetQuoteChar;
 } LIBXML2_2.8.0;
 

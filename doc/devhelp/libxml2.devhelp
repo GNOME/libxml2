@@ -1516,6 +1516,7 @@
     <function name="XPATH_ENCODING_ERROR" link="libxml2-xpath.html#XPATH_ENCODING_ERROR"/>
     <function name="XPATH_EXPRESSION_OK" link="libxml2-xpath.html#XPATH_EXPRESSION_OK"/>
     <function name="XPATH_EXPR_ERROR" link="libxml2-xpath.html#XPATH_EXPR_ERROR"/>
+    <function name="XPATH_FORBID_VARIABLE_ERROR" link="libxml2-xpath.html#XPATH_FORBID_VARIABLE_ERROR"/>
     <function name="XPATH_INVALID_ARITY" link="libxml2-xpath.html#XPATH_INVALID_ARITY"/>
     <function name="XPATH_INVALID_CHAR_ERROR" link="libxml2-xpath.html#XPATH_INVALID_CHAR_ERROR"/>
     <function name="XPATH_INVALID_CTXT" link="libxml2-xpath.html#XPATH_INVALID_CTXT"/>
@@ -3091,6 +3092,7 @@
     <function name="xmlTextWriterFullEndElement ()" link="libxml2-xmlwriter.html#xmlTextWriterFullEndElement"/>
     <function name="xmlTextWriterSetIndent ()" link="libxml2-xmlwriter.html#xmlTextWriterSetIndent"/>
     <function name="xmlTextWriterSetIndentString ()" link="libxml2-xmlwriter.html#xmlTextWriterSetIndentString"/>
+    <function name="xmlTextWriterSetQuoteChar ()" link="libxml2-xmlwriter.html#xmlTextWriterSetQuoteChar"/>
     <function name="xmlTextWriterStartAttribute ()" link="libxml2-xmlwriter.html#xmlTextWriterStartAttribute"/>
     <function name="xmlTextWriterStartAttributeNS ()" link="libxml2-xmlwriter.html#xmlTextWriterStartAttributeNS"/>
     <function name="xmlTextWriterStartCDATA ()" link="libxml2-xmlwriter.html#xmlTextWriterStartCDATA"/>

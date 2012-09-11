@@ -3437,7 +3437,7 @@
      <exports symbol='xmlTextWriterEndPI' type='function'/>
      <exports symbol='xmlTextWriterWriteBase64' type='function'/>
      <exports symbol='xmlTextWriterSetIndentString' type='function'/>
-     <exports symbol='xmlFreeTextWriter' type='function'/>
+     <exports symbol='xmlTextWriterStartAttribute' type='function'/>
      <exports symbol='xmlTextWriterEndComment' type='function'/>
      <exports symbol='xmlTextWriterWriteRawLen' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDExternalEntityContents' type='function'/>
@@ -3459,7 +3459,7 @@
      <exports symbol='xmlTextWriterStartElementNS' type='function'/>
      <exports symbol='xmlTextWriterEndDTDEntity' type='function'/>
      <exports symbol='xmlNewTextWriter' type='function'/>
-     <exports symbol='xmlTextWriterStartAttribute' type='function'/>
+     <exports symbol='xmlFreeTextWriter' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatDTDAttlist' type='function'/>
      <exports symbol='xmlTextWriterStartPI' type='function'/>
      <exports symbol='xmlTextWriterStartElement' type='function'/>
@@ -3485,8 +3485,9 @@
      <exports symbol='xmlTextWriterWriteVFormatElementNS' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDNotation' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatElement' type='function'/>
-     <exports symbol='xmlTextWriterWriteElementNS' type='function'/>
+     <exports symbol='xmlTextWriterSetQuoteChar' type='function'/>
      <exports symbol='xmlTextWriterWriteString' type='function'/>
+     <exports symbol='xmlTextWriterWriteElementNS' type='function'/>
      <exports symbol='xmlTextWriterFullEndElement' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatAttributeNS' type='function'/>
      <exports symbol='xmlTextWriterFlush' type='function'/>
@@ -3549,6 +3550,7 @@
      <exports symbol='XPATH_INVALID_PREDICATE_ERROR' type='enum'/>
      <exports symbol='XPATH_XSLT_TREE' type='enum'/>
      <exports symbol='XPATH_EXPR_ERROR' type='enum'/>
+     <exports symbol='XPATH_FORBID_VARIABLE_ERROR' type='enum'/>
      <exports symbol='XPATH_INVALID_TYPE' type='enum'/>
      <exports symbol='XPATH_INVALID_CTXT_POSITION' type='enum'/>
      <exports symbol='XPATH_UNDEFINED' type='enum'/>
@@ -5864,6 +5866,7 @@ crash if you try to modify the tree)'/>
     <enum name='XPATH_ENCODING_ERROR' file='xpath' value='20' type='xmlXPathError'/>
     <enum name='XPATH_EXPRESSION_OK' file='xpath' value='0' type='xmlXPathError'/>
     <enum name='XPATH_EXPR_ERROR' file='xpath' value='7' type='xmlXPathError'/>
+    <enum name='XPATH_FORBID_VARIABLE_ERROR' file='xpath' value='24' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_ARITY' file='xpath' value='12' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_CHAR_ERROR' file='xpath' value='21' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_CTXT' file='xpath' value='22' type='xmlXPathError'/>
@@ -15257,6 +15260,13 @@ Could we use @subtypes for this?'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar string'/>
     </function>
+    <function name='xmlTextWriterSetQuoteChar' file='xmlwriter' module='xmlwriter'>
+      <cond>defined(LIBXML_WRITER_ENABLED)</cond>
+      <info>Set the character used for quoting attributes.</info>
+      <return type='int' info='-1 on error or 0 otherwise.'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='quotechar' type='xmlChar' info='the quote character'/>
+    </function>
     <function name='xmlTextWriterStartAttribute' file='xmlwriter' module='xmlwriter'>
       <cond>defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Start an xml attribute.</info>
@@ -17906,14 +17916,14 @@ Could we use @subtypes for this?'/>
     <function name='xmlXPathNodeSetAdd' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>add a new xmlNodePtr to an existing NodeSet</info>
-      <return type='void'/>
+      <return type='int' info='0 in case of success, and -1 in case of error'/>
       <arg name='cur' type='xmlNodeSetPtr' info='the initial node set'/>
       <arg name='val' type='xmlNodePtr' info='a new xmlNodePtr'/>
     </function>
     <function name='xmlXPathNodeSetAddNs' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>add a new namespace node to an existing NodeSet</info>
-      <return type='void'/>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='cur' type='xmlNodeSetPtr' info='the initial node set'/>
       <arg name='node' type='xmlNodePtr' info='the hosting node'/>
       <arg name='ns' type='xmlNsPtr' info='a the namespace node'/>
@@ -17921,7 +17931,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlXPathNodeSetAddUnique' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>add a new xmlNodePtr to an existing NodeSet, optimized version when we are sure the node is not already in the set.</info>
-      <return type='void'/>
+      <return type='int' info='0 in case of success and -1 in case of failure'/>
       <arg name='cur' type='xmlNodeSetPtr' info='the initial node set'/>
       <arg name='val' type='xmlNodePtr' info='a new xmlNodePtr'/>
     </function>

@@ -72,6 +72,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlmemory.html#xmlGcMemGet">xmlGcMemGet</a><br />
 <a href="html/libxml-xmlmemory.html#xmlMemGet">xmlMemGet</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPFetch">xmlNanoHTTPFetch</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 <a href="html/libxml-debugXML.html#xmlShell">xmlShell</a><br />
 <a href="html/libxml-debugXML.html#xmlShellSave">xmlShellSave</a><br />
 </dd><dt>saved</dt><dd><a href="html/libxml-HTMLparser.html#_htmlElemDesc">_htmlElemDesc</a><br />
@@ -90,6 +91,16 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFile">xmlOutputBufferCreateFile</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFilename">xmlOutputBufferCreateFilename</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateIO">xmlOutputBufferCreateIO</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveClose">xmlSaveClose</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveDoc">xmlSaveDoc</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveFlush">xmlSaveFlush</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveSetEscape">xmlSaveSetEscape</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToFd">xmlSaveToFd</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToFilename">xmlSaveToFilename</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 </dd><dt>sax</dt><dd><a href="html/libxml-DOCBparser.html#docbSAXParseDoc">docbSAXParseDoc</a><br />
 <a href="html/libxml-DOCBparser.html#docbSAXParseFile">docbSAXParseFile</a><br />
 <a href="html/libxml-HTMLparser.html#htmlSAXParseDoc">htmlSAXParseDoc</a><br />
@@ -126,6 +137,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacetWhtsp">xmlSchemaValidateFacetWhtsp</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateFile">xmlSchemaValidateFile</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaValidityLocatorFunc">xmlSchemaValidityLocatorFunc</a><br />
 <a href="html/libxml-schematron.html#xmlSchematronNewMemParserCtxt">xmlSchematronNewMemParserCtxt</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate">xmlTextReaderRelaxNGValidate</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidateCtxt">xmlTextReaderRelaxNGValidateCtxt</a><br />
@@ -219,11 +231,19 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathInternals.html#xmlXPathNormalizeFunction">xmlXPathNormalizeFunction</a><br />
 </dd><dt>sequqnce</dt><dd><a href="html/libxml-xmlregexp.html#xmlExpIsNillable">xmlExpIsNillable</a><br />
 </dd><dt>serialization</dt><dd><a href="html/libxml-xmlversion.html#LIBXML_OUTPUT_ENABLED">LIBXML_OUTPUT_ENABLED</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToFd">xmlSaveToFd</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToFilename">xmlSaveToFilename</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 <a href="html/libxml-debugXML.html#xmlShellCat">xmlShellCat</a><br />
 <a href="html/libxml-debugXML.html#xmlShellWrite">xmlShellWrite</a><br />
 <a href="html/libxml-valid.html#xmlValidatePopElement">xmlValidatePopElement</a><br />
 <a href="html/libxml-valid.html#xmlValidatePushElement">xmlValidatePushElement</a><br />
 </dd><dt>serialized</dt><dd><a href="html/libxml-xmlreader.html#xmlTextReaderReadOuterXml">xmlTextReaderReadOuterXml</a><br />
+</dd><dt>serializing</dt><dd><a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToFd">xmlSaveToFd</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToFilename">xmlSaveToFilename</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 </dd><dt>server</dt><dd><a href="html/libxml-uri.html#_xmlURI">_xmlURI</a><br />
 <a href="html/libxml-nanoftp.html#xmlNanoFTPCheckResponse">xmlNanoFTPCheckResponse</a><br />
 <a href="html/libxml-nanoftp.html#xmlNanoFTPCloseConnection">xmlNanoFTPCloseConnection</a><br />
@@ -367,6 +387,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a><br />
 <a href="html/libxml-tree.html#xmlPreviousElementSibling">xmlPreviousElementSibling</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGNewDocParserCtxt">xmlRelaxNGNewDocParserCtxt</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaValidateSetLocator">xmlSchemaValidateSetLocator</a><br />
 </dd><dt>single</dt><dd><a href="html/libxml-parserInternals.html#IS_DIGIT_CH">IS_DIGIT_CH</a><br />
 <a href="html/libxml-parserInternals.html#XML_MAX_TEXT_LENGTH">XML_MAX_TEXT_LENGTH</a><br />
 <a href="html/libxml-parserInternals.html#xmlCurrentChar">xmlCurrentChar</a><br />
@@ -390,6 +411,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>singleton</dt><dd><a href="html/libxml-parserInternals.html#xmlCheckLanguageID">xmlCheckLanguageID</a><br />
 </dd><dt>site1</dt><dd><a href="html/libxml-uri.html#xmlBuildRelativeURI">xmlBuildRelativeURI</a><br />
 </dd><dt>site2</dt><dd><a href="html/libxml-uri.html#xmlBuildRelativeURI">xmlBuildRelativeURI</a><br />
+</dd><dt>size_t</dt><dd><a href="html/libxml-tree.html#xmlBufShrink">xmlBufShrink</a><br />
 </dd><dt>sizes</dt><dd><a href="html/libxml-tree.html#xmlGetBufferAllocationScheme">xmlGetBufferAllocationScheme</a><br />
 <a href="html/libxml-tree.html#xmlSetBufferAllocationScheme">xmlSetBufferAllocationScheme</a><br />
 </dd><dt>skip</dt><dd><a href="html/libxml-parserInternals.html#xmlSkipBlankChars">xmlSkipBlankChars</a><br />
@@ -607,6 +629,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#xmlByteConsumed">xmlByteConsumed</a><br />
 <a href="html/libxml-tree.html#xmlNewCharRef">xmlNewCharRef</a><br />
 <a href="html/libxml-xmlwriter.html#xmlNewTextWriterTree">xmlNewTextWriterTree</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateOneElement">xmlSchemaValidateOneElement</a><br />
 <a href="html/libxml-xpath.html#xmlXPathOrderDocElems">xmlXPathOrderDocElems</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathSubstringFunction">xmlXPathSubstringFunction</a><br />
@@ -671,6 +694,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlregexp.html#xmlExpGetLanguage">xmlExpGetLanguage</a><br />
 <a href="html/libxml-xmlregexp.html#xmlExpGetStart">xmlExpGetStart</a><br />
 <a href="html/libxml-parser.html#xmlGetFeature">xmlGetFeature</a><br />
+<a href="html/libxml-tree.html#xmlGetLineNo">xmlGetLineNo</a><br />
 <a href="html/libxml-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferWrite">xmlOutputBufferWrite</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferWriteEscape">xmlOutputBufferWriteEscape</a><br />
@@ -830,6 +854,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-valid.html#xmlFreeElementContent">xmlFreeElementContent</a><br />
 <a href="html/libxml-tree.html#xmlReconciliateNs">xmlReconciliateNs</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGValidateFullElement">xmlRelaxNGValidateFullElement</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateOneElement">xmlSchemaValidateOneElement</a><br />
 <a href="html/libxml-debugXML.html#xmlShellDu">xmlShellDu</a><br />
 <a href="html/libxml-debugXML.html#xmlShellWrite">xmlShellWrite</a><br />
@@ -872,6 +897,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlGetLineNo">xmlGetLineNo</a><br />
 <a href="html/libxml-list.html#xmlListPushBack">xmlListPushBack</a><br />
 <a href="html/libxml-list.html#xmlListPushFront">xmlListPushFront</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveSetEscape">xmlSaveSetEscape</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetParserProp">xmlTextReaderSetParserProp</a><br />
 <a href="html/libxml-tree.html#xmlUnsetNsProp">xmlUnsetNsProp</a><br />
 <a href="html/libxml-tree.html#xmlUnsetProp">xmlUnsetProp</a><br />
@@ -927,6 +954,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlstring.html#xmlStrcat">xmlStrcat</a><br />
 <a href="html/libxml-xmlstring.html#xmlStrdup">xmlStrdup</a><br />
 </dd><dt>sure</dt><dd><a href="html/libxml-dict.html#xmlDictCleanup">xmlDictCleanup</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveClose">xmlSaveClose</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveFlush">xmlSaveFlush</a><br />
 <a href="html/libxml-uri.html#xmlURIEscape">xmlURIEscape</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathNodeSetAddUnique">xmlXPathNodeSetAddUnique</a><br />
 </dd><dt>surprising</dt><dd><a href="html/libxml-encoding.html#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a><br />

@@ -835,8 +835,8 @@ getParameterEntityCallback(void *ctx ATTRIBUTE_UNUSED,
 /**
  * entityDeclCallback:
  * @ctxt:  An XML parser context
- * @name:  the entity name 
- * @type:  the entity type 
+ * @name:  the entity name
+ * @type:  the entity type
  * @publicId: The public ID of the entity
  * @systemId: The system ID of the entity
  * @content: the entity value (without processing).
@@ -858,8 +858,8 @@ entityDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 /**
  * attributeDeclCallback:
  * @ctxt:  An XML parser context
- * @name:  the attribute name 
- * @type:  the attribute type 
+ * @name:  the attribute name
+ * @type:  the attribute type
  *
  * An attribute definition has been parsed
  */
@@ -878,8 +878,8 @@ attributeDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 /**
  * elementDeclCallback:
  * @ctxt:  An XML parser context
- * @name:  the element name 
- * @type:  the element type 
+ * @name:  the element name
+ * @type:  the element type
  * @content: the element value (without processing).
  *
  * An element definition has been parsed
@@ -1032,7 +1032,7 @@ charactersCallback(void *ctx ATTRIBUTE_UNUSED,
  * @ctxt:  An XML parser context
  * @name:  The entity name
  *
- * called when an entity reference is detected. 
+ * called when an entity reference is detected.
  */
 static void
 referenceCallback(void *ctx ATTRIBUTE_UNUSED,
@@ -1337,7 +1337,7 @@ readerTest(const char *filename, size_t limit, int options, int fail) {
         if (fail)
             res = 0;
         else {
-            if (strncmp(filename, "crazy:", 6) == 0) 
+            if (strncmp(filename, "crazy:", 6) == 0)
                 fprintf(stderr, "Failed to parse '%s' %u\n",
                         filename, crazy_indx);
             else
@@ -1347,7 +1347,7 @@ readerTest(const char *filename, size_t limit, int options, int fail) {
         }
     } else {
         if (fail) {
-            if (strncmp(filename, "crazy:", 6) == 0) 
+            if (strncmp(filename, "crazy:", 6) == 0)
                 fprintf(stderr, "Failed to get failure for '%s' %u\n",
                         filename, crazy_indx);
             else

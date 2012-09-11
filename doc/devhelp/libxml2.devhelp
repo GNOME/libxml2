@@ -39,6 +39,7 @@
       <sub name="xmlmodule" link="libxml2-xmlmodule.html"/>
       <sub name="xmlreader" link="libxml2-xmlreader.html"/>
       <sub name="xmlregexp" link="libxml2-xmlregexp.html"/>
+      <sub name="xmlsave" link="libxml2-xmlsave.html"/>
       <sub name="xmlschemas" link="libxml2-xmlschemas.html"/>
       <sub name="xmlschemastypes" link="libxml2-xmlschemastypes.html"/>
       <sub name="xmlstring" link="libxml2-xmlstring.html"/>
@@ -772,6 +773,7 @@
     <function name="XML_PARSER_SUBST_ENTITIES" link="libxml2-xmlreader.html#XML_PARSER_SUBST_ENTITIES"/>
     <function name="XML_PARSER_SYSTEM_LITERAL" link="libxml2-parser.html#XML_PARSER_SYSTEM_LITERAL"/>
     <function name="XML_PARSER_VALIDATE" link="libxml2-xmlreader.html#XML_PARSER_VALIDATE"/>
+    <function name="XML_PARSE_BIG_LINES" link="libxml2-parser.html#XML_PARSE_BIG_LINES"/>
     <function name="XML_PARSE_COMPACT" link="libxml2-parser.html#XML_PARSE_COMPACT"/>
     <function name="XML_PARSE_DOM" link="libxml2-parser.html#XML_PARSE_DOM"/>
     <function name="XML_PARSE_DTDATTR" link="libxml2-parser.html#XML_PARSE_DTDATTR"/>
@@ -990,10 +992,18 @@
     <function name="XML_RNGP_VALUE_NO_CONTENT" link="libxml2-xmlerror.html#XML_RNGP_VALUE_NO_CONTENT"/>
     <function name="XML_RNGP_XMLNS_NAME" link="libxml2-xmlerror.html#XML_RNGP_XMLNS_NAME"/>
     <function name="XML_RNGP_XML_NS" link="libxml2-xmlerror.html#XML_RNGP_XML_NS"/>
+    <function name="XML_SAVE_AS_HTML" link="libxml2-xmlsave.html#XML_SAVE_AS_HTML"/>
+    <function name="XML_SAVE_AS_XML" link="libxml2-xmlsave.html#XML_SAVE_AS_XML"/>
     <function name="XML_SAVE_CHAR_INVALID" link="libxml2-xmlerror.html#XML_SAVE_CHAR_INVALID"/>
+    <function name="XML_SAVE_FORMAT" link="libxml2-xmlsave.html#XML_SAVE_FORMAT"/>
     <function name="XML_SAVE_NOT_UTF8" link="libxml2-xmlerror.html#XML_SAVE_NOT_UTF8"/>
+    <function name="XML_SAVE_NO_DECL" link="libxml2-xmlsave.html#XML_SAVE_NO_DECL"/>
     <function name="XML_SAVE_NO_DOCTYPE" link="libxml2-xmlerror.html#XML_SAVE_NO_DOCTYPE"/>
+    <function name="XML_SAVE_NO_EMPTY" link="libxml2-xmlsave.html#XML_SAVE_NO_EMPTY"/>
+    <function name="XML_SAVE_NO_XHTML" link="libxml2-xmlsave.html#XML_SAVE_NO_XHTML"/>
     <function name="XML_SAVE_UNKNOWN_ENCODING" link="libxml2-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING"/>
+    <function name="XML_SAVE_WSNONSIG" link="libxml2-xmlsave.html#XML_SAVE_WSNONSIG"/>
+    <function name="XML_SAVE_XHTML" link="libxml2-xmlsave.html#XML_SAVE_XHTML"/>
     <function name="XML_SCHEMAP_AG_PROPS_CORRECT" link="libxml2-xmlerror.html#XML_SCHEMAP_AG_PROPS_CORRECT"/>
     <function name="XML_SCHEMAP_ATTRFORMDEFAULT_VALUE" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRFORMDEFAULT_VALUE"/>
     <function name="XML_SCHEMAP_ATTRGRP_NONAME_NOREF" link="libxml2-xmlerror.html#XML_SCHEMAP_ATTRGRP_NONAME_NOREF"/>
@@ -1650,6 +1660,8 @@
     <function name="xmlSAXHandlerPtr" link="libxml2-tree.html#xmlSAXHandlerPtr"/>
     <function name="xmlSAXHandlerV1Ptr" link="libxml2-parser.html#xmlSAXHandlerV1Ptr"/>
     <function name="xmlSAXLocatorPtr" link="libxml2-tree.html#xmlSAXLocatorPtr"/>
+    <function name="xmlSaveCtxtPtr" link="libxml2-xmlsave.html#xmlSaveCtxtPtr"/>
+    <function name="xmlSaveOption" link="libxml2-xmlsave.html#xmlSaveOption"/>
     <function name="xmlSchemaAnnotPtr" link="libxml2-schemasInternals.html#xmlSchemaAnnotPtr"/>
     <function name="xmlSchemaAttributeGroupPtr" link="libxml2-schemasInternals.html#xmlSchemaAttributeGroupPtr"/>
     <function name="xmlSchemaAttributeLinkPtr" link="libxml2-schemasInternals.html#xmlSchemaAttributeLinkPtr"/>
@@ -1758,6 +1770,7 @@
     <function name="xmlSAXHandler" link="libxml2-tree.html#xmlSAXHandler"/>
     <function name="xmlSAXHandlerV1" link="libxml2-parser.html#xmlSAXHandlerV1"/>
     <function name="xmlSAXLocator" link="libxml2-tree.html#xmlSAXLocator"/>
+    <function name="xmlSaveCtxt" link="libxml2-xmlsave.html#xmlSaveCtxt"/>
     <function name="xmlSchema" link="libxml2-xmlschemas.html#xmlSchema"/>
     <function name="xmlSchemaAnnot" link="libxml2-schemasInternals.html#xmlSchemaAnnot"/>
     <function name="xmlSchemaAttribute" link="libxml2-schemasInternals.html#xmlSchemaAttribute"/>
@@ -1864,6 +1877,7 @@
     <function name="xmlRelaxNGValidityErrorFunc" link="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc"/>
     <function name="xmlRelaxNGValidityWarningFunc" link="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc"/>
     <function name="xmlSchemaValidityErrorFunc" link="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc"/>
+    <function name="xmlSchemaValidityLocatorFunc" link="libxml2-xmlschemas.html#xmlSchemaValidityLocatorFunc"/>
     <function name="xmlSchemaValidityWarningFunc" link="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc"/>
     <function name="xmlSchematronValidityErrorFunc" link="libxml2-schematron.html#xmlSchematronValidityErrorFunc"/>
     <function name="xmlSchematronValidityWarningFunc" link="libxml2-schematron.html#xmlSchematronValidityWarningFunc"/>
@@ -2097,6 +2111,7 @@
     <function name="xmlBufEnd ()" link="libxml2-tree.html#xmlBufEnd"/>
     <function name="xmlBufGetNodeContent ()" link="libxml2-tree.html#xmlBufGetNodeContent"/>
     <function name="xmlBufNodeDump ()" link="libxml2-tree.html#xmlBufNodeDump"/>
+    <function name="xmlBufShrink ()" link="libxml2-tree.html#xmlBufShrink"/>
     <function name="xmlBufUse ()" link="libxml2-tree.html#xmlBufUse"/>
     <function name="xmlBufferAdd ()" link="libxml2-tree.html#xmlBufferAdd"/>
     <function name="xmlBufferAddHead ()" link="libxml2-tree.html#xmlBufferAddHead"/>
@@ -2829,12 +2844,22 @@
     <function name="xmlSAXUserParseFile ()" link="libxml2-parser.html#xmlSAXUserParseFile"/>
     <function name="xmlSAXUserParseMemory ()" link="libxml2-parser.html#xmlSAXUserParseMemory"/>
     <function name="xmlSAXVersion ()" link="libxml2-SAX2.html#xmlSAXVersion"/>
+    <function name="xmlSaveClose ()" link="libxml2-xmlsave.html#xmlSaveClose"/>
+    <function name="xmlSaveDoc ()" link="libxml2-xmlsave.html#xmlSaveDoc"/>
     <function name="xmlSaveFile ()" link="libxml2-tree.html#xmlSaveFile"/>
     <function name="xmlSaveFileEnc ()" link="libxml2-tree.html#xmlSaveFileEnc"/>
     <function name="xmlSaveFileTo ()" link="libxml2-tree.html#xmlSaveFileTo"/>
+    <function name="xmlSaveFlush ()" link="libxml2-xmlsave.html#xmlSaveFlush"/>
     <function name="xmlSaveFormatFile ()" link="libxml2-tree.html#xmlSaveFormatFile"/>
     <function name="xmlSaveFormatFileEnc ()" link="libxml2-tree.html#xmlSaveFormatFileEnc"/>
     <function name="xmlSaveFormatFileTo ()" link="libxml2-tree.html#xmlSaveFormatFileTo"/>
+    <function name="xmlSaveSetAttrEscape ()" link="libxml2-xmlsave.html#xmlSaveSetAttrEscape"/>
+    <function name="xmlSaveSetEscape ()" link="libxml2-xmlsave.html#xmlSaveSetEscape"/>
+    <function name="xmlSaveToBuffer ()" link="libxml2-xmlsave.html#xmlSaveToBuffer"/>
+    <function name="xmlSaveToFd ()" link="libxml2-xmlsave.html#xmlSaveToFd"/>
+    <function name="xmlSaveToFilename ()" link="libxml2-xmlsave.html#xmlSaveToFilename"/>
+    <function name="xmlSaveToIO ()" link="libxml2-xmlsave.html#xmlSaveToIO"/>
+    <function name="xmlSaveTree ()" link="libxml2-xmlsave.html#xmlSaveTree"/>
     <function name="xmlSaveUri ()" link="libxml2-uri.html#xmlSaveUri"/>
     <function name="xmlScanName ()" link="libxml2-parserInternals.html#xmlScanName"/>
     <function name="xmlSchemaCheckFacet ()" link="libxml2-xmlschemastypes.html#xmlSchemaCheckFacet"/>
@@ -2892,6 +2917,8 @@
     <function name="xmlSchemaValidateListSimpleTypeFacet ()" link="libxml2-xmlschemastypes.html#xmlSchemaValidateListSimpleTypeFacet"/>
     <function name="xmlSchemaValidateOneElement ()" link="libxml2-xmlschemas.html#xmlSchemaValidateOneElement"/>
     <function name="xmlSchemaValidatePredefinedType ()" link="libxml2-xmlschemastypes.html#xmlSchemaValidatePredefinedType"/>
+    <function name="xmlSchemaValidateSetFilename ()" link="libxml2-xmlschemas.html#xmlSchemaValidateSetFilename"/>
+    <function name="xmlSchemaValidateSetLocator ()" link="libxml2-xmlschemas.html#xmlSchemaValidateSetLocator"/>
     <function name="xmlSchemaValidateStream ()" link="libxml2-xmlschemas.html#xmlSchemaValidateStream"/>
     <function name="xmlSchemaValueAppend ()" link="libxml2-xmlschemastypes.html#xmlSchemaValueAppend"/>
     <function name="xmlSchemaValueGetAsBoolean ()" link="libxml2-xmlschemastypes.html#xmlSchemaValueGetAsBoolean"/>

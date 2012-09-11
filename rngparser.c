@@ -18,7 +18,7 @@
 #include <libxml/relaxng.h>
 #include <libxml/dict.h>
 
-#define TODO 								\
+#define TODO								\
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
@@ -282,7 +282,7 @@ retry:
 	ctxt->cur++;
 	if (ctxt->cur >= ctxt->end) goto eof;
 	cur = ctxt->cur;
-        if ((ctxt->end - ctxt->end > 2) && 
+        if ((ctxt->end - ctxt->end > 2) &&
 	    (*cur == '"') && (cur[1] == '"')) {
 	    TODO
 	} else {
@@ -395,7 +395,7 @@ xmlParseCRNGGetToken(xmlCRelaxNGParserCtxtPtr ctxt, int no) {
  * xmlParseCRNGDropTokens:
  * @ctxt: a compact RNG parser context
  * @nr: the number of token marked as read
- * 
+ *
  * mark a number of token as read and consumed.
  *
  * Returns -1 in case of error and 0 otherwise
@@ -408,7 +408,7 @@ xmlParseCRNGDropTokens(xmlCRelaxNGParserCtxtPtr ctxt, int nr) {
 	nr--;
 	ctxt->nbTokens--;
 	ctxt->totalToken++;
-	if (ctxt->totalToken == 384) 
+	if (ctxt->totalToken == 384)
 	    fprintf(stderr, "found\n");
     }
     ctxt->firstToken = ctxt->firstToken % MAX_TOKEN;
@@ -418,7 +418,7 @@ xmlParseCRNGDropTokens(xmlCRelaxNGParserCtxtPtr ctxt, int nr) {
 static void
 xmlParseCRNGTokenize(xmlCRelaxNGParserCtxtPtr ctxt) {
     tokenPtr token;
-    
+
     token = xmlParseCRNGGetToken(ctxt, 1);
     while (token != NULL) {
         switch (token->toktype) {
@@ -450,7 +450,7 @@ xmlParseCRNGTokenize(xmlCRelaxNGParserCtxtPtr ctxt) {
  * Returns 0 in case of success and -1 in case of error
  */
 static int
-xmlParseCRNG_attribute(xmlCRelaxNGParserCtxtPtr ctxt, 
+xmlParseCRNG_attribute(xmlCRelaxNGParserCtxtPtr ctxt,
                        const xmlChar *name,
                        xmlNsPtr ns,
 		       const xmlChar *value)
@@ -477,7 +477,7 @@ xmlParseCRNG_attribute(xmlCRelaxNGParserCtxtPtr ctxt,
  * Returns 0 in case of success and -1 in case of error
  */
 static int
-xmlParseCRNG_bindPrefix(xmlCRelaxNGParserCtxtPtr ctxt, 
+xmlParseCRNG_bindPrefix(xmlCRelaxNGParserCtxtPtr ctxt,
                         const xmlChar *prefix,
 			const xmlChar *namespace)
 {
@@ -502,7 +502,7 @@ xmlParseCRNG_bindPrefix(xmlCRelaxNGParserCtxtPtr ctxt,
         ret = xmlHashAddEntry(ctxt->namespaces, xmlCRelaxNGDefault,
 	                      (void *) namespace);
     else
-        ret = xmlHashAddEntry(ctxt->namespaces, prefix, 
+        ret = xmlHashAddEntry(ctxt->namespaces, prefix,
 	                      (void *) namespace);
     if (ret < 0) {
         if (prefix == NULL) {
@@ -527,14 +527,14 @@ xmlParseCRNG_bindPrefix(xmlCRelaxNGParserCtxtPtr ctxt,
  * Returns 0 in case of success and -1 in case of error
  */
 static int
-xmlParseCRNG_bindDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED, 
+xmlParseCRNG_bindDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
                                 const xmlChar *prefix,
 			        const xmlChar *namespace)
 {
     int ret;
 
     if ((prefix != NULL) && (xmlStrEqual(prefix, BAD_CAST "xsd"))  &&
-        (!xmlStrEqual(namespace, 
+        (!xmlStrEqual(namespace,
 		  BAD_CAST "http://www.w3.org/2001/XMLSchema-datatypes"))) {
 	ERROR("The \"xsd\" prefix must be bound to \"http://www.w3.org/2001/XMLSchema-datatypes\"");
 	return(-1);
@@ -545,7 +545,7 @@ xmlParseCRNG_bindDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
         ERROR("Failed to create namespace hash table");
 	return(-1);
     }
-    ret = xmlHashAddEntry(ctxt->datatypes, prefix, 
+    ret = xmlHashAddEntry(ctxt->datatypes, prefix,
                           (void *) namespace);
     if (ret < 0) {
 	ERROR("Redefinition of datatype");
@@ -564,7 +564,7 @@ xmlParseCRNG_bindDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * Returns the prefix in case of success or NULL in case of error
  */
 static const xmlChar *
-xmlParseCRNG_lookupPrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED, 
+xmlParseCRNG_lookupPrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
                         const xmlChar *prefix)
 {
     const xmlChar *ret;
@@ -586,7 +586,7 @@ xmlParseCRNG_lookupPrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * Returns the prefix in case of success or NULL in case of error
  */
 static const xmlChar *
-xmlParseCRNG_lookupDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED, 
+xmlParseCRNG_lookupDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
                         const xmlChar *prefix)
 {
     const xmlChar *ret;
@@ -604,7 +604,7 @@ xmlParseCRNG_lookupDatatypePrefix(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED
  * Returns the prefix in case of success or NULL in case of error
  */
 static xmlAttrPtr
-xmlParseCRNG_datatypeAttributes(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED, 
+xmlParseCRNG_datatypeAttributes(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
                         const xmlChar *library, const xmlChar *type)
 {
     xmlAttrPtr lib, typ;
@@ -727,9 +727,9 @@ xmlParseCRNG_innerNameClass(xmlCRelaxNGParserCtxtPtr ctxt)
 	if (cur == NULL) CRNG_MEM_ERROR0();
 	if (ctxt->isElem) {
 	    xmlSetProp(cur, BAD_CAST "ns",
-	               xmlParseCRNG_lookupPrefix(ctxt, NULL)); 
+	               xmlParseCRNG_lookupPrefix(ctxt, NULL));
 	} else {
-	    xmlSetProp(cur, BAD_CAST "ns", BAD_CAST ""); 
+	    xmlSetProp(cur, BAD_CAST "ns", BAD_CAST "");
 	}
 	xmlNodeAddContent(cur, token->token);
 	if (ctxt->insert != NULL)
@@ -742,7 +742,7 @@ xmlParseCRNG_innerNameClass(xmlCRelaxNGParserCtxtPtr ctxt)
 	cur = xmlNewNode(NULL, BAD_CAST "nsName");
 	if (cur == NULL) CRNG_MEM_ERROR0();
         xmlSetProp(cur, BAD_CAST "ns",
-	           xmlParseCRNG_lookupPrefix(ctxt, token->token)); 
+	           xmlParseCRNG_lookupPrefix(ctxt, token->token));
 	if (ctxt->insert != NULL)
 	    xmlAddChild(ctxt->insert, cur);
 	ctxt->insert = cur;
@@ -837,11 +837,11 @@ xmlParseCRNG_datatype(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     token = xmlParseCRNGGetToken(ctxt, 1);
     if (token->toktype == CRNG_KEYWORD) {
 	if (token->token == ctxt->key_string) {
-	    attrs = xmlParseCRNG_datatypeAttributes(ctxt, BAD_CAST "", 
+	    attrs = xmlParseCRNG_datatypeAttributes(ctxt, BAD_CAST "",
 	                                            token->token);
 	    xmlParseCRNGDropTokens(ctxt, 1);
 	} else if (token->token == ctxt->key_token) {
-	    attrs = xmlParseCRNG_datatypeAttributes(ctxt, BAD_CAST "", 
+	    attrs = xmlParseCRNG_datatypeAttributes(ctxt, BAD_CAST "",
 	                                            token->token);
 	    xmlParseCRNGDropTokens(ctxt, 1);
 	} else {
@@ -853,7 +853,7 @@ xmlParseCRNG_datatype(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
 	if (ctxt->insert == NULL) CRNG_MEM_ERROR0();
 	xmlNodeAddContent(ctxt->insert, token->token);
     } else if (token->toktype == CRNG_QNAME) {
-	attrs = xmlParseCRNG_datatypeAttributes(ctxt, 
+	attrs = xmlParseCRNG_datatypeAttributes(ctxt,
 	            xmlParseCRNG_lookupDatatypePrefix(ctxt, token->prefix),
 		    token->token);
     } else {
@@ -1075,7 +1075,7 @@ xmlParseCRNG_pattern(xmlCRelaxNGParserCtxtPtr ctxt)
     } else {
 	ctxt->insert = prev;
     }
-        
+
     return(0);
 }
 
@@ -1092,7 +1092,7 @@ xmlParseCRNG_component(xmlCRelaxNGParserCtxtPtr ctxt)
 {
     tokenPtr token, tok2;
     xmlNodePtr insert = ctxt->insert;
-    
+
     token = xmlParseCRNGGetToken(ctxt, 1);
     if (token == NULL)
         return(0);
@@ -1185,7 +1185,7 @@ xmlParseCRNG_grammar(xmlCRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
 {
     tokenPtr token;
     int ret;
-    
+
     token = xmlParseCRNGGetToken(ctxt, 1);
     while (token != NULL) {
         ret = xmlParseCRNG_component(ctxt);
@@ -1208,7 +1208,7 @@ static int
 xmlParseCRNG_topLevelBody(xmlCRelaxNGParserCtxtPtr ctxt)
 {
     tokenPtr token, tok2;
-    
+
     token = xmlParseCRNGGetToken(ctxt, 1);
     if (token->toktype == CRNG_KEYWORD) {
         if ((token->token == ctxt->key_start) ||
@@ -1220,14 +1220,14 @@ xmlParseCRNG_topLevelBody(xmlCRelaxNGParserCtxtPtr ctxt)
 	    if (grammar == NULL) CRNG_MEM_ERROR0();
 	    xmlDocSetRootElement(ctxt->doc, grammar);
 	    ctxt->insert = grammar;
-	    
+
 	    xmlParseCRNG_grammar(ctxt);
 	} else {
 	    xmlParseCRNG_pattern(ctxt);
 	}
     } else {
         tok2 = xmlParseCRNGGetToken(ctxt, 2);
-	if ((tok2->toktype == CRNG_OP) && 
+	if ((tok2->toktype == CRNG_OP) &&
 	    ((tok2->token == ctxt->key_equal) ||
 	     (tok2->token == ctxt->key_orequal) ||
 	     (tok2->token == ctxt->key_andequal))) {
@@ -1237,7 +1237,7 @@ xmlParseCRNG_topLevelBody(xmlCRelaxNGParserCtxtPtr ctxt)
 	    if (grammar == NULL) CRNG_MEM_ERROR0();
 	    xmlDocSetRootElement(ctxt->doc, grammar);
 	    ctxt->insert = grammar;
-	    
+
 	    xmlParseCRNG_grammar(ctxt);
 	} else {
 	    xmlParseCRNG_pattern(ctxt);
@@ -1293,7 +1293,7 @@ xmlParseCRNG_decl(xmlCRelaxNGParserCtxtPtr ctxt)
     const xmlChar *prefix = NULL;
     const xmlChar *namespace = NULL;
     tokenPtr token;
-    
+
     token = xmlParseCRNGGetToken(ctxt, 1);
     if (token->toktype != CRNG_KEYWORD) return(-1);
     if (token->token == ctxt->key_default) {
@@ -1349,12 +1349,12 @@ xmlParseCRNG_decl(xmlCRelaxNGParserCtxtPtr ctxt)
 	    xmlParseCRNG_bindPrefix(ctxt, prefix, namespace);
     } else if (token->token == ctxt->key_datatypes) {
         xmlParseCRNGDropTokens(ctxt, 1);
-        
+
         token = xmlParseCRNGGetToken(ctxt, 1);
 	if ((token->toktype != CRNG_KEYWORD) &&
 	    (token->toktype != CRNG_IDENTIFIER)) {
 	    ERROR("Expecting a datatype prefix identifier here");
-	} else 
+	} else
 	    prefix = token->token;
         xmlParseCRNGDropTokens(ctxt, 1);
         token = xmlParseCRNGGetToken(ctxt, 1);
@@ -1389,7 +1389,7 @@ static int
 xmlParseCRNG_preamble(xmlCRelaxNGParserCtxtPtr ctxt)
 {
     tokenPtr token;
-    
+
     token = xmlParseCRNGGetToken(ctxt, 1);
     while (token != NULL) {
 	if (token == NULL) return(-1);
@@ -1514,7 +1514,7 @@ xmlConvertCRNGFile(const char *URL, const char *encoding) {
 }
 
 #ifdef STANDALONE
-const xmlChar *schemas = 
+const xmlChar *schemas =
 "# RELAX NG XML syntax specified in compact syntax.\n\
 \n\
 default namespace rng = \"http://relaxng.org/ns/structure/1.0\"\n\

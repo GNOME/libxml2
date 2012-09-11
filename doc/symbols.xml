@@ -1759,5 +1759,6 @@
     <symbol file="xmlschemas">xmlSchemaValidateSetLocator</symbol>
     <symbol file="xmlIO">xmlOutputBufferGetContent</symbol>
     <symbol file="xmlIO">xmlOutputBufferGetSize</symbol>
+    <symbol file="xmlwriter">xmlTextWriterSetQuoteChar</symbol>
   </release>
 </symbols>

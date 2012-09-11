@@ -188,7 +188,7 @@ extern void xmlCheckVersion(int version);
 /**
  * LIBXML_DLL_IMPORT:
  *
- * Used on Windows (MS C compiler only) to declare a variable as 
+ * Used on Windows (MS C compiler only) to declare a variable as
  * imported from the library. This macro should be empty when compiling
  * libxml itself. It should expand to __declspec(dllimport)
  * when the client code includes this header, and that only if the client
@@ -196,9 +196,9 @@ extern void xmlCheckVersion(int version);
  * For this to work, we need three macros. One tells us which compiler is
  * being used and luckily the compiler defines such a thing: _MSC_VER. The
  * second macro tells us if we are compiling libxml or the client code and
- * we define the macro IN_LIBXML on the compiler's command line for this 
- * purpose. The third macro, LIBXML_STATIC, must be defined by any client 
- * code which links against libxml statically. 
+ * we define the macro IN_LIBXML on the compiler's command line for this
+ * purpose. The third macro, LIBXML_STATIC, must be defined by any client
+ * code which links against libxml statically.
  */
 #ifndef LIBXML_DLL_IMPORT
 #if defined(_MSC_VER) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)

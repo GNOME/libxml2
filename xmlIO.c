@@ -1001,7 +1001,7 @@ xmlFileOpenW (const char *filename) {
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
     fd = xmlWrapOpen(path, 1);
 #else
- 	   fd = fopen(path, "wb");
+	   fd = fopen(path, "wb");
 #endif /* WIN32 */
 
 	 if (fd == NULL) xmlIOErr(0, path);
@@ -3512,7 +3512,7 @@ xmlEscapeContent(unsigned char* out, int *outlen,
     inend = in + (*inlen);
 
     while ((in < inend) && (out < outend)) {
-   	if (*in == '<') {
+	if (*in == '<') {
 	    if (outend - out < 4) break;
 	    *out++ = '&';
 	    *out++ = 'l';

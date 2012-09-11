@@ -40,7 +40,7 @@ static int n_blocks_outstanding = 0;
  * Sets the number of allocations until we simulate a failed
  * allocation. If set to 0, the next allocation to run
  * fails; if set to 1, one succeeds then the next fails; etc.
- * Set to _TEST_INT_MAX to not fail anything. 
+ * Set to _TEST_INT_MAX to not fail anything.
  */
 static void
 set_fail_alloc_counter (int until_next_fail)
@@ -96,7 +96,7 @@ decrement_fail_alloc_counter (void)
 
           n_failures_this_failure = 0;
         }
-      
+
       return TRUE;
     }
   else
@@ -121,13 +121,13 @@ test_get_malloc_blocks_outstanding (void)
 
 void*
 test_malloc (size_t bytes)
-{  
+{
   if (decrement_fail_alloc_counter ())
     {
       /* FAIL the malloc */
       return NULL;
     }
-  
+
   if (bytes == 0) /* some system mallocs handle this, some don't */
     return NULL;
   else
@@ -151,7 +151,7 @@ test_realloc (void  *memory,
       /* FAIL */
       return NULL;
     }
-  
+
   if (bytes == 0) /* guarantee this is safe */
     {
       test_free (memory);
@@ -185,10 +185,10 @@ test_strdup (const char *str)
 {
   int len;
   char *copy;
-  
+
   if (str == NULL)
     return NULL;
-  
+
   len = strlen (str);
 
   copy = test_malloc (len + 1);
@@ -196,7 +196,7 @@ test_strdup (const char *str)
     return NULL;
 
   memcpy (copy, str, len + 1);
-  
+
   return copy;
 }
 
@@ -206,14 +206,14 @@ run_failing_each_malloc (int                n_mallocs,
                          void              *data)
 {
   n_mallocs += 10; /* fudge factor to ensure reallocs etc. are covered */
-  
+
   while (n_mallocs >= 0)
-    {      
+    {
       set_fail_alloc_counter (n_mallocs);
 
       if (!(* func) (data))
         return FALSE;
-      
+
       n_mallocs -= 1;
     }
 
@@ -243,7 +243,7 @@ test_oom_handling (TestMemoryFunction  func,
   int approx_mallocs;
 
   /* Run once to see about how many mallocs are involved */
-  
+
   set_fail_alloc_counter (_TEST_INT_MAX);
 
   if (!(* func) (data))
@@ -254,7 +254,7 @@ test_oom_handling (TestMemoryFunction  func,
   set_fail_alloc_failures (1);
   if (!run_failing_each_malloc (approx_mallocs, func, data))
     return FALSE;
-  
+
   set_fail_alloc_failures (2);
   if (!run_failing_each_malloc (approx_mallocs, func, data))
     return FALSE;
@@ -264,6 +264,6 @@ test_oom_handling (TestMemoryFunction  func,
     return FALSE;
 
   set_fail_alloc_counter (_TEST_INT_MAX);
-  
+
   return TRUE;
 }

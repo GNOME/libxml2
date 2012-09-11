@@ -172,7 +172,7 @@ static int64_t BINARY_INSERTION_FIND(SORT_TYPE *dst, const SORT_TYPE x, const si
 static void BINARY_INSERTION_SORT_START(SORT_TYPE *dst, const size_t start, const size_t size)
 {
   int64_t i;
-  for (i = start; i < size; i++)
+  for (i = start; i < (int64_t) size; i++)
   {
     int64_t j;
     SORT_TYPE x;
@@ -214,7 +214,7 @@ static int64_t COUNT_RUN(SORT_TYPE *dst, const int64_t start, const size_t size)
 {
   int64_t curr;
   if (size - start == 1) return 1;
-  if (start >= size - 2)
+  if (start >= (int64_t) size - 2)
   {
     if (SORT_CMP(dst[size - 2], dst[size - 1]) > 0)
       SORT_SWAP(dst[size - 2], dst[size - 1]);
@@ -228,7 +228,7 @@ static int64_t COUNT_RUN(SORT_TYPE *dst, const int64_t start, const size_t size)
     /* increasing run */
     while (1)
     {
-      if (curr == size - 1) break;
+      if (curr == (int64_t) size - 1) break;
       if (SORT_CMP(dst[curr - 1], dst[curr]) > 0) break;
       curr++;
     }
@@ -239,7 +239,7 @@ static int64_t COUNT_RUN(SORT_TYPE *dst, const int64_t start, const size_t size)
     /* decreasing run */
     while (1)
     {
-      if (curr == size - 1) break;
+      if (curr == (int64_t) size - 1) break;
       if (SORT_CMP(dst[curr - 1], dst[curr]) <= 0) break;
       curr++;
     }
@@ -253,7 +253,7 @@ static int64_t COUNT_RUN(SORT_TYPE *dst, const int64_t start, const size_t size)
 len = COUNT_RUN(dst, curr, size);\
 run = minrun;\
 if (run < minrun) run = minrun;\
-if (run > size - curr) run = size - curr;\
+if (run > (int64_t) size - curr) run = size - curr;\
 if (run > len)\
 {\
   BINARY_INSERTION_SORT_START(&dst[curr], len, run);\
@@ -265,7 +265,7 @@ run_stack[stack_curr].length = len;\
 stack_curr++;\
 }\
 curr += len;\
-if (curr == size)\
+if (curr == (int64_t) size)\
 {\
   /* finish up */ \
   while (stack_curr > 1) \
@@ -390,7 +390,8 @@ static int TIM_SORT_COLLAPSE(SORT_TYPE *dst, TIM_SORT_RUN_T *stack, int stack_cu
     /* if the stack only has one thing on it, we are done with the collapse */
     if (stack_curr <= 1) break;
     /* if this is the last merge, just do it */
-    if ((stack_curr == 2) && (stack[0].length + stack[1].length == size))
+    if ((stack_curr == 2) &&
+        (stack[0].length + stack[1].length == (int64_t) size))
     {
       TIM_SORT_MERGE(dst, stack, stack_curr, store);
       stack[0].length += stack[1].length;

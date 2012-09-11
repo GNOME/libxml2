@@ -22,6 +22,8 @@
 #include <libxml/globals.h>
 #include <libxml/dict.h>
 
+#include "save.h"
+
 /*
  * The XML predefined entities.
  */
@@ -620,7 +622,8 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
 	     * Special handling of &{...} construct from HTML 4, see
 	     * http://www.w3.org/TR/html401/appendix/notes.html#h-B.7.1
 	     */
-	    if (html && attr && (cur[1] == '{') && (strchr(cur, '}'))) {
+	    if (html && attr && (cur[1] == '{') &&
+	        (strchr((const char *) cur, '}'))) {
 	        while (*cur != '}') {
 		    *out++ = *cur++;
 		    indx = out - buffer;

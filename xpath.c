@@ -7771,6 +7771,7 @@ xmlXPathNextChildElement(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     return(NULL);
 }
 
+#if 0
 /**
  * xmlXPathNextDescendantOrSelfElemParent:
  * @ctxt:  the XPath Parser context
@@ -7846,6 +7847,7 @@ next_sibling:
     }
     return(NULL);
 }
+#endif
 
 /**
  * xmlXPathNextDescendant:
@@ -12111,8 +12113,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     xmlNodeSetPtr contextSeq;
     int contextIdx;
     xmlNodePtr contextNode;
-    /* The context node for a compound traversal */
-    xmlNodePtr outerContextNode;
     /* The final resulting node set wrt to all context nodes */
     xmlNodeSetPtr outSeq;
     /*
@@ -12306,7 +12306,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     addNode = xmlXPathNodeSetAddUnique;
     outSeq = NULL;
     seq = NULL;
-    outerContextNode = NULL;
     contextNode = NULL;
     contextIdx = 0;
 

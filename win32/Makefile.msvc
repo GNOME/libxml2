@@ -43,7 +43,7 @@ CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS"  /D "NOLIBTOOL" /W1 $(CRUNTIME)
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "HAVE_CONFIG_H" /D "NOLIBTOOL" /W1 $(CRUNTIME)
 CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"
@@ -263,7 +263,8 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\runtest.exe\
 	$(BINDIR)\runsuite.exe\
 	$(BINDIR)\testapi.exe\
-	$(BINDIR)\testlimits.exe
+	$(BINDIR)\testlimits.exe\
+	$(BINDIR)\testrecurse.exe
 	
 !if "$(WITH_THREADS)" == "yes" || "$(WITH_THREADS)" == "ctls" || "$(WITH_THREADS)" == "native"
 UTILS = $(UTILS) $(BINDIR)\testThreadsWin32.exe
@@ -416,7 +417,15 @@ $(UTILS) : $(UTILS_INTDIR) $(BINDIR) libxml libxmla libxmladll
 
 # TESTS
 
-tests :  XPathtests
+tests : checktests XPathtests
+
+checktests : $(UTILS)
+	cd .. && win32\$(BINDIR)\runtest.exe
+	cd .. && win32\$(BINDIR)\testrecurse.exe
+	cd .. && win32\$(BINDIR)\testapi.exe
+	cd .. && win32\$(BINDIR)\testchar.exe
+	cd .. && win32\$(BINDIR)\testdict.exe
+	cd .. && win32\$(BINDIR)\runxmlconf.exe
 
 XPathtests : $(BINDIR)\testXPath.exe
 	@echo. 2> .memdump

@@ -30,6 +30,14 @@ typedef unsigned __int64 uint64_t;
 #endif
 #endif
 
+#ifndef MK_UINT64
+#if defined(WIN32) && defined(_MSC_VER) && _MSC_VER < 1300
+#define MK_UINT64(x) ((uint64_t)(x))
+#else
+#define MK_UINT64(x) x##ULL
+#endif
+#endif
+
 #ifndef MAX
 #define MAX(x,y) (((x) > (y) ? (x) : (y)))
 #endif
@@ -67,12 +75,12 @@ int clzll(uint64_t x) /* {{{ */
 #endif
 #endif
 
-int compute_minrun(const uint64_t size) /* {{{ */
+int compute_minrun(uint64_t size) /* {{{ */
 {
   const int top_bit = 64 - CLZ(size);
   const int shift = MAX(top_bit, 6) - 6;
   const int minrun = size >> shift;
-  const uint64_t mask = (1ULL << shift) - 1;
+  const uint64_t mask = (MK_UINT64(1) << shift) - 1;
   if (mask & size) return minrun + 1;
   return minrun;
 }

@@ -2329,6 +2329,32 @@ libxml_xmlRegisterXPathFunction(ATTRIBUTE_UNUSED PyObject * self,
     return (py_retval);
 }
 
+PyObject *
+libxml_xmlXPathRegisterVariable(ATTRIBUTE_UNUSED PyObject * self,
+                                PyObject * args)
+{
+    PyObject *py_retval;
+    int c_retval = 0;
+    xmlChar *name;
+    xmlChar *ns_uri;
+    xmlXPathContextPtr ctx;
+    xmlXPathObjectPtr val;
+    PyObject *pyobj_ctx;
+    PyObject *pyobj_value;
+
+    if (!PyArg_ParseTuple
+        (args, (char *) "OszO:xpathRegisterVariable", &pyobj_ctx, &name,
+         &ns_uri, &pyobj_value))
+        return (NULL);
+
+    ctx = (xmlXPathContextPtr) PyxmlXPathContext_Get(pyobj_ctx);
+    val = libxml_xmlXPathObjectPtrConvert(pyobj_value);
+
+    c_retval = xmlXPathRegisterVariableNS(ctx, name, ns_uri, val);
+    py_retval = libxml_intWrap(c_retval);
+    return (py_retval);
+}
+
 /************************************************************************
  *									*
  *			Global properties access			*

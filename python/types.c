@@ -622,7 +622,6 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
         printf("Unable to convert Python Object to XPath");
 #endif
     }
-    Py_DECREF(obj);
     return (ret);
 }
 

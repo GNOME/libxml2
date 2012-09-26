@@ -12399,7 +12399,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 				break;
 			}
 		    } else if (cur->type == type) {
-			if (type == XML_NAMESPACE_DECL)
+			if (cur->type == XML_NAMESPACE_DECL)
 			    XP_TEST_HIT_NS
 			else
 			    XP_TEST_HIT

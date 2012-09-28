@@ -9779,7 +9779,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
       <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
       <arg name='langList' type='const xmlChar **' info='where to store the tokens'/>
-      <arg name='len' type='int' info='the allocated lenght of @list'/>
+      <arg name='len' type='int' info='the allocated length of @list'/>
     </function>
     <function name='xmlExpGetStart' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
@@ -9788,7 +9788,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
       <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
       <arg name='tokList' type='const xmlChar **' info='where to store the tokens'/>
-      <arg name='len' type='int' info='the allocated lenght of @list'/>
+      <arg name='len' type='int' info='the allocated length of @list'/>
     </function>
     <function name='xmlExpIsNillable' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
@@ -9808,7 +9808,7 @@ Could we use @subtypes for this?'/>
       <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
       <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
       <arg name='name' type='const xmlChar *' info='the atom name'/>
-      <arg name='len' type='int' info='the atom name lenght in byte (or -1);'/>
+      <arg name='len' type='int' info='the atom name length in byte (or -1);'/>
     </function>
     <function name='xmlExpNewCtxt' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
@@ -13112,7 +13112,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='1 if no validation problem was found or -1 otherwise'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the RelaxNG validation context'/>
       <arg name='data' type='const xmlChar *' info='some character data read'/>
-      <arg name='len' type='int' info='the lenght of the data'/>
+      <arg name='len' type='int' info='the length of the data'/>
     </function>
     <function name='xmlRelaxNGValidatePushElement' file='relaxng' module='relaxng'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -14447,7 +14447,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSplitQName3' file='tree' module='tree'>
       <info>parse an XML qualified name string,i</info>
-      <return type='const xmlChar *' info='NULL if it is not a Qualified Name, otherwise, update len with the lenght in byte of the prefix and return a pointer to the start of the name without the prefix'/>
+      <return type='const xmlChar *' info='NULL if it is not a Qualified Name, otherwise, update len with the length in byte of the prefix and return a pointer to the start of the name without the prefix'/>
       <arg name='name' type='const xmlChar *' info='the full QName'/>
       <arg name='len' type='int *' info='an int *'/>
     </function>
@@ -17165,7 +17165,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='1 if no validation problem was found or 0 otherwise'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='data' type='const xmlChar *' info='some character data read'/>
-      <arg name='len' type='int' info='the lenght of the data'/>
+      <arg name='len' type='int' info='the length of the data'/>
     </function>
     <function name='xmlValidatePushElement' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED) &amp;&amp; defined(LIBXML_REGEXP_ENABLED)</cond>

@@ -1384,19 +1384,19 @@ struct limitDesc {
 };
 
 static limitDesc limitDescriptions[] = {
-    /* max lenght of a text node in content */
+    /* max length of a text node in content */
     {"huge:textNode", XML_MAX_TEXT_LENGTH - CHUNK, 0, 0},
     {"huge:textNode", XML_MAX_TEXT_LENGTH + CHUNK, 0, 1},
     {"huge:textNode", XML_MAX_TEXT_LENGTH + CHUNK, XML_PARSE_HUGE, 0},
-    /* max lenght of a text node in content */
+    /* max length of a text node in content */
     {"huge:attrNode", XML_MAX_TEXT_LENGTH - CHUNK, 0, 0},
     {"huge:attrNode", XML_MAX_TEXT_LENGTH + CHUNK, 0, 1},
     {"huge:attrNode", XML_MAX_TEXT_LENGTH + CHUNK, XML_PARSE_HUGE, 0},
-    /* max lenght of a comment node */
+    /* max length of a comment node */
     {"huge:commentNode", XML_MAX_TEXT_LENGTH - CHUNK, 0, 0},
     {"huge:commentNode", XML_MAX_TEXT_LENGTH + CHUNK, 0, 1},
     {"huge:commentNode", XML_MAX_TEXT_LENGTH + CHUNK, XML_PARSE_HUGE, 0},
-    /* max lenght of a PI node */
+    /* max length of a PI node */
     {"huge:piNode", XML_MAX_TEXT_LENGTH - CHUNK, 0, 0},
     {"huge:piNode", XML_MAX_TEXT_LENGTH + CHUNK, 0, 1},
     {"huge:piNode", XML_MAX_TEXT_LENGTH + CHUNK, XML_PARSE_HUGE, 0},

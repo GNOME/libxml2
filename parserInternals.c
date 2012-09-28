@@ -1253,7 +1253,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
  * xmlSwitchToEncodingInt:
  * @ctxt:  the parser context
  * @handler:  the encoding handler
- * @len: the lenght to convert or -1
+ * @len: the length to convert or -1
  *
  * change the input functions when discovering the character encoding
  * of a given entity, and convert only @len bytes of the output, this

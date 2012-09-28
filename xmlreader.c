@@ -984,7 +984,7 @@ printf("Expand failed !\n");
  * xmlTextReaderValidateCData:
  * @reader:  the xmlTextReaderPtr used
  * @data:  pointer to the CData
- * @len:  lenght of the CData block in bytes.
+ * @len:  length of the CData block in bytes.
  *
  * Push some CData for validation
  */

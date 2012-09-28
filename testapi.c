@@ -17832,7 +17832,7 @@ test_xmlRelaxNGValidatePushCData(void) {
     int n_ctxt;
     xmlChar * data; /* some character data read */
     int n_data;
-    int len; /* the lenght of the data */
+    int len; /* the length of the data */
     int n_len;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlRelaxNGValidCtxtPtr;n_ctxt++) {
@@ -27094,7 +27094,7 @@ test_xmlValidatePushCData(void) {
     int n_ctxt;
     xmlChar * data; /* some character data read */
     int n_data;
-    int len; /* the lenght of the data */
+    int len; /* the length of the data */
     int n_len;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
@@ -33167,7 +33167,7 @@ test_xmlExpGetLanguage(void) {
     int n_exp;
     xmlChar ** langList; /* where to store the tokens */
     int n_langList;
-    int len; /* the allocated lenght of @list */
+    int len; /* the allocated length of @list */
     int n_len;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlExpCtxtPtr;n_ctxt++) {
@@ -33222,7 +33222,7 @@ test_xmlExpGetStart(void) {
     int n_exp;
     xmlChar ** tokList; /* where to store the tokens */
     int n_tokList;
-    int len; /* the allocated lenght of @list */
+    int len; /* the allocated length of @list */
     int n_len;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlExpCtxtPtr;n_ctxt++) {

@@ -24806,7 +24806,7 @@
           <ref name='xmlUTF8Strndup'/>
           <ref name='xmlUTF8Strsize'/>
         </word>
-        <word name='lenght'>
+        <word name='length'>
           <ref name='xmlExpGetLanguage'/>
           <ref name='xmlExpGetStart'/>
           <ref name='xmlExpNewAtom'/>

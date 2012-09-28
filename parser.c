@@ -3436,7 +3436,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseNCName:
  * @ctxt:  an XML parser context
- * @len:  lenght of the string parsed
+ * @len:  length of the string parsed
  *
  * parse an XML name.
  *
@@ -3935,7 +3935,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
         if ((len > XML_MAX_TEXT_LENGTH) &&
             ((ctxt->options & XML_PARSE_HUGE) == 0)) {
             xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                           "AttValue lenght too long\n");
+                           "AttValue length too long\n");
             goto mem_error;
         }
 	if (c == 0) break;
@@ -4094,11 +4094,11 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 
     /*
      * There we potentially risk an overflow, don't allow attribute value of
-     * lenght more than INT_MAX it is a very reasonnable assumption !
+     * length more than INT_MAX it is a very reasonnable assumption !
      */
     if (len >= INT_MAX) {
         xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                       "AttValue lenght too long\n");
+                       "AttValue length too long\n");
         goto mem_error;
     }
 
@@ -8898,7 +8898,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                                   "AttValue lenght too long\n");
+                                   "AttValue length too long\n");
                     return(NULL);
                 }
 	    }
@@ -8920,7 +8920,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                                   "AttValue lenght too long\n");
+                                   "AttValue length too long\n");
                     return(NULL);
                 }
 	    }
@@ -8949,7 +8949,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                                   "AttValue lenght too long\n");
+                                   "AttValue length too long\n");
                     return(NULL);
                 }
 	    }
@@ -8957,7 +8957,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
         if (((in - start) > XML_MAX_TEXT_LENGTH) &&
             ((ctxt->options & XML_PARSE_HUGE) == 0)) {
             xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                           "AttValue lenght too long\n");
+                           "AttValue length too long\n");
             return(NULL);
         }
 	if (*in != limit) goto need_complex;
@@ -8979,7 +8979,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                                   "AttValue lenght too long\n");
+                                   "AttValue length too long\n");
                     return(NULL);
                 }
 	    }
@@ -8988,7 +8988,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
         if (((in - start) > XML_MAX_TEXT_LENGTH) &&
             ((ctxt->options & XML_PARSE_HUGE) == 0)) {
             xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                           "AttValue lenght too long\n");
+                           "AttValue length too long\n");
             return(NULL);
         }
 	if (*in != limit) goto need_complex;

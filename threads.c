@@ -252,7 +252,6 @@ xmlMutexLock(xmlMutexPtr tok)
 #ifdef DEBUG_THREADS
         xmlGenericError(xmlGenericErrorContext,
                         "xmlMutexLock():BeOS:Couldn't aquire semaphore\n");
-        exit();
 #endif
     }
     tok->tid = find_thread(NULL);
@@ -500,7 +499,6 @@ __xmlGlobalInitMutexLock(void)
 #ifdef DEBUG_THREADS
         xmlGenericError(xmlGenericErrorContext,
                         "xmlGlobalInitMutexLock():BeOS:Couldn't acquire semaphore\n");
-        exit();
 #endif
     }
 #endif

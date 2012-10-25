@@ -11633,7 +11633,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    "PP: Parsing internal subset\n");
 #endif
 		    ctxt->inSubset = 1;
-                    ctxt->progressive = 1;
+                    ctxt->progressive = 0;
 		    ctxt->checkIndex = 0;
 		    xmlParseDocTypeDecl(ctxt);
 		    if (RAW == '[') {
@@ -12219,7 +12219,10 @@ xmldecl_done:
 	}
 	ctxt->instate = XML_PARSER_EOF;
     }
-    return((xmlParserErrors) ctxt->errNo);
+    if (ctxt->wellFormed == 0)
+	return((xmlParserErrors) ctxt->errNo);
+    else
+        return(0);
 }
 
 /************************************************************************

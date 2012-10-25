@@ -168,6 +168,7 @@ static int nodefdtd = 0;
 #endif
 #ifdef LIBXML_PUSH_ENABLED
 static int push = 0;
+static int pushsize = 4096;
 #endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_MMAP
 static int memory = 0;
@@ -2192,17 +2193,15 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	f = fopen(filename, "r");
 #endif
         if (f != NULL) {
-            int res, size = 3;
+            int res;
             char chars[4096];
             htmlParserCtxtPtr ctxt;
 
-            /* if (repeat) */
-                size = 4096;
             res = fread(chars, 1, 4, f);
             if (res > 0) {
                 ctxt = htmlCreatePushParserCtxt(NULL, NULL,
                             chars, res, filename, XML_CHAR_ENCODING_NONE);
-                while ((res = fread(chars, 1, size, f)) > 0) {
+                while ((res = fread(chars, 1, pushsize, f)) > 0) {
                     htmlParseChunk(ctxt, chars, res, 0);
                 }
                 htmlParseChunk(ctxt, chars, 0, 1);
@@ -3017,6 +3016,7 @@ static void usage(const char *name) {
 #endif
 #ifdef LIBXML_PUSH_ENABLED
     printf("\t--push : use the push mode of the parser\n");
+    printf("\t--pushsmall : use the push mode of the parser using tiny increments\n");
 #endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_MMAP
     printf("\t--memory : parse from memory\n");
@@ -3247,6 +3247,11 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
+	else if ((!strcmp(argv[i], "-pushsmall")) ||
+	         (!strcmp(argv[i], "--pushsmall"))) {
+	    push++;
+            pushsize = 10;
+        }
 #endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_MMAP
 	else if ((!strcmp(argv[i], "-memory")) ||

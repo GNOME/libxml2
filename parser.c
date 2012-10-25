@@ -1540,7 +1540,7 @@ nsPush(xmlParserCtxtPtr ctxt, const xmlChar *prefix, const xmlChar *URL)
 {
     if (ctxt->options & XML_PARSE_NSCLEAN) {
         int i;
-	for (i = 0;i < ctxt->nsNr;i += 2) {
+	for (i = ctxt->nsNr - 2;i >= 0;i -= 2) {
 	    if (ctxt->nsTab[i] == prefix) {
 		/* in scope */
 	        if (ctxt->nsTab[i + 1] == URL)

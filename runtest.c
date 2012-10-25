@@ -2093,7 +2093,7 @@ static void processNode(FILE *out, xmlTextReaderPtr reader) {
 }
 static int
 streamProcessTest(const char *filename, const char *result, const char *err,
-                  xmlTextReaderPtr reader, const char *rng) {
+                  xmlTextReaderPtr reader, const char *rng, int options) {
     int ret;
     char *temp = NULL;
     FILE *t = NULL;
@@ -2189,7 +2189,7 @@ streamParseTest(const char *filename, const char *result, const char *err,
     int ret;
 
     reader = xmlReaderForFile(filename, NULL, options);
-    ret = streamProcessTest(filename, result, err, reader, NULL);
+    ret = streamProcessTest(filename, result, err, reader, NULL, options);
     xmlFreeTextReader(reader);
     return(ret);
 }
@@ -2217,7 +2217,7 @@ walkerParseTest(const char *filename, const char *result, const char *err,
 	return(-1);
     }
     reader = xmlReaderWalker(doc);
-    ret = streamProcessTest(filename, result, err, reader, NULL);
+    ret = streamProcessTest(filename, result, err, reader, NULL, options);
     xmlFreeTextReader(reader);
     xmlFreeDoc(doc);
     return(ret);
@@ -2249,7 +2249,7 @@ streamMemParseTest(const char *filename, const char *result, const char *err,
 	return(-1);
     }
     reader = xmlReaderForMemory(base, size, filename, NULL, options);
-    ret = streamProcessTest(filename, result, err, reader, NULL);
+    ret = streamProcessTest(filename, result, err, reader, NULL, options);
     free((char *)base);
     xmlFreeTextReader(reader);
     return(ret);
@@ -3308,9 +3308,11 @@ rngStreamTest(const char *filename,
 	    fprintf(stderr, "Failed to build reder for %s\n", instance);
 	}
 	if (disable_err == 1)
-	    ret = streamProcessTest(instance, result, NULL, reader, filename);
+	    ret = streamProcessTest(instance, result, NULL, reader, filename,
+	                            options);
 	else
-	    ret = streamProcessTest(instance, result, err, reader, filename);
+	    ret = streamProcessTest(instance, result, err, reader, filename,
+	                            options);
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
 	    fprintf(stderr, "instance %s failed\n", instance);
@@ -4203,6 +4205,14 @@ testDesc testDescriptions[] = {
     { "Validity checking regression tests" ,
       errParseTest, "./test/VC/*", "result/VC/", NULL, "",
       XML_PARSE_DTDVALID },
+#ifdef LIBXML_READER_ENABLED
+    { "Streaming validity checking regression tests" ,
+      streamParseTest, "./test/valid/*.xml", "result/valid/", NULL, ".err.rdr",
+      XML_PARSE_DTDVALID },
+    { "Streaming validity error checking regression tests" ,
+      streamParseTest, "./test/VC/*", "result/VC/", NULL, ".rdr",
+      XML_PARSE_DTDVALID },
+#endif
     { "General documents valid regression tests" ,
       errParseTest, "./test/valid/*", "result/valid/", "", ".err",
       XML_PARSE_DTDVALID },

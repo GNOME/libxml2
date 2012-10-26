@@ -800,7 +800,7 @@ xmlCheckFilename (const char *path)
     return 1;
 }
 
-static int
+int
 xmlNop(void) {
     return(0);
 }

@@ -91,6 +91,8 @@ void __xmlGlobalInitMutexDestroy(void);
 int __xmlRandom(void);
 #endif
 
+int xmlNop(void);
+
 #ifdef IN_LIBXML
 #ifdef __GNUC__
 #ifdef PIC

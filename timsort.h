@@ -48,7 +48,7 @@ typedef unsigned __int64 uint64_t;
 int compute_minrun(uint64_t);
 
 #ifndef CLZ
-#ifdef __GNUC__
+#if defined(__GNUC__) && ((__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ > 3))
 #define CLZ __builtin_clzll
 #else
 

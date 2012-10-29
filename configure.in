@@ -954,6 +954,7 @@ WITH_THREADS=0
 THREAD_CFLAGS=""
 TEST_THREADS=""
 THREADS_W32=""
+WITH_THREAD_ALLOC=0
 
 if test "$with_threads" = "no" ; then
     echo Disabling multithreaded support
@@ -1017,7 +1018,7 @@ else
     fi
 fi
 if test "$with_thread_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
-    THREAD_CFLAGS="$THREAD_CFLAGS -DLIBXML_THREAD_ALLOC_ENABLED"
+    WITH_THREAD_ALLOC=1
 fi
 
 AC_SUBST(THREAD_LIBS)
@@ -1025,6 +1026,7 @@ AC_SUBST(BASE_THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
 AC_SUBST(TEST_THREADS)
+AC_SUBST(WITH_THREAD_ALLOC)
 AM_CONDITIONAL([THREADS_W32],[test -n "$THREADS_W32"])
 
 dnl

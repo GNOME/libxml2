@@ -3,12 +3,7 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 includedir=@includedir@
-if [ "`ldd /bin/sh | grep lib64`" = "" ]
-then
-    libdir=${exec_prefix}/lib
-else
-    libdir=${exec_prefix}/lib64
-fi
+libdir=@libdir@
 
 usage()
 {

@@ -305,6 +305,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_TRIO\@/, withTrio? "1" : "0"));
 		} else if (s.search(/\@WITH_THREADS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_THREADS\@/, withThreads == "no"? "0" : "1"));
+		} else if (s.search(/\@WITH_THREAD_ALLOC\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_THREAD_ALLOC\@/, "0"));
 		} else if (s.search(/\@WITH_FTP\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_FTP\@/, withFtp? "1" : "0"));
 		} else if (s.search(/\@WITH_HTTP\@/) != -1) {

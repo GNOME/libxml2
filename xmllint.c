@@ -1875,7 +1875,8 @@ static void streamFile(char *filename) {
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
 	else
 #endif /* LIBXML_VALID_ENABLED */
-	    xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
+	    if (loaddtd)
+		xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
 	    if ((timing) && (!repeat)) {

@@ -12042,7 +12042,7 @@ xmlParseCheckTransition(xmlParserCtxtPtr ctxt, const char *chunk, int size) {
     }
     if ((ctxt->progressive == XML_PARSER_DTD) ||
         (ctxt->instate == XML_PARSER_DTD)) {
-        if (memchr(chunk, ']', size) != NULL)
+        if (memchr(chunk, '>', size) != NULL)
             return(1);
         return(0);
     }

@@ -2025,7 +2025,7 @@ static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
 static void xmlGROW (xmlParserCtxtPtr ctxt) {
     if ((((ctxt->input->end - ctxt->input->cur) > XML_MAX_LOOKUP_LIMIT) ||
          ((ctxt->input->cur - ctxt->input->base) > XML_MAX_LOOKUP_LIMIT)) &&
-         ((ctxt->input->buf) && (ctxt->input->buf->readcallback != xmlNop)) &&
+         ((ctxt->input->buf) && (ctxt->input->buf->readcallback != (xmlInputReadCallback) xmlNop)) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Huge input lookup");
         ctxt->instate = XML_PARSER_EOF;

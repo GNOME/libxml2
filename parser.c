@@ -12126,7 +12126,7 @@ xmldecl_done:
                 remain = 0;
             }
         }
-	res =xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
+	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
 	if (res < 0) {
 	    ctxt->errNo = XML_PARSER_EOF;
 	    ctxt->disableSAX = 1;
@@ -12143,6 +12143,8 @@ xmldecl_done:
 	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
 		    (in->raw != NULL)) {
 		int nbchars;
+		size_t base = xmlBufGetInputBase(in->buffer, ctxt->input);
+		size_t current = ctxt->input->cur - ctxt->input->base;
 
 		nbchars = xmlCharEncInput(in);
 		if (nbchars < 0) {
@@ -12151,6 +12153,7 @@ xmldecl_done:
 				    "xmlParseChunk: encoder error\n");
 		    return(XML_ERR_INVALID_ENCODING);
 		}
+		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
 	    }
 	}
     }
@@ -12190,7 +12193,14 @@ xmldecl_done:
     }
     if ((end_in_lf == 1) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL)) {
+	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
+					 ctxt->input);
+	size_t current = ctxt->input->cur - ctxt->input->base;
+
 	xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
+
+	xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input,
+			      base, current);
     }
     if (terminate) {
 	/*

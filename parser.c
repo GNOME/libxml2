@@ -11122,9 +11122,13 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	    /*
 	     * If we are operating on converted input, try to flush
 	     * remainng chars to avoid them stalling in the non-converted
-	     * buffer.
+	     * buffer. But do not do this in document start where
+	     * encoding="..." may not have been read and we work on a
+	     * guessed encoding.
 	     */
-	    if (xmlBufIsEmpty(ctxt->input->buf->buffer) == 0) {
+	    if ((ctxt->instate != XML_PARSER_START) &&
+	        (ctxt->input->buf->raw != NULL) &&
+		(xmlBufIsEmpty(ctxt->input->buf->raw) == 0)) {
                 size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
                                                  ctxt->input);
 		size_t current = ctxt->input->cur - ctxt->input->base;
@@ -12146,7 +12150,7 @@ xmldecl_done:
 		size_t base = xmlBufGetInputBase(in->buffer, ctxt->input);
 		size_t current = ctxt->input->cur - ctxt->input->base;
 
-		nbchars = xmlCharEncInput(in);
+		nbchars = xmlCharEncInput(in, terminate);
 		if (nbchars < 0) {
 		    /* TODO 2.6.0 */
 		    xmlGenericError(xmlGenericErrorContext,

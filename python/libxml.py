@@ -265,22 +265,22 @@ class xmlCore:
         ret = libxml2mod.parent(self._o)
         if ret == None:
             return None
-        return xmlNode(_obj=ret)
+        return nodeWrap(ret)
     def get_children(self):
         ret = libxml2mod.children(self._o)
         if ret == None:
             return None
-        return xmlNode(_obj=ret)
+        return nodeWrap(ret)
     def get_last(self):
         ret = libxml2mod.last(self._o)
         if ret == None:
             return None
-        return xmlNode(_obj=ret)
+        return nodeWrap(ret)
     def get_next(self):
         ret = libxml2mod.next(self._o)
         if ret == None:
             return None
-        return xmlNode(_obj=ret)
+        return nodeWrap(ret)
     def get_properties(self):
         ret = libxml2mod.properties(self._o)
         if ret == None:
@@ -290,7 +290,7 @@ class xmlCore:
         ret = libxml2mod.prev(self._o)
         if ret == None:
             return None
-        return xmlNode(_obj=ret)
+        return nodeWrap(ret)
     def get_content(self):
         return libxml2mod.xmlNodeGetContent(self._o)
     getContent = get_content  # why is this duplicate naming needed ?
@@ -317,7 +317,7 @@ class xmlCore:
                 ret = libxml2mod.parent(self._o)
                 if ret == None:
                     return None
-                return xmlNode(_obj=ret)
+                return nodeWrap(ret)
             elif attr == "properties":
                 ret = libxml2mod.properties(self._o)
                 if ret == None:
@@ -327,22 +327,22 @@ class xmlCore:
                 ret = libxml2mod.children(self._o)
                 if ret == None:
                     return None
-                return xmlNode(_obj=ret)
+                return nodeWrap(ret)
             elif attr == "last":
                 ret = libxml2mod.last(self._o)
                 if ret == None:
                     return None
-                return xmlNode(_obj=ret)
+                return nodeWrap(ret)
             elif attr == "next":
                 ret = libxml2mod.next(self._o)
                 if ret == None:
                     return None
-                return xmlNode(_obj=ret)
+                return nodeWrap(ret)
             elif attr == "prev":
                 ret = libxml2mod.prev(self._o)
                 if ret == None:
                     return None
-                return xmlNode(_obj=ret)
+                return nodeWrap(ret)
             elif attr == "content":
                 return libxml2mod.xmlNodeGetContent(self._o)
             elif attr == "name":

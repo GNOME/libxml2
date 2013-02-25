@@ -665,7 +665,7 @@ pythonExternalEntityLoader(const char *URL, const char *ID,
 	Py_XDECREF(ctxtobj);
 #ifdef DEBUG_LOADER
 	printf("pythonExternalEntityLoader: result ");
-	PyObject_Print(ret, stderr, 0);
+	PyObject_Print(ret, stdout, 0);
 	printf("\n");
 #endif
 
@@ -711,13 +711,20 @@ libxml_xmlSetEntityLoader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
 		&loader))
 	return(NULL);
 
+    if (!PyCallable_Check(loader)) {
+	PyErr_SetString(PyExc_ValueError, "entity loader is not callable");
+	return(NULL);
+    }
+
 #ifdef DEBUG_LOADER
     printf("libxml_xmlSetEntityLoader\n");
 #endif
     if (defaultExternalEntityLoader == NULL) 
 	defaultExternalEntityLoader = xmlGetExternalEntityLoader();
 
+    Py_XDECREF(pythonExternalEntityLoaderObjext);
     pythonExternalEntityLoaderObjext = loader;
+    Py_XINCREF(pythonExternalEntityLoaderObjext);
     xmlSetExternalEntityLoader(pythonExternalEntityLoader);
 
     py_retval = PyInt_FromLong(0);

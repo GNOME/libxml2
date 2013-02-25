@@ -719,10 +719,34 @@ class xmlTextReaderCore:
             return arg
 
 #
-# The cleanup now goes though a wrappe in libxml.c
+# The cleanup now goes though a wrapper in libxml.c
 #
 def cleanupParser():
     libxml2mod.xmlPythonCleanupParser()
+
+#
+# The interface to xmlRegisterInputCallbacks.
+# Since this API does not allow to pass a data object along with
+# match/open callbacks, it is necessary to maintain a list of all
+# Python callbacks.
+#
+__input_callbacks = []
+def registerInputCallback(func):
+    def findOpenCallback(URI):
+        for cb in reversed(__input_callbacks):
+            o = cb(URI)
+            if o is not None:
+                return o
+    libxml2mod.xmlRegisterInputCallback(findOpenCallback)
+    __input_callbacks.append(func)
+
+def popInputCallbacks():
+    # First pop python-level callbacks, when no more available - start
+    # popping built-in ones.
+    if len(__input_callbacks) > 0:
+        __input_callbacks.pop()
+    if len(__input_callbacks) == 0:
+        libxml2mod.xmlUnregisterInputCallback()
 
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #

@@ -339,6 +339,8 @@ def skip_function(name):
         return 1
     if name == "xmlValidateAttributeDecl":
         return 1
+    if name == "xmlPopInputCallbacks":
+	return 1
 
     return 0
 

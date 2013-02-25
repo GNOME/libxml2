@@ -724,6 +724,94 @@ libxml_xmlSetEntityLoader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
     return(py_retval);
 }
 
+/************************************************************************
+ *									*
+ *		Input callback registration				*
+ *									*
+ ************************************************************************/
+static PyObject *pythonInputOpenCallbackObject;
+static int pythonInputCallbackID = -1;
+
+static int
+pythonInputMatchCallback(ATTRIBUTE_UNUSED const char *URI)
+{
+    /* Always return success, real decision whether URI is supported will be
+     * made in open callback.  */
+    return 1;
+}
+
+static void *
+pythonInputOpenCallback(const char *URI)
+{
+    PyObject *ret;
+
+    ret = PyObject_CallFunction(pythonInputOpenCallbackObject,
+	    (char *)"s", URI);
+    if (ret == Py_None) {
+	Py_DECREF(Py_None);
+	return NULL;
+    }
+    return ret;
+}
+
+PyObject *
+libxml_xmlRegisterInputCallback(ATTRIBUTE_UNUSED PyObject *self,
+                                PyObject *args) {
+    PyObject *cb;
+
+    if (!PyArg_ParseTuple(args,
+		(const char *)"O:libxml_xmlRegisterInputCallback", &cb))
+	return(NULL);
+
+    if (!PyCallable_Check(cb)) {
+	PyErr_SetString(PyExc_ValueError, "input callback is not callable");
+	return(NULL);
+    }
+
+    /* Python module registers a single callback and manages the list of
+     * all callbacks internally. This is necessitated by xmlInputMatchCallback
+     * API, which does not allow for passing of data objects to discriminate
+     * different Python methods.  */
+    if (pythonInputCallbackID == -1) {
+	pythonInputCallbackID = xmlRegisterInputCallbacks(
+		pythonInputMatchCallback, pythonInputOpenCallback,
+		xmlPythonFileReadRaw, xmlPythonFileCloseRaw);
+	if (pythonInputCallbackID == -1)
+	    return PyErr_NoMemory();
+	pythonInputOpenCallbackObject = cb;
+	Py_INCREF(pythonInputOpenCallbackObject);
+    }
+
+    Py_INCREF(Py_None);
+    return(Py_None);
+}
+
+PyObject *
+libxml_xmlUnregisterInputCallback(ATTRIBUTE_UNUSED PyObject *self,
+                                ATTRIBUTE_UNUSED PyObject *args) {
+    int ret;
+
+    ret = xmlPopInputCallbacks();
+    if (pythonInputCallbackID != -1) {
+	/* Assert that the right input callback was popped. libxml's API does not
+	 * allow removal by ID, so all that could be done is an assert.  */
+	if (pythonInputCallbackID == ret) {
+	    pythonInputCallbackID = -1;
+	    Py_DECREF(pythonInputOpenCallbackObject);
+	    pythonInputOpenCallbackObject = NULL;
+	} else {
+	    PyErr_SetString(PyExc_AssertionError, "popped non-python input callback");
+	    return(NULL);
+	}
+    } else if (ret == -1) {
+	/* No more callbacks to pop */
+	PyErr_SetString(PyExc_IndexError, "no input callbacks to pop");
+	return(NULL);
+    }
+
+    Py_INCREF(Py_None);
+    return(Py_None);
+}
 
 /************************************************************************
  *									*
@@ -3693,6 +3781,8 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "getObjDesc", libxml_getObjDesc, METH_VARARGS, NULL},
     {(char *) "compareNodesEqual", libxml_compareNodesEqual, METH_VARARGS, NULL},
     {(char *) "nodeHash", libxml_nodeHash, METH_VARARGS, NULL},
+    {(char *) "xmlRegisterInputCallback", libxml_xmlRegisterInputCallback, METH_VARARGS, NULL},
+    {(char *) "xmlUnregisterInputCallback", libxml_xmlUnregisterInputCallback, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 

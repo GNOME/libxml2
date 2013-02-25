@@ -19,6 +19,7 @@ PYTESTS=	\
     xpath.py	\
     outbuf.py	\
     inbuf.py	\
+    input_callback.py \
     resolver.py \
     regexp.py	\
     reader.py	\

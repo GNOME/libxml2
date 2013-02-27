@@ -26,103 +26,118 @@ pystrings = {
 <!ENTITY sample.entity "replacement text">'''
 }
 
-def verify_doc(doc):
-    e = doc.getRootElement()
-    if e.name != 'root':
-        raise ValueError("name")
-    if e.content != 'replacement text':
-        raise ValueError("content")
-
 prefix = "py://strings/"
-def my_input_cb(URI):
-    idx = URI.startswith(prefix)
-    if idx == -1:
-        return None
-    path = URI[len(prefix):]
-    if path not in pystrings:
-        print "my_input_cb: path does not exist, '%s'" % path
-        return None
-    print "my_input_cb: loading '%s'" % URI
-    return StringIO.StringIO(pystrings[path])
-
-opts = libxml2.XML_PARSE_DTDLOAD | libxml2.XML_PARSE_NONET | libxml2.XML_PARSE_COMPACT
 startURL = prefix + "xml/sample.xml"
 catURL = prefix + "catalogs/catalog.xml"
 
+def my_input_cb(URI):
+    if not(URI.startswith(prefix)):
+        return None
+    path = URI[len(prefix):]
+    if path not in pystrings:
+        return None
+    return StringIO.StringIO(pystrings[path])
+
+
+def run_test(desc, docpath, catalog, exp_status="verified", exp_err=[], test_callback=None,
+        root_name="root", root_content="replacement text"):
+    opts = libxml2.XML_PARSE_DTDLOAD | libxml2.XML_PARSE_NONET | libxml2.XML_PARSE_COMPACT
+    actual_err = []
+
+    def my_global_error_cb(ctx, msg):
+        actual_err.append((-1, msg))
+    def my_ctx_error_cb(arg, msg, severity, reserved):
+        actual_err.append((severity, msg))
+
+    libxml2.registerErrorHandler(my_global_error_cb, None)
+    try:
+        parser = libxml2.createURLParserCtxt(docpath, opts)
+        parser.setErrorHandler(my_ctx_error_cb, None)
+        if catalog is not None:
+            parser.addLocalCatalog(catalog)
+        if test_callback is not None:
+            test_callback()
+        parser.parseDocument()
+        doc = parser.doc()
+        actual_status = "loaded"
+        e = doc.getRootElement()
+        if e.name == root_name and e.content == root_content:
+            actual_status = "verified"
+        doc.freeDoc()
+    except libxml2.parserError:
+        actual_status = "not loaded"
+
+    if actual_status != exp_status:
+        print "Test '%s' failed: expect status '%s', actual '%s'" % (desc, exp_status, actual_status)
+        sys.exit(1)
+    elif actual_err != exp_err:
+        print "Test '%s' failed" % desc
+        print "Expect errors:"
+        for s,m in exp_err: print "  [%2d] '%s'" % (s,m)
+        print "Actual errors:"
+        for s,m in actual_err: print "  [%2d] '%s'" % (s,m)
+        sys.exit(1)
+
+
 # Check that we cannot read custom schema without custom callback
-print
-print "Test 1: Expecting failure to load (custom scheme not handled)"
-try:
-    doc = libxml2.readFile(startURL, None, opts)
-    print "Read custom scheme without registering handler succeeded?"
-    sys.exit(1)
-except libxml2.treeError, e:
-    pass
+run_test(desc="Loading entity without custom callback",
+        docpath=startURL, catalog=None,
+        exp_status="not loaded", exp_err=[
+            (-1, "I/O "),
+            (-1, "warning : "),
+            (-1, "failed to load external entity \"py://strings/xml/sample.xml\"\n")
+            ])
 
 # Register handler and try to load the same entity
-print
-print "Test 2: Expecting failure to load (no catalog - cannot load DTD)"
 libxml2.registerInputCallback(my_input_cb)
-doc = libxml2.readFile(startURL, None, opts)
-try:
-    verify_doc(doc)
-    print "Doc was loaded?"
-except ValueError, e:
-    if str(e) != "content":
-        print "Doc verify failed"
-doc.freeDoc()
+run_test(desc="Loading entity with custom callback",
+        docpath=startURL, catalog=None,
+        exp_status="loaded", exp_err=[
+            (-1, "Attempt to load network entity http://example.com/dtds/sample.dtd"),
+            ( 4, "Entity 'sample.entity' not defined\n")
+            ])
 
 # Register a catalog (also accessible via pystr://) and retry
-print
-print "Test 3: Expecting successful loading"
-parser = libxml2.createURLParserCtxt(startURL, opts)
-parser.addLocalCatalog(catURL)
-parser.parseDocument()
-doc = parser.doc()
-verify_doc(doc)
-doc.freeDoc()
+run_test(desc="Loading entity with custom callback and catalog",
+        docpath=startURL, catalog=catURL)
 
 # Unregister custom callback when parser is already created
-print
-print "Test 4: Expect failure to read (custom callback unregistered during read)"
-parser = libxml2.createURLParserCtxt(startURL, opts)
-libxml2.popInputCallbacks()
-parser.addLocalCatalog(catURL)
-parser.parseDocument()
-doc = parser.doc()
-try:
-    verify_doc(doc)
-    print "Doc was loaded?"
-except ValueError, e:
-    if str(e) != "content":
-        print "Doc verify failed"
-doc.freeDoc()
+run_test(desc="Loading entity and unregistering callback",
+        docpath=startURL, catalog=catURL,
+        test_callback=lambda: libxml2.popInputCallbacks(),
+        exp_status="loaded", exp_err=[
+            ( 3, "failed to load external entity \"py://strings/dtds/sample.dtd\"\n"),
+            ( 4, "Entity 'sample.entity' not defined\n")
+            ])
 
 # Try to load the document again
-print
-print "Test 5: Expect failure to load (callback unregistered)"
-try:
-    doc = libxml2.readFile(startURL, None, opts)
-    print "Read custom scheme without registering handler succeeded?"
-    sys.exit(1)
-except libxml2.treeError, e:
-    pass
+run_test(desc="Retry loading document after unregistering callback",
+        docpath=startURL, catalog=catURL,
+        exp_status="not loaded", exp_err=[
+            (-1, "I/O "),
+            (-1, "warning : "),
+            (-1, "failed to load external entity \"py://strings/xml/sample.xml\"\n")
+            ])
 
 # But should be able to read standard I/O yet...
-print
-print "Test 6: Expect successful loading using standard I/O"
-doc = libxml2.readFile("tst.xml", None, opts)
-doc.freeDoc()
+run_test(desc="Loading using standard i/o after unregistering callback",
+        docpath="tst.xml", catalog=None,
+        root_name='doc', root_content='bar')
 
 # Now pop ALL input callbacks, should fail to load even standard I/O
-print
-print "Test 7: Remove all input callbacks, expect failure to load using standard I/O"
 try:
     while True:
         libxml2.popInputCallbacks()
 except IndexError, e:
-    print "Popped all input callbacks: " + str(e)
-try:
-    doc = libxml2.readFile("tst.xml", None, opts)
-except libxml2.treeError, e:
     pass
+
+run_test(desc="Loading using standard i/o after unregistering all callbacks",
+        docpath="tst.xml", catalog=None,
+        exp_status="not loaded", exp_err=[
+            (-1, "I/O "),
+            (-1, "warning : "),
+            (-1, "failed to load external entity \"tst.xml\"\n")
+            ])
+
+print "OK"
+sys.exit(0);

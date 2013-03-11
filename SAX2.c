@@ -605,7 +605,9 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 	}
 	ret->owner = 1;
 	if (ret->checked == 0) {
-	    ret->checked = ctxt->nbentities - oldnbent + 1;
+	    ret->checked = (ctxt->nbentities - oldnbent + 1) * 2;
+	    if ((ret->content != NULL) && (xmlStrchr(ret->content, '<')))
+	        ret->checked |= 1;
 	}
     }
     return(ret);

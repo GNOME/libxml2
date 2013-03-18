@@ -27863,7 +27863,10 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
     const xmlChar *nsName;
 
     /* DOC VAL TODO: Move this to the start function. */
-    valRoot = xmlDocGetRootElement(vctxt->doc);
+    if (vctxt->validationRoot != NULL)
+        valRoot = vctxt->validationRoot;
+    else
+	valRoot = xmlDocGetRootElement(vctxt->doc);
     if (valRoot == NULL) {
 	/* VAL TODO: Error code? */
 	VERROR(1, NULL, "The document has no document element");

@@ -3725,14 +3725,16 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
      */
     if ((out->conv != NULL) && (out->encoder != NULL)) {
 	/*
-	 * convert as much as possible to the parser reading buffer.
+	 * convert as much as possible to the parser output buffer.
 	 */
-	nbchars = xmlCharEncOutput(out, 0);
-	if (nbchars < 0) {
-	    xmlIOErr(XML_IO_ENCODER, NULL);
-	    out->error = XML_IO_ENCODER;
-	    return(-1);
-	}
+	do {
+	    nbchars = xmlCharEncOutput(out, 0);
+	    if (nbchars < 0) {
+		xmlIOErr(XML_IO_ENCODER, NULL);
+		out->error = XML_IO_ENCODER;
+		return(-1);
+	    }
+	} while (nbchars);
     }
 
     /*

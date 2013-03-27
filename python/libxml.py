@@ -11,7 +11,7 @@ class libxmlError(Exception): pass
 def pos_id(o):
     i = id(o)
     if (i < 0):
-        return (sys.maxint - i)
+        return (sys.maxsize - i)
     return i
 
 #
@@ -79,7 +79,7 @@ class ioReadWrapper(ioWrapper):
         self._o = libxml2mod.xmlCreateInputBuffer(self, enc)
 
     def __del__(self):
-        print "__del__"
+        print("__del__")
         self.io_close()
         if self._o != None:
             libxml2mod.xmlFreeParserInputBuffer(self._o)
@@ -95,10 +95,10 @@ class ioWriteWrapper(ioWrapper):
     def __init__(self, _obj, enc = ""):
 #        print "ioWriteWrapper.__init__", _obj
         if type(_obj) == type(''):
-            print "write io from a string"
+            print("write io from a string")
             self.o = None
         elif type(_obj) == types.InstanceType:
-            print "write io from instance of %s" % (_obj.__class__)
+            print("write io from instance of %s" % (_obj.__class__))
             ioWrapper.__init__(self, _obj)
             self._o = libxml2mod.xmlCreateOutputBuffer(self, enc)
         else:
@@ -357,7 +357,7 @@ class xmlCore:
                     else:
                         return None
                 return xmlDoc(_obj=ret)
-            raise AttributeError,attr
+            raise AttributeError(attr)
     else:
         parent = property(get_parent, None, None, "Parent node")
         children = property(get_children, None, None, "First child node")
@@ -400,7 +400,7 @@ class xmlCore:
                    prefixes=None,
                    with_comments=0):
         if nodes:
-            nodes = map(lambda n: n._o, nodes)
+            nodes = [n._o for n in nodes]
         return libxml2mod.xmlC14NDocDumpMemory(
             self.get_doc()._o,
             nodes,
@@ -414,7 +414,7 @@ class xmlCore:
                    prefixes=None,
                    with_comments=0):
         if nodes:
-            nodes = map(lambda n: n._o, nodes)
+            nodes = [n._o for n in nodes]
         return libxml2mod.xmlC14NDocSaveTo(
             self.get_doc()._o,
             nodes,
@@ -502,7 +502,7 @@ class xmlCoreDepthFirstItertor:
         self.parents = []
     def __iter__(self):
         return self
-    def next(self):
+    def __next__(self):
         while 1:
             if self.node:
                 ret = self.node
@@ -513,7 +513,7 @@ class xmlCoreDepthFirstItertor:
                 parent = self.parents.pop()
             except IndexError:
                 raise StopIteration
-            self.node = parent.next
+            self.node = parent.__next__
 
 #
 # implements the breadth-first iterator for libxml2 DOM tree
@@ -524,12 +524,12 @@ class xmlCoreBreadthFirstItertor:
         self.parents = []
     def __iter__(self):
         return self
-    def next(self):
+    def __next__(self):
         while 1:
             if self.node:
                 ret = self.node
                 self.parents.append(self.node)
-                self.node = self.node.next
+                self.node = self.node.__next__
                 return ret
             try:
                 parent = self.parents.pop()
@@ -564,10 +564,10 @@ def nodeWrap(o):
 def xpathObjectRet(o):
     otype = type(o)
     if otype == type([]):
-        ret = map(xpathObjectRet, o)
+        ret = list(map(xpathObjectRet, o))
         return ret
     elif otype == type(()):
-        ret = map(xpathObjectRet, o)
+        ret = list(map(xpathObjectRet, o))
         return tuple(ret)
     elif otype == type('') or otype == type(0) or otype == type(0.0):
         return o
@@ -603,7 +603,7 @@ def registerErrorHandler(f, ctx):
     """Register a Python written function to for error reporting.
        The function is called back as f(ctx, error). """
     import sys
-    if not sys.modules.has_key('libxslt'):
+    if 'libxslt' not in sys.modules:
         # normal behaviour when libxslt is not imported
         ret = libxml2mod.xmlRegisterErrorHandler(f,ctx)
     else:
@@ -682,8 +682,9 @@ class relaxNgValidCtxtCore:
         libxml2mod.xmlRelaxNGSetValidErrors(self._o, err_func, warn_func, arg)
 
     
-def _xmlTextReaderErrorFunc((f,arg),msg,severity,locator):
+def _xmlTextReaderErrorFunc(xxx_todo_changeme,msg,severity,locator):
     """Intermediate callback to wrap the locator"""
+    (f,arg) = xxx_todo_changeme
     return f(arg,msg,severity,xmlTextReaderLocator(locator))
 
 class xmlTextReaderCore:

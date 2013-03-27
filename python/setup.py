@@ -32,7 +32,7 @@ except:
 if WITHDLLS:
     # libxml dlls (expected in ROOT/bin)
     dlls = [ 'iconv.dll','libxml2.dll','libxslt.dll','libexslt.dll' ]
-    dlls = map(lambda dll: os.path.join(ROOT,'bin',dll),dlls)
+    dlls = [os.path.join(ROOT,'bin',dll) for dll in dlls]
 
     # create __init__.py for the libxmlmods package
     if not os.path.exists("libxmlmods"):
@@ -70,7 +70,7 @@ for dir in includes_dir:
 	break;
 
 if xml_includes == "":
-    print "failed to find headers for libxml2: update includes_dir"
+    print("failed to find headers for libxml2: update includes_dir")
     sys.exit(1)
 
 iconv_includes=""
@@ -80,7 +80,7 @@ for dir in includes_dir:
 	break;
 
 if iconv_includes == "":
-    print "failed to find headers for libiconv: update includes_dir"
+    print("failed to find headers for libiconv: update includes_dir")
     sys.exit(1)
 
 # those are added in the linker search path for libraries
@@ -103,8 +103,8 @@ if missing("libxml2-py.c") or missing("libxml2.py"):
 	except:
 	    import generator
     except:
-	print "failed to find and generate stubs for libxml2, aborting ..."
-	print sys.exc_type, sys.exc_value
+	print("failed to find and generate stubs for libxml2, aborting ...")
+	print(sys.exc_info()[0], sys.exc_info()[1])
 	sys.exit(1)
 
     head = open("libxml.py", "r")
@@ -124,13 +124,13 @@ if missing("libxml2-py.c") or missing("libxml2.py"):
 with_xslt=0
 if missing("libxslt-py.c") or missing("libxslt.py"):
     if missing("xsltgenerator.py") or missing("libxslt-api.xml"):
-        print "libxslt stub generator not found, libxslt not built"
+        print("libxslt stub generator not found, libxslt not built")
     else:
 	try:
 	    import xsltgenerator
 	except:
-	    print "failed to generate stubs for libxslt, aborting ..."
-	    print sys.exc_type, sys.exc_value
+	    print("failed to generate stubs for libxslt, aborting ...")
+	    print(sys.exc_info()[0], sys.exc_info()[1])
 	else:
 	    head = open("libxsl.py", "r")
 	    generated = open("libxsltclass.py", "r")
@@ -157,7 +157,7 @@ if with_xslt == 1:
 	    break;
 
     if xslt_includes == "":
-	print "failed to find headers for libxslt: update includes_dir"
+	print("failed to find headers for libxslt: update includes_dir")
 	with_xslt = 0
 
 

@@ -3077,7 +3077,7 @@ static void usage(const char *name) {
     printf("\t--sax: do not build a tree but work just at the SAX level\n");
     printf("\t--oldxml10: use XML-1.0 parsing rules before the 5th edition\n");
 #ifdef LIBXML_XPATH_ENABLED
-    printf("\t--xpath expr: evaluate the XPath expression, inply --noout\n");
+    printf("\t--xpath expr: evaluate the XPath expression, imply --noout\n");
 #endif
 
     printf("\nLibxml project home page: http://xmlsoft.org/\n");

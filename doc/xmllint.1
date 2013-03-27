@@ -1,18 +1,38 @@
-.\" ** You probably do not want to edit this file directly **
-.\" It was generated using the DocBook XSL Stylesheets (version 1.69.1).
-.\" Instead of manually editing it, you probably should edit the DocBook XML
-.\" source for it and then use the DocBook XSL Stylesheets to regenerate it.
-.TH "XMLLINT" "1" "$Date$" "libxml2" ""
+'\" t
+.\"     Title: xmllint
+.\"    Author: John Fleck <jfleck@inkstain.net>
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: $Date$
+.\"    Manual: xmllint Manual
+.\"    Source: libxml2
+.\"  Language: English
+.\"
+.TH "XMLLINT" "1" "$Date$" "libxml2" "xmllint Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
 xmllint \- command line XML tool
 .SH "SYNOPSIS"
-.HP 8
-\fBxmllint\fR [\fB\-\-version\fR \fB\-\-debug\fR \fB\-\-shell\fR \fB\-\-debugent\fR \fB\-\-copy\fR \fB\-\-recover\fR \fB\-\-noent\fR \fB\-\-noout\fR \fB\-\-nonet\fR \fB\-\-path\ "\fR\fB\fIPATH(S)\fR\fR\fB"\fR \fB\-\-load\-trace\fR \fB\-\-htmlout\fR \fB\-\-nowrap\fR \fB\-\-valid\fR \fB\-\-postvalid\fR \fB\-\-dtdvalid\ \fR\fB\fIURL\fR\fR \fB\-\-dtdvalidfpi\ \fR\fB\fIFPI\fR\fR \fB\-\-timing\fR \fB\-\-output\ \fR\fB\fIFILE\fR\fR \fB\-\-repeat\fR \fB\-\-insert\fR \fB\-\-compress\fR \fB\-\-html\fR \fB\-\-xmlout\fR \fB\-\-push\fR \fB\-\-memory\fR \fB\-\-maxmem\ \fR\fB\fINBBYTES\fR\fR \fB\-\-nowarning\fR \fB\-\-noblanks\fR \fB\-\-nocdata\fR \fB\-\-format\fR \fB\-\-encode\ \fR\fB\fIENCODING\fR\fR \fB\-\-dropdtd\fR \fB\-\-nsclean\fR \fB\-\-testIO\fR \fB\-\-catalogs\fR \fB\-\-nocatalogs\fR \fB\-\-auto\fR \fB\-\-xinclude\fR \fB\-\-noxincludenode\fR \fB\-\-loaddtd\fR \fB\-\-dtdattr\fR \fB\-\-stream\fR \fB\-\-walker\fR \fB\-\-pattern\ \fR\fB\fIPATTERNVALUE\fR\fR \fB\-\-chkregister\fR \fB\-\-relaxng\ \fR\fB\fISCHEMA\fR\fR \fB\-\-schema\ \fR\fB\fISCHEMA\fR\fR \fB\-\-c14n\fR] {\fIXML\-FILE(S)\fR... \-}
-.HP 8
+.HP \w'\fBxmllint\fR\ 'u
+\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-shell\fR | \fB\-\-xpath\ "\fR\fB\fIXPath_expression\fR\fR\fB"\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-path\ "\fR\fB\fIPATH(S)\fR\fR\fB"\fR | \fB\-\-load\-trace\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fR\fB\fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fR\fB\fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fR\fB\fIFILE\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-maxmem\ \fR\fB\fINBBYTES\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fR\fB\fIENCODING\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-noxincludenode\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fR\fB\fIPATTERNVALUE\fR\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-schema\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-c14n\fR] {\fIXML\-FILE(S)\fR... | \-}
+.HP \w'\fBxmllint\fR\ 'u
 \fBxmllint\fR \fB\-\-help\fR
 .SH "DESCRIPTION"
 .PP
@@ -24,404 +44,607 @@ files, specified on the command line as
 \fIXML\-FILE\fR
 (or the standard input if the filename provided is
 \fB\-\fR
-). It prints various types of output, depending upon the options selected. It is useful for detecting errors both in
+)\&. It prints various types of output, depending upon the options selected\&. It is useful for detecting errors both in
 XML
 code and in the
 XML
-parser itself.
+parser itself\&.
 .PP
 \fBxmllint\fR
 is included in
-\fBlibxml\fR(3).
+\fBlibxml\fR(3)\&.
 .SH "OPTIONS"
 .PP
+
 \fBxmllint\fR
 accepts the following options (in alphabetical order):
-.TP
+.PP
 \fB\-\-auto\fR
-Generate a small document for testing purposes.
-.TP
+.RS 4
+Generate a small document for testing purposes\&.
+.RE
+.PP
 \fB\-\-catalogs\fR
+.RS 4
 Use the
 SGML
 catalog(s) from
-\fBSGML_CATALOG_FILES\fR. Otherwise
+\fBSGML_CATALOG_FILES\fR\&. Otherwise
 XML
 catalogs starting from
-\fI/etc/xml/catalog\fR
-are used by default.
-.TP
+/etc/xml/catalog
+are used by default\&.
+.RE
+.PP
 \fB\-\-chkregister\fR
-Turn on node registration. Useful for developers testing
+.RS 4
+Turn on node registration\&. Useful for developers testing
 \fBlibxml\fR(3)
-node tracking code.
-.TP
+node tracking code\&.
+.RE
+.PP
 \fB\-\-compress\fR
+.RS 4
 Turn on
 \fBgzip\fR(1)
-compression of output.
-.TP
+compression of output\&.
+.RE
+.PP
 \fB\-\-copy\fR
-Test the internal copy implementation.
-.TP
+.RS 4
+Test the internal copy implementation\&.
+.RE
+.PP
 \fB\-\-c14n\fR
+.RS 4
 Use the W3C
 XML
 Canonicalisation (C14N) to serialize the result of parsing to
-\fIstdout\fR. It keeps comments in the result.
-.TP
+stdout\&. It keeps comments in the result\&.
+.RE
+.PP
 \fB\-\-dtdvalid \fR\fB\fIURL\fR\fR
+.RS 4
 Use the
 DTD
 specified by an
 \fIURL\fR
-for validation.
-.TP
+for validation\&.
+.RE
+.PP
 \fB\-\-dtdvalidfpi \fR\fB\fIFPI\fR\fR
+.RS 4
 Use the
 DTD
 specified by a Formal Public Identifier
 \fIFPI\fR
-for validation, note that this will require a catalog exporting that Formal Public Identifier to work.
-.TP
+for validation, note that this will require a catalog exporting that Formal Public Identifier to work\&.
+.RE
+.PP
 \fB\-\-debug\fR
-Parse a file and output an annotated tree of the in\-memory version of the document.
-.TP
+.RS 4
+Parse a file and output an annotated tree of the in\-memory version of the document\&.
+.RE
+.PP
 \fB\-\-debugent\fR
-Debug the entities defined in the document.
-.TP
+.RS 4
+Debug the entities defined in the document\&.
+.RE
+.PP
 \fB\-\-dropdtd\fR
+.RS 4
 Remove
 DTD
-from output.
-.TP
+from output\&.
+.RE
+.PP
 \fB\-\-dtdattr\fR
+.RS 4
 Fetch external
 DTD
-and populate the tree with inherited attributes.
-.TP
+and populate the tree with inherited attributes\&.
+.RE
+.PP
 \fB\-\-encode \fR\fB\fIENCODING\fR\fR
-Output in the given encoding.
-.TP
+.RS 4
+Output in the given encoding\&.
+.RE
+.PP
 \fB\-\-format\fR
-Reformat and reindent the output. The
+.RS 4
+Reformat and reindent the output\&. The
 \fBXMLLINT_INDENT\fR
-environment variable controls the indentation. The default value is two spaces " ").
-.TP
+environment variable controls the indentation\&. The default value is two spaces " ")\&.
+.RE
+.PP
 \fB\-\-help\fR
+.RS 4
 Print out a short usage summary for
-\fBxmllint\fR.
-.TP
+\fBxmllint\fR\&.
+.RE
+.PP
 \fB\-\-html\fR
+.RS 4
 Use the
 HTML
-parser.
-.TP
+parser\&.
+.RE
+.PP
 \fB\-\-htmlout\fR
+.RS 4
 Output results as an
 HTML
-file. This causes
+file\&. This causes
 \fBxmllint\fR
 to output the necessary
 HTML
-tags surrounding the result tree output so the results can be displayed/viewed in a browser.
-.TP
+tags surrounding the result tree output so the results can be displayed/viewed in a browser\&.
+.RE
+.PP
 \fB\-\-insert\fR
-Test for valid insertions.
-.TP
+.RS 4
+Test for valid insertions\&.
+.RE
+.PP
 \fB\-\-loaddtd\fR
+.RS 4
 Fetch an external
-DTD.
-.TP
+DTD\&.
+.RE
+.PP
 \fB\-\-load\-trace\fR
+.RS 4
 Display all the documents loaded during the processing to
-\fIstderr\fR.
-.TP
+stderr\&.
+.RE
+.PP
 \fB\-\-maxmem \fR\fB\fINNBYTES\fR\fR
-Test the parser memory support.
+.RS 4
+Test the parser memory support\&.
 \fINNBYTES\fR
-is the maximum number of bytes the library is allowed to allocate. This can also be used to make sure batch processing of
+is the maximum number of bytes the library is allowed to allocate\&. This can also be used to make sure batch processing of
 XML
-files will not exhaust the virtual memory of the server running them.
-.TP
+files will not exhaust the virtual memory of the server running them\&.
+.RE
+.PP
 \fB\-\-memory\fR
-Parse from memory.
-.TP
+.RS 4
+Parse from memory\&.
+.RE
+.PP
 \fB\-\-noblanks\fR
-Drop ignorable blank spaces.
-.TP
+.RS 4
+Drop ignorable blank spaces\&.
+.RE
+.PP
 \fB\-\-nocatalogs\fR
-Do not use any catalogs.
-.TP
+.RS 4
+Do not use any catalogs\&.
+.RE
+.PP
 \fB\-\-nocdata\fR
-Substitute CDATA section by equivalent text nodes.
-.TP
+.RS 4
+Substitute CDATA section by equivalent text nodes\&.
+.RE
+.PP
 \fB\-\-noent\fR
-Substitute entity values for entity references. By default,
+.RS 4
+Substitute entity values for entity references\&. By default,
 \fBxmllint\fR
-leaves entity references in place.
-.TP
+leaves entity references in place\&.
+.RE
+.PP
 \fB\-\-nonet\fR
+.RS 4
 Do not use the Internet to fetch
-DTDs or entities.
-.TP
+DTDs or entities\&.
+.RE
+.PP
 \fB\-\-noout\fR
-Suppress output. By default,
+.RS 4
+Suppress output\&. By default,
 \fBxmllint\fR
-outputs the result tree.
-.TP
+outputs the result tree\&.
+.RE
+.PP
 \fB\-\-nowarning\fR
-Do not emit warnings from the parser and/or validator.
-.TP
+.RS 4
+Do not emit warnings from the parser and/or validator\&.
+.RE
+.PP
 \fB\-\-nowrap\fR
+.RS 4
 Do not output
 HTML
-doc wrapper.
-.TP
+doc wrapper\&.
+.RE
+.PP
 \fB\-\-noxincludenode\fR
-Do XInclude processing but do not generate XInclude start and end nodes.
-.TP
+.RS 4
+Do XInclude processing but do not generate XInclude start and end nodes\&.
+.RE
+.PP
 \fB\-\-nsclean\fR
-Remove redundant namespace declarations.
-.TP
+.RS 4
+Remove redundant namespace declarations\&.
+.RE
+.PP
 \fB\-\-output \fR\fB\fIFILE\fR\fR
+.RS 4
 Define a file path where
 \fBxmllint\fR
-will save the result of parsing. Usually the programs build a tree and save it on
-\fIstdout\fR, with this option the result
+will save the result of parsing\&. Usually the programs build a tree and save it on
+stdout, with this option the result
 XML
-instance will be saved onto a file.
-.TP
+instance will be saved onto a file\&.
+.RE
+.PP
 \fB\-\-path "\fR\fB\fIPATH(S)\fR\fR\fB"\fR
+.RS 4
 Use the (space\- or colon\-separated) list of filesystem paths specified by
 \fIPATHS\fR
 to load
-DTDs or entities. Enclose space\-separated lists by quotation marks.
-.TP
+DTDs or entities\&. Enclose space\-separated lists by quotation marks\&.
+.RE
+.PP
 \fB\-\-pattern \fR\fB\fIPATTERNVALUE\fR\fR
-Used to exercise the pattern recognition engine, which can be used with the reader interface to the parser. It allows to select some nodes in the document based on an XPath (subset) expression. Used for debugging.
-.TP
+.RS 4
+Used to exercise the pattern recognition engine, which can be used with the reader interface to the parser\&. It allows to select some nodes in the document based on an XPath (subset) expression\&. Used for debugging\&.
+.RE
+.PP
 \fB\-\-postvalid\fR
-Validate after parsing has completed.
-.TP
+.RS 4
+Validate after parsing has completed\&.
+.RE
+.PP
 \fB\-\-push\fR
-Use the push mode of the parser.
-.TP
+.RS 4
+Use the push mode of the parser\&.
+.RE
+.PP
 \fB\-\-recover\fR
-Output any parsable portions of an invalid document.
-.TP
+.RS 4
+Output any parsable portions of an invalid document\&.
+.RE
+.PP
 \fB\-\-relaxng \fR\fB\fISCHEMA\fR\fR
+.RS 4
 Use RelaxNG file named
 \fISCHEMA\fR
-for validation.
-.TP
+for validation\&.
+.RE
+.PP
 \fB\-\-repeat\fR
-Repeat 100 times, for timing or profiling.
-.TP
+.RS 4
+Repeat 100 times, for timing or profiling\&.
+.RE
+.PP
 \fB\-\-schema \fR\fB\fISCHEMA\fR\fR
+.RS 4
 Use a W3C
 XML
 Schema file named
 \fISCHEMA\fR
-for validation.
-.TP
+for validation\&.
+.RE
+.PP
 \fB\-\-shell\fR
-Run a navigating shell. Details on available commands in shell mode are below (see
-the section called \(lqSHELL COMMANDS\(rq).
-.TP
+.RS 4
+Run a navigating shell\&. Details on available commands in shell mode are below (see
+the section called \(lqSHELL COMMANDS\(rq)\&.
+.RE
+.PP
+\fB\-\-xpath "\fR\fB\fIXPath_expression\fR\fR\fB"\fR
+.RS 4
+Run an XPath expression given as argument and print the result\&. In case of a nodeset result, each node in the node set is serialized in full in the output\&. In case of an empty node set the "XPath set is empty" result will be shown and an error exit code will be returned\&.
+.RE
+.PP
 \fB\-\-stream\fR
+.RS 4
 Use streaming
 API
 \- useful when used in combination with
 \fB\-\-relaxng\fR
 or
 \fB\-\-valid\fR
-options for validation of files that are too large to be held in memory.
-.TP
+options for validation of files that are too large to be held in memory\&.
+.RE
+.PP
 \fB\-\-testIO\fR
-Test user input/output support.
-.TP
+.RS 4
+Test user input/output support\&.
+.RE
+.PP
 \fB\-\-timing\fR
+.RS 4
 Output information about the time it takes
 \fBxmllint\fR
-to perform the various steps.
-.TP
+to perform the various steps\&.
+.RE
+.PP
 \fB\-\-valid\fR
-Determine if the document is a valid instance of the included Document Type Definition (DTD). A
+.RS 4
+Determine if the document is a valid instance of the included Document Type Definition (DTD)\&. A
 DTD
 to be validated against also can be specified at the command line using the
 \fB\-\-dtdvalid\fR
-option. By default,
+option\&. By default,
 \fBxmllint\fR
-also checks to determine if the document is well\-formed.
-.TP
+also checks to determine if the document is well\-formed\&.
+.RE
+.PP
 \fB\-\-version\fR
+.RS 4
 Display the version of
 \fBlibxml\fR(3)
-used.
-.TP
+used\&.
+.RE
+.PP
 \fB\-\-walker\fR
+.RS 4
 Test the walker module, which is a reader interface but for a document tree, instead of using the reader
 API
-on an unparsed document it works on an existing in\-memory tree. Used for debugging.
-.TP
+on an unparsed document it works on an existing in\-memory tree\&. Used for debugging\&.
+.RE
+.PP
 \fB\-\-xinclude\fR
-Do XInclude processing.
-.TP
+.RS 4
+Do XInclude processing\&.
+.RE
+.PP
 \fB\-\-xmlout\fR
+.RS 4
 Used in conjunction with
-\fB\-\-html\fR. Usually when
+\fB\-\-html\fR\&. Usually when
 HTML
 is parsed the document is saved with the
 HTML
-serializer. But with this option the resulting document is saved with the
+serializer\&. But with this option the resulting document is saved with the
 XML
-serializer. This is primarily used to generate
+serializer\&. This is primarily used to generate
 XHTML
 from
 HTML
-input.
+input\&.
+.RE
 .SH "SHELL COMMANDS"
 .PP
+
 \fBxmllint\fR
 offers an interactive shell mode invoked with the
 \fB\-\-shell\fR
-command. Available commands in shell mode include (in alphabetical order):
-.TP
+command\&. Available commands in shell mode include (in alphabetical order):
+.PP
 \fBbase\fR
+.RS 4
 Display
 XML
-base of the node.
-.TP
+base of the node\&.
+.RE
+.PP
 \fBbye\fR
-Leave the shell.
-.TP
+.RS 4
+Leave the shell\&.
+.RE
+.PP
 \fBcat \fR\fB\fINODE\fR\fR
-Display the given node or the current one.
-.TP
+.RS 4
+Display the given node or the current one\&.
+.RE
+.PP
 \fBcd \fR\fB\fIPATH\fR\fR
-Change the current node to the given path (if unique) or root if no argument is given.
-.TP
+.RS 4
+Change the current node to the given path (if unique) or root if no argument is given\&.
+.RE
+.PP
 \fBdir \fR\fB\fIPATH\fR\fR
-Dumps information about the node (namespace, attributes, content).
-.TP
+.RS 4
+Dumps information about the node (namespace, attributes, content)\&.
+.RE
+.PP
 \fBdu \fR\fB\fIPATH\fR\fR
-Show the structure of the subtree under the given path or the current node.
-.TP
+.RS 4
+Show the structure of the subtree under the given path or the current node\&.
+.RE
+.PP
 \fBexit\fR
-Leave the shell.
-.TP
+.RS 4
+Leave the shell\&.
+.RE
+.PP
 \fBhelp\fR
-Show this help.
-.TP
+.RS 4
+Show this help\&.
+.RE
+.PP
 \fBfree\fR
-Display memory usage.
-.TP
+.RS 4
+Display memory usage\&.
+.RE
+.PP
 \fBload \fR\fB\fIFILENAME\fR\fR
-Load a new document with the given filename.
-.TP
+.RS 4
+Load a new document with the given filename\&.
+.RE
+.PP
 \fBls \fR\fB\fIPATH\fR\fR
-List contents of the given path or the current directory.
-.TP
+.RS 4
+List contents of the given path or the current directory\&.
+.RE
+.PP
 \fBpwd\fR
-Display the path to the current node.
-.TP
+.RS 4
+Display the path to the current node\&.
+.RE
+.PP
 \fBquit\fR
-Leave the shell.
-.TP
+.RS 4
+Leave the shell\&.
+.RE
+.PP
 \fBsave \fR\fB\fIFILENAME\fR\fR
-Save the current document to the given filename or to the original name.
-.TP
+.RS 4
+Save the current document to the given filename or to the original name\&.
+.RE
+.PP
 \fBvalidate\fR
-Check the document for errors.
-.TP
+.RS 4
+Check the document for errors\&.
+.RE
+.PP
 \fBwrite \fR\fB\fIFILENAME\fR\fR
-Write the current node to the given filename.
+.RS 4
+Write the current node to the given filename\&.
+.RE
 .SH "ENVIRONMENT"
-.TP
+.PP
 \fBSGML_CATALOG_FILES\fR
+.RS 4
 SGML
-catalog behavior can be changed by redirecting queries to the user's own set of catalogs. This can be done by setting the
+catalog behavior can be changed by redirecting queries to the user\*(Aqs own set of catalogs\&. This can be done by setting the
 \fBSGML_CATALOG_FILES\fR
-environment variable to a list of catalogs. An empty one should deactivate loading the default
-\fI/etc/sgml/catalog\fR
-catalog.
-.TP
+environment variable to a list of catalogs\&. An empty one should deactivate loading the default
+/etc/sgml/catalog
+catalog\&.
+.RE
+.PP
 \fBXML_CATALOG_FILES\fR
+.RS 4
 XML
-catalog behavior can be changed by redirecting queries to the user's own set of catalogs. This can be done by setting the
+catalog behavior can be changed by redirecting queries to the user\*(Aqs own set of catalogs\&. This can be done by setting the
 \fBXML_CATALOG_FILES\fR
-environment variable to a list of catalogs. An empty one should deactivate loading the default
-\fI/etc/xml/catalog\fR
-catalog.
-.TP
+environment variable to a list of catalogs\&. An empty one should deactivate loading the default
+/etc/xml/catalog
+catalog\&.
+.RE
+.PP
 \fBXML_DEBUG_CATALOG\fR
+.RS 4
 Setting the environment variable
 \fBXML_DEBUG_CATALOG\fR
 to
 \fInon\-zero\fR
 using the
 \fBexport\fR
-command outputs debugging information related to catalog operations.
-.TP
+command outputs debugging information related to catalog operations\&.
+.RE
+.PP
 \fBXMLLINT_INDENT\fR
+.RS 4
 Setting the environment variable
 \fBXMLLINT_INDENT\fR
-controls the indentation. The default value is two spaces " ".
+controls the indentation\&. The default value is two spaces " "\&.
+.RE
 .SH "DIAGNOSTICS"
 .PP
+
 \fBxmllint\fR
-return codes provide information that can be used when calling it from scripts.
-.TP
+return codes provide information that can be used when calling it from scripts\&.
+.PP
 \fB0\fR
+.RS 4
 No error
-.TP
+.RE
+.PP
 \fB1\fR
+.RS 4
 Unclassified
-.TP
+.RE
+.PP
 \fB2\fR
+.RS 4
 Error in
 DTD
-.TP
+.RE
+.PP
 \fB3\fR
+.RS 4
 Validation error
-.TP
+.RE
+.PP
 \fB4\fR
+.RS 4
 Validation error
-.TP
+.RE
+.PP
 \fB5\fR
+.RS 4
 Error in schema compilation
-.TP
+.RE
+.PP
 \fB6\fR
+.RS 4
 Error writing output
-.TP
+.RE
+.PP
 \fB7\fR
+.RS 4
 Error in pattern (generated when
 \fB\-\-pattern\fR
 option is used)
-.TP
+.RE
+.PP
 \fB8\fR
+.RS 4
 Error in Reader registration (generated when
 \fB\-\-chkregister\fR
 option is used)
-.TP
+.RE
+.PP
 \fB9\fR
+.RS 4
 Out of memory error
+.RE
 .SH "SEE ALSO"
 .PP
 \fBlibxml\fR(3)
 .PP
 More information can be found at
-.TP 3
-\(bu
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
 \fBlibxml\fR(3)
 web page
-\fI\%http://www.xmlsoft.org/\fR
-.TP
-\(bu
+\m[blue]\fB\%http://www.xmlsoft.org/\fR\m[]
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
 W3C
 XSLT
 page
-\fI\%http://www.w3.org/TR/xslt\fR
-.SH "AUTHOR"
-John Fleck <jfleck@inkstain.net>, Ziying Sherwin <sherwin@nlm.nih.gov>, Heiko Rupp <hwr@pilhuhn.de>. 
+\m[blue]\fB\%http://www.w3.org/TR/xslt\fR\m[]
+.RE
+.sp
+.SH "AUTHORS"
+.PP
+\fBJohn Fleck\fR <\&jfleck@inkstain\&.net\&>
+.RS 4
+Author.
+.RE
+.PP
+\fBZiying Sherwin\fR <\&sherwin@nlm\&.nih\&.gov\&>
+.RS 4
+Author.
+.RE
+.PP
+\fBHeiko Rupp\fR <\&hwr@pilhuhn\&.de\&>
+.RS 4
+Author.
+.RE
+.SH "COPYRIGHT"
+.br
+Copyright \(co 2001, 2004
+.br

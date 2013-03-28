@@ -649,7 +649,7 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
 	} else if (*cur >= 0x80) {
 	    if (((doc != NULL) && (doc->encoding != NULL)) || (html)) {
 		/*
-		 * Bjørn Reese <br@sseusa.com> provided the patch
+		 * BjÃ¸rn Reese <br@sseusa.com> provided the patch
 	        xmlChar xc;
 	        xc = (*cur & 0x3F) << 6;
 	        if (cur[1] != 0) {

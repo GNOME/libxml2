@@ -1,16 +1,19 @@
 *.o
 *.lo
 *.log
+*.pyc
 *.patch
 .deps
 .libs
 .memdump
 COPYING
+CVE-*
 INSTALL
 Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache
+bissect*
 config.guess
 config.h
 config.h.in
@@ -59,6 +62,7 @@ libxml2.la
 libxml2.spec
 list
 ltmain.sh
+log
 missing
 missing.lst
 m4
@@ -82,6 +86,7 @@ runtest
 runxmlconf
 runxmlconf.log
 stamp-h1
+tags
 test.out
 testAutomata
 testC14N
@@ -100,7 +105,9 @@ testapi.c.new
 testchar
 testdict
 testdso.la
+testlimits
 testrecurse
+tmp
 tst.c
 tst
 xml2-config
@@ -111,3 +118,4 @@ xmllint
 xstc/Makefile
 xstc/Makefile.in
 xstc/Tests
+xstc/xsts-*.tar.gz

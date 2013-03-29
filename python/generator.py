@@ -1038,10 +1038,9 @@ def buildWrappers():
                 classes.write("    def __init__(self, _obj=None):\n")
                 if classes_ancestor[classname] == "xmlCore" or \
                    classes_ancestor[classname] == "xmlNode":
-                    classes.write("        if type(_obj).__name__ != ")
-                    classes.write("'PyCObject':\n")
-                    classes.write("            raise TypeError, ")
-                    classes.write("'%s needs a PyCObject argument'\n" % \
+                    classes.write("        if checkWrapper(_obj) != 0:")
+                    classes.write("            raise TypeError")
+                    classes.write("('%s got a wrong wrapper object type')\n" % \
                                 classname)
                 if classname in reference_keepers:
                     rlist = reference_keepers[classname]
@@ -1054,7 +1053,7 @@ def buildWrappers():
                    classes_ancestor[classname] == "xmlNode":
                     classes.write("    def __repr__(self):\n")
                     format = "<%s (%%s) object at 0x%%x>" % (classname)
-                    classes.write("        return \"%s\" %% (self.name, long(pos_id (self)))\n\n" % (
+                    classes.write("        return \"%s\" %% (self.name, int(pos_id (self)))\n\n" % (
                                   format))
             else:
                 txt.write("Class %s()\n" % (classname))

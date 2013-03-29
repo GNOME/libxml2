@@ -5,6 +5,16 @@ import sys
 # The root of all libxml2 errors.
 class libxmlError(Exception): pass
 
+# Type of the wrapper class for the C objects wrappers
+def checkWrapper(obj):
+    try:
+        n = type(_obj).__name__
+        if n != 'PyCObject' and n != 'PyCapsule':
+            return 1
+    except:
+        return 0
+    return 0
+
 #
 # id() is sometimes negative ...
 #
@@ -62,9 +72,18 @@ class ioWrapper:
     def io_read(self, len = -1):
         if self.__io == None:
             return(-1)
-        if len < 0:
-            return(self.__io.read())
-        return(self.__io.read(len))
+        try:
+            if len < 0:
+                ret = self.__io.read()
+            else:
+                ret = self.__io.read(len)
+        except Exception as e:
+            print("failed to read from Python:", type(e))
+            print("on IO:", self.__io)
+            self.__io == None
+            return(-1)
+
+        return(ret)
 
     def io_write(self, str, len = -1):
         if self.__io == None:
@@ -97,10 +116,17 @@ class ioWriteWrapper(ioWrapper):
         if type(_obj) == type(''):
             print("write io from a string")
             self.o = None
-        elif type(_obj) == types.InstanceType:
-            print("write io from instance of %s" % (_obj.__class__))
-            ioWrapper.__init__(self, _obj)
-            self._o = libxml2mod.xmlCreateOutputBuffer(self, enc)
+        elif type(_obj).__name__ == 'PyCapsule':
+            file = libxml2mod.outputBufferGetPythonFile(_obj)
+            if file != None:
+                ioWrapper.__init__(self, file)
+            else:
+                ioWrapper.__init__(self, _obj)
+            self._o = _obj
+#        elif type(_obj) == types.InstanceType:
+#            print(("write io from instance of %s" % (_obj.__class__)))
+#            ioWrapper.__init__(self, _obj)
+#            self._o = libxml2mod.xmlCreateOutputBuffer(self, enc)
         else:
             file = libxml2mod.outputBufferGetPythonFile(_obj)
             if file != None:

@@ -133,8 +133,8 @@ class docParser(xml.sax.handler.ContentHandler):
                 str = str + c
             if self.in_function == 1:
                 self.function_cond = str
-                
-                
+
+
 def function(name, desc, ret, args, file, cond):
     functions[name] = (desc, ret, args, file, cond)
 
@@ -370,6 +370,7 @@ def print_function_wrapper(name, output, export, include):
     c_args=""
     c_return=""
     c_convert=""
+    c_release=""
     num_bufs=0
     for arg in args:
         # This should be correct
@@ -379,7 +380,7 @@ def print_function_wrapper(name, output, export, include):
         if arg[1] in py_types:
             (f, t, n, c) = py_types[arg[1]]
             if (f == 'z') and (name in foreign_encoding_args) and (num_bufs == 0):
-                f = 't#'
+                f = 's#'
             if f != None:
                 format = format + f
             if t != None:
@@ -390,13 +391,16 @@ def print_function_wrapper(name, output, export, include):
                    arg[1], t, arg[0])
             else:
                 format_args = format_args + ", &%s" % (arg[0])
-            if f == 't#':
+            if f == 's#':
                 format_args = format_args + ", &py_buffsize%d" % num_bufs
                 c_args = c_args + "    int py_buffsize%d;\n" % num_bufs
                 num_bufs = num_bufs + 1
             if c_call != "":
                 c_call = c_call + ", "
             c_call = c_call + "%s" % (arg[0])
+            if t == "File":
+                c_release = c_release + \
+		            "    PyFile_Release(%s);\n" % (arg[0])
         else:
             if arg[1] in skipped_types:
                 return 0
@@ -424,7 +428,7 @@ def print_function_wrapper(name, output, export, include):
         ret_convert = "    Py_INCREF(Py_None);\n    return(Py_None);\n"
     elif ret[0] in py_types:
         (f, t, n, c) = py_types[ret[0]]
-        c_return = "    %s c_retval;\n" % (ret[0])
+        c_return = c_return + "    %s c_retval;\n" % (ret[0])
         if file == "python_accessor" and ret[2] != None:
             c_call = "\n    c_retval = %s->%s;\n" % (args[0][0], ret[2])
         else:
@@ -433,7 +437,7 @@ def print_function_wrapper(name, output, export, include):
         ret_convert = ret_convert + "    return(py_retval);\n"
     elif ret[0] in py_return_types:
         (f, t, n, c) = py_return_types[ret[0]]
-        c_return = "    %s c_retval;\n" % (ret[0])
+        c_return = c_return + "    %s c_retval;\n" % (ret[0])
         c_call = "\n    c_retval = %s(%s);\n" % (name, c_call)
         ret_convert = "    py_retval = libxml_%sWrap((%s) c_retval);\n" % (n,c)
         ret_convert = ret_convert + "    return(py_retval);\n"
@@ -491,8 +495,10 @@ def print_function_wrapper(name, output, export, include):
         output.write("        return(NULL);\n")
     if c_convert != "":
         output.write(c_convert)
-                                                              
+
     output.write(c_call)
+    if c_release != "":
+        output.write(c_release)
     output.write(ret_convert)
     output.write("}\n\n")
     if cond != None and cond != "":
@@ -959,6 +965,12 @@ def buildWrappers():
                                   (arg[0], arg[0]))
                     classes.write("    else: %s__o = %s%s\n" %
                                   (arg[0], arg[0], classes_type[arg[1]][0]))
+                if arg[1] in py_types:
+                    (f, t, n, c) = py_types[arg[1]]
+                    if t == "File":
+                        classes.write("    if %s is not None: %s.flush()\n" % (
+                                      arg[0], arg[0]))
+
             if ret[0] != "void":
                 classes.write("    ret = ")
             else:
@@ -973,6 +985,16 @@ def buildWrappers():
                     classes.write("__o")
                 n = n + 1
             classes.write(")\n")
+
+# This may be needed to reposition the I/O, but likely to cause more harm
+# than good. Those changes in Python3 really break the model.
+#           for arg in args:
+#               if arg[1] in py_types:
+#                   (f, t, n, c) = py_types[arg[1]]
+#                   if t == "File":
+#                       classes.write("    if %s is not None: %s.seek(0,0)\n"%(
+#                                     arg[0], arg[0]))
+
             if ret[0] != "void":
                 if ret[0] in classes_type:
                     #

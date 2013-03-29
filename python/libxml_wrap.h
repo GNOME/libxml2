@@ -150,8 +150,16 @@ typedef struct {
 } PyURI_Object;
 
 /* FILE * have their own internal representation */
+#if PY_MAJOR_VERSION >= 3
+FILE *libxml_PyFileGet(PyObject *f);
+void libxml_PyFileRelease(FILE *f);
+#define PyFile_Get(v) (((v) == Py_None) ? NULL : libxml_PyFileGet(v))
+#define PyFile_Release(f) libxml_PyFileRelease(f)
+#else
 #define PyFile_Get(v) (((v) == Py_None) ? NULL : \
 	(PyFile_Check(v) ? (PyFile_AsFile(v)) : stdout))
+#define PyFile_Release(f)
+#endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 typedef struct {
@@ -249,3 +257,4 @@ PyObject * libxml_xmlErrorPtrWrap(xmlErrorPtr error);
 PyObject * libxml_xmlSchemaSetValidErrors(PyObject * self, PyObject * args);
 PyObject * libxml_xmlRegisterInputCallback(PyObject *self, PyObject *args);
 PyObject * libxml_xmlUnregisterInputCallback(PyObject *self, PyObject *args);
+PyObject * libxml_xmlNodeRemoveNsDef(PyObject * self, PyObject * args);

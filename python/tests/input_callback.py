@@ -3,8 +3,13 @@
 # This tests custom input callbacks
 #
 import sys
-import StringIO
 import libxml2
+try:
+    import StringIO
+    str_io = StringIO.StringIO
+except:
+    import io
+    str_io = io.StringIO
 
 # We implement a new scheme, py://strings/ that will reference this dictionary
 pystrings = {
@@ -36,7 +41,7 @@ def my_input_cb(URI):
     path = URI[len(prefix):]
     if path not in pystrings:
         return None
-    return StringIO.StringIO(pystrings[path])
+    return str_io(pystrings[path])
 
 
 def run_test(desc, docpath, catalog, exp_status="verified", exp_err=[], test_callback=None,
@@ -68,14 +73,14 @@ def run_test(desc, docpath, catalog, exp_status="verified", exp_err=[], test_cal
         actual_status = "not loaded"
 
     if actual_status != exp_status:
-        print "Test '%s' failed: expect status '%s', actual '%s'" % (desc, exp_status, actual_status)
+        print("Test '%s' failed: expect status '%s', actual '%s'" % (desc, exp_status, actual_status))
         sys.exit(1)
     elif actual_err != exp_err:
-        print "Test '%s' failed" % desc
-        print "Expect errors:"
-        for s,m in exp_err: print "  [%2d] '%s'" % (s,m)
-        print "Actual errors:"
-        for s,m in actual_err: print "  [%2d] '%s'" % (s,m)
+        print("Test '%s' failed" % desc)
+        print("Expect errors:")
+        for s,m in exp_err: print("  [%2d] '%s'" % (s,m))
+        print("Actual errors:")
+        for s,m in actual_err: print("  [%2d] '%s'" % (s,m))
         sys.exit(1)
 
 
@@ -128,7 +133,7 @@ run_test(desc="Loading using standard i/o after unregistering callback",
 try:
     while True:
         libxml2.popInputCallbacks()
-except IndexError, e:
+except IndexError as e:
     pass
 
 run_test(desc="Loading using standard i/o after unregistering all callbacks",
@@ -139,5 +144,5 @@ run_test(desc="Loading using standard i/o after unregistering all callbacks",
             (-1, "failed to load external entity \"tst.xml\"\n")
             ])
 
-print "OK"
+print("OK")
 sys.exit(0);

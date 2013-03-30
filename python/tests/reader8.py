@@ -3,7 +3,7 @@
 # this tests the entities substitutions with the XmlTextReader interface
 #
 import sys
-import StringIO
+import io
 import libxml2
 
 # Memory debug specific
@@ -23,7 +23,7 @@ ret = reader.Read()
 ret = reader.Close()
 
 if ret != 0:
-    print "Error closing the document test1"
+    print("Error closing the document test1")
     sys.exit(1)
 
 del reader
@@ -31,7 +31,7 @@ del reader
 # Memory debug specific
 libxml2.cleanupParser()
 if libxml2.debugMemory(1) == 0:
-    print "OK"
+    print("OK")
 else:
-    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    print("Memory leak %d bytes" % (libxml2.debugMemory(1)))
     libxml2.dumpMemory()

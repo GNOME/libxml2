@@ -3418,6 +3418,7 @@
      <exports symbol='DEBUG_MEMORY_LOCATION' type='macro'/>
      <exports symbol='LIBXML_ATTR_FORMAT' type='macro'/>
      <exports symbol='LIBXML_TEST_VERSION' type='macro'/>
+     <exports symbol='LIBXML_THREAD_ALLOC_ENABLED' type='macro'/>
      <exports symbol='LIBXML_XPATH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_PATTERN_ENABLED' type='macro'/>
      <exports symbol='LIBXML_VALID_ENABLED' type='macro'/>
@@ -3591,6 +3592,7 @@
      <exports symbol='xmlXPathNINF' type='variable'/>
      <exports symbol='xmlXPathCastNodeSetToBoolean' type='function'/>
      <exports symbol='xmlXPathFuncLookupFunc' type='function'/>
+     <exports symbol='xmlXPathNodeEval' type='function'/>
      <exports symbol='xmlXPathCastNodeToString' type='function'/>
      <exports symbol='xmlXPathIsNaN' type='function'/>
      <exports symbol='xmlXPathContextSetCache' type='function'/>
@@ -3625,6 +3627,7 @@
      <exports symbol='xmlXPathCtxtCompile' type='function'/>
      <exports symbol='xmlXPathEvalFunc' type='function'/>
      <exports symbol='xmlXPathCastBooleanToString' type='function'/>
+     <exports symbol='xmlXPathSetContextNode' type='function'/>
      <exports symbol='xmlXPathCastNumberToBoolean' type='function'/>
      <exports symbol='xmlXPathFreeNodeSet' type='function'/>
      <exports symbol='xmlXPathFreeCompExpr' type='function'/>
@@ -4046,6 +4049,9 @@
     </macro>
     <macro name='LIBXML_TEST_VERSION' file='xmlversion'>
       <info>Macro to check that the libxml version in use is compatible with the version the software has been compiled against</info>
+    </macro>
+    <macro name='LIBXML_THREAD_ALLOC_ENABLED' file='xmlversion'>
+      <info>Whether the allocation hooks are per-thread</info>
     </macro>
     <macro name='LIBXML_THREAD_ENABLED' file='xmlversion'>
       <info>Whether the thread support is configured in</info>
@@ -6184,7 +6190,8 @@ set at the end of parsing'/>
       <field name='URI' type='const xmlChar *' info=' the full URI as computed'/>
       <field name='owner' type='int' info=' does the entity own the childrens'/>
       <field name='checked' type='int' info=' was the entity content checked this is also used to count entites
-* references done from that entity'/>
+* references done from that entity
+* and if it contains &apos;&lt;&apos;'/>
     </struct>
     <typedef name='xmlEntityPtr' file='tree' type='xmlEntity *'/>
     <typedef name='xmlEntityType' file='entities' type='enum'/>
@@ -6434,6 +6441,7 @@ actually an xmlCharEncoding'/>
       <field name='nodeInfoMax' type='int' info=' Max depth of the parsing stack'/>
       <field name='nodeInfoTab' type='xmlParserNodeInfo *' info=' array of nodeInfos'/>
       <field name='input_id' type='int' info=' we need to label inputs'/>
+      <field name='sizeentcopy' type='unsigned long' info=' volume of entity copy'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -17899,6 +17907,14 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='cur' type='xmlNodePtr' info='the current node in the traversal'/>
     </function>
+    <function name='xmlXPathNodeEval' file='xpath' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Evaluate the XPath Location Path in the given context. The node &apos;node&apos; is set as the context node. The context node is not restored.</info>
+      <return type='xmlXPathObjectPtr' info='the xmlXPathObjectPtr resulting from the evaluation or NULL. the caller has to free the object.'/>
+      <arg name='node' type='xmlNodePtr' info='the node to to use as the context node'/>
+      <arg name='str' type='const xmlChar *' info='the XPath expression'/>
+      <arg name='ctx' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
     <function name='xmlXPathNodeLeading' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Implements the EXSLT - Sets leading() function: node-set set:leading (node-set, node-set) @nodes is sorted by document order, then #exslSetsNodeLeadingSorted is called.</info>
@@ -18184,6 +18200,13 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
+    </function>
+    <function name='xmlXPathSetContextNode' file='xpath' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Sets &apos;node&apos; as the context node. The node must be in the same document as that associated with the context.</info>
+      <return type='int' info='-1 in case of error or 0 if successful'/>
+      <arg name='node' type='xmlNodePtr' info='the node to to use as the context node'/>
+      <arg name='ctx' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
     <function name='xmlXPathStartsWithFunction' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>

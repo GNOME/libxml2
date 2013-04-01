@@ -122,6 +122,7 @@
     <function name="LIBXML_SCHEMAS_ENABLED" link="libxml2-xmlversion.html#LIBXML_SCHEMAS_ENABLED"/>
     <function name="LIBXML_SCHEMATRON_ENABLED" link="libxml2-xmlversion.html#LIBXML_SCHEMATRON_ENABLED"/>
     <function name="LIBXML_TEST_VERSION" link="libxml2-xmlversion.html#LIBXML_TEST_VERSION"/>
+    <function name="LIBXML_THREAD_ALLOC_ENABLED" link="libxml2-xmlversion.html#LIBXML_THREAD_ALLOC_ENABLED"/>
     <function name="LIBXML_THREAD_ENABLED" link="libxml2-xmlversion.html#LIBXML_THREAD_ENABLED"/>
     <function name="LIBXML_TREE_ENABLED" link="libxml2-xmlversion.html#LIBXML_TREE_ENABLED"/>
     <function name="LIBXML_UNICODE_ENABLED" link="libxml2-xmlversion.html#LIBXML_UNICODE_ENABLED"/>
@@ -3481,6 +3482,7 @@
     <function name="xmlXPathNextPreceding ()" link="libxml2-xpathInternals.html#xmlXPathNextPreceding"/>
     <function name="xmlXPathNextPrecedingSibling ()" link="libxml2-xpathInternals.html#xmlXPathNextPrecedingSibling"/>
     <function name="xmlXPathNextSelf ()" link="libxml2-xpathInternals.html#xmlXPathNextSelf"/>
+    <function name="xmlXPathNodeEval ()" link="libxml2-xpath.html#xmlXPathNodeEval"/>
     <function name="xmlXPathNodeLeading ()" link="libxml2-xpathInternals.html#xmlXPathNodeLeading"/>
     <function name="xmlXPathNodeLeadingSorted ()" link="libxml2-xpathInternals.html#xmlXPathNodeLeadingSorted"/>
     <function name="xmlXPathNodeSetAdd ()" link="libxml2-xpathInternals.html#xmlXPathNodeSetAdd"/>
@@ -3523,6 +3525,7 @@
     <function name="xmlXPathRegisteredVariablesCleanup ()" link="libxml2-xpathInternals.html#xmlXPathRegisteredVariablesCleanup"/>
     <function name="xmlXPathRoot ()" link="libxml2-xpathInternals.html#xmlXPathRoot"/>
     <function name="xmlXPathRoundFunction ()" link="libxml2-xpathInternals.html#xmlXPathRoundFunction"/>
+    <function name="xmlXPathSetContextNode ()" link="libxml2-xpath.html#xmlXPathSetContextNode"/>
     <function name="xmlXPathStartsWithFunction ()" link="libxml2-xpathInternals.html#xmlXPathStartsWithFunction"/>
     <function name="xmlXPathStringEvalNumber ()" link="libxml2-xpathInternals.html#xmlXPathStringEvalNumber"/>
     <function name="xmlXPathStringFunction ()" link="libxml2-xpathInternals.html#xmlXPathStringFunction"/>

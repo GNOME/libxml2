@@ -86,6 +86,7 @@
     <reference name='LIBXML_SCHEMAS_ENABLED' href='html/libxml-xmlversion.html#LIBXML_SCHEMAS_ENABLED'/>
     <reference name='LIBXML_SCHEMATRON_ENABLED' href='html/libxml-xmlversion.html#LIBXML_SCHEMATRON_ENABLED'/>
     <reference name='LIBXML_TEST_VERSION' href='html/libxml-xmlversion.html#LIBXML_TEST_VERSION'/>
+    <reference name='LIBXML_THREAD_ALLOC_ENABLED' href='html/libxml-xmlversion.html#LIBXML_THREAD_ALLOC_ENABLED'/>
     <reference name='LIBXML_THREAD_ENABLED' href='html/libxml-xmlversion.html#LIBXML_THREAD_ENABLED'/>
     <reference name='LIBXML_TREE_ENABLED' href='html/libxml-xmlversion.html#LIBXML_TREE_ENABLED'/>
     <reference name='LIBXML_UNICODE_ENABLED' href='html/libxml-xmlversion.html#LIBXML_UNICODE_ENABLED'/>
@@ -3461,6 +3462,7 @@
     <reference name='xmlXPathNextPreceding' href='html/libxml-xpathInternals.html#xmlXPathNextPreceding'/>
     <reference name='xmlXPathNextPrecedingSibling' href='html/libxml-xpathInternals.html#xmlXPathNextPrecedingSibling'/>
     <reference name='xmlXPathNextSelf' href='html/libxml-xpathInternals.html#xmlXPathNextSelf'/>
+    <reference name='xmlXPathNodeEval' href='html/libxml-xpath.html#xmlXPathNodeEval'/>
     <reference name='xmlXPathNodeLeading' href='html/libxml-xpathInternals.html#xmlXPathNodeLeading'/>
     <reference name='xmlXPathNodeLeadingSorted' href='html/libxml-xpathInternals.html#xmlXPathNodeLeadingSorted'/>
     <reference name='xmlXPathNodeSetAdd' href='html/libxml-xpathInternals.html#xmlXPathNodeSetAdd'/>
@@ -3522,6 +3524,7 @@
     <reference name='xmlXPathRoot' href='html/libxml-xpathInternals.html#xmlXPathRoot'/>
     <reference name='xmlXPathRoundFunction' href='html/libxml-xpathInternals.html#xmlXPathRoundFunction'/>
     <reference name='xmlXPathSetArityError' href='html/libxml-xpathInternals.html#xmlXPathSetArityError'/>
+    <reference name='xmlXPathSetContextNode' href='html/libxml-xpath.html#xmlXPathSetContextNode'/>
     <reference name='xmlXPathSetError' href='html/libxml-xpathInternals.html#xmlXPathSetError'/>
     <reference name='xmlXPathSetTypeError' href='html/libxml-xpathInternals.html#xmlXPathSetTypeError'/>
     <reference name='xmlXPathStackIsExternal' href='html/libxml-xpathInternals.html#xmlXPathStackIsExternal'/>
@@ -3673,6 +3676,7 @@
       <ref name='LIBXML_SCHEMAS_ENABLED'/>
       <ref name='LIBXML_SCHEMATRON_ENABLED'/>
       <ref name='LIBXML_TEST_VERSION'/>
+      <ref name='LIBXML_THREAD_ALLOC_ENABLED'/>
       <ref name='LIBXML_THREAD_ENABLED'/>
       <ref name='LIBXML_TREE_ENABLED'/>
       <ref name='LIBXML_UNICODE_ENABLED'/>
@@ -7094,6 +7098,7 @@
       <ref name='xmlXPathNextPreceding'/>
       <ref name='xmlXPathNextPrecedingSibling'/>
       <ref name='xmlXPathNextSelf'/>
+      <ref name='xmlXPathNodeEval'/>
       <ref name='xmlXPathNodeLeading'/>
       <ref name='xmlXPathNodeLeadingSorted'/>
       <ref name='xmlXPathNodeSetAdd'/>
@@ -7155,6 +7160,7 @@
       <ref name='xmlXPathRoot'/>
       <ref name='xmlXPathRoundFunction'/>
       <ref name='xmlXPathSetArityError'/>
+      <ref name='xmlXPathSetContextNode'/>
       <ref name='xmlXPathSetError'/>
       <ref name='xmlXPathSetTypeError'/>
       <ref name='xmlXPathStackIsExternal'/>
@@ -7970,6 +7976,7 @@
       <ref name='xmlXPathNewNodeSetList'/>
       <ref name='xmlXPathNewString'/>
       <ref name='xmlXPathNewValueTree'/>
+      <ref name='xmlXPathNodeEval'/>
       <ref name='xmlXPathObjectCopy'/>
       <ref name='xmlXPathVariableLookup'/>
       <ref name='xmlXPathVariableLookupFunc'/>
@@ -8514,6 +8521,7 @@
       <ref name='xmlXPathIsNodeType'/>
       <ref name='xmlXPathNewParserContext'/>
       <ref name='xmlXPathNewString'/>
+      <ref name='xmlXPathNodeEval'/>
       <ref name='xmlXPathNsLookup'/>
       <ref name='xmlXPathRegisterFunc'/>
       <ref name='xmlXPathRegisterFuncNS'/>
@@ -9811,6 +9819,7 @@
       <ref name='xmlXPathNextPreceding'/>
       <ref name='xmlXPathNextPrecedingSibling'/>
       <ref name='xmlXPathNextSelf'/>
+      <ref name='xmlXPathNodeEval'/>
       <ref name='xmlXPathNodeLeading'/>
       <ref name='xmlXPathNodeLeadingSorted'/>
       <ref name='xmlXPathNodeSetAdd'/>
@@ -9821,6 +9830,7 @@
       <ref name='xmlXPathNodeSetDel'/>
       <ref name='xmlXPathNodeTrailing'/>
       <ref name='xmlXPathNodeTrailingSorted'/>
+      <ref name='xmlXPathSetContextNode'/>
       <ref name='xmlXPtrNewCollapsedRange'/>
       <ref name='xmlXPtrNewContext'/>
       <ref name='xmlXPtrNewLocationSetNodes'/>
@@ -10603,6 +10613,7 @@
       <ref name='xmlXPathFunctionLookup'/>
       <ref name='xmlXPathFunctionLookupNS'/>
       <ref name='xmlXPathNewParserContext'/>
+      <ref name='xmlXPathNodeEval'/>
       <ref name='xmlXPathNsLookup'/>
       <ref name='xmlXPathRegisterAllFunctions'/>
       <ref name='xmlXPathRegisterFunc'/>
@@ -10615,6 +10626,7 @@
       <ref name='xmlXPathRegisteredFuncsCleanup'/>
       <ref name='xmlXPathRegisteredNsCleanup'/>
       <ref name='xmlXPathRegisteredVariablesCleanup'/>
+      <ref name='xmlXPathSetContextNode'/>
       <ref name='xmlXPathVariableLookup'/>
       <ref name='xmlXPathVariableLookupNS'/>
       <ref name='xmlXPtrEval'/>
@@ -14006,6 +14018,7 @@
       <ref name='LIBXML_SCHEMAS_ENABLED'/>
       <ref name='LIBXML_SCHEMATRON_ENABLED'/>
       <ref name='LIBXML_TEST_VERSION'/>
+      <ref name='LIBXML_THREAD_ALLOC_ENABLED'/>
       <ref name='LIBXML_THREAD_ENABLED'/>
       <ref name='LIBXML_TREE_ENABLED'/>
       <ref name='LIBXML_UNICODE_ENABLED'/>
@@ -14207,6 +14220,7 @@
       <ref name='xmlXPathNAN'/>
       <ref name='xmlXPathNINF'/>
       <ref name='xmlXPathNewContext'/>
+      <ref name='xmlXPathNodeEval'/>
       <ref name='xmlXPathNodeSetCreate'/>
       <ref name='xmlXPathNodeSetGetLength'/>
       <ref name='xmlXPathNodeSetIsEmpty'/>
@@ -14219,6 +14233,7 @@
       <ref name='xmlXPathPINF'/>
       <ref name='xmlXPathParserContext'/>
       <ref name='xmlXPathParserContextPtr'/>
+      <ref name='xmlXPathSetContextNode'/>
       <ref name='xmlXPathType'/>
       <ref name='xmlXPathTypePtr'/>
       <ref name='xmlXPathVariable'/>
@@ -15736,6 +15751,7 @@
           <ref name='xmlXPathEvalExpression'/>
           <ref name='xmlXPathEvalPredicate'/>
           <ref name='xmlXPathEvaluatePredicateResult'/>
+          <ref name='xmlXPathNodeEval'/>
           <ref name='xmlXPtrEval'/>
           <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
@@ -16476,6 +16492,7 @@
         </word>
         <word name='Location'>
           <ref name='xmlXPathEval'/>
+          <ref name='xmlXPathNodeEval'/>
           <ref name='xmlXPtrEval'/>
           <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
@@ -17078,6 +17095,7 @@
         <word name='Path'>
           <ref name='xmlGetNodePath'/>
           <ref name='xmlXPathEval'/>
+          <ref name='xmlXPathNodeEval'/>
           <ref name='xmlXPtrEval'/>
         </word>
         <word name='People'>
@@ -17794,6 +17812,7 @@
           <ref name='xmlXPathNodeLeadingSorted'/>
           <ref name='xmlXPathNodeTrailing'/>
           <ref name='xmlXPathNodeTrailingSorted'/>
+          <ref name='xmlXPathSetContextNode'/>
           <ref name='xmlXPathTrailing'/>
           <ref name='xmlXPathTrailingSorted'/>
         </word>
@@ -19148,6 +19167,7 @@
           <ref name='xmlXPathObjectCopy'/>
         </word>
         <word name='allocation'>
+          <ref name='LIBXML_THREAD_ALLOC_ENABLED'/>
           <ref name='htmlNewParserCtxt'/>
           <ref name='xmlBufferSetAllocationScheme'/>
           <ref name='xmlGetBufferAllocationScheme'/>
@@ -20970,6 +20990,7 @@
         </word>
         <word name='contains'>
           <ref name='XML_SCHEMAS_ATTRGROUP_HAS_REFS'/>
+          <ref name='_xmlEntity'/>
           <ref name='xmlCurrentChar'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParsePEReference'/>
@@ -22599,6 +22620,7 @@
           <ref name='xmlXPathEvalFunc'/>
           <ref name='xmlXPathEvalPredicate'/>
           <ref name='xmlXPathEvaluatePredicateResult'/>
+          <ref name='xmlXPathNodeEval'/>
           <ref name='xmlXPtrBuildNodeList'/>
           <ref name='xmlXPtrEval'/>
         </word>
@@ -23751,6 +23773,9 @@
         <word name='holds'>
           <ref name='xmlBufferWriteQuotedString'/>
         </word>
+        <word name='hooks'>
+          <ref name='LIBXML_THREAD_ALLOC_ENABLED'/>
+        </word>
         <word name='host'>
           <ref name='xmlNanoFTPProxy'/>
           <ref name='xmlNanoFTPScanProxy'/>
@@ -24805,14 +24830,6 @@
           <ref name='xmlStrndup'/>
           <ref name='xmlUTF8Strndup'/>
           <ref name='xmlUTF8Strsize'/>
-        </word>
-        <word name='length'>
-          <ref name='xmlExpGetLanguage'/>
-          <ref name='xmlExpGetStart'/>
-          <ref name='xmlExpNewAtom'/>
-          <ref name='xmlRelaxNGValidatePushCData'/>
-          <ref name='xmlSplitQName3'/>
-          <ref name='xmlValidatePushCData'/>
         </word>
         <word name='length-1'>
           <ref name='xmlXPathNodeSetItem'/>
@@ -26683,6 +26700,9 @@
           <ref name='xmlValidateElementDecl'/>
           <ref name='xmlXPathContextSetCache'/>
         </word>
+        <word name='per-thread'>
+          <ref name='LIBXML_THREAD_ALLOC_ENABLED'/>
+        </word>
         <word name='performance'>
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlSetBufferAllocationScheme'/>
@@ -28074,6 +28094,7 @@
           <ref name='xmlSchemaSAXUnplug'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
           <ref name='xmlTextReaderSetStructuredErrorHandler'/>
+          <ref name='xmlXPathNodeEval'/>
         </word>
         <word name='restrict'>
           <ref name='xmlParseExternalID'/>
@@ -28289,6 +28310,7 @@
           <ref name='xmlXPathNextFollowing'/>
           <ref name='xmlXPathNextPreceding'/>
           <ref name='xmlXPathNormalizeFunction'/>
+          <ref name='xmlXPathSetContextNode'/>
         </word>
         <word name='save'>
           <ref name='htmlNodeDumpFileFormat'/>
@@ -29527,6 +29549,7 @@
           <ref name='xmlTextReaderSetParserProp'/>
           <ref name='xmlUnsetNsProp'/>
           <ref name='xmlUnsetProp'/>
+          <ref name='xmlXPathSetContextNode'/>
         </word>
         <word name='successfully'>
           <ref name='xmlTextReaderNext'/>
@@ -30600,6 +30623,9 @@
           <ref name='XML_CAST_FPTR'/>
           <ref name='xmlSAXParseFileWithData'/>
           <ref name='xmlSAXParseMemoryWithData'/>
+        </word>
+        <word name='volume'>
+          <ref name='_xmlParserCtxt'/>
         </word>
       </letter>
     </chunk>
@@ -31978,6 +32004,7 @@
           <ref name='xmlXPathNewNodeSetList'/>
           <ref name='xmlXPathNewString'/>
           <ref name='xmlXPathNewValueTree'/>
+          <ref name='xmlXPathNodeEval'/>
           <ref name='xmlXPathWrapNodeSet'/>
           <ref name='xmlXPtrEval'/>
           <ref name='xmlXPtrLocationSetAdd'/>

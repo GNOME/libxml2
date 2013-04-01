@@ -528,7 +528,7 @@ class xmlCoreDepthFirstItertor:
         self.parents = []
     def __iter__(self):
         return self
-    def __next__(self):
+    def next(self):
         while 1:
             if self.node:
                 ret = self.node
@@ -539,7 +539,7 @@ class xmlCoreDepthFirstItertor:
                 parent = self.parents.pop()
             except IndexError:
                 raise StopIteration
-            self.node = parent.__next__
+            self.node = parent.next
 
 #
 # implements the breadth-first iterator for libxml2 DOM tree
@@ -550,12 +550,12 @@ class xmlCoreBreadthFirstItertor:
         self.parents = []
     def __iter__(self):
         return self
-    def __next__(self):
+    def next(self):
         while 1:
             if self.node:
                 ret = self.node
                 self.parents.append(self.node)
-                self.node = self.node.__next__
+                self.node = self.node.next
                 return ret
             try:
                 parent = self.parents.pop()

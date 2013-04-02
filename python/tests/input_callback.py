@@ -133,7 +133,7 @@ run_test(desc="Loading using standard i/o after unregistering callback",
 try:
     while True:
         libxml2.popInputCallbacks()
-except IndexError as e:
+except IndexError:
     pass
 
 run_test(desc="Loading using standard i/o after unregistering all callbacks",

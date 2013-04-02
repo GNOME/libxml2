@@ -77,7 +77,9 @@ class ioWrapper:
                 ret = self.__io.read()
             else:
                 ret = self.__io.read(len)
-        except Exception as e:
+        except Exception:
+            import sys
+            e = sys.exc_info()[1]
             print("failed to read from Python:", type(e))
             print("on IO:", self.__io)
             self.__io == None

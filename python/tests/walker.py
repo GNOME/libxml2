@@ -3,7 +3,6 @@
 # this tests the entities substitutions with the XmlTextReader interface
 #
 import sys
-import io
 import libxml2
 
 # Memory debug specific

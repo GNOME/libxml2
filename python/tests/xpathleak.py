@@ -42,7 +42,7 @@ badexprs = (
 for expr in badexprs:
 	try:
 		ctxt.xpathEval(expr)
-	except libxml2.xpathError as e:
+	except libxml2.xpathError:
 	        pass
 	else:
 		print("Unexpectedly legal expression:", expr)

@@ -384,19 +384,29 @@ libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt)
 
 /**
  * libxml_xmlXPathDestructNsNode:
- * cobj: xmlNsPtr namespace node capsule object
+ * cap: xmlNsPtr namespace node capsule object
  *
  * This function is called if and when a namespace node returned in
  * an XPath node set is to be destroyed. That's the only kind of
  * object returned in node set not directly linked to the original
  * xmlDoc document, see xmlXPathNodeSetDupNs.
  */
+#if PY_VERSION_HEX < 0x02070000
 static void
-libxml_xmlXPathDestructNsNode(PyObject *cap) {
-#ifdef DEBUG
-    fprintf(stderr, "libxml_xmlXPathDestructNsNode called %p\n", cobj);
+libxml_xmlXPathDestructNsNode(void *cap, void *desc ATTRIBUTE_UNUSED)
+#else
+static void
+libxml_xmlXPathDestructNsNode(PyObject *cap)
 #endif
+{
+#ifdef DEBUG
+    fprintf(stderr, "libxml_xmlXPathDestructNsNode called %p\n", cap);
+#endif
+#if PY_VERSION_HEX < 0x02070000
+    xmlXPathNodeSetFreeNs((xmlNsPtr) cap);
+#else
     xmlXPathNodeSetFreeNs((xmlNsPtr) PyCapsule_GetPointer(cap, "xmlNsPtr"));
+#endif
 }
 
 PyObject *
@@ -658,7 +668,7 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
             cur = NULL;
             if (PyCapsule_CheckExact(node)) {
 #ifdef DEBUG
-                printf("Got a CObject\n");
+                printf("Got a Capsule\n");
 #endif
                 cur = PyxmlNode_Get(node);
             } else if ((PyObject_HasAttrString(node, (char *) "_o")) &&

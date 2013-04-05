@@ -954,6 +954,7 @@ xmlOnceInit(void)
 #ifdef HAVE_PTHREAD_H
     (void) pthread_key_create(&globalkey, xmlFreeGlobalState);
     mainthread = pthread_self();
+    __xmlInitializeDict();
 #elif defined(HAVE_WIN32_THREADS)
     if (!run_once.done) {
         if (InterlockedIncrement(&run_once.control) == 1) {
@@ -961,6 +962,7 @@ xmlOnceInit(void)
             globalkey = TlsAlloc();
 #endif
             mainthread = GetCurrentThreadId();
+	    __xmlInitializeDict();
             run_once.done = 1;
         } else {
             /* Another thread is working; give up our slice and
@@ -974,6 +976,7 @@ xmlOnceInit(void)
         globalkey = tls_allocate();
         tls_set(globalkey, NULL);
         mainthread = find_thread(NULL);
+	__xmlInitializeDict();
     } else
         atomic_add(&run_once_init, -1);
 #endif

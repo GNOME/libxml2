@@ -84,6 +84,8 @@ void __xmlGlobalInitMutexLock(void);
 void __xmlGlobalInitMutexUnlock(void);
 void __xmlGlobalInitMutexDestroy(void);
 
+int __xmlInitializeDict(void);
+
 #if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME)
 /*
  * internal thread safe random function

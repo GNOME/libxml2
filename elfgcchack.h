@@ -16769,6 +16769,18 @@ extern __typeof (xmlXPathNextSelf) xmlXPathNextSelf__internal_alias __attribute(
 
 #if defined(LIBXML_XPATH_ENABLED)
 #ifdef bottom_xpath
+#undef xmlXPathNodeEval
+extern __typeof (xmlXPathNodeEval) xmlXPathNodeEval __attribute((alias("xmlXPathNodeEval__internal_alias")));
+#else
+#ifndef xmlXPathNodeEval
+extern __typeof (xmlXPathNodeEval) xmlXPathNodeEval__internal_alias __attribute((visibility("hidden")));
+#define xmlXPathNodeEval xmlXPathNodeEval__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_XPATH_ENABLED)
+#ifdef bottom_xpath
 #undef xmlXPathNodeLeading
 extern __typeof (xmlXPathNodeLeading) xmlXPathNodeLeading __attribute((alias("xmlXPathNodeLeading__internal_alias")));
 #else
@@ -17267,6 +17279,18 @@ extern __typeof (xmlXPathRoundFunction) xmlXPathRoundFunction __attribute((alias
 #ifndef xmlXPathRoundFunction
 extern __typeof (xmlXPathRoundFunction) xmlXPathRoundFunction__internal_alias __attribute((visibility("hidden")));
 #define xmlXPathRoundFunction xmlXPathRoundFunction__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_XPATH_ENABLED)
+#ifdef bottom_xpath
+#undef xmlXPathSetContextNode
+extern __typeof (xmlXPathSetContextNode) xmlXPathSetContextNode __attribute((alias("xmlXPathSetContextNode__internal_alias")));
+#else
+#ifndef xmlXPathSetContextNode
+extern __typeof (xmlXPathSetContextNode) xmlXPathSetContextNode__internal_alias __attribute((visibility("hidden")));
+#define xmlXPathSetContextNode xmlXPathSetContextNode__internal_alias
 #endif
 #endif
 #endif

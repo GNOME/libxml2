@@ -7784,7 +7784,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
     }
     if (ctxt->instate == XML_PARSER_EOF) {
 	xmlFree(name);
-	return;
+	return(NULL);
     }
 
     /*
@@ -8189,7 +8189,7 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 	entity = ctxt->sax->getParameterEntity(ctxt->userData, name);
     if (ctxt->instate == XML_PARSER_EOF) {
 	xmlFree(name);
-	return;
+	return(NULL);
     }
     if (entity == NULL) {
 	/*

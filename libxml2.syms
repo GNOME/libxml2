@@ -2271,3 +2271,11 @@ LIBXML2_2.9.0 {
   xmlTextWriterSetQuoteChar;
 } LIBXML2_2.8.0;
 
+LIBXML2_2.9.1 {
+    global:
+
+# xpath
+  xmlXPathNodeEval;
+  xmlXPathSetContextNode;
+} LIBXML2_2.9.0;
+

@@ -420,6 +420,7 @@
     <reference name='XML_ERR_UNSUPPORTED_ENCODING' href='html/libxml-xmlerror.html#XML_ERR_UNSUPPORTED_ENCODING'/>
     <reference name='XML_ERR_URI_FRAGMENT' href='html/libxml-xmlerror.html#XML_ERR_URI_FRAGMENT'/>
     <reference name='XML_ERR_URI_REQUIRED' href='html/libxml-xmlerror.html#XML_ERR_URI_REQUIRED'/>
+    <reference name='XML_ERR_USER_STOP' href='html/libxml-xmlerror.html#XML_ERR_USER_STOP'/>
     <reference name='XML_ERR_VALUE_REQUIRED' href='html/libxml-xmlerror.html#XML_ERR_VALUE_REQUIRED'/>
     <reference name='XML_ERR_VERSION_MISMATCH' href='html/libxml-xmlerror.html#XML_ERR_VERSION_MISMATCH'/>
     <reference name='XML_ERR_VERSION_MISSING' href='html/libxml-xmlerror.html#XML_ERR_VERSION_MISSING'/>
@@ -4020,6 +4021,7 @@
       <ref name='XML_ERR_UNSUPPORTED_ENCODING'/>
       <ref name='XML_ERR_URI_FRAGMENT'/>
       <ref name='XML_ERR_URI_REQUIRED'/>
+      <ref name='XML_ERR_USER_STOP'/>
       <ref name='XML_ERR_VALUE_REQUIRED'/>
       <ref name='XML_ERR_VERSION_MISMATCH'/>
       <ref name='XML_ERR_VERSION_MISSING'/>
@@ -12823,6 +12825,7 @@
       <ref name='XML_ERR_UNSUPPORTED_ENCODING'/>
       <ref name='XML_ERR_URI_FRAGMENT'/>
       <ref name='XML_ERR_URI_REQUIRED'/>
+      <ref name='XML_ERR_USER_STOP'/>
       <ref name='XML_ERR_VALUE_REQUIRED'/>
       <ref name='XML_ERR_VERSION_MISMATCH'/>
       <ref name='XML_ERR_VERSION_MISSING'/>
@@ -21613,6 +21616,7 @@
           <ref name='xmlCheckLanguageID'/>
           <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlDecodeEntities'/>
+          <ref name='xmlInitializeDict'/>
           <ref name='xmlNodeDump'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlParserInputRead'/>
@@ -26221,7 +26225,6 @@
           <ref name='xmlEncodeEntities'/>
           <ref name='xmlInitParser'/>
           <ref name='xmlInitializeCatalog'/>
-          <ref name='xmlInitializeDict'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
           <ref name='xmlParseAttributeType'/>
@@ -26946,7 +26949,6 @@
         </word>
         <word name='preferably'>
           <ref name='xmlInitializeCatalog'/>
-          <ref name='xmlInitializeDict'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
           <ref name='xmlNewPI'/>
@@ -28278,7 +28280,6 @@
         <word name='safe'>
           <ref name='BAD_CAST'/>
           <ref name='xmlInitializeCatalog'/>
-          <ref name='xmlInitializeDict'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
         </word>
@@ -29142,7 +29143,6 @@
           <ref name='setDocumentLocator'/>
           <ref name='setDocumentLocatorSAXFunc'/>
           <ref name='xmlInitializeCatalog'/>
-          <ref name='xmlInitializeDict'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
           <ref name='xmlSAX2SetDocumentLocator'/>
@@ -29860,7 +29860,6 @@
           <ref name='xmlGetThreadId'/>
           <ref name='xmlInitThreads'/>
           <ref name='xmlInitializeCatalog'/>
-          <ref name='xmlInitializeDict'/>
           <ref name='xmlIsMainThread'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>

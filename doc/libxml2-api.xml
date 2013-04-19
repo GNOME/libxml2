@@ -2706,6 +2706,7 @@
      <exports symbol='XML_RNGP_FOREIGN_ELEMENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_DEF_AND_PREFIX' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_STARTED' type='enum'/>
+     <exports symbol='XML_ERR_USER_STOP' type='enum'/>
      <exports symbol='XML_CHECK_FOUND_CDATA' type='enum'/>
      <exports symbol='XML_SCHEMAP_INTERNAL' type='enum'/>
      <exports symbol='XML_SCHEMAV_INVALIDELEM' type='enum'/>
@@ -4966,6 +4967,7 @@ and not by parsing an instance'/>
     <enum name='XML_ERR_UNSUPPORTED_ENCODING' file='xmlerror' value='32' type='xmlParserErrors' info='32'/>
     <enum name='XML_ERR_URI_FRAGMENT' file='xmlerror' value='92' type='xmlParserErrors' info='92'/>
     <enum name='XML_ERR_URI_REQUIRED' file='xmlerror' value='70' type='xmlParserErrors' info='70'/>
+    <enum name='XML_ERR_USER_STOP' file='xmlerror' value='111' type='xmlParserErrors' info='111'/>
     <enum name='XML_ERR_VALUE_REQUIRED' file='xmlerror' value='84' type='xmlParserErrors' info='84'/>
     <enum name='XML_ERR_VERSION_MISMATCH' file='xmlerror' value='109' type='xmlParserErrors' info='109'/>
     <enum name='XML_ERR_VERSION_MISSING' file='xmlerror' value='96' type='xmlParserErrors' info='96'/>
@@ -10636,7 +10638,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlInitializeDict' file='dict' module='dict'>
-      <info>Do the dictionary mutex initialization. this function is not thread safe, initialization should preferably be done once at startup</info>
+      <info>Do the dictionary mutex initialization. this function is deprecated</info>
       <return type='int' info='0 if initialization was already done, and 1 if that call led to the initialization'/>
     </function>
     <function name='xmlInitializeGlobalState' file='globals' module='globals'>

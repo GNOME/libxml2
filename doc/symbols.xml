@@ -1761,4 +1761,8 @@
     <symbol file="xmlIO">xmlOutputBufferGetSize</symbol>
     <symbol file="xmlwriter">xmlTextWriterSetQuoteChar</symbol>
   </release>
+  <release version="2.9.1">
+    <symbol file="xpath">xmlXPathNodeEval</symbol>
+    <symbol file="xpath">xmlXPathSetContextNode</symbol>
+  </release>
 </symbols>

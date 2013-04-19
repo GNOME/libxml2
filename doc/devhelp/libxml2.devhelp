@@ -615,6 +615,7 @@
     <function name="XML_ERR_UNSUPPORTED_ENCODING" link="libxml2-xmlerror.html#XML_ERR_UNSUPPORTED_ENCODING"/>
     <function name="XML_ERR_URI_FRAGMENT" link="libxml2-xmlerror.html#XML_ERR_URI_FRAGMENT"/>
     <function name="XML_ERR_URI_REQUIRED" link="libxml2-xmlerror.html#XML_ERR_URI_REQUIRED"/>
+    <function name="XML_ERR_USER_STOP" link="libxml2-xmlerror.html#XML_ERR_USER_STOP"/>
     <function name="XML_ERR_VALUE_REQUIRED" link="libxml2-xmlerror.html#XML_ERR_VALUE_REQUIRED"/>
     <function name="XML_ERR_VERSION_MISMATCH" link="libxml2-xmlerror.html#XML_ERR_VERSION_MISMATCH"/>
     <function name="XML_ERR_VERSION_MISSING" link="libxml2-xmlerror.html#XML_ERR_VERSION_MISSING"/>

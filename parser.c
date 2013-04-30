@@ -13607,7 +13607,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 	    xmlFree((xmlChar *) ctxt->encoding);
         ctxt->encoding = xmlStrdup((const xmlChar *) doc->encoding);
 
-        hdlr = xmlFindCharEncodingHandler(doc->encoding);
+        hdlr = xmlFindCharEncodingHandler((const char *) doc->encoding);
         if (hdlr != NULL) {
             xmlSwitchToEncoding(ctxt, hdlr);
 	} else {

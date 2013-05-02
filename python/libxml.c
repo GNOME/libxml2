@@ -2683,6 +2683,7 @@ libxml_last(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
                 xmlAttrPtr attr = (xmlAttrPtr) cur;
 
                 res = attr->last;
+		break;
             }
         default:
             res = NULL;

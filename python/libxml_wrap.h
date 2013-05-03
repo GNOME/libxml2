@@ -34,11 +34,11 @@
 #define PyBytes_AsString PyString_AsString
 #define PyBytes_AS_STRING PyString_AS_STRING
 #define PyBytes_GET_SIZE PyString_GET_SIZE
-
+#endif
+#ifndef PyCapsule_New
 #define PyCapsule_New PyCObject_FromVoidPtrAndDesc
 #define PyCapsule_CheckExact PyCObject_Check
 #define PyCapsule_GetPointer(o, n) PyCObject_GetDesc((o))
-
 #endif
 #endif
 

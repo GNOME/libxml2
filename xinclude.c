@@ -1687,7 +1687,7 @@ loaded:
     /*
      * Do the xml:base fixup if needed
      */
-    if ((doc != NULL) && (URL != NULL) && (xmlStrchr(URL, (xmlChar) '/')) &&
+    if ((doc != NULL) && (URL != NULL) &&
         (!(ctxt->parseFlags & XML_PARSE_NOBASEFIX)) &&
 	(!(doc->parseFlags & XML_PARSE_NOBASEFIX))) {
 	xmlNodePtr node;

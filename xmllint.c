@@ -2338,8 +2338,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    if ((fd = open(filename, O_RDONLY)) < 0)
 		return;
 	    base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	    if (base == (void *) MAP_FAILED)
+	    if (base == (void *) MAP_FAILED) {
+	        fprintf(stderr, "mmap failure for file %s\n", filename);
+		progresult = XMLLINT_ERR_RDFILE;
 	        return;
+	    }
 
 	    if (rectxt == NULL)
 		doc = xmlReadMemory((char *) base, info.st_size,

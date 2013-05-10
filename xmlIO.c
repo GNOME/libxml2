@@ -2669,6 +2669,12 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 #endif
 	}
 #endif
+#ifdef HAVE_LZMA_H
+	if ((xmlInputCallbackTable[i].opencallback == xmlXzfileOpen) &&
+		(strcmp(URI, "-") != 0)) {
+            ret->compressed = __libxml2_xzcompressed(context);
+	}
+#endif
     }
     else
       xmlInputCallbackTable[i].closecallback (context);
@@ -3325,6 +3331,17 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (res < 0) {
 	return(-1);
     }
+
+    /*
+     * try to establish compressed status of input if not done already
+     */
+    if (in->compressed == -1) {
+#ifdef HAVE_LZMA_H
+	if (in->readcallback == xmlXzfileRead)
+            in->compressed = __libxml2_xzcompressed(in->context);
+#endif
+    }
+
     len = res;
     if (in->encoder != NULL) {
         unsigned int use;

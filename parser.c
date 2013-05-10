@@ -10681,6 +10681,10 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
         ctxt->sax->startDocument(ctxt->userData);
     if (ctxt->instate == XML_PARSER_EOF)
 	return(-1);
+    if ((ctxt->myDoc != NULL) && (ctxt->input != NULL) &&
+        (ctxt->input->buf != NULL) && (ctxt->input->buf->compressed >= 0)) {
+	ctxt->myDoc->compression = ctxt->input->buf->compressed;
+    }
 
     /*
      * The Misc part of the Prolog

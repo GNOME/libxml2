@@ -16,10 +16,12 @@ API should <a href="#DOM">look at DOM</a>.</p><p>The <a href="html/libxml-parser
 separated from the <a href="html/libxml-htmlparser.html">HTML parser
 interfaces</a>.  Let's have a look at how the XML parser can be called:</p><h3><a name="Invoking" id="Invoking">Invoking the parser : the pull method</a></h3><p>Usually, the first thing to do is to read an XML input. The parser accepts
 documents either from in-memory strings or from files.  The functions are
-defined in "parser.h":</p><dl><dt><code>xmlDocPtr xmlParseMemory(char *buffer, int size);</code></dt>
+defined in "parser.h":</p><dl>
+  <dt><code>xmlDocPtr xmlParseMemory(char *buffer, int size);</code></dt>
     <dd><p>Parse a null-terminated string containing the document.</p>
     </dd>
-</dl><dl><dt><code>xmlDocPtr xmlParseFile(const char *filename);</code></dt>
+</dl><dl>
+  <dt><code>xmlDocPtr xmlParseFile(const char *filename);</code></dt>
     <dd><p>Parse an XML document contained in a (possibly compressed)
       file.</p>
     </dd>
@@ -88,18 +90,21 @@ adventure".</p><p><strong>NOTE</strong>: XML allows <em>PI</em>s and <em>comment
 present before the document root, so <code>doc-&gt;children</code> may point
 to an element which is not the document Root Element; a function
 <code>xmlDocGetRootElement()</code> was added for this purpose.</p><h3><a name="Modifying" id="Modifying">Modifying the tree</a></h3><p>Functions are provided for reading and writing the document content. Here
-is an excerpt from the <a href="html/libxml-tree.html">tree API</a>:</p><dl><dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const xmlChar *name, const
+is an excerpt from the <a href="html/libxml-tree.html">tree API</a>:</p><dl>
+  <dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const xmlChar *name, const
   xmlChar *value);</code></dt>
     <dd><p>This sets (or changes) an attribute carried by an ELEMENT node.
       The value can be NULL.</p>
     </dd>
-</dl><dl><dt><code>const xmlChar *xmlGetProp(xmlNodePtr node, const xmlChar
+</dl><dl>
+  <dt><code>const xmlChar *xmlGetProp(xmlNodePtr node, const xmlChar
   *name);</code></dt>
     <dd><p>This function returns a pointer to new copy of the property
       content. Note that the user must deallocate the result.</p>
     </dd>
 </dl><p>Two functions are provided for reading and writing the text associated
-with elements:</p><dl><dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const xmlChar
+with elements:</p><dl>
+  <dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const xmlChar
   *value);</code></dt>
     <dd><p>This function takes an "external" string and converts it to one
       text node or possibly to a list of entity and text nodes. All
@@ -107,7 +112,8 @@ with elements:</p><dl><dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, c
       internally as entity nodes, hence the result of the function may not be
       a single node.</p>
     </dd>
-</dl><dl><dt><code>xmlChar *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
+</dl><dl>
+  <dt><code>xmlChar *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
   inLine);</code></dt>
     <dd><p>This function is the inverse of
       <code>xmlStringGetNodeList()</code>. It generates a new string
@@ -117,29 +123,36 @@ with elements:</p><dl><dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, c
       XML encoding in the string, it will substitute it with its value (say,
       "GNU Network Object Model Environment").</p>
     </dd>
-</dl><h3><a name="Saving" id="Saving">Saving a tree</a></h3><p>Basically 3 options are possible:</p><dl><dt><code>void xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int
+</dl><h3><a name="Saving" id="Saving">Saving a tree</a></h3><p>Basically 3 options are possible:</p><dl>
+  <dt><code>void xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int
   *size);</code></dt>
     <dd><p>Returns a buffer into which the document has been saved.</p>
     </dd>
-</dl><dl><dt><code>extern void xmlDocDump(FILE *f, xmlDocPtr doc);</code></dt>
+</dl><dl>
+  <dt><code>extern void xmlDocDump(FILE *f, xmlDocPtr doc);</code></dt>
     <dd><p>Dumps a document to an open file descriptor.</p>
     </dd>
-</dl><dl><dt><code>int xmlSaveFile(const char *filename, xmlDocPtr cur);</code></dt>
+</dl><dl>
+  <dt><code>int xmlSaveFile(const char *filename, xmlDocPtr cur);</code></dt>
     <dd><p>Saves the document to a file. In this case, the compression
       interface is triggered if it has been turned on.</p>
     </dd>
 </dl><h3><a name="Compressio" id="Compressio">Compression</a></h3><p>The library transparently handles compression when doing file-based
 accesses. The level of compression on saves can be turned on either globally
-or individually for one file:</p><dl><dt><code>int  xmlGetDocCompressMode (xmlDocPtr doc);</code></dt>
+or individually for one file:</p><dl>
+  <dt><code>int  xmlGetDocCompressMode (xmlDocPtr doc);</code></dt>
     <dd><p>Gets the document compression ratio (0-9).</p>
     </dd>
-</dl><dl><dt><code>void xmlSetDocCompressMode (xmlDocPtr doc, int mode);</code></dt>
+</dl><dl>
+  <dt><code>void xmlSetDocCompressMode (xmlDocPtr doc, int mode);</code></dt>
     <dd><p>Sets the document compression ratio.</p>
     </dd>
-</dl><dl><dt><code>int  xmlGetCompressMode(void);</code></dt>
+</dl><dl>
+  <dt><code>int  xmlGetCompressMode(void);</code></dt>
     <dd><p>Gets the default compression ratio.</p>
     </dd>
-</dl><dl><dt><code>void xmlSetCompressMode(int mode);</code></dt>
+</dl><dl>
+  <dt><code>void xmlSetCompressMode(int mode);</code></dt>
     <dd><p>Sets the default compression ratio.</p>
     </dd>
 </dl><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

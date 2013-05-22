@@ -3404,6 +3404,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     int len = 0, l;
     int c;
     int count = 0;
+    const xmlChar *end; /* needed because CUR_CHAR() can move cur on \r\n */
 
 #ifdef DEBUG
     nbParseNCNameComplex++;
@@ -3413,6 +3414,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
      * Handler for more complex cases
      */
     GROW;
+    end = ctxt->input->cur;
     c = CUR_CHAR(l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
 	(!xmlIsNameStartChar(ctxt, c) || (c == ':'))) {
@@ -3434,12 +3436,14 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 	}
 	len += l;
 	NEXTL(l);
+	end = ctxt->input->cur;
 	c = CUR_CHAR(l);
 	if (c == 0) {
 	    count = 0;
 	    GROW;
             if (ctxt->instate == XML_PARSER_EOF)
                 return(NULL);
+	    end = ctxt->input->cur;
 	    c = CUR_CHAR(l);
 	}
     }
@@ -3448,7 +3452,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
         xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
         return(NULL);
     }
-    return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
+    return(xmlDictLookup(ctxt->dict, end - len, len));
 }
 
 /**

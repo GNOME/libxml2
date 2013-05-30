@@ -594,7 +594,7 @@ libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj)
 }
 
 xmlXPathObjectPtr
-libxml_xmlXPathObjectPtrConvert(PyObject * obj)
+libxml_xmlXPathObjectPtrConvert(PyObject *obj)
 {
     xmlXPathObjectPtr ret = NULL;
 
@@ -633,11 +633,11 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
 #if PY_VERSION_HEX >= 0x03030000
         xmlChar *str;
 	const char *tmp;
-	size_t size;
+	Py_ssize_t size;
 
 	/* tmp doesn't need to be deallocated */
         tmp = PyUnicode_AsUTF8AndSize(obj, &size);
-        str = xmlStrndup(tmp, (int) size);
+        str = xmlStrndup((const xmlChar *) tmp, (int) size);
         ret = xmlXPathWrapString(str);
 #else
         xmlChar *str = NULL;

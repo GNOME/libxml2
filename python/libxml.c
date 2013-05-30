@@ -296,7 +296,7 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
 #ifdef PyUnicode_Check
     } else if PyUnicode_Check (ret) {
 #if PY_VERSION_HEX >= 0x03030000
-        size_t size;
+        Py_ssize_t size;
 	const char *tmp;
 
 	/* tmp doesn't need to be deallocated */
@@ -361,7 +361,7 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
 #ifdef PyUnicode_Check
     } else if PyUnicode_Check (ret) {
 #if PY_VERSION_HEX >= 0x03030000
-        size_t size;
+        Py_ssize_t size;
 	const char *tmp;
 
 	/* tmp doesn't need to be deallocated */

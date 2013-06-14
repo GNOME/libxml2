@@ -223,6 +223,7 @@ fi
 if test "$with_schematron" = "yes"
 then
     with_pattern=yes
+    with_tree=yes
     with_xpath=yes
 fi
 if test "$with_reader" = "yes"

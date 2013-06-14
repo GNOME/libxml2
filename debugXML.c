@@ -254,10 +254,12 @@ xmlCtxtCheckName(xmlDebugCtxtPtr ctxt, const xmlChar * name)
 	    xmlDebugErr(ctxt, XML_CHECK_NO_NAME, "Name is NULL");
 	    return;
 	}
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
         if (xmlValidateName(name, 0)) {
 	    xmlDebugErr3(ctxt, XML_CHECK_NOT_NCNAME,
 			 "Name is not an NCName '%s'", (const char *) name);
 	}
+#endif
 	if ((ctxt->dict != NULL) &&
 	    (!xmlDictOwns(ctxt->dict, name)) &&
             ((ctxt->doc == NULL) ||

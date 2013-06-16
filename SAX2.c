@@ -2145,12 +2145,14 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	     */
 	    if (dup == NULL)
 	        dup = xmlStrndup(value, valueend - value);
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_VALID_ENABLED
 	    if (xmlValidateNCName(dup, 1) != 0) {
 	        xmlErrValid(ctxt, XML_DTD_XMLID_VALUE,
 		      "xml:id : attribute value %s is not an NCName\n",
 			    (const char *) dup, NULL);
 	    }
+#endif
 #endif
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, dup, ret);
 	} else if (xmlIsID(ctxt->myDoc, ctxt->node, ret)) {

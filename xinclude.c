@@ -17,6 +17,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/uri.h>
+#include <libxml/xpath.h>
 #include <libxml/xpointer.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
@@ -1207,6 +1208,7 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	    }
 	    break;
 	}
+#ifdef LIBXML_XPTR_ENABLED
 	case XPATH_LOCATIONSET: {
 	    xmlLocationSetPtr set = (xmlLocationSetPtr) obj->user;
 	    if (set == NULL)
@@ -1226,7 +1228,6 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	    }
 	    break;
 	}
-#ifdef LIBXML_XPTR_ENABLED
 	case XPATH_RANGE:
 	    return(xmlXIncludeCopyRange(ctxt, target, source, obj));
 #endif

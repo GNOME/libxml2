@@ -3039,7 +3039,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 }
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
-    defined(LIBXML_SCHEMAS_ENABLED)
+    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
 /**
  * xmlAddPrevSibling:
  * @cur:  the child node

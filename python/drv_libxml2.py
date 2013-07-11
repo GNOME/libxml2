@@ -34,12 +34,20 @@ TODO
 
 """
 
-__author__  = u"Stéphane Bidoul <sbi@skynet.be>"
+__author__  = "Stéphane Bidoul <sbi@skynet.be>"
 __version__ = "0.3"
 
+import sys
 import codecs
-from types import StringType, UnicodeType
-StringTypes = (StringType,UnicodeType)
+
+if sys.version < "3":
+    __author__  = codecs.unicode_escape_decode(__author__)[0]
+
+    from types import StringType, UnicodeType
+    StringTypes = (StringType,UnicodeType)
+
+else:
+    StringTypes = (str)
 
 from xml.sax._exceptions import *
 from xml.sax import xmlreader, saxutils
@@ -65,7 +73,7 @@ def _d(s):
 
 try:
     import libxml2
-except ImportError, e:
+except ImportError as e:
     raise SAXReaderNotAvailable("libxml2 not available: " \
                                 "import error was: %s" % e)
 

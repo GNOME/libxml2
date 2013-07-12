@@ -1837,8 +1837,12 @@ static void streamFile(char *filename) {
 	if ((fd = open(filename, O_RDONLY)) < 0)
 	    return;
 	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	if (base == (void *) MAP_FAILED)
+	if (base == (void *) MAP_FAILED) {
+	    close(fd);
+	    fprintf(stderr, "mmap failure for file %s\n", filename);
+	    progresult = XMLLINT_ERR_RDFILE;
 	    return;
+	}
 
 	reader = xmlReaderForMemory(base, info.st_size, filename,
 	                            NULL, options);
@@ -2223,8 +2227,12 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	if ((fd = open(filename, O_RDONLY)) < 0)
 	    return;
 	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	if (base == (void *) MAP_FAILED)
+	if (base == (void *) MAP_FAILED) {
+	    close(fd);
+	    fprintf(stderr, "mmap failure for file %s\n", filename);
+	    progresult = XMLLINT_ERR_RDFILE;
 	    return;
+	}
 
 	doc = htmlReadMemory((char *) base, info.st_size, filename,
 	                     NULL, options);
@@ -2339,6 +2347,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		return;
 	    base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
 	    if (base == (void *) MAP_FAILED) {
+	        close(fd);
 	        fprintf(stderr, "mmap failure for file %s\n", filename);
 		progresult = XMLLINT_ERR_RDFILE;
 	        return;

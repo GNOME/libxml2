@@ -40,14 +40,12 @@ __version__ = "0.3"
 import sys
 import codecs
 
-if sys.version < "3":
+if sys.version_info[0] < 3:
     __author__  = codecs.unicode_escape_decode(__author__)[0]
 
-    from types import StringType, UnicodeType
-    StringTypes = (StringType,UnicodeType)
-
+    StringTypes = (str, unicode)
 else:
-    StringTypes = (str)
+    StringTypes = str
 
 from xml.sax._exceptions import *
 from xml.sax import xmlreader, saxutils
@@ -73,9 +71,9 @@ def _d(s):
 
 try:
     import libxml2
-except ImportError as e:
+except ImportError:
     raise SAXReaderNotAvailable("libxml2 not available: " \
-                                "import error was: %s" % e)
+                                "import error was: %s" % sys.exc_info()[1])
 
 class Locator(xmlreader.Locator):
     """SAX Locator adapter for libxml2.xmlTextReaderLocator"""
@@ -142,7 +140,7 @@ class LibXml2Reader(xmlreader.XMLReader):
         self.__parsing = 1
         try:
             # prepare source and create reader
-            if type(source) in StringTypes:
+            if isinstance(source, StringTypes):
                 reader = libxml2.newTextReaderFilename(source)
             else:
                 source = saxutils.prepare_input_source(source)

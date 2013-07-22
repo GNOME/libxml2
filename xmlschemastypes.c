@@ -242,6 +242,10 @@ xmlSchemaNewMinLengthFacet(int value)
     }
     ret->type = XML_SCHEMA_FACET_MINLENGTH;
     ret->val = xmlSchemaNewValue(XML_SCHEMAS_NNINTEGER);
+    if (ret->val == NULL) {
+        xmlFree(ret);
+	return(NULL);
+    }
     ret->val->value.decimal.lo = value;
     return (ret);
 }

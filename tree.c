@@ -717,8 +717,11 @@ xmlGetBufferAllocationScheme(void) {
  * Creation of a new Namespace. This function will refuse to create
  * a namespace with a similar prefix than an existing one present on this
  * node.
+ * Note that for a default namespace, @prefix should be NULL.
+ *
  * We use href==NULL in the case of an element creation where the namespace
  * was not defined.
+ *
  * Returns a new namespace pointer or NULL
  */
 xmlNsPtr
@@ -803,7 +806,9 @@ xmlSetNs(xmlNodePtr node, xmlNsPtr ns) {
 #endif
 	return;
     }
-    node->ns = ns;
+    if ((node->type == XML_ELEMENT_NODE) ||
+        (node->type == XML_ATTRIBUTE_NODE))
+	node->ns = ns;
 }
 
 /**

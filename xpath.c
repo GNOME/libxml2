@@ -2885,6 +2885,12 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 				fraction_place, number);
 	    }
 
+	    /* Remove leading spaces sometimes inserted by snprintf */
+	    while (work[0] == ' ') {
+	        for (ptr = &work[0];(ptr[0] = ptr[1]);ptr++);
+		size--;
+	    }
+
 	    /* Remove fractional trailing zeroes */
 	    after_fraction = work + size;
 	    ptr = after_fraction;

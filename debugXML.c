@@ -2946,7 +2946,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         } else if (!strcmp(command, "save")) {
             xmlShellSave(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "write")) {
-	    if ((arg == NULL) || (arg[0] == 0))
+	    if (arg[0] == 0)
 		xmlGenericError(xmlGenericErrorContext,
                         "Write command requires a filename argument\n");
 	    else

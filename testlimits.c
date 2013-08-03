@@ -1512,6 +1512,7 @@ launchCrazySAX(unsigned int test, int fail) {
     return(err);
 }
 
+#ifdef LIBXML_READER_ENABLED
 static int
 launchCrazy(unsigned int test, int fail) {
     int res = 0, err = 0;
@@ -1528,6 +1529,7 @@ launchCrazy(unsigned int test, int fail) {
 
     return(err);
 }
+#endif
 
 static int get_crazy_fail(int test) {
     /*
@@ -1565,6 +1567,8 @@ runcrazy(void) {
     old_errors = nb_errors;
     old_tests = nb_tests;
     old_leaks = nb_leaks;
+
+#ifdef LIBXML_READER_ENABLED
     if (tests_quiet == 0) {
 	printf("## Crazy tests on reader\n");
     }
@@ -1573,6 +1577,8 @@ runcrazy(void) {
         if (res != 0)
             ret++;
     }
+#endif
+
     if (tests_quiet == 0) {
 	printf("\n## Crazy tests on SAX\n");
     }

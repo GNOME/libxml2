@@ -2384,6 +2384,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
     return (written? written : ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlCharEncOutput:
  * @output: a parser output buffer
@@ -2612,6 +2613,7 @@ retry:
     }
     return(ret);
 }
+#endif
 
 /**
  * xmlCharEncOutFunc:

@@ -1990,7 +1990,8 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
 
     /* Otherwise, we need to add new node to buffer */
     else {
-        if (ctxt->node_seq.length + 1 > ctxt->node_seq.maximum) {
+        if ((ctxt->node_seq.length + 1 > ctxt->node_seq.maximum) ||
+	    (ctxt->node_seq.buffer == NULL)) {
             xmlParserNodeInfo *tmp_buffer;
             unsigned int byte_size;
 

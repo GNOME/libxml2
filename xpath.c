@@ -14724,8 +14724,9 @@ xmlXPathOptimizeExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
     * internal representation.
     */
 
-    if ((op->ch1 != -1) &&
-        (op->op == XPATH_OP_COLLECT /* 11 */))
+    if ((op->op == XPATH_OP_COLLECT /* 11 */) &&
+        (op->ch1 != -1) &&
+        (op->ch2 == -1 /* no predicate */))
     {
         xmlXPathStepOpPtr prevop = &comp->steps[op->ch1];
 

@@ -12425,7 +12425,14 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
                     if (axis == AXIS_ATTRIBUTE) {
                         if (cur->type == XML_ATTRIBUTE_NODE)
 			{
-			    XP_TEST_HIT
+                            if (prefix == NULL)
+			    {
+				XP_TEST_HIT
+                            } else if ((cur->ns != NULL) &&
+				(xmlStrEqual(URI, cur->ns->href)))
+			    {
+				XP_TEST_HIT
+                            }
                         }
                     } else if (axis == AXIS_NAMESPACE) {
                         if (cur->type == XML_NAMESPACE_DECL)

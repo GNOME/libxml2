@@ -1003,6 +1003,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
             0) {
             /* Solaris error code */
             __xmlIOErr(XML_FROM_HTTP, 0, "getsockopt failed\n");
+            closesocket(s);
             return INVALID_SOCKET;
         }
 #endif

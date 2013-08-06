@@ -2740,23 +2740,24 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
 
     if (doc == NULL) return(-1);
     if (attr == NULL) return(-1);
+
     table = (xmlIDTablePtr) doc->ids;
     if (table == NULL)
         return(-1);
 
-    if (attr == NULL)
-	return(-1);
     ID = xmlNodeListGetString(doc, attr->children, 1);
     if (ID == NULL)
-	return(-1);
+        return(-1);
+
     id = xmlHashLookup(table, ID);
     if (id == NULL || id->attr != attr) {
-	xmlFree(ID);
-	return(-1);
+        xmlFree(ID);
+        return(-1);
     }
+
     xmlHashRemoveEntry(table, ID, (xmlHashDeallocator) xmlFreeID);
     xmlFree(ID);
-	attr->atype = 0;
+    attr->atype = 0;
     return(0);
 }
 
@@ -3059,21 +3060,21 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
 
     if (doc == NULL) return(-1);
     if (attr == NULL) return(-1);
+
     table = (xmlRefTablePtr) doc->refs;
     if (table == NULL)
         return(-1);
 
-    if (attr == NULL)
-        return(-1);
     ID = xmlNodeListGetString(doc, attr->children, 1);
     if (ID == NULL)
         return(-1);
-    ref_list = xmlHashLookup(table, ID);
 
+    ref_list = xmlHashLookup(table, ID);
     if(ref_list == NULL) {
         xmlFree(ID);
         return (-1);
     }
+
     /* At this point, ref_list refers to a list of references which
      * have the same key as the supplied attr. Our list of references
      * is ordered by reference address and we don't have that information

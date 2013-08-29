@@ -3388,11 +3388,13 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--pretty"))) {
 	     i++;
 #ifdef LIBXML_OUTPUT_ENABLED
-	     format = atoi(argv[i]);
-	     if (format == 1) {
-	         noblanks++;
-	         xmlKeepBlanksDefault(0);
-	     }
+       if (argv[i] != NULL) {
+	         format = atoi(argv[i]);
+	         if (format == 1) {
+	             noblanks++;
+	             xmlKeepBlanksDefault(0);
+	         }
+       }
 #endif /* LIBXML_OUTPUT_ENABLED */
 	}
 #ifdef LIBXML_READER_ENABLED

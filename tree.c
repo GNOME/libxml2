@@ -9785,7 +9785,8 @@ leave_node:
 	    if (clone->parent != NULL)
 		clone->parent->last = clone;
 	    clone = clone->parent;
-	    parentClone = clone->parent;
+	    if (clone != NULL)
+		parentClone = clone->parent;
 	    /*
 	    * Process parent --> next;
 	    */

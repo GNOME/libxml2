@@ -3550,8 +3550,8 @@ xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Setting catalog preference to SYSTEM\n");
 		break;
-	    case XML_CATA_PREFER_NONE:
-		break;
+	    default:
+		return(ret);
 	}
     }
     xmlCatalogDefaultPrefer = prefer;

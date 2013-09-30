@@ -5236,7 +5236,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     xmlElementContentPtr cont;
     const xmlChar *name;
 
-    if ((elemDecl == NULL) || (parent == NULL))
+    if ((elemDecl == NULL) || (parent == NULL) || (ctxt == NULL))
 	return(-1);
     cont = elemDecl->content;
     name = elemDecl->name;

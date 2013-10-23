@@ -9047,6 +9047,19 @@ xmlRelaxNGAttributeMatch(xmlRelaxNGValidCtxtPtr ctxt,
                 return (ret);
             list = list->next;
         }
+    } else if (define->type == XML_RELAXNG_CHOICE) {
+        xmlRelaxNGDefinePtr list;
+
+        list = define->nameClass;
+        while (list != NULL) {
+            ret = xmlRelaxNGAttributeMatch(ctxt, list, prop);
+            if (ret == 1)
+                return (1);
+            if (ret < 0)
+                return (ret);
+            list = list->next;
+        }
+        return (0);
     } else {
     TODO}
     return (1);

@@ -68,6 +68,7 @@ AC_PATH_PROG(PERL, perl, /usr/bin/perl)
 AC_PATH_PROG(WGET, wget, /usr/bin/wget)
 AC_PATH_PROG(XMLLINT, xmllint, /usr/bin/xmllint)
 AC_PATH_PROG(XSLTPROC, xsltproc, /usr/bin/xsltproc)
+PKG_PROG_PKG_CONFIG
 
 LT_INIT
 
@@ -414,16 +415,33 @@ WITH_LZMA=0
 if test "$with_lzma" = "no"; then
     echo "Disabling compression support"
 else
-    AC_CHECK_HEADERS(lzma.h,
-	AC_CHECK_LIB(lzma, lzma_code,[
-	    AC_DEFINE([HAVE_LIBLZMA], [1], [Have compression library])
-	    WITH_LZMA=1
-	    if test "x${LZMA_DIR}" != "x"; then
-		LZMA_CFLAGS="-I${LZMA_DIR}/include"
-		LZMA_LIBS="-L${LZMA_DIR}/lib -llzma"
-	    else
-		LZMA_LIBS="-llzma"
-	    fi]))
+    # Try pkg-config first so that static linking works.
+    # If this succeeeds, we ignore the WITH_LZMA directory.
+    PKG_CHECK_MODULES([LZMA],[liblzma],
+        [have_liblzma=yes],
+        [have_liblzma=no])
+
+     # If pkg-config failed, fall back to AC_CHECK_LIB. This
+     # will not pick up the necessary LIBS flags for liblzma's
+     # private dependencies, though, so static linking may fail.
+     if test "x$have_liblzma" = "xno"; then
+         AC_CHECK_HEADERS(lzma.h,
+            AC_CHECK_LIB(lzma, lzma_code,[
+                have_liblzma=yes
+                if test "x${LZMA_DIR}" != "x"; then
+                    LZMA_CFLAGS="-I${LZMA_DIR}/include"
+                    LZMA_LIBS="-L${LZMA_DIR}/lib -llzma"
+                else
+                    LZMA_LIBS="-llzma"
+                fi],
+                [have_liblzma=no]))
+    fi
+
+    # Found the library via either method?
+    if test "x$have_liblzma" = "xyes"; then
+        AC_DEFINE([HAVE_LIBLZMA], [1], [Have compression library])
+        WITH_LZMA=1
+    fi
 fi
 
 AC_SUBST(LZMA_CFLAGS)

@@ -267,7 +267,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 		node2 = node2->parent;
 	    }
 	    if ((node2 == NULL) || (node2->type != XML_ELEMENT_NODE) ||
-		(0 <= (long) node1->content))
+		(0 <= (long) node2->content))
 	    {
 		node2 = miscNode2;
 		precedence2 = 0;

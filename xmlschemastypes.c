@@ -4933,7 +4933,7 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 
     if (y->type == XML_SCHEMAS_STRING)
 	yws = XML_SCHEMA_WHITESPACE_PRESERVE;
-    else if (x->type == XML_SCHEMAS_NORMSTRING)
+    else if (y->type == XML_SCHEMAS_NORMSTRING)
         yws = XML_SCHEMA_WHITESPACE_REPLACE;
     else
         yws = XML_SCHEMA_WHITESPACE_COLLAPSE;

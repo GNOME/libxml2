@@ -10755,7 +10755,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr pctxt, xmlSchemaPtr schema,
 	    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
 	    NULL, node,
 	    xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYURI),
-	    NULL, namespaceName, NULL, NULL, NULL);
+	    NULL, schemaLocation, NULL, NULL, NULL);
 	return (pctxt->err);
     }
     /*

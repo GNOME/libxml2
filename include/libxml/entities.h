@@ -57,7 +57,7 @@ struct _xmlEntity {
     const xmlChar           *URI;	/* the full URI as computed */
     int                    owner;	/* does the entity own the childrens */
     int			 checked;	/* was the entity content checked */
-					/* this is also used to count entites
+					/* this is also used to count entities
 					 * references done from that entity
 					 * and if it contains '<' */
 };

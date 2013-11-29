@@ -3003,7 +3003,7 @@ static void usage(const char *name) {
     printf("\t--noenc : ignore any encoding specified inside the document\n");
     printf("\t--noout : don't output the result tree\n");
     printf("\t--path 'paths': provide a set of paths for resources\n");
-    printf("\t--load-trace : print trace of all external entites loaded\n");
+    printf("\t--load-trace : print trace of all external entities loaded\n");
     printf("\t--nonet : refuse to fetch DTDs or entities over network\n");
     printf("\t--nocompact : do not generate compact text nodes\n");
     printf("\t--htmlout : output results as HTML\n");

@@ -7757,7 +7757,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 
 
     /*
-     * Predefined entites override any extra definition
+     * Predefined entities override any extra definition
      */
     if ((ctxt->options & XML_PARSE_OLDSAX) == 0) {
         ent = xmlGetPredefinedEntity(name);

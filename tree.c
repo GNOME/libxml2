@@ -4299,6 +4299,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 	    }
 	    if (doc->intSubset == NULL) {
 		q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
+		if (q == NULL) return(NULL);
 		q->doc = doc;
 		q->parent = parent;
 		doc->intSubset = (xmlDtdPtr) q;
@@ -4310,6 +4311,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 	} else
 #endif /* LIBXML_TREE_ENABLED */
 	    q = xmlStaticCopyNode(node, doc, parent, 1);
+	if (q == NULL) return(NULL);
 	if (ret == NULL) {
 	    q->prev = NULL;
 	    ret = p = q;

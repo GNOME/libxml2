@@ -5991,7 +5991,7 @@ done:
 		ctxt->sax->endDocument(ctxt->userData);
 	}
     }
-    if ((ctxt->myDoc != NULL) &&
+    if ((!(ctxt->options & HTML_PARSE_NODEFDTD)) && (ctxt->myDoc != NULL) &&
 	((terminate) || (ctxt->instate == XML_PARSER_EOF) ||
 	 (ctxt->instate == XML_PARSER_EPILOG))) {
 	xmlDtdPtr dtd;

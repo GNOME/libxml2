@@ -5648,7 +5648,7 @@ xmlSchemaFormatFloat(double number, char buffer[], int buffersize)
  * @val: the precomputed value
  * @retValue: the returned value
  *
- * Get a the cononical lexical representation of the value.
+ * Get the canonical lexical representation of the value.
  * The caller has to FREE the returned retValue.
  *
  * WARNING: Some value types are not supported yet, resulting
@@ -6070,7 +6070,7 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
  * @retValue: the returned value
  * @ws: the whitespace type of the value
  *
- * Get a the cononical representation of the value.
+ * Get the canonical representation of the value.
  * The caller has to free the returned @retValue.
  *
  * Returns 0 if the value could be built, 1 if the value type is

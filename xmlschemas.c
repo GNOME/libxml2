@@ -1471,7 +1471,7 @@ xmlSchemaWildcardPCToString(int pc)
  * @retValue: the returned value
  * @ws: the whitespace type of the value
  *
- * Get a the cononical representation of the value.
+ * Get a the canonical representation of the value.
  * The caller has to free the returned retValue.
  *
  * Returns 0 if the value could be built and -1 in case of
@@ -19522,7 +19522,7 @@ xmlSchemaCheckAttrPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
 	* "if there is a {value constraint}, the canonical lexical
 	* representation of its value must be �valid� with respect
 	* to the {type definition} as defined in String Valid (�3.14.4)."
-	* TODO: Don't care about the *cononical* stuff here, this requirement
+	* TODO: Don't care about the *canonical* stuff here, this requirement
 	* will be removed in WXS 1.1 anyway.
 	*/
 	ret = xmlSchemaVCheckCVCSimpleType(ACTXT_CAST pctxt,

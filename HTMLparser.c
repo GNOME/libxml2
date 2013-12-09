@@ -6808,6 +6808,7 @@ htmlReadFd(int fd, const char *URL, const char *encoding, int options)
 
     if (fd < 0)
         return (NULL);
+    xmlInitParser();
 
     xmlInitParser();
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
@@ -6898,6 +6899,7 @@ htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar * cur,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     htmlCtxtReset(ctxt);
 
@@ -6931,6 +6933,7 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     htmlCtxtReset(ctxt);
 
@@ -6967,6 +6970,7 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
         return (NULL);
     if (buffer == NULL)
         return (NULL);
+    xmlInitParser();
 
     htmlCtxtReset(ctxt);
 
@@ -7009,6 +7013,7 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     htmlCtxtReset(ctxt);
 
@@ -7053,6 +7058,7 @@ htmlCtxtReadIO(htmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     htmlCtxtReset(ctxt);
 

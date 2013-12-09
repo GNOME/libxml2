@@ -15221,6 +15221,7 @@ xmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int optio
 
     if (cur == NULL)
         return (NULL);
+    xmlInitParser();
 
     ctxt = xmlCreateDocParserCtxt(cur);
     if (ctxt == NULL)
@@ -15243,6 +15244,7 @@ xmlReadFile(const char *filename, const char *encoding, int options)
 {
     xmlParserCtxtPtr ctxt;
 
+    xmlInitParser();
     ctxt = xmlCreateURLParserCtxt(filename, options);
     if (ctxt == NULL)
         return (NULL);
@@ -15266,6 +15268,7 @@ xmlReadMemory(const char *buffer, int size, const char *URL, const char *encodin
 {
     xmlParserCtxtPtr ctxt;
 
+    xmlInitParser();
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL)
         return (NULL);
@@ -15294,6 +15297,7 @@ xmlReadFd(int fd, const char *URL, const char *encoding, int options)
 
     if (fd < 0)
         return (NULL);
+    xmlInitParser();
 
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
@@ -15337,6 +15341,7 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 
     if (ioread == NULL)
         return (NULL);
+    xmlInitParser();
 
     input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
                                          XML_CHAR_ENCODING_NONE);
@@ -15383,6 +15388,7 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     xmlCtxtReset(ctxt);
 
@@ -15416,6 +15422,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     xmlCtxtReset(ctxt);
 
@@ -15452,6 +15459,7 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
         return (NULL);
     if (buffer == NULL)
         return (NULL);
+    xmlInitParser();
 
     xmlCtxtReset(ctxt);
 
@@ -15496,6 +15504,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     xmlCtxtReset(ctxt);
 
@@ -15541,6 +15550,7 @@ xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
         return (NULL);
     if (ctxt == NULL)
         return (NULL);
+    xmlInitParser();
 
     xmlCtxtReset(ctxt);
 

@@ -271,7 +271,7 @@
 		<varlistentry>
 	<term><option>--encode <replaceable class="option">ENCODING</replaceable></option></term>
 	<listitem>
-		<para>Output in the given encoding.</para>
+		<para>Output in the given encoding. Note that this works for full document not fragments or result from XPath queries.</para>
 	</listitem>
 		</varlistentry>
 

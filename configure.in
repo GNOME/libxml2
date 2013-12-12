@@ -563,6 +563,16 @@ else
     fi
 fi
 
+dnl Checking whether va_list is an array type
+AC_MSG_CHECKING([whether va_list is an array type])
+AC_TRY_COMPILE2([
+#include <stdarg.h>
+void a(va_list * ap) {}],[
+va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1],[
+  AC_MSG_RESULT(no)],[
+  AC_MSG_RESULT(yes)
+  AC_DEFINE([VA_LIST_IS_ARRAY], [1],[Define if va_list is an array type])])
+
 dnl Checks for inet libraries:
 AC_SEARCH_LIBS(gethostent, [nsl])
 AC_SEARCH_LIBS(setsockopt, [socket net network])
@@ -594,6 +604,37 @@ AC_TRY_COMPILE2([
       AC_MSG_WARN(could not determine)
       XML_SOCKLEN_T="int"])])])
 AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
+
+dnl Checking if gethostbyname() argument is const.
+AC_MSG_CHECKING([for const gethostbyname() argument])
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <netdb.h>]],
+    [[(void)gethostbyname((const char *)"");]])],
+have_gethostbyname_const_arg=yes,
+have_gethostbyname_const_arg=no)
+AC_MSG_RESULT($have_gethostbyname_const_arg)
+if test x"$have_gethostbyname_const_arg" = x"yes"; then
+    AC_DEFINE([GETHOSTBYNAME_ARG_CAST], [],
+      [Type cast for the gethostbyname() argument])
+else
+    AC_DEFINE([GETHOSTBYNAME_ARG_CAST], [(char *)],
+      [Type cast for the gethostbyname() argument])
+fi
+
+dnl Checking if send() second argument is const.
+AC_MSG_CHECKING([for const send() second argument])
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
+#include <sys/socket.h>]],
+    [[(void)send(1,(const char *)"",1,1);]])],
+have_send_const_arg2=yes,
+have_send_const_arg2=no)
+AC_MSG_RESULT($have_send_const_arg2)
+if test x"$have_send_const_arg2" = x"yes"; then
+    AC_DEFINE([SEND_ARG2_CAST], [],
+      [Type cast for the send() function 2nd arg])
+else
+    AC_DEFINE([SEND_ARG2_CAST], [(char *)],
+      [Type cast for the send() function 2nd arg])
+fi
 
 dnl ***********************Checking for availability of IPv6*******************
 

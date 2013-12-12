@@ -654,7 +654,11 @@ struct _xmlDOMWrapCtxt {
 /*
  * Some helper functions
  */
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || \
+    defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || \
+    defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || \
+    defined(LIBXML_DOCB_ENABLED)
 XMLPUBFUN int XMLCALL
 		xmlValidateNCName	(const xmlChar *value,
 					 int space);
@@ -986,7 +990,8 @@ XMLPUBFUN xmlNsPtr XMLCALL
 		xmlSearchNsByHref	(xmlDocPtr doc,
 					 xmlNodePtr node,
 					 const xmlChar *href);
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
 XMLPUBFUN xmlNsPtr * XMLCALL
 		xmlGetNsList		(xmlDocPtr doc,
 					 xmlNodePtr node);
@@ -1003,7 +1008,8 @@ XMLPUBFUN xmlNsPtr XMLCALL
 /*
  * Changing the content.
  */
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
 XMLPUBFUN xmlAttrPtr XMLCALL
 		xmlSetProp		(xmlNodePtr node,
 					 const xmlChar *name,
@@ -1013,7 +1019,8 @@ XMLPUBFUN xmlAttrPtr XMLCALL
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *value);
-#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED) */
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || \
+	  defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED) */
 XMLPUBFUN xmlChar * XMLCALL
 		xmlGetNoNsProp		(xmlNodePtr node,
 					 const xmlChar *name);

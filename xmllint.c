@@ -2194,6 +2194,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 	f = fopen(filename, "rb");
+#elif defined(__OS400__)
+	f = fopen(filename, "rb");
 #else
 	f = fopen(filename, "r");
 #endif
@@ -2260,6 +2262,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    } else {
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 		f = fopen(filename, "rb");
+#elif defined(__OS400__)
+		f = fopen(filename, "rb");
 #else
 		f = fopen(filename, "r");
 #endif
@@ -2300,6 +2304,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	        FILE *f;
 
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+		f = fopen(filename, "rb");
+#elif defined(__OS400__)
 		f = fopen(filename, "rb");
 #else
 		f = fopen(filename, "r");

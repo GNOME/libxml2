@@ -78,6 +78,10 @@
 # else
 #  define strcasecmp(x,y) strcmpi(x,y)
 # endif
+#elif defined(TRIO_PLATFORM_OS400)
+# define USE_STRCASECMP
+# define USE_STRNCASECMP
+# include <strings.h>
 #endif
 
 #if !(defined(TRIO_PLATFORM_SUNOS))

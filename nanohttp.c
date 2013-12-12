@@ -461,7 +461,7 @@ xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt, const char *xmt_ptr, int outlen)
 
     if ((ctxt->state & XML_NANO_HTTP_WRITE) && (xmt_ptr != NULL)) {
         while (total_sent < outlen) {
-            int nsent = send(ctxt->fd, xmt_ptr + total_sent,
+            int nsent = send(ctxt->fd, SEND_ARG2_CAST (xmt_ptr + total_sent),
                              outlen - total_sent, 0);
 
             if (nsent > 0)
@@ -1122,7 +1122,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 #endif
 #if !defined(HAVE_GETADDRINFO) || !defined(_WIN32)
     {
-	h = gethostbyname (host);
+	h = gethostbyname (GETHOSTBYNAME_ARG_CAST host);
 	if (h == NULL) {
 
 /*

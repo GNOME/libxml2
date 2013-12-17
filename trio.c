@@ -99,7 +99,7 @@
 #endif
 #include <stddef.h>
 
-#ifdef HAVE_ERRNO_H
+#if defined( HAVE_ERRNO_H ) || defined( __VMS )
 #include <errno.h>
 #endif
 
@@ -218,7 +218,7 @@ typedef unsigned long int trio_ulonglong_t;
 #endif
 
 /* Maximal and fixed integer types */
-#if defined(TRIO_COMPILER_SUPPORTS_C99)
+#if defined(TRIO_COMPILER_SUPPORTS_C99) && !defined( __VMS )
 # include <stdint.h>
 typedef intmax_t trio_intmax_t;
 typedef uintmax_t trio_uintmax_t;
@@ -226,8 +226,12 @@ typedef int8_t trio_int8_t;
 typedef int16_t trio_int16_t;
 typedef int32_t trio_int32_t;
 typedef int64_t trio_int64_t;
-#elif defined(TRIO_COMPILER_SUPPORTS_UNIX98)
+#elif defined(TRIO_COMPILER_SUPPORTS_UNIX98) || defined( __VMS )
 # include <inttypes.h>
+#ifdef __VMS
+typedef long long int          intmax_t;
+typedef unsigned long long int uintmax_t;
+#endif
 typedef intmax_t trio_intmax_t;
 typedef uintmax_t trio_uintmax_t;
 typedef int8_t trio_int8_t;
@@ -318,7 +322,9 @@ typedef trio_longlong_t trio_int64_t;
 #define NAN_UPPER "NAN"
 
 #if !defined(HAVE_ISASCII) && !defined(isascii)
-#  define isascii(x) ((unsigned int)(x) < 128)
+#ifndef __VMS
+# define isascii(x) ((unsigned int)(x) < 128)
+#endif
 #endif
 
 /* Various constants */

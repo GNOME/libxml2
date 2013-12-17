@@ -52,7 +52,9 @@
 # define BOOLEAN_T int
 #endif
 
-#if defined(TRIO_COMPILER_SUPPORTS_C99)
+#ifdef __VMS
+# define USE_STRTOD
+#elif defined(TRIO_COMPILER_SUPPORTS_C99)
 # define USE_STRTOD
 # define USE_STRTOF
 #elif defined(TRIO_COMPILER_MSVC)

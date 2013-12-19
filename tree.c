@@ -7962,7 +7962,7 @@ xmlDOMWrapStoreNs(xmlDocPtr doc,
 *
 * Allocates and initializes a new DOM-wrapper context.
 *
-* Returns the xmlDOMWrapCtxtPtr or NULL in case of an internal errror.
+* Returns the xmlDOMWrapCtxtPtr or NULL in case of an internal error.
 */
 xmlDOMWrapCtxtPtr
 xmlDOMWrapNewCtxt(void)

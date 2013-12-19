@@ -618,7 +618,7 @@ static const char *xmlXPathErrorMessages[] = {
     "Encoding error\n",
     "Char out of XML range\n",
     "Invalid or incomplete context\n",
-    "Stack usage errror\n",
+    "Stack usage error\n",
     "Forbidden variable\n",
     "?? Unknown error ??\n"	/* Must be last in the list! */
 };

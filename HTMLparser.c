@@ -1177,7 +1177,7 @@ static const char *const htmlScriptAttributes[] = {
     "onfocus",
     "onblur",
     "onsubmit",
-    "onrest",
+    "onreset",
     "onchange",
     "onselect"
 };

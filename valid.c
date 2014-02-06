@@ -6949,7 +6949,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **names,
                          int max) {
     xmlValidCtxt vctxt;
     int nb_valid_elements = 0;
-    const xmlChar *elements[256];
+    const xmlChar *elements[256]={0};
     int nb_elements = 0, i;
     const xmlChar *name;
 

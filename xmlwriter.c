@@ -2242,10 +2242,12 @@ xmlTextWriterWriteElement(xmlTextWriterPtr writer, const xmlChar * name,
     if (count == -1)
         return -1;
     sum += count;
-    count = xmlTextWriterWriteString(writer, content);
-    if (count == -1)
-        return -1;
-    sum += count;
+    if (content != NULL) {
+	count = xmlTextWriterWriteString(writer, content);
+	if (count == -1)
+	    return -1;
+	sum += count;
+    }
     count = xmlTextWriterEndElement(writer);
     if (count == -1)
         return -1;

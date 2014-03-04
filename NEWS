@@ -1325,7 +1325,8 @@ http://www.w3.org/TR/xmlschema-2/
  code, beware, all
 interfaces are likely to change, there is huge holes, it is clearly a work in
 progress and don't even think of putting this code in a production system,
-it's actually not compiled in by default. The real fixes are:   - a couple of bugs or limitations introduced in 2.4.20
+it's actually not compiled in by default. The real fixes are:
+   - a couple of bugs or limitations introduced in 2.4.20
    - patches for Borland C++ and MSC by Igor
    - some fixes on XPath strings and conformance patches by Richard
   Jinks
@@ -1567,7 +1568,8 @@ it's actually not compiled in by default. The real fixes are:   - a couple of bu
 
 
 2.3.9: May 19 2001:
-Lots of bugfixes, and added a basic SGML catalog support:   - HTML push bugfix #54891 and another patch from Jonas BorgstrÃ¶m
+Lots of bugfixes, and added a basic SGML catalog support:
+   - HTML push bugfix #54891 and another patch from Jonas BorgstrÃ¶m
    - some serious speed optimization again
    - some documentation cleanups
    - trying to get better linking on Solaris (-R)

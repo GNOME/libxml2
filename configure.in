@@ -148,6 +148,9 @@ AC_ARG_WITH(push,
 [  --with-push             add the PUSH parser interfaces (on)])
 AC_ARG_WITH(python,
 [  --with-python[[=DIR]]     build Python bindings if found])
+AC_ARG_WITH(python_install_dir,
+[  --with-python-install-dir=DIR
+                          install Python bindings in DIR])
 AC_ARG_WITH(reader,
 [  --with-reader           add the xmlReader parsing interface (on)])
 AC_ARG_WITH(readline,
@@ -865,6 +868,10 @@ if test "$with_python" != "no" ; then
 		fi
 	    fi
 	fi
+    fi
+    if test "$with_python_install_dir" != ""
+    then
+	PYTHON_SITE_PACKAGES="$with_python_install_dir"
     fi
     if test "$PYTHON_VERSION" != "" -a "$PYTHON_SITE_PACKAGES" = ""
     then

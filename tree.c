@@ -9970,7 +9970,7 @@ internal_error:
 * References of out-of scope ns-decls are remapped to point to @destDoc:
 * 1) If @destParent is given, then nsDef entries on element-nodes are used
 * 2) If *no* @destParent is given, then @destDoc->oldNs entries are used
-*    This is the case when you have an unliked node and just want to move it
+*    This is the case when you have an unlinked node and just want to move it
 *    to the context of
 *
 * If @destParent is given, it ensures that the tree is namespace

@@ -2598,6 +2598,20 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		    xmlCharEncoding enc;
 
 		    /*
+		     * Note: external parsed entities will not be loaded, it is
+		     * not required for a non-validating parser, unless the
+		     * option of validating, or substituting entities were
+		     * given. Doing so is far more secure as the parser will
+		     * only process data coming from the document entity by
+		     * default.
+		     */
+                    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
+		        ((ctxt->options & XML_PARSE_NOENT) == 0) &&
+			((ctxt->options & XML_PARSE_DTDVALID) == 0) &&
+			(ctxt->validate == 0))
+			return;
+
+		    /*
 		     * handle the extra spaces added before and after
 		     * c.f. http://www.w3.org/TR/REC-xml#as-PE
 		     * this is done independently.

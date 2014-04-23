@@ -5096,6 +5096,7 @@ void
 xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
     xmlDocPtr doc;
     xmlDictPtr dict;
+    const xmlChar *freeme = NULL;
 
     if (cur == NULL) return;
     if (name == NULL) return;
@@ -5133,12 +5134,16 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
         dict = NULL;
     if (dict != NULL) {
         if ((cur->name != NULL) && (!xmlDictOwns(dict, cur->name)))
-	    xmlFree((xmlChar *) cur->name);
+	    freeme = cur->name;
 	cur->name = xmlDictLookup(dict, name, -1);
     } else {
-	if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
+	if (cur->name != NULL)
+	    freeme = cur->name;
 	cur->name = xmlStrdup(name);
     }
+
+    if (freeme)
+        xmlFree((xmlChar *) freeme);
 }
 #endif
 

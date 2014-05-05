@@ -193,7 +193,7 @@ for PGMEXP in ${PGMEXPS}
 do      SIGNATURE=`echo "${PGMEXP}" | sed 's/^LIBXML2_//'`
         eval ENTRIES=\"\${${PGMEXP}}\"
         echo " STRPGMEXP PGMLVL(*${PGMLVL}) SIGNATURE('${SIGNATURE}')"
-        for ENTRY in ${OS400SYMS} ${ENTRIES}
+        for ENTRY in ${ENTRIES} ${OS400SYMS}
         do      echo " EXPORT    SYMBOL('${ENTRY}')"
         done
         echo ' ENDPGMEXP'

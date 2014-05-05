@@ -189,11 +189,11 @@ const char *    xmlVasprintf(xmlDictPtr * dict,
 ILE/RPG binding:
 
   All standard types and procedures are provided. Since ILE/RPG does not
-support macros, they have not been ported, with the exceptions of the
-global/threaded variables access macros. These variables can be read with
-function get_xxx(void), where xxxx is the name of the variable; they may be
-set by calling function set_xxxx(value), where value is of the same type as
-the variable.
+support macros, they have not been ported, with the exceptions of the more
+useful ones and the global/threaded variables access macros. These variables
+can be read with function get_xxx(void), where xxxx is the name of the
+variable; they may be set by calling function set_xxxx(value), where value is
+of the same type as the variable.
 
   The C va_list is not implemented as such in ILE/RPG. Functions implementing
 va_list and associated methods are provided:

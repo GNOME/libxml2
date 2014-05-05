@@ -11,6 +11,7 @@
 #include <stdarg.h>
 
 #include "libxml/xmlmemory.h"
+#include "libxml/xpath.h"
 #include "libxml/parser.h"
 
 #include "rpgsupport.h"
@@ -204,8 +205,35 @@ __xmlVaArg(char * * list, void * dest, size_t argsize)
 
 
 void
-_xmlVaEnd(char * * list)
+__xmlVaEnd(char * * list)
 
 {
         /* Nothing to do. */
 }
+
+
+#ifdef LIBXML_XPATH_ENABLED
+int
+__xmlXPathNodeSetGetLength(xmlNodeSetPtr ns)
+
+{
+	return ns? ns->nodeNr: 0;
+}
+
+
+xmlNodePtr
+__xmlXPathNodeSetItem(xmlNodeSetPtr ns, int index)
+
+{
+	return ns && index >= 0 && index < ns->nodeNr && ns->nodeTab?
+	    ns->nodeTab[index]: 0;
+}
+
+
+int
+__xmlXPathNodeSetIsEmpty(xmlNodeSetPtr ns)
+
+{
+	return !ns || !ns->nodeNr || !ns->nodeTab;
+}
+#endif

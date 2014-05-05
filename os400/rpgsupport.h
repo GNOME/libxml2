@@ -12,6 +12,7 @@
 #include <sys/types.h>
 
 #include <libxml/xmlmemory.h>
+#include <libxml/xpath.h>
 
 
 XMLPUBFUN xmlFreeFunc   __get_xmlFree(void);
@@ -136,6 +137,12 @@ XMLPUBFUN xmlOutputBufferPtr
 XMLPUBFUN void          __xmlVaStart(char * * list,
                                 char * lastargaddr, size_t lastargsize);
 XMLPUBFUN void *        __xmlVaArg(char * * list, void * dest, size_t argsize);
-XMLPUBFUN void          _xmlVaEnd(char * * list);
+XMLPUBFUN void          __xmlVaEnd(char * * list);
+
+#ifdef LIBXML_XPATH_ENABLED
+XMLPUBFUN int		__xmlXPathNodeSetGetLength(xmlNodeSetPtr ns);
+XMLPUBFUN xmlNodePtr	__xmlXPathNodeSetItem(xmlNodeSetPtr ns, int index);
+XMLPUBFUN int		__xmlXPathNodeSetIsEmpty(xmlNodeSetPtr ns);
+#endif
 
 #endif

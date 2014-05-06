@@ -628,20 +628,20 @@
 
       /undefine XML_TESTVAL
       /endif
-      *
+
       * C macros implemented as procedures for ILE/RPG support.
-      *
+
       /if defined(LIBXML_XPATH_ENABLED)
      d xmlXPathNodeSetGetLength...
      d                 pr            10i 0 extproc('__xmlXPathNodeSetGetLength')
      d  ns                                 value like(xmlNodeSetPtr)
-      *
+
      d xmlXPathNodeSetItem...
      d                 pr                  extproc('__xmlXPathNodeSetItem')
      d                                     like(xmlNodePtr)
      d  ns                                 value like(xmlNodeSetPtr)
      d  index                        10i 0 value
-      *
+
      d xmlXPathNodeSetIsEmpty...
      d                 pr            10i 0 extproc('__xmlXPathNodeSetIsEmpty')
      d  ns                                 value like(xmlNodeSetPtr)

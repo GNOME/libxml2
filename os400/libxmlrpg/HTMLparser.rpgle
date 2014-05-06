@@ -383,5 +383,21 @@
      d  #param1                            value like(htmlNodePtr)
      d  #param2                      10i 0 value
 
+      * C macros implemented as procedures for ILE/RPG support.
+
+     d htmlDefaultSubelement...
+     d                 pr              *   extproc('__htmlDefaultSubelement')   const char *
+     d  elt                            *   value                                const htmlElemDesc *
+
+     d htmlElementAllowedHereDesc...
+     d                 pr            10i 0 extproc(
+     d                                     '__htmlElementAllowedHereDesc')
+     d  parent                         *   value                                const htmlElemDesc *
+     d  elt                            *   value                                const htmlElemDesc *
+
+     d htmlRequiredAttrs...
+     d                 pr              *   extproc('__htmlRequiredAttrs')        const char * *
+     d  elt                            *   value                                const htmlElemDesc *
+
       /endif                                                                    LIBXML_HTML_ENABLED
       /endif                                                                    HTML_PARSER_H__

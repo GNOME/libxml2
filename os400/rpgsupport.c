@@ -13,12 +13,13 @@
 #include "libxml/xmlmemory.h"
 #include "libxml/xpath.h"
 #include "libxml/parser.h"
+#include "libxml/HTMLparser.h"
 
 #include "rpgsupport.h"
 
 
 /**
-***     ILE/RPG cannot directly derefence a pointer value an has no macros.
+***     ILE/RPG cannot directly derefence a pointer and has no macros.
 ***     The following additional procedures supply these functions.
 ***     In addition, the following code is adjusted for threads control at
 ***             compile time via the C macros.
@@ -215,7 +216,7 @@ __xmlVaEnd(char * * list)
 #ifdef LIBXML_XPATH_ENABLED
 
 int
-__xmlXPathNodeSetGetLength(xmlNodeSetPtr ns)
+__xmlXPathNodeSetGetLength(const xmlNodeSet * ns)
 
 {
 	return xmlXPathNodeSetGetLength(ns);
@@ -223,7 +224,7 @@ __xmlXPathNodeSetGetLength(xmlNodeSetPtr ns)
 
 
 xmlNodePtr
-__xmlXPathNodeSetItem(xmlNodeSetPtr ns, int index)
+__xmlXPathNodeSetItem(const xmlNodeSet * ns, int index)
 
 {
 	return xmlXPathNodeSetItem(ns, index);
@@ -231,10 +232,39 @@ __xmlXPathNodeSetItem(xmlNodeSetPtr ns, int index)
 
 
 int
-__xmlXPathNodeSetIsEmpty(xmlNodeSetPtr ns)
+__xmlXPathNodeSetIsEmpty(const xmlNodeSet * ns)
 
 {
 	return xmlXPathNodeSetIsEmpty(ns);
+}
+
+#endif
+
+
+#ifdef LIBXML_HTML_ENABLED
+
+const char *
+__htmlDefaultSubelement(const htmlElemDesc * elt)
+
+{
+	return htmlDefaultSubelement(elt);
+}
+
+
+int
+__htmlElementAllowedHereDesc(const htmlElemDesc * parent,
+						const htmlElemDesc * elt)
+
+{
+	return htmlElementAllowedHereDesc(parent, elt);
+}
+
+
+const char * *
+__htmlRequiredAttrs(const htmlElemDesc * elt)
+
+{
+	return htmlRequiredAttrs(elt);
 }
 
 #endif

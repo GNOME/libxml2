@@ -213,11 +213,12 @@ __xmlVaEnd(char * * list)
 
 
 #ifdef LIBXML_XPATH_ENABLED
+
 int
 __xmlXPathNodeSetGetLength(xmlNodeSetPtr ns)
 
 {
-	return ns? ns->nodeNr: 0;
+	return xmlXPathNodeSetGetLength(ns);
 }
 
 
@@ -225,8 +226,7 @@ xmlNodePtr
 __xmlXPathNodeSetItem(xmlNodeSetPtr ns, int index)
 
 {
-	return ns && index >= 0 && index < ns->nodeNr && ns->nodeTab?
-	    ns->nodeTab[index]: 0;
+	return xmlXPathNodeSetItem(ns, index);
 }
 
 
@@ -234,6 +234,7 @@ int
 __xmlXPathNodeSetIsEmpty(xmlNodeSetPtr ns)
 
 {
-	return !ns || !ns->nodeNr || !ns->nodeTab;
+	return xmlXPathNodeSetIsEmpty(ns);
 }
+
 #endif

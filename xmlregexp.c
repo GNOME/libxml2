@@ -5709,8 +5709,6 @@ xmlAutomataNewTransition(xmlAutomataPtr am, xmlAutomataStatePtr from,
     if (atom == NULL)
         return(NULL);
     atom->data = data;
-    if (atom == NULL)
-	return(NULL);
     atom->valuep = xmlStrdup(token);
 
     if (xmlFAGenerateTransitions(am, from, to, atom) < 0) {

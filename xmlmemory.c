@@ -583,13 +583,15 @@ xmlMemBlocks(void) {
 static void
 xmlMemContentShow(FILE *fp, MEMHDR *p)
 {
-    int i,j,k,len = p->mh_size;
-    const char *buf = (const char *) HDR_2_CLIENT(p);
+    int i,j,k,len;
+    const char *buf;
 
     if (p == NULL) {
 	fprintf(fp, " NULL");
 	return;
     }
+    len = p->mh_size;
+    buf = (const char *) HDR_2_CLIENT(p);
 
     for (i = 0;i < len;i++) {
         if (buf[i] == 0) break;

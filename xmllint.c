@@ -2580,7 +2580,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    fprintf(stderr, "Failed to canonicalize\n");
 		    progresult = XMLLINT_ERR_OUT;
 		}
-	    } else if (canonical) {
+	    } else if (canonical_11) {
 	        xmlChar *result = NULL;
 		int size;
 

@@ -1194,8 +1194,6 @@ xmlSaveUri(xmlURIPtr uri) {
                 if (temp == NULL) goto mem_error;
                 ret = temp;
 	    }
-	    ret[len++] = '/';
-	    ret[len++] = '/';
 	}
 	if (uri->path != NULL) {
 	    p = uri->path;

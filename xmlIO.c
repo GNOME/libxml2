@@ -1159,7 +1159,12 @@ xmlGzfileOpen_real (const char *filename) {
     gzFile fd;
 
     if (!strcmp(filename, "-")) {
-        fd = gzdopen(dup(fileno(stdin)), "rb");
+        int duped_fd = dup(fileno(stdin));
+        fd = gzdopen(duped_fd, "rb");
+        if (fd == Z_NULL) {
+            close(duped_fd);  /* gzdOpen() does not close on failure */
+        }
+
 	return((void *) fd);
     }
 
@@ -1233,7 +1238,12 @@ xmlGzfileOpenW (const char *filename, int compression) {
 
     snprintf(mode, sizeof(mode), "wb%d", compression);
     if (!strcmp(filename, "-")) {
-        fd = gzdopen(dup(fileno(stdout)), mode);
+        int duped_fd = dup(fileno(stdout));
+        fd = gzdopen(duped_fd, "rb");
+        if (fd == Z_NULL) {
+            close(duped_fd);  /* gzdOpen() does not close on failure */
+        }
+
 	return((void *) fd);
     }
 

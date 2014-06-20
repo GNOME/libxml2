@@ -3854,7 +3854,8 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
 	        tmon = 12;
             tempdays += MAX_DAYINMONTH(tyr, tmon);
             carry = -1;
-        } else if (tempdays > (long) MAX_DAYINMONTH(r->year, r->mon)) {
+        } else if (VALID_YEAR(r->year) && VALID_MONTH(r->mon) &&
+                   tempdays > (long) MAX_DAYINMONTH(r->year, r->mon)) {
             tempdays = tempdays - MAX_DAYINMONTH(r->year, r->mon);
             carry = 1;
         } else

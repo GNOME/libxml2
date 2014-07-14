@@ -1095,7 +1095,7 @@ xmlRelaxNGAddStates(xmlRelaxNGValidCtxtPtr ctxt,
 {
     int i;
 
-    if (state == NULL) {
+    if (state == NULL || states == NULL) {
         return (-1);
     }
     if (states->nbState >= states->maxState) {

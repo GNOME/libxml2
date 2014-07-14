@@ -1363,15 +1363,15 @@ xmlNanoHTTPMethodRedir(const char *URL, const char *method, const char *input,
     xmlNanoHTTPInit();
 
 retry:
-    if (redirURL == NULL)
+    if (redirURL == NULL) {
 	ctxt = xmlNanoHTTPNewCtxt(URL);
-    else {
+	if (ctxt == NULL)
+	    return(NULL);
+    } else {
 	ctxt = xmlNanoHTTPNewCtxt(redirURL);
+	if (ctxt == NULL)
+	    return(NULL);
 	ctxt->location = xmlMemStrdup(redirURL);
-    }
-
-    if ( ctxt == NULL ) {
-	return ( NULL );
     }
 
     if ((ctxt->protocol == NULL) || (strcmp(ctxt->protocol, "http"))) {

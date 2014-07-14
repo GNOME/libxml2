@@ -1244,7 +1244,13 @@ xmlNanoFTPConnectTo(const char *server, int port) {
     if (port <= 0)
 	return(NULL);
     ctxt = (xmlNanoFTPCtxtPtr) xmlNanoFTPNewCtxt(NULL);
+    if (ctxt == NULL)
+        return(NULL);
     ctxt->hostname = xmlMemStrdup(server);
+    if (ctxt->hostname == NULL) {
+	xmlNanoFTPFreeCtxt(ctxt);
+	return(NULL);
+    }
     if (port != 0)
 	ctxt->port = port;
     res = xmlNanoFTPConnect(ctxt);
@@ -1321,8 +1327,8 @@ xmlNanoFTPDele(void *ctx, const char *file) {
     int len;
     int res;
 
-    if ((ctxt == NULL) || (ctxt->controlFd == INVALID_SOCKET) || (file == NULL)) return(-1);
-    if (file == NULL) return (0);
+    if ((ctxt == NULL) || (ctxt->controlFd == INVALID_SOCKET) ||
+        (file == NULL)) return(-1);
 
     /*
      * Expected response code for DELE:

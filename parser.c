@@ -9316,6 +9316,12 @@ reparse:
 	        const xmlChar *URL = xmlDictLookup(ctxt->dict, attvalue, len);
 		xmlURIPtr uri;
 
+                if (URL == NULL) {
+		    xmlErrMemory(ctxt, "dictionary allocation failure");
+		    if ((attvalue != NULL) && (alloc != 0))
+			xmlFree(attvalue);
+		    return(NULL);
+		}
                 if (*URL != 0) {
 		    uri = xmlParseURI((const char *) URL);
 		    if (uri == NULL) {

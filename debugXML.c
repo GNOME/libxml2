@@ -3243,7 +3243,12 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                 ctxt->node = (xmlNodePtr) ctxt->doc;
             } else {
 #ifdef LIBXML_XPATH_ENABLED
+                int l;
+
                 ctxt->pctxt->node = ctxt->node;
+		l = strlen(arg);
+		if ((l >= 2) && (arg[l - 1] == '/'))
+		    arg[l - 1] = 0;
                 list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
 #else
                 list = NULL;

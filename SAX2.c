@@ -2580,6 +2580,7 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	    }
 	    if (lastChild->content == NULL) {
 		xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters: xmlStrdup returned NULL");
+		return;
  	    }
             if (((size_t)ctxt->nodelen + (size_t)len > XML_MAX_TEXT_LENGTH) &&
                 ((ctxt->options & XML_PARSE_HUGE) == 0)) {

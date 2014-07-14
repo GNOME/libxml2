@@ -3848,8 +3848,8 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
 	     * Coverity detected an overrun in daysInMonth
 	     * of size 12 at position 12 with index variable "((r)->mon - 1)"
 	     */
-	    if (tmon < 0)
-	        tmon = 0;
+	    if (tmon < 1)
+	        tmon = 1;
 	    if (tmon > 12)
 	        tmon = 12;
             tempdays += MAX_DAYINMONTH(tyr, tmon);

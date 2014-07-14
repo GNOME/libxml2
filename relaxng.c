@@ -7343,13 +7343,13 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                     if (ns != NULL)
                         xmlFree(ns);
 		    /*
-		     * Since we are about to delete cur, if it's nsDef is non-NULL we
+		     * Since we are about to delete cur, if its nsDef is non-NULL we
 		     * need to preserve it (it contains the ns definitions for the
 		     * children we just moved).  We'll just stick it on to the end
 		     * of cur->parent's list, since it's never going to be re-serialized
 		     * (bug 143738).
 		     */
-		    if (cur->nsDef != NULL) {
+		    if ((cur->nsDef != NULL) && (cur->parent != NULL)) {
 			xmlNsPtr parDef = (xmlNsPtr)&cur->parent->nsDef;
 			while (parDef->next != NULL)
 			    parDef = parDef->next;
@@ -7367,7 +7367,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
         else if ((cur->type == XML_TEXT_NODE) ||
                  (cur->type == XML_CDATA_SECTION_NODE)) {
             if (IS_BLANK_NODE(cur)) {
-                if (cur->parent->type == XML_ELEMENT_NODE) {
+                if ((cur->parent != NULL) &&
+		    (cur->parent->type == XML_ELEMENT_NODE)) {
                     if ((!xmlStrEqual(cur->parent->name, BAD_CAST "value"))
                         &&
                         (!xmlStrEqual

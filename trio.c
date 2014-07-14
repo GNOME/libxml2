@@ -6434,10 +6434,13 @@ TRIO_ARGS2((self, intPointer),
 	   trio_class_t *self,
 	   int *intPointer)
 {
-  FILE *file = (FILE *)self->location;
+  FILE *file;
 
   assert(VALID(self));
+  assert(VALID(self->location));
   assert(VALID(file));
+
+  file = (FILE *)self->location;
 
   self->current = fgetc(file);
   if (self->current == EOF)
@@ -6467,11 +6470,14 @@ TRIO_ARGS2((self, intPointer),
 	   trio_class_t *self,
 	   int *intPointer)
 {
-  int fd = *((int *)self->location);
+  int fd;
   int size;
   unsigned char input;
 
   assert(VALID(self));
+  assert(VALID(self->location));
+
+  fd = *((int *)self->location);
 
   size = read(fd, &input, sizeof(char));
   if (size == -1)

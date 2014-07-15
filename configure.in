@@ -1349,6 +1349,29 @@ AC_SUBST(WITH_XINCLUDE)
 AC_SUBST(XINCLUDE_OBJ)
 AC_SUBST(TEST_XINCLUDE)
 
+if test "$with_xptr" = "" -a "$with_xpath" = "no" ; then
+    with_xptr=no
+fi
+
+if test "$with_schematron" = "" -a "$with_xpath" = "no" ; then
+    with_schematron=no
+fi
+
+if test "$with_schematron" = "no" ; then
+    echo "Disabling Schematron support"
+    WITH_SCHEMATRON=0
+    TEST_SCHEMATRON=
+else 
+    echo "Enabled Schematron support"
+    WITH_SCHEMATRON=1
+    TEST_SCHEMATRON="Schematrontests"
+    with_xpath=yes
+    with_pattern=yes
+    with_schematron=yes
+fi
+AC_SUBST(WITH_SCHEMATRON)
+AC_SUBST(TEST_SCHEMATRON)
+
 if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
     WITH_XPATH=0
@@ -1477,20 +1500,6 @@ if test "$with_iso8859x" = "no" ; then
 fi
 fi
 AC_SUBST(WITH_ISO8859X)
-
-if test "$with_schematron" = "no" ; then
-    echo "Disabling Schematron support"
-    WITH_SCHEMATRON=0
-    TEST_SCHEMATRON=
-else    
-    echo "Enabled Schematron support"
-    WITH_SCHEMATRON=1
-    TEST_SCHEMATRON="Schematrontests"
-    with_xpath=yes
-    with_pattern=yes
-fi
-AC_SUBST(WITH_SCHEMATRON)
-AC_SUBST(TEST_SCHEMATRON)
 
 if test "$with_schemas" = "no" ; then
     echo "Disabling Schemas/Relax-NG support"

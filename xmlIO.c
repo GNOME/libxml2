@@ -887,7 +887,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
  */
 static void *
 xmlFileOpen_real (const char *filename) {
-    const char *path = NULL;
+    const char *path = filename;
     FILE *fd;
 
     if (filename == NULL)
@@ -917,11 +917,8 @@ xmlFileOpen_real (const char *filename) {
 #else
 	path = &filename[5];
 #endif
-    } else
-	path = filename;
+    }
 
-    if (path == NULL)
-	return(NULL);
     if (!xmlCheckFilename(path))
         return(NULL);
 

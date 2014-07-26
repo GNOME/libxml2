@@ -512,10 +512,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
 
     if (xmlMemStopAtBlock == p->mh_number) xmlMallocBreakpoint();
 
-    if (s != NULL)
-      strcpy(s,str);
-    else
-      goto error;
+    strcpy(s,str);
 
     TEST_POINT
 

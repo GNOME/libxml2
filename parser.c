@@ -5099,7 +5099,7 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
     }
     if ((name != NULL) && (xmlStrchr(name, ':') != NULL)) {
 	xmlNsErr(ctxt, XML_NS_ERR_COLON,
-		 "colon are forbidden from PI names '%s'\n", name, NULL, NULL);
+		 "colons are forbidden from PI names '%s'\n", name, NULL, NULL);
     }
     return(name);
 }
@@ -5368,7 +5368,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 	}
 	if (xmlStrchr(name, ':') != NULL) {
 	    xmlNsErr(ctxt, XML_NS_ERR_COLON,
-		     "colon are forbidden from notation names '%s'\n",
+		     "colons are forbidden from notation names '%s'\n",
 		     name, NULL, NULL);
 	}
 	SKIP_BLANKS;
@@ -5457,7 +5457,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	}
 	if (xmlStrchr(name, ':') != NULL) {
 	    xmlNsErr(ctxt, XML_NS_ERR_COLON,
-		     "colon are forbidden from entities names '%s'\n",
+		     "colons are forbidden from entities names '%s'\n",
 		     name, NULL, NULL);
 	}
         skipped = SKIP_BLANKS;

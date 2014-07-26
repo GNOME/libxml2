@@ -4514,6 +4514,10 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
 #ifdef LIBXML_TREE_ENABLED
     if (doc->intSubset != NULL) {
         ret->intSubset = xmlCopyDtd(doc->intSubset);
+	if (ret->intSubset == NULL) {
+	    xmlFreeDoc(ret);
+	    return(NULL);
+	}
 	xmlSetTreeDoc((xmlNodePtr)ret->intSubset, ret);
 	ret->intSubset->parent = ret;
     }

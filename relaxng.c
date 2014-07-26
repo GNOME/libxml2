@@ -6652,12 +6652,17 @@ xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
     ctxt->define = NULL;
     if (IS_RELAXNG(node, "grammar")) {
         schema->topgrammar = xmlRelaxNGParseGrammar(ctxt, node->children);
+        if (schema->topgrammar == NULL) {
+            xmlRelaxNGFree(schema);
+            return (NULL);
+        }
     } else {
         xmlRelaxNGGrammarPtr tmp, ret;
 
         schema->topgrammar = ret = xmlRelaxNGNewGrammar(ctxt);
         if (schema->topgrammar == NULL) {
-            return (schema);
+            xmlRelaxNGFree(schema);
+            return (NULL);
         }
         /*
          * Link the new grammar in the tree

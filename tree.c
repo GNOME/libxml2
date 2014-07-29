@@ -3456,6 +3456,7 @@ xmlChildElementCount(xmlNodePtr parent) {
         case XML_ELEMENT_NODE:
         case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
         case XML_HTML_DOCUMENT_NODE:
             cur = parent->children;
             break;
@@ -3491,6 +3492,7 @@ xmlFirstElementChild(xmlNodePtr parent) {
         case XML_ELEMENT_NODE:
         case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
         case XML_HTML_DOCUMENT_NODE:
             cur = parent->children;
             break;
@@ -3526,6 +3528,7 @@ xmlLastElementChild(xmlNodePtr parent) {
         case XML_ELEMENT_NODE:
         case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
         case XML_HTML_DOCUMENT_NODE:
             cur = parent->last;
             break;

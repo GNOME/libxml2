@@ -2109,6 +2109,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	while (IS_BLANK_CH(*cur)) {
 	    if (*cur == '\n') {
 		ctxt->input->line++; ctxt->input->col = 1;
+	    } else {
+		ctxt->input->col++;
 	    }
 	    cur++;
 	    res++;

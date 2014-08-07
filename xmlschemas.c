@@ -2039,6 +2039,7 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 	if (ctxt->type == XML_SCHEMA_CTXT_VALIDATOR) {
 	    xmlSchemaValidCtxtPtr vctxt = (xmlSchemaValidCtxtPtr) ctxt;
 	    const char *file = NULL;
+	    int col = 0;
 	    if (errorLevel != XML_ERR_WARNING) {
 		vctxt->nberrors++;
 		vctxt->err = error;
@@ -2067,6 +2068,7 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		    (vctxt->parserCtxt->input != NULL)) {
 		    file = vctxt->parserCtxt->input->filename;
 		    line = vctxt->parserCtxt->input->line;
+		    col = vctxt->parserCtxt->input->col;
 		}
 	    } else {
 		/*
@@ -2101,7 +2103,7 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		node, XML_FROM_SCHEMASV,
 		error, errorLevel, file, line,
 		(const char *) str1, (const char *) str2,
-		(const char *) str3, 0, 0, msg, str1, str2, str3, str4);
+		(const char *) str3, 0, col, msg, str1, str2, str3, str4);
 
 	} else if (ctxt->type == XML_SCHEMA_CTXT_PARSER) {
 	    xmlSchemaParserCtxtPtr pctxt = (xmlSchemaParserCtxtPtr) ctxt;

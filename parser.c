@@ -8932,9 +8932,12 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
     xmlChar limit = 0;
     const xmlChar *in = NULL, *start, *end, *last;
     xmlChar *ret = NULL;
+    int line, col;
 
     GROW;
     in = (xmlChar *) CUR_PTR;
+    line = ctxt->input->line;
+    col = ctxt->input->col;
     if (*in != '"' && *in != '\'') {
         xmlFatalErr(ctxt, XML_ERR_ATTRIBUTE_NOT_STARTED, NULL);
         return (NULL);
@@ -8947,6 +8950,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
      * pure ASCII.
      */
     limit = *in++;
+    col++;
     end = ctxt->input->end;
     start = in;
     if (in >= end) {
@@ -8966,6 +8970,11 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	while ((in < end) && (*in != limit) &&
 	       ((*in == 0x20) || (*in == 0x9) ||
 	        (*in == 0xA) || (*in == 0xD))) {
+	    if (*in == 0xA) {
+	        line++; col = 1;
+	    } else {
+	        col++;
+	    }
 	    in++;
 	    start = in;
 	    if (in >= end) {
@@ -8989,6 +8998,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	}
 	while ((in < end) && (*in != limit) && (*in >= 0x20) &&
 	       (*in <= 0x7f) && (*in != '&') && (*in != '<')) {
+	    col++;
 	    if ((*in++ == 0x20) && (*in == 0x20)) break;
 	    if (in >= end) {
 		const xmlChar *oldbase = ctxt->input->base;
@@ -9017,6 +9027,11 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	while ((in < end) && (*in != limit) &&
 	       ((*in == 0x20) || (*in == 0x9) ||
 	        (*in == 0xA) || (*in == 0xD))) {
+	    if (*in == 0xA) {
+	        line++, col = 1;
+	    } else {
+	        col++;
+	    }
 	    in++;
 	    if (in >= end) {
 		const xmlChar *oldbase = ctxt->input->base;
@@ -9049,6 +9064,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	while ((in < end) && (*in != limit) && (*in >= 0x20) &&
 	       (*in <= 0x7f) && (*in != '&') && (*in != '<')) {
 	    in++;
+	    col++;
 	    if (in >= end) {
 		const xmlChar *oldbase = ctxt->input->base;
 		GROW;
@@ -9078,6 +9094,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	if (*in != limit) goto need_complex;
     }
     in++;
+    col++;
     if (len != NULL) {
         *len = last - start;
         ret = (xmlChar *) start;
@@ -9086,6 +9103,8 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
         ret = xmlStrndup(start, last - start);
     }
     CUR_PTR = in;
+    ctxt->input->line = line;
+    ctxt->input->col = col;
     if (alloc) *alloc = 0;
     return ret;
 need_complex:

@@ -1158,7 +1158,7 @@ xmlGzfileOpen_real (const char *filename) {
     if (!strcmp(filename, "-")) {
         int duped_fd = dup(fileno(stdin));
         fd = gzdopen(duped_fd, "rb");
-        if (fd == Z_NULL) {
+        if (fd == Z_NULL && duped_fd >= 0) {
             close(duped_fd);  /* gzdOpen() does not close on failure */
         }
 
@@ -1237,7 +1237,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
     if (!strcmp(filename, "-")) {
         int duped_fd = dup(fileno(stdout));
         fd = gzdopen(duped_fd, "rb");
-        if (fd == Z_NULL) {
+        if (fd == Z_NULL && duped_fd >= 0) {
             close(duped_fd);  /* gzdOpen() does not close on failure */
         }
 

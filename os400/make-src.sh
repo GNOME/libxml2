@@ -101,7 +101,7 @@ fi
 
 if action_needed "${LIBIFSNAME}/TOOLS.FILE"
 then    CMD="CRTSRCPF FILE(${TARGETLIB}/TOOLS) RCDLEN(112)"
-        CMD="${CMD} TEXT('libxml2: build tools')"
+        CMD="${CMD} CCSID(${TGTCCSID}) TEXT('libxml2: build tools')"
         system "${CMD}"
 fi
 

@@ -9386,6 +9386,13 @@ reparse:
 		    if (nsPush(ctxt, NULL, URL) > 0) nbNs++;
 skip_default_ns:
 		if (alloc != 0) xmlFree(attvalue);
+		if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
+		    break;
+		if (!IS_BLANK_CH(RAW)) {
+		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
+				   "attributes construct error\n");
+		    break;
+		}
 		SKIP_BLANKS;
 		continue;
 	    }
@@ -9459,6 +9466,13 @@ skip_default_ns:
 		    if (nsPush(ctxt, attname, URL) > 0) nbNs++;
 skip_ns:
 		if (alloc != 0) xmlFree(attvalue);
+		if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
+		    break;
+		if (!IS_BLANK_CH(RAW)) {
+		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
+				   "attributes construct error\n");
+		    break;
+		}
 		SKIP_BLANKS;
 		if (ctxt->input->base != base) goto base_changed;
 		continue;

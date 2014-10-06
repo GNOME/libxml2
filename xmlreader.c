@@ -1431,7 +1431,7 @@ get_next_node:
 	goto node_found;
     }
 #ifdef LIBXML_REGEXP_ENABLED
-    if ((reader->validate) && (reader->node->type == XML_ELEMENT_NODE))
+    if ((reader->validate != XML_TEXTREADER_NOT_VALIDATE) && (reader->node->type == XML_ELEMENT_NODE))
 	xmlTextReaderValidatePop(reader);
 #endif /* LIBXML_REGEXP_ENABLED */
     if ((reader->preserves > 0) &&
@@ -1564,7 +1564,7 @@ node_found:
         goto get_next_node;
     }
 #ifdef LIBXML_REGEXP_ENABLED
-    if ((reader->validate) && (reader->node != NULL)) {
+    if ((reader->validate != XML_TEXTREADER_NOT_VALIDATE) && (reader->node != NULL)) {
 	xmlNodePtr node = reader->node;
 
 	if ((node->type == XML_ELEMENT_NODE) &&
@@ -1794,6 +1794,7 @@ xmlTextReaderReadString(xmlTextReaderPtr reader)
 	if (xmlTextReaderDoExpand(reader) != -1) {
 	    return xmlTextReaderCollectSiblings(node->children);
 	}
+	break;
     case XML_ATTRIBUTE_NODE:
 	TODO
 	break;

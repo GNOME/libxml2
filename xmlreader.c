@@ -286,7 +286,10 @@ static void
 xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
     xmlDictPtr dict;
 
-    dict = reader->ctxt->dict;
+    if ((reader != NULL) && (reader->ctxt != NULL))
+	dict = reader->ctxt->dict;
+    else
+        dict = NULL;
     if (cur == NULL) return;
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
@@ -323,7 +326,7 @@ xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
 static void
 xmlTextReaderFreePropList(xmlTextReaderPtr reader, xmlAttrPtr cur) {
     xmlAttrPtr next;
-    if (cur == NULL) return;
+
     while (cur != NULL) {
         next = cur->next;
         xmlTextReaderFreeProp(reader, cur);
@@ -344,7 +347,10 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
     xmlNodePtr next;
     xmlDictPtr dict;
 
-    dict = reader->ctxt->dict;
+    if ((reader != NULL) && (reader->ctxt != NULL))
+	dict = reader->ctxt->dict;
+    else
+        dict = NULL;
     if (cur == NULL) return;
     if (cur->type == XML_NAMESPACE_DECL) {
 	xmlFreeNsList((xmlNsPtr) cur);
@@ -421,7 +427,10 @@ static void
 xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
     xmlDictPtr dict;
 
-    dict = reader->ctxt->dict;
+    if ((reader != NULL) && (reader->ctxt != NULL))
+	dict = reader->ctxt->dict;
+    else
+        dict = NULL;
     if (cur->type == XML_DTD_NODE) {
 	xmlFreeDtd((xmlDtdPtr) cur);
 	return;

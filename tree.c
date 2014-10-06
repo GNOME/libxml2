@@ -7913,8 +7913,7 @@ xmlDOMWrapNsMapAddItem(xmlNsMapPtr *nsmap, int position,
 	map->first->prev = ret;
 	ret->next = map->first;
 	map->first = ret;
-    } else
-	return(NULL);
+    }
 
     ret->oldNs = oldNs;
     ret->newNs = newNs;

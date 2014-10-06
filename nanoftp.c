@@ -908,6 +908,8 @@ xmlNanoFTPConnect(void *ctx) {
 	    return (-1);
 	}
 	if (tmp->ai_addrlen > sizeof(ctxt->ftpAddr)) {
+	    if (result)
+		freeaddrinfo (result);
 	    __xmlIOErr(XML_FROM_FTP, 0, "gethostbyname address mismatch");
 	    return (-1);
 	}

@@ -2461,8 +2461,6 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
         ((*end)->type == XML_NAMESPACE_DECL) || (endindex == NULL))
 	return(-1);
     cur = start;
-    if (cur == NULL)
-	return(-1);
     pos = startindex - 1;
     stringlen = xmlStrlen(string);
 

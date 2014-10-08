@@ -7684,8 +7684,8 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
     else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
 	     (ent != NULL) && 
 	     (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
-	if ((ent->checked & 1) || ((ent->checked == 0) &&
-	     (ent->content != NULL) &&(xmlStrchr(ent->content, '<')))) {
+	if (((ent->checked & 1) || (ent->checked == 0)) &&
+	     (ent->content != NULL) && (xmlStrchr(ent->content, '<'))) {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
 	"'<' in entity '%s' is not allowed in attributes values\n", name);
         }

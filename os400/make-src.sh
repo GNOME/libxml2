@@ -17,7 +17,7 @@ cd "${TOPDIR}"
 echo '#pragma comment(user, "libxml2 version '"${LIBXML_VERSION}"'")' > os400.c
 echo '#pragma comment(user, __DATE__)' >> os400.c
 echo '#pragma comment(user, __TIME__)' >> os400.c
-echo '#pragma comment(copyright, "Copyright (C) 1998-2013 Daniel Veillard. OS/400 version by P. Monnerat.")' >> os400.c
+echo '#pragma comment(copyright, "Copyright (C) 1998-2014 Daniel Veillard. OS/400 version by P. Monnerat.")' >> os400.c
 make_module     OS400           os400.c
 LINK=                           # No need to rebuild service program yet.
 MODULES=

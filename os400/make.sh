@@ -37,13 +37,16 @@ for TEXT in "${TOPDIR}/AUTHORS" "${TOPDIR}/ChangeLog"                   \
     "${TOPDIR}/Copyright" "${TOPDIR}/HACKING" "${TOPDIR}/README"        \
     "${TOPDIR}/MAINTAINERS" "${TOPDIR}/NEWS" "${TOPDIR}/TODO"           \
     "${TOPDIR}/TODO_SCHEMAS" "${TOPDIR}/os400/README400"
-do      MEMBER="`basename \"${TEXT}\" .OS400`"
-        MEMBER="${LIBIFSNAME}/DOCS.FILE/`db2_name \"${MEMBER}\"`.MBR"
+do      if [ -f "${TEXT}" ]
+        then    MEMBER="`basename \"${TEXT}\" .OS400`"
+                MEMBER="${LIBIFSNAME}/DOCS.FILE/`db2_name \"${MEMBER}\"`.MBR"
 
-        if action_needed "${MEMBER}" "${TEXT}"
-        then    CMD="CPY OBJ('${TEXT}') TOOBJ('${MEMBER}') TOCCSID(${TGTCCSID})"
-                CMD="${CMD} DTAFMT(*TEXT) REPLACE(*YES)"
-                system "${CMD}"
+                if action_needed "${MEMBER}" "${TEXT}"
+                then    CMD="CPY OBJ('${TEXT}') TOOBJ('${MEMBER}')"
+                        CMD="${CMD} TOCCSID(${TGTCCSID})"
+                        CMD="${CMD} DTAFMT(*TEXT) REPLACE(*YES)"
+                        system "${CMD}"
+                fi
         fi
 done
 

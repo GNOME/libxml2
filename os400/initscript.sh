@@ -117,10 +117,18 @@ setenv MODULE_EXTENSION         '.SRVPGM'
 ################################################################################
 
 
+#       Transitional: get file name of configure script.
+
+AUTOCONFSCRIPT="${TOPDIR}/configure.ac"
+
+if [ ! -f "${AUTOCONFSCRIPT}" ]
+then    AUTOCONFSCRIPT="${TOPDIR}/configure.in"
+fi
+
 #       Need to get the version definitions.
 
-eval "`grep '^LIBXML_[A-Z]*_VERSION=' \"${TOPDIR}/configure.in\"`"
-eval "`grep '^LIBXML_MICRO_VERSION_SUFFIX=' \"${TOPDIR}/configure.in\"`"
+eval "`grep '^LIBXML_[A-Z]*_VERSION=' \"${AUTOCONFSCRIPT}\"`"
+eval "`grep '^LIBXML_MICRO_VERSION_SUFFIX=' \"${AUTOCONFSCRIPT}\"`"
 LIBXML_VERSION="${LIBXML_MAJOR_VERSION}.${LIBXML_MINOR_VERSION}"
 LIBXML_VERSION="${LIBXML_VERSION}.${LIBXML_MICRO_VERSION}"
 LIBXML_VERSION="${LIBXML_VERSION}${LIBXML_MICRO_VERSION_SUFFIX}"

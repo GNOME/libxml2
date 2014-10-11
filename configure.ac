@@ -1656,7 +1656,7 @@ rm -f COPYING.LIB COPYING
 ln -s $srcdir/Copyright COPYING
 
 # keep on one line for cygwin c.f. #130896
-AC_CONFIG_FILES([libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py])
+AC_CONFIG_FILES([libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc libxml2-config.cmake python/setup.py])
 AC_OUTPUT
 
 chmod +x xml2-config python/setup.py

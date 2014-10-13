@@ -6191,7 +6191,7 @@ set at the end of parsing'/>
       <field name='nexte' type='struct _xmlEntity *' info=' unused'/>
       <field name='URI' type='const xmlChar *' info=' the full URI as computed'/>
       <field name='owner' type='int' info=' does the entity own the childrens'/>
-      <field name='checked' type='int' info=' was the entity content checked this is also used to count entites
+      <field name='checked' type='int' info=' was the entity content checked this is also used to count entities
 * references done from that entity
 * and if it contains &apos;&lt;&apos;'/>
     </struct>
@@ -6213,7 +6213,7 @@ set at the end of parsing'/>
       <field name='str2' type='char *' info=' extra string information'/>
       <field name='str3' type='char *' info=' extra string information'/>
       <field name='int1' type='int' info=' extra number information'/>
-      <field name='int2' type='int' info=' column number of the error or 0 if N/A (todo: rename this field when we would break ABI)'/>
+      <field name='int2' type='int' info=' error column # or 0 if N/A (todo: rename field when we would brk ABI)'/>
       <field name='ctxt' type='void *' info=' the parser context if available'/>
       <field name='node' type='void *' info=' the node in the tree'/>
     </struct>
@@ -8359,7 +8359,7 @@ Could we use @subtypes for this?'/>
       <arg name='SystemID' type='const xmlChar *' info='the system identifier or NULL'/>
     </function>
     <function name='xmlAddPrevSibling' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)</cond>
       <info>Add a new node @elem as the previous sibling of @cur merging adjacent TEXT nodes (@elem may be freed) If the new node was already inserted in a document it is first unlinked from its existing context. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an attribute with equal name, it is first destroyed.</info>
       <return type='xmlNodePtr' info='the new node or NULL in case of error.'/>
       <arg name='cur' type='xmlNodePtr' info='the child node'/>
@@ -8564,18 +8564,18 @@ Could we use @subtypes for this?'/>
     <function name='xmlBufContent' file='tree' module='buf'>
       <info>Function to extract the content of a buffer</info>
       <return type='xmlChar *' info='the internal content'/>
-      <arg name='buf' type='const xmlBufPtr' info='the buffer'/>
+      <arg name='buf' type='const xmlBuf *' info='the buffer'/>
     </function>
     <function name='xmlBufEnd' file='tree' module='buf'>
       <info>Function to extract the end of the content of a buffer</info>
       <return type='xmlChar *' info='the end of the internal content or NULL in case of error'/>
-      <arg name='buf' type='const xmlBufPtr' info='the buffer'/>
+      <arg name='buf' type='xmlBufPtr' info='the buffer'/>
     </function>
     <function name='xmlBufGetNodeContent' file='tree' module='tree'>
-      <info>Read the value of a node @cur, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted. Fills up the buffer @buffer with this value</info>
+      <info>Read the value of a node @cur, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted. Fills up the buffer @buf with this value</info>
       <return type='int' info='0 in case of success and -1 in case of error.'/>
       <arg name='buf' type='xmlBufPtr' info='a buffer xmlBufPtr'/>
-      <arg name='cur' type='xmlNodePtr' info='the node being read'/>
+      <arg name='cur' type='const xmlNode *' info='the node being read'/>
     </function>
     <function name='xmlBufNodeDump' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -8627,7 +8627,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlBufferContent' file='tree' module='tree'>
       <info>Function to extract the content of a buffer</info>
       <return type='const xmlChar *' info='the internal content'/>
-      <arg name='buf' type='const xmlBufferPtr' info='the buffer'/>
+      <arg name='buf' type='const xmlBuffer *' info='the buffer'/>
     </function>
     <function name='xmlBufferCreate' file='tree' module='tree'>
       <info>routine to create an XML buffer.</info>
@@ -8674,7 +8674,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlBufferLength' file='tree' module='tree'>
       <info>Function to get the length of a buffer</info>
       <return type='int' info='the length of data in the internal content'/>
-      <arg name='buf' type='const xmlBufferPtr' info='the buffer'/>
+      <arg name='buf' type='const xmlBuffer *' info='the buffer'/>
     </function>
     <function name='xmlBufferResize' file='tree' module='tree'>
       <info>Resize a buffer to accommodate minimum size of @size.</info>
@@ -9145,13 +9145,13 @@ Could we use @subtypes for this?'/>
     <function name='xmlCopyNode' file='tree' module='tree'>
       <info>Do a copy of the node.</info>
       <return type='xmlNodePtr' info='a new #xmlNodePtr, or NULL in case of error.'/>
-      <arg name='node' type='const xmlNodePtr' info='the node'/>
+      <arg name='node' type='xmlNodePtr' info='the node'/>
       <arg name='extended' type='int' info='if 1 do a recursive copy (properties, namespaces and children when applicable) if 2 copy properties and namespaces (when applicable)'/>
     </function>
     <function name='xmlCopyNodeList' file='tree' module='tree'>
       <info>Do a recursive copy of the node list. Use xmlDocCopyNodeList() if possible to ensure string interning.</info>
       <return type='xmlNodePtr' info='a new #xmlNodePtr, or NULL in case of error.'/>
-      <arg name='node' type='const xmlNodePtr' info='the first node in the list.'/>
+      <arg name='node' type='xmlNodePtr' info='the first node in the list.'/>
     </function>
     <function name='xmlCopyNotationTable' file='valid' module='valid'>
       <cond>defined(LIBXML_TREE_ENABLED)</cond>
@@ -9333,7 +9333,7 @@ Could we use @subtypes for this?'/>
       <arg name='nsPrefix' type='const xmlChar *' info='the requested namespace prefix'/>
     </functype>
     <function name='xmlDOMWrapAdoptNode' file='tree' module='tree'>
-      <info>References of out-of scope ns-decls are remapped to point to @destDoc: 1) If @destParent is given, then nsDef entries on element-nodes are used 2) If *no* @destParent is given, then @destDoc-&gt;oldNs entries are used This is the case when you have an unliked node and just want to move it to the context of  If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. NOTE: This function was not intensively tested.</info>
+      <info>References of out-of scope ns-decls are remapped to point to @destDoc: 1) If @destParent is given, then nsDef entries on element-nodes are used 2) If *no* @destParent is given, then @destDoc-&gt;oldNs entries are used This is the case when you have an unlinked node and just want to move it to the context of  If @destParent is given, it ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content. NOTE: This function was not intensively tested.</info>
       <return type='int' info='0 if the operation succeeded, 1 if a node of unsupported type was given, 2 if a node of not yet supported type was given and -1 on API/internal errors.'/>
       <arg name='ctxt' type='xmlDOMWrapCtxtPtr' info='the optional context for custom processing'/>
       <arg name='sourceDoc' type='xmlDocPtr' info='the optional sourceDoc'/>
@@ -9361,7 +9361,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlDOMWrapNewCtxt' file='tree' module='tree'>
       <info>Allocates and initializes a new DOM-wrapper context.</info>
-      <return type='xmlDOMWrapCtxtPtr' info='the xmlDOMWrapCtxtPtr or NULL in case of an internal errror.'/>
+      <return type='xmlDOMWrapCtxtPtr' info='the xmlDOMWrapCtxtPtr or NULL in case of an internal error.'/>
     </function>
     <function name='xmlDOMWrapReconcileNamespaces' file='tree' module='tree'>
       <info>Ensures that ns-references point to ns-decls hold on element-nodes. Ensures that the tree is namespace wellformed by creating additional ns-decls where needed. Note that, since prefixes of already existent ns-decls can be shadowed by this process, it could break QNames in attribute values or element content.  NOTE: This function was not intensively tested.</info>
@@ -9572,7 +9572,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlDocCopyNode' file='tree' module='tree'>
       <info>Do a copy of the node to a given document.</info>
       <return type='xmlNodePtr' info='a new #xmlNodePtr, or NULL in case of error.'/>
-      <arg name='node' type='const xmlNodePtr' info='the node'/>
+      <arg name='node' type='xmlNodePtr' info='the node'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='extended' type='int' info='if 1 do a recursive copy (properties, namespaces and children when applicable) if 2 copy properties and namespaces (when applicable)'/>
     </function>
@@ -9580,7 +9580,7 @@ Could we use @subtypes for this?'/>
       <info>Do a recursive copy of the node list.</info>
       <return type='xmlNodePtr' info='a new #xmlNodePtr, or NULL in case of error.'/>
       <arg name='doc' type='xmlDocPtr' info='the target document'/>
-      <arg name='node' type='const xmlNodePtr' info='the first node in the list.'/>
+      <arg name='node' type='xmlNodePtr' info='the first node in the list.'/>
     </function>
     <function name='xmlDocDump' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -9636,7 +9636,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlDocGetRootElement' file='tree' module='tree'>
       <info>Get the root element of the document (doc-&gt;children is a list containing possibly comments, PIs, etc ...).</info>
       <return type='xmlNodePtr' info='the #xmlNodePtr for the root or NULL'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
     </function>
     <function name='xmlDocSetRootElement' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)</cond>
@@ -9725,7 +9725,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlEncodeSpecialChars' file='entities' module='entities'>
       <info>Do a global encoding of a string, replacing the predefined entities this routine is reentrant, and result must be deallocated.</info>
       <return type='xmlChar *' info='A newly allocated string with the substitution done.'/>
-      <arg name='doc' type='xmlDocPtr' info='the document containing the string'/>
+      <arg name='doc' type='const xmlDoc *' info='the document containing the string'/>
       <arg name='input' type='const xmlChar *' info='A string to convert to XML.'/>
     </function>
     <functype name='xmlEntityReferenceFunc' file='parserInternals' module='parserInternals'>
@@ -10137,12 +10137,12 @@ Could we use @subtypes for this?'/>
     <function name='xmlGetDocCompressMode' file='tree' module='tree'>
       <info>get the compression ratio for a document, ZLIB based</info>
       <return type='int' info='0 (uncompressed) to 9 (max compression)'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
     </function>
     <function name='xmlGetDocEntity' file='entities' module='entities'>
       <info>Do an entity lookup in the document entity hash table and</info>
       <return type='xmlEntityPtr' info='the corresponding entity, otherwise a lookup is done in the predefined entities too.  Returns A pointer to the entity structure or NULL if not found.'/>
-      <arg name='doc' type='xmlDocPtr' info='the document referencing the entity'/>
+      <arg name='doc' type='const xmlDoc *' info='the document referencing the entity'/>
       <arg name='name' type='const xmlChar *' info='the entity name'/>
     </function>
     <function name='xmlGetDtdAttrDesc' file='valid' module='valid'>
@@ -10222,12 +10222,12 @@ Could we use @subtypes for this?'/>
     <function name='xmlGetIntSubset' file='tree' module='tree'>
       <info>Get the internal subset of a document</info>
       <return type='xmlDtdPtr' info='a pointer to the DTD structure or NULL if not found'/>
-      <arg name='doc' type='xmlDocPtr' info='the document pointer'/>
+      <arg name='doc' type='const xmlDoc *' info='the document pointer'/>
     </function>
     <function name='xmlGetLastChild' file='tree' module='tree'>
       <info>Search the last child of a node.</info>
       <return type='xmlNodePtr' info='the last child or NULL if none.'/>
-      <arg name='parent' type='xmlNodePtr' info='the parent node'/>
+      <arg name='parent' type='const xmlNode *' info='the parent node'/>
     </function>
     <function name='xmlGetLastError' file='xmlerror' module='error'>
       <info>Get the last global error registered. This is per thread if compiled with thread support.</info>
@@ -10236,31 +10236,31 @@ Could we use @subtypes for this?'/>
     <function name='xmlGetLineNo' file='tree' module='tree'>
       <info>Get line number of @node. Try to override the limitation of lines being store in 16 bits ints if XML_PARSE_BIG_LINES parser option was used</info>
       <return type='long' info='the line number if successful, -1 otherwise'/>
-      <arg name='node' type='xmlNodePtr' info='valid node'/>
+      <arg name='node' type='const xmlNode *' info='valid node'/>
     </function>
     <function name='xmlGetNoNsProp' file='tree' module='tree'>
       <info>Search and get the value of an attribute associated to a node This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off. This function is similar to xmlGetProp except it will accept only an attribute in no namespace.</info>
       <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree().'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
     </function>
     <function name='xmlGetNodePath' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED)</cond>
       <info>Build a structure based Path for the given node</info>
       <return type='xmlChar *' info='the new path or NULL in case of error. The caller must free the returned string'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
+      <arg name='node' type='const xmlNode *' info='a node'/>
     </function>
     <function name='xmlGetNsList' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Search all the namespace applying to a given element.</info>
       <return type='xmlNsPtr *' info='an NULL terminated array of all the #xmlNsPtr found that need to be freed by the caller or NULL if no namespace if defined'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
-      <arg name='node' type='xmlNodePtr' info='the current node'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
+      <arg name='node' type='const xmlNode *' info='the current node'/>
     </function>
     <function name='xmlGetNsProp' file='tree' module='tree'>
       <info>Search and get the value of an attribute associated to a node This attribute has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off.</info>
       <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree().'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
       <arg name='nameSpace' type='const xmlChar *' info='the URI of the namespace'/>
     </function>
@@ -10278,7 +10278,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlGetProp' file='tree' module='tree'>
       <info>Search and get the value of an attribute associated to a node This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off. NOTE: this function acts independently of namespaces associated to the attribute. Use xmlGetNsProp() or xmlGetNoNsProp() for namespace aware processing.</info>
       <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree().'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
     </function>
     <function name='xmlGetRefs' file='valid' module='valid'>
@@ -10312,14 +10312,14 @@ Could we use @subtypes for this?'/>
     <function name='xmlHasNsProp' file='tree' module='tree'>
       <info>Search for an attribute associated to a node This attribute has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off. Note that a namespace of NULL indicates to use the default namespace.</info>
       <return type='xmlAttrPtr' info='the attribute or the attribute declaration or NULL if neither was found.'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
       <arg name='nameSpace' type='const xmlChar *' info='the URI of the namespace'/>
     </function>
     <function name='xmlHasProp' file='tree' module='tree'>
       <info>Search an attribute associated to a node This function also looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off.</info>
       <return type='xmlAttrPtr' info='the attribute or the attribute declaration or NULL if neither was found.'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
     </function>
     <function name='xmlHashAddEntry' file='hash' module='hash'>
@@ -10686,7 +10686,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlIsBlankNode' file='tree' module='tree'>
       <info>Checks whether this node is an empty or whitespace only (and possibly ignorable) text-node.</info>
       <return type='int' info='1 yes, 0 no'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
     </function>
     <function name='xmlIsChar' file='chvalid' module='chvalid'>
       <info>This function is DEPRECATED. Use xmlIsChar_ch or xmlIsCharQ instead</info>
@@ -11505,7 +11505,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlNewDocText' file='tree' module='tree'>
       <info>Creation of a new text node within a document.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
       <arg name='content' type='const xmlChar *' info='the text content'/>
     </function>
     <function name='xmlNewDocTextLen' file='tree' module='tree'>
@@ -11588,7 +11588,7 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='xmlChar *' info='the node name'/>
     </function>
     <function name='xmlNewNs' file='tree' module='tree'>
-      <info>Creation of a new Namespace. This function will refuse to create a namespace with a similar prefix than an existing one present on this node. We use href==NULL in the case of an element creation where the namespace was not defined.</info>
+      <info>Creation of a new Namespace. This function will refuse to create a namespace with a similar prefix than an existing one present on this node. Note that for a default namespace, @prefix should be NULL.  We use href==NULL in the case of an element creation where the namespace was not defined.</info>
       <return type='xmlNsPtr' info='a new namespace pointer or NULL'/>
       <arg name='node' type='xmlNodePtr' info='the element carrying the namespace'/>
       <arg name='href' type='const xmlChar *' info='the URI associated'/>
@@ -11635,7 +11635,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlNewReference' file='tree' module='tree'>
       <info>Creation of a new reference node.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
       <arg name='name' type='const xmlChar *' info='the reference name, or the reference string with &amp; and ;'/>
     </function>
     <function name='xmlNewStringInputStream' file='parserInternals' module='parserInternals'>
@@ -11759,7 +11759,7 @@ Could we use @subtypes for this?'/>
       <info>Read the value of a node @cur, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted. Fills up the buffer @buffer with this value</info>
       <return type='int' info='0 in case of success and -1 in case of error.'/>
       <arg name='buffer' type='xmlBufferPtr' info='a buffer'/>
-      <arg name='cur' type='xmlNodePtr' info='the node being read'/>
+      <arg name='cur' type='const xmlNode *' info='the node being read'/>
     </function>
     <function name='xmlNodeDump' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -11785,42 +11785,42 @@ Could we use @subtypes for this?'/>
     <function name='xmlNodeGetBase' file='tree' module='tree'>
       <info>Searches for the BASE URL. The code should work on both XML and HTML document even if base mechanisms are completely different. It returns the base as defined in RFC 2396 sections 5.1.1. Base URI within Document Content and 5.1.2. Base URI from the Encapsulating Entity However it does not return the document base (5.1.3), use doc-&gt;URL in this case</info>
       <return type='xmlChar *' info='a pointer to the base URL, or NULL if not found It&apos;s up to the caller to free the memory with xmlFree().'/>
-      <arg name='doc' type='xmlDocPtr' info='the document the node pertains to'/>
-      <arg name='cur' type='xmlNodePtr' info='the node being checked'/>
+      <arg name='doc' type='const xmlDoc *' info='the document the node pertains to'/>
+      <arg name='cur' type='const xmlNode *' info='the node being checked'/>
     </function>
     <function name='xmlNodeGetContent' file='tree' module='tree'>
       <info>Read the value of a node, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted.</info>
       <return type='xmlChar *' info='a new #xmlChar * or NULL if no content is available. It&apos;s up to the caller to free the memory with xmlFree().'/>
-      <arg name='cur' type='xmlNodePtr' info='the node being read'/>
+      <arg name='cur' type='const xmlNode *' info='the node being read'/>
     </function>
     <function name='xmlNodeGetLang' file='tree' module='tree'>
       <info>Searches the language of a node, i.e. the values of the xml:lang attribute or the one carried by the nearest ancestor.</info>
       <return type='xmlChar *' info='a pointer to the lang value, or NULL if not found It&apos;s up to the caller to free the memory with xmlFree().'/>
-      <arg name='cur' type='xmlNodePtr' info='the node being checked'/>
+      <arg name='cur' type='const xmlNode *' info='the node being checked'/>
     </function>
     <function name='xmlNodeGetSpacePreserve' file='tree' module='tree'>
       <info>Searches the space preserving behaviour of a node, i.e. the values of the xml:space attribute or the one carried by the nearest ancestor.</info>
       <return type='int' info='-1 if xml:space is not inherited, 0 if &quot;default&quot;, 1 if &quot;preserve&quot;'/>
-      <arg name='cur' type='xmlNodePtr' info='the node being checked'/>
+      <arg name='cur' type='const xmlNode *' info='the node being checked'/>
     </function>
     <function name='xmlNodeIsText' file='tree' module='tree'>
       <info>Is this node a Text node ?</info>
       <return type='int' info='1 yes, 0 no'/>
-      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='node' type='const xmlNode *' info='the node'/>
     </function>
     <function name='xmlNodeListGetRawString' file='tree' module='tree'>
       <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Builds the string equivalent to the text contained in the Node list made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString() this function doesn&apos;t do any character encoding handling.</info>
       <return type='xmlChar *' info='a pointer to the string copy, the caller must free it with xmlFree().'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
-      <arg name='list' type='xmlNodePtr' info='a Node list'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
+      <arg name='list' type='const xmlNode *' info='a Node list'/>
       <arg name='inLine' type='int' info='should we replace entity contents or show their external form'/>
     </function>
     <function name='xmlNodeListGetString' file='tree' module='tree'>
       <info>Build the string equivalent to the text contained in the Node list made of TEXTs and ENTITY_REFs</info>
       <return type='xmlChar *' info='a pointer to the string copy, the caller must free it with xmlFree().'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
-      <arg name='list' type='xmlNodePtr' info='a Node list'/>
+      <arg name='list' type='const xmlNode *' info='a Node list'/>
       <arg name='inLine' type='int' info='should we replace entity contents or show their external form'/>
     </function>
     <function name='xmlNodeSetBase' file='tree' module='tree'>
@@ -13233,7 +13233,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2EndElement' file='SAX2' module='SAX2'>
-      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)</cond>
+      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED) || defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>called when the end of an element has been detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
@@ -13385,7 +13385,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2StartElement' file='SAX2' module='SAX2'>
-      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)</cond>
+      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED) || defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>called when an opening tag has been processed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
@@ -13741,14 +13741,14 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaGetCanonValue' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Get a the cononical lexical representation of the value. The caller has to FREE the returned retValue.  WARNING: Some value types are not supported yet, resulting in a @retValue of &quot;???&quot;.  TODO: XML Schema 1.0 does not define canonical representations for: duration, gYearMonth, gYear, gMonthDay, gMonth, gDay, anyURI, QName, NOTATION. This will be fixed in XML Schema 1.1.</info>
+      <info>Get the canonical lexical representation of the value. The caller has to FREE the returned retValue.  WARNING: Some value types are not supported yet, resulting in a @retValue of &quot;???&quot;.  TODO: XML Schema 1.0 does not define canonical representations for: duration, gYearMonth, gYear, gMonthDay, gMonth, gDay, anyURI, QName, NOTATION. This will be fixed in XML Schema 1.1.</info>
       <return type='int' info='0 if the value could be built, 1 if the value type is not supported yet and -1 in case of API errors.'/>
       <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
       <arg name='retValue' type='const xmlChar **' info='the returned value'/>
     </function>
     <function name='xmlSchemaGetCanonValueWhtsp' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>Get a the cononical representation of the value. The caller has to free the returned @retValue.</info>
+      <info>Get the canonical representation of the value. The caller has to free the returned @retValue.</info>
       <return type='int' info='0 if the value could be built, 1 if the value type is not supported yet and -1 in case of API errors.'/>
       <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
       <arg name='retValue' type='const xmlChar **' info='the returned value'/>
@@ -14600,7 +14600,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlStringGetNodeList' file='tree' module='tree'>
       <info>Parse the value string and build the node list associated. Should produce a flat tree with only TEXTs and ENTITY_REFs.</info>
       <return type='xmlNodePtr' info='a pointer to the first child'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
       <arg name='value' type='const xmlChar *' info='the value of the attribute'/>
     </function>
     <function name='xmlStringLenDecodeEntities' file='parserInternals' module='parser'>
@@ -14617,7 +14617,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlStringLenGetNodeList' file='tree' module='tree'>
       <info>Parse the value string and build the node list associated. Should produce a flat tree with only TEXTs and ENTITY_REFs.</info>
       <return type='xmlNodePtr' info='a pointer to the first child'/>
-      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='doc' type='const xmlDoc *' info='the document'/>
       <arg name='value' type='const xmlChar *' info='the value of the text'/>
       <arg name='len' type='int' info='the length of the string value'/>
     </function>
@@ -17071,7 +17071,7 @@ Could we use @subtypes for this?'/>
       <arg name='elem' type='xmlElementPtr' info='an element definition'/>
     </function>
     <function name='xmlValidateNCName' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED)</cond>
+      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED) || defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>Check that a value conforms to the lexical space of NCName</info>
       <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='value' type='const xmlChar *' info='the value to check'/>

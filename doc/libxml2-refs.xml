@@ -8136,12 +8136,13 @@
       <ref name='xlinkExtendedLinkFunk'/>
       <ref name='xlinkExtendedLinkSetFunk'/>
     </type>
-    <type name='const xmlBufPtr'>
+    <type name='const xmlBuf *'>
       <ref name='xmlBufContent'/>
-      <ref name='xmlBufEnd'/>
+    </type>
+    <type name='const xmlBufPtr'>
       <ref name='xmlBufUse'/>
     </type>
-    <type name='const xmlBufferPtr'>
+    <type name='const xmlBuffer *'>
       <ref name='xmlBufferContent'/>
       <ref name='xmlBufferLength'/>
     </type>
@@ -8555,15 +8556,46 @@
       <ref name='xmlValidGetPotentialChildren'/>
       <ref name='xmlValidGetValidElements'/>
     </type>
+    <type name='const xmlDoc *'>
+      <ref name='xmlDocGetRootElement'/>
+      <ref name='xmlEncodeSpecialChars'/>
+      <ref name='xmlGetDocCompressMode'/>
+      <ref name='xmlGetDocEntity'/>
+      <ref name='xmlGetIntSubset'/>
+      <ref name='xmlGetNsList'/>
+      <ref name='xmlNewDocText'/>
+      <ref name='xmlNewReference'/>
+      <ref name='xmlNodeGetBase'/>
+      <ref name='xmlNodeListGetRawString'/>
+      <ref name='xmlStringGetNodeList'/>
+      <ref name='xmlStringLenGetNodeList'/>
+    </type>
     <type name='const xmlListPtr'>
       <ref name='xmlListCopy'/>
       <ref name='xmlListDup'/>
     </type>
+    <type name='const xmlNode *'>
+      <ref name='xmlBufGetNodeContent'/>
+      <ref name='xmlGetLastChild'/>
+      <ref name='xmlGetLineNo'/>
+      <ref name='xmlGetNoNsProp'/>
+      <ref name='xmlGetNodePath'/>
+      <ref name='xmlGetNsList'/>
+      <ref name='xmlGetNsProp'/>
+      <ref name='xmlGetProp'/>
+      <ref name='xmlHasNsProp'/>
+      <ref name='xmlHasProp'/>
+      <ref name='xmlIsBlankNode'/>
+      <ref name='xmlNodeBufGetContent'/>
+      <ref name='xmlNodeGetBase'/>
+      <ref name='xmlNodeGetContent'/>
+      <ref name='xmlNodeGetLang'/>
+      <ref name='xmlNodeGetSpacePreserve'/>
+      <ref name='xmlNodeIsText'/>
+      <ref name='xmlNodeListGetRawString'/>
+      <ref name='xmlNodeListGetString'/>
+    </type>
     <type name='const xmlNodePtr'>
-      <ref name='xmlCopyNode'/>
-      <ref name='xmlCopyNodeList'/>
-      <ref name='xmlDocCopyNode'/>
-      <ref name='xmlDocCopyNodeList'/>
       <ref name='xmlParserFindNodeInfo'/>
       <ref name='xmlParserFindNodeInfoIndex'/>
     </type>
@@ -9059,6 +9091,7 @@
       <ref name='xmlAutomataSetFinalState'/>
     </type>
     <type name='xmlBufPtr'>
+      <ref name='xmlBufEnd'/>
       <ref name='xmlBufGetNodeContent'/>
       <ref name='xmlBufNodeDump'/>
       <ref name='xmlBufShrink'/>
@@ -9296,20 +9329,14 @@
       <ref name='xmlDocDumpMemory'/>
       <ref name='xmlDocDumpMemoryEnc'/>
       <ref name='xmlDocFormatDump'/>
-      <ref name='xmlDocGetRootElement'/>
       <ref name='xmlDocSetRootElement'/>
       <ref name='xmlElemDump'/>
       <ref name='xmlEncodeEntities'/>
       <ref name='xmlEncodeEntitiesReentrant'/>
-      <ref name='xmlEncodeSpecialChars'/>
       <ref name='xmlFreeDoc'/>
       <ref name='xmlFreeDocElementContent'/>
-      <ref name='xmlGetDocCompressMode'/>
-      <ref name='xmlGetDocEntity'/>
       <ref name='xmlGetDtdEntity'/>
       <ref name='xmlGetID'/>
-      <ref name='xmlGetIntSubset'/>
-      <ref name='xmlGetNsList'/>
       <ref name='xmlGetParameterEntity'/>
       <ref name='xmlGetRefs'/>
       <ref name='xmlIsID'/>
@@ -9325,17 +9352,13 @@
       <ref name='xmlNewDocPI'/>
       <ref name='xmlNewDocProp'/>
       <ref name='xmlNewDocRawNode'/>
-      <ref name='xmlNewDocText'/>
       <ref name='xmlNewDocTextLen'/>
       <ref name='xmlNewDtd'/>
       <ref name='xmlNewEntity'/>
       <ref name='xmlNewGlobalNs'/>
-      <ref name='xmlNewReference'/>
       <ref name='xmlNewTextWriterTree'/>
       <ref name='xmlNodeDump'/>
       <ref name='xmlNodeDumpOutput'/>
-      <ref name='xmlNodeGetBase'/>
-      <ref name='xmlNodeListGetRawString'/>
       <ref name='xmlNodeListGetString'/>
       <ref name='xmlParseBalancedChunkMemory'/>
       <ref name='xmlParseBalancedChunkMemoryRecover'/>
@@ -9367,8 +9390,6 @@
       <ref name='xmlSetListDoc'/>
       <ref name='xmlSetTreeDoc'/>
       <ref name='xmlShell'/>
-      <ref name='xmlStringGetNodeList'/>
-      <ref name='xmlStringLenGetNodeList'/>
       <ref name='xmlValidCtxtNormalizeAttributeValue'/>
       <ref name='xmlValidNormalizeAttributeValue'/>
       <ref name='xmlValidateAttributeDecl'/>
@@ -9692,10 +9713,11 @@
       <ref name='xmlAddNextSibling'/>
       <ref name='xmlAddPrevSibling'/>
       <ref name='xmlAddSibling'/>
-      <ref name='xmlBufGetNodeContent'/>
       <ref name='xmlBufNodeDump'/>
       <ref name='xmlC14NIsVisibleCallback'/>
       <ref name='xmlChildElementCount'/>
+      <ref name='xmlCopyNode'/>
+      <ref name='xmlCopyNodeList'/>
       <ref name='xmlCopyProp'/>
       <ref name='xmlCopyPropList'/>
       <ref name='xmlDOMWrapAcquireNsFunction'/>
@@ -9707,22 +9729,14 @@
       <ref name='xmlDebugDumpNodeList'/>
       <ref name='xmlDebugDumpOneNode'/>
       <ref name='xmlDeregisterNodeFunc'/>
+      <ref name='xmlDocCopyNode'/>
+      <ref name='xmlDocCopyNodeList'/>
       <ref name='xmlDocSetRootElement'/>
       <ref name='xmlElemDump'/>
       <ref name='xmlEntityReferenceFunc'/>
       <ref name='xmlFirstElementChild'/>
       <ref name='xmlFreeNode'/>
       <ref name='xmlFreeNodeList'/>
-      <ref name='xmlGetLastChild'/>
-      <ref name='xmlGetLineNo'/>
-      <ref name='xmlGetNoNsProp'/>
-      <ref name='xmlGetNodePath'/>
-      <ref name='xmlGetNsList'/>
-      <ref name='xmlGetNsProp'/>
-      <ref name='xmlGetProp'/>
-      <ref name='xmlHasNsProp'/>
-      <ref name='xmlHasProp'/>
-      <ref name='xmlIsBlankNode'/>
       <ref name='xmlIsID'/>
       <ref name='xmlIsRef'/>
       <ref name='xmlLastElementChild'/>
@@ -9738,16 +9752,8 @@
       <ref name='xmlNextElementSibling'/>
       <ref name='xmlNodeAddContent'/>
       <ref name='xmlNodeAddContentLen'/>
-      <ref name='xmlNodeBufGetContent'/>
       <ref name='xmlNodeDump'/>
       <ref name='xmlNodeDumpOutput'/>
-      <ref name='xmlNodeGetBase'/>
-      <ref name='xmlNodeGetContent'/>
-      <ref name='xmlNodeGetLang'/>
-      <ref name='xmlNodeGetSpacePreserve'/>
-      <ref name='xmlNodeIsText'/>
-      <ref name='xmlNodeListGetRawString'/>
-      <ref name='xmlNodeListGetString'/>
       <ref name='xmlNodeSetBase'/>
       <ref name='xmlNodeSetContent'/>
       <ref name='xmlNodeSetContentLen'/>
@@ -19950,7 +19956,6 @@
           <ref name='xmlSchemaValidateOneElement'/>
         </word>
         <word name='break'>
-          <ref name='_xmlError'/>
           <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlDOMWrapReconcileNamespaces'/>
@@ -19961,6 +19966,9 @@
         </word>
         <word name='breaks'>
           <ref name='xmlCurrentChar'/>
+        </word>
+        <word name='brk'>
+          <ref name='_xmlError'/>
         </word>
         <word name='broke'>
           <ref name='XML_CAST_FPTR'/>
@@ -20127,6 +20135,7 @@
           <ref name='xmlC14NExecute'/>
           <ref name='xmlGetCharEncodingName'/>
           <ref name='xmlSchemaGetCanonValue'/>
+          <ref name='xmlSchemaGetCanonValueWhtsp'/>
         </word>
         <word name='canonicalization'>
           <ref name='xmlC14NDocDumpMemory'/>
@@ -20877,10 +20886,6 @@
         </word>
         <word name='connector'>
           <ref name='xmlParseElementChildrenContentDecl'/>
-        </word>
-        <word name='cononical'>
-          <ref name='xmlSchemaGetCanonValue'/>
-          <ref name='xmlSchemaGetCanonValueWhtsp'/>
         </word>
         <word name='consequent'>
           <ref name='_xmlError'/>
@@ -22452,9 +22457,6 @@
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
         </word>
-        <word name='entites'>
-          <ref name='_xmlEntity'/>
-        </word>
         <word name='entities:'>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParserHandleReference'/>
@@ -22554,9 +22556,6 @@
           <ref name='xmlXPathConvertBoolean'/>
           <ref name='xmlXPathConvertNumber'/>
           <ref name='xmlXPathConvertString'/>
-        </word>
-        <word name='errror'>
-          <ref name='xmlDOMWrapNewCtxt'/>
         </word>
         <word name='escape'>
           <ref name='docbEncodeEntities'/>
@@ -30318,9 +30317,6 @@
           <ref name='xmlHasProp'/>
           <ref name='xmlXPathNextNamespace'/>
         </word>
-        <word name='unliked'>
-          <ref name='xmlDOMWrapAdoptNode'/>
-        </word>
         <word name='unlink'>
           <ref name='xmlFreeNode'/>
           <ref name='xmlUnlinkNode'/>
@@ -30329,6 +30325,7 @@
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
           <ref name='xmlAddSibling'/>
+          <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlNewEntity'/>
           <ref name='xmlReplaceNode'/>
           <ref name='xmlUnlinkNode'/>

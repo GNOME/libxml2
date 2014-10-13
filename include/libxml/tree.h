@@ -658,7 +658,7 @@ struct _xmlDOMWrapCtxt {
     defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED) || \
     defined (LIBXML_HTML_ENABLED) || defined(LIBXML_SAX1_ENABLED) || \
     defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || \
-    defined(LIBXML_DOCB_ENABLED)
+    defined(LIBXML_DOCB_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 XMLPUBFUN int XMLCALL
 		xmlValidateNCName	(const xmlChar *value,
 					 int space);
@@ -949,7 +949,7 @@ XMLPUBFUN xmlNodePtr XMLCALL
 					 xmlNodePtr cur);
 #endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED) */
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
-    defined(LIBXML_SCHEMAS_ENABLED)
+    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
 XMLPUBFUN xmlNodePtr XMLCALL
 		xmlAddPrevSibling	(xmlNodePtr cur,
 					 xmlNodePtr elem);

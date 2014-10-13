@@ -800,6 +800,13 @@ xmlCheckFilename (const char *path)
     return 1;
 }
 
+/**
+ * xmlNop:
+ *
+ * No Operation function, does nothing, no input
+ *
+ * Returns zero
+ */
 int
 xmlNop(void) {
     return(0);

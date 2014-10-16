@@ -126,6 +126,7 @@ rm -fr %{buildroot}
 %{_bindir}/xml2-config
 %{_datadir}/aclocal/libxml.m4
 %{_libdir}/pkgconfig/libxml-2.0.pc
+%{_libdir}/cmake/libxml2/libxml2-config.cmake
 
 %files static
 %defattr(-, root, root)

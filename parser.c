@@ -14830,9 +14830,6 @@ xmlInitParser(void) {
 #ifdef LIBXML_XPATH_ENABLED
 	xmlXPathInit();
 #endif
-#ifdef LIBXML_CATALOG_ENABLED
-        xmlInitializeCatalog();
-#endif
 	xmlParserInitialized = 1;
 #ifdef LIBXML_THREAD_ENABLED
     }

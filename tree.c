@@ -1451,9 +1451,9 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 	node->content = xmlBufDetach(buf);
 
 	if (last == NULL) {
-	    last = ret = node;
+	    ret = node;
 	} else {
-	    last = xmlAddNextSibling(last, node);
+	    xmlAddNextSibling(last, node);
 	}
     } else if (ret == NULL) {
         ret = xmlNewDocText(doc, BAD_CAST "");
@@ -1639,9 +1639,9 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 	node->content = xmlBufDetach(buf);
 
 	if (last == NULL) {
-	    last = ret = node;
+	    ret = node;
 	} else {
-	    last = xmlAddNextSibling(last, node);
+	    xmlAddNextSibling(last, node);
 	}
     }
 

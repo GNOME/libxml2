@@ -14,7 +14,7 @@ var srcDirUtils = "..";
 var baseName = "libxml2";
 /* Configure file which contains the version and the output file where
    we can store our build configuration. */
-var configFile = srcDirXml + "\\configure.in";
+var configFile = srcDirXml + "\\configure.ac";
 var versionFile = ".\\config.msvc";
 /* Input and output files regarding the libxml features. */
 var optsFileIn = srcDirXml + "\\include\\libxml\\xmlversion.h.in";

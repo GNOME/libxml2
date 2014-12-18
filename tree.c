@@ -2799,8 +2799,19 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
 	if(tree->type == XML_ELEMENT_NODE) {
 	    prop = tree->properties;
 	    while (prop != NULL) {
+                if (prop->atype == XML_ATTRIBUTE_ID) {
+                    xmlRemoveID(tree->doc, prop);
+                }
+
 		prop->doc = doc;
 		xmlSetListDoc(prop->children, doc);
+
+                if (xmlIsID(doc, tree, prop)) {
+                    xmlChar *idVal = xmlNodeListGetString(doc, prop->children,
+                                                          1);
+                    xmlAddID(NULL, doc, idVal, prop);
+                }
+
 		prop = prop->next;
 	    }
 	}

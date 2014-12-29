@@ -21,7 +21,7 @@ set(LIBXML2_VERSION_MINOR  @LIBXML_MINOR_VERSION@)
 set(LIBXML2_VERSION_MICRO  @LIBXML_MICRO_VERSION@)
 set(LIBXML2_VERSION_STRING "@VERSION@")
 set(LIBXML2_INSTALL_PREFIX ${_libxml2_rootdir})
-set(LIBXML2_INCLUDE_DIRS   ${_libxml2_rootdir}/include)
+set(LIBXML2_INCLUDE_DIRS   ${_libxml2_rootdir}/include ${_libxml2_rootdir}/include/libxml2)
 set(LIBXML2_LIBRARY_DIR    ${_libxml2_rootdir}/lib)
 set(LIBXML2_LIBRARIES      -L${LIBXML2_LIBRARY_DIR} -lxml2)
 

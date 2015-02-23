@@ -5658,6 +5658,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	if (RAW != '>') {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_NOT_FINISHED,
 	            "xmlParseEntityDecl: entity %s not terminated\n", name);
+	    xmlStopParser(ctxt);
 	} else {
 	    if (input != ctxt->input) {
 		xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,

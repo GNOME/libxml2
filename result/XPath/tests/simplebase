@@ -60,6 +60,14 @@ Set contains 3 nodes:
     content=   
 
 ========================
+Expression: /child::EXAMPLE/attribute::prop1/descendant-or-self::node()
+Object is a Node Set :
+Set contains 1 nodes:
+1  ATTRIBUTE prop1
+    TEXT
+      content=gnome is great
+
+========================
 Expression: /descendant::title
 Object is a Node Set :
 Set contains 2 nodes:

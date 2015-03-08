@@ -7,3 +7,4 @@
 /child::EXAMPLE/child::head/node()
 /descendant::title
 /descendant::p/ancestor::chapter
+//p[1]

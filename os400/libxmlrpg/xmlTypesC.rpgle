@@ -20,5 +20,7 @@
      d xmlCenum        s             10i 0 based(######typedef######)
      d xmlCssize_t     s             10i 0 based(######typedef######)
      d xmlCsize_t      s             10u 0 based(######typedef######)
+     d xmlCfloat       s              4f   based(######typedef######)
+     d xmlCdouble      s              8f   based(######typedef######)
 
       /endif

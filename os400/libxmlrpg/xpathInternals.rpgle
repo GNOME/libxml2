@@ -32,7 +32,8 @@
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
      d xmlXPathPopNumber...
-     d                 pr             8f   extproc('xmlXPathPopNumber')
+     d                 pr                  extproc('xmlXPathPopNumber')
+     d                                     like(xmlCdouble)
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
      d xmlXPathPopString...
@@ -311,7 +312,7 @@
      d xmlXPathNewFloat...
      d                 pr                  extproc('xmlXPathNewFloat')
      d                                     like(xmlXPathObjectPtr)
-     d  val                           8f   value
+     d  val                                value like(xmlCdouble)
 
      d xmlXPathNewBoolean...
      d                 pr                  extproc('xmlXPathNewBoolean')
@@ -369,7 +370,8 @@
       * Existing functions.
 
      d xmlXPathStringEvalNumber...
-     d                 pr             8f   extproc('xmlXPathStringEvalNumber')
+     d                 pr                  extproc('xmlXPathStringEvalNumber')
+     d                                     like(xmlCdouble)
      d  str                            *   value options(*string)               const xmlChar *
 
      d xmlXPathEvaluatePredicateResult...

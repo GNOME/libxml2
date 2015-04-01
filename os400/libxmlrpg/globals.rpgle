@@ -305,7 +305,7 @@
      d                 pr                  extproc('__set_xmlDoValidity+
      d                                       CheckingDefaultValue')
      d  value                              value like(xmlCint)
-    
+
      d xmlThrDefDoValidityCheckingDefaultValue...
      d                 pr                  extproc('xmlThrDefDoValidity+
      d                                       CheckingDefaultValue')
@@ -331,7 +331,7 @@
      d xmlStructuredError...
      d                 pr                  extproc('__call_xmlStructuredError')
      d  userData                       *   value options(*string)               void *
-     d  error                              value like(xmlErrorPtr) 
+     d  error                              value like(xmlErrorPtr)
 
      d get_xmlGenericErrorContext...
      d                 pr                  extproc(
@@ -388,19 +388,19 @@
      d set_xmlTreeIndentString...
      d                 pr                  extproc('__set_xmlTreeIndentString')
      d  value                          *   value options(*string)               const char *
- 
+
      d xmlThrDefTreeIndentString...
      d                 pr              *   extproc('xmlThrDefTreeIndentString') const char *
      d  v                              *   value options(*string)               const char *
 
      d get_xmlKeepBlanksDefaultValue...
      d                 pr                  extproc(
-     d                                       '__get_xmlKeepBlanksDefaultValue') 
+     d                                       '__get_xmlKeepBlanksDefaultValue')
      d                                     like(xmlCint)
 
      d set_xmlKeepBlanksDefaultValue...
      d                 pr                  extproc(
-     d                                       '__set_xmlKeepBlanksDefaultValue') 
+     d                                       '__set_xmlKeepBlanksDefaultValue')
      d  value                              value like(xmlCint)
 
      d xmlThrDefKeepBlanksDefaultValue...

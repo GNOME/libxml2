@@ -134,7 +134,7 @@
      d  type                               like(xmlXPathObjectType)
      d  nodesetval                         like(xmlNodeSetPtr)
      d  boolval                            like(xmlCint)
-     d  floatval                      8f
+     d  floatval                           like(xmlCdouble)
      d  stringval                      *                                        xmlChar *
      d  user                           *                                        void *
      d  index                              like(xmlCint)
@@ -420,9 +420,14 @@
 
       * Objects and Nodesets handling
 
-     d xmlXPathNAN     s              8f   import('xmlXPathNAN')
-     d xmlXPathPINF    s              8f   import('xmlXPathPINF')
-     d xmlXPathNINF    s              8f   import('xmlXPathNINF')
+     d xmlXPathNAN     s                   import('xmlXPathNAN')
+     d                                     like(xmlCdouble)
+
+     d xmlXPathPINF    s                   import('xmlXPathPINF')
+     d                                     like(xmlCdouble)
+
+     d xmlXPathNINF    s                   import('xmlXPathNINF')
+     d                                     like(xmlCdouble)
 
      d xmlXPathFreeObject...
      d                 pr                  extproc('xmlXPathFreeObject')
@@ -458,7 +463,7 @@
      d                 pr                  extproc(
      d                                      'xmlXPathCastNumberToBoolean')
      d                                     like(xmlCint)
-     d val                            8f   value
+     d val                                 value like(xmlCdouble)
 
      d xmlXPathCastStringToBoolean...
      d                 pr                  extproc(
@@ -480,24 +485,28 @@
      d xmlXPathCastBooleanToNumber...
      d                 pr                  extproc(
      d                                      'xmlXPathCastBooleanToNumber')
-     d                                8f
+     d                                     like(xmlCdouble)
      d val                                 value like(xmlCint)
 
      d xmlXPathCastStringToNumber...
-     d                 pr             8f   extproc('xmlXPathCastStringToNumber')
+     d                 pr                  extproc('xmlXPathCastStringToNumber')
+     d                                     like(xmlCdouble)
      d val                             *   value options(*string)               const xmlChar *
 
      d xmlXPathCastNodeToNumber...
-     d                 pr             8f   extproc('xmlXPathCastNodeToNumber')
+     d                 pr                  extproc('xmlXPathCastNodeToNumber')
+     d                                     like(xmlCdouble)
      d node                                value like(xmlNodePtr)
 
      d xmlXPathCastNodeSetToNumber...
-     d                 pr             8f   extproc(
+     d                 pr                  extproc(
      d                                      'xmlXPathCastNodeSetToNumber')
+     d                                     like(xmlCdouble)
      d ns                                  value like(xmlNodeSetPtr)
 
      d xmlXPathCastToNumber...
-     d                 pr             8f   extproc('xmlXPathCastToNumber')
+     d                 pr                  extproc('xmlXPathCastToNumber')
+     d                                     like(xmlCdouble)
      d val                                 value like(xmlXPathObjectPtr)
 
      d xmlXPathCastBooleanToString...
@@ -507,7 +516,7 @@
 
      d xmlXPathCastNumberToString...
      d                 pr              *   extproc('xmlXPathCastNumberToString')xmlChar *
-     d val                            8f   value
+     d val                                 value like(xmlCdouble)
 
      d xmlXPathCastNodeToString...
      d                 pr              *   extproc('xmlXPathCastNodeToString')  xmlChar *
@@ -635,11 +644,11 @@
 
      d xmlXPathIsNaN   pr                  extproc('xmlXPathIsNaN')
      d                                     like(xmlCint)
-     d val                            8f   value
+     d val                                 value like(xmlCdouble)
 
      d xmlXPathIsInf   pr                  extproc('xmlXPathIsInf')
      d                                     like(xmlCint)
-     d val                            8f   value
+     d val                                 value like(xmlCdouble)
 
       /undefine XML_TESTVAL
       /endif

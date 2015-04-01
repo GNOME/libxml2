@@ -19,6 +19,7 @@
 
       /if defined(LIBXML_XPTR_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/xpath"
 
@@ -29,8 +30,8 @@
 
      d xmlLocationSet  ds                  based(xmlLocationSetPtr)
      d                                     align qualified
-     d  locNr                        10i 0                                      # locations in set
-     d  locMax                       10i 0                                      Max locations in set
+     d  locNr                              like(xmlCint)                        # locations in set
+     d  locMax                             like(xmlCint)                        Max locations in set
      d  locTab                         *                                        xmlXPathObjectPtr *
 
       * Handling of location sets.
@@ -54,9 +55,9 @@
      d                 pr                  extproc('xmlXPtrNewRange')
      d                                     like(xmlXPathObjectPtr)
      d start                               value like(xmlNodePtr)
-     d startindex                    10i 0 value
+     d startindex                          value like(xmlCint)
      d end                                 value like(xmlNodePtr)
-     d endindex                      10i 0 value
+     d endindex                            value like(xmlCint)
 
      d xmlXPtrNewRangePoints...
      d                 pr                  extproc('xmlXPtrNewRangePoints')
@@ -123,7 +124,7 @@
      d xmlXPtrLocationSetRemove...
      d                 pr                  extproc('xmlXPtrLocationSetRemove')
      d cur                                 value like(xmlLocationSetPtr)
-     d val                           10i 0 value
+     d val                                 value like(xmlCint)
 
       * Functions.
 
@@ -142,7 +143,7 @@
      d xmlXPtrRangeToFunction...
      d                 pr                  extproc('xmlXPtrRangeToFunction')
      d ctxt                                value like(xmlXPathParserContextPtr)
-     d nargs                         10i 0 value
+     d nargs                               value like(xmlCint)
 
      d xmlXPtrBuildNodeList...
      d                 pr                  extproc('xmlXPtrBuildNodeList')

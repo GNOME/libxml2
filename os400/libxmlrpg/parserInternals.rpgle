@@ -11,6 +11,7 @@
       /define XML_PARSER_INTERNALS_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/parser"
       /include "libxmlrpg/HTMLparser"
       /include "libxmlrpg/chvalid"
@@ -94,8 +95,9 @@
 
       * Function to finish the work of the macros where needed.
 
-     d xmlIsLetter     pr            10i 0 extproc('xmlIsLetter')
-     d c                             10i 0 value
+     d xmlIsLetter     pr                  extproc('xmlIsLetter')
+     d                                     like(xmlCint)
+     d c                                   value like(xmlCint)
 
       * Parser context.
 
@@ -108,13 +110,13 @@
      d                 pr                  extproc('xmlCreateURLParserCtxt')
      d                                     like(xmlParserCtxtPtr)
      d filename                        *   value options(*string)               const char *
-     d options                       10i 0 value
+     d options                             value like(xmlCint)
 
      d xmlCreateMemoryParserCtxt...
      d                 pr                  extproc('xmlCreateMemoryParserCtxt')
      d                                     like(xmlParserCtxtPtr)
      d buffer                          *   value options(*string)               const char *
-     d size                          10i 0 value
+     d size                                value like(xmlCint)
 
      d xmlCreateEntityParserCtxt...
      d                 pr                  extproc('xmlCreateEntityParserCtxt')
@@ -124,17 +126,20 @@
      d base                            *   value options(*string)               const xmlChar *
 
      d xmlSwitchEncoding...
-     d                 pr            10i 0 extproc('xmlSwitchEncoding')
+     d                 pr                  extproc('xmlSwitchEncoding')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d enc                                 value like(xmlCharEncoding)
 
      d xmlSwitchToEncoding...
-     d                 pr            10i 0 extproc('xmlSwitchToEncoding')
+     d                 pr                  extproc('xmlSwitchToEncoding')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d handler                             value like(xmlCharEncodingHandlerPtr)
 
      d xmlSwitchInputEncoding...
-     d                 pr            10i 0 extproc('xmlSwitchInputEncoding')
+     d                 pr                  extproc('xmlSwitchInputEncoding')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d input                               value like(xmlParserInputPtr)
      d handler                             value like(xmlCharEncodingHandlerPtr)
@@ -153,7 +158,8 @@
      d ctxt                                value like(xmlParserCtxtPtr)
      d entity                              value like(xmlEntityPtr)
 
-     d xmlPushInput    pr            10i 0 extproc('xmlPushInput')
+     d xmlPushInput    pr                  extproc('xmlPushInput')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d input                               value like(xmlParserInputPtr)
 
@@ -212,13 +218,13 @@
      d xmlParseCharData...
      d                 pr                  extproc('xmlParseCharData')
      d ctxt                                value like(xmlParserCtxtPtr)
-     d cdata                         10i 0 value
+     d cdata                               value like(xmlCint)
 
      d xmlParseExternalID...
      d                 pr              *   extproc('xmlParseExternalID')        xmlChar *
      d ctxt                                value like(xmlParserCtxtPtr)
      d publicID                        *                                        xmlChar *(*)
-     d strict                        10i 0 value
+     d strict                              value like(xmlCint)
 
      d xmlParseComment...
      d                 pr                  extproc('xmlParseComment')
@@ -240,7 +246,8 @@
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlParseDefaultDecl...
-     d                 pr            10i 0 extproc('xmlParseDefaultDecl')
+     d                 pr                  extproc('xmlParseDefaultDecl')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d value                           *                                        xmlChar *(*)
 
@@ -255,12 +262,14 @@
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlParseEnumeratedType...
-     d                 pr            10i 0 extproc('xmlParseEnumeratedType')
+     d                 pr                  extproc('xmlParseEnumeratedType')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d tree                            *   value                                xmlEnumerationPtr *
 
      d xmlParseAttributeType...
-     d                 pr            10i 0 extproc('xmlParseAttributeType')
+     d                 pr                  extproc('xmlParseAttributeType')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d tree                            *   value                                xmlEnumerationPtr *
 
@@ -273,24 +282,26 @@
      d                                     'xmlParseElementMixedContentDecl')
      d                                     like(xmlElementContentPtr)
      d ctxt                                value like(xmlParserCtxtPtr)
-     d inputchk                      10i 0 value
+     d inputchk                            value like(xmlCint)
 
      d xmlParseElementChildrenContentDecl...
      d                 pr                  extproc(
      d                                     'xmlParseElementChildrenContentDecl')
      d                                     like(xmlElementContentPtr)
      d ctxt                                value like(xmlParserCtxtPtr)
-     d inputchk                      10i 0 value
+     d inputchk                            value like(xmlCint)
 
      d xmlParseElementContentDecl...
-     d                 pr            10i 0 extproc('xmlParseElementContentDecl')
+     d                 pr                  extproc('xmlParseElementContentDecl')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d name                            *   value options(*string)               const xmlChar *
      d result                          *   value                                xmlElementContentPtr
      d                                                                          *
 
      d xmlParseElementDecl...
-     d                 pr            10i 0 extproc('xmlParseElementDecl')
+     d                 pr                  extproc('xmlParseElementDecl')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlParseMarkupDecl...
@@ -298,7 +309,8 @@
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlParseCharRef...
-     d                 pr            10i 0 extproc('xmlParseCharRef')
+     d                 pr                  extproc('xmlParseCharRef')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlParseEntityRef...
@@ -359,7 +371,8 @@
      d                 pr              *   extproc('xmlParseEncodingDecl')      const xmlChar *
      d ctxt                                value like(xmlParserCtxtPtr)
 
-     d xmlParseSDDecl  pr            10i 0 extproc('xmlParseSDDecl')
+     d xmlParseSDDecl  pr                  extproc('xmlParseSDDecl')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlParseXMLDecl...
@@ -411,7 +424,7 @@
      d                 pr              *   extproc('xmlStringDecodeEntities')   xmlChar *
      d ctxt                                value like(xmlParserCtxtPtr)
      d str                             *   value options(*string)               const xmlChar *
-     d what                          10i 0 value
+     d what                                value like(xmlCint)
      d end                                 value like(xmlChar)
      d end2                                value like(xmlChar)
      d end3                                value like(xmlChar)
@@ -420,15 +433,16 @@
      d                 pr              *   extproc('xmlStringLenDecodeEntities')xmlChar *
      d ctxt                                value like(xmlParserCtxtPtr)
      d str                             *   value options(*string)               const xmlChar *
-     d len                           10i 0 value
-     d what                          10i 0 value
+     d len                                 value like(xmlCint)
+     d what                                value like(xmlCint)
      d end                                 value like(xmlChar)
      d end2                                value like(xmlChar)
      d end3                                value like(xmlChar)
 
       * Generated by MACROS on top of parser.c c.f. PUSH_AND_POP.
 
-     d nodePush        pr            10i 0 extproc('nodePush')
+     d nodePush        pr                  extproc('nodePush')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d value                               value like(xmlNodePtr)
 
@@ -436,7 +450,8 @@
      d                                     like(xmlNodePtr)
      d ctxt                                value like(xmlParserCtxtPtr)
 
-     d inputPush       pr            10i 0 extproc('inputPush')
+     d inputPush       pr                  extproc('inputPush')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d value                               value like(xmlParserInputPtr)
 
@@ -447,18 +462,21 @@
      d namePop         pr              *   extproc('namePop')                   const xmlChar *
      d ctxt                                value like(xmlParserCtxtPtr)
 
-     d namePush        pr            10i 0 extproc('namePush')
+     d namePush        pr                  extproc('namePush')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d value                           *   value options(*string)               const xmlChar *
 
       * other commodities shared between parser.c and parserInternals.
 
      d xmlSkipBlankChars...
-     d                 pr            10i 0 extproc('xmlSkipBlankChars')
+     d                 pr                  extproc('xmlSkipBlankChars')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlStringCurrentChar...
-     d                 pr            10i 0 extproc('xmlStringCurrentChar')
+     d                 pr                  extproc('xmlStringCurrentChar')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d cur                             *   value options(*string)               const xmlChar *
      d len                             *   value                                int *
@@ -468,24 +486,28 @@
      d ctxt                                value like(xmlParserCtxtPtr)
 
      d xmlCheckLanguageID...
-     d                 pr            10i 0 extproc('xmlCheckLanguageID')
+     d                 pr                  extproc('xmlCheckLanguageID')
+     d                                     like(xmlCint)
      d lang                            *   value options(*string)               const xmlChar *
 
       * Really core function shared with HTML parser.
 
-     d xmlCurrentChar  pr            10i 0 extproc('xmlCurrentChar')
+     d xmlCurrentChar  pr                  extproc('xmlCurrentChar')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlParserCtxtPtr)
      d len                             *   value                                int *
 
      d xmlCopyCharMultiByte...
-     d                 pr            10i 0 extproc('xmlCopyCharMultiByte')
+     d                 pr                  extproc('xmlCopyCharMultiByte')
+     d                                     like(xmlCint)
      d out                             *   value options(*string)               xmlChar *
-     d val                           10i 0 value
+     d val                                 value like(xmlCint)
 
-     d xmlCopyChar     pr            10i 0 extproc('xmlCopyChar')
-     d len                           10i 0 value
+     d xmlCopyChar     pr                  extproc('xmlCopyChar')
+     d                                     like(xmlCint)
+     d len                                 value like(xmlCint)
      d out                             *   value options(*string)               xmlChar *
-     d val                           10i 0 value
+     d val                                 value like(xmlCint)
 
      d xmlNextChar     pr                  extproc('xmlNextChar')
      d ctxt                                value like(xmlParserCtxtPtr)
@@ -561,8 +583,8 @@
      d xmlDecodeEntities...
      d                 pr              *   extproc('xmlDecodeEntities')         xmlChar *
      d ctxt                                value like(xmlParserCtxtPtr)
-     d len                           10i 0 value
-     d what                          10i 0 value
+     d len                                 value like(xmlCint)
+     d what                                value like(xmlCint)
      d end                                 value like(xmlChar)
      d end2                                value like(xmlChar)
      d end3                                value like(xmlChar)

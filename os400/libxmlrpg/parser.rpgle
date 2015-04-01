@@ -53,9 +53,9 @@
      d  base                           *                                        const char *
      d  cur                            *                                        const char *
      d  end                            *                                        const char *
-     d  length                       10i 0                                      Length if known
-     d  line                         10i 0                                      Current line
-     d  col                          10i 0                                      Current column
+     d  length                             like(xmlCint)                        Length if known
+     d  line                               like(xmlCint)                        Current line
+     d  col                                like(xmlCint)                        Current column
       *
       * NOTE: consumed is only tested for equality in the parser code,
       *       so even if there is an overflow this should not give troubles
@@ -65,8 +65,8 @@
      d  free                               like(xmlParserInputDeallocate)       base deallocator
      d  encoding                       *                                        const xmlChar *
      d  version                        *                                        const xmlChar *
-     d  standalone                   10i 0                                      Standalone entity ?
-     d  id                           10i 0                                      Entity unique ID
+     d  standalone                         like(xmlCint)                        Standalone entity ?
+     d  id                                 like(xmlCint)                        Entity unique ID
 
       * xmlParserNodeInfo:
       *
@@ -201,59 +201,59 @@
      d  sax                                like(xmlSAXHandlerPtr)               The SAX handler
      d  userData                       *                                        SAX only-4 DOM build
      d  myDoc                              like(xmlDocPtr)                      Document being built
-     d  wellFormed                   10i 0                                      Well formed doc ?
+     d  wellFormed                         like(xmlCint)                        Well formed doc ?
      d  replaceEntities...                                                      Replace entities ?
-     d                               10i 0
+     d                                     like(xmlCint)
      d  version                        *                                        const xmlChar *
      d  encoding                       *                                        const xmlChar *
-     d  standalone                   10i 0                                      Standalone document
-     d  html                         10i 0                                      HTML state/type
+     d  standalone                         like(xmlCint)                        Standalone document
+     d  html                               like(xmlCint)                        HTML state/type
       *
       * Input stream stack
       *
      d  input                              like(xmlParserInputPtr)              Current input stream
-     d  inputNr                      10i 0                                      # current in streams
-     d  inputMax                     10i 0                                      Max # of in streams
+     d  inputNr                            like(xmlCint)                        # current in streams
+     d  inputMax                           like(xmlCint)                        Max # of in streams
      d  inputTab                       *                                        xmlParserInputPtr *
       *
       * Node analysis stack only used for DOM building
       *
      d  node                               like(xmlNodePtr)                     Current parsed node
-     d  nodeNr                       10i 0                                      Parsing stack depth
-     d  nodeMax                      10i 0                                      Max stack depth
+     d  nodeNr                             like(xmlCint)                        Parsing stack depth
+     d  nodeMax                            like(xmlCint)                        Max stack depth
      d  nodeTab                        *                                        xmlNodePtr *
       *
-     d  record_info                  10i 0                                      Keep node info ?
+     d  record_info                        like(xmlCint)                        Keep node info ?
      d  node_seq                           likeds(xmlParserNodeInfoSeq)         Parsed nodes info
       *
-     d  errNo                        10i 0                                      Error code
+     d  errNo                              like(xmlCint)                        Error code
       *
      d  hasExternalSubset...
-     d                               10i 0
-     d  hasPErefs                    10i 0
-     d  external                     10i 0                                      Parsing ext. entity?
+     d                                     like(xmlCint)
+     d  hasPErefs                          like(xmlCint)
+     d  external                           like(xmlCint)                        Parsing ext. entity?
       *
-     d  valid                        10i 0                                      Valid document ?
-     d  validate                     10i 0                                      Try to validate ?
+     d  valid                              like(xmlCint)                        Valid document ?
+     d  validate                           like(xmlCint)                        Try to validate ?
      d  vctxt                              likeds(xmlValidCtxt)                 Validity context
       *
      d  instate                            like(xmlParserInputState)            Current input type
-     d  token                        10i 0                                      Next look-ahead char
+     d  token                              like(xmlCint)                        Next look-ahead char
       *
      d  directory                      *                                        char *
       *
       * Node name stack
       *
      d  name                           *                                        const xmlChar *
-     d  nameNr                       10i 0                                      Parsing stack depth
-     d  nameMax                      10i 0                                      Max stack depth
+     d  nameNr                             like(xmlCint)                        Parsing stack depth
+     d  nameMax                            like(xmlCint)                        Max stack depth
      d  nameTab                        *                                        const xmlChar * *
       *
      d  nbChars                            like(xmlClong)                       # xmlChars processed
      d  checkIndex                         like(xmlClong)                       4 progressive parse
-     d  keepBlanks                   10i 0                                      Ugly but ...
-     d  disableSAX                   10i 0                                      Disable SAX cllbacks
-     d  inSubset                     10i 0                                      In int 1/ext 2 sbset
+     d  keepBlanks                         like(xmlCint)                        Ugly but ...
+     d  disableSAX                         like(xmlCint)                        Disable SAX cllbacks
+     d  inSubset                           like(xmlCint)                        In int 1/ext 2 sbset
      d  intSubName                     *                                        const xmlChar *
      d  extSubURI                      *                                        const xmlChar *
      d  extSubSytem                    *                                        const xmlChar *
@@ -261,27 +261,27 @@
       * xml:space values
       *
      d  space                          *                                        int *
-     d  spaceNr                      10i 0                                      Parsing stack depth
-     d  spaceMax                     10i 0                                      Max stack depth
+     d  spaceNr                            like(xmlCint)                        Parsing stack depth
+     d  spaceMax                           like(xmlCint)                        Max stack depth
      d  spaceTab                       *                                        int *
       *
-     d  depth                        10i 0                                      To detect loops
+     d  depth                              like(xmlCint)                        To detect loops
      d  entity                             like(xmlParserInputPtr)              To check boundaries
-     d  charset                      10i 0                                      In-memory content
-     d  nodelen                      10i 0                                      Speed up parsing
-     d  nodemem                      10i 0                                      Speed up parsing
-     d  pedantic                     10i 0                                      Enb. pedantic warng
+     d  charset                            like(xmlCint)                        In-memory content
+     d  nodelen                            like(xmlCint)                        Speed up parsing
+     d  nodemem                            like(xmlCint)                        Speed up parsing
+     d  pedantic                           like(xmlCint)                        Enb. pedantic warng
      d  #private                       *                                        void *
       *
-     d  loadsubset                   10i 0                                      Load ext. subset ?
-     d  linenumbers                  10i 0                                      Set line numbers ?
+     d  loadsubset                         like(xmlCint)                        Load ext. subset ?
+     d  linenumbers                        like(xmlCint)                        Set line numbers ?
      d  catalogs                       *                                        void *
-     d  recovery                     10i 0                                      Run in recovery mode
-     d  progressive                  10i 0                                      Progressive parsing?
+     d  recovery                           like(xmlCint)                        Run in recovery mode
+     d  progressive                        like(xmlCint)                        Progressive parsing?
      d  dict                               like(xmlDictPtr)                     Parser dictionary
      d  atts                           *                                        const xmlChar *
-     d  maxatts                      10i 0                                      Above array size
-     d  docdict                      10i 0                                      Use dictionary ?
+     d  maxatts                            like(xmlCint)                        Above array size
+     d  docdict                            like(xmlCint)                        Use dictionary ?
       *
       * pre-interned strings
       *
@@ -291,23 +291,23 @@
       *
       * Everything below is used only by the new SAX mode
       *
-     d  sax2                         10i 0                                      New SAX mode ?
-     d  nsNr                         10i 0                                      # inherited nmspaces
-     d  nsMax                        10i 0                                      Array size
+     d  sax2                               like(xmlCint)                        New SAX mode ?
+     d  nsNr                               like(xmlCint)                        # inherited nmspaces
+     d  nsMax                              like(xmlCint)                        Array size
      d  nsTab                          *                                        const xmlChar *
      d  attallocs                      *                                        int *
      d  pushTab                        *                                        void *
      d  attsDefault                        like(xmlHashTablePtr)                Defaulted attrs
      d  attsSpecial                        like(xmlHashTablePtr)                non-CDATA attrs
-     d  nsWellFormed                 10i 0                                      Doc namespace OK ?
-     d  options                      10i 0                                      Extra options
+     d  nsWellFormed                       like(xmlCint)                        Doc namespace OK ?
+     d  options                            like(xmlCint)                        Extra options
       *
       * Those fields are needed only for treaming parsing so far
       *
-     d  dictNames                    10i 0                                      Dict names in tree ?
-     d  freeElemsNr                  10i 0                                      # free element nodes
+     d  dictNames                          like(xmlCint)                        Dict names in tree ?
+     d  freeElemsNr                        like(xmlCint)                        # free element nodes
      d  freeElems                          like(xmlNodePtr)                     Free elem nodes list
-     d  freeAttrsNr                  10i 0                                      # free attr. nodes
+     d  freeAttrsNr                        like(xmlCint)                        # free attr. nodes
      d  freeAttrs                          like(xmlAttrPtr)                     Free attr noes list
       *
       * the complete error informations for the last error.
@@ -320,11 +320,11 @@
       * for use by HTML non-recursive parser
       *
      d  nodeInfo                           like(xmlParserNodeInfoPtr)           Current NodeInfo
-     d  nodeInfoNr                   10i 0                                      Parsing stack depth
-     d  nodeInfoMax                  10i 0                                      Max stack depth
+     d  nodeInfoNr                         like(xmlCint)                        Parsing stack depth
+     d  nodeInfoMax                        like(xmlCint)                        Max stack depth
      d  nodeInfoTab                    *                                        xmlParserNodeInfo *
       *
-     d  input_id                     10i 0                                      Label inputs ?
+     d  input_id                           like(xmlCint)                        Label inputs ?
      d  sizeentcopy                        like(xmlCulong)                      Entity copy volume
 
       * xmlSAXLocator:
@@ -841,14 +841,16 @@
       * Input functions
 
      d xmlParserInputRead...
-     d                 pr            10i 0 extproc('xmlParserInputRead')
+     d                 pr                  extproc('xmlParserInputRead')
+     d                                     like(xmlCint)
      d  in                                 value like(xmlParserInputPtr)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
      d xmlParserInputGrow...
-     d                 pr            10i 0 extproc('xmlParserInputGrow')
+     d                 pr                  extproc('xmlParserInputGrow')
+     d                                     like(xmlCint)
      d  in                                 value like(xmlParserInputPtr)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
       * Basic parsing Interfaces
 
@@ -864,28 +866,32 @@
      d xmlParseMemory  pr                  extproc('xmlParseMemory')
      d                                     like(xmlDocPtr)
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
       /endif                                                                    LIBXML_SAX1_ENABLED
 
      d xmlSubstituteEntitiesDefault...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                      'xmlSubstituteEntitiesDefault')
-     d  val                          10i 0 value
+     d                                     like(xmlCint)
+     d  val                                value like(xmlCint)
 
      d xmlKeepBlanksDefault...
-     d                 pr            10i 0 extproc('xmlKeepBlanksDefault')
-     d  val                          10i 0 value
+     d                 pr                  extproc('xmlKeepBlanksDefault')
+     d                                     like(xmlCint)
+     d  val                                value like(xmlCint)
 
      d xmlStopParser   pr                  extproc('xmlStopParser')
      d  ctxt                               value like(xmlParserCtxtPtr)
 
      d xmlPedanticParserDefault...
-     d                 pr            10i 0 extproc('xmlPedanticParserDefault')
-     d  val                          10i 0 value
+     d                 pr                  extproc('xmlPedanticParserDefault')
+     d                                     like(xmlCint)
+     d  val                                value like(xmlCint)
 
      d xmlLineNumbersDefault...
-     d                 pr            10i 0 extproc('xmlLineNumbersDefault')
-     d  val                          10i 0 value
+     d                 pr                  extproc('xmlLineNumbersDefault')
+     d                                     like(xmlCint)
+     d  val                                value like(xmlCint)
 
       /if defined(LIBXML_SAX1_ENABLED)
       * Recovery mode
@@ -898,7 +904,7 @@
      d                 pr                  extproc('xmlRecoverMemory')
      d                                     like(xmlDocPtr)
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
 
      d xmlRecoverFile  pr                  extproc('xmlRecoverFile')
      d                                     like(xmlDocPtr)
@@ -908,48 +914,52 @@
       * Less common routines and SAX interfaces
 
      d xmlParseDocument...
-     d                 pr            10i 0 extproc('xmlParseDocument')
+     d                 pr                  extproc('xmlParseDocument')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
 
      d xmlParseExtParsedEnt...
-     d                 pr            10i 0 extproc('xmlParseExtParsedEnt')
+     d                 pr                  extproc('xmlParseExtParsedEnt')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
 
       /if defined(LIBXML_SAX1_ENABLED)
      d xmlSAXUserParseFile...
-     d                 pr            10i 0 extproc('xmlSAXUserParseFile')
+     d                 pr                  extproc('xmlSAXUserParseFile')
+     d                                     like(xmlCint)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  user_data                      *   value                                void *
      d  filename                       *   value options(*string)               const char *
 
      d xmlSAXUserParseMemory...
-     d                 pr            10i 0 extproc('xmlSAXUserParseMemory')
+     d                 pr                  extproc('xmlSAXUserParseMemory')
+     d                                     like(xmlCint)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  user_data                      *   value                                void *
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
 
      d xmlSAXParseDoc  pr                  extproc('xmlSAXParseDoc')
      d                                     like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  cur                            *   value options(*string)               const xmlChar *
-     d  recovery                     10i 0 value
+     d  recovery                           value like(xmlCint)
 
      d xmlSAXParseMemory...
      d                 pr                  extproc('xmlSAXParseMemory')
      d                                     like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
-     d  recovery                     10i 0 value
+     d  size                               value like(xmlCint)
+     d  recovery                           value like(xmlCint)
 
      d xmlSAXParseMemoryWithData...
      d                 pr                  extproc('xmlSAXParseMemoryWithData')
      d                                     like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
-     d  recovery                     10i 0 value
+     d  size                               value like(xmlCint)
+     d  recovery                           value like(xmlCint)
      d  data                           *   value                                void *
 
      d xmlSAXParseFile...
@@ -957,14 +967,14 @@
      d                                     like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  filename                       *   value options(*string)               const char *
-     d  recovery                     10i 0 value
+     d  recovery                           value like(xmlCint)
 
      d xmlSAXParseFileWithData...
      d                 pr                  extproc('xmlSAXParseFileWithData')
      d                                     like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  filename                       *   value options(*string)               const char *
-     d  recovery                     10i 0 value
+     d  recovery                           value like(xmlCint)
      d  data                           *   value                                void *
 
      d xmlSAXParseEntity...
@@ -1000,12 +1010,13 @@
 
       /if defined(LIBXML_SAX1_ENABLED)
      d xmlParseBalancedChunkMemory...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                      'xmlParseBalancedChunkMemory')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  user_data                      *   value                                void *
-     d  depth                        10i 0 value
+     d  depth                              value like(xmlCint)
      d  user_data                      *   value                                void *
      d  string                         *   value options(*string)               const xmlChar *
      d  lst                            *   value                                xmlNodePtr *
@@ -1016,35 +1027,38 @@
      d                                     like(xmlParserErrors)
      d  node                               value like(xmlNodePtr)
      d  data                           *   value options(*string)               const char *
-     d  datalen                      10i 0 value
-     d  options                      10i 0 value
+     d  datalen                            value like(xmlCint)
+     d  options                            value like(xmlCint)
      d  lst                            *   value                                xmlNodePtr *
 
       /if defined(LIBXML_SAX1_ENABLED)
      d xmlParseBalancedChunkMemoryRecover...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                     'xmlParseBalancedChunkMemoryRecover')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  user_data                      *   value                                void *
-     d  depth                        10i 0 value
+     d  depth                              value like(xmlCint)
      d  string                         *   value options(*string)               const xmlChar *
      d  lst                            *   value                                xmlNodePtr *
-     d  recover                      10i 0 value
+     d  recover                            value like(xmlCint)
 
      d xmlParseExternalEntity...
-     d                 pr            10i 0 extproc('xmlParseExternalEntity')
+     d                 pr                  extproc('xmlParseExternalEntity')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  user_data                      *   value                                void *
-     d  depth                        10i 0 value
+     d  depth                              value like(xmlCint)
      d  URL                            *   value options(*string)               const xmlChar *
      d  ID                             *   value options(*string)               const xmlChar *
      d  lst                            *   value                                xmlNodePtr *
       /endif                                                                    LIBXML_SAX1_ENABLED
 
      d xmlParseCtxtExternalEntity...
-     d                 pr            10i 0 extproc('xmlParseCtxtExternalEntity')
+     d                 pr                  extproc('xmlParseCtxtExternalEntity')
+     d                                     like(xmlCint)
      d  sax                                value like(xmlSAXHandlerPtr)
      d  URL                            *   value options(*string)               const xmlChar *
      d  ID                             *   value options(*string)               const xmlChar *
@@ -1057,7 +1071,8 @@
      d                                     like(xmlParserCtxtPtr)
 
      d xmlInitParserCtxt...
-     d                 pr            10i 0 extproc('xmlInitParserCtxt')
+     d                 pr                  extproc('xmlInitParserCtxt')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
 
      d xmlClearParserCtxt...
@@ -1085,16 +1100,19 @@
       * Reading/setting optional parsing features.
 
      d xmlGetFeaturesList...
-     d                 pr            10i 0 extproc('xmlGetFeaturesList')
-     d  len                          10i 0
+     d                 pr                  extproc('xmlGetFeaturesList')
+     d                                     like(xmlCint)
+     d  len                                like(xmlCint)
      d  result                         *                                        const char *(*)
 
-     d xmlGetFeature   pr            10i 0 extproc('xmlGetFeature')
+     d xmlGetFeature   pr                  extproc('xmlGetFeature')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
      d  name                           *   value options(*string)               const char *
      d  result                         *   value                                void *
 
-     d xmlSetFeature   pr            10i 0 extproc('xmlSetFeature')
+     d xmlSetFeature   pr                  extproc('xmlSetFeature')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
      d  name                           *   value options(*string)               const char *
      d  result                         *   value                                void *
@@ -1109,14 +1127,15 @@
      d  sax                                value like(xmlSAXHandlerPtr)
      d  user_data                      *   value                                void *
      d  chunk                          *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  filename                       *   value options(*string)               const char *
 
-     d xmlParseChunk   pr            10i 0 extproc('xmlParseChunk')
+     d xmlParseChunk   pr                  extproc('xmlParseChunk')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
      d  chunk                          *   value options(*string)               const char *
-     d  size                         10i 0 value
-     d  terminate                    10i 0 value
+     d  size                               value like(xmlCint)
+     d  terminate                          value like(xmlCint)
       /endif                                                                    LIBXML_PUSH_ENABLED
 
       * Special I/O mode.
@@ -1249,45 +1268,47 @@
      d  ctxt                               value like(xmlParserCtxtPtr)
 
      d xmlCtxtResetPush...
-     d                 pr            10i 0 extproc('xmlCtxtResetPush')
+     d                 pr                  extproc('xmlCtxtResetPush')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
      d  chunk                          *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  filename                       *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
 
      d xmlCtxtUseOptions...
-     d                 pr            10i 0 extproc('xmlCtxtUseOptions')
+     d                 pr                  extproc('xmlCtxtUseOptions')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlParserCtxtPtr)
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlReadDoc      pr                  extproc('xmlReadDoc')
      d                                     like(xmlDocPtr)
      d  cur                            *   value options(*string)               const xmlChar *
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlReadFile     pr                  extproc('xmlReadFile')
      d                                     like(xmlDocPtr)
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlReadMemory   pr                  extproc('xmlReadMemory')
      d                                     like(xmlDocPtr)
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlReadFd       pr                  extproc('xmlReadFd')
      d                                     like(xmlDocPtr)
-     d  fd                           10i 0 value
+     d  fd                                 value like(xmlCint)
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlReadIO       pr                  extproc('xmlReadIO')
      d                                     like(xmlDocPtr)
@@ -1296,7 +1317,7 @@
      d  ioctx                          *   value                                void *
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlCtxtReadDoc  pr                  extproc('xmlCtxtReadDoc')
      d                                     like(xmlDocPtr)
@@ -1304,7 +1325,7 @@
      d  cur                            *   value options(*string)               const xmlChar *
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlCtxtReadFile...
      d                 pr                  extproc('xmlCtxtReadFile')
@@ -1312,25 +1333,25 @@
      d  ctxt                               value like(xmlParserCtxtPtr)
      d  filename                       *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlCtxtReadMemory...
      d                 pr                  extproc('xmlCtxtReadMemory')
      d                                     like(xmlDocPtr)
      d  ctxt                               value like(xmlParserCtxtPtr)
      d  buffer                         *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlCtxtReadFd   pr                  extproc('xmlCtxtReadFd')
      d                                     like(xmlDocPtr)
      d  ctxt                               value like(xmlParserCtxtPtr)
-     d  fd                           10i 0 value
+     d  fd                                 value like(xmlCint)
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlCtxtReadIO   pr                  extproc('xmlCtxtReadIO')
      d                                     like(xmlDocPtr)
@@ -1340,7 +1361,7 @@
      d  ioctx                          *   value                                void *
      d  URL                            *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
       * Library wide options
 
@@ -1408,7 +1429,8 @@
      d  XML_WITH_LZMA  c                   33
      d  XML_WITH_NONE  c                   99999
 
-     d xmlHasFeature   pr            10i 0 extproc('xmlHasFeature')
+     d xmlHasFeature   pr                  extproc('xmlHasFeature')
+     d                                     like(xmlCint)
      d  feature                            value like(xmlFeature)
 
       /endif                                                                    XML_PARSER_H__

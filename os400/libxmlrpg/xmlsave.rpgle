@@ -45,23 +45,23 @@
 
      d xmlSaveToFd     pr                  extproc('xmlSaveToFd')
      d                                     like(xmlSaveCtxtPtr)
-     d  fd                           10i 0 value
+     d  fd                                 value like(xmlCint)
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlSaveToFilename...
      d                 pr                  extproc('xmlSaveToFilename')
      d                                     like(xmlSaveCtxtPtr)
      d  filename                       *   value options(*string)               const char *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlSaveToBuffer...
      d                 pr                  extproc('xmlSaveToBuffer')
      d                                     like(xmlSaveCtxtPtr)
      d  buffer                             value like(xmlBufferPtr)
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlSaveToIO     pr                  extproc('xmlSaveToIO')
      d                                     like(xmlSaveCtxtPtr)
@@ -69,7 +69,7 @@
      d  ioclose                            value like(xmlOutputCloseCallback)
      d  ioctx                          *   value                                void *
      d  encoding                       *   value options(*string)               const char *
-     d  options                      10i 0 value
+     d  options                            value like(xmlCint)
 
      d xmlSaveDoc      pr                  extproc('xmlSaveDoc')
      d                                     like(xmlClong)
@@ -81,19 +81,23 @@
      d  ctxt                               value like(xmlSaveCtxtPtr)
      d  node                               value like(xmlNodePtr)
 
-     d xmlSaveFlush    pr            10i 0 extproc('xmlSaveFlush')
+     d xmlSaveFlush    pr                  extproc('xmlSaveFlush')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlSaveCtxtPtr)
 
-     d xmlSaveClose    pr            10i 0 extproc('xmlSaveClose')
+     d xmlSaveClose    pr                  extproc('xmlSaveClose')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlSaveCtxtPtr)
 
      d xmlSaveSetEscape...
-     d                 pr            10i 0 extproc('xmlSaveSetEscape')
+     d                 pr                  extproc('xmlSaveSetEscape')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlSaveCtxtPtr)
      d  escape                             value like(xmlCharEncodingOutputFunc)
 
      d xmlSaveSetAttrEscape...
-     d                 pr            10i 0 extproc('xmlSaveSetAttrEscape')
+     d                 pr                  extproc('xmlSaveSetAttrEscape')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlSaveCtxtPtr)
      d  escape                             value like(xmlCharEncodingOutputFunc)
 

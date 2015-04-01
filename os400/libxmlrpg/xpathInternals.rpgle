@@ -11,9 +11,11 @@
       /define XML_XPATH_INTERNALS_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/xpath"
 
       /if defined(LIBXML_XPATH_ENABLED)
+
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/xpath"
 
       ************************************************************************
       *                                                                      *
@@ -25,7 +27,8 @@
       * shouldn't be used in #ifdef's preprocessor instructions.
 
      d xmlXPathPopBoolean...
-     d                 pr            10i 0 extproc('xmlXPathPopBoolean')
+     d                 pr                  extproc('xmlXPathPopBoolean')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
      d xmlXPathPopNumber...
@@ -71,31 +74,32 @@
      d                 pr                  extproc('xmlXPatherror')
      d  ctxt                               value like(xmlXPathParserContextPtr)
      d  file                           *   value options(*string)               const char *
-     d  line                         10i 0 value
-     d  no                           10i 0 value
+     d  line                               value like(xmlCint)
+     d  no                                 value like(xmlCint)
 
      d xmlXPathErr     pr                  extproc('xmlXPathErr')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  error                        10i 0 value
+     d  error                              value like(xmlCint)
 
       /if defined(LIBXML_DEBUG_ENABLED)
      d xmlXPathDebugDumpObject...
      d                 pr                  extproc('xmlXPathDebugDumpObject')
      d  output                         *   value                                FILE *
      d  cur                                value like(xmlXPathObjectPtr)
-     d  depth                        10i 0 value
+     d  depth                              value like(xmlCint)
 
      d xmlXPathDebugDumpCompExpr...
      d                 pr                  extproc('xmlXPathDebugDumpCompExpr')
      d  output                         *   value                                FILE *
      d  comp                               value like(xmlXPathCompExprPtr)
-     d  depth                        10i 0 value
+     d  depth                              value like(xmlCint)
       /endif
 
       * NodeSet handling.
 
      d xmlXPathNodeSetContains...
-     d                 pr            10i 0 extproc('xmlXPathNodeSetContains')
+     d                 pr                  extproc('xmlXPathNodeSetContains')
+     d                                     like(xmlCint)
      d  cur                                value like(xmlNodeSetPtr)
      d  val                                value like(xmlNodePtr)
 
@@ -122,7 +126,8 @@
      d  nodes                              value like(xmlNodeSetPtr)
 
      d xmlXPathHasSameNodes...
-     d                 pr            10i 0 extproc('xmlXPathHasSameNodes')
+     d                 pr                  extproc('xmlXPathHasSameNodes')
+     d                                     like(xmlCint)
      d  nodes1                             value like(xmlNodeSetPtr)
      d  nodes2                             value like(xmlNodeSetPtr)
 
@@ -177,7 +182,8 @@
       * Extending a context.
 
      d xmlXPathRegisterNs...
-     d                 pr            10i 0 extproc('xmlXPathRegisterNs')
+     d                 pr                  extproc('xmlXPathRegisterNs')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathContextPtr)
      d  prefix                         *   value options(*string)               const xmlChar *
      d  ns_uri                         *   value options(*string)               const xmlChar *
@@ -193,26 +199,30 @@
      d  ctxt                               value like(xmlXPathContextPtr)
 
      d xmlXPathRegisterFunc...
-     d                 pr            10i 0 extproc('xmlXPathRegisterFunc')
+     d                 pr                  extproc('xmlXPathRegisterFunc')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathContextPtr)
      d  name                           *   value options(*string)               const xmlChar *
      d  f                                  value like(xmlXPathFunction)
 
      d xmlXPathRegisterFuncNS...
-     d                 pr            10i 0 extproc('xmlXPathRegisterFuncNS')
+     d                 pr                  extproc('xmlXPathRegisterFuncNS')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathContextPtr)
      d  name                           *   value options(*string)               const xmlChar *
      d  ns_uri                         *   value options(*string)               const xmlChar *
      d  f                                  value like(xmlXPathFunction)
 
      d xmlXPathRegisterVariable...
-     d                 pr            10i 0 extproc('xmlXPathRegisterVariable')
+     d                 pr                  extproc('xmlXPathRegisterVariable')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathContextPtr)
      d  name                           *   value options(*string)               const xmlChar *
      d  value                              value like(xmlXPathObjectPtr)
 
      d xmlXPathRegisterVariableNS...
-     d                 pr            10i 0 extproc('xmlXPathRegisterVariableNS')
+     d                 pr                  extproc('xmlXPathRegisterVariableNS')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathContextPtr)
      d  name                           *   value options(*string)               const xmlChar *
      d  ns_uri                         *   value options(*string)               const xmlChar *
@@ -273,7 +283,8 @@
      d                                     like(xmlXPathObjectPtr)
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
-     d valuePush       pr            10i 0 extproc('valuePush')
+     d valuePush       pr                  extproc('valuePush')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathParserContextPtr)
      d  value                              value like(xmlXPathObjectPtr)
 
@@ -305,7 +316,7 @@
      d xmlXPathNewBoolean...
      d                 pr                  extproc('xmlXPathNewBoolean')
      d                                     like(xmlXPathObjectPtr)
-     d  val                          10i 0 value
+     d  val                                value like(xmlCint)
 
      d xmlXPathNewNodeSet...
      d                 pr                  extproc('xmlXPathNewNodeSet')
@@ -318,17 +329,20 @@
      d  val                                value like(xmlNodePtr)
 
      d xmlXPathNodeSetAdd...
-     d                 pr            10i 0 extproc('xmlXPathNodeSetAdd')
+     d                 pr                  extproc('xmlXPathNodeSetAdd')
+     d                                     like(xmlCint)
      d  cur                                value like(xmlNodeSetPtr)
      d  val                                value like(xmlNodePtr)
 
      d xmlXPathNodeSetAddUnique...
-     d                 pr            10i 0 extproc('xmlXPathNodeSetAddUnique')
+     d                 pr                  extproc('xmlXPathNodeSetAddUnique')
+     d                                     like(xmlCint)
      d  cur                                value like(xmlNodeSetPtr)
      d  val                                value like(xmlNodePtr)
 
      d xmlXPathNodeSetAddNs...
-     d                 pr            10i 0 extproc('xmlXPathNodeSetAddNs')
+     d                 pr                  extproc('xmlXPathNodeSetAddNs')
+     d                                     like(xmlCint)
      d  cur                                value like(xmlNodeSetPtr)
      d  node                               value like(xmlNodePtr)
      d  ns                                 value like(xmlNsPtr)
@@ -359,8 +373,9 @@
      d  str                            *   value options(*string)               const xmlChar *
 
      d xmlXPathEvaluatePredicateResult...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                     'xmlXPathEvaluatePredicateResult')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathParserContextPtr)
      d  res                                value like(xmlXPathObjectPtr)
 
@@ -383,7 +398,7 @@
      d xmlXPathNodeSetRemove...
      d                 pr                  extproc('xmlXPathNodeSetRemove')
      d  cur                                value like(xmlNodeSetPtr)
-     d  val                          10i 0 value
+     d  val                                value like(xmlCint)
 
      d xmlXPathNewNodeSetList...
      d                 pr                  extproc('xmlXPathNewNodeSetList')
@@ -401,18 +416,21 @@
      d  val                            *   value                                void *
 
      d xmlXPathEqualValues...
-     d                 pr            10i 0 extproc('xmlXPathEqualValues')
+     d                 pr                  extproc('xmlXPathEqualValues')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
      d xmlXPathNotEqualValues...
-     d                 pr            10i 0 extproc('xmlXPathNotEqualValues')
+     d                 pr                  extproc('xmlXPathNotEqualValues')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
      d xmlXPathCompareValues...
-     d                 pr            10i 0 extproc('xmlXPathCompareValues')
+     d                 pr                  extproc('xmlXPathCompareValues')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  inf                          10i 0 value
-     d  strict                       10i 0 value
+     d  inf                                value like(xmlCint)
+     d  strict                             value like(xmlCint)
 
      d xmlXPathValueFlipSign...
      d                 pr                  extproc('xmlXPathValueFlipSign')
@@ -439,7 +457,8 @@
      d  ctxt                               value like(xmlXPathParserContextPtr)
 
      d xmlXPathIsNodeType...
-     d                 pr            10i 0 extproc('xmlXPathIsNodeType')
+     d                 pr                  extproc('xmlXPathIsNodeType')
+     d                                     like(xmlCint)
      d  name                           *   value options(*string)               const xmlChar *
 
       * Some of the axis navigation routines.
@@ -530,137 +549,137 @@
      d xmlXPathLastFunction...
      d                 pr                  extproc('xmlXPathLastFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathPositionFunction...
      d                 pr                  extproc('xmlXPathPositionFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathCountFunction...
      d                 pr                  extproc('xmlXPathCountFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathIdFunction...
      d                 pr                  extproc('xmlXPathIdFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathLocalNameFunction...
      d                 pr                  extproc('xmlXPathLocalNameFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathNamespaceURIFunction...
      d                 pr                  extproc(
      d                                     'xmlXPathNamespaceURIFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathStringFunction...
      d                 pr                  extproc('xmlXPathStringFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathStringLengthFunction...
      d                 pr                  extproc(
      d                                     'xmlXPathStringLengthFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathConcatFunction...
      d                 pr                  extproc('xmlXPathConcatFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathContainsFunction...
      d                 pr                  extproc('xmlXPathContainsFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathStartsWithFunction...
      d                 pr                  extproc('xmlXPathStartsWithFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathSubstringFunction...
      d                 pr                  extproc('xmlXPathSubstringFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathSubstringBeforeFunction...
      d                 pr                  extproc(
      d                                     'xmlXPathSubstringBeforeFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathSubstringAfterFunction...
      d                 pr                  extproc(
      d                                     'xmlXPathSubstringAfterFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
 
      d xmlXPathNormalizeFunction...
      d                 pr                  extproc('xmlXPathNormalizeFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathTranslateFunction...
      d                 pr                  extproc('xmlXPathTranslateFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathNotFunction...
      d                 pr                  extproc('xmlXPathNotFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathTrueFunction...
      d                 pr                  extproc('xmlXPathTrueFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathFalseFunction...
      d                 pr                  extproc('xmlXPathFalseFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathLangFunction...
      d                 pr                  extproc('xmlXPathLangFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathNumberFunction...
      d                 pr                  extproc('xmlXPathNumberFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathSumFunction...
      d                 pr                  extproc('xmlXPathSumFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathFloorFunction...
      d                 pr                  extproc('xmlXPathFloorFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathCeilingFunction...
      d                 pr                  extproc('xmlXPathCeilingFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathRoundFunction...
      d                 pr                  extproc('xmlXPathRoundFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
      d xmlXPathBooleanFunction...
      d                 pr                  extproc('xmlXPathBooleanFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)
-     d  nargs                        10i 0 value
+     d  nargs                              value like(xmlCint)
 
       * Really internal functions
 

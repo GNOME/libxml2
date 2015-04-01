@@ -130,8 +130,8 @@
       *
      d  buffer                             like(xmlBufPtr)                      UTF-8 local buffer
      d  raw                                like(xmlBufPtr)                      Raw input buffer
-     d  compressed                   10i 0
-     d  error                        10i 0
+     d  compressed                         like(xmlCint)
+     d  error                              like(xmlCint)
      d  rawconsumed                        like(xmlCulong)
 
       /if defined(LIBXML_OUTPUT_ENABLED)
@@ -146,8 +146,8 @@
       *
      d  buffer                             like(xmlBufPtr)                      UTF-8/ISOLatin local
      d  conv                               like(xmlBufPtr)                      Buffer for output
-     d  written                      10i 0                                      Total # byte written
-     d  error                        10i 0
+     d  written                            like(xmlCint)                        Total # byte written
+     d  error                              like(xmlCint)
       /endif                                                                    LIBXML_OUTPUT_ENABLD
 
       * Interfaces for input
@@ -156,7 +156,8 @@
      d                 pr                  extproc('xmlCleanupInputCallbacks')
 
      d xmlPopInputCallbacks...
-     d                 pr            10i 0 extproc('xmlPopInputCallbacks')
+     d                 pr                  extproc('xmlPopInputCallbacks')
+     d                                     like(xmlCint)
 
      d xmlRegisterDefaultInputCallbacks...
      d                 pr                  extproc(
@@ -185,7 +186,7 @@
      d                 pr                  extproc(
      d                                      'xmlParserInputBufferCreateFd')
      d                                     like(xmlParserInputBufferPtr)
-     d  fd                           10i 0 value
+     d  fd                                 value like(xmlCint)
      d  enc                                value like(xmlCharEncoding)
 
      d xmlParserInputBufferCreateMem...
@@ -193,7 +194,7 @@
      d                                      'xmlParserInputBufferCreateMem')
      d                                     like(xmlParserInputBufferPtr)
      d  mem                            *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  enc                                value like(xmlCharEncoding)
 
      d xmlParserInputBufferCreateStatic...
@@ -201,7 +202,7 @@
      d                                      'xmlParserInputBufferCreateStatic')
      d                                     like(xmlParserInputBufferPtr)
      d  mem                            *   value options(*string)               const char *
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  enc                                value like(xmlCharEncoding)
 
      d xmlParserInputBufferCreateIO...
@@ -214,19 +215,22 @@
      d  enc                                value like(xmlCharEncoding)
 
      d xmlParserInputBufferRead...
-     d                 pr            10i 0 extproc('xmlParserInputBufferRead')
+     d                 pr                  extproc('xmlParserInputBufferRead')
+     d                                     like(xmlCint)
      d  in                                 value like(xmlParserInputBufferPtr)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
      d xmlParserInputBufferGrow...
-     d                 pr            10i 0 extproc('xmlParserInputBufferGrow')
+     d                 pr                  extproc('xmlParserInputBufferGrow')
+     d                                     like(xmlCint)
      d  in                                 value like(xmlParserInputBufferPtr)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
      d xmlParserInputBufferPush...
-     d                 pr            10i 0 extproc('xmlParserInputBufferPush')
+     d                 pr                  extproc('xmlParserInputBufferPush')
+     d                                     like(xmlCint)
      d  in                                 value like(xmlParserInputBufferPtr)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
      d  buf                            *   value options(*string)               const char *
 
      d xmlFreeParserInputBuffer...
@@ -238,7 +242,8 @@
      d  filename                       *   value options(*string)               const char *
 
      d xmlRegisterInputCallbacks...
-     d                 pr            10i 0 extproc('xmlRegisterInputCallbacks')
+     d                 pr                  extproc('xmlRegisterInputCallbacks')
+     d                                     like(xmlCint)
      d  matchFunc                          value like(xmlInputMatchCallback)
      d  openFunc                           value like(xmlInputOpenCallback)
      d  readFunc                           value like(xmlInputReadCallback)
@@ -268,7 +273,7 @@
      d  URI                            *   value options(*string)               const char *
      d  encoder                            value
      d                                     like(xmlCharEncodingHandlerPtr)
-     d  compression                  10i 0 value
+     d  compression                        value like(xmlCint)
 
      d xmlOutputBufferCreateFile...
      d                 pr                  extproc('xmlOutputBufferCreateFile')
@@ -288,7 +293,7 @@
      d xmlOutputBufferCreateFd...
      d                 pr                  extproc('xmlOutputBufferCreateFd')
      d                                     like(xmlOutputBufferPtr)
-     d  fd                           10i 0 value
+     d  fd                                 value like(xmlCint)
      d  encoder                            value
      d                                     like(xmlCharEncodingHandlerPtr)
 
@@ -313,32 +318,38 @@
      d  out                                value like(xmlOutputBufferPtr)
 
      d xmlOutputBufferWrite...
-     d                 pr            10i 0 extproc('xmlOutputBufferWrite')
+     d                 pr                  extproc('xmlOutputBufferWrite')
+     d                                     like(xmlCint)
      d  out                                value like(xmlOutputBufferPtr)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
      d  buf                            *   value options(*string)               const char *
 
      d xmlOutputBufferWriteString...
-     d                 pr            10i 0 extproc('xmlOutputBufferWriteString')
+     d                 pr                  extproc('xmlOutputBufferWriteString')
+     d                                     like(xmlCint)
      d  out                                value like(xmlOutputBufferPtr)
      d  str                            *   value options(*string)               const char *
 
      d xmlOutputBufferWriteEscape...
-     d                 pr            10i 0 extproc('xmlOutputBufferWriteEscape')
+     d                 pr                  extproc('xmlOutputBufferWriteEscape')
+     d                                     like(xmlCint)
      d  out                                value like(xmlOutputBufferPtr)
      d  str                            *   value options(*string)               const xmlChar *
      d  escaping                           value like(xmlCharEncodingOutputFunc)
 
      d xmlOutputBufferFlush...
-     d                 pr            10i 0 extproc('xmlOutputBufferFlush')
+     d                 pr                  extproc('xmlOutputBufferFlush')
+     d                                     like(xmlCint)
      d  out                                value like(xmlOutputBufferPtr)
 
      d xmlOutputBufferClose...
-     d                 pr            10i 0 extproc('xmlOutputBufferClose')
+     d                 pr                  extproc('xmlOutputBufferClose')
+     d                                     like(xmlCint)
      d  out                                value like(xmlOutputBufferPtr)
 
      d xmlRegisterOutputCallbacks...
-     d                 pr            10i 0 extproc('xmlRegisterOutputCallbacks')
+     d                 pr                  extproc('xmlRegisterOutputCallbacks')
+     d                                     like(xmlCint)
      d  matchFunc                          value like(xmlOutputMatchCallback)
      d  openFunc                           value like(xmlOutputOpenCallback)
      d  writeFunc                          value like(xmlOutputWriteCallback)
@@ -379,29 +390,34 @@
      d  path                           *   value options(*string)               const xmlChar *
 
      d xmlCheckFilename...
-     d                 pr            10i 0 extproc('xmlCheckFilename')
+     d                 pr                  extproc('xmlCheckFilename')
+     d                                     like(xmlCint)
      d  path                           *   value options(*string)               const char *
 
       * Default 'file://' protocol callbacks
 
-     d xmlFileMatch    pr            10i 0 extproc('xmlFileMatch')
+     d xmlFileMatch    pr                  extproc('xmlFileMatch')
+     d                                     like(xmlCint)
      d  filename                       *   value options(*string)               const char *
 
      d xmlFileOpen     pr              *   extproc('xmlFileOpen')               void *
      d  filename                       *   value options(*string)               const char *
 
-     d xmlFileRead     pr            10i 0 extproc('xmlFileRead')
+     d xmlFileRead     pr                  extproc('xmlFileRead')
+     d                                     like(xmlCint)
      d  context                        *   value                                void *
      d  buffer                    65535    options(*varsize)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
-     d xmlFileClose    pr            10i 0 extproc('xmlFileClose')
+     d xmlFileClose    pr                  extproc('xmlFileClose')
+     d                                     like(xmlCint)
      d  context                        *   value                                void *
 
       * Default 'http://' protocol callbacks
 
       /if defined(LIBXML_HTTP_ENABLED)
-     d xmlIOHTTPMatch  pr            10i 0 extproc('xmlIOHTTPMatch')
+     d xmlIOHTTPMatch  pr                  extproc('xmlIOHTTPMatch')
+     d                                     like(xmlCint)
      d  filename                       *   value options(*string)               const char *
 
      d xmlIOHTTPOpen   pr              *   extproc('xmlIOHTTPOpen')             void *
@@ -410,33 +426,38 @@
       /if defined(LIBXML_OUTPUT_ENABLED)
      d xmlIOHTTPOpenW  pr              *   extproc('xmlIOHTTPOpenW')            void *
      d  post_uri                       *   value options(*string)               const char *
-     d  compression                  10i 0 value
+     d  compression                        value like(xmlCint)
       /endif                                                                    LIBXML_OUTPUT_ENABLD
 
-     d xmlIOHTTPRead   pr            10i 0 extproc('xmlIOHTTPRead')
+     d xmlIOHTTPRead   pr                  extproc('xmlIOHTTPRead')
+     d                                     like(xmlCint)
      d  context                        *   value                                void *
      d  buffer                    65535    options(*varsize)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
-     d xmlIOHTTPClose  pr            10i 0 extproc('xmlIOHTTPClose')
+     d xmlIOHTTPClose  pr                  extproc('xmlIOHTTPClose')
+     d                                     like(xmlCint)
      d  context                        *   value                                void *
       /endif                                                                    LIBXML_HTTP_ENABLED
 
       * Default 'ftp://' protocol callbacks
 
       /if defined(LIBXML_FTP_ENABLED)
-     d xmlIOFTPMatch   pr            10i 0 extproc('xmlIOFTPMatch')
+     d xmlIOFTPMatch   pr                  extproc('xmlIOFTPMatch')
+     d                                     like(xmlCint)
      d  filename                       *   value options(*string)               const char *
 
      d xmlIOFTPOpen    pr              *   extproc('xmlIOFTPOpen')              void *
      d  filename                       *   value options(*string)               const char *
 
-     d xmlIOFTPRead    pr            10i 0 extproc('xmlIOFTPRead')
+     d xmlIOFTPRead    pr                  extproc('xmlIOFTPRead')
+     d                                     like(xmlCint)
      d  context                        *   value                                void *
      d  buffer                    65535    options(*varsize)
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
-     d xmlIOFTPClose   pr            10i 0 extproc('xmlIOFTPClose')
+     d xmlIOFTPClose   pr                  extproc('xmlIOFTPClose')
+     d                                     like(xmlCint)
      d  context                        *   value                                void *
       /endif                                                                    LIBXML_FTP_ENABLED
 

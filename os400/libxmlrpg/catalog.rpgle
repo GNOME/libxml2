@@ -67,7 +67,7 @@
 
      d xmlNewCatalog   pr                  extproc('xmlNewCatalog')
      d                                     like(xmlCatalogPtr)
-     d  sgml                         10i 0 value
+     d  sgml                               value like(xmlCint)
 
      d xmlLoadACatalog...
      d                 pr                  extproc('xmlLoadACatalog')
@@ -80,17 +80,20 @@
      d  filename                       *   value options(*string)               const char *
 
      d xmlConvertSGMLCatalog...
-     d                 pr            10i 0 extproc('xmlConvertSGMLCatalog')
+     d                 pr                  extproc('xmlConvertSGMLCatalog')
+     d                                     like(xmlCint)
      d  catal                              value like(xmlCatalogPtr)
 
-     d xmlACatalogAdd  pr            10i 0 extproc('xmlACatalogAdd')
+     d xmlACatalogAdd  pr                  extproc('xmlACatalogAdd')
+     d                                     like(xmlCint)
      d  catal                              value like(xmlCatalogPtr)
      d  type                           *   value options(*string)               const xmlChar *
      d  orig                           *   value options(*string)               const xmlChar *
      d  replace                        *   value options(*string)               const xmlChar *
 
      d xmlACatalogRemove...
-     d                 pr            10i 0 extproc('xmlACatalogRemove')
+     d                 pr                  extproc('xmlACatalogRemove')
+     d                                     like(xmlCint)
      d  catal                              value like(xmlCatalogPtr)
      d  value                          *   value options(*string)               const xmlChar *
 
@@ -126,7 +129,8 @@
      d  catal                              value like(xmlCatalogPtr)
 
      d xmlCatalogIsEmpty...
-     d                 pr            10i 0 extproc('xmlCatalogIsEmpty')
+     d                 pr                  extproc('xmlCatalogIsEmpty')
+     d                                     like(xmlCint)
      d  catal                              value like(xmlCatalogPtr)
 
       * Global operations.
@@ -134,7 +138,8 @@
      d xmlInitializeCatalog...
      d                 pr                  extproc('xmlInitializeCatalog')
 
-     d xmlLoadCatalog  pr            10i 0 extproc('xmlLoadCatalog')
+     d xmlLoadCatalog  pr                  extproc('xmlLoadCatalog')
+     d                                     like(xmlCint)
      d  filename                       *   value options(*string)               const char *
 
      d xmlLoadCatalogs...
@@ -166,13 +171,15 @@
      d                 pr              *   extproc('xmlCatalogResolveURI')      xmlChar *
      d  URI                            *   value options(*string)               const xmlChar *
 
-     d xmlCatalogAdd   pr            10i 0 extproc('xmlCatalogAdd')
+     d xmlCatalogAdd   pr                  extproc('xmlCatalogAdd')
+     d                                     like(xmlCint)
      d  type                           *   value options(*string)               const xmlChar *
      d  orig                           *   value options(*string)               const xmlChar *
      d  replace                        *   value options(*string)               const xmlChar *
 
      d xmlCatalogRemove...
-     d                 pr            10i 0 extproc('xmlCatalogRemove')
+     d                 pr                  extproc('xmlCatalogRemove')
+     d                                     like(xmlCint)
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlParseCatalogFile...
@@ -181,7 +188,8 @@
      d  filename                       *   value options(*string)               const char *
 
      d xmlCatalogConvert...
-     d                 pr            10i 0 extproc('xmlCatalogConvert')
+     d                 pr                  extproc('xmlCatalogConvert')
+     d                                     like(xmlCint)
 
       * Strictly minimal interfaces for per-document catalogs used
       * by the parser.
@@ -209,8 +217,9 @@
       * Preference settings.
 
      d xmlCatalogSetDebug...
-     d                 pr            10i 0 extproc('xmlCatalogSetDebug')
-     d  level                        10i 0 value
+     d                 pr                  extproc('xmlCatalogSetDebug')
+     d                                     like(xmlCint)
+     d  level                              value like(xmlCint)
 
      d xmlCatalogSetDefaultPrefer...
      d                 pr                  extproc('xmlCatalogSetDefaultPrefer')

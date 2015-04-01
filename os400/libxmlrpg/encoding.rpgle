@@ -202,12 +202,14 @@
       * Interfaces for encoding names and aliases.
 
      d xmlAddEncodingAlias...
-     d                 pr            10i 0 extproc('xmlAddEncodingAlias')
+     d                 pr                  extproc('xmlAddEncodingAlias')
+     d                                     like(xmlCint)
      d  name                           *   value options(*string)               const char *
      d  alias                          *   value options(*string)               const char *
 
      d xmlDelEncodingAlias...
-     d                 pr            10i 0 extproc('xmlDelEncodingAlias')
+     d                 pr                  extproc('xmlDelEncodingAlias')
+     d                                     like(xmlCint)
      d  alias                          *   value options(*string)               const char *
 
      d xmlGetEncodingAlias...
@@ -232,45 +234,51 @@
      d                 pr                  extproc('xmlDetectCharEncoding')
      d                                     like(xmlCharEncoding)
      d  in                             *   value options(*string)               const unsigned char*
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
      d xmlCharEncOutFunc...
-     d                 pr            10i 0 extproc('xmlCharEncOutFunc')
+     d                 pr                  extproc('xmlCharEncOutFunc')
+     d                                     like(xmlCint)
      d  handler                            likeds(xmlCharEncodingHandler)
      d  out                                value like(xmlBufferPtr)
      d  in                                 value like(xmlBufferPtr)
 
      d xmlCharEncInFunc...
-     d                 pr            10i 0 extproc('xmlCharEncInFunc')
+     d                 pr                  extproc('xmlCharEncInFunc')
+     d                                     like(xmlCint)
      d  handler                            likeds(xmlCharEncodingHandler)
      d  out                                value like(xmlBufferPtr)
      d  in                                 value like(xmlBufferPtr)
 
      d xmlCharEncFirstLine...
-     d                 pr            10i 0 extproc('xmlCharEncFirstLine')
+     d                 pr                  extproc('xmlCharEncFirstLine')
+     d                                     like(xmlCint)
      d  handler                            likeds(xmlCharEncodingHandler)
      d  out                                value like(xmlBufferPtr)
      d  in                                 value like(xmlBufferPtr)
 
      d xmlCharEncCloseFunc...
-     d                 pr            10i 0 extproc('xmlCharEncCloseFunc')
+     d                 pr                  extproc('xmlCharEncCloseFunc')
+     d                                     like(xmlCint)
      d  handler                            likeds(xmlCharEncodingHandler)
 
       * Export a few useful functions
 
       /if defined(LIBXML_OUTPUT_ENABLED)
-     d UTF8Toisolat1   pr            10i 0 extproc('UTF8Toisolat1')
+     d UTF8Toisolat1   pr                  extproc('UTF8Toisolat1')
+     d                                     like(xmlCint)
      d  out                       65535    options(*varsize)                    unsigned char (*)
-     d  outlen                       10i 0
+     d  outlen                             like(xmlCint)
      d  in                             *   value options(*string)               const unsigned char*
-     d  inlen                        10i 0
+     d  inlen                              like(xmlCint)
 
       /endif                                                                    LIBXML_OUTPUT_ENABLD
 
-     d isolat1ToUTF8   pr            10i 0 extproc('isolat1ToUTF8')
+     d isolat1ToUTF8   pr                  extproc('isolat1ToUTF8')
+     d                                     like(xmlCint)
      d  out                       65535    options(*varsize)                    unsigned char (*)
-     d  outlen                       10i 0
+     d  outlen                             like(xmlCint)
      d  in                             *   value options(*string)               const unsigned char*
-     d  inlen                        10i 0
+     d  inlen                              like(xmlCint)
 
       /endif                                                                    XML_CHAR_ENCODING_H

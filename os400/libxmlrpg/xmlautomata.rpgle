@@ -9,11 +9,12 @@
       /define XML_AUTOMATA_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/tree"
 
       /if defined(LIBXML_REGEXP_ENABLED)
       /if defined(LIBXML_AUTOMATA_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/tree"
       /include "libxmlrpg/xmlregexp"
 
       * xmlAutomataPtr:
@@ -44,7 +45,8 @@
      d  am                                 value like(xmlAutomataPtr)
 
      d xmlAutomataSetFinalState...
-     d                 pr            10i 0 extproc('xmlAutomataSetFinalState')
+     d                 pr                  extproc('xmlAutomataSetFinalState')
+     d                                     like(xmlCint)
      d  am                                 value like(xmlAutomataPtr)
      d  state                              value like(xmlAutomataStatePtr)
 
@@ -89,8 +91,8 @@
      d  from                               value like(xmlAutomataStatePtr)
      d  to                                 value like(xmlAutomataStatePtr)
      d  token                          *   value options(*string)               const xmlChar *
-     d  min                          10i 0 value
-     d  max                          10i 0 value
+     d  min                                value like(xmlCint)
+     d  max                                value like(xmlCint)
      d  data                           *   value options(*string)               void *
 
      d xmlAutomataNewCountTrans2...
@@ -101,8 +103,8 @@
      d  to                                 value like(xmlAutomataStatePtr)
      d  token                          *   value options(*string)               const xmlChar *
      d  token2                         *   value options(*string)               const xmlChar *
-     d  min                          10i 0 value
-     d  max                          10i 0 value
+     d  min                                value like(xmlCint)
+     d  max                                value like(xmlCint)
      d  data                           *   value options(*string)               void *
 
      d xmlAutomataNewOnceTrans...
@@ -112,8 +114,8 @@
      d  from                               value like(xmlAutomataStatePtr)
      d  to                                 value like(xmlAutomataStatePtr)
      d  token                          *   value options(*string)               const xmlChar *
-     d  min                          10i 0 value
-     d  max                          10i 0 value
+     d  min                                value like(xmlCint)
+     d  max                                value like(xmlCint)
      d  data                           *   value options(*string)               void *
 
      d xmlAutomataNewOnceTrans2...
@@ -124,8 +126,8 @@
      d  to                                 value like(xmlAutomataStatePtr)
      d  token                          *   value options(*string)               const xmlChar *
      d  token2                         *   value options(*string)               const xmlChar *
-     d  min                          10i 0 value
-     d  max                          10i 0 value
+     d  min                                value like(xmlCint)
+     d  max                                value like(xmlCint)
      d  data                           *   value options(*string)               void *
 
      d xmlAutomataNewAllTrans...
@@ -134,7 +136,7 @@
      d  am                                 value like(xmlAutomataPtr)
      d  from                               value like(xmlAutomataStatePtr)
      d  to                                 value like(xmlAutomataStatePtr)
-     d  lax                          10i 0 value
+     d  lax                                value like(xmlCint)
 
      d xmlAutomataNewEpsilon...
      d                 pr                  extproc('xmlAutomataNewEpsilon')
@@ -149,7 +151,7 @@
      d  am                                 value like(xmlAutomataPtr)
      d  from                               value like(xmlAutomataStatePtr)
      d  to                                 value like(xmlAutomataStatePtr)
-     d  counter                      10i 0 value
+     d  counter                            value like(xmlCint)
 
      d xmlAutomataNewCounterTrans...
      d                 pr                  extproc('xmlAutomataNewCounterTrans')
@@ -157,13 +159,14 @@
      d  am                                 value like(xmlAutomataPtr)
      d  from                               value like(xmlAutomataStatePtr)
      d  to                                 value like(xmlAutomataStatePtr)
-     d  counter                      10i 0 value
+     d  counter                            value like(xmlCint)
 
      d xmlAutomataNewCounter...
-     d                 pr            10i 0 extproc('xmlAutomataNewCounter')
+     d                 pr                  extproc('xmlAutomataNewCounter')
+     d                                     like(xmlCint)
      d  am                                 value like(xmlAutomataPtr)
-     d  min                          10i 0 value
-     d  max                          10i 0 value
+     d  min                                value like(xmlCint)
+     d  max                                value like(xmlCint)
 
      d xmlAutomataCompile...
      d                 pr                  extproc('xmlAutomataCompile')
@@ -171,7 +174,8 @@
      d  am                                 value like(xmlAutomataPtr)
 
      d xmlAutomataIsDeterminist...
-     d                 pr            10i 0 extproc('xmlAutomataIsDeterminist')
+     d                 pr                  extproc('xmlAutomataIsDeterminist')
+     d                                     like(xmlCint)
      d  am                                 value like(xmlAutomataPtr)
 
       /endif                                                                    AUTOMATA_ENABLED

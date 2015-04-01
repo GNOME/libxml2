@@ -136,19 +136,22 @@
       * The xmlGc function have an extra entry for atomic block
       * allocations useful for garbage collected memory allocators
 
-     d xmlMemSetup     pr            10i 0 extproc('xmlMemSetup')
+     d xmlMemSetup     pr                  extproc('xmlMemSetup')
+     d                                     like(xmlCint)
      d  freeFunc                           value like(xmlFreeFunc)
      d  mallocFunc                         value like(xmlMallocFunc)
      d  reallocFunc                        value like(xmlReallocFunc)
      d  strdupFunc                         value like(xmlStrdupFunc)
 
-     d xmlMemGet       pr            10i 0 extproc('xmlMemGet')
+     d xmlMemGet       pr                  extproc('xmlMemGet')
+     d                                     like(xmlCint)
      d  freeFunc                           like(xmlFreeFunc)
      d  mallocFunc                         like(xmlMallocFunc)
      d  reallocFunc                        like(xmlReallocFunc)
      d  strdupFunc                         like(xmlStrdupFunc)
 
-     d xmlGcMemSetup   pr            10i 0 extproc('xmlGcMemSetup')
+     d xmlGcMemSetup   pr                  extproc('xmlGcMemSetup')
+     d                                     like(xmlCint)
      d  freeFunc                           value like(xmlFreeFunc)
      d  mallocFunc                         value like(xmlMallocFunc)
      d  mallocAtomicFunc...
@@ -156,7 +159,8 @@
      d  reallocFunc                        value like(xmlReallocFunc)
      d  strdupFunc                         value like(xmlStrdupFunc)
 
-     d xmlGcMemGet     pr            10i 0 extproc('xmlGcMemGet')
+     d xmlGcMemGet     pr                  extproc('xmlGcMemGet')
+     d                                     like(xmlCint)
      d  freeFunc                           like(xmlFreeFunc)
      d  mallocFunc                         like(xmlMallocFunc)
      d  mallocAtomicFunc...
@@ -166,7 +170,8 @@
 
       * Initialization of the memory layer.
 
-     d xmlInitMemory   pr            10i 0 extproc('xmlInitMemory')
+     d xmlInitMemory   pr                  extproc('xmlInitMemory')
+     d                                     like(xmlCint)
 
       * Cleanup of the memory layer.
 
@@ -175,9 +180,11 @@
 
       * These are specific to the XML debug memory wrapper.
 
-     d xmlMemUsed      pr            10i 0 extproc('xmlMemUsed')
+     d xmlMemUsed      pr                  extproc('xmlMemUsed')
+     d                                     like(xmlCint)
 
-     d xmlMemBlocks    pr            10i 0 extproc('xmlMemBlocks')
+     d xmlMemBlocks    pr                  extproc('xmlMemBlocks')
+     d                                     like(xmlCint)
 
      d xmlMemDisplay   pr                  extproc('xmlMemDisplay')
      d  fp                             *   value                                FILE *
@@ -189,7 +196,7 @@
 
      d xmlMemShow      pr                  extproc('xmlMemShow')
      d  fp                             *   value                                FILE *
-     d  nr                           10i 0 value
+     d  nr                                 value like(xmlCint)
 
      d xmlMemoryDump   pr                  extproc('xmlMemoryDump')
 
@@ -210,25 +217,25 @@
      d xmlMallocLoc    pr              *   extproc('xmlMallocLoc')              void *
      d  size                               value like(xmlCsize_t)
      d  file                           *   value options(*string)               const char *
-     d  line                         10i 0 value
+     d  line                               value like(xmlCint)
 
      d xmlReallocLoc   pr              *   extproc('xmlReallocLoc')              void *
      d  ptr                            *   value                                void *
      d  size                               value like(xmlCsize_t)
      d  file                           *   value options(*string)               const char *
-     d  line                         10i 0 value
+     d  line                               value like(xmlCint)
 
      d xmlMallocAtomicLoc...
      d                 pr              *   extproc('xmlMallocAtomicLoc')        void *
      d  size                               value like(xmlCsize_t)
      d  file                           *   value options(*string)               const char *
-     d  line                         10i 0 value
+     d  line                               value like(xmlCint)
 
      d xmlMemStrdupLoc...
      d                 pr              *   extproc('xmlMemStrdupLoc')           char *
      d  str                            *   value options(*string)               const char *
      d  file                           *   value options(*string)               const char *
-     d  line                         10i 0 value
+     d  line                               value like(xmlCint)
 
       /if not defined(XML_GLOBALS_H)
       /if not defined(XML_THREADS_H__)

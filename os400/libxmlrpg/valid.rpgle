@@ -9,6 +9,7 @@
       /define XML_VALID_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/xmlerror"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/list"
@@ -63,19 +64,19 @@
       * Node analysis stack used when validating within entities
       *
      d  node                               like(xmlNodePtr)                     Current parsed Node
-     d  nodeNr                       10i 0                                      Parsing stack depth
-     d  nodeMax                      10i 0                                      Max stack depth
+     d  nodeNr                             like(xmlCint)                        Parsing stack depth
+     d  nodeMax                            like(xmlCint)                        Max stack depth
      d  nodeTab                        *                                        xmlNodePtr *
       *
      d  finishDtd                          like(xmlCuint)
      d  doc                                like(xmlDocPtr)                      The document
-     d  valid                        10i 0                                      Temp check result
+     d  valid                              like(xmlCint)                        Temp check result
       *
       * state state used for non-determinist content validation
       *
      d  vstate                         *                                        xmlValidState *
-     d  vstateNr                     10i 0                                      Validat. stack depth
-     d  vstateMax                    10i 0                                      Max stack depth
+     d  vstateNr                           like(xmlCint)                        Validat. stack depth
+     d  vstateMax                          like(xmlCint)                        Max stack depth
      d  vstateTab                      *                                        xmlValidState *
       *
       /if defined(LIBXML_REGEXP_ENABLED)
@@ -189,9 +190,9 @@
      d xmlSnprintfElementContent...
      d                 pr                  extproc('xmlSnprintfElementContent')
      d  buf                       65535    options(*varsize)
-     d  size                         10i 0 value
+     d  size                               value like(xmlCint)
      d  content                            value like(xmlElementContentPtr)
-     d  englob                       10i 0 value
+     d  englob                             value like(xmlCint)
 
       /if defined(LIBXML_OUTPUT_ENABLED)
       * DEPRECATED
@@ -199,7 +200,7 @@
      d                 pr                  extproc('xmlSprintfElementContent')
      d  buf                       65535    options(*varsize)
      d  content                            value like(xmlElementContentPtr)
-     d  englob                       10i 0 value
+     d  englob                             value like(xmlCint)
       /endif                                                                    LIBXML_OUTPUT_ENABLD
 
       * DEPRECATED
@@ -311,12 +312,14 @@
      d  doc                                value like(xmlDocPtr)
      d  ID                             *   value options(*string)               const xmlChar *
 
-     d xmlIsID         pr            10i 0 extproc('xmlIsID')
+     d xmlIsID         pr                  extproc('xmlIsID')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  node                               value like(xmlNodePtr)
      d  attr                               value like(xmlAttrPtr)
 
-     d xmlRemoveID     pr            10i 0 extproc('xmlRemoveID')
+     d xmlRemoveID     pr                  extproc('xmlRemoveID')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  attr                               value like(xmlAttrPtr)
 
@@ -333,12 +336,14 @@
      d                 pr                  extproc('xmlFreeRefTable')
      d  table                              value like(xmlRefTablePtr)
 
-     d xmlIsRef        pr            10i 0 extproc('xmlIsRef')
+     d xmlIsRef        pr                  extproc('xmlIsRef')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  node                               value like(xmlNodePtr)
      d  attr                               value like(xmlAttrPtr)
 
-     d xmlRemoveRef    pr            10i 0 extproc('xmlRemoveRef')
+     d xmlRemoveRef    pr                  extproc('xmlRemoveRef')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  attr                               value like(xmlAttrPtr)
 
@@ -361,12 +366,14 @@
      d  ctxt                               value like(xmlValidCtxtPtr)
 
      d xmlValidateRoot...
-     d                 pr            10i 0 extproc('xmlValidateRoot')
+     d                 pr                  extproc('xmlValidateRoot')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
 
      d xmlValidateElementDecl...
-     d                 pr            10i 0 extproc('xmlValidateElementDecl')
+     d                 pr                  extproc('xmlValidateElementDecl')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlElementPtr)
@@ -389,51 +396,60 @@
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateAttributeDecl...
-     d                 pr            10i 0 extproc('xmlValidateAttributeDecl')
+     d                 pr                  extproc('xmlValidateAttributeDecl')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  attr                               value like(xmlAttributePtr)
 
      d xmlValidateAttributeValue...
-     d                 pr            10i 0 extproc('xmlValidateAttributeValue')
+     d                 pr                  extproc('xmlValidateAttributeValue')
+     d                                     like(xmlCint)
      d  type                               value like(xmlAttributeType)
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateNotationDecl...
-     d                 pr            10i 0 extproc('xmlValidateNotationDecl')
+     d                 pr                  extproc('xmlValidateNotationDecl')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  nota                               value like(xmlNotationPtr)
 
-     d xmlValidateDtd  pr            10i 0 extproc('xmlValidateDtd')
+     d xmlValidateDtd  pr                  extproc('xmlValidateDtd')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  dtd                                value like(xmlDtdPtr)
 
      d xmlValidateDtdFinal...
-     d                 pr            10i 0 extproc('xmlValidateDtdFinal')
+     d                 pr                  extproc('xmlValidateDtdFinal')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
 
      d xmlValidateDocument...
-     d                 pr            10i 0 extproc('xmlValidateDocument')
+     d                 pr                  extproc('xmlValidateDocument')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
 
      d xmlValidateElement...
-     d                 pr            10i 0 extproc('xmlValidateElement')
+     d                 pr                  extproc('xmlValidateElement')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlNodePtr)
 
      d xmlValidateOneElement...
-     d                 pr            10i 0 extproc('xmlValidateOneElement')
+     d                 pr                  extproc('xmlValidateOneElement')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlNodePtr)
 
      d xmlValidateOneAttribute...
-     d                 pr            10i 0 extproc('xmlValidateOneAttribute')
+     d                 pr                  extproc('xmlValidateOneAttribute')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlNodePtr)
@@ -441,7 +457,8 @@
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateOneNamespace...
-     d                 pr            10i 0 extproc('xmlValidateOneNamespace')
+     d                 pr                  extproc('xmlValidateOneNamespace')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlNodePtr)
@@ -450,7 +467,8 @@
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateDocumentFinal...
-     d                 pr            10i 0 extproc('xmlValidateDocumentFinal')
+     d                 pr                  extproc('xmlValidateDocumentFinal')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
       /endif                                                                    LIBXML_VALID_ENABLED
@@ -463,7 +481,8 @@
       /endif
       /if defined(XML_TESTVAL)
      d xmlValidateNotationUse...
-     d                 pr            10i 0 extproc('xmlValidateNotationUse')
+     d                 pr                  extproc('xmlValidateNotationUse')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  notationName                   *   value options(*string)               const xmlChar *
@@ -472,7 +491,8 @@
       /endif
 
      d xmlIsMixedElement...
-     d                 pr            10i 0 extproc('xmlIsMixedElement')
+     d                 pr                  extproc('xmlIsMixedElement')
+     d                                     like(xmlCint)
      d  doc                                value like(xmlDocPtr)
      d  name                           *   value options(*string)               const xmlChar *
 
@@ -512,59 +532,69 @@
 
       /if defined(LIBXML_VALID_ENABLED)
      d xmlValidGetPotentialChildren...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                      'xmlValidGetPotentialChildren')
+     d                                     like(xmlCint)
      d  ctree                          *   value                                xmlElementContent *
      d  names                          *                                        const xmlChar *(*)
-     d  len                          10i 0
-     d  max                          10i 0 value
+     d  len                                like(xmlCint)
+     d  max                                value like(xmlCint)
 
      d xmlValidGetValidElements...
-     d                 pr            10i 0 extproc('xmlValidGetValidElements')
+     d                 pr                  extproc('xmlValidGetValidElements')
+     d                                     like(xmlCint)
      d  prev                               like(xmlNodePtr)
      d  next                               like(xmlNodePtr)
      d  names                          *                                        const xmlChar *(*)
-     d  max                          10i 0 value
+     d  max                                value like(xmlCint)
 
      d xmlValidateNameValue...
-     d                 pr            10i 0 extproc('xmlValidateNameValue')
+     d                 pr                  extproc('xmlValidateNameValue')
+     d                                     like(xmlCint)
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateNamesValue...
-     d                 pr            10i 0 extproc('xmlValidateNamesValue')
+     d                 pr                  extproc('xmlValidateNamesValue')
+     d                                     like(xmlCint)
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateNmtokenValue...
-     d                 pr            10i 0 extproc('xmlValidateNmtokenValue')
+     d                 pr                  extproc('xmlValidateNmtokenValue')
+     d                                     like(xmlCint)
      d  value                          *   value options(*string)               const xmlChar *
 
      d xmlValidateNmtokensValue...
-     d                 pr            10i 0 extproc('xmlValidateNmtokensValue')
+     d                 pr                  extproc('xmlValidateNmtokensValue')
+     d                                     like(xmlCint)
      d  value                          *   value options(*string)               const xmlChar *
 
       /if defined(LIBXML_REGEXP_ENABLED)
       * Validation based on the regexp support
 
      d xmlValidBuildContentModel...
-     d                 pr            10i 0 extproc('xmlValidBuildContentModel')
+     d                 pr                  extproc('xmlValidBuildContentModel')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  elem                               value like(xmlElementPtr)
 
      d xmlValidatePushElement...
-     d                 pr            10i 0 extproc('xmlValidatePushElement')
+     d                 pr                  extproc('xmlValidatePushElement')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlNodePtr)
      d  qname                          *   value options(*string)               const xmlChar *
 
      d xmlValidatePushCData...
-     d                 pr            10i 0 extproc('xmlValidatePushCData')
+     d                 pr                  extproc('xmlValidatePushCData')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  data                           *   value options(*string)               const xmlChar *
-     d  len                          10i 0 value
+     d  len                                value like(xmlCint)
 
      d xmlValidatePopElement...
-     d                 pr            10i 0 extproc('xmlValidatePopElement')
+     d                 pr                  extproc('xmlValidatePopElement')
+     d                                     like(xmlCint)
      d  ctxt                               value like(xmlValidCtxtPtr)
      d  doc                                value like(xmlDocPtr)
      d  elem                               value like(xmlNodePtr)

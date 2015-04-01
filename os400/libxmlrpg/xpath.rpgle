@@ -96,8 +96,8 @@
 
      d xmlNodeSet      ds                  based(xmlNodeSetPtr)
      d                                     align qualified
-     d  nodeNr                       10i 0                                      Set node count
-     d  nodeMax                      10i 0                                      Max # nodes in set
+     d  nodeNr                             like(xmlCint)                        Set node count
+     d  nodeMax                            like(xmlCint)                        Max # nodes in set
      d  nodeTab                        *                                        xmlNodePtr *
 
       * An expression is evaluated to yield an object, which
@@ -133,13 +133,13 @@
      d                                     align qualified
      d  type                               like(xmlXPathObjectType)
      d  nodesetval                         like(xmlNodeSetPtr)
-     d  boolval                      10i 0
+     d  boolval                            like(xmlCint)
      d  floatval                      8f
      d  stringval                      *                                        xmlChar *
      d  user                           *                                        void *
-     d  index                        10i 0
+     d  index                              like(xmlCint)
      d  user2                          *                                        void *
-     d  index2                       10i 0
+     d  index2                             like(xmlCint)
 
       * xmlXPathConvertFunc:
       * @obj:  an XPath object
@@ -301,69 +301,69 @@
      d  node                               like(xmlNodePtr)                     Current node
       *
      d  nb_variables_unused...                                                  Unused (hash table)
-     d                               10i 0
-     d  max_variables_unused...                                                  Unused (hash table)
-     d                               10i 0
-     d  varHash                            like(xmlHashTablePtr)                 Defined variables
+     d                                     like(xmlCint)
+     d  max_variables_unused...                                                 Unused (hash table)
+     d                                     like(xmlCint)
+     d  varHash                            like(xmlHashTablePtr)                Defined variables
       *
-     d  nb_types                     10i 0                                       # of defined types
-     d  max_types                    10i 0                                       Max number of types
-     d  types                              like(xmlXPathTypePtr)                 Defined types array
+     d  nb_types                           like(xmlCint)                        # of defined types
+     d  max_types                          like(xmlCint)                        Max number of types
+     d  types                              like(xmlXPathTypePtr)                Defined types array
       *
      d  nb_funcs_unused...                                                      Unused (hash table)
-     d                               10i 0
-     d  max_funcs_unused...                                                      Unused (hash table)
-     d                               10i 0
-     d  funcHash                           like(xmlHashTablePtr)                 Defined functions
+     d                                     like(xmlCint)
+     d  max_funcs_unused...                                                     Unused (hash table)
+     d                                     like(xmlCint)
+     d  funcHash                           like(xmlHashTablePtr)                Defined functions
       *
-     d  nb_axis                      10i 0                                       # of defined axis
-     d  max_axis                     10i 0                                       Max number of axis
-     d  axis                               like(xmlXPathAxisPtr)                 Defined axis array
+     d  nb_axis                            like(xmlCint)                        # of defined axis
+     d  max_axis                           like(xmlCint)                        Max number of axis
+     d  axis                               like(xmlXPathAxisPtr)                Defined axis array
       *
       * the namespace nodes of the context node
       *
-     d  namespaces                     *                                         xmlNsPtr *
-     d  nsNr                         10i 0                                       # scope namespaces
-     d  user                           *   procptr                               Function to free
+     d  namespaces                     *                                        xmlNsPtr *
+     d  nsNr                               like(xmlCint)                        # scope namespaces
+     d  user                           *   procptr                              Function to free
       *
       * extra variables
       *
-     d  contextSize                  10i 0                                       The context size
+     d  contextSize                        like(xmlCint)                        The context size
      d  proximityPosition...
-     d                               10i 0
+     d                                     like(xmlCint)
       *
       * extra stuff for XPointer
       *
-     d  xptr                         10i 0                                       XPointer context ?
-     d  here                               like(xmlNodePtr)                      For here()
-     d  origin                             like(xmlNodePtr)                      For origin()
+     d  xptr                               like(xmlCint)                        XPointer context ?
+     d  here                               like(xmlNodePtr)                     For here()
+     d  origin                             like(xmlNodePtr)                     For origin()
       *
       * the set of namespace declarations in scope for the expression
       *
-     d  nsHash                             like(xmlHashTablePtr)                 Namespace hashtable
-     d  varLookupFunc                      like(xmlXPathVariableLookupFunc)      Var lookup function
-     d  varLookupData                  *                                         void *
+     d  nsHash                             like(xmlHashTablePtr)                Namespace hashtable
+     d  varLookupFunc                      like(xmlXPathVariableLookupFunc)     Var lookup function
+     d  varLookupData                  *                                        void *
       *
       * Possibility to link in an extra item
       *
-     d  extra                          *                                         void *
+     d  extra                          *                                        void *
       *
       * The function name and URI when calling a function
       *
-     d  function                       *                                         const xmlChar *
-     d  functionURI                    *                                         const xmlChar *
+     d  function                       *                                        const xmlChar *
+     d  functionURI                    *                                        const xmlChar *
       *
       * function lookup function and data
       *
-     d  funcLookupFunc...                                                        Func lookup func
+     d  funcLookupFunc...                                                       Func lookup func
      d                                     like(xmlXPathVariableLookupFunc)
-     d  funcLookupData...                                                        void *
+     d  funcLookupData...                                                       void *
      d                                 *
       *
       * temporary namespace lists kept for walking the namespace axis
       *
      d  tmpNsList                      *                                        xmlNsPtr *
-     d  tmpNsNr                      10i 0                                      # scope namespaces
+     d  tmpNsNr                            like(xmlCint)                        # scope namespaces
       *
       * error reporting mechanism
       *
@@ -376,7 +376,7 @@
       *
      d  dict                               like(xmlDictPtr)                     Dictionary if any
       *
-     d  flags                        10i 0                                      Compilation control
+     d  flags                              like(xmlCint)                        Compilation control
       *
       * Cache for reusal of XPath objects
       *
@@ -398,19 +398,19 @@
      d  cur                            *                                        const xmlChar *
      d  base                           *                                        const xmlChar *
       *
-     d  error                        10i 0                                      Error code
+     d  error                              like(xmlCint)                        Error code
       *
      d  context                            like(xmlXPathContextPtr)             Evaluation context
      d  value                              like(xmlXPathObjectPtr)              The current value
-     d  valueNr                      10i 0                                      Value stack depth
-     d  valueMax                     10i 0                                      Max stack depth
+     d  valueNr                            like(xmlCint)                        Value stack depth
+     d  valueMax                           like(xmlCint)                        Max stack depth
      d  valueTab                       *                                        xmlXPathObjectPtr *
       *
      d  comp                               like(xmlXPathCompExprPtr)            Precompiled expr.
-     d  xptr                         10i 0                                      XPointer expression?
+     d  xptr                               like(xmlCint)                        XPointer expression?
      d  ancestor                           like(xmlNodePtr)                     To walk prec. axis
       *
-     d  valueFrame                   10i 0                                      Limit stack pop
+     d  valueFrame                         like(xmlCint)                        Limit stack pop
 
       **************************************************************************
       *                                                                        *
@@ -447,36 +447,41 @@
      d val                                 value like(xmlXPathObjectPtr)
 
      d xmlXPathCmpNodes...
-     d                 pr            10i 0 extproc('xmlXPathCmpNodes')
+     d                 pr                  extproc('xmlXPathCmpNodes')
+     d                                     like(xmlCint)
      d node1                               value like(xmlNodePtr)
      d node2                               value like(xmlNodePtr)
 
       * Conversion functions to basic types.
 
      d xmlXPathCastNumberToBoolean...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                      'xmlXPathCastNumberToBoolean')
+     d                                     like(xmlCint)
      d val                            8f   value
 
      d xmlXPathCastStringToBoolean...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                      'xmlXPathCastStringToBoolean')
+     d                                     like(xmlCint)
      d val                             *   value options(*string)               const xmlChar *
 
      d xmlXPathCastNodeSetToBoolean...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                     'xmlXPathCastNodeSetToBoolean')
+     d                                     like(xmlCint)
      d ns                                  value like(xmlNodeSetPtr)
 
      d xmlXPathCastToBoolean...
-     d                 pr            10i 0 extproc('xmlXPathCastToBoolean')
+     d                 pr                  extproc('xmlXPathCastToBoolean')
+     d                                     like(xmlCint)
      d val                                 value like(xmlXPathObjectPtr)
 
      d xmlXPathCastBooleanToNumber...
      d                 pr                  extproc(
      d                                      'xmlXPathCastBooleanToNumber')
      d                                8f
-     d val                           10i 0 value
+     d val                                 value like(xmlCint)
 
      d xmlXPathCastStringToNumber...
      d                 pr             8f   extproc('xmlXPathCastStringToNumber')
@@ -498,7 +503,7 @@
      d xmlXPathCastBooleanToString...
      d                 pr              *   extproc(                             xmlChar *
      d                                      'xmlXPathCastBooleanToString')
-     d val                           10i 0 value
+     d val                                 value like(xmlCint)
 
      d xmlXPathCastNumberToString...
      d                 pr              *   extproc('xmlXPathCastNumberToString')xmlChar *
@@ -544,11 +549,12 @@
      d ctxt                                value like(xmlXPathContextPtr)
 
      d xmlXPathContextSetCache...
-     d                 pr            10i 0 extproc('xmlXPathContextSetCache')
+     d                 pr                  extproc('xmlXPathContextSetCache')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlXPathContextPtr)
-     d active                        10i 0 value
-     d value                         10i 0 value
-     d options                       10i 0 value
+     d active                              value like(xmlCint)
+     d value                               value like(xmlCint)
+     d options                             value like(xmlCint)
 
       * Evaluation functions.
 
@@ -558,7 +564,8 @@
      d doc                                 value like(xmlDocPtr)
 
      d xmlXPathSetContextNode...
-     d                 pr            10i 0 extproc('xmlXPathSetContextNode')
+     d                 pr                  extproc('xmlXPathSetContextNode')
+     d                                     like(xmlCint)
      d node                                value like(xmlNodePtr)
      d ctx                                 value like(xmlXPathContextPtr)
 
@@ -581,7 +588,8 @@
      d ctxt                                value like(xmlXPathContextPtr)
 
      d xmlXPathEvalPredicate...
-     d                 pr            10i 0 extproc('xmlXPathEvalPredicate')
+     d                 pr                  extproc('xmlXPathEvalPredicate')
+     d                                     like(xmlCint)
      d ctxt                                value like(xmlXPathContextPtr)
      d res                                 value like(xmlXPathObjectPtr)
 
@@ -605,8 +613,9 @@
      d ctx                                 value like(xmlXPathContextPtr)
 
      d xmlXPathCompiledEvalToBoolean...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                     'xmlXPathCompiledEvalToBoolean')
+     d                                     like(xmlCint)
      d comp                                value like(xmlXPathCompExprPtr)
      d ctxt                                value like(xmlXPathContextPtr)
 
@@ -624,10 +633,12 @@
       /if defined(XML_TESTVAL)
      d xmlXPathInit    pr                  extproc('xmlXPathInit')
 
-     d xmlXPathIsNaN   pr            10i 0 extproc('xmlXPathIsNaN')
+     d xmlXPathIsNaN   pr                  extproc('xmlXPathIsNaN')
+     d                                     like(xmlCint)
      d val                            8f   value
 
-     d xmlXPathIsInf   pr            10i 0 extproc('xmlXPathIsInf')
+     d xmlXPathIsInf   pr                  extproc('xmlXPathIsInf')
+     d                                     like(xmlCint)
      d val                            8f   value
 
       /undefine XML_TESTVAL
@@ -637,17 +648,19 @@
 
       /if defined(LIBXML_XPATH_ENABLED)
      d xmlXPathNodeSetGetLength...
-     d                 pr            10i 0 extproc('__xmlXPathNodeSetGetLength')
+     d                 pr                  extproc('__xmlXPathNodeSetGetLength')
+     d                                     like(xmlCint)
      d  ns                                 value like(xmlNodeSetPtr)
 
      d xmlXPathNodeSetItem...
      d                 pr                  extproc('__xmlXPathNodeSetItem')
      d                                     like(xmlNodePtr)
      d  ns                                 value like(xmlNodeSetPtr)
-     d  index                        10i 0 value
+     d  index                              value like(xmlCint)
 
      d xmlXPathNodeSetIsEmpty...
-     d                 pr            10i 0 extproc('__xmlXPathNodeSetIsEmpty')
+     d                 pr                  extproc('__xmlXPathNodeSetIsEmpty')
+     d                                     like(xmlCint)
      d  ns                                 value like(xmlNodeSetPtr)
       /endif                                                                    LIBXML_XPATH_ENABLED
       /endif                                                                    XML_XPATH_H__

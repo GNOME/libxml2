@@ -89,17 +89,17 @@
 
      d xmlError        ds                  based(xmlErrorPtr)
      d                                     align qualified
-     d  domain                       10i 0                                      Libpart raising err
-     d  code                         10i 0                                      Error code
+     d  domain                             like(xmlCint)                        Libpart raising err
+     d  code                               like(xmlCint)                        Error code
      d  message                        *                                        char *
      d  level                              like(xmlErrorLevel)                  Error severity
      d  file                           *                                        File name
-     d  line                         10i 0                                      Line number
+     d  line                               like(xmlCint)                        Line number
      d  str1                           *                                        char *
      d  str2                           *                                        char *
      d  str3                           *                                        char *
-     d  int1                         10i 0                                      Extra number info
-     d  int2                         10i 0                                      Error column
+     d  int1                               like(xmlCint)                        Extra number info
+     d  int2                               like(xmlCint)                        Error column
      d  ctxt                           *                                        void *
      d  node                           *                                        void *
 
@@ -1678,7 +1678,8 @@
      d xmlResetError   pr                  extproc('xmlResetError')
      d  err                                value like(xmlErrorPtr)
 
-     d xmlCopyError    pr            10i 0 extproc('xmlCopyError')
+     d xmlCopyError    pr                  extproc('xmlCopyError')
+     d                                     like(xmlCint)
      d  from                               value like(xmlErrorPtr)
      d  to                                 value like(xmlErrorPtr)
 

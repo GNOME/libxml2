@@ -13,6 +13,7 @@
       /define XML_GLOBALS_H
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/parser"
       /include "libxmlrpg/xmlerror"
       /include "libxmlrpg/SAX"
@@ -112,31 +113,31 @@
      d  xmlGenericErrorContext...
      d                                 *                                        void *
      d  oldXMLWDcompatibility...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlBufferAllocScheme...
      d                                     like(xmlBufferAllocationScheme)
      d  xmlDefaultBufferSize...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlSubstituteEntitiesDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlDoValidityCheckingDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlGetWarningsDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlKeepBlanksDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlLineNumbersDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlLoadExtDtdDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlParserDebugEntities...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlPedanticParserDefaultValue...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlSaveNoEmptyTags...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlIndentTreeOutput...
-     d                               10i 0
+     d                                     like(xmlCint)
      d  xmlTreeIndentString...
      d                                 *                                        const char *
      d  xmlRegisterNodeDefaultValue...
@@ -244,13 +245,14 @@
      d  value                              value likeds(xmlError)
 
      d get_oldXMLWDcompatibility...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       '__get_oldXMLWDcompatibility')
+     d                                     like(xmlCint)
 
      d set_oldXMLWDcompatibility...
      d                 pr                  extproc(
      d                                       '__set_oldXMLWDcompatibility')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d get_xmlBufferAllocScheme...
      d                 pr                  extproc('__get_xmlBufferAllocScheme')
@@ -266,15 +268,17 @@
      d  v                                  value like(xmlBufferAllocationScheme)
 
      d get_xmlDefaultBufferSize...
-     d                 pr            10i 0 extproc('__get_xmlDefaultBufferSize')
+     d                 pr                  extproc('__get_xmlDefaultBufferSize')
+     d                                     like(xmlCint)
 
      d set_xmlDefaultBufferSize...
      d                 pr                  extproc('__set_xmlDefaultBufferSize')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefDefaultBufferSize...
-     d                 pr            10i 0 extproc('xmlThrDefDefaultBufferSize')
-     d  v                            10i 0 value
+     d                 pr                  extproc('xmlThrDefDefaultBufferSize')
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlDefaultSAXHandler...
      d                 pr                  extproc('__get_xmlDefaultSAXHandler')
@@ -293,18 +297,20 @@
      d  value                              value likeds(xmlSAXLocator)
 
      d get_xmlDoValidityCheckingDefaultValue...
-     d                 pr            10i 0 extproc('__get_xmlDoValidity+
+     d                 pr                  extproc('__get_xmlDoValidity+
      d                                       CheckingDefaultValue')
+     d                                     like(xmlCint)
 
      d set_xmlDoValidityCheckingDefaultValue...
      d                 pr                  extproc('__set_xmlDoValidity+
      d                                       CheckingDefaultValue')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
     
      d xmlThrDefDoValidityCheckingDefaultValue...
-     d                 pr            10i 0 extproc('xmlThrDefDoValidity+
+     d                 pr                  extproc('xmlThrDefDoValidity+
      d                                       CheckingDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlGenericError...
      d                 pr                  extproc('__get_xmlGenericError')
@@ -348,29 +354,33 @@
      d  value                          *   value options(*string)               void *
 
      d get_xmlGetWarningsDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       '__get_xmlGetWarningsDefaultValue')
+     d                                     like(xmlCint)
 
      d set_xmlGetWarningsDefaultValue...
      d                 pr                  extproc(
      d                                       '__set_xmlGetWarningsDefaultValue')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefGetWarningsDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       'xmlThrDefGetWarningsDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlIndentTreeOutput...
-     d                 pr            10i 0 extproc('__get_xmlIndentTreeOutput')
+     d                 pr                  extproc('__get_xmlIndentTreeOutput')
+     d                                     like(xmlCint)
 
      d set_xmlIndentTreeOutput...
-     d                 pr                   extproc('__set_xmlIndentTreeOutput')
-     d  value                        10i 0 value
+     d                 pr                  extproc('__set_xmlIndentTreeOutput')
+     d  value                              value like(xmlCint)
 
      d xmlThrDefIndentTreeOutput...
-     d                 pr            10i 0 extproc('xmlThrDefIndentTreeOutput')
-     d  v                            10i 0 value
+     d                 pr                  extproc('xmlThrDefIndentTreeOutput')
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlTreeIndentString...
      d                 pr              *   extproc('__get_xmlTreeIndentString') const char *
@@ -384,60 +394,68 @@
      d  v                              *   value options(*string)               const char *
 
      d get_xmlKeepBlanksDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       '__get_xmlKeepBlanksDefaultValue') 
+     d                                     like(xmlCint)
 
      d set_xmlKeepBlanksDefaultValue...
      d                 pr                  extproc(
      d                                       '__set_xmlKeepBlanksDefaultValue') 
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefKeepBlanksDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       'xmlThrDefKeepBlanksDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlLineNumbersDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       '__get_xmlLineNumbersDefaultValue')
+     d                                     like(xmlCint)
 
      d set_xmlLineNumbersDefaultValue...
      d                 pr                  extproc(
      d                                       '__set_xmlLineNumbersDefaultValue')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefLineNumbersDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       'xmlThrDefLineNumbersDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlLoadExtDtdDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       '__get_xmlLoadExtDtdDefaultValue')
+     d                                     like(xmlCint)
 
      d set_xmlLoadExtDtdDefaultValue...
      d                 pr                  extproc(
      d                                       '__set_xmlLoadExtDtdDefaultValue')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefLoadExtDtdDefaultValue...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       'xmlThrDefLoadExtDtdDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlParserDebugEntities...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       '__get_xmlParserDebugEntities')
+     d                                     like(xmlCint)
 
      d set_xmlParserDebugEntities...
      d                 pr                  extproc(
      d                                       '__set_xmlParserDebugEntities')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefParserDebugEntities...
-     d                 pr            10i 0 extproc(
+     d                 pr                  extproc(
      d                                       'xmlThrDefParserDebugEntities')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlParserVersion...
      d                 pr              *   extproc('__get_xmlParserVersion')    const char *
@@ -447,43 +465,49 @@
      d  value                          *   value options(*string)               const char *
 
      d get_xmlPedanticParserDefaultValue...
-     d                 pr            10i 0 extproc('__get_xmlPedantic+
+     d                 pr                  extproc('__get_xmlPedantic+
      d                                       ParserDefaultValue')
+     d                                     like(xmlCint)
 
      d set_xmlPedanticParserDefaultValue...
      d                 pr                  extproc('__set_xmlPedantic+
      d                                       ParserDefaultValue')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefPedanticParserDefaultValue...
-     d                 pr            10i 0 extproc('xmlThrDefPedantic+
+     d                 pr                  extproc('xmlThrDefPedantic+
      d                                       ParserDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlSaveNoEmptyTags...
-     d                 pr            10i 0 extproc('__get_xmlSaveNoEmptyTags')
+     d                 pr                  extproc('__get_xmlSaveNoEmptyTags')
+     d                                     like(xmlCint)
 
      d set_xmlSaveNoEmptyTags...
      d                 pr                  extproc('__set_xmlSaveNoEmptyTags')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefSaveNoEmptyTags...
-     d                 pr            10i 0 extproc('xmlThrDefSaveNoEmptyTags')
-     d  v                            10i 0 value
+     d                 pr                  extproc('xmlThrDefSaveNoEmptyTags')
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlSubstituteEntitiesDefaultValue...
-     d                 pr            10i 0 extproc('__get_xmlSubstitute+
+     d                 pr                  extproc('__get_xmlSubstitute+
      d                                       EntitiesDefaultValue')
+     d                                     like(xmlCint)
 
      d set_xmlSubstituteEntitiesDefaultValue...
      d                 pr                  extproc('__set_xmlSubstitute+
      d                                       EntitiesDefaultValue')
-     d  value                        10i 0 value
+     d  value                              value like(xmlCint)
 
      d xmlThrDefSubstituteEntitiesDefaultValue...
-     d                 pr            10i 0 extproc('xmlThrDefSubstitute+
+     d                 pr                  extproc('xmlThrDefSubstitute+
      d                                       EntitiesDefaultValue')
-     d  v                            10i 0 value
+     d                                     like(xmlCint)
+     d  v                                  value like(xmlCint)
 
      d get_xmlRegisterNodeDefaultValue...
      d                 pr                  extproc('__get_xmlRegisterNode+
@@ -552,6 +576,6 @@
      d                                     like(xmlOutputBufferPtr)
      d  URI                            *   value options(*string)               const char *
      d  encoder                            value like(xmlCharEncodingHandlerPtr)
-     d  compression                  10i 0 value
+     d  compression                        value like(xmlCint)
 
       /endif                                                                    XML_GLOBALS_H

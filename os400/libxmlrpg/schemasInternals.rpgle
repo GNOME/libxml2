@@ -15,12 +15,15 @@
       /include "libxmlrpg/xmlversion"
 
       /if defined(LIBXML_SCHEMAS_ENABLED)
+
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/xmlregexp"
       /include "libxmlrpg/hash"
       /include "libxmlrpg/dict"
 
      d xmlSchemaValType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SCHEMAS_UNKNOWN...
      d                 c                   0
      d  XML_SCHEMAS_STRING...
@@ -119,7 +122,8 @@
       * XML Schemas defines multiple type of types.
 
      d xmlSchemaTypeType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SCHEMA_TYPE_BASIC...                                                A builtin datatype
      d                 c                   1
      d  XML_SCHEMA_TYPE_ANY...
@@ -202,7 +206,8 @@
      d                 c                   2001
 
      d xmlSchemaContentType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SCHEMA_CONTENT_UNKNOWN...
      d                 c                   0
      d  XML_SCHEMA_CONTENT_EMPTY...

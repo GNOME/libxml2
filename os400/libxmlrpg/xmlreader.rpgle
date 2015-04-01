@@ -24,7 +24,8 @@
       * is used.
 
      d xmlParserSeverities...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_PARSER_SEVERITY_VALIDITY_WARNING...
      d                 c                   1
      d  XML_PARSER_SEVERITY_VALIDITY_ERROR...
@@ -41,7 +42,8 @@
       * Internal state values for the reader.
 
      d xmlTextReaderMode...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_TEXTREADER_MODE_INITIAL...
      d                 c                   0
      d  XML_TEXTREADER_MODE_INTERACTIVE...
@@ -62,7 +64,8 @@
       * xmlReaderForxxx APIs now.
 
      d xmlParserProperties...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_PARSER_LOADDTD...
      d                 c                   1
      d  XML_PARSER_DEFAULTATTRS...
@@ -76,7 +79,8 @@
       *
       * Predefined constants for the different types of nodes.
 
-     d xmlReaderTypes  s             10i 0 based(######typedef######)           enum
+     d xmlReaderTypes  s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_READER_TYPE_NONE...
      d                 c                   0
      d  XML_READER_TYPE_ELEMENT...

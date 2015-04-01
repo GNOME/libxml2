@@ -13,6 +13,8 @@
 
       /if defined(LIBXML_REGEXP_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
+
       * xmlRegexpPtr:
       *
       * A libxml regular expression, they can actually be far more complex
@@ -137,7 +139,8 @@
 
      d xmlExpNodePtr   s               *   based(######typedef######)
 
-     d xmlExpNodeType  s             10i 0 based(######typedef######)           enum
+     d xmlExpNodeType  s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_EXP_EMPTY  c                   0
      d  XML_EXP_FORBID...
      d                 c                   1

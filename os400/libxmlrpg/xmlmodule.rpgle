@@ -13,6 +13,8 @@
 
       /if defined(LIBXML_MODULES_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
+
       * xmlModulePtr:
       *
       * A handle to a dynamically loaded module
@@ -24,7 +26,8 @@
       * enumeration of options that can be passed down to xmlModuleOpen()
 
      d xmlModuleOption...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_MODULE_LAZY...                                                      Lazy binding
      d                 c                   1
      d  XML_MODULE_LOCAL...                                                     Local binding

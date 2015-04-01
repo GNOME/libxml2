@@ -10,10 +10,12 @@
       /define XML_PATTERN_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/tree"
-      /include "libxmlrpg/dict"
 
       /if defined(LIBXML_PATTERN_ENABLED)
+
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/tree"
+      /include "libxmlrpg/dict"
 
       * xmlPattern:
       *
@@ -28,7 +30,8 @@
       * matching with this module
 
      d xmlPatternFlags...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_PATTERN_DEFAULT...                                                  Simple pattern match
      d                 c                   X'0000'
      d  XML_PATTERN_XPATH...                                                    Std XPath pattern

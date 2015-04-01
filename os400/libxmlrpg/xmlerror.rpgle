@@ -5,16 +5,18 @@
       *
       * Author: Patrick Monnerat <pm@datasphere.ch>, DATASPHERE S.A.
 
-      /include "libxmlrpg/parser"
-
       /if not defined(XML_ERROR_H__)
       /define XML_ERROR_H__
+
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/parser"
 
       * xmlErrorLevel:
       *
       * Indicates the level of an error
 
-     d xmlErrorLevel   s             10i 0 based(######typedef######)           enum
+     d xmlErrorLevel   s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ERR_NONE   c                   0
      d  XML_ERR_WARNING...                                                      A simple warning
      d                 c                   1
@@ -25,7 +27,8 @@
       *
       * Indicates where an error may have come from
 
-     d xmlErrorDomain  s             10i 0 based(######typedef######)           enum
+     d xmlErrorDomain  s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_FROM_NONE  c                   0
      d  XML_FROM_PARSER...                                                      XML parser
      d                 c                   1
@@ -105,7 +108,8 @@
       * This is an error that the XML (or HTML) parser can generate
 
      d xmlParserErrors...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ERR_OK     c                   0
      d  XML_ERR_INTERNAL_ERROR...
      d                 c                   1

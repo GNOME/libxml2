@@ -9,19 +9,21 @@
       /define XML_XMLSAVE_H__
 
       /include "libxmlrpg/xmlversion"
+
+      /if defined(LIBXML_OUTPUT_ENABLED)
+
       /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/encoding"
       /include "libxmlrpg/xmlIO"
-
-      /if defined(LIBXML_OUTPUT_ENABLED)
 
       * xmlSaveOption:
       *
       * This is the set of XML save options that can be passed down
       * to the xmlSaveToFd() and similar calls.
 
-     d xmlSaveOption   s             10i 0 based(######typedef######)           enum
+     d xmlSaveOption   s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SAVE_FORMAT...                                                      Format save output
      d                 c                   X'0001'
      d  XML_SAVE_NO_DECL...                                                     Drop xml declaration

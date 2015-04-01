@@ -67,7 +67,8 @@
       * need or double it's allocated size each time it is found too small.
 
      d xmlBufferAllocationScheme...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_BUFFER_ALLOC_DOUBLEIT...
      d                 c                   0
      d  XML_BUFFER_ALLOC_EXACT...
@@ -150,7 +151,8 @@
       * Actually this had diverged a bit, and now XML_DOCUMENT_TYPE_NODE should
       * be deprecated to use an XML_DTD_NODE.
 
-     d xmlElementType  s             10i 0 based(######typedef######)           enum
+     d xmlElementType  s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ELEMENT_NODE...
      d                 c                   1
      d  XML_ATTRIBUTE_NODE...
@@ -212,7 +214,8 @@
       * A DTD Attribute type definition.
 
      d xmlAttributeType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ATTRIBUTE_CDATA...
      d                 c                   1
      d  XML_ATTRIBUTE_ID...
@@ -239,7 +242,8 @@
       * A DTD Attribute default definition.
 
      d xmlAttributeDefault...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ATTRIBUTE_NONE...
      d                 c                   1
      d  XML_ATTRIBUTE_REQUIRED...
@@ -298,7 +302,8 @@
       * Possible definitions of element content types.
 
      d xmlElementContentType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ELEMENT_CONTENT_PCDATA...
      d                 c                   1
      d  XML_ELEMENT_CONTENT_ELEMENT...
@@ -313,7 +318,8 @@
       * Possible definitions of element content occurrences.
 
      d xmlElementContentOccur...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ELEMENT_CONTENT_ONCE...
      d                 c                   1
      d  XML_ELEMENT_CONTENT_OPT...
@@ -347,7 +353,8 @@
       * The different possibilities for an element content type.
 
      d xmlElementTypeVal...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_ELEMENT_TYPE_UNDEFINED...
      d                 c                   0
      d  XML_ELEMENT_TYPE_EMPTY...
@@ -515,7 +522,8 @@
       * Some of them are linked to similary named xmlParserOption
 
      d xmlDocProperties...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_DOC_WELLFORMED...
      d                 c                   X'00000001'
      d  XML_DOC_NSVALID...

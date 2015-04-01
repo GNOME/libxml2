@@ -21,6 +21,7 @@
       /if defined(LIBXML_C14N_ENABLED)
       /if defined(LIBXML_OUTPUT_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/xpath"
 
@@ -52,7 +53,8 @@
       * Predefined values for C14N modes
 
      d xmlBufferAllocationScheme...
-     d xmlC14NMode     s             10i 0 based(######typedef######)           enum
+     d xmlC14NMode     s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_C14N_1_0   c                   0                                    Original C14N 1.0
      d  XML_C14N_EXCLUSIVE_1_0...                                               Exclusive C14N 1.0
      d                 c                   1

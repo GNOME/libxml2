@@ -12,10 +12,12 @@
 
       /if defined(LIBXML_SCHEMATRON_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
 
      d xmlSchematronValidOptions...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SCHEMATRON_OUT_QUIET...                                             Quiet no report
      d                 c                   X'0001'
      d  XML_SCHEMATRON_OUT_TEXT...                                              Build textual report

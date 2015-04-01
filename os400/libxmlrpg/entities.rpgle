@@ -10,11 +10,13 @@
       /define XML_ENTITIES_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
 
       * The different valid entity types.
 
-     d xmlEntityType   s             10i 0 based(######typedef######)           enum
+     d xmlEntityType   s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_INTERNAL_GENERAL_ENTITY...
      d                 c                   1
      d  XML_EXTERNAL_GENERAL_PARSED_ENTITY...

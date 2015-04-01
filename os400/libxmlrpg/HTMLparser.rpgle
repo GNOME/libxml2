@@ -12,10 +12,11 @@
       /define HTML_PARSER_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/xmlTypesC"
-      /include "libxmlrpg/parser"
 
       /if defined(LIBXML_HTML_ENABLED)
+
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/parser"
 
       * Most of the back-end structures from XML and HTML are shared.
 
@@ -236,7 +237,8 @@
       * to the xmlReadDoc() and similar calls.
 
      d htmlParserOption...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  HTML_PARSE_RECOVER...                                                   Relaxed parsing
      d                 c                   X'00000001'
      d  HTML_PARSE_NODEFDTD...                                                  No default doctype
@@ -350,7 +352,8 @@
 
       * Further knowledge of HTML structure
 
-     d htmlStatus      s             10i 0 based(######typedef######)           enum
+     d htmlStatus      s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  HTML_NA        c                   X'0000'                              No check at all
      d  HTML_INVALID   c                   X'0001'
      d  HTML_DEPRECATED...

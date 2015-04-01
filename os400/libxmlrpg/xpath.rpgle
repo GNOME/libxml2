@@ -18,10 +18,10 @@
       /define XML_XPATH_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/xmlTypesC"
 
       /if defined(LIBXML_XPATH_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/xmlerror"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/hash"
@@ -37,7 +37,8 @@
 
       * The set of XPath error codes.
 
-     d xmlXPathError   s             10i 0 based(######typedef######)           enum
+     d xmlXPathError   s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XPATH_EXPRESSION_OK...
      d                 c                   0
      d  XPATH_NUMBER_ERROR...
@@ -109,7 +110,8 @@
       * @@ XPointer will add more types !
 
      d xmlXPathObjectType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XPATH_UNDEFINED...
      d                 c                   0
      d  XPATH_NODESET  c                   1

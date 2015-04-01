@@ -13,12 +13,14 @@
 
       /if defined(LIBXML_SCHEMAS_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
 
       * This error codes are obsolete; not used any more.
 
      d xmlSchemaValidError...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SCHEMAS_ERR_OK...
      d                 c                   0
      d  XML_SCHEMAS_ERR_NOROOT...
@@ -81,7 +83,8 @@
       * This is the set of XML Schema validation options.
 
      d xmlSchemaValidOption...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
       *
       * Default/fixed: create an attribute node
       * or an element's text node on the instance.

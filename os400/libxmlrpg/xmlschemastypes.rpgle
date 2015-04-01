@@ -10,15 +10,16 @@
       /define XML_SCHEMA_TYPES_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/xmlTypesC"
 
       /if defined(LIBXML_SCHEMAS_ENABLED)
 
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/schemasInternals"
       /include "libxmlrpg/xmlschemas"
 
      d xmlSchemaWhitespaceValueType...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_SCHEMA_WHITESPACE_UNKNOWN...
      d                 c                   0
      d  XML_SCHEMA_WHITESPACE_PRESERVE...

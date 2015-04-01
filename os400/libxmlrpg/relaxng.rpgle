@@ -9,10 +9,12 @@
       /define XML_RELAX_NG__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/hash"
-      /include "libxmlrpg/xmlstring"
 
       /if defined(LIBXML_SCHEMAS_ENABLED)
+
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/hash"
+      /include "libxmlrpg/xmlstring"
 
      d xmlRelaxNGPtr   s               *   based(######typedef######)
 
@@ -51,7 +53,8 @@
       * List of possible Relax NG validation errors
 
      d xmlRelaxNGValidErr...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_RELAXNG_OK...
      d                 c                   0
      d  XML_RELAXNG_ERR_MEMORY...
@@ -138,7 +141,8 @@
       * List of possible Relax NG Parser flags
 
      d xmlRelaxNGParserFlag...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_RELAXNGP_NONE...
      d                 c                   0
      d  XML_RELAXNGP_FREE_DOC...

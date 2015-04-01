@@ -16,10 +16,12 @@
       /define XML_CATALOG_H__
 
       /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/xmlstring"
-      /include "libxmlrpg/tree"
 
       /if defined(LIBXML_CATALOG_ENABLED)
+
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/xmlstring"
+      /include "libxmlrpg/tree"
 
       * XML_CATALOGS_NAMESPACE:
       *
@@ -38,7 +40,8 @@
       * The API is voluntarily limited to general cataloging.
 
      d xmlCatalogPrefer...
-     d                 s             10u 0 based(######typedef######)           enum type
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d XML_CATA_PREFER_NONE...
      d                 c                   0
      d XML_CATA_PREFER_PUBLIC...
@@ -47,7 +50,8 @@
      d                 c                   2
 
      d xmlCatalogAllow...
-     d                 s             10u 0 based(######typedef######)           enum type
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d XML_CATA_ALLOW_NONE...
      d                 c                   0
      d XML_CATA_ALLOW_GLOBAL...

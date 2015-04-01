@@ -103,7 +103,8 @@
       * The recursive one use the state info for entities processing.
 
      d xmlParserInputState...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_PARSER_EOF...                                                       Nothing to parse
      d                 c                   -1
      d  XML_PARSER_START...                                                     Nothing parsed
@@ -168,7 +169,8 @@
       *
       * A parser can operate in various modes
 
-     d xmlParserMode   s             10i 0 based(######typedef######)           enum
+     d xmlParserMode   s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_PARSE_UNKNOWN...
      d                 c                   0
      d  XML_PARSE_DOM...
@@ -1194,7 +1196,8 @@
       * to the xmlReadDoc() and similar calls.
 
      d xmlParserOption...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_PARSE_RECOVER...                                                    Recover on errors
      d                 c                   X'00000001'
      d  XML_PARSE_NOENT...                                                      Substitute entities
@@ -1347,7 +1350,8 @@
       * or disabled at compile-time.
       * They used to be called XML_FEATURE_xxx but this clashed with Expat
 
-     d xmlFeature      s             10i 0 based(######typedef######)           enum
+     d xmlFeature      s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_WITH_THREAD...
      d                 c                   1
      d  XML_WITH_TREE  c                   2

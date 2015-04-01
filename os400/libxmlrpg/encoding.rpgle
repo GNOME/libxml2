@@ -21,6 +21,7 @@
       /define XML_CHAR_ENCODING_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
 
       * xmlCharEncoding:
       *
@@ -43,7 +44,8 @@
       * the specific UTF-16LE and UTF-16BE are present.
 
      d xmlCharEncoding...
-     d                 s             10i 0 based(######typedef######)           enum
+     d                 s                   based(######typedef######)
+     d                                     like(xmlCenum)
      d  XML_CHAR_ENCODING_ERROR...                                              No encoding detected
      d                 c                   -1
      d  XML_CHAR_ENCODING_NONE...                                               No encoding detected

@@ -90,8 +90,8 @@
      d xmlBuffer       ds                  based(xmlBufferPtr)
      d                                     align qualified
      d  content                        *                                        xmlChar *
-     d  use                          10u 0                                      The buffer size used
-     d  size                         10u 0                                      The buffer size
+     d  use                                like(xmlCuint)
+     d  size                               like(xmlCuint)
      d  alloc                              like(xmlBufferAllocationScheme)      The realloc method
      d  contentIO                      *                                        xmlChar *
 
@@ -734,11 +734,11 @@
      d xmlBufferShrink...
      d                 pr            10i 0 extproc('xmlBufferShrink')
      d  buf                                value like(xmlBufferPtr)
-     d  len                          10u 0 value                                str length
+     d  len                                value like(xmlCuint)
 
      d xmlBufferGrow   pr            10i 0 extproc('xmlBufferGrow')
      d  buf                                value like(xmlBufferPtr)
-     d  len                          10u 0 value                                str length
+     d  len                                value like(xmlCuint)
 
      d xmlBufferEmpty  pr                  extproc('xmlBufferEmpty')
      d  buf                                value like(xmlBufferPtr)

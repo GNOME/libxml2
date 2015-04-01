@@ -26,8 +26,8 @@
 
      d xmlChLRange     ds                  based(xmlChLRangePtr)
      d                                     align qualified
-     d  low                          10u 0
-     d  high                         10u 0
+     d  low                                like(xmlCuint)
+     d  high                               like(xmlCuint)
 
      d xmlChRangeGroupPtr...
      d                 s               *   based(######typedef######)
@@ -43,7 +43,7 @@
       * Range checking routine
 
      d xmlCharInRange  pr            10i 0 extproc('xmlCharInRange')
-     d val                           10u 0 value
+     d val                                 value like(xmlCuint)
      d group                               like(xmlChRangeGroupPtr)             const
 
      d xmlIsBaseCharGroup...
@@ -71,28 +71,28 @@
      d                                     likeds(xmlChRangeGroup)              const
 
      d xmlIsBaseChar   pr            10i 0 extproc('xmlIsBaseChar')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsBlank      pr            10i 0 extproc('xmlIsBlank')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsChar       pr            10i 0 extproc('xmlIsChar')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsCombining  pr            10i 0 extproc('xmlIsCombining')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsDigit      pr            10i 0 extproc('xmlIsDigit')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsExtender   pr            10i 0 extproc('xmlIsExtender')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsIdeographic...
      d                 pr            10i 0 extproc('xmlIsIdeographic')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
      d xmlIsPubidChar  pr            10i 0 extproc('xmlIsPubidChar')
-     d ch                            10u 0 value
+     d ch                                  value like(xmlCuint)
 
       /endif                                                                    XML_CHVALID_H__

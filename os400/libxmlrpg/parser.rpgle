@@ -758,7 +758,7 @@
      d  cdataBlock                         like(cdataBlockSAXFunc)
      d  externalSubset...
      d                                     like(externalSubsetSAXFunc)
-     d  initialized                  10u 0
+     d  initialized                        like(xmlCuint)
       *
       * The following fields are extensions available only on version 2
       *
@@ -812,7 +812,7 @@
      d  cdataBlock                         like(cdataBlockSAXFunc)
      d  externalSubset...
      d                                     like(externalSubsetSAXFunc)
-     d  initialized                  10u 0
+     d  initialized                        like(xmlCuint)
 
       * xmlExternalEntityLoader:
       * @URL: The System ID of the resource requested

@@ -97,7 +97,7 @@
      d htmlEntityDesc...
      d                 ds                  based(htmlEntityDescPtr)
      d                                     align qualified
-     d  value                        10u 0                                      Unicode char value
+     d  value                              like(xmlCuint)
      d  name                           *                                        const char *
      d  desc                           *                                        const char *
 
@@ -115,7 +115,7 @@
      d htmlEntityValueLookup...
      d                 pr                  extproc('htmlEntityValueLookup')
      d                                     like(htmlEntityDescPtr)              const
-     d  value                        10u 0 value
+     d  value                              value like(xmlCuint)
 
      d htmlIsAutoClosed...
      d                 pr            10i 0 extproc('htmlIsAutoClosed')

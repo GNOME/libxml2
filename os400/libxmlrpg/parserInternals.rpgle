@@ -22,7 +22,8 @@
       * boundary feature, use XML_PARSE_HUGE option to override it.
 
      d xmlParserMaxDepth...
-     d                 s             10u 0 import('xmlParserMaxDepth')
+     d                 s                   import('xmlParserMaxDepth')
+     d                                     like(xmlCuint)
 
       * XML_MAX_TEXT_LENGTH:
       *

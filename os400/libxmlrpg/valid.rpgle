@@ -67,7 +67,7 @@
      d  nodeMax                      10i 0                                      Max stack depth
      d  nodeTab                        *                                        xmlNodePtr *
       *
-     d  finishDtd                    10u 0                                      Finish validtng DTD?
+     d  finishDtd                          like(xmlCuint)
      d  doc                                like(xmlDocPtr)                      The document
      d  valid                        10i 0                                      Temp check result
       *

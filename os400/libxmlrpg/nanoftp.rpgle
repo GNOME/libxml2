@@ -9,7 +9,7 @@
       /if not defined(NANO_FTP_H__)
       /define NANO_FTP_H__
 
-      /include /libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlversion"
 
       /if defined(LIBXML_FTP_ENABLED)
 

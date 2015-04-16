@@ -10,6 +10,7 @@
       /define DEBUG_MEMORY_ALLOC__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
 
       * DEBUG_MEMORY:
       *
@@ -96,7 +97,7 @@
      d  func                               value like(xmlMallocFunc)
 
      d xmlMalloc       pr              *   extproc('__call_xmlMalloc')          void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
 
      d get_xmlMallocAtomic...
      d                 pr                  extproc('__get_xmlMallocAtomic')
@@ -108,7 +109,7 @@
 
      d xmlMallocAtomic...
      d                 pr              *   extproc('__call_xmlMallocAtomic')    void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
 
      d get_xmlRealloc  pr                  extproc('__get_xmlRealloc')
      d                                     like(xmlReallocFunc)
@@ -118,7 +119,7 @@
 
      d xmlRealloc      pr              *   extproc('__call_xmlRealloc')         void *
      d  mem                            *   value                                void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
 
      d get_xmlMemStrdup...
      d                 pr                  extproc('__get_xmlMemStrdup')
@@ -184,7 +185,7 @@
      d xmlMmDisplayLast...
      d                 pr                  extproc('xmlMemDisplayLast')
      d  fp                             *   value                                FILE *
-     d  nbBytes                      20i 0 value
+     d  nbBytes                            value like(xmlClong)
 
      d xmlMemShow      pr                  extproc('xmlMemShow')
      d  fp                             *   value                                FILE *
@@ -193,11 +194,11 @@
      d xmlMemoryDump   pr                  extproc('xmlMemoryDump')
 
      d xmlMemMalloc    pr              *   extproc('xmlMemMalloc')              void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
 
      d xmlMemRealloc   pr              *   extproc('xmlMemRealloc')             void *
      d  ptr                            *   value                                void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
 
      d xmlMemFree      pr                  extproc('xmlMemFree')
      d  ptr                            *   value                                void *
@@ -207,19 +208,19 @@
      d  str                            *   value options(*string)               const char *
 
      d xmlMallocLoc    pr              *   extproc('xmlMallocLoc')              void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
      d  file                           *   value options(*string)               const char *
      d  line                         10i 0 value
 
      d xmlReallocLoc   pr              *   extproc('xmlReallocLoc')              void *
      d  ptr                            *   value                                void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
      d  file                           *   value options(*string)               const char *
      d  line                         10i 0 value
 
      d xmlMallocAtomicLoc...
      d                 pr              *   extproc('xmlMallocAtomicLoc')        void *
-     d  size                         10u 0 value                                size_t
+     d  size                               value like(xmlCsize_t)
      d  file                           *   value options(*string)               const char *
      d  line                         10i 0 value
 

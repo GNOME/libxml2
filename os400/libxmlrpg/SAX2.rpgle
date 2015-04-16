@@ -213,20 +213,20 @@
       /endif                                                                    LIBXML_SAX1_ENABLED
 
      d xmlSAXVersion   pr            10i 0 extproc('xmlSAXVersion')
-     d  hdlr                               like(xmlSAXHandler)
+     d  hdlr                               likeds(xmlSAXHandler)
      d  version                      10i 0 value
 
      d xmlSAX2InitDefaultSAXHandler...
      d                 pr                  extproc(
      d                                      'xmlSAX2InitDefaultSAXHandler')
-     d  hdlr                               like(xmlSAXHandler)
+     d  hdlr                               likeds(xmlSAXHandler)
      d  warning                      10i 0 value
 
       /if defined(LIBXML_HTML_ENABLED)
      d xmlSAX2InitHtmlDefaultSAXHandler...
      d                 pr                  extproc(
      d                                      'xmlSAX2InitHtmlDefaultSAXHandler')
-     d  hdlr                               like(xmlSAXHandler)
+     d  hdlr                               likeds(xmlSAXHandler)
 
      d htmlDefaultSAXHandlerInit...
      d                 pr                  extproc('htmlDefaultSAXHandlerInit')
@@ -236,7 +236,7 @@
      d xmlSAX2InitDocbDefaultSAXHandler...
      d                 pr                  extproc(
      d                                      'xmlSAX2InitDocbDefaultSAXHandler')
-     d  hdlr                               like(xmlSAXHandler)
+     d  hdlr                               likeds(xmlSAXHandler)
 
      d docbDefaultSAXHandlerInit...
      d                 pr                  extproc('docbDefaultSAXHandlerInit')

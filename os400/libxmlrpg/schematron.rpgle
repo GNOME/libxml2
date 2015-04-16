@@ -101,7 +101,7 @@
      d  err                                value
      d                                     like(xmlSchematronValidityErrorFunc)
      d  warn                               value like(
-     d                                     xmlSchematronValidityWarningFunc)
+     d                                       xmlSchematronValidityWarningFunc)
      d  ctx                            *   value                                void *
 
      d xmlSchematronGetParserErrors...

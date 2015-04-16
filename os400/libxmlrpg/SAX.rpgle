@@ -186,19 +186,19 @@
       /if defined(LIBXML_SAX1_ENABLED)
      d initxmlDefaultSAXHandler...
      d                 pr                  extproc('initxmlDefaultSAXHandler')
-     d  hdlr                               like(xmlSAXHandlerV1)
+     d  hdlr                               likeds(xmlSAXHandlerV1)
      d  warning                      10i 0 value
 
       /if defined(LIBXML_HTML_ENABLED)
      d inithtmlDefaultSAXHandler...
      d                 pr                  extproc('inithtmlDefaultSAXHandler')
-     d  hdlr                               like(xmlSAXHandlerV1)
+     d  hdlr                               likeds(xmlSAXHandlerV1)
       /endif
 
       /if defined(LIBXML_DOCB_ENABLED)
      d initdocbDefaultSAXHandler...
      d                 pr                  extproc('initdocbDefaultSAXHandler')
-     d  hdlr                               like(xmlSAXHandlerV1)
+     d  hdlr                               likeds(xmlSAXHandlerV1)
       /endif
       /endif                                                                    LIBXML_SAX1_ENABLED
 

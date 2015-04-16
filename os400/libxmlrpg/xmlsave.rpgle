@@ -9,6 +9,7 @@
       /define XML_XMLSAVE_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/encoding"
       /include "libxmlrpg/xmlIO"
@@ -68,11 +69,13 @@
      d  encoding                       *   value options(*string)               const char *
      d  options                      10i 0 value
 
-     d xmlSaveDoc      pr            20i 0 extproc('xmlSaveDoc')
+     d xmlSaveDoc      pr                  extproc('xmlSaveDoc')
+     d                                     like(xmlClong)
      d  ctxt                               value like(xmlSaveCtxtPtr)
      d  doc                                value like(xmlDocPtr)
 
-     d xmlSaveTree     pr            20i 0 extproc('xmlSaveTree')
+     d xmlSaveTree     pr                  extproc('xmlSaveTree')
+     d                                     like(xmlClong)
      d  ctxt                               value like(xmlSaveCtxtPtr)
      d  node                               value like(xmlNodePtr)
 

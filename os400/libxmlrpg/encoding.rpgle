@@ -234,25 +234,25 @@
 
      d xmlCharEncOutFunc...
      d                 pr            10i 0 extproc('xmlCharEncOutFunc')
-     d  handler                            like(xmlCharEncodingHandler)
+     d  handler                            likeds(xmlCharEncodingHandler)
      d  out                                value like(xmlBufferPtr)
      d  in                                 value like(xmlBufferPtr)
 
      d xmlCharEncInFunc...
      d                 pr            10i 0 extproc('xmlCharEncInFunc')
-     d  handler                            like(xmlCharEncodingHandler)
+     d  handler                            likeds(xmlCharEncodingHandler)
      d  out                                value like(xmlBufferPtr)
      d  in                                 value like(xmlBufferPtr)
 
      d xmlCharEncFirstLine...
      d                 pr            10i 0 extproc('xmlCharEncFirstLine')
-     d  handler                            like(xmlCharEncodingHandler)
+     d  handler                            likeds(xmlCharEncodingHandler)
      d  out                                value like(xmlBufferPtr)
      d  in                                 value like(xmlBufferPtr)
 
      d xmlCharEncCloseFunc...
      d                 pr            10i 0 extproc('xmlCharEncCloseFunc')
-     d  handler                            like(xmlCharEncodingHandler)
+     d  handler                            likeds(xmlCharEncodingHandler)
 
       * Export a few useful functions
 

@@ -9,6 +9,7 @@
       /define XML_PARSER_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
       /include "libxmlrpg/dict"
       /include "libxmlrpg/hash"
@@ -60,7 +61,7 @@
       *       so even if there is an overflow this should not give troubles
       *       for parsing very large instances.
       *
-     d  consumed                     20u 0                                      # consumed xmlChars
+     d  consumed                           like(xmlCulong)                      # consumed xmlChars
      d  free                               like(xmlParserInputDeallocate)       base deallocator
      d  encoding                       *                                        const xmlChar *
      d  version                        *                                        const xmlChar *
@@ -81,10 +82,10 @@
      d                                     align qualified
      d  node                               like(xmlNodePtr)                     const
       * Position & line # that text that created the node begins & ends on
-     d  begin_pos                    20u 0
-     d  begin_line                   20u 0
-     d  end_pos                      20u 0
-     d  end_line                     20u 0
+     d  begin_pos                          like(xmlCulong)
+     d  begin_line                         like(xmlCulong)
+     d  end_pos                            like(xmlCulong)
+     d  end_line                           like(xmlCulong)
 
      d xmlParserNodeInfoSeqPtr...
      d                 s               *   based(######typedef######)
@@ -92,8 +93,8 @@
      d xmlParserNodeInfoSeq...
      d                 ds                  based(xmlParserNodeInfoSeqPtr)
      d                                     align qualified
-     d  maximum                      20u 0
-     d  length                       20u 0
+     d  maximum                            like(xmlCulong)
+     d  length                             like(xmlCulong)
      d  buffer                             like(xmlParserNodeInfoPtr)
 
       * xmlParserInputState:
@@ -221,18 +222,18 @@
      d  nodeTab                        *                                        xmlNodePtr *
       *
      d  record_info                  10i 0                                      Keep node info ?
-     d  node_seq                           like(xmlParserNodeInfoSeq)           Parsed nodes info
+     d  node_seq                           likeds(xmlParserNodeInfoSeq)         Parsed nodes info
       *
      d  errNo                        10i 0                                      Error code
       *
      d  hasExternalSubset...
      d                               10i 0
-     d  hashPErefs                   10i 0
+     d  hasPErefs                    10i 0
      d  external                     10i 0                                      Parsing ext. entity?
       *
      d  valid                        10i 0                                      Valid document ?
      d  validate                     10i 0                                      Try to validate ?
-     d  vctxt                              like(xmlValidCtxt)                   Validity context
+     d  vctxt                              likeds(xmlValidCtxt)                 Validity context
       *
      d  instate                            like(xmlParserInputState)            Current input type
      d  token                        10i 0                                      Next look-ahead char
@@ -246,8 +247,8 @@
      d  nameMax                      10i 0                                      Max stack depth
      d  nameTab                        *                                        const xmlChar * *
       *
-     d  nbChars                      20i 0                                      # xmlChars processed
-     d  checkIndex                   20i 0                                      4 progressive parse
+     d  nbChars                            like(xmlClong)                       # xmlChars processed
+     d  checkIndex                         like(xmlClong)                       4 progressive parse
      d  keepBlanks                   10i 0                                      Ugly but ...
      d  disableSAX                   10i 0                                      Disable SAX cllbacks
      d  inSubset                     10i 0                                      In int 1/ext 2 sbset
@@ -309,20 +310,20 @@
       *
       * the complete error informations for the last error.
       *
-     d  lastError                          like(xmlError)
+     d  lastError                          likeds(xmlError)
      d  parseMode                          like(xmlParserMode)                  The parser mode
-     d  nbentities                   20u 0                                      # entity references
-     d  sizeentities                 20u 0                                      Parsed entities size
+     d  nbentities                         like(xmlCulong)                      # entity references
+     d  sizeentities                       like(xmlCulong)                      Parsed entities size
       *
       * for use by HTML non-recursive parser
       *
-     d  nodeInfo                           like(xmlParserNodeInfo)              Current NodeInfo
+     d  nodeInfo                           like(xmlParserNodeInfoPtr)           Current NodeInfo
      d  nodeInfoNr                   10i 0                                      Parsing stack depth
      d  nodeInfoMax                  10i 0                                      Max stack depth
      d  nodeInfoTab                    *                                        xmlParserNodeInfo *
       *
      d  input_id                     10i 0                                      Label inputs ?
-     d  sizeentcopy                  20u 0                                      Entity copy volume
+     d  sizeentcopy                        like(xmlCulong)                      Entity copy volume
 
       * xmlSAXLocator:
       *
@@ -1151,7 +1152,8 @@
      d  seq                                value like(xmlParserNodeInfoSeqPtr)
 
      d xmlParserFindNodeInfoIndex...
-     d                 pr            20u 0 extproc('xmlParserFindNodeInfoIndex')
+     d                 pr                  extproc('xmlParserFindNodeInfoIndex')
+     d                                     like(xmlCulong)
      d  seq                                value like(xmlParserNodeInfoSeqPtr)
      d  node                               value like(xmlNodePtr)               const
 
@@ -1180,7 +1182,8 @@
       * Index lookup, actually implemented in the encoding module
 
      d xmlByteConsumed...
-     d                 pr            20i 0 extproc('xmlByteConsumed')
+     d                 pr                  extproc('xmlByteConsumed')
+     d                                     like(xmlClong)
      d  ctxt                               value like(xmlParserCtxtPtr)
 
       * New set of simpler/more flexible APIs

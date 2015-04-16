@@ -89,7 +89,7 @@
      d                 s              9    import('xmlStringTextNoenc')         \0 in 10th byte
 
      d xmlStringComment...
-     d                 s              7    import('xmlStringTextComment')       \0 in 8th byte
+     d                 s              7    import('xmlStringComment')           \0 in 8th byte
 
       * Function to finish the work of the macros where needed.
 

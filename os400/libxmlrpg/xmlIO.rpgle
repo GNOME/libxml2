@@ -9,6 +9,7 @@
       /define XML_IO_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
 
       * Those are the functions and datatypes for the parser input
       * I/O structures.
@@ -131,7 +132,7 @@
      d  raw                                like(xmlBufPtr)                      Raw input buffer
      d  compressed                   10i 0
      d  error                        10i 0
-     d  rawconsumed                  20u 0
+     d  rawconsumed                        like(xmlCulong)
 
       /if defined(LIBXML_OUTPUT_ENABLED)
      d xmlOutputBuffer...
@@ -307,7 +308,8 @@
      d  out                                value like(xmlOutputBufferPtr)
 
      d xmlOutputBufferGetSize...
-     d                 pr            10u 0 extproc('xmlOutputBufferGetSize')    size_t
+     d                 pr                  extproc('xmlOutputBufferGetSize')
+     d                                     like(xmlCsize_t)
      d  out                                value like(xmlOutputBufferPtr)
 
      d xmlOutputBufferWrite...

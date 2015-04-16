@@ -10,6 +10,7 @@
       /define XML_DICT_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/tree"
 
       * The dictionary.
@@ -27,12 +28,14 @@
      d                                     like(xmlDictPtr)
 
      d xmlDictSetLimit...
-     d                 pr            10u 0 extproc('xmlDictSetLimit')           size_t
+     d                 pr                  extproc('xmlDictSetLimit')
+     d                                     like(xmlCsize_t)
      d  dict                               value like(xmlDictPtr)
-     d  limit                        10u 0 value                                size_t
+     d  limit                              value like(xmlCsize_t)
 
      d xmlDictGetUsage...
-     d                 pr            10u 0 extproc('xmlDictGetUsage')           size_t
+     d                 pr                  extproc('xmlDictGetUsage')
+     d                                     like(xmlCsize_t)
      d  dict                               value like(xmlDictPtr)
 
      d xmlDictCreateSub...

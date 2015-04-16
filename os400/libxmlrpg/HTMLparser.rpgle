@@ -12,6 +12,7 @@
       /define HTML_PARSER_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/parser"
 
       /if defined(LIBXML_HTML_ENABLED)
@@ -63,13 +64,13 @@
      d htmlElemDesc    ds                  based(htmlElemDescPtr)
      d                                     align qualified
      d  name                           *                                        const char *
-     d  startTag                      3u 0                                      Start tag implied ?
-     d  endTag                        3u 0                                      End tag implied ?
-     d  saveEndTag                    3u 0                                      Save end tag ?
-     d  empty                         3u 0                                      Empty element ?
-     d  depr                          3u 0                                      Deprecated element ?
-     d  dtd                           3u 0                                      Loose DTD/Frameset
-     d  isinline                      3u 0                                      Block 0/inline elem?
+     d  startTag                           like(xmlCchar)                       Start tag implied ?
+     d  endTag                             like(xmlCchar)                       End tag implied ?
+     d  saveEndTag                         like(xmlCchar)                       Save end tag ?
+     d  empty                              like(xmlCchar)                       Empty element ?
+     d  depr                               like(xmlCchar)                       Deprecated element ?
+     d  dtd                                like(xmlCchar)                       Loose DTD/Frameset
+     d  isinline                           like(xmlCchar)                       Block 0/inline elem?
      d  desc                           *                                        const char *
       *
       * New fields encapsulating HTML structure

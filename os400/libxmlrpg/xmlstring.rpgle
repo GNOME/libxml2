@@ -10,6 +10,7 @@
       /define XML_STRING_H__
 
       /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
       /include "libxmlrpg/xmlstdarg"
 
       * xmlChar:
@@ -18,7 +19,8 @@
       * It's unsigned allowing to pinpoint case where char * are assigned
       * to xmlChar * (possibly making serialization back impossible).
 
-     d xmlChar         s              3u 0 based(######typedef######)
+     d xmlChar         s                   based(######typedef######)
+     d                                     like(xmlCuchar)
 
       * xmlChar handling
 

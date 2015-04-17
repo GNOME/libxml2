@@ -809,6 +809,7 @@ xmlShellReadline(char *prompt) {
 
     if (prompt != NULL)
 	fprintf(stdout, "%s", prompt);
+    fflush(stdout);
     if (!fgets(line_read, 500, stdin))
         return(NULL);
     line_read[500] = 0;

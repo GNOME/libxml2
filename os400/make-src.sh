@@ -239,3 +239,35 @@ then    rm -rf "${LIBIFSNAME}/${DYNBNDDIR}.BNDDIR"
         CMD="${CMD} OBJ((*LIBL/${SRVPGM} *SRVPGM))"
         system "${CMD}"
 fi
+
+
+#       Compile the ASCII main() stub.
+
+make_module     --ebcdic --sysiconv     LIBXMLMAIN  "${SCRIPTDIR}/libxmlmain.c"
+
+
+#       Compile and link program xmllint.
+
+if action_needed "${LIBIFSNAME}/XMLLINT.PGM" "xmllint.c" ||
+   action_needed "${LIBIFSNAME}/XMLLINT.PGM" "${LIBIFSNAME}/${SRVPGM}.SRVPGM" ||
+   action_needed "${LIBIFSNAME}/XMLLINT.PGM" "${LIBIFSNAME}/LIMXMLMAIN.MODULE"
+then    make_module XMLLINT xmllint.c
+        CMD="CRTPGM PGM(${TARGETLIB}/XMLLINT) MODULE(${TARGETLIB}/XMLLINT)"
+        CMD="${CMD} ENTMOD(${TARGETLIB}/LIBXMLMAIN)"
+        CMD="${CMD} BNDSRVPGM(QADRTTS) BNDDIR((${TARGETLIB}/${STATBNDDIR})"
+        if [ "${WITH_ZLIB}" -ne 0 ]
+        then    CMD="${CMD} (${ZLIB_LIB}/${ZLIB_BNDDIR})"
+        fi
+        CMD="${CMD}) ACTGRP(*NEW) TEXT('XML tool')"
+        CMD="${CMD} TGTRLS(${TGTRLS})"
+        system "${CMD}"
+        rm -f "${LIBIFSNAME}/XMLLINT.MODULE"
+fi
+
+#       Install xmllint in IFS.
+
+if [ ! -d "${IFSDIR}/bin" ]
+then    mkdir -p "${IFSDIR}/bin"
+fi
+rm -f "${IFSDIR}/bin/xmllint"
+ln -s "${LIBIFSNAME}/XMLLINT.PGM" "${IFSDIR}/bin/xmllint"

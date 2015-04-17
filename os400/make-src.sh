@@ -271,3 +271,30 @@ then    mkdir -p "${IFSDIR}/bin"
 fi
 rm -f "${IFSDIR}/bin/xmllint"
 ln -s "${LIBIFSNAME}/XMLLINT.PGM" "${IFSDIR}/bin/xmllint"
+
+#       Prepare the XMLLINT command and its response program.
+
+if action_needed "${LIBIFSNAME}/XMLLINTCL.PGM" "${SCRIPTDIR}/xmllintcl.c"
+then    make_module --ebcdic XMLLINTCL "${SCRIPTDIR}/xmllintcl.c"
+        CMD="CRTPGM PGM(${TARGETLIB}/XMLLINTCL) MODULE(${TARGETLIB}/XMLLINTCL)"
+        CMD="${CMD} ACTGRP(*NEW) TEXT('XMLLINT command response')"
+        CMD="${CMD} TGTRLS(${TGTRLS})"
+        system "${CMD}"
+        rm -f "${LIBIFSNAME}/XMLLINTCL.MODULE"
+fi
+
+if action_needed "${LIBIFSNAME}/TOOLS.FILE/XMLLINT.MBR"                 \
+                 "${SCRIPTDIR}/xmllint.cmd"
+then    CMD="CPY OBJ('${SCRIPTDIR}/xmllint.cmd')"
+        CMD="${CMD} TOOBJ('${LIBIFSNAME}/TOOLS.FILE/XMLLINT.MBR')"
+        CMD="${CMD} TOCCSID(${TGTCCSID}) DTAFMT(*TEXT) REPLACE(*YES)"
+        system "${CMD}"
+fi
+
+if action_needed "${LIBIFSNAME}/XMLLINT.CMD"                            \
+                 "${LIBIFSNAME}/TOOLS.FILE/XMLLINT.MBR"
+then    CMD="CRTCMD CMD(${TARGETLIB}/XMLLINT) PGM(${TARGETLIB}/XMLLINTCL)"
+        CMD="${CMD} SRCFILE(${TARGETLIB}/TOOLS) SRCMBR(XMLLINT) THDSAFE(*YES)"
+        CMD="${CMD} TEXT('XML tool') REPLACE(*YES)"
+        system "${CMD}"
+fi

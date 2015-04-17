@@ -62,11 +62,11 @@ INCLUDES="'`pwd`'"
 
 #       OS/400 specific modules first.
 
-make_module     DLFCN           "${SCRIPTDIR}/dlfcn/dlfcn.c"    ''      ebcdic
-make_module     ICONV           "${SCRIPTDIR}/iconv/iconv.c"    ''      ebcdic
-make_module     WRAPPERS        "${SCRIPTDIR}/wrappers.c"       ''      ebcdic
-make_module     TRANSCODE       "${SCRIPTDIR}/transcode.c"
-make_module     RPGSUPPORT      "${SCRIPTDIR}/rpgsupport.c"
+make_module     --ebcdic        DLFCN           "${SCRIPTDIR}/dlfcn/dlfcn.c"
+make_module     --ebcdic        ICONV           "${SCRIPTDIR}/iconv/iconv.c"
+make_module     --ebcdic        WRAPPERS        "${SCRIPTDIR}/wrappers.c"
+make_module                     TRANSCODE       "${SCRIPTDIR}/transcode.c"
+make_module                     RPGSUPPORT      "${SCRIPTDIR}/rpgsupport.c"
 
 #       Regular libxml2 modules.
 

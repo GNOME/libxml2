@@ -375,7 +375,7 @@ dlmakepath(char * path, size_t pathlen, const char * tail, size_t taillen)
                         case 2:
                                 if (tail[1] != '.')
                                         break;
-                                        
+
                                 pathlen = dlparentpath(path, pathlen);
 
                         case 1:

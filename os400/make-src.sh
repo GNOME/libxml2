@@ -298,3 +298,30 @@ then    CMD="CRTCMD CMD(${TARGETLIB}/XMLLINT) PGM(${TARGETLIB}/XMLLINTCL)"
         CMD="${CMD} TEXT('XML tool') REPLACE(*YES)"
         system "${CMD}"
 fi
+
+
+#       Compile and link program xmlcatalog.
+
+if action_needed "${LIBIFSNAME}/XMLCATALOG.PGM" "xmlcatalog.c" ||
+   action_needed "${LIBIFSNAME}/XMLCATALOG.PGM"                         \
+                 "${LIBIFSNAME}/${SRVPGM}.SRVPGM" ||
+   action_needed "${LIBIFSNAME}/XMLCATALOG.PGM"                         \
+                 "${LIBIFSNAME}/LIMXMLMAIN.MODULE"
+then    make_module XMLCATALOG xmlcatalog.c
+        CMD="CRTPGM PGM(${TARGETLIB}/XMLCATALOG)"
+        CMD="${CMD}  MODULE(${TARGETLIB}/XMLCATALOG)"
+        CMD="${CMD} ENTMOD(${TARGETLIB}/LIBXMLMAIN)"
+        CMD="${CMD} BNDSRVPGM(QADRTTS) BNDDIR((${TARGETLIB}/${STATBNDDIR})"
+        if [ "${WITH_ZLIB}" -ne 0 ]
+        then    CMD="${CMD} (${ZLIB_LIB}/${ZLIB_BNDDIR})"
+        fi
+        CMD="${CMD}) ACTGRP(*NEW) TEXT('XML/SGML catalog tool')"
+        CMD="${CMD} TGTRLS(${TGTRLS})"
+        system "${CMD}"
+        rm -f "${LIBIFSNAME}/XMLCATALOG.MODULE"
+fi
+
+#       Install xmlcatalog in IFS.
+
+rm -f "${IFSDIR}/bin/xmlcatalog"
+ln -s "${LIBIFSNAME}/XMLCATALOG.PGM" "${IFSDIR}/bin/xmlcatalog"

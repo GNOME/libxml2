@@ -17,7 +17,7 @@ cd "${TOPDIR}"
 echo '#pragma comment(user, "libxml2 version '"${LIBXML_VERSION}"'")' > os400.c
 echo '#pragma comment(user, __DATE__)' >> os400.c
 echo '#pragma comment(user, __TIME__)' >> os400.c
-echo '#pragma comment(copyright, "Copyright (C) 1998-2014 Daniel Veillard. OS/400 version by P. Monnerat.")' >> os400.c
+echo '#pragma comment(copyright, "Copyright (C) 1998-2015 Daniel Veillard. OS/400 version by P. Monnerat.")' >> os400.c
 make_module     OS400           os400.c
 LINK=                           # No need to rebuild service program yet.
 MODULES=
@@ -250,7 +250,7 @@ make_module     --ebcdic --sysiconv     LIBXMLMAIN  "${SCRIPTDIR}/libxmlmain.c"
 
 if action_needed "${LIBIFSNAME}/XMLLINT.PGM" "xmllint.c" ||
    action_needed "${LIBIFSNAME}/XMLLINT.PGM" "${LIBIFSNAME}/${SRVPGM}.SRVPGM" ||
-   action_needed "${LIBIFSNAME}/XMLLINT.PGM" "${LIBIFSNAME}/LIMXMLMAIN.MODULE"
+   action_needed "${LIBIFSNAME}/XMLLINT.PGM" "${LIBIFSNAME}/LIBXMLMAIN.MODULE"
 then    make_module XMLLINT xmllint.c
         CMD="CRTPGM PGM(${TARGETLIB}/XMLLINT) MODULE(${TARGETLIB}/XMLLINT)"
         CMD="${CMD} ENTMOD(${TARGETLIB}/LIBXMLMAIN)"
@@ -306,7 +306,7 @@ if action_needed "${LIBIFSNAME}/XMLCATALOG.PGM" "xmlcatalog.c" ||
    action_needed "${LIBIFSNAME}/XMLCATALOG.PGM"                         \
                  "${LIBIFSNAME}/${SRVPGM}.SRVPGM" ||
    action_needed "${LIBIFSNAME}/XMLCATALOG.PGM"                         \
-                 "${LIBIFSNAME}/LIMXMLMAIN.MODULE"
+                 "${LIBIFSNAME}/LIBXMLMAIN.MODULE"
 then    make_module XMLCATALOG xmlcatalog.c
         CMD="CRTPGM PGM(${TARGETLIB}/XMLCATALOG)"
         CMD="${CMD}  MODULE(${TARGETLIB}/XMLCATALOG)"
@@ -325,3 +325,31 @@ fi
 
 rm -f "${IFSDIR}/bin/xmlcatalog"
 ln -s "${LIBIFSNAME}/XMLCATALOG.PGM" "${IFSDIR}/bin/xmlcatalog"
+
+#       Prepare the XMLCATALOG command and its response program.
+
+if action_needed "${LIBIFSNAME}/XMLCATLGCL.PGM" "${SCRIPTDIR}/xmlcatlgcl.c"
+then    make_module --ebcdic XMLCATLGCL "${SCRIPTDIR}/xmlcatlgcl.c"
+        CMD="CRTPGM PGM(${TARGETLIB}/XMLCATLGCL)"
+        CMD="${CMD} MODULE(${TARGETLIB}/XMLCATLGCL)"
+        CMD="${CMD} ACTGRP(*NEW) TEXT('XMLCATALOG command response')"
+        CMD="${CMD} TGTRLS(${TGTRLS})"
+        system "${CMD}"
+        rm -f "${LIBIFSNAME}/XMLCATLGCL.MODULE"
+fi
+
+if action_needed "${LIBIFSNAME}/TOOLS.FILE/XMLCATALOG.MBR"              \
+                 "${SCRIPTDIR}/xmlcatalog.cmd"
+then    CMD="CPY OBJ('${SCRIPTDIR}/xmlcatalog.cmd')"
+        CMD="${CMD} TOOBJ('${LIBIFSNAME}/TOOLS.FILE/XMLCATALOG.MBR')"
+        CMD="${CMD} TOCCSID(${TGTCCSID}) DTAFMT(*TEXT) REPLACE(*YES)"
+        system "${CMD}"
+fi
+
+if action_needed "${LIBIFSNAME}/XMLCATALOG.CMD"                         \
+                 "${LIBIFSNAME}/TOOLS.FILE/XMLCATALOG.MBR"
+then    CMD="CRTCMD CMD(${TARGETLIB}/XMLCATALOG) PGM(${TARGETLIB}/XMLCATLGCL)"
+        CMD="${CMD} SRCFILE(${TARGETLIB}/TOOLS) SRCMBR(XMLCATALOG)"
+        CMD="${CMD} THDSAFE(*YES) TEXT('XML/SGML catalog tool') REPLACE(*YES)"
+        system "${CMD}"
+fi

@@ -30,11 +30,18 @@
                           CHOICE('*STDOUT, *INSTMF or file path')              +
                           PROMPT('Output stream file path')
 
+             /* Convert SGML to XML catalog. */
+
+             PARM       KWD(CONVERT) TYPE(*CHAR) LEN(10) VARY(*YES *INT2)      +
+                          RSTD(*YES) SPCVAL((*YES '--convert') (*NO ''))       +
+                          EXPR(*YES) DFT(*NO) PMTCTL(TYPEXML)                  +
+                          PROMPT('Convert SGML to XML catalog')
+
              /* SGML super catalog update. */
 
              PARM       KWD(SUPERUPD) TYPE(*CHAR) LEN(17) VARY(*YES *INT2)     +
                           SPCVAL((*YES '') (*NO '--no-super-update'))          +
-                          EXPR(*YES) DFT(*YES) RSTD(*YES)                      +
+                          EXPR(*YES) DFT(*YES) RSTD(*YES) PMTCTL(TYPESGML)     +
                           PROMPT('Update the SGML super catalog')
 
              /* Verbose/debug output. */
@@ -55,9 +62,9 @@
 
              /* Values to add. */
 
-             PARM       KWD(ADD) TYPE(ADDELEM) MAX(10)                         +
+             PARM       KWD(ADD) TYPE(XMLELEM) MAX(10) PMTCTL(TYPEXML)         +
                           PROMPT('Add definition')
-ADDELEM:     ELEM       TYPE(*CHAR) LEN(16) VARY(*YES *INT2) DFT(*PUBLIC)      +
+XMLELEM:     ELEM       TYPE(*CHAR) LEN(16) VARY(*YES *INT2) DFT(*PUBLIC)      +
                           PROMPT('Entry type')                                 +
                           EXPR(*YES) RSTD(*YES) SPCVAL(                        +
                             (*PUBLIC         'public')                         +
@@ -69,12 +76,18 @@ ADDELEM:     ELEM       TYPE(*CHAR) LEN(16) VARY(*YES *INT2) DFT(*PUBLIC)      +
                             (*DELEGATESYSTEM 'delegateSystem')                 +
                             (*DELEGATEURI    'delegateURI')                    +
                             (*NEXTCATALOG    'nextCatalog')                    +
-                            (*FILENAME       '')                               +
                           )
              ELEM       TYPE(*PNAME) LEN(256) VARY(*YES *INT2) EXPR(*YES)      +
                           CASE(*MIXED) PROMPT('Original reference/file name')
              ELEM       TYPE(*PNAME) LEN(256) VARY(*YES *INT2) EXPR(*YES)      +
                           CASE(*MIXED) PROMPT('Replacement entity URI')
+
+             PARM       KWD(SGMLADD) TYPE(SGMLELEM) MAX(10)                    +
+                          PMTCTL(TYPESGML) PROMPT('Add SGML definition')
+SGMLELEM:    ELEM       TYPE(*PNAME) LEN(256) VARY(*YES *INT2) EXPR(*YES)      +
+                          CASE(*MIXED) PROMPT('SGML catalog file name')
+             ELEM       TYPE(*PNAME) LEN(256) VARY(*YES *INT2) EXPR(*YES)      +
+                          CASE(*MIXED) PROMPT('SGML definition')
 
              /* Entities to resolve. */
 
@@ -91,3 +104,9 @@ ADDELEM:     ELEM       TYPE(*CHAR) LEN(16) VARY(*YES *INT2) DFT(*PUBLIC)      +
                             (*DEFAULT       '/etc/xml/catalog')                +
                             (*NONE          '')                                +
                           )
+
+
+             /* Conditional prompting. */
+
+TYPEXML:     PMTCTL     CTL(KIND) COND((*EQ ''))
+TYPESGML:    PMTCTL     CTL(KIND) COND((*NE ''))

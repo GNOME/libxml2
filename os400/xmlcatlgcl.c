@@ -44,6 +44,13 @@ typedef struct {
         paramlist(256, char) replace;   /* vary2(256). */
 }               addelement;
 
+/* SGML add element list structure. */
+typedef struct {
+        short           elcount;        /* Element count (=3). */
+        paramlist(256, char) catalog;   /* vary2(256). */
+        paramlist(256, char) ident;     /* vary2(256). */
+}               sgmladdelement;
+
 
 /* Arguments from CL command. */
 typedef struct {
@@ -51,10 +58,12 @@ typedef struct {
         vary2 *         instmf;         /* Input catalog file name. */
         vary2 *         kind;           /* Catalog kind. */
         vary2 *         outstmf;        /* Output catalog file name. */
+        vary2 *         convert;        /* Convert SGML to XML. */
         vary2 *         superupd;       /* --no-super-update. */
         vary2 *         verbose;        /* Verbose output. */
         paramlist(256 + 2, vary2) * delete; /* Identifiers to delete. */
         paramlist(2, unsigned short) * add; /* Items to add. */
+        paramlist(2, unsigned short) * sgmladd; /* SGML items to add. */
         paramlist(256 + 2, vary2) * resolve; /* Identifiers to resolve. */
         paramlist(5000 + 2, vary2) * catalog; /* Additional catalog files. */
 }               arguments;
@@ -141,6 +150,7 @@ main(int argsc, arguments * args)
         int i;
         char c;
         addelement * aelp;
+        sgmladdelement * saelp;
 
         /* Specify additional catalogs. */
         cmd.len = 0;
@@ -178,9 +188,6 @@ main(int argsc, arguments * args)
         if (args->kind && args->kind->len)
                 vary4varg(&cmd, args->kind);
 
-        if (args->superupd && args->superupd->len)
-                vary4varg(&cmd, args->superupd);
-
         if (args->verbose && args->verbose->len)
                 vary4varg(&cmd, args->verbose);
 
@@ -190,19 +197,39 @@ main(int argsc, arguments * args)
                         vary4vargquote(&cmd, &args->delete->item[i].param);
                         }
 
-        if (args->add)
-                for (i = 0; i < args->add->len; i++) {
-                        aelp = OFFSETBY(addelement,
-                                        args->add, args->add->item[i].param);
-                        vary4arg(&cmd, "--add");
-                        if (((vary2 *) &aelp->type)->len) {
+        if (args->kind && args->kind->len) {
+                /* Process SGML-specific parameters. */
+                if (args->superupd && args->superupd->len)
+                        vary4varg(&cmd, args->superupd);
+
+                if (args->sgmladd)
+                        for (i = 0; i < args->sgmladd->len; i++) {
+                                saelp = OFFSETBY(sgmladdelement, args->sgmladd,
+                                                args->sgmladd->item[i].param);
+                                if (!((vary2 *) &saelp->catalog)->len)
+                                        continue;
+                                vary4arg(&cmd, "--add");
+                                vary4vargquote(&cmd, (vary2 *) &saelp->catalog);
+                                vary4vargquote(&cmd, (vary2 *) &saelp->ident);
+                                }
+                }
+        else {
+                /* Process XML-specific parameters. */
+                if (args->convert && args->convert->len)
+                        vary4varg(&cmd, args->convert);
+
+                if (args->add)
+                        for (i = 0; i < args->add->len; i++) {
+                                aelp = OFFSETBY(addelement, args->add,
+                                                args->add->item[i].param);
+                                if (!((vary2 *) &aelp->origin)->len)
+                                        continue;
+                                vary4arg(&cmd, "--add");
                                 vary4varg(&cmd, (vary2 *) &aelp->type);
                                 vary4vargquote(&cmd, (vary2 *) &aelp->origin);
                                 vary4vargquote(&cmd, (vary2 *) &aelp->replace);
                                 }
-                        else
-                                vary4vargquote(&cmd, (vary2 *) &aelp->origin);
-                        }
+                }
 
         /* Avoid INSTMF(*NEW) and OUTSMTF(*INSTMF). */
         if (args->outstmf && args->outstmf->len && !args->outstmf->string[0])
@@ -233,11 +260,13 @@ main(int argsc, arguments * args)
         /* If no input file create catalog, else specify the input file name. */
         /* Specify the input file name: my be a dummy one. */
         if (!args->instmf || !args->instmf->len) {
-                vary4arg(&cmd, "--create");
+                vary4arg(&cmd, "--create -");
                 vary4arg(&cmd, ".dmyxmlcatalog");
                 }
-        else
+        else {
+                vary4arg(&cmd, "-");
                 vary4vargquote(&cmd, args->instmf);
+                }
 
         /* Query entities. */
 

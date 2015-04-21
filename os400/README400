@@ -185,15 +185,27 @@ const char *    xmlVasprintf(xmlDictPtr * dict,
                              va_list args);
 
 
+xmllint and xmlcatalog programs:
+
+  These programs are fully implemented at the qshell level, with standard
+command line options. Links to these are installed in sub-directory bin of
+the IFS installation directory.
+  CL command interfaces to these programs are also provided with limited
+support. In particular, interactive mode is not supported and argument count
+and lengths are limited by the CL command syntax.
+
 
 ILE/RPG binding:
 
   All standard types and procedures are provided. Since ILE/RPG does not
-support macros, they have not been ported, with the exceptions of the more
-useful ones and the global/threaded variables access macros. These variables
-can be read with function get_xxx(void), where xxxx is the name of the
-variable; they may be set by calling function set_xxxx(value), where value is
-of the same type as the variable.
+support macros, they have not been ported. However some of them are emulated
+as functions: these are the more useful ones (xmlXPathNodeSetGetLength,
+xmlXPathNodeSetItem, xmlXPathNodeSetIsEmpty, htmlDefaultSubelement,
+htmlElementAllowedHereDesc, htmlRequiredAttrs) and the global/threaded
+variables access macros. These variables can be read with function
+get_xxx(void), where xxxx is the name of the variable; they may be set by
+calling function set_xxxx(value), where value is of the same type as the
+variable.
 
   The C va_list is not implemented as such in ILE/RPG. Functions implementing
 va_list and associated methods are provided:

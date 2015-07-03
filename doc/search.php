@@ -102,13 +102,14 @@ A:link, A:visited, A:active { text-decoration: underline }
     $scope = ltrim ($scope);
     if ($scope == "")
         $scope = "any";
+    $querystr = htmlspecialchars($query, ENT_QUOTES, 'UTF-8');
 
 ?>
 <p> The search service indexes the libxml2 and libxslt APIs and documentation as well as the xml@gnome.org and xslt@gnome.org mailing-list archives. To use it simply provide a set of keywords:
 <p>
 <form action="<?php echo "$PHP_SELF", "?query=", rawurlencode($query) ?>"
       enctype="application/x-www-form-urlencoded" method="GET">
-  <input name="query" type="TEXT" size="50" value="<?php echo $query?>">
+  <input name="query" type="TEXT" size="50" value="<?php echo $querystr?>">
   <select name="scope">
     <option value="any">Search All</option>
     <option value="XML" <?php if ($scope == 'XML') print "selected"?>>XML resources</option>
@@ -446,7 +447,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 	    }
 	    mysql_close($link);
 	    $nb = count($results);
-	    echo "<h3 align='center'>Found $nb results for query $query</h3>\n";
+	    echo "<h3 align='center'>Found $nb results for query $querystr</h3>\n";
 	    usort($results, "resSort");
 
             if ($nb > 0) {

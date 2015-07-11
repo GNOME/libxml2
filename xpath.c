@@ -361,14 +361,14 @@ turtle_comparison:
     /*
      * compute depth to root
      */
-    for (depth2 = 0, cur = node2; cur != NULL; cur = cur->parent) {
-	if (cur == node1)
+    for (depth2 = 0, cur = node2; cur->parent != NULL; cur = cur->parent) {
+	if (cur->parent == node1)
 	    return(1);
 	depth2++;
     }
     root = cur;
-    for (depth1 = 0, cur = node1; cur != NULL; cur = cur->parent) {
-	if (cur == node2)
+    for (depth1 = 0, cur = node1; cur->parent != NULL; cur = cur->parent) {
+	if (cur->parent == node2)
 	    return(-1);
 	depth1++;
     }

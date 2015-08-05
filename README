@@ -7,7 +7,7 @@ Full documentation is available on-line at
 This code is released under the MIT Licence see the Copyright file.
 
 To build on an Unixised setup:
-   ./configure ; make ; make install
+   ./autogen.sh ; make ; make install
 To build on Windows:
    see instructions on win32/Readme.txt
 

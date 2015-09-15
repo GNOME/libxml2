@@ -3491,7 +3491,14 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 	c = CUR_CHAR(l);
 	if (c == 0) {
 	    count = 0;
+	    /*
+	     * when shrinking to extend the buffer we really need to preserve
+	     * the part of the name we already parsed. Hence rolling back
+	     * by current lenght.
+	     */
+	    ctxt->input->cur -= l;
 	    GROW;
+	    ctxt->input->cur += l;
             if (ctxt->instate == XML_PARSER_EOF)
                 return(NULL);
 	    end = ctxt->input->cur;
@@ -3523,7 +3530,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 
 static const xmlChar *
 xmlParseNCName(xmlParserCtxtPtr ctxt) {
-    const xmlChar *in;
+    const xmlChar *in, *e;
     const xmlChar *ret;
     int count = 0;
 
@@ -3535,16 +3542,19 @@ xmlParseNCName(xmlParserCtxtPtr ctxt) {
      * Accelerator for simple ASCII names
      */
     in = ctxt->input->cur;
-    if (((*in >= 0x61) && (*in <= 0x7A)) ||
-	((*in >= 0x41) && (*in <= 0x5A)) ||
-	(*in == '_')) {
+    e = ctxt->input->end;
+    if ((((*in >= 0x61) && (*in <= 0x7A)) ||
+	 ((*in >= 0x41) && (*in <= 0x5A)) ||
+	 (*in == '_')) && (in < e)) {
 	in++;
-	while (((*in >= 0x61) && (*in <= 0x7A)) ||
-	       ((*in >= 0x41) && (*in <= 0x5A)) ||
-	       ((*in >= 0x30) && (*in <= 0x39)) ||
-	       (*in == '_') || (*in == '-') ||
-	       (*in == '.'))
+	while ((((*in >= 0x61) && (*in <= 0x7A)) ||
+	        ((*in >= 0x41) && (*in <= 0x5A)) ||
+	        ((*in >= 0x30) && (*in <= 0x39)) ||
+	        (*in == '_') || (*in == '-') ||
+	        (*in == '.')) && (in < e))
 	    in++;
+	if (in >= e)
+	    goto complex;
 	if ((*in > 0) && (*in < 0x80)) {
 	    count = in - ctxt->input->cur;
             if ((count > XML_MAX_NAME_LENGTH) &&
@@ -3562,6 +3572,7 @@ xmlParseNCName(xmlParserCtxtPtr ctxt) {
 	    return(ret);
 	}
     }
+complex:
     return(xmlParseNCNameComplex(ctxt));
 }
 

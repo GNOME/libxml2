@@ -1,0 +1,16 @@
+Entity: line 1: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+
+ %SYSTEM; 
+         ^
+Entity: line 1: 
+A<lbbbbbbbbbbbbbbbbbbb_
+^
+Entity: line 1: parser error : DOCTYPE improperly terminated
+ %SYSTEM; 
+         ^
+Entity: line 1: 
+A<lbbbbbbbbbbbbbbbbbbb_
+^
+./test/errors/754946.xml:1: parser error : Extra content at the end of the document
+<!DOCTYPEA[<!ENTITY %
+  ^

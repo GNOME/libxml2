@@ -6915,7 +6915,9 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	"All markup of the conditional section is not in the same entity\n",
 				 NULL, NULL);
 	}
-        SKIP(3);
+	if ((ctxt-> instate != XML_PARSER_EOF) &&
+	    ((ctxt->input->cur + 3) < ctxt->input->end))
+	    SKIP(3);
     }
 }
 

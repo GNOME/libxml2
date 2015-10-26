@@ -25546,7 +25546,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		    if (xmlNewProp(defAttrOwnerElem,
 			iattr->localName, value) == NULL) {
 			VERROR_INT("xmlSchemaVAttributesComplex",
-			    "callling xmlNewProp()");
+			    "calling xmlNewProp()");
 			if (normValue != NULL)
 			    xmlFree(normValue);
 			goto internal_error;

@@ -6916,7 +6916,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 				 NULL, NULL);
 	}
 	if ((ctxt-> instate != XML_PARSER_EOF) &&
-	    ((ctxt->input->cur + 3) < ctxt->input->end))
+	    ((ctxt->input->cur + 3) <= ctxt->input->end))
 	    SKIP(3);
     }
 }

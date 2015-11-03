@@ -581,6 +581,10 @@ xz_decomp(xz_statep state)
             xz_error(state, LZMA_DATA_ERROR, "compressed data error");
             return -1;
         }
+        if (ret == LZMA_PROG_ERROR) {
+            xz_error(state, LZMA_PROG_ERROR, "compression error");
+            return -1;
+        }
     } while (strm->avail_out && ret != LZMA_STREAM_END);
 
     /* update available output and crc check value */

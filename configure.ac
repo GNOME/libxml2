@@ -445,6 +445,9 @@ else
                 fi],
                 [have_liblzma=no])
 	     LDFLAGS="${SAVE_LDFLAGS}"])
+    else
+	# we still need to check for lzma,h header
+	AC_CHECK_HEADERS([lzma.h])
     fi
 
     # Found the library via either method?

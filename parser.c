@@ -6782,6 +6782,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	if (RAW != '[') {
 	    xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
 	    xmlStopParser(ctxt);
+	    ctxt->errNo = XML_ERR_CONDSEC_INVALID;
 	    return;
 	} else {
 	    if (ctxt->input->id != id) {
@@ -6844,6 +6845,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	if (RAW != '[') {
 	    xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
 	    xmlStopParser(ctxt);
+	    ctxt->errNo = XML_ERR_CONDSEC_INVALID;
 	    return;
 	} else {
 	    if (ctxt->input->id != id) {
@@ -6901,6 +6903,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     } else {
 	xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID_KEYWORD, NULL);
 	xmlStopParser(ctxt);
+	ctxt->errNo = XML_ERR_CONDSEC_INVALID_KEYWORD;
 	return;
     }
 

@@ -351,6 +351,7 @@
     <function name="XML_ATTRIBUTE_NONE" link="libxml2-tree.html#XML_ATTRIBUTE_NONE"/>
     <function name="XML_ATTRIBUTE_NOTATION" link="libxml2-tree.html#XML_ATTRIBUTE_NOTATION"/>
     <function name="XML_ATTRIBUTE_REQUIRED" link="libxml2-tree.html#XML_ATTRIBUTE_REQUIRED"/>
+    <function name="XML_BUFFER_ALLOC_BOUNDED" link="libxml2-tree.html#XML_BUFFER_ALLOC_BOUNDED"/>
     <function name="XML_BUFFER_ALLOC_DOUBLEIT" link="libxml2-tree.html#XML_BUFFER_ALLOC_DOUBLEIT"/>
     <function name="XML_BUFFER_ALLOC_EXACT" link="libxml2-tree.html#XML_BUFFER_ALLOC_EXACT"/>
     <function name="XML_BUFFER_ALLOC_HYBRID" link="libxml2-tree.html#XML_BUFFER_ALLOC_HYBRID"/>

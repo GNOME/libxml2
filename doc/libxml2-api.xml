@@ -1441,12 +1441,12 @@
      <exports symbol='XML_DOC_DTDVALID' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_ANY' type='enum'/>
      <exports symbol='XML_DOC_NSVALID' type='enum'/>
-     <exports symbol='XML_ELEMENT_CONTENT_ONCE' type='enum'/>
+     <exports symbol='XML_BUFFER_ALLOC_BOUNDED' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_PCDATA' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_FIXED' type='enum'/>
      <exports symbol='XML_DOCUMENT_TYPE_NODE' type='enum'/>
      <exports symbol='XML_DOC_HTML' type='enum'/>
-     <exports symbol='XML_ELEMENT_CONTENT_OPT' type='enum'/>
+     <exports symbol='XML_ELEMENT_CONTENT_ONCE' type='enum'/>
      <exports symbol='XML_NAMESPACE_DECL' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_NOTATION' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_MIXED' type='enum'/>
@@ -1459,6 +1459,7 @@
      <exports symbol='XML_NOTATION_NODE' type='enum'/>
      <exports symbol='XML_ELEMENT_CONTENT_SEQ' type='enum'/>
      <exports symbol='XML_ELEMENT_TYPE_EMPTY' type='enum'/>
+     <exports symbol='XML_ELEMENT_CONTENT_OPT' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_ENUMERATION' type='enum'/>
      <exports symbol='XML_DOC_OLD10' type='enum'/>
      <exports symbol='XML_HTML_DOCUMENT_NODE' type='enum'/>
@@ -4702,9 +4703,10 @@
     <enum name='XML_ATTRIBUTE_NONE' file='tree' value='1' type='xmlAttributeDefault'/>
     <enum name='XML_ATTRIBUTE_NOTATION' file='tree' value='10' type='xmlAttributeType'/>
     <enum name='XML_ATTRIBUTE_REQUIRED' file='tree' value='2' type='xmlAttributeDefault'/>
+    <enum name='XML_BUFFER_ALLOC_BOUNDED' file='tree' value='6' type='xmlBufferAllocationScheme' info=' limit the upper size of the buffer'/>
     <enum name='XML_BUFFER_ALLOC_DOUBLEIT' file='tree' value='1' type='xmlBufferAllocationScheme' info='double each time one need to grow'/>
     <enum name='XML_BUFFER_ALLOC_EXACT' file='tree' value='2' type='xmlBufferAllocationScheme' info='grow only to the minimal size'/>
-    <enum name='XML_BUFFER_ALLOC_HYBRID' file='tree' value='5' type='xmlBufferAllocationScheme' info=' exact up to a threshold, and doubleit thereafter'/>
+    <enum name='XML_BUFFER_ALLOC_HYBRID' file='tree' value='5' type='xmlBufferAllocationScheme' info='exact up to a threshold, and doubleit thereafter'/>
     <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme' info='immutable buffer'/>
     <enum name='XML_BUFFER_ALLOC_IO' file='tree' value='4' type='xmlBufferAllocationScheme' info='special allocation scheme used for I/O'/>
     <enum name='XML_BUF_OVERFLOW' file='xmlerror' value='7000' type='xmlParserErrors'/>

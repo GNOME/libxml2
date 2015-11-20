@@ -148,6 +148,7 @@
     <reference name='XML_ATTRIBUTE_NONE' href='html/libxml-tree.html#XML_ATTRIBUTE_NONE'/>
     <reference name='XML_ATTRIBUTE_NOTATION' href='html/libxml-tree.html#XML_ATTRIBUTE_NOTATION'/>
     <reference name='XML_ATTRIBUTE_REQUIRED' href='html/libxml-tree.html#XML_ATTRIBUTE_REQUIRED'/>
+    <reference name='XML_BUFFER_ALLOC_BOUNDED' href='html/libxml-tree.html#XML_BUFFER_ALLOC_BOUNDED'/>
     <reference name='XML_BUFFER_ALLOC_DOUBLEIT' href='html/libxml-tree.html#XML_BUFFER_ALLOC_DOUBLEIT'/>
     <reference name='XML_BUFFER_ALLOC_EXACT' href='html/libxml-tree.html#XML_BUFFER_ALLOC_EXACT'/>
     <reference name='XML_BUFFER_ALLOC_HYBRID' href='html/libxml-tree.html#XML_BUFFER_ALLOC_HYBRID'/>
@@ -3749,6 +3750,7 @@
       <ref name='XML_ATTRIBUTE_NONE'/>
       <ref name='XML_ATTRIBUTE_NOTATION'/>
       <ref name='XML_ATTRIBUTE_REQUIRED'/>
+      <ref name='XML_BUFFER_ALLOC_BOUNDED'/>
       <ref name='XML_BUFFER_ALLOC_DOUBLEIT'/>
       <ref name='XML_BUFFER_ALLOC_EXACT'/>
       <ref name='XML_BUFFER_ALLOC_HYBRID'/>
@@ -12100,6 +12102,7 @@
       <ref name='XML_ATTRIBUTE_NONE'/>
       <ref name='XML_ATTRIBUTE_NOTATION'/>
       <ref name='XML_ATTRIBUTE_REQUIRED'/>
+      <ref name='XML_BUFFER_ALLOC_BOUNDED'/>
       <ref name='XML_BUFFER_ALLOC_DOUBLEIT'/>
       <ref name='XML_BUFFER_ALLOC_EXACT'/>
       <ref name='XML_BUFFER_ALLOC_HYBRID'/>

@@ -8,7 +8,78 @@ H2 {font-family: Verdana,Arial,Helvetica}
 H3 {font-family: Verdana,Arial,Helvetica}
 A:link, A:visited, A:active { text-decoration: underline }
 </style><title>Releases</title></head><body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#000000"><table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr><td width="120"><a href="http://swpat.ffii.org/"><img src="epatents.png" alt="Action against software patents" /></a></td><td width="180"><a href="http://www.gnome.org/"><img src="gnome2.png" alt="Gnome2 Logo" /></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo" /></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo" /></a><div align="left"><a href="http://xmlsoft.org/"><img src="Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo" /></a></div></td><td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center"><h1>The XML C parser and toolkit of Gnome</h1><h2>Releases</h2></td></tr></table></td></tr></table></td></tr></table><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr><td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr><tr><td bgcolor="#fffacd"><form action="search.php" enctype="application/x-www-form-urlencoded" method="get"><input name="query" type="text" size="20" value="" /><input name="submit" type="submit" value="Search ..." /></form><ul><li><a href="index.html">Home</a></li><li><a href="html/index.html">Reference Manual</a></li><li><a href="intro.html">Introduction</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="docs.html" style="font-weight:bold">Developer Menu</a></li><li><a href="bugs.html">Reporting bugs and getting help</a></li><li><a href="help.html">How to help</a></li><li><a href="downloads.html">Downloads</a></li><li><a href="news.html">Releases</a></li><li><a href="XMLinfo.html">XML</a></li><li><a href="XSLT.html">XSLT</a></li><li><a href="xmldtd.html">Validation &amp; DTDs</a></li><li><a href="encoding.html">Encodings support</a></li><li><a href="catalog.html">Catalog support</a></li><li><a href="namespaces.html">Namespaces</a></li><li><a href="contribs.html">Contributions</a></li><li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li><li><a href="html/index.html" style="font-weight:bold">API Menu</a></li><li><a href="guidelines.html">XML Guidelines</a></li><li><a href="ChangeLog.html">Recent Changes</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li><li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li><li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li><li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li><li><a href="ftp://xmlsoft.org/">FTP</a></li><li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li><li><a href="http://opencsw.org/packages/libxml2">Solaris binaries</a></li><li><a href="http://www.explain.com.au/oss/libxml2xslt.html">MacOsX binaries</a></li><li><a href="http://lxml.de/">lxml Python bindings</a></li><li><a href="http://cpan.uwinnipeg.ca/dist/XML-LibXML">Perl bindings</a></li><li><a href="http://libxmlplusplus.sourceforge.net/">C++ bindings</a></li><li><a href="http://www.zend.com/php5/articles/php5-xmlphp.php#Heading4">PHP bindings</a></li><li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li><li><a href="http://libxml.rubyforge.org/">Ruby bindings</a></li><li><a href="http://tclxml.sourceforge.net/">Tcl bindings</a></li><li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li></ul></td></tr></table></td></tr></table></td><td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd"><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://git.gnome.org/browse/libxml2/">GIT</a> code base.</p><p>Here is the list of public releases:</p><h3>2.9.2: Oct 16 2014</h3><ul>
+to the <a href="http://git.gnome.org/browse/libxml2/">GIT</a> code base.</p><p>Here is the list of public releases:</p><h3>v2.9.3: Nov 20 2015</h3><ul>
+  <li>Security:<br />
+  CVE-2015-8242 Buffer overead with HTML parser in push mode (Hugh Davenport),<br />
+  CVE-2015-7500 Fix memory access error due to incorrect entities boundaries (Daniel Veillard),<br />
+  CVE-2015-7499-2 Detect incoherency on GROW (Daniel Veillard),<br />
+  CVE-2015-7499-1 Add xmlHaltParser() to stop the parser (Daniel Veillard),<br />
+  CVE-2015-5312 Another entity expansion issue (David Drysdale),<br />
+  CVE-2015-7497 Avoid an heap buffer overflow in xmlDictComputeFastQKey (David Drysdale),<br />
+  CVE-2015-7498 Avoid processing entities after encoding conversion failures (Daniel Veillard),<br />
+  CVE-2015-8035 Fix XZ compression support loop (Daniel Veillard),<br />
+  CVE-2015-7942-2 Fix an error in previous Conditional section patch (Daniel Veillard),<br />
+  CVE-2015-7942 Another variation of overflow in Conditional sections (Daniel Veillard),<br />
+  CVE-2015-1819 Enforce the reader to run in constant memory (Daniel Veillard)<br />
+  CVE-2015-7941_2 Cleanup conditional section error handling (Daniel Veillard),<br />
+  CVE-2015-7941_1 Stop parsing on entities boundaries errors (Daniel Veillard),<br />
+  </li>
+
+  <li>Documentation:<br />
+  Correct spelling of "calling" (Alex Henrie),<br />
+  Fix a small error in xmllint --format description (Fabien Degomme),<br />
+  Avoid XSS on the search of xmlsoft.org (Daniel Veillard)<br />
+  </li>
+
+  <li>Portability:<br />
+  threads: use forward declarations only for glibc (Michael Heimpold),<br />
+  Update Win32 configure.js to search for configure.ac (Daniel Veillard)<br />
+  </li>
+
+  <li>Bug Fixes:<br />
+  Bug on creating new stream from entity (Daniel Veillard),<br />
+  Fix some loop issues embedding NEXT (Daniel Veillard),<br />
+  Do not print error context when there is none (Daniel Veillard),<br />
+  Avoid extra processing of MarkupDecl when EOF (Hugh Davenport),<br />
+  Fix parsing short unclosed comment uninitialized access (Daniel Veillard),<br />
+  Add missing Null check in xmlParseExternalEntityPrivate (Gaurav Gupta),<br />
+  Fix a bug in CData error handling in the push parser (Daniel Veillard),<br />
+  Fix a bug on name parsing at the end of current input buffer (Daniel Veillard),<br />
+  Fix the spurious ID already defined error (Daniel Veillard),<br />
+  Fix previous change to node sort order (Nick Wellnhofer),<br />
+  Fix a self assignment issue raised by clang (Scott Graham),<br />
+  Fail parsing early on if encoding conversion failed (Daniel Veillard),<br />
+  Do not process encoding values if the declaration if broken (Daniel Veillard),<br />
+  Silence clang's -Wunknown-attribute (Michael Catanzaro),<br />
+  xmlMemUsed is not thread-safe (Martin von Gagern),<br />
+  Fix support for except in nameclasses (Daniel Veillard),<br />
+  Fix order of root nodes (Nick Wellnhofer),<br />
+  Allow attributes on descendant-or-self axis (Nick Wellnhofer),<br />
+  Fix the fix to Windows locking (Steve Nairn),<br />
+  Fix timsort invariant loop re: Envisage article (Christopher Swenson),<br />
+  Don't add IDs in xmlSetTreeDoc (Nick Wellnhofer),<br />
+  Account for ID attributes in xmlSetTreeDoc (Nick Wellnhofer),<br />
+  Remove various unused value assignments (Philip Withnall),<br />
+  Fix missing entities after CVE-2014-3660 fix (Daniel Veillard),<br />
+  Revert "Missing initialization for the catalog module" (Daniel Veillard)<br />
+  </li>
+
+  <li>Improvements:<br />
+  Reuse xmlHaltParser() where it makes sense (Daniel Veillard),<br />
+  xmlStopParser reset errNo (Daniel Veillard),<br />
+  Reenable xz support by default (Daniel Veillard),<br />
+  Recover unescaped less-than character in HTML recovery parsing (Daniel Veillard),<br />
+  Allow HTML serializer to output HTML5 DOCTYPE (Shaun McCance),<br />
+  Regression test for bug #695699 (Nick Wellnhofer),<br />
+  Add a couple of XPath tests (Nick Wellnhofer),<br />
+  Add Python 3 rpm subpackage (Tomas Radej),<br />
+  libxml2-config.cmake.in: update include directories (Samuel Martin),<br />
+  Adding example from bugs 738805 to regression tests (Daniel Veillard)<br />
+  </li>
+
+  <li>Cleanups:<br />
+  </li>
+</ul><h3>2.9.2: Oct 16 2014</h3><ul>
   <li>Security:<br />
   Fix for CVE-2014-3660 billion laugh variant (Daniel Veillard),<br />
   CVE-2014-0191 Do not fetch external parameter entities (Daniel Veillard)<br />

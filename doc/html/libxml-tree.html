@@ -305,6 +305,7 @@ The content of this structure is not made public by the API.
     <a name="XML_BUFFER_ALLOC_IMMUTABLE" id="XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a> = 3 : immutable buffer
     <a name="XML_BUFFER_ALLOC_IO" id="XML_BUFFER_ALLOC_IO">XML_BUFFER_ALLOC_IO</a> = 4 : special allocation scheme used for I/O
     <a name="XML_BUFFER_ALLOC_HYBRID" id="XML_BUFFER_ALLOC_HYBRID">XML_BUFFER_ALLOC_HYBRID</a> = 5 : exact up to a threshold, and doubleit thereafter
+    <a name="XML_BUFFER_ALLOC_BOUNDED" id="XML_BUFFER_ALLOC_BOUNDED">XML_BUFFER_ALLOC_BOUNDED</a> = 6 : limit the upper size of the buffer
 }
 </pre><h3><a name="xmlDOMWrapCtxt" id="xmlDOMWrapCtxt">Structure xmlDOMWrapCtxt</a></h3><pre class="programlisting">Structure xmlDOMWrapCtxt<br />struct _xmlDOMWrapCtxt {
     void *	_private	: * The type of this context, just in case

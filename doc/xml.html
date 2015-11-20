@@ -709,6 +709,79 @@ to the <a href="http://git.gnome.org/browse/libxml2/">GIT</a> code base.</p>
 
 <p>Here is the list of public releases:</p>
 
+<h3>v2.9.3: Nov 20 2015</h3>
+<ul>
+  <li>Security:<br/>
+  CVE-2015-8242 Buffer overead with HTML parser in push mode (Hugh Davenport),<br/>
+  CVE-2015-7500 Fix memory access error due to incorrect entities boundaries (Daniel Veillard),<br/>
+  CVE-2015-7499-2 Detect incoherency on GROW (Daniel Veillard),<br/>
+  CVE-2015-7499-1 Add xmlHaltParser() to stop the parser (Daniel Veillard),<br/>
+  CVE-2015-5312 Another entity expansion issue (David Drysdale),<br/>
+  CVE-2015-7497 Avoid an heap buffer overflow in xmlDictComputeFastQKey (David Drysdale),<br/>
+  CVE-2015-7498 Avoid processing entities after encoding conversion failures (Daniel Veillard),<br/>
+  CVE-2015-8035 Fix XZ compression support loop (Daniel Veillard),<br/>
+  CVE-2015-7942-2 Fix an error in previous Conditional section patch (Daniel Veillard),<br/>
+  CVE-2015-7942 Another variation of overflow in Conditional sections (Daniel Veillard),<br/>
+  CVE-2015-1819 Enforce the reader to run in constant memory (Daniel Veillard)<br/>
+  CVE-2015-7941_2 Cleanup conditional section error handling (Daniel Veillard),<br/>
+  CVE-2015-7941_1 Stop parsing on entities boundaries errors (Daniel Veillard),<br/>
+  </li>
+
+  <li>Documentation:<br/>
+  Correct spelling of "calling" (Alex Henrie),<br/>
+  Fix a small error in xmllint --format description (Fabien Degomme),<br/>
+  Avoid XSS on the search of xmlsoft.org (Daniel Veillard)<br/>
+  </li>
+
+  <li>Portability:<br/>
+  threads: use forward declarations only for glibc (Michael Heimpold),<br/>
+  Update Win32 configure.js to search for configure.ac (Daniel Veillard)<br/>
+  </li>
+
+  <li>Bug Fixes:<br/>
+  Bug on creating new stream from entity (Daniel Veillard),<br/>
+  Fix some loop issues embedding NEXT (Daniel Veillard),<br/>
+  Do not print error context when there is none (Daniel Veillard),<br/>
+  Avoid extra processing of MarkupDecl when EOF (Hugh Davenport),<br/>
+  Fix parsing short unclosed comment uninitialized access (Daniel Veillard),<br/>
+  Add missing Null check in xmlParseExternalEntityPrivate (Gaurav Gupta),<br/>
+  Fix a bug in CData error handling in the push parser (Daniel Veillard),<br/>
+  Fix a bug on name parsing at the end of current input buffer (Daniel Veillard),<br/>
+  Fix the spurious ID already defined error (Daniel Veillard),<br/>
+  Fix previous change to node sort order (Nick Wellnhofer),<br/>
+  Fix a self assignment issue raised by clang (Scott Graham),<br/>
+  Fail parsing early on if encoding conversion failed (Daniel Veillard),<br/>
+  Do not process encoding values if the declaration if broken (Daniel Veillard),<br/>
+  Silence clang's -Wunknown-attribute (Michael Catanzaro),<br/>
+  xmlMemUsed is not thread-safe (Martin von Gagern),<br/>
+  Fix support for except in nameclasses (Daniel Veillard),<br/>
+  Fix order of root nodes (Nick Wellnhofer),<br/>
+  Allow attributes on descendant-or-self axis (Nick Wellnhofer),<br/>
+  Fix the fix to Windows locking (Steve Nairn),<br/>
+  Fix timsort invariant loop re: Envisage article (Christopher Swenson),<br/>
+  Don't add IDs in xmlSetTreeDoc (Nick Wellnhofer),<br/>
+  Account for ID attributes in xmlSetTreeDoc (Nick Wellnhofer),<br/>
+  Remove various unused value assignments (Philip Withnall),<br/>
+  Fix missing entities after CVE-2014-3660 fix (Daniel Veillard),<br/>
+  Revert "Missing initialization for the catalog module" (Daniel Veillard)<br/>
+  </li>
+
+  <li>Improvements:<br/>
+  Reuse xmlHaltParser() where it makes sense (Daniel Veillard),<br/>
+  xmlStopParser reset errNo (Daniel Veillard),<br/>
+  Reenable xz support by default (Daniel Veillard),<br/>
+  Recover unescaped less-than character in HTML recovery parsing (Daniel Veillard),<br/>
+  Allow HTML serializer to output HTML5 DOCTYPE (Shaun McCance),<br/>
+  Regression test for bug #695699 (Nick Wellnhofer),<br/>
+  Add a couple of XPath tests (Nick Wellnhofer),<br/>
+  Add Python 3 rpm subpackage (Tomas Radej),<br/>
+  libxml2-config.cmake.in: update include directories (Samuel Martin),<br/>
+  Adding example from bugs 738805 to regression tests (Daniel Veillard)<br/>
+  </li>
+
+  <li>Cleanups:<br/>
+  </li>
+</ul>
 <h3>2.9.2: Oct 16 2014</h3>
 <ul>
   <li>Security:<br/>

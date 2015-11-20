@@ -1034,10 +1034,10 @@ static void des_xmlAttributeType(int no ATTRIBUTE_UNUSED, xmlAttributeType val A
 
 #define gen_nb_xmlBufferAllocationScheme 4
 static xmlBufferAllocationScheme gen_xmlBufferAllocationScheme(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_BUFFER_ALLOC_DOUBLEIT);
-    if (no == 2) return(XML_BUFFER_ALLOC_EXACT);
-    if (no == 3) return(XML_BUFFER_ALLOC_HYBRID);
-    if (no == 4) return(XML_BUFFER_ALLOC_IMMUTABLE);
+    if (no == 1) return(XML_BUFFER_ALLOC_BOUNDED);
+    if (no == 2) return(XML_BUFFER_ALLOC_DOUBLEIT);
+    if (no == 3) return(XML_BUFFER_ALLOC_EXACT);
+    if (no == 4) return(XML_BUFFER_ALLOC_HYBRID);
     return(0);
 }
 

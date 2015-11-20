@@ -2160,7 +2160,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	int cur;
 	do {
 	    cur = CUR;
-	    while (IS_BLANK_CH(cur)) { /* CHECKED tstblanks.xml */
+	    while ((IS_BLANK_CH(cur) && /* CHECKED tstblanks.xml */
+	           (ctxt->instate != XML_PARSER_EOF))) {
 		NEXT;
 		cur = CUR;
 		res++;
@@ -2174,7 +2175,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	     * Need to handle support of entities branching here
 	     */
 	    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);
-	} while (IS_BLANK(cur)); /* CHECKED tstblanks.xml */
+	} while ((IS_BLANK(cur)) && /* CHECKED tstblanks.xml */
+	         (ctxt->instate != XML_PARSER_EOF));
     }
     return(res);
 }

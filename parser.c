@@ -2806,6 +2806,10 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			                      0, 0, 0);
 		ctxt->depth--;
 
+		if ((ctxt->lastError.code == XML_ERR_ENTITY_LOOP) ||
+		    (ctxt->lastError.code == XML_ERR_INTERNAL_ERROR))
+		    goto int_error;
+
 		if (rep != NULL) {
 		    current = rep;
 		    while (*current != 0) { /* non input consuming loop */

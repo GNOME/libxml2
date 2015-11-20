@@ -9348,7 +9348,7 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     const xmlChar **atts = ctxt->atts;
     int maxatts = ctxt->maxatts;
     int nratts, nbatts, nbdef;
-    int i, j, nbNs, attval, oldline, oldcol;
+    int i, j, nbNs, attval, oldline, oldcol, inputNr;
     const xmlChar *base;
     unsigned long cur;
     int nsNr = ctxt->nsNr;
@@ -9367,6 +9367,7 @@ reparse:
     SHRINK;
     base = ctxt->input->base;
     cur = ctxt->input->cur - ctxt->input->base;
+    inputNr = ctxt->inputNr;
     oldline = ctxt->input->line;
     oldcol = ctxt->input->col;
     nbatts = 0;
@@ -9392,7 +9393,8 @@ reparse:
      */
     SKIP_BLANKS;
     GROW;
-    if (ctxt->input->base != base) goto base_changed;
+    if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
+        goto base_changed;
 
     while (((RAW != '>') &&
 	   ((RAW != '/') || (NXT(1) != '>')) &&
@@ -9403,7 +9405,7 @@ reparse:
 
 	attname = xmlParseAttribute2(ctxt, prefix, localname,
 	                             &aprefix, &attvalue, &len, &alloc);
-	if (ctxt->input->base != base) {
+	if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr)) {
 	    if ((attvalue != NULL) && (alloc != 0))
 	        xmlFree(attvalue);
 	    attvalue = NULL;
@@ -9552,7 +9554,8 @@ skip_ns:
 		    break;
 		}
 		SKIP_BLANKS;
-		if (ctxt->input->base != base) goto base_changed;
+		if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
+		    goto base_changed;
 		continue;
 	    }
 
@@ -9589,7 +9592,8 @@ failed:
 	GROW
         if (ctxt->instate == XML_PARSER_EOF)
             break;
-	if (ctxt->input->base != base) goto base_changed;
+	if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
+	    goto base_changed;
 	if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 	    break;
 	if (!IS_BLANK_CH(RAW)) {
@@ -9605,7 +9609,8 @@ failed:
 	    break;
 	}
         GROW;
-	if (ctxt->input->base != base) goto base_changed;
+	if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
+	    goto base_changed;
     }
 
     /*
@@ -9772,6 +9777,17 @@ base_changed:
 	    if ((ctxt->attallocs[j] != 0) && (atts[i] != NULL))
 	        xmlFree((xmlChar *) atts[i]);
     }
+
+    /*
+     * We can't switch from one entity to another in the middle
+     * of a start tag
+     */
+    if (inputNr != ctxt->inputNr) {
+        xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
+		    "Start tag doesn't start and stop in the same entity\n");
+	return(NULL);
+    }
+
     ctxt->input->cur = ctxt->input->base + cur;
     ctxt->input->line = oldline;
     ctxt->input->col = oldcol;

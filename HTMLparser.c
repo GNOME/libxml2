@@ -5735,17 +5735,17 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 				if (ctxt->keepBlanks) {
 				    if (ctxt->sax->characters != NULL)
 					ctxt->sax->characters(
-						ctxt->userData, &cur, 1);
+						ctxt->userData, &in->cur[0], 1);
 				} else {
 				    if (ctxt->sax->ignorableWhitespace != NULL)
 					ctxt->sax->ignorableWhitespace(
-						ctxt->userData, &cur, 1);
+						ctxt->userData, &in->cur[0], 1);
 				}
 			    } else {
 				htmlCheckParagraph(ctxt);
 				if (ctxt->sax->characters != NULL)
 				    ctxt->sax->characters(
-					    ctxt->userData, &cur, 1);
+					    ctxt->userData, &in->cur[0], 1);
 			    }
 			}
 			ctxt->token = 0;

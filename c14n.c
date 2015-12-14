@@ -791,6 +791,20 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 	}
     }
 
+    /* For the root node we should keep all ns declarations except the
+     * empty default ns, so explicitly output all declarations */
+    if(cur->parent != NULL && cur->parent->type == XML_DOCUMENT_NODE) {
+        for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
+            if(visible && xmlC14NIsVisible(ctx, ns, cur)) {
+                if(!xmlExcC14NVisibleNsStackFind(ctx->ns_rendered, ns, ctx)) {
+                    xmlListInsert(list, ns);
+                }
+            }
+            if(visible) {
+                xmlC14NVisibleNsStackAdd(ctx->ns_rendered, ns, cur);
+            }
+        }
+    }
 
     /* add attributes */
     for(attr = cur->properties; attr != NULL; attr = attr->next) {

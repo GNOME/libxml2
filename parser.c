@@ -11210,8 +11210,9 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
 }
 /**
  * xmlCheckCdataPush:
- * @cur: pointer to the bock of characters
+ * @cur: pointer to the block of characters
  * @len: length of the block in bytes
+ * @complete: 1 if complete CDATA block is passed in, 0 if partial block
  *
  * Check that the block of characters is okay as SCdata content [20]
  *
@@ -11219,7 +11220,7 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
  *         UTF-8 error occured otherwise
  */
 static int
-xmlCheckCdataPush(const xmlChar *utf, int len) {
+xmlCheckCdataPush(const xmlChar *utf, int len, int complete) {
     int ix;
     unsigned char c;
     int codepoint;
@@ -11237,7 +11238,7 @@ xmlCheckCdataPush(const xmlChar *utf, int len) {
 	    else
 	        return(-ix);
 	} else if ((c & 0xe0) == 0xc0) {/* 2-byte code, starts with 110 */
-	    if (ix + 2 > len) return(-ix);
+	    if (ix + 2 > len) return(complete ? -ix : ix);
 	    if ((utf[ix+1] & 0xc0 ) != 0x80)
 	        return(-ix);
 	    codepoint = (utf[ix] & 0x1f) << 6;
@@ -11246,7 +11247,7 @@ xmlCheckCdataPush(const xmlChar *utf, int len) {
 	        return(-ix);
 	    ix += 2;
 	} else if ((c & 0xf0) == 0xe0) {/* 3-byte code, starts with 1110 */
-	    if (ix + 3 > len) return(-ix);
+	    if (ix + 3 > len) return(complete ? -ix : ix);
 	    if (((utf[ix+1] & 0xc0) != 0x80) ||
 	        ((utf[ix+2] & 0xc0) != 0x80))
 		    return(-ix);
@@ -11257,7 +11258,7 @@ xmlCheckCdataPush(const xmlChar *utf, int len) {
 	        return(-ix);
 	    ix += 3;
 	} else if ((c & 0xf8) == 0xf0) {/* 4-byte code, starts with 11110 */
-	    if (ix + 4 > len) return(-ix);
+	    if (ix + 4 > len) return(complete ? -ix : ix);
 	    if (((utf[ix+1] & 0xc0) != 0x80) ||
 	        ((utf[ix+2] & 0xc0) != 0x80) ||
 		((utf[ix+3] & 0xc0) != 0x80))
@@ -11772,7 +11773,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		        int tmp;
 
 			tmp = xmlCheckCdataPush(ctxt->input->cur,
-			                        XML_PARSER_BIG_BUFFER_SIZE);
+			                        XML_PARSER_BIG_BUFFER_SIZE, 0);
 			if (tmp < 0) {
 			    tmp = -tmp;
 			    ctxt->input->cur += tmp;
@@ -11795,7 +11796,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else {
 		    int tmp;
 
-		    tmp = xmlCheckCdataPush(ctxt->input->cur, base);
+		    tmp = xmlCheckCdataPush(ctxt->input->cur, base, 1);
 		    if ((tmp < 0) || (tmp != base)) {
 			tmp = -tmp;
 			ctxt->input->cur += tmp;

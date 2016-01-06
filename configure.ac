@@ -1480,8 +1480,6 @@ case "$host" in
 	*) M_LIBS="-lm"
 	;;
 esac
-XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
-XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICONV)
 
 WITH_ICU=0
@@ -1496,11 +1494,41 @@ else
         WITH_ICU=1
         echo Enabling ICU support
     else
-        AC_MSG_ERROR([libicu config program icu-config not found])
+        if test "$with_icu" != "yes" -a "$with_iconv" != "" ; then
+            CPPFLAGS="${CPPFLAGS} -I$with_icu"
+            # Export this since our headers include icu.h
+            XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_icu"
+        fi
+
+        AC_CHECK_HEADER(unicode/ucnv.h,
+        AC_MSG_CHECKING(for icu)
+        AC_TRY_LINK([#include <unicode/ucnv.h>],[
+    UConverter *utf = ucnv_open("UTF-8", NULL);],[
+            AC_MSG_RESULT(yes)
+            WITH_ICU=1],[
+            AC_MSG_RESULT(no)
+            AC_MSG_CHECKING(for icu in -licucore)
+
+            _ldflags="${LDFLAGS}"
+            _libs="${LIBS}"
+            LDFLAGS="${LDFLAGS} ${ICU_LIBS}"
+            LIBS="${LIBS} -licucore"
+
+            AC_TRY_LINK([#include <unicode/ucnv.h>],[
+    UConverter *utf = ucnv_open("UTF-8", NULL);],[
+                AC_MSG_RESULT(yes)
+                WITH_ICU=1
+                ICU_LIBS="${ICU_LIBS} -licucore"
+                LIBS="${_libs}"
+                LDFLAGS="${_ldflags}"],[
+                AC_MSG_RESULT(no)
+                LIBS="${_libs}"
+                LDFLAGS="${_ldflags}"])]))
     fi
 fi
+XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $M_LIBS $LIBS"
+XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICU)
-AC_SUBST(ICU_LIBS)
 
 WITH_ISO8859X=1
 if test "$WITH_ICONV" != "1" ; then
@@ -1639,6 +1667,7 @@ AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)
 AC_SUBST(XML_LIBTOOLLIBS)
 AC_SUBST(ICONV_LIBS)
+AC_SUBST(ICU_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
 AC_SUBST(HTML_DIR)
 AC_SUBST(HAVE_ISNAN)

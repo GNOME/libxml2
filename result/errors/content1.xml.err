@@ -13,4 +13,4 @@
                          ^
 ./test/errors/content1.xml:7: parser error : Start tag expected, '<' not found
 <!ELEMENT aElement (a |b * >
-                           ^
+                         ^

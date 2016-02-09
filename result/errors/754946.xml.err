@@ -11,9 +11,9 @@ Entity: line 1: parser error : DOCTYPE improperly terminated
 Entity: line 1: 
 A<lbbbbbbbbbbbbbbbbbbb_
 ^
-./test/errors/754946.xml:1: parser error : Start tag doesn't start and stop in the same entity
->%SYSTEM;<![
+Entity: line 1: parser error : Start tag expected, '<' not found
+ %SYSTEM; 
          ^
-./test/errors/754946.xml:1: parser error : Extra content at the end of the document
->%SYSTEM;<![
-         ^
+Entity: line 1: 
+A<lbbbbbbbbbbbbbbbbbbb_
+^

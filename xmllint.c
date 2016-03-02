@@ -2967,6 +2967,7 @@ static void showVersion(const char *name) {
     if (xmlHasFeature(XML_WITH_XPTR)) fprintf(stderr, "XPointer ");
     if (xmlHasFeature(XML_WITH_XINCLUDE)) fprintf(stderr, "XInclude ");
     if (xmlHasFeature(XML_WITH_ICONV)) fprintf(stderr, "Iconv ");
+    if (xmlHasFeature(XML_WITH_ICU)) fprintf(stderr, "ICU ");
     if (xmlHasFeature(XML_WITH_ISO8859X)) fprintf(stderr, "ISO8859X ");
     if (xmlHasFeature(XML_WITH_UNICODE)) fprintf(stderr, "Unicode ");
     if (xmlHasFeature(XML_WITH_REGEXP)) fprintf(stderr, "Regexps ");

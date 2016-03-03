@@ -1,0 +1,9 @@
+./test/errors/759398.xml:210: parser error : StartTag: invalid element name
+need to worry about parsers whi<! don't expand PErefs finding
+                                ^
+./test/errors/759398.xml:309: parser error : Opening and ending tag mismatch: spec line 50 and termdef
+and provide access to their content and structure.</termdef> <termdef
+                                                            ^
+./test/errors/759398.xml:309: parser error : Extra content at the end of the document
+and provide access to their content and structure.</termdef> <termdef
+                                                             ^

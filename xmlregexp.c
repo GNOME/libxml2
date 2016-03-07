@@ -5057,11 +5057,12 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	ERROR("Expecting the end of a char range");
 	return;
     }
-    NEXTL(len);
+
     /* TODO check that the values are acceptable character ranges for XML */
     if (end < start) {
 	ERROR("End of range is before start of range");
     } else {
+        NEXTL(len);
         xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 		           XML_REGEXP_CHARVAL, start, end, NULL);
     }

@@ -9488,7 +9488,10 @@ reparse:
 		else
 		    if (nsPush(ctxt, NULL, URL) > 0) nbNs++;
 skip_default_ns:
-		if (alloc != 0) xmlFree(attvalue);
+		if ((attvalue != NULL) && (alloc != 0)) {
+		    xmlFree(attvalue);
+		    attvalue = NULL;
+		}
 		if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 		    break;
 		if (!IS_BLANK_CH(RAW)) {
@@ -9497,6 +9500,8 @@ skip_default_ns:
 		    break;
 		}
 		SKIP_BLANKS;
+		if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
+		    goto base_changed;
 		continue;
 	    }
             if (aprefix == ctxt->str_xmlns) {
@@ -9568,7 +9573,10 @@ skip_default_ns:
 		else
 		    if (nsPush(ctxt, attname, URL) > 0) nbNs++;
 skip_ns:
-		if (alloc != 0) xmlFree(attvalue);
+		if ((attvalue != NULL) && (alloc != 0)) {
+		    xmlFree(attvalue);
+		    attvalue = NULL;
+		}
 		if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 		    break;
 		if (!IS_BLANK_CH(RAW)) {

@@ -1479,7 +1479,7 @@ test_htmlCreateMemoryParserCtxt(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
 
         ret_val = htmlCreateMemoryParserCtxt((const char *)buffer, size);
         desret_htmlParserCtxtPtr(ret_val);
@@ -1544,7 +1544,7 @@ test_htmlCreatePushParserCtxt(void) {
         sax = gen_htmlSAXHandlerPtr(n_sax, 0);
         user_data = gen_userdata(n_user_data, 1);
         chunk = gen_const_char_ptr(n_chunk, 2);
-        size = gen_int(n_size, 3);
+        size = chunk ? strlen(chunk) : 0;
         filename = gen_fileoutput(n_filename, 4);
         enc = gen_xmlCharEncoding(n_enc, 5);
 
@@ -1717,7 +1717,7 @@ test_htmlCtxtReadMemory(void) {
         mem_base = xmlMemBlocks();
         ctxt = gen_htmlParserCtxtPtr(n_ctxt, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
-        size = gen_int(n_size, 2);
+        size = buffer ? strlen(buffer) : 0;
         URL = gen_filepath(n_URL, 3);
         encoding = gen_const_char_ptr(n_encoding, 4);
         options = gen_int(n_options, 5);
@@ -2276,7 +2276,7 @@ test_htmlParseChunk(void) {
         mem_base = xmlMemBlocks();
         ctxt = gen_htmlParserCtxtPtr(n_ctxt, 0);
         chunk = gen_const_char_ptr(n_chunk, 1);
-        size = gen_int(n_size, 2);
+        size = chunk ? strlen(chunk) : 0;
         terminate = gen_int(n_terminate, 3);
 
         ret_val = htmlParseChunk(ctxt, (const char *)chunk, size, terminate);
@@ -2617,7 +2617,7 @@ test_htmlReadMemory(void) {
     for (n_options = 0;n_options < gen_nb_int;n_options++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
         options = gen_int(n_options, 4);
@@ -8220,7 +8220,7 @@ test_xmlDictExists(void) {
         mem_base = xmlMemBlocks();
         dict = gen_xmlDictPtr(n_dict, 0);
         name = gen_const_xmlChar_ptr(n_name, 1);
-        len = gen_int(n_len, 2);
+        len = name ? strlen((const char *)name) : 0;
 
         ret_val = xmlDictExists(dict, (const xmlChar *)name, len);
         desret_const_xmlChar_ptr(ret_val);
@@ -8276,7 +8276,7 @@ test_xmlDictLookup(void) {
         mem_base = xmlMemBlocks();
         dict = gen_xmlDictPtr(n_dict, 0);
         name = gen_const_xmlChar_ptr(n_name, 1);
-        len = gen_int(n_len, 2);
+        len = name ? strlen((const char *)name) : 0;
 
         ret_val = xmlDictLookup(dict, (const xmlChar *)name, len);
         desret_const_xmlChar_ptr(ret_val);
@@ -12725,7 +12725,7 @@ test_xmlCreatePushParserCtxt(void) {
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         user_data = gen_userdata(n_user_data, 1);
         chunk = gen_const_char_ptr(n_chunk, 2);
-        size = gen_int(n_size, 3);
+        size = chunk ? strlen(chunk) : 0;
         filename = gen_fileoutput(n_filename, 4);
 
         ret_val = xmlCreatePushParserCtxt(sax, user_data, (const char *)chunk, size, filename);
@@ -12901,7 +12901,7 @@ test_xmlCtxtReadMemory(void) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
-        size = gen_int(n_size, 2);
+        size = buffer ? strlen(buffer) : 0;
         URL = gen_filepath(n_URL, 3);
         encoding = gen_const_char_ptr(n_encoding, 4);
         options = gen_parseroptions(n_options, 5);
@@ -12995,7 +12995,7 @@ test_xmlCtxtResetPush(void) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         chunk = gen_const_char_ptr(n_chunk, 1);
-        size = gen_int(n_size, 2);
+        size = chunk ? strlen(chunk) : 0;
         filename = gen_filepath(n_filename, 3);
         encoding = gen_const_char_ptr(n_encoding, 4);
 
@@ -13707,7 +13707,7 @@ test_xmlParseChunk(void) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         chunk = gen_const_char_ptr(n_chunk, 1);
-        size = gen_int(n_size, 2);
+        size = chunk ? strlen(chunk) : 0;
         terminate = gen_int(n_terminate, 3);
 
         ret_val = xmlParseChunk(ctxt, (const char *)chunk, size, terminate);
@@ -14113,7 +14113,7 @@ test_xmlParseInNodeContext(void) {
         mem_base = xmlMemBlocks();
         node = gen_xmlNodePtr(n_node, 0);
         data = gen_const_char_ptr(n_data, 1);
-        datalen = gen_int(n_datalen, 2);
+        datalen = data ? strlen(data) : 0;
         options = gen_parseroptions(n_options, 3);
         lst = gen_xmlNodePtr_ptr(n_lst, 4);
 
@@ -14165,7 +14165,7 @@ test_xmlParseMemory(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
 
         ret_val = xmlParseMemory((const char *)buffer, size);
         desret_xmlDocPtr(ret_val);
@@ -14574,7 +14574,7 @@ test_xmlReadMemory(void) {
     for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
         options = gen_parseroptions(n_options, 4);
@@ -14699,7 +14699,7 @@ test_xmlRecoverMemory(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
 
         ret_val = xmlRecoverMemory((const char *)buffer, size);
         desret_xmlDocPtr(ret_val);
@@ -14999,7 +14999,7 @@ test_xmlSAXParseMemory(void) {
         mem_base = xmlMemBlocks();
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
-        size = gen_int(n_size, 2);
+        size = buffer ? strlen(buffer) : 0;
         recovery = gen_int(n_recovery, 3);
 
         ret_val = xmlSAXParseMemory(sax, (const char *)buffer, size, recovery);
@@ -15059,7 +15059,7 @@ test_xmlSAXParseMemoryWithData(void) {
         mem_base = xmlMemBlocks();
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
-        size = gen_int(n_size, 2);
+        size = buffer ? strlen(buffer) : 0;
         recovery = gen_int(n_recovery, 3);
         data = gen_userdata(n_data, 4);
 
@@ -15176,7 +15176,7 @@ test_xmlSAXUserParseMemory(void) {
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         user_data = gen_userdata(n_user_data, 1);
         buffer = gen_const_char_ptr(n_buffer, 2);
-        size = gen_int(n_size, 3);
+        size = buffer ? strlen(buffer) : 0;
         
 #ifdef LIBXML_SAX1_ENABLED
         if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
@@ -15947,7 +15947,7 @@ test_xmlCreateMemoryParserCtxt(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
 
         ret_val = xmlCreateMemoryParserCtxt((const char *)buffer, size);
         desret_xmlParserCtxtPtr(ret_val);
@@ -17572,7 +17572,7 @@ test_xmlRelaxNGNewMemParserCtxt(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
 
         ret_val = xmlRelaxNGNewMemParserCtxt((const char *)buffer, size);
         desret_xmlRelaxNGParserCtxtPtr(ret_val);
@@ -18590,7 +18590,7 @@ test_xmlBufferAdd(void) {
         mem_base = xmlMemBlocks();
         buf = gen_xmlBufferPtr(n_buf, 0);
         str = gen_const_xmlChar_ptr(n_str, 1);
-        len = gen_int(n_len, 2);
+        len = str ? strlen((const char *)str) : 0;
 
         ret_val = xmlBufferAdd(buf, (const xmlChar *)str, len);
         desret_int(ret_val);
@@ -18636,7 +18636,7 @@ test_xmlBufferAddHead(void) {
         mem_base = xmlMemBlocks();
         buf = gen_xmlBufferPtr(n_buf, 0);
         str = gen_const_xmlChar_ptr(n_str, 1);
-        len = gen_int(n_len, 2);
+        len = str ? strlen((const char *)str) : 0;
 
         ret_val = xmlBufferAddHead(buf, (const xmlChar *)str, len);
         desret_int(ret_val);
@@ -19208,7 +19208,7 @@ test_xmlBuildQName(void) {
         ncname = gen_const_xmlChar_ptr(n_ncname, 0);
         prefix = gen_const_xmlChar_ptr(n_prefix, 1);
         memory = gen_xmlChar_ptr(n_memory, 2);
-        len = gen_int(n_len, 3);
+        len = memory ? strlen((const char *)memory) : 0;
 
         ret_val = xmlBuildQName((const xmlChar *)ncname, (const xmlChar *)prefix, memory, len);
         if ((ret_val != NULL) && (ret_val != ncname) &&
@@ -20032,7 +20032,7 @@ test_xmlDocDumpFormatMemory(void) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlDocPtr(n_cur, 0);
         mem = gen_xmlChar_ptr_ptr(n_mem, 1);
-        size = gen_int_ptr(n_size, 2);
+        size = NULL;
         format = gen_int(n_format, 3);
 
         xmlDocDumpFormatMemory(cur, mem, size, format);
@@ -20088,7 +20088,7 @@ test_xmlDocDumpFormatMemoryEnc(void) {
         mem_base = xmlMemBlocks();
         out_doc = gen_xmlDocPtr(n_out_doc, 0);
         doc_txt_ptr = gen_xmlChar_ptr_ptr(n_doc_txt_ptr, 1);
-        doc_txt_len = gen_int_ptr(n_doc_txt_len, 2);
+        doc_txt_len = NULL;
         txt_encoding = gen_const_char_ptr(n_txt_encoding, 3);
         format = gen_int(n_format, 4);
 
@@ -20142,7 +20142,7 @@ test_xmlDocDumpMemory(void) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlDocPtr(n_cur, 0);
         mem = gen_xmlChar_ptr_ptr(n_mem, 1);
-        size = gen_int_ptr(n_size, 2);
+        size = NULL;
 
         xmlDocDumpMemory(cur, mem, size);
         call_tests++;
@@ -20979,7 +20979,7 @@ test_xmlNewCDataBlock(void) {
         mem_base = xmlMemBlocks();
         doc = gen_xmlDocPtr(n_doc, 0);
         content = gen_const_xmlChar_ptr(n_content, 1);
-        len = gen_int(n_len, 2);
+        len = content ? strlen((const char *)content) : 0;
 
         ret_val = xmlNewCDataBlock(doc, (const xmlChar *)content, len);
         desret_xmlNodePtr(ret_val);
@@ -21552,7 +21552,7 @@ test_xmlNewDocTextLen(void) {
         mem_base = xmlMemBlocks();
         doc = gen_xmlDocPtr(n_doc, 0);
         content = gen_const_xmlChar_ptr(n_content, 1);
-        len = gen_int(n_len, 2);
+        len = content ? strlen((const char *)content) : 0;
 
         ret_val = xmlNewDocTextLen(doc, (const xmlChar *)content, len);
         desret_xmlNodePtr(ret_val);
@@ -22095,7 +22095,7 @@ test_xmlNewTextLen(void) {
     for (n_len = 0;n_len < gen_nb_int;n_len++) {
         mem_base = xmlMemBlocks();
         content = gen_const_xmlChar_ptr(n_content, 0);
-        len = gen_int(n_len, 1);
+        len = content ? strlen((const char *)content) : 0;
 
         ret_val = xmlNewTextLen((const xmlChar *)content, len);
         desret_xmlNodePtr(ret_val);
@@ -22208,7 +22208,7 @@ test_xmlNodeAddContentLen(void) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlNodePtr(n_cur, 0);
         content = gen_const_xmlChar_ptr(n_content, 1);
-        len = gen_int(n_len, 2);
+        len = content ? strlen((const char *)content) : 0;
 
         xmlNodeAddContentLen(cur, (const xmlChar *)content, len);
         call_tests++;
@@ -22758,7 +22758,7 @@ test_xmlNodeSetContentLen(void) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlNodePtr(n_cur, 0);
         content = gen_const_xmlChar_ptr(n_content, 1);
-        len = gen_int(n_len, 2);
+        len = content ? strlen((const char *)content) : 0;
 
         xmlNodeSetContentLen(cur, (const xmlChar *)content, len);
         call_tests++;
@@ -23740,7 +23740,7 @@ test_xmlSplitQName3(void) {
     for (n_len = 0;n_len < gen_nb_int_ptr;n_len++) {
         mem_base = xmlMemBlocks();
         name = gen_const_xmlChar_ptr(n_name, 0);
-        len = gen_int_ptr(n_len, 1);
+        len = NULL;
 
         ret_val = xmlSplitQName3((const xmlChar *)name, len);
         desret_const_xmlChar_ptr(ret_val);
@@ -23822,7 +23822,7 @@ test_xmlStringLenGetNodeList(void) {
         mem_base = xmlMemBlocks();
         doc = gen_const_xmlDoc_ptr(n_doc, 0);
         value = gen_const_xmlChar_ptr(n_value, 1);
-        len = gen_int(n_len, 2);
+        len = value ? strlen((const char *)value) : 0;
 
         ret_val = xmlStringLenGetNodeList((const xmlDoc *)doc, (const xmlChar *)value, len);
         desret_xmlNodePtr(ret_val);
@@ -23868,7 +23868,7 @@ test_xmlTextConcat(void) {
         mem_base = xmlMemBlocks();
         node = gen_xmlNodePtr(n_node, 0);
         content = gen_const_xmlChar_ptr(n_content, 1);
-        len = gen_int(n_len, 2);
+        len = content ? strlen((const char *)content) : 0;
 
         ret_val = xmlTextConcat(node, (const xmlChar *)content, len);
         desret_int(ret_val);
@@ -28659,8 +28659,8 @@ test_xmlOutputBufferWrite(void) {
     for (n_buf = 0;n_buf < gen_nb_const_char_ptr;n_buf++) {
         mem_base = xmlMemBlocks();
         out = gen_xmlOutputBufferPtr(n_out, 0);
-        len = gen_int(n_len, 1);
         buf = gen_const_char_ptr(n_buf, 2);
+        len = buf ? strlen(buf) : 0;
 
         ret_val = xmlOutputBufferWrite(out, len, (const char *)buf);
         desret_int(ret_val);
@@ -28885,7 +28885,7 @@ test_xmlParserInputBufferCreateMem(void) {
     for (n_enc = 0;n_enc < gen_nb_xmlCharEncoding;n_enc++) {
         mem_base = xmlMemBlocks();
         mem = gen_const_char_ptr(n_mem, 0);
-        size = gen_int(n_size, 1);
+        size = mem ? strlen(mem) : 0;
         enc = gen_xmlCharEncoding(n_enc, 2);
 
         ret_val = xmlParserInputBufferCreateMem((const char *)mem, size, enc);
@@ -28931,7 +28931,7 @@ test_xmlParserInputBufferCreateStatic(void) {
     for (n_enc = 0;n_enc < gen_nb_xmlCharEncoding;n_enc++) {
         mem_base = xmlMemBlocks();
         mem = gen_const_char_ptr(n_mem, 0);
-        size = gen_int(n_size, 1);
+        size = mem ? strlen(mem) : 0;
         enc = gen_xmlCharEncoding(n_enc, 2);
 
         ret_val = xmlParserInputBufferCreateStatic((const char *)mem, size, enc);
@@ -29016,8 +29016,8 @@ test_xmlParserInputBufferPush(void) {
     for (n_buf = 0;n_buf < gen_nb_const_char_ptr;n_buf++) {
         mem_base = xmlMemBlocks();
         in = gen_xmlParserInputBufferPtr(n_in, 0);
-        len = gen_int(n_len, 1);
         buf = gen_const_char_ptr(n_buf, 2);
+        len = buf ? strlen(buf) : 0;
 
         ret_val = xmlParserInputBufferPush(in, len, (const char *)buf);
         desret_int(ret_val);
@@ -30196,7 +30196,7 @@ test_xmlReaderForMemory(void) {
     for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
         options = gen_parseroptions(n_options, 4);
@@ -30379,7 +30379,7 @@ test_xmlReaderNewMemory(void) {
         mem_base = xmlMemBlocks();
         reader = gen_xmlTextReaderPtr(n_reader, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
-        size = gen_int(n_size, 2);
+        size = buffer ? strlen(buffer) : 0;
         URL = gen_filepath(n_URL, 3);
         encoding = gen_const_char_ptr(n_encoding, 4);
         options = gen_parseroptions(n_options, 5);
@@ -34419,7 +34419,7 @@ test_xmlSchemaNewMemParserCtxt(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
-        size = gen_int(n_size, 1);
+        size = buffer ? strlen(buffer) : 0;
 
         ret_val = xmlSchemaNewMemParserCtxt((const char *)buffer, size);
         desret_xmlSchemaParserCtxtPtr(ret_val);
@@ -36303,7 +36303,7 @@ test_xmlCharStrndup(void) {
     for (n_len = 0;n_len < gen_nb_int;n_len++) {
         mem_base = xmlMemBlocks();
         cur = gen_const_char_ptr(n_cur, 0);
-        len = gen_int(n_len, 1);
+        len = cur ? strlen(cur) : 0;
 
         ret_val = xmlCharStrndup((const char *)cur, len);
         desret_xmlChar_ptr(ret_val);
@@ -36788,7 +36788,7 @@ test_xmlStrncatNew(void) {
         mem_base = xmlMemBlocks();
         str1 = gen_const_xmlChar_ptr(n_str1, 0);
         str2 = gen_const_xmlChar_ptr(n_str2, 1);
-        len = gen_int(n_len, 2);
+        len = str2 ? strlen((const char *)str2) : 0;
 
         ret_val = xmlStrncatNew((const xmlChar *)str1, (const xmlChar *)str2, len);
         desret_xmlChar_ptr(ret_val);
@@ -36834,7 +36834,7 @@ test_xmlStrncmp(void) {
         mem_base = xmlMemBlocks();
         str1 = gen_const_xmlChar_ptr(n_str1, 0);
         str2 = gen_const_xmlChar_ptr(n_str2, 1);
-        len = gen_int(n_len, 2);
+        len = str2 ? strlen((const char *)str2) : 0;
 
         ret_val = xmlStrncmp((const xmlChar *)str1, (const xmlChar *)str2, len);
         desret_int(ret_val);
@@ -36876,7 +36876,7 @@ test_xmlStrndup(void) {
     for (n_len = 0;n_len < gen_nb_int;n_len++) {
         mem_base = xmlMemBlocks();
         cur = gen_const_xmlChar_ptr(n_cur, 0);
-        len = gen_int(n_len, 1);
+        len = cur ? strlen((const char *)cur) : 0;
 
         ret_val = xmlStrndup((const xmlChar *)cur, len);
         desret_xmlChar_ptr(ret_val);
@@ -36958,7 +36958,8 @@ test_xmlStrsub(void) {
         mem_base = xmlMemBlocks();
         str = gen_const_xmlChar_ptr(n_str, 0);
         start = gen_int(n_start, 1);
-        len = gen_int(n_len, 2);
+        len = str ? strlen((const char *)str) : 0;
+        len = ((len > 0) && (len > start)) ? (len - start) : 0;
 
         ret_val = xmlStrsub((const xmlChar *)str, start, len);
         desret_xmlChar_ptr(ret_val);
@@ -44575,7 +44576,8 @@ test_xmlTextWriterWriteBase64(void) {
         writer = gen_xmlTextWriterPtr(n_writer, 0);
         data = gen_const_char_ptr(n_data, 1);
         start = gen_int(n_start, 2);
-        len = gen_int(n_len, 3);
+        len = data ? strlen(data) : 0;
+        len = ((len > 0) && (len > start)) ? (len - start) : 0;
 
         ret_val = xmlTextWriterWriteBase64(writer, (const char *)data, start, len);
         desret_int(ret_val);
@@ -44630,7 +44632,8 @@ test_xmlTextWriterWriteBinHex(void) {
         writer = gen_xmlTextWriterPtr(n_writer, 0);
         data = gen_const_char_ptr(n_data, 1);
         start = gen_int(n_start, 2);
-        len = gen_int(n_len, 3);
+        len = data ? strlen(data) : 0;
+        len = ((len > 0) && (len > start)) ? (len - start) : 0;
 
         ret_val = xmlTextWriterWriteBinHex(writer, (const char *)data, start, len);
         desret_int(ret_val);
@@ -45560,7 +45563,7 @@ test_xmlTextWriterWriteRawLen(void) {
         mem_base = xmlMemBlocks();
         writer = gen_xmlTextWriterPtr(n_writer, 0);
         content = gen_const_xmlChar_ptr(n_content, 1);
-        len = gen_int(n_len, 2);
+        len = content ? strlen((const char *)content) : 0;
 
         ret_val = xmlTextWriterWriteRawLen(writer, (const xmlChar *)content, len);
         desret_int(ret_val);

@@ -2861,7 +2861,21 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	        ctxt->nbentities += ent->checked / 2;
 	    if (ent != NULL) {
                 if (ent->content == NULL) {
-		    xmlLoadEntityContent(ctxt, ent);
+		    /*
+		     * Note: external parsed entities will not be loaded,
+		     * it is not required for a non-validating parser to
+		     * complete external PEreferences coming from the
+		     * internal subset
+		     */
+		    if (((ctxt->options & XML_PARSE_NOENT) != 0) ||
+			((ctxt->options & XML_PARSE_DTDVALID) != 0) ||
+			(ctxt->validate != 0)) {
+			xmlLoadEntityContent(ctxt, ent);
+		    } else {
+			xmlWarningMsg(ctxt, XML_ERR_ENTITY_PROCESSING,
+		  "not validating will not read content for PE entity %s\n",
+		                      ent->name, NULL);
+		    }
 		}
 		ctxt->depth++;
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,

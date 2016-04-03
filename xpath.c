@@ -3706,7 +3706,7 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 
     /* @@ with_ns to check whether namespace nodes should be looked at @@ */
     /*
-     * prevent duplcates
+     * prevent duplicates
      */
     for (i = 0;i < cur->nodeNr;i++)
         if (cur->nodeTab[i] == val) return(0);

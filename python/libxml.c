@@ -906,7 +906,7 @@ pythonStartElement(void *user_data, const xmlChar * name,
         type = 2;
     if (type != 0) {
         /*
-         * the xmllib interface always generate a dictionnary,
+         * the xmllib interface always generates a dictionary,
          * possibly empty
          */
         if ((attrs == NULL) && (type == 1)) {

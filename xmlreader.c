@@ -142,7 +142,7 @@ struct _xmlTextReader {
     xmlNodePtr			faketext;/* fake xmlNs chld */
     int				preserve;/* preserve the resulting document */
     xmlBufPtr		        buffer; /* used to return const xmlChar * */
-    xmlDictPtr			dict;	/* the context dictionnary */
+    xmlDictPtr			dict;	/* the context dictionary */
 
     /* entity stack when traversing entities content */
     xmlNodePtr         ent;          /* Current Entity Ref Node */
@@ -210,7 +210,7 @@ static int xmlTextReaderNextTree(xmlTextReaderPtr reader);
  * DICT_FREE:
  * @str:  a string
  *
- * Free a string if it is not owned by the "dict" dictionnary in the
+ * Free a string if it is not owned by the "dict" dictionary in the
  * current scope
  */
 #define DICT_FREE(str)						\
@@ -2158,7 +2158,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->ctxt->dictNames = 1;
     ret->allocs = XML_TEXTREADER_CTXT;
     /*
-     * use the parser dictionnary to allocate all elements and attributes names
+     * use the parser dictionary to allocate all elements and attributes names
      */
     ret->ctxt->docdict = 1;
     ret->dict = ret->ctxt->dict;
@@ -5249,7 +5249,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
     reader->ctxt->linenumbers = 1;
     reader->ctxt->dictNames = 1;
     /*
-     * use the parser dictionnary to allocate all elements and attributes names
+     * use the parser dictionary to allocate all elements and attributes names
      */
     reader->ctxt->docdict = 1;
     reader->ctxt->parseMode = XML_PARSE_READER;

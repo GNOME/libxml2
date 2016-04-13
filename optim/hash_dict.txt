@@ -1,4 +1,4 @@
-Reuses a dictionnary for the hash table to reduce the string compare
+Reuses a dictionary for the hash table to reduce the string compare
 costs. Not worth it unless validating big DTDs
 
 		without		with

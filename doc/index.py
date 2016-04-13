@@ -49,7 +49,7 @@ def callback(ctx, str):
 libxml2.registerErrorHandler(callback, None)
 
 #
-# The dictionnary of tables required and the SQL command needed
+# The dictionary of tables required and the SQL command needed
 # to create them
 #
 TABLES={
@@ -438,12 +438,12 @@ def updateWordArchive(name, id, relevance):
 	    print """UPDATE wordsArchive SET relevance='%d' where name='%s' and ID='%d'""" % (relevance, name, id)
 	    print sys.exc_type, sys.exc_value
 	    return -1
-	     
+
     return ret
 
 #########################################################################
 #									#
-#                  Word dictionnary and analysis routines		#
+#                  Word dictionary and analysis routines		#
 #									#
 #########################################################################
 

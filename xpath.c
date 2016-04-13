@@ -945,7 +945,7 @@ struct _xmlXPathCompExpr {
     xmlXPathStepOp *steps;	/* ops for computation of this expression */
     int last;			/* index of last step in expression */
     xmlChar *expr;		/* the expression being computed */
-    xmlDictPtr dict;		/* the dictionnary to use if any */
+    xmlDictPtr dict;		/* the dictionary to use if any */
 #ifdef DEBUG_EVAL_COUNTS
     int nb;
     xmlChar *string;

@@ -44,10 +44,10 @@ struct _xmlDebugCtxt {
     int depth;                  /* current depth */
     xmlDocPtr doc;              /* current document */
     xmlNodePtr node;		/* current node */
-    xmlDictPtr dict;		/* the doc dictionnary */
+    xmlDictPtr dict;		/* the doc dictionary */
     int check;                  /* do just checkings */
     int errors;                 /* number of errors found */
-    int nodict;			/* if the document has no dictionnary */
+    int nodict;			/* if the document has no dictionary */
     int options;		/* options */
 };
 
@@ -243,7 +243,7 @@ xmlCtxtCheckString(xmlDebugCtxtPtr ctxt, const xmlChar * str)
  * @ctxt: the debug context
  * @name: the name
  *
- * Do debugging on the name, for example the dictionnary status and
+ * Do debugging on the name, for example the dictionary status and
  * conformance to the Name production.
  */
 static void
@@ -265,7 +265,7 @@ xmlCtxtCheckName(xmlDebugCtxtPtr ctxt, const xmlChar * name)
             ((ctxt->doc == NULL) ||
              ((ctxt->doc->parseFlags & (XML_PARSE_SAX1 | XML_PARSE_NODICT)) == 0))) {
 	    xmlDebugErr3(ctxt, XML_CHECK_OUTSIDE_DICT,
-			 "Name is not from the document dictionnary '%s'",
+			 "Name is not from the document dictionary '%s'",
 			 (const char *) name);
 	}
     }
@@ -292,7 +292,7 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
             /* desactivated right now as it raises too many errors */
 	    if (doc->type == XML_DOCUMENT_NODE)
 		xmlDebugErr(ctxt, XML_CHECK_NO_DICT,
-			    "Document has no dictionnary\n");
+			    "Document has no dictionary\n");
 #endif
 	    ctxt->nodict = 1;
 	}

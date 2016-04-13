@@ -29,7 +29,7 @@ structure.gif                             \ /
 w3c.png                                    -
 
 apibuild.py        Python script which generates the file libxml2-api.xml
-parsedecl.py       Python secipt which generates the file libxml2-refs.xml
+parsedecl.py       Python script which generates the file libxml2-refs.xml
 
 api.xsl            xslt script to generate API cross-references APIchunk*.html
                      using information from libxml2-api.xml and libxml2-refs.xml

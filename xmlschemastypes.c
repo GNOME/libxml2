@@ -5315,7 +5315,15 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	    */
 	    if (value == NULL)
 		return(-1);
-	    ret = xmlRegexpExec(facet->regexp, value);
+	    /*
+	    * If string-derived type, regexp must be tested on the value space of
+	    * the datatype.
+	    * See https://www.w3.org/TR/xmlschema-2/#rf-pattern
+	    */
+	    const int stringType = val && ((val->type >= XML_SCHEMAS_STRING && val->type <= XML_SCHEMAS_NORMSTRING)
+	                                    || (val->type >= XML_SCHEMAS_TOKEN && val->type <= XML_SCHEMAS_NCNAME));
+	    ret = xmlRegexpExec(facet->regexp,
+	                        (stringType && val->value.str) ? val->value.str : value);
 	    if (ret == 1)
 		return(0);
 	    if (ret == 0)

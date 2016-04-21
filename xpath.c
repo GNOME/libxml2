@@ -10151,7 +10151,8 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
         cur++;
       }
       while ((*cur >= '0') && (*cur <= '9')) {
-	exponent = exponent * 10 + (*cur - '0');
+        if (exponent < 1000000)
+	  exponent = exponent * 10 + (*cur - '0');
 	cur++;
       }
     }
@@ -10245,7 +10246,8 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
 	    NEXT;
 	}
         while ((CUR >= '0') && (CUR <= '9')) {
-            exponent = exponent * 10 + (CUR - '0');
+            if (exponent < 1000000)
+                exponent = exponent * 10 + (CUR - '0');
             NEXT;
         }
         if (is_exponent_negative)

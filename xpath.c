@@ -9996,7 +9996,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
         (c == '[') || (c == ']') || (c == '@') || /* accelerators */
         (c == '*') || /* accelerators */
 	(!IS_LETTER(c) && (c != '_') &&
-         ((qualified) && (c != ':')))) {
+         ((!qualified) || (c != ':')))) {
 	return(NULL);
     }
 

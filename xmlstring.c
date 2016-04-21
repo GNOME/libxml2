@@ -837,8 +837,8 @@ xmlUTF8Strsize(const xmlChar *utf, int len) {
             break;
         if ( (ch = *ptr++) & 0x80)
             while ((ch<<=1) & 0x80 ) {
-                ptr++;
 		if (*ptr == 0) break;
+                ptr++;
 	    }
     }
     return (ptr - utf);

@@ -20,5 +20,9 @@ Expression: (1+2)*(3+4)
 Object is a number : 21
 
 ========================
+Expression: 1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1+1*1
+Object is a number : 21
+
+========================
 Expression: self::-name
 Object is empty (NULL)

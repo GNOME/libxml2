@@ -14786,6 +14786,10 @@ xmlXPathOptimizeExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
 	}
     }
 
+    /* OP_VALUE has invalid ch1. */
+    if (op->op == XPATH_OP_VALUE)
+        return;
+
     /* Recurse */
     if (op->ch1 != -1)
         xmlXPathOptimizeExpression(comp, &comp->steps[op->ch1]);

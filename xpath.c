@@ -12379,11 +12379,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
                     STRANGE
 		    goto error;
                 case NODE_TEST_TYPE:
-		    /*
-		    * TODO: Don't we need to use
-		    *  xmlXPathNodeSetAddNs() for namespace nodes here?
-		    *  Surprisingly, some c14n tests fail, if we do this.
-		    */
 		    if (type == NODE_TYPE_NODE) {
 			switch (cur->type) {
 			    case XML_DOCUMENT_NODE:
@@ -12397,9 +12392,16 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 			    case XML_COMMENT_NODE:
 			    case XML_CDATA_SECTION_NODE:
 			    case XML_TEXT_NODE:
-			    case XML_NAMESPACE_DECL:
 				XP_TEST_HIT
 				break;
+			    case XML_NAMESPACE_DECL: {
+				if (axis == AXIS_NAMESPACE) {
+				    XP_TEST_HIT_NS
+				} else {
+				    XP_TEST_HIT
+				}
+				break;
+                            }
 			    default:
 				break;
 			}

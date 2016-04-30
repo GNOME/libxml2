@@ -8390,7 +8390,7 @@ xmlNodePtr
 xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if ((ctxt == NULL) || (ctxt->context == NULL)) return(NULL);
     if (ctxt->context->node->type != XML_ELEMENT_NODE) return(NULL);
-    if (ctxt->context->tmpNsList == NULL && cur != (xmlNodePtr) xmlXPathXMLNamespace) {
+    if (cur == NULL) {
         if (ctxt->context->tmpNsList != NULL)
 	    xmlFree(ctxt->context->tmpNsList);
 	ctxt->context->tmpNsList =
@@ -12693,6 +12693,14 @@ error:
     * Reset the context node.
     */
     xpctxt->node = oldContextNode;
+    /*
+    * When traversing the namespace axis in "toBool" mode, it's
+    * possible that tmpNsList wasn't freed.
+    */
+    if (xpctxt->tmpNsList != NULL) {
+        xmlFree(xpctxt->tmpNsList);
+        xpctxt->tmpNsList = NULL;
+    }
 
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext,

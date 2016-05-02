@@ -11,6 +11,18 @@
 #ifndef __XML_DICT_H__
 #define __XML_DICT_H__
 
+#ifdef __cplusplus
+#define __XML_EXTERNC	extern "C"
+#else
+#define __XML_EXTERNC
+#endif
+
+/*
+ * The dictionary.
+ */
+__XML_EXTERNC typedef struct _xmlDict xmlDict;
+__XML_EXTERNC typedef xmlDict *xmlDictPtr;
+
 #include <limits.h>
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
@@ -18,12 +30,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*
- * The dictionary.
- */
-typedef struct _xmlDict xmlDict;
-typedef xmlDict *xmlDictPtr;
 
 /*
  * Initializer

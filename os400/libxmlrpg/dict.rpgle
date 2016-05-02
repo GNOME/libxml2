@@ -9,13 +9,13 @@
       /if not defined(XML_DICT_H__)
       /define XML_DICT_H__
 
-      /include "libxmlrpg/xmlversion"
-      /include "libxmlrpg/xmlTypesC"
-      /include "libxmlrpg/tree"
-
       * The dictionary.
 
      d xmlDictPtr      s               *   based(######typedef######)
+
+      /include "libxmlrpg/xmlversion"
+      /include "libxmlrpg/xmlTypesC"
+      /include "libxmlrpg/tree"
 
       * Initializer
 

@@ -27382,10 +27382,17 @@ xmlSchemaSAXHandleStartElementNs(void *ctx,
 
         for (j = 0, i = 0; i < nb_attributes; i++, j += 5) {
 	    /*
-	    * Duplicate the value.
+	    * Duplicate the value, changing any &#38; to a literal ampersand.
+	    *
+	    * libxml2 differs from normal SAX here in that it escapes all ampersands
+	    * as &#38; instead of delivering the raw converted string. Changing the
+	    * behavior at this point would break applications that use this API, so
+	    * we are forced to work around it. There is no danger of accidentally
+	    * decoding some entity other than &#38; in this step because without
+	    * unescaped ampersands there can be no other entities in the string.
 	    */
-	    value = xmlStrndup(attributes[j+3],
-		attributes[j+4] - attributes[j+3]);
+	    value = xmlStringLenDecodeEntities(vctxt->parserCtxt, attributes[j+3],
+		attributes[j+4] - attributes[j+3], XML_SUBSTITUTE_REF, 0, 0, 0);
 	    /*
 	    * TODO: Set the node line.
 	    */

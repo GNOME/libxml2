@@ -2002,6 +2002,12 @@ static void walkDoc(xmlDocPtr doc) {
     xmlNsPtr ns;
 
     root = xmlDocGetRootElement(doc);
+    if (root == NULL ) {
+        xmlGenericError(xmlGenericErrorContext,
+                "Document does not have a root element");
+        progresult = XMLLINT_ERR_UNCLASS;
+        return;
+    }
     for (ns = root->nsDef, i = 0;ns != NULL && i < 20;ns=ns->next) {
         namespaces[i++] = ns->href;
         namespaces[i++] = ns->prefix;

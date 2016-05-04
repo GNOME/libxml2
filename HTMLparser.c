@@ -2492,6 +2492,7 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     int len = 0, l;
     int c;
     int count = 0;
+    const xmlChar *base = ctxt->input->base;
 
     /*
      * Handler for more complex cases
@@ -2517,6 +2518,13 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	len += l;
 	NEXTL(l);
 	c = CUR_CHAR(l);
+	if (ctxt->input->base != base) {
+	    /*
+	     * We changed encoding from an unknown encoding
+	     * Input buffer changed location, so we better start again
+	     */
+	    return(htmlParseNameComplex(ctxt));
+	}
     }
 
     if (ctxt->input->base > ctxt->input->cur - len)

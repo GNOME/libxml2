@@ -1,10 +1,11 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.error: htmlParseEntityRef: no name
+SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(html)
 SAX.startElement(body)
 SAX.startElement(p)
 SAX.characters(&amp;, 1)
+SAX.characters(&ecirc;, 2)
 SAX.ignorableWhitespace(
 , 1)
 SAX.endElement(p)

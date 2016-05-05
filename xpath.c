@@ -12398,6 +12398,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 				if (axis == AXIS_NAMESPACE) {
 				    XP_TEST_HIT_NS
 				} else {
+	                            hasNsNodes = 1;
 				    XP_TEST_HIT
 				}
 				break;

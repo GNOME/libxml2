@@ -1487,43 +1487,59 @@ ICU_LIBS=""
 if test "$with_icu" != "yes" ; then
     echo Disabling ICU support
 else
-    ICU_CONFIG=icu-config
-    if ${ICU_CONFIG} --cflags >/dev/null 2>&1
-    then
-        ICU_LIBS=`${ICU_CONFIG} --ldflags`
-        WITH_ICU=1
-        echo Enabling ICU support
-    else
-        if test "$with_icu" != "yes" -a "$with_iconv" != "" ; then
-            CPPFLAGS="${CPPFLAGS} -I$with_icu"
-            # Export this since our headers include icu.h
-            XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_icu"
-        fi
+    # Try pkg-config first so that static linking works.
+    # If this succeeeds, we ignore the WITH_ICU directory.
+    PKG_CHECK_MODULES([ICU],[icu-i18n],
+        [have_libicu=yes],
+        [have_libicu=no])
 
-        AC_CHECK_HEADER(unicode/ucnv.h,
-        AC_MSG_CHECKING(for icu)
-        AC_TRY_LINK([#include <unicode/ucnv.h>],[
-    UConverter *utf = ucnv_open("UTF-8", NULL);],[
-            AC_MSG_RESULT(yes)
-            WITH_ICU=1],[
-            AC_MSG_RESULT(no)
-            AC_MSG_CHECKING(for icu in -licucore)
+    # If pkg-config failed, fall back to AC_CHECK_LIB. This
+    # will not pick up the necessary LIBS flags for liblzma's
+    # private dependencies, though, so static linking may fail.
+    if test "x$have_libicu" = "xno"; then
+        ICU_CONFIG=icu-config
+        if ${ICU_CONFIG} --cflags >/dev/null 2>&1
+        then
+            ICU_LIBS=`${ICU_CONFIG} --ldflags`
+            have_libicu=yes
+            echo Enabling ICU support
+        else
+            if test "$with_icu" != "yes" -a "$with_iconv" != "" ; then
+                CPPFLAGS="${CPPFLAGS} -I$with_icu"
+                # Export this since our headers include icu.h
+                XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_icu"
+            fi
 
-            _ldflags="${LDFLAGS}"
-            _libs="${LIBS}"
-            LDFLAGS="${LDFLAGS} ${ICU_LIBS}"
-            LIBS="${LIBS} -licucore"
-
+            AC_CHECK_HEADER(unicode/ucnv.h,
+            AC_MSG_CHECKING(for icu)
             AC_TRY_LINK([#include <unicode/ucnv.h>],[
-    UConverter *utf = ucnv_open("UTF-8", NULL);],[
+        UConverter *utf = ucnv_open("UTF-8", NULL);],[
                 AC_MSG_RESULT(yes)
-                WITH_ICU=1
-                ICU_LIBS="${ICU_LIBS} -licucore"
-                LIBS="${_libs}"
-                LDFLAGS="${_ldflags}"],[
+                have_libicu=yes],[
                 AC_MSG_RESULT(no)
-                LIBS="${_libs}"
+                AC_MSG_CHECKING(for icu in -licucore)
+
+                _ldflags="${LDFLAGS}"
+                _libs="${LIBS}"
+                LDFLAGS="${LDFLAGS} ${ICU_LIBS}"
+                LIBS="${LIBS} -licucore"
+
+                AC_TRY_LINK([#include <unicode/ucnv.h>],[
+        UConverter *utf = ucnv_open("UTF-8", NULL);],[
+                    AC_MSG_RESULT(yes)
+                    have_libicu=yes
+                    ICU_LIBS="${ICU_LIBS} -licucore"
+                    LIBS="${_libs}"
+                    LDFLAGS="${_ldflags}"],[
+                    AC_MSG_RESULT(no)
+                    LIBS="${_libs}"
                 LDFLAGS="${_ldflags}"])]))
+        fi
+    fi
+
+    # Found the library via either method?
+    if test "x$have_libicu" = "xyes"; then
+        WITH_ICU=1
     fi
 fi
 XML_LIBS="-lxml2 $Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $M_LIBS $LIBS"

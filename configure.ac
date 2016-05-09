@@ -391,24 +391,41 @@ WITH_ZLIB=0
 if test "$with_zlib" = "no"; then
     echo "Disabling compression support"
 else
-    AC_CHECK_HEADERS(zlib.h,
-        [SAVE_LDFLAGS="${LDFLAGS}"
-	 LDFLAGS="-L${Z_DIR}/lib"
-	AC_CHECK_LIB(z, gzread,[
-	    AC_DEFINE([HAVE_LIBZ], [1], [Have compression library])
-	    WITH_ZLIB=1
-	    if test "x${Z_DIR}" != "x"; then
-		Z_CFLAGS="-I${Z_DIR}/include"
-		Z_LIBS="-L${Z_DIR}/lib -lz"
-		[case ${host} in
-		    *-*-solaris*)
-			Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
-			;;
-		esac]
-	    else
-		Z_LIBS="-lz"
-	    fi])
-	 LDFLAGS="${SAVE_LDFLAGS}"])
+    # Try pkg-config first so that static linking works.
+    # If this succeeeds, we ignore the WITH_ZLIB directory.
+    PKG_CHECK_MODULES([Z],[zlib],
+        [have_libz=yes],
+        [have_libz=no])
+
+     if test "x$have_libz" = "xno"; then
+        AC_CHECK_HEADERS(zlib.h,
+            [SAVE_LDFLAGS="${LDFLAGS}"
+             LDFLAGS="-L${Z_DIR}/lib"
+            AC_CHECK_LIB(z, gzread,[
+                have_libz=yes
+                if test "x${Z_DIR}" != "x"; then
+                    Z_CFLAGS="-I${Z_DIR}/include"
+                    Z_LIBS="-L${Z_DIR}/lib -lz"
+                    [case ${host} in
+                        *-*-solaris*)
+                            Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
+                            ;;
+                    esac]
+                else
+                    Z_LIBS="-lz"
+                fi],
+                [have_libz=no])
+             LDFLAGS="${SAVE_LDFLAGS}"])
+    else
+	# we still need to check for zlib.h header
+	AC_CHECK_HEADERS([zlib.h])
+    fi
+
+    # Found the library via either method?
+    if test "x$have_libz" = "xyes"; then
+        AC_DEFINE([HAVE_LIBZ], [1], [Have compression library])
+        WITH_ZLIB=1
+    fi
 fi
 
 AC_SUBST(Z_CFLAGS)

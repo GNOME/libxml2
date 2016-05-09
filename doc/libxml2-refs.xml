@@ -21822,38 +21822,6 @@
         <word name='dictionaries'>
           <ref name='XML_MAX_NAME_LENGTH'/>
         </word>
-        <word name='dictionary'>
-          <ref name='XML_MAX_DICTIONARY_LIMIT'/>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='_xmlXPathContext'/>
-          <ref name='xmlDictCleanup'/>
-          <ref name='xmlDictCreate'/>
-          <ref name='xmlDictCreateSub'/>
-          <ref name='xmlDictGetUsage'/>
-          <ref name='xmlDictReference'/>
-          <ref name='xmlDictSetLimit'/>
-          <ref name='xmlHashCreateDict'/>
-          <ref name='xmlInitializeDict'/>
-          <ref name='xmlPatterncompile'/>
-          <ref name='xmlStreamPush'/>
-          <ref name='xmlStreamPushAttr'/>
-          <ref name='xmlStreamPushNode'/>
-        </word>
-        <word name='dictionnary'>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='xmlDictCreate'/>
-          <ref name='xmlDictCreateSub'/>
-          <ref name='xmlDictExists'/>
-          <ref name='xmlDictFree'/>
-          <ref name='xmlDictGetUsage'/>
-          <ref name='xmlDictLookup'/>
-          <ref name='xmlDictOwns'/>
-          <ref name='xmlDictQLookup'/>
-          <ref name='xmlDictReference'/>
-          <ref name='xmlDictSetLimit'/>
-          <ref name='xmlDictSize'/>
-          <ref name='xmlExpNewCtxt'/>
-        </word>
         <word name='did'>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_DEFAULT'/>
           <ref name='xmlTextReaderGetRemainder'/>

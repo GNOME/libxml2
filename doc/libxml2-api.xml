@@ -367,7 +367,7 @@
      <exports symbol='xmlShell' type='function'/>
     </file>
     <file name='dict'>
-     <summary>string dictionnary</summary>
+     <summary>string dictionary</summary>
      <description>dictionary of reusable strings, just used to avoid allocation and freeing operations. </description>
      <author>Daniel Veillard </author>
      <exports symbol='xmlDict' type='typedef'/>
@@ -5142,7 +5142,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_NOBASEFIX' file='parser' value='262144' type='xmlParserOption' info='do not fixup XINCLUDE xml:base uris'/>
     <enum name='XML_PARSE_NOBLANKS' file='parser' value='256' type='xmlParserOption' info='remove blank nodes'/>
     <enum name='XML_PARSE_NOCDATA' file='parser' value='16384' type='xmlParserOption' info='merge CDATA as text nodes'/>
-    <enum name='XML_PARSE_NODICT' file='parser' value='4096' type='xmlParserOption' info='Do not reuse the context dictionnary'/>
+    <enum name='XML_PARSE_NODICT' file='parser' value='4096' type='xmlParserOption' info='Do not reuse the context dictionary'/>
     <enum name='XML_PARSE_NOENT' file='parser' value='2' type='xmlParserOption' info='substitute entities'/>
     <enum name='XML_PARSE_NOERROR' file='parser' value='32' type='xmlParserOption' info='suppress error reports'/>
     <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info='Forbid network access'/>
@@ -6410,7 +6410,7 @@ actually an xmlCharEncoding'/>
       <field name='catalogs' type='void *' info=' document&apos;s own catalog'/>
       <field name='recovery' type='int' info=' run in recovery mode'/>
       <field name='progressive' type='int' info=' is this a progressive parsing'/>
-      <field name='dict' type='xmlDictPtr' info=' dictionnary for the parser'/>
+      <field name='dict' type='xmlDictPtr' info=' dictionary for the parser'/>
       <field name='atts' type='const xmlChar * *' info=' array for the attributes callbacks'/>
       <field name='maxatts' type='int' info=' the size of the array'/>
       <field name='docdict' type='int' info='* pre-interned strings
@@ -9504,65 +9504,65 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlDictCreate' file='dict' module='dict'>
       <info>Create a new dictionary</info>
-      <return type='xmlDictPtr' info='the newly created dictionnary, or NULL if an error occured.'/>
+      <return type='xmlDictPtr' info='the newly created dictionary, or NULL if an error occured.'/>
     </function>
     <function name='xmlDictCreateSub' file='dict' module='dict'>
-      <info>Create a new dictionary, inheriting strings from the read-only dictionnary @sub. On lookup, strings are first searched in the new dictionnary, then in @sub, and if not found are created in the new dictionnary.</info>
-      <return type='xmlDictPtr' info='the newly created dictionnary, or NULL if an error occured.'/>
-      <arg name='sub' type='xmlDictPtr' info='an existing dictionnary'/>
+      <info>Create a new dictionary, inheriting strings from the read-only dictionary @sub. On lookup, strings are first searched in the new dictionary, then in @sub, and if not found are created in the new dictionary.</info>
+      <return type='xmlDictPtr' info='the newly created dictionary, or NULL if an error occured.'/>
+      <arg name='sub' type='xmlDictPtr' info='an existing dictionary'/>
     </function>
     <function name='xmlDictExists' file='dict' module='dict'>
-      <info>Check if the @name exists in the dictionnary @dict.</info>
+      <info>Check if the @name exists in the dictionary @dict.</info>
       <return type='const xmlChar *' info='the internal copy of the name or NULL if not found.'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
       <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
       <arg name='len' type='int' info='the length of the name, if -1 it is recomputed'/>
     </function>
     <function name='xmlDictFree' file='dict' module='dict'>
       <info>Free the hash @dict and its contents. The userdata is deallocated with @f if provided.</info>
       <return type='void'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
     </function>
     <function name='xmlDictGetUsage' file='dict' module='dict'>
       <info>Get how much memory is used by a dictionary for strings Added in 2.9.0</info>
       <return type='size_t' info='the amount of strings allocated'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
     </function>
     <function name='xmlDictLookup' file='dict' module='dict'>
-      <info>Add the @name to the dictionnary @dict if not present.</info>
+      <info>Add the @name to the dictionary @dict if not present.</info>
       <return type='const xmlChar *' info='the internal copy of the name or NULL in case of internal error'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
       <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
       <arg name='len' type='int' info='the length of the name, if -1 it is recomputed'/>
     </function>
     <function name='xmlDictOwns' file='dict' module='dict'>
       <info>check if a string is owned by the disctionary</info>
       <return type='int' info='1 if true, 0 if false and -1 in case of error -1 in case of error'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
       <arg name='str' type='const xmlChar *' info='the string'/>
     </function>
     <function name='xmlDictQLookup' file='dict' module='dict'>
       <info>Add the QName @prefix:@name to the hash @dict if not present.</info>
       <return type='const xmlChar *' info='the internal copy of the QName or NULL in case of internal error'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
       <arg name='prefix' type='const xmlChar *' info='the prefix'/>
       <arg name='name' type='const xmlChar *' info='the name'/>
     </function>
     <function name='xmlDictReference' file='dict' module='dict'>
       <info>Increment the reference counter of a dictionary</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
     </function>
     <function name='xmlDictSetLimit' file='dict' module='dict'>
       <info>Set a size limit for the dictionary Added in 2.9.0</info>
       <return type='size_t' info='the previous limit of the dictionary or 0'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
       <arg name='limit' type='size_t' info='the limit in bytes'/>
     </function>
     <function name='xmlDictSize' file='dict' module='dict'>
       <info>Query the number of elements installed in the hash @dict.</info>
-      <return type='int' info='the number of elements in the dictionnary or -1 in case of error'/>
-      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
+      <return type='int' info='the number of elements in the dictionary or -1 in case of error'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
     </function>
     <function name='xmlDllMain' file='threads' module='threads'>
       <info></info>
@@ -9827,7 +9827,7 @@ Could we use @subtypes for this?'/>
       <info>Creates a new context for manipulating expressions</info>
       <return type='xmlExpCtxtPtr' info='the context or NULL in case of error'/>
       <arg name='maxNodes' type='int' info='the maximum number of nodes'/>
-      <arg name='dict' type='xmlDictPtr' info='optional dictionnary to use internally'/>
+      <arg name='dict' type='xmlDictPtr' info='optional dictionary to use internally'/>
     </function>
     <function name='xmlExpNewOr' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>

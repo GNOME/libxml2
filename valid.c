@@ -93,7 +93,7 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
  *
  * Handle a validation error
  */
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
             const char *msg, const char *extra)
 {
@@ -137,7 +137,7 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
  *
  * Handle a validation error, provide contextual informations
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlErrValidNode(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,
@@ -180,7 +180,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
  *
  * Handle a validation error, provide contextual informations
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,
@@ -221,7 +221,7 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
  *
  * Handle a validation error, provide contextual information
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlErrValidWarning(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,

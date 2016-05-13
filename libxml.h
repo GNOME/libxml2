@@ -68,7 +68,7 @@ extern int __xmlRegisterCallbacks;
  * internal error reporting routines, shared but not partof the API.
  */
 void __xmlIOErr(int domain, int code, const char *extra);
-void __xmlLoaderErr(void *ctx, const char *msg, const char *filename);
+void __xmlLoaderErr(void *ctx, const char *msg, const char *filename) LIBXML_ATTR_FORMAT(2,0);
 #ifdef LIBXML_HTML_ENABLED
 /*
  * internal function of HTML parser needed for xmlParseInNodeContext

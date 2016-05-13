@@ -245,7 +245,7 @@ xmlSchematronPErrMemory(xmlSchematronParserCtxtPtr ctxt,
  *
  * Handle a parser error
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlSchematronPErr(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr node, int error,
               const char *msg, const xmlChar * str1, const xmlChar * str2)
 {

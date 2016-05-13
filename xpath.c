@@ -639,7 +639,7 @@ xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
             xmlChar buf[200];
 
             xmlStrPrintf(buf, 200,
-                         BAD_CAST "Memory allocation failed : %s\n",
+                         "Memory allocation failed : %s\n",
                          extra);
             ctxt->lastError.message = (char *) xmlStrdup(buf);
         } else {

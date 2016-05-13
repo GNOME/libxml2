@@ -1085,7 +1085,7 @@ xmlSchemaGetUnionSimpleTypeMemberTypes(xmlSchemaTypePtr type);
 static void
 xmlSchemaInternalErr(xmlSchemaAbstractCtxtPtr actxt,
 		     const char *funcName,
-		     const char *message);
+		     const char *message) LIBXML_ATTR_FORMAT(3,0);
 static int
 xmlSchemaCheckCOSSTDerivedOK(xmlSchemaAbstractCtxtPtr ctxt,
 			     xmlSchemaTypePtr type,
@@ -1889,7 +1889,7 @@ xmlSchemaPErrMemory(xmlSchemaParserCtxtPtr ctxt,
  *
  * Handle a parser error
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlSchemaPErr(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
               const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
@@ -1922,7 +1922,7 @@ xmlSchemaPErr(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
  *
  * Handle a parser error
  */
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaPErr2(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
                xmlNodePtr child, int error,
                const char *msg, const xmlChar * str1, const xmlChar * str2)
@@ -1951,7 +1951,7 @@ xmlSchemaPErr2(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
  *
  * Handle a parser error
  */
-static void
+static void LIBXML_ATTR_FORMAT(7,0)
 xmlSchemaPErrExt(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
 		const xmlChar * strData1, const xmlChar * strData2,
 		const xmlChar * strData3, const char *msg, const xmlChar * str1,
@@ -2002,7 +2002,7 @@ xmlSchemaVErrMemory(xmlSchemaValidCtxtPtr ctxt,
                      extra);
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(2,0)
 xmlSchemaPSimpleInternalErr(xmlNodePtr node,
 			    const char *msg, const xmlChar *str)
 {
@@ -2013,18 +2013,21 @@ xmlSchemaPSimpleInternalErr(xmlNodePtr node,
 #define WXS_ERROR_TYPE_ERROR 1
 #define WXS_ERROR_TYPE_WARNING 2
 /**
- * xmlSchemaErr3:
+ * xmlSchemaErr4Line:
  * @ctxt: the validation context
- * @node: the context node
+ * @errorLevel: the error level
  * @error: the error code
+ * @node: the context node
+ * @line: the line number
  * @msg: the error message
  * @str1: extra data
  * @str2: extra data
  * @str3: extra data
+ * @str4: extra data
  *
  * Handle a validation error
  */
-static void
+static void LIBXML_ATTR_FORMAT(6,0)
 xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		  xmlErrorLevel errorLevel,
 		  int error, xmlNodePtr node, int line, const char *msg,
@@ -2139,7 +2142,7 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
  *
  * Handle a validation error
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlSchemaErr3(xmlSchemaAbstractCtxtPtr actxt,
 	      int error, xmlNodePtr node, const char *msg,
 	      const xmlChar *str1, const xmlChar *str2, const xmlChar *str3)
@@ -2148,7 +2151,7 @@ xmlSchemaErr3(xmlSchemaAbstractCtxtPtr actxt,
 	msg, str1, str2, str3, NULL);
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlSchemaErr4(xmlSchemaAbstractCtxtPtr actxt,
 	      int error, xmlNodePtr node, const char *msg,
 	      const xmlChar *str1, const xmlChar *str2,
@@ -2158,7 +2161,7 @@ xmlSchemaErr4(xmlSchemaAbstractCtxtPtr actxt,
 	msg, str1, str2, str3, str4);
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlSchemaErr(xmlSchemaAbstractCtxtPtr actxt,
 	     int error, xmlNodePtr node, const char *msg,
 	     const xmlChar *str1, const xmlChar *str2)
@@ -2181,7 +2184,7 @@ xmlSchemaFormatNodeForError(xmlChar ** msg,
 	/*
 	* Don't try to format other nodes than element and
 	* attribute nodes.
-	* Play save and return an empty string.
+	* Play safe and return an empty string.
 	*/
 	*msg = xmlStrdup(BAD_CAST "");
 	return(*msg);
@@ -2262,7 +2265,7 @@ xmlSchemaFormatNodeForError(xmlChar ** msg,
     return (*msg);
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlSchemaInternalErr2(xmlSchemaAbstractCtxtPtr actxt,
 		     const char *funcName,
 		     const char *message,
@@ -2273,24 +2276,21 @@ xmlSchemaInternalErr2(xmlSchemaAbstractCtxtPtr actxt,
 
     if (actxt == NULL)
         return;
-    msg = xmlStrdup(BAD_CAST "Internal error: ");
-    msg = xmlStrcat(msg, BAD_CAST funcName);
-    msg = xmlStrcat(msg, BAD_CAST ", ");
+    msg = xmlStrdup(BAD_CAST "Internal error: %s, ");
     msg = xmlStrcat(msg, BAD_CAST message);
     msg = xmlStrcat(msg, BAD_CAST ".\n");
 
     if (actxt->type == XML_SCHEMA_CTXT_VALIDATOR)
-	xmlSchemaErr(actxt, XML_SCHEMAV_INTERNAL, NULL,
-	    (const char *) msg, str1, str2);
-
+	xmlSchemaErr3(actxt, XML_SCHEMAV_INTERNAL, NULL,
+	    (const char *) msg, (const xmlChar *) funcName, str1, str2);
     else if (actxt->type == XML_SCHEMA_CTXT_PARSER)
-	xmlSchemaErr(actxt, XML_SCHEMAP_INTERNAL, NULL,
-	    (const char *) msg, str1, str2);
+	xmlSchemaErr3(actxt, XML_SCHEMAP_INTERNAL, NULL,
+	    (const char *) msg, (const xmlChar *) funcName, str1, str2);
 
     FREE_AND_NULL(msg)
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlSchemaInternalErr(xmlSchemaAbstractCtxtPtr actxt,
 		     const char *funcName,
 		     const char *message)
@@ -2299,7 +2299,7 @@ xmlSchemaInternalErr(xmlSchemaAbstractCtxtPtr actxt,
 }
 
 #if 0
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlSchemaPInternalErr(xmlSchemaParserCtxtPtr pctxt,
 		     const char *funcName,
 		     const char *message,
@@ -2311,7 +2311,7 @@ xmlSchemaPInternalErr(xmlSchemaParserCtxtPtr pctxt,
 }
 #endif
 
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaCustomErr4(xmlSchemaAbstractCtxtPtr actxt,
 		   xmlParserErrors error,
 		   xmlNodePtr node,
@@ -2336,7 +2336,7 @@ xmlSchemaCustomErr4(xmlSchemaAbstractCtxtPtr actxt,
     FREE_AND_NULL(msg)
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaCustomErr(xmlSchemaAbstractCtxtPtr actxt,
 		   xmlParserErrors error,
 		   xmlNodePtr node,
@@ -2351,7 +2351,7 @@ xmlSchemaCustomErr(xmlSchemaAbstractCtxtPtr actxt,
 
 
 
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaCustomWarning(xmlSchemaAbstractCtxtPtr actxt,
 		   xmlParserErrors error,
 		   xmlNodePtr node,
@@ -2376,7 +2376,7 @@ xmlSchemaCustomWarning(xmlSchemaAbstractCtxtPtr actxt,
 
 
 
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaKeyrefErr(xmlSchemaValidCtxtPtr vctxt,
 		   xmlParserErrors error,
 		   xmlSchemaPSVIIDCNodePtr idcNode,
@@ -2525,7 +2525,7 @@ xmlSchemaIllegalAttrErr(xmlSchemaAbstractCtxtPtr actxt,
     FREE_AND_NULL(msg)
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
 		        xmlParserErrors error,
 		        xmlNodePtr node,
@@ -2625,7 +2625,7 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
     xmlFree(msg);
 }
 
-static void
+static void LIBXML_ATTR_FORMAT(8,0)
 xmlSchemaFacetErr(xmlSchemaAbstractCtxtPtr actxt,
 		  xmlParserErrors error,
 		  xmlNodePtr node,
@@ -2916,7 +2916,7 @@ xmlSchemaPIllegalAttrErr(xmlSchemaParserCtxtPtr ctxt,
  *
  * Reports an error during parsing.
  */
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaPCustomErrExt(xmlSchemaParserCtxtPtr ctxt,
 		    xmlParserErrors error,
 		    xmlSchemaBasicItemPtr item,
@@ -2952,7 +2952,7 @@ xmlSchemaPCustomErrExt(xmlSchemaParserCtxtPtr ctxt,
  *
  * Reports an error during parsing.
  */
-static void
+static void LIBXML_ATTR_FORMAT(5,0)
 xmlSchemaPCustomErr(xmlSchemaParserCtxtPtr ctxt,
 		    xmlParserErrors error,
 		    xmlSchemaBasicItemPtr item,
@@ -2977,7 +2977,7 @@ xmlSchemaPCustomErr(xmlSchemaParserCtxtPtr ctxt,
  *
  * Reports an attribute use error during parsing.
  */
-static void
+static void LIBXML_ATTR_FORMAT(6,0)
 xmlSchemaPAttrUseErr4(xmlSchemaParserCtxtPtr ctxt,
 		    xmlParserErrors error,
 		    xmlNodePtr node,
@@ -3099,7 +3099,7 @@ xmlSchemaPMutualExclAttrErr(xmlSchemaParserCtxtPtr ctxt,
  * Reports a simple type validation error.
  * TODO: Should this report the value of an element as well?
  */
-static void
+static void LIBXML_ATTR_FORMAT(8,0)
 xmlSchemaPSimpleTypeErr(xmlSchemaParserCtxtPtr ctxt,
 			xmlParserErrors error,
 			xmlSchemaBasicItemPtr ownerItem ATTRIBUTE_UNUSED,

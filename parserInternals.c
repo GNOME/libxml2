@@ -165,7 +165,7 @@ __xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
  *
  * Handle an internal error
  */
-static void
+static void LIBXML_ATTR_FORMAT(2,0)
 xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
 {
     if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
@@ -193,7 +193,7 @@ xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
  *
  * n encoding error
  */
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlErrEncodingInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                   const char *msg, int val)
 {

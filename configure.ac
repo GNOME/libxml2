@@ -791,7 +791,7 @@ else
     fi
 
     # warnings we'd like to see
-    CFLAGS="${CFLAGS} -pedantic -W -Wformat -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    CFLAGS="${CFLAGS} -pedantic -W -Wformat -Wno-format-extra-args -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
     # warnings we'd like to supress
     CFLAGS="${CFLAGS} -Wno-long-long"
     case "${host}" in
@@ -1010,7 +1010,7 @@ if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
 	fi
     fi
     if test "${GCC}" = "yes" ; then
-    CFLAGS="-g -O -pedantic -W -Wformat -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls -Wall"
+    CFLAGS="-g -O -pedantic -W -Wformat -Wno-format-extra-args -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls -Wall"
     fi
     STATIC_BINARIES="-static"
 dnl -Wcast-qual -ansi

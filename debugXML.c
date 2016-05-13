@@ -164,7 +164,7 @@ xmlDebugErr(xmlDebugCtxtPtr ctxt, int error, const char *msg)
 		    NULL, NULL, NULL, 0, 0,
 		    "%s", msg);
 }
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlDebugErr2(xmlDebugCtxtPtr ctxt, int error, const char *msg, int extra)
 {
     ctxt->errors++;
@@ -174,7 +174,7 @@ xmlDebugErr2(xmlDebugCtxtPtr ctxt, int error, const char *msg, int extra)
 		    NULL, NULL, NULL, 0, 0,
 		    msg, extra);
 }
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 xmlDebugErr3(xmlDebugCtxtPtr ctxt, int error, const char *msg, const char *extra)
 {
     ctxt->errors++;

@@ -238,7 +238,7 @@ xmlCatalogErrMemory(const char *extra)
  *
  * Handle a catalog error
  */
-static void
+static void LIBXML_ATTR_FORMAT(4,0)
 xmlCatalogErr(xmlCatalogEntryPtr catal, xmlNodePtr node, int error,
                const char *msg, const xmlChar *str1, const xmlChar *str2,
 	       const xmlChar *str3)

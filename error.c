@@ -18,7 +18,7 @@
 
 void XMLCDECL xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
 				 const char *msg,
-				 ...);
+				 ...) LIBXML_ATTR_FORMAT(2,3);
 
 #define XML_GET_VAR_STR(msg, str) {				\
     int       size, prev_size = -1;				\

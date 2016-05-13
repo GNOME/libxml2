@@ -545,7 +545,7 @@ xmlStrcat(xmlChar *cur, const xmlChar *add) {
  * Returns the number of characters written to @buf or -1 if an error occurs.
  */
 int XMLCDECL
-xmlStrPrintf(xmlChar *buf, int len, const xmlChar *msg, ...) {
+xmlStrPrintf(xmlChar *buf, int len, const char *msg, ...) {
     va_list args;
     int ret;
 
@@ -573,7 +573,7 @@ xmlStrPrintf(xmlChar *buf, int len, const xmlChar *msg, ...) {
  * Returns the number of characters written to @buf or -1 if an error occurs.
  */
 int
-xmlStrVPrintf(xmlChar *buf, int len, const xmlChar *msg, va_list ap) {
+xmlStrVPrintf(xmlChar *buf, int len, const char *msg, va_list ap) {
     int ret;
 
     if((buf == NULL) || (msg == NULL)) {

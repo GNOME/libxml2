@@ -105,7 +105,7 @@ htmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
              const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
@@ -132,7 +132,7 @@ htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
-static void
+static void LIBXML_ATTR_FORMAT(3,0)
 htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
              const char *msg, int val)
 {

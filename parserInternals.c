@@ -294,7 +294,7 @@ xmlParserInputRead(xmlParserInputPtr in ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
  */
 int
 xmlParserInputGrow(xmlParserInputPtr in, int len) {
-    size_t ret;
+    int ret;
     size_t indx;
     const xmlChar *content;
 

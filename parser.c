@@ -289,7 +289,7 @@ unsigned int xmlParserMaxDepth = 256;
  * List of XML prefixed PI allowed by W3C specs
  */
 
-static const char *xmlW3CPIs[] = {
+static const char* const xmlW3CPIs[] = {
     "xml-stylesheet",
     "xml-model",
     NULL

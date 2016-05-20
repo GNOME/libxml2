@@ -85,7 +85,7 @@ xmlCleanupPredefinedEntities(void)
 {
 }
 
-static const char *xmlFeaturesList[] = {
+static const char* const xmlFeaturesList[] = {
     "validate",
     "load subset",
     "keep blanks",

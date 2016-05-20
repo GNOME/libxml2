@@ -580,7 +580,7 @@ static int xmlXPathDisableOptimizer = 0;
 /*
  * The array xmlXPathErrorMessages corresponds to the enum xmlXPathError
  */
-static const char *xmlXPathErrorMessages[] = {
+static const char* const xmlXPathErrorMessages[] = {
     "Ok\n",
     "Number encoding\n",
     "Unfinished literal\n",

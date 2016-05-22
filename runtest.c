@@ -673,20 +673,29 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
 
     if (update_results) {
         fd = open(filename, WR_FLAGS, 0644);
-        if (fd < 0)
+        if (fd < 0) {
+	    fprintf(stderr, "failed to open %s for writing", filename);
             return(-1);
+	}
         res = write(fd, mem, size);
         close(fd);
         return(res != size);
     }
 
-    if (stat(filename, &info) < 0)
+    if (stat(filename, &info) < 0) {
+        fprintf(stderr, "failed to stat %s\n", filename);
 	return(-1);
-    if (info.st_size != size)
+    }
+    if (info.st_size != size) {
+        fprintf(stderr, "file %s is %ld bytes, result is %d bytes\n",
+	        filename, info.st_size, size);
         return(-1);
+    }
     fd = open(filename, RD_FLAGS);
-    if (fd < 0)
+    if (fd < 0) {
+	fprintf(stderr, "failed to open %s for reading", filename);
         return(-1);
+    }
     while (idx < size) {
         res = read(fd, bytes, 4096);
 	if (res <= 0)
@@ -705,6 +714,9 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
 	idx += res;
     }
     close(fd);
+    if (idx != size) {
+	fprintf(stderr,"Compare error index %d, size %d\n", idx, size);
+    }
     return(idx != size);
 }
 
@@ -1905,7 +1917,7 @@ pushParseTest(const char *filename, const char *result,
     if ((base == NULL) || (res != 0)) {
 	if (base != NULL)
 	    xmlFree((char *)base);
-        fprintf(stderr, "Result for %s failed\n", filename);
+        fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	return(-1);
     }
     xmlFree((char *)base);
@@ -1960,7 +1972,7 @@ memParseTest(const char *filename, const char *result,
     if ((base == NULL) || (res != 0)) {
 	if (base != NULL)
 	    xmlFree((char *)base);
-        fprintf(stderr, "Result for %s failed\n", filename);
+        fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	return(-1);
     }
     xmlFree((char *)base);
@@ -2071,15 +2083,15 @@ errParseTest(const char *filename, const char *result, const char *err,
 	    xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
 	}
 	res = compareFileMem(result, base, size);
+	if (res != 0) {
+	    fprintf(stderr, "Result for %s failed in %s\n", filename, result);
+	    return(-1);
+	}
     }
     if (doc != NULL) {
 	if (base != NULL)
 	    xmlFree((char *)base);
 	xmlFreeDoc(doc);
-    }
-    if (res != 0) {
-        fprintf(stderr, "Result for %s failed\n", filename);
-	return(-1);
     }
     if (err != NULL) {
 	res = compareFileMem(err, testErrors, testErrorsSize);
@@ -2193,7 +2205,7 @@ streamProcessTest(const char *filename, const char *result, const char *err,
             free(temp);
         }
 	if (ret) {
-	    fprintf(stderr, "Result for %s failed\n", filename);
+	    fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	    return(-1);
 	}
     }
@@ -2396,7 +2408,7 @@ xpathCommonTest(const char *filename, const char *result,
     if (result != NULL) {
 	ret = compareFiles(temp, result);
 	if (ret) {
-	    fprintf(stderr, "Result for %s failed\n", filename);
+	    fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	}
     }
 
@@ -2567,7 +2579,7 @@ xmlidDocTest(const char *filename,
     if (result != NULL) {
 	ret = compareFiles(temp, result);
 	if (ret) {
-	    fprintf(stderr, "Result for %s failed\n", filename);
+	    fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	    res = 1;
 	}
     }
@@ -2695,7 +2707,7 @@ uriCommonTest(const char *filename,
     if (result != NULL) {
 	ret = compareFiles(temp, result);
 	if (ret) {
-	    fprintf(stderr, "Result for %s failed\n", filename);
+	    fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	    res = 1;
 	}
     }
@@ -3567,7 +3579,7 @@ patternTest(const char *filename,
 
     ret = compareFiles(temp, result);
     if (ret) {
-	fprintf(stderr, "Result for %s failed\n", filename);
+	fprintf(stderr, "Result for %s failed in %s\n", filename, result);
 	ret = 1;
     }
     if (temp != NULL) {

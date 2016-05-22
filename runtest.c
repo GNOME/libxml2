@@ -81,8 +81,10 @@
  */
 #ifdef	O_BINARY
 #define RD_FLAGS	O_RDONLY | O_BINARY
+#define WR_FLAGS	O_WRONLY | O_CREAT | O_TRUNC | O_BINARY
 #else
-#define	RD_FLAGS	O_RDONLY
+#define RD_FLAGS	O_RDONLY
+#define WR_FLAGS	O_WRONLY | O_CREAT | O_TRUNC
 #endif
 
 typedef int (*functest) (const char *filename, const char *result,
@@ -100,6 +102,7 @@ struct testDesc {
     int     options;  /* parser options for the test */
 };
 
+static int update_results = 0;
 static int checkTestFile(const char *filename);
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
@@ -604,11 +607,33 @@ static int checkTestFile(const char *filename) {
     return(1);
 }
 
-static int compareFiles(const char *r1, const char *r2) {
+static int compareFiles(const char *r1 /* temp */, const char *r2 /* result */) {
     int res1, res2;
     int fd1, fd2;
     char bytes1[4096];
     char bytes2[4096];
+
+    if (update_results) {
+        fd1 = open(r1, RD_FLAGS);
+        if (fd1 < 0)
+            return(-1);
+        fd2 = open(r2, WR_FLAGS, 0644);
+        if (fd2 < 0) {
+            close(fd1);
+            return(-1);
+        }
+        do {
+            res1 = read(fd1, bytes1, 4096);
+            if (res1 <= 0)
+                break;
+            res2 = write(fd2, bytes1, res1);
+            if (res2 <= 0 || res2 != res1)
+                break;
+        } while (1);
+        close(fd2);
+        close(fd1);
+        return(res1 != 0);
+    }
 
     fd1 = open(r1, RD_FLAGS);
     if (fd1 < 0)
@@ -645,6 +670,15 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
     char bytes[4096];
     int idx = 0;
     struct stat info;
+
+    if (update_results) {
+        fd = open(filename, WR_FLAGS, 0644);
+        if (fd < 0)
+            return(-1);
+        res = write(fd, mem, size);
+        close(fd);
+        return(res != size);
+    }
 
     if (stat(filename, &info) < 0)
 	return(-1);
@@ -3430,11 +3464,11 @@ patternTest(const char *filename,
     result[499] = 0;
     memcpy(xml + len, ".xml", 5);
 
-    if (!checkTestFile(xml)) {
+    if (!checkTestFile(xml) && !update_results) {
 	fprintf(stderr, "Missing xml file %s\n", xml);
 	return(-1);
     }
-    if (!checkTestFile(result)) {
+    if (!checkTestFile(result) && !update_results) {
 	fprintf(stderr, "Missing result file %s\n", result);
 	return(-1);
     }
@@ -3805,7 +3839,7 @@ c14nCommonTest(const char *filename, int with_comments, int mode,
     prefix[len] = 0;
 
     snprintf(buf, 499, "result/c14n/%s/%s", subdir,prefix);
-    if (!checkTestFile(buf)) {
+    if (!checkTestFile(buf) && !update_results) {
         fprintf(stderr, "Missing result file %s", buf);
 	return(-1);
     }
@@ -4354,9 +4388,9 @@ launchTests(testDescPtr tst) {
 	    } else {
 	        error = NULL;
 	    }
-	    if ((result) &&(!checkTestFile(result))) {
+	    if ((result) &&(!checkTestFile(result)) && !update_results) {
 	        fprintf(stderr, "Missing result file %s\n", result);
-	    } else if ((error) &&(!checkTestFile(error))) {
+	    } else if ((error) &&(!checkTestFile(error)) && !update_results) {
 	        fprintf(stderr, "Missing error file %s\n", error);
 	    } else {
 		mem = xmlMemUsed();
@@ -4440,6 +4474,8 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     for (a = 1; a < argc;a++) {
         if (!strcmp(argv[a], "-v"))
 	    verbose = 1;
+        else if (!strcmp(argv[a], "-u"))
+	    update_results = 1;
         else if (!strcmp(argv[a], "-quiet"))
 	    tests_quiet = 1;
 	else {

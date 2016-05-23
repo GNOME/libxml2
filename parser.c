@@ -138,7 +138,8 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
      * entities problems
      */
     if ((ent != NULL) && (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
-	(ent->content != NULL) && (ent->checked == 0)) {
+	(ent->content != NULL) && (ent->checked == 0) &&
+	(ctxt->errNo != XML_ERR_ENTITY_LOOP)) {
 	unsigned long oldnbent = ctxt->nbentities;
 	xmlChar *rep;
 
@@ -148,6 +149,9 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
 	rep = xmlStringDecodeEntities(ctxt, ent->content,
 				  XML_SUBSTITUTE_REF, 0, 0, 0);
         --ctxt->depth;
+	if (ctxt->errNo == XML_ERR_ENTITY_LOOP) {
+	    ent->content[0] = 0;
+	}
 
 	ent->checked = (ctxt->nbentities - oldnbent + 1) * 2;
 	if (rep != NULL) {

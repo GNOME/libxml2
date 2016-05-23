@@ -399,10 +399,6 @@ else
 
      if test "x$have_libz" = "xno"; then
         AC_CHECK_HEADERS(zlib.h,
-            [SAVE_LDFLAGS="${LDFLAGS}"
-	    if test "x${Z_DIR}" != "x"; then
-	        LDFLAGS="${LDFLAGS} -L${Z_DIR}/lib"
-	    fi
             AC_CHECK_LIB(z, gzread,[
                 have_libz=yes
                 if test "x${Z_DIR}" != "x"; then
@@ -417,7 +413,7 @@ else
                     Z_LIBS="-lz"
                 fi],
                 [have_libz=no])
-             LDFLAGS="${SAVE_LDFLAGS}"])
+             )
     else
 	# we still need to check for zlib.h header
 	AC_CHECK_HEADERS([zlib.h])
@@ -453,8 +449,6 @@ else
      # private dependencies, though, so static linking may fail.
      if test "x$have_liblzma" = "xno"; then
          AC_CHECK_HEADERS(lzma.h,
-	    [SAVE_LDFLAGS="${LDFLAGS}"
-	     LDFLAGS="-L${LZMA_DIR}/lib"
             AC_CHECK_LIB(lzma, lzma_code,[
                 have_liblzma=yes
                 if test "x${LZMA_DIR}" != "x"; then
@@ -464,7 +458,7 @@ else
                     LZMA_LIBS="-llzma"
                 fi],
                 [have_liblzma=no])
-	     LDFLAGS="${SAVE_LDFLAGS}"])
+	     )
     else
 	# we still need to check for lzma,h header
 	AC_CHECK_HEADERS([lzma.h])

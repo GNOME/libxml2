@@ -1769,7 +1769,7 @@ xmlSchemaFormatItemForReport(xmlChar **buf,
     }
     FREE_AND_NULL(str)
 
-    return (*buf);
+    return (xmlEscapeFormatString(buf));
 }
 
 /**
@@ -2249,6 +2249,13 @@ xmlSchemaFormatNodeForError(xmlChar ** msg,
 	TODO
 	return (NULL);
     }
+
+    /*
+     * xmlSchemaFormatItemForReport() also returns an escaped format
+     * string, so do this before calling it below (in the future).
+     */
+    xmlEscapeFormatString(msg);
+
     /*
     * VAL TODO: The output of the given schema component is currently
     * disabled.
@@ -2476,11 +2483,13 @@ xmlSchemaSimpleTypeErr(xmlSchemaAbstractCtxtPtr actxt,
 	msg = xmlStrcat(msg, BAD_CAST " '");
 	if (type->builtInType != 0) {
 	    msg = xmlStrcat(msg, BAD_CAST "xs:");
-	    msg = xmlStrcat(msg, type->name);
-	} else
-	    msg = xmlStrcat(msg,
-		xmlSchemaFormatQName(&str,
-		    type->targetNamespace, type->name));
+	    str = xmlStrdup(type->name);
+	} else {
+	    const xmlChar *qName = xmlSchemaFormatQName(&str, type->targetNamespace, type->name);
+	    if (!str)
+		str = xmlStrdup(qName);
+	}
+	msg = xmlStrcat(msg, xmlEscapeFormatString(&str));
 	msg = xmlStrcat(msg, BAD_CAST "'");
 	FREE_AND_NULL(str);
     }
@@ -2617,7 +2626,7 @@ xmlSchemaComplexTypeErr(xmlSchemaAbstractCtxtPtr actxt,
 		str = xmlStrcat(str, BAD_CAST ", ");
 	}
 	str = xmlStrcat(str, BAD_CAST " ).\n");
-	msg = xmlStrcat(msg, BAD_CAST str);
+	msg = xmlStrcat(msg, xmlEscapeFormatString(&str));
 	FREE_AND_NULL(str)
     } else
       msg = xmlStrcat(msg, BAD_CAST "\n");
@@ -3141,11 +3150,13 @@ xmlSchemaPSimpleTypeErr(xmlSchemaParserCtxtPtr ctxt,
 		msg = xmlStrcat(msg, BAD_CAST " '");
 		if (type->builtInType != 0) {
 		    msg = xmlStrcat(msg, BAD_CAST "xs:");
-		    msg = xmlStrcat(msg, type->name);
-		} else
-		    msg = xmlStrcat(msg,
-			xmlSchemaFormatQName(&str,
-			    type->targetNamespace, type->name));
+		    str = xmlStrdup(type->name);
+		} else {
+		    const xmlChar *qName = xmlSchemaFormatQName(&str, type->targetNamespace, type->name);
+		    if (!str)
+			str = xmlStrdup(qName);
+		}
+		msg = xmlStrcat(msg, xmlEscapeFormatString(&str));
 		msg = xmlStrcat(msg, BAD_CAST "'.");
 		FREE_AND_NULL(str);
 	    }
@@ -3158,7 +3169,9 @@ xmlSchemaPSimpleTypeErr(xmlSchemaParserCtxtPtr ctxt,
 	}
 	if (expected) {
 	    msg = xmlStrcat(msg, BAD_CAST " Expected is '");
-	    msg = xmlStrcat(msg, BAD_CAST expected);
+	    xmlChar *expectedEscaped = xmlCharStrdup(expected);
+	    msg = xmlStrcat(msg, xmlEscapeFormatString(&expectedEscaped));
+	    FREE_AND_NULL(expectedEscaped);
 	    msg = xmlStrcat(msg, BAD_CAST "'.\n");
 	} else
 	    msg = xmlStrcat(msg, BAD_CAST "\n");

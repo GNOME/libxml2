@@ -9,6 +9,8 @@
 #ifndef __XML_LIBXML_H__
 #define __XML_LIBXML_H__
 
+#include <libxml/xmlstring.h>
+
 #ifndef NO_LARGEFILE_SOURCE
 #ifndef _LARGEFILE_SOURCE
 #define _LARGEFILE_SOURCE
@@ -93,6 +95,7 @@ int __xmlInitializeDict(void);
 int __xmlRandom(void);
 #endif
 
+XMLPUBFUN xmlChar * XMLCALL xmlEscapeFormatString(xmlChar **msg);
 int xmlNop(void);
 
 #ifdef IN_LIBXML

@@ -2215,7 +2215,8 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar * arg1,
         snprintf(msg, 1000, "Unknown error code %d\n", err);
     }
     msg[1000 - 1] = 0;
-    return (xmlStrdup((xmlChar *) msg));
+    xmlChar *result = xmlCharStrdup(msg);
+    return (xmlEscapeFormatString(&result));
 }
 
 /**

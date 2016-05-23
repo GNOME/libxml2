@@ -987,5 +987,60 @@ xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
     return(xmlUTF8Strndup(utf, len));
 }
 
+/**
+ * xmlEscapeFormatString:
+ * @msg:  a pointer to the string in which to escape '%' characters.
+ * Must be a heap-allocated buffer created by libxml2 that may be
+ * returned, or that may be freed and replaced.
+ *
+ * Replaces the string pointed to by 'msg' with an escaped string.
+ * Returns the same string with all '%' characters escaped.
+ */
+xmlChar *
+xmlEscapeFormatString(xmlChar **msg)
+{
+    xmlChar *msgPtr = NULL;
+    xmlChar *result = NULL;
+    xmlChar *resultPtr = NULL;
+    size_t count = 0;
+    size_t msgLen = 0;
+    size_t resultLen = 0;
+
+    if (!msg || !*msg)
+        return(NULL);
+
+    for (msgPtr = *msg; *msgPtr != '\0'; ++msgPtr) {
+        ++msgLen;
+        if (*msgPtr == '%')
+            ++count;
+    }
+
+    if (count == 0)
+        return(*msg);
+
+    resultLen = msgLen + count + 1;
+    result = (xmlChar *) xmlMallocAtomic(resultLen * sizeof(xmlChar));
+    if (result == NULL) {
+        /* Clear *msg to prevent format string vulnerabilities in
+           out-of-memory situations. */
+        xmlFree(*msg);
+        *msg = NULL;
+        xmlErrMemory(NULL, NULL);
+        return(NULL);
+    }
+
+    for (msgPtr = *msg, resultPtr = result; *msgPtr != '\0'; ++msgPtr, ++resultPtr) {
+        *resultPtr = *msgPtr;
+        if (*msgPtr == '%')
+            *(++resultPtr) = '%';
+    }
+    result[resultLen - 1] = '\0';
+
+    xmlFree(*msg);
+    *msg = result;
+
+    return *msg;
+}
+
 #define bottom_xmlstring
 #include "elfgcchack.h"

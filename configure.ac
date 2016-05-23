@@ -400,7 +400,9 @@ else
      if test "x$have_libz" = "xno"; then
         AC_CHECK_HEADERS(zlib.h,
             [SAVE_LDFLAGS="${LDFLAGS}"
-             LDFLAGS="-L${Z_DIR}/lib"
+	    if test "x${Z_DIR}" != "x"; then
+	        LDFLAGS="${LDFLAGS} -L${Z_DIR}/lib"
+	    fi
             AC_CHECK_LIB(z, gzread,[
                 have_libz=yes
                 if test "x${Z_DIR}" != "x"; then

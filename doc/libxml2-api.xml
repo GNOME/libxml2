@@ -10985,7 +10985,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlMallocAtomicLoc' file='xmlmemory' module='xmlmemory'>
       <info>a malloc() equivalent, with logging of the allocation info.</info>
       <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <arg name='size' type='size_t' info='an unsigned int specifying the size in byte to allocate.'/>
       <arg name='file' type='const char *' info='the file name or NULL'/>
       <arg name='line' type='int' info='the line number'/>
     </function>
@@ -14487,7 +14487,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='the number of characters written to @buf or -1 if an error occurs.'/>
       <arg name='buf' type='xmlChar *' info='the result buffer.'/>
       <arg name='len' type='int' info='the result buffer length.'/>
-      <arg name='msg' type='const xmlChar *' info='the message with printf formatting.'/>
+      <arg name='msg' type='const char *' info='the message with printf formatting.'/>
       <arg name='...' type='...' info='extra parameters for the message.'/>
     </function>
     <function name='xmlStrQEqual' file='xmlstring' module='xmlstring'>
@@ -14502,7 +14502,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='the number of characters written to @buf or -1 if an error occurs.'/>
       <arg name='buf' type='xmlChar *' info='the result buffer.'/>
       <arg name='len' type='int' info='the result buffer length.'/>
-      <arg name='msg' type='const xmlChar *' info='the message with printf formatting.'/>
+      <arg name='msg' type='const char *' info='the message with printf formatting.'/>
       <arg name='ap' type='va_list' info='extra parameters for the message.'/>
     </function>
     <function name='xmlStrcasecmp' file='xmlstring' module='xmlstring'>

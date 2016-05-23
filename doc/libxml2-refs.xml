@@ -8406,9 +8406,7 @@
       <ref name='xmlSplitQName2'/>
       <ref name='xmlSplitQName3'/>
       <ref name='xmlStrEqual'/>
-      <ref name='xmlStrPrintf'/>
       <ref name='xmlStrQEqual'/>
-      <ref name='xmlStrVPrintf'/>
       <ref name='xmlStrcasecmp'/>
       <ref name='xmlStrcasestr'/>
       <ref name='xmlStrcat'/>
@@ -30349,6 +30347,7 @@
         </word>
         <word name='unsigned'>
           <ref name='c'/>
+          <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlURIUnescapeString'/>
         </word>
         <word name='unsupported'>

@@ -1833,8 +1833,8 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		case XPATH_RANGE: {
 		    xmlNodePtr node = tmp->user;
 		    if (node != NULL) {
-			if (node->type == XML_ATTRIBUTE_NODE) {
-			    /* TODO: Namespace Nodes ??? */
+			if ((node->type == XML_ATTRIBUTE_NODE) ||
+                            (node->type == XML_NAMESPACE_DECL)) {
 			    xmlXPathFreeObject(obj);
 			    xmlXPtrFreeLocationSet(newset);
 			    XP_ERROR(XPTR_SYNTAX_ERROR);
@@ -1929,8 +1929,8 @@ xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		case XPATH_RANGE: {
 		    xmlNodePtr node = tmp->user2;
 		    if (node != NULL) {
-			if (node->type == XML_ATTRIBUTE_NODE) {
-			    /* TODO: Namespace Nodes ??? */
+			if ((node->type == XML_ATTRIBUTE_NODE) ||
+                            (node->type == XML_NAMESPACE_DECL)) {
 			    xmlXPathFreeObject(obj);
 			    xmlXPtrFreeLocationSet(newset);
 			    XP_ERROR(XPTR_SYNTAX_ERROR);

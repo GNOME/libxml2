@@ -3342,13 +3342,13 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      * compute depth to root
      */
     for (depth2 = 0, cur = node2;cur->parent != NULL;cur = cur->parent) {
-	if (cur == node1)
+	if (cur->parent == node1)
 	    return(1);
 	depth2++;
     }
     root = cur;
     for (depth1 = 0, cur = node1;cur->parent != NULL;cur = cur->parent) {
-	if (cur == node2)
+	if (cur->parent == node2)
 	    return(-1);
 	depth1++;
     }

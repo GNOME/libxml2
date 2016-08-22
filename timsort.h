@@ -394,7 +394,7 @@ static int TIM_SORT_COLLAPSE(SORT_TYPE *dst, TIM_SORT_RUN_T *stack, int stack_cu
 {
   while (1) {
     int64_t A, B, C, D;
-    int ABC, BCD, BD, CD;
+    int ABC, BCD, CD;
 
     /* if the stack only has one thing on it, we are done with the collapse */
     if (stack_curr <= 1) {
@@ -431,7 +431,6 @@ static int TIM_SORT_COLLAPSE(SORT_TYPE *dst, TIM_SORT_RUN_T *stack, int stack_cu
 
     BCD = (B <= C + D) || ABC;
     CD = (C <= D);
-    BD = (B < D);
 
     /* Both invariants are good */
     if (!BCD && !CD) {

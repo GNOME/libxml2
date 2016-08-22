@@ -935,7 +935,7 @@ struct _xmlXPathStepOp {
     int value3;
     void *value4;
     void *value5;
-    void *cache;
+    xmlXPathFunction cache;
     void *cacheURI;
 };
 
@@ -13565,7 +13565,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 		    }
                 }
                 if (op->cache != NULL)
-                    XML_CAST_FPTR(func) = op->cache;
+                    func = op->cache;
                 else {
                     const xmlChar *URI = NULL;
 
@@ -13592,7 +13592,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                         (char *)op->value4);
                         XP_ERROR0(XPATH_UNKNOWN_FUNC_ERROR);
                     }
-                    op->cache = XML_CAST_FPTR(func);
+                    op->cache = func;
                     op->cacheURI = (void *) URI;
                 }
                 oldFunc = ctxt->context->function;

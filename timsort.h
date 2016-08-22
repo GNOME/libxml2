@@ -323,7 +323,7 @@ static void TIM_SORT_RESIZE(TEMP_STORAGE_T *store, const size_t new_size)
     SORT_TYPE *tempstore = (SORT_TYPE *)realloc(store->storage, new_size * sizeof(SORT_TYPE));
     if (tempstore == NULL)
     {
-      fprintf(stderr, "Error allocating temporary storage for tim sort: need %lu bytes", sizeof(SORT_TYPE) * new_size);
+      fprintf(stderr, "Error allocating temporary storage for tim sort: need %lu bytes", (unsigned long) (sizeof(SORT_TYPE) * new_size));
       exit(1);
     }
     store->storage = tempstore;

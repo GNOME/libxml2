@@ -3019,6 +3019,7 @@ static void usage(const char *name) {
     printf("\t--path 'paths': provide a set of paths for resources\n");
     printf("\t--load-trace : print trace of all external entities loaded\n");
     printf("\t--nonet : refuse to fetch DTDs or entities over network\n");
+    printf("\t--noxxe : forbid any external entity loading\n");
     printf("\t--nocompact : do not generate compact text nodes\n");
     printf("\t--htmlout : output results as HTML\n");
     printf("\t--nowrap : do not put HTML doc wrapper\n");
@@ -3461,6 +3462,10 @@ main(int argc, char **argv) {
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
 	    xmlSetExternalEntityLoader(xmlNoNetExternalEntityLoader);
+        } else if ((!strcmp(argv[i], "-noxxe")) ||
+                   (!strcmp(argv[i], "--noxxe"))) {
+	    options |= XML_PARSE_NOXXE;
+	    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
         } else if ((!strcmp(argv[i], "-nocompact")) ||
                    (!strcmp(argv[i], "--nocompact"))) {
 	    options &= ~XML_PARSE_COMPACT;

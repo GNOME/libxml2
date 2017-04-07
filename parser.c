@@ -15350,6 +15350,10 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
 	ctxt->options |= XML_PARSE_NONET;
         options -= XML_PARSE_NONET;
     }
+    if (options & XML_PARSE_NOXXE) {
+	ctxt->options |= XML_PARSE_NOXXE;
+        options -= XML_PARSE_NOXXE;
+    }
     if (options & XML_PARSE_COMPACT) {
 	ctxt->options |= XML_PARSE_COMPACT;
         options -= XML_PARSE_COMPACT;

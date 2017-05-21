@@ -3584,37 +3584,6 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
 }
 
 /**
- * xmlXPathNodeSetCreateSize:
- * @size:  the initial size of the set
- *
- * Create a new xmlNodeSetPtr of type double and of value @val
- *
- * Returns the newly created object.
- */
-static xmlNodeSetPtr
-xmlXPathNodeSetCreateSize(int size) {
-    xmlNodeSetPtr ret;
-
-    ret = (xmlNodeSetPtr) xmlMalloc(sizeof(xmlNodeSet));
-    if (ret == NULL) {
-        xmlXPathErrMemory(NULL, "creating nodeset\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlNodeSet));
-    if (size < XML_NODESET_DEFAULT)
-	size = XML_NODESET_DEFAULT;
-    ret->nodeTab = (xmlNodePtr *) xmlMalloc(size * sizeof(xmlNodePtr));
-    if (ret->nodeTab == NULL) {
-	xmlXPathErrMemory(NULL, "creating nodeset\n");
-	xmlFree(ret);
-	return(NULL);
-    }
-    memset(ret->nodeTab, 0 , size * (size_t) sizeof(xmlNodePtr));
-    ret->nodeMax = size;
-    return(ret);
-}
-
-/**
  * xmlXPathNodeSetContains:
  * @cur:  the node-set
  * @val:  the node
@@ -3954,48 +3923,22 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
  * xmlXPathNodeSetMergeAndClear:
  * @set1:  the first NodeSet or NULL
  * @set2:  the second NodeSet
- * @hasSet2NsNodes: 1 if set2 contains namespaces nodes
  *
- * Merges two nodesets, all nodes from @set2 are added to @set1
- * if @set1 is NULL, a new set is created and copied from @set2.
+ * Merges two nodesets, all nodes from @set2 are added to @set1.
  * Checks for duplicate nodes. Clears set2.
  *
  * Returns @set1 once extended or NULL in case of error.
  */
 static xmlNodeSetPtr
-xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2,
-			     int hasNullEntries)
+xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 {
-    if ((set1 == NULL) && (hasNullEntries == 0)) {
-	/*
-	* Note that doing a memcpy of the list, namespace nodes are
-	* just assigned to set1, since set2 is cleared anyway.
-	*/
-	set1 = xmlXPathNodeSetCreateSize(set2->nodeNr);
-	if (set1 == NULL)
-	    return(NULL);
-	if (set2->nodeNr != 0) {
-	    memcpy(set1->nodeTab, set2->nodeTab,
-		set2->nodeNr * sizeof(xmlNodePtr));
-	    set1->nodeNr = set2->nodeNr;
-	}
-    } else {
+    {
 	int i, j, initNbSet1;
 	xmlNodePtr n1, n2;
-
-	if (set1 == NULL)
-            set1 = xmlXPathNodeSetCreate(NULL);
-        if (set1 == NULL)
-            return (NULL);
 
 	initNbSet1 = set1->nodeNr;
 	for (i = 0;i < set2->nodeNr;i++) {
 	    n2 = set2->nodeTab[i];
-	    /*
-	    * Skip NULLed entries.
-	    */
-	    if (n2 == NULL)
-		continue;
 	    /*
 	    * Skip duplicates.
 	    */
@@ -4061,49 +4004,21 @@ skip_node:
  * xmlXPathNodeSetMergeAndClearNoDupls:
  * @set1:  the first NodeSet or NULL
  * @set2:  the second NodeSet
- * @hasSet2NsNodes: 1 if set2 contains namespaces nodes
  *
- * Merges two nodesets, all nodes from @set2 are added to @set1
- * if @set1 is NULL, a new set is created and copied from @set2.
- * Doesn't chack for duplicate nodes. Clears set2.
+ * Merges two nodesets, all nodes from @set2 are added to @set1.
+ * Doesn't check for duplicate nodes. Clears set2.
  *
  * Returns @set1 once extended or NULL in case of error.
  */
 static xmlNodeSetPtr
-xmlXPathNodeSetMergeAndClearNoDupls(xmlNodeSetPtr set1, xmlNodeSetPtr set2,
-				    int hasNullEntries)
+xmlXPathNodeSetMergeAndClearNoDupls(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 {
-    if (set2 == NULL)
-	return(set1);
-    if ((set1 == NULL) && (hasNullEntries == 0)) {
-	/*
-	* Note that doing a memcpy of the list, namespace nodes are
-	* just assigned to set1, since set2 is cleared anyway.
-	*/
-	set1 = xmlXPathNodeSetCreateSize(set2->nodeNr);
-	if (set1 == NULL)
-	    return(NULL);
-	if (set2->nodeNr != 0) {
-	    memcpy(set1->nodeTab, set2->nodeTab,
-		set2->nodeNr * sizeof(xmlNodePtr));
-	    set1->nodeNr = set2->nodeNr;
-	}
-    } else {
+    {
 	int i;
 	xmlNodePtr n2;
 
-	if (set1 == NULL)
-	    set1 = xmlXPathNodeSetCreate(NULL);
-        if (set1 == NULL)
-            return (NULL);
-
 	for (i = 0;i < set2->nodeNr;i++) {
 	    n2 = set2->nodeTab[i];
-	    /*
-	    * Skip NULLed entries.
-	    */
-	    if (n2 == NULL)
-		continue;
 	    if (set1->nodeMax == 0) {
 		set1->nodeTab = (xmlNodePtr *) xmlMalloc(
 		    XML_NODESET_DEFAULT * sizeof(xmlNodePtr));
@@ -7654,7 +7569,7 @@ typedef xmlNodePtr (*xmlXPathTraversalFunctionExt)
  * Used for merging node sets in xmlXPathCollectAndTest().
  */
 typedef xmlNodeSetPtr (*xmlXPathNodeSetMergeFunction)
-		    (xmlNodeSetPtr, xmlNodeSetPtr, int);
+		    (xmlNodeSetPtr, xmlNodeSetPtr);
 
 
 /**
@@ -11654,11 +11569,277 @@ xmlXPathDebugDumpStepAxis(xmlXPathStepOpPtr op,
 }
 #endif /* DEBUG_STEP */
 
-static int
+/**
+ * xmlXPathNodeSetFilter:
+ * @ctxt:  the XPath Parser context
+ * @set: the node set to filter
+ * @filterOpIndex: the index of the predicate/filter op
+ * @minPos: minimum position in the filtered set (1-based)
+ * @maxPos: maximum position in the filtered set (1-based)
+ * @hasNsNodes: true if the node set may contain namespace nodes
+ *
+ * Filter a node set, keeping only nodes for which the predicate expression
+ * matches. Afterwards, keep only nodes between minPos and maxPos in the
+ * filtered result.
+ */
+static void
+xmlXPathNodeSetFilter(xmlXPathParserContextPtr ctxt,
+		      xmlNodeSetPtr set,
+		      int filterOpIndex,
+                      int minPos, int maxPos,
+		      int hasNsNodes)
+{
+    xmlXPathContextPtr xpctxt;
+    xmlNodePtr oldnode;
+    xmlDocPtr olddoc;
+    xmlXPathStepOpPtr filterOp;
+    int oldcs, oldpp;
+    int i, j, pos;
+
+    if ((set == NULL) || (set->nodeNr == 0))
+        return;
+
+    /*
+    * Check if the node set contains a sufficient number of nodes for
+    * the requested range.
+    */
+    if (set->nodeNr < minPos) {
+        xmlXPathNodeSetClear(set, hasNsNodes);
+        return;
+    }
+
+    xpctxt = ctxt->context;
+    oldnode = xpctxt->node;
+    olddoc = xpctxt->doc;
+    oldcs = xpctxt->contextSize;
+    oldpp = xpctxt->proximityPosition;
+    filterOp = &ctxt->comp->steps[filterOpIndex];
+
+    xpctxt->contextSize = set->nodeNr;
+
+    for (i = 0, j = 0, pos = 1; i < set->nodeNr; i++) {
+        xmlNodePtr node = set->nodeTab[i];
+        int res;
+
+        xpctxt->node = node;
+        xpctxt->proximityPosition = i + 1;
+
+        /*
+        * Also set the xpath document in case things like
+        * key() are evaluated in the predicate.
+        *
+        * TODO: Get real doc for namespace nodes.
+        */
+        if ((node->type != XML_NAMESPACE_DECL) &&
+            (node->doc != NULL))
+            xpctxt->doc = node->doc;
+
+        res = xmlXPathCompOpEvalToBoolean(ctxt, filterOp, 1);
+
+        if (ctxt->error != XPATH_EXPRESSION_OK)
+            goto exit;
+        if (res < 0) {
+            /* Shouldn't happen */
+            xmlXPathErr(ctxt, XPATH_EXPR_ERROR);
+            goto exit;
+        }
+
+        if ((res != 0) && ((pos >= minPos) && (pos <= maxPos))) {
+            if (i != j) {
+                set->nodeTab[j] = node;
+                set->nodeTab[i] = NULL;
+            }
+
+            j += 1;
+        } else {
+            /* Remove the entry from the initial node set. */
+            set->nodeTab[i] = NULL;
+            if (node->type == XML_NAMESPACE_DECL)
+                xmlXPathNodeSetFreeNs((xmlNsPtr) node);
+        }
+
+        if (res != 0) {
+            if (pos == maxPos) {
+                /* Clear remaining nodes and exit loop. */
+                if (hasNsNodes) {
+                    for (i++; i < set->nodeNr; i++) {
+                        node = set->nodeTab[i];
+                        if ((node != NULL) &&
+                            (node->type == XML_NAMESPACE_DECL))
+                            xmlXPathNodeSetFreeNs((xmlNsPtr) node);
+                    }
+                }
+                break;
+            }
+
+            pos += 1;
+        }
+    }
+
+    set->nodeNr = j;
+
+    /* If too many elements were removed, shrink table to preserve memory. */
+    if ((set->nodeMax > XML_NODESET_DEFAULT) &&
+        (set->nodeNr < set->nodeMax / 2)) {
+        xmlNodePtr *tmp;
+        int nodeMax = set->nodeNr;
+
+        if (nodeMax < XML_NODESET_DEFAULT)
+            nodeMax = XML_NODESET_DEFAULT;
+        tmp = (xmlNodePtr *) xmlRealloc(set->nodeTab,
+                nodeMax * sizeof(xmlNodePtr));
+        if (tmp == NULL) {
+            xmlXPathPErrMemory(ctxt, "shrinking nodeset\n");
+        } else {
+            set->nodeTab = tmp;
+            set->nodeMax = nodeMax;
+        }
+    }
+
+exit:
+    xpctxt->node = oldnode;
+    xpctxt->doc = olddoc;
+    xpctxt->contextSize = oldcs;
+    xpctxt->proximityPosition = oldpp;
+}
+
+#ifdef LIBXML_XPTR_ENABLED
+/**
+ * xmlXPathLocationSetFilter:
+ * @ctxt:  the XPath Parser context
+ * @locset: the location set to filter
+ * @filterOpIndex: the index of the predicate/filter op
+ * @minPos: minimum position in the filtered set (1-based)
+ * @maxPos: maximum position in the filtered set (1-based)
+ *
+ * Filter a location set, keeping only nodes for which the predicate
+ * expression matches. Afterwards, keep only nodes between minPos and maxPos
+ * in the filtered result.
+ */
+static void
+xmlXPathLocationSetFilter(xmlXPathParserContextPtr ctxt,
+		          xmlLocationSetPtr locset,
+		          int filterOpIndex,
+                          int minPos, int maxPos)
+{
+    xmlXPathContextPtr xpctxt;
+    xmlNodePtr oldnode;
+    xmlDocPtr olddoc;
+    xmlXPathStepOpPtr filterOp;
+    int oldcs, oldpp;
+    int i, j, pos;
+
+    if ((locset == NULL) || (locset->locNr == 0) || (filterOpIndex == -1))
+        return;
+
+    xpctxt = ctxt->context;
+    oldnode = xpctxt->node;
+    olddoc = xpctxt->doc;
+    oldcs = xpctxt->contextSize;
+    oldpp = xpctxt->proximityPosition;
+    filterOp = &ctxt->comp->steps[filterOpIndex];
+
+    xpctxt->contextSize = locset->locNr;
+
+    for (i = 0, j = 0, pos = 1; i < locset->locNr; i++) {
+        xmlNodePtr contextNode = locset->locTab[i]->user;
+        int res;
+
+        xpctxt->node = contextNode;
+        xpctxt->proximityPosition = i + 1;
+
+        /*
+        * Also set the xpath document in case things like
+        * key() are evaluated in the predicate.
+        *
+        * TODO: Get real doc for namespace nodes.
+        */
+        if ((contextNode->type != XML_NAMESPACE_DECL) &&
+            (contextNode->doc != NULL))
+            xpctxt->doc = contextNode->doc;
+
+        res = xmlXPathCompOpEvalToBoolean(ctxt, filterOp, 1);
+
+        if (ctxt->error != XPATH_EXPRESSION_OK)
+            goto exit;
+        if (res < 0) {
+            /* Shouldn't happen */
+            xmlXPathErr(ctxt, XPATH_EXPR_ERROR);
+            goto exit;
+        }
+
+        if ((res != 0) && ((pos >= minPos) && (pos <= maxPos))) {
+            if (i != j) {
+                locset->locTab[j] = locset->locTab[i];
+                locset->locTab[i] = NULL;
+            }
+
+            j += 1;
+        } else {
+            /* Remove the entry from the initial location set. */
+            xmlXPathFreeObject(locset->locTab[i]);
+            locset->locTab[i] = NULL;
+        }
+
+        if (res != 0) {
+            if (pos == maxPos) {
+                /* Clear remaining nodes and exit loop. */
+                for (i++; i < locset->locNr; i++) {
+                    xmlXPathFreeObject(locset->locTab[i]);
+                }
+                break;
+            }
+
+            pos += 1;
+        }
+    }
+
+    locset->locNr = j;
+
+    /* If too many elements were removed, shrink table to preserve memory. */
+    if ((locset->locMax > XML_NODESET_DEFAULT) &&
+        (locset->locNr < locset->locMax / 2)) {
+        xmlXPathObjectPtr *tmp;
+        int locMax = locset->locNr;
+
+        if (locMax < XML_NODESET_DEFAULT)
+            locMax = XML_NODESET_DEFAULT;
+        tmp = (xmlXPathObjectPtr *) xmlRealloc(locset->locTab,
+                locMax * sizeof(xmlXPathObjectPtr));
+        if (tmp == NULL) {
+            xmlXPathPErrMemory(ctxt, "shrinking locset\n");
+        } else {
+            locset->locTab = tmp;
+            locset->locMax = locMax;
+        }
+    }
+
+exit:
+    xpctxt->node = oldnode;
+    xpctxt->doc = olddoc;
+    xpctxt->contextSize = oldcs;
+    xpctxt->proximityPosition = oldpp;
+}
+#endif /* LIBXML_XPTR_ENABLED */
+
+/**
+ * xmlXPathCompOpEvalPredicate:
+ * @ctxt:  the XPath Parser context
+ * @op: the predicate op
+ * @set: the node set to filter
+ * @minPos: minimum position in the filtered set (1-based)
+ * @maxPos: maximum position in the filtered set (1-based)
+ * @hasNsNodes: true if the node set may contain namespace nodes
+ *
+ * Filter a node set, keeping only nodes for which the sequence of predicate
+ * expressions matches. Afterwards, keep only nodes between minPos and maxPos
+ * in the filtered result.
+ */
+static void
 xmlXPathCompOpEvalPredicate(xmlXPathParserContextPtr ctxt,
 			    xmlXPathStepOpPtr op,
 			    xmlNodeSetPtr set,
-			    int contextSize,
+                            int minPos, int maxPos,
 			    int hasNsNodes)
 {
     if (op->ch1 != -1) {
@@ -11667,353 +11848,17 @@ xmlXPathCompOpEvalPredicate(xmlXPathParserContextPtr ctxt,
 	* Process inner predicates first.
 	*/
 	if (comp->steps[op->ch1].op != XPATH_OP_PREDICATE) {
-	    /*
-	    * TODO: raise an internal error.
-	    */
+            xmlGenericError(xmlGenericErrorContext,
+                "xmlXPathCompOpEvalPredicate: Expected a predicate\n");
+            XP_ERROR(XPATH_INVALID_OPERAND);
 	}
-	contextSize = xmlXPathCompOpEvalPredicate(ctxt,
-	    &comp->steps[op->ch1], set, contextSize, hasNsNodes);
-	CHECK_ERROR0;
-	if (contextSize <= 0)
-	    return(0);
+	xmlXPathCompOpEvalPredicate(ctxt, &comp->steps[op->ch1], set,
+                                    1, set->nodeNr, hasNsNodes);
+	CHECK_ERROR;
     }
-    if (op->ch2 != -1) {
-	xmlXPathContextPtr xpctxt = ctxt->context;
-	xmlNodePtr contextNode, oldContextNode;
-	xmlDocPtr oldContextDoc;
-        int oldcs, oldpp;
-	int i, res, contextPos = 0, newContextSize;
-	xmlXPathStepOpPtr exprOp;
-	xmlXPathObjectPtr contextObj = NULL, exprRes = NULL;
 
-#ifdef LIBXML_XPTR_ENABLED
-	/*
-	* URGENT TODO: Check the following:
-	*  We don't expect location sets if evaluating prediates, right?
-	*  Only filters should expect location sets, right?
-	*/
-#endif
-	/*
-	* SPEC XPath 1.0:
-	*  "For each node in the node-set to be filtered, the
-	*  PredicateExpr is evaluated with that node as the
-	*  context node, with the number of nodes in the
-	*  node-set as the context size, and with the proximity
-	*  position of the node in the node-set with respect to
-	*  the axis as the context position;"
-	* @oldset is the node-set" to be filtered.
-	*
-	* SPEC XPath 1.0:
-	*  "only predicates change the context position and
-	*  context size (see [2.4 Predicates])."
-	* Example:
-	*   node-set  context pos
-	*    nA         1
-	*    nB         2
-	*    nC         3
-	*   After applying predicate [position() > 1] :
-	*   node-set  context pos
-	*    nB         1
-	*    nC         2
-	*/
-	oldContextNode = xpctxt->node;
-	oldContextDoc = xpctxt->doc;
-        oldcs = xpctxt->contextSize;
-        oldpp = xpctxt->proximityPosition;
-	/*
-	* Get the expression of this predicate.
-	*/
-	exprOp = &ctxt->comp->steps[op->ch2];
-	newContextSize = 0;
-	for (i = 0; i < set->nodeNr; i++) {
-	    if (set->nodeTab[i] == NULL)
-		continue;
-
-	    contextNode = set->nodeTab[i];
-	    xpctxt->node = contextNode;
-	    xpctxt->contextSize = contextSize;
-	    xpctxt->proximityPosition = ++contextPos;
-
-	    /*
-	    * Also set the xpath document in case things like
-	    * key() are evaluated in the predicate.
-	    */
-	    if ((contextNode->type != XML_NAMESPACE_DECL) &&
-		(contextNode->doc != NULL))
-		xpctxt->doc = contextNode->doc;
-	    /*
-	    * Evaluate the predicate expression with 1 context node
-	    * at a time; this node is packaged into a node set; this
-	    * node set is handed over to the evaluation mechanism.
-	    */
-	    if (contextObj == NULL)
-		contextObj = xmlXPathCacheNewNodeSet(xpctxt, contextNode);
-	    else {
-		if (xmlXPathNodeSetAddUnique(contextObj->nodesetval,
-		    contextNode) < 0) {
-		    ctxt->error = XPATH_MEMORY_ERROR;
-		    goto evaluation_exit;
-		}
-	    }
-
-	    valuePush(ctxt, contextObj);
-
-	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
-
-	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1)) {
-		xmlXPathNodeSetClear(set, hasNsNodes);
-		newContextSize = 0;
-		goto evaluation_exit;
-	    }
-
-	    if (res != 0) {
-		newContextSize++;
-	    } else {
-		/*
-		* Remove the entry from the initial node set.
-		*/
-		set->nodeTab[i] = NULL;
-		if (contextNode->type == XML_NAMESPACE_DECL)
-		    xmlXPathNodeSetFreeNs((xmlNsPtr) contextNode);
-	    }
-	    if (ctxt->value == contextObj) {
-		/*
-		* Don't free the temporary XPath object holding the
-		* context node, in order to avoid massive recreation
-		* inside this loop.
-		*/
-		valuePop(ctxt);
-		xmlXPathNodeSetClear(contextObj->nodesetval, hasNsNodes);
-	    } else {
-		/*
-		* TODO: The object was lost in the evaluation machinery.
-		*  Can this happen? Maybe in internal-error cases.
-		*/
-		contextObj = NULL;
-	    }
-	}
-
-	if (contextObj != NULL) {
-	    if (ctxt->value == contextObj)
-		valuePop(ctxt);
-	    xmlXPathReleaseObject(xpctxt, contextObj);
-	}
-evaluation_exit:
-	if (exprRes != NULL)
-	    xmlXPathReleaseObject(ctxt->context, exprRes);
-	/*
-	* Reset/invalidate the context.
-	*/
-	xpctxt->node = oldContextNode;
-	xpctxt->doc = oldContextDoc;
-	xpctxt->contextSize = oldcs;
-	xpctxt->proximityPosition = oldpp;
-	return(newContextSize);
-    }
-    return(contextSize);
-}
-
-static int
-xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
-				      xmlXPathStepOpPtr op,
-				      xmlNodeSetPtr set,
-				      int contextSize,
-				      int minPos,
-				      int maxPos,
-				      int hasNsNodes)
-{
-    if (op->ch1 != -1) {
-	xmlXPathCompExprPtr comp = ctxt->comp;
-	if (comp->steps[op->ch1].op != XPATH_OP_PREDICATE) {
-	    /*
-	    * TODO: raise an internal error.
-	    */
-	}
-	contextSize = xmlXPathCompOpEvalPredicate(ctxt,
-	    &comp->steps[op->ch1], set, contextSize, hasNsNodes);
-	CHECK_ERROR0;
-	if (contextSize <= 0)
-	    return(0);
-    }
-    /*
-    * Check if the node set contains a sufficient number of nodes for
-    * the requested range.
-    */
-    if (contextSize < minPos) {
-	xmlXPathNodeSetClear(set, hasNsNodes);
-	return(0);
-    }
-    if (op->ch2 == -1) {
-	/*
-	* TODO: Can this ever happen?
-	*/
-	return (contextSize);
-    } else {
-	xmlDocPtr oldContextDoc;
-        int oldcs, oldpp;
-	int i, pos = 0, newContextSize = 0, contextPos = 0, res;
-	xmlXPathStepOpPtr exprOp;
-	xmlXPathObjectPtr contextObj = NULL, exprRes = NULL;
-	xmlNodePtr oldContextNode, contextNode = NULL;
-	xmlXPathContextPtr xpctxt = ctxt->context;
-        int frame;
-
-#ifdef LIBXML_XPTR_ENABLED
-	    /*
-	    * URGENT TODO: Check the following:
-	    *  We don't expect location sets if evaluating prediates, right?
-	    *  Only filters should expect location sets, right?
-	*/
-#endif /* LIBXML_XPTR_ENABLED */
-
-	/*
-	* Save old context.
-	*/
-	oldContextNode = xpctxt->node;
-	oldContextDoc = xpctxt->doc;
-        oldcs = xpctxt->contextSize;
-        oldpp = xpctxt->proximityPosition;
-	/*
-	* Get the expression of this predicate.
-	*/
-	exprOp = &ctxt->comp->steps[op->ch2];
-	for (i = 0; i < set->nodeNr; i++) {
-            xmlXPathObjectPtr tmp;
-
-	    if (set->nodeTab[i] == NULL)
-		continue;
-
-	    contextNode = set->nodeTab[i];
-	    xpctxt->node = contextNode;
-	    xpctxt->contextSize = contextSize;
-	    xpctxt->proximityPosition = ++contextPos;
-
-	    /*
-	    * Initialize the new set.
-	    * Also set the xpath document in case things like
-	    * key() evaluation are attempted on the predicate
-	    */
-	    if ((contextNode->type != XML_NAMESPACE_DECL) &&
-		(contextNode->doc != NULL))
-		xpctxt->doc = contextNode->doc;
-	    /*
-	    * Evaluate the predicate expression with 1 context node
-	    * at a time; this node is packaged into a node set; this
-	    * node set is handed over to the evaluation mechanism.
-	    */
-	    if (contextObj == NULL)
-		contextObj = xmlXPathCacheNewNodeSet(xpctxt, contextNode);
-	    else {
-		if (xmlXPathNodeSetAddUnique(contextObj->nodesetval,
-		    contextNode) < 0) {
-		    ctxt->error = XPATH_MEMORY_ERROR;
-		    goto evaluation_exit;
-		}
-	    }
-
-	    valuePush(ctxt, contextObj);
-            frame = xmlXPathSetFrame(ctxt);
-	    res = xmlXPathCompOpEvalToBoolean(ctxt, exprOp, 1);
-            xmlXPathPopFrame(ctxt, frame);
-            tmp = valuePop(ctxt);
-
-	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1)) {
-                while (tmp != contextObj) {
-                    /*
-                     * Free up the result
-                     * then pop off contextObj, which will be freed later
-                     */
-                    xmlXPathReleaseObject(xpctxt, tmp);
-                    tmp = valuePop(ctxt);
-                }
-		goto evaluation_error;
-	    }
-            /* push the result back onto the stack */
-            valuePush(ctxt, tmp);
-
-	    if (res)
-		pos++;
-
-	    if (res && (pos >= minPos) && (pos <= maxPos)) {
-		/*
-		* Fits in the requested range.
-		*/
-		newContextSize++;
-		if (minPos == maxPos) {
-		    /*
-		    * Only 1 node was requested.
-		    */
-		    if (contextNode->type == XML_NAMESPACE_DECL) {
-			/*
-			* As always: take care of those nasty
-			* namespace nodes.
-			*/
-			set->nodeTab[i] = NULL;
-		    }
-		    xmlXPathNodeSetClear(set, hasNsNodes);
-		    set->nodeNr = 1;
-		    set->nodeTab[0] = contextNode;
-		    goto evaluation_exit;
-		}
-		if (pos == maxPos) {
-		    /*
-		    * We are done.
-		    */
-		    xmlXPathNodeSetClearFromPos(set, i +1, hasNsNodes);
-		    goto evaluation_exit;
-		}
-	    } else {
-		/*
-		* Remove the entry from the initial node set.
-		*/
-		set->nodeTab[i] = NULL;
-		if (contextNode->type == XML_NAMESPACE_DECL)
-		    xmlXPathNodeSetFreeNs((xmlNsPtr) contextNode);
-	    }
-	    if (exprRes != NULL) {
-		xmlXPathReleaseObject(ctxt->context, exprRes);
-		exprRes = NULL;
-	    }
-	    if (ctxt->value == contextObj) {
-		/*
-		* Don't free the temporary XPath object holding the
-		* context node, in order to avoid massive recreation
-		* inside this loop.
-		*/
-		valuePop(ctxt);
-		xmlXPathNodeSetClear(contextObj->nodesetval, hasNsNodes);
-	    } else {
-		/*
-		* The object was lost in the evaluation machinery.
-		* Can this happen? Maybe in case of internal-errors.
-		*/
-		contextObj = NULL;
-	    }
-	}
-	goto evaluation_exit;
-
-evaluation_error:
-	xmlXPathNodeSetClear(set, hasNsNodes);
-	newContextSize = 0;
-
-evaluation_exit:
-	if (contextObj != NULL) {
-	    if (ctxt->value == contextObj)
-		valuePop(ctxt);
-	    xmlXPathReleaseObject(xpctxt, contextObj);
-	}
-	if (exprRes != NULL)
-	    xmlXPathReleaseObject(ctxt->context, exprRes);
-	/*
-	* Reset/invalidate the context.
-	*/
-	xpctxt->node = oldContextNode;
-	xpctxt->doc = oldContextDoc;
-	xpctxt->contextSize = oldcs;
-	xpctxt->proximityPosition = oldpp;
-	return(newContextSize);
-    }
-    return(contextSize);
+    if (op->ch2 != -1)
+        xmlXPathNodeSetFilter(ctxt, set, op->ch2, minPos, maxPos, hasNsNodes);
 }
 
 static int
@@ -12131,7 +11976,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     /* First predicate operator */
     xmlXPathStepOpPtr predOp;
     int maxPos; /* The requested position() (when a "[n]" predicate) */
-    int hasPredicateRange, hasAxisRange, pos, size, newSize;
+    int hasPredicateRange, hasAxisRange, pos;
     int breakOnFirstHit;
 
     xmlXPathTraversalFunction next = NULL;
@@ -12545,7 +12390,7 @@ axis_range_end: /* ----------------------------------------------------- */
 	    outSeq = seq;
 	    seq = NULL;
 	} else
-	    outSeq = mergeAndClear(outSeq, seq, 0);
+	    outSeq = mergeAndClear(outSeq, seq);
 	/*
 	* Break if only a true/false result was requested.
 	*/
@@ -12562,7 +12407,7 @@ first_hit: /* ---------------------------------------------------------- */
 	    outSeq = seq;
 	    seq = NULL;
 	} else
-	    outSeq = mergeAndClear(outSeq, seq, 0);
+	    outSeq = mergeAndClear(outSeq, seq);
 	break;
 
 #ifdef DEBUG_STEP
@@ -12606,51 +12451,20 @@ apply_predicates: /* --------------------------------------------------- */
 	    * For the moment, I'll try to solve this with a recursive
 	    * function: xmlXPathCompOpEvalPredicate().
 	    */
-	    size = seq->nodeNr;
 	    if (hasPredicateRange != 0)
-		newSize = xmlXPathCompOpEvalPositionalPredicate(ctxt,
-		    predOp, seq, size, maxPos, maxPos, hasNsNodes);
+		xmlXPathCompOpEvalPredicate(ctxt, predOp, seq, maxPos, maxPos,
+					    hasNsNodes);
 	    else
-		newSize = xmlXPathCompOpEvalPredicate(ctxt,
-		    predOp, seq, size, hasNsNodes);
+		xmlXPathCompOpEvalPredicate(ctxt, predOp, seq, 1, seq->nodeNr,
+					    hasNsNodes);
 
 	    if (ctxt->error != XPATH_EXPRESSION_OK) {
 		total = 0;
 		goto error;
 	    }
-	    /*
-	    * Add the filtered set of nodes to the result node set.
-	    */
-	    if (newSize == 0) {
-		/*
-		* The predicates filtered all nodes out.
-		*/
-		xmlXPathNodeSetClear(seq, hasNsNodes);
-	    } else if (seq->nodeNr > 0) {
-		/*
-		* Add to result set.
-		*/
-		if (outSeq == NULL) {
-		    if (size != newSize) {
-			/*
-			* We need to merge and clear here, since
-			* the sequence will contained NULLed entries.
-			*/
-			outSeq = mergeAndClear(NULL, seq, 1);
-		    } else {
-			outSeq = seq;
-			seq = NULL;
-		    }
-		} else
-		    outSeq = mergeAndClear(outSeq, seq,
-			(size != newSize) ? 1: 0);
-		/*
-		* Break if only a true/false result was requested.
-		*/
-		if (toBool)
-		    break;
-	    }
-        } else if (seq->nodeNr > 0) {
+        }
+
+        if (seq->nodeNr > 0) {
 	    /*
 	    * Add to result set.
 	    */
@@ -12658,8 +12472,11 @@ apply_predicates: /* --------------------------------------------------- */
 		outSeq = seq;
 		seq = NULL;
 	    } else {
-		outSeq = mergeAndClear(outSeq, seq, 0);
+		outSeq = mergeAndClear(outSeq, seq);
 	    }
+
+            if (toBool)
+                break;
 	}
     }
 
@@ -13002,13 +12819,7 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 {
     int total = 0;
     xmlXPathCompExprPtr comp;
-    xmlXPathObjectPtr res;
-    xmlXPathObjectPtr obj;
-    xmlNodeSetPtr oldset;
-    xmlNodePtr oldnode;
-    xmlDocPtr oldDoc;
-    int oldcs, oldpp;
-    int i;
+    xmlNodeSetPtr set;
 
     CHECK_ERROR0;
     comp = ctxt->comp;
@@ -13063,205 +12874,27 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
     * Hum are we filtering the result of an XPointer expression
     */
     if (ctxt->value->type == XPATH_LOCATIONSET) {
-	xmlXPathObjectPtr tmp = NULL;
-	xmlLocationSetPtr newlocset = NULL;
-	xmlLocationSetPtr oldlocset;
+        xmlLocationSetPtr locset = ctxt->value->user;
 
-	/*
-	* Extract the old locset, and then evaluate the result of the
-	* expression for all the element in the locset. use it to grow
-	* up a new locset.
-	*/
-	CHECK_TYPE0(XPATH_LOCATIONSET);
+        if (locset != NULL) {
+            xmlXPathLocationSetFilter(ctxt, locset, op->ch2, 1, 1);
+            if (locset->locNr > 0)
+                *first = (xmlNodePtr) locset->locTab[0]->user;
+        }
 
-	if ((ctxt->value->user == NULL) ||
-            (((xmlLocationSetPtr) ctxt->value->user)->locNr == 0))
-	    return (total);
-
-	obj = valuePop(ctxt);
-	oldlocset = obj->user;
-        oldnode = ctxt->context->node;
-        oldcs = ctxt->context->contextSize;
-        oldpp = ctxt->context->proximityPosition;
-
-	newlocset = xmlXPtrLocationSetCreate(NULL);
-
-	for (i = 0; i < oldlocset->locNr; i++) {
-	    /*
-	    * Run the evaluation with a node list made of a
-	    * single item in the nodelocset.
-	    */
-	    ctxt->context->node = oldlocset->locTab[i]->user;
-	    ctxt->context->contextSize = oldlocset->locNr;
-	    ctxt->context->proximityPosition = i + 1;
-	    if (tmp == NULL) {
-		tmp = xmlXPathCacheNewNodeSet(ctxt->context,
-		    ctxt->context->node);
-	    } else {
-		if (xmlXPathNodeSetAddUnique(tmp->nodesetval,
-		                             ctxt->context->node) < 0) {
-		    ctxt->error = XPATH_MEMORY_ERROR;
-		}
-	    }
-	    valuePush(ctxt, tmp);
-	    if (op->ch2 != -1)
-		total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
-	    if (ctxt->error != XPATH_EXPRESSION_OK) {
-                xmlXPtrFreeLocationSet(newlocset);
-                goto xptr_error;
-	    }
-	    /*
-	    * The result of the evaluation need to be tested to
-	    * decided whether the filter succeeded or not
-	    */
-	    res = valuePop(ctxt);
-	    if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
-		xmlXPtrLocationSetAdd(newlocset,
-		    xmlXPathCacheObjectCopy(ctxt->context,
-			oldlocset->locTab[i]));
-	    }
-	    /*
-	    * Cleanup
-	    */
-	    if (res != NULL) {
-		xmlXPathReleaseObject(ctxt->context, res);
-	    }
-	    if (ctxt->value == tmp) {
-		valuePop(ctxt);
-		xmlXPathNodeSetClear(tmp->nodesetval, 1);
-		/*
-		* REVISIT TODO: Don't create a temporary nodeset
-		* for everly iteration.
-		*/
-		/* OLD: xmlXPathFreeObject(res); */
-	    } else
-		tmp = NULL;
-	    /*
-	    * Only put the first node in the result, then leave.
-	    */
-	    if (newlocset->locNr > 0) {
-		*first = (xmlNodePtr) oldlocset->locTab[i]->user;
-		break;
-	    }
-	}
-	if (tmp != NULL) {
-	    xmlXPathReleaseObject(ctxt->context, tmp);
-	}
-	/*
-	* The result is used as the new evaluation locset.
-	*/
-	valuePush(ctxt, xmlXPtrWrapLocationSet(newlocset));
-xptr_error:
-	xmlXPathReleaseObject(ctxt->context, obj);
-	ctxt->context->node = oldnode;
-	ctxt->context->contextSize = oldcs;
-	ctxt->context->proximityPosition = oldpp;
 	return (total);
     }
 #endif /* LIBXML_XPTR_ENABLED */
 
-    /*
-    * Extract the old set, and then evaluate the result of the
-    * expression for all the element in the set. use it to grow
-    * up a new set.
-    */
     CHECK_TYPE0(XPATH_NODESET);
-
-    if ((ctxt->value->nodesetval != NULL) &&
-        (ctxt->value->nodesetval->nodeNr != 0)) {
-	xmlNodeSetPtr newset;
-	xmlXPathObjectPtr tmp = NULL;
-
-        obj = valuePop(ctxt);
-        oldset = obj->nodesetval;
-        oldnode = ctxt->context->node;
-        oldDoc = ctxt->context->doc;
-        oldcs = ctxt->context->contextSize;
-        oldpp = ctxt->context->proximityPosition;
-
-	/*
-	* Initialize the new set.
-	* Also set the xpath document in case things like
-	* key() evaluation are attempted on the predicate
-	*/
-	newset = xmlXPathNodeSetCreate(NULL);
-        /* XXX what if xmlXPathNodeSetCreate returned NULL? */
-
-	for (i = 0; i < oldset->nodeNr; i++) {
-	    /*
-	    * Run the evaluation with a node list made of
-	    * a single item in the nodeset.
-	    */
-	    ctxt->context->node = oldset->nodeTab[i];
-	    if ((oldset->nodeTab[i]->type != XML_NAMESPACE_DECL) &&
-		(oldset->nodeTab[i]->doc != NULL))
-		ctxt->context->doc = oldset->nodeTab[i]->doc;
-	    if (tmp == NULL) {
-		tmp = xmlXPathCacheNewNodeSet(ctxt->context,
-		    ctxt->context->node);
-	    } else {
-		if (xmlXPathNodeSetAddUnique(tmp->nodesetval,
-		                             ctxt->context->node) < 0) {
-		    ctxt->error = XPATH_MEMORY_ERROR;
-		}
-	    }
-	    valuePush(ctxt, tmp);
-	    ctxt->context->contextSize = oldset->nodeNr;
-	    ctxt->context->proximityPosition = i + 1;
-	    if (op->ch2 != -1)
-		total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
-	    if (ctxt->error != XPATH_EXPRESSION_OK) {
-		xmlXPathFreeNodeSet(newset);
-                goto error;
-	    }
-	    /*
-	    * The result of the evaluation needs to be tested to
-	    * decide whether the filter succeeded or not
-	    */
-	    res = valuePop(ctxt);
-	    if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
-		if (xmlXPathNodeSetAdd(newset, oldset->nodeTab[i]) < 0)
-		    ctxt->error = XPATH_MEMORY_ERROR;
-	    }
-	    /*
-	    * Cleanup
-	    */
-	    if (res != NULL) {
-		xmlXPathReleaseObject(ctxt->context, res);
-	    }
-	    if (ctxt->value == tmp) {
-		valuePop(ctxt);
-		/*
-		* Don't free the temporary nodeset
-		* in order to avoid massive recreation inside this
-		* loop.
-		*/
-		xmlXPathNodeSetClear(tmp->nodesetval, 1);
-	    } else
-		tmp = NULL;
-	    /*
-	    * Only put the first node in the result, then leave.
-	    */
-	    if (newset->nodeNr > 0) {
-		*first = *(newset->nodeTab);
-		break;
-	    }
-	}
-	if (tmp != NULL) {
-	    xmlXPathReleaseObject(ctxt->context, tmp);
-	}
-	/*
-	* The result is used as the new evaluation set.
-	*/
-	valuePush(ctxt, xmlXPathCacheWrapNodeSet(ctxt->context, newset));
-error:
-	xmlXPathReleaseObject(ctxt->context, obj);
-	ctxt->context->node = oldnode;
-	ctxt->context->doc = oldDoc;
-	ctxt->context->contextSize = oldcs;
-	ctxt->context->proximityPosition = oldpp;
+    set = ctxt->value->nodesetval;
+    if (set != NULL) {
+        xmlXPathNodeSetFilter(ctxt, set, op->ch2, 1, 1, 1);
+        if (set->nodeNr > 0)
+            *first = set->nodeTab[0];
     }
-    return(total);
+
+    return (total);
 }
 #endif /* XP_OPTIMIZED_FILTER_FIRST */
 
@@ -13556,14 +13189,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             break;
         case XPATH_OP_PREDICATE:
         case XPATH_OP_FILTER:{
-                xmlXPathObjectPtr res;
-                xmlXPathObjectPtr obj, tmp;
-                xmlNodeSetPtr newset = NULL;
-                xmlNodeSetPtr oldset;
-                xmlNodePtr oldnode;
-		xmlDocPtr oldDoc;
-                int oldcs, oldpp;
-                int i;
+                xmlNodeSetPtr set;
 
                 /*
                  * Optimization for ()[1] selection i.e. the first elem
@@ -13670,214 +13296,16 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                  * Hum are we filtering the result of an XPointer expression
                  */
                 if (ctxt->value->type == XPATH_LOCATIONSET) {
-                    xmlLocationSetPtr newlocset = NULL;
-                    xmlLocationSetPtr oldlocset;
-
-                    /*
-                     * Extract the old locset, and then evaluate the result of the
-                     * expression for all the element in the locset. use it to grow
-                     * up a new locset.
-                     */
-                    CHECK_TYPE0(XPATH_LOCATIONSET);
-
-                    if ((ctxt->value->user == NULL) ||
-                        (((xmlLocationSetPtr) ctxt->value->user)->locNr == 0))
-                        break;
-
-                    obj = valuePop(ctxt);
-                    oldlocset = obj->user;
-                    oldnode = ctxt->context->node;
-                    oldcs = ctxt->context->contextSize;
-                    oldpp = ctxt->context->proximityPosition;
-
-                    newlocset = xmlXPtrLocationSetCreate(NULL);
-
-                    for (i = 0; i < oldlocset->locNr; i++) {
-                        /*
-                         * Run the evaluation with a node list made of a
-                         * single item in the nodelocset.
-                         */
-                        ctxt->context->node = oldlocset->locTab[i]->user;
-                        ctxt->context->contextSize = oldlocset->locNr;
-                        ctxt->context->proximityPosition = i + 1;
-			tmp = xmlXPathCacheNewNodeSet(ctxt->context,
-			    ctxt->context->node);
-                        valuePush(ctxt, tmp);
-
-                        if (op->ch2 != -1)
-                            total +=
-                                xmlXPathCompOpEval(ctxt,
-                                                   &comp->steps[op->ch2]);
-			if (ctxt->error != XPATH_EXPRESSION_OK) {
-                            xmlXPtrFreeLocationSet(newlocset);
-                            goto filter_xptr_error;
-			}
-
-                        /*
-                         * The result of the evaluation need to be tested to
-                         * decided whether the filter succeeded or not
-                         */
-                        res = valuePop(ctxt);
-                        if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
-                            xmlXPtrLocationSetAdd(newlocset,
-                                                  xmlXPathObjectCopy
-                                                  (oldlocset->locTab[i]));
-                        }
-
-                        /*
-                         * Cleanup
-                         */
-                        if (res != NULL) {
-			    xmlXPathReleaseObject(ctxt->context, res);
-			}
-                        if (ctxt->value == tmp) {
-                            res = valuePop(ctxt);
-			    xmlXPathReleaseObject(ctxt->context, res);
-                        }
-                    }
-
-                    /*
-                     * The result is used as the new evaluation locset.
-                     */
-                    valuePush(ctxt, xmlXPtrWrapLocationSet(newlocset));
-filter_xptr_error:
-		    xmlXPathReleaseObject(ctxt->context, obj);
-                    ctxt->context->node = oldnode;
-                    ctxt->context->contextSize = oldcs;
-                    ctxt->context->proximityPosition = oldpp;
+                    xmlLocationSetPtr locset = ctxt->value->user;
+                    xmlXPathLocationSetFilter(ctxt, locset, op->ch2,
+                                              1, locset->locNr);
                     break;
                 }
 #endif /* LIBXML_XPTR_ENABLED */
 
-                /*
-                 * Extract the old set, and then evaluate the result of the
-                 * expression for all the element in the set. use it to grow
-                 * up a new set.
-                 */
                 CHECK_TYPE0(XPATH_NODESET);
-
-                if ((ctxt->value->nodesetval != NULL) &&
-                    (ctxt->value->nodesetval->nodeNr != 0)) {
-                    obj = valuePop(ctxt);
-                    oldset = obj->nodesetval;
-                    oldnode = ctxt->context->node;
-                    oldDoc = ctxt->context->doc;
-                    oldcs = ctxt->context->contextSize;
-                    oldpp = ctxt->context->proximityPosition;
-		    tmp = NULL;
-                    /*
-                     * Initialize the new set.
-		     * Also set the xpath document in case things like
-		     * key() evaluation are attempted on the predicate
-                     */
-                    newset = xmlXPathNodeSetCreate(NULL);
-		    /*
-		    * SPEC XPath 1.0:
-		    *  "For each node in the node-set to be filtered, the
-		    *  PredicateExpr is evaluated with that node as the
-		    *  context node, with the number of nodes in the
-		    *  node-set as the context size, and with the proximity
-		    *  position of the node in the node-set with respect to
-		    *  the axis as the context position;"
-		    * @oldset is the node-set" to be filtered.
-		    *
-		    * SPEC XPath 1.0:
-		    *  "only predicates change the context position and
-		    *  context size (see [2.4 Predicates])."
-		    * Example:
-		    *   node-set  context pos
-		    *    nA         1
-		    *    nB         2
-		    *    nC         3
-		    *   After applying predicate [position() > 1] :
-		    *   node-set  context pos
-		    *    nB         1
-		    *    nC         2
-		    *
-		    * removed the first node in the node-set, then
-		    * the context position of the
-		    */
-                    for (i = 0; i < oldset->nodeNr; i++) {
-                        /*
-                         * Run the evaluation with a node list made of
-                         * a single item in the nodeset.
-                         */
-                        ctxt->context->node = oldset->nodeTab[i];
-			if ((oldset->nodeTab[i]->type != XML_NAMESPACE_DECL) &&
-			    (oldset->nodeTab[i]->doc != NULL))
-		            ctxt->context->doc = oldset->nodeTab[i]->doc;
-			if (tmp == NULL) {
-			    tmp = xmlXPathCacheNewNodeSet(ctxt->context,
-				ctxt->context->node);
-			} else {
-			    if (xmlXPathNodeSetAddUnique(tmp->nodesetval,
-				               ctxt->context->node) < 0) {
-				ctxt->error = XPATH_MEMORY_ERROR;
-			    }
-			}
-                        valuePush(ctxt, tmp);
-                        ctxt->context->contextSize = oldset->nodeNr;
-                        ctxt->context->proximityPosition = i + 1;
-			/*
-			* Evaluate the predicate against the context node.
-			* Can/should we optimize position() predicates
-			* here (e.g. "[1]")?
-			*/
-                        if (op->ch2 != -1)
-                            total +=
-                                xmlXPathCompOpEval(ctxt,
-                                                   &comp->steps[op->ch2]);
-			if (ctxt->error != XPATH_EXPRESSION_OK) {
-			    xmlXPathFreeNodeSet(newset);
-                            goto filter_error;
-			}
-
-                        /*
-                         * The result of the evaluation needs to be tested to
-                         * decide whether the filter succeeded or not
-                         */
-			/*
-			* OPTIMIZE TODO: Can we use
-			* xmlXPathNodeSetAdd*Unique()* instead?
-			*/
-                        res = valuePop(ctxt);
-                        if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
-                            if (xmlXPathNodeSetAdd(newset, oldset->nodeTab[i])
-			        < 0)
-				ctxt->error = XPATH_MEMORY_ERROR;
-                        }
-
-                        /*
-                         * Cleanup
-                         */
-                        if (res != NULL) {
-			    xmlXPathReleaseObject(ctxt->context, res);
-			}
-                        if (ctxt->value == tmp) {
-                            valuePop(ctxt);
-			    xmlXPathNodeSetClear(tmp->nodesetval, 1);
-			    /*
-			    * Don't free the temporary nodeset
-			    * in order to avoid massive recreation inside this
-			    * loop.
-			    */
-                        } else
-			    tmp = NULL;
-                    }
-		    if (tmp != NULL)
-			xmlXPathReleaseObject(ctxt->context, tmp);
-                    /*
-                     * The result is used as the new evaluation set.
-                     */
-		    valuePush(ctxt,
-			xmlXPathCacheWrapNodeSet(ctxt->context, newset));
-filter_error:
-		    xmlXPathReleaseObject(ctxt->context, obj);
-		    ctxt->context->node = oldnode;
-		    ctxt->context->doc = oldDoc;
-                    ctxt->context->contextSize = oldcs;
-                    ctxt->context->proximityPosition = oldpp;
-                }
+                set = ctxt->value->nodesetval;
+                xmlXPathNodeSetFilter(ctxt, set, op->ch2, 1, set->nodeNr, 1);
                 break;
             }
         case XPATH_OP_SORT:

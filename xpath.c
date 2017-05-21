@@ -4196,33 +4196,6 @@ xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
 }
 
 /**
- * xmlXPathNodeSetClear:
- * @set:  the node set to clear
- *
- * Clears the list from all temporary XPath objects (e.g. namespace nodes
- * are feed), but does *not* free the list itself. Sets the length of the
- * list to 0.
- */
-static void
-xmlXPathNodeSetClear(xmlNodeSetPtr set, int hasNsNodes)
-{
-    if ((set == NULL) || (set->nodeNr <= 0))
-	return;
-    else if (hasNsNodes) {
-	int i;
-	xmlNodePtr node;
-
-	for (i = 0; i < set->nodeNr; i++) {
-	    node = set->nodeTab[i];
-	    if ((node != NULL) &&
-		(node->type == XML_NAMESPACE_DECL))
-		xmlXPathNodeSetFreeNs((xmlNsPtr) node);
-	}
-    }
-    set->nodeNr = 0;
-}
-
-/**
  * xmlXPathNodeSetClearFromPos:
  * @set: the node set to be cleared
  * @pos: the start position to clear from
@@ -4234,7 +4207,7 @@ xmlXPathNodeSetClear(xmlNodeSetPtr set, int hasNsNodes)
 static void
 xmlXPathNodeSetClearFromPos(xmlNodeSetPtr set, int pos, int hasNsNodes)
 {
-    if ((set == NULL) || (set->nodeNr <= 0) || (pos >= set->nodeNr))
+    if ((set == NULL) || (pos >= set->nodeNr))
 	return;
     else if ((hasNsNodes)) {
 	int i;
@@ -4248,6 +4221,46 @@ xmlXPathNodeSetClearFromPos(xmlNodeSetPtr set, int pos, int hasNsNodes)
 	}
     }
     set->nodeNr = pos;
+}
+
+/**
+ * xmlXPathNodeSetClear:
+ * @set:  the node set to clear
+ *
+ * Clears the list from all temporary XPath objects (e.g. namespace nodes
+ * are feed), but does *not* free the list itself. Sets the length of the
+ * list to 0.
+ */
+static void
+xmlXPathNodeSetClear(xmlNodeSetPtr set, int hasNsNodes)
+{
+    xmlXPathNodeSetClearFromPos(set, 0, hasNsNodes);
+}
+
+/**
+ * xmlXPathNodeSetKeepLast:
+ * @set: the node set to be cleared
+ *
+ * Move the last node to the first position and clear temporary XPath objects
+ * (e.g. namespace nodes) from all other nodes. Sets the length of the list
+ * to 1.
+ */
+static void
+xmlXPathNodeSetKeepLast(xmlNodeSetPtr set)
+{
+    int i;
+    xmlNodePtr node;
+
+    if ((set == NULL) || (set->nodeNr <= 1))
+	return;
+    for (i = 0; i < set->nodeNr - 1; i++) {
+        node = set->nodeTab[i];
+        if ((node != NULL) &&
+            (node->type == XML_NAMESPACE_DECL))
+            xmlXPathNodeSetFreeNs((xmlNsPtr) node);
+    }
+    set->nodeTab[0] = set->nodeTab[set->nodeNr-1];
+    set->nodeNr = 1;
 }
 
 /**
@@ -13035,13 +13048,7 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 		(ctxt->value->nodesetval != NULL) &&
 		(ctxt->value->nodesetval->nodeTab != NULL) &&
 		(ctxt->value->nodesetval->nodeNr > 1)) {
-		ctxt->value->nodesetval->nodeTab[0] =
-		    ctxt->value->nodesetval->nodeTab[ctxt->
-		    value->
-		    nodesetval->
-		    nodeNr -
-		    1];
-		ctxt->value->nodesetval->nodeNr = 1;
+                xmlXPathNodeSetKeepLast(ctxt->value->nodesetval);
 		*first = *(ctxt->value->nodesetval->nodeTab);
 	    }
 	    return (total);
@@ -13694,7 +13701,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             (ctxt->value->type == XPATH_NODESET) &&
                             (ctxt->value->nodesetval != NULL) &&
                             (ctxt->value->nodesetval->nodeNr > 1))
-                            ctxt->value->nodesetval->nodeNr = 1;
+                            xmlXPathNodeSetClearFromPos(ctxt->value->nodesetval,
+                                                        1, 1);
                         return (total);
                     }
                 }
@@ -13728,15 +13736,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             (ctxt->value->type == XPATH_NODESET) &&
                             (ctxt->value->nodesetval != NULL) &&
                             (ctxt->value->nodesetval->nodeTab != NULL) &&
-                            (ctxt->value->nodesetval->nodeNr > 1)) {
-                            ctxt->value->nodesetval->nodeTab[0] =
-                                ctxt->value->nodesetval->nodeTab[ctxt->
-                                                                 value->
-                                                                 nodesetval->
-                                                                 nodeNr -
-                                                                 1];
-                            ctxt->value->nodesetval->nodeNr = 1;
-                        }
+                            (ctxt->value->nodesetval->nodeNr > 1))
+                            xmlXPathNodeSetKeepLast(ctxt->value->nodesetval);
                         return (total);
                     }
                 }

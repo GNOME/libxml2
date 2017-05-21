@@ -4021,13 +4021,7 @@ xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2,
 		set1->nodeTab = temp;
 		set1->nodeMax *= 2;
 	    }
-	    if (n2->type == XML_NAMESPACE_DECL) {
-		xmlNsPtr ns = (xmlNsPtr) n2;
-
-		set1->nodeTab[set1->nodeNr++] =
-		    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
-	    } else
-		set1->nodeTab[set1->nodeNr++] = n2;
+	    set1->nodeTab[set1->nodeNr++] = n2;
 skip_node:
 	    {}
 	}

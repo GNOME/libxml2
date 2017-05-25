@@ -6709,7 +6709,13 @@ xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
 	    valuePush(ctxt, val);
 	    return(xmlXPathCompareValues(ctxt, inf, strict));
 	default:
-	    TODO
+            xmlGenericError(xmlGenericErrorContext,
+                    "xmlXPathCompareNodeSetValue: Can't compare node set "
+                    "and object of type %d\n",
+                    val->type);
+            xmlXPathReleaseObject(ctxt->context, arg);
+            xmlXPathReleaseObject(ctxt->context, val);
+            XP_ERROR0(XPATH_INVALID_TYPE);
     }
     return(0);
 }

@@ -15052,22 +15052,21 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
         if (ctxt->comp != NULL)
 	    xmlXPathFreeCompExpr(ctxt->comp);
         ctxt->comp = comp;
-	if (ctxt->cur != NULL)
-	    while (*ctxt->cur != 0) ctxt->cur++;
     } else
 #endif
     {
 	xmlXPathCompileExpr(ctxt, 1);
-	if ((ctxt->error == XPATH_EXPRESSION_OK) &&
-	    (ctxt->comp != NULL) &&
-	    (ctxt->comp->nbStep > 1) &&
-	    (ctxt->comp->last >= 0))
-	{
+        CHECK_ERROR;
+
+        /* Check for trailing characters. */
+        if (*ctxt->cur != 0)
+            XP_ERROR(XPATH_EXPR_ERROR);
+
+	if ((ctxt->comp->nbStep > 1) && (ctxt->comp->last >= 0))
 	    xmlXPathOptimizeExpression(ctxt->comp,
 		&ctxt->comp->steps[ctxt->comp->last]);
-	}
     }
-    CHECK_ERROR;
+
     xmlXPathRunEval(ctxt, 0);
 }
 
@@ -15096,13 +15095,6 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathEvalExpr(ctxt);
 
     if (ctxt->error != XPATH_EXPRESSION_OK) {
-	res = NULL;
-    } else if ((*ctxt->cur != 0) && (ctxt->comp != NULL)
-#ifdef XPATH_STREAMING
-            && (ctxt->comp->stream == NULL)
-#endif
-	      ) {
-	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
 	res = NULL;
     } else {
 	res = valuePop(ctxt);

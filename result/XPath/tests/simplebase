@@ -125,3 +125,8 @@ Expression: /descendant::p/ancestor::chapter
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter
+
+========================
+Expression: /child::EXAMPLE/attribute::prop2/preceding::text()
+Object is a Node Set :
+Set contains 0 nodes:

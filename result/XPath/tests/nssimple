@@ -17,8 +17,22 @@ Set contains 3 nodes:
 ========================
 Expression: //*[namespace::ns1]
 Object is a Node Set :
-Set contains 2 nodes:
+Set contains 4 nodes:
 1  ELEMENT doc
     namespace ns1 href=nsuri1
-2  ELEMENT elem
+2  ELEMENT preceding
+3  ELEMENT elem
     namespace ns2 href=nsuri2
+4  ELEMENT following
+
+========================
+Expression: /doc/elem/namespace::ns2/following::*
+Object is a Node Set :
+Set contains 1 nodes:
+1  ELEMENT following
+
+========================
+Expression: /doc/elem/namespace::ns2/preceding::*
+Object is a Node Set :
+Set contains 1 nodes:
+1  ELEMENT preceding

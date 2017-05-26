@@ -13,3 +13,4 @@
 /child::EXAMPLE/attribute::prop1/ancestor-or-self::*
 /descendant::title
 /descendant::p/ancestor::chapter
+/child::EXAMPLE/attribute::prop2/preceding::text()

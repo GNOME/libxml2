@@ -14971,8 +14971,9 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
     } else {
         resObj = valuePop(pctxt);
         if (resObj == NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-                "xmlXPathCompiledEval: No result on the stack.\n");
+            if (!toBool)
+                xmlGenericError(xmlGenericErrorContext,
+                    "xmlXPathCompiledEval: No result on the stack.\n");
         } else if (pctxt->valueNr > 0) {
             xmlGenericError(xmlGenericErrorContext,
                 "xmlXPathCompiledEval: %d object(s) left on the stack.\n",

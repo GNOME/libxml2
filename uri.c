@@ -2455,6 +2455,7 @@ xmlCanonicPath(const xmlChar *path)
 	        xmlFreeURI(uri);
 		return escURI;
 	    }
+            xmlFree(escURI);
 	}
     }
 

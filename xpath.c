@@ -10379,6 +10379,7 @@ xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
     NEXT;
     name = xmlXPathParseQName(ctxt, &prefix);
     if (name == NULL) {
+        xmlFree(prefix);
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
     }
     ctxt->comp->last = -1;
@@ -10452,6 +10453,8 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
 #endif
 
     if (CUR != '(') {
+	xmlFree(name);
+	xmlFree(prefix);
 	XP_ERROR(XPATH_EXPR_ERROR);
     }
     NEXT;
@@ -10480,6 +10483,8 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
 	    nbargs++;
 	    if (CUR == ')') break;
 	    if (CUR != ',') {
+		xmlFree(name);
+		xmlFree(prefix);
 		XP_ERROR(XPATH_EXPR_ERROR);
 	    }
 	    NEXT;
@@ -12772,11 +12777,15 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
                 xmlXPathCompOpEvalFirst(ctxt, &comp->steps[op->ch2],
                                         first);
 	    CHECK_ERROR0;
-            CHECK_TYPE0(XPATH_NODESET);
-            arg2 = valuePop(ctxt);
 
-            CHECK_TYPE0(XPATH_NODESET);
+            arg2 = valuePop(ctxt);
             arg1 = valuePop(ctxt);
+            if ((arg1 == NULL) || (arg1->type != XPATH_NODESET) ||
+                (arg2 == NULL) || (arg2->type != XPATH_NODESET)) {
+	        xmlXPathReleaseObject(ctxt->context, arg1);
+	        xmlXPathReleaseObject(ctxt->context, arg2);
+                XP_ERROR0(XPATH_INVALID_TYPE);
+            }
 
             arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
                                                     arg2->nodesetval);
@@ -12907,11 +12916,15 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
                 && (ctxt->value->nodesetval != NULL)
                 && (ctxt->value->nodesetval->nodeNr >= 1)) { /* TODO: NOP ? */
             }
-            CHECK_TYPE0(XPATH_NODESET);
-            arg2 = valuePop(ctxt);
 
-            CHECK_TYPE0(XPATH_NODESET);
+            arg2 = valuePop(ctxt);
             arg1 = valuePop(ctxt);
+            if ((arg1 == NULL) || (arg1->type != XPATH_NODESET) ||
+                (arg2 == NULL) || (arg2->type != XPATH_NODESET)) {
+	        xmlXPathReleaseObject(ctxt->context, arg1);
+	        xmlXPathReleaseObject(ctxt->context, arg2);
+                XP_ERROR0(XPATH_INVALID_TYPE);
+            }
 
             arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
                                                     arg2->nodesetval);
@@ -13445,11 +13458,15 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 	    ctxt->context->contextSize = cs;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
-            CHECK_TYPE0(XPATH_NODESET);
-            arg2 = valuePop(ctxt);
 
-            CHECK_TYPE0(XPATH_NODESET);
+            arg2 = valuePop(ctxt);
             arg1 = valuePop(ctxt);
+            if ((arg1 == NULL) || (arg1->type != XPATH_NODESET) ||
+                (arg2 == NULL) || (arg2->type != XPATH_NODESET)) {
+	        xmlXPathReleaseObject(ctxt->context, arg1);
+	        xmlXPathReleaseObject(ctxt->context, arg2);
+                XP_ERROR0(XPATH_INVALID_TYPE);
+            }
 
 	    if ((arg1->nodesetval == NULL) ||
 		((arg2->nodesetval != NULL) &&

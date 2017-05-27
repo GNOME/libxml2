@@ -6296,7 +6296,15 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
  */
 void
 xmlXPathFreeParserContext(xmlXPathParserContextPtr ctxt) {
+    int i;
+
     if (ctxt->valueTab != NULL) {
+        for (i = 0; i < ctxt->valueNr; i++) {
+            if (ctxt->context)
+                xmlXPathReleaseObject(ctxt->context, ctxt->valueTab[i]);
+            else
+                xmlXPathFreeObject(ctxt->valueTab[i]);
+        }
         xmlFree(ctxt->valueTab);
     }
     if (ctxt->comp != NULL) {
@@ -14926,10 +14934,11 @@ xmlXPathCompile(const xmlChar *str) {
 static int
 xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
 			     xmlXPathContextPtr ctxt,
-			     xmlXPathObjectPtr *resObj,
+			     xmlXPathObjectPtr *resObjPtr,
 			     int toBool)
 {
     xmlXPathParserContextPtr pctxt;
+    xmlXPathObjectPtr resObj;
 #ifndef LIBXML_THREAD_ENABLED
     static int reentance = 0;
 #endif
@@ -14957,43 +14966,25 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
     pctxt = xmlXPathCompParserContext(comp, ctxt);
     res = xmlXPathRunEval(pctxt, toBool);
 
-    if (resObj) {
-	if (pctxt->value == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathCompiledEval: evaluation failed\n");
-	    *resObj = NULL;
-	} else {
-	    *resObj = valuePop(pctxt);
-	}
+    if (pctxt->error != XPATH_EXPRESSION_OK) {
+        resObj = NULL;
+    } else {
+        resObj = valuePop(pctxt);
+        if (resObj == NULL) {
+            xmlGenericError(xmlGenericErrorContext,
+                "xmlXPathCompiledEval: No result on the stack.\n");
+        } else if (pctxt->valueNr > 0) {
+            xmlGenericError(xmlGenericErrorContext,
+                "xmlXPathCompiledEval: %d object(s) left on the stack.\n",
+                pctxt->valueNr);
+        }
     }
 
-    /*
-    * Pop all remaining objects from the stack.
-    */
-    if (pctxt->valueNr > 0) {
-	xmlXPathObjectPtr tmp;
-	int stack = 0;
+    if (resObjPtr)
+        *resObjPtr = resObj;
+    else
+        xmlXPathReleaseObject(ctxt, resObj);
 
-	do {
-	    tmp = valuePop(pctxt);
-	    if (tmp != NULL) {
-		stack++;
-		xmlXPathReleaseObject(ctxt, tmp);
-	    }
-	} while (tmp != NULL);
-	if ((stack != 0) &&
-	    ((toBool) || ((resObj) && (*resObj))))
-	{
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathCompiledEval: %d objects left on the stack.\n",
-		stack);
-	}
-    }
-
-    if ((pctxt->error != XPATH_EXPRESSION_OK) && (resObj) && (*resObj)) {
-	xmlXPathFreeObject(*resObj);
-	*resObj = NULL;
-    }
     pctxt->comp = NULL;
     xmlXPathFreeParserContext(pctxt);
 #ifndef LIBXML_THREAD_ENABLED
@@ -15093,8 +15084,7 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 xmlXPathObjectPtr
 xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathParserContextPtr ctxt;
-    xmlXPathObjectPtr res, tmp, init = NULL;
-    int stack = 0;
+    xmlXPathObjectPtr res;
 
     CHECK_CTXT(ctx)
 
@@ -15105,9 +15095,7 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
         return NULL;
     xmlXPathEvalExpr(ctxt);
 
-    if (ctxt->value == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathEval: evaluation failed\n");
+    if (ctxt->error != XPATH_EXPRESSION_OK) {
 	res = NULL;
     } else if ((*ctxt->cur != 0) && (ctxt->comp != NULL)
 #ifdef XPATH_STREAMING
@@ -15118,24 +15106,14 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	res = NULL;
     } else {
 	res = valuePop(ctxt);
-    }
-
-    do {
-        tmp = valuePop(ctxt);
-	if (tmp != NULL) {
-	    if (tmp != init)
-		stack++;
-	    xmlXPathReleaseObject(ctx, tmp);
+        if (res == NULL) {
+            xmlGenericError(xmlGenericErrorContext,
+                "xmlXPathCompiledEval: No result on the stack.\n");
+        } else if (ctxt->valueNr > 0) {
+            xmlGenericError(xmlGenericErrorContext,
+                "xmlXPathCompiledEval: %d object(s) left on the stack.\n",
+                ctxt->valueNr);
         }
-    } while (tmp != NULL);
-    if ((stack != 0) && (res != NULL)) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathEval: %d object left on the stack\n",
-	        stack);
-    }
-    if (ctxt->error != XPATH_EXPRESSION_OK) {
-	xmlXPathFreeObject(res);
-	res = NULL;
     }
 
     xmlXPathFreeParserContext(ctxt);

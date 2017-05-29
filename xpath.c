@@ -17,6 +17,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#include <limits.h>
 #include <string.h>
 
 #ifdef HAVE_SYS_TYPES_H
@@ -12055,6 +12056,8 @@ xmlXPathIsPositionalPredicate(xmlXPathParserContextPtr ctxt,
 	(exprOp->value4 != NULL) &&
 	(((xmlXPathObjectPtr) exprOp->value4)->type == XPATH_NUMBER))
     {
+        double floatval = ((xmlXPathObjectPtr) exprOp->value4)->floatval;
+
 	/*
 	* We have a "[n]" predicate here.
 	* TODO: Unfortunately this simplistic test here is not
@@ -12065,13 +12068,12 @@ xmlXPathIsPositionalPredicate(xmlXPathParserContextPtr ctxt,
 	* like it "[position() < 5]", is also not detected.
 	* Maybe we could rewrite the AST to ease the optimization.
 	*/
-	*maxPos = (int) ((xmlXPathObjectPtr) exprOp->value4)->floatval;
 
-	if (((xmlXPathObjectPtr) exprOp->value4)->floatval ==
-	    (float) *maxPos)
-	{
-	    return(1);
-	}
+        if ((floatval > INT_MIN) && (floatval < INT_MAX)) {
+	    *maxPos = (int) floatval;
+            if (floatval == (double) *maxPos)
+                return(1);
+        }
     }
     return(0);
 }

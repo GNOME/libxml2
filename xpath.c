@@ -10056,20 +10056,6 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 
 #define MAX_FRAC 20
 
-/*
- * These are used as divisors for the fractional part of a number.
- * Since the table includes 1.0 (representing '0' fractional digits),
- * it must be dimensioned at MAX_FRAC+1 (bug 133921)
- */
-static double my_pow10[MAX_FRAC+1] = {
-    1.0, 10.0, 100.0, 1000.0, 10000.0,
-    100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0,
-    10000000000.0, 100000000000.0, 1000000000000.0, 10000000000000.0,
-    100000000000000.0,
-    1000000000000000.0, 10000000000000000.0, 100000000000000000.0,
-    1000000000000000000.0, 10000000000000000000.0, 100000000000000000000.0
-};
-
 /**
  * xmlXPathStringEvalNumber:
  * @str:  A string to scan
@@ -10132,20 +10118,25 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 #endif
 
     if (*cur == '.') {
-	int v, frac = 0;
+	int v, frac = 0, max;
 	double fraction = 0;
 
         cur++;
 	if (((*cur < '0') || (*cur > '9')) && (!ok)) {
 	    return(xmlXPathNAN);
 	}
-	while (((*cur >= '0') && (*cur <= '9')) && (frac < MAX_FRAC)) {
+        while (*cur == '0') {
+	    frac = frac + 1;
+	    cur++;
+        }
+        max = frac + MAX_FRAC;
+	while (((*cur >= '0') && (*cur <= '9')) && (frac < max)) {
 	    v = (*cur - '0');
 	    fraction = fraction * 10 + v;
 	    frac = frac + 1;
 	    cur++;
 	}
-	fraction /= my_pow10[frac];
+	fraction /= pow(10.0, frac);
 	ret = ret + fraction;
 	while ((*cur >= '0') && (*cur <= '9'))
 	    cur++;
@@ -10221,20 +10212,25 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
     }
 #endif
     if (CUR == '.') {
-	int v, frac = 0;
+	int v, frac = 0, max;
 	double fraction = 0;
 
         NEXT;
         if (((CUR < '0') || (CUR > '9')) && (!ok)) {
             XP_ERROR(XPATH_NUMBER_ERROR);
         }
-        while ((CUR >= '0') && (CUR <= '9') && (frac < MAX_FRAC)) {
+        while (CUR == '0') {
+            frac = frac + 1;
+            NEXT;
+        }
+        max = frac + MAX_FRAC;
+        while ((CUR >= '0') && (CUR <= '9') && (frac < max)) {
 	    v = (CUR - '0');
 	    fraction = fraction * 10 + v;
 	    frac = frac + 1;
             NEXT;
         }
-        fraction /= my_pow10[frac];
+        fraction /= pow(10.0, frac);
         ret = ret + fraction;
         while ((CUR >= '0') && (CUR <= '9'))
             NEXT;

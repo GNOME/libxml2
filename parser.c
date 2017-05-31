@@ -9454,191 +9454,161 @@ reparse:
 	    attvalue = NULL;
 	    goto base_changed;
 	}
-        if ((attname != NULL) && (attvalue != NULL)) {
-	    if (len < 0) len = xmlStrlen(attvalue);
-            if ((attname == ctxt->str_xmlns) && (aprefix == NULL)) {
-	        const xmlChar *URL = xmlDictLookup(ctxt->dict, attvalue, len);
-		xmlURIPtr uri;
+        if ((attname == NULL) || (attvalue == NULL))
+            goto next_attr;
+	if (len < 0) len = xmlStrlen(attvalue);
 
-                if (URL == NULL) {
-		    xmlErrMemory(ctxt, "dictionary allocation failure");
-		    if ((attvalue != NULL) && (alloc != 0))
-			xmlFree(attvalue);
-		    return(NULL);
-		}
-                if (*URL != 0) {
-		    uri = xmlParseURI((const char *) URL);
-		    if (uri == NULL) {
-			xmlNsErr(ctxt, XML_WAR_NS_URI,
-			         "xmlns: '%s' is not a valid URI\n",
-					   URL, NULL, NULL);
-		    } else {
-			if (uri->scheme == NULL) {
-			    xmlNsWarn(ctxt, XML_WAR_NS_URI_RELATIVE,
-				      "xmlns: URI %s is not absolute\n",
-				      URL, NULL, NULL);
-			}
-			xmlFreeURI(uri);
-		    }
-		    if (URL == ctxt->str_xml_ns) {
-			if (attname != ctxt->str_xml) {
-			    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-			 "xml namespace URI cannot be the default namespace\n",
-				     NULL, NULL, NULL);
-			}
-			goto skip_default_ns;
-		    }
-		    if ((len == 29) &&
-			(xmlStrEqual(URL,
-				 BAD_CAST "http://www.w3.org/2000/xmlns/"))) {
-			xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-			     "reuse of the xmlns namespace name is forbidden\n",
-				 NULL, NULL, NULL);
-			goto skip_default_ns;
-		    }
-		}
-		/*
-		 * check that it's not a defined namespace
-		 */
-		for (j = 1;j <= nbNs;j++)
-		    if (ctxt->nsTab[ctxt->nsNr - 2 * j] == NULL)
-			break;
-		if (j <= nbNs)
-		    xmlErrAttributeDup(ctxt, NULL, attname);
-		else
-		    if (nsPush(ctxt, NULL, URL) > 0) nbNs++;
-skip_default_ns:
-		if ((attvalue != NULL) && (alloc != 0)) {
-		    xmlFree(attvalue);
-		    attvalue = NULL;
-		}
-		if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
-		    break;
-		if (!IS_BLANK_CH(RAW)) {
-		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
-				   "attributes construct error\n");
-		    break;
-		}
-		SKIP_BLANKS;
-		if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
-		    goto base_changed;
-		continue;
-	    }
-            if (aprefix == ctxt->str_xmlns) {
-	        const xmlChar *URL = xmlDictLookup(ctxt->dict, attvalue, len);
-		xmlURIPtr uri;
+        if ((attname == ctxt->str_xmlns) && (aprefix == NULL)) {
+            const xmlChar *URL = xmlDictLookup(ctxt->dict, attvalue, len);
+            xmlURIPtr uri;
 
-                if (attname == ctxt->str_xml) {
-		    if (URL != ctxt->str_xml_ns) {
-		        xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-			         "xml namespace prefix mapped to wrong URI\n",
-			         NULL, NULL, NULL);
-		    }
-		    /*
-		     * Do not keep a namespace definition node
-		     */
-		    goto skip_ns;
-		}
+            if (URL == NULL) {
+                xmlErrMemory(ctxt, "dictionary allocation failure");
+                if ((attvalue != NULL) && (alloc != 0))
+                    xmlFree(attvalue);
+                return(NULL);
+            }
+            if (*URL != 0) {
+                uri = xmlParseURI((const char *) URL);
+                if (uri == NULL) {
+                    xmlNsErr(ctxt, XML_WAR_NS_URI,
+                             "xmlns: '%s' is not a valid URI\n",
+                                       URL, NULL, NULL);
+                } else {
+                    if (uri->scheme == NULL) {
+                        xmlNsWarn(ctxt, XML_WAR_NS_URI_RELATIVE,
+                                  "xmlns: URI %s is not absolute\n",
+                                  URL, NULL, NULL);
+                    }
+                    xmlFreeURI(uri);
+                }
                 if (URL == ctxt->str_xml_ns) {
-		    if (attname != ctxt->str_xml) {
-		        xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-			         "xml namespace URI mapped to wrong prefix\n",
-			         NULL, NULL, NULL);
-		    }
-		    goto skip_ns;
-		}
-                if (attname == ctxt->str_xmlns) {
-		    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-			     "redefinition of the xmlns prefix is forbidden\n",
-			     NULL, NULL, NULL);
-		    goto skip_ns;
-		}
-		if ((len == 29) &&
-		    (xmlStrEqual(URL,
-		                 BAD_CAST "http://www.w3.org/2000/xmlns/"))) {
-		    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-			     "reuse of the xmlns namespace name is forbidden\n",
-			     NULL, NULL, NULL);
-		    goto skip_ns;
-		}
-		if ((URL == NULL) || (URL[0] == 0)) {
-		    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
-		             "xmlns:%s: Empty XML namespace is not allowed\n",
-			          attname, NULL, NULL);
-		    goto skip_ns;
-		} else {
-		    uri = xmlParseURI((const char *) URL);
-		    if (uri == NULL) {
-			xmlNsErr(ctxt, XML_WAR_NS_URI,
-			     "xmlns:%s: '%s' is not a valid URI\n",
-					   attname, URL, NULL);
-		    } else {
-			if ((ctxt->pedantic) && (uri->scheme == NULL)) {
-			    xmlNsWarn(ctxt, XML_WAR_NS_URI_RELATIVE,
-				      "xmlns:%s: URI %s is not absolute\n",
-				      attname, URL, NULL);
-			}
-			xmlFreeURI(uri);
-		    }
-		}
+                    if (attname != ctxt->str_xml) {
+                        xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                     "xml namespace URI cannot be the default namespace\n",
+                                 NULL, NULL, NULL);
+                    }
+                    goto next_attr;
+                }
+                if ((len == 29) &&
+                    (xmlStrEqual(URL,
+                             BAD_CAST "http://www.w3.org/2000/xmlns/"))) {
+                    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                         "reuse of the xmlns namespace name is forbidden\n",
+                             NULL, NULL, NULL);
+                    goto next_attr;
+                }
+            }
+            /*
+             * check that it's not a defined namespace
+             */
+            for (j = 1;j <= nbNs;j++)
+                if (ctxt->nsTab[ctxt->nsNr - 2 * j] == NULL)
+                    break;
+            if (j <= nbNs)
+                xmlErrAttributeDup(ctxt, NULL, attname);
+            else
+                if (nsPush(ctxt, NULL, URL) > 0) nbNs++;
 
-		/*
-		 * check that it's not a defined namespace
-		 */
-		for (j = 1;j <= nbNs;j++)
-		    if (ctxt->nsTab[ctxt->nsNr - 2 * j] == attname)
-			break;
-		if (j <= nbNs)
-		    xmlErrAttributeDup(ctxt, aprefix, attname);
-		else
-		    if (nsPush(ctxt, attname, URL) > 0) nbNs++;
-skip_ns:
-		if ((attvalue != NULL) && (alloc != 0)) {
-		    xmlFree(attvalue);
-		    attvalue = NULL;
-		}
-		if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
-		    break;
-		if (!IS_BLANK_CH(RAW)) {
-		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
-				   "attributes construct error\n");
-		    break;
-		}
-		SKIP_BLANKS;
-		if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
-		    goto base_changed;
-		continue;
-	    }
+        } else if (aprefix == ctxt->str_xmlns) {
+            const xmlChar *URL = xmlDictLookup(ctxt->dict, attvalue, len);
+            xmlURIPtr uri;
 
-	    /*
-	     * Add the pair to atts
-	     */
-	    if ((atts == NULL) || (nbatts + 5 > maxatts)) {
-	        if (xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0) {
-		    if (attvalue[len] == 0)
-			xmlFree(attvalue);
-		    goto failed;
-		}
-	        maxatts = ctxt->maxatts;
-		atts = ctxt->atts;
-	    }
-	    ctxt->attallocs[nratts++] = alloc;
-	    atts[nbatts++] = attname;
-	    atts[nbatts++] = aprefix;
-	    atts[nbatts++] = NULL; /* the URI will be fetched later */
-	    atts[nbatts++] = attvalue;
-	    attvalue += len;
-	    atts[nbatts++] = attvalue;
-	    /*
-	     * tag if some deallocation is needed
-	     */
-	    if (alloc != 0) attval = 1;
-	} else {
-	    if ((attvalue != NULL) && (attvalue[len] == 0))
-		xmlFree(attvalue);
-	}
+            if (attname == ctxt->str_xml) {
+                if (URL != ctxt->str_xml_ns) {
+                    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                             "xml namespace prefix mapped to wrong URI\n",
+                             NULL, NULL, NULL);
+                }
+                /*
+                 * Do not keep a namespace definition node
+                 */
+                goto next_attr;
+            }
+            if (URL == ctxt->str_xml_ns) {
+                if (attname != ctxt->str_xml) {
+                    xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                             "xml namespace URI mapped to wrong prefix\n",
+                             NULL, NULL, NULL);
+                }
+                goto next_attr;
+            }
+            if (attname == ctxt->str_xmlns) {
+                xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                         "redefinition of the xmlns prefix is forbidden\n",
+                         NULL, NULL, NULL);
+                goto next_attr;
+            }
+            if ((len == 29) &&
+                (xmlStrEqual(URL,
+                             BAD_CAST "http://www.w3.org/2000/xmlns/"))) {
+                xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                         "reuse of the xmlns namespace name is forbidden\n",
+                         NULL, NULL, NULL);
+                goto next_attr;
+            }
+            if ((URL == NULL) || (URL[0] == 0)) {
+                xmlNsErr(ctxt, XML_NS_ERR_XML_NAMESPACE,
+                         "xmlns:%s: Empty XML namespace is not allowed\n",
+                              attname, NULL, NULL);
+                goto next_attr;
+            } else {
+                uri = xmlParseURI((const char *) URL);
+                if (uri == NULL) {
+                    xmlNsErr(ctxt, XML_WAR_NS_URI,
+                         "xmlns:%s: '%s' is not a valid URI\n",
+                                       attname, URL, NULL);
+                } else {
+                    if ((ctxt->pedantic) && (uri->scheme == NULL)) {
+                        xmlNsWarn(ctxt, XML_WAR_NS_URI_RELATIVE,
+                                  "xmlns:%s: URI %s is not absolute\n",
+                                  attname, URL, NULL);
+                    }
+                    xmlFreeURI(uri);
+                }
+            }
 
-failed:
+            /*
+             * check that it's not a defined namespace
+             */
+            for (j = 1;j <= nbNs;j++)
+                if (ctxt->nsTab[ctxt->nsNr - 2 * j] == attname)
+                    break;
+            if (j <= nbNs)
+                xmlErrAttributeDup(ctxt, aprefix, attname);
+            else
+                if (nsPush(ctxt, attname, URL) > 0) nbNs++;
+
+        } else {
+            /*
+             * Add the pair to atts
+             */
+            if ((atts == NULL) || (nbatts + 5 > maxatts)) {
+                if (xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0) {
+                    goto next_attr;
+                }
+                maxatts = ctxt->maxatts;
+                atts = ctxt->atts;
+            }
+            ctxt->attallocs[nratts++] = alloc;
+            atts[nbatts++] = attname;
+            atts[nbatts++] = aprefix;
+            atts[nbatts++] = NULL; /* the URI will be fetched later */
+            atts[nbatts++] = attvalue;
+            attvalue += len;
+            atts[nbatts++] = attvalue;
+            /*
+             * tag if some deallocation is needed
+             */
+            if (alloc != 0) attval = 1;
+            attvalue = NULL; /* moved into atts */
+        }
+
+next_attr:
+        if ((attvalue != NULL) && (alloc != 0)) {
+            xmlFree(attvalue);
+            attvalue = NULL;
+        }
 
 	GROW
         if (ctxt->instate == XML_PARSER_EOF)

@@ -43,6 +43,7 @@
 #include <limits.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stddef.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/threads.h>
 #include <libxml/globals.h>
@@ -9391,8 +9392,7 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     const xmlChar **atts = ctxt->atts;
     int maxatts = ctxt->maxatts;
     int nratts, nbatts, nbdef;
-    int i, j, nbNs, attval, oldline, oldcol, inputNr;
-    const xmlChar *base;
+    int i, j, nbNs, attval;
     unsigned long cur;
     int nsNr = ctxt->nsNr;
 
@@ -9406,13 +9406,8 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
      *       The Shrinking is only possible once the full set of attribute
      *       callbacks have been done.
      */
-reparse:
     SHRINK;
-    base = ctxt->input->base;
     cur = ctxt->input->cur - ctxt->input->base;
-    inputNr = ctxt->inputNr;
-    oldline = ctxt->input->line;
-    oldcol = ctxt->input->col;
     nbatts = 0;
     nratts = 0;
     nbdef = 0;
@@ -9436,8 +9431,6 @@ reparse:
      */
     SKIP_BLANKS;
     GROW;
-    if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
-        goto base_changed;
 
     while (((RAW != '>') &&
 	   ((RAW != '/') || (NXT(1) != '>')) &&
@@ -9448,12 +9441,6 @@ reparse:
 
 	attname = xmlParseAttribute2(ctxt, prefix, localname,
 	                             &aprefix, &attvalue, &len, &alloc);
-	if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr)) {
-	    if ((attvalue != NULL) && (alloc != 0))
-	        xmlFree(attvalue);
-	    attvalue = NULL;
-	    goto base_changed;
-	}
         if ((attname == NULL) || (attvalue == NULL))
             goto next_attr;
 	if (len < 0) len = xmlStrlen(attvalue);
@@ -9593,7 +9580,16 @@ reparse:
             ctxt->attallocs[nratts++] = alloc;
             atts[nbatts++] = attname;
             atts[nbatts++] = aprefix;
-            atts[nbatts++] = NULL; /* the URI will be fetched later */
+            /*
+             * The namespace URI field is used temporarily to point at the
+             * base of the current input buffer for non-alloced attributes.
+             * When the input buffer is reallocated, all the pointers become
+             * invalid, but they can be reconstructed later.
+             */
+            if (alloc)
+                atts[nbatts++] = NULL;
+            else
+                atts[nbatts++] = ctxt->input->base;
             atts[nbatts++] = attvalue;
             attvalue += len;
             atts[nbatts++] = attvalue;
@@ -9613,8 +9609,6 @@ next_attr:
 	GROW
         if (ctxt->instate == XML_PARSER_EOF)
             break;
-	if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
-	    goto base_changed;
 	if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 	    break;
 	if (!IS_BLANK_CH(RAW)) {
@@ -9630,8 +9624,20 @@ next_attr:
 	    break;
 	}
         GROW;
-	if ((ctxt->input->base != base) || (inputNr != ctxt->inputNr))
-	    goto base_changed;
+    }
+
+    /* Reconstruct attribute value pointers. */
+    for (i = 0, j = 0; j < nratts; i += 5, j++) {
+        if (atts[i+2] != NULL) {
+            /*
+             * Arithmetic on dangling pointers is technically undefined
+             * behavior, but well...
+             */
+            ptrdiff_t offset = ctxt->input->base - atts[i+2];
+            atts[i+2]  = NULL;    /* Reset repurposed namespace URI */
+            atts[i+3] += offset;  /* value */
+            atts[i+4] += offset;  /* valuend */
+        }
     }
 
     /*
@@ -9788,34 +9794,6 @@ next_attr:
     }
 
     return(localname);
-
-base_changed:
-    /*
-     * the attribute strings are valid iif the base didn't changed
-     */
-    if (attval != 0) {
-	for (i = 3,j = 0; j < nratts;i += 5,j++)
-	    if ((ctxt->attallocs[j] != 0) && (atts[i] != NULL))
-	        xmlFree((xmlChar *) atts[i]);
-    }
-
-    /*
-     * We can't switch from one entity to another in the middle
-     * of a start tag
-     */
-    if (inputNr != ctxt->inputNr) {
-        xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
-		    "Start tag doesn't start and stop in the same entity\n");
-	return(NULL);
-    }
-
-    ctxt->input->cur = ctxt->input->base + cur;
-    ctxt->input->line = oldline;
-    ctxt->input->col = oldcol;
-    if (ctxt->wellFormed == 1) {
-	goto reparse;
-    }
-    return(NULL);
 }
 
 /**

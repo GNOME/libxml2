@@ -205,7 +205,12 @@ runxmlconf_LDADD= $(LDADDS)
 runtests:
 	[ -d test   ] || $(LN_S) $(srcdir)/test   .
 	[ -d result ] || $(LN_S) $(srcdir)/result .
-	$(CHECKER) ./runtest$(EXEEXT) && $(CHECKER) ./testrecurse$(EXEEXT) &&$(CHECKER) ./testapi$(EXEEXT) && $(CHECKER) ./testchar$(EXEEXT)&& $(CHECKER) ./testdict$(EXEEXT) && $(CHECKER) ./runxmlconf$(EXEEXT)
+	$(CHECKER) ./runtest$(EXEEXT) && \
+	    $(CHECKER) ./testrecurse$(EXEEXT) && \
+	    ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) ./testapi$(EXEEXT) && \
+	    $(CHECKER) ./testchar$(EXEEXT) && \
+	    $(CHECKER) ./testdict$(EXEEXT) && \
+	    $(CHECKER) ./runxmlconf$(EXEEXT)
 	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
 	    $(MAKE) tests ; fi)
 
@@ -229,7 +234,7 @@ tests: XMLtests XMLenttests NStests IDtests Errtests APItests $(READER_TEST) $(T
 
 APItests: testapi$(EXEEXT)
 	@echo "## Running the API regression tests this may take a little while"
-	-@($(CHECKER) $(top_builddir)/testapi -q)
+	-@(ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) $(top_builddir)/testapi -q)
 
 HTMLtests : testHTML$(EXEEXT)
 	@(echo > .memdump)

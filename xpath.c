@@ -3106,7 +3106,8 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 		snprintf(buffer, buffersize, "NaN");
 	} else if (number == 0 && xmlXPathGetSign(number) != 0) {
 	    snprintf(buffer, buffersize, "0");
-	} else if (number == ((int) number)) {
+	} else if ((number > INT_MIN) && (number < INT_MAX) &&
+                   (number == (int) number)) {
 	    char work[30];
 	    char *ptr, *cur;
 	    int value = (int) number;

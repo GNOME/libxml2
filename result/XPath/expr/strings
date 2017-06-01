@@ -20,6 +20,14 @@ Expression: string(false())
 Object is a string : false
 
 ========================
+Expression: string(12345678901234567890)
+Object is a string : 1.23456789012346e+19
+
+========================
+Expression: string(-12345678901234567890)
+Object is a string : -1.23456789012346e+19
+
+========================
 Expression: concat("titi","toto")
 Object is a string : tititoto
 

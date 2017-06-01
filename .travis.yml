@@ -17,6 +17,7 @@ matrix:
       dist: trusty
       env: CONFIG="--without-python"
            CFLAGS="-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize-recover"
+           UBSAN_OPTIONS=print_stacktrace=1
 script: sh autogen.sh $CONFIG && make -j2 V=1 && make check
 git:
   depth: 10

@@ -1767,6 +1767,7 @@ void
 xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr input;
+    int isValidSax;
 
     if (ctxt == NULL) return;
 
@@ -1782,13 +1783,12 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->encoding != NULL) xmlFree((char *) ctxt->encoding);
     if (ctxt->extSubURI != NULL) xmlFree((char *) ctxt->extSubURI);
     if (ctxt->extSubSystem != NULL) xmlFree((char *) ctxt->extSubSystem);
+    isValidSax = (ctxt->sax != NULL);
 #ifdef LIBXML_SAX1_ENABLED
-    if ((ctxt->sax != NULL) &&
+    isValidSax = isValidSax &&
         (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler))
-#else
-    if (ctxt->sax != NULL)
-#endif /* LIBXML_SAX1_ENABLED */
-        xmlFree(ctxt->sax);
+#endif
+    if (isValidSax) xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
     if (ctxt->atts != NULL) xmlFree((xmlChar * *)ctxt->atts);

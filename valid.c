@@ -1262,22 +1262,23 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
         case XML_ELEMENT_CONTENT_PCDATA:
             strcat(buf, "#PCDATA");
 	    break;
-	case XML_ELEMENT_CONTENT_ELEMENT:
-	    if (content->prefix != NULL) {
-		if (size - len < xmlStrlen(content->prefix) + 10) {
-		    strcat(buf, " ...");
-		    return;
-		}
-		strcat(buf, (char *) content->prefix);
-		strcat(buf, ":");
-	    }
-	    if (size - len < xmlStrlen(content->name) + 10) {
+	case XML_ELEMENT_CONTENT_ELEMENT: {
+            int qnameLen = xmlStrlen(content->name);
+
+	    if (content->prefix != NULL)
+                qnameLen += xmlStrlen(content->prefix) + 1;
+	    if (size - len < qnameLen + 10) {
 		strcat(buf, " ...");
 		return;
+	    }
+	    if (content->prefix != NULL) {
+		strcat(buf, (char *) content->prefix);
+		strcat(buf, ":");
 	    }
 	    if (content->name != NULL)
 		strcat(buf, (char *) content->name);
 	    break;
+        }
 	case XML_ELEMENT_CONTENT_SEQ:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
 	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
@@ -1319,6 +1320,7 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 		xmlSnprintfElementContent(buf, size, content->c2, 0);
 	    break;
     }
+    if (size - strlen(buf) <= 2) return;
     if (englob)
         strcat(buf, ")");
     switch (content->ocur) {

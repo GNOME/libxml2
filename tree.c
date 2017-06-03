@@ -5266,7 +5266,7 @@ xmlNodeGetBase(const xmlDoc *doc, const xmlNode *cur) {
         return(NULL);
     if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
         return(NULL);
-    if (doc == NULL) doc = cur->doc;
+    if ((doc == NULL) && (cur != NULL)) doc = cur->doc;
     if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
         cur = doc->children;
 	while ((cur != NULL) && (cur->name != NULL)) {

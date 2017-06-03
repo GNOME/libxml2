@@ -5731,7 +5731,7 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		*retValue = BAD_CAST xmlStrcat((xmlChar *) (*retValue),
 		    BAD_CAST "}");
 		*retValue = BAD_CAST xmlStrcat((xmlChar *) (*retValue),
-		    BAD_CAST val->value.qname.uri);
+		    BAD_CAST val->value.qname.name);
 	    }
 	    break;
 	case XML_SCHEMAS_DECIMAL:

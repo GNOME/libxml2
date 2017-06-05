@@ -427,6 +427,24 @@ Errtests : xmllint$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
+	@echo "## Error cases regression tests (old 1.0)"
+	-@(for i in $(srcdir)/test/errors10/*.xml ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/errors10/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --oldxml10 $$i \
+	         2> $(srcdir)/result/errors10/$$name.err \
+		 > $(srcdir)/result/errors10/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --oldxml10 $$i 2> error.$$name > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	      diff $(srcdir)/result/errors10/$$name result.$$name ; \
+	      diff $(srcdir)/result/errors10/$$name.err error.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
+	      rm result.$$name error.$$name ; \
+	  fi ; fi ; done)
 	@echo "## Error cases stream regression tests"
 	-@(for i in $(srcdir)/test/errors/*.xml ; do \
 	  name=`basename $$i`; \

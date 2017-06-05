@@ -2121,7 +2121,6 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
     ctxt->input->cur += l;				\
-    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
   } while (0)
 
 #define CUR_CHAR(l) xmlCurrentChar(ctxt, &l)
@@ -3412,19 +3411,22 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	    len += l;
 	    NEXTL(l);
 	    c = CUR_CHAR(l);
-	    if (c == 0) {
-		count = 0;
-		GROW;
-                if (ctxt->instate == XML_PARSER_EOF)
-                    return(NULL);
-		c = CUR_CHAR(l);
-	    }
 	}
     }
     if ((len > XML_MAX_NAME_LENGTH) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
         xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "Name");
         return(NULL);
+    }
+    if (ctxt->input->cur - ctxt->input->base < len) {
+        /*
+         * There were a couple of bugs where PERefs lead to to a change
+         * of the buffer. Check the buffer size to avoid passing an invalid
+         * pointer to xmlDictLookup.
+         */
+        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+                    "unexpected change of input buffer");
+        return (NULL);
     }
     if ((*ctxt->input->cur == '\n') && (ctxt->input->cur[-1] == '\r'))
         return(xmlDictLookup(ctxt->dict, ctxt->input->cur - (len + 1), len));

@@ -1,0 +1,21 @@
+Entity: line 1: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+
+ %a; 
+    ^
+Entity: line 1: 
+<:0000
+^
+Entity: line 1: parser error : DOCTYPE improperly terminated
+ %a; 
+    ^
+Entity: line 1: 
+<:0000
+^
+namespace error : Failed to parse QName ':0000'
+ %a; 
+    ^
+<:0000
+      ^
+./test/errors10/781205.xml:4: parser error : Couldn't find end of Start Tag :0000 line 1
+
+^

@@ -4214,6 +4214,9 @@ testDesc testDescriptions[] = {
     { "Error cases regression tests",
       errParseTest, "./test/errors/*.xml", "result/errors/", "", ".err",
       0 },
+    { "Error cases regression tests (old 1.0)",
+      errParseTest, "./test/errors10/*.xml", "result/errors10/", "", ".err",
+      XML_PARSE_OLD10 },
 #ifdef LIBXML_READER_ENABLED
     { "Error cases stream regression tests",
       streamParseTest, "./test/errors/*.xml", "result/errors/", NULL, ".str",

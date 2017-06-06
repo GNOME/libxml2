@@ -4627,6 +4627,12 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	}
     }
 
+    /*
+     * Casting ns to xmlAttrPtr is wrong. We'd need separate functions
+     * xmlAddID and xmlAddRef for namespace declarations, but it makes
+     * no practical sense to use ID types anyway.
+     */
+#if 0
     /* Validity Constraint: ID uniqueness */
     if (attrDecl->atype == XML_ATTRIBUTE_ID) {
         if (xmlAddID(ctxt, doc, value, (xmlAttrPtr) ns) == NULL)
@@ -4638,6 +4644,7 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
         if (xmlAddRef(ctxt, doc, value, (xmlAttrPtr) ns) == NULL)
 	    ret = 0;
     }
+#endif
 
     /* Validity Constraint: Notation Attributes */
     if (attrDecl->atype == XML_ATTRIBUTE_NOTATION) {

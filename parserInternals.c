@@ -1101,8 +1101,10 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	        break;
 	}
     }
-    if (handler == NULL)
+    if (handler == NULL) {
+        xmlStopParser(ctxt);
 	return(-1);
+    }
     ctxt->charset = XML_CHAR_ENCODING_UTF8;
     ret = xmlSwitchToEncodingInt(ctxt, handler, len);
     if ((ret < 0) || (ctxt->errNo == XML_I18N_CONV_FAILED)) {

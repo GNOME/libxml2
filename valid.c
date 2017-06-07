@@ -1172,29 +1172,33 @@ xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) 
 	    xmlBufferWriteCHAR(buf, content->name);
 	    break;
 	case XML_ELEMENT_CONTENT_SEQ:
-	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
-	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
+	    if ((content->c1 != NULL) &&
+	        ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
+	         (content->c1->type == XML_ELEMENT_CONTENT_SEQ)))
 		xmlDumpElementContent(buf, content->c1, 1);
 	    else
 		xmlDumpElementContent(buf, content->c1, 0);
             xmlBufferWriteChar(buf, " , ");
-	    if ((content->c2->type == XML_ELEMENT_CONTENT_OR) ||
-	        ((content->c2->type == XML_ELEMENT_CONTENT_SEQ) &&
-		 (content->c2->ocur != XML_ELEMENT_CONTENT_ONCE)))
+	    if ((content->c2 != NULL) &&
+	        ((content->c2->type == XML_ELEMENT_CONTENT_OR) ||
+	         ((content->c2->type == XML_ELEMENT_CONTENT_SEQ) &&
+		  (content->c2->ocur != XML_ELEMENT_CONTENT_ONCE))))
 		xmlDumpElementContent(buf, content->c2, 1);
 	    else
 		xmlDumpElementContent(buf, content->c2, 0);
 	    break;
 	case XML_ELEMENT_CONTENT_OR:
-	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
-	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
+	    if ((content->c1 != NULL) &&
+	        ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
+	         (content->c1->type == XML_ELEMENT_CONTENT_SEQ)))
 		xmlDumpElementContent(buf, content->c1, 1);
 	    else
 		xmlDumpElementContent(buf, content->c1, 0);
             xmlBufferWriteChar(buf, " | ");
-	    if ((content->c2->type == XML_ELEMENT_CONTENT_SEQ) ||
-	        ((content->c2->type == XML_ELEMENT_CONTENT_OR) &&
-		 (content->c2->ocur != XML_ELEMENT_CONTENT_ONCE)))
+	    if ((content->c2 != NULL) &&
+	        ((content->c2->type == XML_ELEMENT_CONTENT_SEQ) ||
+	         ((content->c2->type == XML_ELEMENT_CONTENT_OR) &&
+		  (content->c2->ocur != XML_ELEMENT_CONTENT_ONCE))))
 		xmlDumpElementContent(buf, content->c2, 1);
 	    else
 		xmlDumpElementContent(buf, content->c2, 0);

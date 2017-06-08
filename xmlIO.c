@@ -3027,7 +3027,7 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
     int errcode;
 
-    if (size <= 0) return(NULL);
+    if (size < 0) return(NULL);
     if (mem == NULL) return(NULL);
 
     ret = xmlAllocParserInputBuffer(enc);
@@ -3063,7 +3063,7 @@ xmlParserInputBufferCreateStatic(const char *mem, int size,
                                  xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
 
-    if (size <= 0) return(NULL);
+    if (size < 0) return(NULL);
     if (mem == NULL) return(NULL);
 
     ret = (xmlParserInputBufferPtr) xmlMalloc(sizeof(xmlParserInputBuffer));

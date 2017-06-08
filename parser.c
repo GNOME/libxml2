@@ -8020,34 +8020,36 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 	    input = xmlNewEntityInputStream(ctxt, entity);
 	    if (xmlPushInput(ctxt, input) < 0)
 		return;
-            /*
-             * Get the 4 first bytes and decode the charset
-             * if enc != XML_CHAR_ENCODING_NONE
-             * plug some encoding conversion routines.
-             * Note that, since we may have some non-UTF8
-             * encoding (like UTF16, bug 135229), the 'length'
-             * is not known, but we can calculate based upon
-             * the amount of data in the buffer.
-             */
-	    GROW
-            if (ctxt->instate == XML_PARSER_EOF)
-                return;
-            if ((ctxt->input->end - ctxt->input->cur)>=4) {
-                start[0] = RAW;
-                start[1] = NXT(1);
-                start[2] = NXT(2);
-                start[3] = NXT(3);
-                enc = xmlDetectCharEncoding(start, 4);
-                if (enc != XML_CHAR_ENCODING_NONE) {
-                    xmlSwitchEncoding(ctxt, enc);
+
+	    if (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
+                /*
+                 * Get the 4 first bytes and decode the charset
+                 * if enc != XML_CHAR_ENCODING_NONE
+                 * plug some encoding conversion routines.
+                 * Note that, since we may have some non-UTF8
+                 * encoding (like UTF16, bug 135229), the 'length'
+                 * is not known, but we can calculate based upon
+                 * the amount of data in the buffer.
+                 */
+                GROW
+                if (ctxt->instate == XML_PARSER_EOF)
+                    return;
+                if ((ctxt->input->end - ctxt->input->cur)>=4) {
+                    start[0] = RAW;
+                    start[1] = NXT(1);
+                    start[2] = NXT(2);
+                    start[3] = NXT(3);
+                    enc = xmlDetectCharEncoding(start, 4);
+                    if (enc != XML_CHAR_ENCODING_NONE) {
+                        xmlSwitchEncoding(ctxt, enc);
+                    }
+                }
+
+                if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) &&
+                    (IS_BLANK_CH(NXT(5)))) {
+                    xmlParseTextDecl(ctxt);
                 }
             }
-
-	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-		(CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) &&
-		(IS_BLANK_CH(NXT(5)))) {
-		xmlParseTextDecl(ctxt);
-	    }
 	}
     }
     ctxt->hasPErefs = 1;

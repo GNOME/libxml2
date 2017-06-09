@@ -1101,6 +1101,11 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	        break;
 	}
     }
+    /*
+     * TODO: We could recover from errors in external entites if we
+     * didn't stop the parser. But most callers of this function don't
+     * check the return value.
+     */
     if (handler == NULL) {
         xmlStopParser(ctxt);
 	return(-1);

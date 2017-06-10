@@ -1,0 +1,5 @@
+./test/errors/partial_utf8_2.xml:1: parser error : Input is not proper UTF-8, indicate encoding !
+Bytes: 0xE3 0xA0 EOF
+<a>ã 
+   ^
+./test/errors/partial_utf8_2.xml : failed to parse

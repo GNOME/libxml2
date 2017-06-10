@@ -1,0 +1,7 @@
+./test/errors/partial_utf8_3.xml:1: parser error : Input is not proper UTF-8, indicate encoding !
+Bytes: 0xF2 0xA0 0xA0 EOF
+<a>ò  
+   ^
+./test/errors/partial_utf8_3.xml:1: parser error : Premature end of data in tag a line 1
+<a>ò  
+      ^

@@ -1,0 +1,4 @@
+./test/errors/partial_utf8_1.xml:1: parser error : Extra content at the end of the document
+<a>Â
+   ^
+./test/errors/partial_utf8_1.xml : failed to parse

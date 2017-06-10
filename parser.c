@@ -6107,7 +6107,6 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	SKIP_BLANKS;
 	GROW;
 	while ((RAW != '>') && (ctxt->instate != XML_PARSER_EOF)) {
-	    const xmlChar *check = CUR_PTR;
 	    int type;
 	    int def;
 	    xmlChar *defaultValue = NULL;
@@ -6166,15 +6165,6 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 		    break;
 		}
 		SKIP_BLANKS;
-	    }
-	    if (check == CUR_PTR) {
-		xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-		            "in xmlParseAttributeListDecl\n");
-		if (defaultValue != NULL)
-		    xmlFree(defaultValue);
-	        if (tree != NULL)
-		    xmlFreeEnumeration(tree);
-		break;
 	    }
 	    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
 		(ctxt->sax->attributeDecl != NULL))

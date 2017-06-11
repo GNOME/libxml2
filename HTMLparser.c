@@ -2528,8 +2528,12 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	}
     }
 
-    if (ctxt->input->base > ctxt->input->cur - len)
-	return(NULL);
+    if (ctxt->input->cur - ctxt->input->base < len) {
+        /* Sanity check */
+	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
+                     "unexpected change of input buffer", NULL, NULL);
+        return (NULL);
+    }
 
     return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
 }

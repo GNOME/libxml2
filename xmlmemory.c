@@ -250,7 +250,7 @@ xmlMallocAtomicLoc(size_t size, const char * file, int line)
 
     if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlMallocAtomicLoc : Unsigned overflow prevented\n");
+		"xmlMallocAtomicLoc : Unsigned overflow\n");
 	xmlMemoryDump();
 	return(NULL);
     }
@@ -361,7 +361,7 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
 
     if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlMallocLoc : Unsigned overflow\n");
+		"xmlReallocLoc : Unsigned overflow\n");
 	xmlMemoryDump();
 	return(NULL);
     }
@@ -515,7 +515,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
 
     if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlMallocLoc : Unsigned overflow\n");
+		"xmlMemStrdupLoc : Unsigned overflow\n");
 	xmlMemoryDump();
 	return(NULL);
     }

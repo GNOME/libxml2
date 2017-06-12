@@ -229,8 +229,8 @@ testall : tests SVGtests SAXtests
 
 tests: XMLtests XMLenttests NStests IDtests Errtests APItests $(READER_TEST) $(TEST_SAX) $(TEST_PUSH) $(TEST_HTML) $(TEST_PHTML) $(TEST_VALID) URItests $(TEST_PATTERN) $(TEST_XPATH) $(TEST_XPTR) $(TEST_XINCLUDE) $(TEST_C14N) $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMAS) $(TEST_SCHEMATRON) $(TEST_THREADS) Timingtests $(TEST_VTIME) $(PYTHON_TESTS) $(TEST_MODULES)
 	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
-	    $(MAKE) tests ; fi)
-	@(cd doc/examples ; $(MAKE) tests)
+	    $(MAKE) -s tests ; fi)
+	@(cd doc/examples ; $(MAKE) -s tests)
 
 APItests: testapi$(EXEEXT)
 	@echo "## Running the API regression tests this may take a little while"
@@ -528,10 +528,10 @@ XPathtests : testXPath$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XPath/expr/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name ; \
+	      $(CHECKER) $(top_builddir)/testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name 2> /dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/testXPath -f --expr $$i 2>&1 > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testXPath -f --expr $$i > result.$$name 2> /dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/expr/$$name result.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
@@ -549,7 +549,7 @@ XPathtests : testXPath$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/testXPath -f -i $$i $$j 2>&1 > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testXPath -f -i $$i $$j > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/tests/$$name result.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
@@ -570,10 +570,10 @@ XPtrtests : testXPath$(EXEEXT)
 	  if [ ! -d $$j ] ; then \
 	  if [ ! -f $(srcdir)/result/XPath/xptr/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j > $(srcdir)/result/XPath/xptr/$$name ; \
+	      $(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j > $(srcdir)/result/XPath/xptr/$$name 2> /dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j 2>&1 > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j > result.$$name 2> /dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/xptr/$$name result.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
@@ -984,7 +984,7 @@ C14Ntests : testC14N$(EXEEXT)
 			    cmdline="$$cmdline '`cat $(srcdir)/test/c14n/$$m/$$name.ns`'"; \
 			fi; \
 		    fi; \
-		    $$cmdline > $(srcdir)/test/c14n/test.tmp; \
+		    $$cmdline > $(srcdir)/test/c14n/test.tmp 2> /dev/null; \
 		    if [ $$? -eq 0 ]; then \
 			diff  $(srcdir)/result/c14n/$$m/$$name $(srcdir)/test/c14n/test.tmp; \
 			if [ $$? -ne 0 ]; then \

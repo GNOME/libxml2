@@ -2839,10 +2839,10 @@ SAX.endElement(br)
 SAX.characters(
 , 1)
 SAX.endElement(body)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(html)
-SAX.ignorableWhitespace(
+SAX.characters(
 
 , 2)
 SAX.endDocument()

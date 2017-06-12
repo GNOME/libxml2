@@ -6,7 +6,7 @@ SAX.startElement(body)
 SAX.startElement(p)
 SAX.characters(&amp;, 1)
 SAX.characters(&ecirc;, 2)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 1)
 SAX.endElement(p)
 SAX.endElement(body)

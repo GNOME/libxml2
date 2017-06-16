@@ -843,6 +843,21 @@ SAXtests : testSAX$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@echo "## SAX2 callbacks regression tests with entity substitution"
+	-@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/noent/$$name.sax2 ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/testSAX --sax2 --noent $$i > $(srcdir)/result/noent/$$name.sax2 2> /dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/testSAX --sax2 --noent $$i > result.$$name 2> /dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/noent/$$name.sax2 result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 Validtests : xmllint$(EXEEXT)
 	@(echo > .memdump)

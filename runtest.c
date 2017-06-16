@@ -23,6 +23,7 @@
 #include <fcntl.h>
 
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
 
@@ -1677,7 +1678,6 @@ static xmlSAXHandler debugHTMLSAXHandlerStruct = {
 static xmlSAXHandlerPtr debugHTMLSAXHandler = &debugHTMLSAXHandlerStruct;
 #endif /* LIBXML_HTML_ENABLED */
 
-#ifdef LIBXML_SAX1_ENABLED
 /**
  * saxParseTest:
  * @filename: the file to parse
@@ -1718,7 +1718,15 @@ saxParseTest(const char *filename, const char *result,
 	ret = 0;
     } else
 #endif
-    ret = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
+    {
+        xmlParserCtxtPtr ctxt = xmlCreateFileParserCtxt(filename);
+        memcpy(ctxt->sax, emptySAXHandler, sizeof(xmlSAXHandler));
+        xmlCtxtUseOptions(ctxt, options);
+        xmlParseDocument(ctxt);
+        ret = ctxt->wellFormed ? 0 : ctxt->errNo;
+        xmlFreeDoc(ctxt->myDoc);
+        xmlFreeParserCtxt(ctxt);
+    }
     if (ret == XML_WAR_UNDECLARED_ENTITY) {
         fprintf(SAXdebug, "xmlSAXUserParseFile returned error %d\n", ret);
         ret = 0;
@@ -1734,10 +1742,19 @@ saxParseTest(const char *filename, const char *result,
 	ret = 0;
     } else
 #endif
-    if (options & XML_PARSE_SAX1) {
-	ret = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
-    } else {
-	ret = xmlSAXUserParseFile(debugSAX2Handler, NULL, filename);
+    {
+        xmlParserCtxtPtr ctxt = xmlCreateFileParserCtxt(filename);
+        if (options & XML_PARSE_SAX1) {
+            memcpy(ctxt->sax, debugSAXHandler, sizeof(xmlSAXHandler));
+            options -= XML_PARSE_SAX1;
+        } else {
+            memcpy(ctxt->sax, debugSAX2Handler, sizeof(xmlSAXHandler));
+        }
+        xmlCtxtUseOptions(ctxt, options);
+        xmlParseDocument(ctxt);
+        ret = ctxt->wellFormed ? 0 : ctxt->errNo;
+        xmlFreeDoc(ctxt->myDoc);
+        xmlFreeParserCtxt(ctxt);
     }
     if (ret == XML_WAR_UNDECLARED_ENTITY) {
         fprintf(SAXdebug, "xmlSAXUserParseFile returned error %d\n", ret);
@@ -1761,7 +1778,6 @@ done:
 
     return(ret);
 }
-#endif
 
 /************************************************************************
  *									*
@@ -4247,10 +4263,13 @@ testDesc testDescriptions[] = {
     { "SAX1 callbacks regression tests" ,
       saxParseTest, "./test/*", "result/", ".sax", NULL,
       XML_PARSE_SAX1 },
+#endif
     { "SAX2 callbacks regression tests" ,
       saxParseTest, "./test/*", "result/", ".sax2", NULL,
       0 },
-#endif
+    { "SAX2 callbacks regression tests with entity substitution" ,
+      saxParseTest, "./test/*", "result/noent/", ".sax2", NULL,
+      XML_PARSE_NOENT },
 #ifdef LIBXML_PUSH_ENABLED
     { "XML push regression tests" ,
       pushParseTest, "./test/*", "result/", "", NULL,
@@ -4265,11 +4284,9 @@ testDesc testDescriptions[] = {
       pushParseTest, "./test/HTML/*", "result/HTML/", "", ".err",
       XML_PARSE_HTML },
 #endif
-#ifdef LIBXML_SAX1_ENABLED
     { "HTML SAX regression tests" ,
       saxParseTest, "./test/HTML/*", "result/HTML/", ".sax", NULL,
       XML_PARSE_HTML },
-#endif
 #endif
 #ifdef LIBXML_VALID_ENABLED
     { "Valid documents regression tests" ,

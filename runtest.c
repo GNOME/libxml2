@@ -3922,7 +3922,7 @@ c14n11WithoutCommentTest(const char *filename,
     return(c14nCommonTest(filename, 0, XML_C14N_1_1, "1-1-without-comments"));
 }
 #endif
-#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined (LIBXML_SAX1_ENABLED)
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
 /************************************************************************
  *									*
  *			Catalog and threads test			*
@@ -3969,7 +3969,11 @@ thread_specific_data(void *private_data)
         xmlDoValidityCheckingDefaultValue = 1;
         xmlGenericErrorContext = stderr;
     }
+#ifdef LIBXML_SAX1_ENABLED
     myDoc = xmlParseFile(filename);
+#else
+    myDoc = xmlReadFile(filename, NULL, XML_WITH_CATALOG);
+#endif
     if (myDoc) {
         xmlFreeDoc(myDoc);
     } else {
@@ -4369,7 +4373,7 @@ testDesc testDescriptions[] = {
       c14n11WithoutCommentTest, "./test/c14n/1-1-without-comments/*.xml", NULL, NULL, NULL,
       0 },
 #endif
-#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_SAX1_ENABLED)
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
     { "Catalog and Threads regression tests" ,
       threadsTest, NULL, NULL, NULL, NULL,
       0 },

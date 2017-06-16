@@ -7418,6 +7418,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	}
 	if (ent->checked == 0)
 	    ent->checked = 2;
+
+        /* Prevent entity from being parsed and expanded twice (Bug 760367). */
+        was_checked = 0;
     } else if (ent->checked != 1) {
 	ctxt->nbentities += ent->checked / 2;
     }

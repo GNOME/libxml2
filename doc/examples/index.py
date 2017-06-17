@@ -267,12 +267,13 @@ clean-local:
         Makefile = Makefile + "%s_SOURCES = %s.c\n\n" % (example, example)
     Makefile = Makefile + "valgrind: \n\t$(MAKE) CHECKER='valgrind' tests\n\n"
     Makefile = Makefile + "tests: $(noinst_PROGRAMS)\n"
-    Makefile = Makefile + "\ttest -f Makefile.am || test -f test1.xml || $(LN_S) $(srcdir)/test?.xml .\n"
+    Makefile = Makefile + "\t@test -f Makefile.am || test -f test1.xml || $(LN_S) $(srcdir)/test?.xml .\n"
     Makefile = Makefile + "\t@(echo '## examples regression tests')\n"
     Makefile = Makefile + "\t@(echo > .memdump)\n"
     for test in tests:
-        Makefile = Makefile + "\t$(CHECKER) %s\n" % (test)
+        Makefile = Makefile + "\t@$(CHECKER) %s\n" % (test)
         Makefile = Makefile + '\t@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0\n'
+    Makefile = Makefile + "\t@rm *.tmp\n"
     try:
 	old = open("Makefile.am", "r").read()
 	if old != Makefile:
@@ -302,7 +303,7 @@ if __name__ == "__main__":
     output = open("examples.xml", "w")
     output.write("<examples>\n")
 
-    for file in glob.glob('*.c'):
+    for file in sorted(glob.glob('*.c')):
 	parse(file, output)
 	examples.append(file[:-2])
 

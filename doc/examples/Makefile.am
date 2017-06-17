@@ -104,10 +104,8 @@ tests: $(noinst_PROGRAMS)
 	@(echo '## examples regression tests')
 	@(echo > .memdump)
 	@$(CHECKER) ./io1 > io1.tmp && diff io1.tmp $(srcdir)/io1.res
-	@rm io1.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./io2 > io2.tmp && diff io2.tmp $(srcdir)/io2.res
-	@rm io2.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./parse1 test1.xml
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
@@ -118,29 +116,21 @@ tests: $(noinst_PROGRAMS)
 	@$(CHECKER) ./parse4 test3.xml
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./reader1 test2.xml > reader1.tmp && diff reader1.tmp $(srcdir)/reader1.res
-	@rm reader1.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./reader2 test2.xml > reader1.tmp && diff reader1.tmp $(srcdir)/reader1.res
-	@rm reader1.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./reader3 > reader3.tmp && diff reader3.tmp $(srcdir)/reader3.res
-	@rm reader3.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./reader4 test1.xml test2.xml test3.xml > reader4.tmp && diff reader4.tmp $(srcdir)/reader4.res
-	@rm reader4.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./testWriter && for i in 1 2 3 4 ; do diff $(srcdir)/writer.xml writer$$i.tmp || break ; done
-	@rm writer[1-4].tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./tree1 test2.xml > tree1.tmp && diff tree1.tmp $(srcdir)/tree1.res
-	@rm tree1.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./tree2 > tree2.tmp && diff tree2.tmp $(srcdir)/tree2.res
-	@rm tree2.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./xpath1 test3.xml '//child2' > xpath1.tmp && diff xpath1.tmp $(srcdir)/xpath1.res
-	@rm xpath1.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./xpath2 test3.xml '//discarded' discarded > xpath2.tmp && diff xpath2.tmp $(srcdir)/xpath2.res
-	@rm xpath2.tmp
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
+	@rm *.tmp

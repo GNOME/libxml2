@@ -279,451 +279,6 @@ xmlCharEncUconv(void *vctxt, const char *name, xmlCharEncConverter *conv);
 
 /************************************************************************
  *									*
- *		Conversions To/From UTF8 encoding			*
- *									*
- ************************************************************************/
-
-/*
- * UTF16LEToUTF8:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @inb:  a pointer to an array of UTF-16LE passwd as a byte array
- * @inlenb:  the length of @in in UTF-16LE chars
- *
- * Take a block of UTF-16LE ushorts in and try to convert it to an UTF-8
- * block of chars out. This function assumes the endian property
- * is the same between the native type of this machine and the
- * inputed one.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- * The value of *inlen after return is the number of octets consumed
- * if the return value is positive, else unpredictable.
- */
-static int
-UTF16LEToUTF8(unsigned char* out, int *outlen,
-            const unsigned char* inb, int *inlenb)
-{
-    unsigned char* outstart = out;
-    const unsigned char* processed = inb;
-    unsigned char* outend;
-    unsigned short* in = (unsigned short *) (void *) inb;
-    unsigned short* inend;
-    unsigned int c, d, inlen;
-    unsigned char *tmp;
-    int bits;
-
-    if (*outlen == 0) {
-        *inlenb = 0;
-        return(0);
-    }
-    outend = out + *outlen;
-    if ((*inlenb % 2) == 1)
-        (*inlenb)--;
-    inlen = *inlenb / 2;
-    inend = in + inlen;
-    while ((in < inend) && (out - outstart + 5 < *outlen)) {
-        if (xmlLittleEndian) {
-	    c= *in++;
-	} else {
-	    tmp = (unsigned char *) in;
-	    c = *tmp++;
-	    c = c | (*tmp << 8);
-	    in++;
-	}
-        if ((c & 0xFC00) == 0xD800) {    /* surrogates */
-	    if (in >= inend) {           /* handle split mutli-byte characters */
-		break;
-	    }
-	    if (xmlLittleEndian) {
-		d = *in++;
-	    } else {
-		tmp = (unsigned char *) in;
-		d = *tmp++;
-		d = d | (*tmp << 8);
-		in++;
-	    }
-            if ((d & 0xFC00) == 0xDC00) {
-                c &= 0x03FF;
-                c <<= 10;
-                c |= d & 0x03FF;
-                c += 0x10000;
-            }
-            else {
-		*outlen = out - outstart;
-		*inlenb = processed - inb;
-	        return(XML_ENC_ERR_INPUT);
-	    }
-        }
-
-	/* assertion: c is a single UTF-4 value */
-        if (out >= outend)
-	    break;
-        if      (c <    0x80) {  *out++=  c;                bits= -6; }
-        else if (c <   0x800) {  *out++= ((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-        else if (c < 0x10000) {  *out++= ((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-        else                  {  *out++= ((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-        for ( ; bits >= 0; bits-= 6) {
-            if (out >= outend)
-	        break;
-            *out++= ((c >> bits) & 0x3F) | 0x80;
-        }
-	processed = (const unsigned char*) in;
-    }
-    *outlen = out - outstart;
-    *inlenb = processed - inb;
-    return(*outlen);
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * UTF8ToUTF16LE:
- * @outb:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @outb
- * @in:  a pointer to an array of UTF-8 chars
- * @inlen:  the length of @in
- *
- * Take a block of UTF-8 chars in and try to convert it to an UTF-16LE
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- */
-static int
-UTF8ToUTF16LE(unsigned char* outb, int *outlen,
-            const unsigned char* in, int *inlen)
-{
-    unsigned short* out = (unsigned short *) (void *) outb;
-    const unsigned char* processed = in;
-    const unsigned char *const instart = in;
-    unsigned short* outstart= out;
-    unsigned short* outend;
-    const unsigned char* inend;
-    unsigned int c, d;
-    int trailing;
-    unsigned char *tmp;
-    unsigned short tmp1, tmp2;
-
-    /* UTF16LE encoding has no BOM */
-    if ((out == NULL) || (outlen == NULL) || (inlen == NULL))
-        return(XML_ENC_ERR_INTERNAL);
-    if (in == NULL) {
-	*outlen = 0;
-	*inlen = 0;
-	return(0);
-    }
-    inend= in + *inlen;
-    outend = out + (*outlen / 2);
-    while (in < inend) {
-      d= *in++;
-      if      (d < 0x80)  { c= d; trailing= 0; }
-      else if (d < 0xC0) {
-          /* trailing byte in leading position */
-	  *outlen = (out - outstart) * 2;
-	  *inlen = processed - instart;
-	  return(XML_ENC_ERR_INPUT);
-      } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
-      else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
-      else if (d < 0xF8)  { c= d & 0x07; trailing= 3; }
-      else {
-	/* no chance for this in UTF-16 */
-	*outlen = (out - outstart) * 2;
-	*inlen = processed - instart;
-	return(XML_ENC_ERR_INPUT);
-      }
-
-      if (inend - in < trailing) {
-          break;
-      }
-
-      for ( ; trailing; trailing--) {
-          if ((in >= inend) || (((d= *in++) & 0xC0) != 0x80))
-	      break;
-          c <<= 6;
-          c |= d & 0x3F;
-      }
-
-      /* assertion: c is a single UTF-4 value */
-        if (c < 0x10000) {
-            if (out >= outend)
-	        break;
-	    if (xmlLittleEndian) {
-		*out++ = c;
-	    } else {
-		tmp = (unsigned char *) out;
-		*tmp = (unsigned char) c; /* Explicit truncation */
-		*(tmp + 1) = c >> 8 ;
-		out++;
-	    }
-        }
-        else if (c < 0x110000) {
-            if (out+1 >= outend)
-	        break;
-            c -= 0x10000;
-	    if (xmlLittleEndian) {
-		*out++ = 0xD800 | (c >> 10);
-		*out++ = 0xDC00 | (c & 0x03FF);
-	    } else {
-		tmp1 = 0xD800 | (c >> 10);
-		tmp = (unsigned char *) out;
-		*tmp = (unsigned char) tmp1; /* Explicit truncation */
-		*(tmp + 1) = tmp1 >> 8;
-		out++;
-
-		tmp2 = 0xDC00 | (c & 0x03FF);
-		tmp = (unsigned char *) out;
-		*tmp  = (unsigned char) tmp2; /* Explicit truncation */
-		*(tmp + 1) = tmp2 >> 8;
-		out++;
-	    }
-        }
-        else
-	    break;
-	processed = in;
-    }
-    *outlen = (out - outstart) * 2;
-    *inlen = processed - instart;
-    return(*outlen);
-}
-
-/**
- * UTF8ToUTF16:
- * @outb:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @outb
- * @in:  a pointer to an array of UTF-8 chars
- * @inlen:  the length of @in
- *
- * Take a block of UTF-8 chars in and try to convert it to an UTF-16
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- */
-static int
-UTF8ToUTF16(unsigned char* outb, int *outlen,
-            const unsigned char* in, int *inlen)
-{
-    if (in == NULL) {
-	/*
-	 * initialization, add the Byte Order Mark for UTF-16LE
-	 */
-        if (*outlen >= 2) {
-	    outb[0] = 0xFF;
-	    outb[1] = 0xFE;
-	    *outlen = 2;
-	    *inlen = 0;
-	    return(2);
-	}
-	*outlen = 0;
-	*inlen = 0;
-	return(0);
-    }
-    return (UTF8ToUTF16LE(outb, outlen, in, inlen));
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-/**
- * UTF16BEToUTF8:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @inb:  a pointer to an array of UTF-16 passed as a byte array
- * @inlenb:  the length of @in in UTF-16 chars
- *
- * Take a block of UTF-16 ushorts in and try to convert it to an UTF-8
- * block of chars out. This function assumes the endian property
- * is the same between the native type of this machine and the
- * inputed one.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- * The value of *inlen after return is the number of octets consumed
- * if the return value is positive, else unpredictable.
- */
-static int
-UTF16BEToUTF8(unsigned char* out, int *outlen,
-            const unsigned char* inb, int *inlenb)
-{
-    unsigned char* outstart = out;
-    const unsigned char* processed = inb;
-    unsigned char* outend;
-    unsigned short* in = (unsigned short *) (void *) inb;
-    unsigned short* inend;
-    unsigned int c, d, inlen;
-    unsigned char *tmp;
-    int bits;
-
-    if (*outlen == 0) {
-        *inlenb = 0;
-        return(0);
-    }
-    outend = out + *outlen;
-    if ((*inlenb % 2) == 1)
-        (*inlenb)--;
-    inlen = *inlenb / 2;
-    inend= in + inlen;
-    while ((in < inend) && (out - outstart + 5 < *outlen)) {
-	if (xmlLittleEndian) {
-	    tmp = (unsigned char *) in;
-	    c = *tmp++;
-	    c = (c << 8) | *tmp;
-	    in++;
-	} else {
-	    c= *in++;
-	}
-        if ((c & 0xFC00) == 0xD800) {    /* surrogates */
-	    if (in >= inend) {           /* handle split mutli-byte characters */
-                break;
-	    }
-	    if (xmlLittleEndian) {
-		tmp = (unsigned char *) in;
-		d = *tmp++;
-		d = (d << 8) | *tmp;
-		in++;
-	    } else {
-		d= *in++;
-	    }
-            if ((d & 0xFC00) == 0xDC00) {
-                c &= 0x03FF;
-                c <<= 10;
-                c |= d & 0x03FF;
-                c += 0x10000;
-            }
-            else {
-		*outlen = out - outstart;
-		*inlenb = processed - inb;
-	        return(XML_ENC_ERR_INPUT);
-	    }
-        }
-
-	/* assertion: c is a single UTF-4 value */
-        if (out >= outend)
-	    break;
-        if      (c <    0x80) {  *out++=  c;                bits= -6; }
-        else if (c <   0x800) {  *out++= ((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-        else if (c < 0x10000) {  *out++= ((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-        else                  {  *out++= ((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-        for ( ; bits >= 0; bits-= 6) {
-            if (out >= outend)
-	        break;
-            *out++= ((c >> bits) & 0x3F) | 0x80;
-        }
-	processed = (const unsigned char*) in;
-    }
-    *outlen = out - outstart;
-    *inlenb = processed - inb;
-    return(*outlen);
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * UTF8ToUTF16BE:
- * @outb:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @outb
- * @in:  a pointer to an array of UTF-8 chars
- * @inlen:  the length of @in
- *
- * Take a block of UTF-8 chars in and try to convert it to an UTF-16BE
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- */
-static int
-UTF8ToUTF16BE(unsigned char* outb, int *outlen,
-            const unsigned char* in, int *inlen)
-{
-    unsigned short* out = (unsigned short *) (void *) outb;
-    const unsigned char* processed = in;
-    const unsigned char *const instart = in;
-    unsigned short* outstart= out;
-    unsigned short* outend;
-    const unsigned char* inend;
-    unsigned int c, d;
-    int trailing;
-    unsigned char *tmp;
-    unsigned short tmp1, tmp2;
-
-    /* UTF-16BE has no BOM */
-    if ((outb == NULL) || (outlen == NULL) || (inlen == NULL))
-        return(XML_ENC_ERR_INTERNAL);
-    if (in == NULL) {
-	*outlen = 0;
-	*inlen = 0;
-	return(0);
-    }
-    inend= in + *inlen;
-    outend = out + (*outlen / 2);
-    while (in < inend) {
-      d= *in++;
-      if      (d < 0x80)  { c= d; trailing= 0; }
-      else if (d < 0xC0)  {
-          /* trailing byte in leading position */
-	  *outlen = out - outstart;
-	  *inlen = processed - instart;
-	  return(XML_ENC_ERR_INPUT);
-      } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
-      else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
-      else if (d < 0xF8)  { c= d & 0x07; trailing= 3; }
-      else {
-          /* no chance for this in UTF-16 */
-	  *outlen = out - outstart;
-	  *inlen = processed - instart;
-	  return(XML_ENC_ERR_INPUT);
-      }
-
-      if (inend - in < trailing) {
-          break;
-      }
-
-      for ( ; trailing; trailing--) {
-          if ((in >= inend) || (((d= *in++) & 0xC0) != 0x80))  break;
-          c <<= 6;
-          c |= d & 0x3F;
-      }
-
-      /* assertion: c is a single UTF-4 value */
-        if (c < 0x10000) {
-            if (out >= outend)  break;
-	    if (xmlLittleEndian) {
-		tmp = (unsigned char *) out;
-		*tmp = c >> 8;
-		*(tmp + 1) = (unsigned char) c; /* Explicit truncation */
-		out++;
-	    } else {
-		*out++ = c;
-	    }
-        }
-        else if (c < 0x110000) {
-            if (out+1 >= outend)  break;
-            c -= 0x10000;
-	    if (xmlLittleEndian) {
-		tmp1 = 0xD800 | (c >> 10);
-		tmp = (unsigned char *) out;
-		*tmp = tmp1 >> 8;
-		*(tmp + 1) = (unsigned char) tmp1; /* Explicit truncation */
-		out++;
-
-		tmp2 = 0xDC00 | (c & 0x03FF);
-		tmp = (unsigned char *) out;
-		*tmp = tmp2 >> 8;
-		*(tmp + 1) = (unsigned char) tmp2; /* Explicit truncation */
-		out++;
-	    } else {
-		*out++ = 0xD800 | (c >> 10);
-		*out++ = 0xDC00 | (c & 0x03FF);
-	    }
-        }
-        else
-	    break;
-	processed = in;
-    }
-    *outlen = (out - outstart) * 2;
-    *inlen = processed - instart;
-    return(*outlen);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-/************************************************************************
- *									*
  *		Generic encoding handling routines			*
  *									*
  ************************************************************************/
@@ -2545,6 +2100,316 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
 	}
 
         in++;
+    }
+
+    ret = out - outstart;
+
+done:
+    *outlen = out - outstart;
+    *inlen = in - instart;
+    return(ret);
+}
+#endif /* LIBXML_OUTPUT_ENABLED */
+
+static int
+UTF16LEToUTF8(unsigned char *out, int *outlen,
+              const unsigned char *in, int *inlen)
+{
+    const unsigned char *instart = in;
+    const unsigned char *inend = in + (*inlen & ~1);
+    unsigned char *outstart = out;
+    unsigned char *outend = out + *outlen;
+    unsigned c, d;
+    int ret = XML_ENC_ERR_SPACE;
+
+    while (in < inend) {
+        c = in[0] | (in[1] << 8);
+
+        if (c < 0x80) {
+            if (out >= outend)
+                goto done;
+            out[0] = c;
+            in += 2;
+            out += 1;
+        } else if (c < 0x800) {
+            if (outend - out < 2)
+                goto done;
+            out[0] = (c >> 6)   | 0xC0;
+            out[1] = (c & 0x3F) | 0x80;
+            in += 2;
+            out += 2;
+        } else if ((c & 0xF800) != 0xD800) {
+            if (outend - out < 3)
+                goto done;
+            out[0] =  (c >> 12)         | 0xE0;
+            out[1] = ((c >>  6) & 0x3F) | 0x80;
+            out[2] =  (c        & 0x3F) | 0x80;
+            in += 2;
+            out += 3;
+        } else {
+            /* Surrogate pair */
+            if ((c & 0xFC00) != 0xD800) {
+                ret = XML_ENC_ERR_INPUT;
+                goto done;
+            }
+	    if (inend - in < 4)
+		break;
+            d = in[2] | (in[3] << 8);
+            if ((d & 0xFC00) != 0xDC00) {
+                ret = XML_ENC_ERR_INPUT;
+                goto done;
+            }
+	    if (outend - out < 4)
+		goto done;
+            c = (c << 10) + d - ((0xD800 << 10) + 0xDC00 - 0x10000);
+            out[0] =  (c >> 18)         | 0xF0;
+            out[1] = ((c >> 12) & 0x3F) | 0x80;
+            out[2] = ((c >>  6) & 0x3F) | 0x80;
+            out[3] =  (c        & 0x3F) | 0x80;
+            in += 4;
+            out += 4;
+        }
+    }
+
+    ret = out - outstart;
+
+done:
+    *outlen = out - outstart;
+    *inlen = in - instart;
+    return(ret);
+}
+
+#ifdef LIBXML_OUTPUT_ENABLED
+static int
+UTF8ToUTF16LE(unsigned char *out, int *outlen,
+              const unsigned char *in, int *inlen)
+{
+    const unsigned char *instart = in;
+    const unsigned char *inend;
+    unsigned char *outstart = out;
+    unsigned char *outend;
+    unsigned c, d;
+    int ret = XML_ENC_ERR_SPACE;
+
+    /* UTF16LE encoding has no BOM */
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL))
+        return(XML_ENC_ERR_INTERNAL);
+    if (in == NULL) {
+	*outlen = 0;
+	*inlen = 0;
+	return(0);
+    }
+    inend = in + *inlen;
+    outend = out + (*outlen & ~1);
+    while (in < inend) {
+        if (out >= outend)
+            goto done;
+
+        c = in[0];
+
+        if (c < 0x80) {
+            out[0] = c;
+            out[1] = 0;
+            in += 1;
+            out += 2;
+        } else if (c < 0xE0) {
+            if (inend - in < 2)
+                break;
+            c = ((c & 0x1F) << 6) | (in[1] & 0x3F);
+            out[0] = c & 0xFF;
+            out[1] = c >> 8;
+            in += 2;
+            out += 2;
+        } else if (c < 0xF0) {
+            if (inend - in < 3)
+                break;
+            c = ((c & 0x0F) << 12) | ((in[1] & 0x3F) << 6) | (in[2] & 0x3F);
+            out[0] = c & 0xFF;
+            out[1] = c >> 8;
+            in += 3;
+            out += 2;
+        } else { /* c >= 0xF0 */
+            if (inend - in < 4)
+                break;
+            if (outend - out < 4)
+                goto done;
+            c = ((c & 0x0F) << 18) | ((in[1] & 0x3F) << 12) |
+                ((in[2] & 0x3F) << 6) | (in[3] & 0x3F);
+            c -= 0x10000;
+            d = (c & 0x03FF) | 0xDC00;
+            c = (c >> 10)    | 0xD800;
+            out[0] = c & 0xFF;
+            out[1] = c >> 8;
+            out[2] = d & 0xFF;
+            out[3] = d >> 8;
+            in += 4;
+            out += 4;
+        }
+    }
+
+    ret = out - outstart;
+
+done:
+    *outlen = out - outstart;
+    *inlen = in - instart;
+    return(ret);
+}
+
+static int
+UTF8ToUTF16(unsigned char* outb, int *outlen,
+            const unsigned char* in, int *inlen)
+{
+    if (in == NULL) {
+	/*
+	 * initialization, add the Byte Order Mark for UTF-16LE
+	 */
+        if (*outlen >= 2) {
+	    outb[0] = 0xFF;
+	    outb[1] = 0xFE;
+	    *outlen = 2;
+	    *inlen = 0;
+	    return(2);
+	}
+	*outlen = 0;
+	*inlen = 0;
+	return(0);
+    }
+    return (UTF8ToUTF16LE(outb, outlen, in, inlen));
+}
+#endif /* LIBXML_OUTPUT_ENABLED */
+
+static int
+UTF16BEToUTF8(unsigned char *out, int *outlen,
+              const unsigned char *in, int *inlen)
+{
+    const unsigned char *instart = in;
+    const unsigned char *inend = in + (*inlen & ~1);
+    unsigned char *outstart = out;
+    unsigned char *outend = out + *outlen;
+    unsigned c, d;
+    int ret = XML_ENC_ERR_SPACE;
+
+    while (in < inend) {
+        c = (in[0] << 8) | in[1];
+
+        if (c < 0x80) {
+            if (out >= outend)
+                goto done;
+            out[0] = c;
+            in += 2;
+            out += 1;
+        } else if (c < 0x800) {
+            if (outend - out < 2)
+                goto done;
+            out[0] = (c >> 6)   | 0xC0;
+            out[1] = (c & 0x3F) | 0x80;
+            in += 2;
+            out += 2;
+        } else if ((c & 0xF800) != 0xD800) {
+            if (outend - out < 3)
+                goto done;
+            out[0] =  (c >> 12)         | 0xE0;
+            out[1] = ((c >>  6) & 0x3F) | 0x80;
+            out[2] =  (c        & 0x3F) | 0x80;
+            in += 2;
+            out += 3;
+        } else {
+            /* Surrogate pair */
+            if ((c & 0xFC00) != 0xD800) {
+                ret = XML_ENC_ERR_INPUT;
+                goto done;
+            }
+	    if (inend - in < 4)
+		break;
+            d = (in[2] << 8) | in[3];
+            if ((d & 0xFC00) != 0xDC00) {
+                ret = XML_ENC_ERR_INPUT;
+                goto done;
+            }
+	    if (outend - out < 4)
+		goto done;
+            c = (c << 10) + d - ((0xD800 << 10) + 0xDC00 - 0x10000);
+            out[0] =  (c >> 18)         | 0xF0;
+            out[1] = ((c >> 12) & 0x3F) | 0x80;
+            out[2] = ((c >>  6) & 0x3F) | 0x80;
+            out[3] =  (c        & 0x3F) | 0x80;
+            in += 4;
+            out += 4;
+        }
+    }
+
+    ret = out - outstart;
+
+done:
+    *outlen = out - outstart;
+    *inlen = in - instart;
+    return(ret);
+}
+
+#ifdef LIBXML_OUTPUT_ENABLED
+static int
+UTF8ToUTF16BE(unsigned char *out, int *outlen,
+              const unsigned char *in, int *inlen)
+{
+    const unsigned char *instart = in;
+    const unsigned char *inend;
+    unsigned char *outstart = out;
+    unsigned char *outend;
+    unsigned c, d;
+    int ret = XML_ENC_ERR_SPACE;
+
+    /* UTF-16BE has no BOM */
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL)) return(-1);
+    if (in == NULL) {
+	*outlen = 0;
+	*inlen = 0;
+	return(0);
+    }
+    inend = in + *inlen;
+    outend = out + (*outlen & ~1);
+    while (in < inend) {
+        if (out >= outend)
+            goto done;
+        c = in[0];
+
+        if (c < 0x80) {
+            out[0] = 0;
+            out[1] = c;
+            in += 1;
+            out += 2;
+        } else if (c < 0xE0) {
+            if (inend - in < 2)
+                break;
+            c = ((c & 0x1F) << 6) | (in[1] & 0x3F);
+            out[0] = c >> 8;
+            out[1] = c & 0xFF;
+            in += 2;
+            out += 2;
+        } else if (c < 0xF0) {
+            if (inend - in < 3)
+                break;
+            c = ((c & 0x0F) << 12) | ((in[1] & 0x3F) << 6) | (in[2] & 0x3F);
+            out[0] = c >> 8;
+            out[1] = c & 0xFF;
+            in += 3;
+            out += 2;
+        } else { /* c >= 0xF0 */
+            if (inend - in < 4)
+                break;
+            if (outend - out < 4)
+                goto done;
+            c = ((c & 0x0F) << 18) | ((in[1] & 0x3F) << 12) |
+                ((in[2] & 0x3F) << 6) | (in[3] & 0x3F);
+            c -= 0x10000;
+            d = (c & 0x03FF) | 0xDC00;
+            c = (c >> 10)    | 0xD800;
+            out[0] = c >> 8;
+            out[1] = c & 0xFF;
+            out[2] = d >> 8;
+            out[3] = d & 0xFF;
+            in += 4;
+            out += 4;
+        }
     }
 
     ret = out - outstart;

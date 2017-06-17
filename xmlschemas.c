@@ -166,7 +166,7 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 /*
 * Macros for attribute uses.
 */
-#define WXS_ATTRUSE_DECL(au) WXS_ATTR_CAST (WXS_ATTR_USE_CAST (au))->attrDecl
+#define WXS_ATTRUSE_DECL(au) (WXS_ATTR_USE_CAST (au))->attrDecl
 
 #define WXS_ATTRUSE_TYPEDEF(au) WXS_ATTR_TYPEDEF(WXS_ATTRUSE_DECL( WXS_ATTR_USE_CAST au))
 
@@ -363,6 +363,7 @@ typedef struct _xmlSchemaAbstractCtxt xmlSchemaAbstractCtxt;
 typedef xmlSchemaAbstractCtxt *xmlSchemaAbstractCtxtPtr;
 struct _xmlSchemaAbstractCtxt {
     int type; /* E.g. XML_SCHEMA_CTXT_VALIDATOR */
+    void *dummy; /* Fix alignment issues */
 };
 
 typedef struct _xmlSchemaBucket xmlSchemaBucket;
@@ -473,6 +474,7 @@ typedef struct _xmlSchemaBasicItem xmlSchemaBasicItem;
 typedef xmlSchemaBasicItem *xmlSchemaBasicItemPtr;
 struct _xmlSchemaBasicItem {
     xmlSchemaTypeType type;
+    void *dummy; /* Fix alignment issues */
 };
 
 /**

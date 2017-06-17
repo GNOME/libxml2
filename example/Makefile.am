@@ -1,4 +1,4 @@
-noinst_PROGRAMS	= gjobread
+check_PROGRAMS = gjobread
 
 AM_CPPFLAGS = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(srcdir)/include
 AM_CFLAGS = $(THREAD_CFLAGS) $(Z_CFLAGS)

@@ -62,9 +62,9 @@ $!
 $   bin_progs = "xmllint xmlcatalog"
 $!
 $!- list of test modules to compile and link.  Compare this list to the
-$!  definition of noinst_PROGRAMS in MAKEFILE.
+$!  definition of check_PROGRAMS in MAKEFILE.
 $!
-$   noinst_PROGRAMS = "testSchemas testRelax testSAX testHTML testXPath testURI " -
+$   check_PROGRAMS = "testSchemas testRelax testSAX testHTML testXPath testURI " -
                 + "testThreads testC14N testAutomata testRegexp testReader"
 $!
 $!- set up build logicals -----------------------------------------------------\
@@ -196,7 +196,7 @@ $ write sys$output "Building main programs and test programs"
 $ write sys$output ""
 $!
 $ p_no = 0
-$ all_progs = bin_progs + " " + noinst_PROGRAMS
+$ all_progs = bin_progs + " " + check_PROGRAMS
 $ all_progs = f$edit(all_progs,"COMPRESS")
 $!
 $ prog_loop:

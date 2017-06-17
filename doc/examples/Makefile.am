@@ -13,7 +13,7 @@ if REBUILD_DOCS
 rebuild: examples.xml index.html
 .PHONY: rebuild
 
-examples.xml: index.py $(noinst_PROGRAMS:=.c)
+examples.xml: index.py $(check_PROGRAMS:=.c)
 	cd $(srcdir) && $(PYTHON) index.py
 	$(MAKE) Makefile
 
@@ -49,7 +49,7 @@ EXTRA_DIST = \
 	xpath1.res \
 	xpath2.res
 
-noinst_PROGRAMS = \
+check_PROGRAMS = \
 	io1 \
 	io2 \
 	parse1 \
@@ -99,7 +99,7 @@ xpath2_SOURCES = xpath2.c
 valgrind: 
 	$(MAKE) CHECKER='valgrind' tests
 
-tests: $(noinst_PROGRAMS)
+tests: $(check_PROGRAMS)
 	@test -f Makefile.am || test -f test1.xml || $(LN_S) $(srcdir)/test?.xml .
 	@(echo '## examples regression tests')
 	@(echo > .memdump)

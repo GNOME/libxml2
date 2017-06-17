@@ -2163,7 +2163,8 @@ static void processNode(FILE *out, xmlTextReaderPtr reader) {
 }
 static int
 streamProcessTest(const char *filename, const char *result, const char *err,
-                  xmlTextReaderPtr reader, const char *rng, int options) {
+                  xmlTextReaderPtr reader, const char *rng,
+                  int options ATTRIBUTE_UNUSED) {
     int ret;
     char *temp = NULL;
     FILE *t = NULL;

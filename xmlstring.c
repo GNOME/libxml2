@@ -822,7 +822,7 @@ xmlCheckUTF8(const unsigned char *utf)
  * @len:  the number of characters in the array
  *
  * storage size of an UTF8 string
- * the behaviour is not garanteed if the input string is not UTF-8
+ * the behaviour is not guaranteed if the input string is not UTF-8
  *
  * Returns the storage size of
  * the first 'len' characters of ARRAY

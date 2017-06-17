@@ -8491,7 +8491,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 	ctxt->instate = XML_PARSER_CONTENT;
     } else {
 	xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
-	       "Specification mandate value for attribute %s\n", name);
+	       "Specification mandates value for attribute %s\n", name);
 	return(NULL);
     }
 
@@ -9224,7 +9224,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
         ctxt->instate = XML_PARSER_CONTENT;
     } else {
         xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
-                          "Specification mandate value for attribute %s\n",
+                          "Specification mandates value for attribute %s\n",
                           name);
         return (NULL);
     }
@@ -11144,7 +11144,7 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
  * Check that the block of characters is okay as SCdata content [20]
  *
  * Returns the number of bytes to pass if okay, a negative index where an
- *         UTF-8 error occured otherwise
+ *         UTF-8 error occurred otherwise
  */
 static int
 xmlCheckCdataPush(const xmlChar *utf, int len, int complete) {

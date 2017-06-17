@@ -1368,7 +1368,7 @@ Gansterer),<br />
     Hendricks), aliasing bug exposed by gcc4 on s390, xmlTextReaderNext bug
     (Rob Richards), Schemas decimal type fixes (William Brack),
     xmlByteConsumed static buffer (Ben Maurer).</li>
-  <li>improvement: speedup parsing comments and DTDs, dictionnary support for
+  <li>improvement: speedup parsing comments and DTDs, dictionary support for
     hash tables, Schemas Identity constraints (Kasimier), streaming XPath
     subset, xmlTextReaderReadString added (Bjorn Reese), Schemas canonical
     values handling (Kasimier), add xmlTextReaderByteConsumed (Aron
@@ -1558,7 +1558,7 @@ Gansterer),<br />
     URI on SYSTEM lookup failure, XInclude parse flags inheritance (William),
     XInclude and XPointer fixes for entities (William), XML parser bug
     reported by Holger Rauch, nanohttp fd leak (William),  regexps char
-    groups '-' handling (William), dictionnary reference counting problems,
+    groups '-' handling (William), dictionary reference counting problems,
     do not close stderr.</li>
   <li>performance patches from Petr Pajas</li>
   <li>Documentation fixes: XML_CATALOG_FILES in man pages (Mike Hommey)</li>
@@ -1613,14 +1613,14 @@ Gansterer),<br />
     Fleck), doc (Sven Zimmerman), I/O example.</li>
   <li>Python bindings: fixes (William), enum support (StÃ©phane Bidoul),
     structured error reporting (StÃ©phane Bidoul)</li>
-  <li>XInclude: various fixes for conformance, problem related to dictionnary
+  <li>XInclude: various fixes for conformance, problem related to dictionary
     references (William &amp; me), recursion (William)</li>
   <li>xmlWriter: indentation (Lucas Brasilino), memory leaks (Alfred
     Mickautsch),</li>
   <li>xmlSchemas: normalizedString datatype (John Belmonte)</li>
   <li>code cleanup for strings functions (William)</li>
   <li>Windows: compiler patches (Mark Vakoc)</li>
-  <li>Parser optimizations, a few new XPath and dictionnary APIs for future
+  <li>Parser optimizations, a few new XPath and dictionary APIs for future
     XSLT optimizations.</li>
 </ul><h3>2.6.4: Dec 24 2003</h3><ul>
   <li>Windows build fixes (Igor Zlatkovic)</li>
@@ -1705,8 +1705,8 @@ Gansterer),<br />
     of change</li>
   <li>Increased the library modularity, far more options can be stripped out,
     a --with-minimum configuration will weight around 160KBytes</li>
-  <li>Use per parser and per document dictionnary, allocate names and small
-    text nodes from the dictionnary</li>
+  <li>Use per parser and per document dictionary, allocate names and small
+    text nodes from the dictionary</li>
   <li>Switch to a SAX2 like parser rewrote most of the XML parser core,
     provides namespace resolution and defaulted attributes, minimize memory
     allocations and copies, namespace checking and specific error handling,
@@ -1753,7 +1753,7 @@ Gansterer),<br />
     (William), xmlCleanupParser (Marc Liyanage), CDATA output (William), HTTP
     error handling.</li>
   <li>xmllint options: --dtdvalidfpi for Tobias Reif, --sax1 for compat
-    testing,  --nodict for building without tree dictionnary, --nocdata to
+    testing,  --nodict for building without tree dictionary, --nocdata to
     replace CDATA by text, --nsclean to remove surperfluous  namespace
     declarations</li>
   <li>added xml2-config --libtool-libs option from Kevin P. Fleming</li>

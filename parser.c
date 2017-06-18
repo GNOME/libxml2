@@ -2043,7 +2043,6 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 
 #define SKIP(val) do {							\
     ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val);			\
-    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
@@ -2058,7 +2057,6 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	ctxt->nbChars++;						\
 	ctxt->input->cur++;						\
     }									\
-    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
@@ -2170,26 +2168,27 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	}
 	ctxt->input->cur = cur;
     } else {
-	int cur;
-	do {
-	    cur = CUR;
-	    while ((IS_BLANK_CH(cur) && /* CHECKED tstblanks.xml */
-	           (ctxt->instate != XML_PARSER_EOF))) {
+        int expandPE = ((ctxt->external != 0) || (ctxt->inputNr != 1));
+
+	while (1) {
+            if (IS_BLANK_CH(CUR)) { /* CHECKED tstblanks.xml */
 		NEXT;
-		cur = CUR;
 		res++;
-	    }
-	    while ((cur == 0) && (ctxt->inputNr > 1) &&
-		   (ctxt->instate != XML_PARSER_COMMENT)) {
-		xmlPopInput(ctxt);
-		cur = CUR;
-	    }
-	    /*
-	     * Need to handle support of entities branching here
-	     */
-	    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);
-	} while ((IS_BLANK(cur)) && /* CHECKED tstblanks.xml */
-	         (ctxt->instate != XML_PARSER_EOF));
+	    } else if (CUR == '%') {
+                /*
+                 * Need to handle support of entities branching here
+                 */
+	        if ((expandPE == 0) || (IS_BLANK_CH(NXT(1))) || (NXT(1) == 0))
+                    break;
+	        xmlParsePEReference(ctxt);
+            } else if (CUR == 0) {
+                if (ctxt->inputNr <= 1)
+                    break;
+                xmlPopInput(ctxt);
+            } else {
+                break;
+            }
+        }
     }
     return(res);
 }
@@ -6730,12 +6729,9 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	    const xmlChar *check = CUR_PTR;
 	    unsigned int cons = ctxt->input->consumed;
 
+            SKIP_BLANKS;
 	    if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 		xmlParseConditionalSections(ctxt);
-	    } else if (IS_BLANK_CH(CUR)) {
-		NEXT;
-	    } else if (RAW == '%') {
-		xmlParsePEReference(ctxt);
 	    } else
 		xmlParseMarkupDecl(ctxt);
 
@@ -6907,13 +6903,6 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
         return;
 
     /*
-     * This is only for internal subset. On external entities,
-     * the replacement is done before parsing stage
-     */
-    if ((ctxt->external == 0) && (ctxt->inputNr == 1))
-	xmlParsePEReference(ctxt);
-
-    /*
      * Conditional sections are allowed from entities included
      * by PE References in the internal subset.
      */
@@ -7060,13 +7049,10 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 	const xmlChar *check = CUR_PTR;
 	unsigned int cons = ctxt->input->consumed;
 
+        SKIP_BLANKS;
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 	    xmlParseConditionalSections(ctxt);
-	} else if (IS_BLANK_CH(CUR)) {
-	    NEXT;
-	} else if (RAW == '%') {
-            xmlParsePEReference(ctxt);
 	} else
 	    xmlParseMarkupDecl(ctxt);
 

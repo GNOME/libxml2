@@ -541,8 +541,6 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
         if (*ctxt->input->cur == 0)
             xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
     }
-    if ((*ctxt->input->cur == '%') && (!ctxt->html))
-        xmlParserHandlePEReference(ctxt);
     if ((*ctxt->input->cur == 0) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
         xmlPopInput(ctxt);

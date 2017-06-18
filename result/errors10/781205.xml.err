@@ -1,7 +1,7 @@
-Entity: line 1: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+./test/errors10/781205.xml:3: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
- %a; 
-    ^
+  %a;
+     ^
 Entity: line 1: 
 <:0000
 ^

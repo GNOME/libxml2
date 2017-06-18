@@ -2169,7 +2169,6 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	while (1) {
             if (IS_BLANK_CH(CUR)) { /* CHECKED tstblanks.xml */
 		NEXT;
-		res++;
 	    } else if (CUR == '%') {
                 /*
                  * Need to handle support of entities branching here
@@ -2184,6 +2183,15 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
             } else {
                 break;
             }
+
+            /*
+             * Also increase the counter when entering or exiting a PERef.
+             * The spec says: "When a parameter-entity reference is recognized
+             * in the DTD and included, its replacement text MUST be enlarged
+             * by the attachment of one leading and one following space (#x20)
+             * character."
+             */
+	    res++;
         }
     }
     return(res);
@@ -2444,57 +2452,6 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 			  val);
     }
     return(0);
-}
-
-/**
- * xmlNewBlanksWrapperInputStream:
- * @ctxt:  an XML parser context
- * @entity:  an Entity pointer
- *
- * Create a new input stream for wrapping
- * blanks around a PEReference
- *
- * Returns the new input stream or NULL
- */
-
-static void deallocblankswrapper (xmlChar *str) {xmlFree(str);}
-
-static xmlParserInputPtr
-xmlNewBlanksWrapperInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
-    xmlParserInputPtr input;
-    xmlChar *buffer;
-    size_t length;
-    if (entity == NULL) {
-	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	            "xmlNewBlanksWrapperInputStream entity\n");
-	return(NULL);
-    }
-    if (xmlParserDebugEntities)
-	xmlGenericError(xmlGenericErrorContext,
-		"new blanks wrapper for entity: %s\n", entity->name);
-    input = xmlNewInputStream(ctxt);
-    if (input == NULL) {
-	return(NULL);
-    }
-    length = xmlStrlen(entity->name) + 5;
-    buffer = xmlMallocAtomic(length);
-    if (buffer == NULL) {
-	xmlErrMemory(ctxt, NULL);
-        xmlFree(input);
-	return(NULL);
-    }
-    buffer [0] = ' ';
-    buffer [1] = '%';
-    buffer [length-3] = ';';
-    buffer [length-2] = ' ';
-    buffer [length-1] = 0;
-    memcpy(buffer + 2, entity->name, length - 5);
-    input->free = deallocblankswrapper;
-    input->base = buffer;
-    input->cur = buffer;
-    input->length = length;
-    input->end = &buffer[length];
-    return(input);
 }
 
 /**
@@ -7945,10 +7902,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 	    xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
 		  "Internal: %%%s; is not a parameter entity\n",
 			  name, NULL);
-	} else if (ctxt->input->free != deallocblankswrapper) {
-	    input = xmlNewBlanksWrapperInputStream(ctxt, entity);
-	    if (xmlPushInput(ctxt, input) < 0)
-		return;
 	} else {
             xmlChar start[4];
             xmlCharEncoding enc;

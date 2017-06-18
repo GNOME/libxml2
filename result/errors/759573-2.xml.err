@@ -1,48 +1,48 @@
 Entity: line 1: parser error : Space required after '<!ENTITY'
- %zz; 
-     ^
+%zz;
+    ^
 Entity: line 1: 
 <!ENTITY<?xDOCTYPEm~?>
         ^
 Entity: line 1: parser error : xmlParseEntityDecl: no name
- %zz; 
-     ^
+%zz;
+    ^
 Entity: line 1: 
 <!ENTITY<?xDOCTYPEm~?>
         ^
 Entity: line 1: parser error : ParsePI: PI xDOCTYPEm space expected
- %zz; 
-     ^
+%zz;
+    ^
 Entity: line 1: 
 <!ENTITY<?xDOCTYPEm~?>
                    ^
-Entity: line 1: parser error : Space required after '<!ENTITY'
- %zz; 
-     ^
+Entity: line 3: parser error : Space required after '<!ENTITY'
+%zz;<!ELEMENTD(%MENT%MENTDŹMENTD%zNMT9KENSMYSYSTEM;MENT9%zz;
+    ^
 Entity: line 1: 
 <!ENTITY<?xDOCTYPEm~?>
         ^
-Entity: line 1: parser error : xmlParseEntityDecl: no name
- %zz; 
-     ^
+Entity: line 3: parser error : xmlParseEntityDecl: no name
+%zz;<!ELEMENTD(%MENT%MENTDŹMENTD%zNMT9KENSMYSYSTEM;MENT9%zz;
+    ^
 Entity: line 1: 
 <!ENTITY<?xDOCTYPEm~?>
         ^
-Entity: line 1: parser error : ParsePI: PI xDOCTYPEm space expected
- %zz; 
-     ^
+Entity: line 3: parser error : ParsePI: PI xDOCTYPEm space expected
+%zz;<!ELEMENTD(%MENT%MENTDŹMENTD%zNMT9KENSMYSYSTEM;MENT9%zz;
+    ^
 Entity: line 1: 
 <!ENTITY<?xDOCTYPEm~?>
                    ^
-Entity: line 1: parser error : Space required after 'ELEMENT'
- %xx; 
-     ^
+./test/errors/759573-2.xml:6: parser error : Space required after 'ELEMENT'
+%xx;�ggKENSMYNT&#35;MENTD&#372zz;'>
+    ^
 Entity: line 3: 
 %zz;<!ELEMENTD(%MENT%MENTDŹMENTD%zNMT9KENSMYSYSTEM;MENT9%zz;
              ^
-Entity: line 1: parser error : Content error in the external subset
- %xx; 
-     ^
+./test/errors/759573-2.xml:6: parser error : Content error in the external subset
+%xx;�ggKENSMYNT&#35;MENTD&#372zz;'>
+    ^
 Entity: line 3: 
 %zz;<!ELEMENTD(%MENT%MENTDŹMENTD%zNMT9KENSMYSYSTEM;MENT9%zz;
              ^

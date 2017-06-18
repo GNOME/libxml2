@@ -1,21 +1,21 @@
-Entity: line 1: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+./test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
- %defroot; 
-          ^
+%defroot; %defmiddle; %deftest;
+         ^
 Entity: line 1: 
 &lt;!ELEMENT root (middle) >
 ^
-Entity: line 1: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+./test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
- %defmiddle; 
-            ^
+%defroot; %defmiddle; %deftest;
+                     ^
 Entity: line 1: 
 &lt;!ELEMENT middle (test) >
 ^
-Entity: line 1: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+./test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
- %deftest; 
-          ^
+%defroot; %defmiddle; %deftest;
+                               ^
 Entity: line 1: 
 &lt;!ELEMENT test (#PCDATA) >
 ^

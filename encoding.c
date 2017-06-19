@@ -2395,7 +2395,6 @@ xmlCharEncOutput(xmlOutputBufferPtr output, int init)
     int c_out;
     xmlBufPtr in;
     xmlBufPtr out;
-    int charref_len = 0;
 
     if ((output == NULL) || (output->encoder == NULL) ||
         (output->buffer == NULL) || (output->conv == NULL))
@@ -2451,7 +2450,6 @@ retry:
     if (ret == -1) {
         if (c_out > 0) {
             /* Can be a limitation of iconv or uconv */
-            charref_len = 0;
             goto retry;
         }
         ret = -3;
@@ -2488,46 +2486,38 @@ retry:
             ret = -1;
             break;
         case -2: {
+	    xmlChar charref[20];
 	    int len = (int) xmlBufUse(in);
             xmlChar *content = xmlBufContent(in);
-	    int cur;
+	    int cur, charrefLen;
 
 	    cur = xmlGetUTF8Char(content, &len);
-	    if ((charref_len != 0) && (c_out < charref_len)) {
-		/*
-		 * We attempted to insert a character reference and failed.
-		 * Undo what was written and skip the remaining charref.
-		 */
-                xmlBufErase(out, c_out);
-		writtentot -= c_out;
-		xmlBufShrink(in, charref_len - c_out);
-		charref_len = 0;
-
-		ret = -1;
+	    if (cur <= 0)
                 break;
-	    } else if (cur > 0) {
-		xmlChar charref[20];
 
 #ifdef DEBUG_ENCODING
-		xmlGenericError(xmlGenericErrorContext,
-			"handling output conversion error\n");
-		xmlGenericError(xmlGenericErrorContext,
-			"Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-			content[0], content[1],
-			content[2], content[3]);
+            xmlGenericError(xmlGenericErrorContext,
+                    "handling output conversion error\n");
+            xmlGenericError(xmlGenericErrorContext,
+                    "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+                    content[0], content[1],
+                    content[2], content[3]);
 #endif
-		/*
-		 * Removes the UTF8 sequence, and replace it by a charref
-		 * and continue the transcoding phase, hoping the error
-		 * did not mangle the encoder state.
-		 */
-		charref_len = snprintf((char *) &charref[0], sizeof(charref),
-				 "&#%d;", cur);
-		xmlBufShrink(in, len);
-		xmlBufAddHead(in, charref, -1);
+            /*
+             * Removes the UTF8 sequence, and replace it by a charref
+             * and continue the transcoding phase, hoping the error
+             * did not mangle the encoder state.
+             */
+            charrefLen = snprintf((char *) &charref[0], sizeof(charref),
+                             "&#%d;", cur);
+            xmlBufShrink(in, len);
+            xmlBufGrow(out, charrefLen * 4);
+            c_out = xmlBufAvail(out) - 1;
+            c_in = charrefLen;
+            ret = xmlEncOutputChunk(output->encoder, xmlBufEnd(out), &c_out,
+                                    charref, &c_in);
 
-		goto retry;
-	    } else {
+	    if ((ret < 0) || (c_in != charrefLen)) {
 		char buf[50];
 
 		snprintf(&buf[0], 49, "0x%02X 0x%02X 0x%02X 0x%02X",
@@ -2539,8 +2529,12 @@ retry:
 			       buf);
 		if (xmlBufGetAllocationScheme(in) != XML_BUFFER_ALLOC_IMMUTABLE)
 		    content[0] = ' ';
+                break;
 	    }
-	    break;
+
+            xmlBufAddLen(out, c_out);
+            writtentot += c_out;
+            goto retry;
 	}
     }
     return(ret);
@@ -2573,7 +2567,6 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     int writtentot = 0;
     int toconv;
     int output = 0;
-    int charref_len = 0;
 
     if (handler == NULL) return(-1);
     if (out == NULL) return(-1);
@@ -2621,7 +2614,6 @@ retry:
     if (ret == -1) {
         if (written > 0) {
             /* Can be a limitation of iconv or uconv */
-            charref_len = 0;
             goto retry;
         }
         ret = -3;
@@ -2658,46 +2650,38 @@ retry:
 	    ret = -1;
             break;
         case -2: {
+	    xmlChar charref[20];
 	    int len = in->use;
 	    const xmlChar *utf = (const xmlChar *) in->content;
-	    int cur;
+	    int cur, charrefLen;
 
 	    cur = xmlGetUTF8Char(utf, &len);
-	    if ((charref_len != 0) && (written < charref_len)) {
-		/*
-		 * We attempted to insert a character reference and failed.
-		 * Undo what was written and skip the remaining charref.
-		 */
-		out->use -= written;
-		writtentot -= written;
-		xmlBufferShrink(in, charref_len - written);
-		charref_len = 0;
-
-		ret = -1;
+	    if (cur <= 0)
                 break;
-	    } else if (cur > 0) {
-		xmlChar charref[20];
 
 #ifdef DEBUG_ENCODING
-		xmlGenericError(xmlGenericErrorContext,
-			"handling output conversion error\n");
-		xmlGenericError(xmlGenericErrorContext,
-			"Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-			in->content[0], in->content[1],
-			in->content[2], in->content[3]);
+            xmlGenericError(xmlGenericErrorContext,
+                    "handling output conversion error\n");
+            xmlGenericError(xmlGenericErrorContext,
+                    "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+                    in->content[0], in->content[1],
+                    in->content[2], in->content[3]);
 #endif
-		/*
-		 * Removes the UTF8 sequence, and replace it by a charref
-		 * and continue the transcoding phase, hoping the error
-		 * did not mangle the encoder state.
-		 */
-		charref_len = snprintf((char *) &charref[0], sizeof(charref),
-				 "&#%d;", cur);
-		xmlBufferShrink(in, len);
-		xmlBufferAddHead(in, charref, -1);
+            /*
+             * Removes the UTF8 sequence, and replace it by a charref
+             * and continue the transcoding phase, hoping the error
+             * did not mangle the encoder state.
+             */
+            charrefLen = snprintf((char *) &charref[0], sizeof(charref),
+                             "&#%d;", cur);
+            xmlBufferShrink(in, len);
+            xmlBufferGrow(out, charrefLen * 4);
+	    written = out->size - out->use - 1;
+            toconv = charrefLen;
+            ret = xmlEncOutputChunk(handler, &out->content[out->use], &written,
+                                    charref, &toconv);
 
-		goto retry;
-	    } else {
+	    if ((ret < 0) || (toconv != charrefLen)) {
 		char buf[50];
 
 		snprintf(&buf[0], 49, "0x%02X 0x%02X 0x%02X 0x%02X",
@@ -2709,8 +2693,13 @@ retry:
 			       buf);
 		if (in->alloc != XML_BUFFER_ALLOC_IMMUTABLE)
 		    in->content[0] = ' ';
+	        break;
 	    }
-	    break;
+
+            out->use += written;
+            writtentot += written;
+            out->content[out->use] = 0;
+            goto retry;
 	}
     }
     return(ret);

@@ -2043,9 +2043,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 
 #define SKIP(val) do {							\
     ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val);			\
-    if ((*ctxt->input->cur == 0) &&					\
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt);						\
+    if (*ctxt->input->cur == 0)						\
+        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
   } while (0)
 
 #define SKIPL(val) do {							\
@@ -2057,9 +2056,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	ctxt->nbChars++;						\
 	ctxt->input->cur++;						\
     }									\
-    if ((*ctxt->input->cur == 0) &&					\
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt);						\
+    if (*ctxt->input->cur == 0)						\
+        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
   } while (0)
 
 #define SHRINK if ((ctxt->progressive == 0) &&				\
@@ -2069,10 +2067,9 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 
 static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
     xmlParserInputShrink(ctxt->input);
-    if ((*ctxt->input->cur == 0) &&
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
-	    xmlPopInput(ctxt);
-  }
+    if (*ctxt->input->cur == 0)
+        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+}
 
 #define GROW if ((ctxt->progressive == 0) &&				\
 		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
@@ -2097,9 +2094,8 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "cur index out of bound");
 	return;
     }
-    if ((ctxt->input->cur != NULL) && (*ctxt->input->cur == 0) &&
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
-	    xmlPopInput(ctxt);
+    if ((ctxt->input->cur != NULL) && (*ctxt->input->cur == 0))
+        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
 }
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)
@@ -2219,9 +2215,8 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
                     "Unfinished entity outside the DTD");
     xmlFreeInputStream(inputPop(ctxt));
-    if ((*ctxt->input->cur == 0) &&
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
-	    return(xmlPopInput(ctxt));
+    if (*ctxt->input->cur == 0)
+        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
     return(CUR);
 }
 
@@ -3808,11 +3803,6 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	}
 	COPY_BUF(l,buf,len,c);
 	NEXTL(l);
-	/*
-	 * Pop-up of finished entities.
-	 */
-	while ((RAW == 0) && (ctxt->inputNr > 1)) /* non input consuming */
-	    xmlPopInput(ctxt);
 
 	GROW;
 	c = CUR_CHAR(l);
@@ -6602,8 +6592,6 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 			   "xmlParseElementDecl: no name for Element\n");
 	    return(-1);
 	}
-	while ((RAW == 0) && (ctxt->inputNr > 1))
-	    xmlPopInput(ctxt);
 	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after the element name\n");
@@ -6639,12 +6627,6 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	    return(-1);
 	}
 
-	SKIP_BLANKS;
-	/*
-	 * Pop-up of finished entities.
-	 */
-	while ((RAW == 0) && (ctxt->inputNr > 1))
-	    xmlPopInput(ctxt);
 	SKIP_BLANKS;
 
 	if (RAW != '>') {
@@ -6724,22 +6706,20 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 		    "Entering INCLUDE Conditional Section\n");
 	}
 
+        SKIP_BLANKS;
+        GROW;
 	while (((RAW != 0) && ((RAW != ']') || (NXT(1) != ']') ||
 	        (NXT(2) != '>'))) && (ctxt->instate != XML_PARSER_EOF)) {
 	    const xmlChar *check = CUR_PTR;
 	    unsigned int cons = ctxt->input->consumed;
 
-            SKIP_BLANKS;
 	    if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 		xmlParseConditionalSections(ctxt);
 	    } else
 		xmlParseMarkupDecl(ctxt);
 
-	    /*
-	     * Pop-up of finished entities.
-	     */
-	    while ((RAW == 0) && (ctxt->inputNr > 1))
-		xmlPopInput(ctxt);
+            SKIP_BLANKS;
+            GROW;
 
 	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 		xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
@@ -7043,24 +7023,19 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 
     ctxt->instate = XML_PARSER_DTD;
     ctxt->external = 1;
+    SKIP_BLANKS;
     while (((RAW == '<') && (NXT(1) == '?')) ||
            ((RAW == '<') && (NXT(1) == '!')) ||
-	   (RAW == '%') || IS_BLANK_CH(CUR)) {
+	   (RAW == '%')) {
 	const xmlChar *check = CUR_PTR;
 	unsigned int cons = ctxt->input->consumed;
 
-        SKIP_BLANKS;
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 	    xmlParseConditionalSections(ctxt);
 	} else
 	    xmlParseMarkupDecl(ctxt);
-
-	/*
-	 * Pop-up of finished entities.
-	 */
-	while ((RAW == 0) && (ctxt->inputNr > 1))
-	    xmlPopInput(ctxt);
+        SKIP_BLANKS;
 
 	if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 	    xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
@@ -8368,30 +8343,14 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	 * PEReferences.
 	 * Subsequence (markupdecl | PEReference | S)*
 	 */
-	while ((RAW != ']') && (ctxt->instate != XML_PARSER_EOF)) {
+	while (((RAW != ']') || (ctxt->inputNr > 1)) &&
+               (ctxt->instate != XML_PARSER_EOF)) {
 	    const xmlChar *check = CUR_PTR;
 	    unsigned int cons = ctxt->input->consumed;
 
 	    SKIP_BLANKS;
 	    xmlParseMarkupDecl(ctxt);
 	    xmlParsePEReference(ctxt);
-
-	    /*
-	     * Pop-up of finished entities.
-	     */
-            while (ctxt->inputNr > 1) {
-                if (RAW == 0) {
-		    xmlPopInput(ctxt);
-                } else if (RAW == ']') {
-                    /*
-                     * Make sure not to return with unfinished entities.
-                     */
-		    xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-                    xmlPopInput(ctxt);
-                } else {
-                    break;
-                }
-            }
 
 	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 		xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
@@ -9973,11 +9932,6 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	}
 
 	GROW;
-	/*
-	 * Pop-up of finished entities.
-	 */
-	while ((RAW == 0) && (ctxt->inputNr > 1))
-	    xmlPopInput(ctxt);
 	SHRINK;
 
 	if ((cons == ctxt->input->consumed) && (test == CUR_PTR)) {
@@ -11272,13 +11226,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
 	    return(0);
 
-
-	/*
-	 * Pop-up of finished entities.
-	 */
-	while ((RAW == 0) && (ctxt->inputNr > 1))
-	    xmlPopInput(ctxt);
-
 	if (ctxt->input == NULL) break;
 	if (ctxt->input->buf == NULL)
 	    avail = ctxt->input->length -
@@ -11629,11 +11576,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->checkIndex = 0;
 		    xmlParseCharData(ctxt, 0);
 		}
-		/*
-		 * Pop-up of finished entities.
-		 */
-		while ((RAW == 0) && (ctxt->inputNr > 1))
-		    xmlPopInput(ctxt);
 		if ((cons == ctxt->input->consumed) && (test == CUR_PTR)) {
 		    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
 		                "detected an error in element content\n");

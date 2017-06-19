@@ -354,8 +354,14 @@ UTF8ToUTF8(unsigned char* out, int *outlen,
 {
     int len;
 
-    if ((out == NULL) || (inb == NULL) || (outlen == NULL) || (inlenb == NULL))
+    if ((out == NULL) || (outlen == NULL) || (inlenb == NULL))
 	return(-1);
+    if (inb == NULL) {
+        /* inb == NULL means output is initialized. */
+        *outlen = 0;
+        *inlenb = 0;
+        return(0);
+    }
     if (*outlen > *inlenb) {
 	len = *inlenb;
     } else {
@@ -1904,6 +1910,61 @@ xmlUconvWrapper(uconv_t *cd, int toUnicode, unsigned char *out, int *outlen,
  *									*
  ************************************************************************/
 
+static int
+xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
+                 int *outlen, const unsigned char *in, int *inlen) {
+    int ret;
+
+    if (handler->input != NULL) {
+        ret = handler->input(out, outlen, in, inlen);
+    }
+#ifdef LIBXML_ICONV_ENABLED
+    else if (handler->iconv_in != NULL) {
+        ret = xmlIconvWrapper(handler->iconv_in, out, outlen, in, inlen);
+    }
+#endif /* LIBXML_ICONV_ENABLED */
+#ifdef LIBXML_ICU_ENABLED
+    else if (handler->uconv_in != NULL) {
+        ret = xmlUconvWrapper(handler->uconv_in, 1, out, outlen, in, inlen);
+    }
+#endif /* LIBXML_ICU_ENABLED */
+    else {
+        *outlen = 0;
+        *inlen = 0;
+        ret = -2;
+    }
+
+    return(ret);
+}
+
+/* Returns -4 if no output function was found. */
+static int
+xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
+                  int *outlen, const unsigned char *in, int *inlen) {
+    int ret;
+
+    if (handler->output != NULL) {
+        ret = handler->output(out, outlen, in, inlen);
+    }
+#ifdef LIBXML_ICONV_ENABLED
+    else if (handler->iconv_out != NULL) {
+        ret = xmlIconvWrapper(handler->iconv_out, out, outlen, in, inlen);
+    }
+#endif /* LIBXML_ICONV_ENABLED */
+#ifdef LIBXML_ICU_ENABLED
+    else if (handler->uconv_out != NULL) {
+        ret = xmlUconvWrapper(handler->uconv_out, 0, out, outlen, in, inlen);
+    }
+#endif /* LIBXML_ICU_ENABLED */
+    else {
+        *outlen = 0;
+        *inlen = 0;
+        ret = -4;
+    }
+
+    return(ret);
+}
+
 /**
  * xmlCharEncFirstLineInt:
  * @handler:	char enconding transformation data structure
@@ -1922,7 +1983,7 @@ xmlUconvWrapper(uconv_t *cd, int toUnicode, unsigned char *out, int *outlen,
 int
 xmlCharEncFirstLineInt(xmlCharEncodingHandler *handler, xmlBufferPtr out,
                        xmlBufferPtr in, int len) {
-    int ret = -2;
+    int ret;
     int written;
     int toconv;
 
@@ -1953,33 +2014,13 @@ xmlCharEncFirstLineInt(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 	written = out->size - out->use - 1;
     }
 
-    if (handler->input != NULL) {
-	ret = handler->input(&out->content[out->use], &written,
-	                     in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	out->content[out->use] = 0;
-    }
-#ifdef LIBXML_ICONV_ENABLED
-    else if (handler->iconv_in != NULL) {
-	ret = xmlIconvWrapper(handler->iconv_in, &out->content[out->use],
-	                      &written, in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	out->content[out->use] = 0;
-	if (ret == -1) ret = -3;
-    }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    else if (handler->uconv_in != NULL) {
-	ret = xmlUconvWrapper(handler->uconv_in, 1, &out->content[out->use],
-	                      &written, in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	out->content[out->use] = 0;
-	if (ret == -1) ret = -3;
-    }
-#endif /* LIBXML_ICU_ENABLED */
+    ret = xmlEncInputChunk(handler, &out->content[out->use], &written,
+                           in->content, &toconv);
+    xmlBufferShrink(in, toconv);
+    out->use += written;
+    out->content[out->use] = 0;
+    if (ret == -1) ret = -3;
+
 #ifdef DEBUG_ENCODING
     switch (ret) {
         case 0:
@@ -2049,7 +2090,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 int
 xmlCharEncFirstLineInput(xmlParserInputBufferPtr input, int len)
 {
-    int ret = -2;
+    int ret;
     size_t written;
     size_t toconv;
     int c_in;
@@ -2091,32 +2132,13 @@ xmlCharEncFirstLineInput(xmlParserInputBufferPtr input, int len)
 
     c_in = toconv;
     c_out = written;
-    if (input->encoder->input != NULL) {
-        ret = input->encoder->input(xmlBufEnd(out), &c_out,
-                                    xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-    }
-#ifdef LIBXML_ICONV_ENABLED
-    else if (input->encoder->iconv_in != NULL) {
-        ret = xmlIconvWrapper(input->encoder->iconv_in, xmlBufEnd(out),
-                              &c_out, xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-        if (ret == -1)
-            ret = -3;
-    }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    else if (input->encoder->uconv_in != NULL) {
-        ret = xmlUconvWrapper(input->encoder->uconv_in, 1, xmlBufEnd(out),
-                              &c_out, xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-        if (ret == -1)
-            ret = -3;
-    }
-#endif /* LIBXML_ICU_ENABLED */
+    ret = xmlEncInputChunk(input->encoder, xmlBufEnd(out), &c_out,
+                           xmlBufContent(in), &c_in);
+    xmlBufShrink(in, c_in);
+    xmlBufAddLen(out, c_out);
+    if (ret == -1)
+        ret = -3;
+
     switch (ret) {
         case 0:
 #ifdef DEBUG_ENCODING
@@ -2175,7 +2197,7 @@ xmlCharEncFirstLineInput(xmlParserInputBufferPtr input, int len)
 int
 xmlCharEncInput(xmlParserInputBufferPtr input, int flush)
 {
-    int ret = -2;
+    int ret;
     size_t written;
     size_t toconv;
     int c_in;
@@ -2208,32 +2230,13 @@ xmlCharEncInput(xmlParserInputBufferPtr input, int flush)
 
     c_in = toconv;
     c_out = written;
-    if (input->encoder->input != NULL) {
-        ret = input->encoder->input(xmlBufEnd(out), &c_out,
-                                    xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-    }
-#ifdef LIBXML_ICONV_ENABLED
-    else if (input->encoder->iconv_in != NULL) {
-        ret = xmlIconvWrapper(input->encoder->iconv_in, xmlBufEnd(out),
-                              &c_out, xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-        if (ret == -1)
-            ret = -3;
-    }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    else if (input->encoder->uconv_in != NULL) {
-        ret = xmlUconvWrapper(input->encoder->uconv_in, 1, xmlBufEnd(out),
-                              &c_out, xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-        if (ret == -1)
-            ret = -3;
-    }
-#endif /* LIBXML_ICU_ENABLED */
+    ret = xmlEncInputChunk(input->encoder, xmlBufEnd(out), &c_out,
+                           xmlBufContent(in), &c_in);
+    xmlBufShrink(in, c_in);
+    xmlBufAddLen(out, c_out);
+    if (ret == -1)
+        ret = -3;
+
     switch (ret) {
         case 0:
 #ifdef DEBUG_ENCODING
@@ -2294,7 +2297,7 @@ int
 xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
                  xmlBufferPtr in)
 {
-    int ret = -2;
+    int ret;
     int written;
     int toconv;
 
@@ -2313,35 +2316,14 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
         xmlBufferGrow(out, out->size + toconv * 2);
         written = out->size - out->use - 1;
     }
-    if (handler->input != NULL) {
-        ret = handler->input(&out->content[out->use], &written,
-                             in->content, &toconv);
-        xmlBufferShrink(in, toconv);
-        out->use += written;
-        out->content[out->use] = 0;
-    }
-#ifdef LIBXML_ICONV_ENABLED
-    else if (handler->iconv_in != NULL) {
-        ret = xmlIconvWrapper(handler->iconv_in, &out->content[out->use],
-                              &written, in->content, &toconv);
-        xmlBufferShrink(in, toconv);
-        out->use += written;
-        out->content[out->use] = 0;
-        if (ret == -1)
-            ret = -3;
-    }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    else if (handler->uconv_in != NULL) {
-        ret = xmlUconvWrapper(handler->uconv_in, 1, &out->content[out->use],
-                              &written, in->content, &toconv);
-        xmlBufferShrink(in, toconv);
-        out->use += written;
-        out->content[out->use] = 0;
-        if (ret == -1)
-            ret = -3;
-    }
-#endif /* LIBXML_ICU_ENABLED */
+    ret = xmlEncInputChunk(handler, &out->content[out->use], &written,
+                           in->content, &toconv);
+    xmlBufferShrink(in, toconv);
+    out->use += written;
+    out->content[out->use] = 0;
+    if (ret == -1)
+        ret = -3;
+
     switch (ret) {
         case 0:
 #ifdef DEBUG_ENCODING
@@ -2405,7 +2387,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
 int
 xmlCharEncOutput(xmlOutputBufferPtr output, int init)
 {
-    int ret = -2;
+    int ret;
     size_t written;
     size_t writtentot = 0;
     size_t toconv;
@@ -2433,26 +2415,10 @@ retry:
     if (init) {
         c_in = 0;
         c_out = written;
-        if (output->encoder->output != NULL) {
-            ret = output->encoder->output(xmlBufEnd(out), &c_out,
-                                          NULL, &c_in);
-            if (ret > 0) /* Gennady: check return value */
-                xmlBufAddLen(out, c_out);
-        }
-#ifdef LIBXML_ICONV_ENABLED
-        else if (output->encoder->iconv_out != NULL) {
-            ret = xmlIconvWrapper(output->encoder->iconv_out, xmlBufEnd(out),
-                                  &c_out, NULL, &c_in);
-            xmlBufAddLen(out, c_out);
-        }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-        else if (output->encoder->uconv_out != NULL) {
-            ret = xmlUconvWrapper(output->encoder->uconv_out, 0, xmlBufEnd(out),
-                                  &c_out, NULL, &c_in);
-            xmlBufAddLen(out, c_out);
-        }
-#endif /* LIBXML_ICU_ENABLED */
+        /* TODO: Check return value. */
+        xmlEncOutputChunk(output->encoder, xmlBufEnd(out), &c_out,
+                          NULL, &c_in);
+        xmlBufAddLen(out, c_out);
 #ifdef DEBUG_ENCODING
 	xmlGenericError(xmlGenericErrorContext,
 		"initialized encoder\n");
@@ -2477,57 +2443,18 @@ retry:
 
     c_in = toconv;
     c_out = written;
-    if (output->encoder->output != NULL) {
-        ret = output->encoder->output(xmlBufEnd(out), &c_out,
-                                      xmlBufContent(in), &c_in);
+    ret = xmlEncOutputChunk(output->encoder, xmlBufEnd(out), &c_out,
+                            xmlBufContent(in), &c_in);
+    xmlBufShrink(in, c_in);
+    xmlBufAddLen(out, c_out);
+    writtentot += c_out;
+    if (ret == -1) {
         if (c_out > 0) {
-            xmlBufShrink(in, c_in);
-            xmlBufAddLen(out, c_out);
-            writtentot += c_out;
+            /* Can be a limitation of iconv or uconv */
+            charref_len = 0;
+            goto retry;
         }
-    }
-#ifdef LIBXML_ICONV_ENABLED
-    else if (output->encoder->iconv_out != NULL) {
-        ret = xmlIconvWrapper(output->encoder->iconv_out, xmlBufEnd(out),
-                              &c_out, xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-        writtentot += c_out;
-        if (ret == -1) {
-            if (c_out > 0) {
-                /*
-                 * Can be a limitation of iconv
-                 */
-                charref_len = 0;
-                goto retry;
-            }
-            ret = -3;
-        }
-    }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    else if (output->encoder->uconv_out != NULL) {
-        ret = xmlUconvWrapper(output->encoder->uconv_out, 0, xmlBufEnd(out),
-                              &c_out, xmlBufContent(in), &c_in);
-        xmlBufShrink(in, c_in);
-        xmlBufAddLen(out, c_out);
-        writtentot += c_out;
-        if (ret == -1) {
-            if (c_out > 0) {
-                /*
-                 * Can be a limitation of uconv
-                 */
-                charref_len = 0;
-                goto retry;
-            }
-            ret = -3;
-        }
-    }
-#endif /* LIBXML_ICU_ENABLED */
-    else {
-        xmlEncodingErr(XML_I18N_NO_OUTPUT,
-                       "xmlCharEncOutFunc: no output function !\n", NULL);
-        return(-1);
+        ret = -3;
     }
 
     if (ret >= 0) output += ret;
@@ -2555,6 +2482,11 @@ retry:
 	            c_in, c_out, (int) xmlBufUse(in));
 #endif
 	    break;
+        case -4:
+            xmlEncodingErr(XML_I18N_NO_OUTPUT,
+                           "xmlCharEncOutFunc: no output function !\n", NULL);
+            ret = -1;
+            break;
         case -2: {
 	    int len = (int) xmlBufUse(in);
             xmlChar *content = xmlBufContent(in);
@@ -2636,7 +2568,7 @@ retry:
 int
 xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
                   xmlBufferPtr in) {
-    int ret = -2;
+    int ret;
     int written;
     int writtentot = 0;
     int toconv;
@@ -2658,31 +2590,11 @@ retry:
      */
     if (in == NULL) {
         toconv = 0;
-	if (handler->output != NULL) {
-	    ret = handler->output(&out->content[out->use], &written,
-				  NULL, &toconv);
-	    if (ret >= 0) { /* Gennady: check return value */
-		out->use += written;
-		out->content[out->use] = 0;
-	    }
-	}
-#ifdef LIBXML_ICONV_ENABLED
-	else if (handler->iconv_out != NULL) {
-	    ret = xmlIconvWrapper(handler->iconv_out, &out->content[out->use],
-				  &written, NULL, &toconv);
-	    out->use += written;
-	    out->content[out->use] = 0;
-	}
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-	else if (handler->uconv_out != NULL) {
-	    ret = xmlUconvWrapper(handler->uconv_out, 0,
-                              &out->content[out->use],
-				              &written, NULL, &toconv);
-	    out->use += written;
-	    out->content[out->use] = 0;
-	}
-#endif /* LIBXML_ICU_ENABLED */
+        /* TODO: Check return value. */
+        xmlEncOutputChunk(handler, &out->content[out->use], &written,
+                          NULL, &toconv);
+        out->use += written;
+        out->content[out->use] = 0;
 #ifdef DEBUG_ENCODING
 	xmlGenericError(xmlGenericErrorContext,
 		"initialized encoder\n");
@@ -2700,61 +2612,19 @@ retry:
         xmlBufferGrow(out, toconv * 4);
 	written = out->size - out->use - 1;
     }
-    if (handler->output != NULL) {
-	ret = handler->output(&out->content[out->use], &written,
-	                      in->content, &toconv);
-	if (written > 0) {
-	    xmlBufferShrink(in, toconv);
-	    out->use += written;
-	    writtentot += written;
-	}
-	out->content[out->use] = 0;
-    }
-#ifdef LIBXML_ICONV_ENABLED
-    else if (handler->iconv_out != NULL) {
-	ret = xmlIconvWrapper(handler->iconv_out, &out->content[out->use],
-	                      &written, in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	writtentot += written;
-	out->content[out->use] = 0;
-	if (ret == -1) {
-	    if (written > 0) {
-		/*
-		 * Can be a limitation of iconv
-		 */
-                charref_len = 0;
-		goto retry;
-	    }
-	    ret = -3;
-	}
-    }
-#endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    else if (handler->uconv_out != NULL) {
-	ret = xmlUconvWrapper(handler->uconv_out, 0,
-                              &out->content[out->use],
-	                      &written, in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	writtentot += written;
-	out->content[out->use] = 0;
-	if (ret == -1) {
-	    if (written > 0) {
-		/*
-		 * Can be a limitation of iconv
-		 */
-                charref_len = 0;
-		goto retry;
-	    }
-	    ret = -3;
-	}
-    }
-#endif /* LIBXML_ICU_ENABLED */
-    else {
-	xmlEncodingErr(XML_I18N_NO_OUTPUT,
-		       "xmlCharEncOutFunc: no output function !\n", NULL);
-	return(-1);
+    ret = xmlEncOutputChunk(handler, &out->content[out->use], &written,
+                            in->content, &toconv);
+    xmlBufferShrink(in, toconv);
+    out->use += written;
+    writtentot += written;
+    out->content[out->use] = 0;
+    if (ret == -1) {
+        if (written > 0) {
+            /* Can be a limitation of iconv or uconv */
+            charref_len = 0;
+            goto retry;
+        }
+        ret = -3;
     }
 
     if (ret >= 0) output += ret;
@@ -2782,6 +2652,11 @@ retry:
 	            toconv, written, in->use);
 #endif
 	    break;
+        case -4:
+	    xmlEncodingErr(XML_I18N_NO_OUTPUT,
+		           "xmlCharEncOutFunc: no output function !\n", NULL);
+	    ret = -1;
+            break;
         case -2: {
 	    int len = in->use;
 	    const xmlChar *utf = (const xmlChar *) in->content;
@@ -2954,54 +2829,20 @@ xmlByteConsumed(xmlParserCtxtPtr ctxt) {
 
 	    int ret;
 
-	    if (handler->output != NULL) {
-	        do {
-		    toconv = in->end - cur;
-		    written = 32000;
-		    ret = handler->output(&convbuf[0], &written,
-				      cur, &toconv);
-		    if (ret == -1) return(-1);
-		    unused += written;
-		    cur += toconv;
-		} while (ret == -2);
-#ifdef LIBXML_ICONV_ENABLED
-	    } else if (handler->iconv_out != NULL) {
-	        do {
-		    toconv = in->end - cur;
-		    written = 32000;
-		    ret = xmlIconvWrapper(handler->iconv_out, &convbuf[0],
-	                      &written, cur, &toconv);
-		    if (ret < 0) {
-		        if (written > 0)
-			    ret = -2;
-			else
-			    return(-1);
-		    }
-		    unused += written;
-		    cur += toconv;
-		} while (ret == -2);
-#endif
-#ifdef LIBXML_ICU_ENABLED
-	    } else if (handler->uconv_out != NULL) {
-	        do {
-		    toconv = in->end - cur;
-		    written = 32000;
-		    ret = xmlUconvWrapper(handler->uconv_out, 0, &convbuf[0],
-	                      &written, cur, &toconv);
-		    if (ret < 0) {
-		        if (written > 0)
-			    ret = -2;
-			else
-			    return(-1);
-		    }
-		    unused += written;
-		    cur += toconv;
-		} while (ret == -2);
-#endif
-            } else {
-	        /* could not find a converter */
-	        return(-1);
-	    }
+            do {
+                toconv = in->end - cur;
+                written = 32000;
+                ret = xmlEncOutputChunk(handler, &convbuf[0], &written,
+                                        cur, &toconv);
+                if (ret < 0) {
+                    if (written > 0)
+                        ret = -2;
+                    else
+                        return(-1);
+                }
+                unused += written;
+                cur += toconv;
+            } while (ret == -2);
 	}
 	if (in->buf->rawconsumed < unused)
 	    return(-1);

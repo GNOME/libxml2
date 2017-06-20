@@ -48,11 +48,11 @@ Entity: line 3:
              ^
 ./test/errors/759573-2.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
-%xx;ÿggKENSMYNT&#35;MENTD&#372zz;'>
-    ^
+
+^
 ./test/errors/759573-2.xml:6: parser error : DOCTYPE improperly terminated
-%xx;ÿggKENSMYNT&#35;MENTD&#372zz;'>
-    ^
+
+^
 ./test/errors/759573-2.xml:6: parser error : Start tag expected, '<' not found
-%xx;ÿggKENSMYNT&#35;MENTD&#372zz;'>
-    ^
+
+^

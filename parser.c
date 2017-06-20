@@ -13224,7 +13224,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     /*
      * And record the last error if any
      */
-    if (ctxt->lastError.code != XML_ERR_OK)
+    if ((oldctxt != NULL) && (ctxt->lastError.code != XML_ERR_OK))
         xmlCopyError(&ctxt->lastError, &oldctxt->lastError);
 
     if (sax != NULL)

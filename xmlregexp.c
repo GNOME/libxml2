@@ -5053,7 +5053,7 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 		return;
 	}
         len = 1;
-    } else if ((cur != 0x5B) && (cur != 0x5D)) {
+    } else if ((cur != '\0') && (cur != 0x5B) && (cur != 0x5D)) {
         end = CUR_SCHAR(ctxt->cur, len);
     } else {
 	ERROR("Expecting the end of a char range");

@@ -2250,6 +2250,13 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Pushing input %d : %.30s\n", ctxt->inputNr+1, input->cur);
     }
+    if (((ctxt->inputNr > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
+        (ctxt->inputNr > 1024)) {
+        xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+        while (ctxt->inputNr > 1)
+            xmlFreeInputStream(inputPop(ctxt));
+	return(-1);
+    }
     ret = inputPush(ctxt, input);
     if (ctxt->instate == XML_PARSER_EOF)
         return(-1);
@@ -7916,8 +7923,10 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 		return;
 
 	    input = xmlNewEntityInputStream(ctxt, entity);
-	    if (xmlPushInput(ctxt, input) < 0)
+	    if (xmlPushInput(ctxt, input) < 0) {
+                xmlFreeInputStream(input);
 		return;
+            }
 
 	    if (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
                 /*

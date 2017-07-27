@@ -50,7 +50,7 @@ setenv TGTCCSID         '500'           # Target CCSID of objects.
 setenv DEBUG            '*ALL'          # Debug level.
 setenv OPTIMIZE         '10'            # Optimisation level.
 setenv OUTPUT           '*NONE'         # Compilation output option.
-setenv TGTRLS           'V5R3M0'        # Target OS release.
+setenv TGTRLS           'V6R1M0'        # Target OS release.
 setenv IFSDIR           '/libxml2'      # Installation IFS directory.
 
 
@@ -217,7 +217,7 @@ make_module()
         cat "${2}" >> __tmpsrcf.c
         CMD="CRTCMOD MODULE(${TARGETLIB}/${1}) SRCSTMF('__tmpsrcf.c')"
 #       CMD="${CMD} OPTION(*INCDIRFIRST *SHOWINC *SHOWSYS)"
-        CMD="${CMD} OPTION(*INCDIRFIRST)"
+        CMD="${CMD} OPTION(*INCDIRFIRST) FLAG(10)"
         CMD="${CMD} SYSIFCOPT(*IFS64IO) LANGLVL(*EXTENDED) LOCALETYPE(*LOCALE)"
         CMD="${CMD} INCDIR("
         if [  -z "${SYSICONV}" ]

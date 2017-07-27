@@ -115,7 +115,7 @@
      d                                     like(xmlCint)
      d  buf                            *   value options(*string)               xmlChar *
      d  len                                value like(xmlCint)
-     d  msg                            *   value options(*string)               const xmlChar *
+     d  msg                            *   value options(*string)               const char *
      d  arg1                           *   value options(*string: *nopass)
      d  arg2                           *   value options(*string: *nopass)
      d  arg3                           *   value options(*string: *nopass)
@@ -129,7 +129,7 @@
      d                                     like(xmlCint)
      d  buf                            *   value options(*string)               xmlChar *
      d  len                                value like(xmlCint)
-     d  msg                            *   value options(*string)               const xmlChar *
+     d  msg                            *   value options(*string)               const char *
      d  ap                                 likeds(xmlVaList)
 
      d xmlGetUTF8Char  pr                  extproc('xmlGetUTF8Char')

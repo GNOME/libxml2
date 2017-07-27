@@ -22031,7 +22031,7 @@ xmlSchemaAugmentIDC(xmlSchemaIDCPtr idcDef,
  * Creates an augmented IDC definition for the imported schema.
  */
 static void
-xmlSchemaAugmentImportedIDC(xmlSchemaImportPtr imported, xmlSchemaValidCtxtPtr vctxt) {
+xmlSchemaAugmentImportedIDC(xmlSchemaImportPtr imported, xmlSchemaValidCtxtPtr vctxt, xmlChar *name ATTRIBUTE_UNUSED) {
     if (imported->schema->idcDef != NULL) {
 	    xmlHashScan(imported->schema->idcDef ,
 	    (xmlHashScanner) xmlSchemaAugmentIDC, vctxt);

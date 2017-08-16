@@ -148,6 +148,20 @@ it will link to its own C-runtime named msvcr70.dll or msvcr71.dll. This
 file is not available on any machine which doesn't have Visual Studio 
 .NET installed.
 
+2.1.1 UCRT and 32bit
+--------------------
+
+If you use the compiler which comes with Visual Studio 2015 and above, note that
+it will link to its own C-runtime named msvcr140.dll or msvcr140.dll. That 
+files are redistributed via the ucrt packages (windows XP need the ucrt files manually copied).
+
+In order to build 32 bit on Visual Studio 2017 on a 64 bit machine,
+ you would need to call the 32 bit compiler:
+
+step1 update your path to call the 32bit versions (assuming Visual studio installed to C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017):
+set PATH="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX86\x86";%PATH%
+step 2 call name
+nmake /f Makefile.msvc
 
 2.2 GNU C/C++, Mingw edition
 ----------------------------

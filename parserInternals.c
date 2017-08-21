@@ -1235,7 +1235,11 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 	    input->buf->rawconsumed += use - xmlBufUse(input->buf->raw);
         }
         return (0);
-    } else {
+    } else if (input->length == 0) {
+	/*
+	 * When parsing a static memory array one must know the
+	 * size to be able to convert the buffer.
+	 */
 	xmlErrInternal(ctxt, "switching encoding : no input\n", NULL);
 	return (-1);
     }

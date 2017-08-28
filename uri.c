@@ -1961,8 +1961,9 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	    res->scheme = xmlMemStrdup(bas->scheme);
 	if (bas->authority != NULL)
 	    res->authority = xmlMemStrdup(bas->authority);
-	else if (bas->server != NULL) {
-	    res->server = xmlMemStrdup(bas->server);
+	else if ((bas->server != NULL) || (bas->port == -1)) {
+	    if (bas->server != NULL)
+		res->server = xmlMemStrdup(bas->server);
 	    if (bas->user != NULL)
 		res->user = xmlMemStrdup(bas->user);
 	    res->port = bas->port;
@@ -2024,8 +2025,9 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     }
     if (bas->authority != NULL)
 	res->authority = xmlMemStrdup(bas->authority);
-    else if (bas->server != NULL) {
-	res->server = xmlMemStrdup(bas->server);
+    else if ((bas->server != NULL) || (bas->port == -1)) {
+	if (bas->server != NULL)
+	    res->server = xmlMemStrdup(bas->server);
 	if (bas->user != NULL)
 	    res->user = xmlMemStrdup(bas->user);
 	res->port = bas->port;

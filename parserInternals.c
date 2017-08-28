@@ -468,8 +468,8 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
 
         c = *cur;
         if (c & 0x80) {
-        if (c == 0xC0)
-	    goto encoding_error;
+            if (c == 0xC0)
+	        goto encoding_error;
             if (cur[1] == 0) {
                 xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
                 cur = ctxt->input->cur;

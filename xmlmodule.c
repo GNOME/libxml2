@@ -8,6 +8,11 @@
  * http://www.fortran-2000.com/ArnaudRecipes/sharedlib.html
  */
 
+/* In order RTLD_GLOBAL and RTLD_NOW to be defined on zOS */
+#if defined(__MVS__)
+#define _UNIX03_SOURCE
+#endif
+
 #define IN_LIBXML
 #include "libxml.h"
 

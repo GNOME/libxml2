@@ -926,8 +926,11 @@ xmlFileOpen_real (const char *filename) {
 #endif
     }
 
+    /* Do not check DDNAME on zOS ! */
+#if !defined(__MVS__)
     if (!xmlCheckFilename(path))
         return(NULL);
+#endif
 
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
     fd = xmlWrapOpen(path, 0);
@@ -1004,11 +1007,13 @@ xmlFileOpenW (const char *filename) {
 
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
     fd = xmlWrapOpen(path, 1);
+#elif(__MVS__)
+    fd = fopen(path, "w");
 #else
-	   fd = fopen(path, "wb");
+    fd = fopen(path, "wb");
 #endif /* WIN32 */
 
-	 if (fd == NULL) xmlIOErr(0, path);
+    if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

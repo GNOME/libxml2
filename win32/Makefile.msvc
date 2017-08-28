@@ -26,18 +26,6 @@ XML_IMP = $(XML_BASENAME).lib
 XML_DEF = $(XML_BASENAME).def
 XML_A = $(XML_BASENAME)_a.lib
 XML_A_DLL = $(XML_BASENAME)_a_dll.lib
-VS14_INCLUDE = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\include"
-VS14_INCLUDE_AUX = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\VS\include"
-VS14_INCLUDE_UCRT = "C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\ucrt"
-VS14_INCLUDE_UM = "C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\um"
-VS14_INCLUDE_SHARED = "C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\shared"
-VS14_INCLUDE_WINRT = "C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\winrt\Include\um"
-WindowsSDK_IncludePath = "C:\Program Files (x86)\Windows Kits\10\Include\10.0.15063.0\um"
-
-VC14_LINK_LIBRARY_PATH_X86 = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\lib\x86"
-VC14_LINK_LIBRARY_PATH_X86_AUX = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\VS\lib\x86"
-VC14_LINK_LIBRARY_PATH_X86_UCRT = "C:\Program Files (x86)\Windows Kits\10\lib\10.0.10240.0\ucrt\x86"
-VC14_LINK_LIBRARY_PATH_X86_WINSDK = "C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86"
 
 # Place where we let the compiler put its output.
 BINDIR = bin.msvc
@@ -48,14 +36,14 @@ UTILS_INTDIR = int.utils.msvc
 
 # The preprocessor and its options.
 CPP = cl.exe /EP
-CPPFLAGS = /nologo /I$(XML_SRCDIR)\include /D "NOLIBTOOL"
+CPPFLAGS = /nologo /I$(XML_SRCDIR)\include /D "NOLIBTOOL" 
 !if "$(WITH_THREADS)" != "no"
 CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
 !endif
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "NOLIBTOOL" /W1 $(CRUNTIME) /I$(VS14_INCLUDE) /I$(VS14_INCLUDE) /I$(VS14_INCLUDE_AUX) /I$(VS14_INCLUDE_UCRT) /I$(VS14_INCLUDE_UM) /I$(VS14_INCLUDE_SHARED) /I$(VS14_INCLUDE_WINRT) /I$(WindowsSDK_IncludePath)
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "NOLIBTOOL" /W1 $(CRUNTIME)
 CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"
@@ -77,8 +65,8 @@ CFLAGS = $(CFLAGS) /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE
 
 # The linker and its options.
 LD = link.exe
-LDFLAGS = /VERSION:$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION) /MACHINE:X86
-LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR) /LIBPATH:$(LIBPREFIX) /LIBPATH:$(VC14_LINK_LIBRARY_PATH_X86) /LIBPATH:$(VC14_LINK_LIBRARY_PATH_X86_AUX) /LIBPATH:$(VC14_LINK_LIBRARY_PATH_X86_UCRT) /LIBPATH:$(VC14_LINK_LIBRARY_PATH_X86_WINSDK)
+LDFLAGS = /nologo /VERSION:$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION)
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR) /LIBPATH:$(LIBPREFIX)
 LIBS =
 !if "$(WITH_FTP)" == "1" || "$(WITH_HTTP)" == "1"
 LIBS = $(LIBS) wsock32.lib ws2_32.lib

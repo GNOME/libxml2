@@ -15146,7 +15146,10 @@ xmlXPathNodeEval(xmlNodePtr node, const xmlChar *str, xmlXPathContextPtr ctx) {
  * @str:  the XPath expression
  * @ctxt:  the XPath context
  *
- * Alias for xmlXPathEval.
+ * Alias for xmlXPathEval().
+ *
+ * Returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ *         the caller has to free the object.
  */
 xmlXPathObjectPtr
 xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {

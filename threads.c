@@ -421,7 +421,7 @@ __xmlGlobalInitMutexLock(void)
     /* Make sure the global init lock is initialized and then lock it. */
 #ifdef HAVE_PTHREAD_H
     /* The mutex is statically initialized, so we just lock it. */
-    if (pthread_mutex_lock != NULL)
+    if (&pthread_mutex_lock != NULL)
         pthread_mutex_lock(&global_init_lock);
 #elif defined HAVE_WIN32_THREADS
     LPCRITICAL_SECTION cs;
@@ -490,7 +490,7 @@ void
 __xmlGlobalInitMutexUnlock(void)
 {
 #ifdef HAVE_PTHREAD_H
-    if (pthread_mutex_unlock != NULL)
+    if (&pthread_mutex_unlock != NULL)
         pthread_mutex_unlock(&global_init_lock);
 #elif defined HAVE_WIN32_THREADS
     if (global_init_lock != NULL) {
@@ -844,21 +844,21 @@ xmlInitThreads(void)
 {
 #ifdef HAVE_PTHREAD_H
     if (libxml_is_threaded == -1) {
-        if ((pthread_once != NULL) &&
-            (pthread_getspecific != NULL) &&
-            (pthread_setspecific != NULL) &&
-            (pthread_key_create != NULL) &&
-            (pthread_key_delete != NULL) &&
-            (pthread_mutex_init != NULL) &&
-            (pthread_mutex_destroy != NULL) &&
-            (pthread_mutex_lock != NULL) &&
-            (pthread_mutex_unlock != NULL) &&
-            (pthread_cond_init != NULL) &&
-            (pthread_cond_destroy != NULL) &&
-            (pthread_cond_wait != NULL) &&
-            (pthread_equal != NULL) &&
-            (pthread_self != NULL) &&
-            (pthread_cond_signal != NULL)) {
+        if ((&pthread_once != NULL) &&
+            (&pthread_getspecific != NULL) &&
+            (&pthread_setspecific != NULL) &&
+            (&pthread_key_create != NULL) &&
+            (&pthread_key_delete != NULL) &&
+            (&pthread_mutex_init != NULL) &&
+            (&pthread_mutex_destroy != NULL) &&
+            (&pthread_mutex_lock != NULL) &&
+            (&pthread_mutex_unlock != NULL) &&
+            (&pthread_cond_init != NULL) &&
+            (&pthread_cond_destroy != NULL) &&
+            (&pthread_cond_wait != NULL) &&
+            (&pthread_equal != NULL) &&
+            (&pthread_self != NULL) &&
+            (&pthread_cond_signal != NULL)) {
             libxml_is_threaded = 1;
 
 /* fprintf(stderr, "Running multithreaded\n"); */
@@ -894,7 +894,7 @@ xmlCleanupThreads(void)
     xmlGenericError(xmlGenericErrorContext, "xmlCleanupThreads()\n");
 #endif
 #ifdef HAVE_PTHREAD_H
-    if ((libxml_is_threaded)  && (pthread_key_delete != NULL))
+    if ((libxml_is_threaded)  && (&pthread_key_delete != NULL))
         pthread_key_delete(globalkey);
     once_control = once_control_init;
 #elif defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))

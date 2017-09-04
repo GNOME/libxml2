@@ -897,7 +897,7 @@ void	<a href="#xmlResetError">xmlResetError</a>			(<a href="libxml2-xmlerror.htm
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCtxtGetLastError"/>xmlCtxtGetLastError ()</h3><pre class="programlisting"><a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlCtxtGetLastError	(void * ctx)<br/>
 </pre><p>Get the last parsing error registered.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occured or a pointer to the error</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occurred or a pointer to the error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCtxtResetLastError"/>xmlCtxtResetLastError ()</h3><pre class="programlisting">void	xmlCtxtResetLastError		(void * ctx)<br/>
 </pre><p>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</p>
@@ -905,7 +905,7 @@ void	<a href="#xmlResetError">xmlResetError</a>			(<a href="libxml2-xmlerror.htm
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetLastError"/>xmlGetLastError ()</h3><pre class="programlisting"><a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlGetLastError		(void)<br/>
 </pre><p>Get the last global error registered. This is per thread if compiled with thread support.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occured or a pointer to the error</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occurred or a pointer to the error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserError"/>xmlParserError ()</h3><pre class="programlisting">void	xmlParserError			(void * ctx, <br/>					 const char * msg, <br/>					 ... ...)<br/>
 </pre><p>Display and format an error messages, gives file, line, position and extra parameters.</p>

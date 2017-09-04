@@ -82,11 +82,11 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDictCreate"/>xmlDictCreate ()</h3><pre class="programlisting"><a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	xmlDictCreate		(void)<br/>
 </pre><p>Create a new dictionary</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created dictionary, or NULL if an error occured.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created dictionary, or NULL if an error occurred.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDictCreateSub"/>xmlDictCreateSub ()</h3><pre class="programlisting"><a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	xmlDictCreateSub	(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> sub)<br/>
 </pre><p>Create a new dictionary, inheriting strings from the read-only dictionary @sub. On lookup, strings are first searched in the new dictionary, then in @sub, and if not found are created in the new dictionary.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>sub</tt></i>:</span></td><td>an existing dictionary</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created dictionary, or NULL if an error occured.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>sub</tt></i>:</span></td><td>an existing dictionary</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created dictionary, or NULL if an error occurred.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDictExists"/>xmlDictExists ()</h3><pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlDictExists		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int len)<br/>
 </pre><p>Check if the @name exists in the dictionary @dict.</p>

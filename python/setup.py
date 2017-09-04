@@ -8,7 +8,7 @@ from distutils.core import setup, Extension
 # Below ROOT, we expect to find include, include/libxml2, lib and bin.
 # On *nix, it is not needed (but should not harm),
 # on Windows, it is set by configure.js.
-ROOT = r'/usr/local'
+ROOT = r'/usr'
 
 # Thread-enabled libxml2
 with_threads = 1
@@ -226,7 +226,7 @@ else:
 setup (name = "libxml2-python",
        # On *nix, the version number is created from setup.py.in
        # On windows, it is set by configure.js
-       version = "2.9.4",
+       version = "2.9.5",
        description = descr,
        author = "Daniel Veillard",
        author_email = "veillard@redhat.com",

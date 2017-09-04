@@ -8185,7 +8185,9 @@
       <ref name='htmlIsScriptAttribute'/>
       <ref name='htmlNewDoc'/>
       <ref name='htmlNewDocNoDtD'/>
+      <ref name='htmlParseDoc'/>
       <ref name='htmlReadDoc'/>
+      <ref name='htmlSAXParseDoc'/>
       <ref name='htmlSetMetaEncoding'/>
       <ref name='htmlTagLookup'/>
       <ref name='ignorableWhitespace'/>
@@ -9171,8 +9173,6 @@
       <ref name='docbSAXParseDoc'/>
       <ref name='entityDecl'/>
       <ref name='entityDeclSAXFunc'/>
-      <ref name='htmlParseDoc'/>
-      <ref name='htmlSAXParseDoc'/>
       <ref name='xmlBuildQName'/>
       <ref name='xmlCopyChar'/>
       <ref name='xmlCopyCharMultiByte'/>
@@ -14535,6 +14535,9 @@
         <word name='AegeanNumbers'>
           <ref name='xmlUCSIsAegeanNumbers'/>
         </word>
+        <word name='Alias'>
+          <ref name='xmlXPathEvalExpression'/>
+        </word>
         <word name='All'>
           <ref name='_xmlSchema'/>
           <ref name='_xmlSchemaType'/>
@@ -14774,6 +14777,7 @@
         </word>
         <word name='Both'>
           <ref name='XML_SUBSTITUTE_BOTH'/>
+          <ref name='xmlSplitQName2'/>
           <ref name='xmlStreamPush'/>
           <ref name='xmlStreamPushAttr'/>
           <ref name='xmlStreamPushNode'/>
@@ -15758,7 +15762,6 @@
         <word name='Evaluate'>
           <ref name='xmlXPathCompiledEval'/>
           <ref name='xmlXPathEval'/>
-          <ref name='xmlXPathEvalExpression'/>
           <ref name='xmlXPathEvalPredicate'/>
           <ref name='xmlXPathEvaluatePredicateResult'/>
           <ref name='xmlXPathNodeEval'/>
@@ -16936,6 +16939,7 @@
           <ref name='_xmlSchemaElement'/>
           <ref name='_xmlSchemaFacet'/>
           <ref name='_xmlSchemaType'/>
+          <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='Obtain'>
           <ref name='xmlTextReaderLocatorBaseURI'/>
@@ -16976,6 +16980,7 @@
           <ref name='xmlXPathContextSetCache'/>
         </word>
         <word name='Otherwise'>
+          <ref name='xmlSplitQName2'/>
           <ref name='xmlStreamPush'/>
           <ref name='xmlStreamPushAttr'/>
         </word>
@@ -22023,6 +22028,7 @@
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlPatternMatch'/>
           <ref name='xmlRemoveProp'/>
+          <ref name='xmlSplitQName2'/>
           <ref name='xmlUTF8Strlen'/>
           <ref name='xmlValidateRoot'/>
           <ref name='xmlXPathLeading'/>
@@ -22607,7 +22613,6 @@
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlTextWriterFullEndElement'/>
-          <ref name='xmlXPathRoundFunction'/>
         </word>
         <word name='event'>
           <ref name='xmlSchemaSAXPlug'/>
@@ -23390,9 +23395,6 @@
         <word name='gYearMonth'>
           <ref name='xmlSchemaGetCanonValue'/>
         </word>
-        <word name='garanteed'>
-          <ref name='xmlUTF8Strsize'/>
-        </word>
         <word name='garbage'>
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
@@ -23594,6 +23596,7 @@
         <word name='guaranteed'>
           <ref name='xmlModuleOpen'/>
           <ref name='xmlModuleSymbol'/>
+          <ref name='xmlUTF8Strsize'/>
         </word>
         <word name='guess'>
           <ref name='xmlCleanupParser'/>
@@ -23615,6 +23618,7 @@
           <ref name='xmlParseElementContentDecl'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
+          <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='handlers'>
           <ref name='xlinkSetDefaultHandler'/>
@@ -24191,6 +24195,7 @@
         <word name='infinity'>
           <ref name='xmlXPathCeilingFunction'/>
           <ref name='xmlXPathFloorFunction'/>
+          <ref name='xmlXPathRoundFunction'/>
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='info'>
@@ -25058,6 +25063,7 @@
           <ref name='xmlSetFeature'/>
           <ref name='xmlUTF8Strloc'/>
           <ref name='xmlXPtrLocationSetAdd'/>
+          <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='locations'>
           <ref name='_xmlLocationSet'/>
@@ -25733,7 +25739,6 @@
           <ref name='xmlSchemaSAXPlug'/>
           <ref name='xmlSetBufferAllocationScheme'/>
           <ref name='xmlShellPwd'/>
-          <ref name='xmlStrncat'/>
           <ref name='xmlTextReaderCurrentDoc'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
@@ -25881,6 +25886,7 @@
         <word name='non-negative'>
           <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlC14NExecute'/>
+          <ref name='xmlTextReaderPreservePattern'/>
         </word>
         <word name='non-normative'>
           <ref name='xmlDetectCharEncoding'/>
@@ -26088,7 +26094,13 @@
           <ref name='xmlParseComment'/>
           <ref name='xmlParseMarkupDecl'/>
         </word>
-        <word name='occured'>
+        <word name='occurences'>
+          <ref name='xmlAutomataNewCountTrans'/>
+          <ref name='xmlAutomataNewCountTrans2'/>
+          <ref name='xmlAutomataNewOnceTrans'/>
+          <ref name='xmlAutomataNewOnceTrans2'/>
+        </word>
+        <word name='occurred'>
           <ref name='xmlCtxtGetLastError'/>
           <ref name='xmlDictCreate'/>
           <ref name='xmlDictCreateSub'/>
@@ -26097,17 +26109,9 @@
           <ref name='xmlHashCreateDict'/>
           <ref name='xmlListRemoveFirst'/>
           <ref name='xmlListRemoveLast'/>
-          <ref name='xmlTextReaderErrorFunc'/>
-        </word>
-        <word name='occurences'>
-          <ref name='xmlAutomataNewCountTrans'/>
-          <ref name='xmlAutomataNewCountTrans2'/>
-          <ref name='xmlAutomataNewOnceTrans'/>
-          <ref name='xmlAutomataNewOnceTrans2'/>
-        </word>
-        <word name='occurred'>
           <ref name='xmlMemStrdupLoc'/>
           <ref name='xmlMemoryStrdup'/>
+          <ref name='xmlTextReaderErrorFunc'/>
         </word>
         <word name='occurrence'>
           <ref name='xmlStrcasestr'/>
@@ -27467,6 +27471,9 @@
           <ref name='INPUT_CHUNK'/>
           <ref name='xmlAutomataCompile'/>
         </word>
+        <word name='real'>
+          <ref name='xmlXPtrRangeToFunction'/>
+        </word>
         <word name='realloc'>
           <ref name='_xmlBuffer'/>
           <ref name='xmlGcMemGet'/>
@@ -27479,6 +27486,7 @@
         </word>
         <word name='reallocated'>
           <ref name='xmlReallocFunc'/>
+          <ref name='xmlStrcat'/>
           <ref name='xmlStrncat'/>
         </word>
         <word name='really'>
@@ -28968,6 +28976,7 @@
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlTextWriterWriteRawLen'/>
+          <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='specialized'>
           <ref name='_xmlDOMWrapCtxt'/>
@@ -29153,6 +29162,7 @@
           <ref name='xmlValidNormalizeAttributeValue'/>
           <ref name='xmlValidateDocumentFinal'/>
           <ref name='xmlValidateDtdFinal'/>
+          <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='steps'>
           <ref name='xmlNormalizeURIPath'/>
@@ -31941,6 +31951,9 @@
         <word name='xmlXPathError'>
           <ref name='err'/>
         </word>
+        <word name='xmlXPathEval'>
+          <ref name='xmlXPathEvalExpression'/>
+        </word>
         <word name='xmlXPathEvalPredicate'>
           <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
@@ -32015,6 +32028,7 @@
         <word name='xpath'>
           <ref name='xmlShellPrintXPathError'/>
           <ref name='xmlShellPrintXPathResult'/>
+          <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='xpointer'>
           <ref name='XINCLUDE_PARSE_XPOINTER'/>

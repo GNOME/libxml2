@@ -1127,7 +1127,7 @@
     </file>
     <file name='schemasInternals'>
      <summary>internal interfaces for XML Schemas</summary>
-     <description>internal interfaces for the XML Schemas handling and schema validity checking The Schemas development is a Work In Progress. Some of those interfaces are not garanteed to be API or ABI stable ! </description>
+     <description>internal interfaces for the XML Schemas handling and schema validity checking The Schemas development is a Work In Progress. Some of those interfaces are not guaranteed to be API or ABI stable ! </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION' type='macro'/>
@@ -7743,7 +7743,7 @@ Could we use @subtypes for this?'/>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>parse an HTML in-memory document and build a tree.</info>
       <return type='htmlDocPtr' info='the resulting document tree'/>
-      <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
     </function>
     <function name='htmlParseDocument' file='HTMLparser' module='HTMLparser'>
@@ -7823,7 +7823,7 @@ Could we use @subtypes for this?'/>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks to handle parse events. If sax is NULL, fallback to the default DOM behavior and return a tree.</info>
       <return type='htmlDocPtr' info='the resulting document tree unless SAX is NULL or the document is not well formed.'/>
-      <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
       <arg name='sax' type='htmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='userData' type='void *' info='if using SAX, this pointer will be provided on callbacks.'/>
@@ -9245,7 +9245,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlCtxtGetLastError' file='xmlerror' module='error'>
       <info>Get the last parsing error registered.</info>
-      <return type='xmlErrorPtr' info='NULL if no error occured or a pointer to the error'/>
+      <return type='xmlErrorPtr' info='NULL if no error occurred or a pointer to the error'/>
       <arg name='ctx' type='void *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtReadDoc' file='parser' module='parser'>
@@ -9504,11 +9504,11 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlDictCreate' file='dict' module='dict'>
       <info>Create a new dictionary</info>
-      <return type='xmlDictPtr' info='the newly created dictionary, or NULL if an error occured.'/>
+      <return type='xmlDictPtr' info='the newly created dictionary, or NULL if an error occurred.'/>
     </function>
     <function name='xmlDictCreateSub' file='dict' module='dict'>
       <info>Create a new dictionary, inheriting strings from the read-only dictionary @sub. On lookup, strings are first searched in the new dictionary, then in @sub, and if not found are created in the new dictionary.</info>
-      <return type='xmlDictPtr' info='the newly created dictionary, or NULL if an error occured.'/>
+      <return type='xmlDictPtr' info='the newly created dictionary, or NULL if an error occurred.'/>
       <arg name='sub' type='xmlDictPtr' info='an existing dictionary'/>
     </function>
     <function name='xmlDictExists' file='dict' module='dict'>
@@ -10233,7 +10233,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlGetLastError' file='xmlerror' module='error'>
       <info>Get the last global error registered. This is per thread if compiled with thread support.</info>
-      <return type='xmlErrorPtr' info='NULL if no error occured or a pointer to the error'/>
+      <return type='xmlErrorPtr' info='NULL if no error occurred or a pointer to the error'/>
     </function>
     <function name='xmlGetLineNo' file='tree' module='tree'>
       <info>Get line number of @node. Try to override the limitation of lines being store in 16 bits ints if XML_PARSE_BIG_LINES parser option was used</info>
@@ -10362,12 +10362,12 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlHashCreate' file='hash' module='hash'>
       <info>Create a new xmlHashTablePtr.</info>
-      <return type='xmlHashTablePtr' info='the newly created object, or NULL if an error occured.'/>
+      <return type='xmlHashTablePtr' info='the newly created object, or NULL if an error occurred.'/>
       <arg name='size' type='int' info='the size of the hash table'/>
     </function>
     <function name='xmlHashCreateDict' file='hash' module='hash'>
       <info>Create a new xmlHashTablePtr which will use @dict as the internal dictionary</info>
-      <return type='xmlHashTablePtr' info='the newly created object, or NULL if an error occured.'/>
+      <return type='xmlHashTablePtr' info='the newly created object, or NULL if an error occurred.'/>
       <arg name='size' type='int' info='the size of the hash table'/>
       <arg name='dict' type='xmlDictPtr' info='a dictionary to use for the hash'/>
     </function>
@@ -10877,13 +10877,13 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlListRemoveFirst' file='list' module='list'>
       <info>Remove the first instance associated to data in the list</info>
-      <return type='int' info='1 if a deallocation occured, or 0 if not found'/>
+      <return type='int' info='1 if a deallocation occurred, or 0 if not found'/>
       <arg name='l' type='xmlListPtr' info='a list'/>
       <arg name='data' type='void *' info='list data'/>
     </function>
     <function name='xmlListRemoveLast' file='list' module='list'>
       <info>Remove the last instance associated to data in the list</info>
-      <return type='int' info='1 if a deallocation occured, or 0 if not found'/>
+      <return type='int' info='1 if a deallocation occurred, or 0 if not found'/>
       <arg name='l' type='xmlListPtr' info='a list'/>
       <arg name='data' type='void *' info='list data'/>
     </function>
@@ -14453,7 +14453,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSplitQName2' file='tree' module='tree'>
       <info>parse an XML qualified name string  [NS 5] QName ::= (Prefix &apos;:&apos;)? LocalPart  [NS 6] Prefix ::= NCName  [NS 7] LocalPart ::= NCName</info>
-      <return type='xmlChar *' info='NULL if not a QName, otherwise the local part, and prefix is updated to get the Prefix if any.'/>
+      <return type='xmlChar *' info='NULL if the name doesn&apos;t have a prefix. Otherwise, returns the local part, and prefix is updated to get the Prefix. Both the return value and the prefix must be freed by the caller.'/>
       <arg name='name' type='const xmlChar *' info='the full QName'/>
       <arg name='prefix' type='xmlChar **' info='a xmlChar **'/>
     </function>
@@ -14519,7 +14519,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlStrcat' file='xmlstring' module='xmlstring'>
       <info>a strcat for array of xmlChar&apos;s. Since they are supposed to be encoded in UTF-8 or an encoding with 8bit based chars, we assume a termination mark of &apos;0&apos;.</info>
-      <return type='xmlChar *' info='a new xmlChar * containing the concatenated string.'/>
+      <return type='xmlChar *' info='a new xmlChar * containing the concatenated string. The original @cur is reallocated and should not be freed.'/>
       <arg name='cur' type='xmlChar *' info='the original xmlChar * array'/>
       <arg name='add' type='const xmlChar *' info='the xmlChar * array added'/>
     </function>
@@ -14637,7 +14637,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlStrncat' file='xmlstring' module='xmlstring'>
       <info>a strncat for array of xmlChar&apos;s, it will extend @cur with the len first bytes of @add. Note that if @len &lt; 0 then this is an API error and NULL will be returned.</info>
-      <return type='xmlChar *' info='a new xmlChar *, the original @cur is reallocated if needed and should not be freed'/>
+      <return type='xmlChar *' info='a new xmlChar *, the original @cur is reallocated and should not be freed.'/>
       <arg name='cur' type='xmlChar *' info='the original xmlChar * array'/>
       <arg name='add' type='const xmlChar *' info='the xmlChar * array added'/>
       <arg name='len' type='int' info='the length of @add'/>
@@ -14828,7 +14828,7 @@ Could we use @subtypes for this?'/>
       <arg name='arg' type='void *' info='the user argument'/>
       <arg name='msg' type='const char *' info='the message'/>
       <arg name='severity' type='xmlParserSeverities' info='the severity of the error'/>
-      <arg name='locator' type='xmlTextReaderLocatorPtr' info='a locator indicating where the error occured'/>
+      <arg name='locator' type='xmlTextReaderLocatorPtr' info='a locator indicating where the error occurred'/>
     </functype>
     <function name='xmlTextReaderExpand' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
@@ -15043,7 +15043,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlTextReaderPreservePattern' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_PATTERN_ENABLED)</cond>
       <info>This tells the XML Reader to preserve all nodes matched by the pattern. The caller must also use xmlTextReaderCurrentDoc() to keep an handle on the resulting document once parsing has finished</info>
-      <return type='int' info='a positive number in case of success and -1 in case of error'/>
+      <return type='int' info='a non-negative number in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='pattern' type='const xmlChar *' info='an XPath subset pattern'/>
       <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
@@ -16932,7 +16932,7 @@ Could we use @subtypes for this?'/>
       <arg name='pos' type='int' info='the position of the desired UTF8 char (in chars)'/>
     </function>
     <function name='xmlUTF8Strsize' file='xmlstring' module='xmlstring'>
-      <info>storage size of an UTF8 string the behaviour is not garanteed if the input string is not UTF-8</info>
+      <info>storage size of an UTF8 string the behaviour is not guaranteed if the input string is not UTF-8</info>
       <return type='int' info='the storage size of the first &apos;len&apos; characters of ARRAY'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='len' type='int' info='the number of characters in the array'/>
@@ -17561,7 +17561,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlXPathEvalExpression' file='xpath' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Evaluate the XPath expression in the given context.</info>
+      <info>Alias for xmlXPathEval().</info>
       <return type='xmlXPathObjectPtr' info='the xmlXPathObjectPtr resulting from the evaluation or NULL. the caller has to free the object.'/>
       <arg name='str' type='const xmlChar *' info='the XPath expression'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
@@ -18200,7 +18200,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlXPathRoundFunction' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implement the round() XPath function number round(number) The round function returns the number that is closest to the argument and that is an integer. If there are two such numbers, then the one that is even is returned.</info>
+      <info>Implement the round() XPath function number round(number) The round function returns the number that is closest to the argument and that is an integer. If there are two such numbers, then the one that is closest to positive infinity is returned.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
@@ -18495,7 +18495,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlXPtrRangeToFunction' file='xpointer' module='xpointer'>
       <cond>defined(LIBXML_XPTR_ENABLED)</cond>
-      <info>Implement the range-to() XPointer function</info>
+      <info>Implement the range-to() XPointer function  Obsolete. range-to is not a real function but a special type of location step which is handled in xpath.c.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPointer Parser context'/>
       <arg name='nargs' type='int' info='the number of args'/>

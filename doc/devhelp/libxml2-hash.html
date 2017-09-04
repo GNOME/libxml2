@@ -130,11 +130,11 @@ The content of this structure is not made public by the API.
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlHashCreate"/>xmlHashCreate ()</h3><pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCreate		(int size)<br/>
 </pre><p>Create a new xmlHashTablePtr.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>the size of the hash table</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created object, or NULL if an error occured.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>the size of the hash table</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created object, or NULL if an error occurred.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlHashCreateDict"/>xmlHashCreateDict ()</h3><pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCreateDict	(int size, <br/>					 <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict)<br/>
 </pre><p>Create a new <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> which will use @dict as the internal dictionary</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>the size of the hash table</td></tr><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td>a dictionary to use for the hash</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created object, or NULL if an error occured.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>the size of the hash table</td></tr><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td>a dictionary to use for the hash</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created object, or NULL if an error occurred.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlHashFree"/>xmlHashFree ()</h3><pre class="programlisting">void	xmlHashFree			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br/>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br/>
 </pre><p>Free the hash @table and its contents. The userdata is deallocated with @f if provided.</p>

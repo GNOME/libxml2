@@ -8,73 +8,93 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>v2.9.3</version>
-    <last-release> Nov 20 2015</last-release>
+    <version>2.9.4</version>
+    <last-release> May 23 2016</last-release>
     <info-url>http://xmlsoft.org/</info-url>
     <changes>   - Security:
-  CVE-2015-8242 Buffer overead with HTML parser in push mode (Hugh Davenport),
-  CVE-2015-7500 Fix memory access error due to incorrect entities boundaries (Daniel Veillard),
-  CVE-2015-7499-2 Detect incoherency on GROW (Daniel Veillard),
-  CVE-2015-7499-1 Add xmlHaltParser() to stop the parser (Daniel Veillard),
-  CVE-2015-5312 Another entity expansion issue (David Drysdale),
-  CVE-2015-7497 Avoid an heap buffer overflow in xmlDictComputeFastQKey (David Drysdale),
-  CVE-2015-7498 Avoid processing entities after encoding conversion failures (Daniel Veillard),
-  CVE-2015-8035 Fix XZ compression support loop (Daniel Veillard),
-  CVE-2015-7942-2 Fix an error in previous Conditional section patch (Daniel Veillard),
-  CVE-2015-7942 Another variation of overflow in Conditional sections (Daniel Veillard),
-  CVE-2015-1819 Enforce the reader to run in constant memory (Daniel Veillard)
-  CVE-2015-7941_2 Cleanup conditional section error handling (Daniel Veillard),
-  CVE-2015-7941_1 Stop parsing on entities boundaries errors (Daniel Veillard),
+  More format string warnings with possible format string vulnerability (David Kilzer),
+  Avoid building recursive entities (Daniel Veillard),
+  Heap-based buffer overread in htmlCurrentChar (Pranjal Jumde),
+  Heap-based buffer-underreads due to xmlParseName (David Kilzer),
+  Heap use-after-free in xmlSAX2AttributeNs (Pranjal Jumde),
+  Heap use-after-free in htmlParsePubidLiteral and htmlParseSystemiteral (Pranjal Jumde),
+  Fix some format string warnings with possible format string vulnerability (David Kilzer),
+  Detect change of encoding when parsing HTML names (Hugh Davenport),
+  Fix inappropriate fetch of entities content (Daniel Veillard),
+  Bug 759398: Heap use-after-free in xmlDictComputeFastKey &lt;https://bugzilla.gnome.org/show_bug.cgi?id=759398&gt; (Pranjal Jumde),
+  Bug 758605: Heap-based buffer overread in xmlDictAddString &lt;https://bugzilla.gnome.org/show_bug.cgi?id=758605&gt; (Pranjal Jumde),
+  Bug 758588: Heap-based buffer overread in xmlParserPrintFileContextInternal &lt;https://bugzilla.gnome.org/show_bug.cgi?id=758588&gt; (David Kilzer),
+  Bug 757711: heap-buffer-overflow in xmlFAParsePosCharGroup &lt;https://bugzilla.gnome.org/show_bug.cgi?id=757711&gt; (Pranjal Jumde),
+  Add missing increments of recursion depth counter to XML parser. (Peter Simons)
   
    - Documentation:
-  Correct spelling of "calling" (Alex Henrie),
-  Fix a small error in xmllint --format description (Fabien Degomme),
-  Avoid XSS on the search of xmlsoft.org (Daniel Veillard)
+  Fix typo: s{ ec -&gt; cr }cipt (Jan Pokorný),
+  Fix typos: dictio{ nn -&gt; n }ar{y,ies} (Jan Pokorný),
+  Fix typos: PATH_{ SEAPARATOR -&gt; SEPARATOR } (Jan Pokorný),
+  Correct a typo. (Shlomi Fish)
   
    - Portability:
-  threads: use forward declarations only for glibc (Michael Heimpold),
-  Update Win32 configure.js to search for configure.ac (Daniel Veillard)
+  Correct the usage of LDFLAGS (Mattias Hansson),
+  Revert the use of SAVE_LDFLAGS in configure.ac (Mattias Hansson),
+  libxml2 hardcodes -L/lib in zlib/lzma tests which breaks cross-compiles (Mike Frysinger),
+  Fix apibuild for a recently added construct (Daniel Veillard),
+  Use pkg-config to locate zlib when possible (Stewart Brodie),
+  Use pkg-config to locate ICU when possible (Stewart Brodie),
+  Portability to non C99 compliant compilers (Patrick Monnerat),
+  dict.h: Move xmlDictPtr definition before includes to allow direct inclusion. (Patrick Monnerat),
+  os400: tell about xmllint and xmlcatalog in README400. (Patrick Monnerat),
+  os400: properly process SGML add in XMLCATALOG command. (Patrick Monnerat),
+  os400: implement CL command XMLCATALOG. (Patrick Monnerat),
+  os400: compile and install program xmlcatalog (qshell-only). (Patrick Monnerat),
+  os400: expand tabs in sources, strip trailing blanks. (Patrick Monnerat),
+  os400: implement CL command XMLLINT. (Patrick Monnerat),
+  os400: compile and install program xmllint (qshell-only). (Patrick Monnerat),
+  os400: initscript make_module(): Use options instead of positional parameters. (Patrick Monnerat),
+  os400: c14n.rpgle: allow *omit for nullable reference parameters. (Patrick Monnerat),
+  os400: use like() for double type. (Patrick Monnerat),
+  os400: use like() for int type. (Patrick Monnerat),
+  os400: use like() for unsigned int type. (Patrick Monnerat),
+  os400: use like() for enum types. (Patrick Monnerat),
+  Add xz to xml2-config --libs output (Baruch Siach),
+  Bug 760190: configure.ac should be able to build --with-icu without icu-config tool &lt;https://bugzilla.gnome.org/show_bug.cgi?id=760190&gt; (David Kilzer),
+  win32\VC10\config.h and VS 2015 (Bruce Dawson),
+  Add configure maintainer mode (orzen)
   
    - Bug Fixes:
-  Bug on creating new stream from entity (Daniel Veillard),
-  Fix some loop issues embedding NEXT (Daniel Veillard),
-  Do not print error context when there is none (Daniel Veillard),
-  Avoid extra processing of MarkupDecl when EOF (Hugh Davenport),
-  Fix parsing short unclosed comment uninitialized access (Daniel Veillard),
-  Add missing Null check in xmlParseExternalEntityPrivate (Gaurav Gupta),
-  Fix a bug in CData error handling in the push parser (Daniel Veillard),
-  Fix a bug on name parsing at the end of current input buffer (Daniel Veillard),
-  Fix the spurious ID already defined error (Daniel Veillard),
-  Fix previous change to node sort order (Nick Wellnhofer),
-  Fix a self assignment issue raised by clang (Scott Graham),
-  Fail parsing early on if encoding conversion failed (Daniel Veillard),
-  Do not process encoding values if the declaration if broken (Daniel Veillard),
-  Silence clang's -Wunknown-attribute (Michael Catanzaro),
-  xmlMemUsed is not thread-safe (Martin von Gagern),
-  Fix support for except in nameclasses (Daniel Veillard),
-  Fix order of root nodes (Nick Wellnhofer),
-  Allow attributes on descendant-or-self axis (Nick Wellnhofer),
-  Fix the fix to Windows locking (Steve Nairn),
-  Fix timsort invariant loop re: Envisage article (Christopher Swenson),
-  Don't add IDs in xmlSetTreeDoc (Nick Wellnhofer),
-  Account for ID attributes in xmlSetTreeDoc (Nick Wellnhofer),
-  Remove various unused value assignments (Philip Withnall),
-  Fix missing entities after CVE-2014-3660 fix (Daniel Veillard),
-  Revert "Missing initialization for the catalog module" (Daniel Veillard)
+  Avoid an out of bound access when serializing malformed strings (Daniel Veillard),
+  Unsigned addition may overflow in xmlMallocAtomicLoc() (David Kilzer),
+  Integer signed/unsigned type mismatch in xmlParserInputGrow() (David Kilzer),
+  Bug 763071: heap-buffer-overflow in xmlStrncat &lt;https://bugzilla.gnome.org/show_bug.cgi?id=763071&gt; (Pranjal Jumde),
+  Integer overflow parsing port number in URI (Michael Paddon),
+  Fix an error with regexp on nullable counted char transition (Daniel Veillard),
+  Fix memory leak with XPath namespace nodes (Nick Wellnhofer),
+  Fix namespace axis traversal (Nick Wellnhofer),
+      Fix null pointer deref in docs with no root element (Hugh Davenport),
+  Fix XSD validation of URIs with ampersands (Alex Henrie),
+  xmlschemastypes.c: accept endOfDayFrag Times set to "24:00:00" mean "end of day" and should not cause an error. (Patrick Monnerat),
+  xmlcatalog: flush stdout before interactive shell input. (Patrick Monnerat),
+  xmllint: flush stdout before interactive shell input. (Patrick Monnerat),
+  Don't recurse into OP_VALUEs in xmlXPathOptimizeExpression (Nick Wellnhofer),
+  Fix namespace::node() XPath expression (Nick Wellnhofer),
+  Fix OOB write in xmlXPathEmptyNodeSet (Nick Wellnhofer),
+  Fix parsing of NCNames in XPath (Nick Wellnhofer),
+  Fix OOB read with invalid UTF-8 in xmlUTF8Strsize (Nick Wellnhofer),
+  Do normalize string-based datatype value in RelaxNG facet checking (Audric Schiltknecht),
+  Bug 760921: REGRESSION (8eb55d78): doc/examples/io1 test fails after fix for "xmlSaveUri() incorrectly recomposes URIs with rootless paths" &lt;https://bugzilla.gnome.org/show_bug.cgi?id=760921&gt; (David Kilzer),
+  Bug 760861: REGRESSION (bf9c1dad): Missing results for test/schemas/regexp-char-ref_[01].xsd &lt;https://bugzilla.gnome.org/show_bug.cgi?id=760861&gt; (David Kilzer),
+  error.c: *input-&gt;cur == 0 does not mean no error (Pavel Raiskup),
+  Add missing RNG test files (David Kilzer),
+  Bug 760183: REGRESSION (v2.9.3): XML push parser fails with bogus UTF-8 encoding error when multi-byte character in large CDATA section is split across buffer &lt;https://bugzilla.gnome.org/show_bug.cgi?id=760183&gt; (David Kilzer),
+  Bug 758572: ASAN crash in make check &lt;https://bugzilla.gnome.org/show_bug.cgi?id=758572&gt; (David Kilzer),
+  Bug 721158: Missing ICU string when doing --version on xmllint &lt;https://bugzilla.gnome.org/show_bug.cgi?id=721158&gt; (David Kilzer),
+  python 3: libxml2.c wrappers create Unicode str already (Michael Stahl),
+  Add autogen.sh to distrib (orzen),
+  Heap-based buffer overread in xmlNextChar (Daniel Veillard)
   
    - Improvements:
-  Reuse xmlHaltParser() where it makes sense (Daniel Veillard),
-  xmlStopParser reset errNo (Daniel Veillard),
-  Reenable xz support by default (Daniel Veillard),
-  Recover unescaped less-than character in HTML recovery parsing (Daniel Veillard),
-  Allow HTML serializer to output HTML5 DOCTYPE (Shaun McCance),
-  Regression test for bug #695699 (Nick Wellnhofer),
-  Add a couple of XPath tests (Nick Wellnhofer),
-  Add Python 3 rpm subpackage (Tomas Radej),
-  libxml2-config.cmake.in: update include directories (Samuel Martin),
-  Adding example from bugs 738805 to regression tests (Daniel Veillard)
-  
-   - Cleanups:
+  Add more debugging info to runtest (Daniel Veillard),
+  Implement "runtest -u" mode (David Kilzer),
+  Add a make rule to rebuild for ASAN (Daniel Veillard)
   
 
 </changes>

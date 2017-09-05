@@ -1181,6 +1181,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");
 		if (name != NULL)
 		    xmlFree(name);
+                if (nval != NULL)
+                    xmlFree(nval);
 		return;
 	    }
 	} else {
@@ -1242,6 +1244,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	        xmlFree(ns);
 		if (name != NULL)
 		    xmlFree(name);
+                if (nval != NULL)
+                    xmlFree(nval);
 		return;
 	    }
 	} else {
@@ -1311,6 +1315,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
                                              name, namespace->href);
                         ctxt->wellFormed = 0;
                         if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+                        if (name != NULL)
+                            xmlFree(name);
                         goto error;
                     }
                 }

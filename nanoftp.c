@@ -511,6 +511,8 @@ xmlNanoFTPFreeCtxt(void * ctx) {
     if (ctxt->hostname != NULL) xmlFree(ctxt->hostname);
     if (ctxt->protocol != NULL) xmlFree(ctxt->protocol);
     if (ctxt->path != NULL) xmlFree(ctxt->path);
+    if (ctxt->user != NULL) xmlFree(ctxt->user);
+    if (ctxt->passwd != NULL) xmlFree(ctxt->passwd);
     ctxt->passive = 1;
     if (ctxt->controlFd != INVALID_SOCKET) closesocket(ctxt->controlFd);
     ctxt->controlFd = INVALID_SOCKET;

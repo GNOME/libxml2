@@ -1678,10 +1678,17 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
 
     fprintf(output, "%s", shift);
 
-    fprintf(output, "Compiled Expression : %d elements\n",
-	    comp->nbStep);
-    i = comp->last;
-    xmlXPathDebugDumpStepOp(output, comp, &comp->steps[i], depth + 1);
+#ifdef XPATH_STREAMING
+    if (comp->stream) {
+        fprintf(output, "Streaming Expression\n");
+    } else
+#endif
+    {
+        fprintf(output, "Compiled Expression : %d elements\n",
+                comp->nbStep);
+        i = comp->last;
+        xmlXPathDebugDumpStepOp(output, comp, &comp->steps[i], depth + 1);
+    }
 }
 
 #ifdef XP_DEBUG_OBJ_USAGE

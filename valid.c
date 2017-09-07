@@ -163,7 +163,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_ERROR, NULL, 0,
                     (const char *) str1,
-                    (const char *) str1,
+                    (const char *) str2,
                     (const char *) str3, 0, 0, msg, str1, str2, str3);
 }
 #endif /* LIBXML_VALID_ENABLED or LIBXML_SCHEMAS_ENABLED */
@@ -247,7 +247,7 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt,
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_WARNING, NULL, 0,
                     (const char *) str1,
-                    (const char *) str1,
+                    (const char *) str2,
                     (const char *) str3, 0, 0, msg, str1, str2, str3);
 }
 

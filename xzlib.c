@@ -797,6 +797,8 @@ __libxml2_xzclose(xzFile file)
         xmlFree(state->in);
     }
     xmlFree(state->path);
+    if ((state->msg != NULL) && (state->err != LZMA_MEM_ERROR))
+        xmlFree(state->msg);
     ret = close(state->fd);
     xmlFree(state);
     return ret ? ret : LZMA_OK;

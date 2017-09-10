@@ -2636,9 +2636,9 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	if (c == 0) break;
         if ((c == '&') && (str[1] == '#')) {
 	    int val = xmlParseStringCharRef(ctxt, &str);
-	    if (val != 0) {
-		COPY_BUF(0,buffer,nbchars,val);
-	    }
+	    if (val == 0)
+                goto int_error;
+	    COPY_BUF(0,buffer,nbchars,val);
 	    if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
 	        growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
 	    }
@@ -2648,9 +2648,6 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 			"String decoding Entity Reference: %.30s\n",
 			str);
 	    ent = xmlParseStringEntityRef(ctxt, &str);
-	    if ((ctxt->lastError.code == XML_ERR_ENTITY_LOOP) ||
-	        (ctxt->lastError.code == XML_ERR_INTERNAL_ERROR))
-	        goto int_error;
 	    xmlParserEntityCheck(ctxt, 0, ent, 0);
 	    if (ent != NULL)
 	        ctxt->nbentities += ent->checked / 2;
@@ -2664,30 +2661,27 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		} else {
 		    xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
 			    "predefined entity has no content\n");
+                    goto int_error;
 		}
 	    } else if ((ent != NULL) && (ent->content != NULL)) {
 		ctxt->depth++;
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
 			                      0, 0, 0);
 		ctxt->depth--;
+		if (rep == NULL)
+                    goto int_error;
 
-		if ((ctxt->lastError.code == XML_ERR_ENTITY_LOOP) ||
-		    (ctxt->lastError.code == XML_ERR_INTERNAL_ERROR))
-		    goto int_error;
-
-		if (rep != NULL) {
-		    current = rep;
-		    while (*current != 0) { /* non input consuming loop */
-			buffer[nbchars++] = *current++;
-			if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
-			    if (xmlParserEntityCheck(ctxt, nbchars, ent, 0))
-				goto int_error;
-			    growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
-			}
-		    }
-		    xmlFree(rep);
-		    rep = NULL;
-		}
+                current = rep;
+                while (*current != 0) { /* non input consuming loop */
+                    buffer[nbchars++] = *current++;
+                    if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
+                        if (xmlParserEntityCheck(ctxt, nbchars, ent, 0))
+                            goto int_error;
+                        growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
+                    }
+                }
+                xmlFree(rep);
+                rep = NULL;
 	    } else if (ent != NULL) {
 		int i = xmlStrlen(ent->name);
 		const xmlChar *cur = ent->name;
@@ -2705,8 +2699,6 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		xmlGenericError(xmlGenericErrorContext,
 			"String decoding PE Reference: %.30s\n", str);
 	    ent = xmlParseStringPEReference(ctxt, &str);
-	    if (ctxt->lastError.code == XML_ERR_ENTITY_LOOP)
-	        goto int_error;
 	    xmlParserEntityCheck(ctxt, 0, ent, 0);
 	    if (ent != NULL)
 	        ctxt->nbentities += ent->checked / 2;
@@ -2732,19 +2724,19 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
 			                      0, 0, 0);
 		ctxt->depth--;
-		if (rep != NULL) {
-		    current = rep;
-		    while (*current != 0) { /* non input consuming loop */
-			buffer[nbchars++] = *current++;
-			if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
-			    if (xmlParserEntityCheck(ctxt, nbchars, ent, 0))
-			        goto int_error;
-			    growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
-			}
-		    }
-		    xmlFree(rep);
-		    rep = NULL;
-		}
+		if (rep == NULL)
+                    goto int_error;
+                current = rep;
+                while (*current != 0) { /* non input consuming loop */
+                    buffer[nbchars++] = *current++;
+                    if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
+                        if (xmlParserEntityCheck(ctxt, nbchars, ent, 0))
+                            goto int_error;
+                        growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
+                    }
+                }
+                xmlFree(rep);
+                rep = NULL;
 	    }
 	} else {
 	    COPY_BUF(l,buffer,nbchars,c);
@@ -4010,7 +4002,9 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 			        ent->checked |= 1;
 			    xmlFree(rep);
 			    rep = NULL;
-			}
+			} else {
+                            ent->content[0] = 0;
+                        }
 		    }
 
 		    /*

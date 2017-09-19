@@ -8271,6 +8271,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
      * Is there any DTD definition ?
      */
     if (RAW == '[') {
+        int baseInputNr = ctxt->inputNr;
         ctxt->instate = XML_PARSER_DTD;
         NEXT;
 	/*
@@ -8278,7 +8279,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	 * PEReferences.
 	 * Subsequence (markupdecl | PEReference | S)*
 	 */
-	while (((RAW != ']') || (ctxt->inputNr > 1)) &&
+	while (((RAW != ']') || (ctxt->inputNr > baseInputNr)) &&
                (ctxt->instate != XML_PARSER_EOF)) {
 	    const xmlChar *check = CUR_PTR;
 	    unsigned int cons = ctxt->input->consumed;
@@ -8290,7 +8291,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 		xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
 	     "xmlParseInternalSubset: error detected in Markup declaration\n");
-                if (ctxt->inputNr > 1)
+                if (ctxt->inputNr > baseInputNr)
                     xmlPopInput(ctxt);
                 else
 		    break;

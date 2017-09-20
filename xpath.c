@@ -13531,10 +13531,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                         xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
                 if (op->value5 == NULL) {
 		    val = xmlXPathVariableLookup(ctxt->context, op->value4);
-		    if (val == NULL) {
-			ctxt->error = XPATH_UNDEF_VARIABLE_ERROR;
-			return(0);
-		    }
+		    if (val == NULL)
+			XP_ERROR0(XPATH_UNDEF_VARIABLE_ERROR);
                     valuePush(ctxt, val);
 		} else {
                     const xmlChar *URI;
@@ -13549,10 +13547,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                     }
 		    val = xmlXPathVariableLookupNS(ctxt->context,
                                                        op->value4, URI);
-		    if (val == NULL) {
-			ctxt->error = XPATH_UNDEF_VARIABLE_ERROR;
-			return(0);
-		    }
+		    if (val == NULL)
+			XP_ERROR0(XPATH_UNDEF_VARIABLE_ERROR);
                     valuePush(ctxt, val);
                 }
                 return (total);

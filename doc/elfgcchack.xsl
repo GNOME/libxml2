@@ -18,7 +18,7 @@
 #ifdef IN_LIBXML
 #ifdef __GNUC__
 #ifdef PIC
-#ifdef linux
+#ifdef __linux__
 #if (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ >= 3) || (__GNUC__ > 3)
 
 #include "libxml/c14n.h"

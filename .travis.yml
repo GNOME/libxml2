@@ -8,8 +8,7 @@ addons:
 matrix:
   include:
     # Try to emulate a C89 compiler on a POSIX system by disabling as many
-    # GNU extensions as possible. -Dlinux is required to make the weak
-    # pthread symbols work.
+    # GNU extensions as possible.
     - compiler: gcc
       env: CFLAGS="-O2 -std=c89 -D_POSIX_C_SOURCE=200809L"
     # clang with AddressSanitizer and UndefinedBehaviorSanitizer.

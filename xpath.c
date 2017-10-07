@@ -6400,16 +6400,12 @@ xmlXPathNodeValHash(xmlNodePtr node) {
     }
     while (tmp != NULL) {
 	switch (tmp->type) {
-	    case XML_COMMENT_NODE:
-	    case XML_PI_NODE:
 	    case XML_CDATA_SECTION_NODE:
 	    case XML_TEXT_NODE:
 		string = tmp->content;
 		break;
-	    case XML_NAMESPACE_DECL:
-		string = ((xmlNsPtr)tmp)->href;
-		break;
 	    default:
+                string = NULL;
 		break;
 	}
 	if ((string != NULL) && (string[0] != 0)) {

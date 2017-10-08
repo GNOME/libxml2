@@ -182,7 +182,21 @@ xmlHTTPErrMemory(const char *extra)
  */
 static int socket_errno(void) {
 #ifdef _WINSOCKAPI_
-    return(WSAGetLastError());
+    int err = WSAGetLastError();
+    switch(err) {
+        case WSAECONNRESET:
+            return(ECONNRESET);
+        case WSAEINPROGRESS:
+            return(EINPROGRESS);
+        case WSAEINTR:
+            return(EINTR);
+        case WSAESHUTDOWN:
+            return(ESHUTDOWN);
+        case WSAEWOULDBLOCK:
+            return(EWOULDBLOCK);
+        default:
+            return(err);
+    }
 #else
     return(errno);
 #endif
@@ -629,7 +643,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt)
 
         if ((select(ctxt->fd + 1, &rfd, NULL, NULL, &tv) < 1)
 #if defined(EINTR)
-            && (errno != EINTR)
+            && (socket_errno() != EINTR)
 #endif
             )
             return (0);

@@ -31,8 +31,6 @@
 #define _WINSOCKAPI_
 #include <wsockcompat.h>
 #include <winsock2.h>
-#undef XML_SOCKLEN_T
-#define XML_SOCKLEN_T unsigned int
 #endif
 
 #ifdef HAVE_SYS_TIMEB_H

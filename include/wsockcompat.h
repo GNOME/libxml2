@@ -27,10 +27,8 @@
 #endif
 #endif
 
-#if !defined SOCKLEN_T
-#define SOCKLEN_T int
-#endif
-
+#undef XML_SOCKLEN_T
+#define XML_SOCKLEN_T int
 
 #ifndef ECONNRESET
 #define ECONNRESET WSAECONNRESET

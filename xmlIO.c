@@ -40,7 +40,8 @@
 #include <lzma.h>
 #endif
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN32) && !defined(__CYGWIN__)
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
@@ -3829,7 +3830,7 @@ xmlParserGetDirectory(const char *filename) {
 
     if (filename == NULL) return(NULL);
 
-#if defined(WIN32) && !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__)
 #   define IS_XMLPGD_SEP(ch) ((ch=='/')||(ch=='\\'))
 #else
 #   define IS_XMLPGD_SEP(ch) (ch=='/')

@@ -24,14 +24,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #else
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
-#elif defined(WIN32)
+#elif defined(_WIN32)
 typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #endif
 #endif
 
 #ifndef MK_UINT64
-#if defined(WIN32) && defined(_MSC_VER) && _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER < 1300
 #define MK_UINT64(x) ((uint64_t)(x))
 #else
 #define MK_UINT64(x) x##ULL

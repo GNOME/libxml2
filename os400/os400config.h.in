@@ -333,9 +333,6 @@
    #define below would cause a syntax error. */
 #undef _UINT32_T
 
-/* Using the Win32 Socket implementation */
-#undef _WINSOCKAPI_
-
 /* ss_family is not defined here, use __ss_family instead */
 #undef ss_family
 

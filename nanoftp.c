@@ -12,8 +12,6 @@
 #define HAVE_NETINET_IN_H
 #define HAVE_NETDB_H
 #define HAVE_SYS_TIME_H
-#else /* TESTING */
-#define NEED_SOCKETS
 #endif /* TESTING */
 
 #define IN_LIBXML
@@ -77,12 +75,8 @@
 #endif
 
 
-#if defined(__MINGW32__) || defined(_WIN32_WCE)
-#ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_
-#endif
+#if defined(_WIN32) && !defined(__CYGWIN__)
 #include <wsockcompat.h>
-#include <winsock2.h>
 #endif
 
 /**

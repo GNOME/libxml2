@@ -27,6 +27,7 @@
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
 #elif defined HAVE_WIN32_THREADS
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #ifndef HAVE_COMPILER_TLS
 #include <process.h>

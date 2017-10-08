@@ -1640,7 +1640,6 @@ case "$host" in
  CPPFLAGS="$CPPFLAGS -DWIN32"
  WIN32_EXTRA_LIBADD="-lws2_32"
  WIN32_EXTRA_LDFLAGS="-no-undefined"
- AC_DEFINE([_WINSOCKAPI_],1,[Using the Win32 Socket implementation])
  if test "${PYTHON}" != ""
  then
    WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"

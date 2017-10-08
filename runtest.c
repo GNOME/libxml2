@@ -4021,7 +4021,7 @@ thread_specific_data(void *private_data)
     return ((void *) Okay);
 }
 
-#if defined WIN32
+#if defined(_WIN32) && !defined(__CYGWIN__)
 #include <windows.h>
 #include <string.h>
 

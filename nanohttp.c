@@ -11,7 +11,6 @@
  * daniel@veillard.com
  */
 
-#define NEED_SOCKETS
 #define IN_LIBXML
 #include "libxml.h"
 
@@ -74,12 +73,8 @@
 #define XML_SOCKLEN_T unsigned int
 #endif
 
-#if defined(__MINGW32__) || defined(_WIN32_WCE)
-#ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_
-#endif
+#if defined(_WIN32) && !defined(__CYGWIN__)
 #include <wsockcompat.h>
-#include <winsock2.h>
 #endif
 
 #include <libxml/globals.h>

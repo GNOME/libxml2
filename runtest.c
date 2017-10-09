@@ -119,8 +119,8 @@ typedef struct
 } glob_t;
 
 #define GLOB_DOOFFS 0
-static int glob(const char *pattern, int flags,
-                int errfunc(const char *epath, int eerrno),
+static int glob(const char *pattern, ATTRIBUTE_UNUSED int flags,
+                ATTRIBUTE_UNUSED int errfunc(const char *epath, int eerrno),
                 glob_t *pglob) {
     glob_t *ret;
     WIN32_FIND_DATA FindFileData;
@@ -4522,6 +4522,11 @@ int
 main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     int i, a, ret = 0;
     int subset = 0;
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
+#endif
 
     initializeLibxml2();
 

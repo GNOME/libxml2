@@ -1053,9 +1053,9 @@ if test "$with_threads" = "no" ; then
 else
     echo Enabling multithreaded support
 
-    dnl Default to native threads on Win32
+    dnl Default to native threads on Windows
     case $host_os in
-       *mingw32*) if test "$with_threads" != "pthread" && test "$with_threads" != "no"; then
+       *mingw*) if test "$with_threads" != "pthread" && test "$with_threads" != "no"; then
                WITH_THREADS="1"
                THREADS_W32="1"
                THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"

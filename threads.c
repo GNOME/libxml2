@@ -139,7 +139,7 @@ static DWORD globalkey = TLS_OUT_OF_INDEXES;
 static DWORD mainthread;
 static struct {
     DWORD done;
-    DWORD control;
+    LONG control;
 } run_once = { 0, 0};
 static volatile LPCRITICAL_SECTION global_init_lock = NULL;
 
@@ -439,7 +439,8 @@ __xmlGlobalInitMutexLock(void)
 
         /* Swap it into the global_init_lock */
 #ifdef InterlockedCompareExchangePointer
-        InterlockedCompareExchangePointer(&global_init_lock, cs, NULL);
+        InterlockedCompareExchangePointer((void **) &global_init_lock,
+                                          cs, NULL);
 #else /* Use older void* version */
         InterlockedCompareExchange((void **) &global_init_lock,
                                    (void *) cs, NULL);
@@ -981,10 +982,12 @@ xmlOnceInit(void)
 #elif defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #if defined(LIBXML_STATIC_FOR_DLL)
 BOOL XMLCALL
-xmlDllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+xmlDllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
+           ATTRIBUTE_UNUSED LPVOID lpvReserved)
 #else
 BOOL WINAPI
-DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
+        ATTRIBUTE_UNUSED LPVOID lpvReserved)
 #endif
 {
     switch (fdwReason) {

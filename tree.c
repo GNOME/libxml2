@@ -19,6 +19,7 @@
 #include "libxml.h"
 
 #include <string.h> /* for memset() only ! */
+#include <stddef.h>
 #include <limits.h>
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
@@ -4605,7 +4606,7 @@ xmlGetLineNoInternal(const xmlNode *node, int depth)
 	(node->type == XML_PI_NODE)) {
 	if (node->line == 65535) {
 	    if ((node->type == XML_TEXT_NODE) && (node->psvi != NULL))
-	        result = (long) node->psvi;
+	        result = (long) (ptrdiff_t) node->psvi;
 	    else if ((node->type == XML_ELEMENT_NODE) &&
 	             (node->children != NULL))
 	        result = xmlGetLineNoInternal(node->children, depth + 1);

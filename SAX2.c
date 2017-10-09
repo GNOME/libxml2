@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stddef.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -1914,7 +1915,7 @@ skip:
 	    else {
 	        ret->line = 65535;
 		if (ctxt->options & XML_PARSE_BIG_LINES)
-		    ret->psvi = (void *) (long) ctxt->input->line;
+		    ret->psvi = (void *) (ptrdiff_t) ctxt->input->line;
 	    }
 	}
     }

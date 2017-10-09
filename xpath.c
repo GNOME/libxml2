@@ -24,6 +24,7 @@
 
 #include <limits.h>
 #include <string.h>
+#include <stddef.h>
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -159,7 +160,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
     int misc = 0, precedence1 = 0, precedence2 = 0;
     xmlNodePtr miscNode1 = NULL, miscNode2 = NULL;
     xmlNodePtr cur, root;
-    long l1, l2;
+    ptrdiff_t l1, l2;
 
     if ((node1 == NULL) || (node2 == NULL))
 	return(-2);
@@ -173,12 +174,12 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
     switch (node1->type) {
 	case XML_ELEMENT_NODE:
 	    if (node2->type == XML_ELEMENT_NODE) {
-		if ((0 > (long) node1->content) && /* TODO: Would a != 0 suffice here? */
-		    (0 > (long) node2->content) &&
+		if ((0 > (ptrdiff_t) node1->content) &&
+		    (0 > (ptrdiff_t) node2->content) &&
 		    (node1->doc == node2->doc))
 		{
-		    l1 = -((long) node1->content);
-		    l2 = -((long) node2->content);
+		    l1 = -((ptrdiff_t) node1->content);
+		    l2 = -((ptrdiff_t) node2->content);
 		    if (l1 < l2)
 			return(1);
 		    if (l1 > l2)
@@ -223,7 +224,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 		node1 = node1->parent;
 	    }
 	    if ((node1 == NULL) || (node1->type != XML_ELEMENT_NODE) ||
-		(0 <= (long) node1->content)) {
+		(0 <= (ptrdiff_t) node1->content)) {
 		/*
 		* Fallback for whatever case.
 		*/
@@ -273,7 +274,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 		node2 = node2->parent;
 	    }
 	    if ((node2 == NULL) || (node2->type != XML_ELEMENT_NODE) ||
-		(0 <= (long) node2->content))
+		(0 <= (ptrdiff_t) node2->content))
 	    {
 		node2 = miscNode2;
 		precedence2 = 0;
@@ -346,12 +347,12 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (long) node1->content) &&
-	(0 > (long) node2->content) &&
+	(0 > (ptrdiff_t) node1->content) &&
+	(0 > (ptrdiff_t) node2->content) &&
 	(node1->doc == node2->doc)) {
 
-	l1 = -((long) node1->content);
-	l2 = -((long) node2->content);
+	l1 = -((ptrdiff_t) node1->content);
+	l2 = -((ptrdiff_t) node2->content);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
@@ -414,12 +415,12 @@ turtle_comparison:
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (long) node1->content) &&
-	(0 > (long) node2->content) &&
+	(0 > (ptrdiff_t) node1->content) &&
+	(0 > (ptrdiff_t) node2->content) &&
 	(node1->doc == node2->doc)) {
 
-	l1 = -((long) node1->content);
-	l2 = -((long) node2->content);
+	l1 = -((ptrdiff_t) node1->content);
+	l2 = -((ptrdiff_t) node2->content);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
@@ -3239,7 +3240,7 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
  */
 long
 xmlXPathOrderDocElems(xmlDocPtr doc) {
-    long count = 0;
+    ptrdiff_t count = 0;
     xmlNodePtr cur;
 
     if (doc == NULL)
@@ -3271,7 +3272,7 @@ xmlXPathOrderDocElems(xmlDocPtr doc) {
 	    }
 	} while (cur != NULL);
     }
-    return(count);
+    return((long) count);
 }
 
 /**
@@ -3339,13 +3340,13 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (long) node1->content) &&
-	(0 > (long) node2->content) &&
+	(0 > (ptrdiff_t) node1->content) &&
+	(0 > (ptrdiff_t) node2->content) &&
 	(node1->doc == node2->doc)) {
-	long l1, l2;
+	ptrdiff_t l1, l2;
 
-	l1 = -((long) node1->content);
-	l2 = -((long) node2->content);
+	l1 = -((ptrdiff_t) node1->content);
+	l2 = -((ptrdiff_t) node2->content);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
@@ -3402,13 +3403,13 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (long) node1->content) &&
-	(0 > (long) node2->content) &&
+	(0 > (ptrdiff_t) node1->content) &&
+	(0 > (ptrdiff_t) node2->content) &&
 	(node1->doc == node2->doc)) {
-	long l1, l2;
+	ptrdiff_t l1, l2;
 
-	l1 = -((long) node1->content);
-	l2 = -((long) node2->content);
+	l1 = -((ptrdiff_t) node1->content);
+	l2 = -((ptrdiff_t) node2->content);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)

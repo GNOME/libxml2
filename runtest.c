@@ -3951,19 +3951,23 @@ c14n11WithoutCommentTest(const char *filename,
  */
 #define	MAX_ARGC	20
 
-static const char *catalog = "test/threads/complex.xml";
-static const char *testfiles[] = {
-    "test/threads/abc.xml",
-    "test/threads/acb.xml",
-    "test/threads/bac.xml",
-    "test/threads/bca.xml",
-    "test/threads/cab.xml",
-    "test/threads/cba.xml",
-    "test/threads/invalid.xml",
-};
+typedef struct {
+    const char *filename;
+    int okay;
+} xmlThreadParams;
 
-static const char *Okay = "OK";
-static const char *Failed = "Failed";
+static const char *catalog = "test/threads/complex.xml";
+static xmlThreadParams threadParams[] = {
+    { "test/threads/abc.xml", 0 },
+    { "test/threads/acb.xml", 0 },
+    { "test/threads/bac.xml", 0 },
+    { "test/threads/bca.xml", 0 },
+    { "test/threads/cab.xml", 0 },
+    { "test/threads/cba.xml", 0 },
+    { "test/threads/invalid.xml", 0 }
+};
+static const unsigned int num_threads = sizeof(threadParams) /
+                                        sizeof(threadParams[0]);
 
 #ifndef xmlDoValidityCheckingDefaultValue
 #error xmlDoValidityCheckingDefaultValue is not a macro
@@ -3976,7 +3980,8 @@ static void *
 thread_specific_data(void *private_data)
 {
     xmlDocPtr myDoc;
-    const char *filename = (const char *) private_data;
+    xmlThreadParams *params = (xmlThreadParams *) private_data;
+    const char *filename = params->filename;
     int okay = 1;
 
     if (!strcmp(filename, "test/threads/invalid.xml")) {
@@ -4016,9 +4021,8 @@ thread_specific_data(void *private_data)
             okay = 0;
         }
     }
-    if (okay == 0)
-        return ((void *) Failed);
-    return ((void *) Okay);
+    params->okay = okay;
+    return(NULL);
 }
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
@@ -4032,15 +4036,14 @@ static HANDLE tid[MAX_ARGC];
 static DWORD WINAPI
 win32_thread_specific_data(void *private_data)
 {
-    return((DWORD) thread_specific_data(private_data));
+    thread_specific_data(private_data);
+    return(0);
 }
 
 static int
 testThread(void)
 {
     unsigned int i, repeat;
-    unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);
-    DWORD results[MAX_ARGC];
     BOOL ret;
     int res = 0;
 
@@ -4050,7 +4053,6 @@ testThread(void)
         nb_tests++;
 
         for (i = 0; i < num_threads; i++) {
-            results[i] = 0;
             tid[i] = (HANDLE) - 1;
         }
 
@@ -4059,7 +4061,7 @@ testThread(void)
 
             tid[i] = CreateThread(NULL, 0,
                                   win32_thread_specific_data,
-				  (void *) testfiles[i], 0,
+				  (void *) &threadParams[i], 0,
                                   &useless);
             if (tid[i] == NULL) {
                 fprintf(stderr, "CreateThread failed\n");
@@ -4074,7 +4076,8 @@ testThread(void)
 	}
 
         for (i = 0; i < num_threads; i++) {
-            ret = GetExitCodeThread(tid[i], &results[i]);
+            DWORD exitCode;
+            ret = GetExitCodeThread(tid[i], &exitCode);
             if (ret == 0) {
                 fprintf(stderr, "GetExitCodeThread failed\n");
                 return(1);
@@ -4084,9 +4087,9 @@ testThread(void)
 
         xmlCatalogCleanup();
         for (i = 0; i < num_threads; i++) {
-            if (results[i] != (DWORD) Okay) {
+            if (threadParams[i].okay == 0) {
                 fprintf(stderr, "Thread %d handling %s failed\n",
-		        i, testfiles[i]);
+		        i, threadParams[i].filename);
 	        res = 1;
 	    }
         }
@@ -4104,8 +4107,6 @@ static int
 testThread(void)
 {
     unsigned int i, repeat;
-    unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);
-    void *results[MAX_ARGC];
     status_t ret;
     int res = 0;
 
@@ -4113,13 +4114,12 @@ testThread(void)
     for (repeat = 0; repeat < 500; repeat++) {
         xmlLoadCatalog(catalog);
         for (i = 0; i < num_threads; i++) {
-            results[i] = NULL;
             tid[i] = (thread_id) - 1;
         }
         for (i = 0; i < num_threads; i++) {
             tid[i] =
                 spawn_thread(thread_specific_data, "xmlTestThread",
-                             B_NORMAL_PRIORITY, (void *) testfiles[i]);
+                             B_NORMAL_PRIORITY, (void *) &threadParams[i]);
             if (tid[i] < B_OK) {
                 fprintf(stderr, "beos_thread_create failed\n");
                 return (1);
@@ -4127,7 +4127,8 @@ testThread(void)
             printf("beos_thread_create %d -> %d\n", i, tid[i]);
         }
         for (i = 0; i < num_threads; i++) {
-            ret = wait_for_thread(tid[i], &results[i]);
+            void *result;
+            ret = wait_for_thread(tid[i], &result);
             printf("beos_thread_wait %d -> %d\n", i, ret);
             if (ret != B_OK) {
                 fprintf(stderr, "beos_thread_wait failed\n");
@@ -4138,8 +4139,9 @@ testThread(void)
         xmlCatalogCleanup();
         ret = B_OK;
         for (i = 0; i < num_threads; i++)
-            if (results[i] != (void *) Okay) {
-                printf("Thread %d handling %s failed\n", i, testfiles[i]);
+            if (threadParams[i].okay == 0) {
+                printf("Thread %d handling %s failed\n", i,
+                       threadParams[i].filename);
                 ret = B_ERROR;
             }
     }
@@ -4157,8 +4159,6 @@ static int
 testThread(void)
 {
     unsigned int i, repeat;
-    unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);
-    void *results[MAX_ARGC];
     int ret;
     int res = 0;
 
@@ -4169,20 +4169,20 @@ testThread(void)
         nb_tests++;
 
         for (i = 0; i < num_threads; i++) {
-            results[i] = NULL;
             tid[i] = (pthread_t) - 1;
         }
 
         for (i = 0; i < num_threads; i++) {
             ret = pthread_create(&tid[i], 0, thread_specific_data,
-                                 (void *) testfiles[i]);
+                                 (void *) &threadParams[i]);
             if (ret != 0) {
                 fprintf(stderr, "pthread_create failed\n");
                 return (1);
             }
         }
         for (i = 0; i < num_threads; i++) {
-            ret = pthread_join(tid[i], &results[i]);
+            void *result;
+            ret = pthread_join(tid[i], &result);
             if (ret != 0) {
                 fprintf(stderr, "pthread_join failed\n");
                 return (1);
@@ -4191,9 +4191,9 @@ testThread(void)
 
         xmlCatalogCleanup();
         for (i = 0; i < num_threads; i++)
-            if (results[i] != (void *) Okay) {
+            if (threadParams[i].okay == 0) {
                 fprintf(stderr, "Thread %d handling %s failed\n",
-                        i, testfiles[i]);
+                        i, threadParams[i].filename);
                 res = 1;
             }
     }

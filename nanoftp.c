@@ -901,7 +901,7 @@ xmlNanoFTPConnect(void *ctx) {
 	    __xmlIOErr(XML_FROM_FTP, 0, "getaddrinfo failed");
 	    return (-1);
 	}
-	if (tmp->ai_addrlen > sizeof(ctxt->ftpAddr)) {
+	if ((size_t)tmp->ai_addrlen > sizeof(ctxt->ftpAddr)) {
 	    if (result)
 		freeaddrinfo (result);
 	    __xmlIOErr(XML_FROM_FTP, 0, "gethostbyname address mismatch");

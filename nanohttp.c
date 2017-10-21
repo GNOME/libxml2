@@ -1088,7 +1088,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 
 	for (res = result; res; res = res->ai_next) {
 	    if (res->ai_family == AF_INET) {
-		if (res->ai_addrlen > sizeof(sockin)) {
+		if ((size_t)res->ai_addrlen > sizeof(sockin)) {
 		    __xmlIOErr(XML_FROM_HTTP, 0, "address size mismatch\n");
 		    freeaddrinfo (result);
 		    return INVALID_SOCKET;
@@ -1098,7 +1098,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 		addr = (struct sockaddr *)&sockin;
 #ifdef SUPPORT_IP6
 	    } else if (have_ipv6 () && (res->ai_family == AF_INET6)) {
-		if (res->ai_addrlen > sizeof(sockin6)) {
+		if ((size_t)res->ai_addrlen > sizeof(sockin6)) {
 		    __xmlIOErr(XML_FROM_HTTP, 0, "address size mismatch\n");
 		    freeaddrinfo (result);
 		    return INVALID_SOCKET;

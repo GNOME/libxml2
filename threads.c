@@ -981,9 +981,9 @@ xmlOnceInit(void)
 #ifdef HAVE_PTHREAD_H
 #elif defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #if defined(LIBXML_STATIC_FOR_DLL)
-BOOL XMLCALL
-xmlDllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
-           ATTRIBUTE_UNUSED LPVOID lpvReserved)
+int XMLCALL
+xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
+           ATTRIBUTE_UNUSED void *lpvReserved)
 #else
 BOOL WINAPI
 DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,

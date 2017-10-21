@@ -528,16 +528,16 @@ static __inline int PUSH_NEXT(SORT_TYPE *dst,
 }
 
 void TIM_SORT(SORT_TYPE *dst, const size_t size) {
-  /* don't bother sorting an array of size 1 */
-  if (size <= 1) {
-    return;
-  }
-
   size_t minrun;
   TEMP_STORAGE_T _store, *store;
   TIM_SORT_RUN_T run_stack[TIM_SORT_STACK_SIZE];
   size_t stack_curr = 0;
   size_t curr = 0;
+
+  /* don't bother sorting an array of size 1 */
+  if (size <= 1) {
+    return;
+  }
 
   if (size < 64) {
     BINARY_INSERTION_SORT(dst, size);

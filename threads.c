@@ -985,6 +985,16 @@ int XMLCALL
 xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
            ATTRIBUTE_UNUSED void *lpvReserved)
 #else
+/* declare to avoid "no previous prototype for 'DllMain'" warning */
+/* Note that we do NOT want to include this function declaration in
+   a public header because it's meant to be called by Windows itself,
+   not a program that uses this library.  This also has to be exported. */
+
+XMLPUBFUN BOOL WINAPI
+DllMain (HINSTANCE hinstDLL,
+         DWORD     fdwReason,
+         LPVOID    lpvReserved);
+
 BOOL WINAPI
 DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
         ATTRIBUTE_UNUSED LPVOID lpvReserved)

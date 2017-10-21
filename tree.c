@@ -8259,7 +8259,7 @@ xmlDOMWrapRemoveNode(xmlDOMWrapCtxtPtr ctxt, xmlDocPtr doc,
 			ns = ns->next;
 		    } while (ns != NULL);
 		}
-		/* No break on purpose. */
+                /* Falls through. */
 	    case XML_ATTRIBUTE_NODE:
 		if (node->ns != NULL) {
 		    /*
@@ -8850,7 +8850,7 @@ next_ns_decl:
 		}
 		if (! adoptns)
 		    goto ns_end;
-		/* No break on purpose. */
+                /* Falls through. */
 	    case XML_ATTRIBUTE_NODE:
 		/* No ns, no fun. */
 		if (cur->ns == NULL)
@@ -9131,7 +9131,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 			    goto internal_error;
 		    }
 		}
-		/* No break on purpose. */
+                /* Falls through. */
 	    case XML_ATTRIBUTE_NODE:
 		/* No namespace, no fun. */
 		if (cur->ns == NULL)

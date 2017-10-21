@@ -1036,6 +1036,7 @@ xmlNanoFTPConnect(void *ctx) {
 		case 2:
 		    if (proxyPasswd == NULL)
 			break;
+                    /* Falls through. */
 		case 3:
 		    if (proxyPasswd != NULL)
 			snprintf(buf, sizeof(buf), "PASS %s\r\n", proxyPasswd);
@@ -1105,6 +1106,7 @@ xmlNanoFTPConnect(void *ctx) {
 		    ctxt->controlFd = INVALID_SOCKET;
 		    return(-1);
 		}
+                /* Falls through. */
 	    case 2:
 		/* USER user@host command */
 		if (ctxt->user == NULL)
@@ -1158,6 +1160,7 @@ xmlNanoFTPConnect(void *ctx) {
 		    ctxt->controlFd = INVALID_SOCKET;
 		    return(-1);
 		}
+                /* Falls through. */
 	    case 3:
 		/*
 		 * If you need support for other Proxy authentication scheme
@@ -1206,6 +1209,7 @@ xmlNanoFTPConnect(void *ctx) {
 	case 3:
 	    __xmlIOErr(XML_FROM_FTP, XML_FTP_ACCNT,
 		       "FTP server asking for ACCNT on anonymous\n");
+           /* Falls through. */
 	case 1:
 	case 4:
 	case 5:

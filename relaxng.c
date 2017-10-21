@@ -8891,7 +8891,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
             if (ret != 0) {
                 break;
             }
-            /* no break on purpose */
+            /* Falls through. */
         case XML_RELAXNG_ZEROORMORE:{
                 xmlChar *cur, *temp;
 
@@ -10168,7 +10168,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
             }
             if (ctxt->errNr > errNr)
                 xmlRelaxNGPopErrors(ctxt, errNr);
-            /* no break on purpose */
+            /* Falls through. */
         case XML_RELAXNG_ZEROORMORE:{
                 int progress;
                 xmlRelaxNGStatesPtr states = NULL, res = NULL;

@@ -5190,6 +5190,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
             case XML_TEXT_NODE:
 		if (xmlIsBlankNode(cur))
 		    break;
+                /* Falls through. */
             case XML_CDATA_SECTION_NODE:
             case XML_ENTITY_REF_NODE:
 	        strcat(buf, "CDATA");

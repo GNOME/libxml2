@@ -1742,6 +1742,7 @@ xmlSchemaFormatItemForReport(xmlChar **buf,
 		*buf = xmlStrcat(*buf, BAD_CAST "'");
 		FREE_AND_NULL(str);
 	    }
+            /* Falls through. */
 	default:
 	    named = 0;
 	}

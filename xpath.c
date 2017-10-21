@@ -7042,7 +7042,7 @@ xmlXPathEqualValuesCommon(xmlXPathParserContextPtr ctxt,
 		    valuePush(ctxt, arg2);
 		    xmlXPathNumberFunction(ctxt, 1);
 		    arg2 = valuePop(ctxt);
-		    /* no break on purpose */
+                    /* Falls through. */
 		case XPATH_NUMBER:
 		    /* Hand check NaN and Infinity equalities */
 		    if (xmlXPathIsNaN(arg1->floatval) ||

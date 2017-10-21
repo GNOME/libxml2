@@ -453,14 +453,23 @@ xmlDictComputeFastKey(const xmlChar *name, int namelen, int seed) {
     }
     switch (namelen) {
         case 10: value += name[9];
+        /* Falls through. */
         case 9: value += name[8];
+        /* Falls through. */
         case 8: value += name[7];
+        /* Falls through. */
         case 7: value += name[6];
+        /* Falls through. */
         case 6: value += name[5];
+        /* Falls through. */
         case 5: value += name[4];
+        /* Falls through. */
         case 4: value += name[3];
+        /* Falls through. */
         case 3: value += name[2];
+        /* Falls through. */
         case 2: value += name[1];
+        /* Falls through. */
         default: break;
     }
     return(value);
@@ -496,15 +505,25 @@ xmlDictComputeFastQKey(const xmlChar *prefix, int plen,
     }
     switch (plen) {
         case 10: value += prefix[9];
+        /* Falls through. */
         case 9: value += prefix[8];
+        /* Falls through. */
         case 8: value += prefix[7];
+        /* Falls through. */
         case 7: value += prefix[6];
+        /* Falls through. */
         case 6: value += prefix[5];
+        /* Falls through. */
         case 5: value += prefix[4];
+        /* Falls through. */
         case 4: value += prefix[3];
+        /* Falls through. */
         case 3: value += prefix[2];
+        /* Falls through. */
         case 2: value += prefix[1];
+        /* Falls through. */
         case 1: value += prefix[0];
+        /* Falls through. */
         default: break;
     }
     len -= plen;
@@ -514,15 +533,25 @@ xmlDictComputeFastQKey(const xmlChar *prefix, int plen,
     }
     switch (len) {
         case 10: value += name[9];
+        /* Falls through. */
         case 9: value += name[8];
+        /* Falls through. */
         case 8: value += name[7];
+        /* Falls through. */
         case 7: value += name[6];
+        /* Falls through. */
         case 6: value += name[5];
+        /* Falls through. */
         case 5: value += name[4];
+        /* Falls through. */
         case 4: value += name[3];
+        /* Falls through. */
         case 3: value += name[2];
+        /* Falls through. */
         case 2: value += name[1];
+        /* Falls through. */
         case 1: value += name[0];
+        /* Falls through. */
         default: break;
     }
     return(value);

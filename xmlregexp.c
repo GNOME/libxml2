@@ -2810,18 +2810,21 @@ xmlRegCheckCharacterRange(xmlRegAtomType type, int codepoint, int neg,
 	    break;
         case XML_REGEXP_NOTSPACE:
 	    neg = !neg;
+            /* Falls through. */
         case XML_REGEXP_ANYSPACE:
 	    ret = ((codepoint == '\n') || (codepoint == '\r') ||
 		   (codepoint == '\t') || (codepoint == ' '));
 	    break;
         case XML_REGEXP_NOTINITNAME:
 	    neg = !neg;
+            /* Falls through. */
         case XML_REGEXP_INITNAME:
 	    ret = (IS_LETTER(codepoint) ||
 		   (codepoint == '_') || (codepoint == ':'));
 	    break;
         case XML_REGEXP_NOTNAMECHAR:
 	    neg = !neg;
+            /* Falls through. */
         case XML_REGEXP_NAMECHAR:
 	    ret = (IS_LETTER(codepoint) || IS_DIGIT(codepoint) ||
 		   (codepoint == '.') || (codepoint == '-') ||
@@ -2830,11 +2833,13 @@ xmlRegCheckCharacterRange(xmlRegAtomType type, int codepoint, int neg,
 	    break;
         case XML_REGEXP_NOTDECIMAL:
 	    neg = !neg;
+            /* Falls through. */
         case XML_REGEXP_DECIMAL:
 	    ret = xmlUCSIsCatNd(codepoint);
 	    break;
         case XML_REGEXP_REALCHAR:
 	    neg = !neg;
+            /* Falls through. */
         case XML_REGEXP_NOTREALCHAR:
 	    ret = xmlUCSIsCatP(codepoint);
 	    if (ret == 0)

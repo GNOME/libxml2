@@ -230,6 +230,21 @@
 		</varlistentry>
 	
 	</variablelist>
+
+	<para>
+		Invoking &xmlcatalog; non-interactively without a designated action
+		(imposed with options like <option>--add</option>) will result in a lookup
+		of the catalog entry for <replaceable>ENTITIES</replaceable> in the
+		catalog denoted with <replaceable>CATALOGFILE</replaceable>. The
+		corresponding entries will be output to the command line. This mode of
+		operation, together with <option>--shell</option> mode and non-modifying
+		(i.e. without <option>--noout</option>) direct actions, allows for
+		a special shortcut of the void <replaceable>CATALOGFILE</replaceable>
+		specification (possibly expressed as &quot;&quot; in the shell
+		environment) appointing the default system catalog. That simplifies the
+		handling when its exact location is irrelevant but the respective built-in
+		still needs to be consulted.
+	</para>
 </refsect1>
 
 <refsect1 id="shell">
@@ -315,7 +330,7 @@
 	<term><option>public <replaceable>PUBLIC-ID</replaceable></option></term>
 	<listitem>
 		<para>
-			Execute a Formal Public Identifier look-up of the catalog entry
+			Execute a Formal Public Identifier lookup of the catalog entry
 			for <replaceable>PUBLIC-ID</replaceable>. The corresponding entry will be
 			output to the command line.
 		</para>
@@ -333,7 +348,7 @@
 	<term><option>system <replaceable>SYSTEM-ID</replaceable></option></term>
 	<listitem>
 		<para>
-			Execute a Formal Public Identifier look-up of the catalog entry
+			Execute a Formal Public Identifier lookup of the catalog entry
 			for <replaceable>SYSTEM-ID</replaceable>. The corresponding entry will be
 			output to the command line.
 		</para>

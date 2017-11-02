@@ -709,6 +709,50 @@ to the <a href="http://git.gnome.org/browse/libxml2/">GIT</a> code base.</p>
 
 <p>Here is the list of public releases:</p>
 
+<h3>2.9.7: Nov 02 2017</h3>
+<ul>
+  <li>Documentation:<br/>
+  xmlcatalog: refresh man page wrt. quering system catalog easily (Jan Pokorný)<br/>
+  </li>
+
+  <li>Portability:<br/>
+  Fix deprecated Travis compiler flag (Nick Wellnhofer),<br/>
+  Add declaration for DllMain (J. Peter Mugaas),<br/>
+  Fix preprocessor conditional in threads.h (J. Peter Mugaas),<br/>
+  Fix pointer comparison warnings on 64-bit Windows (J. Peter Mugaas),<br/>
+  Fix macro redefinition warning (J. Peter Mugaas),<br/>
+  Default to native threads on MinGW-w64 (Nick Wellnhofer),<br/>
+  Simplify Windows IO functions (Nick Wellnhofer),<br/>
+  Fix runtest on Windows (Nick Wellnhofer),<br/>
+  socklen_t is always int on Windows (Nick Wellnhofer),<br/>
+  Don't redefine socket error codes on Windows (Nick Wellnhofer),<br/>
+  Fix pointer/int cast warnings on 64-bit Windows (Nick Wellnhofer),<br/>
+  Fix Windows compiler warnings in xmlCanonicPath (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Bug Fixes:<br/>
+  xmlcatalog: restore ability to query system catalog easily (Jan Pokorný),<br/>
+  Fix comparison of nodesets to strings (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Improvements:<br/>
+  Add Makefile rules to rebuild HTML man pages (Nick Wellnhofer),<br/>
+  Fix mixed decls and code in timsort.h (Nick Wellnhofer),<br/>
+  Rework handling of return values in thread tests (Nick Wellnhofer),<br/>
+  Fix unused variable warnings in testrecurse (Nick Wellnhofer),<br/>
+  Fix -Wimplicit-fallthrough warnings (J. Peter Mugaas),<br/>
+  Upgrade timsort.h to latest revision (Nick Wellnhofer),<br/>
+  Increase warning level to /W3 under MSVC (Nick Wellnhofer),<br/>
+  Fix a couple of warnings in dict.c and threads.c (Nick Wellnhofer),<br/>
+  Update .gitignore for Windows (Nick Wellnhofer),<br/>
+  Fix unused variable warnings in nanohttp.c (Nick Wellnhofer),<br/>
+  Fix the Windows header mess (Nick Wellnhofer),<br/>
+  Don't include winsock2.h in xmllint.c (Nick Wellnhofer),<br/>
+  Remove generated file python/setup.py from version control (Nick Wellnhofer),<br/>
+  Use __linux__ macro in generated code (Nick Wellnhofer)<br/>
+  </li>
+
+</ul>
 <h3>v2.9.6: Oct 06 2017</h3>
 <ul>
   <li>Portability:<br/>

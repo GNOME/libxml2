@@ -978,6 +978,8 @@ static int
 xmlXPathCompOpEvalToBoolean(xmlXPathParserContextPtr ctxt,
 			    xmlXPathStepOpPtr op,
 			    int isPredicate);
+static void
+xmlXPathFreeObjectEntry(void *obj, const xmlChar *name);
 
 /************************************************************************
  *									*
@@ -4582,7 +4584,7 @@ xmlXPathDistinctSorted (xmlNodeSetPtr nodes) {
 	    xmlFree(strval);
 	}
     }
-    xmlHashFree(hash, (xmlHashDeallocator) xmlFree);
+    xmlHashFree(hash, xmlHashDefaultDeallocator);
     return(ret);
 }
 
@@ -5044,10 +5046,9 @@ xmlXPathRegisterVariableNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	return(-1);
     if (value == NULL)
         return(xmlHashRemoveEntry2(ctxt->varHash, name, ns_uri,
-	                           (xmlHashDeallocator)xmlXPathFreeObject));
+	                           xmlXPathFreeObjectEntry));
     return(xmlHashUpdateEntry2(ctxt->varHash, name, ns_uri,
-			       (void *) value,
-			       (xmlHashDeallocator)xmlXPathFreeObject));
+			       (void *) value, xmlXPathFreeObjectEntry));
 }
 
 /**
@@ -5137,7 +5138,7 @@ xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
     if (ctxt == NULL)
 	return;
 
-    xmlHashFree(ctxt->varHash, (xmlHashDeallocator)xmlXPathFreeObject);
+    xmlHashFree(ctxt->varHash, xmlXPathFreeObjectEntry);
     ctxt->varHash = NULL;
 }
 
@@ -5168,9 +5169,9 @@ xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
 	return(-1);
     if (ns_uri == NULL)
         return(xmlHashRemoveEntry(ctxt->nsHash, prefix,
-	                          (xmlHashDeallocator)xmlFree));
+	                          xmlHashDefaultDeallocator));
     return(xmlHashUpdateEntry(ctxt->nsHash, prefix, (void *) xmlStrdup(ns_uri),
-			      (xmlHashDeallocator)xmlFree));
+			      xmlHashDefaultDeallocator));
 }
 
 /**
@@ -5219,7 +5220,7 @@ xmlXPathRegisteredNsCleanup(xmlXPathContextPtr ctxt) {
     if (ctxt == NULL)
 	return;
 
-    xmlHashFree(ctxt->nsHash, (xmlHashDeallocator)xmlFree);
+    xmlHashFree(ctxt->nsHash, xmlHashDefaultDeallocator);
     ctxt->nsHash = NULL;
 }
 
@@ -5531,6 +5532,11 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     xmlXPathDebugObjUsageReleased(NULL, obj->type);
 #endif
     xmlFree(obj);
+}
+
+static void
+xmlXPathFreeObjectEntry(void *obj, const xmlChar *name ATTRIBUTE_UNUSED) {
+    xmlXPathFreeObject((xmlXPathObjectPtr) obj);
 }
 
 /**

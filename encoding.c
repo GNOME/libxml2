@@ -1916,6 +1916,7 @@ static int
 xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
                  int *outlen, const unsigned char *in, int *inlen, int flush) {
     int ret;
+    (void)flush;
 
     if (handler->input != NULL) {
         ret = handler->input(out, outlen, in, inlen);

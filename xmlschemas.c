@@ -25986,11 +25986,12 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaValidCtxtPtr vctxt,
 }
 
 static void
-xmlSchemaVContentModelCallback(xmlSchemaValidCtxtPtr vctxt ATTRIBUTE_UNUSED,
+xmlSchemaVContentModelCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
 			       const xmlChar * name ATTRIBUTE_UNUSED,
-			       xmlSchemaElementPtr item,
-			       xmlSchemaNodeInfoPtr inode)
+			       void *transdata, void *inputdata)
 {
+    xmlSchemaElementPtr item = (xmlSchemaElementPtr) transdata;
+    xmlSchemaNodeInfoPtr inode = (xmlSchemaNodeInfoPtr) inputdata;
     inode->decl = item;
 #ifdef DEBUG_CONTENT
     {
@@ -26095,8 +26096,7 @@ xmlSchemaValidatorPopElem(xmlSchemaValidCtxtPtr vctxt)
 		*/
 		inode->regexCtxt =
 		    xmlRegNewExecCtxt(inode->typeDef->contModel,
-		    (xmlRegExecCallbacks) xmlSchemaVContentModelCallback,
-		    vctxt);
+		    xmlSchemaVContentModelCallback, vctxt);
 		if (inode->regexCtxt == NULL) {
 		    VERROR_INT("xmlSchemaValidatorPopElem",
 			"failed to create a regex context");
@@ -26644,8 +26644,7 @@ xmlSchemaValidateChildElem(xmlSchemaValidCtxtPtr vctxt)
 		* Create the regex context.
 		*/
 		regexCtxt = xmlRegNewExecCtxt(ptype->contModel,
-		    (xmlRegExecCallbacks) xmlSchemaVContentModelCallback,
-		    vctxt);
+		    xmlSchemaVContentModelCallback, vctxt);
 		if (regexCtxt == NULL) {
 		    VERROR_INT("xmlSchemaValidateChildElem",
 			"failed to create a regex context");

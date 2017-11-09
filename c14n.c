@@ -89,7 +89,7 @@ static int			xmlExcC14NVisibleNsStackFind	(xmlC14NVisibleNsStackPtr cur,
 								 xmlNsPtr ns,
 								 xmlC14NCtxPtr ctx);
 
-static int			xmlC14NIsNodeInNodeset		(xmlNodeSetPtr nodes,
+static int			xmlC14NIsNodeInNodeset		(void *user_data,
 								 xmlNodePtr node,
 								 xmlNodePtr parent);
 
@@ -252,7 +252,8 @@ xmlC14NErr(xmlC14NCtxPtr ctxt, xmlNodePtr node, int error,
 #define XML_NAMESPACES_DEFAULT		16
 
 static int
-xmlC14NIsNodeInNodeset(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) {
+xmlC14NIsNodeInNodeset(void *user_data, xmlNodePtr node, xmlNodePtr parent) {
+    xmlNodeSetPtr nodes = (xmlNodeSetPtr) user_data;
     if((nodes != NULL) && (node != NULL)) {
 	if(node->type != XML_NAMESPACE_DECL) {
 	    return(xmlXPathNodeSetContains(nodes, node));
@@ -1975,7 +1976,7 @@ xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
                  int mode, xmlChar ** inclusive_ns_prefixes,
                  int with_comments, xmlOutputBufferPtr buf) {
     return(xmlC14NExecute(doc,
-			(xmlC14NIsVisibleCallback)xmlC14NIsNodeInNodeset,
+			xmlC14NIsNodeInNodeset,
 			nodes,
 			mode,
 			inclusive_ns_prefixes,

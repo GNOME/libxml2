@@ -513,8 +513,10 @@ xmlC14NIsXmlNs(xmlNsPtr ns)
  * Returns -1 if ns1 < ns2, 0 if ns1 == ns2 or 1 if ns1 > ns2.
  */
 static int
-xmlC14NNsCompare(xmlNsPtr ns1, xmlNsPtr ns2)
+xmlC14NNsCompare(const void *data1, const void *data2)
 {
+    const xmlNsPtr ns1 = (const xmlNsPtr) data1;
+    const xmlNsPtr ns2 = (const xmlNsPtr) data2;
     if (ns1 == ns2)
         return (0);
     if (ns1 == NULL)
@@ -557,6 +559,11 @@ xmlC14NPrintNamespaces(const xmlNsPtr ns, xmlC14NCtxPtr ctx)
     	xmlOutputBufferWriteString(ctx->buf, "\"\"");
     }
     return (1);
+}
+
+static int
+xmlC14NPrintNamespacesWalker(const void *ns, void *ctx) {
+    return xmlC14NPrintNamespaces((const xmlNsPtr) ns, (xmlC14NCtxPtr) ctx);
 }
 
 /**
@@ -615,7 +622,7 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
     /*
      * Create a sorted list to store element namespaces
      */
-    list = xmlListCreate(NULL, (xmlListDataCompare) xmlC14NNsCompare);
+    list = xmlListCreate(NULL, xmlC14NNsCompare);
     if (list == NULL) {
         xmlC14NErrInternal("creating namespaces list (c14n)");
         return (-1);
@@ -663,7 +670,7 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
     /*
      * print out all elements from list
      */
-    xmlListWalk(list, (xmlListWalker) xmlC14NPrintNamespaces, (const void *) ctx);
+    xmlListWalk(list, xmlC14NPrintNamespacesWalker, (void *) ctx);
 
     /*
      * Cleanup
@@ -728,7 +735,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
     /*
      * Create a sorted list to store element namespaces
      */
-    list = xmlListCreate(NULL, (xmlListDataCompare) xmlC14NNsCompare);
+    list = xmlListCreate(NULL, xmlC14NNsCompare);
     if (list == NULL) {
         xmlC14NErrInternal("creating namespaces list (exc c14n)");
         return (-1);
@@ -840,7 +847,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
     /*
      * print out all elements from list
      */
-    xmlListWalk(list, (xmlListWalker) xmlC14NPrintNamespaces, (const void *) ctx);
+    xmlListWalk(list, xmlC14NPrintNamespacesWalker, (void *) ctx);
 
     /*
      * Cleanup
@@ -879,8 +886,10 @@ xmlC14NIsXmlAttr(xmlAttrPtr attr)
  * Returns -1 if attr1 < attr2, 0 if attr1 == attr2 or 1 if attr1 > attr2.
  */
 static int
-xmlC14NAttrsCompare(xmlAttrPtr attr1, xmlAttrPtr attr2)
+xmlC14NAttrsCompare(const void *data1, const void *data2)
 {
+    const xmlAttrPtr attr1 = (const xmlAttrPtr) data1;
+    const xmlAttrPtr attr2 = (const xmlAttrPtr) data2;
     int ret = 0;
 
     /*
@@ -931,8 +940,10 @@ xmlC14NAttrsCompare(xmlAttrPtr attr1, xmlAttrPtr attr2)
  * Returns 1 on success or 0 on fail.
  */
 static int
-xmlC14NPrintAttrs(const xmlAttrPtr attr, xmlC14NCtxPtr ctx)
+xmlC14NPrintAttrs(const void *data, void *user)
 {
+    const xmlAttrPtr attr = (const xmlAttrPtr) data;
+    xmlC14NCtxPtr ctx = (xmlC14NCtxPtr) user;
     xmlChar *value;
     xmlChar *buffer;
 
@@ -1142,7 +1153,7 @@ xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int parent_visible)
     /*
      * Create a sorted list to store element attributes
      */
-    list = xmlListCreate(NULL, (xmlListDataCompare) xmlC14NAttrsCompare);
+    list = xmlListCreate(NULL, xmlC14NAttrsCompare);
     if (list == NULL) {
         xmlC14NErrInternal("creating attributes list");
         return (-1);
@@ -1331,7 +1342,7 @@ xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int parent_visible)
     /*
      * print out all elements from list
      */
-    xmlListWalk(list, (xmlListWalker) xmlC14NPrintAttrs, (const void *) ctx);
+    xmlListWalk(list, xmlC14NPrintAttrs, (void *) ctx);
 
     /*
      * Cleanup

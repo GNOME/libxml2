@@ -2843,10 +2843,8 @@ xmlOutputBufferCreateBuffer(xmlBufferPtr buffer,
 
     if (buffer == NULL) return(NULL);
 
-    ret = xmlOutputBufferCreateIO((xmlOutputWriteCallback)
-                                  xmlBufferWrite,
-                                  (xmlOutputCloseCallback)
-                                  NULL, (void *) buffer, encoder);
+    ret = xmlOutputBufferCreateIO(xmlBufferWrite, NULL, (void *) buffer,
+                                  encoder);
 
     return(ret);
 }

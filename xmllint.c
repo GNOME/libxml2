@@ -814,13 +814,14 @@ xmlShellReadline(char *prompt) {
  *									*
  ************************************************************************/
 
-static int myRead(FILE *f, char * buf, int len) {
-    return(fread(buf, 1, len, f));
+static int myRead(void *f, char *buf, int len) {
+    return(fread(buf, 1, len, (FILE *) f));
 }
-static void myClose(FILE *f) {
-  if (f != stdin) {
-    fclose(f);
-  }
+static int myClose(void *context) {
+    FILE *f = (FILE *) context;
+    if (f == stdin)
+        return(0);
+    return(fclose(f));
 }
 
 /************************************************************************
@@ -2303,14 +2304,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #endif
 		if (f != NULL) {
 		    if (rectxt == NULL)
-			doc = xmlReadIO((xmlInputReadCallback) myRead,
-					(xmlInputCloseCallback) myClose, f,
-					filename, NULL, options);
+			doc = xmlReadIO(myRead, myClose, f, filename, NULL,
+                                        options);
 		    else
-			doc = xmlCtxtReadIO(rectxt,
-			                (xmlInputReadCallback) myRead,
-					(xmlInputCloseCallback) myClose, f,
-					filename, NULL, options);
+			doc = xmlCtxtReadIO(rectxt, myRead, myClose, f,
+					    filename, NULL, options);
 		} else
 		    doc = NULL;
 	    }

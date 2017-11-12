@@ -737,7 +737,8 @@ static void des_xmlSchemaValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchemaValidCtx
 
 #define gen_nb_xmlHashDeallocator 2
 static void
-test_xmlHashDeallocator(void *payload ATTRIBUTE_UNUSED, xmlChar *name ATTRIBUTE_UNUSED) {
+test_xmlHashDeallocator(void *payload ATTRIBUTE_UNUSED,
+                        const xmlChar *name ATTRIBUTE_UNUSED) {
 }
 
 static xmlHashDeallocator gen_xmlHashDeallocator(int no, int nr ATTRIBUTE_UNUSED) {

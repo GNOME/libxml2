@@ -4880,7 +4880,9 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	return(-1);
     if (f == NULL)
         return(xmlHashRemoveEntry2(ctxt->funcHash, name, ns_uri, NULL));
-    return(xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, XML_CAST_FPTR(f)));
+XML_IGNORE_PEDANTIC_WARNINGS
+    return(xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, (void *) f));
+XML_POP_WARNINGS
 }
 
 /**
@@ -4961,7 +4963,9 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
     if (ctxt->funcHash == NULL)
 	return(NULL);
 
-    XML_CAST_FPTR(ret) = xmlHashLookup2(ctxt->funcHash, name, ns_uri);
+XML_IGNORE_PEDANTIC_WARNINGS
+    ret = (xmlXPathFunction) xmlHashLookup2(ctxt->funcHash, name, ns_uri);
+XML_POP_WARNINGS
     return(ret);
 }
 

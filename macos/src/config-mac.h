@@ -21,26 +21,8 @@
 #define HAVE_PTHREAD_H
 #define LIBXML_THREAD_ENABLED
 
-/* Define if you have the _stat function.  */
-#define HAVE__STAT
-
-/* Define if you have the class function.  */
-#undef HAVE_CLASS
-
-/* Define if you have the finite function.  */
-#undef HAVE_FINITE
-
-/* Define if you have the fp_class function.  */
-#undef HAVE_FP_CLASS
-
-/* Define if you have the fpclass function.  */
-#undef HAVE_FPCLASS
-
 /* Define if you have the fprintf function.  */
 #define HAVE_FPRINTF
-
-/* Define if you have the isnand function.  */
-#undef HAVE_ISNAND
 
 /* Define if you have the localtime function.  */
 #define HAVE_LOCALTIME
@@ -63,17 +45,8 @@
 /* Define if you have the stat function.  */
 #define HAVE_STAT
 
-/* Define if you have the strdup function.  */
-#define HAVE_STRDUP
-
-/* Define if you have the strerror function.  */
-#define HAVE_STRERROR
-
 /* Define if you have the strftime function.  */
 #define HAVE_STRFTIME
-
-/* Define if you have the strndup function.  */
-#define HAVE_STRNDUP
 
 /* Define if you have the vfprintf function.  */
 #define HAVE_VFPRINTF
@@ -108,20 +81,11 @@
 /* Define if you have the <float.h> header file.  */
 #define HAVE_FLOAT_H
 
-/* Define if you have the <fp_class.h> header file.  */
-#define HAVE_FP_CLASS_H
-
-/* Define if you have the <ieeefp.h> header file.  */
-#define HAVE_IEEEFP_H
-
 /* Define if you have the <malloc.h> header file.  */
 #undef HAVE_MALLOC_H
 
 /* Define if you have the <math.h> header file.  */
 #define HAVE_MATH_H
-
-/* Define if you have the <nan.h> header file.  */
-#define HAVE_NAN_H
 
 /* Define if you have the <ndir.h> header file.  */
 #define HAVE_NDIR_H

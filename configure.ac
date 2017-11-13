@@ -480,11 +480,8 @@ AC_CHECK_HEADERS([stdint.h])
 AC_CHECK_HEADERS([inttypes.h])
 AC_CHECK_HEADERS([time.h])
 AC_CHECK_HEADERS([ansidecl.h])
-AC_CHECK_HEADERS([ieeefp.h])
-AC_CHECK_HEADERS([nan.h])
 AC_CHECK_HEADERS([math.h])
 AC_CHECK_HEADERS([limits.h])
-AC_CHECK_HEADERS([fp_class.h])
 AC_CHECK_HEADERS([float.h])
 AC_CHECK_HEADERS([stdlib.h])
 AC_CHECK_HEADERS([sys/socket.h], [], [],
@@ -541,10 +538,8 @@ echo Checking libraries
 
 dnl Checks for library functions.
 AC_FUNC_STRFTIME
-AC_CHECK_FUNCS(strdup strndup strerror)
-AC_CHECK_FUNCS(finite isnand fp_class class fpclass)
 AC_CHECK_FUNCS(strftime localtime gettimeofday ftime)
-AC_CHECK_FUNCS(stat _stat signal)
+AC_CHECK_FUNCS(stat signal)
 AC_CHECK_FUNCS(rand rand_r srand time)
 AC_CHECK_FUNCS(isascii mmap munmap putenv)
 

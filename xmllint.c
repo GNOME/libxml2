@@ -3015,7 +3015,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--repeat : repeat 100 times, for timing or profiling\n");
     fprintf(f, "\t--insert : ad-hoc test for valid insertions\n");
 #ifdef LIBXML_OUTPUT_ENABLED
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
     fprintf(f, "\t--compress : turn on gzip compression of output\n");
 #endif
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -3295,7 +3295,7 @@ main(int argc, char **argv) {
 	}
 #endif
 #ifdef LIBXML_OUTPUT_ENABLED
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 	else if ((!strcmp(argv[i], "-compress")) ||
 	         (!strcmp(argv[i], "--compress"))) {
 	    compress++;

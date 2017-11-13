@@ -83,12 +83,6 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#ifdef HAVE_ZLIB_H
-#include <zlib.h>
-#endif
-#ifdef HAVE_LZMA_H
-#include <lzma.h>
-#endif
 
 #include "buf.h"
 #include "enc.h"

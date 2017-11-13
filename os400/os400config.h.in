@@ -90,9 +90,6 @@
 /* Define if history library is there (-lhistory) */
 #undef HAVE_LIBHISTORY
 
-/* Have compression library */
-#undef HAVE_LIBLZMA
-
 /* Define if pthread library is there (-lpthread) */
 #undef HAVE_LIBPTHREAD
 
@@ -107,9 +104,6 @@
 
 /* Define to 1 if you have the `localtime' function. */
 #define HAVE_LOCALTIME          1
-
-/* Define to 1 if you have the <lzma.h> header file. */
-#undef HAVE_LZMA_H
 
 /* Define to 1 if you have the <malloc.h> header file. */
 #undef HAVE_MALLOC_H
@@ -273,14 +267,6 @@
 
 /* Define to 1 if you have the `vsprintf' function. */
 #undef HAVE_VSPRINTF                    /* Use trio. */
-
-/* Define to 1 if you have the <zlib.h> header file. */
-/* Actually dependent on the compilation script. */
-#if @WITH_ZLIB@
-#define HAVE_ZLIB_H             1
-#else
-#undef HAVE_ZLIB_H
-#endif
 
 /* Define to 1 if you have the `_stat' function. */
 #undef HAVE__STAT

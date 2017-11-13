@@ -2704,7 +2704,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 		return(-1);
     }
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
     if (cur->compression < 0) cur->compression = xmlGetCompressMode();
 #endif
     /*

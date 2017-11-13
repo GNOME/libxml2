@@ -150,9 +150,6 @@
 /* Define if you have the <unistd.h> header file.  */
 #define HAVE_UNISTD_H	1
 
-/* Define if you have the <zlib.h> header file.  */
-#undef HAVE_ZLIB_H
-
 /* Name of package */
 #undef PACKAGE
 

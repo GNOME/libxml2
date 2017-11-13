@@ -33,10 +33,10 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 #include <zlib.h>
 #endif
-#ifdef HAVE_LZMA_H
+#ifdef LIBXML_LZMA_ENABLED
 #include <lzma.h>
 #endif
 
@@ -597,7 +597,7 @@ xmlWrapOpenUtf8(const char *path,int mode)
     return fd;
 }
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 static gzFile
 xmlWrapGzOpenUtf8(const char *path, const char *mode)
 {
@@ -1038,7 +1038,7 @@ xmlBufferWrite (void * context, const char * buffer, int len) {
 }
 #endif
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 /************************************************************************
  *									*
  *		I/O for compressed file accesses			*
@@ -1241,7 +1241,7 @@ xmlGzfileClose (void * context) {
     if (ret < 0) xmlIOErr(0, "gzclose()");
     return(ret);
 }
-#endif /* HAVE_ZLIB_H */
+#endif /* LIBXML_ZLIB_ENABLED */
 
 #ifdef LIBXML_LZMA_ENABLED
 /************************************************************************
@@ -1380,7 +1380,7 @@ typedef struct xmlIOHTTPWriteCtxt_
 
 } xmlIOHTTPWriteCtxt, *xmlIOHTTPWriteCtxtPtr;
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 
 #define DFLT_WBITS		( -15 )
 #define DFLT_MEM_LVL		( 8 )
@@ -1708,7 +1708,7 @@ xmlZMemBuffGetContent( xmlZMemBuffPtr buff, char ** data_ref ) {
     return ( zlgth );
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
-#endif  /*  HAVE_ZLIB_H  */
+#endif  /*  LIBXML_ZLIB_ENABLED  */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -1727,7 +1727,7 @@ xmlFreeHTTPWriteCtxt( xmlIOHTTPWriteCtxtPtr ctxt )
 
     if ( ctxt->doc_buff != NULL ) {
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 	if ( ctxt->compression > 0 ) {
 	    xmlFreeZMemBuff( ctxt->doc_buff );
 	}
@@ -1814,7 +1814,7 @@ xmlIOHTTPOpenW(const char *post_uri, int compression ATTRIBUTE_UNUSED)
      * **  is being used to avoid pushing the data to disk and back.
      */
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
     if ((compression > 0) && (compression <= 9)) {
 
         ctxt->compression = compression;
@@ -1894,7 +1894,7 @@ xmlIOHTTPWrite( void * context, const char * buffer, int len ) {
 
 	/*  Use gzwrite or fwrite as previously setup in the open call  */
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 	if ( ctxt->compression > 0 )
 	    len = xmlZMemBuffAppend( ctxt->doc_buff, buffer, len );
 
@@ -1958,7 +1958,7 @@ xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
 
     /*  Retrieve the content from the appropriate buffer  */
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 
     if ( ctxt->compression > 0 ) {
 	content_lgth = xmlZMemBuffGetContent( ctxt->doc_buff, &http_content );
@@ -2229,10 +2229,10 @@ xmlRegisterDefaultInputCallbacks(void) {
 
     xmlRegisterInputCallbacks(xmlFileMatch, xmlFileOpen,
 	                      xmlFileRead, xmlFileClose);
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
     xmlRegisterInputCallbacks(xmlGzfileMatch, xmlGzfileOpen,
 	                      xmlGzfileRead, xmlGzfileClose);
-#endif /* HAVE_ZLIB_H */
+#endif /* LIBXML_ZLIB_ENABLED */
 #ifdef LIBXML_LZMA_ENABLED
     xmlRegisterInputCallbacks(xmlXzfileMatch, xmlXzfileOpen,
 	                      xmlXzfileRead, xmlXzfileClose);
@@ -2274,7 +2274,7 @@ xmlRegisterDefaultOutputCallbacks (void) {
  uncompressed ones except opening if existing then closing
  and saving with same compression ratio ... a pain.
 
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
     xmlRegisterOutputCallbacks(xmlGzfileMatch, xmlGzfileOpen,
 	                       xmlGzfileWrite, xmlGzfileClose);
 #endif
@@ -2564,7 +2564,7 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	ret->context = context;
 	ret->readcallback = xmlInputCallbackTable[i].readcallback;
 	ret->closecallback = xmlInputCallbackTable[i].closecallback;
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 	if ((xmlInputCallbackTable[i].opencallback == xmlGzfileOpen) &&
 		(strcmp(URI, "-") != 0)) {
 #if defined(ZLIB_VERNUM) && ZLIB_VERNUM >= 0x1230
@@ -2628,7 +2628,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
     int i = 0;
     void *context = NULL;
     char *unescaped = NULL;
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
     int is_file_uri = 1;
 #endif
 
@@ -2639,7 +2639,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
 
     puri = xmlParseURI(URI);
     if (puri != NULL) {
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
         if ((puri->scheme != NULL) &&
 	    (!xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
 	    is_file_uri = 0;
@@ -2659,7 +2659,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
      * try with an unescaped version of the URI
      */
     if (unescaped != NULL) {
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 	if ((compression > 0) && (compression <= 9) && (is_file_uri == 1)) {
 	    context = xmlGzfileOpenW(unescaped, compression);
 	    if (context != NULL) {
@@ -2677,7 +2677,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
 	for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
 		(xmlOutputCallbackTable[i].matchcallback(unescaped) != 0)) {
-#if defined(LIBXML_HTTP_ENABLED) && defined(HAVE_ZLIB_H)
+#if defined(LIBXML_HTTP_ENABLED) && defined(LIBXML_ZLIB_ENABLED)
 		/*  Need to pass compression parameter into HTTP open calls  */
 		if (xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch)
 		    context = xmlIOHTTPOpenW(unescaped, compression);
@@ -2696,7 +2696,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
      * filename
      */
     if (context == NULL) {
-#ifdef HAVE_ZLIB_H
+#ifdef LIBXML_ZLIB_ENABLED
 	if ((compression > 0) && (compression <= 9) && (is_file_uri == 1)) {
 	    context = xmlGzfileOpenW(URI, compression);
 	    if (context != NULL) {
@@ -2713,7 +2713,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
 	for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
 		(xmlOutputCallbackTable[i].matchcallback(URI) != 0)) {
-#if defined(LIBXML_HTTP_ENABLED) && defined(HAVE_ZLIB_H)
+#if defined(LIBXML_HTTP_ENABLED) && defined(LIBXML_ZLIB_ENABLED)
 		/*  Need to pass compression parameter into HTTP open calls  */
 		if (xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch)
 		    context = xmlIOHTTPOpenW(URI, compression);

@@ -174,9 +174,6 @@
 /* Define if you have the <unistd.h> header file.  */
 #define HAVE_UNISTD_H
 
-/* Define if you have the <zlib.h> header file.  */
-#undef HAVE_ZLIB_H
-
 /* Name of package */
 #define PACKAGE
 

@@ -191,7 +191,6 @@ testapi_SOURCES=testapi.c
 testapi_LDFLAGS = 
 testapi_DEPENDENCIES = $(DEPS)
 testapi_LDADD= $(LDADDS)
-testapi_CFLAGS = -Wno-unused-function
 
 runxmlconf_SOURCES=runxmlconf.c
 runxmlconf_LDFLAGS = 

@@ -6,9 +6,6 @@
 ***     Author: Patrick Monnerat <pm@datasphere.ch>, DATASPHERE S.A.
 **/
 
-/* Define to 1 if you have the <ansidecl.h> header file. */
-#undef HAVE_ANSIDECL_H
-
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #define HAVE_ARPA_INET_H        1
 

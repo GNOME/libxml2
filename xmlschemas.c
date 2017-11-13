@@ -2842,7 +2842,7 @@ xmlSchemaPResCompAttrErr(xmlSchemaParserCtxtPtr ctxt,
     xmlSchemaFormatItemForReport(&des, NULL, ownerItem, ownerElem);
     if (refTypeStr == NULL)
 	refTypeStr = (const char *) xmlSchemaItemTypeToStr(refType);
-	xmlSchemaPErrExt(ctxt, ownerElem, error,
+    xmlSchemaPErrExt(ctxt, ownerElem, error,
 	    NULL, NULL, NULL,
 	    "%s, attribute '%s': The QName value '%s' does not resolve to a(n) "
 	    "%s.\n", BAD_CAST des, BAD_CAST name,
@@ -7391,8 +7391,8 @@ attr_next:
 	*/
 	if (defValue != NULL)
 	    use->defValue = defValue;
-	    if (defValueType == WXS_ATTR_DEF_VAL_FIXED)
-		use->flags |= XML_SCHEMA_ATTR_USE_FIXED;
+	if (defValueType == WXS_ATTR_DEF_VAL_FIXED)
+	    use->flags |= XML_SCHEMA_ATTR_USE_FIXED;
     }
 
 check_children:
@@ -27837,7 +27837,7 @@ xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
 {
     if (ctxt == NULL)
         return;
-	ctxt->serror = serror;
+    ctxt->serror = serror;
     ctxt->error = NULL;
     ctxt->warning = NULL;
     ctxt->errCtxt = ctx;

@@ -127,19 +127,11 @@ found_meta:
     return(NULL);
 
 found_content:
-    encoding = xmlStrstr(content, BAD_CAST"charset=");
-    if (encoding == NULL)
-	encoding = xmlStrstr(content, BAD_CAST"Charset=");
-    if (encoding == NULL)
-	encoding = xmlStrstr(content, BAD_CAST"CHARSET=");
+    encoding = xmlStrcasestr(content, BAD_CAST"charset=");
     if (encoding != NULL) {
 	encoding += 8;
     } else {
-	encoding = xmlStrstr(content, BAD_CAST"charset =");
-	if (encoding == NULL)
-	    encoding = xmlStrstr(content, BAD_CAST"Charset =");
-	if (encoding == NULL)
-	    encoding = xmlStrstr(content, BAD_CAST"CHARSET =");
+	encoding = xmlStrcasestr(content, BAD_CAST"charset =");
 	if (encoding != NULL)
 	    encoding += 9;
     }

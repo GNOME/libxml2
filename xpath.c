@@ -524,7 +524,7 @@ xmlXPathIsNaN(double val) {
 int
 xmlXPathIsInf(double val) {
 #ifdef isinf
-    return isinf(val);
+    return isinf(val) ? (val > 0 ? 1 : -1) : 0;
 #else
     if (val >= HUGE_VAL)
         return 1;

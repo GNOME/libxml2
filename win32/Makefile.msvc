@@ -261,7 +261,10 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testXPath.exe\
 	$(BINDIR)\runtest.exe\
 	$(BINDIR)\runsuite.exe\
+	$(BINDIR)\runxmlconf.exe\
 	$(BINDIR)\testapi.exe\
+	$(BINDIR)\testchar.exe\
+	$(BINDIR)\testdict.exe\
 	$(BINDIR)\testlimits.exe\
 	$(BINDIR)\testrecurse.exe
 	

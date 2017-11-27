@@ -70,7 +70,11 @@ LIBS = $(LIBS) wsock32.lib ws2_32.lib
 LIBS = $(LIBS) iconv.lib
 !endif 
 !if "$(WITH_ICU)" == "1"
-LIBS = $(LIBS) icu.lib
+!if "$(STATIC)" == "1"
+LIBS = $(LIBS) advapi32.lib sicuuc.lib sicuin.lib sicudt.lib
+!else
+LIBS = $(LIBS) icuuc.lib icuin.lib icudt.lib
+!endif
 !endif
 !if "$(WITH_ZLIB)" == "1"
 # could be named differently zdll or zlib

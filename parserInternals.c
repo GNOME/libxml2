@@ -1214,7 +1214,7 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                 /*
                  * convert as much as possible of the buffer
                  */
-                nbchars = xmlCharEncInput(input->buf, 1);
+                nbchars = xmlCharEncInput(input->buf, 0);
             } else {
                 /*
                  * convert just enough to get

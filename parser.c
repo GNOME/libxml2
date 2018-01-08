@@ -3370,9 +3370,9 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 	     */
 	    ctxt->input->cur -= l;
 	    GROW;
-	    ctxt->input->cur += l;
             if (ctxt->instate == XML_PARSER_EOF)
                 return(NULL);
+	    ctxt->input->cur += l;
 	    c = CUR_CHAR(l);
 	}
     }

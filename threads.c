@@ -430,7 +430,7 @@ __xmlGlobalInitMutexLock(void)
 #ifdef HAVE_PTHREAD_H
     /* The mutex is statically initialized, so we just lock it. */
 #ifdef XML_PTHREAD_WEAK
-    if (pthread_mutex_lock == NULL)
+    if (&pthread_mutex_lock == NULL)
         return;
 #endif /* XML_PTHREAD_WEAK */
     pthread_mutex_lock(&global_init_lock);
@@ -503,7 +503,7 @@ __xmlGlobalInitMutexUnlock(void)
 {
 #ifdef HAVE_PTHREAD_H
 #ifdef XML_PTHREAD_WEAK
-    if (pthread_mutex_unlock == NULL)
+    if (&pthread_mutex_unlock == NULL)
         return;
 #endif /* XML_PTHREAD_WEAK */
     pthread_mutex_unlock(&global_init_lock);
@@ -860,21 +860,21 @@ xmlInitThreads(void)
 #ifdef HAVE_PTHREAD_H
 #ifdef XML_PTHREAD_WEAK
     if (libxml_is_threaded == -1) {
-        if ((pthread_once != NULL) &&
-            (pthread_getspecific != NULL) &&
-            (pthread_setspecific != NULL) &&
-            (pthread_key_create != NULL) &&
-            (pthread_key_delete != NULL) &&
-            (pthread_mutex_init != NULL) &&
-            (pthread_mutex_destroy != NULL) &&
-            (pthread_mutex_lock != NULL) &&
-            (pthread_mutex_unlock != NULL) &&
-            (pthread_cond_init != NULL) &&
-            (pthread_cond_destroy != NULL) &&
-            (pthread_cond_wait != NULL) &&
-            (pthread_equal != NULL) &&
-            (pthread_self != NULL) &&
-            (pthread_cond_signal != NULL)) {
+        if ((&pthread_once != NULL) &&
+            (&pthread_getspecific != NULL) &&
+            (&pthread_setspecific != NULL) &&
+            (&pthread_key_create != NULL) &&
+            (&pthread_key_delete != NULL) &&
+            (&pthread_mutex_init != NULL) &&
+            (&pthread_mutex_destroy != NULL) &&
+            (&pthread_mutex_lock != NULL) &&
+            (&pthread_mutex_unlock != NULL) &&
+            (&pthread_cond_init != NULL) &&
+            (&pthread_cond_destroy != NULL) &&
+            (&pthread_cond_wait != NULL) &&
+            (&pthread_equal != NULL) &&
+            (&pthread_self != NULL) &&
+            (&pthread_cond_signal != NULL)) {
             libxml_is_threaded = 1;
 
 /* fprintf(stderr, "Running multithreaded\n"); */

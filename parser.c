@@ -149,7 +149,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
 	rep = xmlStringDecodeEntities(ctxt, ent->content,
 				  XML_SUBSTITUTE_REF, 0, 0, 0);
         --ctxt->depth;
-	if (ctxt->errNo == XML_ERR_ENTITY_LOOP) {
+	if (rep == NULL) {
 	    ent->content[0] = 0;
 	}
 
@@ -7189,6 +7189,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		   (ret != XML_WAR_UNDECLARED_ENTITY)) {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 		     "Entity '%s' failed to parse\n", ent->name);
+            if (ent->content != NULL)
+                ent->content[0] = 0;
 	    xmlParserEntityCheck(ctxt, 0, ent, 0);
 	} else if (list != NULL) {
 	    xmlFreeNodeList(list);

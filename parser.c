@@ -149,7 +149,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
 	rep = xmlStringDecodeEntities(ctxt, ent->content,
 				  XML_SUBSTITUTE_REF, 0, 0, 0);
         --ctxt->depth;
-	if (rep == NULL) {
+	if ((rep == NULL) || (ctxt->errNo == XML_ERR_ENTITY_LOOP)) {
 	    ent->content[0] = 0;
 	}
 

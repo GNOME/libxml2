@@ -42,7 +42,6 @@ ignored_files = {
   "testThreads.c": "test tool",
   "testC14N.c": "test tool",
   "testRelax.c": "test tool",
-  "testThreadsWin32.c": "test tool",
   "testSAX.c": "test tool",
   "testURI.c": "test tool",
   "testapi.c": "generated regression tests",

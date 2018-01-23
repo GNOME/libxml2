@@ -1620,7 +1620,14 @@ case "$host" in
  WIN32_EXTRA_LDFLAGS="-no-undefined"
  if test "${PYTHON}" != ""
  then
-   WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
+   case "$host" in
+     *-w64-mingw*)
+       WIN32_EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
+       ;;
+     *)
+       WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
+       ;;
+   esac
  fi
  ;;
  *-*-cygwin*)

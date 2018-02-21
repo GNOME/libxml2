@@ -147,4 +147,4 @@ add_library(libxml2 ${SOURCE_FILES} ${HEADER_FILES})
 set_target_properties(libxml2 PROPERTIES LANGUAGE C)
 
 install(TARGETS libxml2 ARCHIVE DESTINATION lib)
-install(DIRECTORY include/libxml2 DESTINATION include)
+install(DIRECTORY include/libxml DESTINATION include)

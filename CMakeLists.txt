@@ -50,7 +50,7 @@ set(SOURCE_FILES
     xlink.c
     xmlcatalog.c
     xmlIO.c
-    xmllint.c
+#    xmllint.c
     xmlmemory.c
     xmlmodule.c
     xmlreader.c

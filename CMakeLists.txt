@@ -34,9 +34,9 @@ set(SOURCE_FILES
     pattern.c
 #    relaxng.c
 #    rngparser.c
-    runsuite.c
-    runtest.c
-    runxmlconf.c
+#    runsuite.c
+#    runtest.c
+#    runxmlconf.c
     SAX.c
     SAX2.c
     schematron.c

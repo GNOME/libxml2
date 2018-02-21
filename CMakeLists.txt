@@ -139,6 +139,7 @@ set(HEADER_FILES
     include/libxml/xpath.h
     include/libxml/xpathInternals.h
     include/libxml/xpointer.h
+    ${CMAKE_BINARY_DIR}/include/libxml/xmlversion.h
     )
 
 set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)
@@ -148,3 +149,4 @@ set_target_properties(libxml2 PROPERTIES LANGUAGE C)
 
 install(TARGETS libxml2 ARCHIVE DESTINATION lib)
 install(DIRECTORY include/libxml DESTINATION include)
+install(FILES ${CMAKE_BINARY_DIR}/include/libxml/xmlversion.h DESTINATION include/libxml)

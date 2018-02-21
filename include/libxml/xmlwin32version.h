@@ -16,6 +16,7 @@
 #define LIBXML_ATTR_FORMAT(fmt,args)
 #define LIBXML_ATTR_ALLOC_SIZE(x)
 #define LIBXML_VERSION_EXTRA
+#define HAVE_WIN32_THREADS
 
 #ifdef __cplusplus
 extern "C" {

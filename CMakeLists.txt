@@ -40,6 +40,7 @@ set(SOURCE_FILES
     SAX.c
     SAX2.c
     schematron.c
+    threads.c
     tree.c
     trio.c
     trionan.c
@@ -88,7 +89,6 @@ set(TEST_FILES
     testThreadsWin32.c
     testURI.c
     testXPath.c
-    threads.c
     )
 
 set(HEADER_FILES

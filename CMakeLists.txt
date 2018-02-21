@@ -142,6 +142,7 @@ set(HEADER_FILES
     ${CMAKE_BINARY_DIR}/include/libxml/xmlversion.h
     )
 
+add_definitions(-DLIBXML_READER_ENABLED)
 set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)
 
 add_library(libxml2 ${SOURCE_FILES} ${HEADER_FILES})

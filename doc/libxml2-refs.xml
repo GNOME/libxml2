@@ -34,6 +34,7 @@
     <reference name='HTML_REQUIRED' href='html/libxml-HTMLparser.html#HTML_REQUIRED'/>
     <reference name='HTML_TEXT_NODE' href='html/libxml-HTMLtree.html#HTML_TEXT_NODE'/>
     <reference name='HTML_VALID' href='html/libxml-HTMLparser.html#HTML_VALID'/>
+    <reference name='ICU_PIVOT_BUF_SIZE' href='html/libxml-encoding.html#ICU_PIVOT_BUF_SIZE'/>
     <reference name='INPUT_CHUNK' href='html/libxml-parserInternals.html#INPUT_CHUNK'/>
     <reference name='INVALID_SOCKET' href='html/libxml-nanoftp.html#INVALID_SOCKET'/>
     <reference name='IS_ASCII_DIGIT' href='html/libxml-parserInternals.html#IS_ASCII_DIGIT'/>
@@ -2124,6 +2125,7 @@
     <reference name='xmlHashCreate' href='html/libxml-hash.html#xmlHashCreate'/>
     <reference name='xmlHashCreateDict' href='html/libxml-hash.html#xmlHashCreateDict'/>
     <reference name='xmlHashDeallocator' href='html/libxml-hash.html#xmlHashDeallocator'/>
+    <reference name='xmlHashDefaultDeallocator' href='html/libxml-hash.html#xmlHashDefaultDeallocator'/>
     <reference name='xmlHashFree' href='html/libxml-hash.html#xmlHashFree'/>
     <reference name='xmlHashLookup' href='html/libxml-hash.html#xmlHashLookup'/>
     <reference name='xmlHashLookup2' href='html/libxml-hash.html#xmlHashLookup2'/>
@@ -3624,6 +3626,7 @@
       <ref name='HTML_VALID'/>
     </letter>
     <letter name='I'>
+      <ref name='ICU_PIVOT_BUF_SIZE'/>
       <ref name='INPUT_CHUNK'/>
       <ref name='INVALID_SOCKET'/>
       <ref name='IS_ASCII_DIGIT'/>
@@ -5762,6 +5765,7 @@
       <ref name='xmlHashCreate'/>
       <ref name='xmlHashCreateDict'/>
       <ref name='xmlHashDeallocator'/>
+      <ref name='xmlHashDefaultDeallocator'/>
       <ref name='xmlHashFree'/>
       <ref name='xmlHashLookup'/>
       <ref name='xmlHashLookup2'/>
@@ -8113,8 +8117,6 @@
     </type>
     <type name='const void *'>
       <ref name='xmlListDataCompare'/>
-      <ref name='xmlListReverseWalk'/>
-      <ref name='xmlListWalk'/>
       <ref name='xmlListWalker'/>
     </type>
     <type name='const xlinkHRef'>
@@ -8287,6 +8289,9 @@
       <ref name='xmlHashAddEntry'/>
       <ref name='xmlHashAddEntry2'/>
       <ref name='xmlHashAddEntry3'/>
+      <ref name='xmlHashCopier'/>
+      <ref name='xmlHashDeallocator'/>
+      <ref name='xmlHashDefaultDeallocator'/>
       <ref name='xmlHashLookup'/>
       <ref name='xmlHashLookup2'/>
       <ref name='xmlHashLookup3'/>
@@ -8298,6 +8303,7 @@
       <ref name='xmlHashRemoveEntry3'/>
       <ref name='xmlHashScan3'/>
       <ref name='xmlHashScanFull3'/>
+      <ref name='xmlHashScanner'/>
       <ref name='xmlHashScannerFull'/>
       <ref name='xmlHashUpdateEntry'/>
       <ref name='xmlHashUpdateEntry2'/>
@@ -8862,6 +8868,7 @@
       <ref name='xmlHashAddEntry3'/>
       <ref name='xmlHashCopier'/>
       <ref name='xmlHashDeallocator'/>
+      <ref name='xmlHashDefaultDeallocator'/>
       <ref name='xmlHashScan'/>
       <ref name='xmlHashScan3'/>
       <ref name='xmlHashScanFull'/>
@@ -8885,7 +8892,10 @@
       <ref name='xmlListRemoveFirst'/>
       <ref name='xmlListRemoveLast'/>
       <ref name='xmlListReverseSearch'/>
+      <ref name='xmlListReverseWalk'/>
       <ref name='xmlListSearch'/>
+      <ref name='xmlListWalk'/>
+      <ref name='xmlListWalker'/>
       <ref name='xmlMemFree'/>
       <ref name='xmlMemRealloc'/>
       <ref name='xmlNanoFTPCheckResponse'/>
@@ -9176,9 +9186,6 @@
       <ref name='xmlBuildQName'/>
       <ref name='xmlCopyChar'/>
       <ref name='xmlCopyCharMultiByte'/>
-      <ref name='xmlHashCopier'/>
-      <ref name='xmlHashDeallocator'/>
-      <ref name='xmlHashScanner'/>
       <ref name='xmlNewDocNodeEatName'/>
       <ref name='xmlNewNodeEatName'/>
       <ref name='xmlNewNsPropEatName'/>
@@ -11103,6 +11110,7 @@
       <ref name='xmlInitializeDict'/>
     </file>
     <file name='encoding'>
+      <ref name='ICU_PIVOT_BUF_SIZE'/>
       <ref name='UTF8Toisolat1'/>
       <ref name='XML_CHAR_ENCODING_2022_JP'/>
       <ref name='XML_CHAR_ENCODING_8859_1'/>
@@ -11262,6 +11270,7 @@
       <ref name='xmlHashCreate'/>
       <ref name='xmlHashCreateDict'/>
       <ref name='xmlHashDeallocator'/>
+      <ref name='xmlHashDefaultDeallocator'/>
       <ref name='xmlHashFree'/>
       <ref name='xmlHashLookup'/>
       <ref name='xmlHashLookup2'/>
@@ -14729,8 +14738,6 @@
         </word>
         <word name='Based'>
           <ref name='xmlExpExpDerive'/>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='BasicLatin'>
           <ref name='xmlUCSIsBasicLatin'/>
@@ -15506,6 +15513,7 @@
           <ref name='xmlValidNormalizeAttributeValue'/>
           <ref name='xmlValidateDocumentFinal'/>
           <ref name='xmlValidateDtdFinal'/>
+          <ref name='xmlXPathInit'/>
         </word>
         <word name='Douglas'>
           <ref name='xmlURIEscape'/>
@@ -16868,9 +16876,6 @@
         <word name='Not'>
           <ref name='_xmlSchemaElement'/>
         </word>
-        <word name='NotaNumber'>
-          <ref name='xmlXPathIsNaN'/>
-        </word>
         <word name='Notation'>
           <ref name='_xmlNotation'/>
           <ref name='xmlParseEntityDecl'/>
@@ -17234,8 +17239,6 @@
           <ref name='xmlTextReaderGetAttributeNo'/>
           <ref name='xmlTextReaderGetAttributeNs'/>
           <ref name='xmlTextReaderValue'/>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='Proxy'>
           <ref name='xmlNanoFTPScanProxy'/>
@@ -21304,10 +21307,6 @@
         <word name='cshema'>
           <ref name='XML_SCHEMAS_FINAL_DEFAULT_LIST'/>
         </word>
-        <word name='ctrio'>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
-        </word>
         <word name='ctxt'>
           <ref name='xmlExpNewOr'/>
           <ref name='xmlExpNewRange'/>
@@ -21768,8 +21767,6 @@
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlOutputMatchCallback'/>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='detected'>
           <ref name='CHECK_ERROR'/>
@@ -22461,6 +22458,7 @@
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlCatalogAddLocal'/>
           <ref name='xmlCatalogRemove'/>
+          <ref name='xmlHashDefaultDeallocator'/>
           <ref name='xmlHashUpdateEntry'/>
           <ref name='xmlHashUpdateEntry2'/>
           <ref name='xmlHashUpdateEntry3'/>
@@ -23848,8 +23846,6 @@
           <ref name='xmlSAX2GetSystemId'/>
           <ref name='xmlSchemaGetPredefinedType'/>
           <ref name='xmlTextReaderNodeType'/>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='human-readable'>
           <ref name='_xmlError'/>
@@ -24542,14 +24538,8 @@
         <word name='invited'>
           <ref name='xmlValidGetValidElements'/>
         </word>
-        <word name='isinf'>
-          <ref name='xmlXPathIsInf'/>
-        </word>
         <word name='isn'>
           <ref name='xmlRegisterCharEncodingHandler'/>
-        </word>
-        <word name='isnan'>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='issue'>
           <ref name='xmlEncodeEntities'/>
@@ -24647,6 +24637,7 @@
           <ref name='htmlIsAutoClosed'/>
           <ref name='htmlParseElement'/>
           <ref name='xmlKeepBlanksDefault'/>
+          <ref name='xmlXPathInit'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
         <word name='keyword'>
@@ -25795,10 +25786,6 @@
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseMarkupDecl'/>
         </word>
-        <word name='net'>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
-        </word>
         <word name='network'>
           <ref name='htmlCtxtReadFile'/>
           <ref name='htmlReadFile'/>
@@ -25984,6 +25971,9 @@
         <word name='note'>
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlLoadExternalEntity'/>
+        </word>
+        <word name='nothing'>
+          <ref name='xmlXPathInit'/>
         </word>
         <word name='notice'>
           <ref name='xmlCleanupParser'/>
@@ -26786,10 +26776,6 @@
           <ref name='xmlModuleOpen'/>
           <ref name='xmlModuleSymbol'/>
         </word>
-        <word name='portable'>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
-        </word>
         <word name='pos'>
           <ref name='xmlUTF8Strsub'/>
         </word>
@@ -27172,10 +27158,6 @@
         </word>
         <word name='prohibited'>
           <ref name='XML_SCHEMAS_ATTR_USE_PROHIBITED'/>
-        </word>
-        <word name='projects'>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='prolog'>
           <ref name='xmlParseDocument'/>
@@ -28910,10 +28892,6 @@
           <ref name='xmlDOMWrapAdoptNode'/>
           <ref name='xmlDOMWrapCloneNode'/>
         </word>
-        <word name='sourceforge'>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
-        </word>
         <word name='spaces'>
           <ref name='_xmlParserCtxt'/>
           <ref name='htmlDocContentDumpFormatOutput'/>
@@ -30080,8 +30058,6 @@
         <word name='trio'>
           <ref name='WITHOUT_TRIO'/>
           <ref name='WITH_TRIO'/>
-          <ref name='xmlXPathIsInf'/>
-          <ref name='xmlXPathIsNaN'/>
         </word>
         <word name='troubles'>
           <ref name='_xmlParserInput'/>
@@ -31320,6 +31296,7 @@
           <ref name='xmlGetNoNsProp'/>
           <ref name='xmlGetNsProp'/>
           <ref name='xmlGetProp'/>
+          <ref name='xmlHashDefaultDeallocator'/>
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlNodeGetContent'/>
           <ref name='xmlNodeGetLang'/>

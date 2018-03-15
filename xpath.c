@@ -477,27 +477,28 @@ int wrap_cmp( xmlNodePtr x, xmlNodePtr y );
  *									*
  ************************************************************************/
 
-#ifndef NAN
-#define NAN (0.0 / 0.0)
-#endif
-
 #ifndef INFINITY
-#define INFINITY HUGE_VAL
+#define INFINITY (DBL_MAX * DBL_MAX)
 #endif
 
-double xmlXPathNAN = NAN;
-double xmlXPathPINF = INFINITY;
-double xmlXPathNINF = -INFINITY;
+#ifndef NAN
+#define NAN (INFINITY / INFINITY)
+#endif
+
+double xmlXPathNAN;
+double xmlXPathPINF;
+double xmlXPathNINF;
 
 /**
  * xmlXPathInit:
  *
  * Initialize the XPath environment
- *
- * Does nothing but must be kept as public function.
  */
 void
 xmlXPathInit(void) {
+    xmlXPathNAN = NAN;
+    xmlXPathPINF = INFINITY;
+    xmlXPathNINF = -INFINITY;
 }
 
 /**

@@ -12993,7 +12993,6 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 	return (total);
 
 #ifdef LIBXML_XPTR_ENABLED
-    oldnode = ctxt->context->node;
     /*
     * Hum are we filtering the result of an XPointer expression
     */
@@ -13008,23 +13007,15 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 	* up a new locset.
 	*/
 	CHECK_TYPE0(XPATH_LOCATIONSET);
+
+	if ((ctxt->value->user == NULL) ||
+            (((xmlLocationSetPtr) ctxt->value->user)->locNr == 0))
+	    return (total);
+
 	obj = valuePop(ctxt);
 	oldlocset = obj->user;
-	ctxt->context->node = NULL;
+        oldnode = ctxt->context->node;
 
-	if ((oldlocset == NULL) || (oldlocset->locNr == 0)) {
-	    ctxt->context->contextSize = 0;
-	    ctxt->context->proximityPosition = 0;
-	    if (op->ch2 != -1)
-		total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
-	    res = valuePop(ctxt);
-	    if (res != NULL) {
-		xmlXPathReleaseObject(ctxt->context, res);
-	    }
-	    valuePush(ctxt, obj);
-	    CHECK_ERROR0;
-	    return (total);
-	}
 	newlocset = xmlXPtrLocationSetCreate(NULL);
 
 	for (i = 0; i < oldlocset->locNr; i++) {
@@ -13049,6 +13040,7 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 		total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    if (ctxt->error != XPATH_EXPRESSION_OK) {
 		xmlXPathFreeObject(obj);
+                ctxt->context->node = oldnode;
 		return(0);
 	    }
 	    /*
@@ -13077,7 +13069,6 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 		/* OLD: xmlXPathFreeObject(res); */
 	    } else
 		tmp = NULL;
-	    ctxt->context->node = NULL;
 	    /*
 	    * Only put the first node in the result, then leave.
 	    */
@@ -13093,7 +13084,6 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 	* The result is used as the new evaluation locset.
 	*/
 	xmlXPathReleaseObject(ctxt->context, obj);
-	ctxt->context->node = NULL;
 	ctxt->context->contextSize = -1;
 	ctxt->context->proximityPosition = -1;
 	valuePush(ctxt, xmlXPtrWrapLocationSet(newlocset));
@@ -13108,32 +13098,17 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
     * up a new set.
     */
     CHECK_TYPE0(XPATH_NODESET);
-    obj = valuePop(ctxt);
-    oldset = obj->nodesetval;
 
-    oldnode = ctxt->context->node;
-    oldDoc = ctxt->context->doc;
-    ctxt->context->node = NULL;
-
-    if ((oldset == NULL) || (oldset->nodeNr == 0)) {
-	ctxt->context->contextSize = 0;
-	ctxt->context->proximityPosition = 0;
-	/* QUESTION TODO: Why was this code commented out?
-	    if (op->ch2 != -1)
-		total +=
-		    xmlXPathCompOpEval(ctxt,
-			&comp->steps[op->ch2]);
-	    CHECK_ERROR0;
-	    res = valuePop(ctxt);
-	    if (res != NULL)
-		xmlXPathFreeObject(res);
-	*/
-	valuePush(ctxt, obj);
-	ctxt->context->node = oldnode;
-	CHECK_ERROR0;
-    } else {
+    if ((ctxt->value->nodesetval != NULL) &&
+        (ctxt->value->nodesetval->nodeNr != 0)) {
 	xmlNodeSetPtr newset;
 	xmlXPathObjectPtr tmp = NULL;
+
+        obj = valuePop(ctxt);
+        oldset = obj->nodesetval;
+        oldnode = ctxt->context->node;
+        oldDoc = ctxt->context->doc;
+
 	/*
 	* Initialize the new set.
 	* Also set the xpath document in case things like
@@ -13168,6 +13143,7 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 	    if (ctxt->error != XPATH_EXPRESSION_OK) {
 		xmlXPathFreeNodeSet(newset);
 		xmlXPathFreeObject(obj);
+	        ctxt->context->node = oldnode;
 		return(0);
 	    }
 	    /*
@@ -13195,7 +13171,6 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 		xmlXPathNodeSetClear(tmp->nodesetval, 1);
 	    } else
 		tmp = NULL;
-	    ctxt->context->node = NULL;
 	    /*
 	    * Only put the first node in the result, then leave.
 	    */
@@ -13211,14 +13186,12 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 	* The result is used as the new evaluation set.
 	*/
 	xmlXPathReleaseObject(ctxt->context, obj);
-	ctxt->context->node = NULL;
 	ctxt->context->contextSize = -1;
 	ctxt->context->proximityPosition = -1;
-	/* may want to move this past the '}' later */
+	ctxt->context->node = oldnode;
 	ctxt->context->doc = oldDoc;
 	valuePush(ctxt, xmlXPathCacheWrapNodeSet(ctxt->context, newset));
     }
-    ctxt->context->node = oldnode;
     return(total);
 }
 #endif /* XP_OPTIMIZED_FILTER_FIRST */
@@ -13641,8 +13614,6 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 if (ctxt->value == NULL)
                     return (total);
 
-                oldnode = ctxt->context->node;
-
 #ifdef LIBXML_XPTR_ENABLED
                 /*
                  * Hum are we filtering the result of an XPointer expression
@@ -13657,25 +13628,15 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                      * up a new locset.
                      */
                     CHECK_TYPE0(XPATH_LOCATIONSET);
+
+                    if ((ctxt->value->user == NULL) ||
+                        (((xmlLocationSetPtr) ctxt->value->user)->locNr == 0))
+                        return (total);
+
                     obj = valuePop(ctxt);
                     oldlocset = obj->user;
-                    ctxt->context->node = NULL;
+                    oldnode = ctxt->context->node;
 
-                    if ((oldlocset == NULL) || (oldlocset->locNr == 0)) {
-                        ctxt->context->contextSize = 0;
-                        ctxt->context->proximityPosition = 0;
-                        if (op->ch2 != -1)
-                            total +=
-                                xmlXPathCompOpEval(ctxt,
-                                                   &comp->steps[op->ch2]);
-                        res = valuePop(ctxt);
-                        if (res != NULL) {
-			    xmlXPathReleaseObject(ctxt->context, res);
-			}
-                        valuePush(ctxt, obj);
-                        CHECK_ERROR0;
-                        return (total);
-                    }
                     newlocset = xmlXPtrLocationSetCreate(NULL);
 
                     for (i = 0; i < oldlocset->locNr; i++) {
@@ -13696,6 +13657,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                                    &comp->steps[op->ch2]);
 			if (ctxt->error != XPATH_EXPRESSION_OK) {
 			    xmlXPathFreeObject(obj);
+                            ctxt->context->node = oldnode;
 			    return(0);
 			}
 
@@ -13720,15 +13682,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             res = valuePop(ctxt);
 			    xmlXPathReleaseObject(ctxt->context, res);
                         }
-
-                        ctxt->context->node = NULL;
                     }
 
                     /*
                      * The result is used as the new evaluation locset.
                      */
 		    xmlXPathReleaseObject(ctxt->context, obj);
-                    ctxt->context->node = NULL;
                     ctxt->context->contextSize = -1;
                     ctxt->context->proximityPosition = -1;
                     valuePush(ctxt, xmlXPtrWrapLocationSet(newlocset));
@@ -13743,30 +13702,13 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                  * up a new set.
                  */
                 CHECK_TYPE0(XPATH_NODESET);
-                obj = valuePop(ctxt);
-                oldset = obj->nodesetval;
 
-                oldnode = ctxt->context->node;
-		oldDoc = ctxt->context->doc;
-                ctxt->context->node = NULL;
-
-                if ((oldset == NULL) || (oldset->nodeNr == 0)) {
-                    ctxt->context->contextSize = 0;
-                    ctxt->context->proximityPosition = 0;
-/*
-                    if (op->ch2 != -1)
-                        total +=
-                            xmlXPathCompOpEval(ctxt,
-                                               &comp->steps[op->ch2]);
-		    CHECK_ERROR0;
-                    res = valuePop(ctxt);
-                    if (res != NULL)
-                        xmlXPathFreeObject(res);
-*/
-                    valuePush(ctxt, obj);
-                    ctxt->context->node = oldnode;
-                    CHECK_ERROR0;
-                } else {
+                if ((ctxt->value->nodesetval != NULL) &&
+                    (ctxt->value->nodesetval->nodeNr != 0)) {
+                    obj = valuePop(ctxt);
+                    oldset = obj->nodesetval;
+                    oldnode = ctxt->context->node;
+                    oldDoc = ctxt->context->doc;
 		    tmp = NULL;
                     /*
                      * Initialize the new set.
@@ -13833,6 +13775,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 			if (ctxt->error != XPATH_EXPRESSION_OK) {
 			    xmlXPathFreeNodeSet(newset);
 			    xmlXPathFreeObject(obj);
+                            ctxt->context->node = oldnode;
 			    return(0);
 			}
 
@@ -13867,7 +13810,6 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 			    */
                         } else
 			    tmp = NULL;
-                        ctxt->context->node = NULL;
                     }
 		    if (tmp != NULL)
 			xmlXPathReleaseObject(ctxt->context, tmp);
@@ -13875,15 +13817,13 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                      * The result is used as the new evaluation set.
                      */
 		    xmlXPathReleaseObject(ctxt->context, obj);
-                    ctxt->context->node = NULL;
                     ctxt->context->contextSize = -1;
                     ctxt->context->proximityPosition = -1;
-		    /* may want to move this past the '}' later */
+		    ctxt->context->node = oldnode;
 		    ctxt->context->doc = oldDoc;
 		    valuePush(ctxt,
 			xmlXPathCacheWrapNodeSet(ctxt->context, newset));
                 }
-                ctxt->context->node = oldnode;
                 return (total);
             }
         case XPATH_OP_SORT:
@@ -13906,6 +13846,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 xmlLocationSetPtr newlocset = NULL;
 		    xmlLocationSetPtr oldlocset;
                 xmlNodeSetPtr oldset;
+                xmlNodePtr oldnode = ctxt->context->node;
                 int i, j;
 
                 if (op->ch1 != -1) {
@@ -13926,22 +13867,14 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                      * up a new locset.
                      */
                     CHECK_TYPE0(XPATH_LOCATIONSET);
+
+                    if ((ctxt->value->user == NULL) ||
+                        (((xmlLocationSetPtr) ctxt->value->user)->locNr == 0))
+                        return (total);
+
                     obj = valuePop(ctxt);
                     oldlocset = obj->user;
 
-                    if ((oldlocset == NULL) || (oldlocset->locNr == 0)) {
-		        ctxt->context->node = NULL;
-                        ctxt->context->contextSize = 0;
-                        ctxt->context->proximityPosition = 0;
-                        total += xmlXPathCompOpEval(ctxt,&comp->steps[op->ch2]);
-                        res = valuePop(ctxt);
-                        if (res != NULL) {
-			    xmlXPathReleaseObject(ctxt->context, res);
-			}
-                        valuePush(ctxt, obj);
-                        CHECK_ERROR0;
-                        return (total);
-                    }
                     newlocset = xmlXPtrLocationSetCreate(NULL);
 
                     for (i = 0; i < oldlocset->locNr; i++) {
@@ -13962,6 +13895,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                                    &comp->steps[op->ch2]);
 			if (ctxt->error != XPATH_EXPRESSION_OK) {
 			    xmlXPathFreeObject(obj);
+                            ctxt->context->node = oldnode;
 			    return(0);
 			}
 
@@ -13997,14 +13931,11 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                             res = valuePop(ctxt);
 			    xmlXPathReleaseObject(ctxt->context, res);
                         }
-
-                        ctxt->context->node = NULL;
                     }
 		} else {	/* Not a location set */
                     CHECK_TYPE0(XPATH_NODESET);
                     obj = valuePop(ctxt);
                     oldset = obj->nodesetval;
-                    ctxt->context->node = NULL;
 
                     newlocset = xmlXPtrLocationSetCreate(NULL);
 
@@ -14028,6 +13959,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                                    &comp->steps[op->ch2]);
 			    if (ctxt->error != XPATH_EXPRESSION_OK) {
 				xmlXPathFreeObject(obj);
+                                ctxt->context->node = oldnode;
 				return(0);
 			    }
 
@@ -14049,8 +13981,6 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                 res = valuePop(ctxt);
 				xmlXPathReleaseObject(ctxt->context, res);
                             }
-
-                            ctxt->context->node = NULL;
                         }
                     }
                 }
@@ -14059,7 +13989,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                  * The result is used as the new evaluation set.
                  */
 		xmlXPathReleaseObject(ctxt->context, obj);
-                ctxt->context->node = NULL;
+                ctxt->context->node = oldnode;
                 ctxt->context->contextSize = -1;
                 ctxt->context->proximityPosition = -1;
                 valuePush(ctxt, xmlXPtrWrapLocationSet(newlocset));

@@ -13,6 +13,7 @@ matrix:
       env: CFLAGS="-O2 -std=c89 -D_XOPEN_SOURCE=700 -Werror -Wno-error=unused-function"
     # clang with AddressSanitizer and UndefinedBehaviorSanitizer.
     - compiler: clang
+      sudo: required
       dist: trusty
       env: CONFIG="--without-python"
            CFLAGS="-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero,pointer-overflow -fno-sanitize-recover=all -Werror -Wno-error=unused-function -Wno-error=cast-align"

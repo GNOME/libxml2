@@ -1084,7 +1084,7 @@ static const char * const htmlStartClose[] = {
 "menu",		"p", "head", "ul", NULL,
 "p",		"p", "head", "h1", "h2", "h3", "h4", "h5", "h6", FONTSTYLE, NULL,
 "div",		"p", "head", NULL,
-"noscript",	"p", NULL,
+"noscript",	"script", NULL,
 "center",	"font", "b", "i", "p", "head", NULL,
 "a",		"a", "head", NULL,
 "caption",	"p", NULL,

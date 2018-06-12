@@ -14,6 +14,14 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#ifdef HAVE_PTHREAD_H
+#include <pthread.h>
+#elif defined(HAVE_WIN32_THREADS)
+#include <windows.h>
+#elif defined(HAVE_BEOS_THREADS)
+#include <OS.h>
+#endif
+
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -39,6 +47,19 @@
  */
 static xmlMutexPtr xmlThrDefMutex = NULL;
 
+#ifdef HAVE_PTHREAD_H
+static pthread_once_t once_control = PTHREAD_ONCE_INIT;
+#elif defined(HAVE_WIN32_THREADS)
+static struct {
+    DWORD done;
+    DWORD control;
+} run_once = {0, 0};
+#elif defined(HAVE_BEOS_THREADS)
+static int32 run_once_init = 0;
+#endif
+
+static void _xmlInitGlobalsOnce(void);
+
 /**
  * xmlInitGlobals:
  *
@@ -46,8 +67,36 @@ static xmlMutexPtr xmlThrDefMutex = NULL;
  */
 void xmlInitGlobals(void)
 {
+#ifdef LIBXML_THREAD_ENABLED
+#ifdef HAVE_PTHREAD_H
+    pthread_once(&once_control, _xmlInitGlobalsOnce);
+#elif defined(HAVE_WIN32_THREADS)
+    if (!run_once.done) {
+        if (InterlockedIncrement(&run_once.control) == 1) {
+            _xmlInitGlobalsOnce();
+            run_once.done = 1;
+        } else {
+            /* Another thread is working; give up our slice and
+             * wait until they're done. */
+            while (!run_once.done)
+                Sleep(0);
+        }
+    }
+#elif defined(HAVE_BEOS_THREADS)
+    if (atomic_add(&run_once_init, 1) == 0)
+        _xmlInitGlobalsOnce();
+    else
+        atomic_add(&run_once_init, -1);
+#endif
+#else
     if (xmlThrDefMutex == NULL)
-        xmlThrDefMutex = xmlNewMutex();
+        _xmlInitGlobalsOnce();
+#endif
+}
+
+static void _xmlInitGlobalsOnce(void)
+{
+    xmlThrDefMutex = xmlNewMutex();
 }
 
 /**

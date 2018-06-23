@@ -2025,7 +2025,6 @@ found_node:
  *
  * Skip to the node following the current one in document order while
  * avoiding the subtree if any.
- * Currently implemented only for Readers built on a document
  *
  * Returns 1 if the node was read successfully, 0 if there is no more
  *          nodes to read, or -1 in case of error
@@ -2034,16 +2033,16 @@ int
 xmlTextReaderNextSibling(xmlTextReaderPtr reader) {
     if (reader == NULL)
         return(-1);
-    if (reader->doc == NULL) {
-        /* TODO */
-	return(-1);
-    }
 
     if (reader->state == XML_TEXTREADER_END)
         return(0);
 
-    if (reader->node == NULL)
-        return(xmlTextReaderNextTree(reader));
+    if (reader->node == NULL) {
+        if (reader->doc != NULL)
+            return(xmlTextReaderNextTree(reader));
+        else
+            return(xmlTextReaderRead(reader));
+    }
 
     if (reader->node->next != NULL) {
         reader->node = reader->node->next;

@@ -1917,12 +1917,9 @@ xmlTextReaderNextTree(xmlTextReaderPtr reader)
 
 	/* if reader->node->next is NULL mean no subtree for current node,
 	so need to move to sibling of parent node if present */
-        if ((reader->node->type == XML_ELEMENT_NODE) ||
-            (reader->node->type == XML_ATTRIBUTE_NODE)) {
-            reader->state = XML_TEXTREADER_BACKTRACK;
-	    /* This will move to parent if present */
-            xmlTextReaderRead(reader);
-        }
+	reader->state = XML_TEXTREADER_BACKTRACK;
+	/* This will move to parent if present */
+	xmlTextReaderRead(reader);
     }
 
     if (reader->node->next != 0) {

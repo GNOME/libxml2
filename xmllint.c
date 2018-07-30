@@ -193,6 +193,7 @@ static xmlStreamCtxtPtr patstream = NULL;
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 static const char *xpathquery = NULL;
+static const char *xpathnodesep = NULL;
 #endif
 static int options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
 static int sax = 0;
@@ -2086,7 +2087,7 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             }
             for (i = 0;i < cur->nodesetval->nodeNr;i++) {
                 node = cur->nodesetval->nodeTab[i];
-                xmlSaveTree(ctxt, node);
+                xmlSaveTreeWithSep(ctxt, node, xpathnodesep);
             }
             xmlSaveClose(ctxt);
 #else
@@ -3087,6 +3088,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--oldxml10: use XML-1.0 parsing rules before the 5th edition\n");
 #ifdef LIBXML_XPATH_ENABLED
     fprintf(f, "\t--xpath expr: evaluate the XPath expression, imply --noout\n");
+    fprintf(f, "\t--xpath-node-separator sep: node separator in XPath result\n");
 #endif
 
     fprintf(f, "\nLibxml project home page: http://xmlsoft.org/\n");
@@ -3465,6 +3467,10 @@ main(int argc, char **argv) {
 	    i++;
 	    noout++;
 	    xpathquery = argv[i];
+        } else if ((!strcmp(argv[i], "-xpath-node-separator")) ||
+                   (!strcmp(argv[i], "--xpath-node-separator"))) {
+	    i++;
+	    xpathnodesep = argv[i];
 #endif
 	} else if ((!strcmp(argv[i], "-oldxml10")) ||
 	           (!strcmp(argv[i], "--oldxml10"))) {
@@ -3705,6 +3711,11 @@ main(int argc, char **argv) {
 #ifdef LIBXML_XPATH_ENABLED
         if ((!strcmp(argv[i], "-xpath")) ||
 	    (!strcmp(argv[i], "--xpath"))) {
+	    i++;
+	    continue;
+    }
+        if ((!strcmp(argv[i], "-xpath-node-separator")) ||
+	    (!strcmp(argv[i], "--xpath-node-separator"))) {
 	    i++;
 	    continue;
 	}

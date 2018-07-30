@@ -1960,6 +1960,44 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node)
 }
 
 /**
+ * xmlSaveTreeWithSep:
+ * @ctxt:  a document saving context
+ * @node:  the top node of the subtree to save
+ * @sep:   node separator appended to the subtree
+ *
+ * Save a subtree starting at the node parameter to a saving context
+ * TODO: The function is not fully implemented yet as it does not return the
+ * byte count but the return value of xmlSaveTree instead
+ *
+ * Returns the number of byte written or -1 in case of error
+ */
+long
+xmlSaveTreeWithSep(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
+{
+    long ret = xmlSaveTree(ctxt, node);
+    if (sep != NULL) {
+        char *buf = malloc(strlen(sep) + 1);
+        char *idx = buf;
+        char c;
+        while ((c = *sep++)) {
+            if ((c == '\\') && (*sep)) {
+                switch ((c = *sep++)) {
+                    case '\\': c = '\\'; break;
+                    case 'n': c = '\n'; break;
+                    case 'r': c = '\r'; break;
+                    case 't': c = '\t'; break;
+                    default: *idx++ = '\\'; break;
+                }
+            }
+            *idx++ = c;
+        }
+        *idx = '\0';
+        xmlOutputBufferWrite(ctxt->buf, strlen(buf), buf);
+    }
+    return(ret);
+}
+
+/**
  * xmlSaveFlush:
  * @ctxt:  a document saving context
  *

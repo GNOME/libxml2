@@ -13234,9 +13234,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 		return(0);
 	    }
             xmlXPathBooleanFunction(ctxt, 1);
-            arg1 = valuePop(ctxt);
-            arg1->boolval &= arg2->boolval;
-            valuePush(ctxt, arg1);
+            if (ctxt->value != NULL)
+                ctxt->value->boolval &= arg2->boolval;
 	    xmlXPathReleaseObject(ctxt->context, arg2);
             return (total);
         case XPATH_OP_OR:
@@ -13252,9 +13251,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 		return(0);
 	    }
             xmlXPathBooleanFunction(ctxt, 1);
-            arg1 = valuePop(ctxt);
-            arg1->boolval |= arg2->boolval;
-            valuePush(ctxt, arg1);
+            if (ctxt->value != NULL)
+                ctxt->value->boolval |= arg2->boolval;
 	    xmlXPathReleaseObject(ctxt->context, arg2);
             return (total);
         case XPATH_OP_EQUAL:

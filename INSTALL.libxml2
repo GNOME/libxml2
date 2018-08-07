@@ -13,6 +13,8 @@ Compilation
 
      cd libxml-xxxx
 
+     NOCONFIGURE=1 ./autogen.sh
+
      ./configure --help
 
      to see the options, then the compilation/installation proper

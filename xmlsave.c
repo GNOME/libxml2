@@ -1993,6 +1993,7 @@ xmlSaveTreeWithSep(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
         }
         *idx = '\0';
         xmlOutputBufferWrite(ctxt->buf, strlen(buf), buf);
+        free(buf);
     }
     return(ret);
 }

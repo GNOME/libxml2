@@ -32,6 +32,14 @@ DIE=0
 	echo "or see http://www.gnu.org/software/automake"
 }
 
+if ! test -f "$(aclocal --print-ac-dir)"/pkg.m4; then
+	echo
+	DIE=1
+	echo "You must have pkg-config installed to compile libxml."
+	echo "Download the appropriate package for your distribution,"
+	echo "or see https://www.freedesktop.org/wiki/Software/pkg-config/"
+fi
+
 if test "$DIE" -eq 1; then
 	exit 1
 fi

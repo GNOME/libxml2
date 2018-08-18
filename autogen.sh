@@ -76,6 +76,11 @@ fi
 
 if test -z "$NOCONFIGURE"; then
     $srcdir/configure $EXTRA_ARGS "$@"
-    echo
-    echo "Now type 'make' to compile libxml2."
+    if test "$?" -ne 0; then
+        echo
+        echo "Configure script failed, check config.log for more info."
+    else
+        echo
+        echo "Now type 'make' to compile libxml2."
+    fi
 fi

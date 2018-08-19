@@ -69,6 +69,15 @@ autoreconf -if -Wall
 
 cd $THEDIR
 
+if ! grep -q pkg.m4 aclocal.m4; then
+    cat <<EOF
+
+Couldn't find pkg.m4 from pkg-config. Install the appropriate package for
+your distribution or set ACLOCAL_PATH to the directory containing pkg.m4.
+EOF
+    exit 1
+fi
+
 if test x$OBJ_DIR != x; then
     mkdir -p "$OBJ_DIR"
     cd "$OBJ_DIR"

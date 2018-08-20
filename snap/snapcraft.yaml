@@ -1,0 +1,136 @@
+%YAML 1.2
+---
+# Snapcraft Recipe for XML Toolkit from the GNOME Project
+# ------------------------------
+# This file is in the YAML data serialization format:
+# http://yaml.org
+# For the spec. of writing this file refer the following documentation:
+# * The snapcraft syntax
+#   https://docs.snapcraft.io/build-snaps/syntax
+# * Snap Docs
+#   https://snapdocs.labix.org
+# * Latest doc topics in the Snapcraft Forum
+#   https://forum.snapcraft.io/c/doc
+# For support refer to the snapcraft section in the Snapcraft Forum:
+# https://forum.snapcraft.io/c/snapcraft
+
+name: libxml2-utils
+summary: XML Toolkit from the GNOME Project
+description: |
+  Libxml2 is the XML C parser and toolkit developed for the Gnome project (but usable outside of the Gnome platform), it is free software available under the MIT License.
+
+  This snap ships the latest released and development snapshot of libxml2 itself and expose its command-line utilites to the system.
+
+  For any issue regarding using the snap please refer to the issue tracker:
+
+  https://github.com/GNOME/libxml2/issues
+
+version: determined-by-version-script
+
+version-script: |
+  set \
+    -o errexit \
+    -o nounset
+
+  upstream_version="$(
+    git \
+      -C parts/libxml2/src \
+      describe \
+      --always \
+      --dirty=-d \
+      --tags \
+    | sed s/^v//
+  )"
+
+  packaging_revision="$(
+    git \
+      describe \
+      --abbrev=4 \
+      --always \
+      --match nothing \
+      --dirty=-d
+  )"
+
+  printf -- '%s' "${upstream_version}+pkg-${packaging_revision}"
+
+confinement: strict
+grade: stable
+icon: snap/gui/icon.png
+
+apps:
+  xmllint:
+    command: xmllint
+    plugs:
+    - home
+    - removable-media
+
+  xmlcatalog:
+    command: xmlcatalog
+    plugs:
+    - home
+    - removable-media
+
+parts:
+  libxml2:
+    source: https://gitlab.gnome.org/GNOME/libxml2.git
+    source-depth: 50
+
+    # For building stable releases
+    #source-tag: 'v2.9.8'
+
+    plugin: autotools
+    configflags:
+    - --disable-static
+    - --disable-dependency-tracking
+    - --without-python
+    build-packages:
+    # DISABLED: Python binding not required
+    #- libpython-all-dev
+    #- python-all-dev
+
+    # DISABLED: Automatically installed by `autotools` plugin
+    #- autoconf
+    #- automake
+    #- libtool-bin
+    #- make
+
+    - libicu-dev
+    - liblzma-dev
+    - pkg-config
+    - zlib1g-dev
+    stage-packages:
+    - libicu55
+    - liblzma5
+    - zlib1g
+
+    filesets:
+      cmake:
+      - lib/cmake/*
+      docs-copyright:
+      - share/doc/libxml2-*/Copyright
+      docs-excluded:
+      - -share/doc/*
+      - -share/gtk-doc/*
+      - -share/man/man3/*
+      executables:
+      - bin/*
+      files-in-stage-packages:
+      - usr/*
+      include-headers:
+      - include/*
+      libtool-library:
+      - lib/*.la
+      m4:
+      - share/aclocal/*.m4
+      pkgconfig:
+      - lib/pkgconfig/*
+      static-library:
+      - lib/*.a
+      shared-library:
+      - lib/*.so*
+
+    stage:
+    - $executables
+    - $docs-copyright
+    - $shared-library
+    - $files-in-stage-packages

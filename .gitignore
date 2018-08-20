@@ -4,6 +4,7 @@
 *.log
 *.pyc
 *.patch
+*.snap
 .deps
 .libs
 .memdump
@@ -59,6 +60,7 @@ install-sh
 libtool
 libxml-2.0-uninstalled.pc
 libxml-2.0.pc
+libxml2-utils_source.tar.bz2
 libxml2.la
 libxml2.spec
 list
@@ -67,6 +69,8 @@ log
 missing
 missing.lst
 m4
+parts/
+prime/
 python/.deps
 python/.libs
 python/Makefile
@@ -87,6 +91,8 @@ runsuite
 runtest
 runxmlconf
 runxmlconf.log
+snap/.snapcraft/
+stage/
 stamp-h1
 tags
 test.out

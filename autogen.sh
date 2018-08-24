@@ -67,8 +67,6 @@ fi
 # Replaced by autoreconf below
 autoreconf -if -Wall
 
-cd $THEDIR
-
 if ! grep -q pkg.m4 aclocal.m4; then
     cat <<EOF
 
@@ -77,6 +75,8 @@ your distribution or set ACLOCAL_PATH to the directory containing pkg.m4.
 EOF
     exit 1
 fi
+
+cd $THEDIR
 
 if test x$OBJ_DIR != x; then
     mkdir -p "$OBJ_DIR"

@@ -1,0 +1,59 @@
+version: 2.9.8.{Build}
+image: Visual Studio 2017
+
+environment:
+  matrix:
+  - PlatformToolset: v141_xp
+  #- PlatformToolset: v140_xp
+
+platform:
+    - x64
+    - Win32
+
+configuration:
+    - Release
+    #- Debug
+
+install:
+    - if "%platform%"=="x64" set platform_input=x64
+    - if "%platform%"=="Win32" set platform_input=Win32
+    - if "%platform%"=="x64" set archi=amd64
+    - if "%platform%"=="Win32" set archi=x86
+    - if "%PlatformToolset%"=="v140_xp" call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %archi%
+    - if "%PlatformToolset%"=="v141_xp" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %archi%
+
+
+build_script:
+    - cd "%APPVEYOR_BUILD_FOLDER%"\win32
+    - cscript configure.js compiler=msvc iconv=no
+    - nmake /f Makefile.msvc
+    - nmake /f Makefile.msvc install
+
+
+after_build:
+    - cd "%APPVEYOR_BUILD_FOLDER%"
+    - ps: |
+        Push-AppveyorArtifact "win32\bin\libxml2.dll" -FileName libxml2.dll
+        if ($($env:APPVEYOR_REPO_TAG) -eq "true" -and $env:PLATFORMTOOLSET -eq "v141_xp" -and $env:CONFIGURATION -eq "Release")
+        {
+            $ZipFileName = "libxml2_$($env:APPVEYOR_REPO_TAG_NAME)_$($env:PLATFORM_INPUT).zip"
+            7z a $ZipFileName $env:APPVEYOR_BUILD_FOLDER\win32\bin\libxml2.dll
+            #TODO add further dependencies and txt files
+        }
+artifacts:
+  - path: libxml2_*.zip
+    name: releases
+
+deploy:
+    provider: GitHub
+    description: ''
+    auth_token:
+        secure: !!!TODO!!!
+    artifact: releases
+    draft: false
+    prerelease: false
+    force_update: true
+    on:
+        appveyor_repo_tag: true
+        PlatformToolset: v141_xp
+        configuration: Release

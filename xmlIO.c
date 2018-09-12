@@ -640,7 +640,11 @@ xmlWrapStatUtf8(const char *path, struct _stat *info) {
 
     wPath = __xmlIOWin32UTF8ToWChar(path);
     if (wPath) {
+    #if defined (_WIN64)
+       retval = _wstati64(wPath, info);
+    #else
        retval = _wstat(wPath, info);
+    #endif
        xmlFree(wPath);
     }
     /* maybe path in native encoding */
@@ -670,7 +674,11 @@ xmlCheckFilename (const char *path)
 {
 #ifdef HAVE_STAT
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+#if defined (_WIN64)
+    struct _stati64 stat_buffer;
+#else
     struct _stat stat_buffer;
+#endif
 #else
     struct stat stat_buffer;
 #endif

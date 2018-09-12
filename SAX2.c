@@ -1665,7 +1665,10 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 #ifdef DEBUG_SAX_TREE
     xmlGenericError(xmlGenericErrorContext, "pushing(%s)\n", name);
 #endif
-    nodePush(ctxt, ret);
+    if (nodePush(ctxt, ret) < 0) {
+        xmlFreeNode(ret);
+        return;
+    }
 
     /*
      * Link the child element
@@ -2336,7 +2339,10 @@ xmlSAX2StartElementNs(void *ctx,
     /*
      * We are parsing a new node.
      */
-    nodePush(ctxt, ret);
+    if (nodePush(ctxt, ret) < 0) {
+        xmlFreeNode(ret);
+        return;
+    }
 
     /*
      * Link the child element

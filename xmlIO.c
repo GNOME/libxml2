@@ -568,6 +568,16 @@ xmlCleanupOutputCallbacks(void)
  *									*
  ************************************************************************/
 
+#ifdef HAVE_STAT
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+typedef struct _stat64 _stat_t;
+#elif defined (__DJGPP__) && !defined (__CYGWIN__)
+typedef struct _stat _stat_t;
+#else
+typedef struct stat _stat_t;
+#endif
+#endif
+
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
 
 /**
@@ -634,18 +644,26 @@ xmlWrapGzOpenUtf8(const char *path, const char *mode)
  *
  */
 static int
-xmlWrapStatUtf8(const char *path, struct _stat *info) {
+xmlWrapStatUtf8(const char *path, _stat_t *info) {
     int retval = -1;
     wchar_t *wPath;
 
     wPath = __xmlIOWin32UTF8ToWChar(path);
     if (wPath) {
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+       retval = _wstat64(wPath, info);
+#else
        retval = _wstat(wPath, info);
+#endif
        xmlFree(wPath);
     }
     /* maybe path in native encoding */
     if(retval < 0)
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+       retval = _stat64(path, info);
+#else
        retval = _stat(path, info);
+#endif
     return retval;
 }
 
@@ -669,11 +687,7 @@ int
 xmlCheckFilename (const char *path)
 {
 #ifdef HAVE_STAT
-#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
-    struct _stat stat_buffer;
-#else
-    struct stat stat_buffer;
-#endif
+    _stat_t stat_buffer;
 #endif
     if (path == NULL)
 	return(0);

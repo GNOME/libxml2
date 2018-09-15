@@ -709,8 +709,8 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
 	return(-1);
     }
     if (info.st_size != size) {
-        fprintf(stderr, "file %s is %ld bytes, result is %d bytes\n",
-	        filename, (long) info.st_size, size);
+        fprintf(stderr, "file %s is %lld bytes, result is %d bytes\n",
+	        filename, (long long) info.st_size, size);
         return(-1);
     }
     fd = open(filename, RD_FLAGS);
@@ -759,6 +759,8 @@ static int loadMem(const char *filename, const char **mem, int *size) {
 #endif
         < 0)
 	return(-1);
+    if (sizeof(info.st_size) > sizeof(siz) && info.st_size > INT_MAX)
+	return(-1); /* File size too big */
     base = malloc(info.st_size + 1);
     if (base == NULL)
 	return(-1);

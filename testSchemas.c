@@ -83,9 +83,19 @@ int main(int argc, char **argv) {
 #ifdef HAVE_MMAP
 		if (memory) {
 		    int fd;
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+		    struct _stat64 info;
+#else
 		    struct stat info;
+#endif
 		    const char *base;
-		    if (stat(argv[i], &info) < 0)
+		    if (
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+			_stat64(argv[i], &info)
+#else
+			stat(argv[i], &info)
+#endif
+			< 0)
 			break;
 		    if ((fd = open(argv[i], O_RDONLY)) < 0)
 			break;

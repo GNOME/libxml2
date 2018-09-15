@@ -1813,12 +1813,22 @@ static void streamFile(char *filename) {
     int ret;
 #ifdef HAVE_MMAP
     int fd = -1;
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+    struct _stat64 info;
+#else
     struct stat info;
+#endif
     const char *base = NULL;
     xmlParserInputBufferPtr input = NULL;
 
     if (memory) {
-	if (stat(filename, &info) < 0)
+	if (
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+	    _stat64(filename, &info)
+#else
+	    stat(filename, &info)
+#endif
+	    < 0)
 	    return;
 	if ((fd = open(filename, O_RDONLY)) < 0)
 	    return;
@@ -2215,9 +2225,19 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #ifdef HAVE_MMAP
     else if ((html) && (memory)) {
 	int fd;
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+	struct _stat64 info;
+#else
 	struct stat info;
+#endif
 	const char *base;
-	if (stat(filename, &info) < 0)
+	if (
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+	    _stat64(filename, &info)
+#else
+	    stat(filename, &info)
+#endif
+	    < 0)
 	    return;
 	if ((fd = open(filename, O_RDONLY)) < 0)
 	    return;
@@ -2335,9 +2355,19 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #ifdef HAVE_MMAP
 	} else if (memory) {
 	    int fd;
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+	    struct _stat64 info;
+#else
 	    struct stat info;
+#endif
 	    const char *base;
-	    if (stat(filename, &info) < 0)
+	    if (
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+		_stat64(filename, &info)
+#else
+		stat(filename, &info)
+#endif
+		< 0)
 		return;
 	    if ((fd = open(filename, O_RDONLY)) < 0)
 		return;

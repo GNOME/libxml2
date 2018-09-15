@@ -968,7 +968,11 @@ xmlLoadFileContent(const char *filename)
     long size;
 
 #ifdef HAVE_STAT
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+    struct _stat64 info;
+#else
     struct stat info;
+#endif
 #endif
     xmlChar *content;
 
@@ -976,7 +980,13 @@ xmlLoadFileContent(const char *filename)
         return (NULL);
 
 #ifdef HAVE_STAT
-    if (stat(filename, &info) < 0)
+    if (
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+        _stat64(filename, &info)
+#else
+        stat(filename, &info)
+#endif
+        < 0)
         return (NULL);
 #endif
 

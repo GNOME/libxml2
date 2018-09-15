@@ -965,10 +965,18 @@ xmlLoadFileContent(const char *filename)
     FILE *fd;
 #endif
     int len;
-    long size;
+#if defined(HAVE_STAT) && defined(_MSC_VER)
+    unsigned size; /* Follow non-posix compliant read() requirement. */
+#else
+    size_t size;
+#endif
 
 #ifdef HAVE_STAT
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+    struct _stat64 info;
+#else
     struct stat info;
+#endif
 #endif
     xmlChar *content;
 
@@ -976,7 +984,13 @@ xmlLoadFileContent(const char *filename)
         return (NULL);
 
 #ifdef HAVE_STAT
-    if (stat(filename, &info) < 0)
+    if (
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+        _stat64(filename, &info)
+#else
+        stat(filename, &info)
+#endif
+        < 0)
         return (NULL);
 #endif
 
@@ -989,6 +1003,15 @@ xmlLoadFileContent(const char *filename)
         return (NULL);
     }
 #ifdef HAVE_STAT
+    if (sizeof(info.st_size) > sizeof(size) &&
+#ifdef _MSC_VER
+            info.st_size > UINT_MAX /* Follow non-posix compliant read() limitation. */
+#else
+            info.st_size > SIZE_MAX
+#endif
+        )
+        xmlGenericError(xmlGenericErrorContext,
+            "File size (%lld) too big", (long long) info.st_size);
     size = info.st_size;
 #else
     if (fseek(fd, 0, SEEK_END) || (size = ftell(fd)) == EOF || fseek(fd, 0, SEEK_SET)) {        /* File operations denied? ok, just close and return failure */

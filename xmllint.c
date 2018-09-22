@@ -193,7 +193,7 @@ static xmlStreamCtxtPtr patstream = NULL;
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 static const char *xpathquery = NULL;
-static const char *xpathnodesep = NULL;
+static const char *xpathsep = NULL;
 #endif
 static int options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
 static int sax = 0;
@@ -2087,7 +2087,7 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             }
             for (i = 0;i < cur->nodesetval->nodeNr;i++) {
                 node = cur->nodesetval->nodeTab[i];
-                xmlSaveTree(ctxt, node, xpathnodesep);
+                xmlSaveTree(ctxt, node, xpathsep);
             }
             xmlSaveClose(ctxt);
 #else
@@ -3088,7 +3088,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--oldxml10: use XML-1.0 parsing rules before the 5th edition\n");
 #ifdef LIBXML_XPATH_ENABLED
     fprintf(f, "\t--xpath expr: evaluate the XPath expression, imply --noout\n");
-    fprintf(f, "\t--xpath-node-separator sep: node separator in XPath result\n");
+    fprintf(f, "\t--xpath-separator sep: node separator in XPath result\n");
 #endif
 
     fprintf(f, "\nLibxml project home page: http://xmlsoft.org/\n");
@@ -3467,10 +3467,10 @@ main(int argc, char **argv) {
 	    i++;
 	    noout++;
 	    xpathquery = argv[i];
-        } else if ((!strcmp(argv[i], "-xpath-node-separator")) ||
-                   (!strcmp(argv[i], "--xpath-node-separator"))) {
+        } else if ((!strcmp(argv[i], "-xpath-separator")) ||
+                   (!strcmp(argv[i], "--xpath-separator"))) {
 	    i++;
-	    xpathnodesep = argv[i];
+	    xpathsep = argv[i];
 #endif
 	} else if ((!strcmp(argv[i], "-oldxml10")) ||
 	           (!strcmp(argv[i], "--oldxml10"))) {
@@ -3714,8 +3714,8 @@ main(int argc, char **argv) {
 	    i++;
 	    continue;
     }
-        if ((!strcmp(argv[i], "-xpath-node-separator")) ||
-	    (!strcmp(argv[i], "--xpath-node-separator"))) {
+        if ((!strcmp(argv[i], "-xpath-separator")) ||
+	    (!strcmp(argv[i], "--xpath-separator"))) {
 	    i++;
 	    continue;
 	}

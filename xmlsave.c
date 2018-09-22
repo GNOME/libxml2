@@ -1967,7 +1967,6 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
                 switch ((c = *sep++)) {
                     case '\\': c = '\\'; break;
                     case 'n': c = '\n'; break;
-                    case 'r': c = '\r'; break;
                     case 't': c = '\t'; break;
                     default: *idx++ = '\\'; break;
                 }

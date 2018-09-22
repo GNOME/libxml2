@@ -1666,6 +1666,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     xmlGenericError(xmlGenericErrorContext, "pushing(%s)\n", name);
 #endif
     if (nodePush(ctxt, ret) < 0) {
+        xmlUnlinkNode(ret);
         xmlFreeNode(ret);
         return;
     }
@@ -2340,6 +2341,7 @@ xmlSAX2StartElementNs(void *ctx,
      * We are parsing a new node.
      */
     if (nodePush(ctxt, ret) < 0) {
+        xmlUnlinkNode(ret);
         xmlFreeNode(ret);
         return;
     }

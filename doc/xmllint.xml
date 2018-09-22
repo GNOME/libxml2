@@ -70,6 +70,7 @@
 			<arg choice="plain"><option>--debug</option></arg>
 			<arg choice="plain"><option>--shell</option></arg>
 			<arg choice="plain"><option>--xpath "<replaceable class="option">XPath_expression</replaceable>"</option></arg>
+			<arg choice="plain"><option>--xpath-separator "<replaceable class="option">XPath_separator</replaceable>"</option></arg>
 			<arg choice="plain"><option>--debugent</option></arg>
 			<arg choice="plain"><option>--copy</option></arg>
 			<arg choice="plain"><option>--recover</option></arg>
@@ -537,6 +538,18 @@
 			node set is serialized in full in the output. In case
 			of an empty node set the "XPath set is empty" result
 			will be shown and an error exit code will be returned.
+		</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><option>--xpath-separator "<replaceable class="option">XPath_separator</replaceable>"</option></term>
+	<listitem>
+		<para>
+            In case of a XPath nodeset result, separate nodes in
+            the node set with the given separator. Backslash
+            escapes ("\\", "\n", "\t"), if included in the
+            separator, are interpreted.
 		</para>
 	</listitem>
 		</varlistentry>

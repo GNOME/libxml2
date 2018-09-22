@@ -2087,7 +2087,7 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             }
             for (i = 0;i < cur->nodesetval->nodeNr;i++) {
                 node = cur->nodesetval->nodeTab[i];
-                xmlSaveTreeWithSep(ctxt, node, xpathnodesep);
+                xmlSaveTree(ctxt, node, xpathnodesep);
             }
             xmlSaveClose(ctxt);
 #else

@@ -65,12 +65,9 @@ XMLPUBFUN xmlSaveCtxtPtr XMLCALL
 XMLPUBFUN long XMLCALL
 		xmlSaveDoc		(xmlSaveCtxtPtr ctxt,
 					 xmlDocPtr doc);
-XMLPUBFUN long XMLCALL
-		xmlSaveTree		(xmlSaveCtxtPtr ctxt,
-					 xmlNodePtr node);
 
 XMLPUBFUN long XMLCALL
-		xmlSaveTreeWithSep		(xmlSaveCtxtPtr ctxt,
+		xmlSaveTree		(xmlSaveCtxtPtr ctxt,
 					 xmlNodePtr node,
 					 const char *sep);
 

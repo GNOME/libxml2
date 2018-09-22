@@ -1942,6 +1942,7 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
  * xmlSaveTree:
  * @ctxt:  a document saving context
  * @node:  the top node of the subtree to save
+ * @sep:   node separator appended to the subtree
  *
  * Save a subtree starting at the node parameter to a saving context
  * TODO: The function is not fully implemented yet as it does not return the
@@ -1950,31 +1951,13 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
  * Returns the number of byte written or -1 in case of error
  */
 long
-xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node)
+xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
 {
     long ret = 0;
 
     if ((ctxt == NULL) || (node == NULL)) return(-1);
     xmlNodeDumpOutputInternal(ctxt, node);
-    return(ret);
-}
 
-/**
- * xmlSaveTreeWithSep:
- * @ctxt:  a document saving context
- * @node:  the top node of the subtree to save
- * @sep:   node separator appended to the subtree
- *
- * Save a subtree starting at the node parameter to a saving context
- * TODO: The function is not fully implemented yet as it does not return the
- * byte count but the return value of xmlSaveTree instead
- *
- * Returns the number of byte written or -1 in case of error
- */
-long
-xmlSaveTreeWithSep(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
-{
-    long ret = xmlSaveTree(ctxt, node);
     if (sep != NULL) {
         char *buf = malloc(strlen(sep) + 1);
         char *idx = buf;
@@ -1995,6 +1978,7 @@ xmlSaveTreeWithSep(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
         xmlOutputBufferWrite(ctxt->buf, strlen(buf), buf);
         free(buf);
     }
+
     return(ret);
 }
 

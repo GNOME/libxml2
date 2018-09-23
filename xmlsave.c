@@ -1958,24 +1958,14 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
     if ((ctxt == NULL) || (node == NULL)) return(-1);
     xmlNodeDumpOutputInternal(ctxt, node);
 
-    if (sep != NULL) {
-        char *buf = malloc(strlen(sep) + 1);
-        char *idx = buf;
-        char c;
-        while ((c = *sep++)) {
-            if ((c == '\\') && (*sep)) {
-                switch ((c = *sep++)) {
-                    case '\\': c = '\\'; break;
-                    case 'n': c = '\n'; break;
-                    case 't': c = '\t'; break;
-                    default: *idx++ = '\\'; break;
-                }
-            }
-            *idx++ = c;
-        }
-        *idx = '\0';
-        xmlOutputBufferWrite(ctxt->buf, strlen(buf), buf);
-        free(buf);
+    if (sep == NULL) {
+        ;
+    } else if (*sep == '\n') {
+        xmlOutputBufferWrite(ctxt->buf, 1, "\n");
+    } else if (*sep == '\0') {
+        xmlOutputBufferWrite(ctxt->buf, 1, "\0");
+    } else {
+        return -1;
     }
 
     return(ret);

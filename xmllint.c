@@ -3087,8 +3087,8 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--sax: do not build a tree but work just at the SAX level\n");
     fprintf(f, "\t--oldxml10: use XML-1.0 parsing rules before the 5th edition\n");
 #ifdef LIBXML_XPATH_ENABLED
-    fprintf(f, "\t--xpath expr: evaluate the XPath expression, imply --noout\n");
-    fprintf(f, "\t--xpath-separator sep: node separator in XPath result\n");
+    fprintf(f, "\t--xpath expr: evaluate the XPath expression, nodes are separated by \\n, imply --noout\n");
+    fprintf(f, "\t--xpath0 expr: evaluate the XPath expression, nodes are separated by \\0, imply --noout\n");
 #endif
 
     fprintf(f, "\nLibxml project home page: http://xmlsoft.org/\n");
@@ -3467,10 +3467,13 @@ main(int argc, char **argv) {
 	    i++;
 	    noout++;
 	    xpathquery = argv[i];
-        } else if ((!strcmp(argv[i], "-xpath-separator")) ||
-                   (!strcmp(argv[i], "--xpath-separator"))) {
+	    xpathsep = "\n";
+        } else if ((!strcmp(argv[i], "-xpath0")) ||
+                   (!strcmp(argv[i], "--xpath0"))) {
 	    i++;
-	    xpathsep = argv[i];
+	    noout++;
+	    xpathquery = argv[i];
+	    xpathsep = "\0";
 #endif
 	} else if ((!strcmp(argv[i], "-oldxml10")) ||
 	           (!strcmp(argv[i], "--oldxml10"))) {
@@ -3714,8 +3717,8 @@ main(int argc, char **argv) {
 	    i++;
 	    continue;
     }
-        if ((!strcmp(argv[i], "-xpath-separator")) ||
-	    (!strcmp(argv[i], "--xpath-separator"))) {
+        if ((!strcmp(argv[i], "-xpath0")) ||
+	    (!strcmp(argv[i], "--xpath0"))) {
 	    i++;
 	    continue;
 	}

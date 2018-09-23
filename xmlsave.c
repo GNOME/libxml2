@@ -1960,9 +1960,9 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
 
     if (sep == NULL) {
         ;
-    } else if (*sep == '\n') {
+    } else if (sep[0] == '\n' && sep[1] == '\0') {
         xmlOutputBufferWrite(ctxt->buf, 1, "\n");
-    } else if (*sep == '\0') {
+    } else if (sep[0] == '\0') {
         xmlOutputBufferWrite(ctxt->buf, 1, "\0");
     } else {
         return -1;

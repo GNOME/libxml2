@@ -1739,7 +1739,18 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar * URL,
                 xmlFree(name);
             }
         }
-        cur = cur->next;
+        if (IS_RELAXNG(cur, "div") && cur->children != NULL) {
+            cur = cur->children;
+        } else {
+            if (cur->next != NULL) {
+                cur = cur->next;
+            } else {
+                while (cur->parent != node && cur->parent->next == NULL) {
+                    cur = cur->parent;
+                }
+                cur = cur->parent != node ? cur->parent->next : NULL;
+            }
+        }
     }
 
 

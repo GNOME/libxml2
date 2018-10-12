@@ -15,6 +15,7 @@ Makefile.in
 aclocal.m4
 autom4te.cache
 bissect*
+compile
 config.guess
 config.h
 config.h.in
@@ -59,6 +60,7 @@ install-sh
 libtool
 libxml-2.0-uninstalled.pc
 libxml-2.0.pc
+libxml2-config.cmake
 libxml2.la
 libxml2.spec
 list

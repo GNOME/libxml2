@@ -5358,11 +5358,15 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
         xmlNodePtr child;
         xmlRelaxNGDefinePtr last = NULL;
 
-        ret = xmlRelaxNGNewDefine(ctxt, node);
-        if (ret == NULL)
-            return (NULL);
-        ret->parent = def;
-        ret->type = XML_RELAXNG_CHOICE;
+        if (def->type == XML_RELAXNG_CHOICE) {
+            ret = def;
+        } else {
+            ret = xmlRelaxNGNewDefine(ctxt, node);
+            if (ret == NULL)
+                return (NULL);
+            ret->parent = def;
+            ret->type = XML_RELAXNG_CHOICE;
+        }
 
         if (node->children == NULL) {
             xmlRngPErr(ctxt, node, XML_RNGP_CHOICE_EMPTY,
@@ -5374,7 +5378,7 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
                 tmp = xmlRelaxNGParseNameClass(ctxt, child, ret);
                 if (tmp != NULL) {
                     if (last == NULL) {
-                        last = ret->nameClass = tmp;
+                        last = tmp;
                     } else {
                         last->next = tmp;
                         last = tmp;

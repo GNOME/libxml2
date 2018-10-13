@@ -570,16 +570,7 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
 	xmlCharEncoding enc;
 
 	enc = xmlParseCharEncoding(encoding);
-	if (enc != cur->charset) {
-	    if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-		/*
-		 * Not supported yet
-		 */
-		*mem = NULL;
-		*size = 0;
-		return;
-	    }
-
+	if (enc != XML_CHAR_ENCODING_UTF8) {
 	    handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL)
                 htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
@@ -1101,14 +1092,7 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
 	xmlCharEncoding enc;
 
 	enc = xmlParseCharEncoding(encoding);
-	if (enc != cur->charset) {
-	    if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-		/*
-		 * Not supported yet
-		 */
-		return(-1);
-	    }
-
+	if (enc != XML_CHAR_ENCODING_UTF8) {
 	    handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL)
 		htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
@@ -1160,14 +1144,7 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
 	xmlCharEncoding enc;
 
 	enc = xmlParseCharEncoding(encoding);
-	if (enc != cur->charset) {
-	    if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-		/*
-		 * Not supported yet
-		 */
-		return(-1);
-	    }
-
+	if (enc != XML_CHAR_ENCODING_UTF8) {
 	    handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL)
 		htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
@@ -1221,14 +1198,7 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
 	xmlCharEncoding enc;
 
 	enc = xmlParseCharEncoding(encoding);
-	if (enc != cur->charset) {
-	    if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-		/*
-		 * Not supported yet
-		 */
-		return(-1);
-	    }
-
+	if (enc != XML_CHAR_ENCODING_UTF8) {
 	    handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL)
 		htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);

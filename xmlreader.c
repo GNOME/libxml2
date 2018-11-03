@@ -3004,7 +3004,7 @@ xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
  * Reference:
  * http://www.gnu.org/software/dotgnu/pnetlib-doc/System/Xml/XmlNodeType.html
  *
- * Returns the xmlNodeType of the current node or -1 in case of error
+ * Returns the xmlReaderTypes of the current node or -1 in case of error
  */
 int
 xmlTextReaderNodeType(xmlTextReaderPtr reader) {

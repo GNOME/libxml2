@@ -2280,20 +2280,11 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 	 * beginning of the "unique" suffix of URI
 	 */
 	ix = pos;
-	if ((rptr[ix] == '/') && (ix > 0))
-	    ix--;
-	else if ((rptr[ix] == 0) && (ix > 1) && (rptr[ix - 1] == '/'))
-	    ix -= 2;
 	for (; ix > 0; ix--) {
-	    if (rptr[ix] == '/')
+	    if (rptr[ix - 1] == '/')
 		break;
 	}
-	if (ix == 0) {
-	    uptr = (xmlChar *)rptr;
-	} else {
-	    ix++;
-	    uptr = (xmlChar *)&rptr[ix];
-	}
+	uptr = (xmlChar *)&rptr[ix];
 
 	/*
 	 * In base, count the number of '/' from the differing point
@@ -2304,6 +2295,15 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 		    nbslash++;
 	    }
 	}
+
+	/*
+	 * e.g: URI="foo/" base="foo/bar" -> "./"
+	 */
+	if (nbslash == 0 && !uptr[0]) {
+	    val = xmlStrdup(BAD_CAST "./");
+	    goto done;
+	}
+
 	len = xmlStrlen (uptr) + 1;
     }
 

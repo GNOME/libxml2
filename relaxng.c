@@ -3979,7 +3979,7 @@ xmlRelaxNGGenerateAttributes(xmlRelaxNGParserCtxtPtr ctxt,
  * xmlRelaxNGGetElements:
  * @ctxt:  a Relax-NG parser context
  * @def:  the definition definition
- * @eora:  gather elements (0) or attributes (1)
+ * @eora:  gather elements (0), attributes (1) or elements and text (2)
  *
  * Compute the list of top elements a definition can generate
  *
@@ -4005,7 +4005,12 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
     while (cur != NULL) {
         if (((eora == 0) && ((cur->type == XML_RELAXNG_ELEMENT) ||
                              (cur->type == XML_RELAXNG_TEXT))) ||
-            ((eora == 1) && (cur->type == XML_RELAXNG_ATTRIBUTE))) {
+            ((eora == 1) && (cur->type == XML_RELAXNG_ATTRIBUTE)) ||
+            ((eora == 2) && ((cur->type == XML_RELAXNG_DATATYPE) ||
+	                     (cur->type == XML_RELAXNG_ELEMENT) ||
+			     (cur->type == XML_RELAXNG_LIST) ||
+			     (cur->type == XML_RELAXNG_VALUE)))) {
+
             if (ret == NULL) {
                 max = 10;
                 ret = (xmlRelaxNGDefinePtr *)
@@ -4360,7 +4365,7 @@ xmlRelaxNGComputeInterleaves(void *payload, void *data,
         if (cur->type == XML_RELAXNG_TEXT)
             is_mixed++;
         groups[nbgroups]->rule = cur;
-        groups[nbgroups]->defs = xmlRelaxNGGetElements(ctxt, cur, 0);
+        groups[nbgroups]->defs = xmlRelaxNGGetElements(ctxt, cur, 2);
         groups[nbgroups]->attrs = xmlRelaxNGGetElements(ctxt, cur, 1);
         nbgroups++;
         cur = cur->next;
@@ -9262,7 +9267,10 @@ xmlRelaxNGNodeMatchesList(xmlNodePtr node, xmlRelaxNGDefinePtr * list)
                 return (1);
         } else if (((node->type == XML_TEXT_NODE) ||
                     (node->type == XML_CDATA_SECTION_NODE)) &&
-                   (cur->type == XML_RELAXNG_TEXT)) {
+                   ((cur->type == XML_RELAXNG_TEXT) ||
+		    (cur->type == XML_RELAXNG_DATATYPE) ||
+		    (cur->type == XML_RELAXNG_LIST) ||
+                    (cur->type == XML_RELAXNG_VALUE))) {
             return (1);
         }
         cur = list[i++];

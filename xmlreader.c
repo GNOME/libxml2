@@ -1114,11 +1114,11 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 		continue;
 	    } else {
 		/*
-		 * The error has probably be raised already.
+		 * The error has probably been raised already.
 		 */
 		if (node == oldnode)
 		    break;
-		node = node->next;
+                goto skip_children;
 	    }
 #ifdef LIBXML_REGEXP_ENABLED
 	} else if (node->type == XML_ELEMENT_NODE) {
@@ -1140,6 +1140,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	} else if (node->type == XML_ELEMENT_NODE) {
 	    xmlTextReaderValidatePop(reader);
 	}
+skip_children:
 	if (node->next != NULL) {
 	    node = node->next;
 	    continue;

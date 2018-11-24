@@ -238,6 +238,8 @@ xmlFreeID(xmlIDPtr id) {
 
     if (id->value != NULL)
 	DICT_FREE(id->value)
+    if (id->name != NULL)
+	DICT_FREE(id->name)
     xmlFree(id);
 }
 

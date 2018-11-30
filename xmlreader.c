@@ -1711,10 +1711,11 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
     if (xmlTextReaderExpand(reader) == NULL) {
         return NULL;
     }
-    doc = reader->doc;
+    doc = reader->node->doc;
     buff = xmlBufferCreate();
     for (cur_node = reader->node->children; cur_node != NULL;
          cur_node = cur_node->next) {
+        /* XXX: Why is the node copied? */
         node = xmlDocCopyNode(cur_node, doc, 1);
         buff2 = xmlBufferCreate();
         if (xmlNodeDump(buff2, doc, node, 0, 0) == -1) {
@@ -1755,10 +1756,11 @@ xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
     xmlDocPtr doc;
 
     node = reader->node;
-    doc = reader->doc;
+    doc = node->doc;
     if (xmlTextReaderExpand(reader) == NULL) {
         return NULL;
     }
+    /* XXX: Why is the node copied? */
 	if (node->type == XML_DTD_NODE) {
 		node = (xmlNodePtr) xmlCopyDtd((xmlDtdPtr) node);
 	} else {
@@ -3002,7 +3004,7 @@ xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
  * Reference:
  * http://www.gnu.org/software/dotgnu/pnetlib-doc/System/Xml/XmlNodeType.html
  *
- * Returns the xmlNodeType of the current node or -1 in case of error
+ * Returns the xmlReaderTypes of the current node or -1 in case of error
  */
 int
 xmlTextReaderNodeType(xmlTextReaderPtr reader) {

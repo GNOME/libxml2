@@ -193,7 +193,6 @@ static xmlStreamCtxtPtr patstream = NULL;
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 static const char *xpathquery = NULL;
-static const char *xpathsep = NULL;
 #endif
 static int options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
 static int sax = 0;
@@ -2072,51 +2071,52 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             int i;
             xmlNodePtr node;
 #ifdef LIBXML_OUTPUT_ENABLED
-            xmlSaveCtxtPtr ctxt;
+            xmlOutputBufferPtr buf;
 
             if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
                 fprintf(stderr, "XPath set is empty\n");
                 progresult = XMLLINT_ERR_XPATH;
                 break;
             }
-            ctxt = xmlSaveToFd(1, NULL, 0);
-            if (ctxt == NULL) {
+            buf = xmlOutputBufferCreateFile(stdout, NULL);
+            if (buf == NULL) {
                 fprintf(stderr, "Out of memory for XPath\n");
                 progresult = XMLLINT_ERR_MEM;
                 return;
             }
             for (i = 0;i < cur->nodesetval->nodeNr;i++) {
                 node = cur->nodesetval->nodeTab[i];
-                xmlSaveTree(ctxt, node, xpathsep);
+                xmlNodeDumpOutput(buf, node->doc, node, 0, 0, NULL);
+                xmlOutputBufferWrite(buf, 1, "\n");
             }
-            xmlSaveClose(ctxt);
+            xmlOutputBufferClose(buf);
 #else
             printf("xpath returned %d nodes\n", cur->nodesetval->nodeNr);
 #endif
 	    break;
         }
         case XPATH_BOOLEAN:
-	    if (cur->boolval) printf("true");
-	    else printf("false");
+	    if (cur->boolval) printf("true\n");
+	    else printf("false\n");
 	    break;
         case XPATH_NUMBER:
 	    switch (xmlXPathIsInf(cur->floatval)) {
 	    case 1:
-		printf("Infinity");
+		printf("Infinity\n");
 		break;
 	    case -1:
-		printf("-Infinity");
+		printf("-Infinity\n");
 		break;
 	    default:
 		if (xmlXPathIsNaN(cur->floatval)) {
-		    printf("NaN");
+		    printf("NaN\n");
 		} else {
-		    printf("%0g", cur->floatval);
+		    printf("%0g\n", cur->floatval);
 		}
 	    }
 	    break;
         case XPATH_STRING:
-	    printf("%s", (const char *) cur->stringval);
+	    printf("%s\n", (const char *) cur->stringval);
 	    break;
         case XPATH_UNDEFINED:
 	    fprintf(stderr, "XPath Object is uninitialized\n");
@@ -3087,8 +3087,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--sax: do not build a tree but work just at the SAX level\n");
     fprintf(f, "\t--oldxml10: use XML-1.0 parsing rules before the 5th edition\n");
 #ifdef LIBXML_XPATH_ENABLED
-    fprintf(f, "\t--xpath expr: evaluate the XPath expression, nodes are separated by \\n, imply --noout\n");
-    fprintf(f, "\t--xpath0 expr: evaluate the XPath expression, nodes are separated by \\0, imply --noout\n");
+    fprintf(f, "\t--xpath expr: evaluate the XPath expression, imply --noout\n");
 #endif
 
     fprintf(f, "\nLibxml project home page: http://xmlsoft.org/\n");
@@ -3467,13 +3466,6 @@ main(int argc, char **argv) {
 	    i++;
 	    noout++;
 	    xpathquery = argv[i];
-	    xpathsep = "\n";
-        } else if ((!strcmp(argv[i], "-xpath0")) ||
-                   (!strcmp(argv[i], "--xpath0"))) {
-	    i++;
-	    noout++;
-	    xpathquery = argv[i];
-	    xpathsep = "\0";
 #endif
 	} else if ((!strcmp(argv[i], "-oldxml10")) ||
 	           (!strcmp(argv[i], "--oldxml10"))) {
@@ -3714,11 +3706,6 @@ main(int argc, char **argv) {
 #ifdef LIBXML_XPATH_ENABLED
         if ((!strcmp(argv[i], "-xpath")) ||
 	    (!strcmp(argv[i], "--xpath"))) {
-	    i++;
-	    continue;
-    }
-        if ((!strcmp(argv[i], "-xpath0")) ||
-	    (!strcmp(argv[i], "--xpath0"))) {
 	    i++;
 	    continue;
 	}

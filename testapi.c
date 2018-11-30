@@ -34276,7 +34276,7 @@ test_xmlSaveTree(void) {
         ctxt = gen_xmlSaveCtxtPtr(n_ctxt, 0);
         node = gen_xmlNodePtr(n_node, 1);
 
-        ret_val = xmlSaveTree(ctxt, node, NULL);
+        ret_val = xmlSaveTree(ctxt, node);
         desret_long(ret_val);
         call_tests++;
         des_xmlSaveCtxtPtr(n_ctxt, ctxt, 0);

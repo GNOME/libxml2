@@ -1666,6 +1666,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     xmlGenericError(xmlGenericErrorContext, "pushing(%s)\n", name);
 #endif
     if (nodePush(ctxt, ret) < 0) {
+        xmlUnlinkNode(ret);
         xmlFreeNode(ret);
         return;
     }
@@ -2260,6 +2261,7 @@ xmlSAX2StartElementNs(void *ctx,
 	ctxt->freeElems = ret->next;
 	ctxt->freeElemsNr--;
 	memset(ret, 0, sizeof(xmlNode));
+        ret->doc = ctxt->myDoc;
 	ret->type = XML_ELEMENT_NODE;
 
 	if (ctxt->dictNames)
@@ -2340,6 +2342,7 @@ xmlSAX2StartElementNs(void *ctx,
      * We are parsing a new node.
      */
     if (nodePush(ctxt, ret) < 0) {
+        xmlUnlinkNode(ret);
         xmlFreeNode(ret);
         return;
     }

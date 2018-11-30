@@ -1123,9 +1123,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
         cur->encoding = BAD_CAST ctxt->encoding;
     } else if (cur->encoding != NULL) {
 	encoding = cur->encoding;
-    } else if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-	encoding = (const xmlChar *)
-		     xmlGetCharEncodingName((xmlCharEncoding) cur->charset);
     }
 
     if (((cur->type == XML_HTML_DOCUMENT_NODE) &&
@@ -1942,7 +1939,6 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
  * xmlSaveTree:
  * @ctxt:  a document saving context
  * @node:  the top node of the subtree to save
- * @sep:   node separator appended to the subtree
  *
  * Save a subtree starting at the node parameter to a saving context
  * TODO: The function is not fully implemented yet as it does not return the
@@ -1951,23 +1947,12 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
  * Returns the number of byte written or -1 in case of error
  */
 long
-xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node, const char *sep)
+xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node)
 {
     long ret = 0;
 
     if ((ctxt == NULL) || (node == NULL)) return(-1);
     xmlNodeDumpOutputInternal(ctxt, node);
-
-    if (sep == NULL) {
-        ;
-    } else if (sep[0] == '\n' && sep[1] == '\0') {
-        xmlOutputBufferWrite(ctxt->buf, 1, "\n");
-    } else if (sep[0] == '\0') {
-        xmlOutputBufferWrite(ctxt->buf, 1, "\0");
-    } else {
-        return -1;
-    }
-
     return(ret);
 }
 

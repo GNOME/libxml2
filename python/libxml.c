@@ -2998,7 +2998,7 @@ libxml_serializeNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     if (node == NULL)
 	xmlSaveDoc(ctxt, doc);
     else
-	xmlSaveTree(ctxt, node, NULL);
+	xmlSaveTree(ctxt, node);
     xmlSaveClose(ctxt);
 
     c_retval = buf->content;

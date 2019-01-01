@@ -24,6 +24,7 @@ config.log
 config.status
 config.sub
 configure
+dba100000.xml
 depcomp
 doc/Makefile
 doc/Makefile.in
@@ -119,6 +120,7 @@ xml2Conf.sh
 xmlcatalog
 xmlconf
 xmllint
+xstc/*-test.py
 xstc/Makefile
 xstc/Makefile.in
 xstc/Tests

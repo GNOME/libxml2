@@ -631,7 +631,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	(channel == xmlParserValidityError) ||
 	(channel == xmlParserValidityWarning))
 	xmlReportError(to, ctxt, str, NULL, NULL);
-    else if ((channel == (xmlGenericErrorFunc) fprintf) ||
+    else if (((void(*)(void)) channel == (void(*)(void)) fprintf) ||
              (channel == xmlGenericErrorDefaultFunc))
 	xmlReportError(to, ctxt, str, channel, data);
     else

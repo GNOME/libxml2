@@ -1652,10 +1652,7 @@ testSAX(const char *filename) {
 	xmlSchemaValidCtxtPtr vctxt;
 
 	vctxt = xmlSchemaNewValidCtxt(wxschemas);
-	xmlSchemaSetValidErrors(vctxt,
-		(xmlSchemaValidityErrorFunc) fprintf,
-		(xmlSchemaValidityWarningFunc) fprintf,
-		stderr);
+	xmlSchemaSetValidErrors(vctxt, xmlGenericError, xmlGenericError, NULL);
 	xmlSchemaValidateSetFilename(vctxt, filename);
 
 	ret = xmlSchemaValidateStream(vctxt, buf, 0, handler,
@@ -2760,9 +2757,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 			"Couldn't allocate validation context\n");
 		exit(-1);
 	    }
-	    cvp->userData = (void *) stderr;
-	    cvp->error    = (xmlValidityErrorFunc) fprintf;
-	    cvp->warning  = (xmlValidityWarningFunc) fprintf;
+	    cvp->userData = NULL;
+	    cvp->error    = xmlGenericError;
+	    cvp->warning  = xmlGenericError;
 
 	    if ((timing) && (!repeat)) {
 		startTimer();
@@ -2796,9 +2793,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	if ((timing) && (!repeat)) {
 	    startTimer();
 	}
-	cvp->userData = (void *) stderr;
-	cvp->error    = (xmlValidityErrorFunc) fprintf;
-	cvp->warning  = (xmlValidityWarningFunc) fprintf;
+	cvp->userData = NULL;
+	cvp->error    = xmlGenericError;
+	cvp->warning  = xmlGenericError;
 	if (!xmlValidateDocument(cvp, doc)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Document %s does not validate\n", filename);
@@ -2828,10 +2825,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    flag |= XML_SCHEMATRON_OUT_QUIET;
 	ctxt = xmlSchematronNewValidCtxt(wxschematron, flag);
 #if 0
-	xmlSchematronSetValidErrors(ctxt,
-		(xmlSchematronValidityErrorFunc) fprintf,
-		(xmlSchematronValidityWarningFunc) fprintf,
-		stderr);
+	xmlSchematronSetValidErrors(ctxt, xmlGenericError, xmlGenericError,
+                NULL);
 #endif
 	ret = xmlSchematronValidateDoc(ctxt, doc);
 	if (ret == 0) {
@@ -2860,10 +2855,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	}
 
 	ctxt = xmlRelaxNGNewValidCtxt(relaxngschemas);
-	xmlRelaxNGSetValidErrors(ctxt,
-		(xmlRelaxNGValidityErrorFunc) fprintf,
-		(xmlRelaxNGValidityWarningFunc) fprintf,
-		stderr);
+	xmlRelaxNGSetValidErrors(ctxt, xmlGenericError, xmlGenericError, NULL);
 	ret = xmlRelaxNGValidateDoc(ctxt, doc);
 	if (ret == 0) {
 	    fprintf(stderr, "%s validates\n", filename);
@@ -2888,10 +2880,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	}
 
 	ctxt = xmlSchemaNewValidCtxt(wxschemas);
-	xmlSchemaSetValidErrors(ctxt,
-		(xmlSchemaValidityErrorFunc) fprintf,
-		(xmlSchemaValidityWarningFunc) fprintf,
-		stderr);
+	xmlSchemaSetValidErrors(ctxt, xmlGenericError, xmlGenericError, NULL);
 	ret = xmlSchemaValidateDoc(ctxt, doc);
 	if (ret == 0) {
 	    fprintf(stderr, "%s validates\n", filename);
@@ -3552,10 +3541,8 @@ main(int argc, char **argv) {
 	}
 	ctxt = xmlSchematronNewParserCtxt(schematron);
 #if 0
-	xmlSchematronSetParserErrors(ctxt,
-		(xmlSchematronValidityErrorFunc) fprintf,
-		(xmlSchematronValidityWarningFunc) fprintf,
-		stderr);
+	xmlSchematronSetParserErrors(ctxt, xmlGenericError, xmlGenericError,
+                NULL);
 #endif
 	wxschematron = xmlSchematronParse(ctxt);
 	if (wxschematron == NULL) {
@@ -3585,10 +3572,8 @@ main(int argc, char **argv) {
 	    startTimer();
 	}
 	ctxt = xmlRelaxNGNewParserCtxt(relaxng);
-	xmlRelaxNGSetParserErrors(ctxt,
-		(xmlRelaxNGValidityErrorFunc) fprintf,
-		(xmlRelaxNGValidityWarningFunc) fprintf,
-		stderr);
+	xmlRelaxNGSetParserErrors(ctxt, xmlGenericError, xmlGenericError,
+                NULL);
 	relaxngschemas = xmlRelaxNGParse(ctxt);
 	if (relaxngschemas == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
@@ -3611,10 +3596,7 @@ main(int argc, char **argv) {
 	    startTimer();
 	}
 	ctxt = xmlSchemaNewParserCtxt(schema);
-	xmlSchemaSetParserErrors(ctxt,
-		(xmlSchemaValidityErrorFunc) fprintf,
-		(xmlSchemaValidityWarningFunc) fprintf,
-		stderr);
+	xmlSchemaSetParserErrors(ctxt, xmlGenericError, xmlGenericError, NULL);
 	wxschemas = xmlSchemaParse(ctxt);
 	if (wxschemas == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,

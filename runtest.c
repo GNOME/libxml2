@@ -3019,10 +3019,7 @@ schemasOneTest(const char *sch,
     }
 
     ctxt = xmlSchemaNewValidCtxt(schemas);
-    xmlSchemaSetValidErrors(ctxt,
-         (xmlSchemaValidityErrorFunc) testErrorHandler,
-         (xmlSchemaValidityWarningFunc) testErrorHandler,
-	 ctxt);
+    xmlSchemaSetValidErrors(ctxt, testErrorHandler, testErrorHandler, ctxt);
     validResult = xmlSchemaValidateDoc(ctxt, doc);
     if (validResult == 0) {
 	fprintf(schemasOutput, "%s validates\n", filename);
@@ -3087,10 +3084,7 @@ schemasTest(const char *filename,
 
     /* first compile the schemas if possible */
     ctxt = xmlSchemaNewParserCtxt(filename);
-    xmlSchemaSetParserErrors(ctxt,
-         (xmlSchemaValidityErrorFunc) testErrorHandler,
-         (xmlSchemaValidityWarningFunc) testErrorHandler,
-	 ctxt);
+    xmlSchemaSetParserErrors(ctxt, testErrorHandler, testErrorHandler, ctxt);
     schemas = xmlSchemaParse(ctxt);
     xmlSchemaFreeParserCtxt(ctxt);
 
@@ -3196,10 +3190,7 @@ rngOneTest(const char *sch,
     }
 
     ctxt = xmlRelaxNGNewValidCtxt(schemas);
-    xmlRelaxNGSetValidErrors(ctxt,
-         (xmlRelaxNGValidityErrorFunc) testErrorHandler,
-         (xmlRelaxNGValidityWarningFunc) testErrorHandler,
-	 ctxt);
+    xmlRelaxNGSetValidErrors(ctxt, testErrorHandler, testErrorHandler, ctxt);
     ret = xmlRelaxNGValidateDoc(ctxt, doc);
     if (ret == 0) {
 	testErrorHandler(NULL, "%s validates\n", filename);
@@ -3266,10 +3257,7 @@ rngTest(const char *filename,
 
     /* first compile the schemas if possible */
     ctxt = xmlRelaxNGNewParserCtxt(filename);
-    xmlRelaxNGSetParserErrors(ctxt,
-         (xmlRelaxNGValidityErrorFunc) testErrorHandler,
-         (xmlRelaxNGValidityWarningFunc) testErrorHandler,
-	 ctxt);
+    xmlRelaxNGSetParserErrors(ctxt, testErrorHandler, testErrorHandler, ctxt);
     schemas = xmlRelaxNGParse(ctxt);
     xmlRelaxNGFreeParserCtxt(ctxt);
 

@@ -7009,7 +7009,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
      */
     if (NXT(1) == '#') {
 	int i = 0;
-	xmlChar out[10];
+	xmlChar out[16];
 	int hex = NXT(2);
 	int value = xmlParseCharRef(ctxt);
 

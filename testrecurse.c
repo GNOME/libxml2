@@ -632,8 +632,8 @@ static char *resultFilename(const char *filename, const char *out,
       suffixbuff[0]='_';
 #endif
 
-    snprintf(res, 499, "%s%s%s", out, base, suffixbuff);
-    res[499] = 0;
+    if (snprintf(res, 499, "%s%s%s", out, base, suffixbuff) >= 499)
+        res[499] = 0;
     return(strdup(res));
 }
 

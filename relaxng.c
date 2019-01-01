@@ -4023,8 +4023,8 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
             ((eora == 2) && ((cur->type == XML_RELAXNG_DATATYPE) ||
 	                     (cur->type == XML_RELAXNG_ELEMENT) ||
 			     (cur->type == XML_RELAXNG_LIST) ||
+                             (cur->type == XML_RELAXNG_TEXT) ||
 			     (cur->type == XML_RELAXNG_VALUE)))) {
-
             if (ret == NULL) {
                 max = 10;
                 ret = (xmlRelaxNGDefinePtr *)
@@ -9285,9 +9285,9 @@ xmlRelaxNGNodeMatchesList(xmlNodePtr node, xmlRelaxNGDefinePtr * list)
                 return (1);
         } else if (((node->type == XML_TEXT_NODE) ||
                     (node->type == XML_CDATA_SECTION_NODE)) &&
-                   ((cur->type == XML_RELAXNG_TEXT) ||
-		    (cur->type == XML_RELAXNG_DATATYPE) ||
+                   ((cur->type == XML_RELAXNG_DATATYPE) ||
 		    (cur->type == XML_RELAXNG_LIST) ||
+                    (cur->type == XML_RELAXNG_TEXT) ||
                     (cur->type == XML_RELAXNG_VALUE))) {
             return (1);
         }

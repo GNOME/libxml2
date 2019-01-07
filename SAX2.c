@@ -1668,6 +1668,8 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     if (nodePush(ctxt, ret) < 0) {
         xmlUnlinkNode(ret);
         xmlFreeNode(ret);
+        if (prefix != NULL)
+            xmlFree(prefix);
         return;
     }
 

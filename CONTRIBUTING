@@ -10,7 +10,7 @@ Start discussions and send patches to the mailing list, or file a bug and
 add a patch as attachment.
 
     https://mail.gnome.org/mailman/listinfo/xml
-    https://bugzilla.gnome.org/enter_bug.cgi?product=libxml2
+    https://gitlab.gnome.org/GNOME/libxml2/issues
 
 Format patches with git-format-patch and use plain text attachments
 if possible.

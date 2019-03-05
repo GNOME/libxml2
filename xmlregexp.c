@@ -5537,6 +5537,8 @@ xmlRegexpIsDeterminist(xmlRegexpPtr comp) {
 	return(comp->determinist);
 
     am = xmlNewAutomata();
+    if (am == NULL)
+        return(-1);
     if (am->states != NULL) {
 	int i;
 

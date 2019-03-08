@@ -9135,8 +9135,7 @@ void
 xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr str, start, len;
     double le=0, in;
-    int i, l, m;
-    xmlChar *ret;
+    int i = 1, j = INT_MAX;
 
     if (nargs < 2) {
 	CHECK_ARITY(2);
@@ -9163,67 +9162,42 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_STRING;
     CHECK_TYPE(XPATH_STRING);
     str = valuePop(ctxt);
-    m = xmlUTF8Strlen((const unsigned char *)str->stringval);
 
-    /*
-     * If last pos not present, calculate last position
-    */
-    if (nargs != 3) {
-	le = (double)m;
-	if (in < 1.0)
-	    in = 1.0;
+    if (!(in < INT_MAX)) { /* Logical NOT to handle NaNs */
+        i = INT_MAX;
+    } else if (in >= 1.0) {
+        i = (int)in;
+        if (in - floor(in) >= 0.5)
+            i += 1;
     }
 
-    /* Need to check for the special cases where either
-     * the index is NaN, the length is NaN, or both
-     * arguments are infinity (relying on Inf + -Inf = NaN)
-     */
-    if (!xmlXPathIsInf(in) && !xmlXPathIsNaN(in + le)) {
-        /*
-         * To meet the requirements of the spec, the arguments
-	 * must be converted to integer format before
-	 * initial index calculations are done
-         *
-         * First we go to integer form, rounding up
-	 * and checking for special cases
-         */
-        i = (int) in;
-        if (((double)i)+0.5 <= in) i++;
+    if (nargs == 3) {
+        double rin, rle, end;
 
-	if (xmlXPathIsInf(le) == 1) {
-	    l = m;
-	    if (i < 1)
-		i = 1;
-	}
-	else if (xmlXPathIsInf(le) == -1 || le < 0.0)
-	    l = 0;
-	else {
-	    l = (int) le;
-	    if (((double)l)+0.5 <= le) l++;
-	}
+        rin = floor(in);
+        if (in - rin >= 0.5)
+            rin += 1.0;
 
-	/* Now we normalize inidices */
-        i -= 1;
-        l += i;
-        if (i < 0)
-            i = 0;
-        if (l > m)
-            l = m;
+        rle = floor(le);
+        if (le - rle >= 0.5)
+            rle += 1.0;
 
-        /* number of chars to copy */
-        l -= i;
-
-        ret = xmlUTF8Strsub(str->stringval, i, l);
+        end = rin + rle;
+        if (!(end >= 1.0)) { /* Logical NOT to handle NaNs */
+            j = 1;
+        } else if (end < INT_MAX) {
+            j = (int)end;
+        }
     }
-    else {
-        ret = NULL;
-    }
-    if (ret == NULL)
-	valuePush(ctxt, xmlXPathCacheNewCString(ctxt->context, ""));
-    else {
+
+    if (i < j) {
+        xmlChar *ret = xmlUTF8Strsub(str->stringval, i - 1, j - i);
 	valuePush(ctxt, xmlXPathCacheNewString(ctxt->context, ret));
 	xmlFree(ret);
+    } else {
+	valuePush(ctxt, xmlXPathCacheNewCString(ctxt->context, ""));
     }
+
     xmlXPathReleaseObject(ctxt->context, str);
 }
 

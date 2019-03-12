@@ -2083,7 +2083,7 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             }
             for (i = 0;i < cur->nodesetval->nodeNr;i++) {
                 node = cur->nodesetval->nodeTab[i];
-                xmlNodeDumpOutput(buf, node->doc, node, 0, 0, NULL);
+                xmlNodeDumpOutput(buf, NULL, node, 0, 0, NULL);
                 xmlOutputBufferWrite(buf, 1, "\n");
             }
             xmlOutputBufferClose(buf);

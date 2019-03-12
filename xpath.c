@@ -610,6 +610,7 @@ static const char *xmlXPathErrorMessages[] = {
     "Invalid or incomplete context\n",
     "Stack usage error\n",
     "Forbidden variable\n",
+    "Operation limit exceeded\n",
     "?? Unknown error ??\n"	/* Must be last in the list! */
 };
 #define MAXERRNO ((int)(sizeof(xmlXPathErrorMessages) /	\
@@ -746,6 +747,32 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file ATTRIBUTE_UNUSED,
               int line ATTRIBUTE_UNUSED, int no) {
     xmlXPathErr(ctxt, no);
 }
+
+/**
+ * xmlXPathCheckOpLimit:
+ * @ctxt:  the XPath Parser context
+ * @opCount:  the number of operations to be added
+ *
+ * Adds opCount to the running total of operations and returns -1 if the
+ * operation limit is exceeded. Returns 0 otherwise.
+ */
+static int
+xmlXPathCheckOpLimit(xmlXPathParserContextPtr ctxt, unsigned long opCount) {
+    xmlXPathContextPtr xpctxt = ctxt->context;
+
+    if ((opCount > xpctxt->opLimit) ||
+        (xpctxt->opCount > xpctxt->opLimit - opCount)) {
+        xpctxt->opCount = xpctxt->opLimit;
+        xmlXPathErr(ctxt, XPATH_OP_LIMIT_EXCEEDED);
+        return(-1);
+    }
+
+    xpctxt->opCount += opCount;
+    return(0);
+}
+
+#define OP_LIMIT_EXCEEDED(ctxt, n) \
+    ((ctxt->context->opLimit != 0) && (xmlXPathCheckOpLimit(ctxt, n) < 0))
 
 /************************************************************************
  *									*
@@ -12289,6 +12316,9 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 	cur = NULL;
 	hasNsNodes = 0;
         do {
+            if (OP_LIMIT_EXCEEDED(ctxt, 1))
+                goto error;
+
             cur = next(ctxt, cur);
             if (cur == NULL)
                 break;
@@ -12692,6 +12722,8 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
     xmlXPathObjectPtr arg1, arg2;
 
     CHECK_ERROR0;
+    if (OP_LIMIT_EXCEEDED(ctxt, 1))
+        return(0);
     comp = ctxt->comp;
     switch (op->op) {
         case XPATH_OP_END:
@@ -12731,6 +12763,17 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
 	        xmlXPathReleaseObject(ctxt->context, arg1);
 	        xmlXPathReleaseObject(ctxt->context, arg2);
                 XP_ERROR0(XPATH_INVALID_TYPE);
+            }
+            if ((ctxt->context->opLimit != 0) &&
+                (((arg1->nodesetval != NULL) &&
+                  (xmlXPathCheckOpLimit(ctxt,
+                                        arg1->nodesetval->nodeNr) < 0)) ||
+                 ((arg2->nodesetval != NULL) &&
+                  (xmlXPathCheckOpLimit(ctxt,
+                                        arg2->nodesetval->nodeNr) < 0)))) {
+	        xmlXPathReleaseObject(ctxt->context, arg1);
+	        xmlXPathReleaseObject(ctxt->context, arg2);
+                return(0);
             }
 
             arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
@@ -12811,6 +12854,8 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
     xmlXPathObjectPtr arg1, arg2;
 
     CHECK_ERROR0;
+    if (OP_LIMIT_EXCEEDED(ctxt, 1))
+        return(0);
     comp = ctxt->comp;
     switch (op->op) {
         case XPATH_OP_END:
@@ -12849,6 +12894,17 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
 	        xmlXPathReleaseObject(ctxt->context, arg1);
 	        xmlXPathReleaseObject(ctxt->context, arg2);
                 XP_ERROR0(XPATH_INVALID_TYPE);
+            }
+            if ((ctxt->context->opLimit != 0) &&
+                (((arg1->nodesetval != NULL) &&
+                  (xmlXPathCheckOpLimit(ctxt,
+                                        arg1->nodesetval->nodeNr) < 0)) ||
+                 ((arg2->nodesetval != NULL) &&
+                  (xmlXPathCheckOpLimit(ctxt,
+                                        arg2->nodesetval->nodeNr) < 0)))) {
+	        xmlXPathReleaseObject(ctxt->context, arg1);
+	        xmlXPathReleaseObject(ctxt->context, arg2);
+                return(0);
             }
 
             arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
@@ -13191,6 +13247,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
     xmlXPathObjectPtr arg1, arg2;
 
     CHECK_ERROR0;
+    if (OP_LIMIT_EXCEEDED(ctxt, 1))
+        return(0);
     comp = ctxt->comp;
     switch (op->op) {
         case XPATH_OP_END:
@@ -13291,6 +13349,17 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 	        xmlXPathReleaseObject(ctxt->context, arg1);
 	        xmlXPathReleaseObject(ctxt->context, arg2);
                 XP_ERROR0(XPATH_INVALID_TYPE);
+            }
+            if ((ctxt->context->opLimit != 0) &&
+                (((arg1->nodesetval != NULL) &&
+                  (xmlXPathCheckOpLimit(ctxt,
+                                        arg1->nodesetval->nodeNr) < 0)) ||
+                 ((arg2->nodesetval != NULL) &&
+                  (xmlXPathCheckOpLimit(ctxt,
+                                        arg2->nodesetval->nodeNr) < 0)))) {
+	        xmlXPathReleaseObject(ctxt->context, arg1);
+	        xmlXPathReleaseObject(ctxt->context, arg2);
+                return(0);
             }
 
 	    if ((arg1->nodesetval == NULL) ||
@@ -13967,6 +14036,8 @@ xmlXPathCompOpEvalToBoolean(xmlXPathParserContextPtr ctxt,
     xmlXPathObjectPtr resObj = NULL;
 
 start:
+    if (OP_LIMIT_EXCEEDED(ctxt, 1))
+        return(0);
     /* comp = ctxt->comp; */
     switch (op->op) {
         case XPATH_OP_END:
@@ -14166,6 +14237,16 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp,
     goto scan_children;
 next_node:
     do {
+        if (ctxt->opLimit != 0) {
+            if (ctxt->opCount >= ctxt->opLimit) {
+                xmlGenericError(xmlGenericErrorContext,
+                        "XPath operation limit exceeded\n");
+                xmlFreeStreamCtxt(patstream);
+                return(-1);
+            }
+            ctxt->opCount++;
+        }
+
         nb_nodes++;
 
 	switch (cur->type) {

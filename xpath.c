@@ -13431,6 +13431,9 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 func(ctxt, op->value);
                 ctxt->context->function = oldFunc;
                 ctxt->context->functionURI = oldFuncURI;
+                if ((ctxt->error == XPATH_EXPRESSION_OK) &&
+                    (ctxt->valueNr != ctxt->valueFrame + 1))
+                    XP_ERROR0(XPATH_STACK_ERROR);
                 xmlXPathPopFrame(ctxt, frame);
                 return (total);
             }

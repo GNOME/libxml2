@@ -6182,6 +6182,7 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->proximityPosition = -1;
 
     ret->maxDepth = INT_MAX;
+    ret->maxParserDepth = INT_MAX;
 
 #ifdef XP_DEFAULT_CACHE_ON
     if (xmlXPathContextSetCache(ret, 1, -1, 0) == -1) {
@@ -10999,6 +11000,14 @@ xmlXPathCompAndExpr(xmlXPathParserContextPtr ctxt) {
  */
 static void
 xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt, int sort) {
+    xmlXPathContextPtr xpctxt = ctxt->context;
+
+    if (xpctxt != NULL) {
+        if (xpctxt->depth >= xpctxt->maxParserDepth)
+            XP_ERROR(XPATH_RECURSION_LIMIT_EXCEEDED);
+        xpctxt->depth += 1;
+    }
+
     xmlXPathCompAndExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
@@ -11020,6 +11029,9 @@ xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt, int sort) {
 	*/
 	PUSH_UNARY_EXPR(XPATH_OP_SORT, ctxt->comp->last , 0, 0);
     }
+
+    if (xpctxt != NULL)
+        xpctxt->depth -= 1;
 }
 
 /**
@@ -14727,6 +14739,8 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
     pctxt = xmlXPathNewParserContext(str, ctxt);
     if (pctxt == NULL)
         return NULL;
+    if (ctxt != NULL)
+        ctxt->depth = 0;
     xmlXPathCompileExpr(pctxt, 1);
 
     if( pctxt->error != XPATH_EXPRESSION_OK )
@@ -14915,6 +14929,8 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
     } else
 #endif
     {
+        if (ctxt->context != NULL)
+            ctxt->context->depth = 0;
 	xmlXPathCompileExpr(ctxt, 1);
         CHECK_ERROR;
 

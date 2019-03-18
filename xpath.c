@@ -611,6 +611,7 @@ static const char *xmlXPathErrorMessages[] = {
     "Stack usage error\n",
     "Forbidden variable\n",
     "Operation limit exceeded\n",
+    "Recursion limit exceeded\n",
     "?? Unknown error ??\n"	/* Must be last in the list! */
 };
 #define MAXERRNO ((int)(sizeof(xmlXPathErrorMessages) /	\
@@ -6179,6 +6180,8 @@ xmlXPathNewContext(xmlDocPtr doc) {
 
     ret->contextSize = -1;
     ret->proximityPosition = -1;
+
+    ret->maxDepth = INT_MAX;
 
 #ifdef XP_DEFAULT_CACHE_ON
     if (xmlXPathContextSetCache(ret, 1, -1, 0) == -1) {
@@ -12724,6 +12727,9 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
     CHECK_ERROR0;
     if (OP_LIMIT_EXCEEDED(ctxt, 1))
         return(0);
+    if (ctxt->context->depth >= ctxt->context->maxDepth)
+        XP_ERROR0(XPATH_RECURSION_LIMIT_EXCEEDED);
+    ctxt->context->depth += 1;
     comp = ctxt->comp;
     switch (op->op) {
         case XPATH_OP_END:
@@ -12835,6 +12841,7 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
             break;
     }
 
+    ctxt->context->depth -= 1;
     return(total);
 }
 
@@ -12860,6 +12867,9 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
     CHECK_ERROR0;
     if (OP_LIMIT_EXCEEDED(ctxt, 1))
         return(0);
+    if (ctxt->context->depth >= ctxt->context->maxDepth)
+        XP_ERROR0(XPATH_RECURSION_LIMIT_EXCEEDED);
+    ctxt->context->depth += 1;
     comp = ctxt->comp;
     switch (op->op) {
         case XPATH_OP_END:
@@ -12965,6 +12975,7 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
             break;
     }
 
+    ctxt->context->depth -= 1;
     return (total);
 }
 
@@ -13257,6 +13268,9 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
     CHECK_ERROR0;
     if (OP_LIMIT_EXCEEDED(ctxt, 1))
         return(0);
+    if (ctxt->context->depth >= ctxt->context->maxDepth)
+        XP_ERROR0(XPATH_RECURSION_LIMIT_EXCEEDED);
+    ctxt->context->depth += 1;
     comp = ctxt->comp;
     switch (op->op) {
         case XPATH_OP_END:
@@ -14028,6 +14042,7 @@ rangeto_error:
             break;
     }
 
+    ctxt->context->depth -= 1;
     return (total);
 }
 
@@ -14380,6 +14395,8 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt, int toBool)
 
     if ((ctxt == NULL) || (ctxt->comp == NULL))
 	return(-1);
+
+    ctxt->context->depth = 0;
 
     if (ctxt->valueTab == NULL) {
 	/* Allocate the value stack */

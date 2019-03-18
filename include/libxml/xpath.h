@@ -71,7 +71,8 @@ typedef enum {
     XPATH_INVALID_CTXT,
     XPATH_STACK_ERROR,
     XPATH_FORBID_VARIABLE_ERROR,
-    XPATH_OP_LIMIT_EXCEEDED
+    XPATH_OP_LIMIT_EXCEEDED,
+    XPATH_RECURSION_LIMIT_EXCEEDED
 } xmlXPathError;
 
 /*
@@ -357,6 +358,8 @@ struct _xmlXPathContext {
     /* Resource limits */
     unsigned long opLimit;
     unsigned long opCount;
+    int depth;
+    int maxDepth;
 };
 
 /*

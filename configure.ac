@@ -396,7 +396,7 @@ else
         # Try pkg-config first so that static linking works.
         PKG_CHECK_MODULES([Z],[zlib],
             [WITH_ZLIB=1],
-            [ ])
+            [:])
     fi
 
     if test "$WITH_ZLIB" = "0"; then
@@ -435,7 +435,7 @@ else
         # Try pkg-config first so that static linking works.
         PKG_CHECK_MODULES([LZMA],[liblzma],
             [WITH_LZMA=1],
-            [ ])
+            [:])
     fi
 
     # If pkg-config failed, fall back to AC_CHECK_LIB. This

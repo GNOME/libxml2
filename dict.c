@@ -38,7 +38,8 @@
  *  list we will use the BigKey algo as soon as the hash size grows
  *  over MIN_DICT_SIZE so this actually works
  */
-#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME)
+#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME) && \
+    !defined(FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION)
 #define DICT_RANDOMIZATION
 #endif
 

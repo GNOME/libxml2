@@ -33,7 +33,8 @@
  * it seems that having hash randomization might be a good idea
  * when using XML with untrusted data
  */
-#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME)
+#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME) && \
+    !defined(FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION)
 #define HASH_RANDOMIZATION
 #endif
 

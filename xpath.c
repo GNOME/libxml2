@@ -10004,15 +10004,19 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 		   (IS_COMBINING(c)) ||
 		   (IS_EXTENDER(c))) {
 		if (len + 10 > max) {
+                    xmlChar *tmp;
                     if (max > XML_MAX_NAME_LENGTH) {
+                        xmlFree(buffer);
                         XP_ERRORNULL(XPATH_EXPR_ERROR);
                     }
 		    max *= 2;
-		    buffer = (xmlChar *) xmlRealloc(buffer,
-			                            max * sizeof(xmlChar));
-		    if (buffer == NULL) {
+		    tmp = (xmlChar *) xmlRealloc(buffer,
+			                         max * sizeof(xmlChar));
+		    if (tmp == NULL) {
+                        xmlFree(buffer);
 			XP_ERRORNULL(XPATH_MEMORY_ERROR);
 		    }
+                    buffer = tmp;
 		}
 		COPY_BUF(l,buffer,len,c);
 		NEXTL(l);

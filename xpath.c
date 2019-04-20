@@ -14654,8 +14654,12 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 #endif /* XPATH_STREAMING */
 
 static void
-xmlXPathOptimizeExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
+xmlXPathOptimizeExpression(xmlXPathParserContextPtr pctxt,
+                           xmlXPathStepOpPtr op)
 {
+    xmlXPathCompExprPtr comp = pctxt->comp;
+    xmlXPathContextPtr ctxt;
+
     /*
     * Try to rewrite "descendant-or-self::node()/foo" to an optimized
     * internal representation.
@@ -14711,10 +14715,18 @@ xmlXPathOptimizeExpression(xmlXPathCompExprPtr comp, xmlXPathStepOpPtr op)
         return;
 
     /* Recurse */
+    ctxt = pctxt->context;
+    if (ctxt != NULL) {
+        if (ctxt->depth >= ctxt->maxDepth)
+            return;
+        ctxt->depth += 1;
+    }
     if (op->ch1 != -1)
-        xmlXPathOptimizeExpression(comp, &comp->steps[op->ch1]);
+        xmlXPathOptimizeExpression(pctxt, &comp->steps[op->ch1]);
     if (op->ch2 != -1)
-	xmlXPathOptimizeExpression(comp, &comp->steps[op->ch2]);
+	xmlXPathOptimizeExpression(pctxt, &comp->steps[op->ch2]);
+    if (ctxt != NULL)
+        ctxt->depth -= 1;
 }
 
 /**
@@ -14764,6 +14776,11 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	comp = NULL;
     } else {
 	comp = pctxt->comp;
+	if ((comp->nbStep > 1) && (comp->last >= 0)) {
+            if (ctxt != NULL)
+                ctxt->depth = 0;
+	    xmlXPathOptimizeExpression(pctxt, &comp->steps[comp->last]);
+	}
 	pctxt->comp = NULL;
     }
     xmlXPathFreeParserContext(pctxt);
@@ -14774,9 +14791,6 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	comp->string = xmlStrdup(str);
 	comp->nb = 0;
 #endif
-	if ((comp->nbStep > 1) && (comp->last >= 0)) {
-	    xmlXPathOptimizeExpression(comp, &comp->steps[comp->last]);
-	}
     }
     return(comp);
 }
@@ -14942,9 +14956,12 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
         if (*ctxt->cur != 0)
             XP_ERROR(XPATH_EXPR_ERROR);
 
-	if ((ctxt->comp->nbStep > 1) && (ctxt->comp->last >= 0))
-	    xmlXPathOptimizeExpression(ctxt->comp,
+	if ((ctxt->comp->nbStep > 1) && (ctxt->comp->last >= 0)) {
+            if (ctxt->context != NULL)
+                ctxt->context->depth = 0;
+	    xmlXPathOptimizeExpression(ctxt,
 		&ctxt->comp->steps[ctxt->comp->last]);
+        }
     }
 
     xmlXPathRunEval(ctxt, 0);

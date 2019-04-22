@@ -13305,7 +13305,9 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 
                 CHECK_TYPE0(XPATH_NODESET);
                 set = ctxt->value->nodesetval;
-                xmlXPathNodeSetFilter(ctxt, set, op->ch2, 1, set->nodeNr, 1);
+                if (set != NULL)
+                    xmlXPathNodeSetFilter(ctxt, set, op->ch2,
+                                          1, set->nodeNr, 1);
                 break;
             }
         case XPATH_OP_SORT:

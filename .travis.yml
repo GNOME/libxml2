@@ -10,7 +10,7 @@ matrix:
     # Try to emulate a C89 compiler on a POSIX system by disabling as many
     # GNU extensions as possible.
     - compiler: gcc
-      env: CFLAGS="-O2 -std=c89 -D_XOPEN_SOURCE=700 -Werror"
+      env: CFLAGS="-O2 -std=c89 -D_XOPEN_SOURCE=700 -Werror -Wno-error=array-bounds"
     # clang with AddressSanitizer and UndefinedBehaviorSanitizer.
     - compiler: clang
       sudo: required

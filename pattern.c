@@ -229,13 +229,16 @@ xmlNewPattern(void) {
  */
 void
 xmlFreePattern(xmlPatternPtr comp) {
+    xmlFreePatternList(comp);
+}
+
+static void
+xmlFreePatternInternal(xmlPatternPtr comp) {
     xmlStepOpPtr op;
     int i;
 
     if (comp == NULL)
 	return;
-    if (comp->next != NULL)
-        xmlFreePattern(comp->next);
     if (comp->stream != NULL)
         xmlFreeStreamComp(comp->stream);
     if (comp->pattern != NULL)
@@ -273,7 +276,7 @@ xmlFreePatternList(xmlPatternPtr comp) {
 	cur = comp;
 	comp = comp->next;
 	cur->next = NULL;
-	xmlFreePattern(cur);
+	xmlFreePatternInternal(cur);
     }
 }
 

@@ -11833,8 +11833,12 @@ xmlXPathCompOpEvalPredicate(xmlXPathParserContextPtr ctxt,
                 "xmlXPathCompOpEvalPredicate: Expected a predicate\n");
             XP_ERROR(XPATH_INVALID_OPERAND);
 	}
+        if (ctxt->context->depth >= ctxt->context->maxDepth)
+            XP_ERROR(XPATH_RECURSION_LIMIT_EXCEEDED);
+        ctxt->context->depth += 1;
 	xmlXPathCompOpEvalPredicate(ctxt, &comp->steps[op->ch1], set,
                                     1, set->nodeNr, hasNsNodes);
+        ctxt->context->depth -= 1;
 	CHECK_ERROR;
     }
 

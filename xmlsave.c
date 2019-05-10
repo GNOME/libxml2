@@ -83,7 +83,6 @@ struct _xmlSaveCtxt {
     const xmlChar *encoding;
     xmlCharEncodingHandlerPtr handler;
     xmlOutputBufferPtr buf;
-    xmlDocPtr doc;
     int options;
     int level;
     int format;
@@ -707,7 +706,6 @@ static void
 xmlDtdDumpOutput(xmlSaveCtxtPtr ctxt, xmlDtdPtr dtd) {
     xmlOutputBufferPtr buf;
     int format, level;
-    xmlDocPtr doc;
 
     if (dtd == NULL) return;
     if ((ctxt == NULL) || (ctxt->buf == NULL))
@@ -742,14 +740,11 @@ xmlDtdDumpOutput(xmlSaveCtxtPtr ctxt, xmlDtdPtr dtd) {
     }
     format = ctxt->format;
     level = ctxt->level;
-    doc = ctxt->doc;
     ctxt->format = 0;
     ctxt->level = -1;
-    ctxt->doc = dtd->doc;
     xmlNodeListDumpOutput(ctxt, dtd->children);
     ctxt->format = format;
     ctxt->level = level;
-    ctxt->doc = doc;
     xmlOutputBufferWrite(buf, 2, "]>");
 }
 
@@ -2360,7 +2355,6 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
         encoding = "UTF-8";
 
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.doc = doc;
     ctxt.buf = buf;
     ctxt.level = level;
     ctxt.format = format ? 1 : 0;
@@ -2446,7 +2440,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     }
 
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.doc = out_doc;
     ctxt.buf = out_buff;
     ctxt.level = 0;
     ctxt.format = format ? 1 : 0;
@@ -2565,7 +2558,6 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL) return(-1);
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
     ctxt.format = format ? 1 : 0;
@@ -2615,7 +2607,6 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
 	return(-1);
     }
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
     ctxt.format = 0;
@@ -2655,7 +2646,6 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	return(-1);
     }
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
     ctxt.format = format ? 1 : 0;
@@ -2710,7 +2700,6 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
     buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
     if (buf == NULL) return(-1);
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.doc = cur;
     ctxt.buf = buf;
     ctxt.level = 0;
     ctxt.format = format ? 1 : 0;

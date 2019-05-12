@@ -4955,6 +4955,10 @@ get_more:
 		} else
 		    xmlFatalErrMsgStr(ctxt, XML_ERR_HYPHEN_IN_COMMENT,
 		                      "Double hyphen within comment\n", NULL);
+                if (ctxt->instate == XML_PARSER_EOF) {
+                    xmlFree(buf);
+                    return;
+                }
 		in++;
 		ctxt->input->col++;
 	    }

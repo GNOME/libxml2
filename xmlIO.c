@@ -3372,20 +3372,26 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 		out->error = XML_IO_ENCODER;
 		return(-1);
 	    }
-	    nbchars = xmlBufUse(out->conv);
+            if (out->writecallback)
+	        nbchars = xmlBufUse(out->conv);
+            else
+                nbchars = ret;
 	} else {
 	    ret = xmlBufAdd(out->buffer, (const xmlChar *) buf, chunk);
 	    if (ret != 0)
 	        return(-1);
-	    nbchars = xmlBufUse(out->buffer);
+            if (out->writecallback)
+	        nbchars = xmlBufUse(out->buffer);
+            else
+                nbchars = chunk;
 	}
 	buf += chunk;
 	len -= chunk;
 
-	if ((nbchars < MINLEN) && (len <= 0))
-	    goto done;
-
 	if (out->writecallback) {
+            if ((nbchars < MINLEN) && (len <= 0))
+                goto done;
+
 	    /*
 	     * second write the stuff to the I/O channel
 	     */
@@ -3561,21 +3567,27 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 		out->error = XML_IO_ENCODER;
 		return(-1);
 	    }
-	    nbchars = xmlBufUse(out->conv);
+            if (out->writecallback)
+	        nbchars = xmlBufUse(out->conv);
+            else
+                nbchars = ret;
 	} else {
 	    ret = escaping(xmlBufEnd(out->buffer), &chunk, str, &cons);
 	    if ((ret < 0) || (chunk == 0)) /* chunk==0 => nothing done */
 	        return(-1);
             xmlBufAddLen(out->buffer, chunk);
-	    nbchars = xmlBufUse(out->buffer);
+            if (out->writecallback)
+	        nbchars = xmlBufUse(out->buffer);
+            else
+                nbchars = chunk;
 	}
 	str += cons;
 	len -= cons;
 
-	if ((nbchars < MINLEN) && (len <= 0))
-	    goto done;
-
 	if (out->writecallback) {
+            if ((nbchars < MINLEN) && (len <= 0))
+                goto done;
+
 	    /*
 	     * second write the stuff to the I/O channel
 	     */

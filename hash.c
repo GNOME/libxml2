@@ -79,6 +79,7 @@ struct _xmlHashTable {
  * xmlHashComputeKey:
  * Calculate the hash key
  */
+ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 static unsigned long
 xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
 	          const xmlChar *name2, const xmlChar *name3) {
@@ -109,6 +110,7 @@ xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
     return (value % table->size);
 }
 
+ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 static unsigned long
 xmlHashComputeQKey(xmlHashTablePtr table,
 		   const xmlChar *prefix, const xmlChar *name,

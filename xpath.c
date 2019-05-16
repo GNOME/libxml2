@@ -7497,6 +7497,7 @@ xmlXPathMultValues(xmlXPathParserContextPtr ctxt) {
  * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
+ATTRIBUTE_NO_SANITIZE("float-divide-by-zero")
 void
 xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr arg;

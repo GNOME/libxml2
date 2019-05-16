@@ -72,6 +72,13 @@ int vfprintf(FILE *, const char *, va_list);
 #define XML_POP_WARNINGS
 #endif
 
+#if defined(__clang__) || \
+    (defined(__GNUC__) && (__GNUC__ >= 8))
+#define ATTRIBUTE_NO_SANITIZE(arg) __attribute__((no_sanitize(arg)))
+#else
+#define ATTRIBUTE_NO_SANITIZE(arg)
+#endif
+
 /*
  * Internal variable indicating if a callback has been registered for
  * node creation/destruction. It avoids spending a lot of time in locking

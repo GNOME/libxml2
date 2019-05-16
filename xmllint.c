@@ -180,17 +180,17 @@ static int exc_canonical = 0;
 #ifdef LIBXML_READER_ENABLED
 static int stream = 0;
 static int walker = 0;
+#ifdef LIBXML_PATTERN_ENABLED
+static const char *pattern = NULL;
+static xmlPatternPtr patternc = NULL;
+static xmlStreamCtxtPtr patstream = NULL;
+#endif
 #endif /* LIBXML_READER_ENABLED */
 static int chkregister = 0;
 static int nbregister = 0;
 #ifdef LIBXML_SAX1_ENABLED
 static int sax1 = 0;
 #endif /* LIBXML_SAX1_ENABLED */
-#ifdef LIBXML_PATTERN_ENABLED
-static const char *pattern = NULL;
-static xmlPatternPtr patternc = NULL;
-static xmlStreamCtxtPtr patstream = NULL;
-#endif
 #ifdef LIBXML_XPATH_ENABLED
 static const char *xpathquery = NULL;
 #endif
@@ -3058,10 +3058,10 @@ static void usage(FILE *f, const char *name) {
 #ifdef LIBXML_READER_ENABLED
     fprintf(f, "\t--stream : use the streaming interface to process very large files\n");
     fprintf(f, "\t--walker : create a reader and walk though the resulting doc\n");
-#endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_PATTERN_ENABLED
     fprintf(f, "\t--pattern pattern_value : test the pattern support\n");
 #endif
+#endif /* LIBXML_READER_ENABLED */
     fprintf(f, "\t--chkregister : verify the node registration code\n");
 #ifdef LIBXML_SCHEMAS_ENABLED
     fprintf(f, "\t--relaxng schema : do RelaxNG validation against the schema\n");
@@ -3393,6 +3393,12 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--walker"))) {
 	     walker++;
              noout++;
+#ifdef LIBXML_PATTERN_ENABLED
+        } else if ((!strcmp(argv[i], "-pattern")) ||
+                   (!strcmp(argv[i], "--pattern"))) {
+	    i++;
+	    pattern = argv[i];
+#endif
 	}
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_SAX1_ENABLED
@@ -3443,12 +3449,6 @@ main(int argc, char **argv) {
                    (!strcmp(argv[i], "--path"))) {
 	    i++;
 	    parsePath(BAD_CAST argv[i]);
-#ifdef LIBXML_PATTERN_ENABLED
-        } else if ((!strcmp(argv[i], "-pattern")) ||
-                   (!strcmp(argv[i], "--pattern"))) {
-	    i++;
-	    pattern = argv[i];
-#endif
 #ifdef LIBXML_XPATH_ENABLED
         } else if ((!strcmp(argv[i], "-xpath")) ||
                    (!strcmp(argv[i], "--xpath"))) {
@@ -3610,12 +3610,8 @@ main(int argc, char **argv) {
 	}
     }
 #endif /* LIBXML_SCHEMAS_ENABLED */
-#ifdef LIBXML_PATTERN_ENABLED
-    if ((pattern != NULL)
-#ifdef LIBXML_READER_ENABLED
-        && (walker == 0)
-#endif
-	) {
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
+    if ((pattern != NULL) && (walker == 0)) {
         patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0, NULL);
 	if (patternc == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
@@ -3624,7 +3620,7 @@ main(int argc, char **argv) {
 	    pattern = NULL;
 	}
     }
-#endif /* LIBXML_PATTERN_ENABLED */
+#endif /* LIBXML_READER_ENABLED && LIBXML_PATTERN_ENABLED */
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
@@ -3678,7 +3674,7 @@ main(int argc, char **argv) {
 	    i++;
 	    continue;
         }
-#ifdef LIBXML_PATTERN_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
         if ((!strcmp(argv[i], "-pattern")) ||
 	    (!strcmp(argv[i], "--pattern"))) {
 	    i++;

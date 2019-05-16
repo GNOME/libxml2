@@ -2176,6 +2176,7 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_PUSH_ENABLED
 /**
  * htmlNewInputStream:
  * @ctxt:  an HTML parser context
@@ -2207,6 +2208,7 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
     input->length = 0;
     return(input);
 }
+#endif
 
 
 /************************************************************************

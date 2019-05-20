@@ -10805,10 +10805,7 @@ xmlXPathCompRelationalExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathCompAdditiveExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
-    while ((CUR == '<') ||
-           (CUR == '>') ||
-           ((CUR == '<') && (NXT(1) == '=')) ||
-           ((CUR == '>') && (NXT(1) == '='))) {
+    while ((CUR == '<') || (CUR == '>')) {
 	int inf, strict;
 	int op1 = ctxt->comp->last;
 

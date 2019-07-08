@@ -8728,9 +8728,11 @@ xmlParseQName(xmlParserCtxtPtr ctxt, const xmlChar **prefix) {
             xmlNsErr(ctxt, XML_NS_ERR_QNAME,
 	             "Failed to parse QName '%s:'\n", p, NULL, NULL);
 	    l = xmlParseNmtoken(ctxt);
-	    if (l == NULL)
+	    if (l == NULL) {
+                if (ctxt->instate == XML_PARSER_EOF)
+                    return(NULL);
 		tmp = xmlBuildQName(BAD_CAST "", p, NULL, 0);
-	    else {
+            } else {
 		tmp = xmlBuildQName(l, p, NULL, 0);
 		xmlFree((char *)l);
 	    }

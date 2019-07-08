@@ -2075,11 +2075,11 @@ static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
 	xmlGROW (ctxt);
 
 static void xmlGROW (xmlParserCtxtPtr ctxt) {
-    unsigned long curEnd = ctxt->input->end - ctxt->input->cur;
-    unsigned long curBase = ctxt->input->cur - ctxt->input->base;
+    ptrdiff_t curEnd = ctxt->input->end - ctxt->input->cur;
+    ptrdiff_t curBase = ctxt->input->cur - ctxt->input->base;
 
-    if (((curEnd > (unsigned long) XML_MAX_LOOKUP_LIMIT) ||
-         (curBase > (unsigned long) XML_MAX_LOOKUP_LIMIT)) &&
+    if (((curEnd > XML_MAX_LOOKUP_LIMIT) ||
+         (curBase > XML_MAX_LOOKUP_LIMIT)) &&
          ((ctxt->input->buf) &&
           (ctxt->input->buf->readcallback != xmlInputReadCallbackNop)) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
@@ -8856,6 +8856,18 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
  *     caller if it was copied, this can be detected by val[*len] == 0.
  */
 
+#define GROW_PARSE_ATT_VALUE_INTERNAL(ctxt, in, start, end) \
+    const xmlChar *oldbase = ctxt->input->base;\
+    GROW;\
+    if (ctxt->instate == XML_PARSER_EOF)\
+        return(NULL);\
+    if (oldbase != ctxt->input->base) {\
+        ptrdiff_t delta = ctxt->input->base - oldbase;\
+        start = start + delta;\
+        in = in + delta;\
+    }\
+    end = ctxt->input->end;
+
 static xmlChar *
 xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
                          int normalize)
@@ -8885,14 +8897,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
     end = ctxt->input->end;
     start = in;
     if (in >= end) {
-        const xmlChar *oldbase = ctxt->input->base;
-	GROW;
-	if (oldbase != ctxt->input->base) {
-	    long delta = ctxt->input->base - oldbase;
-	    start = start + delta;
-	    in = in + delta;
-	}
-	end = ctxt->input->end;
+        GROW_PARSE_ATT_VALUE_INTERNAL(ctxt, in, start, end)
     }
     if (normalize) {
         /*
@@ -8909,16 +8914,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	    in++;
 	    start = in;
 	    if (in >= end) {
-		const xmlChar *oldbase = ctxt->input->base;
-		GROW;
-                if (ctxt->instate == XML_PARSER_EOF)
-                    return(NULL);
-		if (oldbase != ctxt->input->base) {
-		    long delta = ctxt->input->base - oldbase;
-		    start = start + delta;
-		    in = in + delta;
-		}
-		end = ctxt->input->end;
+                GROW_PARSE_ATT_VALUE_INTERNAL(ctxt, in, start, end)
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
@@ -8932,16 +8928,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	    col++;
 	    if ((*in++ == 0x20) && (*in == 0x20)) break;
 	    if (in >= end) {
-		const xmlChar *oldbase = ctxt->input->base;
-		GROW;
-                if (ctxt->instate == XML_PARSER_EOF)
-                    return(NULL);
-		if (oldbase != ctxt->input->base) {
-		    long delta = ctxt->input->base - oldbase;
-		    start = start + delta;
-		    in = in + delta;
-		}
-		end = ctxt->input->end;
+                GROW_PARSE_ATT_VALUE_INTERNAL(ctxt, in, start, end)
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
@@ -8970,7 +8957,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
                 if (ctxt->instate == XML_PARSER_EOF)
                     return(NULL);
 		if (oldbase != ctxt->input->base) {
-		    long delta = ctxt->input->base - oldbase;
+		    ptrdiff_t delta = ctxt->input->base - oldbase;
 		    start = start + delta;
 		    in = in + delta;
 		    last = last + delta;
@@ -8997,16 +8984,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	    in++;
 	    col++;
 	    if (in >= end) {
-		const xmlChar *oldbase = ctxt->input->base;
-		GROW;
-                if (ctxt->instate == XML_PARSER_EOF)
-                    return(NULL);
-		if (oldbase != ctxt->input->base) {
-		    long delta = ctxt->input->base - oldbase;
-		    start = start + delta;
-		    in = in + delta;
-		}
-		end = ctxt->input->end;
+                GROW_PARSE_ATT_VALUE_INTERNAL(ctxt, in, start, end)
                 if (((in - start) > XML_MAX_TEXT_LENGTH) &&
                     ((ctxt->options & XML_PARSE_HUGE) == 0)) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,

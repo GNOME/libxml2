@@ -9891,7 +9891,6 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
     ctxt->depth++;
     switch (define->type) {
         case XML_RELAXNG_EMPTY:
-            xmlRelaxNGSkipIgnored(ctxt, node);
             ret = 0;
             break;
         case XML_RELAXNG_NOT_ALLOWED:

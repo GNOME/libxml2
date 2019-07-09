@@ -2383,6 +2383,7 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
     if (encoder != NULL) {
         ret->conv = xmlBufCreateSize(4000);
 	if (ret->conv == NULL) {
+            xmlBufFree(ret->buffer);
 	    xmlFree(ret);
 	    return(NULL);
 	}

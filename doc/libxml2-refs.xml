@@ -31120,9 +31120,6 @@
         <word name='xmlAttributeTablePtr'>
           <ref name='xmlCopyAttributeTable'/>
         </word>
-        <word name='xmlBufNodeDump'>
-          <ref name='xmlNodeDump'/>
-        </word>
         <word name='xmlBufPtr'>
           <ref name='xmlBufGetNodeContent'/>
         </word>
@@ -31492,6 +31489,9 @@
           <ref name='xmlNewTextWriterMemory'/>
           <ref name='xmlNewTextWriterPushParser'/>
           <ref name='xmlNewTextWriterTree'/>
+        </word>
+        <word name='xmlNodeDumpOutput'>
+          <ref name='xmlNodeDump'/>
         </word>
         <word name='xmlNodeListGetString'>
           <ref name='xmlNodeListGetRawString'/>

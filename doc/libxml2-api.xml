@@ -11778,7 +11778,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlNodeDump' file='tree' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called Since this is using xmlBuffer structures it is limited to 2GB and somehow deprecated, use xmlBufNodeDump() instead.</info>
+      <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called. Since this is using xmlBuffer structures it is limited to 2GB and somehow deprecated, use xmlNodeDumpOutput() instead.</info>
       <return type='int' info='the number of bytes written to the buffer or -1 in case of error'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>

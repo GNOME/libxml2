@@ -2186,9 +2186,9 @@ xmlAttrSerializeTxtContent(xmlBufferPtr buf, xmlDocPtr doc,
  *
  * Dump an XML node, recursive behaviour,children are printed too.
  * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
- * or xmlKeepBlanksDefault(0) was called
+ * or xmlKeepBlanksDefault(0) was called.
  * Since this is using xmlBuffer structures it is limited to 2GB and somehow
- * deprecated, use xmlBufNodeDump() instead.
+ * deprecated, use xmlNodeDumpOutput() instead.
  *
  * Returns the number of bytes written to the buffer or -1 in case of error
  */

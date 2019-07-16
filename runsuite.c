@@ -1052,9 +1052,9 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     old_leaks = nb_leaks;
     xsdTest();
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+	printf("Run %d tests, no errors\n", nb_tests - old_tests);
     else
-	printf("Ran %d tests, %d errors, %d leaks\n",
+	printf("Run %d tests, %d errors, %d leaks\n",
 	       nb_tests - old_tests,
 	       nb_errors - old_errors,
 	       nb_leaks - old_leaks);
@@ -1063,9 +1063,9 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     old_leaks = nb_leaks;
     rngTest1();
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+	printf("Run %d tests, no errors\n", nb_tests - old_tests);
     else
-	printf("Ran %d tests, %d errors, %d leaks\n",
+	printf("Run %d tests, %d errors, %d leaks\n",
 	       nb_tests - old_tests,
 	       nb_errors - old_errors,
 	       nb_leaks - old_leaks);
@@ -1074,9 +1074,9 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     old_leaks = nb_leaks;
     rngTest2();
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	printf("Ran %d tests, no errors\n", nb_tests - old_tests);
+	printf("Run %d tests, no errors\n", nb_tests - old_tests);
     else
-	printf("Ran %d tests, %d errors, %d leaks\n",
+	printf("Run %d tests, %d errors, %d leaks\n",
 	       nb_tests - old_tests,
 	       nb_errors - old_errors,
 	       nb_leaks - old_leaks);
@@ -1088,10 +1088,10 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xstcMetadata("xstc/Tests/Metadata/NISTXMLSchemaDatatypes.testSet",
 		 "xstc/Tests/Metadata/");
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	printf("Ran %d tests (%d schemata), no errors\n",
+	printf("Run %d tests (%d schemata), no errors\n",
 	       nb_tests - old_tests, nb_schematas);
     else
-	printf("Ran %d tests (%d schemata), %d errors (%d internals), %d leaks\n",
+	printf("Run %d tests (%d schemata), %d errors (%d internals), %d leaks\n",
 	       nb_tests - old_tests,
 	       nb_schematas,
 	       nb_errors - old_errors,
@@ -1105,10 +1105,10 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xstcMetadata("xstc/Tests/Metadata/SunXMLSchema1-0-20020116.testSet",
 		 "xstc/Tests/");
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	printf("Ran %d tests (%d schemata), no errors\n",
+	printf("Run %d tests (%d schemata), no errors\n",
 	       nb_tests - old_tests, nb_schematas);
     else
-	printf("Ran %d tests (%d schemata), %d errors (%d internals), %d leaks\n",
+	printf("Run %d tests (%d schemata), %d errors (%d internals), %d leaks\n",
 	       nb_tests - old_tests,
 	       nb_schematas,
 	       nb_errors - old_errors,
@@ -1122,10 +1122,10 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xstcMetadata("xstc/Tests/Metadata/MSXMLSchema1-0-20020116.testSet",
 		 "xstc/Tests/");
     if ((nb_errors == old_errors) && (nb_leaks == old_leaks))
-	printf("Ran %d tests (%d schemata), no errors\n",
+	printf("Run %d tests (%d schemata), no errors\n",
 	       nb_tests - old_tests, nb_schematas);
     else
-	printf("Ran %d tests (%d schemata), %d errors (%d internals), %d leaks\n",
+	printf("Run %d tests (%d schemata), %d errors (%d internals), %d leaks\n",
 	       nb_tests - old_tests,
 	       nb_schematas,
 	       nb_errors - old_errors,

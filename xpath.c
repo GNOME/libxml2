@@ -14018,7 +14018,7 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 
 	/*
 	 * We don't try to handle expressions using the verbose axis
-	 * specifiers ("::"), just the simplied form at this point.
+	 * specifiers ("::"), just the simplified form at this point.
 	 * Additionally, if there is no list of namespaces available and
 	 *  there's a ":" in the expression, indicating a prefixed QName,
 	 *  then we won't try to compile either. xmlPatterncompile() needs

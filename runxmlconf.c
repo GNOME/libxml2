@@ -1,5 +1,5 @@
 /*
- * runsuite.c: C program to run libxml2 againts published testsuites
+ * runxmlconf.c: C program to run xml w3c conformance testsuites
  *
  * See Copyright for the status of this software.
  *

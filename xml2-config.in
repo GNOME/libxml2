@@ -29,9 +29,6 @@ if test $# -eq 0; then
     usage 1
 fi
 
-cflags=false
-libs=false
-
 while test $# -gt 0; do
     case "$1" in
     -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
@@ -68,7 +65,7 @@ while test $# -gt 0; do
 	;;
 
     --cflags)
-       	echo @XML_INCLUDEDIR@ @XML_CFLAGS@
+        cflags="@XML_INCLUDEDIR@ @XML_CFLAGS@"
        	;;
 
     --libtool-libs)
@@ -85,16 +82,16 @@ while test $# -gt 0; do
     --libs)
         if [ "$2" = "--dynamic" ]; then
             shift
-            LIBS="@XML_LIBS@"
+            libs="@XML_LIBS@"
         else
-            LIBS="@XML_LIBS@ @XML_PRIVATE_LIBS@ @MODULE_PLATFORM_LIBS@"
+            libs="@XML_LIBS@ @XML_PRIVATE_LIBS@ @MODULE_PLATFORM_LIBS@"
         fi
 
         if [ "@XML_LIBDIR@" != "-L/usr/lib" -a "@XML_LIBDIR@" != "-L/usr/lib64" ]; then
-            LIBS="@XML_LIBDIR@ $LIBS"
+            libs="@XML_LIBDIR@ $libs"
         fi
 
-        echo ${LIBS} @WIN32_EXTRA_LIBADD@
+        libs="$libs @WIN32_EXTRA_LIBADD@"
         ;;
 
     *)
@@ -104,5 +101,9 @@ while test $# -gt 0; do
     esac
     shift
 done
+
+if test "$cflags" -o "$libs"; then
+    echo $cflags $libs
+fi
 
 exit 0

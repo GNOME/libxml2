@@ -880,6 +880,8 @@ internalSubsetDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
     callbacks++;
     if (quiet)
 	return;
+    if (name == NULL)
+        name = BAD_CAST "(null)";
     fprintf(SAXdebug, "SAX.internalSubset(%s,", name);
     if (ExternalID == NULL)
 	fprintf(SAXdebug, " ,");

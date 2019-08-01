@@ -9584,7 +9584,12 @@ xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
 
+#ifdef _AIX
+    /* Work around buggy ceil() function on AIX */
+    ctxt->value->floatval = copysign(ceil(ctxt->value->floatval), ctxt->value->floatval);
+#else
     ctxt->value->floatval = ceil(ctxt->value->floatval);
+#endif
 }
 
 /**

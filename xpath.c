@@ -8626,6 +8626,7 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	return;
     }
     obj = xmlXPathCacheConvertString(ctxt->context, obj);
+	if (obj == NULL) return;
     ret = xmlXPathGetElementsByIds(ctxt->context->doc, obj->stringval);
     valuePush(ctxt, xmlXPathCacheWrapNodeSet(ctxt->context, ret));
     xmlXPathReleaseObject(ctxt->context, obj);

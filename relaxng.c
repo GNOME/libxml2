@@ -9476,7 +9476,17 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
             xmlRelaxNGFreeValidState(ctxt, oldstate);
             oldstate = ctxt->state;
             ctxt->state = NULL;
-            if (cur != NULL) {
+            if (cur != NULL
+                    /* there's a nasty violation of context-free unambiguities,
+                       since in open-name-class context, interleave in the
+                       production shall finish without caring about anything
+                       else that is OK to follow in that case -- it would
+                       otherwise get marked as "extra content" and would
+                       hence fail the validation, hence this perhaps
+                       dirty attempt to rectify such a situation */
+                    && (define->parent->type != XML_RELAXNG_DEF
+                        || !xmlStrEqual(define->parent->name,
+                                        (const xmlChar *) "open-name-class"))) {
                 VALID_ERR2(XML_RELAXNG_ERR_INTEREXTRA, cur->name);
                 ret = -1;
                 ctxt->state = oldstate;

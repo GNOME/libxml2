@@ -1716,6 +1716,8 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
     }
     doc = reader->node->doc;
     buff = xmlBufferCreate();
+    if (buff == NULL)
+        return NULL;
     for (cur_node = reader->node->children; cur_node != NULL;
          cur_node = cur_node->next) {
         /* XXX: Why is the node copied? */

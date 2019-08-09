@@ -6395,7 +6395,10 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
                            NULL, NULL);
             }
             if ((!(flags & XML_RELAXNG_IN_ONEORMORE))
-                && (cur->name == NULL)) {
+                && cur->name == NULL
+                /* following is checking alternative name class readiness
+                   in case it went the "choice" route */
+                && cur->nameClass == NULL) {
                 if (cur->ns == NULL) {
                     xmlRngPErr(ctxt, cur->node, XML_RNGP_ANYNAME_ATTR_ANCESTOR,
                                "Found anyName attribute without oneOrMore ancestor\n",

@@ -4058,7 +4058,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
           ret->ns = ns;
         } else {
           /*
-           * we are in trouble: we need a new reconcilied namespace.
+           * we are in trouble: we need a new reconciled namespace.
            * This is expensive
            */
           ret->ns = xmlNewReconciliedNs(target->doc, target, cur->ns);
@@ -4154,8 +4154,8 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
  * say RPM:Copyright without changing the namespace pointer to
  * something else can produce stale links. One way to do it is
  * to keep a reference counter but this doesn't work as soon
- * as one move the element or the subtree out of the scope of
- * the existing namespace. The actual solution seems to add
+ * as one moves the element or the subtree out of the scope of
+ * the existing namespace. The actual solution seems to be to add
  * a copy of the namespace at the top of the copied tree if
  * not available in the subtree.
  * Hence two functions, the public front-end call the inner ones
@@ -6373,7 +6373,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	    }
 	}
 	/*
-	 * now check for namespace hold by attributes on the node.
+	 * now check for namespace held by attributes on the node.
 	 */
 	if (node->type == XML_ELEMENT_NODE) {
 	    attr = node->properties;

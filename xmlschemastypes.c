@@ -3629,7 +3629,7 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
 	maxday = 0;
     } else {
 	maxday = 366 * ((myear + 3) / 4) +
-	         365 * ((myear - 1) % 4);
+	         365 * (myear - ((myear + 3) / 4));
 	minday = maxday - 1;
     }
 

@@ -1923,6 +1923,7 @@ xinclude_multibyte_fallback:
 		    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 				   XML_XINCLUDE_INVALID_CHAR,
 				   "%s contains invalid char\n", URL);
+		    xmlFreeParserCtxt(pctxt);
 		    xmlFreeParserInputBuffer(buf);
 		    xmlFree(URL);
 		    return(-1);

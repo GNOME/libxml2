@@ -24665,7 +24665,7 @@ xmlSchemaVCheckCVCSimpleType(xmlSchemaAbstractCtxtPtr actxt,
 		    ret = XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1;
 	    }
 	}
-	if (fireErrors && (ret > 0))
+	else if (fireErrors && (ret > 0))
 	    xmlSchemaSimpleTypeErr(actxt, ret, node, value, type, 1);
     } else if (WXS_IS_LIST(type)) {
 

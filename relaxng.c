@@ -5554,8 +5554,10 @@ xmlRelaxNGParsePatterns(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes,
                 if ((group == 1) && (def->type == XML_RELAXNG_ELEMENT) &&
                     (def == last)) {
                     def = xmlRelaxNGNewDefine(ctxt, nodes);
-                    def->type = XML_RELAXNG_GROUP;
-                    def->content = last;
+		    if (def != NULL){
+                    	def->type = XML_RELAXNG_GROUP;
+                    	def->content = last;
+		    }	
                 }
                 last->next = cur;
                 last = cur;

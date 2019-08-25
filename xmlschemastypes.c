@@ -3628,8 +3628,10 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
 	minday = 0;
 	maxday = 0;
     } else {
-	maxday = 366 * ((myear + 3) / 4) +
-	         365 * ((myear - 1) % 4);
+        /* FIXME: This doesn't take leap year exceptions every 100/400 years
+           into account. */
+	maxday = 365 * myear + (myear + 3) / 4;
+        /* FIXME: Needs to be calculated separately */
 	minday = maxday - 1;
     }
 

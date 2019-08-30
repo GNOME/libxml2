@@ -2062,7 +2062,7 @@ static void walkDoc(xmlDocPtr doc) {
  *									*
  ************************************************************************/
 
-static void doXPathDump(xmlXPathObjectPtr cur) {
+static void doXPathDump(xmlXPathObjectPtr cur, const char *url) {
     switch(cur->type) {
         case XPATH_NODESET: {
             int i;
@@ -2071,56 +2071,57 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             xmlOutputBufferPtr buf;
 
             if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
-                fprintf(stderr, "XPath set is empty\n");
+                fprintf(stderr, "%s: XPath set is empty\n", url);
                 progresult = XMLLINT_ERR_XPATH;
                 break;
             }
             buf = xmlOutputBufferCreateFile(stdout, NULL);
             if (buf == NULL) {
-                fprintf(stderr, "Out of memory for XPath\n");
+                fprintf(stderr, "%s: Out of memory for XPath\n", url);
                 progresult = XMLLINT_ERR_MEM;
                 return;
             }
-            for (i = 0;i < cur->nodesetval->nodeNr;i++) {
-                node = cur->nodesetval->nodeTab[i];
+            printf("%s: ", url);
+	    for (i = 0;i < cur->nodesetval->nodeNr;i++) {            
+		node = cur->nodesetval->nodeTab[i];
                 xmlNodeDumpOutput(buf, NULL, node, 0, 0, NULL);
                 xmlOutputBufferWrite(buf, 1, "\n");
             }
             xmlOutputBufferClose(buf);
 #else
-            printf("xpath returned %d nodes\n", cur->nodesetval->nodeNr);
+            printf("%s: xpath returned %d nodes\n", url, cur->nodesetval->nodeNr);
 #endif
 	    break;
         }
         case XPATH_BOOLEAN:
-	    if (cur->boolval) printf("true\n");
-	    else printf("false\n");
+	    if (cur->boolval) printf("%s: true\n", url);
+	    else printf("%s: false\n", url);
 	    break;
         case XPATH_NUMBER:
 	    switch (xmlXPathIsInf(cur->floatval)) {
 	    case 1:
-		printf("Infinity\n");
+		printf("%s: Infinity\n", url);
 		break;
 	    case -1:
-		printf("-Infinity\n");
+		printf("%s: -Infinity\n", url);
 		break;
 	    default:
 		if (xmlXPathIsNaN(cur->floatval)) {
-		    printf("NaN\n");
+		    printf("%s: NaN\n", url);
 		} else {
-		    printf("%0g\n", cur->floatval);
+		    printf("%s: %0g\n", url, cur->floatval);
 		}
 	    }
 	    break;
         case XPATH_STRING:
-	    printf("%s\n", (const char *) cur->stringval);
+	    printf("%s: %s\n", url, (const char *) cur->stringval);
 	    break;
         case XPATH_UNDEFINED:
-	    fprintf(stderr, "XPath Object is uninitialized\n");
+	    fprintf(stderr, "%s: XPath Object is uninitialized\n", url);
             progresult = XMLLINT_ERR_XPATH;
 	    break;
 	default:
-	    fprintf(stderr, "XPath object of unexpected type\n");
+	    fprintf(stderr, "%s: XPath object of unexpected type\n", url);
             progresult = XMLLINT_ERR_XPATH;
 	    break;
     }
@@ -2129,10 +2130,13 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
 static void doXPathQuery(xmlDocPtr doc, const char *query) {
     xmlXPathContextPtr ctxt;
     xmlXPathObjectPtr res;
+    char urlBuf[1024];
 
+    strncpy(urlBuf, (char *)doc->URL, 1023);
+    urlBuf[1023] = 0;
     ctxt = xmlXPathNewContext(doc);
     if (ctxt == NULL) {
-        fprintf(stderr, "Out of memory for XPath\n");
+        fprintf(stderr, "%s: Out of memory for XPath\n", urlBuf);
         progresult = XMLLINT_ERR_MEM;
         return;
     }
@@ -2141,11 +2145,11 @@ static void doXPathQuery(xmlDocPtr doc, const char *query) {
     xmlXPathFreeContext(ctxt);
 
     if (res == NULL) {
-        fprintf(stderr, "XPath evaluation failure\n");
+        fprintf(stderr, "%s: XPath evaluation failure\n", urlBuf);
         progresult = XMLLINT_ERR_XPATH;
         return;
     }
-    doXPathDump(res);
+    doXPathDump(res, urlBuf);
     xmlXPathFreeObject(res);
 }
 #endif /* LIBXML_XPATH_ENABLED */

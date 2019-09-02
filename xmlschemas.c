@@ -23366,7 +23366,7 @@ xmlSchemaIDCFillNodeTables(xmlSchemaValidCtxtPtr vctxt,
 	* Get/create the IDC binding on this element for the IDC definition.
 	*/
 	bind = xmlSchemaIDCAcquireBinding(vctxt, matcher);
-	if (bind = NULL)
+	if (bind == NULL)
 	    return(-1);
 
 	if (! WXS_ILIST_IS_EMPTY(bind->dupls)) {

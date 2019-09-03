@@ -1872,7 +1872,7 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 	    continue;
 	if (state->nbTrans != 1)
 	    continue;
-	if (state->type == XML_REGEXP_UNREACH_STATE)
+	if (state->type == XML_REGEXP_UNREACH_STATE || state->type == XML_REGEXP_FINAL_STATE)
 	    continue;
 	/* is the only transition out a basic transition */
 	if ((state->trans[0].atom == NULL) &&

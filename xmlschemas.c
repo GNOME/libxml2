@@ -12824,9 +12824,9 @@ xmlSchemaBuildAContentModel(xmlSchemaParserCtxtPtr pctxt,
 		    ns = wild->nsSet;
 		    do {
 			pctxt->state = start;
-			pctxt->state = xmlAutomataNewTransition2(pctxt->am,
-			    pctxt->state, NULL, BAD_CAST "*", ns->value, wild);
-			xmlAutomataNewEpsilon(pctxt->am, pctxt->state, end);
+			pctxt->state = xmlAutomataNewNegTrans(pctxt->am,
+					pctxt->state, end, BAD_CAST "*", ns->value,
+					wild);
 			ns = ns->next;
 		    } while (ns != NULL);
 

@@ -26669,6 +26669,10 @@ xmlSchemaValidateChildElem(xmlSchemaValidCtxtPtr vctxt)
 		vctxt->inode->localName,
 		vctxt->inode->nsName,
 		vctxt->inode);
+	    if (ret > 0) {
+		ret = xmlRegExecPushString3(regexCtxt);
+	    }
+
 #ifdef DEBUG_AUTOMATA
 	    if (ret < 0)
 		xmlGenericError(xmlGenericErrorContext,

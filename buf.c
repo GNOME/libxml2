@@ -1204,10 +1204,10 @@ xmlBufferPtr
 xmlBufBackToBuffer(xmlBufPtr buf) {
     xmlBufferPtr ret;
 
-    if ((buf == NULL) || (buf->error))
+    if (buf == NULL)
         return(NULL);
     CHECK_COMPAT(buf)
-    if (buf->buffer == NULL) {
+    if ((buf->error) || (buf->buffer == NULL)) {
         xmlBufFree(buf);
         return(NULL);
     }

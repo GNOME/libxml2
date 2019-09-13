@@ -1964,6 +1964,7 @@ static int
 xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
     xmlXIncludeCtxtPtr newctxt;
     int ret = 0;
+    int oldNbErrors = ctxt->nbErrors;
 
     if ((fallback == NULL) || (fallback->type == XML_NAMESPACE_DECL) ||
         (ctxt == NULL))
@@ -1980,7 +1981,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
 	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
-	if (ctxt->nbErrors > 0)
+	if (ctxt->nbErrors > oldNbErrors)
 	    ret = -1;
 	else if (ret > 0)
 	    ret = 0;	/* xmlXIncludeDoProcess can return +ve number */

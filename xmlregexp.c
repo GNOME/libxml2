@@ -545,6 +545,8 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 	if (transitions == NULL) {
 	    xmlFree(stateRemap);
 	    xmlFree(stringRemap);
+      for (i = 0;i < nbatoms;i++)
+		    xmlFree(stringMap[i]);   
 	    xmlFree(stringMap);
 	    xmlFree(ret);
 	    return(NULL);

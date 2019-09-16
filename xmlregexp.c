@@ -2581,6 +2581,12 @@ done:
     if (atom1->neg != atom2->neg) {
         ret = !ret;
     }
+	if (atom1->valuep2 == NULL && atom1->valuep != NULL && xmlStrcmp((xmlChar*)atom1->data,(xmlChar*)"\004")) {
+		ret = 0;
+	}
+	if (atom2->valuep2 == NULL && atom2->valuep != NULL && xmlStrcmp((xmlChar*)atom2->data,(xmlChar*)"\004")) {
+		ret = 0;
+	}
     if (ret == 0)
         return(0);
 not_determinist:

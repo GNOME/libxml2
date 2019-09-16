@@ -2528,9 +2528,18 @@ xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2, int deep) {
         case XML_REGEXP_STRING:
             if (!deep)
                 ret = (atom1->valuep != atom2->valuep);
-            else
-                ret = xmlRegStrEqualWildcard((xmlChar *)atom1->valuep,
-                                             (xmlChar *)atom2->valuep);
+            else {
+                xmlChar *val1 = (xmlChar *)atom1->valuep;
+                xmlChar *val2 = (xmlChar *)atom2->valuep;
+                int compound1 = (xmlStrchr(val1, '|') != NULL);
+                int compound2 = (xmlStrchr(val2, '|') != NULL);
+
+                /* Ignore negative match flag for ##other namespaces */
+                if (compound1 != compound2)
+                    return(0);
+
+                ret = xmlRegStrEqualWildcard(val1, val2);
+            }
 	    break;
         case XML_REGEXP_EPSILON:
 	    goto not_determinist;

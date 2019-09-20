@@ -140,7 +140,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
     if ((ent != NULL) && (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 	(ent->content != NULL) && (ent->checked == 0) &&
 	(ctxt->errNo != XML_ERR_ENTITY_LOOP)) {
-	unsigned long oldnbent = ctxt->nbentities;
+	unsigned long oldnbent = ctxt->nbentities, diff;
 	xmlChar *rep;
 
 	ent->checked = 1;
@@ -153,7 +153,10 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
 	    ent->content[0] = 0;
 	}
 
-	ent->checked = (ctxt->nbentities - oldnbent + 1) * 2;
+        diff = ctxt->nbentities - oldnbent + 1;
+        if (diff > INT_MAX / 2)
+            diff = INT_MAX / 2;
+	ent->checked = diff * 2;
 	if (rep != NULL) {
 	    if (xmlStrchr(rep, '<'))
 		ent->checked |= 1;
@@ -3990,14 +3993,17 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		     */
 		    if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 			(ent->content != NULL) && (ent->checked == 0)) {
-			unsigned long oldnbent = ctxt->nbentities;
+			unsigned long oldnbent = ctxt->nbentities, diff;
 
 			++ctxt->depth;
 			rep = xmlStringDecodeEntities(ctxt, ent->content,
 						  XML_SUBSTITUTE_REF, 0, 0, 0);
 			--ctxt->depth;
 
-			ent->checked = (ctxt->nbentities - oldnbent + 1) * 2;
+                        diff = ctxt->nbentities - oldnbent + 1;
+                        if (diff > INT_MAX / 2)
+                            diff = INT_MAX / 2;
+                        ent->checked = diff * 2;
 			if (rep != NULL) {
 			    if (xmlStrchr(rep, '<'))
 			        ent->checked |= 1;
@@ -7096,7 +7102,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
          ((ent->children == NULL) && (ctxt->options & XML_PARSE_NOENT))) &&
         ((ent->etype != XML_EXTERNAL_GENERAL_PARSED_ENTITY) ||
          (ctxt->options & (XML_PARSE_NOENT | XML_PARSE_DTDVALID)))) {
-	unsigned long oldnbent = ctxt->nbentities;
+	unsigned long oldnbent = ctxt->nbentities, diff;
 
 	/*
 	 * This is a bit hackish but this seems the best
@@ -7137,7 +7143,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	 * Store the number of entities needing parsing for this entity
 	 * content and do checkings
 	 */
-	ent->checked = (ctxt->nbentities - oldnbent + 1) * 2;
+        diff = ctxt->nbentities - oldnbent + 1;
+        if (diff > INT_MAX / 2)
+            diff = INT_MAX / 2;
+        ent->checked = diff * 2;
 	if ((ent->content != NULL) && (xmlStrchr(ent->content, '<')))
 	    ent->checked |= 1;
 	if (ret == XML_ERR_ENTITY_LOOP) {

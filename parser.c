@@ -14004,6 +14004,10 @@ xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
 	ctxt->input_id = pctx->input_id + 1;
     }
 
+    /* Don't read from stdin. */
+    if (xmlStrcmp(URL, BAD_CAST "-") == 0)
+        URL = BAD_CAST "./-";
+
     uri = xmlBuildURI(URL, base);
 
     if (uri == NULL) {

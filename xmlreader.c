@@ -348,7 +348,9 @@ xmlTextReaderFreePropList(xmlTextReaderPtr reader, xmlAttrPtr cur) {
 static void
 xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
     xmlNodePtr next;
+    xmlNodePtr parent;
     xmlDictPtr dict;
+    size_t depth = 0;
 
     if ((reader != NULL) && (reader->ctxt != NULL))
 	dict = reader->ctxt->dict;
@@ -364,17 +366,20 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 	xmlFreeDoc((xmlDocPtr) cur);
 	return;
     }
-    while (cur != NULL) {
+    while (1) {
+        while ((cur->children != NULL) &&
+               (cur->children->parent == cur) &&
+               (cur->type != XML_DTD_NODE) &&
+               (cur->type != XML_ENTITY_REF_NODE)) {
+            cur = cur->children;
+            depth += 1;
+        }
+
         next = cur->next;
+        parent = cur->parent;
+
 	/* unroll to speed up freeing the document */
 	if (cur->type != XML_DTD_NODE) {
-
-	    if ((cur->children != NULL) &&
-		(cur->type != XML_ENTITY_REF_NODE)) {
-		if (cur->children->parent == cur)
-		    xmlTextReaderFreeNodeList(reader, cur->children);
-		cur->children = NULL;
-	    }
 
 	    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 		xmlDeregisterNodeDefaultValue(cur);
@@ -414,7 +419,16 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 		xmlFree(cur);
 	    }
 	}
-	cur = next;
+
+        if (next != NULL) {
+	    cur = next;
+        } else {
+            if ((depth == 0) || (parent == NULL))
+                break;
+            depth -= 1;
+            cur = parent;
+            cur->children = NULL;
+        }
     }
 }
 

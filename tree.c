@@ -3664,7 +3664,9 @@ xmlNextElementSibling(xmlNodePtr node) {
 void
 xmlFreeNodeList(xmlNodePtr cur) {
     xmlNodePtr next;
+    xmlNodePtr parent;
     xmlDictPtr dict = NULL;
+    size_t depth = 0;
 
     if (cur == NULL) return;
     if (cur->type == XML_NAMESPACE_DECL) {
@@ -3680,16 +3682,21 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	return;
     }
     if (cur->doc != NULL) dict = cur->doc->dict;
-    while (cur != NULL) {
+    while (1) {
+        while ((cur->children != NULL) &&
+               (cur->type != XML_DTD_NODE) &&
+               (cur->type != XML_ENTITY_REF_NODE)) {
+            cur = cur->children;
+            depth += 1;
+        }
+
         next = cur->next;
+        parent = cur->parent;
 	if (cur->type != XML_DTD_NODE) {
 
 	    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 		xmlDeregisterNodeDefaultValue(cur);
 
-	    if ((cur->children != NULL) &&
-		(cur->type != XML_ENTITY_REF_NODE))
-		xmlFreeNodeList(cur->children);
 	    if (((cur->type == XML_ELEMENT_NODE) ||
 		 (cur->type == XML_XINCLUDE_START) ||
 		 (cur->type == XML_XINCLUDE_END)) &&
@@ -3720,7 +3727,16 @@ xmlFreeNodeList(xmlNodePtr cur) {
 		DICT_FREE(cur->name)
 	    xmlFree(cur);
 	}
-	cur = next;
+
+        if (next != NULL) {
+	    cur = next;
+        } else {
+            if ((depth == 0) || (parent == NULL))
+                break;
+            depth -= 1;
+            cur = parent;
+            cur->children = NULL;
+        }
     }
 }
 

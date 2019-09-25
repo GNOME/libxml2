@@ -6629,7 +6629,7 @@ xmlExpHashGetEntry(xmlExpCtxtPtr ctxt, xmlExpNodeType type,
         /* OR reduction rule 1 */
 	/* a | a reduced to a */
         if (left == right) {
-	    left->ref--;
+	    xmlExpFree(ctxt, right);
 	    return(left);
 	}
         /* OR canonicalization rule 1 */

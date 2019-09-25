@@ -5407,7 +5407,6 @@ xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top) {
     while ((CUR == '|') && (ctxt->error == 0)) {
 	NEXT;
 	if (CUR == 0) {
-	    ERROR("expecting a branch after |")
 	    return;
 	}
 	ctxt->state = start;

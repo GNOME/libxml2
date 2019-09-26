@@ -915,6 +915,9 @@ Regexptests: testRegexp$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+
+# Disabled for now
+Exptests: testRegexp$(EXEEXT)
 	@echo "## Formal expresssions regression tests"
 	-@(for i in $(srcdir)/test/expr/* ; do \
 	  name=`basename $$i`; \

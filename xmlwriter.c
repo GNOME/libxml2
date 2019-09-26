@@ -542,7 +542,7 @@ xmlTextWriterStartDocument(xmlTextWriterPtr writer, const char *version,
         encoder = xmlFindCharEncodingHandler(encoding);
         if (encoder == NULL) {
             xmlWriterErrMsg(writer, XML_ERR_NO_MEMORY,
-                            "xmlTextWriterStartDocument : out of memory!\n");
+                            "xmlTextWriterStartDocument : invalid or unsupported encoding!\n");
             return -1;
         }
     }

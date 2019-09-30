@@ -8300,10 +8300,10 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	    xmlParsePEReference(ctxt);
 
             /*
-             * Conditional sections are allowed from entities included
+             * Conditional sections are allowed from external entities included
              * by PE References in the internal subset.
              */
-            if ((ctxt->inputNr > 1) &&
+            if ((ctxt->inputNr > 1) && (ctxt->input->filename != NULL) &&
                 (RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
                 xmlParseConditionalSections(ctxt);
             }

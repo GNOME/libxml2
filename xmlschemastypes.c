@@ -70,7 +70,7 @@ struct _xmlSchemaValDate {
     unsigned int	hour	:5;	/* 0 <=  hour   <= 24   */
     unsigned int	min	:6;	/* 0 <=  min    <= 59	*/
     double		sec;
-    unsigned int	tz_flag	:1;	/* is tzo explicitely set? */
+    unsigned int	tz_flag	:1;	/* is tzo explicitly set? */
     signed int		tzo	:12;	/* -1440 <= tzo <= 1440;
 					   currently only -840 to +840 are needed */
 };
@@ -2130,7 +2130,7 @@ xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
  * @value: the value to check
  * @val:  the return computed value
  * @node:  the node containing the value
- * flags:  flags to control the vlidation
+ * flags:  flags to control the validation
  *
  * Check that a value conforms to the lexical space of the atomic type.
  * if true a value is computed and returned in @val.
@@ -2155,7 +2155,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         return (-1);
 
     /*
-     * validating a non existant text node is similar to validating
+     * validating a non existent text node is similar to validating
      * an empty one.
      */
     if (value == NULL)
@@ -3067,7 +3067,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                  * following cases can arise: (1) the final quantum of
                  * encoding input is an integral multiple of 24 bits; here,
                  * the final unit of encoded output will be an integral
-                 * multiple ofindent: Standard input:701: Warning:old style
+                 * multiple of indent: Standard input:701: Warning:old style
 		 * assignment ambiguity in "=*".  Assuming "= *" 4 characters
 		 * with no "=" padding, (2) the final
                  * quantum of encoding input is exactly 8 bits; here, the

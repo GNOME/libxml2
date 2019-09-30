@@ -343,7 +343,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
     }
 
     /*
-     * Speedup using document order if availble.
+     * Speedup using document order if available.
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
@@ -411,7 +411,7 @@ turtle_comparison:
     if (node1 == node2->next)
 	return(-1);
     /*
-     * Speedup using document order if availble.
+     * Speedup using document order if available.
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
@@ -435,7 +435,7 @@ turtle_comparison:
 #endif /* XP_OPTIMIZED_NON_ELEM_COMPARISON */
 
 /*
- * Wrapper for the Timsort argorithm from timsort.h
+ * Wrapper for the Timsort algorithm from timsort.h
  */
 #ifdef WITH_TIM_SORT
 #define SORT_NAME libxml_domnode
@@ -2254,7 +2254,7 @@ xmlXPathFreeCache(xmlXPathContextCachePtr cache)
  *
  * @ctxt:  the XPath context
  * @active: enables/disables (creates/frees) the cache
- * @value: a value with semantics dependant on @options
+ * @value: a value with semantics dependent on @options
  * @options: options (currently only the value 0 is used)
  *
  * Creates/frees an object cache on the XPath context.
@@ -2414,7 +2414,7 @@ xmlXPathCacheNewNodeSet(xmlXPathContextPtr ctxt, xmlNodePtr val)
 	{
 	    xmlXPathObjectPtr ret;
 	    /*
-	    * Use the nodset-cache.
+	    * Use the nodeset-cache.
 	    */
 	    ret = (xmlXPathObjectPtr)
 		cache->nodesetObjs->items[--cache->nodesetObjs->number];
@@ -3348,7 +3348,7 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
 	return(-1);
 
     /*
-     * Speedup using document order if availble.
+     * Speedup using document order if available.
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
@@ -3411,7 +3411,7 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     if (node1 == node2->next)
 	return(-1);
     /*
-     * Speedup using document order if availble.
+     * Speedup using document order if available.
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
@@ -3827,7 +3827,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	*  xmlXPathNodeSetDupNs() to the set; thus a pure
 	*  memcpy is not possible.
 	*  If there was a flag on the nodesetval, indicating that
-	*  some temporary nodes are in, that would be helpfull.
+	*  some temporary nodes are in, that would be helpful.
 	*/
 	/*
 	* Optimization: Create an equally sized node-set
@@ -5887,7 +5887,7 @@ xmlXPathCastToNumber(xmlXPathObjectPtr val) {
 	return(NAN);
     switch (val->type) {
     case XPATH_UNDEFINED:
-#ifdef DEGUB_EXPR
+#ifdef DEBUG_EXPR
 	xmlGenericError(xmlGenericErrorContext, "NUMBER: undefined\n");
 #endif
 	ret = NAN;
@@ -8549,7 +8549,7 @@ xmlXPathGetElementsByIds (xmlDocPtr doc, const xmlChar *ids) {
 	     * We used to check the fact that the value passed
 	     * was an NCName, but this generated much troubles for
 	     * me and Aleksey Sanin, people blatantly violated that
-	     * constaint, like Visa3D spec.
+	     * constraint, like Visa3D spec.
 	     * if (xmlValidateNCName(ID, 1) == 0)
 	     */
 	    attr = xmlGetID(doc, ID);
@@ -11867,7 +11867,7 @@ xmlXPathIsPositionalPredicate(xmlXPathParserContextPtr ctxt,
     * 1) For predicates (XPATH_OP_PREDICATE):
     *    - an inner predicate operator
     * 2) For filters (XPATH_OP_FILTER):
-    *    - an inner filter operater OR
+    *    - an inner filter operator OR
     *    - an expression selecting the node set.
     *      E.g. "key('a', 'b')" or "(//foo | //bar)".
     */
@@ -12484,7 +12484,7 @@ error:
     xmlXPathReleaseObject(xpctxt, obj);
 
     /*
-    * Ensure we return at least an emtpy set.
+    * Ensure we return at least an empty set.
     */
     if (outSeq == NULL) {
 	if ((seq != NULL) && (seq->nodeNr == 0))
@@ -12569,11 +12569,11 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
                  * limit tree traversing to first node in the result
                  */
 		/*
-		* OPTIMIZE TODO: This implicitely sorts
+		* OPTIMIZE TODO: This implicitly sorts
 		*  the result, even if not needed. E.g. if the argument
 		*  of the count() function, no sorting is needed.
 		* OPTIMIZE TODO: How do we know if the node-list wasn't
-		*  aready sorted?
+		*  already sorted?
 		*/
 		if (ctxt->value->nodesetval->nodeNr > 1)
 		    xmlXPathNodeSetSort(ctxt->value->nodesetval);
@@ -13190,7 +13190,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 		    *  will result in an ordered list if we have an
 		    *  XPATH_OP_FILTER?
 		    *  What about an additional field or flag on
-		    *  xmlXPathObject like @sorted ? This way we wouln'd need
+		    *  xmlXPathObject like @sorted ? This way we wouldn't need
 		    *  to assume anything, so it would be more robust and
 		    *  easier to optimize.
 		    */

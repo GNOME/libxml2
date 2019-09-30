@@ -114,7 +114,7 @@ xmlParseElementEnd(xmlParserCtxtPtr ctxt);
 /*
  * XML_PARSER_NON_LINEAR is the threshold where the ratio of parsed entity
  *    replacement over the size in byte of the input indicates that you have
- *    and eponential behaviour. A value of 10 correspond to at least 3 entity
+ *    and exponential behaviour. A value of 10 correspond to at least 3 entity
  *    replacement per byte of input.
  */
 #define XML_PARSER_NON_LINEAR 10
@@ -1069,7 +1069,7 @@ xmlHasFeature(xmlFeature feature)
  * xmlDetectSAX2:
  * @ctxt:  an XML parser context
  *
- * Do the SAX2 detection and specific intialization
+ * Do the SAX2 detection and specific initialization
  */
 static void
 xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
@@ -1401,7 +1401,7 @@ xmlCleanSpecialAttr(xmlParserCtxtPtr ctxt)
  * [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
  * [38] Subcode ::= ([a-z] | [A-Z])+
  *
- * The current REC reference the sucessors of RFC 1766, currently 5646
+ * The current REC reference the successors of RFC 1766, currently 5646
  *
  * http://www.rfc-editor.org/rfc/rfc5646.txt
  * langtag       = language
@@ -2722,7 +2722,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		    /*
 		     * Note: external parsed entities will not be loaded,
 		     * it is not required for a non-validating parser to
-		     * complete external PEreferences coming from the
+		     * complete external PEReferences coming from the
 		     * internal subset
 		     */
 		    if (((ctxt->options & XML_PARSE_NOENT) != 0) ||
@@ -3386,7 +3386,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 	    /*
 	     * when shrinking to extend the buffer we really need to preserve
 	     * the part of the name we already parsed. Hence rolling back
-	     * by current lenght.
+	     * by current length.
 	     */
 	    ctxt->input->cur -= l;
 	    GROW;
@@ -3855,7 +3855,7 @@ error:
  * xmlParseAttValueComplex:
  * @ctxt:  an XML parser context
  * @len:   the resulting attribute len
- * @normalize:  wether to apply the inner normalization
+ * @normalize:  whether to apply the inner normalization
  *
  * parse a value for an attribute, this is the fallback function
  * of xmlParseAttValue() when the attribute parsing requires handling
@@ -4082,7 +4082,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 
     /*
      * There we potentially risk an overflow, don't allow attribute value of
-     * length more than INT_MAX it is a very reasonnable assumption !
+     * length more than INT_MAX it is a very reasonable assumption !
      */
     if (len >= INT_MAX) {
         xmlFatalErrMsg(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
@@ -4687,7 +4687,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
  * xmlParseCommentComplex:
  * @ctxt:  an XML parser context
  * @buf:  the already parsed part of the buffer
- * @len:  number of bytes filles in the buffer
+ * @len:  number of bytes in the buffer
  * @size:  allocated size of the buffer
  *
  * Skip an XML (SGML) comment <!-- .... -->
@@ -5112,7 +5112,7 @@ error:
  *
  * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
  *
- * The processing is transfered to SAX once parsed.
+ * The processing is transferred to SAX once parsed.
  */
 
 void
@@ -5528,7 +5528,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				    literal, URI, NULL);
 		    /*
 		     * For expat compatibility in SAX mode.
-		     * assuming the entity repalcement was asked for
+		     * assuming the entity replacement was asked for
 		     */
 		    if ((ctxt->replaceEntities != 0) &&
 			((ctxt->myDoc == NULL) ||
@@ -6831,7 +6831,7 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 
     /*
      * detect requirement to exit there and act accordingly
-     * and avoid having instate overriden later on
+     * and avoid having instate overridden later on
      */
     if (ctxt->instate == XML_PARSER_EOF)
         return;
@@ -7689,7 +7689,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
     }
 
     /*
-     * Increate the number of entity references parsed
+     * Increase the number of entity references parsed
      */
     ctxt->nbentities++;
 
@@ -7865,7 +7865,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
     NEXT;
 
     /*
-     * Increate the number of entity references parsed
+     * Increase the number of entity references parsed
      */
     ctxt->nbentities++;
 
@@ -8131,7 +8131,7 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     ptr++;
 
     /*
-     * Increate the number of entity references parsed
+     * Increase the number of entity references parsed
      */
     ctxt->nbentities++;
 
@@ -9091,7 +9091,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 	if (normalize) {
 	    /*
 	     * Sometimes a second normalisation pass for spaces is needed
-	     * but that only happens if charrefs or entities refernces
+	     * but that only happens if charrefs or entities references
 	     * have been used in the attribute value, i.e. the attribute
 	     * value have been extracted in an allocated string already.
 	     */
@@ -10317,7 +10317,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	}
 
 	/*
-	 * UTF-16 encoding stwich has already taken place at this stage,
+	 * UTF-16 encoding switch has already taken place at this stage,
 	 * more over the little-endian/big-endian selection is already done
 	 */
         if ((encoding != NULL) &&
@@ -11200,7 +11200,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	else {
 	    /*
 	     * If we are operating on converted input, try to flush
-	     * remainng chars to avoid them stalling in the non-converted
+	     * remaining chars to avoid them stalling in the non-converted
 	     * buffer. But do not do this in document start where
 	     * encoding="..." may not have been read and we work on a
 	     * guessed encoding.

@@ -1111,7 +1111,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
     do {
 	if (node->type == XML_ENTITY_REF_NODE) {
 	    /*
-	     * Case where the underlying tree is not availble, lookup the entity
+	     * Case where the underlying tree is not available, lookup the entity
 	     * and walk it.
 	     */
 	    if ((node->children == NULL) && (ctxt->sax != NULL) &&
@@ -1374,7 +1374,7 @@ get_next_node:
 
     /*
      * If we are not backtracking on ancestors or examined nodes,
-     * that the parser didn't finished or that we arent at the end
+     * that the parser didn't finished or that we aren't at the end
      * of stream, continue processing.
      */
     while ((reader->node != NULL) && (reader->node->next == NULL) &&
@@ -1565,7 +1565,7 @@ node_found:
 	(reader->node->type == XML_ENTITY_REF_NODE) &&
 	(reader->ctxt != NULL) && (reader->ctxt->replaceEntities == 1)) {
 	/*
-	 * Case where the underlying tree is not availble, lookup the entity
+	 * Case where the underlying tree is not available, lookup the entity
 	 * and walk it.
 	 */
 	if ((reader->node->children == NULL) && (reader->ctxt->sax != NULL) &&
@@ -2521,7 +2521,7 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
  * parser, set its state to End Of File and return the input stream with
  * what is left that the parser did not use.
  *
- * The implementation is not good, the parser certainly procgressed past
+ * The implementation is not good, the parser certainly progressed past
  * what's left in reader->input, and there is an allocation problem. Best
  * would be to rewrite it differently.
  *
@@ -2903,8 +2903,8 @@ xmlTextReaderMoveToElement(xmlTextReaderPtr reader) {
  *
  * Parses an attribute value into one or more Text and EntityReference nodes.
  *
- * Returns 1 in case of success, 0 if the reader was not positionned on an
- *         ttribute node or all the attribute values have been read, or -1
+ * Returns 1 in case of success, 0 if the reader was not positioned on an
+ *         attribute node or all the attribute values have been read, or -1
  *         in case of error.
  */
 int
@@ -3941,7 +3941,7 @@ xmlTextReaderGetParserColumnNumber(xmlTextReaderPtr reader)
  * xmlTextReaderCurrentNode:
  * @reader:  the xmlTextReaderPtr used
  *
- * Hacking interface allowing to get the xmlNodePtr correponding to the
+ * Hacking interface allowing to get the xmlNodePtr corresponding to the
  * current node being accessed by the xmlTextReader. This is dangerous
  * because the underlying node may be destroyed on the next Reads.
  *
@@ -4053,7 +4053,7 @@ xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern,
  * xmlTextReaderCurrentDoc:
  * @reader:  the xmlTextReaderPtr used
  *
- * Hacking interface allowing to get the xmlDocPtr correponding to the
+ * Hacking interface allowing to get the xmlDocPtr corresponding to the
  * current document being accessed by the xmlTextReader.
  * NOTE: as a result of this call, the reader will not destroy the
  *       associated XML document and calling xmlFreeDoc() on the result
@@ -4156,11 +4156,11 @@ xmlTextReaderValidityStructuredRelay(void *userData, xmlErrorPtr error)
  *
  * Use RelaxNG to validate the document as it is processed.
  * Activation is only possible before the first Read().
- * if @schema is NULL, then RelaxNG validation is desactivated.
+ * if @schema is NULL, then RelaxNG validation is deactivated.
  @ The @schema should not be freed until the reader is deallocated
  * or its use has been deactivated.
  *
- * Returns 0 in case the RelaxNG validation could be (des)activated and
+ * Returns 0 in case the RelaxNG validation could be (de)activated and
  *         -1 in case of error.
  */
 int
@@ -4220,7 +4220,7 @@ xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
  *
  * Internal locator function for the readers
  *
- * Returns 0 in case the Schema validation could be (des)activated and
+ * Returns 0 in case the Schema validation could be (de)activated and
  *         -1 in case of error.
  */
 static int
@@ -4273,11 +4273,11 @@ xmlTextReaderLocator(void *ctx, const char **file, unsigned long *line) {
  *
  * Use XSD Schema to validate the document as it is processed.
  * Activation is only possible before the first Read().
- * if @schema is NULL, then Schema validation is desactivated.
- @ The @schema should not be freed until the reader is deallocated
+ * if @schema is NULL, then Schema validation is deactivated.
+ * The @schema should not be freed until the reader is deallocated
  * or its use has been deactivated.
  *
- * Returns 0 in case the Schema validation could be (des)activated and
+ * Returns 0 in case the Schema validation could be (de)activated and
  *         -1 in case of error.
  */
 int

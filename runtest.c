@@ -1,6 +1,6 @@
 /*
  * runtest.c: C program to run libxml2 regression tests without
- *            requiring make or Python, and reducing platform dependancies
+ *            requiring make or Python, and reducing platform dependencies
  *            to a strict minimum.
  *
  * To compile on Unixes:
@@ -95,7 +95,7 @@ typedef int (*functest) (const char *filename, const char *result,
 typedef struct testDesc testDesc;
 typedef testDesc *testDescPtr;
 struct testDesc {
-    const char *desc; /* descripton of the test */
+    const char *desc; /* description of the test */
     functest    func; /* function implementing the test */
     const char *in;   /* glob to path for input files */
     const char *out;  /* output directory */
@@ -3393,7 +3393,7 @@ rngStreamTest(const char *filename,
 	}
 	reader = xmlReaderForFile(instance, NULL, options);
 	if (reader == NULL) {
-	    fprintf(stderr, "Failed to build reder for %s\n", instance);
+	    fprintf(stderr, "Failed to build reader for %s\n", instance);
 	}
 	if (disable_err == 1)
 	    ret = streamProcessTest(instance, result, NULL, reader, filename,

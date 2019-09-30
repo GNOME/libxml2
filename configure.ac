@@ -217,7 +217,7 @@ fi
 AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes" -o "$USER" = "veillard"])
 
 dnl
-dnl hard dependancies on options
+dnl hard dependencies on options
 dnl
 if test "$with_schemas" = "yes"
 then

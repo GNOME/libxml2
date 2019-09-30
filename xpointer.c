@@ -27,7 +27,7 @@
  *       be parsed beforehand instead of a progressive evaluation
  * TODO: Access into entities references are not supported now ...
  *       need a start to be able to pop out of entities refs since
- *       parent is the endity declaration, not the ref.
+ *       parent is the entity declaration, not the ref.
  */
 
 #include <string.h>
@@ -1186,7 +1186,7 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 static void
 xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     /*
-     * XPointer don't allow by syntax to address in mutirooted trees
+     * XPointer don't allow by syntax to address in multirooted trees
      * this might prove useful in some cases, warn about it.
      */
     if ((name == NULL) && (CUR == '/') && (NXT(1) != '1')) {

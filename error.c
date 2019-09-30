@@ -238,7 +238,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
  * @ctx: the parser context or NULL
  * @str: the formatted error message
  *
- * Report an erro with its context, replace the 4 old error/warning
+ * Report an error with its context, replace the 4 old error/warning
  * routines.
  */
 static void

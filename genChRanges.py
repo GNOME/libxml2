@@ -439,7 +439,7 @@ for f in fkeys:
 	numLong  = 0
 	for rg in rangeTable:
 	    if rg[1] < 0x10000:	# if short value
-		if numShort == 0:	# first occurence
+		if numShort == 0:	# first occurrence
 		    pline = "static const xmlChSRange %s_srng[] = { " % f
 		else:
 		    pline += ", "
@@ -449,7 +449,7 @@ for f in fkeys:
 		    pline = "    "
 		pline += "{0x%x, 0x%x}" % (rg[0], rg[1])
 	    else:		# if long value
-		if numLong == 0:	# first occurence
+		if numLong == 0:	# first occurrence
 		    if numShort > 0:	# if there were shorts, finish them off
 			output.write(pline + "};\n")
 		    pline = "static const xmlChLRange %s_lrng[] = { " % f

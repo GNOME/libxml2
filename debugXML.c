@@ -289,7 +289,7 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
 	dict = doc->dict;
 	if ((dict == NULL) && (ctxt->nodict == 0)) {
 #if 0
-            /* desactivated right now as it raises too many errors */
+            /* deactivated right now as it raises too many errors */
 	    if (doc->type == XML_DOCUMENT_NODE)
 		xmlDebugErr(ctxt, XML_CHECK_NO_DICT,
 			    "Document has no dictionary\n");
@@ -1168,7 +1168,7 @@ xmlCtxtDumpDocHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
  * @output:  the FILE * for the output
  * @doc:  the document
  *
- * Dumps debug information cncerning the document, not recursive
+ * Dumps debug information concerning the document, not recursive
  */
 static void
 xmlCtxtDumpDocumentHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
@@ -1498,7 +1498,7 @@ xmlDebugDumpNodeList(FILE * output, xmlNodePtr node, int depth)
  * @output:  the FILE * for the output
  * @doc:  the document
  *
- * Dumps debug information cncerning the document, not recursive
+ * Dumps debug information concerning the document, not recursive
  */
 void
 xmlDebugDumpDocumentHead(FILE * output, xmlDocPtr doc)

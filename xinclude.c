@@ -671,7 +671,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
     int i;
 
     /*
-     * Avoid recursion in already substitued resources
+     * Avoid recursion in already substituted resources
     for (i = 0;i < ctxt->urlNr;i++) {
 	if (xmlStrEqual(doc->URL, ctxt->urlTab[i]))
 	    return;
@@ -756,7 +756,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
  * @txt:  the new text node
  * @url:  the associated URL
  *
- * Add a new txtument to the list
+ * Add a new text node to the list
  */
 static void
 xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
@@ -1262,7 +1262,7 @@ struct _xmlXIncludeMergeData {
  * @doc:  the including doc
  * @nr: the entity name
  *
- * Inplements the merge of one entity
+ * Implements the merge of one entity
  */
 static void
 xmlXIncludeMergeEntity(void *payload, void *vdata,
@@ -1339,7 +1339,7 @@ error:
  * @doc:  the including doc
  * @from:  the included doc
  *
- * Inplements the entity merge
+ * Implements the entity merge
  *
  * Returns 0 if merge succeeded, -1 if some processing failed
  */
@@ -1922,7 +1922,7 @@ xinclude_multibyte_fallback:
 
 	    cur = xmlStringCurrentChar(NULL, &content[i], &l);
 	    if (!IS_CHAR(cur)) {
-		/* Handle splitted multibyte char at buffer boundary */
+		/* Handle split multibyte char at buffer boundary */
 		if (((len - i) < 4) && (!xinclude_multibyte_fallback_used)) {
 		    xinclude_multibyte_fallback_used = 1;
 		    xmlBufShrink(buf->buffer, i);
@@ -2143,7 +2143,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	xmlNodePtr children;
 
 	/*
-	 * Time to try a fallback if availble
+	 * Time to try a fallback if available
 	 */
 #ifdef DEBUG_XINCLUDE
 	xmlGenericError(xmlGenericErrorContext, "error looking for fallback\n");
@@ -2188,7 +2188,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
  * @ctxt: an XInclude context
  * @nr: the node number
  *
- * Inplement the infoset replacement for the given node
+ * Implement the infoset replacement for the given node
  *
  * Returns 0 if substitution succeeded, -1 if some processing failed
  */

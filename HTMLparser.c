@@ -317,7 +317,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 
 #define SKIP_BLANKS htmlSkipBlankChars(ctxt)
 
-/* Inported from XML */
+/* Imported from XML */
 
 /* #define CUR (ctxt->token ? ctxt->token : (int) (*ctxt->input->cur)) */
 #define CUR ((int) (*ctxt->input->cur))
@@ -537,7 +537,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
-     * input encoding didn't get properly advertized in the
+     * input encoding didn't get properly advertised in the
      * declaration header. Report the error and switch the encoding
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
@@ -602,8 +602,8 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  ************************************************************************/
 
 /*
- *  Start Tag: 1 means the start tag can be ommited
- *  End Tag:   1 means the end tag can be ommited
+ *  Start Tag: 1 means the start tag can be omitted
+ *  End Tag:   1 means the end tag can be omitted
  *             2 means it's forbidden (empty elements)
  *             3 means the tag is stylistic and should be closed easily
  *  Depr:      this element is deprecated
@@ -1342,7 +1342,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
         if (xmlStrEqual(newtag, ctxt->nameTab[i]))
             break;
         /*
-         * A missplaced endtag can only close elements with lower
+         * A misplaced endtag can only close elements with lower
          * or equal priority, so if we find an element with higher
          * priority before we find an element with
          * matching name, we just ignore this endtag
@@ -2218,9 +2218,9 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
  ************************************************************************/
 /*
  * all tags allowing pc data from the html 4.01 loose dtd
- * NOTE: it might be more apropriate to integrate this information
+ * NOTE: it might be more appropriate to integrate this information
  * into the html40ElementTable array but I don't want to risk any
- * binary incomptibility
+ * binary incompatibility
  */
 static const char *allowPCData[] = {
     "a", "abbr", "acronym", "address", "applet", "b", "bdo", "big",

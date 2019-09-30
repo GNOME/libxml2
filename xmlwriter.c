@@ -801,7 +801,7 @@ xmlTextWriterStartComment(xmlTextWriterPtr writer)
  * xmlTextWriterEndComment:
  * @writer:  the xmlTextWriterPtr
  *
- * End the current xml coment.
+ * End the current xml comment.
  *
  * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
  */

@@ -59,7 +59,7 @@ typedef unsigned __int64 uint64_t;
 #define SORT_SWAP(x,y) {SORT_TYPE __SORT_SWAP_t = (x); (x) = (y); (y) = __SORT_SWAP_t;}
 
 
-/* Common, type-agnosting functions and constants that we don't want to declare twice. */
+/* Common, type-agnostic functions and constants that we don't want to declare twice. */
 #ifndef SORT_COMMON_H
 #define SORT_COMMON_H
 

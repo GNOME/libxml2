@@ -59,7 +59,7 @@ int __xmlRegisterCallbacks = 0;
  ************************************************************************/
 
 static xmlNsPtr
-xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
+xmlNewReconciledNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 static xmlChar* xmlGetPropNodeValueInternal(const xmlAttr *prop);
 
@@ -181,7 +181,7 @@ xmlGetEntityFromDtd(const xmlDtd *dtd, const xmlChar *name) {
  * @dtd:  A pointer to the DTD to search
  * @name:  The entity name
  *
- * Do an entity lookup in the DTD pararmeter entity hash table and
+ * Do an entity lookup in the DTD parameter entity hash table and
  * return the corresponding entity, if found.
  *
  * Returns A pointer to the entity structure or NULL if not found.
@@ -2950,7 +2950,7 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
  * Add a new attribute after @prev using @cur as base attribute.
  * When inserting before @cur, @prev is passed as @cur->prev.
  * When inserting after @cur, @prev is passed as @cur.
- * If an existing attribute is found it is detroyed prior to adding @prop.
+ * If an existing attribute is found it is destroyed prior to adding @prop.
  *
  * Returns the attribute being inserted or NULL in case of error.
  */
@@ -4066,7 +4066,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
       } else {
         /*
          * we have to find something appropriate here since
-         * we cant be sure, that the namespce we found is identified
+         * we cant be sure, that the namespace we found is identified
          * by the prefix
          */
         if (xmlStrEqual(ns->href, cur->ns->href)) {
@@ -4077,7 +4077,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
            * we are in trouble: we need a new reconciled namespace.
            * This is expensive
            */
-          ret->ns = xmlNewReconciliedNs(target->doc, target, cur->ns);
+          ret->ns = xmlNewReconciledNs(target->doc, target, cur->ns);
         }
       }
 
@@ -4296,7 +4296,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 		while (root->parent != NULL) root = root->parent;
 		ret->ns = xmlNewNs(root, ns->href, ns->prefix);
 		} else {
-			ret->ns = xmlNewReconciliedNs(doc, ret, node->ns);
+			ret->ns = xmlNewReconciledNs(doc, ret, node->ns);
 	    }
 	} else {
 	    /*
@@ -4735,7 +4735,7 @@ xmlGetNodePath(const xmlNode *node)
 
             /*
              * Thumbler index computation
-	     * TODO: the ocurence test seems bogus for namespaced names
+	     * TODO: the occurrence test seems bogus for namespaced names
              */
             tmp = cur->prev;
             while (tmp != NULL) {
@@ -6230,7 +6230,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
 }
 
 /**
- * xmlNewReconciliedNs:
+ * xmlNewReconciledNs:
  * @doc:  the document
  * @tree:  a node expected to hold the new namespace
  * @ns:  the original namespace
@@ -6243,7 +6243,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
  * Returns the (new) namespace definition or NULL in case of error
  */
 static xmlNsPtr
-xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
+xmlNewReconciledNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     xmlNsPtr def;
     xmlChar prefix[50];
     int counter = 1;
@@ -6251,14 +6251,14 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     if ((tree == NULL) || (tree->type != XML_ELEMENT_NODE)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewReconciliedNs : tree == NULL\n");
+		"xmlNewReconciledNs : tree == NULL\n");
 #endif
 	return(NULL);
     }
     if ((ns == NULL) || (ns->type != XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewReconciliedNs : ns == NULL\n");
+		"xmlNewReconciledNs : ns == NULL\n");
 #endif
 	return(NULL);
     }
@@ -6360,7 +6360,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	        /*
 		 * OK we need to recreate a new namespace definition
 		 */
-		n = xmlNewReconciliedNs(doc, tree, node->ns);
+		n = xmlNewReconciledNs(doc, tree, node->ns);
 		if (n != NULL) { /* :-( what if else ??? */
 		    /*
 		     * check if we need to grow the cache buffers.
@@ -6424,7 +6424,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 			/*
 			 * OK we need to recreate a new namespace definition
 			 */
-			n = xmlNewReconciliedNs(doc, tree, attr->ns);
+			n = xmlNewReconciledNs(doc, tree, attr->ns);
 			if (n != NULL) { /* :-( what if else ??? */
 			    /*
 			     * check if we need to grow the cache buffers.
@@ -7977,7 +7977,7 @@ xmlDOMWrapNsMapAddItem(xmlNsMapPtr *nsmap, int position,
 * Creates or reuses an xmlNs struct on doc->oldNs with
 * the given prefix and namespace name.
 *
-* Returns the aquired ns struct or NULL in case of an API
+* Returns the acquired ns struct or NULL in case of an API
 *         or internal error.
 */
 static xmlNsPtr
@@ -8591,7 +8591,7 @@ ns_next_prefix:
 }
 
 /*
-* xmlDOMWrapNSNormAquireNormalizedNs:
+* xmlDOMWrapNSNormAcquireNormalizedNs:
 * @doc: the doc
 * @elem: the element-node to declare namespaces on
 * @ns: the ns-struct to use for the search
@@ -8610,7 +8610,7 @@ ns_next_prefix:
 * Returns 0 if succeeded, -1 otherwise and on API/internal errors.
 */
 static int
-xmlDOMWrapNSNormAquireNormalizedNs(xmlDocPtr doc,
+xmlDOMWrapNSNormAcquireNormalizedNs(xmlDocPtr doc,
 				   xmlNodePtr elem,
 				   xmlNsPtr ns,
 				   xmlNsPtr *retNs,
@@ -8909,9 +8909,9 @@ next_ns_decl:
 		    }
 		}
 		/*
-		* Aquire a normalized ns-decl and add it to the map.
+		* Acquire a normalized ns-decl and add it to the map.
 		*/
-		if (xmlDOMWrapNSNormAquireNormalizedNs(doc, curElem,
+		if (xmlDOMWrapNSNormAcquireNormalizedNs(doc, curElem,
 			cur->ns, &ns,
 			&nsMap, depth,
 			ancestorsOnly,
@@ -9049,7 +9049,7 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 	nsMap = (xmlNsMapPtr) ctxt->namespaceMap;
     /*
     * Disable search for ns-decls in the parent-axis of the
-    * desination element, if:
+    * destination element, if:
     * 1) there's no destination parent
     * 2) custom ns-reference handling is used
     */
@@ -9194,9 +9194,9 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 		    cur->ns = ns;
 		} else {
 		    /*
-		    * Aquire a normalized ns-decl and add it to the map.
+		    * Acquire a normalized ns-decl and add it to the map.
 		    */
-		    if (xmlDOMWrapNSNormAquireNormalizedNs(destDoc,
+		    if (xmlDOMWrapNSNormAcquireNormalizedNs(destDoc,
 			/* ns-decls on curElem or on destDoc->oldNs */
 			destParent ? curElem : NULL,
 			cur->ns, &ns,
@@ -9250,7 +9250,7 @@ ns_end:
 		goto leave_node;
 	    case XML_ENTITY_REF_NODE:
 		/*
-		* Remove reference to the entitity-node.
+		* Remove reference to the entity-node.
 		*/
 		cur->content = NULL;
 		cur->children = NULL;
@@ -9484,7 +9484,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		}
 		memset(clone, 0, sizeof(xmlNode));
 		/*
-		* Set hierachical links.
+		* Set hierarchical links.
 		*/
 		if (resultClone != NULL) {
 		    clone->parent = parentClone;
@@ -9508,7 +9508,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		}
 		memset(clone, 0, sizeof(xmlAttr));
 		/*
-		* Set hierachical links.
+		* Set hierarchical links.
 		* TODO: Change this to add to the end of attributes.
 		*/
 		if (resultClone != NULL) {
@@ -9736,9 +9736,9 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	    clone->ns = ns;
 	} else {
 	    /*
-	    * Aquire a normalized ns-decl and add it to the map.
+	    * Acquire a normalized ns-decl and add it to the map.
 	    */
-	    if (xmlDOMWrapNSNormAquireNormalizedNs(destDoc,
+	    if (xmlDOMWrapNSNormAcquireNormalizedNs(destDoc,
 		/* ns-decls on curElem or on destDoc->oldNs */
 		destParent ? curElem : NULL,
 		cur->ns, &ns,
@@ -9975,7 +9975,7 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 		break;
 	    case XML_ENTITY_REF_NODE:
 		/*
-		* Remove reference to the entitity-node.
+		* Remove reference to the entity-node.
 		*/
 		cur->content = NULL;
 		cur->children = NULL;
@@ -10113,7 +10113,7 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 		    break;
 	    case XML_ENTITY_REF_NODE:
 		/*
-		* Remove reference to the entitity-node.
+		* Remove reference to the entity-node.
 		*/
 		node->content = NULL;
 		node->children = NULL;

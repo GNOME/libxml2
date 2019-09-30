@@ -5450,7 +5450,7 @@ test_xmlC14NDocSave(void) {
     int n_with_comments;
     const char * filename; /* the filename to store canonical XML image */
     int n_filename;
-    int compression; /* the compression level (zlib requred): -1 - libxml default, 0 - uncompressed, >0 - compression level */
+    int compression; /* the compression level (zlib required): -1 - libxml default, 0 - uncompressed, >0 - compression level */
     int n_compression;
 
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
@@ -8693,7 +8693,7 @@ test_xmlCharEncCloseFunc(void) {
 
     int mem_base;
     int ret_val;
-    xmlCharEncodingHandler * handler; /* char enconding transformation data structure */
+    xmlCharEncodingHandler * handler; /* char encoding transformation data structure */
     int n_handler;
 
     for (n_handler = 0;n_handler < gen_nb_xmlCharEncodingHandler_ptr;n_handler++) {
@@ -8725,7 +8725,7 @@ test_xmlCharEncFirstLine(void) {
 
     int mem_base;
     int ret_val;
-    xmlCharEncodingHandler * handler; /* char enconding transformation data structure */
+    xmlCharEncodingHandler * handler; /* char encoding transformation data structure */
     int n_handler;
     xmlBufferPtr out; /* an xmlBuffer for the output. */
     int n_out;
@@ -8817,7 +8817,7 @@ test_xmlCharEncOutFunc(void) {
 
     int mem_base;
     int ret_val;
-    xmlCharEncodingHandler * handler; /* char enconding transformation data structure */
+    xmlCharEncodingHandler * handler; /* char encoding transformation data structure */
     int n_handler;
     xmlBufferPtr out; /* an xmlBuffer for the output. */
     int n_out;
@@ -18195,7 +18195,7 @@ test_xmlSchematronValidateDoc(void) {
     int ret_val;
     xmlSchematronValidCtxtPtr ctxt; /* the schema validation context */
     int n_ctxt;
-    xmlDocPtr instance; /* the document instace tree */
+    xmlDocPtr instance; /* the document instance tree */
     int n_instance;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlSchematronValidCtxtPtr;n_ctxt++) {
@@ -23268,7 +23268,7 @@ test_xmlSaveFileTo(void) {
     int n_buf;
     xmlDocPtr cur; /* the document */
     int n_cur;
-    char * encoding; /* the encoding if any assuming the I/O layer handles the trancoding */
+    char * encoding; /* the encoding if any assuming the I/O layer handles the transcoding */
     int n_encoding;
 
     for (n_buf = 0;n_buf < gen_nb_xmlOutputBufferPtr;n_buf++) {
@@ -23420,7 +23420,7 @@ test_xmlSaveFormatFileTo(void) {
     int n_buf;
     xmlDocPtr cur; /* the document */
     int n_cur;
-    char * encoding; /* the encoding if any assuming the I/O layer handles the trancoding */
+    char * encoding; /* the encoding if any assuming the I/O layer handles the transcoding */
     int n_encoding;
     int format; /* should formatting spaces been added */
     int n_format;
@@ -46663,7 +46663,7 @@ test_xmlXPathContextSetCache(void) {
     int n_ctxt;
     int active; /* enables/disables (creates/frees) the cache */
     int n_active;
-    int value; /* a value with semantics dependant on @options */
+    int value; /* a value with semantics dependent on @options */
     int n_value;
     int options; /* options (currently only the value 0 is used) */
     int n_options;

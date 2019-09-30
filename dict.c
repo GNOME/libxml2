@@ -730,7 +730,7 @@ xmlDictGrow(xmlDictPtr dict, size_t size) {
 		dict->dict[key].next = entry;
 	    } else {
 	        /*
-		 * we don't have much ways to alert from herei
+		 * we don't have much ways to alert from here
 		 * result is losing an entry and unicity guarantee
 		 */
 	        ret = -1;
@@ -1205,7 +1205,7 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
  * @dict: the dictionary
  * @str: the string
  *
- * check if a string is owned by the disctionary
+ * check if a string is owned by the dictionary
  *
  * Returns 1 if true, 0 if false and -1 in case of error
  * -1 in case of error

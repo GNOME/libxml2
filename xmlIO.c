@@ -185,9 +185,9 @@ static const char *IOerr[] = {
     "already connected",	/* EISCONN */
     "connection refused",	/* ECONNREFUSED */
     "unreachable network",	/* ENETUNREACH */
-    "adddress in use",		/* EADDRINUSE */
+    "address in use",		/* EADDRINUSE */
     "already in use",		/* EALREADY */
-    "unknown address familly",	/* EAFNOSUPPORT */
+    "unknown address family",	/* EAFNOSUPPORT */
 };
 
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
@@ -3337,7 +3337,7 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
     int nbchars = 0; /* number of chars to output to I/O */
     int ret;         /* return from function call */
     int written = 0; /* number of char written to I/O so far */
-    int chunk;       /* number of byte curreent processed from buf */
+    int chunk;       /* number of byte current processed from buf */
 
     if ((out == NULL) || (out->error)) return(-1);
     if (len < 0) return(0);
@@ -3493,7 +3493,7 @@ xmlEscapeContent(unsigned char* out, int *outlen,
  * @escaping:  an optional escaping function (or NULL)
  *
  * Write the content of the string in the output I/O buffer
- * This routine escapes the caracters and then handle the I18N
+ * This routine escapes the characters and then handle the I18N
  * transcoding from internal UTF-8
  * The buffer is lossless, i.e. will store in case of partial
  * or delayed writes.
@@ -3951,7 +3951,7 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
  * @ID:  the System ID for the entity to load
  * @ctxt:  the context in which the entity is called or NULL
  *
- * By default we don't load external entitites, yet.
+ * By default we don't load external entities, yet.
  *
  * Returns a new allocated xmlParserInputPtr, or NULL.
  */

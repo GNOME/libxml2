@@ -1,5 +1,5 @@
 /*
- * xmlsave.c: Implemetation of the document serializer
+ * xmlsave.c: Implementation of the document serializer
  *
  * See Copyright for the status of this software.
  *
@@ -355,7 +355,7 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt)
 /**
  * xmlFreeSaveCtxt:
  *
- * Free a saving context, destroying the ouptut in any remaining buffer
+ * Free a saving context, destroying the output in any remaining buffer
  */
 static void
 xmlFreeSaveCtxt(xmlSaveCtxtPtr ctxt)
@@ -2588,7 +2588,7 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  * xmlSaveFileTo:
  * @buf:  an output I/O buffer
  * @cur:  the document
- * @encoding:  the encoding if any assuming the I/O layer handles the trancoding
+ * @encoding:  the encoding if any assuming the I/O layer handles the transcoding
  *
  * Dump an XML document to an I/O buffer.
  * Warning ! This call xmlOutputBufferClose() on buf which is not available
@@ -2622,7 +2622,7 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
  * xmlSaveFormatFileTo:
  * @buf:  an output I/O buffer
  * @cur:  the document
- * @encoding:  the encoding if any assuming the I/O layer handles the trancoding
+ * @encoding:  the encoding if any assuming the I/O layer handles the transcoding
  * @format: should formatting spaces been added
  *
  * Dump an XML document to an I/O buffer.

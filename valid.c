@@ -2640,7 +2640,7 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     ret->doc = doc;
     if ((ctxt != NULL) && (ctxt->vstateNr != 0)) {
 	/*
-	 * Operating in streaming mode, attr is gonna disapear
+	 * Operating in streaming mode, attr is gonna disappear
 	 */
 	if (doc->dict != NULL)
 	    ret->name = xmlDictLookup(doc->dict, attr->name, -1);
@@ -2968,7 +2968,7 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     ret->value = xmlStrdup(value);
     if ((ctxt != NULL) && (ctxt->vstateNr != 0)) {
 	/*
-	 * Operating in streaming mode, attr is gonna disapear
+	 * Operating in streaming mode, attr is gonna disappear
 	 */
 	ret->name = xmlStrdup(attr->name);
 	ret->attr = NULL;

@@ -46,13 +46,3 @@ Entity: line 3:
 Entity: line 3: 
 %zz;<!ELEMENTD(%MENT%MENTDŹMENTD%zNMT9KENSMYSYSTEM;MENT9%zz;
              ^
-./test/errors/759573-2.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
-
-^
-./test/errors/759573-2.xml:6: parser error : DOCTYPE improperly terminated
-
-^
-./test/errors/759573-2.xml:6: parser error : Start tag expected, '<' not found
-
-^

@@ -2961,6 +2961,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	}
 	COPY_BUF(l,buf,nbchar,cur);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
+            buf[nbchar] = 0;
 	    if (ctxt->sax->cdataBlock!= NULL) {
 		/*
 		 * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
@@ -2985,6 +2986,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
     }
 
     if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
+        buf[nbchar] = 0;
 	if (ctxt->sax->cdataBlock!= NULL) {
 	    /*
 	     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
@@ -3030,6 +3032,8 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
 	    COPY_BUF(l,buf,nbchar,cur);
 	}
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
+            buf[nbchar] = 0;
+
 	    /*
 	     * Ok the segment is to be consumed as chars.
 	     */
@@ -5764,13 +5768,13 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 break;
 	    }
             case XML_PARSER_CONTENT: {
+		xmlChar chr[2] = { 0, 0 };
 		long cons;
+
                 /*
 		 * Handle preparsed entities and charRef
 		 */
 		if (ctxt->token != 0) {
-		    xmlChar chr[2] = { 0 , 0 } ;
-
 		    chr[0] = (xmlChar) ctxt->token;
 		    htmlCheckParagraph(ctxt);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
@@ -5782,21 +5786,22 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    cur = in->cur[0];
 		    if ((cur != '<') && (cur != '&')) {
 			if (ctxt->sax != NULL) {
+                            chr[0] = cur;
 			    if (IS_BLANK_CH(cur)) {
 				if (ctxt->keepBlanks) {
 				    if (ctxt->sax->characters != NULL)
 					ctxt->sax->characters(
-						ctxt->userData, &in->cur[0], 1);
+						ctxt->userData, chr, 1);
 				} else {
 				    if (ctxt->sax->ignorableWhitespace != NULL)
 					ctxt->sax->ignorableWhitespace(
-						ctxt->userData, &in->cur[0], 1);
+						ctxt->userData, chr, 1);
 				}
 			    } else {
 				htmlCheckParagraph(ctxt);
 				if (ctxt->sax->characters != NULL)
 				    ctxt->sax->characters(
-					    ctxt->userData, &in->cur[0], 1);
+					    ctxt->userData, chr, 1);
 			    }
 			}
 			ctxt->token = 0;

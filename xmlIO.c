@@ -2485,6 +2485,17 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
     xmlFree(in);
 }
 
+static int clamped_add(int a, int b) {
+    long long c = a;
+    c += b;
+    if(c > INT_MAX)
+	return INT_MAX;
+    else if(c < INT_MIN)
+	return INT_MIN;
+    else
+	return c;
+}
+
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferClose:
@@ -3413,7 +3424,8 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 		out->error = XML_IO_WRITE;
 		return(ret);
 	    }
-	    out->written += ret;
+	    // Clamp at INT_MAX.
+	    out->written = clamped_add(out->written, ret);
 	}
 	written += nbchars;
     } while (len > 0);
@@ -3609,7 +3621,8 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 		out->error = XML_IO_WRITE;
 		return(ret);
 	    }
-	    out->written += ret;
+	    // Clamp at INT_MAX.
+	    out->written = clamped_add(out->written, ret);
 	} else if (xmlBufAvail(out->buffer) < MINLEN) {
 	    xmlBufGrow(out->buffer, MINLEN);
 	}
@@ -3703,7 +3716,8 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
 	out->error = XML_IO_FLUSH;
 	return(ret);
     }
-    out->written += ret;
+    // Clamp at INT_MAX.
+    out->written = clamped_add(out->written, ret);
 
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,

@@ -1099,14 +1099,22 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
  */
 void
 xmlFreeDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
-    xmlElementContentPtr next;
     xmlDictPtr dict = NULL;
+    size_t depth = 0;
 
+    if (cur == NULL)
+        return;
     if (doc != NULL)
         dict = doc->dict;
 
-    while (cur != NULL) {
-        next = cur->c2;
+    while (1) {
+        xmlElementContentPtr parent;
+
+        while ((cur->c1 != NULL) || (cur->c2 != NULL)) {
+            cur = (cur->c1 != NULL) ? cur->c1 : cur->c2;
+            depth += 1;
+        }
+
 	switch (cur->type) {
 	    case XML_ELEMENT_CONTENT_PCDATA:
 	    case XML_ELEMENT_CONTENT_ELEMENT:
@@ -1119,7 +1127,6 @@ xmlFreeDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
 			NULL);
 		return;
 	}
-	if (cur->c1 != NULL) xmlFreeDocElementContent(doc, cur->c1);
 	if (dict) {
 	    if ((cur->name != NULL) && (!xmlDictOwns(dict, cur->name)))
 	        xmlFree((xmlChar *) cur->name);
@@ -1129,8 +1136,23 @@ xmlFreeDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
 	    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
 	    if (cur->prefix != NULL) xmlFree((xmlChar *) cur->prefix);
 	}
+        parent = cur->parent;
+        if ((depth == 0) || (parent == NULL)) {
+            xmlFree(cur);
+            break;
+        }
+        if (cur == parent->c1)
+            parent->c1 = NULL;
+        else
+            parent->c2 = NULL;
 	xmlFree(cur);
-	cur = next;
+
+        if (parent->c2 != NULL) {
+	    cur = parent->c2;
+        } else {
+            depth -= 1;
+            cur = parent;
+        }
     }
 }
 

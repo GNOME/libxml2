@@ -3413,7 +3413,10 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 		out->error = XML_IO_WRITE;
 		return(ret);
 	    }
-	    out->written += ret;
+            if (out->written > INT_MAX - ret)
+                out->written = INT_MAX;
+            else
+                out->written += ret;
 	}
 	written += nbchars;
     } while (len > 0);
@@ -3609,7 +3612,10 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 		out->error = XML_IO_WRITE;
 		return(ret);
 	    }
-	    out->written += ret;
+            if (out->written > INT_MAX - ret)
+                out->written = INT_MAX;
+            else
+                out->written += ret;
 	} else if (xmlBufAvail(out->buffer) < MINLEN) {
 	    xmlBufGrow(out->buffer, MINLEN);
 	}
@@ -3703,7 +3709,10 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
 	out->error = XML_IO_FLUSH;
 	return(ret);
     }
-    out->written += ret;
+    if (out->written > INT_MAX - ret)
+        out->written = INT_MAX;
+    else
+        out->written += ret;
 
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,

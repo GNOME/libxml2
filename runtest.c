@@ -4549,6 +4549,10 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     setvbuf(stderr, NULL, _IONBF, 0);
 #endif
 
+#if defined(_MSC_VER) && _MSC_VER >= 1400 && _MSC_VER < 1900
+    _set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
+
     initializeLibxml2();
 
     for (a = 1; a < argc;a++) {

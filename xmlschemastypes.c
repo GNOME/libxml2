@@ -2925,7 +2925,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 if (*value != 0) {
 		    xmlURIPtr uri;
 		    xmlChar *tmpval, *cur;
-		    if (normOnTheFly) {
+		    if ((norm == NULL) && (normOnTheFly)) {
 			norm = xmlSchemaCollapseString(value);
 			if (norm != NULL)
 			    value = norm;

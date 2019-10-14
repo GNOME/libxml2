@@ -147,7 +147,7 @@ struct _xmlOutputBuffer {
 
     xmlBufPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
     xmlBufPtr conv;      /* if encoder != NULL buffer for output */
-    int written;            /* total number of byte written */
+    size_t written;      /* total number of byte written */
     int error;
 };
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -267,6 +267,8 @@ XMLPUBFUN int XMLCALL
 	xmlOutputBufferFlush		(xmlOutputBufferPtr out);
 XMLPUBFUN int XMLCALL
 	xmlOutputBufferClose		(xmlOutputBufferPtr out);
+XMLPUBFUN ssize_t XMLCALL
+	xmlOutputBufferCloseSizeT	(xmlOutputBufferPtr out);
 
 XMLPUBFUN int XMLCALL
 	xmlRegisterOutputCallbacks	(xmlOutputMatchCallback matchFunc,

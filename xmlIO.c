@@ -2487,7 +2487,7 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
- * xmlOutputBufferClose:
+ * xmlOutputBufferCloseSizeT:
  * @out:  a buffered output
  *
  * flushes and close the output I/O channel
@@ -2495,10 +2495,10 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
  *
  * Returns the number of byte written or -1 in case of error.
  */
-int
-xmlOutputBufferClose(xmlOutputBufferPtr out)
+ssize_t
+xmlOutputBufferCloseSizeT(xmlOutputBufferPtr out)
 {
-    int written;
+    ssize_t written;
     int err_rc = 0;
 
     if (out == NULL)
@@ -2525,6 +2525,35 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
         err_rc = -1;
     xmlFree(out);
     return ((err_rc == 0) ? written : err_rc);
+}
+
+/**
+ * xmlOutputBufferClose:
+ * @out:  a buffered output
+ *
+ * flushes and close the output I/O channel
+ * and free up all the associated resources
+ *
+ * Returns the number of byte written (clamped to INT_MAX) or -1 in case of
+ * error.
+ *
+ * Note: If number of bytes written is greater than INT_MAX, returns INT_MAX.
+ * Use xmlOutputBufferCloseSizeT if total bytes written can be greater than
+ * INT_MAX, and the exactly total is required.
+ */
+int
+xmlOutputBufferClose(xmlOutputBufferPtr out)
+{
+    ssize_t ret = xmlOutputBufferCloseSizeT(out);
+    if(ret < 0) {
+        return ret;
+    }
+
+    if(ret > INT_MAX) {
+        return INT_MAX;
+    } else {
+        return ret;
+    }
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

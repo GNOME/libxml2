@@ -1,32 +1,35 @@
 default:
-  # The image was generated with the following Dockerfile:
+  # The image was generated with the following Dockerfile. It is also used
+  # for libxslt, that's why we need git and libgcrypt-dev.
   #
   # FROM ubuntu:19.04
   # RUN apt-get update && \
   #     apt-get upgrade -y && \
   #     apt-get install -y --no-install-recommends \
+  #         git ca-certificates \
   #         autoconf automake libtool pkg-config \
-  #         gcc clang make \
-  #         python-dev zlib1g-dev liblzma-dev
+  #         make gcc clang \
+  #         python-dev zlib1g-dev liblzma-dev libgcrypt-dev
   image: registry.gitlab.gnome.org/gnome/libxml2
 
 .test:
   script:
-    - sh autogen.sh $CONFIG
-    - make -j$(nproc) V=1
-    - make check
+    - |
+      sh autogen.sh $CONFIG
+      make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
+      make check
 
 gcc:
   extends: .test
   variables:
-    CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=700 -Werror"
+    CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=700"
 
 clang:asan:
   extends: .test
   variables:
     CONFIG: "--without-python"
     CC: clang
-    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize=pointer-overflow -fno-sanitize-recover=all -Werror -Wno-error=cast-align"
+    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize=pointer-overflow -fno-sanitize-recover=all -Wno-error=cast-align"
     UBSAN_OPTIONS: "print_stacktrace=1"
 
 clang:msan:
@@ -34,5 +37,5 @@ clang:msan:
   variables:
     CONFIG: "--without-python --without-zlib --without-lzma"
     CC: clang
-    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Werror -Wno-error=cast-align"
+    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Wno-error=cast-align"
 

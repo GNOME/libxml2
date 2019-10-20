@@ -627,6 +627,7 @@ static void
 xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
 {
     if (ctxt != NULL) {
+        xmlResetError(&ctxt->lastError);
         if (extra) {
             xmlChar buf[200];
 
@@ -1104,14 +1105,15 @@ xmlXPathFreeCompExpr(xmlXPathCompExprPtr comp)
  * Returns -1 in case of failure, the index otherwise
  */
 static int
-xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
+xmlXPathCompExprAdd(xmlXPathParserContextPtr ctxt, int ch1, int ch2,
    xmlXPathOp op, int value,
    int value2, int value3, void *value4, void *value5) {
+    xmlXPathCompExprPtr comp = ctxt->comp;
     if (comp->nbStep >= comp->maxStep) {
 	xmlXPathStepOp *real;
 
         if (comp->maxStep >= XPATH_MAX_STEPS) {
-	    xmlXPathErrMemory(NULL, "adding step\n");
+	    xmlXPathPErrMemory(ctxt, "adding step\n");
 	    return(-1);
         }
 	comp->maxStep *= 2;
@@ -1119,7 +1121,7 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
 		                      comp->maxStep * sizeof(xmlXPathStepOp));
 	if (real == NULL) {
 	    comp->maxStep /= 2;
-	    xmlXPathErrMemory(NULL, "adding step\n");
+	    xmlXPathPErrMemory(ctxt, "adding step\n");
 	    return(-1);
 	}
 	comp->steps = real;
@@ -1181,20 +1183,20 @@ xmlXPathCompSwap(xmlXPathStepOpPtr op) {
 }
 
 #define PUSH_FULL_EXPR(op, op1, op2, val, val2, val3, val4, val5)	\
-    xmlXPathCompExprAdd(ctxt->comp, (op1), (op2),			\
+    xmlXPathCompExprAdd(ctxt, (op1), (op2),			\
 	                (op), (val), (val2), (val3), (val4), (val5))
 #define PUSH_LONG_EXPR(op, val, val2, val3, val4, val5)			\
-    xmlXPathCompExprAdd(ctxt->comp, ctxt->comp->last, -1,		\
+    xmlXPathCompExprAdd(ctxt, ctxt->comp->last, -1,		\
 	                (op), (val), (val2), (val3), (val4), (val5))
 
 #define PUSH_LEAVE_EXPR(op, val, val2)					\
-xmlXPathCompExprAdd(ctxt->comp, -1, -1, (op), (val), (val2), 0 ,NULL ,NULL)
+xmlXPathCompExprAdd(ctxt, -1, -1, (op), (val), (val2), 0 ,NULL ,NULL)
 
 #define PUSH_UNARY_EXPR(op, ch, val, val2)				\
-xmlXPathCompExprAdd(ctxt->comp, (ch), -1, (op), (val), (val2), 0 ,NULL ,NULL)
+xmlXPathCompExprAdd(ctxt, (ch), -1, (op), (val), (val2), 0 ,NULL ,NULL)
 
 #define PUSH_BINARY_EXPR(op, ch1, ch2, val, val2)			\
-xmlXPathCompExprAdd(ctxt->comp, (ch1), (ch2), (op),			\
+xmlXPathCompExprAdd(ctxt, (ch1), (ch2), (op),			\
 			(val), (val2), 0 ,NULL ,NULL)
 
 /************************************************************************

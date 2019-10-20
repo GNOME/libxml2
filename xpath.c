@@ -2426,6 +2426,7 @@ xmlXPathCacheNewNodeSet(xmlXPathContextPtr ctxt, xmlNodePtr val)
 		if ((ret->nodesetval->nodeMax == 0) ||
 		    (val->type == XML_NAMESPACE_DECL))
 		{
+                    /* TODO: Check memory error. */
 		    xmlXPathNodeSetAddUnique(ret->nodesetval, val);
 		} else {
 		    ret->nodesetval->nodeTab[0] = val;
@@ -3584,6 +3585,7 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
 	if (val->type == XML_NAMESPACE_DECL) {
 	    xmlNsPtr ns = (xmlNsPtr) val;
 
+            /* TODO: Check memory error. */
 	    ret->nodeTab[ret->nodeNr++] =
 		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 	} else
@@ -3690,6 +3692,7 @@ xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
         cur->nodeMax *= 2;
 	cur->nodeTab = temp;
     }
+    /* TODO: Check memory error. */
     cur->nodeTab[cur->nodeNr++] = xmlXPathNodeSetDupNs(node, ns);
     return(0);
 }
@@ -3748,6 +3751,7 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
     if (val->type == XML_NAMESPACE_DECL) {
 	xmlNsPtr ns = (xmlNsPtr) val;
 
+        /* TODO: Check memory error. */
 	cur->nodeTab[cur->nodeNr++] =
 	    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
     } else
@@ -3802,6 +3806,7 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
     if (val->type == XML_NAMESPACE_DECL) {
 	xmlNsPtr ns = (xmlNsPtr) val;
 
+        /* TODO: Check memory error. */
 	cur->nodeTab[cur->nodeNr++] =
 	    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
     } else
@@ -3918,6 +3923,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	if (n2->type == XML_NAMESPACE_DECL) {
 	    xmlNsPtr ns = (xmlNsPtr) n2;
 
+            /* TODO: Check memory error. */
 	    val1->nodeTab[val1->nodeNr++] =
 		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 	} else
@@ -4298,6 +4304,7 @@ xmlXPathNewNodeSet(xmlNodePtr val) {
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
     ret->type = XPATH_NODESET;
     ret->boolval = 0;
+    /* TODO: Check memory error. */
     ret->nodesetval = xmlXPathNodeSetCreate(val);
     /* @@ with_ns to check whether namespace nodes should be looked at @@ */
 #ifdef XP_DEBUG_OBJ_USAGE
@@ -4358,6 +4365,7 @@ xmlXPathNewNodeSetList(xmlNodeSetPtr val)
         ret = xmlXPathNewNodeSet(val->nodeTab[0]);
         if (ret) {
             for (i = 1; i < val->nodeNr; ++i) {
+                /* TODO: Propagate memory error. */
                 if (xmlXPathNodeSetAddUnique(ret->nodesetval, val->nodeTab[i])
 		    < 0) break;
 	    }
@@ -4429,6 +4437,7 @@ xmlXPathDifference (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
     if (xmlXPathNodeSetIsEmpty(nodes2))
 	return(nodes1);
 
+    /* TODO: Check memory error. */
     ret = xmlXPathNodeSetCreate(NULL);
     if (xmlXPathNodeSetIsEmpty(nodes1))
 	return(ret);
@@ -4438,6 +4447,7 @@ xmlXPathDifference (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
     for (i = 0; i < l1; i++) {
 	cur = xmlXPathNodeSetItem(nodes1, i);
 	if (!xmlXPathNodeSetContains(nodes2, cur)) {
+            /* TODO: Propagate memory error. */
 	    if (xmlXPathNodeSetAddUnique(ret, cur) < 0)
 	        break;
 	}
@@ -4474,6 +4484,7 @@ xmlXPathIntersection (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
     for (i = 0; i < l1; i++) {
 	cur = xmlXPathNodeSetItem(nodes1, i);
 	if (xmlXPathNodeSetContains(nodes2, cur)) {
+            /* TODO: Propagate memory error. */
 	    if (xmlXPathNodeSetAddUnique(ret, cur) < 0)
 	        break;
 	}
@@ -4512,6 +4523,7 @@ xmlXPathDistinctSorted (xmlNodeSetPtr nodes) {
 	strval = xmlXPathCastNodeToString(cur);
 	if (xmlHashLookup(hash, strval) == NULL) {
 	    xmlHashAddEntry(hash, strval, strval);
+            /* TODO: Propagate memory error. */
 	    if (xmlXPathNodeSetAddUnique(ret, cur) < 0)
 	        break;
 	} else {
@@ -4605,6 +4617,7 @@ xmlXPathNodeLeadingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
 	cur = xmlXPathNodeSetItem(nodes, i);
 	if (cur == node)
 	    break;
+        /* TODO: Propagate memory error. */
 	if (xmlXPathNodeSetAddUnique(ret, cur) < 0)
 	    break;
     }
@@ -4710,6 +4723,7 @@ xmlXPathNodeTrailingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
 	cur = xmlXPathNodeSetItem(nodes, i);
 	if (cur == node)
 	    break;
+        /* TODO: Propagate memory error. */
 	if (xmlXPathNodeSetAddUnique(ret, cur) < 0)
 	    break;
     }
@@ -5409,6 +5423,7 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	    break;
 #endif
 	case XPATH_NODESET:
+            /* TODO: Check memory error. */
 	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
 	    /* Do not deallocate the copied tree value */
 	    ret->boolval = 0;
@@ -6598,6 +6613,7 @@ xmlXPathCompareNodeSets(int inf, int strict,
 
     values2 = (double *) xmlMalloc(ns2->nodeNr * sizeof(double));
     if (values2 == NULL) {
+        /* TODO: Propagate memory error. */
         xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlXPathFreeObject(arg1);
 	xmlXPathFreeObject(arg2);
@@ -6858,11 +6874,13 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2, int neq) {
 
     values1 = (xmlChar **) xmlMalloc(ns1->nodeNr * sizeof(xmlChar *));
     if (values1 == NULL) {
+        /* TODO: Propagate memory error. */
         xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	return(0);
     }
     hashs1 = (unsigned int *) xmlMalloc(ns1->nodeNr * sizeof(unsigned int));
     if (hashs1 == NULL) {
+        /* TODO: Propagate memory error. */
         xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlFree(values1);
 	return(0);
@@ -6870,6 +6888,7 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2, int neq) {
     memset(values1, 0, ns1->nodeNr * sizeof(xmlChar *));
     values2 = (xmlChar **) xmlMalloc(ns2->nodeNr * sizeof(xmlChar *));
     if (values2 == NULL) {
+        /* TODO: Propagate memory error. */
         xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlFree(hashs1);
 	xmlFree(values1);
@@ -6877,6 +6896,7 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2, int neq) {
     }
     hashs2 = (unsigned int *) xmlMalloc(ns2->nodeNr * sizeof(unsigned int));
     if (hashs2 == NULL) {
+        /* TODO: Propagate memory error. */
         xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlFree(hashs1);
 	xmlFree(values1);
@@ -8569,6 +8589,7 @@ xmlXPathGetElementsByIds (xmlDocPtr doc, const xmlChar *ids) {
 		    elem = (xmlNodePtr) attr;
 		else
 		    elem = NULL;
+                /* TODO: Check memory error. */
 		if (elem != NULL)
 		    xmlXPathNodeSetAdd(ret, elem);
 	    }
@@ -8612,18 +8633,15 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	xmlNodeSetPtr ns;
 	int i;
 
+        /* TODO: Check memory error. */
 	ret = xmlXPathNodeSetCreate(NULL);
-        /*
-         * FIXME -- in an out-of-memory condition this will behave badly.
-         * The solution is not clear -- we already popped an item from
-         * ctxt, so the object is in a corrupt state.
-         */
 
 	if (obj->nodesetval != NULL) {
 	    for (i = 0; i < obj->nodesetval->nodeNr; i++) {
 		tokens =
 		    xmlXPathCastNodeToString(obj->nodesetval->nodeTab[i]);
 		ns = xmlXPathGetElementsByIds(ctxt->context->doc, tokens);
+                /* TODO: Check memory error. */
 		ret = xmlXPathNodeSetMerge(ret, ns);
 		xmlXPathFreeNodeSet(ns);
 		if (tokens != NULL)
@@ -12167,6 +12185,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 	if (seq == NULL) {
 	    seq = xmlXPathNodeSetCreate(NULL);
 	    if (seq == NULL) {
+                /* TODO: Propagate memory error. */
 		total = 0;
 		goto error;
 	    }
@@ -12388,6 +12407,7 @@ axis_range_end: /* ----------------------------------------------------- */
 	    outSeq = seq;
 	    seq = NULL;
 	} else
+            /* TODO: Check memory error. */
 	    outSeq = mergeAndClear(outSeq, seq);
 	/*
 	* Break if only a true/false result was requested.
@@ -12405,6 +12425,7 @@ first_hit: /* ---------------------------------------------------------- */
 	    outSeq = seq;
 	    seq = NULL;
 	} else
+            /* TODO: Check memory error. */
 	    outSeq = mergeAndClear(outSeq, seq);
 	break;
 
@@ -12470,6 +12491,7 @@ apply_predicates: /* --------------------------------------------------- */
 		outSeq = seq;
 		seq = NULL;
 	    } else {
+                /* TODO: Check memory error. */
 		outSeq = mergeAndClear(outSeq, seq);
 	    }
 
@@ -12499,8 +12521,8 @@ error:
 	if ((seq != NULL) && (seq->nodeNr == 0))
 	    outSeq = seq;
 	else
+            /* TODO: Check memory error. */
 	    outSeq = xmlXPathNodeSetCreate(NULL);
-        /* XXX what if xmlXPathNodeSetCreate returned NULL here? */
     }
     if ((seq != NULL) && (seq != outSeq)) {
 	 xmlXPathFreeNodeSet(seq);
@@ -12613,6 +12635,7 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
                 break;
             }
 
+            /* TODO: Check memory error. */
             arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
                                                     arg2->nodesetval);
             valuePush(ctxt, arg1);
@@ -12752,6 +12775,7 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
                 break;
             }
 
+            /* TODO: Check memory error. */
             arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
                                                     arg2->nodesetval);
             valuePush(ctxt, arg1);
@@ -13035,6 +13059,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 		((arg2->nodesetval != NULL) &&
 		 (arg2->nodesetval->nodeNr != 0)))
 	    {
+                /* TODO: Check memory error. */
 		arg1->nodesetval = xmlXPathNodeSetMerge(arg1->nodesetval,
 							arg2->nodesetval);
 	    }
@@ -13634,12 +13659,14 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp,
 	    /* Select "/" */
 	    if (toBool)
 		return(1);
+            /* TODO: Check memory error. */
 	    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval,
 		                     (xmlNodePtr) ctxt->doc);
 	} else {
 	    /* Select "self::node()" */
 	    if (toBool)
 		return(1);
+            /* TODO: Check memory error. */
 	    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval, ctxt->node);
 	}
     }
@@ -13700,6 +13727,7 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp,
 	} else if (ret == 1) {
 	    if (toBool)
 		goto return_1;
+            /* TODO: Check memory error. */
 	    xmlXPathNodeSetAddUnique((*resultSeq)->nodesetval, cur);
 	}
     }

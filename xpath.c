@@ -2872,29 +2872,36 @@ valuePop(xmlXPathParserContextPtr ctxt)
  * @ctxt:  an XPath evaluation context
  * @value:  the XPath object
  *
- * Pushes a new XPath object on top of the value stack
+ * Pushes a new XPath object on top of the value stack. If value is NULL,
+ * a memory error is recorded in the parser context.
  *
- * returns the number of items on the value stack
+ * Returns the number of items on the value stack, or -1 in case of error.
  */
 int
 valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
 {
-    if ((ctxt == NULL) || (value == NULL)) return(-1);
+    if (ctxt == NULL) return(-1);
+    if (value == NULL) {
+        /*
+         * A NULL value typically indicates that a memory allocation failed,
+         * so we set ctxt->error here to propagate the error.
+         */
+	ctxt->error = XPATH_MEMORY_ERROR;
+        return(-1);
+    }
     if (ctxt->valueNr >= ctxt->valueMax) {
         xmlXPathObjectPtr *tmp;
 
         if (ctxt->valueMax >= XPATH_MAX_STACK_DEPTH) {
-            xmlXPathErrMemory(NULL, "XPath stack depth limit reached\n");
-            ctxt->error = XPATH_MEMORY_ERROR;
-            return (0);
+            xmlXPathPErrMemory(ctxt, "XPath stack depth limit reached\n");
+            return (-1);
         }
         tmp = (xmlXPathObjectPtr *) xmlRealloc(ctxt->valueTab,
                                              2 * ctxt->valueMax *
                                              sizeof(ctxt->valueTab[0]));
         if (tmp == NULL) {
-            xmlXPathErrMemory(NULL, "pushing value\n");
-            ctxt->error = XPATH_MEMORY_ERROR;
-            return (0);
+            xmlXPathPErrMemory(ctxt, "pushing value\n");
+            return (-1);
         }
         ctxt->valueMax *= 2;
 	ctxt->valueTab = tmp;

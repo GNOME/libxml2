@@ -6729,6 +6729,9 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 ctxt->disableSAX = state;
                 ctxt->instate = instate;
 
+		if (RAW == 0) {
+		    xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
+		}
                 if (ctxt->input->id != id) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                    "All markup of the conditional section is"
@@ -6767,10 +6770,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 
         SKIP_BLANKS;
         GROW;
-    }
-
-    if (RAW == 0) {
-	xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
     }
 
 error:

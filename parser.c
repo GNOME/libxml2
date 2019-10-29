@@ -6731,6 +6731,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 
 		if (RAW == 0) {
 		    xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
+                    goto error;
 		}
                 if (ctxt->input->id != id) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,

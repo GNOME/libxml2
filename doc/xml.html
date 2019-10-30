@@ -709,6 +709,146 @@ to the <a href="https://gitlab.gnome.org/GNOME/libxml2">GIT</a> code base.</p>
 
 <p>Here is the list of public releases:</p>
 
+<h3>v2.9.10: Oct 30 2019</h3>
+<ul>
+  <li>Documentation:<br/>
+  Fix a few more typos ("fonction") (Nick Wellnhofer),<br/>
+  Large batch of typo fixes (Jared Yanovich),<br/>
+  Fix typos: tree: move{ -&gt; s}, reconcil{i -&gt; }ed, h{o -&gt; e}ld by... (Jan Pokorný),<br/>
+  Fix typo: xpath: simpli{ -&gt; fi}ed (Jan Pokorný),<br/>
+  Doc: do not mislead towards "infeasible" scenario wrt. xmlBufNodeDump (Jan Pokorný),<br/>
+  Fix comments in test code (zhouzhongyuan),<br/>
+  fix comment in testReader.c (zhouzhongyuan)<br/>
+  </li>
+
+  <li>Portability:<br/>
+  Fix some release issues on Fedora 30 (Daniel Veillard),<br/>
+  Fix exponent digits when running tests under old MSVC (Daniel Richard G),<br/>
+  Work around buggy ceil() function on AIX (Daniel Richard G),<br/>
+  Don't call printf with NULL string in runtest.c (Daniel Richard G),<br/>
+  Switched from unsigned long to ptrdiff_t in parser.c (Stephen Chenney),<br/>
+  timsort.h: support older GCCs (Jérôme Duval),<br/>
+  Make configure.ac work with older pkg-config (Nick Wellnhofer),<br/>
+  Stop defining _REENTRANT on some Win32 platforms (Nick Wellnhofer),<br/>
+  Fix nanohttp.c on MinGW (Nick Wellnhofer),<br/>
+  Fix Windows compiler warning in testC14N.c (Nick Wellnhofer),<br/>
+  Merge testThreadsWin32.c into testThreads.c (Nick Wellnhofer),<br/>
+  Fix Python bindings under Windows (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Bug Fixes:<br/>
+  Another fix for conditional sections at end of document (Nick Wellnhofer),<br/>
+  Fix for conditional sections at end of document (Nick Wellnhofer),<br/>
+  Make sure that Python tests exit with error code (Nick Wellnhofer),<br/>
+  Audit memory error handling in xpath.c (Nick Wellnhofer),<br/>
+  Fix error code in xmlTextWriterStartDocument (Nick Wellnhofer),<br/>
+  Fix integer overflow when counting written bytes (Nick Wellnhofer),<br/>
+  Fix uninitialized memory access in HTML parser (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlSchemaValAtomicType (Nick Wellnhofer),<br/>
+  Disallow conditional sections in internal subset (Nick Wellnhofer),<br/>
+  Fix use-after-free in xmlTextReaderFreeNodeList (Nick Wellnhofer),<br/>
+  Fix Regextests (Nick Wellnhofer),<br/>
+  Fix empty branch in regex (Nick Wellnhofer),<br/>
+  Fix integer overflow in entity recursion check (Nick Wellnhofer),<br/>
+  Don't read external entities or XIncludes from stdin (Nick Wellnhofer),<br/>
+  Fix Schema determinism check of ##other namespaces (Nick Wellnhofer),<br/>
+  Fix potential null deref in xmlSchemaIDCFillNodeTables (zhouzhongyuan),<br/>
+  Fix potential memory leak in xmlBufBackToBuffer (Nick Wellnhofer),<br/>
+  Fix error message when processing XIncludes with fallbacks (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlRegEpxFromParse (zhouzhongyuan),<br/>
+  14:00 is a valid timezone for xs:dateTime (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlParseBalancedChunkMemoryRecover (Zhipeng Xie),<br/>
+  Fix potential null deref in xmlRelaxNGParsePatterns (Nick Wellnhofer),<br/>
+  Misleading error message with xs:{min|max}Inclusive (bettermanzzy),<br/>
+  Fix memory leak in xmlXIncludeLoadTxt (Wang Kirin),<br/>
+  Partial fix for comparison of xs:durations (Nick Wellnhofer),<br/>
+  Fix null deref in xmlreader buffer (zhouzhongyuan),<br/>
+  Fix unability to RelaxNG-validate grammar with choice-based name class (Jan Pokorný),<br/>
+  Fix unability to validate ambiguously constructed interleave for RelaxNG (Jan Pokorný),<br/>
+  Fix possible null dereference in xmlXPathIdFunction (zhouzhongyuan),<br/>
+  fix memory leak in xmlAllocOutputBuffer (zhouzhongyuan),<br/>
+  Fix unsigned int overflow (Jens Eggerstedt),<br/>
+  dict.h: gcc 2.95 doesn't allow multiple storage classes (Nick Wellnhofer),<br/>
+  Fix another code path in xmlParseQName (Nick Wellnhofer),<br/>
+  Make sure that xmlParseQName returns NULL in error case (Nick Wellnhofer),<br/>
+  Fix build without reader but with pattern (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlAllocOutputBufferInternal error path (Nick Wellnhofer),<br/>
+  Fix unsigned integer overflow (Nick Wellnhofer),<br/>
+  Fix return value of xmlOutputBufferWrite (Nick Wellnhofer),<br/>
+  Fix parser termination from "Double hyphen within comment" error (David Warring),<br/>
+  Fix call stack overflow in xmlFreePattern (Nick Wellnhofer),<br/>
+  Fix null deref in previous commit (Nick Wellnhofer),<br/>
+  Fix memory leaks in xmlXPathParseNameComplex error paths (Nick Wellnhofer),<br/>
+  Check for integer overflow in xmlXPtrEvalChildSeq (Nick Wellnhofer),<br/>
+  Fix xmllint dump of XPath namespace nodes (Nick Wellnhofer),<br/>
+  Fix float casts in xmlXPathSubstringFunction (Nick Wellnhofer),<br/>
+  Fix null deref in xmlregexp error path (Nick Wellnhofer),<br/>
+  Fix null pointer dereference in xmlTextReaderReadOuterXml (Nick Wellnhofer),<br/>
+  Fix memory leaks in xmlParseStartTag2 error paths (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlSAX2StartElement (Nick Wellnhofer),<br/>
+  Fix commit "Memory leak in xmlFreeID (xmlreader.c)" (Nick Wellnhofer),<br/>
+  Fix NULL pointer deref in xmlTextReaderValidateEntity (Nick Wellnhofer),<br/>
+  Memory leak in xmlFreeTextReader (Nick Wellnhofer),<br/>
+  Memory leak in xmlFreeID (xmlreader.c) (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Improvements:<br/>
+  Run XML conformance tests under CI (Nick Wellnhofer),<br/>
+  Update GitLab CI config (Nick Wellnhofer),<br/>
+  Propagate memory errors in valuePush (Nick Wellnhofer),<br/>
+  Propagate memory errors in xmlXPathCompExprAdd (Nick Wellnhofer),<br/>
+  Make xmlFreeDocElementContent non-recursive (Nick Wellnhofer),<br/>
+  Enable continuous integration via GitLab CI (Nick Wellnhofer),<br/>
+  Avoid ignored attribute warnings under GCC (Nick Wellnhofer),<br/>
+  Make xmlDumpElementContent non-recursive (Nick Wellnhofer),<br/>
+  Make apibuild.py ignore ATTRIBUTE_NO_SANITIZE (Nick Wellnhofer),<br/>
+  Mark xmlExp* symbols as removed (Nick Wellnhofer),<br/>
+  Make xmlParseConditionalSections non-recursive (Nick Wellnhofer),<br/>
+  Adjust expected error in Python tests (Nick Wellnhofer),<br/>
+  Make xmlTextReaderFreeNodeList non-recursive (Nick Wellnhofer),<br/>
+  Make xmlFreeNodeList non-recursive (Nick Wellnhofer),<br/>
+  Make xmlParseContent and xmlParseElement non-recursive (Nick Wellnhofer),<br/>
+  Remove executable bit from non-executable files (Nick Wellnhofer),<br/>
+  Fix expected output of test/schemas/any4 (Nick Wellnhofer),<br/>
+  Optimize build instructions in README (zhouzhongyuan),<br/>
+  xml2-config.in: Output CFLAGS and LIBS on the same line (Hugh McMaster),<br/>
+  xml2-config: Add a --dynamic switch to print only shared libraries (Hugh McMaster),<br/>
+  Annotate functions with __attribute__((no_sanitize)) (Nick Wellnhofer),<br/>
+  Fix warnings when compiling without reader or push parser (Nick Wellnhofer),<br/>
+  Remove unused member `doc` in xmlSaveCtxt (Nick Wellnhofer),<br/>
+  Limit recursion depth in xmlXPathCompOpEvalPredicate (Nick Wellnhofer),<br/>
+  Remove -Wno-array-bounds (Nick Wellnhofer),<br/>
+  Remove unreachable code in xmlXPathCountFunction (Nick Wellnhofer),<br/>
+  Improve XPath predicate and filter evaluation (Nick Wellnhofer),<br/>
+  Limit recursion depth in xmlXPathOptimizeExpression (Nick Wellnhofer),<br/>
+  Disable hash randomization when fuzzing (Nick Wellnhofer),<br/>
+  Optional recursion limit when parsing XPath expressions (Nick Wellnhofer),<br/>
+  Optional recursion limit when evaluating XPath expressions (Nick Wellnhofer),<br/>
+  Use break statements in xmlXPathCompOpEval (Nick Wellnhofer),<br/>
+  Optional XPath operation limit (Nick Wellnhofer),<br/>
+  Fix compilation with --with-minimum (Nick Wellnhofer),<br/>
+  Check XPath stack after calling functions (Nick Wellnhofer),<br/>
+  Remove debug printf in xmlreader.c (Nick Wellnhofer),<br/>
+  Always define LIBXML_THREAD_ENABLED when enabled (Michael Haubenwallner),<br/>
+  Regenerate NEWS (Nick Wellnhofer),<br/>
+  Change git repo URL (Nick Wellnhofer),<br/>
+  Change bug tracker URL (Nick Wellnhofer),<br/>
+  Remove outdated HTML file (Nick Wellnhofer),<br/>
+  Fix unused function warning in testapi.c (Nick Wellnhofer),<br/>
+  Add some generated test files to .gitignore (Nick Wellnhofer),<br/>
+  Remove unneeded function pointer casts (Nick Wellnhofer),<br/>
+  Fix -Wcast-function-type warnings (GCC 8) (Nick Wellnhofer),<br/>
+  Fix -Wformat-truncation warnings (GCC 8) (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Cleanups:<br/>
+  Rebuild docs (Nick Wellnhofer),<br/>
+  Disable xmlExp regex code (Nick Wellnhofer),<br/>
+  Remove redundant code in xmlRelaxNGValidateState (Nick Wellnhofer),<br/>
+  Remove redundant code in xmlXPathCompRelationalExpr (Nick Wellnhofer)<br/>
+  </li>
+</ul>
+
 <h3>v2.9.9: Jan 03 2019</h3>
 <ul>
   <li>Security:<br/>

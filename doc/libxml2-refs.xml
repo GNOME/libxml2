@@ -27485,6 +27485,9 @@
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
         </word>
+        <word name='recorded'>
+          <ref name='valuePush'/>
+        </word>
         <word name='recover'>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>

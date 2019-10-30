@@ -8149,8 +8149,8 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='valuePush' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Pushes a new XPath object on top of the value stack</info>
-      <return type='int' info='the number of items on the value stack'/>
+      <info>Pushes a new XPath object on top of the value stack. If value is NULL, a memory error is recorded in the parser context.</info>
+      <return type='int' info='the number of items on the value stack, or -1 in case of error.'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context'/>
       <arg name='value' type='xmlXPathObjectPtr' info='the XPath object'/>
     </function>

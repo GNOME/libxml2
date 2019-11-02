@@ -4,6 +4,8 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 includedir=@includedir@
 libdir=@libdir@
+cflags=
+libs=
 
 usage()
 {
@@ -102,7 +104,7 @@ while test $# -gt 0; do
     shift
 done
 
-if test "$cflags" -o "$libs"; then
+if test -n "$cflags$libs"; then
     echo $cflags $libs
 fi
 

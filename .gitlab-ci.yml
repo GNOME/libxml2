@@ -32,7 +32,7 @@ clang:asan:
   variables:
     CONFIG: "--without-python"
     CC: clang
-    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize=pointer-overflow -fno-sanitize-recover=all -Wno-error=cast-align"
+    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined,unsigned-integer-overflow -fno-sanitize-recover=all -Wno-error=cast-align"
     UBSAN_OPTIONS: "print_stacktrace=1"
 
 clang:msan:

@@ -1276,12 +1276,14 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
     xmlNodePtr ret = NULL, last = NULL;
     xmlNodePtr node;
     xmlChar *val;
-    const xmlChar *cur = value, *end = cur + len;
+    const xmlChar *cur, *end;
     const xmlChar *q;
     xmlEntityPtr ent;
     xmlBufPtr buf;
 
     if (value == NULL) return(NULL);
+    cur = value;
+    end = cur + len;
 
     buf = xmlBufCreateSize(0);
     if (buf == NULL) return(NULL);

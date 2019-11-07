@@ -64,7 +64,7 @@ typedef unsigned __int32 uint32_t;
 
 #define MAX_HASH_LEN 3
 #define MIN_DICT_SIZE 128
-#define MAX_DICT_HASH 8 * 2048
+#define MAX_DICT_HASH (8 * 2048)
 #define WITH_BIG_KEY
 
 #ifdef WITH_BIG_KEY
@@ -259,14 +259,12 @@ xmlDictAddString(xmlDictPtr dict, const xmlChar *name, unsigned int namelen) {
     /*
      * Not found, need to allocate
      */
-    if (pool == NULL) {
-        if ((dict->limit > 0) && (limit > dict->limit)) {
-            return(NULL);
-        }
-
-        if (size == 0) size = 1000;
+    if ((dict->limit > 0) && (limit > dict->limit)) {
+       return(NULL);
+    }
+    if (size == 0) size = 1000;
 	else size *= 4; /* exponential growth */
-        if (size < 4 * namelen)
+    if (size < 4 * namelen)
 	    size = 4 * namelen; /* just in case ! */
 	pool = (xmlDictStringsPtr) xmlMalloc(sizeof(xmlDictStrings) + size);
 	if (pool == NULL)
@@ -280,7 +278,6 @@ xmlDictAddString(xmlDictPtr dict, const xmlChar *name, unsigned int namelen) {
 #ifdef DICT_DEBUG_PATTERNS
         fprintf(stderr, "+");
 #endif
-    }
 found_pool:
     ret = pool->free;
     memcpy(pool->free, name, namelen);
@@ -327,14 +324,13 @@ xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix, unsigned int plen,
     /*
      * Not found, need to allocate
      */
-    if (pool == NULL) {
-        if ((dict->limit > 0) && (limit > dict->limit)) {
-            return(NULL);
-        }
+    if ((dict->limit > 0) && (limit > dict->limit)) {
+       return(NULL);
+    }
 
-        if (size == 0) size = 1000;
+    if (size == 0) size = 1000;
 	else size *= 4; /* exponential growth */
-        if (size < 4 * (namelen + plen + 1))
+    if (size < 4 * (namelen + plen + 1))
 	    size = 4 * (namelen + plen + 1); /* just in case ! */
 	pool = (xmlDictStringsPtr) xmlMalloc(sizeof(xmlDictStrings) + size);
 	if (pool == NULL)
@@ -348,7 +344,6 @@ xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix, unsigned int plen,
 #ifdef DICT_DEBUG_PATTERNS
         fprintf(stderr, "+");
 #endif
-    }
 found_pool:
     ret = pool->free;
     memcpy(pool->free, prefix, plen);
@@ -452,7 +447,7 @@ xmlDictComputeFastKey(const xmlChar *name, int namelen, int seed) {
     unsigned long value = seed;
 
     if (name == NULL) return(0);
-    value = *name;
+    value += *name;
     value <<= 5;
     if (namelen > 10) {
         value += name[namelen - 1];
@@ -798,9 +793,7 @@ xmlDictGrow(xmlDictPtr dict, size_t size) {
  */
 void
 xmlDictFree(xmlDictPtr dict) {
-    size_t i;
     xmlDictEntryPtr iter;
-    xmlDictEntryPtr next;
     int inside_dict = 0;
     xmlDictStringsPtr pool, nextp;
 
@@ -826,7 +819,9 @@ xmlDictFree(xmlDictPtr dict) {
     }
 
     if (dict->dict) {
-	for(i = 0; ((i < dict->size) && (dict->nbElems > 0)); i++) {
+        size_t i;
+        xmlDictEntryPtr next;
+	    for(i = 0; ((i < dict->size) && (dict->nbElems > 0)); i++) {
 	    iter = &(dict->dict[i]);
 	    if (iter->valid == 0)
 		continue;

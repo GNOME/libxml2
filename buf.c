@@ -1233,10 +1233,12 @@ xmlBufBackToBuffer(xmlBufPtr buf) {
          * Keep the buffer but provide a truncated size value.
          */
         xmlBufOverflowError(buf, "Allocated size too big for xmlBuffer");
+        ret->use = (int) buf->use;
         ret->size = INT_MAX;
+    } else {
+        ret->use = (int) buf->use;
+        ret->size = (int) buf->size;
     }
-    ret->use = (int) buf->use;
-    ret->size = (int) buf->size;
     ret->alloc = buf->alloc;
     ret->content = buf->content;
     ret->contentIO = buf->contentIO;

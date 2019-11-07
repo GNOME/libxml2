@@ -746,7 +746,6 @@ xmlBufResize(xmlBufPtr buf, size_t size)
 {
     unsigned int newSize;
     xmlChar* rebuf = NULL;
-    size_t start_buf;
 
     if ((buf == NULL) || (buf->error))
         return(0);
@@ -805,7 +804,7 @@ xmlBufResize(xmlBufPtr buf, size_t size)
     }
 
     if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-        start_buf = buf->content - buf->contentIO;
+        const size_t start_buf = buf->content - buf->contentIO;
 
         if (start_buf > newSize) {
 	    /* move data back to start */
@@ -1109,13 +1108,14 @@ xmlBufWriteChar(xmlBufPtr buf, const char *string) {
  */
 int
 xmlBufWriteQuotedString(xmlBufPtr buf, const xmlChar *string) {
-    const xmlChar *cur, *base;
+    const xmlChar *cur;
     if ((buf == NULL) || (buf->error))
         return(-1);
     CHECK_COMPAT(buf)
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
         return(-1);
     if (xmlStrchr(string, '\"')) {
+        const xmlChar *base;
         if (xmlStrchr(string, '\'')) {
 #ifdef DEBUG_BUFFER
 	    xmlGenericError(xmlGenericErrorContext,

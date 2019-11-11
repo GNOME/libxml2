@@ -97,8 +97,7 @@ while test $# -gt 0; do
         ;;
 
     *)
-	usage
-	exit 1
+	usage 1
 	;;
     esac
     shift

@@ -126,18 +126,15 @@ xmlHashComputeQKey(xmlHashTablePtr table,
 #ifdef HASH_RANDOMIZATION
     value = table->random_seed;
 #endif
-    if (prefix != NULL)
-	value += 30 * (*prefix);
-    else
-	value += 30 * (*name);
-
     if (prefix != NULL) {
+	value += 30 * (*prefix);
 	while ((ch = *prefix++) != 0) {
 	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
 	}
 	value = value ^ ((value << 5) + (value >> 3) + (unsigned long)':');
     }
     if (name != NULL) {
+	value += 30 * (*name);
 	while ((ch = *name++) != 0) {
 	    value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
 	}
@@ -325,15 +322,15 @@ xmlHashGrow(xmlHashTablePtr table, int size) {
  */
 void
 xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
-    int i;
-    xmlHashEntryPtr iter;
-    xmlHashEntryPtr next;
-    int inside_table = 0;
-    int nbElems;
-
     if (table == NULL)
 	return;
     if (table->table) {
+        xmlHashEntryPtr iter;
+        xmlHashEntryPtr next;
+        int inside_table = 0;
+        int nbElems;
+        int i;
+
 	nbElems = table->nbElems;
 	for(i = 0; (i < table->size) && (nbElems > 0); i++) {
 	    iter = &(table->table[i]);
@@ -878,16 +875,16 @@ xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
  */
 void
 xmlHashScanFull(xmlHashTablePtr table, xmlHashScannerFull f, void *data) {
-    int i, nb;
-    xmlHashEntryPtr iter;
-    xmlHashEntryPtr next;
-
     if (table == NULL)
 	return;
     if (f == NULL)
 	return;
 
     if (table->table) {
+        xmlHashEntryPtr iter;
+        xmlHashEntryPtr next;
+        int i, nb;
+
 	for(i = 0; i < table->size; i++) {
 	    if (table->table[i].valid == 0)
 		continue;
@@ -895,7 +892,7 @@ xmlHashScanFull(xmlHashTablePtr table, xmlHashScannerFull f, void *data) {
 	    while (iter) {
 		next = iter->next;
                 nb = table->nbElems;
-		if ((f != NULL) && (iter->payload != NULL))
+		if (iter->payload != NULL)
 		    f(iter->payload, data, iter->name,
 		      iter->name2, iter->name3);
                 if (nb != table->nbElems) {
@@ -955,16 +952,16 @@ void
 xmlHashScanFull3(xmlHashTablePtr table, const xmlChar *name,
 		 const xmlChar *name2, const xmlChar *name3,
 		 xmlHashScannerFull f, void *data) {
-    int i;
-    xmlHashEntryPtr iter;
-    xmlHashEntryPtr next;
-
     if (table == NULL)
 	return;
     if (f == NULL)
 	return;
 
     if (table->table) {
+        xmlHashEntryPtr iter;
+        xmlHashEntryPtr next;
+        int i;
+
 	for(i = 0; i < table->size; i++) {
 	    if (table->table[i].valid == 0)
 		continue;
@@ -995,9 +992,6 @@ xmlHashScanFull3(xmlHashTablePtr table, const xmlChar *name,
  */
 xmlHashTablePtr
 xmlHashCopy(xmlHashTablePtr table, xmlHashCopier f) {
-    int i;
-    xmlHashEntryPtr iter;
-    xmlHashEntryPtr next;
     xmlHashTablePtr ret;
 
     if (table == NULL)
@@ -1010,6 +1004,10 @@ xmlHashCopy(xmlHashTablePtr table, xmlHashCopier f) {
         return(NULL);
 
     if (table->table) {
+        xmlHashEntryPtr iter;
+        xmlHashEntryPtr next;
+        int i;
+
 	for(i = 0; i < table->size; i++) {
 	    if (table->table[i].valid == 0)
 		continue;
@@ -1096,8 +1094,6 @@ int
 xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
     const xmlChar *name2, const xmlChar *name3, xmlHashDeallocator f) {
     unsigned long key;
-    xmlHashEntryPtr entry;
-    xmlHashEntryPtr prev = NULL;
 
     if (table == NULL || name == NULL)
         return(-1);
@@ -1106,6 +1102,9 @@ xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
     if (table->table[key].valid == 0) {
         return(-1);
     } else {
+        xmlHashEntryPtr entry;
+        xmlHashEntryPtr prev = NULL;
+
         for (entry = &(table->table[key]); entry != NULL; entry = entry->next) {
             if (xmlStrEqual(entry->name, name) &&
                     xmlStrEqual(entry->name2, name2) &&

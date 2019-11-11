@@ -10088,6 +10088,7 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
     int ok = 0;
     int exponent = 0;
     int is_exponent_negative = 0;
+    xmlXPathObjectPtr num;
 #ifdef __GNUC__
     unsigned long tmp = 0;
     double temp;
@@ -10160,8 +10161,13 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
             exponent = -exponent;
         ret *= pow(10.0, (double) exponent);
     }
-    PUSH_LONG_EXPR(XPATH_OP_VALUE, XPATH_NUMBER, 0, 0,
-                   xmlXPathCacheNewFloat(ctxt->context, ret), NULL);
+    num = xmlXPathCacheNewFloat(ctxt->context, ret);
+    if (num == NULL) {
+	ctxt->error = XPATH_MEMORY_ERROR;
+    } else if (PUSH_LONG_EXPR(XPATH_OP_VALUE, XPATH_NUMBER, 0, 0, num,
+                              NULL) == -1) {
+        xmlXPathReleaseObject(ctxt->context, num);
+    }
 }
 
 /**
@@ -10223,6 +10229,7 @@ static void
 xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     const xmlChar *q;
     xmlChar *ret = NULL;
+    xmlXPathObjectPtr lit;
 
     if (CUR == '"') {
         NEXT;
@@ -10250,8 +10257,13 @@ xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
 	XP_ERROR(XPATH_START_LITERAL_ERROR);
     }
     if (ret == NULL) return;
-    PUSH_LONG_EXPR(XPATH_OP_VALUE, XPATH_STRING, 0, 0,
-	           xmlXPathCacheNewString(ctxt->context, ret), NULL);
+    lit = xmlXPathCacheNewString(ctxt->context, ret);
+    if (lit == NULL) {
+	ctxt->error = XPATH_MEMORY_ERROR;
+    } else if (PUSH_LONG_EXPR(XPATH_OP_VALUE, XPATH_STRING, 0, 0, lit,
+                              NULL) == -1) {
+        xmlXPathReleaseObject(ctxt->context, lit);
+    }
     xmlFree(ret);
 }
 

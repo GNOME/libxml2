@@ -144,7 +144,7 @@ xmlListLinkSearch(xmlListPtr l, void *data)
     if (lk == l->sentinel)
         return NULL;
     else {
-        if (l->linkCompare(lk->data, data) ==0)
+        if (lk != NULL && l->linkCompare(lk->data, data) ==0)
             return lk;
         return NULL;
     }
@@ -169,7 +169,7 @@ xmlListLinkReverseSearch(xmlListPtr l, void *data)
     if (lk == l->sentinel)
         return NULL;
     else {
-        if (l->linkCompare(lk->data, data) ==0)
+        if (lk != NULL && l->linkCompare(lk->data, data) ==0)
             return lk;
         return NULL;
     }
@@ -285,7 +285,10 @@ xmlListInsert(xmlListPtr l, void *data)
         return (1);
     }
     lkNew->data = data;
-    lkPlace = lkPlace->prev;
+    if (lkPlace != NULL)
+        lkPlace = lkPlace->prev;
+    else
+        lkPlace = NULL;
     lkNew->next = lkPlace->next;
     (lkPlace->next)->prev = lkNew;
     lkPlace->next = lkNew;
@@ -317,7 +320,10 @@ int xmlListAppend(xmlListPtr l, void *data)
         return (1);
     }
     lkNew->data = data;
-    lkNew->next = lkPlace->next;
+    if (lkPlace != NULL) {
+        lkNew->next = lkPlace->next;
+    else
+        lkNew->next = NULL;
     (lkPlace->next)->prev = lkNew;
     lkPlace->next = lkNew;
     lkNew->prev = lkPlace;

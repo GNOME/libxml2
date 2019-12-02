@@ -10300,8 +10300,10 @@ xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
     }
     ctxt->comp->last = -1;
-    PUSH_LONG_EXPR(XPATH_OP_VARIABLE, 0, 0, 0,
-	           name, prefix);
+    if (PUSH_LONG_EXPR(XPATH_OP_VARIABLE, 0, 0, 0, name, prefix) == -1) {
+        xmlFree(prefix);
+        xmlFree(name);
+    }
     SKIP_BLANKS;
     if ((ctxt->context != NULL) && (ctxt->context->flags & XML_XPATH_NOVAR)) {
 	XP_ERROR(XPATH_FORBID_VARIABLE_ERROR);
@@ -10408,8 +10410,10 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
 	    SKIP_BLANKS;
 	}
     }
-    PUSH_LONG_EXPR(XPATH_OP_FUNCTION, nbargs, 0, 0,
-	           name, prefix);
+    if (PUSH_LONG_EXPR(XPATH_OP_FUNCTION, nbargs, 0, 0, name, prefix) == -1) {
+        xmlFree(prefix);
+        xmlFree(name);
+    }
     NEXT;
     SKIP_BLANKS;
 }
@@ -11050,7 +11054,7 @@ xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter) {
  */
 static xmlChar *
 xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
-	             xmlXPathTypeVal *type, const xmlChar **prefix,
+	             xmlXPathTypeVal *type, xmlChar **prefix,
 		     xmlChar *name) {
     int blanks;
 
@@ -11281,7 +11285,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	SKIP_BLANKS;
     } else {
 	xmlChar *name = NULL;
-	const xmlChar *prefix = NULL;
+	xmlChar *prefix = NULL;
 	xmlXPathTestVal test = (xmlXPathTestVal) 0;
 	xmlXPathAxisVal axis = (xmlXPathAxisVal) 0;
 	xmlXPathTypeVal type = (xmlXPathTypeVal) 0;
@@ -11391,9 +11395,11 @@ eval_predicates:
 	    PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op2, op1, 0, 0);
 	} else
 #endif
-	    PUSH_FULL_EXPR(XPATH_OP_COLLECT, op1, ctxt->comp->last, axis,
-			   test, type, (void *)prefix, (void *)name);
-
+        if (PUSH_FULL_EXPR(XPATH_OP_COLLECT, op1, ctxt->comp->last, axis,
+                           test, type, (void *)prefix, (void *)name) == -1) {
+            xmlFree(prefix);
+            xmlFree(name);
+        }
     }
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext, "Step : ");

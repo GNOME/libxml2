@@ -3708,6 +3708,11 @@ xmlFreeNodeList(xmlNodePtr cur) {
 		(cur->type != XML_XINCLUDE_START) &&
 		(cur->type != XML_XINCLUDE_END) &&
 		(cur->type != XML_ENTITY_REF_NODE) &&
+		(cur->type != XML_DOCUMENT_NODE) &&
+#ifdef LIBXML_DOCB_ENABLED
+		(cur->type != XML_DOCB_DOCUMENT_NODE) &&
+#endif
+		(cur->type != XML_HTML_DOCUMENT_NODE) &&
 		(cur->content != (xmlChar *) &(cur->properties))) {
 		DICT_FREE(cur->content)
 	    }

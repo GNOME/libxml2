@@ -25,7 +25,10 @@ class TestCase(unittest.TestCase):
         when the exception is raised, check the libxml2.lastError for
         expected values."""
         # disable the default error handler
-        libxml2.registerErrorHandler(None,None)
+        def noerr(ctx, str):
+            pass
+        # None is not acceptable as function.
+        libxml2.registerErrorHandler(noerr,None)
         try:
             f(*args)
         except exc:
@@ -40,12 +43,12 @@ class TestCase(unittest.TestCase):
                 print("file =",e.file())
                 print("line =",e.line())
                 print()
-            self.failUnlessEqual(domain,e.domain())
-            self.failUnlessEqual(code,e.code())
-            self.failUnlessEqual(message,e.message())
-            self.failUnlessEqual(level,e.level())
-            self.failUnlessEqual(file,e.file())
-            self.failUnlessEqual(line,e.line())
+            self.assertEqual(domain,e.domain())
+            self.assertEqual(code,e.code())
+            self.assertEqual(message,e.message())
+            self.assertEqual(level,e.level())
+            self.assertEqual(file,e.file())
+            self.assertEqual(line,e.line())
         else:
             self.fail("exception %s should have been raised" % exc)
 

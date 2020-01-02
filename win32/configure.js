@@ -210,16 +210,16 @@ function discoverVersion()
 		s = new String(ln);
 		if (s.search(/^LIBXML_MAJOR_VERSION=/) != -1) {
 			vf.WriteLine(s);
-			verMajor = s.substring(s.indexOf("=") + 1, s.length)
+			verMajor = s.substring(s.indexOf("=") + 1, s.length);
 		} else if(s.search(/^LIBXML_MINOR_VERSION=/) != -1) {
 			vf.WriteLine(s);
-			verMinor = s.substring(s.indexOf("=") + 1, s.length)
+			verMinor = s.substring(s.indexOf("=") + 1, s.length);
 		} else if(s.search(/^LIBXML_MICRO_VERSION=/) != -1) {
 			vf.WriteLine(s);
-			verMicro = s.substring(s.indexOf("=") + 1, s.length)
+			verMicro = s.substring(s.indexOf("=") + 1, s.length);
 		} else if(s.search(/^LIBXML_MICRO_VERSION_SUFFIX=/) != -1) {
 			vf.WriteLine(s);
-			verMicroSuffix = s.substring(s.indexOf("=") + 1, s.length)
+			verMicroSuffix = s.substring(s.indexOf("=") + 1, s.length);
 		}
 	}
 	cf.Close();
@@ -280,7 +280,7 @@ function discoverVersion()
 		vf.WriteLine("DYNRUNTIME=" + (dynruntime? "1" : "0"));
 	}
 	vf.Close();
-	versionFile = "rcVersion.h"
+	versionFile = "rcVersion.h";
 	vf = fso.CreateTextFile(versionFile, true);
 	vf.WriteLine("/*");
 	vf.WriteLine("  " + versionFile);
@@ -291,7 +291,7 @@ function discoverVersion()
 	vf.WriteLine("#define LIBXML_MINOR_VERSION " + verMinor);
 	vf.WriteLine("#define LIBXML_MICRO_VERSION " + verMicro);
 	vf.WriteLine("#define LIBXML_DOTTED_VERSION " + "\"" + verMajor + "." + verMinor + "." + verMicro + "\"");
-	vf.Close()
+	vf.Close();
 }
 
 /* Configures libxml. This one will generate xmlversion.h from xmlversion.h.in
@@ -544,8 +544,6 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildStatic = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "prefix")
 			buildPrefix = arg.substring(opt.length + 1, arg.length);
-		else if (opt == "incdir")
-			buildIncPrefix = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "bindir")
 			buildBinPrefix = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "libdir")

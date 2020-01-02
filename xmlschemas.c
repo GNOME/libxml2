@@ -24184,7 +24184,7 @@ xmlSchemaValidateFacets(xmlSchemaAbstractCtxtPtr actxt,
 			unsigned long length,
 			int fireErrors)
 {
-    int ret, error = 0;
+    int ret, error = 0, found;
 
     xmlSchemaTypePtr tmpType;
     xmlSchemaFacetLinkPtr facetLink;
@@ -24308,103 +24308,98 @@ WXS_IS_LIST:
     }
 
 pattern_and_enum:
-    if (error >= 0) {
-	int found = 0;
-	/*
-	* Process enumerations. Facet values are in the value space
-	* of the defining type's base type. This seems to be a bug in the
-	* XML Schema 1.0 spec. Use the whitespace type of the base type.
-	* Only the first set of enumerations in the ancestor-or-self axis
-	* is used for validation.
-	*/
-	ret = 0;
-	tmpType = type;
-	do {
-	    for (facet = tmpType->facets; facet != NULL; facet = facet->next) {
-		if (facet->type != XML_SCHEMA_FACET_ENUMERATION)
-		    continue;
-		found = 1;
-		ret = xmlSchemaAreValuesEqual(facet->val, val);
-		if (ret == 1)
-		    break;
-		else if (ret < 0) {
-		    AERROR_INT("xmlSchemaValidateFacets",
-			"validating against an enumeration facet");
-		    return (-1);
-		}
-	    }
-	    if (ret != 0)
-		break;
-	    /*
-	    * Break on the first set of enumerations. Any additional
-	    *  enumerations which might be existent on the ancestors
-	    *  of the current type are restricted by this set; thus
-	    *  *must* *not* be taken into account.
-	    */
-	    if (found)
-		break;
-	    tmpType = tmpType->baseType;
-	} while ((tmpType != NULL) &&
-	    (tmpType->type != XML_SCHEMA_TYPE_BASIC));
-	if (found && (ret == 0)) {
-	    ret = XML_SCHEMAV_CVC_ENUMERATION_VALID;
-	    if (fireErrors) {
-		xmlSchemaFacetErr(actxt, ret, node,
-		    value, 0, type, NULL, NULL, NULL, NULL);
-	    } else
-		return (ret);
-	    if (error == 0)
-		error = ret;
-	}
+    found = 0;
+    /*
+    * Process enumerations. Facet values are in the value space
+    * of the defining type's base type. This seems to be a bug in the
+    * XML Schema 1.0 spec. Use the whitespace type of the base type.
+    * Only the first set of enumerations in the ancestor-or-self axis
+    * is used for validation.
+    */
+    ret = 0;
+    tmpType = type;
+    do {
+        for (facet = tmpType->facets; facet != NULL; facet = facet->next) {
+            if (facet->type != XML_SCHEMA_FACET_ENUMERATION)
+                continue;
+            found = 1;
+            ret = xmlSchemaAreValuesEqual(facet->val, val);
+            if (ret == 1)
+                break;
+            else if (ret < 0) {
+                AERROR_INT("xmlSchemaValidateFacets",
+                    "validating against an enumeration facet");
+                return (-1);
+            }
+        }
+        if (ret != 0)
+            break;
+        /*
+        * Break on the first set of enumerations. Any additional
+        *  enumerations which might be existent on the ancestors
+        *  of the current type are restricted by this set; thus
+        *  *must* *not* be taken into account.
+        */
+        if (found)
+            break;
+        tmpType = tmpType->baseType;
+    } while ((tmpType != NULL) &&
+        (tmpType->type != XML_SCHEMA_TYPE_BASIC));
+    if (found && (ret == 0)) {
+        ret = XML_SCHEMAV_CVC_ENUMERATION_VALID;
+        if (fireErrors) {
+            xmlSchemaFacetErr(actxt, ret, node,
+                value, 0, type, NULL, NULL, NULL, NULL);
+        } else
+            return (ret);
+        if (error == 0)
+            error = ret;
     }
 
-    if (error >= 0) {
-	int found;
-	/*
-	* Process patters. Pattern facets are ORed at type level
-	* and ANDed if derived. Walk the base type axis.
-	*/
-	tmpType = type;
-	facet = NULL;
-	do {
-	    found = 0;
-	    for (facetLink = tmpType->facetSet; facetLink != NULL;
-		facetLink = facetLink->next) {
-		if (facetLink->facet->type != XML_SCHEMA_FACET_PATTERN)
-		    continue;
-		found = 1;
-		/*
-		* NOTE that for patterns, @value needs to be the
-		* normalized value.
-		*/
-		ret = xmlRegexpExec(facetLink->facet->regexp, value);
-		if (ret == 1)
-		    break;
-		else if (ret < 0) {
-		    AERROR_INT("xmlSchemaValidateFacets",
-			"validating against a pattern facet");
-		    return (-1);
-		} else {
-		    /*
-		    * Save the last non-validating facet.
-		    */
-		    facet = facetLink->facet;
-		}
-	    }
-	    if (found && (ret != 1)) {
-		ret = XML_SCHEMAV_CVC_PATTERN_VALID;
-		if (fireErrors) {
-		    xmlSchemaFacetErr(actxt, ret, node,
-			value, 0, type, facet, NULL, NULL, NULL);
-		} else
-		    return (ret);
-		if (error == 0)
-		    error = ret;
-		break;
-	    }
-	    tmpType = tmpType->baseType;
-	} while ((tmpType != NULL) && (tmpType->type != XML_SCHEMA_TYPE_BASIC));
-    }
+    /*
+    * Process patters. Pattern facets are ORed at type level
+    * and ANDed if derived. Walk the base type axis.
+    */
+    tmpType = type;
+    facet = NULL;
+    do {
+        found = 0;
+        for (facetLink = tmpType->facetSet; facetLink != NULL;
+            facetLink = facetLink->next) {
+            if (facetLink->facet->type != XML_SCHEMA_FACET_PATTERN)
+                continue;
+            found = 1;
+            /*
+            * NOTE that for patterns, @value needs to be the
+            * normalized value.
+            */
+            ret = xmlRegexpExec(facetLink->facet->regexp, value);
+            if (ret == 1)
+                break;
+            else if (ret < 0) {
+                AERROR_INT("xmlSchemaValidateFacets",
+                    "validating against a pattern facet");
+                return (-1);
+            } else {
+                /*
+                * Save the last non-validating facet.
+                */
+                facet = facetLink->facet;
+            }
+        }
+        if (found && (ret != 1)) {
+            ret = XML_SCHEMAV_CVC_PATTERN_VALID;
+            if (fireErrors) {
+                xmlSchemaFacetErr(actxt, ret, node,
+                    value, 0, type, facet, NULL, NULL, NULL);
+            } else
+                return (ret);
+            if (error == 0)
+                error = ret;
+            break;
+        }
+        tmpType = tmpType->baseType;
+    } while ((tmpType != NULL) && (tmpType->type != XML_SCHEMA_TYPE_BASIC));
 
     return (error);
 }

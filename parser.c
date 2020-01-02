@@ -3912,7 +3912,6 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
                            "AttValue length too long\n");
             goto mem_error;
         }
-	if (c == 0) break;
 	if (c == '&') {
 	    in_space = 0;
 	    if (NXT(1) == '#') {

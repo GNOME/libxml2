@@ -1251,8 +1251,7 @@ xmlNanoFTPConnectTo(const char *server, int port) {
 	xmlNanoFTPFreeCtxt(ctxt);
 	return(NULL);
     }
-    if (port != 0)
-	ctxt->port = port;
+    ctxt->port = port;
     res = xmlNanoFTPConnect(ctxt);
     if (res < 0) {
 	xmlNanoFTPFreeCtxt(ctxt);

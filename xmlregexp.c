@@ -6055,7 +6055,7 @@ xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	return(NULL);
     if (min < 1)
 	return(NULL);
-    if ((max < min) || (max < 1))
+    if (max < min)
 	return(NULL);
     atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
     if (atom == NULL)
@@ -6134,7 +6134,7 @@ xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	return(NULL);
     if (min < 1)
 	return(NULL);
-    if ((max < min) || (max < 1))
+    if (max < min)
 	return(NULL);
     atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
     if (atom == NULL)

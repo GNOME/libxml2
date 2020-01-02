@@ -5919,28 +5919,27 @@ xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
 		    break;
 		case XML_ELEMENT_TYPE_MIXED:
 		    break;
-		case XML_ELEMENT_TYPE_ELEMENT:
-		    if (len > 0) {
-			int i;
+		case XML_ELEMENT_TYPE_ELEMENT: {
+                    int i;
 
-			for (i = 0;i < len;i++) {
-			    if (!IS_BLANK_CH(data[i])) {
-				xmlErrValidNode(ctxt, state->node,
-						XML_DTD_CONTENT_MODEL,
-	   "Element %s content does not follow the DTD, Text not allowed\n",
-				       state->node->name, NULL, NULL);
-				ret = 0;
-				goto done;
-			    }
-			}
-			/*
-			 * TODO:
-			 * VC: Standalone Document Declaration
-			 *  element types with element content, if white space
-			 *  occurs directly within any instance of those types.
-			 */
-		    }
-		    break;
+                    for (i = 0;i < len;i++) {
+                        if (!IS_BLANK_CH(data[i])) {
+                            xmlErrValidNode(ctxt, state->node,
+                                            XML_DTD_CONTENT_MODEL,
+       "Element %s content does not follow the DTD, Text not allowed\n",
+                                   state->node->name, NULL, NULL);
+                            ret = 0;
+                            goto done;
+                        }
+                    }
+                    /*
+                     * TODO:
+                     * VC: Standalone Document Declaration
+                     *  element types with element content, if white space
+                     *  occurs directly within any instance of those types.
+                     */
+                    break;
+                }
 	    }
 	}
     }

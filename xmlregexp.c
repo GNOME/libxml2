@@ -26,6 +26,9 @@
 #ifdef HAVE_LIMITS_H
 #include <limits.h>
 #endif
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
 
 #include <libxml/tree.h>
 #include <libxml/parserInternals.h>
@@ -35,6 +38,9 @@
 
 #ifndef INT_MAX
 #define INT_MAX 123456789 /* easy to flag and big enough for our needs */
+#endif
+#ifndef SIZE_MAX
+#define SIZE_MAX ((size_t) -1)
 #endif
 
 /* #define DEBUG_REGEXP_GRAPH */
@@ -418,6 +424,32 @@ xmlRegexpErrCompile(xmlRegParserCtxtPtr ctxt, const char *extra)
  ************************************************************************/
 
 static int xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt);
+
+/**
+ * xmlRegCalloc2:
+ * @dim1:  size of first dimension
+ * @dim2:  size of second dimension
+ * @elemSize:  size of element
+ *
+ * Allocate a two-dimensional array and set all elements to zero.
+ *
+ * Returns the new array or NULL in case of error.
+ */
+static void*
+xmlRegCalloc2(size_t dim1, size_t dim2, size_t elemSize) {
+    size_t totalSize;
+    void *ret;
+
+    /* Check for overflow */
+    if (dim1 > SIZE_MAX / dim2 / elemSize)
+        return (NULL);
+    totalSize = dim1 * dim2 * elemSize;
+    ret = xmlMalloc(totalSize);
+    if (ret != NULL)
+        memset(ret, 0, totalSize);
+    return (ret);
+}
+
 /**
  * xmlRegEpxFromParse:
  * @ctxt:  the parser context used to build it
@@ -540,8 +572,8 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 #ifdef DEBUG_COMPACTION
 	printf("Final: %d atoms\n", nbatoms);
 #endif
-	transitions = (int *) xmlMalloc((nbstates + 1) *
-	                                (nbatoms + 1) * sizeof(int));
+	transitions = (int *) xmlRegCalloc2(nbstates + 1, nbatoms + 1,
+                                            sizeof(int));
 	if (transitions == NULL) {
 	    xmlFree(stateRemap);
 	    xmlFree(stringRemap);
@@ -551,7 +583,6 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 	    xmlFree(ret);
 	    return(NULL);
 	}
-	memset(transitions, 0, (nbstates + 1) * (nbatoms + 1) * sizeof(int));
 
 	/*
 	 * Allocate the transition table. The first entry for each
@@ -577,12 +608,9 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 		    continue;
                 atomno = stringRemap[trans->atom->no];
 		if ((trans->atom->data != NULL) && (transdata == NULL)) {
-		    transdata = (void **) xmlMalloc(nbstates * nbatoms *
-			                            sizeof(void *));
-		    if (transdata != NULL)
-			memset(transdata, 0,
-			       nbstates * nbatoms * sizeof(void *));
-		    else {
+		    transdata = (void **) xmlRegCalloc2(nbstates, nbatoms,
+			                                sizeof(void *));
+		    if (transdata == NULL) {
 			xmlRegexpErrMemory(ctxt, "compiling regexp");
 			break;
 		    }

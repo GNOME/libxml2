@@ -17,13 +17,6 @@ SAX.characters(my title, 8)
 SAX.endElementNs(title, NULL, NULL)
 SAX.characters(
 , 1)
-SAX.ignorableWhitespace(
-, 1)
-SAX.startElementNs(title, NULL, NULL, 0, 0, 0)
-SAX.characters(my title, 8)
-SAX.endElementNs(title, NULL, NULL)
-SAX.characters(
-, 1)
 SAX.characters(
   This text is about XML, the, 31)
 SAX.getEntity(xml)

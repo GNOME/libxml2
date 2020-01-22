@@ -590,36 +590,6 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
     } else {
 	ret = xmlGetDocEntity(ctxt->myDoc, name);
     }
-    if ((ret != NULL) &&
-	((ctxt->validate) || (ctxt->replaceEntities)) &&
-	(ret->children == NULL) &&
-	(ret->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
-	int val;
-
-	/*
-	 * for validation purposes we really need to fetch and
-	 * parse the external entity
-	 */
-	xmlNodePtr children;
-	unsigned long oldnbent = ctxt->nbentities;
-
-        val = xmlParseCtxtExternalEntity(ctxt, ret->URI,
-		                         ret->ExternalID, &children);
-	if (val == 0) {
-	    xmlAddChildList((xmlNodePtr) ret, children);
-	} else {
-	    xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_PROCESSING,
-		           "Failure to process entity %s\n", name, NULL);
-	    ctxt->validate = 0;
-	    return(NULL);
-	}
-	ret->owner = 1;
-	if (ret->checked == 0) {
-	    ret->checked = (ctxt->nbentities - oldnbent + 1) * 2;
-	    if ((ret->content != NULL) && (xmlStrchr(ret->content, '<')))
-	        ret->checked |= 1;
-	}
-    }
     return(ret);
 }
 

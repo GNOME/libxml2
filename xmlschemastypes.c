@@ -6003,13 +6003,13 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		    * recoverable timezone and not "Z".
 		    */
 		    snprintf(buf, 30,
-			"%04ld:%02u:%02uZ",
+			"%04ld-%02u-%02uZ",
 			norm->value.date.year, norm->value.date.mon,
 			norm->value.date.day);
 		    xmlSchemaFreeValue(norm);
 		} else {
 		    snprintf(buf, 30,
-			"%04ld:%02u:%02u",
+			"%04ld-%02u-%02u",
 			val->value.date.year, val->value.date.mon,
 			val->value.date.day);
 		}
@@ -6030,14 +6030,14 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		    * TODO: Check if "%.14g" is portable.
 		    */
 		    snprintf(buf, 50,
-			"%04ld:%02u:%02uT%02u:%02u:%02.14gZ",
+			"%04ld-%02u-%02uT%02u:%02u:%02.14gZ",
 			norm->value.date.year, norm->value.date.mon,
 			norm->value.date.day, norm->value.date.hour,
 			norm->value.date.min, norm->value.date.sec);
 		    xmlSchemaFreeValue(norm);
 		} else {
 		    snprintf(buf, 50,
-			"%04ld:%02u:%02uT%02u:%02u:%02.14g",
+			"%04ld-%02u-%02uT%02u:%02u:%02.14g",
 			val->value.date.year, val->value.date.mon,
 			val->value.date.day, val->value.date.hour,
 			val->value.date.min, val->value.date.sec);

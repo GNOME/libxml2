@@ -1768,4 +1768,7 @@
   <release version="2.9.8">
     <symbol file="hash">xmlHashDefaultDeallocator</symbol>
   </release>
+  <release version="2.9.11">
+    <symbol file="xmlIO">xmlPopOutputCallbacks</symbol>
+  </release>
 </symbols>

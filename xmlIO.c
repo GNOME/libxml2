@@ -560,6 +560,33 @@ xmlCleanupOutputCallbacks(void)
     xmlOutputCallbackNr = 0;
     xmlOutputCallbackInitialized = 0;
 }
+
+/**
+ * xmlPopOutputCallbacks:
+ *
+ * Remove the top output callbacks from the output stack. This includes the
+ * compiled-in I/O.
+ *
+ * Returns the number of output callback registered or -1 in case of error.
+ */
+int
+xmlPopOutputCallbacks(void)
+{
+    if (!xmlOutputCallbackInitialized)
+        return(-1);
+
+    if (xmlOutputCallbackNr <= 0)
+        return(-1);
+
+    xmlOutputCallbackNr--;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].matchcallback = NULL;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].opencallback = NULL;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].writecallback = NULL;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].closecallback = NULL;
+
+    return(xmlOutputCallbackNr);
+}
+
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************

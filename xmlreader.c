@@ -3848,16 +3848,20 @@ xmlTextReaderSetParserProp(xmlTextReaderPtr reader, int prop, int value) {
 	    return(0);
         case XML_PARSER_VALIDATE:
 	    if (value != 0) {
+                ctxt->options |= XML_PARSE_DTDVALID;
 		ctxt->validate = 1;
 		reader->validate = XML_TEXTREADER_VALIDATE_DTD;
 	    } else {
+                ctxt->options &= ~XML_PARSE_DTDVALID;
 		ctxt->validate = 0;
 	    }
 	    return(0);
         case XML_PARSER_SUBST_ENTITIES:
 	    if (value != 0) {
+                ctxt->options |= XML_PARSE_NOENT;
 		ctxt->replaceEntities = 1;
 	    } else {
+                ctxt->options &= ~XML_PARSE_NOENT;
 		ctxt->replaceEntities = 0;
 	    }
 	    return(0);

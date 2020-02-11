@@ -1106,20 +1106,9 @@ static void
 xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
     xmlNodePtr oldnode = reader->node;
     xmlNodePtr node = reader->node;
-    xmlParserCtxtPtr ctxt = reader->ctxt;
 
     do {
 	if (node->type == XML_ENTITY_REF_NODE) {
-	    /*
-	     * Case where the underlying tree is not available, lookup the entity
-	     * and walk it.
-	     */
-	    if ((node->children == NULL) && (ctxt->sax != NULL) &&
-		(ctxt->sax->getEntity != NULL)) {
-		node->children = (xmlNodePtr)
-		    ctxt->sax->getEntity(ctxt, node->name);
-	    }
-
 	    if ((node->children != NULL) &&
 		(node->children->type == XML_ENTITY_DECL) &&
 		(node->children->children != NULL)) {
@@ -1564,16 +1553,6 @@ node_found:
     if ((reader->node != NULL) &&
 	(reader->node->type == XML_ENTITY_REF_NODE) &&
 	(reader->ctxt != NULL) && (reader->ctxt->replaceEntities == 1)) {
-	/*
-	 * Case where the underlying tree is not available, lookup the entity
-	 * and walk it.
-	 */
-	if ((reader->node->children == NULL) && (reader->ctxt->sax != NULL) &&
-	    (reader->ctxt->sax->getEntity != NULL)) {
-	    reader->node->children = (xmlNodePtr)
-		reader->ctxt->sax->getEntity(reader->ctxt, reader->node->name);
-	}
-
 	if ((reader->node->children != NULL) &&
 	    (reader->node->children->type == XML_ENTITY_DECL) &&
 	    (reader->node->children->children != NULL)) {

@@ -294,7 +294,7 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
 	lenread = PyBytes_Size(ret);
 	data = PyBytes_AsString(ret);
 #ifdef PyUnicode_Check
-    } else if PyUnicode_Check (ret) {
+    } else if (PyUnicode_Check (ret)) {
 #if PY_VERSION_HEX >= 0x03030000
         Py_ssize_t size;
 	const char *tmp;
@@ -359,7 +359,7 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
 	lenread = PyBytes_Size(ret);
 	data = PyBytes_AsString(ret);
 #ifdef PyUnicode_Check
-    } else if PyUnicode_Check (ret) {
+    } else if (PyUnicode_Check (ret)) {
 #if PY_VERSION_HEX >= 0x03030000
         Py_ssize_t size;
 	const char *tmp;

@@ -627,7 +627,7 @@ libxml_xmlXPathObjectPtrConvert(PyObject *obj)
                          PyBytes_GET_SIZE(obj));
         ret = xmlXPathWrapString(str);
 #ifdef PyUnicode_Check
-    } else if PyUnicode_Check (obj) {
+    } else if (PyUnicode_Check (obj)) {
 #if PY_VERSION_HEX >= 0x03030000
         xmlChar *str;
 	const char *tmp;

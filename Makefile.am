@@ -918,7 +918,7 @@ Regexptests: testRegexp$(EXEEXT)
 
 # Disabled for now
 Exptests: testRegexp$(EXEEXT)
-	@echo "## Formal expresssions regression tests"
+	@echo "## Formal expressions regression tests"
 	-@(for i in $(srcdir)/test/expr/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \

@@ -76,7 +76,7 @@ static int xmlLittleEndian = 1;
 
 /**
  * xmlEncodingErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */

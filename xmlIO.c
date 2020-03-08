@@ -224,7 +224,7 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 
 /**
  * xmlIOErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -238,7 +238,7 @@ xmlIOErrMemory(const char *extra)
  * __xmlIOErr:
  * @code:  the error number
  * @
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an I/O error
  */
@@ -416,7 +416,7 @@ __xmlIOErr(int domain, int code, const char *extra)
 /**
  * xmlIOErr:
  * @code:  the error number
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an I/O error
  */
@@ -429,7 +429,7 @@ xmlIOErr(int code, const char *extra)
 /**
  * __xmlLoaderErr:
  * @ctx: the parser context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a resource access error
  */

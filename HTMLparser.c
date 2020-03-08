@@ -69,7 +69,7 @@ static void htmlParseComment(htmlParserCtxtPtr ctxt);
 /**
  * htmlErrMemory:
  * @ctxt:  an HTML parser context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -5482,7 +5482,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 1)
 		    goto done;
 		/*
-		 * not enouth chars in buffer
+		 * not enough chars in buffer
 		 */
 		if (avail < 2) {
 		    if (!terminate)
@@ -5648,7 +5648,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 1)
 		    goto done;
 		/*
-		 * not enouth chars in buffer
+		 * not enough chars in buffer
 		 */
 		if (avail < 2) {
 		    if (!terminate)

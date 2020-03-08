@@ -50,7 +50,7 @@ xmlValidateAttributeValueInternal(xmlDocPtr doc, xmlAttributeType type,
 /**
  * xmlVErrMemory:
  * @ctxt:  an XML validation parser context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory error
  */
@@ -89,7 +89,7 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
  * xmlErrValid:
  * @ctxt:  an XML validation parser context
  * @error:  the error number
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a validation error
  */
@@ -131,11 +131,11 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
  * @ctxt:  an XML validation parser context
  * @node:  the node raising the error
  * @error:  the error number
- * @str1:  extra informations
- * @str2:  extra informations
- * @str3:  extra informations
+ * @str1:  extra information
+ * @str2:  extra information
+ * @str3:  extra information
  *
- * Handle a validation error, provide contextual informations
+ * Handle a validation error, provide contextual information
  */
 static void LIBXML_ATTR_FORMAT(4,0)
 xmlErrValidNode(xmlValidCtxtPtr ctxt,
@@ -174,11 +174,11 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
  * @ctxt:  an XML validation parser context
  * @node:  the node raising the error
  * @error:  the error number
- * @str1:  extra informations
- * @int2:  extra informations
- * @str3:  extra informations
+ * @str1:  extra information
+ * @int2:  extra information
+ * @str3:  extra information
  *
- * Handle a validation error, provide contextual informations
+ * Handle a validation error, provide contextual information
  */
 static void LIBXML_ATTR_FORMAT(4,0)
 xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
@@ -1174,7 +1174,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
  * @buf:  An XML buffer
  * @cur:  An element table
  *
- * Dump the occurence operator of an element.
+ * Dump the occurrence operator of an element.
  */
 static void
 xmlDumpElementOccur(xmlBufferPtr buf, xmlElementContentPtr cur) {
@@ -5434,7 +5434,7 @@ fail:
     } else if (ret == -2) {
 	/*
 	 * An entities reference appeared at this level.
-	 * Buid a minimal representation of this node content
+	 * Build a minimal representation of this node content
 	 * sufficient to run the validation process on it
 	 */
 	DEBUG_VALID_MSG("Found an entity reference, linearizing");

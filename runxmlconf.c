@@ -507,7 +507,7 @@ xmlconfInfo(void) {
     fprintf(stderr, "  you need to fetch and extract the\n");
     fprintf(stderr, "  latest XML Conformance Test Suites\n");
     fprintf(stderr, "  http://www.w3.org/XML/Test/xmlts20080827.tar.gz\n");
-    fprintf(stderr, "  see http://www.w3.org/XML/Test/ for informations\n");
+    fprintf(stderr, "  see http://www.w3.org/XML/Test/ for information\n");
 }
 
 static int

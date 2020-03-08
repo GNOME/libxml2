@@ -70,7 +70,7 @@ static xmlChar* xmlGetPropNodeValueInternal(const xmlAttr *prop);
  ************************************************************************/
 /**
  * xmlTreeErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -83,7 +83,7 @@ xmlTreeErrMemory(const char *extra)
 /**
  * xmlTreeErr:
  * @code:  the error number
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -1064,7 +1064,7 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
  * @str:  a string
  *
  * Copy a string using a "dict" dictionary in the current scope,
- * if availabe.
+ * if available.
  */
 #define DICT_COPY(str, cpy) \
     if (str) { \
@@ -1081,7 +1081,7 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
  * @str:  a string
  *
  * Copy a string using a "dict" dictionary in the current scope,
- * if availabe.
+ * if available.
  */
 #define DICT_CONST_COPY(str, cpy) \
     if (str) { \
@@ -4073,7 +4073,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
       } else {
         /*
          * we have to find something appropriate here since
-         * we cant be sure, that the namespace we found is identified
+         * we can't be sure, that the namespace we found is identified
          * by the prefix
          */
         if (xmlStrEqual(ns->href, cur->ns->href)) {
@@ -7250,7 +7250,7 @@ xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
         ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL))) {
 	/*
 	 * we just move the content pointer, but also make sure
-	 * the perceived buffer size has shrinked accordingly
+	 * the perceived buffer size has shrunk accordingly
 	 */
         buf->content += len;
 	buf->size -= len;
@@ -7607,7 +7607,7 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
 
 	if (start_buf > (unsigned int) len) {
 	    /*
-	     * We can add it in the space previously shrinked
+	     * We can add it in the space previously shrunk
 	     */
 	    buf->content -= len;
             memmove(&buf->content[0], str, len);

@@ -519,7 +519,7 @@
       * xmlDocProperty
       *
       * Set of properties of the document as found by the parser
-      * Some of them are linked to similary named xmlParserOption
+      * Some of them are linked to similarly named xmlParserOption
 
      d xmlDocProperties...
      d                 s                   based(######typedef######)

@@ -540,7 +540,7 @@ xmlHTMLEncodeSend(void) {
  * xmlHTMLPrintFileInfo:
  * @input:  an xmlParserInputPtr input
  *
- * Displays the associated file and line informations for the current input
+ * Displays the associated file and line information for the current input
  */
 
 static void

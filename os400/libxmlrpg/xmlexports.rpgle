@@ -8,7 +8,7 @@
       /if not defined(XML_EXPORTS_H__)
       /define XML_EXPORTS_H__
 
-      * The definition in the original C header file are not appliable to
+      * The definition in the original C header file are not applicable to
       * ILE/RPG.
       * Therefore this file is intentionally empty.
 

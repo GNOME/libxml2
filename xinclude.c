@@ -1071,7 +1071,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		case XML_ELEMENT_DECL:
 		case XML_ATTRIBUTE_DECL:
 		case XML_ENTITY_NODE:
-		    /* Do not copy DTD informations */
+		    /* Do not copy DTD information */
 		    break;
 		case XML_ENTITY_DECL:
 		    /* handle crossing entities -> stack needed */
@@ -2612,7 +2612,7 @@ xmlXIncludeProcessTree(xmlNodePtr tree) {
  * @node: a node in an XML document
  *
  * Implement the XInclude substitution for the given subtree reusing
- * the informations and data coming from the given context.
+ * the information and data coming from the given context.
  *
  * Returns 0 if no substitution were done, -1 if some processing failed
  *    or the number of substitutions done.

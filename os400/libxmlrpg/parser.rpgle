@@ -70,7 +70,7 @@
 
       * xmlParserNodeInfo:
       *
-      * The parser can be asked to collect Node informations, i.e. at what
+      * The parser can be asked to collect Node information, i.e. at what
       * place in the file they were detected.
       * NOTE: This is off by default and not very well tested.
 
@@ -310,7 +310,7 @@
      d  freeAttrsNr                        like(xmlCint)                        # free attr. nodes
      d  freeAttrs                          like(xmlAttrPtr)                     Free attr noes list
       *
-      * the complete error informations for the last error.
+      * the complete error information for the last error.
       *
      d  lastError                          likeds(xmlError)
      d  parseMode                          like(xmlParserMode)                  The parser mode
@@ -342,7 +342,7 @@
       * xmlSAXHandler:
       *
       * A SAX handler is bunch of callbacks called by the parser when
-      * processing of the input generate data or structure informations.
+      * processing of the input generate data or structure information.
 
       * resolveEntitySAXFunc:
       * @ctx:  the user data (XML parser context)
@@ -700,7 +700,7 @@
       *                  (localname/prefix/URI/value/end) attribute values.
       *
       * SAX2 callback when an element start has been detected by the parser.
-      * It provides the namespace informations for the element, as well as
+      * It provides the namespace information for the element, as well as
       * the new namespace declarations on the element.
 
      d startElementNsSAX2Func...
@@ -714,7 +714,7 @@
       * @URI:  the element namespace name if available
       *
       * SAX2 callback when an element end has been detected by the parser.
-      * It provides the namespace informations for the element.
+      * It provides the namespace information for the element.
 
      d endElementNsSAX2Func...
      d                 s               *   based(######typedef######)
@@ -1367,7 +1367,7 @@
 
       * xmlFeature:
       *
-      * Used to examine the existance of features that can be enabled
+      * Used to examine the existence of features that can be enabled
       * or disabled at compile-time.
       * They used to be called XML_FEATURE_xxx but this clashed with Expat
 

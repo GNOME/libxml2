@@ -619,7 +619,7 @@ static const char *xmlXPathErrorMessages[] = {
 /**
  * xmlXPathErrMemory:
  * @ctxt:  an XPath context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -662,7 +662,7 @@ xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
 /**
  * xmlXPathPErrMemory:
  * @ctxt:  an XPath parser context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */

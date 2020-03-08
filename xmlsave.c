@@ -100,7 +100,7 @@ struct _xmlSaveCtxt {
  ************************************************************************/
 /**
  * xmlSaveErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -114,7 +114,7 @@ xmlSaveErrMemory(const char *extra)
  * xmlSaveErr:
  * @code:  the error number
  * @node:  the location of the error.
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */

@@ -79,7 +79,7 @@ struct _xmlParserInput {
 /**
  * xmlParserNodeInfo:
  *
- * The parser can be asked to collect Node informations, i.e. at what
+ * The parser can be asked to collect Node information, i.e. at what
  * place in the file they were detected.
  * NOTE: This is off by default and not very well tested.
  */
@@ -296,7 +296,7 @@ struct _xmlParserCtxt {
     xmlAttrPtr        freeAttrs;    /* List of freed attributes nodes */
 
     /*
-     * the complete error informations for the last error.
+     * the complete error information for the last error.
      */
     xmlError          lastError;
     xmlParserMode     parseMode;    /* the parser mode */
@@ -329,7 +329,7 @@ struct _xmlSAXLocator {
  * xmlSAXHandler:
  *
  * A SAX handler is bunch of callbacks called by the parser when processing
- * of the input generate data or structure informations.
+ * of the input generate data or structure information.
  */
 
 /**
@@ -685,7 +685,7 @@ typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
  *               attribute values.
  *
  * SAX2 callback when an element start has been detected by the parser.
- * It provides the namespace informations for the element, as well as
+ * It provides the namespace information for the element, as well as
  * the new namespace declarations on the element.
  */
 
@@ -707,7 +707,7 @@ typedef void (*startElementNsSAX2Func) (void *ctx,
  * @URI:  the element namespace name if available
  *
  * SAX2 callback when an element end has been detected by the parser.
- * It provides the namespace informations for the element.
+ * It provides the namespace information for the element.
  */
 
 typedef void (*endElementNsSAX2Func)   (void *ctx,

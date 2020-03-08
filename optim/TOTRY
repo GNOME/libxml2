@@ -18,6 +18,6 @@ XSLT:
 	     - constants at the XPAth level
 	   - provide more info on compiled expressions
 	     - dependances w.r.t. variables (which ones)
-	     - dependancy on the current node
-	     - dependancy on the current document
+	     - dependency on the current node
+	     - dependency on the current document
   - do not use _private but other fields in the node structures.

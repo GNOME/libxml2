@@ -967,7 +967,7 @@ to the <a href="https://gitlab.gnome.org/GNOME/libxml2">GIT</a> code base.</p>
 <h3>2.9.7: Nov 02 2017</h3>
 <ul>
   <li>Documentation:<br/>
-  xmlcatalog: refresh man page wrt. quering system catalog easily (Jan Pokorný)<br/>
+  xmlcatalog: refresh man page wrt. querying system catalog easily (Jan Pokorný)<br/>
   </li>
 
   <li>Portability:<br/>
@@ -1306,7 +1306,7 @@ to the <a href="https://gitlab.gnome.org/GNOME/libxml2">GIT</a> code base.</p>
   <li>Improvements:<br/>
   Reuse xmlHaltParser() where it makes sense (Daniel Veillard),<br/>
   xmlStopParser reset errNo (Daniel Veillard),<br/>
-  Reenable xz support by default (Daniel Veillard),<br/>
+  Re-enable xz support by default (Daniel Veillard),<br/>
   Recover unescaped less-than character in HTML recovery parsing (Daniel Veillard),<br/>
   Allow HTML serializer to output HTML5 DOCTYPE (Shaun McCance),<br/>
   Regression test for bug #695699 (Nick Wellnhofer),<br/>
@@ -1695,7 +1695,7 @@ Gansterer),<br/>
     Harden the buffer code and make it more compatible (Daniel Veillard),<br/>
     More cleanups for input/buffers code (Daniel Veillard),<br/>
     Cleanup function xmlBufResetInput(),<br/> to set input from Buffer (Daniel Veillard)
-    Swicth the test program for characters to new input buffers (Daniel Veillard),<br/>
+    Switch the test program for characters to new input buffers (Daniel Veillard),<br/>
     Convert the HTML tree module to the new buffers (Daniel Veillard),<br/>
     Convert of the HTML parser to new input buffers (Daniel Veillard),<br/>
     Convert the writer to new output buffer and save APIs (Daniel Veillard),<br/>
@@ -1794,7 +1794,7 @@ Gansterer),<br/>
     Avoid memory leak if xmlParserInputBufferCreateIO fails (Lin Yi-Li),
     Prevent an infinite loop when dumping a node with encoding problems (Timothy Elliott),
     xmlParseNodeInContext problems with an empty document (Tim Elliott),
-    HTML element position is not detected propperly (Pavel Andrejs),
+    HTML element position is not detected properly (Pavel Andrejs),
     Fix an off by one pointer access (Jüri Aedla),
     Try to fix a problem with entities in SAX mode (Daniel Veillard),
     Fix a crash with xmllint --path on empty results (Daniel Veillard),
@@ -1822,7 +1822,7 @@ Gansterer),<br/>
     Small fix for previous commit (Daniel Veillard),
     Fix a potential freeing error in XPath (Daniel Veillard),
     Fix a potential memory access error (Daniel Veillard),
-    Reactivate the shared library versionning script (Daniel Veillard)
+    Reactivate the shared library versioning script (Daniel Veillard)
   </li>
 
   <li>Improvements:
@@ -2011,7 +2011,7 @@ Gansterer),<br/>
     Problem with extern extern in header (Daniel Veillard),
     Add -lnetwork for compiling on Haiku (Scott McCreary),
     Runtest portability patch for Solaris (Tim Rice),
-    Small patch to accomodate the Haiku OS (Scott McCreary),
+    Small patch to accommodate the Haiku OS (Scott McCreary),
     584605 package VxWorks folder in the distribution (Daniel Veillard),
     574017 Realloc too expensive on most platform (Daniel Veillard),
     Fix windows build (Rob Richards),
@@ -2041,7 +2041,7 @@ Gansterer),<br/>
     558452 RNG compilation of optional multiple child (Daniel Veillard),
     579746 XSD validation not correct / nilable groups (Daniel Veillard),
     502960 provide namespace stack when parsing entity (Daniel Veillard),
-    566012 part 2 fix regresion tests and push mode (Daniel Veillard),
+    566012 part 2 fix regression tests and push mode (Daniel Veillard),
     566012 autodetected encoding and encoding conflict (Daniel Veillard),
     584220 xpointer(/) and xinclude problems (Daniel Veillard),
     587663 Incorrect Attribute-Value Normalization (Daniel Veillard),
@@ -2169,14 +2169,14 @@ Gansterer),<br/>
       parsing and validation fixes based on the W3C regression tests, reader
       tree skipping function fix (Ashwin), Schemas regexps escaping fix
       (Volker Grabsch), handling of entity push errors (Ashwin), fix a slowdown
-      when encoder cant serialize characters on output</li>
+      when encoder can't serialize characters on output</li>
   <li>Code cleanup: compilation fix without the reader, without the output
       (Robert Schwebel), python whitespace (Martin), many space/tabs cleanups,
       serious cleanup of the entity handling code</li>
   <li>Improvement: switch parser to XML-1.0 5th edition, add parsing flags
       for old versions, switch URI parsing to RFC 3986,
       add xmlSchemaValidCtxtGetParserCtxt (Holger Kaelberer),
-      new hashing functions for dictionnaries (based on Stefan Behnel work),
+      new hashing functions for dictionaries (based on Stefan Behnel work),
       improve handling of misplaced html/head/body in HTML parser, better
       regression test tools and code coverage display, better algorithms
       to detect various versions of the billion laughts attacks, make
@@ -2235,7 +2235,7 @@ Gansterer),<br/>
       </li>
   <li>Code cleanup: fix open() call third argument, regexp cut'n paste
       copy error, unused variable in __xmlGlobalInitMutexLock (Hannes Eder),
-      some make distcheck realted fixes (John Carr)</li>
+      some make distcheck related fixes (John Carr)</li>
   <li>Improvements: HTTP Header: includes port number (William Brack),
       testURI --debug option, </li>
 </ul>
@@ -2331,13 +2331,13 @@ Gansterer),<br/>
   <li>bug fix: xmlGetNodePath fix (Kasimier), xmlDOMWrapAdoptNode and
       attribute (Kasimier), crash when using the recover mode, 
       xmlXPathEvalExpr problem (Kasimier), xmlXPathCompExprAdd bug (Kasimier),
-      missing destry in xmlFreeRMutex (Andrew Nosenko), XML Schemas fixes
+      missing destroy in xmlFreeRMutex (Andrew Nosenko), XML Schemas fixes
       (Kasimier), warning on entities processing, XHTML script and style
       serialization (Kasimier), python generator for long types, bug in
       xmlSchemaClearValidCtxt (Bertrand Fritsch), xmlSchemaXPathEvaluate
       allocation bug (Marton Illes), error message end of line (Rob Richards),
       fix attribute serialization in writer (Rob Richards), PHP4 DTD validation
-      crasher, parser safety patch (Ben Darnell), _private context propagation
+      crash, parser safety patch (Ben Darnell), _private context propagation
       when parsing entities (with Michael Day), fix entities behaviour when 
       using SAX, URI to file path fix (Mikhail Zabaluev), disappearing validity
       context, arg error in SAX callback (Mike Hommey), fix mixed-content
@@ -2484,7 +2484,7 @@ Gansterer),<br/>
     Anatolij), xmlSchemaPSimpleTypeErr error report (Kasimier Buchcik), xml:
     namespace ahndling in Schemas (Kasimier), empty model group in Schemas
     (Kasimier), wildcard in Schemas (Kasimier), URI composition (William),
-    xs:anyType in Schemas (Kasimier), Python resolver emmitting error
+    xs:anyType in Schemas (Kasimier), Python resolver emitting error
     messages directly, Python xmlAttr.parent (Jakub Piotr Clapa), trying to
     fix the file path/URI conversion, xmlTextReaderGetAttribute fix (Rob
     Richards), xmlSchemaFreeAnnot memleak (Kasimier), HTML UTF-8
@@ -2511,7 +2511,7 @@ Gansterer),<br/>
   <li>build fixes: Windows build (Rob Richards), Mingw compilation (Igor
     Zlatkovic), Windows Makefile (Igor), gcc warnings (Kasimier and
     andriy@google.com), use gcc weak references to pthread to avoid the
-    pthread dependancy on Linux, compilation problem (Steve Nairn), compiling
+    pthread dependency on Linux, compilation problem (Steve Nairn), compiling
     of subset (Morten Welinder), IPv6/ss_family compilation (William Brack),
     compilation when disabling parts of the library, standalone test
     distribution.</li>
@@ -2553,7 +2553,7 @@ Gansterer),<br/>
     Linux/ELF/gcc4</li>
   <li>bug fixes: schemas type decimal fixups (William Brack), xmmlint return
     code (Gerry Murphy), small schemas fixes (Matthew Burgess and GUY
-    Fabrice), workaround "DAV:" namespace brokeness in c14n (Aleksey Sanin),
+    Fabrice), workaround "DAV:" namespace brokenness in c14n (Aleksey Sanin),
     segfault in Schemas (Kasimier Buchcik), Schemas attribute validation
     (Kasimier), Prop related functions and xmlNewNodeEatName (Rob Richards),
     HTML serialization of name attribute on a elements, Python error handlers
@@ -2573,7 +2573,7 @@ Gansterer),<br/>
     Bakefile support (Francesco Montorsi), Windows compilation (Joel Reed),
     some gcc4 fixes, HP-UX portability fixes (Rick Jones).</li>
   <li>bug fixes: xmlSchemaElementDump namespace (Kasimier Buchcik), push and
-    xmlreader stopping on non-fatal errors, thread support for dictionnaries
+    xmlreader stopping on non-fatal errors, thread support for dictionaries
     reference counting (Gary Coady), internal subset and push problem, URL
     saved in xmlCopyDoc, various schemas bug fixes (Kasimier), Python paths
     fixup (Stephane Bidoul), xmlGetNodePath and namespaces, xmlSetNsProp fix
@@ -2630,7 +2630,7 @@ Gansterer),<br/>
   <li>bug fixes: problem with XML::Libxml reported by Petr Pajas,  encoding
     conversion functions return values, UTF-8 bug affecting XPath reported by
     Markus Bertheau, catalog problem with NULL entries (William Brack)</li>
-  <li>documentation: fix to xmllint man page, some API function descritpion
+  <li>documentation: fix to xmllint man page, some API function description
     were updated.</li>
   <li>improvements: DTD validation APIs provided at the Python level (Brent
     Hendricks)</li>
@@ -2777,12 +2777,12 @@ Gansterer),<br/>
     William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with
     William), Relax-NG name classes compares (William), XInclude duplicate
     fallback (William), external DTD encoding detection (William), a DTD
-    validation bug (William), xmlReader Close() fix, recusive extention
+    validation bug (William), xmlReader Close() fix, recursive extension
     schemas</li>
   <li>improvements: use xmlRead* APIs in test tools (Mark Vakoc), indenting
     save optimization, better handle IIS broken HTTP redirect  behaviour (Ian
     Hummel), HTML parser frameset (James Bursa), libxml2-python RPM
-    dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
+    dependency, XML Schemas union support (Kasimier Buchcik), warning removal
     clanup (William), keep ChangeLog compressed when installing from RPMs</li>
   <li>documentation: examples and xmlDocDumpMemory docs (John Fleck), new
     example (load, xpath, modify, save), xmlCatalogDump() comments,</li>
@@ -2836,7 +2836,7 @@ Gansterer),<br/>
     William) reported by Yuuichi Teranishi</li>
   <li>bugfixes: make test and path issues, xmlWriter attribute serialization
     (William Brack), xmlWriter indentation (William), schemas validation
-    (Eric Haszlakiewicz), XInclude dictionnaries issues (William and Oleg
+    (Eric Haszlakiewicz), XInclude dictionaries issues (William and Oleg
     Paraschenko), XInclude empty fallback (William), HTML warnings (William),
     XPointer in XInclude (William), Python namespace serialization,
     isolat1ToUTF8 bound error (Alfred Mickautsch), output of parameter
@@ -2852,13 +2852,13 @@ Gansterer),<br/>
   <li>Windows compilation: mingw, msys (Mikhail Grushinskiy), function
     prototype (Cameron Johnson), MSVC6 compiler warnings, _WINSOCKAPI_
   patch</li>
-  <li>Parsers: added xmlByteConsumed(ctxt) API to get the byte offest in
+  <li>Parsers: added xmlByteConsumed(ctxt) API to get the byte offset in
     input.</li>
 </ul>
 
 <h3>2.6.5: Jan 25 2004</h3>
 <ul>
-  <li>Bugfixes: dictionnaries for schemas (William Brack), regexp segfault
+  <li>Bugfixes: dictionaries for schemas (William Brack), regexp segfault
     (William), xs:all problem (William), a number of XPointer bugfixes
     (William), xmllint error go to stderr, DTD validation problem with
     namespace, memory leak (William), SAX1 cleanup and minimal options fixes
@@ -3890,7 +3890,7 @@ it's actually not compiled in by default. The real fixes are:
     also contains numerous fixes and enhancements:
     <ul>
       <li>added xmlStopParser() to stop parsing</li>
-      <li>improved a lot parsing speed when there is large CDATA blocs</li>
+      <li>improved a lot parsing speed when there is large CDATA blocks</li>
       <li>includes XPath patches provided by Picdar Technology</li>
       <li>tried to fix as much as possible DTD validation and namespace
         related problems</li>
@@ -4189,7 +4189,7 @@ or libxslt wrappers or bindings:</p>
   <li><a href="http://savannah.gnu.org/projects/classpathx/">LibxmlJ</a> is
     an effort to create a 100% JAXP-compatible Java wrapper for libxml2 and
     libxslt as part of GNU ClasspathX project.</li>
-  <li>Patrick McPhee provides Rexx bindings fof libxml2 and libxslt, look for
+  <li>Patrick McPhee provides Rexx bindings for libxml2 and libxslt, look for
     <a href="http://www.interlog.com/~ptjm/software.html">RexxXML</a>.</li>
   <li><a
     href="http://www.satimage.fr/software/en/xml_suite.html">Satimage</a>
@@ -4198,7 +4198,7 @@ or libxslt wrappers or bindings:</p>
     osax</a>. This is an osax for Mac OS X with a set of commands to
     implement in AppleScript the XML DOM, XPATH and XSLT. Also includes
     commands for Property-lists (Apple's fast lookup table XML format.)</li>
-  <li>Francesco Montorsi developped <a
+  <li>Francesco Montorsi developed <a
     href="https://sourceforge.net/project/showfiles.php?group_id=51305&amp;package_id=45182">wxXml2</a>
     wrappers that interface libxml2, allowing wxWidgets applications to
     load/save/edit XML instances.</li>

@@ -4249,7 +4249,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
  * @values: pointer to the array of acceptable values
  * @terminal: return value if this was a terminal state
  *
- * Extract informations from the regexp execution, internal routine to
+ * Extract information from the regexp execution, internal routine to
  * implement xmlRegExecNextValues() and xmlRegExecErrInfo()
  *
  * Returns: 0 in case of success or -1 in case of error.
@@ -4408,7 +4408,7 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
  * @values: pointer to the array of acceptable values
  * @terminal: return value if this was a terminal state
  *
- * Extract informations from the regexp execution,
+ * Extract information from the regexp execution,
  * the parameter @values must point to an array of @nbval string pointers
  * on return nbval will contain the number of possible strings in that
  * state and the @values array will be updated with them. The string values
@@ -4432,7 +4432,7 @@ xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, int *nbneg,
  * @values: pointer to the array of acceptable values
  * @terminal: return value if this was a terminal state
  *
- * Extract error informations from the regexp execution, the parameter
+ * Extract error information from the regexp execution, the parameter
  * @string will be updated with the value pushed and not accepted,
  * the parameter @values must point to an array of @nbval string pointers
  * on return nbval will contain the number of possible strings in that

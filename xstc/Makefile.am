@@ -26,7 +26,7 @@ EXTRA_DIST=xstc.py xstc-to-python.xsl
 all:
 
 #
-# Rule to load the test description and extract the informations
+# Rule to load the test description and extract the information
 #
 $(TESTDIRS) Tests/Metadata/$(NISTTESTDEF_2) Tests/Metadata/$(MSTTESTDEF) Tests/Metadata/$(SUNTESTDEF):
 	-@(if [ ! -d Tests ] ; then \

@@ -199,7 +199,7 @@ static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
  ************************************************************************/
 /**
  * xmlSchemaTypeErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */

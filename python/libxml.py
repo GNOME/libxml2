@@ -392,7 +392,7 @@ class xmlCore:
         last = property(get_last, None, None, "Last sibling node")
         next = property(get_next, None, None, "Next sibling node")
         prev = property(get_prev, None, None, "Previous sibling node")
-        properties = property(get_properties, None, None, "List of properies")
+        properties = property(get_properties, None, None, "List of properties")
         content = property(get_content, None, None, "Content of this node")
         name = property(get_name, None, None, "Node name")
         type = property(get_type, None, None, "Node type")

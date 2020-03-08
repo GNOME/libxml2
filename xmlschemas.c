@@ -1002,11 +1002,11 @@ struct _xmlSchemaValidCtxt {
     int xsiAssemble;
 
     int depth;
-    xmlSchemaNodeInfoPtr *elemInfos; /* array of element informations */
+    xmlSchemaNodeInfoPtr *elemInfos; /* array of element information */
     int sizeElemInfos;
     xmlSchemaNodeInfoPtr inode; /* the current element information */
 
-    xmlSchemaIDCAugPtr aidcs; /* a list of augmented IDC informations */
+    xmlSchemaIDCAugPtr aidcs; /* a list of augmented IDC information */
 
     xmlSchemaIDCStateObjPtr xpathStates; /* first active state object. */
     xmlSchemaIDCStateObjPtr xpathStatePool; /* first stored state object. */
@@ -1873,7 +1873,7 @@ xmlSchemaPSimpleErr(const char *msg)
 /**
  * xmlSchemaPErrMemory:
  * @node: a context node
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -1995,7 +1995,7 @@ xmlSchemaPErrExt(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
 /**
  * xmlSchemaVTypeErrMemory:
  * @node: a context node
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -6031,7 +6031,7 @@ xmlSchemaPValAttrID(xmlSchemaParserCtxtPtr ctxt,
 /**
  * xmlGetMaxOccurs:
  * @ctxt:  a schema validation context
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Get the maxOccurs property
  *
@@ -6096,7 +6096,7 @@ xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
 /**
  * xmlGetMinOccurs:
  * @ctxt:  a schema validation context
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Get the minOccurs property
  *
@@ -6193,7 +6193,7 @@ xmlSchemaPGetBoolNodeValue(xmlSchemaParserCtxtPtr ctxt,
 /**
  * xmlGetBooleanProp:
  * @ctxt:  a schema validation context
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  * @name:  the attribute name
  * @def:  the default value
  *
@@ -6481,7 +6481,7 @@ xmlSchemaCheckReference(xmlSchemaParserCtxtPtr pctxt,
  * xmlSchemaParseLocalAttributes:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  * @type:  the hosting type where the attributes will be anchored
  *
  * Parses attribute uses and attribute declarations and
@@ -6523,7 +6523,7 @@ xmlSchemaParseLocalAttributes(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseAnnotation:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Attribute declaration
  * *WARNING* this interface is highly subject to change
@@ -6643,7 +6643,7 @@ xmlSchemaParseAnnotation(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int neede
  * xmlSchemaParseFacet:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Facet declaration
  * *WARNING* this interface is highly subject to change
@@ -6734,7 +6734,7 @@ xmlSchemaParseFacet(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseWildcardNs:
  * @ctxt:  a schema parser context
  * @wildc:  the wildcard, already created
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parses the attribute "processContents" and "namespace"
  * of a xsd:anyAttribute and xsd:any.
@@ -6901,7 +6901,7 @@ xmlSchemaPCheckParticleCorrect_2(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseAny:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parsea a XML schema <any> element. A particle and wildcard
  * will be created (except if minOccurs==maxOccurs==0, in this case
@@ -6996,7 +6996,7 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseNotation:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Notation declaration
  *
@@ -7043,7 +7043,7 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseAnyAttribute:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema AnyAttribute declaration
  * *WARNING* this interface is highly subject to change
@@ -7113,7 +7113,7 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseAttribute:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Attribute declaration
  * *WARNING* this interface is highly subject to change
@@ -7656,7 +7656,7 @@ xmlSchemaParseGlobalAttribute(xmlSchemaParserCtxtPtr pctxt,
  * xmlSchemaParseAttributeGroupRef:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parse an attribute group definition reference.
  * Note that a reference to an attribute group does not
@@ -7789,7 +7789,7 @@ xmlSchemaParseAttributeGroupRef(xmlSchemaParserCtxtPtr pctxt,
  * xmlSchemaParseAttributeGroupDefinition:
  * @pctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Attribute Group declaration
  * *WARNING* this interface is highly subject to change
@@ -8220,7 +8220,7 @@ xmlSchemaAddAnnotation(xmlSchemaAnnotItemPtr annItem,
  * xmlSchemaParseIDCSelectorAndField:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parses a XML Schema identity-constraint definition's
  * <selector> and <field> elements.
@@ -8318,7 +8318,7 @@ xmlSchemaParseIDCSelectorAndField(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseIDC:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parses a XML Schema identity-constraint definition.
  *
@@ -8465,7 +8465,7 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseElement:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  * @topLevel: indicates if this is global declaration
  *
  * Parses a XML schema element declaration.
@@ -8864,7 +8864,7 @@ return_null:
  * xmlSchemaParseUnion:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Union definition
  * *WARNING* this interface is highly subject to change
@@ -9033,7 +9033,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseList:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema List definition
  * *WARNING* this interface is highly subject to change
@@ -9144,7 +9144,7 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseSimpleType:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Simple Type definition
  * *WARNING* this interface is highly subject to change
@@ -9455,7 +9455,7 @@ xmlSchemaParseModelGroupDefRef(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseModelGroupDefinition:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parses a XML schema model group definition.
  *
@@ -10293,7 +10293,7 @@ xmlSchemaBuildAbsoluteURI(xmlDictPtr dict, const xmlChar* location,
  * xmlSchemaAddSchemaDoc:
  * @pctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parse an included (and to-be-redefined) XML schema document.
  *
@@ -10717,7 +10717,7 @@ exit_failure:
  * xmlSchemaParseImport:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Import definition
  * *WARNING* this interface is highly subject to change
@@ -11209,7 +11209,7 @@ xmlSchemaParseInclude(xmlSchemaParserCtxtPtr pctxt, xmlSchemaPtr schema,
  * xmlSchemaParseModelGroup:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  * @type: the "compositor" type
  * @particleNeeded: if a a model group with a particle
  *
@@ -11489,7 +11489,7 @@ xmlSchemaParseModelGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseRestriction:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Restriction definition
  * *WARNING* this interface is highly subject to change
@@ -11792,7 +11792,7 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseExtension:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * Parses an <extension>, which is found inside a
  * <simpleContent> or <complexContent>.
@@ -11928,7 +11928,7 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * xmlSchemaParseSimpleContent:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema SimpleContent definition
  * *WARNING* this interface is highly subject to change
@@ -12018,7 +12018,7 @@ xmlSchemaParseSimpleContent(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseComplexContent:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema ComplexContent definition
  * *WARNING* this interface is highly subject to change
@@ -12113,7 +12113,7 @@ xmlSchemaParseComplexContent(xmlSchemaParserCtxtPtr ctxt,
  * xmlSchemaParseComplexType:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
- * @node:  a subtree containing XML Schema informations
+ * @node:  a subtree containing XML Schema information
  *
  * parse a XML schema Complex Type definition
  * *WARNING* this interface is highly subject to change
@@ -14938,7 +14938,7 @@ xmlSchemaCheckTypeDefCircularInternal(xmlSchemaParserCtxtPtr pctxt,
     }
     if (ancestor->flags & XML_SCHEMAS_TYPE_MARKED) {
 	/*
-	* Avoid inifinite recursion on circular types not yet checked.
+	* Avoid infinite recursion on circular types not yet checked.
 	*/
 	return (0);
     }
@@ -20961,7 +20961,7 @@ xmlSchemaFixupComponents(xmlSchemaParserCtxtPtr pctxt,
 		break;
 	    case XML_SCHEMA_EXTRA_ATTR_USE_PROHIB:
 		/*
-		* Handle attribue prohibition which had a
+		* Handle attribute prohibition which had a
 		* "ref" attribute.
 		*/
 		xmlSchemaResolveAttrUseProhibReferences(
@@ -27797,7 +27797,7 @@ xmlSchemaIsValid(xmlSchemaValidCtxtPtr ctxt)
  * @warn: the warning function
  * @ctx: the functions context
  *
- * Set the error and warning callback informations
+ * Set the error and warning callback information
  */
 void
 xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,
@@ -27842,7 +27842,7 @@ xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
  * @warn: the warning function result
  * @ctx: the functions context result
  *
- * Get the error and warning callback informations
+ * Get the error and warning callback information
  *
  * Returns -1 in case of error and 0 otherwise
  */
@@ -28267,13 +28267,13 @@ struct _xmlSchemaSplitSAXData {
 struct _xmlSchemaSAXPlug {
     unsigned int magic;
 
-    /* the original callbacks informations */
+    /* the original callbacks information */
     xmlSAXHandlerPtr     *user_sax_ptr;
     xmlSAXHandlerPtr      user_sax;
     void                **user_data_ptr;
     void                 *user_data;
 
-    /* the block plugged back and validation informations */
+    /* the block plugged back and validation information */
     xmlSAXHandler         schemas_sax;
     xmlSchemaValidCtxtPtr ctxt;
 };

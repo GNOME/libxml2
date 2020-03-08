@@ -13613,7 +13613,7 @@ test_xmlParseBalancedChunkMemory(void) {
     int ret_val;
     xmlDocPtr doc; /* the document the chunk pertains to */
     int n_doc;
-    xmlSAXHandlerPtr sax; /* the SAX handler bloc (possibly NULL) */
+    xmlSAXHandlerPtr sax; /* the SAX handler block (possibly NULL) */
     int n_sax;
     void * user_data; /* The user data returned on SAX callbacks (possibly NULL) */
     int n_user_data;
@@ -13689,7 +13689,7 @@ test_xmlParseBalancedChunkMemoryRecover(void) {
     int ret_val;
     xmlDocPtr doc; /* the document the chunk pertains to */
     int n_doc;
-    xmlSAXHandlerPtr sax; /* the SAX handler bloc (possibly NULL) */
+    xmlSAXHandlerPtr sax; /* the SAX handler block (possibly NULL) */
     int n_sax;
     void * user_data; /* The user data returned on SAX callbacks (possibly NULL) */
     int n_user_data;
@@ -14065,7 +14065,7 @@ test_xmlParseExternalEntity(void) {
     int ret_val;
     xmlDocPtr doc; /* the document the chunk pertains to */
     int n_doc;
-    xmlSAXHandlerPtr sax; /* the SAX handler bloc (possibly NULL) */
+    xmlSAXHandlerPtr sax; /* the SAX handler block (possibly NULL) */
     int n_sax;
     void * user_data; /* The user data returned on SAX callbacks (possibly NULL) */
     int n_user_data;
@@ -16158,7 +16158,7 @@ test_xmlErrMemory(void) {
     int mem_base;
     xmlParserCtxtPtr ctxt; /* an XML parser context */
     int n_ctxt;
-    char * extra; /* extra informations */
+    char * extra; /* extra information */
     int n_extra;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {

@@ -71,7 +71,7 @@ static xmlEntity xmlEntityApos = {
 
 /**
  * xmlEntitiesErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */

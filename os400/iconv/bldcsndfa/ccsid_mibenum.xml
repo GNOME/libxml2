@@ -8,7 +8,7 @@
 ---     Author: Patrick Monnerat <pm@datasphere.ch>, DATASPHERE S.A.
 -->
 <ccsid_mibenum>
-        <assoc ccsid="0"><!-- Curent job's CCSID. --></assoc>
+        <assoc ccsid="0"><!-- Current job's CCSID. --></assoc>
         <assoc ccsid="37" mibenum="2028"><!-- EBCDIC-US -->
                 <alias>EBCDIC</alias>
         </assoc>

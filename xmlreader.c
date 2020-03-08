@@ -2950,7 +2950,7 @@ xmlTextReaderConstEncoding(xmlTextReaderPtr reader) {
 
 /************************************************************************
  *									*
- *			Acces API to the current node			*
+ *			Access API to the current node			*
  *									*
  ************************************************************************/
 /**
@@ -3765,7 +3765,7 @@ xmlTextReaderConstString(xmlTextReaderPtr reader, const xmlChar *str) {
  *
  * The value indicating whether to normalize white space and attribute values.
  * Since attribute value and end of line normalizations are a MUST in the XML
- * specification only the value true is accepted. The broken bahaviour of
+ * specification only the value true is accepted. The broken behaviour of
  * accepting out of range character entities like &#0; is of course not
  * supported either.
  *

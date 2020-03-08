@@ -70,7 +70,7 @@
 
 /**
  * xmlXPtrErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -86,7 +86,7 @@ xmlXPtrErrMemory(const char *extra)
 /**
  * xmlXPtrErr:
  * @ctxt:  an XPTR evaluation context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -1005,7 +1005,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	/*
 	 * To evaluate an xpointer scheme element (4.3) we need:
 	 *   context initialized to the root
-	 *   context position initalized to 1
+	 *   context position initialized to 1
 	 *   context size initialized to 1
 	 */
 	ctxt->context->node = (xmlNodePtr)ctxt->context->doc;
@@ -1536,7 +1536,7 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 		case XML_ELEMENT_DECL:
 		case XML_ATTRIBUTE_DECL:
 		case XML_ENTITY_NODE:
-		    /* Do not copy DTD informations */
+		    /* Do not copy DTD information */
 		    break;
 		case XML_ENTITY_DECL:
 		    TODO /* handle crossing entities -> stack needed */

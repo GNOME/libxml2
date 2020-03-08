@@ -146,7 +146,7 @@ xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
  * xmlParserPrintFileInfo:
  * @input:  an xmlParserInputPtr input
  *
- * Displays the associated file and line informations for the current input
+ * Displays the associated file and line information for the current input
  */
 
 void
@@ -643,7 +643,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
  * @domain: where the error comes from
  * @code: the error code
  * @node: the context node
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */

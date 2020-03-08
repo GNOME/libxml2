@@ -33,7 +33,7 @@ xmlZapDict(xmlDictPtr * dict)
 
 /**
 ***     Support for inline conversion from/to UTF-8.
-***     This is targetted to function parameter encoding conversion.
+***     This is targeted to function parameter encoding conversion.
 ***     Method is:
 ***     -       Convert string from/to UTF-8.
 ***     -       Keep it in a dictionary.

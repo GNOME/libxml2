@@ -213,7 +213,7 @@ class XSTCTestCase:
 			tokens = self.groupName.split("-")
 			self.combineName = "%s-%s" % (tokens[0], tokens[1])
 		else:
-			self.combineName = "unkown"
+			self.combineName = "unknown"
 			raise Exception("Could not compute the combine name of a test.")
 		if (not options.silent) and (self.group.descr is not None):
 			self.log.append("'%s'   group-descr: %s\n" % (self.name, self.group.descr))

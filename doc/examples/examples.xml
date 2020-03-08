@@ -141,7 +141,7 @@
   </example>
   <example filename='reader1.c'>
     <synopsis>Parse an XML file with an xmlReader</synopsis>
-    <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file and dump the informations about the nodes found in the process. (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
+    <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file and dump the information about the nodes found in the process. (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
     <usage>reader1 &lt;filename&gt;</usage>
     <test>reader1 test2.xml &gt; reader1.tmp &amp;&amp; diff reader1.tmp $(srcdir)/reader1.res</test>
     <author>Daniel Veillard</author>

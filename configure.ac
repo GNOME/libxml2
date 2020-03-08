@@ -770,7 +770,7 @@ else
 
     # warnings we'd like to see
     EXTRA_CFLAGS="${EXTRA_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
-    # warnings we'd like to supress
+    # warnings we'd like to suppress
     EXTRA_CFLAGS="${EXTRA_CFLAGS} -Wno-long-long -Wno-format-extra-args"
     case "${host}" in
           alpha*-*-linux* )
@@ -1655,7 +1655,7 @@ dnl  http://sourceforge.net/project/shownotes.php?release_id=24832
 dnl
 dnl Also *win32*config.h files redefine them for various MSC compilers.
 dnl
-dnl So do not redefine {v}snprintf to _{v}snprintf like follwing:
+dnl So do not redefine {v}snprintf to _{v}snprintf like following:
 dnl  AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
 dnl  AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])
 dnl and do not redefine those functions is C-source files.

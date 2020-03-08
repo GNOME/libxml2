@@ -79,7 +79,7 @@
  The template files used to generate all makefiles are only two:
  - libxml2.bkl      (the main one)
  - Bakefiles.bkgen
- All the other files can be dinamically regenerated.
+ All the other files can be dynamically regenerated.
 
 
 

@@ -19,7 +19,7 @@
 
 
 /**
-***     ILE/RPG cannot directly derefence a pointer and has no macros.
+***     ILE/RPG cannot directly dereference a pointer and has no macros.
 ***     The following additional procedures supply these functions.
 ***     In addition, the following code is adjusted for threads control at
 ***             compile time via the C macros.

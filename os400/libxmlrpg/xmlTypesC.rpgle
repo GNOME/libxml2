@@ -1,4 +1,4 @@
-      * Eqivalent of C data types.
+      * Equivalent of C data types.
       *
       * Copy: See Copyright for the status of this software.
       *

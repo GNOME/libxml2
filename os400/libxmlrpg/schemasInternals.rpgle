@@ -429,14 +429,14 @@
 
       * XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED:
       *
-      * The attribute wildcard has been already builded.
+      * The attribute wildcard has been already built.
 
      d XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED...
      d                 c                   X'0001'
 
       * XML_SCHEMAS_ATTRGROUP_GLOBAL:
       *
-      * The attribute wildcard has been already builded.
+      * The attribute wildcard has been already built.
 
      d XML_SCHEMAS_ATTRGROUP_GLOBAL...
      d                 c                   X'0002'
@@ -885,7 +885,7 @@
 
       * XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION:
       *
-      * disallowed substitutions: "substituion"
+      * disallowed substitutions: "substitution"
 
      d XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION...
      d                 c                   X'00002000'

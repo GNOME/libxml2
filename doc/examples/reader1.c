@@ -2,7 +2,7 @@
  * section: xmlReader
  * synopsis: Parse an XML file with an xmlReader
  * purpose: Demonstrate the use of xmlReaderForFile() to parse an XML file
- *          and dump the informations about the nodes found in the process.
+ *          and dump the information about the nodes found in the process.
  *          (Note that the XMLReader functions require libxml2 version later
  *          than 2.6.)
  * usage: reader1 <filename>

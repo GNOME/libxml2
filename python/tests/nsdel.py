@@ -42,7 +42,7 @@ checkNamespaceDefs(node, 0)
 ns.freeNsList()
 doc.freeDoc()
 
-# Remove a namespace refered to by a child
+# Remove a namespace referred to by a child
 doc = libxml2.newDoc("1.0")
 root = doc.newChild(None, "root", None)
 namespace = root.newNs("http://example.com/sample", "s")

@@ -5053,7 +5053,7 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
  * <?oasis-xml-catalog catalog="http://example.com/catalog.xml"?>
  *
  * Occurs only if allowed by the user and if happening in the Misc
- * part of the document before any doctype informations
+ * part of the document before any doctype information
  * This will add the given catalog to the parsing context in order
  * to be used if there is a resolution need further down in the document
  */
@@ -8625,7 +8625,7 @@ xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
      *
      */
     if (name != (xmlChar*)1) {
-        if (name == NULL) name = BAD_CAST "unparseable";
+        if (name == NULL) name = BAD_CAST "unparsable";
         xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
 		     "Opening and ending tag mismatch: %s line %d and %s\n",
 		                ctxt->name, line, name);
@@ -9668,7 +9668,7 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
      *
      */
     if (name != (xmlChar*)1) {
-        if (name == NULL) name = BAD_CAST "unparseable";
+        if (name == NULL) name = BAD_CAST "unparsable";
         if ((line == 0) && (ctxt->node != NULL))
             line = ctxt->node->line;
         xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
@@ -12912,7 +12912,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
  * xmlParseExternalEntityPrivate:
  * @doc:  the document the chunk pertains to
  * @oldctxt:  the previous parser context if available
- * @sax:  the SAX handler bloc (possibly NULL)
+ * @sax:  the SAX handler block (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @URL:  the URL for the entity to load
@@ -13150,7 +13150,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 /**
  * xmlParseExternalEntity:
  * @doc:  the document the chunk pertains to
- * @sax:  the SAX handler bloc (possibly NULL)
+ * @sax:  the SAX handler block (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @URL:  the URL for the entity to load
@@ -13177,7 +13177,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 /**
  * xmlParseBalancedChunkMemory:
  * @doc:  the document the chunk pertains to
- * @sax:  the SAX handler bloc (possibly NULL)
+ * @sax:  the SAX handler block (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
@@ -13629,7 +13629,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 /**
  * xmlParseBalancedChunkMemoryRecover:
  * @doc:  the document the chunk pertains to
- * @sax:  the SAX handler bloc (possibly NULL)
+ * @sax:  the SAX handler block (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @string:  the input string in UTF8 or ISO-Latin (zero terminated)

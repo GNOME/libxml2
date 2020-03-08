@@ -60,13 +60,13 @@
       <info>Create a libxml2 output buffer from a Python file</info>
       <return type='xmlOutputBufferPtr' info="the output buffer"/>
       <arg name='file' type='pythonObject' info='the Python file'/>
-      <arg name='encoding' type='xmlChar *' info='an optionnal encoding'/>
+      <arg name='encoding' type='xmlChar *' info='an optional encoding'/>
     </function>
     <function name='xmlCreateInputBuffer' file='python'>
       <info>Create a libxml2 input buffer from a Python file</info>
       <return type='xmlParserInputBufferPtr' info="the input buffer"/>
       <arg name='file' type='pythonObject' info='the Python file'/>
-      <arg name='encoding' type='xmlChar *' info='an optionnal encoding'/>
+      <arg name='encoding' type='xmlChar *' info='an optional encoding'/>
     </function>
     <function name='xmlSetEntityLoader' file='python'>
       <info>Set the entity resolver as a python function</info>

@@ -28,7 +28,7 @@
 #    Bye
 #
 # Then run the script in the doc subdir, it will create the symbols and
-# word tables and populate them with informations extracted from 
+# word tables and populate them with information extracted from 
 # the libxml2-api.xml API description, and make them accessible read-only
 # by nobody@loaclhost the user expected to be Apache's one
 #
@@ -1177,7 +1177,7 @@ def analyzeAPITop():
     try:
 	doc = loadAPI(API)
 	ret = analyzeAPI(doc)
-	print "Analyzed %d blocs" % (ret)
+	print "Analyzed %d blocks" % (ret)
 	doc.freeDoc()
     except:
 	print "Failed to parse and analyze %s" % (API)

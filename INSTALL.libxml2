@@ -26,7 +26,7 @@ Compilation
      At that point you may have to rerun ldconfig or similar utility to
      update your list of installed shared libs.
 
-     At this point you can check that the library is properly functionning
+     At this point you can check that the library is properly functioning
      by running
 
      make tests

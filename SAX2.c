@@ -2173,7 +2173,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
  *               attribute values.
  *
  * SAX2 callback when an element start has been detected by the parser.
- * It provides the namespace informations for the element, as well as
+ * It provides the namespace information for the element, as well as
  * the new namespace declarations on the element.
  */
 void
@@ -2426,7 +2426,7 @@ xmlSAX2StartElementNs(void *ctx,
  * @URI:  the element namespace name if available
  *
  * SAX2 callback when an element end has been detected by the parser.
- * It provides the namespace informations for the element.
+ * It provides the namespace information for the element.
  */
 void
 xmlSAX2EndElementNs(void *ctx,

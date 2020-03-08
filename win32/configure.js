@@ -165,9 +165,9 @@ function usage()
 	txt += "              installed (" + buildLibPrefix + ")\n";
 	txt += "  sodir:      Directory where shared libraries should be installed\n"; 
 	txt += "              (" + buildSoPrefix + ")\n";
-	txt += "  include:    Additional search path for the compiler, particularily\n";
+	txt += "  include:    Additional search path for the compiler, particularly\n";
 	txt += "              where iconv headers can be found (" + buildInclude + ")\n";
-	txt += "  lib:        Additional search path for the linker, particularily\n";
+	txt += "  lib:        Additional search path for the linker, particularly\n";
 	txt += "              where iconv library can be found (" + buildLib + ")\n";
 	WScript.Echo(txt);
 }
@@ -430,7 +430,7 @@ function genReadme(bname, ver, file)
 	f.WriteLine("platform.");
 	f.WriteBlankLines(1);
 	f.WriteLine("  The files in this package do not require any special installation");
-	f.WriteLine("steps. Extract the contents of the archive whereever you wish and");
+	f.WriteLine("steps. Extract the contents of the archive wherever you wish and");
 	f.WriteLine("make sure that your tools which use " + bname + " can find it.");
 	f.WriteBlankLines(1);
 	f.WriteLine("  For example, if you want to run the supplied utilities from the command");

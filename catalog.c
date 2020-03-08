@@ -216,7 +216,7 @@ static int xmlCatalogInitialized = 0;
 
 /**
  * xmlCatalogErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -234,7 +234,7 @@ xmlCatalogErrMemory(const char *extra)
  * @catal: the Catalog entry
  * @node: the context node
  * @msg:  the error message
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a catalog error
  */

@@ -105,7 +105,7 @@ xmlCheckVersion(int version) {
 /**
  * xmlErrMemory:
  * @ctxt:  an XML parser context
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -165,7 +165,7 @@ __xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
  * xmlErrInternal:
  * @ctxt:  an XML parser context
  * @msg:  the error message
- * @str:  error informations
+ * @str:  error information
  *
  * Handle an internal error
  */
@@ -1877,7 +1877,7 @@ xmlNewParserCtxt(void)
 
 /************************************************************************
  *									*
- *		Handling of node informations				*
+ *		Handling of node information				*
  *									*
  ************************************************************************/
 

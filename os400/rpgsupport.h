@@ -1,5 +1,5 @@
 /**
-***     Additional delarations for ILE/RPG support.
+***     Additional declarations for ILE/RPG support.
 ***
 ***     See Copyright for the status of this software.
 ***

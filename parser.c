@@ -14681,6 +14681,14 @@ xmlCleanupParser(void) {
     xmlParserInitialized = 0;
 }
 
+#ifdef ATTRIBUTE_DESTRUCTOR
+static void
+__attribute__((destructor))
+xmlDestructor(void) {
+    xmlCleanupParser();
+}
+#endif
+
 /************************************************************************
  *									*
  *	New set (2.6.0) of simpler and more flexible APIs		*

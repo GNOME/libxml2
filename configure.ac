@@ -641,6 +641,16 @@ else
       [Type cast for the send() function 2nd arg])
 fi
 
+dnl Checking whether __attribute__((destructor)) is accepted by the compiler
+AC_MSG_CHECKING([whether __attribute__((destructor)) is accepted])
+AC_TRY_COMPILE2([
+void __attribute__((destructor))
+f(void) {}], [], [
+  AC_MSG_RESULT(yes)
+  AC_DEFINE([ATTRIBUTE_DESTRUCTOR], [1],[Define if __attribute__((destructor)) is accepted])],[
+  AC_MSG_RESULT(no)])
+
+
 dnl ***********************Checking for availability of IPv6*******************
 
 AC_MSG_CHECKING([whether to enable IPv6])

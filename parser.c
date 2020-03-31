@@ -14599,7 +14599,7 @@ xmlInitParser(void) {
     if (xmlParserInitialized != 0)
 	return;
 
-#if defined(WIN32) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+#if defined(_WIN32) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 	atexit(xmlCleanupParser);
 #endif
 
@@ -14680,6 +14680,15 @@ xmlCleanupParser(void) {
     xmlCleanupMemory();
     xmlParserInitialized = 0;
 }
+
+#if defined(ATTRIBUTE_DESTRUCTOR) && !defined(LIBXML_STATIC) && \
+    !defined(_WIN32)
+static void
+__attribute__((destructor))
+xmlDestructor(void) {
+    xmlCleanupParser();
+}
+#endif
 
 /************************************************************************
  *									*

@@ -298,10 +298,59 @@ else()
 	configure_file(config.h.cmake.in config.h)
 endif()
 
-file(GLOB HDRS include/libxml/*.h)
+set(
+	LIBXML2_HDRS
+	include/libxml/c14n.h
+	include/libxml/catalog.h
+	include/libxml/chvalid.h
+	include/libxml/debugXML.h
+	include/libxml/dict.h
+	include/libxml/DOCBparser.h
+	include/libxml/encoding.h
+	include/libxml/entities.h
+	include/libxml/globals.h
+	include/libxml/hash.h
+	include/libxml/HTMLparser.h
+	include/libxml/HTMLtree.h
+	include/libxml/list.h
+	include/libxml/nanoftp.h
+	include/libxml/nanohttp.h
+	include/libxml/parser.h
+	include/libxml/parserInternals.h
+	include/libxml/pattern.h
+	include/libxml/relaxng.h
+	include/libxml/SAX.h
+	include/libxml/SAX2.h
+	include/libxml/schemasInternals.h
+	include/libxml/schematron.h
+	include/libxml/threads.h
+	include/libxml/tree.h
+	include/libxml/uri.h
+	include/libxml/valid.h
+	include/libxml/xinclude.h
+	include/libxml/xlink.h
+	include/libxml/xmlIO.h
+	include/libxml/xmlautomata.h
+	include/libxml/xmlerror.h
+	include/libxml/xmlexports.h
+	include/libxml/xmlmemory.h
+	include/libxml/xmlmodule.h
+	include/libxml/xmlreader.h
+	include/libxml/xmlregexp.h
+	include/libxml/xmlsave.h
+	include/libxml/xmlschemas.h
+	include/libxml/xmlschemastypes.h
+	include/libxml/xmlstring.h
+	include/libxml/xmlunicode.h
+	include/libxml/xmlwin32version.h
+	include/libxml/xmlwriter.h
+	include/libxml/xpath.h
+	include/libxml/xpathInternals.h
+	include/libxml/xpointer.h
+)
 
 set(
-	SRCS
+	LIBXML2_SRCS
 	buf.c
 	c14n.c
 	catalog.c
@@ -349,7 +398,7 @@ set(
 )
 
 if(WIN32)
-	list(APPEND SRCS win32/libxml2.rc)
+	list(APPEND LIBXML2_SRCS win32/libxml2.rc)
 	file(
 		WRITE
 		${CMAKE_CURRENT_BINARY_DIR}/rcVersion.h
@@ -361,14 +410,14 @@ if(WIN32)
 endif()
 
 if(LIBXML2_WITH_SAX1)
-	list(APPEND SRCS DOCBparser.c)
+	list(APPEND LIBXML2_SRCS DOCBparser.c)
 endif()
 
 if(LIBXML2_WITH_TRIO)
-	list(APPEND SRCS trio.c triostr.c)
+	list(APPEND LIBXML2_SRCS trio.c triostr.c)
 endif()
 
-add_library(LibXml2 ${HDRS} ${SRCS})
+add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
 
 target_include_directories(
 	LibXml2
@@ -443,7 +492,7 @@ if(WIN32)
 	endif()
 endif()
 
-install(FILES ${HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
+install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
 install(
 	TARGETS	LibXml2

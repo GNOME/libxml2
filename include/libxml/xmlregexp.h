@@ -92,6 +92,8 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar *value,
 					 const xmlChar *value2,
 					 void *data);
+XMLPUBFUN int XMLCALL
+	            xmlRegExecPushString3(xmlRegExecCtxtPtr exec);
 
 XMLPUBFUN int XMLCALL
 		    xmlRegExecNextValues(xmlRegExecCtxtPtr exec,

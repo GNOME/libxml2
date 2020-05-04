@@ -4240,6 +4240,26 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
     return(ret);
 }
 
+int
+xmlRegExecPushString3(xmlRegExecCtxtPtr exec) {
+    if (exec == NULL)
+        return(-1);
+    if (exec->comp == NULL)
+        return(-1);
+    if (exec->status != 0)
+        return(exec->status);
+    if ((exec->comp->counters) != NULL) {
+        if ((exec->comp->counters[((exec->state->nbTransTo - 1)/2)-1].min) >= 0) {
+            if (((exec->state->nbTransTo - 1)/2)-1 >= 0 ) {
+                if (exec->comp->counters[((exec->state->nbTransTo - 1)/2)-1].max ==-1) {
+                    return (-1);
+                }
+            }
+        }
+    }
+    return (1);
+}
+
 /**
  * xmlRegExecGetValues:
  * @exec: a regexp execution context

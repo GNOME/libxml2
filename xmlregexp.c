@@ -4385,7 +4385,7 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 	    } else if (trans->counter >= 0) {
 	        continue;
 	    } else {
-                if ((exec->comp->states[trans->to] != NULL) &&
+                if ((exec->comp != NULL) && (exec->comp->states[trans->to] != NULL) &&
 		    (exec->comp->states[trans->to]->type ==
 		     XML_REGEXP_SINK_STATE)) {
 		    if (atom->neg)

@@ -13720,6 +13720,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	ctxt->myDoc = newDoc;
     } else {
 	ctxt->myDoc = newDoc;
+	ctxt->options = doc->parseFlags;
 	newDoc->children->doc = doc;
 	/* Ensure that doc has XML spec namespace */
 	xmlSearchNsByHref(doc, (xmlNodePtr)doc, XML_XML_NAMESPACE);

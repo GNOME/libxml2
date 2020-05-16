@@ -100,7 +100,7 @@ ARFLAGS = /nologo
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
 LDFLAGS = $(LDFLAGS) /DEBUG
 !else
-CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2
 # commented out as this break VC10 c.f. 634846
 # LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 LDFLAGS = $(LDFLAGS)
@@ -248,6 +248,24 @@ XML_OBJS_A_DLL = $(XML_INTDIR_A_DLL)\buf.obj\
 	$(XML_INTDIR_A_DLL)\xpath.obj\
 	$(XML_INTDIR_A_DLL)\xpointer.obj\
 	$(XML_INTDIR_A_DLL)\xmlstring.obj
+
+!if "$(WITH_TRIO)" == "1"
+XML_OBJS =\
+	$(XML_OBJS)\
+	$(XML_INTDIR)\trio.obj\
+	$(XML_INTDIR)\trionan.obj\
+	$(XML_INTDIR)\triostr.obj
+XML_OBJS_A =\
+	$(XML_OBJS_A)\
+	$(XML_INTDIR_A)\trio.obj\
+	$(XML_INTDIR_A)\trionan.obj\
+	$(XML_INTDIR_A)\triostr.obj
+XML_OBJS_A_DLL =\
+	$(XML_OBJS_A_DLL)\
+	$(XML_INTDIR_A_DLL)\trio.obj\
+	$(XML_INTDIR_A_DLL)\trionan.obj\
+	$(XML_INTDIR_A_DLL)\triostr.obj
+!endif
 
 !if "$(WITH_LZMA)" == "1"
 XML_OBJS = $(XML_OBJS) $(XML_INTDIR)\xzlib.obj

@@ -18,6 +18,7 @@
 /*************************************************************************
  * Include files
  */
+#define IN_LIBXML
 
 #include <assert.h>
 #include <stdlib.h>

@@ -40,6 +40,8 @@
 /*************************************************************************
  * Include files
  */
+#define IN_LIBXML
+
 #include "triodef.h"
 #include "trionan.h"
 

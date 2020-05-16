@@ -44,6 +44,8 @@
 /*************************************************************************
  * Trio include files
  */
+#define IN_LIBXML
+
 #include "triodef.h"
 #include "trio.h"
 #include "triop.h"

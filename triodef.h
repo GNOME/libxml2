@@ -21,6 +21,8 @@
 /*************************************************************************
  * Platform and compiler support detection
  */
+#include <libxml/xmlexports.h>
+
 #if defined(__GNUC__)
 # define TRIO_COMPILER_GCC
 #elif defined(__SUNPRO_C)
@@ -123,7 +125,7 @@
  */
 
 #if !defined(TRIO_PUBLIC)
-# define TRIO_PUBLIC
+# define TRIO_PUBLIC XMLPUBFUN
 #endif
 #if !defined(TRIO_PRIVATE)
 # define TRIO_PRIVATE static

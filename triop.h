@@ -84,64 +84,64 @@ extern "C" {
 
 typedef int (*trio_callback_t) TRIO_PROTO((trio_pointer_t));
 
-trio_pointer_t trio_register TRIO_PROTO((trio_callback_t callback, const char *name));
-void trio_unregister TRIO_PROTO((trio_pointer_t handle));
+TRIO_PUBLIC trio_pointer_t trio_register TRIO_PROTO((trio_callback_t callback, const char *name));
+TRIO_PUBLIC void trio_unregister TRIO_PROTO((trio_pointer_t handle));
 
-TRIO_CONST char *trio_get_format TRIO_PROTO((trio_pointer_t ref));
-trio_pointer_t trio_get_argument TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC TRIO_CONST char *trio_get_format TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC trio_pointer_t trio_get_argument TRIO_PROTO((trio_pointer_t ref));
 
 /* Modifiers */
-int  trio_get_width TRIO_PROTO((trio_pointer_t ref));
-void trio_set_width TRIO_PROTO((trio_pointer_t ref, int width));
-int  trio_get_precision TRIO_PROTO((trio_pointer_t ref));
-void trio_set_precision TRIO_PROTO((trio_pointer_t ref, int precision));
-int  trio_get_base TRIO_PROTO((trio_pointer_t ref));
-void trio_set_base TRIO_PROTO((trio_pointer_t ref, int base));
-int  trio_get_padding TRIO_PROTO((trio_pointer_t ref));
-void trio_set_padding TRIO_PROTO((trio_pointer_t ref, int is_padding));
-int  trio_get_short TRIO_PROTO((trio_pointer_t ref)); /* h */
-void trio_set_shortshort TRIO_PROTO((trio_pointer_t ref, int is_shortshort));
-int  trio_get_shortshort TRIO_PROTO((trio_pointer_t ref)); /* hh */
-void trio_set_short TRIO_PROTO((trio_pointer_t ref, int is_short));
-int  trio_get_long TRIO_PROTO((trio_pointer_t ref)); /* l */
-void trio_set_long TRIO_PROTO((trio_pointer_t ref, int is_long));
-int  trio_get_longlong TRIO_PROTO((trio_pointer_t ref)); /* ll */
-void trio_set_longlong TRIO_PROTO((trio_pointer_t ref, int is_longlong));
-int  trio_get_longdouble TRIO_PROTO((trio_pointer_t ref)); /* L */
-void trio_set_longdouble TRIO_PROTO((trio_pointer_t ref, int is_longdouble));
-int  trio_get_alternative TRIO_PROTO((trio_pointer_t ref)); /* # */
-void trio_set_alternative TRIO_PROTO((trio_pointer_t ref, int is_alternative));
-int  trio_get_alignment TRIO_PROTO((trio_pointer_t ref)); /* - */
-void trio_set_alignment TRIO_PROTO((trio_pointer_t ref, int is_leftaligned));
-int  trio_get_spacing TRIO_PROTO((trio_pointer_t ref)); /*  TRIO_PROTO((space) */
-void trio_set_spacing TRIO_PROTO((trio_pointer_t ref, int is_space));
-int  trio_get_sign TRIO_PROTO((trio_pointer_t ref)); /* + */
-void trio_set_sign TRIO_PROTO((trio_pointer_t ref, int is_showsign));
-int  trio_get_quote TRIO_PROTO((trio_pointer_t ref)); /* ' */
-void trio_set_quote TRIO_PROTO((trio_pointer_t ref, int is_quote));
-int  trio_get_upper TRIO_PROTO((trio_pointer_t ref));
-void trio_set_upper TRIO_PROTO((trio_pointer_t ref, int is_upper));
+TRIO_PUBLIC int  trio_get_width TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC void trio_set_width TRIO_PROTO((trio_pointer_t ref, int width));
+TRIO_PUBLIC int  trio_get_precision TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC void trio_set_precision TRIO_PROTO((trio_pointer_t ref, int precision));
+TRIO_PUBLIC int  trio_get_base TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC void trio_set_base TRIO_PROTO((trio_pointer_t ref, int base));
+TRIO_PUBLIC int  trio_get_padding TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC void trio_set_padding TRIO_PROTO((trio_pointer_t ref, int is_padding));
+TRIO_PUBLIC int  trio_get_short TRIO_PROTO((trio_pointer_t ref)); /* h */
+TRIO_PUBLIC void trio_set_shortshort TRIO_PROTO((trio_pointer_t ref, int is_shortshort));
+TRIO_PUBLIC int  trio_get_shortshort TRIO_PROTO((trio_pointer_t ref)); /* hh */
+TRIO_PUBLIC void trio_set_short TRIO_PROTO((trio_pointer_t ref, int is_short));
+TRIO_PUBLIC int  trio_get_long TRIO_PROTO((trio_pointer_t ref)); /* l */
+TRIO_PUBLIC void trio_set_long TRIO_PROTO((trio_pointer_t ref, int is_long));
+TRIO_PUBLIC int  trio_get_longlong TRIO_PROTO((trio_pointer_t ref)); /* ll */
+TRIO_PUBLIC void trio_set_longlong TRIO_PROTO((trio_pointer_t ref, int is_longlong));
+TRIO_PUBLIC int  trio_get_longdouble TRIO_PROTO((trio_pointer_t ref)); /* L */
+TRIO_PUBLIC void trio_set_longdouble TRIO_PROTO((trio_pointer_t ref, int is_longdouble));
+TRIO_PUBLIC int  trio_get_alternative TRIO_PROTO((trio_pointer_t ref)); /* # */
+TRIO_PUBLIC void trio_set_alternative TRIO_PROTO((trio_pointer_t ref, int is_alternative));
+TRIO_PUBLIC int  trio_get_alignment TRIO_PROTO((trio_pointer_t ref)); /* - */
+TRIO_PUBLIC void trio_set_alignment TRIO_PROTO((trio_pointer_t ref, int is_leftaligned));
+TRIO_PUBLIC int  trio_get_spacing TRIO_PROTO((trio_pointer_t ref)); /*  TRIO_PROTO((space) */
+TRIO_PUBLIC void trio_set_spacing TRIO_PROTO((trio_pointer_t ref, int is_space));
+TRIO_PUBLIC int  trio_get_sign TRIO_PROTO((trio_pointer_t ref)); /* + */
+TRIO_PUBLIC void trio_set_sign TRIO_PROTO((trio_pointer_t ref, int is_showsign));
+TRIO_PUBLIC int  trio_get_quote TRIO_PROTO((trio_pointer_t ref)); /* ' */
+TRIO_PUBLIC void trio_set_quote TRIO_PROTO((trio_pointer_t ref, int is_quote));
+TRIO_PUBLIC int  trio_get_upper TRIO_PROTO((trio_pointer_t ref));
+TRIO_PUBLIC void trio_set_upper TRIO_PROTO((trio_pointer_t ref, int is_upper));
 #if TRIO_C99
-int  trio_get_largest TRIO_PROTO((trio_pointer_t ref)); /* j */
-void trio_set_largest TRIO_PROTO((trio_pointer_t ref, int is_largest));
-int  trio_get_ptrdiff TRIO_PROTO((trio_pointer_t ref)); /* t */
-void trio_set_ptrdiff TRIO_PROTO((trio_pointer_t ref, int is_ptrdiff));
-int  trio_get_size TRIO_PROTO((trio_pointer_t ref)); /* z / Z */
-void trio_set_size TRIO_PROTO((trio_pointer_t ref, int is_size));
+TRIO_PUBLIC int  trio_get_largest TRIO_PROTO((trio_pointer_t ref)); /* j */
+TRIO_PUBLIC void trio_set_largest TRIO_PROTO((trio_pointer_t ref, int is_largest));
+TRIO_PUBLIC int  trio_get_ptrdiff TRIO_PROTO((trio_pointer_t ref)); /* t */
+TRIO_PUBLIC void trio_set_ptrdiff TRIO_PROTO((trio_pointer_t ref, int is_ptrdiff));
+TRIO_PUBLIC int  trio_get_size TRIO_PROTO((trio_pointer_t ref)); /* z / Z */
+TRIO_PUBLIC void trio_set_size TRIO_PROTO((trio_pointer_t ref, int is_size));
 #endif
 
 /* Printing */
-int trio_print_ref TRIO_PROTO((trio_pointer_t ref, const char *format, ...));
-int trio_vprint_ref TRIO_PROTO((trio_pointer_t ref, const char *format, va_list args));
-int trio_printv_ref TRIO_PROTO((trio_pointer_t ref, const char *format, trio_pointer_t *args));
+TRIO_PUBLIC int trio_print_ref TRIO_PROTO((trio_pointer_t ref, const char *format, ...));
+TRIO_PUBLIC int trio_vprint_ref TRIO_PROTO((trio_pointer_t ref, const char *format, va_list args));
+TRIO_PUBLIC int trio_printv_ref TRIO_PROTO((trio_pointer_t ref, const char *format, trio_pointer_t *args));
 
-void trio_print_int TRIO_PROTO((trio_pointer_t ref, int number));
-void trio_print_uint TRIO_PROTO((trio_pointer_t ref, unsigned int number));
-/*  void trio_print_long TRIO_PROTO((trio_pointer_t ref, long number)); */
-/*  void trio_print_ulong TRIO_PROTO((trio_pointer_t ref, unsigned long number)); */
-void trio_print_double TRIO_PROTO((trio_pointer_t ref, double number));
-void trio_print_string TRIO_PROTO((trio_pointer_t ref, char *string));
-void trio_print_pointer TRIO_PROTO((trio_pointer_t ref, trio_pointer_t pointer));
+TRIO_PUBLIC void trio_print_int TRIO_PROTO((trio_pointer_t ref, int number));
+TRIO_PUBLIC void trio_print_uint TRIO_PROTO((trio_pointer_t ref, unsigned int number));
+/*  TRIO_PUBLIC void trio_print_long TRIO_PROTO((trio_pointer_t ref, long number)); */
+/*  TRIO_PUBLIC void trio_print_ulong TRIO_PROTO((trio_pointer_t ref, unsigned long number)); */
+TRIO_PUBLIC void trio_print_double TRIO_PROTO((trio_pointer_t ref, double number));
+TRIO_PUBLIC void trio_print_string TRIO_PROTO((trio_pointer_t ref, char *string));
+TRIO_PUBLIC void trio_print_pointer TRIO_PROTO((trio_pointer_t ref, trio_pointer_t pointer));
 
 #ifdef __cplusplus
 } /* extern "C" */

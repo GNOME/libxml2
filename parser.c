@@ -13176,7 +13176,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 
 /**
  * xmlParseBalancedChunkMemory:
- * @doc:  the document the chunk pertains to
+ * @doc:  the document the chunk pertains to (must not be NULL)
  * @sax:  the SAX handler block (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
@@ -13628,7 +13628,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 #ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlParseBalancedChunkMemoryRecover:
- * @doc:  the document the chunk pertains to
+ * @doc:  the document the chunk pertains to (must not be NULL)
  * @sax:  the SAX handler block (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
@@ -13700,6 +13700,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     } else {
 	xmlCtxtUseOptionsInternal(ctxt, XML_PARSE_NODICT, NULL);
     }
+    /* doc == NULL is only supported for historic reasons */
     if (doc != NULL) {
 	newDoc->intSubset = doc->intSubset;
 	newDoc->extSubset = doc->extSubset;
@@ -13716,6 +13717,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     }
     xmlAddChild((xmlNodePtr) newDoc, newRoot);
     nodePush(ctxt, newRoot);
+    /* doc == NULL is only supported for historic reasons */
     if (doc == NULL) {
 	ctxt->myDoc = newDoc;
     } else {
@@ -13785,6 +13787,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     xmlFreeParserCtxt(ctxt);
     newDoc->intSubset = NULL;
     newDoc->extSubset = NULL;
+    /* This leaks the namespace list if doc == NULL */
     newDoc->oldNs = NULL;
     xmlFreeDoc(newDoc);
 

@@ -1608,6 +1608,7 @@ loaded:
 		               XML_XINCLUDE_XPTR_RESULT,
 			       "XPointer is not a range: #%s\n",
 			       fragment);
+                xmlXPathFreeObject(xptr);
 		xmlXPathFreeContext(xptrctxt);
 		xmlFree(URL);
 		xmlFree(fragment);
@@ -1615,6 +1616,7 @@ loaded:
 	    case XPATH_NODESET:
 	        if ((xptr->nodesetval == NULL) ||
 		    (xptr->nodesetval->nodeNr <= 0)) {
+                    xmlXPathFreeObject(xptr);
 		    xmlXPathFreeContext(xptrctxt);
 		    xmlFree(URL);
 		    xmlFree(fragment);

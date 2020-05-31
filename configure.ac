@@ -647,7 +647,8 @@ AC_TRY_COMPILE2([
 void __attribute__((destructor))
 f(void) {}], [], [
   AC_MSG_RESULT(yes)
-  AC_DEFINE([ATTRIBUTE_DESTRUCTOR], [1],[Define if __attribute__((destructor)) is accepted])],[
+  AC_DEFINE([HAVE_ATTRIBUTE_DESTRUCTOR], [1],[Define if __attribute__((destructor)) is accepted])
+  AC_DEFINE([ATTRIBUTE_DESTRUCTOR], [__attribute__((destructor))],[A form that will not confuse apibuild.py])],[
   AC_MSG_RESULT(no)])
 
 

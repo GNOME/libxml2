@@ -14683,10 +14683,10 @@ xmlCleanupParser(void) {
     xmlParserInitialized = 0;
 }
 
-#if defined(ATTRIBUTE_DESTRUCTOR) && !defined(LIBXML_STATIC) && \
+#if defined(HAVE_ATTRIBUTE_DESTRUCTOR) && !defined(LIBXML_STATIC) && \
     !defined(_WIN32)
 static void
-__attribute__((destructor))
+ATTRIBUTE_DESTRUCTOR
 xmlDestructor(void) {
     xmlCleanupParser();
 }

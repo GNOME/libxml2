@@ -533,7 +533,7 @@ if(LIBXML2_WITH_PROGRAMS)
 endif()
 
 if(LIBXML2_WITH_TESTS)
-	#enable_testing()
+	enable_testing()
 	set(
 		TESTS
 		runxmlconf
@@ -569,7 +569,7 @@ if(LIBXML2_WITH_TESTS)
 		foreach(TEST ${TESTS_THREADS})
 			add_executable(${TEST} ${TEST}.c)
 			target_link_libraries(${TEST} LibXml2 Threads::Threads)
-			#add_test(NAME ${TEST} COMMAND ${TEST})
+			add_test(NAME ${TEST} COMMAND ${TEST} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 		endforeach()
 	endif()
 endif()

@@ -13,9 +13,10 @@ XML_SEED_CORPUS_SRC = \
     $(top_srcdir)/test/errors10/*.xml \
     $(top_srcdir)/test/namespaces/* \
     $(top_srcdir)/test/valid/*.xml \
-    $(top_srcdir)/test/xmlid/* \
     $(top_srcdir)/test/VC/* \
-    $(top_srcdir)/test/VCM/*
+    $(top_srcdir)/test/VCM/* \
+    $(top_srcdir)/test/XInclude/docs/* \
+    $(top_srcdir)/test/xmlid/*
 
 testFuzzer_SOURCES = testFuzzer.c fuzz.c
 

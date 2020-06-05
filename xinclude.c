@@ -86,6 +86,8 @@ struct _xmlXIncludeCtxt {
     xmlChar *		 base; /* the current xml:base */
 
     void            *_private; /* application data */
+
+    unsigned long    incTotal; /* total number of processed inclusions */
 };
 
 static int
@@ -729,7 +731,9 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	 * (bug 132597)
 	 */
 	newctxt->parseFlags = ctxt->parseFlags;
+        newctxt->incTotal = ctxt->incTotal;
 	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc));
+        ctxt->incTotal = newctxt->incTotal;
 	for (i = 0;i < ctxt->incNr;i++) {
 	    newctxt->incTab[i]->count--;
 	    newctxt->incTab[i] = NULL;
@@ -1992,11 +1996,13 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt->_private = ctxt->_private;
 	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
+        newctxt->incTotal = ctxt->incTotal;
         for (child = fallback->children; child != NULL; child = next) {
             next = child->next;
 	    if (xmlXIncludeDoProcess(newctxt, ctxt->doc, child) < 0)
                 ret = -1;
         }
+        ctxt->incTotal = newctxt->incTotal;
 	if (ctxt->nbErrors > oldNbErrors)
 	    ret = -1;
 	xmlXIncludeFreeContext(newctxt);
@@ -2411,6 +2417,15 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     do {
 	/* TODO: need to work on entities -> stack */
         if (xmlXIncludeTestNode(ctxt, cur) == 1) {
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+            /*
+             * Avoid superlinear expansion by limiting the total number
+             * of replacements.
+             */
+            if (ctxt->incTotal >= 20)
+                return(-1);
+#endif
+            ctxt->incTotal++;
             xmlXIncludePreProcessNode(ctxt, cur);
         } else if ((cur->children != NULL) &&
                    (cur->children->type != XML_ENTITY_DECL) &&

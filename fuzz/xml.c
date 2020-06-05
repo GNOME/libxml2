@@ -7,6 +7,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlerror.h>
+#include <libxml/xinclude.h>
 #include <libxml/xmlreader.h>
 #include "fuzz.h"
 
@@ -46,6 +47,8 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Pull parser */
 
     doc = xmlReadMemory(docBuffer, docSize, NULL, NULL, opts);
+    if (opts & XML_PARSE_XINCLUDE)
+        xmlXIncludeProcessFlags(doc, opts);
     /* Also test the serializer. */
     xmlDocDumpMemory(doc, &out, &outSize);
     xmlFree(out);
@@ -64,6 +67,8 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     }
 
     xmlParseChunk(ctxt, NULL, 0, 1);
+    if (opts & XML_PARSE_XINCLUDE)
+        xmlXIncludeProcessFlags(ctxt->myDoc, opts);
     xmlFreeDoc(ctxt->myDoc);
     xmlFreeParserCtxt(ctxt);
 

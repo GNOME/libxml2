@@ -1,0 +1,16 @@
+quant_any="*"
+quant_opt="?"
+quant_some="+"
+quant_num="{1,2}"
+
+branch="|a"
+pos_group="[a]"
+neg_group="[^a]"
+
+cat_letter="\\p{L}"
+cat_mark="\\p{M}"
+cat_number="\\p{N}"
+cat_punct="\\p{P}"
+cat_sym="\\p{S}"
+cat_sep="\\p{Z}"
+cat_other="\\p{C}"

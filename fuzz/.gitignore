@@ -1,0 +1,7 @@
+corpus/
+regexp
+seed/xml*
+testFuzzer
+uri
+xml
+xmlSeed

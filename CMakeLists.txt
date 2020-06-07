@@ -140,11 +140,16 @@ if(MSVC)
 	configure_file(include/win32config.h config.h COPYONLY)
 else()
 	check_c_source_compiles("
+		void __attribute__((destructor))
+		f(void) {}
+		int main(void) { return 0; }
+	" ATTRIBUTE_DESTRUCTOR)
+	check_c_source_compiles("
 		#include <netdb.h>
 		int main() { (void) gethostbyname((const char*) \"\"); return 0; }
 	" GETHOSTBYNAME_ARG_CAST_CONST)
 	if(NOT GETHOSTBYNAME_ARG_CAST_CONST)
-		set(GETHOSTBYNAME_ARG_CAST "(char*)")
+		set(GETHOSTBYNAME_ARG_CAST "(char *)")
 	else()
 		set(GETHOSTBYNAME_ARG_CAST "/**/")
 	endif()
@@ -247,16 +252,18 @@ else()
 	if(NOT ICONV_CONST_TEST)
 		set(ICONV_CONST "const")
 	endif()
+	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <sys/socket.h>
 		#include <sys/types.h>
 		int main() { (void) send(1, (const char*) \"\", 1, 1); return 0; }
 	" SEND_ARG2_CAST_CONST)
 	if(NOT SEND_ARG2_CAST_CONST)
-		set(SEND_ARG2_CAST "(char*)")
+		set(SEND_ARG2_CAST "(char *)")
 	else()
 		set(SEND_ARG2_CAST "/**/")
 	endif()
+	check_include_files("float.h;stdarg.h;stdlib.h;string.h" STDC_HEADERS)
 	check_c_source_compiles("
 		#include <stdarg.h>
 		void a(va_list* ap) {};
@@ -293,9 +300,6 @@ else()
 			" XML_SOCKLEN_T_INT)
 			set(XML_SOCKLEN_T int)
 		endif()
-	endif()
-	if(LIBXML2_WITH_THREADS)
-		add_definitions(-D_REENTRANT)
 	endif()
 	configure_file(config.h.cmake.in config.h)
 endif()
@@ -406,7 +410,7 @@ if(WIN32)
 		"#define LIBXML_MAJOR_VERSION ${LIBXML_MAJOR_VERSION}\n"
 		"#define LIBXML_MINOR_VERSION ${LIBXML_MINOR_VERSION}\n"
 		"#define LIBXML_MICRO_VERSION ${LIBXML_MICRO_VERSION}\n"
-		"#define LIBXML_DOTTED_VERSION ${VERSION}\n"
+		"#define LIBXML_DOTTED_VERSION \"${VERSION}\"\n"
 	)
 endif()
 
@@ -419,6 +423,13 @@ if(LIBXML2_WITH_TRIO)
 endif()
 
 add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
+
+if(LIBXML2_WITH_THREADS)
+	target_compile_definitions(LibXml2 PRIVATE _REENTRANT)
+	if(WIN32)
+		target_compile_definitions(LibXml2 PRIVATE HAVE_WIN32_THREADS)
+	endif()
+endif()
 
 target_include_directories(
 	LibXml2
@@ -578,6 +589,9 @@ if(LIBXML2_WITH_TESTS)
 		)
 		foreach(TEST ${TESTS_THREADS})
 			add_executable(${TEST} ${TEST}.c)
+			if(WIN32)
+				target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
+			endif()
 			target_link_libraries(${TEST} LibXml2 Threads::Threads)
 		endforeach()
 		add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

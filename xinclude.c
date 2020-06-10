@@ -2396,21 +2396,19 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
      * First phase: lookup the elements in the document
      */
     cur = tree;
-    if (xmlXIncludeTestNode(ctxt, cur) == 1)
-	xmlXIncludePreProcessNode(ctxt, cur);
     while ((cur != NULL) && (cur != tree->parent)) {
 	/* TODO: need to work on entities -> stack */
-	if ((cur->children != NULL) &&
-	    (cur->children->type != XML_ENTITY_DECL) &&
-	    (cur->children->type != XML_XINCLUDE_START) &&
-	    (cur->children->type != XML_XINCLUDE_END)) {
-	    cur = cur->children;
-	    if (xmlXIncludeTestNode(ctxt, cur))
-		xmlXIncludePreProcessNode(ctxt, cur);
-	} else if (cur->next != NULL) {
+        if (xmlXIncludeTestNode(ctxt, cur) == 1) {
+            xmlXIncludePreProcessNode(ctxt, cur);
+        } else if ((cur->children != NULL) &&
+                   (cur->children->type != XML_ENTITY_DECL) &&
+                   (cur->children->type != XML_XINCLUDE_START) &&
+                   (cur->children->type != XML_XINCLUDE_END)) {
+            cur = cur->children;
+            continue;
+        }
+	if (cur->next != NULL) {
 	    cur = cur->next;
-	    if (xmlXIncludeTestNode(ctxt, cur))
-		xmlXIncludePreProcessNode(ctxt, cur);
 	} else {
 	    if (cur == tree)
 	        break;
@@ -2420,8 +2418,6 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
 		    break; /* do */
 		if (cur->next != NULL) {
 		    cur = cur->next;
-		    if (xmlXIncludeTestNode(ctxt, cur))
-			xmlXIncludePreProcessNode(ctxt, cur);
 		    break; /* do */
 		}
 	    } while (cur != NULL);

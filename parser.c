@@ -2156,7 +2156,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
      * It's Okay to use CUR/NEXT here since all the blanks are on
      * the ASCII range.
      */
-    if ((ctxt->inputNr == 1) && (ctxt->instate != XML_PARSER_DTD)) {
+    if (ctxt->instate != XML_PARSER_DTD) {
 	const xmlChar *cur;
 	/*
 	 * if we are in the document content, go really fast
@@ -6852,6 +6852,7 @@ void
 xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *version;
     const xmlChar *encoding;
+    int oldstate;
 
     /*
      * We know that '<?xml' is here.
@@ -6862,6 +6863,10 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_STARTED, NULL);
 	return;
     }
+
+    /* Avoid expansion of parameter entities when skipping blanks. */
+    oldstate = ctxt->instate;
+    ctxt->instate = XML_PARSER_START;
 
     if (SKIP_BLANKS == 0) {
 	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
@@ -6890,6 +6895,7 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 	/*
 	 * The XML REC instructs us to stop parsing right here
 	 */
+        ctxt->instate = oldstate;
         return;
     }
     if ((encoding == NULL) && (ctxt->errNo == XML_ERR_OK)) {
@@ -6909,6 +6915,8 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 	MOVETO_ENDTAG(CUR_PTR);
 	NEXT;
     }
+
+    ctxt->instate = oldstate;
 }
 
 /**

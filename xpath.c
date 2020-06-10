@@ -14104,8 +14104,7 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	    }
 	}
 
-	stream = xmlPatterncompile(str, dict, XML_PATTERN_XPATH,
-			&namespaces[0]);
+	stream = xmlPatterncompile(str, dict, XML_PATTERN_XPATH, namespaces);
 	if (namespaces != NULL) {
 	    xmlFree((xmlChar **)namespaces);
 	}

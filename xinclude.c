@@ -2238,6 +2238,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	                   XML_XINCLUDE_MULTIPLE_ROOT,
 		       "XInclude error: would result in multiple root nodes\n",
 			   NULL);
+            xmlFreeNodeList(list);
 	    return(-1);
 	}
     }
@@ -2265,6 +2266,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 	                   XML_XINCLUDE_BUILD_FAILED,
 			   "failed to build node\n", NULL);
+            xmlFreeNodeList(list);
 	    return(-1);
 	}
 	end->type = XML_XINCLUDE_END;

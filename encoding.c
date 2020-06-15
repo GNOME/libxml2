@@ -2394,7 +2394,7 @@ xmlCharEncOutput(xmlOutputBufferPtr output, int init)
 {
     int ret;
     size_t written;
-    size_t writtentot = 0;
+    int writtentot = 0;
     size_t toconv;
     int c_in;
     int c_out;
@@ -2427,7 +2427,7 @@ retry:
 	xmlGenericError(xmlGenericErrorContext,
 		"initialized encoder\n");
 #endif
-        return(0);
+        return(c_out);
     }
 
     /*
@@ -2540,7 +2540,7 @@ retry:
             goto retry;
 	}
     }
-    return(ret);
+    return(writtentot ? writtentot : ret);
 }
 #endif
 

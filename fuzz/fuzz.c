@@ -105,6 +105,23 @@ xmlFuzzReadInt() {
 }
 
 /**
+ * xmlFuzzReadRemaining:
+ * @size:  size of string in bytes
+ *
+ * Read remaining bytes from fuzz data.
+ */
+const char *
+xmlFuzzReadRemaining(size_t *size) {
+    const char *ret = fuzzData.ptr;
+
+    *size = fuzzData.remaining;
+    fuzzData.ptr += fuzzData.remaining;
+    fuzzData.remaining = 0;
+
+    return(ret);
+}
+
+/**
  * xmlFuzzReadString:
  * @size:  size of string in bytes
  *

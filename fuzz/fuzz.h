@@ -33,6 +33,9 @@ xmlFuzzDataCleanup(void);
 int
 xmlFuzzReadInt(void);
 
+const char *
+xmlFuzzReadRemaining(size_t *size);
+
 void
 xmlFuzzReadEntities(void);
 

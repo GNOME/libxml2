@@ -1,4 +1,4 @@
-EXTRA_PROGRAMS = regexp uri xml xmlSeed
+EXTRA_PROGRAMS = html regexp uri xml xmlSeed
 check_PROGRAMS = testFuzzer
 CLEANFILES = $(EXTRA_PROGRAMS)
 AM_CPPFLAGS = -I$(top_srcdir)/include
@@ -51,6 +51,17 @@ fuzz-xml: xml$(EXEEXT) seed/xml.stamp
 	    -max_len=$(PARSER_FUZZER_MAX_LEN) \
 	    -timeout=20 \
 	    corpus/xml seed/xml
+
+html_SOURCES = html.c fuzz.c
+html_LDFLAGS = -fsanitize=fuzzer
+
+fuzz-html: html$(EXEEXT)
+	@mkdir -p corpus/html
+	./html$(EXEEXT) \
+	    -dict=html.dict \
+	    -max_len=1000000 \
+	    -timeout=20 \
+	    corpus/html $(top_srcdir)/test/HTML
 
 regexp_SOURCES = regexp.c fuzz.c
 regexp_LDFLAGS = -fsanitize=fuzzer

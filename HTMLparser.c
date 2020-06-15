@@ -3400,13 +3400,16 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
         ((NXT(2) == 'x') || NXT(2) == 'X')) {
 	SKIP(3);
 	while (CUR != ';') {
-	    if ((CUR >= '0') && (CUR <= '9'))
-	        val = val * 16 + (CUR - '0');
-	    else if ((CUR >= 'a') && (CUR <= 'f'))
-	        val = val * 16 + (CUR - 'a') + 10;
-	    else if ((CUR >= 'A') && (CUR <= 'F'))
-	        val = val * 16 + (CUR - 'A') + 10;
-	    else {
+	    if ((CUR >= '0') && (CUR <= '9')) {
+                if (val < 0x110000)
+	            val = val * 16 + (CUR - '0');
+            } else if ((CUR >= 'a') && (CUR <= 'f')) {
+                if (val < 0x110000)
+	            val = val * 16 + (CUR - 'a') + 10;
+            } else if ((CUR >= 'A') && (CUR <= 'F')) {
+                if (val < 0x110000)
+	            val = val * 16 + (CUR - 'A') + 10;
+            } else {
 	        htmlParseErr(ctxt, XML_ERR_INVALID_HEX_CHARREF,
 		             "htmlParseCharRef: missing semicolon\n",
 			     NULL, NULL);
@@ -3419,9 +3422,10 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
     } else if  ((CUR == '&') && (NXT(1) == '#')) {
 	SKIP(2);
 	while (CUR != ';') {
-	    if ((CUR >= '0') && (CUR <= '9'))
-	        val = val * 10 + (CUR - '0');
-	    else {
+	    if ((CUR >= '0') && (CUR <= '9')) {
+                if (val < 0x110000)
+	            val = val * 10 + (CUR - '0');
+            } else {
 	        htmlParseErr(ctxt, XML_ERR_INVALID_DEC_CHARREF,
 		             "htmlParseCharRef: missing semicolon\n",
 			     NULL, NULL);
@@ -3440,6 +3444,9 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
      */
     if (IS_CHAR(val)) {
         return(val);
+    } else if (val >= 0x110000) {
+	htmlParseErr(ctxt, XML_ERR_INVALID_CHAR,
+		     "htmlParseCharRef: value too large\n", NULL, NULL);
     } else {
 	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
 			"htmlParseCharRef: invalid xmlChar value %d\n",

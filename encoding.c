@@ -496,13 +496,18 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
 {
     unsigned char* outstart = out;
     const unsigned char* processed = inb;
-    unsigned char* outend = out + *outlen;
+    unsigned char* outend;
     unsigned short* in = (unsigned short*) inb;
     unsigned short* inend;
     unsigned int c, d, inlen;
     unsigned char *tmp;
     int bits;
 
+    if (*outlen == 0) {
+        *inlenb = 0;
+        return(0);
+    }
+    outend = out + *outlen;
     if ((*inlenb % 2) == 1)
         (*inlenb)--;
     inlen = *inlenb / 2;

@@ -121,6 +121,23 @@ xmlFuzzReadRemaining(size_t *size) {
     return(ret);
 }
 
+/*
+ * Write a random-length string to stdout in a format similar to
+ * FuzzedDataProvider. Backslash followed by newline marks the end of the
+ * string. Two backslashes are used to escape a backslash.
+ */
+static void
+xmlFuzzWriteString(const char *str) {
+    for (; *str; str++) {
+        int c = (unsigned char) *str;
+        putchar(c);
+        if (c == '\\')
+            putchar(c);
+    }
+    putchar('\\');
+    putchar('\n');
+}
+
 /**
  * xmlFuzzReadString:
  * @size:  size of string in bytes
@@ -167,6 +184,47 @@ xmlFuzzReadString(size_t *size) {
     }
 
     return(NULL);
+}
+
+/*
+ * A custom entity loader that writes all external DTDs or entities to a
+ * single file in the format expected by xmlFuzzEntityLoader.
+ */
+xmlParserInputPtr
+xmlFuzzEntityRecorder(const char *URL, const char *ID,
+                      xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr in;
+    static const int chunkSize = 16384;
+    int len;
+
+    in = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
+    if (in == NULL)
+        return(NULL);
+
+    if (fuzzData.entities == NULL) {
+        fuzzData.entities = xmlHashCreate(4);
+    } else if (xmlHashLookup(fuzzData.entities,
+                             (const xmlChar *) URL) != NULL) {
+        return(in);
+    }
+
+    do {
+        len = xmlParserInputBufferGrow(in->buf, chunkSize);
+        if (len < 0) {
+            fprintf(stderr, "Error reading %s\n", URL);
+            xmlFreeInputStream(in);
+            return(NULL);
+        }
+    } while (len > 0);
+
+    xmlFuzzWriteString(URL);
+    xmlFuzzWriteString((char *) xmlBufContent(in->buf->buffer));
+
+    xmlFreeInputStream(in);
+
+    xmlHashAddEntry(fuzzData.entities, (const xmlChar *) URL, NULL);
+
+    return(xmlNoNetExternalEntityLoader(URL, ID, ctxt));
 }
 
 /**

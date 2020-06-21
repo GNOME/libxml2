@@ -36,6 +36,9 @@ xmlFuzzReadInt(void);
 const char *
 xmlFuzzReadRemaining(size_t *size);
 
+xmlParserInputPtr
+xmlFuzzEntityRecorder(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);
+
 void
 xmlFuzzReadEntities(void);
 
@@ -43,8 +46,7 @@ const char *
 xmlFuzzMainEntity(size_t *size);
 
 xmlParserInputPtr
-xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
-                    xmlParserCtxtPtr ctxt);
+xmlFuzzEntityLoader(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);
 
 size_t
 xmlFuzzExtractStrings(const char *data, size_t size, char **strings,

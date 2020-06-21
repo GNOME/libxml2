@@ -6074,7 +6074,16 @@ xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
 	return (def);
     }
     while ((*cur >= '0') && (*cur <= '9')) {
-        ret = ret * 10 + (*cur - '0');
+        if (ret > INT_MAX / 10) {
+            ret = INT_MAX;
+        } else {
+            int digit = *cur - '0';
+            ret *= 10;
+            if (ret > INT_MAX - digit)
+                ret = INT_MAX;
+            else
+                ret += digit;
+        }
         cur++;
     }
     while (IS_BLANK_CH(*cur))
@@ -6126,7 +6135,16 @@ xmlGetMinOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
         return (def);
     }
     while ((*cur >= '0') && (*cur <= '9')) {
-        ret = ret * 10 + (*cur - '0');
+        if (ret > INT_MAX / 10) {
+            ret = INT_MAX;
+        } else {
+            int digit = *cur - '0';
+            ret *= 10;
+            if (ret > INT_MAX - digit)
+                ret = INT_MAX;
+            else
+                ret += digit;
+        }
         cur++;
     }
     while (IS_BLANK_CH(*cur))

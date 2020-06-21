@@ -1222,7 +1222,14 @@ _xmlSchemaParseGYear (xmlSchemaValDatePtr dt, const xmlChar **str) {
     firstChar = cur;
 
     while ((*cur >= '0') && (*cur <= '9')) {
-	dt->year = dt->year * 10 + (*cur - '0');
+        int digit = *cur - '0';
+
+        if (dt->year > LONG_MAX / 10)
+            return 2;
+	dt->year *= 10;
+        if (dt->year > LONG_MAX - digit)
+            return 2;
+        dt->year += digit;
 	cur++;
 	digcnt++;
     }

@@ -43,6 +43,9 @@ void
 xmlFuzzReadEntities(void);
 
 const char *
+xmlFuzzMainUrl(void);
+
+const char *
 xmlFuzzMainEntity(size_t *size);
 
 xmlParserInputPtr

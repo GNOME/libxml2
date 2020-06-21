@@ -5,22 +5,28 @@
  */
 
 #include <stdio.h>
+#include <libxml/xmlschemas.h>
 #include "fuzz.h"
 
 int
 main(int argc, char **argv) {
-    int opts = XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
+    xmlSchemaPtr schema;
+    xmlSchemaParserCtxtPtr pctxt;
 
     if (argc != 2) {
-        fprintf(stderr, "Usage: xmlSeed [FILE]\n");
+        fprintf(stderr, "Usage: schemaSeed [XSD]\n");
         return(1);
     }
 
-    fwrite(&opts, sizeof(opts), 1, stdout);
-
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
     xmlSetExternalEntityLoader(xmlFuzzEntityRecorder);
-    xmlFreeDoc(xmlReadFile(argv[1], NULL, opts));
+
+    pctxt = xmlSchemaNewParserCtxt(argv[1]);
+    xmlSchemaSetParserErrors(pctxt, xmlFuzzErrorFunc, xmlFuzzErrorFunc, NULL);
+    schema = xmlSchemaParse(pctxt);
+    xmlSchemaFreeParserCtxt(pctxt);
+
+    xmlSchemaFree(schema);
     xmlFuzzDataCleanup();
 
     return(0);

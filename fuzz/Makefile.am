@@ -1,4 +1,4 @@
-EXTRA_PROGRAMS = html regexp uri xml xmlSeed
+EXTRA_PROGRAMS = html regexp uri schema schemaSeed xml xmlSeed
 check_PROGRAMS = testFuzzer
 CLEANFILES = $(EXTRA_PROGRAMS)
 AM_CPPFLAGS = -I$(top_srcdir)/include
@@ -83,4 +83,31 @@ fuzz-uri: uri$(EXEEXT)
 	    -max_len=10000 \
 	    -timeout=2 \
 	    corpus/uri $(srcdir)/seed/uri
+
+schemaSeed_SOURCES = schemaSeed.c fuzz.c
+
+seed/schema.stamp: schemaSeed$(EXEEXT)
+	@mkdir -p seed/schema
+	@for i in ../test/schemas/*.xsd; do \
+	    if [ -f $$i ]; then \
+	        echo Processing seed $$i; \
+                base=$$(basename $$i) \
+	        outfile=$(abs_builddir)/seed/schema/$$base; \
+                pushd $$(dirname $$i) >/dev/null; \
+	        $(abs_builddir)/schemaSeed$(EXEEXT) $$base > $$outfile; \
+                popd >/dev/null; \
+	    fi; \
+	done
+	@touch seed/schema.stamp
+
+schema_SOURCES = schema.c fuzz.c
+schema_LDFLAGS = -fsanitize=fuzzer
+
+fuzz-schema: schema$(EXEEXT) seed/schema.stamp
+	@mkdir -p corpus/schema
+	./schema$(EXEEXT) \
+	    -dict=schema.dict \
+	    -max_len=$(PARSER_FUZZER_MAX_LEN) \
+	    -timeout=20 \
+	    corpus/schema seed/schema
 

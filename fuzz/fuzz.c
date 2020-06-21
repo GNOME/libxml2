@@ -266,6 +266,16 @@ xmlFuzzReadEntities(void) {
 }
 
 /**
+ * xmlFuzzMainUrl:
+ *
+ * Returns the main URL.
+ */
+const char *
+xmlFuzzMainUrl(void) {
+    return(fuzzData.mainUrl);
+}
+
+/**
  * xmlFuzzMainEntity:
  * @size:  size of the main entity in bytes
  *

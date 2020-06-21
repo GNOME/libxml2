@@ -1,7 +1,10 @@
 corpus/
 html
 regexp
+schema
+schemaSeed
 seed/xml*
+seed/schema*
 testFuzzer
 uri
 xml

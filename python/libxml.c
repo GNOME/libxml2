@@ -3922,8 +3922,10 @@ void initlibxml2mod(void)
     /* TODO this probably need to be revamped for Python3 */
     libxml_xmlErrorInitialize();
 
-#if PY_MAJOR_VERSION < 3
 #ifdef MERGED_MODULES
+#if PY_MAJOR_VERSION >= 3
+    PyInit_libxsltmod();
+#else
     initlibxsltmod();
 #endif
 #endif

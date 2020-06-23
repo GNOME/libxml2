@@ -28925,6 +28925,9 @@ done:
  * Do a schemas validation of the given resource, it will use the
  * SAX streamable validation internally.
  *
+ * Input callbacks have to be set using xmlRegisterInputCallbacks
+ * before calling this function.
+ *
  * Returns 0 if the document is valid, a positive error code
  *     number otherwise and -1 in case of an internal or API error.
  */

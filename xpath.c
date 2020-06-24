@@ -13833,7 +13833,8 @@ scan_children:
 	do {
 	    cur = cur->parent;
 	    depth--;
-	    if ((cur == NULL) || (cur == limit))
+	    if ((cur == NULL) || (cur == limit) ||
+                (cur->type == XML_DOCUMENT_NODE))
 	        goto done;
 	    if (cur->type == XML_ELEMENT_NODE) {
 		ret = xmlStreamPop(patstream);

@@ -2033,13 +2033,13 @@ xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
     }
 
     ret = xmlBufUse(buf->buffer);
-    if (ret > 0) {
+    if (ret >= 0) {
         *doc_txt_ptr = xmlStrndup(xmlBufContent(buf->buffer), ret);
     }
     (void) xmlOutputBufferClose(buf);
 
-    if ((*doc_txt_ptr == NULL) && (ret > 0)) {
-        xmlC14NErrMemory("coping canonicalized document");
+    if ((*doc_txt_ptr == NULL) && (ret >= 0)) {
+        xmlC14NErrMemory("copying canonicalized document");
         return (-1);
     }
     return (ret);

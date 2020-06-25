@@ -5211,13 +5211,24 @@ static int
 xmlFAParseQuantExact(xmlRegParserCtxtPtr ctxt) {
     int ret = 0;
     int ok = 0;
+    int overflow = 0;
 
     while ((CUR >= '0') && (CUR <= '9')) {
-	ret = ret * 10 + (CUR - '0');
+        if (ret > INT_MAX / 10) {
+            overflow = 1;
+        } else {
+            int digit = CUR - '0';
+
+            ret *= 10;
+            if (ret > INT_MAX - digit)
+                overflow = 1;
+            else
+                ret += digit;
+        }
 	ok = 1;
 	NEXT;
     }
-    if (ok != 1) {
+    if ((ok != 1) || (overflow == 1)) {
 	return(-1);
     }
     return(ret);

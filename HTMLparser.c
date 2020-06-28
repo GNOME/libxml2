@@ -6160,12 +6160,12 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 		size_t current = ctxt->input->cur - ctxt->input->base;
 
 		nbchars = xmlCharEncInput(in, terminate);
+		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
 		if (nbchars < 0) {
 		    htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
 			         "encoder error\n", NULL, NULL);
 		    return(XML_ERR_INVALID_ENCODING);
 		}
-		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
 	    }
 	}
     }

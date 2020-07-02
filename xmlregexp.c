@@ -5268,6 +5268,9 @@ xmlFAParseQuantifier(xmlRegParserCtxtPtr ctxt) {
 	cur = xmlFAParseQuantExact(ctxt);
 	if (cur >= 0)
 	    min = cur;
+        else {
+            ERROR("Improper quantifier");
+        }
 	if (CUR == ',') {
 	    NEXT;
 	    if (CUR == '}')

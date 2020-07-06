@@ -273,6 +273,8 @@ struct _xmlAutomata {
     int determinist;
     int negs;
     int flags;
+
+    int depth;
 };
 
 struct _xmlRegexp {
@@ -5330,6 +5332,10 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
 	xmlRegStatePtr start, oldend, start0;
 
 	NEXT;
+        if (ctxt->depth >= 50) {
+	    ERROR("xmlFAParseAtom: maximum nesting depth exceeded");
+            return(-1);
+        }
 	/*
 	 * this extra Epsilon transition is needed if we count with 0 allowed
 	 * unfortunately this can't be known at that point
@@ -5341,7 +5347,9 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
 	oldend = ctxt->end;
 	ctxt->end = NULL;
 	ctxt->atom = NULL;
+        ctxt->depth++;
 	xmlFAParseRegExp(ctxt, 0);
+        ctxt->depth--;
 	if (CUR == ')') {
 	    NEXT;
 	} else {

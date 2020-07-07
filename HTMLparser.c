@@ -5160,9 +5160,9 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
 
     if (ctxt->checkIndex > base) {
         base = ctxt->checkIndex;
-        /* Abuse inSubset member to restore current state. */
-        incomment = ctxt->inSubset & 1 ? 1 : 0;
-        invalue = ctxt->inSubset & 2 ? 1 : 0;
+        /* Abuse hasPErefs member to restore current state. */
+        incomment = ctxt->hasPErefs & 1 ? 1 : 0;
+        invalue = ctxt->hasPErefs & 2 ? 1 : 0;
     }
 
     if (in->buf == NULL) {
@@ -5240,12 +5240,12 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
         }
     }
     ctxt->checkIndex = base;
-    /* Abuse inSubset member to track current state. */
-    ctxt->inSubset = 0;
+    /* Abuse hasPErefs member to track current state. */
+    ctxt->hasPErefs = 0;
     if (incomment)
-        ctxt->inSubset |= 1;
+        ctxt->hasPErefs |= 1;
     if (invalue)
-        ctxt->inSubset |= 2;
+        ctxt->hasPErefs |= 2;
 #ifdef DEBUG_PUSH
     if (next == 0)
         xmlGenericError(xmlGenericErrorContext,

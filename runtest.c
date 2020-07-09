@@ -611,7 +611,7 @@ static int checkTestFile(const char *filename) {
 }
 
 static int compareFiles(const char *r1 /* temp */, const char *r2 /* result */) {
-    int res1, res2;
+    int res1, res2, total;
     int fd1, fd2;
     char bytes1[4096];
     char bytes2[4096];
@@ -625,16 +625,20 @@ static int compareFiles(const char *r1 /* temp */, const char *r2 /* result */) 
             close(fd1);
             return(-1);
         }
+        total = 0;
         do {
             res1 = read(fd1, bytes1, 4096);
             if (res1 <= 0)
                 break;
+            total += res1;
             res2 = write(fd2, bytes1, res1);
             if (res2 <= 0 || res2 != res1)
                 break;
         } while (1);
         close(fd2);
         close(fd1);
+        if (total == 0)
+            unlink(r2);
         return(res1 != 0);
     }
 
@@ -642,28 +646,27 @@ static int compareFiles(const char *r1 /* temp */, const char *r2 /* result */) 
     if (fd1 < 0)
         return(-1);
     fd2 = open(r2, RD_FLAGS);
-    if (fd2 < 0) {
-        close(fd1);
-        return(-1);
-    }
     while (1) {
         res1 = read(fd1, bytes1, 4096);
-        res2 = read(fd2, bytes2, 4096);
+        res2 = fd2 >= 0 ? read(fd2, bytes2, 4096) : 0;
 	if ((res1 != res2) || (res1 < 0)) {
 	    close(fd1);
-	    close(fd2);
+            if (fd2 >= 0)
+                close(fd2);
 	    return(1);
 	}
 	if (res1 == 0)
 	    break;
 	if (memcmp(bytes1, bytes2, res1) != 0) {
 	    close(fd1);
-	    close(fd2);
+            if (fd2 >= 0)
+                close(fd2);
 	    return(1);
 	}
     }
     close(fd1);
-    close(fd2);
+    if (fd2 >= 0)
+        close(fd2);
     return(0);
 }
 
@@ -675,6 +678,10 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
     struct stat info;
 
     if (update_results) {
+        if (size == 0) {
+            unlink(filename);
+            return(0);
+        }
         fd = open(filename, WR_FLAGS, 0644);
         if (fd < 0) {
 	    fprintf(stderr, "failed to open %s for writing", filename);
@@ -686,6 +693,8 @@ static int compareFileMem(const char *filename, const char *mem, int size) {
     }
 
     if (stat(filename, &info) < 0) {
+        if (size == 0)
+            return(0);
         fprintf(stderr, "failed to stat %s\n", filename);
 	return(-1);
     }
@@ -3591,10 +3600,6 @@ patternTest(const char *filename,
 	fprintf(stderr, "Missing xml file %s\n", xml);
 	return(-1);
     }
-    if (!checkTestFile(result) && !update_results) {
-	fprintf(stderr, "Missing result file %s\n", result);
-	return(-1);
-    }
     f = fopen(filename, "rb");
     if (f == NULL) {
         fprintf(stderr, "Failed to open %s\n", filename);
@@ -3963,10 +3968,6 @@ c14nCommonTest(const char *filename, int with_comments, int mode,
 
     if (snprintf(buf, 499, "result/c14n/%s/%s", subdir, prefix) >= 499)
         buf[499] = 0;
-    if (!checkTestFile(buf) && !update_results) {
-        fprintf(stderr, "Missing result file %s", buf);
-	return(-1);
-    }
     result = strdup(buf);
     if (snprintf(buf, 499, "test/c14n/%s/%s.xpath", subdir, prefix) >= 499)
         buf[499] = 0;
@@ -4549,35 +4550,29 @@ launchTests(testDescPtr tst) {
 	    } else {
 	        error = NULL;
 	    }
-	    if ((result) &&(!checkTestFile(result)) && !update_results) {
-	        fprintf(stderr, "Missing result file %s\n", result);
-	    } else if ((error) &&(!checkTestFile(error)) && !update_results) {
-	        fprintf(stderr, "Missing error file %s\n", error);
-	    } else {
-		mem = xmlMemUsed();
-		extraMemoryFromResolver = 0;
-		testErrorsSize = 0;
-		testErrors[0] = 0;
-		res = tst->func(globbuf.gl_pathv[i], result, error,
-		                tst->options | XML_PARSE_COMPACT);
-		xmlResetLastError();
-		if (res != 0) {
-		    fprintf(stderr, "File %s generated an error\n",
-		            globbuf.gl_pathv[i]);
-		    nb_errors++;
-		    err++;
-		}
-		else if (xmlMemUsed() != mem) {
-		    if ((xmlMemUsed() != mem) &&
-		        (extraMemoryFromResolver == 0)) {
-			fprintf(stderr, "File %s leaked %d bytes\n",
-				globbuf.gl_pathv[i], xmlMemUsed() - mem);
-			nb_leaks++;
-			err++;
-		    }
-		}
-		testErrorsSize = 0;
-	    }
+            mem = xmlMemUsed();
+            extraMemoryFromResolver = 0;
+            testErrorsSize = 0;
+            testErrors[0] = 0;
+            res = tst->func(globbuf.gl_pathv[i], result, error,
+                            tst->options | XML_PARSE_COMPACT);
+            xmlResetLastError();
+            if (res != 0) {
+                fprintf(stderr, "File %s generated an error\n",
+                        globbuf.gl_pathv[i]);
+                nb_errors++;
+                err++;
+            }
+            else if (xmlMemUsed() != mem) {
+                if ((xmlMemUsed() != mem) &&
+                    (extraMemoryFromResolver == 0)) {
+                    fprintf(stderr, "File %s leaked %d bytes\n",
+                            globbuf.gl_pathv[i], xmlMemUsed() - mem);
+                    nb_leaks++;
+                    err++;
+                }
+            }
+            testErrorsSize = 0;
 	    if (result)
 		free(result);
 	    if (error)

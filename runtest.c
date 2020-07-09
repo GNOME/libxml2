@@ -4298,6 +4298,113 @@ threadsTest(const char *filename ATTRIBUTE_UNUSED,
     return(testThread());
 }
 #endif
+
+#if defined(LIBXML_REGEXP_ENABLED)
+/************************************************************************
+ *									*
+ *			Regexp tests					*
+ *									*
+ ************************************************************************/
+
+static void testRegexp(FILE *output, xmlRegexpPtr comp, const char *value) {
+    int ret;
+
+    ret = xmlRegexpExec(comp, (const xmlChar *) value);
+    if (ret == 1)
+	fprintf(output, "%s: Ok\n", value);
+    else if (ret == 0)
+	fprintf(output, "%s: Fail\n", value);
+    else
+	fprintf(output, "%s: Error: %d\n", value, ret);
+}
+
+static int
+regexpTest(const char *filename, const char *result, const char *err,
+	   int options ATTRIBUTE_UNUSED) {
+    xmlRegexpPtr comp = NULL;
+    FILE *input, *output;
+    char *temp;
+    char expression[5000];
+    int len, ret, res = 0;
+
+    input = fopen(filename, "r");
+    if (input == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot open %s for reading\n", filename);
+	return(-1);
+    }
+    temp = resultFilename(filename, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    output = fopen(temp, "wb");
+    if (output == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+        free(temp);
+	return(-1);
+    }
+    while (fgets(expression, 4500, input) != NULL) {
+	len = strlen(expression);
+	len--;
+	while ((len >= 0) &&
+	       ((expression[len] == '\n') || (expression[len] == '\t') ||
+		(expression[len] == '\r') || (expression[len] == ' '))) len--;
+	expression[len + 1] = 0;
+	if (len >= 0) {
+	    if (expression[0] == '#')
+		continue;
+	    if ((expression[0] == '=') && (expression[1] == '>')) {
+		char *pattern = &expression[2];
+
+		if (comp != NULL) {
+		    xmlRegFreeRegexp(comp);
+		    comp = NULL;
+		}
+		fprintf(output, "Regexp: %s\n", pattern) ;
+		comp = xmlRegexpCompile((const xmlChar *) pattern);
+		if (comp == NULL) {
+		    fprintf(output, "   failed to compile\n");
+		    break;
+		}
+	    } else if (comp == NULL) {
+		fprintf(output, "Regexp: %s\n", expression) ;
+		comp = xmlRegexpCompile((const xmlChar *) expression);
+		if (comp == NULL) {
+		    fprintf(output, "   failed to compile\n");
+		    break;
+		}
+	    } else if (comp != NULL) {
+		testRegexp(output, comp, expression);
+	    }
+	}
+    }
+    fclose(output);
+    fclose(input);
+    if (comp != NULL)
+	xmlRegFreeRegexp(comp);
+
+    ret = compareFiles(temp, result);
+    if (ret) {
+        fprintf(stderr, "Result for %s failed in %s\n", filename, result);
+        res = 1;
+    }
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
+
+    ret = compareFileMem(err, testErrors, testErrorsSize);
+    if (ret != 0) {
+        fprintf(stderr, "Error for %s failed\n", filename);
+        res = 1;
+    }
+
+    return(res);
+}
+
+#endif
+
 /************************************************************************
  *									*
  *			Tests Descriptions				*
@@ -4495,6 +4602,11 @@ testDesc testDescriptions[] = {
     { "SVG parsing regression tests" ,
       oldParseTest, "./test/SVG/*.xml", "result/SVG/", "", NULL,
       0 },
+#if defined(LIBXML_REGEXP_ENABLED)
+    { "Regexp regression tests" ,
+      regexpTest, "./test/regexp/*", "result/regexp/", "", ".err",
+      0 },
+#endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 

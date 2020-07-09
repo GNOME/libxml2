@@ -33,7 +33,6 @@ ignored_files = {
   "rngparser.h": "not yet integrated",
   "testAutomata.c": "test tool",
   "testModule.c": "test tool",
-  "testRegexp.c": "test tool",
   "testThreads.c": "test tool",
   "testapi.c": "generated regression tests",
   "runtest.c": "regression tests program",

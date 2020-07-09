@@ -18,7 +18,6 @@ check_PROGRAMS = \
 	runtest \
 	runxmlconf \
 	testAutomata \
-	testRegexp \
 	testModule \
 	testThreads \
 	testapi \
@@ -116,11 +115,6 @@ testThreads_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS)
 testThreads_LDFLAGS = 
 testThreads_DEPENDENCIES = $(DEPS)
 testThreads_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
-
-testRegexp_SOURCES=testRegexp.c
-testRegexp_LDFLAGS = 
-testRegexp_DEPENDENCIES = $(DEPS)
-testRegexp_LDADD= $(LDADDS)
 
 testAutomata_SOURCES=testAutomata.c
 testAutomata_LDFLAGS = 
@@ -272,44 +266,6 @@ Catatests : xmlcatalog$(EXEEXT)
 	diff result/catalogs/mycatalog.empty $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	rm -f $(srcdir)/result/catalogs/mycatalog)
-
-Regexptests: testRegexp$(EXEEXT)
-	@(echo > .memdump)
-	@echo "## Regexp regression tests"
-	-@(for i in $(srcdir)/test/regexp/* ; do \
-	  name=`basename $$i`; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/regexp/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testRegexp -i $$i > $(srcdir)/result/regexp/$$name 2> $(srcdir)/result/regexp/$$name.err ; \
-	      if [ ! -s "$(srcdir)/result/regexp/$$name.err" ] ; then rm $(srcdir)/result/regexp/$$name.err; fi ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	  else \
-	      log=`$(CHECKER) $(top_builddir)/testRegexp -i $$i > result.$$name 2> error.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/regexp/$$name result.$$name ; \
-	      if [ -s "$(srcdir)/result/regexp/$$name.err" -o -s "error.$$name" ] ; then diff $(srcdir)/result/regexp/$$name.err error.$$name ; fi` ; \
-	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
-	      rm result.$$name error.$$name ; \
-	  fi ; fi ; done)
-
-# Disabled for now
-Exptests: testRegexp$(EXEEXT)
-	@echo "## Formal expressions regression tests"
-	-@(for i in $(srcdir)/test/expr/* ; do \
-	  name=`basename $$i`; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/expr/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testRegexp --expr -i $$i > $(srcdir)/result/expr/$$name; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	  else \
-	      log=`$(CHECKER) $(top_builddir)/testRegexp --expr -i $$i 2>&1 > result.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/expr/$$name result.$$name` ; \
-	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
-	      rm result.$$name ; \
-	  fi ; fi ; done)
 
 Automatatests: testAutomata$(EXEEXT)
 	@(echo > .memdump)

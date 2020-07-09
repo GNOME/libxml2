@@ -98,7 +98,6 @@ tags
 test.out
 testAutomata
 testModule
-testRegexp
 testThreads
 testapi
 testapi.c.new

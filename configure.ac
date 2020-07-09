@@ -1299,7 +1299,7 @@ if test "$with_regexps" = "no" ; then
     TEST_REGEXPS=
 else    
     WITH_REGEXPS=1
-    TEST_REGEXPS="Regexptests Automatatests"
+    TEST_REGEXPS="Automatatests"
 fi
 AC_SUBST(WITH_REGEXPS)
 AC_SUBST(TEST_REGEXPS)

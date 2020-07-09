@@ -511,7 +511,6 @@ if(LIBXML2_WITH_TESTS)
 		testModule
 		testlimits
 		testrecurse
-		testRegexp
 	)
 	foreach(TEST ${TESTS})
 		add_executable(${TEST} ${TEST}.c)

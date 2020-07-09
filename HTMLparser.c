@@ -5205,7 +5205,7 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
         }
         if (incomment) {
             if (base + 3 > len)
-                return (-1);
+                break;
             if ((buf[base] == '-') && (buf[base + 1] == '-') &&
                 (buf[base + 2] == '>')) {
                 incomment = 0;
@@ -5294,8 +5294,11 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
     if (base < 0)
         return (-1);
 
-    if (ctxt->checkIndex > base)
+    if (ctxt->checkIndex > base) {
         base = ctxt->checkIndex;
+        /* Abuse hasPErefs member to restore current state. */
+        incomment = ctxt->hasPErefs & 1 ? 1 : 0;
+    }
 
     if (in->buf == NULL) {
         buf = in->base;
@@ -5316,7 +5319,7 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
         }
         if (incomment) {
             if (base + 3 > len)
-                return (-1);
+                break;
             if ((buf[base] == '-') && (buf[base + 1] == '-') &&
                 (buf[base + 2] == '>')) {
                 incomment = 0;
@@ -5332,6 +5335,8 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
         }
     }
     ctxt->checkIndex = base;
+    /* Abuse hasPErefs member to track current state. */
+    ctxt->hasPErefs = incomment;
     return (-1);
 }
 

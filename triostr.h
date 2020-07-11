@@ -33,7 +33,7 @@ enum {
 
 #if !defined(TRIO_STRING_PUBLIC)
 # if !defined(TRIO_PUBLIC)
-#  define TRIO_PUBLIC
+#  define TRIO_PUBLIC XMLPUBFUN
 # endif
 # define TRIO_STRING_PUBLIC TRIO_PUBLIC
 #endif

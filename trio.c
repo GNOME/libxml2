@@ -44,6 +44,8 @@
 /*************************************************************************
  * Trio include files
  */
+#define IN_LIBXML
+
 #include "triodef.h"
 #include "trio.h"
 #include "triop.h"
@@ -273,9 +275,15 @@ typedef trio_longlong_t trio_int64_t;
 #if (!(defined(TRIO_COMPILER_SUPPORTS_C99) \
  || defined(TRIO_COMPILER_SUPPORTS_UNIX01))) \
  && !defined(_WIN32_WCE)
-# define floorl(x) floor((double)(x))
-# define fmodl(x,y) fmod((double)(x),(double)(y))
-# define powl(x,y) pow((double)(x),(double)(y))
+# ifndef floorl
+#  define floorl(x) floor((double)(x))
+# endif
+# ifndef fmodl
+#  define fmodl(x,y) fmod((double)(x),(double)(y))
+# endif
+# ifndef powl
+#  define powl(x,y) pow((double)(x),(double)(y))
+# endif
 #endif
 
 #define TRIO_FABS(x) (((x) < 0.0) ? -(x) : (x))

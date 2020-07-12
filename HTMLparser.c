@@ -5136,7 +5136,7 @@ htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding) {
  * @first:  the first char to lookup
  * @next:  the next char to lookup or zero
  * @third:  the next char to lookup or zero
- * @comment: flag to force checking inside comments
+ * @ignoreattrval: skip over attribute values
  *
  * Try to find if a sequence (first, next, third) or  just (first next) or
  * (first) is available in the input stream.
@@ -5150,13 +5150,11 @@ htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding) {
  */
 static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                        xmlChar next, xmlChar third, int iscomment,
-                        int ignoreattrval)
+                        xmlChar next, xmlChar third, int ignoreattrval)
 {
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
-    int incomment = 0;
     int invalue = 0;
     char valdellim = 0x0;
 
@@ -5171,8 +5169,7 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     if (ctxt->checkIndex > base) {
         base = ctxt->checkIndex;
         /* Abuse hasPErefs member to restore current state. */
-        incomment = ctxt->hasPErefs & 1 ? 1 : 0;
-        invalue = ctxt->hasPErefs & 2 ? 1 : 0;
+        invalue = ctxt->hasPErefs & 1 ? 1 : 0;
     }
 
     if (in->buf == NULL) {
@@ -5189,14 +5186,6 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     else if (next)
         len--;
     for (; base < len; base++) {
-        if ((!incomment) && (base + 4 < len) && (!iscomment)) {
-            if ((buf[base] == '<') && (buf[base + 1] == '!') &&
-                (buf[base + 2] == '-') && (buf[base + 3] == '-')) {
-                incomment = 1;
-                /* do not increment past <! - some people use <!--> */
-                base += 2;
-            }
-        }
         if (ignoreattrval) {
             if (buf[base] == '"' || buf[base] == '\'') {
                 if (invalue) {
@@ -5212,16 +5201,6 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
             } else if (invalue) {
                 continue;
             }
-        }
-        if (incomment) {
-            if (base + 3 > len)
-                break;
-            if ((buf[base] == '-') && (buf[base + 1] == '-') &&
-                (buf[base + 2] == '>')) {
-                incomment = 0;
-                base += 2;
-            }
-            continue;
         }
         if (buf[base] == first) {
             if (third != 0) {
@@ -5251,11 +5230,10 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     }
     ctxt->checkIndex = base;
     /* Abuse hasPErefs member to track current state. */
-    ctxt->hasPErefs = 0;
-    if (incomment)
-        ctxt->hasPErefs |= 1;
     if (invalue)
-        ctxt->hasPErefs |= 2;
+        ctxt->hasPErefs |= 1;
+    else
+        ctxt->hasPErefs &= ~1;
 #ifdef DEBUG_PUSH
     if (next == 0)
         xmlGenericError(xmlGenericErrorContext,
@@ -5293,7 +5271,6 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
-    int incomment = 0;
     int i;
 
     in = ctxt->input;
@@ -5304,11 +5281,8 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
     if (base < 0)
         return (-1);
 
-    if (ctxt->checkIndex > base) {
+    if (ctxt->checkIndex > base)
         base = ctxt->checkIndex;
-        /* Abuse hasPErefs member to restore current state. */
-        incomment = ctxt->hasPErefs & 1 ? 1 : 0;
-    }
 
     if (in->buf == NULL) {
         buf = in->base;
@@ -5319,24 +5293,6 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
     }
 
     for (; base < len; base++) {
-        if (!incomment && (base + 4 < len)) {
-            if ((buf[base] == '<') && (buf[base + 1] == '!') &&
-                (buf[base + 2] == '-') && (buf[base + 3] == '-')) {
-                incomment = 1;
-                /* do not increment past <! - some people use <!--> */
-                base += 2;
-            }
-        }
-        if (incomment) {
-            if (base + 3 > len)
-                break;
-            if ((buf[base] == '-') && (buf[base + 1] == '-') &&
-                (buf[base + 2] == '>')) {
-                incomment = 0;
-                base += 2;
-            }
-            continue;
-        }
         for (i = 0; i < stopLen; ++i) {
             if (buf[base] == stop[i]) {
                 ctxt->checkIndex = 0;
@@ -5345,8 +5301,6 @@ htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
         }
     }
     ctxt->checkIndex = base;
-    /* Abuse hasPErefs member to track current state. */
-    ctxt->hasPErefs = incomment;
     return (-1);
 }
 
@@ -5489,7 +5443,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5536,7 +5490,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 1, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5546,7 +5500,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_MISC;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5560,7 +5514,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5597,7 +5551,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 1, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5607,7 +5561,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_PROLOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5645,7 +5599,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 1, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5655,7 +5609,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5719,7 +5673,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    break;
 		}
 		if ((!terminate) &&
-		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
 		    goto done;
 
                 /* Capture start position */
@@ -5866,7 +5820,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		        int idx;
 			xmlChar val;
 
-			idx = htmlParseLookupSequence(ctxt, '<', '/', 0, 0, 0);
+			idx = htmlParseLookupSequence(ctxt, '<', '/', 0, 0);
 			if (idx < 0)
 			    goto done;
 		        val = in->cur[idx + 2];
@@ -5893,7 +5847,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			(UPP(6) == 'Y') && (UPP(7) == 'P') &&
 			(UPP(8) == 'E')) {
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+			    (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
 			    goto done;
 			htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
 			             "Misplaced DOCTYPE declaration\n",
@@ -5903,7 +5857,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			(in->cur[2] == '-') && (in->cur[3] == '-')) {
 			if ((!terminate) &&
 			    (htmlParseLookupSequence(
-				ctxt, '-', '-', '>', 1, 1) < 0))
+				ctxt, '-', '-', '>', 0) < 0))
 			    goto done;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -5913,7 +5867,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->instate = XML_PARSER_CONTENT;
 		    } else if ((cur == '<') && (next == '?')) {
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+			    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			    goto done;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -5984,7 +5938,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 2)
 		    goto done;
 		if ((!terminate) &&
-		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0, 1) < 0))
+		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 		    goto done;
 		htmlParseEndTag(ctxt);
 		if (ctxt->nameNr == 0) {

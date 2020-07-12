@@ -23,14 +23,17 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     numStrings = xmlFuzzExtractStrings(data, size, str, 2);
 
-    regexp = xmlRegexpCompile(BAD_CAST str[0]);
-    /* xmlRegexpExec has pathological performance in too many cases. */
+    /* CUR_SCHAR doesn't handle invalid UTF-8 and may cause infinite loops. */
+    if (xmlCheckUTF8(BAD_CAST str[0]) != 0) {
+        regexp = xmlRegexpCompile(BAD_CAST str[0]);
+        /* xmlRegexpExec has pathological performance in too many cases. */
 #if 0
-    if ((regexp != NULL) && (numStrings >= 2)) {
-        xmlRegexpExec(regexp, BAD_CAST str[1]);
-    }
+        if ((regexp != NULL) && (numStrings >= 2)) {
+            xmlRegexpExec(regexp, BAD_CAST str[1]);
+        }
 #endif
-    xmlRegFreeRegexp(regexp);
+        xmlRegFreeRegexp(regexp);
+    }
 
     xmlFree(str[0]);
     xmlFree(str[1]);

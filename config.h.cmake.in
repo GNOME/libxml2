@@ -1,4 +1,8 @@
+/* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define if __attribute__((destructor)) is accepted */
+#cmakedefine ATTRIBUTE_DESTRUCTOR 1
 
 /* Type cast for the gethostbyname() argument */
 #cmakedefine GETHOSTBYNAME_ARG_CAST @GETHOSTBYNAME_ARG_CAST@
@@ -230,7 +234,7 @@
 #define ICONV_CONST @ICONV_CONST@
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
-#cmakedefine LT_OBJDIR @LT_OBJDIR@
+#cmakedefine LT_OBJDIR "@LT_OBJDIR@"
 
 /* Name of package */
 #define PACKAGE "@PACKAGE@"
@@ -266,7 +270,7 @@
 #cmakedefine VA_LIST_IS_ARRAY 1
 
 /* Version number of package */
-#cmakedefine VERSION @VERSION@
+#cmakedefine VERSION "@VERSION@"
 
 /* Determine what socket length (socklen_t) data type is */
 #cmakedefine XML_SOCKLEN_T @XML_SOCKLEN_T@
@@ -282,29 +286,3 @@
 /* Define to the type of an unsigned integer type of width exactly 32 bits if
    such a type exists and the standard includes do not define it. */
 #cmakedefine uint32_t @uint32_t@
-
-#if defined(_MSC_VER)
-#ifdef NEED_SOCKETS
-#include <wsockcompat.h>
-#endif
-#endif
-
-#if defined(_MSC_VER)
-#define mkdir(p,m) _mkdir(p)
-#if _MSC_VER < 1900
-#define snprintf _snprintf
-#endif
-#if _MSC_VER < 1500
-#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
-#endif
-#elif defined(__MINGW32__)
-#define mkdir(p,m) _mkdir(p)
-#endif
-
-#if defined(_MSC_VER)
-#if defined(LIBXML_THREAD_ENABLED)
-#if !defined(HAVE_PTHREAD_H) && !defined(HAVE_WIN32_THREADS) && !defined(_WIN32_WCE)
-#define HAVE_WIN32_THREADS
-#endif
-#endif
-#endif

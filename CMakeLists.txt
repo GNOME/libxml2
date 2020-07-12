@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(libxml2)
+project(libxml2 C)
 
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)
@@ -104,6 +104,8 @@ else()
 	set(LIBXML2_WITH_ZLIB OFF)
 endif()
 
+set(LIBXML2_XMLCONF_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH "Working directory for XML Conformance Test Suite")
+
 foreach(VARIABLE IN ITEMS WITH_AUTOMATA WITH_C14N WITH_CATALOG WITH_DEBUG WITH_DOCB WITH_EXPR WITH_FTP WITH_HTML WITH_HTTP WITH_ICONV WITH_ICU WITH_ISO8859X WITH_LEGACY WITH_LZMA WITH_MEM_DEBUG WITH_MODULES WITH_OUTPUT WITH_PATTERN WITH_PUSH WITH_READER WITH_REGEXPS WITH_RUN_DEBUG WITH_SAX1 WITH_SCHEMAS WITH_SCHEMATRON WITH_THREADS WITH_THREAD_ALLOC WITH_TREE WITH_TRIO WITH_UNICODE WITH_VALID WITH_WRITER WITH_XINCLUDE WITH_XPATH WITH_XPTR WITH_ZLIB)
 	if(LIBXML2_${VARIABLE})
 		set(${VARIABLE} 1)
@@ -138,11 +140,16 @@ if(MSVC)
 	configure_file(include/win32config.h config.h COPYONLY)
 else()
 	check_c_source_compiles("
+		void __attribute__((destructor))
+		f(void) {}
+		int main(void) { return 0; }
+	" ATTRIBUTE_DESTRUCTOR)
+	check_c_source_compiles("
 		#include <netdb.h>
 		int main() { (void) gethostbyname((const char*) \"\"); return 0; }
 	" GETHOSTBYNAME_ARG_CAST_CONST)
 	if(NOT GETHOSTBYNAME_ARG_CAST_CONST)
-		set(GETHOSTBYNAME_ARG_CAST "(char*)")
+		set(GETHOSTBYNAME_ARG_CAST "(char *)")
 	else()
 		set(GETHOSTBYNAME_ARG_CAST "/**/")
 	endif()
@@ -245,16 +252,18 @@ else()
 	if(NOT ICONV_CONST_TEST)
 		set(ICONV_CONST "const")
 	endif()
+	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <sys/socket.h>
 		#include <sys/types.h>
 		int main() { (void) send(1, (const char*) \"\", 1, 1); return 0; }
 	" SEND_ARG2_CAST_CONST)
 	if(NOT SEND_ARG2_CAST_CONST)
-		set(SEND_ARG2_CAST "(char*)")
+		set(SEND_ARG2_CAST "(char *)")
 	else()
 		set(SEND_ARG2_CAST "/**/")
 	endif()
+	check_include_files("float.h;stdarg.h;stdlib.h;string.h" STDC_HEADERS)
 	check_c_source_compiles("
 		#include <stdarg.h>
 		void a(va_list* ap) {};
@@ -291,9 +300,6 @@ else()
 			" XML_SOCKLEN_T_INT)
 			set(XML_SOCKLEN_T int)
 		endif()
-	endif()
-	if(LIBXML2_WITH_THREADS)
-		add_definitions(-D_REENTRANT)
 	endif()
 	configure_file(config.h.cmake.in config.h)
 endif()
@@ -404,7 +410,7 @@ if(WIN32)
 		"#define LIBXML_MAJOR_VERSION ${LIBXML_MAJOR_VERSION}\n"
 		"#define LIBXML_MINOR_VERSION ${LIBXML_MINOR_VERSION}\n"
 		"#define LIBXML_MICRO_VERSION ${LIBXML_MICRO_VERSION}\n"
-		"#define LIBXML_DOTTED_VERSION ${VERSION}\n"
+		"#define LIBXML_DOTTED_VERSION \"${VERSION}\"\n"
 	)
 endif()
 
@@ -417,6 +423,13 @@ if(LIBXML2_WITH_TRIO)
 endif()
 
 add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
+
+if(LIBXML2_WITH_THREADS)
+	target_compile_definitions(LibXml2 PRIVATE _REENTRANT)
+	if(WIN32)
+		target_compile_definitions(LibXml2 PRIVATE HAVE_WIN32_THREADS)
+	endif()
+endif()
 
 target_include_directories(
 	LibXml2
@@ -533,7 +546,7 @@ if(LIBXML2_WITH_PROGRAMS)
 endif()
 
 if(LIBXML2_WITH_TESTS)
-	#enable_testing()
+	enable_testing()
 	set(
 		TESTS
 		runxmlconf
@@ -558,8 +571,16 @@ if(LIBXML2_WITH_TESTS)
 	foreach(TEST ${TESTS})
 		add_executable(${TEST} ${TEST}.c)
 		target_link_libraries(${TEST} LibXml2)
-		#add_test(NAME ${TEST} COMMAND ${TEST})
 	endforeach()
+	if(EXISTS ${LIBXML2_XMLCONF_WORKING_DIR}/xmlconf/xmlconf.xml)
+		add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${LIBXML2_XMLCONF_WORKING_DIR})
+	endif()
+	if(NOT WIN32)
+		add_test(NAME testapi COMMAND testapi)
+	endif()
+	add_test(NAME testchar COMMAND testchar)
+	add_test(NAME testdict COMMAND testdict)
+	add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 	if(Threads_FOUND)
 		set(
 			TESTS_THREADS
@@ -568,9 +589,13 @@ if(LIBXML2_WITH_TESTS)
 		)
 		foreach(TEST ${TESTS_THREADS})
 			add_executable(${TEST} ${TEST}.c)
+			if(WIN32)
+				target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
+			endif()
 			target_link_libraries(${TEST} LibXml2 Threads::Threads)
-			#add_test(NAME ${TEST} COMMAND ${TEST})
 		endforeach()
+		add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+		add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 	endif()
 endif()
 
@@ -581,6 +606,8 @@ if(LIBXML2_WITH_PYTHON)
 		${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
 		${CMAKE_CURRENT_SOURCE_DIR}/doc/libxml2-api.xml
 		${CMAKE_CURRENT_SOURCE_DIR}/python/libxml2-python-api.xml
+		WORKING_DIRECTORY
+		${CMAKE_CURRENT_BINARY_DIR}
 	)
 	file(READ python/libxml.py LIBXML_PY)
 	file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML_PY}")

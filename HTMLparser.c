@@ -2928,7 +2928,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 
     SHRINK;
     cur = CUR_CHAR(l);
-    while (IS_CHAR_CH(cur)) {
+    while (cur != 0) {
 	if ((cur == '<') && (NXT(1) == '/')) {
             /*
              * One should break here, the specification is clear:
@@ -2959,7 +2959,12 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
                 }
             }
 	}
-	COPY_BUF(l,buf,nbchar,cur);
+        if (IS_CHAR_CH(cur)) {
+	    COPY_BUF(l,buf,nbchar,cur);
+        } else {
+            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                            "Invalid char in CDATA 0x%X\n", cur);
+        }
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
             buf[nbchar] = 0;
 	    if (ctxt->sax->cdataBlock!= NULL) {
@@ -2975,14 +2980,6 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	GROW;
 	NEXTL(l);
 	cur = CUR_CHAR(l);
-    }
-
-    if ((!(IS_CHAR_CH(cur))) && (!((cur == 0) && (ctxt->progressive)))) {
-        htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                    "Invalid char in CDATA 0x%X\n", cur);
-        if (ctxt->input->cur < ctxt->input->end) {
-            NEXT;
-        }
     }
 
     if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {

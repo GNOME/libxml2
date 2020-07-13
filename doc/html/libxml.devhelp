@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<book xmlns="http://www.devhelp.net/book" title="Gnome XML Library Reference Manual " link="index.html" author="" name="libxml">
+<book xmlns="http://www.devhelp.net/book" title="Gnome XML Library Reference Manual " link="index.html" version="2" author="" name="libxml">
   <chapters>
     <sub name="Libxml Programming Notes" link="ch01.html">
       <sub name="testOOMlib" link="libxml-testOOMlib.html"/>

@@ -1746,7 +1746,6 @@ static int xmlXPathDebugObjMaxUsers = 0;
 static int xmlXPathDebugObjMaxXSLTTree = 0;
 static int xmlXPathDebugObjMaxAll = 0;
 
-/* REVISIT TODO: Make this static when committing */
 static void
 xmlXPathDebugObjUsageReset(xmlXPathContextPtr ctxt)
 {
@@ -2061,7 +2060,6 @@ xmlXPathDebugObjUsageReleased(xmlXPathContextPtr ctxt,
     xmlXPathDebugObjCounterAll--;
 }
 
-/* REVISIT TODO: Make this static when committing */
 static void
 xmlXPathDebugObjUsageDisplay(xmlXPathContextPtr ctxt)
 {

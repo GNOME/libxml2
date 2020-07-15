@@ -436,6 +436,12 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
          */
         if ((int) *ctxt->input->cur < 0x80) {
             *len = 1;
+            if ((*ctxt->input->cur == 0) &&
+                (ctxt->input->cur < ctxt->input->end)) {
+                htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                                "Char 0x%X out of allowed range\n", 0);
+                return(' ');
+            }
             return((int) *ctxt->input->cur);
         }
 
@@ -5437,6 +5443,12 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	}
         if (avail < 1)
 	    goto done;
+        /*
+         * This is done to make progress and avoid an infinite loop
+         * if a parsing attempt was aborted by hitting a NUL byte. After
+         * changing htmlCurrentChar, this probably isn't necessary anymore.
+         * We should consider removing this check.
+         */
 	cur = in->cur[0];
 	if (cur == 0) {
 	    SKIP(1);

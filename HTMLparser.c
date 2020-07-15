@@ -439,6 +439,8 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 
 	c = *cur;
 	if (c & 0x80) {
+	    if ((c & 0x40) == 0)
+		goto encoding_error;
 	    if (cur[1] == 0) {
 		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
                 cur = ctxt->input->cur;
@@ -467,18 +469,24 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		    val |= (cur[1] & 0x3f) << 12;
 		    val |= (cur[2] & 0x3f) << 6;
 		    val |= cur[3] & 0x3f;
+		    if (val < 0x10000)
+			goto encoding_error;
 		} else {
 		  /* 3-byte code */
 		    *len = 3;
 		    val = (cur[0] & 0xf) << 12;
 		    val |= (cur[1] & 0x3f) << 6;
 		    val |= cur[2] & 0x3f;
+		    if (val < 0x800)
+			goto encoding_error;
 		}
 	    } else {
 	      /* 2-byte code */
 		*len = 2;
 		val = (cur[0] & 0x1f) << 6;
 		val |= cur[1] & 0x3f;
+		if (val < 0x80)
+		    goto encoding_error;
 	    }
 	    if (!IS_CHAR(val)) {
 	        htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,

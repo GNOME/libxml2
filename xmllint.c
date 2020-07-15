@@ -2182,13 +2182,17 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     else if ((html) && (push)) {
         FILE *f;
 
+        if ((filename[0] == '-') && (filename[1] == 0)) {
+            f = stdin;
+        } else {
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
-	f = fopen(filename, "rb");
+	    f = fopen(filename, "rb");
 #elif defined(__OS400__)
-	f = fopen(filename, "rb");
+	    f = fopen(filename, "rb");
 #else
-	f = fopen(filename, "r");
+	    f = fopen(filename, "r");
 #endif
+        }
         if (f != NULL) {
             int res;
             char chars[4096];

@@ -5250,61 +5250,6 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
 }
 
 /**
- * htmlParseLookupChars:
- * @ctxt: an HTML parser context
- * @stop: Array of chars, which stop the lookup.
- * @stopLen: Length of stop-Array
- *
- * Try to find if any char of the stop-Array is available in the input
- * stream.
- * This function has a side effect of (possibly) incrementing ctxt->checkIndex
- * to avoid rescanning sequences of bytes, it DOES change the state of the
- * parser, do not use liberally.
- *
- * Returns the index to the current parsing point if a stopChar
- *      is available, -1 otherwise.
- */
-static int
-htmlParseLookupChars(htmlParserCtxtPtr ctxt, const xmlChar * stop,
-                     int stopLen)
-{
-    int base, len;
-    htmlParserInputPtr in;
-    const xmlChar *buf;
-    int i;
-
-    in = ctxt->input;
-    if (in == NULL)
-        return (-1);
-
-    base = in->cur - in->base;
-    if (base < 0)
-        return (-1);
-
-    if (ctxt->checkIndex > base)
-        base = ctxt->checkIndex;
-
-    if (in->buf == NULL) {
-        buf = in->base;
-        len = in->length;
-    } else {
-        buf = xmlBufContent(in->buf->buffer);
-        len = xmlBufUse(in->buf->buffer);
-    }
-
-    for (; base < len; base++) {
-        for (i = 0; i < stopLen; ++i) {
-            if (buf[base] == stop[i]) {
-                ctxt->checkIndex = 0;
-                return (base - (in->cur - in->base));
-            }
-        }
-    }
-    ctxt->checkIndex = base;
-    return (-1);
-}
-
-/**
  * htmlParseTryOrFinish:
  * @ctxt:  an HTML parser context
  * @terminate:  last chunk indicator
@@ -5893,17 +5838,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 				"HPP: entering START_TAG\n");
 #endif
 			break;
-		    } else if (cur == '&') {
-			if ((!terminate) &&
-			    (htmlParseLookupChars(ctxt,
-                                                  BAD_CAST "; >/", 4) < 0))
-			    goto done;
-#ifdef DEBUG_PUSH
-			xmlGenericError(xmlGenericErrorContext,
-				"HPP: Parsing Reference\n");
-#endif
-			/* TODO: check generation of subtrees if noent !!! */
-			htmlParseReference(ctxt);
 		    } else {
 		        /*
 			 * check that the text sequence is complete
@@ -5912,14 +5846,21 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			 * data detection.
 			 */
 			if ((!terminate) &&
-                            (htmlParseLookupChars(ctxt, BAD_CAST "<&", 2) < 0))
+                            (htmlParseLookupSequence(ctxt, '<', 0, 0, 0) < 0))
 			    goto done;
 			ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
 				"HPP: Parsing char data\n");
 #endif
-			htmlParseCharData(ctxt);
+                        while ((cur != '<') && (cur != 0)) {
+                            if (cur == '&') {
+			        htmlParseReference(ctxt);
+                            } else {
+			        htmlParseCharData(ctxt);
+                            }
+                            cur = in->cur[0];
+                        }
 		    }
 		}
 		if (cons == ctxt->nbChars) {

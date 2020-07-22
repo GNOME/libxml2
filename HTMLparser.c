@@ -3796,7 +3796,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 
 
 	/* Dump the bogus tag like browsers do */
-	while ((IS_CHAR_CH(CUR)) && (CUR != '>') &&
+	while ((CUR != 0) && (CUR != '>') &&
                (ctxt->instate != XML_PARSER_EOF))
 	    NEXT;
         return -1;
@@ -3852,7 +3852,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
      * (S Attribute)* S?
      */
     SKIP_BLANKS;
-    while ((IS_CHAR_CH(CUR)) &&
+    while ((CUR != 0) &&
            (CUR != '>') &&
 	   ((CUR != '/') || (NXT(1) != '>'))) {
 	long cons = ctxt->nbChars;
@@ -3915,7 +3915,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	        xmlFree(attvalue);
 	    /* Dump the bogus attribute string up to the next blank or
 	     * the end of the tag. */
-	    while ((IS_CHAR_CH(CUR)) &&
+	    while ((CUR != 0) &&
 	           !(IS_BLANK_CH(CUR)) && (CUR != '>') &&
 		   ((CUR != '/') || (NXT(1) != '>')))
 		NEXT;
@@ -5475,7 +5475,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		           (avail < 9)) {
 		    goto done;
 		} else {
-		    ctxt->instate = XML_PARSER_START_TAG;
+		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "HPP: entering START_TAG\n");
@@ -5518,7 +5518,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		           (avail < 4)) {
 		    goto done;
 		} else {
-		    ctxt->instate = XML_PARSER_START_TAG;
+		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "HPP: entering START_TAG\n");
@@ -5831,12 +5831,34 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
 			break;
 		    } else if (cur == '<') {
-			ctxt->instate = XML_PARSER_START_TAG;
-			ctxt->checkIndex = 0;
+                        if ((!terminate) && (next == 0))
+                            goto done;
+                        /*
+                         * Only switch to START_TAG if the next character
+                         * starts a valid name. Otherwise, htmlParseStartTag
+                         * might return without consuming all characters
+                         * up to the final '>'.
+                         */
+                        if ((IS_ASCII_LETTER(next)) ||
+                            (next == '_') || (next == ':') || (next == '.')) {
+                            ctxt->instate = XML_PARSER_START_TAG;
+                            ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
-			xmlGenericError(xmlGenericErrorContext,
-				"HPP: entering START_TAG\n");
+                            xmlGenericError(xmlGenericErrorContext,
+                                    "HPP: entering START_TAG\n");
 #endif
+                        } else {
+                            htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
+                                         "htmlParseTryOrFinish: "
+                                         "invalid element name\n",
+                                         NULL, NULL);
+                            htmlCheckParagraph(ctxt);
+                            if ((ctxt->sax != NULL) &&
+                                (ctxt->sax->characters != NULL))
+                                ctxt->sax->characters(ctxt->userData,
+                                                      in->cur, 1);
+                            NEXT;
+                        }
 			break;
 		    } else {
 		        /*

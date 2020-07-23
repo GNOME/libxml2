@@ -96,6 +96,10 @@ attr_style=" style=\"\""
 
 comment="<!-- -->"
 
+doctype="<!DOCTYPE d>"
+doctype_system="<!DOCTYPE s SYSTEM \"u\">"
+doctype_public="<!DOCTYPE p PUBLIC \"i\" \"u\">"
+
 pi="<?a?>"
 
 ref_lt="&lt;"

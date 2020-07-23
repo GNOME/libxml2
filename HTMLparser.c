@@ -2802,47 +2802,39 @@ htmlParseAttValue(htmlParserCtxtPtr ctxt) {
 static xmlChar *
 htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
     size_t len = 0, startPosition = 0;
+    int err = 0;
+    int quote;
     xmlChar *ret = NULL;
 
-    if (CUR == '"') {
-        NEXT;
-
-        if (CUR_PTR < BASE_PTR)
-            return(ret);
-        startPosition = CUR_PTR - BASE_PTR;
-
-	while ((IS_CHAR_CH(CUR)) && (CUR != '"')) {
-	    NEXT;
-	    len++;
-	}
-	if (!IS_CHAR_CH(CUR)) {
-	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
-			 "Unfinished SystemLiteral\n", NULL, NULL);
-	} else {
-	    ret = xmlStrndup((BASE_PTR+startPosition), len);
-	    NEXT;
-        }
-    } else if (CUR == '\'') {
-        NEXT;
-
-        if (CUR_PTR < BASE_PTR)
-            return(ret);
-        startPosition = CUR_PTR - BASE_PTR;
-
-	while ((IS_CHAR_CH(CUR)) && (CUR != '\'')) {
-	    NEXT;
-	    len++;
-	}
-	if (!IS_CHAR_CH(CUR)) {
-	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
-			 "Unfinished SystemLiteral\n", NULL, NULL);
-	} else {
-	    ret = xmlStrndup((BASE_PTR+startPosition), len);
-	    NEXT;
-        }
-    } else {
+    if ((CUR != '"') && (CUR != '\'')) {
 	htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_STARTED,
-	             " or ' expected\n", NULL, NULL);
+	             "SystemLiteral \" or ' expected\n", NULL, NULL);
+        return(NULL);
+    }
+    quote = CUR;
+    NEXT;
+
+    if (CUR_PTR < BASE_PTR)
+        return(ret);
+    startPosition = CUR_PTR - BASE_PTR;
+
+    while ((CUR != 0) && (CUR != quote)) {
+        /* TODO: Handle UTF-8 */
+        if (!IS_CHAR_CH(CUR)) {
+            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                            "Invalid char in SystemLiteral 0x%X\n", CUR);
+            err = 1;
+        }
+        NEXT;
+        len++;
+    }
+    if (CUR != quote) {
+        htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
+                     "Unfinished SystemLiteral\n", NULL, NULL);
+    } else {
+        NEXT;
+        if (err == 0)
+            ret = xmlStrndup((BASE_PTR+startPosition), len);
     }
 
     return(ret);
@@ -2862,51 +2854,42 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
 static xmlChar *
 htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     size_t len = 0, startPosition = 0;
+    int err = 0;
+    int quote;
     xmlChar *ret = NULL;
+
+    if ((CUR != '"') && (CUR != '\'')) {
+	htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_STARTED,
+	             "PubidLiteral \" or ' expected\n", NULL, NULL);
+        return(NULL);
+    }
+    quote = CUR;
+    NEXT;
+
     /*
      * Name ::= (Letter | '_') (NameChar)*
      */
-    if (CUR == '"') {
-        NEXT;
+    if (CUR_PTR < BASE_PTR)
+        return(ret);
+    startPosition = CUR_PTR - BASE_PTR;
 
-        if (CUR_PTR < BASE_PTR)
-            return(ret);
-        startPosition = CUR_PTR - BASE_PTR;
-
-        while (IS_PUBIDCHAR_CH(CUR)) {
-            len++;
-            NEXT;
+    while ((CUR != 0) && (CUR != quote)) {
+        if (!IS_PUBIDCHAR_CH(CUR)) {
+            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                            "Invalid char in PubidLiteral 0x%X\n", CUR);
+            err = 1;
         }
-
-	if (CUR != '"') {
-	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
-	                 "Unfinished PubidLiteral\n", NULL, NULL);
-	} else {
-	    ret = xmlStrndup((BASE_PTR + startPosition), len);
-	    NEXT;
-	}
-    } else if (CUR == '\'') {
+        len++;
         NEXT;
+    }
 
-        if (CUR_PTR < BASE_PTR)
-            return(ret);
-        startPosition = CUR_PTR - BASE_PTR;
-
-        while ((IS_PUBIDCHAR_CH(CUR)) && (CUR != '\'')){
-            len++;
-            NEXT;
-        }
-
-	if (CUR != '\'') {
-	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
-	                 "Unfinished PubidLiteral\n", NULL, NULL);
-	} else {
-	    ret = xmlStrndup((BASE_PTR + startPosition), len);
-	    NEXT;
-	}
+    if (CUR != '"') {
+        htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
+                     "Unfinished PubidLiteral\n", NULL, NULL);
     } else {
-	htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_STARTED,
-	             "PubidLiteral \" or ' expected\n", NULL, NULL);
+        NEXT;
+        if (err == 0)
+            ret = xmlStrndup((BASE_PTR + startPosition), len);
     }
 
     return(ret);
@@ -2972,7 +2955,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
                 }
             }
 	}
-        if (IS_CHAR_CH(cur)) {
+        if (IS_CHAR(cur)) {
 	    COPY_BUF(l,buf,nbchar,cur);
         } else {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
@@ -3242,7 +3225,7 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
 	    }
             SKIP_BLANKS;
 	    cur = CUR_CHAR(l);
-	    while (IS_CHAR(cur) && (cur != '>')) {
+	    while ((cur != 0) && (cur != '>')) {
 		if (len + 5 >= size) {
 		    xmlChar *tmp;
 
@@ -3261,7 +3244,13 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
 		    GROW;
 		    count = 0;
 		}
-		COPY_BUF(l,buf,len,cur);
+                if (IS_CHAR(cur)) {
+		    COPY_BUF(l,buf,len,cur);
+                } else {
+                    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                                    "Invalid char in processing instruction "
+                                    "0x%X\n", cur);
+                }
 		NEXTL(l);
 		cur = CUR_CHAR(l);
 		if (cur == 0) {
@@ -3331,15 +3320,15 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     len = 0;
     buf[len] = 0;
     q = CUR_CHAR(ql);
-    if (!IS_CHAR(q))
+    if (q == 0)
         goto unfinished;
     NEXTL(ql);
     r = CUR_CHAR(rl);
-    if (!IS_CHAR(r))
+    if (r == 0)
         goto unfinished;
     NEXTL(rl);
     cur = CUR_CHAR(l);
-    while (IS_CHAR(cur) &&
+    while ((cur != 0) &&
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
 	if (len + 5 >= size) {
@@ -3355,7 +3344,12 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 	    }
 	    buf = tmp;
 	}
-	COPY_BUF(ql,buf,len,q);
+        if (IS_CHAR(q)) {
+	    COPY_BUF(ql,buf,len,q);
+        } else {
+            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                            "Invalid char in comment 0x%X\n", q);
+        }
 	q = r;
 	ql = rl;
 	r = cur;
@@ -3369,7 +3363,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 	}
     }
     buf[len] = 0;
-    if (IS_CHAR(cur)) {
+    if (cur == '>') {
         NEXT;
 	if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
 	    (!ctxt->disableSAX))
@@ -3516,9 +3510,12 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     if (CUR != '>') {
 	htmlParseErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED,
 	             "DOCTYPE improperly terminated\n", NULL, NULL);
-        /* We shouldn't try to resynchronize ... */
+        /* Ignore bogus content */
+        while ((CUR != 0) && (CUR != '>'))
+            NEXT;
     }
-    NEXT;
+    if (CUR == '>')
+        NEXT;
 
     /*
      * Create or update the document accordingly to the DOCTYPE
@@ -3996,19 +3993,14 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
      * We should definitely be at the ending "S? '>'" part
      */
     SKIP_BLANKS;
-    if ((!IS_CHAR_CH(CUR)) || (CUR != '>')) {
+    if (CUR != '>') {
         htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "End tag : expected '>'\n", NULL, NULL);
-	if (ctxt->recovery) {
-	    /*
-	     * We're not at the ending > !!
-	     * Error, unless in recover mode where we search forwards
-	     * until we find a >
-	     */
-	    while (CUR != '\0' && CUR != '>') NEXT;
-	    NEXT;
-	}
-    } else
+        /* Skip to next '>' */
+        while ((CUR != 0) && (CUR != '>'))
+            NEXT;
+    }
+    if (CUR == '>')
         NEXT;
 
     /*
@@ -4198,7 +4190,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 			 "htmlParseStartTag: invalid element name\n",
 			 NULL, NULL);
 	        /* Dump the bogus tag like browsers do */
-        while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
+                while ((CUR != 0) && (CUR != '>'))
 	            NEXT;
 
 	        if (currentNode != NULL)
@@ -4413,7 +4405,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
      */
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
-    while (IS_CHAR_CH(CUR)) {
+    while (CUR != 0) {
 	oldptr = ctxt->input->cur;
 	htmlParseContent(ctxt);
 	if (oldptr==ctxt->input->cur) break;
@@ -4430,7 +4422,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
        node_info.node = ctxt->node;
        xmlParserAddNodeInfo(ctxt, &node_info);
     }
-    if (!IS_CHAR_CH(CUR)) {
+    if (CUR == 0) {
 	htmlAutoCloseOnEnd(ctxt);
     }
 
@@ -4451,7 +4443,7 @@ htmlParserFinishElementParsing(htmlParserCtxtPtr ctxt) {
        xmlParserAddNodeInfo(ctxt, ctxt->nodeInfo);
        htmlNodeInfoPop(ctxt);
     }
-    if (!IS_CHAR_CH(CUR)) {
+    if (CUR == 0) {
        htmlAutoCloseOnEnd(ctxt);
     }
 }
@@ -4600,7 +4592,7 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 			 "htmlParseStartTag: invalid element name\n",
 			 NULL, NULL);
 	        /* Dump the bogus tag like browsers do */
-	        while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
+	        while ((CUR == 0) && (CUR != '>'))
 	            NEXT;
 
 	        htmlParserFinishElementParsing(ctxt);

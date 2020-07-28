@@ -1049,9 +1049,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         while (1) {
             if (cur == root)
                 return;
-            if (ctxt->format == 1) {
+            if (ctxt->format == 1)
                 xmlOutputBufferWrite(buf, 1, "\n");
-            }
             if (cur->next != NULL) {
                 cur = cur->next;
                 break;
@@ -1065,21 +1064,25 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                                      (ctxt->level > ctxt->indent_nr ?
                                       ctxt->indent_nr : ctxt->level),
                                      ctxt->indent);
+
+            if (cur->type == XML_ELEMENT_NODE) {
+                xmlOutputBufferWrite(buf, 2, "</");
+                if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+                    xmlOutputBufferWriteString(buf,
+                            (const char *)cur->ns->prefix);
+                    xmlOutputBufferWrite(buf, 1, ":");
+                }
+
+                xmlOutputBufferWriteString(buf, (const char *)cur->name);
+                if (ctxt->format == 2)
+                    xmlOutputBufferWriteWSNonSig(ctxt, 0);
+                xmlOutputBufferWrite(buf, 1, ">");
+            }
+
             if (cur == unformattedNode) {
                 ctxt->format = format;
                 unformattedNode = NULL;
             }
-
-            xmlOutputBufferWrite(buf, 2, "</");
-            if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-                xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
-                xmlOutputBufferWrite(buf, 1, ":");
-            }
-
-            xmlOutputBufferWriteString(buf, (const char *)cur->name);
-            if (ctxt->format == 2)
-                xmlOutputBufferWriteWSNonSig(ctxt, 0);
-            xmlOutputBufferWrite(buf, 1, ">");
         }
     }
 }
@@ -1672,9 +1675,8 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         while (1) {
             if (cur == root)
                 return;
-            if (ctxt->format == 1) {
+            if (ctxt->format == 1)
                 xmlOutputBufferWrite(buf, 1, "\n");
-            }
             if (cur->next != NULL) {
                 cur = cur->next;
                 break;
@@ -1688,19 +1690,23 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                                      (ctxt->level > ctxt->indent_nr ?
                                       ctxt->indent_nr : ctxt->level),
                                      ctxt->indent);
+
+            if (cur->type == XML_ELEMENT_NODE) {
+                xmlOutputBufferWrite(buf, 2, "</");
+                if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+                    xmlOutputBufferWriteString(buf,
+                            (const char *)cur->ns->prefix);
+                    xmlOutputBufferWrite(buf, 1, ":");
+                }
+
+                xmlOutputBufferWriteString(buf, (const char *)cur->name);
+                xmlOutputBufferWrite(buf, 1, ">");
+            }
+
             if (cur == unformattedNode) {
                 ctxt->format = format;
                 unformattedNode = NULL;
             }
-
-            xmlOutputBufferWrite(buf, 2, "</");
-            if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-                xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
-                xmlOutputBufferWrite(buf, 1, ":");
-            }
-
-            xmlOutputBufferWriteString(buf, (const char *)cur->name);
-            xmlOutputBufferWrite(buf, 1, ">");
         }
     }
 }

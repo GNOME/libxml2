@@ -1058,14 +1058,14 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
             cur = cur->parent;
 
-            if (ctxt->level > 0) ctxt->level--;
-            if ((xmlIndentTreeOutput) && (ctxt->format == 1))
-                xmlOutputBufferWrite(buf, ctxt->indent_size *
-                                     (ctxt->level > ctxt->indent_nr ?
-                                      ctxt->indent_nr : ctxt->level),
-                                     ctxt->indent);
-
             if (cur->type == XML_ELEMENT_NODE) {
+                if (ctxt->level > 0) ctxt->level--;
+                if ((xmlIndentTreeOutput) && (ctxt->format == 1))
+                    xmlOutputBufferWrite(buf, ctxt->indent_size *
+                                         (ctxt->level > ctxt->indent_nr ?
+                                          ctxt->indent_nr : ctxt->level),
+                                         ctxt->indent);
+
                 xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
                     xmlOutputBufferWriteString(buf,
@@ -1077,11 +1077,11 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                 if (ctxt->format == 2)
                     xmlOutputBufferWriteWSNonSig(ctxt, 0);
                 xmlOutputBufferWrite(buf, 1, ">");
-            }
 
-            if (cur == unformattedNode) {
-                ctxt->format = format;
-                unformattedNode = NULL;
+                if (cur == unformattedNode) {
+                    ctxt->format = format;
+                    unformattedNode = NULL;
+                }
             }
         }
     }
@@ -1684,14 +1684,14 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
             cur = cur->parent;
 
-            if (ctxt->level > 0) ctxt->level--;
-            if ((xmlIndentTreeOutput) && (ctxt->format == 1))
-                xmlOutputBufferWrite(buf, ctxt->indent_size *
-                                     (ctxt->level > ctxt->indent_nr ?
-                                      ctxt->indent_nr : ctxt->level),
-                                     ctxt->indent);
-
             if (cur->type == XML_ELEMENT_NODE) {
+                if (ctxt->level > 0) ctxt->level--;
+                if ((xmlIndentTreeOutput) && (ctxt->format == 1))
+                    xmlOutputBufferWrite(buf, ctxt->indent_size *
+                                         (ctxt->level > ctxt->indent_nr ?
+                                          ctxt->indent_nr : ctxt->level),
+                                         ctxt->indent);
+
                 xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
                     xmlOutputBufferWriteString(buf,
@@ -1701,11 +1701,11 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
                 xmlOutputBufferWriteString(buf, (const char *)cur->name);
                 xmlOutputBufferWrite(buf, 1, ">");
-            }
 
-            if (cur == unformattedNode) {
-                ctxt->format = format;
-                unformattedNode = NULL;
+                if (cur == unformattedNode) {
+                    ctxt->format = format;
+                    unformattedNode = NULL;
+                }
             }
         }
     }

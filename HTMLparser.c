@@ -3297,6 +3297,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     int q, ql;
     int r, rl;
     int cur, l;
+    int next, nl;
     xmlParserInputState state;
 
     /*
@@ -3329,6 +3330,21 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     while ((cur != 0) &&
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
+	NEXTL(l);
+	next = CUR_CHAR(nl);
+	if (next == 0) {
+	    SHRINK;
+	    GROW;
+	    next = CUR_CHAR(nl);
+	}
+
+	if ((q == '-') && (r == '-') && (cur == '!') && (next == '>')) {
+	  htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
+		       "Comment incorrectly closed by '--!>'", NULL, NULL);
+	  cur = '>';
+	  break;
+	}
+
 	if (len + 5 >= size) {
 	    xmlChar *tmp;
 
@@ -3348,17 +3364,13 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Invalid char in comment 0x%X\n", q);
         }
+
 	q = r;
 	ql = rl;
 	r = cur;
 	rl = l;
-	NEXTL(l);
-	cur = CUR_CHAR(l);
-	if (cur == 0) {
-	    SHRINK;
-	    GROW;
-	    cur = CUR_CHAR(l);
-	}
+	cur = next;
+	l = nl;
     }
     buf[len] = 0;
     if (cur == '>') {

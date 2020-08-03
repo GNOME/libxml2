@@ -24,7 +24,11 @@ SAX.characters(
 SAX.startElement(div)
 SAX.characters(
         , 9)
-SAX.comment(incorrectly closed comment--!><span id=under-test>whatwg guidance is that this should be a DOM node</span><!--correctly closed comment)
+SAX.error: Comment incorrectly closed by '--!>'SAX.comment(incorrectly closed comment)
+SAX.startElement(span, id='under-test')
+SAX.characters(whatwg guidance is that this s, 49)
+SAX.endElement(span)
+SAX.comment(correctly closed comment)
 SAX.characters(
       , 7)
 SAX.endElement(div)

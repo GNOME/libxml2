@@ -3691,6 +3691,8 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
 	minday = 0;
 	maxday = 0;
     } else {
+        if (myear > LONG_MAX / 366)
+            return -2;
         /* FIXME: This doesn't take leap year exceptions every 100/400 years
            into account. */
 	maxday = 365 * myear + (myear + 3) / 4;
@@ -4078,6 +4080,14 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
 
     if ((x == NULL) || (y == NULL))
         return -2;
+
+    if ((x->value.date.year > LONG_MAX / 366) ||
+        (x->value.date.year < LONG_MIN / 366) ||
+        (y->value.date.year > LONG_MAX / 366) ||
+        (y->value.date.year < LONG_MIN / 366)) {
+        /* Possible overflow when converting to days. */
+        return -2;
+    }
 
     if (x->value.date.tz_flag) {
 

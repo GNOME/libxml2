@@ -1,0 +1,4 @@
+./test/HTML/comments2.html:15: HTML parser error : Comment not terminated 
+<!--incorrectly closed comment--!><span id=under-test>
+
+^

@@ -14696,7 +14696,12 @@ xmlCleanupParser(void) {
 static void
 ATTRIBUTE_DESTRUCTOR
 xmlDestructor(void) {
-    xmlCleanupParser();
+    /*
+     * Calling custom deallocation functions in a destructor can cause
+     * problems, for example with Nokogiri.
+     */
+    if (xmlFree == free)
+        xmlCleanupParser();
 }
 #endif
 

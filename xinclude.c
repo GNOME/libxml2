@@ -2260,11 +2260,19 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	xmlUnlinkNode(cur);
 	xmlFreeNode(cur);
     } else {
+        xmlNodePtr child, next;
+
 	/*
 	 * Change the current node as an XInclude start one, and add an
 	 * XInclude end one
 	 */
 	cur->type = XML_XINCLUDE_START;
+        /* Remove fallback children */
+        for (child = cur->children; child != NULL; child = next) {
+            next = child->next;
+            xmlUnlinkNode(child);
+            xmlFreeNode(child);
+        }
 	end = xmlNewDocNode(cur->doc, cur->ns, cur->name, NULL);
 	if (end == NULL) {
 	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,

@@ -1,4 +1,5 @@
-EXTRA_PROGRAMS = html htmlSeed regexp uri schema schemaSeed xml xmlSeed
+EXTRA_PROGRAMS = html htmlSeed regexp uri schema schemaSeed xml xmlSeed \
+                 xpath xpathSeed
 check_PROGRAMS = testFuzzer
 CLEANFILES = $(EXTRA_PROGRAMS)
 AM_CPPFLAGS = -I$(top_srcdir)/include
@@ -132,4 +133,24 @@ fuzz-schema: schema$(EXEEXT) seed/schema.stamp
 	    -max_len=$(XML_MAX_LEN) \
 	    -timeout=20 \
 	    corpus/schema seed/schema
+
+# XPath fuzzer
+
+xpathSeed_SOURCES = xpathSeed.c fuzz.c
+
+seed/xpath.stamp: xpathSeed$(EXEEXT)
+	@mkdir -p seed/xpath
+	@./xpathSeed$(EXEEXT) "$(top_builddir)/test/XPath"
+	@touch seed/xpath.stamp
+
+xpath_SOURCES = xpath.c fuzz.c
+xpath_LDFLAGS = -fsanitize=fuzzer
+
+fuzz-xpath: xpath$(EXEEXT) seed/xpath.stamp
+	@mkdir -p corpus/xpath
+	./xpath$(EXEEXT) \
+	    -dict=xpath.dict \
+	    -max_len=10000 \
+	    -timeout=20 \
+	    corpus/xpath seed/xpath
 

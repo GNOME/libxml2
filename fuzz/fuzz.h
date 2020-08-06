@@ -36,6 +36,12 @@ xmlFuzzReadInt(void);
 const char *
 xmlFuzzReadRemaining(size_t *size);
 
+void
+xmlFuzzWriteString(FILE *out, const char *str);
+
+const char *
+xmlFuzzReadString(size_t *size);
+
 xmlParserInputPtr
 xmlFuzzEntityRecorder(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);
 

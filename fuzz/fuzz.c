@@ -122,20 +122,24 @@ xmlFuzzReadRemaining(size_t *size) {
 }
 
 /*
- * Write a random-length string to stdout in a format similar to
+ * xmlFuzzWriteString:
+ * @out:  output file
+ * @str:  string to write
+ *
+ * Write a random-length string to file in a format similar to
  * FuzzedDataProvider. Backslash followed by newline marks the end of the
  * string. Two backslashes are used to escape a backslash.
  */
-static void
-xmlFuzzWriteString(const char *str) {
+void
+xmlFuzzWriteString(FILE *out, const char *str) {
     for (; *str; str++) {
         int c = (unsigned char) *str;
-        putchar(c);
+        putc(c, out);
         if (c == '\\')
-            putchar(c);
+            putc(c, out);
     }
-    putchar('\\');
-    putchar('\n');
+    putc('\\', out);
+    putc('\n', out);
 }
 
 /**
@@ -150,7 +154,7 @@ xmlFuzzWriteString(const char *str) {
  *
  * Returns a zero-terminated string or NULL if the fuzz data is exhausted.
  */
-static const char *
+const char *
 xmlFuzzReadString(size_t *size) {
     const char *out = fuzzData.outPtr;
 
@@ -217,8 +221,8 @@ xmlFuzzEntityRecorder(const char *URL, const char *ID,
         }
     } while (len > 0);
 
-    xmlFuzzWriteString(URL);
-    xmlFuzzWriteString((char *) xmlBufContent(in->buf->buffer));
+    xmlFuzzWriteString(stdout, URL);
+    xmlFuzzWriteString(stdout, (char *) xmlBufContent(in->buf->buffer));
 
     xmlFreeInputStream(in);
 

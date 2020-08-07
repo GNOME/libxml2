@@ -1980,6 +1980,8 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
         (ctxt == NULL))
 	return(-1);
     if (fallback->children != NULL) {
+        xmlNodePtr child, next;
+
 	/*
 	 * It's possible that the fallback also has 'includes'
 	 * (Bug 129969), so we re-process the fallback just in case
@@ -1990,11 +1992,13 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt->_private = ctxt->_private;
 	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
-	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
+        for (child = fallback->children; child != NULL; child = next) {
+            next = child->next;
+	    if (xmlXIncludeDoProcess(newctxt, ctxt->doc, child) < 0)
+                ret = -1;
+        }
 	if (ctxt->nbErrors > oldNbErrors)
 	    ret = -1;
-	else if (ret > 0)
-	    ret = 0;	/* xmlXIncludeDoProcess can return +ve number */
 	xmlXIncludeFreeContext(newctxt);
 
 	ctxt->incTab[nr]->inc = xmlDocCopyNodeList(ctxt->doc,
@@ -2396,7 +2400,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
      * First phase: lookup the elements in the document
      */
     cur = tree;
-    while ((cur != NULL) && (cur != tree->parent)) {
+    do {
 	/* TODO: need to work on entities -> stack */
         if (xmlXIncludeTestNode(ctxt, cur) == 1) {
             xmlXIncludePreProcessNode(ctxt, cur);
@@ -2407,22 +2411,16 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
             cur = cur->children;
             continue;
         }
-	if (cur->next != NULL) {
-	    cur = cur->next;
-	} else {
-	    if (cur == tree)
-	        break;
-	    do {
-		cur = cur->parent;
-		if ((cur == NULL) || (cur == tree->parent))
-		    break; /* do */
-		if (cur->next != NULL) {
-		    cur = cur->next;
-		    break; /* do */
-		}
-	    } while (cur != NULL);
-	}
-    }
+        do {
+            if (cur == tree)
+                break;
+            if (cur->next != NULL) {
+                cur = cur->next;
+                break;
+            }
+            cur = cur->parent;
+        } while (cur != NULL);
+    } while ((cur != NULL) && (cur != tree));
 
     /*
      * Second Phase : collect the infosets fragments

@@ -58,7 +58,7 @@
   #undef XMLCDECL
   #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
     #define XMLPUBFUN __declspec(dllexport)
-    #define XMLPUBVAR __declspec(dllexport)
+    #define XMLPUBVAR __declspec(dllexport) extern
   #else
     #define XMLPUBFUN
     #if !defined(LIBXML_STATIC)

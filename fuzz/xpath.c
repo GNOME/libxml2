@@ -28,7 +28,8 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     expr = xmlFuzzReadString(&exprSize);
     xml = xmlFuzzReadString(&xmlSize);
 
-    doc = xmlParseMemory(xml, xmlSize);
+    /* Recovery mode allows more input to be fuzzed. */
+    doc = xmlReadMemory(xml, xmlSize, NULL, NULL, XML_PARSE_RECOVER);
     if (doc != NULL) {
         xmlXPathContextPtr xpctxt = xmlXPathNewContext(doc);
 

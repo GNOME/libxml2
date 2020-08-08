@@ -99,13 +99,16 @@ processXml(const char *testDir, xpathTestXml *xml, const char *subdir,
     char pattern[PATH_SIZE];
     glob_t globbuf;
     size_t i, size;
-    int ret = 0;
+    int ret = 0, res;
 
     size = snprintf(pattern, sizeof(pattern), "%s/%s/%s*",
                     testDir, subdir, xml->prefix);
     if (size >= PATH_SIZE)
         return(-1);
-    if (glob(pattern, 0, NULL, &globbuf) != 0)
+    res = glob(pattern, 0, NULL, &globbuf);
+    if (res == GLOB_NOMATCH)
+        return(0);
+    if (res != 0)
         return(-1);
 
     for (i = 0; i < globbuf.gl_pathc; i++) {
@@ -151,6 +154,7 @@ processXml(const char *testDir, xpathTestXml *xml, const char *subdir,
             } else {
                 char xptrExpr[EXPR_SIZE+100];
 
+                /* Wrap XPath expressions as XPointer */
                 snprintf(xptrExpr, sizeof(xptrExpr), "xpointer(%s)", expr);
                 xmlFuzzWriteString(out, xptrExpr);
             }

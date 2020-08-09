@@ -296,7 +296,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 
 #define UPPER (toupper(*ctxt->input->cur))
 
-#define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val)
+#define SKIP(val) ctxt->input->cur += (val),ctxt->input->col+=(val)
 
 #define NXT(val) ctxt->input->cur[(val)]
 
@@ -330,7 +330,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
     if (*(ctxt->input->cur) == '\n') {					\
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
-    ctxt->token = 0; ctxt->input->cur += l; ctxt->nbChars++;		\
+    ctxt->token = 0; ctxt->input->cur += l;				\
   } while (0)
 
 /************
@@ -597,7 +597,6 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 		ctxt->input->line++; ctxt->input->col = 1;
 	    } else ctxt->input->col++;
 	    ctxt->input->cur++;
-	    ctxt->nbChars++;
 	    if (*ctxt->input->cur == 0)
 		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
 	}
@@ -2495,7 +2494,6 @@ htmlParseName(htmlParserCtxtPtr ctxt) {
 	    count = in - ctxt->input->cur;
 	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
 	    ctxt->input->cur = in;
-	    ctxt->nbChars += count;
 	    ctxt->input->col += count;
 	    return(ret);
 	}
@@ -4938,7 +4936,6 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->vctxt.warning = xmlParserValidityWarning;
     ctxt->record_info = 0;
     ctxt->validate = 0;
-    ctxt->nbChars = 0;
     ctxt->checkIndex = 0;
     ctxt->catalogs = NULL;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
@@ -6581,7 +6578,6 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->vctxt.error = xmlParserValidityError;
     ctxt->vctxt.warning = xmlParserValidityWarning;
     ctxt->record_info = 0;
-    ctxt->nbChars = 0;
     ctxt->checkIndex = 0;
     ctxt->inSubset = 0;
     ctxt->errNo = XML_ERR_OK;

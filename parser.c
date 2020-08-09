@@ -2055,7 +2055,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
     ((unsigned char *) s)[ 9 ] == c10 )
 
 #define SKIP(val) do {							\
-    ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val);			\
+    ctxt->input->cur += (val),ctxt->input->col+=(val);			\
     if (*ctxt->input->cur == 0)						\
         xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
   } while (0)
@@ -2066,7 +2066,6 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	if (*(ctxt->input->cur) == '\n') {				\
 	ctxt->input->line++; ctxt->input->col = 1;			\
 	} else ctxt->input->col++;					\
-	ctxt->nbChars++;						\
 	ctxt->input->cur++;						\
     }									\
     if (*ctxt->input->cur == 0)						\
@@ -2119,7 +2118,6 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
 #define NEXT1 {								\
 	ctxt->input->col++;						\
 	ctxt->input->cur++;						\
-	ctxt->nbChars++;						\
 	if (*ctxt->input->cur == 0)					\
 	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
     }
@@ -2332,7 +2330,6 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	if (RAW == ';') {
 	    /* on purpose to avoid reentrancy problems with NEXT and SKIP */
 	    ctxt->input->col++;
-	    ctxt->nbChars ++;
 	    ctxt->input->cur++;
 	}
     } else if  ((RAW == '&') && (NXT(1) == '#')) {
@@ -2361,7 +2358,6 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	if (RAW == ';') {
 	    /* on purpose to avoid reentrancy problems with NEXT and SKIP */
 	    ctxt->input->col++;
-	    ctxt->nbChars ++;
 	    ctxt->input->cur++;
 	}
     } else {
@@ -3333,7 +3329,6 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
             }
 	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
 	    ctxt->input->cur = in;
-	    ctxt->nbChars += count;
 	    ctxt->input->col += count;
 	    if (ret == NULL)
 	        xmlErrMemory(ctxt, NULL);
@@ -3456,7 +3451,6 @@ xmlParseNCName(xmlParserCtxtPtr ctxt) {
             }
 	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
 	    ctxt->input->cur = in;
-	    ctxt->nbChars += count;
 	    ctxt->input->col += count;
 	    if (ret == NULL) {
 	        xmlErrMemory(ctxt, NULL);
@@ -14793,7 +14787,6 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->vctxt.warning = xmlParserValidityWarning;
 #endif
     ctxt->record_info = 0;
-    ctxt->nbChars = 0;
     ctxt->checkIndex = 0;
     ctxt->inSubset = 0;
     ctxt->errNo = XML_ERR_OK;

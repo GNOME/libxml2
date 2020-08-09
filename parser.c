@@ -3487,10 +3487,10 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
     while (*in != 0 && *in == *cmp) {
 	++in;
 	++cmp;
-	ctxt->input->col++;
     }
     if (*cmp == 0 && (*in == '>' || IS_BLANK_CH (*in))) {
 	/* success */
+	ctxt->input->col += in - ctxt->input->cur;
 	ctxt->input->cur = in;
 	return (const xmlChar*) 1;
     }
@@ -8820,6 +8820,7 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
 	}
 	if (*cmp == 0 && (*in == '>' || IS_BLANK_CH (*in))) {
 	    /* success */
+            ctxt->input->col += in - ctxt->input->cur;
 	    ctxt->input->cur = in;
 	    return((const xmlChar*) 1);
 	}

@@ -2287,7 +2287,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    doc = ctxt->myDoc;
 		    ret = ctxt->wellFormed;
 		    xmlFreeParserCtxt(ctxt);
-		    if (!ret) {
+		    if ((!ret) && (!recovery)) {
 			xmlFreeDoc(doc);
 			doc = NULL;
 		    }

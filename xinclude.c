@@ -60,7 +60,7 @@ struct _xmlXIncludeRef {
     int                   xml; /* xml or txt */
     int                 count; /* how many refs use that specific doc */
     xmlXPathObjectPtr    xptr; /* the xpointer if needed */
-    int		      emptyFb; /* flag to show fallback empty */
+    int		         skip; /* skip in case of errors */
 };
 
 struct _xmlXIncludeCtxt {
@@ -2007,7 +2007,6 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	                                           fallback->children);
     } else {
         ctxt->incTab[nr]->inc = NULL;
-	ctxt->incTab[nr]->emptyFb = 1;	/* flag empty callback */
     }
     return(ret);
 }
@@ -2164,13 +2163,13 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 		((xmlStrEqual(children->ns->href, XINCLUDE_NS)) ||
 		 (xmlStrEqual(children->ns->href, XINCLUDE_OLD_NS)))) {
 		ret = xmlXIncludeLoadFallback(ctxt, children, nr);
-		if (ret == 0)
-		    break;
+		break;
 	    }
 	    children = children->next;
 	}
     }
     if (ret < 0) {
+        ctxt->incTab[nr]->skip = 1;
 	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 	               XML_XINCLUDE_NO_FALLBACK,
 		       "could not load %s, and no fallback was found\n",
@@ -2468,9 +2467,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
      *
      */
     for (i = ctxt->incBase;i < ctxt->incNr; i++) {
-	if ((ctxt->incTab[i]->inc != NULL) ||
-		(ctxt->incTab[i]->xptr != NULL) ||
-		(ctxt->incTab[i]->emptyFb != 0))	/* (empty fallback) */
+	if (ctxt->incTab[i]->skip == 0)
 	    xmlXIncludeIncludeNode(ctxt, i);
     }
 

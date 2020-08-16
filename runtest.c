@@ -2108,15 +2108,15 @@ errParseTest(const char *filename, const char *result, const char *err,
 	    xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
 	}
 	res = compareFileMem(result, base, size);
-	if (res != 0) {
-	    fprintf(stderr, "Result for %s failed in %s\n", filename, result);
-	    return(-1);
-	}
     }
     if (doc != NULL) {
 	if (base != NULL)
 	    xmlFree((char *)base);
 	xmlFreeDoc(doc);
+    }
+    if (res != 0) {
+        fprintf(stderr, "Result for %s failed in %s\n", filename, result);
+        return(-1);
     }
     if (err != NULL) {
 	res = compareFileMem(err, testErrors, testErrorsSize);

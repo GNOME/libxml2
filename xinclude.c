@@ -61,6 +61,7 @@ struct _xmlXIncludeRef {
     int                 count; /* how many refs use that specific doc */
     xmlXPathObjectPtr    xptr; /* the xpointer if needed */
     int		         skip; /* skip in case of errors */
+    int	             fallback; /* fallback was loaded */
 };
 
 struct _xmlXIncludeCtxt {
@@ -2007,6 +2008,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
     } else {
         ctxt->incTab[nr]->inc = NULL;
     }
+    ctxt->incTab[nr]->fallback = 1;
     return(ret);
 }
 
@@ -2266,6 +2268,8 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	 * Change the current node as an XInclude start one, and add an
 	 * XInclude end one
 	 */
+        if (ctxt->incTab[nr]->fallback)
+            xmlUnsetProp(cur, BAD_CAST "href");
 	cur->type = XML_XINCLUDE_START;
 	end = xmlNewDocNode(cur->doc, cur->ns, cur->name, NULL);
 	if (end == NULL) {

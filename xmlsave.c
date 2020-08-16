@@ -1049,7 +1049,9 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         while (1) {
             if (cur == root)
                 return;
-            if (ctxt->format == 1)
+            if ((ctxt->format == 1) &&
+                (cur->type != XML_XINCLUDE_START) &&
+                (cur->type != XML_XINCLUDE_END))
                 xmlOutputBufferWrite(buf, 1, "\n");
             if (cur->next != NULL) {
                 cur = cur->next;
@@ -1224,7 +1226,9 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 		else
 #endif
 		    xmlNodeDumpOutputInternal(ctxt, child);
-		xmlOutputBufferWrite(buf, 1, "\n");
+                if ((child->type != XML_XINCLUDE_START) &&
+                    (child->type != XML_XINCLUDE_END))
+                    xmlOutputBufferWrite(buf, 1, "\n");
 		child = child->next;
 	    }
 	}

@@ -91,7 +91,8 @@ struct _xmlXIncludeCtxt {
 };
 
 static int
-xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree);
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
+                     int skipRoot);
 
 
 /************************************************************************
@@ -732,7 +733,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	 */
 	newctxt->parseFlags = ctxt->parseFlags;
         newctxt->incTotal = ctxt->incTotal;
-	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc));
+	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc), 0);
         ctxt->incTotal = newctxt->incTotal;
 	for (i = 0;i < ctxt->incNr;i++) {
 	    newctxt->incTab[i]->count--;
@@ -1984,8 +1985,6 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
         (ctxt == NULL))
 	return(-1);
     if (fallback->children != NULL) {
-        xmlNodePtr child, next;
-
 	/*
 	 * It's possible that the fallback also has 'includes'
 	 * (Bug 129969), so we re-process the fallback just in case
@@ -1997,11 +1996,8 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
         newctxt->incTotal = ctxt->incTotal;
-        for (child = fallback->children; child != NULL; child = next) {
-            next = child->next;
-	    if (xmlXIncludeDoProcess(newctxt, ctxt->doc, child) < 0)
-                ret = -1;
-        }
+        if (xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback, 1) < 0)
+            ret = -1;
         ctxt->incTotal = newctxt->incTotal;
 	if (ctxt->nbErrors > oldNbErrors)
 	    ret = -1;
@@ -2386,6 +2382,7 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  * @ctxt: the XInclude processing context
  * @doc: an XML document
  * @tree: the top of the tree to process
+ * @skipRoot: don't process the root node of the tree
  *
  * Implement the XInclude substitution on the XML document @doc
  *
@@ -2393,13 +2390,16 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  *    or the number of substitutions done.
  */
 static int
-xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
+                     int skipRoot) {
     xmlNodePtr cur;
     int ret = 0;
     int i, start;
 
     if ((doc == NULL) || (tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
 	return(-1);
+    if ((skipRoot) && (tree->children == NULL))
+        return(-1);
     if (ctxt == NULL)
 	return(-1);
 
@@ -2413,7 +2413,10 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     /*
      * First phase: lookup the elements in the document
      */
-    cur = tree;
+    if (skipRoot)
+        cur = tree->children;
+    else
+        cur = tree;
     do {
 	/* TODO: need to work on entities -> stack */
         if (xmlXIncludeTestNode(ctxt, cur) == 1) {
@@ -2521,7 +2524,7 @@ xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree, int flags, void *data) {
     ctxt->_private = data;
     ctxt->base = xmlStrdup((xmlChar *)tree->doc->URL);
     xmlXIncludeSetFlags(ctxt, flags);
-    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree);
+    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree, 0);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
         ret = -1;
 
@@ -2605,7 +2608,7 @@ xmlXIncludeProcessTreeFlags(xmlNodePtr tree, int flags) {
 	return(-1);
     ctxt->base = xmlNodeGetBase(tree->doc, tree);
     xmlXIncludeSetFlags(ctxt, flags);
-    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree);
+    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree, 0);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
 	ret = -1;
 
@@ -2645,7 +2648,7 @@ xmlXIncludeProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||
         (node->doc == NULL) || (ctxt == NULL))
 	return(-1);
-    ret = xmlXIncludeDoProcess(ctxt, node->doc, node);
+    ret = xmlXIncludeDoProcess(ctxt, node->doc, node, 0);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
 	ret = -1;
     return(ret);

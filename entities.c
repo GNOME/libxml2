@@ -704,11 +704,25 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
 	    } else {
 		/*
 		 * We assume we have UTF-8 input.
+		 * It must match either:
+		 *   110xxxxx 10xxxxxx
+		 *   1110xxxx 10xxxxxx 10xxxxxx
+		 *   11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+		 * That is:
+		 *   cur[0] is 11xxxxxx
+		 *   cur[1] is 10xxxxxx
+		 *   cur[2] is 10xxxxxx if cur[0] is 111xxxxx
+		 *   cur[3] is 10xxxxxx if cur[0] is 1111xxxx
+		 *   cur[0] is not 11111xxx
 		 */
 		char buf[11], *ptr;
 		int val = 0, l = 1;
 
-		if (*cur < 0xC0) {
+		if (((cur[0] & 0xC0) != 0xC0) ||
+		    ((cur[1] & 0xC0) != 0x80) ||
+		    (((cur[0] & 0xE0) == 0xE0) && ((cur[2] & 0xC0) != 0x80)) ||
+		    (((cur[0] & 0xF0) == 0xF0) && ((cur[3] & 0xC0) != 0x80)) ||
+		    (((cur[0] & 0xF8) == 0xF8))) {
 		    xmlEntitiesErr(XML_CHECK_NOT_UTF8,
 			    "xmlEncodeEntities: input not UTF-8");
 		    if (doc != NULL)

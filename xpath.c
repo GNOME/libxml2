@@ -6119,7 +6119,6 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->proximityPosition = -1;
 
     ret->maxDepth = INT_MAX;
-    ret->maxParserDepth = INT_MAX;
 
 #ifdef XP_DEFAULT_CACHE_ON
     if (xmlXPathContextSetCache(ret, 1, -1, 0) == -1) {
@@ -10948,9 +10947,13 @@ xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt, int sort) {
     xmlXPathContextPtr xpctxt = ctxt->context;
 
     if (xpctxt != NULL) {
-        if (xpctxt->depth >= xpctxt->maxParserDepth)
+        if (xpctxt->depth >= xpctxt->maxDepth)
             XP_ERROR(XPATH_RECURSION_LIMIT_EXCEEDED);
-        xpctxt->depth += 1;
+        /*
+         * Parsing a single '(' pushes about 10 functions on the call stack
+         * before recursing!
+         */
+        xpctxt->depth += 10;
     }
 
     xmlXPathCompAndExpr(ctxt);

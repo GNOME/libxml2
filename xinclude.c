@@ -2382,6 +2382,23 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
     start = ctxt->incNr;
 
     /*
+     * TODO: The phases must run separately for recursive inclusions.
+     *
+     * - Phase 1 should start with top-level XInclude nodes, load documents,
+     *   execute XPointer expressions, then process only the result nodes
+     *   (not whole document, see bug #324081) and only for phase 1
+     *   recursively. We will need a backreference from xmlNodes to
+     *   xmlIncludeRefs to detect references that were already visited.
+     *   This can also be used for proper cycle detection, see bug #344240.
+     *
+     * - Phase 2 should visit all top-level XInclude nodes and expand
+     *   possible subreferences in the replacement recursively.
+     *
+     * - Phase 3 should finally replace the top-level XInclude nodes.
+     *   It could also be run together with phase 2.
+     */
+
+    /*
      * First phase: lookup the elements in the document
      */
     if (skipRoot)

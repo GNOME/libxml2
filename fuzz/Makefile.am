@@ -1,3 +1,4 @@
+AUTOMAKE_OPTIONS = -Wno-syntax
 EXTRA_PROGRAMS = html htmlSeed regexp uri schema schemaSeed xml xmlSeed \
                  xpath xpathSeed
 check_PROGRAMS = testFuzzer
@@ -20,9 +21,17 @@ XML_SEED_CORPUS_SRC = \
 
 testFuzzer_SOURCES = testFuzzer.c fuzz.c
 
+.PHONY: tests clean-corpus
+
 tests: testFuzzer$(EXEEXT)
 	@echo "## Running fuzzer tests"
 	@./testFuzzer$(EXEEXT)
+
+clean-corpus:
+	rm -rf seed/html.stamp seed/html
+	rm -rf seed/schema.stamp seed/schema
+	rm -rf seed/xml.stamp seed/xml
+	rm -rf seed/xpath.stamp seed/xpath
 
 # XML fuzzer
 

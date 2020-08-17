@@ -1,15 +1,20 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.63])
-AC_INIT
+
+m4_define([MAJOR_VERSION], 2)
+m4_define([MINOR_VERSION], 9)
+m4_define([MICRO_VERSION], 10)
+
+AC_INIT([libxml2],[MAJOR_VERSION.MINOR_VERSION.MICRO_VERSION])
 AC_CONFIG_SRCDIR([entities.c])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE([enable])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_HOST
 
-LIBXML_MAJOR_VERSION=2
-LIBXML_MINOR_VERSION=9
-LIBXML_MICRO_VERSION=10
+LIBXML_MAJOR_VERSION=MAJOR_VERSION
+LIBXML_MINOR_VERSION=MINOR_VERSION
+LIBXML_MICRO_VERSION=MICRO_VERSION
 LIBXML_MICRO_VERSION_SUFFIX=
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION$LIBXML_MICRO_VERSION_SUFFIX
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
@@ -50,7 +55,7 @@ AC_SUBST(LIBXML_VERSION_EXTRA)
 
 VERSION=${LIBXML_VERSION}
 
-AM_INIT_AUTOMAKE(libxml2, $VERSION)
+AM_INIT_AUTOMAKE([foreign])
 
 # Support silent build rules, requires at least automake-1.11. Disable
 # by either passing --disable-silent-rules to configure or passing V=1
@@ -1514,8 +1519,8 @@ else
 
             AC_CHECK_HEADER(unicode/ucnv.h,
             AC_MSG_CHECKING(for icu)
-            AC_TRY_LINK([#include <unicode/ucnv.h>],[
-        UConverter *utf = ucnv_open("UTF-8", NULL);],[
+            AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <unicode/ucnv.h>]], [[
+        UConverter *utf = ucnv_open("UTF-8", NULL);]])],[
                 AC_MSG_RESULT(yes)
                 have_libicu=yes],[
                 AC_MSG_RESULT(no)
@@ -1526,8 +1531,8 @@ else
                 LDFLAGS="${LDFLAGS} ${ICU_LIBS}"
                 LIBS="${LIBS} -licucore"
 
-                AC_TRY_LINK([#include <unicode/ucnv.h>],[
-        UConverter *utf = ucnv_open("UTF-8", NULL);],[
+                AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <unicode/ucnv.h>]], [[
+        UConverter *utf = ucnv_open("UTF-8", NULL);]])],[
                     AC_MSG_RESULT(yes)
                     have_libicu=yes
                     ICU_LIBS="${ICU_LIBS} -licucore"

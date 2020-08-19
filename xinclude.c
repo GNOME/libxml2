@@ -1464,7 +1464,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      */
     if ((URL[0] == 0) || (URL[0] == '#') ||
 	((ctxt->doc != NULL) && (xmlStrEqual(URL, ctxt->doc->URL)))) {
-	doc = NULL;
+	doc = ctxt->doc;
         goto loaded;
     }
 

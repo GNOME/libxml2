@@ -627,8 +627,8 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_RECURSION,
 	               "detected a local recursion with no xpointer in %s\n",
 		       URL);
-	if (fragment != NULL)
-	    xmlFree(fragment);
+        xmlFree(URL);
+        xmlFree(fragment);
 	return(-1);
     }
 
@@ -640,12 +640,15 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	    if (xmlStrEqual(URL, ctxt->urlTab[i])) {
 		xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_RECURSION,
 		               "detected a recursion in %s\n", URL);
+                xmlFree(URL);
+                xmlFree(fragment);
 		return(-1);
 	    }
 	}
     }
 
     ref = xmlXIncludeNewRef(ctxt, URL, cur);
+    xmlFree(URL);
     if (ref == NULL) {
 	return(-1);
     }
@@ -653,7 +656,6 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     ref->doc = NULL;
     ref->xml = xml;
     ref->count = 1;
-    xmlFree(URL);
     return(0);
 }
 

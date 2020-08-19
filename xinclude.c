@@ -1984,7 +1984,8 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	    ret = -1;
 	xmlXIncludeFreeContext(newctxt);
 
-	ctxt->incTab[nr]->inc = fallback->children;
+	ctxt->incTab[nr]->inc = xmlDocCopyNodeList(ctxt->doc,
+	                                           fallback->children);
     } else {
         ctxt->incTab[nr]->inc = NULL;
     }
@@ -2240,6 +2241,12 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
         if (ctxt->incTab[nr]->fallback)
             xmlUnsetProp(cur, BAD_CAST "href");
 	cur->type = XML_XINCLUDE_START;
+        /* Remove fallback children */
+        for (child = cur->children; child != NULL; child = next) {
+            next = child->next;
+            xmlUnlinkNode(child);
+            xmlFreeNode(child);
+        }
 	end = xmlNewDocNode(cur->doc, cur->ns, cur->name, NULL);
 	if (end == NULL) {
 	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
@@ -2255,17 +2262,11 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	 * Add the list of nodes
 	 */
 	while (list != NULL) {
-	    next = list->next;
-	    xmlAddPrevSibling(end, list);
-	    list = next;
-	}
+	    cur = list;
+	    list = list->next;
 
-        /* Remove fallback node */
-        for (child = cur->children; child != NULL; child = next) {
-            next = child->next;
-            xmlUnlinkNode(child);
-            xmlFreeNode(child);
-        }
+	    xmlAddPrevSibling(end, cur);
+	}
     }
 
 

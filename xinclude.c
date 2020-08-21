@@ -59,8 +59,8 @@ struct _xmlXIncludeRef {
     xmlNodePtr            inc; /* the included copy */
     int                   xml; /* xml or txt */
     int                 count; /* how many refs use that specific doc */
-    int		         skip; /* skip in case of errors */
     int	             fallback; /* fallback was loaded */
+    int		      emptyFb; /* flag to show fallback empty */
 };
 
 struct _xmlXIncludeCtxt {
@@ -1988,8 +1988,11 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 
 	ctxt->incTab[nr]->inc = xmlDocCopyNodeList(ctxt->doc,
 	                                           fallback->children);
+        if (ctxt->incTab[nr]->inc == NULL)
+            ctxt->incTab[nr]->emptyFb = 1;
     } else {
         ctxt->incTab[nr]->inc = NULL;
+	ctxt->incTab[nr]->emptyFb = 1;	/* flag empty callback */
     }
     ctxt->incTab[nr]->fallback = 1;
     return(ret);
@@ -2153,7 +2156,6 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	}
     }
     if (ret < 0) {
-        ctxt->incTab[nr]->skip = 1;
 	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 	               XML_XINCLUDE_NO_FALLBACK,
 		       "could not load %s, and no fallback was found\n",
@@ -2197,6 +2199,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 
     list = ctxt->incTab[nr]->inc;
     ctxt->incTab[nr]->inc = NULL;
+    ctxt->incTab[nr]->emptyFb = 0;
 
     /*
      * Check against the risk of generating a multi-rooted document
@@ -2459,7 +2462,8 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
      *
      */
     for (i = ctxt->incBase;i < ctxt->incNr; i++) {
-	if (ctxt->incTab[i]->skip == 0)
+	if ((ctxt->incTab[i]->inc != NULL) ||
+	    (ctxt->incTab[i]->emptyFb != 0))	/* (empty fallback) */
 	    xmlXIncludeIncludeNode(ctxt, i);
     }
 

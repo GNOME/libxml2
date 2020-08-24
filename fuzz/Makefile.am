@@ -1,6 +1,5 @@
 AUTOMAKE_OPTIONS = -Wno-syntax
-EXTRA_PROGRAMS = html htmlSeed regexp uri schema schemaSeed xml xmlSeed \
-                 xpath xpathSeed
+EXTRA_PROGRAMS = genSeed html regexp schema uri xml xpath
 check_PROGRAMS = testFuzzer
 CLEANFILES = $(EXTRA_PROGRAMS)
 AM_CPPFLAGS = -I$(top_srcdir)/include
@@ -8,16 +7,17 @@ DEPENDENCIES = $(top_builddir)/libxml2.la
 LDADD = $(STATIC_BINARIES) $(top_builddir)/libxml2.la $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(M_LIBS) $(WIN32_EXTRA_LIBADD)
 
 XML_MAX_LEN = 80000
+# Single quotes to avoid wildcard expansion by the shell
 XML_SEED_CORPUS_SRC = \
-    $(top_srcdir)/test/* \
-    $(top_srcdir)/test/errors/*.xml \
-    $(top_srcdir)/test/errors10/*.xml \
-    $(top_srcdir)/test/namespaces/* \
-    $(top_srcdir)/test/valid/*.xml \
-    $(top_srcdir)/test/VC/* \
-    $(top_srcdir)/test/VCM/* \
-    $(top_srcdir)/test/XInclude/docs/* \
-    $(top_srcdir)/test/xmlid/*
+    '$(top_srcdir)/test/*' \
+    '$(top_srcdir)/test/errors/*.xml' \
+    '$(top_srcdir)/test/errors10/*.xml' \
+    '$(top_srcdir)/test/namespaces/*' \
+    '$(top_srcdir)/test/valid/*.xml' \
+    '$(top_srcdir)/test/VC/*' \
+    '$(top_srcdir)/test/VCM/*' \
+    '$(top_srcdir)/test/XInclude/docs/*' \
+    '$(top_srcdir)/test/xmlid/*'
 
 testFuzzer_SOURCES = testFuzzer.c fuzz.c
 
@@ -35,25 +35,15 @@ clean-corpus:
 	rm -rf seed/xml.stamp seed/xml
 	rm -rf seed/xpath.stamp seed/xpath
 
+# Seed corpus
+
+genSeed_SOURCES = genSeed.c fuzz.c
+
 # XML fuzzer
 
-xmlSeed_SOURCES = xmlSeed.c fuzz.c
-
-seed/xml.stamp: xmlSeed$(EXEEXT)
+seed/xml.stamp: genSeed$(EXEEXT)
 	@mkdir -p seed/xml
-	@for i in $(XML_SEED_CORPUS_SRC); do \
-	    if [ -f $$i ]; then \
-	        echo Processing seed $$i; \
-                base=$$(basename $$i) \
-	        outfile=$(abs_builddir)/seed/xml/$$base; \
-                pushd $$(dirname $$i) >/dev/null; \
-	        $(abs_builddir)/xmlSeed$(EXEEXT) $$base > $$outfile; \
-                popd >/dev/null; \
-	        if [ "$$(wc -c < $$outfile)" -gt $(XML_MAX_LEN) ]; then \
-	            rm $$outfile; \
-	        fi; \
-	    fi; \
-	done
+	@./genSeed$(EXEEXT) xml $(XML_SEED_CORPUS_SRC)
 	@touch seed/xml.stamp
 
 xml_SOURCES = xml.c fuzz.c
@@ -69,16 +59,9 @@ fuzz-xml: xml$(EXEEXT) seed/xml.stamp
 
 # HTML fuzzer
 
-htmlSeed_SOURCES = htmlSeed.c fuzz.c
-
-seed/html.stamp: htmlSeed$(EXEEXT)
+seed/html.stamp: genSeed$(EXEEXT)
 	@mkdir -p seed/html
-	@for i in $(top_srcdir)/test/HTML/*; do \
-	    if [ -f $$i ]; then \
-	        echo Processing seed $$i; \
-	        ./htmlSeed$(EXEEXT) $$i > seed/html/$$(basename $$i); \
-	    fi; \
-	done
+	@./genSeed$(EXEEXT) html '$(top_srcdir)/test/HTML/*'
 	@touch seed/html.stamp
 
 html_SOURCES = html.c fuzz.c
@@ -119,20 +102,9 @@ fuzz-uri: uri$(EXEEXT)
 
 # XML Schema fuzzer
 
-schemaSeed_SOURCES = schemaSeed.c fuzz.c
-
-seed/schema.stamp: schemaSeed$(EXEEXT)
+seed/schema.stamp: genSeed$(EXEEXT)
 	@mkdir -p seed/schema
-	@for i in ../test/schemas/*.xsd; do \
-	    if [ -f $$i ]; then \
-	        echo Processing seed $$i; \
-                base=$$(basename $$i) \
-	        outfile=$(abs_builddir)/seed/schema/$$base; \
-                pushd $$(dirname $$i) >/dev/null; \
-	        $(abs_builddir)/schemaSeed$(EXEEXT) $$base > $$outfile; \
-                popd >/dev/null; \
-	    fi; \
-	done
+	@./genSeed$(EXEEXT) schema '$(top_srcdir)/test/schemas/*.xsd'
 	@touch seed/schema.stamp
 
 schema_SOURCES = schema.c fuzz.c
@@ -148,11 +120,9 @@ fuzz-schema: schema$(EXEEXT) seed/schema.stamp
 
 # XPath fuzzer
 
-xpathSeed_SOURCES = xpathSeed.c fuzz.c
-
-seed/xpath.stamp: xpathSeed$(EXEEXT)
+seed/xpath.stamp: genSeed$(EXEEXT)
 	@mkdir -p seed/xpath
-	@./xpathSeed$(EXEEXT) "$(top_builddir)/test/XPath"
+	@./genSeed$(EXEEXT) xpath "$(top_builddir)/test/XPath"
 	@touch seed/xpath.stamp
 
 xpath_SOURCES = xpath.c fuzz.c

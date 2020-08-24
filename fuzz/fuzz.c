@@ -72,11 +72,6 @@ xmlFuzzDataInit(const char *data, size_t size) {
     fuzzData.mainEntity = NULL;
 }
 
-static void
-xmlFreeEntityEntry(void *value, const xmlChar *name) {
-    xmlFree(value);
-}
-
 /**
  * xmlFuzzDataFree:
  *
@@ -85,7 +80,7 @@ xmlFreeEntityEntry(void *value, const xmlChar *name) {
 void
 xmlFuzzDataCleanup(void) {
     xmlFree(fuzzData.outBuf);
-    xmlHashFree(fuzzData.entities, xmlFreeEntityEntry);
+    xmlHashFree(fuzzData.entities, xmlHashDefaultDeallocator);
 }
 
 /**
@@ -191,47 +186,6 @@ xmlFuzzReadString(size_t *size) {
     }
 
     return(NULL);
-}
-
-/*
- * A custom entity loader that writes all external DTDs or entities to a
- * single file in the format expected by xmlFuzzEntityLoader.
- */
-xmlParserInputPtr
-xmlFuzzEntityRecorder(const char *URL, const char *ID,
-                      xmlParserCtxtPtr ctxt) {
-    xmlParserInputPtr in;
-    static const int chunkSize = 16384;
-    int len;
-
-    in = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
-    if (in == NULL)
-        return(NULL);
-
-    if (fuzzData.entities == NULL) {
-        fuzzData.entities = xmlHashCreate(4);
-    } else if (xmlHashLookup(fuzzData.entities,
-                             (const xmlChar *) URL) != NULL) {
-        return(in);
-    }
-
-    do {
-        len = xmlParserInputBufferGrow(in->buf, chunkSize);
-        if (len < 0) {
-            fprintf(stderr, "Error reading %s\n", URL);
-            xmlFreeInputStream(in);
-            return(NULL);
-        }
-    } while (len > 0);
-
-    xmlFuzzWriteString(stdout, URL);
-    xmlFuzzWriteString(stdout, (char *) xmlBufContent(in->buf->buffer));
-
-    xmlFreeInputStream(in);
-
-    xmlHashAddEntry(fuzzData.entities, (const xmlChar *) URL, NULL);
-
-    return(xmlNoNetExternalEntityLoader(URL, ID, ctxt));
 }
 
 /**

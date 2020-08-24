@@ -1,9 +1,8 @@
 corpus/
+genSeed
 html
-htmlSeed
 regexp
 schema
-schemaSeed
 seed/html*
 seed/schema*
 seed/xml*
@@ -11,6 +10,4 @@ seed/xpath*
 testFuzzer
 uri
 xml
-xmlSeed
 xpath
-xpathSeed

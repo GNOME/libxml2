@@ -28,7 +28,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlParserCtxtPtr ctxt;
     xmlTextReaderPtr reader;
     xmlChar *out;
-    const char *docBuffer;
+    const char *docBuffer, *docUrl;
     size_t docSize, consumed, chunkSize;
     int opts, outSize;
 
@@ -39,6 +39,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzReadEntities();
     docBuffer = xmlFuzzMainEntity(&docSize);
+    docUrl = xmlFuzzMainUrl();
     if (docBuffer == NULL) {
         xmlFuzzDataCleanup();
         return(0);
@@ -46,7 +47,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     /* Pull parser */
 
-    doc = xmlReadMemory(docBuffer, docSize, NULL, NULL, opts);
+    doc = xmlReadMemory(docBuffer, docSize, docUrl, NULL, opts);
     if (opts & XML_PARSE_XINCLUDE)
         xmlXIncludeProcessFlags(doc, opts);
     /* Also test the serializer. */
@@ -56,7 +57,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     /* Push parser */
 
-    ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+    ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
     xmlCtxtUseOptions(ctxt, opts);
 
     for (consumed = 0; consumed < docSize; consumed += chunkSize) {

@@ -6,13 +6,93 @@
  */
 
 #include <string.h>
+#include <glob.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlstring.h>
 #include "fuzz.h"
 
-int
-main() {
+#define LLVMFuzzerInitialize fuzzHtmlInit
+#define LLVMFuzzerTestOneInput fuzzHtml
+#include "html.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+
+#define LLVMFuzzerInitialize fuzzRegexpInit
+#define LLVMFuzzerTestOneInput fuzzRegexp
+#include "regexp.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+
+#define LLVMFuzzerInitialize fuzzSchemaInit
+#define LLVMFuzzerTestOneInput fuzzSchema
+#include "schema.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+
+#define LLVMFuzzerInitialize fuzzUriInit
+#define LLVMFuzzerTestOneInput fuzzUri
+#include "uri.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+
+#define LLVMFuzzerInitialize fuzzXmlInit
+#define LLVMFuzzerTestOneInput fuzzXml
+#include "xml.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+
+#define LLVMFuzzerInitialize fuzzXPathInit
+#define LLVMFuzzerTestOneInput fuzzXPath
+#include "xpath.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+
+typedef int
+(*initFunc)(int *argc, char ***argv);
+typedef int
+(*fuzzFunc)(const char *data, size_t size);
+
+int numInputs;
+
+static int
+testFuzzer(initFunc init, fuzzFunc fuzz, const char *pattern) {
+    glob_t globbuf;
+    int ret = -1;
+    int i;
+
+    if (glob(pattern, 0, NULL, &globbuf) != 0) {
+        fprintf(stderr, "pattern %s matches no files\n", pattern);
+        return(-1);
+    }
+
+    if (init != NULL)
+        init(NULL, NULL);
+
+    for (i = 0; i < globbuf.gl_pathc; i++) {
+        const char *path = globbuf.gl_pathv[i];
+        char *data;
+        size_t size;
+
+        data = xmlSlurpFile(path, &size);
+        if (data == NULL) {
+            fprintf(stderr, "couldn't read %s\n", path);
+            goto error;
+        }
+        fuzz(data, size);
+        xmlFree(data);
+
+        numInputs++;
+    }
+
+    ret = 0;
+error:
+    globfree(&globbuf);
+    return(ret);
+}
+
+static int
+testEntityLoader() {
     static const char data[] =
         "doc.xml\\\n"
         "<!DOCTYPE doc SYSTEM \"doc.dtd\">\n"
@@ -49,6 +129,31 @@ main() {
     xmlFree(out);
     xmlFreeDoc(doc);
     xmlFuzzDataCleanup();
+
+    return(ret);
+}
+
+int
+main() {
+    int ret = 0;
+
+    if (testEntityLoader() != 0)
+        ret = 1;
+    if (testFuzzer(fuzzHtmlInit, fuzzHtml, "seed/html/*") != 0)
+        ret = 1;
+    if (testFuzzer(fuzzRegexpInit, fuzzRegexp, "seed/regexp/*") != 0)
+        ret = 1;
+    if (testFuzzer(fuzzSchemaInit, fuzzSchema, "seed/schema/*") != 0)
+        ret = 1;
+    if (testFuzzer(NULL, fuzzUri, "seed/uri/*") != 0)
+        ret = 1;
+    if (testFuzzer(fuzzXmlInit, fuzzXml, "seed/xml/*") != 0)
+        ret = 1;
+    if (testFuzzer(fuzzXPathInit, fuzzXPath, "seed/xpath/*") != 0)
+        ret = 1;
+
+    if (ret == 0)
+        printf("Successfully tested %d inputs\n", numInputs);
 
     return(ret);
 }

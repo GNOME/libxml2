@@ -52,27 +52,12 @@ main(int argc, char **argv) {
 
     for (i = 0; i < globbuf.gl_pathc; i++) {
         char *path = globbuf.gl_pathv[i];
-        FILE *xmlFile;
-        struct stat statbuf;
 
-        if ((stat(path, &statbuf) != 0) || (!S_ISREG(statbuf.st_mode)))
-            continue;
-        size = statbuf.st_size;
-        xmlFile = fopen(path, "rb");
-        if (xmlFile == NULL) {
-            ret = 1;
-            continue;
-        }
-        xml.data = xmlMalloc(size + 1);
+        xml.data = xmlSlurpFile(path, NULL);
         if (xml.data == NULL) {
             ret = 1;
-            goto close;
+            continue;
         }
-        if (fread(xml.data, 1, size, xmlFile) != size) {
-            ret = 1;
-            goto free;
-        }
-        xml.data[size] = 0;
         xml.name = basename(path);
         xml.prefix = xml.name;
         xml.counter = 1;
@@ -82,10 +67,7 @@ main(int argc, char **argv) {
         if (processXml(argv[1], &xml, "xptr", 1) != 0)
             ret = 1;
 
-free:
         xmlFree(xml.data);
-close:
-        fclose(xmlFile);
     }
 
     globfree(&globbuf);

@@ -4,8 +4,11 @@
  * See Copyright for the status of this software.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+
 #include <libxml/hash.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -359,5 +362,34 @@ xmlFuzzExtractStrings(const char *data, size_t size, char **strings,
     }
 
     return(ret);
+}
+
+char *
+xmlSlurpFile(const char *path, size_t *sizeRet) {
+    FILE *file;
+    struct stat statbuf;
+    char *data;
+    size_t size;
+
+    if ((stat(path, &statbuf) != 0) || (!S_ISREG(statbuf.st_mode)))
+        return(NULL);
+    size = statbuf.st_size;
+    file = fopen(path, "rb");
+    if (file == NULL)
+        return(NULL);
+    data = xmlMalloc(size + 1);
+    if (data != NULL) {
+        if (fread(data, 1, size, file) != size) {
+            xmlFree(data);
+            data = NULL;
+        } else {
+            data[size] = 0;
+            if (sizeRet != NULL)
+                *sizeRet = size;
+        }
+    }
+    fclose(file);
+
+    return(data);
 }
 

@@ -21,9 +21,11 @@ XML_SEED_CORPUS_SRC = \
 
 testFuzzer_SOURCES = testFuzzer.c fuzz.c
 
-.PHONY: tests clean-corpus
+.PHONY: tests corpus clean-corpus
 
-tests: testFuzzer$(EXEEXT)
+corpus: seed/html.stamp seed/schema.stamp seed/xml.stamp seed/xpath.stamp
+
+tests: testFuzzer$(EXEEXT) corpus
 	@echo "## Running fuzzer tests"
 	@./testFuzzer$(EXEEXT)
 

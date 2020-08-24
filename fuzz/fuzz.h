@@ -8,6 +8,7 @@
 #define __XML_FUZZERCOMMON_H__
 
 #include <stddef.h>
+#include <stdio.h>
 #include <libxml/parser.h>
 
 #ifdef __cplusplus
@@ -60,6 +61,9 @@ xmlFuzzEntityLoader(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);
 size_t
 xmlFuzzExtractStrings(const char *data, size_t size, char **strings,
                       size_t numStrings);
+
+char *
+xmlSlurpFile(const char *path, size_t *size);
 
 #ifdef __cplusplus
 }

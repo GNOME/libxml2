@@ -1491,6 +1491,8 @@ get_next_node:
             (reader->node->prev->type != XML_DTD_NODE)) {
 	    xmlNodePtr tmp = reader->node->prev;
 	    if ((tmp->extra & NODE_IS_PRESERVED) == 0) {
+                if (oldnode == tmp)
+                    oldnode = NULL;
 		xmlUnlinkNode(tmp);
 		xmlTextReaderFreeNode(reader, tmp);
 	    }

@@ -33,8 +33,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     if (doc != NULL) {
         xmlXPathContextPtr xpctxt = xmlXPathNewContext(doc);
 
-        /* Resource limits to avoid timeouts and call stack overflows */
-        xpctxt->maxDepth = 500;
+        /* Operation limit to avoid timeout */
         xpctxt->opLimit = 500000;
 
         xmlXPathFreeObject(xmlXPtrEval(BAD_CAST expr, xpctxt));

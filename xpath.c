@@ -14234,7 +14234,7 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
         return(comp);
 #endif
 
-    xmlXPathInit();
+    xmlInitParser();
 
     pctxt = xmlXPathNewParserContext(str, ctxt);
     if (pctxt == NULL)
@@ -14323,7 +14323,7 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
 
     if (comp == NULL)
 	return(-1);
-    xmlXPathInit();
+    xmlInitParser();
 
 #ifndef LIBXML_THREAD_ENABLED
     reentance++;
@@ -14468,7 +14468,7 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 
     CHECK_CTXT(ctx)
 
-    xmlXPathInit();
+    xmlInitParser();
 
     ctxt = xmlXPathNewParserContext(str, ctx);
     if (ctxt == NULL)

@@ -1352,7 +1352,7 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathObjectPtr init = NULL;
     int stack = 0;
 
-    xmlXPathInit();
+    xmlInitParser();
 
     if ((ctx == NULL) || (str == NULL))
 	return(NULL);

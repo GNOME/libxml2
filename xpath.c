@@ -11677,11 +11677,11 @@ xmlXPathNodeSetFilter(xmlXPathParserContextPtr ctxt,
         res = xmlXPathCompOpEvalToBoolean(ctxt, filterOp, 1);
 
         if (ctxt->error != XPATH_EXPRESSION_OK)
-            goto exit;
+            break;
         if (res < 0) {
             /* Shouldn't happen */
             xmlXPathErr(ctxt, XPATH_EXPR_ERROR);
-            goto exit;
+            break;
         }
 
         if ((res != 0) && ((pos >= minPos) && (pos <= maxPos))) {
@@ -11700,19 +11700,20 @@ xmlXPathNodeSetFilter(xmlXPathParserContextPtr ctxt,
 
         if (res != 0) {
             if (pos == maxPos) {
-                /* Clear remaining nodes and exit loop. */
-                if (hasNsNodes) {
-                    for (i++; i < set->nodeNr; i++) {
-                        node = set->nodeTab[i];
-                        if ((node != NULL) &&
-                            (node->type == XML_NAMESPACE_DECL))
-                            xmlXPathNodeSetFreeNs((xmlNsPtr) node);
-                    }
-                }
+                i += 1;
                 break;
             }
 
             pos += 1;
+        }
+    }
+
+    /* Free remaining nodes. */
+    if (hasNsNodes) {
+        for (; i < set->nodeNr; i++) {
+            xmlNodePtr node = set->nodeTab[i];
+            if ((node != NULL) && (node->type == XML_NAMESPACE_DECL))
+                xmlXPathNodeSetFreeNs((xmlNsPtr) node);
         }
     }
 
@@ -11736,7 +11737,6 @@ xmlXPathNodeSetFilter(xmlXPathParserContextPtr ctxt,
         }
     }
 
-exit:
     xpctxt->node = oldnode;
     xpctxt->doc = olddoc;
     xpctxt->contextSize = oldcs;
@@ -11801,11 +11801,11 @@ xmlXPathLocationSetFilter(xmlXPathParserContextPtr ctxt,
         res = xmlXPathCompOpEvalToBoolean(ctxt, filterOp, 1);
 
         if (ctxt->error != XPATH_EXPRESSION_OK)
-            goto exit;
+            break;
         if (res < 0) {
             /* Shouldn't happen */
             xmlXPathErr(ctxt, XPATH_EXPR_ERROR);
-            goto exit;
+            break;
         }
 
         if ((res != 0) && ((pos >= minPos) && (pos <= maxPos))) {
@@ -11823,16 +11823,17 @@ xmlXPathLocationSetFilter(xmlXPathParserContextPtr ctxt,
 
         if (res != 0) {
             if (pos == maxPos) {
-                /* Clear remaining nodes and exit loop. */
-                for (i++; i < locset->locNr; i++) {
-                    xmlXPathFreeObject(locset->locTab[i]);
-                }
+                i += 1;
                 break;
             }
 
             pos += 1;
         }
     }
+
+    /* Free remaining nodes. */
+    for (; i < locset->locNr; i++)
+        xmlXPathFreeObject(locset->locTab[i]);
 
     locset->locNr = j;
 
@@ -11854,7 +11855,6 @@ xmlXPathLocationSetFilter(xmlXPathParserContextPtr ctxt,
         }
     }
 
-exit:
     xpctxt->node = oldnode;
     xpctxt->doc = olddoc;
     xpctxt->contextSize = oldcs;

@@ -209,13 +209,13 @@ function discoverVersion()
 		ln = cf.ReadLine();
 		s = new String(ln);
 		if (m = s.match(/^m4_define\(\[MAJOR_VERSION\], (\w+)\)/)) {
-			vf.WriteLine("LIBXSLT_MAJOR_VERSION=" + m[1]);
+			vf.WriteLine("LIBXML_MAJOR_VERSION=" + m[1]);
 			verMajor = m[1];
 		} else if(m = s.match(/^m4_define\(\[MINOR_VERSION\], (\w+)\)/)) {
-			vf.WriteLine("LIBXSLT_MINOR_VERSION=" + m[1]);
+			vf.WriteLine("LIBXML_MINOR_VERSION=" + m[1]);
 			verMinor = m[1];
 		} else if(m = s.match(/^m4_define\(\[MICRO_VERSION\], (\w+)\)/)) {
-			vf.WriteLine("LIBXSLT_MICRO_VERSION=" + m[1]);
+			vf.WriteLine("LIBXML_MICRO_VERSION=" + m[1]);
 			verMicro = m[1];
 		} else if(s.search(/^LIBXML_MICRO_VERSION_SUFFIX=/) != -1) {
 			vf.WriteLine(s);

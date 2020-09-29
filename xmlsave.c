@@ -1058,6 +1058,12 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                 break;
             }
 
+            /*
+             * The parent should never be NULL here but we want to handle
+             * corrupted documents gracefully.
+             */
+            if (cur->parent == NULL)
+                return;
             cur = cur->parent;
 
             if (cur->type == XML_ELEMENT_NODE) {
@@ -1686,6 +1692,12 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                 break;
             }
 
+            /*
+             * The parent should never be NULL here but we want to handle
+             * corrupted documents gracefully.
+             */
+            if (cur->parent == NULL)
+                return;
             cur = cur->parent;
 
             if (cur->type == XML_ELEMENT_NODE) {

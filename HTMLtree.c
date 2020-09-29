@@ -903,6 +903,12 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
                 break;
             }
 
+            /*
+             * The parent should never be NULL here but we want to handle
+             * corrupted documents gracefully.
+             */
+            if (cur->parent == NULL)
+                return;
             cur = cur->parent;
 
             if ((cur->type == XML_HTML_DOCUMENT_NODE) ||

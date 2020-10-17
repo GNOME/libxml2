@@ -11,6 +11,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#include <limits.h>
 #include <string.h>
 
 #include <libxml/xmlmemory.h>
@@ -329,9 +330,14 @@ xmlParse3986Port(xmlURIPtr uri, const char **str)
 
     if (ISA_DIGIT(cur)) {
 	while (ISA_DIGIT(cur)) {
-	    port = port * 10 + (*cur - '0');
-            if (port > 99999999)
-                port = 99999999;
+            int digit = *cur - '0';
+
+            if (port > INT_MAX / 10)
+                return(1);
+            port *= 10;
+            if (port > INT_MAX - digit)
+                return(1);
+	    port += digit;
 
 	    cur++;
 	}

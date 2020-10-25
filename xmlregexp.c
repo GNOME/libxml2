@@ -5155,7 +5155,7 @@ xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
 	} else {
 	    xmlFAParseCharRange(ctxt);
 	}
-    } while ((CUR != ']') && (CUR != '^') && (CUR != '-') &&
+    } while ((CUR != ']') && (CUR != '-') &&
              (CUR != 0) && (ctxt->error == 0));
 }
 
@@ -5170,34 +5170,31 @@ xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
  */
 static void
 xmlFAParseCharGroup(xmlRegParserCtxtPtr ctxt) {
-    int n = ctxt->neg;
-    while ((CUR != ']') && (ctxt->error == 0)) {
-	if (CUR == '^') {
-	    int neg = ctxt->neg;
+    int neg = ctxt->neg;
 
-	    NEXT;
-	    ctxt->neg = !ctxt->neg;
-	    xmlFAParsePosCharGroup(ctxt);
-	    ctxt->neg = neg;
-	} else if ((CUR == '-') && (NXT(1) == '[')) {
-	    int neg = ctxt->neg;
-	    ctxt->neg = 2;
+    if (CUR == '^') {
+	NEXT;
+	ctxt->neg = !ctxt->neg;
+	xmlFAParsePosCharGroup(ctxt);
+	ctxt->neg = neg;
+    }
+    while ((CUR != ']') && (ctxt->error == 0)) {
+	if ((CUR == '-') && (NXT(1) == '[')) {
 	    NEXT;	/* eat the '-' */
 	    NEXT;	/* eat the '[' */
+	    ctxt->neg = 2;
 	    xmlFAParseCharGroup(ctxt);
+	    ctxt->neg = neg;
 	    if (CUR == ']') {
 		NEXT;
 	    } else {
 		ERROR("charClassExpr: ']' expected");
-		break;
 	    }
-	    ctxt->neg = neg;
 	    break;
-	} else if (CUR != ']') {
+	} else {
 	    xmlFAParsePosCharGroup(ctxt);
 	}
     }
-    ctxt->neg = n;
 }
 
 /**

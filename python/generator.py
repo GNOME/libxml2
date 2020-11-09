@@ -393,7 +393,7 @@ def print_function_wrapper(name, output, export, include):
                 format_args = format_args + ", &%s" % (arg[0])
             if f == 's#':
                 format_args = format_args + ", &py_buffsize%d" % num_bufs
-                c_args = c_args + "    int py_buffsize%d;\n" % num_bufs
+                c_args = c_args + "    Py_ssize_t  py_buffsize%d;\n" % num_bufs
                 num_bufs = num_bufs + 1
             if c_call != "":
                 c_call = c_call + ", "
@@ -555,6 +555,7 @@ def buildStubs():
     export.write("/* Generated */\n\n")
     wrapper = open("libxml2-py.c", "w")
     wrapper.write("/* Generated */\n\n")
+    wrapper.write("#define PY_SSIZE_T_CLEAN\n")
     wrapper.write("#include <Python.h>\n")
     wrapper.write("#include <libxml/xmlversion.h>\n")
     wrapper.write("#include <libxml/tree.h>\n")

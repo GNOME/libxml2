@@ -2004,7 +2004,7 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
 #ifdef LIBXML_ICU_ENABLED
     else if (handler->uconv_out != NULL) {
         ret = xmlUconvWrapper(handler->uconv_out, 0, out, outlen, in, inlen,
-                              TRUE);
+                              1);
     }
 #endif /* LIBXML_ICU_ENABLED */
     else {

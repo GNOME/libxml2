@@ -48,8 +48,6 @@ if(NOT @BUILD_SHARED_LIBS@)
 
   if(@LIBXML2_WITH_ZLIB@)
     find_dependency(ZLIB)
-    list(APPEND LIBXML2_LIBRARIES    ${ZLIB_LIBRARIES})
-    list(APPEND LIBXML2_INCLUDE_DIRS ${ZLIB_INCLUDE_DIRS})
   endif()
 endif()
 

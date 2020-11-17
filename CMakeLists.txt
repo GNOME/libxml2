@@ -427,7 +427,7 @@ target_include_directories(
 	PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>
+	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/libxml2>
 )
 
 if(HAVE_DLOPEN)
@@ -495,7 +495,7 @@ if(WIN32)
 	endif()
 endif()
 
-install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml COMPONENT development)
+install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
 install(
 	TARGETS	LibXml2
@@ -683,11 +683,11 @@ install(
 )
 
 configure_file(include/libxml/xmlversion.h.in libxml/xmlversion.h)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlversion.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml COMPONENT development)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlversion.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
 if(MSVC)
 	configure_file(include/libxml/xmlwin32version.h.in libxml/xmlwin32version.h)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlwin32version.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml COMPONENT development)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlwin32version.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 endif()
 
 if(LIBXML2_WITH_PYTHON)

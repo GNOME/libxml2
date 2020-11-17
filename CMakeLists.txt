@@ -431,19 +431,19 @@ target_include_directories(
 )
 
 if(HAVE_DLOPEN)
-	target_link_libraries(LibXml2 PRIVATE dl)
+	target_link_libraries(LibXml2 PUBLIC dl)
 endif()
 
 if(HAVE_SHLLOAD)
-	target_link_libraries(LibXml2 PRIVATE dld)
+	target_link_libraries(LibXml2 PUBLIC dld)
 endif()
 
 if(UNIX)
-	target_link_libraries(LibXml2 PRIVATE m)
+	target_link_libraries(LibXml2 PUBLIC m)
 endif()
 
 if(WIN32)
-	target_link_libraries(LibXml2 PRIVATE ws2_32)
+	target_link_libraries(LibXml2 PUBLIC ws2_32)
 endif()
 
 if(LIBXML2_WITH_ICONV)
@@ -451,19 +451,19 @@ if(LIBXML2_WITH_ICONV)
 endif()
 
 if(LIBXML2_WITH_ICU)
-	target_link_libraries(LibXml2 PRIVATE ICU::i18n)
+	target_link_libraries(LibXml2 PUBLIC ICU::i18n)
 endif()
 
 if(LIBXML2_WITH_LZMA)
-	target_link_libraries(LibXml2 PRIVATE LibLZMA::LibLZMA)
+	target_link_libraries(LibXml2 PUBLIC LibLZMA::LibLZMA)
 endif()
 
 if(LIBXML2_WITH_THREADS)
-	target_link_libraries(LibXml2 PRIVATE Threads::Threads)
+	target_link_libraries(LibXml2 PUBLIC Threads::Threads)
 endif()
 
 if(LIBXML2_WITH_ZLIB)
-	target_link_libraries(LibXml2 PRIVATE ZLIB::ZLIB)
+	target_link_libraries(LibXml2 PUBLIC ZLIB::ZLIB)
 endif()
 
 set_target_properties(

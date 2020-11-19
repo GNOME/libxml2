@@ -1,4 +1,4 @@
-default:
+.test:
   # The image was generated with the following Dockerfile. It is also used
   # for libxslt, that's why we need git and libgcrypt-dev.
   #
@@ -16,8 +16,6 @@ default:
   # WORKDIR /tests
   # RUN curl https://www.w3.org/XML/Test/xmlts20080827.tar.gz |tar xz
   image: registry.gitlab.gnome.org/gnome/libxml2
-
-.test:
   script:
     - |
       ln -s /tests/xmlconf
@@ -53,3 +51,114 @@ clang:msan:
     CC: clang
     CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Wno-error=cast-align"
 
+.cmake:linux:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - cmake -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLIBXML2_XMLCONF_WORKING_DIR=/tests -S . -B libxml2-build
+    - cmake --build libxml2-build --target install
+    - mkdir -p libxml2-install/share/libxml2
+    - cp Copyright libxml2-install/share/libxml2
+    - cd libxml2-build
+    - ctest -VV
+  after_script:
+    - cd libxml2-install
+    - tar -czf ../libxml2-$CI_COMMIT_SHORT_SHA-$CC-$SUFFIX.tar.gz *
+  artifacts:
+    paths:
+      - libxml2-$CI_COMMIT_SHORT_SHA-$CC-$SUFFIX.tar.gz
+    expire_in: 1 day
+
+cmake:linux:gcc:shared:
+  extends: .cmake:linux
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    CC: gcc
+    SUFFIX: shared
+
+cmake:linux:gcc:static:
+  extends: .cmake:linux
+  variables:
+    BUILD_SHARED_LIBS: "OFF"
+    CC: gcc
+    SUFFIX: static
+
+cmake:linux:clang:shared:
+  extends: .cmake:linux
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    CC: clang
+    SUFFIX: shared
+
+cmake:linux:clang:static:
+  extends: .cmake:linux
+  variables:
+    BUILD_SHARED_LIBS: "OFF"
+    CC: clang
+    SUFFIX: static
+
+.cmake:mingw:
+  tags:
+    - win32-ps
+  before_script:
+    - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
+    - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
+    - pacman --noconfirm -Syu
+    - pacman --noconfirm -S $Env:MINGW_PACKAGE_PREFIX-cmake
+    - if (-not (Test-Path 7za.exe)) {
+        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
+        cmake -E tar xf 7z1900-extra.7z 7za.exe
+      }
+    - if (-not (Test-Path libxml2-build/xmlconf)) {
+        Invoke-WebRequest -Uri https://www.w3.org/XML/Test/xmlts20080827.tar.gz -OutFile xmlts20080827.tar.gz ;
+        .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
+      }
+  script:
+    - cmake -G Ninja -DBUILD_SHARED_LIBS=$Env:BUILD_SHARED_LIBS -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B libxml2-build
+    - cmake --build libxml2-build --target install
+    - New-Item -ItemType Directory libxml2-install\share\libxml2
+    - Copy-Item Copyright libxml2-install\share\libxml2
+    - cd libxml2-build
+    - ctest -VV
+  after_script:
+    - .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX-$Env:SUFFIX.7z .\libxml2-install\*
+  cache:
+    key: "$MINGW_PACKAGE_PREFIX"
+    paths:
+      - libxml2-build/xmlconf/
+      - 7za.exe
+  artifacts:
+    paths:
+      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX-$Env:SUFFIX.7z
+    expire_in: 1 day
+
+cmake:mingw:w64-i686:shared:
+  extends: .cmake:mingw
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    MINGW_PACKAGE_PREFIX: mingw-w64-i686
+    MINGW_PATH: mingw32
+    SUFFIX: shared
+
+cmake:mingw:w64-i686:static:
+  extends: .cmake:mingw
+  variables:
+    BUILD_SHARED_LIBS: "OFF"
+    MINGW_PACKAGE_PREFIX: mingw-w64-i686
+    MINGW_PATH: mingw32
+    SUFFIX: static
+
+cmake:mingw:w64-x86_64:shared:
+  extends: .cmake:mingw
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
+    MINGW_PATH: mingw64
+    SUFFIX: shared
+
+cmake:mingw:w64-x86_64:static:
+  extends: .cmake:mingw
+  variables:
+    BUILD_SHARED_LIBS: "OFF"
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
+    MINGW_PATH: mingw64
+    SUFFIX: static

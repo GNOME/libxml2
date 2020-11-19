@@ -424,6 +424,10 @@ endif()
 
 add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
 
+if(NOT BUILD_SHARED_LIBS)
+	target_compile_definitions(LibXml2 INTERFACE LIBXML_STATIC)
+endif()
+
 if(LIBXML2_WITH_THREADS)
 	target_compile_definitions(LibXml2 PRIVATE _REENTRANT)
 	if(WIN32)

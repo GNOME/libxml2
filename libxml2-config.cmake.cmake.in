@@ -8,6 +8,7 @@
 #
 #   LIBXML2_INCLUDE_DIRS      - Directory where libxml2 headers are located.
 #   LIBXML2_LIBRARIES         - xml2 libraries to link against.
+#   LIBXML2_DEFINITIONS       - the compiler switches required for using LibXml2
 #   LIBXML2_VERSION_MAJOR     - The major version of libxml2.
 #   LIBXML2_VERSION_MINOR     - The minor version of libxml2.
 #   LIBXML2_VERSION_PATCH     - The patch version of libxml2.
@@ -62,6 +63,8 @@ if(@LIBXML2_WITH_ICONV@)
 endif()
 
 if(NOT @BUILD_SHARED_LIBS@)
+  set(LIBXML2_DEFINITIONS -DLIBXML_STATIC)
+
   if(@LIBXML2_WITH_THREADS@)
     find_dependency(Threads)
     list(APPEND LIBXML2_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})

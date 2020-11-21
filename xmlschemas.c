@@ -860,6 +860,7 @@ struct _xmlSchemaIDCMatcher {
     int sizeKeySeqs;
     xmlSchemaItemListPtr targets; /* list of target-node
                                      (xmlSchemaPSVIIDCNodePtr) entries */
+    xmlHashTablePtr htab;
 };
 
 /*
@@ -1053,6 +1054,18 @@ typedef xmlSchemaSubstGroup *xmlSchemaSubstGroupPtr;
 struct _xmlSchemaSubstGroup {
     xmlSchemaElementPtr head;
     xmlSchemaItemListPtr members;
+};
+
+/**
+ * xmlIDCHashEntry:
+ *
+ * an entry in hash tables to quickly look up keys/uniques
+ */
+typedef struct _xmlIDCHashEntry xmlIDCHashEntry;
+typedef xmlIDCHashEntry *xmlIDCHashEntryPtr;
+struct _xmlIDCHashEntry {
+    xmlIDCHashEntryPtr next; /* next item with same hash */
+    int index;               /* index into associated item list */
 };
 
 /************************************************************************
@@ -1478,6 +1491,7 @@ xmlSchemaWildcardPCToString(int pc)
  * @val: the precomputed value
  * @retValue: the returned value
  * @ws: the whitespace type of the value
+ * @for_hash: non-zero if this is supposed to generate a string for hashing
  *
  * Get a the canonical representation of the value.
  * The caller has to free the returned retValue.
@@ -1486,9 +1500,10 @@ xmlSchemaWildcardPCToString(int pc)
  *         API errors or if the value type is not supported yet.
  */
 static int
-xmlSchemaGetCanonValueWhtspExt(xmlSchemaValPtr val,
-			       xmlSchemaWhitespaceValueType ws,
-			       xmlChar **retValue)
+xmlSchemaGetCanonValueWhtspExt_1(xmlSchemaValPtr val,
+			         xmlSchemaWhitespaceValueType ws,
+			         xmlChar **retValue,
+				 int for_hash)
 {
     int list;
     xmlSchemaValType valType;
@@ -1522,6 +1537,20 @@ xmlSchemaGetCanonValueWhtspExt(xmlSchemaValPtr val,
 			xmlFree((xmlChar *) value2);
 		    goto internal_error;
 		}
+		if (for_hash && valType == XML_SCHEMAS_DECIMAL) {
+		    /* We can mostly use the canonical value for hashing,
+		       except in the case of decimal.  There the canonical
+		       representation requires a trailing '.0' even for
+		       non-fractional numbers, but for the derived integer
+		       types it forbids any decimal point.  Nevertheless they
+		       compare equal if the value is equal.  We need to generate
+		       the same hash value for this to work, and it's easiest
+		       to just cut off the useless '.0' suffix for the
+		       decimal type.  */
+		    int len = xmlStrlen(value2);
+		    if (len > 2 && value2[len-1] == '0' && value2[len-2] == '.')
+		      ((xmlChar*)value2)[len-2] = 0;
+		}
 		value = value2;
 	}
 	if (*retValue == NULL)
@@ -1546,6 +1575,22 @@ internal_error:
     if (value2 != NULL)
 	xmlFree((xmlChar *) value2);
     return (-1);
+}
+
+static int
+xmlSchemaGetCanonValueWhtspExt(xmlSchemaValPtr val,
+			       xmlSchemaWhitespaceValueType ws,
+			       xmlChar **retValue)
+{
+    return xmlSchemaGetCanonValueWhtspExt_1(val, ws, retValue, 0);
+}
+
+static int
+xmlSchemaGetCanonValueHash(xmlSchemaValPtr val,
+			   xmlChar **retValue)
+{
+    return xmlSchemaGetCanonValueWhtspExt_1(val, XML_SCHEMA_WHITESPACE_COLLAPSE,
+					    retValue, 1);
 }
 
 /**
@@ -22311,6 +22356,17 @@ xmlSchemaIDCFreeIDCTable(xmlSchemaPSVIIDCBindingPtr bind)
     }
 }
 
+static void
+xmlFreeIDCHashEntry (void *payload, const xmlChar *name ATTRIBUTE_UNUSED)
+{
+    xmlIDCHashEntryPtr e = payload, n;
+    while (e) {
+	n = e->next;
+	xmlFree(e);
+	e = n;
+    }
+}
+
 /**
  * xmlSchemaIDCFreeMatcherList:
  * @matcher: the first IDC matcher in the list
@@ -22349,6 +22405,8 @@ xmlSchemaIDCFreeMatcherList(xmlSchemaIDCMatcherPtr matcher)
 	    }
 	    xmlSchemaItemListFree(matcher->targets);
 	}
+	if (matcher->htab != NULL)
+	  xmlHashFree(matcher->htab, xmlFreeIDCHashEntry);
 	xmlFree(matcher);
 	matcher = next;
     }
@@ -22398,6 +22456,10 @@ xmlSchemaIDCReleaseMatcherList(xmlSchemaValidCtxtPtr vctxt,
 	    }
 	    xmlSchemaItemListFree(matcher->targets);
 	    matcher->targets = NULL;
+	}
+	if (matcher->htab != NULL) {
+	    xmlHashFree(matcher->htab, xmlFreeIDCHashEntry);
+	    matcher->htab = NULL;
 	}
 	matcher->next = NULL;
 	/*
@@ -22633,10 +22695,10 @@ next_sto:
 }
 
 static const xmlChar *
-xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
-			      xmlChar **buf,
-			      xmlSchemaPSVIIDCKeyPtr *seq,
-			      int count)
+xmlSchemaFormatIDCKeySequence_1(xmlSchemaValidCtxtPtr vctxt,
+				xmlChar **buf,
+				xmlSchemaPSVIIDCKeyPtr *seq,
+				int count, int for_hash)
 {
     int i, res;
     xmlChar *value = NULL;
@@ -22644,9 +22706,13 @@ xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
     *buf = xmlStrdup(BAD_CAST "[");
     for (i = 0; i < count; i++) {
 	*buf = xmlStrcat(*buf, BAD_CAST "'");
-	res = xmlSchemaGetCanonValueWhtspExt(seq[i]->val,
-	    xmlSchemaGetWhiteSpaceFacetValue(seq[i]->type),
-	    &value);
+	if (!for_hash)
+	    res = xmlSchemaGetCanonValueWhtspExt(seq[i]->val,
+		    xmlSchemaGetWhiteSpaceFacetValue(seq[i]->type),
+		    &value);
+	else {
+	    res = xmlSchemaGetCanonValueHash(seq[i]->val, &value);
+	}
 	if (res == 0)
 	    *buf = xmlStrcat(*buf, BAD_CAST value);
 	else {
@@ -22666,6 +22732,24 @@ xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
     *buf = xmlStrcat(*buf, BAD_CAST "]");
 
     return (BAD_CAST *buf);
+}
+
+static const xmlChar *
+xmlSchemaFormatIDCKeySequence(xmlSchemaValidCtxtPtr vctxt,
+			      xmlChar **buf,
+			      xmlSchemaPSVIIDCKeyPtr *seq,
+			      int count)
+{
+    return xmlSchemaFormatIDCKeySequence_1(vctxt, buf, seq, count, 0);
+}
+
+static const xmlChar *
+xmlSchemaHashKeySequence(xmlSchemaValidCtxtPtr vctxt,
+			 xmlChar **buf,
+			 xmlSchemaPSVIIDCKeyPtr *seq,
+			 int count)
+{
+    return xmlSchemaFormatIDCKeySequence_1(vctxt, buf, seq, count, 1);
 }
 
 /**
@@ -23029,15 +23113,25 @@ create_key:
 	    if ((idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) &&
 		(targets->nbItems != 0)) {
 		xmlSchemaPSVIIDCKeyPtr ckey, bkey, *bkeySeq;
+		xmlIDCHashEntryPtr e;
 
-		i = 0;
 		res = 0;
+
+		if (!matcher->htab)
+		    e = NULL;
+		else {
+		    xmlChar *value = NULL;
+		    xmlSchemaHashKeySequence(vctxt, &value, *keySeq, nbKeys);
+		    e = xmlHashLookup(matcher->htab, value);
+		    FREE_AND_NULL(value);
+		}
+
 		/*
 		* Compare the key-sequences, key by key.
 		*/
-		do {
+		for (;e; e = e->next) {
 		    bkeySeq =
-			((xmlSchemaPSVIIDCNodePtr) targets->items[i])->keys;
+			((xmlSchemaPSVIIDCNodePtr) targets->items[e->index])->keys;
 		    for (j = 0; j < nbKeys; j++) {
 			ckey = (*keySeq)[j];
 			bkey = bkeySeq[j];
@@ -23058,9 +23152,8 @@ create_key:
 			*/
 			break;
 		    }
-		    i++;
-		} while (i < targets->nbItems);
-		if (i != targets->nbItems) {
+		}
+		if (e) {
 		    xmlChar *str = NULL, *strB = NULL;
 		    /*
 		    * TODO: Try to report the key-sequence.
@@ -23137,6 +23230,24 @@ create_key:
 		    xmlFree(ntItem);
 		}
 		return (-1);
+	    }
+	    if (idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) {
+		xmlChar *value = NULL;
+		xmlIDCHashEntryPtr r, e;
+		if (!matcher->htab)
+		  matcher->htab = xmlHashCreate(4);
+		xmlSchemaHashKeySequence(vctxt, &value, ntItem->keys, nbKeys);
+		e = xmlMalloc(sizeof *e);
+		e->index = targets->nbItems - 1;
+		r = xmlHashLookup(matcher->htab, value);
+		if (r) {
+		    e->next = r->next;
+		    r->next = e;
+		} else {
+		    e->next = NULL;
+		    xmlHashAddEntry(matcher->htab, value, e);
+		}
+		FREE_AND_NULL(value);
 	    }
 
 	    goto selector_leave;
@@ -23394,6 +23505,10 @@ xmlSchemaIDCFillNodeTables(xmlSchemaValidCtxtPtr vctxt,
 	    matcher->targets->items = NULL;
 	    matcher->targets->sizeItems = 0;
 	    matcher->targets->nbItems = 0;
+	    if (matcher->htab) {
+		xmlHashFree(matcher->htab, xmlFreeIDCHashEntry);
+		matcher->htab = NULL;
+	    }
 	} else {
 	    /*
 	    * Compare the key-sequences and add to the IDC node-table.
@@ -23841,6 +23956,7 @@ xmlSchemaCheckCVCIDCKeyRef(xmlSchemaValidCtxtPtr vctxt)
 	    int i, j, k, res, nbFields, hasDupls;
 	    xmlSchemaPSVIIDCKeyPtr *refKeys, *keys;
 	    xmlSchemaPSVIIDCNodePtr refNode = NULL;
+	    xmlHashTablePtr table = NULL;
 
 	    nbFields = matcher->aidc->def->nbFields;
 
@@ -23858,26 +23974,52 @@ xmlSchemaCheckCVCIDCKeyRef(xmlSchemaValidCtxtPtr vctxt)
 	    /*
 	    * Search for a matching key-sequences.
 	    */
+	    if (bind) {
+		table = xmlHashCreate(bind->nbNodes * 2);
+		for (j = 0; j < bind->nbNodes; j++) {
+		    xmlChar *value;
+		    xmlIDCHashEntryPtr r, e;
+		    keys = bind->nodeTable[j]->keys;
+		    xmlSchemaHashKeySequence(vctxt, &value, keys, nbFields);
+		    e = xmlMalloc(sizeof *e);
+		    e->index = j;
+		    r = xmlHashLookup(table, value);
+		    if (r) {
+			e->next = r->next;
+			r->next = e;
+		    } else {
+			e->next = NULL;
+			xmlHashAddEntry(table, value, e);
+		    }
+		    FREE_AND_NULL(value);
+		}
+	    }
 	    for (i = 0; i < matcher->targets->nbItems; i++) {
 		res = 0;
 		refNode = matcher->targets->items[i];
 		if (bind != NULL) {
+		    xmlChar *value;
+		    xmlIDCHashEntryPtr e;
 		    refKeys = refNode->keys;
-		    for (j = 0; j < bind->nbNodes; j++) {
-			keys = bind->nodeTable[j]->keys;
+		    xmlSchemaHashKeySequence(vctxt, &value, refKeys, nbFields);
+		    e = xmlHashLookup(table, value);
+		    FREE_AND_NULL(value);
+		    res = 0;
+		    for (;e; e = e->next) {
+			keys = bind->nodeTable[e->index]->keys;
 			for (k = 0; k < nbFields; k++) {
 			    res = xmlSchemaAreValuesEqual(keys[k]->val,
-				refKeys[k]->val);
+							  refKeys[k]->val);
 			    if (res == 0)
-				break;
+			        break;
 			    else if (res == -1) {
 				return (-1);
 			    }
 			}
 			if (res == 1) {
 			    /*
-			    * Match found.
-			    */
+			     * Match found.
+			     */
 			    break;
 			}
 		    }
@@ -23931,6 +24073,9 @@ xmlSchemaCheckCVCIDCKeyRef(xmlSchemaValidCtxtPtr vctxt)
 		    FREE_AND_NULL(str);
 		    FREE_AND_NULL(strB);
 		}
+	    }
+	    if (table) {
+		xmlHashFree(table, xmlFreeIDCHashEntry);
 	    }
 	}
 	matcher = matcher->next;

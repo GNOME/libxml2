@@ -103,7 +103,14 @@ cmake:linux:clang:static:
     - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
     - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
     - pacman --noconfirm -Syu
-    - pacman --noconfirm -S $Env:MINGW_PACKAGE_PREFIX-cmake
+    - pacman --noconfirm -S
+        $Env:MINGW_PACKAGE_PREFIX-cmake
+        $Env:MINGW_PACKAGE_PREFIX-libiconv
+        $Env:MINGW_PACKAGE_PREFIX-ninja
+        $Env:MINGW_PACKAGE_PREFIX-python
+        $Env:MINGW_PACKAGE_PREFIX-python2
+        $Env:MINGW_PACKAGE_PREFIX-xz
+        $Env:MINGW_PACKAGE_PREFIX-zlib
     - if (-not (Test-Path 7za.exe)) {
         Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
         cmake -E tar xf 7z1900-extra.7z 7za.exe

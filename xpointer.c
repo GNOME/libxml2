@@ -2200,7 +2200,6 @@ xmlXPtrRangeInsideFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	     XP_ERROR(XPATH_MEMORY_ERROR)
 	set = tmp;
     }
-    oldset = (xmlLocationSetPtr) set->user;
 
     /*
      * The loop is to compute the covering range for each item and add it
@@ -2210,9 +2209,12 @@ xmlXPtrRangeInsideFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	xmlXPathFreeObject(set);
         XP_ERROR(XPATH_MEMORY_ERROR);
     }
-    for (i = 0;i < oldset->locNr;i++) {
-	xmlXPtrLocationSetAdd(newset,
-		xmlXPtrInsideRange(ctxt, oldset->locTab[i]));
+    oldset = (xmlLocationSetPtr) set->user;
+    if (oldset != NULL) {
+        for (i = 0;i < oldset->locNr;i++) {
+            xmlXPtrLocationSetAdd(newset,
+                    xmlXPtrInsideRange(ctxt, oldset->locTab[i]));
+        }
     }
 
     /*

@@ -528,7 +528,7 @@ if(LIBXML2_WITH_PROGRAMS)
 		if(HAVE_LIBREADLINE)
 			target_link_libraries(${PROGRAM} readline)
 		endif()
-		install(TARGETS	${PROGRAM} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT programs)
+		install(TARGETS	${PROGRAM} EXPORT LibXml2 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT programs)
 	endforeach()
 endif()
 

@@ -2,18 +2,21 @@
 # --------------------
 #
 # Libxml2 cmake module.
-# THis module sets the following variables:
+# This module sets the following variables:
 #
 # ::
 #
-#   LIBXML2_INCLUDE_DIRS      - Directory where libxml2 headers are located.
-#   LIBXML2_LIBRARIES         - xml2 libraries to link against.
-#   LIBXML2_DEFINITIONS       - the compiler switches required for using LibXml2
-#   LIBXML2_VERSION_MAJOR     - The major version of libxml2.
-#   LIBXML2_VERSION_MINOR     - The minor version of libxml2.
-#   LIBXML2_VERSION_PATCH     - The patch version of libxml2.
-#   LIBXML2_VERSION_STRING    - version number as a string (ex: "2.3.4")
-#   LIBXML2_MODULES           - whether libxml2 has dso support
+#   LIBXML2_INCLUDE_DIR        - Directory where LibXml2 headers are located.
+#   LIBXML2_INCLUDE_DIRS       - list of the include directories needed to use LibXml2.
+#   LIBXML2_LIBRARY            - path to the LibXml2 library.
+#   LIBXML2_LIBRARIES          - xml2 libraries to link against.
+#   LIBXML2_DEFINITIONS        - the compiler switches required for using LibXml2.
+#   LIBXML2_VERSION_MAJOR      - The major version of libxml2.
+#   LIBXML2_VERSION_MINOR      - The minor version of libxml2.
+#   LIBXML2_VERSION_PATCH      - The patch version of libxml2.
+#   LIBXML2_VERSION_STRING     - version number as a string (ex: "2.3.4")
+#   LIBXML2_MODULES            - whether libxml2 has dso support
+#   LIBXML2_XMLLINT_EXECUTABLE - path to the XML checking tool xmllint coming with LibXml2
 
 include("${CMAKE_CURRENT_LIST_DIR}/libxml2-export.cmake")
 
@@ -24,7 +27,7 @@ set(LIBXML2_VERSION_MINOR  @LIBXML_MINOR_VERSION@)
 set(LIBXML2_VERSION_PATCH  @LIBXML_MICRO_VERSION@)
 set(LIBXML2_VERSION_STRING "@VERSION@")
 set(LIBXML2_INSTALL_PREFIX ${PACKAGE_PREFIX_DIR})
-set(LIBXML2_INCLUDE_DIRS   ${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_INCLUDEDIR@ ${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_INCLUDEDIR@/libxml2)
+set(LIBXML2_INCLUDE_DIR    ${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_INCLUDEDIR@/libxml2)
 set(LIBXML2_LIBRARY_DIR    ${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@)
 
 macro(select_library_location target basename)
@@ -33,26 +36,47 @@ macro(select_library_location target basename)
     get_target_property(${basename}_${property}_MINSIZEREL ${target} ${property}_MINSIZEREL)
     get_target_property(${basename}_${property}_RELEASE ${target} ${property}_RELEASE)
     get_target_property(${basename}_${property}_RELWITHDEBINFO ${target} ${property}_RELWITHDEBINFO)
-    
+
     if(${basename}_${property}_DEBUG AND ${basename}_${property}_RELEASE)
-      set(${basename}_LIBRARIES debug ${${basename}_${property}_DEBUG} optimized ${${basename}_${property}_RELEASE})
+      set(${basename}_LIBRARY debug ${${basename}_${property}_DEBUG} optimized ${${basename}_${property}_RELEASE})
     elseif(${basename}_${property}_DEBUG AND ${basename}_${property}_RELWITHDEBINFO)
-      set(${basename}_LIBRARIES debug ${${basename}_${property}_DEBUG} optimized ${${basename}_${property}_RELWITHDEBINFO})
+      set(${basename}_LIBRARY debug ${${basename}_${property}_DEBUG} optimized ${${basename}_${property}_RELWITHDEBINFO})
     elseif(${basename}_${property}_DEBUG AND ${basename}_${property}_MINSIZEREL)
-      set(${basename}_LIBRARIES debug ${${basename}_${property}_DEBUG} optimized ${${basename}_${property}_MINSIZEREL})
+      set(${basename}_LIBRARY debug ${${basename}_${property}_DEBUG} optimized ${${basename}_${property}_MINSIZEREL})
     elseif(${basename}_${property}_RELEASE)
-      set(${basename}_LIBRARIES ${${basename}_${property}_RELEASE})
+      set(${basename}_LIBRARY ${${basename}_${property}_RELEASE})
     elseif(${basename}_${property}_RELWITHDEBINFO)
-      set(${basename}_LIBRARIES ${${basename}_${property}_RELWITHDEBINFO})
+      set(${basename}_LIBRARY ${${basename}_${property}_RELWITHDEBINFO})
     elseif(${basename}_${property}_MINSIZEREL)
-      set(${basename}_LIBRARIES ${${basename}_${property}_MINSIZEREL})
+      set(${basename}_LIBRARY ${${basename}_${property}_MINSIZEREL})
     elseif(${basename}_${property}_DEBUG)
-      set(${basename}_LIBRARIES ${${basename}_${property}_DEBUG})
+      set(${basename}_LIBRARY ${${basename}_${property}_DEBUG})
     endif()
   endforeach()
 endmacro()
 
+macro(select_executable_location target basename)
+  get_target_property(${basename}_IMPORTED_LOCATION_DEBUG ${target} IMPORTED_LOCATION_DEBUG)
+  get_target_property(${basename}_IMPORTED_LOCATION_MINSIZEREL ${target} IMPORTED_LOCATION_MINSIZEREL)
+  get_target_property(${basename}_IMPORTED_LOCATION_RELEASE ${target} IMPORTED_LOCATION_RELEASE)
+  get_target_property(${basename}_IMPORTED_LOCATION_RELWITHDEBINFO ${target} IMPORTED_LOCATION_RELWITHDEBINFO)
+
+  if(${basename}_IMPORTED_LOCATION_RELEASE)
+    set(${basename}_EXECUTABLE ${${basename}_IMPORTED_LOCATION_RELEASE})
+  elseif(${basename}_IMPORTED_LOCATION_RELWITHDEBINFO)
+    set(${basename}_EXECUTABLE ${${basename}_IMPORTED_LOCATION_RELWITHDEBINFO})
+  elseif(${basename}_IMPORTED_LOCATION_MINSIZEREL)
+    set(${basename}_EXECUTABLE ${${basename}_IMPORTED_LOCATION_MINSIZEREL})
+  elseif(${basename}_IMPORTED_LOCATION_DEBUG)
+    set(${basename}_EXECUTABLE ${${basename}_IMPORTED_LOCATION_DEBUG})
+  endif()
+endmacro()
+
 select_library_location(LibXml2::LibXml2 LIBXML2)
+select_executable_location(LibXml2::xmllint LIBXML2_XMLLINT)
+
+set(LIBXML2_LIBRARIES ${LIBXML2_LIBRARY})
+set(LIBXML2_INCLUDE_DIRS ${LIBXML2_INCLUDE_DIR})
 
 include(CMakeFindDependencyMacro)
 
@@ -100,4 +124,4 @@ endif()
 # whether libxml2 has dso support
 set(LIBXML2_MODULES @LIBXML2_WITH_MODULES@)
 
-mark_as_advanced( LIBXML2_INCLUDE_DIRS LIBXML2_LIBRARIES )
+mark_as_advanced(LIBXML2_LIBRARY LIBXML2_XMLLINT_EXECUTABLE)

@@ -5832,7 +5832,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			xmlGenericError(xmlGenericErrorContext,
 				"HPP: Parsing char data\n");
 #endif
-                        while ((cur != '<') && (cur != 0)) {
+                        while ((cur != '<') && (in->cur < in->end)) {
                             if (cur == '&') {
 			        htmlParseReference(ctxt);
                             } else {

@@ -5142,7 +5142,7 @@ xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
     /*
     * TODO: Check if this is a decimal.
     */
-    if (facet == NULL)
+    if (facet == NULL || facet->val == NULL)
         return 0;
     return ((unsigned long) facet->val->value.decimal.lo);
 }

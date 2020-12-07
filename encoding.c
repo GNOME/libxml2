@@ -1488,16 +1488,25 @@ xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
     if ((handler == NULL) || (handlers == NULL)) {
         xmlEncodingErr(XML_I18N_NO_HANDLER,
 		"xmlRegisterCharEncodingHandler: NULL handler !\n", NULL);
-	return;
+        goto free_handler;
     }
 
     if (nbCharEncodingHandler >= MAX_ENCODING_HANDLERS) {
         xmlEncodingErr(XML_I18N_EXCESS_HANDLER,
 	"xmlRegisterCharEncodingHandler: Too many handler registered, see %s\n",
 	               "MAX_ENCODING_HANDLERS");
-	return;
+        goto free_handler;
     }
     handlers[nbCharEncodingHandler++] = handler;
+    return;
+
+free_handler:
+    if (handler != NULL) {
+        if (handler->name != NULL) {
+            xmlFree(handler->name);
+        }
+        xmlFree(handler);
+    }
 }
 
 /**

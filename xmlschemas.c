@@ -14721,6 +14721,7 @@ xmlSchemaGetUnionSimpleTypeMemberTypes(xmlSchemaTypePtr type)
     return (NULL);
 }
 
+#if 0
 /**
  * xmlSchemaGetParticleTotalRangeMin:
  * @particle: the particle
@@ -14776,7 +14777,6 @@ xmlSchemaGetParticleTotalRangeMin(xmlSchemaParticlePtr particle)
     }
 }
 
-#if 0
 /**
  * xmlSchemaGetParticleTotalRangeMax:
  * @particle: the particle
@@ -14839,6 +14839,48 @@ xmlSchemaGetParticleTotalRangeMax(xmlSchemaParticlePtr particle)
 #endif
 
 /**
+ * xmlSchemaGetParticleEmptiable:
+ * @particle: the particle
+ *
+ * Returns 1 if emptiable, 0 otherwise.
+ */
+static int
+xmlSchemaGetParticleEmptiable(xmlSchemaParticlePtr particle)
+{
+    xmlSchemaParticlePtr part;
+    int emptiable;
+
+    if ((particle->children == NULL) || (particle->minOccurs == 0))
+	return (1);
+
+    part = (xmlSchemaParticlePtr) particle->children->children;
+    if (part == NULL)
+        return (1);
+
+    while (part != NULL) {
+        if ((part->children->type == XML_SCHEMA_TYPE_ELEMENT) ||
+            (part->children->type == XML_SCHEMA_TYPE_ANY))
+            emptiable = (part->minOccurs == 0);
+        else
+            emptiable = xmlSchemaGetParticleEmptiable(part);
+        if (particle->children->type == XML_SCHEMA_TYPE_CHOICE) {
+            if (emptiable)
+                return (1);
+        } else {
+	    /* <all> and <sequence> */
+            if (!emptiable)
+                return (0);
+        }
+        part = (xmlSchemaParticlePtr) part->next;
+    }
+
+    if (particle->children->type == XML_SCHEMA_TYPE_CHOICE)
+        return (0);
+    else
+        return (1);
+}
+
+/**
  * xmlSchemaIsParticleEmptiable:
  * @particle: the particle
  *
@@ -14860,10 +14902,8 @@ xmlSchemaIsParticleEmptiable(xmlSchemaParticlePtr particle)
     * SPEC (2) "Its {term} is a group and the minimum part of the
     * effective total range of that group, [...] is 0."
     */
-    if (WXS_IS_MODEL_GROUP(particle->children)) {
-	if (xmlSchemaGetParticleTotalRangeMin(particle) == 0)
-	    return (1);
-    }
+    if (WXS_IS_MODEL_GROUP(particle->children))
+	return (xmlSchemaGetParticleEmptiable(particle));
     return (0);
 }
 

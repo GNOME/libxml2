@@ -73,6 +73,7 @@ macro(select_executable_location target basename)
 endmacro()
 
 select_library_location(LibXml2::LibXml2 LIBXML2)
+select_executable_location(LibXml2::xmlcatalog LIBXML2_XMLCATALOG)
 select_executable_location(LibXml2::xmllint LIBXML2_XMLLINT)
 
 set(LIBXML2_LIBRARIES ${LIBXML2_LIBRARY})
@@ -121,4 +122,4 @@ endif()
 # whether libxml2 has dso support
 set(LIBXML2_MODULES @LIBXML2_WITH_MODULES@)
 
-mark_as_advanced(LIBXML2_LIBRARY LIBXML2_XMLLINT_EXECUTABLE)
+mark_as_advanced(LIBXML2_LIBRARY LIBXML2_XMLCATALOG_EXECUTABLE LIBXML2_XMLLINT_EXECUTABLE)

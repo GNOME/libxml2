@@ -68,7 +68,7 @@ if(LIBXML2_WITH_ICONV)
 endif()
 
 if(LIBXML2_WITH_ICU)
-	find_package(ICU REQUIRED)
+	find_package(ICU REQUIRED COMPONENTS data i18n uc)
 endif()
 
 if(LIBXML2_WITH_LZMA)
@@ -463,7 +463,7 @@ if(LIBXML2_WITH_ICONV)
 endif()
 
 if(LIBXML2_WITH_ICU)
-	target_link_libraries(LibXml2 PRIVATE ICU::i18n)
+	target_link_libraries(LibXml2 PRIVATE ICU::data ICU::i18n ICU::uc)
 	if(WIN32)
 		set(ICU_LIBS "-licudt -licuin -licuuc")
 	else()

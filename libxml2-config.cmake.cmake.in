@@ -95,7 +95,7 @@ if(NOT @BUILD_SHARED_LIBS@)
   endif()
 
   if(@LIBXML2_WITH_ICU@)
-    find_dependency(ICU)
+    find_dependency(ICU COMPONENTS data i18n uc)
     list(APPEND LIBXML2_LIBRARIES    ${ICU_LIBRARIES})
     list(APPEND LIBXML2_INCLUDE_DIRS ${ICU_INCLUDE_DIRS})
   endif()

@@ -4558,6 +4558,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     if (doc == NULL) return(NULL);
     ret = xmlNewDoc(doc->version);
     if (ret == NULL) return(NULL);
+    ret->type = doc->type;
     if (doc->name != NULL)
         ret->name = xmlMemStrdup(doc->name);
     if (doc->encoding != NULL)

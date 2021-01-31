@@ -4204,6 +4204,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	}
 	count++;
 	if (count > 50) {
+	    SHRINK;
 	    GROW;
 	    count = 0;
             if (ctxt->instate == XML_PARSER_EOF) {
@@ -4291,6 +4292,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	buf[len++] = cur;
 	count++;
 	if (count > 50) {
+	    SHRINK;
 	    GROW;
 	    count = 0;
             if (ctxt->instate == XML_PARSER_EOF) {
@@ -4571,6 +4573,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	}
 	count++;
 	if (count > 50) {
+	    SHRINK;
 	    GROW;
 	    count = 0;
             if (ctxt->instate == XML_PARSER_EOF)
@@ -4776,6 +4779,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
 
 	count++;
 	if (count > 50) {
+	    SHRINK;
 	    GROW;
 	    count = 0;
             if (ctxt->instate == XML_PARSER_EOF) {
@@ -5186,6 +5190,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		}
 		count++;
 		if (count > 50) {
+		    SHRINK;
 		    GROW;
                     if (ctxt->instate == XML_PARSER_EOF) {
                         xmlFree(buf);
@@ -9783,6 +9788,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	sl = l;
 	count++;
 	if (count > 50) {
+	    SHRINK;
 	    GROW;
             if (ctxt->instate == XML_PARSER_EOF) {
 		xmlFree(buf);

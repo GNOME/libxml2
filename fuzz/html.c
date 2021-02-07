@@ -22,7 +22,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     static const size_t maxChunkSize = 128;
     htmlDocPtr doc;
     htmlParserCtxtPtr ctxt;
-    xmlChar *out;
+    xmlOutputBufferPtr out;
     const char *docBuffer;
     size_t docSize, consumed, chunkSize;
     int opts, outSize;
@@ -39,9 +39,16 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Pull parser */
 
     doc = htmlReadMemory(docBuffer, docSize, NULL, NULL, opts);
-    /* Also test the serializer. */
-    htmlDocDumpMemory(doc, &out, &outSize);
-    xmlFree(out);
+
+    /*
+     * Also test the serializer. Call htmlDocContentDumpOutput with our
+     * own buffer to avoid encoding the output. The HTML encoding is
+     * excruciatingly slow (see htmlEntityValueLookup).
+     */
+    out = xmlAllocOutputBuffer(NULL);
+    htmlDocContentDumpOutput(out, doc, NULL);
+    xmlOutputBufferClose(out);
+
     xmlFreeDoc(doc);
 
     /* Push parser */

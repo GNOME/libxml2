@@ -18,7 +18,7 @@ publication.  -->
 <!ENTITY WebSGML 
  'WebSGML Adaptations Annex to ISO 8879'>
 
-<!ENTITY lt     "<"> 
+<!ENTITY lt     "&#38;#60;"> 
 <!ENTITY gt     ">"> 
 <!ENTITY xmlpio "'&lt;?xml'">
 <!ENTITY pic    "'?>'">

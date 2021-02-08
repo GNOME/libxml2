@@ -1310,6 +1310,16 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 		else
 		    tmp = 0;
 		while (tmp != ';') { /* Non input consuming loop */
+                    /*
+                     * If you find an integer overflow here when fuzzing,
+                     * the bug is probably elsewhere. This function should
+                     * only receive entities that were already validated by
+                     * the parser, typically by xmlParseAttValueComplex
+                     * calling xmlStringDecodeEntities.
+                     *
+                     * So it's better *not* to check for overflow to
+                     * potentially discover new bugs.
+                     */
 		    if ((tmp >= '0') && (tmp <= '9'))
 			charval = charval * 16 + (tmp - '0');
 		    else if ((tmp >= 'a') && (tmp <= 'f'))
@@ -1338,6 +1348,7 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 		else
 		    tmp = 0;
 		while (tmp != ';') { /* Non input consuming loops */
+                    /* Don't check for integer overflow, see above. */
 		    if ((tmp >= '0') && (tmp <= '9'))
 			charval = charval * 10 + (tmp - '0');
 		    else {
@@ -1517,6 +1528,7 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 		cur += 3;
 		tmp = *cur;
 		while (tmp != ';') { /* Non input consuming loop */
+                    /* Don't check for integer overflow, see above. */
 		    if ((tmp >= '0') && (tmp <= '9'))
 			charval = charval * 16 + (tmp - '0');
 		    else if ((tmp >= 'a') && (tmp <= 'f'))
@@ -1539,6 +1551,7 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 		cur += 2;
 		tmp = *cur;
 		while (tmp != ';') { /* Non input consuming loops */
+                    /* Don't check for integer overflow, see above. */
 		    if ((tmp >= '0') && (tmp <= '9'))
 			charval = charval * 10 + (tmp - '0');
 		    else {

@@ -228,7 +228,8 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
                 int valid = 0;
 
                 /* 4.6 Predefined Entities */
-                if (type == XML_INTERNAL_GENERAL_ENTITY) {
+                if ((type == XML_INTERNAL_GENERAL_ENTITY) &&
+                    (content != NULL)) {
                     int c = predef->content[0];
 
                     if (((content[0] == c) && (content[1] == 0)) &&

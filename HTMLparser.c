@@ -457,7 +457,12 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
             ctxt->input->encoding = guess;
             handler = xmlFindCharEncodingHandler((const char *) guess);
             if (handler != NULL) {
-                xmlSwitchToEncoding(ctxt, handler);
+                /*
+                 * Don't use UTF-8 encoder which isn't required and
+                 * can produce invalid UTF-8.
+                 */
+                if (!xmlStrEqual(BAD_CAST handler->name, BAD_CAST "UTF-8"))
+                    xmlSwitchToEncoding(ctxt, handler);
             } else {
                 htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
                              "Unsupported encoding %s", guess, NULL);
@@ -570,7 +575,16 @@ encoding_error:
 		     BAD_CAST buffer, NULL);
     }
 
-    ctxt->charset = XML_CHAR_ENCODING_8859_1;
+    /*
+     * Don't switch encodings twice. Note that if there's an encoder, we
+     * shouldn't receive invalid UTF-8 anyway.
+     *
+     * Note that if ctxt->input->buf == NULL, switching encodings is
+     * impossible, see Gitlab issue #34.
+     */
+    if ((ctxt->input->buf != NULL) &&
+        (ctxt->input->buf->encoder == NULL))
+        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
     *len = 1;
     return((int) *ctxt->input->cur);
 }

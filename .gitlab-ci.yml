@@ -234,3 +234,20 @@ cmake:msvc:v141:x64:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     SUFFIX: static
+
+.cmake:msvc:v141:x86:
+  extends: .cmake:msvc:v141
+  variables:
+    CMAKE_GENERATOR_PLATFORM: Win32
+
+cmake:msvc:v141:x86:shared:
+  extends: .cmake:msvc:v141:x86
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    SUFFIX: shared
+
+cmake:msvc:v141:x86:static:
+  extends: .cmake:msvc:v141:x86
+  variables:
+    BUILD_SHARED_LIBS: "OFF"
+    SUFFIX: static

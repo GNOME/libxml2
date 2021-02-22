@@ -6,12 +6,14 @@
 
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
+#include <libxml/catalog.h>
 #include "fuzz.h"
 
 int
 LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
                      char ***argv ATTRIBUTE_UNUSED) {
     xmlInitParser();
+    xmlInitializeCatalog();
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     return 0;

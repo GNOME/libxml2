@@ -15,6 +15,27 @@
 extern "C" {
 #endif
 
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+  #define HAVE_HTML_FUZZER
+#endif
+#if defined(LIBXML_REGEXP_ENABLED)
+  #define HAVE_REGEXP_FUZZER
+#endif
+#if defined(LIBXML_SCHEMAS_ENABLED)
+  #define HAVE_SCHEMA_FUZZER
+#endif
+#if 1
+  #define HAVE_URI_FUZZER
+#endif
+#if defined(LIBXML_OUTPUT_ENABLED) && \
+    defined(LIBXML_READER_ENABLED) && \
+    defined(LIBXML_XINCLUDE_ENABLED)
+  #define HAVE_XML_FUZZER
+#endif
+#if defined(LIBXML_XPATH_ENABLED)
+  #define HAVE_XPATH_FUZZER
+#endif
+
 int
 LLVMFuzzerInitialize(int *argc, char ***argv);
 

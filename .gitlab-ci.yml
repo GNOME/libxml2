@@ -30,6 +30,8 @@ gcc:
 
 gcc:python3:
   extends: .test
+  only:
+    - schedules
   variables:
     CONFIG: "--with-python=/usr/bin/python3"
     CFLAGS: "-O2"
@@ -46,6 +48,8 @@ clang:asan:
 
 clang:msan:
   extends: .test
+  only:
+    - schedules
   variables:
     CONFIG: "--without-python --without-zlib --without-lzma"
     CC: clang
@@ -70,6 +74,8 @@ clang:msan:
 
 cmake:linux:gcc:shared:
   extends: .cmake:linux
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: gcc
@@ -77,6 +83,8 @@ cmake:linux:gcc:shared:
 
 cmake:linux:gcc:static:
   extends: .cmake:linux
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
     CC: gcc
@@ -84,6 +92,8 @@ cmake:linux:gcc:static:
 
 cmake:linux:clang:shared:
   extends: .cmake:linux
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: clang
@@ -91,6 +101,8 @@ cmake:linux:clang:shared:
 
 cmake:linux:clang:static:
   extends: .cmake:linux
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
     CC: clang
@@ -140,6 +152,8 @@ cmake:linux:clang:static:
 
 cmake:mingw:w64-i686:shared:
   extends: .cmake:mingw
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     MINGW_PACKAGE_PREFIX: mingw-w64-i686
@@ -148,6 +162,8 @@ cmake:mingw:w64-i686:shared:
 
 cmake:mingw:w64-i686:static:
   extends: .cmake:mingw
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
     MINGW_PACKAGE_PREFIX: mingw-w64-i686
@@ -164,6 +180,8 @@ cmake:mingw:w64-x86_64:shared:
 
 cmake:mingw:w64-x86_64:static:
   extends: .cmake:mingw
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
     MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
@@ -231,17 +249,23 @@ cmake:msvc:v141:x64:shared:
 
 cmake:msvc:v141:x64:static:
   extends: .cmake:msvc:v141:x64
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
     SUFFIX: static
 
 .cmake:msvc:v141:x86:
   extends: .cmake:msvc:v141
+  only:
+    - schedules
   variables:
     CMAKE_GENERATOR_PLATFORM: Win32
 
 cmake:msvc:v141:x86:shared:
   extends: .cmake:msvc:v141:x86
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     SUFFIX: shared

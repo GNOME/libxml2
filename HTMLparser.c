@@ -1324,6 +1324,10 @@ htmlCheckAutoClose(const xmlChar * newtag, const xmlChar * oldtag)
     int i, indx;
     const char **closed = NULL;
 
+    /*
+     * FIXME: This is not thread-safe and should be called from
+     * xmlInitParser instead.
+     */
     if (htmlStartCloseIndexinitialized == 0)
         htmlInitAutoClose();
 

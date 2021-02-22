@@ -13,7 +13,9 @@ int
 LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
                      char ***argv ATTRIBUTE_UNUSED) {
     xmlInitParser();
+#ifdef LIBXML_CATALOG_ENABLED
     xmlInitializeCatalog();
+#endif
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     return 0;
@@ -73,6 +75,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Cleanup */
 
     xmlFuzzDataCleanup();
+    xmlResetLastError();
 
     return(0);
 }

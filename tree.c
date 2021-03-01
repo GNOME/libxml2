@@ -6589,6 +6589,16 @@ xmlGetPropNodeInternal(const xmlNode *node, const xmlChar *name,
 		attrDecl = xmlGetDtdQAttrDesc(doc->extSubset,
 		    elemQName, name, NULL);
 	    }
+        } else if (xmlStrEqual(nsName, XML_XML_NAMESPACE)) {
+	    /*
+	    * The XML namespace must be bound to prefix 'xml'.
+	    */
+	    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset,
+		elemQName, name, BAD_CAST "xml");
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
+		attrDecl = xmlGetDtdQAttrDesc(doc->extSubset,
+		    elemQName, name, BAD_CAST "xml");
+	    }
 	} else {
 	    xmlNsPtr *nsList, *cur;
 

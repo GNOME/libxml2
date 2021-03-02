@@ -2020,6 +2020,11 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
  * @value:  the value of the attribute
  *
  * Create a new property carried by a document.
+ * NOTE: @value is supposed to be a piece of XML CDATA, so it allows entity
+ *       references, but XML special chars need to be escaped first by using
+ *       xmlEncodeEntitiesReentrant(). Use xmlNewProp() if you don't need
+ *       entities support.
+ *
  * Returns a pointer to the attribute
  */
 xmlAttrPtr

@@ -1901,12 +1901,6 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
     if (value != NULL) {
         xmlNodePtr tmp;
 
-        if(!xmlCheckUTF8(value)) {
-            xmlTreeErr(XML_TREE_NOT_UTF8, (xmlNodePtr) doc,
-                       NULL);
-            if (doc != NULL)
-                doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
-        }
         cur->children = xmlNewDocText(doc, value);
         cur->last = NULL;
         tmp = cur->children;
@@ -6945,12 +6939,6 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	if (value != NULL) {
 	    xmlNodePtr tmp;
 
-	    if(!xmlCheckUTF8(value)) {
-	        xmlTreeErr(XML_TREE_NOT_UTF8, (xmlNodePtr) node->doc,
-	                   NULL);
-                if (node->doc != NULL)
-                    node->doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
-	    }
 	    prop->children = xmlNewDocText(node->doc, value);
 	    prop->last = NULL;
 	    tmp = prop->children;

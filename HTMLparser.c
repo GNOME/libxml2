@@ -4207,12 +4207,10 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
      * With the exception that the autoclose may have popped stuff out
      * of the stack.
      */
-    if (!xmlStrEqual(name, ctxt->name)) {
-        if ((ctxt->name != NULL) && (!xmlStrEqual(ctxt->name, name))) {
-            htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
-	                 "Opening and ending tag mismatch: %s and %s\n",
-			 name, ctxt->name);
-        }
+    if ((ctxt->name != NULL) && (!xmlStrEqual(ctxt->name, name))) {
+        htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
+                     "Opening and ending tag mismatch: %s and %s\n",
+                     name, ctxt->name);
     }
 
     /*

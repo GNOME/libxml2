@@ -1269,6 +1269,14 @@ htmlInitAutoClose(void) {
     htmlStartCloseIndexinitialized = 1;
 }
 
+static int
+htmlCompareTags(const void *key, const void *member) {
+    const char *tag = (const char *) key;
+    const htmlElemDesc *desc = (const htmlElemDesc *) member;
+
+    return(strcmp(tag, desc->name));
+}
+
 /**
  * htmlTagLookup:
  * @tag:  The tag name in lowercase
@@ -1279,14 +1287,12 @@ htmlInitAutoClose(void) {
  */
 const htmlElemDesc *
 htmlTagLookup(const xmlChar *tag) {
-    unsigned int i;
+    if (tag == NULL)
+        return(NULL);
 
-    for (i = 0; i < (sizeof(html40ElementTable) /
-                     sizeof(html40ElementTable[0]));i++) {
-        if (!xmlStrcasecmp(tag, BAD_CAST html40ElementTable[i].name))
-	    return((htmlElemDescPtr) &html40ElementTable[i]);
-    }
-    return(NULL);
+    return((const htmlElemDesc *) bsearch(tag, html40ElementTable,
+                sizeof(html40ElementTable) / sizeof(htmlElemDesc),
+                sizeof(htmlElemDesc), htmlCompareTags));
 }
 
 /**

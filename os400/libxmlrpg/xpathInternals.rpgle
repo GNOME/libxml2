@@ -605,6 +605,11 @@
      d  ctxt                               value like(xmlXPathParserContextPtr)
      d  nargs                              value like(xmlCint)
 
+     d xmlXPathEndsWithFunction...
+     d                 pr                  extproc('xmlXPathEndsWithFunction')
+     d  ctxt                               value like(xmlXPathParserContextPtr)
+     d  nargs                              value like(xmlCint)
+
      d xmlXPathSubstringFunction...
      d                 pr                  extproc('xmlXPathSubstringFunction')
      d  ctxt                               value like(xmlXPathParserContextPtr)

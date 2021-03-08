@@ -50710,6 +50710,45 @@ test_xmlXPathStartsWithFunction(void) {
 
 
 static int
+test_xmlXPathEndsWithFunction(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_XPATH_ENABLED)
+    int mem_base;
+    xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
+    int n_ctxt;
+    int nargs; /* the number of arguments */
+    int n_nargs;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlXPathParserContextPtr;n_ctxt++) {
+    for (n_nargs = 0;n_nargs < gen_nb_int;n_nargs++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlXPathParserContextPtr(n_ctxt, 0);
+        nargs = gen_int(n_nargs, 1);
+
+        xmlXPathEndsWithFunction(ctxt, nargs);
+        call_tests++;
+        des_xmlXPathParserContextPtr(n_ctxt, ctxt, 0);
+        des_int(n_nargs, nargs, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlXPathEndsWithFunction",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_nargs);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlXPathStringEvalNumber(void) {
     int test_ret = 0;
 
@@ -51543,6 +51582,7 @@ test_xpathInternals(void) {
     test_ret += test_xmlXPathRoot();
     test_ret += test_xmlXPathRoundFunction();
     test_ret += test_xmlXPathStartsWithFunction();
+    test_ret += test_xmlXPathEndsWithFunction();
     test_ret += test_xmlXPathStringEvalNumber();
     test_ret += test_xmlXPathStringFunction();
     test_ret += test_xmlXPathStringLengthFunction();

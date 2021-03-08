@@ -3532,6 +3532,7 @@
     <function name="xmlXPathRoundFunction ()" link="libxml2-xpathInternals.html#xmlXPathRoundFunction"/>
     <function name="xmlXPathSetContextNode ()" link="libxml2-xpath.html#xmlXPathSetContextNode"/>
     <function name="xmlXPathStartsWithFunction ()" link="libxml2-xpathInternals.html#xmlXPathStartsWithFunction"/>
+    <function name="xmlXPathEndsWithFunction ()" link="libxml2-xpathInternals.html#xmlXPathEndsWithFunction"/>
     <function name="xmlXPathStringEvalNumber ()" link="libxml2-xpathInternals.html#xmlXPathStringEvalNumber"/>
     <function name="xmlXPathStringFunction ()" link="libxml2-xpathInternals.html#xmlXPathStringFunction"/>
     <function name="xmlXPathStringLengthFunction ()" link="libxml2-xpathInternals.html#xmlXPathStringLengthFunction"/>

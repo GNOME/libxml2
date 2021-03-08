@@ -47,6 +47,10 @@ opa.add_option("--tsw", "--test-starts-with", type="string", dest="testStartsWit
 			   default=None,
 			   help="Runs the specified test(s), starting with the given string")
 
+opa.add_option("--tsw", "--test-ends-with", type="string", dest="testEndsWith",
+			   default=None,
+			   help="Runs the specified test(s), starting with the given string")
+
 opa.add_option("--rieo", "--report-internal-errors-only", action="store_true",
 			   dest="reportInternalErrOnly", default=False,
 			   help="Display erroneous tests of type 'internal' only")
@@ -64,6 +68,10 @@ opa.add_option("-c", "--combines", type="string", dest="combines",
 			   help="Combines to be run (all if omitted)")
 			   
 opa.add_option("--csw", "--csw", type="string", dest="combineStartsWith",
+			   default=None,
+			   help="Combines to be run (all if omitted)")			   
+
+opa.add_option("--csw", "--csw", type="string", dest="combineEndsWith",
 			   default=None,
 			   help="Combines to be run (all if omitted)")			   
 
@@ -647,8 +655,14 @@ class XSTCTestRunner:
 				elif options.testStartsWith is not None:
 					if not test.name.startswith(options.testStartsWith):
 						continue
+				elif options.testEndsWith is not None:
+					if not test.name.startswith(options.testEndsWith):
+						continue
 				elif options.combineStartsWith is not None:
 					if not test.combineName.startswith(options.combineStartsWith):
+						continue
+				elif options.combineEndsWith is not None:
+					if not test.combineName.startswith(options.combineEndsWith):
 						continue
 				
 				if options.maxTestCount != -1 and self.counters[self.CNT_RAN] >= options.maxTestCount:

@@ -328,6 +328,7 @@
     <symbol file="xpathInternals">xmlXPathRoot</symbol>
     <symbol file="xpathInternals">xmlXPathRoundFunction</symbol>
     <symbol file="xpathInternals">xmlXPathStartsWithFunction</symbol>
+    <symbol file="xpathInternals">xmlXPathEndsWithFunction</symbol>
     <symbol file="xpathInternals">xmlXPathStringEvalNumber</symbol>
     <symbol file="xpathInternals">xmlXPathStringFunction</symbol>
     <symbol file="xpathInternals">xmlXPathStringLengthFunction</symbol>

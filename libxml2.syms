@@ -372,6 +372,7 @@ LIBXML2_2.4.30 {
   xmlXPathRoot;
   xmlXPathRoundFunction;
   xmlXPathStartsWithFunction;
+  xmlXPathEndsWithFunction;
   xmlXPathStringEvalNumber;
   xmlXPathStringFunction;
   xmlXPathStringLengthFunction;

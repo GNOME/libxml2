@@ -104,6 +104,7 @@ void	<a href="#xmlXPathCeilingFunction">xmlXPathCeilingFunction</a>		(<a href="l
 void	<a href="#xmlXPathContainsFunction">xmlXPathContainsFunction</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs);
 void	<a href="#xmlXPathNodeSetSort">xmlXPathNodeSetSort</a>		(<a href="libxml2-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> set);
 void	<a href="#xmlXPathStartsWithFunction">xmlXPathStartsWithFunction</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs);
+void	<a href="#xmlXPathEndsWithFunction">xmlXPathEndsWithFunction</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs);
 <a href="libxml2-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a>	<a href="#xmlXPathNodeLeading">xmlXPathNodeLeading</a>	(<a href="libxml2-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> nodes, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 void	<a href="#xmlXPathSumFunction">xmlXPathSumFunction</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs);
 int	<a href="#xmlXPathNotEqualValues">xmlXPathNotEqualValues</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
@@ -699,6 +700,14 @@ void	<a href="#xmlXPathDebugDumpObject">xmlXPathDebugDumpObject</a>		(FILE * out
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathStartsWithFunction"/>xmlXPathStartsWithFunction ()</h3><pre class="programlisting">void	xmlXPathStartsWithFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs)<br/>
 </pre><p>Implement the starts-with() XPath function boolean starts-with(string, string) The starts-with function returns true if the first argument string starts with the second argument string, and otherwise returns false.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the XPath Parser context</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i>:</span></td><td>the number of arguments</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlXPathEndsWithFunction"/>xmlXPathEndsWithFunction ()</h3><pre class="programlisting">void	xmlXPathEndsWithFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs)<br/>
+</pre><p>Implement the ends-with() XPath function boolean starts-with(string, string) The ends-with function returns true if the first argument string ends with the second argument string, and otherwise returns false.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the XPath Parser context</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i>:</span></td><td>the number of arguments</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlXPathEndsWithFunction"/>xmlXPathEndsWithFunction ()</h3><pre class="programlisting">void	xmlXPathEndsWithFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br/>					 int nargs)<br/>
+</pre><p>Implement the ends-with() XPath function boolean ends-with(string, string) The ends-with function returns true if the first argument string ends with the second argument string, and otherwise returns false.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the XPath Parser context</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i>:</span></td><td>the number of arguments</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathStringEvalNumber"/>xmlXPathStringEvalNumber ()</h3><pre class="programlisting">double	xmlXPathStringEvalNumber	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str)<br/>

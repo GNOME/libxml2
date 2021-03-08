@@ -3535,6 +3535,7 @@
     <reference name='xmlXPathStackIsExternal' href='html/libxml-xpathInternals.html#xmlXPathStackIsExternal'/>
     <reference name='xmlXPathStackIsNodeSet' href='html/libxml-xpathInternals.html#xmlXPathStackIsNodeSet'/>
     <reference name='xmlXPathStartsWithFunction' href='html/libxml-xpathInternals.html#xmlXPathStartsWithFunction'/>
+    <reference name='xmlXPathEndsWithFunction' href='html/libxml-xpathInternals.html#xmlXPathEndsWithFunction'/>
     <reference name='xmlXPathStringEvalNumber' href='html/libxml-xpathInternals.html#xmlXPathStringEvalNumber'/>
     <reference name='xmlXPathStringFunction' href='html/libxml-xpathInternals.html#xmlXPathStringFunction'/>
     <reference name='xmlXPathStringLengthFunction' href='html/libxml-xpathInternals.html#xmlXPathStringLengthFunction'/>
@@ -7176,6 +7177,7 @@
       <ref name='xmlXPathStackIsExternal'/>
       <ref name='xmlXPathStackIsNodeSet'/>
       <ref name='xmlXPathStartsWithFunction'/>
+      <ref name='xmlXPathEndsWithFunction'/>
       <ref name='xmlXPathStringEvalNumber'/>
       <ref name='xmlXPathStringFunction'/>
       <ref name='xmlXPathStringLengthFunction'/>
@@ -10739,6 +10741,7 @@
       <ref name='xmlXPathRoot'/>
       <ref name='xmlXPathRoundFunction'/>
       <ref name='xmlXPathStartsWithFunction'/>
+      <ref name='xmlXPathEndsWithFunction'/>
       <ref name='xmlXPathStringFunction'/>
       <ref name='xmlXPathStringLengthFunction'/>
       <ref name='xmlXPathSubValues'/>
@@ -14389,6 +14392,7 @@
       <ref name='xmlXPathStackIsExternal'/>
       <ref name='xmlXPathStackIsNodeSet'/>
       <ref name='xmlXPathStartsWithFunction'/>
+      <ref name='xmlXPathEndsWithFunction'/>
       <ref name='xmlXPathStringEvalNumber'/>
       <ref name='xmlXPathStringFunction'/>
       <ref name='xmlXPathStringLengthFunction'/>
@@ -22356,6 +22360,10 @@
         <word name='ends'>
           <ref name='_xmlParserNodeInfo'/>
           <ref name='xmlNanoHTTPClose'/>
+          <ref name='xmlXPathEndsWithFunction'/>
+        </word>
+        <word name='ends-with'>
+          <ref name='xmlXPathEndsWithFunction'/>
         </word>
         <word name='enforced'>
           <ref name='XML_MAX_LOOKUP_LIMIT'/>

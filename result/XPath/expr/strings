@@ -52,6 +52,14 @@ Expression: starts-with("tititoto","to")
 Object is a Boolean : false
 
 ========================
+Expression: ends-with("tititoto","toto")
+Object is a Boolean : true
+
+========================
+Expression: ends-with("tititoto","ti")
+Object is a Boolean : false
+
+========================
 Expression: contains("tititototata","titi")
 Object is a Boolean : true
 

@@ -17319,6 +17319,18 @@ extern __typeof (xmlXPathStartsWithFunction) xmlXPathStartsWithFunction__interna
 
 #if defined(LIBXML_XPATH_ENABLED)
 #ifdef bottom_xpath
+#undef xmlXPathEndsWithFunction
+extern __typeof (xmlXPathEndsWithFunction) xmlXPathEndsWithFunction __attribute((alias("xmlXPathEndsWithFunction__internal_alias")));
+#else
+#ifndef xmlXPathEndsWithFunction
+extern __typeof (xmlXPathEndsWithFunction) xmlXPathEndsWithFunction__internal_alias __attribute((visibility("hidden")));
+#define xmlXPathEndsWithFunction xmlXPathEndsWithFunction__internal_alias
+#endif
+#endif
+#endif
+
+#if defined(LIBXML_XPATH_ENABLED)
+#ifdef bottom_xpath
 #undef xmlXPathStringEvalNumber
 extern __typeof (xmlXPathStringEvalNumber) xmlXPathStringEvalNumber __attribute((alias("xmlXPathStringEvalNumber__internal_alias")));
 #else

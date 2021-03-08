@@ -3067,6 +3067,9 @@ xmlXPathSetContextNode
 xmlXPathStartsWithFunction
 #endif
 #ifdef LIBXML_XPATH_ENABLED
+xmlXPathEndsWithFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
 xmlXPathStringEvalNumber
 #endif
 #ifdef LIBXML_XPATH_ENABLED

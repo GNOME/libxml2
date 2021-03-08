@@ -3707,6 +3707,7 @@
      <exports symbol='xmlXPathContainsFunction' type='function'/>
      <exports symbol='xmlXPathNodeSetSort' type='function'/>
      <exports symbol='xmlXPathStartsWithFunction' type='function'/>
+     <exports symbol='xmlXPathEndsWithFunction' type='function'/>
      <exports symbol='xmlXPathNodeLeading' type='function'/>
      <exports symbol='xmlXPathSumFunction' type='function'/>
      <exports symbol='xmlXPathNotEqualValues' type='function'/>
@@ -18234,6 +18235,13 @@ Could we use @subtypes for this?'/>
     <function name='xmlXPathStartsWithFunction' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Implement the starts-with() XPath function boolean starts-with(string, string) The starts-with function returns true if the first argument string starts with the second argument string, and otherwise returns false.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
+      <arg name='nargs' type='int' info='the number of arguments'/>
+    </function>
+    <function name='xmlXPathEndsWithFunction' file='xpathInternals' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Implement the ends-with() XPath function boolean ends-with(string, string) The ends-with function returns true if the first argument string ends with the second argument string, and otherwise returns false.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>

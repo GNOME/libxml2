@@ -4893,7 +4893,9 @@ xmlGetNodePath(const xmlNode *node)
             }
             next = ((xmlAttrPtr) cur)->parent;
         } else {
-            next = cur->parent;
+            xmlFree(buf);
+            xmlFree(buffer);
+            return (NULL);
         }
 
         /*

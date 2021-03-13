@@ -2684,8 +2684,10 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
 			                      0, 0, 0);
 		ctxt->depth--;
-		if (rep == NULL)
+		if (rep == NULL) {
+                    ent->content[0] = 0;
                     goto int_error;
+                }
 
                 current = rep;
                 while (*current != 0) { /* non input consuming loop */
@@ -2740,8 +2742,11 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		rep = xmlStringDecodeEntities(ctxt, ent->content, what,
 			                      0, 0, 0);
 		ctxt->depth--;
-		if (rep == NULL)
+		if (rep == NULL) {
+                    if (ent->content != NULL)
+                        ent->content[0] = 0;
                     goto int_error;
+                }
                 current = rep;
                 while (*current != 0) { /* non input consuming loop */
                     buffer[nbchars++] = *current++;

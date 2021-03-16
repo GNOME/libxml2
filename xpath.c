@@ -497,6 +497,7 @@ double xmlXPathNINF;
  *
  * Initialize the XPath environment
  */
+ATTRIBUTE_NO_SANITIZE("float-divide-by-zero")
 void
 xmlXPathInit(void) {
     /* MSVC doesn't allow division by zero in constant expressions. */

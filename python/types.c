@@ -21,16 +21,139 @@
 
 #if PY_MAJOR_VERSION >= 3
 #include <stdio.h>
+#include <stdint.h>
+
+#ifdef _WIN32
+
+#include <windows.h>
+#include <crtdbg.h>
+
+/* Taken from info on MSDN site, as we may not have the Windows WDK/DDK headers */
+typedef struct _IO_STATUS_BLOCK {
+  union {
+    NTSTATUS Status;
+    PVOID    Pointer;
+  } DUMMYUNIONNAME;
+  ULONG_PTR Information;
+} IO_STATUS_BLOCK;
+
+typedef struct _FILE_ACCESS_INFORMATION {
+  ACCESS_MASK AccessFlags;
+} FILE_ACCESS_INFORMATION;
+
+typedef NTSTATUS (*t_NtQueryInformationFile) (HANDLE           FileHandle,
+                                              IO_STATUS_BLOCK *IoStatusBlock,
+                                              PVOID            FileInformation,
+                                              ULONG            Length,
+                                              int              FileInformationClass); /* this is an Enum */
+
+#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+/*
+ * This is the (empty) invalid parameter handler
+ * that is used for Visual C++ 2005 (and later) builds
+ * so that we can use this instead of the system automatically
+ * aborting the process.
+ *
+ * This is necessary as we use _get_oshandle() to check the validity
+ * of the file descriptors as we close them, so when an invalid file
+ * descriptor is passed into that function as we check on it, we get
+ * -1 as the result, instead of the gspawn helper program aborting.
+ *
+ * Please see http://msdn.microsoft.com/zh-tw/library/ks2530z6%28v=vs.80%29.aspx
+ * for an explanation on this.
+ */
+void
+myInvalidParameterHandler(const wchar_t *expression,
+                          const wchar_t *function,
+                          const wchar_t *file,
+                          unsigned int   line,
+                          uintptr_t      pReserved)
+{
+}
+#endif
+#else
 #include <unistd.h>
 #include <fcntl.h>
+#endif
 
 FILE *
 libxml_PyFileGet(PyObject *f) {
-    int fd, flags;
+    int flags;
     FILE *res;
     const char *mode;
 
-    fd = PyObject_AsFileDescriptor(f);
+    int fd = PyObject_AsFileDescriptor(f);
+    intptr_t w_fh = -1;
+
+#ifdef _WIN32
+    HMODULE hntdll = NULL;
+    IO_STATUS_BLOCK status_block;
+    FILE_ACCESS_INFORMATION ai;
+    t_NtQueryInformationFile NtQueryInformationFile;
+    BOOL is_read = FALSE;
+    BOOL is_write = FALSE;
+    BOOL is_append = FALSE;
+
+#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+    /* set up our empty invalid parameter handler */
+    _invalid_parameter_handler oldHandler, newHandler;
+    newHandler = myInvalidParameterHandler;
+    oldHandler = _set_invalid_parameter_handler(newHandler);
+
+    /* Disable the message box for assertions. */
+    _CrtSetReportMode(_CRT_ASSERT, 0);
+#endif
+
+    w_fh = _get_osfhandle(fd);
+
+    if (w_fh == -1)
+        return(NULL);
+
+    hntdll = GetModuleHandleW(L"ntdll.dll");
+
+    if (hntdll == NULL)
+        return(NULL);
+
+    NtQueryInformationFile = (t_NtQueryInformationFile)GetProcAddress(hntdll, "NtQueryInformationFile");
+
+    if (NtQueryInformationFile != NULL &&
+        (NtQueryInformationFile((HANDLE)w_fh,
+                               &status_block,
+                               &ai,
+                                sizeof(FILE_ACCESS_INFORMATION),
+                                8) == 0)) /* 8 means "FileAccessInformation" */
+        {
+            if (ai.AccessFlags & FILE_READ_DATA)
+                is_read = TRUE;
+            if (ai.AccessFlags & FILE_WRITE_DATA)
+                is_write = TRUE;
+            if (ai.AccessFlags & FILE_APPEND_DATA)
+                is_append = TRUE;
+
+            if (is_write && is_read)
+                if (is_append)
+                    mode = "a+";
+                else
+                    mode = "rw";
+
+            if (!is_write && is_read)
+                if (is_append)
+                    mode = "r+";
+                else
+                    mode = "r";
+
+            if (is_write && !is_read)
+                if (is_append)
+                    mode = "a";
+                else
+                    mode = "w";
+        }
+
+    FreeLibrary(hntdll);
+
+    if (!is_write && !is_read) /* also happens if we did not load or run NtQueryInformationFile() successfully */
+        return(NULL);
+#else
     /*
      * Get the flags on the fd to understand how it was opened
      */
@@ -57,6 +180,7 @@ libxml_PyFileGet(PyObject *f) {
 	default:
 	    return(NULL);
     }
+#endif
 
     /*
      * the FILE struct gets a new fd, so that it can be closed

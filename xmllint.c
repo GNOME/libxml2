@@ -2426,6 +2426,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	dtd = xmlGetIntSubset(doc);
 	if (dtd != NULL) {
 	    xmlUnlinkNode((xmlNodePtr)dtd);
+            doc->intSubset = NULL;
 	    xmlFreeDtd(dtd);
 	}
     }

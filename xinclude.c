@@ -2430,9 +2430,8 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
             ctxt->incTotal++;
             xmlXIncludePreProcessNode(ctxt, cur);
         } else if ((cur->children != NULL) &&
-                   (cur->children->type != XML_ENTITY_DECL) &&
-                   (cur->children->type != XML_XINCLUDE_START) &&
-                   (cur->children->type != XML_XINCLUDE_END)) {
+                   ((cur->type == XML_DOCUMENT_NODE) ||
+                    (cur->type == XML_ELEMENT_NODE))) {
             cur = cur->children;
             continue;
         }

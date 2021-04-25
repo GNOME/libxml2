@@ -1,27 +1,21 @@
-Extracted from the documentation:
-   http://xmlsoft.org/FAQ.html#Compilatio
-
 See also the generic INSTALL file for configure options
 
 Compilation
 
-   1.What is the process to compile libxml ? 
+  1. What is the process to compile libxml?
 
      As most UNIX libraries libxml follows the "standard":
 
-     gunzip -c xxx.tar.gz | tar xvf -
+         gunzip -c xxx.tar.gz | tar xvf -
+         cd libxml-xxxx
 
-     cd libxml-xxxx
-
-     ./configure --help
+         ./configure --help
 
      to see the options, then the compilation/installation proper
 
-     ./configure [possible options]
-
-     make
-
-     make install
+         ./configure [possible options]
+         make
+         make install
 
      At that point you may have to rerun ldconfig or similar utility to
      update your list of installed shared libs.
@@ -29,33 +23,29 @@ Compilation
      At this point you can check that the library is properly functioning
      by running
 
-     make tests
+         make check
 
-   2.What other libraries are needed to compile/install libxml ? 
+     Please report test failures to the mailing list or bug tracker.
 
-     Libxml does not requires any other library, the normal C ANSI API
-     should be sufficient (please report any violation to this rule you
-     may find).
+  2. What other libraries are needed to compile/install libxml?
 
-     However if found at configuration time libxml will detect and use
+     Libxml does not require any other libraries. A platform with somewhat
+     recent POSIX support should be sufficient (please report any violation
+     to this rule you may find).
+
+     However if found at configuration time, libxml will detect and use
      the following libs:
 
-         libz: a highly portable and available widely compression library 
-             http://www.info-zip.org/pub/infozip/zlib/
+         libz: a highly portable and widely available compression library
+             https://zlib.net/
+         liblzma: another compression library
+             https://tukaani.org/xz/
          iconv: a powerful character encoding conversion library. It's
-	     included by default on recent glibc libraries, so it doesn't
-	     need to be installed specifically on linux. It seems it's
-	     now part of the official UNIX specification. Here is one
-	     implementation of the library which source can be found here.
-             http://clisp.cons.org/~haible/packages-libiconv.html
-             ftp://ftp.ilog.fr/pub/Users/haible/gnu/
-
-   3.make tests may fail on some platforms 
-
-     Sometime the regression tests results don't completely match the
-     value produced by the parser, and the makefile uses diff to print
-     the delta. On some platforms the diff return breaks the compilation
-     process, if the diff is small this is probably not a serious problem
+             part of POSIX.1-2001, so it doesn't need to be installed
+             on modern UNIX-like systems, specifically on Linux.
+             https://www.gnu.org/software/libiconv/
+         ICU: Mainly used by Chromium on Windows. Unnecessary on most
+             systems.
 
 Daniel
 veillard@redhat.com

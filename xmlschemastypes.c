@@ -2187,6 +2187,44 @@ xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
     return(ret);
 }
 
+/*
+ * xmlSchemaCheckLanguageType
+ * @value: the value to check
+ *
+ * Check that a value conforms to the lexical space of the language datatype.
+ * Must conform to [a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*
+ *
+ * Returns 1 if this validates, 0 otherwise.
+ */
+static int
+xmlSchemaCheckLanguageType(const xmlChar* value) {
+    int first = 1, len = 0;
+    const xmlChar* cur = value;
+
+    if (value == NULL)
+        return (0);
+
+    while (cur[0] != 0) {
+        if (!( ((cur[0] >= 'a') && (cur[0] <= 'z')) || ((cur[0] >= 'A') && (cur[0] <= 'Z'))
+            || (cur[0] == '-')
+            || ((first == 0) && (xmlIsDigit_ch(cur[0]))) ))
+            return (0);
+        if (cur[0] == '-') {
+            if ((len < 1) || (len > 8))
+                return (0);
+            len = 0;
+            first = 0;
+        }
+        else
+            len++;
+        cur++;
+    }
+    if ((len < 1) || (len > 8))
+        return (0);
+
+    return (1);
+}
+
 /**
  * xmlSchemaValAtomicType:
  * @type: the predefined type
@@ -2704,7 +2742,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		if (norm != NULL)
 		    value = norm;
 	    }
-            if (xmlCheckLanguageID(value) == 1) {
+
+            if (xmlSchemaCheckLanguageType(value) == 1) {
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_LANGUAGE);
                     if (v != NULL) {

@@ -1418,10 +1418,10 @@ htmlInitAutoClose(void) {
 
 static int
 htmlCompareTags(const void *key, const void *member) {
-    const char *tag = (const char *) key;
+    const xmlChar *tag = (const xmlChar *) key;
     const htmlElemDesc *desc = (const htmlElemDesc *) member;
 
-    return(strcmp(tag, desc->name));
+    return(xmlStrcasecmp(tag, BAD_CAST desc->name));
 }
 
 /**

@@ -1838,6 +1838,8 @@ nodePop(xmlParserCtxtPtr ctxt)
  * @value:  the element name
  * @prefix:  the element prefix
  * @URI:  the element namespace name
+ * @line:  the current line number for error messages
+ * @nsNr:  the number of namespaces pushed on the namespace table
  *
  * Pushes a new element name/prefix/URL on top of the name stack
  *
@@ -1845,7 +1847,7 @@ nodePop(xmlParserCtxtPtr ctxt)
  */
 static int
 nameNsPush(xmlParserCtxtPtr ctxt, const xmlChar * value,
-           const xmlChar *prefix, const xmlChar *URI, int nsNr)
+           const xmlChar *prefix, const xmlChar *URI, int line, int nsNr)
 {
     if (ctxt->nameNr >= ctxt->nameMax) {
         const xmlChar * *tmp;
@@ -1860,7 +1862,7 @@ nameNsPush(xmlParserCtxtPtr ctxt, const xmlChar * value,
         }
 	ctxt->nameTab = tmp;
         tmp2 = (void **) xmlRealloc((void * *)ctxt->pushTab,
-                                    ctxt->nameMax * 3 *
+                                    ctxt->nameMax * 4 *
                                     sizeof(ctxt->pushTab[0]));
         if (tmp2 == NULL) {
 	    ctxt->nameMax /= 2;
@@ -1868,16 +1870,17 @@ nameNsPush(xmlParserCtxtPtr ctxt, const xmlChar * value,
         }
 	ctxt->pushTab = tmp2;
     } else if (ctxt->pushTab == NULL) {
-        ctxt->pushTab = (void **) xmlMalloc(ctxt->nameMax * 3 *
+        ctxt->pushTab = (void **) xmlMalloc(ctxt->nameMax * 4 *
                                             sizeof(ctxt->pushTab[0]));
         if (ctxt->pushTab == NULL)
             goto mem_error;
     }
     ctxt->nameTab[ctxt->nameNr] = value;
     ctxt->name = value;
-    ctxt->pushTab[ctxt->nameNr * 3] = (void *) prefix;
-    ctxt->pushTab[ctxt->nameNr * 3 + 1] = (void *) URI;
-    ctxt->pushTab[ctxt->nameNr * 3 + 2] = (void *) (ptrdiff_t) nsNr;
+    ctxt->pushTab[ctxt->nameNr * 4] = (void *) prefix;
+    ctxt->pushTab[ctxt->nameNr * 4 + 1] = (void *) URI;
+    ctxt->pushTab[ctxt->nameNr * 4 + 2] = (void *) (ptrdiff_t) line;
+    ctxt->pushTab[ctxt->nameNr * 4 + 3] = (void *) (ptrdiff_t) nsNr;
     return (ctxt->nameNr++);
 mem_error:
     xmlErrMemory(ctxt, NULL);
@@ -9998,7 +10001,7 @@ xmlParseElementStart(xmlParserCtxtPtr ctxt) {
         return(-1);
     }
     if (ctxt->sax2)
-        nameNsPush(ctxt, name, prefix, URI, ctxt->nsNr - nsNr);
+        nameNsPush(ctxt, name, prefix, URI, line, ctxt->nsNr - nsNr);
 #ifdef LIBXML_SAX1_ENABLED
     else
         namePush(ctxt, name);
@@ -10095,10 +10098,11 @@ xmlParseElementEnd(xmlParserCtxtPtr ctxt) {
      * parse the end of tag: '</' should be here.
      */
     if (ctxt->sax2) {
-        const xmlChar *prefix = ctxt->pushTab[ctxt->nameNr * 3 - 3];
-        const xmlChar *URI = ctxt->pushTab[ctxt->nameNr * 3 - 2];
-        int nsNr = (ptrdiff_t) ctxt->pushTab[ctxt->nameNr * 3 - 1];
-	xmlParseEndTag2(ctxt, prefix, URI, 0, nsNr, 0);
+        const xmlChar *prefix = ctxt->pushTab[ctxt->nameNr * 4 - 4];
+        const xmlChar *URI = ctxt->pushTab[ctxt->nameNr * 4 - 3];
+        int line = (ptrdiff_t) ctxt->pushTab[ctxt->nameNr * 4 - 2];
+        int nsNr = (ptrdiff_t) ctxt->pushTab[ctxt->nameNr * 4 - 1];
+	xmlParseEndTag2(ctxt, prefix, URI, line, nsNr, 0);
 	namePop(ctxt);
     }
 #ifdef LIBXML_SAX1_ENABLED
@@ -11373,6 +11377,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	        const xmlChar *name;
 		const xmlChar *prefix = NULL;
 		const xmlChar *URI = NULL;
+                int line = ctxt->input->line;
 		int nsNr = ctxt->nsNr;
 
 		if ((avail < 2) && (ctxt->inputNr == 1))
@@ -11471,7 +11476,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    spacePop(ctxt);
 		}
 		if (ctxt->sax2)
-		    nameNsPush(ctxt, name, prefix, URI, ctxt->nsNr - nsNr);
+		    nameNsPush(ctxt, name, prefix, URI, line,
+                               ctxt->nsNr - nsNr);
 #ifdef LIBXML_SAX1_ENABLED
 		else
 		    namePush(ctxt, name);
@@ -11593,10 +11599,12 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		}
 		if (ctxt->sax2) {
 		    xmlParseEndTag2(ctxt,
-		            (void *) ctxt->pushTab[ctxt->nameNr * 3 - 3],
-		            (void *) ctxt->pushTab[ctxt->nameNr * 3 - 2], 0,
+		            (void *) ctxt->pushTab[ctxt->nameNr * 4 - 4],
+		            (void *) ctxt->pushTab[ctxt->nameNr * 4 - 3],
+                            (int) (ptrdiff_t)
+                                ctxt->pushTab[ctxt->nameNr * 4 - 2],
 		            (int) (ptrdiff_t)
-                                ctxt->pushTab[ctxt->nameNr * 3 - 1], 0);
+                                ctxt->pushTab[ctxt->nameNr * 4 - 1], 0);
 		    nameNsPop(ctxt);
 		}
 #ifdef LIBXML_SAX1_ENABLED

@@ -10,7 +10,7 @@ import libxml2
 libxml2.debugMemory(1)
 
 expect="""--> (3) xmlns: URI foo is not absolute
---> (4) Opening and ending tag mismatch: x line 0 and y
+--> (4) Opening and ending tag mismatch: x line 1 and y
 """
 
 err=""

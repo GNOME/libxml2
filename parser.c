@@ -9837,16 +9837,15 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlParseContent:
+ * xmlParseContentInternal:
  * @ctxt:  an XML parser context
  *
- * Parse a content:
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ * Parse a content sequence. Stops at EOF or '</'. Leaves checking of
+ * unexpected EOF to the caller.
  */
 
-void
-xmlParseContent(xmlParserCtxtPtr ctxt) {
+static void
+xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
     int nameNr = ctxt->nameNr;
 
     GROW;
@@ -9922,6 +9921,30 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * xmlParseContent:
+ * @ctxt:  an XML parser context
+ *
+ * Parse a content sequence. Stops at EOF or '</'.
+ *
+ * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ */
+
+void
+xmlParseContent(xmlParserCtxtPtr ctxt) {
+    int nameNr = ctxt->nameNr;
+
+    xmlParseContentInternal(ctxt);
+
+    if ((ctxt->instate != XML_PARSER_EOF) && (ctxt->nameNr > nameNr)) {
+        const xmlChar *name = ctxt->nameTab[ctxt->nameNr - 1];
+        int line = (ptrdiff_t) ctxt->pushTab[ctxt->nameNr * 4 - 2];
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
+                "Premature end of data in tag %s line %d\n",
+		name, line, NULL);
+    }
+}
+
+/**
  * xmlParseElement:
  * @ctxt:  an XML parser context
  *
@@ -9939,9 +9962,20 @@ void
 xmlParseElement(xmlParserCtxtPtr ctxt) {
     if (xmlParseElementStart(ctxt) != 0)
         return;
-    xmlParseContent(ctxt);
+
+    xmlParseContentInternal(ctxt);
     if (ctxt->instate == XML_PARSER_EOF)
 	return;
+
+    if (CUR == 0) {
+        const xmlChar *name = ctxt->nameTab[ctxt->nameNr - 1];
+        int line = (ptrdiff_t) ctxt->pushTab[ctxt->nameNr * 4 - 2];
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
+                "Premature end of data in tag %s line %d\n",
+		name, line, NULL);
+        return;
+    }
+
     xmlParseElementEnd(ctxt);
 }
 

@@ -10025,12 +10025,7 @@ xmlParseElementStart(xmlParserCtxtPtr ctxt) {
 	spacePop(ctxt);
         return(-1);
     }
-    if (ctxt->sax2)
-        nameNsPush(ctxt, name, prefix, URI, line, ctxt->nsNr - nsNr);
-#ifdef LIBXML_SAX1_ENABLED
-    else
-        namePush(ctxt, name);
-#endif /* LIBXML_SAX1_ENABLED */
+    nameNsPush(ctxt, name, prefix, URI, line, ctxt->nsNr - nsNr);
     ret = ctxt->node;
 
 #ifdef LIBXML_VALID_ENABLED
@@ -11496,13 +11491,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    nodePop(ctxt);
 		    spacePop(ctxt);
 		}
-		if (ctxt->sax2)
-		    nameNsPush(ctxt, name, prefix, URI, line,
-                               ctxt->nsNr - nsNr);
-#ifdef LIBXML_SAX1_ENABLED
-		else
-		    namePush(ctxt, name);
-#endif /* LIBXML_SAX1_ENABLED */
+                nameNsPush(ctxt, name, prefix, URI, line, ctxt->nsNr - nsNr);
 
 		ctxt->instate = XML_PARSER_CONTENT;
                 ctxt->progressive = 1;

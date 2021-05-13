@@ -709,6 +709,261 @@ to the <a href="https://gitlab.gnome.org/GNOME/libxml2">GIT</a> code base.</p>
 
 <p>Here is the list of public releases:</p>
 
+<h3>v2.9.11: May 13 2021</h3>
+<ul>
+  <li>Security:<br/>
+  Patch for security issue CVE-2021-3541 (Daniel Veillard)<br/>
+  </li>
+
+  <li>Documentation:<br/>
+  Clarify xmlNewDocProp documentation (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Portability:<br/>
+  CMake: Only add postfixes if MSVC (Christopher Degawa),<br/>
+  Fix XPath NaN/Inf for older GCC versions (Nick Wellnhofer),<br/>
+  Use CMake PROJECT_VERSION (Markus Rickert),<br/>
+  Fix warnings in libxml.m4 with autoconf 2.70+. (Simon Josefsson),<br/>
+  Add CI for CMake on MSVC (Markus Rickert),<br/>
+  Update minimum required CMake version (Markus Rickert),<br/>
+  Add variables for configured options to CMake config files (Markus Rickert),<br/>
+  Check if variables exist when defining targets (Markus Rickert),<br/>
+  Check if target exists when reading target properties (Markus Rickert),<br/>
+  Add xmlcatalog target and definition to config files (Markus Rickert),<br/>
+  Remove include directories for link-only dependencies (Markus Rickert),<br/>
+  Fix ICU build in CMake (Markus Rickert),<br/>
+  Configure pkgconfig, xml2-config, and xml2Conf.sh file (Markus Rickert),<br/>
+  Update CMake config files (Markus Rickert),<br/>
+  Add xmlcatalog and xmllint to CMake export (Markus Rickert),<br/>
+  Simplify xmlexports.h (Nick Wellnhofer),<br/>
+  Require dependencies based on enabled CMake options (Markus Rickert),<br/>
+  Use NAMELINK_COMPONENT in CMake install (Markus Rickert),<br/>
+  Add CMake files to EXTRA_DIST (Markus Rickert),<br/>
+  Add missing compile definition for static builds to CMake (Markus Rickert),<br/>
+  Add CI for CMake on Linux and MinGW (Markus Rickert),<br/>
+  Fix variable name in win32/configure.js (Nick Wellnhofer),<br/>
+  Fix version parsing in win32/configure.js (Nick Wellnhofer),<br/>
+  Fix autotools warnings (Nick Wellnhofer),<br/>
+  Update config.h.cmake.in (Markus Rickert),<br/>
+  win32: allow passing *FLAGS on command line (Michael Stahl),<br/>
+  Configure file xmlwin32version.h.in on MSVC (Markus Rickert),<br/>
+  List headers individually (Markus Rickert),<br/>
+  Add CMake build files (Markus Rickert),<br/>
+  Parenthesize Py&lt;type&gt;_Check() in ifs (Miro Hrončok),<br/>
+  Minor fixes to configure.js (Nick Wellnhofer)<br/>
+  </li>
+
+  <li>Bug Fixes:<br/>
+  Fix null deref in legacy SAX1 parser (Nick Wellnhofer),<br/>
+  Fix handling of unexpected EOF in xmlParseContent (Nick Wellnhofer),<br/>
+  Fix line numbers in error messages for mismatched tags (Nick Wellnhofer),<br/>
+  Fix htmlTagLookup (Nick Wellnhofer),<br/>
+  Propagate error in xmlParseElementChildrenContentDeclPriv (Nick Wellnhofer),<br/>
+  Fix user-after-free with `xmllint --xinclude --dropdtd` (Nick Wellnhofer),<br/>
+  Fix dangling pointer with `xmllint --dropdtd` (Nick Wellnhofer),<br/>
+  Validate UTF8 in xmlEncodeEntities (Joel Hockey),<br/>
+  Fix use-after-free with `xmllint --html --push` (Nick Wellnhofer),<br/>
+  Allow FP division by zero in xmlXPathInit (Nick Wellnhofer),<br/>
+  Fix xmlGetNodePath with invalid node types (Nick Wellnhofer),<br/>
+  Fix exponential behavior with recursive entities (Nick Wellnhofer),<br/>
+  Fix quadratic behavior when looking up xml:* attributes (Nick Wellnhofer),<br/>
+  Fix slow parsing of HTML with encoding errors (Nick Wellnhofer),<br/>
+  Fix null deref introduced with previous commit (Nick Wellnhofer),<br/>
+  Check for invalid redeclarations of predefined entities (Nick Wellnhofer),<br/>
+  Add the copy of type from original xmlDoc in xmlCopyDoc() (SVGAnimate),<br/>
+  parser.c: shrink the input buffer when appropriate (Mike Dalessio),<br/>
+  Fix infinite loop in HTML parser introduced with recent commits (Nick Wellnhofer),<br/>
+  Fix quadratic runtime when parsing CDATA sections (Nick Wellnhofer),<br/>
+  Fix timeout when handling recursive entities (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlParseElementMixedContentDecl (Nick Wellnhofer),<br/>
+  Fix null deref in xmlStringGetNodeList (Nick Wellnhofer),<br/>
+  use new htmlParseLookupCommentEnd to find comment ends (Mike Dalessio),<br/>
+  htmlParseComment: treat `--!&gt;` as if it closed the comment (Mike Dalessio),<br/>
+  Fix integer overflow in xmlSchemaGetParticleTotalRangeMin (Nick Wellnhofer),<br/>
+  encoding: fix memleak in xmlRegisterCharEncodingHandler() (Xiaoming Ni),<br/>
+  xmlschemastypes.c: xmlSchemaGetFacetValueAsULong add, check "facet-&gt;val" (Xiaoming Ni),<br/>
+  Fix null pointer deref in xmlXPtrRangeInsideFunction (Nick Wellnhofer),<br/>
+  Fix quadratic runtime in HTML push parser with null bytes (Nick Wellnhofer),<br/>
+  Avoid quadratic checking of identity-constraints (Michael Matz),<br/>
+  Fix building with ICU 68. (Frederik Seiffert),<br/>
+  Convert python/libxml.c to PY_SSIZE_T_CLEAN (Victor Stinner),<br/>
+  Fix xmlURIEscape memory leaks. (Elliott Hughes),<br/>
+  Avoid call stack overflow with XML reader and recursive XIncludes (Nick Wellnhofer),<br/>
+  Fix caret in regexp character group (Nick Wellnhofer),<br/>
+  parser.c: xmlParseCharData peek behavior fixed wrt newlines (Mike Dalessio),<br/>
+  Fix memory leaks in XPointer string-range function (Nick Wellnhofer),<br/>
+  Fix use-after-free when XIncluding text from Reader (Nick Wellnhofer),<br/>
+  Fix SEGV in xmlSAXParseFileWithData (yanjinjq),<br/>
+  Fix null deref in XPointer expression error path (Nick Wellnhofer),<br/>
+  Don't call xmlXPathInit directly (Nick Wellnhofer),<br/>
+  Fix cleanup of attributes in XML reader (Nick Wellnhofer),<br/>
+  Fix double free in XML reader with XIncludes (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlXIncludeAddNode error paths (Nick Wellnhofer),<br/>
+  Revert "Fix quadratic runtime in xi:fallback processing" (Nick Wellnhofer),<br/>
+  Fix error reporting with xi:fallback (Nick Wellnhofer),<br/>
+  Fix quadratic runtime in xi:fallback processing (Nick Wellnhofer),<br/>
+  Fix corner case with empty xi:fallback (Nick Wellnhofer),<br/>
+  Fix XInclude regression introduced with recent commit (Nick Wellnhofer),<br/>
+  Fix memory leak in runtest.c (Nick Wellnhofer),<br/>
+  Make "xmllint --push --recovery" work (Nick Wellnhofer),<br/>
+  Revert "Do not URI escape in server side includes" (Nick Wellnhofer),<br/>
+  Fix column number accounting in xmlParse*NameAndCompare (Nick Wellnhofer),<br/>
+  Stop counting nbChars in parser context (Nick Wellnhofer),<br/>
+  Fix out-of-bounds read with 'xmllint --htmlout' (Nick Wellnhofer),<br/>
+  Fix exponential runtime and memory in xi:fallback processing (Nick Wellnhofer),<br/>
+  Don't process siblings of root in xmlXIncludeProcess (Nick Wellnhofer),<br/>
+  Don't recurse into xi:include children in xmlXIncludeDoProcess (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlXIncludeIncludeNode error paths (Nick Wellnhofer),<br/>
+  Check for custom free function in global destructor (Nick Wellnhofer),<br/>
+  Fix integer overflow when comparing schema dates (Nick Wellnhofer),<br/>
+  Fix exponential runtime in xmlFARecurseDeterminism (Nick Wellnhofer),<br/>
+  Don't try to handle namespaces when building HTML documents (Nick Wellnhofer),<br/>
+  Fix several quadratic runtime issues in HTML push parser (Nick Wellnhofer),<br/>
+  Fix quadratic runtime when push parsing HTML start tags (Nick Wellnhofer),<br/>
+  Reset XML parser input before reporting errors (David Kilzer),<br/>
+  Fix quadratic runtime when push parsing HTML entity refs (Nick Wellnhofer),<br/>
+  Fix HTML push parser lookahead (Nick Wellnhofer),<br/>
+  Make htmlCurrentChar always translate U+0000 (Nick Wellnhofer),<br/>
+  Fix UTF-8 decoder in HTML parser (Nick Wellnhofer),<br/>
+  Fix quadratic runtime when parsing HTML script content (Nick Wellnhofer),<br/>
+  Reset HTML parser input before reporting error (Nick Wellnhofer),<br/>
+  Fix more quadratic runtime issues in HTML push parser (Nick Wellnhofer),<br/>
+  Fix regression introduced with 477c7f6a (Nick Wellnhofer),<br/>
+  Fix quadratic runtime in HTML parser (Nick Wellnhofer),<br/>
+  Reset HTML parser input before reporting encoding error (Nick Wellnhofer),<br/>
+  Fix integer overflow in xmlFAParseQuantExact (Nick Wellnhofer),<br/>
+  Fix return value of xmlC14NDocDumpMemory (Nick Wellnhofer),<br/>
+  Don't follow next pointer on documents in xmlXPathRunStreamEval (Nick Wellnhofer),<br/>
+  Fix integer overflow in _xmlSchemaParseGYear (Nick Wellnhofer),<br/>
+  Fix integer overflow when parsing {min,max}Occurs (Nick Wellnhofer),<br/>
+  Fix another memory leak in xmlSchemaValAtomicType (Nick Wellnhofer),<br/>
+  Fix unsigned integer overflow in htmlParseTryOrFinish (Nick Wellnhofer),<br/>
+  Fix integer overflow in htmlParseCharRef (Nick Wellnhofer),<br/>
+  Fix undefined behavior in UTF16LEToUTF8 (Nick Wellnhofer),<br/>
+  Fix return value of xmlCharEncOutput (Nick Wellnhofer),<br/>
+  Never expand parameter entities in text declaration (Nick Wellnhofer),<br/>
+  Fix undefined behavior in xmlXPathTryStreamCompile (Nick Wellnhofer),<br/>
+  Fix use-after-free with validating reader (Nick Wellnhofer),<br/>
+  xmlParseBalancedChunkMemory must not be called with NULL doc (Nick Wellnhofer),<br/>
+  Revert "Fix memory leak in xmlParseBalancedChunkMemoryRecover" (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlXIncludeLoadDoc error path (Nick Wellnhofer),<br/>
+  Make schema validation fail with multiple top-level elements (Nick Wellnhofer),<br/>
+  Call xmlCleanupParser on ELF destruction (Samuel Thibault),<br/>
+  Fix copying of entities in xmlParseReference (Nick Wellnhofer),<br/>
+  Fix memory leak in xmlSchemaValidateStream (Zhipeng Xie),<br/>
+  Fix xmlSchemaGetCanonValue formatting for date and dateTime (Kevin Puetz),<br/>
+  Fix memory leak when shared libxml.dll is unloaded (Kevin Puetz),<br/>
+  Fix potentially-uninitialized critical section in Win32 DLL builds (Kevin Puetz),<br/>
+  Fix integer overflow in xmlBufferResize (Nick Wellnhofer),<br/>
+  Check for overflow when allocating two-dimensional arrays (Nick Wellnhofer),<br/>
+  Remove useless comparisons (Nick Wellnhofer),<br/>
+  Fix overflow check in xmlNodeDump (Nick Wellnhofer),<br/>
+  Fix infinite loop in xmlStringLenDecodeEntities (Zhipeng Xie),<br/>
+  Fix freeing of nested documents (Nick Wellnhofer),<br/>
+  Fix more memory leaks in error paths of XPath parser (Nick Wellnhofer),<br/>
+  Fix memory leaks of encoding handlers in xmlsave.c (Nick Wellnhofer),<br/>
+  Fix xml2-config error code (Nick Wellnhofer),<br/>
+  Fix memory leak in error path of XPath expr parser (Nick Wellnhofer),<br/>
+  Fix overflow handling in xmlBufBackToBuffer (Nick Wellnhofer),<br/>
+  Null pointer handling in catalog.c (raniervf),<br/>
+  xml2-config.in: fix regressions introduced by commit 2f2bf4b2c (Dmitry V. Levin)<br/>
+  </li>
+
+  <li>Improvements:<br/>
+  Store per-element parser state in a struct (Nick Wellnhofer),<br/>
+  update for xsd:language type check (PaulHiggs),<br/>
+  Update INSTALL.libxml2 (Nick Wellnhofer),<br/>
+  Fix include order in c14n.h (Nick Wellnhofer),<br/>
+  Fix duplicate xmlStrEqual calls in htmlParseEndTag (Nick Wellnhofer),<br/>
+  Speed up htmlCheckAutoClose (Nick Wellnhofer),<br/>
+  Speed up htmlTagLookup (Nick Wellnhofer),<br/>
+  Stop checking attributes for UTF-8 validity (Nick Wellnhofer),<br/>
+  Reduce some fuzzer timeouts (Nick Wellnhofer),<br/>
+  Only run a few CI tests unless scheduled (Nick Wellnhofer),<br/>
+  Improve fuzzer stability (Nick Wellnhofer),<br/>
+  Check for feature flags in fuzzer tests (Nick Wellnhofer),<br/>
+  Another attempt at improving fuzzer stability (Nick Wellnhofer),<br/>
+  Revert "Improve HTML fuzzer stability" (Nick Wellnhofer),<br/>
+  Add charset names to fuzzing dictionaries (Nick Wellnhofer),<br/>
+  Improve HTML fuzzer stability (Nick Wellnhofer),<br/>
+  Add CI for MSVC x86 (Markus Rickert),<br/>
+  Add a flag to not output anything when xmllint succeeded (hhb),<br/>
+  Speed up HTML fuzzer (Nick Wellnhofer),<br/>
+  Remove unused encoding parameter of HTML output functions (Nick Wellnhofer),<br/>
+  Handle malloc failures in fuzzing code (Nick Wellnhofer),<br/>
+  add test coverage for incorrectly-closed comments (Mike Dalessio),<br/>
+  Enforce maximum length of fuzz input (Nick Wellnhofer),<br/>
+  Remove temporary members from struct _xmlXPathContext (Nick Wellnhofer),<br/>
+  Build the Python extension with PY_SSIZE_T_CLEAN (Victor Stinner),<br/>
+  Add CI test for Python 3 (Nick Wellnhofer),<br/>
+  Add fuzzing dictionaries to EXTRA_DIST (Nick Wellnhofer),<br/>
+  Add 'fuzz' subdirectory to DIST_SUBDIRS (Nick Wellnhofer),<br/>
+  Allow port numbers up to INT_MAX (Nick Wellnhofer),<br/>
+  Handle dumps of corrupted documents more gracefully (Nick Wellnhofer),<br/>
+  Limit size of free lists in XML reader when fuzzing (Nick Wellnhofer),<br/>
+  Hardcode maximum XPath recursion depth (Nick Wellnhofer),<br/>
+  Pass URL of main entity in XML fuzzer (Nick Wellnhofer),<br/>
+  Consolidate seed corpus generation (Nick Wellnhofer),<br/>
+  Test fuzz targets with dummy driver (Nick Wellnhofer),<br/>
+  Fix regression introduced with commit d88df4b (Nick Wellnhofer),<br/>
+  Fix regression introduced with commit 74dcc10b (Nick Wellnhofer),<br/>
+  Add TODO comment in xinclude.c (Nick Wellnhofer),<br/>
+  Stop using maxParserDepth in xpath.c (Nick Wellnhofer),<br/>
+  Remove dead code in xinclude.c (Nick Wellnhofer),<br/>
+  Don't add formatting newlines to XInclude nodes (Nick Wellnhofer),<br/>
+  Don't use SAX1 if all element handlers are NULL (Nick Wellnhofer),<br/>
+  Remove unneeded progress checks in HTML parser (Nick Wellnhofer),<br/>
+  Use strcmp when fuzzing (Nick Wellnhofer),<br/>
+  Fix XPath fuzzer (Nick Wellnhofer),<br/>
+  Fuzz XInclude engine (Nick Wellnhofer),<br/>
+  Add XPath and XPointer fuzzer (Nick Wellnhofer),<br/>
+  Update fuzzing code (Nick Wellnhofer),<br/>
+  More *NodeDumpOutput fixes (Nick Wellnhofer),<br/>
+  Fix *NodeDumpOutput functions (Nick Wellnhofer),<br/>
+  Make xmlNodeDumpOutputInternal non-recursive (Nick Wellnhofer),<br/>
+  Make xhtmlNodeDumpOutput non-recursive (Nick Wellnhofer),<br/>
+  Make htmlNodeDumpFormatOutput non-recursive (Nick Wellnhofer),<br/>
+  Fix .gitattributes (Nick Wellnhofer),<br/>
+  Rework control flow in htmlCurrentChar (Nick Wellnhofer),<br/>
+  Make 'xmllint --html --push -' read from stdin (Nick Wellnhofer),<br/>
+  Remove misleading comments in xpath.c (Nick Wellnhofer),<br/>
+  Update to Devhelp index file format version 2 (Andre Klapper),<br/>
+  Set project language to C (Markus Rickert),<br/>
+  Add variable for working directory of XML Conformance Test Suite (Markus Rickert),<br/>
+  Add additional tests and XML Conformance Test Suite (Markus Rickert),<br/>
+  Add command line option for temp directory in runtest (Markus Rickert),<br/>
+  Ensure LF line endings for test files (Markus Rickert),<br/>
+  Enable runtests and testThreads (Markus Rickert),<br/>
+  Limit regexp nesting depth (Nick Wellnhofer),<br/>
+  Fix return values and documentation in encoding.c (Nick Wellnhofer),<br/>
+  Add regexp regression tests (David Kilzer),<br/>
+  Report error for invalid regexp quantifiers (Nick Wellnhofer),<br/>
+  Fix rebuilding docs, by hiding __attribute__((...)) behind a macro. (Martin Vidner),<br/>
+  Copy xs:duration parser from libexslt (Nick Wellnhofer),<br/>
+  Fuzz target for XML Schemas (Nick Wellnhofer),<br/>
+  Move entity recorder to fuzz.c (Nick Wellnhofer),<br/>
+  Fuzz target for HTML parser (Nick Wellnhofer),<br/>
+  Update GitLab CI container (Nick Wellnhofer),<br/>
+  Add options file for xml fuzzer (Nick Wellnhofer),<br/>
+  Add a couple of libFuzzer targets (Nick Wellnhofer),<br/>
+  Guard new calls to xmlValidatePopElement in xml_reader.c (Daniel Cheng),<br/>
+  Add LIBXML_VALID_ENABLED to xmlreader (Łukasz Wojniłowicz),<br/>
+  Fix typos (Nick Wellnhofer),<br/>
+  Disable LeakSanitizer (Nick Wellnhofer),<br/>
+  Stop calling SAX getEntity handler from XMLReader (Nick Wellnhofer),<br/>
+  Add test case for recursive external parsed entities (Nick Wellnhofer),<br/>
+  Enable error tests with entity substitution (Nick Wellnhofer),<br/>
+  Don't load external entity from xmlSAX2GetEntity (Nick Wellnhofer),<br/>
+  Merge code paths loading external entities (Nick Wellnhofer),<br/>
+  Copy some XMLReader option flags to parser context (Nick Wellnhofer),<br/>
+  Add xmlPopOutputCallbacks (Nick Wellnhofer),<br/>
+  Updated Python test reader2.py (Pieter van Oostrum),<br/>
+  Updated python/tests/tstLastError.py (Pieter van Oostrum),<br/>
+  Use random seed in xmlDictComputeFastKey (Ranier Vilela),<br/>
+  Enable more undefined behavior sanitizers (Nick Wellnhofer)<br/>
+  </li>
+</ul>
+
 <h3>v2.9.10: Oct 30 2019</h3>
 <ul>
   <li>Documentation:<br/>

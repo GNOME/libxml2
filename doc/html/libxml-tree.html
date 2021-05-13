@@ -253,7 +253,7 @@ The content of this structure is not made public by the API.
     struct _xmlDoc *	doc	: the containing document
     <a href="libxml-tree.html#xmlNs">xmlNs</a> *	ns	: pointer to the associated namespace
     <a href="libxml-tree.html#xmlAttributeType">xmlAttributeType</a>	atype	: the <a href="libxml-SAX.html#attribute">attribute</a> type if validating
-    void *	psvi	: for type/PSVI informations
+    void *	psvi	: for type/PSVI information
 }</pre><h3><a name="xmlAttribute" id="xmlAttribute">Structure xmlAttribute</a></h3><pre class="programlisting">Structure xmlAttribute<br />struct _xmlAttribute {
     void *	_private	: application data
     <a href="libxml-tree.html#xmlElementType">xmlElementType</a>	type	: XML_ATTRIBUTE_DECL, must be second !
@@ -334,7 +334,7 @@ The content of this structure is not made public by the API.
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	URL	: The URI for that document
     int	charset	: Internal flag for charset handling, act
     struct _xmlDict *	dict	: dict used to allocate names or NULL
-    void *	psvi	: for type/PSVI informations
+    void *	psvi	: for type/PSVI information
     int	parseFlags	: set of <a href="libxml-parser.html#xmlParserOption">xmlParserOption</a> used to parse th
     int	properties	: set of <a href="libxml-tree.html#xmlDocProperties">xmlDocProperties</a> for this docume
 }</pre><h3>Enum <a name="xmlDocProperties" id="xmlDocProperties">xmlDocProperties</a></h3><pre class="programlisting">Enum xmlDocProperties {
@@ -474,7 +474,7 @@ The content of this structure is not made public by the API.
     <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	content	: the content
     struct _xmlAttr *	properties	: properties list
     <a href="libxml-tree.html#xmlNs">xmlNs</a> *	nsDef	: namespace definitions on this node
-    void *	psvi	: for type/PSVI informations
+    void *	psvi	: for type/PSVI information
     unsigned short	line	: line number
     unsigned short	extra	: extra data for XPath/XSLT
 }</pre><h3><a name="xmlNotation" id="xmlNotation">Structure xmlNotation</a></h3><pre class="programlisting">Structure xmlNotation<br />struct _xmlNotation {
@@ -531,7 +531,7 @@ The content of this structure is not made public by the API.
     int	nameNr	: Depth of the parsing stack
     int	nameMax	: Max depth of the parsing stack
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * *	nameTab	: array of nodes
-    long	nbChars	: number of <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> processed
+    long	nbChars	: unused
     long	checkIndex	: used by progressive parsing lookup
     int	keepBlanks	: ugly but ...
     int	disableSAX	: SAX callbacks are disabled
@@ -567,7 +567,7 @@ The content of this structure is not made public by the API.
     int	nsMax	: the size of the arrays
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * *	nsTab	: the array of prefix/namespace name
     int *	attallocs	: which <a href="libxml-SAX.html#attribute">attribute</a> were allocated
-    void * *	pushTab	: array of data for push
+    <a href="libxml-parser.html#xmlStartTag">xmlStartTag</a> *	pushTab	: array of data for push
     <a href="libxml-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	attsDefault	: defaulted attributes if any
     <a href="libxml-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	attsSpecial	: non-CDATA attributes if any
     int	nsWellFormed	: is the document XML Namespace okay
@@ -576,7 +576,7 @@ The content of this structure is not made public by the API.
     int	freeElemsNr	: number of freed element nodes
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	freeElems	: List of freed element nodes
     int	freeAttrsNr	: number of freed attributes nodes
-    <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a>	freeAttrs	: * the complete error informations for th
+    <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a>	freeAttrs	: * the complete error information for the
     <a href="libxml-xmlerror.html#xmlError">xmlError</a>	lastError
     <a href="libxml-parser.html#xmlParserMode">xmlParserMode</a>	parseMode	: the parser mode
     unsigned long	nbentities	: number of entities references
@@ -851,7 +851,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>ns</tt></i>:</span></td><td>namespace if any</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the node name</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the XML text content if any</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the new node object.</td></tr></tbody></table></div><h3><a name="xmlNewDocPI" id="xmlNewDocPI"></a>Function: xmlNewDocPI</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocPI		(<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * content)<br />
 </pre><p>Creation of a processing instruction element.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the target document</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the processing instruction name</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the PI content</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the new node object.</td></tr></tbody></table></div><h3><a name="xmlNewDocProp" id="xmlNewDocProp"></a>Function: xmlNewDocProp</h3><pre class="programlisting"><a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlNewDocProp		(<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * value)<br />
-</pre><p>Create a new property carried by a document.</p>
+</pre><p>Create a new property carried by a document. NOTE: @value is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewProp() if you don't need entities support.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the name of the <a href="libxml-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the value of the <a href="libxml-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the <a href="libxml-SAX.html#attribute">attribute</a></td></tr></tbody></table></div><h3><a name="xmlNewDocRawNode" id="xmlNewDocRawNode"></a>Function: xmlNewDocRawNode</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocRawNode	(<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br />					 <a href="libxml-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * content)<br />
 </pre><p>Creation of a new node element within a document. @ns and @content are optional (NULL).</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>ns</tt></i>:</span></td><td>namespace if any</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the node name</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the text content if any</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the new node object.</td></tr></tbody></table></div><h3><a name="xmlNewDocText" id="xmlNewDocText"></a>Function: xmlNewDocText</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocText		(const <a href="libxml-tree.html#xmlDoc">xmlDoc</a> * doc, <br />					 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * content)<br />

@@ -90,10 +90,10 @@ int	<a href="#xmlNanoHTTPReturnCode">xmlNanoHTTPReturnCode</a>		(void * ctx);
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPFetch"/>xmlNanoHTTPFetch ()</h3><pre class="programlisting">int	xmlNanoHTTPFetch		(const char * URL, <br/>					 const char * filename, <br/>					 char ** contentType)<br/>
 </pre><p>This function try to fetch the indicated resource via HTTP GET and save it's content in the file.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>The URL to load</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the filename where the content should be saved</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i>:</span></td><td>if available the Content-Type information will be returned at that location</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of failure, 0 incase of success. The contentType, if provided must be freed by the caller</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>The URL to load</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the filename where the content should be saved</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i>:</span></td><td>if available the Content-Type information will be returned at that location</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of failure, 0 in case of success. The contentType, if provided must be freed by the caller</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPInit"/>xmlNanoHTTPInit ()</h3><pre class="programlisting">void	xmlNanoHTTPInit			(void)<br/>
-</pre><p>Initialize the HTTP protocol layer. Currently it just checks for proxy informations</p>
+</pre><p>Initialize the HTTP protocol layer. Currently it just checks for proxy information</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPMethod"/>xmlNanoHTTPMethod ()</h3><pre class="programlisting">void *	xmlNanoHTTPMethod		(const char * URL, <br/>					 const char * method, <br/>					 const char * input, <br/>					 char ** contentType, <br/>					 const char * headers, <br/>					 int ilen)<br/>
@@ -130,10 +130,10 @@ int	<a href="#xmlNanoHTTPReturnCode">xmlNanoHTTPReturnCode</a>		(void * ctx);
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPSave"/>xmlNanoHTTPSave ()</h3><pre class="programlisting">int	xmlNanoHTTPSave			(void * ctxt, <br/>					 const char * filename)<br/>
 </pre><p>This function saves the output of the HTTP transaction to a file It closes and free the context at the end</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the HTTP context</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the filename where the content should be saved</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of failure, 0 incase of success.</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the HTTP context</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the filename where the content should be saved</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of failure, 0 in case of success.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPScanProxy"/>xmlNanoHTTPScanProxy ()</h3><pre class="programlisting">void	xmlNanoHTTPScanProxy		(const char * URL)<br/>
-</pre><p>(Re)Initialize the HTTP Proxy context by parsing the URL and finding the protocol host port it indicates. Should be like http://myproxy/ or http://myproxy:3128/ A NULL URL cleans up proxy informations.</p>
+</pre><p>(Re)Initialize the HTTP Proxy context by parsing the URL and finding the protocol host port it indicates. Should be like http://myproxy/ or http://myproxy:3128/ A NULL URL cleans up proxy information.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>The proxy URL used to initialize the proxy context</td></tr></tbody></table></div></div>
         <hr/>
       </div>

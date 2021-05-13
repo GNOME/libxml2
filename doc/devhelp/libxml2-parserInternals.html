@@ -327,7 +327,7 @@ void	<a href="#xmlParseEntityDecl">xmlParseEntityDecl</a>		(<a href="libxml2-tre
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the filename</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i>:</span></td><td>a free form C string describing the HTML document encoding, or NULL</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the new parser context or NULL</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlInitAutoClose"/>htmlInitAutoClose ()</h3><pre class="programlisting">void	htmlInitAutoClose		(void)<br/>
-</pre><p>Initialize the htmlStartCloseIndex for fast lookup of closing tags names. This is not reentrant. Call xmlInitParser() once before processing in case of use in multithreaded programs.</p>
+</pre><p>This is a no-op now.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="inputPop"/>inputPop ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	inputPop	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br/>
@@ -392,7 +392,7 @@ void	<a href="#xmlParseEntityDecl">xmlParseEntityDecl</a>		(<a href="libxml2-tre
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlErrMemory"/>xmlErrMemory ()</h3><pre class="programlisting">void	xmlErrMemory			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br/>					 const char * extra)<br/>
 </pre><p>Handle a redefinition of <a href="libxml2-SAX.html#attribute">attribute</a> error</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>extra</tt></i>:</span></td><td>extra informations</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>extra</tt></i>:</span></td><td>extra information</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFreeInputStream"/>xmlFreeInputStream ()</h3><pre class="programlisting">void	xmlFreeInputStream		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br/>
 </pre><p>Free up an input stream.</p>
@@ -471,7 +471,7 @@ void	<a href="#xmlParseEntityDecl">xmlParseEntityDecl</a>		(<a href="libxml2-tre
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseContent"/>xmlParseContent ()</h3><pre class="programlisting">void	xmlParseContent			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br/>
-</pre><p>Parse a content: [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</p>
+</pre><p>Parse a content sequence. Stops at EOF or '&lt;/'. [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParseDefaultDecl"/>xmlParseDefaultDecl ()</h3><pre class="programlisting">int	xmlParseDefaultDecl		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** value)<br/>

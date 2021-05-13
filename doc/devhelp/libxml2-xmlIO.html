@@ -47,6 +47,7 @@
 typedef int <a href="#xmlInputMatchCallback">xmlInputMatchCallback</a>		(char const * filename);
 void	<a href="#xmlRegisterDefaultOutputCallbacks">xmlRegisterDefaultOutputCallbacks</a>	(void);
 int	<a href="#xmlFileClose">xmlFileClose</a>			(void * context);
+int	<a href="#xmlPopOutputCallbacks">xmlPopOutputCallbacks</a>		(void);
 typedef int <a href="#xmlOutputMatchCallback">xmlOutputMatchCallback</a>		(char const * filename);
 int	<a href="#xmlParserInputBufferPush">xmlParserInputBufferPush</a>	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in, <br/>					 int len, <br/>					 const char * buf);
 int	<a href="#xmlIOFTPRead">xmlIOFTPRead</a>			(void * context, <br/>					 char * buffer, <br/>					 int len);
@@ -320,6 +321,10 @@ void *	<a href="#xmlIOHTTPOpenW">xmlIOHTTPOpenW</a>			(const char * post_uri, <b
         <div class="refsect2" lang="en"><h3><a name="xmlPopInputCallbacks"/>xmlPopInputCallbacks ()</h3><pre class="programlisting">int	xmlPopInputCallbacks		(void)<br/>
 </pre><p>Clear the top input callback from the input stack. this includes the compiled-in I/O.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of input callback registered or -1 in case of error.</td></tr></tbody></table></div></div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="xmlPopOutputCallbacks"/>xmlPopOutputCallbacks ()</h3><pre class="programlisting">int	xmlPopOutputCallbacks		(void)<br/>
+</pre><p>Remove the top output callbacks from the output stack. This includes the compiled-in I/O.</p>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of output callback registered or -1 in case of error.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRegisterDefaultInputCallbacks"/>xmlRegisterDefaultInputCallbacks ()</h3><pre class="programlisting">void	xmlRegisterDefaultInputCallbacks	(void)<br/>
 </pre><p>Registers the default compiled-in I/O handlers.</p>

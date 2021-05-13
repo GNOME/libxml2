@@ -132,6 +132,7 @@
     <reference name='XMLCALL' href='html/libxml-xmlexports.html#XMLCALL'/>
     <reference name='XMLCDECL' href='html/libxml-xmlexports.html#XMLCDECL'/>
     <reference name='XMLPUBFUN' href='html/libxml-xmlexports.html#XMLPUBFUN'/>
+    <reference name='XMLPUBLIC' href='html/libxml-xmlexports.html#XMLPUBLIC'/>
     <reference name='XMLPUBVAR' href='html/libxml-xmlexports.html#XMLPUBVAR'/>
     <reference name='XML_ATTRIBUTE_CDATA' href='html/libxml-tree.html#XML_ATTRIBUTE_CDATA'/>
     <reference name='XML_ATTRIBUTE_DECL' href='html/libxml-tree.html#XML_ATTRIBUTE_DECL'/>
@@ -2568,6 +2569,7 @@
     <reference name='xmlPedanticParserDefaultValue' href='html/libxml-globals.html#xmlPedanticParserDefaultValue'/>
     <reference name='xmlPopInput' href='html/libxml-parserInternals.html#xmlPopInput'/>
     <reference name='xmlPopInputCallbacks' href='html/libxml-xmlIO.html#xmlPopInputCallbacks'/>
+    <reference name='xmlPopOutputCallbacks' href='html/libxml-xmlIO.html#xmlPopOutputCallbacks'/>
     <reference name='xmlPreviousElementSibling' href='html/libxml-tree.html#xmlPreviousElementSibling'/>
     <reference name='xmlPrintURI' href='html/libxml-uri.html#xmlPrintURI'/>
     <reference name='xmlPushInput' href='html/libxml-parserInternals.html#xmlPushInput'/>
@@ -2907,6 +2909,7 @@
     <reference name='xmlSplitQName2' href='html/libxml-tree.html#xmlSplitQName2'/>
     <reference name='xmlSplitQName3' href='html/libxml-tree.html#xmlSplitQName3'/>
     <reference name='xmlSprintfElementContent' href='html/libxml-valid.html#xmlSprintfElementContent'/>
+    <reference name='xmlStartTag' href='html/libxml-parser.html#xmlStartTag'/>
     <reference name='xmlStopParser' href='html/libxml-parser.html#xmlStopParser'/>
     <reference name='xmlStrEqual' href='html/libxml-xmlstring.html#xmlStrEqual'/>
     <reference name='xmlStrPrintf' href='html/libxml-xmlstring.html#xmlStrPrintf'/>
@@ -3737,6 +3740,7 @@
       <ref name='XMLCALL'/>
       <ref name='XMLCDECL'/>
       <ref name='XMLPUBFUN'/>
+      <ref name='XMLPUBLIC'/>
       <ref name='XMLPUBVAR'/>
       <ref name='XML_ATTRIBUTE_CDATA'/>
       <ref name='XML_ATTRIBUTE_DECL'/>
@@ -6209,6 +6213,7 @@
       <ref name='xmlPedanticParserDefaultValue'/>
       <ref name='xmlPopInput'/>
       <ref name='xmlPopInputCallbacks'/>
+      <ref name='xmlPopOutputCallbacks'/>
       <ref name='xmlPreviousElementSibling'/>
       <ref name='xmlPrintURI'/>
       <ref name='xmlPushInput'/>
@@ -6548,6 +6553,7 @@
       <ref name='xmlSplitQName2'/>
       <ref name='xmlSplitQName3'/>
       <ref name='xmlSprintfElementContent'/>
+      <ref name='xmlStartTag'/>
       <ref name='xmlStopParser'/>
       <ref name='xmlStrEqual'/>
       <ref name='xmlStrPrintf'/>
@@ -11582,6 +11588,7 @@
       <ref name='xmlSetExternalEntityLoader'/>
       <ref name='xmlSetFeature'/>
       <ref name='xmlSetupParserForBuffer'/>
+      <ref name='xmlStartTag'/>
       <ref name='xmlStopParser'/>
       <ref name='xmlSubstituteEntitiesDefault'/>
     </file>
@@ -12619,6 +12626,7 @@
       <ref name='xmlParserInputBufferPush'/>
       <ref name='xmlParserInputBufferRead'/>
       <ref name='xmlPopInputCallbacks'/>
+      <ref name='xmlPopOutputCallbacks'/>
       <ref name='xmlRegisterDefaultInputCallbacks'/>
       <ref name='xmlRegisterDefaultOutputCallbacks'/>
       <ref name='xmlRegisterHTTPPostCallbacks'/>
@@ -13449,6 +13457,7 @@
       <ref name='XMLCALL'/>
       <ref name='XMLCDECL'/>
       <ref name='XMLPUBFUN'/>
+      <ref name='XMLPUBLIC'/>
       <ref name='XMLPUBVAR'/>
     </file>
     <file name='xmlmemory'>
@@ -14857,6 +14866,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseAttValue'/>
@@ -14926,7 +14936,6 @@
           <ref name='_xmlXPathContext'/>
         </word>
         <word name='Call'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlInitParser'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
@@ -15597,6 +15606,9 @@
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlStringGetNodeList'/>
           <ref name='xmlStringLenGetNodeList'/>
+        </word>
+        <word name='EOF'>
+          <ref name='xmlParseContent'/>
         </word>
         <word name='ETag'>
           <ref name='htmlParseElement'/>
@@ -16324,7 +16336,6 @@
         <word name='Initialize'>
           <ref name='docbDefaultSAXHandlerInit'/>
           <ref name='htmlDefaultSAXHandlerInit'/>
-          <ref name='htmlInitAutoClose'/>
           <ref name='initdocbDefaultSAXHandler'/>
           <ref name='inithtmlDefaultSAXHandler'/>
           <ref name='initxmlDefaultSAXHandler'/>
@@ -16748,6 +16759,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNewTextChild'/>
           <ref name='xmlNewTextWriter'/>
           <ref name='xmlNewTextWriterPushParser'/>
@@ -17539,6 +17551,7 @@
           <ref name='xmlListRemoveFirst'/>
           <ref name='xmlListRemoveLast'/>
           <ref name='xmlParserHandleReference'/>
+          <ref name='xmlPopOutputCallbacks'/>
           <ref name='xmlRemoveID'/>
           <ref name='xmlRemoveRef'/>
           <ref name='xmlUnsetNsProp'/>
@@ -17967,6 +17980,9 @@
           <ref name='xmlTextWriterStartElementNS'/>
           <ref name='xmlTextWriterStartPI'/>
         </word>
+        <word name='Stops'>
+          <ref name='xmlParseContent'/>
+        </word>
         <word name='StringType'>
           <ref name='xmlParseAttributeType'/>
         </word>
@@ -18354,6 +18370,7 @@
           <ref name='xmlIsPubidChar'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNewNodeEatName'/>
           <ref name='xmlNewPI'/>
           <ref name='xmlNewTextChild'/>
@@ -19270,6 +19287,7 @@
           <ref name='htmlIsAutoClosed'/>
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlNewChild'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
           <ref name='xmlParseURIRaw'/>
@@ -19712,9 +19730,6 @@
         <word name='badly'>
           <ref name='xmlParseExternalID'/>
         </word>
-        <word name='bahaviour'>
-          <ref name='xmlTextReaderNormalization'/>
-        </word>
         <word name='balanced'>
           <ref name='xmlParseBalancedChunkMemory'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
@@ -19774,7 +19789,6 @@
           <ref name='xmlAddAttributeDecl'/>
         </word>
         <word name='before'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlBuildRelativeURI'/>
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlCleanupParser'/>
@@ -19838,6 +19852,7 @@
           <ref name='xmlNodeGetSpacePreserve'/>
           <ref name='xmlNodeSetSpacePreserve'/>
           <ref name='xmlSAX2ResolveEntity'/>
+          <ref name='xmlTextReaderNormalization'/>
           <ref name='xmlTextReaderSetParserProp'/>
           <ref name='xmlUTF8Strsize'/>
         </word>
@@ -19888,11 +19903,6 @@
         <word name='blanks'>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlSkipBlankChars'/>
-        </word>
-        <word name='bloc'>
-          <ref name='xmlParseBalancedChunkMemory'/>
-          <ref name='xmlParseBalancedChunkMemoryRecover'/>
-          <ref name='xmlParseExternalEntity'/>
         </word>
         <word name='blockDefault'>
           <ref name='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION'/>
@@ -20100,6 +20110,8 @@
           <ref name='xmlUTF8Size'/>
         </word>
         <word name='calling'>
+          <ref name='XMLCALL'/>
+          <ref name='XMLCDECL'/>
           <ref name='_xmlXPathContext'/>
           <ref name='xmlBuildRelativeURI'/>
           <ref name='xmlC14NDocDumpMemory'/>
@@ -20498,7 +20510,6 @@
           <ref name='xmlXPathRoundFunction'/>
         </word>
         <word name='closing'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlNanoFTPFreeCtxt'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseStartTag'/>
@@ -20682,6 +20693,7 @@
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
           <ref name='xmlPopInputCallbacks'/>
+          <ref name='xmlPopOutputCallbacks'/>
           <ref name='xmlRegisterDefaultInputCallbacks'/>
           <ref name='xmlRegisterDefaultOutputCallbacks'/>
         </word>
@@ -21021,7 +21033,6 @@
           <ref name='xmlXPtrNewContext'/>
         </word>
         <word name='content:'>
-          <ref name='xmlParseContent'/>
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathNotEqualValues'/>
         </word>
@@ -21084,6 +21095,10 @@
         </word>
         <word name='conveniently'>
           <ref name='xmlCurrentChar'/>
+        </word>
+        <word name='convention'>
+          <ref name='XMLCALL'/>
+          <ref name='XMLCDECL'/>
         </word>
         <word name='conversion'>
           <ref name='_uconv_t'/>
@@ -21479,6 +21494,13 @@
           <ref name='xmlTextReaderStandalone'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
+        </word>
+        <word name='declares'>
+          <ref name='XMLCALL'/>
+          <ref name='XMLCDECL'/>
+          <ref name='XMLPUBFUN'/>
+          <ref name='XMLPUBLIC'/>
+          <ref name='XMLPUBVAR'/>
         </word>
         <word name='declaring'>
           <ref name='xmlGetID'/>
@@ -22020,6 +22042,7 @@
           <ref name='xmlLastElementChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNextElementSibling'/>
           <ref name='xmlParseStartTag'/>
           <ref name='xmlPreviousElementSibling'/>
@@ -22503,6 +22526,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNewTextChild'/>
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
@@ -22695,6 +22719,14 @@
         <word name='explored'>
           <ref name='xmlXPathAxisFunc'/>
         </word>
+        <word name='exportable'>
+          <ref name='XMLPUBFUN'/>
+          <ref name='XMLPUBVAR'/>
+        </word>
+        <word name='exported'>
+          <ref name='XMLCALL'/>
+          <ref name='XMLCDECL'/>
+        </word>
         <word name='exposing'>
           <ref name='xmlTextReaderRead'/>
         </word>
@@ -22870,9 +22902,6 @@
         </word>
         <word name='fashion'>
           <ref name='xmlNewRMutex'/>
-        </word>
-        <word name='fast'>
-          <ref name='htmlInitAutoClose'/>
         </word>
         <word name='faster'>
           <ref name='htmlNodeStatus'/>
@@ -23293,6 +23322,8 @@
           <ref name='xmlXPathNodeSetItem'/>
         </word>
         <word name='functions'>
+          <ref name='XMLCALL'/>
+          <ref name='XMLCDECL'/>
           <ref name='htmlCtxtReadIO'/>
           <ref name='htmlReadIO'/>
           <ref name='xmlC14NDocDumpMemory'/>
@@ -23787,9 +23818,6 @@
           <ref name='htmlAutoCloseTag'/>
           <ref name='htmlIsAutoClosed'/>
         </word>
-        <word name='htmlStartCloseIndex'>
-          <ref name='htmlInitAutoClose'/>
-        </word>
         <word name='http:'>
           <ref name='XINCLUDE_NS'/>
           <ref name='XINCLUDE_OLD_NS'/>
@@ -23952,17 +23980,6 @@
           <ref name='xmlSAXParseMemoryWithData'/>
           <ref name='xmlSAXUserParseMemory'/>
         </word>
-        <word name='incase'>
-          <ref name='xmlNanoFTPClose'/>
-          <ref name='xmlNanoFTPCloseConnection'/>
-          <ref name='xmlNanoFTPCwd'/>
-          <ref name='xmlNanoFTPDele'/>
-          <ref name='xmlNanoFTPGet'/>
-          <ref name='xmlNanoFTPGetConnection'/>
-          <ref name='xmlNanoFTPList'/>
-          <ref name='xmlNanoHTTPFetch'/>
-          <ref name='xmlNanoHTTPSave'/>
-        </word>
         <word name='incl'>
           <ref name='_xmlSchemaType'/>
         </word>
@@ -23993,6 +24010,7 @@
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
           <ref name='xmlPopInputCallbacks'/>
+          <ref name='xmlPopOutputCallbacks'/>
           <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessFlagsData'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
@@ -24168,63 +24186,6 @@
           <ref name='xmlParserFindNodeInfo'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
           <ref name='xmlReallocLoc'/>
-        </word>
-        <word name='information'>
-          <ref name='LIBXML_VERSION_EXTRA'/>
-          <ref name='_xmlError'/>
-          <ref name='xmlDebugDumpAttr'/>
-          <ref name='xmlDebugDumpAttrList'/>
-          <ref name='xmlDebugDumpDTD'/>
-          <ref name='xmlDebugDumpDocument'/>
-          <ref name='xmlDebugDumpDocumentHead'/>
-          <ref name='xmlDebugDumpEntities'/>
-          <ref name='xmlDebugDumpNode'/>
-          <ref name='xmlDebugDumpNodeList'/>
-          <ref name='xmlDebugDumpOneNode'/>
-          <ref name='xmlNanoFTPUpdateURL'/>
-          <ref name='xmlNanoHTTPFetch'/>
-          <ref name='xmlNanoHTTPMethod'/>
-          <ref name='xmlNanoHTTPMethodRedir'/>
-          <ref name='xmlNanoHTTPOpen'/>
-          <ref name='xmlNanoHTTPOpenRedir'/>
-          <ref name='xmlNewTextReader'/>
-          <ref name='xmlRelaxNGGetParserErrors'/>
-          <ref name='xmlSchemaGetParserErrors'/>
-          <ref name='xmlSchemaValidateSetFilename'/>
-          <ref name='xmlSchemaValidateSetLocator'/>
-          <ref name='xmlSchemaValidateStream'/>
-          <ref name='xmlSchemaValidityLocatorFunc'/>
-          <ref name='xmlTextReaderByteConsumed'/>
-          <ref name='xmlXPathOrderDocElems'/>
-        </word>
-        <word name='informations'>
-          <ref name='_xmlAttr'/>
-          <ref name='_xmlDoc'/>
-          <ref name='_xmlNode'/>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='endElementNsSAX2Func'/>
-          <ref name='startElementNsSAX2Func'/>
-          <ref name='xmlDebugDumpString'/>
-          <ref name='xmlErrMemory'/>
-          <ref name='xmlNanoFTPCleanup'/>
-          <ref name='xmlNanoFTPInit'/>
-          <ref name='xmlNanoFTPProxy'/>
-          <ref name='xmlNanoFTPScanProxy'/>
-          <ref name='xmlNanoHTTPInit'/>
-          <ref name='xmlNanoHTTPScanProxy'/>
-          <ref name='xmlParserPrintFileInfo'/>
-          <ref name='xmlRegExecErrInfo'/>
-          <ref name='xmlRegExecNextValues'/>
-          <ref name='xmlRelaxNGGetValidErrors'/>
-          <ref name='xmlRelaxNGSetValidErrors'/>
-          <ref name='xmlRelaxParserSetFlag'/>
-          <ref name='xmlSAX2EndElementNs'/>
-          <ref name='xmlSAX2StartElementNs'/>
-          <ref name='xmlSchemaGetValidErrors'/>
-          <ref name='xmlSchemaSetValidErrors'/>
-          <ref name='xmlSchemaValidityLocatorFunc'/>
-          <ref name='xmlShellDir'/>
-          <ref name='xmlXIncludeProcessNode'/>
         </word>
         <word name='informative'>
           <ref name='_xmlError'/>
@@ -25555,7 +25516,6 @@
           <ref name='xmlXPathMultValues'/>
         </word>
         <word name='multithreaded'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlInitParser'/>
@@ -25596,7 +25556,6 @@
           <ref name='_xmlDoc'/>
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlSchema'/>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlHashAddEntry'/>
           <ref name='xmlHashScan3'/>
@@ -25757,6 +25716,9 @@
         <word name='nillable'>
           <ref name='XML_SCHEMAS_ELEM_NILLABLE'/>
           <ref name='xmlExpIsNillable'/>
+        </word>
+        <word name='no-op'>
+          <ref name='htmlInitAutoClose'/>
         </word>
         <word name='nod'>
           <ref name='xmlEntityReferenceFunc'/>
@@ -25937,6 +25899,7 @@
           <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlSchema'/>
           <ref name='_xmlSchemaElement'/>
+          <ref name='htmlInitAutoClose'/>
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlScanName'/>
@@ -26132,7 +26095,6 @@
           <ref name='xmlXPathStringLengthFunction'/>
         </word>
         <word name='once'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlAutomataNewOnceTrans'/>
           <ref name='xmlAutomataNewOnceTrans2'/>
           <ref name='xmlCleanupThreads'/>
@@ -26646,6 +26608,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
         </word>
@@ -27023,7 +26986,6 @@
           <ref name='xmlValidNormalizeAttributeValue'/>
         </word>
         <word name='processed'>
-          <ref name='_xmlParserCtxt'/>
           <ref name='startDocument'/>
           <ref name='startDocumentSAXFunc'/>
           <ref name='startElement'/>
@@ -27061,6 +27023,8 @@
           <ref name='xmlStringLenGetNodeList'/>
         </word>
         <word name='produced'>
+          <ref name='UTF8Toisolat1'/>
+          <ref name='isolat1ToUTF8'/>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlCurrentChar'/>
         </word>
@@ -27077,7 +27041,6 @@
           <ref name='xmlXPtrNewContext'/>
         </word>
         <word name='programs'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlInitParser'/>
         </word>
         <word name='progressed'>
@@ -27561,7 +27524,6 @@
           <ref name='xmlNanoHTTPRedir'/>
         </word>
         <word name='reentrant'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlEncodeEntitiesReentrant'/>
           <ref name='xmlEncodeSpecialChars'/>
           <ref name='xmlFreeRMutex'/>
@@ -27629,6 +27591,7 @@
           <ref name='xmlGetCharEncodingHandler'/>
           <ref name='xmlGetLastError'/>
           <ref name='xmlPopInputCallbacks'/>
+          <ref name='xmlPopOutputCallbacks'/>
           <ref name='xmlRegisterInputCallbacks'/>
           <ref name='xmlRegisterOutputCallbacks'/>
           <ref name='xmlResetLastError'/>
@@ -28223,7 +28186,6 @@
           <ref name='xmlGcMemGet'/>
           <ref name='xmlMemGet'/>
           <ref name='xmlNanoHTTPFetch'/>
-          <ref name='xmlSaveTree'/>
           <ref name='xmlShell'/>
           <ref name='xmlShellSave'/>
         </word>
@@ -28430,6 +28392,7 @@
           <ref name='xmlParseAttValue'/>
           <ref name='xmlParseBalancedChunkMemory'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
+          <ref name='xmlParseContent'/>
           <ref name='xmlParseInNodeContext'/>
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
@@ -28890,6 +28853,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNodeAddContent'/>
           <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlNodeSetContent'/>
@@ -29513,6 +29477,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNodeAddContent'/>
           <ref name='xmlNodeAddContentLen'/>
           <ref name='xmlNodeSetContent'/>
@@ -29539,6 +29504,7 @@
           <ref name='xmlPushInput'/>
         </word>
         <word name='symbol'>
+          <ref name='XMLPUBLIC'/>
           <ref name='xmlModuleSymbol'/>
         </word>
         <word name='synchronizing'>
@@ -29579,7 +29545,6 @@
           <ref name='htmlAutoCloseTag'/>
           <ref name='htmlGetMetaEncoding'/>
           <ref name='htmlHandleOmittedElem'/>
-          <ref name='htmlInitAutoClose'/>
           <ref name='htmlIsAutoClosed'/>
           <ref name='htmlSetMetaEncoding'/>
         </word>
@@ -29851,9 +29816,9 @@
           <ref name='xmlNamespaceParseNSDef'/>
           <ref name='xmlNamespaceParseQName'/>
           <ref name='xmlPopInputCallbacks'/>
+          <ref name='xmlPopOutputCallbacks'/>
           <ref name='xmlPushInput'/>
           <ref name='xmlReconciliateNs'/>
-          <ref name='xmlSaveTree'/>
           <ref name='xmlSetTreeDoc'/>
         </word>
         <word name='total'>
@@ -31145,6 +31110,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
         </word>
@@ -31252,7 +31218,6 @@
           <ref name='xmlSaveFormatFileEnc'/>
         </word>
         <word name='xmlInitParser'>
-          <ref name='htmlInitAutoClose'/>
           <ref name='xmlCleanupParser'/>
         </word>
         <word name='xmlInitThreads'>
@@ -31379,6 +31344,9 @@
         </word>
         <word name='xmlNewNode'>
           <ref name='xmlNewNodeEatName'/>
+        </word>
+        <word name='xmlNewProp'>
+          <ref name='xmlNewDocProp'/>
         </word>
         <word name='xmlNewTextChild'>
           <ref name='xmlNewChild'/>
@@ -31949,6 +31917,7 @@
           <ref name='xmlDOMWrapCloneNode'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+          <ref name='xmlNewDocProp'/>
           <ref name='xmlNewTextChild'/>
           <ref name='xmlSchemaGetBuiltInType'/>
           <ref name='xmlSearchNs'/>

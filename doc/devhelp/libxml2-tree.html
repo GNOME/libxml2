@@ -326,7 +326,7 @@ void	<a href="#xmlFreeNsList">xmlFreeNsList</a>			(<a href="libxml2-tree.html#xm
     struct _xmlDoc *	doc	: the containing document
     <a href="libxml2-tree.html#xmlNs">xmlNs</a> *	ns	: pointer to the associated namespace
     <a href="libxml2-tree.html#xmlAttributeType">xmlAttributeType</a>	atype	: the <a href="libxml2-SAX.html#attribute">attribute</a> type if validating
-    void *	psvi	: for type/PSVI informations
+    void *	psvi	: for type/PSVI information
 } xmlAttr;
 </pre><p/>
 </div>
@@ -454,7 +454,7 @@ The content of this structure is not made public by the API.
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	URL	: The URI for that document
     int	charset	: Internal flag for charset handling, actually an <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>
     struct _xmlDict *	dict	: dict used to allocate names or NULL
-    void *	psvi	: for type/PSVI informations
+    void *	psvi	: for type/PSVI information
     int	parseFlags	: set of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a> used to parse the document
     int	properties	: set of <a href="libxml2-tree.html#xmlDocProperties">xmlDocProperties</a> for this document set at the end of parsing
 } xmlDoc;
@@ -665,7 +665,7 @@ The content of this structure is not made public by the API.
     <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	content	: the content
     struct _xmlAttr *	properties	: properties list
     <a href="libxml2-tree.html#xmlNs">xmlNs</a> *	nsDef	: namespace definitions on this node
-    void *	psvi	: for type/PSVI informations
+    void *	psvi	: for type/PSVI information
     unsigned short	line	: line number
     unsigned short	extra	: extra data for XPath/XSLT
 } xmlNode;
@@ -758,7 +758,7 @@ The content of this structure is not made public by the API.
     int	nameNr	: Depth of the parsing stack
     int	nameMax	: Max depth of the parsing stack
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * *	nameTab	: array of nodes
-    long	nbChars	: number of <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> processed
+    long	nbChars	: unused
     long	checkIndex	: used by progressive parsing lookup
     int	keepBlanks	: ugly but ...
     int	disableSAX	: SAX callbacks are disabled
@@ -794,7 +794,7 @@ The content of this structure is not made public by the API.
     int	nsMax	: the size of the arrays
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * *	nsTab	: the array of prefix/namespace name
     int *	attallocs	: which <a href="libxml2-SAX.html#attribute">attribute</a> were allocated
-    void * *	pushTab	: array of data for push
+    <a href="libxml2-parser.html#xmlStartTag">xmlStartTag</a> *	pushTab	: array of data for push
     <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	attsDefault	: defaulted attributes if any
     <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	attsSpecial	: non-CDATA attributes if any
     int	nsWellFormed	: is the document XML Namespace okay
@@ -803,7 +803,7 @@ The content of this structure is not made public by the API.
     int	freeElemsNr	: number of freed element nodes
     <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	freeElems	: List of freed element nodes
     int	freeAttrsNr	: number of freed attributes nodes
-    <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	freeAttrs	: * the complete error informations for the last error. *
+    <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	freeAttrs	: * the complete error information for the last error. *
     <a href="libxml2-xmlerror.html#xmlError">xmlError</a>	lastError
     <a href="libxml2-parser.html#xmlParserMode">xmlParserMode</a>	parseMode	: the parser mode
     unsigned long	nbentities	: number of entities references
@@ -1317,7 +1317,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the target document</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the processing instruction name</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the PI content</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the new node object.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNewDocProp"/>xmlNewDocProp ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlNewDocProp		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br/>
-</pre><p>Create a new property carried by a document.</p>
+</pre><p>Create a new property carried by a document. NOTE: @value is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewProp() if you don't need entities support.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the name of the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNewDocRawNode"/>xmlNewDocRawNode ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocRawNode	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br/>

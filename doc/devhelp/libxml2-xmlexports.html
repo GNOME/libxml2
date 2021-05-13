@@ -40,14 +40,15 @@
     </h2>
     <p>xmlexports - macros for marking symbols as exportable/importable.</p>
     <p>macros for marking symbols as exportable/importable. </p>
-    <p>Author(s): Igor Zlatovic &lt;igor@zlatkovic.com&gt; </p>
+    <p>Author(s): </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">#define <a href="#XMLCALL">XMLCALL</a>;
+      <pre class="synopsis">#define <a href="#XMLCDECL">XMLCDECL</a>;
+#define <a href="#XMLPUBLIC">XMLPUBLIC</a>;
 #define <a href="#XMLPUBVAR">XMLPUBVAR</a>;
-#define <a href="#XMLCDECL">XMLCDECL</a>;
-#define <a href="#XMLPUBFUN">XMLPUBFUN</a>;
 #define <a href="#LIBXML_DLL_IMPORT">LIBXML_DLL_IMPORT</a>;
+#define <a href="#XMLCALL">XMLCALL</a>;
+#define <a href="#XMLPUBFUN">XMLPUBFUN</a>;
 </pre>
     </div>
     <div class="refsect1" lang="en">
@@ -61,19 +62,23 @@
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="XMLCALL">Macro </a>XMLCALL</h3><pre class="programlisting">#define <a href="#XMLCALL">XMLCALL</a>;
-</pre><p/>
+</pre><p>Macro which declares the calling convention for exported functions</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="XMLCDECL">Macro </a>XMLCDECL</h3><pre class="programlisting">#define <a href="#XMLCDECL">XMLCDECL</a>;
-</pre><p/>
+</pre><p>Macro which declares the calling convention for exported functions that use '...'.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="XMLPUBFUN">Macro </a>XMLPUBFUN</h3><pre class="programlisting">#define <a href="#XMLPUBFUN">XMLPUBFUN</a>;
-</pre><p/>
+</pre><p>Macro which declares an exportable function</p>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="XMLPUBLIC">Macro </a>XMLPUBLIC</h3><pre class="programlisting">#define <a href="#XMLPUBLIC">XMLPUBLIC</a>;
+</pre><p>Macro which declares a public symbol</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="XMLPUBVAR">Macro </a>XMLPUBVAR</h3><pre class="programlisting">#define <a href="#XMLPUBVAR">XMLPUBVAR</a>;
-</pre><p/>
+</pre><p>Macro which declares an exportable variable</p>
 </div>
         <hr/>
       </div>

@@ -98,16 +98,16 @@ void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the code number, or 0</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPCleanup"/>xmlNanoFTPCleanup ()</h3><pre class="programlisting">void	xmlNanoFTPCleanup		(void)<br/>
-</pre><p>Cleanup the FTP protocol layer. This cleanup proxy informations.</p>
+</pre><p>Cleanup the FTP protocol layer. This cleanup proxy information.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPClose"/>xmlNanoFTPClose ()</h3><pre class="programlisting">int	xmlNanoFTPClose			(void * ctx)<br/>
 </pre><p>Close the connection and both control and transport</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 0 otherwise</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPCloseConnection"/>xmlNanoFTPCloseConnection ()</h3><pre class="programlisting">int	xmlNanoFTPCloseConnection	(void * ctx)<br/>
 </pre><p>Close the data connection from the server</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 0 otherwise</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPConnect"/>xmlNanoFTPConnect ()</h3><pre class="programlisting">int	xmlNanoFTPConnect		(void * ctx)<br/>
 </pre><p>Tries to open a control connection</p>
@@ -119,11 +119,11 @@ void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPCwd"/>xmlNanoFTPCwd ()</h3><pre class="programlisting">int	xmlNanoFTPCwd			(void * ctx, <br/>					 const char * directory)<br/>
 </pre><p>Tries to change the remote directory</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>directory</tt></i>:</span></td><td>a directory on the server</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 1 if CWD worked, 0 if it failed</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>directory</tt></i>:</span></td><td>a directory on the server</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 1 if CWD worked, 0 if it failed</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPDele"/>xmlNanoFTPDele ()</h3><pre class="programlisting">int	xmlNanoFTPDele			(void * ctx, <br/>					 const char * file)<br/>
 </pre><p>Tries to delete an item (file or directory) from server</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>file</tt></i>:</span></td><td>a file or directory on the server</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 1 if DELE worked, 0 if it failed</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>file</tt></i>:</span></td><td>a file or directory on the server</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 1 if DELE worked, 0 if it failed</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPFreeCtxt"/>xmlNanoFTPFreeCtxt ()</h3><pre class="programlisting">void	xmlNanoFTPFreeCtxt		(void * ctx)<br/>
 </pre><p>Frees the context after closing the connection.</p>
@@ -131,11 +131,11 @@ void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPGet"/>xmlNanoFTPGet ()</h3><pre class="programlisting">int	xmlNanoFTPGet			(void * ctx, <br/>					 <a href="libxml2-nanoftp.html#ftpDataCallback">ftpDataCallback</a> callback, <br/>					 void * userData, <br/>					 const char * filename)<br/>
 </pre><p>Fetch the given file from the server. All data are passed back in the callbacks. The last callback has a size of 0 block.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>callback</tt></i>:</span></td><td>the user callback</td></tr><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>the user callback data</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the file to retrieve</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 0 otherwise</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>callback</tt></i>:</span></td><td>the user callback</td></tr><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>the user callback data</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the file to retrieve</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPGetConnection"/>xmlNanoFTPGetConnection ()</h3><pre class="programlisting"><a href="libxml2-nanoftp.html#SOCKET">SOCKET</a>	xmlNanoFTPGetConnection		(void * ctx)<br/>
 </pre><p>Try to open a data connection to the server. Currently only passive mode is supported.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 0 otherwise</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPGetResponse"/>xmlNanoFTPGetResponse ()</h3><pre class="programlisting">int	xmlNanoFTPGetResponse		(void * ctx)<br/>
 </pre><p>Get the response from the FTP server after a command.</p>
@@ -146,12 +146,12 @@ void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>the file to retrieve (or NULL if path is in context).</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the socket for the data connection, or &lt;0 in case of error</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPInit"/>xmlNanoFTPInit ()</h3><pre class="programlisting">void	xmlNanoFTPInit			(void)<br/>
-</pre><p>Initialize the FTP protocol layer. Currently it just checks for proxy informations, and get the hostname</p>
+</pre><p>Initialize the FTP protocol layer. Currently it just checks for proxy information, and get the hostname</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPList"/>xmlNanoFTPList ()</h3><pre class="programlisting">int	xmlNanoFTPList			(void * ctx, <br/>					 <a href="libxml2-nanoftp.html#ftpListCallback">ftpListCallback</a> callback, <br/>					 void * userData, <br/>					 const char * filename)<br/>
 </pre><p>Do a listing on the server. All files info are passed back in the callbacks.</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>callback</tt></i>:</span></td><td>the user callback</td></tr><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>the user callback data</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>optional files to list</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 incase of error, 0 otherwise</td></tr></tbody></table></div></div>
+<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an FTP context</td></tr><tr><td><span class="term"><i><tt>callback</tt></i>:</span></td><td>the user callback</td></tr><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>the user callback data</td></tr><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>optional files to list</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 in case of error, 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPNewCtxt"/>xmlNanoFTPNewCtxt ()</h3><pre class="programlisting">void *	xmlNanoFTPNewCtxt		(const char * URL)<br/>
 </pre><p>Allocate and initialize a new FTP context.</p>
@@ -162,7 +162,7 @@ void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>the URL to the resource</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>an FTP context, or NULL</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPProxy"/>xmlNanoFTPProxy ()</h3><pre class="programlisting">void	xmlNanoFTPProxy			(const char * host, <br/>					 int port, <br/>					 const char * user, <br/>					 const char * passwd, <br/>					 int type)<br/>
-</pre><p>Setup the FTP proxy informations. This can also be done by using ftp_proxy ftp_proxy_user and ftp_proxy_password environment variables.</p>
+</pre><p>Setup the FTP proxy information. This can also be done by using ftp_proxy ftp_proxy_user and ftp_proxy_password environment variables.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>host</tt></i>:</span></td><td>the proxy host name</td></tr><tr><td><span class="term"><i><tt>port</tt></i>:</span></td><td>the proxy port</td></tr><tr><td><span class="term"><i><tt>user</tt></i>:</span></td><td>the proxy user name</td></tr><tr><td><span class="term"><i><tt>passwd</tt></i>:</span></td><td>the proxy password</td></tr><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td>the type of proxy 1 for using SITE, 2 for USER a@b</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPQuit"/>xmlNanoFTPQuit ()</h3><pre class="programlisting">int	xmlNanoFTPQuit			(void * ctx)<br/>
@@ -174,7 +174,7 @@ void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the FTP context</td></tr><tr><td><span class="term"><i><tt>dest</tt></i>:</span></td><td>a buffer</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>the buffer length</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of byte read. 0 is an indication of an end of connection. -1 indicates a parameter error.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPScanProxy"/>xmlNanoFTPScanProxy ()</h3><pre class="programlisting">void	xmlNanoFTPScanProxy		(const char * URL)<br/>
-</pre><p>(Re)Initialize the FTP Proxy context by parsing the URL and finding the protocol host port it indicates. Should be like ftp://myproxy/ or ftp://myproxy:3128/ A NULL URL cleans up proxy informations.</p>
+</pre><p>(Re)Initialize the FTP Proxy context by parsing the URL and finding the protocol host port it indicates. Should be like ftp://myproxy/ or ftp://myproxy:3128/ A NULL URL cleans up proxy information.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>The proxy URL used to initialize the proxy context</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNanoFTPUpdateURL"/>xmlNanoFTPUpdateURL ()</h3><pre class="programlisting">int	xmlNanoFTPUpdateURL		(void * ctx, <br/>					 const char * URL)<br/>

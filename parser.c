@@ -140,6 +140,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
                      xmlEntityPtr ent, size_t replacement)
 {
     size_t consumed = 0;
+    int i;
 
     if ((ctxt == NULL) || (ctxt->options & XML_PARSE_HUGE))
         return (0);
@@ -177,6 +178,28 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
 	    rep = NULL;
 	}
     }
+
+    /*
+     * Prevent entity exponential check, not just replacement while
+     * parsing the DTD
+     * The check is potentially costly so do that only once in a thousand
+     */
+    if ((ctxt->instate == XML_PARSER_DTD) && (ctxt->nbentities > 10000) &&
+        (ctxt->nbentities % 1024 == 0)) {
+	for (i = 0;i < ctxt->inputNr;i++) {
+	    consumed += ctxt->inputTab[i]->consumed +
+	               (ctxt->inputTab[i]->cur - ctxt->inputTab[i]->base);
+	}
+	if (ctxt->nbentities > consumed * XML_PARSER_NON_LINEAR) {
+	    xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+	    ctxt->instate = XML_PARSER_EOF;
+	    return (1);
+	}
+	consumed = 0;
+    }
+
+
+
     if (replacement != 0) {
 	if (replacement < XML_MAX_TEXT_LENGTH)
 	    return(0);
@@ -7962,6 +7985,9 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 	} else {
             xmlChar start[4];
             xmlCharEncoding enc;
+
+	    if (xmlParserEntityCheck(ctxt, 0, entity, 0))
+	        return;
 
 	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
 	        ((ctxt->options & XML_PARSE_NOENT) == 0) &&

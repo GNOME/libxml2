@@ -26,15 +26,13 @@ A:link, A:visited, A:active { text-decoration: underline }
   </li>
 </ol><h3><a name="Installati" id="Installati">Installation</a></h3><ol>
   <li><strong><span style="background-color: #FF0000">Do Not Use
-    libxml1</span></strong>, use libxml2</li>
-  <p></p>
+    libxml1</span></strong>, use libxml2<p></p></li>
   <li><em>Where can I get libxml</em> ?
     <p>The original distribution comes from <a href="ftp://xmlsoft.org/libxml2/">xmlsoft.org</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">gnome.org</a></p>
     <p>Most Linux and BSD distributions include libxml, this is probably the
     safer way for end-users to use libxml.</p>
     <p>David Doolin provides precompiled Windows versions at <a href="http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/         ">http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/</a></p>
   </li>
-  <p></p>
   <li><em>I see libxml and libxml2 releases, which one should I install ?</em>
     <ul>
       <li>If you are not constrained by backward compatibility issues with
@@ -50,6 +48,7 @@ A:link, A:visited, A:active { text-decoration: underline }
       <li>If you are developing a new application, please develop against
         libxml2(-devel)</li>
     </ul>
+    <p></p>
   </li>
   <li><em>I can't install the libxml package, it conflicts with libxml0</em>
     <p>You probably have an old libxml0 package used to provide the shared
@@ -95,8 +94,8 @@ A:link, A:visited, A:active { text-decoration: underline }
         of the official UNIX</a> specification. Here is one <a href="http://www.gnu.org/software/libiconv/">implementation of the
         library</a> which source can be found <a href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
     </ul>
+    <p></p>
   </li>
-  <p></p>
   <li><em>Make check fails on some platforms</em>
     <p>Sometimes the regression tests' results don't completely match the
     value produced by the parser, and the makefile uses diff to print the
@@ -170,9 +169,8 @@ A:link, A:visited, A:active { text-decoration: underline }
         default one, and this will <em>automatically</em> get the correct
         libraries linked with your program.</li>
     </ul>
+    <p></p>
   </li>
-
-  <p></p>
   <li><em>xmlDocDump() generates output on one line.</em>
     <p>Libxml2 will not <strong>invent</strong> spaces in the content of a
     document since <strong>all spaces in the content of a document are
@@ -188,8 +186,8 @@ A:link, A:visited, A:active { text-decoration: underline }
         ()</a> and <a href="http://xmlsoft.org/html/libxml-tree.html#xmlSaveFormatFile">xmlSaveFormatFile
         ()</a></li>
     </ol>
+    <p></p>
   </li>
-  <p></p>
   <li><em>Extra nodes in the document:</em>
     <p><em>For an XML file as below:</em></p>
     <pre>&lt;?xml version="1.0"?&gt;
@@ -259,8 +257,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
         of <a href="http://svn.gnome.org/viewvc/libxml2/trunk/xmllint.c?view=markup">xmllint.c</a> and of the various testXXX.c test programs should
         provide good examples of how to do things with the library.</li>
     </ul>
+    <p></p>
   </li>
-  <p></p>
   <li><em>What about C++ ?</em>
     <p>libxml2 is written in pure C in order to allow easy reuse on a number
     of platforms, including embedded systems. I don't intend to convert to

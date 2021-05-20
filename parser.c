@@ -14672,7 +14672,8 @@ xmlInitParser(void) {
 	return;
 
 #if defined(_WIN32) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
-	atexit(xmlCleanupParser);
+    if (xmlFree == free)
+        atexit(xmlCleanupParser);
 #endif
 
 #ifdef LIBXML_THREAD_ENABLED

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(libxml2 VERSION 2.9.10 LANGUAGES C)
+project(libxml2 VERSION 2.9.12 LANGUAGES C)
 
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)

@@ -823,6 +823,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
  *
  * Returns an I/O context or NULL in case of error
  */
+#ifdef HAVE_STDIO_FOPEN_H
 static void *
 xmlFileOpen_real (const char *filename) {
     const char *path = filename;
@@ -871,6 +872,7 @@ xmlFileOpen_real (const char *filename) {
     if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);
 }
+#endif
 
 /**
  * xmlFileOpen:
@@ -886,6 +888,7 @@ xmlFileOpen (const char *filename) {
     char *unescaped;
     void *retval;
 
+#ifdef HAVE_STDIO_FOPEN_H
     retval = xmlFileOpen_real(filename);
     if (retval == NULL) {
 	unescaped = xmlURIUnescapeString(filename, 0, NULL);
@@ -894,6 +897,9 @@ xmlFileOpen (const char *filename) {
 	    xmlFree(unescaped);
 	}
     }
+#else
+    retval = -1;
+#endif
 
     return retval;
 }
@@ -961,12 +967,16 @@ xmlFileOpenW (const char *filename) {
  */
 int
 xmlFileRead (void * context, char * buffer, int len) {
+#ifdef HAVE_STDIO_FOPEN_H
     int ret;
     if ((context == NULL) || (buffer == NULL))
         return(-1);
     ret = fread(&buffer[0], 1,  len, (FILE *) context);
     if (ret < 0) xmlIOErr(0, "fread()");
     return(ret);
+#else
+    return -1;
+#endif
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -1005,6 +1015,7 @@ xmlFileWrite (void * context, const char * buffer, int len) {
  */
 int
 xmlFileClose (void * context) {
+#ifdef HAVE_STDIO_FOPEN_H
     FILE *fil;
     int ret;
 
@@ -1023,6 +1034,9 @@ xmlFileClose (void * context) {
     if (ret < 0)
         xmlIOErr(0, "fclose()");
     return(ret);
+#else
+    return -1;
+#endif
 }
 
 /**
@@ -1031,6 +1045,7 @@ xmlFileClose (void * context) {
  *
  * Flush an I/O channel
  */
+#ifdef HAVE_STDIO_FOPEN_H
 static int
 xmlFileFlush (void * context) {
     int ret;
@@ -1042,6 +1057,7 @@ xmlFileFlush (void * context) {
         xmlIOErr(0, "fflush()");
     return(ret);
 }
+#endif
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -2807,6 +2823,7 @@ xmlOutputBufferCreateFilename(const char *URI,
  *
  * Returns the new parser input or NULL
  */
+#ifdef HAVE_STDIO_FOPEN_H
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
@@ -2825,6 +2842,7 @@ xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
 
     return(ret);
 }
+#endif
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**

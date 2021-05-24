@@ -544,6 +544,7 @@ xmlBufInflate(xmlBufPtr buf, size_t len) {
  * Dumps an XML buffer to  a FILE *.
  * Returns the number of #xmlChar written
  */
+#ifdef HAVE_STDIO_FOPEN_H
 size_t
 xmlBufDump(FILE *file, xmlBufPtr buf) {
     size_t ret;
@@ -568,6 +569,7 @@ xmlBufDump(FILE *file, xmlBufPtr buf) {
     ret = fwrite(buf->content, sizeof(xmlChar), buf->use, file);
     return(ret);
 }
+#endif
 
 /**
  * xmlBufContent:

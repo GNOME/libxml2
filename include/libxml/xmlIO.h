@@ -169,9 +169,11 @@ XMLPUBFUN xmlParserInputBufferPtr XMLCALL
 XMLPUBFUN xmlParserInputBufferPtr XMLCALL
 	xmlParserInputBufferCreateFilename	(const char *URI,
                                                  xmlCharEncoding enc);
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN xmlParserInputBufferPtr XMLCALL
 	xmlParserInputBufferCreateFile		(FILE *file,
                                                  xmlCharEncoding enc);
+#endif
 XMLPUBFUN xmlParserInputBufferPtr XMLCALL
 	xmlParserInputBufferCreateFd		(int fd,
 	                                         xmlCharEncoding enc);
@@ -229,9 +231,11 @@ XMLPUBFUN xmlOutputBufferPtr XMLCALL
 					 xmlCharEncodingHandlerPtr encoder,
 					 int compression);
 
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN xmlOutputBufferPtr XMLCALL
 	xmlOutputBufferCreateFile	(FILE *file,
 					 xmlCharEncodingHandlerPtr encoder);
+#endif
 
 XMLPUBFUN xmlOutputBufferPtr XMLCALL
 	xmlOutputBufferCreateBuffer	(xmlBufferPtr buffer,

@@ -83,9 +83,11 @@ xmlCheckVersion(int version) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Fatal: program compiled against libxml %d using libxml %d\n",
 		(version / 10000), (myversion / 10000));
+#ifdef HAVE_STDIO_FOPEN_H
 	fprintf(stderr,
 		"Fatal: program compiled against libxml %d using libxml %d\n",
 		(version / 10000), (myversion / 10000));
+#endif
     }
     if ((myversion / 100) < (version / 100)) {
 	xmlGenericError(xmlGenericErrorContext,

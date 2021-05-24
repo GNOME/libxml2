@@ -141,12 +141,14 @@ XMLPUBFUN int XMLCALL
 	xmlMemUsed	(void);
 XMLPUBFUN int XMLCALL
 	xmlMemBlocks	(void);
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN void XMLCALL
 	xmlMemDisplay	(FILE *fp);
 XMLPUBFUN void XMLCALL
 	xmlMemDisplayLast(FILE *fp, long nbBytes);
 XMLPUBFUN void XMLCALL
 	xmlMemShow	(FILE *fp, int nr);
+#endif
 XMLPUBFUN void XMLCALL
 	xmlMemoryDump	(void);
 XMLPUBFUN void * XMLCALL

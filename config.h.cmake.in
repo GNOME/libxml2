@@ -165,6 +165,9 @@
 /* Define to 1 if you have the <stdlib.h> header file. */
 #cmakedefine HAVE_STDLIB_H 1
 
+/* Define to 1 if you have the <stdio.h> header file, and it defines `fopen`. */
+#cmakedefine HAVE_STDIO_FOPEN_H 1
+
 /* Define to 1 if you have the `strftime' function. */
 #cmakedefine HAVE_STRFTIME 1
 

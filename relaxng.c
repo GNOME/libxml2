@@ -3244,9 +3244,11 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def)
         case XML_RELAXNG_LIST:
         case XML_RELAXNG_PARAM:
         case XML_RELAXNG_VALUE:
-            /* This should not happen and generate an internal error */
+#ifdef HAVE_STDIO_FOPEN_H
+	    /* This should not happen and generate an internal error */
             fprintf(stderr, "RNG internal error trying to compile %s\n",
                     xmlRelaxNGDefName(def));
+#endif
             break;
     }
     return (ret);
@@ -7969,24 +7971,32 @@ xmlRelaxNGValidateCompiledCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
                     "Compiled callback for: '%s'\n", token);
 #endif
     if (ctxt == NULL) {
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s missing context\n", token);
+#endif
         return;
     }
     if (define == NULL) {
         if (token[0] == '#')
             return;
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s missing define\n", token);
+#endif
         if ((ctxt != NULL) && (ctxt->errNo == XML_RELAXNG_OK))
             ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
         return;
     }
     if ((ctxt == NULL) || (define == NULL)) {
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s missing info\n", token);
+#endif
         if ((ctxt != NULL) && (ctxt->errNo == XML_RELAXNG_OK))
             ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
         return;
     } else if (define->type != XML_RELAXNG_ELEMENT) {
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s define is not element\n", token);
+#endif
         if (ctxt->errNo == XML_RELAXNG_OK)
             ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
         return;
@@ -8184,7 +8194,9 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec
                     "Progressive callback for: '%s'\n", token);
 #endif
     if (ctxt == NULL) {
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s missing context\n", token);
+#endif
         return;
     }
     node = ctxt->pnode;
@@ -8192,20 +8204,26 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec
     if (define == NULL) {
         if (token[0] == '#')
             return;
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s missing define\n", token);
+#endif
         if ((ctxt != NULL) && (ctxt->errNo == XML_RELAXNG_OK))
             ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
         ctxt->pstate = -1;
         return;
     }
     if ((ctxt == NULL) || (define == NULL)) {
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s missing info\n", token);
+#endif
         if ((ctxt != NULL) && (ctxt->errNo == XML_RELAXNG_OK))
             ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
         ctxt->pstate = -1;
         return;
     } else if (define->type != XML_RELAXNG_ELEMENT) {
+#ifdef HAVE_STDIO_FOPEN_H
         fprintf(stderr, "callback on %s define is not element\n", token);
+#endif
         if (ctxt->errNo == XML_RELAXNG_OK)
             ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
         ctxt->pstate = -1;

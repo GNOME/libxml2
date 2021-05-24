@@ -67,9 +67,11 @@ XMLPUBFUN int XMLCALL
 					 const char *str);
 XMLPUBFUN xmlChar * XMLCALL
 		xmlSaveUri		(xmlURIPtr uri);
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN void XMLCALL
 		xmlPrintURI		(FILE *stream,
 					 xmlURIPtr uri);
+#endif
 XMLPUBFUN xmlChar * XMLCALL
 		xmlURIEscapeStr         (const xmlChar *str,
 					 const xmlChar *list);

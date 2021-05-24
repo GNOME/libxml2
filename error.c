@@ -71,11 +71,15 @@ void XMLCDECL
 xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
     va_list args;
 
+#ifdef HAVE_STDIO_FOPEN_H
     if (xmlGenericErrorContext == NULL)
 	xmlGenericErrorContext = (void *) stderr;
+#endif
 
     va_start(args, msg);
+#ifdef HAVE_STDIO_FOPEN_H
     vfprintf((FILE *)xmlGenericErrorContext, msg, args);
+#endif
     va_end(args);
 }
 
@@ -631,9 +635,11 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	(channel == xmlParserValidityError) ||
 	(channel == xmlParserValidityWarning))
 	xmlReportError(to, ctxt, str, NULL, NULL);
+#ifdef HAVE_STDIO_FOPEN_H
     else if (((void(*)(void)) channel == (void(*)(void)) fprintf) ||
              (channel == xmlGenericErrorDefaultFunc))
 	xmlReportError(to, ctxt, str, channel, data);
+#endif
     else
 	channel(data, "%s", str);
 }

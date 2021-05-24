@@ -7362,6 +7362,7 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
  * Dumps an XML buffer to  a FILE *.
  * Returns the number of #xmlChar written
  */
+#ifdef HAVE_STDIO_FOPEN_H
 int
 xmlBufferDump(FILE *file, xmlBufferPtr buf) {
     int ret;
@@ -7385,6 +7386,7 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
     ret = fwrite(buf->content, sizeof(xmlChar), buf->use, file);
     return(ret);
 }
+#endif
 
 /**
  * xmlBufferContent:

@@ -972,6 +972,7 @@ xmlRegFreeParserCtxt(xmlRegParserCtxtPtr ctxt) {
  *									*
  ************************************************************************/
 
+#ifdef HAVE_STDIO_FOPEN_H
 static void
 xmlRegPrintAtomType(FILE *output, xmlRegAtomType type) {
     switch (type) {
@@ -1196,6 +1197,7 @@ xmlRegPrintState(FILE *output, xmlRegStatePtr state) {
 	xmlRegPrintTrans(output, &(state->trans[i]));
     }
 }
+#endif
 
 #ifdef DEBUG_REGEXP_GRAPH
 static void
@@ -3233,7 +3235,9 @@ xmlFARegExecRollBack(xmlRegExecCtxtPtr exec) {
     exec->transno = exec->rollbacks[exec->nbRollbacks].nextbranch;
     if (exec->comp->nbCounters > 0) {
 	if (exec->rollbacks[exec->nbRollbacks].counts == NULL) {
+#ifdef HAVE_STDIO_FOPEN_H
 	    fprintf(stderr, "exec save: allocation failed");
+#endif
 	    exec->status = -6;
 	    return;
 	}
@@ -3345,7 +3349,9 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		if ((ret) && (counter->min != counter->max))
 		    deter = 0;
 	    } else if (atom == NULL) {
+#ifdef HAVE_STDIO_FOPEN_H
 		fprintf(stderr, "epsilon transition left at runtime\n");
+#endif
 		exec->status = -2;
 		break;
 	    } else if (exec->inputString[exec->index] != 0) {
@@ -3984,7 +3990,9 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 #endif
 		ret = ((count >= counter->min) && (count <= counter->max));
 	    } else if (atom == NULL) {
+#ifdef HAVE_STDIO_FOPEN_H
 		fprintf(stderr, "epsilon transition left at runtime\n");
+#endif
 		exec->status = -2;
 		break;
 	    } else if (value != NULL) {
@@ -5504,6 +5512,7 @@ xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top) {
  *
  * Print the content of the compiled regular expression
  */
+#ifdef HAVE_STDIO_FOPEN_H
 void
 xmlRegexpPrint(FILE *output, xmlRegexpPtr regexp) {
     int i;
@@ -5533,6 +5542,7 @@ xmlRegexpPrint(FILE *output, xmlRegexpPtr regexp) {
 		                                regexp->counters[i].max);
     }
 }
+#endif
 
 /**
  * xmlRegexpCompile:

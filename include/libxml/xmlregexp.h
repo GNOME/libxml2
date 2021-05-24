@@ -54,9 +54,11 @@ XMLPUBFUN void XMLCALL			 xmlRegFreeRegexp(xmlRegexpPtr regexp);
 XMLPUBFUN int XMLCALL
 		    xmlRegexpExec	(xmlRegexpPtr comp,
 					 const xmlChar *value);
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN void XMLCALL
 		    xmlRegexpPrint	(FILE *output,
 					 xmlRegexpPtr regexp);
+#endif
 XMLPUBFUN int XMLCALL
 		    xmlRegexpIsDeterminist(xmlRegexpPtr comp);
 

@@ -55,7 +55,9 @@ int xmlBufErase(xmlBufPtr buf, size_t len);
 
 xmlChar * xmlBufDetach(xmlBufPtr buf);
 
+#ifdef HAVE_STDIO_FOPEN_H
 size_t xmlBufDump(FILE *file, xmlBufPtr buf);
+#endif
 
 xmlBufPtr xmlBufFromBuffer(xmlBufferPtr buffer);
 xmlBufferPtr xmlBufBackToBuffer(xmlBufPtr buf);

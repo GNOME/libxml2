@@ -680,7 +680,7 @@ xmlMemContentShow(FILE *fp, MEMHDR *p)
  * the last nbBytes of memory allocated and not freed, useful for dumping
  * the memory left allocated between two places at runtime.
  */
-
+#ifdef HAVE_STDIO_FOPEN_H
 void
 xmlMemDisplayLast(FILE *fp, long nbBytes)
 {
@@ -823,6 +823,7 @@ xmlMemDisplay(FILE *fp)
     if (old_fp == NULL)
 	fclose(fp);
 }
+#endif
 
 #ifdef MEM_LIST
 
@@ -882,6 +883,7 @@ static FILE *xmlMemoryDumpFile = NULL;
  * the @nr last allocated areas which were not freed
  */
 
+#ifdef HAVE_STDIO_FOPEN_H
 void
 xmlMemShow(FILE *fp, int nr ATTRIBUTE_UNUSED)
 {
@@ -920,6 +922,7 @@ xmlMemShow(FILE *fp, int nr ATTRIBUTE_UNUSED)
     xmlMutexUnlock(xmlMemMutex);
 #endif /* MEM_LIST */
 }
+#endif
 
 /**
  * xmlMemoryDump:

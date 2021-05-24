@@ -1336,6 +1336,7 @@ mem_error:
  *
  * Prints the URI in the stream @stream.
  */
+#ifdef HAVE_STDIO_FOPEN_H
 void
 xmlPrintURI(FILE *stream, xmlURIPtr uri) {
     xmlChar *out;
@@ -1346,6 +1347,7 @@ xmlPrintURI(FILE *stream, xmlURIPtr uri) {
 	xmlFree(out);
     }
 }
+#endif
 
 /**
  * xmlCleanURI:

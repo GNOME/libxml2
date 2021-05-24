@@ -710,9 +710,11 @@ XMLPUBFUN int XMLCALL
 					 unsigned int size);
 XMLPUBFUN void XMLCALL
 		xmlBufferFree		(xmlBufferPtr buf);
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN int XMLCALL
 		xmlBufferDump		(FILE *file,
 					 xmlBufferPtr buf);
+#endif
 XMLPUBFUN int XMLCALL
 		xmlBufferAdd		(xmlBufferPtr buf,
 					 const xmlChar *str,
@@ -1171,6 +1173,7 @@ XMLPUBFUN void XMLCALL
 					 int * doc_txt_len,
 					 const char *txt_encoding,
 					 int format);
+#ifdef HAVE_STDIO_FOPEN_H
 XMLPUBFUN int XMLCALL
 		xmlDocFormatDump	(FILE *f,
 					 xmlDocPtr cur,
@@ -1182,6 +1185,7 @@ XMLPUBFUN void XMLCALL
 		xmlElemDump		(FILE *f,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
+#endif
 XMLPUBFUN int XMLCALL
 		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);

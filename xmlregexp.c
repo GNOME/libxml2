@@ -4969,7 +4969,10 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 	(cur == '|') || (cur == '.') || (cur == '?') || (cur == '*') ||
 	(cur == '+') || (cur == '(') || (cur == ')') || (cur == '{') ||
 	(cur == '}') || (cur == 0x2D) || (cur == 0x5B) || (cur == 0x5D) ||
-	(cur == 0x5E)) {
+	(cur == 0x5E) || (cur == '!') || (cur == '"') || (cur == '#') ||
+	(cur == '$') || (cur == '%') || (cur == ',') || (cur == '/') ||
+	(cur == ':') || (cur == ';') || (cur == '=') || (cur == '>') ||
+	(cur == '@') || (cur == '`') || (cur == '~') || (cur == 'u')) {
 	if (ctxt->atom == NULL) {
 	    ctxt->atom = xmlRegNewAtom(ctxt, XML_REGEXP_CHARVAL);
 	    if (ctxt->atom != NULL) {
@@ -4983,6 +4986,22 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 		    case 't':
 		        ctxt->atom->codepoint = '\t';
 			break;
+		    case 'u':
+		    {
+			char hex_buffer[5];
+			int loop;
+			for (loop = 0; loop < 4; loop++) {
+			    NEXT;
+			    if (!('0' <= CUR && CUR <= '9') && !('a' <= CUR && CUR <= 'f') && !('A' <= CUR && CUR <= 'F')) {
+				ERROR("Expecting hex digit");
+				return;
+			    }
+			    hex_buffer[loop] = CUR;
+			}
+			hex_buffer[4] = 0;
+			sscanf(hex_buffer, "%x", &ctxt->atom->codepoint);
+			break;
+		    }
 		    default:
 			ctxt->atom->codepoint = cur;
 		}

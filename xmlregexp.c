@@ -4999,7 +4999,7 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 			    hex_buffer[loop] = CUR;
 			}
 			hex_buffer[4] = 0;
-			sscanf(hex_buffer, "%x", &ctxt->atom->codepoint);
+			ctxt->atom->codepoint = (int)strtoul(hex_buffer, NULL, 16);
 			break;
 		    }
 		    default:

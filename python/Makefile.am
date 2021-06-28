@@ -25,7 +25,8 @@ python_LTLIBRARIES = libxml2mod.la
 
 libxml2mod_la_SOURCES = libxml.c libxml_wrap.h libxml2-py.h libxml2-py.c types.c
 libxml2mod_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) -module -avoid-version \
-        $(top_builddir)/libxml2.la $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) $(PYTHON_LIBS)
+        $(top_builddir)/libxml2.la
+libxml2mod_la_LIBADD = $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) $(PYTHON_LIBS)
 
 BUILT_SOURCES = libxml2-export.c libxml2-py.h libxml2-py.c
 

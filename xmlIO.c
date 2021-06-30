@@ -860,7 +860,7 @@ xmlFileOpen_real (const char *filename) {
     /* Do not check DDNAME on zOS ! */
 #if !defined(__MVS__)
     if (!xmlCheckFilename(path)){
-        xmlIOErr(0, path);
+    	xmlIOErr(0, path);
         return(NULL);
     }
 #endif

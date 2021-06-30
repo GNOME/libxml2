@@ -859,10 +859,10 @@ xmlFileOpen_real (const char *filename) {
 
     /* Do not check DDNAME on zOS ! */
 #if !defined(__MVS__)
-    if (!xmlCheckFilename(path)) {
-	xmlIOErr(0, path);	    
+    if (!xmlCheckFilename(path)){
+        xmlIOErr(0, path);
         return(NULL);
-	}
+    }
 #endif
 
 #if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)

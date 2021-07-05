@@ -899,6 +899,13 @@
 	</listitem>
 		</varlistentry>
 
+		<varlistentry>
+	<term><errorcode>10</errorcode></term>
+	<listitem>
+		<para>XPath evaluation error</para>
+	</listitem>
+		</varlistentry>
+
 	</variablelist>
 </refsect1>
 

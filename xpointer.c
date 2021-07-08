@@ -1483,16 +1483,16 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 		return(list);
 	    } else {
 		tmp = xmlCopyNode(cur, 0);
-		if (list == NULL)
+		if (list == NULL) {
 		    list = tmp;
-		else {
+		    parent = tmp;
+		} else {
 		    if (last != NULL)
-			xmlAddNextSibling(last, tmp);
+			parent = xmlAddNextSibling(last, tmp);
 		    else
-			xmlAddChild(parent, tmp);
+			parent = xmlAddChild(parent, tmp);
 		}
 		last = NULL;
-		parent = tmp;
 
 		if (index2 > 1) {
 		    end = xmlXPtrGetNthChild(cur, index2 - 1);
@@ -1574,8 +1574,7 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 		if (last != NULL)
 		    xmlAddNextSibling(last, tmp);
 		else {
-		    xmlAddChild(parent, tmp);
-		    last = tmp;
+		    last = xmlAddChild(parent, tmp);
 		}
 	    }
 	}

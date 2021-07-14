@@ -742,6 +742,7 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
         xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
 	     "SAX.xmlSAX2AttributeDecl(%s) called while not in subset\n",
 	               name, NULL);
+	xmlFree(name);
 	xmlFreeEnumeration(tree);
 	return;
     }

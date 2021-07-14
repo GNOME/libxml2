@@ -915,6 +915,7 @@ xmlParseCatalogFile(const char *filename) {
 
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
+	xmlFreeParserInputBuffer(buf);
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }

@@ -3725,7 +3725,10 @@ libxml_C14NDocSaveTo(ATTRIBUTE_UNUSED PyObject * self,
     buf = xmlOutputBufferCreateFile(output, NULL);
 
     result = PyxmlNodeSet_Convert(pyobj_nodes, &nodes);
-    if (result < 0) return NULL;
+    if (result < 0) {
+        xmlOutputBufferClose(buf);
+        return NULL;
+    }
 
     if (exclusive) {
         result = PystringSet_Convert(pyobj_prefixes, &prefixes);
@@ -3734,6 +3737,7 @@ libxml_C14NDocSaveTo(ATTRIBUTE_UNUSED PyObject * self,
                 xmlFree(nodes->nodeTab);
                 xmlFree(nodes);
             }
+            xmlOutputBufferClose(buf);
             return NULL;
         }
     }

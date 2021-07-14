@@ -2359,6 +2359,7 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
 	    }
 	    if (!IS_BLANK_CH(*cur)) {
 		/* error */
+		xmlFree(name);
 		break;
 	    }
 	    SKIP_BLANKS;

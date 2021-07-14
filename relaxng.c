@@ -3654,6 +3654,7 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
 
     def = xmlRelaxNGNewDefine(ctxt, node);
     if (def == NULL) {
+        xmlFree(library);
         xmlFree(type);
         return (NULL);
     }

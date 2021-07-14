@@ -3053,6 +3053,7 @@ libxml_saveNodeTo(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     if (encoding != NULL) {
         handler = xmlFindCharEncodingHandler(encoding);
         if (handler == NULL) {
+            PyFile_Release(output);
             return (PyLong_FromLong((long) -1));
         }
     }

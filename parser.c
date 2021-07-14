@@ -12625,6 +12625,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
 	if (ctxt->sax == NULL) {
+	    xmlFreeParserInputBuffer(buf);
 	    xmlErrMemory(ctxt, NULL);
 	    xmlFreeParserCtxt(ctxt);
 	    return(NULL);

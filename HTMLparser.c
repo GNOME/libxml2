@@ -3484,10 +3484,20 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     q = CUR_CHAR(ql);
     if (q == 0)
         goto unfinished;
+    if (q == '>') {
+        htmlParseErr(ctxt, XML_ERR_COMMENT_ABRUPTLY_ENDED, "Comment abruptly ended", NULL, NULL);
+        cur = '>';
+        goto finished;
+    }
     NEXTL(ql);
     r = CUR_CHAR(rl);
     if (r == 0)
         goto unfinished;
+    if (q == '-' && r == '>') {
+        htmlParseErr(ctxt, XML_ERR_COMMENT_ABRUPTLY_ENDED, "Comment abruptly ended", NULL, NULL);
+        cur = '>';
+        goto finished;
+    }
     NEXTL(rl);
     cur = CUR_CHAR(l);
     while ((cur != 0) &&
@@ -3535,6 +3545,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 	cur = next;
 	l = nl;
     }
+finished:
     buf[len] = 0;
     if (cur == '>') {
         NEXT;

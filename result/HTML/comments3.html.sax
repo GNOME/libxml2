@@ -24,18 +24,16 @@ SAX.characters(
 SAX.startElement(div)
 SAX.characters(
         , 9)
-SAX.comment(>the previous node should be an empty comment, and this should be a text node)
-SAX.characters(
-      , 7)
+SAX.error: Comment abruptly endedSAX.comment()
+SAX.characters(the previous node should be an, 86)
 SAX.endElement(div)
 SAX.characters(
       , 7)
 SAX.startElement(div)
 SAX.characters(
         , 9)
-SAX.comment(->the previous node should be an empty comment, and this should be a text node)
-SAX.characters(
-      , 7)
+SAX.error: Comment abruptly endedSAX.comment()
+SAX.characters(the previous node should be an, 86)
 SAX.endElement(div)
 SAX.characters(
     , 5)

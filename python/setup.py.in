@@ -3,6 +3,12 @@
 # Setup script for libxml2 and libxslt if found
 #
 import sys, os
+
+try:
+    import setuptools
+except ModuleNotFoundError:
+    pass
+
 from distutils.core import setup, Extension
 
 # Below ROOT, we expect to find include, include/libxml2, lib and bin.

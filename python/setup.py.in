@@ -13,6 +13,26 @@ ROOT = r'@prefix@'
 # Thread-enabled libxml2
 with_threads = @WITH_THREADS@
 
+# Features of libxml2 requiring external DLLs
+with_iconv = @WITH_ICONV@
+with_zlib = @WITH_ZLIB@
+with_lzma = @WITH_LZMA@
+with_icu = @WITH_ICU@
+
+icu_series = 69
+
+if icu_series is not None:
+    icu_series_s = str(icu_series)
+else:
+    icu_series_s = ''
+
+# If bundling DLLs, check the following to ensure things are correct
+# (Check the value of `icu_series` above as well)
+iconv_dll = 'iconv.dll'
+zlib_dll = 'zlib1.dll'
+lzma_dll = 'liblzma.dll'
+icu_dlls = ['icuuc%s.dll' % icu_series_s, 'icudt%s.dll' % icu_series_s]
+
 # If this flag is set (windows only),
 # a private copy of the dlls are included in the package.
 # If this flag is not set, the libxml2 and libxslt
@@ -29,21 +49,6 @@ try:
 except:
     HOME="C:"
 
-if WITHDLLS:
-    # libxml dlls (expected in ROOT/bin)
-    dlls = [ 'iconv.dll','libxml2.dll','libxslt.dll','libexslt.dll' ]
-    dlls = [os.path.join(ROOT,'bin',dll) for dll in dlls]
-
-    # create __init__.py for the libxmlmods package
-    if not os.path.exists("libxmlmods"):
-        os.mkdir("libxmlmods")
-        open("libxmlmods/__init__.py","w").close()
-
-    def altImport(s):
-        s = s.replace("import libxml2mod","from libxmlmods import libxml2mod")
-        s = s.replace("import libxsltmod","from libxmlmods import libxsltmod")
-        return s
-
 if sys.platform.startswith('win'):
     libraryPrefix = 'lib'
     platformLibs = []
@@ -53,7 +58,6 @@ else:
 
 # those are examined to find
 # - libxml2/libxml/tree.h
-# - iconv.h
 # - libxslt/xsltconfig.h
 includes_dir = [
 "/usr/include",
@@ -71,16 +75,6 @@ for dir in includes_dir:
 
 if xml_includes == "":
     print("failed to find headers for libxml2: update includes_dir")
-    sys.exit(1)
-
-iconv_includes=""
-for dir in includes_dir:
-    if not missing(dir + "/iconv.h"):
-        iconv_includes=dir
-        break;
-
-if iconv_includes == "":
-    print("failed to find headers for libiconv: update includes_dir")
     sys.exit(1)
 
 # those are added in the linker search path for libraries
@@ -160,13 +154,41 @@ if with_xslt == 1:
         print("failed to find headers for libxslt: update includes_dir")
         with_xslt = 0
 
+if WITHDLLS:
+    # libxml dlls (expected in ROOT/bin)
+    dlls = [ 'libxml2.dll' ]
+
+    if with_zlib == 1:
+        dlls.append(zlib_dll)
+    if with_lzma == 1:
+        dlls.append(lzma_dll)
+    if with_iconv == 1:
+        dlls.append(iconv_dll)
+    if with_icu == 1:
+        dlls += icu_dlls
+    if with_xslt == 1:
+        dlls += ['libxslt.dll','libexslt.dll']
+
+    packaged_dlls = [os.path.join(ROOT,'bin',dll) for dll in dlls]
+
+    # create __init__.py for the libxmlmods package
+    if not os.path.exists("libxmlmods"):
+        os.mkdir("libxmlmods")
+        open("libxmlmods/__init__.py","w").close()
+
+    def altImport(s):
+        s = s.replace("import libxml2mod","from libxmlmods import libxml2mod")
+        s = s.replace("import libxsltmod","from libxmlmods import libxsltmod")
+        return s
+
+    packaged_dlls = [os.path.join(ROOT,'bin',dll) for dll in dlls]
 
 descr = "libxml2 package"
 modules = [ 'libxml2', 'drv_libxml2' ]
 if WITHDLLS:
     modules.append('libxmlmods.__init__')
 c_files = ['libxml2-py.c', 'libxml.c', 'types.c' ]
-includes= [xml_includes, iconv_includes]
+includes= [xml_includes]
 libs    = [libraryPrefix + "xml2"] + platformLibs
 macros  = []
 if with_threads:
@@ -218,7 +240,7 @@ if WITHDLLS:
         base = "lib/site-packages/"
     else:
         base = ""
-    data_files = [(base+"libxmlmods",dlls)]
+    data_files = [(base+"libxmlmods",packaged_dlls)]
 else:
     ext_package = None
     data_files = []

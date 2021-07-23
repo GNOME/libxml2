@@ -1,6 +1,7 @@
 devhelpdir = $(datadir)/gtk-doc/html/libxml2
 
 dist_devhelp_DATA =			\
+	libxml2.devhelp2		\
 	libxml2.devhelp			\
 	$(HTML_FILES)			\
 	$(EXTRA_FORMAT)
@@ -69,11 +70,16 @@ EXTRA_FORMAT=				\
 EXTRA_DIST = devhelp.xsl html.xsl
 
 if REBUILD_DOCS
-rebuild: libxml2.devhelp $(HTML_FILES)
+rebuild: libxml2.devhelp2 libxml2.devhelp $(HTML_FILES)
 .PHONY: rebuild
 
 libxml2.devhelp $(HTML_FILES): devhelp.xsl html.xsl $(top_srcdir)/doc/libxml2-api.xml
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo Rebuilding devhelp files ; \
 	  $(XSLTPROC) --nonet -o $(srcdir)/libxml2.devhelp $(srcdir)/devhelp.xsl $(top_srcdir)/doc/libxml2-api.xml ; fi );
+
+libxml2.devhelp2 $(HTML_FILES): devhelp2.xsl html.xsl $(top_srcdir)/doc/libxml2-api.xml
+	-@(if [ -x $(XSLTPROC) ] ; then \
+	  echo Rebuilding devhelp2 files ; \
+	  $(XSLTPROC) --nonet -o $(srcdir)/libxml2.devhelp2 $(srcdir)/devhelp2.xsl $(top_srcdir)/doc/libxml2-api.xml ; fi );
 endif

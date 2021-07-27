@@ -2,7 +2,7 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define if __attribute__((destructor)) is accepted */
-#cmakedefine ATTRIBUTE_DESTRUCTOR 1
+#cmakedefine ATTRIBUTE_DESTRUCTOR @ATTRIBUTE_DESTRUCTOR@
 
 /* Type cast for the gethostbyname() argument */
 #cmakedefine GETHOSTBYNAME_ARG_CAST @GETHOSTBYNAME_ARG_CAST@

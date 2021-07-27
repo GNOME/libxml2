@@ -139,7 +139,10 @@ else()
 		void __attribute__((destructor))
 		f(void) {}
 		int main(void) { return 0; }
-	" ATTRIBUTE_DESTRUCTOR)
+	" HAVE_ATTRIBUTE_DESTRUCTOR)
+	if(HAVE_ATTRIBUTE_DESTRUCTOR)
+		set(ATTRIBUTE_DESTRUCTOR "__attribute__((destructor))")
+	endif()
 	check_c_source_compiles("
 		#include <netdb.h>
 		int main() { (void) gethostbyname((const char*) \"\"); return 0; }

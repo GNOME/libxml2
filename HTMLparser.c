@@ -6992,7 +6992,9 @@ htmlReadMemory(const char *buffer, int size, const char *URL, const char *encodi
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of htmlParserOption(s)
  *
- * parse an XML from a file descriptor and build a tree.
+ * parse an HTML from a file descriptor and build a tree.
+ * NOTE that the file descriptor will not be closed when the
+ *      reader is closed or reset.
  *
  * Returns the resulting document tree
  */
@@ -7001,17 +7003,17 @@ htmlReadFd(int fd, const char *URL, const char *encoding, int options)
 {
     htmlParserCtxtPtr ctxt;
     xmlParserInputBufferPtr input;
-    xmlParserInputPtr stream;
+    htmlParserInputPtr stream;
 
     if (fd < 0)
         return (NULL);
-    xmlInitParser();
 
     xmlInitParser();
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
-    ctxt = xmlNewParserCtxt();
+    input->closecallback = NULL;
+    ctxt = htmlNewParserCtxt();
     if (ctxt == NULL) {
         xmlFreeParserInputBuffer(input);
         return (NULL);
@@ -7019,7 +7021,7 @@ htmlReadFd(int fd, const char *URL, const char *encoding, int options)
     stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (stream == NULL) {
         xmlFreeParserInputBuffer(input);
-	xmlFreeParserCtxt(ctxt);
+	htmlFreeParserCtxt(ctxt);
         return (NULL);
     }
     inputPush(ctxt, stream);

@@ -55,12 +55,6 @@
 /* Define to 1 if you have the `isascii' function. */
 #cmakedefine HAVE_ISASCII 1
 
-/* Define if isinf is there */
-#cmakedefine HAVE_ISINF 1
-
-/* Define if isnan is there */
-#cmakedefine HAVE_ISNAN 1
-
 /* Define if history library is there (-lhistory) */
 #cmakedefine HAVE_LIBHISTORY 1
 
@@ -119,9 +113,6 @@
 
 /* Have shl_load based dso */
 #cmakedefine HAVE_SHLLOAD 1
-
-/* Define to 1 if you have the `signal' function. */
-#cmakedefine HAVE_SIGNAL 1
 
 /* Define to 1 if you have the <signal.h> header file. */
 #cmakedefine HAVE_SIGNAL_H 1

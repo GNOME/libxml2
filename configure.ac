@@ -740,13 +740,6 @@ fi
 
 dnl ******************************End IPv6 checks******************************
 
-dnl Checks for isnan in libm if not in libc
-AC_CHECK_FUNC(isnan, AC_DEFINE([HAVE_ISNAN],[], [Define if isnan is there]) , AC_CHECK_LIB(m, isnan,
-  [AC_DEFINE([HAVE_ISNAN],[], [Define if isnan is there])]))
-
-AC_CHECK_FUNC(isinf, AC_DEFINE([HAVE_ISINF], [], [Define if isinf is there]) , AC_CHECK_LIB(m, isinf,
-  [AC_DEFINE([HAVE_ISINF], [], [Define if isinf is there])]))
-
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml2'
 
@@ -1699,8 +1692,6 @@ AC_SUBST(ICONV_LIBS)
 AC_SUBST(ICU_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
 AC_SUBST(HTML_DIR)
-AC_SUBST(HAVE_ISNAN)
-AC_SUBST(HAVE_ISINF)
 AC_SUBST(PYTHON)
 AC_SUBST(PYTHON_VERSION)
 AC_SUBST(PYTHON_INCLUDES)

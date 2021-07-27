@@ -10,8 +10,6 @@
 #define VERSION
 
 #undef HAVE_LIBM
-#undef HAVE_ISINF
-#undef HAVE_ISNAN
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
 
@@ -27,9 +25,6 @@
 
 /* Define if you have the printf function.  */
 #define HAVE_PRINTF
-
-/* Define if you have the signal function.  */
-#define HAVE_SIGNAL
 
 /* Define if you have the snprintf function.  */
 #define HAVE_SNPRINTF

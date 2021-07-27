@@ -54,12 +54,6 @@
 /* Define to 1 if you have the `isascii' function. */
 #define HAVE_ISASCII            1
 
-/* Define if isinf is there */
-#undef HAVE_ISINF
-
-/* Define if isnan is there */
-#undef HAVE_ISNAN
-
 /* Define if history library is there (-lhistory) */
 #undef HAVE_LIBHISTORY
 
@@ -121,9 +115,6 @@
 
 /* Have shl_load based dso */
 #undef HAVE_SHLLOAD
-
-/* Define to 1 if you have the `signal' function. */
-#undef HAVE_SIGNAL
 
 /* Define to 1 if you have the <signal.h> header file. */
 #define HAVE_SIGNAL_H           1

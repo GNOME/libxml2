@@ -11,10 +11,6 @@
 #undef PACKAGE
 #undef VERSION
 #undef HAVE_LIBM
-#undef HAVE_ISINF
-#if defined(_IEEE_FP) && (__CRTL_VER >= 60200000)
-# define HAVE_ISNAN 1
-#endif
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
 

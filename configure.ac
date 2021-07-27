@@ -475,7 +475,6 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([fcntl.h])
 AC_CHECK_HEADERS([unistd.h])
 AC_CHECK_HEADERS([ctype.h])
-AC_CHECK_HEADERS([dirent.h])
 AC_CHECK_HEADERS([errno.h])
 AC_CHECK_HEADERS([malloc.h])
 AC_CHECK_HEADERS([stdarg.h])

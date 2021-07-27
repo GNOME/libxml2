@@ -36,9 +36,6 @@
 /* Define if you have the <ctype.h> header file.  */
 #define HAVE_CTYPE_H	1
 
-/* Define if you have the <dirent.h> header file.  */
-#define HAVE_DIRENT_H	1
-
 /* Define if you have the <errno.h> header file.  */
 #define HAVE_ERRNO_H	1
 
@@ -53,9 +50,6 @@
 
 /* Define if you have the <math.h> header file.  */
 #define HAVE_MATH_H	1
-
-/* Define if you have the <ndir.h> header file.  */
-#undef HAVE_NDIR_H
 
 /* Define if you have the <netdb.h> header file.  */
 #define HAVE_NETDB_H	1
@@ -78,14 +72,8 @@
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
 
-/* Define if you have the <sys/dir.h> header file.  */
-#undef HAVE_SYS_DIR_H
-
 /* Define if you have the <sys/mman.h> header file.  */
 #undef HAVE_SYS_MMAN_H
-
-/* Define if you have the <sys/ndir.h> header file.  */
-#undef HAVE_SYS_NDIR_H
 
 /* Define if you have the <sys/select.h> header file.  */
 #undef HAVE_SYS_SELECT_H

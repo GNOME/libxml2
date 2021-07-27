@@ -63,14 +63,8 @@
 /* Define if history library is there (-lhistory) */
 #undef HAVE_LIBHISTORY
 
-/* Define if pthread library is there (-lpthread) */
-#undef HAVE_LIBPTHREAD
-
 /* Define if readline library is there (-lreadline) */
 #undef HAVE_LIBREADLINE
-
-/* Have compression library */
-#undef HAVE_LIBZ
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H           1

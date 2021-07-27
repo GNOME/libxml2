@@ -10,7 +10,6 @@
 
 #undef PACKAGE
 #undef VERSION
-#undef HAVE_LIBZ
 #undef HAVE_LIBM
 #undef HAVE_ISINF
 #if defined(_IEEE_FP) && (__CRTL_VER >= 60200000)

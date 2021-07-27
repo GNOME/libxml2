@@ -64,9 +64,6 @@
 /* Define if history library is there (-lhistory) */
 #cmakedefine HAVE_LIBHISTORY 1
 
-/* Define if pthread library is there (-lpthread) */
-#cmakedefine HAVE_LIBPTHREAD 1
-
 /* Define if readline library is there (-lreadline) */
 #cmakedefine HAVE_LIBREADLINE 1
 

@@ -9,7 +9,6 @@
 #define PACKAGE
 #define VERSION
 
-#undef HAVE_LIBZ
 #undef HAVE_LIBM
 #undef HAVE_ISINF
 #undef HAVE_ISNAN
@@ -17,7 +16,6 @@
 #undef HAVE_LIBREADLINE
 
 #define XML_SOCKLEN_T socklen_t
-#define HAVE_LIBPTHREAD
 #define HAVE_PTHREAD_H
 #define LIBXML_THREAD_ENABLED
 

@@ -5,7 +5,7 @@ m4_define([MAJOR_VERSION], 2)
 m4_define([MINOR_VERSION], 9)
 m4_define([MICRO_VERSION], 12)
 
-AC_INIT([libxml2],[MAJOR_VERSION.MINOR_VERSION.MICRO_VERSION])
+AC_INIT([libxml2],[MAJOR_VERSION.MINOR_VERSION.MICRO_VERSION],[],[libxml2-MAJOR_VERSION.MINOR_VERSION.MICRO_VERSION])
 AC_CONFIG_SRCDIR([entities.c])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE([enable])
@@ -124,13 +124,12 @@ AC_ARG_WITH(html,
 [  --with-html             add the HTML support (on)])
 dnl Specific dir for HTML output ?
 AC_ARG_WITH(html-dir, AS_HELP_STRING([--with-html-dir=path],
-            [path to base html directory, default $datadir/doc/html]),
-            [HTML_DIR=$withval], [HTML_DIR='$(datadir)/doc'])
+            [path to base html directory, default $docdir/html]),
+            [HTML_DIR=$withval], [HTML_DIR='$(docdir)/html'])
 
 AC_ARG_WITH(html-subdir, AS_HELP_STRING([--with-html-subdir=path],
-            [directory used under html-dir, default $PACKAGE-$VERSION/html]),
-            [test "x$withval" != "x" && HTML_DIR="$HTML_DIR/$withval"],
-            [HTML_DIR="$HTML_DIR/\$(PACKAGE)-\$(VERSION)/html"])
+            [directory used under html-dir, default '']),
+            [test "x$withval" != "x" && HTML_DIR="$HTML_DIR/$withval"])
 AC_SUBST(HTML_DIR)
 AC_ARG_WITH(http,
 [  --with-http             add the HTTP support (on)])

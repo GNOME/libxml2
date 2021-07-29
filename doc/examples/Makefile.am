@@ -23,8 +23,8 @@ index.html: examples.xml examples.xsl
 endif
 
 install-data-local: 
-	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)
-	-$(INSTALL) -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(HTML_DIR)
+	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)/examples
+	-$(INSTALL) -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(HTML_DIR)/examples/
 
 clean-local:
 	test -f Makefile.am || rm -f test?.xml

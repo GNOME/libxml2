@@ -1283,8 +1283,10 @@ install-data-local:
 	-$(INSTALL) -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
 	-$(INSTALL) -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
 	-$(INSTALL) -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
+	@echo "If the documentation is installed, please also look at html/examples for more." > $(DESTDIR)$(EXAMPLES_DIR)/README
 
 uninstall-local:
+	rm -f $(DESTDIR)$(EXAMPLES_DIR)/README
 	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testXPath.c
 	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testHTML.c
 	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testSAX.c

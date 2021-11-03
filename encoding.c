@@ -2496,7 +2496,7 @@ retry:
      */
     toconv = xmlBufUse(in);
     if (toconv == 0)
-        return (0);
+        return (writtentot);
     if (toconv > 64 * 1024)
         toconv = 64 * 1024;
     if (toconv * 4 >= written) {

@@ -1342,6 +1342,9 @@ xmlSchemaFormatQNameNs(xmlChar **buf, xmlNsPtr ns, const xmlChar *localName)
 static const xmlChar *
 xmlSchemaGetComponentName(xmlSchemaBasicItemPtr item)
 {
+    if (item == NULL) {
+        return (NULL);
+    }
     switch (item->type) {
 	case XML_SCHEMA_TYPE_ELEMENT:
 	    return (((xmlSchemaElementPtr) item)->name);
@@ -1397,6 +1400,9 @@ xmlSchemaGetQNameRefTargetNs(void *ref)
 static const xmlChar *
 xmlSchemaGetComponentTargetNs(xmlSchemaBasicItemPtr item)
 {
+    if (item == NULL) {
+        return (NULL);
+    }
     switch (item->type) {
 	case XML_SCHEMA_TYPE_ELEMENT:
 	    return (((xmlSchemaElementPtr) item)->targetNamespace);

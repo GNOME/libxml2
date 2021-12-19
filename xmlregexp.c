@@ -1693,12 +1693,12 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		    counter = xmlRegGetCounter(ctxt);
 		    ctxt->counters[counter].min = atom->min - 1;
 		    ctxt->counters[counter].max = atom->max - 1;
-		    /* count the number of times we see it again */
-		    xmlFAGenerateCountedEpsilonTransition(ctxt, atom->stop,
-						   atom->start, counter);
 		    /* allow a way out based on the count */
 		    xmlFAGenerateCountedTransition(ctxt, atom->stop,
 			                           newstate, counter);
+		    /* count the number of times we see it again */
+		    xmlFAGenerateCountedEpsilonTransition(ctxt, atom->stop,
+						   atom->start, counter);
 		    /* and if needed allow a direct exit for 0 */
 		    if (atom->min == 0)
 			xmlFAGenerateEpsilonTransition(ctxt, atom->start0,

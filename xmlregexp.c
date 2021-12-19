@@ -3364,7 +3364,6 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    /*
 		     * this is a multiple input sequence
 		     * If there is a counter associated increment it now.
-		     * before potentially saving and rollback
 		     * do not increment if the counter is already over the
 		     * maximum limit in which case get to next transition
 		     */
@@ -3380,14 +3379,16 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 			counter = &exec->comp->counters[trans->counter];
 			if (exec->counts[trans->counter] >= counter->max)
 			    continue; /* for loop on transitions */
-
+                    }
+                    /* Save before incrementing */
+		    if (exec->state->nbTrans > exec->transno + 1) {
+			xmlFARegExecSave(exec);
+		    }
+		    if (trans->counter >= 0) {
 #ifdef DEBUG_REGEXP_EXEC
 			printf("Increasing count %d\n", trans->counter);
 #endif
 			exec->counts[trans->counter]++;
-		    }
-		    if (exec->state->nbTrans > exec->transno + 1) {
-			xmlFARegExecSave(exec);
 		    }
 		    exec->transcount = 1;
 		    do {

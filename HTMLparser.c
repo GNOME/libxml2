@@ -3958,13 +3958,25 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
 	             "htmlParseStartTag: invalid element name\n",
 		     NULL, NULL);
+        /*
+         * The recovery code is disabled for now as it can result in
+         * quadratic behavior with the push parser. htmlParseStartTag
+         * must consume all content up to the final '>' in order to avoid
+         * rescanning for this terminator.
+         *
+         * For a proper fix in line with HTML5, htmlParseStartTag and
+         * htmlParseElement should only be called when there's an ASCII
+         * alpha character following the initial '<'. Otherwise, the '<'
+         * should be emitted as text (unless followed by '!', '/' or '?').
+         */
+#if 0
 	/* if recover preserve text on classic misconstructs */
 	if ((ctxt->recovery) && ((IS_BLANK_CH(CUR)) || (CUR == '<') ||
 	    (CUR == '=') || (CUR == '>') || (((CUR >= '0') && (CUR <= '9'))))) {
 	    htmlParseCharDataInternal(ctxt, '<');
 	    return(-1);
 	}
-
+#endif
 
 	/* Dump the bogus tag like browsers do */
 	while ((CUR != 0) && (CUR != '>') &&

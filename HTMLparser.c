@@ -5992,32 +5992,12 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    } else if (cur == '<') {
                         if ((!terminate) && (next == 0))
                             goto done;
-                        /*
-                         * Only switch to START_TAG if the next character
-                         * starts a valid name. Otherwise, htmlParseStartTag
-                         * might return without consuming all characters
-                         * up to the final '>'.
-                         */
-                        if ((IS_ASCII_LETTER(next)) ||
-                            (next == '_') || (next == ':') || (next == '.')) {
-                            ctxt->instate = XML_PARSER_START_TAG;
-                            ctxt->checkIndex = 0;
+                        ctxt->instate = XML_PARSER_START_TAG;
+                        ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
-                            xmlGenericError(xmlGenericErrorContext,
-                                    "HPP: entering START_TAG\n");
+                        xmlGenericError(xmlGenericErrorContext,
+                                "HPP: entering START_TAG\n");
 #endif
-                        } else {
-                            htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-                                         "htmlParseTryOrFinish: "
-                                         "invalid element name\n",
-                                         NULL, NULL);
-                            htmlCheckParagraph(ctxt);
-                            if ((ctxt->sax != NULL) &&
-                                (ctxt->sax->characters != NULL))
-                                ctxt->sax->characters(ctxt->userData,
-                                                      in->cur, 1);
-                            NEXT;
-                        }
 			break;
 		    } else {
 		        /*

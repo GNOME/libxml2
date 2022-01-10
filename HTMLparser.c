@@ -3045,7 +3045,7 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
         NEXT;
     }
 
-    if (CUR != '"') {
+    if (CUR != quote) {
         htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
                      "Unfinished PubidLiteral\n", NULL, NULL);
     } else {

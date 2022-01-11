@@ -33,6 +33,7 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/pattern.h>
 #include <libxml/schematron.h>
+#include <libxml/debugXML.h>
 
 #define SCHEMATRON_PARSE_OPTIONS XML_PARSE_NOENT
 
@@ -839,6 +840,57 @@ xmlSchematronAddNamespace(xmlSchematronParserCtxtPtr ctxt,
 }
 
 /**
+ * xmlSchematronParseTestReportMsg:
+ * @ctxt:  the schema parser context
+ * @con:  the assert or report node
+ *
+ * Format the message content of the assert or report test
+ */
+static void
+xmlSchematronParseTestReportMsg(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr con)
+{
+    xmlNodePtr child;
+    xmlXPathCompExprPtr comp;
+
+    child = con->children;
+    while (child != NULL) {
+        if ((child->type == XML_TEXT_NODE) ||
+            (child->type == XML_CDATA_SECTION_NODE))
+            /* Do Nothing */
+            {}
+        else if (IS_SCHEMATRON(child, "name")) {
+            /* Do Nothing */
+        } else if (IS_SCHEMATRON(child, "value-of")) {
+            xmlChar *select;
+
+            select = xmlGetNoNsProp(child, BAD_CAST "select");
+
+            if (select == NULL) {
+                xmlSchematronPErr(ctxt, child,
+                                  XML_SCHEMAV_ATTRINVALID,
+                                  "value-of has no select attribute",
+                                  NULL, NULL);
+            } else {
+                /*
+                 * try first to compile the test expression
+                 */
+                comp = xmlXPathCtxtCompile(ctxt->xctxt, select);
+                if (comp == NULL) {
+                    xmlSchematronPErr(ctxt, child,
+                                      XML_SCHEMAV_ATTRINVALID,
+                                      "Failed to compile select expression %s",
+                                      select, NULL);
+                }
+                xmlXPathFreeCompExpr(comp);
+            }
+            xmlFree(select);
+        }
+        child = child->next;
+        continue;
+    }
+}
+
+/**
  * xmlSchematronParseRule:
  * @ctxt:  a schema validation context
  * @rule:  the rule node
@@ -901,7 +953,7 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
                     NULL, NULL);
                 xmlFree(test);
             } else {
-                /* TODO will need dynamic processing instead */
+                xmlSchematronParseTestReportMsg(ctxt, cur);
                 report = xmlNodeGetContent(cur);
 
                 testptr = xmlSchematronAddTest(ctxt, XML_SCHEMATRON_ASSERT,
@@ -924,7 +976,7 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
                     NULL, NULL);
                 xmlFree(test);
             } else {
-                /* TODO will need dynamic processing instead */
+                xmlSchematronParseTestReportMsg(ctxt, cur);
                 report = xmlNodeGetContent(cur);
 
                 testptr = xmlSchematronAddTest(ctxt, XML_SCHEMATRON_REPORT,
@@ -1294,6 +1346,7 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
                           xmlNodePtr test, xmlNodePtr cur) {
     xmlChar *ret = NULL;
     xmlNodePtr child, node;
+    xmlXPathCompExprPtr comp;
 
     if ((test == NULL) || (cur == NULL))
         return(ret);
@@ -1323,6 +1376,56 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
                 ret = xmlStrcat(ret, BAD_CAST ":");
                 ret = xmlStrcat(ret, node->name);
             }
+        } else if (IS_SCHEMATRON(child, "value-of")) {
+            xmlChar *select;
+            xmlXPathObjectPtr eval;
+
+            select = xmlGetNoNsProp(child, BAD_CAST "select");
+            comp = xmlXPathCtxtCompile(ctxt->xctxt, select);
+            eval = xmlXPathCompiledEval(comp, ctxt->xctxt);
+
+            switch (eval->type) {
+            case XPATH_NODESET: {
+                int indx;
+                xmlChar *spacer = BAD_CAST " ";
+
+                if (eval->nodesetval) {
+                    for (indx = 0; indx < eval->nodesetval->nodeNr; indx++) {
+                        if (indx > 0)
+                            ret = xmlStrcat(ret, spacer);
+                        ret = xmlStrcat(ret, eval->nodesetval->nodeTab[indx]->name);
+                    }
+                } else {
+                    xmlGenericError(xmlGenericErrorContext,
+                                    "Empty node set\n");
+                }
+                break;
+            }
+            case XPATH_BOOLEAN:
+                ret = xmlStrcat(ret, BAD_CAST xmlBoolToText(eval->boolval));
+                break;
+            case XPATH_NUMBER: {
+                xmlChar *buf;
+                int size;
+
+                size = snprintf(NULL, 0, "%0g", eval->floatval);
+                buf = (xmlChar*) malloc(size * sizeof(xmlChar));
+                /* xmlStrPrintf(buf, size, "%0g", eval->floatval); // doesn't work */
+                sprintf((char*) buf, "%0g", eval->floatval);
+                ret = xmlStrcat(ret, buf);
+                free(buf);
+                break;
+            }
+            case XPATH_STRING:
+                ret = xmlStrcat(ret, eval->stringval);
+                break;
+            default:
+                xmlGenericError(xmlGenericErrorContext,
+                                "Unsupported XPATH Type: %d\n", eval->type);
+            }
+            xmlXPathFreeObject(eval);
+            xmlXPathFreeCompExpr(comp);
+            xmlFree(select);
         } else {
             child = child->next;
             continue;

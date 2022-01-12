@@ -77,6 +77,19 @@ typedef enum {
 } xmlSchematronTestType;
 
 /**
+ * _xmlSchematronLet:
+ *
+ * A Schematron let variable
+ */
+typedef struct _xmlSchematronLet xmlSchematronLet;
+typedef xmlSchematronLet *xmlSchematronLetPtr;
+struct _xmlSchematronLet {
+    xmlSchematronLetPtr next; /* the next let variable in the list */
+    xmlChar *name;            /* the name of the variable */
+    xmlXPathCompExprPtr comp; /* the compiled expression */
+};
+
+/**
  * _xmlSchematronTest:
  *
  * A Schematrons test, either an assert or a report
@@ -107,6 +120,7 @@ struct _xmlSchematronRule {
     xmlSchematronTestPtr tests; /* the list of tests */
     xmlPatternPtr pattern;      /* the compiled pattern associated */
     xmlChar *report;            /* the message to report */
+    xmlSchematronLetPtr lets;   /* the list of let variables */
 };
 
 /**
@@ -377,6 +391,27 @@ xmlSchematronFreeTests(xmlSchematronTestPtr tests) {
 }
 
 /**
+ * xmlSchematronFreeLets:
+ * @lets:  a list of let variables
+ *
+ * Free a list of let variables.
+ */
+static void
+xmlSchematronFreeLets(xmlSchematronLetPtr lets) {
+    xmlSchematronLetPtr next;
+
+    while (lets != NULL) {
+        next = lets->next;
+        if (lets->name != NULL)
+            xmlFree(lets->name);
+        if (lets->comp != NULL)
+            xmlXPathFreeCompExpr(lets->comp);
+        xmlFree(lets);
+        lets = next;
+    }
+}
+
+/**
  * xmlSchematronAddRule:
  * @ctxt: the schema parsing context
  * @schema:  a schema structure
@@ -423,6 +458,7 @@ xmlSchematronAddRule(xmlSchematronParserCtxtPtr ctxt, xmlSchematronPtr schema,
     ret->pattern = pattern;
     ret->report = report;
     ret->next = NULL;
+    ret->lets = NULL;
     if (schema->rules == NULL) {
         schema->rules = ret;
     } else {
@@ -465,6 +501,8 @@ xmlSchematronFreeRules(xmlSchematronRulePtr rules) {
             xmlFreePattern(rules->pattern);
         if (rules->report != NULL)
             xmlFree(rules->report);
+        if (rules->lets != NULL)
+            xmlSchematronFreeLets(rules->lets);
         xmlFree(rules);
         rules = next;
     }
@@ -907,6 +945,8 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
     xmlChar *test;
     xmlChar *context;
     xmlChar *report;
+    xmlChar *name;
+    xmlChar *value;
     xmlSchematronRulePtr ruleptr;
     xmlSchematronTestPtr testptr;
 
@@ -938,7 +978,63 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
     cur = rule->children;
     NEXT_SCHEMATRON(cur);
     while (cur != NULL) {
-        if (IS_SCHEMATRON(cur, "assert")) {
+        if (IS_SCHEMATRON(cur, "let")) {
+            xmlXPathCompExprPtr var_comp;
+            xmlSchematronLetPtr let;
+
+            name = xmlGetNoNsProp(cur, BAD_CAST "name");
+            if (name == NULL) {
+                xmlSchematronPErr(ctxt, cur,
+                                  XML_SCHEMAP_NOROOT,
+                                  "let has no name attribute",
+                                  NULL, NULL);
+                return;
+            } else if (name[0] == 0) {
+                xmlSchematronPErr(ctxt, cur,
+                                  XML_SCHEMAP_NOROOT,
+                                  "let has an empty name attribute",
+                                  NULL, NULL);
+                xmlFree(name);
+                return;
+            }
+            value = xmlGetNoNsProp(cur, BAD_CAST "value");
+            if (value == NULL) {
+                xmlSchematronPErr(ctxt, cur,
+                                  XML_SCHEMAP_NOROOT,
+                                  "let has no value attribute",
+                                  NULL, NULL);
+                return;
+            } else if (value[0] == 0) {
+                xmlSchematronPErr(ctxt, cur,
+                                  XML_SCHEMAP_NOROOT,
+                                  "let has an empty value attribute",
+                                  NULL, NULL);
+                xmlFree(value);
+                return;
+            }
+
+            var_comp = xmlXPathCtxtCompile(ctxt->xctxt, value);
+            if (var_comp == NULL) {
+                xmlSchematronPErr(ctxt, cur,
+                                  XML_SCHEMAP_NOROOT,
+                                  "Failed to compile let expression %s",
+                                  value, NULL);
+                return;
+            }
+
+            let = (xmlSchematronLetPtr) malloc(sizeof(xmlSchematronLet));
+            let->name = name;
+            let->comp = var_comp;
+            let->next = NULL;
+
+            /* add new let variable to the beginning of the list */
+            if (ruleptr->lets != NULL) {
+                let->next = ruleptr->lets;
+            }
+            ruleptr->lets = let;
+
+            xmlFree(value);
+        } else if (IS_SCHEMATRON(cur, "assert")) {
             nbChecks++;
             test = xmlGetNoNsProp(cur, BAD_CAST "test");
             if (test == NULL) {
@@ -1756,6 +1852,65 @@ xmlSchematronRunTest(xmlSchematronValidCtxtPtr ctxt,
 }
 
 /**
+ * xmlSchematronRegisterVariables:
+ * @ctxt:  the schema validation context
+ * @let:  the list of let variables
+ * @instance:  the document instance tree
+ * @cur:  the current node
+ *
+ * Registers a list of let variables to the current context of @cur
+ *
+ * Returns -1 in case of errors, otherwise 0
+ */
+static int
+xmlSchematronRegisterVariables(xmlXPathContextPtr ctxt, xmlSchematronLetPtr let,
+                               xmlDocPtr instance, xmlNodePtr cur)
+{
+    xmlXPathObjectPtr let_eval;
+
+    ctxt->doc = instance;
+    ctxt->node = cur;
+    while (let != NULL) {
+        let_eval = xmlXPathCompiledEval(let->comp, ctxt);
+        if (let_eval == NULL) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "Evaluation of compiled expression failed\n");
+            return -1;
+        }
+        if(xmlXPathRegisterVariableNS(ctxt, let->name, NULL, let_eval)) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "Registering a let variable failed\n");
+            return -1;
+        }
+        let = let->next;
+    }
+    return 0;
+}
+
+/**
+ * xmlSchematronUnregisterVariables:
+ * @ctxt:  the schema validation context
+ * @let:  the list of let variables
+ *
+ * Unregisters a list of let variables from the context
+ *
+ * Returns -1 in case of errors, otherwise 0
+ */
+static int
+xmlSchematronUnregisterVariables(xmlXPathContextPtr ctxt, xmlSchematronLetPtr let)
+{
+    while (let != NULL) {
+        if (xmlXPathRegisterVariableNS(ctxt, let->name, NULL, NULL)) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "Unregistering a let variable failed\n");
+            return -1;
+        }
+        let = let->next;
+    }
+    return 0;
+}
+
+/**
  * xmlSchematronValidateDoc:
  * @ctxt:  the schema validation context
  * @instance:  the document instance tree
@@ -1795,10 +1950,18 @@ xmlSchematronValidateDoc(xmlSchematronValidCtxtPtr ctxt, xmlDocPtr instance)
             while (rule != NULL) {
                 if (xmlPatternMatch(rule->pattern, cur) == 1) {
                     test = rule->tests;
+
+                    if (xmlSchematronRegisterVariables(ctxt->xctxt, rule->lets, instance, cur))
+                        return -1;
+
                     while (test != NULL) {
                         xmlSchematronRunTest(ctxt, test, instance, cur, (xmlSchematronPatternPtr)rule->pattern);
                         test = test->next;
                     }
+
+                    if (xmlSchematronUnregisterVariables(ctxt->xctxt, rule->lets))
+                        return -1;
+
                 }
                 rule = rule->next;
             }
@@ -1826,10 +1989,15 @@ xmlSchematronValidateDoc(xmlSchematronValidCtxtPtr ctxt, xmlDocPtr instance)
                 while (rule != NULL) {
                     if (xmlPatternMatch(rule->pattern, cur) == 1) {
                         test = rule->tests;
+                        xmlSchematronRegisterVariables(ctxt->xctxt, rule->lets,
+                                                       instance, cur);
+
                         while (test != NULL) {
                             xmlSchematronRunTest(ctxt, test, instance, cur, pattern);
                             test = test->next;
                         }
+
+                        xmlSchematronUnregisterVariables(ctxt->xctxt, rule->lets);
                     }
                     rule = rule->patnext;
                 }

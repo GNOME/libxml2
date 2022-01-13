@@ -64,10 +64,9 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	/* Use the special values to detect if it is part of a parsing
+	/* Look up flag to detect if it is part of a parsing
 	   context */
-	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	if (ctxt->flags & XML_VCTXT_USE_PCTXT) {
 	    long delta = (char *) ctxt - (char *) ctxt->userData;
 	    if ((delta > 0) && (delta < 250))
 		pctxt = ctxt->userData;
@@ -104,10 +103,9 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	/* Use the special values to detect if it is part of a parsing
+	/* Look up flag to detect if it is part of a parsing
 	   context */
-	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	if (ctxt->flags & XML_VCTXT_USE_PCTXT) {
 	    long delta = (char *) ctxt - (char *) ctxt->userData;
 	    if ((delta > 0) && (delta < 250))
 		pctxt = ctxt->userData;
@@ -151,10 +149,9 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	/* Use the special values to detect if it is part of a parsing
+	/* Look up flag to detect if it is part of a parsing
 	   context */
-	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	if (ctxt->flags & XML_VCTXT_USE_PCTXT) {
 	    long delta = (char *) ctxt - (char *) ctxt->userData;
 	    if ((delta > 0) && (delta < 250))
 		pctxt = ctxt->userData;
@@ -194,10 +191,9 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	/* Use the special values to detect if it is part of a parsing
+	/* Look up flag to detect if it is part of a parsing
 	   context */
-	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	if (ctxt->flags & XML_VCTXT_USE_PCTXT) {
 	    long delta = (char *) ctxt - (char *) ctxt->userData;
 	    if ((delta > 0) && (delta < 250))
 		pctxt = ctxt->userData;
@@ -235,10 +231,9 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt,
     if (ctxt != NULL) {
         channel = ctxt->warning;
         data = ctxt->userData;
-	/* Use the special values to detect if it is part of a parsing
+	/* Look up flag to detect if it is part of a parsing
 	   context */
-	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	if (ctxt->flags & XML_VCTXT_USE_PCTXT) {
 	    long delta = (char *) ctxt - (char *) ctxt->userData;
 	    if ((delta > 0) && (delta < 250))
 		pctxt = ctxt->userData;
@@ -1642,9 +1637,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
      * and flag it by setting a special parent value
      * so the parser doesn't unallocate it.
      */
-    if ((ctxt != NULL) &&
-        ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
-         (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1))) {
+    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_USE_PCTXT)) {
 	ret->content = content;
 	if (content != NULL)
 	    content->parent = (xmlElementContentPtr) 1;
@@ -2642,13 +2635,7 @@ xmlIsStreaming(xmlValidCtxtPtr ctxt) {
 
     if (ctxt == NULL)
         return(0);
-    /*
-     * These magic values are also abused to detect whether we're validating
-     * while parsing a document. In this case, userData points to the parser
-     * context.
-     */
-    if ((ctxt->finishDtd != XML_CTXT_FINISH_DTD_0) &&
-        (ctxt->finishDtd != XML_CTXT_FINISH_DTD_1))
+    if ((ctxt->flags & XML_VCTXT_USE_PCTXT) == 0)
         return(0);
     pctxt = ctxt->userData;
     return(pctxt->parseMode == XML_PARSE_READER);
@@ -6677,8 +6664,8 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     }
 
     /* trick to get correct line id report */
-    save = ctxt->finishDtd;
-    ctxt->finishDtd = 0;
+    save = ctxt->flags;
+    ctxt->flags &= ~XML_VCTXT_USE_PCTXT;
 
     /*
      * Check all the NOTATION/NOTATIONS attributes
@@ -6694,7 +6681,7 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     ctxt->valid = 1;
     xmlHashScan(table, xmlValidateCheckRefCallback, ctxt);
 
-    ctxt->finishDtd = save;
+    ctxt->flags = save;
     return(ctxt->valid);
 }
 

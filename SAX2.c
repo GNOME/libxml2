@@ -1747,7 +1747,8 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
      * If it's the Document root, finish the DTD validation and
      * check the document root element for validity
      */
-    if ((ctxt->validate) && (ctxt->vctxt.finishDtd == XML_CTXT_FINISH_DTD_0)) {
+    if ((ctxt->validate) &&
+        ((ctxt->vctxt.flags & XML_VCTXT_DTD_VALIDATED) == 0)) {
 	int chk;
 
 	chk = xmlValidateDtdFinal(&ctxt->vctxt, ctxt->myDoc);
@@ -1756,7 +1757,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	if (chk < 0)
 	    ctxt->wellFormed = 0;
 	ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
-	ctxt->vctxt.finishDtd = XML_CTXT_FINISH_DTD_1;
+	ctxt->vctxt.flags |= XML_VCTXT_DTD_VALIDATED;
     }
 #endif /* LIBXML_VALID_ENABLED */
 
@@ -2405,7 +2406,8 @@ xmlSAX2StartElementNs(void *ctx,
      * If it's the Document root, finish the DTD validation and
      * check the document root element for validity
      */
-    if ((ctxt->validate) && (ctxt->vctxt.finishDtd == XML_CTXT_FINISH_DTD_0)) {
+    if ((ctxt->validate) &&
+        ((ctxt->vctxt.flags & XML_VCTXT_DTD_VALIDATED) == 0)) {
 	int chk;
 
 	chk = xmlValidateDtdFinal(&ctxt->vctxt, ctxt->myDoc);
@@ -2414,7 +2416,7 @@ xmlSAX2StartElementNs(void *ctx,
 	if (chk < 0)
 	    ctxt->wellFormed = 0;
 	ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
-	ctxt->vctxt.finishDtd = XML_CTXT_FINISH_DTD_1;
+	ctxt->vctxt.flags |= XML_VCTXT_DTD_VALIDATED;
     }
 #endif /* LIBXML_VALID_ENABLED */
 }

@@ -28136,10 +28136,6 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
 	VERROR(1, NULL, "The document has no document element");
 	return (1);
     }
-    for (node = valRoot->next; node != NULL; node = node->next) {
-        if (node->type == XML_ELEMENT_NODE)
-            VERROR(1, NULL, "The document has more than one top element");
-    }
     vctxt->depth = -1;
     vctxt->validationRoot = valRoot;
     node = valRoot;

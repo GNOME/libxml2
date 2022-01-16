@@ -3136,7 +3136,28 @@ main(int argc, char **argv) {
 	usage(stderr, argv[0]);
 	return(1);
     }
+
+    /* xmlMemSetup must be called before initializing the parser. */
+    for (i = 1; i < argc ; i++) {
+	if (!strcmp(argv[i], "-"))
+	    break;
+	if (argv[i][0] != '-')
+	    continue;
+
+	if ((!strcmp(argv[i], "-maxmem")) ||
+	    (!strcmp(argv[i], "--maxmem"))) {
+	     i++;
+	     if (sscanf(argv[i], "%d", &maxmem) == 1) {
+	         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc,
+		             myStrdupFunc);
+	     } else {
+	         maxmem = 0;
+	     }
+        }
+    }
+
     LIBXML_TEST_VERSION
+
     for (i = 1; i < argc ; i++) {
 	if (!strcmp(argv[i], "-"))
 	    break;
@@ -3382,12 +3403,6 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-maxmem")) ||
 	         (!strcmp(argv[i], "--maxmem"))) {
 	     i++;
-	     if (sscanf(argv[i], "%d", &maxmem) == 1) {
-	         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc,
-		             myStrdupFunc);
-	     } else {
-	         maxmem = 0;
-	     }
         }
 	else if ((!strcmp(argv[i], "-format")) ||
 	         (!strcmp(argv[i], "--format"))) {

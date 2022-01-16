@@ -16,4 +16,10 @@
       <gnome:userid>veillard</gnome:userid>
     </foaf:Person>
   </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Nick Wellnhofer</foaf:name>
+      <gnome:userid>nwellnhof</gnome:userid>
+    </foaf:Person>
+  </maintainer>
 </Project>

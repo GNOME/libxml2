@@ -1256,6 +1256,13 @@ else
         [have_libicu=yes],
         [have_libicu=no])
 
+    if test "x$have_libicu" = "xyes"; then
+        PKG_CHECK_VAR([ICU_DEFS], [icu-i18n], [DEFS])
+        if test "x$ICU_DEFS" != "x"; then
+            CPPFLAGS="$CPPFLAGS $ICU_DEFS"
+        fi
+    fi
+
     # If pkg-config failed, fall back to AC_CHECK_LIB. This
     # will not pick up the necessary LIBS flags for liblzma's
     # private dependencies, though, so static linking may fail.

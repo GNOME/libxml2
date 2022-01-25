@@ -834,8 +834,8 @@ xmlCheckUTF8(const unsigned char *utf)
 
 int
 xmlUTF8Strsize(const xmlChar *utf, int len) {
-    const xmlChar   *ptr=utf;
-    xmlChar         ch;
+    const xmlChar *ptr=utf;
+    int ch;
 
     if (utf == NULL)
         return(0);
@@ -896,7 +896,7 @@ xmlUTF8Strndup(const xmlChar *utf, int len) {
  */
 const xmlChar *
 xmlUTF8Strpos(const xmlChar *utf, int pos) {
-    xmlChar ch;
+    int ch;
 
     if (utf == NULL) return(NULL);
     if (pos < 0)
@@ -929,7 +929,7 @@ xmlUTF8Strpos(const xmlChar *utf, int pos) {
 int
 xmlUTF8Strloc(const xmlChar *utf, const xmlChar *utfchar) {
     int i, size;
-    xmlChar ch;
+    int ch;
 
     if (utf==NULL || utfchar==NULL) return -1;
     size = xmlUTF8Strsize(utfchar, 1);
@@ -965,8 +965,8 @@ xmlUTF8Strloc(const xmlChar *utf, const xmlChar *utfchar) {
 
 xmlChar *
 xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
-    int            i;
-    xmlChar ch;
+    int i;
+    int ch;
 
     if (utf == NULL) return(NULL);
     if (start < 0) return(NULL);

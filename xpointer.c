@@ -851,7 +851,6 @@ static void xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name);
  *
  * Dirty macros, i.e. one need to make assumption on the context to use them
  *
- *   CUR_PTR return the current pointer to the xmlChar to be parsed.
  *   CUR     returns the current xmlChar value, i.e. a 8 bit value
  *           in ISO-Latin or UTF-8.
  *           This should be used internally by the parser
@@ -871,7 +870,6 @@ static void xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name);
 #define CUR (*ctxt->cur)
 #define SKIP(val) ctxt->cur += (val)
 #define NXT(val) ctxt->cur[(val)]
-#define CUR_PTR ctxt->cur
 
 #define SKIP_BLANKS							\
     while (IS_BLANK_CH(*(ctxt->cur))) NEXT
@@ -999,9 +997,10 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     }
 
     if (xmlStrEqual(name, (xmlChar *) "xpointer")) {
-	const xmlChar *left = CUR_PTR;
+	const xmlChar *oldBase = ctxt->base;
+	const xmlChar *oldCur = ctxt->cur;
 
-	CUR_PTR = buffer;
+	ctxt->cur = ctxt->base = buffer;
 	/*
 	 * To evaluate an xpointer scheme element (4.3) we need:
 	 *   context initialized to the root
@@ -1012,42 +1011,51 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	ctxt->context->proximityPosition = 1;
 	ctxt->context->contextSize = 1;
 	xmlXPathEvalExpr(ctxt);
-	CUR_PTR=left;
+	ctxt->base = oldBase;
+        ctxt->cur = oldCur;
     } else if (xmlStrEqual(name, (xmlChar *) "element")) {
-	const xmlChar *left = CUR_PTR;
+	const xmlChar *oldBase = ctxt->base;
+	const xmlChar *oldCur = ctxt->cur;
 	xmlChar *name2;
 
-	CUR_PTR = buffer;
+	ctxt->cur = ctxt->base = buffer;
 	if (buffer[0] == '/') {
 	    xmlXPathRoot(ctxt);
 	    xmlXPtrEvalChildSeq(ctxt, NULL);
 	} else {
 	    name2 = xmlXPathParseName(ctxt);
 	    if (name2 == NULL) {
-		CUR_PTR = left;
+                ctxt->base = oldBase;
+                ctxt->cur = oldCur;
 		xmlFree(buffer);
                 xmlFree(name);
 		XP_ERROR(XPATH_EXPR_ERROR);
 	    }
 	    xmlXPtrEvalChildSeq(ctxt, name2);
 	}
-	CUR_PTR = left;
+	ctxt->base = oldBase;
+        ctxt->cur = oldCur;
 #ifdef XPTR_XMLNS_SCHEME
     } else if (xmlStrEqual(name, (xmlChar *) "xmlns")) {
-	const xmlChar *left = CUR_PTR;
+	const xmlChar *oldBase = ctxt->base;
+	const xmlChar *oldCur = ctxt->cur;
 	xmlChar *prefix;
 	xmlChar *URI;
 	xmlURIPtr value;
 
-	CUR_PTR = buffer;
+	ctxt->cur = ctxt->base = buffer;
         prefix = xmlXPathParseNCName(ctxt);
 	if (prefix == NULL) {
+            ctxt->base = oldBase;
+            ctxt->cur = oldCur;
 	    xmlFree(buffer);
 	    xmlFree(name);
 	    XP_ERROR(XPTR_SYNTAX_ERROR);
 	}
 	SKIP_BLANKS;
 	if (CUR != '=') {
+            ctxt->base = oldBase;
+            ctxt->cur = oldCur;
 	    xmlFree(prefix);
 	    xmlFree(buffer);
 	    xmlFree(name);
@@ -1059,6 +1067,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 
 	value = xmlParseURI((const char *)ctxt->cur);
 	if (value == NULL) {
+            ctxt->base = oldBase;
+            ctxt->cur = oldCur;
 	    xmlFree(prefix);
 	    xmlFree(buffer);
 	    xmlFree(name);
@@ -1067,6 +1077,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	URI = xmlSaveUri(value);
 	xmlFreeURI(value);
 	if (URI == NULL) {
+            ctxt->base = oldBase;
+            ctxt->cur = oldCur;
 	    xmlFree(prefix);
 	    xmlFree(buffer);
 	    xmlFree(name);
@@ -1074,7 +1086,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	}
 
 	xmlXPathRegisterNs(ctxt->context, prefix, URI);
-	CUR_PTR = left;
+        ctxt->base = oldBase;
+        ctxt->cur = oldCur;
 	xmlFree(URI);
 	xmlFree(prefix);
 #endif /* XPTR_XMLNS_SCHEME */

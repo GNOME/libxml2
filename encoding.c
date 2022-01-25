@@ -1823,7 +1823,7 @@ xmlIconvWrapper(iconv_t cd, unsigned char *out, int *outlen,
     size_t icv_inlen, icv_outlen;
     const char *icv_in = (const char *) in;
     char *icv_out = (char *) out;
-    int ret;
+    size_t ret;
 
     if ((out == NULL) || (outlen == NULL) || (inlen == NULL) || (in == NULL)) {
         if (outlen != NULL) *outlen = 0;
@@ -1834,7 +1834,7 @@ xmlIconvWrapper(iconv_t cd, unsigned char *out, int *outlen,
     ret = iconv(cd, (ICONV_CONST char **) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
     *inlen -= icv_inlen;
     *outlen -= icv_outlen;
-    if ((icv_inlen != 0) || (ret == -1)) {
+    if ((icv_inlen != 0) || (ret == (size_t) -1)) {
 #ifdef EILSEQ
         if (errno == EILSEQ) {
             return -2;

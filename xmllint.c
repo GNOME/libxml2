@@ -3134,7 +3134,7 @@ main(int argc, char **argv) {
 
     if (argc <= 1) {
 	usage(stderr, argv[0]);
-	return(1);
+	return(XMLLINT_ERR_UNCLASS);
     }
 
     /* xmlMemSetup must be called before initializing the parser. */
@@ -3504,7 +3504,7 @@ main(int argc, char **argv) {
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(stderr, argv[0]);
-	    return(1);
+	    return(XMLLINT_ERR_UNCLASS);
 	}
     }
 
@@ -3787,6 +3787,7 @@ main(int argc, char **argv) {
     }
     if ((files == 0) && (!generate) && (version == 0)) {
 	usage(stderr, argv[0]);
+        progresult = XMLLINT_ERR_UNCLASS;
     }
 #ifdef LIBXML_SCHEMATRON_ENABLED
     if (wxschematron != NULL)

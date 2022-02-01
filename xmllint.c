@@ -3189,14 +3189,13 @@ main(int argc, char **argv) {
 	if ((!strcmp(argv[i], "-maxmem")) ||
 	    (!strcmp(argv[i], "--maxmem"))) {
 	     i++;
-	     if (sscanf(argv[i], "%d", &maxmem) == 1) {
-	         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc,
-		             myStrdupFunc);
-	     } else {
+	     if ((i >= argc) || (sscanf(argv[i], "%d", &maxmem) != 1)) {
 	         maxmem = 0;
 	     }
         }
     }
+    if (maxmem != 0)
+        xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc, myStrdupFunc);
 
     LIBXML_TEST_VERSION
 

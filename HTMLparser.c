@@ -2517,6 +2517,8 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     if ((ExternalID != NULL) ||
 	(URI != NULL))
 	xmlCreateIntSubset(cur, BAD_CAST "html", ExternalID, URI);
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
 

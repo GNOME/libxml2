@@ -5899,7 +5899,7 @@ xmlSchemaPValAttrNodeQNameValue(xmlSchemaParserCtxtPtr ctxt,
 
     if (!strchr((char *) value, ':')) {
 	ns = xmlSearchNs(attr->doc, attr->parent, NULL);
-	if (ns)
+	if (ns && ns->href && ns->href[0])
 	    *uri = xmlDictLookup(ctxt->dict, ns->href, -1);
 	else if (schema->flags & XML_SCHEMAS_INCLUDING_CONVERT_NS) {
 	    /* TODO: move XML_SCHEMAS_INCLUDING_CONVERT_NS to the

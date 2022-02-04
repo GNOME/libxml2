@@ -1040,8 +1040,6 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	const xmlChar *oldBase = ctxt->base;
 	const xmlChar *oldCur = ctxt->cur;
 	xmlChar *prefix;
-	xmlChar *URI;
-	xmlURIPtr value;
 
 	ctxt->cur = ctxt->base = buffer;
         prefix = xmlXPathParseNCName(ctxt);
@@ -1063,32 +1061,10 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	}
 	NEXT;
 	SKIP_BLANKS;
-	/* @@ check escaping in the XPointer WD */
 
-	value = xmlParseURI((const char *)ctxt->cur);
-	if (value == NULL) {
-            ctxt->base = oldBase;
-            ctxt->cur = oldCur;
-	    xmlFree(prefix);
-	    xmlFree(buffer);
-	    xmlFree(name);
-	    XP_ERROR(XPTR_SYNTAX_ERROR);
-	}
-	URI = xmlSaveUri(value);
-	xmlFreeURI(value);
-	if (URI == NULL) {
-            ctxt->base = oldBase;
-            ctxt->cur = oldCur;
-	    xmlFree(prefix);
-	    xmlFree(buffer);
-	    xmlFree(name);
-	    XP_ERROR(XPATH_MEMORY_ERROR);
-	}
-
-	xmlXPathRegisterNs(ctxt->context, prefix, URI);
+	xmlXPathRegisterNs(ctxt->context, prefix, ctxt->cur);
         ctxt->base = oldBase;
         ctxt->cur = oldCur;
-	xmlFree(URI);
 	xmlFree(prefix);
 #endif /* XPTR_XMLNS_SCHEME */
     } else {

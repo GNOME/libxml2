@@ -3181,8 +3181,6 @@ main(int argc, char **argv) {
 
     /* xmlMemSetup must be called before initializing the parser. */
     for (i = 1; i < argc ; i++) {
-	if (!strcmp(argv[i], "-"))
-	    break;
 	if (argv[i][0] != '-')
 	    continue;
 
@@ -3200,11 +3198,9 @@ main(int argc, char **argv) {
     LIBXML_TEST_VERSION
 
     for (i = 1; i < argc ; i++) {
-	if (!strcmp(argv[i], "-"))
-	    break;
-
 	if (argv[i][0] != '-')
 	    continue;
+
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
 	else

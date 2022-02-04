@@ -382,6 +382,7 @@ static void des_FILE_ptr(int no ATTRIBUTE_UNUSED, FILE *val, int nr ATTRIBUTE_UN
     if (val != NULL) fclose(val);
 }
 
+#ifdef LIBXML_DEBUG_ENABLED
 #define gen_nb_debug_FILE_ptr 2
 static FILE *gen_debug_FILE_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(fopen("test.out", "a+"));
@@ -389,6 +390,7 @@ static FILE *gen_debug_FILE_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED
 static void des_debug_FILE_ptr(int no ATTRIBUTE_UNUSED, FILE *val, int nr ATTRIBUTE_UNUSED) {
     if (val != NULL) fclose(val);
 }
+#endif
 
 #define gen_nb_const_xmlChar_ptr 5
 

@@ -4342,8 +4342,45 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	}
 	ret->last = ret->children;
     } else if ((node->children != NULL) && (extended != 2)) {
-        ret->children = xmlStaticCopyNodeList(node->children, doc, ret);
-	UPDATE_LAST_CHILD_AND_PARENT(ret)
+        xmlNodePtr cur, insert;
+
+        cur = node->children;
+        insert = ret;
+        while (cur != NULL) {
+            xmlNodePtr copy = xmlStaticCopyNode(cur, doc, insert, 2);
+            if (copy == NULL) {
+                xmlFreeNode(ret);
+                return(NULL);
+            }
+
+            if (insert->last == NULL) {
+                insert->children = copy;
+            } else {
+                copy->prev = insert->last;
+                insert->last->next = copy;
+            }
+            insert->last = copy;
+
+            if (cur->children != NULL) {
+                cur = cur->children;
+                insert = copy;
+                continue;
+            }
+
+            while (1) {
+                if (cur->next != NULL) {
+                    cur = cur->next;
+                    break;
+                }
+
+                cur = cur->parent;
+                insert = insert->parent;
+                if (cur == node) {
+                    cur = NULL;
+                    break;
+                }
+            }
+        }
     }
 
 out:

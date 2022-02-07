@@ -2856,8 +2856,15 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
 		prop = prop->next;
 	    }
 	}
-	if (tree->children != NULL)
+        if (tree->type == XML_ENTITY_REF_NODE) {
+            /*
+             * Clear 'children' which points to the entity declaration
+             * from the original document.
+             */
+            tree->children = NULL;
+        } else if (tree->children != NULL) {
 	    xmlSetListDoc(tree->children, doc);
+        }
 	tree->doc = doc;
     }
 }

@@ -4982,7 +4982,7 @@ get_more:
 		ctxt->input->cur = in;
 		in++;
 		ctxt->input->line++; ctxt->input->col = 1;
-		continue; /* while */
+		goto get_more;
 	    }
 	    in--;
 	}

@@ -275,3 +275,16 @@ cmake:msvc:v141:x86:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     SUFFIX: static
+
+pages:
+  script:
+    - mkdir -p public
+    - cp -r doc/devhelp doc/tutorial doc/xmllint.html doc/xmlcatalog_man.html public
+  artifacts:
+    paths:
+      - public
+    exclude:
+      - public/devhelp/Makefile*
+      - public/devhelp/*.xsl
+  only:
+    - master

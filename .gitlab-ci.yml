@@ -287,4 +287,4 @@ pages:
       - public/devhelp/Makefile*
       - public/devhelp/*.xsl
   only:
-    - master
+    - master@gitlab-gnome-org/GNOME

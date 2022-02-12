@@ -287,4 +287,4 @@ pages:
       - public/devhelp/Makefile*
       - public/devhelp/*.xsl
   only:
-    - master@gitlab-gnome-org/GNOME/libxml2
+    - master@GNOME/libxml2

@@ -26,7 +26,7 @@ EXTRA_DIST_wc = xmlcatalog_man.xml $(wildcard tutorial/*.html) \
     $(wildcard *.gif) w3c.png $(wildcard html/*.html) \
     $(wildcard html/*.png) libxml2-api.xml index.py search.php \
     apibuild.py libxml2.xsa xmllint.xml xmlcatalog_man.xml \
-    README.docs symbols.xml
+    symbols.xml
 endif
 
 # Expanded form of EXTRA_DIST_wc
@@ -72,7 +72,6 @@ EXTRA_DIST = \
 	FAQ.html \
 	Libxml2-Logo-180x168.gif \
 	Libxml2-Logo-90x34.gif \
-	README.docs \
 	XMLinfo.html \
 	XSLT.html \
 	api.xsl \

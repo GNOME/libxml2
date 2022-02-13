@@ -218,7 +218,6 @@ EXTRA_DIST = \
 	tutorial/includexpath.c \
 	tutorial/index.html \
 	tutorial/ix01.html \
-	tutorial/xmltutorial.pdf \
 	upgrade.html \
 	w3c.png \
 	wiki.xsl \

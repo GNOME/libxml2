@@ -1,15 +1,6 @@
 
         NEWS file for libxml2
 
-  Note that this is automatically generated from the news webpage at:
-       http://xmlsoft.org/news.html
-
-The change log at 
-ChangeLog.html
- describes the recents commits
-to the GIT at 
-https://gitlab.gnome.org/GNOME/libxml2
- code base.Here is the list of public releases:
 v2.9.9: Jan 03 2019:
    - Security:
   CVE-2018-9251 CVE-2018-14567 Fix infinite loop in LZMA decompression (Nick Wellnhofer),

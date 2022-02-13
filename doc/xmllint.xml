@@ -923,11 +923,7 @@
 				<para><citerefentry>
 						<refentrytitle>libxml</refentrytitle>
 						<manvolnum>3</manvolnum>
-					</citerefentry> web page <ulink url="http://www.xmlsoft.org/"/>
-				</para>
-			</listitem>
-			<listitem>
-				<para>W3C <acronym>XSLT</acronym> page <ulink url="http://www.w3.org/TR/xslt"/>
+					</citerefentry> web page <ulink url="https://gitlab.gnome.org/GNOME/libxml2"/>
 				</para>
 			</listitem>
 		</itemizedlist>

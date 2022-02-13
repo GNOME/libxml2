@@ -47,7 +47,7 @@ libxml-doc.el      Control script for displaying docs under emacs
 
 
   Given the above files, the generation of the complete documentation (as
-provided on the web by xmlsoft.org) can be created with the following steps:
+provided on the web) can be created with the following steps:
 
 NOTE:  Steps 1 through 7 are performed with the command "make rebuild";
        Steps 3 and 5 through 7 are performed with the command "make all"

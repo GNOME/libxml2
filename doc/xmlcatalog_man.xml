@@ -437,7 +437,7 @@
 				<para><citerefentry>
 						<refentrytitle>libxml</refentrytitle>
 						<manvolnum>3</manvolnum>
-					</citerefentry> web page <ulink url="http://www.xmlsoft.org/"/>
+					</citerefentry> web page <ulink url="https://gitlab.gnome.org/GNOME/libxml2"/>
 				</para>
 			</listitem>
 			<listitem>
@@ -445,7 +445,7 @@
 						<refentrytitle>libxml</refentrytitle>
 						<manvolnum>3</manvolnum>
 					</citerefentry> catalog support web page
-					at <ulink url="http://www.xmlsoft.org/catalog.html"/>
+					at <ulink url="https://gitlab.gnome.org/GNOME/libxml2/-/wikis/Catalog-support"/>
 				</para>
 			</listitem>
 			<listitem>

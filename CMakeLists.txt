@@ -117,7 +117,7 @@ set(PACKAGE_BUGREPORT "xml@gnome.org")
 set(PACKAGE_NAME "libxml2")
 set(PACKAGE_STRING "libxml2 ${VERSION}")
 set(PACKAGE_TARNAME "libxml2")
-set(PACKAGE_URL "http://www.xmlsoft.org/")
+set(PACKAGE_URL "https://gitlab.gnome.org/GNOME/libxml2")
 set(PACKAGE_VERSION ${VERSION})
 
 if(LIBLZMA_FOUND)

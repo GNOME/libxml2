@@ -3144,8 +3144,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--xpath expr: evaluate the XPath expression, imply --noout\n");
 #endif
 
-    fprintf(f, "\nLibxml project home page: http://xmlsoft.org/\n");
-    fprintf(f, "To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
+    fprintf(f, "\nLibxml project home page: https://gitlab.gnome.org/GNOME/libxml2\n");
 }
 
 static void registerNode(xmlNodePtr node)

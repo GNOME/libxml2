@@ -2,7 +2,7 @@
                   XML toolkit from the GNOME project
 
 Full documentation is available on-line at
-    http://xmlsoft.org/
+    https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home
 
 This code is released under the MIT Licence see the Copyright file.
 
@@ -22,8 +22,8 @@ To assert build quality:
        the proper functioning of libxml2 main APIs while testapi does
        a full coverage check. Report failures to the list.
 
-To report bugs, follow the instructions at: 
-  http://xmlsoft.org/bugs.html
+Bugs should be reported at:
+    https://gitlab.gnome.org/GNOME/libxml2/-/issues
 
 A mailing-list xml@gnome.org is available, to subscribe:
     http://mail.gnome.org/mailman/listinfo/xml

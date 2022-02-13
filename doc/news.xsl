@@ -8,9 +8,6 @@
     <xsl:text>
         NEWS file for libxml2
 
-  Note that this is automatically generated from the news webpage at:
-       http://xmlsoft.org/news.html
-
 </xsl:text>
     <xsl:apply-templates select="//xhtml:h3[1]/.."/>
   </xsl:template>

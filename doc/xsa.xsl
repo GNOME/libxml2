@@ -22,7 +22,7 @@
     <name>libxml2</name>
     <version><xsl:value-of select="substring-before(//xhtml:h3[2], ':')"/></version>
     <last-release><xsl:value-of select="substring-after(//xhtml:h3[2], ':')"/></last-release>
-    <info-url>http://xmlsoft.org/</info-url>
+    <info-url>https://gitlab.gnome.org/GNOME/libxml2</info-url>
     <changes>
     <xsl:apply-templates select="//xhtml:h3[2]/following-sibling::*[1]"/>
     </changes>

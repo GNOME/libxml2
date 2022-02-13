@@ -85,7 +85,7 @@
       creating and manipulating <acronym>XML</acronym> data. This tutorial
     provides example code and explanations of its basic functionality.</para>
     <para>Libxml and more details about its use are available on <ulink
-									url="http://www.xmlsoft.org/">the project home page</ulink>. Included there is complete <ulink url="http://xmlsoft.org/html/libxml-lib.html">
+									url="https://gitlab.gnome.org/GNOME/libxml2">the project home page</ulink>. Included there is complete <ulink url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/general.html">
 	<acronym>API</acronym> documentation</ulink>. This tutorial is not meant
     to substitute for that complete documentation, but to illustrate the
     functions needed to use the library to perform basic operations.
@@ -132,23 +132,23 @@
 	      <primary>xmlChar</primary>
 	    </indexterm>
 <ulink
-	  url="http://xmlsoft.org/html/libxml-tree.html#XMLCHAR">xmlChar</ulink></term>
+	  url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLCHAR">xmlChar</ulink></term>
 	  <listitem>
 	    <para>A basic replacement for char, a byte in a UTF-8 encoded
 	    string. If your data uses another encoding, it must be converted to
 	      UTF-8 for use with <application>libxml's</application>
 	      functions. More information on encoding is available on the <ulink
-		url="http://www.xmlsoft.org/encoding.html"><application>libxml</application> encoding support web page</ulink>.</para>
+		url="https://gitlab.gnome.org/GNOME/libxml2/-/wikis/Encodings-support"><application>libxml</application> encoding support web page</ulink>.</para>
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
 	  <term><indexterm>
 	      <primary>xmlDoc</primary>
 	    </indexterm>
-	    <ulink url="http://xmlsoft.org/html/libxml-tree.html#XMLDOC">xmlDoc</ulink></term>
+	    <ulink url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLDOC">xmlDoc</ulink></term>
 	  <listitem>
 	    <para>A structure containing the tree created by a parsed doc. <ulink
-	  url="http://xmlsoft.org/html/libxml-tree.html#XMLDOCPTR">xmlDocPtr</ulink>
+	  url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLDOCPTR">xmlDocPtr</ulink>
 	  is a pointer to the structure.</para>
 	  </listitem>
 	</varlistentry>
@@ -157,11 +157,11 @@
 	      <primary>xmlNodePtr</primary>
 	    </indexterm>
 <ulink
-	  url="http://xmlsoft.org/html/libxml-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
-	    and <ulink url="http://xmlsoft.org/html/libxml-tree.html#XMLNODE">xmlNode</ulink></term>
+	  url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
+	    and <ulink url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLNODE">xmlNode</ulink></term>
 	  <listitem>
 	    <para>A structure containing a single node. <ulink
-	  url="http://xmlsoft.org/html/libxml-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
+	  url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
 	  is a pointer to the structure, and is used in traversing the document tree.</para>
 	  </listitem>
 	</varlistentry>
@@ -288,7 +288,7 @@ Retrieving the content of an element involves traversing the document
 	    looking for. It uses the <application>libxml</application> string
 	  comparison
 	    function, <function><ulink
-				       url="http://xmlsoft.org/html/libxml-parser.html#XMLSTRCMP">xmlStrcmp</ulink></function>. If there is a match, it calls the function <function>parseStory</function>.</para>
+				       url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-parser.html#XMLSTRCMP">xmlStrcmp</ulink></function>. If there is a match, it calls the function <function>parseStory</function>.</para>
 	</callout>
       </calloutlist>
     </para>
@@ -326,7 +326,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 	    contained within an element is a child node of that element, so we
 	    turn to <varname>cur-&gt;xmlChildrenNode</varname>. To retrieve it, we
 	    use the function <function><ulink
-					      url="http://xmlsoft.org/html/libxml-tree.html#XMLNODELISTGETSTRING">xmlNodeListGetString</ulink></function>, which also takes the <varname>doc</varname> pointer as an argument. In this case, we just print it out.</para>
+					      url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLNODELISTGETSTRING">xmlNodeListGetString</ulink></function>, which also takes the <varname>doc</varname> pointer as an argument. In this case, we just print it out.</para>
 	  <note>
 	    <para>Because <function>xmlNodeListGetString</function> allocates
 	      memory for the string it returns, you must use
@@ -344,7 +344,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
       use of <application>XPath</application> expressions to retrieve sets of
       nodes that match a specified criteria. Full documentation of the
       <application>XPath</application> <acronym>API</acronym> is <ulink
-	url="http://xmlsoft.org/html/libxml-xpath.html">here</ulink>.
+	url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-xpath.html">here</ulink>.
     </para>
     <para><application>XPath</application> allows searching through a document
     for nodes that match specified criteria. In the example below we search
@@ -452,7 +452,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
       <calloutlist>
 	<callout arearefs="addkeyword">
 	  <para>The <function><ulink
-				     url="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink></function>
+				     url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink></function>
 				     function adds a new child element at the
 				     current node pointer's location in the
 	    tree, specified by <varname>cur</varname>.</para>
@@ -515,7 +515,7 @@ Writing an attribute is similar to writing text to a new element. In
 	<callout arearefs="addreferencenode">
 	  <para>First we add a new node at the location of the current node
 	    pointer, <varname>cur.</varname> using the <ulink
-							      url="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink> function.</para>
+							      url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink> function.</para>
 	</callout>
       </calloutlist>
    </para>
@@ -562,7 +562,7 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
 	<callout arearefs="getattributevalue">
 	  <para>
 	    The key function is <function><ulink
-					   url="http://xmlsoft.org/html/libxml-tree.html#XMLGETPROP">xmlGetProp</ulink></function>, which returns an
+					   url="https://gnome.pages.gitlab.gnome.org/libxml2/devhelp/libxml2-tree.html#XMLGETPROP">xmlGetProp</ulink></function>, which returns an
       <varname>xmlChar</varname> containing the attribute's value. In this case,
 					   we just print it out.
       <note>

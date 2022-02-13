@@ -21,21 +21,7 @@ LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML
 
 LIBXML_VERSION_NUMBER=`expr $LIBXML_MAJOR_VERSION \* 10000 + $LIBXML_MINOR_VERSION \* 100 + $LIBXML_MICRO_VERSION`
 
-if test -f CVS/Entries ; then
-  extra=`grep ChangeLog CVS/Entries | grep -v LIBXML | sed -e s\%/ChangeLog/1\.%% -e s\%/.*$%%`
-  echo extra=$extra
-  if test "$extra" != ""
-  then
-      LIBXML_VERSION_EXTRA="-CVS$extra"
-  fi
-else if test -d .svn ; then
-  extra=`svn info | grep Revision | sed 's+Revision: ++'`
-  echo extra=$extra
-  if test "$extra" != ""
-  then
-      LIBXML_VERSION_EXTRA="-SVN$extra"
-  fi
-else if test -d .git ; then
+if test -d .git ; then
   extra=`git describe 2>/dev/null | sed 's+LIBXML[[0-9.]]*-++'`
   echo extra=$extra
   if test "$extra" != ""
@@ -43,8 +29,7 @@ else if test -d .git ; then
       LIBXML_VERSION_EXTRA="-GIT$extra"
   fi
 fi
-fi
-fi
+
 AC_SUBST(LIBXML_MAJOR_VERSION)
 AC_SUBST(LIBXML_MINOR_VERSION)
 AC_SUBST(LIBXML_MICRO_VERSION)

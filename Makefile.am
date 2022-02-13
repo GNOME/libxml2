@@ -1209,14 +1209,14 @@ cleanup:
 
 dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)
-	(cd $(srcdir) ; tar -cf - --exclude CVS --exclude .svn --exclude .git win32 macos os400 vms VxWorks bakefile test result) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar -cf - --exclude .git win32 macos os400 vms VxWorks bakefile test result) | (cd $(distdir); tar xf -)
 
 dist-source: distdir
 	$(AMTAR) -chof - --exclude Tests --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
 
 dist-test: distdir
 	(mkdir -p $(distdir))
-	(cd $(srcdir) ; tar -cf - --exclude CVS --exclude .svn --exclude .git xstc/Tests) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar -cf - --exclude .git xstc/Tests) | (cd $(distdir); tar xf -)
 	tar -cf - $(distdir)/test $(distdir)/result $(distdir)/xstc/Tests  $(distdir)/Makefile.tests $(distdir)/README $(distdir)/README.tests $(distdir)/AUTHORS $(distdir)/testapi.c $(distdir)/runtest.c $(distdir)/runsuite.c | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-tests+"`.tar.gz
 	@(rm -rf $(distdir)/xstc/Test)
 
@@ -1246,7 +1246,6 @@ DISTCLEANFILES = COPYING missing.lst
 
 confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
-CVS_EXTRA_DIST=
 EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
              libxml.m4 Copyright check-xml-test-suite.py gentest.py \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
@@ -1260,8 +1259,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
 	     README.tests Makefile.tests libxml2.syms timsort.h \
 	     README.zOS \
-	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in \
-	     $(CVS_EXTRA_DIST)
+	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in
 
 
 pkgconfigdir = $(libdir)/pkgconfig

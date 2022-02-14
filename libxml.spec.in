@@ -6,7 +6,7 @@ Version: @VERSION@
 Release: 1%{?dist}%{?extra_release}
 License: MIT
 Group: Development/Libraries
-Source: https://gitlab.gnome.org/GNOME/libxml2/-/releases/v%{version}/downloads/libxml2-%{version}.tar.gz
+Source: https://download.gnome.org/sources/libxml2/@LIBXML_MAJOR_VERSION@.@LIBXML_MINOR_VERSION@/libxml2-%{version}.tar.xz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: python-devel
 %if 0%{?with_python3}

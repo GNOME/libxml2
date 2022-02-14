@@ -66,7 +66,6 @@ EXTRA_DIST = \
 	APIfiles.html \
 	APIfunctions.html \
 	APIsymbols.html \
-	ChangeLog.xsl \
 	DOM.gif \
 	DOM.html \
 	FAQ.html \

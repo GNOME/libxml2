@@ -141,7 +141,7 @@ rm -fr %{buildroot}
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS NEWS README Copyright TODO
+%doc NEWS README.md Copyright TODO
 %doc %{_mandir}/man1/xmllint.1*
 %doc %{_mandir}/man1/xmlcatalog.1*
 %doc %{_mandir}/man3/libxml.3*
@@ -154,7 +154,7 @@ rm -fr %{buildroot}
 %defattr(-, root, root)
 
 %doc %{_mandir}/man1/xml2-config.1*
-%doc AUTHORS NEWS README Copyright
+%doc NEWS README.md Copyright
 %doc doc/*.html doc/html doc/*.gif doc/*.png
 %doc doc/tutorial doc/libxml2-api.xml.gz
 %doc doc/examples

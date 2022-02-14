@@ -1217,7 +1217,7 @@ dist-source: distdir
 dist-test: distdir
 	(mkdir -p $(distdir))
 	(cd $(srcdir) ; tar -cf - --exclude .git xstc/Tests) | (cd $(distdir); tar xf -)
-	tar -cf - $(distdir)/test $(distdir)/result $(distdir)/xstc/Tests  $(distdir)/Makefile.tests $(distdir)/README $(distdir)/README.tests $(distdir)/AUTHORS $(distdir)/testapi.c $(distdir)/runtest.c $(distdir)/runsuite.c | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-tests+"`.tar.gz
+	tar -cf - $(distdir)/test $(distdir)/result $(distdir)/xstc/Tests  $(distdir)/Makefile.tests $(distdir)/README.md $(distdir)/README.tests $(distdir)/testapi.c $(distdir)/runtest.c $(distdir)/runsuite.c | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-tests+"`.tar.gz
 	@(rm -rf $(distdir)/xstc/Test)
 
 cleantar:
@@ -1258,7 +1258,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     enc.h save.h genUnicode.py TODO_SCHEMAS \
 	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
 	     README.tests Makefile.tests libxml2.syms timsort.h \
-	     README.zOS \
+	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in
 
 

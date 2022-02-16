@@ -686,11 +686,6 @@ install(
 configure_file(include/libxml/xmlversion.h.in libxml/xmlversion.h)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlversion.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
-if(MSVC)
-	configure_file(include/libxml/xmlwin32version.h.in libxml/xmlwin32version.h)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlwin32version.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
-endif()
-
 if(LIBXML2_WITH_PYTHON)
 	set(prefix "${CMAKE_INSTALL_PREFIX}")
 	configure_file(python/setup.py.in setup.py @ONLY)

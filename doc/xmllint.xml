@@ -45,8 +45,6 @@
 			</affiliation>
 		</author>
 	</authorgroup>
-	<!-- date should be the date of the latest change or the release version -->
-	<date>$Date$</date>
 	<!-- still a bit buggy output, will talk to docbook-xsl upstream to fix this -->
 	<!-- <releaseinfo>This is release 0.5 of the xmllint Manual.</releaseinfo> -->
 	<!-- <edition>0.5</edition> -->

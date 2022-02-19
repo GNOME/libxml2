@@ -3,10 +3,7 @@ genSeed
 html
 regexp
 schema
-seed/html*
-seed/schema*
-seed/xml*
-seed/xpath*
+seed/
 testFuzzer
 uri
 xml

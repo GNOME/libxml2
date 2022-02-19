@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: xmlcatalog
 .\"    Author: John Fleck <jfleck@inkstain.net>
-.\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: $Date$
+.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Date: 02/19/2022
 .\"    Manual: xmlcatalog Manual
 .\"    Source: libxml2
 .\"  Language: English
 .\"
-.TH "XMLCATALOG" "1" "$Date$" "libxml2" "xmlcatalog Manual"
+.TH "XMLCATALOG" "1" "02/19/2022" "libxml2" "xmlcatalog Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -245,7 +245,7 @@ Execute a Formal Public Identifier lookup of the catalog entry for
 XML
 catalog behavior can be changed by redirecting queries to the user\*(Aqs own set of catalogs\&. This can be done by setting the
 \fBXML_CATALOG_FILES\fR
-environment variable to a list of catalogs\&. An empty one should deactivate loading the default
+environment variable to a space\-separated list of catalogs\&. Use percent\-encoding to escape spaces or other characters\&. An empty variable should deactivate loading the default
 /etc/xml/catalog
 catalog\&.
 .RE
@@ -294,7 +294,7 @@ More information can be found at
 .\}
 \fBlibxml\fR(3)
 web page
-\m[blue]\fB\%http://www.xmlsoft.org/\fR\m[]
+\m[blue]\fB\%https://gitlab.gnome.org/GNOME/libxml2\fR\m[]
 .RE
 .sp
 .RS 4
@@ -307,7 +307,7 @@ web page
 .\}
 \fBlibxml\fR(3)
 catalog support web page at
-\m[blue]\fB\%http://www.xmlsoft.org/catalog.html\fR\m[]
+\m[blue]\fB\%https://gitlab.gnome.org/GNOME/libxml2/-/wikis/Catalog-support\fR\m[]
 .RE
 .sp
 .RS 4

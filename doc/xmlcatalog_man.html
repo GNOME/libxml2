@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlcatalog</title><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry"><a name="idm45940765506544"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>xmlcatalog &#8212; 
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlcatalog</title><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry"><a name="idm1"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>xmlcatalog &#8212; 
 		Command line tool to parse and manipulate <acronym class="acronym">XML</acronym>
 		or <acronym class="acronym">SGML</acronym> catalog files.
 	</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">xmlcatalog</code>  [ <code class="option">--sgml</code>  |   <code class="option">--shell</code>  |   <code class="option">--create</code>  |   <code class="option">--del <em class="replaceable"><code>VALUE(S)</code></em></code>  |   
@@ -120,18 +120,18 @@
 			output to the command line.
 		</p></dd></dl></div></div><div class="refsect1"><a name="environment"></a><h2>ENVIRONMENT</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">XML_CATALOG_FILES</code></span></dt><dd><p><acronym class="acronym">XML</acronym> catalog behavior can be changed by redirecting
 			queries to the user's own set of catalogs. This can be done by setting
-			the <code class="envar">XML_CATALOG_FILES</code> environment variable to a list
-			of catalogs. An empty one should deactivate loading the
-			default <code class="filename">/etc/xml/catalog</code> catalog.
+			the <code class="envar">XML_CATALOG_FILES</code> environment variable to a space-separated
+			list of catalogs. Use percent-encoding to escape spaces or other characters.
+			An empty variable should deactivate loading the default <code class="filename">/etc/xml/catalog</code> catalog.
 		</p></dd></dl></div></div><div class="refsect1"><a name="diagnostics"></a><h2>DIAGNOSTICS</h2><p>
 		<span class="command"><strong>xmlcatalog</strong></span> return codes provide information that can be used when
 		calling it from scripts.
 	</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><span class="errorcode">0</span></span></dt><dd><p>No error</p></dd><dt><span class="term"><span class="errorcode">1</span></span></dt><dd><p>Failed to remove an entry from the catalog</p></dd><dt><span class="term"><span class="errorcode">2</span></span></dt><dd><p>Failed to save to the catalog, check file permissions</p></dd><dt><span class="term"><span class="errorcode">3</span></span></dt><dd><p>Failed to add an entry to the catalog</p></dd><dt><span class="term"><span class="errorcode">4</span></span></dt><dd><p>Failed to look up an entry in the catalog</p></dd></dl></div></div><div class="refsect1"><a name="seealso"></a><h2>SEE ALSO</h2><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span>
 	</p><p>
 		More information can be found at
-		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span> web page <a class="ulink" href="http://www.xmlsoft.org/" target="_top">http://www.xmlsoft.org/</a>
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span> web page <a class="ulink" href="https://gitlab.gnome.org/GNOME/libxml2" target="_top">https://gitlab.gnome.org/GNOME/libxml2</a>
 				</p></li><li class="listitem"><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span> catalog support web page
-					at <a class="ulink" href="http://www.xmlsoft.org/catalog.html" target="_top">http://www.xmlsoft.org/catalog.html</a>
+					at <a class="ulink" href="https://gitlab.gnome.org/GNOME/libxml2/-/wikis/Catalog-support" target="_top">https://gitlab.gnome.org/GNOME/libxml2/-/wikis/Catalog-support</a>
 				</p></li><li class="listitem"><p>James Clark's <acronym class="acronym">SGML</acronym> catalog
 					page <a class="ulink" href="http://www.jclark.com/sp/catalog.htm" target="_top">http://www.jclark.com/sp/catalog.htm</a>
 				</p></li><li class="listitem"><p><acronym class="acronym">OASIS</acronym> <acronym class="acronym">XML</acronym> catalog specification

@@ -4078,7 +4078,7 @@
       <info>the version number: 1.2.3 value is 10203</info>
     </macro>
     <macro name='LIBXML_VERSION_EXTRA' file='xmlversion'>
-      <info>extra version information, used to show a CVS compilation</info>
+      <info>extra version information, used to show a git commit description</info>
     </macro>
     <macro name='LIBXML_VERSION_STRING' file='xmlversion'>
       <info>the version number string, 1.2.3 value is &quot;10203&quot;</info>
@@ -7804,7 +7804,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlReadFd' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>parse an XML from a file descriptor and build a tree.</info>
+      <info>parse an HTML from a file descriptor and build a tree. NOTE that the file descriptor will not be closed when the reader is closed or reset.</info>
       <return type='htmlDocPtr' info='the resulting document tree'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>

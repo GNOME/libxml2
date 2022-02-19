@@ -137,9 +137,9 @@
 			default <code class="filename">/etc/sgml/catalog</code> catalog.
 		</p></dd><dt><span class="term"><code class="envar">XML_CATALOG_FILES</code></span></dt><dd><p><acronym class="acronym">XML</acronym> catalog behavior can be changed by redirecting
 			queries to the user's own set of catalogs. This can be done by setting
-			the <code class="envar">XML_CATALOG_FILES</code> environment variable to a list
-			of catalogs. An empty one should deactivate loading the
-			default <code class="filename">/etc/xml/catalog</code> catalog.
+			the <code class="envar">XML_CATALOG_FILES</code> environment variable to a space-separated
+			list of catalogs. Use percent-encoding to escape spaces or other characters.
+			An empty variable should deactivate loading the default <code class="filename">/etc/xml/catalog</code> catalog.
 		</p></dd><dt><span class="term"><code class="envar">XML_DEBUG_CATALOG</code></span></dt><dd><p>Setting the environment variable <code class="envar">XML_DEBUG_CATALOG</code>
 			to <em class="parameter"><code>non-zero</code></em> using the <span class="command"><strong>export</strong></span>
 			command outputs debugging information related to catalog operations.
@@ -153,10 +153,9 @@
 		</p></dd><dt><span class="term"><span class="errorcode">8</span></span></dt><dd><p>
 			Error in Reader registration (generated
 			when <code class="option">--chkregister</code> option is used)
-		</p></dd><dt><span class="term"><span class="errorcode">9</span></span></dt><dd><p>Out of memory error</p></dd></dl></div></div><div class="refsect1"><a name="seealso"></a><h2>SEE ALSO</h2><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span>
+		</p></dd><dt><span class="term"><span class="errorcode">9</span></span></dt><dd><p>Out of memory error</p></dd><dt><span class="term"><span class="errorcode">10</span></span></dt><dd><p>XPath evaluation error</p></dd></dl></div></div><div class="refsect1"><a name="seealso"></a><h2>SEE ALSO</h2><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span>
 	</p><p>
 		More information can be found at
-		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span> web page <a class="ulink" href="http://www.xmlsoft.org/" target="_top">http://www.xmlsoft.org/</a>
-				</p></li><li class="listitem"><p>W3C <acronym class="acronym">XSLT</acronym> page <a class="ulink" href="http://www.w3.org/TR/xslt" target="_top">http://www.w3.org/TR/xslt</a>
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span> web page <a class="ulink" href="https://gitlab.gnome.org/GNOME/libxml2" target="_top">https://gitlab.gnome.org/GNOME/libxml2</a>
 				</p></li></ul></div><p>
 	</p></div></div></body></html>

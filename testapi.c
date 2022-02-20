@@ -8,6 +8,9 @@
  * daniel@veillard.com
  */
 
+/* Disable deprecation warnings */
+#define XML_DEPRECATED
+
 #include "libxml.h"
 #include <stdio.h>
 

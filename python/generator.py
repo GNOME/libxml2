@@ -289,7 +289,14 @@ skip_impl = (
     'xmlSaveFormatFileTo',
 )
 
+deprecated_funcs = {
+    'xmlIsRef': True,
+    'xmlRemoveRef': True,
+}
+
 def skip_function(name):
+    if name in deprecated_funcs:
+        return 1
     if name[0:12] == "xmlXPathWrap":
         return 1
     if name == "xmlFreeParserCtxt":

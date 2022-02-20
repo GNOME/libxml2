@@ -283,20 +283,25 @@ XMLPUBFUN int XMLCALL
 					xmlAttrPtr attr);
 
 /* IDREFs */
+XML_DEPRECATED
 XMLPUBFUN xmlRefPtr XMLCALL
 		xmlAddRef	       (xmlValidCtxtPtr ctxt,
 					xmlDocPtr doc,
 					const xmlChar *value,
 					xmlAttrPtr attr);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 		xmlFreeRefTable	       (xmlRefTablePtr table);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 		xmlIsRef	       (xmlDocPtr doc,
 					xmlNodePtr elem,
 					xmlAttrPtr attr);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 		xmlRemoveRef	       (xmlDocPtr doc,
 					xmlAttrPtr attr);
+XML_DEPRECATED
 XMLPUBFUN xmlListPtr XMLCALL
 		xmlGetRefs	       (xmlDocPtr doc,
 					const xmlChar *ID);

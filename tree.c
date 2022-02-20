@@ -10188,5 +10188,3 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
     return (0);
 }
 
-#define bottom_tree
-#include "elfgcchack.h"

@@ -31,7 +31,6 @@ ignored_files = {
   "testOOMlib.c": "out of memory tester",
   "rngparser.c": "not yet integrated",
   "rngparser.h": "not yet integrated",
-  "elfgcchack.h": "not a normal header",
   "testHTML.c": "test tool",
   "testReader.c": "test tool",
   "testSchemas.c": "test tool",

@@ -117,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\acconfig.h" />
-    <ClInclude Include="..\..\elfgcchack.h" />
     <ClInclude Include="..\..\libxml.h" />
     <ClInclude Include="config.h" />
   </ItemGroup>

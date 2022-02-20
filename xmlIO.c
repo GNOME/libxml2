@@ -4133,5 +4133,3 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
     return(input);
 }
 
-#define bottom_xmlIO
-#include "elfgcchack.h"

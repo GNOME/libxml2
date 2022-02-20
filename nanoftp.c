@@ -2114,5 +2114,3 @@ int main(int argc, char **argv) {
 }
 #endif /* STANDALONE */
 #endif /* LIBXML_FTP_ENABLED */
-#define bottom_nanoftp
-#include "elfgcchack.h"

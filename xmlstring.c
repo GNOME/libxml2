@@ -1051,5 +1051,3 @@ xmlEscapeFormatString(xmlChar **msg)
     return *msg;
 }
 
-#define bottom_xmlstring
-#include "elfgcchack.h"

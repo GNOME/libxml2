@@ -2162,5 +2162,3 @@ xmlKeepBlanksDefault(int val) {
     return(old);
 }
 
-#define bottom_parserInternals
-#include "elfgcchack.h"

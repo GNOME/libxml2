@@ -1591,5 +1591,3 @@ int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     return(0);
 }
 #endif
-#define bottom_rngparser
-#include "elfgcchack.h"

@@ -1122,5 +1122,3 @@ __xmlOutputBufferCreateFilenameValue(void) {
 	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
 }
 
-#define bottom_globals
-#include "elfgcchack.h"

@@ -2651,5 +2651,3 @@ xmlXIncludeProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
 
 #else /* !LIBXML_XINCLUDE_ENABLED */
 #endif
-#define bottom_xinclude
-#include "elfgcchack.h"

@@ -15551,5 +15551,3 @@ xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
     return (xmlDoRead(ctxt, URL, encoding, options, 1));
 }
 
-#define bottom_parser
-#include "elfgcchack.h"

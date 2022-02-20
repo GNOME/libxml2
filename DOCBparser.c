@@ -300,6 +300,5 @@ docbParseFile(const char *filename ATTRIBUTE_UNUSED,
 
     return (xmlParseFile(filename));
 }
-#define bottom_DOCBparser
-#include "elfgcchack.h"
+
 #endif /* LIBXML_DOCB_ENABLED */

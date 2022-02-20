@@ -2558,5 +2558,3 @@ xmlPathToURI(const xmlChar *path)
     xmlFree(cal);
     return(ret);
 }
-#define bottom_uri
-#include "elfgcchack.h"

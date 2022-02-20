@@ -1347,5 +1347,3 @@ xmlBufSetInputBaseCur(xmlBufPtr buf, xmlParserInputPtr input,
     return(0);
 }
 
-#define bottom_buf
-#include "elfgcchack.h"

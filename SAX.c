@@ -175,6 +175,4 @@ initdocbDefaultSAXHandler(xmlSAXHandlerV1 *hdlr)
 
 #endif /* LIBXML_SAX1_ENABLED */
 
-#define bottom_SAX
-#include "elfgcchack.h"
 #endif /* LIBXML_LEGACY_ENABLED */

@@ -83,7 +83,6 @@ EXTRA_DIST = \
 	contribs.html \
 	docs.html \
 	downloads.html \
-	elfgcchack.xsl \
 	encoding.html \
 	entities.html \
 	example.html \
@@ -237,18 +236,9 @@ man_MANS = xmllint.1 xmlcatalog.1
 if REBUILD_DOCS
 docs: web $(top_builddir)/NEWS libxml2.xsa $(man_MANS)
 
-api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src ../elfgcchack.h $(srcdir)/site.xsl
+api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src $(srcdir)/site.xsl
 
 web: $(PAGES) xmllint.html xmlcatalog_man.html
-
-../elfgcchack.h: $(srcdir)/elfgcchack.xsl $(srcdir)/libxml2-api.xml
-	-@(if [ -x $(XSLTPROC) ] ; then \
-	  echo "Rebuilding the elfgcchack.h header" ; \
-	  $(XSLTPROC) --nonet $(srcdir)/elfgcchack.xsl $(srcdir)/libxml2-api.xml > elfgcchack.h ; \
-	  if [ "`diff -q elfgcchack.h ../elfgcchack.h`" ] ; then \
-	    echo "updating ../elfgcchack.h"; \
-	    cp elfgcchack.h ../elfgcchack.h; \
-	  fi ; rm -f elfgcchack.h ;  fi );
 
 $(PAGES): xml.html $(srcdir)/site.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \

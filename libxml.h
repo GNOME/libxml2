@@ -117,17 +117,6 @@ int __xmlRandom(void);
 XMLPUBFUN xmlChar * XMLCALL xmlEscapeFormatString(xmlChar **msg);
 int xmlInputReadCallbackNop(void *context, char *buffer, int len);
 
-#ifdef IN_LIBXML
-#ifdef __GNUC__
-#ifdef PIC
-#ifdef __linux__
-#if (__GNUC__ == 3 && __GNUC_MINOR__ >= 3) || (__GNUC__ > 3)
-#include "elfgcchack.h"
-#endif
-#endif
-#endif
-#endif
-#endif
 #if !defined(PIC) && !defined(NOLIBTOOL) && !defined(LIBXML_STATIC)
 #  define LIBXML_STATIC
 #endif

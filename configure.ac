@@ -125,7 +125,7 @@ AC_ARG_WITH(icu,
 AC_ARG_WITH(iso8859x,
 [  --with-iso8859x         add ISO8859X support if no iconv (on)])
 AC_ARG_WITH(legacy,
-[  --with-legacy           add deprecated APIs for compatibility (on)])
+[  --with-legacy           add deprecated APIs for compatibility (off)])
 AC_ARG_WITH(mem_debug,
 [  --with-mem-debug        add the memory debugging module (off)])
 AC_ARG_WITH(minimum,
@@ -273,10 +273,6 @@ then
     if test "$with_iso8859x" = ""
     then
       with_iso8859x=no
-    fi
-    if test "$with_legacy" = ""
-    then
-      with_legacy=no
     fi
     if test "$with_mem_debug" = ""
     then 
@@ -1146,7 +1142,7 @@ fi
 AC_SUBST(WITH_HTTP)
 AC_SUBST(HTTP_OBJ)
 
-if test "$with_legacy" = "no" ; then
+if test "$with_legacy" != "yes" ; then
     echo Disabling deprecated APIs
     WITH_LEGACY=0
 else    

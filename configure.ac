@@ -203,7 +203,7 @@ AC_ARG_ENABLE(rebuild-docs,
 if test "$enable_rebuild_docs" = "yes" -a "$srcdir" != "."; then
   AC_MSG_ERROR([cannot rebuild docs when builddir != srcdir])
 fi
-AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes" -o "$USER" = "veillard"])
+AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes"])
 
 dnl
 dnl hard dependencies on options
@@ -943,39 +943,6 @@ AC_SUBST(WITH_MODULES)
 AC_SUBST(MODULE_PLATFORM_LIBS)
 AC_SUBST(MODULE_EXTENSION)
 AC_SUBST(TEST_MODULES)
-
-dnl
-dnl Tester makes use of readline if present
-dnl
-
-dnl
-dnl specific tests to setup DV and Bill's devel environments with debug etc ...
-dnl (-Wunreachable-code)
-dnl
-if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
-   [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/home/veillard/libxml2" ]] || \
-   [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomesvn/libxml2" ]]
-   then
-    if test "$with_minimum" != "yes"
-    then
-	if test "${with_mem_debug}" = "" ; then
-	    echo Activating memory debugging
-	    with_mem_debug="yes"
-	    with_run_debug="yes"
-	fi
-	if test "${with_docbook}" = "" ; then
-	    with_docbook="no"
-	fi
-    fi
-    if test "${GCC}" = "yes" ; then
-    EXTRA_CFLAGS="-g -O -pedantic -W -Wformat -Wno-format-extra-args -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls -Wall"
-    fi
-    STATIC_BINARIES="-static"
-dnl -Wcast-qual -ansi
-else
-    STATIC_BINARIES=
-fi
-AC_SUBST(STATIC_BINARIES)
 
 dnl
 dnl Check for trio string functions

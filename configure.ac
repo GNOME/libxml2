@@ -102,7 +102,7 @@ AC_ARG_WITH(docbook,
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 AC_ARG_WITH(ftp,
-[  --with-ftp              add the FTP support (on)])
+[  --with-ftp              add the FTP support (off)])
 AC_ARG_WITH(history,
 [  --with-history          add history support to xmllint shell(off)])
 AC_ARG_WITH(html,
@@ -253,10 +253,6 @@ then
     if test "$with_fexceptions" = ""
     then
       with_fexceptions=no
-    fi
-    if test "$with_ftp" = ""
-    then
-      with_ftp=no 
     fi
     if test "$with_history" = ""
     then
@@ -1128,7 +1124,7 @@ else
 fi
 AC_SUBST(WITH_TREE)
 
-if test "$with_ftp" = "no" ; then
+if test "$with_ftp" != "yes" ; then
     echo Disabling FTP support
     WITH_FTP=0
     FTP_OBJ=

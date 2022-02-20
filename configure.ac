@@ -98,7 +98,7 @@ AC_ARG_WITH(catalog,
 AC_ARG_WITH(debug,
 [  --with-debug            add the debugging module (on)])
 AC_ARG_WITH(docbook,
-[  --with-docbook          add Docbook SGML support (on)])
+[  --with-docbook          add Docbook SGML support (off)])
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 AC_ARG_WITH(ftp,
@@ -245,10 +245,6 @@ then
     if test "$with_debug" = ""
     then
       with_debug=no
-    fi
-    if test "$with_docbook" = ""
-    then
-      with_docbook=no
     fi
     if test "$with_fexceptions" = ""
     then
@@ -968,7 +964,7 @@ if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
 	    with_run_debug="yes"
 	fi
 	if test "${with_docbook}" = "" ; then
-	    with_docbook="yes"
+	    with_docbook="no"
 	fi
     fi
     if test "${GCC}" = "yes" ; then
@@ -1266,7 +1262,7 @@ AC_SUBST(WITH_CATALOG)
 AC_SUBST(CATALOG_OBJ)
 AC_SUBST(TEST_CATALOG)
 
-if test "$with_docbook" = "no" ; then
+if test "$with_docbook" != "yes" ; then
     echo Disabling Docbook support
     WITH_DOCB=0
     DOCB_OBJ=

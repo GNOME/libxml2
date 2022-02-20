@@ -86,7 +86,7 @@ xmlEntitiesErrMemory(const char *extra)
  * @code:  the error code
  * @msg:  the message
  *
- * Handle an out of memory condition
+ * Raise an error.
  */
 static void LIBXML_ATTR_FORMAT(2,0)
 xmlEntitiesErr(xmlParserErrors code, const char *msg)
@@ -99,7 +99,7 @@ xmlEntitiesErr(xmlParserErrors code, const char *msg)
  * @code:  the error code
  * @msg:  the message
  *
- * Handle an out of memory condition
+ * Raise a warning.
  */
 static void LIBXML_ATTR_FORMAT(2,0)
 xmlEntitiesWarn(xmlParserErrors code, const char *msg, const xmlChar *str1)

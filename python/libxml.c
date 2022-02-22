@@ -1886,6 +1886,7 @@ libxml_xmlFreeParserCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
     return(Py_None);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /***
  * xmlValidCtxt stuff
  */
@@ -2045,6 +2046,7 @@ libxml_xmlFreeValidCtxt(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     Py_INCREF(Py_None);
     return(Py_None);
 }
+#endif /* LIBXML_VALID_ENABLED */
 
 #ifdef LIBXML_READER_ENABLED
 /************************************************************************
@@ -3838,8 +3840,10 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "doc", libxml_doc, METH_VARARGS, NULL},
     {(char *) "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL},
     {(char *) "xmlNodeRemoveNsDef", libxml_xmlNodeRemoveNsDef, METH_VARARGS, NULL},
+#ifdef LIBXML_VALID_ENABLED
     {(char *)"xmlSetValidErrors", libxml_xmlSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlFreeValidCtxt", libxml_xmlFreeValidCtxt, METH_VARARGS, NULL},
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_OUTPUT_ENABLED
     {(char *) "serializeNode", libxml_serializeNode, METH_VARARGS, NULL},
     {(char *) "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL},

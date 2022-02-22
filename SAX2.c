@@ -181,31 +181,6 @@ xmlWarnMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlNsErrMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  an error string
- * @str2:  an error string
- *
- * Handle a namespace error
- */
-static void LIBXML_ATTR_FORMAT(3,0)
-xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
-            const char *msg, const xmlChar *str1, const xmlChar *str2)
-{
-    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
-        (ctxt->instate == XML_PARSER_EOF))
-	return;
-    if (ctxt != NULL)
-	ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
-                    XML_ERR_ERROR, NULL, 0,
-		    (const char *) str1, (const char *) str2,
-		    NULL, 0, 0, msg, str1, str2);
-}
-
-/**
  * xmlNsWarnMsg:
  * @ctxt:  an XML parser context
  * @error:  the error number
@@ -709,6 +684,9 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
     xmlAttributePtr attr;
     xmlChar *name = NULL, *prefix = NULL;
 
+    /* Avoid unused variable warning if features are disabled. */
+    (void) attr;
+
     if ((ctxt == NULL) || (ctxt->myDoc == NULL))
         return;
 
@@ -776,6 +754,9 @@ xmlSAX2ElementDecl(void *ctx, const xmlChar * name, int type,
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlElementPtr elem = NULL;
 
+    /* Avoid unused variable warning if features are disabled. */
+    (void) elem;
+
     if ((ctxt == NULL) || (ctxt->myDoc == NULL))
         return;
 
@@ -821,6 +802,9 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNotationPtr nota = NULL;
+
+    /* Avoid unused variable warning if features are disabled. */
+    (void) nota;
 
     if ((ctxt == NULL) || (ctxt->myDoc == NULL))
         return;
@@ -1052,6 +1036,31 @@ xmlSAX2EndDocument(void *ctx)
 
 #if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_DOCB_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 /**
+ * xmlNsErrMsg:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an error string
+ * @str2:  an error string
+ *
+ * Handle a namespace error
+ */
+static void LIBXML_ATTR_FORMAT(3,0)
+xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+            const char *msg, const xmlChar *str1, const xmlChar *str2)
+{
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
+                    XML_ERR_ERROR, NULL, 0,
+		    (const char *) str1, (const char *) str2,
+		    NULL, 0, 0, msg, str1, str2);
+}
+
+/**
  * xmlSAX2AttributeInternal:
  * @ctx: the user data (XML parser context)
  * @fullname:  The attribute name, including namespace prefix
@@ -1144,6 +1153,9 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	xmlNsPtr nsret;
 	xmlChar *val;
 
+        /* Avoid unused variable warning if features are disabled. */
+        (void) nsret;
+
         if (!ctxt->replaceEntities) {
 	    ctxt->depth++;
 	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
@@ -1205,6 +1217,9 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
         (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
 	xmlNsPtr nsret;
 	xmlChar *val;
+
+        /* Avoid unused variable warning if features are disabled. */
+        (void) nsret;
 
         if (!ctxt->replaceEntities) {
 	    ctxt->depth++;

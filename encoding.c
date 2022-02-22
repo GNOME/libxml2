@@ -2780,6 +2780,9 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
     int tofree = 0;
     int i, handler_in_list = 0;
 
+    /* Avoid unused variable warning if features are disabled. */
+    (void) handler_in_list;
+
     if (handler == NULL) return(-1);
     if (handler->name == NULL) return(-1);
     if (handlers != NULL) {

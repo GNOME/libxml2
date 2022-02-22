@@ -3821,6 +3821,9 @@ xmlParserGetDirectory(const char *filename) {
  */
 xmlParserInputPtr
 xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
+    /* Avoid unused variable warning if features are disabled. */
+    (void) ctxt;
+
 #ifdef LIBXML_HTTP_ENABLED
     if ((ret != NULL) && (ret->buf != NULL) &&
         (ret->buf->readcallback == xmlIOHTTPRead) &&

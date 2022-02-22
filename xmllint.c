@@ -3853,6 +3853,9 @@ main(int argc, char **argv) {
         xmlFreePattern(patternc);
 #endif
 
+    /* Avoid unused label warning if features are disabled. */
+    goto error;
+
 error:
     xmlCleanupParser();
     xmlMemoryDump();

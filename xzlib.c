@@ -389,6 +389,10 @@ xz_head(xz_statep state)
     int flags;
     unsigned len;
 
+    /* Avoid unused variable warning if features are disabled. */
+    (void) flags;
+    (void) len;
+
     /* allocate read buffers and inflate memory */
     if (state->size == 0) {
         /* allocate buffers */
@@ -535,6 +539,10 @@ xz_decomp(xz_statep state)
     lzma_stream *strm = &(state->strm);
 
     lzma_action action = LZMA_RUN;
+
+    /* Avoid unused variable warning if features are disabled. */
+    (void) crc;
+    (void) len;
 
     /* fill output buffer up to end of deflate stream */
     had = strm->avail_out;

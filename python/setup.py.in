@@ -6,7 +6,7 @@ import sys, os
 
 try:
     import setuptools
-except ModuleNotFoundError:
+except ImportError:
     pass
 
 from distutils.core import setup, Extension

@@ -1012,7 +1012,7 @@ parseAndPrintFile(char *filename) {
 	    /*
 	     * Empty callbacks for checking
 	     */
-#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+#if defined(_WIN32) || defined (__DJGPP__)
 	    f = fopen(filename, "rb");
 #else
 	    f = fopen(filename, "r");
@@ -1041,7 +1041,7 @@ parseAndPrintFile(char *filename) {
 	/*
 	 * Debug callback
 	 */
-#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+#if defined(_WIN32) || defined (__DJGPP__)
 	f = fopen(filename, "rb");
 #else
 	f = fopen(filename, "r");

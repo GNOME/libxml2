@@ -45,10 +45,6 @@
 #include <windows.h>
 #endif
 
-#if defined(_WIN32_WCE)
-#include <winnls.h> /* for CP_UTF8 */
-#endif
-
 #ifndef S_ISDIR
 #  ifdef _S_ISDIR
 #    define S_ISDIR(x) _S_ISDIR(x)
@@ -3764,10 +3760,6 @@ xmlParserGetDirectory(const char *filename) {
     char *ret = NULL;
     char dir[1024];
     char *cur;
-
-#ifdef _WIN32_WCE  /* easy way by now ... wince does not have dirs! */
-    return NULL;
-#endif
 
     if (xmlInputCallbackInitialized == 0)
 	xmlRegisterDefaultInputCallbacks();

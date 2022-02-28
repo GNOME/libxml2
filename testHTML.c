@@ -627,7 +627,7 @@ parseSAXFile(char *filename) {
     if (push) {
 	FILE *f;
 
-#if defined(_WIN32) || defined (__DJGPP__)
+#if defined(_WIN32)
 	f = fopen(filename, "rb");
 #else
 	f = fopen(filename, "r");
@@ -657,7 +657,7 @@ parseSAXFile(char *filename) {
 	    fclose(f);
 	}
 	if (!noout) {
-#if defined(_WIN32) || defined (__DJGPP__)
+#if defined(_WIN32)
 		f = fopen(filename, "rb");
 #else
 		f = fopen(filename, "r");
@@ -721,7 +721,7 @@ parseAndPrintFile(char *filename) {
     if (push) {
 	FILE *f;
 
-#if defined(_WIN32) || defined (__DJGPP__)
+#if defined(_WIN32)
 	f = fopen(filename, "rb");
 #else
 	f = fopen(filename, "r");

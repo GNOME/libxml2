@@ -2202,7 +2202,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
         if ((filename[0] == '-') && (filename[1] == 0)) {
             f = stdin;
         } else {
-#if defined(_WIN32) || defined (__DJGPP__)
+#if defined(_WIN32)
 	    f = fopen(filename, "rb");
 #elif defined(__OS400__)
 	    f = fopen(filename, "rb");
@@ -2278,7 +2278,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
 	      f = stdin;
 	    } else {
-#if defined(_WIN32) || defined (__DJGPP__)
+#if defined(_WIN32)
 		f = fopen(filename, "rb");
 #elif defined(__OS400__)
 		f = fopen(filename, "rb");
@@ -2327,7 +2327,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    } else {
 	        FILE *f;
 
-#if defined(_WIN32) || defined (__DJGPP__)
+#if defined(_WIN32)
 		f = fopen(filename, "rb");
 #elif defined(__OS400__)
 		f = fopen(filename, "rb");

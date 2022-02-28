@@ -627,11 +627,7 @@ parseSAXFile(char *filename) {
     if (push) {
 	FILE *f;
 
-#if defined(_WIN32)
 	f = fopen(filename, "rb");
-#else
-	f = fopen(filename, "r");
-#endif
 	if (f != NULL) {
 	    int res, size = 3;
 	    char chars[4096];
@@ -657,11 +653,7 @@ parseSAXFile(char *filename) {
 	    fclose(f);
 	}
 	if (!noout) {
-#if defined(_WIN32)
-		f = fopen(filename, "rb");
-#else
-		f = fopen(filename, "r");
-#endif
+	    f = fopen(filename, "rb");
 	    if (f != NULL) {
 		int res, size = 3;
 		char chars[4096];
@@ -721,11 +713,7 @@ parseAndPrintFile(char *filename) {
     if (push) {
 	FILE *f;
 
-#if defined(_WIN32)
 	f = fopen(filename, "rb");
-#else
-	f = fopen(filename, "r");
-#endif
 	if (f != NULL) {
 	    int res, size = 3;
 	    char chars[4096];

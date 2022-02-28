@@ -118,7 +118,7 @@ testXPathFile(const char *filename) {
     char expression[5000];
     int len;
 
-    input = fopen(filename, "r");
+    input = fopen(filename, "rb");
     if (input == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"Cannot open %s for reading\n", filename);

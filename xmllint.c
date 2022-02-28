@@ -2202,13 +2202,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
         if ((filename[0] == '-') && (filename[1] == 0)) {
             f = stdin;
         } else {
-#if defined(_WIN32)
 	    f = fopen(filename, "rb");
-#elif defined(__OS400__)
-	    f = fopen(filename, "rb");
-#else
-	    f = fopen(filename, "r");
-#endif
         }
         if (f != NULL) {
             int res;
@@ -2276,15 +2270,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 	    /* '-' Usually means stdin -<sven@zen.org> */
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
-	      f = stdin;
+	        f = stdin;
 	    } else {
-#if defined(_WIN32)
 		f = fopen(filename, "rb");
-#elif defined(__OS400__)
-		f = fopen(filename, "rb");
-#else
-		f = fopen(filename, "r");
-#endif
 	    }
 	    if (f != NULL) {
 		int ret;
@@ -2327,13 +2315,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    } else {
 	        FILE *f;
 
-#if defined(_WIN32)
 		f = fopen(filename, "rb");
-#elif defined(__OS400__)
-		f = fopen(filename, "rb");
-#else
-		f = fopen(filename, "r");
-#endif
 		if (f != NULL) {
 		    if (rectxt == NULL)
 			doc = xmlReadIO(myRead, myClose, f, filename, NULL,

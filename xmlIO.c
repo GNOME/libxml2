@@ -866,7 +866,7 @@ xmlFileOpen_real (const char *filename) {
 #if defined(_WIN32)
     fd = xmlWrapOpenUtf8(path, 0);
 #else
-    fd = fopen(path, "r");
+    fd = fopen(path, "rb");
 #endif /* WIN32 */
     if (fd == NULL) xmlIOErr(0, path);
     return((void *) fd);

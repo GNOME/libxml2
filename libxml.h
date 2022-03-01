@@ -20,9 +20,6 @@
 #endif
 #endif
 
-#if defined(macintosh)
-#include "config-mac.h"
-#else
 /*
  * Currently supported platforms use either autoconf or
  * copy to config.h own "preset" configuration file.
@@ -30,7 +27,6 @@
  */
 #include "config.h"
 #include <libxml/xmlversion.h>
-#endif
 
 #if defined(__Lynx__)
 #include <stdio.h> /* pull definition of size_t */

@@ -3824,6 +3824,23 @@ libxml_nodeHash(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
 
 /************************************************************************
  *									*
+ *		Deprecation warnings					*
+ *									*
+ ************************************************************************/
+
+int
+libxml_deprecationWarning(const char *func) {
+#if PY_VERSION_HEX >= 0x03020000
+    return PyErr_WarnFormat(PyExc_PendingDeprecationWarning, 1,
+            "libxml2mod.%s is deprecated and will be removed "
+            "in future versions", func);
+#else
+    return PyErr_WarnEx(PyExc_PendingDeprecationWarning, func, 1);
+#endif
+}
+
+/************************************************************************
+ *									*
  *			The registration stuff				*
  *									*
  ************************************************************************/

@@ -60,6 +60,21 @@
 #define ATTRIBUTE_UNUSED
 #endif
 
+/*
+ * Macros to ignore deprecation warnings
+ */
+#if defined(__clang__) || \
+    (defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 406))
+#define XML_IGNORE_DEPRECATION_WARNINGS \
+    _Pragma("GCC diagnostic push") \
+    _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define XML_POP_WARNINGS \
+    _Pragma("GCC diagnostic pop")
+#else
+#define XML_IGNORE_PEDANTIC_WARNINGS
+#define XML_POP_WARNINGS
+#endif
+
 #define PyxmlNode_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyxmlNode_Object *)(v))->obj))
 
@@ -277,3 +292,5 @@ PyObject * libxml_xmlSchemaSetValidErrors(PyObject * self, PyObject * args);
 PyObject * libxml_xmlRegisterInputCallback(PyObject *self, PyObject *args);
 PyObject * libxml_xmlUnregisterInputCallback(PyObject *self, PyObject *args);
 PyObject * libxml_xmlNodeRemoveNsDef(PyObject * self, PyObject * args);
+
+int libxml_deprecationWarning(const char *func);

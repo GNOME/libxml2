@@ -16,7 +16,7 @@ variety of language bindings make it available in other environments.
 
 Libxml2 is known to be very portable, the library should build and work
 without serious troubles on a variety of systems (Linux, Unix, Windows,
-CygWin, MacOS X, RISC Os, OS/2, VMS, QNX, MVS, VxWorks,
+CygWin, MacOS X, RISC Os, OS/2, VMS, QNX, MVS,
 ...)</description>
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/xml" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#infrastructure" />

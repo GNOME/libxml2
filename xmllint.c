@@ -3828,7 +3828,6 @@ main(int argc, char **argv) {
 	xmlRelaxNGFree(relaxngschemas);
     if (wxschemas != NULL)
 	xmlSchemaFree(wxschemas);
-    xmlRelaxNGCleanupTypes();
 #endif
 #if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
     if (patternc != NULL)

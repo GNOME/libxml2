@@ -11,6 +11,7 @@
 #include "libxml.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #include <libxml/threads.h>
 #include <libxml/globals.h>
@@ -20,9 +21,6 @@
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
 #endif
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>

@@ -11,10 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
-
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
 #ifdef HAVE_LIBREADLINE
 #include <readline/readline.h>

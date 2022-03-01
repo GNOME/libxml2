@@ -14,9 +14,7 @@
 #ifdef LIBXML_C14N_ENABLED
 #ifdef LIBXML_OUTPUT_ENABLED
 
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <string.h>
 
 #include <libxml/tree.h>

@@ -17,12 +17,8 @@
 
 #include <string.h> /* for memset() only ! */
 #include <limits.h>
-#ifdef HAVE_CTYPE_H
 #include <ctype.h>
-#endif
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
 #include <libxml/tree.h>
 #include <libxml/globals.h>

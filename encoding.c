@@ -25,18 +25,13 @@
 
 #include <string.h>
 #include <limits.h>
-
-#ifdef HAVE_CTYPE_H
 #include <ctype.h>
-#endif
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
+
 #ifdef LIBXML_ICONV_ENABLED
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
 #endif
-#endif
+
 #include <libxml/encoding.h>
 #include <libxml/xmlmemory.h>
 #ifdef LIBXML_HTML_ENABLED

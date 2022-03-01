@@ -18,6 +18,9 @@
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #include <string.h>
+#include <math.h>
+#include <float.h>
+
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -29,13 +32,6 @@
 #include <libxml/xmlschemas.h>
 #include <libxml/schemasInternals.h>
 #include <libxml/xmlschemastypes.h>
-
-#ifdef HAVE_MATH_H
-#include <math.h>
-#endif
-#ifdef HAVE_FLOAT_H
-#include <float.h>
-#endif
 
 #define DEBUG
 

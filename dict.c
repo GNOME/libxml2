@@ -20,12 +20,8 @@
 #include "libxml.h"
 
 #include <limits.h>
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
-#ifdef HAVE_TIME_H
 #include <time.h>
-#endif
 
 /*
  * Following http://www.ocert.org/advisories/ocert-2011-003.html

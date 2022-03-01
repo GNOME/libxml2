@@ -23,9 +23,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#endif
+
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #endif

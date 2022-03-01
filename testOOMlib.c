@@ -9,10 +9,7 @@
 
 #include "testOOMlib.h"
 
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
-
 #include <string.h>
 
 #define _TEST_INT_MAX 2147483647

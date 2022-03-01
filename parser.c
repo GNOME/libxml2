@@ -49,6 +49,8 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stddef.h>
+#include <ctype.h>
+#include <stdlib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/threads.h>
 #include <libxml/globals.h>
@@ -67,12 +69,6 @@
 #ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/xmlschemastypes.h>
 #include <libxml/relaxng.h>
-#endif
-#ifdef HAVE_CTYPE_H
-#include <ctype.h>
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
 #endif
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>

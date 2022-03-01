@@ -14,9 +14,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <string.h>
 
 #include <libxml/globals.h>

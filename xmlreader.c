@@ -20,13 +20,8 @@
 #ifdef LIBXML_READER_ENABLED
 #include <string.h> /* for memset() only ! */
 #include <stdarg.h>
-
-#ifdef HAVE_CTYPE_H
 #include <ctype.h>
-#endif
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>

@@ -8,25 +8,12 @@
 #include "libxml.h"
 
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
-
-#ifdef HAVE_TIME_H
-#include <time.h>
-#endif
-
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
-#else
-#ifdef HAVE_MALLOC_H
-#include <malloc.h>
-#endif
-#endif
-
-#ifdef HAVE_CTYPE_H
-#include <ctype.h>
 #endif
 
 /* #define DEBUG_MEMORY */
@@ -963,9 +950,7 @@ xmlMemoryDump(void)
 int
 xmlInitMemory(void)
 {
-#ifdef HAVE_STDLIB_H
      char *breakpoint;
-#endif
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlInitMemory()\n");
@@ -978,18 +963,14 @@ xmlInitMemory(void)
      xmlMemInitialized = 1;
      xmlMemMutex = xmlNewMutex();
 
-#ifdef HAVE_STDLIB_H
      breakpoint = getenv("XML_MEM_BREAKPOINT");
      if (breakpoint != NULL) {
          sscanf(breakpoint, "%ud", &xmlMemStopAtBlock);
      }
-#endif
-#ifdef HAVE_STDLIB_H
      breakpoint = getenv("XML_MEM_TRACE");
      if (breakpoint != NULL) {
          sscanf(breakpoint, "%p", &xmlMemTraceBlockAt);
      }
-#endif
 
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,

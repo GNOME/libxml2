@@ -446,19 +446,10 @@ AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_CHECK_HEADERS([fcntl.h])
 AC_CHECK_HEADERS([unistd.h])
-AC_CHECK_HEADERS([ctype.h])
-AC_CHECK_HEADERS([errno.h])
-AC_CHECK_HEADERS([malloc.h])
-AC_CHECK_HEADERS([stdarg.h])
 AC_CHECK_HEADERS([sys/stat.h])
 AC_CHECK_HEADERS([sys/types.h])
 AC_CHECK_HEADERS([stdint.h])
 AC_CHECK_HEADERS([inttypes.h])
-AC_CHECK_HEADERS([time.h])
-AC_CHECK_HEADERS([math.h])
-AC_CHECK_HEADERS([limits.h])
-AC_CHECK_HEADERS([float.h])
-AC_CHECK_HEADERS([stdlib.h])
 AC_CHECK_HEADERS([sys/socket.h], [], [],
 [#if HAVE_SYS_TYPES_H
 # include <sys/types.h>
@@ -483,7 +474,6 @@ AC_CHECK_HEADERS([sys/select.h])
 AC_CHECK_HEADERS([poll.h])
 AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([sys/timeb.h])
-AC_CHECK_HEADERS([signal.h])
 AC_CHECK_HEADERS([arpa/nameser.h], [], [],
 [#if HAVE_SYS_TYPES_H
 # include <sys/types.h>

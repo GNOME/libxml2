@@ -12,11 +12,8 @@
 #include "libxml.h"
 
 #include <string.h>
-#include <stddef.h>
-#ifdef HAVE_ERRNO_H
+#include <stdlib.h>
 #include <errno.h>
-#endif
-
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -29,9 +26,6 @@
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
 #endif
 #ifdef LIBXML_ZLIB_ENABLED
 #include <zlib.h>
@@ -244,7 +238,6 @@ __xmlIOErr(int domain, int code, const char *extra)
     unsigned int idx;
 
     if (code == 0) {
-#ifdef HAVE_ERRNO_H
 	if (errno == 0) code = 0;
 #ifdef EACCES
         else if (errno == EACCES) code = XML_IO_EACCES;
@@ -400,7 +393,6 @@ __xmlIOErr(int domain, int code, const char *extra)
         else if (errno == EAFNOSUPPORT) code = XML_IO_EAFNOSUPPORT;
 #endif
         else code = XML_IO_UNKNOWN;
-#endif /* HAVE_ERRNO_H */
     }
     idx = 0;
     if (code >= XML_IO_UNKNOWN) idx = code - XML_IO_UNKNOWN;

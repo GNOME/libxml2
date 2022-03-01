@@ -48,6 +48,20 @@
 #include "buf.h"
 #include "enc.h"
 
+#ifdef LIBXML_ICU_ENABLED
+#include <unicode/ucnv.h>
+/* Size of pivot buffer, same as icu/source/common/ucnv.cpp CHUNK_SIZE */
+#define ICU_PIVOT_BUF_SIZE 1024
+typedef struct _uconv_t uconv_t;
+struct _uconv_t {
+  UConverter *uconv; /* for conversion between an encoding and UTF-16 */
+  UConverter *utf8; /* for conversion between UTF-8 and UTF-16 */
+  UChar      pivot_buf[ICU_PIVOT_BUF_SIZE];
+  UChar      *pivot_source;
+  UChar      *pivot_target;
+};
+#endif
+
 static xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
 static xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;
 

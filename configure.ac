@@ -1443,8 +1443,6 @@ else
         else
             if test "$with_icu" != "yes" -a "$with_iconv" != "" ; then
                 CPPFLAGS="${CPPFLAGS} -I$with_icu"
-                # Export this since our headers include icu.h
-                XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_icu"
             fi
 
             AC_CHECK_HEADER(unicode/ucnv.h,

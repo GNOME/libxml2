@@ -50,20 +50,6 @@ void xmlInitGlobals(void)
         xmlThrDefMutex = xmlNewMutex();
 }
 
-/**
- * xmlCleanupGlobals:
- *
- * Additional cleanup for multi-threading
- */
-void xmlCleanupGlobals(void)
-{
-    if (xmlThrDefMutex != NULL) {
-	xmlFreeMutex(xmlThrDefMutex);
-	xmlThrDefMutex = NULL;
-    }
-    __xmlGlobalInitMutexDestroy();
-}
-
 /************************************************************************
  *									*
  *	All the user accessible global variables of the library		*
@@ -1120,5 +1106,21 @@ __xmlOutputBufferCreateFilenameValue(void) {
 	return (&xmlOutputBufferCreateFilenameValue);
     else
 	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
+}
+
+/**
+ * xmlCleanupGlobals:
+ *
+ * Additional cleanup for multi-threading
+ */
+void xmlCleanupGlobals(void)
+{
+    xmlResetError(&xmlLastError);
+
+    if (xmlThrDefMutex != NULL) {
+	xmlFreeMutex(xmlThrDefMutex);
+	xmlThrDefMutex = NULL;
+    }
+    __xmlGlobalInitMutexDestroy();
 }
 

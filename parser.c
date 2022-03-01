@@ -14753,7 +14753,6 @@ xmlCleanupParser(void) {
     xmlSchemaCleanupTypes();
     xmlRelaxNGCleanupTypes();
 #endif
-    xmlResetLastError();
     xmlCleanupGlobals();
     xmlCleanupThreads(); /* must be last if called not from the main thread */
     xmlCleanupMemory();

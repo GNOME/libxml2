@@ -442,8 +442,6 @@ LIBS=${_libs}
 echo Checking headers
 
 dnl Checks for header files.
-AC_HEADER_DIRENT
-AC_HEADER_STDC
 AC_CHECK_HEADERS([fcntl.h])
 AC_CHECK_HEADERS([unistd.h])
 AC_CHECK_HEADERS([sys/stat.h])

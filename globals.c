@@ -562,6 +562,22 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 }
 
 /**
+ * xmlCleanupGlobals:
+ *
+ * Additional cleanup for multi-threading
+ */
+void xmlCleanupGlobals(void)
+{
+    xmlResetError(&xmlLastError);
+
+    if (xmlThrDefMutex != NULL) {
+	xmlFreeMutex(xmlThrDefMutex);
+	xmlThrDefMutex = NULL;
+    }
+    __xmlGlobalInitMutexDestroy();
+}
+
+/**
  * DOC_DISABLE : we ignore missing doc for the xmlThrDef functions,
  *               those are really internal work
  */
@@ -1104,21 +1120,5 @@ __xmlOutputBufferCreateFilenameValue(void) {
 	return (&xmlOutputBufferCreateFilenameValue);
     else
 	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
-}
-
-/**
- * xmlCleanupGlobals:
- *
- * Additional cleanup for multi-threading
- */
-void xmlCleanupGlobals(void)
-{
-    xmlResetError(&xmlLastError);
-
-    if (xmlThrDefMutex != NULL) {
-	xmlFreeMutex(xmlThrDefMutex);
-	xmlThrDefMutex = NULL;
-    }
-    __xmlGlobalInitMutexDestroy();
 }
 

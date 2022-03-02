@@ -68,7 +68,7 @@ if __name__ == "__main__":
         fields = string.split(line, ",")
         # Update the header file
         writeline(global_functions_hdr)
-        global_functions_hdr.write("extern "+fields[0]+" *")
+        global_functions_hdr.write("XMLPUBFUN "+fields[0]+" * XMLCALL ")
         if fields[2]:
             global_functions_hdr.write("(*")
         global_functions_hdr.write("__"+fields[1]+"(void)")
@@ -80,13 +80,13 @@ if __name__ == "__main__":
         writeline(global_functions_hdr,"(*(__"+fields[1]+"()))")
         writeline(global_functions_hdr,"#else")
         if fields[2]:
-            writeline(global_functions_hdr,"LIBXML_DLL_IMPORT extern "+fields[0]+" "+fields[1]+fields[2]+";")
+            writeline(global_functions_hdr,"XMLPUBVAR "+fields[0]+" "+fields[1]+fields[2]+";")
         else:
-            writeline(global_functions_hdr,"LIBXML_DLL_IMPORT extern "+fields[0]+" "+fields[1]+";")
+            writeline(global_functions_hdr,"XMLPUBVAR "+fields[0]+" "+fields[1]+";")
         writeline(global_functions_hdr,"#endif")
         # set/get for per-thread global defaults
         if fields[3]:
-            writeline(global_functions_hdr,fields[0]+" "+fields[1][:3]+"ThrDef"+fields[1][3:]+"("+fields[0]+" v);")
+            writeline(global_functions_hdr,"XMLPUBFUN "+fields[0]+" XMLCALL "+fields[1][:3]+"ThrDef"+fields[1][3:]+"("+fields[0]+" v);")
         # Update the implementation file
         writeline(global_functions_impl)
 #        writeline(global_functions_impl, "extern "+fields[0]+" "+fields[1]+";")

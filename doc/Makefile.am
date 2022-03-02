@@ -25,7 +25,7 @@ EXTRA_DIST_wc = xmlcatalog_man.xml $(wildcard tutorial/*.html) \
     $(wildcard *.1) $(wildcard *.xsl) $(wildcard *.html) \
     $(wildcard *.gif) w3c.png $(wildcard html/*.html) \
     $(wildcard html/*.png) libxml2-api.xml index.py search.php \
-    apibuild.py libxml2.xsa xmllint.xml xmlcatalog_man.xml \
+    apibuild.py xmllint.xml xmlcatalog_man.xml \
     symbols.xml
 endif
 
@@ -149,7 +149,6 @@ EXTRA_DIST = \
 	library.html \
 	libxml.gif \
 	libxml2-api.xml \
-	libxml2.xsa \
 	namespaces.html \
 	newapi.xsl \
 	news.html \
@@ -228,13 +227,12 @@ EXTRA_DIST = \
 	xmllint.html \
 	xmllint.xml \
 	xmlmem.html \
-	xmlreader.html \
-	xsa.xsl
+	xmlreader.html
 
 man_MANS = xmllint.1 xmlcatalog.1
 
 if REBUILD_DOCS
-docs: web $(top_builddir)/NEWS libxml2.xsa $(man_MANS)
+docs: web $(top_builddir)/NEWS $(man_MANS)
 
 api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src $(srcdir)/site.xsl
 
@@ -251,11 +249,6 @@ $(PAGES): xml.html $(srcdir)/site.xsl
 $(top_builddir)/NEWS: $(srcdir)/news.xsl $(srcdir)/news.html
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  $(XSLTPROC) --nonet $(srcdir)/news.xsl $(srcdir)/news.html > $(top_builddir)/NEWS ; fi );
-
-libxml2.xsa: $(srcdir)/xsa.xsl $(srcdir)/news.html
-	-@(if [ -x $(XSLTPROC) ] ; then \
-	  echo "Rebuilding the NEWS file" ; \
-	  $(XSLTPROC) --nonet $(srcdir)/xsa.xsl $(srcdir)/news.html > libxml2.xsa ; fi );
 
 $(APIPAGES): libxml2-api.xml libxml2-refs.xml $(srcdir)/site.xsl $(srcdir)/api.xsl
 	-@(if [ -x $(XSLTPROC) ] ; then \

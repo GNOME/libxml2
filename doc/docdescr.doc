@@ -36,7 +36,6 @@ api.xsl            xslt script to generate API cross-references APIchunk*.html
 news.xsl           xslt script to generate ../NEWS from news.html
 site.xsl           xslt script imported by api.xsl, generates most top-level
                      pages from news.html
-xsa.xsl            xslt script to generate libxml.xsa from news.html
 
 xmlcatalog.1       Man page for xml catalogs, built from xmlcatalog_man.xml DocBook
 		   source with "make xmlcatalog.1" or "make all"
@@ -83,18 +82,10 @@ NOTE:  Steps 1 through 7 are performed with the command "make rebuild";
 5) Generate the NEWS file in the top directory:
        xsltproc --nonet --output ../NEWS news.xsl news.html
 
-6) Generate the XML Software Autoupdate file libxml2.xsa:
-       make libxml2.xsa, or,
-       xsltproc --nonet --output libxml2.xsa xsa.xsl news.html
-
-7) Manually generate xmlcatalog.1 and xmllint.1 using manpages/docbook.xsl
+6) Manually generate xmlcatalog.1 and xmllint.1 using manpages/docbook.xsl
    stylesheet in docbook stylesheets. "make all" also takes care of this.
 
   After these steps have been done, the documentation is complete.
 The search engine is then set up using the script index.py, using
 libxml2-api.xml, the HTML web pages generated above, and the HTML
 mailing list archives at gnome.org.
-
-
-Last update:  30 November 2003
-

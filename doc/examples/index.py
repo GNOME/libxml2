@@ -241,7 +241,7 @@ rebuild:
 
 install-data-local: 
 	$(MKDIR_P) $(DESTDIR)$(docdir)/examples
-	-$(INSTALL) -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(docdir)/examples/
+	-$(INSTALL) -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(DESTDIR)$(docdir)/examples/
 
 clean-local:
 	test -f Makefile.am || rm -f test?.xml

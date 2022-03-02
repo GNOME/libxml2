@@ -502,10 +502,9 @@ AC_TYPE_UINT32_T
 echo Checking libraries
 
 dnl Checks for library functions.
-AC_FUNC_STRFTIME
-AC_CHECK_FUNCS(strftime localtime gettimeofday ftime)
-AC_CHECK_FUNCS(stat signal)
-AC_CHECK_FUNCS(rand rand_r srand time)
+AC_CHECK_FUNCS(gettimeofday ftime)
+AC_CHECK_FUNCS(stat)
+AC_CHECK_FUNCS(rand_r)
 AC_CHECK_FUNCS(isascii mmap munmap putenv)
 
 AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
@@ -1594,7 +1593,7 @@ dnl  AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
 dnl  AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])
 dnl and do not redefine those functions is C-source files.
 dnl
-AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
+AC_CHECK_FUNCS(snprintf vsnprintf,,
 	NEED_TRIO=1)
 
 if test "$with_coverage" = "yes" -a "${GCC}" = "yes"

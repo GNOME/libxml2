@@ -746,11 +746,9 @@ xmlMemDisplay(FILE *fp)
     MEMHDR *p;
     unsigned idx;
     int     nb = 0;
-#if defined(HAVE_LOCALTIME) && defined(HAVE_STRFTIME)
     time_t currentTime;
     char buf[500];
     struct tm * tstruct;
-#endif
 #endif
     FILE *old_fp = fp;
 
@@ -761,12 +759,10 @@ xmlMemDisplay(FILE *fp)
     }
 
 #ifdef MEM_LIST
-#if defined(HAVE_LOCALTIME) && defined(HAVE_STRFTIME)
     currentTime = time(NULL);
     tstruct = localtime(&currentTime);
     strftime(buf, sizeof(buf) - 1, "%I:%M:%S %p", tstruct);
     fprintf(fp,"      %s\n\n", buf);
-#endif
 
 
     fprintf(fp,"      MEMORY ALLOCATED : %lu, MAX was %lu\n",

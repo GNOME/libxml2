@@ -27,9 +27,6 @@
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H            1
 
-/* Define to 1 if you have the `fprintf' function. */
-#undef HAVE_FPRINTF                     /* Use trio. */
-
 /* Define to 1 if you have the `ftime' function. */
 #undef HAVE_FTIME
 
@@ -51,9 +48,6 @@
 /* Define if readline library is there (-lreadline) */
 #undef HAVE_LIBREADLINE
 
-/* Define to 1 if you have the `localtime' function. */
-#define HAVE_LOCALTIME          1
-
 /* Define to 1 if you have the `mmap' function. */
 #undef HAVE_MMAP
 
@@ -74,20 +68,11 @@
 /* Define to 1 if you have the <poll.h> header file. */
 #undef HAVE_POLL_H
 
-/* Define to 1 if you have the `printf' function. */
-#undef HAVE_PRINTF                      /* Use trio. */
-
-/* Define to 1 if you have the `vprintf' function. */
-#undef HAVE_VPRINTF                     /* Use trio. */
-
 /* Define if <pthread.h> is there */
 #define HAVE_PTHREAD_H          1
 
 /* Define to 1 if you have the `putenv' function. */
 #define HAVE_PUTENV             1
-
-/* Define to 1 if you have the `rand' function. */
-#define HAVE_RAND               1
 
 /* Define to 1 if you have the `rand_r' function. */
 #define HAVE_RAND_R             1
@@ -98,32 +83,11 @@
 /* Have shl_load based dso */
 #undef HAVE_SHLLOAD
 
-/* Define to 1 if you have the `snprintf' function. */
-#undef HAVE_SNPRINTF                    /* Use trio. */
-
-/* Define to 1 if you have the `sprintf' function. */
-#undef HAVE_SPRINTF                     /* Use trio. */
-
-/* Define to 1 if you have the `srand' function. */
-#define HAVE_SRAND              1
-
-/* Define to 1 if you have the `scanf' function. */
-#undef HAVE_SCANF                       /* Use trio. */
-
-/* Define to 1 if you have the `fscanf' function. */
-#undef HAVE_FSCANF                      /* Use trio. */
-
-/* Define to 1 if you have the `sscanf' function. */
-#undef HAVE_SSCANF                      /* Use trio. */
-
 /* Define to 1 if you have the `stat' function. */
 #define HAVE_STAT               1
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H           1
-
-/* Define to 1 if you have the `strftime' function. */
-#define HAVE_STRFTIME           1
 
 /* Define to 1 if you have the <sys/mman.h> header file. */
 #define HAVE_SYS_MMAN_H         1
@@ -146,23 +110,11 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H        1
 
-/* Define to 1 if you have the `time' function. */
-#define HAVE_TIME               1
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H           1
 
 /* Whether va_copy() is available */
 #undef HAVE_VA_COPY
-
-/* Define to 1 if you have the `vfprintf' function. */
-#undef HAVE_VFPRINTF                    /* Use trio. */
-
-/* Define to 1 if you have the `vsnprintf' function. */
-#undef HAVE_VSNPRINTF                   /* Use trio. */
-
-/* Define to 1 if you have the `vsprintf' function. */
-#undef HAVE_VSPRINTF                    /* Use trio. */
 
 /* Whether __va_copy() is available */
 #undef HAVE___VA_COPY

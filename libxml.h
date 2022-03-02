@@ -95,12 +95,10 @@ void __xmlGlobalInitMutexDestroy(void);
 
 int __xmlInitializeDict(void);
 
-#if defined(HAVE_RAND) && defined(HAVE_SRAND) && defined(HAVE_TIME)
 /*
  * internal thread safe random function
  */
 int __xmlRandom(void);
-#endif
 
 XMLPUBFUN xmlChar * XMLCALL xmlEscapeFormatString(xmlChar **msg);
 int xmlInputReadCallbackNop(void *context, char *buffer, int len);

@@ -2,9 +2,6 @@
 
 #define VMS	1
 
-/* Define if you have the strftime function.  */
-#define HAVE_STRFTIME 	1
-
 /* Define if you have the ANSI C header files.  */
 #define STDC_HEADERS	1
 
@@ -15,15 +12,6 @@
 #undef HAVE_LIBREADLINE
 
 #define ICONV_CONST
-
-/* Define if you have the localtime function.  */
-#define HAVE_LOCALTIME	1
-
-/* Define if you have the snprintf function.  */
-#undef HAVE_SNPRINTF
-
-/* Define if you have the strftime function.  */
-#define HAVE_STRFTIME	1
 
 /* Define if you have the <arpa/inet.h> header file.  */
 #undef HAVE_ARPA_INET_H
@@ -36,9 +24,6 @@
 
 /* Define if you have the <netinet/in.h> header file.  */
 #undef HAVE_NETINET_IN_H
-
-/* Define to 1 if you have the `strftime' function. */
-#define HAVE_STRFTIME 1
 
 /* Define if you have the <sys/mman.h> header file.  */
 #undef HAVE_SYS_MMAN_H

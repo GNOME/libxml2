@@ -105,15 +105,6 @@ AC_ARG_WITH(history,
 [  --with-history          add history support to xmllint shell(off)])
 AC_ARG_WITH(html,
 [  --with-html             add the HTML support (on)])
-dnl Specific dir for HTML output ?
-AC_ARG_WITH(html-dir, AS_HELP_STRING([--with-html-dir=path],
-            [path to base html directory, default $docdir/html]),
-            [HTML_DIR=$withval], [HTML_DIR='$(docdir)/html'])
-
-AC_ARG_WITH(html-subdir, AS_HELP_STRING([--with-html-subdir=path],
-            [directory used under html-dir, default '']),
-            [test "x$withval" != "x" && HTML_DIR="$HTML_DIR/$withval"])
-AC_SUBST(HTML_DIR)
 AC_ARG_WITH(http,
 [  --with-http             add the HTTP support (on)])
 AC_ARG_WITH(iconv,
@@ -1476,7 +1467,6 @@ AC_SUBST(XML_LIBTOOLLIBS)
 AC_SUBST(ICONV_LIBS)
 AC_SUBST(ICU_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
-AC_SUBST(HTML_DIR)
 
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)

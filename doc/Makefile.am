@@ -98,14 +98,14 @@ check-extra-dist:
 	rm -f tmp.EXTRA_DIST_wc tmp.EXTRA_DIST
 
 install-data-local: 
-	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)/tutorial
+	$(MKDIR_P) $(DESTDIR)$(docdir)/tutorial
 	-$(INSTALL) -m 0644 $(srcdir)/tutorial/*.* \
-		$(DESTDIR)$(HTML_DIR)/tutorial
-	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)/tutorial/images
+		$(DESTDIR)$(docdir)/tutorial
+	$(MKDIR_P) $(DESTDIR)$(docdir)/tutorial/images
 	-$(INSTALL) -m 0644 $(srcdir)/tutorial/images/*.* \
-		$(DESTDIR)$(HTML_DIR)/tutorial/images
-	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)/tutorial/images/callouts
+		$(DESTDIR)$(docdir)/tutorial/images
+	$(MKDIR_P) $(DESTDIR)$(docdir)/tutorial/images/callouts
 	-$(INSTALL) -m 0644 $(srcdir)/tutorial/images/callouts/*.* \
-		$(DESTDIR)$(HTML_DIR)/tutorial/images/callouts
+		$(DESTDIR)$(docdir)/tutorial/images/callouts
 
 .PHONY: rebuild

@@ -193,13 +193,6 @@ AC_ARG_WITH(lzma,
 AC_ARG_WITH(coverage,
 [  --with-coverage         build for code coverage with GCC (off)])
 
-AC_ARG_ENABLE(rebuild-docs,
-[  --enable-rebuild-docs[[=yes/no]]  rebuild some generated docs [[default=no]]])
-if test "$enable_rebuild_docs" = "yes" -a "$srcdir" != "."; then
-  AC_MSG_ERROR([cannot rebuild docs when builddir != srcdir])
-fi
-AM_CONDITIONAL([REBUILD_DOCS], [test "$enable_rebuild_docs" = "yes"])
-
 dnl
 dnl hard dependencies on options
 dnl

@@ -67,12 +67,5 @@ EXTRA_FORMAT=				\
 
 EXTRA_DIST = devhelp2.xsl html.xsl
 
-if REBUILD_DOCS
-rebuild: libxml2.devhelp2 $(HTML_FILES)
-.PHONY: rebuild
-
-libxml2.devhelp2 $(HTML_FILES): devhelp2.xsl html.xsl $(top_srcdir)/doc/libxml2-api.xml
-	-@(if [ -x $(XSLTPROC) ] ; then \
-	  echo Rebuilding devhelp2 files ; \
-	  $(XSLTPROC) --nonet -o $(srcdir)/libxml2.devhelp2 $(srcdir)/devhelp2.xsl $(top_srcdir)/doc/libxml2-api.xml ; fi );
-endif
+rebuild:
+	(cd $(srcdir) && $(XSLTPROC) -o libxml2.devhelp2 devhelp2.xsl ../libxml2-api.xml)

@@ -9,18 +9,13 @@ LDADD = $(RDL_LIBS) $(top_builddir)/libxml2.la $(THREAD_LIBS) $(Z_LIBS) $(ICONV_
 
 CLEANFILES = *.tmp
 
-if REBUILD_DOCS
-rebuild: examples.xml index.html
-.PHONY: rebuild
-
-examples.xml: index.py $(check_PROGRAMS:=.c)
+rebuild:
 	cd $(srcdir) && $(PYTHON) index.py
 	$(MAKE) Makefile
-
-index.html: examples.xml examples.xsl
-	cd $(srcdir) && xsltproc examples.xsl examples.xml && echo "Rebuilt web page"
+	cd $(srcdir) && xsltproc examples.xsl examples.xml
 	-cd $(srcdir) && xmllint --valid --noout index.html
-endif
+
+.PHONY: rebuild
 
 install-data-local: 
 	$(MKDIR_P) $(DESTDIR)$(HTML_DIR)/examples

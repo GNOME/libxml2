@@ -25,19 +25,12 @@
 #include <string.h>
 #include <limits.h>
 
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif
-
 #include <libxml/tree.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlunicode.h>
 
-#ifndef INT_MAX
-#define INT_MAX 123456789 /* easy to flag and big enough for our needs */
-#endif
 #ifndef SIZE_MAX
 #define SIZE_MAX ((size_t) -1)
 #endif

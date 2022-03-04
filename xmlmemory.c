@@ -12,10 +12,6 @@
 #include <ctype.h>
 #include <time.h>
 
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
-
 /* #define DEBUG_MEMORY */
 
 /**

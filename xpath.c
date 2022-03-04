@@ -29,10 +29,6 @@
 #include <float.h>
 #include <ctype.h>
 
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
-
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/valid.h>

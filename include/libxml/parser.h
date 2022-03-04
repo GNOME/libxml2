@@ -10,8 +10,6 @@
 #ifndef __XML_PARSER_H__
 #define __XML_PARSER_H__
 
-#include <stdarg.h>
-
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 #include <libxml/dict.h>

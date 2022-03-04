@@ -8,6 +8,10 @@
 #define HAVE_STAT
 #define HAVE_FCNTL_H
 
+#if defined(__MINGW32__) || (defined(_MSC_VER) && _MSC_VER >= 1600)
+#define HAVE_STDINT_H
+#endif
+
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
 #define vsnprintf _vsnprintf

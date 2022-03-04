@@ -1256,7 +1256,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h xzlib.h buf.h \
 	     enc.h save.h genUnicode.py TODO_SCHEMAS \
-	     dbgen.pl dbgenattr.pl regressions.py regressions.xml \
+	     dbgen.pl dbgenattr.pl \
 	     README.tests Makefile.tests libxml2.syms timsort.h \
 	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in

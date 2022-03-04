@@ -193,11 +193,6 @@ XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 		inithtmlDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr);
 #endif
-#ifdef LIBXML_DOCB_ENABLED
-XML_DEPRECATED
-XMLPUBFUN void XMLCALL
-		initdocbDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr);
-#endif
 #endif /* LIBXML_SAX1_ENABLED */
 
 #ifdef __cplusplus

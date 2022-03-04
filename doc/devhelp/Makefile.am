@@ -16,7 +16,6 @@ HTML_MODULES=				\
 	libxml2-chvalid.html		\
 	libxml2-debugXML.html		\
 	libxml2-dict.html		\
-	libxml2-DOCBparser.html		\
 	libxml2-encoding.html		\
 	libxml2-entities.html		\
 	libxml2-globals.html		\

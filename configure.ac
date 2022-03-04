@@ -97,8 +97,6 @@ AC_ARG_WITH(catalog,
 [  --with-catalog          add the Catalog support (on)])
 AC_ARG_WITH(debug,
 [  --with-debug            add the debugging module (on)])
-AC_ARG_WITH(docbook,
-[  --with-docbook          add Docbook SGML support (off)])
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 AC_ARG_WITH(ftp,
@@ -1154,7 +1152,6 @@ else
     TEST_SAX=SAXtests
 fi
 AC_SUBST(WITH_SAX1)
-AM_CONDITIONAL(WITH_SAX1_SOURCES, test "${WITH_TRIO}" = "1")
 AC_SUBST(TEST_SAX)
 
 if test "$with_push" = "no" ; then
@@ -1215,18 +1212,6 @@ fi
 AC_SUBST(WITH_CATALOG)
 AC_SUBST(CATALOG_OBJ)
 AC_SUBST(TEST_CATALOG)
-
-if test "$with_docbook" != "yes" ; then
-    echo Disabling Docbook support
-    WITH_DOCB=0
-    DOCB_OBJ=
-else    
-    WITH_DOCB=1
-    DOCB_OBJ="DOCBparser.o"
-fi
-AC_SUBST(WITH_DOCB)
-AC_SUBST(DOCB_OBJ)
-
 
 if test "$with_xptr" = "no" ; then
     echo Disabling XPointer support

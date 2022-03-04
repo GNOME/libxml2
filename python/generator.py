@@ -152,7 +152,6 @@ def enum(type, name, value):
 
 skipped_modules = {
     'xmlmemory': None,
-    'DOCBparser': None,
     'SAX': None,
     'hash': None,
     'list': None,

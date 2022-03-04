@@ -111,7 +111,6 @@ XML_OBJS = $(XML_INTDIR)/buf.o\
 	$(XML_INTDIR)/chvalid.o\
 	$(XML_INTDIR)/debugXML.o\
 	$(XML_INTDIR)/dict.o\
-	$(XML_INTDIR)/DOCBparser.o\
 	$(XML_INTDIR)/encoding.o\
 	$(XML_INTDIR)/entities.o\
 	$(XML_INTDIR)/error.o\
@@ -159,7 +158,6 @@ XML_OBJS_A = $(XML_INTDIR_A)/buf.o\
 	$(XML_INTDIR_A)/chvalid.o\
 	$(XML_INTDIR_A)/debugXML.o\
 	$(XML_INTDIR_A)/dict.o\
-	$(XML_INTDIR_A)/DOCBparser.o\
 	$(XML_INTDIR_A)/encoding.o\
 	$(XML_INTDIR_A)/entities.o\
 	$(XML_INTDIR_A)/error.o\
@@ -205,7 +203,6 @@ UTILS = $(BINDIR)/xmllint.exe\
 	$(BINDIR)/xmlcatalog.exe\
 	$(BINDIR)/testAutomata.exe\
 	$(BINDIR)/testC14N.exe\
-	$(BINDIR)/testDocbook.exe\
 	$(BINDIR)/testHTML.exe\
 	$(BINDIR)/testReader.exe\
 	$(BINDIR)/testRegexp.exe\

@@ -2438,9 +2438,6 @@ libxml_name(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 
     switch (cur->type) {
         case XML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
         case XML_HTML_DOCUMENT_NODE:{
                 xmlDocPtr doc = (xmlDocPtr) cur;
 
@@ -2485,9 +2482,6 @@ libxml_doc(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 
     switch (cur->type) {
         case XML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
         case XML_HTML_DOCUMENT_NODE:
             res = NULL;
             break;
@@ -2543,9 +2537,6 @@ libxml_next(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 
     switch (cur->type) {
         case XML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
         case XML_HTML_DOCUMENT_NODE:
             res = NULL;
             break;
@@ -2587,9 +2578,6 @@ libxml_prev(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 
     switch (cur->type) {
         case XML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
         case XML_HTML_DOCUMENT_NODE:
             res = NULL;
             break;
@@ -2632,9 +2620,6 @@ libxml_children(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
         case XML_HTML_DOCUMENT_NODE:
         case XML_DTD_NODE:
             res = cur->children;
@@ -2675,9 +2660,6 @@ libxml_last(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
         case XML_HTML_DOCUMENT_NODE:
         case XML_DTD_NODE:
             res = cur->last;
@@ -2714,9 +2696,6 @@ libxml_parent(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     switch (cur->type) {
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-#endif
             res = NULL;
             break;
         case XML_ATTRIBUTE_NODE:{
@@ -2819,11 +2798,6 @@ libxml_type(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         case XML_XINCLUDE_END:
             res = (const xmlChar *) "xinclude_end";
             break;
-#ifdef LIBXML_DOCB_ENABLED
-        case XML_DOCB_DOCUMENT_NODE:
-            res = (const xmlChar *) "document_docbook";
-            break;
-#endif
     }
 #ifdef DEBUG
     printf("libxml_type: cur = %p: %s\n", cur, res);

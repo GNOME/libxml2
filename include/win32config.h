@@ -12,10 +12,6 @@
 
 #include <libxml/xmlversion.h>
 
-#ifndef ICONV_CONST
-#define ICONV_CONST const
-#endif
-
 /*
  * Windows platforms may define except 
  */

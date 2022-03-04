@@ -194,23 +194,6 @@ else()
 	check_include_files(unistd.h HAVE_UNISTD_H)
 	check_function_exists(va_copy HAVE_VA_COPY)
 	check_function_exists(__va_copy HAVE___VA_COPY)
-	check_c_source_compiles("
-		#include <stdlib.h>
-		#include <iconv.h>
-		extern
-		#ifdef __cplusplus
-		\"C\"
-		#endif
-		#if defined(__STDC__) || defined(__cplusplus)
-		size_t iconv(iconv_t cd, char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft);
-		#else
-		size_t iconv();
-		#endif
-		int main() { return 0; }
-	" ICONV_CONST_TEST)
-	if(NOT ICONV_CONST_TEST)
-		set(ICONV_CONST "const")
-	endif()
 	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <sys/socket.h>

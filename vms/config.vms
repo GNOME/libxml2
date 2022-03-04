@@ -11,8 +11,6 @@
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
 
-#define ICONV_CONST
-
 /* Define if you have the <arpa/inet.h> header file.  */
 #undef HAVE_ARPA_INET_H
 

@@ -1840,7 +1840,10 @@ xmlIconvWrapper(iconv_t cd, unsigned char *out, int *outlen,
     }
     icv_inlen = *inlen;
     icv_outlen = *outlen;
-    ret = iconv(cd, (ICONV_CONST char **) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
+    /*
+     * Some versions take const, other versions take non-const input.
+     */
+    ret = iconv(cd, (void *) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
     *inlen -= icv_inlen;
     *outlen -= icv_outlen;
     if ((icv_inlen != 0) || (ret == (size_t) -1)) {

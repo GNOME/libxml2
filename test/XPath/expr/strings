@@ -36,3 +36,11 @@ substring("12345",-0.7,4)
 substring("12345",-5000000000,5000000004)
 string-length("")
 string-length("titi")
+normalize-space("  abc  def  ")
+normalize-space("  abc  def")
+normalize-space("abc  def  ")
+normalize-space(" abcdef   ")
+normalize-space("   abcdef")
+normalize-space("abcdef ")
+
+

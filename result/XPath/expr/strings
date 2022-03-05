@@ -150,3 +150,27 @@ Object is a number : 0
 ========================
 Expression: string-length("titi")
 Object is a number : 4
+
+========================
+Expression: normalize-space("  abc  def  ")
+Object is a string : abc def
+
+========================
+Expression: normalize-space("  abc  def")
+Object is a string : abc def
+
+========================
+Expression: normalize-space("abc  def  ")
+Object is a string : abc def
+
+========================
+Expression: normalize-space(" abcdef   ")
+Object is a string : abcdef
+
+========================
+Expression: normalize-space("   abcdef")
+Object is a string : abcdef
+
+========================
+Expression: normalize-space("abcdef ")
+Object is a string : abcdef

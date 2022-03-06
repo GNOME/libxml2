@@ -46,19 +46,20 @@ static int libxml_is_threaded = -1;
 
 #define XML_PTHREAD_WEAK
 
-#pragma weak pthread_once
+#pragma weak pthread_equal
 #pragma weak pthread_getspecific
-#pragma weak pthread_setspecific
 #pragma weak pthread_key_create
 #pragma weak pthread_key_delete
-#pragma weak pthread_mutex_init
 #pragma weak pthread_mutex_destroy
+#pragma weak pthread_mutex_init
 #pragma weak pthread_mutex_lock
 #pragma weak pthread_mutex_unlock
-#pragma weak pthread_equal
+#pragma weak pthread_mutexattr_destroy
+#pragma weak pthread_mutexattr_init
+#pragma weak pthread_mutexattr_settype
+#pragma weak pthread_once
 #pragma weak pthread_self
-#pragma weak pthread_key_create
-#pragma weak pthread_key_delete
+#pragma weak pthread_setspecific
 
 #else /* __GNUC__, __GLIBC__, __linux__ */
 

@@ -339,6 +339,7 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 			xmlSwitchToEncoding	(xmlParserCtxtPtr ctxt,
 					 xmlCharEncodingHandlerPtr handler);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlSwitchInputEncoding	(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr input,

@@ -866,9 +866,6 @@ xmlCopyChar(int len ATTRIBUTE_UNUSED, xmlChar *out, int val) {
  ************************************************************************/
 
 static int
-xmlSwitchToEncodingInt(xmlParserCtxtPtr ctxt,
-                       xmlCharEncodingHandlerPtr handler, int len);
-static int
 xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                           xmlCharEncodingHandlerPtr handler, int len);
 /**
@@ -968,55 +965,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		/* default encoding, no conversion should be needed */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
-	    case XML_CHAR_ENCODING_UTF16LE:
-		break;
-	    case XML_CHAR_ENCODING_UTF16BE:
-		break;
-	    case XML_CHAR_ENCODING_UCS4LE:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "USC4 little endian", NULL);
-		break;
-	    case XML_CHAR_ENCODING_UCS4BE:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "USC4 big endian", NULL);
-		break;
-	    case XML_CHAR_ENCODING_EBCDIC:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "EBCDIC", NULL);
-		break;
-	    case XML_CHAR_ENCODING_UCS4_2143:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "UCS4 2143", NULL);
-		break;
-	    case XML_CHAR_ENCODING_UCS4_3412:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "UCS4 3412", NULL);
-		break;
-	    case XML_CHAR_ENCODING_UCS2:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "UCS2", NULL);
-		break;
 	    case XML_CHAR_ENCODING_8859_1:
-	    case XML_CHAR_ENCODING_8859_2:
-	    case XML_CHAR_ENCODING_8859_3:
-	    case XML_CHAR_ENCODING_8859_4:
-	    case XML_CHAR_ENCODING_8859_5:
-	    case XML_CHAR_ENCODING_8859_6:
-	    case XML_CHAR_ENCODING_8859_7:
-	    case XML_CHAR_ENCODING_8859_8:
-	    case XML_CHAR_ENCODING_8859_9:
-		/*
-		 * We used to keep the internal content in the
-		 * document encoding however this turns being unmaintainable
-		 * So xmlGetCharEncodingHandler() will return non-null
-		 * values for this now.
-		 */
 		if ((ctxt->inputNr == 1) &&
 		    (ctxt->encoding == NULL) &&
 		    (ctxt->input != NULL) &&
@@ -1025,36 +974,20 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		}
 		ctxt->charset = enc;
 		return(0);
-	    case XML_CHAR_ENCODING_2022_JP:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "ISO-2022-JP", NULL);
-		break;
-	    case XML_CHAR_ENCODING_SHIFT_JIS:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "Shift_JIS", NULL);
-		break;
-	    case XML_CHAR_ENCODING_EUC_JP:
-		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
-			       "encoding not supported %s\n",
-			       BAD_CAST "EUC-JP", NULL);
-		break;
 	    default:
-	        break;
-	}
+		__xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+                        "encoding not supported: %s\n",
+			BAD_CAST xmlGetCharEncodingName(enc), NULL);
+                /*
+                 * TODO: We could recover from errors in external entities
+                 * if we didn't stop the parser. But most callers of this
+                 * function don't check the return value.
+                 */
+                xmlStopParser(ctxt);
+                return(-1);
+        }
     }
-    /*
-     * TODO: We could recover from errors in external entities if we
-     * didn't stop the parser. But most callers of this function don't
-     * check the return value.
-     */
-    if (handler == NULL) {
-        xmlStopParser(ctxt);
-	return(-1);
-    }
-    ctxt->charset = XML_CHAR_ENCODING_UTF8;
-    ret = xmlSwitchToEncodingInt(ctxt, handler, len);
+    ret = xmlSwitchInputEncodingInt(ctxt, ctxt->input, handler, len);
     if ((ret < 0) || (ctxt->errNo == XML_I18N_CONV_FAILED)) {
         /*
 	 * on encoding conversion errors, stop the parser
@@ -1066,7 +999,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 }
 
 /**
- * xmlSwitchInputEncoding:
+ * xmlSwitchInputEncodingInt:
  * @ctxt:  the parser context
  * @input:  the input stream
  * @handler:  the encoding handler
@@ -1088,6 +1021,8 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (input == NULL)
         return (-1);
     if (input->buf != NULL) {
+	ctxt->charset = XML_CHAR_ENCODING_UTF8;
+
         if (input->buf->encoder != NULL) {
             /*
              * Check in case the auto encoding detection triggered
@@ -1191,12 +1126,9 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 	    input->buf->rawconsumed += use - xmlBufUse(input->buf->raw);
         }
         return (0);
-    } else if (input->length == 0) {
-	/*
-	 * When parsing a static memory array one must know the
-	 * size to be able to convert the buffer.
-	 */
-	xmlErrInternal(ctxt, "switching encoding : no input\n", NULL);
+    } else {
+	xmlErrInternal(ctxt,
+                "static memory buffer doesn't support encoding\n", NULL);
         /*
          * Callers assume that the input buffer takes ownership of the
          * encoding handler. xmlCharEncCloseFunc frees unregistered
@@ -1205,11 +1137,6 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         xmlCharEncCloseFunc(handler);
 	return (-1);
     }
-    /*
-     * We should actually raise an error here, see issue #34.
-     */
-    xmlCharEncCloseFunc(handler);
-    return (0);
 }
 
 /**
@@ -1217,6 +1144,8 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
  * @ctxt:  the parser context
  * @input:  the input stream
  * @handler:  the encoding handler
+ *
+ * DEPRECATED: Use xmlSwitchToEncoding
  *
  * change the input functions when discovering the character encoding
  * of a given entity.
@@ -1227,41 +1156,6 @@ int
 xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                           xmlCharEncodingHandlerPtr handler) {
     return(xmlSwitchInputEncodingInt(ctxt, input, handler, -1));
-}
-
-/**
- * xmlSwitchToEncodingInt:
- * @ctxt:  the parser context
- * @handler:  the encoding handler
- * @len: the length to convert or -1
- *
- * change the input functions when discovering the character encoding
- * of a given entity, and convert only @len bytes of the output, this
- * is needed on auto detect to allows any declared encoding later to
- * convert the actual content after the xmlDecl
- *
- * Returns 0 in case of success, -1 otherwise
- */
-static int
-xmlSwitchToEncodingInt(xmlParserCtxtPtr ctxt,
-                       xmlCharEncodingHandlerPtr handler, int len) {
-    int ret = 0;
-
-    if (handler != NULL) {
-        if (ctxt->input != NULL) {
-	    ret = xmlSwitchInputEncodingInt(ctxt, ctxt->input, handler, len);
-	} else {
-	    xmlErrInternal(ctxt, "xmlSwitchToEncoding : no input\n",
-	                   NULL);
-	    return(-1);
-	}
-	/*
-	 * The parsing is now done in UTF8 natively
-	 */
-	ctxt->charset = XML_CHAR_ENCODING_UTF8;
-    } else
-	return(-1);
-    return(ret);
 }
 
 /**
@@ -1277,7 +1171,9 @@ xmlSwitchToEncodingInt(xmlParserCtxtPtr ctxt,
 int
 xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 {
-    return (xmlSwitchToEncodingInt(ctxt, handler, -1));
+    if (ctxt == NULL)
+        return(-1);
+    return(xmlSwitchInputEncodingInt(ctxt, ctxt->input, handler, -1));
 }
 
 /************************************************************************

@@ -284,7 +284,6 @@ int
 xmlParserInputGrow(xmlParserInputPtr in, int len) {
     int ret;
     size_t indx;
-    const xmlChar *content;
 
     if ((in == NULL) || (len < 0)) return(-1);
 #ifdef DEBUG_INPUT
@@ -309,22 +308,8 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     } else
         return(0);
 
-    /*
-     * NOTE : in->base may be a "dangling" i.e. freed pointer in this
-     *        block, but we use it really as an integer to do some
-     *        pointer arithmetic. Insure will raise it as a bug but in
-     *        that specific case, that's not !
-     */
-
-    content = xmlBufContent(in->buf->buffer);
-    if (in->base != content) {
-        /*
-	 * the buffer has been reallocated
-	 */
-	indx = in->cur - in->base;
-	in->base = content;
-	in->cur = &content[indx];
-    }
+    in->base = xmlBufContent(in->buf->buffer);
+    in->cur = in->base + indx;
     in->end = xmlBufEnd(in->buf->buffer);
 
     CHECK_BUFFER(in);
@@ -342,8 +327,6 @@ void
 xmlParserInputShrink(xmlParserInputPtr in) {
     size_t used;
     size_t ret;
-    size_t indx;
-    const xmlChar *content;
 
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext, "Shrink\n");
@@ -356,7 +339,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 
     CHECK_BUFFER(in);
 
-    used = in->cur - xmlBufContent(in->buf->buffer);
+    used = in->cur - in->base;
     /*
      * Do not shrink on large buffers whose only a tiny fraction
      * was consumed
@@ -364,27 +347,17 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     if (used > INPUT_CHUNK) {
 	ret = xmlBufShrink(in->buf->buffer, used - LINE_LEN);
 	if (ret > 0) {
-	    in->cur -= ret;
+            used -= ret;
 	    in->consumed += ret;
 	}
-	in->end = xmlBufEnd(in->buf->buffer);
     }
 
-    CHECK_BUFFER(in);
+    if (xmlBufUse(in->buf->buffer) <= INPUT_CHUNK) {
+        xmlParserInputBufferRead(in->buf, 2 * INPUT_CHUNK);
+    }
 
-    if (xmlBufUse(in->buf->buffer) > INPUT_CHUNK) {
-        return;
-    }
-    xmlParserInputBufferRead(in->buf, 2 * INPUT_CHUNK);
-    content = xmlBufContent(in->buf->buffer);
-    if (in->base != content) {
-        /*
-	 * the buffer has been reallocated
-	 */
-	indx = in->cur - in->base;
-	in->base = content;
-	in->cur = &content[indx];
-    }
+    in->base = xmlBufContent(in->buf->buffer);
+    in->cur = in->base + used;
     in->end = xmlBufEnd(in->buf->buffer);
 
     CHECK_BUFFER(in);

@@ -159,9 +159,11 @@ XMLPUBFUN void XMLCALL
 #ifdef LIBXML_HTML_ENABLED
 XMLPUBFUN void XMLCALL
 		xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 		htmlDefaultSAXHandlerInit	(void);
 #endif
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 		xmlDefaultSAXHandlerInit	(void);
 #ifdef __cplusplus

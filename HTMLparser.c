@@ -1394,6 +1394,9 @@ static const elementPriority htmlEndPriority[] = {
 /**
  * htmlInitAutoClose:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * This is a no-op now.
  */
 void

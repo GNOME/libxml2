@@ -24,7 +24,9 @@
 extern "C" {
 #endif
 
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL xmlInitGlobals(void);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
 
 /**

@@ -2815,6 +2815,9 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar * namespace, void *data,
 /**
  * xmlRelaxNGInitTypes:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * Initialize the default type libraries.
  *
  * Returns 0 in case of success and -1 in case of error.
@@ -2848,6 +2851,11 @@ xmlRelaxNGInitTypes(void)
 
 /**
  * xmlRelaxNGCleanupTypes:
+ *
+ * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * to free global state but see the warnings there. xmlCleanupParser
+ * should be only called once at program exit. In most cases, you don't
+ * have call cleanup functions at all.
  *
  * Cleanup the default Schemas type library associated to RelaxNG
  */

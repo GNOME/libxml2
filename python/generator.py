@@ -289,8 +289,22 @@ skip_impl = (
 )
 
 deprecated_funcs = {
+    'htmlDefaultSAXHandlerInit': True,
+    'htmlInitAutoClose': True,
+    'xmlCleanupCharEncodingHandlers': True,
+    'xmlCleanupGlobals': True,
+    'xmlDefaultSAXHandlerInit': True,
+    'xmlDictCleanup': True,
+    'xmlInitCharEncodingHandlers': True,
+    'xmlInitGlobals': True,
+    'xmlInitializeDict': True,
     'xmlIsRef': True,
+    'xmlRelaxNGCleanupTypes': True,
+    'xmlRelaxNGInitTypes': True,
     'xmlRemoveRef': True,
+    'xmlSchemaCleanupTypes': True,
+    'xmlSchemaInitTypes': True,
+    'xmlXPathInit': True,
 }
 
 def skip_function(name):

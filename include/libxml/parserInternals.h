@@ -574,6 +574,7 @@ XMLPUBFUN void XMLCALL			xmlParserInputShrink	(xmlParserInputPtr in);
 /*
  * Actually comes from the HTML parser but launched from the init stuff.
  */
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL			htmlInitAutoClose	(void);
 XMLPUBFUN htmlParserCtxtPtr XMLCALL	htmlCreateFileParserCtxt(const char *filename,
 	                                         const char *encoding);

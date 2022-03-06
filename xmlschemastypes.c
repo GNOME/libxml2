@@ -386,6 +386,9 @@ xmlSchemaAddParticle(void)
 /*
  * xmlSchemaInitTypes:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * Initialize the default XML Schemas type library
  */
 void
@@ -622,6 +625,11 @@ xmlSchemaFreeTypeEntry(void *type, const xmlChar *name ATTRIBUTE_UNUSED) {
 
 /**
  * xmlSchemaCleanupTypes:
+ *
+ * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * to free global state but see the warnings there. xmlCleanupParser
+ * should be only called once at program exit. In most cases, you don't
+ * have call cleanup functions at all.
  *
  * Cleanup the default XML Schemas type library
  */

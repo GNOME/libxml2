@@ -2928,6 +2928,9 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 /**
  * xmlDefaultSAXHandlerInit:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * Initialize the default SAX2 handler
  */
 void
@@ -2985,6 +2988,9 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 
 /**
  * htmlDefaultSAXHandlerInit:
+ *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
  *
  * Initialize the default SAX handler
  */

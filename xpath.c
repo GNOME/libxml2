@@ -482,6 +482,9 @@ double xmlXPathNINF;
 /**
  * xmlXPathInit:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * Initialize the XPath environment
  */
 ATTRIBUTE_NO_SANITIZE("float-divide-by-zero")

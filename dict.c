@@ -146,8 +146,10 @@ static unsigned int rand_seed = 0;
 /**
  * xmlInitializeDict:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * Do the dictionary mutex initialization.
- * this function is deprecated
  *
  * Returns 0 if initialization was already done, and 1 if that
  * call led to the initialization
@@ -209,6 +211,11 @@ int __xmlRandom(void) {
 
 /**
  * xmlDictCleanup:
+ *
+ * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * to free global state but see the warnings there. xmlCleanupParser
+ * should be only called once at program exit. In most cases, you don't
+ * have call cleanup functions at all.
  *
  * Free the dictionary mutex. Do not call unless sure the library
  * is not in use anymore !

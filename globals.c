@@ -40,6 +40,9 @@ static xmlMutexPtr xmlThrDefMutex = NULL;
 /**
  * xmlInitGlobals:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * Additional initialisation for multi-threading
  */
 void xmlInitGlobals(void)
@@ -521,6 +524,11 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 
 /**
  * xmlCleanupGlobals:
+ *
+ * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * to free global state but see the warnings there. xmlCleanupParser
+ * should be only called once at program exit. In most cases, you don't
+ * have call cleanup functions at all.
  *
  * Additional cleanup for multi-threading
  */

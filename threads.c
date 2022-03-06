@@ -843,6 +843,9 @@ xmlUnlockLibrary(void)
 /**
  * xmlInitThreads:
  *
+ * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * initialize the library.
+ *
  * xmlInitThreads() is used to to initialize all the thread related
  * data of the libxml2 library.
  */
@@ -882,6 +885,11 @@ xmlInitThreads(void)
 
 /**
  * xmlCleanupThreads:
+ *
+ * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * to free global state but see the warnings there. xmlCleanupParser
+ * should be only called once at program exit. In most cases, you don't
+ * have call cleanup functions at all.
  *
  * xmlCleanupThreads() is used to to cleanup all the thread related
  * data of the libxml2 library once processing has ended.

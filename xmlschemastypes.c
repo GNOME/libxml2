@@ -386,9 +386,6 @@ xmlSchemaAddParticle(void)
 /*
  * xmlSchemaInitTypes:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
- * initialize the library.
- *
  * Initialize the default XML Schemas type library
  */
 void

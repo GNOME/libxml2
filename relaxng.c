@@ -2815,9 +2815,6 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar * namespace, void *data,
 /**
  * xmlRelaxNGInitTypes:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
- * initialize the library.
- *
  * Initialize the default type libraries.
  *
  * Returns 0 in case of success and -1 in case of error.

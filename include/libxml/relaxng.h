@@ -116,7 +116,6 @@ typedef enum {
     XML_RELAXNGP_CRNG = 2
 } xmlRelaxNGParserFlag;
 
-XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 		    xmlRelaxNGInitTypes		(void);
 XML_DEPRECATED

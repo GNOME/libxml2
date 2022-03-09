@@ -33,7 +33,6 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/pattern.h>
 #include <libxml/schematron.h>
-#include <libxml/debugXML.h>
 
 #define SCHEMATRON_PARSE_OPTIONS XML_PARSE_NOENT
 
@@ -1497,9 +1496,11 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
                 }
                 break;
             }
-            case XPATH_BOOLEAN:
-                ret = xmlStrcat(ret, BAD_CAST xmlBoolToText(eval->boolval));
+            case XPATH_BOOLEAN: {
+                const char *str = eval->boolval ? "True" : "False";
+                ret = xmlStrcat(ret, BAD_CAST str);
                 break;
+            }
             case XPATH_NUMBER: {
                 xmlChar *buf;
                 int size;

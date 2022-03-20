@@ -18,6 +18,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#include <assert.h>
 #include <string.h> /* for memset() only ! */
 #include <stddef.h>
 #include <limits.h>
@@ -2850,6 +2851,10 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
                     xmlRemoveID(tree->doc, prop);
                 }
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+                if (prop->doc)
+                    assert(xmlDictOwns(prop->doc->dict, prop->name) != 1);
+#endif
                 if (prop->doc != doc) {
                     xmlDictPtr oldPropDict = prop->doc ? prop->doc->dict : NULL;
                     prop->name = _copyStringForNewDictIfNeeded(oldPropDict, newDict, prop->name);
@@ -2884,6 +2889,13 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
 	    xmlSetListDoc(tree->children, doc);
         }
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        if (tree->doc) {
+            assert(xmlDictOwns(tree->doc->dict, tree->name) != 1);
+            assert(xmlDictOwns(tree->doc->dict, tree->content) != 1);
+        }
+        assert(tree->ns == NULL);
+#endif
         tree->name = _copyStringForNewDictIfNeeded(oldTreeDict, newDict, tree->name);
         tree->content = (xmlChar *)_copyStringForNewDictIfNeeded(oldTreeDict, NULL, tree->content);
         /* FIXME: tree->ns should be updated as in xmlStaticCopyNode(). */

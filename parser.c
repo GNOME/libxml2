@@ -7126,6 +7126,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
      */
     ent = xmlParseEntityRef(ctxt);
     if (ent == NULL) return;
+    if (!ctxt->wellFormed)
+	return;
     was_checked = ent->checked;
 
     /* special case of predefined entities */

@@ -10882,8 +10882,6 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
     if ((ctxt == NULL) || (ctxt->input == NULL))
         return(-1);
 
-    xmlDefaultSAXHandlerInit();
-
     xmlDetectSAX2(ctxt);
 
     GROW;

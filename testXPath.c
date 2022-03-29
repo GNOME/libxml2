@@ -130,6 +130,8 @@ int main(int argc, char **argv) {
     int usefile = 0;
     char *filename = NULL;
 
+    xmlInitParser();
+
     for (i = 1; i < argc ; i++) {
 #if defined(LIBXML_XPTR_ENABLED)
 	if ((!strcmp(argv[i], "-xptr")) || (!strcmp(argv[i], "--xptr")))
@@ -158,7 +160,6 @@ int main(int argc, char **argv) {
     xmlSubstituteEntitiesDefaultValue = 1;
 #ifdef LIBXML_SAX1_ENABLED
     if (nocdata != 0) {
-	xmlDefaultSAXHandlerInit();
 	xmlDefaultSAXHandler.cdataBlock = NULL;
     }
 #endif

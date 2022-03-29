@@ -278,7 +278,7 @@ int main(int argc, char **argv) {
     char *filename = NULL;
     int i;
 
-    xmlInitMemory();
+    xmlInitParser();
 
     if (argc <= 1) {
 	usage(argv[0]);

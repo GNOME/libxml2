@@ -169,7 +169,6 @@ int main(int argc, char **argv) {
 	printf("\t--memory : test the schemas in memory parsing\n");
 #endif
     }
-    xmlRelaxNGCleanupTypes();
     xmlCleanupParser();
     xmlMemoryDump();
 

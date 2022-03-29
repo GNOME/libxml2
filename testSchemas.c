@@ -160,7 +160,6 @@ int main(int argc, char **argv) {
 #endif
     }
 failed_schemas:
-    xmlSchemaCleanupTypes();
     xmlCleanupParser();
     xmlMemoryDump();
 

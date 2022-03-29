@@ -1554,7 +1554,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
         return(-1);
     }
 
-    xmlDefaultSAXHandlerInit();
+    xmlInitParser();
 
     if (ctxt->dict == NULL)
 	ctxt->dict = xmlDictCreate();

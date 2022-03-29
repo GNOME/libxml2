@@ -60,7 +60,7 @@
     <symbol file="SAX">characters</symbol>
     <symbol file="SAX">checkNamespace</symbol>
     <symbol file="SAX">comment</symbol>
-    <symbol file="SAX2">docbDefaultSAXHandlerInit</symbol>
+    <symbol file="SAX2" removed="2.10.0">docbDefaultSAXHandlerInit</symbol>
     <symbol file="SAX">elementDecl</symbol>
     <symbol file="SAX">endDocument</symbol>
     <symbol file="SAX">endElement</symbol>
@@ -78,7 +78,7 @@
     <symbol file="SAX">hasInternalSubset</symbol>
     <symbol file="SAX2">htmlDefaultSAXHandlerInit</symbol>
     <symbol file="SAX">ignorableWhitespace</symbol>
-    <symbol file="SAX">initdocbDefaultSAXHandler</symbol>
+    <symbol file="SAX" removed="2.10.0">initdocbDefaultSAXHandler</symbol>
     <symbol file="SAX">inithtmlDefaultSAXHandler</symbol>
     <symbol file="SAX">initxmlDefaultSAXHandler</symbol>
     <symbol file="SAX">internalSubset</symbol>
@@ -401,16 +401,16 @@
     <symbol file="nanoftp">xmlNanoFTPRead</symbol>
     <symbol file="nanoftp">xmlNanoFTPScanProxy</symbol>
     <symbol file="nanoftp">xmlNanoFTPUpdateURL</symbol>
-    <symbol file="DOCBparser">docbCreateFileParserCtxt</symbol>
-    <symbol file="DOCBparser">docbCreatePushParserCtxt</symbol>
-    <symbol file="DOCBparser">docbEncodeEntities</symbol>
-    <symbol file="DOCBparser">docbFreeParserCtxt</symbol>
-    <symbol file="DOCBparser">docbParseChunk</symbol>
-    <symbol file="DOCBparser">docbParseDoc</symbol>
-    <symbol file="DOCBparser">docbParseDocument</symbol>
-    <symbol file="DOCBparser">docbParseFile</symbol>
-    <symbol file="DOCBparser">docbSAXParseDoc</symbol>
-    <symbol file="DOCBparser">docbSAXParseFile</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbCreateFileParserCtxt</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbCreatePushParserCtxt</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbEncodeEntities</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbFreeParserCtxt</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbParseChunk</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbParseDoc</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbParseDocument</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbParseFile</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbSAXParseDoc</symbol>
+    <symbol file="DOCBparser" removed="2.10.0">docbSAXParseFile</symbol>
     <symbol file="xpath">xmlXPathCastBooleanToNumber</symbol>
     <symbol file="xpath">xmlXPathCastBooleanToString</symbol>
     <symbol file="xpath">xmlXPathCastNodeSetToBoolean</symbol>
@@ -726,7 +726,7 @@
     <symbol file="xmlreader">xmlTextReaderRead</symbol>
     <symbol file="xmlreader">xmlTextReaderValue</symbol>
     <symbol file="xmlreader">xmlTextReaderXmlLang</symbol>
-    <symbol file="globals">docbDefaultSAXHandler</symbol>
+    <symbol file="globals" removed="2.10.0">docbDefaultSAXHandler</symbol>
     <symbol file="globals">htmlDefaultSAXHandler</symbol>
     <symbol file="globals">xmlDefaultSAXHandler</symbol>
     <symbol file="globals">xmlDefaultSAXLocator</symbol>
@@ -1285,7 +1285,7 @@
     <symbol file="SAX2">xmlSAX2HasInternalSubset</symbol>
     <symbol file="SAX2">xmlSAX2IgnorableWhitespace</symbol>
     <symbol file="SAX2">xmlSAX2InitDefaultSAXHandler</symbol>
-    <symbol file="SAX2">xmlSAX2InitDocbDefaultSAXHandler</symbol>
+    <symbol file="SAX2" removed="2.10.0">xmlSAX2InitDocbDefaultSAXHandler</symbol>
     <symbol file="SAX2">xmlSAX2InitHtmlDefaultSAXHandler</symbol>
     <symbol file="SAX2">xmlSAX2InternalSubset</symbol>
     <symbol file="SAX2">xmlSAX2IsStandalone</symbol>

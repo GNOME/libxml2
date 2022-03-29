@@ -9,7 +9,7 @@ endif
 
 DIST_SUBDIRS = include . doc example fuzz python xstc
 
-AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include
+AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include -DSYSCONFDIR='"$(sysconfdir)"'
 
 AM_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
 

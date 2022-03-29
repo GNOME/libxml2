@@ -40,7 +40,7 @@ static char *filename = NULL;
 
 
 #ifndef XML_SGML_DEFAULT_CATALOG
-#define XML_SGML_DEFAULT_CATALOG "/etc/sgml/catalog"
+#define XML_SGML_DEFAULT_CATALOG SYSCONFDIR "/sgml/catalog"
 #endif
 
 /************************************************************************

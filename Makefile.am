@@ -2,7 +2,10 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = include . doc example fuzz xstc $(PYTHON_SUBDIR)
+SUBDIRS = include . doc example fuzz xstc
+if WITH_PYTHON
+SUBDIRS += python
+endif
 
 DIST_SUBDIRS = include . doc example fuzz python xstc
 
@@ -201,9 +204,10 @@ runtests: runtest$(EXEEXT) testrecurse$(EXEEXT) testapi$(EXEEXT) \
 	    $(CHECKER) ./testchar$(EXEEXT) && \
 	    $(CHECKER) ./testdict$(EXEEXT) && \
 	    $(CHECKER) ./runxmlconf$(EXEEXT)
-	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
-	    $(MAKE) tests ; fi)
 	@cd fuzz; $(MAKE) tests
+if WITH_PYTHON
+	@cd python && $(MAKE) tests
+endif
 
 check: all runtests
 

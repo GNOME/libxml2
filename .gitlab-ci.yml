@@ -30,11 +30,9 @@ gcc:
 
 gcc:python3:
   extends: .test
-  only:
-    - schedules
   variables:
-    CONFIG: "--with-python=/usr/bin/python3"
     CFLAGS: "-O2"
+    PYTHON: "/usr/bin/python3"
 
 clang:asan:
   extends: .test

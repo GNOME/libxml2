@@ -70,6 +70,7 @@ log
 missing
 missing.lst
 m4
+py-compile
 python/.deps
 python/.libs
 python/Makefile

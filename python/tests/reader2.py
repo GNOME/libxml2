@@ -5,6 +5,7 @@
 #
 import sys
 import glob
+import os
 import string
 import libxml2
 try:
@@ -18,7 +19,8 @@ except:
 libxml2.debugMemory(1)
 
 err = ""
-dir_prefix = "../../test/valid/"
+basedir = os.path.dirname(os.path.realpath(__file__))
+dir_prefix = os.path.join(basedir, "../../test/valid/")
 # This dictionary reflects the contents of the files
 # ../../test/valid/*.xml.err that are not empty, except that
 # the file paths in the messages start with ../../test/
@@ -125,6 +127,7 @@ parsing_error_files = ["766956", "cond_sect2", "t8", "t8a"]
 expect_parsing_error = ["{}{}.xml".format(dir_prefix, f) for f in parsing_error_files]
 
 valid_files = glob.glob(dir_prefix + "*.x*")
+assert valid_files, "found no valid files in '{}'".format(dir_prefix)
 valid_files.sort()
 for file in valid_files:
     err = ""

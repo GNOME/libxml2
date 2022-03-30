@@ -395,7 +395,7 @@ endif()
 
 if(UNIX)
 	target_link_libraries(LibXml2 PRIVATE m)
-	set(M_LIBS "-lm")
+	set(LIBM "-lm")
 endif()
 
 if(WIN32)
@@ -650,7 +650,7 @@ endif()
 set(XML_INCLUDEDIR "-I\${includedir}/libxml2")
 set(XML_LIBDIR "-L\${libdir}")
 set(XML_LIBS "-lxml2")
-set(XML_PRIVATE_LIBS "${Z_LIBS} ${LZMA_LIBS} ${THREAD_LIBS} ${ICONV_LIBS} ${ICU_LIBS} ${M_LIBS}")
+set(XML_PRIVATE_LIBS "${Z_LIBS} ${LZMA_LIBS} ${THREAD_LIBS} ${ICONV_LIBS} ${ICU_LIBS} ${LIBM}")
 
 file(RELATIVE_PATH PACKAGE_RELATIVE_PATH "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig" "${CMAKE_INSTALL_PREFIX}")
 string(REGEX REPLACE "/$" "" PACKAGE_RELATIVE_PATH "${PACKAGE_RELATIVE_PATH}")

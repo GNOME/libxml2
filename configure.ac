@@ -62,6 +62,7 @@ AC_PATH_PROG(XSLTPROC, xsltproc, /usr/bin/xsltproc)
 PKG_PROG_PKG_CONFIG
 
 LT_INIT([disable-static])
+LT_LIB_M
 
 dnl
 dnl if the system support linker version scripts for symbol versioning
@@ -1246,16 +1247,6 @@ iconv (cd, NULL, NULL, NULL, NULL);]])],[
 		LIBS="${_libs}"
 		LDFLAGS="${_ldflags}"])]))
 fi
-case "$host" in
-	*mingw*) M_LIBS=""
-	;;
-	*beos*) M_LIBS=""
-	;;
-        *haiku*) M_LIBS=""
-        ;;
-	*) M_LIBS="-lm"
-	;;
-esac
 AC_SUBST(WITH_ICONV)
 
 WITH_ICU=0
@@ -1317,7 +1308,7 @@ else
     fi
 fi
 XML_LIBS="-lxml2"
-XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $M_LIBS $LIBS"
+XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $LIBS"
 XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICU)
 
@@ -1466,7 +1457,6 @@ AC_SUBST(ICONV_LIBS)
 AC_SUBST(ICU_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
 
-AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
 dnl for the spec file

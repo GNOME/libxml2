@@ -1266,27 +1266,8 @@ cmake_DATA = libxml2-config.cmake
 #
 # Install the tests program sources as examples 
 #
-EXAMPLES_DIR=$(docdir)/examples
-
-install-data-local: 
-	$(MKDIR_P) $(DESTDIR)$(docdir)
-	-$(INSTALL) -m 0644 $(srcdir)/Copyright $(DESTDIR)$(docdir)
-	$(MKDIR_P) $(DESTDIR)$(EXAMPLES_DIR)
-	-$(INSTALL) -m 0644 $(srcdir)/xmllint.c $(DESTDIR)$(EXAMPLES_DIR)
-	-$(INSTALL) -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
-	-$(INSTALL) -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
-	-$(INSTALL) -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
-	@echo "If the documentation is installed, please also look at html/examples for more." > $(DESTDIR)$(EXAMPLES_DIR)/README
-
-uninstall-local:
-	rm -f $(DESTDIR)$(EXAMPLES_DIR)/README
-	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testXPath.c
-	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testHTML.c
-	rm -f $(DESTDIR)$(EXAMPLES_DIR)/testSAX.c
-	rm -f $(DESTDIR)$(EXAMPLES_DIR)/xmllint.c
-	rm -rf $(DESTDIR)$(EXAMPLES_DIR)
-	rm -f $(DESTDIR)$(docdir)/Copyright
-	rm -rf $(DESTDIR)$(docdir)
+examplesdir = $(docdir)/examples
+examples_DATA = xmllint.c testSAX.c testHTML.c testXPath.c
 
 tst: tst.c
 	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz -llzma

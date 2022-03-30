@@ -2,7 +2,7 @@
 
 SUBDIRS = . tests
 
-docsdir = $(datadir)/doc/libxml2-python-$(LIBXML_VERSION)
+docsdir = $(docdir)/python
 dist_docs_DATA = TODO
 
 EXTRA_DIST = 			\

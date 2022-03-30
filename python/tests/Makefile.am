@@ -1,4 +1,4 @@
-exampledir = $(datadir)/doc/libxml2-python-$(LIBXML_VERSION)/examples
+exampledir = $(docdir)/python/examples
 dist_example_DATA = $(PYTESTS) $(XMLS)
 
 PYTESTS=	\

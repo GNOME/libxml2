@@ -61,7 +61,7 @@ AC_PATH_PROG(XMLLINT, xmllint, /usr/bin/xmllint)
 AC_PATH_PROG(XSLTPROC, xsltproc, /usr/bin/xsltproc)
 PKG_PROG_PKG_CONFIG
 
-LT_INIT
+LT_INIT([disable-static])
 
 dnl
 dnl if the system support linker version scripts for symbol versioning

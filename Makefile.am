@@ -11,7 +11,7 @@ DIST_SUBDIRS = include . doc example fuzz python xstc
 
 AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include -DSYSCONFDIR='"$(sysconfdir)"'
 
-AM_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
+AM_CFLAGS = $(EXTRA_CFLAGS)
 
 check_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                testThreads testC14N testAutomata testRegexp \
@@ -23,6 +23,7 @@ bin_PROGRAMS = xmllint xmlcatalog
 bin_SCRIPTS=xml2-config
 
 lib_LTLIBRARIES = libxml2.la
+libxml2_la_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
 libxml2_la_LIBADD = $(ICU_LIBS) $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(LIBM) $(WIN32_EXTRA_LIBADD)
 
 if USE_VERSION_SCRIPT
@@ -54,7 +55,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xmlmodule.c schematron.c xzlib.c
 
 DEPS = $(top_builddir)/libxml2.la
-LDADDS = $(top_builddir)/libxml2.la $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(LIBM) $(WIN32_EXTRA_LIBADD)
+LDADDS = $(top_builddir)/libxml2.la
 
 
 man_MANS = xml2-config.1 libxml.3
@@ -63,34 +64,35 @@ m4datadir = $(datadir)/aclocal
 m4data_DATA = libxml.m4
 
 runtest_SOURCES=runtest.c
+runtest_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS)
 runtest_LDFLAGS = 
 runtest_DEPENDENCIES = $(DEPS)
-runtest_LDADD= $(BASE_THREAD_LIBS) $(RDL_LIBS) $(LDADDS)
+runtest_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
 
 testrecurse_SOURCES=testrecurse.c
 testrecurse_LDFLAGS = 
 testrecurse_DEPENDENCIES = $(DEPS)
-testrecurse_LDADD= $(BASE_THREAD_LIBS) $(RDL_LIBS) $(LDADDS)
+testrecurse_LDADD= $(LDADDS)
 
 testlimits_SOURCES=testlimits.c
 testlimits_LDFLAGS = 
 testlimits_DEPENDENCIES = $(DEPS)
-testlimits_LDADD= $(BASE_THREAD_LIBS) $(RDL_LIBS) $(LDADDS)
+testlimits_LDADD= $(LDADDS)
 
 testchar_SOURCES=testchar.c
 testchar_LDFLAGS = 
 testchar_DEPENDENCIES = $(DEPS)
-testchar_LDADD= $(RDL_LIBS) $(LDADDS)
+testchar_LDADD= $(LDADDS)
 
 testdict_SOURCES=testdict.c
 testdict_LDFLAGS = 
 testdict_DEPENDENCIES = $(DEPS)
-testdict_LDADD= $(RDL_LIBS) $(LDADDS)
+testdict_LDADD= $(LDADDS)
 
 runsuite_SOURCES=runsuite.c
 runsuite_LDFLAGS = 
 runsuite_DEPENDENCIES = $(DEPS)
-runsuite_LDADD= $(RDL_LIBS) $(LDADDS)
+runsuite_LDADD= $(LDADDS)
 
 xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 
@@ -123,9 +125,10 @@ testC14N_DEPENDENCIES = $(DEPS)
 testC14N_LDADD= $(LDADDS)
 
 testThreads_SOURCES = testThreads.c
+testThreads_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS)
 testThreads_LDFLAGS = 
 testThreads_DEPENDENCIES = $(DEPS)
-testThreads_LDADD= $(BASE_THREAD_LIBS) $(LDADDS)
+testThreads_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
 
 testURI_SOURCES=testURI.c
 testURI_LDFLAGS = 

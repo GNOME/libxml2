@@ -6,7 +6,7 @@ EXTRA_DIST = html.dict regexp.dict schema.dict xml.dict xpath.dict \
 CLEANFILES = $(EXTRA_PROGRAMS)
 AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_builddir)/include
 DEPENDENCIES = $(top_builddir)/libxml2.la
-LDADD = $(top_builddir)/libxml2.la $(THREAD_LIBS) $(Z_LIBS) $(LZMA_LIBS) $(ICONV_LIBS) $(LIBM) $(WIN32_EXTRA_LIBADD)
+LDADD = $(top_builddir)/libxml2.la
 
 XML_MAX_LEN = 80000
 # Single quotes to avoid wildcard expansion by the shell

@@ -1,23 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 SUBDIRS = . devhelp examples
 
-EXTRA_DIST_wc = $(wildcard tutorial/*.html) \
-    $(wildcard tutorial/*.c) \
-    $(wildcard tutorial/images/*.png) \
-    $(wildcard tutorial/images/callouts/*.png) \
-    $(wildcard *.html) $(wildcard *.1) $(wildcard *.xsl) \
-    libxml2-api.xml \
-    apibuild.py xmllint.xml xmlcatalog_man.xml \
-    symbols.xml
-
-# Expanded form of EXTRA_DIST_wc
-#
-EXTRA_DIST = \
-	apibuild.py \
-	checkapisym.xsl \
-	libxml2-api.xml \
-	symbols.xml \
-	syms.xsl \
+nobase_dist_doc_DATA = \
 	tutorial/apa.html \
 	tutorial/apb.html \
 	tutorial/apc.html \
@@ -67,14 +51,19 @@ EXTRA_DIST = \
 	tutorial/includexpath.c \
 	tutorial/index.html \
 	tutorial/ix01.html \
-	xmlcatalog.1 \
 	xmlcatalog_man.html \
-	xmlcatalog_man.xml \
-	xmllint.1 \
-	xmllint.html \
-	xmllint.xml
+	xmllint.html
 
-man_MANS = xmllint.1 xmlcatalog.1
+dist_man_MANS = xmllint.1 xmlcatalog.1
+
+EXTRA_DIST = \
+	apibuild.py \
+	checkapisym.xsl \
+	libxml2-api.xml \
+	symbols.xml \
+	syms.xsl \
+	xmlcatalog_man.xml \
+	xmllint.xml
 
 DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl
 
@@ -90,22 +79,5 @@ rebuild:
 	cd devhelp && $(MAKE) rebuild
 	cd examples && $(MAKE) rebuild
 	cd .. && $(MAKE) rebuild_testapi
-
-check-extra-dist:
-	for f in $(EXTRA_DIST_wc) ; do echo $$f; done | sort -u >tmp.EXTRA_DIST_wc
-	for f in $(EXTRA_DIST) ;    do echo $$f; done | sort    >tmp.EXTRA_DIST
-	diff -u tmp.EXTRA_DIST_wc tmp.EXTRA_DIST
-	rm -f tmp.EXTRA_DIST_wc tmp.EXTRA_DIST
-
-install-data-local: 
-	$(MKDIR_P) $(DESTDIR)$(docdir)/tutorial
-	-$(INSTALL) -m 0644 $(srcdir)/tutorial/*.* \
-		$(DESTDIR)$(docdir)/tutorial
-	$(MKDIR_P) $(DESTDIR)$(docdir)/tutorial/images
-	-$(INSTALL) -m 0644 $(srcdir)/tutorial/images/*.* \
-		$(DESTDIR)$(docdir)/tutorial/images
-	$(MKDIR_P) $(DESTDIR)$(docdir)/tutorial/images/callouts
-	-$(INSTALL) -m 0644 $(srcdir)/tutorial/images/callouts/*.* \
-		$(DESTDIR)$(docdir)/tutorial/images/callouts
 
 .PHONY: rebuild

@@ -655,14 +655,20 @@ set(XML_PRIVATE_LIBS "${Z_LIBS} ${LZMA_LIBS} ${THREAD_LIBS} ${ICONV_LIBS} ${ICU_
 file(RELATIVE_PATH PACKAGE_RELATIVE_PATH "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig" "${CMAKE_INSTALL_PREFIX}")
 string(REGEX REPLACE "/$" "" PACKAGE_RELATIVE_PATH "${PACKAGE_RELATIVE_PATH}")
 
-set(prefix "\${pcfiledir}/${PACKAGE_RELATIVE_PATH}")
+if(WIN32)
+	set(prefix "\${pcfiledir}/${PACKAGE_RELATIVE_PATH}")
+else()
+	set(prefix "${CMAKE_INSTALL_PREFIX}")
+endif()
 set(exec_prefix "\${prefix}")
 set(libdir "\${prefix}/${CMAKE_INSTALL_LIBDIR}")
 set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
 configure_file(libxml-2.0.pc.in libxml-2.0.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml-2.0.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig COMPONENT development)
 
-set(prefix "\$(cd \"\$(dirname \"\$0\")\"; pwd -P)/..")
+if(WIN32)
+	set(prefix "\$(cd \"\$(dirname \"\$0\")\"; pwd -P)/..")
+endif()
 configure_file(xml2-config.in xml2-config @ONLY)
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/xml2-config DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT development)
 

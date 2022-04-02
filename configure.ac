@@ -128,7 +128,7 @@ AC_ARG_WITH(reader,
 [  --with-reader           add the xmlReader parsing interface (on)])
 AC_ARG_WITH(readline,
 [  --with-readline=DIR     use readline in DIR],[
-  if test "$withval" != "no" -a "$withval" != "yes"; then
+  if test "$withval" != "no" && test "$withval" != "yes"; then
     RDL_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
     LDFLAGS="${LDFLAGS} -L$withval/lib"
@@ -164,7 +164,7 @@ AC_ARG_WITH(modules,
 [  --with-modules          add the dynamic modules support (on)])
 AC_ARG_WITH(zlib,
 [  --with-zlib[[=DIR]]       use libz in DIR],[
-  if test "$withval" != "no" -a "$withval" != "yes"; then
+  if test "$withval" != "no" && test "$withval" != "yes"; then
     Z_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
     LDFLAGS="${LDFLAGS} -L$withval/lib"
@@ -172,7 +172,7 @@ AC_ARG_WITH(zlib,
 ])
 AC_ARG_WITH(lzma,
 [  --with-lzma[[=DIR]]       use liblzma in DIR],[
-  if test "$withval" != "no" -a "$withval" != "yes"; then
+  if test "$withval" != "no" && test "$withval" != "yes"; then
     LZMA_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
     LDFLAGS="${LDFLAGS} -L$withval/lib"
@@ -905,7 +905,7 @@ else
 	TEST_THREADS="Threadtests"
     fi
 fi
-if test "$with_thread_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
+if test "$with_thread_alloc" = "yes" && test "$WITH_THREADS" = "1" ; then
     WITH_THREAD_ALLOC=1
 fi
 
@@ -938,7 +938,7 @@ if test "$with_history" = "yes" ; then
 	AC_CHECK_LIB(readline, readline,[
 	   RDL_LIBS="-lreadline $RDL_LIBS $tcap"
 	   AC_DEFINE([HAVE_LIBREADLINE], [], [Define if readline library is there (-lreadline)])], , $tcap))
-    if test -n "$RDL_DIR" -a -n "$RDL_LIBS"; then
+    if test -n "$RDL_DIR" && test -n "$RDL_LIBS"; then
 	CPPFLAGS="$CPPFLAGS -I${RDL_DIR}/include"
 	RDL_LIBS="-L${RDL_DIR}/lib $RDL_LIBS"
     fi
@@ -1155,11 +1155,11 @@ AC_SUBST(WITH_XINCLUDE)
 AC_SUBST(XINCLUDE_OBJ)
 AC_SUBST(TEST_XINCLUDE)
 
-if test "$with_xptr" = "" -a "$with_xpath" = "no" ; then
+if test "$with_xptr" = "" && test "$with_xpath" = "no" ; then
     with_xptr=no
 fi
 
-if test "$with_schematron" = "" -a "$with_xpath" = "no" ; then
+if test "$with_schematron" = "" && test "$with_xpath" = "no" ; then
     with_schematron=no
 fi
 
@@ -1207,7 +1207,7 @@ WITH_ICONV=0
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
 else
-    if test "$with_iconv" != "yes" -a "$with_iconv" != "" ; then
+    if test "$with_iconv" != "yes" && test "$with_iconv" != "" ; then
 	CPPFLAGS="${CPPFLAGS} -I$with_iconv/include"
 	# Export this since our headers include iconv.h
 	XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_iconv/include"
@@ -1274,7 +1274,7 @@ else
             have_libicu=yes
             echo Enabling ICU support
         else
-            if test "$with_icu" != "yes" -a "$with_iconv" != "" ; then
+            if test "$with_icu" != "yes" && test "$with_iconv" != "" ; then
                 CPPFLAGS="${CPPFLAGS} -I$with_icu"
             fi
 
@@ -1440,7 +1440,7 @@ dnl
 AC_CHECK_FUNCS(snprintf vsnprintf,,
 	NEED_TRIO=1)
 
-if test "$with_coverage" = "yes" -a "${GCC}" = "yes"
+if test "$with_coverage" = "yes" && test "${GCC}" = "yes"
 then
     echo Enabling code coverage for GCC
     EXTRA_CFLAGS="$EXTRA_CFLAGS -fprofile-arcs -ftest-coverage"

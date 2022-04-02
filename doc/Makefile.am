@@ -51,7 +51,7 @@ nobase_dist_doc_DATA = \
 	tutorial/includexpath.c \
 	tutorial/index.html \
 	tutorial/ix01.html \
-	xmlcatalog_man.html \
+	xmlcatalog.html \
 	xmllint.html
 
 dist_man_MANS = xmllint.1 xmlcatalog.1
@@ -62,7 +62,7 @@ EXTRA_DIST = \
 	libxml2-api.xml \
 	symbols.xml \
 	syms.xsl \
-	xmlcatalog_man.xml \
+	xmlcatalog.xml \
 	xmllint.xml
 
 DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl
@@ -74,8 +74,8 @@ rebuild:
 	cd $(srcdir) && $(XSLTPROC) -o ../win32/libxml2.def.src ../win32/defgen.xsl libxml2-api.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet xmllint.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet -o xmllint.html $(DOCBOOK_HTML) xmllint.xml
-	cd $(srcdir) && $(XSLTPROC) --nonet xmlcatalog_man.xml
-	cd $(srcdir) && $(XSLTPROC) --nonet -o xmlcatalog_man.html $(DOCBOOK_HTML) xmlcatalog_man.xml
+	cd $(srcdir) && $(XSLTPROC) --nonet xmlcatalog.xml
+	cd $(srcdir) && $(XSLTPROC) --nonet -o xmlcatalog.html $(DOCBOOK_HTML) xmlcatalog.xml
 	cd devhelp && $(MAKE) rebuild
 	cd examples && $(MAKE) rebuild
 	cd .. && $(MAKE) rebuild_testapi

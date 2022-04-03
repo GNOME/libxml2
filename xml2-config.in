@@ -92,8 +92,6 @@ while test $# -gt 0; do
         if [ "@XML_LIBDIR@" != "-L/usr/lib" -a "@XML_LIBDIR@" != "-L/usr/lib64" ]; then
             libs="@XML_LIBDIR@ $libs"
         fi
-
-        libs="$libs @WIN32_EXTRA_LIBADD@"
         ;;
 
     *)

@@ -54,7 +54,7 @@ nobase_dist_doc_DATA = \
 	xmlcatalog.html \
 	xmllint.html
 
-dist_man_MANS = xmllint.1 xmlcatalog.1
+dist_man_MANS = xml2-config.1 xmllint.1 xmlcatalog.1
 
 EXTRA_DIST = \
 	apibuild.py \

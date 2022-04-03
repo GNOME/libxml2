@@ -58,8 +58,6 @@ DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la
 
 
-man_MANS = xml2-config.1 libxml.3
-
 m4datadir = $(datadir)/aclocal
 m4data_DATA = libxml.m4
 
@@ -1250,7 +1248,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
 	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
-	     $(man_MANS) libxml-2.0.pc.in libxml-2.0-uninstalled.pc.in \
+	     libxml-2.0.pc.in libxml-2.0-uninstalled.pc.in \
 	     libxml2-config.cmake.in autogen.sh \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h xzlib.h buf.h \

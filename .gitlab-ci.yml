@@ -34,6 +34,12 @@ gcc:python3:
     CFLAGS: "-O2"
     PYTHON: "/usr/bin/python3"
 
+gcc:static:
+  extends: .test
+  variables:
+    CONFIG: "--disable-shared --without-python"
+    CFLAGS: "-O2"
+
 clang:asan:
   extends: .test
   variables:

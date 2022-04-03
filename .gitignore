@@ -70,7 +70,8 @@ ltmain.sh
 log
 missing
 missing.lst
-m4
+m4/libtool.m4
+m4/lt*.m4
 py-compile
 python/.deps
 python/.libs

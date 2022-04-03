@@ -758,7 +758,6 @@ AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" != "xno"])
 
 dnl check for dso support
 WITH_MODULES=0
-TEST_MODULES=
 
 if test "$with_modules" != "no" ; then
  case "$host" in
@@ -807,14 +806,9 @@ if test "$with_modules" != "no" ; then
  esac
 fi
 
-if test "${WITH_MODULES}" = "1"; then
-  TEST_MODULES="ModuleTests"
-fi  
-
 AC_SUBST(WITH_MODULES)
 AC_SUBST(MODULE_PLATFORM_LIBS)
 AC_SUBST(MODULE_EXTENSION)
-AC_SUBST(TEST_MODULES)
 
 dnl
 dnl Check for trio string functions

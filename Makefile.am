@@ -166,7 +166,7 @@ runxmlconf_LDADD= $(LDADDS)
 
 runtests: runtest$(EXEEXT) testrecurse$(EXEEXT) testapi$(EXEEXT) \
           testchar$(EXEEXT) testdict$(EXEEXT) runxmlconf$(EXEEXT) \
-          testThreads$(EXEEXT)
+          testModule$(EXEEXT) testThreads$(EXEEXT)
 	[ -d test   ] || $(LN_S) $(srcdir)/test   .
 	[ -d result ] || $(LN_S) $(srcdir)/result .
 	$(CHECKER) ./runtest$(EXEEXT) && \
@@ -174,6 +174,7 @@ runtests: runtest$(EXEEXT) testrecurse$(EXEEXT) testapi$(EXEEXT) \
 	    ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) ./testapi$(EXEEXT) && \
 	    $(CHECKER) ./testchar$(EXEEXT) && \
 	    $(CHECKER) ./testdict$(EXEEXT) && \
+	    $(CHECKER) ./testModule$(EXEEXT) && \
 	    $(CHECKER) ./testThreads$(EXEEXT) && \
 	    $(CHECKER) ./runxmlconf$(EXEEXT)
 	@cd fuzz; $(MAKE) tests
@@ -194,7 +195,7 @@ asan:
 
 testall : tests SVGtests
 
-tests: $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMATRON) Timingtests $(TEST_VTIME) $(PYTHON_TESTS) $(TEST_MODULES)
+tests: $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMATRON) Timingtests $(TEST_VTIME) $(PYTHON_TESTS)
 	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
 	    $(MAKE) -s tests ; fi)
 	@(cd doc/examples ; $(MAKE) -s tests)
@@ -436,10 +437,6 @@ SchemasPythonTests:
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
 	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" pytests ; fi)
-
-ModuleTests: testModule$(EXEEXT) testdso.la
-	@echo "## Module tests"
-	@(./testModule$(EXEEXT))
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)

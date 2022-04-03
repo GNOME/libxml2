@@ -1222,28 +1222,10 @@ cleantar:
 rpm: cleanup cleantar
 	@(unset CDPATH ; $(MAKE) dist-source dist && rpmbuild -ta $(distdir).tar.gz)
 
-## We create xml2Conf.sh here and not from configure because we want
-## to get the paths expanded correctly.  Macros like srcdir are given
-## the value NONE in configure if the user doesn't specify them (this
-## is an autoconf feature, not a bug).
-
-xml2Conf.sh: xml2Conf.sh.in Makefile
-## Use sed and then mv to avoid problems if the user interrupts.
-	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \
-	    -e 's?\@XML_INCLUDEDIR\@?$(XML_INCLUDEDIR)?g' \
-	    -e 's?\@VERSION\@?$(VERSION)?g' \
-	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
-	    -e 's?\@XML_PRIVATE_LIBS\@?$(XML_PRIVATE_LIBS)?g' \
-	    -e 's?\@LIBS\@?$(LIBS)?g' \
-	       < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
-	&& mv xml2Conf.tmp xml2Conf.sh
-
-CLEANFILES = runxmlconf.log test.out xml2Conf.sh *.gcda *.gcno *.res
+CLEANFILES = runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst
 
-confexecdir=$(libdir)
-confexec_DATA = xml2Conf.sh
-EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
+EXTRA_DIST = xml2-config.in libxml.spec.in libxml2.spec \
              libxml.m4 Copyright check-xml-test-suite.py gentest.py \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
 	     check-xsddata-test-suite.py check-xinclude-test-suite.py \

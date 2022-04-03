@@ -118,7 +118,6 @@ tmp
 tst.c
 tst
 xml2-config
-xml2Conf.sh
 xmlcatalog
 xmlconf
 xmllint

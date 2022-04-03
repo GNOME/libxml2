@@ -475,9 +475,9 @@ int wrap_cmp( xmlNodePtr x, xmlNodePtr y );
  *									*
  ************************************************************************/
 
-double xmlXPathNAN;
-double xmlXPathPINF;
-double xmlXPathNINF;
+double xmlXPathNAN = 0.0;
+double xmlXPathPINF = 0.0;
+double xmlXPathNINF = 0.0;
 
 /**
  * xmlXPathInit:

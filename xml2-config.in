@@ -86,7 +86,7 @@ while test $# -gt 0; do
             shift
             libs="@XML_LIBS@"
         else
-            libs="@XML_LIBS@ @XML_PRIVATE_LIBS@ @MODULE_PLATFORM_LIBS@"
+            libs="@XML_LIBS@ @XML_PRIVATE_LIBS@ @MODULE_PLATFORM_LIBS@ @LIBS@"
         fi
 
         if [ "@XML_LIBDIR@" != "-L/usr/lib" -a "@XML_LIBDIR@" != "-L/usr/lib64" ]; then

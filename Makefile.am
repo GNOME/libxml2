@@ -1236,6 +1236,7 @@ xml2Conf.sh: xml2Conf.sh.in Makefile
 	    -e 's?\@VERSION\@?$(VERSION)?g' \
 	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
 	    -e 's?\@XML_PRIVATE_LIBS\@?$(XML_PRIVATE_LIBS)?g' \
+	    -e 's?\@LIBS\@?$(LIBS)?g' \
 	       < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
 	&& mv xml2Conf.tmp xml2Conf.sh
 

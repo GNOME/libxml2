@@ -165,7 +165,8 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_LDADD= $(LDADDS)
 
 runtests: runtest$(EXEEXT) testrecurse$(EXEEXT) testapi$(EXEEXT) \
-          testchar$(EXEEXT) testdict$(EXEEXT) runxmlconf$(EXEEXT)
+          testchar$(EXEEXT) testdict$(EXEEXT) runxmlconf$(EXEEXT) \
+          testThreads$(EXEEXT)
 	[ -d test   ] || $(LN_S) $(srcdir)/test   .
 	[ -d result ] || $(LN_S) $(srcdir)/result .
 	$(CHECKER) ./runtest$(EXEEXT) && \
@@ -173,6 +174,7 @@ runtests: runtest$(EXEEXT) testrecurse$(EXEEXT) testapi$(EXEEXT) \
 	    ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) ./testapi$(EXEEXT) && \
 	    $(CHECKER) ./testchar$(EXEEXT) && \
 	    $(CHECKER) ./testdict$(EXEEXT) && \
+	    $(CHECKER) ./testThreads$(EXEEXT) && \
 	    $(CHECKER) ./runxmlconf$(EXEEXT)
 	@cd fuzz; $(MAKE) tests
 if WITH_PYTHON
@@ -192,7 +194,7 @@ asan:
 
 testall : tests SVGtests
 
-tests: $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMATRON) $(TEST_THREADS) Timingtests $(TEST_VTIME) $(PYTHON_TESTS) $(TEST_MODULES)
+tests: $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMATRON) Timingtests $(TEST_VTIME) $(PYTHON_TESTS) $(TEST_MODULES)
 	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
 	    $(MAKE) -s tests ; fi)
 	@(cd doc/examples ; $(MAKE) -s tests)
@@ -291,12 +293,6 @@ SVGtests : xmllint$(EXEEXT)
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
-
-Threadtests : testThreads$(EXEEXT)
-	@echo "## Threaded regression tests"
-	-@($(CHECKER) $(top_builddir)/testThreads ; \
-	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	   exit 0)
 
 Regexptests: testRegexp$(EXEEXT)
 	@(echo > .memdump)

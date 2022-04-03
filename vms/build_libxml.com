@@ -64,8 +64,7 @@ $!
 $!- list of test modules to compile and link.  Compare this list to the
 $!  definition of check_PROGRAMS in MAKEFILE.
 $!
-$   check_PROGRAMS = "testSchemas testRelax testSAX testHTML testXPath testURI " -
-                + "testThreads testC14N testAutomata testRegexp testReader"
+$   check_PROGRAMS = "testThreads testAutomata testRegexp"
 $!
 $!- set up build logicals -----------------------------------------------------\
 $!

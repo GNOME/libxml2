@@ -206,16 +206,8 @@ XML_OBJS_A = $(XML_INTDIR_A)\buf.obj\
 UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\xmlcatalog.exe\
 	$(BINDIR)\testAutomata.exe\
-	$(BINDIR)\testC14N.exe\
-	$(BINDIR)\testHTML.exe\
-	$(BINDIR)\testReader.exe\
-	$(BINDIR)\testRelax.exe\
 	$(BINDIR)\testRegexp.exe\
 	$(BINDIR)\testModule.exe\
-	$(BINDIR)\testSAX.exe\
-	$(BINDIR)\testSchemas.exe\
-	$(BINDIR)\testURI.exe\
-	$(BINDIR)\testXPath.exe\
 	$(BINDIR)\runtest.exe\
 	$(BINDIR)\runsuite.exe\
 	$(BINDIR)\testapi.exe\

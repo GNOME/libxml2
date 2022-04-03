@@ -506,20 +506,12 @@ if(LIBXML2_WITH_TESTS)
 		runsuite
 		testapi
 		testAutomata
-		testC14N
 		testchar
 		testdict
-		testHTML
 		testModule
 		testlimits
-		testReader
 		testrecurse
 		testRegexp
-		testRelax
-		testSAX
-		testSchemas
-		testURI
-		testXPath
 	)
 	foreach(TEST ${TESTS})
 		add_executable(${TEST} ${TEST}.c)

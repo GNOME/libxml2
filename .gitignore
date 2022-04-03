@@ -97,17 +97,9 @@ stamp-h1
 tags
 test.out
 testAutomata
-testC14N
-testHTML
 testModule
-testReader
 testRegexp
-testRelax
-testSAX
-testSchemas
 testThreads
-testURI
-testXPath
 testapi
 testapi.c.new
 testchar

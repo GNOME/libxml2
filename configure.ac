@@ -988,17 +988,14 @@ AC_SUBST(WITH_LEGACY)
 if test "$with_reader" = "no" ; then
     echo Disabling the xmlReader parsing interface
     WITH_READER=0
-    READER_TEST=
 else    
     WITH_READER=1
-    READER_TEST=Readertests
     if test "$with_push" = "no" ; then
         echo xmlReader requires Push interface - enabling it
 	with_push=yes
     fi
 fi
 AC_SUBST(WITH_READER)
-AC_SUBST(READER_TEST)
 
 if test "$with_writer" = "no" ; then
     echo Disabling the xmlWriter saving interface
@@ -1022,64 +1019,44 @@ AC_SUBST(WITH_WRITER)
 if test "$with_pattern" = "no" ; then
     echo Disabling the xmlPattern parsing interface
     WITH_PATTERN=0
-    TEST_PATTERN=
 else    
     WITH_PATTERN=1
-    TEST_PATTERN=Patterntests
 fi
 AC_SUBST(WITH_PATTERN)
-AC_SUBST(TEST_PATTERN)
 
 if test "$with_sax1" = "no" ; then
     echo Disabling the older SAX1 interface
     WITH_SAX1=0
-    TEST_SAX=
 else    
     WITH_SAX1=1
-    TEST_SAX=SAXtests
 fi
 AC_SUBST(WITH_SAX1)
-AC_SUBST(TEST_SAX)
 
 if test "$with_push" = "no" ; then
     echo Disabling the PUSH parser interfaces
     WITH_PUSH=0
-    TEST_PUSH=
 else    
     WITH_PUSH=1
-    TEST_PUSH="XMLPushtests"
 fi
 AC_SUBST(WITH_PUSH)
-AC_SUBST(TEST_PUSH)
 
 if test "$with_html" = "no" ; then
     echo Disabling HTML support
     WITH_HTML=0
     HTML_OBJ=
-    TEST_HTML=
 else    
     WITH_HTML=1
     HTML_OBJ="HTMLparser.o HTMLtree.o"
-    TEST_HTML=HTMLtests
-    if test "$with_push" != "no" ; then
-        TEST_PHTML=HTMLPushtests
-    else
-        TEST_PHTML=
-    fi
 fi
 AC_SUBST(WITH_HTML)
 AC_SUBST(HTML_OBJ)
-AC_SUBST(TEST_HTML)
-AC_SUBST(TEST_PHTML)
 
 if test "$with_valid" = "no" ; then
     echo Disabling DTD validation support
     WITH_VALID=0
-    TEST_VALID=
     TEST_VTIME=
 else    
     WITH_VALID=1
-    TEST_VALID=Validtests
     TEST_VTIME=VTimingtests
 fi
 AC_SUBST(WITH_VALID)
@@ -1104,11 +1081,9 @@ if test "$with_xptr" = "no" ; then
     echo Disabling XPointer support
     WITH_XPTR=0
     XPTR_OBJ=
-    TEST_XPTR=
 else    
     WITH_XPTR=1
     XPTR_OBJ=xpointer.o
-    TEST_XPTR=XPtrtests
     if test "$with_xpath" = "no" ; then
         echo XPointer requires XPath support - enabling it
 	with_xpath=yes
@@ -1116,17 +1091,14 @@ else
 fi
 AC_SUBST(WITH_XPTR)
 AC_SUBST(XPTR_OBJ)
-AC_SUBST(TEST_XPTR)
 
 if test "$with_c14n" = "no" ; then
     echo Disabling C14N support
     WITH_C14N=0
     C14N_OBJ=
-    TEST_C14N=
 else    
     WITH_C14N=1
     C14N_OBJ="c14n.c"
-    TEST_C14N=C14Ntests
     if test "$with_xpath" = "no" ; then
         echo C14N requires XPath support - enabling it
 	with_xpath=yes
@@ -1134,18 +1106,15 @@ else
 fi
 AC_SUBST(WITH_C14N)
 AC_SUBST(C14N_OBJ)
-AC_SUBST(TEST_C14N)
 
 if test "$with_xinclude" = "no" ; then
     echo Disabling XInclude support
     WITH_XINCLUDE=0
     XINCLUDE_OBJ=
     with_xinclude="no"
-    TEST_XINCLUDE=
 else    
     WITH_XINCLUDE=1
     XINCLUDE_OBJ=xinclude.o
-    TEST_XINCLUDE=XIncludetests
     if test "$with_xpath" = "no" ; then
         echo XInclude requires XPath support - enabling it
 	with_xpath=yes
@@ -1153,7 +1122,6 @@ else
 fi
 AC_SUBST(WITH_XINCLUDE)
 AC_SUBST(XINCLUDE_OBJ)
-AC_SUBST(TEST_XINCLUDE)
 
 if test "$with_xptr" = "" && test "$with_xpath" = "no" ; then
     with_xptr=no
@@ -1182,15 +1150,12 @@ if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
     WITH_XPATH=0
     XPATH_OBJ=
-    TEST_XPATH=
 else    
     WITH_XPATH=1
     XPATH_OBJ=xpath.o
-    TEST_XPATH=XPathtests
 fi
 AC_SUBST(WITH_XPATH)
 AC_SUBST(XPATH_OBJ)
-AC_SUBST(TEST_XPATH)
 
 dnl
 dnl output functions
@@ -1327,18 +1292,15 @@ AC_SUBST(WITH_ISO8859X)
 if test "$with_schemas" = "no" ; then
     echo "Disabling Schemas/Relax-NG support"
     WITH_SCHEMAS=0
-    TEST_SCHEMAS=
 else    
     echo "Enabled Schemas/Relax-NG support"
     WITH_SCHEMAS=1
-    TEST_SCHEMAS="Schemastests Relaxtests"
     AS_IF([test "x$with_python" != "xno"], [
         PYTHON_TESTS="$PYTHON_TESTS RelaxNGPythonTests SchemasPythonTests"
     ])
     with_regexps=yes
 fi
 AC_SUBST(WITH_SCHEMAS)
-AC_SUBST(TEST_SCHEMAS)
 
 if test "$with_regexps" = "no" ; then
     echo Disabling Regexps support

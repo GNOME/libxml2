@@ -193,8 +193,6 @@ asan:
 	@echo '## rebuilding for ASAN'
 	./configure CFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" CXXFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" LDFLAGS="-fsanitize=address,undefined" CC="clang" CXX="clang++" --disable-shared ; OptimOff  ; $(MAKE) clean ; $(MAKE)
 
-testall : tests SVGtests
-
 tests: $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMATRON) Timingtests $(TEST_VTIME) $(PYTHON_TESTS)
 	@(if [ "$(PYTHON_SUBDIR)" != "" ] ; then cd python ; \
 	    $(MAKE) -s tests ; fi)
@@ -274,26 +272,6 @@ Catatests : xmlcatalog$(EXEEXT)
 	diff result/catalogs/mycatalog.empty $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	rm -f $(srcdir)/result/catalogs/mycatalog)
-
-SVGtests : xmllint$(EXEEXT)
-	@echo "## SVG parsing regression tests"
-	-@(for i in $(srcdir)/test/SVG/* ; do \
-	  name=`basename $$i`; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/SVG/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint $$i > $(srcdir)/result/SVG/$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint $$i > result.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/SVG/$$name result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint result.$$name > result2.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff result.$$name result2.$$name ; \
-	      rm result.$$name result2.$$name ; \
-	  fi ; fi ; done)
 
 Regexptests: testRegexp$(EXEEXT)
 	@(echo > .memdump)

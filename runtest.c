@@ -4491,6 +4491,9 @@ testDesc testDescriptions[] = {
       threadsTest, NULL, NULL, NULL, NULL,
       0 },
 #endif
+    { "SVG parsing regression tests" ,
+      oldParseTest, "./test/SVG/*.xml", "result/SVG/", "", NULL,
+      0 },
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 

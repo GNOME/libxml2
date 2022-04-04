@@ -91,9 +91,9 @@ xpath1_SOURCES = xpath1.c
 xpath2_SOURCES = xpath2.c
 
 valgrind: 
-	$(MAKE) CHECKER='valgrind' tests
+	$(MAKE) CHECKER='valgrind' check
 
-tests: $(check_PROGRAMS)
+check-local:
 	@test -f Makefile.am || test -f test1.xml || $(LN_S) $(srcdir)/test?.xml .
 	@(echo '## examples regression tests')
 	@(echo > .memdump)

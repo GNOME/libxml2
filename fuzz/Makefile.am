@@ -24,14 +24,13 @@ XML_SEED_CORPUS_SRC = \
 
 testFuzzer_SOURCES = testFuzzer.c fuzz.c
 
-.PHONY: tests corpus clean-corpus
+.PHONY: corpus clean-corpus
 
 corpus: seed/html.stamp seed/regexp.stamp seed/schema.stamp seed/uri.stamp \
     seed/xml.stamp seed/xpath.stamp
 
-tests: testFuzzer$(EXEEXT) corpus
-	@echo "## Running fuzzer tests"
-	@./testFuzzer$(EXEEXT)
+check-local: corpus
+	./testFuzzer$(EXEEXT)
 
 clean-corpus:
 	rm -rf seed

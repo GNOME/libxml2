@@ -51,6 +51,3 @@ all-local: drv_libxml2.py libxml2.py
 $(GENERATED): $(srcdir)/generator.py $(API_DESC)
 	$(PYTHON) $(srcdir)/generator.py $(srcdir)
 endif
-
-tests test: all
-	cd tests && $(MAKE) tests

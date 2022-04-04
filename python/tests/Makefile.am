@@ -59,7 +59,7 @@ XMLS=		\
 CLEANFILES = core tmp.xml *.pyc
 
 if WITH_PYTHON
-tests: $(PYTESTS)
+check-local:
 	@for f in $(XMLS) ; do test -f $$f || $(LN_S) $(srcdir)/$$f . ; done
 	@echo "## running Python regression tests"
 	@(export PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; \
@@ -73,6 +73,4 @@ tests: $(PYTESTS)
 	      exit 1 ; \
 	    fi ; \
 	  done)
-else
-tests:
 endif

@@ -158,30 +158,25 @@ runxmlconf_LDADD= $(LDADDS)
 #testOOM_DEPENDENCIES = $(DEPS)
 #testOOM_LDADD= $(LDADDS)
 
-runtests: runtest$(EXEEXT) testrecurse$(EXEEXT) testapi$(EXEEXT) \
-          testchar$(EXEEXT) testdict$(EXEEXT) runxmlconf$(EXEEXT) \
-          testModule$(EXEEXT) testThreads$(EXEEXT)
+check-local:
 	[ -d test   ] || $(LN_S) $(srcdir)/test   .
 	[ -d result ] || $(LN_S) $(srcdir)/result .
-	$(CHECKER) ./runtest$(EXEEXT) && \
-	    $(CHECKER) ./testrecurse$(EXEEXT) && \
-	    ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) ./testapi$(EXEEXT) && \
-	    $(CHECKER) ./testchar$(EXEEXT) && \
-	    $(CHECKER) ./testdict$(EXEEXT) && \
-	    $(CHECKER) ./testModule$(EXEEXT) && \
-	    $(CHECKER) ./testThreads$(EXEEXT) && \
-	    $(CHECKER) ./runxmlconf$(EXEEXT)
-	@cd fuzz; $(MAKE) tests
-if WITH_PYTHON
-	@cd python && $(MAKE) tests
-endif
+	$(CHECKER) ./runtest$(EXEEXT)
+	$(CHECKER) ./testrecurse$(EXEEXT)
+	ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) ./testapi$(EXEEXT)
+	$(CHECKER) ./testchar$(EXEEXT)
+	$(CHECKER) ./testdict$(EXEEXT)
+	$(CHECKER) ./testModule$(EXEEXT)
+	$(CHECKER) ./testThreads$(EXEEXT)
+	$(CHECKER) ./runxmlconf$(EXEEXT)
 
-check: all runtests
+# Compatibility name of the check target
+runtests: check
 
-check-valgrind valgrind: all
+check-valgrind valgrind:
 	@echo '## Running the regression tests under Valgrind'
 	@echo '## Go get a cup of coffee it is gonna take a while ...'
-	$(MAKE) CHECKER='valgrind -q' runtests
+	$(MAKE) CHECKER='valgrind -q' check
 
 asan:
 	@echo '## rebuilding for ASAN'

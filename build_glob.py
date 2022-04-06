@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 ###
 #
 #       build_glob.py : Build the global_functions.h and global_functions.c

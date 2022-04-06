@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 #
 # Original script modified in November 2003 to take advantage of
 # the character-validation range routines, and updated to the

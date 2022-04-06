@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 #
 # this test exercise the XPath basic engine, parser, etc, and
 # allows to detect memory leaks

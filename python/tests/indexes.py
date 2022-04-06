@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 # -*- coding: ISO-8859-1 -*-
 import sys
 import libxml2

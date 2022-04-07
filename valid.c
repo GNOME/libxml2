@@ -1052,6 +1052,7 @@ xmlCopyDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
 	    tmp->type = cur->type;
 	    tmp->ocur = cur->ocur;
 	    prev->c2 = tmp;
+	    tmp->parent = prev;
 	    if (cur->name != NULL) {
 		if (dict)
 		    tmp->name = xmlDictLookup(dict, cur->name, -1);

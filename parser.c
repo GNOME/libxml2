@@ -2202,7 +2202,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 		ctxt->input->col++;
 	    }
 	    cur++;
-	    res++;
+	    if (res < INT_MAX)
+		res++;
 	    if (*cur == 0) {
 		ctxt->input->cur = cur;
 		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
@@ -2238,7 +2239,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
              * by the attachment of one leading and one following space (#x20)
              * character."
              */
-	    res++;
+	    if (res < INT_MAX)
+		res++;
         }
     }
     return(res);

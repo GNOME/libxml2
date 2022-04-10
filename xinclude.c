@@ -2232,6 +2232,9 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 
 	    xmlAddPrevSibling(cur, end);
 	}
+        /*
+         * FIXME: xmlUnlinkNode doesn't coalesce text nodes.
+         */
 	xmlUnlinkNode(cur);
 	xmlFreeNode(cur);
     } else {

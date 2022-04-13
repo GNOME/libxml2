@@ -21,7 +21,7 @@
       ln -s /tests/xmlconf
       sh autogen.sh $CONFIG
       make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
-      make check
+      make CFLAGS="$CFLAGS -Werror" check
 
 gcc:
   extends: .test

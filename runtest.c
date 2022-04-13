@@ -2153,10 +2153,10 @@ fdParseTest(const char *filename, const char *result, const char *err,
              int options) {
     xmlDocPtr doc;
     const char *base = NULL;
-    int size, res = 0;
+    int size, res = 0, fd;
 
     nb_tests++;
-    int fd = open(filename, RD_FLAGS);
+    fd = open(filename, RD_FLAGS);
 #ifdef LIBXML_HTML_ENABLED
     if (options & XML_PARSE_HTML) {
         doc = htmlReadFd(fd, filename, NULL, options);

@@ -134,9 +134,7 @@ if(ZLIB_FOUND)
 	list(APPEND CMAKE_REQUIRED_LIBRARIES ZLIB::ZLIB)
 endif()
 
-if(MSVC)
-	configure_file(include/win32config.h config.h COPYONLY)
-else()
+if (NOT MSVC)
 	check_c_source_compiles("
 		void __attribute__((destructor))
 		f(void) {}
@@ -244,7 +242,6 @@ else()
 			set(XML_SOCKLEN_T int)
 		endif()
 	endif()
-	configure_file(config.h.cmake.in config.h)
 endif()
 
 set(
@@ -640,6 +637,11 @@ install(
 	COMPONENT development
 )
 
+if(MSVC)
+	configure_file(include/win32config.h config.h COPYONLY)
+else()
+	configure_file(config.h.cmake.in config.h)
+endif()
 configure_file(include/libxml/xmlversion.h.in libxml/xmlversion.h)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlversion.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 

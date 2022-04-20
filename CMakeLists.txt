@@ -503,6 +503,7 @@ if(LIBXML2_WITH_TESTS)
 	enable_testing()
 	set(
 		TESTS
+		runtest
 		runxmlconf
 		runsuite
 		testapi
@@ -512,11 +513,22 @@ if(LIBXML2_WITH_TESTS)
 		testModule
 		testlimits
 		testrecurse
+		testThreads
 	)
 	foreach(TEST ${TESTS})
 		add_executable(${TEST} ${TEST}.c)
+		target_compile_definitions(${TEST} PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
 		target_link_libraries(${TEST} LibXml2)
 	endforeach()
+	if(Threads_FOUND)
+		foreach(TEST runtest testThreads)
+			if(WIN32)
+				target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
+			endif()
+			target_link_libraries(${TEST} Threads::Threads)
+		endforeach()
+	endif()
+	add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 	if(EXISTS ${LIBXML2_XMLCONF_WORKING_DIR}/xmlconf/xmlconf.xml)
 		add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${LIBXML2_XMLCONF_WORKING_DIR})
 	endif()
@@ -526,23 +538,7 @@ if(LIBXML2_WITH_TESTS)
 	add_test(NAME testchar COMMAND testchar)
 	add_test(NAME testdict COMMAND testdict)
 	add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-	if(Threads_FOUND)
-		set(
-			TESTS_THREADS
-			runtest
-			testThreads
-		)
-		foreach(TEST ${TESTS_THREADS})
-			add_executable(${TEST} ${TEST}.c)
-			target_compile_definitions(${TEST} PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
-			if(WIN32)
-				target_compile_definitions(${TEST} PRIVATE HAVE_WIN32_THREADS)
-			endif()
-			target_link_libraries(${TEST} LibXml2 Threads::Threads)
-		endforeach()
-		add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-		add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-	endif()
+	add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
 if(LIBXML2_WITH_PYTHON)

@@ -50749,7 +50749,7 @@ static int
 test_xmlXPtrBuildNodeList(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathObjectPtr obj; /* the XPointer result from the evaluation. */
@@ -50824,7 +50824,7 @@ static int
 test_xmlXPtrEvalRangePredicate(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPointer Parser context */
     int n_ctxt;
@@ -50851,159 +50851,12 @@ test_xmlXPtrEvalRangePredicate(void) {
     return(test_ret);
 }
 
-#ifdef LIBXML_XPTR_ENABLED
-
-#define gen_nb_xmlLocationSetPtr 1
-static xmlLocationSetPtr gen_xmlLocationSetPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlLocationSetPtr(int no ATTRIBUTE_UNUSED, xmlLocationSetPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-#endif
-
-
-static int
-test_xmlXPtrLocationSetAdd(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_XPTR_ENABLED)
-    int mem_base;
-    xmlLocationSetPtr cur; /* the initial range set */
-    int n_cur;
-    xmlXPathObjectPtr val; /* a new xmlXPathObjectPtr */
-    int n_val;
-
-    for (n_cur = 0;n_cur < gen_nb_xmlLocationSetPtr;n_cur++) {
-    for (n_val = 0;n_val < gen_nb_xmlXPathObjectPtr;n_val++) {
-        mem_base = xmlMemBlocks();
-        cur = gen_xmlLocationSetPtr(n_cur, 0);
-        val = gen_xmlXPathObjectPtr(n_val, 1);
-
-        xmlXPtrLocationSetAdd(cur, val);
-        call_tests++;
-        des_xmlLocationSetPtr(n_cur, cur, 0);
-        des_xmlXPathObjectPtr(n_val, val, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPtrLocationSetAdd",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_cur);
-            printf(" %d", n_val);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlXPtrLocationSetCreate(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
-static int
-test_xmlXPtrLocationSetDel(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_XPTR_ENABLED)
-    int mem_base;
-    xmlLocationSetPtr cur; /* the initial range set */
-    int n_cur;
-    xmlXPathObjectPtr val; /* an xmlXPathObjectPtr */
-    int n_val;
-
-    for (n_cur = 0;n_cur < gen_nb_xmlLocationSetPtr;n_cur++) {
-    for (n_val = 0;n_val < gen_nb_xmlXPathObjectPtr;n_val++) {
-        mem_base = xmlMemBlocks();
-        cur = gen_xmlLocationSetPtr(n_cur, 0);
-        val = gen_xmlXPathObjectPtr(n_val, 1);
-
-        xmlXPtrLocationSetDel(cur, val);
-        call_tests++;
-        des_xmlLocationSetPtr(n_cur, cur, 0);
-        des_xmlXPathObjectPtr(n_val, val, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPtrLocationSetDel",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_cur);
-            printf(" %d", n_val);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlXPtrLocationSetMerge(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
-static int
-test_xmlXPtrLocationSetRemove(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_XPTR_ENABLED)
-    int mem_base;
-    xmlLocationSetPtr cur; /* the initial range set */
-    int n_cur;
-    int val; /* the index to remove */
-    int n_val;
-
-    for (n_cur = 0;n_cur < gen_nb_xmlLocationSetPtr;n_cur++) {
-    for (n_val = 0;n_val < gen_nb_int;n_val++) {
-        mem_base = xmlMemBlocks();
-        cur = gen_xmlLocationSetPtr(n_cur, 0);
-        val = gen_int(n_val, 1);
-
-        xmlXPtrLocationSetRemove(cur, val);
-        call_tests++;
-        des_xmlLocationSetPtr(n_cur, cur, 0);
-        des_int(n_val, val, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPtrLocationSetRemove",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_cur);
-            printf(" %d", n_val);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
 
 static int
 test_xmlXPtrNewCollapsedRange(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting and ending node */
@@ -51047,7 +50900,7 @@ static int
 test_xmlXPtrNewLocationSetNodeSet(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodeSetPtr set; /* a node set */
@@ -51081,7 +50934,7 @@ static int
 test_xmlXPtrNewLocationSetNodes(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the start NodePtr value */
@@ -51122,7 +50975,7 @@ static int
 test_xmlXPtrNewRange(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -51177,7 +51030,7 @@ static int
 test_xmlXPtrNewRangeNodeObject(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -51218,7 +51071,7 @@ static int
 test_xmlXPtrNewRangeNodePoint(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -51259,7 +51112,7 @@ static int
 test_xmlXPtrNewRangeNodes(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -51300,7 +51153,7 @@ static int
 test_xmlXPtrNewRangePointNode(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr start; /* the starting point */
@@ -51341,7 +51194,7 @@ static int
 test_xmlXPtrNewRangePoints(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr start; /* the starting point */
@@ -51382,7 +51235,7 @@ static int
 test_xmlXPtrRangeToFunction(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPTR_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED) && defined(LIBXML_XPTR_LOCS_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPointer Parser context */
     int n_ctxt;
@@ -51416,53 +51269,14 @@ test_xmlXPtrRangeToFunction(void) {
     return(test_ret);
 }
 
-
-static int
-test_xmlXPtrWrapLocationSet(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_XPTR_ENABLED)
-    int mem_base;
-    xmlXPathObjectPtr ret_val;
-    xmlLocationSetPtr val; /* the LocationSet value */
-    int n_val;
-
-    for (n_val = 0;n_val < gen_nb_xmlLocationSetPtr;n_val++) {
-        mem_base = xmlMemBlocks();
-        val = gen_xmlLocationSetPtr(n_val, 0);
-
-        ret_val = xmlXPtrWrapLocationSet(val);
-        desret_xmlXPathObjectPtr(ret_val);
-        call_tests++;
-        des_xmlLocationSetPtr(n_val, val, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPtrWrapLocationSet",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_val);
-            printf("\n");
-        }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
 static int
 test_xpointer(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xpointer : 17 of 21 functions ...\n");
+    if (quiet == 0) printf("Testing xpointer : 13 of 21 functions ...\n");
     test_ret += test_xmlXPtrBuildNodeList();
     test_ret += test_xmlXPtrEval();
     test_ret += test_xmlXPtrEvalRangePredicate();
-    test_ret += test_xmlXPtrLocationSetAdd();
-    test_ret += test_xmlXPtrLocationSetCreate();
-    test_ret += test_xmlXPtrLocationSetDel();
-    test_ret += test_xmlXPtrLocationSetMerge();
-    test_ret += test_xmlXPtrLocationSetRemove();
     test_ret += test_xmlXPtrNewCollapsedRange();
     test_ret += test_xmlXPtrNewContext();
     test_ret += test_xmlXPtrNewLocationSetNodeSet();
@@ -51474,7 +51288,6 @@ test_xpointer(void) {
     test_ret += test_xmlXPtrNewRangePointNode();
     test_ret += test_xmlXPtrNewRangePoints();
     test_ret += test_xmlXPtrRangeToFunction();
-    test_ret += test_xmlXPtrWrapLocationSet();
 
     if (test_ret != 0)
 	printf("Module xpointer: %d errors\n", test_ret);

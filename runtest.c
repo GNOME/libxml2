@@ -2596,7 +2596,7 @@ xpathDocTest(const char *filename,
     return(ret);
 }
 
-#ifdef LIBXML_XPTR_ENABLED
+#ifdef LIBXML_XPTR_LOCS_ENABLED
 /**
  * xptrDocTest:
  * @filename: the file to parse
@@ -4527,7 +4527,7 @@ testDesc testDescriptions[] = {
     { "XPath document queries regression tests" ,
       xpathDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
       0 },
-#ifdef LIBXML_XPTR_ENABLED
+#ifdef LIBXML_XPTR_LOCS_ENABLED
     { "XPointer document queries regression tests" ,
       xptrDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
       0 },

@@ -4461,6 +4461,12 @@
     <macro name='XML_XPATH_NOVAR' file='xpath'>
       <info>forbid variables in expression</info>
     </macro>
+    <macro name='XPATH_LOCATIONSET' file='xpath'>
+    </macro>
+    <macro name='XPATH_POINT' file='xpath'>
+    </macro>
+    <macro name='XPATH_RANGE' file='xpath'>
+    </macro>
     <macro name='XP_ERROR' file='xpathInternals'>
       <info>Macro to raise an XPath error and return.</info>
       <arg name='X' info='the error code'/>
@@ -18255,7 +18261,7 @@ Could we use @subtypes for this?'/>
       <arg name='no' type='int' info='the error number'/>
     </function>
     <function name='xmlXPtrBuildNodeList' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Build a node list tree copy of the XPointer result. This will drop Attributes and Namespace declarations.</info>
       <return type='xmlNodePtr' info='an xmlNodePtr list or NULL. the caller has to free the node tree.'/>
       <arg name='obj' type='xmlXPathObjectPtr' info='the XPointer result from the evaluation.'/>
@@ -18268,53 +18274,53 @@ Could we use @subtypes for this?'/>
       <arg name='ctx' type='xmlXPathContextPtr' info='the XPointer context'/>
     </function>
     <function name='xmlXPtrEvalRangePredicate' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>[8]   Predicate ::=   &apos;[&apos; PredicateExpr &apos;]&apos; [9]   PredicateExpr ::=   Expr  Evaluate a predicate as in xmlXPathEvalPredicate() but for a Location Set instead of a node set</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPointer Parser context'/>
     </function>
     <function name='xmlXPtrFreeLocationSet' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Free the LocationSet compound (not the actual ranges !).</info>
       <return type='void'/>
       <arg name='obj' type='xmlLocationSetPtr' info='the xmlLocationSetPtr to free'/>
     </function>
     <function name='xmlXPtrLocationSetAdd' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>add a new xmlXPathObjectPtr to an existing LocationSet If the location already exist in the set @val is freed.</info>
       <return type='void'/>
       <arg name='cur' type='xmlLocationSetPtr' info='the initial range set'/>
       <arg name='val' type='xmlXPathObjectPtr' info='a new xmlXPathObjectPtr'/>
     </function>
     <function name='xmlXPtrLocationSetCreate' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlLocationSetPtr of type double and of value @val</info>
       <return type='xmlLocationSetPtr' info='the newly created object.'/>
       <arg name='val' type='xmlXPathObjectPtr' info='an initial xmlXPathObjectPtr, or NULL'/>
     </function>
     <function name='xmlXPtrLocationSetDel' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Removes an xmlXPathObjectPtr from an existing LocationSet</info>
       <return type='void'/>
       <arg name='cur' type='xmlLocationSetPtr' info='the initial range set'/>
       <arg name='val' type='xmlXPathObjectPtr' info='an xmlXPathObjectPtr'/>
     </function>
     <function name='xmlXPtrLocationSetMerge' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Merges two rangesets, all ranges from @val2 are added to @val1</info>
       <return type='xmlLocationSetPtr' info='val1 once extended or NULL in case of error.'/>
       <arg name='val1' type='xmlLocationSetPtr' info='the first LocationSet'/>
       <arg name='val2' type='xmlLocationSetPtr' info='the second LocationSet'/>
     </function>
     <function name='xmlXPtrLocationSetRemove' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Removes an entry from an existing LocationSet list.</info>
       <return type='void'/>
       <arg name='cur' type='xmlLocationSetPtr' info='the initial range set'/>
       <arg name='val' type='int' info='the index to remove'/>
     </function>
     <function name='xmlXPtrNewCollapsedRange' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range using a single nodes</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlNodePtr' info='the starting and ending node'/>
@@ -18328,20 +18334,20 @@ Could we use @subtypes for this?'/>
       <arg name='origin' type='xmlNodePtr' info='the element from which a user or program initiated traversal of the link, or NULL.'/>
     </function>
     <function name='xmlXPtrNewLocationSetNodeSet' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type LocationSet and initialize it with all the nodes from @set</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='set' type='xmlNodeSetPtr' info='a node set'/>
     </function>
     <function name='xmlXPtrNewLocationSetNodes' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type LocationSet and initialize it with the single range made of the two nodes @start and @end</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlNodePtr' info='the start NodePtr value'/>
       <arg name='end' type='xmlNodePtr' info='the end NodePtr value or NULL'/>
     </function>
     <function name='xmlXPtrNewRange' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlNodePtr' info='the starting node'/>
@@ -18350,49 +18356,49 @@ Could we use @subtypes for this?'/>
       <arg name='endindex' type='int' info='the ending index'/>
     </function>
     <function name='xmlXPtrNewRangeNodeObject' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range from a not to an object</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlNodePtr' info='the starting node'/>
       <arg name='end' type='xmlXPathObjectPtr' info='the ending object'/>
     </function>
     <function name='xmlXPtrNewRangeNodePoint' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range from a node to a point</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlNodePtr' info='the starting node'/>
       <arg name='end' type='xmlXPathObjectPtr' info='the ending point'/>
     </function>
     <function name='xmlXPtrNewRangeNodes' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range using 2 nodes</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlNodePtr' info='the starting node'/>
       <arg name='end' type='xmlNodePtr' info='the ending node'/>
     </function>
     <function name='xmlXPtrNewRangePointNode' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range from a point to a node</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlXPathObjectPtr' info='the starting point'/>
       <arg name='end' type='xmlNodePtr' info='the ending node'/>
     </function>
     <function name='xmlXPtrNewRangePoints' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Create a new xmlXPathObjectPtr of type range using 2 Points</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='start' type='xmlXPathObjectPtr' info='the starting point'/>
       <arg name='end' type='xmlXPathObjectPtr' info='the ending point'/>
     </function>
     <function name='xmlXPtrRangeToFunction' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Implement the range-to() XPointer function  Obsolete. range-to is not a real function but a special type of location step which is handled in xpath.c.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPointer Parser context'/>
       <arg name='nargs' type='int' info='the number of args'/>
     </function>
     <function name='xmlXPtrWrapLocationSet' file='xpointer' module='xpointer'>
-      <cond>defined(LIBXML_XPTR_ENABLED)</cond>
+      <cond>defined(LIBXML_XPTR_ENABLED) &amp;&amp; defined(LIBXML_XPTR_LOCS_ENABLED)</cond>
       <info>Wrap the LocationSet @val in a new xmlXPathObjectPtr</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='val' type='xmlLocationSetPtr' info='the LocationSet value'/>

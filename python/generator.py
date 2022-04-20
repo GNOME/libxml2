@@ -320,6 +320,12 @@ deprecated_funcs = {
     'xmlSchemaCleanupTypes': True,
     'xmlSchemaInitTypes': True,
     'xmlXPathInit': True,
+    'xmlXPtrEvalRangePredicate': True,
+    'xmlXPtrNewCollapsedRange': True,
+    'xmlXPtrNewLocationSetNodes': True,
+    'xmlXPtrNewRange': True,
+    'xmlXPtrNewRangeNodes': True,
+    'xmlXPtrRangeToFunction': True,
 }
 
 def skip_function(name):

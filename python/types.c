@@ -603,6 +603,7 @@ libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj)
         case XPATH_STRING:
 	    ret = PY_IMPORT_STRING((char *) obj->stringval);
             break;
+#ifdef LIBXML_XPTR_LOCS_ENABLED
         case XPATH_POINT:
         {
             PyObject *node;
@@ -704,6 +705,7 @@ libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj)
             }
             break;
         }
+#endif /* LIBXML_XPTR_LOCS_ENABLED */
         default:
 #ifdef DEBUG
             printf("Unable to convert XPath object type %d\n", obj->type);

@@ -204,7 +204,6 @@ if (NOT MSVC)
 	else()
 		set(SEND_ARG2_CAST "/**/")
 	endif()
-	check_include_files("float.h;stdarg.h;stdlib.h;string.h" STDC_HEADERS)
 	check_c_source_compiles("
 		#include <stdarg.h>
 		void a(va_list* ap) {};

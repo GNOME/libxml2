@@ -2596,7 +2596,7 @@ xpathDocTest(const char *filename,
     return(ret);
 }
 
-#ifdef LIBXML_XPTR_LOCS_ENABLED
+#ifdef LIBXML_XPTR_ENABLED
 /**
  * xptrDocTest:
  * @filename: the file to parse
@@ -2619,23 +2619,24 @@ xptrDocTest(const char *filename,
     glob_t globbuf;
     size_t i;
     int ret = 0, res;
+    const char *subdir = options == -1 ? "xptr-xp1" : "xptr";
 
     xpathDocument = xmlReadFile(filename, NULL,
-                                options | XML_PARSE_DTDATTR | XML_PARSE_NOENT);
+                                XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (xpathDocument == NULL) {
         fprintf(stderr, "Failed to load %s\n", filename);
 	return(-1);
     }
 
-    res = snprintf(pattern, 499, "./test/XPath/xptr/%s*",
-            baseFilename(filename));
+    res = snprintf(pattern, 499, "./test/XPath/%s/%s*",
+            subdir, baseFilename(filename));
     if (res >= 499)
         pattern[499] = 0;
     globbuf.gl_offs = 0;
     glob(pattern, GLOB_DOOFFS, NULL, &globbuf);
     for (i = 0;i < globbuf.gl_pathc;i++) {
-        res = snprintf(result, 499, "result/XPath/xptr/%s",
-	         baseFilename(globbuf.gl_pathv[i]));
+        res = snprintf(result, 499, "result/XPath/%s/%s",
+	         subdir, baseFilename(globbuf.gl_pathv[i]));
         if (res >= 499)
             result[499] = 0;
 	res = xpathCommonTest(globbuf.gl_pathv[i], &result[0], 1, 0);
@@ -4527,8 +4528,13 @@ testDesc testDescriptions[] = {
     { "XPath document queries regression tests" ,
       xpathDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
       0 },
-#ifdef LIBXML_XPTR_LOCS_ENABLED
+#ifdef LIBXML_XPTR_ENABLED
     { "XPointer document queries regression tests" ,
+      xptrDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
+      -1 },
+#endif
+#ifdef LIBXML_XPTR_LOCS_ENABLED
+    { "XPointer xpointer() queries regression tests" ,
       xptrDocTest, "./test/XPath/docs/*", NULL, NULL, NULL,
       0 },
 #endif

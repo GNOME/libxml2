@@ -1000,7 +1000,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	XP_ERROR(XPTR_SYNTAX_ERROR);
     }
 
-    if (xmlStrEqual(name, (xmlChar *) "xpointer")) {
+    if (xmlStrEqual(name, (xmlChar *) "xpointer") ||
+        xmlStrEqual(name, (xmlChar *) "xpath1")) {
 	const xmlChar *oldBase = ctxt->base;
 	const xmlChar *oldCur = ctxt->cur;
 
@@ -1014,6 +1015,9 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	ctxt->context->node = (xmlNodePtr)ctxt->context->doc;
 	ctxt->context->proximityPosition = 1;
 	ctxt->context->contextSize = 1;
+#ifdef LIBXML_XPTR_LOCS_ENABLED
+        ctxt->xptr = xmlStrEqual(name, (xmlChar *) "xpointer");
+#endif
 	xmlXPathEvalExpr(ctxt);
 	ctxt->base = oldBase;
         ctxt->cur = oldCur;
@@ -1361,7 +1365,6 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     ctxt = xmlXPathNewParserContext(str, ctx);
     if (ctxt == NULL)
 	return(NULL);
-    ctxt->xptr = 1;
     xmlXPtrEvalXPointer(ctxt);
 
     if ((ctxt->value != NULL) &&

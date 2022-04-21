@@ -16,10 +16,12 @@
   # WORKDIR /tests
   # RUN curl https://www.w3.org/XML/Test/xmlts20080827.tar.gz |tar xz
   image: registry.gitlab.gnome.org/gnome/libxml2
+  variables:
+    BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
   script:
     - |
       ln -s /tests/xmlconf
-      sh autogen.sh --with-ftp --with-legacy --with-xptr-locs $CONFIG
+      sh autogen.sh $BASE_CONFIG $CONFIG
       make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
       make CFLAGS="$CFLAGS -Werror" check
 
@@ -27,6 +29,12 @@ gcc:
   extends: .test
   variables:
     CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=700"
+
+gcc:minimum:
+  extends: .test
+  variables:
+    BASE_CONFIG: "--with-minimum"
+    CFLAGS: "-O2"
 
 gcc:python3:
   extends: .test

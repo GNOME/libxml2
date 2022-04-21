@@ -115,6 +115,6 @@ int main(int argc, char **argv) {
 #else
 int main(void) {
     fprintf(stderr, "Reader, Pattern or output support not compiled in\n");
-    exit(1);
+    return(0);
 }
 #endif

@@ -309,6 +309,8 @@ static unsigned int gen_unsigned_int(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_unsigned_int(int no ATTRIBUTE_UNUSED, unsigned int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+
 #define gen_nb_unsigned_long 4
 
 static unsigned long gen_unsigned_long(int no, int nr ATTRIBUTE_UNUSED) {
@@ -320,6 +322,20 @@ static unsigned long gen_unsigned_long(int no, int nr ATTRIBUTE_UNUSED) {
 
 static void des_unsigned_long(int no ATTRIBUTE_UNUSED, unsigned long val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+
+#define gen_nb_unsigned_long_ptr 2
+
+static unsigned long *gen_unsigned_long_ptr(int no, int nr) {
+    if (no == 0) return(&longtab[nr]);
+    return(NULL);
+}
+
+static void des_unsigned_long_ptr(int no ATTRIBUTE_UNUSED, unsigned long *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 
 #define gen_nb_double 4
 
@@ -335,15 +351,7 @@ static double gen_double(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_double(int no ATTRIBUTE_UNUSED, double val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
-#define gen_nb_unsigned_long_ptr 2
-
-static unsigned long *gen_unsigned_long_ptr(int no, int nr) {
-    if (no == 0) return(&longtab[nr]);
-    return(NULL);
-}
-
-static void des_unsigned_long_ptr(int no ATTRIBUTE_UNUSED, unsigned long *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#endif /* defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) */
 
 #define gen_nb_int_ptr 2
 
@@ -455,24 +463,26 @@ static void des_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlParserCtxtPtr val, 
         xmlFreeParserCtxt(val);
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 #define gen_nb_xmlSAXHandlerPtr 2
 static xmlSAXHandlerPtr gen_xmlSAXHandlerPtr(int no, int nr ATTRIBUTE_UNUSED) {
-#ifdef LIBXML_SAX1_ENABLED
     if (no == 0) return((xmlSAXHandlerPtr) &xmlDefaultSAXHandler);
-#endif
     return(NULL);
 }
 static void des_xmlSAXHandlerPtr(int no ATTRIBUTE_UNUSED, xmlSAXHandlerPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 
 #define gen_nb_xmlValidCtxtPtr 2
 static xmlValidCtxtPtr gen_xmlValidCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    (void) no;
 #ifdef LIBXML_VALID_ENABLED
     if (no == 0) return(xmlNewValidCtxt());
 #endif
     return(NULL);
 }
 static void des_xmlValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlValidCtxtPtr val, int nr ATTRIBUTE_UNUSED) {
+    (void) val;
 #ifdef LIBXML_VALID_ENABLED
     if (val != NULL)
         xmlFreeValidCtxt(val);
@@ -747,8 +757,10 @@ static void desret_long(long val ATTRIBUTE_UNUSED) {
 }
 static void desret_unsigned_long(unsigned long val ATTRIBUTE_UNUSED) {
 }
+#if defined(LIBXML_XPATH_ENABLED)
 static void desret_double(double val ATTRIBUTE_UNUSED) {
 }
+#endif
 static void desret_xmlCharEncoding(xmlCharEncoding val ATTRIBUTE_UNUSED) {
 }
 #if 0
@@ -973,12 +985,15 @@ static void des_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, xmlParserNodeIn
 static void desret_const_xmlParserNodeInfo_ptr(const xmlParserNodeInfo *val ATTRIBUTE_UNUSED) {
 }
 
+#if defined(LIBXML_MODULES_ENABLED) || defined(LIBXML_READER_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
 #define gen_nb_void_ptr_ptr 1
 static void ** gen_void_ptr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_void_ptr_ptr(int no ATTRIBUTE_UNUSED, void ** val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 
 /************************************************************************
  *									*
@@ -1332,11 +1347,8 @@ test_UTF8ToHtml(void) {
 #ifdef LIBXML_HTML_ENABLED
 
 #define gen_nb_const_htmlElemDesc_ptr 1
-static htmlElemDesc * gen_const_htmlElemDesc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_htmlElemDesc_ptr(int no ATTRIBUTE_UNUSED, const htmlElemDesc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_htmlElemDesc_ptr(no, nr) NULL
+#define des_const_htmlElemDesc_ptr(no, val, nr)
 #endif
 
 
@@ -1390,11 +1402,8 @@ test_htmlAttrAllowed(void) {
 #ifdef LIBXML_HTML_ENABLED
 
 #define gen_nb_htmlNodePtr 1
-static htmlNodePtr gen_htmlNodePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_htmlNodePtr(int no ATTRIBUTE_UNUSED, htmlNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_htmlNodePtr(no, nr) NULL
+#define des_htmlNodePtr(no, val, nr)
 #endif
 
 
@@ -1492,11 +1501,8 @@ test_htmlCreateMemoryParserCtxt(void) {
 #ifdef LIBXML_HTML_ENABLED
 
 #define gen_nb_htmlSAXHandlerPtr 1
-static htmlSAXHandlerPtr gen_htmlSAXHandlerPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_htmlSAXHandlerPtr(int no ATTRIBUTE_UNUSED, htmlSAXHandlerPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_htmlSAXHandlerPtr(no, nr) NULL
+#define des_htmlSAXHandlerPtr(no, val, nr)
 #endif
 
 
@@ -2956,11 +2962,8 @@ test_htmlDocDump(void) {
 
 
 #define gen_nb_xmlChar_ptr_ptr 1
-static xmlChar ** gen_xmlChar_ptr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlChar_ptr_ptr(int no ATTRIBUTE_UNUSED, xmlChar ** val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlChar_ptr_ptr(no, nr) NULL
+#define des_xmlChar_ptr_ptr(no, val, nr)
 
 static int
 test_htmlDocDumpMemory(void) {
@@ -3744,11 +3747,8 @@ test_xmlDefaultSAXHandlerInit(void) {
 
 
 #define gen_nb_xmlEnumerationPtr 1
-static xmlEnumerationPtr gen_xmlEnumerationPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlEnumerationPtr(int no ATTRIBUTE_UNUSED, xmlEnumerationPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlEnumerationPtr(no, nr) NULL
+#define des_xmlEnumerationPtr(no, val, nr)
 
 static int
 test_xmlSAX2AttributeDecl(void) {
@@ -4560,11 +4560,8 @@ test_xmlSAX2IgnorableWhitespace(void) {
 
 
 #define gen_nb_xmlSAXHandler_ptr 1
-static xmlSAXHandler * gen_xmlSAXHandler_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSAXHandler_ptr(int no ATTRIBUTE_UNUSED, xmlSAXHandler * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSAXHandler_ptr(no, nr) NULL
+#define des_xmlSAXHandler_ptr(no, val, nr)
 
 static int
 test_xmlSAX2InitDefaultSAXHandler(void) {
@@ -4897,11 +4894,8 @@ test_xmlSAX2ResolveEntity(void) {
 
 
 #define gen_nb_xmlSAXLocatorPtr 1
-static xmlSAXLocatorPtr gen_xmlSAXLocatorPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSAXLocatorPtr(int no ATTRIBUTE_UNUSED, xmlSAXLocatorPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSAXLocatorPtr(no, nr) NULL
+#define des_xmlSAXLocatorPtr(no, val, nr)
 
 static int
 test_xmlSAX2SetDocumentLocator(void) {
@@ -5523,11 +5517,8 @@ test_c14n(void) {
 #ifdef LIBXML_CATALOG_ENABLED
 
 #define gen_nb_xmlCatalogPtr 1
-static xmlCatalogPtr gen_xmlCatalogPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlCatalogPtr(int no ATTRIBUTE_UNUSED, xmlCatalogPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlCatalogPtr(no, nr) NULL
+#define des_xmlCatalogPtr(no, val, nr)
 #endif
 
 
@@ -6539,11 +6530,8 @@ test_catalog(void) {
 }
 
 #define gen_nb_const_xmlChRangeGroup_ptr 1
-static xmlChRangeGroup * gen_const_xmlChRangeGroup_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlChRangeGroup_ptr(int no ATTRIBUTE_UNUSED, const xmlChRangeGroup * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlChRangeGroup_ptr(no, nr) NULL
+#define des_const_xmlChRangeGroup_ptr(no, val, nr)
 
 static int
 test_xmlCharInRange(void) {
@@ -7443,11 +7431,8 @@ test_xmlShell(void) {
 
 
 #define gen_nb_char_ptr 1
-static char * gen_char_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_char_ptr(int no ATTRIBUTE_UNUSED, char * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_char_ptr(no, nr) NULL
+#define des_char_ptr(no, val, nr)
 
 static int
 test_xmlShellBase(void) {
@@ -8602,11 +8587,8 @@ test_xmlAddEncodingAlias(void) {
 
 
 #define gen_nb_xmlCharEncodingHandler_ptr 1
-static xmlCharEncodingHandler * gen_xmlCharEncodingHandler_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlCharEncodingHandler_ptr(int no ATTRIBUTE_UNUSED, xmlCharEncodingHandler * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlCharEncodingHandler_ptr(no, nr) NULL
+#define des_xmlCharEncodingHandler_ptr(no, val, nr)
 
 static int
 test_xmlCharEncCloseFunc(void) {
@@ -9029,11 +9011,8 @@ test_xmlParseCharEncoding(void) {
 
 
 #define gen_nb_xmlCharEncodingHandlerPtr 1
-static xmlCharEncodingHandlerPtr gen_xmlCharEncodingHandlerPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlCharEncodingHandlerPtr(int no ATTRIBUTE_UNUSED, xmlCharEncodingHandlerPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlCharEncodingHandlerPtr(no, nr) NULL
+#define des_xmlCharEncodingHandlerPtr(no, val, nr)
 
 static int
 test_xmlRegisterCharEncodingHandler(void) {
@@ -9249,11 +9228,8 @@ test_xmlCreateEntitiesTable(void) {
 
 
 #define gen_nb_xmlEntitiesTablePtr 1
-static xmlEntitiesTablePtr gen_xmlEntitiesTablePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlEntitiesTablePtr(int no ATTRIBUTE_UNUSED, xmlEntitiesTablePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlEntitiesTablePtr(no, nr) NULL
+#define des_xmlEntitiesTablePtr(no, val, nr)
 
 static int
 test_xmlDumpEntitiesTable(void) {
@@ -9295,11 +9271,8 @@ test_xmlDumpEntitiesTable(void) {
 
 
 #define gen_nb_xmlEntityPtr 1
-static xmlEntityPtr gen_xmlEntityPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlEntityPtr(int no ATTRIBUTE_UNUSED, xmlEntityPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlEntityPtr(no, nr) NULL
+#define des_xmlEntityPtr(no, val, nr)
 
 static int
 test_xmlDumpEntityDecl(void) {
@@ -9380,11 +9353,8 @@ test_xmlEncodeEntitiesReentrant(void) {
 
 
 #define gen_nb_const_xmlDoc_ptr 1
-static xmlDoc * gen_const_xmlDoc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlDoc_ptr(int no ATTRIBUTE_UNUSED, const xmlDoc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlDoc_ptr(no, nr) NULL
+#define des_const_xmlDoc_ptr(no, val, nr)
 
 static int
 test_xmlEncodeSpecialChars(void) {
@@ -10654,11 +10624,8 @@ test_hash(void) {
 }
 
 #define gen_nb_xmlLinkPtr 1
-static xmlLinkPtr gen_xmlLinkPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlLinkPtr(int no ATTRIBUTE_UNUSED, xmlLinkPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlLinkPtr(no, nr) NULL
+#define des_xmlLinkPtr(no, val, nr)
 
 static int
 test_xmlLinkGetData(void) {
@@ -10762,11 +10729,8 @@ test_xmlListClear(void) {
 
 
 #define gen_nb_const_xmlListPtr 1
-static xmlListPtr gen_const_xmlListPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlListPtr(int no ATTRIBUTE_UNUSED, const xmlListPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlListPtr(no, nr) NULL
+#define des_const_xmlListPtr(no, val, nr)
 
 static int
 test_xmlListCopy(void) {
@@ -11563,11 +11527,8 @@ test_xmlNanoHTTPEncoding(void) {
 
 
 #define gen_nb_char_ptr_ptr 1
-static char ** gen_char_ptr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_char_ptr_ptr(int no ATTRIBUTE_UNUSED, char ** val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_char_ptr_ptr(no, nr) NULL
+#define des_char_ptr_ptr(no, val, nr)
 
 static int
 test_xmlNanoHTTPFetch(void) {
@@ -12799,11 +12760,8 @@ test_xmlNewParserCtxt(void) {
 
 
 #define gen_nb_xmlNodePtr_ptr 1
-static xmlNodePtr * gen_xmlNodePtr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlNodePtr_ptr(int no ATTRIBUTE_UNUSED, xmlNodePtr * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlNodePtr_ptr(no, nr) NULL
+#define des_xmlNodePtr_ptr(no, val, nr)
 
 static int
 test_xmlParseBalancedChunkMemory(void) {
@@ -13478,11 +13436,8 @@ test_xmlParseMemory(void) {
 
 
 #define gen_nb_const_xmlParserNodeInfoPtr 1
-static xmlParserNodeInfoPtr gen_const_xmlParserNodeInfoPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlParserNodeInfoPtr(int no ATTRIBUTE_UNUSED, const xmlParserNodeInfoPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlParserNodeInfoPtr(no, nr) NULL
+#define des_const_xmlParserNodeInfoPtr(no, val, nr)
 
 static int
 test_xmlParserAddNodeInfo(void) {
@@ -13522,18 +13477,12 @@ test_xmlParserAddNodeInfo(void) {
 
 
 #define gen_nb_const_xmlParserCtxtPtr 1
-static xmlParserCtxtPtr gen_const_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, const xmlParserCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlParserCtxtPtr(no, nr) NULL
+#define des_const_xmlParserCtxtPtr(no, val, nr)
 
 #define gen_nb_const_xmlNodePtr 1
-static xmlNodePtr gen_const_xmlNodePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlNodePtr(int no ATTRIBUTE_UNUSED, const xmlNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlNodePtr(no, nr) NULL
+#define des_const_xmlNodePtr(no, val, nr)
 
 static int
 test_xmlParserFindNodeInfo(void) {
@@ -13575,11 +13524,8 @@ test_xmlParserFindNodeInfo(void) {
 
 
 #define gen_nb_const_xmlParserNodeInfoSeqPtr 1
-static xmlParserNodeInfoSeqPtr gen_const_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, const xmlParserNodeInfoSeqPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlParserNodeInfoSeqPtr(no, nr) NULL
+#define des_const_xmlParserNodeInfoSeqPtr(no, val, nr)
 
 static int
 test_xmlParserFindNodeInfoIndex(void) {
@@ -13621,11 +13567,8 @@ test_xmlParserFindNodeInfoIndex(void) {
 
 
 #define gen_nb_xmlParserInputPtr 1
-static xmlParserInputPtr gen_xmlParserInputPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlParserInputPtr(int no ATTRIBUTE_UNUSED, xmlParserInputPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlParserInputPtr(no, nr) NULL
+#define des_xmlParserInputPtr(no, val, nr)
 
 static int
 test_xmlParserInputGrow(void) {
@@ -16262,11 +16205,8 @@ test_xmlPatterncompile(void) {
 #ifdef LIBXML_PATTERN_ENABLED
 
 #define gen_nb_xmlStreamCtxtPtr 1
-static xmlStreamCtxtPtr gen_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, xmlStreamCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlStreamCtxtPtr(no, nr) NULL
+#define des_xmlStreamCtxtPtr(no, val, nr)
 #endif
 
 
@@ -16513,11 +16453,8 @@ test_pattern(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlRelaxNGPtr 1
-static xmlRelaxNGPtr gen_xmlRelaxNGPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRelaxNGPtr(int no ATTRIBUTE_UNUSED, xmlRelaxNGPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRelaxNGPtr(no, nr) NULL
+#define des_xmlRelaxNGPtr(no, val, nr)
 #endif
 
 
@@ -16601,31 +16538,22 @@ test_xmlRelaxNGDumpTree(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlRelaxNGParserCtxtPtr 1
-static xmlRelaxNGParserCtxtPtr gen_xmlRelaxNGParserCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRelaxNGParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlRelaxNGParserCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRelaxNGParserCtxtPtr(no, nr) NULL
+#define des_xmlRelaxNGParserCtxtPtr(no, val, nr)
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlRelaxNGValidityErrorFunc_ptr 1
-static xmlRelaxNGValidityErrorFunc * gen_xmlRelaxNGValidityErrorFunc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRelaxNGValidityErrorFunc_ptr(int no ATTRIBUTE_UNUSED, xmlRelaxNGValidityErrorFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRelaxNGValidityErrorFunc_ptr(no, nr) NULL
+#define des_xmlRelaxNGValidityErrorFunc_ptr(no, val, nr)
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlRelaxNGValidityWarningFunc_ptr 1
-static xmlRelaxNGValidityWarningFunc * gen_xmlRelaxNGValidityWarningFunc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRelaxNGValidityWarningFunc_ptr(int no ATTRIBUTE_UNUSED, xmlRelaxNGValidityWarningFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRelaxNGValidityWarningFunc_ptr(no, nr) NULL
+#define des_xmlRelaxNGValidityWarningFunc_ptr(no, val, nr)
 #endif
 
 
@@ -16686,11 +16614,8 @@ test_xmlRelaxNGGetParserErrors(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlRelaxNGValidCtxtPtr 1
-static xmlRelaxNGValidCtxtPtr gen_xmlRelaxNGValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRelaxNGValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlRelaxNGValidCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRelaxNGValidCtxtPtr(no, nr) NULL
+#define des_xmlRelaxNGValidCtxtPtr(no, val, nr)
 #endif
 
 
@@ -17327,11 +17252,8 @@ test_xmlSchematronSetValidStructuredErrors(void) {
 #ifdef LIBXML_SCHEMATRON_ENABLED
 
 #define gen_nb_xmlSchematronValidCtxtPtr 1
-static xmlSchematronValidCtxtPtr gen_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchematronValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchematronValidCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchematronValidCtxtPtr(no, nr) NULL
+#define des_xmlSchematronValidCtxtPtr(no, val, nr)
 #endif
 
 
@@ -17651,11 +17573,8 @@ test_xmlAttrSerializeTxtContent(void) {
 
 
 #define gen_nb_const_xmlBuf_ptr 1
-static xmlBuf * gen_const_xmlBuf_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlBuf_ptr(int no ATTRIBUTE_UNUSED, const xmlBuf * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlBuf_ptr(no, nr) NULL
+#define des_const_xmlBuf_ptr(no, val, nr)
 
 static int
 test_xmlBufContent(void) {
@@ -17690,11 +17609,8 @@ test_xmlBufContent(void) {
 
 
 #define gen_nb_xmlBufPtr 1
-static xmlBufPtr gen_xmlBufPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlBufPtr(int no ATTRIBUTE_UNUSED, xmlBufPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlBufPtr(no, nr) NULL
+#define des_xmlBufPtr(no, val, nr)
 
 static int
 test_xmlBufEnd(void) {
@@ -17729,11 +17645,8 @@ test_xmlBufEnd(void) {
 
 
 #define gen_nb_const_xmlNode_ptr 1
-static xmlNode * gen_const_xmlNode_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlNode_ptr(int no ATTRIBUTE_UNUSED, const xmlNode * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlNode_ptr(no, nr) NULL
+#define des_const_xmlNode_ptr(no, val, nr)
 
 static int
 test_xmlBufGetNodeContent(void) {
@@ -17981,11 +17894,8 @@ test_xmlBufferCat(void) {
 
 
 #define gen_nb_const_xmlBuffer_ptr 1
-static xmlBuffer * gen_const_xmlBuffer_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_const_xmlBuffer_ptr(int no ATTRIBUTE_UNUSED, const xmlBuffer * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_const_xmlBuffer_ptr(no, nr) NULL
+#define des_const_xmlBuffer_ptr(no, val, nr)
 
 static int
 test_xmlBufferContent(void) {
@@ -18862,11 +18772,8 @@ test_xmlCreateIntSubset(void) {
 
 
 #define gen_nb_xmlDOMWrapCtxtPtr 1
-static xmlDOMWrapCtxtPtr gen_xmlDOMWrapCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlDOMWrapCtxtPtr(int no ATTRIBUTE_UNUSED, xmlDOMWrapCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlDOMWrapCtxtPtr(no, nr) NULL
+#define des_xmlDOMWrapCtxtPtr(no, val, nr)
 
 static int
 test_xmlDOMWrapAdoptNode(void) {
@@ -23793,11 +23700,8 @@ test_xmlParseURIRaw(void) {
 
 
 #define gen_nb_xmlURIPtr 1
-static xmlURIPtr gen_xmlURIPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlURIPtr(int no ATTRIBUTE_UNUSED, xmlURIPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlURIPtr(no, nr) NULL
+#define des_xmlURIPtr(no, val, nr)
 
 static int
 test_xmlParseURIReference(void) {
@@ -24344,11 +24248,8 @@ test_xmlCreateEnumeration(void) {
 
 
 #define gen_nb_xmlAttributePtr 1
-static xmlAttributePtr gen_xmlAttributePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlAttributePtr(int no ATTRIBUTE_UNUSED, xmlAttributePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlAttributePtr(no, nr) NULL
+#define des_xmlAttributePtr(no, val, nr)
 
 static int
 test_xmlDumpAttributeDecl(void) {
@@ -24390,11 +24291,8 @@ test_xmlDumpAttributeDecl(void) {
 
 
 #define gen_nb_xmlAttributeTablePtr 1
-static xmlAttributeTablePtr gen_xmlAttributeTablePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlAttributeTablePtr(int no ATTRIBUTE_UNUSED, xmlAttributeTablePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlAttributeTablePtr(no, nr) NULL
+#define des_xmlAttributeTablePtr(no, val, nr)
 
 static int
 test_xmlDumpAttributeTable(void) {
@@ -24436,11 +24334,8 @@ test_xmlDumpAttributeTable(void) {
 
 
 #define gen_nb_xmlElementPtr 1
-static xmlElementPtr gen_xmlElementPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlElementPtr(int no ATTRIBUTE_UNUSED, xmlElementPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlElementPtr(no, nr) NULL
+#define des_xmlElementPtr(no, val, nr)
 
 static int
 test_xmlDumpElementDecl(void) {
@@ -24482,11 +24377,8 @@ test_xmlDumpElementDecl(void) {
 
 
 #define gen_nb_xmlElementTablePtr 1
-static xmlElementTablePtr gen_xmlElementTablePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlElementTablePtr(int no ATTRIBUTE_UNUSED, xmlElementTablePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlElementTablePtr(no, nr) NULL
+#define des_xmlElementTablePtr(no, val, nr)
 
 static int
 test_xmlDumpElementTable(void) {
@@ -24528,11 +24420,8 @@ test_xmlDumpElementTable(void) {
 
 
 #define gen_nb_xmlNotationPtr 1
-static xmlNotationPtr gen_xmlNotationPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlNotationPtr(int no ATTRIBUTE_UNUSED, xmlNotationPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlNotationPtr(no, nr) NULL
+#define des_xmlNotationPtr(no, val, nr)
 
 static int
 test_xmlDumpNotationDecl(void) {
@@ -24574,11 +24463,8 @@ test_xmlDumpNotationDecl(void) {
 
 
 #define gen_nb_xmlNotationTablePtr 1
-static xmlNotationTablePtr gen_xmlNotationTablePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlNotationTablePtr(int no ATTRIBUTE_UNUSED, xmlNotationTablePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlNotationTablePtr(no, nr) NULL
+#define des_xmlNotationTablePtr(no, val, nr)
 
 static int
 test_xmlDumpNotationTable(void) {
@@ -25370,11 +25256,8 @@ test_xmlValidCtxtNormalizeAttributeValue(void) {
 
 
 #define gen_nb_xmlElementContent_ptr 1
-static xmlElementContent * gen_xmlElementContent_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlElementContent_ptr(int no ATTRIBUTE_UNUSED, xmlElementContent * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlElementContent_ptr(no, nr) NULL
+#define des_xmlElementContent_ptr(no, val, nr)
 
 static int
 test_xmlValidGetPotentialChildren(void) {
@@ -26720,11 +26603,8 @@ test_xmlXIncludeProcessFlagsData(void) {
 #ifdef LIBXML_XINCLUDE_ENABLED
 
 #define gen_nb_xmlXIncludeCtxtPtr 1
-static xmlXIncludeCtxtPtr gen_xmlXIncludeCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlXIncludeCtxtPtr(int no ATTRIBUTE_UNUSED, xmlXIncludeCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlXIncludeCtxtPtr(no, nr) NULL
+#define des_xmlXIncludeCtxtPtr(no, val, nr)
 #endif
 
 
@@ -28562,11 +28442,8 @@ test_xmlAutomataGetInitState(void) {
 #ifdef LIBXML_AUTOMATA_ENABLED
 
 #define gen_nb_xmlAutomataPtr 1
-static xmlAutomataPtr gen_xmlAutomataPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlAutomataPtr(int no ATTRIBUTE_UNUSED, xmlAutomataPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlAutomataPtr(no, nr) NULL
+#define des_xmlAutomataPtr(no, val, nr)
 #endif
 
 
@@ -28774,11 +28651,8 @@ test_xmlAutomataNewTransition2(void) {
 #ifdef LIBXML_AUTOMATA_ENABLED
 
 #define gen_nb_xmlAutomataStatePtr 1
-static xmlAutomataStatePtr gen_xmlAutomataStatePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlAutomataStatePtr(int no ATTRIBUTE_UNUSED, xmlAutomataStatePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlAutomataStatePtr(no, nr) NULL
+#define des_xmlAutomataStatePtr(no, val, nr)
 #endif
 
 
@@ -28862,11 +28736,8 @@ test_xmlautomata(void) {
 }
 
 #define gen_nb_xmlGenericErrorFunc_ptr 1
-static xmlGenericErrorFunc * gen_xmlGenericErrorFunc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlGenericErrorFunc_ptr(int no ATTRIBUTE_UNUSED, xmlGenericErrorFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlGenericErrorFunc_ptr(no, nr) NULL
+#define des_xmlGenericErrorFunc_ptr(no, val, nr)
 
 static int
 test_initGenericErrorDefaultFunc(void) {
@@ -28899,11 +28770,8 @@ test_initGenericErrorDefaultFunc(void) {
 
 
 #define gen_nb_xmlErrorPtr 1
-static xmlErrorPtr gen_xmlErrorPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlErrorPtr(int no ATTRIBUTE_UNUSED, xmlErrorPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlErrorPtr(no, nr) NULL
+#define des_xmlErrorPtr(no, val, nr)
 
 static int
 test_xmlCopyError(void) {
@@ -29186,11 +29054,8 @@ test_xmlerror(void) {
 #ifdef LIBXML_MODULES_ENABLED
 
 #define gen_nb_xmlModulePtr 1
-static xmlModulePtr gen_xmlModulePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlModulePtr(int no ATTRIBUTE_UNUSED, xmlModulePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlModulePtr(no, nr) NULL
+#define des_xmlModulePtr(no, val, nr)
 #endif
 
 
@@ -30557,11 +30422,8 @@ test_xmlTextReaderGetAttributeNs(void) {
 #ifdef LIBXML_READER_ENABLED
 
 #define gen_nb_xmlTextReaderErrorFunc_ptr 1
-static xmlTextReaderErrorFunc * gen_xmlTextReaderErrorFunc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlTextReaderErrorFunc_ptr(int no ATTRIBUTE_UNUSED, xmlTextReaderErrorFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlTextReaderErrorFunc_ptr(no, nr) NULL
+#define des_xmlTextReaderErrorFunc_ptr(no, val, nr)
 #endif
 
 
@@ -30994,11 +30856,8 @@ test_xmlTextReaderLocalName(void) {
 #ifdef LIBXML_READER_ENABLED
 
 #define gen_nb_xmlTextReaderLocatorPtr 1
-static xmlTextReaderLocatorPtr gen_xmlTextReaderLocatorPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlTextReaderLocatorPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderLocatorPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlTextReaderLocatorPtr(no, nr) NULL
+#define des_xmlTextReaderLocatorPtr(no, val, nr)
 #endif
 
 
@@ -32817,11 +32676,8 @@ test_xmlExpSubsume(void) {
 #ifdef LIBXML_REGEXP_ENABLED
 
 #define gen_nb_xmlRegExecCtxtPtr 1
-static xmlRegExecCtxtPtr gen_xmlRegExecCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRegExecCtxtPtr(int no ATTRIBUTE_UNUSED, xmlRegExecCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRegExecCtxtPtr(no, nr) NULL
+#define des_xmlRegExecCtxtPtr(no, val, nr)
 #endif
 
 
@@ -33081,11 +32937,8 @@ test_xmlRegexpCompile(void) {
 #ifdef LIBXML_REGEXP_ENABLED
 
 #define gen_nb_xmlRegexpPtr 1
-static xmlRegexpPtr gen_xmlRegexpPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlRegexpPtr(int no ATTRIBUTE_UNUSED, xmlRegexpPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlRegexpPtr(no, nr) NULL
+#define des_xmlRegexpPtr(no, val, nr)
 #endif
 
 
@@ -33241,11 +33094,8 @@ test_xmlregexp(void) {
 #ifdef LIBXML_OUTPUT_ENABLED
 
 #define gen_nb_xmlSaveCtxtPtr 1
-static xmlSaveCtxtPtr gen_xmlSaveCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSaveCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSaveCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSaveCtxtPtr(no, nr) NULL
+#define des_xmlSaveCtxtPtr(no, val, nr)
 #endif
 
 
@@ -33509,31 +33359,22 @@ test_xmlSchemaDump(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaParserCtxtPtr 1
-static xmlSchemaParserCtxtPtr gen_xmlSchemaParserCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlSchemaParserCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaParserCtxtPtr(no, nr) NULL
+#define des_xmlSchemaParserCtxtPtr(no, val, nr)
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaValidityErrorFunc_ptr 1
-static xmlSchemaValidityErrorFunc * gen_xmlSchemaValidityErrorFunc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaValidityErrorFunc_ptr(int no ATTRIBUTE_UNUSED, xmlSchemaValidityErrorFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaValidityErrorFunc_ptr(no, nr) NULL
+#define des_xmlSchemaValidityErrorFunc_ptr(no, val, nr)
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaValidityWarningFunc_ptr 1
-static xmlSchemaValidityWarningFunc * gen_xmlSchemaValidityWarningFunc_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaValidityWarningFunc_ptr(int no ATTRIBUTE_UNUSED, xmlSchemaValidityWarningFunc * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaValidityWarningFunc_ptr(no, nr) NULL
+#define des_xmlSchemaValidityWarningFunc_ptr(no, val, nr)
 #endif
 
 
@@ -33825,11 +33666,8 @@ test_xmlSchemaSAXPlug(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaSAXPlugPtr 1
-static xmlSchemaSAXPlugPtr gen_xmlSchemaSAXPlugPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaSAXPlugPtr(int no ATTRIBUTE_UNUSED, xmlSchemaSAXPlugPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaSAXPlugPtr(no, nr) NULL
+#define des_xmlSchemaSAXPlugPtr(no, val, nr)
 #endif
 
 
@@ -34293,21 +34131,15 @@ test_xmlschemas(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaFacetPtr 1
-static xmlSchemaFacetPtr gen_xmlSchemaFacetPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaFacetPtr(int no ATTRIBUTE_UNUSED, xmlSchemaFacetPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaFacetPtr(no, nr) NULL
+#define des_xmlSchemaFacetPtr(no, val, nr)
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaTypePtr 1
-static xmlSchemaTypePtr gen_xmlSchemaTypePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaTypePtr(int no ATTRIBUTE_UNUSED, xmlSchemaTypePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaTypePtr(no, nr) NULL
+#define des_xmlSchemaTypePtr(no, val, nr)
 #endif
 
 
@@ -34419,11 +34251,8 @@ test_xmlSchemaCollapseString(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaValPtr 1
-static xmlSchemaValPtr gen_xmlSchemaValPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaValPtr(int no ATTRIBUTE_UNUSED, xmlSchemaValPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaValPtr(no, nr) NULL
+#define des_xmlSchemaValPtr(no, val, nr)
 #endif
 
 
@@ -34890,11 +34719,8 @@ test_xmlSchemaNewStringValue(void) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #define gen_nb_xmlSchemaValPtr_ptr 1
-static xmlSchemaValPtr * gen_xmlSchemaValPtr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlSchemaValPtr_ptr(int no ATTRIBUTE_UNUSED, xmlSchemaValPtr * val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlSchemaValPtr_ptr(no, nr) NULL
+#define des_xmlSchemaValPtr_ptr(no, val, nr)
 #endif
 
 
@@ -45729,21 +45555,15 @@ test_xmlXPathCompile(void) {
 #ifdef LIBXML_XPATH_ENABLED
 
 #define gen_nb_xmlXPathCompExprPtr 1
-static xmlXPathCompExprPtr gen_xmlXPathCompExprPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlXPathCompExprPtr(int no ATTRIBUTE_UNUSED, xmlXPathCompExprPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlXPathCompExprPtr(no, nr) NULL
+#define des_xmlXPathCompExprPtr(no, val, nr)
 #endif
 
 #ifdef LIBXML_XPATH_ENABLED
 
 #define gen_nb_xmlXPathContextPtr 1
-static xmlXPathContextPtr gen_xmlXPathContextPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlXPathContextPtr(int no ATTRIBUTE_UNUSED, xmlXPathContextPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlXPathContextPtr(no, nr) NULL
+#define des_xmlXPathContextPtr(no, val, nr)
 #endif
 
 
@@ -46463,11 +46283,8 @@ test_xpath(void) {
 #ifdef LIBXML_XPATH_ENABLED
 
 #define gen_nb_xmlXPathParserContextPtr 1
-static xmlXPathParserContextPtr gen_xmlXPathParserContextPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlXPathParserContextPtr(int no ATTRIBUTE_UNUSED, xmlXPathParserContextPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
+#define gen_xmlXPathParserContextPtr(no, nr) NULL
+#define des_xmlXPathParserContextPtr(no, val, nr)
 #endif
 
 

@@ -427,12 +427,9 @@ def generate_param_type(name, rtype):
             define = 1
         test.write("""
 #define gen_nb_%s 1
-static %s gen_%s(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-""" % (name, crtype, name, name, rtype))
+#define gen_%s(no, nr) NULL
+#define des_%s(no, val, nr)
+""" % (name, name, name))
         if define == 1:
             test.write("#endif\n\n")
         add_generated_param_type(name)

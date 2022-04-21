@@ -20,8 +20,11 @@
     BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
   script:
     - |
+      rm -rf build
+      mkdir build
+      cd build
       ln -s /tests/xmlconf
-      sh autogen.sh $BASE_CONFIG $CONFIG
+      sh ../autogen.sh $BASE_CONFIG $CONFIG
       make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
       make CFLAGS="$CFLAGS -Werror" check
 

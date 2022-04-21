@@ -1,11 +1,10 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
-srcdir=`dirname $0`
-test -z "$srcdir" && srcdir=. 
-
 THEDIR=`pwd`
-cd $srcdir
+cd `dirname $0`
+srcdir=`pwd`
+
 DIE=0
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {

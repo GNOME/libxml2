@@ -86,9 +86,9 @@ check-local:
 	@test -f Makefile.am || test -f test1.xml || $(LN_S) $(srcdir)/test?.xml .
 	@(echo '## examples regression tests')
 	@(echo > .memdump)
-	@$(CHECKER) ./io1
+	@$(CHECKER) ./io1 >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./io2
+	@$(CHECKER) ./io2 >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./parse1 test1.xml
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
@@ -98,22 +98,22 @@ check-local:
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./parse4 test3.xml
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./reader1 test2.xml
+	@$(CHECKER) ./reader1 test2.xml >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./reader2 test2.xml
+	@$(CHECKER) ./reader2 test2.xml >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./reader3
+	@$(CHECKER) ./reader3 >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./reader4 test1.xml test2.xml test3.xml
+	@$(CHECKER) ./reader4 test1.xml test2.xml test3.xml >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@$(CHECKER) ./testWriter
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./tree1 test2.xml
+	@$(CHECKER) ./tree1 test2.xml >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./tree2
+	@$(CHECKER) ./tree2 >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./xpath1 test3.xml '//child2'
+	@$(CHECKER) ./xpath1 test3.xml '//child2' >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
-	@$(CHECKER) ./xpath2 test3.xml '//discarded' discarded
+	@$(CHECKER) ./xpath2 test3.xml '//discarded' discarded >/dev/null
 	@grep "MORY ALLO" .memdump | grep -v "MEMORY ALLOCATED : 0" ; exit 0
 	@rm -f *.tmp

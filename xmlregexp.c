@@ -5108,7 +5108,7 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
     }
     NEXTL(len);
     cur = CUR;
-    if ((cur != '-') || (NXT(1) == ']')) {
+    if ((cur != '-') || (NXT(1) == '[') || (NXT(1) == ']')) {
         xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 		              XML_REGEXP_CHARVAL, start, end, NULL);
 	return;

@@ -4372,7 +4372,8 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
                 insert->last = copy;
             }
 
-            if (cur->children != NULL) {
+            if ((cur->type != XML_ENTITY_REF_NODE) &&
+                (cur->children != NULL)) {
                 cur = cur->children;
                 insert = copy;
                 continue;

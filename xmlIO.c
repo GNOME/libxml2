@@ -1130,7 +1130,7 @@ xmlGzfileOpen_real (const char *filename) {
  * xmlGzfileOpen:
  * @filename:  the URI for matching
  *
- * Wrapper around xmlGzfileOpen if the open fais, it will
+ * Wrapper around xmlGzfileOpen_real if the open fails, it will
  * try to unescape @filename
  */
 static void *

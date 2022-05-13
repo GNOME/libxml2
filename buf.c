@@ -435,10 +435,14 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
     CHECK_COMPAT(buf)
 
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return(0);
-    if (len < buf->size - buf->use)
-        return(buf->size - buf->use);
-    if (len > SIZE_MAX - buf->use)
+    if (len < buf->size - buf->use) {
+        buf->content[buf->use + len] = 0;
+        return(buf->size - buf->use - 1);
+    }
+    if (len > SIZE_MAX - buf->use - 1) {
+        xmlBufMemoryError(buf, "growing buffer past SIZE_MAX");
         return(0);
+    }
 
     if (buf->size > (size_t) len) {
         size = buf->size > SIZE_MAX / 2 ? SIZE_MAX : buf->size * 2;
@@ -451,7 +455,7 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
         /*
 	 * Used to provide parsing limits
 	 */
-        if ((buf->use + len >= XML_MAX_TEXT_LENGTH) ||
+        if ((buf->use + len + 1 >= XML_MAX_TEXT_LENGTH) ||
 	    (buf->size >= XML_MAX_TEXT_LENGTH)) {
 	    xmlBufMemoryError(buf, "buffer error: text too long\n");
 	    return(0);
@@ -478,8 +482,10 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
 	buf->content = newbuf;
     }
     buf->size = size;
+    buf->content[buf->use] = 0;
+    buf->content[buf->use + len] = 0;
     UPDATE_COMPAT(buf)
-    return(buf->size - buf->use);
+    return(buf->size - buf->use - 1);
 }
 
 /**
@@ -591,14 +597,11 @@ xmlBufAddLen(xmlBufPtr buf, size_t len) {
     if ((buf == NULL) || (buf->error))
         return(-1);
     CHECK_COMPAT(buf)
-    if (len > (buf->size - buf->use))
+    if (len >= (buf->size - buf->use))
         return(-1);
     buf->use += len;
+    buf->content[buf->use] = 0;
     UPDATE_COMPAT(buf)
-    if (buf->size > buf->use)
-        buf->content[buf->use] = 0;
-    else
-        return(-1);
     return(0);
 }
 
@@ -658,7 +661,7 @@ xmlBufAvail(const xmlBufPtr buf)
         return 0;
     CHECK_COMPAT(buf)
 
-    return(buf->size - buf->use);
+    return((buf->size > buf->use) ? (buf->size - 1) - buf->use : 0);
 }
 
 /**
@@ -762,7 +765,6 @@ xmlBufResize(xmlBufPtr buf, size_t size)
 	    /* move data back to start */
 	    memmove(buf->contentIO, buf->content, buf->use);
 	    buf->content = buf->contentIO;
-	    buf->content[buf->use] = 0;
 	    buf->size += start_buf;
 	} else {
 	    rebuf = (xmlChar *) xmlRealloc(buf->contentIO, start_buf + newSize);
@@ -788,7 +790,6 @@ xmlBufResize(xmlBufPtr buf, size_t size)
 	    if (rebuf != NULL) {
 		memcpy(rebuf, buf->content, buf->use);
 		xmlFree(buf->content);
-		rebuf[buf->use] = 0;
 	    }
 	}
 	if (rebuf == NULL) {
@@ -798,6 +799,7 @@ xmlBufResize(xmlBufPtr buf, size_t size)
 	buf->content = rebuf;
     }
     buf->size = newSize;
+    buf->content[buf->use] = 0;
     UPDATE_COMPAT(buf)
 
     return 1;
@@ -839,9 +841,12 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
     if (len < 0) return -1;
     if (len == 0) return 0;
 
+    /* Note that both buf->size and buf->use can be zero here. */
     if ((size_t) len >= buf->size - buf->use) {
-        if ((size_t) len >= SIZE_MAX - buf->use)
+        if ((size_t) len >= SIZE_MAX - buf->use) {
+            xmlBufMemoryError(buf, "growing buffer past SIZE_MAX");
             return(-1);
+        }
         needSize = buf->use + len + 1;
 	if (buf->alloc == XML_BUFFER_ALLOC_BOUNDED) {
 	    /*

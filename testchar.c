@@ -607,7 +607,7 @@ static int testCharRanges(void) {
         fprintf(stderr, "Failed to allocate parser context\n");
 	return(1);
     }
-    buf = xmlParserInputBufferCreateStatic(data, sizeof(data),
+    buf = xmlParserInputBufferCreateStatic(data, sizeof(data) - 1,
                                            XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
         fprintf(stderr, "Failed to allocate input buffer\n");

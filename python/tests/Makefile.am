@@ -64,6 +64,7 @@ check-local:
 	@echo "## running Python regression tests"
 	@(export PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; \
 	  export LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
+	  export DYLD_LIBRARY_PATH="$(top_builddir)/.libs:$$DYLD_LIBRARY_PATH" ; \
 	  export PATH="$(top_builddir)/.libs:$$PATH" ; \
 	  for test in $(PYTESTS) ; do \
 	    log=`$(PYTHON) $(srcdir)/$$test` ; \

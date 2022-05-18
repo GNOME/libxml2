@@ -5912,10 +5912,11 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 		    cur->content = xmlStrncatNew(cur->content, content, len);
 		    cur->properties = NULL;
 		    cur->nsDef = NULL;
-		    break;
-		}
-		cur->content = xmlStrncat(cur->content, content, len);
+		} else {
+		    cur->content = xmlStrncat(cur->content, content, len);
+                }
             }
+	    break;
         case XML_DOCUMENT_NODE:
         case XML_DTD_NODE:
         case XML_HTML_DOCUMENT_NODE:

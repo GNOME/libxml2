@@ -5760,7 +5760,6 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
 	    } else
 		cur->content = NULL;
 	    cur->properties = NULL;
-	    cur->nsDef = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
@@ -5835,7 +5834,6 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    } else
 		cur->content = NULL;
 	    cur->properties = NULL;
-	    cur->nsDef = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
         case XML_DTD_NODE:
@@ -5911,7 +5909,6 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 			    xmlDictOwns(cur->doc->dict, cur->content))) {
 		    cur->content = xmlStrncatNew(cur->content, content, len);
 		    cur->properties = NULL;
-		    cur->nsDef = NULL;
 		} else {
 		    cur->content = xmlStrncat(cur->content, content, len);
                 }

@@ -988,7 +988,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		int len;
 
 		if (content == NULL) {
-		    tmp = xmlNewTextLen(NULL, 0);
+		    tmp = xmlNewDocTextLen(target, NULL, 0);
 		} else {
 		    len = index2;
 		    if ((cur == start) && (index1 > 1)) {
@@ -997,7 +997,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    } else {
 			len = index2;
 		    }
-		    tmp = xmlNewTextLen(content, len);
+		    tmp = xmlNewDocTextLen(target, content, len);
 		}
 		/* single sub text node selection */
 		if (list == NULL)
@@ -1048,13 +1048,13 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		const xmlChar *content = cur->content;
 
 		if (content == NULL) {
-		    tmp = xmlNewTextLen(NULL, 0);
+		    tmp = xmlNewDocTextLen(target, NULL, 0);
 		} else {
 		    if (index1 > 1) {
 			content += (index1 - 1);
 			index1 = 0;
 		    }
-		    tmp = xmlNewText(content);
+		    tmp = xmlNewDocText(target, content);
 		}
 		last = list = tmp;
 		listParent = cur->parent;

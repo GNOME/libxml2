@@ -1849,7 +1849,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      */
     for (i = 0; i < ctxt->txtNr; i++) {
 	if (xmlStrEqual(URL, ctxt->txturlTab[i])) {
-            node = xmlNewText(ctxt->txtTab[i]);
+            node = xmlNewDocText(ctxt->doc, ctxt->txtTab[i]);
 	    goto loaded;
 	}
     }
@@ -1898,7 +1898,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (buf->encoder)
 	xmlCharEncCloseFunc(buf->encoder);
     buf->encoder = xmlGetCharEncodingHandler(enc);
-    node = xmlNewText(NULL);
+    node = xmlNewDocText(ctxt->doc, NULL);
 
     /*
      * Scan all chars from the resource and add the to the node

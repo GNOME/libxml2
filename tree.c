@@ -5878,7 +5878,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    xmlNodePtr last, newNode, tmp;
 
 	    last = cur->last;
-	    newNode = xmlNewTextLen(content, len);
+	    newNode = xmlNewDocTextLen(cur->doc, content, len);
 	    if (newNode != NULL) {
 		tmp = xmlAddChild(cur, newNode);
 		if (tmp != newNode)

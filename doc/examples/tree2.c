@@ -36,7 +36,7 @@ main(int argc, char **argv)
      * Creates a new document, a node and set it as a root node
      */
     doc = xmlNewDoc(BAD_CAST "1.0");
-    root_node = xmlNewNode(NULL, BAD_CAST "root");
+    root_node = xmlNewDocNode(doc, NULL, BAD_CAST "root", NULL);
     xmlDocSetRootElement(doc, root_node);
 
     /*
@@ -70,8 +70,8 @@ main(int argc, char **argv)
      * creates a node and a text node separately. They are "attached"
      * by xmlAddChild() 
      */
-    node = xmlNewNode(NULL, BAD_CAST "node4");
-    node1 = xmlNewText(BAD_CAST
+    node = xmlNewDocNode(doc, NULL, BAD_CAST "node4", NULL);
+    node1 = xmlNewDocText(doc, BAD_CAST
                    "other way to create content (which is also a node)");
     xmlAddChild(node, node1);
     xmlAddChild(root_node, node);

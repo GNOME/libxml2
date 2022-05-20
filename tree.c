@@ -3828,18 +3828,18 @@ xmlFreeNode(xmlNodePtr cur) {
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);
-    if (((cur->type == XML_ELEMENT_NODE) ||
-	 (cur->type == XML_XINCLUDE_START) ||
-	 (cur->type == XML_XINCLUDE_END)) &&
-	(cur->properties != NULL))
-	xmlFreePropList(cur->properties);
-    if ((cur->type != XML_ELEMENT_NODE) &&
-	(cur->content != NULL) &&
-	(cur->type != XML_ENTITY_REF_NODE) &&
-	(cur->type != XML_XINCLUDE_END) &&
-	(cur->type != XML_XINCLUDE_START) &&
-	(cur->content != (xmlChar *) &(cur->properties))) {
-	DICT_FREE(cur->content)
+
+    if ((cur->type == XML_ELEMENT_NODE) ||
+        (cur->type == XML_XINCLUDE_START) ||
+        (cur->type == XML_XINCLUDE_END)) {
+        if (cur->properties != NULL)
+            xmlFreePropList(cur->properties);
+        if (cur->nsDef != NULL)
+            xmlFreeNsList(cur->nsDef);
+    } else if ((cur->content != NULL) &&
+               (cur->type != XML_ENTITY_REF_NODE) &&
+               (cur->content != (xmlChar *) &(cur->properties))) {
+        DICT_FREE(cur->content)
     }
 
     /*
@@ -3852,11 +3852,6 @@ xmlFreeNode(xmlNodePtr cur) {
         (cur->type != XML_COMMENT_NODE))
 	DICT_FREE(cur->name)
 
-    if (((cur->type == XML_ELEMENT_NODE) ||
-	 (cur->type == XML_XINCLUDE_START) ||
-	 (cur->type == XML_XINCLUDE_END)) &&
-	(cur->nsDef != NULL))
-	xmlFreeNsList(cur->nsDef);
     xmlFree(cur);
 }
 

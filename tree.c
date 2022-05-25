@@ -7519,7 +7519,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	    }
 	    break;
 	case XML_BUFFER_ALLOC_EXACT:
-	    newSize = (size > UINT_MAX - 10 ? UINT_MAX : size + 10);;
+	    newSize = (size > UINT_MAX - 10 ? UINT_MAX : size + 10);
 	    break;
         case XML_BUFFER_ALLOC_HYBRID:
             if (buf->use < BASE_BUFFER_SIZE)
@@ -7537,7 +7537,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
             break;
 
 	default:
-	    newSize = (size > UINT_MAX - 10 ? UINT_MAX : size + 10);;
+	    newSize = (size > UINT_MAX - 10 ? UINT_MAX : size + 10);
 	    break;
     }
 

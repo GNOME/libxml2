@@ -506,24 +506,6 @@ xmlBufGrow(xmlBufPtr buf, int len) {
 }
 
 /**
- * xmlBufInflate:
- * @buf:  the buffer
- * @len:  the minimum extra free size to allocate
- *
- * Grow the available space of an XML buffer, adding at least @len bytes
- *
- * Returns 0 if successful or -1 in case of error
- */
-int
-xmlBufInflate(xmlBufPtr buf, size_t len) {
-    if (buf == NULL) return(-1);
-    xmlBufGrowInternal(buf, len + buf->size);
-    if (buf->error)
-        return(-1);
-    return(0);
-}
-
-/**
  * xmlBufDump:
  * @file:  the file output
  * @buf:  the buffer to dump
@@ -617,28 +599,6 @@ xmlBufAddLen(xmlBufPtr buf, size_t len) {
         buf->content[buf->use] = 0;
     else
         return(-1);
-    return(0);
-}
-
-/**
- * xmlBufErase:
- * @buf:  the buffer
- * @len:  the size to erase at the end
- *
- * Sometime data need to be erased at the end of the buffer
- *
- * Returns -1 in case of error and 0 otherwise
- */
-int
-xmlBufErase(xmlBufPtr buf, size_t len) {
-    if ((buf == NULL) || (buf->error))
-        return(-1);
-    CHECK_COMPAT(buf)
-    if (len > buf->use)
-        return(-1);
-    buf->use -= len;
-    buf->content[buf->use] = 0;
-    UPDATE_COMPAT(buf)
     return(0);
 }
 
@@ -906,87 +866,6 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
 }
 
 /**
- * xmlBufAddHead:
- * @buf:  the buffer
- * @str:  the #xmlChar string
- * @len:  the number of #xmlChar to add
- *
- * Add a string range to the beginning of an XML buffer.
- * if len == -1, the length of @str is recomputed.
- *
- * Returns 0 successful, a positive error code number otherwise
- *         and -1 in case of internal or API error.
- */
-int
-xmlBufAddHead(xmlBufPtr buf, const xmlChar *str, int len) {
-    unsigned int needSize;
-
-    if ((buf == NULL) || (buf->error))
-        return(-1);
-    CHECK_COMPAT(buf)
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
-    if (str == NULL) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufAddHead: str == NULL\n");
-#endif
-	return -1;
-    }
-    if (len < -1) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufAddHead: len < 0\n");
-#endif
-	return -1;
-    }
-    if (len == 0) return 0;
-
-    if (len < 0)
-        len = xmlStrlen(str);
-
-    if (len <= 0) return -1;
-
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-        size_t start_buf = buf->content - buf->contentIO;
-
-	if (start_buf > (unsigned int) len) {
-	    /*
-	     * We can add it in the space previously shrunk
-	     */
-	    buf->content -= len;
-            memmove(&buf->content[0], str, len);
-	    buf->use += len;
-	    buf->size += len;
-	    UPDATE_COMPAT(buf)
-	    return(0);
-	}
-    }
-    needSize = buf->use + len + 2;
-    if (needSize > buf->size){
-	if (buf->alloc == XML_BUFFER_ALLOC_BOUNDED) {
-	    /*
-	     * Used to provide parsing limits
-	     */
-	    if (needSize >= XML_MAX_TEXT_LENGTH) {
-		xmlBufMemoryError(buf, "buffer error: text too long\n");
-		return(-1);
-	    }
-	}
-        if (!xmlBufResize(buf, needSize)){
-	    xmlBufMemoryError(buf, "growing buffer");
-            return XML_ERR_NO_MEMORY;
-        }
-    }
-
-    memmove(&buf->content[len], &buf->content[0], buf->use);
-    memmove(&buf->content[0], str, len);
-    buf->use += len;
-    buf->content[buf->use] = 0;
-    UPDATE_COMPAT(buf)
-    return 0;
-}
-
-/**
  * xmlBufCat:
  * @buf:  the buffer to add to
  * @str:  the #xmlChar string
@@ -1020,49 +899,6 @@ int
 xmlBufCCat(xmlBufPtr buf, const char *str) {
     return xmlBufCat(buf, (const xmlChar *) str);
 }
-
-/**
- * xmlBufWriteCHAR:
- * @buf:  the XML buffer
- * @string:  the string to add
- *
- * routine which manages and grows an output buffer. This one adds
- * xmlChars at the end of the buffer.
- *
- * Returns 0 if successful, a positive error code number otherwise
- *         and -1 in case of internal or API error.
- */
-int
-xmlBufWriteCHAR(xmlBufPtr buf, const xmlChar *string) {
-    if ((buf == NULL) || (buf->error))
-        return(-1);
-    CHECK_COMPAT(buf)
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
-        return(-1);
-    return(xmlBufCat(buf, string));
-}
-
-/**
- * xmlBufWriteChar:
- * @buf:  the XML buffer output
- * @string:  the string to add
- *
- * routine which manage and grows an output buffer. This one add
- * C chars at the end of the array.
- *
- * Returns 0 if successful, a positive error code number otherwise
- *         and -1 in case of internal or API error.
- */
-int
-xmlBufWriteChar(xmlBufPtr buf, const char *string) {
-    if ((buf == NULL) || (buf->error))
-        return(-1);
-    CHECK_COMPAT(buf)
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)
-        return(-1);
-    return(xmlBufCCat(buf, string));
-}
-
 
 /**
  * xmlBufWriteQuotedString:

@@ -645,10 +645,11 @@ xmlBufUse(const xmlBufPtr buf)
  * @buf:  the buffer
  *
  * Function to find how much free space is allocated but not
- * used in the buffer. It does not account for the terminating zero
- * usually needed
+ * used in the buffer. It reserves one byte for the NUL
+ * terminator character that is usually needed, so there is
+ * no need to subtract 1 from the result anymore.
  *
- * Returns the amount or 0 if none or an error occurred
+ * Returns the amount, or 0 if none or if an error occurred.
  */
 
 size_t
@@ -658,7 +659,7 @@ xmlBufAvail(const xmlBufPtr buf)
         return 0;
     CHECK_COMPAT(buf)
 
-    return(buf->size - buf->use);
+    return((buf->size > buf->use) ? (buf->size - buf->use - 1) : 0);
 }
 
 /**

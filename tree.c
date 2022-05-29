@@ -7562,6 +7562,8 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
     } else {
 	if (buf->content == NULL) {
 	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
+	    buf->use = 0;
+	    rebuf[buf->use] = 0;
 	} else if (buf->size - buf->use < 100) {
 	    rebuf = (xmlChar *) xmlRealloc(buf->content, newSize);
         } else {
@@ -7690,6 +7692,7 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
             memmove(&buf->content[0], str, len);
 	    buf->use += len;
 	    buf->size += len;
+            buf->content[buf->use] = 0;
 	    return(0);
 	}
     }

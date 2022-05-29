@@ -591,14 +591,11 @@ xmlBufAddLen(xmlBufPtr buf, size_t len) {
     if ((buf == NULL) || (buf->error))
         return(-1);
     CHECK_COMPAT(buf)
-    if (len > (buf->size - buf->use))
+    if (len >= (buf->size - buf->use))
         return(-1);
     buf->use += len;
+    buf->content[buf->use] = 0;
     UPDATE_COMPAT(buf)
-    if (buf->size > buf->use)
-        buf->content[buf->use] = 0;
-    else
-        return(-1);
     return(0);
 }
 
@@ -777,6 +774,8 @@ xmlBufResize(xmlBufPtr buf, size_t size)
     } else {
 	if (buf->content == NULL) {
 	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
+	    buf->use = 0;
+	    rebuf[buf->use] = 0;
 	} else if (buf->size - buf->use < 100) {
 	    rebuf = (xmlChar *) xmlRealloc(buf->content, newSize);
         } else {

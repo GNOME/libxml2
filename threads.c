@@ -925,6 +925,8 @@ xmlCleanupThreads(void)
         globalkey = TLS_OUT_OF_INDEXES;
     }
     DeleteCriticalSection(&cleanup_helpers_cs);
+    run_once.done = 0;
+    run_once.control = 0;
 #endif
 }
 

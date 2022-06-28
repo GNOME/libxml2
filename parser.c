@@ -1752,9 +1752,7 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
                                              sizeof(ctxt->inputTab[0]));
         if (ctxt->inputTab == NULL) {
             xmlErrMemory(ctxt, NULL);
-	    xmlFreeInputStream(value);
 	    ctxt->inputMax /= 2;
-	    value = NULL;
             return (-1);
         }
     }

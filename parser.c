@@ -8088,6 +8088,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
      */
     if (xmlPushInput(ctxt, input) < 0) {
         xmlBufferFree(buf);
+	xmlFreeInputStream(input);
 	return(-1);
     }
 

@@ -367,6 +367,12 @@ if(NOT BUILD_SHARED_LIBS)
 	set(XML_CFLAGS "-DLIBXML_STATIC")
 endif()
 
+if(BUILD_SHARED_LIBS AND UNIX)
+	if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
+		target_link_options(LibXml2 PRIVATE "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libxml2.syms")
+	endif()
+endif()
+
 if(LIBXML2_WITH_THREADS)
 	target_compile_definitions(LibXml2 PRIVATE _REENTRANT)
 	if(WIN32)

@@ -2545,6 +2545,21 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
 
 static const xmlChar * htmlParseNameComplex(xmlParserCtxtPtr ctxt);
 
+static void
+htmlSkipBogusComment(htmlParserCtxtPtr ctxt) {
+    int c;
+
+    htmlParseErr(ctxt, XML_HTML_INCORRECTLY_OPENED_COMMENT,
+                 "Incorrectly opened comment\n", NULL, NULL);
+
+    do {
+        c = CUR;
+        if (c == 0)
+            break;
+        NEXT;
+    } while (c != '>');
+}
+
 /**
  * htmlParseHTMLName:
  * @ctxt:  an HTML parser context
@@ -4380,26 +4395,28 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    htmlParseScript(ctxt);
 	}
 
-        /*
-         * Sometimes DOCTYPE arrives in the middle of the document
-         */
-        else if ((CUR == '<') && (NXT(1) == '!') &&
-            (UPP(2) == 'D') && (UPP(3) == 'O') &&
-            (UPP(4) == 'C') && (UPP(5) == 'T') &&
-            (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-            (UPP(8) == 'E')) {
-            htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-                         "Misplaced DOCTYPE declaration\n",
-                         BAD_CAST "DOCTYPE" , NULL);
-            htmlParseDocTypeDecl(ctxt);
-        }
-
-        /*
-         * First case :  a comment
-         */
-        else if ((CUR == '<') && (NXT(1) == '!') &&
-            (NXT(2) == '-') && (NXT(3) == '-')) {
-            htmlParseComment(ctxt);
+        else if ((CUR == '<') && (NXT(1) == '!')) {
+            /*
+             * Sometimes DOCTYPE arrives in the middle of the document
+             */
+            if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
+                (UPP(4) == 'C') && (UPP(5) == 'T') &&
+                (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+                (UPP(8) == 'E')) {
+                htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                             "Misplaced DOCTYPE declaration\n",
+                             BAD_CAST "DOCTYPE" , NULL);
+                htmlParseDocTypeDecl(ctxt);
+            }
+            /*
+             * First case :  a comment
+             */
+            else if ((NXT(2) == '-') && (NXT(3) == '-')) {
+                htmlParseComment(ctxt);
+            }
+            else {
+                htmlSkipBogusComment(ctxt);
+            }
         }
 
         /*
@@ -4785,26 +4802,28 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	    htmlParseScript(ctxt);
 	}
 
-        /*
-         * Sometimes DOCTYPE arrives in the middle of the document
-         */
-        else if ((CUR == '<') && (NXT(1) == '!') &&
-            (UPP(2) == 'D') && (UPP(3) == 'O') &&
-            (UPP(4) == 'C') && (UPP(5) == 'T') &&
-            (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-            (UPP(8) == 'E')) {
-            htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-                         "Misplaced DOCTYPE declaration\n",
-                         BAD_CAST "DOCTYPE" , NULL);
-            htmlParseDocTypeDecl(ctxt);
-        }
-
-        /*
-         * First case :  a comment
-         */
-        else if ((CUR == '<') && (NXT(1) == '!') &&
-            (NXT(2) == '-') && (NXT(3) == '-')) {
-            htmlParseComment(ctxt);
+        else if ((CUR == '<') && (NXT(1) == '!')) {
+            /*
+             * Sometimes DOCTYPE arrives in the middle of the document
+             */
+            if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
+                (UPP(4) == 'C') && (UPP(5) == 'T') &&
+                (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+                (UPP(8) == 'E')) {
+                htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                             "Misplaced DOCTYPE declaration\n",
+                             BAD_CAST "DOCTYPE" , NULL);
+                htmlParseDocTypeDecl(ctxt);
+            }
+            /*
+             * First case :  a comment
+             */
+            else if ((NXT(2) == '-') && (NXT(3) == '-')) {
+                htmlParseComment(ctxt);
+            }
+            else {
+                htmlSkipBogusComment(ctxt);
+            }
         }
 
         /*
@@ -5949,31 +5968,37 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
 			break;
 		    }
-		} else if ((cur == '<') && (next == '!') &&
-                    (UPP(2) == 'D') && (UPP(3) == 'O') &&
-                    (UPP(4) == 'C') && (UPP(5) == 'T') &&
-                    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-                    (UPP(8) == 'E')) {
+		} else if ((cur == '<') && (next == '!')) {
                     /*
                      * Sometimes DOCTYPE arrives in the middle of the document
                      */
-                    if ((!terminate) &&
-                        (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
-                        goto done;
-                    htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-                                 "Misplaced DOCTYPE declaration\n",
-                                 BAD_CAST "DOCTYPE" , NULL);
-                    htmlParseDocTypeDecl(ctxt);
-                } else if ((cur == '<') && (next == '!') &&
-                    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-                    if ((!terminate) && (htmlParseLookupCommentEnd(ctxt) < 0))
-                        goto done;
+                    if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
+                        (UPP(4) == 'C') && (UPP(5) == 'T') &&
+                        (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+                        (UPP(8) == 'E')) {
+                        if ((!terminate) &&
+                            (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
+                            goto done;
+                        htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                                     "Misplaced DOCTYPE declaration\n",
+                                     BAD_CAST "DOCTYPE" , NULL);
+                        htmlParseDocTypeDecl(ctxt);
+                    } else if ((in->cur[2] == '-') && (in->cur[3] == '-')) {
+                        if ((!terminate) &&
+                            (htmlParseLookupCommentEnd(ctxt) < 0))
+                            goto done;
 #ifdef DEBUG_PUSH
-                    xmlGenericError(xmlGenericErrorContext,
-                            "HPP: Parsing Comment\n");
+                        xmlGenericError(xmlGenericErrorContext,
+                                "HPP: Parsing Comment\n");
 #endif
-                    htmlParseComment(ctxt);
-                    ctxt->instate = XML_PARSER_CONTENT;
+                        htmlParseComment(ctxt);
+                        ctxt->instate = XML_PARSER_CONTENT;
+                    } else {
+                        if ((!terminate) &&
+                            (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+                            goto done;
+                        htmlSkipBogusComment(ctxt);
+                    }
                 } else if ((cur == '<') && (next == '?')) {
                     if ((!terminate) &&
                         (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))

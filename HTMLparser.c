@@ -2793,7 +2793,7 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt, const xmlChar **str) {
     if ((ctxt == NULL) || (ctxt->input == NULL)) return(NULL);
 
     if (CUR == '&') {
-        NEXT;
+        SKIP(1);
         name = htmlParseName(ctxt);
 	if (name == NULL) {
 	    htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
@@ -2809,7 +2809,7 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt, const xmlChar **str) {
 		 */
 		ent = htmlEntityLookup(name);
 		if (ent != NULL) /* OK that's ugly !!! */
-		    NEXT;
+		    SKIP(1);
 	    } else {
 		htmlParseErr(ctxt, XML_ERR_ENTITYREF_SEMICOL_MISSING,
 		             "htmlParseEntityRef: expecting ';'\n",
@@ -2839,21 +2839,21 @@ htmlParseAttValue(htmlParserCtxtPtr ctxt) {
     xmlChar *ret = NULL;
 
     if (CUR == '"') {
-        NEXT;
+        SKIP(1);
 	ret = htmlParseHTMLAttribute(ctxt, '"');
         if (CUR != '"') {
 	    htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
 	                 "AttValue: \" expected\n", NULL, NULL);
 	} else
-	    NEXT;
+	    SKIP(1);
     } else if (CUR == '\'') {
-        NEXT;
+        SKIP(1);
 	ret = htmlParseHTMLAttribute(ctxt, '\'');
         if (CUR != '\'') {
 	    htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
 	                 "AttValue: ' expected\n", NULL, NULL);
 	} else
-	    NEXT;
+	    SKIP(1);
     } else {
         /*
 	 * That's an HTMLism, the attribute value may not be quoted
@@ -3455,7 +3455,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 finished:
     buf[len] = 0;
     if (cur == '>') {
-        NEXT;
+        SKIP(1);
 	if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
 	    (!ctxt->disableSAX))
 	    ctxt->sax->comment(ctxt->userData, buf);
@@ -3511,7 +3511,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 	    NEXT;
 	}
 	if (CUR == ';')
-	    NEXT;
+	    SKIP(1);
     } else if  ((CUR == '&') && (NXT(1) == '#')) {
 	SKIP(2);
 	while (CUR != ';') {
@@ -3527,7 +3527,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 	    NEXT;
 	}
 	if (CUR == ';')
-	    NEXT;
+	    SKIP(1);
     } else {
 	htmlParseErr(ctxt, XML_ERR_INVALID_CHARREF,
 	             "htmlParseCharRef: invalid value\n", NULL, NULL);
@@ -3605,7 +3605,7 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
             NEXT;
     }
     if (CUR == '>')
-        NEXT;
+        SKIP(1);
 
     /*
      * Create or update the document accordingly to the DOCTYPE
@@ -3660,7 +3660,7 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
      */
     SKIP_BLANKS;
     if (CUR == '=') {
-        NEXT;
+        SKIP(1);
 	SKIP_BLANKS;
 	val = htmlParseAttValue(ctxt);
     }
@@ -3783,7 +3783,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     if ((ctxt == NULL) || (ctxt->input == NULL))
 	return -1;
     if (CUR != '<') return -1;
-    NEXT;
+    SKIP(1);
 
     atts = ctxt->atts;
     maxatts = ctxt->maxatts;
@@ -4266,7 +4266,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
             if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
                 (ctxt->sax->characters != NULL))
                 ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
-            NEXT;
+            SKIP(1);
         }
 
         /*
@@ -4336,7 +4336,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     name = ctxt->name;
     if ((failed == -1) || (name == NULL)) {
 	if (CUR == '>')
-	    NEXT;
+	    SKIP(1);
         return;
     }
 
@@ -4361,7 +4361,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     }
 
     if (CUR == '>') {
-        NEXT;
+        SKIP(1);
     } else {
 	htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "Couldn't find end of Start Tag %s\n", name, NULL);
@@ -4477,7 +4477,7 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     name = ctxt->name;
     if ((failed == -1) || (name == NULL)) {
 	if (CUR == '>')
-	    NEXT;
+	    SKIP(1);
         return;
     }
 
@@ -4502,7 +4502,7 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     }
 
     if (CUR == '>') {
-        NEXT;
+        SKIP(1);
     } else {
 	htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "Couldn't find end of Start Tag %s\n", name, NULL);
@@ -4703,7 +4703,7 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
             if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
                 (ctxt->sax->characters != NULL))
                 ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
-            NEXT;
+            SKIP(1);
         }
 
         /*
@@ -5610,7 +5610,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((failed == -1) ||
 		    (name == NULL)) {
 		    if (CUR == '>')
-			NEXT;
+			SKIP(1);
 		    break;
 		}
 
@@ -5636,7 +5636,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		}
 
 		if (CUR == '>') {
-		    NEXT;
+		    SKIP(1);
 		} else {
 		    htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 		                 "Couldn't find end of Start Tag %s\n",
@@ -5787,7 +5787,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         (ctxt->sax->characters != NULL))
                         ctxt->sax->characters(ctxt->userData,
                                               BAD_CAST "<", 1);
-                    NEXT;
+                    SKIP(1);
                 } else {
                     /*
                      * check that the text sequence is complete

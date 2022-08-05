@@ -1226,7 +1226,8 @@ else
         [have_libicu=no])
 
     if test "x$have_libicu" = "xyes"; then
-        PKG_CHECK_VAR([ICU_DEFS], [icu-i18n], [DEFS])
+        m4_ifdef([PKG_CHECK_VAR],
+            [PKG_CHECK_VAR([ICU_DEFS], [icu-i18n], [DEFS])])
         if test "x$ICU_DEFS" != "x"; then
             CPPFLAGS="$CPPFLAGS $ICU_DEFS"
         fi

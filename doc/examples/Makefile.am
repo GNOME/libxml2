@@ -15,6 +15,11 @@ install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(docdir)/examples
 	-$(INSTALL) -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(DESTDIR)$(docdir)/examples/
 
+uninstall-local:
+	rm -f $(DESTDIR)$(docdir)/examples/*.c
+	rm -f $(DESTDIR)$(docdir)/examples/*.html
+	-rmdir $(DESTDIR)$(docdir)/examples
+
 clean-local:
 	test -f Makefile.am || rm -f test?.xml
 

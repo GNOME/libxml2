@@ -2,7 +2,6 @@
 <book xmlns="http://www.devhelp.net/book" title="libxml2 Reference Manual" link="index.html" author="" name="libxml2">
   <chapters>
     <sub name="API" link="general.html">
-      <sub name="DOCBparser" link="libxml2-DOCBparser.html"/>
       <sub name="HTMLparser" link="libxml2-HTMLparser.html"/>
       <sub name="HTMLtree" link="libxml2-HTMLtree.html"/>
       <sub name="SAX" link="libxml2-SAX.html"/>
@@ -70,7 +69,6 @@
     <keyword type="macro" name="HTML_PI_NODE" link="libxml2-HTMLtree.html#HTML_PI_NODE"/>
     <keyword type="macro" name="HTML_PRESERVE_NODE" link="libxml2-HTMLtree.html#HTML_PRESERVE_NODE"/>
     <keyword type="macro" name="HTML_TEXT_NODE" link="libxml2-HTMLtree.html#HTML_TEXT_NODE"/>
-    <keyword type="macro" name="ICU_PIVOT_BUF_SIZE" link="libxml2-encoding.html#ICU_PIVOT_BUF_SIZE"/>
     <keyword type="macro" name="INPUT_CHUNK" link="libxml2-parserInternals.html#INPUT_CHUNK"/>
     <keyword type="macro" name="INVALID_SOCKET" link="libxml2-nanoftp.html#INVALID_SOCKET"/>
     <keyword type="macro" name="IS_ASCII_DIGIT" link="libxml2-parserInternals.html#IS_ASCII_DIGIT"/>
@@ -101,7 +99,6 @@
     <keyword type="macro" name="LIBXML_DEBUG_ENABLED" link="libxml2-xmlversion.html#LIBXML_DEBUG_ENABLED"/>
     <keyword type="macro" name="LIBXML_DEBUG_RUNTIME" link="libxml2-xmlversion.html#LIBXML_DEBUG_RUNTIME"/>
     <keyword type="macro" name="LIBXML_DLL_IMPORT" link="libxml2-xmlexports.html#LIBXML_DLL_IMPORT"/>
-    <keyword type="macro" name="LIBXML_DOCB_ENABLED" link="libxml2-xmlversion.html#LIBXML_DOCB_ENABLED"/>
     <keyword type="macro" name="LIBXML_DOTTED_VERSION" link="libxml2-xmlversion.html#LIBXML_DOTTED_VERSION"/>
     <keyword type="macro" name="LIBXML_EXPR_ENABLED" link="libxml2-xmlversion.html#LIBXML_EXPR_ENABLED"/>
     <keyword type="macro" name="LIBXML_FTP_ENABLED" link="libxml2-xmlversion.html#LIBXML_FTP_ENABLED"/>
@@ -135,6 +132,7 @@
     <keyword type="macro" name="LIBXML_XINCLUDE_ENABLED" link="libxml2-xmlversion.html#LIBXML_XINCLUDE_ENABLED"/>
     <keyword type="macro" name="LIBXML_XPATH_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPATH_ENABLED"/>
     <keyword type="macro" name="LIBXML_XPTR_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPTR_ENABLED"/>
+    <keyword type="macro" name="LIBXML_XPTR_LOCS_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPTR_LOCS_ENABLED"/>
     <keyword type="macro" name="LIBXML_ZLIB_ENABLED" link="libxml2-xmlversion.html#LIBXML_ZLIB_ENABLED"/>
     <keyword type="macro" name="MOVETO_ENDTAG" link="libxml2-parserInternals.html#MOVETO_ENDTAG"/>
     <keyword type="macro" name="MOVETO_STARTTAG" link="libxml2-parserInternals.html#MOVETO_STARTTAG"/>
@@ -161,10 +159,10 @@
     <keyword type="macro" name="XML_CATALOGS_NAMESPACE" link="libxml2-catalog.html#XML_CATALOGS_NAMESPACE"/>
     <keyword type="macro" name="XML_CATALOG_PI" link="libxml2-catalog.html#XML_CATALOG_PI"/>
     <keyword type="macro" name="XML_COMPLETE_ATTRS" link="libxml2-parser.html#XML_COMPLETE_ATTRS"/>
-    <keyword type="macro" name="XML_CTXT_FINISH_DTD_0" link="libxml2-valid.html#XML_CTXT_FINISH_DTD_0"/>
-    <keyword type="macro" name="XML_CTXT_FINISH_DTD_1" link="libxml2-valid.html#XML_CTXT_FINISH_DTD_1"/>
     <keyword type="macro" name="XML_DEFAULT_VERSION" link="libxml2-parser.html#XML_DEFAULT_VERSION"/>
+    <keyword type="macro" name="XML_DEPRECATED" link="libxml2-xmlversion.html#XML_DEPRECATED"/>
     <keyword type="macro" name="XML_DETECT_IDS" link="libxml2-parser.html#XML_DETECT_IDS"/>
+    <keyword type="macro" name="XML_DOCB_DOCUMENT_NODE" link="libxml2-tree.html#XML_DOCB_DOCUMENT_NODE"/>
     <keyword type="macro" name="XML_GET_CONTENT" link="libxml2-tree.html#XML_GET_CONTENT"/>
     <keyword type="macro" name="XML_GET_LINE" link="libxml2-tree.html#XML_GET_LINE"/>
     <keyword type="macro" name="XML_LOCAL_NAMESPACE" link="libxml2-tree.html#XML_LOCAL_NAMESPACE"/>
@@ -261,10 +259,15 @@
     <keyword type="macro" name="XML_SUBSTITUTE_NONE" link="libxml2-parserInternals.html#XML_SUBSTITUTE_NONE"/>
     <keyword type="macro" name="XML_SUBSTITUTE_PEREF" link="libxml2-parserInternals.html#XML_SUBSTITUTE_PEREF"/>
     <keyword type="macro" name="XML_SUBSTITUTE_REF" link="libxml2-parserInternals.html#XML_SUBSTITUTE_REF"/>
+    <keyword type="macro" name="XML_VCTXT_DTD_VALIDATED" link="libxml2-valid.html#XML_VCTXT_DTD_VALIDATED"/>
+    <keyword type="macro" name="XML_VCTXT_USE_PCTXT" link="libxml2-valid.html#XML_VCTXT_USE_PCTXT"/>
     <keyword type="macro" name="XML_XML_ID" link="libxml2-tree.html#XML_XML_ID"/>
     <keyword type="macro" name="XML_XML_NAMESPACE" link="libxml2-tree.html#XML_XML_NAMESPACE"/>
     <keyword type="macro" name="XML_XPATH_CHECKNS" link="libxml2-xpath.html#XML_XPATH_CHECKNS"/>
     <keyword type="macro" name="XML_XPATH_NOVAR" link="libxml2-xpath.html#XML_XPATH_NOVAR"/>
+    <keyword type="macro" name="XPATH_LOCATIONSET" link="libxml2-xpath.html#XPATH_LOCATIONSET"/>
+    <keyword type="macro" name="XPATH_POINT" link="libxml2-xpath.html#XPATH_POINT"/>
+    <keyword type="macro" name="XPATH_RANGE" link="libxml2-xpath.html#XPATH_RANGE"/>
     <keyword type="macro" name="XP_ERROR" link="libxml2-xpathInternals.html#XP_ERROR"/>
     <keyword type="macro" name="XP_ERROR0" link="libxml2-xpathInternals.html#XP_ERROR0"/>
     <keyword type="macro" name="htmlDefaultSubelement" link="libxml2-HTMLparser.html#htmlDefaultSubelement"/>
@@ -444,7 +447,6 @@
     <keyword type="enum" name="XML_CHECK_WRONG_PARENT" link="libxml2-xmlerror.html#XML_CHECK_WRONG_PARENT"/>
     <keyword type="enum" name="XML_CHECK_WRONG_PREV" link="libxml2-xmlerror.html#XML_CHECK_WRONG_PREV"/>
     <keyword type="enum" name="XML_COMMENT_NODE" link="libxml2-tree.html#XML_COMMENT_NODE"/>
-    <keyword type="enum" name="XML_DOCB_DOCUMENT_NODE" link="libxml2-tree.html#XML_DOCB_DOCUMENT_NODE"/>
     <keyword type="enum" name="XML_DOCUMENT_FRAG_NODE" link="libxml2-tree.html#XML_DOCUMENT_FRAG_NODE"/>
     <keyword type="enum" name="XML_DOCUMENT_NODE" link="libxml2-tree.html#XML_DOCUMENT_NODE"/>
     <keyword type="enum" name="XML_DOCUMENT_TYPE_NODE" link="libxml2-tree.html#XML_DOCUMENT_TYPE_NODE"/>
@@ -528,6 +530,7 @@
     <keyword type="enum" name="XML_ERR_CHARREF_IN_DTD" link="libxml2-xmlerror.html#XML_ERR_CHARREF_IN_DTD"/>
     <keyword type="enum" name="XML_ERR_CHARREF_IN_EPILOG" link="libxml2-xmlerror.html#XML_ERR_CHARREF_IN_EPILOG"/>
     <keyword type="enum" name="XML_ERR_CHARREF_IN_PROLOG" link="libxml2-xmlerror.html#XML_ERR_CHARREF_IN_PROLOG"/>
+    <keyword type="enum" name="XML_ERR_COMMENT_ABRUPTLY_ENDED" link="libxml2-xmlerror.html#XML_ERR_COMMENT_ABRUPTLY_ENDED"/>
     <keyword type="enum" name="XML_ERR_COMMENT_NOT_FINISHED" link="libxml2-xmlerror.html#XML_ERR_COMMENT_NOT_FINISHED"/>
     <keyword type="enum" name="XML_ERR_CONDSEC_INVALID" link="libxml2-xmlerror.html#XML_ERR_CONDSEC_INVALID"/>
     <keyword type="enum" name="XML_ERR_CONDSEC_INVALID_KEYWORD" link="libxml2-xmlerror.html#XML_ERR_CONDSEC_INVALID_KEYWORD"/>
@@ -669,6 +672,7 @@
     <keyword type="enum" name="XML_FTP_PASV_ANSWER" link="libxml2-xmlerror.html#XML_FTP_PASV_ANSWER"/>
     <keyword type="enum" name="XML_FTP_URL_SYNTAX" link="libxml2-xmlerror.html#XML_FTP_URL_SYNTAX"/>
     <keyword type="enum" name="XML_HTML_DOCUMENT_NODE" link="libxml2-tree.html#XML_HTML_DOCUMENT_NODE"/>
+    <keyword type="enum" name="XML_HTML_INCORRECTLY_OPENED_COMMENT" link="libxml2-xmlerror.html#XML_HTML_INCORRECTLY_OPENED_COMMENT"/>
     <keyword type="enum" name="XML_HTML_STRUCURE_ERROR" link="libxml2-xmlerror.html#XML_HTML_STRUCURE_ERROR"/>
     <keyword type="enum" name="XML_HTML_UNKNOWN_TAG" link="libxml2-xmlerror.html#XML_HTML_UNKNOWN_TAG"/>
     <keyword type="enum" name="XML_HTTP_UNKNOWN_HOST" link="libxml2-xmlerror.html#XML_HTTP_UNKNOWN_HOST"/>
@@ -1553,13 +1557,6 @@
     <keyword type="enum" name="XPTR_RESOURCE_ERROR" link="libxml2-xpath.html#XPTR_RESOURCE_ERROR"/>
     <keyword type="enum" name="XPTR_SUB_RESOURCE_ERROR" link="libxml2-xpath.html#XPTR_SUB_RESOURCE_ERROR"/>
     <keyword type="enum" name="XPTR_SYNTAX_ERROR" link="libxml2-xpath.html#XPTR_SYNTAX_ERROR"/>
-    <keyword type="typedef" name="docbDocPtr" link="libxml2-DOCBparser.html#docbDocPtr"/>
-    <keyword type="typedef" name="docbParserCtxt" link="libxml2-DOCBparser.html#docbParserCtxt"/>
-    <keyword type="typedef" name="docbParserCtxtPtr" link="libxml2-DOCBparser.html#docbParserCtxtPtr"/>
-    <keyword type="typedef" name="docbParserInput" link="libxml2-DOCBparser.html#docbParserInput"/>
-    <keyword type="typedef" name="docbParserInputPtr" link="libxml2-DOCBparser.html#docbParserInputPtr"/>
-    <keyword type="typedef" name="docbSAXHandler" link="libxml2-DOCBparser.html#docbSAXHandler"/>
-    <keyword type="typedef" name="docbSAXHandlerPtr" link="libxml2-DOCBparser.html#docbSAXHandlerPtr"/>
     <keyword type="typedef" name="htmlDocPtr" link="libxml2-HTMLparser.html#htmlDocPtr"/>
     <keyword type="typedef" name="htmlElemDescPtr" link="libxml2-HTMLparser.html#htmlElemDescPtr"/>
     <keyword type="typedef" name="htmlEntityDescPtr" link="libxml2-HTMLparser.html#htmlEntityDescPtr"/>
@@ -1718,7 +1715,6 @@
     <keyword type="typedef" name="xmlXPathVariablePtr" link="libxml2-xpath.html#xmlXPathVariablePtr"/>
     <keyword type="struct" name="htmlElemDesc" link="libxml2-HTMLparser.html#htmlElemDesc"/>
     <keyword type="struct" name="htmlEntityDesc" link="libxml2-HTMLparser.html#htmlEntityDesc"/>
-    <keyword type="struct" name="uconv_t" link="libxml2-encoding.html#uconv_t"/>
     <keyword type="struct" name="xlinkHandler" link="libxml2-xlink.html#xlinkHandler"/>
     <keyword type="struct" name="xmlAttr" link="libxml2-tree.html#xmlAttr"/>
     <keyword type="struct" name="xmlAttribute" link="libxml2-tree.html#xmlAttribute"/>
@@ -1902,7 +1898,6 @@
     <keyword type="function" name="xmlXPathFuncLookupFunc" link="libxml2-xpath.html#xmlXPathFuncLookupFunc"/>
     <keyword type="function" name="xmlXPathFunction" link="libxml2-xpath.html#xmlXPathFunction"/>
     <keyword type="function" name="xmlXPathVariableLookupFunc" link="libxml2-xpath.html#xmlXPathVariableLookupFunc"/>
-    <keyword type="macro" name="docbDefaultSAXHandler" link="libxml2-globals.html#docbDefaultSAXHandler"/>
     <keyword type="macro" name="emptyExp" link="libxml2-xmlregexp.html#emptyExp"/>
     <keyword type="macro" name="forbiddenExp" link="libxml2-xmlregexp.html#forbiddenExp"/>
     <keyword type="macro" name="htmlDefaultSAXHandler" link="libxml2-globals.html#htmlDefaultSAXHandler"/>
@@ -1959,17 +1954,6 @@
     <keyword type="function" name="characters ()" link="libxml2-SAX.html#characters"/>
     <keyword type="function" name="checkNamespace ()" link="libxml2-SAX.html#checkNamespace"/>
     <keyword type="function" name="comment ()" link="libxml2-SAX.html#comment"/>
-    <keyword type="function" name="docbCreateFileParserCtxt ()" link="libxml2-DOCBparser.html#docbCreateFileParserCtxt"/>
-    <keyword type="function" name="docbCreatePushParserCtxt ()" link="libxml2-DOCBparser.html#docbCreatePushParserCtxt"/>
-    <keyword type="function" name="docbDefaultSAXHandlerInit ()" link="libxml2-SAX2.html#docbDefaultSAXHandlerInit"/>
-    <keyword type="function" name="docbEncodeEntities ()" link="libxml2-DOCBparser.html#docbEncodeEntities"/>
-    <keyword type="function" name="docbFreeParserCtxt ()" link="libxml2-DOCBparser.html#docbFreeParserCtxt"/>
-    <keyword type="function" name="docbParseChunk ()" link="libxml2-DOCBparser.html#docbParseChunk"/>
-    <keyword type="function" name="docbParseDoc ()" link="libxml2-DOCBparser.html#docbParseDoc"/>
-    <keyword type="function" name="docbParseDocument ()" link="libxml2-DOCBparser.html#docbParseDocument"/>
-    <keyword type="function" name="docbParseFile ()" link="libxml2-DOCBparser.html#docbParseFile"/>
-    <keyword type="function" name="docbSAXParseDoc ()" link="libxml2-DOCBparser.html#docbSAXParseDoc"/>
-    <keyword type="function" name="docbSAXParseFile ()" link="libxml2-DOCBparser.html#docbSAXParseFile"/>
     <keyword type="function" name="elementDecl ()" link="libxml2-SAX.html#elementDecl"/>
     <keyword type="function" name="endDocument ()" link="libxml2-SAX.html#endDocument"/>
     <keyword type="function" name="endElement ()" link="libxml2-SAX.html#endElement"/>
@@ -2045,7 +2029,6 @@
     <keyword type="function" name="htmlTagLookup ()" link="libxml2-HTMLparser.html#htmlTagLookup"/>
     <keyword type="function" name="ignorableWhitespace ()" link="libxml2-SAX.html#ignorableWhitespace"/>
     <keyword type="function" name="initGenericErrorDefaultFunc ()" link="libxml2-xmlerror.html#initGenericErrorDefaultFunc"/>
-    <keyword type="function" name="initdocbDefaultSAXHandler ()" link="libxml2-SAX.html#initdocbDefaultSAXHandler"/>
     <keyword type="function" name="inithtmlDefaultSAXHandler ()" link="libxml2-SAX.html#inithtmlDefaultSAXHandler"/>
     <keyword type="function" name="initxmlDefaultSAXHandler ()" link="libxml2-SAX.html#initxmlDefaultSAXHandler"/>
     <keyword type="function" name="inputPop ()" link="libxml2-parserInternals.html#inputPop"/>
@@ -2830,7 +2813,6 @@
     <keyword type="function" name="xmlSAX2HasInternalSubset ()" link="libxml2-SAX2.html#xmlSAX2HasInternalSubset"/>
     <keyword type="function" name="xmlSAX2IgnorableWhitespace ()" link="libxml2-SAX2.html#xmlSAX2IgnorableWhitespace"/>
     <keyword type="function" name="xmlSAX2InitDefaultSAXHandler ()" link="libxml2-SAX2.html#xmlSAX2InitDefaultSAXHandler"/>
-    <keyword type="function" name="xmlSAX2InitDocbDefaultSAXHandler ()" link="libxml2-SAX2.html#xmlSAX2InitDocbDefaultSAXHandler"/>
     <keyword type="function" name="xmlSAX2InitHtmlDefaultSAXHandler ()" link="libxml2-SAX2.html#xmlSAX2InitHtmlDefaultSAXHandler"/>
     <keyword type="function" name="xmlSAX2InternalSubset ()" link="libxml2-SAX2.html#xmlSAX2InternalSubset"/>
     <keyword type="function" name="xmlSAX2IsStandalone ()" link="libxml2-SAX2.html#xmlSAX2IsStandalone"/>

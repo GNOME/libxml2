@@ -43,9 +43,7 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">#define <a href="#ICU_PIVOT_BUF_SIZE">ICU_PIVOT_BUF_SIZE</a>;
-typedef struct _uconv_t <a href="#uconv_t">uconv_t</a>;
-typedef enum <a href="#xmlCharEncoding">xmlCharEncoding</a>;
+      <pre class="synopsis">typedef enum <a href="#xmlCharEncoding">xmlCharEncoding</a>;
 typedef struct _xmlCharEncodingHandler <a href="#xmlCharEncodingHandler">xmlCharEncodingHandler</a>;
 typedef <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * <a href="#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>;
 int	<a href="#xmlDelEncodingAlias">xmlDelEncodingAlias</a>		(const char * alias);
@@ -77,20 +75,6 @@ const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a hr
     <div class="refsect1" lang="en">
       <h2>Details</h2>
       <div class="refsect2" lang="en">
-        <div class="refsect2" lang="en"><h3><a name="ICU_PIVOT_BUF_SIZE">Macro </a>ICU_PIVOT_BUF_SIZE</h3><pre class="programlisting">#define <a href="#ICU_PIVOT_BUF_SIZE">ICU_PIVOT_BUF_SIZE</a>;
-</pre><p/>
-</div>
-        <hr/>
-        <div class="refsect2" lang="en"><h3><a name="uconv_t">Structure </a>uconv_t</h3><pre class="programlisting">struct _uconv_t {
-    UConverter *	uconv	: for conversion between an encoding and UTF-16
-    UConverter *	utf8	: for conversion between UTF-8 and UTF-16
-    UCharpivot_buf[ICU_PIVOT_BUF_SIZE]	pivot_buf
-    UChar *	pivot_source
-    UChar *	pivot_target
-} uconv_t;
-</pre><p/>
-</div>
-        <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCharEncoding">Enum </a>xmlCharEncoding</h3><pre class="programlisting">enum <a href="#xmlCharEncoding">xmlCharEncoding</a> {
     <a name="XML_CHAR_ENCODING_ERROR">XML_CHAR_ENCODING_ERROR</a> = -1 /* No char encoding detected */
     <a name="XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a> = 0 /* No char encoding detected */
@@ -126,8 +110,8 @@ const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a hr
     <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a>	output
     iconv_t	iconv_in
     iconv_t	iconv_out
-    <a href="libxml2-encoding.html#uconv_t">uconv_t</a> *	uconv_in
-    <a href="libxml2-encoding.html#uconv_t">uconv_t</a> *	uconv_out
+    struct _uconv_t *	uconv_in
+    struct _uconv_t *	uconv_out
 } xmlCharEncodingHandler;
 </pre><p/>
 </div>
@@ -173,7 +157,7 @@ const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a hr
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>char encoding transformation data structure</td></tr><tr><td><span class="term"><i><tt>out</tt></i>:</span></td><td>an <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> for the output.</td></tr><tr><td><span class="term"><i><tt>in</tt></i>:</span></td><td>an <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> for the input</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of byte written if success, or -1 general error -2 if the transcoding fails (for *in is not valid utf8 string or the result of transformation can't fit into the encoding we want), or</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCleanupCharEncodingHandlers"/>xmlCleanupCharEncodingHandlers ()</h3><pre class="programlisting">void	xmlCleanupCharEncodingHandlers	(void)<br/>
-</pre><p>Cleanup the memory allocated for the char encoding support, it unregisters all the encoding handlers and the aliases.</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Cleanup the memory allocated for the char encoding support, it unregisters all the encoding handlers and the aliases.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCleanupEncodingAliases"/>xmlCleanupEncodingAliases ()</h3><pre class="programlisting">void	xmlCleanupEncodingAliases	(void)<br/>
@@ -205,7 +189,7 @@ const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a hr
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>alias</tt></i>:</span></td><td>the alias name as parsed, in UTF-8 format (ASCII actually)</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if not found, otherwise the original name</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlInitCharEncodingHandlers"/>xmlInitCharEncodingHandlers ()</h3><pre class="programlisting">void	xmlInitCharEncodingHandlers	(void)<br/>
-</pre><p>Initialize the char encoding support, it registers the default encoding supported. NOTE: while public, this function usually doesn't need to be called in normal processing.</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Initialize the char encoding support, it registers the default encoding supported. NOTE: while public, this function usually doesn't need to be called in normal processing.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNewCharEncodingHandler"/>xmlNewCharEncodingHandler ()</h3><pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlNewCharEncodingHandler	(const char * name, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output)<br/>

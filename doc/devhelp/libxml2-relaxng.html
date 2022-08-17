@@ -177,7 +177,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra arguments</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRelaxNGCleanupTypes"/>xmlRelaxNGCleanupTypes ()</h3><pre class="programlisting">void	xmlRelaxNGCleanupTypes		(void)<br/>
-</pre><p>Cleanup the default Schemas type library associated to RelaxNG</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Cleanup the default Schemas type library associated to RelaxNG</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRelaxNGDump"/>xmlRelaxNGDump ()</h3><pre class="programlisting">void	xmlRelaxNGDump			(FILE * output, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema)<br/>

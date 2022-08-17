@@ -13,11 +13,6 @@
     <table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
       <tr valign="middle">
         <td>
-          <a accesskey="p" href="libxml2-DOCBparser.html">
-            <img src="left.png" width="24" height="24" border="0" alt="Prev"/>
-          </a>
-        </td>
-        <td>
           <a accesskey="u" href="general.html">
             <img src="up.png" width="24" height="24" border="0" alt="Up"/>
           </a>
@@ -340,7 +335,7 @@ int	<a href="#htmlCtxtUseOptions">htmlCtxtUseOptions</a>		(<a href="libxml2-HTML
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>a pointer to a zero terminated string</td></tr><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>the base URL to use for the document</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i>:</span></td><td>the document encoding, or NULL</td></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td>a combination of htmlParserOption(s)</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the resulting document tree</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlReadFd"/>htmlReadFd ()</h3><pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlReadFd		(int fd, <br/>					 const char * URL, <br/>					 const char * encoding, <br/>					 int options)<br/>
-</pre><p>parse an XML from a file descriptor and build a tree.</p>
+</pre><p>parse an HTML from a file descriptor and build a tree. NOTE that the file descriptor will not be closed when the reader is closed or reset.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>fd</tt></i>:</span></td><td>an open file descriptor</td></tr><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>the base URL to use for the document</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i>:</span></td><td>the document encoding, or NULL</td></tr><tr><td><span class="term"><i><tt>options</tt></i>:</span></td><td>a combination of htmlParserOption(s)</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the resulting document tree</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlReadFile"/>htmlReadFile ()</h3><pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlReadFile		(const char * filename, <br/>					 const char * encoding, <br/>					 int options)<br/>

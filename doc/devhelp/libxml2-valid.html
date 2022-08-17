@@ -43,8 +43,8 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">#define <a href="#XML_CTXT_FINISH_DTD_0">XML_CTXT_FINISH_DTD_0</a>;
-#define <a href="#XML_CTXT_FINISH_DTD_1">XML_CTXT_FINISH_DTD_1</a>;
+      <pre class="synopsis">#define <a href="#XML_VCTXT_DTD_VALIDATED">XML_VCTXT_DTD_VALIDATED</a>;
+#define <a href="#XML_VCTXT_USE_PCTXT">XML_VCTXT_USE_PCTXT</a>;
 typedef struct _xmlHashTable <a href="#xmlElementTable">xmlElementTable</a>;
 typedef <a href="libxml2-valid.html#xmlValidState">xmlValidState</a> * <a href="#xmlValidStatePtr">xmlValidStatePtr</a>;
 typedef <a href="libxml2-valid.html#xmlIDTable">xmlIDTable</a> * <a href="#xmlIDTablePtr">xmlIDTablePtr</a>;
@@ -139,12 +139,12 @@ void	<a href="#xmlFreeDocElementContent">xmlFreeDocElementContent</a>	(<a href="
     <div class="refsect1" lang="en">
       <h2>Details</h2>
       <div class="refsect2" lang="en">
-        <div class="refsect2" lang="en"><h3><a name="XML_CTXT_FINISH_DTD_0">Macro </a>XML_CTXT_FINISH_DTD_0</h3><pre class="programlisting">#define <a href="#XML_CTXT_FINISH_DTD_0">XML_CTXT_FINISH_DTD_0</a>;
-</pre><p>Special value for finishDtd field when embedded in an <a href="libxml2-tree.html#xmlParserCtxt">xmlParserCtxt</a></p>
+        <div class="refsect2" lang="en"><h3><a name="XML_VCTXT_DTD_VALIDATED">Macro </a>XML_VCTXT_DTD_VALIDATED</h3><pre class="programlisting">#define <a href="#XML_VCTXT_DTD_VALIDATED">XML_VCTXT_DTD_VALIDATED</a>;
+</pre><p>Set after <a href="libxml2-valid.html#xmlValidateDtdFinal">xmlValidateDtdFinal</a> was called.</p>
 </div>
         <hr/>
-        <div class="refsect2" lang="en"><h3><a name="XML_CTXT_FINISH_DTD_1">Macro </a>XML_CTXT_FINISH_DTD_1</h3><pre class="programlisting">#define <a href="#XML_CTXT_FINISH_DTD_1">XML_CTXT_FINISH_DTD_1</a>;
-</pre><p>Special value for finishDtd field when embedded in an <a href="libxml2-tree.html#xmlParserCtxt">xmlParserCtxt</a></p>
+        <div class="refsect2" lang="en"><h3><a name="XML_VCTXT_USE_PCTXT">Macro </a>XML_VCTXT_USE_PCTXT</h3><pre class="programlisting">#define <a href="#XML_VCTXT_USE_PCTXT">XML_VCTXT_USE_PCTXT</a>;
+</pre><p>Set if the validation context is part of a parser context.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlAttributeTable">Structure </a>xmlAttributeTable</h3><pre class="programlisting">struct _xmlHashTable {
@@ -205,7 +205,7 @@ The content of this structure is not made public by the API.
     int	nodeNr	: Depth of the parsing stack
     int	nodeMax	: Max depth of the parsing stack
     <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> *	nodeTab	: array of nodes
-    unsigned int	finishDtd	: finished validating the Dtd ?
+    unsigned int	flags	: internal flags
     <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	doc	: the document
     int	valid	: temporary validity check result state state used for non-determinist
     <a href="libxml2-valid.html#xmlValidState">xmlValidState</a> *	vstate	: current state
@@ -259,7 +259,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i>:</span></td><td>pointer to the DTD</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the entity name</td></tr><tr><td><span class="term"><i><tt>PublicID</tt></i>:</span></td><td>the public identifier or NULL</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i>:</span></td><td>the system identifier or NULL</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if not, otherwise the entity</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlAddRef"/>xmlAddRef ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlRefPtr">xmlRefPtr</a>	xmlAddRef		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr)<br/>
-</pre><p>Register a new ref declaration</p>
+</pre><p>DEPRECATED, do not use. This function will be removed from the public API. Register a new ref declaration</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the validation context</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>pointer to the document</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the value name</td></tr><tr><td><span class="term"><i><tt>attr</tt></i>:</span></td><td>the <a href="libxml2-SAX.html#attribute">attribute</a> holding the Ref</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if not, otherwise the new <a href="libxml2-tree.html#xmlRefPtr">xmlRefPtr</a></td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCopyAttributeTable"/>xmlCopyAttributeTable ()</h3><pre class="programlisting"><a href="libxml2-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a>	xmlCopyAttributeTable	(<a href="libxml2-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> table)<br/>
@@ -343,7 +343,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>table</tt></i>:</span></td><td>An notation table</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFreeRefTable"/>xmlFreeRefTable ()</h3><pre class="programlisting">void	xmlFreeRefTable			(<a href="libxml2-valid.html#xmlRefTablePtr">xmlRefTablePtr</a> table)<br/>
-</pre><p>Deallocate the memory used by an Ref hash table.</p>
+</pre><p>DEPRECATED, do not use. This function will be removed from the public API. Deallocate the memory used by an Ref hash table.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>table</tt></i>:</span></td><td>An ref table</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFreeValidCtxt"/>xmlFreeValidCtxt ()</h3><pre class="programlisting">void	xmlFreeValidCtxt		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> cur)<br/>
@@ -375,7 +375,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>pointer to the document</td></tr><tr><td><span class="term"><i><tt>ID</tt></i>:</span></td><td>the ID value</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if not found, otherwise the <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> defining the ID</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetRefs"/>xmlGetRefs ()</h3><pre class="programlisting"><a href="libxml2-list.html#xmlListPtr">xmlListPtr</a>	xmlGetRefs		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ID)<br/>
-</pre><p>Find the set of references for the supplied ID.</p>
+</pre><p>DEPRECATED, do not use. This function will be removed from the public API. Find the set of references for the supplied ID.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>pointer to the document</td></tr><tr><td><span class="term"><i><tt>ID</tt></i>:</span></td><td>the ID value</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if not found, otherwise node set for the ID.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlIsID"/>xmlIsID ()</h3><pre class="programlisting">int	xmlIsID			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr)<br/>
@@ -387,7 +387,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the element name</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if no, 1 if yes, and -1 if no element description is available</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlIsRef"/>xmlIsRef ()</h3><pre class="programlisting">int	xmlIsRef			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr)<br/>
-</pre><p>Determine whether an <a href="libxml2-SAX.html#attribute">attribute</a> is of type Ref. In case we have DTD(s) then this is simple, otherwise we use an heuristic: name Ref (upper or lowercase).</p>
+</pre><p>DEPRECATED, do not use. This function will be removed from the public API. Determine whether an <a href="libxml2-SAX.html#attribute">attribute</a> is of type Ref. In case we have DTD(s) then this is simple, otherwise we use an heuristic: name Ref (upper or lowercase).</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>elem</tt></i>:</span></td><td>the element carrying the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>attr</tt></i>:</span></td><td>the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 or 1 depending on the lookup result</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlNewDocElementContent"/>xmlNewDocElementContent ()</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a>	xmlNewDocElementContent	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>						 <a href="libxml2-tree.html#xmlElementContentType">xmlElementContentType</a> type)<br/>
@@ -407,7 +407,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>attr</tt></i>:</span></td><td>the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 if the lookup failed and 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRemoveRef"/>xmlRemoveRef ()</h3><pre class="programlisting">int	xmlRemoveRef			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr)<br/>
-</pre><p>Remove the given <a href="libxml2-SAX.html#attribute">attribute</a> from the Ref table maintained internally.</p>
+</pre><p>DEPRECATED, do not use. This function will be removed from the public API. Remove the given <a href="libxml2-SAX.html#attribute">attribute</a> from the Ref table maintained internally.</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>the document</td></tr><tr><td><span class="term"><i><tt>attr</tt></i>:</span></td><td>the <a href="libxml2-SAX.html#attribute">attribute</a></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 if the lookup failed and 0 otherwise</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSnprintfElementContent"/>xmlSnprintfElementContent ()</h3><pre class="programlisting">void	xmlSnprintfElementContent	(char * buf, <br/>					 int size, <br/>					 <a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content, <br/>					 int englob)<br/>

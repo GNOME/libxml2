@@ -100,7 +100,7 @@ int	<a href="#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a>		(<a href="libxml2-sc
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>the facet</td></tr><tr><td><span class="term"><i><tt>typeDecl</tt></i>:</span></td><td>the schema type definition</td></tr><tr><td><span class="term"><i><tt>pctxt</tt></i>:</span></td><td>the schema parser context or NULL</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the optional name of the type</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if valid, a positive error code if not valid and -1 in case of an internal or API error.</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaCleanupTypes"/>xmlSchemaCleanupTypes ()</h3><pre class="programlisting">void	xmlSchemaCleanupTypes		(void)<br/>
-</pre><p>Cleanup the default XML Schemas type library</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Cleanup the default XML Schemas type library</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSchemaCollapseString"/>xmlSchemaCollapseString ()</h3><pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlSchemaCollapseString	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br/>

@@ -51,7 +51,6 @@ void	<a href="#xmlSAX2Comment">xmlSAX2Comment</a>			(void * ctx, <br/>					 cons
 int	<a href="#xmlSAX2GetColumnNumber">xmlSAX2GetColumnNumber</a>		(void * ctx);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlSAX2GetEntity">xmlSAX2GetEntity</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 void	<a href="#xmlSAX2UnparsedEntityDecl">xmlSAX2UnparsedEntityDecl</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * notationName);
-void	<a href="#xmlSAX2InitDocbDefaultSAXHandler">xmlSAX2InitDocbDefaultSAXHandler</a>	(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr);
 int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr, <br/>					 int version);
 void	<a href="#xmlSAX2IgnorableWhitespace">xmlSAX2IgnorableWhitespace</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ch, <br/>					 int len);
 void	<a href="#xmlSAX2NotationDecl">xmlSAX2NotationDecl</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId);
@@ -75,7 +74,6 @@ void	<a href="#htmlDefaultSAXHandlerInit">htmlDefaultSAXHandlerInit</a>	(void);
 int	<a href="#xmlSAX2GetLineNumber">xmlSAX2GetLineNumber</a>		(void * ctx);
 int	<a href="#xmlSAX2HasInternalSubset">xmlSAX2HasInternalSubset</a>	(void * ctx);
 void	<a href="#xmlSAX2InitHtmlDefaultSAXHandler">xmlSAX2InitHtmlDefaultSAXHandler</a>	(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr);
-void	<a href="#docbDefaultSAXHandlerInit">docbDefaultSAXHandlerInit</a>	(void);
 void	<a href="#xmlDefaultSAXHandlerInit">xmlDefaultSAXHandlerInit</a>	(void);
 void	<a href="#xmlSAX2InitDefaultSAXHandler">xmlSAX2InitDefaultSAXHandler</a>	(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr, <br/>					 int warning);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlSAX2GetParameterEntity">xmlSAX2GetParameterEntity</a>	(void * ctx, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
@@ -89,16 +87,12 @@ void	<a href="#xmlSAX2EntityDecl">xmlSAX2EntityDecl</a>		(void * ctx, <br/>					
     <div class="refsect1" lang="en">
       <h2>Details</h2>
       <div class="refsect2" lang="en">
-        <div class="refsect2" lang="en"><h3><a name="docbDefaultSAXHandlerInit"/>docbDefaultSAXHandlerInit ()</h3><pre class="programlisting">void	docbDefaultSAXHandlerInit	(void)<br/>
-</pre><p>Initialize the default SAX handler</p>
-</div>
-        <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlDefaultSAXHandlerInit"/>htmlDefaultSAXHandlerInit ()</h3><pre class="programlisting">void	htmlDefaultSAXHandlerInit	(void)<br/>
-</pre><p>Initialize the default SAX handler</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Initialize the default SAX handler</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDefaultSAXHandlerInit"/>xmlDefaultSAXHandlerInit ()</h3><pre class="programlisting">void	xmlDefaultSAXHandlerInit	(void)<br/>
-</pre><p>Initialize the default SAX2 handler</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Initialize the default SAX2 handler</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSAX2AttributeDecl"/>xmlSAX2AttributeDecl ()</h3><pre class="programlisting">void	xmlSAX2AttributeDecl		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elem, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br/>					 int type, <br/>					 int def, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * defaultValue, <br/>					 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> tree)<br/>
@@ -180,10 +174,6 @@ void	<a href="#xmlSAX2EntityDecl">xmlSAX2EntityDecl</a>		(void * ctx, <br/>					
         <div class="refsect2" lang="en"><h3><a name="xmlSAX2InitDefaultSAXHandler"/>xmlSAX2InitDefaultSAXHandler ()</h3><pre class="programlisting">void	xmlSAX2InitDefaultSAXHandler	(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr, <br/>					 int warning)<br/>
 </pre><p>Initialize the default XML SAX2 handler</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>hdlr</tt></i>:</span></td><td>the SAX handler</td></tr><tr><td><span class="term"><i><tt>warning</tt></i>:</span></td><td>flag if non-zero sets the handler warning procedure</td></tr></tbody></table></div></div>
-        <hr/>
-        <div class="refsect2" lang="en"><h3><a name="xmlSAX2InitDocbDefaultSAXHandler"/>xmlSAX2InitDocbDefaultSAXHandler ()</h3><pre class="programlisting">void	xmlSAX2InitDocbDefaultSAXHandler	(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr)<br/>
-</pre><p>Initialize the default DocBook SAX2 handler</p>
-<div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>hdlr</tt></i>:</span></td><td>the SAX handler</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSAX2InitHtmlDefaultSAXHandler"/>xmlSAX2InitHtmlDefaultSAXHandler ()</h3><pre class="programlisting">void	xmlSAX2InitHtmlDefaultSAXHandler	(<a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * hdlr)<br/>
 </pre><p>Initialize the default HTML SAX2 handler</p>

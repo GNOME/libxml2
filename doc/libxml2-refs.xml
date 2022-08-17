@@ -97,6 +97,7 @@
     <reference name='LIBXML_XINCLUDE_ENABLED' href='html/libxml-xmlversion.html#LIBXML_XINCLUDE_ENABLED'/>
     <reference name='LIBXML_XPATH_ENABLED' href='html/libxml-xmlversion.html#LIBXML_XPATH_ENABLED'/>
     <reference name='LIBXML_XPTR_ENABLED' href='html/libxml-xmlversion.html#LIBXML_XPTR_ENABLED'/>
+    <reference name='LIBXML_XPTR_LOCS_ENABLED' href='html/libxml-xmlversion.html#LIBXML_XPTR_LOCS_ENABLED'/>
     <reference name='LIBXML_ZLIB_ENABLED' href='html/libxml-xmlversion.html#LIBXML_ZLIB_ENABLED'/>
     <reference name='MOVETO_ENDTAG' href='html/libxml-parserInternals.html#MOVETO_ENDTAG'/>
     <reference name='MOVETO_STARTTAG' href='html/libxml-parserInternals.html#MOVETO_STARTTAG'/>
@@ -475,6 +476,7 @@
     <reference name='XML_GET_CONTENT' href='html/libxml-tree.html#XML_GET_CONTENT'/>
     <reference name='XML_GET_LINE' href='html/libxml-tree.html#XML_GET_LINE'/>
     <reference name='XML_HTML_DOCUMENT_NODE' href='html/libxml-tree.html#XML_HTML_DOCUMENT_NODE'/>
+    <reference name='XML_HTML_INCORRECTLY_OPENED_COMMENT' href='html/libxml-xmlerror.html#XML_HTML_INCORRECTLY_OPENED_COMMENT'/>
     <reference name='XML_HTML_STRUCURE_ERROR' href='html/libxml-xmlerror.html#XML_HTML_STRUCURE_ERROR'/>
     <reference name='XML_HTML_UNKNOWN_TAG' href='html/libxml-xmlerror.html#XML_HTML_UNKNOWN_TAG'/>
     <reference name='XML_HTTP_UNKNOWN_HOST' href='html/libxml-xmlerror.html#XML_HTTP_UNKNOWN_HOST'/>
@@ -3672,6 +3674,7 @@
       <ref name='LIBXML_XINCLUDE_ENABLED'/>
       <ref name='LIBXML_XPATH_ENABLED'/>
       <ref name='LIBXML_XPTR_ENABLED'/>
+      <ref name='LIBXML_XPTR_LOCS_ENABLED'/>
       <ref name='LIBXML_ZLIB_ENABLED'/>
     </letter>
     <letter name='M'>
@@ -4060,6 +4063,7 @@
       <ref name='XML_GET_CONTENT'/>
       <ref name='XML_GET_LINE'/>
       <ref name='XML_HTML_DOCUMENT_NODE'/>
+      <ref name='XML_HTML_INCORRECTLY_OPENED_COMMENT'/>
       <ref name='XML_HTML_STRUCURE_ERROR'/>
       <ref name='XML_HTML_UNKNOWN_TAG'/>
       <ref name='XML_HTTP_UNKNOWN_HOST'/>
@@ -12789,6 +12793,7 @@
       <ref name='XML_FTP_EPSV_ANSWER'/>
       <ref name='XML_FTP_PASV_ANSWER'/>
       <ref name='XML_FTP_URL_SYNTAX'/>
+      <ref name='XML_HTML_INCORRECTLY_OPENED_COMMENT'/>
       <ref name='XML_HTML_STRUCURE_ERROR'/>
       <ref name='XML_HTML_UNKNOWN_TAG'/>
       <ref name='XML_HTTP_UNKNOWN_HOST'/>
@@ -13954,6 +13959,7 @@
       <ref name='LIBXML_XINCLUDE_ENABLED'/>
       <ref name='LIBXML_XPATH_ENABLED'/>
       <ref name='LIBXML_XPTR_ENABLED'/>
+      <ref name='LIBXML_XPTR_LOCS_ENABLED'/>
       <ref name='LIBXML_ZLIB_ENABLED'/>
       <ref name='WITHOUT_TRIO'/>
       <ref name='WITH_TRIO'/>
@@ -14457,6 +14463,7 @@
         <word name='All'>
           <ref name='_xmlSchema'/>
           <ref name='_xmlSchemaType'/>
+          <ref name='xmlAddChild'/>
           <ref name='xmlNanoFTPGet'/>
           <ref name='xmlNanoFTPList'/>
           <ref name='xmlParseAttValue'/>
@@ -14731,6 +14738,7 @@
           <ref name='xmlNodeListGetRawString'/>
         </word>
         <word name='But'>
+          <ref name='xmlAddChild'/>
           <ref name='xmlValidateNotationDecl'/>
         </word>
         <word name='ByzantineMusicalSymbols'>
@@ -15268,6 +15276,14 @@
         </word>
         <word name='DIGIT'>
           <ref name='xmlCheckLanguageID'/>
+        </word>
+        <word name='DISCOURAGED'>
+          <ref name='xmlNewComment'/>
+          <ref name='xmlNewNode'/>
+          <ref name='xmlNewNodeEatName'/>
+          <ref name='xmlNewPI'/>
+          <ref name='xmlNewText'/>
+          <ref name='xmlNewTextLen'/>
         </word>
         <word name='DOCTYPE'>
           <ref name='xmlParseDocTypeDecl'/>
@@ -16463,6 +16479,7 @@
           <ref name='_xmlElementContent'/>
         </word>
         <word name='MUST'>
+          <ref name='xmlAddChild'/>
           <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlC14NExecute'/>
           <ref name='xmlTextReaderNormalization'/>
@@ -16619,6 +16636,9 @@
         </word>
         <word name='NMToken'>
           <ref name='xmlValidateNMToken'/>
+        </word>
+        <word name='NOT'>
+          <ref name='xmlAddChild'/>
         </word>
         <word name='NOTATION'>
           <ref name='xmlParseEnumeratedType'/>
@@ -17694,9 +17714,14 @@
           <ref name='xmlNormalizeURIPath'/>
         </word>
         <word name='See'>
+          <ref name='xmlAddChildList'/>
+          <ref name='xmlAddNextSibling'/>
+          <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlAddSibling'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlLinkGetData'/>
           <ref name='xmlParseNotationDecl'/>
+          <ref name='xmlReplaceNode'/>
           <ref name='xmlTextReaderByteConsumed'/>
         </word>
         <word name='Semi'>
@@ -18226,37 +18251,6 @@
         <word name='Upgrade'>
           <ref name='xmlKeepBlanksDefault'/>
         </word>
-        <word name='Use'>
-          <ref name='XML_COMPLETE_ATTRS'/>
-          <ref name='XML_DETECT_IDS'/>
-          <ref name='_xmlDOMWrapCtxt'/>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='xmlCopyNodeList'/>
-          <ref name='xmlGetProp'/>
-          <ref name='xmlIsBaseChar'/>
-          <ref name='xmlIsBlank'/>
-          <ref name='xmlIsChar'/>
-          <ref name='xmlIsCombining'/>
-          <ref name='xmlIsDigit'/>
-          <ref name='xmlIsExtender'/>
-          <ref name='xmlIsIdeographic'/>
-          <ref name='xmlIsPubidChar'/>
-          <ref name='xmlNewDocNode'/>
-          <ref name='xmlNewDocNodeEatName'/>
-          <ref name='xmlNewDocProp'/>
-          <ref name='xmlNewNodeEatName'/>
-          <ref name='xmlNewPI'/>
-          <ref name='xmlNewTextChild'/>
-          <ref name='xmlPatternGetStreamCtxt'/>
-          <ref name='xmlSwitchInputEncoding'/>
-          <ref name='xmlTextReaderRelaxNGSetSchema'/>
-          <ref name='xmlTextReaderRelaxNGValidate'/>
-          <ref name='xmlTextReaderRelaxNGValidateCtxt'/>
-          <ref name='xmlTextReaderSchemaValidate'/>
-          <ref name='xmlTextReaderSchemaValidateCtxt'/>
-          <ref name='xmlTextReaderSetSchema'/>
-          <ref name='xmlXPathContextSetCache'/>
-        </word>
         <word name='Used'>
           <ref name='XML_SCHEMAS_ANY_LAX'/>
           <ref name='XML_SCHEMAS_ANY_STRICT'/>
@@ -18621,6 +18615,7 @@
         </word>
         <word name='XPointer'>
           <ref name='LIBXML_XPTR_ENABLED'/>
+          <ref name='LIBXML_XPTR_LOCS_ENABLED'/>
           <ref name='_xmlXPathContext'/>
           <ref name='_xmlXPathParserContext'/>
           <ref name='xmlXPtrBuildNodeList'/>
@@ -18997,6 +18992,7 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='htmlEncodeEntities'/>
           <ref name='isolat1ToUTF8'/>
+          <ref name='xmlAddChild'/>
           <ref name='xmlAutomataCompile'/>
           <ref name='xmlCharEncodingInputFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
@@ -19279,6 +19275,7 @@
           <ref name='_xmlSchema'/>
         </word>
         <word name='another'>
+          <ref name='xmlAddChild'/>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
@@ -19564,6 +19561,7 @@
         </word>
         <word name='avoid'>
           <ref name='XML_MAX_LOOKUP_LIMIT'/>
+          <ref name='xmlAddChild'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlGetBufferAllocationScheme'/>
@@ -20758,6 +20756,7 @@
           <ref name='LIBXML_XINCLUDE_ENABLED'/>
           <ref name='LIBXML_XPATH_ENABLED'/>
           <ref name='LIBXML_XPTR_ENABLED'/>
+          <ref name='LIBXML_XPTR_LOCS_ENABLED'/>
           <ref name='WITHOUT_TRIO'/>
           <ref name='WITH_TRIO'/>
         </word>
@@ -22811,7 +22810,13 @@
           <ref name='fatalErrorSAXFunc'/>
         </word>
         <word name='favor'>
+          <ref name='xmlNewComment'/>
           <ref name='xmlNewElementContent'/>
+          <ref name='xmlNewNode'/>
+          <ref name='xmlNewNodeEatName'/>
+          <ref name='xmlNewPI'/>
+          <ref name='xmlNewText'/>
+          <ref name='xmlNewTextLen'/>
         </word>
         <word name='feature'>
           <ref name='XML_MAX_DICTIONARY_LIMIT'/>
@@ -22944,6 +22949,7 @@
         <word name='fixed'>
           <ref name='XML_SCHEMAS_ATTR_FIXED'/>
           <ref name='XML_SCHEMAS_ELEM_FIXED'/>
+          <ref name='xmlAddChild'/>
           <ref name='xmlParseDefaultDecl'/>
           <ref name='xmlSchemaGetCanonValue'/>
         </word>
@@ -23338,7 +23344,6 @@
           <ref name='xmlGetProp'/>
           <ref name='xmlNamespaceParseQName'/>
           <ref name='xmlNanoFTPInit'/>
-          <ref name='xmlNewPI'/>
           <ref name='xmlSplitQName'/>
           <ref name='xmlSplitQName2'/>
           <ref name='xmlTextReaderCurrentDoc'/>
@@ -24290,7 +24295,6 @@
         </word>
         <word name='interning'>
           <ref name='xmlCopyNodeList'/>
-          <ref name='xmlNewPI'/>
         </word>
         <word name='interoperability'>
           <ref name='xmlParseElementChildrenContentDecl'/>
@@ -24820,6 +24824,7 @@
           <ref name='xmlXPtrRangeToFunction'/>
         </word>
         <word name='locations'>
+          <ref name='LIBXML_XPTR_LOCS_ENABLED'/>
           <ref name='_xmlLocationSet'/>
         </word>
         <word name='locator'>
@@ -25005,6 +25010,7 @@
         </word>
         <word name='manipulation'>
           <ref name='LIBXML_TREE_ENABLED'/>
+          <ref name='xmlAddChild'/>
         </word>
         <word name='many'>
           <ref name='_xmlParserInput'/>
@@ -25360,10 +25366,14 @@
           <ref name='xmlSchemaCleanupTypes'/>
         </word>
         <word name='move'>
+          <ref name='xmlAddChild'/>
           <ref name='xmlDOMWrapAdoptNode'/>
         </word>
         <word name='moved'>
           <ref name='xmlTextReaderMoveToElement'/>
+        </word>
+        <word name='moving'>
+          <ref name='xmlAddChild'/>
         </word>
         <word name='much'>
           <ref name='xmlDictGetUsage'/>
@@ -25449,6 +25459,11 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='_xmlSchemaWildcard'/>
           <ref name='_xmlXPathContext'/>
+          <ref name='xmlAddChild'/>
+          <ref name='xmlAddChildList'/>
+          <ref name='xmlAddNextSibling'/>
+          <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlAddSibling'/>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
@@ -25461,6 +25476,7 @@
           <ref name='xmlGetProp'/>
           <ref name='xmlParseInNodeContext'/>
           <ref name='xmlReconciliateNs'/>
+          <ref name='xmlReplaceNode'/>
         </word>
         <word name='naming'>
           <ref name='xmlChildrenNode'/>
@@ -25755,8 +25771,13 @@
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='note'>
+          <ref name='xmlAddChildList'/>
+          <ref name='xmlAddNextSibling'/>
+          <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlAddSibling'/>
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlLoadExternalEntity'/>
+          <ref name='xmlReplaceNode'/>
         </word>
         <word name='notice'>
           <ref name='xmlCleanupParser'/>
@@ -26048,6 +26069,7 @@
           <ref name='xmlParserInputBufferPush'/>
         </word>
         <word name='operation'>
+          <ref name='xmlAddChild'/>
           <ref name='xmlBuildRelativeURI'/>
           <ref name='xmlCatalogSetDebug'/>
           <ref name='xmlDOMWrapAdoptNode'/>
@@ -26690,7 +26712,6 @@
           <ref name='xmlInitializeCatalog'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
-          <ref name='xmlNewPI'/>
         </word>
         <word name='preference'>
           <ref name='xmlCatalogGetDefaults'/>
@@ -27452,6 +27473,13 @@
         <word name='refuse'>
           <ref name='xmlNewNs'/>
         </word>
+        <word name='regarding'>
+          <ref name='xmlAddChildList'/>
+          <ref name='xmlAddNextSibling'/>
+          <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlAddSibling'/>
+          <ref name='xmlReplaceNode'/>
+        </word>
         <word name='regex'>
           <ref name='_xmlSchemaFacet'/>
         </word>
@@ -28015,6 +28043,9 @@
           <ref name='xmlInitializeCatalog'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
+        </word>
+        <word name='safely'>
+          <ref name='xmlAddChild'/>
         </word>
         <word name='safety'>
           <ref name='XML_MAX_DICTIONARY_LIMIT'/>
@@ -30543,37 +30574,6 @@
         <word name='with_ns'>
           <ref name='_xmlNodeSet'/>
         </word>
-        <word name='within'>
-          <ref name='_xmlValidCtxt'/>
-          <ref name='xmlAutomataNewCounterTrans'/>
-          <ref name='xmlGetUTF8Char'/>
-          <ref name='xmlNewDocComment'/>
-          <ref name='xmlNewDocNode'/>
-          <ref name='xmlNewDocNodeEatName'/>
-          <ref name='xmlNewDocRawNode'/>
-          <ref name='xmlNewDocText'/>
-          <ref name='xmlNodeGetBase'/>
-          <ref name='xmlParseCharData'/>
-          <ref name='xmlParseComment'/>
-          <ref name='xmlParseCtxtExternalEntity'/>
-          <ref name='xmlParseInNodeContext'/>
-          <ref name='xmlParseMarkupDecl'/>
-          <ref name='xmlParseSDDecl'/>
-          <ref name='xmlParserFindNodeInfo'/>
-          <ref name='xmlParserHandlePEReference'/>
-          <ref name='xmlParserPrintFileContext'/>
-          <ref name='xmlReconciliateNs'/>
-          <ref name='xmlSAXParseFileWithData'/>
-          <ref name='xmlSAXParseMemoryWithData'/>
-          <ref name='xmlSchemaCopyValue'/>
-          <ref name='xmlSearchNs'/>
-          <ref name='xmlTextReaderConstXmlLang'/>
-          <ref name='xmlTextReaderXmlLang'/>
-          <ref name='xmlTextWriterWriteBase64'/>
-          <ref name='xmlTextWriterWriteBinHex'/>
-          <ref name='xmlValidGetValidElements'/>
-          <ref name='xmlXPathIntersection'/>
-        </word>
         <word name='without'>
           <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlEntity'/>
@@ -30833,6 +30833,13 @@
           <ref name='xmlNodeGetSpacePreserve'/>
           <ref name='xmlNodeSetSpacePreserve'/>
         </word>
+        <word name='xmlAddChild'>
+          <ref name='xmlAddChildList'/>
+          <ref name='xmlAddNextSibling'/>
+          <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlAddSibling'/>
+          <ref name='xmlReplaceNode'/>
+        </word>
         <word name='xmlAddDocEntity'>
           <ref name='xmlNewEntity'/>
         </word>
@@ -30941,9 +30948,6 @@
         </word>
         <word name='xmlDocCopyNodeList'>
           <ref name='xmlCopyNodeList'/>
-        </word>
-        <word name='xmlDocNewPI'>
-          <ref name='xmlNewPI'/>
         </word>
         <word name='xmlDocProperties'>
           <ref name='_xmlDoc'/>
@@ -31213,12 +31217,30 @@
         <word name='xmlNewChild'>
           <ref name='xmlNewTextChild'/>
         </word>
+        <word name='xmlNewDocComment'>
+          <ref name='xmlNewComment'/>
+        </word>
         <word name='xmlNewDocElementContent'>
           <ref name='xmlNewElementContent'/>
+        </word>
+        <word name='xmlNewDocNode'>
+          <ref name='xmlNewNode'/>
+        </word>
+        <word name='xmlNewDocNodeEatName'>
+          <ref name='xmlNewNodeEatName'/>
+        </word>
+        <word name='xmlNewDocPI'>
+          <ref name='xmlNewPI'/>
         </word>
         <word name='xmlNewDocRawNode'>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
+        </word>
+        <word name='xmlNewDocText'>
+          <ref name='xmlNewText'/>
+        </word>
+        <word name='xmlNewDocTextLen'>
+          <ref name='xmlNewTextLen'/>
         </word>
         <word name='xmlNewMutex'>
           <ref name='xmlNewMutex'/>
@@ -31420,6 +31442,9 @@
         </word>
         <word name='xmlReaderTypes'>
           <ref name='xmlTextReaderNodeType'/>
+        </word>
+        <word name='xmlReconciliateNs'>
+          <ref name='xmlAddChild'/>
         </word>
         <word name='xmlRefPtr'>
           <ref name='xmlAddRef'/>
@@ -31792,6 +31817,7 @@
           <ref name='xmlTextReaderSchemaValidateCtxt'/>
         </word>
         <word name='you'>
+          <ref name='xmlAddChild'/>
           <ref name='xmlCleanupCharEncodingHandlers'/>
           <ref name='xmlCleanupGlobals'/>
           <ref name='xmlCleanupMemory'/>

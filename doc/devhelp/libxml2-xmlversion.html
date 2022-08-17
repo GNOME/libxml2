@@ -47,6 +47,7 @@
 #define <a href="#LIBXML_MODULES_ENABLED">LIBXML_MODULES_ENABLED</a>;
 #define <a href="#LIBXML_LEGACY_ENABLED">LIBXML_LEGACY_ENABLED</a>;
 #define <a href="#LIBXML_LZMA_ENABLED">LIBXML_LZMA_ENABLED</a>;
+#define <a href="#XML_DEPRECATED">XML_DEPRECATED</a>;
 #define <a href="#LIBXML_READER_ENABLED">LIBXML_READER_ENABLED</a>;
 #define <a href="#LIBXML_THREAD_ENABLED">LIBXML_THREAD_ENABLED</a>;
 #define <a href="#LIBXML_DOTTED_VERSION">LIBXML_DOTTED_VERSION</a>;
@@ -54,7 +55,7 @@
 #define <a href="#LIBXML_DEBUG_ENABLED">LIBXML_DEBUG_ENABLED</a>;
 #define <a href="#LIBXML_XINCLUDE_ENABLED">LIBXML_XINCLUDE_ENABLED</a>;
 #define <a href="#ATTRIBUTE_UNUSED">ATTRIBUTE_UNUSED</a>;
-#define <a href="#LIBXML_DOCB_ENABLED">LIBXML_DOCB_ENABLED</a>;
+#define <a href="#LIBXML_XPTR_LOCS_ENABLED">LIBXML_XPTR_LOCS_ENABLED</a>;
 #define <a href="#LIBXML_PUSH_ENABLED">LIBXML_PUSH_ENABLED</a>;
 #define <a href="#LIBXML_SAX1_ENABLED">LIBXML_SAX1_ENABLED</a>;
 #define <a href="#WITHOUT_TRIO">WITHOUT_TRIO</a>;
@@ -132,10 +133,6 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="LIBXML_DEBUG_RUNTIME">Macro </a>LIBXML_DEBUG_RUNTIME</h3><pre class="programlisting">#define <a href="#LIBXML_DEBUG_RUNTIME">LIBXML_DEBUG_RUNTIME</a>;
 </pre><p>Whether the runtime debugging is configured in</p>
-</div>
-        <hr/>
-        <div class="refsect2" lang="en"><h3><a name="LIBXML_DOCB_ENABLED">Macro </a>LIBXML_DOCB_ENABLED</h3><pre class="programlisting">#define <a href="#LIBXML_DOCB_ENABLED">LIBXML_DOCB_ENABLED</a>;
-</pre><p>Whether the SGML Docbook support is configured in</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="LIBXML_DOTTED_VERSION">Macro </a>LIBXML_DOTTED_VERSION</h3><pre class="programlisting">#define <a href="#LIBXML_DOTTED_VERSION">LIBXML_DOTTED_VERSION</a>;
@@ -247,7 +244,7 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="LIBXML_VERSION_EXTRA">Macro </a>LIBXML_VERSION_EXTRA</h3><pre class="programlisting">#define <a href="#LIBXML_VERSION_EXTRA">LIBXML_VERSION_EXTRA</a>;
-</pre><p>extra version information, used to show a CVS compilation</p>
+</pre><p>extra version information, used to show a git commit description</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="LIBXML_VERSION_STRING">Macro </a>LIBXML_VERSION_STRING</h3><pre class="programlisting">#define <a href="#LIBXML_VERSION_STRING">LIBXML_VERSION_STRING</a>;
@@ -270,6 +267,10 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
 </pre><p>Whether XPointer is configured in</p>
 </div>
         <hr/>
+        <div class="refsect2" lang="en"><h3><a name="LIBXML_XPTR_LOCS_ENABLED">Macro </a>LIBXML_XPTR_LOCS_ENABLED</h3><pre class="programlisting">#define <a href="#LIBXML_XPTR_LOCS_ENABLED">LIBXML_XPTR_LOCS_ENABLED</a>;
+</pre><p>Whether support for XPointer locations is configured in</p>
+</div>
+        <hr/>
         <div class="refsect2" lang="en"><h3><a name="LIBXML_ZLIB_ENABLED">Macro </a>LIBXML_ZLIB_ENABLED</h3><pre class="programlisting">#define <a href="#LIBXML_ZLIB_ENABLED">LIBXML_ZLIB_ENABLED</a>;
 </pre><p>Whether the Zlib support is compiled in</p>
 </div>
@@ -280,6 +281,10 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="WITH_TRIO">Macro </a>WITH_TRIO</h3><pre class="programlisting">#define <a href="#WITH_TRIO">WITH_TRIO</a>;
 </pre><p>defined if the trio support need to be configured in</p>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="XML_DEPRECATED">Macro </a>XML_DEPRECATED</h3><pre class="programlisting">#define <a href="#XML_DEPRECATED">XML_DEPRECATED</a>;
+</pre><p>Macro used to indicate that a function, variable, type or struct member is deprecated.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCheckVersion"/>xmlCheckVersion ()</h3><pre class="programlisting">void	xmlCheckVersion			(int version)<br/>

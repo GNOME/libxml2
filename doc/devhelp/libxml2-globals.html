@@ -87,7 +87,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
     const char *	xmlParserVersion
     <a href="libxml2-tree.html#xmlSAXLocator">xmlSAXLocator</a>	xmlDefaultSAXLocator
     <a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	xmlDefaultSAXHandler
-    <a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	docbDefaultSAXHandler
+    <a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	docbDefaultSAXHandler	: unused
     <a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	htmlDefaultSAXHandler
     <a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a>	xmlFree
     <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a>	xmlMalloc
@@ -140,10 +140,6 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
         <div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeFunc"/>Function type xmlRegisterNodeFunc</h3><pre class="programlisting">void	xmlRegisterNodeFunc		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br/>
 </pre><p>Signature for the registration callback of a created node</p>
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td>the current node</td></tr></tbody></table></div></div>
-        <hr/>
-        <div class="refsect2" lang="en"><h3><a name="docbDefaultSAXHandler">Variable </a>docbDefaultSAXHandler</h3><pre class="programlisting"><a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> docbDefaultSAXHandler;
-</pre><p/>
-</div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="htmlDefaultSAXHandler">Variable </a>htmlDefaultSAXHandler</h3><pre class="programlisting"><a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> htmlDefaultSAXHandler;
 </pre><p/>
@@ -274,7 +270,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCleanupGlobals"/>xmlCleanupGlobals ()</h3><pre class="programlisting">void	xmlCleanupGlobals		(void)<br/>
-</pre><p>Additional cleanup for multi-threading</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Additional cleanup for multi-threading</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDeregisterNodeDefault"/>xmlDeregisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlDeregisterNodeDefault	(<a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br/>
@@ -282,7 +278,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td>function pointer to the new DeregisterNodeFunc</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the previous value of the deregistration function</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlInitGlobals"/>xmlInitGlobals ()</h3><pre class="programlisting">void	xmlInitGlobals			(void)<br/>
-</pre><p>Additional initialisation for multi-threading</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Additional initialisation for multi-threading</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlInitializeGlobalState"/>xmlInitializeGlobalState ()</h3><pre class="programlisting">void	xmlInitializeGlobalState	(<a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs)<br/>

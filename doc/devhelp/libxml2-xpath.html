@@ -43,11 +43,11 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">#define <a href="#xmlXPathNodeSetGetLength">xmlXPathNodeSetGetLength</a>(ns);
-#define <a href="#XML_XPATH_CHECKNS">XML_XPATH_CHECKNS</a>;
-#define <a href="#XML_XPATH_NOVAR">XML_XPATH_NOVAR</a>;
+      <pre class="synopsis">#define <a href="#xmlXPathNodeSetIsEmpty">xmlXPathNodeSetIsEmpty</a>(ns);
 #define <a href="#xmlXPathNodeSetItem">xmlXPathNodeSetItem</a>(ns, index);
-#define <a href="#xmlXPathNodeSetIsEmpty">xmlXPathNodeSetIsEmpty</a>(ns);
+#define <a href="#XML_XPATH_CHECKNS">XML_XPATH_CHECKNS</a>;
+#define <a href="#xmlXPathNodeSetGetLength">xmlXPathNodeSetGetLength</a>(ns);
+#define <a href="#XML_XPATH_NOVAR">XML_XPATH_NOVAR</a>;
 typedef enum <a href="#xmlXPathObjectType">xmlXPathObjectType</a>;
 typedef <a href="libxml2-xpath.html#xmlXPathVariable">xmlXPathVariable</a> * <a href="#xmlXPathVariablePtr">xmlXPathVariablePtr</a>;
 typedef struct _xmlXPathContext <a href="#xmlXPathContext">xmlXPathContext</a>;
@@ -128,6 +128,18 @@ int	<a href="#xmlXPathCastToBoolean">xmlXPathCastToBoolean</a>		(<a href="libxml
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="XML_XPATH_NOVAR">Macro </a>XML_XPATH_NOVAR</h3><pre class="programlisting">#define <a href="#XML_XPATH_NOVAR">XML_XPATH_NOVAR</a>;
 </pre><p>forbid variables in expression</p>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="XPATH_LOCATIONSET">Macro </a>XPATH_LOCATIONSET</h3><pre class="programlisting">#define <a href="#XPATH_LOCATIONSET">XPATH_LOCATIONSET</a>;
+</pre><p/>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="XPATH_POINT">Macro </a>XPATH_POINT</h3><pre class="programlisting">#define <a href="#XPATH_POINT">XPATH_POINT</a>;
+</pre><p/>
+</div>
+        <hr/>
+        <div class="refsect2" lang="en"><h3><a name="XPATH_RANGE">Macro </a>XPATH_RANGE</h3><pre class="programlisting">#define <a href="#XPATH_RANGE">XPATH_RANGE</a>;
+</pre><p/>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathNodeSetGetLength">Macro </a>xmlXPathNodeSetGetLength</h3><pre class="programlisting">#define <a href="#xmlXPathNodeSetGetLength">xmlXPathNodeSetGetLength</a>(ns);
@@ -506,7 +518,7 @@ The content of this structure is not made public by the API.
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>obj</tt></i>:</span></td><td>the object to free</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathInit"/>xmlXPathInit ()</h3><pre class="programlisting">void	xmlXPathInit			(void)<br/>
-</pre><p>Initialize the XPath environment</p>
+</pre><p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Initialize the XPath environment</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlXPathIsInf"/>xmlXPathIsInf ()</h3><pre class="programlisting">int	xmlXPathIsInf			(double val)<br/>

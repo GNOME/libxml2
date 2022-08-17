@@ -22,6 +22,7 @@ uninstall-local:
 
 clean-local:
 	test -f Makefile.am || rm -f test?.xml
+	rm -f .memdump
 
 EXTRA_DIST = \
 	examples.xml \

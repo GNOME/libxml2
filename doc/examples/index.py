@@ -305,5 +305,5 @@ if __name__ == "__main__":
     dump_sections(output)
     output.write("</examples>\n")
     output.close()
-    dump_Makefile()
+    #dump_Makefile()
 

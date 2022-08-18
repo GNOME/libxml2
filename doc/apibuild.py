@@ -1603,50 +1603,11 @@ class docBuilder:
         self.modules = {}
         self.headers = {}
         self.idx = index()
-        self.xref = {}
         self.index = {}
         if name == 'libxml2':
             self.basename = 'libxml'
         else:
             self.basename = name
-
-    def indexString(self, id, str):
-        if str == None:
-            return
-        str = str.replace("'", ' ')
-        str = str.replace('"', ' ')
-        str = str.replace("/", ' ')
-        str = str.replace('*', ' ')
-        str = str.replace("[", ' ')
-        str = str.replace("]", ' ')
-        str = str.replace("(", ' ')
-        str = str.replace(")", ' ')
-        str = str.replace("<", ' ')
-        str = str.replace('>', ' ')
-        str = str.replace("&", ' ')
-        str = str.replace('#', ' ')
-        str = str.replace(",", ' ')
-        str = str.replace('.', ' ')
-        str = str.replace(';', ' ')
-        tokens = str.split()
-        for token in tokens:
-            try:
-                c = token[0]
-                if string.ascii_letters.find(c) < 0:
-                    pass
-                elif len(token) < 3:
-                    pass
-                else:
-                    lower = token.lower()
-                    # TODO: generalize this a bit
-                    if lower == 'and' or lower == 'the':
-                        pass
-                    elif token in self.xref:
-                        self.xref[token].append(id)
-                    else:
-                        self.xref[token] = [id]
-            except:
-                pass
 
     def analyze(self):
         print("Project %s : %d headers, %d modules" % (self.name, len(list(self.headers.keys())), len(list(self.modules.keys()))))
@@ -1727,13 +1688,11 @@ class docBuilder:
                 (args, desc) = id.info
                 if desc != None and desc != "":
                     output.write("      <info>%s</info>\n" % (escape(desc)))
-                    self.indexString(name, desc)
                 for arg in args:
                     (name, desc) = arg
                     if desc != None and desc != "":
                         output.write("      <arg name='%s' info='%s'/>\n" % (
                                      name, escape(desc)))
-                        self.indexString(name, desc)
                     else:
                         output.write("      <arg name='%s'/>\n" % (name))
             except:
@@ -1753,7 +1712,6 @@ class docBuilder:
                 try:
                     for field in self.idx.structs[name].info:
                         desc = field[2]
-                        self.indexString(name, desc)
                         if desc == None:
                             desc = ''
                         else:
@@ -1812,14 +1770,12 @@ class docBuilder:
                        self.modulename_file(id.module)))
 
             output.write("      <info>%s</info>\n" % (escape(desc)))
-            self.indexString(name, desc)
             if ret[0] != None:
                 if ret[0] == "void":
                     output.write("      <return type='void'/>\n")
                 else:
                     output.write("      <return type='%s' info='%s'/>\n" % (
                              ret[0], escape(ret[1])))
-                    self.indexString(name, ret[1])
             for param in params:
                 if param[0] == 'void':
                     continue
@@ -1827,7 +1783,6 @@ class docBuilder:
                     output.write("      <arg name='%s' type='%s' info=''/>\n" % (param[1], param[0]))
                 else:
                     output.write("      <arg name='%s' type='%s' info='%s'/>\n" % (param[1], param[0], escape(param[2])))
-                    self.indexString(name, param[2])
         except:
             print("Failed to save function %s info: " % name, repr(id.info))
         output.write("    </%s>\n" % (id.type))
@@ -1887,172 +1842,6 @@ class docBuilder:
             output.write("     <exports symbol='%s' type='function'/>\n" % (id))
         output.write("    </file>\n")
 
-    def serialize_xrefs_files(self, output):
-        headers = list(self.headers.keys())
-        headers.sort()
-        for file in headers:
-            module = self.modulename_file(file)
-            output.write("    <file name='%s'>\n" % (module))
-            dict = self.headers[file]
-            ids = uniq(list(dict.functions.keys()) + list(dict.variables.keys()) + \
-                  list(dict.macros.keys()) + list(dict.typedefs.keys()) + \
-                  list(dict.structs.keys()) + list(dict.enums.keys()))
-            ids.sort()
-            for id in ids:
-                output.write("      <ref name='%s'/>\n" % (id))
-            output.write("    </file>\n")
-        pass
-
-    def serialize_xrefs_functions(self, output):
-        funcs = {}
-        for name in list(self.idx.functions.keys()):
-            id = self.idx.functions[name]
-            try:
-                (ret, params, desc) = id.info
-                for param in params:
-                    if param[0] == 'void':
-                        continue
-                    if param[0] in funcs:
-                        funcs[param[0]].append(name)
-                    else:
-                        funcs[param[0]] = [name]
-            except:
-                pass
-        typ = list(funcs.keys())
-        typ.sort()
-        for type in typ:
-            if type == '' or type == 'void' or type == "int" or \
-               type == "char *" or type == "const char *" :
-                continue
-            output.write("    <type name='%s'>\n" % (type))
-            ids = funcs[type]
-            ids.sort()
-            pid = ''        # not sure why we have dups, but get rid of them!
-            for id in ids:
-                if id != pid:
-                    output.write("      <ref name='%s'/>\n" % (id))
-                    pid = id
-            output.write("    </type>\n")
-
-    def serialize_xrefs_constructors(self, output):
-        funcs = {}
-        for name in list(self.idx.functions.keys()):
-            id = self.idx.functions[name]
-            try:
-                (ret, params, desc) = id.info
-                if ret[0] == "void":
-                    continue
-                if ret[0] in funcs:
-                    funcs[ret[0]].append(name)
-                else:
-                    funcs[ret[0]] = [name]
-            except:
-                pass
-        typ = list(funcs.keys())
-        typ.sort()
-        for type in typ:
-            if type == '' or type == 'void' or type == "int" or \
-               type == "char *" or type == "const char *" :
-                continue
-            output.write("    <type name='%s'>\n" % (type))
-            ids = funcs[type]
-            ids.sort()
-            for id in ids:
-                output.write("      <ref name='%s'/>\n" % (id))
-            output.write("    </type>\n")
-
-    def serialize_xrefs_alpha(self, output):
-        letter = None
-        ids = list(self.idx.identifiers.keys())
-        ids.sort()
-        for id in ids:
-            if id[0] != letter:
-                if letter != None:
-                    output.write("    </letter>\n")
-                letter = id[0]
-                output.write("    <letter name='%s'>\n" % (letter))
-            output.write("      <ref name='%s'/>\n" % (id))
-        if letter != None:
-            output.write("    </letter>\n")
-
-    def serialize_xrefs_references(self, output):
-        typ = list(self.idx.identifiers.keys())
-        typ.sort()
-        for id in typ:
-            idf = self.idx.identifiers[id]
-            module = idf.header
-            output.write("    <reference name='%s' href='%s'/>\n" % (id,
-                         'html/' + self.basename + '-' +
-                         self.modulename_file(module) + '.html#' +
-                         id))
-
-    def serialize_xrefs_index(self, output):
-        index = self.xref
-        typ = list(index.keys())
-        typ.sort()
-        letter = None
-        count = 0
-        chunk = 0
-        chunks = []
-        for id in typ:
-            if len(index[id]) > 30:
-                continue
-            if id[0] != letter:
-                if letter == None or count > 200:
-                    if letter != None:
-                        output.write("      </letter>\n")
-                        output.write("    </chunk>\n")
-                        count = 0
-                        chunks.append(["chunk%s" % (chunk -1), first_letter, letter])
-                    output.write("    <chunk name='chunk%s'>\n" % (chunk))
-                    first_letter = id[0]
-                    chunk = chunk + 1
-                elif letter != None:
-                    output.write("      </letter>\n")
-                letter = id[0]
-                output.write("      <letter name='%s'>\n" % (letter))
-            output.write("        <word name='%s'>\n" % (id))
-            tokens = index[id];
-            tokens.sort()
-            tok = None
-            for token in tokens:
-                if tok == token:
-                    continue
-                tok = token
-                output.write("          <ref name='%s'/>\n" % (token))
-                count = count + 1
-            output.write("        </word>\n")
-        if letter != None:
-            output.write("      </letter>\n")
-            output.write("    </chunk>\n")
-            if count != 0:
-                chunks.append(["chunk%s" % (chunk -1), first_letter, letter])
-            output.write("    <chunks>\n")
-            for ch in chunks:
-                output.write("      <chunk name='%s' start='%s' end='%s'/>\n" % (
-                             ch[0], ch[1], ch[2]))
-            output.write("    </chunks>\n")
-
-    def serialize_xrefs(self, output):
-        output.write("  <references>\n")
-        self.serialize_xrefs_references(output)
-        output.write("  </references>\n")
-        output.write("  <alpha>\n")
-        self.serialize_xrefs_alpha(output)
-        output.write("  </alpha>\n")
-        output.write("  <constructors>\n")
-        self.serialize_xrefs_constructors(output)
-        output.write("  </constructors>\n")
-        output.write("  <functions>\n")
-        self.serialize_xrefs_functions(output)
-        output.write("  </functions>\n")
-        output.write("  <files>\n")
-        self.serialize_xrefs_files(output)
-        output.write("  </files>\n")
-        output.write("  <index>\n")
-        self.serialize_xrefs_index(output)
-        output.write("  </index>\n")
-
     def serialize(self):
         filename = "%s-api.xml" % self.name
         print("Saving XML description %s" % (filename))
@@ -2088,15 +1877,6 @@ class docBuilder:
             self.serialize_function(output, function)
         output.write("  </symbols>\n")
         output.write("</api>\n")
-        output.close()
-
-        filename = "%s-refs.xml" % self.name
-        print("Saving XML Cross References %s" % (filename))
-        output = open(filename, "w")
-        output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
-        output.write("<apirefs name='%s'>\n" % self.name)
-        self.serialize_xrefs(output)
-        output.write("</apirefs>\n")
         output.close()
 
 

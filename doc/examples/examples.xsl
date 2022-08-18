@@ -37,6 +37,7 @@
     <p>Includes:</p>
     <ul>
     <xsl:for-each select="includes/include">
+      <xsl:sort select="@line" data-type="number"/>
       <xsl:apply-templates select='.'/>
     </xsl:for-each>
     </ul>

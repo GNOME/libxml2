@@ -135,14 +135,6 @@ rebuild_testapi:
 	-@(if [ "$(PYTHON)" != "" ] ; then \
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 
-# that one is just to make sure it is rebuilt if missing
-# but adding the dependances generate mess
-testapi.c: $(srcdir)/gentest.py
-	-@(if [ "$(PYTHON)" != "" ] ; then \
-	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
-
-BUILT_SOURCES = testapi.c
-
 testapi_SOURCES=testapi.c
 testapi_LDFLAGS = 
 testapi_DEPENDENCIES = $(DEPS)

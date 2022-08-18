@@ -83,12 +83,6 @@ def escape(raw):
     raw = raw.replace('"', '&quot;')
     return raw
 
-def uniq(items):
-    d = {}
-    for item in items:
-        d[item]=1
-    return list(d.keys())
-
 class identifier:
     def __init__(self, name, header=None, module=None, type=None, lineno = 0,
                  info=None, extra=None, conditionals = None):
@@ -1807,7 +1801,7 @@ class docBuilder:
 
         ids = list(dict.macros.keys())
         ids.sort()
-        for id in uniq(ids):
+        for id in ids:
             # Macros are sometime used to masquerade other types.
             if id in dict.functions:
                 continue
@@ -1822,23 +1816,23 @@ class docBuilder:
             output.write("     <exports symbol='%s' type='macro'/>\n" % (id))
         ids = list(dict.enums.keys())
         ids.sort()
-        for id in uniq(ids):
+        for id in ids:
             output.write("     <exports symbol='%s' type='enum'/>\n" % (id))
         ids = list(dict.typedefs.keys())
         ids.sort()
-        for id in uniq(ids):
+        for id in ids:
             output.write("     <exports symbol='%s' type='typedef'/>\n" % (id))
         ids = list(dict.structs.keys())
         ids.sort()
-        for id in uniq(ids):
+        for id in ids:
             output.write("     <exports symbol='%s' type='struct'/>\n" % (id))
         ids = list(dict.variables.keys())
         ids.sort()
-        for id in uniq(ids):
+        for id in ids:
             output.write("     <exports symbol='%s' type='variable'/>\n" % (id))
         ids = list(dict.functions.keys())
         ids.sort()
-        for id in uniq(ids):
+        for id in ids:
             output.write("     <exports symbol='%s' type='function'/>\n" % (id))
         output.write("    </file>\n")
 

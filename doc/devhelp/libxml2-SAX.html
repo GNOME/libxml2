@@ -44,42 +44,42 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">void	<a href="#comment">comment</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
-int	<a href="#checkNamespace">checkNamespace</a>			(void * ctx, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespace);
-int	<a href="#getColumnNumber">getColumnNumber</a>			(void * ctx);
-void	<a href="#entityDecl">entityDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
-void	<a href="#attribute">attribute</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
-<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a>	<a href="#getNamespace">getNamespace</a>		(void * ctx);
-void	<a href="#setDocumentLocator">setDocumentLocator</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a> loc);
-void	<a href="#initxmlDefaultSAXHandler">initxmlDefaultSAXHandler</a>	(<a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> * hdlr, <br/>					 int warning);
-void	<a href="#ignorableWhitespace">ignorableWhitespace</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ch, <br/>					 int len);
-int	<a href="#hasExternalSubset">hasExternalSubset</a>		(void * ctx);
-void	<a href="#unparsedEntityDecl">unparsedEntityDecl</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * notationName);
-void	<a href="#globalNamespace">globalNamespace</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * href, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix);
-int	<a href="#hasInternalSubset">hasInternalSubset</a>		(void * ctx);
-void	<a href="#reference">reference</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#notationDecl">notationDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#getSystemId">getSystemId</a>		(void * ctx);
-void	<a href="#externalSubset">externalSubset</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID);
-<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#resolveEntity">resolveEntity</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId);
-void	<a href="#startDocument">startDocument</a>			(void * ctx);
-void	<a href="#setNamespace">setNamespace</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#cdataBlock">cdataBlock</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 int len);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#getPublicId">getPublicId</a>		(void * ctx);
-void	<a href="#inithtmlDefaultSAXHandler">inithtmlDefaultSAXHandler</a>	(<a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> * hdlr);
-void	<a href="#processingInstruction">processingInstruction</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * target, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * data);
-void	<a href="#endElement">endElement</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#namespaceDecl">namespaceDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * href, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix);
-void	<a href="#startElement">startElement</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** atts);
-<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#getEntity">getEntity</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#characters">characters</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ch, <br/>					 int len);
-void	<a href="#elementDecl">elementDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 <a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);
-<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#getParameterEntity">getParameterEntity</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+      <pre class="synopsis">void	<a href="#attribute">attribute</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 void	<a href="#attributeDecl">attributeDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elem, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br/>					 int type, <br/>					 int def, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * defaultValue, <br/>					 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> tree);
-int	<a href="#isStandalone">isStandalone</a>			(void * ctx);
-void	<a href="#internalSubset">internalSubset</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID);
+void	<a href="#cdataBlock">cdataBlock</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br/>					 int len);
+void	<a href="#characters">characters</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ch, <br/>					 int len);
+int	<a href="#checkNamespace">checkNamespace</a>			(void * ctx, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespace);
+void	<a href="#comment">comment</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
+void	<a href="#elementDecl">elementDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 <a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);
 void	<a href="#endDocument">endDocument</a>			(void * ctx);
+void	<a href="#endElement">endElement</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+void	<a href="#entityDecl">entityDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
+void	<a href="#externalSubset">externalSubset</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID);
+int	<a href="#getColumnNumber">getColumnNumber</a>			(void * ctx);
+<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#getEntity">getEntity</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 int	<a href="#getLineNumber">getLineNumber</a>			(void * ctx);
+<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a>	<a href="#getNamespace">getNamespace</a>		(void * ctx);
+<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#getParameterEntity">getParameterEntity</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#getPublicId">getPublicId</a>		(void * ctx);
+const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#getSystemId">getSystemId</a>		(void * ctx);
+void	<a href="#globalNamespace">globalNamespace</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * href, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix);
+int	<a href="#hasExternalSubset">hasExternalSubset</a>		(void * ctx);
+int	<a href="#hasInternalSubset">hasInternalSubset</a>		(void * ctx);
+void	<a href="#ignorableWhitespace">ignorableWhitespace</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ch, <br/>					 int len);
+void	<a href="#inithtmlDefaultSAXHandler">inithtmlDefaultSAXHandler</a>	(<a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> * hdlr);
+void	<a href="#initxmlDefaultSAXHandler">initxmlDefaultSAXHandler</a>	(<a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> * hdlr, <br/>					 int warning);
+void	<a href="#internalSubset">internalSubset</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID);
+int	<a href="#isStandalone">isStandalone</a>			(void * ctx);
+void	<a href="#namespaceDecl">namespaceDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * href, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix);
+void	<a href="#notationDecl">notationDecl</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId);
+void	<a href="#processingInstruction">processingInstruction</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * target, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * data);
+void	<a href="#reference">reference</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#resolveEntity">resolveEntity</a>	(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId);
+void	<a href="#setDocumentLocator">setDocumentLocator</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a> loc);
+void	<a href="#setNamespace">setNamespace</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+void	<a href="#startDocument">startDocument</a>			(void * ctx);
+void	<a href="#startElement">startElement</a>			(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** atts);
+void	<a href="#unparsedEntityDecl">unparsedEntityDecl</a>		(void * ctx, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * notationName);
 </pre>
     </div>
     <div class="refsect1" lang="en">

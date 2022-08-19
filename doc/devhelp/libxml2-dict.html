@@ -45,19 +45,19 @@
       <h2>Synopsis</h2>
       <pre class="synopsis">typedef struct _xmlDict <a href="#xmlDict">xmlDict</a>;
 typedef <a href="libxml2-dict.html#xmlDict">xmlDict</a> * <a href="#xmlDictPtr">xmlDictPtr</a>;
-size_t	<a href="#xmlDictGetUsage">xmlDictGetUsage</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
-int	<a href="#xmlDictReference">xmlDictReference</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
 void	<a href="#xmlDictCleanup">xmlDictCleanup</a>			(void);
-int	<a href="#xmlDictSize">xmlDictSize</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
+<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	<a href="#xmlDictCreate">xmlDictCreate</a>		(void);
+<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	<a href="#xmlDictCreateSub">xmlDictCreateSub</a>	(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> sub);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictExists">xmlDictExists</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int len);
-size_t	<a href="#xmlDictSetLimit">xmlDictSetLimit</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 size_t limit);
+void	<a href="#xmlDictFree">xmlDictFree</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
+size_t	<a href="#xmlDictGetUsage">xmlDictGetUsage</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
+const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictLookup">xmlDictLookup</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int len);
 int	<a href="#xmlDictOwns">xmlDictOwns</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictQLookup">xmlDictQLookup</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+int	<a href="#xmlDictReference">xmlDictReference</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
+size_t	<a href="#xmlDictSetLimit">xmlDictSetLimit</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 size_t limit);
+int	<a href="#xmlDictSize">xmlDictSize</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
 int	<a href="#xmlInitializeDict">xmlInitializeDict</a>		(void);
-<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	<a href="#xmlDictCreateSub">xmlDictCreateSub</a>	(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> sub);
-void	<a href="#xmlDictFree">xmlDictFree</a>			(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDictLookup">xmlDictLookup</a>		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int len);
-<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	<a href="#xmlDictCreate">xmlDictCreate</a>		(void);
 </pre>
     </div>
     <div class="refsect1" lang="en">

@@ -43,28 +43,28 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">#define <a href="#XINCLUDE_PARSE_TEXT">XINCLUDE_PARSE_TEXT</a>;
-#define <a href="#XINCLUDE_PARSE_XPOINTER">XINCLUDE_PARSE_XPOINTER</a>;
+      <pre class="synopsis">#define <a href="#XINCLUDE_FALLBACK">XINCLUDE_FALLBACK</a>;
 #define <a href="#XINCLUDE_HREF">XINCLUDE_HREF</a>;
-#define <a href="#XINCLUDE_FALLBACK">XINCLUDE_FALLBACK</a>;
-#define <a href="#XINCLUDE_NS">XINCLUDE_NS</a>;
-#define <a href="#XINCLUDE_PARSE">XINCLUDE_PARSE</a>;
 #define <a href="#XINCLUDE_NODE">XINCLUDE_NODE</a>;
-#define <a href="#XINCLUDE_PARSE_XML">XINCLUDE_PARSE_XML</a>;
-#define <a href="#XINCLUDE_PARSE_ENCODING">XINCLUDE_PARSE_ENCODING</a>;
+#define <a href="#XINCLUDE_NS">XINCLUDE_NS</a>;
 #define <a href="#XINCLUDE_OLD_NS">XINCLUDE_OLD_NS</a>;
+#define <a href="#XINCLUDE_PARSE">XINCLUDE_PARSE</a>;
+#define <a href="#XINCLUDE_PARSE_ENCODING">XINCLUDE_PARSE_ENCODING</a>;
+#define <a href="#XINCLUDE_PARSE_TEXT">XINCLUDE_PARSE_TEXT</a>;
+#define <a href="#XINCLUDE_PARSE_XML">XINCLUDE_PARSE_XML</a>;
+#define <a href="#XINCLUDE_PARSE_XPOINTER">XINCLUDE_PARSE_XPOINTER</a>;
 typedef struct _xmlXIncludeCtxt <a href="#xmlXIncludeCtxt">xmlXIncludeCtxt</a>;
 typedef <a href="libxml2-xinclude.html#xmlXIncludeCtxt">xmlXIncludeCtxt</a> * <a href="#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a>;
-int	<a href="#xmlXIncludeProcessTreeFlagsData">xmlXIncludeProcessTreeFlagsData</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br/>					 int flags, <br/>					 void * data);
-int	<a href="#xmlXIncludeProcessFlagsData">xmlXIncludeProcessFlagsData</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int flags, <br/>					 void * data);
-int	<a href="#xmlXIncludeProcessFlags">xmlXIncludeProcessFlags</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int flags);
-int	<a href="#xmlXIncludeProcessTree">xmlXIncludeProcessTree</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
-int	<a href="#xmlXIncludeProcessNode">xmlXIncludeProcessNode</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 void	<a href="#xmlXIncludeFreeContext">xmlXIncludeFreeContext</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt);
-int	<a href="#xmlXIncludeSetFlags">xmlXIncludeSetFlags</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br/>					 int flags);
-int	<a href="#xmlXIncludeProcess">xmlXIncludeProcess</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 <a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a>	<a href="#xmlXIncludeNewContext">xmlXIncludeNewContext</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlXIncludeProcess">xmlXIncludeProcess</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlXIncludeProcessFlags">xmlXIncludeProcessFlags</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int flags);
+int	<a href="#xmlXIncludeProcessFlagsData">xmlXIncludeProcessFlagsData</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 int flags, <br/>					 void * data);
+int	<a href="#xmlXIncludeProcessNode">xmlXIncludeProcessNode</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+int	<a href="#xmlXIncludeProcessTree">xmlXIncludeProcessTree</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
 int	<a href="#xmlXIncludeProcessTreeFlags">xmlXIncludeProcessTreeFlags</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br/>					 int flags);
+int	<a href="#xmlXIncludeProcessTreeFlagsData">xmlXIncludeProcessTreeFlagsData</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br/>					 int flags, <br/>					 void * data);
+int	<a href="#xmlXIncludeSetFlags">xmlXIncludeSetFlags</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br/>					 int flags);
 </pre>
     </div>
     <div class="refsect1" lang="en">

@@ -43,26 +43,26 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef <a href="libxml2-pattern.html#xmlStreamCtxt">xmlStreamCtxt</a> * <a href="#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a>;
+      <pre class="synopsis">typedef struct _xmlPattern <a href="#xmlPattern">xmlPattern</a>;
 typedef enum <a href="#xmlPatternFlags">xmlPatternFlags</a>;
-typedef struct _xmlStreamCtxt <a href="#xmlStreamCtxt">xmlStreamCtxt</a>;
-typedef struct _xmlPattern <a href="#xmlPattern">xmlPattern</a>;
 typedef <a href="libxml2-pattern.html#xmlPattern">xmlPattern</a> * <a href="#xmlPatternPtr">xmlPatternPtr</a>;
-int	<a href="#xmlPatternMinDepth">xmlPatternMinDepth</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a>	<a href="#xmlPatternGetStreamCtxt">xmlPatternGetStreamCtxt</a>	(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-int	<a href="#xmlPatternFromRoot">xmlPatternFromRoot</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-void	<a href="#xmlFreePatternList">xmlFreePatternList</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-int	<a href="#xmlPatternStreamable">xmlPatternStreamable</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-int	<a href="#xmlStreamPushAttr">xmlStreamPushAttr</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns);
-int	<a href="#xmlPatternMatch">xmlPatternMatch</a>			(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-int	<a href="#xmlStreamWantsAnyNode">xmlStreamWantsAnyNode</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> streamCtxt);
-int	<a href="#xmlStreamPop">xmlStreamPop</a>			(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream);
+typedef struct _xmlStreamCtxt <a href="#xmlStreamCtxt">xmlStreamCtxt</a>;
+typedef <a href="libxml2-pattern.html#xmlStreamCtxt">xmlStreamCtxt</a> * <a href="#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a>;
 void	<a href="#xmlFreePattern">xmlFreePattern</a>			(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-int	<a href="#xmlStreamPush">xmlStreamPush</a>			(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns);
-int	<a href="#xmlPatternMaxDepth">xmlPatternMaxDepth</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
-<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a>	<a href="#xmlPatterncompile">xmlPatterncompile</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pattern, <br/>					 <a href="libxml2-dict.html#xmlDict">xmlDict</a> * dict, <br/>					 int flags, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** namespaces);
-int	<a href="#xmlStreamPushNode">xmlStreamPushNode</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns, <br/>					 int nodeType);
+void	<a href="#xmlFreePatternList">xmlFreePatternList</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
 void	<a href="#xmlFreeStreamCtxt">xmlFreeStreamCtxt</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream);
+int	<a href="#xmlPatternFromRoot">xmlPatternFromRoot</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
+<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a>	<a href="#xmlPatternGetStreamCtxt">xmlPatternGetStreamCtxt</a>	(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
+int	<a href="#xmlPatternMatch">xmlPatternMatch</a>			(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+int	<a href="#xmlPatternMaxDepth">xmlPatternMaxDepth</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
+int	<a href="#xmlPatternMinDepth">xmlPatternMinDepth</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
+int	<a href="#xmlPatternStreamable">xmlPatternStreamable</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
+<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a>	<a href="#xmlPatterncompile">xmlPatterncompile</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pattern, <br/>					 <a href="libxml2-dict.html#xmlDict">xmlDict</a> * dict, <br/>					 int flags, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** namespaces);
+int	<a href="#xmlStreamPop">xmlStreamPop</a>			(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream);
+int	<a href="#xmlStreamPush">xmlStreamPush</a>			(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns);
+int	<a href="#xmlStreamPushAttr">xmlStreamPushAttr</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns);
+int	<a href="#xmlStreamPushNode">xmlStreamPushNode</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns, <br/>					 int nodeType);
+int	<a href="#xmlStreamWantsAnyNode">xmlStreamWantsAnyNode</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> streamCtxt);
 </pre>
     </div>
     <div class="refsect1" lang="en">

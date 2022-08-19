@@ -43,18 +43,18 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef enum <a href="#xmlSaveOption">xmlSaveOption</a>;
-typedef struct _xmlSaveCtxt <a href="#xmlSaveCtxt">xmlSaveCtxt</a>;
+      <pre class="synopsis">typedef struct _xmlSaveCtxt <a href="#xmlSaveCtxt">xmlSaveCtxt</a>;
 typedef <a href="libxml2-xmlsave.html#xmlSaveCtxt">xmlSaveCtxt</a> * <a href="#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>;
-<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToIO">xmlSaveToIO</a>		(<a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite, <br/>					 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose, <br/>					 void * ioctx, <br/>					 const char * encoding, <br/>					 int options);
-<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFd">xmlSaveToFd</a>		(int fd, <br/>					 const char * encoding, <br/>					 int options);
+typedef enum <a href="#xmlSaveOption">xmlSaveOption</a>;
 int	<a href="#xmlSaveClose">xmlSaveClose</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
-int	<a href="#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
-<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToBuffer">xmlSaveToBuffer</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>					 const char * encoding, <br/>					 int options);
-<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFilename">xmlSaveToFilename</a>	(const char * filename, <br/>					 const char * encoding, <br/>					 int options);
-int	<a href="#xmlSaveFlush">xmlSaveFlush</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 long	<a href="#xmlSaveDoc">xmlSaveDoc</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlSaveFlush">xmlSaveFlush</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
+int	<a href="#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
 int	<a href="#xmlSaveSetEscape">xmlSaveSetEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
+<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToBuffer">xmlSaveToBuffer</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br/>					 const char * encoding, <br/>					 int options);
+<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFd">xmlSaveToFd</a>		(int fd, <br/>					 const char * encoding, <br/>					 int options);
+<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFilename">xmlSaveToFilename</a>	(const char * filename, <br/>					 const char * encoding, <br/>					 int options);
+<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToIO">xmlSaveToIO</a>		(<a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite, <br/>					 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose, <br/>					 void * ioctx, <br/>					 const char * encoding, <br/>					 int options);
 long	<a href="#xmlSaveTree">xmlSaveTree</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 </pre>
     </div>

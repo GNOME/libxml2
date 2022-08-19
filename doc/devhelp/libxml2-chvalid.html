@@ -43,35 +43,35 @@
     <p>Author(s): William Brack &lt;wbrack@mmm.com.hk&gt; </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">#define <a href="#xmlIsExtender_ch">xmlIsExtender_ch</a>(c);
-#define <a href="#xmlIsPubidCharQ">xmlIsPubidCharQ</a>(c);
-#define <a href="#xmlIsPubidChar_ch">xmlIsPubidChar_ch</a>(c);
-#define <a href="#xmlIsIdeographicQ">xmlIsIdeographicQ</a>(c);
-#define <a href="#xmlIsExtenderQ">xmlIsExtenderQ</a>(c);
+      <pre class="synopsis">#define <a href="#xmlIsBaseCharQ">xmlIsBaseCharQ</a>(c);
+#define <a href="#xmlIsBaseChar_ch">xmlIsBaseChar_ch</a>(c);
+#define <a href="#xmlIsBlankQ">xmlIsBlankQ</a>(c);
+#define <a href="#xmlIsBlank_ch">xmlIsBlank_ch</a>(c);
+#define <a href="#xmlIsCharQ">xmlIsCharQ</a>(c);
 #define <a href="#xmlIsChar_ch">xmlIsChar_ch</a>(c);
+#define <a href="#xmlIsCombiningQ">xmlIsCombiningQ</a>(c);
 #define <a href="#xmlIsDigitQ">xmlIsDigitQ</a>(c);
 #define <a href="#xmlIsDigit_ch">xmlIsDigit_ch</a>(c);
-#define <a href="#xmlIsBaseChar_ch">xmlIsBaseChar_ch</a>(c);
-#define <a href="#xmlIsCombiningQ">xmlIsCombiningQ</a>(c);
-#define <a href="#xmlIsBlankQ">xmlIsBlankQ</a>(c);
-#define <a href="#xmlIsCharQ">xmlIsCharQ</a>(c);
-#define <a href="#xmlIsBaseCharQ">xmlIsBaseCharQ</a>(c);
-#define <a href="#xmlIsBlank_ch">xmlIsBlank_ch</a>(c);
+#define <a href="#xmlIsExtenderQ">xmlIsExtenderQ</a>(c);
+#define <a href="#xmlIsExtender_ch">xmlIsExtender_ch</a>(c);
+#define <a href="#xmlIsIdeographicQ">xmlIsIdeographicQ</a>(c);
+#define <a href="#xmlIsPubidCharQ">xmlIsPubidCharQ</a>(c);
+#define <a href="#xmlIsPubidChar_ch">xmlIsPubidChar_ch</a>(c);
 typedef struct _xmlChLRange <a href="#xmlChLRange">xmlChLRange</a>;
-typedef <a href="libxml2-chvalid.html#xmlChSRange">xmlChSRange</a> * <a href="#xmlChSRangePtr">xmlChSRangePtr</a>;
 typedef <a href="libxml2-chvalid.html#xmlChLRange">xmlChLRange</a> * <a href="#xmlChLRangePtr">xmlChLRangePtr</a>;
+typedef struct _xmlChRangeGroup <a href="#xmlChRangeGroup">xmlChRangeGroup</a>;
 typedef <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * <a href="#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a>;
 typedef struct _xmlChSRange <a href="#xmlChSRange">xmlChSRange</a>;
-typedef struct _xmlChRangeGroup <a href="#xmlChRangeGroup">xmlChRangeGroup</a>;
-int	<a href="#xmlIsChar">xmlIsChar</a>			(unsigned int ch);
-int	<a href="#xmlIsDigit">xmlIsDigit</a>			(unsigned int ch);
-int	<a href="#xmlIsBlank">xmlIsBlank</a>			(unsigned int ch);
-int	<a href="#xmlIsIdeographic">xmlIsIdeographic</a>		(unsigned int ch);
+typedef <a href="libxml2-chvalid.html#xmlChSRange">xmlChSRange</a> * <a href="#xmlChSRangePtr">xmlChSRangePtr</a>;
 int	<a href="#xmlCharInRange">xmlCharInRange</a>			(unsigned int val, <br/>					 const <a href="libxml2-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a> * rptr);
-int	<a href="#xmlIsPubidChar">xmlIsPubidChar</a>			(unsigned int ch);
-int	<a href="#xmlIsCombining">xmlIsCombining</a>			(unsigned int ch);
 int	<a href="#xmlIsBaseChar">xmlIsBaseChar</a>			(unsigned int ch);
+int	<a href="#xmlIsBlank">xmlIsBlank</a>			(unsigned int ch);
+int	<a href="#xmlIsChar">xmlIsChar</a>			(unsigned int ch);
+int	<a href="#xmlIsCombining">xmlIsCombining</a>			(unsigned int ch);
+int	<a href="#xmlIsDigit">xmlIsDigit</a>			(unsigned int ch);
 int	<a href="#xmlIsExtender">xmlIsExtender</a>			(unsigned int ch);
+int	<a href="#xmlIsIdeographic">xmlIsIdeographic</a>		(unsigned int ch);
+int	<a href="#xmlIsPubidChar">xmlIsPubidChar</a>			(unsigned int ch);
 </pre>
     </div>
     <div class="refsect1" lang="en">

@@ -43,23 +43,23 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">int	<a href="#xmlNanoHTTPRead">xmlNanoHTTPRead</a>			(void * ctx, <br/>					 void * dest, <br/>					 int len);
-int	<a href="#xmlNanoHTTPSave">xmlNanoHTTPSave</a>			(void * ctxt, <br/>					 const char * filename);
-const char *	<a href="#xmlNanoHTTPRedir">xmlNanoHTTPRedir</a>	(void * ctx);
-const char *	<a href="#xmlNanoHTTPAuthHeader">xmlNanoHTTPAuthHeader</a>	(void * ctx);
-int	<a href="#xmlNanoHTTPFetch">xmlNanoHTTPFetch</a>		(const char * URL, <br/>					 const char * filename, <br/>					 char ** contentType);
-int	<a href="#xmlNanoHTTPContentLength">xmlNanoHTTPContentLength</a>	(void * ctx);
-const char *	<a href="#xmlNanoHTTPMimeType">xmlNanoHTTPMimeType</a>	(void * ctx);
-void	<a href="#xmlNanoHTTPClose">xmlNanoHTTPClose</a>		(void * ctx);
+      <pre class="synopsis">const char *	<a href="#xmlNanoHTTPAuthHeader">xmlNanoHTTPAuthHeader</a>	(void * ctx);
 void	<a href="#xmlNanoHTTPCleanup">xmlNanoHTTPCleanup</a>		(void);
-void *	<a href="#xmlNanoHTTPMethod">xmlNanoHTTPMethod</a>		(const char * URL, <br/>					 const char * method, <br/>					 const char * input, <br/>					 char ** contentType, <br/>					 const char * headers, <br/>					 int ilen);
+void	<a href="#xmlNanoHTTPClose">xmlNanoHTTPClose</a>		(void * ctx);
+int	<a href="#xmlNanoHTTPContentLength">xmlNanoHTTPContentLength</a>	(void * ctx);
+const char *	<a href="#xmlNanoHTTPEncoding">xmlNanoHTTPEncoding</a>	(void * ctx);
+int	<a href="#xmlNanoHTTPFetch">xmlNanoHTTPFetch</a>		(const char * URL, <br/>					 const char * filename, <br/>					 char ** contentType);
 void	<a href="#xmlNanoHTTPInit">xmlNanoHTTPInit</a>			(void);
+void *	<a href="#xmlNanoHTTPMethod">xmlNanoHTTPMethod</a>		(const char * URL, <br/>					 const char * method, <br/>					 const char * input, <br/>					 char ** contentType, <br/>					 const char * headers, <br/>					 int ilen);
+void *	<a href="#xmlNanoHTTPMethodRedir">xmlNanoHTTPMethodRedir</a>		(const char * URL, <br/>					 const char * method, <br/>					 const char * input, <br/>					 char ** contentType, <br/>					 char ** redir, <br/>					 const char * headers, <br/>					 int ilen);
+const char *	<a href="#xmlNanoHTTPMimeType">xmlNanoHTTPMimeType</a>	(void * ctx);
 void *	<a href="#xmlNanoHTTPOpen">xmlNanoHTTPOpen</a>			(const char * URL, <br/>					 char ** contentType);
 void *	<a href="#xmlNanoHTTPOpenRedir">xmlNanoHTTPOpenRedir</a>		(const char * URL, <br/>					 char ** contentType, <br/>					 char ** redir);
-void *	<a href="#xmlNanoHTTPMethodRedir">xmlNanoHTTPMethodRedir</a>		(const char * URL, <br/>					 const char * method, <br/>					 const char * input, <br/>					 char ** contentType, <br/>					 char ** redir, <br/>					 const char * headers, <br/>					 int ilen);
-void	<a href="#xmlNanoHTTPScanProxy">xmlNanoHTTPScanProxy</a>		(const char * URL);
-const char *	<a href="#xmlNanoHTTPEncoding">xmlNanoHTTPEncoding</a>	(void * ctx);
+int	<a href="#xmlNanoHTTPRead">xmlNanoHTTPRead</a>			(void * ctx, <br/>					 void * dest, <br/>					 int len);
+const char *	<a href="#xmlNanoHTTPRedir">xmlNanoHTTPRedir</a>	(void * ctx);
 int	<a href="#xmlNanoHTTPReturnCode">xmlNanoHTTPReturnCode</a>		(void * ctx);
+int	<a href="#xmlNanoHTTPSave">xmlNanoHTTPSave</a>			(void * ctxt, <br/>					 const char * filename);
+void	<a href="#xmlNanoHTTPScanProxy">xmlNanoHTTPScanProxy</a>		(const char * URL);
 </pre>
     </div>
     <div class="refsect1" lang="en">

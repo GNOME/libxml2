@@ -44,12 +44,12 @@
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
       <pre class="synopsis">typedef struct _xmlModule <a href="#xmlModule">xmlModule</a>;
-typedef <a href="libxml2-xmlmodule.html#xmlModule">xmlModule</a> * <a href="#xmlModulePtr">xmlModulePtr</a>;
 typedef enum <a href="#xmlModuleOption">xmlModuleOption</a>;
-int	<a href="#xmlModuleFree">xmlModuleFree</a>			(<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module);
-int	<a href="#xmlModuleSymbol">xmlModuleSymbol</a>			(<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module, <br/>					 const char * name, <br/>					 void ** symbol);
-<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a>	<a href="#xmlModuleOpen">xmlModuleOpen</a>		(const char * name, <br/>					 int options);
+typedef <a href="libxml2-xmlmodule.html#xmlModule">xmlModule</a> * <a href="#xmlModulePtr">xmlModulePtr</a>;
 int	<a href="#xmlModuleClose">xmlModuleClose</a>			(<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module);
+int	<a href="#xmlModuleFree">xmlModuleFree</a>			(<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module);
+<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a>	<a href="#xmlModuleOpen">xmlModuleOpen</a>		(const char * name, <br/>					 int options);
+int	<a href="#xmlModuleSymbol">xmlModuleSymbol</a>			(<a href="libxml2-xmlmodule.html#xmlModulePtr">xmlModulePtr</a> module, <br/>					 const char * name, <br/>					 void ** symbol);
 </pre>
     </div>
     <div class="refsect1" lang="en">

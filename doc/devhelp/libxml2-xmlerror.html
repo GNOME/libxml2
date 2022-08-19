@@ -43,28 +43,28 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * <a href="#xmlErrorPtr">xmlErrorPtr</a>;
-typedef enum <a href="#xmlErrorLevel">xmlErrorLevel</a>;
-typedef enum <a href="#xmlParserErrors">xmlParserErrors</a>;
+      <pre class="synopsis">typedef struct _xmlError <a href="#xmlError">xmlError</a>;
 typedef enum <a href="#xmlErrorDomain">xmlErrorDomain</a>;
-typedef struct _xmlError <a href="#xmlError">xmlError</a>;
-void	<a href="#xmlParserValidityError">xmlParserValidityError</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-typedef void <a href="#xmlGenericErrorFunc">xmlGenericErrorFunc</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-void	<a href="#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a>		(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
-void	<a href="#xmlParserPrintFileInfo">xmlParserPrintFileInfo</a>		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
-void	<a href="#xmlCtxtResetLastError">xmlCtxtResetLastError</a>		(void * ctx);
-void	<a href="#xmlResetLastError">xmlResetLastError</a>		(void);
+typedef enum <a href="#xmlErrorLevel">xmlErrorLevel</a>;
+typedef <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * <a href="#xmlErrorPtr">xmlErrorPtr</a>;
+typedef enum <a href="#xmlParserErrors">xmlParserErrors</a>;
 void	<a href="#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>	(<a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler);
 int	<a href="#xmlCopyError">xmlCopyError</a>			(<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> from, <br/>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to);
-void	<a href="#xmlParserValidityWarning">xmlParserValidityWarning</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-void	<a href="#xmlParserPrintFileContext">xmlParserPrintFileContext</a>	(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
-void	<a href="#xmlParserError">xmlParserError</a>			(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-void	<a href="#xmlParserWarning">xmlParserWarning</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br/>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error);
-void	<a href="#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a>	(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
-void	<a href="#xmlResetError">xmlResetError</a>			(<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> err);
-<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	<a href="#xmlGetLastError">xmlGetLastError</a>		(void);
 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	<a href="#xmlCtxtGetLastError">xmlCtxtGetLastError</a>	(void * ctx);
+void	<a href="#xmlCtxtResetLastError">xmlCtxtResetLastError</a>		(void * ctx);
+typedef void <a href="#xmlGenericErrorFunc">xmlGenericErrorFunc</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	<a href="#xmlGetLastError">xmlGetLastError</a>		(void);
+void	<a href="#xmlParserError">xmlParserError</a>			(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+void	<a href="#xmlParserPrintFileContext">xmlParserPrintFileContext</a>	(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
+void	<a href="#xmlParserPrintFileInfo">xmlParserPrintFileInfo</a>		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
+void	<a href="#xmlParserValidityError">xmlParserValidityError</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+void	<a href="#xmlParserValidityWarning">xmlParserValidityWarning</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+void	<a href="#xmlParserWarning">xmlParserWarning</a>		(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+void	<a href="#xmlResetError">xmlResetError</a>			(<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> err);
+void	<a href="#xmlResetLastError">xmlResetLastError</a>		(void);
+void	<a href="#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a>		(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
+void	<a href="#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a>	(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
+typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br/>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error);
 </pre>
     </div>
     <div class="refsect1" lang="en">

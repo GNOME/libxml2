@@ -46,27 +46,27 @@
       <pre class="synopsis">typedef enum <a href="#xmlCharEncoding">xmlCharEncoding</a>;
 typedef struct _xmlCharEncodingHandler <a href="#xmlCharEncodingHandler">xmlCharEncodingHandler</a>;
 typedef <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * <a href="#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>;
-int	<a href="#xmlDelEncodingAlias">xmlDelEncodingAlias</a>		(const char * alias);
-const char *	<a href="#xmlGetEncodingAlias">xmlGetEncodingAlias</a>	(const char * alias);
-void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);
 int	<a href="#UTF8Toisolat1">UTF8Toisolat1</a>			(unsigned char * out, <br/>					 int * outlen, <br/>					 const unsigned char * in, <br/>					 int * inlen);
-void	<a href="#xmlInitCharEncodingHandlers">xmlInitCharEncodingHandlers</a>	(void);
-int	<a href="#xmlAddEncodingAlias">xmlAddEncodingAlias</a>		(const char * name, <br/>					 const char * alias);
-void	<a href="#xmlCleanupEncodingAliases">xmlCleanupEncodingAliases</a>	(void);
-int	<a href="#xmlCharEncOutFunc">xmlCharEncOutFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
-<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlParseCharEncoding">xmlParseCharEncoding</a>	(const char * name);
-typedef int <a href="#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a>	(unsigned char * out, <br/>					 int * outlen, <br/>					 const unsigned char * in, <br/>					 int * inlen);
-void	<a href="#xmlCleanupCharEncodingHandlers">xmlCleanupCharEncodingHandlers</a>	(void);
-<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlNewCharEncodingHandler">xmlNewCharEncodingHandler</a>	(const char * name, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output);
-typedef int <a href="#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a>	(unsigned char * out, <br/>					 int * outlen, <br/>					 const unsigned char * in, <br/>					 int * inlen);
 int	<a href="#isolat1ToUTF8">isolat1ToUTF8</a>			(unsigned char * out, <br/>					 int * outlen, <br/>					 const unsigned char * in, <br/>					 int * inlen);
-<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlFindCharEncodingHandler">xmlFindCharEncodingHandler</a>	(const char * name);
-int	<a href="#xmlCharEncInFunc">xmlCharEncInFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
-<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlGetCharEncodingHandler">xmlGetCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
-int	<a href="#xmlCharEncFirstLine">xmlCharEncFirstLine</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
-<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlDetectCharEncoding">xmlDetectCharEncoding</a>	(const unsigned char * in, <br/>					 int len);
+int	<a href="#xmlAddEncodingAlias">xmlAddEncodingAlias</a>		(const char * name, <br/>					 const char * alias);
 int	<a href="#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler);
+int	<a href="#xmlCharEncFirstLine">xmlCharEncFirstLine</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
+int	<a href="#xmlCharEncInFunc">xmlCharEncInFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
+int	<a href="#xmlCharEncOutFunc">xmlCharEncOutFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br/>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
+typedef int <a href="#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a>	(unsigned char * out, <br/>					 int * outlen, <br/>					 const unsigned char * in, <br/>					 int * inlen);
+typedef int <a href="#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a>	(unsigned char * out, <br/>					 int * outlen, <br/>					 const unsigned char * in, <br/>					 int * inlen);
+void	<a href="#xmlCleanupCharEncodingHandlers">xmlCleanupCharEncodingHandlers</a>	(void);
+void	<a href="#xmlCleanupEncodingAliases">xmlCleanupEncodingAliases</a>	(void);
+int	<a href="#xmlDelEncodingAlias">xmlDelEncodingAlias</a>		(const char * alias);
+<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlDetectCharEncoding">xmlDetectCharEncoding</a>	(const unsigned char * in, <br/>					 int len);
+<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlFindCharEncodingHandler">xmlFindCharEncodingHandler</a>	(const char * name);
+<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlGetCharEncodingHandler">xmlGetCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
+const char *	<a href="#xmlGetEncodingAlias">xmlGetEncodingAlias</a>	(const char * alias);
+void	<a href="#xmlInitCharEncodingHandlers">xmlInitCharEncodingHandlers</a>	(void);
+<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlNewCharEncodingHandler">xmlNewCharEncodingHandler</a>	(const char * name, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output);
+<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlParseCharEncoding">xmlParseCharEncoding</a>	(const char * name);
+void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);
 </pre>
     </div>
     <div class="refsect1" lang="en">

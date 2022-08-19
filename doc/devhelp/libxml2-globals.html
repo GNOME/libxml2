@@ -43,37 +43,37 @@
     <p>Author(s): Gary Pennington &lt;Gary.Pennington@uk.sun.com&gt;, Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef <a href="libxml2-globals.html#xmlGlobalState">xmlGlobalState</a> * <a href="#xmlGlobalStatePtr">xmlGlobalStatePtr</a>;
-typedef struct _xmlGlobalState <a href="#xmlGlobalState">xmlGlobalState</a>;
-void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc</a>	(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
-void	<a href="#xmlInitializeGlobalState">xmlInitializeGlobalState</a>	(<a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);
-<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	<a href="#xmlThrDefBufferAllocScheme">xmlThrDefBufferAllocScheme</a>	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v);
-int	<a href="#xmlThrDefPedanticParserDefaultValue">xmlThrDefPedanticParserDefaultValue</a>	(int v);
-<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
-typedef <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> <a href="#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	(const char * URI, <br/>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
-<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	<a href="#xmlThrDefOutputBufferCreateFilenameDefault">xmlThrDefOutputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func);
+      <pre class="synopsis">typedef struct _xmlGlobalState <a href="#xmlGlobalState">xmlGlobalState</a>;
+typedef <a href="libxml2-globals.html#xmlGlobalState">xmlGlobalState</a> * <a href="#xmlGlobalStatePtr">xmlGlobalStatePtr</a>;
+void	<a href="#xmlCleanupGlobals">xmlCleanupGlobals</a>		(void);
 <a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlDeregisterNodeDefault">xmlDeregisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
-int	<a href="#xmlThrDefDefaultBufferSize">xmlThrDefDefaultBufferSize</a>	(int v);
-<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	<a href="#xmlOutputBufferCreateFilenameDefault">xmlOutputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func);
-int	<a href="#xmlThrDefLoadExtDtdDefaultValue">xmlThrDefLoadExtDtdDefaultValue</a>	(int v);
-<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlThrDefRegisterNodeDefault">xmlThrDefRegisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
-int	<a href="#xmlThrDefKeepBlanksDefaultValue">xmlThrDefKeepBlanksDefaultValue</a>	(int v);
 typedef void <a href="#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+void	<a href="#xmlInitGlobals">xmlInitGlobals</a>			(void);
+void	<a href="#xmlInitializeGlobalState">xmlInitializeGlobalState</a>	(<a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);
+<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	<a href="#xmlOutputBufferCreateFilenameDefault">xmlOutputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func);
+typedef <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> <a href="#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	(const char * URI, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder, <br/>							 int compression);
+<a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	<a href="#xmlParserInputBufferCreateFilenameDefault">xmlParserInputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func);
+typedef <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> <a href="#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	(const char * URI, <br/>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
+<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
+typedef void <a href="#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	<a href="#xmlThrDefBufferAllocScheme">xmlThrDefBufferAllocScheme</a>	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v);
+int	<a href="#xmlThrDefDefaultBufferSize">xmlThrDefDefaultBufferSize</a>	(int v);
+<a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlThrDefDeregisterNodeDefault">xmlThrDefDeregisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
+int	<a href="#xmlThrDefDoValidityCheckingDefaultValue">xmlThrDefDoValidityCheckingDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefGetWarningsDefaultValue">xmlThrDefGetWarningsDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefIndentTreeOutput">xmlThrDefIndentTreeOutput</a>	(int v);
+int	<a href="#xmlThrDefKeepBlanksDefaultValue">xmlThrDefKeepBlanksDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefLineNumbersDefaultValue">xmlThrDefLineNumbersDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefLoadExtDtdDefaultValue">xmlThrDefLoadExtDtdDefaultValue</a>	(int v);
+<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	<a href="#xmlThrDefOutputBufferCreateFilenameDefault">xmlThrDefOutputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func);
 int	<a href="#xmlThrDefParserDebugEntities">xmlThrDefParserDebugEntities</a>	(int v);
 <a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	<a href="#xmlThrDefParserInputBufferCreateFilenameDefault">xmlThrDefParserInputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func);
-void	<a href="#xmlThrDefSetGenericErrorFunc">xmlThrDefSetGenericErrorFunc</a>	(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
-<a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	<a href="#xmlParserInputBufferCreateFilenameDefault">xmlParserInputBufferCreateFilenameDefault</a>	(<a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func);
-int	<a href="#xmlThrDefDoValidityCheckingDefaultValue">xmlThrDefDoValidityCheckingDefaultValue</a>	(int v);
-void	<a href="#xmlCleanupGlobals">xmlCleanupGlobals</a>		(void);
-int	<a href="#xmlThrDefGetWarningsDefaultValue">xmlThrDefGetWarningsDefaultValue</a>	(int v);
-<a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlThrDefDeregisterNodeDefault">xmlThrDefDeregisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
-int	<a href="#xmlThrDefSubstituteEntitiesDefaultValue">xmlThrDefSubstituteEntitiesDefaultValue</a>	(int v);
-typedef void <a href="#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+int	<a href="#xmlThrDefPedanticParserDefaultValue">xmlThrDefPedanticParserDefaultValue</a>	(int v);
+<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlThrDefRegisterNodeDefault">xmlThrDefRegisterNodeDefault</a>	(<a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
 int	<a href="#xmlThrDefSaveNoEmptyTags">xmlThrDefSaveNoEmptyTags</a>	(int v);
-int	<a href="#xmlThrDefIndentTreeOutput">xmlThrDefIndentTreeOutput</a>	(int v);
-typedef <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> <a href="#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	(const char * URI, <br/>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder, <br/>							 int compression);
-void	<a href="#xmlInitGlobals">xmlInitGlobals</a>			(void);
-int	<a href="#xmlThrDefLineNumbersDefaultValue">xmlThrDefLineNumbersDefaultValue</a>	(int v);
+void	<a href="#xmlThrDefSetGenericErrorFunc">xmlThrDefSetGenericErrorFunc</a>	(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
+void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc</a>	(void * ctx, <br/>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
+int	<a href="#xmlThrDefSubstituteEntitiesDefaultValue">xmlThrDefSubstituteEntitiesDefaultValue</a>	(int v);
 const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	(const char * v);
 </pre>
     </div>

@@ -43,25 +43,25 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef struct _xmlSchematronValidCtxt <a href="#xmlSchematronValidCtxt">xmlSchematronValidCtxt</a>;
-typedef enum <a href="#xmlSchematronValidOptions">xmlSchematronValidOptions</a>;
-typedef <a href="libxml2-schematron.html#xmlSchematron">xmlSchematron</a> * <a href="#xmlSchematronPtr">xmlSchematronPtr</a>;
+      <pre class="synopsis">typedef struct _xmlSchematron <a href="#xmlSchematron">xmlSchematron</a>;
 typedef struct _xmlSchematronParserCtxt <a href="#xmlSchematronParserCtxt">xmlSchematronParserCtxt</a>;
-typedef struct _xmlSchematron <a href="#xmlSchematron">xmlSchematron</a>;
-typedef <a href="libxml2-schematron.html#xmlSchematronValidCtxt">xmlSchematronValidCtxt</a> * <a href="#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a>;
 typedef <a href="libxml2-schematron.html#xmlSchematronParserCtxt">xmlSchematronParserCtxt</a> * <a href="#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>;
-int	<a href="#xmlSchematronValidateDoc">xmlSchematronValidateDoc</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> instance);
-void	<a href="#xmlSchematronFreeParserCtxt">xmlSchematronFreeParserCtxt</a>	(<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a> ctxt);
-<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewMemParserCtxt">xmlSchematronNewMemParserCtxt</a>	(const char * buffer, <br/>							 int size);
-typedef void <a href="#xmlSchematronValidityErrorFunc">xmlSchematronValidityErrorFunc</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewParserCtxt">xmlSchematronNewParserCtxt</a>	(const char * URL);
-typedef void <a href="#xmlSchematronValidityWarningFunc">xmlSchematronValidityWarningFunc</a>	(void * ctx, <br/>						 const char * msg, <br/>						 ... ...);
+typedef <a href="libxml2-schematron.html#xmlSchematron">xmlSchematron</a> * <a href="#xmlSchematronPtr">xmlSchematronPtr</a>;
+typedef struct _xmlSchematronValidCtxt <a href="#xmlSchematronValidCtxt">xmlSchematronValidCtxt</a>;
+typedef <a href="libxml2-schematron.html#xmlSchematronValidCtxt">xmlSchematronValidCtxt</a> * <a href="#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a>;
+typedef enum <a href="#xmlSchematronValidOptions">xmlSchematronValidOptions</a>;
 void	<a href="#xmlSchematronFree">xmlSchematronFree</a>		(<a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a> schema);
-void	<a href="#xmlSchematronSetValidStructuredErrors">xmlSchematronSetValidStructuredErrors</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
+void	<a href="#xmlSchematronFreeParserCtxt">xmlSchematronFreeParserCtxt</a>	(<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a> ctxt);
 void	<a href="#xmlSchematronFreeValidCtxt">xmlSchematronFreeValidCtxt</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt);
-<a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a>	<a href="#xmlSchematronParse">xmlSchematronParse</a>	(<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a> ctxt);
 <a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewDocParserCtxt">xmlSchematronNewDocParserCtxt</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewMemParserCtxt">xmlSchematronNewMemParserCtxt</a>	(const char * buffer, <br/>							 int size);
+<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a>	<a href="#xmlSchematronNewParserCtxt">xmlSchematronNewParserCtxt</a>	(const char * URL);
 <a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a>	<a href="#xmlSchematronNewValidCtxt">xmlSchematronNewValidCtxt</a>	(<a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a> schema, <br/>							 int options);
+<a href="libxml2-schematron.html#xmlSchematronPtr">xmlSchematronPtr</a>	<a href="#xmlSchematronParse">xmlSchematronParse</a>	(<a href="libxml2-schematron.html#xmlSchematronParserCtxtPtr">xmlSchematronParserCtxtPtr</a> ctxt);
+void	<a href="#xmlSchematronSetValidStructuredErrors">xmlSchematronSetValidStructuredErrors</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
+int	<a href="#xmlSchematronValidateDoc">xmlSchematronValidateDoc</a>	(<a href="libxml2-schematron.html#xmlSchematronValidCtxtPtr">xmlSchematronValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> instance);
+typedef void <a href="#xmlSchematronValidityErrorFunc">xmlSchematronValidityErrorFunc</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+typedef void <a href="#xmlSchematronValidityWarningFunc">xmlSchematronValidityWarningFunc</a>	(void * ctx, <br/>						 const char * msg, <br/>						 ... ...);
 </pre>
     </div>
     <div class="refsect1" lang="en">

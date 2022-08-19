@@ -44,39 +44,39 @@
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
       <pre class="synopsis">typedef struct _xmlRelaxNG <a href="#xmlRelaxNG">xmlRelaxNG</a>;
-typedef <a href="libxml2-relaxng.html#xmlRelaxNG">xmlRelaxNG</a> * <a href="#xmlRelaxNGPtr">xmlRelaxNGPtr</a>;
-typedef enum <a href="#xmlRelaxNGValidErr">xmlRelaxNGValidErr</a>;
 typedef struct _xmlRelaxNGParserCtxt <a href="#xmlRelaxNGParserCtxt">xmlRelaxNGParserCtxt</a>;
 typedef <a href="libxml2-relaxng.html#xmlRelaxNGParserCtxt">xmlRelaxNGParserCtxt</a> * <a href="#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>;
 typedef enum <a href="#xmlRelaxNGParserFlag">xmlRelaxNGParserFlag</a>;
+typedef <a href="libxml2-relaxng.html#xmlRelaxNG">xmlRelaxNG</a> * <a href="#xmlRelaxNGPtr">xmlRelaxNGPtr</a>;
 typedef struct _xmlRelaxNGValidCtxt <a href="#xmlRelaxNGValidCtxt">xmlRelaxNGValidCtxt</a>;
 typedef <a href="libxml2-relaxng.html#xmlRelaxNGValidCtxt">xmlRelaxNGValidCtxt</a> * <a href="#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a>;
-void	<a href="#xmlRelaxNGFreeValidCtxt">xmlRelaxNGFreeValidCtxt</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);
-<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>	<a href="#xmlRelaxNGNewDocParserCtxt">xmlRelaxNGNewDocParserCtxt</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-void	<a href="#xmlRelaxNGSetValidErrors">xmlRelaxNGSetValidErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn, <br/>					 void * ctx);
-<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>	<a href="#xmlRelaxNGNewParserCtxt">xmlRelaxNGNewParserCtxt</a>	(const char * URL);
-int	<a href="#xmlRelaxNGGetParserErrors">xmlRelaxNGGetParserErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> * err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> * warn, <br/>					 void ** ctx);
-int	<a href="#xmlRelaxNGValidatePopElement">xmlRelaxNGValidatePopElement</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
-<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a>	<a href="#xmlRelaxNGNewValidCtxt">xmlRelaxNGNewValidCtxt</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
-<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>	<a href="#xmlRelaxNGNewMemParserCtxt">xmlRelaxNGNewMemParserCtxt</a>	(const char * buffer, <br/>							 int size);
+typedef enum <a href="#xmlRelaxNGValidErr">xmlRelaxNGValidErr</a>;
+void	<a href="#xmlRelaxNGCleanupTypes">xmlRelaxNGCleanupTypes</a>		(void);
 void	<a href="#xmlRelaxNGDump">xmlRelaxNGDump</a>			(FILE * output, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
-void	<a href="#xmlRelaxNGSetParserErrors">xmlRelaxNGSetParserErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn, <br/>					 void * ctx);
-<a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a>	<a href="#xmlRelaxNGParse">xmlRelaxNGParse</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
-void	<a href="#xmlRelaxNGSetParserStructuredErrors">xmlRelaxNGSetParserStructuredErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
-int	<a href="#xmlRelaxNGValidateFullElement">xmlRelaxNGValidateFullElement</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
-typedef void <a href="#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
-int	<a href="#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+void	<a href="#xmlRelaxNGDumpTree">xmlRelaxNGDumpTree</a>		(FILE * output, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
 void	<a href="#xmlRelaxNGFree">xmlRelaxNGFree</a>			(<a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
-int	<a href="#xmlRelaxNGValidateDoc">xmlRelaxNGValidateDoc</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-void	<a href="#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
 void	<a href="#xmlRelaxNGFreeParserCtxt">xmlRelaxNGFreeParserCtxt</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
+void	<a href="#xmlRelaxNGFreeValidCtxt">xmlRelaxNGFreeValidCtxt</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);
+int	<a href="#xmlRelaxNGGetParserErrors">xmlRelaxNGGetParserErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> * err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> * warn, <br/>					 void ** ctx);
 int	<a href="#xmlRelaxNGGetValidErrors">xmlRelaxNGGetValidErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> * err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> * warn, <br/>					 void ** ctx);
 int	<a href="#xmlRelaxNGInitTypes">xmlRelaxNGInitTypes</a>		(void);
-void	<a href="#xmlRelaxNGDumpTree">xmlRelaxNGDumpTree</a>		(FILE * output, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
-void	<a href="#xmlRelaxNGCleanupTypes">xmlRelaxNGCleanupTypes</a>		(void);
+<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>	<a href="#xmlRelaxNGNewDocParserCtxt">xmlRelaxNGNewDocParserCtxt</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>	<a href="#xmlRelaxNGNewMemParserCtxt">xmlRelaxNGNewMemParserCtxt</a>	(const char * buffer, <br/>							 int size);
+<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>	<a href="#xmlRelaxNGNewParserCtxt">xmlRelaxNGNewParserCtxt</a>	(const char * URL);
+<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a>	<a href="#xmlRelaxNGNewValidCtxt">xmlRelaxNGNewValidCtxt</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+<a href="libxml2-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a>	<a href="#xmlRelaxNGParse">xmlRelaxNGParse</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
+void	<a href="#xmlRelaxNGSetParserErrors">xmlRelaxNGSetParserErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn, <br/>					 void * ctx);
+void	<a href="#xmlRelaxNGSetParserStructuredErrors">xmlRelaxNGSetParserStructuredErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
+void	<a href="#xmlRelaxNGSetValidErrors">xmlRelaxNGSetValidErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err, <br/>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn, <br/>					 void * ctx);
+void	<a href="#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> serror, <br/>						 void * ctx);
+int	<a href="#xmlRelaxNGValidateDoc">xmlRelaxNGValidateDoc</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlRelaxNGValidateFullElement">xmlRelaxNGValidateFullElement</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+int	<a href="#xmlRelaxNGValidatePopElement">xmlRelaxNGValidatePopElement</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
 int	<a href="#xmlRelaxNGValidatePushCData">xmlRelaxNGValidatePushCData</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * data, <br/>					 int len);
-int	<a href="#xmlRelaxParserSetFlag">xmlRelaxParserSetFlag</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>					 int flags);
+int	<a href="#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a>	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br/>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+typedef void <a href="#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
 typedef void <a href="#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a>	(void * ctx, <br/>					 const char * msg, <br/>					 ... ...);
+int	<a href="#xmlRelaxParserSetFlag">xmlRelaxParserSetFlag</a>		(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br/>					 int flags);
 </pre>
     </div>
     <div class="refsect1" lang="en">

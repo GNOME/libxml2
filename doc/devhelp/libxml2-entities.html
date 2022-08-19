@@ -43,26 +43,26 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef enum <a href="#xmlEntityType">xmlEntityType</a>;
-typedef struct _xmlHashTable <a href="#xmlEntitiesTable">xmlEntitiesTable</a>;
+      <pre class="synopsis">typedef struct _xmlHashTable <a href="#xmlEntitiesTable">xmlEntitiesTable</a>;
 typedef <a href="libxml2-entities.html#xmlEntitiesTable">xmlEntitiesTable</a> * <a href="#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>;
+typedef enum <a href="#xmlEntityType">xmlEntityType</a>;
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlAddDocEntity">xmlAddDocEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
-<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlNewEntity">xmlNewEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncodeEntitiesReentrant">xmlEncodeEntitiesReentrant</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * input);
-<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetDocEntity">xmlGetDocEntity</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetDtdEntity">xmlGetDtdEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlAddDtdEntity">xmlAddDtdEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
+void	<a href="#xmlCleanupPredefinedEntities">xmlCleanupPredefinedEntities</a>	(void);
 <a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>	<a href="#xmlCopyEntitiesTable">xmlCopyEntitiesTable</a>	(<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);
-void	<a href="#xmlFreeEntitiesTable">xmlFreeEntitiesTable</a>		(<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);
-<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetParameterEntity">xmlGetParameterEntity</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>	<a href="#xmlCreateEntitiesTable">xmlCreateEntitiesTable</a>	(void);
 void	<a href="#xmlDumpEntitiesTable">xmlDumpEntitiesTable</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 <a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);
 void	<a href="#xmlDumpEntityDecl">xmlDumpEntityDecl</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br/>					 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent);
-void	<a href="#xmlCleanupPredefinedEntities">xmlCleanupPredefinedEntities</a>	(void);
-<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>	<a href="#xmlCreateEntitiesTable">xmlCreateEntitiesTable</a>	(void);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncodeEntities">xmlEncodeEntities</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * input);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncodeEntitiesReentrant">xmlEncodeEntitiesReentrant</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * input);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncodeSpecialChars">xmlEncodeSpecialChars</a>	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * input);
+void	<a href="#xmlFreeEntitiesTable">xmlFreeEntitiesTable</a>		(<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);
+<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetDocEntity">xmlGetDocEntity</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetDtdEntity">xmlGetDtdEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetParameterEntity">xmlGetParameterEntity</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetPredefinedEntity">xmlGetPredefinedEntity</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 void	<a href="#xmlInitializePredefinedEntities">xmlInitializePredefinedEntities</a>	(void);
+<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlNewEntity">xmlNewEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 int type, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
 </pre>
     </div>
     <div class="refsect1" lang="en">

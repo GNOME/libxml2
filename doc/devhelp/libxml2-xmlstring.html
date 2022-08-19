@@ -45,36 +45,36 @@
       <h2>Synopsis</h2>
       <pre class="synopsis">#define <a href="#BAD_CAST">BAD_CAST</a>;
 typedef unsigned char <a href="#xmlChar">xmlChar</a>;
-int	<a href="#xmlStrcmp">xmlStrcmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCharStrdup">xmlCharStrdup</a>		(const char * cur);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCharStrndup">xmlCharStrndup</a>		(const char * cur, <br/>					 int len);
+int	<a href="#xmlCheckUTF8">xmlCheckUTF8</a>			(const unsigned char * utf);
+int	<a href="#xmlGetUTF8Char">xmlGetUTF8Char</a>			(const unsigned char * utf, <br/>					 int * len);
+int	<a href="#xmlStrEqual">xmlStrEqual</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
+int	<a href="#xmlStrPrintf">xmlStrPrintf</a>			(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buf, <br/>					 int len, <br/>					 const char * msg, <br/>					 ... ...);
+int	<a href="#xmlStrQEqual">xmlStrQEqual</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pref, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
+int	<a href="#xmlStrVPrintf">xmlStrVPrintf</a>			(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buf, <br/>					 int len, <br/>					 const char * msg, <br/>					 va_list ap);
+int	<a href="#xmlStrcasecmp">xmlStrcasecmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrcasestr">xmlStrcasestr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrcat">xmlStrcat</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * add);
-int	<a href="#xmlStrPrintf">xmlStrPrintf</a>			(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buf, <br/>					 int len, <br/>					 const char * msg, <br/>					 ... ...);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrstr">xmlStrstr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val);
-int	<a href="#xmlUTF8Size">xmlUTF8Size</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf);
-int	<a href="#xmlStrQEqual">xmlStrQEqual</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pref, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrncatNew">xmlStrncatNew</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2, <br/>					 int len);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlUTF8Strpos">xmlUTF8Strpos</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int pos);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrdup">xmlStrdup</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCharStrdup">xmlCharStrdup</a>		(const char * cur);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrchr">xmlStrchr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> val);
+int	<a href="#xmlStrcmp">xmlStrcmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrdup">xmlStrdup</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur);
 int	<a href="#xmlStrlen">xmlStrlen</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
-int	<a href="#xmlStrncmp">xmlStrncmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2, <br/>					 int len);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrsub">xmlStrsub</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 int start, <br/>					 int len);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrncat">xmlStrncat</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * add, <br/>					 int len);
-int	<a href="#xmlGetUTF8Char">xmlGetUTF8Char</a>			(const unsigned char * utf, <br/>					 int * len);
-int	<a href="#xmlStrcasecmp">xmlStrcasecmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrndup">xmlStrndup</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 int len);
-int	<a href="#xmlStrVPrintf">xmlStrVPrintf</a>			(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buf, <br/>					 int len, <br/>					 const char * msg, <br/>					 va_list ap);
-int	<a href="#xmlUTF8Strsize">xmlUTF8Strsize</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int len);
-int	<a href="#xmlCheckUTF8">xmlCheckUTF8</a>			(const unsigned char * utf);
 int	<a href="#xmlStrncasecmp">xmlStrncasecmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2, <br/>					 int len);
-int	<a href="#xmlUTF8Strlen">xmlUTF8Strlen</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlUTF8Strsub">xmlUTF8Strsub</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int start, <br/>					 int len);
-int	<a href="#xmlStrEqual">xmlStrEqual</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrncat">xmlStrncat</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * add, <br/>					 int len);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrncatNew">xmlStrncatNew</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2, <br/>					 int len);
+int	<a href="#xmlStrncmp">xmlStrncmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str2, <br/>					 int len);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrndup">xmlStrndup</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br/>					 int len);
+const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrstr">xmlStrstr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * val);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlStrsub">xmlStrsub</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 int start, <br/>					 int len);
 int	<a href="#xmlUTF8Charcmp">xmlUTF8Charcmp</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf1, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf2);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlUTF8Strndup">xmlUTF8Strndup</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int len);
+int	<a href="#xmlUTF8Size">xmlUTF8Size</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf);
+int	<a href="#xmlUTF8Strlen">xmlUTF8Strlen</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf);
 int	<a href="#xmlUTF8Strloc">xmlUTF8Strloc</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utfchar);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlUTF8Strndup">xmlUTF8Strndup</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int len);
+const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlUTF8Strpos">xmlUTF8Strpos</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int pos);
+int	<a href="#xmlUTF8Strsize">xmlUTF8Strsize</a>			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int len);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlUTF8Strsub">xmlUTF8Strsub</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * utf, <br/>					 int start, <br/>					 int len);
 </pre>
     </div>
     <div class="refsect1" lang="en">

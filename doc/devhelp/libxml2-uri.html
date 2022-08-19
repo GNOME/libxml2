@@ -45,21 +45,21 @@
       <h2>Synopsis</h2>
       <pre class="synopsis">typedef struct _xmlURI <a href="#xmlURI">xmlURI</a>;
 typedef <a href="libxml2-uri.html#xmlURI">xmlURI</a> * <a href="#xmlURIPtr">xmlURIPtr</a>;
-int	<a href="#xmlNormalizeURIPath">xmlNormalizeURIPath</a>		(char * path);
-void	<a href="#xmlPrintURI">xmlPrintURI</a>			(FILE * stream, <br/>					 <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri);
-<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlParseURIRaw">xmlParseURIRaw</a>		(const char * str, <br/>					 int raw);
-char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * str, <br/>					 int len, <br/>					 char * target);
-<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlParseURI">xmlParseURI</a>		(const char * str);
-<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlCreateURI">xmlCreateURI</a>		(void);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlURIEscapeStr">xmlURIEscapeStr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * list);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlPathToURI">xmlPathToURI</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCanonicPath">xmlCanonicPath</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path);
-void	<a href="#xmlFreeURI">xmlFreeURI</a>			(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri);
-int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri, <br/>					 const char * str);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBuildRelativeURI">xmlBuildRelativeURI</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBuildURI">xmlBuildURI</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlCanonicPath">xmlCanonicPath</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path);
+<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlCreateURI">xmlCreateURI</a>		(void);
+void	<a href="#xmlFreeURI">xmlFreeURI</a>			(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri);
+int	<a href="#xmlNormalizeURIPath">xmlNormalizeURIPath</a>		(char * path);
+<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlParseURI">xmlParseURI</a>		(const char * str);
+<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a>	<a href="#xmlParseURIRaw">xmlParseURIRaw</a>		(const char * str, <br/>					 int raw);
+int	<a href="#xmlParseURIReference">xmlParseURIReference</a>		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri, <br/>					 const char * str);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlPathToURI">xmlPathToURI</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * path);
+void	<a href="#xmlPrintURI">xmlPrintURI</a>			(FILE * stream, <br/>					 <a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSaveUri">xmlSaveUri</a>		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlURIEscape">xmlURIEscape</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBuildURI">xmlBuildURI</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base);
+<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlURIEscapeStr">xmlURIEscapeStr</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * list);
+char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * str, <br/>					 int len, <br/>					 char * target);
 </pre>
     </div>
     <div class="refsect1" lang="en">

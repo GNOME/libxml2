@@ -46,30 +46,30 @@
       <h2>Synopsis</h2>
       <pre class="synopsis">#define <a href="#INVALID_SOCKET">INVALID_SOCKET</a>;
 #define <a href="#SOCKET">SOCKET</a>;
-int	<a href="#xmlNanoFTPQuit">xmlNanoFTPQuit</a>			(void * ctx);
-int	<a href="#xmlNanoFTPClose">xmlNanoFTPClose</a>			(void * ctx);
-typedef void <a href="#ftpListCallback">ftpListCallback</a>			(void * userData, <br/>					 const char * filename, <br/>					 const char * attrib, <br/>					 const char * owner, <br/>					 const char * group, <br/>					 unsigned long size, <br/>					 int links, <br/>					 int year, <br/>					 const char * month, <br/>					 int day, <br/>					 int hour, <br/>					 int minute);
-int	<a href="#xmlNanoFTPCloseConnection">xmlNanoFTPCloseConnection</a>	(void * ctx);
-void	<a href="#xmlNanoFTPProxy">xmlNanoFTPProxy</a>			(const char * host, <br/>					 int port, <br/>					 const char * user, <br/>					 const char * passwd, <br/>					 int type);
-int	<a href="#xmlNanoFTPUpdateURL">xmlNanoFTPUpdateURL</a>		(void * ctx, <br/>					 const char * URL);
-<a href="libxml2-nanoftp.html#SOCKET">SOCKET</a>	<a href="#xmlNanoFTPGetConnection">xmlNanoFTPGetConnection</a>		(void * ctx);
-int	<a href="#xmlNanoFTPDele">xmlNanoFTPDele</a>			(void * ctx, <br/>					 const char * file);
-void *	<a href="#xmlNanoFTPNewCtxt">xmlNanoFTPNewCtxt</a>		(const char * URL);
-int	<a href="#xmlNanoFTPCheckResponse">xmlNanoFTPCheckResponse</a>		(void * ctx);
-void	<a href="#xmlNanoFTPScanProxy">xmlNanoFTPScanProxy</a>		(const char * URL);
 typedef void <a href="#ftpDataCallback">ftpDataCallback</a>			(void * userData, <br/>					 const char * data, <br/>					 int len);
-int	<a href="#xmlNanoFTPGetResponse">xmlNanoFTPGetResponse</a>		(void * ctx);
-int	<a href="#xmlNanoFTPCwd">xmlNanoFTPCwd</a>			(void * ctx, <br/>					 const char * directory);
-void	<a href="#xmlNanoFTPInit">xmlNanoFTPInit</a>			(void);
-void *	<a href="#xmlNanoFTPConnectTo">xmlNanoFTPConnectTo</a>		(const char * server, <br/>					 int port);
-int	<a href="#xmlNanoFTPList">xmlNanoFTPList</a>			(void * ctx, <br/>					 <a href="libxml2-nanoftp.html#ftpListCallback">ftpListCallback</a> callback, <br/>					 void * userData, <br/>					 const char * filename);
-void *	<a href="#xmlNanoFTPOpen">xmlNanoFTPOpen</a>			(const char * URL);
-int	<a href="#xmlNanoFTPConnect">xmlNanoFTPConnect</a>		(void * ctx);
-<a href="libxml2-nanoftp.html#SOCKET">SOCKET</a>	<a href="#xmlNanoFTPGetSocket">xmlNanoFTPGetSocket</a>		(void * ctx, <br/>					 const char * filename);
-int	<a href="#xmlNanoFTPGet">xmlNanoFTPGet</a>			(void * ctx, <br/>					 <a href="libxml2-nanoftp.html#ftpDataCallback">ftpDataCallback</a> callback, <br/>					 void * userData, <br/>					 const char * filename);
-int	<a href="#xmlNanoFTPRead">xmlNanoFTPRead</a>			(void * ctx, <br/>					 void * dest, <br/>					 int len);
-void	<a href="#xmlNanoFTPFreeCtxt">xmlNanoFTPFreeCtxt</a>		(void * ctx);
+typedef void <a href="#ftpListCallback">ftpListCallback</a>			(void * userData, <br/>					 const char * filename, <br/>					 const char * attrib, <br/>					 const char * owner, <br/>					 const char * group, <br/>					 unsigned long size, <br/>					 int links, <br/>					 int year, <br/>					 const char * month, <br/>					 int day, <br/>					 int hour, <br/>					 int minute);
+int	<a href="#xmlNanoFTPCheckResponse">xmlNanoFTPCheckResponse</a>		(void * ctx);
 void	<a href="#xmlNanoFTPCleanup">xmlNanoFTPCleanup</a>		(void);
+int	<a href="#xmlNanoFTPClose">xmlNanoFTPClose</a>			(void * ctx);
+int	<a href="#xmlNanoFTPCloseConnection">xmlNanoFTPCloseConnection</a>	(void * ctx);
+int	<a href="#xmlNanoFTPConnect">xmlNanoFTPConnect</a>		(void * ctx);
+void *	<a href="#xmlNanoFTPConnectTo">xmlNanoFTPConnectTo</a>		(const char * server, <br/>					 int port);
+int	<a href="#xmlNanoFTPCwd">xmlNanoFTPCwd</a>			(void * ctx, <br/>					 const char * directory);
+int	<a href="#xmlNanoFTPDele">xmlNanoFTPDele</a>			(void * ctx, <br/>					 const char * file);
+void	<a href="#xmlNanoFTPFreeCtxt">xmlNanoFTPFreeCtxt</a>		(void * ctx);
+int	<a href="#xmlNanoFTPGet">xmlNanoFTPGet</a>			(void * ctx, <br/>					 <a href="libxml2-nanoftp.html#ftpDataCallback">ftpDataCallback</a> callback, <br/>					 void * userData, <br/>					 const char * filename);
+<a href="libxml2-nanoftp.html#SOCKET">SOCKET</a>	<a href="#xmlNanoFTPGetConnection">xmlNanoFTPGetConnection</a>		(void * ctx);
+int	<a href="#xmlNanoFTPGetResponse">xmlNanoFTPGetResponse</a>		(void * ctx);
+<a href="libxml2-nanoftp.html#SOCKET">SOCKET</a>	<a href="#xmlNanoFTPGetSocket">xmlNanoFTPGetSocket</a>		(void * ctx, <br/>					 const char * filename);
+void	<a href="#xmlNanoFTPInit">xmlNanoFTPInit</a>			(void);
+int	<a href="#xmlNanoFTPList">xmlNanoFTPList</a>			(void * ctx, <br/>					 <a href="libxml2-nanoftp.html#ftpListCallback">ftpListCallback</a> callback, <br/>					 void * userData, <br/>					 const char * filename);
+void *	<a href="#xmlNanoFTPNewCtxt">xmlNanoFTPNewCtxt</a>		(const char * URL);
+void *	<a href="#xmlNanoFTPOpen">xmlNanoFTPOpen</a>			(const char * URL);
+void	<a href="#xmlNanoFTPProxy">xmlNanoFTPProxy</a>			(const char * host, <br/>					 int port, <br/>					 const char * user, <br/>					 const char * passwd, <br/>					 int type);
+int	<a href="#xmlNanoFTPQuit">xmlNanoFTPQuit</a>			(void * ctx);
+int	<a href="#xmlNanoFTPRead">xmlNanoFTPRead</a>			(void * ctx, <br/>					 void * dest, <br/>					 int len);
+void	<a href="#xmlNanoFTPScanProxy">xmlNanoFTPScanProxy</a>		(const char * URL);
+int	<a href="#xmlNanoFTPUpdateURL">xmlNanoFTPUpdateURL</a>		(void * ctx, <br/>					 const char * URL);
 </pre>
     </div>
     <div class="refsect1" lang="en">

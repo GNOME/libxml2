@@ -43,23 +43,23 @@
     <p>Author(s): Daniel Veillard </p>
     <div class="refsynopsisdiv">
       <h2>Synopsis</h2>
-      <pre class="synopsis">typedef <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * <a href="#xlinkTitle">xlinkTitle</a>;
-typedef enum <a href="#xlinkShow">xlinkShow</a>;
+      <pre class="synopsis">typedef enum <a href="#xlinkActuate">xlinkActuate</a>;
 typedef <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * <a href="#xlinkHRef">xlinkHRef</a>;
-typedef enum <a href="#xlinkActuate">xlinkActuate</a>;
 typedef struct _xlinkHandler <a href="#xlinkHandler">xlinkHandler</a>;
-typedef <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * <a href="#xlinkRole">xlinkRole</a>;
 typedef <a href="libxml2-xlink.html#xlinkHandler">xlinkHandler</a> * <a href="#xlinkHandlerPtr">xlinkHandlerPtr</a>;
+typedef <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * <a href="#xlinkRole">xlinkRole</a>;
+typedef enum <a href="#xlinkShow">xlinkShow</a>;
+typedef <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * <a href="#xlinkTitle">xlinkTitle</a>;
 typedef enum <a href="#xlinkType">xlinkType</a>;
-void	<a href="#xlinkSetDefaultDetect">xlinkSetDefaultDetect</a>		(<a href="libxml2-xlink.html#xlinkNodeDetectFunc">xlinkNodeDetectFunc</a> func);
-void	<a href="#xlinkSetDefaultHandler">xlinkSetDefaultHandler</a>		(<a href="libxml2-xlink.html#xlinkHandlerPtr">xlinkHandlerPtr</a> handler);
 typedef void <a href="#xlinkExtendedLinkFunk">xlinkExtendedLinkFunk</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 int nbLocators, <br/>					 const <a href="libxml2-xlink.html#xlinkHRef">xlinkHRef</a> * hrefs, <br/>					 const <a href="libxml2-xlink.html#xlinkRole">xlinkRole</a> * roles, <br/>					 int nbArcs, <br/>					 const <a href="libxml2-xlink.html#xlinkRole">xlinkRole</a> * from, <br/>					 const <a href="libxml2-xlink.html#xlinkRole">xlinkRole</a> * to, <br/>					 <a href="libxml2-xlink.html#xlinkShow">xlinkShow</a> * show, <br/>					 <a href="libxml2-xlink.html#xlinkActuate">xlinkActuate</a> * actuate, <br/>					 int nbTitles, <br/>					 const <a href="libxml2-xlink.html#xlinkTitle">xlinkTitle</a> * titles, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** langs);
 typedef void <a href="#xlinkExtendedLinkSetFunk">xlinkExtendedLinkSetFunk</a>	(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 int nbLocators, <br/>					 const <a href="libxml2-xlink.html#xlinkHRef">xlinkHRef</a> * hrefs, <br/>					 const <a href="libxml2-xlink.html#xlinkRole">xlinkRole</a> * roles, <br/>					 int nbTitles, <br/>					 const <a href="libxml2-xlink.html#xlinkTitle">xlinkTitle</a> * titles, <br/>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** langs);
-typedef void <a href="#xlinkSimpleLinkFunk">xlinkSimpleLinkFunk</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xlink.html#xlinkHRef">xlinkHRef</a> href, <br/>					 const <a href="libxml2-xlink.html#xlinkRole">xlinkRole</a> role, <br/>					 const <a href="libxml2-xlink.html#xlinkTitle">xlinkTitle</a> title);
-typedef void <a href="#xlinkNodeDetectFunc">xlinkNodeDetectFunc</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+<a href="libxml2-xlink.html#xlinkNodeDetectFunc">xlinkNodeDetectFunc</a>	<a href="#xlinkGetDefaultDetect">xlinkGetDefaultDetect</a>	(void);
 <a href="libxml2-xlink.html#xlinkHandlerPtr">xlinkHandlerPtr</a>	<a href="#xlinkGetDefaultHandler">xlinkGetDefaultHandler</a>	(void);
 <a href="libxml2-xlink.html#xlinkType">xlinkType</a>	<a href="#xlinkIsLink">xlinkIsLink</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-<a href="libxml2-xlink.html#xlinkNodeDetectFunc">xlinkNodeDetectFunc</a>	<a href="#xlinkGetDefaultDetect">xlinkGetDefaultDetect</a>	(void);
+typedef void <a href="#xlinkNodeDetectFunc">xlinkNodeDetectFunc</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+void	<a href="#xlinkSetDefaultDetect">xlinkSetDefaultDetect</a>		(<a href="libxml2-xlink.html#xlinkNodeDetectFunc">xlinkNodeDetectFunc</a> func);
+void	<a href="#xlinkSetDefaultHandler">xlinkSetDefaultHandler</a>		(<a href="libxml2-xlink.html#xlinkHandlerPtr">xlinkHandlerPtr</a> handler);
+typedef void <a href="#xlinkSimpleLinkFunk">xlinkSimpleLinkFunk</a>		(void * ctx, <br/>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br/>					 const <a href="libxml2-xlink.html#xlinkHRef">xlinkHRef</a> href, <br/>					 const <a href="libxml2-xlink.html#xlinkRole">xlinkRole</a> role, <br/>					 const <a href="libxml2-xlink.html#xlinkTitle">xlinkTitle</a> title);
 </pre>
     </div>
     <div class="refsect1" lang="en">

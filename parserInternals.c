@@ -1345,6 +1345,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 xmlParserInputPtr
 xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     xmlParserInputPtr input;
+    xmlParserInputBufferPtr buf;
 
     if (buffer == NULL) {
         xmlErrInternal(ctxt, "xmlNewStringInputStream string = NULL\n",
@@ -1354,15 +1355,21 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     if (xmlParserDebugEntities)
 	xmlGenericError(xmlGenericErrorContext,
 		"new fixed input: %.30s\n", buffer);
+    buf = xmlParserInputBufferCreateMem((const char *) buffer,
+                                        strlen((const char *) buffer),
+                                        XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) {
+	xmlErrMemory(ctxt, NULL);
+        return(NULL);
+    }
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
         xmlErrMemory(ctxt,  "couldn't allocate a new input stream\n");
+	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
-    input->base = buffer;
-    input->cur = buffer;
-    input->length = xmlStrlen(buffer);
-    input->end = &buffer[input->length];
+    input->buf = buf;
+    xmlBufResetInput(input->buf->buffer, input);
     return(input);
 }
 

@@ -1356,7 +1356,7 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
 	xmlGenericError(xmlGenericErrorContext,
 		"new fixed input: %.30s\n", buffer);
     buf = xmlParserInputBufferCreateMem((const char *) buffer,
-                                        strlen((const char *) buffer),
+                                        xmlStrlen(buffer),
                                         XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);

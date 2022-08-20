@@ -15359,22 +15359,12 @@ xmlDocPtr
 xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
                const char *URL, const char *encoding, int options)
 {
-    xmlParserInputPtr stream;
+    const char *buf;
 
     if (cur == NULL)
         return (NULL);
-    if (ctxt == NULL)
-        return (NULL);
-    xmlInitParser();
-
-    xmlCtxtReset(ctxt);
-
-    stream = xmlNewStringInputStream(ctxt, cur);
-    if (stream == NULL) {
-        return (NULL);
-    }
-    inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, URL, encoding, options, 1));
+    buf = (const char *) cur;
+    return (xmlCtxtReadMemory(ctxt, buf, strlen(buf), URL, encoding, options));
 }
 
 /**

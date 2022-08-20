@@ -7116,13 +7116,10 @@ htmlDocPtr
 htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar * cur,
                const char *URL, const char *encoding, int options)
 {
-    const char *buf;
-
     if (cur == NULL)
         return (NULL);
-    buf = (const char *) cur;
-    return (htmlCtxtReadMemory(ctxt, buf, strlen(buf), URL, encoding,
-                               options));
+    return (htmlCtxtReadMemory(ctxt, (const char *) cur, xmlStrlen(cur), URL,
+                               encoding, options));
 }
 
 /**

@@ -6992,7 +6992,7 @@ htmlReadMemory(const char *buffer, int size, const char *URL, const char *encodi
     htmlParserCtxtPtr ctxt;
 
     xmlInitParser();
-    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+    ctxt = htmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL)
         return (NULL);
     htmlDefaultSAXHandlerInit();

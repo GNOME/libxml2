@@ -2998,7 +2998,9 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 void
 htmlDefaultSAXHandlerInit(void)
 {
+#ifdef LIBXML_SAX1_ENABLED
     xmlSAX2InitHtmlDefaultSAXHandler((xmlSAXHandlerPtr) &htmlDefaultSAXHandler);
+#endif
 }
 
 #endif /* LIBXML_HTML_ENABLED */

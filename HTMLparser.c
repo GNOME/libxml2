@@ -6338,7 +6338,9 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     if(enc==XML_CHAR_ENCODING_UTF8 || buf->encoder)
 	ctxt->charset=XML_CHAR_ENCODING_UTF8;
     if (sax != NULL) {
+#ifdef LIBXML_SAX1_ENABLED
 	if (ctxt->sax != (xmlSAXHandlerPtr) &htmlDefaultSAXHandler)
+#endif
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (htmlSAXHandlerPtr) xmlMalloc(sizeof(htmlSAXHandler));
 	if (ctxt->sax == NULL) {

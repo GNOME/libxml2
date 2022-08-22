@@ -405,7 +405,7 @@ xmlSAXLocator xmlDefaultSAXLocator = {
     xmlSAX2GetColumnNumber
 };
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 /**
  * htmlDefaultSAXHandler:
  *
@@ -667,7 +667,7 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
     return(old);
 }
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 #undef	htmlDefaultSAXHandler
 xmlSAXHandlerV1 *
 __htmlDefaultSAXHandler(void) {

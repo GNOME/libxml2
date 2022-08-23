@@ -1117,7 +1117,6 @@ class CParser:
                 token = self.token()
                 token = self.parseBlock(token)
             elif token[0] == "sep" and token[1] == "}":
-                self.comment = None
                 token = self.token()
                 return token
             else:
@@ -1561,17 +1560,20 @@ class CParser:
                                 ((type, None), self.signature), 1)
                         self.index_add(self.name, self.filename, static,
                                         "function", d)
+                        self.comment = None
                         token = self.token()
                     elif token[0] == "sep" and token[1] == "{":
                         d = self.mergeFunctionComment(self.name,
                                 ((type, None), self.signature), static)
                         self.index_add(self.name, self.filename, static,
                                         "function", d)
+                        self.comment = None
                         token = self.token()
                         token = self.parseBlock(token);
                 elif token[1] == ',':
                     self.index_add(self.name, self.filename, static,
                                     "variable", type)
+                    self.comment = None
                     type = type_orig
                     token = self.token()
                     while token != None and token[0] == "sep":
@@ -1580,7 +1582,6 @@ class CParser:
                     if token != None and token[0] == "name":
                         self.name = token[1]
                         token = self.token()
-                    self.comment = None
                 else:
                     break
 

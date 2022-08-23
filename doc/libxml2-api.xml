@@ -6951,7 +6951,9 @@ Could we use @subtypes for this?'/>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
     <variable name='emptyExp' file='xmlregexp' type='xmlExpNodePtr'/>
     <variable name='forbiddenExp' file='xmlregexp' type='xmlExpNodePtr'/>
-    <variable name='htmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
+    <variable name='htmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'>
+      <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default old SAX v1 handler for HTML, builds the DOM tree</info>
+    </variable>
     <variable name='oldXMLWDcompatibility' file='globals' type='int'>
       <info>Global setting, DEPRECATED.</info>
     </variable>
@@ -6961,8 +6963,12 @@ Could we use @subtypes for this?'/>
     <variable name='xmlDefaultBufferSize' file='globals' type='int'>
       <info>DEPRECATED: Don&apos;t use.  Global setting, default buffer size. Default value is BASE_BUFFER_SIZE</info>
     </variable>
-    <variable name='xmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
-    <variable name='xmlDefaultSAXLocator' file='globals' type='xmlSAXLocator'/>
+    <variable name='xmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'>
+      <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default SAX version1 handler for XML, builds the DOM tree</info>
+    </variable>
+    <variable name='xmlDefaultSAXLocator' file='globals' type='xmlSAXLocator'>
+      <info>DEPRECATED: Don&apos;t use  The default SAX Locator { getPublicId, getSystemId, getLineNumber, getColumnNumber}</info>
+    </variable>
     <variable name='xmlDeregisterNodeDefaultValue' file='globals' type='xmlDeregisterNodeFunc'/>
     <variable name='xmlDoValidityCheckingDefaultValue' file='globals' type='int'>
       <info>Global setting, indicate that the parser should work in validating mode. Disabled by default.</info>

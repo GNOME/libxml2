@@ -330,7 +330,19 @@ class index:
          #     else:
          #         print "Function %s from %s is not declared in headers" % (
          #                id, idx.functions[id].module)
-         # TODO: do the same for variables.
+
+        for id in list(idx.variables.keys()):
+            if id in self.variables:
+                # check that variable condition agrees with header
+                # TODO: produces many false positives
+                #if idx.variables[id].conditionals != \
+                #   self.variables[id].conditionals:
+                #    print("Header condition differs from Variable for %s:" \
+                #       % id)
+                #    print("  H: %s" % self.variables[id].conditionals)
+                #    print("  C: %s" % idx.variables[id].conditionals)
+                up = idx.variables[id]
+                self.variables[id].update(None, up.module, up.type, up.info, up.extra)
 
     def analyze_dict(self, type, dict):
         count = 0
@@ -679,9 +691,9 @@ class CParser:
         return token
 
     #
-    # Parse a comment block associate to a typedef
+    # Parse a simple comment block for typedefs or global variables
     #
-    def parseTypeComment(self, name, quiet = 0):
+    def parseSimpleComment(self, name, quiet = False):
         if name[0:2] == '__':
             quiet = 1
 
@@ -690,20 +702,20 @@ class CParser:
 
         if self.comment == None:
             if not quiet:
-                self.warning("Missing comment for type %s" % (name))
-            return((args, desc))
+                self.warning("Missing comment for %s" % (name))
+            return(None)
         if self.comment[0] != '*':
             if not quiet:
-                self.warning("Missing * in type comment for %s" % (name))
-            return((args, desc))
+                self.warning("Missing * in comment for %s" % (name))
+            return(None)
         lines = self.comment.split('\n')
         if lines[0] == '*':
             del lines[0]
         if lines[0] != "* %s:" % (name):
             if not quiet:
-                self.warning("Misformatted type comment for %s" % (name))
+                self.warning("Misformatted comment for %s" % (name))
                 self.warning("  Expecting '* %s:' got '%s'" % (name, lines[0]))
-            return((args, desc))
+            return(None)
         del lines[0]
         while len(lines) > 0 and lines[0] == '*':
             del lines[0]
@@ -720,7 +732,7 @@ class CParser:
 
         if quiet == 0:
             if desc == "":
-                self.warning("Type comment for %s lack description of the macro" % (name))
+                self.warning("Comment for %s lacks description" % (name))
 
         return(desc)
     #
@@ -1070,7 +1082,7 @@ class CParser:
                         base_type = "struct " + name
                     else:
                         # TODO report missing or misformatted comments
-                        info = self.parseTypeComment(name, 1)
+                        info = self.parseSimpleComment(name, True)
                         self.index_add(name, self.filename, not self.is_header,
                                     "typedef", type, info)
                 token = self.token()
@@ -1520,25 +1532,24 @@ class CParser:
                     token = self.token()
                     token = self.parseBlock(token)
                 else:
-                    self.comment = None
                     while token != None and (token[0] != "sep" or \
                           (token[1] != ';' and token[1] != ',')):
                             token = self.token()
-                self.comment = None
                 if token == None or token[0] != "sep" or (token[1] != ';' and
                    token[1] != ','):
                     self.error("missing ';' or ',' after value")
 
             if token != None and token[0] == "sep":
                 if token[1] == ";":
-                    self.comment = None
-                    token = self.token()
                     if type == "struct":
                         self.index_add(self.name, self.filename,
                              not self.is_header, "struct", self.struct_fields)
                     else:
+                        info = self.parseSimpleComment(self.name, True)
                         self.index_add(self.name, self.filename,
-                             not self.is_header, "variable", type)
+                             not self.is_header, "variable", type, info)
+                    self.comment = None
+                    token = self.token()
                     break
                 elif token[1] == "(":
                     token = self.token()
@@ -1559,7 +1570,6 @@ class CParser:
                         token = self.token()
                         token = self.parseBlock(token);
                 elif token[1] == ',':
-                    self.comment = None
                     self.index_add(self.name, self.filename, static,
                                     "variable", type)
                     type = type_orig
@@ -1570,6 +1580,7 @@ class CParser:
                     if token != None and token[0] == "name":
                         self.name = token[1]
                         token = self.token()
+                    self.comment = None
                 else:
                     break
 
@@ -1734,11 +1745,17 @@ class docBuilder:
     def serialize_variable(self, output, name):
         id = self.idx.variables[name]
         if id.info != None:
-            output.write("    <variable name='%s' file='%s' type='%s'/>\n" % (
+            output.write("    <variable name='%s' file='%s' type='%s'" % (
                     name, self.modulename_file(id.header), id.info))
         else:
-            output.write("    <variable name='%s' file='%s'/>\n" % (
+            output.write("    <variable name='%s' file='%s'" % (
                     name, self.modulename_file(id.header)))
+        desc = id.extra
+        if desc != None and desc != "":
+            output.write(">\n      <info>%s</info>\n" % (escape(desc)))
+            output.write("    </variable>\n")
+        else:
+            output.write("/>\n")
 
     def serialize_function(self, output, name):
         id = self.idx.functions[name]

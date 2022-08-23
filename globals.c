@@ -559,10 +559,6 @@ void xmlCleanupGlobals(void)
     __xmlGlobalInitMutexDestroy();
 }
 
-/**
- * DOC_DISABLE : we ignore missing doc for the xmlThrDef functions,
- *               those are really internal work
- */
 void
 xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
     xmlMutexLock(xmlThrDefMutex);

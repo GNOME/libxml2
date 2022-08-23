@@ -577,23 +577,25 @@ class CParser:
         self.last_comment = ""
         self.comment = None
         self.collect_ref = 0
-        self.no_error = 0
+        self.doc_disable = 0
         self.conditionals = []
         self.defines = []
 
     def collect_references(self):
         self.collect_ref = 1
 
-    def stop_error(self):
-        self.no_error = 1
+    def disable(self):
+        self.doc_disable = 1
 
-    def start_error(self):
-        self.no_error = 0
+    def enable(self):
+        self.doc_disable = 0
 
     def lineno(self):
         return self.lexer.getlineno()
 
     def index_add(self, name, module, static, type, info=None, extra = None):
+        if self.doc_disable:
+            return
         if self.is_header == 1:
             self.index.add(name, module, module, static, type, self.lineno(),
                            info, extra, self.conditionals)
@@ -611,12 +613,12 @@ class CParser:
                                info, extra, self.conditionals)
 
     def warning(self, msg):
-        if self.no_error:
+        if self.doc_disable:
             return
         print(msg)
 
     def error(self, msg, token=-1):
-        if self.no_error:
+        if self.doc_disable:
             return
 
         print("Parse Error: " + msg)
@@ -669,10 +671,10 @@ class CParser:
         token = self.lexer.token()
 
         if self.comment.find("DOC_DISABLE") != -1:
-            self.stop_error()
+            self.disable()
 
         if self.comment.find("DOC_ENABLE") != -1:
-            self.start_error()
+            self.enable()
 
         return token
 
@@ -935,7 +937,7 @@ class CParser:
                     name = name.split('(') [0]
                 except:
                     pass
-                info = self.parseMacroComment(name, not self.is_header)
+                info = self.parseMacroComment(name, True)
                 self.index_add(name, self.filename, not self.is_header,
                                 "macro", info)
                 return token

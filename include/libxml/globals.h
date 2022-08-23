@@ -192,7 +192,6 @@ XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL
 	xmlThrDefParserInputBufferCreateFilenameDefault(
 				xmlParserInputBufferCreateFilenameFunc func);
 
-/** DOC_DISABLE */
 /*
  * In general the memory allocation entry points are not kept
  * thread specific but this can be overridden by LIBXML_THREAD_ALLOC_ENABLED
@@ -204,6 +203,8 @@ XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL
  */
 
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
+/** DOC_DISABLE */
+
 #ifdef LIBXML_THREAD_ENABLED
 XMLPUBFUN  xmlMallocFunc * XMLCALL __xmlMalloc(void);
 #define xmlMalloc \
@@ -244,6 +245,7 @@ XMLPUBFUN  xmlStrdupFunc * XMLCALL __xmlMemStrdup(void);
 XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
 #endif
 
+/** DOC_ENABLE */
 #else /* !LIBXML_THREAD_ALLOC_ENABLED */
 XMLPUBVAR xmlMallocFunc xmlMalloc;
 XMLPUBVAR xmlMallocFunc xmlMallocAtomic;

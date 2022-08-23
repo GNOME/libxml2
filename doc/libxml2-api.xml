@@ -1387,7 +1387,6 @@
      <author>Daniel Veillard </author>
      <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
      <exports symbol='LIBXML2_NEW_BUFFER' type='macro'/>
-     <exports symbol='XML_DOCB_DOCUMENT_NODE' type='macro'/>
      <exports symbol='XML_GET_CONTENT' type='macro'/>
      <exports symbol='XML_GET_LINE' type='macro'/>
      <exports symbol='XML_LOCAL_NAMESPACE' type='macro'/>
@@ -2763,7 +2762,6 @@
     <file name='xmlexports'>
      <summary>macros for marking symbols as exportable/importable.</summary>
      <description>macros for marking symbols as exportable/importable. </description>
-     <exports symbol='LIBXML_DLL_IMPORT' type='macro'/>
      <exports symbol='XMLCALL' type='macro'/>
      <exports symbol='XMLCDECL' type='macro'/>
      <exports symbol='XMLPUBFUN' type='macro'/>
@@ -3963,8 +3961,6 @@
     <macro name='LIBXML_DEBUG_RUNTIME' file='xmlversion'>
       <info>Whether the runtime debugging is configured in</info>
     </macro>
-    <macro name='LIBXML_DLL_IMPORT' file='xmlexports'>
-    </macro>
     <macro name='LIBXML_DOTTED_VERSION' file='xmlversion'>
       <info>the version string like &quot;1.2.3&quot;</info>
     </macro>
@@ -4157,8 +4153,6 @@
     </macro>
     <macro name='XML_DETECT_IDS' file='parser'>
       <info>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize xmlLoadExtDtdDefaultValue.</info>
-    </macro>
-    <macro name='XML_DOCB_DOCUMENT_NODE' file='tree'>
     </macro>
     <macro name='XML_GET_CONTENT' file='tree'>
       <info>Macro to extract the content pointer of a node.</info>
@@ -4465,12 +4459,6 @@
     </macro>
     <macro name='XML_XPATH_NOVAR' file='xpath'>
       <info>forbid variables in expression</info>
-    </macro>
-    <macro name='XPATH_LOCATIONSET' file='xpath'>
-    </macro>
-    <macro name='XPATH_POINT' file='xpath'>
-    </macro>
-    <macro name='XPATH_RANGE' file='xpath'>
     </macro>
     <macro name='XP_ERROR' file='xpathInternals'>
       <info>Macro to raise an XPath error and return.</info>

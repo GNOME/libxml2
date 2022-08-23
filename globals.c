@@ -175,6 +175,8 @@ const char *xmlParserVersion = LIBXML_VERSION_STRING LIBXML_VERSION_EXTRA;
 /**
  * xmlBufferAllocScheme:
  *
+ * DEPRECATED: Don't use.
+ *
  * Global setting, default allocation policy for buffers, default is
  * XML_BUFFER_ALLOC_EXACT
  */
@@ -182,6 +184,8 @@ xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 static xmlBufferAllocationScheme xmlBufferAllocSchemeThrDef = XML_BUFFER_ALLOC_EXACT;
 /**
  * xmlDefaultBufferSize:
+ *
+ * DEPRECATED: Don't use.
  *
  * Global setting, default buffer size. Default value is BASE_BUFFER_SIZE
  */
@@ -235,6 +239,8 @@ static int xmlLoadExtDtdDefaultValueThrDef = 0;
 /**
  * xmlPedanticParserDefaultValue:
  *
+ * DEPRECATED: Use the modern options API with XML_PARSE_PEDANTIC.
+ *
  * Global setting, indicate that the parser be pedantic
  * Disabled by default.
  */
@@ -242,6 +248,8 @@ int xmlPedanticParserDefaultValue = 0;
 static int xmlPedanticParserDefaultValueThrDef = 0;
 /**
  * xmlLineNumbersDefaultValue:
+ *
+ * DEPRECATED: The modern options API always enables line numbers.
  *
  * Global setting, indicate that the parser should store the line number
  * in the content field of elements in the DOM tree.
@@ -358,6 +366,9 @@ static int xmlSaveNoEmptyTagsThrDef = 0;
 /**
  * xmlDefaultSAXHandler:
  *
+ * DEPRECATED: This handler is unused and will be removed from future
+ * versions.
+ *
  * Default SAX version1 handler for XML, builds the DOM tree
  */
 xmlSAXHandlerV1 xmlDefaultSAXHandler = {
@@ -395,6 +406,8 @@ xmlSAXHandlerV1 xmlDefaultSAXHandler = {
 /**
  * xmlDefaultSAXLocator:
  *
+ * DEPRECATED: Don't use
+ *
  * The default SAX Locator
  * { getPublicId, getSystemId, getLineNumber, getColumnNumber}
  */
@@ -408,6 +421,9 @@ xmlSAXLocator xmlDefaultSAXLocator = {
 #if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 /**
  * htmlDefaultSAXHandler:
+ *
+ * DEPRECATED: This handler is unused and will be removed from future
+ * versions.
  *
  * Default old SAX v1 handler for HTML, builds the DOM tree
  */

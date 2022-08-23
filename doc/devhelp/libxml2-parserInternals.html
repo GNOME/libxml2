@@ -307,7 +307,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <div class="variablelist"><table border="0"><col align="left"/><tbody><tr><td><span class="term"><i><tt>ent</tt></i>:</span></td><td>the entity</td></tr><tr><td><span class="term"><i><tt>firstNode</tt></i>:</span></td><td>the fist node in the chunk</td></tr><tr><td><span class="term"><i><tt>lastNode</tt></i>:</span></td><td>the last nod in the chunk</td></tr></tbody></table></div></div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserMaxDepth">Variable </a>xmlParserMaxDepth</h3><pre class="programlisting">unsigned int xmlParserMaxDepth;
-</pre><p/>
+</pre><p>arbitrary depth limit for the XML documents that we allow to process. This is not a limitation of the parser but a safety boundary feature. It can be disabled with the <a href="libxml2-parser.html#XML_PARSE_HUGE">XML_PARSE_HUGE</a> parser option.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlStringComment">Variable </a>xmlStringComment</h3><pre class="programlisting">const xmlCharxmlStringComment[] xmlStringComment;

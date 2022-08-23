@@ -98,7 +98,6 @@
     <keyword type="macro" name="LIBXML_CATALOG_ENABLED" link="libxml2-xmlversion.html#LIBXML_CATALOG_ENABLED"/>
     <keyword type="macro" name="LIBXML_DEBUG_ENABLED" link="libxml2-xmlversion.html#LIBXML_DEBUG_ENABLED"/>
     <keyword type="macro" name="LIBXML_DEBUG_RUNTIME" link="libxml2-xmlversion.html#LIBXML_DEBUG_RUNTIME"/>
-    <keyword type="macro" name="LIBXML_DLL_IMPORT" link="libxml2-xmlexports.html#LIBXML_DLL_IMPORT"/>
     <keyword type="macro" name="LIBXML_DOTTED_VERSION" link="libxml2-xmlversion.html#LIBXML_DOTTED_VERSION"/>
     <keyword type="macro" name="LIBXML_EXPR_ENABLED" link="libxml2-xmlversion.html#LIBXML_EXPR_ENABLED"/>
     <keyword type="macro" name="LIBXML_FTP_ENABLED" link="libxml2-xmlversion.html#LIBXML_FTP_ENABLED"/>
@@ -162,7 +161,6 @@
     <keyword type="macro" name="XML_DEFAULT_VERSION" link="libxml2-parser.html#XML_DEFAULT_VERSION"/>
     <keyword type="macro" name="XML_DEPRECATED" link="libxml2-xmlversion.html#XML_DEPRECATED"/>
     <keyword type="macro" name="XML_DETECT_IDS" link="libxml2-parser.html#XML_DETECT_IDS"/>
-    <keyword type="macro" name="XML_DOCB_DOCUMENT_NODE" link="libxml2-tree.html#XML_DOCB_DOCUMENT_NODE"/>
     <keyword type="macro" name="XML_GET_CONTENT" link="libxml2-tree.html#XML_GET_CONTENT"/>
     <keyword type="macro" name="XML_GET_LINE" link="libxml2-tree.html#XML_GET_LINE"/>
     <keyword type="macro" name="XML_LOCAL_NAMESPACE" link="libxml2-tree.html#XML_LOCAL_NAMESPACE"/>
@@ -265,9 +263,6 @@
     <keyword type="macro" name="XML_XML_NAMESPACE" link="libxml2-tree.html#XML_XML_NAMESPACE"/>
     <keyword type="macro" name="XML_XPATH_CHECKNS" link="libxml2-xpath.html#XML_XPATH_CHECKNS"/>
     <keyword type="macro" name="XML_XPATH_NOVAR" link="libxml2-xpath.html#XML_XPATH_NOVAR"/>
-    <keyword type="macro" name="XPATH_LOCATIONSET" link="libxml2-xpath.html#XPATH_LOCATIONSET"/>
-    <keyword type="macro" name="XPATH_POINT" link="libxml2-xpath.html#XPATH_POINT"/>
-    <keyword type="macro" name="XPATH_RANGE" link="libxml2-xpath.html#XPATH_RANGE"/>
     <keyword type="macro" name="XP_ERROR" link="libxml2-xpathInternals.html#XP_ERROR"/>
     <keyword type="macro" name="XP_ERROR0" link="libxml2-xpathInternals.html#XP_ERROR0"/>
     <keyword type="macro" name="htmlDefaultSubelement" link="libxml2-HTMLparser.html#htmlDefaultSubelement"/>

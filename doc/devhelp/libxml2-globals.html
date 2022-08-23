@@ -146,15 +146,15 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="oldXMLWDcompatibility">Variable </a>oldXMLWDcompatibility</h3><pre class="programlisting">int oldXMLWDcompatibility;
-</pre><p/>
+</pre><p>Global setting, DEPRECATED.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlBufferAllocScheme">Variable </a>xmlBufferAllocScheme</h3><pre class="programlisting"><a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> xmlBufferAllocScheme;
-</pre><p/>
+</pre><p>DEPRECATED: Don't use. Global setting, default allocation policy for buffers, default is <a href="libxml2-tree.html#XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a></p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDefaultBufferSize">Variable </a>xmlDefaultBufferSize</h3><pre class="programlisting">int xmlDefaultBufferSize;
-</pre><p/>
+</pre><p>DEPRECATED: Don't use. Global setting, default buffer size. Default value is <a href="libxml2-tree.html#BASE_BUFFER_SIZE">BASE_BUFFER_SIZE</a></p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDefaultSAXHandler">Variable </a>xmlDefaultSAXHandler</h3><pre class="programlisting"><a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> xmlDefaultSAXHandler;
@@ -170,31 +170,31 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDoValidityCheckingDefaultValue">Variable </a>xmlDoValidityCheckingDefaultValue</h3><pre class="programlisting">int xmlDoValidityCheckingDefaultValue;
-</pre><p/>
+</pre><p>Global setting, indicate that the parser should work in validating mode. Disabled by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFree">Variable </a>xmlFree</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> xmlFree;
-</pre><p/>
+</pre><p>@mem: an already allocated block of memory The variable holding the libxml free() implementation</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGenericError">Variable </a>xmlGenericError</h3><pre class="programlisting"><a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> xmlGenericError;
-</pre><p/>
+</pre><p>Global setting: function used for generic error callbacks</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGenericErrorContext">Variable </a>xmlGenericErrorContext</h3><pre class="programlisting">void * xmlGenericErrorContext;
-</pre><p/>
+</pre><p>Global setting passed to generic error callbacks</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetWarningsDefaultValue">Variable </a>xmlGetWarningsDefaultValue</h3><pre class="programlisting">int xmlGetWarningsDefaultValue;
-</pre><p/>
+</pre><p>Global setting, indicate that the parser should provide warnings. Activated by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlIndentTreeOutput">Variable </a>xmlIndentTreeOutput</h3><pre class="programlisting">int xmlIndentTreeOutput;
-</pre><p/>
+</pre><p>Global setting, asking the serializer to indent the output tree by default Enabled by default</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlKeepBlanksDefaultValue">Variable </a>xmlKeepBlanksDefaultValue</h3><pre class="programlisting">int xmlKeepBlanksDefaultValue;
-</pre><p/>
+</pre><p>Global setting, indicate that the parser should keep all blanks nodes found in the content Activated by default, this is actually needed to have the parser conformant to the XML Recommendation, however the option is kept for some applications since this was libxml1 default behaviour.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlLastError">Variable </a>xmlLastError</h3><pre class="programlisting"><a href="libxml2-xmlerror.html#xmlError">xmlError</a> xmlLastError;
@@ -202,23 +202,23 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlLineNumbersDefaultValue">Variable </a>xmlLineNumbersDefaultValue</h3><pre class="programlisting">int xmlLineNumbersDefaultValue;
-</pre><p/>
+</pre><p>DEPRECATED: The modern options API always enables line numbers. Global setting, indicate that the parser should store the line number in the content field of elements in the DOM tree. Disabled by default since this may not be safe for old classes of application.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlLoadExtDtdDefaultValue">Variable </a>xmlLoadExtDtdDefaultValue</h3><pre class="programlisting">int xmlLoadExtDtdDefaultValue;
-</pre><p/>
+</pre><p>Global setting, indicate that the parser should load DTD while not validating. Disabled by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlMalloc">Variable </a>xmlMalloc</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> xmlMalloc;
-</pre><p/>
+</pre><p>@size: the size requested in bytes The variable holding the libxml malloc() implementation Returns a pointer to the newly allocated block or NULL in case of error</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlMallocAtomic">Variable </a>xmlMallocAtomic</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> xmlMallocAtomic;
-</pre><p/>
+</pre><p>@size: the size requested in bytes The variable holding the libxml malloc() implementation for atomic data (i.e. blocks not containing pointers), useful when using a garbage collecting allocator. Returns a pointer to the newly allocated block or NULL in case of error</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlMemStrdup">Variable </a>xmlMemStrdup</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> xmlMemStrdup;
-</pre><p/>
+</pre><p>@str: a zero terminated string The variable holding the libxml strdup() implementation Returns the copy of the string or NULL in case of error</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateFilenameValue">Variable </a>xmlOutputBufferCreateFilenameValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> xmlOutputBufferCreateFilenameValue;
@@ -226,7 +226,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserDebugEntities">Variable </a>xmlParserDebugEntities</h3><pre class="programlisting">int xmlParserDebugEntities;
-</pre><p/>
+</pre><p>Global setting, asking the parser to print out debugging information. while handling entities. Disabled by default</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateFilenameValue">Variable </a>xmlParserInputBufferCreateFilenameValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> xmlParserInputBufferCreateFilenameValue;
@@ -234,15 +234,15 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserVersion">Variable </a>xmlParserVersion</h3><pre class="programlisting">const char * xmlParserVersion;
-</pre><p/>
+</pre><p>Constant string describing the internal version of the library</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlPedanticParserDefaultValue">Variable </a>xmlPedanticParserDefaultValue</h3><pre class="programlisting">int xmlPedanticParserDefaultValue;
-</pre><p/>
+</pre><p>DEPRECATED: Use the modern options API with XML_PARSE_PEDANTIC. Global setting, indicate that the parser be pedantic Disabled by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRealloc">Variable </a>xmlRealloc</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> xmlRealloc;
-</pre><p/>
+</pre><p>@mem: an already allocated block of memory @size: the new size requested in bytes The variable holding the libxml realloc() implementation Returns a pointer to the newly reallocated block or NULL in case of error</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeDefaultValue">Variable </a>xmlRegisterNodeDefaultValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> xmlRegisterNodeDefaultValue;
@@ -250,23 +250,23 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSaveNoEmptyTags">Variable </a>xmlSaveNoEmptyTags</h3><pre class="programlisting">int xmlSaveNoEmptyTags;
-</pre><p/>
+</pre><p>Global setting, asking the serializer to not output empty tags as &lt;empty/&gt; but &lt;empty&gt;&lt;/empty&gt;. those two forms are indistinguishable once parsed. Disabled by default</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlStructuredError">Variable </a>xmlStructuredError</h3><pre class="programlisting"><a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> xmlStructuredError;
-</pre><p/>
+</pre><p>Global setting: function used for structured error callbacks</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlStructuredErrorContext">Variable </a>xmlStructuredErrorContext</h3><pre class="programlisting">void * xmlStructuredErrorContext;
-</pre><p/>
+</pre><p>Global setting passed to structured error callbacks</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSubstituteEntitiesDefaultValue">Variable </a>xmlSubstituteEntitiesDefaultValue</h3><pre class="programlisting">int xmlSubstituteEntitiesDefaultValue;
-</pre><p/>
+</pre><p>Global setting, indicate that the parser should not generate entity references but replace them with the actual content of the entity Disabled by default, this should be activated when using XPath since the XPath data model requires entities replacement and the XPath engine does not handle entities references transparently.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTreeIndentString">Variable </a>xmlTreeIndentString</h3><pre class="programlisting">const char * xmlTreeIndentString;
-</pre><p/>
+</pre><p>The string used to do one-level indent. By default is equal to " " (two spaces)</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlCleanupGlobals"/>xmlCleanupGlobals ()</h3><pre class="programlisting">void	xmlCleanupGlobals		(void)<br/>

@@ -192,10 +192,10 @@ class index:
         if name[0:2] == '__':
             return None
         d = None
-        try:
+        if name in self.identifiers:
            d = self.identifiers[name]
-           d.update(header, module, type, lineno, info, extra, conditionals)
-        except:
+           d.update(header, module, type, info, extra, conditionals)
+        else:
            d = identifier(name, header, module, type, lineno, info, extra, conditionals)
            self.identifiers[name] = d
 
@@ -214,10 +214,10 @@ class index:
         if name[0:2] == '__':
             return None
         d = None
-        try:
+        if name in self.identifiers:
            d = self.identifiers[name]
-           d.update(header, module, type, lineno, info, extra, conditionals)
-        except:
+           d.update(header, module, type, info, extra, conditionals)
+        else:
            d = identifier(name, header, module, type, lineno, info, extra, conditionals)
            self.identifiers[name] = d
 

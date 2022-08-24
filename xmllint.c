@@ -3478,13 +3478,6 @@ main(int argc, char **argv) {
     }
 #endif
 
-#ifdef LIBXML_SAX1_ENABLED
-    if (sax1)
-        xmlSAXDefaultVersion(1);
-    else
-        xmlSAXDefaultVersion(2);
-#endif /* LIBXML_SAX1_ENABLED */
-
     if (chkregister) {
 	xmlRegisterNodeDefault(registerNode);
 	xmlDeregisterNodeDefault(deregisterNode);

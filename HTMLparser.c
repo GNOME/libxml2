@@ -4915,8 +4915,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 		     "htmlParseDocument: context error\n", NULL, NULL);
 	return(XML_ERR_INTERNAL_ERROR);
     }
-    ctxt->html = 1;
-    ctxt->linenumbers = 1;
     GROW;
     /*
      * SAX: beginning of the document processing.
@@ -6876,6 +6874,7 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
         options -= HTML_PARSE_NOIMPLIED;
     }
     ctxt->dictNames = 0;
+    ctxt->linenumbers = 1;
     return (options);
 }
 

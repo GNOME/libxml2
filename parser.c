@@ -12745,6 +12745,8 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
  * @ExternalID:  a NAME* containing the External ID of the DTD
  * @SystemID:  a NAME* containing the URL to the DTD
  *
+ * DEPRECATED: Don't use.
+ *
  * Load and parse an external subset.
  *
  * Returns the resulting xmlDtdPtr or NULL in case of error.
@@ -13796,6 +13798,8 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
  * xmlSAXParseEntity:
  * @sax:  the SAX handler block
  * @filename:  the filename
+ *
+ * DEPRECATED: Don't use.
  *
  * parse an XML external entity out of context and build a tree.
  * It use the given SAX function block to handle the parsing callback.

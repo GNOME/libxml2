@@ -260,7 +260,7 @@ void check_buffer(xmlParserInputPtr in) {
  * @in:  an XML parser input
  * @len:  an indicative size for the lookahead
  *
- * This function was internal and is deprecated.
+ * DEPRECATED: This function was internal and is deprecated.
  *
  * Returns -1 as this is an error to use it.
  */
@@ -273,6 +273,8 @@ xmlParserInputRead(xmlParserInputPtr in ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
  * xmlParserInputGrow:
  * @in:  an XML parser input
  * @len:  an indicative size for the lookahead
+ *
+ * DEPRECATED: Don't use.
  *
  * This function increase the input for the parser. It tries to
  * preserve pointers to the input buffer, and keep already read data
@@ -1811,6 +1813,8 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
  * @ctx:  an XML parser context
  * @node:  an XML node within the tree
  *
+ * DEPRECATED: Don't use.
+ *
  * Find the parser node info struct for a given node
  *
  * Returns an xmlParserNodeInfo block pointer or NULL
@@ -1836,6 +1840,8 @@ xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx, const xmlNodePtr node)
  * xmlInitNodeInfoSeq:
  * @seq:  a node info sequence pointer
  *
+ * DEPRECATED: Don't use.
+ *
  * -- Initialize (set to initial state) node info sequence
  */
 void
@@ -1851,6 +1857,8 @@ xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
 /**
  * xmlClearNodeInfoSeq:
  * @seq:  a node info sequence pointer
+ *
+ * DEPRECATED: Don't use.
  *
  * -- Clear (release memory and reinitialize) node
  *   info sequence
@@ -1870,6 +1878,7 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  * @seq:  a node info sequence pointer
  * @node:  an XML node pointer
  *
+ * DEPRECATED: Don't use.
  *
  * xmlParserFindNodeInfoIndex : Find the index that the info record for
  *   the given node is or should be at in a sorted sequence
@@ -1912,6 +1921,8 @@ xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
  * xmlParserAddNodeInfo:
  * @ctxt:  an XML parser context
  * @info:  a node info sequence pointer
+ *
+ * DEPRECATED: Don't use.
  *
  * Insert node info record into the sorted sequence
  */
@@ -1983,6 +1994,8 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
  * xmlPedanticParserDefault:
  * @val:  int 0 or 1
  *
+ * DEPRECATED: Use the modern options API with XML_PARSE_PEDANTIC.
+ *
  * Set and return the previous value for enabling pedantic warnings.
  *
  * Returns the last value for 0 for no substitution, 1 for substitution.
@@ -2017,6 +2030,8 @@ xmlLineNumbersDefault(int val) {
 /**
  * xmlSubstituteEntitiesDefault:
  * @val:  int 0 or 1
+ *
+ * DEPRECATED: Use the modern options API with XML_PARSE_NOENT.
  *
  * Set and return the previous value for default entity support.
  * Initially the parser always keep entity references instead of substituting

@@ -14,6 +14,20 @@
       <xsl:when test="$ref">
         <a href="libxml2-{$ref/@file}.html#{$ref/@name}"><xsl:value-of select="$token"/></a>
       </xsl:when>
+      <!-- TODO: This hack only works for tokens followed by a period. -->
+      <xsl:when test="substring($token, string-length($token)) = '.'">
+        <xsl:variable name="token2" select="substring($token, 1, string-length($token) - 1)"/>
+        <xsl:variable name="ref2" select="key('symbols', $token2)"/>
+        <xsl:choose>
+          <xsl:when test="$ref2">
+            <a href="libxml2-{$ref2/@file}.html#{$ref2/@name}"><xsl:value-of select="$token2"/></a>
+            <xsl:text>.</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$token"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$token"/>
       </xsl:otherwise>

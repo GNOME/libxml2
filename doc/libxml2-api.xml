@@ -11978,7 +11978,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlParseAttribute' file='parserInternals' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an attribute  [41] Attribute ::= Name Eq AttValue  [ WFC: No External Entity References ] Attribute values cannot contain direct or indirect entity references to external entities.  [ WFC: No &lt; in Attribute Values ] The replacement text of any entity referred to directly or indirectly in an attribute value (other than &quot;&amp;lt;&quot;) must not contain a &lt;.  [ VC: Attribute Value Type ] The attribute must have been declared; the value must be of the type declared for it.  [25] Eq ::= S? &apos;=&apos; S?  With namespace:  [NS 11] Attribute ::= QName Eq AttValue  Also the case QName == xmlns:??? is handled independently as a namespace definition.</info>
+      <info>DEPRECATED: Don&apos;t use.  parse an attribute  [41] Attribute ::= Name Eq AttValue  [ WFC: No External Entity References ] Attribute values cannot contain direct or indirect entity references to external entities.  [ WFC: No &lt; in Attribute Values ] The replacement text of any entity referred to directly or indirectly in an attribute value (other than &quot;&amp;lt;&quot;) must not contain a &lt;.  [ VC: Attribute Value Type ] The attribute must have been declared; the value must be of the type declared for it.  [25] Eq ::= S? &apos;=&apos; S?  With namespace:  [NS 11] Attribute ::= QName Eq AttValue  Also the case QName == xmlns:??? is handled independently as a namespace definition.</info>
       <return type='const xmlChar *' info='the attribute name, and the value in *value.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlChar **' info='a xmlChar ** used to store the value of the attribute'/>
@@ -12086,7 +12086,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlParseDoc' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory document and build a tree.</info>
+      <info>DEPRECATED: Use xmlReadDoc.  parse an XML in-memory document and build a tree.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
@@ -12211,7 +12211,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlParseFile' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
+      <info>DEPRECATED: Use xmlReadFile.  parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
       <return type='xmlDocPtr' info='the resulting document tree if the file was wellformed, NULL otherwise.'/>
       <arg name='filename' type='const char *' info='the filename'/>
     </function>
@@ -12231,7 +12231,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlParseMemory' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory block and build a tree.</info>
+      <info>DEPRECATED: Use xmlReadMemory.  parse an XML in-memory block and build a tree.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='buffer' type='const char *' info='an pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
@@ -12305,7 +12305,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlParseStartTag' file='parserInternals' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse a start of tag either for rule element or EmptyElement. In both case we don&apos;t parse the tag closing chars.  [40] STag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  [44] EmptyElemTag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;/&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  With namespace:  [NS 8] STag ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;&gt;&apos;  [NS 10] EmptyElement ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;/&gt;&apos;</info>
+      <info>DEPRECATED: Don&apos;t use.  parse a start of tag either for rule element or EmptyElement. In both case we don&apos;t parse the tag closing chars.  [40] STag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  [44] EmptyElemTag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;/&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  With namespace:  [NS 8] STag ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;&gt;&apos;  [NS 10] EmptyElement ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;/&gt;&apos;</info>
       <return type='const xmlChar *' info='the element name parsed'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12790,19 +12790,19 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlRecoverDoc' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a attempt to build a tree is tried anyway</info>
+      <info>DEPRECATED: Use xmlReadDoc with XML_PARSE_RECOVER.  parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a attempt to build a tree is tried anyway</info>
       <return type='xmlDocPtr' info='the resulting document tree or NULL in case of failure'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
     <function name='xmlRecoverFile' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. In the case the document is not Well Formed, it attempts to build a tree anyway</info>
+      <info>DEPRECATED: Use xmlReadFile with XML_PARSE_RECOVER.  parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. In the case the document is not Well Formed, it attempts to build a tree anyway</info>
       <return type='xmlDocPtr' info='the resulting document tree or NULL in case of failure'/>
       <arg name='filename' type='const char *' info='the filename'/>
     </function>
     <function name='xmlRecoverMemory' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory block and build a tree. In the case the document is not Well Formed, an attempt to build a tree is tried anyway</info>
+      <info>DEPRECATED: Use xmlReadMemory with XML_PARSE_RECOVER.  parse an XML in-memory block and build a tree. In the case the document is not Well Formed, an attempt to build a tree is tried anyway</info>
       <return type='xmlDocPtr' info='the resulting document tree or NULL in case of error'/>
       <arg name='buffer' type='const char *' info='an pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
@@ -13388,7 +13388,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXDefaultVersion' file='SAX2' module='SAX2'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>Set the default version of SAX used globally by the library. By default, during initialization the default is set to 2. Note that it is generally a better coding style to use xmlSAXVersion() to set up the version explicitly for a given parsing context.</info>
+      <info>DEPRECATED: Use parser option XML_PARSE_SAX1.  Set the default version of SAX used globally by the library. By default, during initialization the default is set to 2. Note that it is generally a better coding style to use xmlSAXVersion() to set up the version explicitly for a given parsing context.</info>
       <return type='int' info='the previous value in case of success and -1 in case of error.'/>
       <arg name='version' type='int' info='the version, 1 or 2'/>
     </function>
@@ -13402,7 +13402,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseDoc' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory document and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadDoc.  parse an XML in-memory document and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
@@ -13417,7 +13417,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseFile' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadFile.  parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='filename' type='const char *' info='the filename'/>
@@ -13425,7 +13425,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseFileWithData' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.  User data (void *) is stored within the parser context in the context&apos;s _private member, so it is available nearly everywhere in libxml</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadFile.  parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.  User data (void *) is stored within the parser context in the context&apos;s _private member, so it is available nearly everywhere in libxml</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='filename' type='const char *' info='the filename'/>
@@ -13434,7 +13434,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseMemory' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadMemory.  parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='buffer' type='const char *' info='an pointer to a char array'/>
@@ -13443,7 +13443,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseMemoryWithData' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.  User data (void *) is stored within the parser context in the context&apos;s _private member, so it is available nearly everywhere in libxml</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadMemory.  parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.  User data (void *) is stored within the parser context in the context&apos;s _private member, so it is available nearly everywhere in libxml</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='buffer' type='const char *' info='an pointer to a char array'/>
@@ -13453,7 +13453,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXUserParseFile' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML file and call the given SAX handler routines. Automatic support for ZLIB/Compress compressed document is provided</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadFile.  parse an XML file and call the given SAX handler routines. Automatic support for ZLIB/Compress compressed document is provided</info>
       <return type='int' info='0 in case of success or a error number otherwise'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler'/>
       <arg name='user_data' type='void *' info='The user data returned on SAX callbacks'/>
@@ -13461,7 +13461,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXUserParseMemory' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>A better SAX parsing routine. parse an XML in-memory buffer and call the given SAX handler routines.</info>
+      <info>DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadMemory.  parse an XML in-memory buffer and call the given SAX handler routines.</info>
       <return type='int' info='0 in case of success or a error number otherwise'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler'/>
       <arg name='user_data' type='void *' info='The user data returned on SAX callbacks'/>
@@ -14262,7 +14262,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSetupParserForBuffer' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>Setup the parser context to parse a new buffer; Clears any prior contents from the parser context. The buffer parameter must not be NULL, but the filename parameter can be</info>
+      <info>DEPRECATED: Don&apos;t use.  Setup the parser context to parse a new buffer; Clears any prior contents from the parser context. The buffer parameter must not be NULL, but the filename parameter can be</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='buffer' type='const xmlChar *' info='a xmlChar * buffer'/>

@@ -2829,6 +2829,8 @@ static int xmlSAX2DefaultVersionValue = 2;
  * xmlSAXDefaultVersion:
  * @version:  the version, 1 or 2
  *
+ * DEPRECATED: Use parser option XML_PARSE_SAX1.
+ *
  * Set the default version of SAX used globally by the library.
  * By default, during initialization the default is set to 2.
  * Note that it is generally a better coding style to use

@@ -8404,6 +8404,8 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  * @value:  a xmlChar ** used to store the value of the attribute
  *
+ * DEPRECATED: Don't use.
+ *
  * parse an attribute
  *
  * [41] Attribute ::= Name Eq AttValue
@@ -8496,6 +8498,8 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 /**
  * xmlParseStartTag:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Don't use.
  *
  * parse a start of tag either for rule element or
  * EmptyElement. In both case we don't parse the tag closing chars.
@@ -8653,6 +8657,8 @@ failed:
  * @ctxt:  an XML parser context
  * @line:  line of the start tag
  * @nsNr:  number of namespaces on the start tag
+ *
+ * DEPRECATED: Don't use.
  *
  * parse an end of tag
  *
@@ -14021,6 +14027,8 @@ xmlCreateFileParserCtxt(const char *filename)
  *             documents
  * @data:  the userdata
  *
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadFile.
+ *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  * It use the given SAX function block to handle the parsing callback.
@@ -14089,6 +14097,8 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
  * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
  *             documents
  *
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadFile.
+ *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  * It use the given SAX function block to handle the parsing callback.
@@ -14107,6 +14117,8 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
  * xmlRecoverDoc:
  * @cur:  a pointer to an array of xmlChar
  *
+ * DEPRECATED: Use xmlReadDoc with XML_PARSE_RECOVER.
+ *
  * parse an XML in-memory document and build a tree.
  * In the case the document is not Well Formed, a attempt to build a
  * tree is tried anyway
@@ -14123,6 +14135,8 @@ xmlRecoverDoc(const xmlChar *cur) {
  * xmlParseFile:
  * @filename:  the filename
  *
+ * DEPRECATED: Use xmlReadFile.
+ *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  *
@@ -14138,6 +14152,8 @@ xmlParseFile(const char *filename) {
 /**
  * xmlRecoverFile:
  * @filename:  the filename
+ *
+ * DEPRECATED: Use xmlReadFile with XML_PARSE_RECOVER.
  *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
@@ -14158,6 +14174,8 @@ xmlRecoverFile(const char *filename) {
  * @ctxt:  an XML parser context
  * @buffer:  a xmlChar * buffer
  * @filename:  a file name
+ *
+ * DEPRECATED: Don't use.
  *
  * Setup the parser context to parse a new buffer; Clears any prior
  * contents from the parser context. The buffer parameter must not be
@@ -14193,6 +14211,8 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
  * @sax:  a SAX handler
  * @user_data:  The user data returned on SAX callbacks
  * @filename:  a file name
+ *
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadFile.
  *
  * parse an XML file and call the given SAX handler routines.
  * Automatic support for ZLIB/Compress compressed document is provided
@@ -14299,6 +14319,8 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
  *             documents
  * @data:  the userdata
  *
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadMemory.
+ *
  * parse an XML in-memory block and use the given SAX function block
  * to handle the parsing callback. If sax is NULL, fallback to the default
  * DOM tree building routines.
@@ -14354,6 +14376,8 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
  * @recovery:  work in recovery mode, i.e. tries to read not Well Formed
  *             documents
  *
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadMemory.
+ *
  * parse an XML in-memory block and use the given SAX function block
  * to handle the parsing callback. If sax is NULL, fallback to the default
  * DOM tree building routines.
@@ -14371,6 +14395,8 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, const char *buffer,
  * @buffer:  an pointer to a char array
  * @size:  the size of the array
  *
+ * DEPRECATED: Use xmlReadMemory.
+ *
  * parse an XML in-memory block and build a tree.
  *
  * Returns the resulting document tree
@@ -14384,6 +14410,8 @@ xmlDocPtr xmlParseMemory(const char *buffer, int size) {
  * xmlRecoverMemory:
  * @buffer:  an pointer to a char array
  * @size:  the size of the array
+ *
+ * DEPRECATED: Use xmlReadMemory with XML_PARSE_RECOVER.
  *
  * parse an XML in-memory block and build a tree.
  * In the case the document is not Well Formed, an attempt to
@@ -14403,7 +14431,8 @@ xmlDocPtr xmlRecoverMemory(const char *buffer, int size) {
  * @buffer:  an in-memory XML document input
  * @size:  the length of the XML document in bytes
  *
- * A better SAX parsing routine.
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadMemory.
+ *
  * parse an XML in-memory buffer and call the given SAX handler routines.
  *
  * Returns 0 in case of success or a error number otherwise
@@ -14473,6 +14502,8 @@ xmlCreateDocParserCtxt(const xmlChar *cur) {
  * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
  *             documents
  *
+ * DEPRECATED: Use xmlNewSAXParserCtxt and xmlCtxtReadDoc.
+ *
  * parse an XML in-memory document and build a tree.
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
@@ -14515,6 +14546,8 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, const xmlChar *cur, int recovery) {
 /**
  * xmlParseDoc:
  * @cur:  a pointer to an array of xmlChar
+ *
+ * DEPRECATED: Use xmlReadDoc.
  *
  * parse an XML in-memory document and build a tree.
  *

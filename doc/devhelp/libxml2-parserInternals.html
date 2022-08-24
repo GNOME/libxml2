@@ -54,8 +54,6 @@
 #define <a href="#XML_SUBSTITUTE_NONE">XML_SUBSTITUTE_NONE</a>;
 #define <a href="#XML_SUBSTITUTE_PEREF">XML_SUBSTITUTE_PEREF</a>;
 #define <a href="#XML_SUBSTITUTE_REF">XML_SUBSTITUTE_REF</a>;
-<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlCreateFileParserCtxt">htmlCreateFileParserCtxt</a>	(const char * filename, <br>							 const char * encoding);
-void	<a href="#htmlInitAutoClose">htmlInitAutoClose</a>		(void);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#inputPop">inputPop</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 int	<a href="#inputPush">inputPush</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#namePop">namePop</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
@@ -616,39 +614,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <pre class="programlisting">const xmlCharxmlStringTextNoenc[] xmlStringTextNoenc;
 </pre>
 <p></p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="htmlCreateFileParserCtxt"></a>htmlCreateFileParserCtxt ()</h3>
-<pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	htmlCreateFileParserCtxt	(const char * filename, <br>							 const char * encoding)<br>
-</pre>
-<p>Create a parser context for a file content. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>filename</tt></i>:</span></td>
-<td>the filename</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>encoding</tt></i>:</span></td>
-<td>a free form C string describing the HTML document encoding, or NULL</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the new parser context or NULL</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="htmlInitAutoClose"></a>htmlInitAutoClose ()</h3>
-<pre class="programlisting">void	htmlInitAutoClose		(void)<br>
-</pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. This is a no-op now.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

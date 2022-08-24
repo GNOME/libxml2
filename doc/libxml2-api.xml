@@ -43,6 +43,7 @@
      <exports symbol='UTF8ToHtml' type='function'/>
      <exports symbol='htmlAttrAllowed' type='function'/>
      <exports symbol='htmlAutoCloseTag' type='function'/>
+     <exports symbol='htmlCreateFileParserCtxt' type='function'/>
      <exports symbol='htmlCreateMemoryParserCtxt' type='function'/>
      <exports symbol='htmlCreatePushParserCtxt' type='function'/>
      <exports symbol='htmlCtxtReadDoc' type='function'/>
@@ -59,6 +60,7 @@
      <exports symbol='htmlEntityValueLookup' type='function'/>
      <exports symbol='htmlFreeParserCtxt' type='function'/>
      <exports symbol='htmlHandleOmittedElem' type='function'/>
+     <exports symbol='htmlInitAutoClose' type='function'/>
      <exports symbol='htmlIsAutoClosed' type='function'/>
      <exports symbol='htmlIsScriptAttribute' type='function'/>
      <exports symbol='htmlNewParserCtxt' type='function'/>
@@ -898,8 +900,6 @@
      <exports symbol='xmlStringComment' type='variable'/>
      <exports symbol='xmlStringText' type='variable'/>
      <exports symbol='xmlStringTextNoenc' type='variable'/>
-     <exports symbol='htmlCreateFileParserCtxt' type='function'/>
-     <exports symbol='htmlInitAutoClose' type='function'/>
      <exports symbol='inputPop' type='function'/>
      <exports symbol='inputPush' type='function'/>
      <exports symbol='namePop' type='function'/>
@@ -7397,7 +7397,7 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const xmlChar *' info='The tag name'/>
       <arg name='elem' type='htmlNodePtr' info='the HTML element'/>
     </function>
-    <function name='htmlCreateFileParserCtxt' file='parserInternals' module='HTMLparser'>
+    <function name='htmlCreateFileParserCtxt' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>Create a parser context for a file content. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
       <return type='htmlParserCtxtPtr' info='the new parser context or NULL'/>
@@ -7587,7 +7587,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='the last value for 0 for no handling, 1 for auto insertion.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>
-    <function name='htmlInitAutoClose' file='parserInternals' module='HTMLparser'>
+    <function name='htmlInitAutoClose' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  This is a no-op now.</info>
       <return type='void'/>

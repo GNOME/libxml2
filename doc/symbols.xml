@@ -94,8 +94,8 @@
     <symbol file="SAX">startElement</symbol>
     <symbol file="SAX">unparsedEntityDecl</symbol>
     <symbol file="SAX2">xmlDefaultSAXHandlerInit</symbol>
-    <symbol file="parserInternals">htmlCreateFileParserCtxt</symbol>
-    <symbol file="parserInternals">htmlInitAutoClose</symbol>
+    <symbol file="HTMLparser">htmlCreateFileParserCtxt</symbol>
+    <symbol file="HTMLparser">htmlInitAutoClose</symbol>
     <symbol file="parserInternals">inputPop</symbol>
     <symbol file="parserInternals">inputPush</symbol>
     <symbol file="parserInternals">namePop</symbol>

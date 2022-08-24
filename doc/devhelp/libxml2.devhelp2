@@ -1966,7 +1966,7 @@
     <keyword type="function" name="hasInternalSubset ()" link="libxml2-SAX.html#hasInternalSubset"/>
     <keyword type="function" name="htmlAttrAllowed ()" link="libxml2-HTMLparser.html#htmlAttrAllowed"/>
     <keyword type="function" name="htmlAutoCloseTag ()" link="libxml2-HTMLparser.html#htmlAutoCloseTag"/>
-    <keyword type="function" name="htmlCreateFileParserCtxt ()" link="libxml2-parserInternals.html#htmlCreateFileParserCtxt"/>
+    <keyword type="function" name="htmlCreateFileParserCtxt ()" link="libxml2-HTMLparser.html#htmlCreateFileParserCtxt"/>
     <keyword type="function" name="htmlCreateMemoryParserCtxt ()" link="libxml2-HTMLparser.html#htmlCreateMemoryParserCtxt"/>
     <keyword type="function" name="htmlCreatePushParserCtxt ()" link="libxml2-HTMLparser.html#htmlCreatePushParserCtxt"/>
     <keyword type="function" name="htmlCtxtReadDoc ()" link="libxml2-HTMLparser.html#htmlCtxtReadDoc"/>
@@ -1990,7 +1990,7 @@
     <keyword type="function" name="htmlFreeParserCtxt ()" link="libxml2-HTMLparser.html#htmlFreeParserCtxt"/>
     <keyword type="function" name="htmlGetMetaEncoding ()" link="libxml2-HTMLtree.html#htmlGetMetaEncoding"/>
     <keyword type="function" name="htmlHandleOmittedElem ()" link="libxml2-HTMLparser.html#htmlHandleOmittedElem"/>
-    <keyword type="function" name="htmlInitAutoClose ()" link="libxml2-parserInternals.html#htmlInitAutoClose"/>
+    <keyword type="function" name="htmlInitAutoClose ()" link="libxml2-HTMLparser.html#htmlInitAutoClose"/>
     <keyword type="function" name="htmlIsAutoClosed ()" link="libxml2-HTMLparser.html#htmlIsAutoClosed"/>
     <keyword type="function" name="htmlIsBooleanAttr ()" link="libxml2-HTMLtree.html#htmlIsBooleanAttr"/>
     <keyword type="function" name="htmlIsScriptAttribute ()" link="libxml2-HTMLparser.html#htmlIsScriptAttribute"/>

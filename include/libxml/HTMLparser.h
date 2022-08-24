@@ -83,6 +83,9 @@ struct _htmlEntityDesc {
 /*
  * There is only few public functions.
  */
+XML_DEPRECATED
+XMLPUBFUN void XMLCALL
+			htmlInitAutoClose	(void);
 XMLPUBFUN const htmlElemDesc * XMLCALL
 			htmlTagLookup	(const xmlChar *tag);
 XMLPUBFUN const htmlEntityDesc * XMLCALL
@@ -125,6 +128,9 @@ XMLPUBFUN htmlDocPtr XMLCALL
 XMLPUBFUN htmlDocPtr XMLCALL
 			htmlParseDoc	(const xmlChar *cur,
 					 const char *encoding);
+XMLPUBFUN htmlParserCtxtPtr XMLCALL
+			htmlCreateFileParserCtxt(const char *filename,
+	                                         const char *encoding);
 XMLPUBFUN htmlDocPtr XMLCALL
 			htmlSAXParseFile(const char *filename,
 					 const char *encoding,

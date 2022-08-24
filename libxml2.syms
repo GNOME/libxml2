@@ -119,9 +119,11 @@ LIBXML2_2.4.30 {
 # SAX2
   xmlDefaultSAXHandlerInit;
 
-# parserInternals
+# HTMLparser
   htmlCreateFileParserCtxt;
   htmlInitAutoClose;
+
+# parserInternals
   inputPop;
   inputPush;
   namePop;

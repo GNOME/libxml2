@@ -571,16 +571,6 @@ XMLPUBFUN int XMLCALL			xmlCopyChar		(int len,
 XMLPUBFUN void XMLCALL			xmlNextChar		(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL			xmlParserInputShrink	(xmlParserInputPtr in);
 
-#ifdef LIBXML_HTML_ENABLED
-/*
- * Actually comes from the HTML parser but launched from the init stuff.
- */
-XML_DEPRECATED
-XMLPUBFUN void XMLCALL			htmlInitAutoClose	(void);
-XMLPUBFUN htmlParserCtxtPtr XMLCALL	htmlCreateFileParserCtxt(const char *filename,
-	                                         const char *encoding);
-#endif
-
 /*
  * Specific function to keep track of entities references
  * and used by the XSLT debugger.

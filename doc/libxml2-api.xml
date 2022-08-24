@@ -6969,9 +6969,11 @@ Could we use @subtypes for this?'/>
     <variable name='xmlDefaultSAXLocator' file='globals' type='xmlSAXLocator'>
       <info>DEPRECATED: Don&apos;t use  The default SAX Locator { getPublicId, getSystemId, getLineNumber, getColumnNumber}</info>
     </variable>
-    <variable name='xmlDeregisterNodeDefaultValue' file='globals' type='xmlDeregisterNodeFunc'/>
+    <variable name='xmlDeregisterNodeDefaultValue' file='globals' type='xmlDeregisterNodeFunc'>
+      <info>DEPRECATED: Don&apos;t use</info>
+    </variable>
     <variable name='xmlDoValidityCheckingDefaultValue' file='globals' type='int'>
-      <info>Global setting, indicate that the parser should work in validating mode. Disabled by default.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_DTDVALID.  Global setting, indicate that the parser should work in validating mode. Disabled by default.</info>
     </variable>
     <variable name='xmlFree' file='globals' type='xmlFreeFunc'>
       <info>@mem: an already allocated block of memory  The variable holding the libxml free() implementation</info>
@@ -6983,7 +6985,7 @@ Could we use @subtypes for this?'/>
       <info>Global setting passed to generic error callbacks</info>
     </variable>
     <variable name='xmlGetWarningsDefaultValue' file='globals' type='int'>
-      <info>Global setting, indicate that the parser should provide warnings. Activated by default.</info>
+      <info>DEPRECATED: Don&apos;t use  Global setting, indicate that the DTD validation should provide warnings. Activated by default.</info>
     </variable>
     <variable name='xmlIndentTreeOutput' file='globals' type='int'>
       <info>Global setting, asking the serializer to indent the output tree by default Enabled by default</info>
@@ -6996,14 +6998,14 @@ Could we use @subtypes for this?'/>
     <variable name='xmlIsIdeographicGroup' file='chvalid' type='const xmlChRangeGroup'/>
     <variable name='xmlIsPubidChar_tab' file='chvalid' type='const unsigned charxmlIsPubidChar_tab[256]'/>
     <variable name='xmlKeepBlanksDefaultValue' file='globals' type='int'>
-      <info>Global setting, indicate that the parser should keep all blanks nodes found in the content Activated by default, this is actually needed to have the parser conformant to the XML Recommendation, however the option is kept for some applications since this was libxml1 default behaviour.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS.  Global setting, indicate that the parser should keep all blanks nodes found in the content Activated by default, this is actually needed to have the parser conformant to the XML Recommendation, however the option is kept for some applications since this was libxml1 default behaviour.</info>
     </variable>
     <variable name='xmlLastError' file='globals' type='xmlError'/>
     <variable name='xmlLineNumbersDefaultValue' file='globals' type='int'>
       <info>DEPRECATED: The modern options API always enables line numbers.  Global setting, indicate that the parser should store the line number in the content field of elements in the DOM tree. Disabled by default since this may not be safe for old classes of application.</info>
     </variable>
     <variable name='xmlLoadExtDtdDefaultValue' file='globals' type='int'>
-      <info>Global setting, indicate that the parser should load DTD while not validating. Disabled by default.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_DTDLOAD.  Global setting, indicate that the parser should load DTD while not validating. Disabled by default.</info>
     </variable>
     <variable name='xmlMalloc' file='globals' type='xmlMallocFunc'>
       <info>@size:  the size requested in bytes  The variable holding the libxml malloc() implementation  Returns a pointer to the newly allocated block or NULL in case of error</info>
@@ -7014,11 +7016,15 @@ Could we use @subtypes for this?'/>
     <variable name='xmlMemStrdup' file='globals' type='xmlStrdupFunc'>
       <info>@str: a zero terminated string  The variable holding the libxml strdup() implementation  Returns the copy of the string or NULL in case of error</info>
     </variable>
-    <variable name='xmlOutputBufferCreateFilenameValue' file='globals' type='xmlOutputBufferCreateFilenameFunc'/>
-    <variable name='xmlParserDebugEntities' file='globals' type='int'>
-      <info>Global setting, asking the parser to print out debugging information. while handling entities. Disabled by default</info>
+    <variable name='xmlOutputBufferCreateFilenameValue' file='globals' type='xmlOutputBufferCreateFilenameFunc'>
+      <info>DEPRECATED: Don&apos;t use</info>
     </variable>
-    <variable name='xmlParserInputBufferCreateFilenameValue' file='globals' type='xmlParserInputBufferCreateFilenameFunc'/>
+    <variable name='xmlParserDebugEntities' file='globals' type='int'>
+      <info>DEPRECATED: Don&apos;t use  Global setting, asking the parser to print out debugging information. while handling entities. Disabled by default</info>
+    </variable>
+    <variable name='xmlParserInputBufferCreateFilenameValue' file='globals' type='xmlParserInputBufferCreateFilenameFunc'>
+      <info>DEPRECATED: Don&apos;t use</info>
+    </variable>
     <variable name='xmlParserMaxDepth' file='parserInternals' type='unsigned int'>
       <info>arbitrary depth limit for the XML documents that we allow to process. This is not a limitation of the parser but a safety boundary feature. It can be disabled with the XML_PARSE_HUGE parser option.</info>
     </variable>
@@ -7031,7 +7037,9 @@ Could we use @subtypes for this?'/>
     <variable name='xmlRealloc' file='globals' type='xmlReallocFunc'>
       <info>@mem: an already allocated block of memory @size:  the new size requested in bytes  The variable holding the libxml realloc() implementation  Returns a pointer to the newly reallocated block or NULL in case of error</info>
     </variable>
-    <variable name='xmlRegisterNodeDefaultValue' file='globals' type='xmlRegisterNodeFunc'/>
+    <variable name='xmlRegisterNodeDefaultValue' file='globals' type='xmlRegisterNodeFunc'>
+      <info>DEPRECATED: Don&apos;t use</info>
+    </variable>
     <variable name='xmlSaveNoEmptyTags' file='globals' type='int'>
       <info>Global setting, asking the serializer to not output empty tags as &lt;empty/&gt; but &lt;empty&gt;&lt;/empty&gt;. those two forms are indistinguishable once parsed. Disabled by default</info>
     </variable>
@@ -7045,7 +7053,7 @@ Could we use @subtypes for this?'/>
       <info>Global setting passed to structured error callbacks</info>
     </variable>
     <variable name='xmlSubstituteEntitiesDefaultValue' file='globals' type='int'>
-      <info>Global setting, indicate that the parser should not generate entity references but replace them with the actual content of the entity Disabled by default, this should be activated when using XPath since the XPath data model requires entities replacement and the XPath engine does not handle entities references transparently.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_NOENT.  Global setting, indicate that the parser should not generate entity references but replace them with the actual content of the entity Disabled by default, this should be activated when using XPath since the XPath data model requires entities replacement and the XPath engine does not handle entities references transparently.</info>
     </variable>
     <variable name='xmlTreeIndentString' file='globals' type='const char *'>
       <info>The string used to do one-level indent. By default is equal to &quot;  &quot; (two spaces)</info>

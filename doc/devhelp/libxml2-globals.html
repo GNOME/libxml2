@@ -166,11 +166,11 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDeregisterNodeDefaultValue">Variable </a>xmlDeregisterNodeDefaultValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> xmlDeregisterNodeDefaultValue;
-</pre><p/>
+</pre><p>DEPRECATED: Don't use</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlDoValidityCheckingDefaultValue">Variable </a>xmlDoValidityCheckingDefaultValue</h3><pre class="programlisting">int xmlDoValidityCheckingDefaultValue;
-</pre><p>Global setting, indicate that the parser should work in validating mode. Disabled by default.</p>
+</pre><p>DEPRECATED: Use the modern options API with XML_PARSE_DTDVALID. Global setting, indicate that the parser should work in validating mode. Disabled by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlFree">Variable </a>xmlFree</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> xmlFree;
@@ -186,7 +186,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlGetWarningsDefaultValue">Variable </a>xmlGetWarningsDefaultValue</h3><pre class="programlisting">int xmlGetWarningsDefaultValue;
-</pre><p>Global setting, indicate that the parser should provide warnings. Activated by default.</p>
+</pre><p>DEPRECATED: Don't use Global setting, indicate that the DTD validation should provide warnings. Activated by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlIndentTreeOutput">Variable </a>xmlIndentTreeOutput</h3><pre class="programlisting">int xmlIndentTreeOutput;
@@ -194,7 +194,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlKeepBlanksDefaultValue">Variable </a>xmlKeepBlanksDefaultValue</h3><pre class="programlisting">int xmlKeepBlanksDefaultValue;
-</pre><p>Global setting, indicate that the parser should keep all blanks nodes found in the content Activated by default, this is actually needed to have the parser conformant to the XML Recommendation, however the option is kept for some applications since this was libxml1 default behaviour.</p>
+</pre><p>DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS. Global setting, indicate that the parser should keep all blanks nodes found in the content Activated by default, this is actually needed to have the parser conformant to the XML Recommendation, however the option is kept for some applications since this was libxml1 default behaviour.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlLastError">Variable </a>xmlLastError</h3><pre class="programlisting"><a href="libxml2-xmlerror.html#xmlError">xmlError</a> xmlLastError;
@@ -206,7 +206,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlLoadExtDtdDefaultValue">Variable </a>xmlLoadExtDtdDefaultValue</h3><pre class="programlisting">int xmlLoadExtDtdDefaultValue;
-</pre><p>Global setting, indicate that the parser should load DTD while not validating. Disabled by default.</p>
+</pre><p>DEPRECATED: Use the modern options API with XML_PARSE_DTDLOAD. Global setting, indicate that the parser should load DTD while not validating. Disabled by default.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlMalloc">Variable </a>xmlMalloc</h3><pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> xmlMalloc;
@@ -222,15 +222,15 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateFilenameValue">Variable </a>xmlOutputBufferCreateFilenameValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> xmlOutputBufferCreateFilenameValue;
-</pre><p/>
+</pre><p>DEPRECATED: Don't use</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserDebugEntities">Variable </a>xmlParserDebugEntities</h3><pre class="programlisting">int xmlParserDebugEntities;
-</pre><p>Global setting, asking the parser to print out debugging information. while handling entities. Disabled by default</p>
+</pre><p>DEPRECATED: Don't use Global setting, asking the parser to print out debugging information. while handling entities. Disabled by default</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateFilenameValue">Variable </a>xmlParserInputBufferCreateFilenameValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> xmlParserInputBufferCreateFilenameValue;
-</pre><p/>
+</pre><p>DEPRECATED: Don't use</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlParserVersion">Variable </a>xmlParserVersion</h3><pre class="programlisting">const char * xmlParserVersion;
@@ -246,7 +246,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeDefaultValue">Variable </a>xmlRegisterNodeDefaultValue</h3><pre class="programlisting"><a href="libxml2-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> xmlRegisterNodeDefaultValue;
-</pre><p/>
+</pre><p>DEPRECATED: Don't use</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSaveNoEmptyTags">Variable </a>xmlSaveNoEmptyTags</h3><pre class="programlisting">int xmlSaveNoEmptyTags;
@@ -262,7 +262,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlSubstituteEntitiesDefaultValue">Variable </a>xmlSubstituteEntitiesDefaultValue</h3><pre class="programlisting">int xmlSubstituteEntitiesDefaultValue;
-</pre><p>Global setting, indicate that the parser should not generate entity references but replace them with the actual content of the entity Disabled by default, this should be activated when using XPath since the XPath data model requires entities replacement and the XPath engine does not handle entities references transparently.</p>
+</pre><p>DEPRECATED: Use the modern options API with XML_PARSE_NOENT. Global setting, indicate that the parser should not generate entity references but replace them with the actual content of the entity Disabled by default, this should be activated when using XPath since the XPath data model requires entities replacement and the XPath engine does not handle entities references transparently.</p>
 </div>
         <hr/>
         <div class="refsect2" lang="en"><h3><a name="xmlTreeIndentString">Variable </a>xmlTreeIndentString</h3><pre class="programlisting">const char * xmlTreeIndentString;

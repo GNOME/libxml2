@@ -205,6 +205,8 @@ int oldXMLWDcompatibility = 0; /* DEPRECATED */
 /**
  * xmlParserDebugEntities:
  *
+ * DEPRECATED: Don't use
+ *
  * Global setting, asking the parser to print out debugging information.
  * while handling entities.
  * Disabled by default
@@ -214,6 +216,8 @@ static int xmlParserDebugEntitiesThrDef = 0;
 /**
  * xmlDoValidityCheckingDefaultValue:
  *
+ * DEPRECATED: Use the modern options API with XML_PARSE_DTDVALID.
+ *
  * Global setting, indicate that the parser should work in validating mode.
  * Disabled by default.
  */
@@ -222,13 +226,17 @@ static int xmlDoValidityCheckingDefaultValueThrDef = 0;
 /**
  * xmlGetWarningsDefaultValue:
  *
- * Global setting, indicate that the parser should provide warnings.
+ * DEPRECATED: Don't use
+ *
+ * Global setting, indicate that the DTD validation should provide warnings.
  * Activated by default.
  */
 int xmlGetWarningsDefaultValue = 1;
 static int xmlGetWarningsDefaultValueThrDef = 1;
 /**
  * xmlLoadExtDtdDefaultValue:
+ *
+ * DEPRECATED: Use the modern options API with XML_PARSE_DTDLOAD.
  *
  * Global setting, indicate that the parser should load DTD while not
  * validating.
@@ -261,6 +269,8 @@ static int xmlLineNumbersDefaultValueThrDef = 0;
 /**
  * xmlKeepBlanksDefaultValue:
  *
+ * DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS.
+ *
  * Global setting, indicate that the parser should keep all blanks
  * nodes found in the content
  * Activated by default, this is actually needed to have the parser
@@ -272,6 +282,8 @@ static int xmlKeepBlanksDefaultValueThrDef = 1;
 /**
  * xmlSubstituteEntitiesDefaultValue:
  *
+ * DEPRECATED: Use the modern options API with XML_PARSE_NOENT.
+ *
  * Global setting, indicate that the parser should not generate entity
  * references but replace them with the actual content of the entity
  * Disabled by default, this should be activated when using XPath since
@@ -281,14 +293,35 @@ static int xmlKeepBlanksDefaultValueThrDef = 1;
 int xmlSubstituteEntitiesDefaultValue = 0;
 static int xmlSubstituteEntitiesDefaultValueThrDef = 0;
 
+/**
+ * xmlRegisterNodeDefaultValue:
+ *
+ * DEPRECATED: Don't use
+ */
 xmlRegisterNodeFunc xmlRegisterNodeDefaultValue = NULL;
 static xmlRegisterNodeFunc xmlRegisterNodeDefaultValueThrDef = NULL;
+
+/**
+ * xmlDeregisterNodeDefaultValue:
+ *
+ * DEPRECATED: Don't use
+ */
 xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue = NULL;
 static xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValueThrDef = NULL;
 
+/**
+ * xmlParserInputBufferCreateFilenameValue:
+ *
+ * DEPRECATED: Don't use
+ */
 xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValue = NULL;
 static xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValueThrDef = NULL;
 
+/**
+ * xmlOutputBufferCreateFilenameValue:
+ *
+ * DEPRECATED: Don't use
+ */
 xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue = NULL;
 static xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValueThrDef = NULL;
 

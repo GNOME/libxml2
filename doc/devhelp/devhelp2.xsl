@@ -33,7 +33,7 @@
     <xsl:variable name="prev" select="string(preceding-sibling::file[position()=1]/@name)"/>
     <xsl:variable name="next" select="string(following-sibling::file[position()=1]/@name)"/>
     <sub name="{@name}" link="libxml2-{@name}.html"/>
-    <xsl:document xmlns="" href="libxml2-{@name}.html" method="xml" indent="yes" encoding="UTF-8">
+    <xsl:document xmlns="" href="libxml2-{@name}.html" method="html" indent="yes" encoding="UTF-8">
       <html>
         <head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>

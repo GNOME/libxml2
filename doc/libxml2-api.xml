@@ -9011,7 +9011,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlClearNodeInfoSeq' file='parser' module='parserInternals'>
-      <info>-- Clear (release memory and reinitialize) node info sequence</info>
+      <info>DEPRECATED: Don&apos;t use.  -- Clear (release memory and reinitialize) node info sequence</info>
       <return type='void'/>
       <arg name='seq' type='xmlParserNodeInfoSeqPtr' info='a node info sequence pointer'/>
     </function>
@@ -10582,7 +10582,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='0 on success'/>
     </function>
     <function name='xmlInitNodeInfoSeq' file='parser' module='parserInternals'>
-      <info>-- Initialize (set to initial state) node info sequence</info>
+      <info>DEPRECATED: Don&apos;t use.  -- Initialize (set to initial state) node info sequence</info>
       <return type='void'/>
       <arg name='seq' type='xmlParserNodeInfoSeqPtr' info='a node info sequence pointer'/>
     </function>
@@ -12352,7 +12352,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParserAddNodeInfo' file='parser' module='parserInternals'>
-      <info>Insert node info record into the sorted sequence</info>
+      <info>DEPRECATED: Don&apos;t use.  Insert node info record into the sorted sequence</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='info' type='const xmlParserNodeInfoPtr' info='a node info sequence pointer'/>
@@ -12365,13 +12365,13 @@ Could we use @subtypes for this?'/>
       <arg name='...' type='...' info='extra parameters for the message display'/>
     </function>
     <function name='xmlParserFindNodeInfo' file='parser' module='parserInternals'>
-      <info>Find the parser node info struct for a given node</info>
+      <info>DEPRECATED: Don&apos;t use.  Find the parser node info struct for a given node</info>
       <return type='const xmlParserNodeInfo *' info='an xmlParserNodeInfo block pointer or NULL'/>
       <arg name='ctx' type='const xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='node' type='const xmlNodePtr' info='an XML node within the tree'/>
     </function>
     <function name='xmlParserFindNodeInfoIndex' file='parser' module='parserInternals'>
-      <info>xmlParserFindNodeInfoIndex : Find the index that the info record for the given node is or should be at in a sorted sequence</info>
+      <info>DEPRECATED: Don&apos;t use.  xmlParserFindNodeInfoIndex : Find the index that the info record for the given node is or should be at in a sorted sequence</info>
       <return type='unsigned long' info='a long indicating the position of the record'/>
       <arg name='seq' type='const xmlParserNodeInfoSeqPtr' info='a node info sequence pointer'/>
       <arg name='node' type='const xmlNodePtr' info='an XML node pointer'/>
@@ -12468,13 +12468,13 @@ Could we use @subtypes for this?'/>
       <arg name='str' type='xmlChar *' info='the string to deallocate'/>
     </functype>
     <function name='xmlParserInputGrow' file='parser' module='parserInternals'>
-      <info>This function increase the input for the parser. It tries to preserve pointers to the input buffer, and keep already read data</info>
+      <info>DEPRECATED: Don&apos;t use.  This function increase the input for the parser. It tries to preserve pointers to the input buffer, and keep already read data</info>
       <return type='int' info='the amount of char read, or -1 in case of error, 0 indicate the end of this entity'/>
       <arg name='in' type='xmlParserInputPtr' info='an XML parser input'/>
       <arg name='len' type='int' info='an indicative size for the lookahead'/>
     </function>
     <function name='xmlParserInputRead' file='parser' module='parserInternals'>
-      <info>This function was internal and is deprecated.</info>
+      <info>DEPRECATED: This function was internal and is deprecated.</info>
       <return type='int' info='-1 as this is an error to use it.'/>
       <arg name='in' type='xmlParserInputPtr' info='an XML parser input'/>
       <arg name='len' type='int' info='an indicative size for the lookahead'/>
@@ -12567,7 +12567,7 @@ Could we use @subtypes for this?'/>
       <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
     <function name='xmlPedanticParserDefault' file='parser' module='parserInternals'>
-      <info>Set and return the previous value for enabling pedantic warnings.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_PEDANTIC.  Set and return the previous value for enabling pedantic warnings.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>
@@ -13394,7 +13394,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseDTD' file='parser' module='parser'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
-      <info>Load and parse an external subset.</info>
+      <info>DEPRECATED: Don&apos;t use.  Load and parse an external subset.</info>
       <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error.'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='ExternalID' type='const xmlChar *' info='a NAME* containing the External ID of the DTD'/>
@@ -13410,7 +13410,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSAXParseEntity' file='parser' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an XML external entity out of context and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.  [78] extParsedEnt ::= TextDecl? content  This correspond to a &quot;Well Balanced&quot; chunk</info>
+      <info>DEPRECATED: Don&apos;t use.  parse an XML external entity out of context and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.  [78] extParsedEnt ::= TextDecl? content  This correspond to a &quot;Well Balanced&quot; chunk</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='filename' type='const char *' info='the filename'/>
@@ -14652,7 +14652,7 @@ Could we use @subtypes for this?'/>
       <arg name='error' type='xmlErrorPtr' info='the error being raised.'/>
     </functype>
     <function name='xmlSubstituteEntitiesDefault' file='parser' module='parserInternals'>
-      <info>Set and return the previous value for default entity support. Initially the parser always keep entity references instead of substituting entity values in the output. This function has to be used to change the default parser behavior SAX::substituteEntities() has to be used for changing that on a file by file basis.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_NOENT.  Set and return the previous value for default entity support. Initially the parser always keep entity references instead of substituting entity values in the output. This function has to be used to change the default parser behavior SAX::substituteEntities() has to be used for changing that on a file by file basis.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>

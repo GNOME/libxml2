@@ -312,7 +312,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderForDoc"></a>xmlReaderForDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a>	xmlReaderForDoc	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption.</p>
+<p>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -346,7 +346,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderForFd"></a>xmlReaderForFd ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a>	xmlReaderForFd	(int fd, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Create an xmltextReader for an XML from a file descriptor. The parsing flags @options are a combination of xmlParserOption. NOTE that the file descriptor will not be closed when the reader is closed or reset.</p>
+<p>Create an xmltextReader for an XML from a file descriptor. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>. NOTE that the file descriptor will not be closed when the reader is closed or reset.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -380,7 +380,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderForFile"></a>xmlReaderForFile ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a>	xmlReaderForFile	(const char * filename, <br>						 const char * encoding, <br>						 int options)<br>
 </pre>
-<p>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption.</p>
+<p>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -410,7 +410,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderForIO"></a>xmlReaderForIO ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a>	xmlReaderForIO	(<a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Create an xmltextReader for an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption.</p>
+<p>Create an xmltextReader for an XML document from I/O functions and source. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -452,7 +452,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderForMemory"></a>xmlReaderForMemory ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a>	xmlReaderForMemory	(const char * buffer, <br>						 int size, <br>						 const char * URL, <br>						 const char * encoding, <br>						 int options)<br>
 </pre>
-<p>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption.</p>
+<p>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -490,7 +490,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderNewDoc"></a>xmlReaderNewDoc ()</h3>
 <pre class="programlisting">int	xmlReaderNewDoc			(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</p>
+<p>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>. This reuses the existing @reader <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -528,7 +528,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderNewFd"></a>xmlReaderNewFd ()</h3>
 <pre class="programlisting">int	xmlReaderNewFd			(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 int fd, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Setup an xmltextReader to parse an XML from a file descriptor. NOTE that the file descriptor will not be closed when the reader is closed or reset. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</p>
+<p>Setup an xmltextReader to parse an XML from a file descriptor. NOTE that the file descriptor will not be closed when the reader is closed or reset. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>. This reuses the existing @reader <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -566,7 +566,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderNewFile"></a>xmlReaderNewFile ()</h3>
 <pre class="programlisting">int	xmlReaderNewFile		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 const char * filename, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</p>
+<p>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>. This reuses the existing @reader <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -600,7 +600,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderNewIO"></a>xmlReaderNewIO ()</h3>
 <pre class="programlisting">int	xmlReaderNewIO			(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Setup an xmltextReader to parse an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</p>
+<p>Setup an xmltextReader to parse an XML document from I/O functions and source. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>. This reuses the existing @reader <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -646,7 +646,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderNewMemory"></a>xmlReaderNewMemory ()</h3>
 <pre class="programlisting">int	xmlReaderNewMemory		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 const char * buffer, <br>					 int size, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</p>
+<p>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a>. This reuses the existing @reader <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -688,7 +688,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReaderNewWalker"></a>xmlReaderNewWalker ()</h3>
 <pre class="programlisting">int	xmlReaderNewWalker		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>Setup an xmltextReader to parse a preparsed XML document. This reuses the existing @reader xmlTextReader.</p>
+<p>Setup an xmltextReader to parse a preparsed XML document. This reuses the existing @reader <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1032,7 +1032,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderCurrentDoc"></a>xmlTextReaderCurrentDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlTextReaderCurrentDoc	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Hacking interface allowing to get the <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> corresponding to the current document being accessed by the xmlTextReader. NOTE: as a result of this call, the reader will not destroy the associated XML document and calling xmlFreeDoc() on the result is needed once the reader parsing has finished.</p>
+<p>Hacking interface allowing to get the <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> corresponding to the current document being accessed by the <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>. NOTE: as a result of this call, the reader will not destroy the associated XML document and calling xmlFreeDoc() on the result is needed once the reader parsing has finished.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1053,7 +1053,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderCurrentNode"></a>xmlTextReaderCurrentNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlTextReaderCurrentNode	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Hacking interface allowing to get the <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> corresponding to the current node being accessed by the xmlTextReader. This is dangerous because the underlying node may be destroyed on the next Reads.</p>
+<p>Hacking interface allowing to get the <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> corresponding to the current node being accessed by the <a href="libxml2-xmlreader.html#xmlTextReader">xmlTextReader</a>. This is dangerous because the underlying node may be destroyed on the next Reads.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1126,7 +1126,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the qualified name of the attribute.</td>
+<td>the qualified name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1176,11 +1176,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>localName</tt></i>:</span></td>
-<td>the local name of the attribute.</td>
+<td>the local name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
-<td>the namespace URI of the attribute.</td>
+<td>the namespace URI of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1392,7 +1392,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderIsNamespaceDecl"></a>xmlTextReaderIsNamespaceDecl ()</h3>
 <pre class="programlisting">int	xmlTextReaderIsNamespaceDecl	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Determine whether the current node is a namespace declaration rather than a regular attribute.</p>
+<p>Determine whether the current node is a namespace declaration rather than a regular <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1532,7 +1532,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the qualified name of the attribute.</td>
+<td>the qualified name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1582,11 +1582,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>localName</tt></i>:</span></td>
-<td>the local name of the attribute.</td>
+<td>the local name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
-<td>the namespace URI of the attribute.</td>
+<td>the namespace URI of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1861,7 +1861,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderQuoteChar"></a>xmlTextReaderQuoteChar ()</h3>
 <pre class="programlisting">int	xmlTextReaderQuoteChar		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>The quotation mark character used to enclose the value of an attribute.</p>
+<p>The quotation mark character used to enclose the value of an <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

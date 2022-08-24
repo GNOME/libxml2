@@ -152,7 +152,7 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
 <a name="XML_COMPLETE_ATTRS">Macro </a>XML_COMPLETE_ATTRS</h3>
 <pre class="programlisting">#define <a href="#XML_COMPLETE_ATTRS">XML_COMPLETE_ATTRS</a>;
 </pre>
-<p>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs. Use it to initialize xmlLoadExtDtdDefaultValue.</p>
+<p>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs. Use it to initialize <a href="libxml2-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -168,7 +168,7 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
 <a name="XML_DETECT_IDS">Macro </a>XML_DETECT_IDS</h3>
 <pre class="programlisting">#define <a href="#XML_DETECT_IDS">XML_DETECT_IDS</a>;
 </pre>
-<p>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize xmlLoadExtDtdDefaultValue.</p>
+<p>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize <a href="libxml2-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -846,7 +846,7 @@ The content of this structure is not made public by the API.
 <a name="ignorableWhitespaceSAXFunc"></a>Function type ignorableWhitespaceSAXFunc</h3>
 <pre class="programlisting">void	ignorableWhitespaceSAXFunc	(void * ctx, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ch, <br>					 int len)<br>
 </pre>
-<p>Receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use characters.</p>
+<p>Receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use <a href="libxml2-SAX.html#characters">characters</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1026,7 +1026,7 @@ The content of this structure is not made public by the API.
 <a name="setDocumentLocatorSAXFunc"></a>Function type setDocumentLocatorSAXFunc</h3>
 <pre class="programlisting">void	setDocumentLocatorSAXFunc	(void * ctx, <br>					 <a href="libxml2-tree.html#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a> loc)<br>
 </pre>
-<p>Receive the document locator at startup, actually xmlDefaultSAXLocator. Everything is available on the context, so this is useless in our case.</p>
+<p>Receive the document locator at startup, actually <a href="libxml2-globals.html#xmlDefaultSAXLocator">xmlDefaultSAXLocator</a>. Everything is available on the context, so this is useless in our case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1267,7 +1267,7 @@ The content of this structure is not made public by the API.
 <a name="xmlClearNodeInfoSeq"></a>xmlClearNodeInfoSeq ()</h3>
 <pre class="programlisting">void	xmlClearNodeInfoSeq		(<a href="libxml2-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq)<br>
 </pre>
-<p>-- Clear (release memory and reinitialize) node info sequence</p>
+<p>DEPRECATED: Don't use. -- Clear (release memory and reinitialize) node info sequence</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1360,7 +1360,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCreatePushParserCtxt"></a>xmlCreatePushParserCtxt ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlCreatePushParserCtxt	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 void * user_data, <br>						 const char * chunk, <br>						 int size, <br>						 const char * filename)<br>
 </pre>
-<p>Create a parser context for using the XML parser in push mode. If @buffer and @size are non-NULL, the data is used to detect the encoding. The remaining <a href="libxml2-SAX.html#characters">characters</a> will be parsed so they don't need to be fed in again through xmlParseChunk. To allow content encoding detection, @size should be &gt;= 4 The value of @filename is used for fetching external entities and error/warning reports.</p>
+<p>Create a parser context for using the XML parser in push mode. If @buffer and @size are non-NULL, the data is used to detect the encoding. The remaining <a href="libxml2-SAX.html#characters">characters</a> will be parsed so they don't need to be fed in again through <a href="libxml2-parser.html#xmlParseChunk">xmlParseChunk</a>. To allow content encoding detection, @size should be &gt;= 4 The value of @filename is used for fetching external entities and error/warning reports.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1807,7 +1807,7 @@ The content of this structure is not made public by the API.
 <a name="xmlInitNodeInfoSeq"></a>xmlInitNodeInfoSeq ()</h3>
 <pre class="programlisting">void	xmlInitNodeInfoSeq		(<a href="libxml2-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq)<br>
 </pre>
-<p>-- Initialize (set to initial state) node info sequence</p>
+<p>DEPRECATED: Don't use. -- Initialize (set to initial state) node info sequence</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2168,7 +2168,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParseDoc"></a>xmlParseDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlParseDoc		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur)<br>
 </pre>
-<p>DEPRECATED: Use xmlReadDoc. parse an XML in-memory document and build a tree.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadDoc">xmlReadDoc</a>. parse an XML in-memory document and build a tree.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2298,7 +2298,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParseFile"></a>xmlParseFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlParseFile		(const char * filename)<br>
 </pre>
-<p>DEPRECATED: Use xmlReadFile. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadFile">xmlReadFile</a>. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2358,7 +2358,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParseMemory"></a>xmlParseMemory ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlParseMemory		(const char * buffer, <br>					 int size)<br>
 </pre>
-<p>DEPRECATED: Use xmlReadMemory. parse an XML in-memory block and build a tree.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadMemory">xmlReadMemory</a>. parse an XML in-memory block and build a tree.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2383,7 +2383,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParserAddNodeInfo"></a>xmlParserAddNodeInfo ()</h3>
 <pre class="programlisting">void	xmlParserAddNodeInfo		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-parser.html#xmlParserNodeInfoPtr">xmlParserNodeInfoPtr</a> info)<br>
 </pre>
-<p>Insert node info record into the sorted sequence</p>
+<p>DEPRECATED: Don't use. Insert node info record into the sorted sequence</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2404,7 +2404,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParserFindNodeInfo"></a>xmlParserFindNodeInfo ()</h3>
 <pre class="programlisting">const <a href="libxml2-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a> *	xmlParserFindNodeInfo	(const <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctx, <br>							 const <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
 </pre>
-<p>Find the parser node info struct for a given node</p>
+<p>DEPRECATED: Don't use. Find the parser node info struct for a given node</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2429,7 +2429,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParserFindNodeInfoIndex"></a>xmlParserFindNodeInfoIndex ()</h3>
 <pre class="programlisting">unsigned long	xmlParserFindNodeInfoIndex	(const <a href="libxml2-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq, <br>						 const <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
 </pre>
-<p><a href="libxml2-parser.html#xmlParserFindNodeInfoIndex">xmlParserFindNodeInfoIndex</a> : Find the index that the info record for the given node is or should be at in a sorted sequence</p>
+<p>DEPRECATED: Don't use. <a href="libxml2-parser.html#xmlParserFindNodeInfoIndex">xmlParserFindNodeInfoIndex</a> : Find the index that the info record for the given node is or should be at in a sorted sequence</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2454,7 +2454,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParserInputGrow"></a>xmlParserInputGrow ()</h3>
 <pre class="programlisting">int	xmlParserInputGrow		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> in, <br>					 int len)<br>
 </pre>
-<p>This function increase the input for the parser. It tries to preserve pointers to the input buffer, and keep already read data</p>
+<p>DEPRECATED: Don't use. This function increase the input for the parser. It tries to preserve pointers to the input buffer, and keep already read data</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2479,7 +2479,7 @@ The content of this structure is not made public by the API.
 <a name="xmlParserInputRead"></a>xmlParserInputRead ()</h3>
 <pre class="programlisting">int	xmlParserInputRead		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> in, <br>					 int len)<br>
 </pre>
-<p>This function was internal and is deprecated.</p>
+<p>DEPRECATED: This function was internal and is deprecated.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2504,7 +2504,7 @@ The content of this structure is not made public by the API.
 <a name="xmlPedanticParserDefault"></a>xmlPedanticParserDefault ()</h3>
 <pre class="programlisting">int	xmlPedanticParserDefault	(int val)<br>
 </pre>
-<p>Set and return the previous value for enabling pedantic warnings.</p>
+<p>DEPRECATED: Use the modern options API with <a href="libxml2-parser.html#XML_PARSE_PEDANTIC">XML_PARSE_PEDANTIC</a>. Set and return the previous value for enabling pedantic warnings.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2703,7 +2703,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRecoverDoc"></a>xmlRecoverDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlRecoverDoc		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadDoc">xmlReadDoc</a> with XML_PARSE_RECOVER. parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a attempt to build a tree is tried anyway</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadDoc">xmlReadDoc</a> with <a href="libxml2-parser.html#XML_PARSE_RECOVER">XML_PARSE_RECOVER</a>. parse an XML in-memory document and build a tree. In the case the document is not Well Formed, a attempt to build a tree is tried anyway</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2725,7 +2725,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRecoverFile"></a>xmlRecoverFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlRecoverFile		(const char * filename)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadFile">xmlReadFile</a> with XML_PARSE_RECOVER. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. In the case the document is not Well Formed, it attempts to build a tree anyway</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadFile">xmlReadFile</a> with <a href="libxml2-parser.html#XML_PARSE_RECOVER">XML_PARSE_RECOVER</a>. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. In the case the document is not Well Formed, it attempts to build a tree anyway</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2746,7 +2746,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRecoverMemory"></a>xmlRecoverMemory ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlRecoverMemory	(const char * buffer, <br>					 int size)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadMemory">xmlReadMemory</a> with XML_PARSE_RECOVER. parse an XML in-memory block and build a tree. In the case the document is not Well Formed, an attempt to build a tree is tried anyway</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlReadMemory">xmlReadMemory</a> with <a href="libxml2-parser.html#XML_PARSE_RECOVER">XML_PARSE_RECOVER</a>. parse an XML in-memory block and build a tree. In the case the document is not Well Formed, an attempt to build a tree is tried anyway</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2771,7 +2771,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseDTD"></a>xmlSAXParseDTD ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a>	xmlSAXParseDTD		(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID)<br>
 </pre>
-<p>Load and parse an external subset.</p>
+<p>DEPRECATED: Don't use. Load and parse an external subset.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2800,7 +2800,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseDoc"></a>xmlSAXParseDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlSAXParseDoc		(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 int recovery)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadDoc. parse an XML in-memory document and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadDoc">xmlCtxtReadDoc</a>. parse an XML in-memory document and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2830,7 +2830,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseEntity"></a>xmlSAXParseEntity ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlSAXParseEntity	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 const char * filename)<br>
 </pre>
-<p>parse an XML external entity out of context and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines. [78] extParsedEnt ::= TextDecl? content This correspond to a "Well Balanced" chunk</p>
+<p>DEPRECATED: Don't use. parse an XML external entity out of context and build a tree. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines. [78] extParsedEnt ::= TextDecl? content This correspond to a "Well Balanced" chunk</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2855,7 +2855,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseFile"></a>xmlSAXParseFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlSAXParseFile		(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 const char * filename, <br>					 int recovery)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadFile. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadFile">xmlCtxtReadFile</a>. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2884,7 +2884,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseFileWithData"></a>xmlSAXParseFileWithData ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlSAXParseFileWithData	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 const char * filename, <br>					 int recovery, <br>					 void * data)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadFile. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines. User data (void *) is stored within the parser context in the context's _private member, so it is available nearly everywhere in libxml</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadFile">xmlCtxtReadFile</a>. parse an XML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines. User data (void *) is stored within the parser context in the context's _private member, so it is available nearly everywhere in libxml</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2917,7 +2917,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseMemory"></a>xmlSAXParseMemory ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlSAXParseMemory	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 const char * buffer, <br>					 int size, <br>					 int recovery)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadMemory. parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadMemory">xmlCtxtReadMemory</a>. parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2950,7 +2950,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXParseMemoryWithData"></a>xmlSAXParseMemoryWithData ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlSAXParseMemoryWithData	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 const char * buffer, <br>						 int size, <br>						 int recovery, <br>						 void * data)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadMemory. parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines. User data (void *) is stored within the parser context in the context's _private member, so it is available nearly everywhere in libxml</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadMemory">xmlCtxtReadMemory</a>. parse an XML in-memory block and use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines. User data (void *) is stored within the parser context in the context's _private member, so it is available nearly everywhere in libxml</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2987,7 +2987,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXUserParseFile"></a>xmlSAXUserParseFile ()</h3>
 <pre class="programlisting">int	xmlSAXUserParseFile		(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 void * user_data, <br>					 const char * filename)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadFile. parse an XML file and call the given SAX handler routines. Automatic support for ZLIB/Compress compressed document is provided</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadFile">xmlCtxtReadFile</a>. parse an XML file and call the given SAX handler routines. Automatic support for ZLIB/Compress compressed document is provided</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3016,7 +3016,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSAXUserParseMemory"></a>xmlSAXUserParseMemory ()</h3>
 <pre class="programlisting">int	xmlSAXUserParseMemory		(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 void * user_data, <br>					 const char * buffer, <br>					 int size)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and xmlCtxtReadMemory. parse an XML in-memory buffer and call the given SAX handler routines.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a> and <a href="libxml2-parser.html#xmlCtxtReadMemory">xmlCtxtReadMemory</a>. parse an XML in-memory buffer and call the given SAX handler routines.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3133,7 +3133,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSubstituteEntitiesDefault"></a>xmlSubstituteEntitiesDefault ()</h3>
 <pre class="programlisting">int	xmlSubstituteEntitiesDefault	(int val)<br>
 </pre>
-<p>Set and return the previous value for default entity support. Initially the parser always keep entity references instead of substituting entity values in the output. This function has to be used to change the default parser behavior SAX::substituteEntities() has to be used for changing that on a file by file basis.</p>
+<p>DEPRECATED: Use the modern options API with <a href="libxml2-parser.html#XML_PARSE_NOENT">XML_PARSE_NOENT</a>. Set and return the previous value for default entity support. Initially the parser always keep entity references instead of substituting entity values in the output. This function has to be used to change the default parser behavior SAX::substituteEntities() has to be used for changing that on a file by file basis.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

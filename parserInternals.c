@@ -1439,16 +1439,19 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
  ************************************************************************/
 
 /**
- * xmlInitParserCtxt:
- * @ctxt:  an XML parser context
+ * xmlInitSAXParserCtxt:
+ * @ctxt:  XML parser context
+ * @sax:  SAX handlert
+ * @userData:  user data
  *
- * Initialize a parser context
+ * Initialize a SAX parser context
  *
  * Returns 0 in case of success and -1 in case of error
  */
 
-int
-xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
+static int
+xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, xmlSAXHandlerPtr sax,
+                     void *userData)
 {
     xmlParserInputPtr input;
 
@@ -1473,8 +1476,19 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	return(-1);
     }
-    else
+    if (sax == NULL) {
+	memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
         xmlSAXVersion(ctxt->sax, 2);
+        ctxt->userData = ctxt;
+    } else {
+	if (sax->initialized == XML_SAX2_MAGIC) {
+	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
+        } else {
+	    memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
+	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
+        }
+        ctxt->userData = userData ? userData : ctxt;
+    }
 
     ctxt->maxatts = 0;
     ctxt->atts = NULL;
@@ -1572,7 +1586,6 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->spaceMax = 10;
     ctxt->spaceTab[0] = -1;
     ctxt->space = &ctxt->spaceTab[0];
-    ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->nsWellFormed = 1;
@@ -1622,6 +1635,24 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->input_id = 1;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
     return(0);
+}
+
+/**
+ * xmlInitParserCtxt:
+ * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function which will be made private in a future
+ * version.
+ *
+ * Initialize a parser context
+ *
+ * Returns 0 in case of success and -1 in case of error
+ */
+
+int
+xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
+{
+    return(xmlInitSAXParserCtxt(ctxt, NULL, NULL));
 }
 
 /**
@@ -1721,6 +1752,22 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 xmlParserCtxtPtr
 xmlNewParserCtxt(void)
 {
+    return(xmlNewSAXParserCtxt(NULL, NULL));
+}
+
+/**
+ * xmlNewSAXParserCtxt:
+ * @sax:  SAX handler
+ * @userData:  user data
+ *
+ * Allocate and initialize a new SAX parser context.
+ *
+ * Returns the xmlParserCtxtPtr or NULL
+ */
+
+xmlParserCtxtPtr
+xmlNewSAXParserCtxt(xmlSAXHandlerPtr sax, void *userData)
+{
     xmlParserCtxtPtr ctxt;
 
     ctxt = (xmlParserCtxtPtr) xmlMalloc(sizeof(xmlParserCtxt));
@@ -1729,7 +1776,7 @@ xmlNewParserCtxt(void)
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(xmlParserCtxt));
-    if (xmlInitParserCtxt(ctxt) < 0) {
+    if (xmlInitSAXParserCtxt(ctxt, sax, userData) < 0) {
         xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }

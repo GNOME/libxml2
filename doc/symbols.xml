@@ -1771,4 +1771,8 @@
   <release version="2.9.11">
     <symbol file="xmlIO">xmlPopOutputCallbacks</symbol>
   </release>
+  <release version="2.11.0">
+    <symbol file="HTMLparser">htmlNewSAXParserCtxt</symbol>
+    <symbol file="parser">xmlNewSAXParserCtxt</symbol>
+  </release>
 </symbols>

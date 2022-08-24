@@ -2293,3 +2293,13 @@ LIBXML2_2.9.11 {
   xmlPopOutputCallbacks;
 } LIBXML2_2.9.8;
 
+LIBXML2_2.11.0 {
+    global:
+
+# HTMLparser
+  htmlNewSAXParserCtxt;
+
+# parser
+  xmlNewSAXParserCtxt;
+} LIBXML2_2.9.11;
+

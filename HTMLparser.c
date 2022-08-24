@@ -5028,6 +5028,8 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 /**
  * htmlInitParserCtxt:
  * @ctxt:  an HTML parser context
+ * @sax:  SAX handler
+ * @userData:  user data
  *
  * Initialize a parser context
  *
@@ -5035,10 +5037,8 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
  */
 
 static int
-htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
+htmlInitParserCtxt(htmlParserCtxtPtr ctxt, htmlSAXHandler *sax, void *userData)
 {
-    htmlSAXHandler *sax;
-
     if (ctxt == NULL) return(-1);
     memset(ctxt, 0, sizeof(htmlParserCtxt));
 
@@ -5047,12 +5047,21 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
         htmlErrMemory(NULL, "htmlInitParserCtxt: out of memory\n");
 	return(-1);
     }
-    sax = (htmlSAXHandler *) xmlMalloc(sizeof(htmlSAXHandler));
-    if (sax == NULL) {
+
+    if (ctxt->sax == NULL)
+        ctxt->sax = (htmlSAXHandler *) xmlMalloc(sizeof(htmlSAXHandler));
+    if (ctxt->sax == NULL) {
         htmlErrMemory(NULL, "htmlInitParserCtxt: out of memory\n");
 	return(-1);
     }
-    memset(sax, 0, sizeof(htmlSAXHandler));
+    if (sax == NULL) {
+        memset(ctxt->sax, 0, sizeof(htmlSAXHandler));
+        xmlSAX2InitHtmlDefaultSAXHandler(ctxt->sax);
+        ctxt->userData = ctxt;
+    } else {
+        memcpy(ctxt->sax, sax, sizeof(htmlSAXHandler));
+        ctxt->userData = userData ? userData : ctxt;
+    }
 
     /* Allocate the Input stack */
     ctxt->inputTab = (htmlParserInputPtr *)
@@ -5111,10 +5120,6 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->nodeInfoNr  = 0;
     ctxt->nodeInfoMax = 0;
 
-    ctxt->sax = sax;
-    xmlSAX2InitHtmlDefaultSAXHandler(sax);
-
-    ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->replaceEntities = 0;
@@ -5158,6 +5163,22 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
 htmlParserCtxtPtr
 htmlNewParserCtxt(void)
 {
+    return(htmlNewSAXParserCtxt(NULL, NULL));
+}
+
+/**
+ * htmlNewSAXParserCtxt:
+ * @sax:  SAX handler
+ * @userData:  user data
+ *
+ * Allocate and initialize a new parser context.
+ *
+ * Returns the htmlParserCtxtPtr or NULL in case of allocation error
+ */
+
+htmlParserCtxtPtr
+htmlNewSAXParserCtxt(htmlSAXHandlerPtr sax, void *userData)
+{
     xmlParserCtxtPtr ctxt;
 
     ctxt = (xmlParserCtxtPtr) xmlMalloc(sizeof(xmlParserCtxt));
@@ -5166,7 +5187,7 @@ htmlNewParserCtxt(void)
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(xmlParserCtxt));
-    if (htmlInitParserCtxt(ctxt) < 0) {
+    if (htmlInitParserCtxt(ctxt, sax, userData) < 0) {
         htmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
@@ -6326,28 +6347,13 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     buf = xmlAllocParserInputBuffer(enc);
     if (buf == NULL) return(NULL);
 
-    ctxt = htmlNewParserCtxt();
+    ctxt = htmlNewSAXParserCtxt(sax, user_data);
     if (ctxt == NULL) {
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
     if(enc==XML_CHAR_ENCODING_UTF8 || buf->encoder)
 	ctxt->charset=XML_CHAR_ENCODING_UTF8;
-    if (sax != NULL) {
-#ifdef LIBXML_SAX1_ENABLED
-	if (ctxt->sax != (xmlSAXHandlerPtr) &htmlDefaultSAXHandler)
-#endif
-	    xmlFree(ctxt->sax);
-	ctxt->sax = (htmlSAXHandlerPtr) xmlMalloc(sizeof(htmlSAXHandler));
-	if (ctxt->sax == NULL) {
-	    xmlFree(buf);
-	    xmlFree(ctxt);
-	    return(NULL);
-	}
-	memcpy(ctxt->sax, sax, sizeof(htmlSAXHandler));
-	if (user_data != NULL)
-	    ctxt->userData = user_data;
-    }
     if (filename == NULL) {
 	ctxt->directory = NULL;
     } else {

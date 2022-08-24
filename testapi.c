@@ -464,8 +464,6 @@ static void des_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlParserCtxtPtr val, 
         xmlFreeParserCtxt(val);
 }
 
-#if defined(LIBXML_PUSH_ENABLED) || defined(LIBXML_SAX1_ENABLED) || \
-    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_VALID_ENABLED)
 #define gen_nb_xmlSAXHandlerPtr 2
 static xmlSAXHandlerPtr gen_xmlSAXHandlerPtr(int no, int nr ATTRIBUTE_UNUSED) {
     (void) no;
@@ -476,7 +474,6 @@ static xmlSAXHandlerPtr gen_xmlSAXHandlerPtr(int no, int nr ATTRIBUTE_UNUSED) {
 }
 static void des_xmlSAXHandlerPtr(int no ATTRIBUTE_UNUSED, xmlSAXHandlerPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
-#endif
 
 #define gen_nb_xmlValidCtxtPtr 2
 static xmlValidCtxtPtr gen_xmlValidCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
@@ -2182,6 +2179,47 @@ test_htmlNewParserCtxt(void) {
 
 
 static int
+test_htmlNewSAXParserCtxt(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_HTML_ENABLED)
+    int mem_base;
+    htmlParserCtxtPtr ret_val;
+    htmlSAXHandlerPtr sax; /* SAX handler */
+    int n_sax;
+    void * userData; /* user data */
+    int n_userData;
+
+    for (n_sax = 0;n_sax < gen_nb_htmlSAXHandlerPtr;n_sax++) {
+    for (n_userData = 0;n_userData < gen_nb_userdata;n_userData++) {
+        mem_base = xmlMemBlocks();
+        sax = gen_htmlSAXHandlerPtr(n_sax, 0);
+        userData = gen_userdata(n_userData, 1);
+
+        ret_val = htmlNewSAXParserCtxt(sax, userData);
+        desret_htmlParserCtxtPtr(ret_val);
+        call_tests++;
+        des_htmlSAXHandlerPtr(n_sax, sax, 0);
+        des_userdata(n_userData, userData, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlNewSAXParserCtxt",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_sax);
+            printf(" %d", n_userData);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_htmlNodeStatus(void) {
     int test_ret = 0;
 
@@ -2786,7 +2824,7 @@ static int
 test_HTMLparser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing HTMLparser : 32 of 38 functions ...\n");
+    if (quiet == 0) printf("Testing HTMLparser : 33 of 39 functions ...\n");
     test_ret += test_UTF8ToHtml();
     test_ret += test_htmlAttrAllowed();
     test_ret += test_htmlAutoCloseTag();
@@ -2806,6 +2844,7 @@ test_HTMLparser(void) {
     test_ret += test_htmlIsAutoClosed();
     test_ret += test_htmlIsScriptAttribute();
     test_ret += test_htmlNewParserCtxt();
+    test_ret += test_htmlNewSAXParserCtxt();
     test_ret += test_htmlNodeStatus();
     test_ret += test_htmlParseCharRef();
     test_ret += test_htmlParseChunk();
@@ -12764,6 +12803,45 @@ test_xmlNewParserCtxt(void) {
 }
 
 
+static int
+test_xmlNewSAXParserCtxt(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlParserCtxtPtr ret_val;
+    xmlSAXHandlerPtr sax; /* SAX handler */
+    int n_sax;
+    void * userData; /* user data */
+    int n_userData;
+
+    for (n_sax = 0;n_sax < gen_nb_xmlSAXHandlerPtr;n_sax++) {
+    for (n_userData = 0;n_userData < gen_nb_userdata;n_userData++) {
+        mem_base = xmlMemBlocks();
+        sax = gen_xmlSAXHandlerPtr(n_sax, 0);
+        userData = gen_userdata(n_userData, 1);
+
+        ret_val = xmlNewSAXParserCtxt(sax, userData);
+        desret_xmlParserCtxtPtr(ret_val);
+        call_tests++;
+        des_xmlSAXHandlerPtr(n_sax, sax, 0);
+        des_userdata(n_userData, userData, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewSAXParserCtxt",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_sax);
+            printf(" %d", n_userData);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
 #define gen_nb_xmlNodePtr_ptr 1
 #define gen_xmlNodePtr_ptr(no, nr) NULL
 #define des_xmlNodePtr_ptr(no, val, nr)
@@ -14587,7 +14665,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 58 of 70 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 59 of 71 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlClearNodeInfoSeq();
     test_ret += test_xmlClearParserCtxt();
@@ -14610,6 +14688,7 @@ test_parser(void) {
     test_ret += test_xmlLoadExternalEntity();
     test_ret += test_xmlNewIOInputStream();
     test_ret += test_xmlNewParserCtxt();
+    test_ret += test_xmlNewSAXParserCtxt();
     test_ret += test_xmlParseBalancedChunkMemory();
     test_ret += test_xmlParseBalancedChunkMemoryRecover();
     test_ret += test_xmlParseChunk();

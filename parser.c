@@ -85,8 +85,9 @@ static void
 xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info);
 
 static xmlParserCtxtPtr
-xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
-	                  const xmlChar *base, xmlParserCtxtPtr pctx);
+xmlCreateEntityParserCtxtInternal(xmlSAXHandlerPtr sax, void *userData,
+        const xmlChar *URL, const xmlChar *ID, const xmlChar *base,
+        xmlParserCtxtPtr pctx);
 
 static void xmlHaltParser(xmlParserCtxtPtr ctxt);
 
@@ -12447,33 +12448,13 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     buf = xmlAllocParserInputBuffer(enc);
     if (buf == NULL) return(NULL);
 
-    ctxt = xmlNewParserCtxt();
+    ctxt = xmlNewSAXParserCtxt(sax, user_data);
     if (ctxt == NULL) {
         xmlErrMemory(NULL, "creating parser: out of memory\n");
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
     ctxt->dictNames = 1;
-    if (sax != NULL) {
-#ifdef LIBXML_SAX1_ENABLED
-	if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
-#endif /* LIBXML_SAX1_ENABLED */
-	    xmlFree(ctxt->sax);
-	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
-	if (ctxt->sax == NULL) {
-	    xmlErrMemory(ctxt, NULL);
-	    xmlFreeParserInputBuffer(buf);
-	    xmlFreeParserCtxt(ctxt);
-	    return(NULL);
-	}
-	memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
-	if (sax->initialized == XML_SAX2_MAGIC)
-	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
-	else
-	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
-	if (user_data != NULL)
-	    ctxt->userData = user_data;
-    }
     if (filename == NULL) {
 	ctxt->directory = NULL;
     } else {
@@ -12609,30 +12590,10 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
         return (NULL);
     }
 
-    ctxt = xmlNewParserCtxt();
+    ctxt = xmlNewSAXParserCtxt(sax, user_data);
     if (ctxt == NULL) {
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
-    }
-    if (sax != NULL) {
-#ifdef LIBXML_SAX1_ENABLED
-	if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
-#endif /* LIBXML_SAX1_ENABLED */
-	    xmlFree(ctxt->sax);
-	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
-	if (ctxt->sax == NULL) {
-	    xmlFreeParserInputBuffer(buf);
-	    xmlErrMemory(ctxt, NULL);
-	    xmlFreeParserCtxt(ctxt);
-	    return(NULL);
-	}
-	memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
-	if (sax->initialized == XML_SAX2_MAGIC)
-	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
-	else
-	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
-	if (user_data != NULL)
-	    ctxt->userData = user_data;
     }
 
     inputStream = xmlNewIOInputStream(ctxt, buf, enc);
@@ -12675,7 +12636,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     if (input == NULL)
 	return(NULL);
 
-    ctxt = xmlNewParserCtxt();
+    ctxt = xmlNewSAXParserCtxt(sax, NULL);
     if (ctxt == NULL) {
         xmlFreeParserInputBuffer(input);
 	return(NULL);
@@ -12684,15 +12645,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     /* We are loading a DTD */
     ctxt->options |= XML_PARSE_DTDLOAD;
 
-    /*
-     * Set-up the SAX context
-     */
-    if (sax != NULL) {
-	if (ctxt->sax != NULL)
-	    xmlFree(ctxt->sax);
-        ctxt->sax = sax;
-        ctxt->userData = ctxt;
-    }
     xmlDetectSAX2(ctxt);
 
     /*
@@ -12701,7 +12653,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
 
     pinput = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (pinput == NULL) {
-        if (sax != NULL) ctxt->sax = NULL;
         xmlFreeParserInputBuffer(input);
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
@@ -12711,7 +12662,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
      * plug some encoding conversion routines here.
      */
     if (xmlPushInput(ctxt, pinput) < 0) {
-        if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
@@ -12778,7 +12728,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
         xmlFreeDoc(ctxt->myDoc);
         ctxt->myDoc = NULL;
     }
-    if (sax != NULL) ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
 
     return(ret);
@@ -12806,23 +12755,13 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
 
     if ((ExternalID == NULL) && (SystemID == NULL)) return(NULL);
 
-    ctxt = xmlNewParserCtxt();
+    ctxt = xmlNewSAXParserCtxt(sax, NULL);
     if (ctxt == NULL) {
 	return(NULL);
     }
 
     /* We are loading a DTD */
     ctxt->options |= XML_PARSE_DTDLOAD;
-
-    /*
-     * Set-up the SAX context
-     */
-    if (sax != NULL) {
-	if (ctxt->sax != NULL)
-	    xmlFree(ctxt->sax);
-        ctxt->sax = sax;
-        ctxt->userData = ctxt;
-    }
 
     /*
      * Canonicalise the system ID
@@ -12841,7 +12780,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
 	input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID,
 	                                 systemIdCanonic);
     if (input == NULL) {
-        if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
 	if (systemIdCanonic != NULL)
 	    xmlFree(systemIdCanonic);
@@ -12852,7 +12790,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      * plug some encoding conversion routines here.
      */
     if (xmlPushInput(ctxt, input) < 0) {
-        if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
 	if (systemIdCanonic != NULL)
 	    xmlFree(systemIdCanonic);
@@ -12880,7 +12817,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
     if (ctxt->myDoc == NULL) {
 	xmlErrMemory(ctxt, "New Doc failed");
-        if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
@@ -12909,7 +12845,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
         xmlFreeDoc(ctxt->myDoc);
         ctxt->myDoc = NULL;
     }
-    if (sax != NULL) ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
 
     return(ret);
@@ -13000,7 +12935,6 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlNodePtr newRoot;
-    xmlSAXHandlerPtr oldsax = NULL;
     xmlParserErrors ret = XML_ERR_OK;
     xmlChar start[4];
     xmlCharEncoding enc;
@@ -13018,17 +12952,11 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (doc == NULL)
 	return(XML_ERR_INTERNAL_ERROR);
 
-
-    ctxt = xmlCreateEntityParserCtxtInternal(URL, ID, NULL, oldctxt);
+    ctxt = xmlCreateEntityParserCtxtInternal(sax, user_data, URL, ID, NULL,
+                                             oldctxt);
     if (ctxt == NULL) return(XML_WAR_UNDECLARED_ENTITY);
-    ctxt->userData = ctxt;
-    if (sax != NULL) {
-	oldsax = ctxt->sax;
-        ctxt->sax = sax;
-	if (user_data != NULL)
-	    ctxt->userData = user_data;
-    }
     xmlDetectSAX2(ctxt);
+
     newDoc = xmlNewDoc(BAD_CAST "1.0");
     if (newDoc == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -13049,7 +12977,6 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     newRoot = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
     if (newRoot == NULL) {
 	if (sax != NULL)
-	    ctxt->sax = oldsax;
 	xmlFreeParserCtxt(ctxt);
 	newDoc->intSubset = NULL;
 	newDoc->extSubset = NULL;
@@ -13190,8 +13117,6 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if ((oldctxt != NULL) && (ctxt->lastError.code != XML_ERR_OK))
         xmlCopyError(&ctxt->lastError, &oldctxt->lastError);
 
-    if (sax != NULL)
-	ctxt->sax = oldsax;
     if (oldctxt != NULL) {
         ctxt->dict = NULL;
         ctxt->attsDefault = NULL;
@@ -13942,14 +13867,15 @@ xmlParseEntity(const char *filename) {
  * Returns the new parser context or NULL
  */
 static xmlParserCtxtPtr
-xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
-	                  const xmlChar *base, xmlParserCtxtPtr pctx) {
+xmlCreateEntityParserCtxtInternal(xmlSAXHandlerPtr sax, void *userData,
+        const xmlChar *URL, const xmlChar *ID, const xmlChar *base,
+        xmlParserCtxtPtr pctx) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
     char *directory = NULL;
     xmlChar *uri;
 
-    ctxt = xmlNewParserCtxt();
+    ctxt = xmlNewSAXParserCtxt(sax, userData);
     if (ctxt == NULL) {
 	return(NULL);
     }
@@ -14017,7 +13943,7 @@ xmlCreateEntityParserCtxtInternal(const xmlChar *URL, const xmlChar *ID,
 xmlParserCtxtPtr
 xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
 	                  const xmlChar *base) {
-    return xmlCreateEntityParserCtxtInternal(URL, ID, base, NULL);
+    return xmlCreateEntityParserCtxtInternal(NULL, NULL, URL, ID, base, NULL);
 
 }
 

@@ -297,6 +297,9 @@ htmlNewDocNoDtD
 htmlNewParserCtxt
 #endif
 #ifdef LIBXML_HTML_ENABLED
+htmlNewSAXParserCtxt
+#endif
+#ifdef LIBXML_HTML_ENABLED
 htmlNodeDump
 #endif
 #ifdef LIBXML_HTML_ENABLED
@@ -1214,6 +1217,7 @@ xmlNewParserCtxt
 xmlNewProp
 xmlNewRMutex
 xmlNewReference
+xmlNewSAXParserCtxt
 xmlNewStringInputStream
 xmlNewText
 xmlNewTextChild

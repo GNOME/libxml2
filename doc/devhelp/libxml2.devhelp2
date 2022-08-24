@@ -1997,6 +1997,7 @@
     <keyword type="function" name="htmlNewDoc ()" link="libxml2-HTMLtree.html#htmlNewDoc"/>
     <keyword type="function" name="htmlNewDocNoDtD ()" link="libxml2-HTMLtree.html#htmlNewDocNoDtD"/>
     <keyword type="function" name="htmlNewParserCtxt ()" link="libxml2-HTMLparser.html#htmlNewParserCtxt"/>
+    <keyword type="function" name="htmlNewSAXParserCtxt ()" link="libxml2-HTMLparser.html#htmlNewSAXParserCtxt"/>
     <keyword type="function" name="htmlNodeDump ()" link="libxml2-HTMLtree.html#htmlNodeDump"/>
     <keyword type="function" name="htmlNodeDumpFile ()" link="libxml2-HTMLtree.html#htmlNodeDumpFile"/>
     <keyword type="function" name="htmlNodeDumpFileFormat ()" link="libxml2-HTMLtree.html#htmlNodeDumpFileFormat"/>
@@ -2563,6 +2564,7 @@
     <keyword type="function" name="xmlNewProp ()" link="libxml2-tree.html#xmlNewProp"/>
     <keyword type="function" name="xmlNewRMutex ()" link="libxml2-threads.html#xmlNewRMutex"/>
     <keyword type="function" name="xmlNewReference ()" link="libxml2-tree.html#xmlNewReference"/>
+    <keyword type="function" name="xmlNewSAXParserCtxt ()" link="libxml2-parser.html#xmlNewSAXParserCtxt"/>
     <keyword type="function" name="xmlNewStringInputStream ()" link="libxml2-parserInternals.html#xmlNewStringInputStream"/>
     <keyword type="function" name="xmlNewText ()" link="libxml2-tree.html#xmlNewText"/>
     <keyword type="function" name="xmlNewTextChild ()" link="libxml2-tree.html#xmlNewTextChild"/>

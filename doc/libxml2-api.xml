@@ -62,6 +62,7 @@
      <exports symbol='htmlIsAutoClosed' type='function'/>
      <exports symbol='htmlIsScriptAttribute' type='function'/>
      <exports symbol='htmlNewParserCtxt' type='function'/>
+     <exports symbol='htmlNewSAXParserCtxt' type='function'/>
      <exports symbol='htmlNodeStatus' type='function'/>
      <exports symbol='htmlParseCharRef' type='function'/>
      <exports symbol='htmlParseChunk' type='function'/>
@@ -813,6 +814,7 @@
      <exports symbol='xmlLoadExternalEntity' type='function'/>
      <exports symbol='xmlNewIOInputStream' type='function'/>
      <exports symbol='xmlNewParserCtxt' type='function'/>
+     <exports symbol='xmlNewSAXParserCtxt' type='function'/>
      <exports symbol='xmlParseBalancedChunkMemory' type='function'/>
      <exports symbol='xmlParseBalancedChunkMemoryRecover' type='function'/>
      <exports symbol='xmlParseChunk' type='function'/>
@@ -7628,6 +7630,13 @@ Could we use @subtypes for this?'/>
       <info>Allocate and initialize a new parser context.</info>
       <return type='htmlParserCtxtPtr' info='the htmlParserCtxtPtr or NULL in case of allocation error'/>
     </function>
+    <function name='htmlNewSAXParserCtxt' file='HTMLparser' module='HTMLparser'>
+      <cond>defined(LIBXML_HTML_ENABLED)</cond>
+      <info>Allocate and initialize a new parser context.</info>
+      <return type='htmlParserCtxtPtr' info='the htmlParserCtxtPtr or NULL in case of allocation error'/>
+      <arg name='sax' type='htmlSAXHandlerPtr' info='SAX handler'/>
+      <arg name='userData' type='void *' info='user data'/>
+    </function>
     <function name='htmlNodeDump' file='HTMLtree' module='HTMLtree'>
       <cond>defined(LIBXML_HTML_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Dump an HTML node, recursive behaviour,children are printed too, and formatting returns are added.</info>
@@ -10582,7 +10591,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlInitParserCtxt' file='parser' module='parserInternals'>
-      <info>Initialize a parser context</info>
+      <info>DEPRECATED: Internal function which will be made private in a future version.  Initialize a parser context</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -11595,6 +11604,12 @@ Could we use @subtypes for this?'/>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
       <arg name='doc' type='const xmlDoc *' info='the document'/>
       <arg name='name' type='const xmlChar *' info='the reference name, or the reference string with &amp; and ;'/>
+    </function>
+    <function name='xmlNewSAXParserCtxt' file='parser' module='parserInternals'>
+      <info>Allocate and initialize a new SAX parser context.</info>
+      <return type='xmlParserCtxtPtr' info='the xmlParserCtxtPtr or NULL'/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info='SAX handler'/>
+      <arg name='userData' type='void *' info='user data'/>
     </function>
     <function name='xmlNewStringInputStream' file='parserInternals' module='parserInternals'>
       <info>Create a new input stream based on a memory buffer.</info>

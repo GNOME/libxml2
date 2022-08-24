@@ -1586,10 +1586,6 @@ static void
 testSAX(const char *filename) {
     xmlSAXHandlerPtr handler;
     const char *user_data = "user_data"; /* mostly for debugging */
-    xmlParserInputBufferPtr buf = NULL;
-    xmlParserInputPtr inputStream;
-    xmlParserCtxtPtr ctxt = NULL;
-    xmlSAXHandlerPtr old_sax = NULL;
 
     callbacks = 0;
 
@@ -1603,24 +1599,22 @@ testSAX(const char *filename) {
         handler = debugSAX2Handler;
     }
 
-    /*
-     * it's not the simplest code but the most generic in term of I/O
-     */
-    buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-        goto error;
-    }
-
 #ifdef LIBXML_SCHEMAS_ENABLED
     if (wxschemas != NULL) {
         int ret;
 	xmlSchemaValidCtxtPtr vctxt;
+        xmlParserInputBufferPtr buf;
+
+        buf = xmlParserInputBufferCreateFilename(filename,
+                XML_CHAR_ENCODING_NONE);
+        if (buf == NULL)
+            return;
 
 	vctxt = xmlSchemaNewValidCtxt(wxschemas);
         if (vctxt == NULL) {
             progresult = XMLLINT_ERR_MEM;
             xmlFreeParserInputBuffer(buf);
-            goto error;
+            return;
         }
 	xmlSchemaSetValidErrors(vctxt, xmlGenericError, xmlGenericError, NULL);
 	xmlSchemaValidateSetFilename(vctxt, filename);
@@ -1645,38 +1639,23 @@ testSAX(const char *filename) {
     } else
 #endif
     {
+        xmlParserCtxtPtr ctxt = NULL;
+
 	/*
 	 * Create the parser context amd hook the input
 	 */
-	ctxt = xmlNewParserCtxt();
+	ctxt = xmlNewSAXParserCtxt(handler, (void *) user_data);
 	if (ctxt == NULL) {
             progresult = XMLLINT_ERR_MEM;
-	    xmlFreeParserInputBuffer(buf);
-	    goto error;
+	    return;
 	}
-	old_sax = ctxt->sax;
-	ctxt->sax = handler;
-	ctxt->userData = (void *) user_data;
-	inputStream = xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE);
-	if (inputStream == NULL) {
-	    xmlFreeParserInputBuffer(buf);
-	    goto error;
-	}
-	inputPush(ctxt, inputStream);
-
-	/* do the parsing */
-	xmlParseDocument(ctxt);
+        xmlCtxtReadFile(ctxt, filename, NULL, options);
 
 	if (ctxt->myDoc != NULL) {
 	    fprintf(stderr, "SAX generated a doc !\n");
 	    xmlFreeDoc(ctxt->myDoc);
 	    ctxt->myDoc = NULL;
 	}
-    }
-
-error:
-    if (ctxt != NULL) {
-        ctxt->sax = old_sax;
         xmlFreeParserCtxt(ctxt);
     }
 }

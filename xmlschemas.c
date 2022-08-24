@@ -29063,7 +29063,6 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
                         xmlSAXHandlerPtr sax, void *user_data)
 {
     xmlSchemaSAXPlugPtr plug = NULL;
-    xmlSAXHandlerPtr old_sax = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     xmlParserInputPtr inputStream = NULL;
     int ret;
@@ -29074,12 +29073,9 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     /*
      * prepare the parser
      */
-    pctxt = xmlNewParserCtxt();
+    pctxt = xmlNewSAXParserCtxt(sax, user_data);
     if (pctxt == NULL)
         return (-1);
-    old_sax = pctxt->sax;
-    pctxt->sax = sax;
-    pctxt->userData = user_data;
 #if 0
     if (options)
         xmlCtxtUseOptions(pctxt, options);
@@ -29125,7 +29121,6 @@ done:
     }
     /* cleanup */
     if (pctxt != NULL) {
-	pctxt->sax = old_sax;
 	xmlFreeParserCtxt(pctxt);
     }
     return (ret);

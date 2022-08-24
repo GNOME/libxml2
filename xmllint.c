@@ -112,8 +112,8 @@ static int noenc = 0;
 static int noblanks = 0;
 static int noout = 0;
 static int nowrap = 0;
-#ifdef LIBXML_OUTPUT_ENABLED
 static int format = 0;
+#ifdef LIBXML_OUTPUT_ENABLED
 static const char *output = NULL;
 static int compress = 0;
 static int oldout = 0;
@@ -2336,14 +2336,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	} else {
 	    if (rectxt != NULL)
 	        doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
-	    else {
-#ifdef LIBXML_SAX1_ENABLED
-                if (sax1)
-		    doc = xmlParseFile(filename);
-		else
-#endif /* LIBXML_SAX1_ENABLED */
+	    else
 		doc = xmlReadFile(filename, NULL, options);
-	    }
 	}
     }
 
@@ -3143,8 +3137,7 @@ main(int argc, char **argv) {
 	    options |= XML_PARSE_HUGE;
 	} else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent"))) {
-	    noent++;
-	    options |= XML_PARSE_NOENT;
+	    noent = 1;
 	} else if ((!strcmp(argv[i], "-noenc")) ||
 	         (!strcmp(argv[i], "--noenc"))) {
 	    noenc++;
@@ -3297,15 +3290,13 @@ main(int argc, char **argv) {
 #endif /* LIBXML_OUTPUT_ENABLED */
 	else if ((!strcmp(argv[i], "-nowarning")) ||
 	         (!strcmp(argv[i], "--nowarning"))) {
-	    xmlGetWarningsDefaultValue = 0;
-	    xmlPedanticParserDefault(0);
 	    options |= XML_PARSE_NOWARNING;
+            options &= ~XML_PARSE_PEDANTIC;
         }
 	else if ((!strcmp(argv[i], "-pedantic")) ||
 	         (!strcmp(argv[i], "--pedantic"))) {
-	    xmlGetWarningsDefaultValue = 1;
-	    xmlPedanticParserDefault(1);
 	    options |= XML_PARSE_PEDANTIC;
+            options &= XML_PARSE_NOWARNING;
         }
 #ifdef LIBXML_DEBUG_ENABLED
 	else if ((!strcmp(argv[i], "-debugent")) ||
@@ -3351,9 +3342,7 @@ main(int argc, char **argv) {
         }
 	else if ((!strcmp(argv[i], "-noblanks")) ||
 	         (!strcmp(argv[i], "--noblanks"))) {
-	    noblanks++;
-	    xmlKeepBlanksDefault(0);
-	    options |= XML_PARSE_NOBLANKS;
+	    noblanks = 1;
         }
 	else if ((!strcmp(argv[i], "-maxmem")) ||
 	         (!strcmp(argv[i], "--maxmem"))) {
@@ -3361,23 +3350,16 @@ main(int argc, char **argv) {
         }
 	else if ((!strcmp(argv[i], "-format")) ||
 	         (!strcmp(argv[i], "--format"))) {
-	     noblanks++;
 #ifdef LIBXML_OUTPUT_ENABLED
-	     format = 1;
+	    format = 1;
 #endif /* LIBXML_OUTPUT_ENABLED */
-	     xmlKeepBlanksDefault(0);
 	}
 	else if ((!strcmp(argv[i], "-pretty")) ||
 	         (!strcmp(argv[i], "--pretty"))) {
-	     i++;
+	    i++;
 #ifdef LIBXML_OUTPUT_ENABLED
-       if (argv[i] != NULL) {
-	         format = atoi(argv[i]);
-	         if (format == 1) {
-	             noblanks++;
-	             xmlKeepBlanksDefault(0);
-	         }
-       }
+            if (argv[i] != NULL)
+	        format = atoi(argv[i]);
 #endif /* LIBXML_OUTPUT_ENABLED */
 	}
 #ifdef LIBXML_READER_ENABLED
@@ -3416,20 +3398,19 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--relaxng"))) {
 	    i++;
 	    relaxng = argv[i];
-	    noent++;
-	    options |= XML_PARSE_NOENT;
+	    noent = 1;
 	} else if ((!strcmp(argv[i], "-schema")) ||
 	         (!strcmp(argv[i], "--schema"))) {
 	    i++;
 	    schema = argv[i];
-	    noent++;
+	    noent = 1;
 #endif
 #ifdef LIBXML_SCHEMATRON_ENABLED
 	} else if ((!strcmp(argv[i], "-schematron")) ||
 	         (!strcmp(argv[i], "--schematron"))) {
 	    i++;
 	    schematron = argv[i];
-	    noent++;
+	    noent = 1;
 #endif
         } else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
@@ -3492,15 +3473,14 @@ main(int argc, char **argv) {
     defaultEntityLoader = xmlGetExternalEntityLoader();
     xmlSetExternalEntityLoader(xmllintExternalEntityLoader);
 
-    xmlLineNumbersDefault(1);
     if (loaddtd != 0)
 	xmlLoadExtDtdDefaultValue |= XML_DETECT_IDS;
     if (dtdattrs)
 	xmlLoadExtDtdDefaultValue |= XML_COMPLETE_ATTRS;
-    if (noent != 0) xmlSubstituteEntitiesDefault(1);
-#ifdef LIBXML_VALID_ENABLED
-    if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
-#endif /* LIBXML_VALID_ENABLED */
+    if (noent != 0)
+        options |= XML_PARSE_NOENT;
+    if ((noblanks != 0) || (format == 1))
+        options |= XML_PARSE_NOBLANKS;
     if ((htmlout) && (!nowrap)) {
 	xmlGenericError(xmlGenericErrorContext,
          "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");

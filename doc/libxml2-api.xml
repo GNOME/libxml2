@@ -10721,7 +10721,7 @@ Could we use @subtypes for this?'/>
       <arg name='publicID' type='const xmlChar *' info='the public identifier'/>
     </function>
     <function name='xmlKeepBlanksDefault' file='parser' module='parserInternals'>
-      <info>Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
+      <info>DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS.  Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>
@@ -10732,7 +10732,7 @@ Could we use @subtypes for this?'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
     </function>
     <function name='xmlLineNumbersDefault' file='parser' module='parserInternals'>
-      <info>Set and return the previous value for enabling line numbers in elements contents. This may break on old application and is turned off by default.</info>
+      <info>DEPRECATED: The modern options API always enables line numbers.  Set and return the previous value for enabling line numbers in elements contents. This may break on old application and is turned off by default.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>

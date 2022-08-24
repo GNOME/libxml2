@@ -2013,6 +2013,8 @@ xmlPedanticParserDefault(int val) {
  * xmlLineNumbersDefault:
  * @val:  int 0 or 1
  *
+ * DEPRECATED: The modern options API always enables line numbers.
+ *
  * Set and return the previous value for enabling line numbers in elements
  * contents. This may break on old application and is turned off by default.
  *
@@ -2054,6 +2056,8 @@ xmlSubstituteEntitiesDefault(int val) {
 /**
  * xmlKeepBlanksDefault:
  * @val:  int 0 or 1
+ *
+ * DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS.
  *
  * Set and return the previous value for default blanks text nodes support.
  * The 1.x version of the parser used an heuristic to try to detect

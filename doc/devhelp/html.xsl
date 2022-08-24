@@ -4,8 +4,6 @@
 		xmlns:str="http://exslt.org/strings"
 		extension-element-prefixes="exsl str"
 		exclude-result-prefixes="exsl str">
-  <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-
   <!-- This is convoluted but needed to force the current document to
        be the API one and not the result tree from the tokenize() result,
        because the keys are only defined on the main document -->
@@ -497,7 +495,7 @@
 -->
   <xsl:template name="generate_general">
     <xsl:variable name="next" select="string(/api/files/file[position()=1]/@name)"/>
-    <xsl:document xmlns="" href="general.html" method="xml" indent="yes" encoding="UTF-8">
+    <xsl:document xmlns="" href="general.html" method="html" indent="yes" encoding="UTF-8">
       <html>
         <head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -537,7 +535,7 @@
 
 -->
   <xsl:template name="generate_index">
-    <xsl:document xmlns="" href="index.html" method="xml" indent="yes" encoding="UTF-8">
+    <xsl:document xmlns="" href="index.html" method="html" indent="yes" encoding="UTF-8">
       <html>
         <head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>

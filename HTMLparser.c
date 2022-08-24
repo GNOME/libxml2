@@ -4910,8 +4910,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 
     xmlInitParser();
 
-    htmlDefaultSAXHandlerInit();
-
     if ((ctxt == NULL) || (ctxt->input == NULL)) {
 	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
 		     "htmlParseDocument: context error\n", NULL, NULL);

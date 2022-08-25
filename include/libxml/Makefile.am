@@ -26,7 +26,6 @@ xmlinc_HEADERS = \
 		uri.h \
 		valid.h \
 		xlink.h \
-		xmlversion.h \
 		catalog.h \
 		threads.h \
 		globals.h \

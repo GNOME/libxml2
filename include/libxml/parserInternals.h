@@ -388,106 +388,148 @@ XMLPUBFUN xmlChar * XMLCALL
 /**
  * Generic production rules.
  */
+XML_DEPRECATED
 XMLPUBFUN const xmlChar * XMLCALL
 			xmlParseName		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseNmtoken		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseEntityValue	(xmlParserCtxtPtr ctxt,
 						 xmlChar **orig);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseAttValue	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseSystemLiteral	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParsePubidLiteral	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseCharData	(xmlParserCtxtPtr ctxt,
 						 int cdata);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseExternalID	(xmlParserCtxtPtr ctxt,
 						 xmlChar **publicID,
 						 int strict);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseComment		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN const xmlChar * XMLCALL
 			xmlParsePITarget	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParsePI		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseNotationDecl	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseEntityDecl	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseDefaultDecl	(xmlParserCtxtPtr ctxt,
 						 xmlChar **value);
+XML_DEPRECATED
 XMLPUBFUN xmlEnumerationPtr XMLCALL
 			xmlParseNotationType	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlEnumerationPtr XMLCALL
 			xmlParseEnumerationType	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseEnumeratedType	(xmlParserCtxtPtr ctxt,
 						 xmlEnumerationPtr *tree);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseAttributeType	(xmlParserCtxtPtr ctxt,
 						 xmlEnumerationPtr *tree);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlElementContentPtr XMLCALL
 			xmlParseElementMixedContentDecl
 						(xmlParserCtxtPtr ctxt,
 						 int inputchk);
+XML_DEPRECATED
 XMLPUBFUN xmlElementContentPtr XMLCALL
 			xmlParseElementChildrenContentDecl
 						(xmlParserCtxtPtr ctxt,
 						 int inputchk);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
 						 const xmlChar *name,
 						 xmlElementContentPtr *result);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseElementDecl	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseMarkupDecl	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseCharRef		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlEntityPtr XMLCALL
 			xmlParseEntityRef	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseReference	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParsePEReference	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseDocTypeDecl	(xmlParserCtxtPtr ctxt);
 #ifdef LIBXML_SAX1_ENABLED
+XML_DEPRECATED
 XMLPUBFUN const xmlChar * XMLCALL
 			xmlParseAttribute	(xmlParserCtxtPtr ctxt,
 						 xmlChar **value);
+XML_DEPRECATED
 XMLPUBFUN const xmlChar * XMLCALL
 			xmlParseStartTag	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseEndTag		(xmlParserCtxtPtr ctxt);
 #endif /* LIBXML_SAX1_ENABLED */
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseCDSect		(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL
 			xmlParseContent		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseElement		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseVersionNum	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseVersionInfo	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN xmlChar * XMLCALL
 			xmlParseEncName		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN const xmlChar * XMLCALL
 			xmlParseEncodingDecl	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlParseSDDecl		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseXMLDecl		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseTextDecl	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlParseMisc		(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL

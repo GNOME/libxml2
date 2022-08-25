@@ -2317,6 +2317,8 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  * xmlParseCharRef:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse Reference declarations
  *
  * [66] CharRef ::= '&#' [0-9]+ ';' |
@@ -3324,6 +3326,8 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
  * xmlParseName:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse an XML name.
  *
  * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
@@ -3642,6 +3646,8 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
  * xmlParseNmtoken:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse an XML Nmtoken.
  *
  * [7] Nmtoken ::= (NameChar)+
@@ -3746,6 +3752,8 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
  * xmlParseEntityValue:
  * @ctxt:  an XML parser context
  * @orig:  if non-NULL store a copy of the original entity value
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse a value for ENTITY declarations
  *
@@ -4143,6 +4151,8 @@ error:
  * xmlParseAttValue:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse a value for an attribute
  * Note: the parser won't do substitution of entities here, this
  * will be handled later in xmlStringGetNodeList
@@ -4182,6 +4192,8 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseSystemLiteral:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an XML Literal
  *
@@ -4272,6 +4284,8 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParsePubidLiteral:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an XML public literal
  *
@@ -4400,6 +4414,8 @@ static const unsigned char test_char_data[256] = {
  * xmlParseCharData:
  * @ctxt:  an XML parser context
  * @cdata:  int indicating whether we are within a CDATA section
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse a CharData section.
  * if we are within a CDATA section ']]>' marks an end of section.
@@ -4655,6 +4671,8 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
  * @strict: indicate whether we should restrict parsing to only
  *          production [75], see NOTE below
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Parse an External ID or a Public ID
  *
  * NOTE: Productions [75] and [83] interact badly since [75] can generate
@@ -4866,6 +4884,8 @@ not_terminated:
  * xmlParseComment:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Skip an XML (SGML) comment <!-- .... -->
  *  The spec says that "For compatibility, the string "--" (double-hyphen)
  *  must not occur within comments. "
@@ -5041,6 +5061,8 @@ get_more:
  * xmlParsePITarget:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse the name of a PI
  *
  * [17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
@@ -5148,6 +5170,8 @@ error:
 /**
  * xmlParsePI:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an XML Processing Instruction.
  *
@@ -5307,6 +5331,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
  * xmlParseNotationDecl:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse a notation declaration
  *
  * [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID) S? '>'
@@ -5378,6 +5404,8 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseEntityDecl:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse <!ENTITY declarations
  *
@@ -5646,6 +5674,8 @@ done:
  * @ctxt:  an XML parser context
  * @value:  Receive a possible fixed default value for the attribute
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Parse an attribute default declaration
  *
  * [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)
@@ -5706,6 +5736,8 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
 /**
  * xmlParseNotationType:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an Notation attribute type.
  *
@@ -5779,6 +5811,8 @@ xmlParseNotationType(xmlParserCtxtPtr ctxt) {
  * xmlParseEnumerationType:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse an Enumeration attribute type.
  *
  * [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
@@ -5849,6 +5883,8 @@ xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  * @tree:  the enumeration tree built while parsing
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse an Enumerated attribute type.
  *
  * [57] EnumeratedType ::= NotationType | Enumeration
@@ -5881,6 +5917,8 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
  * xmlParseAttributeType:
  * @ctxt:  an XML parser context
  * @tree:  the enumeration tree built while parsing
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse the Attribute list def for an element
  *
@@ -5956,6 +5994,8 @@ xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
 /**
  * xmlParseAttributeListDecl:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * : parse the Attribute list def for an element
  *
@@ -6077,6 +6117,8 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
  * xmlParseElementMixedContentDecl:
  * @ctxt:  an XML parser context
  * @inputchk:  the input used for the current entity, needed for boundary checks
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
@@ -6496,6 +6538,8 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
  * @ctxt:  an XML parser context
  * @inputchk:  the input used for the current entity, needed for boundary checks
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
  *
@@ -6532,6 +6576,8 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
  * @ctxt:  an XML parser context
  * @name:  the name of the element being defined.
  * @result:  the Element Content pointer will be stored here if any
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse the declaration for an Element content either Mixed or Children,
  * the cases EMPTY and ANY are handled directly in xmlParseElementDecl
@@ -6576,6 +6622,8 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, const xmlChar *name,
 /**
  * xmlParseElementDecl:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an Element declaration.
  *
@@ -6836,6 +6884,8 @@ error:
  * xmlParseMarkupDecl:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse Markup declarations
  *
  * [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
@@ -6897,6 +6947,8 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseTextDecl:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an XML declaration header for external entities
  *
@@ -7058,6 +7110,8 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 /**
  * xmlParseReference:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse and handle entity references in content, depending on the SAX
  * interface, this may end-up in a call to character() if this is a
@@ -7495,6 +7549,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
  * xmlParseEntityRef:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse ENTITY references declarations
  *
  * [68] EntityRef ::= '&' Name ';'
@@ -7874,6 +7930,8 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 /**
  * xmlParsePEReference:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse PEReference declarations
  * The entity content is handled directly by pushing it's content as
@@ -8260,6 +8318,8 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  * xmlParseDocTypeDecl:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse a DOCTYPE declaration
  *
  * [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
@@ -8405,7 +8465,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  * @value:  a xmlChar ** used to store the value of the attribute
  *
- * DEPRECATED: Don't use.
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an attribute
  *
@@ -8500,7 +8560,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
  * xmlParseStartTag:
  * @ctxt:  an XML parser context
  *
- * DEPRECATED: Don't use.
+ * DEPRECATED: Internal function, don't use.
  *
  * parse a start of tag either for rule element or
  * EmptyElement. In both case we don't parse the tag closing chars.
@@ -8659,8 +8719,6 @@ failed:
  * @line:  line of the start tag
  * @nsNr:  number of namespaces on the start tag
  *
- * DEPRECATED: Don't use.
- *
  * parse an end of tag
  *
  * [42] ETag ::= '</' Name S? '>'
@@ -8722,6 +8780,8 @@ xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
 /**
  * xmlParseEndTag:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an end of tag
  *
@@ -9752,6 +9812,8 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlStartTag *tag) {
  * xmlParseCDSect:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Parse escaped pure raw content.
  *
  * [18] CDSect ::= CDStart CData CDEnd
@@ -9972,6 +10034,8 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
  * xmlParseElement:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse an XML element
  *
  * [39] element ::= EmptyElemTag | STag content ETag
@@ -10175,6 +10239,8 @@ xmlParseElementEnd(xmlParserCtxtPtr ctxt) {
  * xmlParseVersionNum:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse the XML version value.
  *
  * [26] VersionNum ::= '1.' [0-9]+
@@ -10235,6 +10301,8 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
  * xmlParseVersionInfo:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse the XML version.
  *
  * [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
@@ -10281,6 +10349,8 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseEncName:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse the XML encoding name
  *
@@ -10343,6 +10413,8 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseEncodingDecl:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse the XML encoding declaration
  *
@@ -10458,6 +10530,8 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
  * xmlParseSDDecl:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse the XML standalone declaration
  *
  * [32] SDDecl ::= S 'standalone' Eq
@@ -10541,6 +10615,8 @@ xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseXMLDecl:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an XML declaration header
  *
@@ -10656,6 +10732,8 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseMisc:
  * @ctxt:  an XML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an XML Misc* optional field.
  *

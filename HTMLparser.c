@@ -2865,6 +2865,8 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
  * @ctxt:  an HTML parser context
  * @str:  location to store the entity name
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse an HTML ENTITY references
  *
  * [68] EntityRef ::= '&' Name ';'
@@ -3572,6 +3574,8 @@ unfinished:
 /**
  * htmlParseCharRef:
  * @ctxt:  an HTML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse Reference declarations
  *
@@ -4469,6 +4473,8 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 /**
  * htmlParseElement:
  * @ctxt:  an HTML parser context
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse an HTML element, this is highly recursive
  * this is kept for compatibility with previous code versions

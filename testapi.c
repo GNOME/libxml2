@@ -15330,43 +15330,6 @@ test_xmlCurrentChar(void) {
 
 
 static int
-test_xmlErrMemory(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-    char * extra; /* extra information */
-    int n_extra;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-    for (n_extra = 0;n_extra < gen_nb_const_char_ptr;n_extra++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-        extra = gen_const_char_ptr(n_extra, 1);
-
-        xmlErrMemory(ctxt, (const char *)extra);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        des_const_char_ptr(n_extra, (const char *)extra, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlErrMemory",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf(" %d", n_extra);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
 test_xmlIsLetter(void) {
     int test_ret = 0;
 
@@ -16051,7 +16014,7 @@ static int
 test_parserInternals(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parserInternals : 31 of 88 functions ...\n");
+    if (quiet == 0) printf("Testing parserInternals : 30 of 87 functions ...\n");
     test_ret += test_inputPop();
     test_ret += test_inputPush();
     test_ret += test_namePop();
@@ -16066,7 +16029,6 @@ test_parserInternals(void) {
     test_ret += test_xmlCreateMemoryParserCtxt();
     test_ret += test_xmlCreateURLParserCtxt();
     test_ret += test_xmlCurrentChar();
-    test_ret += test_xmlErrMemory();
     test_ret += test_xmlIsLetter();
     test_ret += test_xmlNewEntityInputStream();
     test_ret += test_xmlNewInputFromFile();

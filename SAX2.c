@@ -28,6 +28,10 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/globals.h>
 
+#include "private/error.h"
+#include "private/parser.h"
+#include "private/tree.h"
+
 /* Define SIZE_T_MAX unless defined through <limits.h>. */
 #ifndef SIZE_T_MAX
 # define SIZE_T_MAX     ((size_t)-1)

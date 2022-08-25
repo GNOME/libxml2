@@ -30,6 +30,8 @@
 #include <libxml/relaxng.h>
 #endif
 
+#include "private/error.h"
+
 #define DUMP_TEXT_TYPE 1
 
 typedef struct _xmlDebugCtxt xmlDebugCtxt;

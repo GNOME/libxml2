@@ -34,6 +34,10 @@
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlschemastypes.h>
 
+#include "private/error.h"
+#include "private/regexp.h"
+#include "private/string.h"
+
 /*
  * The Relax-NG namespace
  */
@@ -2874,10 +2878,6 @@ xmlRelaxNGCleanupTypes(void)
  * This allows a faster execution and streamability at that level	*
  *									*
  ************************************************************************/
-
-/* from automata.c but not exported */
-void xmlAutomataSetFlags(xmlAutomataPtr am, int flags);
-
 
 static int xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt,
                                 xmlRelaxNGDefinePtr def);

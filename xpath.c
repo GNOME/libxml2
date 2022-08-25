@@ -49,7 +49,8 @@
 #include <libxml/pattern.h>
 #endif
 
-#include "buf.h"
+#include "private/buf.h"
+#include "private/error.h"
 
 #ifdef LIBXML_PATTERN_ENABLED
 #define XPATH_STREAMING

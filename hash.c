@@ -39,6 +39,8 @@
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
 
+#include "private/dict.h"
+
 #define MAX_HASH_LEN 8
 
 /* #define DEBUG_GROW */

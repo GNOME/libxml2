@@ -31,6 +31,9 @@
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlunicode.h>
 
+#include "private/error.h"
+#include "private/regexp.h"
+
 #ifndef SIZE_MAX
 #define SIZE_MAX ((size_t) -1)
 #endif
@@ -360,8 +363,6 @@ static int xmlRegStrEqualWildcard(const xmlChar *expStr, const xmlChar *valStr);
 static int xmlRegCheckCharacter(xmlRegAtomPtr atom, int codepoint);
 static int xmlRegCheckCharacterRange(xmlRegAtomType type, int codepoint,
                   int neg, int start, int end, const xmlChar *blockName);
-
-void xmlAutomataSetFlags(xmlAutomataPtr am, int flags);
 
 /************************************************************************
  *									*

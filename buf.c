@@ -24,7 +24,9 @@
 #include <libxml/globals.h>
 #include <libxml/tree.h>
 #include <libxml/parserInternals.h> /* for XML_MAX_TEXT_LENGTH */
-#include "buf.h"
+
+#include "private/buf.h"
+#include "private/error.h"
 
 #ifndef SIZE_MAX
 #define SIZE_MAX ((size_t) -1)

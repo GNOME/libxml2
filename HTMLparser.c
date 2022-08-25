@@ -28,8 +28,12 @@
 #include <libxml/globals.h>
 #include <libxml/uri.h>
 
-#include "buf.h"
-#include "enc.h"
+#include "private/buf.h"
+#include "private/enc.h"
+#include "private/error.h"
+#include "private/html.h"
+#include "private/parser.h"
+#include "private/tree.h"
 
 #define HTML_MAX_NAMELEN 1000
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000

@@ -33,7 +33,7 @@
 #include <lzma.h>
 #endif
 
-#include "xzlib.h"
+#include "private/xzlib.h"
 #include <libxml/xmlmemory.h>
 
 /* values for xz_state how */

@@ -21,6 +21,10 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/threads.h>
 
+#include "private/error.h"
+#include "private/threads.h"
+#include "private/tree.h"
+
 /* #define DEBUG_GLOBALS */
 
 /*
@@ -325,15 +329,6 @@ static xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilename
 xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue = NULL;
 static xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValueThrDef = NULL;
 
-/*
- * Error handling
- */
-
-/* xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc; */
-/* Must initialize xmlGenericError in xmlInitParser */
-void XMLCDECL xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
-				 const char *msg,
-				 ...);
 /**
  * xmlGenericError:
  *

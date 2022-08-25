@@ -52,6 +52,8 @@
 #endif
 #endif
 
+#include "private/error.h"
+
 #define TODO								\
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\

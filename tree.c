@@ -44,8 +44,10 @@
 #include <libxml/debugXML.h>
 #endif
 
-#include "buf.h"
-#include "save.h"
+#include "private/buf.h"
+#include "private/entities.h"
+#include "private/error.h"
+#include "private/tree.h"
 
 int __xmlRegisterCallbacks = 0;
 

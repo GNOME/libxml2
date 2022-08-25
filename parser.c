@@ -72,8 +72,13 @@
 #include <libxml/relaxng.h>
 #endif
 
-#include "buf.h"
-#include "enc.h"
+#include "private/buf.h"
+#include "private/enc.h"
+#include "private/error.h"
+#include "private/html.h"
+#include "private/io.h"
+#include "private/parser.h"
+#include "private/threads.h"
 
 struct _xmlStartTag {
     const xmlChar *prefix;
@@ -14704,7 +14709,6 @@ xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
 #include <libxml/xpath.h>
 #endif
 
-extern void XMLCDECL xmlGenericErrorDefaultFunc(void *ctx, const char *msg, ...);
 static int xmlParserInitialized = 0;
 
 /**

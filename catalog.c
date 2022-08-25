@@ -39,7 +39,8 @@
 #include <libxml/threads.h>
 #include <libxml/globals.h>
 
-#include "buf.h"
+#include "private/buf.h"
+#include "private/error.h"
 
 #define MAX_DELEGATE	50
 #define MAX_CATAL_DEPTH	50

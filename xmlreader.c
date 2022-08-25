@@ -39,7 +39,8 @@
 #include <libxml/pattern.h>
 #endif
 
-#include "buf.h"
+#include "private/buf.h"
+#include "private/tree.h"
 
 #define MAX_ERR_MSG_SIZE 64000
 

@@ -40,8 +40,9 @@
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 
-#include "buf.h"
-#include "enc.h"
+#include "private/buf.h"
+#include "private/enc.h"
+#include "private/error.h"
 
 #ifdef LIBXML_ICU_ENABLED
 #include <unicode/ucnv.h>
@@ -2056,11 +2057,10 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
 }
 
 /**
- * xmlCharEncFirstLineInt:
+ * xmlCharEncFirstLine:
  * @handler:	char encoding transformation data structure
  * @out:  an xmlBuffer for the output.
  * @in:  an xmlBuffer for the input
- * @len:  number of bytes to convert for the first line, or -1
  *
  * Front-end for the encoding handler input function, but handle only
  * the very first line, i.e. limit itself to 45 chars.
@@ -2071,8 +2071,8 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
  *        the result of transformation can't fit into the encoding we want), or
  */
 int
-xmlCharEncFirstLineInt(xmlCharEncodingHandler *handler, xmlBufferPtr out,
-                       xmlBufferPtr in, int len) {
+xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
+                    xmlBufferPtr in) {
     int ret;
     int written;
     int toconv;
@@ -2092,13 +2092,8 @@ xmlCharEncFirstLineInt(xmlCharEncodingHandler *handler, xmlBufferPtr out,
      * The actual value depending on guessed encoding is passed as @len
      * if provided
      */
-    if (len >= 0) {
-        if (toconv > len)
-            toconv = len;
-    } else {
-        if (toconv > 180)
-            toconv = 180;
-    }
+    if (toconv > 180)
+        toconv = 180;
     if (toconv * 2 >= written) {
         xmlBufferGrow(out, toconv * 2);
 	written = out->size - out->use - 1;
@@ -2140,26 +2135,6 @@ xmlCharEncFirstLineInt(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     if (ret == -3) ret = 0;
     if (ret == -1) ret = 0;
     return(written ? written : ret);
-}
-
-/**
- * xmlCharEncFirstLine:
- * @handler:	char encoding transformation data structure
- * @out:  an xmlBuffer for the output.
- * @in:  an xmlBuffer for the input
- *
- * Front-end for the encoding handler input function, but handle only
- * the very first line, i.e. limit itself to 45 chars.
- *
- * Returns the number of byte written if success, or
- *     -1 general error
- *     -2 if the transcoding fails (for *in is not valid utf8 string or
- *        the result of transformation can't fit into the encoding we want), or
- */
-int
-xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
-                 xmlBufferPtr in) {
-    return(xmlCharEncFirstLineInt(handler, out, in, -1));
 }
 
 /**

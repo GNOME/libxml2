@@ -76,6 +76,9 @@
 #include <libxml/xmlreader.h>
 #endif
 
+#include "private/error.h"
+#include "private/string.h"
+
 /* #define DEBUG 1 */
 
 /* #define DEBUG_CONTENT 1 */

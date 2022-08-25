@@ -23,6 +23,9 @@
 #include <libxml/list.h>
 #include <libxml/globals.h>
 
+#include "private/error.h"
+#include "private/parser.h"
+
 static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 	                           int create);
 /* #define DEBUG_VALID_ALGO */

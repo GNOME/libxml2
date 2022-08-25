@@ -33,6 +33,8 @@
 #include <libxml/schemasInternals.h>
 #include <libxml/xmlschemastypes.h>
 
+#include "private/error.h"
+
 #define DEBUG
 
 #ifndef LIBXML_XPATH_ENABLED

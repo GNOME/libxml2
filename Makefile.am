@@ -395,8 +395,8 @@ EXTRA_DIST = xml2-config.in libxml.spec.in \
 	     libxml-2.0.pc.in libxml-2.0-uninstalled.pc.in \
 	     libxml2-config.cmake.in autogen.sh \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
-	     triop.h triodef.h libxml.h xzlib.h buf.h \
-	     enc.h save.h genUnicode.py TODO_SCHEMAS \
+	     triop.h triodef.h libxml.h \
+	     genUnicode.py TODO_SCHEMAS \
 	     dbgen.pl dbgenattr.pl \
 	     README.tests Makefile.tests libxml2.syms timsort.h \
 	     README.zOS README.md \

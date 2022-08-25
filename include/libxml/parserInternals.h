@@ -317,16 +317,6 @@ XMLPUBFUN int XMLCALL
 						 xmlParserInputPtr input,
 					 xmlCharEncodingHandlerPtr handler);
 
-#ifdef IN_LIBXML
-/* internal error reporting */
-XMLPUBFUN void XMLCALL
-			__xmlErrEncoding	(xmlParserCtxtPtr ctxt,
-						 xmlParserErrors xmlerr,
-						 const char *msg,
-						 const xmlChar * str1,
-						 const xmlChar * str2) LIBXML_ATTR_FORMAT(3,0);
-#endif
-
 /**
  * Input Streams.
  */
@@ -644,15 +634,6 @@ XMLPUBFUN void XMLCALL
 						 xmlEntityPtr entity);
 
 #endif /* LIBXML_LEGACY_ENABLED */
-
-#ifdef IN_LIBXML
-/*
- * internal only
- */
-XMLPUBFUN void XMLCALL
-	xmlErrMemory		(xmlParserCtxtPtr ctxt,
-				 const char *extra);
-#endif
 
 #ifdef __cplusplus
 }

@@ -22,6 +22,8 @@
 #include <libxml/xmlmodule.h>
 #include <libxml/globals.h>
 
+#include "private/error.h"
+
 #ifdef LIBXML_MODULES_ENABLED
 
 struct _xmlModule {

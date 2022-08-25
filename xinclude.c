@@ -27,7 +27,8 @@
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>
 
-#include "buf.h"
+#include "private/buf.h"
+#include "private/error.h"
 
 #define XINCLUDE_MAX_DEPTH 40
 

@@ -25,7 +25,8 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/c14n.h>
 
-#include "buf.h"
+#include "private/buf.h"
+#include "private/error.h"
 
 /************************************************************************
  *									*

@@ -21,9 +21,10 @@
 
 #include <libxml/xmlwriter.h>
 
-#include "buf.h"
-#include "enc.h"
-#include "save.h"
+#include "private/buf.h"
+#include "private/enc.h"
+#include "private/error.h"
+#include "private/save.h"
 
 #define B64LINELEN 72
 #define B64CRLF "\r\n"

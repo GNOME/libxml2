@@ -34,6 +34,8 @@
 #include <libxml/pattern.h>
 #include <libxml/schematron.h>
 
+#include "private/error.h"
+
 #define SCHEMATRON_PARSE_OPTIONS XML_PARSE_NOENT
 
 #define SCT_OLD_NS BAD_CAST "http://www.ascc.net/xml/schematron"

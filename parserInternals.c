@@ -43,8 +43,11 @@
 #define END(ctxt) ctxt->input->end
 #define VALID_CTXT(ctxt) (CUR(ctxt) <= END(ctxt))
 
-#include "buf.h"
-#include "enc.h"
+#include "private/buf.h"
+#include "private/enc.h"
+#include "private/error.h"
+#include "private/io.h"
+#include "private/parser.h"
 
 /*
  * Various global defaults for parsing

@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "private/dict.h"
+
 /*
  * Following http://www.ocert.org/advisories/ocert-2011-003.html
  * it seems that having hash randomization might be a good idea

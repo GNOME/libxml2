@@ -1557,6 +1557,7 @@ libxml_htmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     const char *encoding;
     PyObject *pyobj_SAX = NULL;
     xmlSAXHandlerPtr SAX = NULL;
+    htmlParserCtxtPtr ctxt;
 
     if (!PyArg_ParseTuple
         (args, (char *) "Osz:htmlSAXParseFile", &pyobj_SAX, &URI,
@@ -1574,7 +1575,9 @@ libxml_htmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     SAX = &pythonSaxHandler;
     Py_INCREF(pyobj_SAX);
     /* The reference is released in pythonEndDocument() */
-    htmlSAXParseFile(URI, encoding, SAX, pyobj_SAX);
+    ctxt = htmlNewSAXParserCtxt(SAX, pyobj_SAX);
+    htmlCtxtReadFile(ctxt, URI, encoding, 0);
+    htmlFreeParserCtxt(ctxt);
     Py_INCREF(Py_None);
     return (Py_None);
 #else

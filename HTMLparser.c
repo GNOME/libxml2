@@ -6402,6 +6402,8 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
  * @sax:  the SAX handler block
  * @userData: if using SAX, this pointer will be provided on callbacks.
  *
+ * DEPRECATED: Use htmlNewSAXParserCtxt and htmlCtxtReadDoc.
+ *
  * Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks
  * to handle parse events. If sax is NULL, fallback to the default DOM
  * behavior and return a tree.
@@ -6522,6 +6524,8 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  * @sax:  the SAX handler block
  * @userData: if using SAX, this pointer will be provided on callbacks.
+ *
+ * DEPRECATED: Use htmlNewSAXParserCtxt and htmlCtxtReadFile.
  *
  * parse an HTML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.

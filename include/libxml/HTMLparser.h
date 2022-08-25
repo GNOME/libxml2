@@ -120,6 +120,7 @@ XMLPUBFUN htmlParserCtxtPtr XMLCALL
 
 XMLPUBFUN int XMLCALL
 			htmlParseDocument(htmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN htmlDocPtr XMLCALL
 			htmlSAXParseDoc	(const xmlChar *cur,
 					 const char *encoding,
@@ -131,6 +132,7 @@ XMLPUBFUN htmlDocPtr XMLCALL
 XMLPUBFUN htmlParserCtxtPtr XMLCALL
 			htmlCreateFileParserCtxt(const char *filename,
 	                                         const char *encoding);
+XML_DEPRECATED
 XMLPUBFUN htmlDocPtr XMLCALL
 			htmlSAXParseFile(const char *filename,
 					 const char *encoding,

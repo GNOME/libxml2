@@ -7018,9 +7018,14 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_FINISHED, NULL);
 	NEXT;
     } else {
+        int c;
+
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_FINISHED, NULL);
-	MOVETO_ENDTAG(CUR_PTR);
-	NEXT;
+        while ((c = CUR) != 0) {
+            NEXT;
+            if (c == '>')
+                break;
+        }
     }
 
     ctxt->instate = oldstate;
@@ -10723,9 +10728,14 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_FINISHED, NULL);
 	NEXT;
     } else {
+        int c;
+
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_FINISHED, NULL);
-	MOVETO_ENDTAG(CUR_PTR);
-	NEXT;
+        while ((c = CUR) != 0) {
+            NEXT;
+            if (c == '>')
+                break;
+        }
     }
 }
 

@@ -279,34 +279,6 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
 #define IS_PUBIDCHAR_CH(c) xmlIsPubidChar_ch(c)
 
 /**
- * SKIP_EOL:
- * @p:  and UTF8 string pointer
- *
- * Skips the end of line chars.
- */
-#define SKIP_EOL(p)							\
-    if (*(p) == 0x13) { p++ ; if (*(p) == 0x10) p++; }			\
-    if (*(p) == 0x10) { p++ ; if (*(p) == 0x13) p++; }
-
-/**
- * MOVETO_ENDTAG:
- * @p:  and UTF8 string pointer
- *
- * Skips to the next '>' char.
- */
-#define MOVETO_ENDTAG(p)						\
-    while ((*p) && (*(p) != '>')) (p)++
-
-/**
- * MOVETO_STARTTAG:
- * @p:  and UTF8 string pointer
- *
- * Skips to the next '<' char.
- */
-#define MOVETO_STARTTAG(p)						\
-    while ((*p) && (*(p) != '<')) (p)++
-
-/**
  * Global variables used for predefined strings.
  */
 XMLPUBVAR const xmlChar xmlStringText[];

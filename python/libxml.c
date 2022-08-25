@@ -1524,6 +1524,7 @@ libxml_xmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     const char *URI;
     PyObject *pyobj_SAX = NULL;
     xmlSAXHandlerPtr SAX = NULL;
+    xmlParserCtxtPtr ctxt;
 
     if (!PyArg_ParseTuple(args, (char *) "Osi:xmlSAXParseFile", &pyobj_SAX,
                           &URI, &recover))
@@ -1540,7 +1541,9 @@ libxml_xmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     SAX = &pythonSaxHandler;
     Py_INCREF(pyobj_SAX);
     /* The reference is released in pythonEndDocument() */
-    xmlSAXUserParseFile(SAX, pyobj_SAX, URI);
+    ctxt = xmlNewSAXParserCtxt(SAX, pyobj_SAX);
+    xmlCtxtReadFile(ctxt, URI, NULL, 0);
+    xmlFreeParserCtxt(ctxt);
 #endif /* LIBXML_SAX1_ENABLED */
     Py_INCREF(Py_None);
     return (Py_None);

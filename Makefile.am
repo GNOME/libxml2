@@ -28,7 +28,7 @@ check_PROGRAMS = \
 
 bin_PROGRAMS = xmllint xmlcatalog
 
-bin_SCRIPTS=xml2-config
+nodist_bin_SCRIPTS = xml2-config
 
 lib_LTLIBRARIES = libxml2.la
 libxml2_la_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
@@ -387,7 +387,7 @@ rpm: cleanup cleantar
 CLEANFILES = runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst
 
-EXTRA_DIST = xml2-config.in libxml.spec.in libxml2.spec \
+EXTRA_DIST = xml2-config.in libxml.spec.in \
              libxml.m4 Copyright check-xml-test-suite.py gentest.py \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
 	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
@@ -404,7 +404,7 @@ EXTRA_DIST = xml2-config.in libxml.spec.in libxml2.spec \
 
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libxml-2.0.pc
+nodist_pkgconfig_DATA = libxml-2.0.pc
 
 cmakedir = $(libdir)/cmake/libxml2
 cmake_DATA = libxml2-config.cmake

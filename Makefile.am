@@ -362,8 +362,7 @@ cleanup:
 	-@(find . -name \*.gcda -o -name \*.gcno -exec rm -f {} \;)
 	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm -f {} \;)
 
-dist-hook: cleanup libxml2.spec
-	-cp libxml2.spec $(distdir)
+dist-hook: cleanup
 	(cd $(srcdir) ; tar -cf - --exclude .git win32 os400 vms test result) | (cd $(distdir); tar xf -)
 
 dist-source: distdir

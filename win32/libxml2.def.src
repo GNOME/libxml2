@@ -764,7 +764,6 @@ xmlElemDump
 xmlEncodeEntities
 xmlEncodeEntitiesReentrant
 xmlEncodeSpecialChars
-xmlErrMemory
 #ifdef LIBXML_REGEXP_ENABLED
 xmlExpCtxtNbCons
 #endif

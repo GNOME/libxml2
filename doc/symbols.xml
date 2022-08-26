@@ -1343,7 +1343,7 @@
     <symbol file="dict">xmlDictQLookup</symbol>
     <symbol file="dict">xmlDictReference</symbol>
     <symbol file="dict">xmlDictSize</symbol>
-    <symbol file="parserInternals">xmlErrMemory</symbol>
+    <symbol file="parserInternals" removed="2.11.0">xmlErrMemory</symbol>
     <symbol file="parserInternals">xmlParserMaxDepth</symbol>
     <symbol file="parserInternals">xmlStringLenDecodeEntities</symbol>
     <symbol file="parserInternals">xmlSwitchInputEncoding</symbol>

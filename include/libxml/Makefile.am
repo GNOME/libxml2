@@ -49,4 +49,6 @@ xmlinc_HEADERS = \
 		xmlsave.h \
 		schematron.h
 
+nodist_xmlinc_HEADERS = xmlversion.h
+
 EXTRA_DIST = xmlversion.h.in

@@ -44,6 +44,6 @@ libxml2.py: $(srcdir)/libxml.py libxml2class.py
 	cat $(srcdir)/libxml.py `test -f libxml2class.py || echo $(srcdir)/`libxml2class.py > $@
 
 clean-local:
-	rm -rf __pycache__
+	rm -rf __pycache__ *.pyc
 
 endif

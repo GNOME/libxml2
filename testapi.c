@@ -443,7 +443,7 @@ static void des_eaten_name(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSE
 #define gen_nb_fileoutput 6
 
 static const char *gen_fileoutput(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 0) return("missing.xml");
+    if (no == 0) return("missing/dir/missing.xml");
     if (no == 1) return("<foo/>");
     if (no == 2) return(REMOTE2GOOD);
     if (no == 3) return(REMOTE1GOOD);

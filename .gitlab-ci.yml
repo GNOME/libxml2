@@ -42,7 +42,8 @@ gcc:minimum:
 gcc:python3:
   extends: .test
   variables:
-    CFLAGS: "-O2"
+    # TODO: Re-enable the warning after #208 is fixed.
+    CFLAGS: "-O2 -Wno-error=deprecated-declarations"
     PYTHON: "/usr/bin/python3"
 
 gcc:static:

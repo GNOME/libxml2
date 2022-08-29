@@ -155,30 +155,44 @@ libxml_PyFileGet(PyObject *f) {
         return(NULL);
 #else
     /*
-     * Get the flags on the fd to understand how it was opened
+     * macOS returns O_RDWR for standard streams, but fails to write to
+     * stdout or stderr when opened with fdopen(dup_fd, "rw").
      */
-    flags = fcntl(fd, F_GETFL, 0);
-    switch (flags & O_ACCMODE) {
-        case O_RDWR:
-	    if (flags & O_APPEND)
-	        mode = "a+";
-	    else
-	        mode = "rw";
-	    break;
-        case O_RDONLY:
-	    if (flags & O_APPEND)
-	        mode = "r+";
-	    else
-	        mode = "r";
-	    break;
-	case O_WRONLY:
-	    if (flags & O_APPEND)
-	        mode = "a";
-	    else
-	        mode = "w";
-	    break;
-	default:
-	    return(NULL);
+    switch (fd) {
+        case STDIN_FILENO:
+            mode = "r";
+            break;
+        case STDOUT_FILENO:
+        case STDERR_FILENO:
+            mode = "w";
+            break;
+        default:
+            /*
+             * Get the flags on the fd to understand how it was opened
+             */
+            flags = fcntl(fd, F_GETFL, 0);
+            switch (flags & O_ACCMODE) {
+                case O_RDWR:
+                    if (flags & O_APPEND)
+                        mode = "a+";
+                    else
+                        mode = "rw";
+                    break;
+                case O_RDONLY:
+                    if (flags & O_APPEND)
+                        mode = "r+";
+                    else
+                        mode = "r";
+                    break;
+                case O_WRONLY:
+                    if (flags & O_APPEND)
+                        mode = "a";
+                    else
+                        mode = "w";
+                    break;
+                default:
+                    return(NULL);
+            }
     }
 #endif
 

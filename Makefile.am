@@ -28,7 +28,7 @@ check_PROGRAMS = \
 
 bin_PROGRAMS = xmllint xmlcatalog
 
-nodist_bin_SCRIPTS = xml2-config
+bin_SCRIPTS = xml2-config
 
 lib_LTLIBRARIES = libxml2.la
 libxml2_la_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
@@ -67,7 +67,7 @@ LDADDS = $(top_builddir)/libxml2.la
 
 
 m4datadir = $(datadir)/aclocal
-m4data_DATA = libxml.m4
+dist_m4data_DATA = libxml.m4
 
 runtest_SOURCES=runtest.c
 runtest_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS)
@@ -383,12 +383,10 @@ rpm: cleanup cleantar
 CLEANFILES = runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst
 
-EXTRA_DIST = xml2-config.in libxml.spec.in \
-             libxml.m4 Copyright check-xml-test-suite.py gentest.py \
+EXTRA_DIST = Copyright check-xml-test-suite.py gentest.py \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
 	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
-	     libxml-2.0.pc.in libxml-2.0-uninstalled.pc.in \
 	     libxml2-config.cmake.in autogen.sh \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h \
@@ -400,7 +398,7 @@ EXTRA_DIST = xml2-config.in libxml.spec.in \
 
 
 pkgconfigdir = $(libdir)/pkgconfig
-nodist_pkgconfig_DATA = libxml-2.0.pc
+pkgconfig_DATA = libxml-2.0.pc
 
 cmakedir = $(libdir)/cmake/libxml2
 cmake_DATA = libxml2-config.cmake

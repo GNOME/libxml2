@@ -533,7 +533,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
 	} else {
 	    tmp = (unsigned char *) in;
 	    c = *tmp++;
-	    c = c | (((unsigned int)*tmp) << 8);
+	    c = c | (*tmp << 8);
 	    in++;
 	}
         if ((c & 0xFC00) == 0xD800) {    /* surrogates */
@@ -545,7 +545,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
 	    } else {
 		tmp = (unsigned char *) in;
 		d = *tmp++;
-		d = d | (((unsigned int)*tmp) << 8);
+		d = d | (*tmp << 8);
 		in++;
 	    }
             if ((d & 0xFC00) == 0xDC00) {
@@ -656,7 +656,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 		*out++ = c;
 	    } else {
 		tmp = (unsigned char *) out;
-		*tmp = c ;
+		*tmp = (unsigned char) c; /* Explicit truncation */
 		*(tmp + 1) = c >> 8 ;
 		out++;
 	    }
@@ -671,13 +671,13 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 	    } else {
 		tmp1 = 0xD800 | (c >> 10);
 		tmp = (unsigned char *) out;
-		*tmp = (unsigned char) tmp1;
+		*tmp = (unsigned char) tmp1; /* Explicit truncation */
 		*(tmp + 1) = tmp1 >> 8;
 		out++;
 
 		tmp2 = 0xDC00 | (c & 0x03FF);
 		tmp = (unsigned char *) out;
-		*tmp  = (unsigned char) tmp2;
+		*tmp  = (unsigned char) tmp2; /* Explicit truncation */
 		*(tmp + 1) = tmp2 >> 8;
 		out++;
 	    }
@@ -774,7 +774,7 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
 	if (xmlLittleEndian) {
 	    tmp = (unsigned char *) in;
 	    c = *tmp++;
-	    c = (c << 8) | (unsigned int) *tmp;
+	    c = (c << 8) | *tmp;
 	    in++;
 	} else {
 	    c= *in++;
@@ -786,7 +786,7 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
 	    if (xmlLittleEndian) {
 		tmp = (unsigned char *) in;
 		d = *tmp++;
-		d = (d << 8) | (unsigned int) *tmp;
+		d = (d << 8) | *tmp;
 		in++;
 	    } else {
 		d= *in++;
@@ -896,7 +896,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 	    if (xmlLittleEndian) {
 		tmp = (unsigned char *) out;
 		*tmp = c >> 8;
-		*(tmp + 1) = c;
+		*(tmp + 1) = (unsigned char) c; /* Explicit truncation */
 		out++;
 	    } else {
 		*out++ = c;
@@ -909,13 +909,13 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 		tmp1 = 0xD800 | (c >> 10);
 		tmp = (unsigned char *) out;
 		*tmp = tmp1 >> 8;
-		*(tmp + 1) = (unsigned char) tmp1;
+		*(tmp + 1) = (unsigned char) tmp1; /* Explicit truncation */
 		out++;
 
 		tmp2 = 0xDC00 | (c & 0x03FF);
 		tmp = (unsigned char *) out;
 		*tmp = tmp2 >> 8;
-		*(tmp + 1) = (unsigned char) tmp2;
+		*(tmp + 1) = (unsigned char) tmp2; /* Explicit truncation */
 		out++;
 	    } else {
 		*out++ = 0xD800 | (c >> 10);
@@ -2544,7 +2544,7 @@ retry:
             break;
         case -2: {
 	    xmlChar charref[20];
-	    int len = (int) xmlBufUse(in);
+	    int len = xmlBufUse(in);
             xmlChar *content = xmlBufContent(in);
 	    int cur, charrefLen;
 

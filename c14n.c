@@ -287,7 +287,7 @@ xmlC14NVisibleNsStackCreate(void) {
         xmlC14NErrMemory("creating namespaces stack");
 	return(NULL);
     }
-    memset(ret, 0 , (size_t) sizeof(xmlC14NVisibleNsStack));
+    memset(ret, 0, sizeof(xmlC14NVisibleNsStack));
     return(ret);
 }
 

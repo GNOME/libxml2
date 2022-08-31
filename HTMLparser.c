@@ -274,8 +274,6 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
  *
  * Clean macros, not dependent of an ASCII context, expect UTF-8 encoding
  *
- *   CURRENT Returns the current char value, with the full decoding of
- *           UTF-8 if we are using this mode. It returns an int.
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
  *   NEXTL(l) Skip the current unicode character of l xmlChars long.
@@ -301,14 +299,11 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
 	xmlParserInputGrow(ctxt->input, INPUT_CHUNK)
 
-#define CURRENT ((int) (*ctxt->input->cur))
-
 #define SKIP_BLANKS htmlSkipBlankChars(ctxt)
 
 /* Imported from XML */
 
-/* #define CUR (ctxt->token ? ctxt->token : (int) (*ctxt->input->cur)) */
-#define CUR ((int) (*ctxt->input->cur))
+#define CUR (*ctxt->input->cur)
 #define NEXT xmlNextChar(ctxt)
 
 #define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
@@ -422,7 +417,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
          * a compatible encoding for the ASCII set, since
          * HTML constructs only use < 128 chars
          */
-        if ((int) *ctxt->input->cur < 0x80) {
+        if (*ctxt->input->cur < 0x80) {
             *len = 1;
             if ((*ctxt->input->cur == 0) &&
                 (ctxt->input->cur < ctxt->input->end)) {
@@ -430,7 +425,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                                 "Char 0x%X out of allowed range\n", 0);
                 return(' ');
             }
-            return((int) *ctxt->input->cur);
+            return(*ctxt->input->cur);
         }
 
         /*
@@ -537,7 +532,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
         }
         /* 1-byte code */
         *len = 1;
-        return((int) *ctxt->input->cur);
+        return(*ctxt->input->cur);
     }
 
 encoding_error:
@@ -574,7 +569,7 @@ encoding_error:
         (ctxt->input->buf->encoder == NULL))
         xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
     *len = 1;
-    return((int) *ctxt->input->cur);
+    return(*ctxt->input->cur);
 }
 
 /**

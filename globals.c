@@ -498,8 +498,8 @@ void
 xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 {
 #ifdef DEBUG_GLOBALS
-    fprintf(stderr, "Initializing globals at %lu for thread %d\n",
-	    (unsigned long) gs, xmlGetThreadId());
+    fprintf(stderr, "Initializing globals at %p for thread %d\n",
+	    (void *) gs, xmlGetThreadId());
 #endif
 
     /*

@@ -7459,7 +7459,7 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
     if (file == NULL)
 	file = stdout;
     ret = fwrite(buf->content, sizeof(xmlChar), buf->use, file);
-    return(ret > INT_MAX ? INT_MAX : (int)ret);
+    return(ret > INT_MAX ? INT_MAX : ret);
 }
 
 /**

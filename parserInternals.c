@@ -62,7 +62,7 @@
  */
 void
 xmlCheckVersion(int version) {
-    int myversion = (int) LIBXML_VERSION;
+    int myversion = LIBXML_VERSION;
 
     xmlInitParser();
 
@@ -248,9 +248,9 @@ void check_buffer(xmlParserInputPtr in) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlParserInput: cur > base + use problem\n");
     }
-    xmlGenericError(xmlGenericErrorContext,"buffer %x : content %x, cur %d, use %d\n",
-            (int) in, (int) xmlBufContent(in->buf->buffer), in->cur - in->base,
-	    xmlBufUse(in->buf->buffer));
+    xmlGenericError(xmlGenericErrorContext,"buffer %p : content %x, cur %d, use %d\n",
+            (void *) in, (int) xmlBufContent(in->buf->buffer),
+            in->cur - in->base, xmlBufUse(in->buf->buffer));
 }
 
 #else
@@ -551,7 +551,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 
     if ((*ctxt->input->cur >= 0x20) && (*ctxt->input->cur <= 0x7F)) {
 	    *len = 1;
-	    return((int) *ctxt->input->cur);
+	    return(*ctxt->input->cur);
     }
     if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 	/*
@@ -640,7 +640,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		}
 		return(0xA);
 	    }
-	    return((int) *ctxt->input->cur);
+	    return(*ctxt->input->cur);
 	}
     }
     /*
@@ -655,7 +655,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	}
 	return(0xA);
     }
-    return((int) *ctxt->input->cur);
+    return(*ctxt->input->cur);
 encoding_error:
     /*
      * An encoding problem may arise from a truncated input buffer
@@ -686,7 +686,7 @@ encoding_error:
     }
     ctxt->charset = XML_CHAR_ENCODING_8859_1;
     *len = 1;
-    return((int) *ctxt->input->cur);
+    return(*ctxt->input->cur);
 }
 
 /**
@@ -758,7 +758,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
         } else {
             /* 1-byte code */
             *len = 1;
-            return ((int) *cur);
+            return (*cur);
         }
     }
     /*
@@ -767,7 +767,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
      * XML constructs only use < 128 chars
      */
     *len = 1;
-    return ((int) *cur);
+    return (*cur);
 encoding_error:
 
     /*
@@ -798,7 +798,7 @@ encoding_error:
 		     BAD_CAST buffer, NULL);
     }
     *len = 1;
-    return ((int) *cur);
+    return (*cur);
 }
 
 /**

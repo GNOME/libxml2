@@ -5018,7 +5018,7 @@ cont:
 	     * save the second branch 'or' branch
 	     */
 	    DEBUG_VALID_MSG("saving 'or' branch");
-	    if (vstateVPush(ctxt, CONT->c2, NODE, (unsigned char)(DEPTH + 1),
+	    if (vstateVPush(ctxt, CONT->c2, NODE, DEPTH + 1,
 			    OCCURS, ROLLBACK_OR) < 0)
 		return(-1);
 	    DEPTH++;

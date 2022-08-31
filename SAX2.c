@@ -1643,7 +1643,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {
 	    if (ctxt->input->line < USHRT_MAX)
-		ret->line = (unsigned short) ctxt->input->line;
+		ret->line = ctxt->input->line;
 	    else
 	        ret->line = USHRT_MAX;
 	}
@@ -1908,7 +1908,7 @@ skip:
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {
 	    if (ctxt->input->line < USHRT_MAX)
-		ret->line = (unsigned short) ctxt->input->line;
+		ret->line = ctxt->input->line;
 	    else {
 	        ret->line = USHRT_MAX;
 		if (ctxt->options & XML_PARSE_BIG_LINES)
@@ -2286,7 +2286,7 @@ xmlSAX2StartElementNs(void *ctx,
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {
 	    if (ctxt->input->line < USHRT_MAX)
-		ret->line = (unsigned short) ctxt->input->line;
+		ret->line = ctxt->input->line;
 	    else
 	        ret->line = USHRT_MAX;
 	}
@@ -2711,7 +2711,7 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {
 	    if (ctxt->input->line < USHRT_MAX)
-		ret->line = (unsigned short) ctxt->input->line;
+		ret->line = ctxt->input->line;
 	    else
 	        ret->line = USHRT_MAX;
 	}
@@ -2771,7 +2771,7 @@ xmlSAX2Comment(void *ctx, const xmlChar *value)
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {
 	    if (ctxt->input->line < USHRT_MAX)
-		ret->line = (unsigned short) ctxt->input->line;
+		ret->line = ctxt->input->line;
 	    else
 	        ret->line = USHRT_MAX;
 	}

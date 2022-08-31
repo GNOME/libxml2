@@ -2178,7 +2178,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     xmlBufBackToBuffer(buffer);
     if (ret > INT_MAX)
         return(-1);
-    return((int) ret);
+    return(ret);
 }
 
 /**

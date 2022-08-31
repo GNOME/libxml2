@@ -1224,7 +1224,7 @@ xmlAttrNormalizeSpace2(xmlParserCtxtPtr ctxt, xmlChar *src, int *len)
 	    return(NULL);
 	}
 	xmlAttrNormalizeSpace(ret, ret);
-	*len = (int) strlen((const char *)ret);
+	*len = strlen((const char *)ret);
         return(ret);
     } else if (remove_head) {
         *len -= remove_head;
@@ -4139,7 +4139,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
         goto mem_error;
     }
 
-    if (attlen != NULL) *attlen = (int) len;
+    if (attlen != NULL) *attlen = len;
     return(buf);
 
 mem_error:

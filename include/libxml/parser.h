@@ -990,7 +990,8 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN xmlParserCtxtPtr XMLCALL
 		xmlNewParserCtxt	(void);
 XMLPUBFUN xmlParserCtxtPtr XMLCALL
-		xmlNewSAXParserCtxt	(xmlSAXHandlerPtr sax, void *userData);
+		xmlNewSAXParserCtxt	(const xmlSAXHandler *sax,
+					 void *userData);
 XMLPUBFUN int XMLCALL
 		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL

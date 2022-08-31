@@ -5047,7 +5047,8 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
  */
 
 static int
-htmlInitParserCtxt(htmlParserCtxtPtr ctxt, htmlSAXHandler *sax, void *userData)
+htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
+                   void *userData)
 {
     if (ctxt == NULL) return(-1);
     memset(ctxt, 0, sizeof(htmlParserCtxt));
@@ -5181,13 +5182,14 @@ htmlNewParserCtxt(void)
  * @sax:  SAX handler
  * @userData:  user data
  *
- * Allocate and initialize a new parser context.
+ * Allocate and initialize a new SAX parser context. If userData is NULL,
+ * the parser context will be passed as user data.
  *
  * Returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
 
 htmlParserCtxtPtr
-htmlNewSAXParserCtxt(htmlSAXHandlerPtr sax, void *userData)
+htmlNewSAXParserCtxt(const htmlSAXHandler *sax, void *userData)
 {
     xmlParserCtxtPtr ctxt;
 

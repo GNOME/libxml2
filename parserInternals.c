@@ -1455,7 +1455,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
  */
 
 static int
-xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, xmlSAXHandlerPtr sax,
+xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
                      void *userData)
 {
     xmlParserInputPtr input;
@@ -1765,13 +1765,14 @@ xmlNewParserCtxt(void)
  * @sax:  SAX handler
  * @userData:  user data
  *
- * Allocate and initialize a new SAX parser context.
+ * Allocate and initialize a new SAX parser context. If userData is NULL,
+ * the parser context will be passed as user data.
  *
- * Returns the xmlParserCtxtPtr or NULL
+ * Returns the xmlParserCtxtPtr or NULL if memory allocation failed.
  */
 
 xmlParserCtxtPtr
-xmlNewSAXParserCtxt(xmlSAXHandlerPtr sax, void *userData)
+xmlNewSAXParserCtxt(const xmlSAXHandler *sax, void *userData)
 {
     xmlParserCtxtPtr ctxt;
 

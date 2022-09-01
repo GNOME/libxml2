@@ -326,7 +326,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(l,b,i,v)						\
-    if (l == 1) b[i++] = (xmlChar) v;					\
+    if (l == 1) b[i++] = v;						\
     else i += xmlCopyChar(l,&b[i],v)
 
 /**
@@ -5924,7 +5924,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 * Handle preparsed entities and charRef
 		 */
 		if (ctxt->token != 0) {
-		    chr[0] = (xmlChar) ctxt->token;
+		    chr[0] = ctxt->token;
 		    htmlCheckParagraph(ctxt);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 			ctxt->sax->characters(ctxt->userData, chr, 1);

@@ -1657,6 +1657,7 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
 	        c = c * 16 + (*in - 'A') + 10;
 	    in++;
 	    len -= 3;
+            /* Explicit sign change */
 	    *out++ = (char) c;
 	} else {
 	    *out++ = *in++;

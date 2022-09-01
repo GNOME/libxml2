@@ -97,6 +97,7 @@ xmlCharStrndup(const char *cur, int len) {
         return(NULL);
     }
     for (i = 0;i < len;i++) {
+        /* Explicit sign change */
         ret[i] = (xmlChar) cur[i];
         if (ret[i] == 0) return(ret);
     }

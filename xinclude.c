@@ -1714,7 +1714,7 @@ loaded:
 		       "trying to build relative URI from %s\n", URL);
 	    } else {
 		/* If the URI doesn't contain a slash, it's not relative */
-	        if (!xmlStrchr(curBase, (xmlChar) '/'))
+	        if (!xmlStrchr(curBase, '/'))
 		    xmlFree(curBase);
 		else
 		    base = curBase;

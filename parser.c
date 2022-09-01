@@ -2169,7 +2169,7 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(l,b,i,v)						\
-    if (l == 1) b[i++] = (xmlChar) v;					\
+    if (l == 1) b[i++] = v;						\
     else i += xmlCopyCharMultiByte(&b[i],v)
 
 #define CUR_CONSUMED \

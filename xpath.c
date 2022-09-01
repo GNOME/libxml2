@@ -3098,7 +3098,7 @@ xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
 #define CUR_CHAR(l) xmlXPathCurrentChar(ctxt, &l)
 
 #define COPY_BUF(l,b,i,v)                                              \
-    if (l == 1) b[i++] = (xmlChar) v;                                  \
+    if (l == 1) b[i++] = v;                                            \
     else i += xmlCopyChar(l,&b[i],v)
 
 #define NEXTL(l)  ctxt->cur += l

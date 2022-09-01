@@ -186,159 +186,143 @@ AC_ARG_WITH(coverage,
 dnl
 dnl hard dependencies on options
 dnl
-if test "$with_schemas" = "yes"
-then
+if test "$with_c14n" = "yes"; then
+    if test "$with_output" = "no"; then
+        echo WARNING: --with-c14n overrides --without-output
+    fi
+    with_output=yes
+    if test "$with_xpath" = "no"; then
+        echo WARNING: --with-c14n overrides --without-xpath
+    fi
+    with_xpath=yes
+fi
+if test "$with_schemas" = "yes"; then
+    if test "$with_pattern" = "no"; then
+        echo WARNING: --with-schemas overrides --without-pattern
+    fi
     with_pattern=yes
+    if test "$with_regexps" = "no"; then
+        echo WARNING: --with-schemas overrides --without-regexps
+    fi
     with_regexps=yes
 fi
-if test "$with_schematron" = "yes"
-then
+if test "$with_schematron" = "yes"; then
+    if test "$with_pattern" = "no"; then
+        echo WARNING: --with-schematron overrides --without-pattern
+    fi
     with_pattern=yes
+    if test "$with_tree" = "no"; then
+        echo WARNING: --with-schematron overrides --without-tree
+    fi
     with_tree=yes
+    if test "$with_xpath" = "no"; then
+        echo WARNING: --with-schematron overrides --without-xpath
+    fi
     with_xpath=yes
 fi
-if test "$with_reader" = "yes"
-then
+if test "$with_reader" = "yes"; then
+    if test "$with_push" = "no"; then
+        echo WARNING: --with-reader overrides --without-push
+    fi
+    with_push=yes
+    if test "$with_tree" = "no"; then
+        echo WARNING: --with-reader overrides --without-tree
+    fi
+    with_tree=yes
+fi
+if test "$with_writer" = "yes"; then
+    if test "$with_output" = "no"; then
+        echo WARNING: --with-writer overrides --without-output
+    fi
+    with_output=yes
+    if test "$with_push" = "no"; then
+        echo WARNING: --with-writer overrides --without-push
+    fi
     with_push=yes
 fi
-if test "$with_xptr_locs" = "yes"
-then
-    with_xptr=yes
-fi
-if test "$with_xptr" = "yes"
-then
+if test "$with_xinclude" = "yes"; then
+    if test "$with_xpath" = "no"; then
+        echo WARNING: --with-xinclude overrides --without-xpath
+    fi
     with_xpath=yes
 fi
-dnl
-dnl option to build a minimal libxml2 library
-dnl
-if test "$with_minimum" = "yes"
-then
+if test "$with_xptr_locs" = "yes"; then
+    if test "$with_xptr" = "no"; then
+        echo WARNING: --with-xptr-locs overrides --without-xptr
+    fi
+    with_xptr=yes
+fi
+if test "$with_xptr" = "yes"; then
+    if test "$with_xpath" = "no"; then
+        echo WARNING: --with-xptr overrides --without-xpath
+    fi
+    with_xpath=yes
+fi
+
+if test "$with_minimum" = "yes"; then
+    dnl
+    dnl option to build a minimal libxml2 library
+    dnl
     echo "Configuring for a minimal library"
-    if test "$with_c14n" = ""
-    then
-      with_c14n=no
+    test "$with_c14n" = "" && with_c14n=no
+    test "$with_catalog" = "" && with_catalog=no
+    test "$with_debug" = "" && with_debug=no
+    test "$with_fexceptions" = "" && with_fexceptions=no
+    test "$with_history" = "" && with_history=no
+    test "$with_html" = "" && with_html=no
+    test "$with_http" = "" && with_http=no
+    test "$with_iconv" = "" && with_iconv=no
+    test "$with_iso8859x" = "" && with_iso8859x=no
+    test "$with_mem_debug" = "" && with_mem_debug=no
+    test "$with_output" = "" && with_output=no
+    test "$with_pattern" = "" && with_pattern=no
+    test "$with_push" = "" && with_push=no
+    test "$with_python" = "" && with_python=no
+    test "$with_reader" = "" && with_reader=no
+    test "$with_readline" = "" && with_readline=no
+    test "$with_regexps" = "" && with_regexps=no
+    test "$with_run_debug" = "" && with_run_debug=no
+    test "$with_sax1" = "" && with_sax1=no
+    test "$with_schemas" = "" && with_schemas=no
+    test "$with_schematron" = "" && with_schematron=no
+    test "$with_threads" = "" && with_threads=no
+    test "$with_thread_alloc" = "" && with_thread_alloc=no
+    test "$with_tree" = "" && with_tree=no
+    test "$with_valid" = "" && with_valid=no
+    test "$with_writer" = "" && with_writer=no
+    test "$with_xinclude" = "" && with_xinclude=no
+    test "$with_xpath" = "" && with_xpath=no
+    test "$with_xptr" = "" && with_xptr=no
+    test "$with_zlib" = "" && with_zlib=no
+    test "$with_modules" = "" && with_modules=no
+else
+    dnl
+    dnl Disable dependent modules
+    dnl
+    if test "$with_output" = "no"; then
+        with_c14n=no
+        with_writer=no
     fi
-    if test "$with_catalog" = ""
-    then
-      with_catalog=no
+    if test "$with_pattern" = "no"; then
+        with_schemas=no
+        with_schematron=no
     fi
-    echo So far so good!
-    if test "$with_debug" = ""
-    then
-      with_debug=no
+    if test "$with_push" = "no"; then
+        with_reader=no
+        with_writer=no
     fi
-    if test "$with_fexceptions" = ""
-    then
-      with_fexceptions=no
+    if test "$with_regexps" = "no"; then
+        with_schemas=no
     fi
-    if test "$with_history" = ""
-    then
-      with_history=no
+    if test "$with_tree" = "no"; then
+        with_reader=no
+        with_schematron=no
     fi
-    if test "$with_html" = ""
-    then
-      with_html=no
-    fi
-    if test "$with_http" = ""
-    then
-      with_http=no 
-    fi
-    if test "$with_iconv" = ""
-    then
-      with_iconv=no
-    fi
-    if test "$with_iso8859x" = ""
-    then
-      with_iso8859x=no
-    fi
-    if test "$with_mem_debug" = ""
-    then 
-      with_mem_debug=no
-    fi
-    if test "$with_output" = ""
-    then
-      with_output=no
-    fi
-    if test "$with_pattern" = ""
-    then
-      with_pattern=no
-    fi
-    if test "$with_push" = ""
-    then
-      with_push=no
-    fi
-    if test "$with_python" = ""
-    then
-      with_python=no
-    fi
-    if test "$with_reader" = ""
-    then
-      with_reader=no
-    fi
-    if test "$with_readline" = ""
-    then
-      with_readline=no
-    fi
-    if test "$with_regexps" = ""
-    then
-      with_regexps=no
-    fi
-    if test "$with_run_debug" = ""
-    then
-      with_run_debug=no
-    fi
-    if test "$with_sax1" = ""
-    then
-      with_sax1=no
-    fi
-    if test "$with_schemas" = ""
-    then
-      with_schemas=no
-    fi
-    if test "$with_schematron" = ""
-    then
-      with_schematron=no
-    fi
-    if test "$with_threads" = ""
-    then
-      with_threads=no
-    fi
-    if test "$with_thread_alloc" = ""
-    then
-      with_thread_alloc=no
-   fi
-    if test "$with_tree" = ""
-    then
-      with_tree=no
-    fi
-    if test "$with_valid" = ""
-    then
-      with_valid=no
-    fi
-    if test "$with_writer" = ""
-    then
-      with_writer=no
-    fi
-    if test "$with_xinclude" = ""
-    then
-      with_xinclude=no
-    fi
-    if test "$with_xpath" = ""
-    then
-      with_xpath=no
-    fi
-    if test "$with_xptr" = ""
-    then
-      with_xptr=no
-    fi
-    if test "$with_zlib" = ""
-    then
-      with_zlib=no
-    fi
-    if test "$with_modules" = ""
-    then
-      with_modules=no
+    if test "$with_xpath" = "no"; then
+        with_c14n=no
+        with_schematron=no
+        with_xinclude=no
+        with_xptr=no
     fi
 fi
 
@@ -985,10 +969,6 @@ if test "$with_reader" = "no" ; then
     WITH_READER=0
 else    
     WITH_READER=1
-    if test "$with_push" = "no" ; then
-        echo xmlReader requires Push interface - enabling it
-	with_push=yes
-    fi
 fi
 AC_SUBST(WITH_READER)
 AM_CONDITIONAL(WITH_READER_SOURCES, test "$WITH_READER" = "1")
@@ -998,14 +978,6 @@ if test "$with_writer" = "no" ; then
     WITH_WRITER=0
 else    
     WITH_WRITER=1
-    if test "$with_push" = "no" ; then
-        echo xmlWriter requires Push interface - enabling it
-	with_push=yes
-    fi
-    if test "$with_output" = "no" ; then
-        echo xmlWriter requires Output interface - enabling it
-	with_output=yes
-    fi
 fi
 AC_SUBST(WITH_WRITER)
 AM_CONDITIONAL(WITH_WRITER_SOURCES, test "$WITH_WRITER" = "1")
@@ -1069,29 +1041,22 @@ if test "$with_xptr" = "no" ; then
     WITH_XPTR_LOCS=0
 else    
     WITH_XPTR=1
-    if test "$with_xpath" = "no" ; then
-        echo XPointer requires XPath support - enabling it
-	with_xpath=yes
-    fi
-    if test "$with_xptr_locs" = "yes" ; then
-        WITH_XPTR_LOCS=1
-    else
-        WITH_XPTR_LOCS=0
-    fi
 fi
 AC_SUBST(WITH_XPTR)
-AC_SUBST(WITH_XPTR_LOCS)
 AM_CONDITIONAL(WITH_XPTR_SOURCES, test "$WITH_XPTR" = "1")
+
+if test "$with_xptr_locs" = "yes" ; then
+    WITH_XPTR_LOCS=1
+else
+    WITH_XPTR_LOCS=0
+fi
+AC_SUBST(WITH_XPTR_LOCS)
 
 if test "$with_c14n" = "no" ; then
     echo Disabling C14N support
     WITH_C14N=0
 else    
     WITH_C14N=1
-    if test "$with_xpath" = "no" ; then
-        echo C14N requires XPath support - enabling it
-	with_xpath=yes
-    fi
 fi
 AC_SUBST(WITH_C14N)
 AM_CONDITIONAL(WITH_C14N_SOURCES, test "$WITH_C14N" = "1")
@@ -1099,24 +1064,11 @@ AM_CONDITIONAL(WITH_C14N_SOURCES, test "$WITH_C14N" = "1")
 if test "$with_xinclude" = "no" ; then
     echo Disabling XInclude support
     WITH_XINCLUDE=0
-    with_xinclude="no"
 else    
     WITH_XINCLUDE=1
-    if test "$with_xpath" = "no" ; then
-        echo XInclude requires XPath support - enabling it
-	with_xpath=yes
-    fi
 fi
 AC_SUBST(WITH_XINCLUDE)
 AM_CONDITIONAL(WITH_XINCLUDE_SOURCES, test "$WITH_XINCLUDE" = "1")
-
-if test "$with_xptr" = "" && test "$with_xpath" = "no" ; then
-    with_xptr=no
-fi
-
-if test "$with_schematron" = "" && test "$with_xpath" = "no" ; then
-    with_schematron=no
-fi
 
 if test "$with_schematron" = "no" ; then
     echo "Disabling Schematron support"
@@ -1124,9 +1076,6 @@ if test "$with_schematron" = "no" ; then
 else 
     echo "Enabled Schematron support"
     WITH_SCHEMATRON=1
-    with_xpath=yes
-    with_pattern=yes
-    with_schematron=yes
 fi
 AC_SUBST(WITH_SCHEMATRON)
 AM_CONDITIONAL(WITH_SCHEMATRON_SOURCES, test "$WITH_SCHEMATRON" = "1")
@@ -1279,7 +1228,6 @@ if test "$with_schemas" = "no" ; then
 else    
     echo "Enabled Schemas/Relax-NG support"
     WITH_SCHEMAS=1
-    with_regexps=yes
 fi
 AC_SUBST(WITH_SCHEMAS)
 AM_CONDITIONAL(WITH_SCHEMAS_SOURCES, test "$WITH_SCHEMAS" = "1")

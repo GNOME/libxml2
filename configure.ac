@@ -82,12 +82,6 @@ dnl some of them to try to prevent impossible combinations.  This
 dnl also allows up so alphabetize the choices
 dnl
 
-dnl
-dnl zlib option might change flags, so we save them initially
-dnl
-_cppflags="${CPPFLAGS}"
-_libs="${LIBS}"
-
 AC_ARG_WITH(c14n,
 [  --with-c14n             add the Canonicalization support (on)])
 AC_ARG_WITH(catalog,
@@ -168,16 +162,12 @@ AC_ARG_WITH(zlib,
 [  --with-zlib[[=DIR]]       use libz in DIR],[
   if test "$withval" != "no" && test "$withval" != "yes"; then
     Z_DIR=$withval
-    CPPFLAGS="${CPPFLAGS} -I$withval/include"
-    LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
 ])
 AC_ARG_WITH(lzma,
 [  --with-lzma[[=DIR]]       use liblzma in DIR],[
   if test "$withval" != "no" && test "$withval" != "yes"; then
     LZMA_DIR=$withval
-    CPPFLAGS="${CPPFLAGS} -I$withval/include"
-    LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
 ])
 AC_ARG_WITH(coverage,
@@ -343,6 +333,12 @@ else
     fi
 
     if test "$WITH_ZLIB" = "0"; then
+        _cppflags="${CPPFLAGS}"
+        _libs="${LIBS}"
+        if test "x$Z_DIR" != "x"; then
+            CPPFLAGS="${CPPFLAGS} -I$Z_DIR/include"
+            LDFLAGS="${LDFLAGS} -L$Z_DIR/lib"
+        fi
         AC_CHECK_HEADERS(zlib.h,
             AC_CHECK_LIB(z, gzread,[
                 WITH_ZLIB=1
@@ -358,6 +354,8 @@ else
                     Z_LIBS="-lz"
                 fi])
             )
+        CPPFLAGS=${_cppflags}
+        LIBS=${_libs}
     fi
 fi
 
@@ -385,6 +383,12 @@ else
     # will not pick up the necessary LIBS flags for liblzma's
     # private dependencies, though, so static linking may fail.
     if test "$WITH_LZMA" = "0"; then
+        _cppflags="${CPPFLAGS}"
+        _libs="${LIBS}"
+        if test "x$LZMA_DIR" != "x"; then
+            CPPFLAGS="${CPPFLAGS} -I$LZMA_DIR/include"
+            LDFLAGS="${LDFLAGS} -L$LZMA_DIR/lib"
+        fi
         AC_CHECK_HEADERS(lzma.h,
             AC_CHECK_LIB(lzma, lzma_code,[
                 WITH_LZMA=1
@@ -395,6 +399,8 @@ else
                     LZMA_LIBS="-llzma"
                 fi])
             )
+        CPPFLAGS=${_cppflags}
+        LIBS=${_libs}
     fi
 fi
 
@@ -402,9 +408,6 @@ AC_SUBST(LZMA_CFLAGS)
 AC_SUBST(LZMA_LIBS)
 AC_SUBST(WITH_LZMA)
 AM_CONDITIONAL(WITH_LZMA_SOURCES, test "$WITH_LZMA" = "1")
-
-CPPFLAGS=${_cppflags}
-LIBS=${_libs}
 
 echo Checking headers
 

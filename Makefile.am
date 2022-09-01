@@ -34,33 +34,83 @@ lib_LTLIBRARIES = libxml2.la
 libxml2_la_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
 libxml2_la_LIBADD = $(XML_PRIVATE_LIBS)
 
-if USE_VERSION_SCRIPT
-LIBXML2_VERSION_SCRIPT = $(VERSION_SCRIPT_FLAGS)$(srcdir)/libxml2.syms
-else
-LIBXML2_VERSION_SCRIPT =
-endif
-
 libxml2_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) \
-		     $(LIBXML2_VERSION_SCRIPT) \
 		     -version-info $(LIBXML_VERSION_INFO) \
 		     $(MODULE_PLATFORM_LIBS)
-
-if WITH_TRIO_SOURCES
-trio_sources = triostr.c trio.c
-else
-trio_sources =
+if USE_VERSION_SCRIPT
+libxml2_la_LDFLAGS += $(VERSION_SCRIPT_FLAGS)$(srcdir)/libxml2.syms
 endif
 
-libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
-		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
-		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
-		xpointer.c xinclude.c nanohttp.c nanoftp.c \
-		catalog.c globals.c threads.c c14n.c xmlstring.c buf.c \
-		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		$(trio_sources) \
-		xmlreader.c relaxng.c dict.c SAX2.c \
-		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
-		xmlmodule.c schematron.c xzlib.c
+libxml2_la_SOURCES = buf.c chvalid.c dict.c entities.c encoding.c error.c \
+		     globals.c hash.c list.c parser.c parserInternals.c \
+		     SAX2.c threads.c tree.c uri.c valid.c xmlIO.c \
+		     xmlmemory.c xmlstring.c
+if WITH_C14N_SOURCES
+libxml2_la_SOURCES += c14n.c
+endif
+if WITH_CATALOG_SOURCES
+libxml2_la_SOURCES += catalog.c
+endif
+if WITH_DEBUG_SOURCES
+libxml2_la_SOURCES += debugXML.c
+endif
+if WITH_FTP_SOURCES
+libxml2_la_SOURCES += nanoftp.c
+endif
+if WITH_HTML_SOURCES
+libxml2_la_SOURCES += HTMLparser.c HTMLtree.c
+endif
+if WITH_HTTP_SOURCES
+libxml2_la_SOURCES += nanohttp.c
+endif
+if WITH_LEGACY_SOURCES
+libxml2_la_SOURCES += legacy.c
+if WITH_SAX1_SOURCES
+libxml2_la_SOURCES += SAX.c
+endif
+endif
+if WITH_LZMA_SOURCES
+libxml2_la_SOURCES += xzlib.c
+endif
+if WITH_MODULES_SOURCES
+libxml2_la_SOURCES += xmlmodule.c
+endif
+if WITH_OUTPUT_SOURCES
+libxml2_la_SOURCES += xmlsave.c
+endif
+if WITH_PATTERN_SOURCES
+libxml2_la_SOURCES += pattern.c
+endif
+if WITH_READER_SOURCES
+libxml2_la_SOURCES += xmlreader.c
+endif
+if WITH_REGEXPS_SOURCES
+libxml2_la_SOURCES += xmlregexp.c xmlunicode.c
+endif
+if WITH_SCHEMAS_SOURCES
+libxml2_la_SOURCES += relaxng.c xmlschemas.c xmlschemastypes.c
+if !WITH_XPATH_SOURCES
+libxml2_la_SOURCES += xpath.c
+endif
+endif
+if WITH_SCHEMATRON_SOURCES
+libxml2_la_SOURCES += schematron.c
+endif
+if WITH_TRIO_SOURCES
+libxml2_la_SOURCES += triostr.c trio.c
+endif
+if WITH_WRITER_SOURCES
+libxml2_la_SOURCES += xmlwriter.c
+endif
+if WITH_XINCLUDE_SOURCES
+libxml2_la_SOURCES += xinclude.c
+endif
+if WITH_XPATH_SOURCES
+libxml2_la_SOURCES += xpath.c
+endif
+if WITH_XPTR_SOURCES
+libxml2_la_SOURCES += xlink.c xpointer.c
+endif
 
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la
@@ -175,7 +225,30 @@ asan:
 	./configure CFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" CXXFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" LDFLAGS="-fsanitize=address,undefined" CC="clang" CXX="clang++" --disable-shared ; OptimOff  ; $(MAKE) clean ; $(MAKE)
 
 # Old test suite. This should be ported to C.
-tests: $(TEST_DEBUG) $(TEST_CATALOG) $(TEST_REGEXPS) $(TEST_SCHEMATRON) Timingtests $(TEST_VTIME) $(PYTHON_TESTS)
+
+OLD_TESTS = Timingtests
+if WITH_CATALOG_SOURCES
+OLD_TESTS += Catatests
+endif
+if WITH_DEBUG_SOURCES
+OLD_TESTS += Scripttests
+endif
+if WITH_REGEXPS_SOURCES
+OLD_TESTS += Automatatests
+endif
+if WITH_SCHEMAS_SOURCES
+if WITH_PYTHON
+OLD_TESTS += RelaxNGPythonTests SchemasPythonTests
+endif
+endif
+if WITH_SCHEMATRON_SOURCES
+OLD_TESTS += Schematrontests
+endif
+if WITH_VALID_SOURCES
+OLD_TESTS += VTimingtests
+endif
+
+tests: $(OLD_TESTS)
 
 Scripttests : xmllint$(EXEEXT)
 	@(echo > .memdump)

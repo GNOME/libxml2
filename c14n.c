@@ -12,7 +12,6 @@
 #define IN_LIBXML
 #include "libxml.h"
 #ifdef LIBXML_C14N_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
 
 #include <stdlib.h>
 #include <string.h>
@@ -2224,6 +2223,5 @@ xmlC11NNormalizeString(const xmlChar * input,
     *out = 0;
     return (buffer);
 }
-#endif /* LIBXML_OUTPUT_ENABLED */
 
 #endif /* LIBXML_C14N_ENABLED */

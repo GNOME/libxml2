@@ -417,6 +417,7 @@ fi
 AC_SUBST(LZMA_CFLAGS)
 AC_SUBST(LZMA_LIBS)
 AC_SUBST(WITH_LZMA)
+AM_CONDITIONAL(WITH_LZMA_SOURCES, test "$WITH_LZMA" = "1")
 
 CPPFLAGS=${_cppflags}
 LIBS=${_libs}
@@ -755,7 +756,6 @@ dnl
 dnl check for python
 dnl
 
-PYTHON_TESTS=
 AS_IF([test "x$with_python" != "xno"], [
     AM_PATH_PYTHON
     PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
@@ -815,6 +815,7 @@ fi
 AC_SUBST(WITH_MODULES)
 AC_SUBST(MODULE_PLATFORM_LIBS)
 AC_SUBST(MODULE_EXTENSION)
+AM_CONDITIONAL(WITH_MODULES_SOURCES, test "$WITH_MODULES" = "1")
 
 dnl
 dnl Check for trio string functions
@@ -955,24 +956,20 @@ AC_SUBST(WITH_TREE)
 if test "$with_ftp" != "yes" ; then
     echo Disabling FTP support
     WITH_FTP=0
-    FTP_OBJ=
 else    
     WITH_FTP=1
-    FTP_OBJ=nanoftp.o
 fi
 AC_SUBST(WITH_FTP)
-AC_SUBST(FTP_OBJ)
+AM_CONDITIONAL(WITH_FTP_SOURCES, test "$WITH_FTP" = "1")
 
 if test "$with_http" = "no" ; then
     echo Disabling HTTP support
     WITH_HTTP=0
-    HTTP_OBJ=
 else    
     WITH_HTTP=1
-    HTTP_OBJ=nanohttp.o
 fi
 AC_SUBST(WITH_HTTP)
-AC_SUBST(HTTP_OBJ)
+AM_CONDITIONAL(WITH_HTTP_SOURCES, test "$WITH_HTTP" = "1")
 
 if test "$with_legacy" != "yes" ; then
     echo Disabling deprecated APIs
@@ -981,6 +978,7 @@ else
     WITH_LEGACY=1
 fi
 AC_SUBST(WITH_LEGACY)
+AM_CONDITIONAL(WITH_LEGACY_SOURCES, test "$WITH_LEGACY" = "1")
 
 if test "$with_reader" = "no" ; then
     echo Disabling the xmlReader parsing interface
@@ -993,14 +991,13 @@ else
     fi
 fi
 AC_SUBST(WITH_READER)
+AM_CONDITIONAL(WITH_READER_SOURCES, test "$WITH_READER" = "1")
 
 if test "$with_writer" = "no" ; then
     echo Disabling the xmlWriter saving interface
     WITH_WRITER=0
-#    WRITER_TEST=
 else    
     WITH_WRITER=1
-#    WRITER_TEST=Writertests
     if test "$with_push" = "no" ; then
         echo xmlWriter requires Push interface - enabling it
 	with_push=yes
@@ -1011,7 +1008,7 @@ else
     fi
 fi
 AC_SUBST(WITH_WRITER)
-#AC_SUBST(WRITER_TEST)
+AM_CONDITIONAL(WITH_WRITER_SOURCES, test "$WITH_WRITER" = "1")
 
 if test "$with_pattern" = "no" ; then
     echo Disabling the xmlPattern parsing interface
@@ -1020,6 +1017,7 @@ else
     WITH_PATTERN=1
 fi
 AC_SUBST(WITH_PATTERN)
+AM_CONDITIONAL(WITH_PATTERN_SOURCES, test "$WITH_PATTERN" = "1")
 
 if test "$with_sax1" = "no" ; then
     echo Disabling the older SAX1 interface
@@ -1028,6 +1026,7 @@ else
     WITH_SAX1=1
 fi
 AC_SUBST(WITH_SAX1)
+AM_CONDITIONAL(WITH_SAX1_SOURCES, test "$WITH_SAX1" = "1")
 
 if test "$with_push" = "no" ; then
     echo Disabling the PUSH parser interfaces
@@ -1040,48 +1039,36 @@ AC_SUBST(WITH_PUSH)
 if test "$with_html" = "no" ; then
     echo Disabling HTML support
     WITH_HTML=0
-    HTML_OBJ=
 else    
     WITH_HTML=1
-    HTML_OBJ="HTMLparser.o HTMLtree.o"
 fi
 AC_SUBST(WITH_HTML)
-AC_SUBST(HTML_OBJ)
+AM_CONDITIONAL(WITH_HTML_SOURCES, test "$WITH_HTML" = "1")
 
 if test "$with_valid" = "no" ; then
     echo Disabling DTD validation support
     WITH_VALID=0
-    TEST_VTIME=
 else    
     WITH_VALID=1
-    TEST_VTIME=VTimingtests
 fi
 AC_SUBST(WITH_VALID)
-AC_SUBST(TEST_VALID)
-AC_SUBST(TEST_VTIME)
+AM_CONDITIONAL(WITH_VALID_SOURCES, test "$WITH_VALID" = "1")
 
 if test "$with_catalog" = "no" ; then
     echo Disabling Catalog support
     WITH_CATALOG=0
-    CATALOG_OBJ=
-    TEST_CATALOG=
 else    
     WITH_CATALOG=1
-    CATALOG_OBJ="catalog.o"
-    TEST_CATALOG=Catatests
 fi
 AC_SUBST(WITH_CATALOG)
-AC_SUBST(CATALOG_OBJ)
-AC_SUBST(TEST_CATALOG)
+AM_CONDITIONAL(WITH_CATALOG_SOURCES, test "$WITH_CATALOG" = "1")
 
 if test "$with_xptr" = "no" ; then
     echo Disabling XPointer support
     WITH_XPTR=0
     WITH_XPTR_LOCS=0
-    XPTR_OBJ=
 else    
     WITH_XPTR=1
-    XPTR_OBJ=xpointer.o
     if test "$with_xpath" = "no" ; then
         echo XPointer requires XPath support - enabling it
 	with_xpath=yes
@@ -1094,38 +1081,34 @@ else
 fi
 AC_SUBST(WITH_XPTR)
 AC_SUBST(WITH_XPTR_LOCS)
-AC_SUBST(XPTR_OBJ)
+AM_CONDITIONAL(WITH_XPTR_SOURCES, test "$WITH_XPTR" = "1")
 
 if test "$with_c14n" = "no" ; then
     echo Disabling C14N support
     WITH_C14N=0
-    C14N_OBJ=
 else    
     WITH_C14N=1
-    C14N_OBJ="c14n.c"
     if test "$with_xpath" = "no" ; then
         echo C14N requires XPath support - enabling it
 	with_xpath=yes
     fi
 fi
 AC_SUBST(WITH_C14N)
-AC_SUBST(C14N_OBJ)
+AM_CONDITIONAL(WITH_C14N_SOURCES, test "$WITH_C14N" = "1")
 
 if test "$with_xinclude" = "no" ; then
     echo Disabling XInclude support
     WITH_XINCLUDE=0
-    XINCLUDE_OBJ=
     with_xinclude="no"
 else    
     WITH_XINCLUDE=1
-    XINCLUDE_OBJ=xinclude.o
     if test "$with_xpath" = "no" ; then
         echo XInclude requires XPath support - enabling it
 	with_xpath=yes
     fi
 fi
 AC_SUBST(WITH_XINCLUDE)
-AC_SUBST(XINCLUDE_OBJ)
+AM_CONDITIONAL(WITH_XINCLUDE_SOURCES, test "$WITH_XINCLUDE" = "1")
 
 if test "$with_xptr" = "" && test "$with_xpath" = "no" ; then
     with_xptr=no
@@ -1138,28 +1121,24 @@ fi
 if test "$with_schematron" = "no" ; then
     echo "Disabling Schematron support"
     WITH_SCHEMATRON=0
-    TEST_SCHEMATRON=
 else 
     echo "Enabled Schematron support"
     WITH_SCHEMATRON=1
-    TEST_SCHEMATRON="Schematrontests"
     with_xpath=yes
     with_pattern=yes
     with_schematron=yes
 fi
 AC_SUBST(WITH_SCHEMATRON)
-AC_SUBST(TEST_SCHEMATRON)
+AM_CONDITIONAL(WITH_SCHEMATRON_SOURCES, test "$WITH_SCHEMATRON" = "1")
 
 if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
     WITH_XPATH=0
-    XPATH_OBJ=
 else    
     WITH_XPATH=1
-    XPATH_OBJ=xpath.o
 fi
 AC_SUBST(WITH_XPATH)
-AC_SUBST(XPATH_OBJ)
+AM_CONDITIONAL(WITH_XPATH_SOURCES, test "$WITH_XPATH" = "1")
 
 dnl
 dnl output functions
@@ -1171,6 +1150,7 @@ else
     WITH_OUTPUT=1
 fi
 AC_SUBST(WITH_OUTPUT)
+AM_CONDITIONAL(WITH_OUTPUT_SOURCES, test "$WITH_OUTPUT" = "1")
 
 WITH_ICONV=0
 if test "$with_iconv" = "no" ; then
@@ -1299,37 +1279,28 @@ if test "$with_schemas" = "no" ; then
 else    
     echo "Enabled Schemas/Relax-NG support"
     WITH_SCHEMAS=1
-    AS_IF([test "x$with_python" != "xno"], [
-        PYTHON_TESTS="$PYTHON_TESTS RelaxNGPythonTests SchemasPythonTests"
-    ])
     with_regexps=yes
 fi
 AC_SUBST(WITH_SCHEMAS)
+AM_CONDITIONAL(WITH_SCHEMAS_SOURCES, test "$WITH_SCHEMAS" = "1")
 
 if test "$with_regexps" = "no" ; then
     echo Disabling Regexps support
     WITH_REGEXPS=0
-    TEST_REGEXPS=
 else    
     WITH_REGEXPS=1
-    TEST_REGEXPS="Automatatests"
 fi
 AC_SUBST(WITH_REGEXPS)
-AC_SUBST(TEST_REGEXPS)
+AM_CONDITIONAL(WITH_REGEXPS_SOURCES, test "$WITH_REGEXPS" = "1")
 
 if test "$with_debug" = "no" ; then
     echo Disabling DEBUG support
     WITH_DEBUG=0
-    DEBUG_OBJ=
-    TEST_DEBUG=
 else    
     WITH_DEBUG=1
-    DEBUG_OBJ=debugXML.o
-    TEST_DEBUG=Scripttests
 fi
 AC_SUBST(WITH_DEBUG)
-AC_SUBST(DEBUG_OBJ)
-AC_SUBST(TEST_DEBUG)
+AM_CONDITIONAL(WITH_DEBUG_SOURCES, test "$WITH_DEBUG" = "1")
 
 if test "$with_mem_debug" = "yes" ; then
     if test "$with_thread_alloc" = "yes" ; then
@@ -1434,7 +1405,6 @@ AC_SUBST(RDL_LIBS)
 dnl for the spec file
 RELDATE=`date +'%a %b %e %Y'`
 AC_SUBST(RELDATE)
-AC_SUBST(PYTHON_TESTS)
 
 # keep on one line for cygwin c.f. #130896
 AC_CONFIG_FILES([libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile include/private/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile fuzz/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h libxml-2.0.pc libxml-2.0-uninstalled.pc libxml2-config.cmake])

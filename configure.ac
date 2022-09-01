@@ -737,6 +737,238 @@ esac
 
 
 dnl
+dnl Simple API modules
+dnl
+
+if test "$with_tree" = "no" ; then
+    echo Disabling DOM like tree manipulation APIs
+    WITH_TREE=0
+else
+    WITH_TREE=1
+fi
+AC_SUBST(WITH_TREE)
+
+if test "$with_ftp" != "yes" ; then
+    WITH_FTP=0
+else
+    echo Enabling FTP support
+    WITH_FTP=1
+fi
+AC_SUBST(WITH_FTP)
+AM_CONDITIONAL(WITH_FTP_SOURCES, test "$WITH_FTP" = "1")
+
+if test "$with_http" = "no" ; then
+    echo Disabling HTTP support
+    WITH_HTTP=0
+else
+    WITH_HTTP=1
+fi
+AC_SUBST(WITH_HTTP)
+AM_CONDITIONAL(WITH_HTTP_SOURCES, test "$WITH_HTTP" = "1")
+
+if test "$with_legacy" != "yes" ; then
+    WITH_LEGACY=0
+else
+    echo Enabling deprecated APIs
+    WITH_LEGACY=1
+fi
+AC_SUBST(WITH_LEGACY)
+AM_CONDITIONAL(WITH_LEGACY_SOURCES, test "$WITH_LEGACY" = "1")
+
+if test "$with_reader" = "no" ; then
+    echo Disabling the xmlReader parsing interface
+    WITH_READER=0
+else
+    WITH_READER=1
+fi
+AC_SUBST(WITH_READER)
+AM_CONDITIONAL(WITH_READER_SOURCES, test "$WITH_READER" = "1")
+
+if test "$with_writer" = "no" ; then
+    echo Disabling the xmlWriter saving interface
+    WITH_WRITER=0
+else
+    WITH_WRITER=1
+fi
+AC_SUBST(WITH_WRITER)
+AM_CONDITIONAL(WITH_WRITER_SOURCES, test "$WITH_WRITER" = "1")
+
+if test "$with_pattern" = "no" ; then
+    echo Disabling the xmlPattern parsing interface
+    WITH_PATTERN=0
+else
+    WITH_PATTERN=1
+fi
+AC_SUBST(WITH_PATTERN)
+AM_CONDITIONAL(WITH_PATTERN_SOURCES, test "$WITH_PATTERN" = "1")
+
+if test "$with_sax1" = "no" ; then
+    echo Disabling the older SAX1 interface
+    WITH_SAX1=0
+else
+    WITH_SAX1=1
+fi
+AC_SUBST(WITH_SAX1)
+AM_CONDITIONAL(WITH_SAX1_SOURCES, test "$WITH_SAX1" = "1")
+
+if test "$with_push" = "no" ; then
+    echo Disabling the PUSH parser interfaces
+    WITH_PUSH=0
+else
+    WITH_PUSH=1
+fi
+AC_SUBST(WITH_PUSH)
+
+if test "$with_html" = "no" ; then
+    echo Disabling HTML support
+    WITH_HTML=0
+else
+    WITH_HTML=1
+fi
+AC_SUBST(WITH_HTML)
+AM_CONDITIONAL(WITH_HTML_SOURCES, test "$WITH_HTML" = "1")
+
+if test "$with_valid" = "no" ; then
+    echo Disabling DTD validation support
+    WITH_VALID=0
+else
+    WITH_VALID=1
+fi
+AC_SUBST(WITH_VALID)
+AM_CONDITIONAL(WITH_VALID_SOURCES, test "$WITH_VALID" = "1")
+
+if test "$with_catalog" = "no" ; then
+    echo Disabling Catalog support
+    WITH_CATALOG=0
+else
+    WITH_CATALOG=1
+fi
+AC_SUBST(WITH_CATALOG)
+AM_CONDITIONAL(WITH_CATALOG_SOURCES, test "$WITH_CATALOG" = "1")
+
+if test "$with_xptr" = "no" ; then
+    echo Disabling XPointer support
+    WITH_XPTR=0
+    WITH_XPTR_LOCS=0
+else
+    WITH_XPTR=1
+fi
+AC_SUBST(WITH_XPTR)
+AM_CONDITIONAL(WITH_XPTR_SOURCES, test "$WITH_XPTR" = "1")
+
+if test "$with_xptr_locs" != "yes" ; then
+    WITH_XPTR_LOCS=0
+else
+    echo Enabling Xpointer locations support
+    WITH_XPTR_LOCS=1
+fi
+AC_SUBST(WITH_XPTR_LOCS)
+
+if test "$with_c14n" = "no" ; then
+    echo Disabling C14N support
+    WITH_C14N=0
+else
+    WITH_C14N=1
+fi
+AC_SUBST(WITH_C14N)
+AM_CONDITIONAL(WITH_C14N_SOURCES, test "$WITH_C14N" = "1")
+
+if test "$with_xinclude" = "no" ; then
+    echo Disabling XInclude support
+    WITH_XINCLUDE=0
+else
+    WITH_XINCLUDE=1
+fi
+AC_SUBST(WITH_XINCLUDE)
+AM_CONDITIONAL(WITH_XINCLUDE_SOURCES, test "$WITH_XINCLUDE" = "1")
+
+if test "$with_schematron" = "no" ; then
+    echo "Disabling Schematron support"
+    WITH_SCHEMATRON=0
+else
+    WITH_SCHEMATRON=1
+fi
+AC_SUBST(WITH_SCHEMATRON)
+AM_CONDITIONAL(WITH_SCHEMATRON_SOURCES, test "$WITH_SCHEMATRON" = "1")
+
+if test "$with_xpath" = "no" ; then
+    echo Disabling XPATH support
+    WITH_XPATH=0
+else
+    WITH_XPATH=1
+fi
+AC_SUBST(WITH_XPATH)
+AM_CONDITIONAL(WITH_XPATH_SOURCES, test "$WITH_XPATH" = "1")
+
+dnl
+dnl output functions
+dnl
+if test "$with_output" = "no" ; then
+    echo Disabling serialization/saving support
+    WITH_OUTPUT=0
+else
+    WITH_OUTPUT=1
+fi
+AC_SUBST(WITH_OUTPUT)
+AM_CONDITIONAL(WITH_OUTPUT_SOURCES, test "$WITH_OUTPUT" = "1")
+
+if test "$WITH_ICONV" != "1" && "$with_iso8859x" = "no" ; then
+    echo Disabling ISO8859X support
+    WITH_ISO8859X=0
+else
+    WITH_ISO8859X=1
+fi
+AC_SUBST(WITH_ISO8859X)
+
+if test "$with_schemas" = "no" ; then
+    echo "Disabling Schemas/Relax-NG support"
+    WITH_SCHEMAS=0
+else
+    WITH_SCHEMAS=1
+fi
+AC_SUBST(WITH_SCHEMAS)
+AM_CONDITIONAL(WITH_SCHEMAS_SOURCES, test "$WITH_SCHEMAS" = "1")
+
+if test "$with_regexps" = "no" ; then
+    echo Disabling Regexps support
+    WITH_REGEXPS=0
+else
+    WITH_REGEXPS=1
+fi
+AC_SUBST(WITH_REGEXPS)
+AM_CONDITIONAL(WITH_REGEXPS_SOURCES, test "$WITH_REGEXPS" = "1")
+
+if test "$with_debug" = "no" ; then
+    echo Disabling DEBUG support
+    WITH_DEBUG=0
+else
+    WITH_DEBUG=1
+fi
+AC_SUBST(WITH_DEBUG)
+AM_CONDITIONAL(WITH_DEBUG_SOURCES, test "$WITH_DEBUG" = "1")
+
+if test "$with_mem_debug" = "yes" ; then
+    if test "$with_thread_alloc" = "yes" ; then
+        echo Disabling memory debug - cannot use mem-debug with thread-alloc!
+	WITH_MEM_DEBUG=0
+    else
+        echo Enabling memory debug support
+        WITH_MEM_DEBUG=1
+    fi
+else
+    WITH_MEM_DEBUG=0
+fi
+AC_SUBST(WITH_MEM_DEBUG)
+
+if test "$with_run_debug" = "yes" ; then
+    echo Enabling runtime debug support
+    WITH_RUN_DEBUG=1
+else
+    WITH_RUN_DEBUG=0
+fi
+AC_SUBST(WITH_RUN_DEBUG)
+
+dnl
 dnl check for python
 dnl
 
@@ -926,181 +1158,6 @@ if test "$with_history" = "yes" ; then
     fi
 fi
 
-dnl
-dnl Tree functions
-dnl
-if test "$with_tree" = "no" ; then
-    echo Disabling DOM like tree manipulation APIs
-    WITH_TREE=0
-else    
-    WITH_TREE=1
-fi
-AC_SUBST(WITH_TREE)
-
-if test "$with_ftp" != "yes" ; then
-    echo Disabling FTP support
-    WITH_FTP=0
-else    
-    WITH_FTP=1
-fi
-AC_SUBST(WITH_FTP)
-AM_CONDITIONAL(WITH_FTP_SOURCES, test "$WITH_FTP" = "1")
-
-if test "$with_http" = "no" ; then
-    echo Disabling HTTP support
-    WITH_HTTP=0
-else    
-    WITH_HTTP=1
-fi
-AC_SUBST(WITH_HTTP)
-AM_CONDITIONAL(WITH_HTTP_SOURCES, test "$WITH_HTTP" = "1")
-
-if test "$with_legacy" != "yes" ; then
-    echo Disabling deprecated APIs
-    WITH_LEGACY=0
-else    
-    WITH_LEGACY=1
-fi
-AC_SUBST(WITH_LEGACY)
-AM_CONDITIONAL(WITH_LEGACY_SOURCES, test "$WITH_LEGACY" = "1")
-
-if test "$with_reader" = "no" ; then
-    echo Disabling the xmlReader parsing interface
-    WITH_READER=0
-else    
-    WITH_READER=1
-fi
-AC_SUBST(WITH_READER)
-AM_CONDITIONAL(WITH_READER_SOURCES, test "$WITH_READER" = "1")
-
-if test "$with_writer" = "no" ; then
-    echo Disabling the xmlWriter saving interface
-    WITH_WRITER=0
-else    
-    WITH_WRITER=1
-fi
-AC_SUBST(WITH_WRITER)
-AM_CONDITIONAL(WITH_WRITER_SOURCES, test "$WITH_WRITER" = "1")
-
-if test "$with_pattern" = "no" ; then
-    echo Disabling the xmlPattern parsing interface
-    WITH_PATTERN=0
-else    
-    WITH_PATTERN=1
-fi
-AC_SUBST(WITH_PATTERN)
-AM_CONDITIONAL(WITH_PATTERN_SOURCES, test "$WITH_PATTERN" = "1")
-
-if test "$with_sax1" = "no" ; then
-    echo Disabling the older SAX1 interface
-    WITH_SAX1=0
-else    
-    WITH_SAX1=1
-fi
-AC_SUBST(WITH_SAX1)
-AM_CONDITIONAL(WITH_SAX1_SOURCES, test "$WITH_SAX1" = "1")
-
-if test "$with_push" = "no" ; then
-    echo Disabling the PUSH parser interfaces
-    WITH_PUSH=0
-else    
-    WITH_PUSH=1
-fi
-AC_SUBST(WITH_PUSH)
-
-if test "$with_html" = "no" ; then
-    echo Disabling HTML support
-    WITH_HTML=0
-else    
-    WITH_HTML=1
-fi
-AC_SUBST(WITH_HTML)
-AM_CONDITIONAL(WITH_HTML_SOURCES, test "$WITH_HTML" = "1")
-
-if test "$with_valid" = "no" ; then
-    echo Disabling DTD validation support
-    WITH_VALID=0
-else    
-    WITH_VALID=1
-fi
-AC_SUBST(WITH_VALID)
-AM_CONDITIONAL(WITH_VALID_SOURCES, test "$WITH_VALID" = "1")
-
-if test "$with_catalog" = "no" ; then
-    echo Disabling Catalog support
-    WITH_CATALOG=0
-else    
-    WITH_CATALOG=1
-fi
-AC_SUBST(WITH_CATALOG)
-AM_CONDITIONAL(WITH_CATALOG_SOURCES, test "$WITH_CATALOG" = "1")
-
-if test "$with_xptr" = "no" ; then
-    echo Disabling XPointer support
-    WITH_XPTR=0
-    WITH_XPTR_LOCS=0
-else    
-    WITH_XPTR=1
-fi
-AC_SUBST(WITH_XPTR)
-AM_CONDITIONAL(WITH_XPTR_SOURCES, test "$WITH_XPTR" = "1")
-
-if test "$with_xptr_locs" = "yes" ; then
-    WITH_XPTR_LOCS=1
-else
-    WITH_XPTR_LOCS=0
-fi
-AC_SUBST(WITH_XPTR_LOCS)
-
-if test "$with_c14n" = "no" ; then
-    echo Disabling C14N support
-    WITH_C14N=0
-else    
-    WITH_C14N=1
-fi
-AC_SUBST(WITH_C14N)
-AM_CONDITIONAL(WITH_C14N_SOURCES, test "$WITH_C14N" = "1")
-
-if test "$with_xinclude" = "no" ; then
-    echo Disabling XInclude support
-    WITH_XINCLUDE=0
-else    
-    WITH_XINCLUDE=1
-fi
-AC_SUBST(WITH_XINCLUDE)
-AM_CONDITIONAL(WITH_XINCLUDE_SOURCES, test "$WITH_XINCLUDE" = "1")
-
-if test "$with_schematron" = "no" ; then
-    echo "Disabling Schematron support"
-    WITH_SCHEMATRON=0
-else 
-    echo "Enabled Schematron support"
-    WITH_SCHEMATRON=1
-fi
-AC_SUBST(WITH_SCHEMATRON)
-AM_CONDITIONAL(WITH_SCHEMATRON_SOURCES, test "$WITH_SCHEMATRON" = "1")
-
-if test "$with_xpath" = "no" ; then
-    echo Disabling XPATH support
-    WITH_XPATH=0
-else    
-    WITH_XPATH=1
-fi
-AC_SUBST(WITH_XPATH)
-AM_CONDITIONAL(WITH_XPATH_SOURCES, test "$WITH_XPATH" = "1")
-
-dnl
-dnl output functions
-dnl
-if test "$with_output" = "no" ; then
-    echo Disabling serialization/saving support
-    WITH_OUTPUT=0
-else    
-    WITH_OUTPUT=1
-fi
-AC_SUBST(WITH_OUTPUT)
-AM_CONDITIONAL(WITH_OUTPUT_SOURCES, test "$WITH_OUTPUT" = "1")
-
 WITH_ICONV=0
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
@@ -1212,64 +1269,6 @@ fi
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICU)
-
-WITH_ISO8859X=1
-if test "$WITH_ICONV" != "1" ; then
-if test "$with_iso8859x" = "no" ; then
-    echo Disabling ISO8859X support
-    WITH_ISO8859X=0
-fi
-fi
-AC_SUBST(WITH_ISO8859X)
-
-if test "$with_schemas" = "no" ; then
-    echo "Disabling Schemas/Relax-NG support"
-    WITH_SCHEMAS=0
-else    
-    echo "Enabled Schemas/Relax-NG support"
-    WITH_SCHEMAS=1
-fi
-AC_SUBST(WITH_SCHEMAS)
-AM_CONDITIONAL(WITH_SCHEMAS_SOURCES, test "$WITH_SCHEMAS" = "1")
-
-if test "$with_regexps" = "no" ; then
-    echo Disabling Regexps support
-    WITH_REGEXPS=0
-else    
-    WITH_REGEXPS=1
-fi
-AC_SUBST(WITH_REGEXPS)
-AM_CONDITIONAL(WITH_REGEXPS_SOURCES, test "$WITH_REGEXPS" = "1")
-
-if test "$with_debug" = "no" ; then
-    echo Disabling DEBUG support
-    WITH_DEBUG=0
-else    
-    WITH_DEBUG=1
-fi
-AC_SUBST(WITH_DEBUG)
-AM_CONDITIONAL(WITH_DEBUG_SOURCES, test "$WITH_DEBUG" = "1")
-
-if test "$with_mem_debug" = "yes" ; then
-    if test "$with_thread_alloc" = "yes" ; then
-        echo Disabling memory debug - cannot use mem-debug with thread-alloc!
-	WITH_MEM_DEBUG=0
-    else
-        echo Enabling memory debug support
-        WITH_MEM_DEBUG=1
-    fi
-else    
-    WITH_MEM_DEBUG=0
-fi
-AC_SUBST(WITH_MEM_DEBUG)
-
-if test "$with_run_debug" = "yes" ; then
-    echo Enabling runtime debug support
-    WITH_RUN_DEBUG=1
-else    
-    WITH_RUN_DEBUG=0
-fi
-AC_SUBST(WITH_RUN_DEBUG)
 
 WIN32_EXTRA_LIBADD=
 WIN32_EXTRA_LDFLAGS=

@@ -71,6 +71,9 @@
 #include <libxml/xmlschemastypes.h>
 #include <libxml/relaxng.h>
 #endif
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#include <libxml/xpath.h>
+#endif
 
 #include "private/buf.h"
 #include "private/enc.h"
@@ -14700,10 +14703,6 @@ xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
  *									*
  ************************************************************************/
 
-#ifdef LIBXML_XPATH_ENABLED
-#include <libxml/xpath.h>
-#endif
-
 static int xmlParserInitialized = 0;
 
 /**
@@ -14745,7 +14744,7 @@ xmlInitParser(void) {
 	htmlInitAutoClose();
 	htmlDefaultSAXHandlerInit();
 #endif
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 	xmlXPathInit();
 #endif
 	xmlParserInitialized = 1;

@@ -4810,12 +4810,12 @@ xmlGetNodePath(const xmlNode *node)
         return (NULL);
 
     buf_len = 500;
-    buffer = (xmlChar *) xmlMallocAtomic(buf_len * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(buf_len);
     if (buffer == NULL) {
 	xmlTreeErrMemory("getting node path");
         return (NULL);
     }
-    buf = (xmlChar *) xmlMallocAtomic(buf_len * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(buf_len);
     if (buf == NULL) {
 	xmlTreeErrMemory("getting node path");
         xmlFree(buffer);
@@ -7148,7 +7148,7 @@ xmlBufferCreate(void) {
     ret->use = 0;
     ret->size = xmlDefaultBufferSize;
     ret->alloc = xmlBufferAllocScheme;
-    ret->content = (xmlChar *) xmlMallocAtomic(ret->size * sizeof(xmlChar));
+    ret->content = (xmlChar *) xmlMallocAtomic(ret->size);
     if (ret->content == NULL) {
 	xmlTreeErrMemory("creating buffer");
 	xmlFree(ret);
@@ -7181,7 +7181,7 @@ xmlBufferCreateSize(size_t size) {
     ret->alloc = xmlBufferAllocScheme;
     ret->size = (size ? size + 1 : 0);         /* +1 for ending null */
     if (ret->size){
-        ret->content = (xmlChar *) xmlMallocAtomic(ret->size * sizeof(xmlChar));
+        ret->content = (xmlChar *) xmlMallocAtomic(ret->size);
         if (ret->content == NULL) {
 	    xmlTreeErrMemory("creating buffer");
             xmlFree(ret);
@@ -7458,7 +7458,7 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
     }
     if (file == NULL)
 	file = stdout;
-    ret = fwrite(buf->content, sizeof(xmlChar), buf->use, file);
+    ret = fwrite(buf->content, 1, buf->use, file);
     return(ret > INT_MAX ? INT_MAX : ret);
 }
 
@@ -7665,7 +7665,7 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
         }
     }
 
-    memmove(&buf->content[buf->use], str, len*sizeof(xmlChar));
+    memmove(&buf->content[buf->use], str, len);
     buf->use += len;
     buf->content[buf->use] = 0;
     return 0;

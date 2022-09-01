@@ -2187,7 +2187,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
     } else {
 	stop = ' ';
     }
-    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
         xmlCatalogErrMemory("allocating public ID");
 	return(NULL);
@@ -2199,7 +2199,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
 	    break;
 	if (len + 1 >= size) {
 	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    tmp = (xmlChar *) xmlRealloc(buf, size);
 	    if (tmp == NULL) {
 		xmlCatalogErrMemory("allocating public ID");
 		xmlFree(buf);

@@ -2116,7 +2116,7 @@ xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
 #define growBufferReentrant() {						\
     buffer_size *= 2;							\
     buffer = (xmlChar *)						\
-		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
+		xmlRealloc(buffer, buffer_size);			\
     if (buffer == NULL) {						\
 	xmlC14NErrMemory("growing buffer");				\
 	return(NULL);							\
@@ -2151,7 +2151,7 @@ xmlC11NNormalizeString(const xmlChar * input,
      * allocate an translation buffer.
      */
     buffer_size = 1000;
-    buffer = (xmlChar *) xmlMallocAtomic(buffer_size * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(buffer_size);
     if (buffer == NULL) {
 	xmlC14NErrMemory("allocating buffer");
         return (NULL);

@@ -538,7 +538,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt)
 
     while (ctxt->state & XML_NANO_HTTP_READ) {
         if (ctxt->in == NULL) {
-            ctxt->in = (char *) xmlMallocAtomic(65000 * sizeof(char));
+            ctxt->in = (char *) xmlMallocAtomic(65000);
             if (ctxt->in == NULL) {
                 xmlHTTPErrMemory("allocating input");
                 ctxt->last = -1;

@@ -3222,8 +3222,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     if (v == NULL)
                         goto error;
                     base =
-                        (xmlChar *) xmlMallocAtomic((i + pad + 1) *
-                                                    sizeof(xmlChar));
+                        (xmlChar *) xmlMallocAtomic(i + pad + 1);
                     if (base == NULL) {
 		        xmlSchemaTypeErrMemory(node, "allocating base64 data");
                         xmlFree(v);

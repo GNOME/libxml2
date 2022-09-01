@@ -1076,7 +1076,7 @@ xmlSaveUri(xmlURIPtr uri) {
 
 
     max = 80;
-    ret = (xmlChar *) xmlMallocAtomic((max + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic(max + 1);
     if (ret == NULL) {
         xmlURIErrMemory("saving URI\n");
 	return(NULL);

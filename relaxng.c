@@ -8588,7 +8588,7 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar * str)
         tmp++;
     len = tmp - str;
 
-    ret = (xmlChar *) xmlMallocAtomic((len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic(len + 1);
     if (ret == NULL) {
         xmlRngVErrMemory(ctxt, "validating\n");
         return (NULL);

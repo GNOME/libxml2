@@ -2987,7 +2987,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	 */
 	max = len * 2;
 
-	buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
+	buffer = (xmlChar *) xmlMallocAtomic(max);
 	if (buffer == NULL) {
 	    xmlErrMemory(ctxt, NULL);
 	    return(NULL);
@@ -2998,8 +2998,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	        xmlChar *tmp;
 
 		max *= 2;
-		tmp = (xmlChar *) xmlRealloc(buffer,
-						max * sizeof(xmlChar));
+		tmp = (xmlChar *) xmlRealloc(buffer, max);
 		if (tmp == NULL) {
 		    xmlFree(buffer);
 		    xmlErrMemory(ctxt, NULL);
@@ -3066,7 +3065,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	     */
 	    max = len * 2;
 
-	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max);
 	    if (buffer == NULL) {
 	        xmlErrMemory(ctxt, NULL);
 		return(NULL);
@@ -3077,8 +3076,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 		    xmlChar *tmp;
 
 		    max *= 2;
-		    tmp = (xmlChar *) xmlRealloc(buffer,
-						    max * sizeof(xmlChar));
+		    tmp = (xmlChar *) xmlRealloc(buffer, max);
 		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
 			xmlFree(buffer);
@@ -3603,7 +3601,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 
-	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max);
 	    if (buffer == NULL) {
 	        xmlErrMemory(ctxt, NULL);
 		return(NULL);
@@ -3620,8 +3618,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
                         return(NULL);
                     }
 		    max *= 2;
-		    tmp = (xmlChar *) xmlRealloc(buffer,
-			                            max * sizeof(xmlChar));
+		    tmp = (xmlChar *) xmlRealloc(buffer, max);
 		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
 			xmlFree(buffer);
@@ -3701,7 +3698,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 
-	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max);
 	    if (buffer == NULL) {
 	        xmlErrMemory(ctxt, NULL);
 		return(NULL);
@@ -3726,8 +3723,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
                         return(NULL);
                     }
 		    max *= 2;
-		    tmp = (xmlChar *) xmlRealloc(buffer,
-			                            max * sizeof(xmlChar));
+		    tmp = (xmlChar *) xmlRealloc(buffer, max);
 		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
 			xmlFree(buffer);
@@ -3785,7 +3781,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	xmlFatalErr(ctxt, XML_ERR_ENTITY_NOT_STARTED, NULL);
 	return(NULL);
     }
-    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);
 	return(NULL);
@@ -3817,7 +3813,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	    xmlChar *tmp;
 
 	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    tmp = (xmlChar *) xmlRealloc(buf, size);
 	    if (tmp == NULL) {
 		xmlErrMemory(ctxt, NULL);
                 goto error;
@@ -4229,7 +4225,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	return(NULL);
     }
 
-    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
         xmlErrMemory(ctxt, NULL);
 	return(NULL);
@@ -4248,7 +4244,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
                 return(NULL);
             }
 	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    tmp = (xmlChar *) xmlRealloc(buf, size);
 	    if (tmp == NULL) {
 	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
@@ -4320,7 +4316,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	xmlFatalErr(ctxt, XML_ERR_LITERAL_NOT_STARTED, NULL);
 	return(NULL);
     }
-    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);
 	return(NULL);
@@ -4338,7 +4334,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
                 return(NULL);
             }
 	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    tmp = (xmlChar *) xmlRealloc(buf, size);
 	    if (tmp == NULL) {
 		xmlErrMemory(ctxt, NULL);
 		xmlFree(buf);
@@ -4774,7 +4770,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
     if (buf == NULL) {
         len = 0;
 	size = XML_PARSER_BUFFER_SIZE;
-	buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+	buf = (xmlChar *) xmlMallocAtomic(size);
 	if (buf == NULL) {
 	    xmlErrMemory(ctxt, NULL);
 	    return;
@@ -4960,7 +4956,7 @@ get_more:
 		        size = nbchar + 1;
 		    else
 		        size = XML_PARSER_BUFFER_SIZE + nbchar;
-		    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+		    buf = (xmlChar *) xmlMallocAtomic(size);
 		    if (buf == NULL) {
 		        xmlErrMemory(ctxt, NULL);
 			ctxt->instate = state;
@@ -4970,8 +4966,7 @@ get_more:
 		} else if (len + nbchar + 1 >= size) {
 		    xmlChar *new_buf;
 		    size  += len + nbchar + XML_PARSER_BUFFER_SIZE;
-		    new_buf = (xmlChar *) xmlRealloc(buf,
-		                                     size * sizeof(xmlChar));
+		    new_buf = (xmlChar *) xmlRealloc(buf, size);
 		    if (new_buf == NULL) {
 		        xmlFree (buf);
 			xmlErrMemory(ctxt, NULL);
@@ -5230,7 +5225,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    ctxt->instate = state;
 		return;
 	    }
-	    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlMallocAtomic(size);
 	    if (buf == NULL) {
 		xmlErrMemory(ctxt, NULL);
 		ctxt->instate = state;
@@ -9866,7 +9861,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     }
     NEXTL(sl);
     cur = CUR_CHAR(l);
-    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);
 	return;
@@ -9883,7 +9878,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
                 xmlFree (buf);
                 return;
             }
-	    tmp = (xmlChar *) xmlRealloc(buf, size * 2 * sizeof(xmlChar));
+	    tmp = (xmlChar *) xmlRealloc(buf, size * 2);
 	    if (tmp == NULL) {
 	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
@@ -10266,7 +10261,7 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
     int size = 10;
     xmlChar cur;
 
-    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);
 	return(NULL);
@@ -10291,7 +10286,7 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 	    xmlChar *tmp;
 
 	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    tmp = (xmlChar *) xmlRealloc(buf, size);
 	    if (tmp == NULL) {
 	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
@@ -10378,7 +10373,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
     cur = CUR;
     if (((cur >= 'a') && (cur <= 'z')) ||
         ((cur >= 'A') && (cur <= 'Z'))) {
-	buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
+	buf = (xmlChar *) xmlMallocAtomic(size);
 	if (buf == NULL) {
 	    xmlErrMemory(ctxt, NULL);
 	    return(NULL);
@@ -10396,7 +10391,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 	        xmlChar *tmp;
 
 		size *= 2;
-		tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+		tmp = (xmlChar *) xmlRealloc(buf, size);
 		if (tmp == NULL) {
 		    xmlErrMemory(ctxt, NULL);
 		    xmlFree(buf);

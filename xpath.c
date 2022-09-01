@@ -9921,7 +9921,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
             if (len > XML_MAX_NAME_LENGTH) {
                 XP_ERRORNULL(XPATH_EXPR_ERROR);
             }
-	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max);
 	    if (buffer == NULL) {
 		XP_ERRORNULL(XPATH_MEMORY_ERROR);
 	    }
@@ -9938,8 +9938,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
                         XP_ERRORNULL(XPATH_EXPR_ERROR);
                     }
 		    max *= 2;
-		    tmp = (xmlChar *) xmlRealloc(buffer,
-			                         max * sizeof(xmlChar));
+		    tmp = (xmlChar *) xmlRealloc(buffer, max);
 		    if (tmp == NULL) {
                         xmlFree(buffer);
 			XP_ERRORNULL(XPATH_MEMORY_ERROR);

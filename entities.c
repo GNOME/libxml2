@@ -628,7 +628,7 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
      * allocate an translation buffer.
      */
     buffer_size = 1000;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMalloc(buffer_size);
     if (buffer == NULL) {
         xmlEntitiesErrMemory("xmlEncodeEntities: malloc failed");
 	return(NULL);
@@ -868,7 +868,7 @@ xmlEncodeSpecialChars(const xmlDoc *doc ATTRIBUTE_UNUSED, const xmlChar *input) 
      * allocate an translation buffer.
      */
     buffer_size = 1000;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMalloc(buffer_size);
     if (buffer == NULL) {
         xmlEntitiesErrMemory("xmlEncodeSpecialChars: malloc failed");
 	return(NULL);

@@ -61,22 +61,6 @@ LT_INIT([disable-static])
 LT_LIB_M
 
 dnl
-dnl if the system support linker version scripts for symbol versioning
-dnl then add it
-dnl
-VERSION_SCRIPT_FLAGS=
-# lt_cv_prog_gnu_ld is from libtool 2.+
-if test "$lt_cv_prog_gnu_ld" = yes; then
-  VERSION_SCRIPT_FLAGS=-Wl,--version-script=
-else
-  case $host in
-  *-*-sunos*) VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,";;
-  esac
-fi
-AC_SUBST(VERSION_SCRIPT_FLAGS)
-AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
-
-dnl
 dnl We process the AC_ARG_WITH first so that later we can modify
 dnl some of them to try to prevent impossible combinations.  This
 dnl also allows up so alphabetize the choices
@@ -316,102 +300,9 @@ else
     fi
 fi
 
-echo Checking zlib
-
-dnl Checks for zlib library.
-
-WITH_ZLIB=0
-if test "$with_zlib" = "no"; then
-    echo "Disabling zlib compression support"
-else
-    # Don't run pkg-config if with_zlib contains a path.
-    if test "x$Z_DIR" = "x"; then
-        # Try pkg-config first so that static linking works.
-        PKG_CHECK_MODULES([Z],[zlib],
-            [WITH_ZLIB=1],
-            [:])
-    fi
-
-    if test "$WITH_ZLIB" = "0"; then
-        _cppflags="${CPPFLAGS}"
-        _libs="${LIBS}"
-        if test "x$Z_DIR" != "x"; then
-            CPPFLAGS="${CPPFLAGS} -I$Z_DIR/include"
-            LDFLAGS="${LDFLAGS} -L$Z_DIR/lib"
-        fi
-        AC_CHECK_HEADERS(zlib.h,
-            AC_CHECK_LIB(z, gzread,[
-                WITH_ZLIB=1
-                if test "x${Z_DIR}" != "x"; then
-                    Z_CFLAGS="-I${Z_DIR}/include"
-                    Z_LIBS="-L${Z_DIR}/lib -lz"
-                    [case ${host} in
-                        *-*-solaris*)
-                            Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
-                            ;;
-                    esac]
-                else
-                    Z_LIBS="-lz"
-                fi])
-            )
-        CPPFLAGS=${_cppflags}
-        LIBS=${_libs}
-    fi
-fi
-
-AC_SUBST(Z_CFLAGS)
-AC_SUBST(Z_LIBS)
-AC_SUBST(WITH_ZLIB)
-
-echo Checking lzma
-
-dnl Checks for lzma library.
-
-WITH_LZMA=0
-if test "$with_lzma" = "no"; then
-    echo "Disabling lzma compression support"
-else
-    # Don't run pkg-config if with_lzma contains a path.
-    if test "x$LZMA_DIR" = "x"; then
-        # Try pkg-config first so that static linking works.
-        PKG_CHECK_MODULES([LZMA],[liblzma],
-            [WITH_LZMA=1],
-            [:])
-    fi
-
-    # If pkg-config failed, fall back to AC_CHECK_LIB. This
-    # will not pick up the necessary LIBS flags for liblzma's
-    # private dependencies, though, so static linking may fail.
-    if test "$WITH_LZMA" = "0"; then
-        _cppflags="${CPPFLAGS}"
-        _libs="${LIBS}"
-        if test "x$LZMA_DIR" != "x"; then
-            CPPFLAGS="${CPPFLAGS} -I$LZMA_DIR/include"
-            LDFLAGS="${LDFLAGS} -L$LZMA_DIR/lib"
-        fi
-        AC_CHECK_HEADERS(lzma.h,
-            AC_CHECK_LIB(lzma, lzma_code,[
-                WITH_LZMA=1
-                if test "x${LZMA_DIR}" != "x"; then
-                    LZMA_CFLAGS="-I${LZMA_DIR}/include"
-                    LZMA_LIBS="-L${LZMA_DIR}/lib -llzma"
-                else
-                    LZMA_LIBS="-llzma"
-                fi])
-            )
-        CPPFLAGS=${_cppflags}
-        LIBS=${_libs}
-    fi
-fi
-
-AC_SUBST(LZMA_CFLAGS)
-AC_SUBST(LZMA_LIBS)
-AC_SUBST(WITH_LZMA)
-AM_CONDITIONAL(WITH_LZMA_SOURCES, test "$WITH_LZMA" = "1")
-
-echo Checking headers
-
+dnl
 dnl Checks for header files.
+dnl
 AC_CHECK_HEADERS([fcntl.h])
 AC_CHECK_HEADERS([unistd.h])
 AC_CHECK_HEADERS([sys/stat.h])
@@ -461,13 +352,15 @@ AC_CHECK_HEADERS([resolv.h], [], [],
 AC_CHECK_HEADERS([dl.h])
 AC_CHECK_HEADERS([dlfcn.h])
 
-
-echo Checking types
-
+dnl
+dnl Checking types
+dnl
 AC_TYPE_UINT32_T
 
-
-echo Checking libraries
+dnl
+dnl Checking libraries
+dnl
+AC_CHECK_FUNCS(snprintf vsnprintf,, NEED_TRIO=1)
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(gettimeofday ftime)
@@ -511,7 +404,9 @@ va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1],[
   AC_MSG_RESULT(yes)
   AC_DEFINE([VA_LIST_IS_ARRAY], [1],[Define if va_list is an array type])])
 
-dnl Checks for inet libraries:
+dnl
+dnl Checks for inet libraries
+dnl
 AC_SEARCH_LIBS(gethostent, [nsl])
 AC_SEARCH_LIBS(setsockopt, [socket net network])
 AC_SEARCH_LIBS(connect, [inet])
@@ -574,19 +469,9 @@ else
       [Type cast for the send() function 2nd arg])
 fi
 
-dnl Checking whether __attribute__((destructor)) is accepted by the compiler
-AC_MSG_CHECKING([whether __attribute__((destructor)) is accepted])
-AC_TRY_COMPILE2([
-void __attribute__((destructor))
-f(void) {}], [], [
-  AC_MSG_RESULT(yes)
-  AC_DEFINE([HAVE_ATTRIBUTE_DESTRUCTOR], [1],[Define if __attribute__((destructor)) is accepted])
-  AC_DEFINE([ATTRIBUTE_DESTRUCTOR], [__attribute__((destructor))],[A form that will not confuse apibuild.py])],[
-  AC_MSG_RESULT(no)])
-
-
-dnl ***********************Checking for availability of IPv6*******************
-
+dnl
+dnl Checking for availability of IPv6
+dnl
 AC_MSG_CHECKING([whether to enable IPv6])
 AC_ARG_ENABLE(ipv6, [  --enable-ipv6[[=yes/no]]  enables compilation of IPv6 code [[default=yes]]],, enable_ipv6=yes)
 if test "$with_minimum" = "yes"
@@ -667,16 +552,77 @@ if test $enable_ipv6 = yes; then
   fi
 fi 
 
-dnl ******************************End IPv6 checks******************************
-
-XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${includedir}/libxml2'
-
 dnl
 dnl Extra flags
 dnl
+XML_LIBDIR='-L${libdir}'
+XML_INCLUDEDIR='-I${includedir}/libxml2'
 XML_CFLAGS=""
-RDL_LIBS=""
+
+dnl Checking whether __attribute__((destructor)) is accepted by the compiler
+AC_MSG_CHECKING([whether __attribute__((destructor)) is accepted])
+AC_TRY_COMPILE2([
+void __attribute__((destructor))
+f(void) {}], [], [
+  AC_MSG_RESULT(yes)
+  AC_DEFINE([HAVE_ATTRIBUTE_DESTRUCTOR], [1],[Define if __attribute__((destructor)) is accepted])
+  AC_DEFINE([ATTRIBUTE_DESTRUCTOR], [__attribute__((destructor))],[A form that will not confuse apibuild.py])],[
+  AC_MSG_RESULT(no)])
+
+dnl
+dnl Linker version scripts for symbol versioning
+dnl
+VERSION_SCRIPT_FLAGS=
+# lt_cv_prog_gnu_ld is from libtool 2.+
+if test "$lt_cv_prog_gnu_ld" = yes; then
+  VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+else
+  case $host in
+  *-*-sunos*) VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,";;
+  esac
+fi
+AC_SUBST(VERSION_SCRIPT_FLAGS)
+AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
+
+dnl
+dnl Windows compiler flags
+dnl
+WIN32_EXTRA_LIBADD=
+WIN32_EXTRA_LDFLAGS=
+CYGWIN_EXTRA_LDFLAGS=
+CYGWIN_EXTRA_PYTHON_LIBADD=
+WIN32_EXTRA_PYTHON_LIBADD=
+case "$host" in
+ *-*-mingw*)
+ CPPFLAGS="$CPPFLAGS -DWIN32"
+ WIN32_EXTRA_LIBADD="-lws2_32"
+ WIN32_EXTRA_LDFLAGS="-no-undefined"
+ if test "${PYTHON}" != ""
+ then
+   case "$host" in
+     *-w64-mingw*)
+       WIN32_EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
+       ;;
+     *)
+       WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
+       ;;
+   esac
+ fi
+ ;;
+ *-*-cygwin*)
+ CYGWIN_EXTRA_LDFLAGS="-no-undefined"
+ if test "${PYTHON}" != ""
+ then
+   CYGWIN_EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
+ fi
+ ;;
+esac
+
+AC_SUBST(WIN32_EXTRA_LIBADD)
+AC_SUBST(WIN32_EXTRA_LDFLAGS)
+AC_SUBST(WIN32_EXTRA_PYTHON_LIBADD)
+AC_SUBST(CYGWIN_EXTRA_LDFLAGS)
+AC_SUBST(CYGWIN_EXTRA_PYTHON_LIBADD)
 
 dnl
 dnl Workaround for native compilers
@@ -903,9 +849,6 @@ fi
 AC_SUBST(WITH_XPATH)
 AM_CONDITIONAL(WITH_XPATH_SOURCES, test "$WITH_XPATH" = "1")
 
-dnl
-dnl output functions
-dnl
 if test "$with_output" = "no" ; then
     echo Disabling serialization/saving support
     WITH_OUTPUT=0
@@ -964,7 +907,7 @@ fi
 AC_SUBST(WITH_MEM_DEBUG)
 
 dnl
-dnl check for python
+dnl Check for Python
 dnl
 
 AS_IF([test "x$with_python" != "xno"], [
@@ -973,7 +916,9 @@ AS_IF([test "x$with_python" != "xno"], [
 ])
 AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" != "xno"])
 
-dnl check for dso support
+dnl
+dnl Check for DSO support
+dnl
 WITH_MODULES=0
 
 if test "$with_modules" != "no" ; then
@@ -1031,7 +976,6 @@ AM_CONDITIONAL(WITH_MODULES_SOURCES, test "$WITH_MODULES" = "1")
 dnl
 dnl Check for trio string functions
 dnl
-
 if test "${NEED_TRIO}" = "1" ; then
     echo Adding trio library for string functions
     WITH_TRIO=1
@@ -1040,11 +984,6 @@ else
 fi
 AM_CONDITIONAL(WITH_TRIO_SOURCES, test "${NEED_TRIO}" = "1")
 AC_SUBST(WITH_TRIO)
-
-dnl
-dnl Allow to enable/disable various pieces
-dnl
-echo Checking configuration requirements
 
 dnl
 dnl Thread-related stuff
@@ -1153,7 +1092,104 @@ if test "$with_history" = "yes" ; then
     fi
 fi
 
+dnl
+dnl Checks for zlib library.
+dnl
+WITH_ZLIB=0
+
+if test "$with_zlib" = "no"; then
+    echo "Disabling zlib compression support"
+else
+    # Don't run pkg-config if with_zlib contains a path.
+    if test "x$Z_DIR" = "x"; then
+        # Try pkg-config first so that static linking works.
+        PKG_CHECK_MODULES([Z],[zlib],
+            [WITH_ZLIB=1],
+            [:])
+    fi
+
+    if test "$WITH_ZLIB" = "0"; then
+        _cppflags="${CPPFLAGS}"
+        _libs="${LIBS}"
+        if test "x$Z_DIR" != "x"; then
+            CPPFLAGS="${CPPFLAGS} -I$Z_DIR/include"
+            LDFLAGS="${LDFLAGS} -L$Z_DIR/lib"
+        fi
+        AC_CHECK_HEADERS(zlib.h,
+            AC_CHECK_LIB(z, gzread,[
+                WITH_ZLIB=1
+                if test "x${Z_DIR}" != "x"; then
+                    Z_CFLAGS="-I${Z_DIR}/include"
+                    Z_LIBS="-L${Z_DIR}/lib -lz"
+                    [case ${host} in
+                        *-*-solaris*)
+                            Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
+                            ;;
+                    esac]
+                else
+                    Z_LIBS="-lz"
+                fi])
+            )
+        CPPFLAGS=${_cppflags}
+        LIBS=${_libs}
+    fi
+fi
+
+AC_SUBST(Z_CFLAGS)
+AC_SUBST(Z_LIBS)
+AC_SUBST(WITH_ZLIB)
+
+dnl
+dnl Checks for lzma library.
+dnl
+WITH_LZMA=0
+
+if test "$with_lzma" = "no"; then
+    echo "Disabling lzma compression support"
+else
+    # Don't run pkg-config if with_lzma contains a path.
+    if test "x$LZMA_DIR" = "x"; then
+        # Try pkg-config first so that static linking works.
+        PKG_CHECK_MODULES([LZMA],[liblzma],
+            [WITH_LZMA=1],
+            [:])
+    fi
+
+    # If pkg-config failed, fall back to AC_CHECK_LIB. This
+    # will not pick up the necessary LIBS flags for liblzma's
+    # private dependencies, though, so static linking may fail.
+    if test "$WITH_LZMA" = "0"; then
+        _cppflags="${CPPFLAGS}"
+        _libs="${LIBS}"
+        if test "x$LZMA_DIR" != "x"; then
+            CPPFLAGS="${CPPFLAGS} -I$LZMA_DIR/include"
+            LDFLAGS="${LDFLAGS} -L$LZMA_DIR/lib"
+        fi
+        AC_CHECK_HEADERS(lzma.h,
+            AC_CHECK_LIB(lzma, lzma_code,[
+                WITH_LZMA=1
+                if test "x${LZMA_DIR}" != "x"; then
+                    LZMA_CFLAGS="-I${LZMA_DIR}/include"
+                    LZMA_LIBS="-L${LZMA_DIR}/lib -llzma"
+                else
+                    LZMA_LIBS="-llzma"
+                fi])
+            )
+        CPPFLAGS=${_cppflags}
+        LIBS=${_libs}
+    fi
+fi
+
+AC_SUBST(LZMA_CFLAGS)
+AC_SUBST(LZMA_LIBS)
+AC_SUBST(WITH_LZMA)
+AM_CONDITIONAL(WITH_LZMA_SOURCES, test "$WITH_LZMA" = "1")
+
+dnl
+dnl Checks for iconv library.
+dnl
 WITH_ICONV=0
+
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
 else
@@ -1195,8 +1231,12 @@ iconv (cd, NULL, NULL, NULL, NULL);]])],[
 fi
 AC_SUBST(WITH_ICONV)
 
+dnl
+dnl Checks for ICU library.
+dnl
 WITH_ICU=0
 ICU_LIBS=""
+
 if test "$with_icu" != "yes" ; then
     echo Disabling ICU support
 else
@@ -1261,66 +1301,7 @@ else
         WITH_ICU=1
     fi
 fi
-XML_LIBS="-lxml2"
-XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICU)
-
-WIN32_EXTRA_LIBADD=
-WIN32_EXTRA_LDFLAGS=
-CYGWIN_EXTRA_LDFLAGS=
-CYGWIN_EXTRA_PYTHON_LIBADD=
-WIN32_EXTRA_PYTHON_LIBADD=
-case "$host" in
- *-*-mingw*)
- CPPFLAGS="$CPPFLAGS -DWIN32"
- WIN32_EXTRA_LIBADD="-lws2_32"
- WIN32_EXTRA_LDFLAGS="-no-undefined"
- if test "${PYTHON}" != ""
- then
-   case "$host" in
-     *-w64-mingw*)
-       WIN32_EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
-       ;;
-     *)
-       WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
-       ;;
-   esac
- fi
- ;;
- *-*-cygwin*)
- CYGWIN_EXTRA_LDFLAGS="-no-undefined"
- if test "${PYTHON}" != ""
- then
-   CYGWIN_EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
- fi
- ;;
-esac
-
-XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $WIN32_EXTRA_LIBADD"
-
-AC_SUBST(WIN32_EXTRA_LIBADD)
-AC_SUBST(WIN32_EXTRA_LDFLAGS)
-AC_SUBST(WIN32_EXTRA_PYTHON_LIBADD)
-AC_SUBST(CYGWIN_EXTRA_LDFLAGS)
-AC_SUBST(CYGWIN_EXTRA_PYTHON_LIBADD)
-
-dnl Checking the standard string functions availability
-dnl
-dnl Note mingw* has C99 implementation that produce expected xml numbers
-dnl if code use {v}snprintf functions.
-dnl If you like to activate at run-time C99 compatible number output
-dnl see release note for mingw runtime 3.15:
-dnl  http://sourceforge.net/project/shownotes.php?release_id=24832
-dnl
-dnl Also *win32*config.h files redefine them for various MSC compilers.
-dnl
-dnl So do not redefine {v}snprintf to _{v}snprintf like following:
-dnl  AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
-dnl  AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])
-dnl and do not redefine those functions is C-source files.
-dnl
-AC_CHECK_FUNCS(snprintf vsnprintf,,
-	NEED_TRIO=1)
 
 if test "$with_coverage" = "yes" && test "${GCC}" = "yes"
 then
@@ -1330,6 +1311,10 @@ then
 else
     echo Disabling code coverage for GCC
 fi
+
+XML_LIBS="-lxml2"
+XML_LIBTOOLLIBS="libxml2.la"
+XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $WIN32_EXTRA_LIBADD"
 
 AC_SUBST(EXTRA_CFLAGS)
 AC_SUBST(XML_CFLAGS)

@@ -73,7 +73,7 @@ clang:msan:
 .cmake:linux:
   image: registry.gitlab.gnome.org/gnome/libxml2
   script:
-    - cmake -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLIBXML2_XMLCONF_WORKING_DIR=/tests -S . -B libxml2-build
+    - cmake -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_C_FLAGS='-Werror' -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLIBXML2_XMLCONF_WORKING_DIR=/tests -S . -B libxml2-build
     - cmake --build libxml2-build --target install
     - mkdir -p libxml2-install/share/libxml2
     - cp Copyright libxml2-install/share/libxml2
@@ -147,7 +147,7 @@ cmake:linux:clang:static:
         .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
       }
   script:
-    - cmake -G Ninja -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B libxml2-build
+    - cmake -G Ninja -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_C_FLAGS='-Werror' -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B libxml2-build
     - cmake --build libxml2-build --target install
     - New-Item -ItemType Directory libxml2-install\share\libxml2
     - Copy-Item Copyright libxml2-install\share\libxml2

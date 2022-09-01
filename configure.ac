@@ -960,14 +960,6 @@ else
 fi
 AC_SUBST(WITH_MEM_DEBUG)
 
-if test "$with_run_debug" = "yes" ; then
-    echo Enabling runtime debug support
-    WITH_RUN_DEBUG=1
-else
-    WITH_RUN_DEBUG=0
-fi
-AC_SUBST(WITH_RUN_DEBUG)
-
 dnl
 dnl check for python
 dnl

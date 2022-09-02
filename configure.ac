@@ -286,22 +286,14 @@ fi
 dnl
 dnl Checks for header files.
 dnl
-AC_CHECK_HEADERS([fcntl.h])
-AC_CHECK_HEADERS([unistd.h])
-AC_CHECK_HEADERS([sys/stat.h])
-AC_CHECK_HEADERS([stdint.h])
-AC_CHECK_HEADERS([inttypes.h])
-AC_CHECK_HEADERS([sys/socket.h])
-AC_CHECK_HEADERS([netinet/in.h])
-AC_CHECK_HEADERS([arpa/inet.h])
-AC_CHECK_HEADERS([netdb.h])
-AC_CHECK_HEADERS([sys/time.h])
-AC_CHECK_HEADERS([sys/select.h])
-AC_CHECK_HEADERS([poll.h])
-AC_CHECK_HEADERS([sys/mman.h])
-AC_CHECK_HEADERS([sys/timeb.h])
-AC_CHECK_HEADERS([dl.h])
-AC_CHECK_HEADERS([dlfcn.h])
+AC_CHECK_HEADERS([
+    stdint.h inttypes.h
+    fcntl.h unistd.h sys/stat.h
+    sys/mman.h
+    sys/socket.h netinet/in.h arpa/inet.h netdb.h
+    sys/select.h poll.h
+    sys/time.h sys/timeb.h
+    dl.h dlfcn.h])
 
 dnl
 dnl Checking types
@@ -314,10 +306,13 @@ dnl
 AC_CHECK_FUNCS(snprintf vsnprintf,, NEED_TRIO=1)
 
 dnl Checks for library functions.
-AC_CHECK_FUNCS(gettimeofday ftime)
-AC_CHECK_FUNCS(stat)
-AC_CHECK_FUNCS(rand_r)
-AC_CHECK_FUNCS(isascii mmap munmap putenv)
+AC_CHECK_FUNCS([
+    gettimeofday ftime
+    stat
+    rand_r
+    isascii
+    mmap munmap
+    putenv])
 
 AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 #if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)

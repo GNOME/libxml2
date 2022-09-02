@@ -580,7 +580,6 @@ CYGWIN_EXTRA_PYTHON_LIBADD=
 WIN32_EXTRA_PYTHON_LIBADD=
 case "$host" in
  *-*-mingw*)
- CPPFLAGS="$CPPFLAGS -DWIN32"
  WIN32_EXTRA_LIBADD="-lws2_32"
  WIN32_EXTRA_LDFLAGS="-no-undefined"
  if test "${PYTHON}" != ""

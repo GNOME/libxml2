@@ -40,7 +40,7 @@ endif
 
 # The compiler and its options.
 CC = gcc.exe
-CFLAGS += -DWIN32 -D_WINDOWS -D_MBCS -DNOLIBTOOL 
+CFLAGS += -D_WINDOWS -D_MBCS -DNOLIBTOOL
 CFLAGS += -I$(XML_SRCDIR) -I$(XML_SRCDIR)/include -I$(INCPREFIX) $(INCLUDE)
 ifneq ($(WITH_THREADS),no)
 CFLAGS += -D_REENTRANT

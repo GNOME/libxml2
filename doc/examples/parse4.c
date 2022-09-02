@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
     return(0);
 }
 #else /* ! LIBXML_PUSH_ENABLED */
-int main(int argc, char **argv) {
+int main(void) {
     fprintf(stderr, "Library not compiled with push parser support\n");
     return(0);
 }

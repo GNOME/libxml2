@@ -300,15 +300,6 @@ AC_CHECK_HEADERS([sys/select.h])
 AC_CHECK_HEADERS([poll.h])
 AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([sys/timeb.h])
-AC_CHECK_HEADERS([arpa/nameser.h])
-AC_CHECK_HEADERS([resolv.h], [], [], [
-#if HAVE_NETINET_IN_H
-# include <netinet/in.h>
-# endif
-#if HAVE_ARPA_NAMESER_H
-# include <arpa/nameser.h>
-# endif
-])
 AC_CHECK_HEADERS([dl.h])
 AC_CHECK_HEADERS([dlfcn.h])
 

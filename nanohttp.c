@@ -34,12 +34,6 @@
 #ifdef HAVE_NETDB_H
 #include <netdb.h>
 #endif
-#ifdef HAVE_RESOLV_H
-#ifdef HAVE_ARPA_NAMESER_H
-#include <arpa/nameser.h>
-#endif
-#include <resolv.h>
-#endif
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
@@ -1050,15 +1044,6 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     memset (&sockin, 0, sizeof(sockin));
 #ifdef SUPPORT_IP6
     memset (&sockin6, 0, sizeof(sockin6));
-#endif
-
-#if !defined(HAVE_GETADDRINFO) && defined(SUPPORT_IP6) && defined(RES_USE_INET6)
-    if (have_ipv6 ())
-    {
-	if (!(_res.options & RES_INIT))
-	    res_init();
-	_res.options |= RES_USE_INET6;
-    }
 #endif
 
 #if defined(HAVE_GETADDRINFO) && defined(SUPPORT_IP6) && !defined(_WIN32)

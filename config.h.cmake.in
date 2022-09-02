@@ -10,9 +10,6 @@
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #cmakedefine HAVE_ARPA_INET_H 1
 
-/* Define to 1 if you have the <arpa/nameser.h> header file. */
-#cmakedefine HAVE_ARPA_NAMESER_H 1
-
 /* Whether struct sockaddr::__ss_family exists */
 #cmakedefine HAVE_BROKEN_SS_FAMILY 1
 
@@ -77,9 +74,6 @@
 
 /* Define to 1 if you have the `rand_r' function. */
 #cmakedefine HAVE_RAND_R 1
-
-/* Define to 1 if you have the <resolv.h> header file. */
-#cmakedefine HAVE_RESOLV_H 1
 
 /* Have shl_load based dso */
 #cmakedefine HAVE_SHLLOAD 1

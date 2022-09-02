@@ -105,13 +105,7 @@ AC_ARG_WITH(python,
 AC_ARG_WITH(reader,
 [  --with-reader           add the xmlReader parsing interface (on)])
 AC_ARG_WITH(readline,
-[  --with-readline=DIR     use readline in DIR],[
-  if test "$withval" != "no" && test "$withval" != "yes"; then
-    RDL_DIR=$withval
-    CPPFLAGS="${CPPFLAGS} -I$withval/include"
-    LDFLAGS="${LDFLAGS} -L$withval/lib"
-  fi
-])
+[  --with-readline[[=DIR]]   use readline in DIR])
 AC_ARG_WITH(regexps,
 [  --with-regexps          add Regular Expressions support (on)])
 AC_ARG_WITH(run_debug,
@@ -143,17 +137,9 @@ AC_ARG_WITH(xptr-locs,
 AC_ARG_WITH(modules,
 [  --with-modules          add the dynamic modules support (on)])
 AC_ARG_WITH(zlib,
-[  --with-zlib[[=DIR]]       use libz in DIR],[
-  if test "$withval" != "no" && test "$withval" != "yes"; then
-    Z_DIR=$withval
-  fi
-])
+[  --with-zlib[[=DIR]]       use libz in DIR])
 AC_ARG_WITH(lzma,
-[  --with-lzma[[=DIR]]       use liblzma in DIR],[
-  if test "$withval" != "no" && test "$withval" != "yes"; then
-    LZMA_DIR=$withval
-  fi
-])
+[  --with-lzma[[=DIR]]       use liblzma in DIR])
 AC_ARG_WITH(coverage,
 [  --with-coverage         build for code coverage with GCC (off)])
 
@@ -1068,7 +1054,7 @@ AM_CONDITIONAL([THREADS_W32],[test -n "$THREADS_W32"])
 dnl
 dnl xmllint shell history
 dnl
-if test "$with_history" = "yes" ; then
+if test "$with_history" = "yes" && test "$with_readline" != "no"; then
     echo Enabling xmllint shell history
     dnl check for terminal library. this is a very cool solution
     dnl from octave's configure.in
@@ -1078,19 +1064,34 @@ if test "$with_history" = "yes" ; then
 	test -n "$tcap" && break
     done
 
+    _cppflags=$CPPFLAGS
+    _libs=$LIBS
+    if test "$with_readline" != "" && test "$with_readline" != "yes"; then
+        RDL_DIR=$with_readline
+        CPPFLAGS="${CPPFLAGS} -I$RDL_DIR/include"
+        LIBS="${LIBS} -L$RDL_DIR/lib"
+    fi
     AC_CHECK_HEADER(readline/history.h,
 	AC_CHECK_LIB(history, append_history,[
-	   RDL_LIBS="-lhistory"
-	   AC_DEFINE([HAVE_LIBHISTORY], [], [Define if history library is there (-lhistory)])]))
+	    RDL_LIBS="-lhistory"
+            if test "x${RDL_DIR}" != "x"; then
+                RDL_CFLAGS="-I$RDL_DIR/include"
+                RDL_LIBS="-L$RDL_DIR/lib $RDL_LIBS"
+            fi
+	    AC_DEFINE([HAVE_LIBHISTORY], [], [Define if history library is there (-lhistory)])]))
     AC_CHECK_HEADER(readline/readline.h,
 	AC_CHECK_LIB(readline, readline,[
-	   RDL_LIBS="-lreadline $RDL_LIBS $tcap"
-	   AC_DEFINE([HAVE_LIBREADLINE], [], [Define if readline library is there (-lreadline)])], , $tcap))
-    if test -n "$RDL_DIR" && test -n "$RDL_LIBS"; then
-	CPPFLAGS="$CPPFLAGS -I${RDL_DIR}/include"
-	RDL_LIBS="-L${RDL_DIR}/lib $RDL_LIBS"
-    fi
+	    RDL_LIBS="-lreadline $RDL_LIBS $tcap"
+            if test "x$RDL_DIR" != "x"; then
+                RDL_CFLAGS="-I$RDL_DIR/include"
+                RDL_LIBS="-L$RDL_DIR/lib $RDL_LIBS"
+            fi
+	    AC_DEFINE([HAVE_LIBREADLINE], [], [Define if readline library is there (-lreadline)])], , $tcap))
+    CPPFLAGS=$_cppflags
+    LIBS=$_libs
 fi
+AC_SUBST(RDL_CFLAGS)
+AC_SUBST(RDL_LIBS)
 
 dnl
 dnl Checks for zlib library.
@@ -1100,6 +1101,10 @@ WITH_ZLIB=0
 if test "$with_zlib" = "no"; then
     echo "Disabling zlib compression support"
 else
+    if test "$with_zlib" != "yes"; then
+        Z_DIR=$with_zlib
+    fi
+
     # Don't run pkg-config if with_zlib contains a path.
     if test "x$Z_DIR" = "x"; then
         # Try pkg-config first so that static linking works.
@@ -1109,11 +1114,11 @@ else
     fi
 
     if test "$WITH_ZLIB" = "0"; then
-        _cppflags="${CPPFLAGS}"
-        _libs="${LIBS}"
+        _cppflags=$CPPFLAGS
+        _libs=$LIBS
         if test "x$Z_DIR" != "x"; then
             CPPFLAGS="${CPPFLAGS} -I$Z_DIR/include"
-            LDFLAGS="${LDFLAGS} -L$Z_DIR/lib"
+            LIBS="${LIBS} -L$Z_DIR/lib"
         fi
         AC_CHECK_HEADERS(zlib.h,
             AC_CHECK_LIB(z, gzread,[
@@ -1130,13 +1135,10 @@ else
                     Z_LIBS="-lz"
                 fi])
             )
-        CPPFLAGS=${_cppflags}
-        LIBS=${_libs}
+        CPPFLAGS=$_cppflags
+        LIBS=$_libs
     fi
 fi
-
-AC_SUBST(Z_CFLAGS)
-AC_SUBST(Z_LIBS)
 AC_SUBST(WITH_ZLIB)
 
 dnl
@@ -1147,6 +1149,10 @@ WITH_LZMA=0
 if test "$with_lzma" = "no"; then
     echo "Disabling lzma compression support"
 else
+    if test "$with_lzma" != "yes"; then
+        LZMA_DIR=$with_lzma
+    fi
+
     # Don't run pkg-config if with_lzma contains a path.
     if test "x$LZMA_DIR" = "x"; then
         # Try pkg-config first so that static linking works.
@@ -1159,11 +1165,11 @@ else
     # will not pick up the necessary LIBS flags for liblzma's
     # private dependencies, though, so static linking may fail.
     if test "$WITH_LZMA" = "0"; then
-        _cppflags="${CPPFLAGS}"
-        _libs="${LIBS}"
+        _cppflags=$CPPFLAGS
+        _libs=$LIBS
         if test "x$LZMA_DIR" != "x"; then
             CPPFLAGS="${CPPFLAGS} -I$LZMA_DIR/include"
-            LDFLAGS="${LDFLAGS} -L$LZMA_DIR/lib"
+            LIBS="${LIBS} -L$LZMA_DIR/lib"
         fi
         AC_CHECK_HEADERS(lzma.h,
             AC_CHECK_LIB(lzma, lzma_code,[
@@ -1175,13 +1181,10 @@ else
                     LZMA_LIBS="-llzma"
                 fi])
             )
-        CPPFLAGS=${_cppflags}
-        LIBS=${_libs}
+        CPPFLAGS=$_cppflags
+        LIBS=$_libs
     fi
 fi
-
-AC_SUBST(LZMA_CFLAGS)
-AC_SUBST(LZMA_LIBS)
 AC_SUBST(WITH_LZMA)
 AM_CONDITIONAL(WITH_LZMA_SOURCES, test "$WITH_LZMA" = "1")
 
@@ -1193,41 +1196,27 @@ WITH_ICONV=0
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
 else
+    _cppflags=$CPPFLAGS
+    _libs=$LIBS
     if test "$with_iconv" != "yes" && test "$with_iconv" != "" ; then
-	CPPFLAGS="${CPPFLAGS} -I$with_iconv/include"
+	ICONV_DIR=$with_iconv
+	CPPFLAGS="$CPPFLAGS -I$ICONV_DIR/include"
+        LIBS="$LIBS -L$ICONV_DIR/libs"
 	# Export this since our headers include iconv.h
-	XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_iconv/include"
-	ICONV_LIBS="-L$with_iconv/lib"
+	XML_INCLUDEDIR="$XML_INCLUDEDIR -I$ICONV_DIR/include"
     fi
-
-    AC_CHECK_HEADER(iconv.h,
-	AC_MSG_CHECKING(for iconv)
-	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>
-#include <iconv.h>]],[[
-iconv_t cd = iconv_open ("","");
-iconv (cd, NULL, NULL, NULL, NULL);]])],[
-	    AC_MSG_RESULT(yes)
-	    WITH_ICONV=1],[
-	    AC_MSG_RESULT(no)
-	    AC_MSG_CHECKING(for iconv in -liconv)
-
-	    _ldflags="${LDFLAGS}"
-	    _libs="${LIBS}"
-	    LDFLAGS="${LDFLAGS} ${ICONV_LIBS}"
-	    LIBS="${LIBS} -liconv"
-
-	    AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>
-#include <iconv.h>]],[[
-iconv_t cd = iconv_open ("","");
-iconv (cd, NULL, NULL, NULL, NULL);]])],[
-		AC_MSG_RESULT(yes)
-		WITH_ICONV=1
-		ICONV_LIBS="${ICONV_LIBS} -liconv"
-		LIBS="${_libs}"
-		LDFLAGS="${_ldflags}"],[
-		AC_MSG_RESULT(no)
-		LIBS="${_libs}"
-		LDFLAGS="${_ldflags}"])]))
+    AC_CHECK_HEADER(iconv.h, [
+        AC_SEARCH_LIBS([iconv], [iconv], [
+            WITH_ICONV=1
+            if test "$ac_cv_search_iconv" != "none required"; then
+                ICONV_LIBS=$ac_cv_search_iconv
+            fi
+            if test "$ICONV_DIR" != ""; then
+                ICONV_CFLAGS="-I$ICONV_DIR/include"
+                ICONV_LIBS="-L$ICONV_DIR/libs $ICONV_LIBS"
+            fi])])
+    CPPFLAGS=$_cppflags
+    LIBS=$_libs
 fi
 AC_SUBST(WITH_ICONV)
 
@@ -1242,63 +1231,41 @@ if test "$with_icu" != "yes" ; then
 else
     # Try pkg-config first so that static linking works.
     # If this succeeeds, we ignore the WITH_ICU directory.
-    PKG_CHECK_MODULES([ICU],[icu-i18n],
-        [have_libicu=yes],
-        [have_libicu=no])
-
-    if test "x$have_libicu" = "xyes"; then
+    PKG_CHECK_MODULES([ICU], [icu-i18n], [
+        WITH_ICU=1
         m4_ifdef([PKG_CHECK_VAR],
             [PKG_CHECK_VAR([ICU_DEFS], [icu-i18n], [DEFS])])
         if test "x$ICU_DEFS" != "x"; then
-            CPPFLAGS="$CPPFLAGS $ICU_DEFS"
-        fi
-    fi
+            ICU_CFLAGS="$ICU_CFLAGS $ICU_DEFS"
+        fi],[:])
 
-    # If pkg-config failed, fall back to AC_CHECK_LIB. This
-    # will not pick up the necessary LIBS flags for liblzma's
-    # private dependencies, though, so static linking may fail.
-    if test "x$have_libicu" = "xno"; then
+    if test "$WITH_ICU" = "0"; then
         ICU_CONFIG=icu-config
         if ${ICU_CONFIG} --cflags >/dev/null 2>&1
         then
+            WITH_ICU=1
+            ICU_CFLAGS=`${ICU_CONFIG} --cflags`
             ICU_LIBS=`${ICU_CONFIG} --ldflags`
-            have_libicu=yes
-            echo Enabling ICU support
         else
-            if test "$with_icu" != "yes" && test "$with_iconv" != "" ; then
-                CPPFLAGS="${CPPFLAGS} -I$with_icu"
+	    _cppflags="${CPPFLAGS}"
+	    _libs="${LIBS}"
+            if test "$with_icu" != "yes" && test "$with_icu" != "" ; then
+                ICU_DIR=$with_icu
+                CPPFLAGS="${CPPFLAGS} -I$ICU_DIR/include"
+                LIBS="${LIBS} -L$ICU_DIR/lib"
             fi
 
-            AC_CHECK_HEADER(unicode/ucnv.h,
-            AC_MSG_CHECKING(for icu)
-            AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <unicode/ucnv.h>]], [[
-        UConverter *utf = ucnv_open("UTF-8", NULL);]])],[
-                AC_MSG_RESULT(yes)
-                have_libicu=yes],[
-                AC_MSG_RESULT(no)
-                AC_MSG_CHECKING(for icu in -licucore)
-
-                _ldflags="${LDFLAGS}"
-                _libs="${LIBS}"
-                LDFLAGS="${LDFLAGS} ${ICU_LIBS}"
-                LIBS="${LIBS} -licucore"
-
-                AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <unicode/ucnv.h>]], [[
-        UConverter *utf = ucnv_open("UTF-8", NULL);]])],[
-                    AC_MSG_RESULT(yes)
-                    have_libicu=yes
-                    ICU_LIBS="${ICU_LIBS} -licucore"
-                    LIBS="${_libs}"
-                    LDFLAGS="${_ldflags}"],[
-                    AC_MSG_RESULT(no)
-                    LIBS="${_libs}"
-                LDFLAGS="${_ldflags}"])]))
+            AC_CHECK_HEADER(unicode/ucnv.h, [
+                AC_CHECK_LIB([icucore], [uconv_open], [
+                    WITH_ICU=1
+                    ICU_LIBS=-licucore
+                    if test "$ICU_DIR" != ""; then
+                        ICU_CFLAGS="-I$ICU_DIR/include"
+                        ICU_LIBS="-L$ICU_DIR/libs $ICU_LIBS"
+                    fi])])
+            CPPFLAGS=$_cppflags
+            LIBS=$_libs
         fi
-    fi
-
-    # Found the library via either method?
-    if test "x$have_libicu" = "xyes"; then
-        WITH_ICU=1
     fi
 fi
 AC_SUBST(WITH_ICU)
@@ -1315,6 +1282,7 @@ fi
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"
 XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $WIN32_EXTRA_LIBADD"
+XML_PRIVATE_CFLAGS="$Z_CFLAGS $LZMA_CFLAGS $THREAD_CFLAGS $ICONV_CFLAGS $ICU_CFLAGS"
 
 AC_SUBST(EXTRA_CFLAGS)
 AC_SUBST(XML_CFLAGS)
@@ -1322,12 +1290,9 @@ AC_SUBST(XML_CFLAGS)
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)
 AC_SUBST(XML_PRIVATE_LIBS)
+AC_SUBST(XML_PRIVATE_CFLAGS)
 AC_SUBST(XML_LIBTOOLLIBS)
-AC_SUBST(ICONV_LIBS)
-AC_SUBST(ICU_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
-
-AC_SUBST(RDL_LIBS)
 
 dnl for the spec file
 RELDATE=`date +'%a %b %e %Y'`

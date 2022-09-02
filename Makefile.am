@@ -31,7 +31,7 @@ bin_PROGRAMS = xmllint xmlcatalog
 bin_SCRIPTS = xml2-config
 
 lib_LTLIBRARIES = libxml2.la
-libxml2_la_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
+libxml2_la_CFLAGS = $(AM_CFLAGS) $(XML_PRIVATE_CFLAGS)
 libxml2_la_LIBADD = $(XML_PRIVATE_LIBS)
 
 libxml2_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) \
@@ -151,6 +151,7 @@ runsuite_DEPENDENCIES = $(DEPS)
 runsuite_LDADD= $(LDADDS)
 
 xmllint_SOURCES=xmllint.c
+xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS)
 xmllint_LDFLAGS = 
 xmllint_DEPENDENCIES = $(DEPS)
 xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)

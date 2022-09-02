@@ -96,7 +96,6 @@ runxmlconf.log
 stamp-h1
 tags
 test.out
-testAutomata
 testModule
 testThreads
 testapi

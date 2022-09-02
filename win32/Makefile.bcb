@@ -205,7 +205,6 @@ XML_OBJS_A = $(XML_INTDIR_A)\buf.obj\
 # Xmllint and friends executables.
 UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\xmlcatalog.exe\
-	$(BINDIR)\testAutomata.exe\
 	$(BINDIR)\testModule.exe\
 	$(BINDIR)\runtest.exe\
 	$(BINDIR)\runsuite.exe\

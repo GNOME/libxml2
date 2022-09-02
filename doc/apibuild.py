@@ -29,7 +29,6 @@ ignored_files = {
   "testOOMlib.h": "out of memory tester",
   "testOOMlib.c": "out of memory tester",
   "rngparser.c": "not yet integrated",
-  "testAutomata.c": "test tool",
   "testModule.c": "test tool",
   "testThreads.c": "test tool",
   "testapi.c": "generated regression tests",

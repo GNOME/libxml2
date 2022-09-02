@@ -15,7 +15,6 @@ check_PROGRAMS = \
 	runsuite \
 	runtest \
 	runxmlconf \
-	testAutomata \
 	testModule \
 	testThreads \
 	testapi \
@@ -156,10 +155,6 @@ testThreads_CFLAGS = $(AM_CFLAGS) $(THREAD_CFLAGS)
 testThreads_DEPENDENCIES = $(DEPS)
 testThreads_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
 
-testAutomata_SOURCES=testAutomata.c
-testAutomata_DEPENDENCIES = $(DEPS)
-testAutomata_LDADD= $(LDADDS)
-
 testModule_SOURCES=testModule.c
 testModule_DEPENDENCIES = $(DEPS)
 testModule_LDADD= $(LDADDS)
@@ -218,9 +213,6 @@ OLD_TESTS += Catatests
 endif
 if WITH_DEBUG_SOURCES
 OLD_TESTS += Scripttests
-endif
-if WITH_REGEXPS_SOURCES
-OLD_TESTS += Automatatests
 endif
 if WITH_SCHEMAS_SOURCES
 if WITH_PYTHON
@@ -310,24 +302,6 @@ Catatests : xmlcatalog$(EXEEXT)
 	diff result/catalogs/mycatalog.empty $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	rm -f $(srcdir)/result/catalogs/mycatalog)
-
-Automatatests: testAutomata$(EXEEXT)
-	@(echo > .memdump)
-	@echo "## Automata regression tests"
-	-@(for i in $(srcdir)/test/automata/* ; do \
-	  name=`basename $$i`; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/automata/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testAutomata $$i > $(srcdir)/result/automata/$$name; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	  else \
-	      log=`$(CHECKER) $(top_builddir)/testAutomata $$i 2>&1 > result.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/automata/$$name result.$$name` ; \
-	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
-	      rm result.$$name ; \
-	  fi ; fi ; done)
 
 dba100000.xml: dbgenattr.pl
 	@echo "## generating dba100000.xml"

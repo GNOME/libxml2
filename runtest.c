@@ -4323,7 +4323,9 @@ regexpTest(const char *filename, const char *result, const char *err,
     char expression[5000];
     int len, ret, res = 0;
 
-    input = fopen(filename, "r");
+    nb_tests++;
+
+    input = fopen(filename, "rb");
     if (input == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"Cannot open %s for reading\n", filename);
@@ -4399,7 +4401,246 @@ regexpTest(const char *filename, const char *result, const char *err,
     return(res);
 }
 
-#endif
+#endif /* LIBXML_REGEXPS_ENABLED */
+
+#ifdef LIBXML_AUTOMATA_ENABLED
+/************************************************************************
+ *									*
+ *			Automata tests					*
+ *									*
+ ************************************************************************/
+
+static int scanNumber(char **ptr) {
+    int ret = 0;
+    char *cur;
+
+    cur = *ptr;
+    while ((*cur >= '0') && (*cur <= '9')) {
+	ret = ret * 10 + (*cur - '0');
+	cur++;
+    }
+    *ptr = cur;
+    return(ret);
+}
+
+static int
+automataTest(const char *filename, const char *result,
+             const char *err ATTRIBUTE_UNUSED, int options ATTRIBUTE_UNUSED) {
+    FILE *input, *output;
+    char *temp;
+    char expr[5000];
+    int len;
+    int ret;
+    int i;
+    int res = 0;
+    xmlAutomataPtr am;
+    xmlAutomataStatePtr states[1000];
+    xmlRegexpPtr regexp = NULL;
+    xmlRegExecCtxtPtr exec = NULL;
+
+    nb_tests++;
+
+    for (i = 0;i<1000;i++)
+	states[i] = NULL;
+
+    input = fopen(filename, "rb");
+    if (input == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot open %s for reading\n", filename);
+	return(-1);
+    }
+    temp = resultFilename(filename, "", ".res");
+    if (temp == NULL) {
+        fprintf(stderr, "Out of memory\n");
+        fatalError();
+    }
+    output = fopen(temp, "wb");
+    if (output == NULL) {
+	fprintf(stderr, "failed to open output file %s\n", temp);
+        free(temp);
+	return(-1);
+    }
+
+    am = xmlNewAutomata();
+    if (am == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot create automata\n");
+	fclose(input);
+	return(-1);
+    }
+    states[0] = xmlAutomataGetInitState(am);
+    if (states[0] == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"Cannot get start state\n");
+	xmlFreeAutomata(am);
+	fclose(input);
+	return(-1);
+    }
+    ret = 0;
+
+    while (fgets(expr, 4500, input) != NULL) {
+	if (expr[0] == '#')
+	    continue;
+	len = strlen(expr);
+	len--;
+	while ((len >= 0) &&
+	       ((expr[len] == '\n') || (expr[len] == '\t') ||
+		(expr[len] == '\r') || (expr[len] == ' '))) len--;
+	expr[len + 1] = 0;
+	if (len >= 0) {
+	    if ((am != NULL) && (expr[0] == 't') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
+		int from, to;
+
+		from = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		if (states[from] == NULL)
+		    states[from] = xmlAutomataNewState(am);
+		ptr++;
+		to = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		if (states[to] == NULL)
+		    states[to] = xmlAutomataNewState(am);
+		ptr++;
+		xmlAutomataNewTransition(am, states[from], states[to],
+			                 BAD_CAST ptr, NULL);
+	    } else if ((am != NULL) && (expr[0] == 'e') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
+		int from, to;
+
+		from = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		if (states[from] == NULL)
+		    states[from] = xmlAutomataNewState(am);
+		ptr++;
+		to = scanNumber(&ptr);
+		if (states[to] == NULL)
+		    states[to] = xmlAutomataNewState(am);
+		xmlAutomataNewEpsilon(am, states[from], states[to]);
+	    } else if ((am != NULL) && (expr[0] == 'f') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
+		int state;
+
+		state = scanNumber(&ptr);
+		if (states[state] == NULL) {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad state %d : %s\n", state, expr);
+		    break;
+		}
+		xmlAutomataSetFinalState(am, states[state]);
+	    } else if ((am != NULL) && (expr[0] == 'c') && (expr[1] == ' ')) {
+		char *ptr = &expr[2];
+		int from, to;
+		int min, max;
+
+		from = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		if (states[from] == NULL)
+		    states[from] = xmlAutomataNewState(am);
+		ptr++;
+		to = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		if (states[to] == NULL)
+		    states[to] = xmlAutomataNewState(am);
+		ptr++;
+		min = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		ptr++;
+		max = scanNumber(&ptr);
+		if (*ptr != ' ') {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Bad line %s\n", expr);
+		    break;
+		}
+		ptr++;
+		xmlAutomataNewCountTrans(am, states[from], states[to],
+			                 BAD_CAST ptr, min, max, NULL);
+	    } else if ((am != NULL) && (expr[0] == '-') && (expr[1] == '-')) {
+		/* end of the automata */
+		regexp = xmlAutomataCompile(am);
+		xmlFreeAutomata(am);
+		am = NULL;
+		if (regexp == NULL) {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Failed to compile the automata");
+		    break;
+		}
+	    } else if ((expr[0] == '=') && (expr[1] == '>')) {
+		if (regexp == NULL) {
+		    fprintf(output, "=> failed not compiled\n");
+		} else {
+		    if (exec == NULL)
+			exec = xmlRegNewExecCtxt(regexp, NULL, NULL);
+		    if (ret == 0) {
+			ret = xmlRegExecPushString(exec, NULL, NULL);
+		    }
+		    if (ret == 1)
+			fprintf(output, "=> Passed\n");
+		    else if ((ret == 0) || (ret == -1))
+			fprintf(output, "=> Failed\n");
+		    else if (ret < 0)
+			fprintf(output, "=> Error\n");
+		    xmlRegFreeExecCtxt(exec);
+		    exec = NULL;
+		}
+		ret = 0;
+	    } else if (regexp != NULL) {
+		if (exec == NULL)
+		    exec = xmlRegNewExecCtxt(regexp, NULL, NULL);
+		ret = xmlRegExecPushString(exec, BAD_CAST expr, NULL);
+	    } else {
+		xmlGenericError(xmlGenericErrorContext,
+			"Unexpected line %s\n", expr);
+	    }
+	}
+    }
+    fclose(output);
+    fclose(input);
+    if (regexp != NULL)
+	xmlRegFreeRegexp(regexp);
+    if (exec != NULL)
+	xmlRegFreeExecCtxt(exec);
+    if (am != NULL)
+	xmlFreeAutomata(am);
+
+    ret = compareFiles(temp, result);
+    if (ret) {
+        fprintf(stderr, "Result for %s failed in %s\n", filename, result);
+        res = 1;
+    }
+    if (temp != NULL) {
+        unlink(temp);
+        free(temp);
+    }
+
+    return(res);
+}
+
+#endif /* LIBXML_AUTOMATA_ENABLED */
 
 /************************************************************************
  *									*
@@ -4606,6 +4847,11 @@ testDesc testDescriptions[] = {
 #if defined(LIBXML_REGEXP_ENABLED)
     { "Regexp regression tests" ,
       regexpTest, "./test/regexp/*", "result/regexp/", "", ".err",
+      0 },
+#endif
+#if defined(LIBXML_AUTOMATA_ENABLED)
+    { "Automata regression tests" ,
+      automataTest, "./test/automata/*", "result/automata/", "", NULL,
       0 },
 #endif
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}

@@ -505,7 +505,6 @@ if(LIBXML2_WITH_TESTS)
 		runxmlconf
 		runsuite
 		testapi
-		testAutomata
 		testchar
 		testdict
 		testModule

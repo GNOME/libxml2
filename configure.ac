@@ -532,7 +532,6 @@ case "$host" in
  if test "$with_http" != "no" || test "$with_ftp" != "no"; then
    WINSOCK_LIBS="-lws2_32"
  fi
- AM_LDFLAGS="$AM_LDFLAGS -no-undefined"
  if test "${PYTHON}" != ""
  then
    case "$host" in
@@ -546,7 +545,6 @@ case "$host" in
  fi
  ;;
  *-*-cygwin*)
- AM_LDFLAGS="$AM_LDFLAGS -no-undefined"
  if test "${PYTHON}" != ""
  then
    EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"

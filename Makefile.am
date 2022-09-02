@@ -32,7 +32,7 @@ lib_LTLIBRARIES = libxml2.la
 libxml2_la_CFLAGS = $(AM_CFLAGS) $(XML_PRIVATE_CFLAGS)
 libxml2_la_LIBADD = $(XML_PRIVATE_LIBS)
 
-libxml2_la_LDFLAGS = $(AM_LDFLAGS) \
+libxml2_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined \
 		     -version-info $(LIBXML_VERSION_INFO) \
 		     $(MODULE_PLATFORM_LIBS)
 if USE_VERSION_SCRIPT

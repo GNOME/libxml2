@@ -154,8 +154,8 @@ if (NOT MSVC)
 	endif()
 	check_include_files(arpa/inet.h HAVE_ARPA_INET_H)
 	check_include_files(arpa/nameser.h HAVE_ARPA_NAMESER_H)
-	check_struct_has_member("struct sockaddr_storage" ss_family "sys/socket.h;sys/types.h" HAVE_SS_FAMILY)
-	check_struct_has_member("struct sockaddr_storage" __ss_family "sys/socket.h;sys/types.h" HAVE_BROKEN_SS_FAMILY)
+	check_struct_has_member("struct sockaddr_storage" ss_family "sys/socket.h" HAVE_SS_FAMILY)
+	check_struct_has_member("struct sockaddr_storage" __ss_family "sys/socket.h" HAVE_BROKEN_SS_FAMILY)
 	if(HAVE_BROKEN_SS_FAMILY)
 		set(ss_family __ss_family)
 	endif()
@@ -189,14 +189,12 @@ if (NOT MSVC)
 	check_include_files(sys/stat.h HAVE_SYS_STAT_H)
 	check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)
 	check_include_files(sys/time.h HAVE_SYS_TIME_H)
-	check_include_files(sys/types.h HAVE_SYS_TYPES_H)
 	check_include_files(unistd.h HAVE_UNISTD_H)
 	check_function_exists(va_copy HAVE_VA_COPY)
 	check_function_exists(__va_copy HAVE___VA_COPY)
 	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <sys/socket.h>
-		#include <sys/types.h>
 		int main() { (void) send(1, (const char*) \"\", 1, 1); return 0; }
 	" SEND_ARG2_CAST_CONST)
 	if(NOT SEND_ARG2_CAST_CONST)
@@ -217,7 +215,6 @@ if (NOT MSVC)
 	check_c_source_compiles("
 		#include <stddef.h>
 		#include <sys/socket.h>
-		#include <sys/types.h>
 		int main() { (void) getsockopt(1, 1, 1, NULL, (socklen_t*) NULL); return 0; }
 	" XML_SOCKLEN_T_SOCKLEN_T)
 	if(XML_SOCKLEN_T_SOCKLEN_T)
@@ -226,7 +223,6 @@ if (NOT MSVC)
 		check_c_source_compiles("
 			#include <stddef.h>
 			#include <sys/socket.h>
-			#include <sys/types.h>
 			int main() { (void) getsockopt(1, 1, 1, NULL, (size_t*) NULL); return 0; }
 		" XML_SOCKLEN_T_SIZE_T)
 		if(XML_SOCKLEN_T_SIZE_T)
@@ -235,7 +231,6 @@ if (NOT MSVC)
 			check_c_source_compiles("
 				#include <stddef.h>
 				#include <sys/socket.h>
-				#include <sys/types.h>
 				int main() { (void) getsockopt (1, 1, 1, NULL, (int*) NULL); return 0; }
 			" XML_SOCKLEN_T_INT)
 			set(XML_SOCKLEN_T int)

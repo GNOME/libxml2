@@ -289,42 +289,19 @@ dnl
 AC_CHECK_HEADERS([fcntl.h])
 AC_CHECK_HEADERS([unistd.h])
 AC_CHECK_HEADERS([sys/stat.h])
-AC_CHECK_HEADERS([sys/types.h])
 AC_CHECK_HEADERS([stdint.h])
 AC_CHECK_HEADERS([inttypes.h])
-AC_CHECK_HEADERS([sys/socket.h], [], [],
-[#if HAVE_SYS_TYPES_H
-# include <sys/types.h>
-# endif
-])
-AC_CHECK_HEADERS([netinet/in.h], [], [],
-[#if HAVE_SYS_TYPES_H
-# include <sys/types.h>
-# endif
-])
-AC_CHECK_HEADERS([arpa/inet.h], [], [],
-[#if HAVE_SYS_TYPES_H
-# include <sys/types.h>
-# endif
-#if HAVE_ARPA_INET_H
-# include <arpa/inet.h>
-# endif
-])
+AC_CHECK_HEADERS([sys/socket.h])
+AC_CHECK_HEADERS([netinet/in.h])
+AC_CHECK_HEADERS([arpa/inet.h])
 AC_CHECK_HEADERS([netdb.h])
 AC_CHECK_HEADERS([sys/time.h])
 AC_CHECK_HEADERS([sys/select.h])
 AC_CHECK_HEADERS([poll.h])
 AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([sys/timeb.h])
-AC_CHECK_HEADERS([arpa/nameser.h], [], [],
-[#if HAVE_SYS_TYPES_H
-# include <sys/types.h>
-# endif
-])
-AC_CHECK_HEADERS([resolv.h], [], [],
-[#if HAVE_SYS_TYPES_H
-# include <sys/types.h>
-# endif
+AC_CHECK_HEADERS([arpa/nameser.h])
+AC_CHECK_HEADERS([resolv.h], [], [], [
 #if HAVE_NETINET_IN_H
 # include <netinet/in.h>
 # endif
@@ -398,21 +375,18 @@ dnl Determine what socket length (socklen_t) data type is
 AC_MSG_CHECKING([for type of socket length (socklen_t)])
 AC_TRY_COMPILE2([
 #include <stddef.h>
-#include <sys/types.h>
 #include <sys/socket.h>],[
 (void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
   AC_MSG_RESULT(socklen_t *)
   XML_SOCKLEN_T=socklen_t],[
   AC_TRY_COMPILE2([
 #include <stddef.h>
-#include <sys/types.h>
 #include <sys/socket.h>],[
 (void)getsockopt (1, 1, 1, NULL, (size_t *)NULL)],[
     AC_MSG_RESULT(size_t *)
     XML_SOCKLEN_T=size_t],[
     AC_TRY_COMPILE2([
 #include <stddef.h>
-#include <sys/types.h>
 #include <sys/socket.h>],[
 (void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
       AC_MSG_RESULT(int *)
@@ -438,8 +412,7 @@ fi
 
 dnl Checking if send() second argument is const.
 AC_MSG_CHECKING([for const send() second argument])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
-#include <sys/socket.h>]],
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]],
     [[(void)send(1,(const char *)"",1,1);]])],
 have_send_const_arg2=yes,
 have_send_const_arg2=no)
@@ -464,7 +437,6 @@ fi
 if test $enable_ipv6 = yes; then
   have_ipv6=no
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#   include <sys/types.h>
 #   include <sys/socket.h>
     ]], [[
     struct sockaddr_storage ss;
@@ -488,7 +460,6 @@ if test $enable_ipv6 = yes; then
     dnl ********************************************************************
     AC_MSG_CHECKING([struct sockaddr::ss_family])
     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#     include <sys/types.h>
 #     include <sys/socket.h>
       ]], [[
       struct sockaddr_storage ss ;
@@ -501,7 +472,6 @@ if test $enable_ipv6 = yes; then
     if test x$have_ss_family = xno ; then
       AC_MSG_CHECKING([broken struct sockaddr::ss_family])
       AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#       include <sys/types.h>
 #       include <sys/socket.h>
         ]], [[
         struct sockaddr_storage ss ;

@@ -526,41 +526,35 @@ AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
 dnl
 dnl Windows compiler flags
 dnl
-WIN32_EXTRA_LIBADD=
-WIN32_EXTRA_LDFLAGS=
-CYGWIN_EXTRA_LDFLAGS=
-CYGWIN_EXTRA_PYTHON_LIBADD=
-WIN32_EXTRA_PYTHON_LIBADD=
+EXTRA_PYTHON_LIBADD=
 case "$host" in
  *-*-mingw*)
- WIN32_EXTRA_LIBADD="-lws2_32"
- WIN32_EXTRA_LDFLAGS="-no-undefined"
+ if test "$with_http" != "no" || test "$with_ftp" != "no"; then
+   WINSOCK_LIBS="-lws2_32"
+ fi
+ AM_LDFLAGS="$AM_LDFLAGS -no-undefined"
  if test "${PYTHON}" != ""
  then
    case "$host" in
      *-w64-mingw*)
-       WIN32_EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
+       EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
        ;;
      *)
-       WIN32_EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
+       EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
        ;;
    esac
  fi
  ;;
  *-*-cygwin*)
- CYGWIN_EXTRA_LDFLAGS="-no-undefined"
+ AM_LDFLAGS="$AM_LDFLAGS -no-undefined"
  if test "${PYTHON}" != ""
  then
-   CYGWIN_EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
+   EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
  fi
  ;;
 esac
 
-AC_SUBST(WIN32_EXTRA_LIBADD)
-AC_SUBST(WIN32_EXTRA_LDFLAGS)
-AC_SUBST(WIN32_EXTRA_PYTHON_LIBADD)
-AC_SUBST(CYGWIN_EXTRA_LDFLAGS)
-AC_SUBST(CYGWIN_EXTRA_PYTHON_LIBADD)
+AC_SUBST(EXTRA_PYTHON_LIBADD)
 
 dnl
 dnl Workaround for native compilers
@@ -570,13 +564,13 @@ dnl
 if test "${GCC}" != "yes" ; then
     case "${host}" in
           hppa*-*-hpux* )
-	       EXTRA_CFLAGS="${EXTRA_CFLAGS} -Wp,-H30000"
+	       AM_CFLAGS="${AM_CFLAGS} -Wp,-H30000"
 	       ;;
           *-dec-osf* )
-               EXTRA_CFLAGS="${EXTRA_CFLAGS} -ieee"
+               AM_CFLAGS="${AM_CFLAGS} -ieee"
                ;;
 	  alpha*-*-linux* )
-	       EXTRA_CFLAGS="${EXTRA_CFLAGS} -ieee"
+	       AM_CFLAGS="${AM_CFLAGS} -ieee"
 	       ;;
     esac
 else
@@ -586,19 +580,19 @@ else
 	# Not activated by default because this inflates the code size
 	# Used to allow propagation of C++ exceptions through the library
 	#
-	EXTRA_CFLAGS="${EXTRA_CFLAGS} -fexceptions"
+	AM_CFLAGS="${AM_CFLAGS} -fexceptions"
     fi
 
     # warnings we'd like to see
-    EXTRA_CFLAGS="${EXTRA_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline"
+    AM_CFLAGS="${AM_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline"
     # warnings we'd like to suppress
-    EXTRA_CFLAGS="${EXTRA_CFLAGS} -Wno-long-long -Wno-format-extra-args"
+    AM_CFLAGS="${AM_CFLAGS} -Wno-long-long -Wno-format-extra-args"
     case "${host}" in
           alpha*-*-linux* )
-	       EXTRA_CFLAGS="${EXTRA_CFLAGS} -mieee"
+	       AM_CFLAGS="${AM_CFLAGS} -mieee"
 	       ;;
 	  alpha*-*-osf* )
-	       EXTRA_CFLAGS="${EXTRA_CFLAGS} -mieee"
+	       AM_CFLAGS="${AM_CFLAGS} -mieee"
 	       ;;
     esac
 fi
@@ -611,13 +605,13 @@ case ${host} in
 	;;
     *-*-mingw* | *-*-cygwin* | *-*-msvc* )
         # If the host is Windows, and shared libraries are disabled, we
-        # need to add -DLIBXML_STATIC to EXTRA_CFLAGS in order for linking to
+        # need to add -DLIBXML_STATIC to AM_CFLAGS in order for linking to
         # work properly (without it, xmlexports.h would force the use of
         # DLL imports, which obviously aren't present in a static
         # library).
         if test "x$enable_shared" = "xno"; then
             XML_CFLAGS="$XML_CFLAGS -DLIBXML_STATIC"
-            EXTRA_CFLAGS="$EXTRA_CFLAGS -DLIBXML_STATIC"
+            AM_CFLAGS="$AM_CFLAGS -DLIBXML_STATIC"
         fi
         ;;
 esac
@@ -1225,18 +1219,19 @@ AC_SUBST(WITH_ICU)
 if test "$with_coverage" = "yes" && test "${GCC}" = "yes"
 then
     echo Enabling code coverage for GCC
-    EXTRA_CFLAGS="$EXTRA_CFLAGS -fprofile-arcs -ftest-coverage"
-    LDFLAGS="$LDFLAGS -fprofile-arcs -ftest-coverage"
+    AM_CFLAGS="$AM_CFLAGS -fprofile-arcs -ftest-coverage"
+    AM_LDFLAGS="$AM_LDFLAGS -fprofile-arcs -ftest-coverage"
 else
     echo Disabling code coverage for GCC
 fi
 
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"
-XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $WIN32_EXTRA_LIBADD"
+XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $WINSOCK_LIBS"
 XML_PRIVATE_CFLAGS="$Z_CFLAGS $LZMA_CFLAGS $THREAD_CFLAGS $ICONV_CFLAGS $ICU_CFLAGS"
 
-AC_SUBST(EXTRA_CFLAGS)
+AC_SUBST(AM_CFLAGS)
+AC_SUBST(AM_LDFLAGS)
 AC_SUBST(XML_CFLAGS)
 
 AC_SUBST(XML_LIBDIR)

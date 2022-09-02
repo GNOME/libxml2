@@ -11,8 +11,6 @@ DIST_SUBDIRS = include . doc example fuzz python xstc
 
 AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include -DSYSCONFDIR='"$(sysconfdir)"'
 
-AM_CFLAGS = $(EXTRA_CFLAGS)
-
 check_PROGRAMS = \
 	runsuite \
 	runtest \
@@ -34,7 +32,7 @@ lib_LTLIBRARIES = libxml2.la
 libxml2_la_CFLAGS = $(AM_CFLAGS) $(XML_PRIVATE_CFLAGS)
 libxml2_la_LIBADD = $(XML_PRIVATE_LIBS)
 
-libxml2_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) \
+libxml2_la_LDFLAGS = $(AM_LDFLAGS) \
 		     -version-info $(LIBXML_VERSION_INFO) \
 		     $(MODULE_PLATFORM_LIBS)
 if USE_VERSION_SCRIPT
@@ -120,66 +118,56 @@ m4datadir = $(datadir)/aclocal
 dist_m4data_DATA = libxml.m4
 
 runtest_SOURCES=runtest.c
-runtest_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS)
-runtest_LDFLAGS = 
+runtest_CFLAGS = $(AM_CFLAGS) $(THREAD_CFLAGS)
 runtest_DEPENDENCIES = $(DEPS)
 runtest_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
 
 testrecurse_SOURCES=testrecurse.c
-testrecurse_LDFLAGS = 
 testrecurse_DEPENDENCIES = $(DEPS)
 testrecurse_LDADD= $(LDADDS)
 
 testlimits_SOURCES=testlimits.c
-testlimits_LDFLAGS = 
 testlimits_DEPENDENCIES = $(DEPS)
 testlimits_LDADD= $(LDADDS)
 
 testchar_SOURCES=testchar.c
-testchar_LDFLAGS = 
 testchar_DEPENDENCIES = $(DEPS)
 testchar_LDADD= $(LDADDS)
 
 testdict_SOURCES=testdict.c
-testdict_LDFLAGS = 
 testdict_DEPENDENCIES = $(DEPS)
 testdict_LDADD= $(LDADDS)
 
 runsuite_SOURCES=runsuite.c
-runsuite_LDFLAGS = 
 runsuite_DEPENDENCIES = $(DEPS)
 runsuite_LDADD= $(LDADDS)
 
 xmllint_SOURCES=xmllint.c
 xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS)
-xmllint_LDFLAGS = 
 xmllint_DEPENDENCIES = $(DEPS)
 xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)
 
 xmlcatalog_SOURCES=xmlcatalog.c
-xmlcatalog_LDFLAGS = 
 xmlcatalog_DEPENDENCIES = $(DEPS)
 xmlcatalog_LDADD = $(RDL_LIBS) $(LDADDS)
 
 testThreads_SOURCES = testThreads.c
-testThreads_CFLAGS = $(EXTRA_CFLAGS) $(THREAD_CFLAGS)
-testThreads_LDFLAGS = 
+testThreads_CFLAGS = $(AM_CFLAGS) $(THREAD_CFLAGS)
 testThreads_DEPENDENCIES = $(DEPS)
 testThreads_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
 
 testAutomata_SOURCES=testAutomata.c
-testAutomata_LDFLAGS = 
 testAutomata_DEPENDENCIES = $(DEPS)
 testAutomata_LDADD= $(LDADDS)
 
 testModule_SOURCES=testModule.c
-testModule_LDFLAGS = 
 testModule_DEPENDENCIES = $(DEPS)
 testModule_LDADD= $(LDADDS)
 
 noinst_LTLIBRARIES = testdso.la
 testdso_la_SOURCES = testdso.c
-testdso_la_LDFLAGS = -module -no-undefined -avoid-version -rpath $(libdir)
+testdso_la_LDFLAGS = $(AM_LDFLAGS) \
+		     -module -no-undefined -avoid-version -rpath $(libdir)
 
 # that one forces the rebuild when "make rebuild" is run on doc/
 rebuild_testapi:
@@ -187,17 +175,14 @@ rebuild_testapi:
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 
 testapi_SOURCES=testapi.c
-testapi_LDFLAGS = 
 testapi_DEPENDENCIES = $(DEPS)
 testapi_LDADD= $(LDADDS)
 
 runxmlconf_SOURCES=runxmlconf.c
-runxmlconf_LDFLAGS = 
 runxmlconf_DEPENDENCIES = $(DEPS)
 runxmlconf_LDADD= $(LDADDS)
 
 #testOOM_SOURCES=testOOM.c testOOMlib.h testOOMlib.c
-#testOOM_LDFLAGS = 
 #testOOM_DEPENDENCIES = $(DEPS)
 #testOOM_LDADD= $(LDADDS)
 
@@ -497,7 +482,7 @@ LCOV = /usr/bin/lcov
 GENHTML = /usr/bin/genhtml
 
 cov: clean-cov
-	if [ "`echo $(LDFLAGS) | grep coverage`" = "" ] ; then \
+	if [ "`echo $(AM_LDFLAGS) | grep coverage`" = "" ] ; then \
 	    echo not configured with coverage; exit 1 ; fi
 	if [ ! -x $(LCOV) -o ! -x $(GENHTML) ] ; then \
 	    echo Need $(LCOV) and $(GENHTML) excecutables; exit 1 ; fi

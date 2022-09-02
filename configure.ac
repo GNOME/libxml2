@@ -48,12 +48,9 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
-AC_PROG_CPP
-AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
 AC_PATH_PROG(PERL, perl, /usr/bin/perl)
 AC_PATH_PROG(WGET, wget, /usr/bin/wget)
-AC_PATH_PROG(XMLLINT, xmllint, /usr/bin/xmllint)
 AC_PATH_PROG(XSLTPROC, xsltproc, /usr/bin/xsltproc)
 PKG_PROG_PKG_CONFIG
 

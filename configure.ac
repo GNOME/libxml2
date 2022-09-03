@@ -919,7 +919,6 @@ else
         *mingw*)
             dnl Default to native threads on Windows
             WITH_THREADS="1"
-            THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
             ;;
         *)
             dnl Use pthread by default in other cases

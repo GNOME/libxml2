@@ -10,7 +10,7 @@
 #include <libxml/catalog.h>
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#elif defined HAVE_WIN32_THREADS
+#elif defined(_WIN32)
 #include <windows.h>
 #endif
 #include <string.h>
@@ -23,7 +23,7 @@
 #define TEST_REPEAT_COUNT 500
 #ifdef HAVE_PTHREAD_H
 static pthread_t tid[MAX_ARGC];
-#elif defined HAVE_WIN32_THREADS
+#elif defined(_WIN32)
 static HANDLE tid[MAX_ARGC];
 #endif
 
@@ -141,7 +141,7 @@ main(void)
     xmlMemoryDump();
     return (0);
 }
-#elif defined HAVE_WIN32_THREADS
+#elif defined(_WIN32)
 static DWORD WINAPI
 win32_thread_specific_data(void *private_data)
 {

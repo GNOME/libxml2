@@ -788,7 +788,7 @@ fi
 AC_SUBST(WITH_OUTPUT)
 AM_CONDITIONAL(WITH_OUTPUT_SOURCES, test "$WITH_OUTPUT" = "1")
 
-if test "$WITH_ICONV" != "1" && "$with_iso8859x" = "no" ; then
+if test "$WITH_ICONV" != "1" && test "$with_iso8859x" = "no" ; then
     echo Disabling ISO8859X support
     WITH_ISO8859X=0
 else

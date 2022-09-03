@@ -852,50 +852,38 @@ dnl
 WITH_MODULES=0
 
 if test "$with_modules" != "no" ; then
- case "$host" in
-  *-*-cygwin*)
-  MODULE_EXTENSION=".dll"
-  AC_CHECK_LIB(cygwin, dlopen, [
-    WITH_MODULES=1
-    MODULE_PLATFORM_LIBS=
-    AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
-  ])
-  ;;
-  *-*-mingw*)
-  MODULE_EXTENSION=".dll"
-  WITH_MODULES=1
-  ;;
-  *)
-  AC_CHECK_FUNC(shl_load, libxml_have_shl_load=yes, [
-    AC_CHECK_LIB(dld, shl_load, [
-      MODULE_PLATFORM_LIBS="-ldld"
-      libxml_have_shl_load=yes], [
-      AC_CHECK_FUNC(dlopen, libxml_have_dlopen=yes, [
-        AC_CHECK_LIB(dl, dlopen, [
-          MODULE_PLATFORM_LIBS="-ldl"
-          libxml_have_dlopen=yes])])])])
-
-  if test "${libxml_have_shl_load}" = "yes"; then
-    MODULE_EXTENSION=".sl"
-    WITH_MODULES=1
-    AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])
-  fi
- 
-  if test "${libxml_have_dlopen}" = "yes"; then
-    case "${host}" in
-      *-*-hpux* )
-	MODULE_EXTENSION=".sl"
-	;;
-      * )
-	MODULE_EXTENSION=".so"
-	;;
+    case "$host" in
+        *-*-cygwin*)
+            MODULE_EXTENSION=".dll"
+            ;;
+        *-*-mingw*)
+            MODULE_EXTENSION=".dll"
+            WITH_MODULES=1
+            ;;
+        *-*-hpux*)
+	    MODULE_EXTENSION=".sl"
+	    ;;
+        *)
+	    MODULE_EXTENSION=".so"
+	    ;;
     esac
 
-    WITH_MODULES=1
-    AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
-  fi
- ;;
- esac
+    if test "$WITH_MODULES" = "0"; then
+        _libs=$LIBS
+        AC_SEARCH_LIBS([dlopen], [dl], [
+            WITH_MODULES=1
+            if test "$ac_cv_search_iconv" != "none required"; then
+                MODULE_PLATFORM_LIBS=$ac_cv_search_dlopen
+            fi
+            AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])], [
+            AC_SEARCH_LIBS([shl_load], [dld], [
+                WITH_MODULES=1
+                if test "$ac_cv_search_shl_load" != "none required"; then
+                    MODULE_PLATFORM_LIBS=$ac_cv_search_shl_load
+                fi
+                AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])])])
+        LIBS=$_libs
+    fi
 fi
 
 AC_SUBST(WITH_MODULES)
@@ -922,64 +910,45 @@ THREAD_LIBS=""
 BASE_THREAD_LIBS=""
 WITH_THREADS=0
 THREAD_CFLAGS=""
-THREADS_W32=""
 WITH_THREAD_ALLOC=0
 
 if test "$with_threads" = "no" ; then
     echo Disabling multithreaded support
 else
-    echo Enabling multithreaded support
-
-    dnl Default to native threads on Windows
     case $host_os in
-       *mingw*) if test "$with_threads" != "pthread" && test "$with_threads" != "no"; then
-               WITH_THREADS="1"
-               THREADS_W32="1"
-               THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
-           fi
-       ;;
+        *mingw*)
+            dnl Default to native threads on Windows
+            WITH_THREADS="1"
+            THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
+            ;;
+        *beos*)
+            WITH_THREADS="1"
+	    THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
+            ;;
+        *)
+            dnl Use pthread by default in other cases
+            _libs=$LIBS
+            AC_CHECK_HEADERS(pthread.h,
+                AC_SEARCH_LIBS([pthread_join], [pthread], [
+                    WITH_THREADS="1"
+                    if test "$ac_cv_search_pthread_join" != "none required"; then
+                        THREAD_LIBS=$ac_cv_search_pthread_join
+                    fi
+                    AC_DEFINE([HAVE_PTHREAD_H], [],
+                              [Define if <pthread.h> is there])]))
+            LIBS=$_libs
+            ;;
     esac
 
-    dnl Use pthread by default in other cases
-    if test -z "$THREADS_W32"; then
-        if test "$with_threads" = "pthread" || test "$with_threads" = "" || test "$with_threads" = "yes" ; then
-            AC_CHECK_HEADER(pthread.h,
-                AC_CHECK_LIB(pthread, pthread_join,[
-                THREAD_LIBS="-lpthread"
-                AC_DEFINE([HAVE_PTHREAD_H], [], [Define if <pthread.h> is there])
-                WITH_THREADS="1"]))
-        fi
-    fi
-
     case $host_os in
-       *cygwin*) THREAD_LIBS=""
-       ;;
-       *beos*) WITH_THREADS="1"
-	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
-       ;;
-       *linux*)
-           if test "${GCC}" = "yes" ; then
-	       GCC_VERSION=`${CC} --version | head -1 | awk '{print $3}'`
-	       GCC_MAJOR=`echo ${GCC_VERSION} | sed 's+\..*++'`
-	       GCC_MEDIUM=`echo ${GCC_VERSION} | sed 's+[[0-9]]*\.++' | sed 's+\..*++'`
-	       if test "${THREAD_LIBS}" = "-lpthread" ; then
-	           if expr ${GCC_MEDIUM} \> 2 \& ${GCC_MAJOR} = 3 > /dev/null
-		   then
-		       THREAD_LIBS=""
-		       BASE_THREAD_LIBS="-lpthread"
-		   else
-		   if expr ${GCC_MAJOR} \> 3 > /dev/null
-		   then
-		       THREAD_LIBS=""
-		       BASE_THREAD_LIBS="-lpthread"
-		   else
-		       echo old GCC disabling weak symbols for pthread
-		   fi
-		   fi
-	       fi
-	   fi
-       ;;
+        *linux*)
+            if test "${GCC}" = "yes" ; then
+                BASE_THREAD_LIBS="$THREAD_LIBS"
+                THREAD_LIBS=""
+            fi
+            ;;
     esac
+
     if test "$WITH_THREADS" = "1" ; then
 	THREAD_CFLAGS="$THREAD_CFLAGS -D_REENTRANT"
     fi
@@ -993,7 +962,6 @@ AC_SUBST(BASE_THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
 AC_SUBST(WITH_THREAD_ALLOC)
-AM_CONDITIONAL([THREADS_W32],[test -n "$THREADS_W32"])
 
 dnl
 dnl xmllint shell history

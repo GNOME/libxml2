@@ -42,8 +42,7 @@
 
 #ifdef HAVE_PTHREAD_H
 
-#if defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 303) && \
-    defined(__GLIBC__) && defined(__linux__)
+#if defined(__GNUC__) && defined(__linux__)
 
 static int libxml_is_threaded = -1;
 

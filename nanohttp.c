@@ -76,17 +76,9 @@
  * A couple portability macros
  */
 #ifndef _WINSOCKAPI_
-#if !defined(__BEOS__) || defined(__HAIKU__)
 #define closesocket(s) close(s)
-#endif
 #define SOCKET int
 #define INVALID_SOCKET (-1)
-#endif
-
-#ifdef __BEOS__
-#ifndef PF_INET
-#define PF_INET AF_INET
-#endif
 #endif
 
 #ifndef XML_SOCKLEN_T
@@ -890,15 +882,6 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
         status = ioctl(s, FIONBIO, &enable);
     }
 #else /* VMS */
-#if defined(__BEOS__) && !defined(__HAIKU__)
-    {
-        bool noblock = true;
-
-        status =
-            setsockopt(s, SOL_SOCKET, SO_NONBLOCK, &noblock,
-                       sizeof(noblock));
-    }
-#else /* __BEOS__ */
     if ((status = fcntl(s, F_GETFL, 0)) != -1) {
 #ifdef O_NONBLOCK
         status |= O_NONBLOCK;
@@ -917,7 +900,6 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
         closesocket(s);
         return INVALID_SOCKET;
     }
-#endif /* !__BEOS__ */
 #endif /* !VMS */
 #endif /* !_WINSOCKAPI_ */
 

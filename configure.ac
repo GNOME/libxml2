@@ -921,10 +921,6 @@ else
             WITH_THREADS="1"
             THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
             ;;
-        *beos*)
-            WITH_THREADS="1"
-	    THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
-            ;;
         *)
             dnl Use pthread by default in other cases
             _libs=$LIBS

@@ -4175,58 +4175,6 @@ testThread(void)
     return (res);
 }
 
-#elif defined __BEOS__
-#include <OS.h>
-
-static thread_id tid[MAX_ARGC];
-
-static int
-testThread(void)
-{
-    unsigned int i, repeat;
-    status_t ret;
-    int res = 0;
-
-    xmlInitParser();
-    for (repeat = 0; repeat < 500; repeat++) {
-        xmlLoadCatalog(catalog);
-        for (i = 0; i < num_threads; i++) {
-            tid[i] = (thread_id) - 1;
-        }
-        for (i = 0; i < num_threads; i++) {
-            tid[i] =
-                spawn_thread(thread_specific_data, "xmlTestThread",
-                             B_NORMAL_PRIORITY, (void *) &threadParams[i]);
-            if (tid[i] < B_OK) {
-                fprintf(stderr, "beos_thread_create failed\n");
-                return (1);
-            }
-            printf("beos_thread_create %d -> %d\n", i, tid[i]);
-        }
-        for (i = 0; i < num_threads; i++) {
-            void *result;
-            ret = wait_for_thread(tid[i], &result);
-            printf("beos_thread_wait %d -> %d\n", i, ret);
-            if (ret != B_OK) {
-                fprintf(stderr, "beos_thread_wait failed\n");
-                return (1);
-            }
-        }
-
-        xmlCatalogCleanup();
-        ret = B_OK;
-        for (i = 0; i < num_threads; i++)
-            if (threadParams[i].okay == 0) {
-                printf("Thread %d handling %s failed\n", i,
-                       threadParams[i].filename);
-                ret = B_ERROR;
-            }
-    }
-    if (ret != B_OK)
-        return(1);
-    return (0);
-}
-
 #elif defined HAVE_PTHREAD_H
 #include <pthread.h>
 

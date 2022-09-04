@@ -135,7 +135,6 @@ cmake:linux:clang:static:
         $Env:MINGW_PACKAGE_PREFIX-libiconv
         $Env:MINGW_PACKAGE_PREFIX-ninja
         $Env:MINGW_PACKAGE_PREFIX-python
-        $Env:MINGW_PACKAGE_PREFIX-python2
         $Env:MINGW_PACKAGE_PREFIX-xz
         $Env:MINGW_PACKAGE_PREFIX-zlib
     - if (-not (Test-Path 7za.exe)) {

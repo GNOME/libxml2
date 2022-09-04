@@ -28,8 +28,9 @@
 #define HAVE_GETADDRINFO
 #endif
 
-#undef XML_SOCKLEN_T
+#ifndef XML_SOCKLEN_T
 #define XML_SOCKLEN_T int
+#endif
 
 #ifndef ECONNRESET
 #define ECONNRESET WSAECONNRESET

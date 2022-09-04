@@ -370,7 +370,11 @@ dnl Determine what socket length (socklen_t) data type is
 AC_MSG_CHECKING([for type of socket length (socklen_t)])
 AC_TRY_COMPILE2([
 #include <stddef.h>
-#include <sys/socket.h>],[
+#ifdef _WIN32
+  #include <ws2tcpip.h>
+#else
+  #include <sys/socket.h>
+#endif],[
 (void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
   AC_MSG_RESULT(socklen_t *)
   XML_SOCKLEN_T=socklen_t],[
@@ -402,7 +406,11 @@ fi
 if test $enable_ipv6 = yes; then
   have_ipv6=no
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#   include <sys/socket.h>
+    #ifdef _WIN32
+      #include <winsock2.h>
+    #else
+      #include <sys/socket.h>
+    #endif
     ]], [[
     struct sockaddr_storage ss;
     socket(AF_INET6, SOCK_STREAM, 0)

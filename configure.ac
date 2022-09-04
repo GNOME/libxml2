@@ -1075,11 +1075,15 @@ else
             WITH_ICONV=1
             if test "$ac_cv_search_iconv" != "none required"; then
                 ICONV_LIBS=$ac_cv_search_iconv
-            fi
-            if test "$ICONV_DIR" != ""; then
-                ICONV_CFLAGS="-I$ICONV_DIR/include"
-                ICONV_LIBS="-L$ICONV_DIR/libs $ICONV_LIBS"
-            fi])])
+            fi], [
+            dnl GNU libiconv prefixes symbols with "lib"
+            AC_CHECK_LIB([iconv], [libiconv], [
+                WITH_ICONV=1
+                ICONV_LIBS="-liconv"])])])
+    if test "$WITH_ICONV" = "1" && test "$ICONV_DIR" != ""; then
+        ICONV_CFLAGS="-I$ICONV_DIR/include"
+        ICONV_LIBS="-L$ICONV_DIR/libs $ICONV_LIBS"
+    fi
     CPPFLAGS=$_cppflags
     LIBS=$_libs
 fi

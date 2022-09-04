@@ -143,15 +143,6 @@ if (NOT MSVC)
 	if(HAVE_ATTRIBUTE_DESTRUCTOR)
 		set(ATTRIBUTE_DESTRUCTOR "__attribute__((destructor))")
 	endif()
-	check_c_source_compiles("
-		#include <netdb.h>
-		int main() { (void) gethostbyname((const char*) \"\"); return 0; }
-	" GETHOSTBYNAME_ARG_CAST_CONST)
-	if(NOT GETHOSTBYNAME_ARG_CAST_CONST)
-		set(GETHOSTBYNAME_ARG_CAST "(char *)")
-	else()
-		set(GETHOSTBYNAME_ARG_CAST "/**/")
-	endif()
 	check_include_files(arpa/inet.h HAVE_ARPA_INET_H)
 	check_struct_has_member("struct sockaddr_storage" ss_family "sys/socket.h" HAVE_SS_FAMILY)
 	check_struct_has_member("struct sockaddr_storage" __ss_family "sys/socket.h" HAVE_BROKEN_SS_FAMILY)
@@ -191,15 +182,6 @@ if (NOT MSVC)
 	check_function_exists(va_copy HAVE_VA_COPY)
 	check_function_exists(__va_copy HAVE___VA_COPY)
 	set(LT_OBJDIR ".libs/")
-	check_c_source_compiles("
-		#include <sys/socket.h>
-		int main() { (void) send(1, (const char*) \"\", 1, 1); return 0; }
-	" SEND_ARG2_CAST_CONST)
-	if(NOT SEND_ARG2_CAST_CONST)
-		set(SEND_ARG2_CAST "(char *)")
-	else()
-		set(SEND_ARG2_CAST "/**/")
-	endif()
 	check_c_source_compiles("
 		#include <stdarg.h>
 		void a(va_list* ap) {};

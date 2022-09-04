@@ -4,9 +4,6 @@
 /* Define if __attribute__((destructor)) is accepted */
 #cmakedefine ATTRIBUTE_DESTRUCTOR @ATTRIBUTE_DESTRUCTOR@
 
-/* Type cast for the gethostbyname() argument */
-#cmakedefine GETHOSTBYNAME_ARG_CAST @GETHOSTBYNAME_ARG_CAST@
-
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #cmakedefine HAVE_ARPA_INET_H 1
 
@@ -137,9 +134,6 @@
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "@PACKAGE_VERSION@"
-
-/* Type cast for the send() function 2nd arg */
-#cmakedefine SEND_ARG2_CAST @SEND_ARG2_CAST@
 
 /* Support for IPv6 */
 #cmakedefine SUPPORT_IP6 1

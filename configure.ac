@@ -381,36 +381,6 @@ AC_TRY_COMPILE2([
       XML_SOCKLEN_T="int"])])])
 AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
 
-dnl Checking if gethostbyname() argument is const.
-AC_MSG_CHECKING([for const gethostbyname() argument])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <netdb.h>]],
-    [[(void)gethostbyname((const char *)"");]])],
-have_gethostbyname_const_arg=yes,
-have_gethostbyname_const_arg=no)
-AC_MSG_RESULT($have_gethostbyname_const_arg)
-if test x"$have_gethostbyname_const_arg" = x"yes"; then
-    AC_DEFINE([GETHOSTBYNAME_ARG_CAST], [],
-      [Type cast for the gethostbyname() argument])
-else
-    AC_DEFINE([GETHOSTBYNAME_ARG_CAST], [(char *)],
-      [Type cast for the gethostbyname() argument])
-fi
-
-dnl Checking if send() second argument is const.
-AC_MSG_CHECKING([for const send() second argument])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]],
-    [[(void)send(1,(const char *)"",1,1);]])],
-have_send_const_arg2=yes,
-have_send_const_arg2=no)
-AC_MSG_RESULT($have_send_const_arg2)
-if test x"$have_send_const_arg2" = x"yes"; then
-    AC_DEFINE([SEND_ARG2_CAST], [],
-      [Type cast for the send() function 2nd arg])
-else
-    AC_DEFINE([SEND_ARG2_CAST], [(char *)],
-      [Type cast for the send() function 2nd arg])
-fi
-
 dnl
 dnl Checking for availability of IPv6
 dnl

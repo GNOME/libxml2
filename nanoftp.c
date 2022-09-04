@@ -88,6 +88,9 @@
 #define XML_SOCKLEN_T unsigned int
 #endif
 
+#define GETHOSTBYNAME_ARG_CAST (char *)
+#define SEND_ARG2_CAST (char *)
+
 #define FTP_COMMAND_OK		200
 #define FTP_SYNTAX_ERROR	500
 #define FTP_GET_PASSWD		331

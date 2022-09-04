@@ -85,6 +85,9 @@
 #define XML_SOCKLEN_T unsigned int
 #endif
 
+#define GETHOSTBYNAME_ARG_CAST (char *)
+#define SEND_ARG2_CAST (char *)
+
 #ifdef STANDALONE
 #define DEBUG_HTTP
 #define xmlStrncasecmp(a, b, n) strncasecmp((char *)a, (char *)b, n)

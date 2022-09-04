@@ -70,6 +70,49 @@ clang:msan:
     CC: clang
     CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Wno-error=cast-align"
 
+.mingw:
+  tags:
+    - win32-ps
+  variables:
+    BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
+  before_script:
+    - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
+    - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
+    - pacman --noconfirm -Syu
+    - pacman --noconfirm -S
+        $Env:MINGW_PACKAGE_PREFIX-autoconf
+        $Env:MINGW_PACKAGE_PREFIX-automake
+        $Env:MINGW_PACKAGE_PREFIX-libtool
+        $Env:MINGW_PACKAGE_PREFIX-pkg-config
+        $Env:MINGW_PACKAGE_PREFIX-make
+        $Env:MINGW_PACKAGE_PREFIX-libiconv
+        $Env:MINGW_PACKAGE_PREFIX-python
+        $Env:MINGW_PACKAGE_PREFIX-python2
+        $Env:MINGW_PACKAGE_PREFIX-xz
+        $Env:MINGW_PACKAGE_PREFIX-zlib
+    - if (-not (Test-Path 7za.exe)) {
+        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
+        cmake -E tar xf 7z1900-extra.7z 7za.exe
+      }
+    - if (-not (Test-Path libxml2-build/xmlconf)) {
+        Invoke-WebRequest -Uri https://www.w3.org/XML/Test/xmlts20080827.tar.gz -OutFile xmlts20080827.tar.gz ;
+        .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
+      }
+  script:
+    - |
+      rm -rf build
+      mkdir build
+      cd build
+      ln -s /tests/xmlconf
+      sh ../autogen.sh $BASE_CONFIG $CONFIG
+      make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
+      make CFLAGS="$CFLAGS -Werror" check
+
+mingw:
+  extends: .mingw
+  variables:
+    CFLAGS: "-O2"
+
 .cmake:linux:
   image: registry.gitlab.gnome.org/gnome/libxml2
   script:

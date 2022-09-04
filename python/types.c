@@ -81,14 +81,10 @@ libxml_PyFileGet(PyObject *f) {
     int flags;
     FILE *res;
     const char *mode;
+    int fd = PyObject_AsFileDescriptor(f);
 
 #ifdef _WIN32
     intptr_t w_fh = -1;
-#else
-    int fd = PyObject_AsFileDescriptor(f);
-#endif
-
-#ifdef _WIN32
     HMODULE hntdll = NULL;
     IO_STATUS_BLOCK status_block;
     FILE_ACCESS_INFORMATION ai;

@@ -4855,7 +4855,7 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	return(-1);
     if (f == NULL)
         return(xmlHashRemoveEntry2(ctxt->funcHash, name, ns_uri, NULL));
-XML_IGNORE_PEDANTIC_WARNINGS
+XML_IGNORE_FPTR_CAST_WARNINGS
     return(xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, (void *) f));
 XML_POP_WARNINGS
 }
@@ -4938,7 +4938,7 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
     if (ctxt->funcHash == NULL)
 	return(NULL);
 
-XML_IGNORE_PEDANTIC_WARNINGS
+XML_IGNORE_FPTR_CAST_WARNINGS
     ret = (xmlXPathFunction) xmlHashLookup2(ctxt->funcHash, name, ns_uri);
 XML_POP_WARNINGS
     return(ret);

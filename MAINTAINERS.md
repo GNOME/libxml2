@@ -56,25 +56,10 @@ xml@gnome.org.
 ## Updating the CI Docker image
 
 Note that the CI image is used for libxslt as well. Run the following
-commands with the Dockerfile passed as heredoc:
+commands with the Dockerfile in the .gitlab-ci directory:
 
     docker login registry.gitlab.gnome.org
-
-    docker build -t registry.gitlab.gnome.org/gnome/libxml2 - <<'EOF'
-    FROM ubuntu:22.04
-    ENV DEBIAN_FRONTEND=noninteractive
-    RUN apt-get update && \
-	apt-get upgrade -y && \
-	apt-get install -y --no-install-recommends \
-	    curl git ca-certificates \
-	    autoconf automake libtool pkg-config \
-	    make gcc clang llvm \
-	    zlib1g-dev liblzma-dev libgcrypt-dev \
-	    python2-dev python3-dev \
-	    cmake
-    WORKDIR /tests
-    RUN curl https://www.w3.org/XML/Test/xmlts20080827.tar.gz |tar xz
-    EOF
-
+    docker build -t registry.gitlab.gnome.org/gnome/libxml2 - \
+        < .gitlab-ci/Dockerfile
     docker push registry.gitlab.gnome.org/gnome/libxml2
 

@@ -790,25 +790,17 @@ AS_IF([test "x$with_python" != "xno"], [
 AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" != "xno"])
 
 dnl
-dnl Extra Python flags for Windows (is this still needed now that we use
-dnl AM_PATH_PYTHON/PKG_CHECK_MODULES to detect and set up Python?)
+dnl Extra Python flags for Windows
 dnl
-EXTRA_PYTHON_LIBADD=
+PYTHON_LDFLAGS=
 if test "${PYTHON}" != ""; then
     case "$host" in
-        *-w64-mingw*)
-            EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
-            ;;
-        *-*-mingw*)
-            EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
-            ;;
-        *-*-cygwin*)
-            EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
+        *-*-cygwin* | *-*-mingw* | *-*-msys* )
+            PYTHON_LDFLAGS="-no-undefined"
             ;;
     esac
 fi
-
-AC_SUBST(EXTRA_PYTHON_LIBADD)
+AC_SUBST(PYTHON_LDFLAGS)
 
 dnl
 dnl Check for DSO support

@@ -20,8 +20,8 @@ pyexec_LTLIBRARIES = libxml2mod.la
 
 libxml2mod_la_SOURCES = libxml.c libxml_wrap.h types.c
 nodist_libxml2mod_la_SOURCES = libxml2-py.h libxml2-py.c
-libxml2mod_la_LDFLAGS = $(AM_LDFLAGS) -module -avoid-version
-libxml2mod_la_LIBADD = $(top_builddir)/libxml2.la $(EXTRA_PYTHON_LIBADD) $(PYTHON_LIBS)
+libxml2mod_la_LDFLAGS = $(AM_LDFLAGS) $(PYTHON_LDFLAGS) -module -avoid-version
+libxml2mod_la_LIBADD = $(top_builddir)/libxml2.la $(PYTHON_LIBS)
 
 BUILT_SOURCES = libxml2-export.c libxml2-py.h libxml2-py.c
 

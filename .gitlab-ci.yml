@@ -60,13 +60,13 @@ clang:msan:
   before_script:
     - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
     - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
-    - .gitlab-ci/Setup-MinGW
+    - bash -lc 'sh .gitlab-ci/setup_mingw.sh'
     - .gitlab-ci/Install-7-Zip
     - .gitlab-ci/Fetch-W3C-Tests
   script:
     - bash -lc 'sh .gitlab-ci/test.sh'
   cache:
-    key: "${MINGW_PACKAGE_PREFIX}msys"
+    key: "$MSYSTEM"
     paths:
       - libxml2-build/xmlconf/
       - 7za.exe
@@ -76,7 +76,6 @@ mingw:w64-x86_64:shared:
   variables:
     CFLAGS: "-O2"
     MSYSTEM: MINGW64
-    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64-
     MINGW_PATH: mingw64
 
 # Disabled, GCC missing?
@@ -143,10 +142,12 @@ cmake:linux:clang:static:
 .cmake:mingw:
   tags:
     - win32-ps
+  variables:
+    CHERE_INVOKING: "yes"
   before_script:
     - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
     - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
-    - .gitlab-ci/Setup-MinGW
+    - bash -lc 'sh .gitlab-ci/setup_mingw.sh'
     - .gitlab-ci/Install-7-Zip
     - .gitlab-ci/Fetch-W3C-Tests
   script:
@@ -157,15 +158,15 @@ cmake:linux:clang:static:
     - cd libxml2-build
     - ctest -VV
   after_script:
-    - .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX$Env:SUFFIX.7z .\libxml2-install\*
+    - .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.7z .\libxml2-install\*
   cache:
-    key: "${MINGW_PACKAGE_PREFIX}msys"
+    key: "$MSYSTEM"
     paths:
       - libxml2-build/xmlconf/
       - 7za.exe
   artifacts:
     paths:
-      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX$Env:SUFFIX.7z
+      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.7z
     expire_in: 1 day
 
 cmake:mingw:w64-i686:shared:
@@ -174,7 +175,7 @@ cmake:mingw:w64-i686:shared:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
-    MINGW_PACKAGE_PREFIX: mingw-w64-i686-
+    MSYSTEM: MINGW32
     MINGW_PATH: mingw32
     SUFFIX: shared
 
@@ -184,7 +185,7 @@ cmake:mingw:w64-i686:static:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
-    MINGW_PACKAGE_PREFIX: mingw-w64-i686-
+    MSYSTEM: MINGW32
     MINGW_PATH: mingw32
     SUFFIX: static
 
@@ -192,7 +193,7 @@ cmake:mingw:w64-x86_64:shared:
   extends: .cmake:mingw
   variables:
     BUILD_SHARED_LIBS: "ON"
-    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64-
+    MSYSTEM: MINGW64
     MINGW_PATH: mingw64
     SUFFIX: shared
 
@@ -202,7 +203,7 @@ cmake:mingw:w64-x86_64:static:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
-    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64-
+    MSYSTEM: MINGW64
     MINGW_PATH: mingw64
     SUFFIX: static
 

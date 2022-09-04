@@ -115,12 +115,12 @@ cmake:linux:clang:static:
     - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
     - pacman --noconfirm -Syu
     - pacman --noconfirm -S
-        $Env:MINGW_PACKAGE_PREFIX-cmake
-        $Env:MINGW_PACKAGE_PREFIX-libiconv
-        $Env:MINGW_PACKAGE_PREFIX-ninja
-        $Env:MINGW_PACKAGE_PREFIX-python
-        $Env:MINGW_PACKAGE_PREFIX-xz
-        $Env:MINGW_PACKAGE_PREFIX-zlib
+        ${Env:MINGW_PACKAGE_PREFIX}cmake
+        ${Env:MINGW_PACKAGE_PREFIX}libiconv
+        ${Env:MINGW_PACKAGE_PREFIX}ninja
+        ${Env:MINGW_PACKAGE_PREFIX}python
+        ${Env:MINGW_PACKAGE_PREFIX}xz
+        ${Env:MINGW_PACKAGE_PREFIX}zlib
     - if (-not (Test-Path 7za.exe)) {
         Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
         cmake -E tar xf 7z1900-extra.7z 7za.exe
@@ -137,15 +137,15 @@ cmake:linux:clang:static:
     - cd libxml2-build
     - ctest -VV
   after_script:
-    - .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX-$Env:SUFFIX.7z .\libxml2-install\*
+    - .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX$Env:SUFFIX.7z .\libxml2-install\*
   cache:
-    key: "$MINGW_PACKAGE_PREFIX"
+    key: "${MINGW_PACKAGE_PREFIX}msys"
     paths:
       - libxml2-build/xmlconf/
       - 7za.exe
   artifacts:
     paths:
-      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX-$Env:SUFFIX.7z
+      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MINGW_PACKAGE_PREFIX$Env:SUFFIX.7z
     expire_in: 1 day
 
 cmake:mingw:w64-i686:shared:
@@ -154,7 +154,7 @@ cmake:mingw:w64-i686:shared:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
-    MINGW_PACKAGE_PREFIX: mingw-w64-i686
+    MINGW_PACKAGE_PREFIX: mingw-w64-i686-
     MINGW_PATH: mingw32
     SUFFIX: shared
 
@@ -164,7 +164,7 @@ cmake:mingw:w64-i686:static:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
-    MINGW_PACKAGE_PREFIX: mingw-w64-i686
+    MINGW_PACKAGE_PREFIX: mingw-w64-i686-
     MINGW_PATH: mingw32
     SUFFIX: static
 
@@ -172,7 +172,7 @@ cmake:mingw:w64-x86_64:shared:
   extends: .cmake:mingw
   variables:
     BUILD_SHARED_LIBS: "ON"
-    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64-
     MINGW_PATH: mingw64
     SUFFIX: shared
 
@@ -182,7 +182,7 @@ cmake:mingw:w64-x86_64:static:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "OFF"
-    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64-
     MINGW_PATH: mingw64
     SUFFIX: static
 

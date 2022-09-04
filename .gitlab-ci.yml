@@ -51,6 +51,42 @@ clang:msan:
     CC: clang
     CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Wno-error=cast-align"
 
+.mingw:
+  tags:
+    - win32-ps
+  variables:
+    BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
+    CHERE_INVOKING: "yes"
+  before_script:
+    - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
+    - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
+    - .gitlab-ci/Setup-MinGW
+    - .gitlab-ci/Install-7-Zip
+    - .gitlab-ci/Fetch-W3C-Tests
+  script:
+    - bash -lc 'sh .gitlab-ci/test.sh'
+  cache:
+    key: "${MINGW_PACKAGE_PREFIX}msys"
+    paths:
+      - libxml2-build/xmlconf/
+      - 7za.exe
+
+mingw:w64-x86_64:shared:
+  extends: .mingw
+  variables:
+    CFLAGS: "-O2"
+    MSYSTEM: MINGW64
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64-
+    MINGW_PATH: mingw64
+
+# Disabled, GCC missing?
+.mingw:msys:shared:
+  extends: .mingw
+  variables:
+    CFLAGS: "-O2"
+    MSYSTEM: MSYS
+    MINGW_PATH: usr
+
 .cmake:linux:
   image: registry.gitlab.gnome.org/gnome/libxml2
   script:

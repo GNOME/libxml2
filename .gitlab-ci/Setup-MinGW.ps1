@@ -1,5 +1,6 @@
 pacman --noconfirm -Syu
 pacman --noconfirm -S --needed `
+    ${Env:MINGW_PACKAGE_PREFIX}autotools `
     ${Env:MINGW_PACKAGE_PREFIX}cmake `
     ${Env:MINGW_PACKAGE_PREFIX}libiconv `
     ${Env:MINGW_PACKAGE_PREFIX}ninja `

@@ -546,7 +546,7 @@ case ${host} in
     hppa*-hp-mpeix)
         NEED_TRIO=1
 	;;
-    *-*-mingw* | *-*-cygwin* | *-*-msvc* )
+    *-*-cygwin* | *-*-mingw* | *-*-msys* )
         # If the host is Windows, and shared libraries are disabled, we
         # need to add -DLIBXML_STATIC to AM_CFLAGS in order for linking to
         # work properly (without it, xmlexports.h would force the use of
@@ -811,7 +811,7 @@ WITH_MODULES=0
 
 if test "$with_modules" != "no" ; then
     case "$host" in
-        *-*-cygwin*)
+        *-*-cygwin* | *-*-msys* )
             MODULE_EXTENSION=".dll"
             ;;
         *-*-mingw*)

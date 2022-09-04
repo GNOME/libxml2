@@ -872,7 +872,7 @@ if test "$with_modules" != "no" ; then
         _libs=$LIBS
         AC_SEARCH_LIBS([dlopen], [dl], [
             WITH_MODULES=1
-            if test "$ac_cv_search_iconv" != "none required"; then
+            if test "$ac_cv_search_dlopen" != "none required"; then
                 MODULE_PLATFORM_LIBS=$ac_cv_search_dlopen
             fi
             AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])], [

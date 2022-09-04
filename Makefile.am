@@ -2,9 +2,12 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = include . doc example fuzz xstc
+SUBDIRS = include . doc example xstc
 if WITH_PYTHON
 SUBDIRS += python
+endif
+if WITH_GLOB
+SUBDIRS += fuzz
 endif
 
 DIST_SUBDIRS = include . doc example fuzz python xstc

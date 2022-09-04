@@ -293,7 +293,9 @@ AC_CHECK_HEADERS([
     sys/socket.h netinet/in.h arpa/inet.h netdb.h
     sys/select.h poll.h
     sys/time.h sys/timeb.h
-    dl.h dlfcn.h])
+    dl.h dlfcn.h
+    glob.h])
+AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
 dnl
 dnl Checking types

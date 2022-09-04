@@ -362,7 +362,7 @@ AC_SEARCH_LIBS(setsockopt, [socket net network], [
     if test "$ac_cv_search_setsockopt" != "none required"; then
         NET_LIBS="$NET_LIBS $ac_cv_search_setsockopt"
     fi])
-AC_SEARCH_LIBS(connect, [inet], [
+AC_SEARCH_LIBS(connect, [inet ws2_32], [
     if test "$ac_cv_search_connect" != "none required"; then
         NET_LIBS="$NET_LIBS $ac_cv_search_connect"
     fi])
@@ -499,37 +499,6 @@ else
 fi
 AC_SUBST(VERSION_SCRIPT_FLAGS)
 AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
-
-dnl
-dnl Windows compiler flags
-dnl
-EXTRA_PYTHON_LIBADD=
-case "$host" in
- *-*-mingw*)
- if test "$with_http" != "no" || test "$with_ftp" != "no"; then
-   NET_LIBS="-lws2_32"
- fi
- if test "${PYTHON}" != ""
- then
-   case "$host" in
-     *-w64-mingw*)
-       EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
-       ;;
-     *)
-       EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
-       ;;
-   esac
- fi
- ;;
- *-*-cygwin*)
- if test "${PYTHON}" != ""
- then
-   EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
- fi
- ;;
-esac
-
-AC_SUBST(EXTRA_PYTHON_LIBADD)
 
 dnl
 dnl Workaround for native compilers
@@ -822,6 +791,27 @@ AS_IF([test "x$with_python" != "xno"], [
     PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
 ])
 AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" != "xno"])
+
+dnl
+dnl Extra Python flags for Windows (is this still needed now that we use
+dnl AM_PATH_PYTHON/PKG_CHECK_MODULES to detect and set up Python?)
+dnl
+EXTRA_PYTHON_LIBADD=
+if test "${PYTHON}" != ""; then
+    case "$host" in
+        *-w64-mingw*)
+            EXTRA_PYTHON_LIBADD="-shrext .pyd -L${pythondir}/../../lib -lpython${PYTHON_VERSION}"
+            ;;
+        *-*-mingw*)
+            EXTRA_PYTHON_LIBADD="-L${pythondir}/../../libs -lpython$(echo ${PYTHON_VERSION} | tr -d .)"
+            ;;
+        *-*-cygwin*)
+            EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
+            ;;
+    esac
+fi
+
+AC_SUBST(EXTRA_PYTHON_LIBADD)
 
 dnl
 dnl Check for DSO support

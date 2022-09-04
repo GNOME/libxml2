@@ -78,7 +78,9 @@ if(LIBXML2_WITH_PYTHON)
 	check_include_files(unistd.h HAVE_UNISTD_H)
 	check_symbol_exists(F_GETFL fcntl.h HAVE_F_GETFL)
 	find_package(Python COMPONENTS Interpreter Development REQUIRED)
-	set(LIBXML2_PYTHON_INSTALL_DIR ${Python_SITEARCH} CACHE PATH "Python bindings install directory")
+        #set(LIBXML2_PYTHON_INSTALL_DIR ${Python_SITEARCH} CACHE PATH "Python bindings install directory")
+        set(LIBXML2_PYTHON_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/python"
+	    CACHE PATH "Python bindings install directory")
 endif()
 
 if(LIBXML2_WITH_THREADS)

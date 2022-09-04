@@ -353,9 +353,20 @@ va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1],[
 dnl
 dnl Checks for inet libraries
 dnl
-AC_SEARCH_LIBS(gethostent, [nsl])
-AC_SEARCH_LIBS(setsockopt, [socket net network])
-AC_SEARCH_LIBS(connect, [inet])
+_libs=$LIBS
+AC_SEARCH_LIBS(gethostent, [nsl], [
+    if test "$ac_cv_search_gethostent" != "none required"; then
+        NET_LIBS="$NET_LIBS $ac_cv_search_gethostent"
+    fi])
+AC_SEARCH_LIBS(setsockopt, [socket net network], [
+    if test "$ac_cv_search_setsockopt" != "none required"; then
+        NET_LIBS="$NET_LIBS $ac_cv_search_setsockopt"
+    fi])
+AC_SEARCH_LIBS(connect, [inet], [
+    if test "$ac_cv_search_connect" != "none required"; then
+        NET_LIBS="$NET_LIBS $ac_cv_search_connect"
+    fi])
+LIBS=$_libs
 
 dnl Determine what socket length (socklen_t) data type is
 AC_MSG_CHECKING([for type of socket length (socklen_t)])
@@ -447,17 +458,13 @@ if test $enable_ipv6 = yes; then
       fi
     fi
 
-    have_getaddrinfo=no
-    AC_CHECK_FUNC(getaddrinfo, have_getaddrinfo=yes)
-    if test $have_getaddrinfo != yes; then
-      for lib in bsd socket inet; do
-        AC_CHECK_LIB($lib, getaddrinfo, [LIBS="$LIBS -l$lib";have_getaddrinfo=yes;break])
-      done
-    fi
-
-    if test $have_getaddrinfo = yes; then
-      AC_DEFINE([HAVE_GETADDRINFO], [], [Define if getaddrinfo is there])
-    fi
+    _libs=$LIBS
+    AC_SEARCH_LIBS([getaddrinfo], [bsd socket inet], [
+      if test "$ac_cv_search_getaddrinfo" != "none required"; then
+        NET_LIBS="$NET_LIBS $ac_cv_search_getaddrinfo"
+      fi
+      AC_DEFINE([HAVE_GETADDRINFO], [], [Define if getaddrinfo is there])])
+    LIBS=$_libs
   fi
 fi 
 
@@ -500,7 +507,7 @@ EXTRA_PYTHON_LIBADD=
 case "$host" in
  *-*-mingw*)
  if test "$with_http" != "no" || test "$with_ftp" != "no"; then
-   WINSOCK_LIBS="-lws2_32"
+   NET_LIBS="-lws2_32"
  fi
  if test "${PYTHON}" != ""
  then
@@ -1158,7 +1165,7 @@ fi
 
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"
-XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $WINSOCK_LIBS"
+XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $NET_LIBS"
 XML_PRIVATE_CFLAGS="$Z_CFLAGS $LZMA_CFLAGS $THREAD_CFLAGS $ICONV_CFLAGS $ICU_CFLAGS"
 
 AC_SUBST(AM_CFLAGS)

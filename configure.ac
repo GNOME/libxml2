@@ -354,18 +354,14 @@ dnl
 dnl Checks for inet libraries
 dnl
 _libs=$LIBS
-AC_SEARCH_LIBS(gethostent, [nsl], [
-    if test "$ac_cv_search_gethostent" != "none required"; then
-        NET_LIBS="$NET_LIBS $ac_cv_search_gethostent"
-    fi])
-AC_SEARCH_LIBS(setsockopt, [socket net network], [
-    if test "$ac_cv_search_setsockopt" != "none required"; then
-        NET_LIBS="$NET_LIBS $ac_cv_search_setsockopt"
-    fi])
-AC_SEARCH_LIBS(connect, [inet ws2_32], [
+AC_SEARCH_LIBS(gethostbyname, [nsl ws2_32], [
+    if test "$ac_cv_search_gethostbyname" != "none required"; then
+        NET_LIBS="$NET_LIBS $ac_cv_search_gethostbyname"
+    fi], [:], [$NET_LIBS])
+AC_SEARCH_LIBS(connect, [bsd socket inet ws2_32], [
     if test "$ac_cv_search_connect" != "none required"; then
         NET_LIBS="$NET_LIBS $ac_cv_search_connect"
-    fi])
+    fi], [:], [$NET_LIBS])
 LIBS=$_libs
 
 dnl Determine what socket length (socklen_t) data type is
@@ -463,7 +459,8 @@ if test $enable_ipv6 = yes; then
       if test "$ac_cv_search_getaddrinfo" != "none required"; then
         NET_LIBS="$NET_LIBS $ac_cv_search_getaddrinfo"
       fi
-      AC_DEFINE([HAVE_GETADDRINFO], [], [Define if getaddrinfo is there])])
+      AC_DEFINE([HAVE_GETADDRINFO], [], [Define if getaddrinfo is there])],
+      [:], [$NET_LIBS])
     LIBS=$_libs
   fi
 fi 

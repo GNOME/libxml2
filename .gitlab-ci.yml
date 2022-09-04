@@ -2,15 +2,12 @@
   image: registry.gitlab.gnome.org/gnome/libxml2
   variables:
     BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
+  before_script:
+    - rm -rf libxml2-build
+    - mkdir libxml2-build
+    - ln -s /tests/xmlconf libxml2-build
   script:
-    - |
-      rm -rf build
-      mkdir build
-      cd build
-      ln -s /tests/xmlconf
-      sh ../autogen.sh $BASE_CONFIG $CONFIG
-      make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
-      make CFLAGS="$CFLAGS -Werror" check
+    - sh .gitlab-ci/test.sh
 
 gcc:
   extends: .test
@@ -113,22 +110,9 @@ cmake:linux:clang:static:
   before_script:
     - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
     - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
-    - pacman --noconfirm -Syu
-    - pacman --noconfirm -S
-        ${Env:MINGW_PACKAGE_PREFIX}cmake
-        ${Env:MINGW_PACKAGE_PREFIX}libiconv
-        ${Env:MINGW_PACKAGE_PREFIX}ninja
-        ${Env:MINGW_PACKAGE_PREFIX}python
-        ${Env:MINGW_PACKAGE_PREFIX}xz
-        ${Env:MINGW_PACKAGE_PREFIX}zlib
-    - if (-not (Test-Path 7za.exe)) {
-        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
-        cmake -E tar xf 7z1900-extra.7z 7za.exe
-      }
-    - if (-not (Test-Path libxml2-build/xmlconf)) {
-        Invoke-WebRequest -Uri https://www.w3.org/XML/Test/xmlts20080827.tar.gz -OutFile xmlts20080827.tar.gz ;
-        .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
-      }
+    - .gitlab-ci/Setup-MinGW
+    - .gitlab-ci/Install-7-Zip
+    - .gitlab-ci/Fetch-W3C-Tests
   script:
     - cmake -G Ninja -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_C_FLAGS='-Werror' -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B libxml2-build
     - cmake --build libxml2-build --target install
@@ -198,14 +182,8 @@ cmake:mingw:w64-x86_64:static:
         Expand-Archive cmake-$Env:CMAKE_VERSION-win64-x64.zip -DestinationPath .
       }
     - $Env:Path="$Env:CI_PROJECT_DIR\cmake-$Env:CMAKE_VERSION-win64-x64\bin;$Env:Path"
-    - if (-not (Test-Path 7za.exe)) {
-        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
-        cmake -E tar xf 7z1900-extra.7z 7za.exe
-      }
-    - if (-not (Test-Path libxml2-build/xmlconf)) {
-        Invoke-WebRequest -Uri https://www.w3.org/XML/Test/xmlts20080827.tar.gz -OutFile xmlts20080827.tar.gz ;
-        .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
-      }
+    - .gitlab-ci/Install-7-Zip
+    - .gitlab-ci/Fetch-W3C-Tests
   script:
     - cmake -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" -DCMAKE_INSTALL_PREFIX=libxml2-install -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_ZLIB=OFF -S . -B libxml2-build
     - cmake --build libxml2-build --config Debug --target install

@@ -25,9 +25,6 @@
 /* Define to 1 if you have the `ftime' function. */
 #cmakedefine HAVE_FTIME 1
 
-/* Define if getaddrinfo is there */
-#cmakedefine HAVE_GETADDRINFO 1
-
 /* Define to 1 if you have the `gettimeofday' function. */
 #cmakedefine HAVE_GETTIMEOFDAY 1
 

@@ -410,10 +410,14 @@ if test $enable_ipv6 = yes; then
       #include <winsock2.h>
     #else
       #include <sys/socket.h>
+      #ifdef HAVE_NETDB_H
+        #include <netdb.h>
+      #endif
     #endif
     ]], [[
     struct sockaddr_storage ss;
-    socket(AF_INET6, SOCK_STREAM, 0)
+    socket(AF_INET6, SOCK_STREAM, 0);
+    getaddrinfo(0, 0, 0, 0);
     ]])],
     have_ipv6=yes,
     have_ipv6=no
@@ -463,15 +467,6 @@ if test $enable_ipv6 = yes; then
         AC_MSG_WARN(ss_family and __ss_family not found)
       fi
     fi
-
-    _libs=$LIBS
-    AC_SEARCH_LIBS([getaddrinfo], [bsd socket inet], [
-      if test "$ac_cv_search_getaddrinfo" != "none required"; then
-        NET_LIBS="$NET_LIBS $ac_cv_search_getaddrinfo"
-      fi
-      AC_DEFINE([HAVE_GETADDRINFO], [], [Define if getaddrinfo is there])],
-      [:], [$NET_LIBS])
-    LIBS=$_libs
   fi
 fi 
 

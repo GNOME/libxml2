@@ -390,14 +390,13 @@ AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length 
 dnl
 dnl Checking for availability of IPv6
 dnl
-AC_MSG_CHECKING([whether to enable IPv6])
 AC_ARG_ENABLE(ipv6, [  --enable-ipv6[[=yes/no]]  enables compilation of IPv6 code [[default=yes]]],, enable_ipv6=yes)
 if test "$with_minimum" = "yes"
 then
     enable_ipv6=no
 fi
 if test $enable_ipv6 = yes; then
-  have_ipv6=no
+  AC_MSG_CHECKING([whether to enable IPv6])
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
     #ifdef _WIN32
       #include <winsock2.h>
@@ -411,56 +410,11 @@ if test $enable_ipv6 = yes; then
     struct sockaddr_storage ss;
     socket(AF_INET6, SOCK_STREAM, 0);
     getaddrinfo(0, 0, 0, 0);
-    ]])],
-    have_ipv6=yes,
-    have_ipv6=no
-  )
-  AC_MSG_RESULT($have_ipv6)
-
-  if test $have_ipv6 = yes; then
+    ]])], [
     AC_DEFINE([SUPPORT_IP6], [], [Support for IPv6])
-    have_broken_ss_family=no
-
-    dnl *********************************************************************
-    dnl on some platforms (like AIX 5L), the structure sockaddr doesn't have
-    dnl a ss_family member, but rather __ss_family. Let's detect that
-    dnl and define the HAVE_BROKEN_SS_FAMILY when we are on one of these
-    dnl platforms.  However, we should only do this if ss_family is not
-    dnl present.
-    dnl ********************************************************************
-    AC_MSG_CHECKING([struct sockaddr::ss_family])
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#     include <sys/socket.h>
-      ]], [[
-      struct sockaddr_storage ss ;
-      ss.ss_family = 0 ;
-      ]])],
-      have_ss_family=yes,
-      have_ss_family=no
-    )
-    AC_MSG_RESULT($have_ss_family)
-    if test x$have_ss_family = xno ; then
-      AC_MSG_CHECKING([broken struct sockaddr::ss_family])
-      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#       include <sys/socket.h>
-        ]], [[
-        struct sockaddr_storage ss ;
-        ss.__ss_family = 0 ;
-        ]])],
-        have_broken_ss_family=yes,
-        have_broken_ss_family=no
-      )
-      AC_MSG_RESULT($have_broken_ss_family)
-      if test x$have_broken_ss_family = xyes ; then
-        AC_DEFINE(HAVE_BROKEN_SS_FAMILY, [],
-	  [Whether struct sockaddr::__ss_family exists]) 
-        AC_DEFINE(ss_family, __ss_family,
-	  [ss_family is not defined here, use __ss_family instead])
-      else
-        AC_MSG_WARN(ss_family and __ss_family not found)
-      fi
-    fi
-  fi
+    AC_MSG_RESULT([yes])], [
+    AC_MSG_RESULT([no])]
+  )
 fi 
 
 dnl

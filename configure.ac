@@ -286,14 +286,14 @@ fi
 dnl
 dnl Checks for header files.
 dnl
-AC_CHECK_HEADERS([stdint.h inttypes.h
-                  fcntl.h unistd.h sys/stat.h
-                  sys/mman.h
-                  sys/socket.h netinet/in.h arpa/inet.h netdb.h
-                  sys/select.h poll.h
-                  sys/time.h sys/timeb.h
-                  dl.h dlfcn.h
-                  glob.h])
+AC_CHECK_HEADERS([stdint.h inttypes.h])
+AC_CHECK_HEADERS([fcntl.h unistd.h sys/stat.h])
+AC_CHECK_HEADERS([sys/mman.h])
+AC_CHECK_HEADERS([sys/socket.h netinet/in.h arpa/inet.h netdb.h])
+AC_CHECK_HEADERS([sys/select.h poll.h])
+AC_CHECK_HEADERS([sys/time.h sys/timeb.h])
+AC_CHECK_HEADERS([dl.h dlfcn.h])
+AC_CHECK_HEADERS([glob.h])
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
 dnl

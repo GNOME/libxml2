@@ -669,12 +669,12 @@ def buildStubs():
     export.close()
     wrapper.close()
 
-    print("Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
+    print("Generated %d wrapper functions, %d failed, %d skipped" % (nb_wrap,
                                                               failed, skipped))
-    print("Missing type converters: ")
-    for type in list(unknown_types.keys()):
-        print("%s:%d " % (type, len(unknown_types[type])))
-    print()
+#    print("Missing type converters: ")
+#    for type in list(unknown_types.keys()):
+#        print("%s:%d " % (type, len(unknown_types[type])))
+#    print()
 
 #######################################################################
 #

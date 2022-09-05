@@ -42,7 +42,8 @@ clang:asan:
     ASAN_OPTIONS: "detect_leaks=0"
     UBSAN_OPTIONS: "print_stacktrace=1"
 
-clang:msan:
+# Disabled, MSan seems broken on Ubntu 22.04
+.clang:msan:
   extends: .test
   only:
     - schedules

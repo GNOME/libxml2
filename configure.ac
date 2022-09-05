@@ -286,15 +286,14 @@ fi
 dnl
 dnl Checks for header files.
 dnl
-AC_CHECK_HEADERS([
-    stdint.h inttypes.h
-    fcntl.h unistd.h sys/stat.h
-    sys/mman.h
-    sys/socket.h netinet/in.h arpa/inet.h netdb.h
-    sys/select.h poll.h
-    sys/time.h sys/timeb.h
-    dl.h dlfcn.h
-    glob.h])
+AC_CHECK_HEADERS([stdint.h inttypes.h
+                  fcntl.h unistd.h sys/stat.h
+                  sys/mman.h
+                  sys/socket.h netinet/in.h arpa/inet.h netdb.h
+                  sys/select.h poll.h
+                  sys/time.h sys/timeb.h
+                  dl.h dlfcn.h
+                  glob.h])
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
 dnl
@@ -308,13 +307,7 @@ dnl
 AC_CHECK_FUNCS(snprintf vsnprintf,, NEED_TRIO=1)
 
 dnl Checks for library functions.
-AC_CHECK_FUNCS([
-    gettimeofday ftime
-    stat
-    rand_r
-    isascii
-    mmap munmap
-    putenv])
+AC_CHECK_FUNCS([gettimeofday ftime stat rand_r isascii mmap munmap putenv])
 
 AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 #if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)

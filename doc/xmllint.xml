@@ -66,6 +66,7 @@
 		<group choice="opt">
 			<arg choice="plain"><option>--version</option></arg>
 			<arg choice="plain"><option>--debug</option></arg>
+			<arg choice="plain"><option>--quiet</option></arg>
 			<arg choice="plain"><option>--shell</option></arg>
 			<arg choice="plain"><option>--xpath "<replaceable class="option">XPath_expression</replaceable>"</option></arg>
 			<arg choice="plain"><option>--debugent</option></arg>
@@ -479,6 +480,13 @@
 	<term><option>--push</option></term>
 	<listitem>
 		<para>Use the push mode of the parser.</para>
+	</listitem>
+		</varlistentry>
+
+		<varlistentry>
+	<term><option>--quiet</option></term>
+	<listitem>
+		<para>Don't print informational messages to stderr.</para>
 	</listitem>
 		</varlistentry>
 

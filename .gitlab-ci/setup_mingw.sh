@@ -1,16 +1,11 @@
 #!/bin/sh
 
+pacman --noconfirm -Syu
+
 prefix=
 if [ -n "$MINGW_PACKAGE_PREFIX" ]; then
     prefix="${MINGW_PACKAGE_PREFIX}-"
 fi
-
-pacman --noconfirm -Syu
-pacman --noconfirm -S --needed \
-    ${prefix}autotools \
-    ${prefix}cmake \
-    ${prefix}libiconv \
-    ${prefix}ninja \
-    ${prefix}python \
-    ${prefix}xz \
-    ${prefix}zlib
+for module in autotools libiconv python xz zlib "$@"; do
+    pacman --noconfirm -S --needed ${prefix}$module
+done

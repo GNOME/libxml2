@@ -147,7 +147,7 @@ cmake:linux:clang:static:
   before_script:
     - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
     - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
-    - bash -lc 'sh .gitlab-ci/setup_mingw.sh'
+    - bash -lc 'sh .gitlab-ci/setup_mingw.sh cmake ninja'
     - .gitlab-ci/Install-7-Zip
     - .gitlab-ci/Fetch-W3C-Tests
   script:

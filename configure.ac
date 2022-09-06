@@ -748,7 +748,7 @@ PYTHON_LDFLAGS=
 if test "${PYTHON}" != ""; then
     case "$host" in
         *-*-cygwin* | *-*-mingw* | *-*-msys* )
-            PYTHON_LDFLAGS="-no-undefined"
+            PYTHON_LDFLAGS="-no-undefined -shrext .pyd"
             ;;
     esac
 fi

@@ -546,6 +546,9 @@ if(LIBXML2_WITH_PYTHON)
 		PREFIX lib
 		VERSION ${PROJECT_VERSION}
 	)
+	if (WIN32)
+		set_target_properties(LibXml2Mod PROPERTIES SUFFIX ".pyd")
+	endif()
 	install(
 		TARGETS	LibXml2Mod
 		ARCHIVE DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT development

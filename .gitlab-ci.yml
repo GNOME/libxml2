@@ -73,7 +73,6 @@ mingw:w64-x86_64:shared:
   variables:
     CFLAGS: "-O2"
     MSYSTEM: MINGW64
-    MINGW_PATH: mingw64
 
 # Disabled, GCC missing?
 .mingw:msys:shared:
@@ -81,7 +80,6 @@ mingw:w64-x86_64:shared:
   variables:
     CFLAGS: "-O2"
     MSYSTEM: MSYS
-    MINGW_PATH: usr
 
 .cmake:linux:
   image: registry.gitlab.gnome.org/gnome/libxml2
@@ -93,7 +91,7 @@ mingw:w64-x86_64:shared:
     - sh .gitlab-ci/test_cmake.sh
   artifacts:
     paths:
-      - libxml2-$CI_COMMIT_SHORT_SHA-$CC-$SUFFIX.tar.gz
+      - libxml2-$CI_COMMIT_SHORT_SHA-$SUFFIX.tar.gz
     expire_in: 1 day
 
 cmake:linux:gcc:shared:
@@ -103,7 +101,7 @@ cmake:linux:gcc:shared:
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: gcc
-    SUFFIX: shared
+    SUFFIX: linux-gcc-shared
 
 cmake:linux:gcc:static:
   extends: .cmake:linux
@@ -112,7 +110,7 @@ cmake:linux:gcc:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     CC: gcc
-    SUFFIX: static
+    SUFFIX: linux-gcc-static
 
 cmake:linux:clang:shared:
   extends: .cmake:linux
@@ -121,7 +119,7 @@ cmake:linux:clang:shared:
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: clang
-    SUFFIX: shared
+    SUFFIX: linux-clang-shared
 
 cmake:linux:clang:static:
   extends: .cmake:linux
@@ -130,7 +128,7 @@ cmake:linux:clang:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     CC: clang
-    SUFFIX: static
+    SUFFIX: linux-clang-static
 
 .cmake:mingw:
   tags:
@@ -148,7 +146,7 @@ cmake:linux:clang:static:
       - libxml2-build/xmlconf/
   artifacts:
     paths:
-      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.tar.gz
+      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:SUFFIX.tar.gz
     expire_in: 1 day
 
 cmake:mingw:w64-i686:shared:
@@ -158,8 +156,7 @@ cmake:mingw:w64-i686:shared:
   variables:
     BUILD_SHARED_LIBS: "ON"
     MSYSTEM: MINGW32
-    MINGW_PATH: mingw32
-    SUFFIX: shared
+    SUFFIX: mingw-w64-i686-shared
 
 cmake:mingw:w64-i686:static:
   extends: .cmake:mingw
@@ -168,16 +165,14 @@ cmake:mingw:w64-i686:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     MSYSTEM: MINGW32
-    MINGW_PATH: mingw32
-    SUFFIX: static
+    SUFFIX: mingw-w64-i686-static
 
 cmake:mingw:w64-x86_64:shared:
   extends: .cmake:mingw
   variables:
     BUILD_SHARED_LIBS: "ON"
     MSYSTEM: MINGW64
-    MINGW_PATH: mingw64
-    SUFFIX: shared
+    SUFFIX: mingw-w64-x86_64-shared
 
 cmake:mingw:w64-x86_64:static:
   extends: .cmake:mingw
@@ -186,8 +181,7 @@ cmake:mingw:w64-x86_64:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     MSYSTEM: MINGW64
-    MINGW_PATH: mingw64
-    SUFFIX: static
+    SUFFIX: mingw-w64-x86_64-static
 
 .cmake:msvc:
   tags:

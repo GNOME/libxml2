@@ -15,4 +15,4 @@ cmake --build libxml2-build --target install
 mkdir -p libxml2-install/share/libxml2
 cp Copyright libxml2-install/share/libxml2
 (cd libxml2-install &&
-    tar -czf ../libxml2-$CI_COMMIT_SHORT_SHA-$CC-$SUFFIX.tar.gz *)
+    tar -czf ../libxml2-$CI_COMMIT_SHORT_SHA-$SUFFIX.tar.gz *)

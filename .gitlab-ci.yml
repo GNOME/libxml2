@@ -59,11 +59,8 @@ clang:asan:
     BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
     CHERE_INVOKING: "yes"
   before_script:
-    - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
-    - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
+    - $Env:Path="C:\msys64\usr\bin;$Env:Path"
     - bash -lc 'sh .gitlab-ci/setup_mingw.sh autotools'
-    - .gitlab-ci/Install-7-Zip
-    - .gitlab-ci/Fetch-W3C-Tests
   script:
     - bash -lc 'sh .gitlab-ci/test.sh'
   cache:
@@ -88,16 +85,12 @@ mingw:w64-x86_64:shared:
 
 .cmake:linux:
   image: registry.gitlab.gnome.org/gnome/libxml2
+  before_script:
+    - rm -rf libxml2-build
+    - mkdir libxml2-build
+    - ln -s /tests/xmlconf libxml2-build
   script:
-    - cmake -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_C_FLAGS='-Werror' -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLIBXML2_XMLCONF_WORKING_DIR=/tests -S . -B libxml2-build
-    - cmake --build libxml2-build --target install
-    - mkdir -p libxml2-install/share/libxml2
-    - cp Copyright libxml2-install/share/libxml2
-    - cd libxml2-build
-    - ctest -VV
-  after_script:
-    - cd libxml2-install
-    - tar -czf ../libxml2-$CI_COMMIT_SHORT_SHA-$CC-$SUFFIX.tar.gz *
+    - sh .gitlab-ci/test_cmake.sh
   artifacts:
     paths:
       - libxml2-$CI_COMMIT_SHORT_SHA-$CC-$SUFFIX.tar.gz
@@ -105,8 +98,8 @@ mingw:w64-x86_64:shared:
 
 cmake:linux:gcc:shared:
   extends: .cmake:linux
-  only:
-    - schedules
+#  only:
+#    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: gcc
@@ -145,27 +138,17 @@ cmake:linux:clang:static:
   variables:
     CHERE_INVOKING: "yes"
   before_script:
-    - "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12"
-    - $Env:Path="C:\msys64\$Env:MINGW_PATH\bin;C:\msys64\usr\bin;$Env:Path"
+    - $Env:Path="C:\msys64\usr\bin;$Env:Path"
     - bash -lc 'sh .gitlab-ci/setup_mingw.sh cmake ninja'
-    - .gitlab-ci/Install-7-Zip
-    - .gitlab-ci/Fetch-W3C-Tests
   script:
-    - cmake -G Ninja -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" -DCMAKE_INSTALL_PREFIX=libxml2-install -DCMAKE_C_FLAGS='-Werror' -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B libxml2-build
-    - cmake --build libxml2-build --target install
-    - New-Item -ItemType Directory libxml2-install\share\libxml2
-    - Copy-Item Copyright libxml2-install\share\libxml2
-    - cd libxml2-build
-    - ctest -VV
-  after_script:
-    - .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.7z .\libxml2-install\*
+    - bash -lc 'sh .gitlab-ci/test_cmake.sh -G Ninja'
   cache:
     key: "$MSYSTEM"
     paths:
       - libxml2-build/xmlconf/
   artifacts:
     paths:
-      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.7z
+      - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.tar.gz
     expire_in: 1 day
 
 cmake:mingw:w64-i686:shared:
@@ -218,8 +201,14 @@ cmake:mingw:w64-x86_64:static:
         Expand-Archive cmake-$Env:CMAKE_VERSION-win64-x64.zip -DestinationPath .
       }
     - $Env:Path="$Env:CI_PROJECT_DIR\cmake-$Env:CMAKE_VERSION-win64-x64\bin;$Env:Path"
-    - .gitlab-ci/Install-7-Zip
-    - .gitlab-ci/Fetch-W3C-Tests
+    - if (-not (Test-Path 7za.exe)) {
+        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z ;
+        cmake -E tar xf 7z1900-extra.7z 7za.exe
+      }
+    - if (-not (Test-Path libxml2-build/xmlconf)) {
+        Invoke-WebRequest -Uri https://www.w3.org/XML/Test/xmlts20080827.tar.gz -OutFile xmlts20080827.tar.gz ;
+        .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
+      }
   script:
     - cmake -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" -DCMAKE_INSTALL_PREFIX=libxml2-install -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_ZLIB=OFF -S . -B libxml2-build
     - cmake --build libxml2-build --config Debug --target install
@@ -236,6 +225,7 @@ cmake:mingw:w64-x86_64:static:
     paths:
       - cmake-$Env:CMAKE_VERSION-win64-x64/
       - libxml2-build/xmlconf/
+      - 7za.exe
   artifacts:
     paths:
       - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:CMAKE_GENERATOR_TOOLSET-$Env:CMAKE_GENERATOR_PLATFORM-$Env:SUFFIX.7z

@@ -9,3 +9,9 @@ fi
 for module in libiconv python xz zlib "$@"; do
     pacman --noconfirm -S --needed ${prefix}$module
 done
+
+if [ ! -e libxml2-build/xmlconf ]; then
+    mkdir -p libxml2-build
+    wget https://www.w3.org/XML/Test/xmlts20080827.tar.gz -O - |
+       tar -C libxml2-build x
+fi

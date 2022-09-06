@@ -1,4 +1,4 @@
-if (-not (Test-Path 7za.exe)) {
-    Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-extra.7z -OutFile 7z1900-extra.7z
-    cmake -E tar xf 7z1900-extra.7z 7za.exe
+if (-not (Get-Command "7za.exe" -ErrorAction SilentlyContinue)) {
+    Invoke-WebRequest -Uri https://www.7-zip.org/a/7z2201.msi -OutFile 7z2201.msi
+    msiexec /i $Installer7Zip /qb
 }

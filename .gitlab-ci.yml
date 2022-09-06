@@ -70,7 +70,6 @@ clang:asan:
     key: "$MSYSTEM"
     paths:
       - libxml2-build/xmlconf/
-      - 7za.exe
 
 mingw:w64-x86_64:shared:
   extends: .mingw
@@ -164,7 +163,6 @@ cmake:linux:clang:static:
     key: "$MSYSTEM"
     paths:
       - libxml2-build/xmlconf/
-      - 7za.exe
   artifacts:
     paths:
       - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:MSYSTEM-$Env:SUFFIX.7z
@@ -238,7 +236,6 @@ cmake:mingw:w64-x86_64:static:
     paths:
       - cmake-$Env:CMAKE_VERSION-win64-x64/
       - libxml2-build/xmlconf/
-      - 7za.exe
   artifacts:
     paths:
       - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:CMAKE_GENERATOR_TOOLSET-$Env:CMAKE_GENERATOR_PLATFORM-$Env:SUFFIX.7z

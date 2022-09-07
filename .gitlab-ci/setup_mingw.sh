@@ -13,5 +13,5 @@ done
 if [ ! -e libxml2-build/xmlconf ]; then
     mkdir -p libxml2-build
     wget https://www.w3.org/XML/Test/xmlts20080827.tar.gz -O - |
-       tar -C libxml2-build x
+       tar -x -z -C libxml2-build
 fi

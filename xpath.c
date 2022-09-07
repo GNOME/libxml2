@@ -130,6 +130,9 @@
  */
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
 #define XPATH_MAX_RECURSION_DEPTH 500
+#elif defined(_WIN32)
+/* Windows typically limits stack size to 1MB. */
+#define XPATH_MAX_RECURSION_DEPTH 1000
 #else
 #define XPATH_MAX_RECURSION_DEPTH 5000
 #endif

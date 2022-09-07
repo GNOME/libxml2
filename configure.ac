@@ -349,16 +349,25 @@ dnl
 dnl Checks for inet libraries
 dnl
 if test "$with_http" != "no" || test "with_ftp" = "yes"; then
-    _libs=$LIBS
-    AC_SEARCH_LIBS(gethostbyname, [nsl ws2_32], [
-        if test "$ac_cv_search_gethostbyname" != "none required"; then
-            NET_LIBS="$NET_LIBS $ac_cv_search_gethostbyname"
-        fi], [:], [$NET_LIBS])
-    AC_SEARCH_LIBS(connect, [bsd socket inet ws2_32], [
-        if test "$ac_cv_search_connect" != "none required"; then
-            NET_LIBS="$NET_LIBS $ac_cv_search_connect"
-        fi], [:], [$NET_LIBS])
-    LIBS=$_libs
+    case "$host" in
+        *-*-mingw*)
+            dnl AC_SEARCH_LIBS doesn't work because of non-standard calling
+            dnl conventions on 32-bit Windows.
+            NET_LIBS="$NET_LIBS -lws2_32"
+            ;;
+        *)
+            _libs=$LIBS
+            AC_SEARCH_LIBS(gethostbyname, [nsl], [
+                if test "$ac_cv_search_gethostbyname" != "none required"; then
+                    NET_LIBS="$NET_LIBS $ac_cv_search_gethostbyname"
+                fi], [:], [$NET_LIBS])
+            AC_SEARCH_LIBS(connect, [bsd socket inet], [
+                if test "$ac_cv_search_connect" != "none required"; then
+                    NET_LIBS="$NET_LIBS $ac_cv_search_connect"
+                fi], [:], [$NET_LIBS])
+            LIBS=$_libs
+            ;;
+    esac
 
     dnl Determine what socket length (socklen_t) data type is
     AC_MSG_CHECKING([for type of socket length (socklen_t)])

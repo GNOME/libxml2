@@ -74,6 +74,14 @@ mingw:w64-x86_64:shared:
     CFLAGS: "-O2"
     MSYSTEM: MINGW64
 
+mingw:w64-i686:shared:
+  extends: .mingw
+  only:
+    - schedules
+  variables:
+    CFLAGS: "-O2"
+    MSYSTEM: MINGW32
+
 # Disabled, GCC missing?
 .mingw:msys:shared:
   extends: .mingw
@@ -96,8 +104,6 @@ mingw:w64-x86_64:shared:
 
 cmake:linux:gcc:shared:
   extends: .cmake:linux
-#  only:
-#    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: gcc

@@ -348,74 +348,76 @@ va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1],[
 dnl
 dnl Checks for inet libraries
 dnl
-_libs=$LIBS
-AC_SEARCH_LIBS(gethostbyname, [nsl ws2_32], [
-    if test "$ac_cv_search_gethostbyname" != "none required"; then
-        NET_LIBS="$NET_LIBS $ac_cv_search_gethostbyname"
-    fi], [:], [$NET_LIBS])
-AC_SEARCH_LIBS(connect, [bsd socket inet ws2_32], [
-    if test "$ac_cv_search_connect" != "none required"; then
-        NET_LIBS="$NET_LIBS $ac_cv_search_connect"
-    fi], [:], [$NET_LIBS])
-LIBS=$_libs
+if test "$with_http" != "no" || test "with_ftp" = "yes"; then
+    _libs=$LIBS
+    AC_SEARCH_LIBS(gethostbyname, [nsl ws2_32], [
+        if test "$ac_cv_search_gethostbyname" != "none required"; then
+            NET_LIBS="$NET_LIBS $ac_cv_search_gethostbyname"
+        fi], [:], [$NET_LIBS])
+    AC_SEARCH_LIBS(connect, [bsd socket inet ws2_32], [
+        if test "$ac_cv_search_connect" != "none required"; then
+            NET_LIBS="$NET_LIBS $ac_cv_search_connect"
+        fi], [:], [$NET_LIBS])
+    LIBS=$_libs
 
-dnl Determine what socket length (socklen_t) data type is
-AC_MSG_CHECKING([for type of socket length (socklen_t)])
-AC_TRY_COMPILE2([
-#include <stddef.h>
-#ifdef _WIN32
-  #include <ws2tcpip.h>
-#else
-  #include <sys/socket.h>
-#endif],[
-(void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
-  AC_MSG_RESULT(socklen_t *)
-  XML_SOCKLEN_T=socklen_t],[
-  AC_TRY_COMPILE2([
-#include <stddef.h>
-#include <sys/socket.h>],[
-(void)getsockopt (1, 1, 1, NULL, (size_t *)NULL)],[
-    AC_MSG_RESULT(size_t *)
-    XML_SOCKLEN_T=size_t],[
+    dnl Determine what socket length (socklen_t) data type is
+    AC_MSG_CHECKING([for type of socket length (socklen_t)])
     AC_TRY_COMPILE2([
-#include <stddef.h>
-#include <sys/socket.h>],[
-(void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
-      AC_MSG_RESULT(int *)
-      XML_SOCKLEN_T=int],[
-      AC_MSG_WARN(could not determine)
-      XML_SOCKLEN_T="int"])])])
-AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
-
-dnl
-dnl Checking for availability of IPv6
-dnl
-AC_ARG_ENABLE(ipv6, [  --enable-ipv6[[=yes/no]]  enables compilation of IPv6 code [[default=yes]]],, enable_ipv6=yes)
-if test "$with_minimum" = "yes"
-then
-    enable_ipv6=no
-fi
-if test $enable_ipv6 = yes; then
-  AC_MSG_CHECKING([whether to enable IPv6])
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+    #include <stddef.h>
     #ifdef _WIN32
-      #include <winsock2.h>
+      #include <ws2tcpip.h>
     #else
       #include <sys/socket.h>
-      #ifdef HAVE_NETDB_H
-        #include <netdb.h>
-      #endif
-    #endif
-    ]], [[
-    struct sockaddr_storage ss;
-    socket(AF_INET6, SOCK_STREAM, 0);
-    getaddrinfo(0, 0, 0, 0);
-    ]])], [
-    AC_DEFINE([SUPPORT_IP6], [], [Support for IPv6])
-    AC_MSG_RESULT([yes])], [
-    AC_MSG_RESULT([no])]
-  )
-fi 
+    #endif],[
+    (void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
+      AC_MSG_RESULT(socklen_t *)
+      XML_SOCKLEN_T=socklen_t],[
+      AC_TRY_COMPILE2([
+    #include <stddef.h>
+    #include <sys/socket.h>],[
+    (void)getsockopt (1, 1, 1, NULL, (size_t *)NULL)],[
+        AC_MSG_RESULT(size_t *)
+        XML_SOCKLEN_T=size_t],[
+        AC_TRY_COMPILE2([
+    #include <stddef.h>
+    #include <sys/socket.h>],[
+    (void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
+          AC_MSG_RESULT(int *)
+          XML_SOCKLEN_T=int],[
+          AC_MSG_WARN(could not determine)
+          XML_SOCKLEN_T="int"])])])
+    AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
+
+    dnl
+    dnl Checking for availability of IPv6
+    dnl
+    AC_ARG_ENABLE(ipv6, [  --enable-ipv6[[=yes/no]]  enables compilation of IPv6 code [[default=yes]]],, enable_ipv6=yes)
+    if test "$with_minimum" = "yes"
+    then
+        enable_ipv6=no
+    fi
+    if test $enable_ipv6 = yes; then
+        AC_MSG_CHECKING([whether to enable IPv6])
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+            #ifdef _WIN32
+              #include <winsock2.h>
+            #else
+              #include <sys/socket.h>
+              #ifdef HAVE_NETDB_H
+                #include <netdb.h>
+              #endif
+            #endif
+            ]], [[
+            struct sockaddr_storage ss;
+            socket(AF_INET6, SOCK_STREAM, 0);
+            getaddrinfo(0, 0, 0, 0);
+            ]])], [
+            AC_DEFINE([SUPPORT_IP6], [], [Support for IPv6])
+            AC_MSG_RESULT([yes])], [
+            AC_MSG_RESULT([no])]
+        )
+    fi
+fi
 
 dnl
 dnl Extra flags

@@ -14725,9 +14725,6 @@ xmlInitParser(void) {
 #endif
 	xmlInitThreads();
 	xmlInitGlobals();
-	if ((xmlGenericError == xmlGenericErrorDefaultFunc) ||
-	    (xmlGenericError == NULL))
-	    initGenericErrorDefaultFunc(NULL);
 	xmlInitMemory();
         xmlInitializeDict();
 	xmlInitCharEncodingHandlers();

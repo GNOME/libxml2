@@ -2,10 +2,10 @@
 
 set -e
 
+CFLAGS="-Werror $CFLAGS" \
 cmake "$@" \
     -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS \
     -DCMAKE_INSTALL_PREFIX=libxml2-install \
-    -DCMAKE_C_FLAGS='-Werror' \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -S . -B libxml2-build
 cmake --build libxml2-build --target install

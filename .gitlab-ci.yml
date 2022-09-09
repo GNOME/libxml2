@@ -125,6 +125,7 @@ cmake:linux:clang:shared:
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: clang
+    CFLAGS: "-Wno-error=cast-align"
     SUFFIX: linux-clang-shared
 
 cmake:linux:clang:static:
@@ -134,6 +135,7 @@ cmake:linux:clang:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     CC: clang
+    CFLAGS: "-Wno-error=cast-align"
     SUFFIX: linux-clang-static
 
 .cmake:mingw:

@@ -451,7 +451,13 @@ dnl
 VERSION_SCRIPT_FLAGS=
 # lt_cv_prog_gnu_ld is from libtool 2.+
 if test "$lt_cv_prog_gnu_ld" = yes; then
-  VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+  case $host in
+    *-*-cygwin* | *-*-mingw* | *-*-msys* )
+      ;;
+    *)
+      VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+      ;;
+  esac
 else
   case $host in
   *-*-sunos*) VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,";;

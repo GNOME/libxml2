@@ -9155,6 +9155,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
     in++;
     col++;
     if (len != NULL) {
+        if (alloc) *alloc = 0;
         *len = last - start;
         ret = (xmlChar *) start;
     } else {
@@ -9164,7 +9165,6 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
     CUR_PTR = in;
     ctxt->input->line = line;
     ctxt->input->col = col;
-    if (alloc) *alloc = 0;
     return ret;
 need_complex:
     if (alloc) *alloc = 1;

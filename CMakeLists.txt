@@ -326,7 +326,7 @@ add_library(LibXml2::LibXml2 ALIAS LibXml2)
 target_compile_definitions(LibXml2 PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
 
 if(NOT BUILD_SHARED_LIBS)
-	target_compile_definitions(LibXml2 INTERFACE LIBXML_STATIC)
+	target_compile_definitions(LibXml2 PUBLIC LIBXML_STATIC)
 	set(XML_CFLAGS "-DLIBXML_STATIC")
 endif()
 

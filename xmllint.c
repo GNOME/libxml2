@@ -2022,8 +2022,9 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             xmlOutputBufferPtr buf;
 
             if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
-                fprintf(stderr, "XPath set is empty\n");
-                progresult = XMLLINT_ERR_XPATH;
+                if (!quiet) {
+                    fprintf(stderr, "XPath set is empty\n");
+                }
                 break;
             }
             buf = xmlOutputBufferCreateFile(stdout, NULL);

@@ -821,7 +821,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *txt,
 
 static xmlNodePtr
 xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	                xmlDocPtr source, xmlNodePtr elem);
+	                xmlDocPtr source, xmlNodePtr elem, xmlNodePtr parent);
 
 /**
  * xmlXIncludeCopyNode:
@@ -844,9 +844,16 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     if (elem->type == XML_DTD_NODE)
 	return(NULL);
     if (elem->type == XML_DOCUMENT_NODE)
-	result = xmlXIncludeCopyNodeList(ctxt, target, source, elem->children);
-    else
-        result = xmlDocCopyNode(elem, target, 1);
+	result = xmlXIncludeCopyNodeList(ctxt, target, source, elem->children,
+                                         NULL);
+    else {
+        result = xmlDocCopyNode(elem, target, 2);
+        if (result == NULL)
+            return(NULL);
+        if ((elem->type != XML_ENTITY_REF_NODE) && (elem->children != NULL))
+            result->children = xmlXIncludeCopyNodeList(ctxt, target, source,
+                                                       elem->children, result);
+    }
     return(result);
 }
 
@@ -862,7 +869,7 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
  */
 static xmlNodePtr
 xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	                xmlDocPtr source, xmlNodePtr elem) {
+	                xmlDocPtr source, xmlNodePtr elem, xmlNodePtr parent) {
     xmlNodePtr cur, res, result = NULL, last = NULL;
 
     if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
@@ -879,6 +886,7 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		res->prev = last;
 		last = res;
 	    }
+            res->parent = parent;
 	}
 	cur = cur->next;
     }
@@ -1536,7 +1544,8 @@ loaded:
 	 * Add the top children list as the replacement copy.
 	 */
 	ctxt->incTab[nr]->inc = xmlXIncludeCopyNodeList(ctxt, ctxt->doc,
-		                                        doc, doc->children);
+		                                        doc, doc->children,
+                                                        NULL);
     }
 #ifdef LIBXML_XPTR_ENABLED
     else {

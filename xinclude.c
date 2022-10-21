@@ -1572,9 +1572,8 @@ loaded:
 	/*
 	 * Add the top children list as the replacement copy.
 	 */
-	ctxt->incTab[nr]->inc = xmlXIncludeCopyNodeList(ctxt, ctxt->doc,
-		                                        doc, doc->children,
-                                                        NULL);
+        ctxt->incTab[nr]->inc = xmlDocCopyNode(xmlDocGetRootElement(doc),
+                                               ctxt->doc, 1);
     }
 #ifdef LIBXML_XPTR_ENABLED
     else {

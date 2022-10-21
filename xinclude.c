@@ -1166,37 +1166,9 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    case XML_COMMENT_NODE:
 		    case XML_DOCUMENT_NODE:
 		    case XML_HTML_DOCUMENT_NODE:
-		    case XML_XINCLUDE_END:
 			break;
-		    case XML_XINCLUDE_START: {
-	                xmlNodePtr tmp, cur = set->nodeTab[i];
-
-			cur = cur->next;
-			while (cur != NULL) {
-			    switch(cur->type) {
-				case XML_TEXT_NODE:
-				case XML_CDATA_SECTION_NODE:
-				case XML_ELEMENT_NODE:
-				case XML_ENTITY_REF_NODE:
-				case XML_ENTITY_NODE:
-				case XML_PI_NODE:
-				case XML_COMMENT_NODE:
-				    tmp = xmlXIncludeCopyNode(ctxt, target,
-							      source, cur);
-				    if (last == NULL) {
-					list = last = tmp;
-				    } else {
-					last = xmlAddNextSibling(last, tmp);
-				    }
-				    cur = cur->next;
-				    continue;
-				default:
-				    break;
-			    }
-			    break;
-			}
-			continue;
-		    }
+		    case XML_XINCLUDE_START:
+		    case XML_XINCLUDE_END:
 		    case XML_ATTRIBUTE_NODE:
 		    case XML_NAMESPACE_DECL:
 		    case XML_DOCUMENT_TYPE_NODE:

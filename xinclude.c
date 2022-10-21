@@ -60,7 +60,6 @@ struct _xmlXIncludeRef {
     xmlNodePtr            inc; /* the included copy */
     int                   xml; /* xml or txt */
     int                 count; /* how many refs use that specific doc */
-    xmlXPathObjectPtr    xptr; /* the xpointer if needed */
     int	             fallback; /* fallback was loaded */
     int		      emptyFb; /* flag to show fallback empty */
 };
@@ -212,8 +211,6 @@ xmlXIncludeFreeRef(xmlXIncludeRefPtr ref) {
 	xmlFree(ref->URI);
     if (ref->fragment != NULL)
 	xmlFree(ref->fragment);
-    if (ref->xptr != NULL)
-	xmlXPathFreeObject(ref->xptr);
     xmlFree(ref);
 }
 
@@ -1471,7 +1468,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      */
     if ((URL[0] == 0) || (URL[0] == '#') ||
 	((ctxt->doc != NULL) && (xmlStrEqual(URL, ctxt->doc->URL)))) {
-	doc = NULL;
+	doc = ctxt->doc;
         goto loaded;
     }
 
@@ -1563,15 +1560,8 @@ loaded:
 	/*
 	 * Add the top children list as the replacement copy.
 	 */
-	if (doc == NULL)
-	{
-	    /* Hopefully a DTD declaration won't be copied from
-	     * the same document */
-	    ctxt->incTab[nr]->inc = xmlCopyNodeList(ctxt->doc->children);
-	} else {
-	    ctxt->incTab[nr]->inc = xmlXIncludeCopyNodeList(ctxt, ctxt->doc,
-		                                       doc, doc->children);
-	}
+	ctxt->incTab[nr]->inc = xmlXIncludeCopyNodeList(ctxt, ctxt->doc,
+		                                        doc, doc->children);
     }
 #ifdef LIBXML_XPTR_ENABLED
     else {
@@ -1583,12 +1573,7 @@ loaded:
 	xmlXPathContextPtr xptrctxt;
 	xmlNodeSetPtr set;
 
-	if (doc == NULL) {
-	    xptrctxt = xmlXPtrNewContext(ctxt->doc, ctxt->incTab[nr]->ref,
-		                         NULL);
-	} else {
-	    xptrctxt = xmlXPtrNewContext(doc, NULL, NULL);
-	}
+	xptrctxt = xmlXPtrNewContext(doc, NULL, NULL);
 	if (xptrctxt == NULL) {
 	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 	                   XML_XINCLUDE_XPTR_FAILED,
@@ -1693,14 +1678,9 @@ loaded:
 		}
 	    }
 	}
-	if (doc == NULL) {
-	    ctxt->incTab[nr]->xptr = xptr;
-	    ctxt->incTab[nr]->inc = NULL;
-	} else {
-	    ctxt->incTab[nr]->inc =
-		xmlXIncludeCopyXPointer(ctxt, ctxt->doc, doc, xptr);
-	    xmlXPathFreeObject(xptr);
-	}
+        ctxt->incTab[nr]->inc =
+            xmlXIncludeCopyXPointer(ctxt, ctxt->doc, doc, xptr);
+        xmlXPathFreeObject(xptr);
 	xmlXPathFreeContext(xptrctxt);
 	xmlFree(fragment);
     }
@@ -2222,17 +2202,6 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
 	return(-1);
 
-    /*
-     * If we stored an XPointer a late computation may be needed
-     */
-    if ((ctxt->incTab[nr]->inc == NULL) &&
-	(ctxt->incTab[nr]->xptr != NULL)) {
-	ctxt->incTab[nr]->inc =
-	    xmlXIncludeCopyXPointer(ctxt, ctxt->doc, ctxt->doc,
-		                    ctxt->incTab[nr]->xptr);
-	xmlXPathFreeObject(ctxt->incTab[nr]->xptr);
-	ctxt->incTab[nr]->xptr = NULL;
-    }
     list = ctxt->incTab[nr]->inc;
     ctxt->incTab[nr]->inc = NULL;
     ctxt->incTab[nr]->emptyFb = 0;
@@ -2501,7 +2470,6 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
      */
     for (i = ctxt->incBase;i < ctxt->incNr; i++) {
 	if ((ctxt->incTab[i]->inc != NULL) ||
-            (ctxt->incTab[i]->xptr != NULL) ||
 	    (ctxt->incTab[i]->emptyFb != 0))	/* (empty fallback) */
 	    xmlXIncludeIncludeNode(ctxt, i);
     }

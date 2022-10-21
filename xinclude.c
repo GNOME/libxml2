@@ -92,6 +92,9 @@ struct _xmlXIncludeCtxt {
 };
 
 static int
+xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr);
+
+static int
 xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
                      int skipRoot);
 
@@ -1982,19 +1985,30 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
  ************************************************************************/
 
 /**
- * xmlXIncludePreProcessNode:
+ * xmlXIncludeExpandNode:
  * @ctxt: an XInclude context
  * @node: an XInclude node
  *
- * Implement the XInclude preprocessing, currently just adding the element
- * for further processing.
+ * If the XInclude node wasn't processed yet, create a new RefPtr,
+ * add it to ctxt->incTab and load the included items.
  *
- * Returns the result list or NULL in case of error
+ * Returns the new or existing xmlXIncludeRefPtr, or NULL in case of error.
  */
-static xmlNodePtr
-xmlXIncludePreProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
-    xmlXIncludeAddNode(ctxt, node);
-    return(NULL);
+static xmlXIncludeRefPtr
+xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
+    int nr, i;
+
+    for (i = ctxt->incBase; i < ctxt->incNr; i++) {
+        if (ctxt->incTab[i]->ref == node)
+            return(ctxt->incTab[i]);
+    }
+
+    if (xmlXIncludeAddNode(ctxt, node) < 0)
+        return(NULL);
+    nr = ctxt->incNr - 1;
+    xmlXIncludeLoadNode(ctxt, nr);
+
+    return(ctxt->incTab[nr]);
 }
 
 /**
@@ -2351,7 +2365,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
                      int skipRoot) {
     xmlNodePtr cur;
     int ret = 0;
-    int i, start;
+    int i;
 
     if ((doc == NULL) || (tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
 	return(-1);
@@ -2365,24 +2379,6 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
 	if (ret < 0)
 	    return(-1);
     }
-    start = ctxt->incNr;
-
-    /*
-     * TODO: The phases must run separately for recursive inclusions.
-     *
-     * - Phase 1 should start with top-level XInclude nodes, load documents,
-     *   execute XPointer expressions, then process only the result nodes
-     *   (not whole document, see bug #324081) and only for phase 1
-     *   recursively. We will need a backreference from xmlNodes to
-     *   xmlIncludeRefs to detect references that were already visited.
-     *   This can also be used for proper cycle detection, see bug #344240.
-     *
-     * - Phase 2 should visit all top-level XInclude nodes and expand
-     *   possible subreferences in the replacement recursively.
-     *
-     * - Phase 3 should finally replace the top-level XInclude nodes.
-     *   It could also be run together with phase 2.
-     */
 
     /*
      * First phase: lookup the elements in the document
@@ -2403,7 +2399,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
                 return(-1);
 #endif
             ctxt->incTotal++;
-            xmlXIncludePreProcessNode(ctxt, cur);
+            xmlXIncludeExpandNode(ctxt, cur);
         } else if ((cur->children != NULL) &&
                    ((cur->type == XML_DOCUMENT_NODE) ||
                     (cur->type == XML_ELEMENT_NODE))) {
@@ -2422,15 +2418,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
     } while ((cur != NULL) && (cur != tree));
 
     /*
-     * Second Phase : collect the infosets fragments
-     */
-    for (i = start;i < ctxt->incNr; i++) {
-        xmlXIncludeLoadNode(ctxt, i);
-	ret++;
-    }
-
-    /*
-     * Third phase: extend the original document infoset.
+     * Second phase: extend the original document infoset.
      *
      * Originally we bypassed the inclusion if there were any errors
      * encountered on any of the XIncludes.  A bug was raised (bug
@@ -2444,6 +2432,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
 	if ((ctxt->incTab[i]->inc != NULL) ||
 	    (ctxt->incTab[i]->emptyFb != 0))	/* (empty fallback) */
 	    xmlXIncludeIncludeNode(ctxt, i);
+	ret++;
     }
 
     if (doc->URL != NULL)

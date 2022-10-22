@@ -90,6 +90,7 @@ struct _xmlXIncludeCtxt {
     void            *_private; /* application data */
 
     unsigned long    incTotal; /* total number of processed inclusions */
+    int			depth; /* recursion depth */
 };
 
 static xmlXIncludeRefPtr
@@ -2036,6 +2037,12 @@ static xmlXIncludeRefPtr
 xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     int nr, i;
 
+    if (ctxt->depth >= XINCLUDE_MAX_DEPTH) {
+        xmlXIncludeErr(ctxt, node, XML_XINCLUDE_RECURSION,
+                       "maximum recursion depth exceeded\n", NULL);
+        return(NULL);
+    }
+
     for (i = ctxt->incBase; i < ctxt->incNr; i++) {
         if (ctxt->incTab[i]->ref == node) {
             if (ctxt->incTab[i]->expanding) {
@@ -2051,7 +2058,9 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
         return(NULL);
     nr = ctxt->incNr - 1;
     ctxt->incTab[nr]->expanding = 1;
+    ctxt->depth++;
     xmlXIncludeLoadNode(ctxt, nr);
+    ctxt->depth--;
     ctxt->incTab[nr]->expanding = 0;
 
     return(ctxt->incTab[nr]);

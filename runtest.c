@@ -2102,7 +2102,10 @@ errParseTest(const char *filename, const char *result, const char *err,
 #ifdef LIBXML_XINCLUDE_ENABLED
     if (options & XML_PARSE_XINCLUDE) {
 	doc = xmlReadFile(filename, NULL, options);
-	xmlXIncludeProcessFlags(doc, options);
+	if (xmlXIncludeProcessFlags(doc, options) < 0) {
+	    xmlFreeDoc(doc);
+            doc = NULL;
+        }
     } else
 #endif
     {

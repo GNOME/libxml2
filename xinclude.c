@@ -825,14 +825,12 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *txt,
  ************************************************************************/
 
 static xmlNodePtr
-xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	                xmlDocPtr source, xmlNodePtr elem, xmlNodePtr parent);
+xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem,
+                        xmlNodePtr parent);
 
 /**
  * xmlXIncludeCopyNode:
  * @ctxt:  the XInclude context
- * @target:  the document target
- * @source:  the document source
  * @elem:  the element
  *
  * Make a copy of the node while preserving the XInclude semantic
@@ -841,18 +839,15 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
  * Returns a node list, not a single node.
  */
 static xmlNodePtr
-xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	            xmlDocPtr source, xmlNodePtr elem) {
+xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem) {
     xmlNodePtr result = NULL;
 
-    if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
-	(elem == NULL))
+    if ((ctxt == NULL) || (elem == NULL))
 	return(NULL);
     if (elem->type == XML_DTD_NODE)
 	return(NULL);
     if (elem->type == XML_DOCUMENT_NODE)
-	result = xmlXIncludeCopyNodeList(ctxt, target, source, elem->children,
-                                         NULL);
+	result = xmlXIncludeCopyNodeList(ctxt, elem->children, NULL);
     else if ((elem->type == XML_ELEMENT_NODE) &&
              (elem->ns != NULL) &&
              (xmlStrEqual(elem->name, XINCLUDE_NODE)) &&
@@ -864,14 +859,14 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
          * TODO: Insert XML_XINCLUDE_START and XML_XINCLUDE_END nodes
          */
         if ((ref != NULL) && (ref->inc != NULL))
-            result = xmlDocCopyNodeList(target, ref->inc);
+            result = xmlDocCopyNodeList(ctxt->doc, ref->inc);
     } else {
-        result = xmlDocCopyNode(elem, target, 2);
+        result = xmlDocCopyNode(elem, ctxt->doc, 2);
         if (result == NULL)
             return(NULL);
         if ((elem->type != XML_ENTITY_REF_NODE) && (elem->children != NULL))
-            result->children = xmlXIncludeCopyNodeList(ctxt, target, source,
-                                                       elem->children, result);
+            result->children = xmlXIncludeCopyNodeList(ctxt, elem->children,
+                                                       result);
     }
     return(result);
 }
@@ -879,24 +874,21 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 /**
  * xmlXIncludeCopyNodeList:
  * @ctxt:  the XInclude context
- * @target:  the document target
- * @source:  the document source
  * @elem:  the element list
  *
  * Make a copy of the node list while preserving the XInclude semantic
  * of the Infoset copy
  */
 static xmlNodePtr
-xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	                xmlDocPtr source, xmlNodePtr elem, xmlNodePtr parent) {
+xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem,
+                        xmlNodePtr parent) {
     xmlNodePtr cur, res, result = NULL, last = NULL;
 
-    if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
-	(elem == NULL))
+    if ((ctxt == NULL) || (elem == NULL))
 	return(NULL);
     cur = elem;
     while (cur != NULL) {
-	res = xmlXIncludeCopyNode(ctxt, target, source, cur);
+	res = xmlXIncludeCopyNode(ctxt, cur);
 	while (res != NULL) {
 	    if (result == NULL) {
 		result = last = res;
@@ -945,8 +937,6 @@ xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur, int *level); /* in xpointer.c */
 /**
  * xmlXIncludeCopyRange:
  * @ctxt:  the XInclude context
- * @target:  the document target
- * @source:  the document source
  * @obj:  the XPointer result from the evaluation.
  *
  * Build a node list tree copy of the XPointer result.
@@ -955,8 +945,7 @@ xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur, int *level); /* in xpointer.c */
  *         The caller has to free the node tree.
  */
 static xmlNodePtr
-xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	                xmlDocPtr source, xmlXPathObjectPtr range) {
+xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlXPathObjectPtr range) {
     /* pointers to generated nodes */
     xmlNodePtr list = NULL, last = NULL, listParent = NULL;
     xmlNodePtr tmp, tmp2;
@@ -965,8 +954,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     int index1, index2;
     int level = 0, lastLevel = 0, endLevel = 0, endFlag = 0;
 
-    if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
-	(range == NULL))
+    if ((ctxt == NULL) || (range == NULL))
 	return(NULL);
     if (range->type != XPATH_RANGE)
 	return(NULL);
@@ -976,7 +964,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	return(NULL);
     end = range->user2;
     if (end == NULL)
-	return(xmlDocCopyNode(start, target, 1));
+	return(xmlDocCopyNode(start, ctxt->doc, 1));
     if (end->type == XML_NAMESPACE_DECL)
         return(NULL);
 
@@ -998,7 +986,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	if (level < 0) {
 	    while (level < 0) {
 	        /* copy must include namespaces and properties */
-	        tmp2 = xmlDocCopyNode(listParent, target, 2);
+	        tmp2 = xmlDocCopyNode(listParent, ctxt->doc, 2);
 	        xmlAddChild(tmp2, list);
 	        list = tmp2;
 	        listParent = listParent->parent;
@@ -1020,7 +1008,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		int len;
 
 		if (content == NULL) {
-		    tmp = xmlNewDocTextLen(target, NULL, 0);
+		    tmp = xmlNewDocTextLen(ctxt->doc, NULL, 0);
 		} else {
 		    len = index2;
 		    if ((cur == start) && (index1 > 1)) {
@@ -1029,7 +1017,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    } else {
 			len = index2;
 		    }
-		    tmp = xmlNewDocTextLen(target, content, len);
+		    tmp = xmlNewDocTextLen(ctxt->doc, content, len);
 		}
 		/* single sub text node selection */
 		if (list == NULL)
@@ -1044,7 +1032,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	        endLevel = level;	/* remember the level of the end node */
 		endFlag = 1;
 		/* last node - need to take care of properties + namespaces */
-		tmp = xmlDocCopyNode(cur, target, 2);
+		tmp = xmlDocCopyNode(cur, ctxt->doc, 2);
 		if (list == NULL) {
 		    list = tmp;
 		    listParent = cur->parent;
@@ -1080,13 +1068,13 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		const xmlChar *content = cur->content;
 
 		if (content == NULL) {
-		    tmp = xmlNewDocTextLen(target, NULL, 0);
+		    tmp = xmlNewDocTextLen(ctxt->doc, NULL, 0);
 		} else {
 		    if (index1 > 1) {
 			content += (index1 - 1);
 			index1 = 0;
 		    }
-		    tmp = xmlNewDocText(target, content);
+		    tmp = xmlNewDocText(ctxt->doc, content);
 		}
 		last = list = tmp;
 		listParent = cur->parent;
@@ -1095,7 +1083,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		 * start of the range - need to take care of
 		 * properties and namespaces
 		 */
-		tmp = xmlDocCopyNode(cur, target, 2);
+		tmp = xmlDocCopyNode(cur, ctxt->doc, 2);
 		list = last = tmp;
 		listParent = cur->parent;
 		if (index1 > 1) {	/* Do we need to position? */
@@ -1132,7 +1120,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		     * Middle of the range - need to take care of
 		     * properties and namespaces
 		     */
-		    tmp = xmlDocCopyNode(cur, target, 2);
+		    tmp = xmlDocCopyNode(cur, ctxt->doc, 2);
 		    break;
 	    }
 	    if (tmp != NULL) {
@@ -1156,10 +1144,8 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 #endif /* LIBXML_XPTR_LOCS_ENABLED */
 
 /**
- * xmlXIncludeBuildNodeList:
+ * xmlXIncludeCopyXPointer:
  * @ctxt:  the XInclude context
- * @target:  the document target
- * @source:  the document source
  * @obj:  the XPointer result from the evaluation.
  *
  * Build a node list tree copy of the XPointer result.
@@ -1169,15 +1155,11 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
  *         the caller has to free the node tree.
  */
 static xmlNodePtr
-xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
-	                xmlDocPtr source, xmlXPathObjectPtr obj) {
+xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlXPathObjectPtr obj) {
     xmlNodePtr list = NULL, last = NULL, copy;
     int i;
 
-    if (source == NULL)
-	source = ctxt->doc;
-    if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
-	(obj == NULL))
+    if ((ctxt == NULL) || (obj == NULL))
 	return(NULL);
     switch (obj->type) {
         case XPATH_NODESET: {
@@ -1217,8 +1199,7 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
                  * xmlXIncludeCopyNode is only required for the initial
                  * document.
                  */
-		copy = xmlXIncludeCopyNode(ctxt, target, source,
-			                   set->nodeTab[i]);
+		copy = xmlXIncludeCopyNode(ctxt, set->nodeTab[i]);
                 if (copy == NULL) {
                     xmlFreeNodeList(list);
                     return(NULL);
@@ -1242,12 +1223,11 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		return(NULL);
 	    for (i = 0;i < set->locNr;i++) {
 		if (last == NULL)
-		    list = last = xmlXIncludeCopyXPointer(ctxt, target, source,
+		    list = last = xmlXIncludeCopyXPointer(ctxt,
 			                                  set->locTab[i]);
 		else
 		    xmlAddNextSibling(last,
-			    xmlXIncludeCopyXPointer(ctxt, target, source,
-				                    set->locTab[i]));
+			    xmlXIncludeCopyXPointer(ctxt, set->locTab[i]));
 		if (last != NULL) {
 		    while (last->next != NULL)
 			last = last->next;
@@ -1256,7 +1236,7 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	    break;
 	}
 	case XPATH_RANGE:
-	    return(xmlXIncludeCopyRange(ctxt, target, source, obj));
+	    return(xmlXIncludeCopyRange(ctxt, obj));
 	case XPATH_POINT:
 	    /* points are ignored in XInclude */
 	    break;
@@ -1692,8 +1672,7 @@ loaded:
 		}
 	    }
 	}
-        ctxt->incTab[nr]->inc =
-            xmlXIncludeCopyXPointer(ctxt, ctxt->doc, doc, xptr);
+        ctxt->incTab[nr]->inc = xmlXIncludeCopyXPointer(ctxt, xptr);
         xmlXPathFreeObject(xptr);
 	xmlXPathFreeContext(xptrctxt);
 	xmlFree(fragment);

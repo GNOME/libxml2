@@ -4695,25 +4695,24 @@ testDesc testDescriptions[] = {
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
     { "XInclude regression tests" ,
-      errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", NULL,
-      /* Ignore errors at this point ".err", */
+      errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", ".err",
       XML_PARSE_XINCLUDE },
 #ifdef LIBXML_READER_ENABLED
     { "XInclude xmlReader regression tests",
       streamParseTest, "./test/XInclude/docs/*", "result/XInclude/", ".rdr",
-      /* Ignore errors at this point ".err", */
-      NULL, XML_PARSE_XINCLUDE },
+      ".err", XML_PARSE_XINCLUDE },
 #endif
     { "XInclude regression tests stripping include nodes" ,
-      errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", NULL,
-      /* Ignore errors at this point ".err", */
+      errParseTest, "./test/XInclude/docs/*", "result/XInclude/", "", ".err",
       XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
 #ifdef LIBXML_READER_ENABLED
     { "XInclude xmlReader regression tests stripping include nodes",
       streamParseTest, "./test/XInclude/docs/*", "result/XInclude/", ".rdr",
-      /* Ignore errors at this point ".err", */
-      NULL, XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
+      ".err", XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE },
 #endif
+    { "XInclude regression tests without reader",
+      errParseTest, "./test/XInclude/without-reader/*", "result/XInclude/", "",
+      ".err", XML_PARSE_XINCLUDE },
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 #ifdef LIBXML_DEBUG_ENABLED

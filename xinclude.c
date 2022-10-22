@@ -91,6 +91,9 @@ struct _xmlXIncludeCtxt {
     unsigned long    incTotal; /* total number of processed inclusions */
 };
 
+static xmlXIncludeRefPtr
+xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node);
+
 static int
 xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr);
 
@@ -848,7 +851,19 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     if (elem->type == XML_DOCUMENT_NODE)
 	result = xmlXIncludeCopyNodeList(ctxt, target, source, elem->children,
                                          NULL);
-    else {
+    else if ((elem->type == XML_ELEMENT_NODE) &&
+             (elem->ns != NULL) &&
+             (xmlStrEqual(elem->name, XINCLUDE_NODE)) &&
+             ((xmlStrEqual(elem->ns->href, XINCLUDE_NS)) ||
+              (xmlStrEqual(elem->ns->href, XINCLUDE_OLD_NS)))) {
+        xmlXIncludeRefPtr ref = xmlXIncludeExpandNode(ctxt, elem);
+
+        /*
+         * TODO: Insert XML_XINCLUDE_START and XML_XINCLUDE_END nodes
+         */
+        if ((ref != NULL) && (ref->inc != NULL))
+            result = xmlDocCopyNodeList(target, ref->inc);
+    } else {
         result = xmlDocCopyNode(elem, target, 2);
         if (result == NULL)
             return(NULL);

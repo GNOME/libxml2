@@ -29,6 +29,7 @@
 
 #include "private/buf.h"
 #include "private/error.h"
+#include "private/tree.h"
 
 #define XINCLUDE_MAX_DEPTH 40
 
@@ -824,83 +825,96 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *txt,
  *									*
  ************************************************************************/
 
-static xmlNodePtr
-xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem,
-                        xmlNodePtr parent);
-
 /**
  * xmlXIncludeCopyNode:
  * @ctxt:  the XInclude context
  * @elem:  the element
  *
- * Make a copy of the node while preserving the XInclude semantic
- * of the Infoset copy.
+ * Make a copy of the node while expanding nested XIncludes.
  *
  * Returns a node list, not a single node.
  */
 static xmlNodePtr
 xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem) {
     xmlNodePtr result = NULL;
+    xmlNodePtr insertParent = NULL;
+    xmlNodePtr insertLast = NULL;
+    xmlNodePtr cur = elem;
 
-    if ((ctxt == NULL) || (elem == NULL))
-	return(NULL);
-    if ((elem->type == XML_DOCUMENT_NODE) || (elem->type == XML_DTD_NODE))
-	return(NULL);
-    if ((elem->type == XML_ELEMENT_NODE) &&
-             (elem->ns != NULL) &&
-             (xmlStrEqual(elem->name, XINCLUDE_NODE)) &&
-             ((xmlStrEqual(elem->ns->href, XINCLUDE_NS)) ||
-              (xmlStrEqual(elem->ns->href, XINCLUDE_OLD_NS)))) {
-        xmlXIncludeRefPtr ref = xmlXIncludeExpandNode(ctxt, elem);
+    while (1) {
+        xmlNodePtr copy = NULL;
+        int recurse = 0;
 
-        /*
-         * TODO: Insert XML_XINCLUDE_START and XML_XINCLUDE_END nodes
-         */
-        if ((ref != NULL) && (ref->inc != NULL))
-            result = xmlDocCopyNodeList(ctxt->doc, ref->inc);
-    } else {
-        result = xmlDocCopyNode(elem, ctxt->doc, 2);
-        if (result == NULL)
-            return(NULL);
-        if ((elem->type != XML_ENTITY_REF_NODE) && (elem->children != NULL))
-            result->children = xmlXIncludeCopyNodeList(ctxt, elem->children,
-                                                       result);
+        if ((cur->type == XML_DOCUMENT_NODE) ||
+            (cur->type == XML_DTD_NODE)) {
+            ;
+        } else if ((cur->type == XML_ELEMENT_NODE) &&
+                   (cur->ns != NULL) &&
+                   (xmlStrEqual(cur->name, XINCLUDE_NODE)) &&
+                   ((xmlStrEqual(cur->ns->href, XINCLUDE_NS)) ||
+                    (xmlStrEqual(cur->ns->href, XINCLUDE_OLD_NS)))) {
+            xmlXIncludeRefPtr ref = xmlXIncludeExpandNode(ctxt, cur);
+
+            if (ref == NULL)
+                goto error;
+            /*
+             * TODO: Insert XML_XINCLUDE_START and XML_XINCLUDE_END nodes
+             */
+            if (ref->inc != NULL) {
+                copy = xmlStaticCopyNodeList(ref->inc, ctxt->doc,
+                                             insertParent);
+                if (copy == NULL)
+                    goto error;
+            }
+        } else {
+            copy = xmlStaticCopyNode(cur, ctxt->doc, insertParent, 2);
+            if (copy == NULL)
+                goto error;
+
+            recurse = (cur->type != XML_ENTITY_REF_NODE) &&
+                      (cur->children != NULL);
+        }
+
+        if (copy != NULL) {
+            if (result == NULL)
+                result = copy;
+            if (insertLast != NULL) {
+                insertLast->next = copy;
+                copy->prev = insertLast;
+            } else if (insertParent != NULL) {
+                insertParent->children = copy;
+            }
+            insertLast = copy;
+            while (insertLast->next != NULL) {
+                insertLast = insertLast->next;
+            }
+        }
+
+        if (recurse) {
+            cur = cur->children;
+            insertParent = insertLast;
+            insertLast = NULL;
+            continue;
+        }
+
+        while ((cur != elem) && (cur->next == NULL)) {
+            cur = cur->parent;
+            insertParent->last = insertLast;
+            insertLast = insertParent;
+            insertParent = insertParent->parent;
+        }
+
+        if (cur == elem)
+            break;
+
+        cur = cur->next;
     }
-    return(result);
-}
 
-/**
- * xmlXIncludeCopyNodeList:
- * @ctxt:  the XInclude context
- * @elem:  the element list
- *
- * Make a copy of the node list while preserving the XInclude semantic
- * of the Infoset copy
- */
-static xmlNodePtr
-xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem,
-                        xmlNodePtr parent) {
-    xmlNodePtr cur, res, result = NULL, last = NULL;
-
-    if ((ctxt == NULL) || (elem == NULL))
-	return(NULL);
-    cur = elem;
-    while (cur != NULL) {
-	res = xmlXIncludeCopyNode(ctxt, cur);
-	while (res != NULL) {
-	    if (result == NULL) {
-		result = last = res;
-	    } else {
-		last->next = res;
-		res->prev = last;
-		last = res;
-	    }
-            res->parent = parent;
-            res = res->next;
-	}
-	cur = cur->next;
-    }
     return(result);
+
+error:
+    xmlFreeNodeList(result);
+    return(NULL);
 }
 
 #ifdef LIBXML_XPTR_LOCS_ENABLED

@@ -831,7 +831,9 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
  * @elem:  the element
  *
  * Make a copy of the node while preserving the XInclude semantic
- * of the Infoset copy
+ * of the Infoset copy.
+ *
+ * Returns a node list, not a single node.
  */
 static xmlNodePtr
 xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
@@ -878,7 +880,7 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     cur = elem;
     while (cur != NULL) {
 	res = xmlXIncludeCopyNode(ctxt, target, source, cur);
-	if (res != NULL) {
+	while (res != NULL) {
 	    if (result == NULL) {
 		result = last = res;
 	    } else {
@@ -887,6 +889,7 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		last = res;
 	    }
             res->parent = parent;
+            res = res->next;
 	}
 	cur = cur->next;
     }
@@ -1151,7 +1154,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 static xmlNodePtr
 xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	                xmlDocPtr source, xmlXPathObjectPtr obj) {
-    xmlNodePtr list = NULL, last = NULL;
+    xmlNodePtr list = NULL, last = NULL, copy;
     int i;
 
     if (source == NULL)
@@ -1191,16 +1194,27 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    case XML_ENTITY_DECL:
 			continue; /* for */
 		}
-		if (last == NULL)
-		    list = last = xmlXIncludeCopyNode(ctxt, target, source,
-			                              set->nodeTab[i]);
-		else {
-		    xmlAddNextSibling(last,
-			    xmlXIncludeCopyNode(ctxt, target, source,
-				                set->nodeTab[i]));
-		    if (last->next != NULL)
-			last = last->next;
+                /*
+                 * OPTIMIZE TODO: External documents should already be
+                 * expanded, so xmlDocCopyNode should work as well.
+                 * xmlXIncludeCopyNode is only required for the initial
+                 * document.
+                 */
+		copy = xmlXIncludeCopyNode(ctxt, target, source,
+			                   set->nodeTab[i]);
+                if (copy == NULL) {
+                    xmlFreeNodeList(list);
+                    return(NULL);
+                }
+		if (last == NULL) {
+                    list = copy;
+                } else {
+                    while (last->next != NULL)
+                        last = last->next;
+                    copy->prev = last;
+                    last->next = copy;
 		}
+                last = copy;
 	    }
 	    break;
 	}

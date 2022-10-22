@@ -62,6 +62,7 @@ struct _xmlXIncludeRef {
     int                 count; /* how many refs use that specific doc */
     int	             fallback; /* fallback was loaded */
     int		      emptyFb; /* flag to show fallback empty */
+    int		    expanding; /* flag to detect inclusion loops */
 };
 
 struct _xmlXIncludeCtxt {
@@ -2036,14 +2037,22 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     int nr, i;
 
     for (i = ctxt->incBase; i < ctxt->incNr; i++) {
-        if (ctxt->incTab[i]->ref == node)
+        if (ctxt->incTab[i]->ref == node) {
+            if (ctxt->incTab[i]->expanding) {
+                xmlXIncludeErr(ctxt, node, XML_XINCLUDE_RECURSION,
+                               "inclusion loop detected\n", NULL);
+                return(NULL);
+            }
             return(ctxt->incTab[i]);
+        }
     }
 
     if (xmlXIncludeAddNode(ctxt, node) < 0)
         return(NULL);
     nr = ctxt->incNr - 1;
+    ctxt->incTab[nr]->expanding = 1;
     xmlXIncludeLoadNode(ctxt, nr);
+    ctxt->incTab[nr]->expanding = 0;
 
     return(ctxt->incTab[nr]);
 }

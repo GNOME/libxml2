@@ -60,7 +60,6 @@ struct _xmlXIncludeRef {
     xmlNodePtr           elem; /* the xi:include element */
     xmlNodePtr            inc; /* the included copy */
     int                   xml; /* xml or txt */
-    int                 count; /* how many refs use that specific doc */
     int	             fallback; /* fallback was loaded */
     int		      emptyFb; /* flag to show fallback empty */
     int		    expanding; /* flag to detect inclusion loops */
@@ -254,7 +253,6 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
     ret->fragment = NULL;
     ret->elem = elem;
     ret->doc = NULL;
-    ret->count = 0;
     ret->xml = 0;
     ret->inc = NULL;
     if (ctxt->incMax == 0) {
@@ -671,7 +669,6 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     ref->fragment = fragment;
     ref->doc = NULL;
     ref->xml = xml;
-    ref->count = 1;
     return(ref);
 }
 
@@ -740,8 +737,6 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	newctxt->incBase = ctxt->incNr;
 	for (i = 0;i < ctxt->incNr;i++) {
 	    newctxt->incTab[i] = ctxt->incTab[i];
-	    newctxt->incTab[i]->count++; /* prevent the recursion from
-					    freeing it */
 	}
 	/*
 	 * The new context should also inherit the Parse Flags
@@ -752,7 +747,6 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc), 0);
         ctxt->incTotal = newctxt->incTotal;
 	for (i = 0;i < ctxt->incNr;i++) {
-	    newctxt->incTab[i]->count--;
 	    newctxt->incTab[i] = NULL;
 	}
 
@@ -1757,13 +1751,6 @@ loaded:
 	    }
 	    xmlFree(base);
 	}
-    }
-    if ((ref->doc != NULL) && (ref->count <= 1)) {
-#ifdef DEBUG_XINCLUDE
-        printf("freeing %s\n", ref->doc->URL);
-#endif
-	xmlFreeDoc(ref->doc);
-	ref->doc = NULL;
     }
     xmlFree(URL);
     return(0);

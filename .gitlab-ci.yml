@@ -41,6 +41,7 @@ clang:asan:
     # LeakSanitizer requires SYS_CAP_PTRACE
     ASAN_OPTIONS: "detect_leaks=0"
     UBSAN_OPTIONS: "print_stacktrace=1"
+    ASAN_SYMBOLIZER_PATH: "$CI_PROJECT_DIR/.gitlab-ci/llvm-symbolizer"
 
 # Disabled, MSan seems broken on Ubntu 22.04
 .clang:msan:

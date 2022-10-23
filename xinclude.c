@@ -77,7 +77,6 @@ struct _xmlXIncludeCtxt {
     xmlChar *         *txtTab; /* array of unparsed text strings */
     xmlURL         *txturlTab; /* array of unparsed text URLs */
 
-    xmlChar *             url; /* the current URL processed */
     int                 urlNr; /* number of URLs stacked */
     int                urlMax; /* size of URL stack */
     xmlChar *         *urlTab; /* URL stack */
@@ -351,7 +350,7 @@ xmlXIncludeURLPush(xmlXIncludeCtxtPtr ctxt,
             return (-1);
         }
     }
-    ctxt->url = ctxt->urlTab[ctxt->urlNr] = xmlStrdup(value);
+    ctxt->urlTab[ctxt->urlNr] = xmlStrdup(value);
     return (ctxt->urlNr++);
 }
 
@@ -369,10 +368,6 @@ xmlXIncludeURLPop(xmlXIncludeCtxtPtr ctxt)
     if (ctxt->urlNr <= 0)
         return;
     ctxt->urlNr--;
-    if (ctxt->urlNr > 0)
-        ctxt->url = ctxt->urlTab[ctxt->urlNr - 1];
-    else
-        ctxt->url = NULL;
     ret = ctxt->urlTab[ctxt->urlNr];
     ctxt->urlTab[ctxt->urlNr] = NULL;
     if (ret != NULL)

@@ -57,7 +57,7 @@ struct _xmlXIncludeRef {
     xmlChar              *URI; /* the fully resolved resource URL */
     xmlChar         *fragment; /* the fragment in the URI */
     xmlDocPtr		  doc; /* the parsed document */
-    xmlNodePtr            ref; /* the node making the reference in the source */
+    xmlNodePtr           elem; /* the xi:include element */
     xmlNodePtr            inc; /* the included copy */
     int                   xml; /* xml or txt */
     int                 count; /* how many refs use that specific doc */
@@ -98,7 +98,7 @@ static xmlXIncludeRefPtr
 xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node);
 
 static int
-xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr);
+xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref);
 
 static int
 xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
@@ -227,6 +227,7 @@ xmlXIncludeFreeRef(xmlXIncludeRefPtr ref) {
  * xmlXIncludeNewRef:
  * @ctxt: the XInclude context
  * @URI:  the resource URI
+ * @elem:  the xi:include element
  *
  * Creates a new reference within an XInclude context
  *
@@ -234,7 +235,7 @@ xmlXIncludeFreeRef(xmlXIncludeRefPtr ref) {
  */
 static xmlXIncludeRefPtr
 xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
-	          xmlNodePtr ref) {
+	          xmlNodePtr elem) {
     xmlXIncludeRefPtr ret;
 
 #ifdef DEBUG_XINCLUDE
@@ -242,7 +243,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
 #endif
     ret = (xmlXIncludeRefPtr) xmlMalloc(sizeof(xmlXIncludeRef));
     if (ret == NULL) {
-        xmlXIncludeErrMemory(ctxt, ref, "growing XInclude context");
+        xmlXIncludeErrMemory(ctxt, elem, "growing XInclude context");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlXIncludeRef));
@@ -251,7 +252,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
     else
 	ret->URI = xmlStrdup(URI);
     ret->fragment = NULL;
-    ret->ref = ref;
+    ret->elem = elem;
     ret->doc = NULL;
     ret->count = 0;
     ret->xml = 0;
@@ -261,7 +262,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
         ctxt->incTab = (xmlXIncludeRefPtr *) xmlMalloc(ctxt->incMax *
 					      sizeof(ctxt->incTab[0]));
         if (ctxt->incTab == NULL) {
-	    xmlXIncludeErrMemory(ctxt, ref, "growing XInclude context");
+	    xmlXIncludeErrMemory(ctxt, elem, "growing XInclude context");
 	    xmlXIncludeFreeRef(ret);
 	    return(NULL);
 	}
@@ -271,7 +272,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
         ctxt->incTab = (xmlXIncludeRefPtr *) xmlRealloc(ctxt->incTab,
 	             ctxt->incMax * sizeof(ctxt->incTab[0]));
         if (ctxt->incTab == NULL) {
-	    xmlXIncludeErrMemory(ctxt, ref, "growing XInclude context");
+	    xmlXIncludeErrMemory(ctxt, elem, "growing XInclude context");
 	    xmlXIncludeFreeRef(ret);
 	    return(NULL);
 	}
@@ -504,7 +505,7 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
  *
  * Add a new node to process to an XInclude context
  */
-static int
+static xmlXIncludeRefPtr
 xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     xmlXIncludeRefPtr ref;
     xmlURIPtr uri;
@@ -519,9 +520,9 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 
 
     if (ctxt == NULL)
-	return(-1);
+	return(NULL);
     if (cur == NULL)
-	return(-1);
+	return(NULL);
 
 #ifdef DEBUG_XINCLUDE
     xmlGenericError(xmlGenericErrorContext, "Add node\n");
@@ -533,7 +534,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     if (href == NULL) {
 	href = xmlStrdup(BAD_CAST ""); /* @@@@ href is now optional */
 	if (href == NULL)
-	    return(-1);
+	    return(NULL);
     }
     parse = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_PARSE);
     if (parse != NULL) {
@@ -548,7 +549,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 		xmlFree(href);
 	    if (parse != NULL)
 		xmlFree(parse);
-	    return(-1);
+	    return(NULL);
 	}
     }
 
@@ -584,7 +585,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     if (URI == NULL) {
 	xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_HREF_URI,
 	               "failed build URL\n", NULL);
-	return(-1);
+	return(NULL);
     }
     fragment = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_PARSE_XPOINTER);
 
@@ -598,7 +599,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	if (fragment != NULL)
 	    xmlFree(fragment);
 	xmlFree(URI);
-	return(-1);
+	return(NULL);
     }
 
     if (uri->fragment != NULL) {
@@ -616,7 +617,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	        xmlFree(fragment);
 	    xmlFreeURI(uri);
 	    xmlFree(URI);
-	    return(-1);
+	    return(NULL);
 	}
 	uri->fragment = NULL;
     }
@@ -628,7 +629,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	               "invalid value URI %s\n", URI);
 	if (fragment != NULL)
 	    xmlFree(fragment);
-	return(-1);
+	return(NULL);
     }
 
     if (xmlStrEqual(URL, ctxt->doc->URL))
@@ -644,7 +645,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 		       URL);
         xmlFree(URL);
         xmlFree(fragment);
-	return(-1);
+	return(NULL);
     }
 
     /*
@@ -657,7 +658,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 		               "detected a recursion in %s\n", URL);
                 xmlFree(URL);
                 xmlFree(fragment);
-		return(-1);
+		return(NULL);
 	    }
 	}
     }
@@ -665,13 +666,13 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     ref = xmlXIncludeNewRef(ctxt, URL, cur);
     xmlFree(URL);
     if (ref == NULL) {
-	return(-1);
+	return(NULL);
     }
     ref->fragment = fragment;
     ref->doc = NULL;
     ref->xml = xml;
     ref->count = 1;
-    return(0);
+    return(ref);
 }
 
 /**
@@ -1279,7 +1280,7 @@ struct _xmlXIncludeMergeData {
  * xmlXIncludeMergeOneEntity:
  * @ent: the entity
  * @doc:  the including doc
- * @nr: the entity name
+ * @name: the entity name
  *
  * Implements the merge of one entity
  */
@@ -1417,14 +1418,15 @@ xmlXIncludeMergeEntities(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
  * xmlXIncludeLoadDoc:
  * @ctxt:  the XInclude context
  * @url:  the associated URL
- * @nr:  the xinclude node number
+ * @ref:  an XMLXincludeRefPtr
  *
  * Load the document, and store the result in the XInclude context
  *
  * Returns 0 in case of success, -1 in case of failure
  */
 static int
-xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
+xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
+                   xmlXIncludeRefPtr ref) {
     xmlDocPtr doc;
     xmlURIPtr uri;
     xmlChar *URL;
@@ -1435,15 +1437,14 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 #endif
 
 #ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "Loading doc %s:%d\n", url, nr);
+    xmlGenericError(xmlGenericErrorContext, "Loading doc %s\n", url);
 #endif
     /*
      * Check the URL and remove any fragment identifier
      */
     uri = xmlParseURI((const char *)url);
     if (uri == NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	               XML_XINCLUDE_HREF_URI,
+	xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
 		       "invalid value URI %s\n", url);
 	return(-1);
     }
@@ -1451,22 +1452,15 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	fragment = (xmlChar *) uri->fragment;
 	uri->fragment = NULL;
     }
-    if ((ctxt->incTab != NULL) && (ctxt->incTab[nr] != NULL) &&
-        (ctxt->incTab[nr]->fragment != NULL)) {
+    if (ref->fragment != NULL) {
 	if (fragment != NULL) xmlFree(fragment);
-	fragment = xmlStrdup(ctxt->incTab[nr]->fragment);
+	fragment = xmlStrdup(ref->fragment);
     }
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
     if (URL == NULL) {
-        if (ctxt->incTab != NULL)
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-			   XML_XINCLUDE_HREF_URI,
-			   "invalid value URI %s\n", url);
-	else
-	    xmlXIncludeErr(ctxt, NULL,
-			   XML_XINCLUDE_HREF_URI,
-			   "invalid value URI %s\n", url);
+        xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
+                       "invalid value URI %s\n", url);
 	if (fragment != NULL)
 	    xmlFree(fragment);
 	return(-1);
@@ -1524,7 +1518,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	    xmlFree(fragment);
 	return(-1);
     }
-    ctxt->incTab[nr]->doc = doc;
+    ref->doc = doc;
     /*
      * It's possible that the requested URL has been mapped to a
      * completely different location (e.g. through a catalog entry).
@@ -1561,8 +1555,7 @@ loaded:
 	/*
 	 * Add the top children list as the replacement copy.
 	 */
-        ctxt->incTab[nr]->inc = xmlDocCopyNode(xmlDocGetRootElement(doc),
-                                               ctxt->doc, 1);
+        ref->inc = xmlDocCopyNode(xmlDocGetRootElement(doc), ctxt->doc, 1);
     }
 #ifdef LIBXML_XPTR_ENABLED
     else {
@@ -1576,8 +1569,7 @@ loaded:
 
 	xptrctxt = xmlXPtrNewContext(doc, NULL, NULL);
 	if (xptrctxt == NULL) {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	                   XML_XINCLUDE_XPTR_FAILED,
+	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
 			   "could not create XPointer context\n", NULL);
 	    xmlFree(URL);
 	    xmlFree(fragment);
@@ -1585,8 +1577,7 @@ loaded:
 	}
 	xptr = xmlXPtrEval(fragment, xptrctxt);
 	if (xptr == NULL) {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	                   XML_XINCLUDE_XPTR_FAILED,
+	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
 			   "XPointer evaluation failed: #%s\n",
 			   fragment);
 	    xmlXPathFreeContext(xptrctxt);
@@ -1604,8 +1595,7 @@ loaded:
 #endif
 	    case XPATH_USERS:
 	    case XPATH_XSLT_TREE:
-		xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-		               XML_XINCLUDE_XPTR_RESULT,
+		xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_RESULT,
 			       "XPointer is not a range: #%s\n",
 			       fragment);
                 xmlXPathFreeObject(xptr);
@@ -1647,14 +1637,14 @@ loaded:
 			continue;
 
 		    case XML_ATTRIBUTE_NODE:
-			xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
+			xmlXIncludeErr(ctxt, ref->elem,
 			               XML_XINCLUDE_XPTR_RESULT,
 				       "XPointer selects an attribute: #%s\n",
 				       fragment);
 			set->nodeTab[i] = NULL;
 			continue;
 		    case XML_NAMESPACE_DECL:
-			xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
+			xmlXIncludeErr(ctxt, ref->elem,
 			               XML_XINCLUDE_XPTR_RESULT,
 				       "XPointer selects a namespace: #%s\n",
 				       fragment);
@@ -1669,7 +1659,7 @@ loaded:
 		    case XML_ENTITY_DECL:
 		    case XML_XINCLUDE_START:
 		    case XML_XINCLUDE_END:
-			xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
+			xmlXIncludeErr(ctxt, ref->elem,
 			               XML_XINCLUDE_XPTR_RESULT,
 				   "XPointer selects unexpected nodes: #%s\n",
 				       fragment);
@@ -1679,7 +1669,7 @@ loaded:
 		}
 	    }
 	}
-        ctxt->incTab[nr]->inc = xmlXIncludeCopyXPointer(ctxt, xptr);
+        ref->inc = xmlXIncludeCopyXPointer(ctxt, xptr);
         xmlXPathFreeObject(xptr);
 	xmlXPathFreeContext(xptrctxt);
 	xmlFree(fragment);
@@ -1700,8 +1690,7 @@ loaded:
 	 * The base is only adjusted if "necessary", i.e. if the xinclude node
 	 * has a base specified, or the URL is relative
 	 */
-	base = xmlGetNsProp(ctxt->incTab[nr]->ref, BAD_CAST "base",
-			XML_XML_NAMESPACE);
+	base = xmlGetNsProp(ref->elem, BAD_CAST "base", XML_XML_NAMESPACE);
 	if (base == NULL) {
 	    /*
 	     * No xml:base on the xinclude node, so we check whether the
@@ -1709,8 +1698,7 @@ loaded:
 	     */
 	    curBase = xmlBuildRelativeURI(URL, ctxt->base);
 	    if (curBase == NULL) {	/* Error return */
-	        xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	               XML_XINCLUDE_HREF_URI,
+	        xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
 		       "trying to build relative URI from %s\n", URL);
 	    } else {
 		/* If the URI doesn't contain a slash, it's not relative */
@@ -1721,7 +1709,7 @@ loaded:
 	    }
 	}
 	if (base != NULL) {	/* Adjustment may be needed */
-	    node = ctxt->incTab[nr]->inc;
+	    node = ref->inc;
 	    while (node != NULL) {
 		/* Only work on element nodes */
 		if (node->type == XML_ELEMENT_NODE) {
@@ -1751,7 +1739,7 @@ loaded:
 				relBase = xmlBuildURI(xmlBase, base);
 				if (relBase == NULL) { /* error */
 				    xmlXIncludeErr(ctxt,
-						ctxt->incTab[nr]->ref,
+						ref->elem,
 						XML_XINCLUDE_HREF_URI,
 					"trying to rebuild base from %s\n",
 						xmlBase);
@@ -1770,13 +1758,12 @@ loaded:
 	    xmlFree(base);
 	}
     }
-    if ((nr < ctxt->incNr) && (ctxt->incTab[nr]->doc != NULL) &&
-	(ctxt->incTab[nr]->count <= 1)) {
+    if ((ref->doc != NULL) && (ref->count <= 1)) {
 #ifdef DEBUG_XINCLUDE
-        printf("freeing %s\n", ctxt->incTab[nr]->doc->URL);
+        printf("freeing %s\n", ref->doc->URL);
 #endif
-	xmlFreeDoc(ctxt->incTab[nr]->doc);
-	ctxt->incTab[nr]->doc = NULL;
+	xmlFreeDoc(ref->doc);
+	ref->doc = NULL;
     }
     xmlFree(URL);
     return(0);
@@ -1786,14 +1773,15 @@ loaded:
  * xmlXIncludeLoadTxt:
  * @ctxt:  the XInclude context
  * @url:  the associated URL
- * @nr:  the xinclude node number
+ * @ref:  an XMLXincludeRefPtr
  *
  * Load the content, and store the result in the XInclude context
  *
  * Returns 0 in case of success, -1 in case of failure
  */
 static int
-xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
+xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
+                   xmlXIncludeRefPtr ref) {
     xmlParserInputBufferPtr buf;
     xmlNodePtr node;
     xmlURIPtr uri;
@@ -1814,12 +1802,12 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      */
     uri = xmlParseURI((const char *)url);
     if (uri == NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, XML_XINCLUDE_HREF_URI,
+	xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
 	               "invalid value URI %s\n", url);
 	return(-1);
     }
     if (uri->fragment != NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, XML_XINCLUDE_TEXT_FRAGMENT,
+	xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_TEXT_FRAGMENT,
 	               "fragment identifier forbidden for text: %s\n",
 		       (const xmlChar *) uri->fragment);
 	xmlFreeURI(uri);
@@ -1828,7 +1816,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
     if (URL == NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, XML_XINCLUDE_HREF_URI,
+	xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
 	               "invalid value URI %s\n", url);
 	return(-1);
     }
@@ -1838,8 +1826,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      * directly through ctxt->doc.
      */
     if (URL[0] == 0) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	               XML_XINCLUDE_TEXT_DOCUMENT,
+	xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_TEXT_DOCUMENT,
 		       "text serialization of document not available\n", NULL);
 	xmlFree(URL);
 	return(-1);
@@ -1857,8 +1844,8 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     /*
      * Try to get the encoding if available
      */
-    if ((ctxt->incTab[nr] != NULL) && (ctxt->incTab[nr]->ref != NULL)) {
-	encoding = xmlGetProp(ctxt->incTab[nr]->ref, XINCLUDE_PARSE_ENCODING);
+    if (ref->elem != NULL) {
+	encoding = xmlGetProp(ref->elem, XINCLUDE_PARSE_ENCODING);
     }
     if (encoding != NULL) {
 	/*
@@ -1869,8 +1856,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	 */
         enc = xmlParseCharEncoding((const char *) encoding);
 	if (enc == XML_CHAR_ENCODING_ERROR) {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	                   XML_XINCLUDE_UNKNOWN_ENCODING,
+	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_UNKNOWN_ENCODING,
 			   "encoding %s not supported\n", encoding);
 	    xmlFree(encoding);
 	    xmlFree(URL);
@@ -1923,8 +1909,7 @@ xinclude_multibyte_fallback:
 		    xmlBufShrink(buf->buffer, i);
 		    goto xinclude_multibyte_fallback;
 		} else {
-		    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-				   XML_XINCLUDE_INVALID_CHAR,
+		    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_INVALID_CHAR,
 				   "%s contains invalid char\n", URL);
 		    xmlFreeParserCtxt(pctxt);
 		    xmlFreeParserInputBuffer(buf);
@@ -1947,7 +1932,7 @@ loaded:
     /*
      * Add the element as the replacement copy.
      */
-    ctxt->incTab[nr]->inc = node;
+    ref->inc = node;
     xmlFree(URL);
     return(0);
 }
@@ -1956,7 +1941,7 @@ loaded:
  * xmlXIncludeLoadFallback:
  * @ctxt:  the XInclude context
  * @fallback:  the fallback node
- * @nr:  the xinclude node number
+ * @ref:  an XMLXincludeRefPtr
  *
  * Load the content of the fallback node, and store the result
  * in the XInclude context
@@ -1964,7 +1949,8 @@ loaded:
  * Returns 0 in case of success, -1 in case of failure
  */
 static int
-xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
+xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback,
+                        xmlXIncludeRefPtr ref) {
     xmlXIncludeCtxtPtr newctxt;
     int ret = 0;
     int oldNbErrors = ctxt->nbErrors;
@@ -1991,15 +1977,14 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	    ret = -1;
 	xmlXIncludeFreeContext(newctxt);
 
-	ctxt->incTab[nr]->inc = xmlDocCopyNodeList(ctxt->doc,
-	                                           fallback->children);
-        if (ctxt->incTab[nr]->inc == NULL)
-            ctxt->incTab[nr]->emptyFb = 1;
+	ref->inc = xmlDocCopyNodeList(ctxt->doc, fallback->children);
+        if (ref->inc == NULL)
+            ref->emptyFb = 1;
     } else {
-        ctxt->incTab[nr]->inc = NULL;
-	ctxt->incTab[nr]->emptyFb = 1;	/* flag empty callback */
+        ref->inc = NULL;
+	ref->emptyFb = 1;	/* flag empty callback */
     }
-    ctxt->incTab[nr]->fallback = 1;
+    ref->fallback = 1;
     return(ret);
 }
 
@@ -2021,7 +2006,8 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
  */
 static xmlXIncludeRefPtr
 xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
-    int nr, i;
+    xmlXIncludeRefPtr ref;
+    int i;
 
     if (ctxt->depth >= XINCLUDE_MAX_DEPTH) {
         xmlXIncludeErr(ctxt, node, XML_XINCLUDE_RECURSION,
@@ -2030,7 +2016,7 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     }
 
     for (i = ctxt->incBase; i < ctxt->incNr; i++) {
-        if (ctxt->incTab[i]->ref == node) {
+        if (ctxt->incTab[i]->elem == node) {
             if (ctxt->incTab[i]->expanding) {
                 xmlXIncludeErr(ctxt, node, XML_XINCLUDE_RECURSION,
                                "inclusion loop detected\n", NULL);
@@ -2040,29 +2026,29 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
         }
     }
 
-    if (xmlXIncludeAddNode(ctxt, node) < 0)
+    ref = xmlXIncludeAddNode(ctxt, node);
+    if (ref == NULL)
         return(NULL);
-    nr = ctxt->incNr - 1;
-    ctxt->incTab[nr]->expanding = 1;
+    ref->expanding = 1;
     ctxt->depth++;
-    xmlXIncludeLoadNode(ctxt, nr);
+    xmlXIncludeLoadNode(ctxt, ref);
     ctxt->depth--;
-    ctxt->incTab[nr]->expanding = 0;
+    ref->expanding = 0;
 
-    return(ctxt->incTab[nr]);
+    return(ref);
 }
 
 /**
  * xmlXIncludeLoadNode:
  * @ctxt: an XInclude context
- * @nr: the node number
+ * @ref: an xmlXIncludeRefPtr
  *
  * Find and load the infoset replacement for the given node.
  *
  * Returns 0 if substitution succeeded, -1 if some processing failed
  */
 static int
-xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
+xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
     xmlNodePtr cur;
     xmlChar *href;
     xmlChar *parse;
@@ -2072,11 +2058,9 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     int xml = 1; /* default Issue 64 */
     int ret;
 
-    if (ctxt == NULL)
+    if ((ctxt == NULL) || (ref == NULL))
 	return(-1);
-    if ((nr < 0) || (nr >= ctxt->incNr))
-	return(-1);
-    cur = ctxt->incTab[nr]->ref;
+    cur = ref->elem;
     if (cur == NULL)
 	return(-1);
 
@@ -2096,8 +2080,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	else if (xmlStrEqual(parse, XINCLUDE_PARSE_TEXT))
 	    xml = 0;
 	else {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	                   XML_XINCLUDE_PARSE_VALUE,
+	    xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_PARSE_VALUE,
 			   "invalid value %s for 'parse'\n", parse);
 	    if (href != NULL)
 		xmlFree(href);
@@ -2131,8 +2114,8 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	    xmlFree(eschref);
     }
     if (URI == NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	               XML_XINCLUDE_HREF_URI, "failed build URL\n", NULL);
+	xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_HREF_URI,
+                       "failed build URL\n", NULL);
 	if (parse != NULL)
 	    xmlFree(parse);
 	if (href != NULL)
@@ -2154,10 +2137,10 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     ctxt->base = base;
 
     if (xml) {
-	ret = xmlXIncludeLoadDoc(ctxt, URI, nr);
+	ret = xmlXIncludeLoadDoc(ctxt, URI, ref);
 	/* xmlXIncludeGetFragment(ctxt, cur, URI); */
     } else {
-	ret = xmlXIncludeLoadTxt(ctxt, URI, nr);
+	ret = xmlXIncludeLoadTxt(ctxt, URI, ref);
     }
 
     /*
@@ -2181,15 +2164,14 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 		(xmlStrEqual(children->name, XINCLUDE_FALLBACK)) &&
 		((xmlStrEqual(children->ns->href, XINCLUDE_NS)) ||
 		 (xmlStrEqual(children->ns->href, XINCLUDE_OLD_NS)))) {
-		ret = xmlXIncludeLoadFallback(ctxt, children, nr);
+		ret = xmlXIncludeLoadFallback(ctxt, children, ref);
 		break;
 	    }
 	    children = children->next;
 	}
     }
     if (ret < 0) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	               XML_XINCLUDE_NO_FALLBACK,
+	xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_NO_FALLBACK,
 		       "could not load %s, and no fallback was found\n",
 		       URI);
     }
@@ -2211,27 +2193,25 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 /**
  * xmlXIncludeIncludeNode:
  * @ctxt: an XInclude context
- * @nr: the node number
+ * @ref: an xmlXIncludeRefPtr
  *
  * Implement the infoset replacement for the given node
  *
  * Returns 0 if substitution succeeded, -1 if some processing failed
  */
 static int
-xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
+xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
     xmlNodePtr cur, end, list, tmp;
 
-    if (ctxt == NULL)
+    if ((ctxt == NULL) || (ref == NULL))
 	return(-1);
-    if ((nr < 0) || (nr >= ctxt->incNr))
-	return(-1);
-    cur = ctxt->incTab[nr]->ref;
+    cur = ref->elem;
     if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
 	return(-1);
 
-    list = ctxt->incTab[nr]->inc;
-    ctxt->incTab[nr]->inc = NULL;
-    ctxt->incTab[nr]->emptyFb = 0;
+    list = ref->inc;
+    ref->inc = NULL;
+    ref->emptyFb = 0;
 
     /*
      * Check against the risk of generating a multi-rooted document
@@ -2247,8 +2227,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	    tmp = tmp->next;
 	}
 	if (nb_elem > 1) {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	                   XML_XINCLUDE_MULTIPLE_ROOT,
+	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_MULTIPLE_ROOT,
 		       "XInclude error: would result in multiple root nodes\n",
 			   NULL);
             xmlFreeNodeList(list);
@@ -2278,7 +2257,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	 * Change the current node as an XInclude start one, and add an
 	 * XInclude end one
 	 */
-        if (ctxt->incTab[nr]->fallback)
+        if (ref->fallback)
             xmlUnsetProp(cur, BAD_CAST "href");
 	cur->type = XML_XINCLUDE_START;
         /* Remove fallback children */
@@ -2289,8 +2268,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
         }
 	end = xmlNewDocNode(cur->doc, cur->ns, cur->name, NULL);
 	if (end == NULL) {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
-	                   XML_XINCLUDE_BUILD_FAILED,
+	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_BUILD_FAILED,
 			   "failed to build node\n", NULL);
             xmlFreeNodeList(list);
 	    return(-1);
@@ -2472,7 +2450,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
     for (i = ctxt->incBase;i < ctxt->incNr; i++) {
 	if ((ctxt->incTab[i]->inc != NULL) ||
 	    (ctxt->incTab[i]->emptyFb != 0))	/* (empty fallback) */
-	    xmlXIncludeIncludeNode(ctxt, i);
+	    xmlXIncludeIncludeNode(ctxt, ctxt->incTab[i]);
 	ret++;
     }
 

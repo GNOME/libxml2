@@ -1535,15 +1535,6 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
        xmlFree(URL);
        URL = xmlStrdup(doc->URL);
    }
-    for (i = nr + 1; i < ctxt->incNr; i++) {
-	if (xmlStrEqual(URL, ctxt->incTab[i]->URI)) {
-	    ctxt->incTab[nr]->count++;
-#ifdef DEBUG_XINCLUDE
-	    printf("Increasing %s count since reused\n", URL);
-#endif
-            break;
-	}
-    }
 
     /*
      * Make sure we have all entities fixed up

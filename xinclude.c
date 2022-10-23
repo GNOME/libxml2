@@ -99,8 +99,7 @@ static int
 xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref);
 
 static int
-xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
-                     int skipRoot);
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree, int skipRoot);
 
 
 /************************************************************************
@@ -739,7 +738,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	 */
 	newctxt->parseFlags = ctxt->parseFlags;
         newctxt->incTotal = ctxt->incTotal;
-	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc), 0);
+	xmlXIncludeDoProcess(newctxt, xmlDocGetRootElement(doc), 0);
         ctxt->incTotal = newctxt->incTotal;
 	for (i = 0;i < ctxt->incNr;i++) {
 	    newctxt->incTab[i] = NULL;
@@ -1952,7 +1951,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback,
 	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
         newctxt->incTotal = ctxt->incTotal;
-        if (xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback, 1) < 0)
+        if (xmlXIncludeDoProcess(newctxt, fallback, 1) < 0)
             ret = -1;
         ctxt->incTotal = newctxt->incTotal;
 	if (ctxt->nbErrors > oldNbErrors)
@@ -2352,7 +2351,6 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
 /**
  * xmlXIncludeDoProcess:
  * @ctxt: the XInclude processing context
- * @doc: an XML document
  * @tree: the top of the tree to process
  * @skipRoot: don't process the root node of the tree
  *
@@ -2362,13 +2360,12 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  *    or the number of substitutions done.
  */
 static int
-xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree,
-                     int skipRoot) {
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree, int skipRoot) {
     xmlNodePtr cur;
     int ret = 0;
     int i;
 
-    if ((doc == NULL) || (tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
+    if ((tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
 	return(-1);
     if ((skipRoot) && (tree->children == NULL))
         return(-1);
@@ -2486,7 +2483,7 @@ xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree, int flags, void *data) {
     ctxt->_private = data;
     ctxt->base = xmlStrdup((xmlChar *)tree->doc->URL);
     xmlXIncludeSetFlags(ctxt, flags);
-    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree, 0);
+    ret = xmlXIncludeDoProcess(ctxt, tree, 0);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
         ret = -1;
 
@@ -2570,7 +2567,7 @@ xmlXIncludeProcessTreeFlags(xmlNodePtr tree, int flags) {
 	return(-1);
     ctxt->base = xmlNodeGetBase(tree->doc, tree);
     xmlXIncludeSetFlags(ctxt, flags);
-    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree, 0);
+    ret = xmlXIncludeDoProcess(ctxt, tree, 0);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
 	ret = -1;
 
@@ -2610,7 +2607,7 @@ xmlXIncludeProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||
         (node->doc == NULL) || (ctxt == NULL))
 	return(-1);
-    ret = xmlXIncludeDoProcess(ctxt, node->doc, node, 0);
+    ret = xmlXIncludeDoProcess(ctxt, node, 0);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
 	ret = -1;
     return(ret);

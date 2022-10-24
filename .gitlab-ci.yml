@@ -43,15 +43,15 @@ clang:asan:
     UBSAN_OPTIONS: "print_stacktrace=1"
     ASAN_SYMBOLIZER_PATH: "$CI_PROJECT_DIR/.gitlab-ci/llvm-symbolizer"
 
-# Disabled, MSan seems broken on Ubntu 22.04
-.clang:msan:
+clang:msan:
   extends: .test
-  only:
-    - schedules
+#  only:
+#    - schedules
   variables:
     CONFIG: "--without-python --without-zlib --without-lzma"
     CC: clang
     CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Wno-error=cast-align"
+    MSAN_SYMBOLIZER_PATH: "$CI_PROJECT_DIR/.gitlab-ci/llvm-symbolizer"
 
 .mingw:
   tags:

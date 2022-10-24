@@ -1,7 +1,7 @@
 # The image is also used for libxslt, that's why we need git and
 # libgcrypt-dev.
 
-FROM ubuntu:22.04
+FROM ubuntu:22.10
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \

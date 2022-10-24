@@ -25,13 +25,39 @@
 
 /* #define DEBUG_THREADS */
 
-#ifdef HAVE_POSIX_THREADS
+#if defined(HAVE_POSIX_THREADS) && \
+    defined(__GLIBC__) && \
+    __GLIBC__ * 100 + __GLIBC_MINOR__ >= 234
 
-#if defined(__GNUC__) && defined(__linux__)
+/*
+ * The modern way available since glibc 2.32.
+ *
+ * The check above is for glibc 2.34 which merged the pthread symbols into
+ * libc. Since we still allow linking without pthread symbols (see below),
+ * this only works if pthread symbols are guaranteed to be available.
+ */
 
-static int libxml_is_threaded = -1;
+#include <sys/single_threaded.h>
 
-#define XML_PTHREAD_WEAK
+#define XML_IS_THREADED() (!__libc_single_threaded)
+
+#elif defined(HAVE_POSIX_THREADS) && \
+      defined(__GLIBC__) && \
+      defined(__GNUC__)
+
+/*
+ * The traditional way to check for single-threaded applications with
+ * glibc was to check whether the separate libpthread library is
+ * linked in. This works by not linking libxml2 with libpthread (see
+ * BASE_THREAD_LIBS in configure.ac and Makefile.am) and declaring
+ * pthread functions as weak symbols.
+ *
+ * In glibc 2.34, the pthread symbols were moved from libpthread to libc,
+ * so this doesn't work anymore.
+ *
+ * At some point, this legacy code and the BASE_THREAD_LIBS hack in
+ * configure.ac can probably be removed.
+ */
 
 #pragma weak pthread_getspecific
 #pragma weak pthread_setspecific
@@ -50,13 +76,16 @@ static int libxml_is_threaded = -1;
 #pragma weak pthread_key_delete
 #pragma weak pthread_cond_signal
 
-#else /* __GNUC__, __GLIBC__, __linux__ */
+#define XML_PTHREAD_WEAK
+#define XML_IS_THREADED() libxml_is_threaded
 
-static int libxml_is_threaded = 1;
+static int libxml_is_threaded = -1;
 
-#endif /* __GNUC__, __GLIBC__, __linux__ */
+#else /* other POSIX platforms */
 
-#endif /* HAVE_POSIX_THREADS */
+#define XML_IS_THREADED() 1
+
+#endif
 
 /*
  * TODO: this module still uses malloc/free and not xmlMalloc/xmlFree
@@ -187,7 +216,11 @@ xmlMutexLock(xmlMutexPtr tok)
     if (tok == NULL)
         return;
 #ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded != 0)
+    /*
+     * This assumes that __libc_single_threaded won't change while the
+     * lock is held.
+     */
+    if (XML_IS_THREADED() != 0)
         pthread_mutex_lock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
     EnterCriticalSection(&tok->cs);
@@ -207,7 +240,7 @@ xmlMutexUnlock(xmlMutexPtr tok)
     if (tok == NULL)
         return;
 #ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded != 0)
+    if (XML_IS_THREADED() != 0)
         pthread_mutex_unlock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
     LeaveCriticalSection(&tok->cs);
@@ -232,12 +265,10 @@ xmlNewRMutex(void)
     if ((tok = malloc(sizeof(xmlRMutex))) == NULL)
         return (NULL);
 #ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded != 0) {
-        pthread_mutex_init(&tok->lock, NULL);
-        tok->held = 0;
-        tok->waiters = 0;
-        pthread_cond_init(&tok->cv, NULL);
-    }
+    pthread_mutex_init(&tok->lock, NULL);
+    tok->held = 0;
+    tok->waiters = 0;
+    pthread_cond_init(&tok->cv, NULL);
 #elif defined HAVE_WIN32_THREADS
     InitializeCriticalSection(&tok->cs);
 #endif
@@ -257,10 +288,8 @@ xmlFreeRMutex(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
     if (tok == NULL)
         return;
 #ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded != 0) {
-        pthread_mutex_destroy(&tok->lock);
-        pthread_cond_destroy(&tok->cv);
-    }
+    pthread_mutex_destroy(&tok->lock);
+    pthread_cond_destroy(&tok->cv);
 #elif defined HAVE_WIN32_THREADS
     DeleteCriticalSection(&tok->cs);
 #endif
@@ -279,7 +308,7 @@ xmlRMutexLock(xmlRMutexPtr tok)
     if (tok == NULL)
         return;
 #ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded == 0)
+    if (XML_IS_THREADED() == 0)
         return;
 
     pthread_mutex_lock(&tok->lock);
@@ -315,7 +344,7 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
     if (tok == NULL)
         return;
 #ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded == 0)
+    if (XML_IS_THREADED() == 0)
         return;
 
     pthread_mutex_lock(&tok->lock);
@@ -342,11 +371,14 @@ __xmlGlobalInitMutexLock(void)
 {
     /* Make sure the global init lock is initialized and then lock it. */
 #ifdef HAVE_POSIX_THREADS
-    /* The mutex is statically initialized, so we just lock it. */
 #ifdef XML_PTHREAD_WEAK
     if (pthread_mutex_lock == NULL)
         return;
-#endif /* XML_PTHREAD_WEAK */
+#else
+    if (XML_IS_THREADED() == 0)
+        return;
+#endif
+    /* The mutex is statically initialized, so we just lock it. */
     pthread_mutex_lock(&global_init_lock);
 #elif defined HAVE_WIN32_THREADS
     LPCRITICAL_SECTION cs;
@@ -389,9 +421,12 @@ __xmlGlobalInitMutexUnlock(void)
 {
 #ifdef HAVE_POSIX_THREADS
 #ifdef XML_PTHREAD_WEAK
-    if (pthread_mutex_unlock == NULL)
+    if (pthread_mutex_lock == NULL)
         return;
-#endif /* XML_PTHREAD_WEAK */
+#else
+    if (XML_IS_THREADED() == 0)
+        return;
+#endif
     pthread_mutex_unlock(&global_init_lock);
 #elif defined HAVE_WIN32_THREADS
     if (global_init_lock != NULL) {
@@ -524,7 +559,7 @@ xmlGetGlobalState(void)
 #ifdef HAVE_POSIX_THREADS
     xmlGlobalState *globalval;
 
-    if (libxml_is_threaded == 0)
+    if (XML_IS_THREADED() == 0)
         return (NULL);
 
     if ((globalval = (xmlGlobalState *)
@@ -618,7 +653,7 @@ xmlGetThreadId(void)
     pthread_t id;
     int ret;
 
-    if (libxml_is_threaded == 0)
+    if (XML_IS_THREADED() == 0)
         return (0);
     id = pthread_self();
     /* horrible but preserves compat, see warning above */
@@ -644,15 +679,13 @@ int
 xmlIsMainThread(void)
 {
     xmlInitParser();
-#ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded == 0)
-        return (1);
-#endif
 
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlIsMainThread()\n");
 #endif
 #ifdef HAVE_POSIX_THREADS
+    if (XML_IS_THREADED() == 0)
+        return (1);
     return (pthread_equal(mainthread,pthread_self()));
 #elif defined HAVE_WIN32_THREADS
     return (mainthread == GetCurrentThreadId());
@@ -712,34 +745,13 @@ xmlInitThreadsInternal(void)
 {
 #ifdef HAVE_POSIX_THREADS
 #ifdef XML_PTHREAD_WEAK
-    if (libxml_is_threaded == -1) {
-        if ((pthread_getspecific != NULL) &&
-            (pthread_setspecific != NULL) &&
-            (pthread_key_create != NULL) &&
-            (pthread_key_delete != NULL) &&
-            (pthread_mutex_init != NULL) &&
-            (pthread_mutex_destroy != NULL) &&
-            (pthread_mutex_lock != NULL) &&
-            (pthread_mutex_unlock != NULL) &&
-            (pthread_cond_init != NULL) &&
-            (pthread_cond_destroy != NULL) &&
-            (pthread_cond_wait != NULL) &&
-            /*
-             * pthread_equal can be inline, resuting in -Waddress warnings.
-             * Let's assume it's available if all the other functions are.
-             */
-            /* (pthread_equal != NULL) && */
-            (pthread_self != NULL) &&
-            (pthread_cond_signal != NULL)) {
-            libxml_is_threaded = 1;
-
-/* fprintf(stderr, "Running multithreaded\n"); */
-        } else {
-
-/* fprintf(stderr, "Running without multithread\n"); */
-            libxml_is_threaded = 0;
-        }
-    }
+    /*
+     * This is somewhat unreliable since libpthread could be loaded
+     * later with dlopen() and threads could be created. But it's
+     * long-standing behavior and hard to work around.
+     */
+    if (libxml_is_threaded == -1)
+        libxml_is_threaded = (pthread_mutex_lock != NULL);
 #endif /* XML_PTHREAD_WEAK */
     pthread_key_create(&globalkey, xmlFreeGlobalState);
     mainthread = pthread_self();

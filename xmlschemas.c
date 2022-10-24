@@ -21875,7 +21875,6 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
 {
     const xmlChar *cur, *end;
     const xmlChar *nsname = NULL, *location;
-    int count = 0;
     int ret = 0;
     xmlSchemaAttrInfoPtr iattr;
 
@@ -21910,7 +21909,7 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
 		end++;
 	    if (end == cur)
 		break;
-	    count++; /* TODO: Don't use the schema's dict. */
+	    /* TODO: Don't use the schema's dict. */
 	    nsname = xmlDictLookup(vctxt->schema->dict, cur, end - cur);
 	    cur = end;
 	}
@@ -21937,7 +21936,7 @@ xmlSchemaAssembleByXSI(xmlSchemaValidCtxtPtr vctxt)
 	    }
 	    break;
 	}
-	count++; /* TODO: Don't use the schema's dict. */
+	/* TODO: Don't use the schema's dict. */
 	location = xmlDictLookup(vctxt->schema->dict, cur, end - cur);
 	cur = end;
 	ret = xmlSchemaAssembleByLocation(vctxt, vctxt->schema,

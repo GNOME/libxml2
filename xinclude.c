@@ -1308,8 +1308,10 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
                 return(-1);
             }
 	    doc = ctxt->urlTab[i].doc;
-            if (doc == NULL)
+            if (doc == NULL) {
+                xmlFree(URL);
                 return(-1);
+            }
 	    goto loaded;
 	}
     }

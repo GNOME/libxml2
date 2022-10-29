@@ -2247,7 +2247,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
              * of replacements.
              */
             if (ctxt->incTotal >= 20)
-                return(-1);
+                break;
 #endif
             ctxt->incTotal++;
             ref = xmlXIncludeExpandNode(ctxt, cur);

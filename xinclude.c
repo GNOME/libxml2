@@ -2227,7 +2227,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
     xmlXIncludeRefPtr ref;
     xmlNodePtr cur;
     int ret = 0;
-    int i;
+    int i, start;
 
     if ((tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
 	return(-1);
@@ -2237,6 +2237,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
     /*
      * First phase: lookup the elements in the document
      */
+    start = ctxt->incNr;
     cur = tree;
     do {
 	/* TODO: need to work on entities -> stack */
@@ -2276,13 +2277,13 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
     /*
      * Second phase: extend the original document infoset.
      */
-    for (i = 0; i < ctxt->incNr; i++) {
+    for (i = start; i < ctxt->incNr; i++) {
 	if (ctxt->incTab[i]->replace != 0) {
             if ((ctxt->incTab[i]->inc != NULL) ||
                 (ctxt->incTab[i]->emptyFb != 0)) {	/* (empty fallback) */
                 xmlXIncludeIncludeNode(ctxt, ctxt->incTab[i]);
-                ctxt->incTab[i]->replace = 0;
             }
+            ctxt->incTab[i]->replace = 0;
         } else {
             /*
              * Ignore includes which were added indirectly, for example

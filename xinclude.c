@@ -1249,9 +1249,10 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     xmlXIncludeDocPtr cache;
     xmlDocPtr doc;
     xmlURIPtr uri;
-    xmlChar *URL;
+    xmlChar *URL = NULL;
     xmlChar *fragment = NULL;
     int i = 0;
+    int ret = -1;
 #ifdef LIBXML_XPTR_ENABLED
     int saveFlags;
 #endif
@@ -1266,7 +1267,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     if (uri == NULL) {
 	xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
 		       "invalid value URI %s\n", url);
-	return(-1);
+        goto error;
     }
     if (uri->fragment != NULL) {
 	fragment = (xmlChar *) uri->fragment;
@@ -1281,9 +1282,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     if (URL == NULL) {
         xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_HREF_URI,
                        "invalid value URI %s\n", url);
-	if (fragment != NULL)
-	    xmlFree(fragment);
-	return(-1);
+        goto error;
     }
 
     /*
@@ -1307,13 +1306,11 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
             if (ctxt->urlTab[i].expanding) {
                 xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_RECURSION,
                                "inclusion loop detected\n", NULL);
-                return(-1);
+                goto error;
             }
 	    doc = ctxt->urlTab[i].doc;
-            if (doc == NULL) {
-                xmlFree(URL);
-                return(-1);
-            }
+            if (doc == NULL)
+                goto error;
 	    goto loaded;
 	}
     }
@@ -1350,7 +1347,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
         if (tmp == NULL) {
             xmlXIncludeErrMemory(ctxt, ref->elem,
                                  "growing XInclude URL table");
-            return(-1);
+            goto error;
         }
         ctxt->urlMax = newSize;
         ctxt->urlTab = tmp;
@@ -1360,12 +1357,8 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     cache->url = xmlStrdup(URL);
     cache->expanding = 0;
 
-    if (doc == NULL) {
-	xmlFree(URL);
-	if (fragment != NULL)
-	    xmlFree(fragment);
-	return(-1);
-    }
+    if (doc == NULL)
+        goto error;
     /*
      * It's possible that the requested URL has been mapped to a
      * completely different location (e.g. through a catalog entry).
@@ -1420,18 +1413,14 @@ loaded:
 	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
 			   "XPointer expressions not allowed in streaming"
                            " mode\n", NULL);
-	    xmlFree(URL);
-	    xmlFree(fragment);
-	    return(-1);
+            goto error;
         }
 
 	xptrctxt = xmlXPtrNewContext(doc, NULL, NULL);
 	if (xptrctxt == NULL) {
 	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
 			   "could not create XPointer context\n", NULL);
-	    xmlFree(URL);
-	    xmlFree(fragment);
-	    return(-1);
+            goto error;
 	}
 	xptr = xmlXPtrEval(fragment, xptrctxt);
 	if (xptr == NULL) {
@@ -1439,9 +1428,7 @@ loaded:
 			   "XPointer evaluation failed: #%s\n",
 			   fragment);
 	    xmlXPathFreeContext(xptrctxt);
-	    xmlFree(URL);
-	    xmlFree(fragment);
-	    return(-1);
+            goto error;
 	}
 	switch (xptr->type) {
 	    case XPATH_UNDEFINED:
@@ -1458,17 +1445,13 @@ loaded:
 			       fragment);
                 xmlXPathFreeObject(xptr);
 		xmlXPathFreeContext(xptrctxt);
-		xmlFree(URL);
-		xmlFree(fragment);
-		return(-1);
+                goto error;
 	    case XPATH_NODESET:
 	        if ((xptr->nodesetval == NULL) ||
 		    (xptr->nodesetval->nodeNr <= 0)) {
                     xmlXPathFreeObject(xptr);
 		    xmlXPathFreeContext(xptrctxt);
-		    xmlFree(URL);
-		    xmlFree(fragment);
-		    return(-1);
+                    goto error;
 		}
 
 #ifdef LIBXML_XPTR_LOCS_ENABLED
@@ -1530,7 +1513,6 @@ loaded:
         ref->inc = xmlXIncludeCopyXPointer(ctxt, xptr);
         xmlXPathFreeObject(xptr);
 	xmlXPathFreeContext(xptrctxt);
-	xmlFree(fragment);
     }
 #endif
 
@@ -1616,8 +1598,12 @@ loaded:
 	    xmlFree(base);
 	}
     }
+    ret = 0;
+
+error:
     xmlFree(URL);
-    return(0);
+    xmlFree(fragment);
+    return(ret);
 }
 
 /**

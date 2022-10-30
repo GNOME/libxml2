@@ -603,17 +603,19 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	              const xmlURL url ATTRIBUTE_UNUSED) {
     xmlDocPtr oldDoc;
     xmlXIncludeRefPtr *oldIncTab;
-    int oldIncMax, oldIncNr;
+    int oldIncMax, oldIncNr, oldIsStream;
     int i;
 
     oldDoc = ctxt->doc;
     oldIncMax = ctxt->incMax;
     oldIncNr = ctxt->incNr;
     oldIncTab = ctxt->incTab;
+    oldIsStream = ctxt->isStream;
     ctxt->doc = doc;
     ctxt->incMax = 0;
     ctxt->incNr = 0;
     ctxt->incTab = NULL;
+    ctxt->isStream = 0;
 
     xmlXIncludeDoProcess(ctxt, xmlDocGetRootElement(doc));
 
@@ -627,6 +629,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
     ctxt->incMax = oldIncMax;
     ctxt->incNr = oldIncNr;
     ctxt->incTab = oldIncTab;
+    ctxt->isStream = oldIsStream;
 }
 
 /************************************************************************
@@ -1409,7 +1412,7 @@ loaded:
 	xmlXPathContextPtr xptrctxt;
 	xmlNodeSetPtr set;
 
-        if (ctxt->isStream) {
+        if (ctxt->isStream && doc == ctxt->doc) {
 	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
 			   "XPointer expressions not allowed in streaming"
                            " mode\n", NULL);

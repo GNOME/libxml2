@@ -30,6 +30,7 @@
 #include "private/buf.h"
 #include "private/error.h"
 #include "private/tree.h"
+#include "private/xinclude.h"
 
 #define XINCLUDE_MAX_DEPTH 40
 
@@ -103,6 +104,7 @@ struct _xmlXIncludeCtxt {
 
     unsigned long    incTotal; /* total number of processed inclusions */
     int			depth; /* recursion depth */
+    int		     isStream; /* streaming mode */
 };
 
 static xmlXIncludeRefPtr
@@ -1414,6 +1416,15 @@ loaded:
 	xmlXPathContextPtr xptrctxt;
 	xmlNodeSetPtr set;
 
+        if (ctxt->isStream) {
+	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
+			   "XPointer expressions not allowed in streaming"
+                           " mode\n", NULL);
+	    xmlFree(URL);
+	    xmlFree(fragment);
+	    return(-1);
+        }
+
 	xptrctxt = xmlXPtrNewContext(doc, NULL, NULL);
 	if (xptrctxt == NULL) {
 	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_XPTR_FAILED,
@@ -2297,6 +2308,18 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
 	ret++;
     }
 
+    if (ctxt->isStream) {
+        /*
+         * incTab references nodes which will eventually be deleted in
+         * streaming mode. The table is only required for XPointer
+         * expressions which aren't allowed in streaming mode.
+         */
+        for (i = 0;i < ctxt->incNr;i++) {
+            xmlXIncludeFreeRef(ctxt->incTab[i]);
+        }
+        ctxt->incNr = 0;
+    }
+
     return(ret);
 }
 
@@ -2314,6 +2337,23 @@ xmlXIncludeSetFlags(xmlXIncludeCtxtPtr ctxt, int flags) {
     if (ctxt == NULL)
         return(-1);
     ctxt->parseFlags = flags;
+    return(0);
+}
+
+/**
+ * xmlXIncludeSetStreamingMode:
+ * @ctxt:  an XInclude processing context
+ * @mode:  whether streaming mode should be enabled
+ *
+ * In streaming mode, XPointer expressions aren't allowed.
+ *
+ * Returns 0 in case of success and -1 in case of error.
+ */
+int
+xmlXIncludeSetStreamingMode(xmlXIncludeCtxtPtr ctxt, int mode) {
+    if (ctxt == NULL)
+        return(-1);
+    ctxt->isStream = !!mode;
     return(0);
 }
 

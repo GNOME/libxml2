@@ -2384,8 +2384,9 @@ xmlNewDocNodeEatName(xmlDocPtr doc, xmlNsPtr ns,
 	}
     } else {
         /* if name don't come from the doc dictionary free it here */
-        if ((name != NULL) && (doc != NULL) &&
-	    (!(xmlDictOwns(doc->dict, name))))
+        if ((name != NULL) &&
+            ((doc == NULL) || (doc->dict == NULL) ||
+	     (!(xmlDictOwns(doc->dict, name)))))
 	    xmlFree(name);
     }
     return(cur);

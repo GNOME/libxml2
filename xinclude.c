@@ -555,14 +555,15 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     }
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
-    xmlFree(URI);
     if (URL == NULL) {
 	xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_HREF_URI,
 	               "invalid value URI %s\n", URI);
 	if (fragment != NULL)
 	    xmlFree(fragment);
+        xmlFree(URI);
 	return(NULL);
     }
+    xmlFree(URI);
 
     if (xmlStrEqual(URL, ctxt->doc->URL))
 	local = 1;

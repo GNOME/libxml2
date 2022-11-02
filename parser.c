@@ -2220,7 +2220,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     } else {
         int expandPE = ((ctxt->external != 0) || (ctxt->inputNr != 1));
 
-	while (1) {
+	while (ctxt->instate != XML_PARSER_EOF) {
             if (IS_BLANK_CH(CUR)) { /* CHECKED tstblanks.xml */
 		NEXT;
 	    } else if (CUR == '%') {

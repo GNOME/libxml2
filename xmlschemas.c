@@ -19960,7 +19960,8 @@ xmlSchemaCheckElemSubstGroup(xmlSchemaParserCtxtPtr ctxt,
 	    /*
 	    * The set of all {derivation method}s involved in the derivation
 	    */
-	    while ((type != NULL) && (type != headType)) {
+	    while ((type != NULL) && (type != headType) &&
+                   (type != type->baseType)) {
 		if ((WXS_IS_EXTENSION(type)) &&
 		    ((methSet & XML_SCHEMAS_TYPE_BLOCK_RESTRICTION) == 0))
 		    methSet |= XML_SCHEMAS_TYPE_BLOCK_EXTENSION;

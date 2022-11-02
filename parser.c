@@ -7518,8 +7518,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			    firstChild = cur;
 			}
 			xmlAddChild((xmlNodePtr) ent, nw);
-			xmlAddChild(ctxt->node, cur);
 		    }
+		    xmlAddChild(ctxt->node, cur);
 		    if (cur == last)
 			break;
 		    cur = next;

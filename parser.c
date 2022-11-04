@@ -4807,7 +4807,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
     if (!IS_CHAR(r)) {
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
                           "xmlParseComment: invalid xmlChar value %d\n",
-	                  q);
+	                  r);
 	xmlFree (buf);
 	return;
     }

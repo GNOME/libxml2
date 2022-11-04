@@ -1719,9 +1719,6 @@
   <release version="2.6.28">
     <symbol file="xmlreader">xmlTextReaderSetup</symbol>
   </release>
-  <release version="2.6.29">
-    <symbol file="threads">xmlDllMain</symbol>
-  </release>
   <release version="2.6.32">
     <symbol file="schematron">xmlSchematronSetValidStructuredErrors</symbol>
   </release>

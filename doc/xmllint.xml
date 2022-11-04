@@ -72,6 +72,7 @@
             <arg choice="plain"><option>--debugent</option></arg>
             <arg choice="plain"><option>--copy</option></arg>
             <arg choice="plain"><option>--recover</option></arg>
+            <arg choice="plain"><option>--nodict</option></arg>
             <arg choice="plain"><option>--noent</option></arg>
             <arg choice="plain"><option>--noout</option></arg>
             <arg choice="plain"><option>--nonet</option></arg>
@@ -115,6 +116,7 @@
             <arg choice="plain"><option>--relaxng <replaceable class="option">SCHEMA</replaceable></option></arg>
             <arg choice="plain"><option>--schema <replaceable class="option">SCHEMA</replaceable></option></arg>
             <arg choice="plain"><option>--c14n</option></arg>
+            <arg choice="plain"><option>--pedantic</option></arg>
         </group>
         <group choice="req">
             <arg choice="plain" rep="repeat"><replaceable>XML-FILE(S)</replaceable></arg>
@@ -377,6 +379,16 @@
         </varlistentry>
 
         <varlistentry>
+            <term><option>--nodict</option></term>
+            <listitem>
+                <para>
+                    Don't use dictionaries (parser option XML_PARSE_NODICT).
+                    Only for debugging.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
             <term><option>--noent</option></term>
             <listitem>
                 <para>
@@ -466,6 +478,13 @@
                     nodes in the document based on an XPath (subset) expression. Used
                     for debugging.
                 </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--pedantic</option></term>
+            <listitem>
+                <para>Enable additional warnings.</para>
             </listitem>
         </varlistentry>
 

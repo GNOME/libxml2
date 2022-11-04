@@ -377,7 +377,9 @@
                     queries to the user's own set of catalogs. This can be done by setting
                     the <envar>XML_CATALOG_FILES</envar> environment variable to a space-separated
                     list of catalogs. Use percent-encoding to escape spaces or other characters.
-                    An empty variable should deactivate loading the default <filename>/etc/xml/catalog</filename> catalog.
+                    An empty variable should deactivate loading the default catalog from
+                    <filename>/etc/xml/catalog</filename> or, more specifically,
+                    <filename>${sysconfdir}/xml/catalog</filename>.
                 </para>
             </listitem>
         </varlistentry>

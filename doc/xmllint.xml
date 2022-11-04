@@ -167,7 +167,8 @@
                 <para>
                     Use the <acronym>SGML</acronym> catalog(s) from <envar>SGML_CATALOG_FILES</envar>.
                     Otherwise <acronym>XML</acronym> catalogs starting
-                    from <filename>/etc/xml/catalog</filename> are used by default.
+                    from <filename>/etc/xml/catalog</filename> or, more specifically,
+                    <filename>${sysconfdir}/xml/catalog</filename> are used by default.
                 </para>
             </listitem>
         </varlistentry>
@@ -800,7 +801,7 @@
                     queries to the user's own set of catalogs. This can be done by setting
                     the <envar>SGML_CATALOG_FILES</envar> environment variable to a list
                     of catalogs. An empty one should deactivate loading the
-                    default <filename>/etc/sgml/catalog</filename> catalog.
+                    default catalog.
                 </para>
             </listitem>
         </varlistentry>
@@ -812,7 +813,7 @@
                     queries to the user's own set of catalogs. This can be done by setting
                     the <envar>XML_CATALOG_FILES</envar> environment variable to a space-separated
                     list of catalogs. Use percent-encoding to escape spaces or other characters.
-                    An empty variable should deactivate loading the default <filename>/etc/xml/catalog</filename> catalog.
+                    An empty variable should deactivate loading the default catalog.
                 </para>
             </listitem>
         </varlistentry>

@@ -49,6 +49,7 @@
     <group choice="opt">
         <arg choice="plain"><option>--sgml</option></arg>
         <arg choice="plain"><option>--shell</option></arg>
+        <arg choice="plain"><option>--convert</option></arg>
         <arg choice="plain"><option>--create</option></arg>
         <arg choice="plain"><option>--del <replaceable>VALUE(S)</replaceable></option></arg>
         <arg choice="plain">
@@ -149,6 +150,15 @@
                     the name of a catalog file to an <acronym>SGML</acronym> supercatalog,
                     a file that contains references to other included <acronym>SGML</acronym>
                     catalog files.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--convert</option></term>
+            <listitem>
+                <para>
+                    Convert SGML catalog to XML.
                 </para>
             </listitem>
         </varlistentry>

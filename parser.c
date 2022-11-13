@@ -8551,7 +8551,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
     } else {
 	xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
 	       "Specification mandates value for attribute %s\n", name);
-	return(NULL);
+	return(name);
     }
 
     /*
@@ -8647,11 +8647,13 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     while (((RAW != '>') &&
 	   ((RAW != '/') || (NXT(1) != '>')) &&
 	   (IS_BYTE_CHAR(RAW))) && (ctxt->instate != XML_PARSER_EOF)) {
-        int id = ctxt->input->id;
-	unsigned long cons = CUR_CONSUMED;
-
 	attname = xmlParseAttribute(ctxt, &attvalue);
-        if ((attname != NULL) && (attvalue != NULL)) {
+        if (attname == NULL) {
+	    xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
+			   "xmlParseStartTag: problem parsing attributes\n");
+	    break;
+	}
+        if (attvalue != NULL) {
 	    /*
 	     * [ WFC: Unique Att Spec ]
 	     * No attribute name may appear more than once in the same
@@ -8712,12 +8714,6 @@ failed:
 	if (SKIP_BLANKS == 0) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "attributes construct error\n");
-	}
-        if ((cons == CUR_CONSUMED) && (id == ctxt->input->id) &&
-            (attname == NULL) && (attvalue == NULL)) {
-	    xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
-			   "xmlParseStartTag: problem parsing attributes\n");
-	    break;
 	}
 	SHRINK;
         GROW;
@@ -9270,7 +9266,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
         xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
                           "Specification mandates value for attribute %s\n",
                           name);
-        return (NULL);
+        return (name);
     }
 
     if (*prefix == ctxt->str_xml) {
@@ -9396,13 +9392,16 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     while (((RAW != '>') &&
 	   ((RAW != '/') || (NXT(1) != '>')) &&
 	   (IS_BYTE_CHAR(RAW))) && (ctxt->instate != XML_PARSER_EOF)) {
-	int id = ctxt->input->id;
-	unsigned long cons = CUR_CONSUMED;
 	int len = -1, alloc = 0;
 
 	attname = xmlParseAttribute2(ctxt, prefix, localname,
 	                             &aprefix, &attvalue, &len, &alloc);
-        if ((attname == NULL) || (attvalue == NULL))
+        if (attname == NULL) {
+	    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+	         "xmlParseStartTag: problem parsing attributes\n");
+	    break;
+	}
+        if (attvalue == NULL)
             goto next_attr;
 	if (len < 0) len = xmlStrlen(attvalue);
 
@@ -9576,12 +9575,6 @@ next_attr:
 	if (SKIP_BLANKS == 0) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "attributes construct error\n");
-	    break;
-	}
-        if ((cons == CUR_CONSUMED) && (id == ctxt->input->id) &&
-            (attname == NULL) && (attvalue == NULL)) {
-	    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	         "xmlParseStartTag: problem parsing attributes\n");
 	    break;
 	}
         GROW;

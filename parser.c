@@ -6816,8 +6816,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 inputIds[depth] = id;
                 depth++;
             } else if (CMP6(CUR_PTR, 'I', 'G', 'N', 'O', 'R', 'E')) {
-                int state;
-                xmlParserInputState instate;
                 size_t ignoreDepth = 0;
 
                 SKIP(6);
@@ -6833,15 +6831,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                                    " not in the same entity\n");
                 }
                 NEXT;
-
-                /*
-                 * Parse up to the end of the conditional section but disable
-                 * SAX event generating DTD building in the meantime
-                 */
-                state = ctxt->disableSAX;
-                instate = ctxt->instate;
-                if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-                ctxt->instate = XML_PARSER_IGNORE;
 
                 while (RAW != 0) {
                     if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
@@ -6862,9 +6851,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                         NEXT;
                     }
                 }
-
-                ctxt->disableSAX = state;
-                ctxt->instate = instate;
 
 		if (RAW == 0) {
 		    xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);

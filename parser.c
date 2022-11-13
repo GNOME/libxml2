@@ -2131,7 +2131,7 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
     if (((curEnd > XML_MAX_LOOKUP_LIMIT) ||
          (curBase > XML_MAX_LOOKUP_LIMIT)) &&
          ((ctxt->input->buf) &&
-          (ctxt->input->buf->readcallback != xmlInputReadCallbackNop)) &&
+          (ctxt->input->buf->readcallback != NULL)) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Huge input lookup");
         xmlHaltParser(ctxt);

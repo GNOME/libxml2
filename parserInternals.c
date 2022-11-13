@@ -300,7 +300,8 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     if (in->buf->buffer == NULL) return(-1);
 
     /* Don't grow memory buffers. */
-    if (in->buf->readcallback == NULL) return(0);
+    if ((in->buf->encoder == NULL) && (in->buf->readcallback == NULL))
+        return(0);
 
     CHECK_BUFFER(in);
 

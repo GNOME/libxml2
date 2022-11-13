@@ -717,20 +717,6 @@ xmlCheckFilename (const char *path)
 }
 
 /**
- * xmlInputReadCallbackNop:
- *
- * No Operation xmlInputReadCallback function, does nothing.
- *
- * Returns zero
- */
-int
-xmlInputReadCallbackNop(void *context ATTRIBUTE_UNUSED,
-                        char *buffer ATTRIBUTE_UNUSED,
-                        int len ATTRIBUTE_UNUSED) {
-    return(0);
-}
-
-/**
  * xmlFdRead:
  * @context:  the I/O context
  * @buffer:  where to drop data
@@ -2946,7 +2932,7 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
     ret = xmlAllocParserInputBuffer(enc);
     if (ret != NULL) {
         ret->context = (void *) mem;
-	ret->readcallback = xmlInputReadCallbackNop;
+	ret->readcallback = NULL;
 	ret->closecallback = NULL;
 	errcode = xmlBufAdd(ret->buffer, (const xmlChar *) mem, size);
 	if (errcode != 0) {
@@ -3244,10 +3230,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	res = in->readcallback(in->context, &buffer[0], len);
 	if (res <= 0)
 	    in->readcallback = endOfInput;
-    } else {
-	xmlIOErr(XML_IO_NO_INPUT, NULL);
-	in->error = XML_IO_NO_INPUT;
-	return(-1);
+    } else if (in->encoder == NULL) {
+	return(0);
     }
     if (res < 0) {
 	return(-1);
@@ -3314,13 +3298,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
  */
 int
 xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
-    if ((in == NULL) || (in->error)) return(-1);
-    if (in->readcallback != NULL)
-	return(xmlParserInputBufferGrow(in, len));
-    else if (xmlBufGetAllocationScheme(in->buffer) == XML_BUFFER_ALLOC_IMMUTABLE)
-	return(0);
-    else
-        return(-1);
+    return(xmlParserInputBufferGrow(in, len));
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

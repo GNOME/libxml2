@@ -354,7 +354,11 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 	ret = xmlBufShrink(in->buf->buffer, used - LINE_LEN);
 	if (ret > 0) {
             used -= ret;
-	    in->consumed += ret;
+            if ((ret > ULONG_MAX) ||
+                (in->consumed > ULONG_MAX - (unsigned long)ret))
+                in->consumed = ULONG_MAX;
+            else
+                in->consumed += ret;
 	}
     }
 
@@ -1070,8 +1074,7 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
      * Is there already some content down the pipe to convert ?
      */
     if (xmlBufIsEmpty(in->buffer) == 0) {
-        int processed;
-        unsigned int use;
+        size_t processed, use, consumed;
 
         /*
          * Specific handling of the Byte Order Mark for
@@ -1132,7 +1135,12 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                            NULL);
             return (-1);
         }
-        in->rawconsumed += use - xmlBufUse(in->raw);
+        consumed = use - xmlBufUse(in->raw);
+        if ((consumed > ULONG_MAX) ||
+            (in->rawconsumed > ULONG_MAX - (unsigned long)consumed))
+            in->rawconsumed = ULONG_MAX;
+        else
+	    in->rawconsumed += consumed;
     }
     return (0);
 }

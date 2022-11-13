@@ -3141,7 +3141,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
     if (len < 0) return(0);
     if ((in == NULL) || (in->error)) return(-1);
     if (in->encoder != NULL) {
-        unsigned int use;
+        size_t use, consumed;
 
         /*
 	 * Store the data in the incoming raw buffer
@@ -3163,7 +3163,12 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
-	in->rawconsumed += (use - xmlBufUse(in->raw));
+        consumed = use - xmlBufUse(in->raw);
+        if ((consumed > ULONG_MAX) ||
+            (in->rawconsumed > ULONG_MAX - (unsigned long)consumed))
+            in->rawconsumed = ULONG_MAX;
+        else
+	    in->rawconsumed += consumed;
     } else {
 	nbchars = len;
         ret = xmlBufAdd(in->buffer, (xmlChar *) buf, nbchars);
@@ -3256,7 +3261,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     }
 
     if (in->encoder != NULL) {
-        unsigned int use;
+        size_t use, consumed;
 
 	/*
 	 * convert as much as possible to the parser reading buffer.
@@ -3268,7 +3273,12 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
-	in->rawconsumed += (use - xmlBufUse(buf));
+        consumed = use - xmlBufUse(buf);
+        if ((consumed > ULONG_MAX) ||
+            (in->rawconsumed > ULONG_MAX - (unsigned long)consumed))
+            in->rawconsumed = ULONG_MAX;
+        else
+	    in->rawconsumed += consumed;
     }
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,

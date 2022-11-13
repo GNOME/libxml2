@@ -2173,9 +2173,6 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
     if (l == 1) b[i++] = v;						\
     else i += xmlCopyCharMultiByte(&b[i],v)
 
-#define CUR_CONSUMED \
-    (ctxt->input->consumed + (ctxt->input->cur - ctxt->input->base))
-
 /**
  * xmlSkipBlankChars:
  * @ctxt:  the XML parser context
@@ -2325,7 +2322,7 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse Reference declarations
+ * Parse a numeric character reference. Always consumes '&'.
  *
  * [66] CharRef ::= '&#' [0-9]+ ';' |
  *                  '&#x' [0-9a-fA-F]+ ';'
@@ -2406,6 +2403,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    ctxt->input->cur++;
 	}
     } else {
+        if (RAW == '&')
+            SKIP(1);
         xmlFatalErr(ctxt, XML_ERR_INVALID_CHARREF, NULL);
     }
 
@@ -4428,7 +4427,9 @@ static const unsigned char test_char_data[256] = {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse a CharData section.
+ * Parse character data. Always makes progress if the first char isn't
+ * '<' or '&'.
+ *
  * if we are within a CDATA section ']]>' marks an end of section.
  *
  * The right angle bracket (>) may be represented using the string "&gt;",
@@ -4586,6 +4587,8 @@ get_more:
  * @ctxt:  an XML parser context
  * @cdata:  int indicating whether we are within a CDATA section
  *
+ * Always makes progress if the first char isn't '<' or '&'.
+ *
  * parse a CharData section.this is the fallback function
  * of xmlParseCharData() when the parsing requires handling
  * of non-ASCII characters.
@@ -4666,12 +4669,12 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	    }
 	}
     }
-    if ((cur != 0) && (!IS_CHAR(cur))) {
+    if ((CUR != 0) && (!IS_CHAR(cur))) {
 	/* Generate the error and skip the offending character */
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
                           "PCDATA invalid Char value %d\n",
-	                  cur);
-	NEXTL(l);
+	                  cur ? cur : CUR);
+	NEXT;
     }
 }
 
@@ -7148,6 +7151,8 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
  * CharRef, a predefined entity, if there is no reference() callback.
  * or if the parser was asked to switch to that mode.
  *
+ * Always consumes '&'.
+ *
  * [67] Reference ::= EntityRef | CharRef
  */
 void
@@ -7581,7 +7586,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse ENTITY references declarations
+ * Parse an entitiy reference. Always consumes '&'.
  *
  * [68] EntityRef ::= '&' Name ';'
  *
@@ -8592,8 +8597,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse a start of tag either for rule element or
- * EmptyElement. In both case we don't parse the tag closing chars.
+ * Parse a start tag. Always consumes '<'.
  *
  * [40] STag ::= '<' Name (S Attribute)* S? '>'
  *
@@ -8745,7 +8749,7 @@ failed:
  * @line:  line of the start tag
  * @nsNr:  number of namespaces on the start tag
  *
- * parse an end of tag
+ * Parse an end tag. Always consumes '</'.
  *
  * [42] ETag ::= '</' Name S? '>'
  *
@@ -9311,8 +9315,8 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
  * xmlParseStartTag2:
  * @ctxt:  an XML parser context
  *
- * parse a start of tag either for rule element or
- * EmptyElement. In both case we don't parse the tag closing chars.
+ * Parse a start tag. Always consumes '<'.
+ *
  * This routine is called when running SAX2 parsing
  *
  * [40] STag ::= '<' Name (S Attribute)* S? '>'
@@ -9765,7 +9769,7 @@ done:
  * @line:  line of the start tag
  * @nsNr:  number of namespaces on the start tag
  *
- * parse an end of tag
+ * Parse an end tag. Always consumes '</'.
  *
  * [42] ETag ::= '</' Name S? '>'
  *
@@ -9834,7 +9838,7 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlStartTag *tag) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * Parse escaped pure raw content.
+ * Parse escaped pure raw content. Always consumes '<!['.
  *
  * [18] CDSect ::= CDStart CData CDEnd
  *
@@ -9857,11 +9861,13 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
                     XML_MAX_HUGE_LENGTH :
                     XML_MAX_TEXT_LENGTH;
 
-    /* Check 2.6.0 was NXT(0) not RAW */
-    if (CMP9(CUR_PTR, '<', '!', '[', 'C', 'D', 'A', 'T', 'A', '[')) {
-	SKIP(9);
-    } else
+    if ((CUR != '<') || (NXT(1) != '!') || (NXT(2) != '['))
         return;
+    SKIP(3);
+
+    if (!CMP6(CUR_PTR, 'C', 'D', 'A', 'T', 'A', '['))
+        return;
+    SKIP(6);
 
     ctxt->instate = XML_PARSER_CDATA_SECTION;
     r = CUR_CHAR(rl);
@@ -9959,8 +9965,6 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
     GROW;
     while ((RAW != 0) &&
 	   (ctxt->instate != XML_PARSER_EOF)) {
-        int id = ctxt->input->id;
-	unsigned long cons = CUR_CONSUMED;
 	const xmlChar *cur = ctxt->input->cur;
 
 	/*
@@ -10018,13 +10022,6 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
 
 	GROW;
 	SHRINK;
-
-	if ((cons == CUR_CONSUMED) && (id == ctxt->input->id)) {
-	    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	                "detected an error in element content\n");
-	    xmlHaltParser(ctxt);
-            break;
-	}
     }
 }
 
@@ -10095,6 +10092,8 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
  *
  * Parse the start of an XML element. Returns -1 in case of error, 0 if an
  * opening tag was parsed, 1 if an empty element was parsed.
+ *
+ * Always consumes '<'.
  */
 static int
 xmlParseElementStart(xmlParserCtxtPtr ctxt) {
@@ -10223,15 +10222,18 @@ xmlParseElementStart(xmlParserCtxtPtr ctxt) {
  * xmlParseElementEnd:
  * @ctxt:  an XML parser context
  *
- * Parse the end of an XML element.
+ * Parse the end of an XML element. Always consumes '</'.
  */
 static void
 xmlParseElementEnd(xmlParserCtxtPtr ctxt) {
     xmlParserNodeInfo node_info;
     xmlNodePtr ret = ctxt->node;
 
-    if (ctxt->nameNr <= 0)
+    if (ctxt->nameNr <= 0) {
+        if ((RAW == '<') && (NXT(1) == '/'))
+            SKIP(2);
         return;
+    }
 
     /*
      * parse the end of tag: '</' should be here.
@@ -11633,15 +11635,11 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 break;
 	    }
             case XML_PARSER_CONTENT: {
-		int id;
-		unsigned long cons;
 		if ((avail < 2) && (ctxt->inputNr == 1))
 		    goto done;
 		cur = ctxt->input->cur[0];
 		next = ctxt->input->cur[1];
 
-		id = ctxt->input->id;
-	        cons = CUR_CONSUMED;
 		if ((cur == '<') && (next == '/')) {
 		    ctxt->instate = XML_PARSER_END_TAG;
 		    break;
@@ -11688,6 +11686,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 9)) {
 		    goto done;
+		} else if (cur == '<') {
+		    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+		                "detected an error in element content\n");
+                    SKIP(1);
 		} else if (cur == '&') {
 		    if ((!terminate) &&
 		        (xmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
@@ -11721,12 +11723,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                     }
 		    ctxt->checkIndex = 0;
 		    xmlParseCharData(ctxt, 0);
-		}
-		if ((cons == CUR_CONSUMED) && (id == ctxt->input->id)) {
-		    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-		                "detected an error in element content\n");
-		    xmlHaltParser(ctxt);
-		    break;
 		}
 		break;
 	    }

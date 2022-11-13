@@ -22,7 +22,7 @@ Entity: line 1:
     ^
 Entity: line 2: 
 <![INCLUDE[
-^
+  ^
 ./test/errors/759573-2.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %xx;ÿggKENSMYNT&#35;MENTD&#372zz;'>

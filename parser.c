@@ -4900,7 +4900,8 @@ not_terminated:
  *
  * DEPRECATED: Internal function, don't use.
  *
- * Skip an XML (SGML) comment <!-- .... -->
+ * Parse an XML (SGML) comment. Always consumes '<!'.
+ *
  *  The spec says that "For compatibility, the string "--" (double-hyphen)
  *  must not occur within comments. "
  *
@@ -4923,12 +4924,15 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     /*
      * Check that there is a comment right here.
      */
-    if ((RAW != '<') || (NXT(1) != '!') ||
-        (NXT(2) != '-') || (NXT(3) != '-')) return;
+    if ((RAW != '<') || (NXT(1) != '!'))
+        return;
+    SKIP(2);
+    if ((RAW != '-') || (NXT(1) != '-'))
+        return;
     state = ctxt->instate;
     ctxt->instate = XML_PARSER_COMMENT;
     inputid = ctxt->input->id;
-    SKIP(4);
+    SKIP(2);
     SHRINK;
     GROW;
 
@@ -5342,7 +5346,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse a notation declaration
+ * Parse a notation declaration. Always consumes '<!'.
  *
  * [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID) S? '>'
  *
@@ -5360,10 +5364,14 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *Pubid;
     xmlChar *Systemid;
 
-    if (CMP10(CUR_PTR, '<', '!', 'N', 'O', 'T', 'A', 'T', 'I', 'O', 'N')) {
+    if ((CUR != '<') || (NXT(1) != '!'))
+        return;
+    SKIP(2);
+
+    if (CMP8(CUR_PTR, 'N', 'O', 'T', 'A', 'T', 'I', 'O', 'N')) {
 	int inputid = ctxt->input->id;
 	SHRINK;
-	SKIP(10);
+	SKIP(8);
 	if (SKIP_BLANKS == 0) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after '<!NOTATION'\n");
@@ -5416,7 +5424,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse <!ENTITY declarations
+ * Parse an entity declaration. Always consumes '<!'.
  *
  * [70] EntityDecl ::= GEDecl | PEDecl
  *
@@ -5443,11 +5451,15 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
     int isParameter = 0;
     xmlChar *orig = NULL;
 
+    if ((CUR != '<') || (NXT(1) != '!'))
+        return;
+    SKIP(2);
+
     /* GROW; done in the caller */
-    if (CMP8(CUR_PTR, '<', '!', 'E', 'N', 'T', 'I', 'T', 'Y')) {
+    if (CMP6(CUR_PTR, 'E', 'N', 'T', 'I', 'T', 'Y')) {
 	int inputid = ctxt->input->id;
 	SHRINK;
-	SKIP(8);
+	SKIP(6);
 	if (SKIP_BLANKS == 0) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after '<!ENTITY'\n");
@@ -6006,7 +6018,7 @@ xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * : parse the Attribute list def for an element
+ * Parse an attribute list declaration for an element. Always consumes '<!'.
  *
  * [52] AttlistDecl ::= '<!ATTLIST' S Name AttDef* S? '>'
  *
@@ -6019,10 +6031,14 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
     const xmlChar *attrName;
     xmlEnumerationPtr tree;
 
-    if (CMP9(CUR_PTR, '<', '!', 'A', 'T', 'T', 'L', 'I', 'S', 'T')) {
+    if ((CUR != '<') || (NXT(1) != '!'))
+        return;
+    SKIP(2);
+
+    if (CMP7(CUR_PTR, 'A', 'T', 'T', 'L', 'I', 'S', 'T')) {
 	int inputid = ctxt->input->id;
 
-	SKIP(9);
+	SKIP(7);
 	if (SKIP_BLANKS == 0) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		                 "Space required after '<!ATTLIST'\n");
@@ -6634,7 +6650,7 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, const xmlChar *name,
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse an Element declaration.
+ * Parse an element declaration. Always consumes '<!'.
  *
  * [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
  *
@@ -6649,11 +6665,15 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
     int ret = -1;
     xmlElementContentPtr content  = NULL;
 
+    if ((CUR != '<') || (NXT(1) != '!'))
+        return(ret);
+    SKIP(2);
+
     /* GROW; done in the caller */
-    if (CMP9(CUR_PTR, '<', '!', 'E', 'L', 'E', 'M', 'E', 'N', 'T')) {
+    if (CMP7(CUR_PTR, 'E', 'L', 'E', 'M', 'E', 'N', 'T')) {
 	int inputid = ctxt->input->id;
 
-	SKIP(9);
+	SKIP(7);
 	if (SKIP_BLANKS == 0) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		           "Space required after 'ELEMENT'\n");
@@ -6740,6 +6760,8 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseConditionalSections
  * @ctxt:  an XML parser context
+ *
+ * Parse a conditional section. Always consumes '<!['.
  *
  * [61] conditionalSect ::= includeSect | ignoreSect
  * [62] includeSect ::= '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'
@@ -6865,17 +6887,12 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                                " in the same entity\n");
             }
             SKIP(3);
-        } else {
-            int id = ctxt->input->id;
-            unsigned long cons = CUR_CONSUMED;
-
+        } else if ((RAW == '<') && ((NXT(1) == '!') || (NXT(1) == '?'))) {
             xmlParseMarkupDecl(ctxt);
-
-            if ((id == ctxt->input->id) && (cons == CUR_CONSUMED)) {
-                xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-                xmlHaltParser(ctxt);
-                goto error;
-            }
+        } else {
+            xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
+            xmlHaltParser(ctxt);
+            goto error;
         }
 
         if (depth == 0)
@@ -6895,7 +6912,7 @@ error:
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse Markup declarations
+ * Parse markup declarations. Always consumes '<!' or '<?'.
  *
  * [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
  *                     NotationDecl | PI | Comment
@@ -6924,6 +6941,8 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 			xmlParseElementDecl(ctxt);
 		    else if (NXT(3) == 'N')
 			xmlParseEntityDecl(ctxt);
+                    else
+                        SKIP(2);
 		    break;
 	        case 'A':
 		    xmlParseAttributeListDecl(ctxt);
@@ -6936,6 +6955,7 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 		    break;
 		default:
 		    /* there is an error but it will be detected later */
+                    SKIP(2);
 		    break;
 	    }
 	} else if (NXT(1) == '?') {
@@ -7099,20 +7119,16 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     while (((RAW == '<') && (NXT(1) == '?')) ||
            ((RAW == '<') && (NXT(1) == '!')) ||
 	   (RAW == '%')) {
-	int id = ctxt->input->id;
-	unsigned long cons = CUR_CONSUMED;
-
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
-	    xmlParseConditionalSections(ctxt);
-	} else
-	    xmlParseMarkupDecl(ctxt);
+            xmlParseConditionalSections(ctxt);
+        } else if ((RAW == '<') && ((NXT(1) == '!') || (NXT(1) == '?'))) {
+            xmlParseMarkupDecl(ctxt);
+        } else {
+            xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
+            break;
+        }
         SKIP_BLANKS;
-
-	if ((id == ctxt->input->id) && (cons == CUR_CONSUMED)) {
-	    xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-	    break;
-	}
     }
 
     if (RAW != 0) {
@@ -7947,7 +7963,8 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse PEReference declarations
+ * Parse a parameter entity reference. Always consumes '%'.
+ *
  * The entity content is handled directly by pushing it's content as
  * a new input stream.
  *
@@ -8430,14 +8447,9 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	 * PEReferences.
 	 * Subsequence (markupdecl | PEReference | S)*
 	 */
+	SKIP_BLANKS;
 	while (((RAW != ']') || (ctxt->inputNr > baseInputNr)) &&
                (ctxt->instate != XML_PARSER_EOF)) {
-	    int id = ctxt->input->id;
-	    unsigned long cons = CUR_CONSUMED;
-
-	    SKIP_BLANKS;
-	    xmlParseMarkupDecl(ctxt);
-	    xmlParsePEReference(ctxt);
 
             /*
              * Conditional sections are allowed from external entities included
@@ -8446,16 +8458,20 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
             if ((ctxt->inputNr > 1) && (ctxt->input->filename != NULL) &&
                 (RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
                 xmlParseConditionalSections(ctxt);
-            }
-
-	    if ((id == ctxt->input->id) && (cons == CUR_CONSUMED)) {
+            } else if ((RAW == '<') && ((NXT(1) == '!') || (NXT(1) == '?'))) {
+	        xmlParseMarkupDecl(ctxt);
+            } else if (RAW == '%') {
+	        xmlParsePEReference(ctxt);
+            } else {
 		xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	     "xmlParseInternalSubset: error detected in Markup declaration\n");
+                        "xmlParseInternalSubset: error detected in"
+                        " Markup declaration\n");
                 if (ctxt->inputNr > baseInputNr)
                     xmlPopInput(ctxt);
                 else
 		    break;
-	    }
+            }
+	    SKIP_BLANKS;
 	}
 	if (RAW == ']') {
 	    NEXT;

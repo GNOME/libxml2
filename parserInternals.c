@@ -299,6 +299,9 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     if (in->cur == NULL) return(-1);
     if (in->buf->buffer == NULL) return(-1);
 
+    /* Don't grow memory buffers. */
+    if (in->buf->readcallback == NULL) return(0);
+
     CHECK_BUFFER(in);
 
     indx = in->cur - in->base;
@@ -308,10 +311,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
 
         return(0);
     }
-    if (in->buf->readcallback != NULL) {
-	ret = xmlParserInputBufferGrow(in->buf, len);
-    } else
-        return(0);
+    ret = xmlParserInputBufferGrow(in->buf, len);
 
     in->base = xmlBufContent(in->buf->buffer);
     in->cur = in->base + indx;

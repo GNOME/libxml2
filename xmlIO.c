@@ -3208,33 +3208,41 @@ endOfInput (void * context ATTRIBUTE_UNUSED,
  */
 int
 xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
-    char *buffer = NULL;
+    xmlBufPtr buf;
     int res = 0;
-    int nbchars = 0;
 
     if ((in == NULL) || (in->error)) return(-1);
     if ((len <= MINLEN) && (len != 4))
         len = MINLEN;
 
-    if (xmlBufGrow(in->buffer, len + 1) < 0) {
-        xmlIOErrMemory("growing input buffer");
-        in->error = XML_ERR_NO_MEMORY;
-        return(-1);
+    if (in->encoder == NULL) {
+        if (in->readcallback == NULL)
+            return(0);
+        buf = in->buffer;
+    } else {
+        if (in->raw == NULL) {
+	    in->raw = xmlBufCreate();
+	}
+        buf = in->raw;
     }
-    buffer = (char *)xmlBufEnd(in->buffer);
 
     /*
      * Call the read method for this I/O type.
      */
     if (in->readcallback != NULL) {
-	res = in->readcallback(in->context, &buffer[0], len);
+        if (xmlBufGrow(buf, len + 1) < 0) {
+            xmlIOErrMemory("growing input buffer");
+            in->error = XML_ERR_NO_MEMORY;
+            return(-1);
+        }
+
+	res = in->readcallback(in->context, (char *)xmlBufEnd(buf), len);
 	if (res <= 0)
 	    in->readcallback = endOfInput;
-    } else if (in->encoder == NULL) {
-	return(0);
-    }
-    if (res < 0) {
-	return(-1);
+        if (res < 0)
+            return(-1);
+
+        xmlBufAddLen(buf, res);
     }
 
     /*
@@ -3247,41 +3255,27 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 #endif
     }
 
-    len = res;
     if (in->encoder != NULL) {
         unsigned int use;
-
-        /*
-	 * Store the data in the incoming raw buffer
-	 */
-        if (in->raw == NULL) {
-	    in->raw = xmlBufCreate();
-	}
-	res = xmlBufAdd(in->raw, (const xmlChar *) buffer, len);
-	if (res != 0)
-	    return(-1);
 
 	/*
 	 * convert as much as possible to the parser reading buffer.
 	 */
-	use = xmlBufUse(in->raw);
-	nbchars = xmlCharEncInput(in, 1);
-	if (nbchars < 0) {
+	use = xmlBufUse(buf);
+	res = xmlCharEncInput(in, 1);
+	if (res < 0) {
 	    xmlIOErr(XML_IO_ENCODER, NULL);
 	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
-	in->rawconsumed += (use - xmlBufUse(in->raw));
-    } else {
-	nbchars = len;
-        xmlBufAddLen(in->buffer, nbchars);
+	in->rawconsumed += (use - xmlBufUse(buf));
     }
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,
 	    "I/O: read %d chars, buffer %d\n",
             nbchars, xmlBufUse(in->buffer));
 #endif
-    return(nbchars);
+    return(res);
 }
 
 /**

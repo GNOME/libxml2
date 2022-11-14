@@ -2115,7 +2115,10 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	xmlSHRINK (ctxt);
 
 static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
-    xmlParserInputShrink(ctxt->input);
+    /* Don't shrink memory buffers. */
+    if ((ctxt->input->buf) &&
+        ((ctxt->input->buf->encoder) || (ctxt->input->buf->readcallback)))
+        xmlParserInputShrink(ctxt->input);
     if (*ctxt->input->cur == 0)
         xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
 }

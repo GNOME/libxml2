@@ -11349,7 +11349,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 
     if ((ctxt->input != NULL) &&
         (ctxt->input->cur - ctxt->input->base > 4096)) {
-	xmlSHRINK(ctxt);
+        xmlParserInputShrink(ctxt->input);
 	ctxt->checkIndex = 0;
     }
     xmlParseGetLasts(ctxt, &lastlt, &lastgt);

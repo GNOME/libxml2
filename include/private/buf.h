@@ -5,7 +5,6 @@
 
 xmlBufPtr xmlBufCreate(void);
 xmlBufPtr xmlBufCreateSize(size_t size);
-xmlBufPtr xmlBufCreateStatic(void *mem, size_t size);
 
 int xmlBufSetAllocationScheme(xmlBufPtr buf,
                               xmlBufferAllocationScheme scheme);

@@ -14377,7 +14377,6 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
     if (ctxt == NULL)
 	return(NULL);
 
-    /* TODO: xmlParserInputBufferCreateStatic, requires some serious changes */
     buf = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
 	xmlFreeParserCtxt(ctxt);

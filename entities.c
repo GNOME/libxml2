@@ -1011,7 +1011,6 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
  */
 static void
 xmlDumpEntityContent(xmlBufferPtr buf, const xmlChar *content) {
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return;
     if (xmlStrchr(content, '%')) {
         const xmlChar * base, *cur;
 

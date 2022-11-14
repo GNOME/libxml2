@@ -2584,8 +2584,7 @@ retry:
 		xmlEncodingErr(XML_I18N_CONV_FAILED,
 		    "output conversion failed due to conv error, bytes %s\n",
 			       buf);
-		if (xmlBufGetAllocationScheme(in) != XML_BUFFER_ALLOC_IMMUTABLE)
-		    content[0] = ' ';
+		content[0] = ' ';
                 break;
 	    }
 
@@ -2745,8 +2744,7 @@ retry:
 		xmlEncodingErr(XML_I18N_CONV_FAILED,
 		    "output conversion failed due to conv error, bytes %s\n",
 			       buf);
-		if (in->alloc != XML_BUFFER_ALLOC_IMMUTABLE)
-		    in->content[0] = ' ';
+		in->content[0] = ' ';
 	        break;
 	    }
 

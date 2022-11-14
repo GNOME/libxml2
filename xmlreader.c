@@ -5366,8 +5366,7 @@ xmlReaderForMemory(const char *buffer, int size, const char *URL,
     xmlTextReaderPtr reader;
     xmlParserInputBufferPtr buf;
 
-    buf = xmlParserInputBufferCreateStatic(buffer, size,
-                                      XML_CHAR_ENCODING_NONE);
+    buf = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
         return (NULL);
     }
@@ -5593,7 +5592,7 @@ xmlReaderNewMemory(xmlTextReaderPtr reader, const char *buffer, int size,
     if (buffer == NULL)
         return (-1);
 
-    input = xmlParserInputBufferCreateStatic(buffer, size,
+    input = xmlParserInputBufferCreateMem(buffer, size,
                                       XML_CHAR_ENCODING_NONE);
     if (input == NULL) {
         return (-1);

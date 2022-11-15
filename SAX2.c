@@ -387,6 +387,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	xmlCharEncoding enc;
 	int oldcharset;
 	const xmlChar *oldencoding;
+	int oldprogressive;
 
 	/*
 	 * Ask the Entity resolver to load the damn thing
@@ -409,7 +410,9 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	oldinputTab = ctxt->inputTab;
 	oldcharset = ctxt->charset;
 	oldencoding = ctxt->encoding;
+        oldprogressive = ctxt->progressive;
 	ctxt->encoding = NULL;
+        ctxt->progressive = 0;
 
 	ctxt->inputTab = (xmlParserInputPtr *)
 	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
@@ -422,6 +425,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	    ctxt->inputTab = oldinputTab;
 	    ctxt->charset = oldcharset;
 	    ctxt->encoding = oldencoding;
+            ctxt->progressive = oldprogressive;
 	    return;
 	}
 	ctxt->inputNr = 0;
@@ -472,6 +476,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	     (!xmlDictOwns(ctxt->dict, ctxt->encoding))))
 	    xmlFree((xmlChar *) ctxt->encoding);
 	ctxt->encoding = oldencoding;
+        ctxt->progressive = oldprogressive;
 	/* ctxt->wellFormed = oldwellFormed; */
     }
 }

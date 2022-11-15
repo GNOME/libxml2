@@ -5334,30 +5334,17 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
-    int invalue = 0;
-    char valdellim = 0x0;
+    int quote;
 
     in = ctxt->input;
     if (in == NULL)
         return (-1);
 
-    base = in->cur - in->base;
-    if (base < 0)
-        return (-1);
+    base = ctxt->checkIndex;
+    quote = ctxt->endCheckState;
 
-    if (ctxt->checkIndex > base) {
-        base = ctxt->checkIndex;
-        /* Abuse hasPErefs member to restore current state. */
-        invalue = ctxt->hasPErefs & 1 ? 1 : 0;
-    }
-
-    if (in->buf == NULL) {
-        buf = in->base;
-        len = in->length;
-    } else {
-        buf = xmlBufContent(in->buf->buffer);
-        len = xmlBufUse(in->buf->buffer);
-    }
+    buf = in->cur;
+    len = in->end - in->cur;
 
     /* take into account the sequence length */
     if (third)
@@ -5366,18 +5353,13 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
         len--;
     for (; base < len; base++) {
         if (ignoreattrval) {
+            if (quote) {
+                if (buf[base] == quote)
+                    quote = 0;
+                continue;
+            }
             if (buf[base] == '"' || buf[base] == '\'') {
-                if (invalue) {
-                    if (buf[base] == valdellim) {
-                        invalue = 0;
-                        continue;
-                    }
-                } else {
-                    valdellim = buf[base];
-                    invalue = 1;
-                    continue;
-                }
-            } else if (invalue) {
+                quote = buf[base];
                 continue;
             }
         }
@@ -5390,29 +5372,12 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
                     continue;
             }
             ctxt->checkIndex = 0;
-#ifdef DEBUG_PUSH
-            if (next == 0)
-                xmlGenericError(xmlGenericErrorContext,
-                                "HPP: lookup '%c' found at %d\n",
-                                first, base);
-            else if (third == 0)
-                xmlGenericError(xmlGenericErrorContext,
-                                "HPP: lookup '%c%c' found at %d\n",
-                                first, next, base);
-            else
-                xmlGenericError(xmlGenericErrorContext,
-                                "HPP: lookup '%c%c%c' found at %d\n",
-                                first, next, third, base);
-#endif
-            return (base - (in->cur - in->base));
+            ctxt->endCheckState = 0;
+            return (base);
         }
     }
     ctxt->checkIndex = base;
-    /* Abuse hasPErefs member to track current state. */
-    if (invalue)
-        ctxt->hasPErefs |= 1;
-    else
-        ctxt->hasPErefs &= ~1;
+    ctxt->endCheckState = quote;
 #ifdef DEBUG_PUSH
     if (next == 0)
         xmlGenericError(xmlGenericErrorContext,
@@ -5446,7 +5411,6 @@ static int
 htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
 {
     int mark = 0;
-    int cur = CUR_PTR - BASE_PTR;
 
     while (mark >= 0) {
 	mark = htmlParseLookupSequence(ctxt, '-', '-', 0, 0);
@@ -5455,7 +5419,7 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
 	    ((NXT(mark+2) == '!') && (NXT(mark+3) == '>'))) {
 	    return mark;
 	}
-	ctxt->checkIndex = cur + mark + 1;
+	ctxt->checkIndex = mark + 1;
     }
     return mark;
 }
@@ -6806,6 +6770,7 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->vctxt.warning = xmlParserValidityWarning;
     ctxt->record_info = 0;
     ctxt->checkIndex = 0;
+    ctxt->endCheckState = 0;
     ctxt->inSubset = 0;
     ctxt->errNo = XML_ERR_OK;
     ctxt->depth = 0;

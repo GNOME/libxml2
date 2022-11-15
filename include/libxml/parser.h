@@ -311,6 +311,8 @@ struct _xmlParserCtxt {
 
     int                input_id;      /* we need to label inputs */
     unsigned long      sizeentcopy;   /* volume of entity copy */
+
+    int           endCheckState;    /* quote state for push parser */
 };
 
 /**

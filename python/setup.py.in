@@ -45,6 +45,11 @@ icu_dlls = ['icuuc%s.dll' % icu_series_s, 'icudt%s.dll' % icu_series_s]
 # dlls must be found somewhere in the PATH at runtime.
 WITHDLLS = 1 and sys.platform.startswith('win')
 
+if WITHDLLS:
+    def altImport(s):
+        s = s.replace("import libxml2mod","from libxmlmods import libxml2mod")
+        return s
+
 def missing(file):
     if os.access(file, os.R_OK) == 0:
         return 1
@@ -181,11 +186,6 @@ if WITHDLLS:
     if not os.path.exists("libxmlmods"):
         os.mkdir("libxmlmods")
         open("libxmlmods/__init__.py","w").close()
-
-    def altImport(s):
-        s = s.replace("import libxml2mod","from libxmlmods import libxml2mod")
-        s = s.replace("import libxsltmod","from libxmlmods import libxsltmod")
-        return s
 
     packaged_dlls = [os.path.join(ROOT,'bin',dll) for dll in dlls]
 

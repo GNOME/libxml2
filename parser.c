@@ -12428,9 +12428,10 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
      * the encoding, we set the context to XML_CHAR_ENCODING_NONE so
      * that it can be automatically determined later
      */
-    if ((size == 0) || (chunk == NULL)) {
-	ctxt->charset = XML_CHAR_ENCODING_NONE;
-    } else if ((ctxt->input != NULL) && (ctxt->input->buf != NULL)) {
+    ctxt->charset = XML_CHAR_ENCODING_NONE;
+
+    if ((size != 0) && (chunk != NULL) &&
+        (ctxt->input != NULL) && (ctxt->input->buf != NULL)) {
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
 	size_t cur = ctxt->input->cur - ctxt->input->base;
 

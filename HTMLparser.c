@@ -5411,14 +5411,22 @@ static int
 htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
 {
     int mark = 0;
+    int offset;
 
-    while (mark >= 0) {
+    while (1) {
 	mark = htmlParseLookupSequence(ctxt, '-', '-', 0, 0);
-	if ((mark < 0) ||
-	    (NXT(mark+2) == '>') ||
+	if (mark < 0)
+            break;
+        if ((NXT(mark+2) == '>') ||
 	    ((NXT(mark+2) == '!') && (NXT(mark+3) == '>'))) {
-	    return mark;
+            ctxt->checkIndex = 0;
+	    break;
 	}
+        offset = (NXT(mark+2) == '!') ? 3 : 2;
+        if (mark + offset >= ctxt->input->end - ctxt->input->cur) {
+	    ctxt->checkIndex = mark;
+            return(-1);
+        }
 	ctxt->checkIndex = mark + 1;
     }
     return mark;
@@ -5954,6 +5962,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			break;
 		    }
 		} else if ((cur == '<') && (next == '!')) {
+                    if (avail < 4)
+                        goto done;
                     /*
                      * Sometimes DOCTYPE arrives in the middle of the document
                      */
@@ -5994,8 +6004,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
                     htmlParsePI(ctxt);
                     ctxt->instate = XML_PARSER_CONTENT;
-                } else if ((cur == '<') && (next == '!') && (avail < 4)) {
-                    goto done;
                 } else if ((cur == '<') && (next == '/')) {
                     ctxt->instate = XML_PARSER_END_TAG;
                     ctxt->checkIndex = 0;

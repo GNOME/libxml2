@@ -1109,6 +1109,7 @@ xmlSwitchInputEncodingInt(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
          */
         processed = input->cur - input->base;
         xmlBufShrink(in->buffer, processed);
+        input->consumed += processed;
         in->raw = in->buffer;
         in->buffer = xmlBufCreate();
         in->rawconsumed = processed;

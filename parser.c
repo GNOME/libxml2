@@ -11083,14 +11083,17 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
 static int
 xmlParseLookupChar(xmlParserCtxtPtr ctxt, int c) {
     const xmlChar *cur;
+    const xmlChar *end = ctxt->input->end;
 
     if (ctxt->checkIndex == 0) {
         cur = ctxt->input->cur + 1;
     } else {
         cur = ctxt->input->cur + ctxt->checkIndex;
     }
+    if (cur >= end)
+        return(0);
 
-    if (memchr(cur, c, ctxt->input->end - cur) == NULL) {
+    if (memchr(cur, c, end - cur) == NULL) {
         ctxt->checkIndex = ctxt->input->end - ctxt->input->cur;
         return(0);
     } else {
@@ -11112,17 +11115,18 @@ static const xmlChar *
 xmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
                      const char *str, size_t strLen) {
     const xmlChar *cur, *term;
+    const xmlChar *end = ctxt->input->end;
 
     if (ctxt->checkIndex == 0) {
         cur = ctxt->input->cur + startDelta;
     } else {
         cur = ctxt->input->cur + ctxt->checkIndex;
     }
+    if (cur >= end)
+        return(0);
 
     term = BAD_CAST strstr((const char *) cur, str);
     if (term == NULL) {
-        const xmlChar *end = ctxt->input->end;
-
         /* Rescan (strLen - 1) characters. */
         if ((size_t) (end - cur) < strLen)
             end = cur;

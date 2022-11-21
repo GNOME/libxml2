@@ -4666,7 +4666,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt) {
 	    }
 	}
     }
-    if ((CUR != 0) && (!IS_CHAR(cur))) {
+    if ((ctxt->input->cur < ctxt->input->end) && (!IS_CHAR(cur))) {
 	/* Generate the error and skip the offending character */
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
                           "PCDATA invalid Char value %d\n",

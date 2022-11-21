@@ -400,7 +400,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
 	return;
     }
 
-    if ((*ctxt->input->cur == 0) &&
+    if ((ctxt->input->cur >= ctxt->input->end) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {
         return;
     }

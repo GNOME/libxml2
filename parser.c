@@ -11793,7 +11793,19 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		 */
 		const xmlChar *term;
 
-		term = xmlParseLookupString(ctxt, 0, "]]>", 3);
+                if (terminate) {
+                    /*
+                     * Don't call xmlParseLookupString. If 'terminate'
+                     * is set, checkIndex is invalid.
+                     */
+                    term = BAD_CAST strstr((const char *) ctxt->input->cur,
+                                           "]]>");
+                    if (term == NULL)
+                        term = ctxt->input->end;
+                } else {
+		    term = xmlParseLookupString(ctxt, 0, "]]>", 3);
+                }
+
 		if (term == NULL) {
 		    int tmp;
 

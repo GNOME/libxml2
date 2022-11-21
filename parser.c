@@ -9856,22 +9856,20 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     r = CUR_CHAR(rl);
     if (!IS_CHAR(r)) {
 	xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, NULL);
-	ctxt->instate = XML_PARSER_CONTENT;
-        return;
+        goto out;
     }
     NEXTL(rl);
     s = CUR_CHAR(sl);
     if (!IS_CHAR(s)) {
 	xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, NULL);
-	ctxt->instate = XML_PARSER_CONTENT;
-        return;
+        goto out;
     }
     NEXTL(sl);
     cur = CUR_CHAR(l);
     buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);
-	return;
+        goto out;
     }
     while (IS_CHAR(cur) &&
            ((r != ']') || (s != ']') || (cur != '>'))) {
@@ -9880,9 +9878,8 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 
 	    tmp = (xmlChar *) xmlRealloc(buf, size * 2);
 	    if (tmp == NULL) {
-	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
-		return;
+                goto out;
 	    }
 	    buf = tmp;
 	    size *= 2;
@@ -9897,8 +9894,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	    SHRINK;
 	    GROW;
             if (ctxt->instate == XML_PARSER_EOF) {
-		xmlFree(buf);
-		return;
+                goto out;
             }
 	    count = 0;
 	}
@@ -9907,17 +9903,14 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
         if (len > maxLength) {
             xmlFatalErrMsg(ctxt, XML_ERR_CDATA_NOT_FINISHED,
                            "CData section too big found\n");
-            xmlFree(buf);
-            return;
+            goto out;
         }
     }
     buf[len] = 0;
-    ctxt->instate = XML_PARSER_CONTENT;
     if (cur != '>') {
 	xmlFatalErrMsgStr(ctxt, XML_ERR_CDATA_NOT_FINISHED,
 	                     "CData section not finished\n%.50s\n", buf);
-	xmlFree(buf);
-        return;
+        goto out;
     }
     NEXTL(l);
 
@@ -9930,6 +9923,10 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	else if (ctxt->sax->characters != NULL)
 	    ctxt->sax->characters(ctxt->userData, buf, len);
     }
+
+out:
+    if (ctxt->instate != XML_PARSER_EOF)
+        ctxt->instate = XML_PARSER_CONTENT;
     xmlFree(buf);
 }
 

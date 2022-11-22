@@ -11794,20 +11794,24 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                      */
                     term = BAD_CAST strstr((const char *) ctxt->input->cur,
                                            "]]>");
-                    if (term == NULL)
-                        term = ctxt->input->end;
                 } else {
 		    term = xmlParseLookupString(ctxt, 0, "]]>", 3);
                 }
 
 		if (term == NULL) {
-		    int tmp;
+		    int tmp, size;
 
-		    if (avail < XML_PARSER_BIG_BUFFER_SIZE + 2)
-		        goto done;
-                    ctxt->checkIndex = 0;
-                    tmp = xmlCheckCdataPush(ctxt->input->cur,
-                                            XML_PARSER_BIG_BUFFER_SIZE, 0);
+                    if (terminate) {
+                        /* Unfinished CDATA section */
+                        size = ctxt->input->end - ctxt->input->cur;
+                    } else {
+                        if (avail < XML_PARSER_BIG_BUFFER_SIZE + 2)
+                            goto done;
+                        ctxt->checkIndex = 0;
+                        /* XXX: Why don't we pass the full buffer? */
+                        size = XML_PARSER_BIG_BUFFER_SIZE;
+                    }
+                    tmp = xmlCheckCdataPush(ctxt->input->cur, size, 0);
                     if (tmp < 0) {
                         tmp = -tmp;
                         ctxt->input->cur += tmp;

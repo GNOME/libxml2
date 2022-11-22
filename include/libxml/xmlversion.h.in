@@ -499,13 +499,23 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  *
  * Macro used to ignore pointer cast warnings that can't be worked around.
  */
-#define XML_IGNORE_FPTR_CAST_WARNINGS
+#if defined (_MSC_VER) && (_MSC_VER >= 1400)
+#  define XML_IGNORE_FPTR_CAST_WARNINGS __pragma(warning(push))
+#else
+#  define XML_IGNORE_FPTR_CAST_WARNINGS
+#endif
 /**
- * LIBXML_POP_WARNINGS:
+ * XML_POP_WARNINGS:
  *
  * Macro used to restore warnings state.
  */
-#define XML_POP_WARNINGS
+#ifndef XML_POP_WARNINGS
+#  if defined (_MSC_VER) && (_MSC_VER >= 1400)
+#    define XML_POP_WARNINGS __pragma(warning(pop))
+#  else
+#    define XML_POP_WARNINGS
+#  endif
+#endif
 #endif /* __GNUC__ */
 
 #ifdef __cplusplus

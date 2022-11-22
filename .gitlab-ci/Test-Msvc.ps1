@@ -37,7 +37,13 @@ Copy-Item Copyright libxml2-install\share\libxml2
 
 cd libxml2-build
 ctest -C Debug -VV
+if ($LastExitCode -ne 0) {
+    throw "ctest failed"
+}
 ctest -C Release -VV
+if ($LastExitCode -ne 0) {
+    throw "ctest failed"
+}
 cd ..
 
 .\7za.exe a libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:CMAKE_GENERATOR_TOOLSET-$Env:CMAKE_GENERATOR_PLATFORM-$Env:SUFFIX.7z .\libxml2-install\*

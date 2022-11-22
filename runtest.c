@@ -14,8 +14,10 @@
 #include "libxml.h"
 #include <stdio.h>
 
-#if !defined(_WIN32)
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#elif defined (_WIN32)
+#include <io.h>
 #endif
 #include <string.h>
 #include <sys/stat.h>
@@ -110,7 +112,6 @@ static int checkTestFile(const char *filename);
 #if defined(_WIN32)
 
 #include <windows.h>
-#include <io.h>
 
 typedef struct
 {

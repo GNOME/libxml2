@@ -9,12 +9,8 @@
 #include "libxml.h"
 #include <stdio.h>
 
-#if !defined(_WIN32)
-#include <unistd.h>
-#endif
 #include <string.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>

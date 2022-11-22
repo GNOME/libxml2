@@ -196,6 +196,7 @@ cmake:mingw:w64-x86_64:static:
   tags:
     - win32-ps
   variables:
+    CFLAGS: /WX
     CMAKE_VERSION: 3.19.4
   script:
     - .gitlab-ci/Test-Msvc

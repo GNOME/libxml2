@@ -23,6 +23,8 @@
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#elif defined (_WIN32)
+#include <io.h>
 #endif
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>

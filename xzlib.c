@@ -22,6 +22,8 @@
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#elif defined (_WIN32)
+#include <io.h>
 #endif
 #ifdef LIBXML_ZLIB_ENABLED
 #include <zlib.h>

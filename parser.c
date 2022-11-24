@@ -14498,14 +14498,12 @@ xmlInitParser(void) {
 	xmlInitMemory();
         xmlInitializeDict();
 	xmlInitCharEncodingHandlers();
-	xmlDefaultSAXHandlerInit();
 	xmlRegisterDefaultInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED
 	xmlRegisterDefaultOutputCallbacks();
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
 	htmlInitAutoClose();
-	htmlDefaultSAXHandlerInit();
 #endif
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 	xmlXPathInit();

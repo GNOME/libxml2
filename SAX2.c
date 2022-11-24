@@ -2937,7 +2937,7 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 /**
  * xmlDefaultSAXHandlerInit:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * DEPRECATED: This function is a no-op. Call xmlInitParser to
  * initialize the library.
  *
  * Initialize the default SAX2 handler
@@ -2945,9 +2945,6 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 void
 xmlDefaultSAXHandlerInit(void)
 {
-#ifdef LIBXML_SAX1_ENABLED
-    xmlSAXVersion((xmlSAXHandlerPtr) &xmlDefaultSAXHandler, 1);
-#endif /* LIBXML_SAX1_ENABLED */
 }
 
 #ifdef LIBXML_HTML_ENABLED
@@ -2998,17 +2995,12 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 /**
  * htmlDefaultSAXHandlerInit:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
+ * DEPRECATED: This function is a no-op. Call xmlInitParser to
  * initialize the library.
- *
- * Initialize the default SAX handler
  */
 void
 htmlDefaultSAXHandlerInit(void)
 {
-#ifdef LIBXML_SAX1_ENABLED
-    xmlSAX2InitHtmlDefaultSAXHandler((xmlSAXHandlerPtr) &htmlDefaultSAXHandler);
-#endif
 }
 
 #endif /* LIBXML_HTML_ENABLED */

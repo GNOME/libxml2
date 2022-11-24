@@ -427,7 +427,7 @@ xmlSAXHandlerV1 xmlDefaultSAXHandler = {
     xmlSAX2GetParameterEntity,
     xmlSAX2CDataBlock,
     xmlSAX2ExternalSubset,
-    0,
+    1,
 };
 #endif /* LIBXML_SAX1_ENABLED */
 
@@ -480,10 +480,10 @@ xmlSAXHandlerV1 htmlDefaultSAXHandler = {
     xmlParserWarning,
     xmlParserError,
     xmlParserError,
-    xmlSAX2GetParameterEntity,
+    NULL,
     xmlSAX2CDataBlock,
     NULL,
-    0,
+    1,
 };
 #endif /* LIBXML_HTML_ENABLED */
 

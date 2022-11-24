@@ -64,13 +64,16 @@ XMLPUBFUN void XMLCALL
 			xmlLockLibrary	(void);
 XMLPUBFUN void XMLCALL
 			xmlUnlockLibrary(void);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlGetThreadId	(void);
+XML_DEPRECATED
 XMLPUBFUN int XMLCALL
 			xmlIsMainThread	(void);
 XML_DEPRECATED
 XMLPUBFUN void XMLCALL
 			xmlCleanupThreads(void);
+XML_DEPRECATED
 XMLPUBFUN xmlGlobalStatePtr XMLCALL
 			xmlGetGlobalState(void);
 

@@ -512,6 +512,8 @@ static CRITICAL_SECTION cleanup_helpers_cs;
 /**
  * xmlGetGlobalState:
  *
+ * DEPRECATED: Internal function, do not use.
+ *
  * xmlGetGlobalState() is called to retrieve the global state for a thread.
  *
  * Returns the thread global state or NULL in case of error
@@ -601,6 +603,8 @@ xmlGetGlobalState(void)
 /**
  * xmlGetThreadId:
  *
+ * DEPRECATED: Internal function, do not use.
+ *
  * xmlGetThreadId() find the current thread ID number
  * Note that this is likely to be broken on some platforms using pthreads
  * as the specification doesn't mandate pthread_t to be an integer type
@@ -629,6 +633,8 @@ xmlGetThreadId(void)
 
 /**
  * xmlIsMainThread:
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * xmlIsMainThread() check whether the current thread is the main thread.
  *

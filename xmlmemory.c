@@ -31,6 +31,8 @@
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
 
+#include "private/memory.h"
+
 static int xmlMemInitialized = 0;
 static unsigned long  debugMemSize = 0;
 static unsigned long  debugMemBlocks = 0;
@@ -147,7 +149,7 @@ xmlMallocLoc(size_t size, const char * file, int line)
     MEMHDR *p;
     void *ret;
 
-    if (!xmlMemInitialized) xmlInitMemory();
+    if (!xmlMemInitialized) xmlInitMemoryInternal();
 #ifdef DEBUG_MEMORY
     xmlGenericError(xmlGenericErrorContext,
 	    "Malloc(%d)\n",size);
@@ -223,7 +225,7 @@ xmlMallocAtomicLoc(size_t size, const char * file, int line)
     MEMHDR *p;
     void *ret;
 
-    if (!xmlMemInitialized) xmlInitMemory();
+    if (!xmlMemInitialized) xmlInitMemoryInternal();
 #ifdef DEBUG_MEMORY
     xmlGenericError(xmlGenericErrorContext,
 	    "Malloc(%d)\n",size);
@@ -320,7 +322,7 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
     if (ptr == NULL)
         return(xmlMallocLoc(size, file, line));
 
-    if (!xmlMemInitialized) xmlInitMemory();
+    if (!xmlMemInitialized) xmlInitMemoryInternal();
     TEST_POINT
 
     p = CLIENT_2_HDR(ptr);
@@ -493,7 +495,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
     size_t size = strlen(str) + 1;
     MEMHDR *p;
 
-    if (!xmlMemInitialized) xmlInitMemory();
+    if (!xmlMemInitialized) xmlInitMemoryInternal();
     TEST_POINT
 
     if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
@@ -935,16 +937,23 @@ xmlMemoryDump(void)
 /**
  * xmlInitMemory:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
- * initialize the library.
+ * DEPRECATED: Alias for xmlInitParser.
+ */
+int
+xmlInitMemory(void) {
+    xmlInitParser();
+    return(0);
+}
+
+/**
+ * xmlInitMemoryInternal:
  *
  * Initialize the memory layer.
  *
  * Returns 0 on success
  */
-int
-xmlInitMemory(void)
-{
+void
+xmlInitMemoryInternal(void) {
      char *breakpoint;
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,
@@ -954,7 +963,7 @@ xmlInitMemory(void)
      This is really not good code (see Bug 130419).  Suggestions for
      improvement will be welcome!
     */
-     if (xmlMemInitialized) return(-1);
+     if (xmlMemInitialized) return;
      xmlMemInitialized = 1;
      xmlMemMutex = xmlNewMutex();
 
@@ -971,22 +980,28 @@ xmlInitMemory(void)
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlInitMemory() Ok\n");
 #endif
-     return(0);
 }
 
 /**
  * xmlCleanupMemory:
  *
- * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * DEPRECATED: This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
+ */
+void
+xmlCleanupMemory(void) {
+}
+
+/**
+ * xmlCleanupMemoryInternal:
  *
  * Free up all the memory allocated by the library for its own
  * use. This should not be called by user level code.
  */
 void
-xmlCleanupMemory(void) {
+xmlCleanupMemoryInternal(void) {
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlCleanupMemory()\n");

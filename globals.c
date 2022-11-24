@@ -22,6 +22,7 @@
 #include <libxml/threads.h>
 
 #include "private/error.h"
+#include "private/globals.h"
 #include "private/threads.h"
 #include "private/tree.h"
 
@@ -44,13 +45,18 @@ static xmlMutexPtr xmlThrDefMutex = NULL;
 /**
  * xmlInitGlobals:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
- * initialize the library.
+ * DEPRECATED: Alias for xmlInitParser.
+ */
+void xmlInitGlobals(void) {
+    xmlInitParser();
+}
+
+/**
+ * xmlInitGlobalsInternal:
  *
  * Additional initialisation for multi-threading
  */
-void xmlInitGlobals(void)
-{
+void xmlInitGlobalsInternal(void) {
     if (xmlThrDefMutex == NULL)
         xmlThrDefMutex = xmlNewMutex();
 }
@@ -506,7 +512,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
      * Perform initialization as required by libxml
      */
     if (xmlThrDefMutex == NULL)
-        xmlInitGlobals();
+        xmlInitGlobalsInternal();
 
     xmlMutexLock(xmlThrDefMutex);
 
@@ -569,15 +575,20 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 /**
  * xmlCleanupGlobals:
  *
- * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * DEPRECATED: This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
+ */
+void xmlCleanupGlobals(void) {
+}
+
+/**
+ * xmlCleanupGlobalsInternal:
  *
  * Additional cleanup for multi-threading
  */
-void xmlCleanupGlobals(void)
-{
+void xmlCleanupGlobalsInternal(void) {
     xmlResetError(&xmlLastError);
 
     if (xmlThrDefMutex != NULL) {

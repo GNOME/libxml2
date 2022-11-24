@@ -4,8 +4,10 @@ EXTRA_DIST = \
 	enc.h \
 	entities.h \
 	error.h \
+	globals.h \
 	html.h \
 	io.h \
+	memory.h \
 	parser.h \
 	regexp.h \
 	save.h \

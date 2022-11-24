@@ -78,8 +78,10 @@
 #include "private/buf.h"
 #include "private/enc.h"
 #include "private/error.h"
+#include "private/globals.h"
 #include "private/html.h"
 #include "private/io.h"
+#include "private/memory.h"
 #include "private/parser.h"
 #include "private/threads.h"
 
@@ -14494,17 +14496,14 @@ xmlInitParser(void) {
     if (xmlParserInitialized == 0) {
 #endif
 	xmlInitThreads();
-	xmlInitGlobals();
-	xmlInitMemory();
+	xmlInitGlobalsInternal();
+	xmlInitMemoryInternal();
         xmlInitializeDict();
 	xmlInitCharEncodingHandlers();
 	xmlRegisterDefaultInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED
 	xmlRegisterDefaultOutputCallbacks();
 #endif /* LIBXML_OUTPUT_ENABLED */
-#ifdef LIBXML_HTML_ENABLED
-	htmlInitAutoClose();
-#endif
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 	xmlXPathInit();
 #endif
@@ -14555,9 +14554,9 @@ xmlCleanupParser(void) {
     xmlSchemaCleanupTypes();
     xmlRelaxNGCleanupTypes();
 #endif
-    xmlCleanupGlobals();
+    xmlCleanupGlobalsInternal();
     xmlCleanupThreads(); /* must be last if called not from the main thread */
-    xmlCleanupMemory();
+    xmlCleanupMemoryInternal();
     xmlParserInitialized = 0;
 }
 

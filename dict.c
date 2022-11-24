@@ -24,6 +24,7 @@
 #include <time.h>
 
 #include "private/dict.h"
+#include "private/threads.h"
 
 /*
  * Following http://www.ocert.org/advisories/ocert-2011-003.html
@@ -129,7 +130,7 @@ struct _xmlDict {
  * A mutex for modifying the reference counter for shared
  * dictionaries.
  */
-static xmlMutexPtr xmlDictMutex = NULL;
+static xmlMutex xmlDictMutex;
 
 #ifdef DICT_RANDOMIZATION
 #ifdef HAVE_RAND_R
@@ -155,14 +156,9 @@ int xmlInitializeDict(void) {
  *
  * This function is not public
  * Do the dictionary mutex initialization.
- *
- * Returns 0 if initialization was already done, and 1 if that
- * call led to the initialization
  */
 int __xmlInitializeDict(void) {
-    if ((xmlDictMutex = xmlNewMutex()) == NULL)
-        return(0);
-    xmlMutexLock(xmlDictMutex);
+    xmlInitMutex(&xmlDictMutex);
 
 #ifdef DICT_RANDOMIZATION
 #ifdef HAVE_RAND_R
@@ -172,7 +168,6 @@ int __xmlInitializeDict(void) {
     srand(time(NULL));
 #endif
 #endif
-    xmlMutexUnlock(xmlDictMutex);
     return(1);
 }
 
@@ -180,13 +175,13 @@ int __xmlInitializeDict(void) {
 int __xmlRandom(void) {
     int ret;
 
-    xmlMutexLock(xmlDictMutex);
+    xmlMutexLock(&xmlDictMutex);
 #ifdef HAVE_RAND_R
     ret = rand_r(& rand_seed);
 #else
     ret = rand();
 #endif
-    xmlMutexUnlock(xmlDictMutex);
+    xmlMutexUnlock(&xmlDictMutex);
     return(ret);
 }
 #endif
@@ -210,7 +205,7 @@ xmlDictCleanup(void) {
  */
 void
 xmlCleanupDictInternal(void) {
-    xmlFreeMutex(xmlDictMutex);
+    xmlCleanupMutex(&xmlDictMutex);
 }
 
 /*
@@ -627,9 +622,9 @@ xmlDictCreateSub(xmlDictPtr sub) {
 int
 xmlDictReference(xmlDictPtr dict) {
     if (dict == NULL) return -1;
-    xmlMutexLock(xmlDictMutex);
+    xmlMutexLock(&xmlDictMutex);
     dict->ref_counter++;
-    xmlMutexUnlock(xmlDictMutex);
+    xmlMutexUnlock(&xmlDictMutex);
     return(0);
 }
 
@@ -787,14 +782,14 @@ xmlDictFree(xmlDictPtr dict) {
 	return;
 
     /* decrement the counter, it may be shared by a parser and docs */
-    xmlMutexLock(xmlDictMutex);
+    xmlMutexLock(&xmlDictMutex);
     dict->ref_counter--;
     if (dict->ref_counter > 0) {
-        xmlMutexUnlock(xmlDictMutex);
+        xmlMutexUnlock(&xmlDictMutex);
         return;
     }
 
-    xmlMutexUnlock(xmlDictMutex);
+    xmlMutexUnlock(&xmlDictMutex);
 
     if (dict->subdict != NULL) {
         xmlDictFree(dict->subdict);

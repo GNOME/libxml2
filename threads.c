@@ -16,20 +16,6 @@
 #include <libxml/threads.h>
 #include <libxml/globals.h>
 
-#ifdef LIBXML_THREAD_ENABLED
-  #ifdef HAVE_PTHREAD_H
-    #include <pthread.h>
-    #define HAVE_POSIX_THREADS
-  #elif defined(_WIN32)
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-    #ifndef HAVE_COMPILER_TLS
-      #include <process.h>
-    #endif
-    #define HAVE_WIN32_THREADS
-  #endif
-#endif
-
 #if defined(SOLARIS)
 #include <note.h>
 #endif
@@ -79,19 +65,6 @@ static int libxml_is_threaded = 1;
  */
 
 /*
- * xmlMutex are a simple mutual exception locks
- */
-struct _xmlMutex {
-#ifdef HAVE_POSIX_THREADS
-    pthread_mutex_t lock;
-#elif defined HAVE_WIN32_THREADS
-    CRITICAL_SECTION cs;
-#else
-    int empty;
-#endif
-};
-
-/*
  * xmlRMutex are reentrant mutual exception locks
  */
 struct _xmlRMutex {
@@ -132,6 +105,24 @@ static volatile LPCRITICAL_SECTION global_init_lock = NULL;
 static xmlRMutexPtr xmlLibraryLock = NULL;
 
 /**
+ * xmlInitMutex:
+ * @mutex:  the mutex
+ *
+ * Initialize a mutex.
+ */
+void
+xmlInitMutex(xmlMutexPtr mutex)
+{
+#ifdef HAVE_POSIX_THREADS
+    pthread_mutex_init(&mutex->lock, NULL);
+#elif defined HAVE_WIN32_THREADS
+    InitializeCriticalSection(&mutex->cs);
+#else
+    (void) mutex;
+#endif
+}
+
+/**
  * xmlNewMutex:
  *
  * xmlNewMutex() is used to allocate a libxml2 token struct for use in
@@ -146,21 +137,33 @@ xmlNewMutex(void)
 
     if ((tok = malloc(sizeof(xmlMutex))) == NULL)
         return (NULL);
-#ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded != 0)
-        pthread_mutex_init(&tok->lock, NULL);
-#elif defined HAVE_WIN32_THREADS
-    InitializeCriticalSection(&tok->cs);
-#endif
+    xmlInitMutex(tok);
     return (tok);
+}
+
+/**
+ * xmlCleanupMutex:
+ * @mutex:  the simple mutex
+ *
+ * Reclaim resources associated with a mutex.
+ */
+void
+xmlCleanupMutex(xmlMutexPtr mutex)
+{
+#ifdef HAVE_POSIX_THREADS
+    pthread_mutex_destroy(&mutex->lock);
+#elif defined HAVE_WIN32_THREADS
+    DeleteCriticalSection(&mutex->cs);
+#else
+    (void) mutex;
+#endif
 }
 
 /**
  * xmlFreeMutex:
  * @tok:  the simple mutex
  *
- * xmlFreeMutex() is used to reclaim resources associated with a libxml2 token
- * struct.
+ * Free a mutex.
  */
 void
 xmlFreeMutex(xmlMutexPtr tok)
@@ -168,12 +171,7 @@ xmlFreeMutex(xmlMutexPtr tok)
     if (tok == NULL)
         return;
 
-#ifdef HAVE_POSIX_THREADS
-    if (libxml_is_threaded != 0)
-        pthread_mutex_destroy(&tok->lock);
-#elif defined HAVE_WIN32_THREADS
-    DeleteCriticalSection(&tok->cs);
-#endif
+    xmlCleanupMutex(tok);
     free(tok);
 }
 

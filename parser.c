@@ -14495,7 +14495,7 @@ xmlInitParser(void) {
     __xmlGlobalInitMutexLock();
     if (xmlParserInitialized == 0) {
 #endif
-	xmlInitThreads();
+	xmlInitThreadsInternal();
 	xmlInitGlobalsInternal();
 	xmlInitMemoryInternal();
         xmlInitializeDict();
@@ -14555,7 +14555,7 @@ xmlCleanupParser(void) {
     xmlRelaxNGCleanupTypes();
 #endif
     xmlCleanupGlobalsInternal();
-    xmlCleanupThreads(); /* must be last if called not from the main thread */
+    xmlCleanupThreadsInternal();
     xmlCleanupMemoryInternal();
     xmlParserInitialized = 0;
 }

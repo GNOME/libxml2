@@ -14484,6 +14484,9 @@ static int xmlParserInitialized = 0;
 
 void
 xmlInitParser(void) {
+    /*
+     * Note that the initialization code must not make memory allocations.
+     */
     if (xmlParserInitialized != 0)
 	return;
 

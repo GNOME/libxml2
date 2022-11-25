@@ -145,23 +145,13 @@ libxml_xmlDebugMemory(PyObject * self ATTRIBUTE_UNUSED, PyObject * args)
             if ((freeFunc == xmlMemFree) && (mallocFunc == xmlMemMalloc) &&
                 (reallocFunc == xmlMemRealloc) &&
                 (strdupFunc == xmlMemoryStrdup)) {
-                libxmlMemoryAllocatedBase = xmlMemUsed();
             } else {
-                /* 
-                 * cleanup first, because some memory has been
-                 * allocated with the non-debug malloc in xmlInitParser
-                 * when the python module was imported
-                 */
-                xmlCleanupParser();
                 ret = (long) xmlMemSetup(xmlMemFree, xmlMemMalloc,
                                          xmlMemRealloc, xmlMemoryStrdup);
                 if (ret < 0)
                     goto error;
-                libxmlMemoryAllocatedBase = xmlMemUsed();
-                /* reinitialize */
-                xmlInitParser();
-                libxml_xmlErrorInitialize();
             }
+            libxmlMemoryAllocatedBase = xmlMemUsed();
             ret = 0;
         } else if (libxmlMemoryDebugActivated == 0) {
             libxmlMemoryAllocatedBase = xmlMemUsed();
@@ -188,13 +178,7 @@ libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
                               PyObject *args ATTRIBUTE_UNUSED) {
 
     int ix;
-    long freed = -1;
 
-    if (libxmlMemoryDebug) {
-        freed = xmlMemUsed();
-    }
-
-    xmlCleanupParser();
     /*
      * Need to confirm whether we really want to do this (required for
      * memcheck) in all cases...
@@ -212,12 +196,7 @@ libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
 	libxml_xpathCallbacks = NULL;
     }
 
-    if (libxmlMemoryDebug) {
-        freed -= xmlMemUsed();
-	libxmlMemoryAllocatedBase -= freed;
-	if (libxmlMemoryAllocatedBase < 0)
-	    libxmlMemoryAllocatedBase = 0;
-    }
+    xmlCleanupParser();
 
     Py_INCREF(Py_None);
     return(Py_None);

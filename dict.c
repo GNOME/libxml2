@@ -148,15 +148,10 @@ static unsigned int rand_seed = 0;
 /**
  * xmlInitializeDict:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
- * initialize the library.
- *
- * Do the dictionary mutex initialization.
- *
- * Returns 0 if initialization was already done, and 1 if that
- * call led to the initialization
+ * DEPRECATED: Alias for xmlInitParser.
  */
 int xmlInitializeDict(void) {
+    xmlInitParser();
     return(0);
 }
 
@@ -165,9 +160,6 @@ int xmlInitializeDict(void) {
  *
  * This function is not public
  * Do the dictionary mutex initialization.
- * this function is not thread safe, initialization should
- * normally be done once at setup when called from xmlOnceInit()
- * we may also land in this code if thread support is not compiled in
  *
  * Returns 0 if initialization was already done, and 1 if that
  * call led to the initialization
@@ -214,16 +206,22 @@ int __xmlRandom(void) {
 /**
  * xmlDictCleanup:
  *
- * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * DEPRECATED: This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
- *
- * Free the dictionary mutex. Do not call unless sure the library
- * is not in use anymore !
  */
 void
 xmlDictCleanup(void) {
+}
+
+/**
+ * xmlCleanupDictInternal:
+ *
+ * Free the dictionary mutex.
+ */
+void
+xmlCleanupDictInternal(void) {
     if (!xmlDictInitialized)
         return;
 

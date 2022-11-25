@@ -2,6 +2,7 @@
 #define XML_DICT_H_PRIVATE__
 
 int __xmlInitializeDict(void);
+void xmlCleanupDictInternal(void);
 int __xmlRandom(void);
 
 #endif /* XML_DICT_H_PRIVATE__ */

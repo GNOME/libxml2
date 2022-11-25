@@ -14487,15 +14487,15 @@ xmlInitParser(void) {
     if (xmlParserInitialized != 0)
 	return;
 
-#if defined(_WIN32) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
-    if (xmlFree == free)
-        atexit(xmlCleanupParser);
-#endif
-
 #ifdef LIBXML_THREAD_ENABLED
     __xmlGlobalInitMutexLock();
     if (xmlParserInitialized == 0) {
 #endif
+#if defined(_WIN32) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+        if (xmlFree == free)
+            atexit(xmlCleanupParser);
+#endif
+
 	xmlInitThreadsInternal();
 	xmlInitGlobalsInternal();
 	xmlInitMemoryInternal();

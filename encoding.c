@@ -1482,16 +1482,20 @@ xmlNewCharEncodingHandler(const char *name,
 /**
  * xmlInitCharEncodingHandlers:
  *
- * DEPRECATED: This function will be made private. Call xmlInitParser to
- * initialize the library.
- *
- * Initialize the char encoding support, it registers the default
- * encoding supported.
- * NOTE: while public, this function usually doesn't need to be called
- *       in normal processing.
+ * DEPRECATED: Alias for xmlInitParser.
  */
 void
 xmlInitCharEncodingHandlers(void) {
+    xmlInitParser();
+}
+
+/**
+ * xmlInitEncodingInternal:
+ *
+ * Initialize the char encoding support.
+ */
+void
+xmlInitEncodingInternal(void) {
     unsigned short int tst = 0x1234;
     unsigned char *ptr = (unsigned char *) &tst;
 

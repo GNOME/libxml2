@@ -14503,7 +14503,7 @@ xmlInitParser(void) {
 	xmlInitGlobalsInternal();
 	xmlInitMemoryInternal();
         __xmlInitializeDict();
-	xmlInitCharEncodingHandlers();
+	xmlInitEncodingInternal();
 	xmlRegisterDefaultInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED
 	xmlRegisterDefaultOutputCallbacks();

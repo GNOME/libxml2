@@ -4,6 +4,8 @@
 #include <libxml/encoding.h>
 #include <libxml/tree.h>
 
+void xmlInitEncodingInternal(void);
+
 int xmlCharEncFirstLineInput(xmlParserInputBufferPtr input, int len);
 int xmlCharEncInput(xmlParserInputBufferPtr input, int flush);
 int xmlCharEncOutput(xmlOutputBufferPtr output, int init);

@@ -33,7 +33,6 @@
 
 #include "private/memory.h"
 
-static int xmlMemInitialized = 0;
 static unsigned long  debugMemSize = 0;
 static unsigned long  debugMemBlocks = 0;
 static unsigned long  debugMaxMemSize = 0;
@@ -149,7 +148,7 @@ xmlMallocLoc(size_t size, const char * file, int line)
     MEMHDR *p;
     void *ret;
 
-    if (!xmlMemInitialized) xmlInitMemoryInternal();
+    xmlInitParser();
 #ifdef DEBUG_MEMORY
     xmlGenericError(xmlGenericErrorContext,
 	    "Malloc(%d)\n",size);
@@ -225,7 +224,7 @@ xmlMallocAtomicLoc(size_t size, const char * file, int line)
     MEMHDR *p;
     void *ret;
 
-    if (!xmlMemInitialized) xmlInitMemoryInternal();
+    xmlInitParser();
 #ifdef DEBUG_MEMORY
     xmlGenericError(xmlGenericErrorContext,
 	    "Malloc(%d)\n",size);
@@ -322,7 +321,7 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
     if (ptr == NULL)
         return(xmlMallocLoc(size, file, line));
 
-    if (!xmlMemInitialized) xmlInitMemoryInternal();
+    xmlInitParser();
     TEST_POINT
 
     p = CLIENT_2_HDR(ptr);
@@ -495,7 +494,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
     size_t size = strlen(str) + 1;
     MEMHDR *p;
 
-    if (!xmlMemInitialized) xmlInitMemoryInternal();
+    xmlInitParser();
     TEST_POINT
 
     if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
@@ -963,8 +962,6 @@ xmlInitMemoryInternal(void) {
      This is really not good code (see Bug 130419).  Suggestions for
      improvement will be welcome!
     */
-     if (xmlMemInitialized) return;
-     xmlMemInitialized = 1;
      xmlMemMutex = xmlNewMutex();
 
      breakpoint = getenv("XML_MEM_BREAKPOINT");
@@ -1006,12 +1003,9 @@ xmlCleanupMemoryInternal(void) {
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlCleanupMemory()\n");
 #endif
-    if (xmlMemInitialized == 0)
-        return;
 
     xmlFreeMutex(xmlMemMutex);
     xmlMemMutex = NULL;
-    xmlMemInitialized = 0;
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlCleanupMemory() Ok\n");

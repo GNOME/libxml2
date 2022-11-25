@@ -131,11 +131,6 @@ struct _xmlDict {
  */
 static xmlMutexPtr xmlDictMutex = NULL;
 
-/*
- * Whether the dictionary mutex was initialized.
- */
-static int xmlDictInitialized = 0;
-
 #ifdef DICT_RANDOMIZATION
 #ifdef HAVE_RAND_R
 /*
@@ -165,9 +160,6 @@ int xmlInitializeDict(void) {
  * call led to the initialization
  */
 int __xmlInitializeDict(void) {
-    if (xmlDictInitialized)
-        return(1);
-
     if ((xmlDictMutex = xmlNewMutex()) == NULL)
         return(0);
     xmlMutexLock(xmlDictMutex);
@@ -180,7 +172,6 @@ int __xmlInitializeDict(void) {
     srand(time(NULL));
 #endif
 #endif
-    xmlDictInitialized = 1;
     xmlMutexUnlock(xmlDictMutex);
     return(1);
 }
@@ -188,9 +179,6 @@ int __xmlInitializeDict(void) {
 #ifdef DICT_RANDOMIZATION
 int __xmlRandom(void) {
     int ret;
-
-    if (xmlDictInitialized == 0)
-        __xmlInitializeDict();
 
     xmlMutexLock(xmlDictMutex);
 #ifdef HAVE_RAND_R
@@ -222,12 +210,7 @@ xmlDictCleanup(void) {
  */
 void
 xmlCleanupDictInternal(void) {
-    if (!xmlDictInitialized)
-        return;
-
     xmlFreeMutex(xmlDictMutex);
-
-    xmlDictInitialized = 0;
 }
 
 /*
@@ -577,9 +560,7 @@ xmlDictPtr
 xmlDictCreate(void) {
     xmlDictPtr dict;
 
-    if (!xmlDictInitialized)
-        if (!__xmlInitializeDict())
-            return(NULL);
+    xmlInitParser();
 
 #ifdef DICT_DEBUG_PATTERNS
     fprintf(stderr, "C");
@@ -645,10 +626,6 @@ xmlDictCreateSub(xmlDictPtr sub) {
  */
 int
 xmlDictReference(xmlDictPtr dict) {
-    if (!xmlDictInitialized)
-        if (!__xmlInitializeDict())
-            return(-1);
-
     if (dict == NULL) return -1;
     xmlMutexLock(xmlDictMutex);
     dict->ref_counter++;
@@ -808,10 +785,6 @@ xmlDictFree(xmlDictPtr dict) {
 
     if (dict == NULL)
 	return;
-
-    if (!xmlDictInitialized)
-        if (!__xmlInitializeDict())
-            return;
 
     /* decrement the counter, it may be shared by a parser and docs */
     xmlMutexLock(xmlDictMutex);

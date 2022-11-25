@@ -1398,13 +1398,6 @@ static const xmlCharEncodingHandler *xmlUTF16BEHandler = &defaultHandlers[2];
 static xmlCharEncodingHandlerPtr *handlers = NULL;
 static int nbCharEncodingHandler = 0;
 
-/*
- * The default is UTF-8 for XML, that's also the default used for the
- * parser internals, so the default encoding handler is NULL
- */
-
-static xmlCharEncodingHandlerPtr xmlDefaultCharEncodingHandler = NULL;
-
 /**
  * xmlNewCharEncodingHandler:
  * @name:  the encoding name, in UTF-8 format (ASCII actually)
@@ -1538,7 +1531,6 @@ xmlCleanupCharEncodingHandlers(void) {
     xmlFree(handlers);
     handlers = NULL;
     nbCharEncodingHandler = 0;
-    xmlDefaultCharEncodingHandler = NULL;
 }
 
 /**
@@ -1738,8 +1730,8 @@ xmlFindCharEncodingHandler(const char *name) {
     char upper[100];
     int i;
 
-    if (name == NULL) return(xmlDefaultCharEncodingHandler);
-    if (name[0] == 0) return(xmlDefaultCharEncodingHandler);
+    if (name == NULL) return(NULL);
+    if (name[0] == 0) return(NULL);
 
     /*
      * Do the alias resolution

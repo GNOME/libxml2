@@ -568,12 +568,7 @@ xmlMemoryStrdup(const char *str) {
 
 int
 xmlMemUsed(void) {
-    int res;
-
-    xmlMutexLock(&xmlMemMutex);
-    res = debugMemSize;
-    xmlMutexUnlock(&xmlMemMutex);
-    return(res);
+    return(debugMemSize);
 }
 
 /**

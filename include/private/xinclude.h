@@ -3,6 +3,7 @@
 
 #include <libxml/xinclude.h>
 
-int xmlXIncludeSetStreamingMode(xmlXIncludeCtxtPtr ctxt, int mode);
+XML_HIDDEN int
+xmlXIncludeSetStreamingMode(xmlXIncludeCtxtPtr ctxt, int mode);
 
 #endif /* XML_IO_H_PRIVATE__ */

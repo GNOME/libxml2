@@ -30,14 +30,21 @@ struct _xmlMutex {
 #endif
 };
 
-void __xmlGlobalInitMutexLock(void);
-void __xmlGlobalInitMutexUnlock(void);
-void __xmlGlobalInitMutexDestroy(void);
+XML_HIDDEN void
+__xmlGlobalInitMutexLock(void);
+XML_HIDDEN void
+__xmlGlobalInitMutexUnlock(void);
+XML_HIDDEN void
+__xmlGlobalInitMutexDestroy(void);
 
-void xmlInitThreadsInternal(void);
-void xmlCleanupThreadsInternal(void);
+XML_HIDDEN void
+xmlInitThreadsInternal(void);
+XML_HIDDEN void
+xmlCleanupThreadsInternal(void);
 
-void xmlInitMutex(xmlMutexPtr mutex);
-void xmlCleanupMutex(xmlMutexPtr mutex);
+XML_HIDDEN void
+xmlInitMutex(xmlMutexPtr mutex);
+XML_HIDDEN void
+xmlCleanupMutex(xmlMutexPtr mutex);
 
 #endif /* XML_THREADS_H_PRIVATE__ */

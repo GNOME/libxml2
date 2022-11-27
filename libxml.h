@@ -54,6 +54,15 @@ int vfprintf(FILE *, const char *, va_list);
 #include "trio.h"
 #endif
 
+#if !defined(_WIN32) && \
+    !defined(__CYGWIN__) && \
+    (defined(__clang__) || \
+     (defined(__GNUC__) && (__GNUC__ >= 4)))
+#define XML_HIDDEN __attribute__((visibility("hidden")))
+#else
+#define XML_HIDDEN
+#endif
+
 #if defined(__clang__) || \
     (defined(__GNUC__) && (__GNUC__ >= 8))
 #define ATTRIBUTE_NO_SANITIZE(arg) __attribute__((no_sanitize(arg)))

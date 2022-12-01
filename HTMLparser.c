@@ -2314,7 +2314,7 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
 	    else
 		cp = ent->name;
 	    len = strlen(cp);
-	    if (out + 2 + len > outend)
+	    if (outend - out < len + 2)
 		break;
 	    *out++ = '&';
 	    memcpy(out, cp, len);

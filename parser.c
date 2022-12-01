@@ -9582,10 +9582,10 @@ next_attr:
              * Arithmetic on dangling pointers is technically undefined
              * behavior, but well...
              */
-            ptrdiff_t offset = ctxt->input->base - atts[i+2];
+            const xmlChar *old = atts[i+2];
             atts[i+2]  = NULL;    /* Reset repurposed namespace URI */
-            atts[i+3] += offset;  /* value */
-            atts[i+4] += offset;  /* valuend */
+            atts[i+3] = ctxt->input->base + (atts[i+3] - old);  /* value */
+            atts[i+4] = ctxt->input->base + (atts[i+4] - old);  /* valuend */
         }
     }
 

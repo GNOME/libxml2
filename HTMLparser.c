@@ -6769,6 +6769,7 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->disableSAX = 0;
     ctxt->valid = 1;
     ctxt->vctxt.userData = ctxt;
+    ctxt->vctxt.flags = XML_VCTXT_USE_PCTXT;
     ctxt->vctxt.error = xmlParserValidityError;
     ctxt->vctxt.warning = xmlParserValidityWarning;
     ctxt->record_info = 0;

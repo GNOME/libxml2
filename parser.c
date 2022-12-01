@@ -12907,6 +12907,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
             ctxt->vctxt.error = oldctxt->vctxt.error;
             ctxt->vctxt.warning = oldctxt->vctxt.warning;
             ctxt->vctxt.userData = oldctxt->vctxt.userData;
+            ctxt->vctxt.flags = oldctxt->vctxt.flags;
         }
 	ctxt->external = oldctxt->external;
         if (ctxt->dict) xmlDictFree(ctxt->dict);

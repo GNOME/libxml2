@@ -1,0 +1,9 @@
+./test/errors/utf8-1.xml:1: parser error : StartTag: invalid element name
+..............................................................................<<
+                                                                               ^
+./test/errors/utf8-1.xml:1: parser error : StartTag: invalid element name
+..............................................................................<<
+                                                                               ^
+./test/errors/utf8-1.xml:2: parser error : Premature end of data in tag d line 1
+
+^

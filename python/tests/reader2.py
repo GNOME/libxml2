@@ -19,103 +19,104 @@ libxml2.debugMemory(1)
 
 err = ""
 basedir = os.path.dirname(os.path.realpath(__file__))
-dir_prefix = os.path.join(basedir, "../../test/valid/")
+dir_prefix = os.path.realpath(os.path.join(basedir, "..", "..", "test", "valid"))
+
 # This dictionary reflects the contents of the files
 # ../../test/valid/*.xml.err that are not empty, except that
 # the file paths in the messages start with ../../test/
 
 expect = {
     '766956':
-"""../../test/valid/dtds/766956.dtd:2: parser error : PEReference: expecting ';'
+"""{0}/dtds/766956.dtd:2: parser error : PEReference: expecting ';'
 %ä%ent;
    ^
-../../test/valid/dtds/766956.dtd:2: parser error : Content error in the external subset
+{0}/dtds/766956.dtd:2: parser error : Content error in the external subset
 %ä%ent;
         ^
 Entity: line 1: 
 value
 ^
-""",
+""".format(dir_prefix),
     '781333':
-"""../../test/valid/781333.xml:4: element a: validity error : Element a content does not follow the DTD, expecting ( ..., got 
+"""{0}/781333.xml:4: element a: validity error : Element a content does not follow the DTD, expecting ( ..., got 
 <a/>
     ^
-../../test/valid/781333.xml:5: element a: validity error : Element a content does not follow the DTD, Expecting more child
+{0}/781333.xml:5: element a: validity error : Element a content does not follow the DTD, Expecting more child
 
 ^
-""",
+""".format(dir_prefix),
     'cond_sect2':
-"""../../test/valid/dtds/cond_sect2.dtd:15: parser error : All markup of the conditional section is not in the same entity
+"""{0}/dtds/cond_sect2.dtd:15: parser error : All markup of the conditional section is not in the same entity
     %ent;
          ^
 Entity: line 1: 
 ]]>
 ^
-../../test/valid/dtds/cond_sect2.dtd:17: parser error : Content error in the external subset
+{0}/dtds/cond_sect2.dtd:17: parser error : Content error in the external subset
 
 ^
-""",
+""".format(dir_prefix),
     'rss':
-"""../../test/valid/rss.xml:177: element rss: validity error : Element rss does not carry attribute version
+"""{0}/rss.xml:177: element rss: validity error : Element rss does not carry attribute version
 </rss>
       ^
-""",
+""".format(dir_prefix),
     't8':
-"""../../test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+"""{0}/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %defroot; %defmiddle; %deftest;
          ^
 Entity: line 1: 
 &lt;!ELEMENT root (middle) >
 ^
-../../test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+{0}/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %defroot; %defmiddle; %deftest;
                      ^
 Entity: line 1: 
 &lt;!ELEMENT middle (test) >
 ^
-../../test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+{0}/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %defroot; %defmiddle; %deftest;
                                ^
 Entity: line 1: 
 &lt;!ELEMENT test (#PCDATA) >
 ^
-""",
+""".format(dir_prefix),
     't8a':
-"""../../test/valid/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+"""{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %defroot;%defmiddle;%deftest;
          ^
 Entity: line 1: 
 &lt;!ELEMENT root (middle) >
 ^
-../../test/valid/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %defroot;%defmiddle;%deftest;
                     ^
 Entity: line 1: 
 &lt;!ELEMENT middle (test) >
 ^
-../../test/valid/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
+{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
 
 %defroot;%defmiddle;%deftest;
                              ^
 Entity: line 1: 
 &lt;!ELEMENT test (#PCDATA) >
 ^
-""",
+""".format(dir_prefix),
     'xlink':
-"""../../test/valid/xlink.xml:450: element termdef: validity error : ID dt-arc already defined
+"""{0}/xlink.xml:450: element termdef: validity error : ID dt-arc already defined
 	<p><termdef id="dt-arc" term="Arc">An <ter
 	                                  ^
 validity error : attribute def line 199 references an unknown ID "dt-xlg"
-""",
+""".format(dir_prefix),
 }
 
 # Add prefix_dir and extension to the keys
-expect = {"{}{}.xml".format(dir_prefix, key): val for key, val in expect.items()}
+expect = {os.path.join(dir_prefix, key + ".xml"): val for key, val in expect.items()}
 
 def callback(ctx, str):
     global err
@@ -123,9 +124,9 @@ def callback(ctx, str):
 libxml2.registerErrorHandler(callback, "")
 
 parsing_error_files = ["766956", "cond_sect2", "t8", "t8a"]
-expect_parsing_error = ["{}{}.xml".format(dir_prefix, f) for f in parsing_error_files]
+expect_parsing_error = [os.path.join(dir_prefix, f + ".xml") for f in parsing_error_files]
 
-valid_files = glob.glob(dir_prefix + "*.x*")
+valid_files = glob.glob(os.path.join(dir_prefix, "*.x*"))
 assert valid_files, "found no valid files in '{}'".format(dir_prefix)
 valid_files.sort()
 failures = 0

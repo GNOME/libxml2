@@ -6,7 +6,6 @@
 import sys
 import glob
 import os
-import string
 import libxml2
 try:
     import StringIO
@@ -129,6 +128,7 @@ expect_parsing_error = ["{}{}.xml".format(dir_prefix, f) for f in parsing_error_
 valid_files = glob.glob(dir_prefix + "*.x*")
 assert valid_files, "found no valid files in '{}'".format(dir_prefix)
 valid_files.sort()
+failures = 0
 for file in valid_files:
     err = ""
     reader = libxml2.newTextReaderFilename(file)
@@ -142,9 +142,15 @@ for file in valid_files:
         #sys.exit(1)
     if (err):
         if not(file in expect and err == expect[file]):
+            failures += 1
             print("Error: ", err)
             if file in expect:
                 print("Expected: ", expect[file])
+
+if failures:
+    print("Failed %d tests" % failures)
+    sys.exit(1)
+
 #
 # another separate test based on Stephane Bidoul one
 #
@@ -337,9 +343,11 @@ while reader.Read() == 1:
 if res != expect:
     print("test5 failed: unexpected output")
     print(res)
+    sys.exit(1)
 if err != "":
     print("test5 failed: validation error found")
     print(err)
+    sys.exit(1)
 
 #
 # cleanup

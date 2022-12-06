@@ -29,7 +29,7 @@ gcc:python3:
 gcc:static:
   extends: .test
   variables:
-    CONFIG: "--disable-shared --without-python"
+    CONFIG: "--disable-shared --without-python --without-modules"
     CFLAGS: "-O2"
 
 clang:asan:

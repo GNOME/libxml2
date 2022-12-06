@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # this tests the Expand() API of the xmlTextReader interface
 # this extract the Dragon bibliography entries from the XML specification

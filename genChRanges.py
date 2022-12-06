@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Portions of this script have been (shamelessly) stolen from the
 # prior work of Daniel Veillard (genUnicode.py)

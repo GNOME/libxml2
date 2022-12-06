@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #
 # This is the MS subset of the W3C test suite for XML Schemas.

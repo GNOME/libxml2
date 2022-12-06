@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Original script modified in November 2003 to take advantage of
 # the character-validation range routines, and updated to the

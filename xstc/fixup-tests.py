@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys, os
 import libxml2
@@ -26,7 +26,7 @@ def gatherFiles():
 
 def debugMsg(text):
     #pass
-    print "DEBUG:", text
+    print("DEBUG:", text)
 
 
 def fixup():
@@ -38,14 +38,14 @@ def fixup():
         schemaFile = os.path.join(baseDir, mainXSD)
         schemaDoc = libxml2.parseFile(schemaFile)
         if (schemaDoc is None):
-            print "ERROR: doc '%s' not found" % mainXSD
+            print("ERROR: doc '%s' not found" % mainXSD)
             sys.exit(1)
         try:
             xpmainCtx = schemaDoc.xpathNewContext()
-            xpmainCtx.xpathRegisterNs("xs", "http://www.w3.org/2001/XMLSchema");
+            xpmainCtx.xpathRegisterNs("xs", "http://www.w3.org/2001/XMLSchema")
             xpres = xpmainCtx.xpathEval("/xs:schema")
             if len(xpres) == 0:
-                print "ERROR: doc '%s' has no <schema> element" % mainXSD
+                print("ERROR: doc '%s' has no <schema> element" % mainXSD)
                 sys.exit(1)
             schemaElem = xpres[0]
             schemaNs = schemaElem.ns()
@@ -67,7 +67,7 @@ def fixup():
                     xpimpCtx = impDoc.xpathNewContext()
                     try:
                         xpimpCtx.setContextDoc(impDoc)
-                        xpimpCtx.xpathRegisterNs("xs", "http://www.w3.org/2001/XMLSchema");
+                        xpimpCtx.xpathRegisterNs("xs", "http://www.w3.org/2001/XMLSchema")
                         xpres = xpimpCtx.xpathEval("/xs:schema")
                         impTargetNs = xpres[0].noNsProp("targetNamespace")
                     finally:
@@ -94,6 +94,6 @@ try:
 finally:
     libxml2.cleanupParser()
     if libxml2.debugMemory(1) != 0:
-        print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+        print("Memory leak %d bytes" % (libxml2.debugMemory(1)))
         libxml2.dumpMemory()
 

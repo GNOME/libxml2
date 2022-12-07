@@ -195,6 +195,7 @@ check-local:
 	$(CHECKER) ./testModule$(EXEEXT)
 	$(CHECKER) ./testThreads$(EXEEXT)
 	$(CHECKER) ./runxmlconf$(EXEEXT)
+	$(CHECKER) ./runsuite$(EXEEXT)
 
 # Compatibility name of the check target
 runtests: check

@@ -34,15 +34,7 @@
   #define SYSCONFDIR "/etc"
 #endif
 
-#ifndef WITH_TRIO
-#include <stdio.h>
-#else
-/**
- * TRIO_REPLACE_STDIO:
- *
- * This macro is defined if the trio string formatting functions are to
- * be used instead of the default stdio ones.
- */
+#ifdef WITH_TRIO
 #define TRIO_REPLACE_STDIO
 #include "trio.h"
 #endif

@@ -518,7 +518,7 @@ typedef struct _xmlGlobalStateCleanupHelperParams {
     void *memory;
 } xmlGlobalStateCleanupHelperParams;
 
-static void XMLCDECL
+static void
 xmlGlobalStateCleanupHelper(void *p)
 {
     xmlGlobalStateCleanupHelperParams *params =
@@ -831,7 +831,7 @@ xmlCleanupThreadsInternal(void)
 #ifdef HAVE_POSIX_THREADS
 #elif defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #if defined(LIBXML_STATIC_FOR_DLL)
-int XMLCALL
+int
 xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
            ATTRIBUTE_UNUSED void *lpvReserved)
 #else

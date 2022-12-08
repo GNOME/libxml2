@@ -884,9 +884,6 @@
      <exports symbol='IS_LETTER_CH' type='macro'/>
      <exports symbol='IS_PUBIDCHAR' type='macro'/>
      <exports symbol='IS_PUBIDCHAR_CH' type='macro'/>
-     <exports symbol='MOVETO_ENDTAG' type='macro'/>
-     <exports symbol='MOVETO_STARTTAG' type='macro'/>
-     <exports symbol='SKIP_EOL' type='macro'/>
      <exports symbol='XML_MAX_DICTIONARY_LIMIT' type='macro'/>
      <exports symbol='XML_MAX_LOOKUP_LIMIT' type='macro'/>
      <exports symbol='XML_MAX_NAMELEN' type='macro'/>
@@ -916,7 +913,6 @@
      <exports symbol='xmlCurrentChar' type='function'/>
      <exports symbol='xmlDecodeEntities' type='function'/>
      <exports symbol='xmlEntityReferenceFunc' type='function'/>
-     <exports symbol='xmlErrMemory' type='function'/>
      <exports symbol='xmlFreeInputStream' type='function'/>
      <exports symbol='xmlHandleEntity' type='function'/>
      <exports symbol='xmlIsLetter' type='function'/>
@@ -1367,7 +1363,6 @@
      <exports symbol='xmlRMutex' type='typedef'/>
      <exports symbol='xmlRMutexPtr' type='typedef'/>
      <exports symbol='xmlCleanupThreads' type='function'/>
-     <exports symbol='xmlDllMain' type='function'/>
      <exports symbol='xmlFreeMutex' type='function'/>
      <exports symbol='xmlFreeRMutex' type='function'/>
      <exports symbol='xmlGetGlobalState' type='function'/>
@@ -1717,8 +1712,6 @@
      <summary>The DTD validation</summary>
      <description>API for the DTD handling and the validity checking </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_VCTXT_DTD_VALIDATED' type='macro'/>
-     <exports symbol='XML_VCTXT_USE_PCTXT' type='macro'/>
      <exports symbol='xmlAttributeTable' type='typedef'/>
      <exports symbol='xmlAttributeTablePtr' type='typedef'/>
      <exports symbol='xmlElementTable' type='typedef'/>
@@ -2764,10 +2757,7 @@
     <file name='xmlexports'>
      <summary>macros for marking symbols as exportable/importable.</summary>
      <description>macros for marking symbols as exportable/importable. </description>
-     <exports symbol='XMLCALL' type='macro'/>
-     <exports symbol='XMLCDECL' type='macro'/>
      <exports symbol='XMLPUBFUN' type='macro'/>
-     <exports symbol='XMLPUBLIC' type='macro'/>
      <exports symbol='XMLPUBVAR' type='macro'/>
     </file>
     <file name='xmlmemory'>
@@ -3402,7 +3392,6 @@
      <exports symbol='LIBXML_ZLIB_ENABLED' type='macro'/>
      <exports symbol='WITHOUT_TRIO' type='macro'/>
      <exports symbol='WITH_TRIO' type='macro'/>
-     <exports symbol='XML_DEPRECATED' type='macro'/>
      <exports symbol='xmlCheckVersion' type='function'/>
     </file>
     <file name='xmlwriter'>
@@ -3961,7 +3950,7 @@
       <info>Whether Debugging module is configured in</info>
     </macro>
     <macro name='LIBXML_DEBUG_RUNTIME' file='xmlversion'>
-      <info>Whether the runtime debugging is configured in</info>
+      <info>Removed</info>
     </macro>
     <macro name='LIBXML_DOTTED_VERSION' file='xmlversion'>
       <info>the version string like &quot;1.2.3&quot;</info>
@@ -4068,18 +4057,6 @@
     <macro name='LIBXML_ZLIB_ENABLED' file='xmlversion'>
       <info>Whether the Zlib support is compiled in</info>
     </macro>
-    <macro name='MOVETO_ENDTAG' file='parserInternals'>
-      <info>Skips to the next &apos;&gt;&apos; char.</info>
-      <arg name='p' info='and UTF8 string pointer'/>
-    </macro>
-    <macro name='MOVETO_STARTTAG' file='parserInternals'>
-      <info>Skips to the next &apos;&lt;&apos; char.</info>
-      <arg name='p' info='and UTF8 string pointer'/>
-    </macro>
-    <macro name='SKIP_EOL' file='parserInternals'>
-      <info>Skips the end of line chars.</info>
-      <arg name='p' info='and UTF8 string pointer'/>
-    </macro>
     <macro name='SOCKET' file='nanoftp'>
       <info>macro used to provide portability of code to windows sockets</info>
     </macro>
@@ -4119,17 +4096,8 @@
     <macro name='XINCLUDE_PARSE_XPOINTER' file='xinclude'>
       <info>Macro defining &quot;xpointer&quot;</info>
     </macro>
-    <macro name='XMLCALL' file='xmlexports'>
-      <info>Macro which declares the calling convention for exported functions</info>
-    </macro>
-    <macro name='XMLCDECL' file='xmlexports'>
-      <info>Macro which declares the calling convention for exported functions that use &apos;...&apos;.</info>
-    </macro>
     <macro name='XMLPUBFUN' file='xmlexports'>
       <info>Macro which declares an exportable function</info>
-    </macro>
-    <macro name='XMLPUBLIC' file='xmlexports'>
-      <info>Macro which declares a public symbol</info>
     </macro>
     <macro name='XMLPUBVAR' file='xmlexports'>
       <info>Macro which declares an exportable variable</info>
@@ -4149,9 +4117,6 @@
     </macro>
     <macro name='XML_DEFAULT_VERSION' file='parser'>
       <info>The default version of XML used: 1.0</info>
-    </macro>
-    <macro name='XML_DEPRECATED' file='xmlversion'>
-      <info>Macro used to indicate that a function, variable, type or struct member is deprecated.</info>
     </macro>
     <macro name='XML_DETECT_IDS' file='parser'>
       <info>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize xmlLoadExtDtdDefaultValue.</info>
@@ -4444,12 +4409,6 @@
     <macro name='XML_SUBSTITUTE_REF' file='parserInternals'>
       <info>Whether general entities need to be substituted.</info>
     </macro>
-    <macro name='XML_VCTXT_DTD_VALIDATED' file='valid'>
-      <info>Set after xmlValidateDtdFinal was called.</info>
-    </macro>
-    <macro name='XML_VCTXT_USE_PCTXT' file='valid'>
-      <info>Set if the validation context is part of a parser context.</info>
-    </macro>
     <macro name='XML_XML_ID' file='tree'>
       <info>This is the name for the special xml:id attribute</info>
     </macro>
@@ -4692,7 +4651,7 @@
     <enum name='XML_BUFFER_ALLOC_DOUBLEIT' file='tree' value='1' type='xmlBufferAllocationScheme' info='double each time one need to grow'/>
     <enum name='XML_BUFFER_ALLOC_EXACT' file='tree' value='2' type='xmlBufferAllocationScheme' info='grow only to the minimal size'/>
     <enum name='XML_BUFFER_ALLOC_HYBRID' file='tree' value='5' type='xmlBufferAllocationScheme' info='exact up to a threshold, and doubleit thereafter'/>
-    <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme' info='immutable buffer'/>
+    <enum name='XML_BUFFER_ALLOC_IMMUTABLE' file='tree' value='3' type='xmlBufferAllocationScheme' info='immutable buffer, deprecated'/>
     <enum name='XML_BUFFER_ALLOC_IO' file='tree' value='4' type='xmlBufferAllocationScheme' info='special allocation scheme used for I/O'/>
     <enum name='XML_BUF_OVERFLOW' file='xmlerror' value='7000' type='xmlParserErrors'/>
     <enum name='XML_C14N_1_0' file='c14n' value='0' type='xmlC14NMode' info='Original C14N 1.0 spec'/>
@@ -6423,6 +6382,7 @@ actually an xmlCharEncoding'/>
       <field name='nodeInfoTab' type='xmlParserNodeInfo *' info=' array of nodeInfos'/>
       <field name='input_id' type='int' info=' we need to label inputs'/>
       <field name='sizeentcopy' type='unsigned long' info=' volume of entity copy'/>
+      <field name='endCheckState' type='int' info=' quote state for push parser'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -7489,7 +7449,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlDefaultSAXHandlerInit' file='SAX2' module='SAX2'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Initialize the default SAX handler</info>
+      <info>DEPRECATED: This function is a no-op. Call xmlInitParser to initialize the library.</info>
       <return type='void'/>
     </function>
     <function name='htmlDocContentDumpFormatOutput' file='HTMLtree' module='HTMLtree'>
@@ -7589,7 +7549,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlInitAutoClose' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  This is a no-op now.</info>
+      <info>DEPRECATED: This is a no-op.</info>
       <return type='void'/>
     </function>
     <function name='htmlIsAutoClosed' file='HTMLparser' module='HTMLparser'>
@@ -7632,9 +7592,9 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlNewSAXParserCtxt' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Allocate and initialize a new parser context.</info>
+      <info>Allocate and initialize a new SAX parser context. If userData is NULL, the parser context will be passed as user data.</info>
       <return type='htmlParserCtxtPtr' info='the htmlParserCtxtPtr or NULL in case of allocation error'/>
-      <arg name='sax' type='htmlSAXHandlerPtr' info='SAX handler'/>
+      <arg name='sax' type='const htmlSAXHandler *' info='SAX handler'/>
       <arg name='userData' type='void *' info='user data'/>
     </function>
     <function name='htmlNodeDump' file='HTMLtree' module='HTMLtree'>
@@ -7691,7 +7651,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlParseCharRef' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>parse Reference declarations  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse Reference declarations  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;</info>
       <return type='int' info='the value parsed (as an int)'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
     </function>
@@ -7719,13 +7679,13 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlParseElement' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>parse an HTML element, this is highly recursive this is kept for compatibility with previous code versions  [39] element ::= EmptyElemTag | STag content ETag  [41] Attribute ::= Name Eq AttValue</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an HTML element, this is highly recursive this is kept for compatibility with previous code versions  [39] element ::= EmptyElemTag | STag content ETag  [41] Attribute ::= Name Eq AttValue</info>
       <return type='void'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
     </function>
     <function name='htmlParseEntityRef' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>parse an HTML ENTITY references  [68] EntityRef ::= &apos;&amp;&apos; Name &apos;;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an HTML ENTITY references  [68] EntityRef ::= &apos;&amp;&apos; Name &apos;;&apos;</info>
       <return type='const htmlEntityDesc *' info='the associated htmlEntityDescPtr if found, or NULL otherwise, if non-NULL *str will have to be freed by the caller.'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
       <arg name='str' type='const xmlChar **' info='location to store the entity name'/>
@@ -7786,7 +7746,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlSAXParseDoc' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks to handle parse events. If sax is NULL, fallback to the default DOM behavior and return a tree.</info>
+      <info>DEPRECATED: Use htmlNewSAXParserCtxt and htmlCtxtReadDoc.  Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks to handle parse events. If sax is NULL, fallback to the default DOM behavior and return a tree.</info>
       <return type='htmlDocPtr' info='the resulting document tree unless SAX is NULL or the document is not well formed.'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
@@ -7795,7 +7755,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='htmlSAXParseFile' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>parse an HTML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
+      <info>DEPRECATED: Use htmlNewSAXParserCtxt and htmlCtxtReadFile.  parse an HTML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</info>
       <return type='htmlDocPtr' info='the resulting document tree unless SAX is NULL or the document is not well formed.'/>
       <arg name='filename' type='const char *' info='the filename'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
@@ -7855,7 +7815,7 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='the number of xmlChar'/>
     </functype>
     <function name='initGenericErrorDefaultFunc' file='xmlerror' module='error'>
-      <info>Set or reset (if NULL) the default handler for generic errors to the builtin error function.</info>
+      <info>DEPRECATED: Use xmlSetGenericErrorFunc.  Set or reset (if NULL) the default handler for generic errors to the builtin error function.</info>
       <return type='void'/>
       <arg name='handler' type='xmlGenericErrorFunc *' info='the handler'/>
     </function>
@@ -8600,8 +8560,8 @@ Could we use @subtypes for this?'/>
       <arg name='size' type='size_t' info='initial size of buffer'/>
     </function>
     <function name='xmlBufferCreateStatic' file='tree' module='tree'>
-      <info>routine to create an XML buffer from an immutable memory area. The area won&apos;t be modified nor copied, and is expected to be present until the end of the buffer lifetime.</info>
-      <return type='xmlBufferPtr' info='the new structure.'/>
+      <info>Create an XML buffer initialized with bytes.</info>
+      <return type='xmlBufferPtr' info=''/>
       <arg name='mem' type='void *' info='the memory area'/>
       <arg name='size' type='size_t' info='the size in byte'/>
     </function>
@@ -8981,7 +8941,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupGlobals' file='globals' module='globals'>
-      <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.  Additional cleanup for multi-threading</info>
+      <info>DEPRECATED: This function is a no-op. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupInputCallbacks' file='xmlIO' module='xmlIO'>
@@ -8989,7 +8949,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupMemory' file='xmlmemory' module='xmlmemory'>
-      <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.  Free up all the memory allocated by the library for its own use. This should not be called by user level code.</info>
+      <info>DEPRECATED: This function is a no-op. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupOutputCallbacks' file='xmlIO' module='xmlIO'>
@@ -9007,7 +8967,7 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupThreads' file='threads' module='threads'>
-      <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.  xmlCleanupThreads() is used to to cleanup all the thread related data of the libxml2 library once processing has ended.  WARNING: if your application is multithreaded or has plugin support calling this may crash the application if another thread or a plugin is still using libxml2. It&apos;s sometimes very hard to guess if libxml2 is in use in the application, some libraries or plugins may use it without notice. In case of doubt abstain from calling this function or do it just before calling exit() to avoid leak reports from valgrind !</info>
+      <info>DEPRECATED: This function is a no-op. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.</info>
       <return type='void'/>
     </function>
     <function name='xmlClearNodeInfoSeq' file='parser' module='parserInternals'>
@@ -9433,7 +9393,7 @@ Could we use @subtypes for this?'/>
       <arg name='end3' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
     </function>
     <function name='xmlDefaultSAXHandlerInit' file='SAX2' module='SAX2'>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Initialize the default SAX2 handler</info>
+      <info>DEPRECATED: This function is a no-op. Call xmlInitParser to initialize the library.  Initialize the default SAX2 handler</info>
       <return type='void'/>
     </function>
     <function name='xmlDelEncodingAlias' file='encoding' module='encoding'>
@@ -9458,7 +9418,7 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='pointer to the length of the buffer'/>
     </function>
     <function name='xmlDictCleanup' file='dict' module='dict'>
-      <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.  Free the dictionary mutex. Do not call unless sure the library is not in use anymore !</info>
+      <info>DEPRECATED: This function is a no-op. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.</info>
       <return type='void'/>
     </function>
     <function name='xmlDictCreate' file='dict' module='dict'>
@@ -9522,13 +9482,6 @@ Could we use @subtypes for this?'/>
       <info>Query the number of elements installed in the hash @dict.</info>
       <return type='int' info='the number of elements in the dictionary or -1 in case of error'/>
       <arg name='dict' type='xmlDictPtr' info='the dictionary'/>
-    </function>
-    <function name='xmlDllMain' file='threads' module='threads'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='hinstDLL' type='void *' info=''/>
-      <arg name='fdwReason' type='unsigned long' info=''/>
-      <arg name='lpvReserved' type='void *' info=''/>
     </function>
     <function name='xmlDocCopyNode' file='tree' module='tree'>
       <info>Do a copy of the node to a given document.</info>
@@ -9697,12 +9650,6 @@ Could we use @subtypes for this?'/>
       <arg name='firstNode' type='xmlNodePtr' info='the fist node in the chunk'/>
       <arg name='lastNode' type='xmlNodePtr' info='the last nod in the chunk'/>
     </functype>
-    <function name='xmlErrMemory' file='parserInternals' module='parserInternals'>
-      <info>Handle a redefinition of attribute error</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='extra' type='const char *' info='extra information'/>
-    </function>
     <function name='xmlExpCtxtNbCons' file='xmlregexp' module='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
       <info>Debugging facility provides the number of allocated nodes over lifetime</info>
@@ -9873,7 +9820,7 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='number of bytes to write'/>
     </function>
     <function name='xmlFindCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Search in the registered set the handler able to read/write that encoding.</info>
+      <info>Search in the registered set the handler able to read/write that encoding or create a new one.</info>
       <return type='xmlCharEncodingHandlerPtr' info='the handler or NULL if not found'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
     </function>
@@ -9952,7 +9899,7 @@ Could we use @subtypes for this?'/>
       <arg name='input' type='xmlParserInputPtr' info='an xmlParserInputPtr'/>
     </function>
     <function name='xmlFreeMutex' file='threads' module='threads'>
-      <info>xmlFreeMutex() is used to reclaim resources associated with a libxml2 token struct.</info>
+      <info>Free a mutex.</info>
       <return type='void'/>
       <arg name='tok' type='xmlMutexPtr' info='the simple mutex'/>
     </function>
@@ -10171,7 +10118,7 @@ Could we use @subtypes for this?'/>
       <arg name='result' type='const char **' info='an array of string to be filled with the features name.'/>
     </function>
     <function name='xmlGetGlobalState' file='threads' module='threads'>
-      <info>xmlGetGlobalState() is called to retrieve the global state for a thread.</info>
+      <info>DEPRECATED: Internal function, do not use.  xmlGetGlobalState() is called to retrieve the global state for a thread.</info>
       <return type='xmlGlobalStatePtr' info='the thread global state or NULL in case of error'/>
     </function>
     <function name='xmlGetID' file='valid' module='valid'>
@@ -10249,7 +10196,7 @@ Could we use @subtypes for this?'/>
       <arg name='ID' type='const xmlChar *' info='the ID value'/>
     </function>
     <function name='xmlGetThreadId' file='threads' module='threads'>
-      <info>xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn&apos;t mandate pthread_t to be an integer type</info>
+      <info>DEPRECATED: Internal function, do not use.  xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn&apos;t mandate pthread_t to be an integer type</info>
       <return type='int' info='the current thread ID number'/>
     </function>
     <function name='xmlGetUTF8Char' file='xmlstring' module='xmlstring'>
@@ -10570,16 +10517,16 @@ Could we use @subtypes for this?'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
     <function name='xmlInitCharEncodingHandlers' file='encoding' module='encoding'>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Initialize the char encoding support, it registers the default encoding supported. NOTE: while public, this function usually doesn&apos;t need to be called in normal processing.</info>
+      <info>DEPRECATED: Alias for xmlInitParser.</info>
       <return type='void'/>
     </function>
     <function name='xmlInitGlobals' file='globals' module='globals'>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Additional initialisation for multi-threading</info>
+      <info>DEPRECATED: Alias for xmlInitParser.</info>
       <return type='void'/>
     </function>
     <function name='xmlInitMemory' file='xmlmemory' module='xmlmemory'>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Initialize the memory layer.</info>
-      <return type='int' info='0 on success'/>
+      <info>DEPRECATED: Alias for xmlInitParser.</info>
+      <return type='int' info=''/>
     </function>
     <function name='xmlInitNodeInfoSeq' file='parser' module='parserInternals'>
       <info>DEPRECATED: Don&apos;t use.  -- Initialize (set to initial state) node info sequence</info>
@@ -10596,7 +10543,7 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlInitThreads' file='threads' module='threads'>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  xmlInitThreads() is used to to initialize all the thread related data of the libxml2 library.</info>
+      <info>DEPRECATED: Alias for xmlInitParser.</info>
       <return type='void'/>
     </function>
     <function name='xmlInitializeCatalog' file='catalog' module='catalog'>
@@ -10605,8 +10552,8 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlInitializeDict' file='dict' module='dict'>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Do the dictionary mutex initialization.</info>
-      <return type='int' info='0 if initialization was already done, and 1 if that call led to the initialization'/>
+      <info>DEPRECATED: Alias for xmlInitParser.</info>
+      <return type='int' info=''/>
     </function>
     <function name='xmlInitializeGlobalState' file='globals' module='globals'>
       <info>xmlInitializeGlobalState() initialize a global state with all the default values of the library.</info>
@@ -10693,7 +10640,7 @@ Could we use @subtypes for this?'/>
       <arg name='c' type='int' info='an unicode character (int)'/>
     </function>
     <function name='xmlIsMainThread' file='threads' module='threads'>
-      <info>xmlIsMainThread() check whether the current thread is the main thread.</info>
+      <info>DEPRECATED: Internal function, do not use.  xmlIsMainThread() check whether the current thread is the main thread.</info>
       <return type='int' info='1 if the current thread is the main thread, 0 otherwise'/>
     </function>
     <function name='xmlIsMixedElement' file='valid' module='valid'>
@@ -10714,7 +10661,7 @@ Could we use @subtypes for this?'/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
     </function>
-    <function name='xmlIsXHTML' file='tree' module='xmlsave'>
+    <function name='xmlIsXHTML' file='tree' module='tree'>
       <info>Try to find if the document correspond to an XHTML DTD</info>
       <return type='int' info='1 if true, 0 if not and -1 in case of error'/>
       <arg name='systemID' type='const xmlChar *' info='the system identifier'/>
@@ -11606,9 +11553,9 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const xmlChar *' info='the reference name, or the reference string with &amp; and ;'/>
     </function>
     <function name='xmlNewSAXParserCtxt' file='parser' module='parserInternals'>
-      <info>Allocate and initialize a new SAX parser context.</info>
-      <return type='xmlParserCtxtPtr' info='the xmlParserCtxtPtr or NULL'/>
-      <arg name='sax' type='xmlSAXHandlerPtr' info='SAX handler'/>
+      <info>Allocate and initialize a new SAX parser context. If userData is NULL, the parser context will be passed as user data.</info>
+      <return type='xmlParserCtxtPtr' info='the xmlParserCtxtPtr or NULL if memory allocation failed.'/>
+      <arg name='sax' type='const xmlSAXHandler *' info='SAX handler'/>
       <arg name='userData' type='void *' info='user data'/>
     </function>
     <function name='xmlNewStringInputStream' file='parserInternals' module='parserInternals'>
@@ -11972,24 +11919,24 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='the length of the buffer in bytes'/>
     </functype>
     <function name='xmlParseAttValue' file='parserInternals' module='parser'>
-      <info>parse a value for an attribute Note: the parser won&apos;t do substitution of entities here, this will be handled later in xmlStringGetNodeList  [10] AttValue ::= &apos;&quot;&apos; ([^&lt;&amp;&quot;] | Reference)* &apos;&quot;&apos; | &quot;&apos;&quot; ([^&lt;&amp;&apos;] | Reference)* &quot;&apos;&quot;  3.3.3 Attribute-Value Normalization: Before the value of an attribute is passed to the application or checked for validity, the XML processor must normalize it as follows: - a character reference is processed by appending the referenced character to the attribute value - an entity reference is processed by recursively processing the replacement text of the entity - a whitespace character (#x20, #xD, #xA, #x9) is processed by appending #x20 to the normalized value, except that only a single #x20 is appended for a &quot;#xD#xA&quot; sequence that is part of an external parsed entity or the literal entity value of an internal parsed entity - other characters are processed by appending them to the normalized value If the declared value is not CDATA, then the XML processor must further process the normalized attribute value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) characters by a single space (#x20) character. All attributes for which no declaration has been read should be treated by a non-validating parser as if declared CDATA.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse a value for an attribute Note: the parser won&apos;t do substitution of entities here, this will be handled later in xmlStringGetNodeList  [10] AttValue ::= &apos;&quot;&apos; ([^&lt;&amp;&quot;] | Reference)* &apos;&quot;&apos; | &quot;&apos;&quot; ([^&lt;&amp;&apos;] | Reference)* &quot;&apos;&quot;  3.3.3 Attribute-Value Normalization: Before the value of an attribute is passed to the application or checked for validity, the XML processor must normalize it as follows: - a character reference is processed by appending the referenced character to the attribute value - an entity reference is processed by recursively processing the replacement text of the entity - a whitespace character (#x20, #xD, #xA, #x9) is processed by appending #x20 to the normalized value, except that only a single #x20 is appended for a &quot;#xD#xA&quot; sequence that is part of an external parsed entity or the literal entity value of an internal parsed entity - other characters are processed by appending them to the normalized value If the declared value is not CDATA, then the XML processor must further process the normalized attribute value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) characters by a single space (#x20) character. All attributes for which no declaration has been read should be treated by a non-validating parser as if declared CDATA.</info>
       <return type='xmlChar *' info='the AttValue parsed or NULL. The value has to be freed by the caller.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseAttribute' file='parserInternals' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>DEPRECATED: Don&apos;t use.  parse an attribute  [41] Attribute ::= Name Eq AttValue  [ WFC: No External Entity References ] Attribute values cannot contain direct or indirect entity references to external entities.  [ WFC: No &lt; in Attribute Values ] The replacement text of any entity referred to directly or indirectly in an attribute value (other than &quot;&amp;lt;&quot;) must not contain a &lt;.  [ VC: Attribute Value Type ] The attribute must have been declared; the value must be of the type declared for it.  [25] Eq ::= S? &apos;=&apos; S?  With namespace:  [NS 11] Attribute ::= QName Eq AttValue  Also the case QName == xmlns:??? is handled independently as a namespace definition.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an attribute  [41] Attribute ::= Name Eq AttValue  [ WFC: No External Entity References ] Attribute values cannot contain direct or indirect entity references to external entities.  [ WFC: No &lt; in Attribute Values ] The replacement text of any entity referred to directly or indirectly in an attribute value (other than &quot;&amp;lt;&quot;) must not contain a &lt;.  [ VC: Attribute Value Type ] The attribute must have been declared; the value must be of the type declared for it.  [25] Eq ::= S? &apos;=&apos; S?  With namespace:  [NS 11] Attribute ::= QName Eq AttValue  Also the case QName == xmlns:??? is handled independently as a namespace definition.</info>
       <return type='const xmlChar *' info='the attribute name, and the value in *value.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlChar **' info='a xmlChar ** used to store the value of the attribute'/>
     </function>
     <function name='xmlParseAttributeListDecl' file='parserInternals' module='parser'>
-      <info>: parse the Attribute list def for an element  [52] AttlistDecl ::= &apos;&lt;!ATTLIST&apos; S Name AttDef* S? &apos;&gt;&apos;  [53] AttDef ::= S Name S AttType S DefaultDecl</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an attribute list declaration for an element. Always consumes &apos;&lt;!&apos;.  [52] AttlistDecl ::= &apos;&lt;!ATTLIST&apos; S Name AttDef* S? &apos;&gt;&apos;  [53] AttDef ::= S Name S AttType S DefaultDecl</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseAttributeType' file='parserInternals' module='parser'>
-      <info>parse the Attribute list def for an element  [54] AttType ::= StringType | TokenizedType | EnumeratedType  [55] StringType ::= &apos;CDATA&apos;  [56] TokenizedType ::= &apos;ID&apos; | &apos;IDREF&apos; | &apos;IDREFS&apos; | &apos;ENTITY&apos; | &apos;ENTITIES&apos; | &apos;NMTOKEN&apos; | &apos;NMTOKENS&apos;  Validity constraints for attribute values syntax are checked in xmlValidateAttributeValue()  [ VC: ID ] Values of type ID must match the Name production. A name must not appear more than once in an XML document as a value of this type; i.e., ID values must uniquely identify the elements which bear them.  [ VC: One ID per Element Type ] No element type may have more than one ID attribute specified.  [ VC: ID Attribute Default ] An ID attribute must have a declared default of #IMPLIED or #REQUIRED.  [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names; each IDREF Name must match the value of an ID attribute on some element in the XML document; i.e. IDREF values must match the value of some ID attribute.  [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names; each Entity Name must match the name of an unparsed entity declared in the DTD.  [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the Attribute list def for an element  [54] AttType ::= StringType | TokenizedType | EnumeratedType  [55] StringType ::= &apos;CDATA&apos;  [56] TokenizedType ::= &apos;ID&apos; | &apos;IDREF&apos; | &apos;IDREFS&apos; | &apos;ENTITY&apos; | &apos;ENTITIES&apos; | &apos;NMTOKEN&apos; | &apos;NMTOKENS&apos;  Validity constraints for attribute values syntax are checked in xmlValidateAttributeValue()  [ VC: ID ] Values of type ID must match the Name production. A name must not appear more than once in an XML document as a value of this type; i.e., ID values must uniquely identify the elements which bear them.  [ VC: One ID per Element Type ] No element type may have more than one ID attribute specified.  [ VC: ID Attribute Default ] An ID attribute must have a declared default of #IMPLIED or #REQUIRED.  [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names; each IDREF Name must match the value of an ID attribute on some element in the XML document; i.e. IDREF values must match the value of some ID attribute.  [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names; each Entity Name must match the name of an unparsed entity declared in the DTD.  [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</info>
       <return type='int' info='the attribute type'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='tree' type='xmlEnumerationPtr *' info='the enumeration tree built while parsing'/>
@@ -12018,7 +11965,7 @@ Could we use @subtypes for this?'/>
       <arg name='recover' type='int' info='return nodes even if the data is broken (use 0)'/>
     </function>
     <function name='xmlParseCDSect' file='parserInternals' module='parser'>
-      <info>Parse escaped pure raw content.  [18] CDSect ::= CDStart CData CDEnd  [19] CDStart ::= &apos;&lt;![CDATA[&apos;  [20] Data ::= (Char* - (Char* &apos;]]&gt;&apos; Char*))  [21] CDEnd ::= &apos;]]&gt;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse escaped pure raw content. Always consumes &apos;&lt;![&apos;.  [18] CDSect ::= CDStart CData CDEnd  [19] CDStart ::= &apos;&lt;![CDATA[&apos;  [20] Data ::= (Char* - (Char* &apos;]]&gt;&apos; Char*))  [21] CDEnd ::= &apos;]]&gt;&apos;</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12029,10 +11976,10 @@ Could we use @subtypes for this?'/>
       <arg name='filename' type='const char *' info='the filename'/>
     </function>
     <function name='xmlParseCharData' file='parserInternals' module='parser'>
-      <info>parse a CharData section. if we are within a CDATA section &apos;]]&gt;&apos; marks an end of section.  The right angle bracket (&gt;) may be represented using the string &quot;&amp;gt;&quot;, and must, for compatibility, be escaped using &quot;&amp;gt;&quot; or a character reference when it appears in the string &quot;]]&gt;&quot; in content, when that string is not marking the end of a CDATA section.  [14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* &apos;]]&gt;&apos; [^&lt;&amp;]*)</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse character data. Always makes progress if the first char isn&apos;t &apos;&lt;&apos; or &apos;&amp;&apos;.  if we are within a CDATA section &apos;]]&gt;&apos; marks an end of section.  The right angle bracket (&gt;) may be represented using the string &quot;&amp;gt;&quot;, and must, for compatibility, be escaped using &quot;&amp;gt;&quot; or a character reference when it appears in the string &quot;]]&gt;&quot; in content, when that string is not marking the end of a CDATA section.  [14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* &apos;]]&gt;&apos; [^&lt;&amp;]*)</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='cdata' type='int' info='int indicating whether we are within a CDATA section'/>
+      <arg name='cdata' type='int' info='unused'/>
     </function>
     <function name='xmlParseCharEncoding' file='encoding' module='encoding'>
       <info>Compare the string to the encoding schemes already known. Note that the comparison is case insensitive accordingly to the section [XML] 4.3.3 Character Encoding in Entities.</info>
@@ -12040,7 +11987,7 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const char *' info='the encoding name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
     <function name='xmlParseCharRef' file='parserInternals' module='parser'>
-      <info>parse Reference declarations  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;  [ WFC: Legal Character ] Characters referred to using character references must match the production for Char.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse a numeric character reference. Always consumes &apos;&amp;&apos;.  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;  [ WFC: Legal Character ] Characters referred to using character references must match the production for Char.</info>
       <return type='int' info='the value parsed (as an int), 0 in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12054,7 +12001,7 @@ Could we use @subtypes for this?'/>
       <arg name='terminate' type='int' info='last chunk indicator'/>
     </function>
     <function name='xmlParseComment' file='parserInternals' module='parser'>
-      <info>Skip an XML (SGML) comment &lt;!-- .... --&gt; The spec says that &quot;For compatibility, the string &quot;--&quot; (double-hyphen) must not occur within comments. &quot;  [15] Comment ::= &apos;&lt;!--&apos; ((Char - &apos;-&apos;) | (&apos;-&apos; (Char - &apos;-&apos;)))* &apos;--&gt;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an XML (SGML) comment. Always consumes &apos;&lt;!&apos;.  The spec says that &quot;For compatibility, the string &quot;--&quot; (double-hyphen) must not occur within comments. &quot;  [15] Comment ::= &apos;&lt;!--&apos; ((Char - &apos;-&apos;) | (&apos;-&apos; (Char - &apos;-&apos;)))* &apos;--&gt;&apos;</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12079,7 +12026,7 @@ Could we use @subtypes for this?'/>
       <arg name='SystemID' type='const xmlChar *' info='a NAME* containing the URL to the DTD'/>
     </function>
     <function name='xmlParseDefaultDecl' file='parserInternals' module='parser'>
-      <info>Parse an attribute default declaration  [60] DefaultDecl ::= &apos;#REQUIRED&apos; | &apos;#IMPLIED&apos; | ((&apos;#FIXED&apos; S)? AttValue)  [ VC: Required Attribute ] if the default declaration is the keyword #REQUIRED, then the attribute must be specified for all elements of the type in the attribute-list declaration.  [ VC: Attribute Default Legal ] The declared default value must meet the lexical constraints of the declared attribute type c.f. xmlValidateAttributeDecl()  [ VC: Fixed Attribute Default ] if an attribute has a default value declared with the #FIXED keyword, instances of that attribute must match the default value.  [ WFC: No &lt; in Attribute Values ] handled in xmlParseAttValue()</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an attribute default declaration  [60] DefaultDecl ::= &apos;#REQUIRED&apos; | &apos;#IMPLIED&apos; | ((&apos;#FIXED&apos; S)? AttValue)  [ VC: Required Attribute ] if the default declaration is the keyword #REQUIRED, then the attribute must be specified for all elements of the type in the attribute-list declaration.  [ VC: Attribute Default Legal ] The declared default value must meet the lexical constraints of the declared attribute type c.f. xmlValidateAttributeDecl()  [ VC: Fixed Attribute Default ] if an attribute has a default value declared with the #FIXED keyword, instances of that attribute must match the default value.  [ WFC: No &lt; in Attribute Values ] handled in xmlParseAttValue()</info>
       <return type='int' info='XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED or XML_ATTRIBUTE_FIXED.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlChar **' info='Receive a possible fixed default value for the attribute'/>
@@ -12091,7 +12038,7 @@ Could we use @subtypes for this?'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
     <function name='xmlParseDocTypeDecl' file='parserInternals' module='parser'>
-      <info>parse a DOCTYPE declaration  [28] doctypedecl ::= &apos;&lt;!DOCTYPE&apos; S Name (S ExternalID)? S? (&apos;[&apos; (markupdecl | PEReference | S)* &apos;]&apos; S?)? &apos;&gt;&apos;  [ VC: Root Element Type ] The Name in the document type declaration must match the element type of the root element.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse a DOCTYPE declaration  [28] doctypedecl ::= &apos;&lt;!DOCTYPE&apos; S Name (S ExternalID)? S? (&apos;[&apos; (markupdecl | PEReference | S)* &apos;]&apos; S?)? &apos;&gt;&apos;  [ VC: Root Element Type ] The Name in the document type declaration must match the element type of the root element.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12101,47 +12048,47 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseElement' file='parserInternals' module='parser'>
-      <info>parse an XML element  [39] element ::= EmptyElemTag | STag content ETag  [ WFC: Element Type Match ] The Name in an element&apos;s end-tag must match the element type in the start-tag.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML element  [39] element ::= EmptyElemTag | STag content ETag  [ WFC: Element Type Match ] The Name in an element&apos;s end-tag must match the element type in the start-tag.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseElementChildrenContentDecl' file='parserInternals' module='parser'>
-      <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl  [47] children ::= (choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [48] cp ::= (Name | choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [49] choice ::= &apos;(&apos; S? cp ( S? &apos;|&apos; S? cp )* S? &apos;)&apos;  [50] seq ::= &apos;(&apos; S? cp ( S? &apos;,&apos; S? cp )* S? &apos;)&apos;  [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity reference appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl  [47] children ::= (choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [48] cp ::= (Name | choice | seq) (&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?  [49] choice ::= &apos;(&apos; S? cp ( S? &apos;|&apos; S? cp )* S? &apos;)&apos;  [50] seq ::= &apos;(&apos; S? cp ( S? &apos;,&apos; S? cp )* S? &apos;)&apos;  [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity reference appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</info>
       <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element hierarchy.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='inputchk' type='int' info='the input used for the current entity, needed for boundary checks'/>
     </function>
     <function name='xmlParseElementContentDecl' file='parserInternals' module='parser'>
-      <info>parse the declaration for an Element content either Mixed or Children, the cases EMPTY and ANY are handled directly in xmlParseElementDecl  [46] contentspec ::= &apos;EMPTY&apos; | &apos;ANY&apos; | Mixed | children</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the declaration for an Element content either Mixed or Children, the cases EMPTY and ANY are handled directly in xmlParseElementDecl  [46] contentspec ::= &apos;EMPTY&apos; | &apos;ANY&apos; | Mixed | children</info>
       <return type='int' info='the type of element content XML_ELEMENT_TYPE_xxx'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='name' type='const xmlChar *' info='the name of the element being defined.'/>
       <arg name='result' type='xmlElementContentPtr *' info='the Element Content pointer will be stored here if any'/>
     </function>
     <function name='xmlParseElementDecl' file='parserInternals' module='parser'>
-      <info>parse an Element declaration.  [45] elementdecl ::= &apos;&lt;!ELEMENT&apos; S Name S contentspec S? &apos;&gt;&apos;  [ VC: Unique Element Type Declaration ] No element type may be declared more than once</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an element declaration. Always consumes &apos;&lt;!&apos;.  [45] elementdecl ::= &apos;&lt;!ELEMENT&apos; S Name S contentspec S? &apos;&gt;&apos;  [ VC: Unique Element Type Declaration ] No element type may be declared more than once</info>
       <return type='int' info='the type of the element, or -1 in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseElementMixedContentDecl' file='parserInternals' module='parser'>
-      <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl  [51] Mixed ::= &apos;(&apos; S? &apos;#PCDATA&apos; (S? &apos;|&apos; S? Name)* S? &apos;)*&apos; | &apos;(&apos; S? &apos;#PCDATA&apos; S? &apos;)&apos;  [ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])  [ VC: No Duplicate Types ] The same name must not appear more than once in a single mixed-content declaration.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl  [51] Mixed ::= &apos;(&apos; S? &apos;#PCDATA&apos; (S? &apos;|&apos; S? Name)* S? &apos;)*&apos; | &apos;(&apos; S? &apos;#PCDATA&apos; S? &apos;)&apos;  [ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])  [ VC: No Duplicate Types ] The same name must not appear more than once in a single mixed-content declaration.</info>
       <return type='xmlElementContentPtr' info='the list of the xmlElementContentPtr describing the element choices'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='inputchk' type='int' info='the input used for the current entity, needed for boundary checks'/>
     </function>
     <function name='xmlParseEncName' file='parserInternals' module='parser'>
-      <info>parse the XML encoding name  [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | &apos;-&apos;)*</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the XML encoding name  [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | &apos;-&apos;)*</info>
       <return type='xmlChar *' info='the encoding name value or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseEncodingDecl' file='parserInternals' module='parser'>
-      <info>parse the XML encoding declaration  [80] EncodingDecl ::= S &apos;encoding&apos; Eq (&apos;&quot;&apos; EncName &apos;&quot;&apos; |  &quot;&apos;&quot; EncName &quot;&apos;&quot;)  this setups the conversion filters.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the XML encoding declaration  [80] EncodingDecl ::= S &apos;encoding&apos; Eq (&apos;&quot;&apos; EncName &apos;&quot;&apos; |  &quot;&apos;&quot; EncName &quot;&apos;&quot;)  this setups the conversion filters.</info>
       <return type='const xmlChar *' info='the encoding value or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseEndTag' file='parserInternals' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>parse an end of tag  [42] ETag ::= &apos;&lt;/&apos; Name S? &apos;&gt;&apos;  With namespace  [NS 9] ETag ::= &apos;&lt;/&apos; QName S? &apos;&gt;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an end of tag  [42] ETag ::= &apos;&lt;/&apos; Name S? &apos;&gt;&apos;  With namespace  [NS 9] ETag ::= &apos;&lt;/&apos; QName S? &apos;&gt;&apos;</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12152,29 +12099,29 @@ Could we use @subtypes for this?'/>
       <arg name='filename' type='const char *' info='the filename'/>
     </function>
     <function name='xmlParseEntityDecl' file='parserInternals' module='parser'>
-      <info>parse &lt;!ENTITY declarations  [70] EntityDecl ::= GEDecl | PEDecl  [71] GEDecl ::= &apos;&lt;!ENTITY&apos; S Name S EntityDef S? &apos;&gt;&apos;  [72] PEDecl ::= &apos;&lt;!ENTITY&apos; S &apos;%&apos; S Name S PEDef S? &apos;&gt;&apos;  [73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)  [74] PEDef ::= EntityValue | ExternalID  [76] NDataDecl ::= S &apos;NDATA&apos; S Name  [ VC: Notation Declared ] The Name must match the declared name of a notation.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an entity declaration. Always consumes &apos;&lt;!&apos;.  [70] EntityDecl ::= GEDecl | PEDecl  [71] GEDecl ::= &apos;&lt;!ENTITY&apos; S Name S EntityDef S? &apos;&gt;&apos;  [72] PEDecl ::= &apos;&lt;!ENTITY&apos; S &apos;%&apos; S Name S PEDef S? &apos;&gt;&apos;  [73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)  [74] PEDef ::= EntityValue | ExternalID  [76] NDataDecl ::= S &apos;NDATA&apos; S Name  [ VC: Notation Declared ] The Name must match the declared name of a notation.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseEntityRef' file='parserInternals' module='parser'>
-      <info>parse ENTITY references declarations  [68] EntityRef ::= &apos;&amp;&apos; Name &apos;;&apos;  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, the Name given in the entity reference must match that in an entity declaration, except that well-formed documents need not declare any of the following entities: amp, lt, gt, apos, quot.  The declaration of a parameter entity must precede any reference to it.  Similarly, the declaration of a general entity must precede any reference to it which appears in a default value in an attribute-list declaration. Note that if entities are declared in the external subset or in external parameter entities, a non-validating processor is not obligated to read and process their declarations; for such documents, the rule that an entity must be declared is a well-formedness constraint only if standalone=&apos;yes&apos;.  [ WFC: Parsed Entity ] An entity reference must not contain the name of an unparsed entity</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an entitiy reference. Always consumes &apos;&amp;&apos;.  [68] EntityRef ::= &apos;&amp;&apos; Name &apos;;&apos;  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, the Name given in the entity reference must match that in an entity declaration, except that well-formed documents need not declare any of the following entities: amp, lt, gt, apos, quot.  The declaration of a parameter entity must precede any reference to it.  Similarly, the declaration of a general entity must precede any reference to it which appears in a default value in an attribute-list declaration. Note that if entities are declared in the external subset or in external parameter entities, a non-validating processor is not obligated to read and process their declarations; for such documents, the rule that an entity must be declared is a well-formedness constraint only if standalone=&apos;yes&apos;.  [ WFC: Parsed Entity ] An entity reference must not contain the name of an unparsed entity</info>
       <return type='xmlEntityPtr' info='the xmlEntityPtr if found, or NULL otherwise.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseEntityValue' file='parserInternals' module='parser'>
-      <info>parse a value for ENTITY declarations  [9] EntityValue ::= &apos;&quot;&apos; ([^%&amp;&quot;] | PEReference | Reference)* &apos;&quot;&apos; | &quot;&apos;&quot; ([^%&amp;&apos;] | PEReference | Reference)* &quot;&apos;&quot;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse a value for ENTITY declarations  [9] EntityValue ::= &apos;&quot;&apos; ([^%&amp;&quot;] | PEReference | Reference)* &apos;&quot;&apos; | &quot;&apos;&quot; ([^%&amp;&apos;] | PEReference | Reference)* &quot;&apos;&quot;</info>
       <return type='xmlChar *' info='the EntityValue parsed with reference substituted or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='orig' type='xmlChar **' info='if non-NULL store a copy of the original entity value'/>
     </function>
     <function name='xmlParseEnumeratedType' file='parserInternals' module='parser'>
-      <info>parse an Enumerated attribute type.  [57] EnumeratedType ::= NotationType | Enumeration  [58] NotationType ::= &apos;NOTATION&apos; S &apos;(&apos; S? Name (S? &apos;|&apos; S? Name)* S? &apos;)&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an Enumerated attribute type.  [57] EnumeratedType ::= NotationType | Enumeration  [58] NotationType ::= &apos;NOTATION&apos; S &apos;(&apos; S? Name (S? &apos;|&apos; S? Name)* S? &apos;)&apos;</info>
       <return type='int' info='XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='tree' type='xmlEnumerationPtr *' info='the enumeration tree built while parsing'/>
     </function>
     <function name='xmlParseEnumerationType' file='parserInternals' module='parser'>
-      <info>parse an Enumeration attribute type.  [59] Enumeration ::= &apos;(&apos; S? Nmtoken (S? &apos;|&apos; S? Nmtoken)* S? &apos;)&apos;  [ VC: Enumeration ] Values of this type must match one of the Nmtoken tokens in the declaration</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an Enumeration attribute type.  [59] Enumeration ::= &apos;(&apos; S? Nmtoken (S? &apos;|&apos; S? Nmtoken)* S? &apos;)&apos;  [ VC: Enumeration ] Values of this type must match one of the Nmtoken tokens in the declaration</info>
       <return type='xmlEnumerationPtr' info='the enumeration attribute tree built while parsing'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12196,7 +12143,7 @@ Could we use @subtypes for this?'/>
       <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes'/>
     </function>
     <function name='xmlParseExternalID' file='parserInternals' module='parser'>
-      <info>Parse an External ID or a Public ID  NOTE: Productions [75] and [83] interact badly since [75] can generate &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral  [75] ExternalID ::= &apos;SYSTEM&apos; S SystemLiteral | &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral  [83] PublicID ::= &apos;PUBLIC&apos; S PubidLiteral</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse an External ID or a Public ID  NOTE: Productions [75] and [83] interact badly since [75] can generate &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral  [75] ExternalID ::= &apos;SYSTEM&apos; S SystemLiteral | &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral  [83] PublicID ::= &apos;PUBLIC&apos; S PubidLiteral</info>
       <return type='xmlChar *' info='the function returns SystemLiteral and in the second case publicID receives PubidLiteral, is strict is off it is possible to return NULL and have publicID set.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='publicID' type='xmlChar **' info='a xmlChar** receiving PubidLiteral'/>
@@ -12225,7 +12172,7 @@ Could we use @subtypes for this?'/>
       <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes'/>
     </function>
     <function name='xmlParseMarkupDecl' file='parserInternals' module='parser'>
-      <info>parse Markup declarations  [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment  [ VC: Proper Declaration/PE Nesting ] Parameter-entity replacement text must be properly nested with markup declarations. That is to say, if either the first character or the last character of a markup declaration (markupdecl above) is contained in the replacement text for a parameter-entity reference, both must be contained in the same replacement text.  [ WFC: PEs in Internal Subset ] In the internal DTD subset, parameter-entity references can occur only where markup declarations can occur, not within markup declarations. (This does not apply to references that occur in external parameter entities or to the external subset.)</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse markup declarations. Always consumes &apos;&lt;!&apos; or &apos;&lt;?&apos;.  [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment  [ VC: Proper Declaration/PE Nesting ] Parameter-entity replacement text must be properly nested with markup declarations. That is to say, if either the first character or the last character of a markup declaration (markupdecl above) is contained in the replacement text for a parameter-entity reference, both must be contained in the same replacement text.  [ WFC: PEs in Internal Subset ] In the internal DTD subset, parameter-entity references can occur only where markup declarations can occur, not within markup declarations. (This does not apply to references that occur in external parameter entities or to the external subset.)</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12237,12 +12184,12 @@ Could we use @subtypes for this?'/>
       <arg name='size' type='int' info='the size of the array'/>
     </function>
     <function name='xmlParseMisc' file='parserInternals' module='parser'>
-      <info>parse an XML Misc* optional field.  [27] Misc ::= Comment | PI |  S</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML Misc* optional field.  [27] Misc ::= Comment | PI |  S</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseName' file='parserInternals' module='parser'>
-      <info>parse an XML name.  [4] NameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | &apos;:&apos; | CombiningChar | Extender  [5] Name ::= (Letter | &apos;_&apos; | &apos;:&apos;) (NameChar)*  [6] Names ::= Name (#x20 Name)*</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML name.  [4] NameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | &apos;:&apos; | CombiningChar | Extender  [5] Name ::= (Letter | &apos;_&apos; | &apos;:&apos;) (NameChar)*  [6] Names ::= Name (#x20 Name)*</info>
       <return type='const xmlChar *' info='the Name parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12253,37 +12200,37 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseNmtoken' file='parserInternals' module='parser'>
-      <info>parse an XML Nmtoken.  [7] Nmtoken ::= (NameChar)+  [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML Nmtoken.  [7] Nmtoken ::= (NameChar)+  [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*</info>
       <return type='xmlChar *' info='the Nmtoken parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseNotationDecl' file='parserInternals' module='parser'>
-      <info>parse a notation declaration  [82] NotationDecl ::= &apos;&lt;!NOTATION&apos; S Name S (ExternalID |  PublicID) S? &apos;&gt;&apos;  Hence there is actually 3 choices: &apos;PUBLIC&apos; S PubidLiteral &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral and &apos;SYSTEM&apos; S SystemLiteral  See the NOTE on xmlParseExternalID().</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse a notation declaration. Always consumes &apos;&lt;!&apos;.  [82] NotationDecl ::= &apos;&lt;!NOTATION&apos; S Name S (ExternalID |  PublicID) S? &apos;&gt;&apos;  Hence there is actually 3 choices: &apos;PUBLIC&apos; S PubidLiteral &apos;PUBLIC&apos; S PubidLiteral S SystemLiteral and &apos;SYSTEM&apos; S SystemLiteral  See the NOTE on xmlParseExternalID().</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseNotationType' file='parserInternals' module='parser'>
-      <info>parse an Notation attribute type.  Note: the leading &apos;NOTATION&apos; S part has already being parsed...  [58] NotationType ::= &apos;NOTATION&apos; S &apos;(&apos; S? Name (S? &apos;|&apos; S? Name)* S? &apos;)&apos;  [ VC: Notation Attributes ] Values of this type must match one of the notation names included in the declaration; all notation names in the declaration must be declared.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an Notation attribute type.  Note: the leading &apos;NOTATION&apos; S part has already being parsed...  [58] NotationType ::= &apos;NOTATION&apos; S &apos;(&apos; S? Name (S? &apos;|&apos; S? Name)* S? &apos;)&apos;  [ VC: Notation Attributes ] Values of this type must match one of the notation names included in the declaration; all notation names in the declaration must be declared.</info>
       <return type='xmlEnumerationPtr' info='the notation attribute tree built while parsing'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParsePEReference' file='parserInternals' module='parser'>
-      <info>parse PEReference declarations The entity content is handled directly by pushing it&apos;s content as a new input stream.  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;  [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly.  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ VC: Entity Declared ] In a document with an external subset or external parameter entities with &quot;standalone=&apos;no&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse a parameter entity reference. Always consumes &apos;%&apos;.  The entity content is handled directly by pushing it&apos;s content as a new input stream.  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;  [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly.  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ VC: Entity Declared ] In a document with an external subset or external parameter entities with &quot;standalone=&apos;no&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParsePI' file='parserInternals' module='parser'>
-      <info>parse an XML Processing Instruction.  [16] PI ::= &apos;&lt;?&apos; PITarget (S (Char* - (Char* &apos;?&gt;&apos; Char*)))? &apos;?&gt;&apos;  The processing is transferred to SAX once parsed.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML Processing Instruction.  [16] PI ::= &apos;&lt;?&apos; PITarget (S (Char* - (Char* &apos;?&gt;&apos; Char*)))? &apos;?&gt;&apos;  The processing is transferred to SAX once parsed.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParsePITarget' file='parserInternals' module='parser'>
-      <info>parse the name of a PI  [17] PITarget ::= Name - ((&apos;X&apos; | &apos;x&apos;) (&apos;M&apos; | &apos;m&apos;) (&apos;L&apos; | &apos;l&apos;))</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the name of a PI  [17] PITarget ::= Name - ((&apos;X&apos; | &apos;x&apos;) (&apos;M&apos; | &apos;m&apos;) (&apos;L&apos; | &apos;l&apos;))</info>
       <return type='const xmlChar *' info='the PITarget name or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParsePubidLiteral' file='parserInternals' module='parser'>
-      <info>parse an XML public literal  [12] PubidLiteral ::= &apos;&quot;&apos; PubidChar* &apos;&quot;&apos; | &quot;&apos;&quot; (PubidChar - &quot;&apos;&quot;)* &quot;&apos;&quot;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML public literal  [12] PubidLiteral ::= &apos;&quot;&apos; PubidChar* &apos;&quot;&apos; | &quot;&apos;&quot; (PubidChar - &quot;&apos;&quot;)* &quot;&apos;&quot;</info>
       <return type='xmlChar *' info='the PubidLiteral parsed or NULL.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12294,28 +12241,28 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseReference' file='parserInternals' module='parser'>
-      <info>parse and handle entity references in content, depending on the SAX interface, this may end-up in a call to character() if this is a CharRef, a predefined entity, if there is no reference() callback. or if the parser was asked to switch to that mode.  [67] Reference ::= EntityRef | CharRef</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse and handle entity references in content, depending on the SAX interface, this may end-up in a call to character() if this is a CharRef, a predefined entity, if there is no reference() callback. or if the parser was asked to switch to that mode.  Always consumes &apos;&amp;&apos;.  [67] Reference ::= EntityRef | CharRef</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseSDDecl' file='parserInternals' module='parser'>
-      <info>parse the XML standalone declaration  [32] SDDecl ::= S &apos;standalone&apos; Eq ((&quot;&apos;&quot; (&apos;yes&apos; | &apos;no&apos;) &quot;&apos;&quot;) | (&apos;&quot;&apos; (&apos;yes&apos; | &apos;no&apos;)&apos;&quot;&apos;))  [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value &quot;no&quot; if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the attribute appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the XML standalone declaration  [32] SDDecl ::= S &apos;standalone&apos; Eq ((&quot;&apos;&quot; (&apos;yes&apos; | &apos;no&apos;) &quot;&apos;&quot;) | (&apos;&quot;&apos; (&apos;yes&apos; | &apos;no&apos;)&apos;&quot;&apos;))  [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value &quot;no&quot; if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the attribute appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</info>
       <return type='int' info='1 if standalone=&quot;yes&quot; 0 if standalone=&quot;no&quot; -2 if standalone attribute is missing or invalid (A standalone value of -2 means that the XML declaration was found, but no value was specified for the standalone attribute).'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseStartTag' file='parserInternals' module='parser'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>DEPRECATED: Don&apos;t use.  parse a start of tag either for rule element or EmptyElement. In both case we don&apos;t parse the tag closing chars.  [40] STag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  [44] EmptyElemTag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;/&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  With namespace:  [NS 8] STag ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;&gt;&apos;  [NS 10] EmptyElement ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;/&gt;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse a start tag. Always consumes &apos;&lt;&apos;.  [40] STag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  [44] EmptyElemTag ::= &apos;&lt;&apos; Name (S Attribute)* S? &apos;/&gt;&apos;  [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag.  With namespace:  [NS 8] STag ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;&gt;&apos;  [NS 10] EmptyElement ::= &apos;&lt;&apos; QName (S Attribute)* S? &apos;/&gt;&apos;</info>
       <return type='const xmlChar *' info='the element name parsed'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseSystemLiteral' file='parserInternals' module='parser'>
-      <info>parse an XML Literal  [11] SystemLiteral ::= (&apos;&quot;&apos; [^&quot;]* &apos;&quot;&apos;) | (&quot;&apos;&quot; [^&apos;]* &quot;&apos;&quot;)</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML Literal  [11] SystemLiteral ::= (&apos;&quot;&apos; [^&quot;]* &apos;&quot;&apos;) | (&quot;&apos;&quot; [^&apos;]* &quot;&apos;&quot;)</info>
       <return type='xmlChar *' info='the SystemLiteral parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseTextDecl' file='parserInternals' module='parser'>
-      <info>parse an XML declaration header for external entities  [77] TextDecl ::= &apos;&lt;?xml&apos; VersionInfo? EncodingDecl S? &apos;?&gt;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML declaration header for external entities  [77] TextDecl ::= &apos;&lt;?xml&apos; VersionInfo? EncodingDecl S? &apos;?&gt;&apos;</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12337,17 +12284,17 @@ Could we use @subtypes for this?'/>
       <arg name='str' type='const char *' info='the string to analyze'/>
     </function>
     <function name='xmlParseVersionInfo' file='parserInternals' module='parser'>
-      <info>parse the XML version.  [24] VersionInfo ::= S &apos;version&apos; Eq (&apos; VersionNum &apos; | &quot; VersionNum &quot;)  [25] Eq ::= S? &apos;=&apos; S?</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the XML version.  [24] VersionInfo ::= S &apos;version&apos; Eq (&apos; VersionNum &apos; | &quot; VersionNum &quot;)  [25] Eq ::= S? &apos;=&apos; S?</info>
       <return type='xmlChar *' info='the version string, e.g. &quot;1.0&quot;'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseVersionNum' file='parserInternals' module='parser'>
-      <info>parse the XML version value.  [26] VersionNum ::= &apos;1.&apos; [0-9]+  In practice allow [0-9].[0-9]+ at that level</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse the XML version value.  [26] VersionNum ::= &apos;1.&apos; [0-9]+  In practice allow [0-9].[0-9]+ at that level</info>
       <return type='xmlChar *' info='the string giving the XML version number, or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseXMLDecl' file='parserInternals' module='parser'>
-      <info>parse an XML declaration header  [23] XMLDecl ::= &apos;&lt;?xml&apos; VersionInfo EncodingDecl? SDDecl? S? &apos;?&gt;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML declaration header  [23] XMLDecl ::= &apos;&lt;?xml&apos; VersionInfo EncodingDecl? SDDecl? S? &apos;?&gt;&apos;</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12437,7 +12384,7 @@ Could we use @subtypes for this?'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
     <function name='xmlParserInputBufferCreateStatic' file='xmlIO' module='xmlIO'>
-      <info>Create a buffered parser input for the progressive parsing for the input from an immutable memory area. This will not copy the memory area to the buffer, but the memory is expected to be available until the end of the parsing, this is useful for example when using mmap&apos;ed file.</info>
+      <info>DEPRECATED: Use xmlParserInputBufferCreateMem.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='mem' type='const char *' info='the memory input'/>
       <arg name='size' type='int' info='the length of the memory block'/>
@@ -16855,7 +16802,7 @@ Could we use @subtypes for this?'/>
       <arg name='str' type='const xmlChar *' info='the string of the URI to escape'/>
     </function>
     <function name='xmlURIEscapeStr' file='uri' module='uri'>
-      <info>This routine escapes a string to hex, ignoring reserved characters (a-z) and the characters in the exception list.</info>
+      <info>This routine escapes a string to hex, ignoring reserved characters (a-z, A-Z, 0-9, &quot;@-_.!~*&apos;()&quot;) and the characters in the exception list.</info>
       <return type='xmlChar *' info='a new escaped string or NULL in case of error.'/>
       <arg name='str' type='const xmlChar *' info='string to escape'/>
       <arg name='list' type='const xmlChar *' info='exception list string of chars not to escape'/>
@@ -17653,7 +17600,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlXPathInit' file='xpath' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>DEPRECATED: This function will be made private. Call xmlInitParser to initialize the library.  Initialize the XPath environment</info>
+      <info>DEPRECATED: Alias for xmlInitParser.</info>
       <return type='void'/>
     </function>
     <function name='xmlXPathIntersection' file='xpathInternals' module='xpath'>

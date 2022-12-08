@@ -55,7 +55,4 @@
 #define ATTRIBUTE_NO_SANITIZE(arg)
 #endif
 
-#if !defined(PIC) && !defined(NOLIBTOOL) && !defined(LIBXML_STATIC)
-#  define LIBXML_STATIC
-#endif
 #endif /* ! __XML_LIBXML_H__ */

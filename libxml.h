@@ -34,13 +34,6 @@
   #define SYSCONFDIR "/etc"
 #endif
 
-#if defined(__Lynx__)
-#include <stdio.h> /* pull definition of size_t */
-#include <varargs.h>
-int snprintf(char *, size_t, const char *, ...);
-int vfprintf(FILE *, const char *, va_list);
-#endif
-
 #ifndef WITH_TRIO
 #include <stdio.h>
 #else

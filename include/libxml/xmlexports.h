@@ -8,28 +8,19 @@
 #ifndef __XML_EXPORTS_H__
 #define __XML_EXPORTS_H__
 
-#if defined(_WIN32) || defined(__CYGWIN__)
 /** DOC_DISABLE */
-
-#ifdef LIBXML_STATIC
-  #define XMLPUBLIC
-#elif defined(IN_LIBXML)
-  #define XMLPUBLIC __declspec(dllexport)
-#else
-  #define XMLPUBLIC __declspec(dllimport)
-#endif
-
-/** DOC_ENABLE */
+#if defined(_WIN32) || defined(__CYGWIN__)
+  #ifdef LIBXML_STATIC
+    #define XMLPUBLIC
+  #elif defined(IN_LIBXML)
+    #define XMLPUBLIC __declspec(dllexport)
+  #else
+    #define XMLPUBLIC __declspec(dllimport)
+  #endif
 #else /* not Windows */
-
-/**
- * XMLPUBLIC:
- *
- * Macro which declares a public symbol
- */
-#define XMLPUBLIC
-
+  #define XMLPUBLIC
 #endif /* platform switch */
+/** DOC_ENABLE */
 
 /*
  * XMLPUBFUN:

@@ -189,7 +189,7 @@ check-local:
 	[ -d result ] || $(LN_S) $(srcdir)/result .
 	$(CHECKER) ./runtest$(EXEEXT)
 	$(CHECKER) ./testrecurse$(EXEEXT)
-	ASAN_OPTIONS="$$ASAN_OPTIONS:detect_leaks=0" $(CHECKER) ./testapi$(EXEEXT)
+	$(CHECKER) ./testapi$(EXEEXT)
 	$(CHECKER) ./testchar$(EXEEXT)
 	$(CHECKER) ./testdict$(EXEEXT)
 	$(CHECKER) ./testModule$(EXEEXT)

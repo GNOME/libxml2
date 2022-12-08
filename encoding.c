@@ -1315,6 +1315,7 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
     static int UTF8ToISO8859_##n(unsigned char* out, int *outlen, \
                                  const unsigned char* in, int *inlen);
 
+/** DOC_DISABLE */
 DECLARE_ISO_FUNCS(2)
 DECLARE_ISO_FUNCS(3)
 DECLARE_ISO_FUNCS(4)
@@ -1329,6 +1330,7 @@ DECLARE_ISO_FUNCS(13)
 DECLARE_ISO_FUNCS(14)
 DECLARE_ISO_FUNCS(15)
 DECLARE_ISO_FUNCS(16)
+/** DOC_ENABLE */
 
 #endif /* LIBXML_ISO8859X_ENABLED */
 

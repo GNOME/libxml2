@@ -3129,7 +3129,7 @@ xmlInitializeCatalog(void) {
 					strncpy(p, "\\..\\etc\\catalog", 255 - (p - buf));
 					uri = xmlCanonicPath((const xmlChar*)buf);
 					if (uri != NULL) {
-						strncpy(XML_XML_DEFAULT_CATALOG, uri, 255);
+						strncpy(XML_XML_DEFAULT_CATALOG, (char* )uri, 255);
 						xmlFree(uri);
 					}
 				}

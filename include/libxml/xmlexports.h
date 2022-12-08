@@ -19,13 +19,6 @@
   #define XMLPUBLIC __declspec(dllimport)
 #endif
 
-#if defined(LIBXML_FASTCALL)
-  #define XMLCALL __fastcall
-#else
-  #define XMLCALL __cdecl
-#endif
-#define XMLCDECL __cdecl
-
 /** DOC_ENABLE */
 #else /* not Windows */
 
@@ -35,21 +28,6 @@
  * Macro which declares a public symbol
  */
 #define XMLPUBLIC
-
-/**
- * XMLCALL:
- *
- * Macro which declares the calling convention for exported functions
- */
-#define XMLCALL
-
-/**
- * XMLCDECL:
- *
- * Macro which declares the calling convention for exported functions that
- * use '...'.
- */
-#define XMLCDECL
 
 #endif /* platform switch */
 
@@ -69,6 +47,8 @@
 
 /** DOC_DISABLE */
 /* Compatibility */
+#define XMLCALL
+#define XMLCDECL
 #if !defined(LIBXML_DLL_IMPORT)
 #define LIBXML_DLL_IMPORT XMLPUBVAR
 #endif

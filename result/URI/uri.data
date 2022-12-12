@@ -16,3 +16,6 @@ http://foo.com/root.cgi?OK#OK2
 http://elsewhere.com/#deep
 http://elsewhere.com/?deep
 http://elsewhere.com/?deep#deep2
+http://elsewhere.com/bar
+http://elsewhere.com:8080/bar
+http://:8080

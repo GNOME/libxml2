@@ -16,3 +16,6 @@ bar?baz#baz2
 http://elsewhere.com/#deep
 http://elsewhere.com/?deep
 http://elsewhere.com/?deep#deep2
+//elsewhere.com/bar
+//elsewhere.com:8080/bar
+//:8080

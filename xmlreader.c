@@ -788,7 +788,13 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	     */
 	    if (reader->mode != XML_TEXTREADER_MODE_EOF) {
 		val = xmlParserInputBufferRead(reader->input, 4096);
-		if (val < 0) {
+		if ((val == 0) &&
+		    (reader->input->readcallback == NULL)) {
+		    if (xmlBufUse(inbuf) == reader->cur) {
+			reader->mode = XML_TEXTREADER_MODE_EOF;
+			reader->state = oldstate;
+		    }
+		} else if (val < 0) {
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
 		    reader->state = oldstate;
 		    if ((oldstate != XML_TEXTREADER_START) ||

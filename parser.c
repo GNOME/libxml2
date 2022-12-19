@@ -158,7 +158,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
     if ((ent != NULL) && (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 	(ent->content != NULL) && (ent->checked == 0) &&
 	(ctxt->errNo != XML_ERR_ENTITY_LOOP)) {
-	unsigned long oldnbent = ctxt->nbentities, diff;
+	unsigned long oldnbent = ctxt->nbentities;
 	xmlChar *rep;
 
 	ent->checked = 1;
@@ -171,13 +171,8 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
 	    ent->content[0] = 0;
 	}
 
-        diff = ctxt->nbentities - oldnbent + 1;
-        if (diff > INT_MAX / 2)
-            diff = INT_MAX / 2;
-	ent->checked = diff * 2;
+	ent->checked = ctxt->nbentities - oldnbent + 1;
 	if (rep != NULL) {
-	    if (xmlStrchr(rep, '<'))
-		ent->checked |= 1;
 	    xmlFree(rep);
 	    rep = NULL;
 	}
@@ -244,7 +239,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, size_t size,
         /*
          * use the number of parsed entities in the replacement
          */
-        size = ent->checked / 2;
+        size = ent->checked;
 
         /*
          * The amount of data parsed counting entities size only once
@@ -2714,7 +2709,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	    ent = xmlParseStringEntityRef(ctxt, &str);
 	    xmlParserEntityCheck(ctxt, 0, ent, 0);
 	    if (ent != NULL)
-	        ctxt->nbentities += ent->checked / 2;
+	        ctxt->nbentities += ent->checked;
 	    if ((ent != NULL) &&
 		(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		if (ent->content != NULL) {
@@ -2767,7 +2762,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	    ent = xmlParseStringPEReference(ctxt, &str);
 	    xmlParserEntityCheck(ctxt, 0, ent, 0);
 	    if (ent != NULL)
-	        ctxt->nbentities += ent->checked / 2;
+	        ctxt->nbentities += ent->checked;
 	    if (ent != NULL) {
                 if (ent->content == NULL) {
 		    /*
@@ -4067,20 +4062,15 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		     */
 		    if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 			(ent->content != NULL) && (ent->checked == 0)) {
-			unsigned long oldnbent = ctxt->nbentities, diff;
+			unsigned long oldnbent = ctxt->nbentities;
 
 			++ctxt->depth;
 			rep = xmlStringDecodeEntities(ctxt, ent->content,
 						  XML_SUBSTITUTE_REF, 0, 0, 0);
 			--ctxt->depth;
 
-                        diff = ctxt->nbentities - oldnbent + 1;
-                        if (diff > INT_MAX / 2)
-                            diff = INT_MAX / 2;
-                        ent->checked = diff * 2;
+                        ent->checked = ctxt->nbentities - oldnbent + 1;
 			if (rep != NULL) {
-			    if (xmlStrchr(rep, '<'))
-			        ent->checked |= 1;
 			    xmlFree(rep);
 			    rep = NULL;
 			} else {
@@ -7233,7 +7223,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     if (((ent->flags & XML_ENT_PARSED) == 0) &&
         ((ent->etype != XML_EXTERNAL_GENERAL_PARSED_ENTITY) ||
          (ctxt->options & (XML_PARSE_NOENT | XML_PARSE_DTDVALID)))) {
-	unsigned long oldnbent = ctxt->nbentities, diff;
+	unsigned long oldnbent = ctxt->nbentities;
 
 	/*
 	 * This is a bit hackish but this seems the best
@@ -7275,12 +7265,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	 * Store the number of entities needing parsing for this entity
 	 * content and do checkings
 	 */
-        diff = ctxt->nbentities - oldnbent + 1;
-        if (diff > INT_MAX / 2)
-            diff = INT_MAX / 2;
-        ent->checked = diff * 2;
-	if ((ent->content != NULL) && (xmlStrchr(ent->content, '<')))
-	    ent->checked |= 1;
+        ent->checked = ctxt->nbentities - oldnbent + 1;
 	if (ret == XML_ERR_ENTITY_LOOP) {
 	    xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
             xmlHaltParser(ctxt);
@@ -7345,12 +7330,12 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	    list = NULL;
 	}
 	if (ent->checked == 0)
-	    ent->checked = 2;
+	    ent->checked = 1;
 
         /* Prevent entity from being parsed and expanded twice (Bug 760367). */
         was_checked = 0;
-    } else if (ent->checked != 1) {
-	ctxt->nbentities += ent->checked / 2;
+    } else {
+	ctxt->nbentities += ent->checked;
     }
 
     /*
@@ -7716,13 +7701,16 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
      * not contain a <.
      */
     else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
-	     (ent != NULL) && 
 	     (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
-	if (((ent->checked & 1) || (ent->checked == 0)) &&
-	     (ent->content != NULL) && (xmlStrchr(ent->content, '<'))) {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
-	"'<' in entity '%s' is not allowed in attributes values\n", name);
+	if ((ent->flags & XML_ENT_CHECKED_LT) == 0) {
+            if ((ent->content != NULL) && (xmlStrchr(ent->content, '<')))
+                ent->flags |= XML_ENT_CONTAINS_LT;
+            ent->flags |= XML_ENT_CHECKED_LT;
         }
+        if (ent->flags & XML_ENT_CONTAINS_LT)
+            xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
+                    "'<' in entity '%s' is not allowed in attributes "
+                    "values\n", name);
     }
 
     /*
@@ -7910,12 +7898,16 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
      * not contain a <.
      */
     else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
-	     (ent != NULL) && (ent->content != NULL) &&
-	     (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
-	     (xmlStrchr(ent->content, '<'))) {
-	xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
-     "'<' in entity '%s' is not allowed in attributes values\n",
-			  name);
+	     (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
+	if ((ent->flags & XML_ENT_CHECKED_LT) == 0) {
+            if ((ent->content != NULL) && (xmlStrchr(ent->content, '<')))
+                ent->flags |= XML_ENT_CONTAINS_LT;
+            ent->flags |= XML_ENT_CHECKED_LT;
+        }
+        if (ent->flags & XML_ENT_CONTAINS_LT)
+            xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
+                    "'<' in entity '%s' is not allowed in attributes "
+                    "values\n", name);
     }
 
     /*

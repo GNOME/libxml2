@@ -56,10 +56,6 @@ struct _xmlEntity {
     struct _xmlEntity     *nexte;	/* unused */
     const xmlChar           *URI;	/* the full URI as computed */
     int                    owner;	/* does the entity own the childrens */
-    int			 checked;	/* was the entity content checked */
-					/* this is also used to count entities
-					 * references done from that entity
-					 * and if it contains '<' */
     int                    flags;       /* various flags */
     unsigned long   expandedSize;       /* expanded size */
 };

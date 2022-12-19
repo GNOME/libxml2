@@ -4,6 +4,14 @@
 #include <libxml/tree.h>
 #include <libxml/xmlstring.h>
 
+/*
+ * Entity flags
+ *
+ * XML_ENT_PARSED: The entity was parsed and `children` points to the
+ * content.
+ */
+#define XML_ENT_PARSED      (1<<0)
+
 XML_HIDDEN xmlChar *
 xmlEncodeAttributeEntities(xmlDocPtr doc, const xmlChar *input);
 

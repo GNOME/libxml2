@@ -78,6 +78,7 @@
 #include "private/buf.h"
 #include "private/dict.h"
 #include "private/enc.h"
+#include "private/entities.h"
 #include "private/error.h"
 #include "private/globals.h"
 #include "private/html.h"
@@ -7203,7 +7204,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     if (ent == NULL) return;
     if (!ctxt->wellFormed)
 	return;
-    was_checked = ent->checked;
+    was_checked = ent->flags & XML_ENT_PARSED;
 
     /* special case of predefined entities */
     if ((ent->name == NULL) ||
@@ -7229,8 +7230,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
      * far more secure as the parser will only process data coming from
      * the document entity by default.
      */
-    if (((ent->checked == 0) ||
-         ((ent->children == NULL) && (ctxt->options & XML_PARSE_NOENT))) &&
+    if (((ent->flags & XML_ENT_PARSED) == 0) &&
         ((ent->etype != XML_EXTERNAL_GENERAL_PARSED_ENTITY) ||
          (ctxt->options & (XML_PARSE_NOENT | XML_PARSE_DTDVALID)))) {
 	unsigned long oldnbent = ctxt->nbentities, diff;
@@ -7270,6 +7270,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			 "invalid entity type found\n", NULL);
 	}
 
+        ent->flags |= XML_ENT_PARSED;
 	/*
 	 * Store the number of entities needing parsing for this entity
 	 * content and do checkings
@@ -7292,9 +7293,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	}
 
 	if ((ret == XML_ERR_OK) && (list != NULL)) {
-	    if (((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
-	     (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY))&&
-		(ent->children == NULL)) {
+	    if ((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
+	        (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
 		ent->children = list;
                 /*
                  * Prune it directly in the generated document

@@ -4049,7 +4049,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		     */
 		    if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 			(ent->content != NULL)) {
-                        if (ent->checked == 0) {
+                        if ((ent->flags & XML_ENT_CHECKED) == 0) {
 			    unsigned long oldnbent = ctxt->nbentities;
                             unsigned long oldCopy = ctxt->sizeentcopy;
 
@@ -4063,6 +4063,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
                             --ctxt->depth;
 
                             ent->checked = ctxt->nbentities - oldnbent + 1;
+                            ent->flags |= XML_ENT_CHECKED;
                             ent->expandedSize = ctxt->sizeentcopy;
 
                             if (rep != NULL) {
@@ -7266,7 +7267,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			 "invalid entity type found\n", NULL);
 	}
 
-        ent->flags |= XML_ENT_PARSED;
+        ent->flags |= XML_ENT_PARSED | XML_ENT_CHECKED;
         ent->expandedSize = ctxt->sizeentcopy;
 	/*
 	 * Store the number of entities needing parsing for this entity

@@ -60,6 +60,7 @@ struct _xmlEntity {
 					/* this is also used to count entities
 					 * references done from that entity
 					 * and if it contains '<' */
+    int                    flags;       /* various flags */
 };
 
 /*

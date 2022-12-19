@@ -61,6 +61,7 @@ struct _xmlEntity {
 					 * references done from that entity
 					 * and if it contains '<' */
     int                    flags;       /* various flags */
+    unsigned long   expandedSize;       /* expanded size */
 };
 
 /*

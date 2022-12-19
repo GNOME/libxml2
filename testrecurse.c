@@ -160,7 +160,9 @@ static const char *start = "<!DOCTYPE foo [\
 ]> \
 <foo>";
 
-static const char *segment = "  <bar>&e; &f; &d;</bar>\n";
+static const char *segment =
+    "  <bar>&e; &f; &d;</bar>\n"
+    "  <text>_123456789_123456789_123456789_123456789</text>\n";
 static const char *finish = "</foo>";
 
 static int curseg = 0;

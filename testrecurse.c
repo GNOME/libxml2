@@ -31,7 +31,8 @@
 #define	RD_FLAGS	O_RDONLY
 #endif
 
-#define OPT_SAX     (1<<0)
+#define OPT_SAX         (1<<0)
+#define OPT_NO_SUBST    (1<<1)
 
 typedef int (*functest) (const char *filename, const char *result,
                          const char *error, int options);
@@ -686,17 +687,19 @@ recursiveDetectTest(const char *filename,
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
+    int parserOptions = XML_PARSE_DTDLOAD;
 
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
     if (options & OPT_SAX)
         initSAX(ctxt);
+    if ((options & OPT_NO_SUBST) == 0)
+        parserOptions |= XML_PARSE_NOENT;
     /*
      * base of the test, parse with the old API
      */
-    doc = xmlCtxtReadFile(ctxt, filename, NULL,
-                          XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    doc = xmlCtxtReadFile(ctxt, filename, NULL, parserOptions);
     if ((doc != NULL) || (ctxt->lastError.code != XML_ERR_ENTITY_LOOP)) {
         fprintf(stderr, "Failed to detect recursion in %s\n", filename);
 	xmlFreeParserCtxt(ctxt);
@@ -727,17 +730,19 @@ notRecursiveDetectTest(const char *filename,
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
+    int parserOptions = XML_PARSE_DTDLOAD;
 
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
     if (options & OPT_SAX)
         initSAX(ctxt);
+    if ((options & OPT_NO_SUBST) == 0)
+        parserOptions |= XML_PARSE_NOENT;
     /*
      * base of the test, parse with the old API
      */
-    doc = xmlCtxtReadFile(ctxt, filename, NULL,
-                          XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    doc = xmlCtxtReadFile(ctxt, filename, NULL, parserOptions);
     if (doc == NULL) {
         fprintf(stderr, "Failed to parse correct file %s\n", filename);
 	xmlFreeParserCtxt(ctxt);
@@ -768,14 +773,16 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     int res = 0;
+    int parserOptions = XML_PARSE_DTDLOAD;
 
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
     if (options & OPT_SAX)
         initSAX(ctxt);
-    doc = xmlCtxtReadFile(ctxt, "huge:text", NULL,
-                          XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    if ((options & OPT_NO_SUBST) == 0)
+        parserOptions |= XML_PARSE_NOENT;
+    doc = xmlCtxtReadFile(ctxt, "huge:text", NULL, parserOptions);
     if (doc == NULL) {
         fprintf(stderr, "Failed to parse huge:test with entities\n");
 	res = 1;
@@ -839,9 +846,15 @@ testDesc testDescriptions[] = {
     { "Parsing recursive test cases" ,
       recursiveDetectTest, "./test/recurse/lol*.xml", NULL, NULL, NULL,
       0 },
+    { "Parsing recursive test cases (no substitution)" ,
+      recursiveDetectTest, "./test/recurse/lol*.xml", NULL, NULL, NULL,
+      OPT_NO_SUBST },
     { "Parsing recursive test cases (SAX)" ,
       recursiveDetectTest, "./test/recurse/lol*.xml", NULL, NULL, NULL,
       OPT_SAX },
+    { "Parsing recursive test cases (SAX, no substitution)" ,
+      recursiveDetectTest, "./test/recurse/lol*.xml", NULL, NULL, NULL,
+      OPT_SAX | OPT_NO_SUBST },
     { "Parsing non-recursive test cases" ,
       notRecursiveDetectTest, "./test/recurse/good*.xml", NULL, NULL, NULL,
       0 },
@@ -851,9 +864,15 @@ testDesc testDescriptions[] = {
     { "Parsing non-recursive huge case" ,
       notRecursiveHugeTest, NULL, NULL, NULL, NULL,
       0 },
+    { "Parsing non-recursive huge case (no substitution)" ,
+      notRecursiveHugeTest, NULL, NULL, NULL, NULL,
+      OPT_NO_SUBST },
     { "Parsing non-recursive huge case (SAX)" ,
       notRecursiveHugeTest, NULL, NULL, NULL, NULL,
       OPT_SAX },
+    { "Parsing non-recursive huge case (SAX, no substitution)" ,
+      notRecursiveHugeTest, NULL, NULL, NULL, NULL,
+      OPT_SAX | OPT_NO_SUBST },
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 

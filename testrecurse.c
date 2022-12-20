@@ -31,6 +31,8 @@
 #define	RD_FLAGS	O_RDONLY
 #endif
 
+#define OPT_SAX     (1<<0)
+
 typedef int (*functest) (const char *filename, const char *result,
                          const char *error, int options);
 
@@ -196,6 +198,7 @@ static void *
 hugeOpen(const char * URI) {
     if ((URI == NULL) || (strncmp(URI, "huge:", 4)))
         return(NULL);
+    curseg = 0;
     rlen = strlen(start);
     current = start;
     return((void *) current);
@@ -581,6 +584,17 @@ initializeLibxml2(void) {
     }
 }
 
+static void
+initSAX(xmlParserCtxtPtr ctxt) {
+    ctxt->sax->startElementNs = NULL;
+    ctxt->sax->endElementNs = NULL;
+    ctxt->sax->characters = NULL;
+    ctxt->sax->cdataBlock = NULL;
+    ctxt->sax->ignorableWhitespace = NULL;
+    ctxt->sax->processingInstruction = NULL;
+    ctxt->sax->comment = NULL;
+}
+
 /************************************************************************
  *									*
  *		File name and path utilities				*
@@ -668,7 +682,7 @@ static int
 recursiveDetectTest(const char *filename,
              const char *result ATTRIBUTE_UNUSED,
              const char *err ATTRIBUTE_UNUSED,
-	     int options ATTRIBUTE_UNUSED) {
+	     int options) {
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
@@ -676,6 +690,8 @@ recursiveDetectTest(const char *filename,
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
+    if (options & OPT_SAX)
+        initSAX(ctxt);
     /*
      * base of the test, parse with the old API
      */
@@ -707,7 +723,7 @@ static int
 notRecursiveDetectTest(const char *filename,
              const char *result ATTRIBUTE_UNUSED,
              const char *err ATTRIBUTE_UNUSED,
-	     int options ATTRIBUTE_UNUSED) {
+	     int options) {
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
@@ -715,6 +731,8 @@ notRecursiveDetectTest(const char *filename,
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
+    if (options & OPT_SAX)
+        initSAX(ctxt);
     /*
      * base of the test, parse with the old API
      */
@@ -746,7 +764,7 @@ static int
 notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
              const char *result ATTRIBUTE_UNUSED,
              const char *err ATTRIBUTE_UNUSED,
-	     int options ATTRIBUTE_UNUSED) {
+	     int options) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     int res = 0;
@@ -754,6 +772,8 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
     nb_tests++;
 
     ctxt = xmlNewParserCtxt();
+    if (options & OPT_SAX)
+        initSAX(ctxt);
     doc = xmlCtxtReadFile(ctxt, "huge:text", NULL,
                           XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
     if (doc == NULL) {
@@ -819,14 +839,21 @@ testDesc testDescriptions[] = {
     { "Parsing recursive test cases" ,
       recursiveDetectTest, "./test/recurse/lol*.xml", NULL, NULL, NULL,
       0 },
+    { "Parsing recursive test cases (SAX)" ,
+      recursiveDetectTest, "./test/recurse/lol*.xml", NULL, NULL, NULL,
+      OPT_SAX },
     { "Parsing non-recursive test cases" ,
       notRecursiveDetectTest, "./test/recurse/good*.xml", NULL, NULL, NULL,
       0 },
-#ifdef LIBXML_READER_ENABLED
+    { "Parsing non-recursive test cases (SAX)" ,
+      notRecursiveDetectTest, "./test/recurse/good*.xml", NULL, NULL, NULL,
+      OPT_SAX },
     { "Parsing non-recursive huge case" ,
       notRecursiveHugeTest, NULL, NULL, NULL, NULL,
       0 },
-#endif
+    { "Parsing non-recursive huge case (SAX)" ,
+      notRecursiveHugeTest, NULL, NULL, NULL, NULL,
+      OPT_SAX },
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 

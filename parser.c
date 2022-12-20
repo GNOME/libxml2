@@ -2786,6 +2786,8 @@ int_error:
  * @end2:  an end marker xmlChar, 0 if none
  * @end3:  an end marker xmlChar, 0 if none
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Takes a entity string content and process to do the adequate substitutions.
  *
  * [67] Reference ::= EntityRef | CharRef
@@ -2813,6 +2815,8 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
  * @end:  an end marker xmlChar, 0 if none
  * @end2:  an end marker xmlChar, 0 if none
  * @end3:  an end marker xmlChar, 0 if none
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Takes a entity string content and process to do the adequate substitutions.
  *

@@ -358,6 +358,8 @@ deprecated_funcs = {
     'xmlSchemaCleanupTypes': True,
     'xmlSchemaInitTypes': True,
     'xmlSetupParserForBuffer': True,
+    'xmlStringDecodeEntities': True,
+    'xmlStringLenDecodeEntities': True,
     'xmlThrDefDefaultBufferSize': True,
     'xmlThrDefLineNumbersDefaultValue': True,
     'xmlThrDefPedanticParserDefaultValue': True,

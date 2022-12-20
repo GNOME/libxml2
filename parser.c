@@ -7410,7 +7410,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	return;
     }
 
-    if ((ctxt->replaceEntities) || (ent->children == NULL))  {
+    if (ctxt->replaceEntities)  {
 	/*
 	 * There is a problem on the handling of _private for entities
 	 * (bug 155816): Should we copy the content of the field from
@@ -7424,7 +7424,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	 * hack - maybe we should have further tests to determine
 	 * what to do.
 	 */
-	if ((ctxt->node != NULL) && (ent->children != NULL)) {
+	if (ctxt->node != NULL) {
 	    /*
 	     * Seems we are generating the DOM content, do
 	     * a simple tree copy for all references except the first

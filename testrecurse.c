@@ -155,6 +155,12 @@ static void globfree(glob_t *pglob) {
 
 
 static const char *start = "<!DOCTYPE foo [\
+<!ELEMENT foo (bar*)> \
+<!ELEMENT bar (#PCDATA)> \
+<!ATTLIST bar attr CDATA #IMPLIED> \
+<!ENTITY a SYSTEM 'test/recurse/ga.ent'> \
+<!ENTITY b SYSTEM 'test/recurse/gb.ent'> \
+<!ENTITY c SYSTEM 'test/recurse/gc.ent'> \
 <!ENTITY f 'some internal data'> \
 <!ENTITY e '&f;&f;'> \
 <!ENTITY d '&e;&e;'> \
@@ -162,9 +168,10 @@ static const char *start = "<!DOCTYPE foo [\
 <foo>";
 
 static const char *segment =
-    "  <bar attr='&e; &f; &d;'>&e; &f; &d;</bar>\n"
-    "  <text>_123456789_123456789_123456789_123456789</text>\n"
-    "  <text>_123456789_123456789_123456789_123456789</text>\n";
+    "  <bar attr='&e; &f; &d;'>&a; &b; &c; &e; &f; &d;</bar>\n"
+    "  <bar>_123456789_123456789_123456789_123456789</bar>\n"
+    "  <bar>_123456789_123456789_123456789_123456789</bar>\n"
+    "  <bar>_123456789_123456789_123456789_123456789</bar>\n";
 static const char *finish = "</foo>";
 
 static int curseg = 0;
@@ -175,13 +182,13 @@ static int rlen;
  * hugeMatch:
  * @URI: an URI to test
  *
- * Check for an huge: query
+ * Check for an huge.xml query
  *
  * Returns 1 if yes and 0 if another Input module should be used
  */
 static int
 hugeMatch(const char * URI) {
-    if ((URI != NULL) && (!strncmp(URI, "huge:", 4)))
+    if ((URI != NULL) && (!strcmp(URI, "huge.xml")))
         return(1);
     return(0);
 }
@@ -190,14 +197,14 @@ hugeMatch(const char * URI) {
  * hugeOpen:
  * @URI: an URI to test
  *
- * Return a pointer to the huge: query handler, in this example simply
+ * Return a pointer to the huge.xml query handler, in this example simply
  * the current pointer...
  *
  * Returns an Input context or NULL in case or error
  */
 static void *
 hugeOpen(const char * URI) {
-    if ((URI == NULL) || (strncmp(URI, "huge:", 4)))
+    if ((URI == NULL) || (strcmp(URI, "huge.xml")))
         return(NULL);
     curseg = 0;
     rlen = strlen(start);
@@ -209,7 +216,7 @@ hugeOpen(const char * URI) {
  * hugeClose:
  * @context: the read context
  *
- * Close the huge: query handler
+ * Close the huge.xml query handler
  *
  * Returns 0 or -1 in case of error
  */
@@ -219,7 +226,7 @@ hugeClose(void * context) {
     return(0);
 }
 
-#define MAX_NODES 20000
+#define MAX_NODES 10000
 
 /**
  * hugeRead:
@@ -227,7 +234,7 @@ hugeClose(void * context) {
  * @buffer: where to store data
  * @len: number of bytes to read
  *
- * Implement an huge: query read.
+ * Implement an huge.xml query read.
  *
  * Returns the number of bytes read or -1 in case of error
  */
@@ -778,7 +785,7 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     int res = 0;
-    int parserOptions = XML_PARSE_DTDLOAD;
+    int parserOptions = XML_PARSE_DTDVALID;
 
     nb_tests++;
 
@@ -787,9 +794,9 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
         initSAX(ctxt);
     if ((options & OPT_NO_SUBST) == 0)
         parserOptions |= XML_PARSE_NOENT;
-    doc = xmlCtxtReadFile(ctxt, "huge:text", NULL, parserOptions);
+    doc = xmlCtxtReadFile(ctxt, "huge.xml", NULL, parserOptions);
     if (doc == NULL) {
-        fprintf(stderr, "Failed to parse huge:test with entities\n");
+        fprintf(stderr, "Failed to parse huge.xml with entities\n");
 	res = 1;
     } else {
         xmlEntityPtr ent;
@@ -809,12 +816,26 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
             res = 1;
         }
 
+        ent = xmlGetDocEntity(doc, BAD_CAST "b");
+        if (ent->expandedSize != e_size) {
+            fprintf(stderr, "Wrong size for entity b: %lu (expected %lu)\n",
+                    ent->expandedSize, e_size);
+            res = 1;
+        }
+
         ent = xmlGetDocEntity(doc, BAD_CAST "d");
         d_size = e_size * 2 +
                  xmlStrlen(BAD_CAST "&e;") * 2 +
                  fixed_cost * 2;
         if (ent->expandedSize != d_size) {
             fprintf(stderr, "Wrong size for entity d: %lu (expected %lu)\n",
+                    ent->expandedSize, d_size);
+            res = 1;
+        }
+
+        ent = xmlGetDocEntity(doc, BAD_CAST "c");
+        if (ent->expandedSize != d_size) {
+            fprintf(stderr, "Wrong size for entity c: %lu (expected %lu)\n",
                     ent->expandedSize, d_size);
             res = 1;
         }
@@ -826,10 +847,16 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
         }
 
         total_size = (f_size + e_size + d_size + 3 * fixed_cost) *
-                     (MAX_NODES - 1) * 2;
+                     (MAX_NODES - 1) * 3;
         if (ctxt->sizeentcopy != total_size) {
             fprintf(stderr, "Wrong total entity size: %lu (expected %lu)\n",
                     ctxt->sizeentcopy, total_size);
+            res = 1;
+        }
+
+        if (ctxt->sizeentities != 30) {
+            fprintf(stderr, "Wrong parsed entity size: %lu (expected %lu)\n",
+                    ctxt->sizeentities, 30lu);
             res = 1;
         }
     }

@@ -687,7 +687,12 @@ recursiveDetectTest(const char *filename,
     xmlDocPtr doc;
     xmlParserCtxtPtr ctxt;
     int res = 0;
-    int parserOptions = XML_PARSE_DTDLOAD;
+    /*
+     * XML_PARSE_DTDVALID is the only way to load external entities
+     * without XML_PARSE_NOENT. The validation result doesn't matter
+     * anyway.
+     */
+    int parserOptions = XML_PARSE_DTDVALID;
 
     nb_tests++;
 

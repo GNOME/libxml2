@@ -17,11 +17,9 @@
 #include <sys/stat.h>
 
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
-#ifdef LIBXML_READER_ENABLED
-#include <libxml/xmlreader.h>
-#endif
 
 /*
  * O_BINARY is just for Windows compatibility - if it isn't defined
@@ -161,7 +159,8 @@ static const char *start = "<!DOCTYPE foo [\
 <foo>";
 
 static const char *segment =
-    "  <bar>&e; &f; &d;</bar>\n"
+    "  <bar attr='&e; &f; &d;'>&e; &f; &d;</bar>\n"
+    "  <text>_123456789_123456789_123456789_123456789</text>\n"
     "  <text>_123456789_123456789_123456789_123456789</text>\n";
 static const char *finish = "</foo>";
 
@@ -216,7 +215,7 @@ hugeClose(void * context) {
     return(0);
 }
 
-#define MAX_NODES 1000000
+#define MAX_NODES 20000
 
 /**
  * hugeRead:
@@ -244,12 +243,9 @@ hugeRead(void *context, char *buffer, int len)
 	memcpy(buffer, current, len);
         curseg ++;
         if (curseg == MAX_NODES) {
-	    fprintf(stderr, "\n");
             rlen = strlen(finish);
             current = finish;
 	} else {
-	    if (curseg % (MAX_NODES / 10) == 0)
-	        fprintf(stderr, ".");
             rlen = strlen(segment);
             current = segment;
 	}
@@ -735,7 +731,6 @@ notRecursiveDetectTest(const char *filename,
     return(res);
 }
 
-#ifdef LIBXML_READER_ENABLED
 /**
  * notRecursiveHugeTest:
  * @filename: the file to parse
@@ -752,31 +747,66 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
              const char *result ATTRIBUTE_UNUSED,
              const char *err ATTRIBUTE_UNUSED,
 	     int options ATTRIBUTE_UNUSED) {
-    xmlTextReaderPtr reader;
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr doc;
     int res = 0;
-    int ret;
 
     nb_tests++;
 
-    reader = xmlReaderForFile("huge:test" , NULL,
-                              XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
-    if (reader == NULL) {
-        fprintf(stderr, "Failed to open huge:test\n");
-	return(1);
-    }
-    ret = xmlTextReaderRead(reader);
-    while (ret == 1) {
-        ret = xmlTextReaderRead(reader);
-    }
-    if (ret != 0) {
-        fprintf(stderr, "Failed to parser huge:test with entities\n");
+    ctxt = xmlNewParserCtxt();
+    doc = xmlCtxtReadFile(ctxt, "huge:text", NULL,
+                          XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    if (doc == NULL) {
+        fprintf(stderr, "Failed to parse huge:test with entities\n");
 	res = 1;
+    } else {
+        xmlEntityPtr ent;
+        unsigned long fixed_cost = 50;
+        unsigned long f_size = xmlStrlen(BAD_CAST "some internal data");
+        unsigned long e_size;
+        unsigned long d_size;
+        unsigned long total_size;
+
+        ent = xmlGetDocEntity(doc, BAD_CAST "e");
+        e_size = f_size * 2 +
+                 xmlStrlen(BAD_CAST "&f;") * 2 +
+                 fixed_cost * 2;
+        if (ent->expandedSize != e_size) {
+            fprintf(stderr, "Wrong size for entity e: %lu (expected %lu)\n",
+                    ent->expandedSize, e_size);
+            res = 1;
+        }
+
+        ent = xmlGetDocEntity(doc, BAD_CAST "d");
+        d_size = e_size * 2 +
+                 xmlStrlen(BAD_CAST "&e;") * 2 +
+                 fixed_cost * 2;
+        if (ent->expandedSize != d_size) {
+            fprintf(stderr, "Wrong size for entity d: %lu (expected %lu)\n",
+                    ent->expandedSize, d_size);
+            res = 1;
+        }
+
+        if (ctxt->sizeentcopy < XML_MAX_TEXT_LENGTH) {
+            fprintf(stderr, "Total entity size too small: %lu\n",
+                    ctxt->sizeentcopy);
+            res = 1;
+        }
+
+        total_size = (f_size + e_size + d_size + 3 * fixed_cost) *
+                     (MAX_NODES - 1) * 2;
+        if (ctxt->sizeentcopy != total_size) {
+            fprintf(stderr, "Wrong total entity size: %lu (expected %lu)\n",
+                    ctxt->sizeentcopy, total_size);
+            res = 1;
+        }
     }
-    xmlFreeTextReader(reader);
+
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
 
     return(res);
 }
-#endif
 
 /************************************************************************
  *									*

@@ -184,6 +184,26 @@ static const xmlHugeDocParts hugeDocTable[] = {
 
         "</foo>"
     },
+    {
+        "test/recurse/huge_dtd.dtd",
+
+        "<!ELEMENT foo (#PCDATA)>\n"
+        "<!ENTITY ent 'success'>\n"
+        "<!ENTITY % a SYSTEM 'pa.ent'>\n"
+        "<!ENTITY % b SYSTEM 'pb.ent'>\n"
+        "<!ENTITY % c SYSTEM 'pc.ent'>\n"
+        "<!ENTITY % d '<!-- comment -->'>\n"
+        "<!ENTITY % e '%d;%d;'>\n"
+        "<!ENTITY % f '%e;%e;'>\n",
+
+        "<!ENTITY ent '%a; %b; %c; %d; %e; %f;'>\n"
+        "%a; %b; %c; %d; %e; %f;\n"
+        "<!-- _123456789_123456789_123456789_123456789 -->\n"
+        "<!-- _123456789_123456789_123456789_123456789 -->\n"
+        "<!-- _123456789_123456789_123456789_123456789 -->\n",
+
+        ""
+    },
     { NULL, NULL, NULL, NULL }
 };
 
@@ -898,6 +918,94 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
     return(res);
 }
 
+/**
+ * notRecursiveHugeTest:
+ * @filename: the file to parse
+ * @result: the file with expected result
+ * @err: the file with error messages: unused
+ *
+ * Parse a memory generated file
+ * good cases
+ *
+ * Returns 0 in case of success, an error code otherwise
+ */
+static int
+hugeDtdTest(const char *filename ATTRIBUTE_UNUSED,
+            const char *result ATTRIBUTE_UNUSED,
+            const char *err ATTRIBUTE_UNUSED,
+            int options) {
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr doc;
+    int res = 0;
+    int parserOptions = XML_PARSE_DTDVALID;
+
+    nb_tests++;
+
+    ctxt = xmlNewParserCtxt();
+    if (options & OPT_SAX)
+        initSAX(ctxt);
+    if ((options & OPT_NO_SUBST) == 0)
+        parserOptions |= XML_PARSE_NOENT;
+    doc = xmlCtxtReadFile(ctxt, "test/recurse/huge_dtd.xml", NULL,
+                          parserOptions);
+    if (doc == NULL) {
+        fprintf(stderr, "Failed to parse huge_dtd.xml\n");
+	res = 1;
+    } else {
+        unsigned long fixed_cost = 50;
+        unsigned long a_size = xmlStrlen(BAD_CAST "<!-- comment -->");
+        unsigned long b_size;
+        unsigned long c_size;
+        unsigned long e_size;
+        unsigned long f_size;
+        unsigned long total_size;
+
+        if (ctxt->sizeentcopy < XML_MAX_TEXT_LENGTH) {
+            fprintf(stderr, "Total entity size too small: %lu\n",
+                    ctxt->sizeentcopy);
+            res = 1;
+        }
+
+        b_size = (a_size + strlen("&a;") + fixed_cost) * 2;
+        c_size = (b_size + strlen("&b;") + fixed_cost) * 2;
+        /*
+         * Internal parameter entites are substitued eagerly and
+         * need different accounting.
+         */
+        e_size = a_size * 2;
+        f_size = e_size * 2;
+        total_size = /* internal */
+                     e_size + f_size + fixed_cost * 4 +
+                     (a_size + e_size + f_size + fixed_cost * 3) *
+                     (MAX_NODES - 1) * 2 +
+                     /* external */
+                     (a_size + b_size + c_size + fixed_cost * 3) *
+                     (MAX_NODES - 1) * 2 +
+                     /* final reference in main doc */
+                     strlen("success") + fixed_cost;
+        if (ctxt->sizeentcopy != total_size) {
+            fprintf(stderr, "Wrong total entity size: %lu (expected %lu)\n",
+                    ctxt->sizeentcopy, total_size);
+            res = 1;
+        }
+
+        total_size = strlen(hugeDocParts->start) +
+                     strlen(hugeDocParts->segment) * (MAX_NODES - 1) +
+                     strlen(hugeDocParts->finish) +
+                     28;
+        if (ctxt->sizeentities != total_size) {
+            fprintf(stderr, "Wrong parsed entity size: %lu (expected %lu)\n",
+                    ctxt->sizeentities, total_size);
+            res = 1;
+        }
+    }
+
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
+
+    return(res);
+}
+
 /************************************************************************
  *									*
  *			Tests Descriptions				*
@@ -936,6 +1044,9 @@ testDesc testDescriptions[] = {
     { "Parsing non-recursive huge case (SAX, no substitution)" ,
       notRecursiveHugeTest, NULL, NULL, NULL, NULL,
       OPT_SAX | OPT_NO_SUBST },
+    { "Parsing non-recursive huge DTD case" ,
+      hugeDtdTest, NULL, NULL, NULL, NULL,
+      0 },
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };
 

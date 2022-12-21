@@ -153,27 +153,41 @@ static void globfree(glob_t *pglob) {
 
 #include <libxml/xmlIO.h>
 
+typedef struct {
+    const char *URL;
+    const char *start;
+    const char *segment;
+    const char *finish;
+} xmlHugeDocParts;
 
-static const char *start = "<!DOCTYPE foo [\
-<!ELEMENT foo (bar*)> \
-<!ELEMENT bar (#PCDATA)> \
-<!ATTLIST bar attr CDATA #IMPLIED> \
-<!ENTITY a SYSTEM 'test/recurse/ga.ent'> \
-<!ENTITY b SYSTEM 'test/recurse/gb.ent'> \
-<!ENTITY c SYSTEM 'test/recurse/gc.ent'> \
-<!ENTITY f 'some internal data'> \
-<!ENTITY e '&f;&f;'> \
-<!ENTITY d '&e;&e;'> \
-]> \
-<foo>";
+static const xmlHugeDocParts hugeDocTable[] = {
+    {
+        "test/recurse/huge.xml",
 
-static const char *segment =
-    "  <bar attr='&e; &f; &d;'>&a; &b; &c; &e; &f; &d;</bar>\n"
-    "  <bar>_123456789_123456789_123456789_123456789</bar>\n"
-    "  <bar>_123456789_123456789_123456789_123456789</bar>\n"
-    "  <bar>_123456789_123456789_123456789_123456789</bar>\n";
-static const char *finish = "</foo>";
+        "<!DOCTYPE foo ["
+        "<!ELEMENT foo (bar*)> "
+        "<!ELEMENT bar (#PCDATA)> "
+        "<!ATTLIST bar attr CDATA #IMPLIED> "
+        "<!ENTITY a SYSTEM 'ga.ent'> "
+        "<!ENTITY b SYSTEM 'gb.ent'> "
+        "<!ENTITY c SYSTEM 'gc.ent'> "
+        "<!ENTITY f 'some internal data'> "
+        "<!ENTITY e '&f;&f;'> "
+        "<!ENTITY d '&e;&e;'> "
+        "]> "
+        "<foo>",
 
+        "  <bar attr='&e; &f; &d;'>&a; &b; &c; &e; &f; &d;</bar>\n"
+        "  <bar>_123456789_123456789_123456789_123456789</bar>\n"
+        "  <bar>_123456789_123456789_123456789_123456789</bar>\n"
+        "  <bar>_123456789_123456789_123456789_123456789</bar>\n",
+
+        "</foo>"
+    },
+    { NULL, NULL, NULL, NULL }
+};
+
+static const xmlHugeDocParts *hugeDocParts;
 static int curseg = 0;
 static const char *current;
 static int rlen;
@@ -182,14 +196,22 @@ static int rlen;
  * hugeMatch:
  * @URI: an URI to test
  *
- * Check for an huge.xml query
+ * Check for a huge query
  *
  * Returns 1 if yes and 0 if another Input module should be used
  */
 static int
 hugeMatch(const char * URI) {
-    if ((URI != NULL) && (!strcmp(URI, "huge.xml")))
-        return(1);
+    int i;
+
+    if (URI == NULL)
+        return(0);
+
+    for (i = 0; hugeDocTable[i].URL; i++) {
+        if (strcmp(URI, hugeDocTable[i].URL) == 0)
+            return(1);
+    }
+
     return(0);
 }
 
@@ -197,26 +219,36 @@ hugeMatch(const char * URI) {
  * hugeOpen:
  * @URI: an URI to test
  *
- * Return a pointer to the huge.xml query handler, in this example simply
+ * Return a pointer to the huge query handler, in this example simply
  * the current pointer...
  *
  * Returns an Input context or NULL in case or error
  */
 static void *
 hugeOpen(const char * URI) {
-    if ((URI == NULL) || (strcmp(URI, "huge.xml")))
+    int i;
+
+    if (URI == NULL)
         return(NULL);
-    curseg = 0;
-    rlen = strlen(start);
-    current = start;
-    return((void *) current);
+
+    for (i = 0; hugeDocTable[i].URL; i++) {
+        if (strcmp(URI, hugeDocTable[i].URL) == 0) {
+            hugeDocParts = hugeDocTable + i;
+            curseg = 0;
+            current = hugeDocParts->start;
+            rlen = strlen(current);
+            return((void *) current);
+        }
+    }
+
+    return(NULL);
 }
 
 /**
  * hugeClose:
  * @context: the read context
  *
- * Close the huge.xml query handler
+ * Close the huge query handler
  *
  * Returns 0 or -1 in case of error
  */
@@ -234,7 +266,7 @@ hugeClose(void * context) {
  * @buffer: where to store data
  * @len: number of bytes to read
  *
- * Implement an huge.xml query read.
+ * Implement an huge query read.
  *
  * Returns the number of bytes read or -1 in case of error
  */
@@ -254,12 +286,11 @@ hugeRead(void *context, char *buffer, int len)
 	memcpy(buffer, current, len);
         curseg ++;
         if (curseg == MAX_NODES) {
-            rlen = strlen(finish);
-            current = finish;
+            current = hugeDocParts->finish;
 	} else {
-            rlen = strlen(segment);
-            current = segment;
+            current = hugeDocParts->segment;
 	}
+        rlen = strlen(current);
     } else {
 	memcpy(buffer, current, len);
 	rlen -= len;
@@ -794,9 +825,9 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
         initSAX(ctxt);
     if ((options & OPT_NO_SUBST) == 0)
         parserOptions |= XML_PARSE_NOENT;
-    doc = xmlCtxtReadFile(ctxt, "huge.xml", NULL, parserOptions);
+    doc = xmlCtxtReadFile(ctxt, "test/recurse/huge.xml", NULL, parserOptions);
     if (doc == NULL) {
-        fprintf(stderr, "Failed to parse huge.xml with entities\n");
+        fprintf(stderr, "Failed to parse huge.xml\n");
 	res = 1;
     } else {
         xmlEntityPtr ent;

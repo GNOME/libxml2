@@ -64,7 +64,6 @@ libxml-2.0-uninstalled.pc
 libxml-2.0.pc
 libxml2-config.cmake
 libxml2.la
-libxml2.spec
 list
 ltmain.sh
 log

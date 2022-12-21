@@ -412,7 +412,7 @@ EXTRA_DIST = Copyright check-xml-test-suite.py gentest.py \
 	     libxml2-config.cmake.in autogen.sh \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h \
-	     genUnicode.py TODO_SCHEMAS \
+	     genUnicode.py \
 	     dbgen.pl dbgenattr.pl \
 	     libxml2.syms timsort.h \
 	     README.zOS README.md \

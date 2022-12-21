@@ -6,9 +6,6 @@
 
 SUBDIRS = . tests
 
-docsdir = $(docdir)/python
-dist_docs_DATA = TODO
-
 EXTRA_DIST = 			\
 	generator.py		\
 	libxml.py		\

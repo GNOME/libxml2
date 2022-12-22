@@ -9593,7 +9593,7 @@ next_attr:
 	            if (j <= nbNs) continue;
 
 		    nsname = xmlGetNamespace(ctxt, attname);
-		    if (nsname != defaults->values[2]) {
+		    if (nsname != defaults->values[5 * i + 2]) {
 			if (nsPush(ctxt, attname,
 			           defaults->values[5 * i + 2]) > 0)
 			    nbNs++;

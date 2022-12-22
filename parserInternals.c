@@ -1237,8 +1237,13 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
      * should not happen while parsing which is the situation where
      * the id is actually needed.
      */
-    if (ctxt != NULL)
+    if (ctxt != NULL) {
+        if (input->id >= INT_MAX) {
+            xmlErrMemory(ctxt, "Input ID overflow\n");
+            return(NULL);
+        }
         input->id = ctxt->input_id++;
+    }
 
     return(input);
 }

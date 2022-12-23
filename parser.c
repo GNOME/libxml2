@@ -7264,7 +7264,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         ent->flags |= XML_ENT_PARSED | XML_ENT_CHECKED;
         ent->expandedSize = ctxt->sizeentcopy;
 	if (ret == XML_ERR_ENTITY_LOOP) {
-	    xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
             xmlHaltParser(ctxt);
 	    xmlFreeNodeList(list);
 	    return;
@@ -12777,7 +12776,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (((depth > 40) &&
 	((oldctxt == NULL) || (oldctxt->options & XML_PARSE_HUGE) == 0)) ||
 	(depth > 1024)) {
-	return(XML_ERR_ENTITY_LOOP);
+	xmlFatalErr(oldctxt, XML_ERR_ENTITY_LOOP, NULL);
+        return(XML_ERR_ENTITY_LOOP);
     }
 
     if (list != NULL)
@@ -12910,10 +12910,12 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     }
 
     if (!ctxt->wellFormed) {
-        if (ctxt->errNo == 0)
-	    ret = XML_ERR_INTERNAL_ERROR;
-	else
-	    ret = (xmlParserErrors)ctxt->errNo;
+	ret = (xmlParserErrors)ctxt->errNo;
+        if (oldctxt != NULL) {
+            oldctxt->errNo = ctxt->errNo;
+            oldctxt->wellFormed = 0;
+            xmlCopyError(&ctxt->lastError, &oldctxt->lastError);
+        }
     } else {
 	if (list != NULL) {
 	    xmlNodePtr cur;
@@ -12947,11 +12949,6 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
         xmlSaturatedAdd(&oldctxt->sizeentcopy, consumed);
         xmlSaturatedAdd(&oldctxt->sizeentcopy, ctxt->sizeentcopy);
     }
-    /*
-     * And record the last error if any
-     */
-    if ((oldctxt != NULL) && (ctxt->lastError.code != XML_ERR_OK))
-        xmlCopyError(&ctxt->lastError, &oldctxt->lastError);
 
     if (oldctxt != NULL) {
         ctxt->dict = NULL;
@@ -13068,6 +13065,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     if (((oldctxt->depth > 40) && ((oldctxt->options & XML_PARSE_HUGE) == 0)) ||
         (oldctxt->depth >  1024)) {
+	xmlFatalErr(oldctxt, XML_ERR_ENTITY_LOOP, NULL);
 	return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -13163,12 +13161,12 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     }
 
     if (!ctxt->wellFormed) {
-        if (ctxt->errNo == 0)
-	    ret = XML_ERR_INTERNAL_ERROR;
-	else
-	    ret = (xmlParserErrors)ctxt->errNo;
+	ret = (xmlParserErrors)ctxt->errNo;
+        oldctxt->errNo = ctxt->errNo;
+        oldctxt->wellFormed = 0;
+        xmlCopyError(&ctxt->lastError, &oldctxt->lastError);
     } else {
-      ret = XML_ERR_OK;
+        ret = XML_ERR_OK;
     }
 
     if ((lst != NULL) && (ret == XML_ERR_OK)) {
@@ -13211,12 +13209,6 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
         xmlSaturatedAdd(&oldctxt->sizeentcopy, consumed);
         xmlSaturatedAdd(&oldctxt->sizeentcopy, ctxt->sizeentcopy);
     }
-
-    /*
-     * Also record the last error if any
-     */
-    if (ctxt->lastError.code != XML_ERR_OK)
-        xmlCopyError(&ctxt->lastError, &oldctxt->lastError);
 
     ctxt->sax = oldsax;
     ctxt->dict = NULL;

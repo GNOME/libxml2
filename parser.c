@@ -13181,7 +13181,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     xmlAddChild((xmlNodePtr) ctxt->myDoc, newRoot);
     nodePush(ctxt, ctxt->myDoc->children);
     ctxt->instate = XML_PARSER_CONTENT;
-    ctxt->depth = oldctxt->depth + 1;
+    ctxt->depth = oldctxt->depth;
 
     ctxt->validate = 0;
     ctxt->loadsubset = oldctxt->loadsubset;

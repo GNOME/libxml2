@@ -2270,7 +2270,7 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 		"Pushing input %d : %.30s\n", ctxt->inputNr+1, input->cur);
     }
     if (((ctxt->inputNr > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-        (ctxt->inputNr > 1024)) {
+        (ctxt->inputNr > 100)) {
         xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
         while (ctxt->inputNr > 1)
             xmlFreeInputStream(inputPop(ctxt));
@@ -2625,7 +2625,7 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 
     if (((ctxt->depth > 40) &&
          ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-	(ctxt->depth > 1024)) {
+	(ctxt->depth > 100)) {
 	xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
                        "Maximum entity nesting depth exceeded");
 	return(NULL);
@@ -12818,7 +12818,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 
     if (((depth > 40) &&
 	((oldctxt == NULL) || (oldctxt->options & XML_PARSE_HUGE) == 0)) ||
-	(depth > 1024)) {
+	(depth > 100)) {
 	xmlFatalErrMsg(oldctxt, XML_ERR_ENTITY_LOOP,
                        "Maximum entity nesting depth exceeded");
         return(XML_ERR_ENTITY_LOOP);
@@ -13108,7 +13108,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 #endif
 
     if (((oldctxt->depth > 40) && ((oldctxt->options & XML_PARSE_HUGE) == 0)) ||
-        (oldctxt->depth >  1024)) {
+        (oldctxt->depth >  100)) {
 	xmlFatalErrMsg(oldctxt, XML_ERR_ENTITY_LOOP,
                        "Maximum entity nesting depth exceeded");
 	return(XML_ERR_ENTITY_LOOP);

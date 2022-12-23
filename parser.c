@@ -768,14 +768,20 @@ static int
 xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
 {
     unsigned long consumed;
+    xmlParserInputPtr input = ctxt->input;
+    xmlEntityPtr entity = input->entity;
 
     /*
      * Compute total consumed bytes so far, including input streams of
      * external entities.
      */
-    consumed = ctxt->input->parentConsumed;
-    xmlSaturatedAdd(&consumed, ctxt->input->consumed);
-    xmlSaturatedAddSizeT(&consumed, ctxt->input->cur - ctxt->input->base);
+    consumed = input->parentConsumed;
+    if ((entity == NULL) ||
+        ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
+         ((entity->flags & XML_ENT_PARSED) == 0))) {
+        xmlSaturatedAdd(&consumed, input->consumed);
+        xmlSaturatedAddSizeT(&consumed, input->cur - input->base);
+    }
     xmlSaturatedAdd(&consumed, ctxt->sizeentities);
 
     /*
@@ -8058,6 +8064,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
             xmlChar start[4];
             xmlCharEncoding enc;
             unsigned long parentConsumed;
+            xmlEntityPtr oldEnt;
 
 	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
 	        ((ctxt->options & XML_PARSE_NOENT) == 0) &&
@@ -8074,10 +8081,16 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                 return;
             }
 
+            /* Must be computed from old input before pushing new input. */
             parentConsumed = ctxt->input->parentConsumed;
-            xmlSaturatedAdd(&parentConsumed, ctxt->input->consumed);
-            xmlSaturatedAddSizeT(&parentConsumed,
-                                 ctxt->input->cur - ctxt->input->base);
+            oldEnt = ctxt->input->entity;
+            if ((oldEnt == NULL) ||
+                ((oldEnt->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
+                 ((oldEnt->flags & XML_ENT_PARSED) == 0))) {
+                xmlSaturatedAdd(&parentConsumed, ctxt->input->consumed);
+                xmlSaturatedAddSizeT(&parentConsumed,
+                                     ctxt->input->cur - ctxt->input->base);
+            }
 
 	    input = xmlNewEntityInputStream(ctxt, entity);
 	    if (xmlPushInput(ctxt, input) < 0) {

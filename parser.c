@@ -2228,6 +2228,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  */
 xmlChar
 xmlPopInput(xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr input;
+
     if ((ctxt == NULL) || (ctxt->inputNr <= 1)) return(0);
     if (xmlParserDebugEntities)
 	xmlGenericError(xmlGenericErrorContext,
@@ -2236,7 +2238,10 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
         (ctxt->instate != XML_PARSER_EOF))
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
                     "Unfinished entity outside the DTD");
-    xmlFreeInputStream(inputPop(ctxt));
+    input = inputPop(ctxt);
+    if (input->entity != NULL)
+        input->entity->flags &= ~XML_ENT_EXPANDING;
+    xmlFreeInputStream(input);
     if (*ctxt->input->cur == 0)
         xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
     return(CUR);
@@ -2621,7 +2626,8 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     if (((ctxt->depth > 40) &&
          ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
 	(ctxt->depth > 1024)) {
-	xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+	xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
+                       "Maximum entity nesting depth exceeded");
 	return(NULL);
     }
 
@@ -2675,10 +2681,20 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	        if ((check) && (xmlParserEntityCheck(ctxt, ent->length)))
                     goto int_error;
 
+                if (ent->flags & XML_ENT_EXPANDING) {
+	            xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+                    xmlHaltParser(ctxt);
+                    ent->content[0] = 0;
+                    goto int_error;
+                }
+
+                ent->flags |= XML_ENT_EXPANDING;
 		ctxt->depth++;
 		rep = xmlStringDecodeEntitiesInt(ctxt, ent->content,
                         ent->length, what, 0, 0, 0, check);
 		ctxt->depth--;
+                ent->flags &= ~XML_ENT_EXPANDING;
+
 		if (rep == NULL) {
                     ent->content[0] = 0;
                     goto int_error;
@@ -2732,10 +2748,20 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	        if ((check) && (xmlParserEntityCheck(ctxt, ent->length)))
                     goto int_error;
 
+                if (ent->flags & XML_ENT_EXPANDING) {
+	            xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+                    xmlHaltParser(ctxt);
+                    ent->content[0] = 0;
+                    goto int_error;
+                }
+
+                ent->flags |= XML_ENT_EXPANDING;
 		ctxt->depth++;
 		rep = xmlStringDecodeEntitiesInt(ctxt, ent->content,
                         ent->length, what, 0, 0, 0, check);
 		ctxt->depth--;
+                ent->flags &= ~XML_ENT_EXPANDING;
+
 		if (rep == NULL) {
                     if (ent->content != NULL)
                         ent->content[0] = 0;
@@ -7237,6 +7263,14 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         /* Avoid overflow as much as possible */
         ctxt->sizeentcopy = 0;
 
+        if (ent->flags & XML_ENT_EXPANDING) {
+            xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+            xmlHaltParser(ctxt);
+            return;
+        }
+
+        ent->flags |= XML_ENT_EXPANDING;
+
 	/*
 	 * Check that this entity is well formed
 	 * 4.3.2: An internal general parsed entity is well-formed
@@ -7261,6 +7295,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			 "invalid entity type found\n", NULL);
 	}
 
+        ent->flags &= ~XML_ENT_EXPANDING;
         ent->flags |= XML_ENT_PARSED | XML_ENT_CHECKED;
         ent->expandedSize = ctxt->sizeentcopy;
 	if (ret == XML_ERR_ENTITY_LOOP) {
@@ -8033,6 +8068,12 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 		(ctxt->validate == 0))
 		return;
 
+            if (entity->flags & XML_ENT_EXPANDING) {
+                xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
+                xmlHaltParser(ctxt);
+                return;
+            }
+
             parentConsumed = ctxt->input->parentConsumed;
             xmlSaturatedAdd(&parentConsumed, ctxt->input->consumed);
             xmlSaturatedAddSizeT(&parentConsumed,
@@ -8043,6 +8084,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                 xmlFreeInputStream(input);
 		return;
             }
+
+            entity->flags |= XML_ENT_EXPANDING;
 
             input->parentConsumed = parentConsumed;
 
@@ -12776,7 +12819,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (((depth > 40) &&
 	((oldctxt == NULL) || (oldctxt->options & XML_PARSE_HUGE) == 0)) ||
 	(depth > 1024)) {
-	xmlFatalErr(oldctxt, XML_ERR_ENTITY_LOOP, NULL);
+	xmlFatalErrMsg(oldctxt, XML_ERR_ENTITY_LOOP,
+                       "Maximum entity nesting depth exceeded");
         return(XML_ERR_ENTITY_LOOP);
     }
 
@@ -13065,7 +13109,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     if (((oldctxt->depth > 40) && ((oldctxt->options & XML_PARSE_HUGE) == 0)) ||
         (oldctxt->depth >  1024)) {
-	xmlFatalErr(oldctxt, XML_ERR_ENTITY_LOOP, NULL);
+	xmlFatalErrMsg(oldctxt, XML_ERR_ENTITY_LOOP,
+                       "Maximum entity nesting depth exceeded");
 	return(XML_ERR_ENTITY_LOOP);
     }
 

@@ -2757,7 +2757,8 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
                 if (ent->flags & XML_ENT_EXPANDING) {
 	            xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
                     xmlHaltParser(ctxt);
-                    ent->content[0] = 0;
+                    if (ent->content != NULL)
+                        ent->content[0] = 0;
                     goto int_error;
                 }
 

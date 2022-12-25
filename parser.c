@@ -11836,7 +11836,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                         size = XML_PARSER_BIG_BUFFER_SIZE;
                     }
                     tmp = xmlCheckCdataPush(ctxt->input->cur, size, 0);
-                    if (tmp < 0) {
+                    if (tmp <= 0) {
                         tmp = -tmp;
                         ctxt->input->cur += tmp;
                         goto encoding_error;

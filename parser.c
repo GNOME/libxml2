@@ -12848,6 +12848,10 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     ctxt = xmlCreateEntityParserCtxtInternal(sax, user_data, URL, ID, NULL,
                                              oldctxt);
     if (ctxt == NULL) return(XML_WAR_UNDECLARED_ENTITY);
+    if (oldctxt != NULL) {
+        ctxt->nbErrors = oldctxt->nbErrors;
+        ctxt->nbWarnings = oldctxt->nbWarnings;
+    }
     xmlDetectSAX2(ctxt);
 
     newDoc = xmlNewDoc(BAD_CAST "1.0");
@@ -13012,6 +13016,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
         ctxt->dict = NULL;
         ctxt->attsDefault = NULL;
         ctxt->attsSpecial = NULL;
+        oldctxt->nbErrors = ctxt->nbErrors;
+        oldctxt->nbWarnings = ctxt->nbWarnings;
         oldctxt->validate = ctxt->validate;
         oldctxt->valid = ctxt->valid;
         oldctxt->node_seq.maximum = ctxt->node_seq.maximum;
@@ -13138,6 +13144,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     ctxt = xmlCreateMemoryParserCtxt((char *) string, size);
     if (ctxt == NULL) return(XML_WAR_UNDECLARED_ENTITY);
+    ctxt->nbErrors = oldctxt->nbErrors;
+    ctxt->nbWarnings = oldctxt->nbWarnings;
     if (user_data != NULL)
 	ctxt->userData = user_data;
     else
@@ -13269,6 +13277,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
         xmlSaturatedAdd(&oldctxt->sizeentcopy, ctxt->sizeentcopy);
     }
 
+    oldctxt->nbErrors = ctxt->nbErrors;
+    oldctxt->nbWarnings = ctxt->nbWarnings;
     ctxt->sax = oldsax;
     ctxt->dict = NULL;
     ctxt->attsDefault = NULL;
@@ -14710,6 +14720,8 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     if (ctxt->catalogs != NULL)
 	xmlCatalogFreeLocal(ctxt->catalogs);
 #endif
+    ctxt->nbErrors = 0;
+    ctxt->nbWarnings = 0;
     if (ctxt->lastError.code != XML_ERR_OK)
         xmlResetError(&ctxt->lastError);
 }

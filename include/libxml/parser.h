@@ -310,6 +310,8 @@ struct _xmlParserCtxt {
     unsigned long      sizeentcopy;   /* volume of entity copy */
 
     int           endCheckState;    /* quote state for push parser */
+    unsigned short     nbErrors;    /* number of errors */
+    unsigned short   nbWarnings;    /* number of warnings */
 };
 
 /**

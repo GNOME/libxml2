@@ -1412,14 +1412,19 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 			    goto out;
 			}
 			else if ((ent != NULL) &&
-                                 ((ent->flags & XML_ENT_PARSED) == 0)) {
+                                 ((ent->flags & XML_ENT_PARSED) == 0) &&
+                                 ((ent->flags & XML_ENT_EXPANDING) == 0)) {
 			    xmlNodePtr temp;
 
-                            /* Set to non-NULL value to avoid recursion. */
-			    ent->children = (xmlNodePtr) -1;
+                            /*
+                             * The entity should have been checked already,
+                             * but set the flag anyway to avoid recursion.
+                             */
+			    ent->flags |= XML_ENT_EXPANDING;
 			    ent->children = xmlStringGetNodeList(doc,
 				    (const xmlChar*)node->content);
 			    ent->owner = 1;
+			    ent->flags &= ~XML_ENT_EXPANDING;
                             ent->flags |= XML_ENT_PARSED;
 			    temp = ent->children;
 			    while (temp) {
@@ -1610,14 +1615,19 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 			if (node == NULL)
 			    goto out;
 			if ((ent != NULL) &&
-                            ((ent->flags & XML_ENT_PARSED) == 0)) {
+                            ((ent->flags & XML_ENT_PARSED) == 0) &&
+                            ((ent->flags & XML_ENT_EXPANDING) == 0)) {
 			    xmlNodePtr temp;
 
-                            /* Set to non-NULL value to avoid recursion. */
-			    ent->children = (xmlNodePtr) -1;
+                            /*
+                             * The entity should have been checked already,
+                             * but set the flag anyway to avoid recursion.
+                             */
+			    ent->flags |= XML_ENT_EXPANDING;
 			    ent->children = xmlStringGetNodeList(doc,
 				    (const xmlChar*)node->content);
 			    ent->owner = 1;
+			    ent->flags &= ~XML_ENT_EXPANDING;
                             ent->flags |= XML_ENT_PARSED;
 			    temp = ent->children;
 			    while (temp) {

@@ -58,10 +58,7 @@ dist_man_MANS = xml2-config.1 xmllint.1 xmlcatalog.1
 
 EXTRA_DIST = \
 	apibuild.py \
-	checkapisym.xsl \
 	libxml2-api.xml \
-	symbols.xml \
-	syms.xsl \
 	xmlcatalog.xml \
 	xmllint.xml
 
@@ -69,8 +66,6 @@ DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.x
 
 rebuild:
 	cd $(srcdir) && ./apibuild.py
-	cd $(srcdir) && $(XSLTPROC) checkapisym.xsl libxml2-api.xml
-	cd $(srcdir) && $(XSLTPROC) -o ../libxml2.syms syms.xsl symbols.xml
 	cd $(srcdir) && $(XSLTPROC) -o ../win32/libxml2.def.src ../win32/defgen.xsl libxml2-api.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet xmllint.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet -o xmllint.html $(DOCBOOK_HTML) xmllint.xml

@@ -4091,8 +4091,16 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
                                     /* check */ 1);
                             --ctxt->depth;
 
-                            ent->flags |= XML_ENT_CHECKED;
-                            ent->expandedSize = ctxt->sizeentcopy;
+                            /*
+                             * If we're parsing DTD content, the entity
+                             * might reference other entities which
+                             * weren't defined yet, so the check isn't
+                             * reliable.
+                             */
+                            if (ctxt->inSubset == 0) {
+                                ent->flags |= XML_ENT_CHECKED;
+                                ent->expandedSize = ctxt->sizeentcopy;
+                            }
 
                             if (rep != NULL) {
                                 xmlFree(rep);

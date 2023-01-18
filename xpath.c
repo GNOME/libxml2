@@ -10001,12 +10001,12 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 #endif
     if (cur == NULL) return(0);
     while (IS_BLANK_CH(*cur)) cur++;
-    if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
-        return(xmlXPathNAN);
-    }
     if (*cur == '-') {
 	isneg = 1;
 	cur++;
+    }
+    if ((*cur != '.') && ((*cur < '0') || (*cur > '9'))) {
+        return(xmlXPathNAN);
     }
 
 #ifdef __GNUC__

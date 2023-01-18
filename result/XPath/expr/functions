@@ -20,6 +20,10 @@ Expression: -number('abc')
 Object is a number : NaN
 
 ========================
+Expression: number('-')
+Object is a number : NaN
+
+========================
 Expression: floor(0.1)
 Object is a number : 0
 

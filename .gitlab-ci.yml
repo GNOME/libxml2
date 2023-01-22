@@ -196,7 +196,9 @@ cmake:mingw:w64-x86_64:static:
   tags:
     - win32-ps
   variables:
-    CFLAGS: /WX
+    # MSVC warns when casting `const char **` to `void *` which is wrong.
+    # Disable warning C4090.
+    CFLAGS: /WX /wd4090
     CMAKE_VERSION: 3.19.4
   script:
     - .gitlab-ci/Test-Msvc

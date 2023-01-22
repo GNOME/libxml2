@@ -69,20 +69,6 @@ Entity: line 1:
 Entity: line 1: 
 &lt;!ELEMENT root (middle) >
 ^
-{0}/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
-%defroot; %defmiddle; %deftest;
-                     ^
-Entity: line 1: 
-&lt;!ELEMENT middle (test) >
-^
-{0}/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
-%defroot; %defmiddle; %deftest;
-                               ^
-Entity: line 1: 
-&lt;!ELEMENT test (#PCDATA) >
-^
 """.format(dir_prefix),
     't8a':
 """{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
@@ -91,20 +77,6 @@ Entity: line 1:
          ^
 Entity: line 1: 
 &lt;!ELEMENT root (middle) >
-^
-{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
-%defroot;%defmiddle;%deftest;
-                    ^
-Entity: line 1: 
-&lt;!ELEMENT middle (test) >
-^
-{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
-%defroot;%defmiddle;%deftest;
-                             ^
-Entity: line 1: 
-&lt;!ELEMENT test (#PCDATA) >
 ^
 """.format(dir_prefix),
     'xlink':

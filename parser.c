@@ -7143,7 +7143,8 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
             xmlParseMarkupDecl(ctxt);
         } else {
             xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-            break;
+            xmlHaltParser(ctxt);
+            return;
         }
         SKIP_BLANKS;
     }
@@ -8481,10 +8482,8 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 		xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
                         "xmlParseInternalSubset: error detected in"
                         " Markup declaration\n");
-                if (ctxt->inputNr > baseInputNr)
-                    xmlPopInput(ctxt);
-                else
-		    break;
+                xmlHaltParser(ctxt);
+                return;
             }
 	    SKIP_BLANKS;
 	}

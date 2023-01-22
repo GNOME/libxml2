@@ -8,9 +8,3 @@
 
 <!ELEMENT aElement (a |b * >
                          ^
-./test/errors/content1.xml:7: parser error : DOCTYPE improperly terminated
-<!ELEMENT aElement (a |b * >
-                         ^
-./test/errors/content1.xml:7: parser error : Start tag expected, '<' not found
-<!ELEMENT aElement (a |b * >
-                         ^

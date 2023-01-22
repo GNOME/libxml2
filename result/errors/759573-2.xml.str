@@ -23,11 +23,4 @@ Entity: line 1:
 Entity: line 2: 
 <![INCLUDE[
   ^
-./test/errors/759573-2.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
-%xx;
-    ^
-./test/errors/759573-2.xml:6: parser error : DOCTYPE improperly terminated
-%xx;
-    ^
 ./test/errors/759573-2.xml : failed to parse

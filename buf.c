@@ -735,7 +735,8 @@ xmlBufResize(xmlBufPtr buf, size_t size)
 	if (buf->content == NULL) {
 	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
 	    buf->use = 0;
-	    rebuf[buf->use] = 0;
+            if (rebuf != NULL)
+	        rebuf[buf->use] = 0;
 	} else if (buf->size - buf->use < 100) {
 	    rebuf = (xmlChar *) xmlRealloc(buf->content, newSize);
         } else {

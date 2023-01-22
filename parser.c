@@ -7046,6 +7046,8 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
      * We must have the encoding declaration
      */
     encoding = xmlParseEncodingDecl(ctxt);
+    if (ctxt->instate == XML_PARSER_EOF)
+        return;
     if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
 	/*
 	 * The XML REC instructs us to stop parsing right here

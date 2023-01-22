@@ -3218,7 +3218,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         if (res < 0)
             return(-1);
 
-        xmlBufAddLen(buf, res);
+        if (xmlBufAddLen(buf, res) < 0)
+            return(-1);
     }
 
     /*

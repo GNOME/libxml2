@@ -315,6 +315,12 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     ret = xmlParserInputBufferGrow(in->buf, len);
 
     in->base = xmlBufContent(in->buf->buffer);
+    if (in->base == NULL) {
+        in->base = BAD_CAST "";
+        in->cur = in->base;
+        in->end = in->base;
+        return(-1);
+    }
     in->cur = in->base + indx;
     in->end = xmlBufEnd(in->buf->buffer);
 

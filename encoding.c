@@ -2332,7 +2332,8 @@ xmlCharEncInput(xmlParserInputBufferPtr input, int flush)
         toconv = 64 * 1024;
     written = xmlBufAvail(out);
     if (toconv * 2 >= written) {
-        xmlBufGrow(out, toconv * 2);
+        if (xmlBufGrow(out, toconv * 2) < 0)
+            return (-1);
         written = xmlBufAvail(out);
     }
     if ((written > 128 * 1024) && (flush == 0))

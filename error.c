@@ -190,10 +190,12 @@ xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
     }
     n = 0;
     /* search backwards for beginning-of-line (to max buff size) */
-    while ((n++ < (sizeof(content)-1)) && (cur > base) &&
-	   (*(cur) != '\n') && (*(cur) != '\r'))
+    while ((n < sizeof(content) - 1) && (cur > base) &&
+	   (*cur != '\n') && (*cur != '\r')) {
         cur--;
-    if ((*(cur) == '\n') || (*(cur) == '\r')) {
+        n++;
+    }
+    if ((n > 0) && ((*cur == '\n') || (*cur == '\r'))) {
         cur++;
     } else {
         /* skip over continuation bytes */

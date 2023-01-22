@@ -2655,7 +2655,8 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 	    /* Mixed content, first time */
             if (type == XML_TEXT_NODE) {
                 lastChild = xmlSAX2TextNode(ctxt, ch, len);
-                lastChild->doc = ctxt->myDoc;
+                if (lastChild != NULL)
+                    lastChild->doc = ctxt->myDoc;
             } else
                 lastChild = xmlNewCDataBlock(ctxt->myDoc, ch, len);
 	    if (lastChild != NULL) {

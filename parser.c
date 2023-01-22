@@ -1274,6 +1274,8 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     /* intern the string and precompute the end */
     len = xmlStrlen(value);
     value = xmlDictLookup(ctxt->dict, value, len);
+    if (value == NULL)
+        goto mem_error;
     defaults->values[5 * defaults->nbAttrs + 2] = value;
     defaults->values[5 * defaults->nbAttrs + 3] = value + len;
     if (ctxt->external)

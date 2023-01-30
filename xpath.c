@@ -6831,6 +6831,7 @@ xmlXPathEqualNodeSetFloat(xmlXPathParserContextPtr ctxt,
 		xmlFree(str2);
 		xmlXPathNumberFunction(ctxt, 1);
 		val = valuePop(ctxt);
+                CHECK_ERROR0;
 		v = val->floatval;
 		xmlXPathReleaseObject(ctxt->context, val);
 		if (!xmlXPathIsNaN(v)) {

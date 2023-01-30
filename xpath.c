@@ -7046,6 +7046,7 @@ xmlXPathEqualValuesCommon(xmlXPathParserContextPtr ctxt,
 		    valuePush(ctxt, arg2);
 		    xmlXPathNumberFunction(ctxt, 1);
 		    arg2 = valuePop(ctxt);
+                    CHECK_ERROR0;
                     /* Falls through. */
 		case XPATH_NUMBER:
 		    /* Hand check NaN and Infinity equalities */
@@ -7111,6 +7112,7 @@ xmlXPathEqualValuesCommon(xmlXPathParserContextPtr ctxt,
 		    valuePush(ctxt, arg1);
 		    xmlXPathNumberFunction(ctxt, 1);
 		    arg1 = valuePop(ctxt);
+                    CHECK_ERROR0;
 		    /* Hand check NaN and Infinity equalities */
 		    if (xmlXPathIsNaN(arg1->floatval) ||
 			    xmlXPathIsNaN(arg2->floatval)) {

@@ -10272,7 +10272,10 @@ xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     } else {
 	XP_ERROR(XPATH_START_LITERAL_ERROR);
     }
-    if (ret == NULL) return;
+    if (ret == NULL) {
+        xmlXPathPErrMemory(ctxt, NULL);
+        return;
+    }
     lit = xmlXPathCacheNewString(ctxt->context, ret);
     if (lit == NULL) {
 	ctxt->error = XPATH_MEMORY_ERROR;

@@ -3606,10 +3606,13 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
         ret->nodeMax = XML_NODESET_DEFAULT;
 	if (val->type == XML_NAMESPACE_DECL) {
 	    xmlNsPtr ns = (xmlNsPtr) val;
+            xmlNodePtr nsNode = xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 
-            /* TODO: Check memory error. */
-	    ret->nodeTab[ret->nodeNr++] =
-		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+            if (nsNode == NULL) {
+                xmlXPathFreeNodeSet(ret);
+                return(NULL);
+            }
+	    ret->nodeTab[ret->nodeNr++] = nsNode;
 	} else
 	    ret->nodeTab[ret->nodeNr++] = val;
     }
@@ -3666,7 +3669,7 @@ xmlXPathNodeSetContains (xmlNodeSetPtr cur, xmlNodePtr val) {
 int
 xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
     int i;
-
+    xmlNodePtr nsNode;
 
     if ((cur == NULL) || (ns == NULL) || (node == NULL) ||
         (ns->type != XML_NAMESPACE_DECL) ||
@@ -3714,8 +3717,10 @@ xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
         cur->nodeMax *= 2;
 	cur->nodeTab = temp;
     }
-    /* TODO: Check memory error. */
-    cur->nodeTab[cur->nodeNr++] = xmlXPathNodeSetDupNs(node, ns);
+    nsNode = xmlXPathNodeSetDupNs(node, ns);
+    if(nsNode == NULL)
+        return(-1);
+    cur->nodeTab[cur->nodeNr++] = nsNode;
     return(0);
 }
 
@@ -3772,10 +3777,11 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
     }
     if (val->type == XML_NAMESPACE_DECL) {
 	xmlNsPtr ns = (xmlNsPtr) val;
+        xmlNodePtr nsNode = xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 
-        /* TODO: Check memory error. */
-	cur->nodeTab[cur->nodeNr++] =
-	    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+        if (nsNode == NULL)
+            return(-1);
+	cur->nodeTab[cur->nodeNr++] = nsNode;
     } else
 	cur->nodeTab[cur->nodeNr++] = val;
     return(0);
@@ -3827,10 +3833,11 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
     }
     if (val->type == XML_NAMESPACE_DECL) {
 	xmlNsPtr ns = (xmlNsPtr) val;
+        xmlNodePtr nsNode = xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 
-        /* TODO: Check memory error. */
-	cur->nodeTab[cur->nodeNr++] =
-	    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+        if (nsNode == NULL)
+            return(-1);
+	cur->nodeTab[cur->nodeNr++] = nsNode;
     } else
 	cur->nodeTab[cur->nodeNr++] = val;
     return(0);
@@ -3944,10 +3951,11 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	}
 	if (n2->type == XML_NAMESPACE_DECL) {
 	    xmlNsPtr ns = (xmlNsPtr) n2;
+            xmlNodePtr nsNode = xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 
-            /* TODO: Check memory error. */
-	    val1->nodeTab[val1->nodeNr++] =
-		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+            if (nsNode == NULL)
+                return(NULL);
+	    val1->nodeTab[val1->nodeNr++] = nsNode;
 	} else
 	    val1->nodeTab[val1->nodeNr++] = n2;
     }

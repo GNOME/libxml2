@@ -712,6 +712,9 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 			"%s", xmlXPathErrorMessages[error]);
 	return;
     }
+    /* Only report the first error */
+    if (ctxt->error != 0)
+        return;
     ctxt->error = error;
     if (ctxt->context == NULL) {
 	__xmlRaiseError(NULL, NULL, NULL,

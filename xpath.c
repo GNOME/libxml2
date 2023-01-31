@@ -2873,7 +2873,15 @@ valuePop(xmlXPathParserContextPtr ctxt)
 {
     xmlXPathObjectPtr ret;
 
-    if ((ctxt == NULL) || (ctxt->valueNr <= 0))
+    /*
+     * If a memory allocation failed, it can happen that valuePush doesn't
+     * push a value on the stack. If there's no error check before the
+     * corresponding valuePop call, we would pop an unrelated object which
+     * could lead to use-after-free errors later on. So we don't pop values
+     * if an error was signaled. The stack will be cleaned later in
+     * xmlXPathFreeParserContext.
+     */
+    if ((ctxt == NULL) || (ctxt->valueNr <= 0) || (ctxt->error != 0))
         return (NULL);
 
     if (ctxt->valueNr <= ctxt->valueFrame) {

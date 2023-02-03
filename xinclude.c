@@ -272,14 +272,18 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
 	}
     }
     if (ctxt->incNr >= ctxt->incMax) {
-	ctxt->incMax *= 2;
-        ctxt->incTab = (xmlXIncludeRefPtr *) xmlRealloc(ctxt->incTab,
-	             ctxt->incMax * sizeof(ctxt->incTab[0]));
-        if (ctxt->incTab == NULL) {
+        xmlXIncludeRefPtr *tmp;
+        size_t newSize = ctxt->incMax * 2;
+
+        tmp = (xmlXIncludeRefPtr *) xmlRealloc(ctxt->incTab,
+	             newSize * sizeof(ctxt->incTab[0]));
+        if (tmp == NULL) {
 	    xmlXIncludeErrMemory(ctxt, elem, "growing XInclude context");
 	    xmlXIncludeFreeRef(ret);
 	    return(NULL);
 	}
+        ctxt->incTab = tmp;
+        ctxt->incMax *= 2;
     }
     ctxt->incTab[ctxt->incNr++] = ret;
     return(ret);

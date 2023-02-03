@@ -103,7 +103,9 @@ struct _xmlXIncludeCtxt {
 
     void            *_private; /* application data */
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
     unsigned long    incTotal; /* total number of processed inclusions */
+#endif
     int			depth; /* recursion depth */
     int		     isStream; /* streaming mode */
 };
@@ -1875,6 +1877,17 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
         return(NULL);
     }
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    /*
+     * The XInclude engine offers no protection against exponential
+     * expansion attacks similar to "billion laughs". Avoid timeouts by
+     * limiting the total number of replacements when fuzzing.
+     */
+    if (ctxt->incTotal >= 20)
+        return(NULL);
+    ctxt->incTotal++;
+#endif
+
     for (i = 0; i < ctxt->incNr; i++) {
         if (ctxt->incTab[i]->elem == node) {
             if (ctxt->incTab[i]->expanding) {
@@ -2257,15 +2270,6 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
     do {
 	/* TODO: need to work on entities -> stack */
         if (xmlXIncludeTestNode(ctxt, cur) == 1) {
-#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-            /*
-             * Avoid superlinear expansion by limiting the total number
-             * of replacements.
-             */
-            if (ctxt->incTotal >= 20)
-                break;
-#endif
-            ctxt->incTotal++;
             ref = xmlXIncludeExpandNode(ctxt, cur);
             /*
              * Mark direct includes.

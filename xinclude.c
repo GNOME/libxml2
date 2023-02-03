@@ -96,6 +96,7 @@ struct _xmlXIncludeCtxt {
     xmlXIncludeDoc    *urlTab; /* document stack */
 
     int              nbErrors; /* the number of errors detected */
+    int              fatalErr; /* abort processing */
     int                legacy; /* using XINCLUDE_OLD_NS */
     int            parseFlags; /* the flags used for parsing XML documents */
     xmlChar *		 base; /* the current xml:base */
@@ -1865,9 +1866,12 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     xmlXIncludeRefPtr ref;
     int i;
 
+    if (ctxt->fatalErr)
+        return(NULL);
     if (ctxt->depth >= XINCLUDE_MAX_DEPTH) {
         xmlXIncludeErr(ctxt, node, XML_XINCLUDE_RECURSION,
                        "maximum recursion depth exceeded\n", NULL);
+        ctxt->fatalErr = 1;
         return(NULL);
     }
 

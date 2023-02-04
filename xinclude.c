@@ -1732,6 +1732,12 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
 	xmlCharEncCloseFunc(buf->encoder);
     buf->encoder = xmlGetCharEncodingHandler(enc);
     node = xmlNewDocText(ctxt->doc, NULL);
+    if (node == NULL) {
+        xmlFreeInputStream(inputStream);
+        xmlFreeParserCtxt(pctxt);
+        xmlFree(URL);
+        return(-1);
+    }
 
     /*
      * Scan all chars from the resource and add the to the node

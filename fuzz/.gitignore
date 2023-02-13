@@ -6,5 +6,6 @@ schema
 seed/
 testFuzzer
 uri
+xinclude
 xml
 xpath

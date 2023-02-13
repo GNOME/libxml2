@@ -402,7 +402,7 @@ cleanup:
 dist-hook: cleanup
 	(cd $(srcdir) ; tar -cf - --exclude .git win32 os400 vms test result) | (cd $(distdir); tar xf -)
 
-CLEANFILES = runxmlconf.log test.out *.gcda *.gcno *.res
+CLEANFILES = runsuite.log runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst
 
 EXTRA_DIST = Copyright check-xml-test-suite.py gentest.py \

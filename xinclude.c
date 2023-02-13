@@ -1639,7 +1639,9 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     xmlCharEncoding enc = (xmlCharEncoding) 0;
     xmlParserCtxtPtr pctxt;
     xmlParserInputPtr inputStream;
-    int xinclude_multibyte_fallback_used = 0;
+    int len;
+    const xmlChar *content;
+
 
     /* Don't read from stdin. */
     if (xmlStrcmp(url, BAD_CAST "-") == 0)
@@ -1745,40 +1747,30 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     /*
      * Scan all chars from the resource and add the to the node
      */
-xinclude_multibyte_fallback:
-    while (xmlParserInputBufferRead(buf, 128) > 0) {
-	int len;
-	const xmlChar *content;
+    while (xmlParserInputBufferRead(buf, 4096) > 0)
+        ;
 
-	content = xmlBufContent(buf->buffer);
-	len = xmlBufLength(buf->buffer);
-	for (i = 0;i < len;) {
-	    int cur;
-	    int l;
+    content = xmlBufContent(buf->buffer);
+    len = xmlBufLength(buf->buffer);
+    for (i = 0; i < len;) {
+        int cur;
+        int l;
 
-	    cur = xmlStringCurrentChar(NULL, &content[i], &l);
-	    if (!IS_CHAR(cur)) {
-		/* Handle split multibyte char at buffer boundary */
-		if (((len - i) < 4) && (!xinclude_multibyte_fallback_used)) {
-		    xinclude_multibyte_fallback_used = 1;
-		    xmlBufShrink(buf->buffer, i);
-		    goto xinclude_multibyte_fallback;
-		} else {
-		    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_INVALID_CHAR,
-				   "%s contains invalid char\n", URL);
-		    xmlFreeParserCtxt(pctxt);
-		    xmlFreeParserInputBuffer(buf);
-		    xmlFree(URL);
-		    return(-1);
-		}
-	    } else {
-		xinclude_multibyte_fallback_used = 0;
-		xmlNodeAddContentLen(node, &content[i], l);
-	    }
-	    i += l;
-	}
-	xmlBufShrink(buf->buffer, len);
+        cur = xmlStringCurrentChar(NULL, &content[i], &l);
+        if (!IS_CHAR(cur)) {
+            xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_INVALID_CHAR,
+                           "%s contains invalid char\n", URL);
+            xmlFreeNode(node);
+            xmlFreeInputStream(inputStream);
+            xmlFreeParserCtxt(pctxt);
+            xmlFree(URL);
+            return(-1);
+        }
+
+        i += l;
     }
+
+    xmlNodeAddContentLen(node, content, len);
     xmlFreeParserCtxt(pctxt);
     xmlFreeInputStream(inputStream);
 

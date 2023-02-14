@@ -2822,7 +2822,6 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
     int i = 0;
 
     if (handler == NULL) return(-1);
-    if (handler->name == NULL) return(-1);
 
     for (i = 0; i < (int) NUM_DEFAULT_HANDLERS; i++) {
         if (handler == &defaultHandlers[i])

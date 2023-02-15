@@ -14138,6 +14138,7 @@ xmlXPathTryStreamCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	    comp = xmlXPathNewCompExpr();
 	    if (comp == NULL) {
 		xmlXPathErrMemory(ctxt, "allocating streamable expression\n");
+	        xmlFreePattern(stream);
 		return(NULL);
 	    }
 	    comp->stream = stream;

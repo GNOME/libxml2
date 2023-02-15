@@ -5322,6 +5322,8 @@ xmlXPathNewString(const xmlChar *val) {
  * Wraps the @val string into an XPath object.
  *
  * Returns the newly created object.
+ *
+ * Frees @val in case of error.
  */
 xmlXPathObjectPtr
 xmlXPathWrapString (xmlChar *val) {
@@ -5330,6 +5332,7 @@ xmlXPathWrapString (xmlChar *val) {
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
         xmlXPathErrMemory(NULL, "creating string object\n");
+        xmlFree(val);
 	return(NULL);
     }
     memset(ret, 0 , sizeof(xmlXPathObject));

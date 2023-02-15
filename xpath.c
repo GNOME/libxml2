@@ -2912,6 +2912,8 @@ valuePop(xmlXPathParserContextPtr ctxt)
  * a memory error is recorded in the parser context.
  *
  * Returns the number of items on the value stack, or -1 in case of error.
+ *
+ * The object is destroyed in case of error.
  */
 int
 valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
@@ -2930,6 +2932,7 @@ valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
 
         if (ctxt->valueMax >= XPATH_MAX_STACK_DEPTH) {
             xmlXPathPErrMemory(ctxt, "XPath stack depth limit reached\n");
+            xmlXPathFreeObject(value);
             return (-1);
         }
         tmp = (xmlXPathObjectPtr *) xmlRealloc(ctxt->valueTab,
@@ -2937,6 +2940,7 @@ valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
                                              sizeof(ctxt->valueTab[0]));
         if (tmp == NULL) {
             xmlXPathPErrMemory(ctxt, "pushing value\n");
+            xmlXPathFreeObject(value);
             return (-1);
         }
         ctxt->valueMax *= 2;

@@ -2338,6 +2338,8 @@ xmlXPathContextSetCache(xmlXPathContextPtr ctxt,
  * Wrap the Nodeset @val in a new xmlXPathObjectPtr
  *
  * Returns the created or reused object.
+ *
+ * In case of error the node set is destroyed and NULL is returned.
  */
 static xmlXPathObjectPtr
 xmlXPathCacheWrapNodeSet(xmlXPathContextPtr ctxt, xmlNodeSetPtr val)
@@ -4423,6 +4425,8 @@ xmlXPathNewNodeSetList(xmlNodeSetPtr val)
  * Wrap the Nodeset @val in a new xmlXPathObjectPtr
  *
  * Returns the newly created object.
+ *
+ * In case of error the node set is destroyed and NULL is returned.
  */
 xmlXPathObjectPtr
 xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
@@ -4431,6 +4435,7 @@ xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
         xmlXPathErrMemory(NULL, "creating node set object\n");
+        xmlXPathFreeNodeSet(val);
 	return(NULL);
     }
     memset(ret, 0 , sizeof(xmlXPathObject));

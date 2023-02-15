@@ -591,6 +591,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     ref = xmlXIncludeNewRef(ctxt, URL, cur);
     xmlFree(URL);
     if (ref == NULL) {
+        xmlFree(fragment);
 	return(NULL);
     }
     ref->fragment = fragment;

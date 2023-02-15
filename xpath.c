@@ -145,6 +145,9 @@
  * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
  */
 
+static void
+xmlXPathNodeSetClear(xmlNodeSetPtr set, int hasNsNodes);
+
 #ifdef XP_OPTIMIZED_NON_ELEM_COMPARISON
 /**
  * xmlXPathCmpNodesExt:
@@ -3869,6 +3872,8 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
  * if @val1 is NULL, a new set is created and copied from @val2
  *
  * Returns @val1 once extended or NULL in case of error.
+ *
+ * Frees @val1 in case of error.
  */
 xmlNodeSetPtr
 xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
@@ -3878,35 +3883,8 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
     if (val2 == NULL) return(val1);
     if (val1 == NULL) {
 	val1 = xmlXPathNodeSetCreate(NULL);
-    if (val1 == NULL)
-        return (NULL);
-#if 0
-	/*
-	* TODO: The optimization won't work in every case, since
-	*  those nasty namespace nodes need to be added with
-	*  xmlXPathNodeSetDupNs() to the set; thus a pure
-	*  memcpy is not possible.
-	*  If there was a flag on the nodesetval, indicating that
-	*  some temporary nodes are in, that would be helpful.
-	*/
-	/*
-	* Optimization: Create an equally sized node-set
-	* and memcpy the content.
-	*/
-	val1 = xmlXPathNodeSetCreateSize(val2->nodeNr);
-	if (val1 == NULL)
-	    return(NULL);
-	if (val2->nodeNr != 0) {
-	    if (val2->nodeNr == 1)
-		*(val1->nodeTab) = *(val2->nodeTab);
-	    else {
-		memcpy(val1->nodeTab, val2->nodeTab,
-		    val2->nodeNr * sizeof(xmlNodePtr));
-	    }
-	    val1->nodeNr = val2->nodeNr;
-	}
-	return(val1);
-#endif
+        if (val1 == NULL)
+            return (NULL);
     }
 
     /* @@ with_ns to check whether namespace nodes should be looked at @@ */
@@ -3945,7 +3923,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 						    sizeof(xmlNodePtr));
 	    if (val1->nodeTab == NULL) {
 	        xmlXPathErrMemory(NULL, "merging nodeset\n");
-		return(NULL);
+		goto error;
 	    }
 	    memset(val1->nodeTab, 0 ,
 		   XML_NODESET_DEFAULT * sizeof(xmlNodePtr));
@@ -3955,13 +3933,13 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 
             if (val1->nodeMax >= XPATH_MAX_NODESET_LENGTH) {
                 xmlXPathErrMemory(NULL, "merging nodeset hit limit\n");
-                return(NULL);
+                goto error;
             }
 	    temp = (xmlNodePtr *) xmlRealloc(val1->nodeTab, val1->nodeMax * 2 *
 					     sizeof(xmlNodePtr));
 	    if (temp == NULL) {
 	        xmlXPathErrMemory(NULL, "merging nodeset\n");
-		return(NULL);
+		goto error;
 	    }
 	    val1->nodeTab = temp;
 	    val1->nodeMax *= 2;
@@ -3971,13 +3949,17 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
             xmlNodePtr nsNode = xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
 
             if (nsNode == NULL)
-                return(NULL);
+                goto error;
 	    val1->nodeTab[val1->nodeNr++] = nsNode;
 	} else
 	    val1->nodeTab[val1->nodeNr++] = n2;
     }
 
     return(val1);
+
+error:
+    xmlXPathFreeNodeSet(val1);
+    return(NULL);
 }
 
 
@@ -3990,6 +3972,8 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
  * Checks for duplicate nodes. Clears set2.
  *
  * Returns @set1 once extended or NULL in case of error.
+ *
+ * Frees @set1 in case of error.
  */
 static xmlNodeSetPtr
 xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
@@ -4018,7 +4002,6 @@ xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 			/*
 			* Free the namespace node.
 			*/
-			set2->nodeTab[i] = NULL;
 			xmlXPathNodeSetFreeNs((xmlNsPtr) n2);
 			goto skip_node;
 		    }
@@ -4032,7 +4015,7 @@ xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 		    XML_NODESET_DEFAULT * sizeof(xmlNodePtr));
 		if (set1->nodeTab == NULL) {
 		    xmlXPathErrMemory(NULL, "merging nodeset\n");
-		    return(NULL);
+		    goto error;
 		}
 		memset(set1->nodeTab, 0,
 		    XML_NODESET_DEFAULT * sizeof(xmlNodePtr));
@@ -4042,24 +4025,29 @@ xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 
                 if (set1->nodeMax >= XPATH_MAX_NODESET_LENGTH) {
                     xmlXPathErrMemory(NULL, "merging nodeset hit limit\n");
-                    return(NULL);
+                    goto error;
                 }
 		temp = (xmlNodePtr *) xmlRealloc(
 		    set1->nodeTab, set1->nodeMax * 2 * sizeof(xmlNodePtr));
 		if (temp == NULL) {
 		    xmlXPathErrMemory(NULL, "merging nodeset\n");
-		    return(NULL);
+		    goto error;
 		}
 		set1->nodeTab = temp;
 		set1->nodeMax *= 2;
 	    }
 	    set1->nodeTab[set1->nodeNr++] = n2;
 skip_node:
-	    {}
+            set2->nodeTab[i] = NULL;
 	}
     }
     set2->nodeNr = 0;
     return(set1);
+
+error:
+    xmlXPathFreeNodeSet(set1);
+    xmlXPathNodeSetClear(set2, 1);
+    return(NULL);
 }
 
 /**
@@ -4071,6 +4059,8 @@ skip_node:
  * Doesn't check for duplicate nodes. Clears set2.
  *
  * Returns @set1 once extended or NULL in case of error.
+ *
+ * Frees @set1 in case of error.
  */
 static xmlNodeSetPtr
 xmlXPathNodeSetMergeAndClearNoDupls(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
@@ -4086,7 +4076,7 @@ xmlXPathNodeSetMergeAndClearNoDupls(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 		    XML_NODESET_DEFAULT * sizeof(xmlNodePtr));
 		if (set1->nodeTab == NULL) {
 		    xmlXPathErrMemory(NULL, "merging nodeset\n");
-		    return(NULL);
+		    goto error;
 		}
 		memset(set1->nodeTab, 0,
 		    XML_NODESET_DEFAULT * sizeof(xmlNodePtr));
@@ -4096,22 +4086,28 @@ xmlXPathNodeSetMergeAndClearNoDupls(xmlNodeSetPtr set1, xmlNodeSetPtr set2)
 
                 if (set1->nodeMax >= XPATH_MAX_NODESET_LENGTH) {
                     xmlXPathErrMemory(NULL, "merging nodeset hit limit\n");
-                    return(NULL);
+                    goto error;
                 }
 		temp = (xmlNodePtr *) xmlRealloc(
 		    set1->nodeTab, set1->nodeMax * 2 * sizeof(xmlNodePtr));
 		if (temp == NULL) {
 		    xmlXPathErrMemory(NULL, "merging nodeset\n");
-		    return(NULL);
+		    goto error;
 		}
 		set1->nodeTab = temp;
 		set1->nodeMax *= 2;
 	    }
 	    set1->nodeTab[set1->nodeNr++] = n2;
+            set2->nodeTab[i] = NULL;
 	}
     }
     set2->nodeNr = 0;
     return(set1);
+
+error:
+    xmlXPathFreeNodeSet(set1);
+    xmlXPathNodeSetClear(set2, 1);
+    return(NULL);
 }
 
 /**

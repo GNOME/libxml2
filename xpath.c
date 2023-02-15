@@ -7431,14 +7431,14 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 	valuePush(ctxt, arg1);
 	xmlXPathNumberFunction(ctxt, 1);
 	arg1 = valuePop(ctxt);
-        CHECK_ERROR0;
     }
     if (arg2->type != XPATH_NUMBER) {
 	valuePush(ctxt, arg2);
 	xmlXPathNumberFunction(ctxt, 1);
 	arg2 = valuePop(ctxt);
-        CHECK_ERROR0;
     }
+    if (ctxt->error)
+        goto error;
     /*
      * Add tests for infinity and nan
      * => feedback on 3.4 for Inf and NaN
@@ -7488,6 +7488,7 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 	    }
 	}
     }
+error:
     xmlXPathReleaseObject(ctxt->context, arg1);
     xmlXPathReleaseObject(ctxt->context, arg2);
     return(ret);

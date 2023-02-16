@@ -149,7 +149,7 @@ htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  *
  * Pushes a new element name on top of the name stack
  *
- * Returns 0 in case of error, the index in the stack otherwise
+ * Returns -1 in case of error, the index in the stack otherwise
  */
 static int
 htmlnamePush(htmlParserCtxtPtr ctxt, const xmlChar * value)
@@ -159,15 +159,17 @@ htmlnamePush(htmlParserCtxtPtr ctxt, const xmlChar * value)
     if ((ctxt->html < 10) && (xmlStrEqual(value, BAD_CAST "body")))
         ctxt->html = 10;
     if (ctxt->nameNr >= ctxt->nameMax) {
-        ctxt->nameMax *= 2;
-        ctxt->nameTab = (const xmlChar * *)
-                         xmlRealloc((xmlChar * *)ctxt->nameTab,
-                                    ctxt->nameMax *
-                                    sizeof(ctxt->nameTab[0]));
-        if (ctxt->nameTab == NULL) {
+        size_t newSize = ctxt->nameMax * 2;
+        const xmlChar **tmp;
+
+        tmp = xmlRealloc((xmlChar **) ctxt->nameTab,
+                         newSize * sizeof(ctxt->nameTab[0]));
+        if (tmp == NULL) {
             htmlErrMemory(ctxt, NULL);
-            return (0);
+            return (-1);
         }
+        ctxt->nameTab = tmp;
+        ctxt->nameMax = newSize;
     }
     ctxt->nameTab[ctxt->nameNr] = value;
     ctxt->name = value;

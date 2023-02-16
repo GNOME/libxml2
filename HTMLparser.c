@@ -2566,6 +2566,7 @@ htmlSkipBogusComment(htmlParserCtxtPtr ctxt) {
 
 static const xmlChar *
 htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
+    const xmlChar *ret;
     int i = 0;
     xmlChar loc[HTML_PARSER_BUFFER_SIZE];
 
@@ -2583,7 +2584,11 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
 	NEXT;
     }
 
-    return(xmlDictLookup(ctxt->dict, loc, i));
+    ret = xmlDictLookup(ctxt->dict, loc, i);
+    if (ret == NULL)
+        htmlErrMemory(ctxt, NULL);
+
+    return(ret);
 }
 
 
@@ -4031,7 +4036,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     SKIP_BLANKS;
     while ((CUR != 0) &&
            (CUR != '>') &&
-	   ((CUR != '/') || (NXT(1) != '>'))) {
+	   ((CUR != '/') || (NXT(1) != '>')) &&
+           (ctxt->instate != XML_PARSER_EOF)) {
 	GROW;
 	attname = htmlParseAttribute(ctxt, &attvalue);
         if (attname != NULL) {

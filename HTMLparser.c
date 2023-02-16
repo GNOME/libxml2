@@ -4733,8 +4733,16 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
     int depth;
     const xmlChar *name;
 
-    currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
+    if (depth <= 0) {
+        currentNode = NULL;
+    } else {
+        currentNode = xmlStrdup(ctxt->name);
+        if (currentNode == NULL) {
+            htmlErrMemory(ctxt, NULL);
+            return;
+        }
+    }
     while (1) {
         GROW;
 
@@ -4750,8 +4758,16 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 		if (currentNode != NULL)
 		    xmlFree(currentNode);
 
-	        currentNode = xmlStrdup(ctxt->name);
 	        depth = ctxt->nameNr;
+                if (depth <= 0) {
+                    currentNode = NULL;
+                } else {
+                    currentNode = xmlStrdup(ctxt->name);
+                    if (currentNode == NULL) {
+                        htmlErrMemory(ctxt, NULL);
+                        break;
+                    }
+                }
 	    }
 	    continue; /* while */
         }
@@ -4773,6 +4789,10 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	            xmlFree(currentNode);
 
 	        currentNode = xmlStrdup(ctxt->name);
+                if (currentNode == NULL) {
+                    htmlErrMemory(ctxt, NULL);
+                    break;
+                }
 	        depth = ctxt->nameNr;
 	        continue;
 	    }
@@ -4796,6 +4816,10 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	    if (currentNode != NULL) xmlFree(currentNode);
 
 	    currentNode = xmlStrdup(ctxt->name);
+            if (currentNode == NULL) {
+                htmlErrMemory(ctxt, NULL);
+                break;
+            }
 	    depth = ctxt->nameNr;
 	    continue;
 	}
@@ -4847,6 +4871,10 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
             if (currentNode != NULL) xmlFree(currentNode);
 
             currentNode = xmlStrdup(ctxt->name);
+            if (currentNode == NULL) {
+                htmlErrMemory(ctxt, NULL);
+                break;
+            }
             depth = ctxt->nameNr;
         }
         else if (CUR == '<') {

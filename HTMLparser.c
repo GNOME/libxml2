@@ -5227,7 +5227,10 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 	return(NULL);
 
     buf = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) return(NULL);
+    if (buf == NULL) {
+	xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {

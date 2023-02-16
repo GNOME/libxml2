@@ -3706,7 +3706,8 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
 	htmlParseErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED,
 	             "DOCTYPE improperly terminated\n", NULL, NULL);
         /* Ignore bogus content */
-        while ((CUR != 0) && (CUR != '>'))
+        while ((CUR != 0) && (CUR != '>') &&
+               (ctxt->instate != XML_PARSER_EOF))
             NEXT;
     }
     if (CUR == '>')

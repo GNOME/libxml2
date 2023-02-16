@@ -1042,7 +1042,7 @@ xmlGetEncodingAlias(const char *alias) {
 	return(NULL);
 
     for (i = 0;i < 99;i++) {
-        upper[i] = toupper(alias[i]);
+        upper[i] = (char) toupper((unsigned char) alias[i]);
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;
@@ -1077,7 +1077,7 @@ xmlAddEncodingAlias(const char *name, const char *alias) {
 	return(-1);
 
     for (i = 0;i < 99;i++) {
-        upper[i] = toupper(alias[i]);
+        upper[i] = (char) toupper((unsigned char) alias[i]);
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;
@@ -1179,7 +1179,7 @@ xmlParseCharEncoding(const char* name)
 	name = alias;
 
     for (i = 0;i < 499;i++) {
-        upper[i] = toupper(name[i]);
+        upper[i] = (char) toupper((unsigned char) name[i]);
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;
@@ -1436,7 +1436,7 @@ xmlNewCharEncodingHandler(const char *name,
 	return(NULL);
     }
     for (i = 0;i < 499;i++) {
-        upper[i] = toupper(name[i]);
+        upper[i] = (char) toupper((unsigned char) name[i]);
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;
@@ -1751,7 +1751,7 @@ xmlFindCharEncodingHandler(const char *name) {
      * Check first for directly registered encoding names
      */
     for (i = 0;i < 99;i++) {
-        upper[i] = toupper(name[i]);
+        upper[i] = (char) toupper((unsigned char) name[i]);
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;

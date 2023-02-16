@@ -6280,9 +6280,8 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 	if (res < 0) {
-	    ctxt->errNo = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
-	    return (XML_PARSER_EOF);
+            htmlErrMemory(ctxt, NULL);
+	    return (ctxt->errNo);
 	}
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);

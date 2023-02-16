@@ -1359,6 +1359,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
         if (tmp == NULL) {
             xmlXIncludeErrMemory(ctxt, ref->elem,
                                  "growing XInclude URL table");
+            xmlFreeDoc(doc);
             goto error;
         }
         ctxt->urlMax = newSize;

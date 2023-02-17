@@ -107,7 +107,7 @@ seed/regexp.stamp:
 regexp_SOURCES = regexp.c fuzz.c
 regexp_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 
-fuzz-regexp: regexp$(EXEEXT)
+fuzz-regexp: regexp$(EXEEXT) seed/regexp.stamp
 	@mkdir -p corpus/regexp
 	./regexp$(EXEEXT) \
 	    -dict=regexp.dict \
@@ -125,7 +125,7 @@ seed/uri.stamp:
 uri_SOURCES = uri.c fuzz.c
 uri_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 
-fuzz-uri: uri$(EXEEXT)
+fuzz-uri: uri$(EXEEXT) seed/uri.stamp
 	@mkdir -p corpus/uri
 	./uri$(EXEEXT) \
 	    -max_len=10000 \

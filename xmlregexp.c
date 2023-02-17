@@ -1238,7 +1238,7 @@ xmlRegPrintCtxt(FILE *output, xmlRegParserCtxtPtr ctxt) {
  *									*
  ************************************************************************/
 
-static void
+static xmlRegRangePtr
 xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 	           int neg, xmlRegAtomType type, int start, int end,
 		   xmlChar *blockName) {
@@ -1246,11 +1246,11 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 
     if (atom == NULL) {
 	ERROR("add range: atom is NULL");
-	return;
+	return(NULL);
     }
     if (atom->type != XML_REGEXP_RANGES) {
 	ERROR("add range: atom is not ranges");
-	return;
+	return(NULL);
     }
     if (atom->maxRanges == 0) {
 	atom->maxRanges = 4;
@@ -1259,7 +1259,7 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 	if (atom->ranges == NULL) {
 	    xmlRegexpErrMemory(ctxt, "adding ranges");
 	    atom->maxRanges = 0;
-	    return;
+	    return(NULL);
 	}
     } else if (atom->nbRanges >= atom->maxRanges) {
 	xmlRegRangePtr *tmp;
@@ -1269,16 +1269,17 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt, "adding ranges");
 	    atom->maxRanges /= 2;
-	    return;
+	    return(NULL);
 	}
 	atom->ranges = tmp;
     }
     range = xmlRegNewRange(ctxt, neg, type, start, end);
     if (range == NULL)
-	return;
+	return(NULL);
     range->blockName = blockName;
     atom->ranges[atom->nbRanges++] = range;
 
+    return(range);
 }
 
 static int
@@ -4883,11 +4884,16 @@ xmlFAParseCharProp(xmlRegParserCtxtPtr ctxt) {
     }
     if (ctxt->atom == NULL) {
 	ctxt->atom = xmlRegNewAtom(ctxt, type);
-	if (ctxt->atom != NULL)
-	    ctxt->atom->valuep = blockName;
+        if (ctxt->atom == NULL) {
+            xmlFree(blockName);
+            return;
+        }
+	ctxt->atom->valuep = blockName;
     } else if (ctxt->atom->type == XML_REGEXP_RANGES) {
-        xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
-		           type, 0, 0, blockName);
+        if (xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
+                               type, 0, 0, blockName) == NULL) {
+            xmlFree(blockName);
+        }
     }
 }
 

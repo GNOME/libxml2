@@ -11152,17 +11152,6 @@ xmlSchemaParseIncludeOrRedefine(xmlSchemaParserCtxtPtr pctxt,
 	    * differ from the resulting namespace.
 	    */
 	    isChameleon = 1;
-	    if (bucket->parsed &&
-		bucket->origTargetNamespace != NULL) {
-		xmlSchemaCustomErr(ACTXT_CAST pctxt,
-		    XML_SCHEMAP_SRC_INCLUDE,
-		    node, NULL,
-		    "The target namespace of the included/redefined schema "
-		    "'%s' has to be absent or the same as the "
-		    "including/redefining schema's target namespace",
-		    schemaLocation, NULL);
-		goto exit_error;
-	    }
 	    bucket->targetNamespace = pctxt->targetNamespace;
 	}
     }

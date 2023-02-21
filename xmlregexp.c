@@ -436,7 +436,8 @@ xmlRegCalloc2(size_t dim1, size_t dim2, size_t elemSize) {
     void *ret;
 
     /* Check for overflow */
-    if (dim1 > SIZE_MAX / dim2 / elemSize)
+    if ((dim2 == 0) || (elemSize == 0) ||
+        (dim1 > SIZE_MAX / dim2 / elemSize))
         return (NULL);
     totalSize = dim1 * dim2 * elemSize;
     ret = xmlMalloc(totalSize);

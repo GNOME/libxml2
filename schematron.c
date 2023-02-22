@@ -1586,8 +1586,8 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
         long line;
         const xmlChar *report = NULL;
 
-        if (((test->type == XML_SCHEMATRON_REPORT) & (!success)) ||
-            ((test->type == XML_SCHEMATRON_ASSERT) & (success)))
+        if (((test->type == XML_SCHEMATRON_REPORT) && (!success)) ||
+            ((test->type == XML_SCHEMATRON_ASSERT) && (success)))
             return;
         line = xmlGetLineNo(cur);
         path = xmlGetNodePath(cur);

@@ -12888,6 +12888,7 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
 {
     int total = 0;
     xmlXPathCompExprPtr comp;
+    xmlXPathObjectPtr obj;
     xmlNodeSetPtr set;
 
     CHECK_ERROR0;
@@ -12955,13 +12956,20 @@ xmlXPathCompOpEvalFilterFirst(xmlXPathParserContextPtr ctxt,
     }
 #endif /* LIBXML_XPTR_LOCS_ENABLED */
 
+    /*
+     * In case of errors, xmlXPathNodeSetFilter can pop additional nodes from
+     * the stack. We have to temporarily remove the nodeset object from the
+     * stack to avoid freeing it prematurely.
+     */
     CHECK_TYPE0(XPATH_NODESET);
-    set = ctxt->value->nodesetval;
+    obj = valuePop(ctxt);
+    set = obj->nodesetval;
     if (set != NULL) {
         xmlXPathNodeSetFilter(ctxt, set, op->ch2, 1, 1, 1);
         if (set->nodeNr > 0)
             *first = set->nodeTab[0];
     }
+    valuePush(ctxt, obj);
 
     return (total);
 }
@@ -13259,6 +13267,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             break;
         case XPATH_OP_PREDICATE:
         case XPATH_OP_FILTER:{
+                xmlXPathObjectPtr obj;
                 xmlNodeSetPtr set;
 
                 /*
@@ -13373,11 +13382,19 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 }
 #endif /* LIBXML_XPTR_LOCS_ENABLED */
 
+                /*
+                 * In case of errors, xmlXPathNodeSetFilter can pop additional
+                 * nodes from the stack. We have to temporarily remove the
+                 * nodeset object from the stack to avoid freeing it
+                 * prematurely.
+                 */
                 CHECK_TYPE0(XPATH_NODESET);
-                set = ctxt->value->nodesetval;
+                obj = valuePop(ctxt);
+                set = obj->nodesetval;
                 if (set != NULL)
                     xmlXPathNodeSetFilter(ctxt, set, op->ch2,
                                           1, set->nodeNr, 1);
+                valuePush(ctxt, obj);
                 break;
             }
         case XPATH_OP_SORT:

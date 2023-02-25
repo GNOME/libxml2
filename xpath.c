@@ -6840,8 +6840,8 @@ xmlXPathEqualNodeSetFloat(xmlXPathParserContextPtr ctxt,
 		valuePush(ctxt, xmlXPathCacheNewString(ctxt->context, str2));
 		xmlFree(str2);
 		xmlXPathNumberFunction(ctxt, 1);
-		val = valuePop(ctxt);
                 CHECK_ERROR0;
+		val = valuePop(ctxt);
 		v = val->floatval;
 		xmlXPathReleaseObject(ctxt->context, val);
 		if (!xmlXPathIsNaN(v)) {

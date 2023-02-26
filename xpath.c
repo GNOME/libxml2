@@ -823,32 +823,30 @@ xmlPointerListAddSize(xmlPointerListPtr list,
 		       void *item,
 		       int initialSize)
 {
-    if (list->items == NULL) {
-	if (initialSize <= 0)
-	    initialSize = 1;
-	list->items = (void **) xmlMalloc(initialSize * sizeof(void *));
-	if (list->items == NULL) {
-	    xmlXPathErrMemory(NULL,
-		"xmlPointerListCreate: allocating item\n");
-	    return(-1);
-	}
-	list->number = 0;
-	list->size = initialSize;
-    } else if (list->size <= list->number) {
-        if (list->size > 50000000) {
-	    xmlXPathErrMemory(NULL,
-		"xmlPointerListAddSize: re-allocating item\n");
-            return(-1);
+    if (list->size <= list->number) {
+        void **tmp;
+        size_t newSize;
+
+        if (list->size == 0) {
+            if (initialSize <= 0)
+                initialSize = 1;
+            newSize = initialSize;
+        } else {
+            if (list->size > 50000000) {
+                xmlXPathErrMemory(NULL,
+                    "xmlPointerListAddSize: re-allocating item\n");
+                return(-1);
+            }
+	    newSize = list->size * 2;
         }
-	list->size *= 2;
-	list->items = (void **) xmlRealloc(list->items,
-	    list->size * sizeof(void *));
-	if (list->items == NULL) {
+	tmp = (void **) xmlRealloc(list->items, newSize * sizeof(void *));
+	if (tmp == NULL) {
 	    xmlXPathErrMemory(NULL,
 		"xmlPointerListAddSize: re-allocating item\n");
-	    list->size = 0;
 	    return(-1);
 	}
+        list->items = tmp;
+        list->size = newSize;
     }
     list->items[list->number++] = item;
     return(0);

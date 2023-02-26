@@ -3042,15 +3042,16 @@ xmlXPathPopNodeSet (xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr obj;
     xmlNodeSetPtr ret;
 
-    obj = valuePop(ctxt);
-    if (obj == NULL) {
+    if (ctxt == NULL) return(NULL);
+    if (ctxt->value == NULL) {
 	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
 	return(NULL);
     }
-    if (obj->type != XPATH_NODESET) {
+    if (!xmlXPathStackIsNodeSet(ctxt)) {
 	xmlXPathSetTypeError(ctxt);
 	return(NULL);
     }
+    obj = valuePop(ctxt);
     ret = obj->nodesetval;
 #if 0
     /* to fix memory leak of not clearing obj->user */
@@ -3076,15 +3077,15 @@ xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr obj;
     void * ret;
 
-    obj = valuePop(ctxt);
-    if (obj == NULL) {
+    if ((ctxt == NULL) || (ctxt->value == NULL)) {
 	xmlXPathSetError(ctxt, XPATH_INVALID_OPERAND);
 	return(NULL);
     }
-    if (obj->type != XPATH_USERS) {
+    if (ctxt->value->type != XPATH_USERS) {
 	xmlXPathSetTypeError(ctxt);
 	return(NULL);
     }
+    obj = valuePop(ctxt);
     ret = obj->user;
     obj->user = NULL;
     xmlXPathReleaseObject(ctxt->context, obj);

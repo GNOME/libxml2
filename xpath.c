@@ -9369,7 +9369,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr to;
     xmlBufPtr target;
     int offset, max;
-    xmlChar ch;
+    int ch;
     const xmlChar *point;
     xmlChar *cptr;
 

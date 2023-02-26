@@ -2467,21 +2467,24 @@ xmlXPathCacheNewNodeSet(xmlXPathContextPtr ctxt, xmlNodePtr val)
 	    (cache->miscObjs->number != 0))
 	{
 	    xmlXPathObjectPtr ret;
+            xmlNodeSetPtr set;
 	    /*
 	    * Fallback to misc-cache.
 	    */
+
+	    set = xmlXPathNodeSetCreate(val);
+	    if (set == NULL) {
+		ctxt->lastError.domain = XML_FROM_XPATH;
+		ctxt->lastError.code = XML_ERR_NO_MEMORY;
+		return(NULL);
+	    }
 
 	    ret = (xmlXPathObjectPtr)
 		cache->miscObjs->items[--cache->miscObjs->number];
 
 	    ret->type = XPATH_NODESET;
 	    ret->boolval = 0;
-	    ret->nodesetval = xmlXPathNodeSetCreate(val);
-	    if (ret->nodesetval == NULL) {
-		ctxt->lastError.domain = XML_FROM_XPATH;
-		ctxt->lastError.code = XML_ERR_NO_MEMORY;
-		return(NULL);
-	    }
+	    ret->nodesetval = set;
 #ifdef XP_DEBUG_OBJ_USAGE
 	    xmlXPathDebugObjUsageRequested(ctxt, XPATH_NODESET);
 #endif

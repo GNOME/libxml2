@@ -14370,6 +14370,8 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
     }
 #endif
     pctxt = xmlXPathCompParserContext(comp, ctxt);
+    if (pctxt == NULL)
+        return(-1);
     res = xmlXPathRunEval(pctxt, toBool);
 
     if (pctxt->error != XPATH_EXPRESSION_OK) {

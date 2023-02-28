@@ -82,7 +82,8 @@ fuzzEntityRecorder(const char *URL, const char *ID,
 
     xmlFreeInputStream(in);
 
-    xmlHashAddEntry(globalData.entities, (const xmlChar *) URL, NULL);
+    xmlHashAddEntry(globalData.entities, (const xmlChar *) URL,
+                    globalData.entities);
 
     return(xmlNoNetExternalEntityLoader(URL, ID, ctxt));
 }
@@ -98,7 +99,7 @@ fuzzRecorderInit(FILE *out) {
 static void
 fuzzRecorderCleanup(void) {
     xmlSetExternalEntityLoader(globalData.oldLoader);
-    xmlHashFree(globalData.entities, xmlHashDefaultDeallocator);
+    xmlHashFree(globalData.entities, NULL);
     globalData.out = NULL;
     globalData.entities = NULL;
     globalData.oldLoader = NULL;

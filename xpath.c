@@ -8875,9 +8875,8 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs)
 				     NULL, 0);
 		    if (fullname == cur->nodesetval->nodeTab[i]->name)
 			fullname = xmlStrdup(cur->nodesetval->nodeTab[i]->name);
-		    if (fullname == NULL) {
-			XP_ERROR(XPATH_MEMORY_ERROR);
-		    }
+		    if (fullname == NULL)
+                        xmlXPathPErrMemory(ctxt, NULL);
 		    valuePush(ctxt, xmlXPathCacheWrapString(
 			ctxt->context, fullname));
                 }

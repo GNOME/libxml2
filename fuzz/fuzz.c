@@ -274,7 +274,7 @@ xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
         return(NULL);
 
     input = xmlNewInputStream(ctxt);
-    input->filename = NULL;
+    input->filename = (char *) xmlCharStrdup(URL);
     input->buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
                                                XML_CHAR_ENCODING_NONE);
     if (input->buf == NULL) {

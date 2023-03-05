@@ -6858,6 +6858,8 @@ xmlSchemaParseWildcardNs(xmlSchemaParserCtxtPtr ctxt,
      */
     attr = xmlSchemaGetPropNode(node, "namespace");
     ns = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
+    if (ns == NULL)
+        return (-1);
     if ((attr == NULL) || (xmlStrEqual(ns, BAD_CAST "##any")))
 	wildc->any = 1;
     else if (xmlStrEqual(ns, BAD_CAST "##other")) {

@@ -3040,6 +3040,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 			    value = norm;
 		    }
 		    tmpval = xmlStrdup(value);
+                    if (tmpval == NULL)
+                        goto error;
 		    for (cur = tmpval; *cur; ++cur) {
 			if (*cur < 32 || *cur >= 127 || *cur == ' ' ||
 			    *cur == '<' || *cur == '>' || *cur == '"' ||

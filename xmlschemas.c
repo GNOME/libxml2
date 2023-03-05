@@ -9032,6 +9032,11 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    if (end == cur)
 		break;
 	    tmp = xmlStrndup(cur, end - cur);
+            if (tmp == NULL) {
+                xmlSchemaPErrMemory(ctxt, "xmlSchemaParseUnion, "
+                    "duplicating type name", NULL);
+                return (-1);
+            }
 	    if (xmlSchemaPValAttrNodeQNameValue(ctxt, schema,
 		NULL, attr, BAD_CAST tmp, &nsName, &localName) == 0) {
 		/*
@@ -9042,6 +9047,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		if (link == NULL) {
 		    xmlSchemaPErrMemory(ctxt, "xmlSchemaParseUnion, "
 			"allocating a type link", NULL);
+	            FREE_AND_NULL(tmp)
 		    return (-1);
 		}
 		link->type = NULL;

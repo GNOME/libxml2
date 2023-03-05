@@ -308,10 +308,20 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 #define WXS_SCHEMA(ctx) (ctx)->schema
 
 #define WXS_ADD_LOCAL(ctx, item) \
-    xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->locals), 10, item)
+    do { \
+        if (xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->locals), 10, item) < 0) { \
+            xmlFree(item); \
+            item = NULL; \
+        } \
+    } while (0)
 
 #define WXS_ADD_GLOBAL(ctx, item) \
-    xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->globals), 5, item)
+    do { \
+        if (xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->globals), 5, item) < 0) { \
+            xmlFree(item); \
+            item = NULL; \
+        } \
+    } while (0)
 
 #define WXS_ADD_PENDING(ctx, item) \
     xmlSchemaAddItemSize(&((ctx)->constructor->pending), 10, item)
@@ -3764,8 +3774,7 @@ xmlSchemaAddItemSize(xmlSchemaItemListPtr *list, int initialSize, void *item)
 	if (*list == NULL)
 	    return(-1);
     }
-    xmlSchemaItemListAddSize(*list, initialSize, item);
-    return(0);
+    return(xmlSchemaItemListAddSize(*list, initialSize, item));
 }
 
 /**

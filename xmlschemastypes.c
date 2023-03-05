@@ -404,6 +404,10 @@ xmlSchemaInitTypes(void)
     xmlSchemaTypeAnyTypeDef = xmlSchemaInitBasicType("anyType",
                                                      XML_SCHEMAS_ANYTYPE,
 						     NULL);
+    if (xmlSchemaTypeAnyTypeDef == NULL) {
+	xmlSchemaTypeErrMemory(NULL, NULL);
+        return;
+    }
     xmlSchemaTypeAnyTypeDef->baseType = xmlSchemaTypeAnyTypeDef;
     xmlSchemaTypeAnyTypeDef->contentType = XML_SCHEMA_CONTENT_MIXED;
     /*

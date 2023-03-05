@@ -3755,7 +3755,10 @@ xmlSchemaBucketCreate(xmlSchemaParserCtxtPtr pctxt,
 		return(NULL);
 	    }
 	}
-	xmlSchemaItemListAdd(mainSchema->includes, ret);
+	if (xmlSchemaItemListAdd(mainSchema->includes, ret) < 0) {
+	    xmlSchemaBucketFree(ret);
+	    return(NULL);
+        }
     }
     /*
     * Add to list of all buckets; this is used for lookup

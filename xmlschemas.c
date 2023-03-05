@@ -21456,7 +21456,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     if (ctxt->constructor == NULL) {
 	ctxt->constructor = xmlSchemaConstructionCtxtCreate(ctxt->dict);
 	if (ctxt->constructor == NULL)
-	    return(NULL);
+	    goto exit_failure;
 	/* Take ownership of the constructor to be able to free it. */
 	ctxt->ownsConstructor = 1;
     }

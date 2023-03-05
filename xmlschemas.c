@@ -3448,14 +3448,17 @@ xmlSchemaItemListAddSize(xmlSchemaItemListPtr list,
 	}
 	list->sizeItems = initialSize;
     } else if (list->sizeItems <= list->nbItems) {
+        void **tmp;
+
 	list->sizeItems *= 2;
-	list->items = (void **) xmlRealloc(list->items,
+	tmp = (void **) xmlRealloc(list->items,
 	    list->sizeItems * sizeof(void *));
-	if (list->items == NULL) {
+	if (tmp == NULL) {
 	    xmlSchemaPErrMemory(NULL, "growing item list", NULL);
-	    list->sizeItems = 0;
+	    list->sizeItems /= 2;
 	    return(-1);
 	}
+        list->items = tmp;
     }
     list->items[list->nbItems++] = item;
     return(0);

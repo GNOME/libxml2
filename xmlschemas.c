@@ -9017,6 +9017,8 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	xmlSchemaQNameRefPtr ref;
 
 	cur = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
+        if (cur == NULL)
+            return (-1);
 	type->base = cur;
 	do {
 	    while (IS_BLANK_CH(*cur))

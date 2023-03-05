@@ -3651,12 +3651,12 @@ xmlSchemaBucketCreate(xmlSchemaParserCtxtPtr pctxt,
     ret->type = type;
     ret->globals = xmlSchemaItemListCreate();
     if (ret->globals == NULL) {
-	xmlFree(ret);
+	xmlSchemaBucketFree(ret);
 	return(NULL);
     }
     ret->locals = xmlSchemaItemListCreate();
     if (ret->locals == NULL) {
-	xmlFree(ret);
+	xmlSchemaBucketFree(ret);
 	return(NULL);
     }
     /*

@@ -120,14 +120,27 @@ xmlParseElementEnd(xmlParserCtxtPtr ctxt);
 #define XML_PARSER_LOT_ENTITY 5000
 
 /*
- * XML_PARSER_NON_LINEAR is the threshold where the ratio of parsed entity
- *    replacement over the size in byte of the input indicates that you have
- *    and exponential behaviour. A value of 10 correspond to at least 3 entity
- *    replacement per byte of input.
+ * Constants for protection against abusive entity expansion
+ * ("billion laughs").
  */
-#define XML_PARSER_NON_LINEAR 10
 
-#define XML_ENT_FIXED_COST 50
+/*
+ * XML_PARSER_NON_LINEAR is roughly the maximum allowed amplification factor
+ * of serialized output after entity expansion.
+ */
+#define XML_PARSER_NON_LINEAR 5
+
+/*
+ * A certain amount is always allowed.
+ */
+#define XML_PARSER_ALLOWED_EXPANSION 1000000
+
+/*
+ * Fixed cost for each entity reference. This crudely models processing time
+ * as well to protect, for example, against exponential expansion of empty
+ * or very short entities.
+ */
+#define XML_ENT_FIXED_COST 20
 
 /**
  * xmlParserMaxDepth:
@@ -795,7 +808,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
      * entity sizes to make the size checks reliable. If "sizeentcopy"
      * overflows, we have to abort.
      */
-    if ((ctxt->sizeentcopy > XML_MAX_TEXT_LENGTH) &&
+    if ((ctxt->sizeentcopy > XML_PARSER_ALLOWED_EXPANSION) &&
         ((ctxt->sizeentcopy >= ULONG_MAX) ||
          (ctxt->sizeentcopy / XML_PARSER_NON_LINEAR > consumed))) {
         xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,

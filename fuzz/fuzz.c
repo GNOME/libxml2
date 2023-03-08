@@ -84,20 +84,45 @@ xmlFuzzDataCleanup(void) {
 }
 
 /**
+ * xmlFuzzWriteInt:
+ * @out:  output file
+ * @v:  integer to write
+ * @size:  size of integer in bytes
+ *
+ * Write an integer to the fuzz data.
+ */
+void
+xmlFuzzWriteInt(FILE *out, size_t v, int size) {
+    int shift;
+
+    while (size > (int) sizeof(size_t)) {
+        putc(0, out);
+        size--;
+    }
+
+    shift = size * 8;
+    while (shift > 0) {
+        shift -= 8;
+        putc((v >> shift) & 255, out);
+    }
+}
+
+/**
  * xmlFuzzReadInt:
- * @size:  size of string in bytes
+ * @size:  size of integer in bytes
  *
  * Read an integer from the fuzz data.
  */
-int
-xmlFuzzReadInt(void) {
-    int ret;
+size_t
+xmlFuzzReadInt(int size) {
+    size_t ret = 0;
 
-    if (fuzzData.remaining < sizeof(int))
-        return(0);
-    memcpy(&ret, fuzzData.ptr, sizeof(int));
-    fuzzData.ptr += sizeof(int);
-    fuzzData.remaining -= sizeof(int);
+    while ((size > 0) && (fuzzData.remaining > 0)) {
+        unsigned char c = (unsigned char) *fuzzData.ptr++;
+        fuzzData.remaining--;
+        ret = (ret << 8) | c;
+        size--;
+    }
 
     return ret;
 }

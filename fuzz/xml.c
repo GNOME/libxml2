@@ -36,7 +36,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     int opts, outSize;
 
     xmlFuzzDataInit(data, size);
-    opts = xmlFuzzReadInt();
+    opts = (int) xmlFuzzReadInt(4);
     opts &= ~XML_PARSE_XINCLUDE;
 
     xmlFuzzReadEntities();

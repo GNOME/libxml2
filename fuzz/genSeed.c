@@ -114,6 +114,8 @@ processXml(const char *docFile, FILE *out) {
 
     /* Parser options. */
     xmlFuzzWriteInt(out, opts, 4);
+    /* Max allocations. */
+    xmlFuzzWriteInt(out, 0, 4);
 
     fuzzRecorderInit(out);
 
@@ -135,6 +137,8 @@ processHtml(const char *docFile, FILE *out) {
     size_t size;
 
     /* Parser options. */
+    xmlFuzzWriteInt(out, 0, 4);
+    /* Max allocations. */
     xmlFuzzWriteInt(out, 0, 4);
 
     /* Copy file */
@@ -159,6 +163,9 @@ static int
 processSchema(const char *docFile, FILE *out) {
     xmlSchemaPtr schema;
     xmlSchemaParserCtxtPtr pctxt;
+
+    /* Max allocations. */
+    xmlFuzzWriteInt(out, 0, 4);
 
     fuzzRecorderInit(out);
 
@@ -313,6 +320,9 @@ processXPath(const char *testDir, const char *prefix, const char *name,
                 ret = -1;
                 continue;
             }
+
+            /* Max allocations. */
+            xmlFuzzWriteInt(out, 0, 4);
 
             if (xptr) {
                 xmlFuzzWriteString(out, expr);

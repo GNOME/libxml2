@@ -42,6 +42,9 @@ static struct {
     xmlFuzzEntityInfo *mainEntity;
 } fuzzData;
 
+size_t fuzzNumAllocs;
+size_t fuzzMaxAllocs;
+
 /**
  * xmlFuzzErrorFunc:
  *
@@ -50,6 +53,58 @@ static struct {
 void
 xmlFuzzErrorFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg ATTRIBUTE_UNUSED,
                  ...) {
+}
+
+/*
+ * Malloc failure injection.
+ *
+ * Quick tip to debug complicated issues: Increase MALLOC_OFFSET until
+ * the crash disappears (or a different issue is triggered). Then set
+ * the offset to the highest value that produces a crash and set
+ * MALLOC_ABORT to 1 to see which failed memory allocation causes the
+ * issue.
+ */
+
+#define XML_FUZZ_MALLOC_OFFSET  0
+#define XML_FUZZ_MALLOC_ABORT   0
+
+static void *
+xmlFuzzMalloc(size_t size) {
+    if (fuzzMaxAllocs > 0) {
+        if (fuzzNumAllocs >= fuzzMaxAllocs - 1)
+#if XML_FUZZ_MALLOC_ABORT
+            abort();
+#else
+            return(NULL);
+#endif
+        fuzzNumAllocs += 1;
+    }
+    return malloc(size);
+}
+
+static void *
+xmlFuzzRealloc(void *ptr, size_t size) {
+    if (fuzzMaxAllocs > 0) {
+        if (fuzzNumAllocs >= fuzzMaxAllocs - 1)
+#if XML_FUZZ_MALLOC_ABORT
+            abort();
+#else
+            return(NULL);
+#endif
+        fuzzNumAllocs += 1;
+    }
+    return realloc(ptr, size);
+}
+
+void
+xmlFuzzMemSetup(void) {
+    xmlMemSetup(free, xmlFuzzMalloc, xmlFuzzRealloc, xmlMemStrdup);
+}
+
+void
+xmlFuzzMemSetLimit(size_t limit) {
+    fuzzNumAllocs = 0;
+    fuzzMaxAllocs = limit ? limit + XML_FUZZ_MALLOC_OFFSET : 0;
 }
 
 /**
@@ -299,6 +354,8 @@ xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
         return(NULL);
 
     input = xmlNewInputStream(ctxt);
+    if (input == NULL)
+        return(NULL);
     input->filename = (char *) xmlCharStrdup(URL);
     input->buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
                                                XML_CHAR_ENCODING_NONE);
@@ -310,47 +367,6 @@ xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
     input->end = input->base + entity->size;
 
     return input;
-}
-
-/**
- * xmlFuzzExtractStrings:
- *
- * Extract C strings from input data. Use exact-size allocations to detect
- * potential memory errors.
- */
-size_t
-xmlFuzzExtractStrings(const char *data, size_t size, char **strings,
-                      size_t numStrings) {
-    const char *start = data;
-    const char *end = data + size;
-    size_t i = 0, ret;
-
-    while (i < numStrings) {
-        size_t strSize = end - start;
-        const char *zero = memchr(start, 0, strSize);
-
-        if (zero != NULL)
-            strSize = zero - start;
-
-        strings[i] = xmlMalloc(strSize + 1);
-        memcpy(strings[i], start, strSize);
-        strings[i][strSize] = '\0';
-
-        i++;
-        if (zero != NULL)
-            start = zero + 1;
-        else
-            break;
-    }
-
-    ret = i;
-
-    while (i < numStrings) {
-        strings[i] = NULL;
-        i++;
-    }
-
-    return(ret);
 }
 
 char *

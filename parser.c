@@ -2083,38 +2083,45 @@ static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
 	xmlGROW (ctxt);
 
 static void xmlGROW (xmlParserCtxtPtr ctxt) {
-    ptrdiff_t curEnd = ctxt->input->end - ctxt->input->cur;
-    ptrdiff_t curBase = ctxt->input->cur - ctxt->input->base;
+    xmlParserInputPtr in = ctxt->input;
+    xmlParserInputBufferPtr buf = in->buf;
+    ptrdiff_t curEnd = in->end - in->cur;
+    ptrdiff_t curBase = in->cur - in->base;
+    int ret;
+
+    if (buf == NULL)
+        return;
+    /* Don't grow memory buffers. */
+    if ((buf->encoder == NULL) && (buf->readcallback == NULL))
+        return;
 
     if (((curEnd > XML_MAX_LOOKUP_LIMIT) ||
          (curBase > XML_MAX_LOOKUP_LIMIT)) &&
-         ((ctxt->input->buf) &&
-          (ctxt->input->buf->readcallback != NULL)) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Huge input lookup");
         xmlHaltParser(ctxt);
 	return;
     }
-    /* TODO: xmlParserInputGrow should take a ctxt argument. */
-    if (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) < 0) {
-        /* Could be a memory or IO error. */
-        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "growing buffer");
-        xmlHaltParser(ctxt);
-	return;
+
+    if (xmlBufUse(buf->buffer) > (unsigned int) curBase + INPUT_CHUNK)
+        return;
+
+    ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
+
+    in->base = xmlBufContent(buf->buffer);
+    if (in->base == NULL) {
+        xmlErrMemory(ctxt, NULL);
+        in->base = BAD_CAST "";
+        in->cur = in->base;
+        in->end = in->base;
+        return;
     }
-    if ((ctxt->input->cur > ctxt->input->end) ||
-        (ctxt->input->cur < ctxt->input->base)) {
-        xmlHaltParser(ctxt);
-        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "cur index out of bound");
-	return;
-    }
-    if ((ctxt->input->cur != NULL) && (*ctxt->input->cur == 0)) {
-        if (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) < 0) {
-            xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "growing buffer");
-            xmlHaltParser(ctxt);
-            return;
-        }
-    }
+    in->cur = in->base + curBase;
+    in->end = xmlBufEnd(buf->buffer);
+
+    /* TODO: Get error code from xmlParserInputBufferGrow */
+    if (ret < 0)
+        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Growing input buffer");
 }
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)

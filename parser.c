@@ -2095,15 +2095,26 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
         xmlHaltParser(ctxt);
 	return;
     }
-    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+    /* TODO: xmlParserInputGrow should take a ctxt argument. */
+    if (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) < 0) {
+        /* Could be a memory or IO error. */
+        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "growing buffer");
+        xmlHaltParser(ctxt);
+	return;
+    }
     if ((ctxt->input->cur > ctxt->input->end) ||
         (ctxt->input->cur < ctxt->input->base)) {
         xmlHaltParser(ctxt);
         xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "cur index out of bound");
 	return;
     }
-    if ((ctxt->input->cur != NULL) && (*ctxt->input->cur == 0))
-        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+    if ((ctxt->input->cur != NULL) && (*ctxt->input->cur == 0)) {
+        if (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) < 0) {
+            xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "growing buffer");
+            xmlHaltParser(ctxt);
+            return;
+        }
+    }
 }
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)

@@ -2640,7 +2640,7 @@ not_determinist:
  */
 static int
 xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
-	                 int to, xmlRegAtomPtr atom) {
+	                int fromnr, int tonr, xmlRegAtomPtr atom) {
     int ret = 1;
     int res;
     int transnr, nbTrans;
@@ -2665,21 +2665,23 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	/*
 	 * check transitions conflicting with the one looked at
 	 */
+        if ((t1->to < 0) || (t1->to == fromnr))
+            continue;
 	if (t1->atom == NULL) {
-	    if (t1->to < 0)
-		continue;
 	    state->markd = XML_REGEXP_MARK_VISITED;
 	    res = xmlFARecurseDeterminism(ctxt, ctxt->states[t1->to],
-		                           to, atom);
+		                          fromnr, tonr, atom);
 	    if (res == 0) {
 	        ret = 0;
 		/* t1->nd = 1; */
 	    }
 	    continue;
 	}
-	if (t1->to != to)
-	    continue;
 	if (xmlFACompareAtoms(t1->atom, atom, deep)) {
+            /* Treat equal transitions as deterministic. */
+            if ((t1->to != tonr) ||
+                (!xmlFAEqualAtoms(t1->atom, atom, deep)))
+                ret = 0;
 	    ret = 0;
 	    /* mark the transition as non-deterministic */
 	    t1->nd = 1;
@@ -2812,29 +2814,39 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
                      * find transitions which indicate a conflict
                      */
 		    if (xmlFACompareAtoms(t1->atom, t2->atom, 1)) {
-			ret = 0;
+                        /*
+                         * Treat equal counter transitions that couldn't be
+                         * eliminated as deterministic.
+                         */
+                        if ((t1->to != t2->to) ||
+                            (t1->counter == t2->counter) ||
+                            (!xmlFAEqualAtoms(t1->atom, t2->atom, deep)))
+                            ret = 0;
 			/* mark the transitions as non-deterministic ones */
 			t1->nd = 1;
 			t2->nd = 1;
 			last = t1;
 		    }
 		} else {
+                    int res;
+
 		    /*
 		     * do the closure in case of remaining specific
 		     * epsilon transitions like choices or all
 		     */
-		    ret = xmlFARecurseDeterminism(ctxt, ctxt->states[t1->to],
-						   t2->to, t2->atom);
-                    xmlFAFinishRecurseDeterminism(ctxt, ctxt->states[t1->to]);
+		    res = xmlFARecurseDeterminism(ctxt, ctxt->states[t2->to],
+						  statenr, t1->to, t1->atom);
+                    xmlFAFinishRecurseDeterminism(ctxt, ctxt->states[t2->to]);
 		    /* don't shortcut the computation so all non deterministic
 		       transition get marked down
 		    if (ret == 0)
 			return(0);
 		     */
-		    if (ret == 0) {
+		    if (res == 0) {
 			t1->nd = 1;
 			/* t2->nd = 1; */
 			last = t1;
+                        ret = 0;
 		    }
 		}
 	    }

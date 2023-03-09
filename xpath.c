@@ -5154,6 +5154,8 @@ xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
 int
 xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
 			   const xmlChar *ns_uri) {
+    xmlChar *copy;
+
     if (ctxt == NULL)
 	return(-1);
     if (prefix == NULL)
@@ -5168,8 +5170,17 @@ xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
     if (ns_uri == NULL)
         return(xmlHashRemoveEntry(ctxt->nsHash, prefix,
 	                          xmlHashDefaultDeallocator));
-    return(xmlHashUpdateEntry(ctxt->nsHash, prefix, (void *) xmlStrdup(ns_uri),
-			      xmlHashDefaultDeallocator));
+
+    copy = xmlStrdup(ns_uri);
+    if (copy == NULL)
+        return(-1);
+    if (xmlHashUpdateEntry(ctxt->nsHash, prefix, copy,
+                           xmlHashDefaultDeallocator) < 0) {
+        xmlFree(copy);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**

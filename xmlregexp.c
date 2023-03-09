@@ -600,7 +600,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 
 	    for (j = 0;j < state->nbTrans;j++) {
 		trans = &(state->trans[j]);
-		if ((trans->to == -1) || (trans->atom == NULL))
+		if ((trans->to < 0) || (trans->atom == NULL))
 		    continue;
                 atomno = stringRemap[trans->atom->no];
 		if ((trans->atom->data != NULL) && (transdata == NULL)) {
@@ -2758,11 +2758,11 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 		/* t1->nd = 1; */
 		continue;
 	    }
-	    if (t1->to == -1) /* eliminated */
+	    if (t1->to < 0) /* eliminated */
 		continue;
 	    for (i = 0;i < transnr;i++) {
 		t2 = &(state->trans[i]);
-		if (t2->to == -1) /* eliminated */
+		if (t2->to < 0) /* eliminated */
 		    continue;
 		if (t2->atom != NULL) {
 		    if (t1->to == t2->to) {
@@ -2800,11 +2800,11 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 	    if (t1->atom == NULL) {
 		continue;
 	    }
-	    if (t1->to == -1) /* eliminated */
+	    if (t1->to < 0) /* eliminated */
 		continue;
 	    for (i = 0;i < transnr;i++) {
 		t2 = &(state->trans[i]);
-		if (t2->to == -1) /* eliminated */
+		if (t2->to < 0) /* eliminated */
 		    continue;
 		if (t2->atom != NULL) {
                     /*
@@ -2818,7 +2818,7 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
 			t2->nd = 1;
 			last = t1;
 		    }
-		} else if (t1->to != -1) {
+		} else {
 		    /*
 		     * do the closure in case of remaining specific
 		     * epsilon transitions like choices or all

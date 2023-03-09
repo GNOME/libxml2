@@ -1821,47 +1821,38 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 	from->type = XML_REGEXP_FINAL_STATE;
     }
     for (transnr = 0;transnr < to->nbTrans;transnr++) {
-        if (to->trans[transnr].to < 0)
+        xmlRegTransPtr t1 = &to->trans[transnr];
+        int tcounter;
+
+        if (t1->to < 0)
 	    continue;
-	if (to->trans[transnr].atom == NULL) {
+        if (t1->counter >= 0) {
+            /* assert(counter < 0); */
+            tcounter = t1->counter;
+        } else {
+            tcounter = counter;
+        }
+	if (t1->atom == NULL) {
 	    /*
 	     * Don't remove counted transitions
 	     * Don't loop either
 	     */
-	    if (to->trans[transnr].to != fromnr) {
-		if (to->trans[transnr].count >= 0) {
-		    int newto = to->trans[transnr].to;
-
-		    xmlRegStateAddTrans(ctxt, from, NULL,
-					ctxt->states[newto],
-					-1, to->trans[transnr].count);
+	    if (t1->to != fromnr) {
+		if (t1->count >= 0) {
+		    xmlRegStateAddTrans(ctxt, from, NULL, ctxt->states[t1->to],
+					-1, t1->count);
 		} else {
 #ifdef DEBUG_REGEXP_GRAPH
 		    printf("Found epsilon trans %d from %d to %d\n",
-			   transnr, tonr, to->trans[transnr].to);
+			   transnr, tonr, t1->to);
 #endif
-		    if (to->trans[transnr].counter >= 0) {
-			xmlFAReduceEpsilonTransitions(ctxt, fromnr,
-					      to->trans[transnr].to,
-					      to->trans[transnr].counter);
-		    } else {
-			xmlFAReduceEpsilonTransitions(ctxt, fromnr,
-					      to->trans[transnr].to,
-					      counter);
-		    }
+                    xmlFAReduceEpsilonTransitions(ctxt, fromnr, t1->to,
+                                                  tcounter);
 		}
 	    }
 	} else {
-	    int newto = to->trans[transnr].to;
-
-	    if (to->trans[transnr].counter >= 0) {
-		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom,
-				    ctxt->states[newto],
-				    to->trans[transnr].counter, -1);
-	    } else {
-		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom,
-				    ctxt->states[newto], counter, -1);
-	    }
+            xmlRegStateAddTrans(ctxt, from, t1->atom,
+                                ctxt->states[t1->to], tcounter, -1);
 	}
     }
 }

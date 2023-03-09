@@ -1864,7 +1864,32 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 	    }
 	}
     }
+}
+
+/**
+ * xmlFAFinishReduceEpsilonTransitions:
+ * @ctxt:  a regexp parser context
+ * @fromnr:  the from state
+ * @tonr:  the to state
+ * @counter:  should that transition be associated to a counted
+ *
+ */
+static void
+xmlFAFinishReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int tonr) {
+    int transnr;
+    xmlRegStatePtr to;
+
+    to = ctxt->states[tonr];
+    if ((to->mark == XML_REGEXP_MARK_START) ||
+	(to->mark == XML_REGEXP_MARK_NORMAL))
+	return;
+
     to->mark = XML_REGEXP_MARK_NORMAL;
+    for (transnr = 0;transnr < to->nbTrans;transnr++) {
+	xmlRegTransPtr t1 = &to->trans[transnr];
+	if ((t1->to >= 0) && (t1->atom == NULL))
+            xmlFAFinishReduceEpsilonTransitions(ctxt, t1->to);
+    }
 }
 
 /**
@@ -2016,6 +2041,7 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 		    state->mark = XML_REGEXP_MARK_START;
 		    xmlFAReduceEpsilonTransitions(ctxt, statenr,
 				      newto, state->trans[transnr].counter);
+		    xmlFAFinishReduceEpsilonTransitions(ctxt, newto);
 		    state->mark = XML_REGEXP_MARK_NORMAL;
 #ifdef DEBUG_REGEXP_GRAPH
 		} else {

@@ -66,7 +66,6 @@ DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.x
 
 rebuild:
 	cd $(srcdir) && ./apibuild.py
-	cd $(srcdir) && $(XSLTPROC) -o ../win32/libxml2.def.src ../win32/defgen.xsl libxml2-api.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet xmllint.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet -o xmllint.html $(DOCBOOK_HTML) xmllint.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet xmlcatalog.xml

@@ -200,7 +200,7 @@ main(void) {
         ret = 1;
 #endif
 #ifdef HAVE_URI_FUZZER
-    if (testFuzzer(NULL, fuzzUri, "seed/uri/*") != 0)
+    if (testFuzzer(fuzzUriInit, fuzzUri, "seed/uri/*") != 0)
         ret = 1;
 #endif
 #ifdef HAVE_VALID_FUZZER

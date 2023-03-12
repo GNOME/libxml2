@@ -9350,7 +9350,7 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     int maxatts = ctxt->maxatts;
     int nratts, nbatts, nbdef, inputid;
     int i, j, nbNs, attval;
-    unsigned long cur;
+    size_t cur;
     int nsNr = ctxt->nsNr;
 
     if (RAW != '<') return(NULL);
@@ -11422,7 +11422,8 @@ xmlCheckCdataPush(const xmlChar *utf, int len, int complete) {
 static int
 xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
-    int avail, tlen;
+    int tlen;
+    size_t avail;
     xmlChar cur, next;
 
     if (ctxt->input == NULL)

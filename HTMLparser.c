@@ -3875,7 +3875,7 @@ htmlCheckEncodingDirect(htmlParserCtxtPtr ctxt, const xmlChar *encoding) {
 	    (ctxt->input->buf->raw != NULL) &&
 	    (ctxt->input->buf->buffer != NULL)) {
 	    int nbchars;
-	    int processed;
+	    size_t processed;
 
 	    /*
 	     * convert as much as possible to the parser reading buffer.

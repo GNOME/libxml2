@@ -5580,11 +5580,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 
 	in = ctxt->input;
 	if (in == NULL) break;
-	if (in->buf == NULL)
-	    avail = in->length - (in->cur - in->base);
-	else
-	    avail = (ptrdiff_t)xmlBufUse(in->buf->buffer) -
-                    (in->cur - in->base);
+	avail = in->end - in->cur;
 	if ((avail == 0) && (terminate)) {
 	    htmlAutoCloseOnEnd(ctxt);
 	    if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) {
@@ -5623,11 +5619,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		cur = in->cur[0];
 		if (IS_BLANK_CH(cur)) {
 		    SKIP_BLANKS;
-		    if (in->buf == NULL)
-			avail = in->length - (in->cur - in->base);
-		    else
-			avail = (ptrdiff_t)xmlBufUse(in->buf->buffer) -
-                                (in->cur - in->base);
+                    avail = in->end - in->cur;
 		}
 		if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
 		    ctxt->sax->setDocumentLocator(ctxt->userData,
@@ -5666,11 +5658,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		break;
             case XML_PARSER_MISC:
 		SKIP_BLANKS;
-		if (in->buf == NULL)
-		    avail = in->length - (in->cur - in->base);
-		else
-		    avail = (ptrdiff_t)xmlBufUse(in->buf->buffer) -
-                            (in->cur - in->base);
+                avail = in->end - in->cur;
 		/*
 		 * no chars in buffer
 		 */
@@ -5739,11 +5727,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		break;
             case XML_PARSER_PROLOG:
 		SKIP_BLANKS;
-		if (in->buf == NULL)
-		    avail = in->length - (in->cur - in->base);
-		else
-		    avail = (ptrdiff_t)xmlBufUse(in->buf->buffer) -
-                            (in->cur - in->base);
+                avail = in->end - in->cur;
 		if (avail < 2)
 		    goto done;
 		cur = in->cur[0];
@@ -5780,11 +5764,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		}
 		break;
             case XML_PARSER_EPILOG:
-		if (in->buf == NULL)
-		    avail = in->length - (in->cur - in->base);
-		else
-		    avail = (ptrdiff_t)xmlBufUse(in->buf->buffer) -
-                            (in->cur - in->base);
+                avail = in->end - in->cur;
 		if (avail < 1)
 		    goto done;
 		cur = in->cur[0];

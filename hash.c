@@ -78,6 +78,7 @@ struct _xmlHashTable {
  */
 #ifdef __clang__
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
+ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
 static unsigned long
 xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
@@ -111,6 +112,7 @@ xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
 
 #ifdef __clang__
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
+ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
 static unsigned long
 xmlHashComputeQKey(xmlHashTablePtr table,

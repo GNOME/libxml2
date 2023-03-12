@@ -27,6 +27,10 @@ extern "C" {
 #if 1
   #define HAVE_URI_FUZZER
 #endif
+#if defined(LIBXML_VALID_ENABLED) && \
+    defined(LIBXML_READER_ENABLED)
+  #define HAVE_VALID_FUZZER
+#endif
 #if defined(LIBXML_XINCLUDE_ENABLED) && \
     defined(LIBXML_READER_ENABLED)
   #define HAVE_XINCLUDE_FUZZER

@@ -36,6 +36,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
+    opts &= ~XML_PARSE_DTDVALID;
     opts |= XML_PARSE_XINCLUDE;
     maxAlloc = xmlFuzzReadInt(4) % (size + 1);
 

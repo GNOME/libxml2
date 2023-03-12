@@ -2671,6 +2671,9 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     int len = 0, l;
     int c;
     int count = 0;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_TEXT_LENGTH :
+                    XML_MAX_NAME_LENGTH;
     const xmlChar *base = ctxt->input->base;
 
     /*
@@ -2695,6 +2698,10 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	    GROW;
 	}
 	len += l;
+        if (len > maxLength) {
+            htmlParseErr(ctxt, XML_ERR_NAME_TOO_LONG, "name too long", NULL, NULL);
+            return(NULL);
+        }
 	NEXTL(l);
 	c = CUR_CHAR(l);
 	if (ctxt->input->base != base) {
@@ -2732,6 +2739,9 @@ static xmlChar *
 htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     xmlChar *buffer = NULL;
     int buffer_size = 0;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_HUGE_LENGTH :
+                    XML_MAX_TEXT_LENGTH;
     xmlChar *out = NULL;
     const xmlChar *name = NULL;
     const xmlChar *cur = NULL;
@@ -2851,6 +2861,12 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 	    }
 	    NEXT;
 	}
+        if (out - buffer > maxLength) {
+            htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
+                         "attribute value too long\n", NULL, NULL);
+            xmlFree(buffer);
+            return(NULL);
+        }
     }
     *out = 0;
     return(buffer);
@@ -3345,6 +3361,9 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
     int len = 0;
     int size = HTML_PARSER_BUFFER_SIZE;
     int cur, l;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_HUGE_LENGTH :
+                    XML_MAX_TEXT_LENGTH;
     const xmlChar *target;
     xmlParserInputState state;
     int count = 0;
@@ -3416,6 +3435,13 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
                                     "Invalid char in processing instruction "
                                     "0x%X\n", cur);
                 }
+                if (len > maxLength) {
+                    htmlParseErr(ctxt, XML_ERR_PI_NOT_FINISHED,
+                                 "PI %s too long", target, NULL);
+                    xmlFree(buf);
+                    ctxt->instate = state;
+                    return;
+                }
 		NEXTL(l);
 		cur = CUR_CHAR(l);
 		if (cur == 0) {
@@ -3465,6 +3491,9 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     int r, rl;
     int cur, l;
     int next, nl;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_HUGE_LENGTH :
+                    XML_MAX_TEXT_LENGTH;
     xmlParserInputState state;
 
     /*
@@ -3540,6 +3569,13 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
         } else {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Invalid char in comment 0x%X\n", q);
+        }
+        if (len > maxLength) {
+            htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
+                         "comment too long", NULL, NULL);
+            xmlFree(buf);
+            ctxt->instate = state;
+            return;
         }
 
 	q = r;

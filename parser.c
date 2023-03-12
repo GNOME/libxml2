@@ -2049,7 +2049,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 #define SKIP(val) do {							\
     ctxt->input->cur += (val),ctxt->input->col+=(val);			\
     if (*ctxt->input->cur == 0)						\
-        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
+        xmlParserGrow(ctxt);						\
   } while (0)
 
 #define SKIPL(val) do {							\
@@ -2061,7 +2061,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	ctxt->input->cur++;						\
     }									\
     if (*ctxt->input->cur == 0)						\
-        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
+        xmlParserGrow(ctxt);						\
   } while (0)
 
 #define SHRINK if ((ctxt->progressive == 0) &&				\
@@ -2075,54 +2075,12 @@ static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
         ((ctxt->input->buf->encoder) || (ctxt->input->buf->readcallback)))
         xmlParserInputShrink(ctxt->input);
     if (*ctxt->input->cur == 0)
-        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+        xmlParserGrow(ctxt);
 }
 
 #define GROW if ((ctxt->progressive == 0) &&				\
 		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
-	xmlGROW (ctxt);
-
-static void xmlGROW (xmlParserCtxtPtr ctxt) {
-    xmlParserInputPtr in = ctxt->input;
-    xmlParserInputBufferPtr buf = in->buf;
-    ptrdiff_t curEnd = in->end - in->cur;
-    ptrdiff_t curBase = in->cur - in->base;
-    int ret;
-
-    if (buf == NULL)
-        return;
-    /* Don't grow memory buffers. */
-    if ((buf->encoder == NULL) && (buf->readcallback == NULL))
-        return;
-
-    if (((curEnd > XML_MAX_LOOKUP_LIMIT) ||
-         (curBase > XML_MAX_LOOKUP_LIMIT)) &&
-        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
-        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Huge input lookup");
-        xmlHaltParser(ctxt);
-	return;
-    }
-
-    if (xmlBufUse(buf->buffer) > (unsigned int) curBase + INPUT_CHUNK)
-        return;
-
-    ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
-
-    in->base = xmlBufContent(buf->buffer);
-    if (in->base == NULL) {
-        in->base = BAD_CAST "";
-        in->cur = in->base;
-        in->end = in->base;
-        xmlErrMemory(ctxt, NULL);
-        return;
-    }
-    in->cur = in->base + curBase;
-    in->end = xmlBufEnd(buf->buffer);
-
-    /* TODO: Get error code from xmlParserInputBufferGrow */
-    if (ret < 0)
-        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "Growing input buffer");
-}
+	xmlParserGrow(ctxt);
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)
 
@@ -2132,7 +2090,7 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
 	ctxt->input->col++;						\
 	ctxt->input->cur++;						\
 	if (*ctxt->input->cur == 0)					\
-	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
+	    xmlParserGrow(ctxt);						\
     }
 
 #define NEXTL(l) do {							\
@@ -2185,7 +2143,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 		res++;
 	    if (*cur == 0) {
 		ctxt->input->cur = cur;
-		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+		xmlParserGrow(ctxt);
 		cur = ctxt->input->cur;
 	    }
 	}
@@ -2279,7 +2237,7 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
         input->entity->flags &= ~XML_ENT_EXPANDING;
     xmlFreeInputStream(input);
     if (*ctxt->input->cur == 0)
-        xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+        xmlParserGrow(ctxt);
     return(CUR);
 }
 

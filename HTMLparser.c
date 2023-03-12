@@ -299,7 +299,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 
 #define GROW if ((ctxt->progressive == 0) &&				\
 		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
-	xmlParserInputGrow(ctxt->input, INPUT_CHUNK)
+	xmlParserGrow(ctxt)
 
 #define SKIP_BLANKS htmlSkipBlankChars(ctxt)
 
@@ -473,7 +473,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
         if ((c & 0x40) == 0)
             goto encoding_error;
         if (cur[1] == 0) {
-            xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+            xmlParserGrow(ctxt);
             cur = ctxt->input->cur;
         }
         if ((cur[1] & 0xc0) != 0x80)
@@ -481,14 +481,14 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
         if ((c & 0xe0) == 0xe0) {
 
             if (cur[2] == 0) {
-                xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                xmlParserGrow(ctxt);
                 cur = ctxt->input->cur;
             }
             if ((cur[2] & 0xc0) != 0x80)
                 goto encoding_error;
             if ((c & 0xf0) == 0xf0) {
                 if (cur[3] == 0) {
-                    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+                    xmlParserGrow(ctxt);
                     cur = ctxt->input->cur;
                 }
                 if (((c & 0xf8) != 0xf0) ||
@@ -588,17 +588,12 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     int res = 0;
 
     while (IS_BLANK_CH(*(ctxt->input->cur))) {
-	if ((*ctxt->input->cur == 0) &&
-	    (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {
-		xmlPopInput(ctxt);
-	} else {
-	    if (*(ctxt->input->cur) == '\n') {
-		ctxt->input->line++; ctxt->input->col = 1;
-	    } else ctxt->input->col++;
-	    ctxt->input->cur++;
-	    if (*ctxt->input->cur == 0)
-		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
-	}
+        if (*(ctxt->input->cur) == '\n') {
+            ctxt->input->line++; ctxt->input->col = 1;
+        } else ctxt->input->col++;
+        ctxt->input->cur++;
+        if (*ctxt->input->cur == 0)
+            xmlParserGrow(ctxt);
 	if (res < INT_MAX)
 	    res++;
     }

@@ -11102,7 +11102,13 @@ xmlParseLookupChar(xmlParserCtxtPtr ctxt, int c) {
     }
 
     if (memchr(cur, c, ctxt->input->end - cur) == NULL) {
-        ctxt->checkIndex = ctxt->input->end - ctxt->input->cur;
+        size_t index = ctxt->input->end - ctxt->input->cur;
+
+        if (index > LONG_MAX) {
+            ctxt->checkIndex = 0;
+            return(1);
+        }
+        ctxt->checkIndex = index;
         return(0);
     } else {
         ctxt->checkIndex = 0;
@@ -11133,13 +11139,19 @@ xmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
     term = BAD_CAST strstr((const char *) cur, str);
     if (term == NULL) {
         const xmlChar *end = ctxt->input->end;
+        size_t index;
 
         /* Rescan (strLen - 1) characters. */
         if ((size_t) (end - cur) < strLen)
             end = cur;
         else
             end -= strLen - 1;
-        ctxt->checkIndex = end - ctxt->input->cur;
+        index = end - ctxt->input->cur;
+        if (index > LONG_MAX) {
+            ctxt->checkIndex = 0;
+            return(ctxt->input->end - strLen);
+        }
+        ctxt->checkIndex = index;
     } else {
         ctxt->checkIndex = 0;
     }
@@ -11157,6 +11169,7 @@ static int
 xmlParseLookupCharData(xmlParserCtxtPtr ctxt) {
     const xmlChar *cur = ctxt->input->cur + ctxt->checkIndex;
     const xmlChar *end = ctxt->input->end;
+    size_t index;
 
     while (cur < end) {
         if ((*cur == '<') || (*cur == '&')) {
@@ -11166,7 +11179,12 @@ xmlParseLookupCharData(xmlParserCtxtPtr ctxt) {
         cur++;
     }
 
-    ctxt->checkIndex = cur - ctxt->input->cur;
+    index = cur - ctxt->input->cur;
+    if (index > LONG_MAX) {
+        ctxt->checkIndex = 0;
+        return(1);
+    }
+    ctxt->checkIndex = index;
     return(0);
 }
 
@@ -11182,6 +11200,7 @@ xmlParseLookupGt(xmlParserCtxtPtr ctxt) {
     const xmlChar *cur;
     const xmlChar *end = ctxt->input->end;
     int state = ctxt->endCheckState;
+    size_t index;
 
     if (ctxt->checkIndex == 0)
         cur = ctxt->input->cur + 1;
@@ -11202,7 +11221,13 @@ xmlParseLookupGt(xmlParserCtxtPtr ctxt) {
         cur++;
     }
 
-    ctxt->checkIndex = cur - ctxt->input->cur;
+    index = cur - ctxt->input->cur;
+    if (index > LONG_MAX) {
+        ctxt->checkIndex = 0;
+        ctxt->endCheckState = 0;
+        return(1);
+    }
+    ctxt->checkIndex = index;
     ctxt->endCheckState = state;
     return(0);
 }
@@ -11226,6 +11251,7 @@ xmlParseLookupInternalSubset(xmlParserCtxtPtr ctxt) {
     const xmlChar *cur, *start;
     const xmlChar *end = ctxt->input->end;
     int state = ctxt->endCheckState;
+    size_t index;
 
     if (ctxt->checkIndex == 0) {
         cur = ctxt->input->cur + 1;
@@ -11305,7 +11331,13 @@ xmlParseLookupInternalSubset(xmlParserCtxtPtr ctxt) {
         else
             cur -= 3;
     }
-    ctxt->checkIndex = cur - ctxt->input->cur;
+    index = cur - ctxt->input->cur;
+    if (index > LONG_MAX) {
+        ctxt->checkIndex = 0;
+        ctxt->endCheckState = 0;
+        return(1);
+    }
+    ctxt->checkIndex = index;
     ctxt->endCheckState = state;
     return(0);
 }

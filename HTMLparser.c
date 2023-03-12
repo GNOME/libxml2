@@ -5398,7 +5398,7 @@ static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
                         xmlChar next, xmlChar third, int ignoreattrval)
 {
-    int base, len;
+    size_t base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
     int quote;
@@ -5419,6 +5419,11 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     else if (next)
         len--;
     for (; base < len; base++) {
+        if (base >= INT_MAX / 2) {
+            ctxt->checkIndex = 0;
+            ctxt->endCheckState = 0;
+            return (base - 2);
+        }
         if (ignoreattrval) {
             if (quote) {
                 if (buf[base] == quote)

@@ -2110,10 +2110,10 @@ static void xmlGROW (xmlParserCtxtPtr ctxt) {
 
     in->base = xmlBufContent(buf->buffer);
     if (in->base == NULL) {
-        xmlErrMemory(ctxt, NULL);
         in->base = BAD_CAST "";
         in->cur = in->base;
         in->end = in->base;
+        xmlErrMemory(ctxt, NULL);
         return;
     }
     in->cur = in->base + curBase;

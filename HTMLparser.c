@@ -295,7 +295,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 
 #define SHRINK if ((ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
 		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
-	xmlParserInputShrink(ctxt->input)
+	xmlParserShrink(ctxt)
 
 #define GROW if ((ctxt->progressive == 0) &&				\
 		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\

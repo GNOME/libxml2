@@ -2065,16 +2065,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 #define SHRINK if ((ctxt->progressive == 0) &&				\
 		   (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
 		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
-	xmlSHRINK (ctxt);
-
-static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
-    /* Don't shrink memory buffers. */
-    if ((ctxt->input->buf) &&
-        ((ctxt->input->buf->encoder) || (ctxt->input->buf->readcallback)))
-        xmlParserInputShrink(ctxt->input);
-    if (*ctxt->input->cur == 0)
-        xmlParserGrow(ctxt);
-}
+	xmlParserShrink(ctxt);
 
 #define GROW if ((ctxt->progressive == 0) &&				\
 		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
@@ -11484,7 +11475,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 
     if ((ctxt->input != NULL) &&
         (ctxt->input->cur - ctxt->input->base > 4096)) {
-        xmlParserInputShrink(ctxt->input);
+        xmlParserShrink(ctxt);
     }
 
     while (ctxt->instate != XML_PARSER_EOF) {

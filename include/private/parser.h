@@ -25,5 +25,7 @@ __xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
                  const xmlChar *str2) LIBXML_ATTR_FORMAT(3,0);
 XML_HIDDEN int
 xmlParserGrow(xmlParserCtxtPtr ctxt);
+XML_HIDDEN int
+xmlParserShrink(xmlParserCtxtPtr ctxt);
 
 #endif /* XML_PARSER_H_PRIVATE__ */

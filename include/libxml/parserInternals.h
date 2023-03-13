@@ -582,6 +582,7 @@ XMLPUBFUN int			xmlCopyChar		(int len,
 						 xmlChar *out,
 						 int val);
 XMLPUBFUN void			xmlNextChar		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void			xmlParserInputShrink	(xmlParserInputPtr in);
 
 /*

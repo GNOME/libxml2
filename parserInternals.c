@@ -441,6 +441,8 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
  * xmlParserInputShrink:
  * @in:  an XML parser input
  *
+ * DEPRECATED: Don't use.
+ *
  * This function removes used input for the parser.
  */
 void

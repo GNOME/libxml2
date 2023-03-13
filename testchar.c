@@ -5,6 +5,8 @@
  * copy: see Copyright for the status of this software.
  */
 
+#define XML_DEPRECATED
+
 #include <stdio.h>
 #include <string.h>
 #include <libxml/tree.h>

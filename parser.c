@@ -1376,6 +1376,8 @@ xmlCleanSpecialAttr(xmlParserCtxtPtr ctxt)
  * xmlCheckLanguageID:
  * @lang:  pointer to the string value
  *
+ * DEPRECATED: Internal function, do not use.
+ *
  * Checks that the value conforms to the LanguageID production:
  *
  * NOTE: this is somewhat deprecated, those productions were removed from
@@ -1750,6 +1752,8 @@ inputPop(xmlParserCtxtPtr ctxt)
  * @ctxt:  an XML parser context
  * @value:  the element node
  *
+ * DEPRECATED: Internal function, do not use.
+ *
  * Pushes a new element node on top of the node stack
  *
  * Returns -1 in case of error, the index in the stack otherwise
@@ -1787,6 +1791,8 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 /**
  * nodePop:
  * @ctxt: an XML parser context
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * Pops the top element node from the node stack
  *
@@ -1899,6 +1905,8 @@ nameNsPop(xmlParserCtxtPtr ctxt)
  * @ctxt:  an XML parser context
  * @value:  the element name
  *
+ * DEPRECATED: Internal function, do not use.
+ *
  * Pushes a new element name on top of the name stack
  *
  * Returns -1 in case of error, the index in the stack otherwise
@@ -1926,9 +1934,12 @@ mem_error:
     xmlErrMemory(ctxt, NULL);
     return (-1);
 }
+
 /**
  * namePop:
  * @ctxt: an XML parser context
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * Pops the top element name from the name stack
  *
@@ -2097,6 +2108,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 /**
  * xmlSkipBlankChars:
  * @ctxt:  the XML parser context
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * skip all blanks character found at that point in the input streams.
  * It pops up finished entities in the process if allowable at that point.
@@ -2472,6 +2485,8 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 /**
  * xmlParserHandlePEReference:
  * @ctxt:  the parser context
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * [69] PEReference ::= '%' Name ';'
  *

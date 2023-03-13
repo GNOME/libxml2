@@ -513,6 +513,8 @@ xmlParserInputShrink(xmlParserInputPtr in) {
  * xmlNextChar:
  * @ctxt:  the XML parser context
  *
+ * DEPRECATED: Internal function, do not use.
+ *
  * Skip to the next char input char.
  */
 
@@ -657,6 +659,8 @@ encoding_error:
  * xmlCurrentChar:
  * @ctxt:  the XML parser context
  * @len:  pointer to the length of the char read
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer. Implement the end of line normalization:
@@ -817,6 +821,8 @@ encoding_error:
  * @ctxt:  the XML parser context
  * @cur:  pointer to the beginning of the char
  * @len:  pointer to the length of the char read
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer.
@@ -1393,6 +1399,8 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
  * xmlNewEntityInputStream:
  * @ctxt:  an XML parser context
  * @entity:  an Entity pointer
+ *
+ * DEPRECATED: Internal function, do not use.
  *
  * Create a new input stream based on an xmlEntityPtr
  *

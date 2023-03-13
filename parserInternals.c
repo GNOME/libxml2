@@ -424,6 +424,13 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     }
 
     in->base = xmlBufContent(in->buf->buffer);
+    if (in->base == NULL) {
+        /* TODO: raise error */
+        in->base = BAD_CAST "";
+        in->cur = in->base;
+        in->end = in->base;
+        return;
+    }
     in->cur = in->base + used;
     in->end = xmlBufEnd(in->buf->buffer);
 

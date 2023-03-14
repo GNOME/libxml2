@@ -1782,15 +1782,6 @@ static void streamFile(char *filename) {
 #endif
 	reader = xmlReaderForFile(filename, NULL, options);
 #ifdef LIBXML_PATTERN_ENABLED
-    if (pattern != NULL) {
-        patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0, NULL);
-	if (patternc == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Pattern %s failed to compile\n", pattern);
-            progresult = XMLLINT_ERR_SCHEMAPAT;
-	    pattern = NULL;
-	}
-    }
     if (patternc != NULL) {
         patstream = xmlPatternGetStreamCtxt(patternc);
 	if (patstream != NULL) {

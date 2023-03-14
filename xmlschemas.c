@@ -21457,7 +21457,8 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     * the API; i.e. not automatically by the validated instance document.
     */
 
-    xmlSchemaInitTypes();
+    if (xmlSchemaInitTypes() < 0)
+        return (NULL);
 
     if (ctxt == NULL)
         return (NULL);

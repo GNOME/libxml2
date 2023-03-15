@@ -6000,8 +6000,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			if (idx < 0)
 			    goto done;
 		        val = in->cur[idx + 2];
-			if (val == 0) /* bad cut of input */
+			if (val == 0) { /* bad cut of input */
+                            /*
+                             * FIXME: htmlParseScript checks for additional
+                             * characters after '</'.
+                             */
+                            ctxt->checkIndex = idx;
 			    goto done;
+                        }
 		    }
 		    htmlParseScript(ctxt);
 		    if ((cur == '<') && (next == '/')) {

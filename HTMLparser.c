@@ -2859,7 +2859,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 	    for ( ; bits >= 0; bits-= 6) {
 		*out++  = ((c >> bits) & 0x3F) | 0x80;
 	    }
-	    NEXT;
+	    NEXTL(l);
 	}
         if (out - buffer > maxLength) {
             htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,

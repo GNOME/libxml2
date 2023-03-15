@@ -554,8 +554,11 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
 	return;
     }
 
-    if ((ctxt->input->cur >= ctxt->input->end) && (xmlParserGrow(ctxt) <= 0)) {
-        return;
+    if (ctxt->input->end - ctxt->input->cur < 4) {
+        if (xmlParserGrow(ctxt) < 0)
+            return;
+        if (ctxt->input->cur >= ctxt->input->end)
+            return;
     }
 
     if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
@@ -588,30 +591,23 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
 
         c = *cur;
         if (c & 0x80) {
+            size_t avail;
+
             if (c == 0xC0)
 	        goto encoding_error;
-            if (cur[1] == 0) {
-                xmlParserGrow(ctxt);
-                cur = ctxt->input->cur;
-            }
-            if ((cur[1] & 0xc0) != 0x80)
+
+            avail = ctxt->input->end - ctxt->input->cur;
+
+            if ((avail < 2) || (cur[1] & 0xc0) != 0x80)
                 goto encoding_error;
             if ((c & 0xe0) == 0xe0) {
                 unsigned int val;
 
-                if (cur[2] == 0) {
-                    xmlParserGrow(ctxt);
-                    cur = ctxt->input->cur;
-                }
-                if ((cur[2] & 0xc0) != 0x80)
+                if ((avail < 3) || (cur[2] & 0xc0) != 0x80)
                     goto encoding_error;
                 if ((c & 0xf0) == 0xf0) {
-                    if (cur[3] == 0) {
-                        xmlParserGrow(ctxt);
-                        cur = ctxt->input->cur;
-                    }
                     if (((c & 0xf8) != 0xf0) ||
-                        ((cur[3] & 0xc0) != 0x80))
+                        (avail < 4) || ((cur[3] & 0xc0) != 0x80))
                         goto encoding_error;
                     /* 4-byte code */
                     ctxt->input->cur += 4;
@@ -652,8 +648,6 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
             ctxt->input->col++;
         ctxt->input->cur++;
     }
-    if (*ctxt->input->cur == 0)
-        xmlParserGrow(ctxt);
     return;
 encoding_error:
     /*
@@ -707,6 +701,10 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     if (ctxt->instate == XML_PARSER_EOF)
 	return(0);
 
+    if ((ctxt->input->end - ctxt->input->cur < 4) &&
+        (xmlParserGrow(ctxt) < 0))
+        return(0);
+
     if ((*ctxt->input->cur >= 0x20) && (*ctxt->input->cur <= 0x7F)) {
 	    *len = 1;
 	    return(*ctxt->input->cur);
@@ -729,28 +727,21 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 
 	c = *cur;
 	if (c & 0x80) {
+            size_t avail;
+
 	    if (((c & 0x40) == 0) || (c == 0xC0))
 		goto encoding_error;
-	    if (cur[1] == 0) {
-		xmlParserGrow(ctxt);
-                cur = ctxt->input->cur;
-            }
-	    if ((cur[1] & 0xc0) != 0x80)
+
+            avail = ctxt->input->end - ctxt->input->cur;
+
+	    if ((avail < 2) || (cur[1] & 0xc0) != 0x80)
 		goto encoding_error;
 	    if ((c & 0xe0) == 0xe0) {
-		if (cur[2] == 0) {
-		    xmlParserGrow(ctxt);
-                    cur = ctxt->input->cur;
-                }
-		if ((cur[2] & 0xc0) != 0x80)
+		if ((avail < 3) || (cur[2] & 0xc0) != 0x80)
 		    goto encoding_error;
 		if ((c & 0xf0) == 0xf0) {
-		    if (cur[3] == 0) {
-			xmlParserGrow(ctxt);
-                        cur = ctxt->input->cur;
-                    }
 		    if (((c & 0xf8) != 0xf0) ||
-			((cur[3] & 0xc0) != 0x80))
+			(avail < 4) || ((cur[3] & 0xc0) != 0x80))
 			goto encoding_error;
 		    /* 4-byte code */
 		    *len = 4;
@@ -785,8 +776,6 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	} else {
 	    /* 1-byte code */
 	    *len = 1;
-	    if (*ctxt->input->cur == 0)
-		xmlParserGrow(ctxt);
 	    if ((*ctxt->input->cur == 0) &&
 	        (ctxt->input->end > ctxt->input->cur)) {
 	        xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,

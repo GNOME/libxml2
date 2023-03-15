@@ -410,6 +410,11 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	*len = 0;
 	return(ctxt->token);
     }
+
+    if ((ctxt->input->end - ctxt->input->cur < 4) &&
+        (xmlParserGrow(ctxt) < 0))
+        return(0);
+
     if (ctxt->charset != XML_CHAR_ENCODING_UTF8) {
         xmlChar * guess;
         xmlCharEncodingHandlerPtr handler;
@@ -470,29 +475,21 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     cur = ctxt->input->cur;
     c = *cur;
     if (c & 0x80) {
+        size_t avail;
+
         if ((c & 0x40) == 0)
             goto encoding_error;
-        if (cur[1] == 0) {
-            xmlParserGrow(ctxt);
-            cur = ctxt->input->cur;
-        }
-        if ((cur[1] & 0xc0) != 0x80)
+
+        avail = ctxt->input->end - ctxt->input->cur;
+
+        if ((avail < 2) || ((cur[1] & 0xc0) != 0x80))
             goto encoding_error;
         if ((c & 0xe0) == 0xe0) {
-
-            if (cur[2] == 0) {
-                xmlParserGrow(ctxt);
-                cur = ctxt->input->cur;
-            }
-            if ((cur[2] & 0xc0) != 0x80)
+            if ((avail < 3) || ((cur[2] & 0xc0) != 0x80))
                 goto encoding_error;
             if ((c & 0xf0) == 0xf0) {
-                if (cur[3] == 0) {
-                    xmlParserGrow(ctxt);
-                    cur = ctxt->input->cur;
-                }
                 if (((c & 0xf8) != 0xf0) ||
-                    ((cur[3] & 0xc0) != 0x80))
+                    (avail < 4) || ((cur[3] & 0xc0) != 0x80))
                     goto encoding_error;
                 /* 4-byte code */
                 *len = 4;

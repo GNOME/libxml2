@@ -328,8 +328,8 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
     if (((curEnd > XML_MAX_LOOKUP_LIMIT) ||
          (curBase > XML_MAX_LOOKUP_LIMIT)) &&
         ((ctxt->options & XML_PARSE_HUGE) == 0)) {
-        xmlHaltParser(ctxt);
         xmlErrInternal(ctxt, "Huge input lookup", NULL);
+        xmlHaltParser(ctxt);
 	return(-1);
     }
 
@@ -337,20 +337,12 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
         return(0);
 
     ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
-
-    in->base = xmlBufContent(buf->buffer);
-    if (in->base == NULL) {
-        xmlHaltParser(ctxt);
-        xmlErrMemory(ctxt, NULL);
-        return(-1);
-    }
-    in->cur = in->base + curBase;
-    in->end = xmlBufEnd(buf->buffer);
+    xmlBufSetInputBaseCur(buf->buffer, in, 0, curBase);
 
     /* TODO: Get error code from xmlParserInputBufferGrow */
     if (ret < 0) {
-        xmlHaltParser(ctxt);
         xmlErrInternal(ctxt, "Growing input buffer", NULL);
+        xmlHaltParser(ctxt);
     }
 
     return(ret);
@@ -450,19 +442,12 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
     if (xmlBufUse(buf->buffer) < INPUT_CHUNK)
         ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
 
-    in->base = xmlBufContent(buf->buffer);
-    if (in->base == NULL) {
-        xmlHaltParser(ctxt);
-        xmlErrMemory(ctxt, NULL);
-        return(-1);
-    }
-    in->cur = in->base + used;
-    in->end = xmlBufEnd(buf->buffer);
+    xmlBufSetInputBaseCur(buf->buffer, in, 0, used);
 
     /* TODO: Get error code from xmlParserInputBufferGrow */
     if (ret < 0) {
-        xmlHaltParser(ctxt);
         xmlErrInternal(ctxt, "Growing input buffer", NULL);
+        xmlHaltParser(ctxt);
     }
 
     return(ret);

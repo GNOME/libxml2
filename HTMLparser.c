@@ -3203,6 +3203,7 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
 	} else {
 	    COPY_BUF(l,buf,nbchar,cur);
 	}
+	NEXTL(l);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
             buf[nbchar] = 0;
 
@@ -3228,7 +3229,6 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
 	    nbchar = 0;
             SHRINK;
 	}
-	NEXTL(l);
 	cur = CUR_CHAR(l);
     }
     if (ctxt->instate == XML_PARSER_EOF)

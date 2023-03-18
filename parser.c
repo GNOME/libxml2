@@ -3683,8 +3683,10 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 		c = CUR_CHAR(l);
 	    }
 	    buffer[len] = 0;
-            if (ctxt->instate == XML_PARSER_EOF)
+            if (ctxt->instate == XML_PARSER_EOF) {
+                xmlFree(buffer);
                 return(NULL);
+            }
 	    return(buffer);
 	}
     }

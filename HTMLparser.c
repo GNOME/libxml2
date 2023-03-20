@@ -3139,6 +3139,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Invalid char in CDATA 0x%X\n", cur);
         }
+	NEXTL(l);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
             buf[nbchar] = 0;
 	    if (ctxt->sax->cdataBlock!= NULL) {
@@ -3152,7 +3153,6 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	    nbchar = 0;
             SHRINK;
 	}
-	NEXTL(l);
 	cur = CUR_CHAR(l);
     }
 

@@ -10229,6 +10229,9 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
     xmlChar *buf = NULL;
     int len = 0;
     int size = 10;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_TEXT_LENGTH :
+                    XML_MAX_NAME_LENGTH;
     xmlChar cur;
 
     cur = CUR;
@@ -10261,13 +10264,13 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 		buf = tmp;
 	    }
 	    buf[len++] = cur;
+            if (len > maxLength) {
+                xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "EncName");
+                xmlFree(buf);
+                return(NULL);
+            }
 	    NEXT;
 	    cur = CUR;
-	    if (cur == 0) {
-	        SHRINK;
-		GROW;
-		cur = CUR;
-	    }
         }
 	buf[len] = 0;
     } else {

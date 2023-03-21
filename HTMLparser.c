@@ -411,7 +411,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	return(ctxt->token);
     }
 
-    if ((ctxt->input->end - ctxt->input->cur < 4) &&
+    if ((ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) &&
         (xmlParserGrow(ctxt) < 0))
         return(0);
 

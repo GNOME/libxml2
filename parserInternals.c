@@ -527,7 +527,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
 	return;
     }
 
-    if (ctxt->input->end - ctxt->input->cur < 4) {
+    if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) {
         if (xmlParserGrow(ctxt) < 0)
             return;
         if (ctxt->input->cur >= ctxt->input->end)
@@ -674,7 +674,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     if (ctxt->instate == XML_PARSER_EOF)
 	return(0);
 
-    if ((ctxt->input->end - ctxt->input->cur < 4) &&
+    if ((ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) &&
         (xmlParserGrow(ctxt) < 0))
         return(0);
 

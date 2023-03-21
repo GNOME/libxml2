@@ -3100,7 +3100,6 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
     int nbchar = 0;
     int cur,l;
 
-    SHRINK;
     cur = CUR_CHAR(l);
     while (cur != 0) {
 	if ((cur == '<') && (NXT(1) == '/')) {
@@ -3358,7 +3357,6 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
 	 * this is a Processing Instruction.
 	 */
 	SKIP(2);
-	SHRINK;
 
 	/*
 	 * Parse the target name and check for special support like
@@ -3481,7 +3479,6 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 
     state = ctxt->instate;
     ctxt->instate = XML_PARSER_COMMENT;
-    SHRINK;
     SKIP(4);
     buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
@@ -4477,8 +4474,8 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
             htmlParseCharData(ctxt);
         }
 
-        GROW;
         SHRINK;
+        GROW;
     }
     if (currentNode != NULL) xmlFree(currentNode);
 }
@@ -4920,8 +4917,8 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
             htmlParseCharData(ctxt);
         }
 
-        GROW;
         SHRINK;
+        GROW;
     }
     if (currentNode != NULL) xmlFree(currentNode);
 }

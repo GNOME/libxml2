@@ -409,17 +409,16 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
  * xmlParserShrink:
  * @ctxt:  an XML parser context
  */
-int
+void
 xmlParserShrink(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr in = ctxt->input;
     xmlParserInputBufferPtr buf = in->buf;
     size_t used;
-    int ret = 0;
 
     /* Don't shrink memory buffers. */
     if ((buf == NULL) ||
         ((buf->encoder == NULL) && (buf->readcallback == NULL)))
-        return(0);
+        return;
 
     used = in->cur - in->base;
     /*
@@ -439,18 +438,7 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
 	}
     }
 
-    if (xmlBufUse(buf->buffer) < INPUT_CHUNK)
-        ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
-
     xmlBufSetInputBaseCur(buf->buffer, in, 0, used);
-
-    /* TODO: Get error code from xmlParserInputBufferGrow */
-    if (ret < 0) {
-        xmlErrInternal(ctxt, "Growing input buffer", NULL);
-        xmlHaltParser(ctxt);
-    }
-
-    return(ret);
 }
 
 /**

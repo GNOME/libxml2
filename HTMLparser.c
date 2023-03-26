@@ -3010,9 +3010,9 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
         htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
                      "Unfinished SystemLiteral\n", NULL, NULL);
     } else {
-        NEXT;
         if (err == 0)
             ret = xmlStrndup((BASE_PTR+startPosition), len);
+        NEXT;
     }
 
     return(ret);
@@ -3065,9 +3065,9 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
         htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
                      "Unfinished PubidLiteral\n", NULL, NULL);
     } else {
-        NEXT;
         if (err == 0)
             ret = xmlStrndup((BASE_PTR + startPosition), len);
+        NEXT;
     }
 
     return(ret);

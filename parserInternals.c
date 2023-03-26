@@ -1003,11 +1003,12 @@ xmlDetectEBCDIC(xmlParserInputPtr input) {
     handler = xmlGetCharEncodingHandler(XML_CHAR_ENCODING_EBCDIC);
     if (handler == NULL)
         return(NULL);
-    outlen = sizeof(out);
+    outlen = sizeof(out) - 1;
     inlen = input->end - input->cur;
     res = xmlEncInputChunk(handler, out, &outlen, input->cur, &inlen, 0);
     if (res < 0)
         return(handler);
+    out[outlen] = 0;
 
     for (i = 0; i < outlen; i++) {
         if (out[i] == '>')

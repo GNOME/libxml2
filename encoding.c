@@ -197,7 +197,7 @@ asciiToUTF8(unsigned char* out, int *outlen,
 	} else {
 	    *outlen = out - outstart;
 	    *inlen = processed - base;
-	    return(-1);
+	    return(-2);
 	}
 
 	processed = (const unsigned char*) in;

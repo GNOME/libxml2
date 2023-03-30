@@ -1234,9 +1234,11 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         nbchars = xmlCharEncInput(in, 0);
         xmlBufResetInput(in->buffer, input);
         if (nbchars < 0) {
+            /* TODO: This could be an out of memory or an encoding error. */
             xmlErrInternal(ctxt,
                            "switching encoding: encoder error\n",
                            NULL);
+            xmlHaltParser(ctxt);
             return (-1);
         }
         consumed = use - xmlBufUse(in->raw);

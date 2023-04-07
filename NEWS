@@ -1,5 +1,19 @@
 NEWS file for libxml2
 
+v2.10.4: Apr 11 2023
+
+### Security
+
+- [CVE-2023-29469] Hashing of empty dict strings isn't deterministic
+- [CVE-2023-28484] Fix null deref in xmlSchemaFixupComplexType
+- schemas: Fix null-pointer-deref in xmlSchemaCheckCOSSTDerivedOK
+
+### Regressions
+
+- SAX2: Ignore namespaces in HTML documents
+- io: Fix "buffer full" error with certain buffer sizes
+
+
 v2.10.3: Oct 14 2022
 
 ### Security

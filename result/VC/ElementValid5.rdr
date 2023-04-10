@@ -4,3 +4,6 @@
 ./test/VC/ElementValid5:8: element doc: validity error : Element doc content does not follow the DTD, Misplaced b
 
 ^
+./test/VC/ElementValid5:8: element doc: validity error : Element doc content does not follow the DTD, Expecting more children
+
+^

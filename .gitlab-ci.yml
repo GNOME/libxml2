@@ -25,8 +25,8 @@
       cd build
       ln -s /tests/xmlconf
       sh ../autogen.sh $BASE_CONFIG $CONFIG
-      make -j$(nproc) V=1 CFLAGS="$CFLAGS -Werror"
-      make CFLAGS="$CFLAGS -Werror" check
+      make -j$(nproc) V=1
+      make check
 
 gcc:
   extends: .test

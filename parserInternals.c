@@ -321,6 +321,9 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
 
     if (buf == NULL)
         return(0);
+    /* Don't grow push parser buffer. */
+    if (ctxt->progressive)
+        return(0);
     /* Don't grow memory buffers. */
     if ((buf->encoder == NULL) && (buf->readcallback == NULL))
         return(0);

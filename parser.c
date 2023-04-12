@@ -11997,7 +11997,6 @@ int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     int end_in_lf = 0;
-    int remain = 0;
 
     if (ctxt == NULL)
         return(XML_ERR_INTERNAL_ERROR);
@@ -12017,49 +12016,12 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	size--;
     }
 
-xmldecl_done:
-
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
 	size_t cur = ctxt->input->cur - ctxt->input->base;
 	int res;
 
-        /*
-         * Specific handling if we autodetected an encoding, we should not
-         * push more than the first line ... which depend on the encoding
-         * And only push the rest once the final encoding was detected
-         */
-        if ((ctxt->instate == XML_PARSER_START) && (ctxt->input != NULL) &&
-            (ctxt->input->buf != NULL) && (ctxt->input->buf->encoder != NULL)) {
-            unsigned int len = 45;
-
-            if ((xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
-                               BAD_CAST "UTF-16")) ||
-                (xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
-                               BAD_CAST "UTF16")))
-                len = 90;
-            else if ((xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
-                                    BAD_CAST "UCS-4")) ||
-                     (xmlStrcasestr(BAD_CAST ctxt->input->buf->encoder->name,
-                                    BAD_CAST "UCS4")))
-                len = 180;
-
-            if (ctxt->input->buf->rawconsumed < len)
-                len -= ctxt->input->buf->rawconsumed;
-
-            /*
-             * Change size for reading the initial declaration only
-             * if size is greater than len. Otherwise, memmove in xmlBufferAdd
-             * will blindly copy extra bytes from memory.
-             */
-            if ((unsigned int) size > len) {
-                remain = size - len;
-                size = len;
-            } else {
-                remain = 0;
-            }
-        }
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 	if (res < 0) {
@@ -12093,11 +12055,7 @@ xmldecl_done:
 	}
     }
 
-    if (remain != 0) {
-        xmlParseTryOrFinish(ctxt, 0);
-    } else {
-        xmlParseTryOrFinish(ctxt, terminate);
-    }
+    xmlParseTryOrFinish(ctxt, terminate);
     if (ctxt->instate == XML_PARSER_EOF)
         return(ctxt->errNo);
 
@@ -12111,12 +12069,6 @@ xmldecl_done:
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
 
-    if (remain != 0) {
-        chunk += size;
-        size = remain;
-        remain = 0;
-        goto xmldecl_done;
-    }
     if ((end_in_lf == 1) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL)) {
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,

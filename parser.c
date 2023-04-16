@@ -4447,7 +4447,8 @@ get_more:
         if (*in == ']') {
             if ((in[1] == ']') && (in[2] == '>')) {
                 xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
-                ctxt->input->cur = in + 1;
+                if (ctxt->instate != XML_PARSER_EOF)
+                    ctxt->input->cur = in + 1;
                 return;
             }
             in++;

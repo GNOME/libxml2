@@ -14766,6 +14766,12 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
     if (encoding != NULL) {
         xmlCharEncodingHandlerPtr hdlr;
 
+        /*
+         * TODO: We should consider to set XML_PARSE_IGNORE_ENC if the
+         * caller provided an encoding. Otherwise, we might switch to
+         * the encoding from the XML declaration which is likely to
+         * break things. Also see xmlSwitchInputEncoding.
+         */
 	hdlr = xmlFindCharEncodingHandler(encoding);
 	if (hdlr != NULL)
 	    xmlSwitchToEncoding(ctxt, hdlr);

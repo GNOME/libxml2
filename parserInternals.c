@@ -1242,7 +1242,17 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         in->rawconsumed = processed;
         use = xmlBufUse(in->raw);
 
-        nbchars = xmlCharEncInput(in, 0);
+        /*
+         * TODO: We must flush and decode the whole buffer to make functions
+         * like xmlReadMemory work with a user-provided encoding. If the
+         * encoding is specified directly, we should probably set
+         * XML_PARSE_IGNORE_ENC in xmlDoRead to avoid switching encodings
+         * twice. Then we could set "flush" to false which should save
+         * a considerable amount of memory when parsing from memory.
+         * It's probably even possible to remove this whole if-block
+         * completely.
+         */
+        nbchars = xmlCharEncInput(in, 1);
         xmlBufResetInput(in->buffer, input);
         if (nbchars < 0) {
             /* TODO: This could be an out of memory or an encoding error. */

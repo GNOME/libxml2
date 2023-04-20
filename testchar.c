@@ -654,6 +654,62 @@ error:
     return(test_ret);
 }
 
+static int
+testUserEncoding(void) {
+    /*
+     * Create a document encoded as UTF-16LE with an ISO-8859-1 encoding
+     * declaration, then parse it with xmlReadMemory and the encoding
+     * argument set to UTF-16LE.
+     */
+    xmlDocPtr doc = NULL;
+    const char *start = "<?xml version='1.0' encoding='ISO-8859-1'?><d>";
+    const char *end = "</d>";
+    char *buf = NULL;
+    xmlChar *text;
+    int startSize = strlen(start);
+    int textSize = 100000; /* Make sure to exceed internal buffer sizes. */
+    int endSize = strlen(end);
+    int totalSize = startSize + textSize + endSize;
+    int k = 0;
+    int i;
+    int ret = 0;
+
+    buf = xmlMalloc(2 * totalSize);
+    for (i = 0; start[i] != 0; i++) {
+        buf[k++] = start[i];
+        buf[k++] = 0;
+    }
+    for (i = 0; i < textSize; i++) {
+        buf[k++] = 'x';
+        buf[k++] = 0;
+    }
+    for (i = 0; end[i] != 0; i++) {
+        buf[k++] = end[i];
+        buf[k++] = 0;
+    }
+
+    doc = xmlReadMemory(buf, 2 * totalSize, NULL, "UTF-16LE", 0);
+    if (doc == NULL) {
+        fprintf(stderr, "failed to parse document\n");
+        goto error;
+    }
+    text = doc->children->children->content;
+
+    for (i = 0; i < textSize; i++) {
+        if (text[i] != 'x') {
+            fprintf(stderr, "text node has wrong content at offset %d\n", k);
+            ret = 1;
+            goto error;
+        }
+    }
+
+error:
+    xmlFreeDoc(doc);
+    xmlFree(buf);
+
+    return ret;
+}
+
 int main(void) {
 
     int ret = 0;
@@ -676,6 +732,7 @@ int main(void) {
      */
     ret += testCharRanges();
     ret += testDocumentRanges();
+    ret += testUserEncoding();
 
     /*
      * Cleanup function for the XML library.

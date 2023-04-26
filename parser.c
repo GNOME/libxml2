@@ -4057,12 +4057,20 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 						  XML_SUBSTITUTE_REF, 0, 0, 0);
 			--ctxt->depth;
 
-                        diff = ctxt->nbentities - oldnbent + 1;
-                        if (diff > INT_MAX / 2)
-                            diff = INT_MAX / 2;
-                        ent->checked = diff * 2;
+			/*
+			 * If we're parsing DTD content, the entity
+			 * might reference other entities which
+			 * weren't defined yet, so the check isn't
+			 * reliable.
+			 */
+                        if (ctxt->inSubset == 0) {
+			    diff = ctxt->nbentities - oldnbent + 1;
+			    if (diff > INT_MAX / 2)
+				diff = INT_MAX / 2;
+			    ent->checked = diff * 2;
+			}
 			if (rep != NULL) {
-			    if (xmlStrchr(rep, '<'))
+			    if ((ctxt->inSubset == 0) && (xmlStrchr(rep, '<')))
 			        ent->checked |= 1;
 			    xmlFree(rep);
 			    rep = NULL;

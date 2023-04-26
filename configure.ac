@@ -1141,7 +1141,7 @@ AC_CONFIG_FILES([python/setup.py], [chmod +x python/setup.py])
 AC_CONFIG_FILES([xml2-config], [chmod +x xml2-config])
 AC_OUTPUT
 
-AC_COMPILE_IFELSE([_Thread_local int v;], [], [
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([_Thread_local int v;])], [], [
     echo "================================================================"
     echo "WARNING: Your C compiler doesn't support C11."
     echo "Future versions of libxml2 will probably require a C11 compiler,"

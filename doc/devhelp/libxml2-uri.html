@@ -358,7 +358,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a name="xmlURIEscapeStr"></a>xmlURIEscapeStr ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlURIEscapeStr		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * list)<br>
 </pre>
-<p>This routine escapes a string to hex, ignoring reserved <a href="libxml2-SAX.html#characters">characters</a> (a-z) and the <a href="libxml2-SAX.html#characters">characters</a> in the exception list.</p>
+<p>This routine escapes a string to hex, ignoring reserved <a href="libxml2-SAX.html#characters">characters</a> (a-z, A-Z, 0-9, "@-_.!~*'()") and the <a href="libxml2-SAX.html#characters">characters</a> in the exception list.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

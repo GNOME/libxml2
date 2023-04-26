@@ -66,7 +66,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDictCleanup"></a>xmlDictCleanup ()</h3>
 <pre class="programlisting">void	xmlDictCleanup			(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Free the dictionary mutex. Do not call unless sure the library is not in use anymore !</p>
+<p>DEPRECATED: This function is a no-op. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -325,12 +325,12 @@ The content of this structure is not made public by the API.
 <a name="xmlInitializeDict"></a>xmlInitializeDict ()</h3>
 <pre class="programlisting">int	xmlInitializeDict		(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Do the dictionary mutex initialization.</p>
+<p>DEPRECATED: Alias for <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if initialization was already done, and 1 if that call led to the initialization</td>
+<td></td>
 </tr></tbody>
 </table></div>
 </div>

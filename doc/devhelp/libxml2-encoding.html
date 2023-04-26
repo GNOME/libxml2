@@ -292,7 +292,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlCharEncFirstLine"></a>xmlCharEncFirstLine ()</h3>
 <pre class="programlisting">int	xmlCharEncFirstLine		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in)<br>
 </pre>
-<p>Front-end for the encoding handler input function, but handle only the very first line, i.e. limit itself to 45 chars.</p>
+<p>DEPERECATED: Don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -310,7 +310,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of byte written if success, or -1 general error -2 if the transcoding fails (for *in is not valid utf8 string or the result of transformation can't fit into the encoding we want), or</td>
+<td></td>
 </tr>
 </tbody>
 </table></div>
@@ -441,7 +441,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlFindCharEncodingHandler"></a>xmlFindCharEncodingHandler ()</h3>
 <pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlFindCharEncodingHandler	(const char * name)<br>
 </pre>
-<p>Search in the registered set the handler able to read/write that encoding.</p>
+<p>Search in the registered set the handler able to read/write that encoding or create a new one.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -525,7 +525,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlInitCharEncodingHandlers"></a>xmlInitCharEncodingHandlers ()</h3>
 <pre class="programlisting">void	xmlInitCharEncodingHandlers	(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Initialize the char encoding support, it registers the default encoding supported. NOTE: while public, this function usually doesn't need to be called in normal processing.</p>
+<p>DEPRECATED: Alias for <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

@@ -650,7 +650,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of items on the value stack, or -1 in case of error.</td>
+<td>the number of items on the value stack, or -1 in case of error. The object is destroyed in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2095,7 +2095,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>@val1 once extended or NULL in case of error.</td>
+<td>@val1 once extended or NULL in case of error. Frees @val1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3164,7 +3164,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the newly created object.</td>
+<td>the newly created object. In case of error the node set is destroyed and NULL is returned.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3185,7 +3185,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the newly created object.</td>
+<td>the newly created object. Frees @val in case of error.</td>
 </tr>
 </tbody>
 </table></div>

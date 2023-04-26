@@ -38,7 +38,7 @@ int	<a href="#xmlSchemaGetCanonValueWhtsp">xmlSchemaGetCanonValueWhtsp</a>	(<a h
 unsigned long	<a href="#xmlSchemaGetFacetValueAsULong">xmlSchemaGetFacetValueAsULong</a>	(<a href="libxml2-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet);
 <a href="libxml2-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	<a href="#xmlSchemaGetPredefinedType">xmlSchemaGetPredefinedType</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns);
 <a href="libxml2-schemasInternals.html#xmlSchemaValType">xmlSchemaValType</a>	<a href="#xmlSchemaGetValType">xmlSchemaGetValType</a>	(<a href="libxml2-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);
-void	<a href="#xmlSchemaInitTypes">xmlSchemaInitTypes</a>		(void);
+int	<a href="#xmlSchemaInitTypes">xmlSchemaInitTypes</a>		(void);
 int	<a href="#xmlSchemaIsBuiltInTypeFacet">xmlSchemaIsBuiltInTypeFacet</a>	(<a href="libxml2-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type, <br>					 int facetType);
 <a href="libxml2-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>	<a href="#xmlSchemaNewFacet">xmlSchemaNewFacet</a>	(void);
 <a href="libxml2-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a>	<a href="#xmlSchemaNewNOTATIONValue">xmlSchemaNewNOTATIONValue</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns);
@@ -114,7 +114,7 @@ const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSchema
 <a name="xmlSchemaCleanupTypes"></a>xmlSchemaCleanupTypes ()</h3>
 <pre class="programlisting">void	xmlSchemaCleanupTypes		(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Cleanup the default XML Schemas type library</p>
+<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have to call cleanup functions at all. Cleanup the default XML Schemas type library</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -413,9 +413,16 @@ const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSchema
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlSchemaInitTypes"></a>xmlSchemaInitTypes ()</h3>
-<pre class="programlisting">void	xmlSchemaInitTypes		(void)<br>
+<pre class="programlisting">int	xmlSchemaInitTypes		(void)<br>
 </pre>
 <p>Initialize the default XML Schemas type library</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody><tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, -1 on error.</td>
+</tr></tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2" lang="en">

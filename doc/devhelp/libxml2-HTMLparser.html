@@ -63,7 +63,7 @@ void	<a href="#htmlInitAutoClose">htmlInitAutoClose</a>		(void);
 int	<a href="#htmlIsAutoClosed">htmlIsAutoClosed</a>		(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc, <br>					 <a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> elem);
 int	<a href="#htmlIsScriptAttribute">htmlIsScriptAttribute</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlNewParserCtxt">htmlNewParserCtxt</a>	(void);
-<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlNewSAXParserCtxt">htmlNewSAXParserCtxt</a>	(<a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>						 void * userData);
+<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlNewSAXParserCtxt">htmlNewSAXParserCtxt</a>	(const <a href="libxml2-HTMLparser.html#htmlSAXHandler">htmlSAXHandler</a> * sax, <br>						 void * userData);
 <a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	<a href="#htmlNodeStatus">htmlNodeStatus</a>		(const <a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> node, <br>					 int legacy);
 int	<a href="#htmlParseCharRef">htmlParseCharRef</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);
 int	<a href="#htmlParseChunk">htmlParseChunk</a>			(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const char * chunk, <br>					 int size, <br>					 int terminate);
@@ -881,7 +881,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlInitAutoClose"></a>htmlInitAutoClose ()</h3>
 <pre class="programlisting">void	htmlInitAutoClose		(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. This is a no-op now.</p>
+<p>DEPRECATED: This is a no-op.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -948,9 +948,9 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <div class="refsect2" lang="en">
 <h3>
 <a name="htmlNewSAXParserCtxt"></a>htmlNewSAXParserCtxt ()</h3>
-<pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	htmlNewSAXParserCtxt	(<a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>						 void * userData)<br>
+<pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	htmlNewSAXParserCtxt	(const <a href="libxml2-HTMLparser.html#htmlSAXHandler">htmlSAXHandler</a> * sax, <br>						 void * userData)<br>
 </pre>
-<p>Allocate and initialize a new parser context.</p>
+<p>Allocate and initialize a new SAX parser context. If userData is NULL, the parser context will be passed as user data.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1000,7 +1000,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlParseCharRef"></a>htmlParseCharRef ()</h3>
 <pre class="programlisting">int	htmlParseCharRef		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>parse Reference declarations [66] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';'</p>
+<p>DEPRECATED: Internal function, don't use. parse Reference declarations [66] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';'</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1101,7 +1101,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlParseElement"></a>htmlParseElement ()</h3>
 <pre class="programlisting">void	htmlParseElement		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>parse an HTML element, this is highly recursive this is kept for compatibility with previous code versions [39] element ::= EmptyElemTag | STag content ETag [41] Attribute ::= Name Eq AttValue</p>
+<p>DEPRECATED: Internal function, don't use. parse an HTML element, this is highly recursive this is kept for compatibility with previous code versions [39] element ::= EmptyElemTag | STag content ETag [41] Attribute ::= Name Eq AttValue</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1116,7 +1116,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlParseEntityRef"></a>htmlParseEntityRef ()</h3>
 <pre class="programlisting">const <a href="libxml2-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a> *	htmlParseEntityRef	(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** str)<br>
 </pre>
-<p>parse an HTML ENTITY references [68] EntityRef ::= '&amp;' Name ';'</p>
+<p>DEPRECATED: Internal function, don't use. parse an HTML ENTITY references [68] EntityRef ::= '&amp;' Name ';'</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1339,7 +1339,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlSAXParseDoc"></a>htmlSAXParseDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlSAXParseDoc		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * encoding, <br>					 <a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>					 void * userData)<br>
 </pre>
-<p>Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks to handle parse events. If sax is NULL, fallback to the default DOM behavior and return a tree.</p>
+<p>DEPRECATED: Use <a href="libxml2-HTMLparser.html#htmlNewSAXParserCtxt">htmlNewSAXParserCtxt</a> and <a href="libxml2-HTMLparser.html#htmlCtxtReadDoc">htmlCtxtReadDoc</a>. Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks to handle parse events. If sax is NULL, fallback to the default DOM behavior and return a tree.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1373,7 +1373,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlSAXParseFile"></a>htmlSAXParseFile ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlSAXParseFile	(const char * filename, <br>					 const char * encoding, <br>					 <a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>					 void * userData)<br>
 </pre>
-<p>parse an HTML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
+<p>DEPRECATED: Use <a href="libxml2-HTMLparser.html#htmlNewSAXParserCtxt">htmlNewSAXParserCtxt</a> and <a href="libxml2-HTMLparser.html#htmlCtxtReadFile">htmlCtxtReadFile</a>. parse an HTML file and build a tree. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. It use the given SAX function block to handle the parsing callback. If sax is NULL, fallback to the default DOM tree building routines.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

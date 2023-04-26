@@ -22,9 +22,7 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">#define <a href="#XML_VCTXT_DTD_VALIDATED">XML_VCTXT_DTD_VALIDATED</a>;
-#define <a href="#XML_VCTXT_USE_PCTXT">XML_VCTXT_USE_PCTXT</a>;
-typedef struct _xmlHashTable <a href="#xmlAttributeTable">xmlAttributeTable</a>;
+<pre class="synopsis">typedef struct _xmlHashTable <a href="#xmlAttributeTable">xmlAttributeTable</a>;
 typedef <a href="libxml2-valid.html#xmlAttributeTable">xmlAttributeTable</a> * <a href="#xmlAttributeTablePtr">xmlAttributeTablePtr</a>;
 typedef struct _xmlHashTable <a href="#xmlElementTable">xmlElementTable</a>;
 typedef <a href="libxml2-valid.html#xmlElementTable">xmlElementTable</a> * <a href="#xmlElementTablePtr">xmlElementTablePtr</a>;
@@ -93,7 +91,7 @@ int	<a href="#xmlValidateDocument">xmlValidateDocument</a>		(<a href="libxml2-va
 int	<a href="#xmlValidateDocumentFinal">xmlValidateDocumentFinal</a>	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 int	<a href="#xmlValidateDtd">xmlValidateDtd</a>			(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd);
 int	<a href="#xmlValidateDtdFinal">xmlValidateDtdFinal</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-int	<a href="#xmlValidateElement">xmlValidateElement</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+int	<a href="#xmlValidateElement">xmlValidateElement</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> root);
 int	<a href="#xmlValidateElementDecl">xmlValidateElementDecl</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlElementPtr">xmlElementPtr</a> elem);
 int	<a href="#xmlValidateNameValue">xmlValidateNameValue</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 int	<a href="#xmlValidateNamesValue">xmlValidateNamesValue</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
@@ -116,22 +114,6 @@ typedef void <a href="#xmlValidityWarningFunc">xmlValidityWarningFunc</a>		(void
 <div class="refsect1" lang="en">
 <h2>Details</h2>
 <div class="refsect2" lang="en">
-<div class="refsect2" lang="en">
-<h3>
-<a name="XML_VCTXT_DTD_VALIDATED">Macro </a>XML_VCTXT_DTD_VALIDATED</h3>
-<pre class="programlisting">#define <a href="#XML_VCTXT_DTD_VALIDATED">XML_VCTXT_DTD_VALIDATED</a>;
-</pre>
-<p>Set after <a href="libxml2-valid.html#xmlValidateDtdFinal">xmlValidateDtdFinal</a> was called.</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="XML_VCTXT_USE_PCTXT">Macro </a>XML_VCTXT_USE_PCTXT</h3>
-<pre class="programlisting">#define <a href="#XML_VCTXT_USE_PCTXT">XML_VCTXT_USE_PCTXT</a>;
-</pre>
-<p>Set if the validation context is part of a parser context.</p>
-</div>
-<hr>
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlAttributeTable">Structure </a>xmlAttributeTable</h3>
@@ -1713,7 +1695,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlValidateElement"></a>xmlValidateElement ()</h3>
-<pre class="programlisting">int	xmlValidateElement		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem)<br>
+<pre class="programlisting">int	xmlValidateElement		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> root)<br>
 </pre>
 <p>Try to validate the subtree under an element</p>
 <div class="variablelist"><table border="0">
@@ -1728,8 +1710,8 @@ The content of this structure is not made public by the API.
 <td>a document instance</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>elem</tt></i>:</span></td>
-<td>an element instance</td>
+<td><span class="term"><i><tt>root</tt></i>:</span></td>
+<td></td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>

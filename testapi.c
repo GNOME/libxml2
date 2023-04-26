@@ -25770,23 +25770,23 @@ test_xmlValidateElement(void) {
     int n_ctxt;
     xmlDocPtr doc; /* a document instance */
     int n_doc;
-    xmlNodePtr elem; /* an element instance */
-    int n_elem;
+    xmlNodePtr root; /*  */
+    int n_root;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
-    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_root = 0;n_root < gen_nb_xmlNodePtr;n_root++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlValidCtxtPtr(n_ctxt, 0);
         doc = gen_xmlDocPtr(n_doc, 1);
-        elem = gen_xmlNodePtr(n_elem, 2);
+        root = gen_xmlNodePtr(n_root, 2);
 
-        ret_val = xmlValidateElement(ctxt, doc, elem);
+        ret_val = xmlValidateElement(ctxt, doc, root);
         desret_int(ret_val);
         call_tests++;
         des_xmlValidCtxtPtr(n_ctxt, ctxt, 0);
         des_xmlDocPtr(n_doc, doc, 1);
-        des_xmlNodePtr(n_elem, elem, 2);
+        des_xmlNodePtr(n_root, root, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlValidateElement",
@@ -25794,7 +25794,7 @@ test_xmlValidateElement(void) {
 	    test_ret++;
             printf(" %d", n_ctxt);
             printf(" %d", n_doc);
-            printf(" %d", n_elem);
+            printf(" %d", n_root);
             printf("\n");
         }
     }
@@ -34695,9 +34695,11 @@ test_xmlSchemaInitTypes(void) {
     int test_ret = 0;
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
+    int ret_val;
 
 
-        xmlSchemaInitTypes();
+        ret_val = xmlSchemaInitTypes();
+        desret_int(ret_val);
         call_tests++;
         xmlResetLastError();
     function_tests++;

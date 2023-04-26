@@ -885,6 +885,7 @@
      <exports symbol='IS_PUBIDCHAR' type='macro'/>
      <exports symbol='IS_PUBIDCHAR_CH' type='macro'/>
      <exports symbol='XML_MAX_DICTIONARY_LIMIT' type='macro'/>
+     <exports symbol='XML_MAX_HUGE_LENGTH' type='macro'/>
      <exports symbol='XML_MAX_LOOKUP_LIMIT' type='macro'/>
      <exports symbol='XML_MAX_NAMELEN' type='macro'/>
      <exports symbol='XML_MAX_NAME_LENGTH' type='macro'/>
@@ -2786,6 +2787,7 @@
      <exports symbol='xmlMemRealloc' type='function'/>
      <exports symbol='xmlMemSetup' type='function'/>
      <exports symbol='xmlMemShow' type='function'/>
+     <exports symbol='xmlMemSize' type='function'/>
      <exports symbol='xmlMemStrdupLoc' type='function'/>
      <exports symbol='xmlMemUsed' type='function'/>
      <exports symbol='xmlMemoryDump' type='function'/>
@@ -4132,6 +4134,9 @@
     </macro>
     <macro name='XML_MAX_DICTIONARY_LIMIT' file='parserInternals'>
       <info>Maximum size allowed by the parser for a dictionary by default This is not a limitation of the parser but a safety boundary feature, use XML_PARSE_HUGE option to override it. Introduced in 2.9.0</info>
+    </macro>
+    <macro name='XML_MAX_HUGE_LENGTH' file='parserInternals'>
+      <info>Maximum size allowed when XML_PARSE_HUGE is set.</info>
     </macro>
     <macro name='XML_MAX_LOOKUP_LIMIT' file='parserInternals'>
       <info>Maximum size allowed by the parser for ahead lookup This is an upper boundary enforced by the parser to avoid bad behaviour on &quot;unfriendly&apos; content Introduced in 2.9.0</info>
@@ -6129,9 +6134,8 @@ set at the end of parsing'/>
       <field name='nexte' type='struct _xmlEntity *' info=' unused'/>
       <field name='URI' type='const xmlChar *' info=' the full URI as computed'/>
       <field name='owner' type='int' info=' does the entity own the childrens'/>
-      <field name='checked' type='int' info=' was the entity content checked this is also used to count entities
-* references done from that entity
-* and if it contains &apos;&lt;&apos;'/>
+      <field name='flags' type='int' info=' various flags'/>
+      <field name='expandedSize' type='unsigned long' info=' expanded size'/>
     </struct>
     <typedef name='xmlEntityPtr' file='tree' type='xmlEntity *'/>
     <typedef name='xmlEntityType' file='entities' type='enum'/>
@@ -6374,7 +6378,7 @@ actually an xmlCharEncoding'/>
 *'/>
       <field name='lastError' type='xmlError' info=''/>
       <field name='parseMode' type='xmlParserMode' info=' the parser mode'/>
-      <field name='nbentities' type='unsigned long' info=' number of entities references'/>
+      <field name='nbentities' type='unsigned long' info=' unused'/>
       <field name='sizeentities' type='unsigned long' info=' size of parsed entities for use by HTML non-recursive parser'/>
       <field name='nodeInfo' type='xmlParserNodeInfo *' info=' Current NodeInfo'/>
       <field name='nodeInfoNr' type='int' info=' Depth of the parsing stack'/>
@@ -6383,6 +6387,8 @@ actually an xmlCharEncoding'/>
       <field name='input_id' type='int' info=' we need to label inputs'/>
       <field name='sizeentcopy' type='unsigned long' info=' volume of entity copy'/>
       <field name='endCheckState' type='int' info=' quote state for push parser'/>
+      <field name='nbErrors' type='unsigned short' info=' number of errors'/>
+      <field name='nbWarnings' type='unsigned short' info=' number of warnings'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -6395,16 +6401,15 @@ actually an xmlCharEncoding'/>
       <field name='end' type='const xmlChar *' info=' end of the array to parse'/>
       <field name='length' type='int' info=' length if known'/>
       <field name='line' type='int' info=' Current line'/>
-      <field name='col' type='int' info='* NOTE: consumed is only tested for equality in the parser code,
-*       so even if there is an overflow this should not give troubles
-*       for parsing very large instances.
-*'/>
+      <field name='col' type='int' info=' Current column'/>
       <field name='consumed' type='unsigned long' info=' How many xmlChars already consumed'/>
       <field name='free' type='xmlParserInputDeallocate' info=' function to deallocate the base'/>
       <field name='encoding' type='const xmlChar *' info=' the encoding string for entity'/>
       <field name='version' type='const xmlChar *' info=' the version string for entity'/>
       <field name='standalone' type='int' info=' Was that entity marked standalone'/>
       <field name='id' type='int' info=' an unique identifier for the entity'/>
+      <field name='parentConsumed' type='unsigned long' info=' consumed bytes from parents'/>
+      <field name='entity' type='xmlEntityPtr' info=' entity, if any'/>
     </struct>
     <struct name='xmlParserInputBuffer' file='tree' type='struct _xmlParserInputBuffer'>
       <field name='context' type='void *' info=''/>
@@ -6898,7 +6903,7 @@ Could we use @subtypes for this?'/>
       <field name='comp' type='xmlXPathCompExprPtr' info=' the precompiled expression'/>
       <field name='xptr' type='int' info=' it this an XPointer expression'/>
       <field name='ancestor' type='xmlNodePtr' info=' used for walking preceding axis'/>
-      <field name='valueFrame' type='int' info=' used to limit Pop on the stack'/>
+      <field name='valueFrame' type='int' info=' unused'/>
     </struct>
     <typedef name='xmlXPathParserContextPtr' file='xpath' type='xmlXPathParserContext *'/>
     <struct name='xmlXPathType' file='xpath' type='struct _xmlXPathType'>
@@ -7880,12 +7885,12 @@ Could we use @subtypes for this?'/>
       <arg name='inlen' type='int *' info='the length of @in'/>
     </function>
     <function name='namePop' file='parserInternals' module='parser'>
-      <info>Pops the top element name from the name stack</info>
+      <info>DEPRECATED: Internal function, do not use.  Pops the top element name from the name stack</info>
       <return type='const xmlChar *' info='the name just removed'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='namePush' file='parserInternals' module='parser'>
-      <info>Pushes a new element name on top of the name stack</info>
+      <info>DEPRECATED: Internal function, do not use.  Pushes a new element name on top of the name stack</info>
       <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='const xmlChar *' info='the element name'/>
@@ -7899,12 +7904,12 @@ Could we use @subtypes for this?'/>
       <arg name='prefix' type='const xmlChar *' info='the namespace prefix'/>
     </function>
     <function name='nodePop' file='parserInternals' module='parser'>
-      <info>Pops the top element node from the node stack</info>
+      <info>DEPRECATED: Internal function, do not use.  Pops the top element node from the node stack</info>
       <return type='xmlNodePtr' info='the node just removed'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='nodePush' file='parserInternals' module='parser'>
-      <info>Pushes a new element node on top of the node stack</info>
+      <info>DEPRECATED: Internal function, do not use.  Pushes a new element node on top of the node stack</info>
       <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlNodePtr' info='the element node'/>
@@ -8056,7 +8061,7 @@ Could we use @subtypes for this?'/>
     <function name='valuePush' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Pushes a new XPath object on top of the value stack. If value is NULL, a memory error is recorded in the parser context.</info>
-      <return type='int' info='the number of items on the value stack, or -1 in case of error.'/>
+      <return type='int' info='the number of items on the value stack, or -1 in case of error.  The object is destroyed in case of error.'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context'/>
       <arg name='value' type='xmlXPathObjectPtr' info='the XPath object'/>
     </function>
@@ -8847,8 +8852,8 @@ Could we use @subtypes for this?'/>
       <arg name='handler' type='xmlCharEncodingHandler *' info='char encoding transformation data structure'/>
     </function>
     <function name='xmlCharEncFirstLine' file='encoding' module='encoding'>
-      <info>Front-end for the encoding handler input function, but handle only the very first line, i.e. limit itself to 45 chars.</info>
-      <return type='int' info='the number of byte written if success, or -1 general error -2 if the transcoding fails (for *in is not valid utf8 string or the result of transformation can&apos;t fit into the encoding we want), or'/>
+      <info>DEPERECATED: Don&apos;t use.</info>
+      <return type='int' info=''/>
       <arg name='handler' type='xmlCharEncodingHandler *' info='char encoding transformation data structure'/>
       <arg name='out' type='xmlBufferPtr' info='an xmlBuffer for the output.'/>
       <arg name='in' type='xmlBufferPtr' info='an xmlBuffer for the input'/>
@@ -8912,7 +8917,7 @@ Could we use @subtypes for this?'/>
       <arg name='ret' type='xmlParserInputPtr' info='an XML parser input'/>
     </function>
     <function name='xmlCheckLanguageID' file='parserInternals' module='parser'>
-      <info>Checks that the value conforms to the LanguageID production:  NOTE: this is somewhat deprecated, those productions were removed from the XML Second edition.  [33] LanguageID ::= Langcode (&apos;-&apos; Subcode)* [34] Langcode ::= ISO639Code |  IanaCode |  UserCode [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z]) [36] IanaCode ::= (&apos;i&apos; | &apos;I&apos;) &apos;-&apos; ([a-z] | [A-Z])+ [37] UserCode ::= (&apos;x&apos; | &apos;X&apos;) &apos;-&apos; ([a-z] | [A-Z])+ [38] Subcode ::= ([a-z] | [A-Z])+  The current REC reference the successors of RFC 1766, currently 5646  http://www.rfc-editor.org/rfc/rfc5646.txt langtag       = language [&quot;-&quot; script] [&quot;-&quot; region] *(&quot;-&quot; variant) *(&quot;-&quot; extension) [&quot;-&quot; privateuse] language      = 2*3ALPHA            ; shortest ISO 639 code [&quot;-&quot; extlang]       ; sometimes followed by ; extended language subtags / 4ALPHA              ; or reserved for future use / 5*8ALPHA            ; or registered language subtag  extlang       = 3ALPHA              ; selected ISO 639 codes *2(&quot;-&quot; 3ALPHA)      ; permanently reserved  script        = 4ALPHA              ; ISO 15924 code  region        = 2ALPHA              ; ISO 3166-1 code / 3DIGIT              ; UN M.49 code  variant       = 5*8alphanum         ; registered variants / (DIGIT 3alphanum)  extension     = singleton 1*(&quot;-&quot; (2*8alphanum))  ; Single alphanumerics ; &quot;x&quot; reserved for private use singleton     = DIGIT               ; 0 - 9 / %x41-57             ; A - W / %x59-5A             ; Y - Z / %x61-77             ; a - w / %x79-7A             ; y - z  it sounds right to still allow Irregular i-xxx IANA and user codes too The parser below doesn&apos;t try to cope with extension or privateuse that could be added but that&apos;s not interoperable anyway</info>
+      <info>DEPRECATED: Internal function, do not use.  Checks that the value conforms to the LanguageID production:  NOTE: this is somewhat deprecated, those productions were removed from the XML Second edition.  [33] LanguageID ::= Langcode (&apos;-&apos; Subcode)* [34] Langcode ::= ISO639Code |  IanaCode |  UserCode [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z]) [36] IanaCode ::= (&apos;i&apos; | &apos;I&apos;) &apos;-&apos; ([a-z] | [A-Z])+ [37] UserCode ::= (&apos;x&apos; | &apos;X&apos;) &apos;-&apos; ([a-z] | [A-Z])+ [38] Subcode ::= ([a-z] | [A-Z])+  The current REC reference the successors of RFC 1766, currently 5646  http://www.rfc-editor.org/rfc/rfc5646.txt langtag       = language [&quot;-&quot; script] [&quot;-&quot; region] *(&quot;-&quot; variant) *(&quot;-&quot; extension) [&quot;-&quot; privateuse] language      = 2*3ALPHA            ; shortest ISO 639 code [&quot;-&quot; extlang]       ; sometimes followed by ; extended language subtags / 4ALPHA              ; or reserved for future use / 5*8ALPHA            ; or registered language subtag  extlang       = 3ALPHA              ; selected ISO 639 codes *2(&quot;-&quot; 3ALPHA)      ; permanently reserved  script        = 4ALPHA              ; ISO 15924 code  region        = 2ALPHA              ; ISO 3166-1 code / 3DIGIT              ; UN M.49 code  variant       = 5*8alphanum         ; registered variants / (DIGIT 3alphanum)  extension     = singleton 1*(&quot;-&quot; (2*8alphanum))  ; Single alphanumerics ; &quot;x&quot; reserved for private use singleton     = DIGIT               ; 0 - 9 / %x41-57             ; A - W / %x59-5A             ; Y - Z / %x61-77             ; a - w / %x79-7A             ; y - z  it sounds right to still allow Irregular i-xxx IANA and user codes too The parser below doesn&apos;t try to cope with extension or privateuse that could be added but that&apos;s not interoperable anyway</info>
       <return type='int' info='1 if correct 0 otherwise'/>
       <arg name='lang' type='const xmlChar *' info='pointer to the string value'/>
     </function>
@@ -9240,7 +9245,7 @@ Could we use @subtypes for this?'/>
       <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCurrentChar' file='parserInternals' module='parserInternals'>
-      <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer. Implement the end of line normalization: 2.11 End-of-Line Handling Wherever an external parsed entity or the literal entity value of an internal parsed entity contains either the literal two-character sequence &quot;#xD#xA&quot; or a standalone literal #xD, an XML processor must pass to the application the single character #xA. This behavior can conveniently be produced by normalizing all line breaks to #xA on input, before parsing.)</info>
+      <info>DEPRECATED: Internal function, do not use.  The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer. Implement the end of line normalization: 2.11 End-of-Line Handling Wherever an external parsed entity or the literal entity value of an internal parsed entity contains either the literal two-character sequence &quot;#xD#xA&quot; or a standalone literal #xD, an XML processor must pass to the application the single character #xA. This behavior can conveniently be produced by normalizing all line breaks to #xA on input, before parsing.)</info>
       <return type='int' info='the current char value and its length'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
       <arg name='len' type='int *' info='pointer to the length of the char read'/>
@@ -10966,6 +10971,11 @@ Could we use @subtypes for this?'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file'/>
       <arg name='nr' type='int' info='number of entries to dump'/>
     </function>
+    <function name='xmlMemSize' file='xmlmemory' module='xmlmemory'>
+      <info></info>
+      <return type='size_t' info='the size of a memory allocation.'/>
+      <arg name='ptr' type='void *' info='pointer to the memory allocation'/>
+    </function>
     <function name='xmlMemStrdupLoc' file='xmlmemory' module='xmlmemory'>
       <info>a strdup() equivalent, with logging of the allocation info.</info>
       <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
@@ -11454,7 +11464,7 @@ Could we use @subtypes for this?'/>
       <arg name='content' type='const xmlChar *' info='the entity content'/>
     </function>
     <function name='xmlNewEntityInputStream' file='parserInternals' module='parserInternals'>
-      <info>Create a new input stream based on an xmlEntityPtr</info>
+      <info>DEPRECATED: Internal function, do not use.  Create a new input stream based on an xmlEntityPtr</info>
       <return type='xmlParserInputPtr' info='the new input stream or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='entity' type='xmlEntityPtr' info='an Entity pointer'/>
@@ -11645,7 +11655,7 @@ Could we use @subtypes for this?'/>
       <return type='xmlValidCtxtPtr' info='NULL if not, otherwise the new validation context structure'/>
     </function>
     <function name='xmlNextChar' file='parserInternals' module='parserInternals'>
-      <info>Skip to the next char input char.</info>
+      <info>DEPRECATED: Internal function, do not use.  Skip to the next char input char.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
     </function>
@@ -12329,7 +12339,7 @@ Could we use @subtypes for this?'/>
       <arg name='filename' type='const char *' info='the path to a file'/>
     </function>
     <function name='xmlParserHandlePEReference' file='parserInternals' module='parser'>
-      <info>[69] PEReference ::= &apos;%&apos; Name &apos;;&apos;  [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly.  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ VC: Entity Declared ] In a document with an external subset or external parameter entities with &quot;standalone=&apos;no&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.  A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc i.e. - Included in literal in entity values - Included as Parameter Entity reference within DTDs</info>
+      <info>DEPRECATED: Internal function, do not use.  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;  [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly.  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ VC: Entity Declared ] In a document with an external subset or external parameter entities with &quot;standalone=&apos;no&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.  A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc i.e. - Included in literal in entity values - Included as Parameter Entity reference within DTDs</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
     </function>
@@ -12427,7 +12437,7 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='an indicative size for the lookahead'/>
     </function>
     <function name='xmlParserInputShrink' file='parserInternals' module='parserInternals'>
-      <info>This function removes used input for the parser.</info>
+      <info>DEPRECATED: Don&apos;t use.  This function removes used input for the parser.</info>
       <return type='void'/>
       <arg name='in' type='xmlParserInputPtr' info='an XML parser input'/>
     </function>
@@ -13566,7 +13576,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlSchemaCleanupTypes' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.  Cleanup the default XML Schemas type library</info>
+      <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have to call cleanup functions at all.  Cleanup the default XML Schemas type library</info>
       <return type='void'/>
     </function>
     <function name='xmlSchemaCollapseString' file='xmlschemastypes' module='xmlschemastypes'>
@@ -13713,7 +13723,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlSchemaInitTypes' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Initialize the default XML Schemas type library</info>
-      <return type='void'/>
+      <return type='int' info='0 on success, -1 on error.'/>
     </function>
     <function name='xmlSchemaIsBuiltInTypeFacet' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -14349,7 +14359,7 @@ Could we use @subtypes for this?'/>
       <arg name='node2' type='xmlNodePtr' info='unused'/>
     </function>
     <function name='xmlSkipBlankChars' file='parserInternals' module='parser'>
-      <info>skip all blanks character found at that point in the input streams. It pops up finished entities in the process if allowable at that point.</info>
+      <info>DEPRECATED: Internal function, do not use.  skip all blanks character found at that point in the input streams. It pops up finished entities in the process if allowable at that point.</info>
       <return type='int' info='the number of space chars skipped'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
     </function>
@@ -14500,14 +14510,14 @@ Could we use @subtypes for this?'/>
       <arg name='streamCtxt' type='xmlStreamCtxtPtr' info='the stream context'/>
     </function>
     <function name='xmlStringCurrentChar' file='parserInternals' module='parserInternals'>
-      <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer.</info>
+      <info>DEPRECATED: Internal function, do not use.  The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer.</info>
       <return type='int' info='the current char value and its length'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
       <arg name='cur' type='const xmlChar *' info='pointer to the beginning of the char'/>
       <arg name='len' type='int *' info='pointer to the length of the char read'/>
     </function>
     <function name='xmlStringDecodeEntities' file='parserInternals' module='parser'>
-      <info>Takes a entity string content and process to do the adequate substitutions.  [67] Reference ::= EntityRef | CharRef  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Takes a entity string content and process to do the adequate substitutions.  [67] Reference ::= EntityRef | CharRef  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;</info>
       <return type='xmlChar *' info='A newly allocated string with the substitution done. The caller must deallocate it !'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
       <arg name='str' type='const xmlChar *' info='the input string'/>
@@ -14523,7 +14533,7 @@ Could we use @subtypes for this?'/>
       <arg name='value' type='const xmlChar *' info='the value of the attribute'/>
     </function>
     <function name='xmlStringLenDecodeEntities' file='parserInternals' module='parser'>
-      <info>Takes a entity string content and process to do the adequate substitutions.  [67] Reference ::= EntityRef | CharRef  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Takes a entity string content and process to do the adequate substitutions.  [67] Reference ::= EntityRef | CharRef  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;</info>
       <return type='xmlChar *' info='A newly allocated string with the substitution done. The caller must deallocate it !'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
       <arg name='str' type='const xmlChar *' info='the input string'/>
@@ -14610,7 +14620,7 @@ Could we use @subtypes for this?'/>
       <arg name='enc' type='xmlCharEncoding' info='the encoding value (number)'/>
     </function>
     <function name='xmlSwitchInputEncoding' file='parserInternals' module='parserInternals'>
-      <info>DEPRECATED: Use xmlSwitchToEncoding  change the input functions when discovering the character encoding of a given entity.</info>
+      <info>change the input functions when discovering the character encoding of a given entity.</info>
       <return type='int' info='0 in case of success, -1 otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
       <arg name='input' type='xmlParserInputPtr' info='the input stream'/>
@@ -16979,7 +16989,7 @@ Could we use @subtypes for this?'/>
       <return type='int' info='1 if valid or 0 otherwise'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='doc' type='xmlDocPtr' info='a document instance'/>
-      <arg name='elem' type='xmlNodePtr' info='an element instance'/>
+      <arg name='root' type='xmlNodePtr' info=''/>
     </function>
     <function name='xmlValidateElementDecl' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
@@ -17901,7 +17911,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlXPathNodeSetMerge' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Merges two nodesets, all nodes from @val2 are added to @val1 if @val1 is NULL, a new set is created and copied from @val2</info>
-      <return type='xmlNodeSetPtr' info='@val1 once extended or NULL in case of error.'/>
+      <return type='xmlNodeSetPtr' info='@val1 once extended or NULL in case of error.  Frees @val1 in case of error.'/>
       <arg name='val1' type='xmlNodeSetPtr' info='the first NodeSet or NULL'/>
       <arg name='val2' type='xmlNodeSetPtr' info='the second NodeSet'/>
     </function>
@@ -18262,13 +18272,13 @@ Could we use @subtypes for this?'/>
     <function name='xmlXPathWrapNodeSet' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Wrap the Nodeset @val in a new xmlXPathObjectPtr</info>
-      <return type='xmlXPathObjectPtr' info='the newly created object.'/>
+      <return type='xmlXPathObjectPtr' info='the newly created object.  In case of error the node set is destroyed and NULL is returned.'/>
       <arg name='val' type='xmlNodeSetPtr' info='the NodePtr value'/>
     </function>
     <function name='xmlXPathWrapString' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Wraps the @val string into an XPath object.</info>
-      <return type='xmlXPathObjectPtr' info='the newly created object.'/>
+      <return type='xmlXPathObjectPtr' info='the newly created object.  Frees @val in case of error.'/>
       <arg name='val' type='xmlChar *' info='the xmlChar * value'/>
     </function>
     <function name='xmlXPatherror' file='xpathInternals' module='xpath'>

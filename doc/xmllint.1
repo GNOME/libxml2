@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: xmllint
 .\"    Author: John Fleck <jfleck@inkstain.net>
-.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 08/17/2022
+.\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
+.\"      Date: 04/26/2023
 .\"    Manual: xmllint Manual
 .\"    Source: libxml2
 .\"  Language: English
 .\"
-.TH "XMLLINT" "1" "08/17/2022" "libxml2" "xmllint Manual"
+.TH "XMLLINT" "1" "04/26/2023" "libxml2" "xmllint Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,7 +31,7 @@
 xmllint \- command line XML tool
 .SH "SYNOPSIS"
 .HP \w'\fBxmllint\fR\ 'u
-\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-shell\fR | \fB\-\-xpath\ "\fR\fB\fIXPath_expression\fR\fR\fB"\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-path\ "\fR\fB\fIPATH(S)\fR\fR\fB"\fR | \fB\-\-load\-trace\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fR\fB\fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fR\fB\fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fR\fB\fIFILE\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-maxmem\ \fR\fB\fINBBYTES\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fR\fB\fIENCODING\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-noxincludenode\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fR\fB\fIPATTERNVALUE\fR\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-schema\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-c14n\fR] {\fIXML\-FILE(S)\fR... | \-}
+\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-quiet\fR | \fB\-\-shell\fR | \fB\-\-xpath\ "\fR\fB\fIXPath_expression\fR\fR\fB"\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-nodict\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-path\ "\fR\fB\fIPATH(S)\fR\fR\fB"\fR | \fB\-\-load\-trace\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fR\fB\fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fR\fB\fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fR\fB\fIFILE\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-maxmem\ \fR\fB\fINBBYTES\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fR\fB\fIENCODING\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-noxincludenode\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fR\fB\fIPATTERNVALUE\fR\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-schema\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-c14n\fR | \fB\-\-pedantic\fR] {\fIXML\-FILE(S)\fR... | \-}
 .HP \w'\fBxmllint\fR\ 'u
 \fBxmllint\fR \fB\-\-help\fR
 .SH "DESCRIPTION"
@@ -72,6 +72,8 @@ catalog(s) from
 XML
 catalogs starting from
 /etc/xml/catalog
+or, more specifically,
+${sysconfdir}/xml/catalog
 are used by default\&.
 .RE
 .PP
@@ -226,6 +228,11 @@ Do not use any catalogs\&.
 Substitute CDATA section by equivalent text nodes\&.
 .RE
 .PP
+\fB\-\-nodict\fR
+.RS 4
+Don\*(Aqt use dictionaries (parser option XML_PARSE_NODICT)\&. Only for debugging\&.
+.RE
+.PP
 \fB\-\-noent\fR
 .RS 4
 Substitute entity values for entity references\&. By default,
@@ -291,6 +298,11 @@ DTDs or entities\&. Enclose space\-separated lists by quotation marks\&.
 Used to exercise the pattern recognition engine, which can be used with the reader interface to the parser\&. It allows to select some nodes in the document based on an XPath (subset) expression\&. Used for debugging\&.
 .RE
 .PP
+\fB\-\-pedantic\fR
+.RS 4
+Enable additional warnings\&.
+.RE
+.PP
 \fB\-\-postvalid\fR
 .RS 4
 Validate after parsing has completed\&.
@@ -299,6 +311,11 @@ Validate after parsing has completed\&.
 \fB\-\-push\fR
 .RS 4
 Use the push mode of the parser\&.
+.RE
+.PP
+\fB\-\-quiet\fR
+.RS 4
+Don\*(Aqt print informational messages to stderr\&.
 .RE
 .PP
 \fB\-\-recover\fR
@@ -501,9 +518,7 @@ Write the current node to the given filename\&.
 SGML
 catalog behavior can be changed by redirecting queries to the user\*(Aqs own set of catalogs\&. This can be done by setting the
 \fBSGML_CATALOG_FILES\fR
-environment variable to a list of catalogs\&. An empty one should deactivate loading the default
-/etc/sgml/catalog
-catalog\&.
+environment variable to a list of catalogs\&. An empty one should deactivate loading the default catalog\&.
 .RE
 .PP
 \fBXML_CATALOG_FILES\fR
@@ -511,9 +526,7 @@ catalog\&.
 XML
 catalog behavior can be changed by redirecting queries to the user\*(Aqs own set of catalogs\&. This can be done by setting the
 \fBXML_CATALOG_FILES\fR
-environment variable to a space\-separated list of catalogs\&. Use percent\-encoding to escape spaces or other characters\&. An empty variable should deactivate loading the default
-/etc/xml/catalog
-catalog\&.
+environment variable to a space\-separated list of catalogs\&. Use percent\-encoding to escape spaces or other characters\&. An empty variable should deactivate loading the default catalog\&.
 .RE
 .PP
 \fBXML_DEBUG_CATALOG\fR

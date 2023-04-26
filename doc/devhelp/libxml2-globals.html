@@ -455,7 +455,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 <a name="xmlCleanupGlobals"></a>xmlCleanupGlobals ()</h3>
 <pre class="programlisting">void	xmlCleanupGlobals		(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. Additional cleanup for multi-threading</p>
+<p>DEPRECATED: This function is a no-op. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -484,7 +484,7 @@ const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	
 <a name="xmlInitGlobals"></a>xmlInitGlobals ()</h3>
 <pre class="programlisting">void	xmlInitGlobals			(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. Additional initialisation for multi-threading</p>
+<p>DEPRECATED: Alias for <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

@@ -133,9 +133,6 @@
     <keyword type="macro" name="LIBXML_XPTR_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPTR_ENABLED"/>
     <keyword type="macro" name="LIBXML_XPTR_LOCS_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPTR_LOCS_ENABLED"/>
     <keyword type="macro" name="LIBXML_ZLIB_ENABLED" link="libxml2-xmlversion.html#LIBXML_ZLIB_ENABLED"/>
-    <keyword type="macro" name="MOVETO_ENDTAG" link="libxml2-parserInternals.html#MOVETO_ENDTAG"/>
-    <keyword type="macro" name="MOVETO_STARTTAG" link="libxml2-parserInternals.html#MOVETO_STARTTAG"/>
-    <keyword type="macro" name="SKIP_EOL" link="libxml2-parserInternals.html#SKIP_EOL"/>
     <keyword type="macro" name="SOCKET" link="libxml2-nanoftp.html#SOCKET"/>
     <keyword type="macro" name="WITHOUT_TRIO" link="libxml2-xmlversion.html#WITHOUT_TRIO"/>
     <keyword type="macro" name="WITH_TRIO" link="libxml2-xmlversion.html#WITH_TRIO"/>
@@ -149,22 +146,19 @@
     <keyword type="macro" name="XINCLUDE_PARSE_TEXT" link="libxml2-xinclude.html#XINCLUDE_PARSE_TEXT"/>
     <keyword type="macro" name="XINCLUDE_PARSE_XML" link="libxml2-xinclude.html#XINCLUDE_PARSE_XML"/>
     <keyword type="macro" name="XINCLUDE_PARSE_XPOINTER" link="libxml2-xinclude.html#XINCLUDE_PARSE_XPOINTER"/>
-    <keyword type="macro" name="XMLCALL" link="libxml2-xmlexports.html#XMLCALL"/>
-    <keyword type="macro" name="XMLCDECL" link="libxml2-xmlexports.html#XMLCDECL"/>
     <keyword type="macro" name="XMLPUBFUN" link="libxml2-xmlexports.html#XMLPUBFUN"/>
-    <keyword type="macro" name="XMLPUBLIC" link="libxml2-xmlexports.html#XMLPUBLIC"/>
     <keyword type="macro" name="XMLPUBVAR" link="libxml2-xmlexports.html#XMLPUBVAR"/>
     <keyword type="macro" name="XML_CAST_FPTR" link="libxml2-hash.html#XML_CAST_FPTR"/>
     <keyword type="macro" name="XML_CATALOGS_NAMESPACE" link="libxml2-catalog.html#XML_CATALOGS_NAMESPACE"/>
     <keyword type="macro" name="XML_CATALOG_PI" link="libxml2-catalog.html#XML_CATALOG_PI"/>
     <keyword type="macro" name="XML_COMPLETE_ATTRS" link="libxml2-parser.html#XML_COMPLETE_ATTRS"/>
     <keyword type="macro" name="XML_DEFAULT_VERSION" link="libxml2-parser.html#XML_DEFAULT_VERSION"/>
-    <keyword type="macro" name="XML_DEPRECATED" link="libxml2-xmlversion.html#XML_DEPRECATED"/>
     <keyword type="macro" name="XML_DETECT_IDS" link="libxml2-parser.html#XML_DETECT_IDS"/>
     <keyword type="macro" name="XML_GET_CONTENT" link="libxml2-tree.html#XML_GET_CONTENT"/>
     <keyword type="macro" name="XML_GET_LINE" link="libxml2-tree.html#XML_GET_LINE"/>
     <keyword type="macro" name="XML_LOCAL_NAMESPACE" link="libxml2-tree.html#XML_LOCAL_NAMESPACE"/>
     <keyword type="macro" name="XML_MAX_DICTIONARY_LIMIT" link="libxml2-parserInternals.html#XML_MAX_DICTIONARY_LIMIT"/>
+    <keyword type="macro" name="XML_MAX_HUGE_LENGTH" link="libxml2-parserInternals.html#XML_MAX_HUGE_LENGTH"/>
     <keyword type="macro" name="XML_MAX_LOOKUP_LIMIT" link="libxml2-parserInternals.html#XML_MAX_LOOKUP_LIMIT"/>
     <keyword type="macro" name="XML_MAX_NAMELEN" link="libxml2-parserInternals.html#XML_MAX_NAMELEN"/>
     <keyword type="macro" name="XML_MAX_NAME_LENGTH" link="libxml2-parserInternals.html#XML_MAX_NAME_LENGTH"/>
@@ -257,8 +251,6 @@
     <keyword type="macro" name="XML_SUBSTITUTE_NONE" link="libxml2-parserInternals.html#XML_SUBSTITUTE_NONE"/>
     <keyword type="macro" name="XML_SUBSTITUTE_PEREF" link="libxml2-parserInternals.html#XML_SUBSTITUTE_PEREF"/>
     <keyword type="macro" name="XML_SUBSTITUTE_REF" link="libxml2-parserInternals.html#XML_SUBSTITUTE_REF"/>
-    <keyword type="macro" name="XML_VCTXT_DTD_VALIDATED" link="libxml2-valid.html#XML_VCTXT_DTD_VALIDATED"/>
-    <keyword type="macro" name="XML_VCTXT_USE_PCTXT" link="libxml2-valid.html#XML_VCTXT_USE_PCTXT"/>
     <keyword type="macro" name="XML_XML_ID" link="libxml2-tree.html#XML_XML_ID"/>
     <keyword type="macro" name="XML_XML_NAMESPACE" link="libxml2-tree.html#XML_XML_NAMESPACE"/>
     <keyword type="macro" name="XML_XPATH_CHECKNS" link="libxml2-xpath.html#XML_XPATH_CHECKNS"/>
@@ -2248,7 +2240,6 @@
     <keyword type="function" name="xmlDictReference ()" link="libxml2-dict.html#xmlDictReference"/>
     <keyword type="function" name="xmlDictSetLimit ()" link="libxml2-dict.html#xmlDictSetLimit"/>
     <keyword type="function" name="xmlDictSize ()" link="libxml2-dict.html#xmlDictSize"/>
-    <keyword type="function" name="xmlDllMain ()" link="libxml2-threads.html#xmlDllMain"/>
     <keyword type="function" name="xmlDocCopyNode ()" link="libxml2-tree.html#xmlDocCopyNode"/>
     <keyword type="function" name="xmlDocCopyNodeList ()" link="libxml2-tree.html#xmlDocCopyNodeList"/>
     <keyword type="function" name="xmlDocDump ()" link="libxml2-tree.html#xmlDocDump"/>
@@ -2271,7 +2262,6 @@
     <keyword type="function" name="xmlEncodeEntities ()" link="libxml2-entities.html#xmlEncodeEntities"/>
     <keyword type="function" name="xmlEncodeEntitiesReentrant ()" link="libxml2-entities.html#xmlEncodeEntitiesReentrant"/>
     <keyword type="function" name="xmlEncodeSpecialChars ()" link="libxml2-entities.html#xmlEncodeSpecialChars"/>
-    <keyword type="function" name="xmlErrMemory ()" link="libxml2-parserInternals.html#xmlErrMemory"/>
     <keyword type="function" name="xmlExpCtxtNbCons ()" link="libxml2-xmlregexp.html#xmlExpCtxtNbCons"/>
     <keyword type="function" name="xmlExpCtxtNbNodes ()" link="libxml2-xmlregexp.html#xmlExpCtxtNbNodes"/>
     <keyword type="function" name="xmlExpDump ()" link="libxml2-xmlregexp.html#xmlExpDump"/>
@@ -2475,6 +2465,7 @@
     <keyword type="function" name="xmlMemRealloc ()" link="libxml2-xmlmemory.html#xmlMemRealloc"/>
     <keyword type="function" name="xmlMemSetup ()" link="libxml2-xmlmemory.html#xmlMemSetup"/>
     <keyword type="function" name="xmlMemShow ()" link="libxml2-xmlmemory.html#xmlMemShow"/>
+    <keyword type="function" name="xmlMemSize ()" link="libxml2-xmlmemory.html#xmlMemSize"/>
     <keyword type="function" name="xmlMemStrdupLoc ()" link="libxml2-xmlmemory.html#xmlMemStrdupLoc"/>
     <keyword type="function" name="xmlMemUsed ()" link="libxml2-xmlmemory.html#xmlMemUsed"/>
     <keyword type="function" name="xmlMemoryDump ()" link="libxml2-xmlmemory.html#xmlMemoryDump"/>

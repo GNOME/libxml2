@@ -27,7 +27,6 @@ typedef <a href="libxml2-threads.html#xmlMutex">xmlMutex</a> * <a href="#xmlMute
 typedef struct _xmlRMutex <a href="#xmlRMutex">xmlRMutex</a>;
 typedef <a href="libxml2-threads.html#xmlRMutex">xmlRMutex</a> * <a href="#xmlRMutexPtr">xmlRMutexPtr</a>;
 void	<a href="#xmlCleanupThreads">xmlCleanupThreads</a>		(void);
-int	<a href="#xmlDllMain">xmlDllMain</a>			(void * hinstDLL, <br>					 unsigned long fdwReason, <br>					 void * lpvReserved);
 void	<a href="#xmlFreeMutex">xmlFreeMutex</a>			(<a href="libxml2-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);
 void	<a href="#xmlFreeRMutex">xmlFreeRMutex</a>			(<a href="libxml2-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);
 <a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>	<a href="#xmlGetGlobalState">xmlGetGlobalState</a>	(void);
@@ -89,36 +88,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCleanupThreads"></a>xmlCleanupThreads ()</h3>
 <pre class="programlisting">void	xmlCleanupThreads		(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all. xmlCleanupThreads() is used to to cleanup all the thread related data of the libxml2 library once processing has ended. WARNING: if your application is multithreaded or has plugin support calling this may crash the application if another thread or a plugin is still using libxml2. It's sometimes very hard to guess if libxml2 is in use in the application, some libraries or plugins may use it without notice. In case of doubt abstain from calling this function or do it just before calling exit() to avoid leak reports from valgrind !</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlDllMain"></a>xmlDllMain ()</h3>
-<pre class="programlisting">int	xmlDllMain			(void * hinstDLL, <br>					 unsigned long fdwReason, <br>					 void * lpvReserved)<br>
-</pre>
-<p></p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>hinstDLL</tt></i>:</span></td>
-<td></td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>fdwReason</tt></i>:</span></td>
-<td></td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>lpvReserved</tt></i>:</span></td>
-<td></td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td></td>
-</tr>
-</tbody>
-</table></div>
+<p>DEPRECATED: This function is a no-op. Call <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> to free global state but see the warnings there. <a href="libxml2-parser.html#xmlCleanupParser">xmlCleanupParser</a> should be only called once at program exit. In most cases, you don't have call cleanup functions at all.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -126,7 +96,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeMutex"></a>xmlFreeMutex ()</h3>
 <pre class="programlisting">void	xmlFreeMutex			(<a href="libxml2-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok)<br>
 </pre>
-<p>xmlFreeMutex() is used to reclaim resources associated with a libxml2 token struct.</p>
+<p>Free a mutex.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -156,7 +126,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetGlobalState"></a>xmlGetGlobalState ()</h3>
 <pre class="programlisting"><a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>	xmlGetGlobalState	(void)<br>
 </pre>
-<p>xmlGetGlobalState() is called to retrieve the global state for a thread.</p>
+<p>DEPRECATED: Internal function, do not use. xmlGetGlobalState() is called to retrieve the global state for a thread.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -171,7 +141,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetThreadId"></a>xmlGetThreadId ()</h3>
 <pre class="programlisting">int	xmlGetThreadId			(void)<br>
 </pre>
-<p>xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn't mandate pthread_t to be an integer type</p>
+<p>DEPRECATED: Internal function, do not use. xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn't mandate pthread_t to be an integer type</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -186,7 +156,7 @@ The content of this structure is not made public by the API.
 <a name="xmlInitThreads"></a>xmlInitThreads ()</h3>
 <pre class="programlisting">void	xmlInitThreads			(void)<br>
 </pre>
-<p>DEPRECATED: This function will be made private. Call <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a> to initialize the library. xmlInitThreads() is used to to initialize all the thread related data of the libxml2 library.</p>
+<p>DEPRECATED: Alias for <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -194,7 +164,7 @@ The content of this structure is not made public by the API.
 <a name="xmlIsMainThread"></a>xmlIsMainThread ()</h3>
 <pre class="programlisting">int	xmlIsMainThread			(void)<br>
 </pre>
-<p>xmlIsMainThread() check whether the current thread is the main thread.</p>
+<p>DEPRECATED: Internal function, do not use. xmlIsMainThread() check whether the current thread is the main thread.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>

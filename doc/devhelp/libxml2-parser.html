@@ -98,7 +98,7 @@ int	<a href="#xmlLineNumbersDefault">xmlLineNumbersDefault</a>		(int val);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlLoadExternalEntity">xmlLoadExternalEntity</a>	(const char * URL, <br>						 const char * ID, <br>						 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlNewIOInputStream">xmlNewIOInputStream</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>						 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input, <br>						 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlNewParserCtxt">xmlNewParserCtxt</a>	(void);
-<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a>	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 void * userData);
+<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlNewSAXParserCtxt">xmlNewSAXParserCtxt</a>	(const <a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * sax, <br>						 void * userData);
 int	<a href="#xmlParseBalancedChunkMemory">xmlParseBalancedChunkMemory</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>					 void * user_data, <br>					 int depth, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * string, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> * lst);
 int	<a href="#xmlParseBalancedChunkMemoryRecover">xmlParseBalancedChunkMemoryRecover</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>						 <a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 void * user_data, <br>						 int depth, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * string, <br>						 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> * lst, <br>						 int recover);
 int	<a href="#xmlParseChunk">xmlParseChunk</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const char * chunk, <br>					 int size, <br>					 int terminate);
@@ -1964,9 +1964,9 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNewSAXParserCtxt"></a>xmlNewSAXParserCtxt ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlNewSAXParserCtxt	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 void * userData)<br>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlNewSAXParserCtxt	(const <a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> * sax, <br>						 void * userData)<br>
 </pre>
-<p>Allocate and initialize a new SAX parser context.</p>
+<p>Allocate and initialize a new SAX parser context. If userData is NULL, the parser context will be passed as user data.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1980,7 +1980,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> or NULL</td>
+<td>the <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> or NULL if memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>

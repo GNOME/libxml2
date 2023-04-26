@@ -459,7 +459,7 @@ The content of this structure is not made public by the API.
 <pre class="programlisting">enum <a href="#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> {
     <a name="XML_BUFFER_ALLOC_DOUBLEIT">XML_BUFFER_ALLOC_DOUBLEIT</a> = 1 /* double each time one need to grow */
     <a name="XML_BUFFER_ALLOC_EXACT">XML_BUFFER_ALLOC_EXACT</a> = 2 /* grow only to the minimal size */
-    <a name="XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a> = 3 /* immutable buffer */
+    <a name="XML_BUFFER_ALLOC_IMMUTABLE">XML_BUFFER_ALLOC_IMMUTABLE</a> = 3 /* immutable buffer, deprecated */
     <a name="XML_BUFFER_ALLOC_IO">XML_BUFFER_ALLOC_IO</a> = 4 /* special allocation scheme used for I/O */
     <a name="XML_BUFFER_ALLOC_HYBRID">XML_BUFFER_ALLOC_HYBRID</a> = 5 /* exact up to a threshold, and doubleit thereafter */
     <a name="XML_BUFFER_ALLOC_BOUNDED">XML_BUFFER_ALLOC_BOUNDED</a> = 6 /*  limit the upper size of the buffer */
@@ -735,7 +735,8 @@ The content of this structure is not made public by the API.
     struct _xmlEntity *	nexte	: unused
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	URI	: the full URI as computed
     int	owner	: does the entity own the childrens
-    int	checked	: was the entity content checked this is also used to count entities *
+    int	flags	: various flags
+    unsigned long	expandedSize	: expanded size
 } xmlEntity;
 </pre>
 <p></p>
@@ -985,7 +986,7 @@ The content of this structure is not made public by the API.
     <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	freeAttrs	: * the complete error information for the last error. *
     <a href="libxml2-xmlerror.html#xmlError">xmlError</a>	lastError
     <a href="libxml2-parser.html#xmlParserMode">xmlParserMode</a>	parseMode	: the parser mode
-    unsigned long	nbentities	: number of entities references
+    unsigned long	nbentities	: unused
     unsigned long	sizeentities	: size of parsed entities for use by HTML non-recursive parser
     <a href="libxml2-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a> *	nodeInfo	: Current NodeInfo
     int	nodeInfoNr	: Depth of the parsing stack
@@ -993,6 +994,9 @@ The content of this structure is not made public by the API.
     <a href="libxml2-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a> *	nodeInfoTab	: array of nodeInfos
     int	input_id	: we need to label inputs
     unsigned long	sizeentcopy	: volume of entity copy
+    int	endCheckState	: quote state for push parser
+    unsigned short	nbErrors	: number of errors
+    unsigned short	nbWarnings	: number of warnings
 } xmlParserCtxt;
 </pre>
 <p></p>
@@ -1018,13 +1022,15 @@ The content of this structure is not made public by the API.
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	end	: end of the array to parse
     int	length	: length if known
     int	line	: Current line
-    int	col	: * NOTE: consumed is only tested for equality in the parser code, *
+    int	col	: Current column
     unsigned long	consumed	: How many xmlChars already consumed
     <a href="libxml2-parser.html#xmlParserInputDeallocate">xmlParserInputDeallocate</a>	free	: function to deallocate the base
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	encoding	: the encoding string for entity
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	version	: the version string for entity
     int	standalone	: Was that entity marked standalone
     int	id	: an unique identifier for the entity
+    unsigned long	parentConsumed	: consumed bytes from parents
+    <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	entity	: entity, if any
 } xmlParserInput;
 </pre>
 <p></p>
@@ -1664,7 +1670,7 @@ The content of this structure is not made public by the API.
 <a name="xmlBufferCreateStatic"></a>xmlBufferCreateStatic ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	xmlBufferCreateStatic	(void * mem, <br>					 size_t size)<br>
 </pre>
-<p>routine to create an XML buffer from an immutable memory area. The area won't be modified nor copied, and is expected to be present until the end of the buffer lifetime.</p>
+<p>Create an XML buffer initialized with bytes.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1678,7 +1684,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the new structure.</td>
+<td></td>
 </tr>
 </tbody>
 </table></div>

@@ -1211,7 +1211,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateStatic"></a>xmlParserInputBufferCreateStatic ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateStatic	(const char * mem, <br>							 int size, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a buffered parser input for the progressive parsing for the input from an immutable memory area. This will not copy the memory area to the buffer, but the memory is expected to be available until the end of the parsing, this is useful for example when using mmap'ed file.</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateMem">xmlParserInputBufferCreateMem</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

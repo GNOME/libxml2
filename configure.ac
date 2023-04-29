@@ -455,7 +455,10 @@ if test "$lt_cv_prog_gnu_ld" = yes; then
     *-*-cygwin* | *-*-mingw* | *-*-msys* )
       ;;
     *)
-      VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+      dnl lld 16 defaults to --no-undefined-version but the version script
+      dnl can contain symbols disabled by configuration options.
+      AX_APPEND_LINK_FLAGS([-Wl,--undefined-version], [VERSION_SCRIPT_FLAGS])
+      AX_APPEND_FLAG([-Wl,--version-script=], [VERSION_SCRIPT_FLAGS])
       ;;
   esac
 else

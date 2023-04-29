@@ -466,6 +466,10 @@ fi
 AC_SUBST(VERSION_SCRIPT_FLAGS)
 AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
 
+dnl lld 16 defaults to --no-undefined-version but the version script
+dnl can contain symbols disabled by configuration options.
+AX_APPEND_LINK_FLAGS([-Wl,--undefined-version], [AM_LDFLAGS])
+
 dnl
 dnl Workaround for native compilers
 dnl  HP  : http://bugs.gnome.org/db/31/3163.html

@@ -78,33 +78,6 @@ static int xmlCharEncodingAliasesMax = 0;
 
 static int xmlLittleEndian = 1;
 
-/**
- * xmlEncodingErrMemory:
- * @extra:  extra information
- *
- * Handle an out of memory condition
- */
-static void
-xmlEncodingErrMemory(const char *extra)
-{
-    __xmlSimpleError(XML_FROM_I18N, XML_ERR_NO_MEMORY, NULL, NULL, extra);
-}
-
-/**
- * xmlErrEncoding:
- * @error:  the error number
- * @msg:  the error message
- *
- * n encoding error
- */
-static void LIBXML_ATTR_FORMAT(2,0)
-xmlEncodingErr(xmlParserErrors error, const char *msg, const char *val)
-{
-    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL,
-                    XML_FROM_I18N, error, XML_ERR_FATAL,
-                    NULL, 0, val, NULL, NULL, 0, 0, msg, val);
-}
-
 #ifdef LIBXML_ICU_ENABLED
 static uconv_t*
 openIcuConverter(const char* name, int toUnicode)
@@ -1437,21 +1410,16 @@ xmlNewCharEncodingHandler(const char *name,
     /*
      * Keep only the uppercase version of the encoding.
      */
-    if (name == NULL) {
-        xmlEncodingErr(XML_I18N_NO_NAME,
-		       "xmlNewCharEncodingHandler : no name !\n", NULL);
+    if (name == NULL)
 	return(NULL);
-    }
     for (i = 0;i < 499;i++) {
         upper[i] = (char) toupper((unsigned char) name[i]);
 	if (upper[i] == 0) break;
     }
     upper[i] = 0;
     up = xmlMemStrdup(upper);
-    if (up == NULL) {
-        xmlEncodingErrMemory("xmlNewCharEncodingHandler : out of memory !\n");
+    if (up == NULL)
 	return(NULL);
-    }
 
     /*
      * allocate and fill-up an handler block.
@@ -1460,7 +1428,6 @@ xmlNewCharEncodingHandler(const char *name,
               xmlMalloc(sizeof(xmlCharEncodingHandler));
     if (handler == NULL) {
         xmlFree(up);
-        xmlEncodingErrMemory("xmlNewCharEncodingHandler : out of memory !\n");
 	return(NULL);
     }
     memset(handler, 0, sizeof(xmlCharEncodingHandler));
@@ -1509,11 +1476,7 @@ xmlInitEncodingInternal(void) {
     unsigned char *ptr = (unsigned char *) &tst;
 
     if (*ptr == 0x12) xmlLittleEndian = 0;
-    else if (*ptr == 0x34) xmlLittleEndian = 1;
-    else {
-        xmlEncodingErr(XML_ERR_INTERNAL_ERROR,
-	               "Odd problem at endianness detection\n", NULL);
-    }
+    else xmlLittleEndian = 1;
 }
 
 /**
@@ -1554,25 +1517,16 @@ xmlCleanupCharEncodingHandlers(void) {
  */
 void
 xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
-    if (handler == NULL) {
-        xmlEncodingErr(XML_I18N_NO_HANDLER,
-		"xmlRegisterCharEncodingHandler: NULL handler\n", NULL);
+    if (handler == NULL)
         return;
-    }
     if (handlers == NULL) {
         handlers = xmlMalloc(MAX_ENCODING_HANDLERS * sizeof(handlers[0]));
-        if (handlers == NULL) {
-            xmlEncodingErrMemory("allocating handler table");
+        if (handlers == NULL)
             goto free_handler;
-        }
     }
 
-    if (nbCharEncodingHandler >= MAX_ENCODING_HANDLERS) {
-        xmlEncodingErr(XML_I18N_EXCESS_HANDLER,
-	"xmlRegisterCharEncodingHandler: Too many handler registered, see %s\n",
-	               "MAX_ENCODING_HANDLERS");
+    if (nbCharEncodingHandler >= MAX_ENCODING_HANDLERS)
         goto free_handler;
-    }
     handlers[nbCharEncodingHandler++] = handler;
     return;
 
@@ -1816,8 +1770,6 @@ xmlFindCharEncodingHandler(const char *name) {
 #endif
 	    return enc;
     } else if ((icv_in != (iconv_t) -1) || icv_out != (iconv_t) -1) {
-	    xmlEncodingErr(XML_ERR_INTERNAL_ERROR,
-		    "iconv : problems with filters for '%s'\n", name);
 	    if (icv_in != (iconv_t) -1)
 		iconv_close(icv_in);
 	    else
@@ -1856,8 +1808,6 @@ xmlFindCharEncodingHandler(const char *name) {
     } else if (ucv_in != NULL || ucv_out != NULL) {
             closeIcuConverter(ucv_in);
             closeIcuConverter(ucv_out);
-	    xmlEncodingErr(XML_ERR_INTERNAL_ERROR,
-		    "ICU converter : problems with filters for '%s'\n", name);
     }
 #endif /* LIBXML_ICU_ENABLED */
 

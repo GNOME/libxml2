@@ -61,6 +61,7 @@ python/libxml2mod.la
 python/setup.py
 python/tests/tmp.xml
 runsuite
+runsuite.log
 runtest
 runxmlconf
 runxmlconf.log

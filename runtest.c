@@ -419,7 +419,11 @@ testStructuredErrorHandler(void *ctx  ATTRIBUTE_UNUSED, xmlErrorPtr err) {
         else if ((line != 0) && (domain == XML_FROM_PARSER))
             channel(data, "Entity: line %d: ", line);
     }
-    if (name != NULL) {
+    /*
+     * Skip element name when testing schemas to make memory and streaming
+     * output match.
+     */
+    if ((domain != XML_FROM_SCHEMASV) && (name != NULL)) {
         channel(data, "element %s: ", name);
     }
     if (code == XML_ERR_OK)

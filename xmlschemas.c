@@ -2143,8 +2143,14 @@ xmlSchemaErr4Line(xmlSchemaAbstractCtxtPtr ctxt,
 		    (vctxt->parserCtxt != NULL) &&
 		    (vctxt->parserCtxt->input != NULL)) {
 		    file = vctxt->parserCtxt->input->filename;
-		    line = vctxt->parserCtxt->input->line;
-		    col = vctxt->parserCtxt->input->col;
+                    if (vctxt->inode != NULL) {
+		        line = vctxt->inode->nodeLine;
+                        col = 0;
+                    } else {
+                        /* This is inaccurate. */
+		        line = vctxt->parserCtxt->input->line;
+		        col = vctxt->parserCtxt->input->col;
+                    }
 		}
 	    } else {
 		/*

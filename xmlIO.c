@@ -211,6 +211,7 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 }
 #endif
 
+#if defined(LIBXML_HTTP_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 /**
  * xmlIOErrMemory:
  * @extra:  extra information
@@ -222,6 +223,7 @@ xmlIOErrMemory(const char *extra)
 {
     __xmlSimpleError(XML_FROM_IO, XML_ERR_NO_MEMORY, NULL, NULL, extra);
 }
+#endif
 
 /**
  * __xmlIOErr:
@@ -2325,7 +2327,6 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
 
     ret = (xmlParserInputBufferPtr) xmlMalloc(sizeof(xmlParserInputBuffer));
     if (ret == NULL) {
-	xmlIOErrMemory("creating input buffer");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlParserInputBuffer));
@@ -2364,7 +2365,6 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
 
     ret = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (ret == NULL) {
-	xmlIOErrMemory("creating output buffer");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlOutputBuffer));
@@ -2412,7 +2412,6 @@ xmlAllocOutputBufferInternal(xmlCharEncodingHandlerPtr encoder) {
 
     ret = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (ret == NULL) {
-	xmlIOErrMemory("creating output buffer");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlOutputBuffer));
@@ -4011,7 +4010,7 @@ xmlLoadExternalEntity(const char *URL, const char *ID,
 
 	canonicFilename = (char *) xmlCanonicPath((const xmlChar *) URL);
 	if (canonicFilename == NULL) {
-            xmlIOErrMemory("building canonical path\n");
+            xmlErrMemory(ctxt, "building canonical path\n");
 	    return(NULL);
 	}
 

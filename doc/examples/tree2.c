@@ -97,16 +97,6 @@ main(int argc, char **argv)
     /*free the document */
     xmlFreeDoc(doc);
 
-    /*
-     *Free the global variables that may
-     *have been allocated by the parser.
-     */
-    xmlCleanupParser();
-
-    /*
-     * this is to debug memory for regression tests
-     */
-    xmlMemoryDump();
     return(0);
 }
 #else

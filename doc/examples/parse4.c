@@ -125,14 +125,6 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Failed to parse %s\n", argv[1]);
     }
 
-    /*
-     * Cleanup function for the XML library.
-     */
-    xmlCleanupParser();
-    /*
-     * this is to debug memory for regression tests
-     */
-    xmlMemoryDump();
     return(0);
 }
 #else /* ! LIBXML_PUSH_ENABLED */

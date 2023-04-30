@@ -48,14 +48,6 @@ main(void)
     /* next, the tree version */
     testXmlwriterTree("writer4.tmp");
 
-    /*
-     * Cleanup function for the XML library.
-     */
-    xmlCleanupParser();
-    /*
-     * this is to debug memory for regression tests
-     */
-    xmlMemoryDump();
     return 0;
 }
 

@@ -60,13 +60,5 @@ int main(int argc, char **argv) {
 
     exampleFunc(argv[1]);
 
-    /*
-     * Cleanup function for the XML library.
-     */
-    xmlCleanupParser();
-    /*
-     * this is to debug memory for regression tests
-     */
-    xmlMemoryDump();
     return(0);
 }

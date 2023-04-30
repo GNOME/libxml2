@@ -78,12 +78,6 @@ main(int argc, char **argv)
     /*free the document */
     xmlFreeDoc(doc);
 
-    /*
-     *Free the global variables that may
-     *have been allocated by the parser.
-     */
-    xmlCleanupParser();
-
     return 0;
 }
 #else

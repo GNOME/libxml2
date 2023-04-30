@@ -45,13 +45,6 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    /* Shutdown libxml */
-    xmlCleanupParser();
-    
-    /*
-     * this is to debug memory for regression tests
-     */
-    xmlMemoryDump();
     return 0;
 }
 

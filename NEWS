@@ -1,5 +1,15 @@
 NEWS file for libxml2
 
+v2.11.1: Apr 30 2023
+
+Fixes build and ABI issues.
+
+- cmake: Fix va_copy detection (Luca Niccoli)
+- libxml.m4: Fix quoting
+- Link with --undefined-version
+- libxml2.syms: Revert removal of version information
+
+
 v2.11.0: Apr 28 2023
 
 ### Major changes

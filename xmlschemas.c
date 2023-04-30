@@ -29074,6 +29074,55 @@ xmlSchemaValidateStreamLocator(void *ctx, const char **file,
 }
 
 /**
+ * xmlSchemaValidateStreamInternal:
+ * @ctxt:  a schema validation context
+ * @pctxt:  a parser context
+ *
+ * Returns 0 if the document is schemas valid, a positive error code
+ *     number otherwise and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValidateStreamInternal(xmlSchemaValidCtxtPtr ctxt,
+                                 xmlParserCtxtPtr pctxt) {
+    xmlSchemaSAXPlugPtr plug = NULL;
+    int ret;
+
+    pctxt->linenumbers = 1;
+    xmlSchemaValidateSetLocator(ctxt, xmlSchemaValidateStreamLocator, pctxt);
+
+    ctxt->parserCtxt = pctxt;
+    ctxt->input = pctxt->input->buf;
+
+    /*
+     * Plug the validation and launch the parsing
+     */
+    plug = xmlSchemaSAXPlug(ctxt, &(pctxt->sax), &(pctxt->userData));
+    if (plug == NULL) {
+        ret = -1;
+	goto done;
+    }
+    ctxt->input = pctxt->input->buf;
+    ctxt->sax = pctxt->sax;
+    ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
+    ret = xmlSchemaVStart(ctxt);
+
+    if ((ret == 0) && (! ctxt->parserCtxt->wellFormed)) {
+	ret = ctxt->parserCtxt->errNo;
+	if (ret == 0)
+	    ret = 1;
+    }
+
+done:
+    ctxt->parserCtxt = NULL;
+    ctxt->sax = NULL;
+    ctxt->input = NULL;
+    if (plug != NULL) {
+        xmlSchemaSAXUnplug(plug);
+    }
+    return (ret);
+}
+
+/**
  * xmlSchemaValidateStream:
  * @ctxt:  a schema validation context
  * @input:  the input to use for reading the data
@@ -29093,7 +29142,6 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
                         xmlParserInputBufferPtr input, xmlCharEncoding enc,
                         xmlSAXHandlerPtr sax, void *user_data)
 {
-    xmlSchemaSAXPlugPtr plug = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     xmlParserInputPtr inputStream = NULL;
     int ret;
@@ -29120,8 +29168,6 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     if (options)
         xmlCtxtUseOptions(pctxt, options);
 #endif
-    pctxt->linenumbers = 1;
-    xmlSchemaValidateSetLocator(ctxt, xmlSchemaValidateStreamLocator, pctxt);
 
     inputStream = xmlNewIOInputStream(pctxt, input, enc);;
     if (inputStream == NULL) {
@@ -29129,36 +29175,12 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
 	goto done;
     }
     inputPush(pctxt, inputStream);
-    ctxt->parserCtxt = pctxt;
-    ctxt->input = input;
 
-    /*
-     * Plug the validation and launch the parsing
-     */
-    plug = xmlSchemaSAXPlug(ctxt, &(pctxt->sax), &(pctxt->userData));
-    if (plug == NULL) {
-        ret = -1;
-	goto done;
-    }
-    ctxt->input = input;
     ctxt->enc = enc;
-    ctxt->sax = pctxt->sax;
-    ctxt->flags |= XML_SCHEMA_VALID_CTXT_FLAG_STREAM;
-    ret = xmlSchemaVStart(ctxt);
 
-    if ((ret == 0) && (! ctxt->parserCtxt->wellFormed)) {
-	ret = ctxt->parserCtxt->errNo;
-	if (ret == 0)
-	    ret = 1;
-    }
+    ret = xmlSchemaValidateStreamInternal(ctxt, pctxt);
 
 done:
-    ctxt->parserCtxt = NULL;
-    ctxt->sax = NULL;
-    ctxt->input = NULL;
-    if (plug != NULL) {
-        xmlSchemaSAXUnplug(plug);
-    }
     /* cleanup */
     if (pctxt != NULL) {
 	xmlFreeParserCtxt(pctxt);
@@ -29184,17 +29206,19 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
 		      int options ATTRIBUTE_UNUSED)
 {
     int ret;
-    xmlParserInputBufferPtr input;
+    xmlParserCtxtPtr pctxt = NULL;
 
     if ((ctxt == NULL) || (filename == NULL))
         return (-1);
 
-    input = xmlParserInputBufferCreateFilename(filename,
-	XML_CHAR_ENCODING_NONE);
-    if (input == NULL)
+    pctxt = xmlCreateURLParserCtxt(filename, 0);
+    if (pctxt == NULL)
 	return (-1);
-    ret = xmlSchemaValidateStream(ctxt, input, XML_CHAR_ENCODING_NONE,
-	NULL, NULL);
+    /* We really want pctxt->sax to be NULL here. */
+    xmlFree(pctxt->sax);
+    pctxt->sax = NULL;
+    ret = xmlSchemaValidateStreamInternal(ctxt, pctxt);
+    xmlFreeParserCtxt(pctxt);
     return (ret);
 }
 

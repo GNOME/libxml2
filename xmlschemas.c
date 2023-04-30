@@ -29098,9 +29098,18 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     /*
      * prepare the parser
      */
-    pctxt = xmlNewSAXParserCtxt(sax, user_data);
-    if (pctxt == NULL)
-        return (-1);
+    if (sax != NULL) {
+        pctxt = xmlNewSAXParserCtxt(sax, user_data);
+        if (pctxt == NULL)
+            return (-1);
+    } else {
+        pctxt = xmlNewParserCtxt();
+        if (pctxt == NULL)
+            return (-1);
+        /* We really want pctxt->sax to be NULL here. */
+        xmlFree(pctxt->sax);
+        pctxt->sax = NULL;
+    }
 #if 0
     if (options)
         xmlCtxtUseOptions(pctxt, options);

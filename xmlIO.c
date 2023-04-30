@@ -3119,21 +3119,24 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	 */
         if (in->raw == NULL) {
 	    in->raw = xmlBufCreate();
+            if (in->raw == NULL) {
+                in->error = XML_ERR_NO_MEMORY;
+                return(-1);
+            }
 	}
 	ret = xmlBufAdd(in->raw, (const xmlChar *) buf, len);
-	if (ret != 0)
+	if (ret != 0) {
+            in->error = XML_ERR_NO_MEMORY;
 	    return(-1);
+        }
 
 	/*
 	 * convert as much as possible to the parser reading buffer.
 	 */
 	use = xmlBufUse(in->raw);
 	nbchars = xmlCharEncInput(in, 1);
-	if (nbchars < 0) {
-	    xmlIOErr(XML_IO_ENCODER, NULL);
-	    in->error = XML_IO_ENCODER;
+	if (nbchars < 0)
 	    return(-1);
-	}
         consumed = use - xmlBufUse(in->raw);
         if ((consumed > ULONG_MAX) ||
             (in->rawconsumed > ULONG_MAX - (unsigned long)consumed))
@@ -3143,8 +3146,10 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
     } else {
 	nbchars = len;
         ret = xmlBufAdd(in->buffer, (xmlChar *) buf, nbchars);
-	if (ret != 0)
+	if (ret != 0) {
+            in->error = XML_ERR_NO_MEMORY;
 	    return(-1);
+        }
     }
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,
@@ -3207,7 +3212,6 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
      */
     if (in->readcallback != NULL) {
         if (xmlBufGrow(buf, len + 1) < 0) {
-            xmlIOErrMemory("growing input buffer");
             in->error = XML_ERR_NO_MEMORY;
             return(-1);
         }
@@ -3215,11 +3219,15 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	res = in->readcallback(in->context, (char *)xmlBufEnd(buf), len);
 	if (res <= 0)
 	    in->readcallback = endOfInput;
-        if (res < 0)
+        if (res < 0) {
+            in->error = XML_IO_UNKNOWN;
             return(-1);
+        }
 
-        if (xmlBufAddLen(buf, res) < 0)
+        if (xmlBufAddLen(buf, res) < 0) {
+            in->error = XML_ERR_NO_MEMORY;
             return(-1);
+        }
     }
 
     /*
@@ -3240,11 +3248,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	 */
 	use = xmlBufUse(buf);
 	res = xmlCharEncInput(in, 1);
-	if (res < 0) {
-	    xmlIOErr(XML_IO_ENCODER, NULL);
-	    in->error = XML_IO_ENCODER;
+	if (res < 0)
 	    return(-1);
-	}
         consumed = use - xmlBufUse(buf);
         if ((consumed > ULONG_MAX) ||
             (in->rawconsumed > ULONG_MAX - (unsigned long)consumed))

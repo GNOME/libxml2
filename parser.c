@@ -11144,10 +11144,16 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
                                                  ctxt->input);
 		size_t current = ctxt->input->cur - ctxt->input->base;
+                int res;
 
-		xmlParserInputBufferPush(ctxt->input->buf, 0, "");
+		res = xmlParserInputBufferPush(ctxt->input->buf, 0, "");
                 xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input,
                                       base, current);
+                if (res < 0) {
+                    xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+                    xmlHaltParser(ctxt);
+                    return(0);
+                }
 	    }
 	}
         avail = ctxt->input->end - ctxt->input->cur;
@@ -11822,9 +11828,9 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 	if (res < 0) {
-	    ctxt->errNo = XML_PARSER_EOF;
+            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
 	    xmlHaltParser(ctxt);
-	    return (XML_PARSER_EOF);
+	    return(ctxt->errNo);
 	}
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
@@ -11842,11 +11848,9 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 		nbchars = xmlCharEncInput(in, terminate);
 		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
 		if (nbchars < 0) {
-		    /* TODO 2.6.0 */
-		    xmlGenericError(xmlGenericErrorContext,
-				    "xmlParseChunk: encoder error\n");
+	            xmlFatalErr(ctxt, in->error, NULL);
                     xmlHaltParser(ctxt);
-		    return(XML_ERR_INVALID_ENCODING);
+		    return(ctxt->errNo);
 		}
 	    }
 	}
@@ -11871,11 +11875,16 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
 					 ctxt->input);
 	size_t current = ctxt->input->cur - ctxt->input->base;
+        int res;
 
-	xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
-
+	res = xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
 	xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input,
 			      base, current);
+        if (res < 0) {
+            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlHaltParser(ctxt);
+            return(ctxt->errNo);
+        }
     }
     if (terminate) {
 	/*
@@ -11983,10 +11992,14 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
         (ctxt->input != NULL) && (ctxt->input->buf != NULL)) {
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
 	size_t cur = ctxt->input->cur - ctxt->input->base;
+        int res;
 
-	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-
+	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        if (res < 0) {
+            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlHaltParser(ctxt);
+        }
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
@@ -14351,10 +14364,15 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
         (ctxt->input->buf != NULL)) {
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
         size_t cur = ctxt->input->cur - ctxt->input->base;
+        int res;
 
-        xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-
+        res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        if (res < 0) {
+            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlHaltParser(ctxt);
+            return(1);
+        }
 #ifdef DEBUG_PUSH
         xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif

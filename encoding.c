@@ -2007,6 +2007,34 @@ xmlUconvWrapper(uconv_t *cd, int toUnicode, unsigned char *out, int *outlen,
  ************************************************************************/
 
 /**
+ * xmlEncConvertError:
+ * @code:  XML_ENC_ERR code
+ *
+ * Convert XML_ENC_ERR to libxml2 error codes.
+ */
+static int
+xmlEncConvertError(int code) {
+    int ret;
+
+    switch (code) {
+        case XML_ENC_ERR_SUCCESS:
+            ret = XML_ERR_OK;
+            break;
+        case XML_ENC_ERR_INPUT:
+            ret = XML_ERR_INVALID_ENCODING;
+            break;
+        case XML_ENC_ERR_MEMORY:
+            ret = XML_ERR_NO_MEMORY;
+            break;
+        default:
+            ret = XML_ERR_INTERNAL_ERROR;
+            break;
+    }
+
+    return(ret);
+}
+
+/**
  * xmlEncInputChunk:
  * @handler:  encoding handler
  * @out:  a pointer to an array of bytes to store the result
@@ -2165,7 +2193,13 @@ xmlCharEncInput(xmlParserInputBufferPtr input, int flush)
     xmlBufShrink(in, c_in);
     xmlBufAddLen(out, c_out);
 
-    return (c_out? c_out : ret);
+    if ((c_out == 0) && (ret != 0)) {
+        if (input->error == 0)
+            input->error = xmlEncConvertError(ret);
+        return(ret);
+    }
+
+    return (c_out);
 }
 
 /**
@@ -2301,7 +2335,7 @@ retry:
 
         cur = xmlGetUTF8Char(content, &len);
         if (cur <= 0)
-            return(ret);
+            goto error;
 
 #ifdef DEBUG_ENCODING
         xmlGenericError(xmlGenericErrorContext,
@@ -2324,14 +2358,24 @@ retry:
         c_in = charrefLen;
         ret = xmlEncOutputChunk(output->encoder, xmlBufEnd(out), &c_out,
                                 charref, &c_in);
-        if ((ret < 0) || (c_in != charrefLen))
-            return(XML_ENC_ERR_INTERNAL);
+        if ((ret < 0) || (c_in != charrefLen)) {
+            ret = XML_ENC_ERR_INTERNAL;
+            goto error;
+        }
 
         xmlBufAddLen(out, c_out);
         writtentot += c_out;
         goto retry;
     }
-    return(writtentot ? writtentot : ret);
+
+error:
+    if ((writtentot <= 0) && (ret != 0)) {
+        if (output->error == 0)
+            output->error = xmlEncConvertError(ret);
+        return(ret);
+    }
+
+    return(writtentot);
 }
 #endif
 

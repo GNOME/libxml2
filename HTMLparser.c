@@ -3858,9 +3858,10 @@ htmlCheckEncodingDirect(htmlParserCtxtPtr ctxt, const xmlChar *encoding) {
 	    nbchars = xmlCharEncInput(ctxt->input->buf, 1);
             xmlBufResetInput(ctxt->input->buf->buffer, ctxt->input);
 	    if (nbchars < 0) {
-		htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
+		htmlParseErr(ctxt, ctxt->input->buf->error,
 		             "htmlCheckEncoding: encoder error\n",
 			     NULL, NULL);
+                xmlHaltParser(ctxt);
 	    }
 	}
     }
@@ -6279,7 +6280,9 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
 	if (res < 0) {
-            htmlErrMemory(ctxt, NULL);
+            htmlParseErr(ctxt, ctxt->input->buf->error,
+                         "xmlParserInputBufferPush failed", NULL, NULL);
+            xmlHaltParser(ctxt);
 	    return (ctxt->errNo);
 	}
 #ifdef DEBUG_PUSH
@@ -6302,8 +6305,9 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 		nbchars = xmlCharEncInput(in, terminate);
 		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
 		if (nbchars < 0) {
-		    htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
+		    htmlParseErr(ctxt, in->error,
 			         "encoder error\n", NULL, NULL);
+                    xmlHaltParser(ctxt);
 		    return(XML_ERR_INVALID_ENCODING);
 		}
 	    }
@@ -6394,10 +6398,15 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
         (ctxt->input->buf != NULL))  {
 	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
 	size_t cur = ctxt->input->cur - ctxt->input->base;
+        int res;
 
-	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-
+	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        if (res < 0) {
+            htmlParseErr(ctxt, ctxt->input->buf->error,
+                         "xmlParserInputBufferPush failed\n", NULL, NULL);
+            xmlHaltParser(ctxt);
+        }
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);
 #endif

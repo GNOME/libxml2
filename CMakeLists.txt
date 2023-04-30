@@ -169,8 +169,8 @@ if (NOT MSVC)
 	check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)
 	check_include_files(sys/time.h HAVE_SYS_TIME_H)
 	check_include_files(unistd.h HAVE_UNISTD_H)
-	check_function_exists(va_copy HAVE_VA_COPY)
-	check_function_exists(__va_copy HAVE___VA_COPY)
+	check_symbol_exists(va_copy stdarg.h HAVE_VA_COPY)
+	check_symbol_exists(__va_copy stdarg.h HAVE___VA_COPY)
 	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <stdarg.h>

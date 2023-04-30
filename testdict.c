@@ -441,6 +441,5 @@ int main(void)
     }
     clean_strings();
     xmlCleanupParser();
-    xmlMemoryDump();
     return(ret);
 }

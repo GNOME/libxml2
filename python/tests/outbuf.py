@@ -107,4 +107,3 @@ if __name__ == '__main__':
         print("OK")
     else:
         print("Memory leak %d bytes" % (libxml2.debugMemory(1)))
-        libxml2.dumpMemory()

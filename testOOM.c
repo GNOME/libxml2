@@ -352,14 +352,12 @@ int main(int argc, char **argv) {
              if (test_get_malloc_blocks_outstanding () > 0) {
                   fprintf (stdout, "%d blocks leaked\n",
                            test_get_malloc_blocks_outstanding ());
-		  xmlMemoryDump();
                   return 1;
              }
 
 	    files ++;
 	}
     }
-    xmlMemoryDump();
 
     return 0;
 }

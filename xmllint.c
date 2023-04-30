@@ -3753,7 +3753,6 @@ main(int argc, char **argv) {
 
 error:
     xmlCleanupParser();
-    xmlMemoryDump();
 
     return(progresult);
 }

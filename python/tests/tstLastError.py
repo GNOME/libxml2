@@ -15,7 +15,6 @@ class TestCase(unittest.TestCase):
     def tearDown(self):
         libxml2.cleanupParser()
         if libxml2.debugMemory(1) != 0:
-            libxml2.dumpMemory() 
             self.fail("Memory leak %d bytes" % (libxml2.debugMemory(1),))
         else:
             print("OK")

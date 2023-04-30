@@ -51,5 +51,3 @@ if leakedbytes == 0:
 	print("OK")
 else:
 	print("Memory leak", leakedbytes, "bytes")
-	# drop file to .memdump file in cwd, but won't work if not compiled in
-	libxml2.dumpMemory()

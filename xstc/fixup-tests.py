@@ -95,5 +95,4 @@ finally:
     libxml2.cleanupParser()
     if libxml2.debugMemory(1) != 0:
         print("Memory leak %d bytes" % (libxml2.debugMemory(1)))
-        libxml2.dumpMemory()
 

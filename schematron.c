@@ -2053,7 +2053,6 @@ main(void)
     xmlFreeDoc(instance);
 
     xmlCleanupParser();
-    xmlMemoryDump();
 
     return (0);
 }

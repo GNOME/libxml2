@@ -174,8 +174,8 @@ int main(int argc, char **argv) {
     mem = xmlMemUsed();
     if ((blocks != 0) || (mem != 0)) {
         printf("testapi leaked %d bytes in %d blocks\n", mem, blocks);
+        ret = 1;
     }
-    xmlMemoryDump();
 
     return (ret != 0);
 }

@@ -2682,7 +2682,6 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
             if ((t1->to != tonr) ||
                 (!xmlFAEqualAtoms(t1->atom, atom, deep)))
                 ret = 0;
-	    ret = 0;
 	    /* mark the transition as non-deterministic */
 	    t1->nd = 1;
 	}

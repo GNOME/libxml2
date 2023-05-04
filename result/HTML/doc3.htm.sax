@@ -319,8 +319,7 @@ SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
 SAX.startElement(a, href='http://www.gentus.com/')
-SAX.error: error parsing attribute name
-SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', gentus)
+SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', gentus?.?)
 SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(br)
@@ -2698,7 +2697,7 @@ SAX.error: Unexpected end tag : iframe
 SAX.cdata(");
 							} else if ((parseI, 463)
 SAX.error: End tag : expected '>'
-SAX.error: Unexpected end tag : sc
+SAX.error: Unexpected end tag : sc");
 SAX.cdata(");
 							} else {
 							d, 328)

@@ -10,9 +10,6 @@ _top"><img src="http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&media
 ./test/HTML/doc3.htm:52: HTML parser error : htmlParseEntityRef: expecting ';'
 ><img src="http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&media=1&id
                                                                                ^
-./test/HTML/doc3.htm:145: HTML parser error : error parsing attribute name
-                        width=70 Gentus?.?></A><BR><A 
-                                       ^
 ./test/HTML/doc3.htm:148: HTML parser error : Unexpected end tag : p
   </P></TD></TR></TBODY></TABLE></CENTER></TD></TR></TBODY></TABLE></CENTER></P>
                                                                                ^
@@ -43,10 +40,10 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT>
 ./test/HTML/doc3.htm:795: HTML parser error : Unexpected end tag : iframe
 							document.write("42DF8478957377></IFRAME>");
 							                                        ^
-./test/HTML/doc3.htm:803: HTML parser error : End tag : expected '>'
-							document.write("DF8478957377></SC");
-							                                 ^
-./test/HTML/doc3.htm:804: HTML parser error : Unexpected end tag : sc
+./test/HTML/doc3.htm:804: HTML parser error : End tag : expected '>'
+							document.write("RIPT>");
+							^
+./test/HTML/doc3.htm:804: HTML parser error : Unexpected end tag : sc");
 							document.write("RIPT>");
 							                     ^
 ./test/HTML/doc3.htm:811: HTML parser error : Unexpected end tag : a

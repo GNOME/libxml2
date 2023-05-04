@@ -2441,32 +2441,35 @@ htmlSkipBogusComment(htmlParserCtxtPtr ctxt) {
  */
 
 static const xmlChar *
-htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
+htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
     const xmlChar *ret;
-    int i = 0;
-    xmlChar loc[HTML_PARSER_BUFFER_SIZE];
+    int nbchar = 0;
+    int c, l;
+    int stop = attr ? '=' : 0;
+    xmlChar buf[HTML_PARSER_BUFFER_SIZE];
 
-    if (!IS_ASCII_LETTER(CUR) && (CUR != '_') &&
-        (CUR != ':') && (CUR != '.')) return(NULL);
+    c = CUR_CHAR(l);
+    while ((c != 0) && (c != '/') && (c != '>') &&
+           ((nbchar == 0) || (c != stop)) &&
+           (!IS_BLANK_CH(c))) {
+        if (nbchar + l <= HTML_PARSER_BUFFER_SIZE) {
+            if ((c >= 'A') && (c <= 'Z'))  {
+                buf[nbchar++] = c + 0x20;
+            } else {
+	        COPY_BUF(buf, nbchar, c);
+            }
+        }
 
-    while ((i < HTML_PARSER_BUFFER_SIZE) &&
-           ((IS_ASCII_LETTER(CUR)) || (IS_ASCII_DIGIT(CUR)) ||
-	   (CUR == ':') || (CUR == '-') || (CUR == '_') ||
-           (CUR == '.'))) {
-	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
-        else loc[i] = CUR;
-	i++;
-
-	NEXT;
+	NEXTL(l);
+        c = CUR_CHAR(l);
     }
 
-    ret = xmlDictLookup(ctxt->dict, loc, i);
+    ret = xmlDictLookup(ctxt->dict, buf, nbchar);
     if (ret == NULL)
         htmlErrMemory(ctxt);
 
     return(ret);
 }
-
 
 /**
  * htmlParseHTMLName_nonInvasive:
@@ -2481,22 +2484,31 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
 
 static const xmlChar *
 htmlParseHTMLName_nonInvasive(htmlParserCtxtPtr ctxt) {
+    int nbchar = 0;
     int i = 0;
-    xmlChar loc[HTML_PARSER_BUFFER_SIZE];
+    int c, l;
+    xmlChar buf[HTML_PARSER_BUFFER_SIZE];
     const xmlChar *ret;
+    size_t avail = ctxt->input->end - ctxt->input->cur;
 
-    if (!IS_ASCII_LETTER(NXT(1)) && (NXT(1) != '_') &&
-        (NXT(1) != ':')) return(NULL);
+    l = avail - i;
+    c = xmlGetUTF8Char(CUR_PTR + i, &l);
+    while ((c > 0) && (c != '/') && (c != '>') &&
+           (!IS_BLANK_CH(c))) {
+        if (nbchar + l <= HTML_PARSER_BUFFER_SIZE) {
+            if ((c >= 'A') && (c <= 'Z'))  {
+                buf[nbchar++] = c + 0x20;
+            } else {
+	        COPY_BUF(buf, nbchar, c);
+            }
+        }
 
-    while ((i < HTML_PARSER_BUFFER_SIZE) &&
-           ((IS_ASCII_LETTER(NXT(1+i))) || (IS_ASCII_DIGIT(NXT(1+i))) ||
-	   (NXT(1+i) == ':') || (NXT(1+i) == '-') || (NXT(1+i) == '_'))) {
-	if ((NXT(1+i) >= 'A') && (NXT(1+i) <= 'Z')) loc[i] = NXT(1+i) + 0x20;
-        else loc[i] = NXT(1+i);
-	i++;
+	i += l;
+        l = avail - i;
+        c = xmlGetUTF8Char(CUR_PTR + i, &l);
     }
 
-    ret = xmlDictLookup(ctxt->dict, loc, i);
+    ret = xmlDictLookup(ctxt->dict, buf, nbchar);
     if (ret == NULL)
         htmlErrMemory(ctxt);
 
@@ -3636,7 +3648,7 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
     xmlChar *val = NULL;
 
     *value = NULL;
-    name = htmlParseHTMLName(ctxt);
+    name = htmlParseHTMLName(ctxt, 1);
     if (name == NULL) {
 	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
 	             "error parsing attribute name\n", NULL, NULL);
@@ -3777,7 +3789,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     maxatts = ctxt->maxatts;
 
     GROW;
-    name = htmlParseHTMLName(ctxt);
+    name = htmlParseHTMLName(ctxt, 0);
     if (name == NULL) {
 	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
 	             "htmlParseStartTag: invalid element name\n",
@@ -3970,7 +3982,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     }
     SKIP(2);
 
-    name = htmlParseHTMLName(ctxt);
+    name = htmlParseHTMLName(ctxt, 0);
     if (name == NULL)
         return (0);
     /*

@@ -1960,7 +1960,6 @@ SAX.error: Opening and ending tag mismatch: a and font
 SAX.endElement(font)
 SAX.endElement(a)
 SAX.endElement(i)
-SAX.error: End tag : expected '>'
 SAX.error: Unexpected end tag : font<
 SAX.startElement(br)
 SAX.endElement(br)

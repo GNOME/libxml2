@@ -3980,20 +3980,39 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     name = htmlParseHTMLName(ctxt, 0);
     if (name == NULL)
         return (0);
+
     /*
-     * We should definitely be at the ending "S? '>'" part
+     * Parse and ignore attributes.
      */
     SKIP_BLANKS;
-    if (CUR != '>') {
+    while ((CUR != 0) &&
+           (CUR != '>') &&
+	   ((CUR != '/') || (NXT(1) != '>')) &&
+           (ctxt->instate != XML_PARSER_EOF)) {
+        xmlChar *attvalue = NULL;
+
+        /*  unexpected-solidus-in-tag */
+        if (CUR == '/') {
+            NEXT;
+            SKIP_BLANKS;
+            continue;
+        }
+	GROW;
+	htmlParseAttribute(ctxt, &attvalue);
+        if (attvalue != NULL)
+            xmlFree(attvalue);
+
+	SKIP_BLANKS;
+    }
+
+    if (CUR == '>') {
+        NEXT;
+    } else if ((CUR == '/') && (NXT(1) == '>')) {
+        SKIP(2);
+    } else {
         htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "End tag : expected '>'\n", NULL, NULL);
-        /* Skip to next '>' */
-        while ((PARSER_STOPPED(ctxt) == 0) &&
-               (CUR != 0) && (CUR != '>'))
-            NEXT;
     }
-    if (CUR == '>')
-        NEXT;
 
     /*
      * if we ignored misplaced tags in htmlParseStartTag don't pop them

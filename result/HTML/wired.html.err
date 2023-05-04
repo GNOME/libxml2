@@ -217,9 +217,6 @@ wired.com&BANNER=Sprint" style="text-decoration:none"><font color="#000000">Spri
 ./test/HTML/wired.html:408: HTML parser error : Opening and ending tag mismatch: a and font
 com&BANNER=Sprint" style="text-decoration:none"><font color="#000000">Sprint</a>
                                                                                ^
-./test/HTML/wired.html:408: HTML parser error : End tag : expected '>'
-Sprint" style="text-decoration:none"><font color="#000000">Sprint</a></i></font<
-                                                                               ^
 ./test/HTML/wired.html:408: HTML parser error : Unexpected end tag : font<
 " style="text-decoration:none"><font color="#000000">Sprint</a></i></font</font>
                                                                                ^

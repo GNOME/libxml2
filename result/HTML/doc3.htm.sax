@@ -2696,7 +2696,6 @@ SAX.cdata(
 SAX.error: Unexpected end tag : iframe
 SAX.cdata(");
 							} else if ((parseI, 463)
-SAX.error: End tag : expected '>'
 SAX.error: Unexpected end tag : sc");
 SAX.cdata(");
 							} else {

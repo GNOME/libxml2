@@ -2898,7 +2898,7 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
     startPosition = CUR_PTR - BASE_PTR;
 
     while ((PARSER_STOPPED(ctxt) == 0) &&
-           (CUR != 0) && (CUR != quote)) {
+           (CUR != 0) && (CUR != quote) && (CUR != '>')) {
         /* TODO: Handle UTF-8 */
         if (!IS_CHAR_CH(CUR)) {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
@@ -2959,7 +2959,7 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     startPosition = CUR_PTR - BASE_PTR;
 
     while ((PARSER_STOPPED(ctxt) == 0) &&
-           (CUR != 0) && (CUR != quote)) {
+           (CUR != 0) && (CUR != quote) && (CUR != '>')) {
         if (!IS_PUBIDCHAR_CH(CUR)) {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Invalid char in PubidLiteral 0x%X\n", CUR);
@@ -5270,7 +5270,6 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
  * @first:  the first char to lookup
  * @next:  the next char to lookup or zero
  * @third:  the next char to lookup or zero
- * @ignoreattrval: skip over attribute values
  *
  * Try to find if a sequence (first, next, third) or  just (first next) or
  * (first) is available in the input stream.
@@ -5284,8 +5283,7 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
  */
 static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                        xmlChar next, xmlChar third, int ignoreattrval)
-{
+                        xmlChar next, xmlChar third) {
     size_t base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
@@ -5311,17 +5309,6 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
             ctxt->checkIndex = 0;
             ctxt->endCheckState = 0;
             return (base - 2);
-        }
-        if (ignoreattrval) {
-            if (quote) {
-                if (buf[base] == quote)
-                    quote = 0;
-                continue;
-            }
-            if (buf[base] == '"' || buf[base] == '\'') {
-                quote = buf[base];
-                continue;
-            }
         }
         if (buf[base] == first) {
             if (third != 0) {
@@ -5362,7 +5349,7 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
     int offset;
 
     while (1) {
-	mark = htmlParseLookupSequence(ctxt, '-', '-', 0, 0);
+	mark = htmlParseLookupSequence(ctxt, '-', '-', 0);
 	if (mark < 0)
             break;
         if ((NXT(mark+2) == '>') ||
@@ -5470,7 +5457,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 		    htmlParseDocTypeDecl(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5506,7 +5493,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_MISC;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_MISC;
@@ -5516,7 +5503,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 		    htmlParseDocTypeDecl(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5542,7 +5529,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_PROLOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5573,7 +5560,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_EPILOG;
@@ -5745,7 +5732,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		        int idx;
 			xmlChar val;
 
-			idx = htmlParseLookupSequence(ctxt, '<', '/', 0, 0);
+			idx = htmlParseLookupSequence(ctxt, '<', '/', 0);
 			if (idx < 0)
 			    goto done;
 		        val = in->cur[idx + 2];
@@ -5775,7 +5762,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         (UPP(6) == 'Y') && (UPP(7) == 'P') &&
                         (UPP(8) == 'E')) {
                         if ((!terminate) &&
-                            (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
+                            (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
                             goto done;
                         htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
                                      "Misplaced DOCTYPE declaration\n",
@@ -5789,13 +5776,13 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         ctxt->instate = XML_PARSER_CONTENT;
                     } else {
                         if ((!terminate) &&
-                            (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+                            (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
                             goto done;
                         htmlSkipBogusComment(ctxt);
                     }
                 } else if ((cur == '<') && (next == '?')) {
                     if ((!terminate) &&
-                        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+                        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
                         goto done;
                     htmlParsePI(ctxt);
                     ctxt->instate = XML_PARSER_CONTENT;
@@ -5823,7 +5810,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                      * data detection.
                      */
                     if ((!terminate) &&
-                        (htmlParseLookupSequence(ctxt, '<', 0, 0, 0) < 0))
+                        (htmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
                         goto done;
                     ctxt->checkIndex = 0;
                     while ((PARSER_STOPPED(ctxt) == 0) &&

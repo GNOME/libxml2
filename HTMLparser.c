@@ -5155,6 +5155,115 @@ htmlCreateDocParserCtxt(const xmlChar *str, const char *url,
  *									*
  ************************************************************************/
 
+enum xmlLookupStates {
+    LSTATE_TAG_NAME = 0,
+    LSTATE_BEFORE_ATTR_NAME,
+    LSTATE_ATTR_NAME,
+    LSTATE_AFTER_ATTR_NAME,
+    LSTATE_BEFORE_ATTR_VALUE,
+    LSTATE_ATTR_VALUE_DQUOTED,
+    LSTATE_ATTR_VALUE_SQUOTED,
+    LSTATE_ATTR_VALUE_UNQUOTED
+};
+
+/**
+ * htmlParseLookupGt:
+ * @ctxt:  an HTML parser context
+ *
+ * Check whether there's enough data in the input buffer to finish parsing
+ * a tag. This has to take quotes into account.
+ */
+static int
+htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
+    const xmlChar *cur;
+    const xmlChar *end = ctxt->input->end;
+    int state = ctxt->endCheckState;
+    size_t index;
+
+    if (ctxt->checkIndex == 0)
+        cur = ctxt->input->cur + 2; /* Skip '<a' or '</' */
+    else
+        cur = ctxt->input->cur + ctxt->checkIndex;
+
+    while (cur < end) {
+        int c = *cur++;
+
+        if (state != LSTATE_ATTR_VALUE_SQUOTED &&
+            state != LSTATE_ATTR_VALUE_DQUOTED) {
+            if (c == '/' &&
+                state != LSTATE_BEFORE_ATTR_VALUE &&
+                state != LSTATE_ATTR_VALUE_UNQUOTED) {
+                state = LSTATE_BEFORE_ATTR_NAME;
+                continue;
+            } else if (c == '>') {
+                ctxt->checkIndex = 0;
+                ctxt->endCheckState = 0;
+                return(0);
+            }
+        }
+
+        switch (state) {
+            case LSTATE_TAG_NAME:
+                if (IS_BLANK_CH(c))
+                    state = LSTATE_BEFORE_ATTR_NAME;
+                break;
+
+            case LSTATE_BEFORE_ATTR_NAME:
+                if (!IS_BLANK_CH(c))
+                    state = LSTATE_ATTR_NAME;
+                break;
+
+            case LSTATE_ATTR_NAME:
+                if (c == '=')
+                    state = LSTATE_BEFORE_ATTR_VALUE;
+                else if (IS_BLANK(c))
+                    state = LSTATE_AFTER_ATTR_NAME;
+                break;
+
+            case LSTATE_AFTER_ATTR_NAME:
+                if (c == '=')
+                    state = LSTATE_BEFORE_ATTR_VALUE;
+                else if (!IS_BLANK(c))
+                    state = LSTATE_ATTR_NAME;
+                break;
+
+            case LSTATE_BEFORE_ATTR_VALUE:
+                if (c == '"')
+                    state = LSTATE_ATTR_VALUE_DQUOTED;
+                else if (c == '\'')
+                    state = LSTATE_ATTR_VALUE_SQUOTED;
+                else if (!IS_BLANK(c))
+                    state = LSTATE_ATTR_VALUE_UNQUOTED;
+                break;
+
+            case LSTATE_ATTR_VALUE_DQUOTED:
+                if (c == '"')
+                    state = LSTATE_BEFORE_ATTR_NAME;
+                break;
+
+            case LSTATE_ATTR_VALUE_SQUOTED:
+                if (c == '\'')
+                    state = LSTATE_BEFORE_ATTR_NAME;
+                break;
+
+            case LSTATE_ATTR_VALUE_UNQUOTED:
+                if (IS_BLANK_CH(c))
+                    state = LSTATE_BEFORE_ATTR_NAME;
+                break;
+        }
+    }
+
+    index = cur - ctxt->input->cur;
+    if (index > LONG_MAX) {
+        ctxt->checkIndex = 0;
+        ctxt->endCheckState = 0;
+        return(0);
+    }
+    ctxt->checkIndex = index;
+    ctxt->endCheckState = state;
+    return(-1);
+}
+
 /**
  * htmlParseLookupSequence:
  * @ctxt:  an HTML parser context
@@ -5512,7 +5621,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    break;
 		}
 		if ((!terminate) &&
-		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 1) < 0))
+		    (htmlParseLookupGt(ctxt) < 0))
 		    goto done;
 
                 /* Capture start position */
@@ -5734,7 +5843,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 2)
 		    goto done;
 		if ((!terminate) &&
-		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
+		    (htmlParseLookupGt(ctxt) < 0))
 		    goto done;
 		htmlParseEndTag(ctxt);
 		if (ctxt->nameNr == 0) {

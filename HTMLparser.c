@@ -3794,10 +3794,6 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
 	             "htmlParseStartTag: invalid element name\n",
 		     NULL, NULL);
-	/* Dump the bogus tag like browsers do */
-	while ((CUR != 0) && (CUR != '>') &&
-               (PARSER_STOPPED(ctxt) == 0))
-	    NEXT;
         return -1;
     }
     if (xmlStrEqual(name, BAD_CAST"meta"))
@@ -3911,13 +3907,6 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	else {
 	    if (attvalue != NULL)
 	        xmlFree(attvalue);
-	    /* Dump the bogus attribute string up to the next blank or
-	     * the end of the tag. */
-	    while ((CUR != 0) &&
-	           !(IS_BLANK_CH(CUR)) && (CUR != '>') &&
-		   ((CUR != '/') || (NXT(1) != '>')) &&
-                   (PARSER_STOPPED(ctxt) == 0))
-		NEXT;
 	}
 
 failed:
@@ -4179,10 +4168,6 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	        htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
 			 "htmlParseStartTag: invalid element name\n",
 			 NULL, NULL);
-	        /* Dump the bogus tag like browsers do */
-                while ((CUR != 0) && (CUR != '>'))
-	            NEXT;
-
 	        if (currentNode != NULL)
 	            xmlFree(currentNode);
 	        return;
@@ -4583,9 +4568,6 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	        htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
 			 "htmlParseStartTag: invalid element name\n",
 			 NULL, NULL);
-	        /* Dump the bogus tag like browsers do */
-	        while ((CUR == 0) && (CUR != '>'))
-	            NEXT;
 
 	        htmlParserFinishElementParsing(ctxt);
 	        if (currentNode != NULL)

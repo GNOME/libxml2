@@ -5265,67 +5265,54 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * htmlParseLookupSequence:
- * @ctxt:  an HTML parser context
- * @first:  the first char to lookup
- * @next:  the next char to lookup or zero
- * @third:  the next char to lookup or zero
+ * htmlParseLookupString:
+ * @ctxt:  an XML parser context
+ * @startDelta: delta to apply at the start
+ * @str:  string
+ * @strLen:  length of string
  *
- * Try to find if a sequence (first, next, third) or  just (first next) or
- * (first) is available in the input stream.
- * This function has a side effect of (possibly) incrementing ctxt->checkIndex
- * to avoid rescanning sequences of bytes, it DOES change the state of the
- * parser, do not use liberally.
- * This is basically similar to xmlParseLookupSequence()
- *
- * Returns the index to the current parsing point if the full sequence
- *      is available, -1 otherwise.
+ * Check whether the input buffer contains a string.
  */
 static int
-htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                        xmlChar next, xmlChar third) {
-    size_t base, len;
-    htmlParserInputPtr in;
-    const xmlChar *buf;
-    int quote;
+htmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
+                      const char *str, size_t strLen) {
+    const xmlChar *cur, *term;
+    int ret;
 
-    in = ctxt->input;
-    if (in == NULL)
-        return (-1);
-
-    base = ctxt->checkIndex;
-    quote = ctxt->endCheckState;
-
-    buf = in->cur;
-    len = in->end - in->cur;
-
-    /* take into account the sequence length */
-    if (third)
-        len -= 2;
-    else if (next)
-        len--;
-    for (; base < len; base++) {
-        if (base >= INT_MAX / 2) {
-            ctxt->checkIndex = 0;
-            ctxt->endCheckState = 0;
-            return (base - 2);
-        }
-        if (buf[base] == first) {
-            if (third != 0) {
-                if ((buf[base + 1] != next) || (buf[base + 2] != third))
-                    continue;
-            } else if (next != 0) {
-                if (buf[base + 1] != next)
-                    continue;
-            }
-            ctxt->checkIndex = 0;
-            ctxt->endCheckState = 0;
-            return (base);
-        }
+    if (ctxt->checkIndex == 0) {
+        cur = ctxt->input->cur + startDelta;
+    } else {
+        cur = ctxt->input->cur + ctxt->checkIndex;
     }
-    ctxt->checkIndex = base;
-    ctxt->endCheckState = quote;
-    return (-1);
+
+    term = BAD_CAST strstr((const char *) cur, str);
+    if (term == NULL) {
+        const xmlChar *end = ctxt->input->end;
+        size_t index;
+
+        /* Rescan (strLen - 1) characters. */
+        if ((size_t) (end - cur) < strLen)
+            end = cur;
+        else
+            end -= strLen - 1;
+        index = end - ctxt->input->cur;
+        if (index > INT_MAX / 2) {
+            ctxt->checkIndex = 0;
+            ret = INT_MAX / 2;
+        } else {
+            ctxt->checkIndex = index;
+            ret = -1;
+        }
+    } else {
+        ctxt->checkIndex = 0;
+
+        if (term - ctxt->input->cur > INT_MAX / 2)
+            ret = INT_MAX / 2;
+        else
+            ret = term - ctxt->input->cur;
+    }
+
+    return(ret);
 }
 
 /**
@@ -5338,7 +5325,6 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
  * This function has a side effect of (possibly) incrementing ctxt->checkIndex
  * to avoid rescanning sequences of bytes, it DOES change the state of the
  * parser, do not use liberally.
- * This wraps to htmlParseLookupSequence()
  *
  * Returns the index to the current parsing point if the full sequence is available, -1 otherwise.
  */
@@ -5349,7 +5335,7 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
     int offset;
 
     while (1) {
-	mark = htmlParseLookupSequence(ctxt, '-', '-', 0);
+	mark = htmlParseLookupString(ctxt, 2, "--", 2);
 	if (mark < 0)
             break;
         if ((NXT(mark+2) == '>') ||
@@ -5457,7 +5443,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupString(ctxt, 9, ">", 1) < 0))
 			goto done;
 		    htmlParseDocTypeDecl(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5493,7 +5479,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_MISC;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_MISC;
@@ -5503,7 +5489,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupString(ctxt, 9, ">", 1) < 0))
 			goto done;
 		    htmlParseDocTypeDecl(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5529,7 +5515,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_PROLOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5560,7 +5546,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_EPILOG;
@@ -5732,7 +5718,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		        int idx;
 			xmlChar val;
 
-			idx = htmlParseLookupSequence(ctxt, '<', '/', 0);
+			idx = htmlParseLookupString(ctxt, 0, "</", 2);
 			if (idx < 0)
 			    goto done;
 		        val = in->cur[idx + 2];
@@ -5762,7 +5748,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         (UPP(6) == 'Y') && (UPP(7) == 'P') &&
                         (UPP(8) == 'E')) {
                         if ((!terminate) &&
-                            (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+                            (htmlParseLookupString(ctxt, 9, ">", 1) < 0))
                             goto done;
                         htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
                                      "Misplaced DOCTYPE declaration\n",
@@ -5776,13 +5762,13 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         ctxt->instate = XML_PARSER_CONTENT;
                     } else {
                         if ((!terminate) &&
-                            (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+                            (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
                             goto done;
                         htmlSkipBogusComment(ctxt);
                     }
                 } else if ((cur == '<') && (next == '?')) {
                     if ((!terminate) &&
-                        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+                        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
                         goto done;
                     htmlParsePI(ctxt);
                     ctxt->instate = XML_PARSER_CONTENT;
@@ -5810,7 +5796,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                      * data detection.
                      */
                     if ((!terminate) &&
-                        (htmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
+                        (htmlParseLookupString(ctxt, 0, "<", 1) < 0))
                         goto done;
                     ctxt->checkIndex = 0;
                     while ((PARSER_STOPPED(ctxt) == 0) &&

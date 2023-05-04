@@ -3851,6 +3851,12 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
            (CUR != '>') &&
 	   ((CUR != '/') || (NXT(1) != '>')) &&
            (PARSER_STOPPED(ctxt) == 0)) {
+        /*  unexpected-solidus-in-tag */
+        if (CUR == '/') {
+            NEXT;
+            SKIP_BLANKS;
+            continue;
+        }
 	GROW;
 	attname = htmlParseAttribute(ctxt, &attvalue);
         if (attname != NULL) {

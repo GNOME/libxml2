@@ -1871,6 +1871,8 @@ xmlFAFinishReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int tonr) {
     xmlRegStatePtr to;
 
     to = ctxt->states[tonr];
+    if (to == NULL)
+	return;
     if ((to->mark == XML_REGEXP_MARK_START) ||
 	(to->mark == XML_REGEXP_MARK_NORMAL))
 	return;

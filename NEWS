@@ -1,5 +1,14 @@
 NEWS file for libxml2
 
+v2.11.2: May 5 2023
+
+Fix regressions.
+
+- threads: Fix startup crash with weak symbol hack
+- win32: Don't depend on removed .def file
+- schemas: Fix memory leak in xmlSchemaValidateStream
+
+
 v2.11.1: Apr 30 2023
 
 Fixes build and ABI issues.

@@ -145,11 +145,12 @@ runsuite_DEPENDENCIES = $(DEPS)
 runsuite_LDADD= $(LDADDS)
 
 xmllint_SOURCES=xmllint.c
-xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS)
+xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
 xmllint_DEPENDENCIES = $(DEPS)
 xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)
 
 xmlcatalog_SOURCES=xmlcatalog.c
+xmlcatalog_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
 xmlcatalog_DEPENDENCIES = $(DEPS)
 xmlcatalog_LDADD = $(RDL_LIBS) $(LDADDS)
 

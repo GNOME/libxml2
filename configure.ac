@@ -1036,7 +1036,7 @@ else
     if test "$with_iconv" != "yes" && test "$with_iconv" != "" ; then
 	ICONV_DIR=$with_iconv
 	CPPFLAGS="$CPPFLAGS -I$ICONV_DIR/include"
-        LIBS="$LIBS -L$ICONV_DIR/libs"
+	LIBS="$LIBS -L$ICONV_DIR/lib"
 	# Export this since our headers include iconv.h
 	XML_INCLUDEDIR="$XML_INCLUDEDIR -I$ICONV_DIR/include"
     fi
@@ -1052,12 +1052,13 @@ else
                 ICONV_LIBS="-liconv"])])])
     if test "$WITH_ICONV" = "1" && test "$ICONV_DIR" != ""; then
         ICONV_CFLAGS="-I$ICONV_DIR/include"
-        ICONV_LIBS="-L$ICONV_DIR/libs $ICONV_LIBS"
+        ICONV_LIBS="-L$ICONV_DIR/lib $ICONV_LIBS"
     fi
     CPPFLAGS=$_cppflags
     LIBS=$_libs
 fi
 AC_SUBST(WITH_ICONV)
+AC_SUBST(ICONV_CFLAGS)
 
 dnl
 dnl Checks for ICU library.
@@ -1100,7 +1101,7 @@ else
                     ICU_LIBS=-licucore
                     if test "$ICU_DIR" != ""; then
                         ICU_CFLAGS="-I$ICU_DIR/include"
-                        ICU_LIBS="-L$ICU_DIR/libs $ICU_LIBS"
+                        ICU_LIBS="-L$ICU_DIR/lib $ICU_LIBS"
                     fi])])
             CPPFLAGS=$_cppflags
             LIBS=$_libs

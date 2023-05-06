@@ -14479,8 +14479,6 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
     }
 #ifdef LIBXML_SAX1_ENABLED
     if (options & XML_PARSE_SAX1) {
-        ctxt->sax->startElement = xmlSAX2StartElement;
-        ctxt->sax->endElement = xmlSAX2EndElement;
         ctxt->sax->startElementNs = NULL;
         ctxt->sax->endElementNs = NULL;
         ctxt->sax->initialized = 1;

@@ -266,7 +266,11 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
     ret->inc = NULL;
     if (ctxt->incNr >= ctxt->incMax) {
         xmlXIncludeRefPtr *tmp;
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        size_t newSize = ctxt->incMax ? ctxt->incMax * 2 : 1;
+#else
         size_t newSize = ctxt->incMax ? ctxt->incMax * 2 : 4;
+#endif
 
         tmp = (xmlXIncludeRefPtr *) xmlRealloc(ctxt->incTab,
 	             newSize * sizeof(ctxt->incTab[0]));
@@ -1344,7 +1348,11 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     /* Also cache NULL docs */
     if (ctxt->urlNr >= ctxt->urlMax) {
         xmlXIncludeDoc *tmp;
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        size_t newSize = ctxt->urlMax ? ctxt->urlMax * 2 : 1;
+#else
         size_t newSize = ctxt->urlMax ? ctxt->urlMax * 2 : 8;
+#endif
 
         tmp = xmlRealloc(ctxt->urlTab, sizeof(xmlXIncludeDoc) * newSize);
         if (tmp == NULL) {
@@ -1752,7 +1760,11 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
 
     if (ctxt->txtNr >= ctxt->txtMax) {
         xmlXIncludeTxt *tmp;
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        size_t newSize = ctxt->txtMax ? ctxt->txtMax * 2 : 1;
+#else
         size_t newSize = ctxt->txtMax ? ctxt->txtMax * 2 : 8;
+#endif
 
         tmp = xmlRealloc(ctxt->txtTab, sizeof(xmlXIncludeTxt) * newSize);
         if (tmp == NULL) {

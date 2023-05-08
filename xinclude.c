@@ -1265,6 +1265,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     xmlChar *fragment = NULL;
     int i = 0;
     int ret = -1;
+    int cacheNr;
 #ifdef LIBXML_XPTR_ENABLED
     int saveFlags;
 #endif
@@ -1365,7 +1366,8 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
         ctxt->urlMax = newSize;
         ctxt->urlTab = tmp;
     }
-    cache = &ctxt->urlTab[ctxt->urlNr++];
+    cacheNr = ctxt->urlNr++;
+    cache = &ctxt->urlTab[cacheNr];
     cache->doc = doc;
     cache->url = xmlStrdup(URL);
     cache->expanding = 0;
@@ -1403,6 +1405,8 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
      */
     cache->expanding = 1;
     xmlXIncludeRecurseDoc(ctxt, doc, URL);
+    /* urlTab might be reallocated. */
+    cache = &ctxt->urlTab[cacheNr];
     cache->expanding = 0;
 
 loaded:

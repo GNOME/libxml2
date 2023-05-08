@@ -216,11 +216,12 @@ xzFile
 __libxml2_xzdopen(int fd, const char *mode)
 {
     char *path;                 /* identifier for error messages */
+    size_t path_size = 7 + 3 * sizeof(int);
     xzFile xz;
 
-    if (fd == -1 || (path = xmlMalloc(7 + 3 * sizeof(int))) == NULL)
+    if (fd == -1 || (path = xmlMalloc(path_size)) == NULL)
         return NULL;
-    sprintf(path, "<fd:%d>", fd);       /* for debugging */
+    snprintf(path, path_size, "<fd:%d>", fd);       /* for debugging */
     xz = xz_open(path, fd, mode);
     xmlFree(path);
     return xz;

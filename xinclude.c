@@ -264,19 +264,9 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
     ret->elem = elem;
     ret->xml = 0;
     ret->inc = NULL;
-    if (ctxt->incMax == 0) {
-	ctxt->incMax = 4;
-        ctxt->incTab = (xmlXIncludeRefPtr *) xmlMalloc(ctxt->incMax *
-					      sizeof(ctxt->incTab[0]));
-        if (ctxt->incTab == NULL) {
-	    xmlXIncludeErrMemory(ctxt, elem, "growing XInclude context");
-	    xmlXIncludeFreeRef(ret);
-	    return(NULL);
-	}
-    }
     if (ctxt->incNr >= ctxt->incMax) {
         xmlXIncludeRefPtr *tmp;
-        size_t newSize = ctxt->incMax * 2;
+        size_t newSize = ctxt->incMax ? ctxt->incMax * 2 : 4;
 
         tmp = (xmlXIncludeRefPtr *) xmlRealloc(ctxt->incTab,
 	             newSize * sizeof(ctxt->incTab[0]));
@@ -286,7 +276,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
 	    return(NULL);
 	}
         ctxt->incTab = tmp;
-        ctxt->incMax *= 2;
+        ctxt->incMax = newSize;
     }
     ctxt->incTab[ctxt->incNr++] = ret;
     return(ret);

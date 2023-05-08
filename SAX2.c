@@ -2874,20 +2874,23 @@ xmlSAXVersion(xmlSAXHandler *hdlr, int version)
 {
     if (hdlr == NULL) return(-1);
     if (version == 2) {
-	hdlr->startElement = NULL;
-	hdlr->endElement = NULL;
 	hdlr->startElementNs = xmlSAX2StartElementNs;
 	hdlr->endElementNs = xmlSAX2EndElementNs;
 	hdlr->serror = NULL;
 	hdlr->initialized = XML_SAX2_MAGIC;
 #ifdef LIBXML_SAX1_ENABLED
     } else if (version == 1) {
-	hdlr->startElement = xmlSAX2StartElement;
-	hdlr->endElement = xmlSAX2EndElement;
 	hdlr->initialized = 1;
 #endif /* LIBXML_SAX1_ENABLED */
     } else
         return(-1);
+#ifdef LIBXML_SAX1_ENABLED
+    hdlr->startElement = xmlSAX2StartElement;
+    hdlr->endElement = xmlSAX2EndElement;
+#else
+    hdlr->startElement = NULL;
+    hdlr->endElement = NULL;
+#endif /* LIBXML_SAX1_ENABLED */
     hdlr->internalSubset = xmlSAX2InternalSubset;
     hdlr->externalSubset = xmlSAX2ExternalSubset;
     hdlr->isStandalone = xmlSAX2IsStandalone;

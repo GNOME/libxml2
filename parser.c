@@ -842,10 +842,7 @@ xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
     if (ctxt == NULL) return;
     sax = ctxt->sax;
 #ifdef LIBXML_SAX1_ENABLED
-    if ((sax) &&  (sax->initialized == XML_SAX2_MAGIC) &&
-        ((sax->startElementNs != NULL) ||
-         (sax->endElementNs != NULL) ||
-         ((sax->startElement == NULL) && (sax->endElement == NULL))))
+    if ((sax) && (sax->initialized == XML_SAX2_MAGIC))
         ctxt->sax2 = 1;
 #else
     ctxt->sax2 = 1;

@@ -2174,15 +2174,11 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	     *
 	     * Open issue: normalization of the value.
 	     */
-#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
-#ifdef LIBXML_VALID_ENABLED
 	    if (xmlValidateNCName(content, 1) != 0) {
 	        xmlErrValid(ctxt, XML_DTD_XMLID_VALUE,
 		      "xml:id : attribute value %s is not an NCName\n",
 			    (const char *) content, NULL);
 	    }
-#endif
-#endif
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, content, ret);
 	} else if (xmlIsID(ctxt->myDoc, ctxt->node, ret)) {
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, content, ret);

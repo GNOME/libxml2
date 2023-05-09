@@ -418,9 +418,10 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
     xmlParserInputBufferPtr buf = in->buf;
     size_t used;
 
-    /* Don't shrink memory buffers. */
+    /* Don't shrink pull parser memory buffers. */
     if ((buf == NULL) ||
-        ((buf->encoder == NULL) && (buf->readcallback == NULL)))
+        ((ctxt->progressive == 0) &&
+         (buf->encoder == NULL) && (buf->readcallback == NULL)))
         return;
 
     used = in->cur - in->base;

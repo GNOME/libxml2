@@ -1096,7 +1096,7 @@ else
             fi
 
             AC_CHECK_HEADER(unicode/ucnv.h, [
-                AC_CHECK_LIB([icucore], [uconv_open], [
+                AC_CHECK_LIB([icucore], [ucnv_open], [
                     WITH_ICU=1
                     ICU_LIBS=-licucore
                     if test "$ICU_DIR" != ""; then

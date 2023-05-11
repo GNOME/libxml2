@@ -1,5 +1,17 @@
 NEWS file for libxml2
 
+v2.11.3: May 11 2023
+
+Fixes more regressions.
+
+- xinclude: Fix false positives in inclusion loop detection
+- autotools: Fix ICU detection
+- parser: Fix "huge input lookup" error with push parser
+- xpath: Fix build without LIBXML_XPATH_ENABLED
+- hash: Fix possible startup crash with old libxslt versions
+- autoconf: fix iconv library paths (Mike Dalessio)
+
+
 v2.11.2: May 5 2023
 
 Fix regressions.

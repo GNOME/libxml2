@@ -1,5 +1,12 @@
 NEWS file for libxml2
 
+v2.11.4: May 18 2023
+
+Fixes a serious regression.
+
+- parser: Fix regression when push parsing UTF-8 sequences
+
+
 v2.11.3: May 11 2023
 
 Fixes more regressions.

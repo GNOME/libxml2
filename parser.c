@@ -4332,7 +4332,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     return(buf);
 }
 
-static void xmlParseCharDataComplex(xmlParserCtxtPtr ctxt);
+static void xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial);
 
 /*
  * used for the test in the inner loop of the char data testing
@@ -4373,16 +4373,12 @@ static const unsigned char test_char_data[256] = {
 };
 
 /**
- * xmlParseCharData:
+ * xmlParseCharDataInternal:
  * @ctxt:  an XML parser context
- * @cdata:  unused
- *
- * DEPRECATED: Internal function, don't use.
+ * @partial:  buffer may contain partial UTF-8 sequences
  *
  * Parse character data. Always makes progress if the first char isn't
  * '<' or '&'.
- *
- * if we are within a CDATA section ']]>' marks an end of section.
  *
  * The right angle bracket (>) may be represented using the string "&gt;",
  * and must, for compatibility, be escaped using "&gt;" or a character
@@ -4391,9 +4387,8 @@ static const unsigned char test_char_data[256] = {
  *
  * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
  */
-
-void
-xmlParseCharData(xmlParserCtxtPtr ctxt, ATTRIBUTE_UNUSED int cdata) {
+static void
+xmlParseCharDataInternal(xmlParserCtxtPtr ctxt, int partial) {
     const xmlChar *in;
     int nbchar = 0;
     int line = ctxt->input->line;
@@ -4526,7 +4521,7 @@ get_more:
              (*in == 0x09) || (*in == 0x0a));
     ctxt->input->line = line;
     ctxt->input->col = col;
-    xmlParseCharDataComplex(ctxt);
+    xmlParseCharDataComplex(ctxt, partial);
 }
 
 /**
@@ -4541,7 +4536,7 @@ get_more:
  * of non-ASCII characters.
  */
 static void
-xmlParseCharDataComplex(xmlParserCtxtPtr ctxt) {
+xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     xmlChar buf[XML_PARSER_BIG_BUFFER_SIZE + 5];
     int nbchar = 0;
     int cur, l;
@@ -4604,13 +4599,40 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt) {
 	    }
 	}
     }
-    if ((ctxt->input->cur < ctxt->input->end) && (!IS_CHAR(cur))) {
-	/* Generate the error and skip the offending character */
-        xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
-                          "PCDATA invalid Char value %d\n",
-	                  cur ? cur : CUR);
-	NEXT;
+    /*
+     * cur == 0 can mean
+     *
+     * - XML_PARSER_EOF or memory error. This is checked above.
+     * - An actual 0 character.
+     * - End of buffer.
+     * - An incomplete UTF-8 sequence. This is allowed if partial is set.
+     */
+    if (ctxt->input->cur < ctxt->input->end) {
+        if ((cur == 0) && (CUR != 0)) {
+            if (partial == 0) {
+                xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                        "Incomplete UTF-8 sequence starting with %02X\n", CUR);
+                NEXTL(1);
+            }
+        } else if ((cur != '<') && (cur != '&')) {
+            /* Generate the error and skip the offending character */
+            xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                              "PCDATA invalid Char value %d\n", cur);
+            NEXTL(l);
+        }
     }
+}
+
+/**
+ * xmlParseCharData:
+ * @ctxt:  an XML parser context
+ * @cdata:  unused
+ *
+ * DEPRECATED: Internal function, don't use.
+ */
+void
+xmlParseCharData(xmlParserCtxtPtr ctxt, ATTRIBUTE_UNUSED int cdata) {
+    xmlParseCharDataInternal(ctxt, 0);
 }
 
 /**
@@ -9875,7 +9897,7 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
 	 * Last case, text. Note that References are handled directly.
 	 */
 	else {
-	    xmlParseCharData(ctxt, 0);
+	    xmlParseCharDataInternal(ctxt, 0);
 	}
 
 	SHRINK;
@@ -11662,7 +11684,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    goto done;
                     }
                     ctxt->checkIndex = 0;
-		    xmlParseCharData(ctxt, 0);
+		    xmlParseCharDataInternal(ctxt, !terminate);
 		}
 		break;
 	    }

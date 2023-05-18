@@ -715,14 +715,20 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 
             avail = ctxt->input->end - ctxt->input->cur;
 
-	    if ((avail < 2) || (cur[1] & 0xc0) != 0x80)
+            if (avail < 2)
+                goto incomplete_sequence;
+	    if ((cur[1] & 0xc0) != 0x80)
 		goto encoding_error;
 	    if ((c & 0xe0) == 0xe0) {
-		if ((avail < 3) || (cur[2] & 0xc0) != 0x80)
+                if (avail < 3)
+                    goto incomplete_sequence;
+		if ((cur[2] & 0xc0) != 0x80)
 		    goto encoding_error;
 		if ((c & 0xf0) == 0xf0) {
+                    if (avail < 4)
+                        goto incomplete_sequence;
 		    if (((c & 0xf8) != 0xf0) ||
-			(avail < 4) || ((cur[3] & 0xc0) != 0x80))
+			((cur[3] & 0xc0) != 0x80))
 			goto encoding_error;
 		    /* 4-byte code */
 		    *len = 4;
@@ -784,17 +790,8 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	return(0xA);
     }
     return(*ctxt->input->cur);
-encoding_error:
-    /*
-     * An encoding problem may arise from a truncated input buffer
-     * splitting a character in the middle. In that case do not raise
-     * an error but return 0 to indicate an end of stream problem
-     */
-    if (ctxt->input->end - ctxt->input->cur < 4) {
-	*len = 0;
-	return(0);
-    }
 
+encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
      * input encoding didn't get properly advertised in the
@@ -802,7 +799,11 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    {
+    if (ctxt->input->end - ctxt->input->cur < 4) {
+	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		     "Input is not proper UTF-8, indicate encoding !\n",
+		     NULL, NULL);
+    } else {
         char buffer[150];
 
 	snprintf(&buffer[0], 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
@@ -815,6 +816,16 @@ encoding_error:
     ctxt->charset = XML_CHAR_ENCODING_8859_1;
     *len = 1;
     return(*ctxt->input->cur);
+
+incomplete_sequence:
+    /*
+     * An encoding problem may arise from a truncated input buffer
+     * splitting a character in the middle. In that case do not raise
+     * an error but return 0. This should only happen when push parsing
+     * char data.
+     */
+    *len = 0;
+    return(0);
 }
 
 /**

@@ -12,7 +12,7 @@
 gcc:
   extends: .test
   variables:
-    CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=700"
+    CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=600"
 
 gcc:minimum:
   extends: .test

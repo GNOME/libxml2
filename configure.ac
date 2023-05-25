@@ -307,7 +307,7 @@ dnl
 AC_CHECK_FUNCS(snprintf vsnprintf,, NEED_TRIO=1)
 
 dnl Checks for library functions.
-AC_CHECK_FUNCS([gettimeofday ftime stat rand_r isascii mmap munmap putenv])
+AC_CHECK_FUNCS([gettimeofday ftime stat rand_r isascii mmap munmap])
 
 AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 #if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)

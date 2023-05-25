@@ -14,7 +14,7 @@
 #include "libxml.h"
 #include <stdio.h>
 
-#include <stdlib.h> /* for putenv() */
+#include <stdlib.h>
 #include <string.h>
 #include <libxml/xmlerror.h>
 #include <libxml/catalog.h>
@@ -131,11 +131,6 @@ int main(int argc, char **argv) {
 
     printf("Skipping on Windows for now\n");
     return(0);
-#endif
-
-#ifdef HAVE_PUTENV
-    /* access to the proxy can slow up regression tests a lot */
-    putenv((char *) "http_proxy=");
 #endif
 
     memset(chartab, 0, sizeof(chartab));

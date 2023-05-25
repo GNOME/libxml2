@@ -1037,22 +1037,30 @@ else
 	ICONV_DIR=$with_iconv
 	CPPFLAGS="$CPPFLAGS -I$ICONV_DIR/include"
 	LIBS="$LIBS -L$ICONV_DIR/lib"
-	# Export this since our headers include iconv.h
-	XML_INCLUDEDIR="$XML_INCLUDEDIR -I$ICONV_DIR/include"
     fi
-    AC_CHECK_HEADER(iconv.h, [
-        AC_SEARCH_LIBS([iconv], [iconv], [
+    AC_MSG_CHECKING([for libiconv])
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([#include <iconv.h>], [iconv_open(0,0);])
+    ], [
+        WITH_ICONV=1
+        AC_MSG_RESULT([none required])
+    ], [
+        LIBS="$LIBS -liconv"
+        AC_LINK_IFELSE([
+            AC_LANG_PROGRAM([#include <iconv.h>], [iconv_open(0,0);])
+        ], [
             WITH_ICONV=1
-            if test "$ac_cv_search_iconv" != "none required"; then
-                ICONV_LIBS=$ac_cv_search_iconv
-            fi], [
-            dnl GNU libiconv prefixes symbols with "lib"
-            AC_CHECK_LIB([iconv], [libiconv], [
-                WITH_ICONV=1
-                ICONV_LIBS="-liconv"])])])
+            ICONV_LIBS="-liconv"
+            AC_MSG_RESULT([yes])
+        ], [
+            AC_MSG_RESULT([no])
+        ])
+    ])
     if test "$WITH_ICONV" = "1" && test "$ICONV_DIR" != ""; then
         ICONV_CFLAGS="-I$ICONV_DIR/include"
         ICONV_LIBS="-L$ICONV_DIR/lib $ICONV_LIBS"
+	# Export this since our headers include iconv.h
+	XML_INCLUDEDIR="$XML_INCLUDEDIR -I$ICONV_DIR/include"
     fi
     CPPFLAGS=$_cppflags
     LIBS=$_libs

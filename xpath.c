@@ -6382,11 +6382,12 @@ xmlXPathNodeValHash(xmlNodePtr node) {
 	/*
 	 * Skip to next node
 	 */
-	if ((tmp->children != NULL) && (tmp->type != XML_DTD_NODE)) {
-	    if (tmp->children->type != XML_ENTITY_DECL) {
-		tmp = tmp->children;
-		continue;
-	    }
+        if ((tmp->children != NULL) &&
+            (tmp->type != XML_DTD_NODE) &&
+            (tmp->type != XML_ENTITY_REF_NODE) &&
+            (tmp->children->type != XML_ENTITY_DECL)) {
+            tmp = tmp->children;
+            continue;
 	}
 	if (tmp == node)
 	    break;

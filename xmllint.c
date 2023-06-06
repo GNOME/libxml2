@@ -2399,6 +2399,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    startTimer();
 	}
 	doc = xmlCopyDoc(doc, 1);
+        if (doc == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            xmlFreeDoc(tmp);
+            return;
+        }
 	if (timing) {
 	    endTimer("Copying");
 	}

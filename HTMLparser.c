@@ -411,9 +411,11 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	return(ctxt->token);
     }
 
-    if ((ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) &&
-        (xmlParserGrow(ctxt) < 0))
-        return(0);
+    if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) {
+        xmlParserGrow(ctxt);
+        if (ctxt->instate == XML_PARSER_EOF)
+            return(0);
+    }
 
     if (ctxt->charset != XML_CHAR_ENCODING_UTF8) {
         xmlChar * guess;

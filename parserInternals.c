@@ -566,8 +566,12 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
     ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
     xmlBufSetInputBaseCur(buf->buffer, in, 0, curBase);
 
-    if (ret < 0)
+    if (ret < 0) {
         xmlFatalErr(ctxt, buf->error, NULL);
+        /* Buffer contents may be lost in case of memory errors. */
+        if (buf->error == XML_ERR_NO_MEMORY)
+            xmlHaltParser(ctxt);
+    }
 
     return(ret);
 }

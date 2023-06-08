@@ -2143,8 +2143,10 @@ xmlCharEncInput(xmlParserInputBufferPtr input, int flush)
         toconv = 64 * 1024;
     written = xmlBufAvail(out);
     if (toconv * 2 >= written) {
-        if (xmlBufGrow(out, toconv * 2) < 0)
+        if (xmlBufGrow(out, toconv * 2) < 0) {
+            input->error = XML_ERR_NO_MEMORY;
             return(XML_ENC_ERR_MEMORY);
+        }
         written = xmlBufAvail(out);
     }
     if ((written > 128 * 1024) && (flush == 0))

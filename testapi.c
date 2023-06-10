@@ -5300,7 +5300,14 @@ test_xmlSAXDefaultVersion(void) {
         mem_base = xmlMemBlocks();
         version = gen_int(n_version, 0);
 
+        {
+            int original_version = xmlSAXDefaultVersion(2);
+
+
         ret_val = xmlSAXDefaultVersion(version);
+            (void)xmlSAXDefaultVersion(original_version);
+        }
+
         desret_int(ret_val);
         call_tests++;
         des_int(n_version, version, 0);

@@ -1326,7 +1326,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
         (ctxt->input->cur == ctxt->input->base) &&
         ((enc == XML_CHAR_ENCODING_UTF8) ||
          (enc == XML_CHAR_ENCODING_UTF16LE) ||
-         (enc == XML_CHAR_ENCODING_UTF16LE))) {
+         (enc == XML_CHAR_ENCODING_UTF16BE))) {
         /*
          * Errata on XML-1.0 June 20 2001
          * Specific handling of the Byte Order Mark for

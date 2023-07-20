@@ -4494,6 +4494,8 @@ get_more:
                 line = ctxt->input->line;
                 col = ctxt->input->col;
             }
+            if (ctxt->instate == XML_PARSER_EOF)
+                return;
         }
         ctxt->input->cur = in;
         if (*in == 0xD) {

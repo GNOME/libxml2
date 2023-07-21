@@ -935,7 +935,6 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
 
 	if (IS_BLANK_CH(CUR)) {
 	    ERROR5(NULL, NULL, NULL, "Invalid QName.\n", NULL);
-	    XML_PAT_FREE_STRING(ctxt, prefix);
 	    ctxt->error = 1;
 	    goto error;
 	}
@@ -960,12 +959,12 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
 		ERROR5(NULL, NULL, NULL,
 		    "xmlCompileAttributeTest : no namespace bound to prefix %s\n",
 		    prefix);
-	        XML_PAT_FREE_STRING(ctxt, prefix);
 		ctxt->error = 1;
 		goto error;
 	    }
 	}
-	XML_PAT_FREE_STRING(ctxt, prefix);
+        XML_PAT_FREE_STRING(ctxt, name);
+        name = NULL;
 	if (token == NULL) {
 	    if (CUR == '*') {
 		NEXT;
@@ -984,6 +983,8 @@ xmlCompileAttributeTest(xmlPatParserContextPtr ctxt) {
     }
     return;
 error:
+    if (name != NULL)
+	XML_PAT_FREE_STRING(ctxt, name);
     if (URL != NULL)
 	XML_PAT_FREE_STRING(ctxt, URL)
     if (token != NULL)

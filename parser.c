@@ -14340,15 +14340,11 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 {
     xmlParserInputPtr inputStream;
     xmlParserInputBufferPtr buf;
-    xmlCharEncoding enc = XML_CHAR_ENCODING_NONE;
 
     if (ctxt == NULL)
         return(1);
 
-    if ((encoding == NULL) && (chunk != NULL) && (size >= 4))
-        enc = xmlDetectCharEncoding((const xmlChar *) chunk, size);
-
-    buf = xmlAllocParserInputBuffer(enc);
+    buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (buf == NULL)
         return(1);
 
@@ -14413,8 +14409,6 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
 			      "Unsupported encoding %s\n", BAD_CAST encoding);
         }
-    } else if (enc != XML_CHAR_ENCODING_NONE) {
-        xmlSwitchEncoding(ctxt, enc);
     }
 
     return(0);

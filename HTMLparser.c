@@ -32,6 +32,7 @@
 #include "private/enc.h"
 #include "private/error.h"
 #include "private/html.h"
+#include "private/io.h"
 #include "private/parser.h"
 #include "private/tree.h"
 
@@ -5169,7 +5170,7 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 
 /**
  * htmlCreateDocParserCtxt:
- * @cur:  a pointer to an array of xmlChar
+ * @str:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  *
  * Create a parser context for an HTML document.
@@ -5179,16 +5180,36 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
  * Returns the new parser context or NULL
  */
 static htmlParserCtxtPtr
-htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding) {
-    int len;
-    htmlParserCtxtPtr ctxt;
+htmlCreateDocParserCtxt(const xmlChar *str, const char *encoding) {
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr input;
+    xmlParserInputBufferPtr buf;
 
-    if (cur == NULL)
+    if (str == NULL)
 	return(NULL);
-    len = xmlStrlen(cur);
-    ctxt = htmlCreateMemoryParserCtxt((char *)cur, len);
+
+    ctxt = htmlNewParserCtxt();
     if (ctxt == NULL)
 	return(NULL);
+
+    buf = xmlParserInputBufferCreateString(str);
+    if (buf == NULL) {
+	xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
+
+    input = xmlNewInputStream(ctxt);
+    if (input == NULL) {
+	xmlFreeParserInputBuffer(buf);
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+
+    input->filename = NULL;
+    input->buf = buf;
+    xmlBufResetInput(buf->buffer, input);
+
+    inputPush(ctxt, input);
 
     if (encoding != NULL) {
 	xmlCharEncoding enc;
@@ -5219,6 +5240,7 @@ htmlCreateDocParserCtxt(const xmlChar *cur, const char *encoding) {
 	    }
 	}
     }
+
     return(ctxt);
 }
 
@@ -6932,13 +6954,33 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
  * Returns the resulting document tree
  */
 htmlDocPtr
-htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar * cur,
+htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
                const char *URL, const char *encoding, int options)
 {
-    if (cur == NULL)
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ctxt == NULL)
         return (NULL);
-    return (htmlCtxtReadMemory(ctxt, (const char *) cur, xmlStrlen(cur), URL,
-                               encoding, options));
+    if (str == NULL)
+        return (NULL);
+    xmlInitParser();
+
+    htmlCtxtReset(ctxt);
+
+    input = xmlParserInputBufferCreateString(str);
+    if (input == NULL) {
+	return(NULL);
+    }
+
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+	xmlFreeParserInputBuffer(input);
+	return(NULL);
+    }
+
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 1));
 }
 
 /**

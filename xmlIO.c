@@ -2909,6 +2909,31 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
     return(ret);
 }
 
+typedef struct {
+    const char *mem;
+    size_t size;
+} xmlMemIOCtxt;
+
+static int
+xmlMemRead(void *vctxt, char *buf, int size) {
+    xmlMemIOCtxt *ctxt = vctxt;
+
+    if ((size_t) size > ctxt->size)
+        size = ctxt->size;
+
+    memcpy(buf, ctxt->mem, size);
+    ctxt->mem += size;
+    ctxt->size -= size;
+
+    return size;
+}
+
+static int
+xmlMemClose(void *vctxt) {
+    xmlFree(vctxt);
+    return(0);
+}
+
 /**
  * xmlParserInputBufferCreateMem:
  * @mem:  the memory input
@@ -2923,22 +2948,26 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
-    int errcode;
+    xmlMemIOCtxt *ctxt;
 
     if (size < 0) return(NULL);
     if (mem == NULL) return(NULL);
 
     ret = xmlAllocParserInputBuffer(enc);
-    if (ret != NULL) {
-        ret->context = (void *) mem;
-	ret->readcallback = NULL;
-	ret->closecallback = NULL;
-	errcode = xmlBufAdd(ret->buffer, (const xmlChar *) mem, size);
-	if (errcode != 0) {
-	    xmlFreeParserInputBuffer(ret);
-	    return(NULL);
-	}
+    if (ret == NULL)
+        return(NULL);
+
+    ctxt = xmlMalloc(sizeof(*ctxt));
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(ret);
+        return(NULL);
     }
+    ctxt->mem = mem;
+    ctxt->size = size;
+
+    ret->context = ctxt;
+    ret->readcallback = xmlMemRead;
+    ret->closecallback = xmlMemClose;
 
     return(ret);
 }
@@ -2957,6 +2986,65 @@ xmlParserInputBufferPtr
 xmlParserInputBufferCreateStatic(const char *mem, int size,
                                  xmlCharEncoding enc) {
     return(xmlParserInputBufferCreateMem(mem, size, enc));
+}
+
+typedef struct {
+    const xmlChar *str;
+} xmlStringIOCtxt;
+
+static int
+xmlStringRead(void *vctxt, char *buf, int size) {
+    xmlStringIOCtxt *ctxt = vctxt;
+    const xmlChar *zero;
+    size_t len;
+
+    zero = memchr(ctxt->str, 0, size);
+    len = zero ? zero - ctxt->str : size;
+
+    memcpy(buf, ctxt->str, len);
+    ctxt->str += len;
+
+    return(len);
+}
+
+static int
+xmlStringClose(void *vctxt) {
+    xmlFree(vctxt);
+    return(0);
+}
+
+/**
+ * xmlParserInputBufferCreateString:
+ * @str:  a null-terminated string
+ *
+ * Create a buffered parser input for the progressive parsing for the input
+ * from a null-terminated C string.
+ *
+ * Returns the new parser input or NULL
+ */
+xmlParserInputBufferPtr
+xmlParserInputBufferCreateString(const xmlChar *str) {
+    xmlParserInputBufferPtr ret;
+    xmlStringIOCtxt *ctxt;
+
+    if (str == NULL) return(NULL);
+
+    ret = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
+    if (ret == NULL)
+        return(NULL);
+
+    ctxt = xmlMalloc(sizeof(*ctxt));
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(ret);
+        return(NULL);
+    }
+    ctxt->str = str;
+
+    ret->context = ctxt;
+    ret->readcallback = xmlStringRead;
+    ret->closecallback = xmlStringClose;
+
+    return(ret);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

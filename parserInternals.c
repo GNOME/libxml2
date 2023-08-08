@@ -546,9 +546,6 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
     /* Don't grow push parser buffer. */
     if (ctxt->progressive)
         return(0);
-    /* Don't grow memory buffers. */
-    if ((buf->encoder == NULL) && (buf->readcallback == NULL))
-        return(0);
     if (buf->error != 0)
         return(-1);
 
@@ -602,10 +599,6 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     if (in->base == NULL) return(-1);
     if (in->cur == NULL) return(-1);
     if (in->buf->buffer == NULL) return(-1);
-
-    /* Don't grow memory buffers. */
-    if ((in->buf->encoder == NULL) && (in->buf->readcallback == NULL))
-        return(0);
 
     CHECK_BUFFER(in);
 
@@ -1838,9 +1831,7 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     if (xmlParserDebugEntities)
 	xmlGenericError(xmlGenericErrorContext,
 		"new fixed input: %.30s\n", buffer);
-    buf = xmlParserInputBufferCreateMem((const char *) buffer,
-                                        xmlStrlen(buffer),
-                                        XML_CHAR_ENCODING_NONE);
+    buf = xmlParserInputBufferCreateString(buffer);
     if (buf == NULL) {
 	xmlErrMemory(ctxt, NULL);
         return(NULL);

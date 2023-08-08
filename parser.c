@@ -10455,7 +10455,12 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 
 	if (RAW != 0) {
 	    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
-	}
+        } else if ((ctxt->input->buf != NULL) &&
+                   (ctxt->input->buf->encoder != NULL) &&
+                   (!xmlBufIsEmpty(ctxt->input->buf->raw))) {
+            xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,
+                           "Truncated multi-byte sequence at EOF\n");
+        }
 	ctxt->instate = XML_PARSER_EOF;
     }
 
@@ -11686,7 +11691,12 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	if ((ctxt->instate == XML_PARSER_EPILOG) &&
             (ctxt->input->cur < ctxt->input->end)) {
 	    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
-	}
+        } else if ((ctxt->input->buf != NULL) &&
+                   (ctxt->input->buf->encoder != NULL) &&
+                   (!xmlBufIsEmpty(ctxt->input->buf->raw))) {
+            xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,
+                           "Truncated multi-byte sequence at EOF\n");
+        }
 	if (ctxt->instate != XML_PARSER_EOF) {
 	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 		ctxt->sax->endDocument(ctxt->userData);

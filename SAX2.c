@@ -2503,10 +2503,7 @@ xmlSAX2Reference(void *ctx, const xmlChar *name)
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2Reference(%s)\n", name);
 #endif
-    if (name[0] == '#')
-	ret = xmlNewCharRef(ctxt->myDoc, name);
-    else
-	ret = xmlNewReference(ctxt->myDoc, name);
+    ret = xmlNewReference(ctxt->myDoc, name);
 #ifdef DEBUG_SAX_TREE
     xmlGenericError(xmlGenericErrorContext,
 	    "add xmlSAX2Reference %s to %s \n", name, ctxt->node->name);

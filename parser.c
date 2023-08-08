@@ -11973,13 +11973,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
         xmlSwitchEncoding(ctxt, enc);
     }
 
-    pinput->filename = NULL;
-    pinput->line = 1;
-    pinput->col = 1;
-    pinput->base = ctxt->input->cur;
-    pinput->cur = ctxt->input->cur;
-    pinput->free = NULL;
-
     /*
      * let's parse that entity knowing it's an external subset.
      */
@@ -12092,11 +12085,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
 	input->filename = (char *) systemIdCanonic;
     else
 	xmlFree(systemIdCanonic);
-    input->line = 1;
-    input->col = 1;
-    input->base = ctxt->input->cur;
-    input->cur = ctxt->input->cur;
-    input->free = NULL;
 
     /*
      * let's parse that entity knowing it's an external subset.

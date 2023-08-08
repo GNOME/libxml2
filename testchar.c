@@ -713,9 +713,65 @@ error:
     return ret;
 }
 
+#if defined(LIBXML_PUSH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+
+static char *
+convert(xmlCharEncodingHandlerPtr handler, const char *utf8, int size,
+        int *outSize) {
+    char *ret;
+    int inlen;
+    int res;
+
+    inlen = size;
+    *outSize = size * 2;
+    ret = xmlMalloc(*outSize);
+    if (ret == NULL)
+        return(NULL);
+    res = handler->output(BAD_CAST ret, outSize, BAD_CAST utf8, &inlen);
+    if ((res < 0) || (inlen != size)) {
+        xmlFree(ret);
+        return(NULL);
+    }
+
+    return(ret);
+}
+
+static int
+testUserEncodingPush(void) {
+    xmlCharEncodingHandlerPtr handler;
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr doc;
+    char buf[] =
+        "\xEF\xBB\xBF"
+        "<?xml version='1.0' encoding='ISO-8859-1'?>\n"
+        "<d>text</d>\n";
+    char *utf16;
+    int utf16Size;
+    int ret = 1;
+
+    handler = xmlGetCharEncodingHandler(XML_CHAR_ENCODING_UTF16LE);
+    utf16 = convert(handler, buf, sizeof(buf) - 1, &utf16Size);
+    ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+    xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_UTF16LE);
+    xmlParseChunk(ctxt, utf16, utf16Size, 0);
+    xmlParseChunk(ctxt, NULL, 0, 1);
+    doc = ctxt->myDoc;
+
+    if ((doc != NULL) &&
+        (doc->children != NULL) &&
+        (doc->children->children != NULL) &&
+        (xmlStrcmp(doc->children->children->content, BAD_CAST "text") == 0))
+        ret = 0;
+
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
+    xmlFree(utf16);
+
+    return(ret);
+}
+
 static int
 testUTF8Chunks(void) {
-#if defined(LIBXML_PUSH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     xmlParserCtxtPtr ctxt;
     xmlChar *out;
     int outSize;
@@ -786,10 +842,10 @@ error:
     xmlFreeParserCtxt(ctxt);
 
     return(ret);
-#else
     return(0);
-#endif
 }
+
+#endif
 
 int main(void) {
 
@@ -814,7 +870,10 @@ int main(void) {
     ret += testCharRanges();
     ret += testDocumentRanges();
     ret += testUserEncoding();
+#if defined(LIBXML_PUSH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+    ret += testUserEncodingPush();
     ret += testUTF8Chunks();
+#endif
 
     /*
      * Cleanup function for the XML library.

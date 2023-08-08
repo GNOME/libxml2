@@ -10320,7 +10320,8 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
      * XML declaration but it does not have a standalone attribute.
      * It will be overwritten later if a standalone attribute is found.
      */
-    ctxt->input->standalone = -2;
+
+    ctxt->standalone = -2;
 
     /*
      * We know that '<?xml' is here.
@@ -10401,7 +10402,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     GROW;
 
     SKIP_BLANKS;
-    ctxt->input->standalone = xmlParseSDDecl(ctxt);
+    ctxt->standalone = xmlParseSDDecl(ctxt);
 
     SKIP_BLANKS;
     if ((RAW == '?') && (NXT(1) == '>')) {
@@ -10525,7 +10526,6 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	     */
 	    return(-1);
 	}
-	ctxt->standalone = ctxt->input->standalone;
 	SKIP_BLANKS;
     } else {
 	ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
@@ -11265,7 +11265,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    xmlHaltParser(ctxt);
 			    return(0);
 			}
-			ctxt->standalone = ctxt->input->standalone;
 			if ((ctxt->encoding == NULL) &&
 			    (ctxt->input->encoding != NULL))
 			    ctxt->encoding = xmlStrdup(ctxt->input->encoding);

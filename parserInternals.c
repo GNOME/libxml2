@@ -1601,7 +1601,6 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     memset(input, 0, sizeof(xmlParserInput));
     input->line = 1;
     input->col = 1;
-    input->standalone = -1;
 
     /*
      * If the context is NULL the id cannot be initialized, but that

@@ -6110,29 +6110,6 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);
 #endif
-
-#if 0
-	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
-	    htmlParseTryOrFinish(ctxt, terminate);
-#endif
-    } else if (ctxt->instate != XML_PARSER_EOF) {
-	if ((ctxt->input != NULL) && ctxt->input->buf != NULL) {
-	    xmlParserInputBufferPtr in = ctxt->input->buf;
-	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
-		    (in->raw != NULL)) {
-		int nbchars;
-		size_t pos = ctxt->input->cur - ctxt->input->base;
-
-		nbchars = xmlCharEncInput(in, terminate);
-		xmlBufUpdateInput(in->buffer, ctxt->input, pos);
-		if (nbchars < 0) {
-		    htmlParseErr(ctxt, in->error,
-			         "encoder error\n", NULL, NULL);
-                    xmlHaltParser(ctxt);
-		    return(XML_ERR_INVALID_ENCODING);
-		}
-	    }
-	}
     }
     htmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {

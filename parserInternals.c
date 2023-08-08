@@ -1253,7 +1253,7 @@ xmlDetectEBCDIC(xmlParserInputPtr input) {
         return(NULL);
     outlen = sizeof(out) - 1;
     inlen = input->end - input->cur;
-    res = xmlEncInputChunk(handler, out, &outlen, input->cur, &inlen, 0);
+    res = xmlEncInputChunk(handler, out, &outlen, input->cur, &inlen);
     if (res < 0)
         return(handler);
     out[outlen] = 0;
@@ -1287,12 +1287,15 @@ xmlDetectEBCDIC(xmlParserInputPtr input) {
                 break;
             out[i] = 0;
             xmlCharEncCloseFunc(handler);
-            handler = xmlFindCharEncodingHandler((char *) out + start);
-            break;
+            return(xmlFindCharEncodingHandler((char *) out + start));
         }
     }
 
-    return(handler);
+    /*
+     * ICU handlers are stateful, so we have to recreate them.
+     */
+    xmlCharEncCloseFunc(handler);
+    return(xmlGetCharEncodingHandler(XML_CHAR_ENCODING_EBCDIC));
 }
 
 /**
@@ -1420,17 +1423,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         in->buffer = xmlBufCreate();
         in->rawconsumed = processed;
 
-        /*
-         * TODO: We must flush and decode the whole buffer to make functions
-         * like xmlReadMemory work with a user-provided encoding. If the
-         * encoding is specified directly, we should probably set
-         * XML_PARSE_IGNORE_ENC in xmlDoRead to avoid switching encodings
-         * twice. Then we could set "flush" to false which should save
-         * a considerable amount of memory when parsing from memory.
-         * It's probably even possible to remove this whole if-block
-         * completely.
-         */
-        nbchars = xmlCharEncInput(in, 1);
+        nbchars = xmlCharEncInput(in);
         xmlBufResetInput(in->buffer, input);
         if (nbchars < 0) {
             /* TODO: This could be an out of memory or an encoding error. */

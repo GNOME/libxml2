@@ -3218,7 +3218,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	/*
 	 * convert as much as possible to the parser reading buffer.
 	 */
-	nbchars = xmlCharEncInput(in, 1);
+	nbchars = xmlCharEncInput(in);
 	if (nbchars < 0)
 	    return(-1);
     } else {
@@ -3319,7 +3319,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     }
 
     if (in->encoder != NULL) {
-	res = xmlCharEncInput(in, 1);
+	res = xmlCharEncInput(in);
 	if (res < 0)
 	    return(-1);
     }

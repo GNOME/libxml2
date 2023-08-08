@@ -10993,27 +10993,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
 	    return(0);
 
-	if (ctxt->input == NULL) break;
-	if (ctxt->input->buf != NULL) {
-	    /*
-	     * If we are operating on converted input, try to flush
-	     * remaining chars to avoid them stalling in the non-converted
-	     * buffer.
-	     */
-	    if ((ctxt->input->buf->raw != NULL) &&
-		(xmlBufIsEmpty(ctxt->input->buf->raw) == 0)) {
-		size_t pos = ctxt->input->cur - ctxt->input->base;
-                int res;
-
-		res = xmlParserInputBufferPush(ctxt->input->buf, 0, "");
-                xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
-                if (res < 0) {
-                    xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
-                    xmlHaltParser(ctxt);
-                    return(0);
-                }
-	    }
-	}
         avail = ctxt->input->end - ctxt->input->cur;
         if (avail < 1)
 	    goto done;
@@ -11667,24 +11646,6 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
-
-    } else if (ctxt->instate != XML_PARSER_EOF) {
-	if ((ctxt->input != NULL) && ctxt->input->buf != NULL) {
-	    xmlParserInputBufferPtr in = ctxt->input->buf;
-	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
-		    (in->raw != NULL)) {
-		int nbchars;
-		size_t pos = ctxt->input->cur - ctxt->input->base;
-
-		nbchars = xmlCharEncInput(in, terminate);
-		xmlBufUpdateInput(in->buffer, ctxt->input, pos);
-		if (nbchars < 0) {
-	            xmlFatalErr(ctxt, in->error, NULL);
-                    xmlHaltParser(ctxt);
-		    return(ctxt->errNo);
-		}
-	    }
-	}
     }
 
     xmlParseTryOrFinish(ctxt, terminate);

@@ -5480,6 +5480,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((ctxt->sax) && (ctxt->sax->startDocument) &&
 	            (!ctxt->disableSAX))
 		    ctxt->sax->startDocument(ctxt->userData);
+                if (ctxt->instate == XML_PARSER_EOF)
+                    goto done;
 
 		cur = in->cur[0];
 		next = in->cur[1];
@@ -5496,6 +5498,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing internal subset\n");
 #endif
 		    htmlParseDocTypeDecl(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_PROLOG;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5538,6 +5542,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing Comment\n");
 #endif
 		    htmlParseComment(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_MISC;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
@@ -5548,6 +5554,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing PI\n");
 #endif
 		    htmlParsePI(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_MISC;
 		} else if ((cur == '<') && (next == '!') &&
 		    (UPP(2) == 'D') && (UPP(3) == 'O') &&
@@ -5562,6 +5570,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing internal subset\n");
 #endif
 		    htmlParseDocTypeDecl(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_PROLOG;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5594,6 +5604,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing Comment\n");
 #endif
 		    htmlParseComment(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_PROLOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
@@ -5604,6 +5616,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing PI\n");
 #endif
 		    htmlParsePI(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_PROLOG;
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 4)) {
@@ -5637,6 +5651,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing Comment\n");
 #endif
 		    htmlParseComment(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_EPILOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
@@ -5647,6 +5663,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    "HPP: Parsing PI\n");
 #endif
 		    htmlParsePI(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_EPILOG;
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 4)) {
@@ -5741,6 +5759,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 			ctxt->sax->endElement(ctxt->userData, name);
 		    htmlnamePop(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5767,6 +5787,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    if (ctxt->record_info)
 		        htmlNodeInfoPush(ctxt, &node_info);
 
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -5787,6 +5809,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 if (ctxt->record_info)
 	            htmlNodeInfoPush(ctxt, &node_info);
 
+                if (ctxt->instate == XML_PARSER_EOF)
+                    goto done;
 		ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
 		xmlGenericError(xmlGenericErrorContext,
@@ -5863,6 +5887,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         }
 		    }
 		    htmlParseScript(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
 		    if ((cur == '<') && (next == '/')) {
 			ctxt->instate = XML_PARSER_END_TAG;
 			ctxt->checkIndex = 0;
@@ -5898,6 +5924,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                                 "HPP: Parsing Comment\n");
 #endif
                         htmlParseComment(ctxt);
+                        if (ctxt->instate == XML_PARSER_EOF)
+                            goto done;
                         ctxt->instate = XML_PARSER_CONTENT;
                     } else {
                         if ((!terminate) &&
@@ -5914,6 +5942,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                             "HPP: Parsing PI\n");
 #endif
                     htmlParsePI(ctxt);
+                    if (ctxt->instate == XML_PARSER_EOF)
+                        goto done;
                     ctxt->instate = XML_PARSER_CONTENT;
                 } else if ((cur == '<') && (next == '/')) {
                     ctxt->instate = XML_PARSER_END_TAG;
@@ -5974,6 +6004,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 		    goto done;
 		htmlParseEndTag(ctxt);
+                if (ctxt->instate == XML_PARSER_EOF)
+                    goto done;
 		if (ctxt->nameNr == 0) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 		} else {

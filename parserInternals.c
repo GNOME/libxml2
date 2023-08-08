@@ -564,7 +564,7 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
         return(0);
 
     ret = xmlParserInputBufferGrow(buf, INPUT_CHUNK);
-    xmlBufSetInputBaseCur(buf->buffer, in, 0, curBase);
+    xmlBufUpdateInput(buf->buffer, in, curBase);
 
     if (ret < 0) {
         xmlFatalErr(ctxt, buf->error, NULL);
@@ -667,7 +667,7 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
 	}
     }
 
-    xmlBufSetInputBaseCur(buf->buffer, in, 0, used);
+    xmlBufUpdateInput(buf->buffer, in, used);
 }
 
 /**

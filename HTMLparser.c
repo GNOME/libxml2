@@ -6042,12 +6042,11 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
     }
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
-	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
-	size_t cur = ctxt->input->cur - ctxt->input->base;
+	size_t pos = ctxt->input->cur - ctxt->input->base;
 	int res;
 
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
 	if (res < 0) {
             htmlParseErr(ctxt, ctxt->input->buf->error,
                          "xmlParserInputBufferPush failed", NULL, NULL);
@@ -6068,11 +6067,10 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
 		    (in->raw != NULL)) {
 		int nbchars;
-		size_t base = xmlBufGetInputBase(in->buffer, ctxt->input);
-		size_t current = ctxt->input->cur - ctxt->input->base;
+		size_t pos = ctxt->input->cur - ctxt->input->base;
 
 		nbchars = xmlCharEncInput(in, terminate);
-		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
+		xmlBufUpdateInput(in->buffer, ctxt->input, pos);
 		if (nbchars < 0) {
 		    htmlParseErr(ctxt, in->error,
 			         "encoder error\n", NULL, NULL);
@@ -6163,12 +6161,11 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL))  {
-	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
-	size_t cur = ctxt->input->cur - ctxt->input->base;
+	size_t pos = ctxt->input->cur - ctxt->input->base;
         int res;
 
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
             htmlParseErr(ctxt, ctxt->input->buf->error,
                          "xmlParserInputBufferPush failed\n", NULL, NULL);

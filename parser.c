@@ -11007,14 +11007,11 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	     */
 	    if ((ctxt->input->buf->raw != NULL) &&
 		(xmlBufIsEmpty(ctxt->input->buf->raw) == 0)) {
-                size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
-                                                 ctxt->input);
-		size_t current = ctxt->input->cur - ctxt->input->base;
+		size_t pos = ctxt->input->cur - ctxt->input->base;
                 int res;
 
 		res = xmlParserInputBufferPush(ctxt->input->buf, 0, "");
-                xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input,
-                                      base, current);
+                xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
                 if (res < 0) {
                     xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
                     xmlHaltParser(ctxt);
@@ -11669,12 +11666,11 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
-	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
-	size_t cur = ctxt->input->cur - ctxt->input->base;
+	size_t pos = ctxt->input->cur - ctxt->input->base;
 	int res;
 
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
 	if (res < 0) {
             xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
 	    xmlHaltParser(ctxt);
@@ -11690,11 +11686,10 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
 		    (in->raw != NULL)) {
 		int nbchars;
-		size_t base = xmlBufGetInputBase(in->buffer, ctxt->input);
-		size_t current = ctxt->input->cur - ctxt->input->base;
+		size_t pos = ctxt->input->cur - ctxt->input->base;
 
 		nbchars = xmlCharEncInput(in, terminate);
-		xmlBufSetInputBaseCur(in->buffer, ctxt->input, base, current);
+		xmlBufUpdateInput(in->buffer, ctxt->input, pos);
 		if (nbchars < 0) {
 	            xmlFatalErr(ctxt, in->error, NULL);
                     xmlHaltParser(ctxt);
@@ -11720,14 +11715,11 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 
     if ((end_in_lf == 1) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL)) {
-	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer,
-					 ctxt->input);
-	size_t current = ctxt->input->cur - ctxt->input->base;
+	size_t pos = ctxt->input->cur - ctxt->input->base;
         int res;
 
 	res = xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
-	xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input,
-			      base, current);
+	xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
             xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
             xmlHaltParser(ctxt);
@@ -11831,12 +11823,11 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     if ((size != 0) && (chunk != NULL) &&
         (ctxt->input != NULL) && (ctxt->input->buf != NULL)) {
-	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
-	size_t cur = ctxt->input->cur - ctxt->input->base;
+	size_t pos = ctxt->input->cur - ctxt->input->base;
         int res;
 
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
             xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
             xmlHaltParser(ctxt);
@@ -14146,12 +14137,11 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL)) {
-	size_t base = xmlBufGetInputBase(ctxt->input->buf->buffer, ctxt->input);
-        size_t cur = ctxt->input->cur - ctxt->input->base;
+        size_t pos = ctxt->input->cur - ctxt->input->base;
         int res;
 
         res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-        xmlBufSetInputBaseCur(ctxt->input->buf->buffer, ctxt->input, base, cur);
+        xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
             xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
             xmlHaltParser(ctxt);

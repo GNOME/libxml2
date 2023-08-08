@@ -7775,9 +7775,11 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
  */
 static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
-    xmlParserInputPtr input;
-    xmlBufferPtr buf;
-    int l, c;
+    xmlParserInputPtr input = NULL;
+    xmlChar *content = NULL;
+    size_t length, i;
+    int ret = -1;
+    int res;
 
     if ((ctxt == NULL) || (entity == NULL) ||
         ((entity->etype != XML_EXTERNAL_PARAMETER_ENTITY) &&
@@ -7792,61 +7794,54 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Reading %s entity content input\n", entity->name);
 
-    buf = xmlBufferCreate();
-    if (buf == NULL) {
-	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	            "xmlLoadEntityContent parameter error");
-        return(-1);
-    }
-    xmlBufferSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
-
-    input = xmlNewEntityInputStream(ctxt, entity);
+    input = xmlLoadExternalEntity((char *) entity->URI,
+           (char *) entity->ExternalID, ctxt);
     if (input == NULL) {
 	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
 	            "xmlLoadEntityContent input error");
-	xmlBufferFree(buf);
         return(-1);
     }
 
-    /*
-     * Push the entity as the current input, read char by char
-     * saving to the buffer until the end of the entity or an error
-     */
-    if (xmlPushInput(ctxt, input) < 0) {
-        xmlBufferFree(buf);
-	xmlFreeInputStream(input);
-	return(-1);
+    while ((res = xmlParserInputBufferGrow(input->buf, 16384)) > 0)
+        ;
+
+    if (res < 0) {
+        xmlFatalErr(ctxt, input->buf->error, NULL);
+        goto error;
     }
 
-    GROW;
-    c = CUR_CHAR(l);
-    while ((ctxt->input == input) && (ctxt->input->cur < ctxt->input->end) &&
-           (IS_CHAR(c))) {
-        xmlBufferAdd(buf, ctxt->input->cur, l);
-	NEXTL(l);
-	c = CUR_CHAR(l);
-    }
-    if (ctxt->instate == XML_PARSER_EOF) {
-	xmlBufferFree(buf);
-	return(-1);
+    length = xmlBufUse(input->buf->buffer);
+    content = xmlBufDetach(input->buf->buffer);
+
+    if (length > INT_MAX) {
+        xmlErrMemory(ctxt, NULL);
+        goto error;
     }
 
-    if ((ctxt->input == input) && (ctxt->input->cur >= ctxt->input->end)) {
-        xmlSaturatedAdd(&ctxt->sizeentities, ctxt->input->consumed);
-        xmlPopInput(ctxt);
-    } else if (!IS_CHAR(c)) {
-        xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
-                          "xmlLoadEntityContent: invalid char value %d\n",
-	                  c);
-	xmlBufferFree(buf);
-	return(-1);
-    }
-    entity->content = buf->content;
-    entity->length = buf->use;
-    buf->content = NULL;
-    xmlBufferFree(buf);
+    for (i = 0; i < length; ) {
+        int clen = length - i;
+        int c = xmlGetUTF8Char(content + i, &clen);
 
-    return(0);
+        if ((c < 0) || (!IS_CHAR(c))) {
+            xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
+                              "xmlLoadEntityContent: invalid char value %d\n",
+                              content[i]);
+            goto error;
+        }
+        i += clen;
+    }
+
+    xmlSaturatedAdd(&ctxt->sizeentities, length);
+    entity->content = content;
+    entity->length = length;
+    content = NULL;
+    ret = 0;
+
+error:
+    xmlFree(content);
+    xmlFreeInputStream(input);
+
+    return(ret);
 }
 
 /**

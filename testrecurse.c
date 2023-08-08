@@ -995,7 +995,12 @@ hugeDtdTest(const char *filename ATTRIBUTE_UNUSED,
         total_size = strlen(hugeDocParts->start) +
                      strlen(hugeDocParts->segment) * (MAX_NODES - 1) +
                      strlen(hugeDocParts->finish) +
-                     28;
+                     /*
+                      * Other external entities pa.ent, pb.ent, pc.ent.
+                      * These are currently counted twice because they're
+                      * used both in DTD and EntityValue.
+                      */
+                     (16 + 6 + 6) * 2;
         if (ctxt->sizeentities != total_size) {
             fprintf(stderr, "Wrong parsed entity size: %lu (expected %lu)\n",
                     ctxt->sizeentities, total_size);

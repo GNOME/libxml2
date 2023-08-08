@@ -63,9 +63,9 @@ struct _xmlParserInput {
     int col;                          /* Current column */
     unsigned long consumed;           /* How many xmlChars already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
-    const xmlChar *encoding;          /* the encoding string for entity */
+    const xmlChar *encoding;          /* unused */
     const xmlChar *version;           /* the version string for entity */
-    int standalone;                   /* Was that entity marked standalone */
+    int flags;                        /* Flags */
     int id;                           /* an unique identifier for the entity */
     unsigned long parentConsumed;     /* consumed bytes from parents */
     xmlEntityPtr entity;              /* entity, if any */
@@ -122,7 +122,8 @@ typedef enum {
     XML_PARSER_SYSTEM_LITERAL,	/* within a SYSTEM value */
     XML_PARSER_EPILOG,		/* the Misc* after the last end tag */
     XML_PARSER_IGNORE,		/* within an IGNORED section */
-    XML_PARSER_PUBLIC_LITERAL	/* within a PUBLIC value */
+    XML_PARSER_PUBLIC_LITERAL,	/* within a PUBLIC value */
+    XML_PARSER_XML_DECL         /* before XML decl (but after BOM) */
 } xmlParserInputState;
 
 /**
@@ -245,8 +246,7 @@ struct _xmlParserCtxt {
 
     int                depth;         /* to prevent entity substitution loops */
     xmlParserInputPtr  entity;        /* used to check entities boundaries */
-    int                charset;       /* encoding of the in-memory content
-				         actually an xmlCharEncoding */
+    int                charset;       /* unused */
     int                nodelen;       /* Those two fields are there to */
     int                nodemem;       /* Speed up large node parsing */
     int                pedantic;      /* signal pedantic warnings */

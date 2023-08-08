@@ -384,8 +384,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	int oldinputMax;
 	xmlParserInputPtr *oldinputTab;
 	xmlParserInputPtr input = NULL;
-	xmlCharEncoding enc;
-	int oldcharset;
 	const xmlChar *oldencoding;
 	int oldprogressive;
         unsigned long consumed;
@@ -410,7 +408,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	oldinputNr = ctxt->inputNr;
 	oldinputMax = ctxt->inputMax;
 	oldinputTab = ctxt->inputTab;
-	oldcharset = ctxt->charset;
 	oldencoding = ctxt->encoding;
         oldprogressive = ctxt->progressive;
 	ctxt->encoding = NULL;
@@ -425,7 +422,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	    ctxt->inputNr = oldinputNr;
 	    ctxt->inputMax = oldinputMax;
 	    ctxt->inputTab = oldinputTab;
-	    ctxt->charset = oldcharset;
 	    ctxt->encoding = oldencoding;
             ctxt->progressive = oldprogressive;
 	    return;
@@ -434,14 +430,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	ctxt->inputMax = 5;
 	ctxt->input = NULL;
 	xmlPushInput(ctxt, input);
-
-	/*
-	 * On the fly encoding conversion if needed
-	 */
-	if (ctxt->input->length >= 4) {
-	    enc = xmlDetectCharEncoding(ctxt->input->cur, 4);
-	    xmlSwitchEncoding(ctxt, enc);
-	}
 
 	if (input->filename == NULL)
 	    input->filename = (char *) xmlCanonicPath(SystemID);
@@ -484,7 +472,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	ctxt->inputNr = oldinputNr;
 	ctxt->inputMax = oldinputMax;
 	ctxt->inputTab = oldinputTab;
-	ctxt->charset = oldcharset;
 	if ((ctxt->encoding != NULL) &&
 	    ((ctxt->dict == NULL) ||
 	     (!xmlDictOwns(ctxt->dict, ctxt->encoding))))
@@ -1040,16 +1027,6 @@ xmlSAX2EndDocument(void *ctx)
 	(ctxt->myDoc->encoding == NULL)) {
 	ctxt->myDoc->encoding = ctxt->encoding;
 	ctxt->encoding = NULL;
-    }
-    if ((ctxt->inputTab != NULL) &&
-        (ctxt->inputNr > 0) && (ctxt->inputTab[0] != NULL) &&
-        (ctxt->inputTab[0]->encoding != NULL) && (ctxt->myDoc != NULL) &&
-	(ctxt->myDoc->encoding == NULL)) {
-	ctxt->myDoc->encoding = xmlStrdup(ctxt->inputTab[0]->encoding);
-    }
-    if ((ctxt->charset != XML_CHAR_ENCODING_NONE) && (ctxt->myDoc != NULL) &&
-	(ctxt->myDoc->charset == XML_CHAR_ENCODING_NONE)) {
-	ctxt->myDoc->charset = ctxt->charset;
     }
 }
 

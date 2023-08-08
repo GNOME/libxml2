@@ -3790,8 +3790,6 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
                                          "Unknown encoding %s",
                                          BAD_CAST encoding, NULL);
                     }
-                    if (ret->encoding == NULL)
-                        ret->encoding = xmlStrdup(BAD_CAST encoding);
                 }
 #if 0
             } else if (xmlStrstr(BAD_CAST mime, BAD_CAST "html")) {

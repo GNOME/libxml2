@@ -271,11 +271,11 @@ static int testCharRangeByte1(xmlParserCtxtPtr ctxt) {
     data[3] = 0;
     for (i = 0;i <= 0xFF;i++) {
         data[0] = (char) i;
-	ctxt->charset = XML_CHAR_ENCODING_UTF8;
         ctxt->nbErrors = 0;
 
 	lastError = 0;
         c = xmlCurrentChar(ctxt, &len);
+        ctxt->input->flags = 0;
 	if ((i == 0) || (i >= 0x80)) {
 	    /* we must see an error there */
 	    if (lastError != XML_ERR_INVALID_CHAR) {
@@ -307,11 +307,11 @@ static int testCharRangeByte2(xmlParserCtxtPtr ctxt) {
 	for (j = 0;j <= 0xFF;j++) {
 	    data[0] = (char) i;
 	    data[1] = (char) j;
-	    ctxt->charset = XML_CHAR_ENCODING_UTF8;
             ctxt->nbErrors = 0;
 
 	    lastError = 0;
 	    c = xmlCurrentChar(ctxt, &len);
+            ctxt->input->flags = 0;
 
 	    /* if first bit of first char is set, then second bit must too */
 	    if ((i & 0x80) && ((i & 0x40) == 0)) {
@@ -401,11 +401,11 @@ static int testCharRangeByte3(xmlParserCtxtPtr ctxt) {
 	K = lows[k];
 	data[2] = (char) K;
 	value = (K & 0x3F) + ((j & 0x3F) << 6) + ((i & 0xF) << 12);
-	ctxt->charset = XML_CHAR_ENCODING_UTF8;
         ctxt->nbErrors = 0;
 
 	lastError = 0;
 	c = xmlCurrentChar(ctxt, &len);
+        ctxt->input->flags = 0;
 
 	/*
 	 * if fourth bit of first char is set, then the sequence would need
@@ -504,11 +504,11 @@ static int testCharRangeByte4(xmlParserCtxtPtr ctxt) {
 	data[3] = (char) L;
 	value = (L & 0x3F) + ((K & 0x3F) << 6) + ((j & 0x3F) << 12) +
 	        ((i & 0x7) << 18);
-	ctxt->charset = XML_CHAR_ENCODING_UTF8;
         ctxt->nbErrors = 0;
 
 	lastError = 0;
 	c = xmlCurrentChar(ctxt, &len);
+        ctxt->input->flags = 0;
 
 	/*
 	 * if fifth bit of first char is set, then the sequence would need

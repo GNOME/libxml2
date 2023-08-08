@@ -1414,7 +1414,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
      * Is there already some content down the pipe to convert ?
      */
     if (xmlBufIsEmpty(in->buffer) == 0) {
-        size_t processed, use, consumed;
+        size_t processed;
 
         /*
          * Shrink the current input buffer.
@@ -1426,7 +1426,6 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         in->raw = in->buffer;
         in->buffer = xmlBufCreate();
         in->rawconsumed = processed;
-        use = xmlBufUse(in->raw);
 
         /*
          * TODO: We must flush and decode the whole buffer to make functions
@@ -1448,12 +1447,6 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
             xmlHaltParser(ctxt);
             return (-1);
         }
-        consumed = use - xmlBufUse(in->raw);
-        if ((consumed > ULONG_MAX) ||
-            (in->rawconsumed > ULONG_MAX - (unsigned long)consumed))
-            in->rawconsumed = ULONG_MAX;
-        else
-	    in->rawconsumed += consumed;
     }
     return (0);
 }

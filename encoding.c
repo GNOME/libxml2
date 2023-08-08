@@ -2159,6 +2159,11 @@ xmlCharEncInput(xmlParserInputBufferPtr input, int flush)
     xmlBufShrink(in, c_in);
     xmlBufAddLen(out, c_out);
 
+    if (input->rawconsumed > ULONG_MAX - (unsigned long)c_in)
+        input->rawconsumed = ULONG_MAX;
+    else
+        input->rawconsumed += c_in;
+
     if ((c_out == 0) && (ret != 0)) {
         if (input->error == 0)
             input->error = xmlEncConvertError(ret);

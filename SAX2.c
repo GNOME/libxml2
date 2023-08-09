@@ -1898,18 +1898,6 @@ skip:
     } else
 	ret->content = (xmlChar *) intern;
 
-    if (ctxt->linenumbers) {
-	if (ctxt->input != NULL) {
-	    if ((unsigned) ctxt->input->line < (unsigned) USHRT_MAX)
-		ret->line = ctxt->input->line;
-	    else {
-	        ret->line = USHRT_MAX;
-		if (ctxt->options & XML_PARSE_BIG_LINES)
-		    ret->psvi = (void *) (ptrdiff_t) ctxt->input->line;
-	    }
-	}
-    }
-
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(ret);
     return(ret);
@@ -2625,6 +2613,19 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 		}
 	    }
 	}
+    }
+
+    if ((lastChild != NULL) &&
+        (type == XML_TEXT_NODE) &&
+        (ctxt->linenumbers) &&
+        (ctxt->input != NULL)) {
+        if ((unsigned) ctxt->input->line < (unsigned) USHRT_MAX)
+            lastChild->line = ctxt->input->line;
+        else {
+            lastChild->line = USHRT_MAX;
+            if (ctxt->options & XML_PARSE_BIG_LINES)
+                lastChild->psvi = (void *) (ptrdiff_t) ctxt->input->line;
+        }
     }
 }
 

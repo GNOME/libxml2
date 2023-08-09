@@ -1,5 +1,26 @@
 NEWS file for libxml2
 
+v2.11.5: Aug 9 2023
+
+### Regressions
+
+- parser: Make xmlSwitchEncoding always skip the BOM
+- autotools: Improve iconv check
+
+### Bug fixes
+
+- valid: Fix c1->parent pointer in xmlCopyDocElementContent
+- encoding: Always call ucnv_convertEx with flush set to false
+
+### Portability
+
+- autotools: fix Python module file ext for cygwin/msys2 (Christoph Reiter)
+
+### Tests
+
+- runtest: Fix compilation without LIBXML_HTML_ENABLED
+
+
 v2.11.4: May 18 2023
 
 Fixes a serious regression.

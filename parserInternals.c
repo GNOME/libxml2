@@ -1467,13 +1467,14 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
  */
 void
 xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
-    const xmlChar *in = ctxt->input->cur;
+    const xmlChar *in;
     xmlCharEncoding enc;
     int bomSize;
     int autoFlag = 0;
 
     if (xmlParserGrow(ctxt) < 0)
         return;
+    in = ctxt->input->cur;
     if (ctxt->input->end - in < 4)
         return;
 

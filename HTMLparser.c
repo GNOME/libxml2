@@ -445,7 +445,6 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
             xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
         } else {
             handler = xmlFindCharEncodingHandler((const char *) guess);
-            xmlFree(guess);
             if (handler != NULL) {
                 /*
                  * Don't use UTF-8 encoder which isn't required and
@@ -457,6 +456,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                 htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
                              "Unsupported encoding %s", guess, NULL);
             }
+            xmlFree(guess);
         }
         ctxt->input->flags |= XML_INPUT_HAS_ENCODING;
     }

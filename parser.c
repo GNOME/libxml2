@@ -2292,8 +2292,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 #define CUR_CHAR(l) xmlCurrentChar(ctxt, &l)
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
-#define COPY_BUF(l,b,i,v)						\
-    if (l == 1) b[i++] = v;						\
+#define COPY_BUF(b, i, v)						\
+    if (v < 0x80) b[i++] = v;						\
     else i += xmlCopyCharMultiByte(&b[i],v)
 
 /**
@@ -2843,7 +2843,7 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	    int val = xmlParseStringCharRef(ctxt, &str);
 	    if (val == 0)
                 goto int_error;
-	    COPY_BUF(0,buffer,nbchars,val);
+	    COPY_BUF(buffer, nbchars, val);
 	    if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
 	        growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
 	    }
@@ -2856,7 +2856,7 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 	    if ((ent != NULL) &&
 		(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		if (ent->content != NULL) {
-		    COPY_BUF(0,buffer,nbchars,ent->content[0]);
+		    COPY_BUF(buffer, nbchars, ent->content[0]);
 		    if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
 			growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
 		    }
@@ -2967,7 +2967,7 @@ xmlStringDecodeEntitiesInt(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
                 rep = NULL;
 	    }
 	} else {
-	    COPY_BUF(l,buffer,nbchars,c);
+	    COPY_BUF(buffer, nbchars, c);
 	    str += l;
 	    if (nbchars + XML_PARSER_BUFFER_SIZE > buffer_size) {
 	        growBuffer(buffer, XML_PARSER_BUFFER_SIZE);
@@ -3742,11 +3742,11 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 	return(NULL);
     }
 
-    COPY_BUF(l,buf,len,c);
+    COPY_BUF(buf, len, c);
     cur += l;
     c = CUR_SCHAR(cur, l);
     while (xmlIsNameChar(ctxt, c)) {
-	COPY_BUF(l,buf,len,c);
+	COPY_BUF(buf, len, c);
 	cur += l;
 	c = CUR_SCHAR(cur, l);
 	if (len >= XML_MAX_NAMELEN) { /* test bigentname.xml */
@@ -3776,7 +3776,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 		    }
 		    buffer = tmp;
 		}
-		COPY_BUF(l,buffer,len,c);
+		COPY_BUF(buffer, len, c);
 		cur += l;
 		c = CUR_SCHAR(cur, l);
                 if (len > maxLength) {
@@ -3825,7 +3825,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     c = CUR_CHAR(l);
 
     while (xmlIsNameChar(ctxt, c)) {
-	COPY_BUF(l,buf,len,c);
+	COPY_BUF(buf, len, c);
 	NEXTL(l);
 	c = CUR_CHAR(l);
 	if (len >= XML_MAX_NAMELEN) {
@@ -3855,7 +3855,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 		    }
 		    buffer = tmp;
 		}
-		COPY_BUF(l,buffer,len,c);
+		COPY_BUF(buffer, len, c);
                 if (len > maxLength) {
                     xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NmToken");
                     xmlFree(buffer);
@@ -3957,7 +3957,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	    }
 	    buf = tmp;
 	}
-	COPY_BUF(l,buf,len,c);
+	COPY_BUF(buf, len, c);
 	NEXTL(l);
 
 	GROW;
@@ -4241,7 +4241,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 	    if ((c == 0x20) || (c == 0xD) || (c == 0xA) || (c == 0x9)) {
 	        if ((len != 0) || (!normalize)) {
 		    if ((!normalize) || (!in_space)) {
-			COPY_BUF(l,buf,len,0x20);
+			COPY_BUF(buf, len, 0x20);
 			while (len + 10 > buf_size) {
 			    growBuffer(buf, 10);
 			}
@@ -4250,7 +4250,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		}
 	    } else {
 	        in_space = 0;
-		COPY_BUF(l,buf,len,c);
+		COPY_BUF(buf, len, c);
 		if (len + 10 > buf_size) {
 		    growBuffer(buf, 10);
 		}
@@ -4397,7 +4397,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	    }
 	    buf = tmp;
 	}
-	COPY_BUF(l,buf,len,cur);
+	COPY_BUF(buf, len, cur);
         if (len > maxLength) {
             xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "SystemLiteral");
             xmlFree(buf);
@@ -4721,7 +4721,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
 	if ((cur == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
 	    xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
 	}
-	COPY_BUF(l,buf,nbchar,cur);
+	COPY_BUF(buf, nbchar, cur);
 	/* move current position before possible calling of ctxt->sax->characters */
 	NEXTL(l);
 	if (nbchar >= XML_PARSER_BIG_BUFFER_SIZE) {
@@ -4964,7 +4964,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
 	    buf = new_buf;
             size = new_size;
 	}
-	COPY_BUF(ql,buf,len,q);
+	COPY_BUF(buf, len, q);
         if (len > maxLength) {
             xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
                          "Comment too big found", NULL);
@@ -5386,7 +5386,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    buf = tmp;
                     size = new_size;
 		}
-		COPY_BUF(l,buf,len,cur);
+		COPY_BUF(buf, len, cur);
                 if (len > maxLength) {
                     xmlFatalErrMsgStr(ctxt, XML_ERR_PI_NOT_FINISHED,
                                       "PI %s too big found", target);
@@ -7246,7 +7246,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         /*
          * Just encode the value in UTF-8
          */
-        COPY_BUF(0, out, i, value);
+        COPY_BUF(out, i, value);
         out[i] = 0;
         if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL) &&
             (!ctxt->disableSAX))
@@ -10218,7 +10218,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	    buf = tmp;
 	    size *= 2;
 	}
-	COPY_BUF(rl,buf,len,r);
+	COPY_BUF(buf, len, r);
         if (len > maxLength) {
             xmlFatalErrMsg(ctxt, XML_ERR_CDATA_NOT_FINISHED,
                            "CData section too big found\n");

@@ -792,9 +792,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
                                     "xmlParserInputBufferRead failed\n");
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
 		    reader->state = oldstate;
-		    if ((oldstate != XML_TEXTREADER_START) ||
-			(reader->ctxt->myDoc != NULL))
-			return(val);
+		    return(val);
 		} else if (val == 0) {
 		    /* mark the end of the stream and process the remains */
 		    reader->mode = XML_TEXTREADER_MODE_EOF;

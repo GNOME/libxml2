@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 #
+import setup_test
 import libxml2
 
 expect=' xmlns:a="urn:whatevar"'

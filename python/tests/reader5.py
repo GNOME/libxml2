@@ -3,6 +3,7 @@
 # this tests the Expand() API of the xmlTextReader interface
 # this extract the Dragon bibliography entries from the XML specification
 #
+import setup_test
 import libxml2
 import os
 import sys

@@ -3,6 +3,7 @@
 #
 # this tests the next API of the XmlTextReader interface
 #
+import setup_test
 import libxml2
 import sys
 try:

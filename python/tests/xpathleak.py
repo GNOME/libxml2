@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import sys, libxml2
+import setup_test
+import libxml2
+import sys
 
 libxml2.debugMemory(True)
 

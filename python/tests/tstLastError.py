@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys, unittest
 
+import setup_test
 import libxml2
 
 class TestCase(unittest.TestCase):

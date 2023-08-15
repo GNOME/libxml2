@@ -6,6 +6,7 @@ except:
     from thread import get_ident
 from threading import Thread, Lock
 
+import setup_test
 import libxml2
 
 THREADS_COUNT = 15

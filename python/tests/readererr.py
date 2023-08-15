@@ -2,6 +2,7 @@
 #
 # this tests the basic APIs of the XmlTextReader interface
 #
+import setup_test
 import libxml2
 import sys
 try:

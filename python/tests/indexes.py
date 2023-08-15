@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: ISO-8859-1 -*-
 import sys
+import setup_test
 import libxml2
 
 # Memory debug specific

@@ -4,6 +4,7 @@
 # functions defined in Python.
 #
 import sys
+import setup_test
 import libxml2
 
 # Memory debug specific

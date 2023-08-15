@@ -6,6 +6,7 @@
 import sys
 import glob
 import os
+import setup_test
 import libxml2
 try:
     import StringIO

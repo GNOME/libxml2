@@ -3,6 +3,7 @@
 # this tests the entities substitutions with the XmlTextReader interface
 #
 import sys
+import setup_test
 import libxml2
 try:
     import StringIO

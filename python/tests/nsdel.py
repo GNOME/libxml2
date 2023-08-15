@@ -4,6 +4,7 @@
 # allows to detect memory leaks
 #
 import sys
+import setup_test
 import libxml2
 
 instance="""<?xml version="1.0"?>

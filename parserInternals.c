@@ -1386,6 +1386,15 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     input->flags |= XML_INPUT_HAS_ENCODING;
     input->flags &= ~XML_INPUT_8_BIT;
 
+    /*
+     * UTF-8 requires no encoding handler.
+     */
+    if ((handler != NULL) &&
+        (xmlStrcasecmp(BAD_CAST handler->name, BAD_CAST "UTF-8") == 0)) {
+        xmlCharEncCloseFunc(handler);
+        handler = NULL;
+    }
+
     if (in->encoder == handler)
         return (0);
 

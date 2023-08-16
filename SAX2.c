@@ -977,10 +977,6 @@ xmlSAX2StartDocument(void *ctx)
 	    if (ctxt->options & XML_PARSE_OLD10)
 	        doc->properties |= XML_DOC_OLD10;
 	    doc->parseFlags = ctxt->options;
-	    if (ctxt->encoding != NULL)
-		doc->encoding = xmlStrdup(ctxt->encoding);
-	    else
-		doc->encoding = NULL;
 	    doc->standalone = ctxt->standalone;
 	} else {
 	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartDocument");
@@ -1009,6 +1005,8 @@ void
 xmlSAX2EndDocument(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlDocPtr doc;
+
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2EndDocument()\n");
@@ -1020,13 +1018,25 @@ xmlSAX2EndDocument(void *ctx)
 	ctxt->valid &= xmlValidateDocumentFinal(&ctxt->vctxt, ctxt->myDoc);
 #endif /* LIBXML_VALID_ENABLED */
 
-    /*
-     * Grab the encoding if it was added on-the-fly
-     */
-    if ((ctxt->encoding != NULL) && (ctxt->myDoc != NULL) &&
-	(ctxt->myDoc->encoding == NULL)) {
-	ctxt->myDoc->encoding = ctxt->encoding;
-	ctxt->encoding = NULL;
+    doc = ctxt->myDoc;
+    if ((doc != NULL) && (doc->encoding == NULL)) {
+        const xmlChar *encoding = NULL;
+
+        if ((ctxt->input->flags & XML_INPUT_USES_ENC_DECL) ||
+            (ctxt->input->flags & XML_INPUT_AUTO_ENCODING)) {
+            /* Preserve encoding exactly */
+            encoding = ctxt->encoding;
+        } else if ((ctxt->input->buf) && (ctxt->input->buf->encoder)) {
+            encoding = BAD_CAST ctxt->input->buf->encoder->name;
+        } else if (ctxt->input->flags & XML_INPUT_HAS_ENCODING) {
+            encoding = BAD_CAST "UTF-8";
+        }
+
+        if (encoding != NULL) {
+            doc->encoding = xmlStrdup(encoding);
+            if (doc->encoding == NULL)
+                xmlSAX2ErrMemory(ctxt, "xmlSAX2EndDocument");
+        }
     }
 }
 

@@ -23,7 +23,8 @@
 #define XML_INPUT_AUTO_UTF16LE      (2u << 1)
 #define XML_INPUT_AUTO_UTF16BE      (3u << 1)
 #define XML_INPUT_AUTO_OTHER        (4u << 1)
-#define XML_INPUT_8_BIT             (1u << 4)
+#define XML_INPUT_USES_ENC_DECL     (1u << 4)
+#define XML_INPUT_8_BIT             (1u << 5)
 
 XML_HIDDEN void
 xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra);

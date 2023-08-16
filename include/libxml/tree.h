@@ -573,7 +573,7 @@ struct _xmlDoc {
     struct _xmlDtd  *extSubset;	/* the document external subset */
     struct _xmlNs   *oldNs;	/* Global namespace, the old way */
     const xmlChar  *version;	/* the XML version string */
-    const xmlChar  *encoding;   /* encoding from XML declaration, if any */
+    const xmlChar  *encoding;   /* actual encoding, if any */
     void           *ids;        /* Hash table for ID attributes if any */
     void           *refs;       /* Hash table for IDREFs attributes if any */
     const xmlChar  *URL;	/* The URI for that document */

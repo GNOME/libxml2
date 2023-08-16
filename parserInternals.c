@@ -1590,13 +1590,15 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
         xmlCharEncodingHandlerPtr handler;
 
         handler = xmlFindCharEncodingHandler((const char *) encoding);
-        if (handler != NULL) {
-            xmlSwitchToEncoding(ctxt, handler);
-        } else {
+        if (handler == NULL) {
             __xmlErrEncoding(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
                              "Unsupported encoding: %s\n",
                              encoding, NULL);
+            return;
         }
+
+        xmlSwitchToEncoding(ctxt, handler);
+        ctxt->input->flags |= XML_INPUT_USES_ENC_DECL;
     } else if (ctxt->input->flags & XML_INPUT_AUTO_ENCODING) {
         static const char *allowedUTF8[] = {
             "UTF-8", "UTF8", NULL

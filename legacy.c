@@ -1338,5 +1338,266 @@ cdataBlock(void *ctx, const xmlChar * value, int len)
         xmlSAX2CDataBlock(ctx, value, len);
 }
 
+/*
+ * nanoftp.h
+ */
+
+#ifndef LIBXML_FTP_ENABLED
+
+#include <libxml/nanoftp.h>
+
+void
+xmlNanoFTPInit(void) {
+}
+
+void
+xmlNanoFTPCleanup(void) {
+}
+
+void
+xmlNanoFTPProxy(const char *host ATTRIBUTE_UNUSED, int port ATTRIBUTE_UNUSED,
+                const char *user ATTRIBUTE_UNUSED,
+	        const char *passwd ATTRIBUTE_UNUSED, int type ATTRIBUTE_UNUSED) {
+}
+
+int
+xmlNanoFTPUpdateURL(void *ctx ATTRIBUTE_UNUSED,
+                    const char *URL ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+void
+xmlNanoFTPScanProxy(const char *URL ATTRIBUTE_UNUSED) {
+}
+
+void*
+xmlNanoFTPNewCtxt(const char *URL ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+void
+xmlNanoFTPFreeCtxt(void * ctx ATTRIBUTE_UNUSED) {
+}
+
+int
+xmlNanoFTPGetResponse(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPCheckResponse(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPQuit(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPConnect(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+void*
+xmlNanoFTPConnectTo(const char *server ATTRIBUTE_UNUSED,
+                    int port ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+int
+xmlNanoFTPCwd(void *ctx ATTRIBUTE_UNUSED,
+              const char *directory ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPDele(void *ctx ATTRIBUTE_UNUSED, const char *file ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+SOCKET
+xmlNanoFTPGetConnection(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPCloseConnection(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPList(void *ctx ATTRIBUTE_UNUSED,
+               ftpListCallback callback ATTRIBUTE_UNUSED,
+               void *userData ATTRIBUTE_UNUSED,
+	       const char *filename ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+SOCKET
+xmlNanoFTPGetSocket(void *ctx ATTRIBUTE_UNUSED,
+                    const char *filename ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPGet(void *ctx ATTRIBUTE_UNUSED,
+              ftpDataCallback callback ATTRIBUTE_UNUSED,
+              void *userData ATTRIBUTE_UNUSED,
+	      const char *filename ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlNanoFTPRead(void *ctx ATTRIBUTE_UNUSED, void *dest ATTRIBUTE_UNUSED,
+               int len ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+void*
+xmlNanoFTPOpen(const char *URL ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+int
+xmlNanoFTPClose(void *ctx ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlIOFTPMatch(const char *filename ATTRIBUTE_UNUSED) {
+    return(0);
+}
+
+void *
+xmlIOFTPOpen(const char *filename ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+int
+xmlIOFTPRead(void *context ATTRIBUTE_UNUSED, char *buffer ATTRIBUTE_UNUSED,
+             int len ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+int
+xmlIOFTPClose(void *context ATTRIBUTE_UNUSED) {
+    return(-1);
+}
+
+#endif /* #ifndef LIBXML_FTP_ENABLED */
+
+/*
+ * xpointer.h
+ */
+
+#ifndef LIBXML_XPTR_LOCS_ENABLED
+
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
+#include <libxml/xpointer.h>
+
+xmlXPathObjectPtr
+xmlXPtrNewRange(xmlNodePtr start ATTRIBUTE_UNUSED,
+                int startindex ATTRIBUTE_UNUSED,
+                xmlNodePtr end ATTRIBUTE_UNUSED,
+                int endindex ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewRangePoints(xmlXPathObjectPtr start ATTRIBUTE_UNUSED,
+                      xmlXPathObjectPtr end ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewRangePointNode(xmlXPathObjectPtr start ATTRIBUTE_UNUSED,
+                         xmlNodePtr end ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewRangeNodePoint(xmlNodePtr start ATTRIBUTE_UNUSED,
+                         xmlXPathObjectPtr end ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewRangeNodes(xmlNodePtr start ATTRIBUTE_UNUSED,
+                     xmlNodePtr end ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewCollapsedRange(xmlNodePtr start ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewRangeNodeObject(xmlNodePtr start ATTRIBUTE_UNUSED,
+                          xmlXPathObjectPtr end ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlLocationSetPtr
+xmlXPtrLocationSetCreate(xmlXPathObjectPtr val ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+void
+xmlXPtrLocationSetAdd(xmlLocationSetPtr cur ATTRIBUTE_UNUSED,
+                      xmlXPathObjectPtr val ATTRIBUTE_UNUSED) {
+}
+
+xmlLocationSetPtr
+xmlXPtrLocationSetMerge(xmlLocationSetPtr val1 ATTRIBUTE_UNUSED,
+                        xmlLocationSetPtr val2 ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+void
+xmlXPtrLocationSetDel(xmlLocationSetPtr cur ATTRIBUTE_UNUSED,
+                      xmlXPathObjectPtr val ATTRIBUTE_UNUSED) {
+}
+
+void
+xmlXPtrLocationSetRemove(xmlLocationSetPtr cur ATTRIBUTE_UNUSED,
+                         int val ATTRIBUTE_UNUSED) {
+}
+
+void
+xmlXPtrFreeLocationSet(xmlLocationSetPtr obj ATTRIBUTE_UNUSED) {
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewLocationSetNodes(xmlNodePtr start ATTRIBUTE_UNUSED,
+                           xmlNodePtr end ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrNewLocationSetNodeSet(xmlNodeSetPtr set ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlXPathObjectPtr
+xmlXPtrWrapLocationSet(xmlLocationSetPtr val ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+xmlNodePtr
+xmlXPtrBuildNodeList(xmlXPathObjectPtr obj ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+
+void
+xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt,
+                       int nargs ATTRIBUTE_UNUSED) {
+    XP_ERROR(XPATH_EXPR_ERROR);
+}
+
+#endif /* #ifndef LIBXML_XPTR_LOCS_ENABLED */
+
 #endif /* LIBXML_LEGACY_ENABLED */
 

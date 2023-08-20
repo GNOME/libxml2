@@ -349,7 +349,7 @@ XMLPUBFUN int
 /**
  * Default 'ftp://' protocol callbacks
  */
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 XMLPUBFUN int
 	xmlIOFTPMatch			(const char *filename);
 XMLPUBFUN void *
@@ -360,7 +360,7 @@ XMLPUBFUN int
 					 int len);
 XMLPUBFUN int
 	xmlIOFTPClose			(void * context);
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* defined(LIBXML_FTP_ENABLED) || defined(LIBXML_LEGACY_ENABLED) */
 
 #ifdef __cplusplus
 }

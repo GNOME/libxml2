@@ -20,6 +20,14 @@ gcc:minimum:
     BASE_CONFIG: "--with-minimum"
     CFLAGS: "-O2"
 
+gcc:legacy:
+  extends: .test
+  only:
+    - schedules
+  variables:
+    BASE_CONFIG: "--with-legacy"
+    CFLAGS: "-O2"
+
 gcc:python3:
   extends: .test
   variables:

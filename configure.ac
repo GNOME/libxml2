@@ -64,79 +64,79 @@ dnl also allows up so alphabetize the choices
 dnl
 
 AC_ARG_WITH(c14n,
-[  --with-c14n             add the Canonicalization support (on)])
+[  --with-c14n             Canonical XML 1.0 support (on)])
 AC_ARG_WITH(catalog,
-[  --with-catalog          add the Catalog support (on)])
+[  --with-catalog          XML Catalogs support (on)])
 AC_ARG_WITH(debug,
-[  --with-debug            add the debugging module (on)])
-AC_ARG_WITH(fexceptions,
-[  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
+[  --with-debug            debugging module and shell (on)])
 AC_ARG_WITH(ftp,
-[  --with-ftp              add the FTP support (off)])
+[  --with-ftp              FTP support (off)])
 AC_ARG_WITH(history,
-[  --with-history          add history support to xmllint shell(off)])
+[  --with-history          history support for shell (off)])
+AC_ARG_WITH(readline,
+[  --with-readline[[=DIR]]   use readline in DIR (for shell history)])
 AC_ARG_WITH(html,
-[  --with-html             add the HTML support (on)])
+[  --with-html             HTML parser (on)])
 AC_ARG_WITH(http,
-[  --with-http             add the HTTP support (on)])
+[  --with-http             HTTP support (on)])
 AC_ARG_WITH(iconv,
-[  --with-iconv[[=DIR]]      add ICONV support (on)])
+[  --with-iconv[[=DIR]]      iconv support (on)])
 AC_ARG_WITH(icu,
-[  --with-icu                add ICU support (off)])
+[  --with-icu              ICU support (off)])
 AC_ARG_WITH(iso8859x,
-[  --with-iso8859x         add ISO8859X support if no iconv (on)])
-AC_ARG_WITH(legacy,
-[  --with-legacy           add deprecated APIs for compatibility (off)])
+[  --with-iso8859x         ISO-8859-X support if no iconv (on)])
+AC_ARG_WITH(lzma,
+[  --with-lzma[[=DIR]]       use liblzma in DIR (on)])
 AC_ARG_WITH(mem_debug,
-[  --with-mem-debug        add the memory debugging module (off)])
+[  --with-mem-debug        memory debugging module (off)])
+AC_ARG_WITH(modules,
+[  --with-modules          dynamic modules support (on)])
+AC_ARG_WITH(output,
+[  --with-output           serialization support (on)])
+AC_ARG_WITH(pattern,
+[  --with-pattern          xmlPattern selection interface (on)])
+AC_ARG_WITH(push,
+[  --with-push             push parser interfaces (on)])
+AC_ARG_WITH(python,
+[  --with-python           Python bindings (on)])
+AC_ARG_WITH(reader,
+[  --with-reader           xmlReader parsing interface (on)])
+AC_ARG_WITH(regexps,
+[  --with-regexps          regular expressions support (on)])
+AC_ARG_WITH(run_debug,
+[  --with-run-debug        runtime debugging module (off)])
+AC_ARG_WITH(sax1,
+[  --with-sax1             older SAX1 interface (on)])
+AC_ARG_WITH(schemas,
+[  --with-schemas          XML Schemas 1.0 and RELAX NG support (on)])
+AC_ARG_WITH(schematron,
+[  --with-schematron       Schematron support (on)])
+AC_ARG_WITH(threads,
+[  --with-threads          multithreading support (on)])
+AC_ARG_WITH(thread-alloc,
+[  --with-thread-alloc     per-thread malloc hooks (off)])
+AC_ARG_WITH(tree,
+[  --with-tree             DOM like tree manipulation APIs (on)])
+AC_ARG_WITH(valid,
+[  --with-valid            DTD validation support (on)])
+AC_ARG_WITH(writer,
+[  --with-writer           xmlWriter serialization interface (on)])
+AC_ARG_WITH(xinclude,
+[  --with-xinclude         XInclude 1.0 support (on)])
+AC_ARG_WITH(xpath,
+[  --with-xpath            XPath 1.0 support (on)])
+AC_ARG_WITH(xptr,
+[  --with-xptr             XPointer support (on)])
+AC_ARG_WITH(zlib,
+[  --with-zlib[[=DIR]]       use libz in DIR (on)])
+
 AC_ARG_WITH(minimum,
 [  --with-minimum          build a minimally sized library (off)])
-AC_ARG_WITH(output,
-[  --with-output           add the serialization support (on)])
-AC_ARG_WITH(pattern,
-[  --with-pattern          add the xmlPattern selection interface (on)])
-AC_ARG_WITH(push,
-[  --with-push             add the PUSH parser interfaces (on)])
-AC_ARG_WITH(python,
-[  --with-python           build Python bindings (on)])
-AC_ARG_WITH(reader,
-[  --with-reader           add the xmlReader parsing interface (on)])
-AC_ARG_WITH(readline,
-[  --with-readline[[=DIR]]   use readline in DIR])
-AC_ARG_WITH(regexps,
-[  --with-regexps          add Regular Expressions support (on)])
-AC_ARG_WITH(run_debug,
-[  --with-run-debug        add the runtime debugging module (off)])
-AC_ARG_WITH(sax1,
-[  --with-sax1             add the older SAX1 interface (on)])
-AC_ARG_WITH(schemas,
-[  --with-schemas          add Relax-NG and Schemas support (on)])
-AC_ARG_WITH(schematron,
-[  --with-schematron       add Schematron support (on)])
-AC_ARG_WITH(threads,
-[  --with-threads          add multithread support(on)])
-AC_ARG_WITH(thread-alloc,
-[  --with-thread-alloc     add per-thread memory(off)])
-AC_ARG_WITH(tree,
-[  --with-tree             add the DOM like tree manipulation APIs (on)])
-AC_ARG_WITH(valid,
-[  --with-valid            add the DTD validation support (on)])
-AC_ARG_WITH(writer,
-[  --with-writer           add the xmlWriter saving interface (on)])
-AC_ARG_WITH(xinclude,
-[  --with-xinclude         add the XInclude support (on)])
-AC_ARG_WITH(xpath,
-[  --with-xpath            add the XPATH support (on)])
-AC_ARG_WITH(xptr,
-[  --with-xptr             add the XPointer support (on)])
-AC_ARG_WITH(xptr-locs,
-[  --with-xptr-locs        add support for XPointer locations (off)])
-AC_ARG_WITH(modules,
-[  --with-modules          add the dynamic modules support (on)])
-AC_ARG_WITH(zlib,
-[  --with-zlib[[=DIR]]       use libz in DIR])
-AC_ARG_WITH(lzma,
-[  --with-lzma[[=DIR]]       use liblzma in DIR])
+AC_ARG_WITH(legacy,
+[  --with-legacy           maximum ABI compatibility (off)])
+
+AC_ARG_WITH(fexceptions,
+[  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 AC_ARG_WITH(coverage,
 [  --with-coverage         build for code coverage with GCC (off)])
 

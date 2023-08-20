@@ -121,6 +121,9 @@ XMLPUBFUN int
             xmlTextReaderSetup(xmlTextReaderPtr reader,
                    xmlParserInputBufferPtr input, const char *URL,
                    const char *encoding, int options);
+XMLPUBFUN void
+            xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader,
+                   unsigned maxAmpl);
 
 /*
  * Iterators

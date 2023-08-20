@@ -5236,6 +5236,19 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 }
 
 /**
+ * xmlTextReaderSetMaxAmplification:
+ * @reader: an XML reader
+ * @maxAmpl:  maximum amplification factor
+ *
+ * Set the maximum amplification factor. See xmlCtxtSetMaxAmplification.
+ */
+void
+xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader, unsigned maxAmpl)
+{
+    xmlCtxtSetMaxAmplification(reader->ctxt, maxAmpl);
+}
+
+/**
  * xmlTextReaderByteConsumed:
  * @reader: an XML reader
  *

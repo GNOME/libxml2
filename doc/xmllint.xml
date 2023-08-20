@@ -93,6 +93,7 @@
             <arg choice="plain"><option>--xmlout</option></arg>
             <arg choice="plain"><option>--push</option></arg>
             <arg choice="plain"><option>--memory</option></arg>
+            <arg choice="plain"><option>--max-ampl <replaceable class="option">INTEGER</replaceable></option></arg>
             <arg choice="plain"><option>--maxmem <replaceable class="option">NBBYTES</replaceable></option></arg>
             <arg choice="plain"><option>--nowarning</option></arg>
             <arg choice="plain"><option>--noblanks</option></arg>
@@ -334,6 +335,18 @@
                 <para>
                     Display all the documents loaded during the processing
                     to <filename class="devicefile">stderr</filename>.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--max-ampl <replaceable class="option">INTEGER</replaceable></option></term>
+            <listitem>
+                <para>
+                    Set the maximum amplification factor which protects against
+                    exponential entity expansion ("billion laughs"). The default value
+                    is 5. Documents making heavy use of entity expansion may require a
+                    higher value.
                 </para>
             </listitem>
         </varlistentry>

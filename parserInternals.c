@@ -50,6 +50,12 @@
 #include "private/parser.h"
 
 /*
+ * XML_MAX_AMPLIFICATION_DEFAULT is the default maximum allowed amplification
+ * factor of serialized output after entity expansion.
+ */
+#define XML_MAX_AMPLIFICATION_DEFAULT 5
+
+/*
  * Various global defaults for parsing
  */
 
@@ -2110,6 +2116,7 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->sizeentities = 0;
     ctxt->sizeentcopy = 0;
     ctxt->input_id = 1;
+    ctxt->maxAmpl = XML_MAX_AMPLIFICATION_DEFAULT;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
     return(0);
 }

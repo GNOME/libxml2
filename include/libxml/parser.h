@@ -312,6 +312,7 @@ struct _xmlParserCtxt {
     int           endCheckState;    /* quote state for push parser */
     unsigned short     nbErrors;    /* number of errors */
     unsigned short   nbWarnings;    /* number of warnings */
+    unsigned            maxAmpl;    /* maximum amplification factor */
 };
 
 /**
@@ -1149,6 +1150,9 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
+XMLPUBFUN void
+		xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt,
+					 unsigned maxAmpl);
 XMLPUBFUN xmlDocPtr
 		xmlReadDoc		(const xmlChar *cur,
 					 const char *URL,

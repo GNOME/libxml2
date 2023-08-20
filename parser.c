@@ -121,13 +121,7 @@ xmlParseElementEnd(xmlParserCtxtPtr ctxt);
  */
 
 /*
- * XML_PARSER_NON_LINEAR is roughly the maximum allowed amplification factor
- * of serialized output after entity expansion.
- */
-#define XML_PARSER_NON_LINEAR 5
-
-/*
- * A certain amount is always allowed.
+ * A certain amount of entity expansion which is always allowed.
  */
 #define XML_PARSER_ALLOWED_EXPANSION 1000000
 
@@ -590,9 +584,10 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
      */
     if ((ctxt->sizeentcopy > XML_PARSER_ALLOWED_EXPANSION) &&
         ((ctxt->sizeentcopy >= ULONG_MAX) ||
-         (ctxt->sizeentcopy / XML_PARSER_NON_LINEAR > consumed))) {
+         (ctxt->sizeentcopy / ctxt->maxAmpl > consumed))) {
         xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
-                       "Maximum entity amplification factor exceeded");
+                       "Maximum entity amplification factor exceeded, see "
+                       "xmlCtxtSetMaxAmplification.\n");
         xmlHaltParser(ctxt);
         return(1);
     }
@@ -14299,6 +14294,25 @@ int
 xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 {
    return(xmlCtxtUseOptionsInternal(ctxt, options, NULL));
+}
+
+/**
+ * xmlCtxtSetMaxAmplification:
+ * @ctxt: an XML parser context
+ * @maxAmpl:  maximum amplification factor
+ *
+ * To protect against exponential entity expansion ("billion laughs"), the
+ * size of serialized output is (roughly) limited to the input size
+ * multiplied by this factor. The default value is 5.
+ *
+ * When working with documents making heavy use of entity expansion, it can
+ * be necessary to increase the value. For security reasons, this should only
+ * be considered when processing trusted input.
+ */
+void
+xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt, unsigned maxAmpl)
+{
+    ctxt->maxAmpl = maxAmpl;
 }
 
 /**

@@ -1599,7 +1599,6 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     int i;
 
     if ((ctx == NULL) || (fullname == NULL) || (ctxt->myDoc == NULL)) return;
-    parent = ctxt->node;
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2StartElement(%s)\n", fullname);
@@ -1641,14 +1640,6 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");
         return;
     }
-    if (ctxt->myDoc->children == NULL) {
-#ifdef DEBUG_SAX_TREE
-	xmlGenericError(xmlGenericErrorContext, "Setting %s as root\n", name);
-#endif
-        xmlAddChild((xmlNodePtr) ctxt->myDoc, (xmlNodePtr) ret);
-    } else if (parent == NULL) {
-        parent = ctxt->myDoc->children;
-    }
     ctxt->nodemem = -1;
     if (ctxt->linenumbers) {
 	if (ctxt->input != NULL) {
@@ -1658,6 +1649,11 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	        ret->line = USHRT_MAX;
 	}
     }
+
+    /* Initialize parent before pushing node */
+    parent = ctxt->node;
+    if (parent == NULL)
+        parent = (xmlNodePtr) ctxt->myDoc;
 
     /*
      * We are parsing a new node.
@@ -1676,22 +1672,11 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     /*
      * Link the child element
      */
-    if (parent != NULL) {
-        if (parent->type == XML_ELEMENT_NODE) {
 #ifdef DEBUG_SAX_TREE
-	    xmlGenericError(xmlGenericErrorContext,
-		    "adding child %s to %s\n", name, parent->name);
+    xmlGenericError(xmlGenericErrorContext,
+            "adding child %s to %s\n", name, parent->name);
 #endif
-	    xmlAddChild(parent, ret);
-	} else {
-#ifdef DEBUG_SAX_TREE
-	    xmlGenericError(xmlGenericErrorContext,
-		    "adding sibling %s to ", name);
-	    xmlDebugDumpOneNode(stderr, parent, 0);
-#endif
-	    xmlAddSibling(parent, ret);
-	}
-    }
+    xmlAddChild(parent, ret);
 
     if (!ctxt->html) {
         /*
@@ -2202,7 +2187,6 @@ xmlSAX2StartElementNs(void *ctx,
     int i, j;
 
     if (ctx == NULL) return;
-    parent = ctxt->node;
     /*
      * First check on validity:
      */
@@ -2280,9 +2264,6 @@ xmlSAX2StartElementNs(void *ctx,
 	}
     }
 
-    if (parent == NULL) {
-        xmlAddChild((xmlNodePtr) ctxt->myDoc, (xmlNodePtr) ret);
-    }
     /*
      * Build the namespace list
      */
@@ -2317,6 +2298,11 @@ xmlSAX2StartElementNs(void *ctx,
     }
     ctxt->nodemem = -1;
 
+    /* Initialize parent before pushing node */
+    parent = ctxt->node;
+    if (parent == NULL)
+        parent = (xmlNodePtr) ctxt->myDoc;
+
     /*
      * We are parsing a new node.
      */
@@ -2329,13 +2315,7 @@ xmlSAX2StartElementNs(void *ctx,
     /*
      * Link the child element
      */
-    if (parent != NULL) {
-        if (parent->type == XML_ELEMENT_NODE) {
-	    xmlAddChild(parent, ret);
-	} else {
-	    xmlAddSibling(parent, ret);
-	}
-    }
+    xmlAddChild(parent, ret);
 
     /*
      * Insert the defaulted attributes from the DTD only if requested:

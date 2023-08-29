@@ -10955,7 +10955,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 /*
                  * Very first chars read from the document flow.
                  */
-                if (avail < 4)
+                if ((!terminate) && (avail < 4))
                     goto done;
 
                 /*
@@ -10973,23 +10973,12 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		break;
 
             case XML_PARSER_XML_DECL:
-		if (avail < 2)
+		if ((!terminate) && (avail < 2))
 		    goto done;
 		cur = ctxt->input->cur[0];
 		next = ctxt->input->cur[1];
-		if (cur == 0) {
-		    if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
-			ctxt->sax->setDocumentLocator(ctxt->userData,
-						      &xmlDefaultSAXLocator);
-		    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_EMPTY, NULL);
-		    xmlHaltParser(ctxt);
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-			ctxt->sax->endDocument(ctxt->userData);
-		    goto done;
-		}
 	        if ((cur == '<') && (next == '?')) {
 		    /* PI or XML decl */
-		    if (avail < 5) goto done;
 		    if ((!terminate) &&
                         (!xmlParseLookupString(ctxt, 2, "?>", 2)))
 			goto done;
@@ -11034,11 +11023,12 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 int line = ctxt->input->line;
 		int nsNr = ctxt->nsNr;
 
-		if (avail < 2)
+		if ((!terminate) && (avail < 2))
 		    goto done;
 		cur = ctxt->input->cur[0];
 	        if (cur != '<') {
-		    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_EMPTY, NULL);
+		    xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
+                                   "Start tag expected, '<' not found");
 		    xmlHaltParser(ctxt);
 		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 			ctxt->sax->endDocument(ctxt->userData);
@@ -11213,8 +11203,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		break;
 	    }
             case XML_PARSER_END_TAG:
-		if (avail < 2)
-		    goto done;
 		if ((!terminate) && (!xmlParseLookupChar(ctxt, '>')))
 		    goto done;
 		if (ctxt->sax2) {
@@ -11532,9 +11520,20 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	/*
 	 * Check for termination
 	 */
-        if (ctxt->input->cur < ctxt->input->end) {
-            if (ctxt->errNo == XML_ERR_OK)
-                xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
+        if ((ctxt->instate != XML_PARSER_EOF) &&
+            (ctxt->instate != XML_PARSER_EPILOG)) {
+            if (ctxt->nameNr > 0) {
+                const xmlChar *name = ctxt->nameTab[ctxt->nameNr - 1];
+                int line = ctxt->pushTab[ctxt->nameNr - 1].line;
+                xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
+                        "Premature end of data in tag %s line %d\n",
+                        name, line, NULL);
+            } else if (ctxt->instate == XML_PARSER_START) {
+                xmlFatalErr(ctxt, XML_ERR_DOCUMENT_EMPTY, NULL);
+            } else {
+                xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
+                               "Start tag expected, '<' not found\n");
+            }
         } else if ((ctxt->input->buf != NULL) &&
                    (ctxt->input->buf->encoder != NULL) &&
                    (!xmlBufIsEmpty(ctxt->input->buf->raw))) {

@@ -453,7 +453,6 @@ xmlIsLetter(int c) {
 
 /* #define DEBUG_INPUT */
 /* #define DEBUG_STACK */
-/* #define DEBUG_PUSH */
 
 
 /* we need to keep enough input to show errors in context */

@@ -2131,38 +2131,39 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #ifdef LIBXML_PUSH_ENABLED
     else if ((html) && (push)) {
         FILE *f;
+        int res;
+        char chars[4096];
+        htmlParserCtxtPtr ctxt;
 
         if ((filename[0] == '-') && (filename[1] == 0)) {
             f = stdin;
         } else {
 	    f = fopen(filename, "rb");
-        }
-        if (f != NULL) {
-            int res;
-            char chars[4096];
-            htmlParserCtxtPtr ctxt;
-
-            res = fread(chars, 1, 4, f);
-            if (res > 0) {
-                ctxt = htmlCreatePushParserCtxt(NULL, NULL,
-                            chars, res, filename, XML_CHAR_ENCODING_NONE);
-                if (ctxt == NULL) {
-                    progresult = XMLLINT_ERR_MEM;
-                    if (f != stdin)
-                        fclose(f);
-                    return;
-                }
-                htmlCtxtUseOptions(ctxt, options);
-                while ((res = fread(chars, 1, pushsize, f)) > 0) {
-                    htmlParseChunk(ctxt, chars, res, 0);
-                }
-                htmlParseChunk(ctxt, chars, 0, 1);
-                doc = ctxt->myDoc;
-                htmlFreeParserCtxt(ctxt);
+            if (f == NULL) {
+                fprintf(stderr, "Can't open %s\n", filename);
+                progresult = XMLLINT_ERR_UNCLASS;
+                return;
             }
+        }
+
+        res = fread(chars, 1, 4, f);
+        ctxt = htmlCreatePushParserCtxt(NULL, NULL,
+                    chars, res, filename, XML_CHAR_ENCODING_NONE);
+        if (ctxt == NULL) {
+            progresult = XMLLINT_ERR_MEM;
             if (f != stdin)
                 fclose(f);
+            return;
         }
+        htmlCtxtUseOptions(ctxt, options);
+        while ((res = fread(chars, 1, pushsize, f)) > 0) {
+            htmlParseChunk(ctxt, chars, res, 0);
+        }
+        htmlParseChunk(ctxt, chars, 0, 1);
+        doc = ctxt->myDoc;
+        htmlFreeParserCtxt(ctxt);
+        if (f != stdin)
+            fclose(f);
     }
 #endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_MMAP
@@ -2200,46 +2201,48 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	 */
 	if (push) {
 	    FILE *f;
+            int ret;
+            int res, size = 1024;
+            char chars[1024];
+            xmlParserCtxtPtr ctxt;
 
 	    /* '-' Usually means stdin -<sven@zen.org> */
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
 	        f = stdin;
 	    } else {
 		f = fopen(filename, "rb");
-	    }
-	    if (f != NULL) {
-		int ret;
-	        int res, size = 1024;
-	        char chars[1024];
-                xmlParserCtxtPtr ctxt;
-
-		/* if (repeat) size = 1024; */
-		res = fread(chars, 1, 4, f);
-                ctxt = xmlCreatePushParserCtxt(NULL, NULL,
-                            chars, res, filename);
-                if (ctxt == NULL) {
-                    progresult = XMLLINT_ERR_MEM;
-                    if (f != stdin)
-                        fclose(f);
+                if (f == NULL) {
+                    fprintf(stderr, "Can't open %s\n", filename);
+                    progresult = XMLLINT_ERR_UNCLASS;
                     return;
                 }
-                xmlCtxtUseOptions(ctxt, options);
-                if (maxAmpl > 0)
-                    xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-                while ((res = fread(chars, 1, size, f)) > 0) {
-                    xmlParseChunk(ctxt, chars, res, 0);
-                }
-                xmlParseChunk(ctxt, chars, 0, 1);
-                doc = ctxt->myDoc;
-                ret = ctxt->wellFormed;
-                xmlFreeParserCtxt(ctxt);
-                if ((!ret) && (!recovery)) {
-                    xmlFreeDoc(doc);
-                    doc = NULL;
-                }
+	    }
+
+            res = fread(chars, 1, 4, f);
+            ctxt = xmlCreatePushParserCtxt(NULL, NULL,
+                        chars, res, filename);
+            if (ctxt == NULL) {
+                progresult = XMLLINT_ERR_MEM;
                 if (f != stdin)
                     fclose(f);
-	    }
+                return;
+            }
+            xmlCtxtUseOptions(ctxt, options);
+            if (maxAmpl > 0)
+                xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
+            while ((res = fread(chars, 1, size, f)) > 0) {
+                xmlParseChunk(ctxt, chars, res, 0);
+            }
+            xmlParseChunk(ctxt, chars, 0, 1);
+            doc = ctxt->myDoc;
+            ret = ctxt->wellFormed;
+            xmlFreeParserCtxt(ctxt);
+            if ((!ret) && (!recovery)) {
+                xmlFreeDoc(doc);
+                doc = NULL;
+            }
+            if (f != stdin)
+                fclose(f);
 	} else
 #endif /* LIBXML_PUSH_ENABLED */
         if (testIO) {

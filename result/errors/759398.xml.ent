@@ -7,6 +7,3 @@ and provide access to their content and structure.</termdef> <termdef
 ./test/errors/759398.xml:314: parser error : Opening and ending tag mismatch: spec line 50 and p
 data and the information it must provide to the application.</p>
                                                                 ^
-./test/errors/759398.xml:316: parser error : Extra content at the end of the document
-<div2 id='sec-origin-goals'>
-^

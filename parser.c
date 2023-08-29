@@ -11124,57 +11124,64 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 break;
 	    }
             case XML_PARSER_CONTENT: {
-		if (avail < 2)
-		    goto done;
 		cur = ctxt->input->cur[0];
-		next = ctxt->input->cur[1];
 
-		if ((cur == '<') && (next == '/')) {
-		    ctxt->instate = XML_PARSER_END_TAG;
-		    break;
-	        } else if ((cur == '<') && (next == '?')) {
-		    if ((!terminate) &&
-		        (!xmlParseLookupString(ctxt, 2, "?>", 2)))
-			goto done;
-		    xmlParsePI(ctxt);
-                    if (ctxt->instate == XML_PARSER_EOF)
+		if (cur == '<') {
+                    if ((!terminate) && (avail < 2))
                         goto done;
-		    ctxt->instate = XML_PARSER_CONTENT;
-		} else if ((cur == '<') && (next != '!')) {
-		    ctxt->instate = XML_PARSER_START_TAG;
-		    break;
-		} else if ((cur == '<') && (next == '!') &&
-		           (ctxt->input->cur[2] == '-') &&
-			   (ctxt->input->cur[3] == '-')) {
-		    if ((!terminate) &&
-		        (!xmlParseLookupString(ctxt, 4, "-->", 3)))
-			goto done;
-		    xmlParseComment(ctxt);
-                    if (ctxt->instate == XML_PARSER_EOF)
-                        goto done;
-		    ctxt->instate = XML_PARSER_CONTENT;
-		} else if ((cur == '<') && (ctxt->input->cur[1] == '!') &&
-		    (ctxt->input->cur[2] == '[') &&
-		    (ctxt->input->cur[3] == 'C') &&
-		    (ctxt->input->cur[4] == 'D') &&
-		    (ctxt->input->cur[5] == 'A') &&
-		    (ctxt->input->cur[6] == 'T') &&
-		    (ctxt->input->cur[7] == 'A') &&
-		    (ctxt->input->cur[8] == '[')) {
-		    SKIP(9);
-		    ctxt->instate = XML_PARSER_CDATA_SECTION;
-		    break;
-		} else if ((cur == '<') && (next == '!') &&
-		           (avail < 9)) {
-		    goto done;
-		} else if (cur == '<') {
-		    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-		                "detected an error in element content\n");
-                    SKIP(1);
+		    next = ctxt->input->cur[1];
+
+                    if (next == '/') {
+                        ctxt->instate = XML_PARSER_END_TAG;
+                        break;
+                    } else if (next == '?') {
+                        if ((!terminate) &&
+                            (!xmlParseLookupString(ctxt, 2, "?>", 2)))
+                            goto done;
+                        xmlParsePI(ctxt);
+                        if (ctxt->instate == XML_PARSER_EOF)
+                            goto done;
+                        ctxt->instate = XML_PARSER_CONTENT;
+                        break;
+                    } else if (next == '!') {
+                        if ((!terminate) && (avail < 3))
+                            goto done;
+                        next = ctxt->input->cur[2];
+
+                        if (next == '-') {
+                            if ((!terminate) && (avail < 4))
+                                goto done;
+                            if (ctxt->input->cur[3] == '-') {
+                                if ((!terminate) &&
+                                    (!xmlParseLookupString(ctxt, 4, "-->", 3)))
+                                    goto done;
+                                xmlParseComment(ctxt);
+                                if (ctxt->instate == XML_PARSER_EOF)
+                                    goto done;
+                                ctxt->instate = XML_PARSER_CONTENT;
+                                break;
+                            }
+                        } else if (next == '[') {
+                            if ((!terminate) && (avail < 9))
+                                goto done;
+                            if ((ctxt->input->cur[2] == '[') &&
+                                (ctxt->input->cur[3] == 'C') &&
+                                (ctxt->input->cur[4] == 'D') &&
+                                (ctxt->input->cur[5] == 'A') &&
+                                (ctxt->input->cur[6] == 'T') &&
+                                (ctxt->input->cur[7] == 'A') &&
+                                (ctxt->input->cur[8] == '[')) {
+                                SKIP(9);
+                                ctxt->instate = XML_PARSER_CDATA_SECTION;
+                                break;
+                            }
+                        }
+                    }
 		} else if (cur == '&') {
 		    if ((!terminate) && (!xmlParseLookupChar(ctxt, ';')))
 			goto done;
 		    xmlParseReference(ctxt);
+                    break;
 		} else {
 		    /* TODO Avoid the extra copy, handle directly !!! */
 		    /*
@@ -11194,7 +11201,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                     }
                     ctxt->checkIndex = 0;
 		    xmlParseCharDataInternal(ctxt, !terminate);
+                    break;
 		}
+
+                ctxt->instate = XML_PARSER_START_TAG;
 		break;
 	    }
             case XML_PARSER_END_TAG:
@@ -11310,69 +11320,84 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
             case XML_PARSER_EPILOG:
 		SKIP_BLANKS;
                 avail = ctxt->input->end - ctxt->input->cur;
-		if (avail < 2)
+		if (avail < 1)
 		    goto done;
-		cur = ctxt->input->cur[0];
-		next = ctxt->input->cur[1];
-	        if ((cur == '<') && (next == '?')) {
-		    if ((!terminate) &&
-                        (!xmlParseLookupString(ctxt, 2, "?>", 2)))
-			goto done;
-		    xmlParsePI(ctxt);
-		    if (ctxt->instate == XML_PARSER_EOF)
-			goto done;
-		} else if ((cur == '<') && (next == '!') &&
-		    (ctxt->input->cur[2] == '-') &&
-		    (ctxt->input->cur[3] == '-')) {
-		    if ((!terminate) &&
-                        (!xmlParseLookupString(ctxt, 4, "-->", 3)))
-			goto done;
-		    xmlParseComment(ctxt);
-		    if (ctxt->instate == XML_PARSER_EOF)
-			goto done;
-		} else if ((ctxt->instate == XML_PARSER_MISC) &&
-                    (cur == '<') && (next == '!') &&
-		    (ctxt->input->cur[2] == 'D') &&
-		    (ctxt->input->cur[3] == 'O') &&
-		    (ctxt->input->cur[4] == 'C') &&
-		    (ctxt->input->cur[5] == 'T') &&
-		    (ctxt->input->cur[6] == 'Y') &&
-		    (ctxt->input->cur[7] == 'P') &&
-		    (ctxt->input->cur[8] == 'E')) {
-		    if ((!terminate) && (!xmlParseLookupGt(ctxt)))
+		if (ctxt->input->cur[0] == '<') {
+                    if ((!terminate) && (avail < 2))
                         goto done;
-		    ctxt->inSubset = 1;
-		    xmlParseDocTypeDecl(ctxt);
-		    if (ctxt->instate == XML_PARSER_EOF)
-			goto done;
-		    if (RAW == '[') {
-			ctxt->instate = XML_PARSER_DTD;
-		    } else {
-			/*
-			 * Create and update the external subset.
-			 */
-			ctxt->inSubset = 2;
-			if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-			    (ctxt->sax->externalSubset != NULL))
-			    ctxt->sax->externalSubset(ctxt->userData,
-				    ctxt->intSubName, ctxt->extSubSystem,
-				    ctxt->extSubURI);
-			ctxt->inSubset = 0;
-			xmlCleanSpecialAttr(ctxt);
+                    next = ctxt->input->cur[1];
+                    if (next == '?') {
+                        if ((!terminate) &&
+                            (!xmlParseLookupString(ctxt, 2, "?>", 2)))
+                            goto done;
+                        xmlParsePI(ctxt);
                         if (ctxt->instate == XML_PARSER_EOF)
                             goto done;
-			ctxt->instate = XML_PARSER_PROLOG;
-		    }
-		} else if ((cur == '<') && (next == '!') &&
-		           (avail <
-                            (ctxt->instate == XML_PARSER_MISC ? 9 : 4))) {
-		    goto done;
-		} else if (ctxt->instate == XML_PARSER_EPILOG) {
-		    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
-		    xmlHaltParser(ctxt);
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-			ctxt->sax->endDocument(ctxt->userData);
-		    goto done;
+                        break;
+                    } else if (next == '!') {
+                        if ((!terminate) && (avail < 3))
+                            goto done;
+
+                        if (ctxt->input->cur[2] == '-') {
+                            if ((!terminate) && (avail < 4))
+                                goto done;
+                            if (ctxt->input->cur[3] == '-') {
+                                if ((!terminate) &&
+                                    (!xmlParseLookupString(ctxt, 4, "-->", 3)))
+                                    goto done;
+                                xmlParseComment(ctxt);
+                                if (ctxt->instate == XML_PARSER_EOF)
+                                    goto done;
+                                break;
+                            }
+                        } else if (ctxt->instate == XML_PARSER_MISC) {
+                            if ((!terminate) && (avail < 9))
+                                goto done;
+                            if ((ctxt->input->cur[2] == 'D') &&
+                                (ctxt->input->cur[3] == 'O') &&
+                                (ctxt->input->cur[4] == 'C') &&
+                                (ctxt->input->cur[5] == 'T') &&
+                                (ctxt->input->cur[6] == 'Y') &&
+                                (ctxt->input->cur[7] == 'P') &&
+                                (ctxt->input->cur[8] == 'E')) {
+                                if ((!terminate) && (!xmlParseLookupGt(ctxt)))
+                                    goto done;
+                                ctxt->inSubset = 1;
+                                xmlParseDocTypeDecl(ctxt);
+                                if (ctxt->instate == XML_PARSER_EOF)
+                                    goto done;
+                                if (RAW == '[') {
+                                    ctxt->instate = XML_PARSER_DTD;
+                                } else {
+                                    /*
+                                     * Create and update the external subset.
+                                     */
+                                    ctxt->inSubset = 2;
+                                    if ((ctxt->sax != NULL) &&
+                                        (!ctxt->disableSAX) &&
+                                        (ctxt->sax->externalSubset != NULL))
+                                        ctxt->sax->externalSubset(
+                                                ctxt->userData,
+                                                ctxt->intSubName,
+                                                ctxt->extSubSystem,
+                                                ctxt->extSubURI);
+                                    ctxt->inSubset = 0;
+                                    xmlCleanSpecialAttr(ctxt);
+                                    if (ctxt->instate == XML_PARSER_EOF)
+                                        goto done;
+                                    ctxt->instate = XML_PARSER_PROLOG;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (ctxt->instate == XML_PARSER_EPILOG) {
+                    xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
+		    ctxt->instate = XML_PARSER_EOF;
+                    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
+                        ctxt->sax->endDocument(ctxt->userData);
                 } else {
 		    ctxt->instate = XML_PARSER_START_TAG;
 		}

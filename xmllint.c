@@ -2215,30 +2215,28 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
 		/* if (repeat) size = 1024; */
 		res = fread(chars, 1, 4, f);
-		if (res > 0) {
-		    ctxt = xmlCreatePushParserCtxt(NULL, NULL,
-		                chars, res, filename);
-                    if (ctxt == NULL) {
-                        progresult = XMLLINT_ERR_MEM;
-                        if (f != stdin)
-                            fclose(f);
-                        return;
-                    }
-		    xmlCtxtUseOptions(ctxt, options);
-                    if (maxAmpl > 0)
-                        xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-		    while ((res = fread(chars, 1, size, f)) > 0) {
-			xmlParseChunk(ctxt, chars, res, 0);
-		    }
-		    xmlParseChunk(ctxt, chars, 0, 1);
-		    doc = ctxt->myDoc;
-		    ret = ctxt->wellFormed;
-		    xmlFreeParserCtxt(ctxt);
-		    if ((!ret) && (!recovery)) {
-			xmlFreeDoc(doc);
-			doc = NULL;
-		    }
-	        }
+                ctxt = xmlCreatePushParserCtxt(NULL, NULL,
+                            chars, res, filename);
+                if (ctxt == NULL) {
+                    progresult = XMLLINT_ERR_MEM;
+                    if (f != stdin)
+                        fclose(f);
+                    return;
+                }
+                xmlCtxtUseOptions(ctxt, options);
+                if (maxAmpl > 0)
+                    xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
+                while ((res = fread(chars, 1, size, f)) > 0) {
+                    xmlParseChunk(ctxt, chars, res, 0);
+                }
+                xmlParseChunk(ctxt, chars, 0, 1);
+                doc = ctxt->myDoc;
+                ret = ctxt->wellFormed;
+                xmlFreeParserCtxt(ctxt);
+                if ((!ret) && (!recovery)) {
+                    xmlFreeDoc(doc);
+                    doc = NULL;
+                }
                 if (f != stdin)
                     fclose(f);
 	    }

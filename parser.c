@@ -11029,7 +11029,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 int line = ctxt->input->line;
 		int nsNr = ctxt->nsNr;
 
-		if ((avail < 2) && (ctxt->inputNr == 1))
+		if (avail < 2)
 		    goto done;
 		cur = ctxt->input->cur[0];
 	        if (cur != '<') {
@@ -11124,7 +11124,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                 break;
 	    }
             case XML_PARSER_CONTENT: {
-		if ((avail < 2) && (ctxt->inputNr == 1))
+		if (avail < 2)
 		    goto done;
 		cur = ctxt->input->cur[0];
 		next = ctxt->input->cur[1];
@@ -11188,8 +11188,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		     *    callbacks between the push and pull versions
 		     *    of the parser.
 		     */
-		    if ((ctxt->inputNr == 1) &&
-		        (avail < XML_PARSER_BIG_BUFFER_SIZE)) {
+		    if (avail < XML_PARSER_BIG_BUFFER_SIZE) {
 			if ((!terminate) && (!xmlParseLookupCharData(ctxt)))
 			    goto done;
                     }

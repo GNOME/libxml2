@@ -541,7 +541,7 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
 
-    if ((table == NULL) || (name == NULL))
+    if ((table == NULL) || (name == NULL) || (table->nbElems == INT_MAX))
 	return(-1);
 
     /*
@@ -680,7 +680,7 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
 
-    if ((table == NULL) || name == NULL)
+    if ((table == NULL) || (name == NULL) || (table->nbElems == INT_MAX))
 	return(-1);
 
     /*

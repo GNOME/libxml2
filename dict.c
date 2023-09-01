@@ -132,7 +132,12 @@ static xmlMutex xmlDictMutex;
 /*
  * Internal data for random function, protected by xmlDictMutex
  */
-static uint32_t rand_seed[2];
+static uint32_t globalRngState[2];
+
+#ifdef XML_THREAD_LOCAL
+XML_THREAD_LOCAL static int localRngInitialized = 0;
+XML_THREAD_LOCAL static uint32_t localRngState[2];
+#endif
 
 /**
  * xmlInitializeDict:
@@ -162,10 +167,10 @@ xmlInitDictInternal(void) {
 
     /* TODO: Get seed values from system PRNG */
 
-    rand_seed[0] = (uint32_t) time(NULL) ^
-                   HASH_ROL((uint32_t) (size_t) &xmlInitializeDict, 8);
-    rand_seed[1] = HASH_ROL((uint32_t) (size_t) &xmlDictMutex, 16) ^
-                   HASH_ROL((uint32_t) (size_t) &var, 24);
+    globalRngState[0] = (uint32_t) time(NULL) ^
+                        HASH_ROL((uint32_t) (size_t) &xmlInitializeDict, 8);
+    globalRngState[1] = HASH_ROL((uint32_t) (size_t) &xmlDictMutex, 16) ^
+                        HASH_ROL((uint32_t) (size_t) &var, 24);
 }
 
 #ifdef __clang__
@@ -187,13 +192,25 @@ xoroshiro64ss(uint32_t *s) {
 
 unsigned
 xmlRandom(void) {
+#ifdef XML_THREAD_LOCAL
+    if (!localRngInitialized) {
+        xmlMutexLock(&xmlDictMutex);
+        localRngState[0] = xoroshiro64ss(globalRngState);
+        localRngState[1] = xoroshiro64ss(globalRngState);
+        localRngInitialized = 1;
+        xmlMutexUnlock(&xmlDictMutex);
+    }
+
+    return(xoroshiro64ss(localRngState));
+#else
     uint32_t ret;
 
     xmlMutexLock(&xmlDictMutex);
-    ret = xoroshiro64ss(rand_seed);
+    ret = xoroshiro64ss(globalRngState);
     xmlMutexUnlock(&xmlDictMutex);
 
     return(ret);
+#endif
 }
 
 /**

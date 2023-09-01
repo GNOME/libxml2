@@ -206,6 +206,30 @@ if (NOT MSVC)
 	endif()
 endif()
 
+check_c_source_compiles(
+    "_Thread_local int v; int main(){return 0;}"
+    XML_THREAD_LOCAL_C11
+)
+if (XML_THREAD_LOCAL_C11)
+    set(XML_THREAD_LOCAL "_Thread_local")
+else()
+    check_c_source_compiles(
+        "__thread int v; int main(){return 0;}"
+        XML_THREAD_LOCAL_THREAD
+    )
+    if (XML_THREAD_LOCAL_THREAD)
+        set(XML_THREAD_LOCAL "__thread")
+    else()
+        check_c_source_compiles(
+            "__declspec(thread) int v; int main(){return 0;}"
+            XML_THREAD_LOCAL_DECLSPEC
+        )
+        if (XML_THREAD_LOCAL_DECLSPEC)
+            set(XML_THREAD_LOCAL "__declspec(thread)")
+        endif()
+    endif()
+endif()
+
 set(
 	LIBXML2_HDRS
 	include/libxml/c14n.h

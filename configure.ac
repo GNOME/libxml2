@@ -135,6 +135,8 @@ AC_ARG_WITH(minimum,
 AC_ARG_WITH(legacy,
 [  --with-legacy           maximum ABI compatibility (off)])
 
+AC_ARG_WITH(tls,
+[  --with-tls              thread-local storage (on)])
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 AC_ARG_WITH(coverage,
@@ -434,6 +436,20 @@ dnl
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml2'
 XML_CFLAGS=""
+
+dnl Thread-local storage
+if test "$with_tls" != "no"; then
+    AC_COMPILE_IFELSE([
+        AC_LANG_SOURCE([_Thread_local int v;]) ], [
+        AC_DEFINE([XML_THREAD_LOCAL], [_Thread_local], [TLS specifier]) ], [
+    AC_COMPILE_IFELSE([
+        AC_LANG_SOURCE([__thread int v;]) ], [
+        AC_DEFINE([XML_THREAD_LOCAL], [__thread], [TLS specifier]) ], [
+    AC_COMPILE_IFELSE([
+        AC_LANG_SOURCE([__declspec(thread) int v;]) ], [
+        AC_DEFINE([XML_THREAD_LOCAL], [__declspec(thread)], [TLS specifier]) ], [
+    WARN_NO_TLS=1 ])])])
+fi
 
 dnl Checking whether __attribute__((destructor)) is accepted by the compiler
 AC_MSG_CHECKING([whether __attribute__((destructor)) is accepted])
@@ -1156,10 +1172,10 @@ AC_CONFIG_FILES([python/setup.py], [chmod +x python/setup.py])
 AC_CONFIG_FILES([xml2-config], [chmod +x xml2-config])
 AC_OUTPUT
 
-AC_COMPILE_IFELSE([AC_LANG_SOURCE([_Thread_local int v;])], [], [
+if test "$WARN_NO_TLS" != ""; then
     echo "================================================================"
-    echo "WARNING: Your C compiler doesn't support C11."
-    echo "Future versions of libxml2 will probably require a C11 compiler,"
-    echo "at least for features like multi-threading."
+    echo "WARNING: Your C compiler appears to not support thread-local"
+    echo "storage. Future versions of libxml2 will require this feature"
+    echo "for multi-threading."
     echo "================================================================"
-])
+fi

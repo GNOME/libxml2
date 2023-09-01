@@ -60,9 +60,10 @@ typedef unsigned __int32 uint32_t;
 /* #define DEBUG_GROW */
 /* #define DICT_DEBUG_PATTERNS */
 
-#define MAX_HASH_LEN 3
+#define MAX_HASH_LEN 16
+#define MAX_FILL 2
+#define GROWTH_FACTOR 4
 #define MIN_DICT_SIZE 128
-#define MAX_DICT_HASH 100000000
 #define WITH_BIG_KEY
 
 #ifdef WITH_BIG_KEY
@@ -654,16 +655,14 @@ xmlDictGrow(xmlDictPtr dict, size_t size) {
 
     if (dict == NULL)
 	return(-1);
-    if (size < 8)
-        return(-1);
-    if (size > MAX_DICT_HASH)
-	return(-1);
+    oldsize = dict->size;
+    if (size <= oldsize)
+	return(0);
 
 #ifdef DICT_DEBUG_PATTERNS
     fprintf(stderr, "*");
 #endif
 
-    oldsize = dict->size;
     olddict = dict->dict;
     if (olddict == NULL)
         return(-1);
@@ -954,9 +953,12 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 
     dict->nbElems++;
 
-    if ((nbi > MAX_HASH_LEN) &&
-        (dict->size <= ((MAX_DICT_HASH / 2) / MAX_HASH_LEN))) {
-	if (xmlDictGrow(dict, MAX_HASH_LEN * 2 * dict->size) != 0)
+    if ((dict->nbElems > dict->size / MAX_FILL) ||
+        (nbi > MAX_HASH_LEN)) {
+        int newSize = dict->size > INT_MAX / GROWTH_FACTOR ?
+                      INT_MAX :
+                      GROWTH_FACTOR * dict->size;
+	if (xmlDictGrow(dict, newSize) != 0)
 	    return(NULL);
     }
     /* Note that entry may have been freed at this point by xmlDictGrow */
@@ -1167,9 +1169,14 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
 
     dict->nbElems++;
 
-    if ((nbi > MAX_HASH_LEN) &&
-        (dict->size <= ((MAX_DICT_HASH / 2) / MAX_HASH_LEN)))
-	xmlDictGrow(dict, MAX_HASH_LEN * 2 * dict->size);
+    if ((dict->nbElems > dict->size / MAX_FILL) ||
+        (nbi > MAX_HASH_LEN)) {
+        int newSize = dict->size > INT_MAX / GROWTH_FACTOR ?
+                      INT_MAX :
+                      GROWTH_FACTOR * dict->size;
+	if (xmlDictGrow(dict, newSize) != 0)
+	    return(NULL);
+    }
     /* Note that entry may have been freed at this point by xmlDictGrow */
 
     return(ret);

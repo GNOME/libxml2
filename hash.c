@@ -41,7 +41,10 @@
 
 #include "private/dict.h"
 
-#define MAX_HASH_LEN 8
+#define MAX_HASH_LEN 16
+#define MAX_FILL 2
+#define GROWTH_FACTOR 4
+#define MIN_HASH_SIZE 16
 
 /* #define DEBUG_GROW */
 
@@ -182,8 +185,8 @@ xmlHashCreate(int size) {
 
     xmlInitParser();
 
-    if (size <= 0)
-        size = 256;
+    if (size <= MIN_HASH_SIZE)
+        size = MIN_HASH_SIZE;
 
     table = xmlMalloc(sizeof(xmlHashTable));
     if (table) {
@@ -245,12 +248,10 @@ xmlHashGrow(xmlHashTablePtr table, int size) {
 
     if (table == NULL)
 	return(-1);
-    if (size < 8)
-        return(-1);
-    if (size > 8 * 2048)
-	return(-1);
-
     oldsize = table->size;
+    if (size <= oldsize)
+        return(0);
+
     oldtable = table->table;
     if (oldtable == NULL)
         return(-1);
@@ -644,8 +645,13 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
 
     table->nbElems++;
 
-    if (len > MAX_HASH_LEN)
-	xmlHashGrow(table, MAX_HASH_LEN * table->size);
+    if ((table->nbElems > table->size / MAX_FILL) ||
+        (len > MAX_HASH_LEN)) {
+        int newSize = table->size > INT_MAX / GROWTH_FACTOR ?
+                      INT_MAX :
+                      GROWTH_FACTOR * table->size;
+	xmlHashGrow(table, newSize);
+    }
 
     return(0);
 

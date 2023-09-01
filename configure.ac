@@ -1093,7 +1093,7 @@ dnl
 WITH_ICU=0
 ICU_LIBS=""
 
-if test "$with_icu" != "yes" ; then
+if test "$with_icu" = "no" || test "$with_icu" = "" ; then
     echo Disabling ICU support
 else
     # Try pkg-config first so that static linking works.
@@ -1116,7 +1116,7 @@ else
         else
 	    _cppflags="${CPPFLAGS}"
 	    _libs="${LIBS}"
-            if test "$with_icu" != "yes" && test "$with_icu" != "" ; then
+            if test "$with_icu" != "yes" ; then
                 ICU_DIR=$with_icu
                 CPPFLAGS="${CPPFLAGS} -I$ICU_DIR/include"
                 LIBS="${LIBS} -L$ICU_DIR/lib"

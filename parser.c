@@ -13702,7 +13702,7 @@ xmlInitParser(void) {
 	xmlInitThreadsInternal();
 	xmlInitGlobalsInternal();
 	xmlInitMemoryInternal();
-        __xmlInitializeDict();
+        xmlInitDictInternal();
 	xmlInitEncodingInternal();
 	xmlRegisterDefaultInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED

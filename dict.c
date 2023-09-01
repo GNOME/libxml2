@@ -20,11 +20,23 @@
 #include "libxml.h"
 
 #include <limits.h>
-#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "private/dict.h"
 #include "private/threads.h"
+
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#elif defined(_WIN32)
+typedef unsigned __int32 uint32_t;
+#endif
+
+#include <libxml/tree.h>
+#include <libxml/dict.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/xmlerror.h>
+#include <libxml/globals.h>
 
 /*
  * Following http://www.ocert.org/advisories/ocert-2011-003.html
@@ -40,22 +52,6 @@
 #if !defined(FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION)
 #define DICT_RANDOMIZATION
 #endif
-
-#include <string.h>
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#else
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#elif defined(_WIN32)
-typedef unsigned __int32 uint32_t;
-#endif
-#endif
-#include <libxml/tree.h>
-#include <libxml/dict.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/xmlerror.h>
-#include <libxml/globals.h>
 
 /* #define DEBUG_GROW */
 /* #define DICT_DEBUG_PATTERNS */
@@ -122,7 +118,7 @@ struct _xmlDict {
 
     struct _xmlDict *subdict;
     /* used for randomization */
-    int seed;
+    unsigned seed;
     /* used to impose a limit on size */
     size_t limit;
 };
@@ -133,59 +129,72 @@ struct _xmlDict {
  */
 static xmlMutex xmlDictMutex;
 
-#ifdef DICT_RANDOMIZATION
-#ifdef HAVE_RAND_R
 /*
  * Internal data for random function, protected by xmlDictMutex
  */
-static unsigned int rand_seed = 0;
-#endif
-#endif
+static uint32_t rand_seed[2];
 
 /**
  * xmlInitializeDict:
  *
  * DEPRECATED: Alias for xmlInitParser.
  */
-int xmlInitializeDict(void) {
+int
+xmlInitializeDict(void) {
     xmlInitParser();
     return(0);
 }
 
 /**
- * __xmlInitializeDict:
+ * xmlInitializeDict:
  *
- * This function is not public
- * Do the dictionary mutex initialization.
+ * Initialize mutex and global PRNG seed.
  */
-int __xmlInitializeDict(void) {
+#ifdef __clang__
+ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
+ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
+#endif
+void
+xmlInitDictInternal(void) {
+    int var;
+
     xmlInitMutex(&xmlDictMutex);
 
-#ifdef DICT_RANDOMIZATION
-#ifdef HAVE_RAND_R
-    rand_seed = time(NULL);
-    rand_r(& rand_seed);
-#else
-    srand(time(NULL));
-#endif
-#endif
-    return(1);
+    /* TODO: Get seed values from system PRNG */
+
+    rand_seed[0] = (uint32_t) time(NULL) ^
+                   HASH_ROL((uint32_t) (size_t) &xmlInitializeDict, 8);
+    rand_seed[1] = HASH_ROL((uint32_t) (size_t) &xmlDictMutex, 16) ^
+                   HASH_ROL((uint32_t) (size_t) &var, 24);
 }
 
-#ifdef DICT_RANDOMIZATION
-int __xmlRandom(void) {
-    int ret;
+#ifdef __clang__
+ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
+ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
+#endif
+static uint32_t
+xoroshiro64ss(uint32_t *s) {
+    uint32_t s0 = s[0];
+    uint32_t s1 = s[1];
+    uint32_t result = HASH_ROL(s0 * 0x9E3779BB, 5) * 5;
+
+    s1 ^= s0;
+    s[0] = HASH_ROL(s0, 26) ^ s1 ^ (s1 << 9);
+    s[1] = HASH_ROL(s1, 13);
+
+    return result;
+}
+
+unsigned
+xmlRandom(void) {
+    uint32_t ret;
 
     xmlMutexLock(&xmlDictMutex);
-#ifdef HAVE_RAND_R
-    ret = rand_r(& rand_seed);
-#else
-    ret = rand();
-#endif
+    ret = xoroshiro64ss(rand_seed);
     xmlMutexUnlock(&xmlDictMutex);
+
     return(ret);
 }
-#endif
 
 /**
  * xmlDictCleanup:
@@ -358,7 +367,7 @@ ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
 static uint32_t
-xmlDictComputeBigKey(const xmlChar* data, int namelen, int seed) {
+xmlDictComputeBigKey(const xmlChar* data, int namelen, unsigned seed) {
     uint32_t hash;
     int i;
 
@@ -395,7 +404,7 @@ ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
 static unsigned long
 xmlDictComputeBigQKey(const xmlChar *prefix, int plen,
-                      const xmlChar *name, int len, int seed)
+                      const xmlChar *name, int len, unsigned seed)
 {
     uint32_t hash;
     int i;
@@ -431,7 +440,7 @@ xmlDictComputeBigQKey(const xmlChar *prefix, int plen,
  * for low hash table fill.
  */
 static unsigned long
-xmlDictComputeFastKey(const xmlChar *name, int namelen, int seed) {
+xmlDictComputeFastKey(const xmlChar *name, int namelen, unsigned seed) {
     unsigned long value = seed;
 
     if ((name == NULL) || (namelen <= 0))
@@ -476,7 +485,7 @@ xmlDictComputeFastKey(const xmlChar *name, int namelen, int seed) {
  */
 static unsigned long
 xmlDictComputeFastQKey(const xmlChar *prefix, int plen,
-                       const xmlChar *name, int len, int seed)
+                       const xmlChar *name, int len, unsigned seed)
 {
     unsigned long value = seed;
 
@@ -578,7 +587,7 @@ xmlDictCreate(void) {
         if (dict->dict) {
 	    memset(dict->dict, 0, MIN_DICT_SIZE * sizeof(xmlDictEntry));
 #ifdef DICT_RANDOMIZATION
-            dict->seed = __xmlRandom();
+            dict->seed = xmlRandom();
 #else
             dict->seed = 0;
 #endif

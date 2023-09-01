@@ -70,9 +70,7 @@ struct _xmlHashTable {
     int size;
     int nbElems;
     xmlDictPtr dict;
-#ifdef HASH_RANDOMIZATION
-    int random_seed;
-#endif
+    unsigned random_seed;
 };
 
 /*
@@ -86,12 +84,10 @@ ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 static unsigned long
 xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
 	          const xmlChar *name2, const xmlChar *name3) {
-    unsigned long value = 0L;
+    unsigned long value;
     unsigned long ch;
 
-#ifdef HASH_RANDOMIZATION
     value = table->random_seed;
-#endif
     if (name != NULL) {
 	value += 30 * (*name);
 	while ((ch = *name++) != 0) {
@@ -122,12 +118,10 @@ xmlHashComputeQKey(xmlHashTablePtr table,
 		   const xmlChar *prefix, const xmlChar *name,
 		   const xmlChar *prefix2, const xmlChar *name2,
 		   const xmlChar *prefix3, const xmlChar *name3) {
-    unsigned long value = 0L;
+    unsigned long value;
     unsigned long ch;
 
-#ifdef HASH_RANDOMIZATION
     value = table->random_seed;
-#endif
     if (prefix != NULL)
 	value += 30 * (*prefix);
     else
@@ -197,7 +191,7 @@ xmlHashCreate(int size) {
         if (table->table) {
 	    memset(table->table, 0, size * sizeof(xmlHashEntry));
 #ifdef HASH_RANDOMIZATION
-            table->random_seed = __xmlRandom();
+            table->random_seed = xmlRandom();
 #endif
 	    return(table);
         }

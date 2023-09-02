@@ -285,6 +285,12 @@ else
     fi
 fi
 
+XML_PRIVATE_LIBS=
+XML_PRIVATE_CFLAGS=
+XML_PC_LIBS=
+XML_PC_CFLAGS=
+XML_PC_REQUIRES=
+
 dnl
 dnl Checks for header files.
 dnl
@@ -844,7 +850,7 @@ dnl
 if test "${NEED_TRIO}" = "1" ; then
     echo Adding trio library for string functions
     WITH_TRIO=1
-else    
+else
     WITH_TRIO=0
 fi
 AM_CONDITIONAL(WITH_TRIO_SOURCES, test "${NEED_TRIO}" = "1")
@@ -963,7 +969,7 @@ else
     if test "x$Z_DIR" = "x"; then
         # Try pkg-config first so that static linking works.
         PKG_CHECK_MODULES([Z],[zlib],
-            [WITH_ZLIB=1],
+            [WITH_ZLIB=1; XML_PC_REQUIRES="${XML_PC_REQUIRES} zlib"],
             [:])
     fi
 
@@ -988,10 +994,15 @@ else
                 else
                     Z_LIBS="-lz"
                 fi])
+                XML_PC_CFLAGS="${XML_PC_CFLAGS} ${Z_CFLAGS}"
+                XML_PC_LIBS="${XML_PC_LIBS} ${Z_LIBS}"
             )
         CPPFLAGS=$_cppflags
         LIBS=$_libs
     fi
+
+    XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${Z_CFLAGS}"
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${Z_LIBS}"
 fi
 AC_SUBST(WITH_ZLIB)
 
@@ -1011,7 +1022,7 @@ else
     if test "x$LZMA_DIR" = "x"; then
         # Try pkg-config first so that static linking works.
         PKG_CHECK_MODULES([LZMA],[liblzma],
-            [WITH_LZMA=1],
+            [WITH_LZMA=1; XML_PC_REQUIRES="${XML_PC_REQUIRES} liblzma"],
             [:])
     fi
 
@@ -1034,10 +1045,15 @@ else
                 else
                     LZMA_LIBS="-llzma"
                 fi])
+                XML_PC_CFLAGS="${XML_PC_CFLAGS} ${LZMA_CFLAGS}"
+                XML_PC_LIBS="${XML_PC_LIBS} ${LZMA_LIBS}"
             )
         CPPFLAGS=$_cppflags
         LIBS=$_libs
     fi
+
+    XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${LZMA_CFLAGS}"
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${LZMA_LIBS}"
 fi
 AC_SUBST(WITH_LZMA)
 AM_CONDITIONAL(WITH_LZMA_SOURCES, test "$WITH_LZMA" = "1")
@@ -1091,7 +1107,6 @@ dnl
 dnl Checks for ICU library.
 dnl
 WITH_ICU=0
-ICU_LIBS=""
 
 if test "$with_icu" = "no" || test "$with_icu" = "" ; then
     echo Disabling ICU support
@@ -1099,7 +1114,7 @@ else
     # Try pkg-config first so that static linking works.
     # If this succeeeds, we ignore the WITH_ICU directory.
     PKG_CHECK_MODULES([ICU], [icu-i18n], [
-        WITH_ICU=1
+        WITH_ICU=1; XML_PC_REQUIRES="${XML_PC_REQUIRES} icu-i18n"
         m4_ifdef([PKG_CHECK_VAR],
             [PKG_CHECK_VAR([ICU_DEFS], [icu-i18n], [DEFS])])
         if test "x$ICU_DEFS" != "x"; then
@@ -1113,9 +1128,11 @@ else
             WITH_ICU=1
             ICU_CFLAGS=`${ICU_CONFIG} --cflags`
             ICU_LIBS=`${ICU_CONFIG} --ldflags`
+            XML_PC_CFLAGS="${XML_PC_CFLAGS} ${ICU_CFLAGS}"
+            XML_PC_LIBS="${XML_PC_LIBS} ${ICU_LIBS}"
         else
-	    _cppflags="${CPPFLAGS}"
-	    _libs="${LIBS}"
+            _cppflags="${CPPFLAGS}"
+            _libs="${LIBS}"
             if test "$with_icu" != "yes" ; then
                 ICU_DIR=$with_icu
                 CPPFLAGS="${CPPFLAGS} -I$ICU_DIR/include"
@@ -1130,10 +1147,15 @@ else
                         ICU_CFLAGS="-I$ICU_DIR/include"
                         ICU_LIBS="-L$ICU_DIR/lib $ICU_LIBS"
                     fi])])
+                    XML_PC_CFLAGS="${XML_PC_CFLAGS} ${ICU_CFLAGS}"
+                    XML_PC_LIBS="${XML_PC_LIBS} ${ICU_LIBS}"
             CPPFLAGS=$_cppflags
             LIBS=$_libs
         fi
     fi
+
+    XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${ICU_CFLAGS}"
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${ICU_LIBS}"
 fi
 AC_SUBST(WITH_ICU)
 
@@ -1148,8 +1170,15 @@ fi
 
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"
-XML_PRIVATE_LIBS="$Z_LIBS $LZMA_LIBS $THREAD_LIBS $ICONV_LIBS $ICU_LIBS $LIBM $NET_LIBS"
-XML_PRIVATE_CFLAGS="$Z_CFLAGS $LZMA_CFLAGS $THREAD_CFLAGS $ICONV_CFLAGS $ICU_CFLAGS"
+XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} $THREAD_LIBS $ICONV_LIBS $LIBM $NET_LIBS"
+XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} $THREAD_CFLAGS $ICONV_CFLAGS"
+
+AC_SUBST(XML_PC_LIBS)
+AC_SUBST(XML_PC_CFLAGS)
+AC_SUBST(XML_PC_REQUIRES)
+AM_SUBST_NOTMAKE(XML_PC_LIBS)
+AM_SUBST_NOTMAKE(XML_PC_CFLAGS)
+AM_SUBST_NOTMAKE(XML_PC_REQUIRES)
 
 AC_SUBST(AM_CFLAGS)
 AC_SUBST(AM_LDFLAGS)

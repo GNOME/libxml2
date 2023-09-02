@@ -348,11 +348,6 @@ add_library(LibXml2::LibXml2 ALIAS LibXml2)
 
 target_compile_definitions(LibXml2 PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
 
-if(NOT BUILD_SHARED_LIBS)
-	target_compile_definitions(LibXml2 PUBLIC LIBXML_STATIC)
-	set(XML_CFLAGS "-DLIBXML_STATIC")
-endif()
-
 if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra -Wshadow \
 -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return \
@@ -653,6 +648,16 @@ set(XML_LIBDIR "-L\${libdir}")
 set(XML_LIBS "-lxml2")
 set(XML_PRIVATE_LIBS "${Z_LIBS} ${LZMA_LIBS} ${THREAD_LIBS} ${ICONV_LIBS} ${ICU_LIBS} ${LIBM} ${WINSOCK_LIBS}")
 set(XML_PC_LIBS "${XML_PRIVATE_LIBS}")
+
+if(BUILD_SHARED_LIBS)
+	set(XML_PC_PRIVATE ".private")
+	set(XML_PC_LIBS_PRIVATE "
+Libs.private:")
+else()
+	target_compile_definitions(LibXml2 PUBLIC LIBXML_STATIC)
+	set(XML_CFLAGS "-DLIBXML_STATIC")
+	set(XML_PRIVATE_LIBS_NO_SHARED "${XML_PRIVATE_LIBS}")
+endif()
 
 file(RELATIVE_PATH PACKAGE_RELATIVE_PATH "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig" "${CMAKE_INSTALL_PREFIX}")
 string(REGEX REPLACE "/$" "" PACKAGE_RELATIVE_PATH "${PACKAGE_RELATIVE_PATH}")

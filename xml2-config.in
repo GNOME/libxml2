@@ -84,7 +84,7 @@ while test $# -gt 0; do
     --libs)
         if [ "$2" = "--dynamic" ]; then
             shift
-            libs="@XML_LIBS@"
+            libs="@XML_LIBS@ @XML_PRIVATE_LIBS_NO_SHARED@"
         else
             libs="@XML_LIBS@ @XML_PRIVATE_LIBS@ @MODULE_PLATFORM_LIBS@ @LIBS@"
         fi

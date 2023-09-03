@@ -20,6 +20,7 @@ include(CheckLinkerFlag)
 include(CheckStructHasMember)
 include(CheckSymbolExists)
 include(CMakePackageConfigHelpers)
+include(FindPkgConfig)
 include(GNUInstallDirs)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
@@ -63,18 +64,6 @@ option(LIBXML2_WITH_XPTR_LOCS "Add support for XPointer locations" OFF)
 option(LIBXML2_WITH_ZLIB "Use libz" ON)
 set(LIBXML2_XMLCONF_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH "Working directory for XML Conformance Test Suite")
 
-if(LIBXML2_WITH_ICONV)
-	find_package(Iconv REQUIRED)
-endif()
-
-if(LIBXML2_WITH_ICU)
-	find_package(ICU REQUIRED COMPONENTS data i18n uc)
-endif()
-
-if(LIBXML2_WITH_LZMA)
-	find_package(LibLZMA REQUIRED)
-endif()
-
 if(LIBXML2_WITH_PYTHON)
 	check_include_files(unistd.h HAVE_UNISTD_H)
 	check_symbol_exists(F_GETFL fcntl.h HAVE_F_GETFL)
@@ -82,14 +71,6 @@ if(LIBXML2_WITH_PYTHON)
         #set(LIBXML2_PYTHON_INSTALL_DIR ${Python_SITEARCH} CACHE PATH "Python bindings install directory")
         set(LIBXML2_PYTHON_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/python"
 	    CACHE PATH "Python bindings install directory")
-endif()
-
-if(LIBXML2_WITH_THREADS)
-	find_package(Threads REQUIRED)
-endif()
-
-if(LIBXML2_WITH_ZLIB)
-	find_package(ZLIB REQUIRED)
 endif()
 
 foreach(VARIABLE IN ITEMS WITH_AUTOMATA WITH_C14N WITH_CATALOG WITH_DEBUG WITH_EXPR WITH_FTP WITH_HTML WITH_HTTP WITH_ICONV WITH_ICU WITH_ISO8859X WITH_LEGACY WITH_LZMA WITH_MEM_DEBUG WITH_MODULES WITH_OUTPUT WITH_PATTERN WITH_PUSH WITH_READER WITH_REGEXPS WITH_SAX1 WITH_SCHEMAS WITH_SCHEMATRON WITH_THREADS WITH_THREAD_ALLOC WITH_TREE WITH_TRIO WITH_UNICODE WITH_VALID WITH_WRITER WITH_XINCLUDE WITH_XPATH WITH_XPTR WITH_XPTR_LOCS WITH_ZLIB)
@@ -117,18 +98,6 @@ set(PACKAGE_STRING "libxml2 ${VERSION}")
 set(PACKAGE_TARNAME "libxml2")
 set(PACKAGE_URL "https://gitlab.gnome.org/GNOME/libxml2")
 set(PACKAGE_VERSION ${VERSION})
-
-if(LIBLZMA_FOUND)
-	list(APPEND CMAKE_REQUIRED_LIBRARIES LibLZMA::LibLZMA)
-endif()
-
-if(Threads_FOUND)
-	list(APPEND CMAKE_REQUIRED_LIBRARIES Threads::Threads)
-endif()
-
-if(ZLIB_FOUND)
-	list(APPEND CMAKE_REQUIRED_LIBRARIES ZLIB::ZLIB)
-endif()
 
 if (NOT MSVC)
 	check_c_source_compiles("
@@ -348,21 +317,6 @@ add_library(LibXml2::LibXml2 ALIAS LibXml2)
 
 target_compile_definitions(LibXml2 PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
 
-if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra -Wshadow \
--Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return \
--Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline \
--Wredundant-decls -Wno-long-long -Wno-format-extra-args")
-
-	if(BUILD_SHARED_LIBS AND UNIX AND NOT APPLE)
-		check_linker_flag(C "LINKER:--undefined-version" FLAG_UNDEFINED_VERSION)
-		if (FLAG_UNDEFINED_VERSION)
-			target_link_options(LibXml2 PRIVATE "LINKER:--undefined-version")
-		endif()
-		target_link_options(LibXml2 PRIVATE "LINKER:--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libxml2.syms")
-	endif()
-endif()
-
 if(LIBXML2_WITH_THREADS)
 	target_compile_definitions(LibXml2 PRIVATE _REENTRANT)
         if(NOT WIN32)
@@ -401,6 +355,7 @@ if(WIN32)
 endif()
 
 if(LIBXML2_WITH_ICONV)
+	find_package(Iconv REQUIRED)
 	target_link_libraries(LibXml2 PUBLIC Iconv::Iconv)
 	if(NOT Iconv_IS_BUILT_IN)
 		set(ICONV_LIBS "-liconv")
@@ -408,27 +363,71 @@ if(LIBXML2_WITH_ICONV)
 endif()
 
 if(LIBXML2_WITH_ICU)
-	target_link_libraries(LibXml2 PRIVATE ICU::data ICU::i18n ICU::uc)
-	if(WIN32)
-		set(ICU_LIBS "-licudt -licuin -licuuc")
+	pkg_check_modules(ICU IMPORTED_TARGET icu-i18n)
+	if(ICU_FOUND)
+		target_link_libraries(LibXml2 PRIVATE PkgConfig::ICU)
+		list(APPEND XML_PC_REQUIRES icu-i18n)
 	else()
-		set(ICU_LIBS "-licudata -licui18n -licuuc")
+		find_package(ICU REQUIRED COMPONENTS data i18n uc)
+		target_link_libraries(LibXml2 PRIVATE ICU::data ICU::i18n ICU::uc)
+		if(WIN32)
+			set(ICU_LDFLAGS "-licudt -licuin -licuuc")
+		else()
+			set(ICU_LDFLAGS "-licudata -licui18n -licuuc")
+		endif()
+		list(APPEND XML_PC_LIBS "${ICU_LDFLAGS}")
 	endif()
+	list(APPEND XML_PRIVATE_LIBS "${ICU_LDFLAGS}")
 endif()
 
 if(LIBXML2_WITH_LZMA)
-	target_link_libraries(LibXml2 PRIVATE LibLZMA::LibLZMA)
-	set(LZMA_LIBS "-llzma")
+	pkg_check_modules(LibLZMA IMPORTED_TARGET liblzma)
+	if(LibLZMA_FOUND)
+		target_link_libraries(LibXml2 PRIVATE PkgConfig::LibLZMA)
+		list(APPEND XML_PC_REQUIRES liblzma)
+	else()
+		find_package(LibLZMA REQUIRED)
+		target_link_libraries(LibXml2 PRIVATE LibLZMA::LibLZMA)
+		set(LibLZMA_LDFLAGS "-llzma")
+		list(APPEND XML_PC_LIBS "${LibLZMA_LDFLAGS}")
+	endif()
+	list(APPEND XML_PRIVATE_LIBS "${LibLZMA_LDFLAGS}")
 endif()
 
 if(LIBXML2_WITH_THREADS)
+	find_package(Threads REQUIRED)
 	target_link_libraries(LibXml2 PRIVATE Threads::Threads)
 	set(THREAD_LIBS ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if(LIBXML2_WITH_ZLIB)
-	target_link_libraries(LibXml2 PRIVATE ZLIB::ZLIB)
-	set(Z_LIBS "-lz")
+	pkg_check_modules(ZLIB IMPORTED_TARGET zlib)
+	if(ZLIB_FOUND)
+		target_link_libraries(LibXml2 PRIVATE PkgConfig::ZLIB)
+		list(APPEND XML_PC_REQUIRES zlib)
+	else()
+		find_package(ZLIB REQUIRED)
+		target_link_libraries(LibXml2 PRIVATE ZLIB::ZLIB)
+		set(ZLIB_LDFLAGS "-lz")
+		list(APPEND XML_PC_LIBS "${ZLIB_LDFLAGS}")
+	endif()
+	list(APPEND XML_PRIVATE_LIBS "${ZLIB_LDFLAGS}")
+endif()
+
+if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
+	# These compiler flags can break the checks above so keep them here.
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra -Wshadow \
+-Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return \
+-Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline \
+-Wredundant-decls -Wno-long-long -Wno-format-extra-args")
+
+	if(BUILD_SHARED_LIBS AND UNIX AND NOT APPLE)
+		check_linker_flag(C "LINKER:--undefined-version" FLAG_UNDEFINED_VERSION)
+		if (FLAG_UNDEFINED_VERSION)
+			target_link_options(LibXml2 PRIVATE "LINKER:--undefined-version")
+		endif()
+		target_link_options(LibXml2 PRIVATE "LINKER:--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libxml2.syms")
+	endif()
 endif()
 
 set_target_properties(
@@ -643,11 +642,19 @@ if(LIBXML2_WITH_PYTHON)
 	configure_file(python/setup.py.in setup.py @ONLY)
 endif()
 
+set(NON_PC_LIBS "${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${WINSOCK_LIBS}")
+list(APPEND XML_PC_LIBS "${NON_PC_LIBS}")
+list(APPEND XML_PRIVATE_LIBS "${NON_PC_LIBS}")
+list(REMOVE_DUPLICATES XML_PC_LIBS)
+list(REMOVE_DUPLICATES XML_PRIVATE_LIBS)
+
+list(JOIN XML_PC_REQUIRES " " XML_PC_REQUIRES)
+list(JOIN XML_PC_LIBS " " XML_PC_LIBS)
+list(JOIN XML_PRIVATE_LIBS " " XML_PRIVATE_LIBS)
+
 set(XML_INCLUDEDIR "-I\${includedir}/libxml2")
 set(XML_LIBDIR "-L\${libdir}")
 set(XML_LIBS "-lxml2")
-set(XML_PRIVATE_LIBS "${Z_LIBS} ${LZMA_LIBS} ${THREAD_LIBS} ${ICONV_LIBS} ${ICU_LIBS} ${LIBM} ${WINSOCK_LIBS}")
-set(XML_PC_LIBS "${XML_PRIVATE_LIBS}")
 
 if(BUILD_SHARED_LIBS)
 	set(XML_PC_PRIVATE ".private")

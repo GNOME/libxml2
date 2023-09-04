@@ -192,6 +192,8 @@ xmlHashCreate(int size) {
 	    memset(table->table, 0, size * sizeof(xmlHashEntry));
 #ifdef HASH_RANDOMIZATION
             table->random_seed = xmlRandom();
+#else
+            table->random_seed = 0;
 #endif
 	    return(table);
         }

@@ -288,7 +288,6 @@ fi
 XML_PRIVATE_LIBS=
 XML_PRIVATE_CFLAGS=
 XML_PC_LIBS=
-XML_PC_CFLAGS=
 XML_PC_REQUIRES=
 
 dnl
@@ -994,7 +993,6 @@ else
                 else
                     Z_LIBS="-lz"
                 fi])
-                XML_PC_CFLAGS="${XML_PC_CFLAGS} ${Z_CFLAGS}"
                 XML_PC_LIBS="${XML_PC_LIBS} ${Z_LIBS}"
             )
         CPPFLAGS=$_cppflags
@@ -1045,7 +1043,6 @@ else
                 else
                     LZMA_LIBS="-llzma"
                 fi])
-                XML_PC_CFLAGS="${XML_PC_CFLAGS} ${LZMA_CFLAGS}"
                 XML_PC_LIBS="${XML_PC_LIBS} ${LZMA_LIBS}"
             )
         CPPFLAGS=$_cppflags
@@ -1128,7 +1125,6 @@ else
             WITH_ICU=1
             ICU_CFLAGS=`${ICU_CONFIG} --cflags`
             ICU_LIBS=`${ICU_CONFIG} --ldflags`
-            XML_PC_CFLAGS="${XML_PC_CFLAGS} ${ICU_CFLAGS}"
             XML_PC_LIBS="${XML_PC_LIBS} ${ICU_LIBS}"
         else
             _cppflags="${CPPFLAGS}"
@@ -1147,7 +1143,6 @@ else
                         ICU_CFLAGS="-I$ICU_DIR/include"
                         ICU_LIBS="-L$ICU_DIR/lib $ICU_LIBS"
                     fi])])
-                    XML_PC_CFLAGS="${XML_PC_CFLAGS} ${ICU_CFLAGS}"
                     XML_PC_LIBS="${XML_PC_LIBS} ${ICU_LIBS}"
             CPPFLAGS=$_cppflags
             LIBS=$_libs
@@ -1194,10 +1189,8 @@ AM_SUBST_NOTMAKE(XML_PC_PRIVATE)
 AM_SUBST_NOTMAKE(XML_PC_LIBS_PRIVATE)
 
 AC_SUBST(XML_PC_LIBS)
-AC_SUBST(XML_PC_CFLAGS)
 AC_SUBST(XML_PC_REQUIRES)
 AM_SUBST_NOTMAKE(XML_PC_LIBS)
-AM_SUBST_NOTMAKE(XML_PC_CFLAGS)
 AM_SUBST_NOTMAKE(XML_PC_REQUIRES)
 
 AC_SUBST(AM_CFLAGS)

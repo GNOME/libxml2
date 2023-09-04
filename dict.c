@@ -26,12 +26,6 @@
 #include "private/dict.h"
 #include "private/threads.h"
 
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#elif defined(_WIN32)
-typedef unsigned __int32 uint32_t;
-#endif
-
 #include <libxml/tree.h>
 #include <libxml/dict.h>
 #include <libxml/xmlmemory.h>
@@ -132,11 +126,11 @@ static xmlMutex xmlDictMutex;
 /*
  * Internal data for random function, protected by xmlDictMutex
  */
-static uint32_t globalRngState[2];
+static unsigned globalRngState[2];
 
 #ifdef XML_THREAD_LOCAL
 XML_THREAD_LOCAL static int localRngInitialized = 0;
-XML_THREAD_LOCAL static uint32_t localRngState[2];
+XML_THREAD_LOCAL static unsigned localRngState[2];
 #endif
 
 /**
@@ -167,27 +161,27 @@ xmlInitDictInternal(void) {
 
     /* TODO: Get seed values from system PRNG */
 
-    globalRngState[0] = (uint32_t) time(NULL) ^
-                        HASH_ROL((uint32_t) (size_t) &xmlInitializeDict, 8);
-    globalRngState[1] = HASH_ROL((uint32_t) (size_t) &xmlDictMutex, 16) ^
-                        HASH_ROL((uint32_t) (size_t) &var, 24);
+    globalRngState[0] = (unsigned) time(NULL) ^
+                        HASH_ROL((unsigned) (size_t) &xmlInitializeDict, 8);
+    globalRngState[1] = HASH_ROL((unsigned) (size_t) &xmlDictMutex, 16) ^
+                        HASH_ROL((unsigned) (size_t) &var, 24);
 }
 
 #ifdef __clang__
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
-static uint32_t
-xoroshiro64ss(uint32_t *s) {
-    uint32_t s0 = s[0];
-    uint32_t s1 = s[1];
-    uint32_t result = HASH_ROL(s0 * 0x9E3779BB, 5) * 5;
+static unsigned
+xoroshiro64ss(unsigned *s) {
+    unsigned s0 = s[0];
+    unsigned s1 = s[1];
+    unsigned result = HASH_ROL(s0 * 0x9E3779BB, 5) * 5;
 
     s1 ^= s0;
     s[0] = HASH_ROL(s0, 26) ^ s1 ^ (s1 << 9);
     s[1] = HASH_ROL(s1, 13);
 
-    return result;
+    return(result & 0xFFFFFFFF);
 }
 
 unsigned
@@ -203,7 +197,7 @@ xmlRandom(void) {
 
     return(xoroshiro64ss(localRngState));
 #else
-    uint32_t ret;
+    unsigned ret;
 
     xmlMutexLock(&xmlDictMutex);
     ret = xoroshiro64ss(globalRngState);

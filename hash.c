@@ -81,88 +81,88 @@ struct _xmlHashTable {
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
-static unsigned long
+static unsigned
 xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
 	          const xmlChar *name2, const xmlChar *name3) {
-    unsigned long value;
-    unsigned long ch;
+    unsigned h1, h2, ch;
 
-    value = table->random_seed;
+    HASH_INIT(h1, h2, table->random_seed);
+
     if (name != NULL) {
-	value += 30 * (*name);
 	while ((ch = *name++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
     }
-    value = value ^ ((value << 5) + (value >> 3));
+    HASH_UPDATE(h1, h2, 0);
     if (name2 != NULL) {
 	while ((ch = *name2++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
     }
-    value = value ^ ((value << 5) + (value >> 3));
+    HASH_UPDATE(h1, h2, 0);
     if (name3 != NULL) {
 	while ((ch = *name3++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
     }
-    return (value % table->size);
+
+    HASH_FINISH(h1, h2);
+
+    return (h2 % table->size);
 }
 
 #ifdef __clang__
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
-static unsigned long
+static unsigned
 xmlHashComputeQKey(xmlHashTablePtr table,
 		   const xmlChar *prefix, const xmlChar *name,
 		   const xmlChar *prefix2, const xmlChar *name2,
 		   const xmlChar *prefix3, const xmlChar *name3) {
-    unsigned long value;
-    unsigned long ch;
+    unsigned h1, h2, ch;
 
-    value = table->random_seed;
-    if (prefix != NULL)
-	value += 30 * (*prefix);
-    else
-	value += 30 * (*name);
+    HASH_INIT(h1, h2, table->random_seed);
 
     if (prefix != NULL) {
 	while ((ch = *prefix++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
-	value = value ^ ((value << 5) + (value >> 3) + ':');
+        HASH_UPDATE(h1, h2, ':');
     }
     if (name != NULL) {
 	while ((ch = *name++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
     }
-    value = value ^ ((value << 5) + (value >> 3));
+    HASH_UPDATE(h1, h2, 0);
     if (prefix2 != NULL) {
 	while ((ch = *prefix2++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
-	value = value ^ ((value << 5) + (value >> 3) + ':');
+        HASH_UPDATE(h1, h2, ':');
     }
     if (name2 != NULL) {
 	while ((ch = *name2++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
     }
-    value = value ^ ((value << 5) + (value >> 3));
+    HASH_UPDATE(h1, h2, 0);
     if (prefix3 != NULL) {
 	while ((ch = *prefix3++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
-	value = value ^ ((value << 5) + (value >> 3) + ':');
+        HASH_UPDATE(h1, h2, ':');
     }
     if (name3 != NULL) {
 	while ((ch = *name3++) != 0) {
-	    value = value ^ ((value << 5) + (value >> 3) + ch);
+            HASH_UPDATE(h1, h2, ch);
 	}
     }
-    return (value % table->size);
+
+    HASH_FINISH(h1, h2);
+
+    return (h2 % table->size);
 }
 
 /**
@@ -232,12 +232,12 @@ xmlHashCreateDict(int size, xmlDictPtr dict) {
  */
 static int
 xmlHashGrow(xmlHashTablePtr table, int size) {
-    unsigned long key;
+    unsigned key;
     int oldsize, i;
     xmlHashEntryPtr iter, next;
     struct _xmlHashEntry *oldtable;
 #ifdef DEBUG_GROW
-    unsigned long nbElem = 0;
+    unsigned nbElem = 0;
 #endif
 
     if (table == NULL)
@@ -532,7 +532,7 @@ int
 xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
 	         const xmlChar *name2, const xmlChar *name3,
 		 void *userdata) {
-    unsigned long key, len = 0;
+    unsigned key, len = 0;
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
 
@@ -676,7 +676,7 @@ int
 xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
 	           const xmlChar *name2, const xmlChar *name3,
 		   void *userdata, xmlHashDeallocator f) {
-    unsigned long key;
+    unsigned key;
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
 
@@ -820,7 +820,7 @@ error:
 void *
 xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
 	       const xmlChar *name2, const xmlChar *name3) {
-    unsigned long key;
+    unsigned key;
     xmlHashEntryPtr entry;
 
     if (table == NULL)
@@ -866,7 +866,7 @@ xmlHashQLookup3(xmlHashTablePtr table,
                 const xmlChar *prefix, const xmlChar *name,
 		const xmlChar *prefix2, const xmlChar *name2,
 		const xmlChar *prefix3, const xmlChar *name3) {
-    unsigned long key;
+    unsigned key;
     xmlHashEntryPtr entry;
 
     if (table == NULL)
@@ -1142,7 +1142,7 @@ xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
 int
 xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
     const xmlChar *name2, const xmlChar *name3, xmlHashDeallocator f) {
-    unsigned long key;
+    unsigned key;
     xmlHashEntryPtr entry;
     xmlHashEntryPtr prev = NULL;
 

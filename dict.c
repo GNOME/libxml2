@@ -92,7 +92,7 @@ struct _xmlDictEntry {
     const xmlChar *name;
     unsigned int len;
     int valid;
-    unsigned long okey;
+    unsigned okey;
 };
 
 typedef struct _xmlDictStrings xmlDictStrings;
@@ -374,34 +374,28 @@ found_pool:
  *
  * Calculate a hash key using a good hash function that works well for
  * larger hash table sizes.
- *
- * Hash function by "One-at-a-Time Hash" see
- * http://burtleburtle.net/bob/hash/doobs.html
  */
 
 #ifdef __clang__
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
-static uint32_t
+static unsigned
 xmlDictComputeBigKey(const xmlChar* data, int namelen, unsigned seed) {
-    uint32_t hash;
+    unsigned h1, h2;
     int i;
 
     if (namelen <= 0 || data == NULL) return(0);
 
-    hash = seed;
+    HASH_INIT(h1, h2, seed);
 
     for (i = 0;i < namelen; i++) {
-        hash += data[i];
-	hash += (hash << 10);
-	hash ^= (hash >> 6);
+        HASH_UPDATE(h1, h2, data[i]);
     }
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
 
-    return hash;
+    HASH_FINISH(h1, h2);
+
+    return h2;
 }
 
 /*
@@ -419,34 +413,27 @@ xmlDictComputeBigKey(const xmlChar* data, int namelen, unsigned seed) {
 ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
 ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
 #endif
-static unsigned long
+static unsigned
 xmlDictComputeBigQKey(const xmlChar *prefix, int plen,
                       const xmlChar *name, int len, unsigned seed)
 {
-    uint32_t hash;
+    unsigned h1, h2;
     int i;
 
-    hash = seed;
+    HASH_INIT(h1, h2, seed);
 
-    for (i = 0;i < plen; i++) {
-        hash += prefix[i];
-	hash += (hash << 10);
-	hash ^= (hash >> 6);
+    for (i = 0; i < plen; i++) {
+        HASH_UPDATE(h1, h2, prefix[i]);
     }
-    hash += ':';
-    hash += (hash << 10);
-    hash ^= (hash >> 6);
+    HASH_UPDATE(h1, h2, ':');
 
-    for (i = 0;i < len; i++) {
-        hash += name[i];
-	hash += (hash << 10);
-	hash ^= (hash >> 6);
+    for (i = 0; i < len; i++) {
+        HASH_UPDATE(h1, h2, name[i]);
     }
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
 
-    return hash;
+    HASH_FINISH(h1, h2);
+
+    return h2;
 }
 #endif /* WITH_BIG_KEY */
 
@@ -456,9 +443,13 @@ xmlDictComputeBigQKey(const xmlChar *prefix, int plen,
  * Calculate a hash key using a fast hash function that works well
  * for low hash table fill.
  */
-static unsigned long
+#ifdef __clang__
+ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
+ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
+#endif
+static unsigned
 xmlDictComputeFastKey(const xmlChar *name, int namelen, unsigned seed) {
-    unsigned long value = seed;
+    unsigned value = seed;
 
     if ((name == NULL) || (namelen <= 0))
         return(value);
@@ -500,11 +491,15 @@ xmlDictComputeFastKey(const xmlChar *name, int namelen, unsigned seed) {
  *
  * Neither of the two strings must be NULL.
  */
-static unsigned long
+#ifdef __clang__
+ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
+ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
+#endif
+static unsigned
 xmlDictComputeFastQKey(const xmlChar *prefix, int plen,
                        const xmlChar *name, int len, unsigned seed)
 {
-    unsigned long value = seed;
+    unsigned value = seed;
 
     if (plen == 0)
 	value += 30 * ':';
@@ -669,12 +664,12 @@ xmlDictReference(xmlDictPtr dict) {
  */
 static int
 xmlDictGrow(xmlDictPtr dict, size_t size) {
-    unsigned long key, okey;
+    unsigned key, okey;
     size_t oldsize, i;
     xmlDictEntryPtr iter, next;
     struct _xmlDictEntry *olddict;
 #ifdef DEBUG_GROW
-    unsigned long nbElem = 0;
+    unsigned nbElem = 0;
 #endif
     int ret = 0;
     int keep_keys = 1;
@@ -861,7 +856,7 @@ xmlDictFree(xmlDictPtr dict) {
  */
 const xmlChar *
 xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
-    unsigned long key, okey, nbi = 0;
+    unsigned key, okey, nbi = 0;
     xmlDictEntryPtr entry;
     xmlDictEntryPtr insert;
     const xmlChar *ret;
@@ -914,7 +909,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     }
 
     if (dict->subdict) {
-        unsigned long skey;
+        unsigned skey;
 
         /* we cannot always reuse the same okey for the subdict */
         if (((dict->size == MIN_DICT_SIZE) &&
@@ -1004,7 +999,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
  */
 const xmlChar *
 xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
-    unsigned long key, okey;
+    unsigned key, okey;
     xmlDictEntryPtr insert;
     unsigned int l;
 
@@ -1053,7 +1048,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
     }
 
     if (dict->subdict) {
-        unsigned long skey;
+        unsigned skey;
 
         /* we cannot always reuse the same okey for the subdict */
         if (((dict->size == MIN_DICT_SIZE) &&
@@ -1110,7 +1105,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
  */
 const xmlChar *
 xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
-    unsigned long okey, key, nbi = 0;
+    unsigned okey, key, nbi = 0;
     xmlDictEntryPtr entry;
     xmlDictEntryPtr insert;
     const xmlChar *ret;
@@ -1146,7 +1141,7 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
     }
 
     if (dict->subdict) {
-        unsigned long skey;
+        unsigned skey;
 
         /* we cannot always reuse the same okey for the subdict */
         if (((dict->size == MIN_DICT_SIZE) &&

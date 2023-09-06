@@ -950,7 +950,9 @@ xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
      * Only enable SAX2 if there SAX2 element handlers, except when there
      * are no element handlers at all.
      */
-    if ((sax) && (sax->initialized == XML_SAX2_MAGIC) &&
+    if (((ctxt->options & XML_PARSE_SAX1) == 0) &&
+        (sax) &&
+        (sax->initialized == XML_SAX2_MAGIC) &&
         ((sax->startElementNs != NULL) ||
          (sax->endElementNs != NULL) ||
          ((sax->startElement == NULL) && (sax->endElement == NULL))))
@@ -13412,9 +13414,6 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
     }
 #ifdef LIBXML_SAX1_ENABLED
     if (options & XML_PARSE_SAX1) {
-        ctxt->sax->startElementNs = NULL;
-        ctxt->sax->endElementNs = NULL;
-        ctxt->sax->initialized = 1;
         options -= XML_PARSE_SAX1;
 	ctxt->options |= XML_PARSE_SAX1;
     }

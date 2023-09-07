@@ -7824,10 +7824,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 			  name, NULL);
 	} else {
 	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-	        ((ctxt->options & XML_PARSE_NOENT) == 0) &&
-		((ctxt->options & XML_PARSE_DTDVALID) == 0) &&
-		((ctxt->options & XML_PARSE_DTDLOAD) == 0) &&
-		((ctxt->options & XML_PARSE_DTDATTR) == 0) &&
+		(ctxt->loadsubset == 0) &&
 		(ctxt->replaceEntities == 0) &&
 		(ctxt->validate == 0))
 		return;

@@ -13341,13 +13341,257 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     return(0);
 }
 
+static int
+xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
+{
+    int allMask;
+
+    if (ctxt == NULL)
+        return(-1);
+
+    /*
+     * XInclude options aren't handled by the parser.
+     *
+     * XML_PARSE_XINCLUDE
+     * XML_PARSE_NOXINCNODE
+     * XML_PARSE_NOBASEFIX
+     */
+    allMask = XML_PARSE_RECOVER |
+              XML_PARSE_NOENT |
+              XML_PARSE_DTDLOAD |
+              XML_PARSE_DTDATTR |
+              XML_PARSE_DTDVALID |
+              XML_PARSE_NOERROR |
+              XML_PARSE_NOWARNING |
+              XML_PARSE_PEDANTIC |
+              XML_PARSE_NOBLANKS |
+#ifdef LIBXML_SAX1_ENABLED
+              XML_PARSE_SAX1 |
+#endif
+              XML_PARSE_NONET |
+              XML_PARSE_NODICT |
+              XML_PARSE_NSCLEAN |
+              XML_PARSE_NOCDATA |
+              XML_PARSE_COMPACT |
+              XML_PARSE_OLD10 |
+              XML_PARSE_HUGE |
+              XML_PARSE_OLDSAX |
+              XML_PARSE_IGNORE_ENC |
+              XML_PARSE_BIG_LINES;
+
+    ctxt->options = (ctxt->options & keepMask) | (options & allMask);
+
+    /*
+     * For some options, struct members are historically the source
+     * of truth. The values are initalized from global variables and
+     * old code could also modify them directly. Several older API
+     * functions that don't take an options argument rely on these
+     * deprecated mechanisms.
+     *
+     * Once public access to struct members and the globals are
+     * disabled, we can use the options bitmask as source of
+     * truth, making all these struct members obsolete.
+     */
+    ctxt->recovery = (options & XML_PARSE_RECOVER) ? 1 : 0;
+    ctxt->replaceEntities = (options & XML_PARSE_NOENT) ? 1 : 0;
+    ctxt->loadsubset = (options & XML_PARSE_DTDLOAD) ? XML_DETECT_IDS : 0;
+    ctxt->loadsubset |= (options & XML_PARSE_DTDATTR) ? XML_COMPLETE_ATTRS : 0;
+    ctxt->validate = (options & XML_PARSE_DTDVALID) ? 1 : 0;
+    ctxt->pedantic = (options & XML_PARSE_PEDANTIC) ? 1 : 0;
+    ctxt->keepBlanks = (options & XML_PARSE_NOBLANKS) ? 0 : 1;
+    ctxt->dictNames = (options & XML_PARSE_NODICT) ? 0 : 1;
+
+    /*
+     * Changing SAX callbacks is a bad idea. This should be fixed.
+     */
+    if (options & XML_PARSE_NOBLANKS) {
+        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
+    }
+    if (options & XML_PARSE_NOCDATA) {
+        ctxt->sax->cdataBlock = NULL;
+    }
+    if (options & XML_PARSE_HUGE) {
+        if (ctxt->dict != NULL)
+            xmlDictSetLimit(ctxt->dict, 0);
+    }
+
+    ctxt->linenumbers = 1;
+
+    return(options & ~allMask);
+}
+
+/**
+ * xmlCtxtSetOptions:
+ * @ctxt: an XML parser context
+ * @options:  a bitmask of xmlParserOption values
+ *
+ * Applies the options to the parser context. Unset options are
+ * cleared.
+ *
+ * Available since 2.13.0. With older versions, you can use
+ * xmlCtxtUseOptions.
+ *
+ * XML_PARSE_RECOVER
+ *
+ * Enable "recovery" mode which allows non-wellformed documents.
+ * How this mode behaves exactly is unspecified and may change
+ * without further notice. Use of this feature is DISCOURAGED.
+ *
+ * XML_PARSE_NOENT
+ *
+ * Despite the confusing name, this option enables substitution
+ * of entities. The resulting tree won't contain any entity
+ * reference nodes. This option also enables loading of
+ * external entities which is dangerous. If you process
+ * untrusted data, it's recommended to set up an external entity
+ * loader that validates the files or URIs being loaded.
+ *
+ * This option also enables the loading and substitution of
+ * external parameter entities. Internal parameter entities are
+ * always expanded.
+ *
+ * XML_PARSE_DTDLOAD
+ *
+ * Enables loading of an external DTD and the loading and
+ * substitution of external parameter entities.
+ *
+ * XML_PARSE_DTDATTR
+ *
+ * Adds default attributes from the DTD to the result document.
+ *
+ * Implies XML_PARSE_DTDLOAD.
+ *
+ * XML_PARSE_DTDVALID
+ *
+ * This option enables DTD validation.
+ *
+ * Implies XML_PARSE_DTDLOAD.
+ *
+ * XML_PARSE_NOERROR
+ *
+ * Disable error and warning reports to the error handlers.
+ * Errors are still accessible with xmlCtxtGetLastError.
+ *
+ * XML_PARSE_NOWARNING
+ *
+ * Disable warning reports.
+ *
+ * XML_PARSE_PEDANTIC
+ *
+ * Enable some pedantic warnings.
+ *
+ * XML_PARSE_NOBLANKS
+ *
+ * Remove some text nodes containing only whitespace from the
+ * result document. Which nodes are removed depends on DTD
+ * element declarations or a conservative heuristic. The
+ * reindenting feature of the serialization code relies on this
+ * option to be set when parsing. Use of this option is
+ * DISCOURAGED.
+ *
+ * XML_PARSE_SAX1
+ *
+ * Always invoke the deprecated SAX1 startElement and endElement
+ * handlers. This option is DEPRECATED.
+ *
+ * XML_PARSE_NONET
+ *
+ * Disable network access with the builtin HTTP and FTP clients.
+ *
+ * XML_PARSE_NODICT
+ *
+ * Create a document without interned strings, making all
+ * strings separate memory allocations.
+ *
+ * XML_PARSE_NSCLEAN
+ *
+ * Remove redundant namespace declarations from the result
+ * document.
+ *
+ * XML_PARSE_NOCDATA
+ *
+ * Output normal text nodes instead of CDATA nodes.
+ *
+ * XML_PARSE_COMPACT
+ *
+ * Store small strings directly in the node struct to save
+ * memory.
+ *
+ * XML_PARSE_OLD10
+ *
+ * Use old Name productions from before XML 1.0 Fifth Edition.
+ * This options is DEPRECATED.
+ *
+ * XML_PARSE_HUGE
+ *
+ * Relax some internal limits.
+ *
+ * Maximum size of text nodes, tags, comments, processing instructions,
+ * CDATA sections, entity values
+ *
+ * normal: 10M
+ * huge:    1B
+ *
+ * Maximum size of names, system literals, pubid literals
+ *
+ * normal: 50K
+ * huge:   10M
+ *
+ * Maximum nesting depth of elements
+ *
+ * normal:  256
+ * huge:   2048
+ *
+ * Maximum nesting depth of entities
+ *
+ * normal: 20
+ * huge:   40
+ *
+ * XML_PARSE_OLDSAX
+ *
+ * Enable an unspecified legacy mode for SAX parsers. This
+ * option is DEPRECATED.
+ *
+ * XML_PARSE_IGNORE_ENC
+ *
+ * Ignore the encoding in the XML declaration. This option is
+ * mostly unneeded these days. The only effect is to enforce
+ * UTF-8 decoding of ASCII-like data.
+ *
+ * XML_PARSE_BIG_LINES
+ *
+ * Enable reporting of line numbers larger than 65535.
+ *
+ * Returns 0 in case of success, the set of unknown or unimplemented options
+ *         in case of error.
+ */
+int
+xmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
+{
+    return(xmlCtxtSetOptionsInternal(ctxt, options, 0));
+}
 
 /**
  * xmlCtxtUseOptions:
  * @ctxt: an XML parser context
  * @options:  a combination of xmlParserOption
  *
- * Applies the options to the parser context
+ * DEPRECATED: Use xmlCtxtSetOptions.
+ *
+ * Applies the options to the parser context. The following options
+ * are never cleared and can only be enabled:
+ *
+ * XML_PARSE_NOERROR
+ * XML_PARSE_NOWARNING
+ * XML_PARSE_NONET
+ * XML_PARSE_NSCLEAN
+ * XML_PARSE_NOCDATA
+ * XML_PARSE_COMPACT
+ * XML_PARSE_OLD10
+ * XML_PARSE_HUGE
+ * XML_PARSE_OLDSAX
+ * XML_PARSE_IGNORE_ENC
+ * XML_PARSE_BIG_LINES
  *
  * Returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -13355,118 +13599,24 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 int
 xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 {
-    if (ctxt == NULL)
-        return(-1);
+    int keepMask;
 
-    if (options & XML_PARSE_RECOVER) {
-        ctxt->recovery = 1;
-        options -= XML_PARSE_RECOVER;
-	ctxt->options |= XML_PARSE_RECOVER;
-    } else
-        ctxt->recovery = 0;
-    if (options & XML_PARSE_DTDLOAD) {
-        ctxt->loadsubset = XML_DETECT_IDS;
-        options -= XML_PARSE_DTDLOAD;
-	ctxt->options |= XML_PARSE_DTDLOAD;
-    } else
-        ctxt->loadsubset = 0;
-    if (options & XML_PARSE_DTDATTR) {
-        ctxt->loadsubset |= XML_COMPLETE_ATTRS;
-        options -= XML_PARSE_DTDATTR;
-	ctxt->options |= XML_PARSE_DTDATTR;
-    }
-    if (options & XML_PARSE_NOENT) {
-        ctxt->replaceEntities = 1;
-        /* ctxt->loadsubset |= XML_DETECT_IDS; */
-        options -= XML_PARSE_NOENT;
-	ctxt->options |= XML_PARSE_NOENT;
-    } else
-        ctxt->replaceEntities = 0;
-    if (options & XML_PARSE_PEDANTIC) {
-        ctxt->pedantic = 1;
-        options -= XML_PARSE_PEDANTIC;
-	ctxt->options |= XML_PARSE_PEDANTIC;
-    } else
-        ctxt->pedantic = 0;
-    if (options & XML_PARSE_NOBLANKS) {
-        ctxt->keepBlanks = 0;
-        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
-        options -= XML_PARSE_NOBLANKS;
-	ctxt->options |= XML_PARSE_NOBLANKS;
-    } else
-        ctxt->keepBlanks = 1;
-    if (options & XML_PARSE_DTDVALID) {
-        ctxt->validate = 1;
-        options -= XML_PARSE_DTDVALID;
-	ctxt->options |= XML_PARSE_DTDVALID;
-    } else
-        ctxt->validate = 0;
-    if (options & XML_PARSE_NOWARNING) {
-        options -= XML_PARSE_NOWARNING;
-	ctxt->options |= XML_PARSE_NOWARNING;
-    }
-    if (options & XML_PARSE_NOERROR) {
-        options -= XML_PARSE_NOERROR;
-	ctxt->options |= XML_PARSE_NOERROR;
-    }
-#ifdef LIBXML_SAX1_ENABLED
-    if (options & XML_PARSE_SAX1) {
-        options -= XML_PARSE_SAX1;
-	ctxt->options |= XML_PARSE_SAX1;
-    }
-#endif /* LIBXML_SAX1_ENABLED */
-    if (options & XML_PARSE_NODICT) {
-        ctxt->dictNames = 0;
-        options -= XML_PARSE_NODICT;
-	ctxt->options |= XML_PARSE_NODICT;
-    } else {
-        ctxt->dictNames = 1;
-    }
-    if (options & XML_PARSE_NOCDATA) {
-        ctxt->sax->cdataBlock = NULL;
-        options -= XML_PARSE_NOCDATA;
-	ctxt->options |= XML_PARSE_NOCDATA;
-    }
-    if (options & XML_PARSE_NSCLEAN) {
-	ctxt->options |= XML_PARSE_NSCLEAN;
-        options -= XML_PARSE_NSCLEAN;
-    }
-    if (options & XML_PARSE_NONET) {
-	ctxt->options |= XML_PARSE_NONET;
-        options -= XML_PARSE_NONET;
-    }
-    if (options & XML_PARSE_COMPACT) {
-	ctxt->options |= XML_PARSE_COMPACT;
-        options -= XML_PARSE_COMPACT;
-    }
-    if (options & XML_PARSE_OLD10) {
-	ctxt->options |= XML_PARSE_OLD10;
-        options -= XML_PARSE_OLD10;
-    }
-    if (options & XML_PARSE_NOBASEFIX) {
-	ctxt->options |= XML_PARSE_NOBASEFIX;
-        options -= XML_PARSE_NOBASEFIX;
-    }
-    if (options & XML_PARSE_HUGE) {
-	ctxt->options |= XML_PARSE_HUGE;
-        options -= XML_PARSE_HUGE;
-        if (ctxt->dict != NULL)
-            xmlDictSetLimit(ctxt->dict, 0);
-    }
-    if (options & XML_PARSE_OLDSAX) {
-	ctxt->options |= XML_PARSE_OLDSAX;
-        options -= XML_PARSE_OLDSAX;
-    }
-    if (options & XML_PARSE_IGNORE_ENC) {
-	ctxt->options |= XML_PARSE_IGNORE_ENC;
-        options -= XML_PARSE_IGNORE_ENC;
-    }
-    if (options & XML_PARSE_BIG_LINES) {
-	ctxt->options |= XML_PARSE_BIG_LINES;
-        options -= XML_PARSE_BIG_LINES;
-    }
-    ctxt->linenumbers = 1;
-    return (options);
+    /*
+     * For historic reasons, some options can only be enabled.
+     */
+    keepMask = XML_PARSE_NOERROR |
+               XML_PARSE_NOWARNING |
+               XML_PARSE_NONET |
+               XML_PARSE_NSCLEAN |
+               XML_PARSE_NOCDATA |
+               XML_PARSE_COMPACT |
+               XML_PARSE_OLD10 |
+               XML_PARSE_HUGE |
+               XML_PARSE_OLDSAX |
+               XML_PARSE_IGNORE_ENC |
+               XML_PARSE_BIG_LINES;
+
+    return(xmlCtxtSetOptionsInternal(ctxt, options, keepMask));
 }
 
 /**

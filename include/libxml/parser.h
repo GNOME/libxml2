@@ -1273,6 +1273,9 @@ XMLPUBFUN int
 					 const char *filename,
 					 const char *encoding);
 XMLPUBFUN int
+		xmlCtxtSetOptions	(xmlParserCtxtPtr ctxt,
+					 int options);
+XMLPUBFUN int
 		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
 XMLPUBFUN void

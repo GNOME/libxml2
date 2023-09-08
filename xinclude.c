@@ -727,10 +727,11 @@ xmlXIncludeCopyNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr elem,
             return(result);
 
         while (cur->next == NULL) {
+            if (insertParent != NULL)
+                insertParent->last = insertLast;
             cur = cur->parent;
             if (cur == elem)
                 return(result);
-            insertParent->last = insertLast;
             insertLast = insertParent;
             insertParent = insertParent->parent;
         }

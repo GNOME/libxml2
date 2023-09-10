@@ -99,6 +99,12 @@ set(PACKAGE_TARNAME "libxml2")
 set(PACKAGE_URL "https://gitlab.gnome.org/GNOME/libxml2")
 set(PACKAGE_VERSION ${VERSION})
 
+if(LIBXML2_WITH_THREADS)
+	find_package(Threads REQUIRED)
+	set(THREAD_LIBS ${CMAKE_THREAD_LIBS_INIT})
+	list(APPEND CMAKE_REQUIRED_LIBRARIES Threads::Threads)
+endif()
+
 if (NOT MSVC)
 	check_c_source_compiles("
 		void __attribute__((destructor))
@@ -395,9 +401,7 @@ if(LIBXML2_WITH_LZMA)
 endif()
 
 if(LIBXML2_WITH_THREADS)
-	find_package(Threads REQUIRED)
 	target_link_libraries(LibXml2 PRIVATE Threads::Threads)
-	set(THREAD_LIBS ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if(LIBXML2_WITH_ZLIB)

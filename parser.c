@@ -9144,19 +9144,21 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
             ctxt->attallocs[nratts++] = alloc;
             atts[nbatts++] = attname;
             atts[nbatts++] = aprefix;
-            /*
-             * The namespace URI field is used temporarily to point at the
-             * base of the current input buffer for non-alloced attributes.
-             * When the input buffer is reallocated, all the pointers become
-             * invalid, but they can be reconstructed later.
-             */
-            if (alloc)
-                atts[nbatts++] = NULL;
-            else
-                atts[nbatts++] = ctxt->input->base;
-            atts[nbatts++] = attvalue;
-            attvalue += len;
-            atts[nbatts++] = attvalue;
+            atts[nbatts++] = NULL;
+            if (alloc) {
+                atts[nbatts++] = attvalue;
+                attvalue += len;
+                atts[nbatts++] = attvalue;
+            } else {
+                /*
+                 * attvalue points into the input buffer which can be
+                 * reallocated. Store differences to input->base instead.
+                 * The pointers will be reconstructed later.
+                 */
+                atts[nbatts++] = (void *) (attvalue - BASE_PTR);
+                attvalue += len;
+                atts[nbatts++] = (void *) (attvalue - BASE_PTR);
+            }
             /*
              * tag if some deallocation is needed
              */
@@ -9192,15 +9194,9 @@ next_attr:
 
     /* Reconstruct attribute value pointers. */
     for (i = 0, j = 0; j < nratts; i += 5, j++) {
-        if (atts[i+2] != NULL) {
-            /*
-             * Arithmetic on dangling pointers is technically undefined
-             * behavior, but well...
-             */
-            const xmlChar *old = atts[i+2];
-            atts[i+2]  = NULL;    /* Reset repurposed namespace URI */
-            atts[i+3] = ctxt->input->base + (atts[i+3] - old);  /* value */
-            atts[i+4] = ctxt->input->base + (atts[i+4] - old);  /* valuend */
+        if (ctxt->attallocs[j] == 0) {
+            atts[i+3] = BASE_PTR + (ptrdiff_t) atts[i+3];  /* value */
+            atts[i+4] = BASE_PTR + (ptrdiff_t) atts[i+4];  /* valuend */
         }
     }
 

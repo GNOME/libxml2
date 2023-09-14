@@ -3809,6 +3809,8 @@ xmlSchemaFreeNotation(xmlSchemaNotationPtr nota)
 {
     if (nota == NULL)
         return;
+    if (nota->annot != NULL)
+	xmlSchemaFreeAnnot(nota->annot);
     xmlFree(nota);
 }
 

@@ -17,6 +17,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/catalog.h>
 #include <libxml/relaxng.h>
+#include <libxml/parser.h>
 
 
 static int testlibxml2(void);

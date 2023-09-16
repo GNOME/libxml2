@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 #include <libxml/xmlreader.h>
+#include <libxml/parser.h>
 
 #ifdef LIBXML_READER_ENABLED
 

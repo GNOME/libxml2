@@ -47,6 +47,11 @@ XML_HIDDEN void
 xmlInitDictInternal(void);
 XML_HIDDEN void
 xmlCleanupDictInternal(void);
+
+XML_HIDDEN void
+xmlInitRandom(void);
+XML_HIDDEN void
+xmlCleanupRandom(void);
 XML_HIDDEN unsigned
 xmlRandom(void);
 

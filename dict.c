@@ -122,16 +122,6 @@ struct _xmlDict {
  */
 static xmlMutex xmlDictMutex;
 
-/*
- * Internal data for random function, protected by xmlDictMutex
- */
-static unsigned globalRngState[2];
-
-#ifdef XML_THREAD_LOCAL
-XML_THREAD_LOCAL static int localRngInitialized = 0;
-XML_THREAD_LOCAL static unsigned localRngState[2];
-#endif
-
 /**
  * xmlInitializeDict:
  *
@@ -146,64 +136,11 @@ xmlInitializeDict(void) {
 /**
  * xmlInitializeDict:
  *
- * Initialize mutex and global PRNG seed.
+ * Initialize mutex.
  */
-#ifdef __clang__
-ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
-ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
-#endif
 void
 xmlInitDictInternal(void) {
-    int var;
-
     xmlInitMutex(&xmlDictMutex);
-
-    /* TODO: Get seed values from system PRNG */
-
-    globalRngState[0] = (unsigned) time(NULL) ^
-                        HASH_ROL((unsigned) (size_t) &xmlInitializeDict, 8);
-    globalRngState[1] = HASH_ROL((unsigned) (size_t) &xmlDictMutex, 16) ^
-                        HASH_ROL((unsigned) (size_t) &var, 24);
-}
-
-#ifdef __clang__
-ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow")
-ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")
-#endif
-static unsigned
-xoroshiro64ss(unsigned *s) {
-    unsigned s0 = s[0];
-    unsigned s1 = s[1];
-    unsigned result = HASH_ROL(s0 * 0x9E3779BB, 5) * 5;
-
-    s1 ^= s0;
-    s[0] = HASH_ROL(s0, 26) ^ s1 ^ (s1 << 9);
-    s[1] = HASH_ROL(s1, 13);
-
-    return(result & 0xFFFFFFFF);
-}
-
-unsigned
-xmlRandom(void) {
-#ifdef XML_THREAD_LOCAL
-    if (!localRngInitialized) {
-        xmlMutexLock(&xmlDictMutex);
-        localRngState[0] = xoroshiro64ss(globalRngState);
-        localRngState[1] = xoroshiro64ss(globalRngState);
-        localRngInitialized = 1;
-        xmlMutexUnlock(&xmlDictMutex);
-    }
-
-    return(xoroshiro64ss(localRngState));
-#else
-    unsigned ret;
-
-    xmlMutexLock(&xmlDictMutex);
-    ret = xoroshiro64ss(globalRngState);
-    xmlMutexUnlock(&xmlDictMutex);
-
-    return(ret);
-#endif
 }
 
 /**
@@ -1286,5 +1223,75 @@ xmlDictGetUsage(xmlDictPtr dict) {
 	pool = pool->next;
     }
     return(limit);
+}
+
+/*
+ * Pseudo-random generator
+ */
+
+static xmlMutex xmlRngMutex;
+
+static unsigned globalRngState[2];
+
+#ifdef XML_THREAD_LOCAL
+XML_THREAD_LOCAL static int localRngInitialized = 0;
+XML_THREAD_LOCAL static unsigned localRngState[2];
+#endif
+
+ATTRIBUTE_NO_SANITIZE_INTEGER
+void
+xmlInitRandom(void) {
+    int var;
+
+    xmlInitMutex(&xmlRngMutex);
+
+    /* TODO: Get seed values from system PRNG */
+
+    globalRngState[0] = (unsigned) time(NULL) ^
+                        HASH_ROL((unsigned) (size_t) &xmlInitRandom, 8);
+    globalRngState[1] = HASH_ROL((unsigned) (size_t) &xmlRngMutex, 16) ^
+                        HASH_ROL((unsigned) (size_t) &var, 24);
+}
+
+void
+xmlCleanupRandom(void) {
+    xmlCleanupMutex(&xmlRngMutex);
+}
+
+ATTRIBUTE_NO_SANITIZE_INTEGER
+static unsigned
+xoroshiro64ss(unsigned *s) {
+    unsigned s0 = s[0];
+    unsigned s1 = s[1];
+    unsigned result = HASH_ROL(s0 * 0x9E3779BB, 5) * 5;
+
+    s1 ^= s0;
+    s[0] = HASH_ROL(s0, 26) ^ s1 ^ (s1 << 9);
+    s[1] = HASH_ROL(s1, 13);
+
+    return(result & 0xFFFFFFFF);
+}
+
+unsigned
+xmlRandom(void) {
+#ifdef XML_THREAD_LOCAL
+    if (!localRngInitialized) {
+        xmlMutexLock(&xmlRngMutex);
+        localRngState[0] = xoroshiro64ss(globalRngState);
+        localRngState[1] = xoroshiro64ss(globalRngState);
+        localRngInitialized = 1;
+        xmlMutexUnlock(&xmlRngMutex);
+    }
+
+    return(xoroshiro64ss(localRngState));
+#else
+    unsigned ret;
+
+    xmlMutexLock(&xmlRngMutex);
+    ret = xoroshiro64ss(globalRngState);
+    xmlMutexUnlock(&xmlRngMutex);
+
+    return(ret);
+#endif
 }
 

@@ -63,6 +63,7 @@ ignored_words = {
   "LIBXML_ATTR_FORMAT": (5, "macro for gcc printf args checking extension"),
   "LIBXML_ATTR_ALLOC_SIZE": (3, "macro for gcc checking extension"),
   "ATTRIBUTE_NO_SANITIZE": (3, "macro keyword"),
+  "ATTRIBUTE_NO_SANITIZE_INTEGER": (0, "macro keyword"),
   "XML_DEPRECATED": (0, "macro keyword"),
   "XML_GLOBALS_ALLOC": (0, "macro keyword"),
   "XML_GLOBALS_ERROR": (0, "macro keyword"),

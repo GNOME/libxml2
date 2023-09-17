@@ -167,15 +167,11 @@ struct _xmlGlobalState
 	void *gsStructuredErrorContext;
 };
 
-#ifdef __cplusplus
-}
-#endif
-#include <libxml/threads.h>
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+XML_DEPRECATED
 XMLPUBFUN void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
+XML_DEPRECATED
+XMLPUBFUN xmlGlobalStatePtr
+			xmlGetGlobalState(void);
 
 XMLPUBFUN void xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
 
@@ -521,6 +517,15 @@ XMLPUBFUN xmlOutputBufferCreateFilenameFunc * __xmlOutputBufferCreateFilenameVal
 XML_DEPRECATED
 XMLPUBVAR xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue;
 #endif
+
+/** DOC_DISABLE */
+#if defined(LIBXML_THREAD_ENABLED) && defined(_WIN32) && \
+    !defined(HAVE_COMPILER_TLS) && defined(LIBXML_STATIC_FOR_DLL)
+int
+xmlDllMain(void *hinstDLL, unsigned long fdwReason,
+           void *lpvReserved);
+#endif
+/** DOC_ENABLE */
 
 #ifdef __cplusplus
 }

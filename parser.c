@@ -13757,6 +13757,7 @@ xmlCleanupParser(void) {
     xmlCleanupGlobalsInternal();
     xmlCleanupThreadsInternal();
     xmlCleanupMemoryInternal();
+    __xmlGlobalInitMutexDestroy();
     xmlParserInitialized = 0;
 }
 

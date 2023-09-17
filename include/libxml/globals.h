@@ -121,50 +121,50 @@ typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
 struct _xmlGlobalState
 {
-	const char *xmlParserVersion;
+	const char *gsParserVersion;
 
-	xmlSAXLocator xmlDefaultSAXLocator;
-	xmlSAXHandlerV1 xmlDefaultSAXHandler;
-	xmlSAXHandlerV1 docbDefaultSAXHandler; /* unused */
-	xmlSAXHandlerV1 htmlDefaultSAXHandler;
+	xmlSAXLocator gsDefaultSAXLocator;
+	xmlSAXHandlerV1 gsDefaultSAXHandler;
+	xmlSAXHandlerV1 gsDocbDefaultSAXHandler; /* unused */
+	xmlSAXHandlerV1 gsHtmlDefaultSAXHandler;
 
-	xmlFreeFunc xmlFree;
-	xmlMallocFunc xmlMalloc;
-	xmlStrdupFunc xmlMemStrdup;
-	xmlReallocFunc xmlRealloc;
+	xmlFreeFunc gsFree;
+	xmlMallocFunc gsMalloc;
+	xmlStrdupFunc gsMemStrdup;
+	xmlReallocFunc gsRealloc;
 
-	xmlGenericErrorFunc xmlGenericError;
-	xmlStructuredErrorFunc xmlStructuredError;
-	void *xmlGenericErrorContext;
+	xmlGenericErrorFunc gsGenericError;
+	xmlStructuredErrorFunc gsStructuredError;
+	void *gsGenericErrorContext;
 
-	int oldXMLWDcompatibility;
+	int gsOldXMLWDcompatibility;
 
-	xmlBufferAllocationScheme xmlBufferAllocScheme;
-	int xmlDefaultBufferSize;
+	xmlBufferAllocationScheme gsBufferAllocScheme;
+	int gsDefaultBufferSize;
 
-	int xmlSubstituteEntitiesDefaultValue;
-	int xmlDoValidityCheckingDefaultValue;
-	int xmlGetWarningsDefaultValue;
-	int xmlKeepBlanksDefaultValue;
-	int xmlLineNumbersDefaultValue;
-	int xmlLoadExtDtdDefaultValue;
-	int xmlParserDebugEntities;
-	int xmlPedanticParserDefaultValue;
+	int gsSubstituteEntitiesDefaultValue;
+	int gsDoValidityCheckingDefaultValue;
+	int gsGetWarningsDefaultValue;
+	int gsKeepBlanksDefaultValue;
+	int gsLineNumbersDefaultValue;
+	int gsLoadExtDtdDefaultValue;
+	int gsParserDebugEntities;
+	int gsPedanticParserDefaultValue;
 
-	int xmlSaveNoEmptyTags;
-	int xmlIndentTreeOutput;
-	const char *xmlTreeIndentString;
+	int gsSaveNoEmptyTags;
+	int gsIndentTreeOutput;
+	const char *gsTreeIndentString;
 
-	xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
-	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
+	xmlRegisterNodeFunc gsRegisterNodeDefaultValue;
+	xmlDeregisterNodeFunc gsDeregisterNodeDefaultValue;
 
-	xmlMallocFunc xmlMallocAtomic;
-	xmlError xmlLastError;
+	xmlMallocFunc gsMallocAtomic;
+	xmlError gsLastError;
 
-	xmlParserInputBufferCreateFilenameFunc xmlParserInputBufferCreateFilenameValue;
-	xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue;
+	xmlParserInputBufferCreateFilenameFunc gsParserInputBufferCreateFilenameValue;
+	xmlOutputBufferCreateFilenameFunc gsOutputBufferCreateFilenameValue;
 
-	void *xmlStructuredErrorContext;
+	void *gsStructuredErrorContext;
 };
 
 #ifdef __cplusplus

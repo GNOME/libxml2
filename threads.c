@@ -487,7 +487,7 @@ xmlFreeGlobalState(void *state)
     xmlGlobalState *gs = (xmlGlobalState *) state;
 
     /* free any memory allocated in the thread's xmlLastError */
-    xmlResetError(&(gs->xmlLastError));
+    xmlResetError(&(gs->gsLastError));
     free(state);
 }
 

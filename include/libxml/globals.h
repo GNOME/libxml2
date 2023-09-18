@@ -82,6 +82,7 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
 
+XMLPUBFUN int xmlCheckThreadLocalStorage(void);
 XML_DEPRECATED
 XMLPUBFUN void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
 XML_DEPRECATED

@@ -807,6 +807,31 @@ xmlNewGlobalState(void)
 #endif /* LIBXML_THREAD_ENABLED */
 
 /**
+ * xmlCheckThreadLocalStorage:
+ *
+ * Check whether thread-local storage could be allocated.
+ *
+ * In multithreaded environments, this function should be called once
+ * in each thread before calling other library functions to make sure
+ * that thread-local storage was allocated properly.
+ *
+ * Returns 0 on success or -1 if a memory allocation failed. A failed
+ * allocation signals a typically fatal and irrecoverable out-of-memory
+ * situation. Don't call any library functions in this case.
+ *
+ * This function never fails for the "main" thread which is the first
+ * thread calling xmlInitParser.
+ *
+ * Available since v2.12.0.
+ */
+int
+xmlCheckThreadLocalStorage(void) {
+    if (IS_MAIN_THREAD)
+        return(0);
+    return((xmlGetGlobalState() == NULL) ? -1 : 0);
+}
+
+/**
  * xmlGetGlobalState:
  *
  * DEPRECATED: Internal function, do not use.

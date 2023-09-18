@@ -35,8 +35,6 @@
 
 #include "private/error.h"
 
-#define DEBUG
-
 #ifndef LIBXML_XPATH_ENABLED
 extern double xmlXPathNAN;
 extern double xmlXPathPINF;
@@ -1298,25 +1296,6 @@ static const long dayInLeapYearByMonth[12] =
         ((IS_LEAP(year) ?					\
                 dayInLeapYearByMonth[month - 1] :		\
                 dayInYearByMonth[month - 1]) + day)
-
-#ifdef DEBUG
-#define DEBUG_DATE(dt)                                                  \
-    xmlGenericError(xmlGenericErrorContext,                             \
-        "type=%o %04ld-%02u-%02uT%02u:%02u:%03f",                       \
-        dt->type,dt->value.date.year,dt->value.date.mon,                \
-        dt->value.date.day,dt->value.date.hour,dt->value.date.min,      \
-        dt->value.date.sec);                                            \
-    if (dt->value.date.tz_flag)                                         \
-        if (dt->value.date.tzo != 0)                                    \
-            xmlGenericError(xmlGenericErrorContext,                     \
-                "%+05d\n",dt->value.date.tzo);                          \
-        else                                                            \
-            xmlGenericError(xmlGenericErrorContext, "Z\n");             \
-    else                                                                \
-        xmlGenericError(xmlGenericErrorContext,"\n")
-#else
-#define DEBUG_DATE(dt)
-#endif
 
 /**
  * _xmlSchemaParseGYear:

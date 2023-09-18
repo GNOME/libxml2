@@ -2897,14 +2897,6 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
  *	Routines to parse Name, NCName and NmToken			*
  *									*
  ************************************************************************/
-#ifdef DEBUG
-static unsigned long nbParseName = 0;
-static unsigned long nbParseNmToken = 0;
-static unsigned long nbParseNCName = 0;
-static unsigned long nbParseNCNameComplex = 0;
-static unsigned long nbParseNameComplex = 0;
-static unsigned long nbParseStringName = 0;
-#endif
 
 /*
  * The two following functions are related to the change of accepted
@@ -2996,10 +2988,6 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
-
-#ifdef DEBUG
-    nbParseNameComplex++;
-#endif
 
     /*
      * Handler for more complex cases
@@ -3131,10 +3119,6 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
     if (ctxt->instate == XML_PARSER_EOF)
         return(NULL);
 
-#ifdef DEBUG
-    nbParseName++;
-#endif
-
     /*
      * Accelerator for simple ASCII names
      */
@@ -3175,10 +3159,6 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
     size_t startPosition = 0;
-
-#ifdef DEBUG
-    nbParseNCNameComplex++;
-#endif
 
     /*
      * Handler for more complex cases
@@ -3229,10 +3209,6 @@ xmlParseNCName(xmlParserCtxtPtr ctxt) {
     size_t maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                        XML_MAX_TEXT_LENGTH :
                        XML_MAX_NAME_LENGTH;
-
-#ifdef DEBUG
-    nbParseNCName++;
-#endif
 
     /*
      * Accelerator for simple ASCII names
@@ -3339,10 +3315,6 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
 
-#ifdef DEBUG
-    nbParseStringName++;
-#endif
-
     c = CUR_SCHAR(cur, l);
     if (!xmlIsNameStartChar(ctxt, c)) {
 	return(NULL);
@@ -3427,10 +3399,6 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
-
-#ifdef DEBUG
-    nbParseNmToken++;
-#endif
 
     c = CUR_CHAR(l);
 

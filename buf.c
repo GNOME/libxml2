@@ -225,10 +225,6 @@ xmlBufDetach(xmlBufPtr buf) {
 int
 xmlBufGetAllocationScheme(xmlBufPtr buf) {
     if (buf == NULL) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufGetAllocationScheme: buf == NULL\n");
-#endif
         return(-1);
     }
     return(buf->alloc);
@@ -247,10 +243,6 @@ int
 xmlBufSetAllocationScheme(xmlBufPtr buf,
                           xmlBufferAllocationScheme scheme) {
     if ((buf == NULL) || (buf->error != 0)) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufSetAllocationScheme: buf == NULL or in error\n");
-#endif
         return(-1);
     }
     if (buf->alloc == XML_BUFFER_ALLOC_IO)
@@ -285,10 +277,6 @@ xmlBufSetAllocationScheme(xmlBufPtr buf,
 void
 xmlBufFree(xmlBufPtr buf) {
     if (buf == NULL) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufFree: buf == NULL\n");
-#endif
 	return;
     }
 
@@ -479,17 +467,9 @@ xmlBufDump(FILE *file, xmlBufPtr buf) {
     size_t ret;
 
     if ((buf == NULL) || (buf->error != 0)) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufDump: buf == NULL or in error\n");
-#endif
 	return(0);
     }
     if (buf->content == NULL) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufDump: buf->content == NULL\n");
-#endif
 	return(0);
     }
     CHECK_COMPAT(buf)
@@ -785,10 +765,6 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
     CHECK_COMPAT(buf)
 
     if (len < -1) {
-#ifdef DEBUG_BUFFER
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufAdd: len < 0\n");
-#endif
 	return -1;
     }
     if (len == 0) return 0;
@@ -882,10 +858,6 @@ xmlBufWriteQuotedString(xmlBufPtr buf, const xmlChar *string) {
     CHECK_COMPAT(buf)
     if (xmlStrchr(string, '\"')) {
         if (xmlStrchr(string, '\'')) {
-#ifdef DEBUG_BUFFER
-	    xmlGenericError(xmlGenericErrorContext,
- "xmlBufWriteQuotedString: string contains quote and double-quotes !\n");
-#endif
 	    xmlBufCCat(buf, "\"");
             base = cur = string;
             while(*cur != 0){

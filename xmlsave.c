@@ -2166,17 +2166,9 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     xmlInitParser();
 
     if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlNodeDump : node == NULL\n");
-#endif
         return (-1);
     }
     if (buf == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlNodeDump : buf == NULL\n");
-#endif
         return (-1);
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
@@ -2218,18 +2210,8 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
     xmlInitParser();
 
     if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlElemDump : cur == NULL\n");
-#endif
         return;
     }
-#ifdef DEBUG_TREE
-    if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlElemDump : doc == NULL\n");
-    }
-#endif
 
     outbuf = xmlOutputBufferCreateFile(f, NULL);
     if (outbuf == NULL)
@@ -2467,10 +2449,6 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     int ret;
 
     if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlDocDump : document == NULL\n");
-#endif
 	return(-1);
     }
     encoding = (const char *) cur->encoding;

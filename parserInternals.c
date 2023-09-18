@@ -451,39 +451,8 @@ xmlIsLetter(int c) {
  *									*
  ************************************************************************/
 
-/* #define DEBUG_INPUT */
-/* #define DEBUG_STACK */
-
-
 /* we need to keep enough input to show errors in context */
 #define LINE_LEN        80
-
-#ifdef DEBUG_INPUT
-#define CHECK_BUFFER(in) check_buffer(in)
-
-static
-void check_buffer(xmlParserInputPtr in) {
-    if (in->base != xmlBufContent(in->buf->buffer)) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlParserInput: base mismatch problem\n");
-    }
-    if (in->cur < in->base) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlParserInput: cur < base problem\n");
-    }
-    if (in->cur > in->base + xmlBufUse(in->buf->buffer)) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlParserInput: cur > base + use problem\n");
-    }
-    xmlGenericError(xmlGenericErrorContext,"buffer %p : content %x, cur %d, use %d\n",
-            (void *) in, (int) xmlBufContent(in->buf->buffer),
-            in->cur - in->base, xmlBufUse(in->buf->buffer));
-}
-
-#else
-#define CHECK_BUFFER(in)
-#endif
-
 
 /**
  * xmlHaltParser:
@@ -597,21 +566,13 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     size_t indx;
 
     if ((in == NULL) || (len < 0)) return(-1);
-#ifdef DEBUG_INPUT
-    xmlGenericError(xmlGenericErrorContext, "Grow\n");
-#endif
     if (in->buf == NULL) return(-1);
     if (in->base == NULL) return(-1);
     if (in->cur == NULL) return(-1);
     if (in->buf->buffer == NULL) return(-1);
 
-    CHECK_BUFFER(in);
-
     indx = in->cur - in->base;
     if (xmlBufUse(in->buf->buffer) > (unsigned int) indx + INPUT_CHUNK) {
-
-	CHECK_BUFFER(in);
-
         return(0);
     }
     ret = xmlParserInputBufferGrow(in->buf, len);
@@ -625,8 +586,6 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     }
     in->cur = in->base + indx;
     in->end = xmlBufEnd(in->buf->buffer);
-
-    CHECK_BUFFER(in);
 
     return(ret);
 }
@@ -681,16 +640,11 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     size_t used;
     size_t ret;
 
-#ifdef DEBUG_INPUT
-    xmlGenericError(xmlGenericErrorContext, "Shrink\n");
-#endif
     if (in == NULL) return;
     if (in->buf == NULL) return;
     if (in->base == NULL) return;
     if (in->cur == NULL) return;
     if (in->buf->buffer == NULL) return;
-
-    CHECK_BUFFER(in);
 
     used = in->cur - in->base;
     /*
@@ -723,8 +677,6 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     }
     in->cur = in->base + used;
     in->end = xmlBufEnd(in->buf->buffer);
-
-    CHECK_BUFFER(in);
 }
 
 /************************************************************************

@@ -26,8 +26,6 @@
 #include "private/threads.h"
 #include "private/tree.h"
 
-/* #define DEBUG_GLOBALS */
-
 /*
  * Helpful Macro
  */
@@ -126,7 +124,7 @@ static CRITICAL_SECTION cleanup_helpers_cs;
 #undef	xmlMemStrdup
 #undef	xmlRealloc
 
-#if defined(DEBUG_MEMORY_LOCATION) || defined(DEBUG_MEMORY)
+#if defined(DEBUG_MEMORY_LOCATION)
 xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
 xmlMallocFunc xmlMallocAtomic = (xmlMallocFunc) xmlMemMalloc;
@@ -191,7 +189,7 @@ xmlPosixStrdup(const char *cur) {
  * Returns the copy of the string or NULL in case of error
  */
 xmlStrdupFunc xmlMemStrdup = xmlPosixStrdup;
-#endif /* DEBUG_MEMORY_LOCATION || DEBUG_MEMORY */
+#endif /* DEBUG_MEMORY_LOCATION */
 
 #include <libxml/threads.h>
 #include <libxml/globals.h>
@@ -655,11 +653,6 @@ void xmlCleanupGlobalsInternal(void) {
 void
 xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 {
-#ifdef DEBUG_GLOBALS
-    fprintf(stderr, "Initializing globals at %p for thread %d\n",
-	    (void *) gs, xmlGetThreadId());
-#endif
-
     xmlMutexLock(&xmlThrDefMutex);
 
 #if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_LEGACY_ENABLED) && defined(LIBXML_SAX1_ENABLED)
@@ -678,7 +671,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->gsDefaultSAXLocator.getColumnNumber = xmlSAX2GetColumnNumber;
     gs->gsDoValidityCheckingDefaultValue =
          xmlDoValidityCheckingDefaultValueThrDef;
-#if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
+#if defined(DEBUG_MEMORY_LOCATION)
     gs->gsFree = (xmlFreeFunc) xmlMemFree;
     gs->gsMalloc = (xmlMallocFunc) xmlMemMalloc;
     gs->gsMallocAtomic = (xmlMallocFunc) xmlMemMalloc;

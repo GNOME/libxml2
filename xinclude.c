@@ -34,13 +34,6 @@
 
 #define XINCLUDE_MAX_DEPTH 40
 
-/* #define DEBUG_XINCLUDE */
-#ifdef DEBUG_XINCLUDE
-#ifdef LIBXML_DEBUG_ENABLED
-#include <libxml/debugXML.h>
-#endif
-#endif
-
 /************************************************************************
  *									*
  *			XInclude context handling			*
@@ -222,9 +215,6 @@ static void
 xmlXIncludeFreeRef(xmlXIncludeRefPtr ref) {
     if (ref == NULL)
 	return;
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "Freeing ref\n");
-#endif
     if (ref->URI != NULL)
 	xmlFree(ref->URI);
     if (ref->fragment != NULL)
@@ -247,9 +237,6 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
 	          xmlNodePtr elem) {
     xmlXIncludeRefPtr ret;
 
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "New ref %s\n", URI);
-#endif
     ret = (xmlXIncludeRefPtr) xmlMalloc(sizeof(xmlXIncludeRef));
     if (ret == NULL) {
         xmlXIncludeErrMemory(ctxt, elem, "growing XInclude context");
@@ -298,9 +285,6 @@ xmlXIncludeCtxtPtr
 xmlXIncludeNewContext(xmlDocPtr doc) {
     xmlXIncludeCtxtPtr ret;
 
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "New context\n");
-#endif
     if (doc == NULL)
 	return(NULL);
     ret = (xmlXIncludeCtxtPtr) xmlMalloc(sizeof(xmlXIncludeCtxt));
@@ -328,9 +312,6 @@ void
 xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
     int i;
 
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "Freeing context\n");
-#endif
     if (ctxt == NULL)
 	return;
     if (ctxt->urlTab != NULL) {
@@ -457,9 +438,6 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     if (cur == NULL)
 	return(NULL);
 
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "Add node\n");
-#endif
     /*
      * read the attributes
      */
@@ -1265,9 +1243,6 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     int saveFlags;
 #endif
 
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "Loading doc %s\n", url);
-#endif
     /*
      * Check the URL and remove any fragment identifier
      */
@@ -1308,9 +1283,6 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
      */
     for (i = 0; i < ctxt->urlNr; i++) {
 	if (xmlStrEqual(URL, ctxt->urlTab[i].url)) {
-#ifdef DEBUG_XINCLUDE
-	    printf("Already loaded %s\n", URL);
-#endif
             if (ctxt->urlTab[i].expanding) {
                 xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_RECURSION,
                                "inclusion loop detected\n", NULL);
@@ -1326,9 +1298,6 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     /*
      * Load it.
      */
-#ifdef DEBUG_XINCLUDE
-    printf("loading %s\n", URL);
-#endif
 #ifdef LIBXML_XPTR_ENABLED
     /*
      * If this is an XPointer evaluation, we want to assure that
@@ -1987,11 +1956,6 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
 	    xmlFree(base);
 	return(-1);
     }
-#ifdef DEBUG_XINCLUDE
-    xmlGenericError(xmlGenericErrorContext, "parse: %s\n",
-	    xml ? "xml": "text");
-    xmlGenericError(xmlGenericErrorContext, "URI: %s\n", URI);
-#endif
 
     /*
      * Save the base for this include (saving the current one)
@@ -2017,9 +1981,6 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
 	/*
 	 * Time to try a fallback if available
 	 */
-#ifdef DEBUG_XINCLUDE
-	xmlGenericError(xmlGenericErrorContext, "error looking for fallback\n");
-#endif
 	children = cur->children;
 	while (children != NULL) {
 	    if ((children->type == XML_ELEMENT_NODE) &&

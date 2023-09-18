@@ -23,8 +23,6 @@
 #include "private/dict.h"
 #include "private/threads.h"
 
-/* #define DEBUG_THREADS */
-
 #if defined(HAVE_POSIX_THREADS) && \
     defined(__GLIBC__) && \
     __GLIBC__ * 100 + __GLIBC_MINOR__ >= 234
@@ -502,9 +500,6 @@ xmlIsMainThread(void)
 {
     xmlInitParser();
 
-#ifdef DEBUG_THREADS
-    xmlGenericError(xmlGenericErrorContext, "xmlIsMainThread()\n");
-#endif
 #ifdef HAVE_POSIX_THREADS
     if (XML_IS_THREADED() == 0)
         return (1);
@@ -525,9 +520,6 @@ xmlIsMainThread(void)
 void
 xmlLockLibrary(void)
 {
-#ifdef DEBUG_THREADS
-    xmlGenericError(xmlGenericErrorContext, "xmlLockLibrary()\n");
-#endif
     xmlRMutexLock(xmlLibraryLock);
 }
 
@@ -540,9 +532,6 @@ xmlLockLibrary(void)
 void
 xmlUnlockLibrary(void)
 {
-#ifdef DEBUG_THREADS
-    xmlGenericError(xmlGenericErrorContext, "xmlUnlockLibrary()\n");
-#endif
     xmlRMutexUnlock(xmlLibraryLock);
 }
 

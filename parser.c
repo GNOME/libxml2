@@ -52,12 +52,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <libxml/xmlmemory.h>
-#include <libxml/threads.h>
 #include <libxml/globals.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#include <libxml/HTMLparser.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
 #include <libxml/xmlerror.h>
@@ -67,26 +65,13 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
-#include <libxml/xmlschemastypes.h>
-#include <libxml/relaxng.h>
-#endif
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-#include <libxml/xpath.h>
-#endif
 
 #include "private/buf.h"
-#include "private/dict.h"
-#include "private/enc.h"
 #include "private/entities.h"
 #include "private/error.h"
-#include "private/globals.h"
 #include "private/html.h"
 #include "private/io.h"
-#include "private/memory.h"
 #include "private/parser.h"
-#include "private/threads.h"
-#include "private/xpath.h"
 
 struct _xmlStartTag {
     const xmlChar *prefix;
@@ -13629,119 +13614,6 @@ xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
     xmlEntityRefFunc = func;
 }
 #endif /* LIBXML_LEGACY_ENABLED */
-
-/************************************************************************
- *									*
- *				Miscellaneous				*
- *									*
- ************************************************************************/
-
-static int xmlParserInitialized = 0;
-
-/**
- * xmlInitParser:
- *
- * Initialization function for the XML parser.
- * This is not reentrant. Call once before processing in case of
- * use in multithreaded programs.
- */
-
-void
-xmlInitParser(void) {
-    /*
-     * Note that the initialization code must not make memory allocations.
-     */
-    if (xmlParserInitialized != 0)
-	return;
-
-#ifdef LIBXML_THREAD_ENABLED
-    __xmlGlobalInitMutexLock();
-    if (xmlParserInitialized == 0) {
-#endif
-#if defined(_WIN32) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
-        if (xmlFree == free)
-            atexit(xmlCleanupParser);
-#endif
-
-	xmlInitThreadsInternal();
-	xmlInitGlobalsInternal();
-	xmlInitMemoryInternal();
-        xmlInitDictInternal();
-	xmlInitEncodingInternal();
-	xmlRegisterDefaultInputCallbacks();
-#ifdef LIBXML_OUTPUT_ENABLED
-	xmlRegisterDefaultOutputCallbacks();
-#endif /* LIBXML_OUTPUT_ENABLED */
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-	xmlInitXPathInternal();
-#endif
-	xmlParserInitialized = 1;
-#ifdef LIBXML_THREAD_ENABLED
-    }
-    __xmlGlobalInitMutexUnlock();
-#endif
-}
-
-/**
- * xmlCleanupParser:
- *
- * This function name is somewhat misleading. It does not clean up
- * parser state, it cleans up memory allocated by the library itself.
- * It is a cleanup function for the XML library. It tries to reclaim all
- * related global memory allocated for the library processing.
- * It doesn't deallocate any document related memory. One should
- * call xmlCleanupParser() only when the process has finished using
- * the library and all XML/HTML documents built with it.
- * See also xmlInitParser() which has the opposite function of preparing
- * the library for operations.
- *
- * WARNING: if your application is multithreaded or has plugin support
- *          calling this may crash the application if another thread or
- *          a plugin is still using libxml2. It's sometimes very hard to
- *          guess if libxml2 is in use in the application, some libraries
- *          or plugins may use it without notice. In case of doubt abstain
- *          from calling this function or do it just before calling exit()
- *          to avoid leak reports from valgrind !
- */
-
-void
-xmlCleanupParser(void) {
-    if (!xmlParserInitialized)
-	return;
-
-    xmlCleanupCharEncodingHandlers();
-#ifdef LIBXML_CATALOG_ENABLED
-    xmlCatalogCleanup();
-#endif
-    xmlCleanupDictInternal();
-    xmlCleanupInputCallbacks();
-#ifdef LIBXML_OUTPUT_ENABLED
-    xmlCleanupOutputCallbacks();
-#endif
-#ifdef LIBXML_SCHEMAS_ENABLED
-    xmlSchemaCleanupTypes();
-    xmlRelaxNGCleanupTypes();
-#endif
-    xmlCleanupGlobalsInternal();
-    xmlCleanupThreadsInternal();
-    xmlCleanupMemoryInternal();
-    __xmlGlobalInitMutexDestroy();
-    xmlParserInitialized = 0;
-}
-
-#if defined(HAVE_ATTRIBUTE_DESTRUCTOR) && !defined(LIBXML_STATIC) && \
-    !defined(_WIN32)
-static void
-ATTRIBUTE_DESTRUCTOR
-xmlDestructor(void) {
-    /*
-     * Calling custom deallocation functions in a destructor can cause
-     * problems, for example with Nokogiri.
-     */
-    if (xmlFree == free)
-        xmlCleanupParser();
-}
-#endif
 
 /************************************************************************
  *									*

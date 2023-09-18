@@ -15,13 +15,24 @@
 
 #include <libxml/threads.h>
 #include <libxml/parser.h>
+#ifdef LIBXML_CATALOG_ENABLED
+#include <libxml/catalog.h>
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+#include <libxml/xmlschemastypes.h>
+#include <libxml/relaxng.h>
+#endif
 
 #if defined(SOLARIS)
 #include <note.h>
 #endif
 
 #include "private/dict.h"
+#include "private/enc.h"
+#include "private/globals.h"
+#include "private/memory.h"
 #include "private/threads.h"
+#include "private/xpath.h"
 
 #if defined(HAVE_POSIX_THREADS) && \
     defined(__GLIBC__) && \
@@ -107,17 +118,10 @@ struct _xmlRMutex {
 #endif
 };
 
-/*
- * This module still has some internal static data.
- *   - xmlLibraryLock a global lock
- */
-
 #ifdef HAVE_POSIX_THREADS
 static pthread_t mainthread;
-static pthread_mutex_t global_init_lock = PTHREAD_MUTEX_INITIALIZER;
 #elif defined HAVE_WIN32_THREADS
 static DWORD mainthread;
-static volatile LPCRITICAL_SECTION global_init_lock = NULL;
 #endif
 
 static xmlRMutexPtr xmlLibraryLock = NULL;
@@ -355,100 +359,6 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 #endif
 }
 
-/**
- * xmlGlobalInitMutexLock
- *
- * Makes sure that the global initialization mutex is initialized and
- * locks it.
- */
-void
-__xmlGlobalInitMutexLock(void)
-{
-    /* Make sure the global init lock is initialized and then lock it. */
-#ifdef HAVE_POSIX_THREADS
-#ifdef XML_PTHREAD_WEAK
-    if (pthread_mutex_lock == NULL)
-        return;
-#else
-    if (XML_IS_THREADED() == 0)
-        return;
-#endif
-    /* The mutex is statically initialized, so we just lock it. */
-    pthread_mutex_lock(&global_init_lock);
-#elif defined HAVE_WIN32_THREADS
-    LPCRITICAL_SECTION cs;
-
-    /* Create a new critical section */
-    if (global_init_lock == NULL) {
-        cs = malloc(sizeof(CRITICAL_SECTION));
-        if (cs == NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlGlobalInitMutexLock: out of memory\n");
-            return;
-        }
-        InitializeCriticalSection(cs);
-
-        /* Swap it into the global_init_lock */
-#ifdef InterlockedCompareExchangePointer
-        InterlockedCompareExchangePointer((void **) &global_init_lock,
-                                          cs, NULL);
-#else /* Use older void* version */
-        InterlockedCompareExchange((void **) &global_init_lock,
-                                   (void *) cs, NULL);
-#endif /* InterlockedCompareExchangePointer */
-
-        /* If another thread successfully recorded its critical
-         * section in the global_init_lock then discard the one
-         * allocated by this thread. */
-        if (global_init_lock != cs) {
-            DeleteCriticalSection(cs);
-            free(cs);
-        }
-    }
-
-    /* Lock the chosen critical section */
-    EnterCriticalSection(global_init_lock);
-#endif
-}
-
-void
-__xmlGlobalInitMutexUnlock(void)
-{
-#ifdef HAVE_POSIX_THREADS
-#ifdef XML_PTHREAD_WEAK
-    if (pthread_mutex_lock == NULL)
-        return;
-#else
-    if (XML_IS_THREADED() == 0)
-        return;
-#endif
-    pthread_mutex_unlock(&global_init_lock);
-#elif defined HAVE_WIN32_THREADS
-    if (global_init_lock != NULL) {
-	LeaveCriticalSection(global_init_lock);
-    }
-#endif
-}
-
-/**
- * xmlGlobalInitMutexDestroy
- *
- * Makes sure that the global initialization mutex is destroyed before
- * application termination.
- */
-void
-__xmlGlobalInitMutexDestroy(void)
-{
-#ifdef HAVE_POSIX_THREADS
-#elif defined HAVE_WIN32_THREADS
-    if (global_init_lock != NULL) {
-        DeleteCriticalSection(global_init_lock);
-        free(global_init_lock);
-        global_init_lock = NULL;
-    }
-#endif
-}
-
 /************************************************************************
  *									*
  *			Library wide thread interfaces			*
@@ -551,10 +461,54 @@ xmlInitThreads(void)
  *
  * Used to to initialize all the thread related data.
  */
-void
+static void
 xmlInitThreadsInternal(void)
 {
 #ifdef HAVE_POSIX_THREADS
+    if (XML_IS_NEVER_THREADED() == 0)
+        mainthread = pthread_self();
+#elif defined(HAVE_WIN32_THREADS)
+    mainthread = GetCurrentThreadId();
+#endif
+}
+
+/**
+ * xmlCleanupThreads:
+ *
+ * DEPRECATED: This function is a no-op. Call xmlCleanupParser
+ * to free global state but see the warnings there. xmlCleanupParser
+ * should be only called once at program exit. In most cases, you don't
+ * have call cleanup functions at all.
+ */
+void
+xmlCleanupThreads(void)
+{
+}
+
+/************************************************************************
+ *									*
+ *			Library wide initialization			*
+ *									*
+ ************************************************************************/
+
+static int xmlParserInitialized = 0;
+
+#ifdef HAVE_POSIX_THREADS
+static pthread_mutex_t global_init_lock = PTHREAD_MUTEX_INITIALIZER;
+#elif defined HAVE_WIN32_THREADS
+static volatile LPCRITICAL_SECTION global_init_lock = NULL;
+#endif
+
+/**
+ * xmlGlobalInitMutexLock
+ *
+ * Makes sure that the global initialization mutex is initialized and
+ * locks it.
+ */
+static void
+xmlGlobalInitMutexLock(void) {
+#ifdef HAVE_POSIX_THREADS
+
 #ifdef XML_PTHREAD_WEAK
     /*
      * This is somewhat unreliable since libpthread could be loaded
@@ -577,35 +531,192 @@ xmlInitThreadsInternal(void)
             /* (pthread_equal != NULL) && */
             (pthread_self != NULL) &&
             (pthread_cond_signal != NULL);
-    if (libxml_is_threaded == 0)
-        return;
-#endif /* XML_PTHREAD_WEAK */
-    mainthread = pthread_self();
-#elif defined(HAVE_WIN32_THREADS)
-    mainthread = GetCurrentThreadId();
+#endif
+
+    /* The mutex is statically initialized, so we just lock it. */
+    if (XML_IS_THREADED() != 0)
+        pthread_mutex_lock(&global_init_lock);
+
+#elif defined HAVE_WIN32_THREADS
+
+    LPCRITICAL_SECTION cs;
+
+    /* Create a new critical section */
+    if (global_init_lock == NULL) {
+        cs = malloc(sizeof(CRITICAL_SECTION));
+        if (cs == NULL) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "xmlGlobalInitMutexLock: out of memory\n");
+            return;
+        }
+        InitializeCriticalSection(cs);
+
+        /* Swap it into the global_init_lock */
+#ifdef InterlockedCompareExchangePointer
+        InterlockedCompareExchangePointer((void **) &global_init_lock,
+                                          cs, NULL);
+#else /* Use older void* version */
+        InterlockedCompareExchange((void **) &global_init_lock,
+                                   (void *) cs, NULL);
+#endif /* InterlockedCompareExchangePointer */
+
+        /* If another thread successfully recorded its critical
+         * section in the global_init_lock then discard the one
+         * allocated by this thread. */
+        if (global_init_lock != cs) {
+            DeleteCriticalSection(cs);
+            free(cs);
+        }
+    }
+
+    /* Lock the chosen critical section */
+    EnterCriticalSection(global_init_lock);
+
+#endif
+}
+
+static void
+xmlGlobalInitMutexUnlock(void) {
+#ifdef HAVE_POSIX_THREADS
+    if (XML_IS_THREADED() != 0)
+        pthread_mutex_unlock(&global_init_lock);
+#elif defined HAVE_WIN32_THREADS
+    if (global_init_lock != NULL)
+	LeaveCriticalSection(global_init_lock);
 #endif
 }
 
 /**
- * xmlCleanupThreads:
+ * xmlGlobalInitMutexDestroy
  *
- * DEPRECATED: This function is a no-op. Call xmlCleanupParser
- * to free global state but see the warnings there. xmlCleanupParser
- * should be only called once at program exit. In most cases, you don't
- * have call cleanup functions at all.
+ * Makes sure that the global initialization mutex is destroyed before
+ * application termination.
  */
-void
-xmlCleanupThreads(void)
-{
+static void
+xmlGlobalInitMutexDestroy(void) {
+#ifdef HAVE_POSIX_THREADS
+#elif defined HAVE_WIN32_THREADS
+    if (global_init_lock != NULL) {
+        DeleteCriticalSection(global_init_lock);
+        free(global_init_lock);
+        global_init_lock = NULL;
+    }
+#endif
 }
 
 /**
- * xmlCleanupThreadsInternal:
+ * xmlInitParser:
  *
- * Used to to cleanup all the thread related data.
+ * Initialization function for the XML parser.
+ *
+ * Call once from the main thread before using the library in
+ * multithreaded programs.
  */
 void
-xmlCleanupThreadsInternal(void)
-{
+xmlInitParser(void) {
+    /*
+     * Note that the initialization code must not make memory allocations.
+     */
+    if (xmlParserInitialized != 0)
+        return;
+
+    xmlGlobalInitMutexLock();
+
+    if (xmlParserInitialized == 0) {
+#if defined(_WIN32) && \
+    (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+        if (xmlFree == free)
+            atexit(xmlCleanupParser);
+#endif
+
+        xmlInitThreadsInternal(); /* Must come first */
+        xmlInitMemoryInternal(); /* Should come second */
+        xmlInitGlobalsInternal();
+        xmlInitDictInternal();
+        xmlInitEncodingInternal();
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+        xmlInitXPathInternal();
+#endif
+
+        xmlRegisterDefaultInputCallbacks();
+#ifdef LIBXML_OUTPUT_ENABLED
+        xmlRegisterDefaultOutputCallbacks();
+#endif /* LIBXML_OUTPUT_ENABLED */
+
+        xmlParserInitialized = 1;
+    }
+
+    xmlGlobalInitMutexUnlock();
 }
+
+/**
+ * xmlCleanupParser:
+ *
+ * This function name is somewhat misleading. It does not clean up
+ * parser state, it cleans up memory allocated by the library itself.
+ * It is a cleanup function for the XML library. It tries to reclaim all
+ * related global memory allocated for the library processing.
+ * It doesn't deallocate any document related memory. One should
+ * call xmlCleanupParser() only when the process has finished using
+ * the library and all XML/HTML documents built with it.
+ * See also xmlInitParser() which has the opposite function of preparing
+ * the library for operations.
+ *
+ * WARNING: if your application is multithreaded or has plugin support
+ *          calling this may crash the application if another thread or
+ *          a plugin is still using libxml2. It's sometimes very hard to
+ *          guess if libxml2 is in use in the application, some libraries
+ *          or plugins may use it without notice. In case of doubt abstain
+ *          from calling this function or do it just before calling exit()
+ *          to avoid leak reports from valgrind !
+ */
+void
+xmlCleanupParser(void) {
+    if (!xmlParserInitialized)
+        return;
+
+    /* These functions can call xmlFree. */
+
+    xmlCleanupCharEncodingHandlers();
+#ifdef LIBXML_CATALOG_ENABLED
+    xmlCatalogCleanup();
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+    xmlSchemaCleanupTypes();
+    xmlRelaxNGCleanupTypes();
+#endif
+
+    /* These functions should never call xmlFree. */
+
+    xmlCleanupInputCallbacks();
+#ifdef LIBXML_OUTPUT_ENABLED
+    xmlCleanupOutputCallbacks();
+#endif
+
+    xmlCleanupDictInternal();
+    xmlCleanupGlobalsInternal();
+    /*
+     * Must come last. On Windows, xmlCleanupGlobalsInternal can call
+     * xmlFree which uses xmlMemMutex in debug mode.
+     */
+    xmlCleanupMemoryInternal();
+
+    xmlGlobalInitMutexDestroy();
+
+    xmlParserInitialized = 0;
+}
+
+#if defined(HAVE_ATTRIBUTE_DESTRUCTOR) && !defined(LIBXML_STATIC) && \
+    !defined(_WIN32)
+static void
+ATTRIBUTE_DESTRUCTOR
+xmlDestructor(void) {
+    /*
+     * Calling custom deallocation functions in a destructor can cause
+     * problems, for example with Nokogiri.
+     */
+    if (xmlFree == free)
+        xmlCleanupParser();
+}
+#endif
 

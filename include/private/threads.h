@@ -10,9 +10,6 @@
   #elif defined(_WIN32)
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
-    #ifndef HAVE_COMPILER_TLS
-      #include <process.h>
-    #endif
     #define HAVE_WIN32_THREADS
   #endif
 #endif

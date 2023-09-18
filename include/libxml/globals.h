@@ -122,7 +122,7 @@ XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
 
 /** DOC_DISABLE */
 #if defined(LIBXML_THREAD_ENABLED) && defined(_WIN32) && \
-    !defined(HAVE_COMPILER_TLS) && defined(LIBXML_STATIC_FOR_DLL)
+    defined(LIBXML_STATIC_FOR_DLL)
 int
 xmlDllMain(void *hinstDLL, unsigned long fdwReason,
            void *lpvReserved);

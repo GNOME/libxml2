@@ -43,15 +43,16 @@ static xmlMutex xmlThrDefMutex;
   type gs_##name;
 
 struct _xmlGlobalState {
+#if defined(HAVE_WIN32_THREADS) && \
+    defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+    void *threadHandle;
+    void *waitHandle;
+#endif
+
 #define XML_OP XML_DECLARE_MEMBER
 XML_GLOBALS
 #undef XML_OP
 };
-
-#ifdef LIBXML_THREAD_ENABLED
-static void
-xmlFreeGlobalState(void *state);
-#endif
 
 #ifdef HAVE_POSIX_THREADS
 
@@ -81,41 +82,14 @@ static __declspec(thread) int tlstate_inited = 0;
 
 static DWORD globalkey = TLS_OUT_OF_INDEXES;
 
-#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
-
-typedef struct _xmlGlobalStateCleanupHelperParams {
-    HANDLE thread;
-    void *memory;
-} xmlGlobalStateCleanupHelperParams;
-
-static void
-xmlGlobalStateCleanupHelper(void *p)
-{
-    xmlGlobalStateCleanupHelperParams *params =
-        (xmlGlobalStateCleanupHelperParams *) p;
-    WaitForSingleObject(params->thread, INFINITE);
-    CloseHandle(params->thread);
-    xmlFreeGlobalState(params->memory);
-    free(params);
-    _endthread();
-}
-
-#else /* LIBXML_STATIC && !LIBXML_STATIC_FOR_DLL */
-
-typedef struct _xmlGlobalStateCleanupHelperParams {
-    void *memory;
-    struct _xmlGlobalStateCleanupHelperParams *prev;
-    struct _xmlGlobalStateCleanupHelperParams *next;
-} xmlGlobalStateCleanupHelperParams;
-
-static xmlGlobalStateCleanupHelperParams *cleanup_helpers_head = NULL;
-static CRITICAL_SECTION cleanup_helpers_cs;
-
-#endif /* LIBXMLSTATIC && !LIBXML_STATIC_FOR_DLL */
-
 #endif /* HAVE_COMPILER_TLS */
 
 #endif /* HAVE_WIN32_THREADS */
+
+#ifdef LIBXML_THREAD_ENABLED
+static void
+xmlFreeGlobalState(void *state);
+#endif
 
 /************************************************************************
  *									*
@@ -549,9 +523,6 @@ void xmlInitGlobalsInternal(void) {
     pthread_key_create(&globalkey, xmlFreeGlobalState);
 #elif defined(HAVE_WIN32_THREADS)
 #if !defined(HAVE_COMPILER_TLS)
-#if !defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL)
-    InitializeCriticalSection(&cleanup_helpers_cs);
-#endif
     globalkey = TlsAlloc();
 #endif
 #endif
@@ -587,27 +558,9 @@ void xmlCleanupGlobalsInternal(void) {
 #elif defined(HAVE_WIN32_THREADS)
 #if !defined(HAVE_COMPILER_TLS)
     if (globalkey != TLS_OUT_OF_INDEXES) {
-#if !defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL)
-        xmlGlobalStateCleanupHelperParams *p;
-
-        EnterCriticalSection(&cleanup_helpers_cs);
-        p = cleanup_helpers_head;
-        while (p != NULL) {
-            xmlGlobalStateCleanupHelperParams *temp = p;
-
-            p = p->next;
-            xmlFreeGlobalState(temp->memory);
-            free(temp);
-        }
-        cleanup_helpers_head = 0;
-        LeaveCriticalSection(&cleanup_helpers_cs);
-#endif
         TlsFree(globalkey);
         globalkey = TLS_OUT_OF_INDEXES;
     }
-#if !defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL)
-    DeleteCriticalSection(&cleanup_helpers_cs);
-#endif
 #endif
 #endif
 }
@@ -616,14 +569,80 @@ void xmlCleanupGlobalsInternal(void) {
  * xmlInitializeGlobalState:
  * @gs: a pointer to a newly allocated global state
  *
- * DEPRECATED: Internal function, do not use.
- *
- * xmlInitializeGlobalState() initialize a global state with all the
- * default values of the library.
+ * DEPRECATED: No-op.
  */
 void
-xmlInitializeGlobalState(xmlGlobalStatePtr gs)
+xmlInitializeGlobalState(xmlGlobalStatePtr gs ATTRIBUTE_UNUSED)
 {
+}
+
+/**
+ * xmlGetGlobalState:
+ *
+ * DEPRECATED: Always returns NULL.
+ */
+xmlGlobalStatePtr
+xmlGetGlobalState(void)
+{
+    return(NULL);
+}
+
+#ifdef LIBXML_THREAD_ENABLED
+/**
+ * xmlFreeGlobalState:
+ * @state:  a thread global state
+ *
+ * xmlFreeGlobalState() is called when a thread terminates with a non-NULL
+ * global state. It is is used here to reclaim memory resources.
+ */
+static void
+xmlFreeGlobalState(void *state)
+{
+    xmlGlobalState *gs = (xmlGlobalState *) state;
+
+    /* free any memory allocated in the thread's xmlLastError */
+    xmlResetError(&(gs->gs_xmlLastError));
+#if !defined(HAVE_WIN32_THREADS) || !defined(HAVE_COMPILER_TLS)
+    free(state);
+#endif
+}
+
+#if defined(HAVE_WIN32_THREADS) && \
+    defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+static void WINAPI
+xmlGlobalStateDtor(void *ctxt, unsigned char timedOut ATTRIBUTE_UNUSED) {
+    xmlGlobalStatePtr gs = ctxt;
+
+    UnregisterWait(gs->waitHandle);
+    CloseHandle(gs->threadHandle);
+    xmlFreeGlobalState(gs);
+}
+
+static int
+xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
+    void *processHandle = GetCurrentProcess();
+    void *threadHandle;
+    void *waitHandle;
+
+    if (DuplicateHandle(processHandle, GetCurrentThread(), processHandle,
+                &threadHandle, 0, FALSE, DUPLICATE_SAME_ACCESS) == 0) {
+        return(-1);
+    }
+
+    if (RegisterWaitForSingleObject(&waitHandle, threadHandle,
+                xmlGlobalStateDtor, gs, INFINITE, WT_EXECUTEONLYONCE) == 0) {
+        CloseHandle(threadHandle);
+        return(-1);
+    }
+
+    gs->threadHandle = threadHandle;
+    gs->waitHandle = waitHandle;
+    return(0);
+}
+#endif /* LIBXML_STATIC */
+
+static void
+xmlInitGlobalState(xmlGlobalStatePtr gs) {
     xmlMutexLock(&xmlThrDefMutex);
 
 #if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_LEGACY_ENABLED) && defined(LIBXML_SAX1_ENABLED)
@@ -676,24 +695,17 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     memset(&gs->gs_xmlLastError, 0, sizeof(xmlError));
 
     xmlMutexUnlock(&xmlThrDefMutex);
-}
 
-#ifdef LIBXML_THREAD_ENABLED
-/**
- * xmlFreeGlobalState:
- * @state:  a thread global state
- *
- * xmlFreeGlobalState() is called when a thread terminates with a non-NULL
- * global state. It is is used here to reclaim memory resources.
- */
-static void
-xmlFreeGlobalState(void *state)
-{
-    xmlGlobalState *gs = (xmlGlobalState *) state;
-
-    /* free any memory allocated in the thread's xmlLastError */
-    xmlResetError(&(gs->gs_xmlLastError));
-    free(state);
+#ifdef HAVE_POSIX_THREADS
+    pthread_setspecific(globalkey, gs);
+#elif defined HAVE_WIN32_THREADS
+#ifndef HAVE_COMPILER_TLS
+    TlsSetValue(globalkey, gs);
+#endif
+#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+    xmlRegisterGlobalStateDtor(gs);
+#endif
+#endif
 }
 
 /**
@@ -711,15 +723,39 @@ xmlNewGlobalState(void)
     xmlGlobalState *gs;
 
     gs = malloc(sizeof(xmlGlobalState));
-    if (gs == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-			"xmlGetGlobalState: out of memory\n");
+    if (gs == NULL)
         return (NULL);
-    }
 
     memset(gs, 0, sizeof(xmlGlobalState));
-    xmlInitializeGlobalState(gs);
+    xmlInitGlobalState(gs);
     return (gs);
+}
+
+static xmlGlobalStatePtr
+xmlGetThreadLocalStorage(void) {
+#ifdef HAVE_POSIX_THREADS
+    xmlGlobalState *gs;
+    gs = (xmlGlobalState *) pthread_getspecific(globalkey);
+    if (gs == NULL)
+        gs = xmlNewGlobalState();
+    return (gs);
+#elif defined HAVE_WIN32_THREADS
+#if defined(HAVE_COMPILER_TLS)
+    if (!tlstate_inited) {
+        tlstate_inited = 1;
+        xmlInitGlobalState(&tlstate);
+    }
+    return &tlstate;
+#else /* HAVE_COMPILER_TLS */
+    xmlGlobalState *gs;
+    gs = (xmlGlobalState *) TlsGetValue(globalkey);
+    if (gs == NULL)
+        gs = xmlNewGlobalState();
+    return (gs);
+#endif /* HAVE_COMPILER_TLS */
+#else
+    return (NULL);
+#endif
 }
 #endif /* LIBXML_THREAD_ENABLED */
 
@@ -743,91 +779,11 @@ xmlNewGlobalState(void)
  */
 int
 xmlCheckThreadLocalStorage(void) {
-    if (IS_MAIN_THREAD)
-        return(0);
-    return((xmlGetGlobalState() == NULL) ? -1 : 0);
-}
-
-/**
- * xmlGetGlobalState:
- *
- * DEPRECATED: Internal function, do not use.
- *
- * xmlGetGlobalState() is called to retrieve the global state for a thread.
- *
- * Returns the thread global state or NULL in case of error
- */
-xmlGlobalStatePtr
-xmlGetGlobalState(void)
-{
-#ifdef HAVE_POSIX_THREADS
-    xmlGlobalState *globalval;
-
-    if ((globalval = (xmlGlobalState *)
-         pthread_getspecific(globalkey)) == NULL) {
-        xmlGlobalState *tsd = xmlNewGlobalState();
-	if (tsd == NULL)
-	    return(NULL);
-
-        pthread_setspecific(globalkey, tsd);
-        return (tsd);
-    }
-    return (globalval);
-#elif defined HAVE_WIN32_THREADS
-#if defined(HAVE_COMPILER_TLS)
-    if (!tlstate_inited) {
-        tlstate_inited = 1;
-        xmlInitializeGlobalState(&tlstate);
-    }
-    return &tlstate;
-#else /* HAVE_COMPILER_TLS */
-    xmlGlobalState *globalval;
-    xmlGlobalStateCleanupHelperParams *p;
-#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
-    globalval = (xmlGlobalState *) TlsGetValue(globalkey);
-#else
-    p = (xmlGlobalStateCleanupHelperParams *) TlsGetValue(globalkey);
-    globalval = (xmlGlobalState *) (p ? p->memory : NULL);
+#ifdef LIBXML_THREAD_ENABLED
+    if ((!xmlIsMainThread()) && (xmlGetThreadLocalStorage() == NULL))
+        return(-1);
 #endif
-    if (globalval == NULL) {
-        xmlGlobalState *tsd = xmlNewGlobalState();
-
-        if (tsd == NULL)
-	    return(NULL);
-        p = (xmlGlobalStateCleanupHelperParams *)
-            malloc(sizeof(xmlGlobalStateCleanupHelperParams));
-	if (p == NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlGetGlobalState: out of memory\n");
-            xmlFreeGlobalState(tsd);
-	    return(NULL);
-	}
-        p->memory = tsd;
-#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
-        DuplicateHandle(GetCurrentProcess(), GetCurrentThread(),
-                        GetCurrentProcess(), &p->thread, 0, TRUE,
-                        DUPLICATE_SAME_ACCESS);
-        TlsSetValue(globalkey, tsd);
-        _beginthread(xmlGlobalStateCleanupHelper, 0, p);
-#else
-        EnterCriticalSection(&cleanup_helpers_cs);
-        if (cleanup_helpers_head != NULL) {
-            cleanup_helpers_head->prev = p;
-        }
-        p->next = cleanup_helpers_head;
-        p->prev = NULL;
-        cleanup_helpers_head = p;
-        TlsSetValue(globalkey, p);
-        LeaveCriticalSection(&cleanup_helpers_cs);
-#endif
-
-        return (tsd);
-    }
-    return (globalval);
-#endif /* HAVE_COMPILER_TLS */
-#else
-    return (NULL);
-#endif
+    return(0);
 }
 
 /**
@@ -842,7 +798,7 @@ xmlGetGlobalState(void)
  * Returns TRUE always
  */
 #ifdef HAVE_POSIX_THREADS
-#elif defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+#elif defined(HAVE_WIN32_THREADS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #if defined(LIBXML_STATIC_FOR_DLL)
 int
 xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
@@ -866,25 +822,12 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
     switch (fdwReason) {
         case DLL_THREAD_DETACH:
             if (globalkey != TLS_OUT_OF_INDEXES) {
-                xmlGlobalState *globalval = NULL;
-                xmlGlobalStateCleanupHelperParams *p =
-                    (xmlGlobalStateCleanupHelperParams *)
-                    TlsGetValue(globalkey);
-                globalval = (xmlGlobalState *) (p ? p->memory : NULL);
+                xmlGlobalState *globalval;
+
+                globalval = (xmlGlobalState *) TlsGetValue(globalkey);
                 if (globalval) {
                     xmlFreeGlobalState(globalval);
                     TlsSetValue(globalkey, NULL);
-                }
-                if (p) {
-                    EnterCriticalSection(&cleanup_helpers_cs);
-                    if (p == cleanup_helpers_head)
-                        cleanup_helpers_head = p->next;
-                    else
-                        p->prev->next = p->next;
-                    if (p->next != NULL)
-                        p->next->prev = p->prev;
-                    LeaveCriticalSection(&cleanup_helpers_cs);
-                    free(p);
                 }
             }
             break;
@@ -1138,7 +1081,7 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
       if (IS_MAIN_THREAD) \
         return (&name); \
       else \
-        return (&xmlGetGlobalState()->gs_##name); \
+        return (&xmlGetThreadLocalStorage()->gs_##name); \
     }
 
   #define XML_OP XML_DEFINE_GLOBAL_WRAPPER

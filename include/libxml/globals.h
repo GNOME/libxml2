@@ -64,44 +64,6 @@ xmlParserInputBufferCreateFilenameDefault (xmlParserInputBufferCreateFilenameFun
 XMLPUBFUN xmlOutputBufferCreateFilenameFunc
 xmlOutputBufferCreateFilenameDefault (xmlOutputBufferCreateFilenameFunc func);
 
-/*
- * Externally global symbols which need to be protected for backwards
- * compatibility support.
- */
-
-#undef	htmlDefaultSAXHandler
-#undef	oldXMLWDcompatibility
-#undef	xmlBufferAllocScheme
-#undef	xmlDefaultBufferSize
-#undef	xmlDefaultSAXHandler
-#undef	xmlDefaultSAXLocator
-#undef	xmlDoValidityCheckingDefaultValue
-#undef	xmlFree
-#undef	xmlGenericError
-#undef	xmlStructuredError
-#undef	xmlGenericErrorContext
-#undef	xmlStructuredErrorContext
-#undef	xmlGetWarningsDefaultValue
-#undef	xmlIndentTreeOutput
-#undef  xmlTreeIndentString
-#undef	xmlKeepBlanksDefaultValue
-#undef	xmlLineNumbersDefaultValue
-#undef	xmlLoadExtDtdDefaultValue
-#undef	xmlMalloc
-#undef	xmlMallocAtomic
-#undef	xmlMemStrdup
-#undef	xmlParserDebugEntities
-#undef	xmlParserVersion
-#undef	xmlPedanticParserDefaultValue
-#undef	xmlRealloc
-#undef	xmlSaveNoEmptyTags
-#undef	xmlSubstituteEntitiesDefaultValue
-#undef  xmlRegisterNodeDefaultValue
-#undef  xmlDeregisterNodeDefaultValue
-#undef  xmlLastError
-#undef  xmlParserInputBufferCreateFilenameValue
-#undef  xmlOutputBufferCreateFilenameValue
-
 /**
  * xmlRegisterNodeFunc:
  * @node: the current node
@@ -119,53 +81,6 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
-struct _xmlGlobalState
-{
-	const char *gsParserVersion;
-
-	xmlSAXLocator gsDefaultSAXLocator;
-	xmlSAXHandlerV1 gsDefaultSAXHandler;
-	xmlSAXHandlerV1 gsDocbDefaultSAXHandler; /* unused */
-	xmlSAXHandlerV1 gsHtmlDefaultSAXHandler;
-
-	xmlFreeFunc gsFree;
-	xmlMallocFunc gsMalloc;
-	xmlStrdupFunc gsMemStrdup;
-	xmlReallocFunc gsRealloc;
-
-	xmlGenericErrorFunc gsGenericError;
-	xmlStructuredErrorFunc gsStructuredError;
-	void *gsGenericErrorContext;
-
-	int gsOldXMLWDcompatibility;
-
-	xmlBufferAllocationScheme gsBufferAllocScheme;
-	int gsDefaultBufferSize;
-
-	int gsSubstituteEntitiesDefaultValue;
-	int gsDoValidityCheckingDefaultValue;
-	int gsGetWarningsDefaultValue;
-	int gsKeepBlanksDefaultValue;
-	int gsLineNumbersDefaultValue;
-	int gsLoadExtDtdDefaultValue;
-	int gsParserDebugEntities;
-	int gsPedanticParserDefaultValue;
-
-	int gsSaveNoEmptyTags;
-	int gsIndentTreeOutput;
-	const char *gsTreeIndentString;
-
-	xmlRegisterNodeFunc gsRegisterNodeDefaultValue;
-	xmlDeregisterNodeFunc gsDeregisterNodeDefaultValue;
-
-	xmlMallocFunc gsMallocAtomic;
-	xmlError gsLastError;
-
-	xmlParserInputBufferCreateFilenameFunc gsParserInputBufferCreateFilenameValue;
-	xmlOutputBufferCreateFilenameFunc gsOutputBufferCreateFilenameValue;
-
-	void *gsStructuredErrorContext;
-};
 
 XML_DEPRECATED
 XMLPUBFUN void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);

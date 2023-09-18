@@ -40,6 +40,56 @@
  */
 static xmlMutex xmlThrDefMutex;
 
+struct _xmlGlobalState {
+    const char *gsParserVersion;
+
+    xmlSAXLocator gsDefaultSAXLocator;
+#ifdef LIBXML_SAX1_ENABLED
+    xmlSAXHandlerV1 gsDefaultSAXHandler;
+#ifdef LIBXML_HTML_ENABLED
+    xmlSAXHandlerV1 gsHtmlDefaultSAXHandler;
+#endif
+#endif
+
+    xmlFreeFunc gsFree;
+    xmlMallocFunc gsMalloc;
+    xmlStrdupFunc gsMemStrdup;
+    xmlReallocFunc gsRealloc;
+
+    xmlGenericErrorFunc gsGenericError;
+    xmlStructuredErrorFunc gsStructuredError;
+    void *gsGenericErrorContext;
+
+    int gsOldXMLWDcompatibility;
+
+    xmlBufferAllocationScheme gsBufferAllocScheme;
+    int gsDefaultBufferSize;
+
+    int gsSubstituteEntitiesDefaultValue;
+    int gsDoValidityCheckingDefaultValue;
+    int gsGetWarningsDefaultValue;
+    int gsKeepBlanksDefaultValue;
+    int gsLineNumbersDefaultValue;
+    int gsLoadExtDtdDefaultValue;
+    int gsParserDebugEntities;
+    int gsPedanticParserDefaultValue;
+
+    int gsSaveNoEmptyTags;
+    int gsIndentTreeOutput;
+    const char *gsTreeIndentString;
+
+    xmlRegisterNodeFunc gsRegisterNodeDefaultValue;
+    xmlDeregisterNodeFunc gsDeregisterNodeDefaultValue;
+
+    xmlMallocFunc gsMallocAtomic;
+    xmlError gsLastError;
+
+    xmlParserInputBufferCreateFilenameFunc gsParserInputBufferCreateFilenameValue;
+    xmlOutputBufferCreateFilenameFunc gsOutputBufferCreateFilenameValue;
+
+    void *gsStructuredErrorContext;
+};
+
 #ifdef LIBXML_THREAD_ENABLED
 static void
 xmlFreeGlobalState(void *state);

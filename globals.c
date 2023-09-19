@@ -43,6 +43,8 @@ static xmlMutex xmlThrDefMutex;
   type gs_##name;
 
 struct _xmlGlobalState {
+    int initialized;
+
 #if defined(HAVE_WIN32_THREADS) && \
     defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
     void *threadHandle;
@@ -53,6 +55,12 @@ struct _xmlGlobalState {
 XML_GLOBALS
 #undef XML_OP
 };
+
+#ifdef LIBXML_THREAD_ENABLED
+
+#ifdef XML_THREAD_LOCAL
+static XML_THREAD_LOCAL xmlGlobalState globalState;
+#endif
 
 #ifdef HAVE_POSIX_THREADS
 
@@ -73,23 +81,16 @@ static pthread_key_t globalkey;
 
 #elif defined HAVE_WIN32_THREADS
 
-#if defined(HAVE_COMPILER_TLS)
-
-static __declspec(thread) xmlGlobalState tlstate;
-static __declspec(thread) int tlstate_inited = 0;
-
-#else /* HAVE_COMPILER_TLS */
-
+#ifndef XML_THREAD_LOCAL
 static DWORD globalkey = TLS_OUT_OF_INDEXES;
-
-#endif /* HAVE_COMPILER_TLS */
+#endif
 
 #endif /* HAVE_WIN32_THREADS */
 
-#ifdef LIBXML_THREAD_ENABLED
 static void
 xmlFreeGlobalState(void *state);
-#endif
+
+#endif /* LIBXML_THREAD_ENABLED */
 
 /************************************************************************
  *									*
@@ -522,7 +523,7 @@ void xmlInitGlobalsInternal(void) {
 #endif /* XML_PTHREAD_WEAK */
     pthread_key_create(&globalkey, xmlFreeGlobalState);
 #elif defined(HAVE_WIN32_THREADS)
-#if !defined(HAVE_COMPILER_TLS)
+#ifndef XML_THREAD_LOCAL
     globalkey = TlsAlloc();
 #endif
 #endif
@@ -556,7 +557,7 @@ void xmlCleanupGlobalsInternal(void) {
 #endif /* XML_PTHREAD_WEAK */
     pthread_key_delete(globalkey);
 #elif defined(HAVE_WIN32_THREADS)
-#if !defined(HAVE_COMPILER_TLS)
+#ifndef XML_THREAD_LOCAL
     if (globalkey != TLS_OUT_OF_INDEXES) {
         TlsFree(globalkey);
         globalkey = TLS_OUT_OF_INDEXES;
@@ -602,7 +603,7 @@ xmlFreeGlobalState(void *state)
 
     /* free any memory allocated in the thread's xmlLastError */
     xmlResetError(&(gs->gs_xmlLastError));
-#if !defined(HAVE_WIN32_THREADS) || !defined(HAVE_COMPILER_TLS)
+#ifndef XML_THREAD_LOCAL
     free(state);
 #endif
 }
@@ -699,15 +700,18 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
 #ifdef HAVE_POSIX_THREADS
     pthread_setspecific(globalkey, gs);
 #elif defined HAVE_WIN32_THREADS
-#ifndef HAVE_COMPILER_TLS
+#ifndef XML_THREAD_LOCAL
     TlsSetValue(globalkey, gs);
 #endif
 #if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
     xmlRegisterGlobalStateDtor(gs);
 #endif
 #endif
+
+    gs->initialized = 1;
 }
 
+#ifndef XML_THREAD_LOCAL
 /**
  * xmlNewGlobalState:
  *
@@ -730,32 +734,29 @@ xmlNewGlobalState(void)
     xmlInitGlobalState(gs);
     return (gs);
 }
+#endif
 
 static xmlGlobalStatePtr
 xmlGetThreadLocalStorage(void) {
-#ifdef HAVE_POSIX_THREADS
     xmlGlobalState *gs;
+
+#ifdef XML_THREAD_LOCAL
+    gs = &globalState;
+    if (gs->initialized == 0)
+        xmlInitGlobalState(gs);
+#elif defined(HAVE_POSIX_THREADS)
     gs = (xmlGlobalState *) pthread_getspecific(globalkey);
     if (gs == NULL)
         gs = xmlNewGlobalState();
-    return (gs);
-#elif defined HAVE_WIN32_THREADS
-#if defined(HAVE_COMPILER_TLS)
-    if (!tlstate_inited) {
-        tlstate_inited = 1;
-        xmlInitGlobalState(&tlstate);
-    }
-    return &tlstate;
-#else /* HAVE_COMPILER_TLS */
-    xmlGlobalState *gs;
+#elif defined(HAVE_WIN32_THREADS)
     gs = (xmlGlobalState *) TlsGetValue(globalkey);
     if (gs == NULL)
         gs = xmlNewGlobalState();
-    return (gs);
-#endif /* HAVE_COMPILER_TLS */
 #else
-    return (NULL);
+    gs = NULL;
 #endif
+
+    return(gs);
 }
 #endif /* LIBXML_THREAD_ENABLED */
 
@@ -779,7 +780,7 @@ xmlGetThreadLocalStorage(void) {
  */
 int
 xmlCheckThreadLocalStorage(void) {
-#ifdef LIBXML_THREAD_ENABLED
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_THREAD_LOCAL_STORAGE)
     if ((!xmlIsMainThread()) && (xmlGetThreadLocalStorage() == NULL))
         return(-1);
 #endif
@@ -821,6 +822,9 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
 {
     switch (fdwReason) {
         case DLL_THREAD_DETACH:
+#ifdef XML_THREAD_LOCAL
+            xmlFreeGlobalState(&globalState);
+#else
             if (globalkey != TLS_OUT_OF_INDEXES) {
                 xmlGlobalState *globalval;
 
@@ -830,6 +834,7 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
                     TlsSetValue(globalkey, NULL);
                 }
             }
+#endif
             break;
     }
     return TRUE;

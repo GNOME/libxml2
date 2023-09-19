@@ -29,10 +29,12 @@
  * Helpful Macro
  */
 #ifdef LIBXML_THREAD_ENABLED
-#define IS_MAIN_THREAD (xmlIsMainThread())
+#define IS_MAIN_THREAD (xmlIsMainThreadInternal())
 #else
 #define IS_MAIN_THREAD 1
 #endif
+
+static int parserInitialized;
 
 /*
  * Mutex to protect "ForNewThreads" variables
@@ -78,12 +80,14 @@ static int libxml_is_threaded = -1;
 #endif
 
 static pthread_key_t globalkey;
+static pthread_t mainthread;
 
 #elif defined HAVE_WIN32_THREADS
 
 #ifndef XML_THREAD_LOCAL
 static DWORD globalkey = TLS_OUT_OF_INDEXES;
 #endif
+static DWORD mainthread;
 
 #endif /* HAVE_WIN32_THREADS */
 
@@ -522,10 +526,12 @@ void xmlInitGlobalsInternal(void) {
         return;
 #endif /* XML_PTHREAD_WEAK */
     pthread_key_create(&globalkey, xmlFreeGlobalState);
+    mainthread = pthread_self();
 #elif defined(HAVE_WIN32_THREADS)
 #ifndef XML_THREAD_LOCAL
     globalkey = TlsAlloc();
 #endif
+    mainthread = GetCurrentThreadId();
 #endif
 }
 
@@ -586,6 +592,40 @@ xmlGlobalStatePtr
 xmlGetGlobalState(void)
 {
     return(NULL);
+}
+
+static int
+xmlIsMainThreadInternal(void) {
+    if (parserInitialized == 0) {
+        xmlInitParser();
+        parserInitialized = 1;
+    }
+
+#ifdef HAVE_POSIX_THREADS
+#ifdef XML_PTHREAD_WEAK
+    if (libxml_is_threaded == 0)
+        return (1);
+#endif
+    return (pthread_equal(mainthread, pthread_self()));
+#elif defined HAVE_WIN32_THREADS
+    return (mainthread == GetCurrentThreadId());
+#else
+    return (1);
+#endif
+}
+
+/**
+ * xmlIsMainThread:
+ *
+ * DEPRECATED: Internal function, do not use.
+ *
+ * Check whether the current thread is the main thread.
+ *
+ * Returns 1 if the current thread is the main thread, 0 otherwise
+ */
+int
+xmlIsMainThread(void) {
+    return(xmlIsMainThreadInternal());
 }
 
 #ifdef LIBXML_THREAD_ENABLED
@@ -781,7 +821,7 @@ xmlGetThreadLocalStorage(void) {
 int
 xmlCheckThreadLocalStorage(void) {
 #if defined(LIBXML_THREAD_ENABLED) && !defined(XML_THREAD_LOCAL_STORAGE)
-    if ((!xmlIsMainThread()) && (xmlGetThreadLocalStorage() == NULL))
+    if ((!xmlIsMainThreadInternal()) && (xmlGetThreadLocalStorage() == NULL))
         return(-1);
 #endif
     return(0);

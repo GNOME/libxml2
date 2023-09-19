@@ -118,12 +118,6 @@ struct _xmlRMutex {
 #endif
 };
 
-#ifdef HAVE_POSIX_THREADS
-static pthread_t mainthread;
-#elif defined HAVE_WIN32_THREADS
-static DWORD mainthread;
-#endif
-
 static xmlRMutexPtr xmlLibraryLock = NULL;
 
 /**
@@ -397,31 +391,6 @@ xmlGetThreadId(void)
 }
 
 /**
- * xmlIsMainThread:
- *
- * DEPRECATED: Internal function, do not use.
- *
- * xmlIsMainThread() check whether the current thread is the main thread.
- *
- * Returns 1 if the current thread is the main thread, 0 otherwise
- */
-int
-xmlIsMainThread(void)
-{
-    xmlInitParser();
-
-#ifdef HAVE_POSIX_THREADS
-    if (XML_IS_THREADED() == 0)
-        return (1);
-    return (pthread_equal(mainthread,pthread_self()));
-#elif defined HAVE_WIN32_THREADS
-    return (mainthread == GetCurrentThreadId());
-#else
-    return (1);
-#endif
-}
-
-/**
  * xmlLockLibrary:
  *
  * xmlLockLibrary() is used to take out a re-entrant lock on the libxml2
@@ -454,22 +423,6 @@ void
 xmlInitThreads(void)
 {
     xmlInitParser();
-}
-
-/**
- * xmlInitThreadsInternal:
- *
- * Used to to initialize all the thread related data.
- */
-static void
-xmlInitThreadsInternal(void)
-{
-#ifdef HAVE_POSIX_THREADS
-    if (XML_IS_NEVER_THREADED() == 0)
-        mainthread = pthread_self();
-#elif defined(HAVE_WIN32_THREADS)
-    mainthread = GetCurrentThreadId();
-#endif
 }
 
 /**
@@ -629,7 +582,6 @@ xmlInitParser(void) {
             atexit(xmlCleanupParser);
 #endif
 
-        xmlInitThreadsInternal(); /* Must come first */
         xmlInitMemoryInternal(); /* Should come second */
         xmlInitGlobalsInternal();
         xmlInitDictInternal();

@@ -567,6 +567,8 @@ xmlGlobalInitMutexDestroy(void) {
  */
 void
 xmlInitParser(void) {
+    static int innerInitialized = 0;
+
     /*
      * Note that the initialization code must not make memory allocations.
      */
@@ -575,7 +577,7 @@ xmlInitParser(void) {
 
     xmlGlobalInitMutexLock();
 
-    if (xmlParserInitialized == 0) {
+    if (innerInitialized == 0) {
 #if defined(_WIN32) && \
     (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
         if (xmlFree == free)
@@ -595,10 +597,12 @@ xmlInitParser(void) {
         xmlRegisterDefaultOutputCallbacks();
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-        xmlParserInitialized = 1;
+        innerInitialized = 1;
     }
 
     xmlGlobalInitMutexUnlock();
+
+    xmlParserInitialized = 1;
 }
 
 /**

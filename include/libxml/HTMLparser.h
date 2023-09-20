@@ -80,8 +80,12 @@ struct _htmlEntityDesc {
     const char *desc;   /* the description */
 };
 
-#define XML_GLOBALS_HTML \
-  XML_OP(htmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED)
+#ifdef LIBXML_SAX1_ENABLED
+  #define XML_GLOBALS_HTML \
+    XML_OP(htmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED)
+#else
+  #define XML_GLOBALS_HTML
+#endif
 
 #define XML_OP XML_DECLARE_GLOBAL
 XML_GLOBALS_HTML

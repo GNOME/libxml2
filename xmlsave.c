@@ -2256,6 +2256,8 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     int is_xhtml = 0;
 #endif
 
+    (void) doc;
+
     xmlInitParser();
 
     if ((buf == NULL) || (cur == NULL)) return;

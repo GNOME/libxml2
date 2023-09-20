@@ -58,6 +58,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     /* Push parser */
 
+#ifdef LIBXML_PUSH_ENABLED
     xmlFuzzMemSetLimit(maxAlloc);
     ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
     if (ctxt == NULL)
@@ -70,6 +71,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             chunkSize = maxChunkSize;
         xmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
     }
+#endif
 
     xmlParseChunk(ctxt, NULL, 0, 1);
     xmlFreeDoc(ctxt->myDoc);

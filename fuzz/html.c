@@ -32,6 +32,11 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     size_t maxAlloc, docSize, consumed, chunkSize;
     int opts;
 
+    (void) maxChunkSize;
+    (void) ctxt;
+    (void) consumed;
+    (void) chunkSize;
+
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
     maxAlloc = xmlFuzzReadInt(4) % (size + 1);
@@ -60,6 +65,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     /* Push parser */
 
+#ifdef LIBXML_PUSH_ENABLED
     xmlFuzzMemSetLimit(maxAlloc);
     ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
                                     XML_CHAR_ENCODING_NONE);
@@ -78,6 +84,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlFreeDoc(ctxt->myDoc);
         htmlFreeParserCtxt(ctxt);
     }
+#endif
 
     /* Cleanup */
 

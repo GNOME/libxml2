@@ -39,7 +39,7 @@ extern "C" {
     defined(LIBXML_READER_ENABLED)
   #define HAVE_XML_FUZZER
 #endif
-#if defined(LIBXML_XPATH_ENABLED)
+#if defined(LIBXML_XPTR_ENABLED)
   #define HAVE_XPATH_FUZZER
 #endif
 

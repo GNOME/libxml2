@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_VALID_ENABLED)
 
 #include <string.h>
 #include <sys/stat.h>
@@ -594,7 +594,7 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 #else /* ! LIBXML_XPATH_ENABLED */
 int
 main(int argc ATTRIBUTE_UNUSED, char **argv) {
-    fprintf(stderr, "%s need XPath support\n", argv[0]);
+    fprintf(stderr, "%s need XPath and validation support\n", argv[0]);
     return(0);
 }
 #endif

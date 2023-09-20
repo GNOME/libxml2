@@ -818,9 +818,8 @@ XMLPUBVAR const char *const xmlParserVersion;
 XMLPUBFUN const char *const *__xmlParserVersion(void);
 #endif
 
-#define XML_GLOBALS_PARSER \
+#define XML_GLOBALS_PARSER_CORE \
   XML_OP(oldXMLWDcompatibility, int, XML_DEPRECATED) \
-  XML_OP(xmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED) \
   XML_OP(xmlDefaultSAXLocator, xmlSAXLocator, XML_DEPRECATED) \
   XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlGetWarningsDefaultValue, int, XML_DEPRECATED) \
@@ -830,6 +829,17 @@ XMLPUBFUN const char *const *__xmlParserVersion(void);
   XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED)
+
+#ifdef LIBXML_SAX1_ENABLED
+  #define XML_GLOBALS_PARSER_SAX1 \
+    XML_OP(xmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED)
+#else
+  #define XML_GLOBALS_PARSER_SAX1
+#endif
+
+#define XML_GLOBALS_PARSER \
+  XML_GLOBALS_PARSER_CORE \
+  XML_GLOBALS_PARSER_SAX1
 
 #define XML_OP XML_DECLARE_GLOBAL
 XML_GLOBALS_PARSER

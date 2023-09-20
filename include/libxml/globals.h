@@ -90,12 +90,13 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
 #define XML_EMPTY
 
 #define XML_GLOBALS_CORE \
-  XML_OP(xmlLastError, xmlError, XML_EMPTY) \
+  XML_OP(xmlParserVersion, const char *, XML_EMPTY) \
+  /* error handling */ \
+  XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
   XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
   XML_OP(xmlGenericErrorContext, void *, XML_EMPTY) \
   XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_EMPTY) \
   XML_OP(xmlStructuredErrorContext, void *, XML_EMPTY) \
-  XML_OP(xmlParserVersion, const char *, XML_EMPTY) \
   /* output options */ \
   XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
   XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \

@@ -630,6 +630,22 @@ struct _xmlDOMWrapCtxt {
 };
 
 /**
+ * xmlRegisterNodeFunc:
+ * @node: the current node
+ *
+ * Signature for the registration callback of a created node
+ */
+typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
+
+/**
+ * xmlDeregisterNodeFunc:
+ * @node: the current node
+ *
+ * Signature for the deregistration callback of a discarded node
+ */
+typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
+
+/**
  * xmlChildrenNode:
  *
  * Macro for compatibility naming layer with libxml1. Maps
@@ -1296,6 +1312,12 @@ XMLPUBFUN xmlNodePtr
 XMLPUBFUN xmlNodePtr
             xmlPreviousElementSibling   (xmlNodePtr node);
 #endif
+
+XMLPUBFUN xmlRegisterNodeFunc
+	    xmlRegisterNodeDefault	(xmlRegisterNodeFunc func);
+XMLPUBFUN xmlDeregisterNodeFunc
+	    xmlDeregisterNodeDefault	(xmlDeregisterNodeFunc func);
+
 #ifdef __cplusplus
 }
 #endif

@@ -1051,24 +1051,6 @@ int xmlThrDefSubstituteEntitiesDefaultValue(int v) {
     return ret;
 }
 
-/**
- * xmlRegisterNodeDefault:
- * @func: function pointer to the new RegisterNodeFunc
- *
- * Registers a callback for node creation
- *
- * Returns the old value of the registration function
- */
-xmlRegisterNodeFunc
-xmlRegisterNodeDefault(xmlRegisterNodeFunc func)
-{
-    xmlRegisterNodeFunc old = xmlRegisterNodeDefaultValue;
-
-    __xmlRegisterCallbacks = 1;
-    xmlRegisterNodeDefaultValue = func;
-    return(old);
-}
-
 xmlRegisterNodeFunc
 xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func)
 {
@@ -1081,24 +1063,6 @@ xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func)
     xmlRegisterNodeDefaultValueThrDef = func;
     xmlMutexUnlock(&xmlThrDefMutex);
 
-    return(old);
-}
-
-/**
- * xmlDeregisterNodeDefault:
- * @func: function pointer to the new DeregisterNodeFunc
- *
- * Registers a callback for node destruction
- *
- * Returns the previous value of the deregistration function
- */
-xmlDeregisterNodeFunc
-xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func)
-{
-    xmlDeregisterNodeFunc old = xmlDeregisterNodeDefaultValue;
-
-    __xmlRegisterCallbacks = 1;
-    xmlDeregisterNodeDefaultValue = func;
     return(old);
 }
 

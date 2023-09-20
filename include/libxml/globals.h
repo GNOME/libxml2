@@ -61,21 +61,6 @@ xmlParserInputBufferCreateFilenameDefault (xmlParserInputBufferCreateFilenameFun
 XMLPUBFUN xmlOutputBufferCreateFilenameFunc
 xmlOutputBufferCreateFilenameDefault (xmlOutputBufferCreateFilenameFunc func);
 
-/**
- * xmlRegisterNodeFunc:
- * @node: the current node
- *
- * Signature for the registration callback of a created node
- */
-typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
-/**
- * xmlDeregisterNodeFunc:
- * @node: the current node
- *
- * Signature for the deregistration callback of a discarded node
- */
-typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
-
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
 
@@ -109,9 +94,7 @@ XMLPUBFUN int xmlThrDefPedanticParserDefaultValue(int v);
 XMLPUBFUN int xmlThrDefSaveNoEmptyTags(int v);
 XMLPUBFUN int xmlThrDefSubstituteEntitiesDefaultValue(int v);
 
-XMLPUBFUN xmlRegisterNodeFunc xmlRegisterNodeDefault(xmlRegisterNodeFunc func);
 XMLPUBFUN xmlRegisterNodeFunc xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
-XMLPUBFUN xmlDeregisterNodeFunc xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 XMLPUBFUN xmlDeregisterNodeFunc xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 
 XMLPUBFUN xmlOutputBufferCreateFilenameFunc

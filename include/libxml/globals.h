@@ -21,52 +21,60 @@
 extern "C" {
 #endif
 
-XML_DEPRECATED
-XMLPUBFUN void xmlInitGlobals(void);
-XML_DEPRECATED
-XMLPUBFUN void xmlCleanupGlobals(void);
-
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
 
-XMLPUBFUN int xmlCheckThreadLocalStorage(void);
-XML_DEPRECATED
-XMLPUBFUN void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
-XML_DEPRECATED
-XMLPUBFUN xmlGlobalStatePtr
-			xmlGetGlobalState(void);
+XMLPUBFUN int
+xmlCheckThreadLocalStorage(void);
 
-XMLPUBFUN void xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
+XML_DEPRECATED XMLPUBFUN void
+xmlInitGlobals(void);
+XML_DEPRECATED XMLPUBFUN void
+xmlCleanupGlobals(void);
+XML_DEPRECATED XMLPUBFUN void
+xmlInitializeGlobalState(xmlGlobalStatePtr gs);
+XML_DEPRECATED XMLPUBFUN
+xmlGlobalStatePtr xmlGetGlobalState(void);
 
-XMLPUBFUN void xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler);
-
-XML_DEPRECATED
-XMLPUBFUN xmlBufferAllocationScheme
-	xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v);
-XML_DEPRECATED
-XMLPUBFUN int xmlThrDefDefaultBufferSize(int v);
-XMLPUBFUN int xmlThrDefDoValidityCheckingDefaultValue(int v);
-XMLPUBFUN int xmlThrDefGetWarningsDefaultValue(int v);
-XMLPUBFUN int xmlThrDefIndentTreeOutput(int v);
-XMLPUBFUN const char * xmlThrDefTreeIndentString(const char * v);
-XMLPUBFUN int xmlThrDefKeepBlanksDefaultValue(int v);
-XML_DEPRECATED
-XMLPUBFUN int xmlThrDefLineNumbersDefaultValue(int v);
-XMLPUBFUN int xmlThrDefLoadExtDtdDefaultValue(int v);
-XMLPUBFUN int xmlThrDefParserDebugEntities(int v);
-XML_DEPRECATED
-XMLPUBFUN int xmlThrDefPedanticParserDefaultValue(int v);
-XMLPUBFUN int xmlThrDefSaveNoEmptyTags(int v);
-XMLPUBFUN int xmlThrDefSubstituteEntitiesDefaultValue(int v);
-
-XMLPUBFUN xmlRegisterNodeFunc xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
-XMLPUBFUN xmlDeregisterNodeFunc xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
-
+XMLPUBFUN void
+xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
+XMLPUBFUN void
+xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler);
+XML_DEPRECATED XMLPUBFUN xmlBufferAllocationScheme
+xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v);
+XML_DEPRECATED XMLPUBFUN int
+xmlThrDefDefaultBufferSize(int v);
+XMLPUBFUN int
+xmlThrDefDoValidityCheckingDefaultValue(int v);
+XMLPUBFUN int
+xmlThrDefGetWarningsDefaultValue(int v);
+XMLPUBFUN int
+xmlThrDefIndentTreeOutput(int v);
+XMLPUBFUN const char *
+xmlThrDefTreeIndentString(const char * v);
+XMLPUBFUN int
+xmlThrDefKeepBlanksDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
+xmlThrDefLineNumbersDefaultValue(int v);
+XMLPUBFUN int
+xmlThrDefLoadExtDtdDefaultValue(int v);
+XMLPUBFUN int
+xmlThrDefParserDebugEntities(int v);
+XML_DEPRECATED XMLPUBFUN int
+xmlThrDefPedanticParserDefaultValue(int v);
+XMLPUBFUN int
+xmlThrDefSaveNoEmptyTags(int v);
+XMLPUBFUN int
+xmlThrDefSubstituteEntitiesDefaultValue(int v);
+XMLPUBFUN xmlRegisterNodeFunc
+xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
+XMLPUBFUN xmlDeregisterNodeFunc
+xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 XMLPUBFUN xmlOutputBufferCreateFilenameFunc
-	xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
+xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
 XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
-	xmlThrDefParserInputBufferCreateFilenameDefault(
-				xmlParserInputBufferCreateFilenameFunc func);
+xmlThrDefParserInputBufferCreateFilenameDefault(
+        xmlParserInputBufferCreateFilenameFunc func);
 
 /** DOC_DISABLE */
 #if defined(LIBXML_THREAD_ENABLED) && defined(_WIN32) && \

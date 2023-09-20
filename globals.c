@@ -665,6 +665,7 @@ xmlIsMainThread(void) {
 }
 
 #ifdef LIBXML_THREAD_ENABLED
+
 static void
 xmlFreeGlobalState(void *state)
 {
@@ -848,6 +849,34 @@ xmlGetThreadLocalStorage(int allowFailure) {
 
     return(gs);
 }
+
+/* Define thread-local storage accessors with macro magic */
+
+#define XML_DEFINE_GLOBAL_WRAPPER(name, type, attrs) \
+    type *__##name(void) { \
+        if (IS_MAIN_THREAD) \
+            return (&name); \
+        else \
+            return (&xmlGetThreadLocalStorage(0)->gs_##name); \
+    }
+
+#define XML_OP XML_DEFINE_GLOBAL_WRAPPER
+XML_GLOBALS_ALLOC
+XML_GLOBALS_ERROR
+XML_GLOBALS_HTML
+XML_GLOBALS_IO
+XML_GLOBALS_PARSER
+XML_GLOBALS_SAVE
+XML_GLOBALS_TREE
+#undef XML_OP
+
+/* For backward compatibility */
+
+const char *const *
+__xmlParserVersion(void) {
+    return &xmlParserVersion;
+}
+
 #endif /* LIBXML_THREAD_ENABLED */
 
 /**
@@ -874,7 +903,7 @@ xmlGetThreadLocalStorage(int allowFailure) {
  */
 int
 xmlCheckThreadLocalStorage(void) {
-#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_THREAD_LOCAL_STORAGE)
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_THREAD_LOCAL)
     if ((!xmlIsMainThreadInternal()) && (xmlGetThreadLocalStorage(1) == NULL))
         return(-1);
 #endif
@@ -892,8 +921,8 @@ xmlCheckThreadLocalStorage(void) {
  *
  * Returns TRUE always
  */
-#ifdef HAVE_POSIX_THREADS
-#elif defined(HAVE_WIN32_THREADS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+#if defined(HAVE_WIN32_THREADS) && \
+    (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #if defined(LIBXML_STATIC_FOR_DLL)
 int
 xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
@@ -1137,33 +1166,4 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
 
     return(old);
 }
-
-/* Define thread-local storage accessors with macro magic */
-
-#ifdef LIBXML_THREAD_ENABLED
-  #define XML_DEFINE_GLOBAL_WRAPPER(name, type, attrs) \
-    type *__##name(void) { \
-      if (IS_MAIN_THREAD) \
-        return (&name); \
-      else \
-        return (&xmlGetThreadLocalStorage(0)->gs_##name); \
-    }
-
-  #define XML_OP XML_DEFINE_GLOBAL_WRAPPER
-  XML_GLOBALS_ALLOC
-  XML_GLOBALS_ERROR
-  XML_GLOBALS_HTML
-  XML_GLOBALS_IO
-  XML_GLOBALS_PARSER
-  XML_GLOBALS_SAVE
-  XML_GLOBALS_TREE
-  #undef XML_OP
-
-  /* For backward compatibility */
-
-  const char *const *
-  __xmlParserVersion(void) {
-    return &xmlParserVersion;
-  }
-#endif
 

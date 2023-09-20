@@ -80,6 +80,7 @@ struct _xmlGlobalState {
 
 #define XML_OP XML_DECLARE_MEMBER
 XML_GLOBALS
+XML_GLOBALS_ALLOC
 #undef XML_OP
 };
 
@@ -1136,6 +1137,7 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
 
   #define XML_OP XML_DEFINE_GLOBAL_WRAPPER
   XML_GLOBALS
+  XML_GLOBALS_ALLOC
   #undef XML_OP
 
   /* For backward compatibility */

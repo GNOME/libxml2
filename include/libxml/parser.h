@@ -18,6 +18,7 @@
 #include <libxml/entities.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xmlstring.h>
+#include <libxml/xmlmemory.h>
 
 #ifdef __cplusplus
 extern "C" {

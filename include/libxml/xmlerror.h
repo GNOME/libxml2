@@ -7,8 +7,6 @@
  * Author: Daniel Veillard
  */
 
-#include <libxml/parser.h>
-
 #ifndef __XML_ERROR_H__
 #define __XML_ERROR_H__
 
@@ -892,10 +890,11 @@ XMLPUBFUN void
     xmlParserValidityWarning	(void *ctx,
 				 const char *msg,
 				 ...) LIBXML_ATTR_FORMAT(2,3);
+struct _xmlParserInput;
 XMLPUBFUN void
-    xmlParserPrintFileInfo	(xmlParserInputPtr input);
+    xmlParserPrintFileInfo	(struct _xmlParserInput *input);
 XMLPUBFUN void
-    xmlParserPrintFileContext	(xmlParserInputPtr input);
+    xmlParserPrintFileContext	(struct _xmlParserInput *input);
 
 /*
  * Extended error information routines

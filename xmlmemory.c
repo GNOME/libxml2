@@ -24,9 +24,9 @@
 #endif
 #endif
 
-#include <libxml/globals.h>	/* must come before xmlmemory.h */
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlerror.h>
+#include <libxml/parser.h>
 #include <libxml/threads.h>
 
 #include "private/memory.h"

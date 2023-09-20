@@ -14,7 +14,6 @@
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
-#include <libxml/xmlmemory.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,8 +85,6 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
 
 /* Declare globals with macro magic */
 
-#define XML_EMPTY
-
 #define XML_GLOBALS_CORE \
   /* error handling */ \
   XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
@@ -128,52 +125,15 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
   #define XML_GLOBALS_HTML
 #endif
 
-/*
- * In general the memory allocation entry points are not kept
- * thread specific but this can be overridden by LIBXML_THREAD_ALLOC_ENABLED
- *    - xmlMalloc
- *    - xmlMallocAtomic
- *    - xmlRealloc
- *    - xmlMemStrdup
- *    - xmlFree
- */
-#ifdef LIBXML_THREAD_ALLOC_ENABLED
-  #define XML_GLOBALS_ALLOC \
-    XML_OP(xmlMalloc, xmlMallocFunc, XML_EMPTY) \
-    XML_OP(xmlMallocAtomic, xmlMallocFunc, XML_EMPTY) \
-    XML_OP(xmlRealloc, xmlReallocFunc, XML_EMPTY) \
-    XML_OP(xmlFree, xmlFreeFunc, XML_EMPTY) \
-    XML_OP(xmlMemStrdup, xmlStrdupFunc, XML_EMPTY)
-#else
-  #define XML_GLOBALS_ALLOC
-
-  XMLPUBVAR xmlMallocFunc xmlMalloc;
-  XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
-  XMLPUBVAR xmlReallocFunc xmlRealloc;
-  XMLPUBVAR xmlFreeFunc xmlFree;
-  XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
-#endif
-
 #define XML_GLOBALS \
   XML_GLOBALS_CORE \
-  XML_GLOBALS_HTML \
-  XML_GLOBALS_ALLOC
-
-#ifdef LIBXML_THREAD_ENABLED
-  #define XML_DECLARE_GLOBAL(name, type, attrs) \
-    attrs XMLPUBFUN type *__##name(void);
-#else
-  #define XML_DECLARE_GLOBAL(name, type, attrs) \
-    attrs XMLPUBVAR type name;
-#endif
+  XML_GLOBALS_HTML
 
 #define XML_OP XML_DECLARE_GLOBAL
 XML_GLOBALS
 #undef XML_OP
 
 #if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
-  #define XML_GLOBAL_MACRO(name) (*__##name())
-
   #define xmlLastError XML_GLOBAL_MACRO(xmlLastError)
   #define oldXMLWDcompatibility XML_GLOBAL_MACRO(oldXMLWDcompatibility)
   #define xmlBufferAllocScheme XML_GLOBAL_MACRO(xmlBufferAllocScheme)
@@ -211,14 +171,6 @@ XML_GLOBALS
 
   #ifdef LIBXML_HTML_ENABLED
     #define htmlDefaultSAXHandler XML_GLOBAL_MACRO(htmlDefaultSAXHandler)
-  #endif
-
-  #ifdef LIBXML_THREAD_ALLOC_ENABLED
-    #define xmlMalloc XML_GLOBAL_MACRO(xmlMalloc)
-    #define xmlMallocAtomic XML_GLOBAL_MACRO(xmlMallocAtomic)
-    #define xmlRealloc XML_GLOBAL_MACRO(xmlRealloc)
-    #define xmlFree XML_GLOBAL_MACRO(xmlFree)
-    #define xmlMemStrdup XML_GLOBAL_MACRO(xmlMemStrdup)
   #endif
 #endif
 

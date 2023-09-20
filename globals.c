@@ -203,13 +203,6 @@ xmlStrdupFunc xmlMemStrdup = xmlPosixStrdup;
 #endif /* DEBUG_MEMORY_LOCATION */
 
 /**
- * xmlParserVersion:
- *
- * Constant string describing the internal version of the library
- */
-const char *xmlParserVersion = LIBXML_VERSION_STRING LIBXML_VERSION_EXTRA;
-
-/**
  * xmlBufferAllocScheme:
  *
  * DEPRECATED: Don't use.
@@ -747,7 +740,6 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
     gs->gs_xmlLineNumbersDefaultValue = xmlLineNumbersDefaultValueThrDef;
     gs->gs_xmlLoadExtDtdDefaultValue = xmlLoadExtDtdDefaultValueThrDef;
     gs->gs_xmlParserDebugEntities = xmlParserDebugEntitiesThrDef;
-    gs->gs_xmlParserVersion = LIBXML_VERSION_STRING;
     gs->gs_xmlPedanticParserDefaultValue = xmlPedanticParserDefaultValueThrDef;
     gs->gs_xmlSaveNoEmptyTags = xmlSaveNoEmptyTagsThrDef;
     gs->gs_xmlSubstituteEntitiesDefaultValue =
@@ -1144,5 +1136,12 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
   #define XML_OP XML_DEFINE_GLOBAL_WRAPPER
   XML_GLOBALS
   #undef XML_OP
+
+  /* For backward compatibility */
+
+  const char *const *
+  __xmlParserVersion(void) {
+    return &xmlParserVersion;
+  }
 #endif
 

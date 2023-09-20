@@ -805,6 +805,17 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr context);
 
+/*
+ * Variables
+ */
+
+XMLPUBVAR const char *const
+xmlParserVersion;
+#ifdef LIBXML_THREAD_ENABLED
+XMLPUBFUN const char *const *
+__xmlParserVersion(void);
+#endif
+
 #ifdef __cplusplus
 }
 #endif

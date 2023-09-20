@@ -90,7 +90,6 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
 #define XML_EMPTY
 
 #define XML_GLOBALS_CORE \
-  XML_OP(xmlParserVersion, const char *, XML_EMPTY) \
   /* error handling */ \
   XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
   XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
@@ -197,7 +196,6 @@ XML_GLOBALS
     XML_GLOBAL_MACRO(xmlLineNumbersDefaultValue)
   #define xmlLoadExtDtdDefaultValue XML_GLOBAL_MACRO(xmlLoadExtDtdDefaultValue)
   #define xmlParserDebugEntities XML_GLOBAL_MACRO(xmlParserDebugEntities)
-  #define xmlParserVersion XML_GLOBAL_MACRO(xmlParserVersion)
   #define xmlPedanticParserDefaultValue \
     XML_GLOBAL_MACRO(xmlPedanticParserDefaultValue)
   #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)

@@ -145,6 +145,14 @@ unsigned int xmlParserMaxDepth = 256;
  */
 #define XML_PARSER_CHUNK_SIZE 100
 
+/**
+ * xmlParserVersion:
+ *
+ * Constant string describing the internal version of the library
+ */
+const char *const
+xmlParserVersion = LIBXML_VERSION_STRING LIBXML_VERSION_EXTRA;
+
 /*
  * List of XML prefixed PI allowed by W3C specs
  */

@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 #include <libxml/encoding.h>
+#include <libxml/tree.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -140,16 +141,6 @@ typedef xmlOutputBufferPtr
 (*xmlOutputBufferCreateFilenameFunc)(const char *URI,
         xmlCharEncodingHandlerPtr encoder, int compression);
 
-#ifdef __cplusplus
-}
-#endif
-
-#include <libxml/tree.h>
-#include <libxml/parser.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 struct _xmlParserInputBuffer {
     void*                  context;
     xmlInputReadCallback   readcallback;

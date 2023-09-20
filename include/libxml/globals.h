@@ -26,41 +26,6 @@ XMLPUBFUN void xmlInitGlobals(void);
 XML_DEPRECATED
 XMLPUBFUN void xmlCleanupGlobals(void);
 
-/**
- * xmlParserInputBufferCreateFilenameFunc:
- * @URI: the URI to read from
- * @enc: the requested source encoding
- *
- * Signature for the function doing the lookup for a suitable input method
- * corresponding to an URI.
- *
- * Returns the new xmlParserInputBufferPtr in case of success or NULL if no
- *         method was found.
- */
-typedef xmlParserInputBufferPtr (*xmlParserInputBufferCreateFilenameFunc) (const char *URI,
-									   xmlCharEncoding enc);
-
-
-/**
- * xmlOutputBufferCreateFilenameFunc:
- * @URI: the URI to write to
- * @enc: the requested target encoding
- *
- * Signature for the function doing the lookup for a suitable output method
- * corresponding to an URI.
- *
- * Returns the new xmlOutputBufferPtr in case of success or NULL if no
- *         method was found.
- */
-typedef xmlOutputBufferPtr (*xmlOutputBufferCreateFilenameFunc) (const char *URI,
-								 xmlCharEncodingHandlerPtr encoder,
-								 int compression);
-
-XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
-xmlParserInputBufferCreateFilenameDefault (xmlParserInputBufferCreateFilenameFunc func);
-XMLPUBFUN xmlOutputBufferCreateFilenameFunc
-xmlOutputBufferCreateFilenameDefault (xmlOutputBufferCreateFilenameFunc func);
-
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
 

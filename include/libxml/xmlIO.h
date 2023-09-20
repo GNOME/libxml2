@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <libxml/xmlversion.h>
+#include <libxml/encoding.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -110,14 +111,41 @@ typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
 typedef int (*xmlOutputCloseCallback) (void * context);
 #endif /* LIBXML_OUTPUT_ENABLED */
 
+/**
+ * xmlParserInputBufferCreateFilenameFunc:
+ * @URI: the URI to read from
+ * @enc: the requested source encoding
+ *
+ * Signature for the function doing the lookup for a suitable input method
+ * corresponding to an URI.
+ *
+ * Returns the new xmlParserInputBufferPtr in case of success or NULL if no
+ *         method was found.
+ */
+typedef xmlParserInputBufferPtr
+(*xmlParserInputBufferCreateFilenameFunc)(const char *URI, xmlCharEncoding enc);
+
+/**
+ * xmlOutputBufferCreateFilenameFunc:
+ * @URI: the URI to write to
+ * @enc: the requested target encoding
+ *
+ * Signature for the function doing the lookup for a suitable output method
+ * corresponding to an URI.
+ *
+ * Returns the new xmlOutputBufferPtr in case of success or NULL if no
+ *         method was found.
+ */
+typedef xmlOutputBufferPtr
+(*xmlOutputBufferCreateFilenameFunc)(const char *URI,
+        xmlCharEncodingHandlerPtr encoder, int compression);
+
 #ifdef __cplusplus
 }
 #endif
 
-#include <libxml/globals.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
-#include <libxml/encoding.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -361,6 +389,13 @@ XMLPUBFUN int
 XMLPUBFUN int
 	xmlIOFTPClose			(void * context);
 #endif /* defined(LIBXML_FTP_ENABLED) || defined(LIBXML_LEGACY_ENABLED) */
+
+XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
+	xmlParserInputBufferCreateFilenameDefault(
+		xmlParserInputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlOutputBufferCreateFilenameFunc
+	xmlOutputBufferCreateFilenameDefault(
+		xmlOutputBufferCreateFilenameFunc func);
 
 #ifdef __cplusplus
 }

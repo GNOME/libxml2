@@ -558,7 +558,6 @@ initializeLibxml2(void) {
     xmlMemStrdup = NULL;
     xmlInitParser();
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
-    xmlPedanticParserDefault(0);
     xmlSetExternalEntityLoader(testExternalEntityLoader);
     xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -4065,9 +4064,6 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
     /*
      * load XPath expr as a file
      */
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-
     doc = xmlReadFile(filename, NULL, XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (doc == NULL) {
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", filename);
@@ -4216,9 +4212,6 @@ c14nRunTest(const char* xml_filename, int with_comments, int mode,
      * build an XML tree from a the file; we need to add default
      * attributes and resolve all character and entities references
      */
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-
     doc = xmlReadFile(xml_filename, NULL, XML_PARSE_DTDATTR | XML_PARSE_NOENT);
     if (doc == NULL) {
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_filename);
@@ -4391,13 +4384,6 @@ static xmlThreadParams threadParams[] = {
 static const unsigned int num_threads = sizeof(threadParams) /
                                         sizeof(threadParams[0]);
 
-#ifndef xmlDoValidityCheckingDefaultValue
-#error xmlDoValidityCheckingDefaultValue is not a macro
-#endif
-#ifndef xmlGenericErrorContext
-#error xmlGenericErrorContext is not a macro
-#endif
-
 static void *
 thread_specific_data(void *private_data)
 {
@@ -4406,42 +4392,12 @@ thread_specific_data(void *private_data)
     const char *filename = params->filename;
     int okay = 1;
 
-    if (!strcmp(filename, "test/threads/invalid.xml")) {
-        xmlDoValidityCheckingDefaultValue = 0;
-        xmlGenericErrorContext = stdout;
-    } else {
-        xmlDoValidityCheckingDefaultValue = 1;
-        xmlGenericErrorContext = stderr;
-    }
-#ifdef LIBXML_SAX1_ENABLED
-    myDoc = xmlParseFile(filename);
-#else
-    myDoc = xmlReadFile(filename, NULL, XML_WITH_CATALOG);
-#endif
+    myDoc = xmlReadFile(filename, NULL, XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
     if (myDoc) {
         xmlFreeDoc(myDoc);
     } else {
         printf("parse failed\n");
         okay = 0;
-    }
-    if (!strcmp(filename, "test/threads/invalid.xml")) {
-        if (xmlDoValidityCheckingDefaultValue != 0) {
-            printf("ValidityCheckingDefaultValue override failed\n");
-            okay = 0;
-        }
-        if (xmlGenericErrorContext != stdout) {
-            printf("xmlGenericErrorContext override failed\n");
-            okay = 0;
-        }
-    } else {
-        if (xmlDoValidityCheckingDefaultValue != 1) {
-            printf("ValidityCheckingDefaultValue override failed\n");
-            okay = 0;
-        }
-        if (xmlGenericErrorContext != stderr) {
-            printf("xmlGenericErrorContext override failed\n");
-            okay = 0;
-        }
     }
     params->okay = okay;
     return(NULL);

@@ -43,13 +43,6 @@ static xmlThreadParams threadParams[] = {
 static const unsigned int num_threads = sizeof(threadParams) /
                                         sizeof(threadParams[0]);
 
-#ifndef xmlDoValidityCheckingDefaultValue
-#error xmlDoValidityCheckingDefaultValue is not a macro
-#endif
-#ifndef xmlGenericErrorContext
-#error xmlGenericErrorContext is not a macro
-#endif
-
 static void *
 thread_specific_data(void *private_data)
 {
@@ -57,6 +50,7 @@ thread_specific_data(void *private_data)
     xmlThreadParams *params = (xmlThreadParams *) private_data;
     const char *filename = params->filename;
     int okay = 1;
+    int options = 0;
 
     if (xmlCheckThreadLocalStorage() != 0) {
         printf("xmlCheckThreadLocalStorage failed\n");
@@ -64,42 +58,15 @@ thread_specific_data(void *private_data)
         return(NULL);
     }
 
-    if (!strcmp(filename, "test/threads/invalid.xml")) {
-        xmlDoValidityCheckingDefaultValue = 0;
-        xmlGenericErrorContext = stdout;
-    } else {
-        xmlDoValidityCheckingDefaultValue = 1;
-        xmlGenericErrorContext = stderr;
+    if (strcmp(filename, "test/threads/invalid.xml") != 0) {
+        options |= XML_PARSE_DTDVALID;
     }
-#ifdef LIBXML_SAX1_ENABLED
-    myDoc = xmlParseFile(filename);
-#else
-    myDoc = xmlReadFile(filename, NULL, XML_WITH_CATALOG);
-#endif
+    myDoc = xmlReadFile(filename, NULL, options);
     if (myDoc) {
         xmlFreeDoc(myDoc);
     } else {
         printf("parse failed\n");
 	okay = 0;
-    }
-    if (!strcmp(filename, "test/threads/invalid.xml")) {
-        if (xmlDoValidityCheckingDefaultValue != 0) {
-	    printf("ValidityCheckingDefaultValue override failed\n");
-	    okay = 0;
-	}
-        if (xmlGenericErrorContext != stdout) {
-	    printf("xmlGenericErrorContext override failed\n");
-	    okay = 0;
-	}
-    } else {
-        if (xmlDoValidityCheckingDefaultValue != 1) {
-	    printf("ValidityCheckingDefaultValue override failed\n");
-	    okay = 0;
-	}
-        if (xmlGenericErrorContext != stderr) {
-	    printf("xmlGenericErrorContext override failed\n");
-	    okay = 0;
-	}
     }
     params->okay = okay;
     return(NULL);

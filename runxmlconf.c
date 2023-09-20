@@ -148,9 +148,6 @@ static xmlXPathContextPtr ctxtXPath;
 
 static void
 initializeLibxml2(void) {
-    xmlGetWarningsDefaultValue = 0;
-    xmlPedanticParserDefault(0);
-
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
     xmlInitParser();
     xmlSetExternalEntityLoader(testExternalEntityLoader);
@@ -252,8 +249,10 @@ xmlconfTestNotNSWF(const char *id, const char *filename, int options) {
         nb_errors++;
 	ret = 0;
     } else {
-	if ((xmlLastError.code == XML_ERR_OK) ||
-	    (xmlLastError.domain != XML_FROM_NAMESPACE)) {
+        xmlError *error = xmlGetLastError();
+
+	if ((error->code == XML_ERR_OK) ||
+	    (error->domain != XML_FROM_NAMESPACE)) {
 	    test_log("test %s : %s failed to detect namespace error\n",
 		     id, filename);
 	    nb_errors++;

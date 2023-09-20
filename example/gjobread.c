@@ -184,18 +184,11 @@ parseGjobFile(char *filename ATTRIBUTE_UNUSED) {
     xmlNsPtr ns;
     xmlNodePtr cur;
 
-#ifdef LIBXML_SAX1_ENABLED
     /*
      * build an XML tree from a the file;
      */
-    doc = xmlParseFile(filename);
+    doc = xmlReadFile(filename, NULL, XML_PARSE_NOBLANKS);
     if (doc == NULL) return(NULL);
-#else
-    /*
-     * the library has been compiled without some of the old interfaces
-     */
-    return(NULL);
-#endif /* LIBXML_SAX1_ENABLED */
 
     /*
      * Check the document is of the right kind
@@ -291,7 +284,6 @@ int main(int argc, char **argv) {
 
     /* COMPAT: Do not generate nodes for formatting spaces */
     LIBXML_TEST_VERSION
-    xmlKeepBlanksDefault(0);
 
     for (i = 1; i < argc ; i++) {
 	cur = parseGjobFile(argv[i]);

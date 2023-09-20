@@ -889,13 +889,29 @@ XMLPUBFUN xmlDocPtr
 XML_DEPRECATED XMLPUBFUN int
 		xmlSubstituteEntitiesDefault(int val);
 XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefSubstituteEntitiesDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
 		xmlKeepBlanksDefault	(int val);
+XML_DEPRECATED XMLPUBFUN int
+		xmlThrDefKeepBlanksDefaultValue(int v);
 XMLPUBFUN void
 		xmlStopParser		(xmlParserCtxtPtr ctxt);
 XML_DEPRECATED XMLPUBFUN int
 		xmlPedanticParserDefault(int val);
 XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefPedanticParserDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
 		xmlLineNumbersDefault	(int val);
+XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefLineNumbersDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefDoValidityCheckingDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefGetWarningsDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefLoadExtDtdDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
+                xmlThrDefParserDebugEntities(int v);
 
 #ifdef LIBXML_SAX1_ENABLED
 /*

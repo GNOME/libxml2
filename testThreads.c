@@ -5,7 +5,6 @@
 
 #include <libxml/parser.h>
 #include <libxml/threads.h>
-#include <libxml/globals.h>
 
 #if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
 #include <libxml/catalog.h>

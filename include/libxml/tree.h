@@ -1331,6 +1331,15 @@ XMLPUBFUN xmlRegisterNodeFunc
 	    xmlRegisterNodeDefault	(xmlRegisterNodeFunc func);
 XMLPUBFUN xmlDeregisterNodeFunc
 	    xmlDeregisterNodeDefault	(xmlDeregisterNodeFunc func);
+XMLPUBFUN xmlRegisterNodeFunc
+            xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
+XMLPUBFUN xmlDeregisterNodeFunc
+            xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
+
+XML_DEPRECATED XMLPUBFUN xmlBufferAllocationScheme
+            xmlThrDefBufferAllocScheme  (xmlBufferAllocationScheme v);
+XML_DEPRECATED XMLPUBFUN int
+            xmlThrDefDefaultBufferSize  (int v);
 
 #ifdef __cplusplus
 }

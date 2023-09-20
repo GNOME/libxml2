@@ -404,6 +404,12 @@ XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
 XMLPUBFUN xmlOutputBufferCreateFilenameFunc
 	xmlOutputBufferCreateFilenameDefault(
 		xmlOutputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlOutputBufferCreateFilenameFunc
+	xmlThrDefOutputBufferCreateFilenameDefault(
+		xmlOutputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
+	xmlThrDefParserInputBufferCreateFilenameDefault(
+		xmlParserInputBufferCreateFilenameFunc func);
 
 #ifdef __cplusplus
 }

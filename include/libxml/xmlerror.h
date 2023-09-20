@@ -884,6 +884,9 @@ XML_GLOBALS_ERROR
 XMLPUBFUN void
     xmlSetGenericErrorFunc	(void *ctx,
 				 xmlGenericErrorFunc handler);
+XMLPUBFUN void
+    xmlThrDefSetGenericErrorFunc(void *ctx,
+                                 xmlGenericErrorFunc handler);
 XML_DEPRECATED
 XMLPUBFUN void
     initGenericErrorDefaultFunc	(xmlGenericErrorFunc *handler);
@@ -891,6 +894,9 @@ XMLPUBFUN void
 XMLPUBFUN void
     xmlSetStructuredErrorFunc	(void *ctx,
 				 xmlStructuredErrorFunc handler);
+XMLPUBFUN void
+    xmlThrDefSetStructuredErrorFunc(void *ctx,
+                                 xmlStructuredErrorFunc handler);
 /*
  * Default message routines used by SAX and Valid context for error
  * and warning reporting.

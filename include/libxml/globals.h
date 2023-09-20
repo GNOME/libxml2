@@ -86,12 +86,6 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
 /* Declare globals with macro magic */
 
 #define XML_GLOBALS_CORE \
-  /* error handling */ \
-  XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
-  XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
-  XML_OP(xmlGenericErrorContext, void *, XML_EMPTY) \
-  XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_EMPTY) \
-  XML_OP(xmlStructuredErrorContext, void *, XML_EMPTY) \
   /* output options */ \
   XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
   XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
@@ -134,7 +128,6 @@ XML_GLOBALS
 #undef XML_OP
 
 #if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
-  #define xmlLastError XML_GLOBAL_MACRO(xmlLastError)
   #define oldXMLWDcompatibility XML_GLOBAL_MACRO(oldXMLWDcompatibility)
   #define xmlBufferAllocScheme XML_GLOBAL_MACRO(xmlBufferAllocScheme)
   #define xmlDefaultBufferSize XML_GLOBAL_MACRO(xmlDefaultBufferSize)
@@ -142,10 +135,6 @@ XML_GLOBALS
   #define xmlDefaultSAXLocator XML_GLOBAL_MACRO(xmlDefaultSAXLocator)
   #define xmlDoValidityCheckingDefaultValue \
     XML_GLOBAL_MACRO(xmlDoValidityCheckingDefaultValue)
-  #define xmlGenericError XML_GLOBAL_MACRO(xmlGenericError)
-  #define xmlStructuredError XML_GLOBAL_MACRO(xmlStructuredError)
-  #define xmlGenericErrorContext XML_GLOBAL_MACRO(xmlGenericErrorContext)
-  #define xmlStructuredErrorContext XML_GLOBAL_MACRO(xmlStructuredErrorContext)
   #define xmlGetWarningsDefaultValue \
     XML_GLOBAL_MACRO(xmlGetWarningsDefaultValue)
   #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)

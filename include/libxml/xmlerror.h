@@ -10,6 +10,8 @@
 #ifndef __XML_ERROR_H__
 #define __XML_ERROR_H__
 
+#include <libxml/xmlversion.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -855,6 +857,25 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
  * the module handles the new error reporting mechanism.
  */
 typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
+
+#define XML_GLOBALS_ERROR \
+  XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
+  XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
+  XML_OP(xmlGenericErrorContext, void *, XML_EMPTY) \
+  XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_EMPTY) \
+  XML_OP(xmlStructuredErrorContext, void *, XML_EMPTY)
+
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_ERROR
+#undef XML_OP
+
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define xmlLastError XML_GLOBAL_MACRO(xmlLastError)
+  #define xmlGenericError XML_GLOBAL_MACRO(xmlGenericError)
+  #define xmlGenericErrorContext XML_GLOBAL_MACRO(xmlGenericErrorContext)
+  #define xmlStructuredError XML_GLOBAL_MACRO(xmlStructuredError)
+  #define xmlStructuredErrorContext XML_GLOBAL_MACRO(xmlStructuredErrorContext)
+#endif
 
 /*
  * Use the following function to reset the two global variables

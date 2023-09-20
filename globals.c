@@ -17,6 +17,7 @@
 
 #define XML_GLOBALS_NO_REDEFINITION
 #include <libxml/globals.h>
+#include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/threads.h>
 #include <libxml/SAX.h>
@@ -81,6 +82,7 @@ struct _xmlGlobalState {
 #define XML_OP XML_DECLARE_MEMBER
 XML_GLOBALS
 XML_GLOBALS_ALLOC
+XML_GLOBALS_ERROR
 #undef XML_OP
 };
 
@@ -1138,6 +1140,7 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
   #define XML_OP XML_DEFINE_GLOBAL_WRAPPER
   XML_GLOBALS
   XML_GLOBALS_ALLOC
+  XML_GLOBALS_ERROR
   #undef XML_OP
 
   /* For backward compatibility */

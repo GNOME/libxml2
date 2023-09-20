@@ -669,6 +669,26 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  * Variables.
  */
 
+#define XML_GLOBALS_TREE \
+  XML_OP(xmlBufferAllocScheme, xmlBufferAllocationScheme, XML_DEPRECATED) \
+  XML_OP(xmlDefaultBufferSize, int, XML_DEPRECATED) \
+  XML_OP(xmlRegisterNodeDefaultValue, xmlRegisterNodeFunc, XML_DEPRECATED) \
+  XML_OP(xmlDeregisterNodeDefaultValue, xmlDeregisterNodeFunc, \
+         XML_DEPRECATED)
+
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_TREE
+#undef XML_OP
+
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define xmlBufferAllocScheme XML_GLOBAL_MACRO(xmlBufferAllocScheme)
+  #define xmlDefaultBufferSize XML_GLOBAL_MACRO(xmlDefaultBufferSize)
+  #define xmlRegisterNodeDefaultValue \
+    XML_GLOBAL_MACRO(xmlRegisterNodeDefaultValue)
+  #define xmlDeregisterNodeDefaultValue \
+    XML_GLOBAL_MACRO(xmlDeregisterNodeDefaultValue)
+#endif
+
 /*
  * Some helper functions
  */

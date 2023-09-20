@@ -12,8 +12,11 @@
 #define __XML_GLOBALS_H
 
 #include <libxml/xmlversion.h>
+#include <libxml/HTMLparser.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/xmlIO.h>
+#include <libxml/xmlsave.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -82,86 +85,6 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
            void *lpvReserved);
 #endif
 /** DOC_ENABLE */
-
-/* Declare globals with macro magic */
-
-#define XML_GLOBALS_CORE \
-  /* output options */ \
-  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
-  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
-  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY) \
-  /* deprecated */ \
-  XML_OP(oldXMLWDcompatibility, int, XML_DEPRECATED) \
-  XML_OP(xmlBufferAllocScheme, xmlBufferAllocationScheme, XML_DEPRECATED) \
-  XML_OP(xmlDefaultBufferSize, int, XML_DEPRECATED) \
-  XML_OP(xmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED) \
-  XML_OP(xmlDefaultSAXLocator, xmlSAXLocator, XML_DEPRECATED) \
-  XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlGetWarningsDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlKeepBlanksDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlLineNumbersDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlLoadExtDtdDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
-  XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlRegisterNodeDefaultValue, xmlRegisterNodeFunc, XML_DEPRECATED) \
-  XML_OP(xmlDeregisterNodeDefaultValue, xmlDeregisterNodeFunc, \
-           XML_DEPRECATED) \
-  XML_OP(xmlParserInputBufferCreateFilenameValue, \
-           xmlParserInputBufferCreateFilenameFunc, XML_DEPRECATED) \
-  XML_OP(xmlOutputBufferCreateFilenameValue, \
-           xmlOutputBufferCreateFilenameFunc, XML_DEPRECATED)
-
-#ifdef LIBXML_HTML_ENABLED
-  #define XML_GLOBALS_HTML \
-    XML_OP(htmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED)
-#else
-  #define XML_GLOBALS_HTML
-#endif
-
-#define XML_GLOBALS \
-  XML_GLOBALS_CORE \
-  XML_GLOBALS_HTML
-
-#define XML_OP XML_DECLARE_GLOBAL
-XML_GLOBALS
-#undef XML_OP
-
-#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
-  #define oldXMLWDcompatibility XML_GLOBAL_MACRO(oldXMLWDcompatibility)
-  #define xmlBufferAllocScheme XML_GLOBAL_MACRO(xmlBufferAllocScheme)
-  #define xmlDefaultBufferSize XML_GLOBAL_MACRO(xmlDefaultBufferSize)
-  #define xmlDefaultSAXHandler XML_GLOBAL_MACRO(xmlDefaultSAXHandler)
-  #define xmlDefaultSAXLocator XML_GLOBAL_MACRO(xmlDefaultSAXLocator)
-  #define xmlDoValidityCheckingDefaultValue \
-    XML_GLOBAL_MACRO(xmlDoValidityCheckingDefaultValue)
-  #define xmlGetWarningsDefaultValue \
-    XML_GLOBAL_MACRO(xmlGetWarningsDefaultValue)
-  #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)
-  #define xmlTreeIndentString XML_GLOBAL_MACRO(xmlTreeIndentString)
-  #define xmlKeepBlanksDefaultValue XML_GLOBAL_MACRO(xmlKeepBlanksDefaultValue)
-  #define xmlLineNumbersDefaultValue \
-    XML_GLOBAL_MACRO(xmlLineNumbersDefaultValue)
-  #define xmlLoadExtDtdDefaultValue XML_GLOBAL_MACRO(xmlLoadExtDtdDefaultValue)
-  #define xmlParserDebugEntities XML_GLOBAL_MACRO(xmlParserDebugEntities)
-  #define xmlPedanticParserDefaultValue \
-    XML_GLOBAL_MACRO(xmlPedanticParserDefaultValue)
-  #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)
-  #define xmlSubstituteEntitiesDefaultValue \
-    XML_GLOBAL_MACRO(xmlSubstituteEntitiesDefaultValue)
-  #define xmlRegisterNodeDefaultValue \
-    XML_GLOBAL_MACRO(xmlRegisterNodeDefaultValue)
-  #define xmlDeregisterNodeDefaultValue \
-    XML_GLOBAL_MACRO(xmlDeregisterNodeDefaultValue)
-  #define xmlParserInputBufferCreateFilenameValue \
-    XML_GLOBAL_MACRO(xmlParserInputBufferCreateFilenameValue)
-  #define xmlOutputBufferCreateFilenameValue \
-    XML_GLOBAL_MACRO(xmlOutputBufferCreateFilenameValue)
-
-  #ifdef LIBXML_HTML_ENABLED
-    #define htmlDefaultSAXHandler XML_GLOBAL_MACRO(htmlDefaultSAXHandler)
-  #endif
-#endif
 
 #ifdef __cplusplus
 }

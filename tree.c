@@ -28,15 +28,14 @@
 #include <zlib.h>
 #endif
 
-#include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/uri.h>
 #include <libxml/entities.h>
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
 #include <libxml/parserInternals.h>
-#include <libxml/globals.h>
 #ifdef LIBXML_HTML_ENABLED
 #include <libxml/HTMLtree.h>
 #endif

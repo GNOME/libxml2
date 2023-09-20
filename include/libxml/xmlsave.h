@@ -41,6 +41,21 @@ typedef enum {
 typedef struct _xmlSaveCtxt xmlSaveCtxt;
 typedef xmlSaveCtxt *xmlSaveCtxtPtr;
 
+#define XML_GLOBALS_SAVE \
+  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
+  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
+  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY)
+
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_SAVE
+#undef XML_OP
+
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)
+  #define xmlTreeIndentString XML_GLOBAL_MACRO(xmlTreeIndentString)
+  #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)
+#endif
+
 XMLPUBFUN xmlSaveCtxtPtr
 		xmlSaveToFd		(int fd,
 					 const char *encoding,
@@ -82,6 +97,11 @@ XMLPUBFUN int
 #ifdef __cplusplus
 }
 #endif
+
+#else /* LIBXML_OUTPUT_ENABLED */
+
+#define XML_GLOBALS_SAVE
+
 #endif /* LIBXML_OUTPUT_ENABLED */
 #endif /* __XML_XMLSAVE_H__ */
 

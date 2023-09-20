@@ -50,10 +50,10 @@
 #  endif
 #endif
 
+#include <libxml/xmlIO.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#include <libxml/xmlIO.h>
 #include <libxml/uri.h>
 #include <libxml/nanohttp.h>
 #include <libxml/nanoftp.h>
@@ -61,7 +61,6 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
-#include <libxml/globals.h>
 
 #include "private/buf.h"
 #include "private/enc.h"

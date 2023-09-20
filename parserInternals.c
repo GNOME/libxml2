@@ -2518,7 +2518,10 @@ xmlKeepBlanksDefault(int val) {
     int old = xmlKeepBlanksDefaultValue;
 
     xmlKeepBlanksDefaultValue = val;
-    if (!val) xmlIndentTreeOutput = 1;
+#ifdef LIBXML_OUTPUT_ENABLED
+    if (!val)
+        xmlIndentTreeOutput = 1;
+#endif
     return(old);
 }
 

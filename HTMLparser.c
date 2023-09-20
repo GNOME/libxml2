@@ -14,18 +14,17 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#include <libxml/HTMLparser.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
-#include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
 #include <libxml/entities.h>
 #include <libxml/encoding.h>
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
-#include <libxml/globals.h>
 #include <libxml/uri.h>
 
 #include "private/buf.h"

@@ -19,6 +19,8 @@
 #include <libxml/xmlerror.h>
 #include <libxml/xmlstring.h>
 #include <libxml/xmlmemory.h>
+#include <libxml/encoding.h>
+#include <libxml/xmlIO.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -810,25 +812,47 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
  * Variables
  */
 
-XMLPUBVAR const char *const
-xmlParserVersion;
+XMLPUBVAR const char *const xmlParserVersion;
 #ifdef LIBXML_THREAD_ENABLED
-XMLPUBFUN const char *const *
-__xmlParserVersion(void);
+/* backward compatibility */
+XMLPUBFUN const char *const *__xmlParserVersion(void);
 #endif
 
-#ifdef __cplusplus
-}
+#define XML_GLOBALS_PARSER \
+  XML_OP(oldXMLWDcompatibility, int, XML_DEPRECATED) \
+  XML_OP(xmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED) \
+  XML_OP(xmlDefaultSAXLocator, xmlSAXLocator, XML_DEPRECATED) \
+  XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlGetWarningsDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlKeepBlanksDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlLineNumbersDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlLoadExtDtdDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
+  XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED)
+
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_PARSER
+#undef XML_OP
+
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define oldXMLWDcompatibility XML_GLOBAL_MACRO(oldXMLWDcompatibility)
+  #define xmlDefaultSAXHandler XML_GLOBAL_MACRO(xmlDefaultSAXHandler)
+  #define xmlDefaultSAXLocator XML_GLOBAL_MACRO(xmlDefaultSAXLocator)
+  #define xmlDoValidityCheckingDefaultValue \
+    XML_GLOBAL_MACRO(xmlDoValidityCheckingDefaultValue)
+  #define xmlGetWarningsDefaultValue \
+    XML_GLOBAL_MACRO(xmlGetWarningsDefaultValue)
+  #define xmlKeepBlanksDefaultValue XML_GLOBAL_MACRO(xmlKeepBlanksDefaultValue)
+  #define xmlLineNumbersDefaultValue \
+    XML_GLOBAL_MACRO(xmlLineNumbersDefaultValue)
+  #define xmlLoadExtDtdDefaultValue XML_GLOBAL_MACRO(xmlLoadExtDtdDefaultValue)
+  #define xmlParserDebugEntities XML_GLOBAL_MACRO(xmlParserDebugEntities)
+  #define xmlPedanticParserDefaultValue \
+    XML_GLOBAL_MACRO(xmlPedanticParserDefaultValue)
+  #define xmlSubstituteEntitiesDefaultValue \
+    XML_GLOBAL_MACRO(xmlSubstituteEntitiesDefaultValue)
 #endif
-
-#include <libxml/encoding.h>
-#include <libxml/xmlIO.h>
-#include <libxml/globals.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 
 /*
  * Init/Cleanup

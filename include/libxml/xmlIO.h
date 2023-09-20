@@ -171,6 +171,23 @@ struct _xmlOutputBuffer {
 };
 #endif /* LIBXML_OUTPUT_ENABLED */
 
+#define XML_GLOBALS_IO \
+  XML_OP(xmlParserInputBufferCreateFilenameValue, \
+           xmlParserInputBufferCreateFilenameFunc, XML_DEPRECATED) \
+  XML_OP(xmlOutputBufferCreateFilenameValue, \
+           xmlOutputBufferCreateFilenameFunc, XML_DEPRECATED)
+
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_IO
+#undef XML_OP
+
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define xmlParserInputBufferCreateFilenameValue \
+    XML_GLOBAL_MACRO(xmlParserInputBufferCreateFilenameValue)
+  #define xmlOutputBufferCreateFilenameValue \
+    XML_GLOBAL_MACRO(xmlOutputBufferCreateFilenameValue)
+#endif
+
 /*
  * Interfaces for input
  */

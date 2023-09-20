@@ -80,6 +80,17 @@ struct _htmlEntityDesc {
     const char *desc;   /* the description */
 };
 
+#define XML_GLOBALS_HTML \
+  XML_OP(htmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED)
+
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_HTML
+#undef XML_OP
+
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define htmlDefaultSAXHandler XML_GLOBAL_MACRO(htmlDefaultSAXHandler)
+#endif
+
 /*
  * There is only few public functions.
  */
@@ -315,6 +326,10 @@ XMLPUBFUN htmlStatus htmlNodeStatus(const htmlNodePtr, int) ;
 #ifdef __cplusplus
 }
 #endif
+
+#else /* LIBXML_HTML_ENABLED */
+
+#define XML_GLOBALS_HTML
 
 #endif /* LIBXML_HTML_ENABLED */
 #endif /* __HTML_PARSER_H__ */

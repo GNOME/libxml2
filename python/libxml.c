@@ -26,6 +26,7 @@
 #include <libxml/c14n.h>
 #include <libxml/xmlreader.h>
 #include <libxml/xmlsave.h>
+#include <libxml/globals.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 

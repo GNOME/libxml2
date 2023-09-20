@@ -18,6 +18,7 @@
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlreader.h>
+#include <libxml/globals.h>
 #ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/relaxng.h>
 #include <libxml/xmlschemas.h>

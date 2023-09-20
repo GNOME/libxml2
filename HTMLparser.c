@@ -23,7 +23,6 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/entities.h>
 #include <libxml/encoding.h>
-#include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
 

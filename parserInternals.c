@@ -24,15 +24,12 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#include <libxml/valid.h>
 #include <libxml/entities.h>
 #include <libxml/xmlerror.h>
 #include <libxml/encoding.h>
-#include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
 #include <libxml/dict.h>
-#include <libxml/SAX.h>
 #include <libxml/xmlsave.h>
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>

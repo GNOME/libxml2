@@ -6,8 +6,8 @@
  * daniel@veillard.com
  */
 
-#include "libxml.h"
 #include <stdio.h>
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_XPATH_ENABLED
 
@@ -592,9 +592,9 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
 }
 
 #else /* ! LIBXML_XPATH_ENABLED */
-#include <stdio.h>
 int
 main(int argc ATTRIBUTE_UNUSED, char **argv) {
     fprintf(stderr, "%s need XPath support\n", argv[0]);
+    return(0);
 }
 #endif

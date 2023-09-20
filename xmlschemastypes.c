@@ -17,6 +17,7 @@
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <float.h>
@@ -25,7 +26,6 @@
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/hash.h>
-#include <libxml/valid.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
 

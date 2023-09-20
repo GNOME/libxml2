@@ -1,5 +1,4 @@
-#include "libxml.h"
-
+#include "config.h"
 #include <stdlib.h>
 #include <stdio.h>
 

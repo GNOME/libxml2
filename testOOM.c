@@ -6,8 +6,6 @@
  * hp@redhat.com
  */
 
-#include "libxml.h"
-
 #include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>

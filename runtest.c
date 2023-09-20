@@ -11,14 +11,14 @@
  * daniel@veillard.com
  */
 
-#include "libxml.h"
+#include "config.h"
 #include <stdio.h>
-
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #elif defined (_WIN32)
 #include <io.h>
 #endif
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -69,7 +69,6 @@
 #include <libxml/threads.h>
 #include <libxml/parser.h>
 #include <libxml/catalog.h>
-#include <string.h>
 #endif
 
 /*

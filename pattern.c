@@ -27,13 +27,12 @@
 #include "libxml.h"
 
 #include <string.h>
+#include <libxml/pattern.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
-#include <libxml/hash.h>
 #include <libxml/dict.h>
 #include <libxml/xmlerror.h>
 #include <libxml/parserInternals.h>
-#include <libxml/pattern.h>
 
 #ifdef LIBXML_PATTERN_ENABLED
 

@@ -40,31 +40,31 @@ XMLPUBFUN void
 xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
 XMLPUBFUN void
 xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler);
-XML_DEPRECATED XMLPUBFUN xmlBufferAllocationScheme
-xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v);
-XML_DEPRECATED XMLPUBFUN int
-xmlThrDefDefaultBufferSize(int v);
-XMLPUBFUN int
-xmlThrDefDoValidityCheckingDefaultValue(int v);
-XMLPUBFUN int
-xmlThrDefGetWarningsDefaultValue(int v);
 XMLPUBFUN int
 xmlThrDefIndentTreeOutput(int v);
 XMLPUBFUN const char *
 xmlThrDefTreeIndentString(const char * v);
 XMLPUBFUN int
+xmlThrDefSaveNoEmptyTags(int v);
+XML_DEPRECATED XMLPUBFUN xmlBufferAllocationScheme
+xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v);
+XML_DEPRECATED XMLPUBFUN int
+xmlThrDefDefaultBufferSize(int v);
+XML_DEPRECATED XMLPUBFUN int
+xmlThrDefDoValidityCheckingDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
+xmlThrDefGetWarningsDefaultValue(int v);
+XML_DEPRECATED XMLPUBFUN int
 xmlThrDefKeepBlanksDefaultValue(int v);
 XML_DEPRECATED XMLPUBFUN int
 xmlThrDefLineNumbersDefaultValue(int v);
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 xmlThrDefLoadExtDtdDefaultValue(int v);
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 xmlThrDefParserDebugEntities(int v);
 XML_DEPRECATED XMLPUBFUN int
 xmlThrDefPedanticParserDefaultValue(int v);
-XMLPUBFUN int
-xmlThrDefSaveNoEmptyTags(int v);
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 xmlThrDefSubstituteEntitiesDefaultValue(int v);
 XMLPUBFUN xmlRegisterNodeFunc
 xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
@@ -91,27 +91,29 @@ xmlDllMain(void *hinstDLL, unsigned long fdwReason,
 
 #define XML_GLOBALS_CORE \
   XML_OP(xmlLastError, xmlError, XML_EMPTY) \
+  XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
+  XML_OP(xmlGenericErrorContext, void *, XML_EMPTY) \
+  XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_EMPTY) \
+  XML_OP(xmlStructuredErrorContext, void *, XML_EMPTY) \
+  XML_OP(xmlParserVersion, const char *, XML_EMPTY) \
+  /* output options */ \
+  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
+  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
+  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY) \
+  /* deprecated */ \
   XML_OP(oldXMLWDcompatibility, int, XML_DEPRECATED) \
   XML_OP(xmlBufferAllocScheme, xmlBufferAllocationScheme, XML_DEPRECATED) \
   XML_OP(xmlDefaultBufferSize, int, XML_DEPRECATED) \
   XML_OP(xmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED) \
   XML_OP(xmlDefaultSAXLocator, xmlSAXLocator, XML_DEPRECATED) \
-  XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_EMPTY) \
-  XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
-  XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_EMPTY) \
-  XML_OP(xmlGenericErrorContext, void *, XML_EMPTY) \
-  XML_OP(xmlStructuredErrorContext, void *, XML_EMPTY) \
-  XML_OP(xmlGetWarningsDefaultValue, int, XML_EMPTY) \
-  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
-  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
-  XML_OP(xmlKeepBlanksDefaultValue, int, XML_EMPTY) \
+  XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlGetWarningsDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlKeepBlanksDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlLineNumbersDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlLoadExtDtdDefaultValue, int, XML_EMPTY) \
-  XML_OP(xmlParserDebugEntities, int, XML_EMPTY) \
-  XML_OP(xmlParserVersion, const char *, XML_EMPTY) \
+  XML_OP(xmlLoadExtDtdDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY) \
-  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_EMPTY) \
+  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlRegisterNodeDefaultValue, xmlRegisterNodeFunc, XML_DEPRECATED) \
   XML_OP(xmlDeregisterNodeDefaultValue, xmlDeregisterNodeFunc, \
            XML_DEPRECATED) \

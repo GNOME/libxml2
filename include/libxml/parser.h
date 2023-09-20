@@ -850,15 +850,15 @@ XMLPUBFUN xmlDocPtr
 		xmlParseMemory		(const char *buffer,
 					 int size);
 #endif /* LIBXML_SAX1_ENABLED */
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 		xmlSubstituteEntitiesDefault(int val);
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 		xmlKeepBlanksDefault	(int val);
 XMLPUBFUN void
 		xmlStopParser		(xmlParserCtxtPtr ctxt);
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 		xmlPedanticParserDefault(int val);
-XMLPUBFUN int
+XML_DEPRECATED XMLPUBFUN int
 		xmlLineNumbersDefault	(int val);
 
 #ifdef LIBXML_SAX1_ENABLED

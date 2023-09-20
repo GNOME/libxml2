@@ -24,7 +24,6 @@
 #include <libxml/uri.h>
 #include <libxml/catalog.h>
 #include <libxml/parser.h>
-#include <libxml/globals.h>
 
 #if defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 static int shell = 0;

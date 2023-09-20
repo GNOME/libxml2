@@ -21,7 +21,6 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/list.h>
-#include <libxml/globals.h>
 
 #include "private/error.h"
 #include "private/parser.h"

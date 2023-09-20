@@ -20,7 +20,6 @@
 #include <libxml/parser.h>
 #include <libxml/uri.h>
 #include <libxml/xmlerror.h>
-#include <libxml/globals.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/c14n.h>
 

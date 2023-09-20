@@ -63,7 +63,6 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
-#include <libxml/globals.h>
 #include <libxml/xmlreader.h>
 #ifdef LIBXML_SCHEMATRON_ENABLED
 #include <libxml/schematron.h>

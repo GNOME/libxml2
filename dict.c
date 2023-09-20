@@ -26,11 +26,10 @@
 #include "private/dict.h"
 #include "private/threads.h"
 
-#include <libxml/tree.h>
+#include <libxml/parser.h>
 #include <libxml/dict.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlerror.h>
-#include <libxml/globals.h>
 
 /*
  * Following http://www.ocert.org/advisories/ocert-2011-003.html

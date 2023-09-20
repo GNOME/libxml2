@@ -38,7 +38,6 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/xmlerror.h>
-#include <libxml/globals.h>
 
 #ifdef LIBXML_XPTR_ENABLED
 

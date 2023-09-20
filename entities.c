@@ -23,7 +23,6 @@
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
-#include <libxml/globals.h>
 #include <libxml/dict.h>
 
 #include "private/entities.h"

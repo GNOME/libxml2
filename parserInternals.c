@@ -33,10 +33,10 @@
 #include <libxml/uri.h>
 #include <libxml/dict.h>
 #include <libxml/SAX.h>
+#include <libxml/xmlsave.h>
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
-#include <libxml/globals.h>
 #include <libxml/chvalid.h>
 
 #define CUR(ctxt) ctxt->input->cur

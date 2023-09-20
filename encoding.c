@@ -38,7 +38,6 @@
 #ifdef LIBXML_HTML_ENABLED
 #include <libxml/HTMLparser.h>
 #endif
-#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 
 #include "private/buf.h"

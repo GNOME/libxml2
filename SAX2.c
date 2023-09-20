@@ -27,7 +27,6 @@
 #include <libxml/uri.h>
 #include <libxml/valid.h>
 #include <libxml/HTMLtree.h>
-#include <libxml/globals.h>
 
 #include "private/error.h"
 #include "private/parser.h"

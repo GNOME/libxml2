@@ -44,7 +44,6 @@
 #endif
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
-#include <libxml/globals.h>
 #ifdef LIBXML_PATTERN_ENABLED
 #include <libxml/pattern.h>
 #endif

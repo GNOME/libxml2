@@ -64,12 +64,10 @@
 #include <wsockcompat.h>
 #endif
 
-#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h> /* for xmlStr(n)casecmp() */
 #include <libxml/nanohttp.h>
-#include <libxml/globals.h>
 #include <libxml/uri.h>
 
 #include "private/error.h"

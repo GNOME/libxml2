@@ -21,8 +21,6 @@
 #include <stdlib.h>
 
 #include <libxml/tree.h>
-#include <libxml/globals.h>
-#include <libxml/tree.h>
 #include <libxml/parserInternals.h> /* for XML_MAX_TEXT_LENGTH */
 
 #include "private/buf.h"

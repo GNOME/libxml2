@@ -56,7 +56,6 @@
 #include <libxml/xmlerror.h>
 #include <libxml/uri.h>
 #include <libxml/nanoftp.h>
-#include <libxml/globals.h>
 
 #include "private/error.h"
 #include "private/io.h"

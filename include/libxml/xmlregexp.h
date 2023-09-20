@@ -12,7 +12,7 @@
 #define __XML_REGEXP_H__
 
 #include <libxml/xmlversion.h>
-#include <libxml/dict.h>
+#include <libxml/xmlstring.h>
 
 #ifdef LIBXML_REGEXP_ENABLED
 

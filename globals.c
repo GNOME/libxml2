@@ -20,6 +20,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/threads.h>
 #include <libxml/SAX.h>
+#include <libxml/SAX2.h>
 
 #include "private/error.h"
 #include "private/globals.h"

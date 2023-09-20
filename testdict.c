@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include <libxml/parser.h>
 #include <libxml/dict.h>

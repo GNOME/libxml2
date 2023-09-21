@@ -18,6 +18,8 @@
 #include <libxml/relaxng.h>
 #include <libxml/xmlschemas.h>
 #endif
+/* for compatibility */
+#include <libxml/parser.h>
 
 #ifdef __cplusplus
 extern "C" {

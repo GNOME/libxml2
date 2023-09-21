@@ -10144,7 +10144,7 @@ Could we use @subtypes for this?'/>
     </function>
     <function name='xmlGetLastError' file='xmlerror' module='error'>
       <info>Get the last global error registered. This is per thread if compiled with thread support.</info>
-      <return type='xmlErrorPtr' info='NULL if no error occurred or a pointer to the error'/>
+      <return type='const xmlError *' info='NULL if no error occurred or a pointer to the error'/>
     </function>
     <function name='xmlGetLineNo' file='tree' module='tree'>
       <info>Get line number of @node. Try to override the limitation of lines being store in 16 bits ints if XML_PARSE_BIG_LINES parser option was used</info>

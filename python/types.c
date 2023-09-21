@@ -8,6 +8,7 @@
  */
 #include "libxml_wrap.h"
 #include <libxml/xpathInternals.h>
+#include <string.h>
 
 #if PY_MAJOR_VERSION >= 3
 #define PY_IMPORT_STRING_SIZE PyUnicode_FromStringAndSize
@@ -963,15 +964,30 @@ libxml_xmlSchemaValidCtxtPtrWrap(xmlSchemaValidCtxtPtr valid)
 }
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
+static void
+libxml_xmlDestructError(PyObject *cap) {
+    xmlErrorPtr err = (xmlErrorPtr) PyCapsule_GetPointer(cap, "xmlErrorPtr");
+    xmlResetError(err);
+    xmlFree(err);
+}
+
 PyObject *
-libxml_xmlErrorPtrWrap(xmlErrorPtr error)
+libxml_xmlErrorPtrWrap(const xmlError *error)
 {
     PyObject *ret;
+    xmlErrorPtr copy;
 
     if (error == NULL) {
         Py_INCREF(Py_None);
         return (Py_None);
     }
-    ret = PyCapsule_New((void *) error, (char *) "xmlErrorPtr", NULL);
+    copy = xmlMalloc(sizeof(*copy));
+    if (copy == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    memset(copy, 0, sizeof(*copy));
+    xmlCopyError(error, copy);
+    ret = PyCapsule_New(copy, "xmlErrorPtr", libxml_xmlDestructError);
     return (ret);
 }

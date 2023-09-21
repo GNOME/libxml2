@@ -928,7 +928,7 @@ XMLPUBFUN void
 /*
  * Extended error information routines
  */
-XMLPUBFUN xmlErrorPtr
+XMLPUBFUN const xmlError *
     xmlGetLastError		(void);
 XMLPUBFUN void
     xmlResetLastError		(void);
@@ -939,7 +939,7 @@ XMLPUBFUN void
 XMLPUBFUN void
     xmlResetError		(xmlErrorPtr err);
 XMLPUBFUN int
-    xmlCopyError		(xmlErrorPtr from,
+    xmlCopyError		(const xmlError *from,
 				 xmlErrorPtr to);
 
 #ifdef __cplusplus

@@ -249,7 +249,7 @@ xmlconfTestNotNSWF(const char *id, const char *filename, int options) {
         nb_errors++;
 	ret = 0;
     } else {
-        xmlError *error = xmlGetLastError();
+        const xmlError *error = xmlGetLastError();
 
 	if ((error->code == XML_ERR_OK) ||
 	    (error->domain != XML_FROM_NAMESPACE)) {

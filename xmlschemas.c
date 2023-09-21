@@ -10545,7 +10545,7 @@ doc_load:
 	* TODO: (2.2) is not supported.
 	*/
 	if (doc == NULL) {
-	    xmlErrorPtr lerr;
+	    const xmlError *lerr;
 	    lerr = xmlGetLastError();
 	    /*
 	    * Check if this a parser error, or if the document could

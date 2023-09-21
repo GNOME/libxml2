@@ -622,7 +622,9 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs ATTRIBUTE_UNUSED)
 /**
  * xmlGetGlobalState:
  *
- * DEPRECATED: Always returns NULL.
+ * DEPRECATED
+ *
+ * Returns NULL.
  */
 xmlGlobalStatePtr
 xmlGetGlobalState(void)

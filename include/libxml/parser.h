@@ -821,6 +821,7 @@ XMLPUBVAR const char *const xmlParserVersion;
 XMLPUBFUN const char *const *__xmlParserVersion(void);
 #endif
 
+/** DOC_DISABLE */
 #define XML_GLOBALS_PARSER_CORE \
   XML_OP(oldXMLWDcompatibility, int, XML_DEPRECATED) \
   XML_OP(xmlDefaultSAXLocator, xmlSAXLocator, XML_DEPRECATED) \
@@ -866,6 +867,7 @@ XML_GLOBALS_PARSER
   #define xmlSubstituteEntitiesDefaultValue \
     XML_GLOBAL_MACRO(xmlSubstituteEntitiesDefaultValue)
 #endif
+/** DOC_ENABLE */
 
 /*
  * Init/Cleanup

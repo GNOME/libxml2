@@ -1346,6 +1346,8 @@ cdataBlock(void *ctx, const xmlChar * value, int len)
 
 #include <libxml/nanoftp.h>
 
+/** DOC_DISABLE */
+
 void
 xmlNanoFTPInit(void) {
 }
@@ -1485,6 +1487,8 @@ xmlIOFTPClose(void *context ATTRIBUTE_UNUSED) {
     return(-1);
 }
 
+/** DOC_ENABLE */
+
 #endif /* #ifndef LIBXML_FTP_ENABLED */
 
 /*
@@ -1496,6 +1500,8 @@ xmlIOFTPClose(void *context ATTRIBUTE_UNUSED) {
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/xpointer.h>
+
+/** DOC_DISABLE */
 
 xmlXPathObjectPtr
 xmlXPtrNewRange(xmlNodePtr start ATTRIBUTE_UNUSED,
@@ -1596,6 +1602,8 @@ xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt,
                        int nargs ATTRIBUTE_UNUSED) {
     XP_ERROR(XPATH_EXPR_ERROR);
 }
+
+/** DOC_ENABLE */
 
 #endif /* #ifndef LIBXML_XPTR_LOCS_ENABLED */
 

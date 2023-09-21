@@ -13476,7 +13476,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 
 /**
  * xmlCreateDocParserCtxt:
- * @cur:  a pointer to an array of xmlChar
+ * @str:  a pointer to an array of xmlChar
  *
  * Creates a parser context for an XML in-memory document.
  *
@@ -14219,7 +14219,7 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 /**
  * xmlCtxtReadDoc:
  * @ctxt:  an XML parser context
- * @cur:  a pointer to a zero terminated string
+ * @str:  a pointer to a zero terminated string
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption

@@ -6721,7 +6721,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 /**
  * htmlCtxtReadDoc:
  * @ctxt:  an HTML parser context
- * @cur:  a pointer to a zero terminated string
+ * @str:  a pointer to a zero terminated string
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of htmlParserOption(s)

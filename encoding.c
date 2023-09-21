@@ -1977,11 +1977,11 @@ xmlEncConvertError(int code) {
  * @in:  a pointer to an array of input bytes
  * @inlen:  the length of @in
  *
- * Returns an XML_ENC_ERR code.
- *
  * The value of @inlen after return is the number of octets consumed
  *     as the return value is 0, else unpredictable.
  * The value of @outlen after return is the number of octets produced.
+ *
+ * Returns an XML_ENC_ERR code.
  */
 int
 xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
@@ -2070,6 +2070,8 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
  * @in:  an xmlBuffer for the input
  *
  * DEPERECATED: Don't use.
+ *
+ * Returns the number of bytes written or an XML_ENC_ERR code.
  */
 int
 xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,

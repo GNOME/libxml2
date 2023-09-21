@@ -69,6 +69,7 @@ typedef char *(*xmlStrdupFunc)(const char *str);
  *    - xmlMemStrdup
  *    - xmlFree
  */
+/** DOC_DISABLE */
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
   #define XML_GLOBALS_ALLOC \
     XML_OP(xmlMalloc, xmlMallocFunc, XML_EMPTY) \
@@ -88,6 +89,7 @@ typedef char *(*xmlStrdupFunc)(const char *str);
   #endif
 #else
   #define XML_GLOBALS_ALLOC
+/** DOC_ENABLE */
   XMLPUBVAR xmlMallocFunc xmlMalloc;
   XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
   XMLPUBVAR xmlReallocFunc xmlRealloc;
@@ -171,6 +173,7 @@ XMLPUBFUN char *
 	xmlMemStrdupLoc	(const char *str, const char *file, int line);
 
 
+/** DOC_DISABLE */
 #ifdef DEBUG_MEMORY_LOCATION
 /**
  * xmlMalloc:
@@ -212,6 +215,7 @@ XMLPUBFUN char *
 #define xmlMemStrdup(str) xmlMemStrdupLoc((str), __FILE__, __LINE__)
 
 #endif /* DEBUG_MEMORY_LOCATION */
+/** DOC_ENABLE */
 
 #ifdef __cplusplus
 }

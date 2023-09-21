@@ -858,6 +858,7 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
  */
 typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
 
+/** DOC_DISABLE */
 #define XML_GLOBALS_ERROR \
   XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
   XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
@@ -876,6 +877,7 @@ XML_GLOBALS_ERROR
   #define xmlStructuredError XML_GLOBAL_MACRO(xmlStructuredError)
   #define xmlStructuredErrorContext XML_GLOBAL_MACRO(xmlStructuredErrorContext)
 #endif
+/** DOC_ENABLE */
 
 /*
  * Use the following function to reset the two global variables

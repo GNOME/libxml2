@@ -14,7 +14,7 @@
 
 #include <libxml/xmlversion.h>
 
-#if defined(LIBXML_FTP_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
+#if defined(LIBXML_FTP_ENABLED)
 
 /* Needed for portability to Windows 64 bits */
 #if defined(_WIN32)

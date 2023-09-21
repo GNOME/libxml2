@@ -6264,7 +6264,7 @@ name_ok:
  * xmlValidateElement:
  * @ctxt:  the validation context
  * @doc:  a document instance
- * @elem:  an element instance
+ * @root:  an element instance
  *
  * Try to validate the subtree under an element
  *

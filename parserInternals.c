@@ -182,7 +182,7 @@ xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
  * xmlFatalErr:
  * @ctxt:  an XML parser context
  * @error:  the error number
- * @extra:  extra information string
+ * @info:  extra information string
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
@@ -503,6 +503,10 @@ xmlParserInputRead(xmlParserInputPtr in ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
 /**
  * xmlParserGrow:
  * @ctxt:  an XML parser context
+ *
+ * Grow the input buffer.
+ *
+ * Returns the number of bytes read or -1 in case of error.
  */
 int
 xmlParserGrow(xmlParserCtxtPtr ctxt) {
@@ -590,6 +594,8 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
 /**
  * xmlParserShrink:
  * @ctxt:  an XML parser context
+ *
+ * Shrink the input buffer.
  */
 void
 xmlParserShrink(xmlParserCtxtPtr ctxt) {

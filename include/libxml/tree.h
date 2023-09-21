@@ -663,6 +663,7 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  * Variables.
  */
 
+/** DOC_DISABLE */
 #define XML_GLOBALS_TREE \
   XML_OP(xmlBufferAllocScheme, xmlBufferAllocationScheme, XML_DEPRECATED) \
   XML_OP(xmlDefaultBufferSize, int, XML_DEPRECATED) \
@@ -682,6 +683,7 @@ XML_GLOBALS_TREE
   #define xmlDeregisterNodeDefaultValue \
     XML_GLOBAL_MACRO(xmlDeregisterNodeDefaultValue)
 #endif
+/** DOC_ENABLE */
 
 /*
  * Some helper functions

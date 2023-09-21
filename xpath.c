@@ -183,6 +183,8 @@ xmlInitXPathInternal(void) {
  * xmlXPathIsNaN:
  * @val:  a double value
  *
+ * Checks whether a double is a NaN.
+ *
  * Returns 1 if the value is a NaN, 0 otherwise
  */
 int
@@ -197,6 +199,8 @@ xmlXPathIsNaN(double val) {
 /**
  * xmlXPathIsInf:
  * @val:  a double value
+ *
+ * Checks whether a double is an infinity.
  *
  * Returns 1 if the value is +Infinite, -1 if -Infinite, 0 otherwise
  */

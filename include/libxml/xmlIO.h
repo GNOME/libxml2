@@ -171,6 +171,7 @@ struct _xmlOutputBuffer {
 };
 #endif /* LIBXML_OUTPUT_ENABLED */
 
+/** DOC_DISABLE */
 #define XML_GLOBALS_IO \
   XML_OP(xmlParserInputBufferCreateFilenameValue, \
            xmlParserInputBufferCreateFilenameFunc, XML_DEPRECATED) \
@@ -187,6 +188,7 @@ XML_GLOBALS_IO
   #define xmlOutputBufferCreateFilenameValue \
     XML_GLOBAL_MACRO(xmlOutputBufferCreateFilenameValue)
 #endif
+/** DOC_ENABLE */
 
 /*
  * Interfaces for input
@@ -385,7 +387,7 @@ XMLPUBFUN int
 /**
  * Default 'ftp://' protocol callbacks
  */
-#if defined(LIBXML_FTP_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
+#if defined(LIBXML_FTP_ENABLED)
 XMLPUBFUN int
 	xmlIOFTPMatch			(const char *filename);
 XMLPUBFUN void *
@@ -396,7 +398,7 @@ XMLPUBFUN int
 					 int len);
 XMLPUBFUN int
 	xmlIOFTPClose			(void * context);
-#endif /* defined(LIBXML_FTP_ENABLED) || defined(LIBXML_LEGACY_ENABLED) */
+#endif /* defined(LIBXML_FTP_ENABLED) */
 
 XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
 	xmlParserInputBufferCreateFilenameDefault(

@@ -21,6 +21,13 @@ gcc:minimum:
     BASE_CONFIG: "--with-minimum"
     CFLAGS: "-O2"
 
+gcc:medium:
+  extends: .test
+  variables:
+    BASE_CONFIG: "--with-minimum"
+    CONFIG: "--with-threads --with-tree --with-xpath --with-output --with-html"
+    CFLAGS: "-O2"
+
 gcc:legacy:
   extends: .test
   only:

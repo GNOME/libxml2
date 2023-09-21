@@ -9,6 +9,9 @@ from threading import Thread, Lock
 import setup_test
 import libxml2
 
+# Memory debug specific
+libxml2.debugMemory(1)
+
 THREADS_COUNT = 15
 
 failed = 0

@@ -727,11 +727,10 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	     */
 	    if (reader->mode != XML_TEXTREADER_MODE_EOF) {
 		val = xmlParserInputBufferRead(reader->input, 4096);
-		if ((val == 0) &&
-		    (reader->input->readcallback == NULL)) {
+		if (val == 0) {
 		    if (xmlBufUse(inbuf) == reader->cur) {
 			reader->mode = XML_TEXTREADER_MODE_EOF;
-			reader->state = oldstate;
+                        break;
 		    }
 		} else if (val < 0) {
                     xmlGenericError(xmlGenericErrorContext,
@@ -739,10 +738,6 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
 		    reader->state = oldstate;
 		    return(val);
-		} else if (val == 0) {
-		    /* mark the end of the stream and process the remains */
-		    reader->mode = XML_TEXTREADER_MODE_EOF;
-		    break;
 		}
 
 	    } else
@@ -772,6 +767,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	    break;
 	}
     }
+    reader->state = oldstate;
 
     /*
      * Discard the consumed input when needed and possible
@@ -808,7 +804,6 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	    }
 	}
     }
-    reader->state = oldstate;
     if (reader->ctxt->wellFormed == 0) {
 	reader->mode = XML_TEXTREADER_MODE_EOF;
         return(-1);

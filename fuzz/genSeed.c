@@ -120,7 +120,9 @@ processXml(const char *docFile, FILE *out) {
     fuzzRecorderInit(out);
 
     doc = xmlReadFile(docFile, NULL, opts);
+#ifdef LIBXML_XINCLUDE_ENABLED
     xmlXIncludeProcessFlags(doc, opts);
+#endif
     xmlFreeDoc(doc);
 
     fuzzRecorderCleanup();

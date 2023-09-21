@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+#if defined(LIBXML_HTML_ENABLED)
   #define HAVE_HTML_FUZZER
 #endif
 #if defined(LIBXML_REGEXP_ENABLED)
@@ -27,16 +27,13 @@ extern "C" {
 #if 1
   #define HAVE_URI_FUZZER
 #endif
-#if defined(LIBXML_VALID_ENABLED) && \
-    defined(LIBXML_READER_ENABLED)
+#if defined(LIBXML_VALID_ENABLED)
   #define HAVE_VALID_FUZZER
 #endif
-#if defined(LIBXML_XINCLUDE_ENABLED) && \
-    defined(LIBXML_READER_ENABLED)
+#if defined(LIBXML_XINCLUDE_ENABLED)
   #define HAVE_XINCLUDE_FUZZER
 #endif
-#if defined(LIBXML_OUTPUT_ENABLED) && \
-    defined(LIBXML_READER_ENABLED)
+#if 1
   #define HAVE_XML_FUZZER
 #endif
 #if defined(LIBXML_XPTR_ENABLED)

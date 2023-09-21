@@ -27,13 +27,10 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
 
 int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
-    static const size_t maxChunkSize = 128;
     xmlDocPtr doc;
-    xmlParserCtxtPtr ctxt;
     xmlValidCtxtPtr vctxt;
-    xmlTextReaderPtr reader;
     const char *docBuffer, *docUrl;
-    size_t maxAlloc, docSize, consumed, chunkSize;
+    size_t maxAlloc, docSize;
     int opts;
 
     xmlFuzzDataInit(data, size);
@@ -65,39 +62,53 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     /* Push parser */
 
-    xmlFuzzMemSetLimit(maxAlloc);
-    ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
-    if (ctxt == NULL)
-        goto exit;
-    xmlCtxtUseOptions(ctxt, opts);
+#ifdef LIBXML_PUSH_ENABLED
+    {
+        static const size_t maxChunkSize = 128;
+        xmlParserCtxtPtr ctxt;
+        size_t consumed, chunkSize;
 
-    for (consumed = 0; consumed < docSize; consumed += chunkSize) {
-        chunkSize = docSize - consumed;
-        if (chunkSize > maxChunkSize)
-            chunkSize = maxChunkSize;
-        xmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
+        xmlFuzzMemSetLimit(maxAlloc);
+        ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
+        if (ctxt == NULL)
+            goto exit;
+        xmlCtxtUseOptions(ctxt, opts);
+
+        for (consumed = 0; consumed < docSize; consumed += chunkSize) {
+            chunkSize = docSize - consumed;
+            if (chunkSize > maxChunkSize)
+                chunkSize = maxChunkSize;
+            xmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
+        }
+
+        xmlParseChunk(ctxt, NULL, 0, 1);
+        xmlFreeDoc(ctxt->myDoc);
+        xmlFreeParserCtxt(ctxt);
     }
-
-    xmlParseChunk(ctxt, NULL, 0, 1);
-    xmlFreeDoc(ctxt->myDoc);
-    xmlFreeParserCtxt(ctxt);
+#endif
 
     /* Reader */
 
-    xmlFuzzMemSetLimit(maxAlloc);
-    reader = xmlReaderForMemory(docBuffer, docSize, NULL, NULL, opts);
-    if (reader == NULL)
-        goto exit;
-    while (xmlTextReaderRead(reader) == 1) {
-        if (xmlTextReaderNodeType(reader) == XML_ELEMENT_NODE) {
-            int i, n = xmlTextReaderAttributeCount(reader);
-            for (i=0; i<n; i++) {
-                xmlTextReaderMoveToAttributeNo(reader, i);
-                while (xmlTextReaderReadAttributeValue(reader) == 1);
+#ifdef LIBXML_READER_ENABLED
+    {
+        xmlTextReaderPtr reader;
+
+        xmlFuzzMemSetLimit(maxAlloc);
+        reader = xmlReaderForMemory(docBuffer, docSize, NULL, NULL, opts);
+        if (reader == NULL)
+            goto exit;
+        while (xmlTextReaderRead(reader) == 1) {
+            if (xmlTextReaderNodeType(reader) == XML_ELEMENT_NODE) {
+                int i, n = xmlTextReaderAttributeCount(reader);
+                for (i=0; i<n; i++) {
+                    xmlTextReaderMoveToAttributeNo(reader, i);
+                    while (xmlTextReaderReadAttributeValue(reader) == 1);
+                }
             }
         }
+        xmlFreeTextReader(reader);
     }
-    xmlFreeTextReader(reader);
+#endif
 
 exit:
     xmlFuzzMemSetLimit(0);

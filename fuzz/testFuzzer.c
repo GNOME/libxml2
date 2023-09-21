@@ -147,14 +147,9 @@ testEntityLoader(void) {
         "<!ENTITY ent SYSTEM \"ent.txt\">\\\n"
         "ent.txt\\\n"
         "Hello, world!\\\n";
-    static xmlChar expected[] =
-        "<?xml version=\"1.0\"?>\n"
-        "<!DOCTYPE doc SYSTEM \"doc.dtd\">\n"
-        "<doc>Hello, world!</doc>\n";
     const char *docBuffer;
     size_t docSize;
     xmlDocPtr doc;
-    xmlChar *out;
     int ret = 0;
 
     xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
@@ -165,13 +160,23 @@ testEntityLoader(void) {
     doc = xmlReadMemory(docBuffer, docSize, NULL, NULL,
                         XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
 
-    xmlDocDumpMemory(doc, &out, NULL);
-    if (xmlStrcmp(out, expected) != 0) {
-        fprintf(stderr, "Expected:\n%sGot:\n%s", expected, out);
-        ret = 1;
-    }
+#ifdef LIBXML_OUTPUT_ENABLED
+    {
+        static xmlChar expected[] =
+            "<?xml version=\"1.0\"?>\n"
+            "<!DOCTYPE doc SYSTEM \"doc.dtd\">\n"
+            "<doc>Hello, world!</doc>\n";
+        xmlChar *out;
 
-    xmlFree(out);
+        xmlDocDumpMemory(doc, &out, NULL);
+        if (xmlStrcmp(out, expected) != 0) {
+            fprintf(stderr, "Expected:\n%sGot:\n%s", expected, out);
+            ret = 1;
+        }
+        xmlFree(out);
+    }
+#endif
+
     xmlFreeDoc(doc);
     xmlFuzzDataCleanup();
 

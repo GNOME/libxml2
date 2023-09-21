@@ -24,18 +24,10 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
 
 int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
-    static const size_t maxChunkSize = 128;
     htmlDocPtr doc;
-    htmlParserCtxtPtr ctxt;
-    xmlOutputBufferPtr out;
     const char *docBuffer;
-    size_t maxAlloc, docSize, consumed, chunkSize;
+    size_t maxAlloc, docSize;
     int opts;
-
-    (void) maxChunkSize;
-    (void) ctxt;
-    (void) consumed;
-    (void) chunkSize;
 
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
@@ -52,37 +44,49 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFuzzMemSetLimit(maxAlloc);
     doc = htmlReadMemory(docBuffer, docSize, NULL, NULL, opts);
 
-    /*
-     * Also test the serializer. Call htmlDocContentDumpOutput with our
-     * own buffer to avoid encoding the output. The HTML encoding is
-     * excruciatingly slow (see htmlEntityValueLookup).
-     */
-    out = xmlAllocOutputBuffer(NULL);
-    htmlDocContentDumpOutput(out, doc, NULL);
-    xmlOutputBufferClose(out);
+#ifdef LIBXML_OUTPUT_ENABLED
+    {
+        xmlOutputBufferPtr out;
+
+        /*
+         * Also test the serializer. Call htmlDocContentDumpOutput with our
+         * own buffer to avoid encoding the output. The HTML encoding is
+         * excruciatingly slow (see htmlEntityValueLookup).
+         */
+        out = xmlAllocOutputBuffer(NULL);
+        htmlDocContentDumpOutput(out, doc, NULL);
+        xmlOutputBufferClose(out);
+    }
+#endif
 
     xmlFreeDoc(doc);
 
     /* Push parser */
 
 #ifdef LIBXML_PUSH_ENABLED
-    xmlFuzzMemSetLimit(maxAlloc);
-    ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
-                                    XML_CHAR_ENCODING_NONE);
+    {
+        static const size_t maxChunkSize = 128;
+        xmlParserCtxtPtr ctxt;
+        size_t consumed, chunkSize;
 
-    if (ctxt != NULL) {
-        htmlCtxtUseOptions(ctxt, opts);
+        xmlFuzzMemSetLimit(maxAlloc);
+        ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
+                                        XML_CHAR_ENCODING_NONE);
 
-        for (consumed = 0; consumed < docSize; consumed += chunkSize) {
-            chunkSize = docSize - consumed;
-            if (chunkSize > maxChunkSize)
-                chunkSize = maxChunkSize;
-            htmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
+        if (ctxt != NULL) {
+            htmlCtxtUseOptions(ctxt, opts);
+
+            for (consumed = 0; consumed < docSize; consumed += chunkSize) {
+                chunkSize = docSize - consumed;
+                if (chunkSize > maxChunkSize)
+                    chunkSize = maxChunkSize;
+                htmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
+            }
+
+            htmlParseChunk(ctxt, NULL, 0, 1);
+            xmlFreeDoc(ctxt->myDoc);
+            htmlFreeParserCtxt(ctxt);
         }
-
-        htmlParseChunk(ctxt, NULL, 0, 1);
-        xmlFreeDoc(ctxt->myDoc);
-        htmlFreeParserCtxt(ctxt);
     }
 #endif
 

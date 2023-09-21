@@ -1272,26 +1272,29 @@ class CParser:
         if token == None:
             return token
 
+        have_sign = 0
+        done = 0
+
         while token[0] == "name" and (
               token[1] == "const" or \
               token[1] == "unsigned" or \
               token[1] == "signed"):
+            if token[1] == "unsigned" or token[1] == "signed":
+                have_sign = 1
             if self.type == "":
                 self.type = token[1]
             else:
                 self.type = self.type + " " + token[1]
             token = self.token()
 
-        if token[0] == "name" and (token[1] == "long" or token[1] == "short"):
+        if token[0] == "name" and token[1] in ("char", "short", "int", "long"):
             if self.type == "":
                 self.type = token[1]
             else:
                 self.type = self.type + " " + token[1]
-            if token[0] == "name" and token[1] == "int":
-                if self.type == "":
-                    self.type = tmp[1]
-                else:
-                    self.type = self.type + " " + tmp[1]
+
+        elif have_sign:
+            done = 1
 
         elif token[0] == "name" and token[1] == "struct":
             if self.type == "":
@@ -1360,7 +1363,8 @@ class CParser:
             self.error("parsing type %s: expecting a name" % (self.type),
                        token)
             return token
-        token = self.token()
+        if not done:
+            token = self.token()
         while token != None and (token[0] == "op" or
               token[0] == "name" and token[1] == "const"):
             self.type = self.type + " " + token[1]

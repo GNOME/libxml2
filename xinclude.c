@@ -1715,8 +1715,9 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
         int cur;
         int l;
 
-        cur = xmlStringCurrentChar(NULL, &content[i], &l);
-        if (!IS_CHAR(cur)) {
+        l = len - i;
+        cur = xmlGetUTF8Char(&content[i], &l);
+        if ((cur < 0) || (!IS_CHAR(cur))) {
             xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_INVALID_CHAR,
                            "%s contains invalid char\n", URL);
             goto error;

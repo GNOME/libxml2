@@ -321,7 +321,6 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
  ************/
 
 #define CUR_CHAR(l) htmlCurrentChar(ctxt, &l)
-#define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(l,b,i,v)						\
     if (l == 1) b[i++] = v;						\

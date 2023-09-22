@@ -29,16 +29,13 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     maxAlloc = xmlFuzzReadInt(4) % (size * 8 + 1);
     str1 = xmlFuzzReadString(NULL);
 
-    /* CUR_SCHAR doesn't handle invalid UTF-8 and may cause infinite loops. */
-    if (xmlCheckUTF8(BAD_CAST str1) != 0) {
-        xmlFuzzMemSetLimit(maxAlloc);
-        regexp = xmlRegexpCompile(BAD_CAST str1);
-        /* xmlRegexpExec has pathological performance in too many cases. */
+    xmlFuzzMemSetLimit(maxAlloc);
+    regexp = xmlRegexpCompile(BAD_CAST str1);
+    /* xmlRegexpExec has pathological performance in too many cases. */
 #if 0
-        xmlRegexpExec(regexp, BAD_CAST str2);
+    xmlRegexpExec(regexp, BAD_CAST str2);
 #endif
-        xmlRegFreeRegexp(regexp);
-    }
+    xmlRegFreeRegexp(regexp);
 
     xmlFuzzMemSetLimit(0);
     xmlFuzzDataCleanup();

@@ -38,6 +38,16 @@
 
 #define MAX_PUSH 10000000
 
+/*
+ * -2 and -3 are used by xmlValidateElementType for other things.
+ */
+#define XML_REGEXP_OK               0
+#define XML_REGEXP_NOT_FOUND        (-1)
+#define XML_REGEXP_INTERNAL_ERROR   (-4)
+#define XML_REGEXP_OUT_OF_MEMORY    (-5)
+#define XML_REGEXP_INTERNAL_LIMIT   (-6)
+#define XML_REGEXP_INVALID_UTF8     (-7)
+
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -48,7 +58,6 @@
 #define CUR (*(ctxt->cur))
 #define NXT(index) (ctxt->cur[index])
 
-#define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
 #define NEXTL(l) ctxt->cur += l;
 #define XML_REG_STRING_SEPARATOR '|'
 /*
@@ -3036,6 +3045,7 @@ static void
 xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 #ifdef MAX_PUSH
     if (exec->nbPush > MAX_PUSH) {
+        exec->status = XML_REGEXP_INTERNAL_LIMIT;
         return;
     }
     exec->nbPush++;
@@ -3077,7 +3087,7 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 		xmlMalloc(exec->comp->nbCounters * sizeof(int));
 	    if (exec->rollbacks[exec->nbRollbacks].counts == NULL) {
 		xmlRegexpErrMemory(NULL, "saving regexp");
-		exec->status = -5;
+		exec->status = XML_REGEXP_OUT_OF_MEMORY;
 		return;
 	    }
 	}
@@ -3090,7 +3100,7 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 static void
 xmlFARegExecRollBack(xmlRegExecCtxtPtr exec) {
     if (exec->nbRollbacks <= 0) {
-	exec->status = -1;
+	exec->status = XML_REGEXP_NOT_FOUND;
 	return;
     }
     exec->nbRollbacks--;
@@ -3100,7 +3110,7 @@ xmlFARegExecRollBack(xmlRegExecCtxtPtr exec) {
     if (exec->comp->nbCounters > 0) {
 	if (exec->rollbacks[exec->nbRollbacks].counts == NULL) {
 	    fprintf(stderr, "exec save: allocation failed");
-	    exec->status = -6;
+	    exec->status = XML_REGEXP_INTERNAL_ERROR;
 	    return;
 	}
 	if (exec->counts) {
@@ -3129,7 +3139,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
     exec->maxRollbacks = 0;
     exec->nbRollbacks = 0;
     exec->rollbacks = NULL;
-    exec->status = 0;
+    exec->status = XML_REGEXP_OK;
     exec->comp = comp;
     exec->state = comp->states[0];
     exec->transno = 0;
@@ -3145,7 +3155,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
         memset(exec->counts, 0, comp->nbCounters * sizeof(int));
     } else
 	exec->counts = NULL;
-    while ((exec->status == 0) && (exec->state != NULL) &&
+    while ((exec->status == XML_REGEXP_OK) && (exec->state != NULL) &&
 	   ((exec->inputString[exec->index] != 0) ||
 	    ((exec->state != NULL) &&
 	     (exec->state->type != XML_REGEXP_FINAL_STATE)))) {
@@ -3189,7 +3199,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		xmlRegCounterPtr counter;
 
 		if (exec->counts == NULL) {
-		    exec->status = -1;
+		    exec->status = XML_REGEXP_INTERNAL_ERROR;
 		    goto error;
 		}
 		/*
@@ -3203,10 +3213,16 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    deter = 0;
 	    } else if (atom == NULL) {
 		fprintf(stderr, "epsilon transition left at runtime\n");
-		exec->status = -2;
+		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    } else if (exec->inputString[exec->index] != 0) {
-                codepoint = CUR_SCHAR(&(exec->inputString[exec->index]), len);
+                len = 4;
+                codepoint = xmlGetUTF8Char(&exec->inputString[exec->index],
+                                           &len);
+                if (codepoint < 0) {
+                    exec->status = XML_REGEXP_INVALID_UTF8;
+                    goto error;
+                }
 		ret = xmlRegCheckCharacter(atom, codepoint);
 		if ((ret == 1) && (atom->min >= 0) && (atom->max > 0)) {
 		    xmlRegStatePtr to = comp->states[trans->to];
@@ -3223,7 +3239,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 			if ((exec->counts == NULL) ||
 			    (exec->comp == NULL) ||
 			    (exec->comp->counters == NULL)) {
-			    exec->status = -1;
+			    exec->status = XML_REGEXP_INTERNAL_ERROR;
 			    goto error;
 			}
 			counter = &exec->comp->counters[trans->counter];
@@ -3266,8 +3282,13 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 			    exec->transno = transno;
 			    exec->state = state;
 			}
-			codepoint = CUR_SCHAR(&(exec->inputString[exec->index]),
-				              len);
+                        len = 4;
+                        codepoint = xmlGetUTF8Char(
+                                &exec->inputString[exec->index], &len);
+                        if (codepoint < 0) {
+                            exec->status = XML_REGEXP_INVALID_UTF8;
+                            goto error;
+                        }
 			ret = xmlRegCheckCharacter(atom, codepoint);
 			exec->transcount++;
 		    } while (ret == 1);
@@ -3285,7 +3306,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    }
 		    if (trans->counter >= 0) {
 			if (exec->counts == NULL) {
-			    exec->status = -1;
+			    exec->status = XML_REGEXP_INTERNAL_ERROR;
 			    goto error;
 			}
 			exec->counts[trans->counter]--;
@@ -3319,7 +3340,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    if ((exec->counts == NULL) ||
 			(exec->comp == NULL) ||
 			(exec->comp->counters == NULL)) {
-			exec->status = -1;
+			exec->status = XML_REGEXP_INTERNAL_ERROR;
 			goto error;
 		    }
 		    counter = &exec->comp->counters[trans->counter];
@@ -3330,7 +3351,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		if ((trans->count >= 0) &&
 		    (trans->count < REGEXP_ALL_COUNTER)) {
 		    if (exec->counts == NULL) {
-		        exec->status = -1;
+		        exec->status = XML_REGEXP_INTERNAL_ERROR;
 			goto error;
 		    }
 		    exec->counts[trans->count] = 0;
@@ -3342,7 +3363,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		}
 		goto progress;
 	    } else if (ret < 0) {
-		exec->status = -4;
+		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    }
 	}
@@ -3369,16 +3390,13 @@ error:
 	xmlFree(exec->rollbacks);
     }
     if (exec->state == NULL)
-        return(-1);
+        return(XML_REGEXP_INTERNAL_ERROR);
     if (exec->counts != NULL)
 	xmlFree(exec->counts);
-    if (exec->status == 0)
+    if (exec->status == XML_REGEXP_OK)
 	return(1);
-    if (exec->status == -1) {
-	if (exec->nbPush > MAX_PUSH)
-	    return(-1);
+    if (exec->status == XML_REGEXP_NOT_FOUND)
 	return(0);
-    }
     return(exec->status);
 }
 
@@ -3419,7 +3437,7 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
     exec->maxRollbacks = 0;
     exec->nbRollbacks = 0;
     exec->rollbacks = NULL;
-    exec->status = 0;
+    exec->status = XML_REGEXP_OK;
     exec->comp = comp;
     if (comp->compact == NULL)
 	exec->state = comp->states[0];
@@ -3639,8 +3657,8 @@ error:
         xmlFree(exec->errString);
     exec->errString = xmlStrdup(value);
     exec->errStateNo = state;
-    exec->status = -1;
-    return(-1);
+    exec->status = XML_REGEXP_NOT_FOUND;
+    return(XML_REGEXP_NOT_FOUND);
 }
 
 /**
@@ -3668,7 +3686,7 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	return(-1);
     if (exec->comp == NULL)
 	return(-1);
-    if (exec->status != 0)
+    if (exec->status != XML_REGEXP_OK)
 	return(exec->status);
 
     if (exec->comp->compact != NULL)
@@ -3690,7 +3708,7 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	data = exec->inputStack[exec->index].data;
     }
 
-    while ((exec->status == 0) &&
+    while ((exec->status == XML_REGEXP_OK) &&
 	   ((value != NULL) ||
 	    ((final == 1) &&
 	     (exec->state->type != XML_REGEXP_FINAL_STATE)))) {
@@ -3780,7 +3798,7 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		ret = ((count >= counter->min) && (count <= counter->max));
 	    } else if (atom == NULL) {
 		fprintf(stderr, "epsilon transition left at runtime\n");
-		exec->status = -2;
+		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    } else if (value != NULL) {
 		ret = xmlRegStrEqualWildcard(atom->valuep, value);
@@ -3915,7 +3933,7 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		}
 		goto progress;
 	    } else if (ret < 0) {
-		exec->status = -4;
+		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    }
 	}
@@ -3942,7 +3960,8 @@ rollback:
 	     */
 	    exec->determinist = 0;
 	    xmlFARegExecRollBack(exec);
-	    if ((exec->inputStack != NULL ) && (exec->status == 0)) {
+	    if ((exec->inputStack != NULL ) &&
+                (exec->status == XML_REGEXP_OK)) {
 		value = exec->inputStack[exec->index].value;
 		data = exec->inputStack[exec->index].data;
 	    }
@@ -3952,7 +3971,7 @@ progress:
         progress = 1;
 	continue;
     }
-    if (exec->status == 0) {
+    if (exec->status == XML_REGEXP_OK) {
         return(exec->state->type == XML_REGEXP_FINAL_STATE);
     }
     return(exec->status);
@@ -3998,7 +4017,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	return(-1);
     if (exec->comp == NULL)
 	return(-1);
-    if (exec->status != 0)
+    if (exec->status != XML_REGEXP_OK)
 	return(exec->status);
 
     if (value2 == NULL)
@@ -4010,7 +4029,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
     if (150 < lenn + lenp + 2) {
 	str = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
 	if (str == NULL) {
-	    exec->status = -1;
+	    exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return(-1);
 	}
     } else {
@@ -4239,7 +4258,7 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
     if (exec == NULL)
         return(-1);
     if (string != NULL) {
-        if (exec->status != 0)
+        if (exec->status != XML_REGEXP_OK)
 	    *string = exec->errString;
 	else
 	    *string = NULL;
@@ -4257,10 +4276,10 @@ xmlRegExecPushChar(xmlRegExecCtxtPtr exec, int UCS) {
 
     if (exec == NULL)
 	return(-1);
-    if (exec->status != 0)
+    if (exec->status != XML_REGEXP_OK)
 	return(exec->status);
 
-    while ((exec->status == 0) &&
+    while ((exec->status == XML_REGEXP_OK) &&
 	   ((exec->inputString[exec->index] != 0) ||
 	    (exec->state->type != XML_REGEXP_FINAL_STATE))) {
 
@@ -4292,7 +4311,7 @@ xmlRegExecPushChar(xmlRegExecCtxtPtr exec, int UCS) {
 		ret = ((count >= counter->min) && (count <= counter->max));
 	    } else if (atom == NULL) {
 		fprintf(stderr, "epsilon transition left at runtime\n");
-		exec->status = -2;
+		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    } else if (exec->inputString[exec->index] != 0) {
                 codepoint = CUR_SCHAR(&(exec->inputString[exec->index]), len);
@@ -4374,7 +4393,7 @@ xmlRegExecPushChar(xmlRegExecCtxtPtr exec, int UCS) {
 		}
 		goto progress;
 	    } else if (ret < 0) {
-		exec->status = -4;
+		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    }
 	}
@@ -4409,7 +4428,12 @@ xmlFAIsChar(xmlRegParserCtxtPtr ctxt) {
     int cur;
     int len;
 
-    cur = CUR_SCHAR(ctxt->cur, len);
+    len = 4;
+    cur = xmlGetUTF8Char(ctxt->cur, &len);
+    if (cur < 0) {
+        ERROR("Invalid UTF-8");
+        return(0);
+    }
     if ((cur == '.') || (cur == '\\') || (cur == '?') ||
 	(cur == '*') || (cur == '+') || (cur == '(') ||
 	(cur == ')') || (cur == '|') || (cur == 0x5B) ||
@@ -4897,7 +4921,12 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	end = start;
         len = 1;
     } else if ((cur != 0x5B) && (cur != 0x5D)) {
-        end = start = CUR_SCHAR(ctxt->cur, len);
+        len = 4;
+        end = start = xmlGetUTF8Char(ctxt->cur, &len);
+        if (start < 0) {
+            ERROR("Invalid UTF-8");
+            return;
+        }
     } else {
 	ERROR("Expecting a char range");
 	return;
@@ -4936,7 +4965,12 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	}
         len = 1;
     } else if ((cur != '\0') && (cur != 0x5B) && (cur != 0x5D)) {
-        end = CUR_SCHAR(ctxt->cur, len);
+        len = 4;
+        end = xmlGetUTF8Char(ctxt->cur, &len);
+        if (end < 0) {
+            ERROR("Invalid UTF-8");
+            return;
+        }
     } else {
 	ERROR("Expecting the end of a char range");
 	return;
@@ -5151,7 +5185,12 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
 	ctxt->atom = xmlRegNewAtom(ctxt, XML_REGEXP_CHARVAL);
 	if (ctxt->atom == NULL)
 	    return(-1);
-	codepoint = CUR_SCHAR(ctxt->cur, len);
+        len = 4;
+        codepoint = xmlGetUTF8Char(ctxt->cur, &len);
+        if (codepoint < 0) {
+            ERROR("Invalid UTF-8");
+            return(-1);
+        }
 	ctxt->atom->codepoint = codepoint;
 	NEXTL(len);
 	return(1);
@@ -5364,6 +5403,9 @@ xmlRegexpPtr
 xmlRegexpCompile(const xmlChar *regexp) {
     xmlRegexpPtr ret = NULL;
     xmlRegParserCtxtPtr ctxt;
+
+    if (regexp == NULL)
+        return(NULL);
 
     ctxt = xmlRegNewParserCtxt(regexp);
     if (ctxt == NULL)

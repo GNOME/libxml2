@@ -1,14 +1,34 @@
 # Maintainer's Guide
 
+## Generated files
+
+The documentation and other generated files can be rebuilt by running
+
+    make -C doc rebuild
+
+This requires `xsltproc`, the DocBook stylesheets in your XML Catalog
+and the libxml2 Python bindings to be installed, so it's best done on a
+Linux system. On Debian/Ubuntu, try
+
+    apt install xsltproc python3-libxml2 docbook-xsl docbook-xml
+
+doc/apibuild.py generates doc/libxml2-api.xml which is used to generate
+
+- API documentation with XSLT stylesheets
+- testapi.c with gentest.py
+- Python bindings with python/generator.py
+
+Man pages and HTML documentation for xmllint and xmlcatalog are
+generated with xsltproc and DocBook stylesheets.
+
 ## Making a release
 
 ### Rebuild generated files and documentation
 
-The documentation and some generated files can be rebuilt by running
+See above for details and run `make -C doc rebuild`.
 
-    make -C doc rebuild
-
-This requires `xsltproc` and the libxml2 Python bindings to be installed.
+Look for new warning messages and inspect changes for correctness
+before committing.
 
 ### Update the NEWS file
 

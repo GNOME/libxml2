@@ -56,6 +56,9 @@ xmlFuzzMemSetup(void);
 void
 xmlFuzzMemSetLimit(size_t limit);
 
+int
+xmlFuzzMallocFailed(void);
+
 void
 xmlFuzzDataInit(const char *data, size_t size);
 

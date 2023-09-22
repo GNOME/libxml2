@@ -476,7 +476,11 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
     ret->determinist = ctxt->determinist;
     ret->flags = ctxt->flags;
     if (ret->determinist == -1) {
-        xmlRegexpIsDeterminist(ret);
+        if (xmlRegexpIsDeterminist(ret) < 0) {
+            xmlRegexpErrMemory(ctxt, "checking determinism");
+            xmlFree(ret);
+            return(NULL);
+        }
     }
 
     if ((ret->determinist != 0) &&

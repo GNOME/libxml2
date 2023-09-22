@@ -44,6 +44,7 @@ static struct {
 
 size_t fuzzNumAllocs;
 size_t fuzzMaxAllocs;
+int fuzzAllocFailed;
 
 /**
  * xmlFuzzErrorFunc:
@@ -71,12 +72,13 @@ xmlFuzzErrorFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg ATTRIBUTE_UNUSED,
 static void *
 xmlFuzzMalloc(size_t size) {
     if (fuzzMaxAllocs > 0) {
-        if (fuzzNumAllocs >= fuzzMaxAllocs - 1)
+        if (fuzzNumAllocs >= fuzzMaxAllocs - 1) {
 #if XML_FUZZ_MALLOC_ABORT
             abort();
-#else
-            return(NULL);
 #endif
+            fuzzAllocFailed = 1;
+            return(NULL);
+        }
         fuzzNumAllocs += 1;
     }
     return malloc(size);
@@ -85,12 +87,13 @@ xmlFuzzMalloc(size_t size) {
 static void *
 xmlFuzzRealloc(void *ptr, size_t size) {
     if (fuzzMaxAllocs > 0) {
-        if (fuzzNumAllocs >= fuzzMaxAllocs - 1)
+        if (fuzzNumAllocs >= fuzzMaxAllocs - 1) {
 #if XML_FUZZ_MALLOC_ABORT
             abort();
-#else
-            return(NULL);
 #endif
+            fuzzAllocFailed = 1;
+            return(NULL);
+        }
         fuzzNumAllocs += 1;
     }
     return realloc(ptr, size);
@@ -105,6 +108,12 @@ void
 xmlFuzzMemSetLimit(size_t limit) {
     fuzzNumAllocs = 0;
     fuzzMaxAllocs = limit ? limit + XML_FUZZ_MALLOC_OFFSET : 0;
+    fuzzAllocFailed = 0;
+}
+
+int
+xmlFuzzMallocFailed(void) {
+    return fuzzAllocFailed;
 }
 
 /**

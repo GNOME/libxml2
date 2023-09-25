@@ -430,7 +430,7 @@ endif()
 if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
 	# These compiler flags can break the checks above so keep them here.
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra -Wshadow \
--Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return \
+-Wpointer-arith -Wcast-align -Wwrite-strings \
 -Wstrict-prototypes -Wmissing-prototypes \
 -Wno-long-long -Wno-format-extra-args")
 

@@ -40,12 +40,6 @@
 #define MIN_HASH_SIZE 8
 #define MAX_HASH_SIZE (1u << 31)
 
-typedef struct {
-    unsigned hashValue;
-    const xmlChar *name;
-} xmlDictEntry;
-typedef xmlDictEntry *xmlDictEntryPtr;
-
 typedef struct _xmlDictStrings xmlDictStrings;
 typedef xmlDictStrings *xmlDictStringsPtr;
 struct _xmlDictStrings {
@@ -56,6 +50,8 @@ struct _xmlDictStrings {
     size_t nbStrings;
     xmlChar array[1];
 };
+
+typedef xmlHashedString xmlDictEntry;
 
 /*
  * The entire dictionary
@@ -496,6 +492,12 @@ xmlDictHashQName(unsigned seed, const xmlChar *prefix, const xmlChar *name,
     return(h2 | MAX_HASH_SIZE);
 }
 
+unsigned
+xmlDictComputeHash(const xmlDict *dict, const xmlChar *string) {
+    size_t len;
+    return(xmlDictHashName(dict->seed, string, SIZE_MAX, &len));
+}
+
 /**
  * xmlDictFindEntry:
  * @dict: dict
@@ -640,10 +642,10 @@ done:
  * Internal lookup and update function.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
-static const xmlChar *
+static const xmlDictEntry *
 xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
                       const xmlChar *name, int maybeLen, int update) {
-    xmlDictEntryPtr entry = NULL;
+    xmlDictEntry *entry = NULL;
     const xmlChar *ret;
     unsigned hashValue;
     size_t maxLen, len, plen, klen;
@@ -675,7 +677,7 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
     if (dict->size > 0)
         entry = xmlDictFindEntry(dict, prefix, name, klen, hashValue, &found);
     if (found)
-        return(entry->name);
+        return(entry);
 
     if (dict->subdict != NULL) {
         xmlDictEntry *subEntry;
@@ -690,7 +692,7 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
         subEntry = xmlDictFindEntry(dict->subdict, prefix, name, klen,
                                     subHashValue, &found);
         if (found)
-            return(subEntry->name);
+            return(subEntry);
     }
 
     if (!update)
@@ -772,7 +774,7 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
 
     dict->nbElems++;
 
-    return(ret);
+    return(entry);
 }
 
 /**
@@ -788,7 +790,40 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
  */
 const xmlChar *
 xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
-    return(xmlDictLookupInternal(dict, NULL, name, len, 1));
+    const xmlDictEntry *entry;
+
+    entry = xmlDictLookupInternal(dict, NULL, name, len, 1);
+    if (entry == NULL)
+        return(NULL);
+    return(entry->name);
+}
+
+/**
+ * xmlDictLookupHashed:
+ * @dict: dictionary
+ * @name: string key
+ * @len: length of the key, if -1 it is recomputed
+ *
+ * Lookup a dictionary entry and add the string to the dictionary if
+ * it wasn't found.
+ *
+ * Returns the dictionary entry.
+ */
+xmlHashedString
+xmlDictLookupHashed(xmlDictPtr dict, const xmlChar *name, int len) {
+    const xmlDictEntry *entry;
+    xmlHashedString ret;
+
+    entry = xmlDictLookupInternal(dict, NULL, name, len, 1);
+
+    if (entry == NULL) {
+        ret.name = NULL;
+        ret.hashValue = 0;
+    } else {
+        ret = *entry;
+    }
+
+    return(ret);
 }
 
 /**
@@ -803,7 +838,12 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
  */
 const xmlChar *
 xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
-    return(xmlDictLookupInternal(dict, NULL, name, len, 0));
+    const xmlDictEntry *entry;
+
+    entry = xmlDictLookupInternal(dict, NULL, name, len, 0);
+    if (entry == NULL)
+        return(NULL);
+    return(entry->name);
 }
 
 /**
@@ -820,7 +860,12 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
  */
 const xmlChar *
 xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
-    return(xmlDictLookupInternal(dict, prefix, name, -1, 1));
+    const xmlDictEntry *entry;
+
+    entry = xmlDictLookupInternal(dict, prefix, name, -1, 1);
+    if (entry == NULL)
+        return(NULL);
+    return(entry->name);
 }
 
 /*

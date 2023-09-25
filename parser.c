@@ -67,6 +67,7 @@
 #endif
 
 #include "private/buf.h"
+#include "private/dict.h"
 #include "private/entities.h"
 #include "private/error.h"
 #include "private/html.h"
@@ -3144,14 +3145,18 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
     return(xmlParseNameComplex(ctxt));
 }
 
-static const xmlChar *
+static xmlHashedString
 xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
+    xmlHashedString ret;
     int len = 0, l;
     int c;
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
     size_t startPosition = 0;
+
+    ret.name = NULL;
+    ret.hashValue = 0;
 
     /*
      * Handler for more complex cases
@@ -3160,7 +3165,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     c = CUR_CHAR(l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
 	(!xmlIsNameStartChar(ctxt, c) || (c == ':'))) {
-	return(NULL);
+	return(ret);
     }
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
@@ -3171,12 +3176,13 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 	c = CUR_CHAR(l);
     }
     if (ctxt->instate == XML_PARSER_EOF)
-        return(NULL);
+        return(ret);
     if (len > maxLength) {
         xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
-        return(NULL);
+        return(ret);
     }
-    return(xmlDictLookup(ctxt->dict, (BASE_PTR + startPosition), len));
+    ret = xmlDictLookupHashed(ctxt->dict, (BASE_PTR + startPosition), len);
+    return(ret);
 }
 
 /**
@@ -3194,14 +3200,16 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
  * Returns the Name parsed or NULL
  */
 
-static const xmlChar *
+static xmlHashedString
 xmlParseNCName(xmlParserCtxtPtr ctxt) {
     const xmlChar *in, *e;
-    const xmlChar *ret;
+    xmlHashedString ret;
     size_t count = 0;
     size_t maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                        XML_MAX_TEXT_LENGTH :
                        XML_MAX_NAME_LENGTH;
+
+    ret.name = NULL;
 
     /*
      * Accelerator for simple ASCII names
@@ -3224,12 +3232,12 @@ xmlParseNCName(xmlParserCtxtPtr ctxt) {
 	    count = in - ctxt->input->cur;
             if (count > maxLength) {
                 xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
-                return(NULL);
+                return(ret);
             }
-	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
+	    ret = xmlDictLookupHashed(ctxt->dict, ctxt->input->cur, count);
 	    ctxt->input->cur = in;
 	    ctxt->input->col += count;
-	    if (ret == NULL) {
+	    if (ret.name == NULL) {
 	        xmlErrMemory(ctxt, NULL);
 	    }
 	    return(ret);
@@ -8423,6 +8431,62 @@ xmlGetNamespace(xmlParserCtxtPtr ctxt, const xmlChar *prefix) {
 }
 
 /**
+ * xmlParseQNameHashed:
+ * @ctxt:  an XML parser context
+ * @prefix:  pointer to store the prefix part
+ *
+ * parse an XML Namespace QName
+ *
+ * [6]  QName  ::= (Prefix ':')? LocalPart
+ * [7]  Prefix  ::= NCName
+ * [8]  LocalPart  ::= NCName
+ *
+ * Returns the Name parsed or NULL
+ */
+
+static xmlHashedString
+xmlParseQNameHashed(xmlParserCtxtPtr ctxt, xmlHashedString *prefix) {
+    xmlHashedString l, p;
+    int start;
+
+    l.name = NULL;
+    p.name = NULL;
+
+    GROW;
+    if (ctxt->instate == XML_PARSER_EOF)
+        return(l);
+    start = CUR_PTR - BASE_PTR;
+
+    l = xmlParseNCName(ctxt);
+    if ((l.name != NULL) && (CUR == ':')) {
+        NEXT;
+	p = l;
+	l = xmlParseNCName(ctxt);
+    }
+    if ((l.name == NULL) || (CUR == ':')) {
+        xmlChar *tmp;
+
+        p.name = NULL;
+        if (ctxt->instate == XML_PARSER_EOF)
+            return(l);
+        if ((CUR != ':') && (CUR_PTR <= BASE_PTR + start))
+            return(l);
+        tmp = xmlParseNmtoken(ctxt);
+        if (tmp != NULL)
+            xmlFree(tmp);
+        if (ctxt->instate == XML_PARSER_EOF)
+            return(l);
+        l = xmlDictLookupHashed(ctxt->dict, BASE_PTR + start,
+                                CUR_PTR - (BASE_PTR + start));
+        xmlNsErr(ctxt, XML_NS_ERR_QNAME,
+                 "Failed to parse QName '%s'\n", l.name, NULL, NULL);
+    }
+
+    *prefix = p;
+    return(l);
+}
+
+/**
  * xmlParseQName:
  * @ctxt:  an XML parser context
  * @prefix:  pointer to store the prefix part
@@ -8438,76 +8502,13 @@ xmlGetNamespace(xmlParserCtxtPtr ctxt, const xmlChar *prefix) {
 
 static const xmlChar *
 xmlParseQName(xmlParserCtxtPtr ctxt, const xmlChar **prefix) {
-    const xmlChar *l, *p;
+    xmlHashedString n, p;
 
-    GROW;
-    if (ctxt->instate == XML_PARSER_EOF)
+    n = xmlParseQNameHashed(ctxt, &p);
+    if (n.name == NULL)
         return(NULL);
-
-    l = xmlParseNCName(ctxt);
-    if (l == NULL) {
-        if (CUR == ':') {
-	    l = xmlParseName(ctxt);
-	    if (l != NULL) {
-	        xmlNsErr(ctxt, XML_NS_ERR_QNAME,
-		         "Failed to parse QName '%s'\n", l, NULL, NULL);
-		*prefix = NULL;
-		return(l);
-	    }
-	}
-        return(NULL);
-    }
-    if (CUR == ':') {
-        NEXT;
-	p = l;
-	l = xmlParseNCName(ctxt);
-	if (l == NULL) {
-	    xmlChar *tmp;
-
-            if (ctxt->instate == XML_PARSER_EOF)
-                return(NULL);
-            xmlNsErr(ctxt, XML_NS_ERR_QNAME,
-	             "Failed to parse QName '%s:'\n", p, NULL, NULL);
-	    l = xmlParseNmtoken(ctxt);
-	    if (l == NULL) {
-                if (ctxt->instate == XML_PARSER_EOF)
-                    return(NULL);
-		tmp = xmlBuildQName(BAD_CAST "", p, NULL, 0);
-            } else {
-		tmp = xmlBuildQName(l, p, NULL, 0);
-		xmlFree((char *)l);
-	    }
-	    p = xmlDictLookup(ctxt->dict, tmp, -1);
-	    if (tmp != NULL) xmlFree(tmp);
-	    *prefix = NULL;
-	    return(p);
-	}
-	if (CUR == ':') {
-	    xmlChar *tmp;
-
-            xmlNsErr(ctxt, XML_NS_ERR_QNAME,
-	             "Failed to parse QName '%s:%s:'\n", p, l, NULL);
-	    NEXT;
-	    tmp = (xmlChar *) xmlParseName(ctxt);
-	    if (tmp != NULL) {
-	        tmp = xmlBuildQName(tmp, l, NULL, 0);
-		l = xmlDictLookup(ctxt->dict, tmp, -1);
-		if (tmp != NULL) xmlFree(tmp);
-		*prefix = p;
-		return(l);
-	    }
-            if (ctxt->instate == XML_PARSER_EOF)
-                return(NULL);
-	    tmp = xmlBuildQName(BAD_CAST "", l, NULL, 0);
-	    l = xmlDictLookup(ctxt->dict, tmp, -1);
-	    if (tmp != NULL) xmlFree(tmp);
-	    *prefix = p;
-	    return(l);
-	}
-	*prefix = p;
-    } else
-        *prefix = NULL;
-    return(l);
+    *prefix = p.name;
+    return(n.name);
 }
 
 /**
@@ -8559,6 +8560,8 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
      * all strings coms from the dictionary, equality can be done directly
      */
     ret = xmlParseQName (ctxt, &prefix2);
+    if (ret == NULL)
+        return(NULL);
     if ((ret == name) && (prefix == prefix2))
 	return((const xmlChar*) 1);
     return ret;

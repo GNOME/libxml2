@@ -722,16 +722,24 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
         const unsigned char *cur;
         unsigned char c;
 
+        cur = ctxt->input->cur;
+
         /*
          *   2.11 End-of-Line Handling
          *   the literal two-character sequence "#xD#xA" or a standalone
          *   literal #xD, an XML processor must pass to the application
          *   the single character #xA.
          */
-        if (*(ctxt->input->cur) == '\n') {
-            ctxt->input->line++; ctxt->input->col = 1;
-        } else
+        if ((*cur == '\n') || (*cur == '\r')) {
+            ctxt->input->line++;
+            ctxt->input->col = 1;
+            if ((*cur == '\r') && (cur[1] == '\n')) {
+                ctxt->input->cur++;
+                cur++;
+            }
+        } else {
             ctxt->input->col++;
+        }
 
         /*
          * We are supposed to handle UTF8, check it's valid
@@ -744,7 +752,6 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
          *
          * Check for the 0x110000 limit too
          */
-        cur = ctxt->input->cur;
 
         c = *cur;
         if (c & 0x80) {
@@ -793,16 +800,25 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
             /* 1-byte code */
             ctxt->input->cur++;
     } else {
+        const unsigned char *cur;
+
         /*
          * Assume it's a fixed length encoding (1) with
          * a compatible encoding for the ASCII set, since
          * XML constructs only use < 128 chars
          */
 
-        if (*(ctxt->input->cur) == '\n') {
-            ctxt->input->line++; ctxt->input->col = 1;
-        } else
+        cur = ctxt->input->cur;
+
+        if ((*cur == '\n') || (*cur == '\r')) {
+            ctxt->input->line++;
+            ctxt->input->col = 1;
+            if ((*cur == '\r') && (cur[1] == '\n')) {
+                ctxt->input->cur++;
+            }
+        } else {
             ctxt->input->col++;
+        }
         ctxt->input->cur++;
     }
     return;
@@ -953,7 +969,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	    }
 	    if (*ctxt->input->cur == 0xD) {
 		if (ctxt->input->cur[1] == 0xA) {
-		    ctxt->input->cur++;
+                    *len = 2;
 		}
 		return(0xA);
 	    }
@@ -968,7 +984,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     *len = 1;
     if (*ctxt->input->cur == 0xD) {
 	if (ctxt->input->cur[1] == 0xA) {
-	    ctxt->input->cur++;
+            *len = 2;
 	}
 	return(0xA);
     }

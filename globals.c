@@ -615,6 +615,8 @@ void xmlCleanupGlobalsInternal(void) {
     }
 #endif
 #endif
+
+    parserInitialized = 0;
 }
 
 /**

@@ -445,6 +445,8 @@ xmlCleanupThreads(void)
  ************************************************************************/
 
 static int xmlParserInitialized = 0;
+static int xmlParserInnerInitialized = 0;
+
 
 #ifdef HAVE_POSIX_THREADS
 static pthread_mutex_t global_init_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -567,8 +569,6 @@ xmlGlobalInitMutexDestroy(void) {
  */
 void
 xmlInitParser(void) {
-    static int innerInitialized = 0;
-
     /*
      * Note that the initialization code must not make memory allocations.
      */
@@ -577,7 +577,7 @@ xmlInitParser(void) {
 
     xmlGlobalInitMutexLock();
 
-    if (innerInitialized == 0) {
+    if (xmlParserInnerInitialized == 0) {
 #if defined(_WIN32) && \
     (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
         if (xmlFree == free)
@@ -597,7 +597,7 @@ xmlInitParser(void) {
         xmlRegisterDefaultOutputCallbacks();
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-        innerInitialized = 1;
+        xmlParserInnerInitialized = 1;
     }
 
     xmlGlobalInitMutexUnlock();
@@ -660,6 +660,7 @@ xmlCleanupParser(void) {
     xmlGlobalInitMutexDestroy();
 
     xmlParserInitialized = 0;
+    xmlParserInnerInitialized = 0;
 }
 
 #if defined(HAVE_ATTRIBUTE_DESTRUCTOR) && !defined(LIBXML_STATIC) && \

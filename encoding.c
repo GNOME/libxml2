@@ -2118,8 +2118,8 @@ xmlCharEncInput(xmlParserInputBufferPtr input)
         avail = xmlBufAvail(out);
         if (avail > INT_MAX)
             avail = INT_MAX;
-        if (avail < toconv * 2) {
-            if (xmlBufGrow(out, toconv * 2) < 0) {
+        if (avail < 4096) {
+            if (xmlBufGrow(out, 4096) < 0) {
                 input->error = XML_ERR_NO_MEMORY;
                 return(XML_ENC_ERR_MEMORY);
             }

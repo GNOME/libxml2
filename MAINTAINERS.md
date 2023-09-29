@@ -1,5 +1,17 @@
 # Maintainer's Guide
 
+## Working with the test suite
+
+Most of the tests are contained in the `runtest` executable which
+generally reads test cases from the `test` directory and compares output
+to files in the `result` directory.
+
+You can simply add new test cases and run `runtest -u` to update the
+results. If you debug test failures, it's also useful to execute
+`runtest -u` and then `git diff result` to get a diff between actual and
+expected results. You can restore the original results by running
+`git restore result` and `git clean -xd result`.
+
 ## Generated files
 
 The documentation and other generated files can be rebuilt by running

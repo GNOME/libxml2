@@ -12916,8 +12916,10 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     /* propagate namespaces down the entity */
     if (oldctxt->nsdb != NULL) {
         ctxt->nsdb = xmlParserNsCreate();
-        if (ctxt->nsdb == NULL)
-            return(XML_ERR_NO_MEMORY);
+        if (ctxt->nsdb == NULL) {
+            ret = XML_ERR_NO_MEMORY;
+            goto error;
+        }
         for (i = 0; i < oldctxt->nsdb->hashSize; i++) {
             xmlParserNsBucket *bucket = &oldctxt->nsdb->hash[i];
             xmlHashedString hprefix, huri;
@@ -12950,10 +12952,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     if (oldctxt->myDoc == NULL) {
 	newDoc = xmlNewDoc(BAD_CAST "1.0");
 	if (newDoc == NULL) {
-	    ctxt->sax = oldsax;
-	    ctxt->dict = NULL;
-	    xmlFreeParserCtxt(ctxt);
-	    return(XML_ERR_INTERNAL_ERROR);
+            ret = XML_ERR_INTERNAL_ERROR;
+            goto error;
 	}
 	newDoc->properties = XML_DOC_INTERNAL;
 	newDoc->dict = ctxt->dict;
@@ -12966,13 +12966,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     }
     newRoot = xmlNewDocNode(ctxt->myDoc, NULL, BAD_CAST "pseudoroot", NULL);
     if (newRoot == NULL) {
-	ctxt->sax = oldsax;
-	ctxt->dict = NULL;
-	xmlFreeParserCtxt(ctxt);
-	if (newDoc != NULL) {
-	    xmlFreeDoc(newDoc);
-	}
-	return(XML_ERR_INTERNAL_ERROR);
+        ret = XML_ERR_INTERNAL_ERROR;
+        goto error;
     }
     ctxt->myDoc->children = NULL;
     ctxt->myDoc->last = NULL;
@@ -13055,6 +13050,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     oldctxt->nbErrors = ctxt->nbErrors;
     oldctxt->nbWarnings = ctxt->nbWarnings;
+
+error:
     ctxt->sax = oldsax;
     ctxt->dict = NULL;
     ctxt->attsDefault = NULL;

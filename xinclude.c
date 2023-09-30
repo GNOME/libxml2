@@ -1841,6 +1841,20 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
      * The XInclude engine offers no protection against exponential
      * expansion attacks similar to "billion laughs". Avoid timeouts by
      * limiting the total number of replacements when fuzzing.
+     *
+     * Unfortuately, a single XInclude can already result in quadratic
+     * behavior:
+     *
+     *     <doc xmlns:xi="http://www.w3.org/2001/XInclude">
+     *       <xi:include xpointer="xpointer(//e)"/>
+     *       <e>
+     *         <e>
+     *           <e>
+     *             <!-- more nested elements -->
+     *           </e>
+     *         </e>
+     *       </e>
+     *     </doc>
      */
     if (ctxt->incTotal >= 20)
         return(NULL);

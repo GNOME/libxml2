@@ -34,7 +34,12 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
-    opts &= ~XML_PARSE_XINCLUDE & ~XML_PARSE_DTDVALID;
+    /*
+     * Disable options that are known to cause timeouts
+     */
+    opts &= ~XML_PARSE_XINCLUDE &
+            ~XML_PARSE_DTDVALID &
+            ~XML_PARSE_SAX1;
     maxAlloc = xmlFuzzReadInt(4) % (size + 1);
 
     xmlFuzzReadEntities();

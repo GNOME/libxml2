@@ -698,13 +698,6 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
     if (!update)
         return(NULL);
 
-    if (prefix == NULL)
-        ret = xmlDictAddString(dict, name, len);
-    else
-        ret = xmlDictAddQString(dict, prefix, plen, name, len);
-    if (ret == NULL)
-        return(NULL);
-
     /*
      * Grow the hash table if needed
      */
@@ -738,6 +731,13 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
                 entry = dict->table;
         }
     }
+
+    if (prefix == NULL)
+        ret = xmlDictAddString(dict, name, len);
+    else
+        ret = xmlDictAddQString(dict, prefix, plen, name, len);
+    if (ret == NULL)
+        return(NULL);
 
     /*
      * Shift the remainder of the probe sequence to the right

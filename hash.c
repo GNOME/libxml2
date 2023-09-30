@@ -458,6 +458,43 @@ xmlHashUpdateInternal(xmlHashTablePtr hash, const xmlChar *key,
     }
 
     /*
+     * Grow the hash table if needed
+     */
+    if (hash->nbElems + 1 > hash->size / MAX_FILL_DENOM * MAX_FILL_NUM) {
+        unsigned newSize, mask, displ, pos;
+
+        if (hash->size == 0) {
+            newSize = MIN_HASH_SIZE;
+        } else {
+            /* This guarantees that nbElems < INT_MAX */
+            if (hash->size >= MAX_HASH_SIZE)
+                return(-1);
+            newSize = hash->size * 2;
+        }
+        if (xmlHashGrow(hash, newSize) != 0)
+            return(-1);
+
+        /*
+         * Find new entry
+         */
+        mask = hash->size - 1;
+        displ = 0;
+        pos = hashValue & mask;
+        entry = &hash->table[pos];
+
+        if (entry->hashValue != 0) {
+            do {
+                displ++;
+                pos++;
+                entry++;
+                if ((pos & mask) == 0)
+                    entry = hash->table;
+            } while ((entry->hashValue != 0) &&
+                     ((pos - entry->hashValue) & mask) >= displ);
+        }
+    }
+
+    /*
      * Copy keys
      */
     if (hash->dict != NULL) {
@@ -510,43 +547,6 @@ xmlHashUpdateInternal(xmlHashTablePtr hash, const xmlChar *key,
             memcpy(copy3, key3, lengths[2] + 1);
         } else {
             copy3 = NULL;
-        }
-    }
-
-    /*
-     * Grow the hash table if needed
-     */
-    if (hash->nbElems + 1 > hash->size / MAX_FILL_DENOM * MAX_FILL_NUM) {
-        unsigned newSize, mask, displ, pos;
-
-        if (hash->size == 0) {
-            newSize = MIN_HASH_SIZE;
-        } else {
-            /* This guarantees that nbElems < INT_MAX */
-            if (hash->size >= MAX_HASH_SIZE)
-                return(-1);
-            newSize = hash->size * 2;
-        }
-        if (xmlHashGrow(hash, newSize) != 0)
-            return(-1);
-
-        /*
-         * Find new entry
-         */
-        mask = hash->size - 1;
-        displ = 0;
-        pos = hashValue & mask;
-        entry = &hash->table[pos];
-
-        if (entry->hashValue != 0) {
-            do {
-                displ++;
-                pos++;
-                entry++;
-                if ((pos & mask) == 0)
-                    entry = hash->table;
-            } while ((entry->hashValue != 0) &&
-                     ((pos - entry->hashValue) & mask) >= displ);
         }
     }
 

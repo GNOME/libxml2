@@ -679,7 +679,7 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
     if (found)
         return(entry);
 
-    if (dict->subdict != NULL) {
+    if ((dict->subdict != NULL) && (dict->subdict->size > 0)) {
         xmlDictEntry *subEntry;
         unsigned subHashValue;
 

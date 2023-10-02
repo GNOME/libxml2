@@ -480,7 +480,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
     unsigned char* outstart = out;
     const unsigned char* processed = inb;
     unsigned char* outend;
-    unsigned short* in = (unsigned short*) inb;
+    unsigned short* in = (unsigned short *) (void *) inb;
     unsigned short* inend;
     unsigned int c, d, inlen;
     unsigned char *tmp;
@@ -566,7 +566,7 @@ static int
 UTF8ToUTF16LE(unsigned char* outb, int *outlen,
             const unsigned char* in, int *inlen)
 {
-    unsigned short* out = (unsigned short*) outb;
+    unsigned short* out = (unsigned short *) (void *) outb;
     const unsigned char* processed = in;
     const unsigned char *const instart = in;
     unsigned short* outstart= out;
@@ -718,7 +718,7 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
     unsigned char* outstart = out;
     const unsigned char* processed = inb;
     unsigned char* outend;
-    unsigned short* in = (unsigned short*) inb;
+    unsigned short* in = (unsigned short *) (void *) inb;
     unsigned short* inend;
     unsigned int c, d, inlen;
     unsigned char *tmp;
@@ -804,7 +804,7 @@ static int
 UTF8ToUTF16BE(unsigned char* outb, int *outlen,
             const unsigned char* in, int *inlen)
 {
-    unsigned short* out = (unsigned short*) outb;
+    unsigned short* out = (unsigned short *) (void *) outb;
     const unsigned char* processed = in;
     const unsigned char *const instart = in;
     unsigned short* outstart= out;

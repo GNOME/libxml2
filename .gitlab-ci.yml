@@ -55,7 +55,7 @@ clang:asan:
   variables:
     CONFIG: "--without-python"
     CC: clang
-    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined,integer -fno-sanitize-recover=all -Wno-error=cast-align"
+    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=address,undefined,integer -fno-sanitize-recover=all"
     UBSAN_OPTIONS: "print_stacktrace=1"
     ASAN_SYMBOLIZER_PATH: "$CI_PROJECT_DIR/.gitlab-ci/llvm-symbolizer"
 
@@ -66,7 +66,7 @@ clang:msan:
   variables:
     CONFIG: "--without-python --without-zlib --without-lzma"
     CC: clang
-    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory -Wno-error=cast-align"
+    CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory"
     MSAN_SYMBOLIZER_PATH: "$CI_PROJECT_DIR/.gitlab-ci/llvm-symbolizer"
 
 .mingw:
@@ -142,7 +142,6 @@ cmake:linux:clang:shared:
   variables:
     BUILD_SHARED_LIBS: "ON"
     CC: clang
-    CFLAGS: "-Wno-error=cast-align"
     SUFFIX: linux-clang-shared
 
 cmake:linux:clang:static:
@@ -152,7 +151,6 @@ cmake:linux:clang:static:
   variables:
     BUILD_SHARED_LIBS: "OFF"
     CC: clang
-    CFLAGS: "-Wno-error=cast-align"
     SUFFIX: linux-clang-static
 
 .cmake:mingw:

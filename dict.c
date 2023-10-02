@@ -538,7 +538,8 @@ xmlDictFindEntry(const xmlDict *dict, const xmlChar *prefix,
                     /*
                      * name is not necessarily null-terminated.
                      */
-                    if ((memcmp(entry->name, name, len) == 0) &&
+                    if ((strncmp((const char *) entry->name,
+                                 (const char *) name, len) == 0) &&
                         (entry->name[len] == 0)) {
                         found = 1;
                         break;

@@ -8847,6 +8847,7 @@ xmlParseQNameHashed(xmlParserCtxtPtr ctxt, xmlHashedString *prefix) {
     if ((l.name == NULL) || (CUR == ':')) {
         xmlChar *tmp;
 
+        l.name = NULL;
         p.name = NULL;
         if (ctxt->instate == XML_PARSER_EOF)
             return(l);

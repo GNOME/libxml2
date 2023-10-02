@@ -1397,7 +1397,7 @@ static xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
  *
  * Returns the new obejct.
  */
-static xmlParserNsData *
+xmlParserNsData *
 xmlParserNsCreate(void) {
     xmlParserNsData *nsdb = xmlMalloc(sizeof(*nsdb));
 
@@ -9473,14 +9473,6 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     nbNs = 0;
     attval = 0;
 
-    if (ctxt->nsdb == NULL) {
-        ctxt->nsdb = xmlParserNsCreate();
-        if (ctxt->nsdb == NULL) {
-            xmlErrMemory(ctxt, NULL);
-            return(NULL);
-        }
-    }
-
     if (xmlParserNsStartElement(ctxt->nsdb) < 0) {
         xmlErrMemory(ctxt, NULL);
         return(NULL);
@@ -12916,11 +12908,6 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     /* propagate namespaces down the entity */
     if (oldctxt->nsdb != NULL) {
-        ctxt->nsdb = xmlParserNsCreate();
-        if (ctxt->nsdb == NULL) {
-            ret = XML_ERR_NO_MEMORY;
-            goto error;
-        }
         for (i = 0; i < oldctxt->nsdb->hashSize; i++) {
             xmlParserNsBucket *bucket = &oldctxt->nsdb->hash[i];
             xmlHashedString hprefix, huri;

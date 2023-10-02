@@ -2002,6 +2002,15 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->input_id = 1;
     ctxt->maxAmpl = XML_MAX_AMPLIFICATION_DEFAULT;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
+
+    if (ctxt->nsdb == NULL) {
+        ctxt->nsdb = xmlParserNsCreate();
+        if (ctxt->nsdb == NULL) {
+            xmlErrMemory(ctxt, NULL);
+            return(-1);
+        }
+    }
+
     return(0);
 }
 

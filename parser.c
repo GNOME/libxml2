@@ -4569,6 +4569,7 @@ get_more_space:
                 ctxt->input->cur = in;
 
                 if ((ctxt->sax != NULL) &&
+                    (ctxt->disableSAX == 0) &&
                     (ctxt->sax->ignorableWhitespace !=
                      ctxt->sax->characters)) {
                     if (areBlanks(ctxt, tmp, nbchar, 1)) {
@@ -4583,6 +4584,7 @@ get_more_space:
                             *ctxt->space = -2;
                     }
                 } else if ((ctxt->sax != NULL) &&
+                           (ctxt->disableSAX == 0) &&
                            (ctxt->sax->characters != NULL)) {
                     ctxt->sax->characters(ctxt->userData,
                                           tmp, nbchar);
@@ -4619,6 +4621,7 @@ get_more:
         nbchar = in - ctxt->input->cur;
         if (nbchar > 0) {
             if ((ctxt->sax != NULL) &&
+                (ctxt->disableSAX == 0) &&
                 (ctxt->sax->ignorableWhitespace !=
                  ctxt->sax->characters) &&
                 (IS_BLANK_CH(*ctxt->input->cur))) {
@@ -4638,7 +4641,8 @@ get_more:
                 }
                 line = ctxt->input->line;
                 col = ctxt->input->col;
-            } else if (ctxt->sax != NULL) {
+            } else if ((ctxt->sax != NULL) &&
+                       (ctxt->disableSAX == 0)) {
                 if (ctxt->sax->characters != NULL)
                     ctxt->sax->characters(ctxt->userData,
                                           ctxt->input->cur, nbchar);
@@ -5068,6 +5072,7 @@ get_more:
 	 */
 	if (nbchar > 0) {
 	    if ((ctxt->sax != NULL) &&
+                (ctxt->disableSAX == 0) &&
 		(ctxt->sax->comment != NULL)) {
 		if (buf == NULL) {
 		    if ((*in == '-') && (in[1] == '-'))
@@ -7739,6 +7744,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		     "Entity '%s' not defined\n", name);
 	    if ((ctxt->inSubset == 0) &&
 		(ctxt->sax != NULL) &&
+                (ctxt->disableSAX == 0) &&
 		(ctxt->sax->reference != NULL)) {
 		ctxt->sax->reference(ctxt->userData, name);
 	    }

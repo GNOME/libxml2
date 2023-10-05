@@ -8183,7 +8183,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
  */
 static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
-    xmlParserInputPtr input = NULL;
+    xmlParserInputPtr oldinput, input = NULL;
     xmlChar *content = NULL;
     size_t length, i;
     int ret = -1;
@@ -8209,6 +8209,32 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	            "xmlLoadEntityContent input error");
         return(-1);
     }
+
+    xmlBufResetInput(input->buf->buffer, input);
+
+    oldinput = ctxt->input;
+    ctxt->input = input;
+
+    xmlDetectEncoding(ctxt);
+
+    /*
+     * Parse a possible text declaration first
+     */
+    if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
+	xmlParseTextDecl(ctxt);
+        /*
+         * An XML-1.0 document can't reference an entity not XML-1.0
+         */
+        if ((xmlStrEqual(ctxt->version, BAD_CAST "1.0")) &&
+            (!xmlStrEqual(ctxt->input->version, BAD_CAST "1.0"))) {
+            xmlFatalErrMsg(ctxt, XML_ERR_VERSION_MISMATCH,
+                           "Version mismatch between document and entity\n");
+        }
+    }
+
+    ctxt->input = oldinput;
+
+    xmlBufShrink(input->buf->buffer, input->cur - input->base);
 
     while ((res = xmlParserInputBufferGrow(input->buf, 16384)) > 0)
         ;

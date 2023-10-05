@@ -1685,6 +1685,10 @@ xmlParserNsPush(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
                 xmlErrAttributeDup(ctxt, NULL, BAD_CAST "xmlns");
                 return(0);
             }
+
+            if ((ctxt->options & XML_PARSE_NSCLEAN) &&
+                (uri->name == ctxt->nsTab[oldIndex * 2 + 1]))
+                return(0);
         }
 
         ctxt->nsdb->defaultNsIndex = ctxt->nsNr;
@@ -1708,6 +1712,10 @@ xmlParserNsPush(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
             xmlErrAttributeDup(ctxt, BAD_CAST "xmlns", prefix->name);
             return(0);
         }
+
+        if ((ctxt->options & XML_PARSE_NSCLEAN) &&
+            (uri->name == ctxt->nsTab[bucket->index * 2 + 1]))
+            return(0);
 
         bucket->index = ctxt->nsNr;
         goto populate_entry;

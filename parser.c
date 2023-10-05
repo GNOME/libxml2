@@ -885,6 +885,7 @@ typedef struct {
     xmlHashedString value;
     const xmlChar *valueEnd;
     int external;
+    int expandedSize;
 } xmlDefAttr;
 
 typedef struct _xmlDefAttrs xmlDefAttrs;
@@ -1014,7 +1015,7 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
                const xmlChar *value) {
     xmlDefAttrsPtr defaults;
     xmlDefAttr *attr;
-    int len;
+    int len, expandedSize;
     xmlHashedString name;
     xmlHashedString prefix;
     xmlHashedString hvalue;
@@ -1094,10 +1095,15 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
         goto mem_error;
 
     /* intern the string and precompute the end */
-    len = xmlStrlen(value);
+    len = strlen((const char *) value);
     hvalue = xmlDictLookupHashed(ctxt->dict, value, len);
     if (hvalue.name == NULL)
         goto mem_error;
+
+    expandedSize = strlen((const char *) name.name);
+    if (prefix.name != NULL)
+        expandedSize += strlen((const char *) prefix.name);
+    expandedSize += len;
 
     attr = &defaults->attrs[defaults->nbAttrs++];
     attr->name = name;
@@ -1105,6 +1111,7 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     attr->value = hvalue;
     attr->valueEnd = hvalue.name + len;
     attr->external = ctxt->external;
+    attr->expandedSize = expandedSize;
 
     return;
 
@@ -9801,9 +9808,13 @@ next_attr:
 		aprefix = attr->prefix.name;
 
 		if ((attname == ctxt->str_xmlns) && (aprefix == NULL)) {
+                    xmlParserEntityCheck(ctxt, attr->expandedSize);
+
                     if (xmlParserNsPush(ctxt, NULL, &attr->value, NULL, 1) > 0)
                         nbNs++;
 		} else if (aprefix == ctxt->str_xmlns) {
+                    xmlParserEntityCheck(ctxt, attr->expandedSize);
+
                     if (xmlParserNsPush(ctxt, &attr->name, &attr->value,
                                       NULL, 1) > 0)
                         nbNs++;
@@ -9950,6 +9961,8 @@ next_attr:
                              "Namespaced Attribute %s in '%s' redefined\n",
                              attname, nsuri, NULL);
                 }
+
+                xmlParserEntityCheck(ctxt, attr->expandedSize);
 
                 if ((atts == NULL) || (nbatts + 5 > maxatts)) {
                     if (xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0) {

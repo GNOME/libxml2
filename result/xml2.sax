@@ -8,11 +8,15 @@ SAX.getParameterEntity(xx)
 SAX.entityDecl(zz, 4, (null), (null), <!ENTITY tricky "error-prone" >)
 SAX.getParameterEntity(zz)
 SAX.getParameterEntity(xx)
-SAX.error: PEReference: %xx; not found
+SAX.getParameterEntity(zz)
+SAX.entityDecl(tricky, 1, (null), (null), error-prone)
+SAX.getEntity(tricky)
+SAX.externalSubset(test, , )
+SAX.startElement(test)
 SAX.characters(This sample shows a , 20)
 SAX.getEntity(tricky)
-SAX.error: Entity 'tricky' not defined
+SAX.characters(error-prone, 11)
 SAX.reference(tricky)
 SAX.characters( method., 8)
+SAX.endElement(test)
 SAX.endDocument()
-xmlSAXUserParseFile returned error 27

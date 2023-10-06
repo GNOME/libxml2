@@ -2261,13 +2261,11 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
         xmlParserGrow(ctxt);						\
   } while (0)
 
-#define SHRINK if ((ctxt->progressive == 0) &&				\
-		   (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
+#define SHRINK if ((ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
 		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
 	xmlParserShrink(ctxt);
 
-#define GROW if ((ctxt->progressive == 0) &&				\
-		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
+#define GROW if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)	\
 	xmlParserGrow(ctxt);
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)

@@ -8197,8 +8197,11 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     xmlParserInputPtr oldinput, input = NULL;
+    xmlParserInputPtr *oldinputTab;
+    const xmlChar *oldencoding;
     xmlChar *content = NULL;
     size_t length, i;
+    int oldinputNr, oldinputMax, oldprogressive;
     int ret = -1;
     int res;
 
@@ -8223,10 +8226,27 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
         return(-1);
     }
 
+    oldinput = ctxt->input;
+    oldinputNr = ctxt->inputNr;
+    oldinputMax = ctxt->inputMax;
+    oldinputTab = ctxt->inputTab;
+    oldencoding = ctxt->encoding;
+    oldprogressive = ctxt->progressive;
+
+    ctxt->input = NULL;
+    ctxt->inputNr = 0;
+    ctxt->inputMax = 1;
+    ctxt->encoding = NULL;
+    ctxt->progressive = 0;
+    ctxt->inputTab = xmlMalloc(sizeof(xmlParserInputPtr));
+    if (ctxt->inputTab == NULL) {
+        xmlErrMemory(ctxt, NULL);
+        goto error;
+    }
+
     xmlBufResetInput(input->buf->buffer, input);
 
-    oldinput = ctxt->input;
-    ctxt->input = input;
+    inputPush(ctxt, input);
 
     xmlDetectEncoding(ctxt);
 
@@ -8245,12 +8265,17 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
         }
     }
 
-    ctxt->input = oldinput;
+    if (ctxt->instate == XML_PARSER_EOF)
+        goto error;
 
-    xmlBufShrink(input->buf->buffer, input->cur - input->base);
+    length = input->cur - input->base;
+    xmlBufShrink(input->buf->buffer, length);
+    xmlSaturatedAdd(&ctxt->sizeentities, length);
 
-    while ((res = xmlParserInputBufferGrow(input->buf, 16384)) > 0)
+    while ((res = xmlParserInputBufferGrow(input->buf, 4096)) > 0)
         ;
+
+    xmlBufResetInput(input->buf->buffer, input);
 
     if (res < 0) {
         xmlFatalErr(ctxt, input->buf->error, NULL);
@@ -8285,8 +8310,19 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     ret = 0;
 
 error:
+    while (ctxt->inputNr > 0)
+        xmlFreeInputStream(inputPop(ctxt));
+    xmlFree(ctxt->inputTab);
+    xmlFree((xmlChar *) ctxt->encoding);
+
+    ctxt->input = oldinput;
+    ctxt->inputNr = oldinputNr;
+    ctxt->inputMax = oldinputMax;
+    ctxt->inputTab = oldinputTab;
+    ctxt->encoding = oldencoding;
+    ctxt->progressive = oldprogressive;
+
     xmlFree(content);
-    xmlFreeInputStream(input);
 
     return(ret);
 }

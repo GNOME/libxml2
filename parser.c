@@ -8237,6 +8237,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     ctxt->inputTab = xmlMalloc(sizeof(xmlParserInputPtr));
     if (ctxt->inputTab == NULL) {
         xmlErrMemory(ctxt, NULL);
+        xmlFreeInputStream(input);
         goto error;
     }
 

@@ -7131,6 +7131,8 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
             if (c == '>')
                 break;
         }
+        if (ctxt->instate == XML_PARSER_EOF)
+            return;
     }
 
     ctxt->instate = oldstate;

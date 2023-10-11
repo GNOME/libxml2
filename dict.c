@@ -153,10 +153,20 @@ xmlDictAddString(xmlDictPtr dict, const xmlChar *name, unsigned int namelen) {
             return(NULL);
         }
 
-        if (size == 0) size = 1000;
-	else size *= 4; /* exponential growth */
-        if (size < 4 * namelen)
-	    size = 4 * namelen; /* just in case ! */
+        if (size == 0) {
+            size = 1000;
+        } else {
+            if (size < (SIZE_MAX - sizeof(xmlDictStrings)) / 4)
+                size *= 4; /* exponential growth */
+            else
+                size = SIZE_MAX - sizeof(xmlDictStrings);
+        }
+        if (size / 4 < namelen) {
+            if ((size_t) namelen + 0 < (SIZE_MAX - sizeof(xmlDictStrings)) / 4)
+                size = 4 * (size_t) namelen; /* just in case ! */
+            else
+                return(NULL);
+        }
 	pool = (xmlDictStringsPtr) xmlMalloc(sizeof(xmlDictStrings) + size);
 	if (pool == NULL)
 	    return(NULL);
@@ -659,12 +669,12 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
 
     if (prefix == NULL) {
         hashValue = xmlDictHashName(dict->seed, name, maxLen, &len);
-        if (len > INT_MAX)
+        if (len > INT_MAX / 2)
             return(NULL);
         klen = len;
     } else {
         hashValue = xmlDictHashQName(dict->seed, prefix, name, &plen, &len);
-        if ((len > INT_MAX) || (plen >= INT_MAX - len))
+        if ((len > INT_MAX / 2) || (plen >= INT_MAX / 2 - len))
             return(NULL);
         klen = plen + 1 + len;
     }

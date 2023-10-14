@@ -11736,7 +11736,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		const xmlChar *prefix = NULL;
 		const xmlChar *URI = NULL;
                 int line = ctxt->input->line;
-		int nbNs;
+		int nbNs = 0;
 
 		if ((!terminate) && (avail < 2))
 		    goto done;
@@ -11807,30 +11807,26 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    ctxt->sax->endElement(ctxt->userData, name);
 #endif /* LIBXML_SAX1_ENABLED */
 		    }
-		    if (ctxt->instate == XML_PARSER_EOF)
-			goto done;
 		    spacePop(ctxt);
-		    if (ctxt->nameNr == 0) {
-			ctxt->instate = XML_PARSER_EPILOG;
-		    } else {
-			ctxt->instate = XML_PARSER_CONTENT;
-		    }
-		    break;
-		}
-		if (RAW == '>') {
+		} else if (RAW == '>') {
 		    NEXT;
+                    nameNsPush(ctxt, name, prefix, URI, line, nbNs);
 		} else {
 		    xmlFatalErrMsgStr(ctxt, XML_ERR_GT_REQUIRED,
 					 "Couldn't find end of Start Tag %s\n",
 					 name);
 		    nodePop(ctxt);
 		    spacePop(ctxt);
+                    if (nbNs > 0)
+                        xmlParserNsPop(ctxt, nbNs);
 		}
-                nameNsPush(ctxt, name, prefix, URI, line, nbNs);
 
                 if (ctxt->instate == XML_PARSER_EOF)
                     goto done;
-		ctxt->instate = XML_PARSER_CONTENT;
+                if (ctxt->nameNr == 0)
+                    ctxt->instate = XML_PARSER_EPILOG;
+                else
+                    ctxt->instate = XML_PARSER_CONTENT;
                 break;
 	    }
             case XML_PARSER_CONTENT: {

@@ -92,6 +92,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 #ifdef LIBXML_READER_ENABLED
     {
         xmlTextReaderPtr reader;
+        int j;
 
         xmlFuzzMemSetLimit(maxAlloc);
         reader = xmlReaderForMemory(docBuffer, docSize, NULL, NULL, opts);
@@ -106,6 +107,8 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 }
             }
         }
+        for (j = 0; j < 10; j++)
+            xmlTextReaderRead(reader);
         xmlFreeTextReader(reader);
     }
 #endif

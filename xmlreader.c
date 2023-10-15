@@ -1142,6 +1142,7 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
 	val = xmlTextReaderPushData(reader);
 	if (val < 0){
 	    reader->mode = XML_TEXTREADER_MODE_ERROR;
+            reader->state = XML_TEXTREADER_ERROR;
 	    return(-1);
 	}
     } while(reader->mode != XML_TEXTREADER_MODE_EOF);
@@ -1220,6 +1221,8 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
         return(xmlTextReaderReadTree(reader));
     if (reader->ctxt == NULL)
 	return(-1);
+    if (reader->state == XML_TEXTREADER_ERROR)
+        return(-1);
 
     if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
 	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;
@@ -1228,11 +1231,11 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	 */
 	do {
 	    val = xmlTextReaderPushData(reader);
-		if (val < 0){
-			reader->mode = XML_TEXTREADER_MODE_ERROR;
-			reader->state = XML_TEXTREADER_ERROR;
-		return(-1);
-		}
+            if (val < 0) {
+                reader->mode = XML_TEXTREADER_MODE_ERROR;
+                reader->state = XML_TEXTREADER_ERROR;
+                return(-1);
+            }
 	} while ((reader->ctxt->node == NULL) &&
 		 ((reader->mode != XML_TEXTREADER_MODE_EOF) &&
 		  (reader->state != XML_TEXTREADER_DONE)));
@@ -1240,11 +1243,11 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    if (reader->ctxt->myDoc != NULL) {
 		reader->node = reader->ctxt->myDoc->children;
 	    }
-	    if (reader->node == NULL){
-			reader->mode = XML_TEXTREADER_MODE_ERROR;
-			reader->state = XML_TEXTREADER_ERROR;
+	    if (reader->node == NULL) {
+                reader->mode = XML_TEXTREADER_MODE_ERROR;
+                reader->state = XML_TEXTREADER_ERROR;
 		return(-1);
-		}
+	    }
 	    reader->state = XML_TEXTREADER_ELEMENT;
 	} else {
 	    if (reader->ctxt->myDoc != NULL) {
@@ -1264,10 +1267,13 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 
 get_next_node:
     if (reader->node == NULL) {
-	if (reader->mode == XML_TEXTREADER_MODE_EOF)
+	if (reader->mode == XML_TEXTREADER_MODE_EOF) {
 	    return(0);
-	else
+        } else {
+            reader->mode = XML_TEXTREADER_MODE_ERROR;
+            reader->state = XML_TEXTREADER_ERROR;
 	    return(-1);
+        }
     }
 
     /*
@@ -1292,8 +1298,11 @@ get_next_node:
 	   (reader->ctxt->instate != XML_PARSER_EOF) &&
 	   (PARSER_STOPPED(reader->ctxt) == 0)) {
 	val = xmlTextReaderPushData(reader);
-	if (val < 0)
+	if (val < 0) {
+            reader->mode = XML_TEXTREADER_MODE_ERROR;
+            reader->state = XML_TEXTREADER_ERROR;
 	    return(-1);
+        }
 	if (reader->node == NULL)
 	    goto node_end;
     }
@@ -1377,8 +1386,11 @@ get_next_node:
 	if (reader->mode != XML_TEXTREADER_MODE_EOF) {
 	    val = xmlParseChunk(reader->ctxt, "", 0, 1);
 	    reader->state = XML_TEXTREADER_DONE;
-	    if (val != 0)
+	    if (val != 0) {
+                reader->mode = XML_TEXTREADER_MODE_ERROR;
+                reader->state = XML_TEXTREADER_ERROR;
 	        return(-1);
+            }
 	}
 	reader->node = NULL;
 	reader->depth = -1;

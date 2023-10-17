@@ -104,7 +104,7 @@ xmlInitDictInternal(void) {
  * DEPRECATED: This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
- * have call cleanup functions at all.
+ * have to call cleanup functions at all.
  */
 void
 xmlDictCleanup(void) {

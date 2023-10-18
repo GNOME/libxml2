@@ -4384,6 +4384,10 @@ thread_specific_data(void *private_data)
     const char *filename = params->filename;
     int okay = 1;
 
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+    xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
+#endif
+
     if (!strcmp(filename, "test/threads/invalid.xml")) {
         xmlDoValidityCheckingDefaultValue = 0;
         xmlGenericErrorContext = stdout;

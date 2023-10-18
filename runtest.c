@@ -4431,6 +4431,10 @@ thread_specific_data(void *private_data)
     const char *filename = params->filename;
     int okay = 1;
 
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+    xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
+#endif
+
     myDoc = xmlReadFile(filename, NULL, XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
     if (myDoc) {
         xmlFreeDoc(myDoc);

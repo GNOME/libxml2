@@ -856,6 +856,10 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                     *len = 0;
                 } else {
                     *len = 1;
+                    /*
+                     * TODO: Null bytes should be handled by callers,
+                     * but this can be tricky.
+                     */
                     xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Char 0x0 out of allowed range\n", c);
                 }
@@ -911,11 +915,6 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                     goto encoding_error;
                 *len = 4;
             }
-        }
-
-        if (!IS_CHAR(val)) {
-            xmlErrEncodingInt(ctxt, XML_ERR_INVALID_CHAR,
-                              "Char 0x%X out of allowed range\n", val);
         }
 
         return(val);

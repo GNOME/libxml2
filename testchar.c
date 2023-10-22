@@ -447,10 +447,9 @@ static int testCharRangeByte3(xmlParserCtxtPtr ctxt) {
 	}
 
         /*
-	 * There are values in that range that are not allowed in XML-1.0
+	 * There are values that are not allowed in UTF-8
 	 */
-	else if (((value > 0xD7FF) && (value <0xE000)) ||
-	         ((value > 0xFFFD) && (value <0x10000))) {
+	else if ((value > 0xD7FF) && (value <0xE000)) {
 	    if (lastError != XML_ERR_INVALID_CHAR) {
 		fprintf(stderr,
 	"Failed to detect invalid char 0x%04X for Bytes 0x%02X 0x%02X 0x%02X\n",
@@ -551,10 +550,9 @@ static int testCharRangeByte4(xmlParserCtxtPtr ctxt) {
 	}
 
         /*
-	 * There are values in that range that are not allowed in XML-1.0
+	 * There are values in that are not allowed in UTF-8
 	 */
-	else if (((value > 0xD7FF) && (value <0xE000)) ||
-	         ((value > 0xFFFD) && (value <0x10000)) ||
+	else if (((value > 0xD7FF) && (value < 0xE000)) ||
 		 (value > 0x10FFFF)) {
 	    if (lastError != XML_ERR_INVALID_CHAR) {
 		fprintf(stderr,

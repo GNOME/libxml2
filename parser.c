@@ -4717,7 +4717,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     cur = CUR_CHAR(l);
     while ((cur != '<') && /* checked */
            (cur != '&') &&
-	   (IS_CHAR(cur))) /* test also done in xmlCurrentChar() */ {
+	   (IS_CHAR(cur))) {
 	if ((cur == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
 	    xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
 	}

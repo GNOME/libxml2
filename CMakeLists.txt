@@ -520,6 +520,7 @@ if(LIBXML2_WITH_TESTS)
 		testdict
 		testModule
 		testlimits
+		testparser
 		testrecurse
 		testThreads
 	)
@@ -543,6 +544,7 @@ if(LIBXML2_WITH_TESTS)
 	endif()
 	add_test(NAME testchar COMMAND testchar)
 	add_test(NAME testdict COMMAND testdict)
+	add_test(NAME testparser COMMAND testparser)
 	add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 	add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()

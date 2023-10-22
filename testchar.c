@@ -261,6 +261,40 @@ static int testDocumentRanges(void) {
     return(test_ret);
 }
 
+static int
+testCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
+    const xmlChar *oldcur;
+    int c, err, len2;
+
+    lastError = 0;
+    c = xmlCurrentChar(ctxt, len);
+    ctxt->input->flags = 0;
+    err = lastError;
+
+    oldcur = ctxt->input->cur;
+    lastError = 0;
+    xmlNextChar(ctxt);
+    ctxt->input->flags = 0;
+    len2 = ctxt->input->cur - oldcur;
+    ctxt->input->cur = oldcur;
+
+    if ((*ctxt->input->cur != 0) && (err != lastError)) {
+        fprintf(stderr, "xmlCurrentChar and xmlNextChar report different "
+                "errors: %d %d\n", err, lastError);
+        return(-1);
+    }
+
+    if ((err == 0) && (*len != len2)) {
+        fprintf(stderr, "xmlCurrentChar and xmlNextChar report different "
+                "lengths: %d %d\n", *len, len2);
+        return(-1);
+    }
+
+    lastError = err;
+
+    return(c);
+}
+
 static int testCharRangeByte1(xmlParserCtxtPtr ctxt) {
     int i = 0;
     int len, c;
@@ -273,9 +307,9 @@ static int testCharRangeByte1(xmlParserCtxtPtr ctxt) {
         data[0] = (char) i;
         ctxt->nbErrors = 0;
 
-	lastError = 0;
-        c = xmlCurrentChar(ctxt, &len);
-        ctxt->input->flags = 0;
+        c = testCurrentChar(ctxt, &len);
+        if (c < 0)
+            continue;
 	if ((i == 0) || (i >= 0x80)) {
 	    /* we must see an error there */
 	    if (lastError != XML_ERR_INVALID_CHAR) {
@@ -309,9 +343,9 @@ static int testCharRangeByte2(xmlParserCtxtPtr ctxt) {
 	    data[1] = (char) j;
             ctxt->nbErrors = 0;
 
-	    lastError = 0;
-	    c = xmlCurrentChar(ctxt, &len);
-            ctxt->input->flags = 0;
+            c = testCurrentChar(ctxt, &len);
+            if (c < 0)
+                continue;
 
 	    /* if first bit of first char is set, then second bit must too */
 	    if ((i & 0x80) && ((i & 0x40) == 0)) {
@@ -403,9 +437,9 @@ static int testCharRangeByte3(xmlParserCtxtPtr ctxt) {
 	value = (K & 0x3F) + ((j & 0x3F) << 6) + ((i & 0xF) << 12);
         ctxt->nbErrors = 0;
 
-	lastError = 0;
-	c = xmlCurrentChar(ctxt, &len);
-        ctxt->input->flags = 0;
+        c = testCurrentChar(ctxt, &len);
+        if (c < 0)
+            continue;
 
 	/*
 	 * if fourth bit of first char is set, then the sequence would need
@@ -505,9 +539,9 @@ static int testCharRangeByte4(xmlParserCtxtPtr ctxt) {
 	        ((i & 0x7) << 18);
         ctxt->nbErrors = 0;
 
-	lastError = 0;
-	c = xmlCurrentChar(ctxt, &len);
-        ctxt->input->flags = 0;
+        c = testCurrentChar(ctxt, &len);
+        if (c < 0)
+            continue;
 
 	/*
 	 * if fifth bit of first char is set, then the sequence would need

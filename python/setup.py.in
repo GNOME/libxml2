@@ -5,11 +5,15 @@
 import sys, os
 
 try:
-    import setuptools
+    from setuptools import setup, Extension
 except ImportError:
-    pass
-
-from distutils.core import setup, Extension
+    try:
+        # Using distutils, for python < 3.12
+        from distutils.core import setup, Extension
+    except ImportError:
+        # distutils is not present in python 3.12 and greater
+        print("setuptools is required for python >= 3.12")
+        sys.exit(1)
 
 # Below ROOT, we expect to find include, include/libxml2, lib and bin.
 # On *nix, it is not needed (but should not harm),

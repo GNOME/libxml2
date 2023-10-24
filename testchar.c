@@ -15,7 +15,7 @@
 
 int lastError;
 
-static void errorHandler(void *unused, xmlErrorPtr err) {
+static void errorHandler(void *unused, const xmlError *err) {
     if ((unused == NULL) && (err != NULL) && (lastError == 0)) {
         lastError = err->code;
     }

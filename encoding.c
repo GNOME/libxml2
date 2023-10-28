@@ -1989,9 +1989,22 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
     int ret;
 
     if (handler->input != NULL) {
+        int oldinlen = *inlen;
+
         ret = handler->input(out, outlen, in, inlen);
-        if (ret > 0)
-           ret = XML_ENC_ERR_SUCCESS;
+        if (ret >= 0) {
+            /*
+             * The built-in converters don't signal XML_ENC_ERR_SPACE.
+             */
+            if (*inlen < oldinlen) {
+                if (*outlen > 0)
+                    ret = XML_ENC_ERR_SPACE;
+                else
+                    ret = XML_ENC_ERR_PARTIAL;
+            } else {
+                ret = XML_ENC_ERR_SUCCESS;
+            }
+        }
     }
 #ifdef LIBXML_ICONV_ENABLED
     else if (handler->iconv_in != NULL) {
@@ -2036,9 +2049,22 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
     int ret;
 
     if (handler->output != NULL) {
+        int oldinlen = *inlen;
+
         ret = handler->output(out, outlen, in, inlen);
-        if (ret > 0)
-           ret = XML_ENC_ERR_SUCCESS;
+        if (ret >= 0) {
+            /*
+             * The built-in converters don't signal XML_ENC_ERR_SPACE.
+             */
+            if (*inlen < oldinlen) {
+                if (*outlen > 0)
+                    ret = XML_ENC_ERR_SPACE;
+                else
+                    ret = XML_ENC_ERR_PARTIAL;
+            } else {
+                ret = XML_ENC_ERR_SUCCESS;
+            }
+        }
     }
 #ifdef LIBXML_ICONV_ENABLED
     else if (handler->iconv_out != NULL) {

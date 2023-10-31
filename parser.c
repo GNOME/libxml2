@@ -12994,9 +12994,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     xmlNodePtr content = NULL;
     xmlNodePtr last = NULL;
     xmlParserErrors ret = XML_ERR_OK;
-#if 0
     unsigned i;
-#endif
 
     if (((oldctxt->depth > 40) && ((oldctxt->options & XML_PARSE_HUGE) == 0)) ||
         (oldctxt->depth >  100)) {
@@ -13029,14 +13027,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     /*
      * Propagate namespaces down the entity
      *
-     * This is disabled for now. The pre-2.12 code was already broken
-     * since the SAX handler was using xmlSearchNs which didn't see the
-     * namespaces added here.
-     *
      * Making entities and namespaces work correctly requires additional
      * changes, see xmlParseReference.
      */
-#if 0
     for (i = 0; i < oldctxt->nsdb->hashSize; i++) {
         xmlParserNsBucket *bucket = &oldctxt->nsdb->hash[i];
         xmlHashedString hprefix, huri;
@@ -13054,10 +13047,13 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
             hprefix.hashValue = bucket->hashValue;
             huri.name = ns[1];
             huri.hashValue = extra->uriHashValue;
-            xmlParserNsPush(ctxt, &hprefix, &huri, extra->saxData, 0);
+            /*
+             * Don't copy SAX data top avoid a use-after-free in reader
+             * mode. This matches the pre-2.12 behavior.
+             */
+            xmlParserNsPush(ctxt, &hprefix, &huri, NULL, 0);
         }
     }
-#endif
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;

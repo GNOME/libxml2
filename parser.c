@@ -12994,6 +12994,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     xmlNodePtr content = NULL;
     xmlNodePtr last = NULL;
     xmlParserErrors ret = XML_ERR_OK;
+    xmlHashedString hprefix, huri;
     unsigned i;
 
     if (((oldctxt->depth > 40) && ((oldctxt->options & XML_PARSE_HUGE) == 0)) ||
@@ -13030,9 +13031,17 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
      * Making entities and namespaces work correctly requires additional
      * changes, see xmlParseReference.
      */
+
+    /* Default namespace */
+    hprefix.name = NULL;
+    hprefix.hashValue = 0;
+    huri.name = xmlParserNsLookupUri(oldctxt, &hprefix);
+    huri.hashValue = 0;
+    if (huri.name != NULL)
+        xmlParserNsPush(ctxt, NULL, &huri, NULL, 0);
+
     for (i = 0; i < oldctxt->nsdb->hashSize; i++) {
         xmlParserNsBucket *bucket = &oldctxt->nsdb->hash[i];
-        xmlHashedString hprefix, huri;
         const xmlChar **ns;
         xmlParserNsExtra *extra;
         unsigned nsIndex;
@@ -13048,8 +13057,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
             huri.name = ns[1];
             huri.hashValue = extra->uriHashValue;
             /*
-             * Don't copy SAX data top avoid a use-after-free in reader
-             * mode. This matches the pre-2.12 behavior.
+             * Don't copy SAX data to avoid a use-after-free with XML reader.
+             * This matches the pre-2.12 behavior.
              */
             xmlParserNsPush(ctxt, &hprefix, &huri, NULL, 0);
         }

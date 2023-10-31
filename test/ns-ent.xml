@@ -1,7 +1,10 @@
 <!DOCTYPE doc [
-  <!ENTITY ent "<ns:elem/>">
+  <!ENTITY ent1 "<elem/>">
+  <!ENTITY ent2 "<ns:elem/>">
 ]>
 <doc>
-    <c1 xmlns:ns="urn:ns1">&ent;</c1>
-    <c2 xmlns:ns="urn:ns2">&ent;</c2>
+    <a xmlns="urn:a">&ent1;</a>
+    <b xmlns="urn:b">&ent1;</b>
+    <a xmlns:ns="urn:a">&ent2;</a>
+    <b xmlns:ns="urn:b">&ent2;</b>
 </doc>

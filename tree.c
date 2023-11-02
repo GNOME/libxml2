@@ -6125,7 +6125,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
         if (node->type == XML_ELEMENT_NODE) {
             cur = node->nsDef;
             while (cur != NULL) {
-                if ((cur->href != NULL) && (href != NULL) &&
+                if ((cur->href != NULL) &&
                     (xmlStrEqual(cur->href, href))) {
 		    if (((!is_attr) || (cur->prefix != NULL)) &&
 		        (xmlNsInScope(doc, orig, node, cur->prefix) == 1))
@@ -6136,7 +6136,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
             if (orig != node) {
                 cur = node->ns;
                 if (cur != NULL) {
-                    if ((cur->href != NULL) && (href != NULL) &&
+                    if ((cur->href != NULL) &&
                         (xmlStrEqual(cur->href, href))) {
 			if (((!is_attr) || (cur->prefix != NULL)) &&
 		            (xmlNsInScope(doc, orig, node, cur->prefix) == 1))

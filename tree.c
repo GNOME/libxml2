@@ -9814,7 +9814,7 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
     if (attr->children == NULL)
 	return (0);
     cur = attr->children;
-    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
+    if (cur->type == XML_NAMESPACE_DECL)
         goto internal_error;
     while (cur != NULL) {
 	cur->doc = destDoc;

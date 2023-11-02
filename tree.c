@@ -1182,7 +1182,7 @@ xmlFreeDoc(xmlDocPtr cur) {
 	return;
     }
 
-    if (cur != NULL) dict = cur->dict;
+    dict = cur->dict;
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);

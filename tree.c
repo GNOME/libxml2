@@ -9292,7 +9292,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     *resNode = NULL;
 
     cur = node;
-    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
+    if (cur->type == XML_NAMESPACE_DECL)
         return(-1);
 
     while (cur != NULL) {

@@ -3836,9 +3836,6 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	xmlUnlinkNode(old);
 	return(old);
     }
-    if (cur == old) {
-	return(old);
-    }
     if ((old->type==XML_ATTRIBUTE_NODE) && (cur->type!=XML_ATTRIBUTE_NODE)) {
 	return(old);
     }

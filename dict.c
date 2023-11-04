@@ -81,6 +81,8 @@ static xmlMutex xmlDictMutex;
  * xmlInitializeDict:
  *
  * DEPRECATED: Alias for xmlInitParser.
+ *
+ * Returns 0.
  */
 int
 xmlInitializeDict(void) {
@@ -89,7 +91,7 @@ xmlInitializeDict(void) {
 }
 
 /**
- * xmlInitializeDict:
+ * xmlInitDictInternal:
  *
  * Initialize mutex.
  */

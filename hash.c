@@ -632,6 +632,8 @@ xmlHashAddEntry(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
  * Add a hash table entry with two strings as key.
  *
  * See xmlHashAddEntry.
+ *
+ * Returns 0 on success and -1 in case of error.
  */
 int
 xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar *key,
@@ -650,6 +652,8 @@ xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar *key,
  * Add a hash table entry with three strings as key.
  *
  * See xmlHashAddEntry.
+ *
+ * Returns 0 on success and -1 in case of error.
  */
 int
 xmlHashAddEntry3(xmlHashTablePtr hash, const xmlChar *key,
@@ -688,6 +692,8 @@ xmlHashUpdateEntry(xmlHashTablePtr hash, const xmlChar *key,
  * Add a hash table entry with two strings as key.
  *
  * See xmlHashUpdateEntry.
+ *
+ * Returns 0 on success and -1 in case of error.
  */
 int
 xmlHashUpdateEntry2(xmlHashTablePtr hash, const xmlChar *key,
@@ -709,6 +715,8 @@ xmlHashUpdateEntry2(xmlHashTablePtr hash, const xmlChar *key,
  * Add a hash table entry with three strings as key.
  *
  * See xmlHashUpdateEntry.
+ *
+ * Returns 0 on success and -1 in case of error.
  */
 int
 xmlHashUpdateEntry3(xmlHashTablePtr hash, const xmlChar *key,
@@ -1054,6 +1062,8 @@ int xmlHashRemoveEntry(xmlHashTablePtr hash, const xmlChar *key,
  * Remove an entry with two strings as key.
  *
  * See xmlHashRemoveEntry.
+ *
+ * Returns 0 on success and -1 in case of error.
  */
 int
 xmlHashRemoveEntry2(xmlHashTablePtr hash, const xmlChar *key,
@@ -1072,6 +1082,8 @@ xmlHashRemoveEntry2(xmlHashTablePtr hash, const xmlChar *key,
  * Remove an entry with three strings as key.
  *
  * See xmlHashRemoveEntry.
+ *
+ * Returns 0 on success and -1 in case of error.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 int

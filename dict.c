@@ -501,6 +501,10 @@ xmlDictHashQName(unsigned seed, const xmlChar *prefix, const xmlChar *name,
 
     HASH_FINISH(h1, h2);
 
+    /*
+     * Always set the upper bit of hash values since 0 means an unoccupied
+     * bucket.
+     */
     return(h2 | MAX_HASH_SIZE);
 }
 
@@ -508,6 +512,21 @@ unsigned
 xmlDictComputeHash(const xmlDict *dict, const xmlChar *string) {
     size_t len;
     return(xmlDictHashName(dict->seed, string, SIZE_MAX, &len));
+}
+
+#define HASH_ROL31(x,n) ((x) << (n) | ((x) & 0x7FFFFFFF) >> (31 - (n)))
+
+ATTRIBUTE_NO_SANITIZE_INTEGER
+unsigned
+xmlDictCombineHash(unsigned v1, unsigned v2) {
+    /*
+     * The upper bit of hash values is always set, so we have to operate on
+     * 31-bit hashes here.
+     */
+    v1 ^= v2;
+    v1 += HASH_ROL31(v2, 5);
+
+    return((v1 & 0xFFFFFFFF) | 0x80000000);
 }
 
 /**

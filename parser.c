@@ -9390,12 +9390,6 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
     return (hname);
 }
 
-ATTRIBUTE_NO_SANITIZE_INTEGER
-static unsigned
-xmlCombineHash(unsigned v1, unsigned v2) {
-    return(HASH_ROL(v1, 15) ^ v2);
-}
-
 /**
  * xmlAttrHashInsert:
  * @ctxt: parser context
@@ -9913,7 +9907,7 @@ next_attr:
             uriHashValue = ctxt->nsdb->extra[nsIndex].uriHashValue;
         }
 
-        hashValue = xmlCombineHash(nameHashValue, uriHashValue);
+        hashValue = xmlDictCombineHash(nameHashValue, uriHashValue);
         res = xmlAttrHashInsert(ctxt, i, &attrHashSize, attname, nsuri,
                                 hashValue);
         if (res < 0)
@@ -9985,7 +9979,7 @@ next_attr:
                 /*
                  * Check whether the attribute exists
                  */
-                hashValue = xmlCombineHash(attr->name.hashValue, uriHashValue);
+                hashValue = xmlDictCombineHash(attr->name.hashValue, uriHashValue);
                 res = xmlAttrHashInsert(ctxt, nbatts, &attrHashSize, attname,
                                         nsuri, hashValue);
                 if (res < 0)
